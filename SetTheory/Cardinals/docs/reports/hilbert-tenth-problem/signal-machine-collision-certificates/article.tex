@@ -18,7 +18,7 @@
 \hypersetup{colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,
  urlcolor=MidnightBlue,pdftitle={Collision Geometry Is Linear: Diophantine Certificates for Rational Signal Machines and Conservative Particle Dynamics},
  pdfauthor={AI-assisted research report prepared for Vladimir Reshetnikov},
- pdfsubject={Event-sparse chambers, canonical quadratic and quartic certificates, two routes to complete chronology, a conservative universal signal frontend, sparse lattice certificates, conserved-mass thresholds and mass four in every dimension}}
+ pdfsubject={Event-sparse chambers, canonical quadratic and quartic certificates, two routes to complete chronology, a conservative universal signal frontend, sparse lattice certificates, conserved-mass thresholds, mass four in every dimension and unbounded-time certificates for exact three-mass targets}}
 \urlstyle{same}
 \setlength{\emergencystretch}{2em}
 \setlength{\parskip}{3pt}
@@ -82,6 +82,10 @@
 % maximum norm \norm of sources 19-21 is written \inorm (Part IV's \norm differs)
 \newcommand{\Lift}{\mathcal L}\newcommand{\inorm}[1]{\lVert#1\rVert_\infty}
 \newcommand{\file}[1]{\texttt{\detokenize{#1}}}
+% Sources 22-23 (Part VIII) macros; their \N is written \NN. Their \sha used the
+% seqsplit package; here a hash is set as a breakable path. %M2WRITE
+\newcommand{\Np}{\Z_{>0}}\newcommand{\Tclean}{T_{\mathrm{clean}}}\newcommand{\Qcan}{Q_R^{\mathrm{can}}}
+\newcommand{\sha}[1]{\begin{quote}\small\path{#1}\end{quote}}
 % Batch 82: section numbers reach three digits, so the contents get wider number boxes
 \makeatletter
 \renewcommand*\l@section[2]{%
@@ -106,29 +110,29 @@
 \begin{titlepage}
 \vspace*{0in}
 \noindent{\color{MidnightBlue}\large PROVEIT RESEARCH REPORT}\par
-\vspace{0.06in}
+\vspace{0.03in}
 \noindent{\Huge\bfseries Collision Geometry Is Linear}\par
-\vspace{0.07in}
+\vspace{0.03in}
 \noindent{\LARGE Diophantine Certificates for Rational Signal Machines\\[0.15em] and Conservative Particle Dynamics}\par
-\vspace{0.07in}
-\noindent{\large Event-sparse chambers, canonical quadratic and quartic certificates,\\ two routes to complete chronology, a conservative universal frontend,\\ sparse lattice certificates, conserved-mass thresholds, and mass four in every dimension}\par
-\vspace{0.08in}
-\noindent AI-assisted research report prepared for Vladimir Reshetnikov from twelve manuscripts\par
-\noindent(ProveIt's incoming reports: batch~78, manuscripts~07 and~11; batch~79, manuscripts~16 and~19;\\ batch~80, manuscripts~10, 02, 05 and~03; batch~82, manuscripts~19, 06, 17 and~01), 2 October 2026\par
-\vspace{0.08in}
-\begin{abstract}\footnotesize\setlength{\parskip}{2pt}
+\vspace{0.03in}
+\noindent{\large Event-sparse chambers, canonical quadratic and quartic certificates,\\ two routes to complete chronology, a conservative universal frontend,\\ sparse lattice certificates, conserved-mass thresholds, mass four in every dimension,\\ and unbounded-time certificates for exact three-mass targets}\par
+\vspace{0.04in}
+\noindent AI-assisted research report prepared for Vladimir Reshetnikov from fourteen manuscripts\par
+\noindent(ProveIt's incoming reports: batch~78, manuscripts~07 and~11; batch~79, 16 and~19; batch~80, 10, 02,\\ 05 and~03; batch~82, 19, 06, 17, 01, 21 and~02), 2 October 2026\par
+\vspace{0.04in}
+\begin{abstract}\footnotesize\setlength{\parskip}{0pt}
 A rational signal machine computes by the collisions of finitely many kinds of particles moving at fixed rational speeds on a line. Its first two Parts print two independent manuscripts that prove one theorem by two routes: once a complete finite collision history is fixed, its realizations are exactly the natural zeros of a sum of squares of integer affine residuals, of degree two, with exactly one witness tuple for each realization. In both, typed endpoint conditions on maximal adjacency intervals exclude unrecorded earlier collisions, omitted simultaneous inputs and omitted simultaneous sites, and causal depth controls the denominators of the event coordinates.
 
 Part~I (source~07) eliminates every event coordinate. The realizing initial-gap vectors form a relatively open rational polyhedral cone cut out by at most $3(n-1)+(3m+1)E$ linear conditions, and the only witnesses are the slacks of the strict rows. The chamber geometry yields small integral realizations, an NP upper bound for bounded synthesis, a robustness--codimension criterion, a canonical first-hit quartic for a fixed event budget, exact quasi-polynomial seed counts, an exactly solved first-collision tournament and a four-speed accumulating clock with exponentially growing denominators. Part~II (source~11) keeps batch times and event positions as natural witnesses on a fixed rational grid, adds halting semantics, proves that the witness matrix has full column rank (so the certificate is strictly convex in its witnesses), gives linear witness and residual ledgers and a full-layer reference construction, and bounds the canonical witnesses by $60^K\max(1,M_0)$ for the four-speed interface of Durand-Lose's universal machine.
 
 Parts~III and~IV (sources~12 and~13, from batch~79) certify conservative dynamics at a fixed horizon. Part~III writes out a reversible number-conserving universal signal machine (Morita's universal Turing machine through Durand-Lose's stacks) with 18 live signals, whose event dynamics is an 18-dimensional integer-linear map with a canonical quadratic step certificate; Part~IV compiles one-dimensional number-conserving lattice dynamics into a quartic sum of squares with a unique natural witness and proves decidability at total mass at most two.
 
-Parts~V and~VI (sources~14--17, batch~80) find the least conserved mass of an undecidable observation. With many weight-one symbols, a fixed reversible automaton simulates a universal reversible two-counter machine at total mass three, also for exact pairs (Part~V); with at most one, masses three and four stay decidable, so integer-state number-conserving automata need five particles (Part~VI). Source~18 and Part~VII (sources~19--21, batch~82) add timed quartics and mass-four decidability on every $\Z^d$.
+Parts~V and~VI (sources~14--17, batch~80) find the least conserved mass of an undecidable observation. With many weight-one symbols, a fixed reversible automaton simulates a universal reversible two-counter machine at total mass three, also for exact pairs (Part~V); with at most one, masses three and four stay decidable, so integer-state number-conserving automata need five particles (Part~VI). Source~18 and Part~VII (sources~19--21, batch~82) add timed quartics and mass-four decidability on every $\Z^d$. Part~VIII (sources~22--23) removes Part~V's horizon for fixed sources, with infinite witness fibres.
 
-None of the seven Parts compiles unbounded halting into one fixed-arity polynomial or improves the repository's 75- and 87-operation bounds; Parts~I and~II do not transcribe the published universal machine, and Part~III transcribes a different one. Re-derived devices are printed as pointers or second routes. Part~I's convex-quadratic barrier is a special case of Part~XI of the collection's report \emph{canonical-diophantine-certificates}. The report is AI-assisted and unrefereed; nothing in it is formalized in Lean or Rocq.
+None of the eight Parts compiles universal unbounded halting into one fixed-arity polynomial or improves the repository's 75- and 87-operation bounds; Parts~I and~II do not transcribe the published universal machine, and Part~III transcribes a different one. Re-derived devices are printed as pointers or second routes. Part~I's convex-quadratic barrier is a special case of Part~XI of the collection's report \emph{canonical-diophantine-certificates}. The report is AI-assisted and unrefereed; nothing in it is formalized in Lean or Rocq.
 \end{abstract}
 \vfill
-\noindent\small\textbf{Status.} Conventional proofs and finite exact-arithmetic checks; not kernel-checked. Section~\ref{smc:sec:front} compares the two routes, introduces Parts~III--VII, and states what is not claimed; Appendix~\ref{smc:app:provenance} gives the provenance.
+\noindent\footnotesize\textbf{Status.} Conventional proofs and finite exact-arithmetic checks; not kernel-checked. Section~\ref{smc:sec:front} compares the two routes, introduces Parts~III--VIII, and states what is not claimed; Appendix~\ref{smc:app:provenance} gives the provenance.
 \end{titlepage}
 \hypersetup{pageanchor=true}
 
@@ -136,7 +140,7 @@ None of the seven Parts compiles unbounded halting into one fixed-arity polynomi
 \newpage
 \section{Scope, the two routes, and conventions}\label{smc:sec:front}
 
-\wtag\ This section was written when the two manuscripts were merged. Part~\ref{smc:part:cg} and Part~\ref{smc:part:sd} print the two sources; text there without a \wtag\ marker is the source's own. Sections~\ref{smc:cs:sec:batch79}--\ref{smc:cs:sec:questions} were added on 2 October 2026, when two manuscripts of batch~79 became Parts~\ref{smc:cs:part} and~\ref{smc:sl:part}; where they make a sentence of the earlier subsections stale, a dated note says so. Sections~\ref{smc:tm:sec:batch80}--\ref{smc:tm:sec:frontquestions} were added later the same day, when four manuscripts of batch~80 became Parts~\ref{smc:tm:part} and~\ref{smc:su:part}, again with dated notes where earlier sentences became stale. Sections~\ref{smc:zd:sec:batch82}--\ref{smc:zd:sec:frontquestions} were added on 3 October 2026, when four manuscripts of batch~82 became source~18 of Part~\ref{smc:su:part} and Part~\ref{smc:zd:part}, likewise with dated notes.
+\wtag\ This section was written when the two manuscripts were merged. Part~\ref{smc:part:cg} and Part~\ref{smc:part:sd} print the two sources; text there without a \wtag\ marker is the source's own. Sections~\ref{smc:cs:sec:batch79}--\ref{smc:cs:sec:questions} were added on 2 October 2026, when two manuscripts of batch~79 became Parts~\ref{smc:cs:part} and~\ref{smc:sl:part}; where they make a sentence of the earlier subsections stale, a dated note says so. Sections~\ref{smc:tm:sec:batch80}--\ref{smc:tm:sec:frontquestions} were added later the same day, when four manuscripts of batch~80 became Parts~\ref{smc:tm:part} and~\ref{smc:su:part}, again with dated notes where earlier sentences became stale. Sections~\ref{smc:zd:sec:batch82}--\ref{smc:zd:sec:frontquestions} were added on 3 October 2026, when four manuscripts of batch~82 became source~18 of Part~\ref{smc:su:part} and Part~\ref{smc:zd:part}, likewise with dated notes. Sections~\ref{smc:uc:sec:batch82}--\ref{smc:uc:sec:frontquestions} were added later that day, when two further manuscripts of batch~82 became Part~\ref{smc:uc:part}, again with dated notes.
 
 \subsection{The two sources}\label{smc:sec:parts}
 
@@ -147,7 +151,7 @@ This report is built from two AI-assisted research manuscripts that arrived in o
 \item \textbf{Part~\ref{smc:part:sd} (source~11), \emph{Direct Diophantine certificates}.} Speeds and positions normalized to natural numbers by an external Galilean change of coordinates. Batch times and event positions stay in the certificate as natural witnesses on the grid $B=D^K$, and the certificate has prefix and halting versions (Theorem~\ref{smc:sd:thm:main}). Its additions are the halting semantics with terminal rays, full column rank of the witness matrix and hence strict convexity in the witnesses (Lemma~\ref{smc:sd:lem:rank}), an explicit witness and residual ledger, a full-layer reference construction with exact counts (Section~\ref{smc:sd:sec:fulllayer}), the witness-height bound for Durand-Lose's four-speed interface (Theorem~\ref{smc:sd:thm:height}) and a positive-witness translation.
 \end{itemize}
 
-Source~07 is the base because it assumes less (signed rational speeds, no normalization interface) and proves more about the chamber; source~11 is printed in full as the second route together with its additions. Each Part keeps its source's definitions, letters and numbering of statements. (\wtag\ Added 2 October 2026: two further Parts, from batch~79, follow Part~II; Section~\ref{smc:cs:sec:batch79} describes them. They do not prove the common theorem of this subsection and the next again.) (\wtag\ Added 2 October 2026, batch~80: two more Parts, from four manuscripts of batch~80, follow Part~IV, so that the report now prints eight sources in six Parts; Section~\ref{smc:tm:sec:batch80} describes them.) (\wtag\ Added 3 October 2026, batch~82: a third source joins Part~VI and a seventh Part follows it, so that the report now prints twelve sources in seven Parts; Section~\ref{smc:zd:sec:batch82} describes them.) The common theorem is stated in both Parts, because its two statements have different inputs and witnesses; where a lemma of Part~II coincides with one of Part~I, a \wtag\ note at the lemma says so, and source~11's proof is kept as a marked second route.
+Source~07 is the base because it assumes less (signed rational speeds, no normalization interface) and proves more about the chamber; source~11 is printed in full as the second route together with its additions. Each Part keeps its source's definitions, letters and numbering of statements. (\wtag\ Added 2 October 2026: two further Parts, from batch~79, follow Part~II; Section~\ref{smc:cs:sec:batch79} describes them. They do not prove the common theorem of this subsection and the next again.) (\wtag\ Added 2 October 2026, batch~80: two more Parts, from four manuscripts of batch~80, follow Part~IV, so that the report now prints eight sources in six Parts; Section~\ref{smc:tm:sec:batch80} describes them.) (\wtag\ Added 3 October 2026, batch~82: a third source joins Part~VI and a seventh Part follows it, so that the report now prints twelve sources in seven Parts; Section~\ref{smc:zd:sec:batch82} describes them.) (\wtag\ Added 3 October 2026, batch~82, cluster~M2: an eighth Part follows Part~VII, so that the report now prints fourteen sources in eight Parts; Section~\ref{smc:uc:sec:batch82} describes it.) The common theorem is stated in both Parts, because its two statements have different inputs and witnesses; where a lemma of Part~II coincides with one of Part~I, a \wtag\ note at the lemma says so, and source~11's proof is kept as a marked second route.
 
 \subsection{One theorem by two routes}\label{smc:sec:routes}
 
@@ -251,7 +255,7 @@ Neither source cites the related material below; this subsection supplies the cr
 \item \textbf{Report \emph{liveness-beyond-halting}}~\cite{lbh}. Its Part~V prints a question of its source~11, ``Optimal degree under stronger geometric restrictions'', which asks for the minimal degree and dimension of a witness-free, binary-branching local polynomial that is globally nonnegative on all real inputs, and remarks that the globally nonnegative quadratic case ``has a much more rigid affine geometry''. Part~I's Theorem~\ref{smc:cg:thm:rigidity} (and, more generally, Part~XI of~\cite{cdc}) states that geometry: such a quadratic has a rational affine zero set. This report does not settle that degree question.
 \item \textbf{The Hilbert-tenth-problem programme has already reviewed both manuscripts.} The review of the delivery of 2 October 2026~\cite{review808}, with its detailed signal-machine part~\cite{reviewsignal}, replayed both suites from the original archives, read both articles in full and reports ``PASS for both reports' stated finite-schema, exact-domain theorems and generated examples'', with no mandatory correction. It also proves and checks two reductions that neither source claims: deleting source~11's identically zero same-birth rows and its same-death rows (differences of retained flight rows), and erasing the initial-order slacks when $K>0$ or the certificate is halting, which takes the worked annihilation from six residuals and five witnesses to four and four (a bijection of natural zero sets, not of nonnegative rational ones, with a rational counterexample); and deleting redundant strict rows, with computed slacks, from the five exported packets of source~07. Those reductions are the review's, are not re-proved here, and do not change any theorem of either Part. This report's intake is therefore not a first review; it adds the merge, the cross-references and the credit of Remark~\ref{smc:cg:rem:credit}.
 \item \textbf{The programme's audits of finite-history models.} Source~07 cites the reversible finite-history audit~\cite{reversible} for its distinction between cheap local relations and a complete computation certificate; that file is unchanged from source~07's pin to the write. A sibling audit~\cite{blockca} notes that ``finite particles can in principle store unbounded values in their separation'' and that ``a new construction would have to establish that interface''. Durand-Lose's halting universal signal machine~\cite{durandlose} uses a finite initial configuration and a halting event (Part~II, Section~\ref{smc:sd:sec:purpose}), so signal machines are a candidate for such an interface, and both Parts compile its finite collision histories in principle; but neither transcribes its universal rule table or its input loader (Part~I, Section~\ref{smc:cg:sec:implementation}; Part~II, Question~\ref{smc:sd:q:universal}), so this report does not establish that interface. (\wtag\ Added 2 October 2026: for signal machines Part~III now establishes it, with a different universal machine and a prepared rational loader; see Section~\ref{smc:cs:sec:relation}.)
-\item \textbf{The repository's universal bounds.} The project README~\cite{repo} still states the established bounds of 75 operations for a complete certificate and 87 for one universal polynomial. Neither Part improves or bears on them; both say so. (\wtag\ Nor do Parts~III--VI.)
+\item \textbf{The repository's universal bounds.} The project README~\cite{repo} still states the established bounds of 75 operations for a complete certificate and 87 for one universal polynomial. Neither Part improves or bears on them; both say so. (\wtag\ Nor do Parts~III--VI.) (\wtag\ Added 3 October 2026: nor does Part~VIII, whose horizon-free polynomials are for four fixed nonuniversal sources; Section~\ref{smc:uc:sec:relation}.)
 \item \textbf{Other reports of the category.} No result of \emph{probabilistic-quantum-and-continuous-computation} or \emph{group-theoretic-substrates} is re-proved here. Apart from the programme's review described above, nothing in the repository treated signal machines before this report.
 \end{itemize}
 
@@ -260,7 +264,7 @@ Neither source cites the related material below; this subsection supplies the cr
 The report is AI-assisted and unrefereed, and \textbf{nothing in it is formalized in Lean or Rocq}. Both sources give conventional proofs together with finite exact-arithmetic checks that are regression evidence, not proofs. Every limitation stated by either source is kept in its Part; collected here, neither Part claims
 \begin{itemize}
 \item historical priority, or exhaustive novelty, for its constructions (Part~I, Section~\ref{smc:cg:sec:intro}; Part~II, Section~\ref{smc:sd:sec:purpose}); Part~II adds that a general linearizability of signal-machine evolution is already in Durand-Lose's linear real-register simulation~\cite{DL07};
-\item one fixed-arity polynomial for unbounded halting, a single-fold or finite-fold Diophantine representation of c.e.\ sets, or a fixed-universal arithmetic-operation bound: the skeleton or schema, the machine and the input length are compiler data, and the row and residual counts are not operation counts;
+\item one fixed-arity polynomial for unbounded halting, a single-fold or finite-fold Diophantine representation of c.e.\ sets, or a fixed-universal arithmetic-operation bound: the skeleton or schema, the machine and the input length are compiler data, and the row and residual counts are not operation counts (\wtag\ added 3 October 2026: still true of Parts~I and~II and of the report as a whole; Part~VIII prints fixed-arity polynomials without a horizon for the first-target relation of four fixed nonuniversal sources of Part~V's three-mass automaton, whose witness fibres are infinite, and gives no universal source and no finite-fold representation; Section~\ref{smc:uc:sec:status});
 \item that the published universal machine (13 meta-signals, 21 non-blank rules) or its input loader has been transcribed, executed or certified;
 \item any semantics at or after an accumulation point; the clock and the shuttle are tests of finite prefixes, and the clock is not a claim to have discovered accumulation;
 \item NP-hardness (Corollary~\ref{smc:cg:cor:NP} is an upper bound), an efficient enumeration of first-hit chambers or of their volumes, or an optimized exhaustive enumerator in the code;
@@ -269,11 +273,11 @@ The report is AI-assisted and unrefereed, and \textbf{nothing in it is formalize
 \item that the finite checks are exhaustive, or that the shared simulator of Part~II's two compilers is independently verified;
 \item any Lean or Rocq verification; neither source's code is a verified compiler.
 \end{itemize}
-The report itself claims no novelty for Part~I's convex-quadratic barrier (Remark~\ref{smc:cg:rem:credit}) and none for the reductions of the programme's review. (\wtag\ The non-claims of Parts~III and~IV are collected in Section~\ref{smc:cs:sec:status}, those of Parts~V and~VI in Section~\ref{smc:tm:sec:status}, and those of source~18 and Part~VII in Section~\ref{smc:zd:sec:status}.)
+The report itself claims no novelty for Part~I's convex-quadratic barrier (Remark~\ref{smc:cg:rem:credit}) and none for the reductions of the programme's review. (\wtag\ The non-claims of Parts~III and~IV are collected in Section~\ref{smc:cs:sec:status}, those of Parts~V and~VI in Section~\ref{smc:tm:sec:status}, those of source~18 and Part~VII in Section~\ref{smc:zd:sec:status}, and those of Part~VIII in Section~\ref{smc:uc:sec:status}.)
 
 \subsection{Research questions}\label{smc:sec:questions}
 
-Both agendas are printed in full: the nine research directions of Part~I (Section~\ref{smc:cg:sec:future}) and the five questions of Part~II (Section~\ref{smc:sd:sec:questions}), each in its Part and with its source's wording. Four of Part~II's questions coincide with, or overlap, directions of Part~I; Table~\ref{smc:tab:questions} pairs them, so that the two formulations are read together. None of them is answered by the other source, by the repository, or by the programme's review; the one partial overlap is that Part~II's Question~\ref{smc:sd:q:ledger} begins with causal-depth clearing, which both sources already prove (a \wtag\ note there re-scopes it). (\wtag\ Added 2 October 2026: this sentence describes the report before batch~79. Part~III now answers Part~I's direction~\ref{smc:cg:q:universal}, except for an ordinary-integer loader, and Parts~III and~IV answer Part~II's Question~\ref{smc:sd:q:conservative} in part; Section~\ref{smc:cs:sec:questions} and dated notes at the questions give the details.) (\wtag\ Added 2 October 2026, batch~80: Parts~V and~VI answer two of Part~IV's questions and the remark after its mass-two theorem; Section~\ref{smc:tm:sec:frontquestions} gives the details.)
+Both agendas are printed in full: the nine research directions of Part~I (Section~\ref{smc:cg:sec:future}) and the five questions of Part~II (Section~\ref{smc:sd:sec:questions}), each in its Part and with its source's wording. Four of Part~II's questions coincide with, or overlap, directions of Part~I; Table~\ref{smc:tab:questions} pairs them, so that the two formulations are read together. None of them is answered by the other source, by the repository, or by the programme's review; the one partial overlap is that Part~II's Question~\ref{smc:sd:q:ledger} begins with causal-depth clearing, which both sources already prove (a \wtag\ note there re-scopes it). (\wtag\ Added 2 October 2026: this sentence describes the report before batch~79. Part~III now answers Part~I's direction~\ref{smc:cg:q:universal}, except for an ordinary-integer loader, and Parts~III and~IV answer Part~II's Question~\ref{smc:sd:q:conservative} in part; Section~\ref{smc:cs:sec:questions} and dated notes at the questions give the details.) (\wtag\ Added 2 October 2026, batch~80: Parts~V and~VI answer two of Part~IV's questions and the remark after its mass-two theorem; Section~\ref{smc:tm:sec:frontquestions} gives the details.) (\wtag\ Added 3 October 2026, batch~82, cluster~M2: Part~VIII answers the unbounded-time questions of sources~14 and~15 for fixed sources; Section~\ref{smc:uc:sec:frontquestions}.)
 
 \begin{center}
 \small
@@ -298,6 +302,7 @@ Part~I (source~07) & Part~II (source~11) & Relation\\
 --- & --- & \wtag\ Part~V's questions (Sections~\ref{smc:tm:sec:questions} and~\ref{smc:ct:sec:questions}; source~14's third is answered by source~15, both sources' fourth in part by Part~VI) and Part~VI's (Sections~\ref{smc:su:sec:sources} and~\ref{smc:fm:sec:checks}; source~16's four-versus-five question is answered by source~17)\\
 --- & --- & \wtag\ Source~17's seventh question is answered for a fixed input by source~18; its second, fourth and sixth are touched by sources~18, 20 and~21, and its first, third and fifth stay open (Section~\ref{smc:zd:sec:frontquestions})\\
 --- & --- & \wtag\ The questions of sources~18--21 (Sections~\ref{smc:tq:sec:checks}, \ref{smc:zd:sec:questions}, \ref{smc:og:sec:literature} and~\ref{smc:bp:sec:limits}); source~20's first is answered for binary rules by source~21, the others are open\\
+--- & --- & \wtag\ Source~14's Question~\ref{smc:tm:q:unbounded} and source~15's Question~\ref{smc:ct:q:unbounded} are answered for fixed eligible sources by Part~VIII, and Part~II's Question~\ref{smc:sd:q:conservative} is touched (Section~\ref{smc:uc:sec:frontquestions}); sources~22 and~23 state no questions\\
 \bottomrule
 \end{longtable}
 \end{center}
@@ -407,7 +412,7 @@ Several words need the same care.
 \begin{itemize}
 \item \textbf{Part~I's direction~\ref{smc:cg:q:universal}} (an audited universal signal-machine frontend) is \emph{answered by Part~III, except for the ordinary-integer loader}: Part~III instantiates a published finite-input universal construction with its exact labels, speeds, all collision rules, forbidden (not transparent) undefined encounters, input encoding and marked acceptance, audits simultaneous and triple collisions, and proves the correspondence of its loader with the simulated machine. Two differences from the direction as worded remain. The machine is Morita's UTM(15,6) through Durand-Lose's 2012 stacks, not the 13-type construction of~\cite{durandlose} named as a candidate; and the input is a prepared cyclic-tag tape loaded as two rational distances, so the equivalence with ``an ordinary integer program input'' would still need a digit-extraction and base-conversion loader, whose cost Part~III leaves explicit (Section~\ref{smc:cs:sec:loader}).
 \item \textbf{Part~II's Question~\ref{smc:sd:q:universal}} (transcribe the 13-label, 21-rule machine) stays open as stated: Part~III transcribes a different universal machine.
-\item \textbf{Part~II's Question~\ref{smc:sd:q:conservative}} (exploit conservative bounded populations) is \emph{answered in part, at a fixed horizon}, by both new Parts. Part~III instantiates every finite transition branch of a reversible conservative universal signal machine, pays for strict guards and for its loader, and excludes accumulation on encoded runs; Part~IV does the same for lattice dynamics, where conserved mass bounds the records but not the gaps. Neither encodes unbounded histories in a fixed arity, which the question also mentions.
+\item \textbf{Part~II's Question~\ref{smc:sd:q:conservative}} (exploit conservative bounded populations) is \emph{answered in part, at a fixed horizon}, by both new Parts. Part~III instantiates every finite transition branch of a reversible conservative universal signal machine, pays for strict guards and for its loader, and excludes accumulation on encoded runs; Part~IV does the same for lattice dynamics, where conserved mass bounds the records but not the gaps. Neither encodes unbounded histories in a fixed arity, which the question also mentions. (\wtag\ Added 3 October 2026: Part~VIII does, for fixed sources of Part~V's three-mass automaton, not for signal machines; Section~\ref{smc:uc:sec:frontquestions}.)
 \item \textbf{Part~II's Questions~\ref{smc:sd:q:ledger} and~\ref{smc:sd:q:compress}} are not answered; Part~III's literal ledger is a variable-and-residual count, not the gate ledger asked for.
 \item \textbf{Part~IV's own five questions} (Section~\ref{smc:sl:sec:questions}) are open; Part~III states no separate questions. (\wtag\ Added 2 October 2026, batch~80: the fourth and fifth are now answered, in substance and for the weighted three-mass automaton respectively, by Parts~V and~VI; Section~\ref{smc:tm:sec:frontquestions}.)
 \end{itemize}
@@ -446,7 +451,7 @@ Model & Mass at most 2 & Mass 3 & Mass 4 & Mass 5\\
 \midrule
 Weighted alphabet, several weight-one symbols & decidable (Part~IV, Theorem~\ref{smc:sl:thm:two}) & undecidable pattern occurrence and exact-pair reachability, fixed reversible rule (Part~V) & not treated & not treated\\
 At most one weight-one symbol (includes integer-state NCCA) & decidable (Part~IV) & decidable, timed relation Presburger (Part~VI, source~16) & decidable, timed relation not Presburger (Part~VI, source~17) & universal at large radius by the Alhazov--Imai abstract~\cite{alhazovimai}; reversibility not asserted, full paper not checked\\
-\wtag\ The same, on $\Z^d$ for every finite $d$ (added 3 October 2026) & decidable (Part~VII, source~19) & decidable, fixed-input timed Presburger (source~19, Lemma~\ref{smc:zd:lem:triple}) & decidable (Theorem~\ref{smc:zd:thm:main}); timed relation not Presburger (source~17's shuttle embeds linewise) & source~19 infers universality by embedding the one-dimensional binary five-particle construction of batch-82 Reports~16 and~26 linewise (Corollary~\ref{smc:zd:cor:boundary}); Report~16 is Part~II of \path{five-particle-binary-automata}, Report~26 is placed there but not yet written, and this report does not establish it\\
+\wtag\ The same, on $\Z^d$ for every finite $d$ (added 3 October 2026) & decidable (Part~VII, source~19) & decidable, fixed-input timed Presburger (source~19, Lemma~\ref{smc:zd:lem:triple}) & decidable (Theorem~\ref{smc:zd:thm:main}); timed relation not Presburger (source~17's shuttle embeds linewise) & source~19 infers universality by embedding the one-dimensional binary five-particle construction of batch-82 Reports~16 and~26 linewise (Corollary~\ref{smc:zd:cor:boundary}); Report~16 is Part~II of \path{five-particle-binary-automata}, Report~26 is printed there as Part~VI (commit \texttt{d2043bbd0}), and this report does not establish it\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -526,7 +531,7 @@ Several words need the same care.
 
 \wtag\ The four sources give conventional proofs and finite exact-arithmetic checks, which are regression evidence, not proofs; all four are AI-assisted and unrefereed. Every limitation they state is kept in its Part. Collected here, they do not claim
 \begin{itemize}
-\item for source~14: an expanded universal source table, a numerical universal alphabet or row count, or a frozen universal transition table (universality is imported from Morita and Imai's Proposition~3.4); anchored halt observation or intrinsic universality; an efficiency bound (the gap is exponential in the counters); a three-numerical-particle theorem for integer-state NCCA; real or rational exactness of the certificate; a fixed-arity polynomial for an unknown horizon, or a finite-fold or single-fold representation; an exponentiation gadget (the loader is a bounded table); that the syntactic slot counts are lower bounds; novelty of the radius reductions; optimal overhead, a smallest alphabet, priority or literature-wide novelty; global halting, freezing or an eventual fixed point;
+\item for source~14: an expanded universal source table, a numerical universal alphabet or row count, or a frozen universal transition table (universality is imported from Morita and Imai's Proposition~3.4); anchored halt observation or intrinsic universality; an efficiency bound (the gap is exponential in the counters); a three-numerical-particle theorem for integer-state NCCA; real or rational exactness of the certificate; a fixed-arity polynomial for an unknown horizon, or a finite-fold or single-fold representation (\wtag\ added 3 October 2026: still true of source~14; Part~VIII composes source~15's wrapper with the research tree's residue-history interface into fixed-arity polynomials without a horizon for fixed sources, which are not finite-fold; Section~\ref{smc:uc:sec:frontquestions}); an exponentiation gadget (the loader is a bounded table); that the syntactic slot counts are lower bounds; novelty of the radius reductions; optimal overhead, a smallest alphabet, priority or literature-wide novelty; global halting, freezing or an eventual fixed point;
 \item for source~15: one target independent of the input; that the target is stationary or reached once; microscopic reversal of the forward paths; a bound on the overhead of the fresh-entry normalization; a map of the whole natural orthant, an identity off the zero sets, or rational or real exactness of the lift; novelty or priority for forward-and-reverse computation; a numerical universal alphabet;
 \item for source~16: one formula with the rule as a parameter; anything about intrinsic universality, signed masses, infinite alphabets, nonuniform or time-dependent rules, or active zero-weight backgrounds; a universal bound on the formula-dependent arity $K$, efficient preprocessing or optimal arity; a general rule-to-formula or quantifier-elimination implementation (the code validates the orbit accelerator); real or rational fibre exactness; a finite-fold conclusion for c.e.\ sets; novelty with respect to Kong's thesis and Imai's report;
 \item for source~17: an efficiency bound; infinite backgrounds, signed weights, infinite alphabets, active zero-weight backgrounds, several unit labels, or time-dependent or nonuniform rules; a five-particle upper bound for binary automata; an implemented rule-to-section compiler or a formalization; reversibility of the binary shuttle (it is not injective); a general fixed-arity single-fold quartic compiler; uniform timed Presburger definability at mass four; priority, or any statement on the present status of the four-particle question;
@@ -538,7 +543,7 @@ The report claims no novelty for the results that the four sources prove again (
 
 \wtag\ Dated notes at the questions themselves record the following; Table~\ref{smc:tab:questions} carries the same information in its last rows.
 \begin{itemize}
-\item \textbf{Part~IV's remark after Theorem~\ref{smc:sl:thm:two}} (``It does not show that three suffices, or identify a least universal mass'') is \emph{answered, model by model}. With several weight-one symbols three suffices, for pattern occurrence (Theorem~\ref{smc:tm:thm:threshold}) and for exact pairs (Theorem~\ref{smc:ct:thm:main}); with a single weight-one symbol neither three nor four does (Theorems~\ref{smc:su:thm:main} and~\ref{smc:fm:thm:main}), so that the least universal numerical mass is at least five, and exactly five if the Alhazov--Imai construction holds as its abstract states (its full paper has not been checked, and it is not asserted reversible). (\wtag\ Added 3 October 2026, batch~82: the lower bound five holds in every finite dimension (Part~\ref{smc:zd:part}, Theorem~\ref{smc:zd:thm:main}); source~19 states an inherited sharp four-versus-five boundary in every dimension, conditional on batch-82 Reports~16 and~26, which this report does not print: Report~16 is Part~II of \path{five-particle-binary-automata}, whose Part~I (Reports~14 and~15) proves the binary one-dimensional upper bound five, and Report~26 is placed there but not yet written.)
+\item \textbf{Part~IV's remark after Theorem~\ref{smc:sl:thm:two}} (``It does not show that three suffices, or identify a least universal mass'') is \emph{answered, model by model}. With several weight-one symbols three suffices, for pattern occurrence (Theorem~\ref{smc:tm:thm:threshold}) and for exact pairs (Theorem~\ref{smc:ct:thm:main}); with a single weight-one symbol neither three nor four does (Theorems~\ref{smc:su:thm:main} and~\ref{smc:fm:thm:main}), so that the least universal numerical mass is at least five, and exactly five if the Alhazov--Imai construction holds as its abstract states (its full paper has not been checked, and it is not asserted reversible). (\wtag\ Added 3 October 2026, batch~82: the lower bound five holds in every finite dimension (Part~\ref{smc:zd:part}, Theorem~\ref{smc:zd:thm:main}); source~19 states an inherited sharp four-versus-five boundary in every dimension, conditional on batch-82 Reports~16 and~26, which this report does not print: Report~16 is Part~II of \path{five-particle-binary-automata}, whose Part~I (Reports~14 and~15) proves the binary one-dimensional upper bound five, and Report~26 is printed there as Part~VI (commit \texttt{d2043bbd0}).)
 \item \textbf{Part~IV's fourth question} (``Resolve small-particle model comparisons'') is \emph{answered in substance}: the number of weight-one symbols is the decisive convention (Section~\ref{smc:tm:sec:notation}). Still open: the full Alhazov--Imai construction, a reversible numerical threshold, a binary upper bound, and the least number of weight-one symbols that permits a universal three-mass construction.
 \item \textbf{Part~IV's fifth question} (``Keep exact targets separate from halt signals'') is \emph{answered for the three-mass weighted automaton} by source~15, whose output normalization is inverse execution from a fresh entry state; it is not answered for Part~IV's own Morita--Imai pulse interface.
 \item \textbf{Part~IV's non-claims} ``exact-target undecidability, \ldots a minimum universal mass, or that three particles suffice'' (Section~\ref{smc:cs:sec:status}) remain true of Part~IV; Parts~V and~VI supply those statements in the models stated above.
@@ -565,7 +570,7 @@ Source & Batch~82; pipeline & Archive and title & Printed as\\
 \end{tabular}
 \end{center}
 
-Citations among them, all pinned by SHA-256 and verified at placement: source~18 cites source~17; source~19 cites sources~17 and~18 and batch-82 Reports~16 and~26; source~20 cites source~19; source~21 cites sources~17, 18 and~20. Reports~16 and~26 belong to the binary five-particle line of the same batch and were placed in the collection's report \path{five-particle-binary-automata} (commits \texttt{bca6383e9} and \texttt{7d2b1b245}); Report~16 is printed there as Part~II, and Report~26 is not yet written. Neither is printed here.
+Citations among them, all pinned by SHA-256 and verified at placement: source~18 cites source~17; source~19 cites sources~17 and~18 and batch-82 Reports~16 and~26; source~20 cites source~19; source~21 cites sources~17, 18 and~20. Reports~16 and~26 belong to the binary five-particle line of the same batch and were placed in the collection's report \path{five-particle-binary-automata} (commits \texttt{bca6383e9} and \texttt{7d2b1b245}); Report~16 is printed there as Part~II, and Report~26 as Part~VI (commit \texttt{d2043bbd0}). Neither is printed here.
 
 \begin{itemize}
 \item \textbf{Source~18 (Part~\ref{smc:su:part}), \emph{timed quartics for a fixed input}.} Conditional on source~17's effective normal form (Proposition~\ref{smc:fm:prop:normal}), the complete timed orbit of a fixed input of mass at most four is a disjoint union of half-open charts with at most two natural parameters, affine domains and quadratic outputs (Lemma~\ref{smc:tq:lem:interface}), and a canonical quartic with $B+K+M$ natural witnesses has exactly one witness tuple at each complete timed configuration (Theorem~\ref{smc:tq:thm:main}, Proposition~\ref{smc:tq:prop:compiler}). For source~17's binary shuttle it writes the two charts explicitly and specializes the certificate to four witnesses and seven squares, exact even for nonnegative real witnesses and uniform in the gap (Corollary~\ref{smc:tq:cor:uniform}). It answers source~17's last question for a fixed input (Question~\ref{smc:fm:q:quartic}).
@@ -574,7 +579,7 @@ Citations among them, all pinned by SHA-256 and verified at placement: source~18
 \item \textbf{Source~21, \emph{a binary planar shuttle}.} An ordinary binary, quiescent, conservative radius-six automaton on $\Z^2$, obtained by lifting two outputs of source~17's binary shuttle by one row, has a four-particle orbit with source~17's clock (Theorem~\ref{smc:bp:thm:orbit}), visited set a wedge minus two lines (Theorem~\ref{smc:bp:thm:visited}), exact stationary and drifted counts $4N-4\sqrt N+O_k(1)$ (Theorems~\ref{smc:bp:thm:Gcount} and~\ref{smc:bp:thm:Fcount}), Boolean degree exactly~45 with exactly 78 essential cells (Theorem~\ref{smc:bp:thm:degree}), and a one-step quartic with 614 unique auxiliaries (Theorem~\ref{smc:bp:thm:quartic}).
 \end{itemize}
 
-The threshold table of Section~\ref{smc:tm:sec:batch80} gains a row for every finite dimension (\wtag, 3 October 2026). Its entry at mass five records only what is true now: the inherited five-particle upper bound in every dimension rests on source~19's linewise embedding and on Reports~16 and~26; Report~16 is Part~II of \path{five-particle-binary-automata}, Report~26 is placed there but not yet written, and the programme's reviews of both leave published theorems as explicit dependencies (note after Corollary~\ref{smc:zd:cor:boundary}).
+The threshold table of Section~\ref{smc:tm:sec:batch80} gains a row for every finite dimension (\wtag, 3 October 2026). Its entry at mass five records only what is true now: the inherited five-particle upper bound in every dimension rests on source~19's linewise embedding and on Reports~16 and~26; Report~16 is Part~II of \path{five-particle-binary-automata}, Report~26 is printed there as Part~VI (commit \texttt{d2043bbd0}), and the programme's reviews of both leave published theorems as explicit dependencies (note after Corollary~\ref{smc:zd:cor:boundary}).
 
 \subsection{Notions and letters of source 18 and Part VII}\label{smc:zd:sec:notation}
 
@@ -658,6 +663,116 @@ The report claims no novelty for what the four sources prove again (Section~\ref
 \item \textbf{The numerical particle threshold} of Section~\ref{smc:tm:sec:frontquestions} (at least five units, exactly five if the Alhazov--Imai construction holds) \emph{extends to every finite dimension} for the lower bound (Theorem~\ref{smc:zd:thm:main}); the sharp upper bound in every dimension is conditional on Reports~16 and~26 (Corollary~\ref{smc:zd:cor:boundary}).
 \item \textbf{Source~20's first question} (binary or reversible realizations) is \emph{answered for binary rules} by source~21; reversible realizations stay open.
 \item \textbf{Source~19's fifth question} (optimizing the timed certificates) is touched by source~18's selector elimination and four-witness certificate, without a general answer. All other questions of the four sources (Sections~\ref{smc:tq:sec:checks}, \ref{smc:zd:sec:questions}, \ref{smc:og:sec:literature} and~\ref{smc:bp:sec:limits}) are open.
+\end{itemize}
+
+\subsection{Part VIII: unbounded-time certificates for exact three-mass targets (batch 82)}\label{smc:uc:sec:batch82}
+
+\wtag\ This subsection and the four that follow were written on 3 October 2026, when two further manuscripts of batch~82 of ProveIt's incoming reports (cluster~M2) were added to the report as Part~\ref{smc:uc:part}. They are called \emph{sources~22 and~23} after the file prefixes of their shipped programs and data, which continue this report's local sequence after~21. Their batch-82 manuscript numbers and their numbers in the research pipeline that wrote them are different: \textbf{source~22 is batch-82 manuscript~21 (the pipeline's Report~21), and source~23 is manuscript~02 (Report~22)}. Both arrived in commit \texttt{db37d18c8}, were placed by commit \texttt{7d2b1b245} and are dated 3 October 2026; both pin the ProveIt commit \texttt{ad634b2d1}. Appendix~\ref{smc:app:provenance} gives the full provenance.
+
+\begin{center}
+\small
+\begin{tabular}{@{}L{0.07\textwidth}L{0.15\textwidth}L{0.42\textwidth}L{0.26\textwidth}@{}}
+\toprule
+Source & Batch~82; pipeline & Archive and title & Printed as\\
+\midrule
+22 & manuscript~21; Report~21 & \path{Unbounded_Compact_Clean_Clocks_Package.zip}; \emph{Unbounded compact clean clocks for exact three mass targets} & Part~\ref{smc:uc:part}, Sections~\ref{smc:uc:sec:result}--\ref{smc:uc:sec:checks}\\
+23 & manuscript~02; Report~22 & \path{Canonical_Histories_and_Infinite_Fibers_Package.zip}; \emph{Canonical histories and infinite native fibers}, a declared sequel of source~22 & Part~\ref{smc:uc:part}, Sections~\ref{smc:ch:sec:main}--\ref{smc:ch:sec:replay}\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{itemize}
+\item \textbf{Source~22, \emph{unbounded compact clean clocks}.} For a fixed reversible separated two-counter source with fresh entry and terminal halt, the raw unbounded residue-history polynomial of the programme's research tree is composed with source~15's clean return wrapper: the raw native time becomes a positive witness $\theta$, the redundant output-copy comparison is dropped, and one square imposes $U=2\theta+192(F+x+1)+16$. The resulting polynomial $Q_R(x,U;z,\theta)$ has no horizon, and its positive zeros at $(x,U)$ are exactly the first exact whole-configuration targets of the cleaned three-mass automaton at time~$U$ (Theorem~\ref{smc:uc:thm:main}); every accepted nonempty fibre is infinite (Theorem~\ref{smc:uc:thm:fibers}). For four nonuniversal fixtures that halt in one or two source steps the complete circuits are emitted and audited: 604, 479, 477 and~480 operations, 60, 58, 58 and~58 positive witnesses, exact degrees 2344, 1192, 1192 and~1192; separately folded schedules have 603, 478, 476 and~479 operations. Initially halted sources have witness-free four-gate certificates.
+\item \textbf{Source~23, \emph{canonical histories and infinite native fibers}.} One positive coordinate $\kappa$ and the square $(\eta+\kappa-S-1)^2$, with $S=n_{\rm initial}+n_{\rm target}+\theta$, force the outer height $h$ to be the least power of two above~$S$; completeness survives because every true residue quotient is below $\theta$. At every accepted pair the outer coordinates are unique and projection onto the twenty-two native coordinates is a bijection onto the entire native extension fibre (Theorems~\ref{smc:ch:thm:combined} and~\ref{smc:ch:thm:projection}); that fibre is infinite by an elementary matrix argument in which only three native coordinates vary (Theorem~\ref{smc:ch:thm:infinite}). The circuits cost 608, 483, 481 and~484 operations.
+\end{itemize}
+
+\textbf{How they relate to Parts~I--VII.} Part~VIII continues Part~V. It uses source~15's wrapper, target and clock as inherited theorems and restates them for the reader (note in Section~\ref{smc:uc:sec:clean}), and it answers, for fixed sources, the unbounded-time questions of sources~14 and~15 (Section~\ref{smc:uc:sec:frontquestions}). Its circuits are not fixed-horizon certificates like those of Parts~I--VII: the arity is fixed by the source alone, and the price is infinite witness fibres. It shares no lemma with Parts~I--IV, VI or~VII. Its arithmetic comes from the Hilbert's-tenth research tree, not from the collection: the residue-history packing, the native prescribed-scale AND and the Pell block are research-wip notes there (Section~\ref{smc:uc:sec:relation}).
+
+\subsection{Notions and letters of Part VIII}\label{smc:uc:sec:notation}
+
+\wtag\ The two sources keep their letters and their numbering of statements, by section; equations are numbered by section (the sources numbered theirs consecutively). Their macro for the natural numbers is written \verb|\NN| here and prints $\NN=\{0,1,2,\ldots\}$, as both sources define it; $\Np=\{1,2,\ldots\}$ is theirs. Source~22's \verb|\file| prints delivered file names in typewriter type, as in the rest of the report, and both sources' hash display \verb|\sha| sets a hash as a breakable path rather than through the \texttt{seqsplit} package. No symbol was renamed and no normalization changed. Source~23 renames one of its own symbols (the native integer that its inherited block calls $R$ is written $\rho$, to avoid confusion with the source program; Section~\ref{smc:ch:sec:affected}). The table lists the letters that carry different meanings in the two sources or against Part~V; inside a source the meaning is always that source's.
+
+\begin{center}
+\small
+\renewcommand{\theHtable}{smc.uc.notation.\arabic{table}}%
+\begin{longtable}{@{}L{0.07\textwidth}L{0.29\textwidth}L{0.33\textwidth}L{0.23\textwidth}@{}}
+\toprule
+Letter & Source~22 & Source~23 & Part~V (sources~14, 15)\\
+\midrule
+\endfirsthead
+\toprule
+Letter & Source~22 & Source~23 & Part~V (sources~14, 15)\\
+\midrule
+\endhead
+$h$ & the outer height $h=n_0+n_f+\theta+\eta$, ``distinct from its source step count $\ell$'' & the outer height $h=S+\eta$; also a native coordinate $h$ & the source horizon, a number of source instructions (source~15's $h$ is source~22's $\ell$)\\
+$\ell$ & the number of source instructions of the trace & the number $m+g+1$ of AND lanes (source~22's $L$) & ---\\
+$t$ & the raw native time of $P_R(x,y,t;z)$, replaced by $\theta$ & the trace length, $P=B^t$ (source~22's $\ell$) & ---\\
+$L$ & the number $m+g+1$ of lanes & a dyadic multiplier $L\ge\max\{4,m+1,1+\max_r(a_r+d_r)\}$ (source~22's $K_0$) & ---\\
+$\theta$ & the forward native duration, a positive witness & the same & source~15's $\Theta$\\
+$F$ & the final raw payload, a retained positive witness & the same & source~15's $N_h$\\
+$U$, $\Tclean$ & the requested clean time; the cleaned physical time & the same & source~15's $T_{\cl}$\\
+$Q_R$ & the clean-clock polynomial~\eqref{smc:uc:eq:sos} & the five-gate-folded form of the same polynomial; $\Qcan$ adds the height square & ---\\
+$z$, $w$ & $z$ the witness tuple (with $F$), $\theta$ separate & $w$ the witness tuple (with $\theta$); $z_i$ the residue quotients (source~22's $q_i$) & ---\\
+$q$, $s$, $r$ & control code $q$; quotient $q$ and residue $s$ in $f(mq+s)$ & control code $q$; quotient $z$ and residue $r$ in $f(mz+r)$; the native scale $q=16Q_{\rm native}$; native coordinates $r$, $s$ & a source state; number of states\\
+$B$, $P$, $J$ & radix $B=Ch^2$, $P=B^\ell$, $J=1+B+\cdots$ & the same, with $P=B^t$ & $B$: number of branches\\
+$C$ & the dyadic constant $C=131072$; $\mathcal C$, $\mathcal C_\tau$ packed words & the same $C$; $C_\tau$ the packed clock word; a native coordinate $c$ & completed pair-support count; cofactor\\
+$K$ & $K=5$ controls; $K_0$ the inherited dyadic multiplier & $K=5$ controls & loader selectors $(A+1)(C+1)$\\
+$M$, $A$ & numbers of multiplications and of additions or subtractions; ports $M_*$, $A_*$ & the same counts; joined words $M$, $A$ & a source machine $M$\\
+$H$ & the new sole halt of $R_{\mathrm{clean}}$; port $H_*$ & a joined word $H$ & the same terminal state $H$ (source~15); an instruction table (source~14)\\
+$Q_*$ & the scale $BP^v$ & $Q_{\rm native}$ & ---\\
+$\widehat k$ & the clock quotient hat & written $\widehat c_\tau$ & ---\\
+$S$ & --- & $S=n_{\rm initial}+n_{\rm target}+\theta$ & static shuttle types $S_j$\\
+$D$, $\rho$ & --- & $D=\rho^2-1$, $\rho=ic^2$ (native) & $D=6qm$ data triples\\
+$\eta$, $\tau$, $y$ & outer height slack $\eta$; tick durations $\tau_i$; raw output $y$ & the same; also native coordinates $\eta$, $\tau$ and $y_{\rm aux}$ & $\tau$ a source-step duration; $y_N$ the target\\
+$E$ & selector words $E_s$ & selector words $E_r$; $E=(wq)(sq)$ in Section~\ref{smc:ch:sec:affected} & selector sums $E_t$\\
+\bottomrule
+\end{longtable}
+\addtocounter{table}{-1}
+\end{center}
+
+Several readings need the same care.
+\begin{itemize}
+\item \textbf{Unique and infinite.} Part~V's unique natural witness is at a fixed external source horizon; Part~VIII's polynomials have no horizon and infinite witness fibres. Source~23's ``canonical'' outer history is unique, its witness tuples are not: reading ``canonical'' as ``single-fold'' is false.
+\item \textbf{Native, twice.} ``Native'' names the unblocked radius-four clock model, against the spatially blocked and the four-phase models, and also the inherited native AND and Pell block with its twenty-two coordinates. ``Native time'' is the former, ``native fibre'' the latter.
+\item \textbf{Compact.} ``Compact clean clocks'' means a compressed history certificate without reverse witnesses, as in source~15's compact certificate; the domains are unbounded integers, not a compact real set (the programme's intake says the same).
+\item \textbf{Unbounded.} Unbounded running time for one fixed source, with the raw payload $x+1$ as input. On that interface halting depends only on $\nu_2(x+1)$ and $\nu_3(x+1)$ (Section~\ref{smc:uc:sec:rawlimits}), so it is not an ordinary-input loader, and no universal source is instantiated.
+\item \textbf{Report numbers.} The pipeline's Report~21 and Report~22 are sources~22 and~23, one apart; its Report~10 is source~15.
+\end{itemize}
+
+\subsection{Relation of Part VIII to the repository}\label{smc:uc:sec:relation}
+
+\wtag\ The two sources cite the research tree's pinned files and source~15's theorem, and source~23 cites source~22; the cross-references below are added. Results of other reports are cited by label name.
+
+\begin{itemize}
+\item \textbf{Re-derived and repeated material, printed with notes.} Source~22's Section~\ref{smc:uc:sec:clean} restates source~15's wrapper, target and clock (Theorems~\ref{smc:ct:thm:restore}, \ref{smc:ct:thm:equiv} and~\ref{smc:ct:thm:clock}), and its Section~\ref{smc:uc:sec:chronology} restates the research tree's residue-history and exact-clock arguments for the time-substituted circuit; both are printed in full, as the sources' own accounts. Source~23's Section~\ref{smc:ch:sec:oldnowrap} restates source~22's no-wrap argument, and its Sections~\ref{smc:ch:sec:fixtures}, \ref{smc:ch:sec:halted}, \ref{smc:ch:sec:sanity} and~\ref{smc:ch:sec:notfollow} repeat source~22's fixtures, zero-step circuits, sanity values and raw-input limits; its two repeated tables are printed once, in source~22. Each place carries a bracketed note, and no novelty is claimed for any of them.
+\item \textbf{The research tree's sketch, completed.} The pinned note \path{three_mass_unbounded_interface.md} describes the clean-time bridge and its incremental cost but ``does not claim a complete cleaned-time total''; source~22 emits and audits that total. The credit is in the opening of Part~\ref{smc:uc:part}.
+\item \textbf{Part~V.} Sources~14 and~15 have a unique natural witness at each fixed source horizon (Theorems~\ref{smc:tm:thm:certificate} and~\ref{smc:ct:thm:lift}); Part~VIII removes the horizon and pays with infinite fibres (Theorem~\ref{smc:uc:thm:fibers}), and canonicalization restores the uniqueness of the outer history only (Theorem~\ref{smc:ch:thm:combined}). Source~15's target $y_N$ depends on the input, and so does Part~VIII's.
+\item \textbf{\emph{fixed-universal-polynomials}, Part~III.} Report~25, the sequel of source~23, classifies the entire native fibre (Theorem \texttt{fup:nf:thm:class}: seventeen coordinates fixed, five parametrized by two integer indices), which implies Theorem~\ref{smc:ch:thm:infinite}; source~23's matrix argument is kept as a second route (note after that theorem). That Part's transport corollary (its Section \texttt{fup:nf:sec:transport}) uses Theorem~\ref{smc:ch:thm:projection} and is conditional on it.
+\item \textbf{\emph{five-particle-binary-automata}.} Source~22 contrasts itself with Reports~19 and~20 there (Parts~IV and~V), which certify a different automaton at a fixed horizon. That report's Part~VI prints Report~28, whose remark on ``earlier observations about infinite native Pell witness fibers'' is uncited in its source; a note there identifies them as source~23's.
+\item \textbf{Later work of the programme on the same circuits.} After the pin \texttt{ad634b2d1} the research tree improved the native-time circuits $(x,y,T)$ of the pinned interface: a factored first Pell coefficient (\path{native_pell_factored_first_coefficient.md}, commit \texttt{bbfe44d90}; 598 to~597 operations), a paid endpoint projection that removes the output alias $F$ (\path{three_mass_unbounded_endpoint_projection.md}, \texttt{06a9631b1}), a target-free height (\path{three_mass_target_free_height.md}, \texttt{9393b0f29}; 592, 467, 465 and~468 operations), and a refutation of removing the time from that height (\path{three_mass_time_free_height_obstruction.md}, \texttt{c8f08eb6e}), with its one-step exceptions (\path{three_mass_one_step_height.md}, \texttt{d400c01ee}). For clean time it built the direct clean clock (\path{three_mass_direct_clean_clock.md}, \texttt{8aabb1453}; 597, 472, 470 and~473 operations for source~22's four sources, independently reviewed)~\cite{directcleanclock} and refuted one further deletion from its height (\path{three_mass_input_free_height_obstruction.md}, \texttt{735f62a6a})~\cite{inputfreeheight}. These are later repository results, not printed here. None supersedes a statement of Part~VIII: the programme states that the direct clean clock's counts are not to be attributed to source~22 and do not revise its counts, the endpoint projection removes the payload $F$ that the clean formula needs, and the time-free obstruction is consistent with source~23's keeping $\theta$ in $S$. None of them makes a fibre claim.
+\item \textbf{The programme's intakes.} Source~22 was taken in with Report~20 in \path{review_event_budget_clean_clock_intake.md} (commit \texttt{8aabb1453})~\cite{reviewcleanclock}, and source~23 with Report~25 in \path{review_incoming_negative_index_fibers.md} (commit \texttt{0055e1c4d})~\cite{reviewnegfibers}. Neither is a full review: the first finds no defect in the stated theorem scopes, and the second does not certify source~23's canonical-height circuit costs. The pinned raw interface itself was reviewed by the programme before the sources were written (\path{review_three_mass_unbounded_interface.md}, commit \texttt{ad634b2d1}: ``PASS within the stated fixed-source, natural-input scope''). Notes at the end of the two sources give the details. This write has not been reviewed by the programme.
+\item \textbf{The repository's universal bounds.} The project README's fixed-universal operation bounds~\cite{repo} are untouched. Part~VIII's polynomials are for four fixed nonuniversal sources, with the raw payload as input; both sources and the programme's intake say that no universal numerical bound and no ordinary-input loader follow.
+\item \textbf{Formal status.} Nothing in Part~VIII is formalized in Lean or Rocq. The Hilbert-tenth-problem Lean development has no cellular-automaton module, and the residue-history, native AND and Pell results that Part~VIII imports are research-wip notes with checked receipts, not Lean declarations. The project's formal endpoint, the MRDP theorem \texttt{Diophantine.mrdp} of \path{Computability/HilbertTenthProblem/Lean/Diophantine/MRDP.lean}, is not used by either source.
+\end{itemize}
+
+\subsection{Status and what Part VIII does not claim}\label{smc:uc:sec:status}
+
+\wtag\ The two sources give conventional proofs, completely emitted circuits and finite exact-arithmetic checks, which are regression evidence, not proofs; both are AI-assisted and unrefereed, and both theorems are conditional on the inherited results listed in the opening of Part~\ref{smc:uc:part}. Every limitation they state is kept in its place. Collected here, they do not claim
+\begin{itemize}
+\item for source~22: an arbitrary c.e.\ ordinary-input loader (halting on the raw interface depends only on two valuations of $x+1$), a universal source or a numerical universal bound, optimality or minimality of the fixture circuits, a rational-zero or real-zero theorem (real sum-of-squares nonnegativity does not extend the native theorem), a materialized complete positive native Pell witness, a fixed universal target, a stationary halt or later target recurrences, lower bounds from the degrees, a re-proof of the native Pell representation theorem or a regeneration of the automaton's local rules; that bounded tests prove the unbounded interpretation; that the emitted representations are finite-fold (they are not), or any multiplicity limitation for another representation of the same relation; that its first-halt argument applies to endpoints that permit looping;
+\item for source~23: a general finite-fold MRDP claim or impossibility, an ordinary-input universal loader, optimality, or a new Pell classification; a materialized positive native Pell seed (the matrix family is relative to a seed supplied by the inherited completeness theorem); a total polynomial map $(x,U)\mapsto o(x,U)$ or an all-tuple normalization from old to new witnesses; that the matrix family enumerates the whole fibre; a rational or real zero-set theorem, an arbitrary signed-witness interpretation, a fixed universal target, a stationary halt, a later-recurrence theorem, a minimal circuit bound or a new universal operation bound; a free fresh-entry transformation for every reversible program; that finite test totals or a pass under \texttt{python -O} replace the proofs;
+\item a proof-assistant verification; neither source's code is a verified compiler.
+\end{itemize}
+The report claims no novelty for what the two sources restate or inherit (Section~\ref{smc:uc:sec:relation}).
+
+\subsection{Research questions answered or touched by Part VIII}\label{smc:uc:sec:frontquestions}
+
+\wtag\ Dated notes at the questions themselves record the following; Table~\ref{smc:tab:questions} carries the same information in its last row.
+\begin{itemize}
+\item \textbf{Source~14's Question~\ref{smc:tm:q:unbounded} and source~15's Question~\ref{smc:ct:q:unbounded}} (a costed unbounded-time certificate for the three-mass frontend, with degree, variable ledger and fibre properties) are \emph{answered for fixed eligible sources}, conditional on the inherited theorems. Composition with the research tree's residue-history interface gives horizon-free polynomials of exact degrees 2344 and~1192, with complete ledgers of 604, 479, 477 and~480 operations (603, 478, 476 and~479 folded; 608, 483, 481 and~484 canonical) and 60, 58, 58 and~58 positive witnesses for the four fixtures. Every accepted nonempty fibre is infinite (Theorem~\ref{smc:uc:thm:fibers}); after canonicalization the outer history is unique and the native fibre, onto which the fibre projects bijectively, is infinite (Theorems~\ref{smc:ch:thm:projection} and~\ref{smc:ch:thm:infinite}). So the unique witnesses of Part~V do not survive, as source~14 anticipated, and the emitted representations are not finite-fold.
+\item \textbf{The universal-source questions} (source~14's Question~\ref{smc:tm:q:source} and source~15's Question~\ref{smc:ct:q:universal}) are not answered by Part~VIII, which instantiates four nonuniversal sources and whose raw interface is not an ordinary-input loader. Nor is source~15's Question~\ref{smc:ct:q:fixedtarget} (one target independent of the input): Part~VIII's target depends on the input, as source~15's does.
+\item \textbf{Part~II's Question~\ref{smc:sd:q:conservative}} is \emph{touched}: Part~VIII encodes unbounded histories in a fixed arity for fixed sources of the conservative three-mass automaton, through arithmetic on source-level histories. The question as posed, for signal machines and histories of rational distances, stays open.
+\item Neither source states a list of questions of its own.
 \end{itemize}
 
 \part{Collision geometry is linear (source 07)}\label{smc:part:cg}
@@ -2760,7 +2875,7 @@ These checks can catch coefficient, endpoint and bookkeeping defects. They do no
 \wtag\ Table~\ref{smc:tab:questions} pairs these questions with the research directions of Part~I: Questions~\ref{smc:sd:q:universal} and~\ref{smc:sd:q:formal} coincide with Sections~\ref{smc:cg:q:universal} and~\ref{smc:cg:q:formal}, and Questions~\ref{smc:sd:q:ledger} and~\ref{smc:sd:q:compress} overlap Sections~\ref{smc:cg:q:denominators}, \ref{smc:cg:q:circuits} and~\ref{smc:cg:q:firsthit}.
 \begin{enumerate}
 \item\label{smc:sd:q:universal} \textbf{Instantiate the universal table and input map.} Transcribe the 13-label, 21-non-blank-rule machine with an explicit convention for every blank collision. Verify the cyclic-tag input encoding and rational halting gadget, then compile and replay complete finite examples. This would connect the present implementation to the cited universal machine rather than only to its speed interface. (\wtag\ Added 2 October 2026: still open as stated. Part~\ref{smc:cs:part} instantiates a different universal machine, Morita's UTM(15,6) through Durand-Lose's 2012 stacks; the 13-label table has not been transcribed.)
-\item\label{smc:sd:q:conservative} \textbf{Exploit conservative bounded populations carefully.} A reversible conservative rational construction is already Turing universal \cite{DL06}. Its positive energy assignment bounds the number of simultaneously live signals for fixed total energy, but not the number of collisions. A direct unbounded representation would need to instantiate its finite transition branches, encode unbounded histories of rational distances, and pay for strict guards and input loading. Conservation alone neither bounds runtime nor excludes accumulation. (\wtag\ Added 2 October 2026: answered in part, at a fixed horizon. Part~\ref{smc:cs:part} instantiates every finite transition branch of a reversible conservative universal signal machine with 18 live signals, pays for the strict guards and the loader, and excludes accumulation on encoded runs (Section~\ref{smc:cs:sec:nozeno}); Part~\ref{smc:sl:part} does the same for conservative lattice dynamics. Neither encodes unbounded histories of rational distances in a fixed arity.)
+\item\label{smc:sd:q:conservative} \textbf{Exploit conservative bounded populations carefully.} A reversible conservative rational construction is already Turing universal \cite{DL06}. Its positive energy assignment bounds the number of simultaneously live signals for fixed total energy, but not the number of collisions. A direct unbounded representation would need to instantiate its finite transition branches, encode unbounded histories of rational distances, and pay for strict guards and input loading. Conservation alone neither bounds runtime nor excludes accumulation. (\wtag\ Added 2 October 2026: answered in part, at a fixed horizon. Part~\ref{smc:cs:part} instantiates every finite transition branch of a reversible conservative universal signal machine with 18 live signals, pays for the strict guards and the loader, and excludes accumulation on encoded runs (Section~\ref{smc:cs:sec:nozeno}); Part~\ref{smc:sl:part} does the same for conservative lattice dynamics. Neither encodes unbounded histories of rational distances in a fixed arity.) (\wtag\ Added 3 October 2026: Part~\ref{smc:uc:part} encodes unbounded histories in a fixed arity for fixed sources of Part~V's conservative three-mass automaton, with infinite witness fibres; not for signal machines or histories of rational distances, so the question stays open as posed.)
 \item\label{smc:sd:q:ledger} \textbf{Sharpen the denominator and cost ledger.} Causal depth can replace batch count in $B$. Further denominator cancellation may depend on the actual branch structure. A useful next result would make such improvements canonical and give a literal arithmetic-gate ledger, including the construction of coefficients and any conversion of input conventions. (\wtag\ Causal-depth clearing itself is proved: Lemma~\ref{smc:sd:lem:denom} shows that $D^H$ suffices, and Part~I, Theorem~\ref{smc:cg:thm:denominator}, gives $D^h$ event by event. What remains open is a canonical choice compatible with the witness format, and the gate ledger.)
 \item\label{smc:sd:q:compress} \textbf{Compress histories without losing canonicality.} The sparse certificate removes repeated geometry, not the unbounded number of events. Can a restricted family of repeated collision motifs be packed with a unique decoder witness and explicit degree, height and operation bounds? Any answer should separate verification of a supplied history from existence of an outcome.
 \item\label{smc:sd:q:formal} \textbf{Formalize geometric completeness.} The most valuable proof-assistant target is the typed-endpoint soundness theorem, including atomic simultaneous replacement and disappearing event blocks. The replay data provide regression fixtures, but the formal objects must model the real semantics, not only the executable's output.
@@ -4775,7 +4890,7 @@ The proofs resolve the mass and radius thresholds within the stated weighted mod
 \item\label{smc:tm:q:overhead} \textbf{Reduce the finite-state overhead.} Can fewer clock phases, channel types or collision rows implement the same cleanup and residue query? The phase implementation pays a factor four in types and time; spatial blocking pays a factor four in types while preserving time. These are constructive bounds for different spatial conventions, not optimal overhead theorems. (\wtag\ Compare source~15's Question~\ref{smc:ct:q:overhead}.)
 \item\label{smc:tm:q:observe} \textbf{Develop quantitative observation extensions.} Construct and cost an anchored halt observer, for example by carrying a halt message to the fixed marker, while minimizing extra channel types and rules. Exact finite-target encodings also require explicit treatment of the final counters. Neither extension is part of the validated generator here. (\wtag\ Added 2 October 2026, batch~80: the exact finite-target part is answered by source~15 (Theorem~\ref{smc:ct:thm:equiv}): its target $y_N$ is computed from the input, and the final counters are restored by inverse execution rather than treated explicitly. The anchored halt observer is still open.)
 \item\label{smc:tm:q:mass} \textbf{Change the mass convention.} What is the sharp reversible threshold when cell states are nonnegative integers equal to their conserved mass? The abundance of equal-weight types used here cannot be carried over by relabeling. (\wtag\ Added 2 October 2026, batch~80: answered in part by Part~\ref{smc:su:part}. With at most one weight-one symbol, exact reachability and pattern occurrence are decidable at masses three and four, so undecidable observations need at least five units (Corollaries~\ref{smc:su:cor:numerical} and~\ref{smc:fm:cor:numerical}); no reversibility is assumed there. The sharp reversible threshold is still open. Compare source~15's Question~\ref{smc:ct:q:mass}.)
-\item\label{smc:tm:q:unbounded} \textbf{Cost an unbounded-time encoding for this frontend.} Instantiate known fixed-arity Diophantine coding for this particular simulation with an explicit degree and variable ledger, and determine which witness properties survive the composition. Uniqueness at each fixed horizon does not by itself yield a finite-fold or single-fold representation after introducing such coding. This is a concrete construction and accounting task, not an open question about existence of ordinary Diophantine representations. (\wtag\ Compare source~15's Question~\ref{smc:ct:q:unbounded}.)
+\item\label{smc:tm:q:unbounded} \textbf{Cost an unbounded-time encoding for this frontend.} Instantiate known fixed-arity Diophantine coding for this particular simulation with an explicit degree and variable ledger, and determine which witness properties survive the composition. Uniqueness at each fixed horizon does not by itself yield a finite-fold or single-fold representation after introducing such coding. This is a concrete construction and accounting task, not an open question about existence of ordinary Diophantine representations. (\wtag\ Compare source~15's Question~\ref{smc:ct:q:unbounded}.) (\wtag\ Added 3 October 2026: answered for fixed eligible sources by Part~\ref{smc:uc:part}, conditional on its inherited theorems. Source~22 composes source~15's wrapper with the research tree's residue-history interface into horizon-free polynomials of exact degrees 2344 and~1192, with complete ledgers of 604, 479, 477 and~480 operations for four nonuniversal fixtures (Theorem~\ref{smc:uc:thm:main}); every accepted nonempty fibre is infinite (Theorem~\ref{smc:uc:thm:fibers}), so the unique witness does not survive, as anticipated here. Source~23 makes the outer history unique, and the remaining native fibre is still infinite (Theorems~\ref{smc:ch:thm:projection} and~\ref{smc:ch:thm:infinite}). Part~VIII does not address a universal source, Question~\ref{smc:tm:q:source}.)
 \item\label{smc:tm:q:priorart} \textbf{Complete the prior-art comparison.} A literature-wide priority assessment would require the uninspected full texts and a precise comparison of the update, reversibility, particle and observation conventions. No such assessment is asserted here.
 \end{enumerate}
 
@@ -5252,7 +5367,7 @@ The construction settles the mass threshold for exact-pair reachability in the s
 \item\label{smc:ct:q:fixedtarget} \textbf{One target independent of the input.} Determine whether a suitable fixed reversible weighted CA can have undecidable reachability to one chosen finite configuration from a computable input family. The present restoration construction gives $y_N$, not a single $y$. Injectivity and the backward orbit of a fixed target must be handled explicitly; no claim of impossibility follows from this report.
 \item\label{smc:ct:q:overhead} \textbf{Smaller finite-state overhead.} Reduce the duplicate state space, residue clock, or two bridge costs while retaining global reversibility and exact scratch cleanup. Compare improvements using the same target convention and all resource ledgers. A faster logical inverse cannot be assumed to reverse microscopic paths. (\wtag\ Compare source~14's Question~\ref{smc:tm:q:overhead}.)
 \item\label{smc:ct:q:mass} \textbf{The integer-state mass convention.} Find the corresponding sharp reversible threshold when each cell state's integer value is its conserved mass. Equal-weight channel types used here cannot be transferred by relabeling. This is a different model-specific question. (\wtag\ Compare source~14's Question~\ref{smc:tm:q:mass}, answered in part by Part~\ref{smc:su:part}, as the note there says.)
-\item\label{smc:ct:q:unbounded} \textbf{A costed unbounded-time certificate.} Compose this frontend with an explicit fixed-arity Diophantine encoding of unbounded computation, and state degree, variable costs, and the resulting fiber properties. The fixed-horizon affine lift alone supplies no finite-fold or single-fold unbounded-time conclusion. (\wtag\ Compare source~14's Question~\ref{smc:tm:q:unbounded}.)
+\item\label{smc:ct:q:unbounded} \textbf{A costed unbounded-time certificate.} Compose this frontend with an explicit fixed-arity Diophantine encoding of unbounded computation, and state degree, variable costs, and the resulting fiber properties. The fixed-horizon affine lift alone supplies no finite-fold or single-fold unbounded-time conclusion. (\wtag\ Compare source~14's Question~\ref{smc:tm:q:unbounded}.) (\wtag\ Added 3 October 2026: answered for fixed eligible sources by Part~\ref{smc:uc:part}, which composes this frontend with the research tree's residue-history interface: exact degrees 2344 and~1192, ledgers of 604, 479, 477 and~480 operations (603, 478, 476 and~479 folded, 608, 483, 481 and~484 canonical) and 60, 58, 58 and~58 positive witnesses for four nonuniversal fixtures, and infinite witness fibres, also after canonicalization of the outer history (Theorems~\ref{smc:uc:thm:fibers} and~\ref{smc:ch:thm:infinite}). The emitted representations are not finite-fold. Part~VIII does not address Questions~\ref{smc:ct:q:universal} and~\ref{smc:ct:q:fixedtarget}.)
 \item\label{smc:ct:q:mechanized} \textbf{Mechanized compiler composition.} Formalize the separated syntax, inverse source transform, prescribed collision routes, and zero-fiber correspondence in one proof system. The key interfaces to preserve are exact absolute configurations, natural domains, and the distinction between source steps and CA ticks.
 \end{enumerate}
 
@@ -7163,7 +7278,7 @@ In the effective finite input and finite observation simulation setting of Repor
 \end{corollary}
 The upper part inherits the source construction and compiler proofs in those reports; this report proves the higher dimensional lower part and the linewise inheritance argument. Section~\ref{smc:zd:sec:boundary} states the distinction precisely. It does not transfer undecidability to an arbitrary observation convention lacking the inherited effective encoding and halt observation.
 
-\wtag\ [The upper half of Corollary~\ref{smc:zd:cor:boundary} is not proved in this report. It is the linewise embedding (Section~\ref{smc:zd:sec:boundary}) of the binary five-particle universal construction of batch-82 Reports~16 and~26 of the same research pipeline, which source~19 pins by SHA-256 (Appendix~\ref{smc:zd:app:lineage}). Both were placed in the collection's report \path{five-particle-binary-automata} (file prefixes \path{16-literal-source-} and \path{26-parallel-involutions-}; placement commits \texttt{bca6383e9} and \texttt{7d2b1b245}). Report~16 is printed there as Part~II (labels \texttt{fpa:ls:}); Part~I of that report, Reports~14 and~15, proves with source~17 that five particles are the exact one-dimensional binary threshold (its Corollary \texttt{fpa:bc:cor:sharp}). Report~26 is placed there but not yet written. The four-versus-five boundary in every dimension is therefore sharp only conditionally on those releases having their stated properties. The Hilbert's-tenth programme has reviewed both. Its review of Report~16 (\path{review_literal_universal_reversible_source16.md}, commit \texttt{69730d3e8})~\cite{reviewsource16} found no source-interface or arithmetic contradiction; it records that Report~16 closes the literal-source and clean-nonblocking obligations of the earlier five-particle compiler, keeps the published Neary--Woods universality theorem and the earlier compiler theorems as explicit dependencies, and notes that Report~16's own threshold claim inherits source~17's mass-four theorem, which it does not recertify. Its review of Reports~26--28 (\path{review_parallel_particle_reports.md}, commit \texttt{fb7e3cb47})~\cite{reviewparallel} found the two-involution mechanism of Report~26 sound but states that it did not reconstruct the complete source compiler and that Report~26's full source binding remains outside its replay. The lower half, decidability at mass at most four in every finite dimension, is proved in full here. Source~19's own adversarial review says the same: ``the sharpness statement remains conditional on the cited five-particle source releases having their stated properties'' (\path{19-mass-four-zd-independent-review.md}).]
+\wtag\ [The upper half of Corollary~\ref{smc:zd:cor:boundary} is not proved in this report. It is the linewise embedding (Section~\ref{smc:zd:sec:boundary}) of the binary five-particle universal construction of batch-82 Reports~16 and~26 of the same research pipeline, which source~19 pins by SHA-256 (Appendix~\ref{smc:zd:app:lineage}). Both were placed in the collection's report \path{five-particle-binary-automata} (file prefixes \path{16-literal-source-} and \path{26-parallel-involutions-}; placement commits \texttt{bca6383e9} and \texttt{7d2b1b245}). Report~16 is printed there as Part~II (labels \texttt{fpa:ls:}); Part~I of that report, Reports~14 and~15, proves with source~17 that five particles are the exact one-dimensional binary threshold (its Corollary \texttt{fpa:bc:cor:sharp}). Report~26 is printed there as Part~VI (commit \texttt{d2043bbd0}). The four-versus-five boundary in every dimension is therefore sharp only conditionally on those releases having their stated properties. The Hilbert's-tenth programme has reviewed both. Its review of Report~16 (\path{review_literal_universal_reversible_source16.md}, commit \texttt{69730d3e8})~\cite{reviewsource16} found no source-interface or arithmetic contradiction; it records that Report~16 closes the literal-source and clean-nonblocking obligations of the earlier five-particle compiler, keeps the published Neary--Woods universality theorem and the earlier compiler theorems as explicit dependencies, and notes that Report~16's own threshold claim inherits source~17's mass-four theorem, which it does not recertify. Its review of Reports~26--28 (\path{review_parallel_particle_reports.md}, commit \texttt{fb7e3cb47})~\cite{reviewparallel} found the two-involution mechanism of Report~26 sound but states that it did not reconstruct the complete source compiler and that Report~26's full source binding remains outside its replay. The lower half, decidability at mass at most four in every finite dimension, is proved in full here. Source~19's own adversarial review says the same: ``the sharpness statement remains conditional on the cited five-particle source releases having their stated properties'' (\path{19-mass-four-zd-independent-review.md}).]
 
 \section{Stationary unit frame and independent components}\label{smc:zd:sec:frame}
 Use the maximum norm on $\Z^d$. A radius bound $R\ge0$ means that the output at $x$ depends only on $x+[-R,R]^d$. For a nonempty finite configuration,
@@ -8462,6 +8577,839 @@ Natural next questions remain tightly connected to this construction:
 These are questions, not claims settled by the present finite checks or by the existing general classification.
 
 
+\part{Unbounded-time certificates for exact three-mass targets (sources 22 and 23)}\label{smc:uc:part}
+
+\noindent\wtag\ Part~VIII prints two AI-assisted research manuscripts of ProveIt's incoming reports, batch~82 (arrival \texttt{db37d18c8}; cluster~M2, placed by \texttt{7d2b1b245}), both dated 3 October 2026 and added on that day. They are numbered reports of the research pipeline that also wrote sources~18--21: \emph{source~22} is batch-82 manuscript~21, the pipeline's Report~21; \emph{source~23} is manuscript~02, Report~22, a declared sequel of Report~21. Their author lines are ``Report 21 \quad Mathematical construction and portable reproducibility package'' and the same with ``Report 22''; they name no assistant. Both pin the ProveIt commit \texttt{ad634b2d1} of the research files they build on. Brackets translate the pipeline's numbers where they occur: Report~10, which source~22's provenance record names as ``Report10 construction'', is source~15; Reports~19 and~20 are Parts~IV and~V of the collection's report \path{five-particle-binary-automata}; Reports~21 and~22 are sources~22 and~23; and Report~25, the sequel of Report~22, is Part~III of \path{fixed-universal-polynomials}.
+
+\wtag\ \textbf{What the two sources do.} Part~V certifies the three-mass automaton at a fixed external \emph{source horizon}: one polynomial for each horizon, with a unique natural witness (Theorems~\ref{smc:tm:thm:certificate} and~\ref{smc:ct:thm:lift}). Its two sources end by asking for a costed \emph{unbounded-time} encoding, with its degree, its variable ledger and the fibre properties that survive (source~14's Question~\ref{smc:tm:q:unbounded} and source~15's Question~\ref{smc:ct:q:unbounded}). Source~22 gives one for each fixed eligible source (fresh entry, terminal halt, $q_0\ne q_h$): a polynomial $Q_R(x,U;z,\theta)$ with no horizon, whose positive zeros at a natural pair $(x,U)$ exist exactly when source~15's cleaned automaton first reaches its exact whole-configuration target at time~$U$ from the raw payload $x+1$ (Theorem~\ref{smc:uc:thm:main}). For four fixed nonuniversal sources it emits the complete circuits, of 604, 479, 477 and~480 operations and exact degrees 2344, 1192, 1192 and~1192, and it proves that every accepted nonempty witness fibre is infinite (Theorem~\ref{smc:uc:thm:fibers}). Source~23 appends one positive coordinate and one square, which fix the outer history height at the least power of two above $S=n_{\rm initial}+n_{\rm target}+\theta$. The outer coordinates then become unique, projection onto the twenty-two native coordinates is a bijection onto the entire native extension fibre (Theorem~\ref{smc:ch:thm:projection}), and that fibre is still infinite (Theorem~\ref{smc:ch:thm:infinite}); the circuits cost 608, 483, 481 and~484 operations. Unbounded time thus costs Part~V's unique natural witness, and canonicalization restores uniqueness of the outer history only.
+
+\wtag\ \textbf{Dependencies.} Both main theorems are composition theorems. They are conditional, exactly as the sources state, on results that this report does not print:
+\begin{enumerate}[label=(\roman*)]
+\item the raw unbounded residue-history interface \path{three_mass_unbounded_interface.md} of the Hilbert's-tenth research tree, with its literal arithmetic receipt and its independent review (``PASS within the stated fixed-source, natural-input scope''), at ProveIt commit \texttt{ad634b2d1}~\cite{threemassraw}, and the residue-affine packed-history proof~\cite{residuehistory};
+\item source~15's clean-target theorem (Theorems~\ref{smc:ct:thm:restore}, \ref{smc:ct:thm:equiv} and~\ref{smc:ct:thm:clock}; its audited statement is shipped as \path{15-clean-targets-CLEAN-TARGET-THEOREM.md});
+\item the native prescribed-scale AND theorem and the Pell notes of the same tree~\cite{nativeand64,nativeselector56,pellparity,pellsigns}.
+\end{enumerate}
+The files of (i) and~(iii) are research-wip notes in \path{Computability/HilbertTenthProblem/Papers/}, not printed reports of the collection, and the native Pell representation theorem behind them is not re-proved by either source. The two archives carried byte copies of these files and of source~15's theorem; they are not shipped twice. At this write the pinned files are unchanged in the repository.
+
+\wtag\ \textbf{Credit.} The clean-time bridge itself is in the research-wip note, at its lines~96--98: the formula $T_{\rm clean}=2T_{\rm native}+192(x+1)+192F+16$, its literal cost $2M+4A$ and one more square, with the remark ``This is an incremental schedule only; the prototype emits the native-time relation and does not claim a complete cleaned-time total''. Its four raw circuits have 598, 473, 471 and~474 operations (lines~106--109), and $598+6=604$ and so on. The clock identity is source~15's Theorem~\ref{smc:ct:thm:clock}. New in source~22 are the complete emitted, audited and costed composition, its exact degrees, the separately folded schedules and the infinite-fibre theorem; new in source~23 are the canonical height, the entire-fibre projection and the fixed-scale infinitude by a matrix argument. Neither source claims novelty for what it inherits.
+
+\wtag\ \textbf{Review status.} The Hilbert's-tenth programme has made a scoped intake of each source, not a full review: of source~22 in \path{review_event_budget_clean_clock_intake.md} (commit \texttt{8aabb1453})~\cite{reviewcleanclock}, and of source~23 in \path{review_incoming_negative_index_fibers.md} (commit \texttt{0055e1c4d})~\cite{reviewnegfibers}; notes at the end of the two sources give the details. Section~\ref{smc:uc:sec:relation} relates Part~VIII to the rest of the report and to later work of the programme on the same circuits, and Section~\ref{smc:uc:sec:status} collects what the two sources do not claim.
+
+\bigskip
+\phantomsection\addcontentsline{toc}{section}{Source 22: Unbounded compact clean clocks for exact three mass targets}
+\noindent{\large\bfseries Source 22 (batch-82 manuscript 21): Unbounded compact clean clocks for exact three mass targets}\par
+\noindent\emph{Fully emitted fixed source Diophantine certificates}, ``Report 21 \quad Mathematical construction and portable reproducibility package'', 3 October 2026. \wtag\ From the archive \path{Unbounded_Compact_Clean_Clocks_Package.zip}; its labels carry the prefix \texttt{smc:uc:}, its sections are Sections~\ref{smc:uc:sec:result}--\ref{smc:uc:sec:checks} here, and its equations are numbered by section. Its four bibliography entries are this report's~\cite{threemassraw}, \cite{residuehistory} and~\cite{ucaudits} and, for the clean-target theorem, source~15 (Part~V). Its abstract follows.
+\begin{quote}\small
+We close the clean-time output interface of the existing fixed-source unbounded residue-history certificate. For a fresh-entry, terminal-halt reversible source, retain its positive final payload $F$, promote its nonempty native duration $\theta$ to a positive witness, remove only the redundant output-copy comparison, and impose
+\[
+\Tclean=2\theta+192(F+x+1)+16.
+\]
+All chronology, native AND, endpoint, clock and no-wrap guards remain. Four complete native or spatially blocked circuits have respectively 604, 479, 477 and 480 arithmetic operations, 60, 58, 58 and 58 positive witnesses, and exact degrees 2344, 1192, 1192 and 1192. Each includes twenty comparison squares and the entire finalizer. The original four-phase variant pays one additional multiplication. A separately audited constant-folded schedule reduces both native and phase-four totals to 603, 478, 476 and 479, with unchanged witness counts and degrees. Exact degrees have deterministic modular leading-component certificates. Both directions of the first-target interpretation follow from explicitly identified inherited theorems. Every accepted nonempty fiber has infinitely many positive witnesses, as every sufficiently large dyadic height admits a fresh native extension. The four fixtures themselves halt in one or two source steps and are nonuniversal demonstrations. No arbitrary c.e. ordinary-input loader, universal numerical bound, optimality claim, rational-zero theorem or materialized full positive Pell witness is supplied. Initially halted sources have separate four-gate, witness-free quadratic certificates.
+\end{quote}
+
+\section{Result and scope}\label{smc:uc:sec:result}
+Throughout, $\NN=\{0,1,2,\ldots\}$ and every existential coordinate of a nonempty packet belongs to $\Np$. Fix a reversible separated two-counter source $R$ whose entry $q_0$ has no incoming instruction and whose terminal halt $q_h$ has no outgoing instruction. For the nonempty construction assume $q_0\ne q_h$. The raw initial payload is $N_0=x+1$, with $x\in\NN$; its prime-two and prime-three valuations encode the two counters. Factors coprime to six are part of the payload and are preserved.
+
+The inherited three-mass compiler uses a finite alphabet of Boolean channel subsets, with mass equal to the number of occupied channels and vacuum of mass zero. The resulting cellular automaton (CA) preserves total mass three on the configurations here. This is a weighted finite-alphabet model, not the model in which an integer state label itself equals its mass.
+
+\begin{theorem}[Fixed-source clean-time composition]\label{smc:uc:thm:main}
+Assume the inherited complete raw-history/native theorem and the inherited exact clean-target CA theorem described in Section~\ref{smc:uc:sec:dependencies}. For an eligible fixed source $R$, the construction below gives an integer polynomial $Q_R(x,U;z,\theta)$ with no external history horizon, such that for every $x,U\in\NN$,
+\[
+\exists (z,\theta)\in\Np^{d_R+1}\quad Q_R(x,U;z,\theta)=0
+\]
+if and only if the cleaned CA first reaches its exact canonical whole-configuration target at time $U$ from its canonical input at raw payload $x+1$. The terminal payload $F$ is a retained coordinate of $z$ and
+\[
+U=2\theta+192(F+x+1)+16.
+\]
+Spatial blocking preserves this time. The four-phase construction replaces the right side by four times the entire expression. The dimension depends on the fixed source, not its runtime.
+\end{theorem}
+
+This is a composition theorem with explicit dependencies. The portable packet emits the construction completely for these four fixed sources:
+\begin{center}\small
+\begin{tabular}{@{}llll@{}}\toprule
+Fixture & Literal source & Accepted raw inputs & Steps\\\midrule
+INC2;DEC2 & $s\xrightarrow{\mathrm{INC2}}a\xrightarrow{\mathrm{DEC2}}h$ & all $N_0>0$ & 2\\
+ZERO3 & $s\xrightarrow{\mathrm{ZERO3}}h$ & $3\nmid N_0$ & 1\\
+NOP & $s\xrightarrow{\mathrm{NOP}}h$ & all $N_0>0$ & 1\\
+POSITIVE3 & $s\xrightarrow{\mathrm{POSITIVE3}}h$ & $3\mid N_0$ & 1\\\bottomrule
+\end{tabular}
+\end{center}
+A disabled test is a nonfinal stuck state. Each fixture has singleton incoming and outgoing instruction groups, fresh entry and terminal halt. Its generic certificate has no horizon parameter, but these short executions do not demonstrate a long or universal execution. Their simple accepted relations could have much smaller specialized descriptions; the measured costs concern the fully retained generic compiler, not minimal representations.
+
+The present unbounded packet differs from Reports 19--20 \textup{[Parts~IV and~V of \path{five-particle-binary-automata}, on the binary five-particle automaton]}: those reports concern finite-horizon CA schemas and canonical natural witness tuples. Here the native positive witnesses have unbounded height freedom, and accepted nonempty fibers are provably infinite.
+
+\section{Authenticated dependencies}\label{smc:uc:sec:dependencies}
+The public raw interface, its arithmetic receipt, independent review and residue-history proof are pinned to ProveIt commit
+\sha{ad634b2d10ad666260f9fdff04ec94b75169ee4b}
+The local \file{reproducibility/source/} directory contains their exact bytes, including two Python files retained solely as inert provenance. None of those third-party Python files is imported or executed by the new emitter or checkers. The JSON gate lists are read as arithmetic data.
+
+The raw receipt \file{three_mass_unbounded_interface.json} has SHA-256
+\sha{fe69f0504c8f68c4130c4b21fed5c817596ab5c0e2fdf9621b0bf5f45c12ac0e}
+The unchanged earlier clean-target proof, \file{inherited_clean_target_theorem.md}, has SHA-256
+\sha{3d85f8cde66837d8916fb3273c2c57cc1a91ce37de1f3d6c6fe28a4db9103168}
+The complete source hashes, public URLs, Git-blob hashes and byte counts are in \path{source/provenance.json}. The outer release records original and delivered hashes separately; no emitted circuit or inherited source file was adapted. The folding auditor has a documented portable path-guard adaptation, with its self-hash receipt regenerated.
+
+Write the inherited raw polynomial as
+\[
+P_R(x,y,t;z),\qquad x,y,t\in\NN,\quad z\in\Np^{d_R}.
+\]
+Its positive coordinates include the unshifted terminal payload $F$, twenty-two native auxiliaries, all thirty residue-selector hats in the fixtures, quotient and selected-quotient hats, height and global slacks, and the shifted clock quotient. Its twenty comparisons are two outer rows, sixteen native rows, the exact native-clock row and $F=y$. The inherited assertion is
+\[
+\exists z>0\ P_R(x,y,t;z)=0
+\quad\Longleftrightarrow\quad
+\begin{gathered}
+R\text{ first halts from }(q_0,x+1)\\
+\text{with raw output }y\text{ and native time }t.
+\end{gathered}
+\]
+In particular every such zero has $F=y>0$ and $t>0$ when $q_0\ne q_h$.
+
+The raw input port is paid as $5x+q_0$, and its target port as $5(F-1)+q_h$ for these fixtures. Their subtraction, multiplication and code addition remain in the emitted clean circuits. $F$ is neither $F-1$ nor a valuation. The existential dimension and literal loaders therefore preserve the inherited domain contract.
+
+The second dependency is the earlier clean-wrapper and canonical-section theorem \textup{[source~15, Theorems~\ref{smc:ct:thm:restore}, \ref{smc:ct:thm:equiv} and~\ref{smc:ct:thm:clock}]}, including the prescribed escape of nonfinal stuck configurations. This report does not regenerate the CA local rule tables, reprove the historical native/Pell theorem or replay its third-party implementation. The new portable arithmetic replays have no network or external repository dependency; this computational self-containment is separate from foundational independence of the inherited theorems.
+
+\wtag\ [The pinned commit is ProveIt's \texttt{ad634b2d1}; the pinned interface, its receipt and review, and the residue-history proof are the files \path{three_mass_unbounded_interface.md}, \path{.json}, \path{review_three_mass_unbounded_interface.md} and \path{residue_affine_packed_history.md} of \path{Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/}~\cite{threemassraw,residuehistory}, unchanged there at this write. The ``unchanged earlier clean-target proof'' is source~15's file shipped as \path{15-clean-targets-CLEAN-TARGET-THEOREM.md}, byte for byte. The directory \path{reproducibility/source/} held byte copies of these files and is not shipped; its \path{provenance.json} is shipped as \path{data/22-clean-clocks-source-provenance.json}.]
+
+\section{The clean source and exact physical target}\label{smc:uc:sec:clean}
+\wtag\ [This section restates source~15's clean return wrapper and exact target for the reader: the wrapper and its restoration theorem are Section~\ref{smc:ct:sec:wrapper} and Theorem~\ref{smc:ct:thm:restore}, the freshness discussion is Section~\ref{smc:ct:sec:fresh}, the target is Theorem~\ref{smc:ct:thm:equiv}, and the clock identity~\eqref{smc:uc:eq:clean} is Theorem~\ref{smc:ct:thm:clock}, in which source~15 writes $\Theta$ for $\theta$, $N_h$ for $F$ and $T_{\cl}$ for $\Tclean$. It is printed in full as source~22's own account; no novelty is claimed for it.]
+\subsection{Forward and reverse source traces}\label{smc:uc:sec:traces}
+Construct $R_{\mathrm{clean}}$ with controls $\mathrm F:q$, $\mathrm B:q$ for each source control $q$, and a new sole halt $H$. Copy every source instruction forward, copy its inverse backward, and add
+\[
+\mathrm F:q_h\xrightarrow{\mathrm{NOP}}\mathrm B:q_h,
+\qquad
+\mathrm B:q_0\xrightarrow{\mathrm{NOP}}H.
+\]
+INC and positive-only DEC exchange; ZERO, POSITIVE and NOP are self-inverse. In the backward copy, incoming and outgoing source groups interchange. Singleton arithmetic groups remain singletons, and a complementary pair of tests remains disjoint. Terminality makes the first bridge legal; entry freshness makes the second bridge legal.
+
+Suppose the original first-halting trace has $\ell$ instructions and payloads $N_0,\ldots,N_\ell=F$. The cleaned trace is its forward copy, the halt bridge, its uniquely determined inverse trace, and the entry bridge. Each reverse step restores its actual forward input. No original instruction enters $q_0$, so the reverse copy cannot reach $\mathrm B:q_0$ prematurely. Thus the first $H$ occurs after $2\ell+2$ source instructions and restores the entire integer $N_0$, including its coprime cofactor. A nonhalting or nonfinal stuck forward run never reaches the first bridge.
+
+Freshness is a genuine hypothesis. An arbitrary source cannot be made eligible merely by prepending a NOP: it can conflict with existing incoming groups. If $q_0$ recurs in the original trace, an unguarded reverse exit at $\mathrm B:q_0$ could leave before the input is restored. The packet includes a rejecting regression for such a nonfresh source.
+
+\subsection{Geometry and first target}\label{smc:uc:sec:geometry}
+At a canonical native section, the fixed right marker is at absolute coordinate $0$, and the clean stage-zero controller with its stationary shuttle is at $-12N_0$. All other channels and sites are vacuum. The input controller is $\mathrm F:q_0$; the exact target replaces it by $H$ at the same positions. Equality includes the entire finite configuration, not just an observed control label or a translate.
+
+The inherited section theorem excludes an earlier target at a macro boundary or inside a macro. A stuck source follows its prescribed shuttle escape and cannot form that target. Arbitrary completion rows are not used before the first target or along these nonhalting and stuck continuations. No claim is made about later target recurrences or stationary posthalt behavior.
+
+Blocking four sites gives radius one, moves the left pair to $-3N_0$ with offset zero, and preserves every time. The alternative four-phase radius-one simulator keeps the native positions; its exact target is phase zero. Its first time is four times the native time, since off-section phases cannot equal this target. Both preserve mass three without a background.
+
+\subsection{The clock identity}\label{smc:uc:sec:clockid}
+A forward step $N\to N'$ has native duration
+\[
+\begin{array}{ll}
+\mathrm{INC}:&108N+96N'+8,\\
+\mathrm{DEC}:&96N+108N'+8,\\
+\mathrm{ZERO},\mathrm{POSITIVE},\mathrm{NOP}:&192N+8\quad(N'=N).
+\end{array}
+\]
+Interchanging $N,N'$ and inverting the instruction preserves the duration. If $\theta$ is the forward duration, the reverse half also takes $\theta$. The two NOP bridges take $192F+8$ and $192N_0+8$. Therefore
+\begin{equation}\label{smc:uc:eq:clean}
+\Tclean=2\theta+192(F+N_0)+16
+       =2\theta+192(F+x+1)+16.
+\end{equation}
+This is forward execution of a logically reversed source with different control states. It does not follow from microscopic CA reversibility alone.
+
+\section{The complete polynomial and both directions}\label{smc:uc:sec:polynomial}
+The only exact raw coordinate $y$ occurs in the final output-copy residual $F-y$. It occurs in neither the raw core nor the other nineteen comparisons. The differently named native auxiliary \file{native__y_aux} is retained. Replace every occurrence of the raw natural time $t$ by a fresh positive coordinate $\theta$, including its occurrence in the height and clock row. Drop only $F=y$, retain positive $F$ and its encoded endpoint, and append~\eqref{smc:uc:eq:clean}.
+
+Let $E_1,\ldots,E_{19}$ be the retained residuals after the time substitution, with $F$ among $z$. The complete emitted polynomial is
+\begin{equation}\label{smc:uc:eq:sos}
+Q_R(x,U;z,\theta)
+ =\sum_{i=1}^{19}E_i(x,z,\theta)^2
+  +\bigl(2\theta+192(F+x+1)+16-U\bigr)^2.
+\end{equation}
+Equivalently, as an identity of integer polynomials on all tuples,
+\begin{equation}\label{smc:uc:eq:identity}
+Q_R(x,U;z,\theta)=P_R(x,F,\theta;z)
+             +\bigl(2\theta+192(F+x+1)+16-U\bigr)^2.
+\end{equation}
+The old last square is identically zero after the explicit substitution $y=F$. This identity does not compare the polynomials while leaving $y$ independently free. For phase four, multiply the entire clean affine expression by four inside the new square.
+
+\begin{proof}[Proof of Theorem~\ref{smc:uc:thm:main}]
+For soundness, an integer zero of~\eqref{smc:uc:eq:sos} makes every residual zero, since a sum of real squares is zero only when each square is zero. Set the forgotten natural coordinate $y=F$ and the original natural time $t=\theta$. Positivity makes both substitutions admissible. This reconstructs a zero of the complete inherited raw certificate, hence an actual first-halting source trace with its exact terminal payload and native time. The clean-wrapper theorem and~\eqref{smc:uc:eq:clean} give its first exact whole-configuration target at the requested $U$.
+
+Conversely, if the cleaned CA first reaches its target, the inherited clean theorem gives an original first halt. Its $F$ is positive and its $\theta$ is positive because the source starts away from halt and every genuine instruction has positive duration. The raw theorem supplies positive witnesses at $y=F,t=\theta$. These witnesses satisfy the nineteen retained rows, while~\eqref{smc:uc:eq:clean} supplies the twentieth. Thus~\eqref{smc:uc:eq:sos} vanishes. The spatial and phase statements follow from their inherited section correspondence.
+\end{proof}
+
+Promoting $t$ directly to a positive variable costs one witness and no arithmetic gate; a separate $W-1$ shift is unnecessary for nonempty runs. No reverse history packet, reverse native witnesses, new selector lane, hidden external horizon or unpaid exponentiation is introduced. Removing $F$ itself would invalidate the positive target port and the halt-bridge duration; removing chronological or native rows is also unjustified.
+
+\section{Retained chronology and nonwrapping time}\label{smc:uc:sec:chronology}
+\wtag\ [This section restates, for the circuit with $t$ replaced by $\theta$, the residue-history proof~\cite{residuehistory} and the exact-clock argument of the pinned interface and of its independent review~\cite{threemassraw}, with the radix $Ch^2$ in place of the former linear one; it is printed in full as source~22's own account.]
+\subsection{Pretyping and the actual history}\label{smc:uc:sec:pretyping}
+The general encoded source configuration is $n=K(N-1)+q$. Here $K=5$ and $m=6K=30$. The residue fixes the control and payload modulo six. The source becomes a total positive residue-affine map
+\[
+f(mq+s)=a_s q+d_s,\qquad q\geq0,\quad1\leq s\leq m,
+\]
+with integer $a_s\geq0,d_s>0$. Missing guards, the halt control, trap and unused labels go to a permanent rejecting trap with unchanged payload. A nonempty orbit ending at the original halt is consequently a genuine first-halting source orbit.
+
+In the general construction choose a source-dependent dyadic $C$ at least the inherited radix multiplier and $2384m+2$. For the four fixtures $C=131072$ suffices. For the packet's height $h$, distinct from its source step count $\ell$, retain
+\[
+h=n_0+n_f+\theta+\eta,\qquad B=Ch^2,\qquad C=131072,
+\qquad\eta>0.
+\]
+Write selector hats as $\widehat E_s=E_s+1$, quotient hat as $\widehat W=W+1$, and exceptional-slope hats as $\widehat Z_a=Z_a+1$. Set
+\[
+J=\sum_s E_s,\quad P=(B-1)J+1,\quad
+G_a=\sum_{s:a_s=a}E_s,\quad R_h=(h-1)J.
+\]
+The two retained outer equations are
+\begin{align}
+J+(W+1)+\sum_a(Z_a+1)+\beta&=P,\qquad\beta>0,\label{smc:uc:eq:global}\\
+B\mathcal N+n_0&=\mathcal C+Pn_f,\label{smc:uc:eq:transport}
+\end{align}
+where the paid chronological words are
+\[
+\mathcal C=mW+\sum_s sE_s,\qquad
+\mathcal N=a_0W+\sum_a(a-a_0)Z_a+\sum_s d_sE_s.
+\]
+Negative slope differences are allowed in this algebraic expression; nonnegativity is not presumed before typing.
+
+Equation~\eqref{smc:uc:eq:global} first excludes $J=0$: then $P=1$ while $W+1+\beta\geq2$. It bounds $W,Z_a,J<P$, with $E_s,G_a\leq J$. The selector, class and range AND lanes are
+\[
+(E_s,J,E_s),\qquad (W,(B-1)G_a,Z_a),\qquad (W,R_h,W).
+\]
+All lane coefficients lie in $[0,P)$. Concatenate them in base $P$ to ports $H_*,M_*,A_*$. If $L=m+g+1$ and $v$ is the least power of two at least $L$, then
+\[
+0\leq H_*,M_*,A_*<P^L\leq P^v<Q_*=BP^v.
+\]
+These bounds are obtained before assuming a history or digit typing. The sixteen retained native comparisons, on the paid padded ports
+\[
+16H_*+12,\quad16M_*+10,\quad16A_*+8,\quad16Q_*,
+\]
+give the prescribed-scale native AND theorem. They force $Q_*$ dyadic and $H_*\mathbin{\mathrm{AND}}M_*=A_*$. Hence $B,P$ are dyadic, and so is the integer $h$, since $B=Ch^2$ and $C$ is dyadic.
+
+The identity $P-1=(B-1)J$ now forces $P=B^\ell$ for an integer $\ell\geq1$: writing $B=2^b,P=2^p$ and reducing $p$ modulo $b$ proves $b\mid p$. Thus $J=1+B+\cdots+B^{\ell-1}$. Selectors are subsets of these unit positions. Their sum is $J$; the bound $m<B$ prevents a carry, so exactly one residue is selected at each time. The range lane gives quotient digits $0\leq q_i<h$, and class lanes select their correct subsets. The words in~\eqref{smc:uc:eq:transport} consequently have genuine positive base-$B$ digits. Their bounds and the endpoint bounds yield
+\[
+n_0=\mathcal C_0,\qquad
+\mathcal C_{i+1}=\mathcal N_i,\qquad
+\mathcal N_{\ell-1}=n_f.
+\]
+This is actual chronological transport, not an unordered flow or a bare endpoint comparison. The inherited proof supplies the exact digit bounds; replacing its former linear radix by $Ch^2$ preserves them because the new radix dominates the old multiplier times $h$.
+
+\subsection{Why the clock congruence is exact}\label{smc:uc:sec:nowrapclock}
+Each current encoded configuration lies in $[1,mh]$. No current configuration repeats in a deterministic first-halting orbit: repetition would force a cycle and exclude the later first halt. Therefore
+\[
+1\leq\ell\leq mh.
+\]
+Each current payload satisfies $N\leq6h$, and every genuine native tick satisfies
+\[
+0<\tau\leq396N+8\leq2384h.
+\]
+It follows that
+\begin{equation}\label{smc:uc:eq:nowrap}
+\sum_{i<\ell}\tau_i\leq2384mh^2<Ch^2-1=B-1,
+\end{equation}
+since $C\geq2384m+2$. Independently the positive height identity gives $0<\theta<h<B-1$.
+
+The paid affine packed clock $\mathcal C_\tau=\sum_i\tau_iB^i$ uses exactly the same selected-quotient and selector hats. Its retained comparison is
+\[
+\mathcal C_\tau=(B-1)(\widehat k-1)+\theta,\qquad\widehat k>0.
+\]
+Reducing modulo $B-1$ gives $\sum_i\tau_i\equiv\theta\pmod{B-1}$. Both numbers lie in $[0,B-2]$ by~\eqref{smc:uc:eq:nowrap}; hence they are equal. Hiding $\theta$ existentially changes none of these paid guards. The new cleanup square is applied only after exact native time is established.
+
+This argument requires first-halt rejecting totalization. It does not apply automatically to arbitrary endpoints that permit looping after an earlier acceptance. Nor is a bounded sample of nonhalting behavior proof of nonhalting.
+
+\section{Every accepted nonempty witness fiber is infinite}\label{smc:uc:sec:fibers}
+\begin{theorem}[Infinite positive fibers]\label{smc:uc:thm:fibers}
+For any accepted fixed pair $(x,U)$ of an emitted nonempty native, spatial or phase-four circuit, its complete positive witness fiber is infinite. Rejected fibers are empty. This assertion excludes the separate initially halted circuits.
+\end{theorem}
+\begin{proof}
+Fix the actual first-halting source trace, its payload $F$, native time $\theta$, encoded endpoints $n_0,n_f$, length $\ell\geq1$ and residue quotients $q_i$. For every sufficiently large dyadic integer
+\[
+h>\max\{n_0+n_f+\theta,q_0,\ldots,q_{\ell-1}\},
+\]
+set $\eta=h-n_0-n_f-\theta>0$, $B=Ch^2$, $P=B^\ell$ and $J=1+B+\cdots+B^{\ell-1}$. Pack the same residue indicators, quotients and selected quotients in this new base. Zero words have positive hat one and are allowed.
+
+Let $g\leq m-1$ be the number of exceptional slope classes. They are disjoint, so $\sum_aZ_a\leq W\leq(h-1)J$. The exact remaining global slack is
+\begin{align*}
+\beta&=P-J-(W+1)-\sum_a(Z_a+1)\\
+     &=(B-2)J-W-\sum_aZ_a-g\\
+     &\geq(B-2h)J-g>0.
+\end{align*}
+For the last inequality, the new radix satisfies $B\geq K_0h$, where the inherited dyadic multiplier $K_0$ is at least $4$ and $m+1$; also $h\geq3$ and $J\geq1$. Thus $(B-2h)J\geq(K_0-2)hJ>g$. These are strict positive supplied slacks, not merely nonnegative residuals.
+
+All actual lane equalities hold. Selector words are at most $J$, quotient and selected-quotient words are at most $(h-1)J<P$, class masks are at most $(B-1)J=P-1$, and the range mask is below $P$. Therefore the concatenated ports are below the dyadic prescribed scale $Q_*=BP^v$. Their padded positive versions are strictly below $16Q_*$. The inherited prescribed-scale completeness theorem supplies fresh positive native witnesses at every such scale. No old native tuple is assumed to remain valid when $h$ changes.
+
+Chronological transport is the actual fixed path, and
+\[
+\widehat k=1+\frac{\mathcal C_\tau-\theta}{B-1}\in\Np,
+\]
+since $\mathcal C_\tau-\theta=\sum_i\tau_i(B^i-1)$ is a nonnegative multiple of $B-1$. For $\ell=1$ the quotient is zero and the hat is one. The terminal payload and cleanup equation preserve the same fixed external $(x,U)$. Thus every permitted height extends to a full positive zero.
+
+There are infinitely many such dyadic heights; distinct heights give distinct retained $\eta$. The resulting complete tuples are distinct regardless of native multiplicity at a fixed scale.
+\end{proof}
+The result is an all-height consequence of the inherited completeness theorem. The checker verifies 54 larger-height outer extensions as implementation evidence; it does not numerically construct huge full native/Pell witnesses. A deterministic source trace and unique reverse lift therefore coexist with infinitely many arithmetic witnesses. These emitted representations are not finite-fold, without implying any multiplicity limitation for a different representation of the same simple relation.
+
+\wtag\ [Compare Part~V: at a fixed source horizon sources~14 and~15 have exactly one natural witness (Theorems~\ref{smc:tm:thm:certificate} and~\ref{smc:ct:thm:lift}), and source~14 warns that uniqueness at each fixed horizon does not by itself yield a finite-fold representation after unbounded coding is introduced (Question~\ref{smc:tm:q:unbounded}). This theorem shows that for the present coding it does not. Source~23 (Theorems~\ref{smc:ch:thm:projection} and~\ref{smc:ch:thm:infinite}) shows that infinitude survives even at the least admissible height.]
+
+\section{Complete arithmetic ledgers and exact degrees}\label{smc:uc:sec:ledgers}
+\subsection{Literal cost model}\label{smc:uc:sec:costmodel}
+Each binary $+$, $-$ or $\times$ gate costs one operation. Constant multiplications and squarings count as multiplications; the integer literals are explicitly listed in each ledger. This model does not synthesize those constants from a restricted initial constant set. There is no gate for exponentiation, division, bitwise AND or an unspecified predicate. Powers such as $P^v$ are realized by their fixed squaring chains. Bitwise AND appears only in the semantic checker of the native encoding, not as a free polynomial gate.
+
+The new affine bridge consists of these six paid gates:
+\[
+F+x,\quad F+x+1,\quad192(F+x+1),\quad2\theta,
+\quad192(F+x+1)+2\theta,\quad192(F+x+1)+2\theta+16.
+\]
+They cost $2M+4A$, where $A$ includes addition and subtraction. Deleting the old $F=y$ square and its accumulation removes $1M+2A$; adding the clean-time square and its accumulation restores $1M+2A$. Every final twenty-row SOS uses twenty subtractions, twenty squarings and nineteen additions: $20M+39A=59$ gates.
+
+\begin{center}\small
+\begin{tabular}{@{}lrrrrrr@{}}\toprule
+Fixture & Raw core & $M$ & $A$ & Total & Witnesses & Degree\\\midrule
+INC2;DEC2 & 539 & 239 & 365 & 604 & 60 & 2344\\
+ZERO3 & 414 & 184 & 295 & 479 & 58 & 1192\\
+NOP & 412 & 182 & 295 & 477 & 58 & 1192\\
+POSITIVE3 & 415 & 189 & 291 & 480 & 58 & 1192\\\bottomrule
+\end{tabular}
+\end{center}
+These totals include the core, six bridge gates and the full finalizer. Each has two natural parameters $x,U$ and twenty comparisons. Spatial blocking uses precisely the same polynomials. Phase four adds one multiplication by literal four before the final clean comparison, giving totals $605,480,478,481$ with the same $A$, witnesses and degrees.
+
+\subsection{Separately emitted constant folded schedules}\label{smc:uc:sec:folded}
+The original freeze and its counts above remain unchanged. A separate addendum folds the affine input shift and scale into literal constants. The native and phase-four clocks are identically
+\[
+192(F+x)+2\theta+208,\qquad
+768(F+x)+8\theta+832,
+\]
+respectively, since $192+16=208$ and $4\cdot208=832$. In either model, compute $F+x$, the first scalar product, the $\theta$ product, their sum, and the final constant addition. This uses five bridge gates, $2M+3A$, with no changed coordinate domain. The complete twenty-row finalizer is rebuilt unchanged in size.
+
+\begin{center}\small
+\begin{tabular}{@{}lrrrrr@{}}\toprule
+Folded native or phase four & $M$ & $A$ & Total & Witnesses & Degree\\\midrule
+INC2;DEC2 & 239 & 364 & 603 & 60 & 2344\\
+ZERO3 & 184 & 294 & 478 & 58 & 1192\\
+NOP & 182 & 294 & 476 & 58 & 1192\\
+POSITIVE3 & 189 & 290 & 479 & 58 & 1192\\\bottomrule
+\end{tabular}
+\end{center}
+This saves one addition from the original native schedule and one multiplication plus one addition from the original unrolled phase-four schedule. The equality holds on every integer tuple, so all semantic and fiber statements are unchanged. The addendum supplies eight complete circuits, their full ledgers, degree certificates and an independent data-only audit. The separate audit checks all 4072 folded gates and, in addition to formal degree bounds, evaluates complete univariate polynomial specializations modulo $1000003$. Its pinned reference files are byte-identical copies of the original eight circuits. This is an elementary schedule improvement within the stated literal-constant model, not an optimality claim. The unchanged first freeze and its original audits are retained separately.
+
+\subsection{Witnesses and literal inheritance}\label{smc:uc:sec:witnesses}
+The witnesses are the raw positive list followed by \file{theta_positive}: twenty-two native coordinates, thirty selector hats, one quotient hat, $g$ selected-quotient hats, two slacks, $F$, the shifted clock quotient and $\theta$. Thus the count is $58+g$, with $g=2$ for INC2;DEC2 and zero for the other fixtures. The exact gate and coordinate names are in every JSON circuit and matching textual DAG.
+
+The independent auditor checks 3560 inherited-gate identities across all eight nonempty variants. Every raw core gate is unchanged except the operand substitution $t\mapsto\theta$. It checks all 152 retained comparison-pair identities and the complete twenty-row finalizers. The complete ancestor set of the output equals all declared gates and ports: there are no undeclared operands, forward references, dead charged gates or dead supplied coordinates.
+
+\subsection{Deterministic exact degree certificates}\label{smc:uc:sec:degree}
+The claimed degrees are exact total polynomial degrees in all supplied coordinates, before restricting to the zero set or quantifying witnesses. Give each coordinate $v_i$ degree one and each integer literal degree zero. Propagate a formal bound $d$ by addition of bounds at multiplication and maximum at addition or subtraction. Simultaneously evaluate the degree-$d$ homogeneous component under the integer ray
+\[
+v_i=(i+2)z,\qquad i=0,1,\ldots,
+\]
+using the exact emitted order \file{parameters + auxiliaries}, modulo $p=1000003$.
+
+At a sum or difference of bound $d$, an operand contributes its stored coefficient only if its formal bound equals $d$. At a product, multiply the stored top coefficients. A zero coefficient never lowers the bound: cancellation on this chosen ray cannot justify discarding lower components for subsequent operations. Induction on the gate list proves both the degree upper bound and the claimed component evaluation. A nonzero output value modulo $p$ implies a genuinely nonzero integer homogeneous component, so the lower bound matches the upper bound. Primality is not needed for this nonzero-modulus implication.
+
+\begin{center}\small
+\begin{tabular}{@{}lrr@{}}\toprule
+Circuit family & Degree & Top value modulo $1000003$\\\midrule
+INC2;DEC2 native and phase four & 2344 & 135347\\
+ZERO3 NOP POSITIVE3 native and phase four & 1192 & 977370\\
+Initially halted native & 2 & 585225\\
+Initially halted phase four & 2 & 418734\\\bottomrule
+\end{tabular}
+\end{center}
+The full weight map and every per-gate degree/top row are in the JSON artifacts. Two independently implemented data-only checkers recompute the certificates. Nonempty traces contain two zero-top entries, and an explicit cancellation regression verifies retention of their bounds. Equality of the high-degree native and phase-four coefficients is consistent with changing only a degree-one time residual. No degree claim is a lower bound on circuit size or on the intrinsic complexity of the represented relation.
+
+\section{Initially halted sources and raw input limits}\label{smc:uc:sec:halted}
+\subsection{The separate zero step circuit}\label{smc:uc:sec:zerostep}
+If $q_0=q_h$, freshness and terminality make it isolated. The cleaned trace consists of two NOP bridges, with $\theta=0$ and $F=N_0$. Hence
+\[
+\Tclean=384N_0+16=384x+400.
+\]
+The separate polynomial is
+\[
+(384x+400-U)^2,
+\]
+with four gates, $2M+2A$, one comparison, zero witnesses and degree two. Its phase-four counterpart is $(1536x+1600-U)^2$, with the same ledger by constant folding. Neither is forced through the positive-time nonempty packet. At an accepted external pair the witness fiber is the singleton empty tuple, so the infinite-fiber theorem does not apply.
+
+\subsection{All input clock sanity checks}\label{smc:uc:sec:sanity}
+On accepted paths of the four fixtures, $F=N_0$. Direct source arithmetic gives
+\begin{center}\small
+\begin{tabular}{@{}lll@{}}\toprule
+Fixture & Native forward duration $\theta$ & Clean duration\\\midrule
+INC2;DEC2 & $600N_0+16$ & $1584x+1632$\\
+NOP & $192N_0+8$ & $768x+800$\\
+ZERO3 when $3\nmid x+1$ & $192N_0+8$ & $768x+800$\\
+POSITIVE3 when $3\mid x+1$ & $192N_0+8$ & $768x+800$\\\bottomrule
+\end{tabular}
+\end{center}
+All phase-four durations are multiplied by four. The generic circuits deliberately retain $F$, rather than specializing these coincidences away. For example a fresh singleton INC2 source has $F=2N_0$, $\theta=300N_0+8$, and clean time $1176N_0+32$. Additional wrapper tests cover this unequal-payload behavior and coprime factors five and seven, without claiming a full emitted generic circuit count for these extra sources.
+
+A fake ZERO3 halt at $N_0=3$ and fake POSITIVE3 halt at $N_0=1$ fail the retained chronological endpoint row: their totalized successors are the rejecting trap, not halt. This construction removes no selector and no encoded halt endpoint, and does not pass through a weakened fixed-horizon selector interface.
+
+\subsection{What the raw coordinate cannot represent}\label{smc:uc:sec:rawlimits}
+Write $N_0=2^a3^bc$, with $\gcd(c,6)=1$. Scaling the raw payload by a positive factor coprime to six preserves guards and the control sequence, and scales the payload throughout. For each corresponding tick,
+\[
+\tau(cN)-8=c\bigl(\tau(N)-8\bigr).
+\]
+When output and time are existentially hidden, halting thus depends only on $\nu_2(x+1),\nu_3(x+1)$. In particular $x=0$ and $4$ cannot be distinguished for halting; among positive coordinates, neither can $x=4$ and $6$. This excludes interpreting the raw $x+1$ interface as an arbitrary c.e. ordinary-input loader.
+
+The general fixed-source theorem is compatible with encoded input contracts, but a numerical universal claim would require a concrete fixed universal separated reversible source table, its proved ordinary-input or decoder interface, and a fully charged emission and audit. None is supplied here. The inherited clean theorem's abstract computable reduction is not such a paid loader.
+
+All zero-set interpretations require natural external coordinates and strictly positive integer witnesses. Real SOS nonnegativity does not extend the native theorem to rational or real witnesses. The target depends on the input; no fixed universal target, stationary halt, arbitrary later recurrence, optimality or new universal operation bound is asserted.
+
+\section{Independent checks and reproducible delivery}\label{smc:uc:sec:checks}
+\subsection{What was checked}\label{smc:uc:sec:checked}
+The new emitter authenticates the pinned raw JSON, parses its literal arithmetic, verifies the old finalizers and emits complete clean circuits. It does not execute the upstream author scripts. The independent literal auditor checks all ten JSON circuits and all eight text DAGs: 4092 gates, 162 comparison rows, inheritance, closure, liveness, literal constants, counts, degree certificates and complete SOS output identity.
+
+The literal auditor also checks 120 signed assignments, 320 modular assignments and 606 exact or adjacent-time zero-step evaluations. These are finite arithmetic identities. No implication from modular SOS zero to individual modular residual zero is used. Eight deliberately corrupted circuit copies are rejected: omitted witness, undeclared operand, changed inherited gate, deleted comparison, wrong cleanup constant, extra dead gate, undercounted ledger and false degree.
+
+A separate semantic checker records:
+\begin{itemize}
+\item 19200 residue-state and clock evaluations, including rejecting controls;
+\item 576 accepted full outer packed histories, with all four outer equations and the actual joined AND checked;
+\item 576 each of strict no-wrap and coprime-scaled trace checks;
+\item 192 false prime-three halts rejected by chronological transport;
+\item 576 rejections each for clean-time, native-time and final-payload mutations;
+\item 384 complete signed/modular SOS evaluations and 390 zero-step exact evaluations;
+\item 29 additional physical-wrapper checks, including 13 unequal-payload cases, and one nonfresh-entry rejection;
+\item 54 larger-height outer extensions at unchanged input and clean time.
+\end{itemize}
+Native and phase-four cases are counted separately. These are not hundreds of distinct source programs. Bounded tests and all-tuple arithmetic identities support implementation correctness; the inherited theorems and the proofs above establish the unbounded semantic interpretation.
+
+\textbf{No complete positive native/Pell zero tuple has been numerically materialized.} Outer-history witnesses stop at the native interface. Signed or modular evaluations of the entire DAG are not evaluations at a full positive satisfying native witness. The package preserves this distinction explicitly in its receipts.
+
+\subsection{Portable commands and integrity boundary}\label{smc:uc:sec:portable}
+The release contains this editable \file{report21.tex}, its rendered \file{report21.pdf}, the unchanged mathematical freeze under \file{reproducibility/}, the separate constant-folded alternatives under \file{folded-clocks/}, and standard-library integrity and replay tools. From the release root:
+\begin{lstlisting}
+python -B verify_release.py
+python -B replay.py --output /tmp/new-report21-replay
+\end{lstlisting}
+The output directory must be new and outside the release. Replay verifies the sealed release first, copies the mathematical packet into fresh normal and optimized work areas, and runs all own emitters and independent checks in isolated standard-library Python processes. Each mode authenticates the freeze before and after; deterministic re-emission and receipt bytes must agree. The assertion-dependent secondary degree checker runs normally and is explicitly required to reject optimized execution; the full independent circuit auditor recomputes every degree certificate successfully in both modes. The original release is left unchanged. Exact-inventory attack tests are run in both modes.
+
+For direct mathematical replay, enter \file{reproducibility/} and run:
+\begin{lstlisting}
+python -B emit_clean_clocks.py --check
+python -B check_semantics.py --check
+python -B audit/check_emitted_circuits.py \
+  --expect audit/independent_emitted_circuit_audit.json
+python -B audit/check_degree_certificate.py
+python -B verify_manifest.py
+\end{lstlisting}
+The constant-folding addendum is also checked in both modes by the main replay. To replay it directly, enter \file{folded-clocks/} and run:
+\begin{lstlisting}
+python -B emit_folded_clocks.py --check
+python -B audit/check_folded_clocks.py \
+  --expect audit/independent_folded_clock_audit.json
+python -B verify_manifest.py
+\end{lstlisting}
+The degree checker rewrites only its deterministic receipt; the main replay runs it in the disposable copy. No third-party executable source is invoked. To rebuild the PDF with a local TeX installation, run \file{sh build.sh}; temporary TeX products remain outside the sealed tree. The distributed PDF is already built and is not needed for arithmetic replay.
+
+The release manifest enumerates every delivered payload file by exact relative path, byte length and SHA-256. Its checker rejects missing files, extra files or directories, symlinks, nonregular objects, duplicate JSON keys, noncanonical paths, altered pins and altered bytes, including under Python optimization. A companion digest protects the manifest's bytes against accidental change. These are consistency checks, not a digital signature; authenticity requires a separately trusted archive digest. The outer inventory also authenticates the untouched inner freeze and its own manifest.
+
+All pages of the final PDF were rendered and visually reviewed; its text and mathematical claims were independently reviewed against the frozen source. The packaged quality and replay receipts distinguish those review results from foundational theorem dependencies. A content scan found no private credentials or personal conversation material in the release. Public author attribution and public mathematical provenance remain intentional.
+
+\wtag\ \textbf{The release in this report.} These are the delivered names. Of \path{reproducibility/}, the emitter \path{emit_clean_clocks.py}, the semantic checker \path{check_semantics.py} and the two checkers of \path{audit/} are shipped as \path{code/22-clean-clocks-*}; the receipts of \path{receipts/} and \path{audit/} and the source record \path{source/provenance.json} as \path{data/22-clean-clocks-*} (the last as \path{data/22-clean-clocks-source-provenance.json}); \path{THEOREM.md}, \path{README.md} and the two audit notes as \path{22-clean-clocks-THEOREM.md}, \path{22-clean-clocks-REPRODUCIBILITY-README.md}, \path{22-clean-clocks-PROOF-AUDIT.md} and \path{22-clean-clocks-EMITTED-CIRCUIT-AUDIT.md}. Of \path{folded-clocks/}, the emitter and its checker are \path{code/22-clean-clocks-folded-*}, its receipts and logs \path{data/22-clean-clocks-folded-*}, and \path{ADDENDUM.md}, \path{PORTABILITY.md}, \path{README.md} and the folding audit \path{22-clean-clocks-FOLDED-ADDENDUM.md}, \path{-FOLDED-PORTABILITY.md}, \path{-FOLDED-README.md} and \path{22-clean-clocks-FIVE-GATE-FOLDING-AUDIT.md}. The release-level \path{build.sh}, \path{delivery-provenance.json}, \path{privacy-scan.json}, \path{report21-qa.json}, \path{report21-replay.json} and \path{report21-math-review.md} are shipped under the prefix too. Not shipped: the manuscript (printed here) and its PDF, the delivery README, the release and packet checksum manifests with their checkers and the release tools (\path{verify_release.py}, \path{replay.py}, \path{release_checks.py}, \path{write_manifest.py}), the byte copies of repository files in \path{reproducibility/source/}, three log files that are byte copies of shipped ones, and the 42 circuit files (34 emitted files and eight reference copies), which the shipped emitters regenerate byte for byte from the repository's raw receipt in a few seconds (README, ``Reconstructing the excluded data''); the shipped emission receipts list the SHA-256 of every one. The replay above needs the delivered layout, and on Windows it fails: two checkers key their hash tables by native path strings (\path{audit/check_emitted_circuits.py}, lines 382, 393 and~394, and \path{audit/check_folded_clocks.py}, lines 423 and~425), and \path{replay.py} starts its children isolated with \texttt{-I -S}. With POSIX path strings every delivered command passed at placement, in normal and optimized mode, on unchanged copies; the secondary degree checker rejects optimized mode, as designed (README).
+
+\wtag\ \textbf{The programme's intake.} The Hilbert's-tenth programme took this source in, together with Report~20 (Part~V of \path{five-particle-binary-automata}), in \path{review_event_budget_clean_clock_intake.md} (commit \texttt{8aabb1453}, 3 October 2026)~\cite{reviewcleanclock}. It read the theorem and the folding addendum against the inherited clean-wrapper theorem, executed no archived Python, and found ``no newly identified defect in their stated theorem scopes''. It confirms that Theorem~\ref{smc:uc:thm:main} has fixed arity for each fixed source and no external horizon because it inherits the already unbounded native/Pell packed-history theorem, whose replacement it is not; that the new content is the clean wrapper and the exact affine first-hit clock; that accepted nonempty fibres are infinite, all domains integral and the raw input $x+1$; and that the folded identity $192(F+x)+2\theta+208$ is a genuine paid saving. It stresses that ``compact'' means a compressed history certificate without reverse witnesses, not a compact real domain. The same commit adds a separate construction, \path{three_mass_direct_clean_clock.md} with an independent review (PASS)~\cite{directcleanclock}, which imposes the clean clock directly on the packed clock word for the same four sources: 597, 472, 470 and~473 operations, 59, 57, 57 and~57 positive witnesses and 19 comparisons, six operations and one witness fewer than the folded circuits of Section~\ref{smc:uc:sec:folded}. The programme states that these counts must not be attributed to source~22 and do not revise its historical counts. A later note~\cite{inputfreeheight} proves that the further deletion of the input from that construction's height (596, 471, 469 and~472 operations) is unsound, with false zeros at infinitely many input pairs.
+
+\bigskip
+\phantomsection\addcontentsline{toc}{section}{Source 23: Canonical histories and infinite native fibers}
+\noindent{\large\bfseries Source 23 (batch-82 manuscript 02): Canonical histories and infinite native fibers}\par
+\noindent\emph{Exact fixed source Diophantine certificates for three mass computation}, ``Report 22 \quad Mathematical construction and portable reproducibility package'', 3 October 2026. \wtag\ From the archive \path{Canonical_Histories_and_Infinite_Fibers_Package.zip}; its labels carry the prefix \texttt{smc:ch:}, its sections are Sections~\ref{smc:ch:sec:main}--\ref{smc:ch:sec:replay} here, and its equations are numbered by section. It is a declared sequel of source~22 (``Report~21''), whose frozen base and folded packets it carried byte for byte (shipped once, as source~22's). Its bibliography entries are this report's~\cite{nativeand64}, \cite{nativeselector56}, \cite{residuehistory}, \cite{threemassraw}, \cite{pellparity} and~\cite{pellsigns}. Its abstract follows; the bracketed note in it is \wtag.
+\begin{quote}\small
+The unbounded clean-clock certificates of Report 21 [source~22] admit a canonical outer history without acquiring finite full witness fibers. Put $S=n_{\rm initial}+n_{\rm target}+\theta$ and retain $h=S+\eta$. One new positive coordinate $\kappa$ and the comparison $\eta+\kappa=S+1$ force the least dyadic $h>S$. Completeness survives at this exact height because every genuine residue quotient is below the physical native duration $\theta$. At every accepted external pair, all supplied outer coordinates are unique, and projection onto the twenty-two native coordinates is a bijection onto the entire native extension fiber at its fixed ports and scale. A separate elementary matrix argument proves that every nonempty such native fiber is infinite: only three native coordinates need vary, while the other nineteen stay fixed. Thus full accepted nonempty fibers remain infinite even after outer canonicalization. Eight complete circuits have 608, 483, 481 and 484 operations in each clock model, 61, 59, 59 and 59 positive coordinates, and exact degrees 2344, 1192, 1192 and 1192. These are structural results for the retained representations. They imply no general finite-fold MRDP claim, no ordinary-input universal loader, no optimality result and no new Pell classification. No complete positive native Pell tuple is numerically materialized.
+\end{quote}
+
+\section{The two results and their common scope}\label{smc:ch:sec:main}
+We use $\NN=\{0,1,2,\ldots\}$ and $\Np=\{1,2,\ldots\}$. External coordinates are natural integers. Every supplied witness coordinate in a nonempty circuit is strictly positive. Computed arithmetic registers may be signed; they are not extra witnesses.
+
+Fix an eligible deterministic reversible separated source $R$, using INC2, INC3, enabled DEC2 and DEC3, ZERO2, ZERO3, POSITIVE2, POSITIVE3 and NOP. Its entry $q_0$ has no incoming instruction, its designated halt $q_h$ has no outgoing instruction, and initially $q_0\ne q_h$. Eligibility means that the inherited complete raw residue-history/native interface and exact clean-target wrapper apply. It does not assert a free fresh-entry transformation for every reversible program.
+
+The positive raw input is $N_0=x+1$. The valuations at two and three encode the counters, and the cofactor coprime to six remains part of the payload. Disabled guards are nonfinal stuck states. The cleaned cellular automaton (CA) has total mass three on the configurations considered, using a finite alphabet of Boolean channel subsets whose mass is the number of occupied channels. This is not the convention that a state's integer label equals its mass.
+
+Let $Q_R(x,U;w)$ denote the complete five-gate-folded clean-clock polynomial of Report 21 \textup{[source~22, Section~\ref{smc:uc:sec:folded}; as a polynomial it equals source~22's $Q_R$ of~\eqref{smc:uc:eq:sos}, whose circuits it computes with one gate fewer, and its witness tuple $w$ is source~22's $(z,\theta)$]}. For a nonempty first-halting source history let $F$ be its final raw payload and $\theta>0$ its forward physical native duration. Native and spatially blocked time satisfy
+\begin{equation}\label{smc:ch:eq:clean}
+U=2\theta+192(F+x+1)+16.
+\end{equation}
+The phase-four time is four times the whole right side. The exact target restores the entire raw input and the prescribed absolute marker/controller geometry; phase four has a phase-zero target. The semantic claim is a first-hit claim about this whole finite configuration, not a claim about arbitrary microscopic states or later recurrence.
+
+\begin{theorem}[Canonical outer history and infinite full fibers]\label{smc:ch:thm:combined}
+Assume the inherited native completeness, residue-history and clean-target theorems described in Section~\ref{smc:ch:sec:sources}. Set
+\[
+S=n_{\rm initial}+n_{\rm target}+\theta,\qquad h=S+\eta,
+\]
+where $\eta$ is the existing positive height slack. Add $\kappa\in\Np$ and define
+\begin{equation}\label{smc:ch:eq:poly}
+\Qcan(x,U;w,\kappa)
+=Q_R(x,U;w)+(\eta+\kappa-S-1)^2.
+\end{equation}
+Then for each $x,U\in\NN$:
+\begin{enumerate}
+\item A positive zero exists exactly when the inherited cleaned CA first reaches its specified target at $U$ in the chosen clock model.
+\item At an accepted pair, $h$ is the least power of two strictly greater than $S$, and every supplied outer coordinate is unique.
+\item Projection onto the twenty-two native coordinates is a bijection onto the entire positive native extension fiber at its uniquely fixed padded ports and prescribed scale.
+\item Every such nonempty full fiber is infinite. Starting from any one witness, only native $j,o,y_{\rm aux}$ need vary; all supplied outer coordinates and the other nineteen native coordinates can stay fixed.
+\end{enumerate}
+The initially halted, witness-free construction is separate and excluded from items 2--4.
+\end{theorem}
+
+Equation~\eqref{smc:ch:eq:poly} is an identity of integer polynomials on all tuples. Items 2--4 are statements about accepted positive fibers. In particular the fiberwise inverse in item 3 inserts fixed outer constants; it is not an all-input polynomial procedure for discovering a halting trace or a global polynomial coordinate change from old witnesses to new witnesses.
+
+The outer-canonical packet alone does not decide native cardinality. Its statement of that limitation is retained in the archive. The separate fixed-scale theorem in Section~\ref{smc:ch:sec:infinity} supplies the additional fact needed for item 4. Report 21's infinite-fiber conclusion \textup{[Theorem~\ref{smc:uc:thm:fibers}]} remains correct; the new result shows that enlarging height is not necessary for infinitude.
+
+\section{Dependencies and source ledger}\label{smc:ch:sec:sources}
+The public native and residue-history sources are pinned to ProveIt commit
+\sha{ad634b2d10ad666260f9fdff04ec94b75169ee4b}
+The raw complete arithmetic receipt has SHA-256
+\sha{fe69f0504c8f68c4130c4b21fed5c817596ab5c0e2fdf9621b0bf5f45c12ac0e}
+It is read as literal JSON data. No upstream Python implementation is imported or executed by the new proofs' checkers or replay harness. Local copies, their provenance and pinned public links are included in the archive.
+
+\begin{center}\small
+\begin{tabular}{@{}p{.27\linewidth}p{.65\linewidth}@{}}\toprule
+Dependency & Role in the present argument\\\midrule
+Native prescribed AND64 \cite{nativeand64,nativeselector56} & Dyadic typing, soundness and positive extension at the prescribed fixed scale; the sixteen native equations\\
+Residue-affine packing \cite{residuehistory} & Typed chronological histories, positive packed hats, lane bounds and native input interface\\
+Raw three-mass interface \cite{threemassraw} & Literal gates, coordinate order, physical clock, first-halt rejection and public arithmetic provenance\\
+Inherited clean-target theorem \textup{[source~15]} & Forward/reverse wrapper, full-payload restoration, exact absolute target and equation~\eqref{smc:ch:eq:clean}\\
+Report 21 \textup{[source~22]} base and folding proofs & Complete cleaned arithmetic, exact no-wrap argument, paid ports, five-gate time bridge and frozen parent circuits\\
+Outer canonicalization audit & Quotient bound at the least height, outer uniqueness, native-fiber bijection and literal extra-square implementation\\
+Fixed-scale native audit & Three-coordinate dependency isolation, positivity and the matrix family of Section~\ref{smc:ch:sec:infinity}\\\bottomrule
+\end{tabular}
+\end{center}
+
+The unchanged clean-target proof snapshot has SHA-256
+\sha{3d85f8cde66837d8916fb3273c2c57cc1a91ce37de1f3d6c6fe28a4db9103168}
+The outer packet pins its original base and folded manifests respectively by
+\sha{1bf1225aa950ad1d4f842c8bf098e1935925cd1d52c90453b7696c1321648f95}
+\sha{774a4498984ebccf8216897e21bf597084e70b148557ba4fa12b597bba44ba91}
+The separately frozen outer-canonical packet manifest has SHA-256
+\sha{3546ec269df10808a2067cea9df325709df11966b346857271e66ab4855cadce}
+\begin{minipage}{\linewidth}
+The separately frozen native-fiber packet manifest has SHA-256
+\sha{d716d6dc668547ee5d64dfe77620b66f93ab839f95e0261250c2a387b5338dca}
+\end{minipage}
+Release provenance distinguishes original snapshots from any documented portability edits and records delivered hashes. Earlier reports and source packets are left unchanged.
+
+This report does not reprove the historical native/Pell representation theorem or regenerate the CA local rules. It proves the new outer canonicalization and fixed-scale multiplicity statements from those explicit dependencies. The portable replay is computationally self-contained; that fact is distinct from foundational independence of the inherited mathematics.
+
+\wtag\ [The pinned commit and files are those of source~22 (note at the end of Section~\ref{smc:uc:sec:dependencies}); the clean-target proof snapshot is source~15's theorem. The outer packet is \path{canonical-height/} and the native-fibre packet \path{native-fibers/}, shipped as \path{23-canonical-fibers-*}; the base and folded manifests, which the outer packet pins and which describe source~22's packets, and the two later packet manifests are not shipped, and their SHA-256 values above are the record of them. The ``outer canonicalization audit'' and ``fixed-scale native audit'' of the table are \path{23-canonical-fibers-CANONICAL-HEIGHT-PROOF-AUDIT.md} and \path{23-canonical-fibers-NATIVE-FIBERS-REVIEW.md}.]
+
+\section{Why the physical clock pays for the canonical height}\label{smc:ch:sec:height}
+\subsection{Encoded states and exact instruction durations}\label{smc:ch:sec:durations}
+Assign controls in $\{1,\ldots,K\}$, including a rejecting trap, and put $m=6K$. Encode a positive raw payload and control by
+\[
+n=K(N-1)+q,\qquad 1\le q\le K.
+\]
+Missing guards, original halt, trap and unused labels transition to the trap with unchanged payload, and the trap never exits. Thus a nonempty path ending at the original halt represents its first genuine halt. The retained residue-affine table is
+\[
+f(mz+r)=a_rz+d_r,\qquad 1\le r\le m,\ z\ge0,\ a_r\ge0,\ d_r\ge1.
+\]
+For a current encoded configuration,
+\begin{equation}\label{smc:ch:eq:quot}
+\left\lfloor\frac{n-1}{6K}\right\rfloor
+=\left\lfloor\frac{N-1}{6}\right\rfloor.
+\end{equation}
+Indeed, writing $N-1=6a+b$, $0\le b\le5$, leaves remainder $Kb+q-1$ between zero and $6K-1$.
+
+The literal native tick durations, measured at the current payload, are
+\begin{center}\small
+\begin{tabular}{@{}lc@{}}\toprule
+Enabled instruction & Native duration $\tau$\\\midrule
+INC2 & $300N+8$\\
+INC3 & $396N+8$\\
+DEC2 & $150N+8$\\
+DEC3 & $132N+8$\\
+ZERO POSITIVE NOP & $192N+8$\\\bottomrule
+\end{tabular}
+\end{center}
+Therefore, in any genuine nonempty first-halting trace with $\theta=\sum_i\tau_i$,
+\begin{equation}\label{smc:ch:eq:bound}
+z_i=\left\lfloor\frac{N_i-1}{6}\right\rfloor<N_i\le\tau_i\le\theta.
+\end{equation}
+The weaker uniform inequality $\tau_i\ge132N_i+8$ is enough. The argument does not require monotone payloads or an endpoint bound on intermediate growth. A large temporary payload costs physical time at the very step where it appears.
+
+With
+\[
+n_{\rm initial}=Kx+q_0,\quad
+n_{\rm target}=K(F-1)+q_h,\quad
+S=n_{\rm initial}+n_{\rm target}+\theta,
+\]
+every $h>S$ already exceeds every true quotient. This is the completeness point that an arbitrary endpoint-only canonical-height proposal would lack.
+
+\subsection{The strict dyadic interval}\label{smc:ch:sec:dyadic}
+\begin{lemma}\label{smc:ch:lem:dyadic}
+For $S\in\Np$, $h=S+\eta$, and $\eta,\kappa\in\Np$, the new comparison $\eta+\kappa=S+1$ is equivalent to
+\[
+S<h\le2S,\qquad \eta=h-S,\qquad \kappa=2S+1-h.
+\]
+Exactly one power of two lies in $(S,2S]$, the least one strictly greater than $S$.
+\end{lemma}
+\begin{proof}
+The two inequalities are precisely positivity of the displayed slacks. If $2^a\le S<2^{a+1}$, then $2^{a+1}\in(S,2S]$ and adjacent powers lie outside. When $S=2^a$, the chosen height is $2S$, with $\eta=S$ and $\kappa=1$; the inadmissible choice $h=S$ would make $\eta=0$.
+\end{proof}
+
+The old radix is $B=Ch^2$, where $C$ is a fixed dyadic integer satisfying
+\[
+C\ge L,\qquad C\ge2384m+2,\qquad
+L\ge\max\{4,m+1,1+\max_r(a_r+d_r)\},
+\]
+and $L$ is dyadic. The native theorem forces $B$ and the length power $P$ to be dyadic. Since $C$ is dyadic and $h$ is a positive integer, $B=Ch^2$ dyadic forces $h$ dyadic: an odd prime divisor of $h$ would divide $B$. The new row is not an independent dyadicity oracle. In the emitted fixtures $K=5$, $m=30$, $C=131072$.
+
+\section{Soundness and exact canonical completeness}\label{smc:ch:sec:completeness}
+\subsection{The old no-wrap argument remains necessary}\label{smc:ch:sec:oldnowrap}
+\wtag\ [This subsection restates source~22's argument of Section~\ref{smc:uc:sec:nowrapclock} (with $t$ for source~22's $\ell$, $C_\tau$ for its $\mathcal C_\tau$ and $\widehat c_\tau$ for its $\widehat k$); it is printed as source~23's account of why that argument is still needed.]
+A positive integer zero of~\eqref{smc:ch:eq:poly} annihilates all old comparison squares and the new square. Old soundness supplies the first-halting history, $F$ and its clock. Lemma~\ref{smc:ch:lem:dyadic} then forces the stated height. No old comparison is deleted.
+
+For clarity, the inherited exact-clock proof does not obtain the clock merely from a congruence. Before digit typing, its global equation implies $J\ge1$, $P\ge B$ and that all lane coefficients lie in $[0,P)$. The native block establishes actual packed AND and dyadic $B,P$. Then
+\[
+P-1=(B-1)J
+\]
+forces $P=B^t$, $J=1+B+\cdots+B^{t-1}$ for $t\ge1$. Selector lanes type one residue per time and the range mask $(h-1)J$ types $0\le z_i<h$. Chronological transport gives the deterministic orbit from the initial endpoint to the halt, with each current encoded state in $[1,mh]$.
+
+A current state cannot repeat before a deterministic first halt, so $t\le mh$. Its payload satisfies $N_i\le6h$, giving $\tau_i\le396N_i+8\le2384h$. Consequently
+\begin{equation}\label{smc:ch:eq:nowrap}
+0<\sum_i\tau_i\le2384mh^2<Ch^2-1=B-1.
+\end{equation}
+Independently $0<\theta<h<B-1$. If $C_\tau=\sum_i\tau_iB^i$ is the typed clock word, the retained paid comparison is
+\[
+C_\tau=(B-1)(\widehat c_\tau-1)+\theta.
+\]
+Reduction modulo $B-1$ gives $\sum_i\tau_i\equiv\theta$, and the strict interval bounds give equality. First-halt totalization is essential here. The new cap neither replaces the proof nor permits loops or posthalt continuation.
+
+\subsection{Positive witnesses at the exact selected height}\label{smc:ch:sec:exactheight}
+Conversely take the genuine first-halting trace and its $\theta=\sum_i\tau_i$. Choose the unique dyadic $h\in(S,2S]$, set $\eta=h-S$, $\kappa=2S+1-h$, and use~\eqref{smc:ch:eq:bound} to fit all true quotient digits. Set
+\[
+B=Ch^2,\qquad P=B^t,\qquad J=\sum_{i=0}^{t-1}B^i.
+\]
+Pack the chronological selector words $E_r$, quotient word $W$ and selected-quotient words $Z_a$ for the $g$ exceptional slope classes. Their supplied hats are $E_r+1,W+1,Z_a+1$. Zero words therefore have positive hat one and are allowed.
+
+Disjoint exceptional classes give $\sum_a Z_a\le W\le(h-1)J$. The global comparison fixes the remaining slack as
+\begin{align}
+\beta&=P-J-(W+1)-\sum_a(Z_a+1)\notag\\
+&=(B-2)J-W-\sum_a Z_a-g\notag\\
+&\ge(B-2h)J-g\ge(L-2)hJ-g>0.\label{smc:ch:eq:beta}
+\end{align}
+For the final strict bound use $L\ge4$, $L\ge m+1$, $g\le m-1$, $h\ge3$ and $J\ge1$. The physical nonempty setting has $S>2$, so its selected height satisfies the required lower bound.
+
+All scalar AND lane coefficients lie in $[0,P)$. Selectors and class selectors are at most $J$; $W$ and every $Z_a$ are at most $(h-1)J<P$; class masks are at most $(B-1)J=P-1$. Let $\ell=m+g+1$ be the number of lanes and $v$ the least power of two at least $\ell$. For the joined words $H,M,A$,
+\[
+0\le H,M,A<P^\ell\le P^v<Q_{\rm native}=BP^v.
+\]
+The genuine AND holds lane by lane. The actual native ports and scale are
+\begin{equation}\label{smc:ch:eq:ports}
+\mathsf a=16H+12,\quad \mathsf b=16M+10,\quad
+\mathsf c=16A+8,\quad q=16Q_{\rm native}.
+\end{equation}
+The three ports are positive and below $q$, $q$ is dyadic, and the low padding satisfies $12\mathbin{\mathrm{AND}}10=8$. Prescribed-scale completeness supplies all twenty-two positive native coordinates at this exact scale. It is neither necessary nor generally correct to reuse a native tuple from another height.
+
+Finally
+\[
+\widehat c_\tau=1+\frac{C_\tau-\theta}{B-1}\in\Np,
+\]
+since $C_\tau-\theta=\sum_i\tau_i(B^i-1)$ is a nonnegative multiple of $B-1$. For one step this hat equals one. Transport, physical time, clean time and the new cap all hold, so every one of the twenty-one comparisons vanishes. This proves completeness at the canonical height, rather than at an unspecified sufficiently large height.
+
+\section{The precise canonical object}\label{smc:ch:sec:projection}
+Fix an accepted $(x,U)$ and clock model. Determinism and first-halt semantics fix the entire trace, its length $t$, final payload $F$, native duration $\theta$, and every residue and quotient. These fix the endpoints and $S$, hence $h,\eta,\kappa$, then $B,P,J$, every packed word and hat. Equation~\eqref{smc:ch:eq:beta} fixes $\beta$ and the clock comparison fixes $\widehat c_\tau$. All outer registers and the padded ports~\eqref{smc:ch:eq:ports} are fixed as well.
+
+The supplied outer coordinates are the selector hats, quotient hat, exceptional selected-quotient hats, $\eta,\beta,F,\widehat c_\tau,\theta,\kappa$. In these fixtures their number is $39$ for INC2;DEC2 and $37$ for the other three. Quantities $S,h,B,P,J$ are computed registers, not additional coordinates.
+
+Write $o(x,U)$ for this unique outer tuple and $\mathcal E(\mathsf a,\mathsf b,\mathsf c,q)\subseteq\Np^{22}$ for the set of \emph{all} positive native assignments satisfying the complete sixteen-comparison block at the fixed boundary. The native coordinate order, with the literal prefix \file{native__} understood, is
+\[
+\begin{gathered}
+F_0,F_1,F_2,a,c,d,f,h,i,j,k,o,r,s,w,\\
+\tau,\eta,\zeta,\mathit{ga},y_{\rm aux},\mathit{odd\_half},\mathit{bound\_beta}.
+\end{gathered}
+\]
+Native $h,\eta,\tau$ are different coordinates from the outer height, outer slack and physical clock. Native $F_3$ and $q$ are computed ports, not supplied coordinates.
+
+\begin{theorem}[Entire-fiber projection]\label{smc:ch:thm:projection}
+Projection that retains the twenty-two native coordinates is a bijection
+\[
+\{(w,\kappa)>0:\Qcan(x,U;w,\kappa)=0\}
+\longrightarrow\mathcal E(\mathsf a,\mathsf b,\mathsf c,q).
+\]
+\end{theorem}
+\begin{proof}
+A complete zero satisfies the native block at the fixed outer boundary, so projection is well defined. If two witnesses project to the same native tuple, their outer tuples both equal $o(x,U)$; this proves injectivity. Conversely, adjoin $o(x,U)$ to \emph{any} member of $\mathcal E$. The sixteen native comparisons hold by definition, and the five nonnative comparisons depend only on the fixed outer data and external ports. All twenty-one comparisons therefore hold. This proves surjectivity onto the entire native fiber, not merely a selected family of native extensions.
+\end{proof}
+
+The comparison-independence statement is checked transitively on all eight complete emitted DAGs; no native witness enters an outer comparison through a hidden intermediate. All native gate rows, the ordered coordinate list and the sixteen comparison pairs are retained literally from the folded parents.
+
+This is accepted-fiber canonicality. It does not give a total polynomial function $(x,U)\mapsto o(x,U)$, nor an all-tuple polynomial normalization map from an old witness to a new witness. The extra square restricts the old zero set's outer projection, even though the old-polynomial portion remains identical on all tuples.
+
+\section{Infinitely many native extensions at fixed scale}\label{smc:ch:sec:infinity}
+\subsection{The two affected equations}\label{smc:ch:sec:affected}
+Fix the four ports~\eqref{smc:ch:eq:ports} and any positive native solution. All symbols in this section except the four ports refer to native coordinates. Define
+\[
+p=2r+1,\qquad \rho=ic^2,\qquad D=\rho^2-1,\qquad
+u=jc-p=of-c,\qquad y=y_{\rm aux}.
+\]
+We write $\rho$ instead of $R$ to avoid confusing this auxiliary integer with the fixed source program. The exact native comparisons involving $j,o,y$ are
+\begin{equation}\label{smc:ch:eq:nativechanged}
+u=jc-p=of-c,\qquad \rho^2(u^2-y^2)=1-y^2.
+\end{equation}
+The second is equivalently $(\rho u)^2-Dy^2=1$. The distinct unchanged auxiliary norm is
+\[
+\rho^2=(a^2+4a+3)(f^2-1).
+\]
+It remains valid because all its supplied coordinates are fixed.
+
+Positivity is available directly from the source equations. Since $q\ge16$ and $s=2\mathit{odd\_half}+1\ge3$, let $E=(wq)(sq)>0$. The retained equations give
+\[
+k=r+1+hE>r+1,\qquad c=(sq)k+\eta>48(r+1)>p.
+\]
+As $j\ge1$, $u\ge c-p>0$. Also $\rho=ic^2>1$, so $D>0$. The optional nonsquare fact $(\rho-1)^2<D<\rho^2$ is true but not needed below. No deep classification of the auxiliary Pell index is used to establish these inequalities.
+
+The only direct gate uses of the three changing coordinates are $of=o\cdot f$, $jc=j\cdot c$, and $\mathit{aux\_y2}=y^2$. Their transitive comparison descendants are exactly native comparisons 13 and 14, numbered from one. These are full comparisons 15 and 16. All other fourteen native comparisons and all five outer comparisons are independent of them. Derived gate values along those paths may change; the claim fixes the other \emph{supplied coordinates}, not every arithmetic register.
+
+\subsection{A congruence preserving norm family}\label{smc:ch:sec:family}
+\begin{theorem}[Fixed-scale native infinitude]\label{smc:ch:thm:infinite}
+Every nonempty positive fiber of this prescribed native block is infinite. From any positive seed, the other nineteen supplied native coordinates can remain unchanged.
+\end{theorem}
+\begin{proof}
+Put $M_0=\rho cf$ and
+\[
+B_0=\begin{pmatrix}\rho&D\\1&\rho\end{pmatrix},\qquad
+\binom{V_0}{Y_0}=\binom{\rho u}{y}.
+\]
+The determinant of $B_0$ is $\rho^2-D=1$, so its reduction modulo $M_0$ belongs to the finite group $\mathrm{GL}_2(\Z/M_0\Z)$. Let $L_0\ge1$ be its order. A completely specified alternative is $L_0=(M_0^4)!$: there are at most $M_0^4$ residue matrices, so the order is at most $M_0^4$ and divides this factorial. The order is not claimed to divide $M_0^4$ itself.
+
+For every $n\ge0$ define
+\begin{equation}\label{smc:ch:eq:family}
+\binom{V_n}{Y_n}=B_0^{nL_0}\binom{V_0}{Y_0},\qquad
+u_n=\frac{V_n}{\rho},\qquad
+j_n=\frac{u_n+p}{c},\qquad
+o_n=\frac{u_n+c}{f}.
+\end{equation}
+Set $y_{{\rm aux},n}=Y_n$ and leave all other native coordinates unchanged.
+
+Since $B_0^{nL_0}\equiv I\pmod{M_0}$,
+\[
+V_n\equiv\rho u\pmod{\rho cf}.
+\]
+Thus $u_n$ is an integer and $u_n\equiv u\pmod{cf}$. The seed identities $u+p=jc$ and $u+c=of$ then make $j_n,o_n$ integers. No coprimality assumption on $c,f$ is required.
+
+For arbitrary $V,Y$,
+\begin{align*}
+(\rho V+DY)^2-D(V+\rho Y)^2
+&=(\rho^2-D)(V^2-DY^2)\\
+&=V^2-DY^2.
+\end{align*}
+Therefore the seed norm $V_0^2-DY_0^2=1$ is preserved. Substituting $V_n=\rho u_n$ gives exactly
+\[
+\rho^2(u_n^2-Y_n^2)=1-Y_n^2,
+\qquad j_nc-p=u_n=o_nf-c.
+\]
+These are both changed comparisons in~\eqref{smc:ch:eq:nativechanged}. The other fourteen native comparisons keep their seed values by the dependency statement above.
+
+Finally $V_0,Y_0>0$ and one multiplication by $B_0$ sends a positive vector to
+\[
+V'=\rho V+DY>V,\qquad Y'=V+\rho Y>Y.
+\]
+Since $L_0\ge1$, $V_n,Y_n$ strictly increase with $n$. All reconstructed coordinates are positive, and distinct $n$ give distinct $Y_n$. This yields infinitely many positive native tuples at the same ports and scale.
+\end{proof}
+
+These matrix powers and the factorial describe witnesses mathematically. They introduce no new circuit gates, comparisons or existential coordinates. The result is seed-relative: it does not assert that inadmissible ports possess a seed. At a valid canonical boundary, the inherited prescribed-scale theorem supplies one; Theorem~\ref{smc:ch:thm:projection} lifts the whole resulting family to the complete canonical circuit.
+
+The family need not enumerate the entire native fiber. It proves a cardinality lower bound sufficient here. The pinned auxiliary-index notes already retain noncanonical indices and exhibit related congruence behavior \cite{pellparity,pellsigns}; the present matrix argument needs no novel index-classification or divisibility theorem.
+
+\wtag\ [Report~25, the pipeline's sequel to this source (batch-82 manuscript~07), classifies the entire positive native fibre at fixed ports and scale: exactly seventeen of the twenty-two coordinates are fixed, and the other five are parametrized without repetition by two integer indices. It is printed as Part~III of the collection's report \path{fixed-universal-polynomials} (Theorem \texttt{fup:nf:thm:class}), which implies Theorem~\ref{smc:ch:thm:infinite}: there a seed also has infinitely many native extensions, with the seventeen fixed coordinates among the nineteen that the matrix family keeps fixed. The elementary matrix argument above is kept as a second route; the classification is the complete answer. That Part also prints a corollary that transports the classification to the complete canonical circuits through Theorem~\ref{smc:ch:thm:projection} (its Section \texttt{fup:nf:sec:transport}), conditional on this source.]
+
+\section{Literal circuits and full operation ledgers}\label{smc:ch:sec:ledger}
+\subsection{Four fixtures in two clock models}\label{smc:ch:sec:fixtures}
+The archive emits eight complete nonempty circuits and two unchanged zero-step circuits. The fixed sources are \wtag\ [those of source~22, whose table in Section~\ref{smc:uc:sec:result} is the same as source~23's and is printed once: INC2;DEC2, $s\xrightarrow{\mathrm{INC2}}a\xrightarrow{\mathrm{DEC2}}h$, accepting all $N_0>0$ in two steps; and ZERO3, NOP and POSITIVE3, $s\to h$ in one step, accepting $3\nmid N_0$, all $N_0$ and $3\mid N_0$ respectively].
+They are nonuniversal demonstrations of the generic unbounded mechanism. The generic eligible-source proof does not mean that a literal circuit for every eligible source, or a long universal computation, has been emitted. These simple accepted relations admit smaller specialized descriptions; no minimality claim is made.
+
+An operation is one binary multiplication, addition or subtraction in the literal straight-line DAG. Reuse is allowed; integer constants are literal; signs in intermediate registers are unrestricted. Every comparison's subtraction and square, and every final accumulation, are charged. Both native/spatial and phase-four models have the same complete ledger:
+\begin{center}\small
+\begin{tabular}{@{}lrrrrrrr@{}}\toprule
+Fixture & $M$ & $A$ & Total & Outer & Native & All & Degree\\\midrule
+INC2;DEC2 & 240 & 368 & 608 & 39 & 22 & 61 & 2344\\
+ZERO3 & 185 & 298 & 483 & 37 & 22 & 59 & 1192\\
+NOP & 183 & 298 & 481 & 37 & 22 & 59 & 1192\\
+POSITIVE3 & 190 & 294 & 484 & 37 & 22 & 59 & 1192\\\bottomrule
+\end{tabular}
+\end{center}
+Here $A$ includes additions and subtractions; Outer, Native and All count supplied positive coordinates. Every nonempty circuit has two natural external ports, twenty-one comparisons and the complete $62$-gate SOS finalizer. Across both clock models this is $4112$ nonempty gates; the two zero-step circuits bring the delivered total to $4120$.
+
+\subsection{Materializing S without a hidden free gate}\label{smc:ch:sec:materialize}
+The folded parent's graph did not already contain $S$. Its height schedule was
+\[
+d=n_{\rm initial}+n_{\rm target},\qquad
+b=d+\eta,\qquad h=b+\theta.
+\]
+In each of the eight actual parent DAGs, $b$, named \file{bridge_height_without_time}, has exactly one consumer, the height addition, and occurs in no comparison. Replace the last two additions by
+\[
+S=d+\theta,\qquad h=S+\eta.
+\]
+The same two gates now materialize $S$; associativity preserves $h$ on every integer tuple. The single-consumer graph condition ensures every other old register and all twenty old residual polynomials remain unchanged. This is a checked graph reassociation, not an assumption that a useful affine register is free.
+
+Two additional producers compute $\eta+\kappa$ and $S+1$. Rebuild the entire finalizer from all twenty-one comparisons: twenty-one residual subtractions, twenty-one self-products and twenty accumulation additions give
+\[
+21M+41A=62\text{ operations}.
+\]
+The parent's twenty-row finalizer cost $20M+39A=59$. Thus the fully paid net change is $1M+4A=5$ gates and one positive coordinate. The folded-parent totals were $603,478,476,479$, producing the displayed $608,483,481,484$.
+
+The resulting output satisfies~\eqref{smc:ch:eq:poly} on arbitrary signed integer assignments, including away from the old zero set. The natural ports and all old coordinate positions retain their order; $\kappa$ is appended. The folded time bridge stays
+\[
+192(F+x)+2\theta+208\quad\text{or}\quad768(F+x)+8\theta+832.
+\]
+In both models the canonical $S$ uses forward native $\theta$, never the phase-four time or a source-step count.
+
+\subsection{Exact polynomial degree}\label{smc:ch:sec:degree}
+Degree means total degree of the complete output polynomial in all supplied ports and witnesses, before restricting to zeros. Formal upper bounds propagate by maximum at addition/subtraction and sum at multiplication. Along the integer ray $v_i=(i+2)z$, with $v_i$ ordered as parameters followed by auxiliaries, propagate coefficients at those formal bounds modulo $1000003$. A vanishing leading coefficient never lowers its stored bound.
+
+The nonzero output coefficients at the formal upper bounds are $135347$ at degree $2344$ for INC2;DEC2 and $977370$ at degree $1192$ for each other fixture. Thus the lower and upper bounds match. The appended coordinate leaves old weights unchanged, reassociation preserves old polynomials, and the new square has only degree two. Independently computed full univariate specializations agree with the certificates, including all gate coefficients. These degrees are properties of the emitted polynomials; they are not lower bounds on every representation of the same accepted relation.
+
+\section{Boundary cases and limits}\label{smc:ch:sec:limits}
+\subsection{Initially halted and rejected inputs}\label{smc:ch:sec:halted}
+\wtag\ [The zero-step polynomials are source~22's, Section~\ref{smc:uc:sec:zerostep}, unchanged.]
+If $q_0=q_h$, freshness and terminality make the control isolated. The cleaned computation consists of two NOP bridges, $\theta=0$ and $F=x+1$. The separate polynomials are
+\[
+(384x+400-U)^2,\qquad(1536x+1600-U)^2.
+\]
+Each has four operations, $2M+2A$, one comparison, no witnesses and exact degree two. The files are byte-identical to the frozen originals. An accepted zero-step pair has the single empty witness tuple. It has no twenty-two-coordinate native fiber, and is not covered by the nonempty infinitude conclusion.
+
+For stuck or nonhalting inputs the old positive fiber is empty, so adding a square cannot create a zero. Rejecting totalization and inherited soundness, rather than a bounded simulation prefix, justify the unbounded statement. Wrong requested clean times remain rejected; in phase four a time not divisible by four cannot satisfy the clean-time row. Quotient words equal to zero are valid via hat one, including the one-step clock quotient hat.
+
+\subsection{Sanity checks on all accepted fixture inputs}\label{smc:ch:sec:sanity}
+Let $N_0=x+1$. On the accepted paths of these four fixtures $F=N_0$: \wtag\ [the table is source~22's, in Section~\ref{smc:uc:sec:sanity}, printed once: forward native time $600N_0+16$ and native clean time $1584x+1632$ for INC2;DEC2, and $192N_0+8$ and $768x+800$ for NOP, for ZERO3 if $3\nmid N_0$ and for POSITIVE3 if $3\mid N_0$].
+Phase-four times are four times these values. The generic circuits retain $F$ and its paid ports rather than specializing the equal-input/output coincidence away.
+
+\subsection{What does not follow}\label{smc:ch:sec:notfollow}
+\wtag\ [The first paragraph repeats source~22's Section~\ref{smc:uc:sec:rawlimits}.]
+The raw input contract still preserves cofactors coprime to six. Writing $N_0=2^a3^bc$ with $\gcd(c,6)=1$, such scaling preserves guards and source control sequence; each corresponding duration obeys $\tau(cN)-8=c(\tau(N)-8)$. When output and time are hidden, halting depends only on the two valuations. For example $x=0$ and $x=4$ cannot be distinguished for halting by this raw interface. It is not a paid arbitrary ordinary-input/program loader.
+
+No general finite-fold MRDP impossibility follows from an infinite fiber in this particular representation. Nor does deterministic computation force uniqueness of arithmetical auxiliaries. The established conclusions are exactly unique outer history, a fixed-port native-fiber bijection, and infinitely many remaining native extensions. No rational or real zero-set theorem, arbitrary signed-witness interpretation, fixed universal target, stationary halt, later-recurrence theorem, minimal circuit bound, or new universal numerical operation bound is asserted.
+
+The matrix formula is explicit relative to a positive seed, but neither this report nor its finite replay materializes a complete positive native Pell seed. Existence comes from the inherited completeness theorem; infinitude then follows from the mathematical matrix argument.
+
+\section{Independent evidence and portable replay}\label{smc:ch:sec:replay}
+\subsection{Mathematical checks and finite evidence}\label{smc:ch:sec:evidence}
+The outer packet has independent proof and complete-circuit audits. Its circuit audit checks the exact inherited graph, liveness, coordinate order, all-tuple extra-square identity, complete ledgers, degree and zero-step identity. It records $96$ signed and $256$ modular identity evaluations and $29$ rejected circuit corruptions. Finite modular evaluations are supplemental arithmetic tests; no inference from a modular SOS zero to separate modular residual zeros is made.
+
+The independent outer semantic checker records, among other tests:
+\begin{itemize}
+\item $32768$ scalar strict-next-dyadic cases, including $16$ exact dyadic boundaries;
+\item $6656$ residue/control quotient identities and $1749$ enabled primitive duration bounds;
+\item $3072$ accepted full \emph{outer} histories, comprising $1536$ parent and $1536$ canonical candidates;
+\item $1536$ larger-height repackings that retain the old outer constraints and AND but fail the new cap;
+\item $1024$ false-halt rejections, $9216$ wrong-clean-time rejections and $3072$ cap-slack mutation rejections;
+\item $60$ accepted all-zero quotient-word histories and $390$ exact zero-step evaluations.
+\end{itemize}
+These are tests across the four small fixtures and both models, not counts of distinct universal programs. Accepted outer histories check positive outer slacks, padded native-port bounds, genuine joined AND and strict no-wrap. They do not construct complete positive native zeros.
+
+The fixed-scale audit separately checks the source inequalities, the exact two affected native comparisons, the full transitive dependency graph and the norm/congruence proof. Its local numerical family examples exercise only the auxiliary recurrence system. They are deliberately labeled as such, not as complete positive native witnesses. The combined release checker connects the native coordinate order and dependencies directly to the eight actual canonical DAGs.
+
+Normal and optimized Python runs are reported separately. Passing under \file{python -O} is not, by itself, proof that assertions executed; the delivered replay records the actual coverage and uses explicit failures for release-integrity checks. Neither finite test totals nor the optimized interpreter replace the general proofs in Sections~\ref{smc:ch:sec:height}--\ref{smc:ch:sec:infinity}.
+
+\subsection{Package and reproduction contract}\label{smc:ch:sec:package}
+The portable archive includes this LaTeX source and PDF, exact complete arithmetic JSON/text DAGs, the two theorem packets, pinned inherited data and prose, independent checkers, original/delivered provenance, and a release-level exact inventory. All computation is local standard-library Python; public source URLs are provenance links and are not needed for replay.
+
+The principal directories are \file{canonical-height/}, \file{native-fibers/} and \file{inherited-source/}. The outer packet includes authenticated base/folded reference data. The release inventory rejects missing, changed and extra files, unexpected directories, hidden extras and symlinks; its negative tests also exercise malformed manifests and tampered pinned dependencies. A checksum is an integrity check, not a digital signature: archive authenticity requires a trusted separately obtained digest.
+
+From an extracted release directory, the documented entry points are
+\begin{lstlisting}
+python -B verify_release.py
+python -B release_checks.py
+python -B replay.py --output ../report22-replay
+\end{lstlisting}
+Choose a new output directory outside the sealed release. The replay must not write generated receipts, bytecode or build products into the sealed inventory. Optional PDF rebuilding uses \file{build.sh}, writes temporary TeX files outside the package, and replaces only the PDF; it is therefore an intentional release edit and requires resealing if retained.
+
+The final delivery process includes a fresh ZIP extraction, read-only normal and optimized replay from that extracted tree, adversarial inventory checks, independent article review, PDF text/build checks and visual inspection of every page. Separate machine-readable receipts record the exact executed checks and outcome. Replaying the mathematical packet authenticates and recomputes its data; it does not claim to solve an unbounded witness search.
+
+\wtag\ \textbf{The release in this report.} These are the delivered names. Of \path{canonical-height/}, the emitter \path{emit_canonical_clocks.py} and the two checkers of \path{audit/} are shipped as \path{code/23-canonical-fibers-*}, its emission receipt as \path{data/23-canonical-fibers-canonical-emission.json} and the audit receipts as \path{data/23-canonical-fibers-*}, and \path{README.md}, \path{THEOREM.md} and the two audit notes as \path{23-canonical-fibers-CANONICAL-HEIGHT-*.md}. Of \path{native-fibers/}, the checker is \path{code/23-canonical-fibers-native-check_native_fibers.py}, its receipt \path{data/23-canonical-fibers-native-CHECK-RECEIPT.json}, and \path{README.md}, \path{THEOREM.md} and \path{REVIEW.md} are \path{23-canonical-fibers-NATIVE-FIBERS-*.md}. The release-level \path{build.sh}, the checkers \path{check_combined_fibers.py}, \path{check_privacy.py} and \path{check_provenance.py}, the records \path{combined-checks.json}, \path{delivery-provenance.json} and \path{report22-qa.json}, and \path{report22-math-review.md} (as \path{23-canonical-fibers-MATH-REVIEW.md}) are shipped under the prefix too. Not shipped: the manuscript (printed here) and its PDF, the delivery README, the checksum manifests with their checkers and the release tools, the directory \path{inherited-source/} (byte copies of source~22's and of repository files; its five-gate audit copy differs from source~22's only in a sanitized example path at its line~179), the reference copies in \path{canonical-height/reference/} (of source~22's notes, two manifests and ten circuits, and of three repository files), the six files of \path{native-fibers/source/} (four byte copies of repository notes, and two byte copies of files shipped by \path{fixed-universal-polynomials} as \path{data/07-native-fiber-source-native_blocks.json} and \path{data/07-native-fiber-source-provenance.json}), and the 18 emitted circuit files, which the shipped emitter regenerates byte for byte from source~22's regenerated circuits (README). On Windows the emitter fails when it checks its reference manifest, because it keys the manifest by a native path string (line~16 of \path{emit_canonical_clocks.py}); with POSIX path strings all eleven commands of the delivered replay passed at placement in normal and optimized mode, on unchanged copies (README).
+
+\wtag\ \textbf{The programme's intake.} The Hilbert's-tenth programme took this source in within its intake of the negative-index and native-fibre archives, \path{review_incoming_negative_index_fibers.md} (commit \texttt{0055e1c4d}, 3 October 2026)~\cite{reviewnegfibers}, under the heading ``Report25 and Report22: fibers, not a competing soundness result''. It reads this source as supplying the earlier fixed-slice infinitude (Theorem~\ref{smc:ch:thm:infinite}), whose native-fibre statement explains why canonicalizing outer histories does not remove auxiliary multiplicity; it notes that neither this archive nor Report~25's asserts finite-fold universality, removes a positivity constraint or reduces the programme's current universal circuit, and that infinite fibres are compatible with that circuit's full-zero bijection. It states that it does not certify source~23's canonical-height circuit costs. The programme's archive inventory \path{reviewed_report_archive_replay.md} (commit \texttt{ceb7222e9}) lists this archive as a reviewed intake and source~22's as relocation only; the scoped intake of source~22 described at the end of Section~\ref{smc:uc:sec:checks} came later.
+
 \appendix
 \section{Part~I: a minimal worked use of the compiler}
 \label{smc:cg:app:example}
@@ -8704,6 +9652,37 @@ No manuscript names a ProveIt commit. The pins of sources~19--21 are recorded in
 \paragraph{Files added in batch 82.} The report directory gained, at its root, source~18's \path{verification/independent-audit.md}, source~19's six proof, audit, review and literature notes, source~20's nine proof, review and supplement notes and source~21's two proof notes and four audit notes, with the prefixes \path{18-timed-quartics-}, \path{19-mass-four-zd-}, \path{20-orbit-geometry-} and \path{21-planar-shuttle-}; the four sources' programs in \path{code/} and records in \path{data/} under the same prefixes; and three figures in \path{figures/}. The README maps each delivered name to its shipped name. Not shipped: the four manuscripts, PDFs, delivery READMEs and checksum ledgers, source~18's manifest checker and its three byte copies of source-17 files, and source~20's two supplement checksum manifests.
 
 
+\paragraph{Part VIII (batch 82, cluster M2).} \wtag\ Two further manuscripts of batch~82 were added on 3 October 2026. Both archives arrived in commit \texttt{db37d18c8} and were placed by commit \texttt{7d2b1b245} (batch~82, cluster~M2, which placed four more manuscripts of the same batch in \path{five-particle-binary-automata}); it staged 61 files byte-identical to the delivery (37 of source~22, 24 of source~23) and retired the archives from the drop zone. At this write both release checksum ledgers verify against the arrival archives (source~22: 103 of 103 files; source~23: 87 of 87), and every shipped file of the two sources equals an archive member byte for byte; the ledgers are not shipped.
+
+\begin{center}
+\small
+\begin{tabular}{@{}L{0.06\textwidth}L{0.29\textwidth}L{0.16\textwidth}L{0.23\textwidth}L{0.15\textwidth}@{}}
+\toprule
+Source & Archive (batch 82) & Pin & Contributed & Printed as\\
+\midrule
+22 & \path{Unbounded_Compact_Clean_Clocks_Package.zip}, manuscript~21 (Report~21); main file \path{unbounded-clean-clock-release-20261003/report21.tex}, 14-page PDF & ProveIt \texttt{ad634b2d1} (the research tree's interface, receipt, review and residue-history proof); source~15's theorem by SHA-256 & the clean-time composition and both directions, the retained chronology and no-wrap clock, infinite fibres, complete ledgers and exact degrees, folded schedules, zero-step circuits, raw-input limits & Part~VIII, Sections~\ref{smc:uc:sec:result}--\ref{smc:uc:sec:checks}\\
+23 & \path{Canonical_Histories_and_Infinite_Fibers_Package.zip}, manuscript~02 (Report~22); main file \path{canonical-fiber-release-20261003/report22.tex}, 14-page PDF & ProveIt \texttt{ad634b2d1}; source~22's base and folded manifests by SHA-256 & the canonical height and its completeness, outer uniqueness, the entire-fibre projection, fixed-scale native infinitude, canonical ledgers & Part~VIII, Sections~\ref{smc:ch:sec:main}--\ref{smc:ch:sec:replay}\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\paragraph{Where the batch-82 M2 addition had to choose.}
+\begin{itemize}
+\item \emph{Placement and order.} Both sources answer questions of this report (source~14's Question~\ref{smc:tm:q:unbounded} and source~15's Question~\ref{smc:ct:q:unbounded}) and rest on source~15's theorem, so they are an addition to it. They form a new Part~VIII after Part~VII and before the appendices, rather than further sources of Part~V, because their machinery is the research tree's residue-history, native AND and Pell arithmetic, not automaton construction. Placing them with Report~25 in \path{fixed-universal-polynomials} was the alternative; that report prints Report~25 and points here. Source~22 comes first; source~23 is its sequel. Every result, proof, example, remark and limitation of both is printed, except for the two repeated tables below.
+\item \emph{Repetitions.} Source~23's tables of the four fixtures (Section~\ref{smc:ch:sec:fixtures}) and of the sanity values (Section~\ref{smc:ch:sec:sanity}) equal source~22's and are printed once, with their contents in the bracketed pointers; the omitted tables survive in the arrival archive. Source~22's restatements of source~15 and of the research tree's arguments, and source~23's restatements of source~22, are printed in full with notes. Source~23's Theorem~\ref{smc:ch:thm:infinite}, implied by Report~25's classification in \path{fixed-universal-polynomials}, is printed in full as a second route.
+\item \emph{Byte copies.} Source~23 carried 23 files of source~22 byte for byte, and both carried byte copies of the research tree's pinned files and of source~15's theorem; none is shipped twice. Two native-fibre source files of source~23 are shipped once, by \path{fixed-universal-polynomials}.
+\item \emph{Excluded data.} The 70 emitted circuit files of the two sources (4,189,675 bytes: 34 emitted files of source~22 and eight reference copies, 18 emitted files of source~23 and ten reference copies) are not shipped. The shipped emitters regenerate all of them byte for byte from the repository's raw receipt in a few seconds, and the shipped emission receipts list the SHA-256 of each; the README gives the commands.
+\item \emph{Pipeline numbers and author lines.} The author lines name no assistant; the openings describe the manuscripts as AI-assisted research manuscripts of ProveIt's incoming reports. The pipeline's report numbers are kept in the text with bracketed translations.
+\item \emph{Bibliography.} The two sources' entries for the research tree's interface and residue-history proof are merged into one entry each (\texttt{threemassraw}, \texttt{residuehistory}); source~22's entry for the clean-target theorem is source~15 (Part~V); the other entries are appended, marked with their sources, and the three programme notes cited are added and marked \wtag.
+\item \emph{Typesetting.} The sources' macro \verb|\N| is written \verb|\NN|; their \verb|\file| is this report's; their \verb|\sha| sets a hash as a breakable path instead of loading \texttt{seqsplit}, and one file name in source~22's Section~\ref{smc:uc:sec:dependencies} is set as a breakable path for the line width; tables of contents are omitted. Equations are numbered by section. No symbol was renamed and no normalization changed.
+\item \emph{Front matter.} The title, subtitle, author line, abstract and status line were widened, and Section~\ref{smc:sec:front} gained Sections~\ref{smc:uc:sec:batch82}--\ref{smc:uc:sec:frontquestions}; dated \wtag\ notes were added where Part~VIII made earlier sentences stale or answered questions (Sections~\ref{smc:sec:front}, \ref{smc:sec:parts}, \ref{smc:sec:relation}, \ref{smc:sec:status}, \ref{smc:sec:questions}, \ref{smc:cs:sec:questions} and~\ref{smc:tm:sec:status}, Table~\ref{smc:tab:questions}, Part~II's Question~\ref{smc:sd:q:conservative}, source~14's Question~\ref{smc:tm:q:unbounded} and source~15's Question~\ref{smc:ct:q:unbounded}). Nothing was numbered anew: the new front tables are uncaptioned, Part~VIII follows every earlier section, and it has no figure, captioned table or appendix.
+\item \emph{A correction to the batch-82 M4 text.} Six places written for source~19 called Report~26 ``placed but not yet written'' in \path{five-particle-binary-automata}; it had been printed there as Part~VI (commit \texttt{d2043bbd0}) before that write. They now say so (the threshold table of Section~\ref{smc:tm:sec:batch80}, Sections~\ref{smc:tm:sec:frontquestions} and~\ref{smc:zd:sec:batch82}, the note after Corollary~\ref{smc:zd:cor:boundary} and Appendix~\ref{smc:zd:app:lineage}); the conditional status of source~19's sharp boundary is unchanged.
+\item \emph{Labels.} Source~22's labels are \texttt{smc:uc:} plus their delivered names and source~23's \texttt{smc:ch:}; labels were added to unlabelled sections and subsections and to source~22's fibre theorem. The new Part and the five front subsections use \texttt{smc:uc:}.
+\item \emph{Added text.} Every sentence written in this addition is marked \wtag: the title-page and abstract text on Part~VIII, Sections~\ref{smc:uc:sec:batch82}--\ref{smc:uc:sec:frontquestions} and the dated notes listed above, the opening of Part~VIII and of the two sources, the bracketed notes inside them, this paragraph and the bibliography entries marked \wtag.
+\end{itemize}
+
+\paragraph{Files added in batch 82 (cluster M2).} The report directory gained, at its root, source~22's nine proof, audit, review and README notes and source~23's eight, with the prefixes \path{22-clean-clocks-} and \path{23-canonical-fibers-}; the two sources' programs in \path{code/} and records in \path{data/} under the same prefixes. The README maps each delivered name to its shipped name. Not shipped: the two manuscripts, PDFs and delivery READMEs, the checksum manifests with their checkers, the release tools, the byte copies named above and the 70 regenerable circuit files.
+
 \section{Part~III: the complete Morita transition data}\label{smc:cs:app:tm}
 In the table, $bRq_s$ means write $b$, move right, and enter $q_s$; $bLq_s$ is analogous. A dash is unspecified. The two words halt and null are designated terminal cells, not transitions. Symbol order is the release's digit order $\blank,\lab Y,\lab N,\lab *,\lab\$,\lab1$, assigned digits 1 through 6.
 
@@ -8944,7 +9923,7 @@ The earlier audit corrected two important wording points: compact exits need the
 \textup{[batch~82, archive \path{Literal_Universal_Reversible_Source_Package.zip}; printed as Part~II of \path{five-particle-binary-automata}]}
 \item[Report 26 parallel involution replacement]
 \small\texttt{a156d7d973721f18c896cf71f0e9eedbaa214a613b8c7a77cf4704be90850dab}\\
-\textup{[batch~82, archive \path{Two_Parallel_Conservative_Involutions_Package.zip}; placed in \path{five-particle-binary-automata}, not yet written]}
+\textup{[batch~82, archive \path{Two_Parallel_Conservative_Involutions_Package.zip}; printed as Part~VI of \path{five-particle-binary-automata}]}
 \end{description}
 These are proof dependencies for the inherited statements, not redistributed literature. This report does not revise their one dimensional conclusions.
 
@@ -9379,6 +10358,45 @@ Kevin Woods. Presburger arithmetic, rational generating functions, and quasi-pol
 \bibitem{reviewsource16}
 \wtag\ ProveIt research programme, \emph{Report 16: a literal reversible source, and the remaining arithmetic interface}, \path{Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/review_literal_universal_reversible_source16.md}, with its checker and receipt in the same directory; commit \texttt{69730d3e8}, 3 October 2026. It reviews batch-82 Report~16, printed as Part~II of \path{five-particle-binary-automata}.
 
+\bibitem{threemassraw}
+V. Reshetnikov, \emph{Three-mass transitions through an existing unbounded residue-history packet}, ProveIt research note \path{Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/three_mass_unbounded_interface.md}, with its program, its literal arithmetic receipt \path{three_mass_unbounded_interface.json} and the independent review \path{review_three_mass_unbounded_interface.md} in the same directory; pinned at ProveIt commit \texttt{ad634b2d1} (2 October 2026). \href{https://github.com/VladimirReshetnikov/ProveIt/blob/ad634b2d10ad666260f9fdff04ec94b75169ee4b/Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/three_mass_unbounded_interface.md}{Public pinned interface}.
+(Sources~22 and~23; source~22's \texttt{raw} and source~23's \texttt{raw}, merged.)
+
+\bibitem{residuehistory}
+V. Reshetnikov, \emph{A paid finite orbit for residue-affine maps} (residue affine packed history), ProveIt research note \path{Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/residue_affine_packed_history.md}, same pinned commit; Sections 2 and~4. \href{https://github.com/VladimirReshetnikov/ProveIt/blob/ad634b2d10ad666260f9fdff04ec94b75169ee4b/Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/residue_affine_packed_history.md}{Public pinned proof}.
+(Sources~22 and~23; source~22's \texttt{history} and source~23's \texttt{residue}, merged.)
+
+\bibitem{ucaudits}
+\emph{Independent compatibility audit} and \emph{Independent audit of the fully emitted unbounded clean-clock circuits}, with machine-readable receipts and independently written checkers, in the delivered \file{reproducibility/audit/}. \wtag\ Shipped as \path{22-clean-clocks-PROOF-AUDIT.md}, \path{22-clean-clocks-EMITTED-CIRCUIT-AUDIT.md}, \path{data/22-clean-clocks-independent_emitted_circuit_audit.json}, \path{data/22-clean-clocks-degree_crosscheck.json} and \path{code/22-clean-clocks-check_*.py}.
+(Source~22's \texttt{audits}.)
+
+\bibitem{nativeand64}
+V. Reshetnikov, \emph{Prescribed native binary masked selection}, pinned ProveIt snapshot \texttt{ad634b2d1}, \path{Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/native_binary_masked_selection63.md}, especially Sections 1--2. \href{https://github.com/VladimirReshetnikov/ProveIt/blob/ad634b2d10ad666260f9fdff04ec94b75169ee4b/Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/native_binary_masked_selection63.md}{Public pinned file}.
+(Source~23's \texttt{and64}.)
+
+\bibitem{nativeselector56}
+V. Reshetnikov, \emph{Native controller binary selector}, same snapshot, \path{Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/native_controller_binary_selector56.md}: core equations, positive bounds and positive converse. \href{https://github.com/VladimirReshetnikov/ProveIt/blob/ad634b2d10ad666260f9fdff04ec94b75169ee4b/Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/native_controller_binary_selector56.md}{Public pinned file}.
+(Source~23's \texttt{selector}.)
+
+\bibitem{pellparity}
+V. Reshetnikov, \emph{Fixed minus index parity exploration}, same snapshot, \path{Computability/HilbertTenthProblem/Papers/1980/EXPLORATION_FIXED_MINUS_INDEX_PARITY.md}, Sections 3--5. Context for noncanonical indices, not a new classification claim here. \href{https://github.com/VladimirReshetnikov/ProveIt/blob/ad634b2d10ad666260f9fdff04ec94b75169ee4b/Computability/HilbertTenthProblem/Papers/1980/EXPLORATION_FIXED_MINUS_INDEX_PARITY.md}{Public pinned file}.
+(Source~23's \texttt{parity}.)
+
+\bibitem{pellsigns}
+V. Reshetnikov, \emph{Odd index Pell signs exploration}, same snapshot, \path{Computability/HilbertTenthProblem/Papers/1980/EXPLORATION_ODD_INDEX_PELL_SIGNS.md}. \href{https://github.com/VladimirReshetnikov/ProveIt/blob/ad634b2d10ad666260f9fdff04ec94b75169ee4b/Computability/HilbertTenthProblem/Papers/1980/EXPLORATION_ODD_INDEX_PELL_SIGNS.md}{Public pinned file}.
+(Source~23's \texttt{signs}.)
+
+\bibitem{reviewcleanclock}
+\wtag\ ProveIt research programme, \emph{Scoped intake: Reports 20 and 21 after the literal-source review}, \path{Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/review_event_budget_clean_clock_intake.md}; commit \texttt{8aabb1453}, 3 October 2026. It takes in source~22 (arrival \texttt{db37d18c8}) and batch-82 Report~20, printed in \path{five-particle-binary-automata}.
+
+\bibitem{reviewnegfibers}
+\wtag\ ProveIt research programme, intake of the incoming negative-index and native-fibre archives, \path{Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/review_incoming_negative_index_fibers.md}, section ``Report25 and Report22: fibers, not a competing soundness result''; commit \texttt{0055e1c4d}, 3 October 2026. It takes in source~23 (arrival \texttt{db37d18c8}) and Report~25, printed in \path{fixed-universal-polynomials}.
+
+\bibitem{directcleanclock}
+\wtag\ ProveIt research programme, \emph{Direct unbounded clean clocks for four complete three-mass sources}, \path{Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/three_mass_direct_clean_clock.md}, with its program and receipt, and the independent review \path{review_three_mass_direct_clean_clock.md} with checker and receipt, in the same directory; commit \texttt{8aabb1453}, 3 October 2026.
+
+\bibitem{inputfreeheight}
+\wtag\ ProveIt research programme, \emph{Input-free height destroys the four direct clean-clock representations}, \path{Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/three_mass_input_free_height_obstruction.md}, with its program, receipt and independent review in the same directory; commit \texttt{735f62a6a}, 3 October 2026.
 
 \end{thebibliography}
 \end{document}

@@ -1,22 +1,23 @@
 # Collision Geometry Is Linear
 
-**Diophantine Certificates for Rational Signal Machines and Conservative Particle Dynamics: event-sparse chambers, canonical quadratic and quartic certificates, two routes to complete chronology, a conservative universal frontend, sparse lattice certificates, conserved-mass thresholds, and mass four in every dimension**
+**Diophantine Certificates for Rational Signal Machines and Conservative Particle Dynamics: event-sparse chambers, canonical quadratic and quartic certificates, two routes to complete chronology, a conservative universal frontend, sparse lattice certificates, conserved-mass thresholds, mass four in every dimension, and unbounded-time certificates for exact three-mass targets**
 
 This is a research report dated 2 October 2026 and extended on 3 October
-2026, built from twelve AI-assisted research manuscripts of ProveIt's incoming
+2026, built from fourteen AI-assisted research manuscripts of ProveIt's incoming
 reports: manuscripts 07 and 11 of batch 78 (Parts I and II), manuscripts 16
 and 19 of batch 79 (Parts III and IV), manuscripts 10, 02, 05 and 03 of batch
-80 (Parts V and VI), and manuscripts 19, 06, 17 and 01 of batch 82 (a third
-source of Part VI, and Part VII). The
-report calls them *source 07*, *source 11* and *source 12* to *source 21*
+80 (Parts V and VI), and manuscripts 19, 06, 17, 01, 21 and 02 of batch 82 (a
+third source of Part VI, Part VII and Part VIII). The
+report calls them *source 07*, *source 11* and *source 12* to *source 23*
 after the file prefixes of their shipped programs and data. For the first two
 the prefix is also the batch-78 manuscript number; for the others it is not:
 **source 12 is batch-79 manuscript 16, source 13 is batch-79 manuscript 19,
 source 14 is batch-80 manuscript 10, source 15 is batch-80 manuscript 02,
 source 16 is batch-80 manuscript 05, source 17 is batch-80 manuscript 03,
 source 18 is batch-82 manuscript 19, source 19 is batch-82 manuscript 06,
-source 20 is batch-82 manuscript 17, and source 21 is batch-82 manuscript
-01** (the prefixes continue this report's own sequence). Source 07 is
+source 20 is batch-82 manuscript 17, source 21 is batch-82 manuscript 01,
+source 22 is batch-82 manuscript 21, and source 23 is batch-82 manuscript
+02** (the prefixes continue this report's own sequence). Source 07 is
 "prepared with ChatGPT for Vladimir Reshetnikov's ProveIt research
 program", source 11's document metadata name "Research report prepared with
 OpenAI", source 12 is an AI-assisted research note, and source 13 is a
@@ -30,8 +31,12 @@ numbered reports of one research pipeline, which calls source 17 its "Report
 12": source 18 is its "Research addendum 13 / Complete fixed input orbits and
 exact witness accounting", and sources 19, 20 and 21 carry the author lines
 "Research report 29", "Research report 30" and "Research report 31". They name
-no assistant or repository commit either. Source, manuscript and pipeline
-numbers all differ; the article translates the pipeline's numbers in brackets.
+no assistant or repository commit either. Sources 22 and 23 are the same
+pipeline's Reports 21 and 22 ("Report 21 / Mathematical construction and
+portable reproducibility package", and the same for Report 22); they name no
+assistant, and both pin the ProveIt commit `ad634b2d1` of the research files
+they build on. Source, manuscript and pipeline numbers all differ; the article
+translates the pipeline's numbers in brackets.
 
 | Source | Manuscript | Archive (arrival commit) | Pin | Placed | Printed as |
 |---|---|---|---|---|---|
@@ -47,6 +52,8 @@ numbers all differ; the article translates the pipeline's numbers in brackets.
 | 19 | batch 82, manuscript 06 | `Dimension_Independent_Particle_Thresholds_Package.zip` (`db37d18c8`); *Dimension independent particle thresholds: Effective reachability at mass four and the inherited mass five boundary* (Report 29), main file `dimension-independent-threshold-release-20261003/report29.tex`, 22-page PDF | no repository commit; SHA-256 of the TeX of source 17 (`803bf0c4…`), source 18 (`fecc0ae2…`) and batch-82 Reports 16 (`7e644e82…`) and 26 (`a156d7d9…`) | `49dfa8fd6` | Part VII (Sections 101–117) and Appendices I–J |
 | 20 | batch 82, manuscript 17 | `Sparse_Orbit_Geometry_and_Exact_Counting_Package.zip` (`db37d18c8`); *Sparse orbit geometry and exact counting: Semilinear spatial sets, quadratic clocks, and the effects of drift* (Report 30), main file `sparse-orbit-geometry-release-20261003/report30.tex`, 24-page PDF | no repository commit; SHA-256 of source 19's TeX (`1e4b9cb1…`) | `49dfa8fd6` | Part VII (Sections 118–128) and Appendix K |
 | 21 | batch 82, manuscript 01 | `Binary_Planar_Four_Particle_Shuttle_Package.zip` (`db37d18c8`); *A binary planar four particle shuttle: Exact orbit geometry and a one step quartic certificate* (Report 31), main file `binary-planar-shuttle-release-20261003/report31.tex`, 14-page PDF | no repository commit; SHA-256 of the TeX of sources 17, 18 and 20 (`0723338c…` for source 20) | `49dfa8fd6` | Part VII (Sections 129–140) |
+| 22 | batch 82, manuscript 21 | `Unbounded_Compact_Clean_Clocks_Package.zip` (`db37d18c8`); *Unbounded compact clean clocks for exact three mass targets: Fully emitted fixed source Diophantine certificates* (Report 21), main file `unbounded-clean-clock-release-20261003/report21.tex`, 14-page PDF | ProveIt `ad634b2d1` (the research tree's interface, receipt, review and residue-history proof); source 15's theorem by SHA-256 | `7d2b1b245` | Part VIII (Sections 141–149) |
+| 23 | batch 82, manuscript 02 | `Canonical_Histories_and_Infinite_Fibers_Package.zip` (`db37d18c8`); *Canonical histories and infinite native fibers: Exact fixed source Diophantine certificates for three mass computation* (Report 22), main file `canonical-fiber-release-20261003/report22.tex`, 14-page PDF; a declared sequel of source 22 | ProveIt `ad634b2d1`; source 22's base and folded manifests by SHA-256 | `7d2b1b245` | Part VIII (Sections 150–158) |
 
 **Parts I and II prove one theorem by two routes.** Once a complete finite
 collision history of a rational signal machine is fixed, its realizations are
@@ -135,6 +142,34 @@ Boolean degree exactly 45 with exactly 78 essential cells, and a one-step
 quartic with 614 auxiliaries unique even over the reals (Theorems
 132.1–138.1). Sections 1.17–1.21 introduce them.
 
+**Part VIII: unbounded-time certificates for exact three-mass targets (batch
+82, cluster M2).** Part V certifies the three-mass automaton at a fixed source
+horizon, with a unique natural witness, and its sources ask for a costed
+unbounded-time encoding (`smc:tm:q:unbounded`, `smc:ct:q:unbounded`). Source
+22 composes the research tree's raw unbounded residue-history interface
+(`three_mass_unbounded_interface.md`, pinned at `ad634b2d1`) with source 15's
+clean-target theorem: for a fixed eligible source (fresh entry, terminal halt,
+`q0 ≠ qh`) a polynomial `Q_R(x, U; z, θ)` with no horizon has a positive zero
+exactly when the cleaned automaton first reaches its exact whole-configuration
+target at time `U = 2θ + 192(F + x + 1) + 16` from raw payload `x + 1`
+(Theorem 141.1). For four nonuniversal fixtures that halt in one or two source
+steps the complete circuits are emitted and audited: 604, 479, 477 and 480
+operations, 60, 58, 58 and 58 positive witnesses, exact degrees 2344, 1192,
+1192 and 1192 (603, 478, 476 and 479 operations when constant-folded); every
+accepted nonempty witness fibre is infinite (Theorem 146.1). Source 23 adds one
+positive coordinate and the square `(η + κ − S − 1)²`, `S = n_initial +
+n_target + θ`, which fixes the outer height at the least power of two above
+`S`: the outer coordinates become unique, projection onto the 22 native
+coordinates is a bijection onto the entire native extension fibre (Theorem
+154.1), and that fibre is infinite by an elementary matrix argument
+(Theorem 155.1); the circuits cost 608, 483, 481 and 484 operations. Both
+theorems are conditional on the inherited research-tree results and source
+15's theorem. The clean-time bridge itself is sketched, uncosted, in the
+research-tree note (its lines 96–98); source 22 emits the complete
+composition. Report 25, the sequel of source 23, classifies the whole native
+fibre in `fixed-universal-polynomials` Part III, which implies Theorem 155.1.
+Sections 1.22–1.26 introduce them.
+
 **Status: AI-assisted, unrefereed, not formalized.** Conventional proofs and
 finite exact-arithmetic checks. Nothing in the report is formalized in Lean or
 Rocq, and no priority is certified.
@@ -221,9 +256,23 @@ of batch-82 Reports 16 (`review_literal_universal_reversible_source16.md`,
 bear on source 19's corollary. None of these reviews the batch-82 write of
 this report.
 
+**Batch 82 (Part VIII): intakes.** The research tree took both Part VIII
+sources in, without a full review: source 22 (with Report 20) in
+`review_event_budget_clean_clock_intake.md` (commit `8aabb1453`; "no newly
+identified defect in their stated theorem scopes"), and source 23 (with
+Report 25) in `review_incoming_negative_index_fibers.md` (commit
+`0055e1c4d`), which does not certify source 23's canonical-height circuit
+costs. The raw interface the sources build on was reviewed before them
+(`review_three_mass_unbounded_interface.md`, `ad634b2d1`: "PASS within the
+stated fixed-source, natural-input scope"). The same commit `8aabb1453` adds
+a separate, reviewed construction (`three_mass_direct_clean_clock.md`) with
+six operations and one witness fewer than source 22's folded circuits,
+explicitly not attributed to source 22. "Reviews and patches" gives the
+details. None of these reviews the batch-82 M2 write.
+
 ```
 article.tex                                                     the report, standalone LaTeX with an internal bibliography
-article.pdf                                                     the compiled report, 280 pages (unnumbered title page, then pages 1–279)
+article.pdf                                                     the compiled report, 320 pages (unnumbered title page, then pages 1–319)
 README.md                                                       this guide
 07-collision-geometry-PROVENANCE.md                             source 07's repository and literature provenance, as delivered
 11-signal-certificates-REPRODUCIBILITY.md                       source 11's reproducibility record, as delivered
@@ -268,23 +317,23 @@ README.md                                                       this guide
 21-planar-shuttle-audit-final-review.md                         source 21's final review (pins its files in data/21-planar-shuttle-audit-reviewed-*.sha256)
 21-planar-shuttle-audit-independent-audit.md                    source 21's independent audit
 21-planar-shuttle-audit-local-quartic-review.md                 source 21's review of the local algebra and literal quartic
-22-clean-clocks-EMITTED-CIRCUIT-AUDIT.md                        placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
-22-clean-clocks-FIVE-GATE-FOLDING-AUDIT.md                      placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
-22-clean-clocks-FOLDED-ADDENDUM.md                              placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
-22-clean-clocks-FOLDED-PORTABILITY.md                           placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
-22-clean-clocks-FOLDED-README.md                                placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
-22-clean-clocks-MATH-REVIEW.md                                  placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
-22-clean-clocks-PROOF-AUDIT.md                                  placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
-22-clean-clocks-REPRODUCIBILITY-README.md                       placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
-22-clean-clocks-THEOREM.md                                      placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
-23-canonical-fibers-CANONICAL-HEIGHT-CIRCUIT-AUDIT.md           placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
-23-canonical-fibers-CANONICAL-HEIGHT-PROOF-AUDIT.md             placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
-23-canonical-fibers-CANONICAL-HEIGHT-README.md                  placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
-23-canonical-fibers-CANONICAL-HEIGHT-THEOREM.md                 placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
-23-canonical-fibers-MATH-REVIEW.md                              placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
-23-canonical-fibers-NATIVE-FIBERS-README.md                     placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
-23-canonical-fibers-NATIVE-FIBERS-REVIEW.md                     placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
-23-canonical-fibers-NATIVE-FIBERS-THEOREM.md                    placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
+22-clean-clocks-EMITTED-CIRCUIT-AUDIT.md                        source 22's independent audit of all emitted circuits (delivered reproducibility/audit/)
+22-clean-clocks-FIVE-GATE-FOLDING-AUDIT.md                      source 22's independent five-gate folding audit (delivered folded-clocks/audit/)
+22-clean-clocks-FOLDED-ADDENDUM.md                              source 22's constant-folding addendum: identity and complete ledgers (delivered folded-clocks/)
+22-clean-clocks-FOLDED-PORTABILITY.md                           source 22's record of the folded packet's portable path-guard edit and resealing
+22-clean-clocks-FOLDED-README.md                                the folded-clocks packet's README, as delivered
+22-clean-clocks-MATH-REVIEW.md                                  source 22's independent mathematical review (delivered report21-math-review.md)
+22-clean-clocks-PROOF-AUDIT.md                                  source 22's independent compatibility audit of the composition (delivered reproducibility/audit/)
+22-clean-clocks-REPRODUCIBILITY-README.md                       the reproducibility packet's README, as delivered
+22-clean-clocks-THEOREM.md                                      source 22's theorem, proof and scope note (delivered reproducibility/THEOREM.md)
+23-canonical-fibers-CANONICAL-HEIGHT-CIRCUIT-AUDIT.md           source 23's independent audit of the canonical-height circuits
+23-canonical-fibers-CANONICAL-HEIGHT-PROOF-AUDIT.md             source 23's independent canonical-height proof audit
+23-canonical-fibers-CANONICAL-HEIGHT-README.md                  the canonical-height packet's README, as delivered
+23-canonical-fibers-CANONICAL-HEIGHT-THEOREM.md                 source 23's canonical-height theorem and proof (delivered canonical-height/THEOREM.md)
+23-canonical-fibers-MATH-REVIEW.md                              source 23's independent mathematical review (delivered report22-math-review.md)
+23-canonical-fibers-NATIVE-FIBERS-README.md                     the native-fibers packet's README, as delivered
+23-canonical-fibers-NATIVE-FIBERS-REVIEW.md                     source 23's independent review of the fixed-scale infinitude
+23-canonical-fibers-NATIVE-FIBERS-THEOREM.md                    source 23's fixed-scale native infinitude theorem and proof
 code/07-collision-geometry-Makefile                             source 07's make targets: test (run_checks.py) and pdf (latexmk)
 code/07-collision-geometry-run_checks.py                        source 07's 34,560-assertion regression suite (imports signal_certificates; rewrites data/)
 code/07-collision-geometry-signal_certificates.py               source 07's exact simulator, chamber compiler, quartic union (standard library)
@@ -409,21 +458,21 @@ code/21-planar-shuttle-make_figures.py                          source 21's matp
 code/21-planar-shuttle-replay.py                                source 21's replay (--verify-only or --output-dir; delivered layout only)
 code/21-planar-shuttle-reproduce.sh                             source 21's bootstrap for replay.py
 code/21-planar-shuttle-tamper_regression.py                     source 21's tamper regression of the replay
-code/22-clean-clocks-build.sh                                   placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
-code/22-clean-clocks-check_degree_certificate.py                placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
-code/22-clean-clocks-check_emitted_circuits.py                  placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
-code/22-clean-clocks-check_semantics.py                         placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
-code/22-clean-clocks-emit_clean_clocks.py                       placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
-code/22-clean-clocks-folded-check_folded_clocks.py              placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
-code/22-clean-clocks-folded-emit_folded_clocks.py               placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
-code/23-canonical-fibers-build.sh                               placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
-code/23-canonical-fibers-check_canonical_height.py              placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
-code/23-canonical-fibers-check_canonical_height_proof.py        placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
-code/23-canonical-fibers-check_combined_fibers.py               placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
-code/23-canonical-fibers-check_privacy.py                       placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
-code/23-canonical-fibers-check_provenance.py                    placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
-code/23-canonical-fibers-emit_canonical_clocks.py               placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
-code/23-canonical-fibers-native-check_native_fibers.py          placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
+code/22-clean-clocks-build.sh                                   source 22's PDF build script (delivered layout; builds report21.tex)
+code/22-clean-clocks-check_degree_certificate.py                source 22's secondary exact-degree checker (rejects python -O by design)
+code/22-clean-clocks-check_emitted_circuits.py                  source 22's independent circuit auditor
+code/22-clean-clocks-check_semantics.py                         source 22's semantic checker (outer histories, clocks, mutations)
+code/22-clean-clocks-emit_clean_clocks.py                       source 22's emitter of the ten clean-clock circuits (regenerates the excluded ones)
+code/22-clean-clocks-folded-check_folded_clocks.py              source 22's independent folding auditor
+code/22-clean-clocks-folded-emit_folded_clocks.py               source 22's emitter of the eight folded circuits
+code/23-canonical-fibers-build.sh                               source 23's PDF build script (delivered layout; builds report22.tex)
+code/23-canonical-fibers-check_canonical_height.py              source 23's independent canonical-height circuit auditor
+code/23-canonical-fibers-check_canonical_height_proof.py        source 23's canonical-height proof checker
+code/23-canonical-fibers-check_combined_fibers.py               source 23's combined check of native order and dependencies on the canonical circuits
+code/23-canonical-fibers-check_privacy.py                       source 23's release privacy scan
+code/23-canonical-fibers-check_provenance.py                    source 23's provenance checker (delivered layout)
+code/23-canonical-fibers-emit_canonical_clocks.py               source 23's emitter of the canonical circuits (regenerates the excluded ones)
+code/23-canonical-fibers-native-check_native_fibers.py          source 23's checker of the fixed-scale native-fibre argument
 data/07-collision-geometry-checks.json                          source 07's recorded run: PASS, 34,560 assertions, test counts and ledgers
 data/07-collision-geometry-first_hit_quartic_union.json         the two-chamber first-hit quartic (all matrices and the selector formula)
 data/07-collision-geometry-simultaneous_two_sites.json          the simultaneous two-site certificate (Section 11.3)
@@ -587,35 +636,35 @@ data/21-planar-shuttle-local-quartic-certificate.json           the one-step qua
 data/21-planar-shuttle-local-rule-certificate.json              the local rule and its 78-cell dependency set
 data/21-planar-shuttle-simulation-data.json                     orbit data of the two figures (delivered figures/)
 data/21-planar-shuttle-source-lineage.json                      pins of sources 17, 18 and 20 (SHA-256)
-data/22-clean-clocks-degree_crosscheck.json                     placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
-data/22-clean-clocks-delivery-provenance.json                   placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
-data/22-clean-clocks-emission.json                              placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
-data/22-clean-clocks-final-degree-replay.log                    placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
-data/22-clean-clocks-final-emission-replay.log                  placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
-data/22-clean-clocks-final-independent-replay.log               placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
-data/22-clean-clocks-final-semantics-replay.log                 placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
-data/22-clean-clocks-folded-base-integrity-after-audit.log      placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
-data/22-clean-clocks-folded-emission.json                       placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
-data/22-clean-clocks-folded-emitter-replay.log                  placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
-data/22-clean-clocks-folded-final-live-base-replay.log          placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
-data/22-clean-clocks-folded-independent_folded_clock_audit.json placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
-data/22-clean-clocks-folded-initial-live-base-audit.log         placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
-data/22-clean-clocks-folded-portable-read-only-replay.log       placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
-data/22-clean-clocks-folded-relocated-portable-replay.json      placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
-data/22-clean-clocks-independent_emitted_circuit_audit.json     placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
-data/22-clean-clocks-privacy-scan.json                          placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
-data/22-clean-clocks-report21-qa.json                           placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
-data/22-clean-clocks-report21-replay.json                       placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
-data/22-clean-clocks-semantics.json                             placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
-data/22-clean-clocks-source-provenance.json                     placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
-data/23-canonical-fibers-canonical-emission.json                placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
-data/23-canonical-fibers-canonical_height_proof_checks.json     placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
-data/23-canonical-fibers-combined-checks.json                   placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
-data/23-canonical-fibers-delivery-provenance.json               placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
-data/23-canonical-fibers-frozen-before.json                     placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
-data/23-canonical-fibers-independent-canonical-height-audit.json  placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
-data/23-canonical-fibers-native-CHECK-RECEIPT.json              placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
-data/23-canonical-fibers-report22-qa.json                       placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
+data/22-clean-clocks-degree_crosscheck.json                     source 22's degree cross-check receipt
+data/22-clean-clocks-delivery-provenance.json                   source 22's original and delivered file hashes
+data/22-clean-clocks-emission.json                              source 22's emission receipt (SHA-256 of the 18 excluded base circuit files)
+data/22-clean-clocks-final-degree-replay.log                    source 22's final degree-checker replay log
+data/22-clean-clocks-final-emission-replay.log                  source 22's final emission replay log
+data/22-clean-clocks-final-independent-replay.log               source 22's final independent-audit replay log
+data/22-clean-clocks-final-semantics-replay.log                 source 22's final semantic replay log
+data/22-clean-clocks-folded-base-integrity-after-audit.log      the folded packet's base-integrity log (equal to the unshipped before-audit log)
+data/22-clean-clocks-folded-emission.json                       the folded emission receipt (SHA-256 of the 16 excluded folded circuit files)
+data/22-clean-clocks-folded-emitter-replay.log                  the folded emitter replay log
+data/22-clean-clocks-folded-final-live-base-replay.log          the folding audit's live-base replay log
+data/22-clean-clocks-folded-independent_folded_clock_audit.json the folding audit's receipt
+data/22-clean-clocks-folded-initial-live-base-audit.log         the folding audit's initial live-base log
+data/22-clean-clocks-folded-portable-read-only-replay.log       the folding audit's portable read-only replay log
+data/22-clean-clocks-folded-relocated-portable-replay.json      the folded packet's relocated portable replay record
+data/22-clean-clocks-independent_emitted_circuit_audit.json     the independent circuit audit's receipt
+data/22-clean-clocks-privacy-scan.json                          source 22's release privacy scan
+data/22-clean-clocks-report21-qa.json                           source 22's manuscript QA record (pages, hashes, visual review)
+data/22-clean-clocks-report21-replay.json                       source 22's release replay record (delivered layout)
+data/22-clean-clocks-semantics.json                             source 22's semantic-checker receipt
+data/22-clean-clocks-source-provenance.json                     source 22's pinned sources: ProveIt ad634b2d1 files, URLs, hashes
+data/23-canonical-fibers-canonical-emission.json                source 23's emission receipt (SHA-256 of the 18 excluded canonical circuit files)
+data/23-canonical-fibers-canonical_height_proof_checks.json     source 23's proof-checker receipt
+data/23-canonical-fibers-combined-checks.json                   source 23's combined-check receipt
+data/23-canonical-fibers-delivery-provenance.json               source 23's original and delivered file hashes
+data/23-canonical-fibers-frozen-before.json                     source 23's record of source 22's frozen packets before the change
+data/23-canonical-fibers-independent-canonical-height-audit.json  source 23's independent circuit-audit receipt
+data/23-canonical-fibers-native-CHECK-RECEIPT.json              source 23's native-fibre check receipt
+data/23-canonical-fibers-report22-qa.json                       source 23's manuscript QA record
 figures/17-four-mass-binary-four-particle-shuttle.pdf           source 17's article figure (vector PDF, printed as Figure 5)
 figures/20-orbit-geometry-visited-geometry.pdf                  source 20's figure (vector PDF, printed as Figure 7)
 figures/21-planar-shuttle-orbits.pdf                            source 21's orbit figure (vector PDF, printed as Figure 9)
@@ -733,9 +782,47 @@ byte-identical in both editions). Delivered name → shipped name:
   `21-planar-shuttle-<file name>` and `scientific/audit/*.md` →
   `21-planar-shuttle-audit-<file name>`; `figures/{rule,orbits}.pdf` →
   `figures/21-planar-shuttle-{rule,orbits}.pdf`.
-- Sources 22 and 23 (batch 82, cluster M2, placed by `7d2b1b245` for a
-  Part VIII that is not yet written) are listed above but are not described
-  by this write.
+- Source 22 (`unbounded-clean-clock-release-20261003/`, placed by
+  `7d2b1b245`): `build.sh` → `code/22-clean-clocks-build.sh`;
+  `reproducibility/emit_clean_clocks.py`, `check_semantics.py` and
+  `audit/check_{emitted_circuits,degree_certificate}.py` →
+  `code/22-clean-clocks-<file name>`; `folded-clocks/emit_folded_clocks.py`
+  and `folded-clocks/audit/check_folded_clocks.py` →
+  `code/22-clean-clocks-folded-<file name>`; `reproducibility/receipts/*`
+  and `reproducibility/audit/*.json` → `data/22-clean-clocks-<file name>`
+  (`receipts/emission.json` as `data/22-clean-clocks-emission.json`);
+  `reproducibility/source/provenance.json` →
+  `data/22-clean-clocks-source-provenance.json`; `folded-clocks/receipts/*`
+  and `folded-clocks/audit/*.{json,log}` →
+  `data/22-clean-clocks-folded-<file name>`; the release-level
+  `delivery-provenance.json`, `privacy-scan.json`, `report21-qa.json` and
+  `report21-replay.json` → `data/22-clean-clocks-<file name>`;
+  `reproducibility/{THEOREM,README}.md` → `22-clean-clocks-THEOREM.md` and
+  `22-clean-clocks-REPRODUCIBILITY-README.md`;
+  `reproducibility/audit/{PROOF-AUDIT,EMITTED-CIRCUIT-AUDIT}.md` →
+  `22-clean-clocks-<file name>`; `folded-clocks/{ADDENDUM,PORTABILITY,README}.md`
+  → `22-clean-clocks-FOLDED-<file name>`;
+  `folded-clocks/audit/FIVE-GATE-FOLDING-AUDIT.md` →
+  `22-clean-clocks-FIVE-GATE-FOLDING-AUDIT.md`; `report21-math-review.md` →
+  `22-clean-clocks-MATH-REVIEW.md`.
+- Source 23 (`canonical-fiber-release-20261003/`, placed by `7d2b1b245`):
+  `build.sh`, `check_combined_fibers.py`, `check_privacy.py`,
+  `check_provenance.py`, `canonical-height/emit_canonical_clocks.py` and
+  `canonical-height/audit/check_canonical_height{,_proof}.py` →
+  `code/23-canonical-fibers-<file name>`; `native-fibers/check_native_fibers.py`
+  → `code/23-canonical-fibers-native-check_native_fibers.py`;
+  `canonical-height/receipts/emission.json` →
+  `data/23-canonical-fibers-canonical-emission.json`;
+  `canonical-height/audit/*.json`, `combined-checks.json`,
+  `delivery-provenance.json` and `report22-qa.json` →
+  `data/23-canonical-fibers-<file name>`; `native-fibers/CHECK-RECEIPT.json` →
+  `data/23-canonical-fibers-native-CHECK-RECEIPT.json`;
+  `canonical-height/{README,THEOREM}.md` and
+  `canonical-height/audit/CANONICAL-HEIGHT-{CIRCUIT,PROOF}-AUDIT.md` →
+  `23-canonical-fibers-CANONICAL-HEIGHT-*.md`;
+  `native-fibers/{README,THEOREM,REVIEW}.md` →
+  `23-canonical-fibers-NATIVE-FIBERS-<file name>`; `report22-math-review.md`
+  → `23-canonical-fibers-MATH-REVIEW.md`.
 
 Not shipped (all survive in the archives of the arrival commits):
 
@@ -786,7 +873,30 @@ Not shipped (all survive in the archives of the arrival commits):
   `verify_manifest.py` and its three byte copies of source-17 files (above);
   source 20's two supplement manifests
   `scientific/first-visit/MANIFEST.sha256` and
-  `scientific/geometry/MANIFEST.sha256`.
+  `scientific/geometry/MANIFEST.sha256`;
+- for sources 22 and 23 (batch 82, cluster M2; 133 files, all in
+  `db37d18c8`): the two manuscripts (printed as Part VIII), their PDFs and
+  delivery READMEs; the release checksum ledgers `release-manifest.json` and
+  `release-manifest.json.sha256`, verified at this write against the
+  arrival archives (source 22's 103 of 103 files, source 23's 87 of 87), and
+  the packet manifests, original and resealed (`MANIFEST.json`,
+  `original-MANIFEST.json`), with their checkers `verify_manifest.py`; the
+  release tools `verify_release.py`, `replay.py`, `release_checks.py` and
+  `write_manifest.py`; the eight byte copies in source 22's
+  `reproducibility/source/` (of the research tree's pinned files and of
+  source 15's `15-clean-targets-CLEAN-TARGET-THEOREM.md`) and three logs that are byte
+  copies of shipped ones (`folded-clocks/receipts/base-integrity-before-audit.log`,
+  `independent-live-base-replay.log`, `independent-portable-replay.log`);
+  source 23's `inherited-source/` (byte copies of source 22's and of
+  repository files; its `five_gate_folding_audit.md` differs from source
+  22's `FIVE-GATE-FOLDING-AUDIT.md` only in a sanitized example path at line
+  179), the reference copies in `canonical-height/reference/`, and
+  `native-fibers/source/` (four byte copies of repository notes, and
+  `native_blocks.json` and `provenance.json`, which
+  `fixed-universal-polynomials` ships as
+  `data/07-native-fiber-source-native_blocks.json` and
+  `data/07-native-fiber-source-provenance.json`); and the 70 regenerable
+  circuit files of the next section.
 
 ```sh
 git show 808b53ed8:docs/incoming/Collision_Geometry_Diophantine_Signal_Machines.zip > cg.zip
@@ -804,6 +914,8 @@ git show db37d18c8:docs/incoming/Timed_Four_Mass_Quartic_Certificates.zip > tq.z
 git show db37d18c8:docs/incoming/Dimension_Independent_Particle_Thresholds_Package.zip > zd.zip     # source 19
 git show db37d18c8:docs/incoming/Sparse_Orbit_Geometry_and_Exact_Counting_Package.zip > og.zip      # source 20
 git show db37d18c8:docs/incoming/Binary_Planar_Four_Particle_Shuttle_Package.zip > bp.zip           # source 21
+git show db37d18c8:docs/incoming/Unbounded_Compact_Clean_Clocks_Package.zip > uc.zip               # source 22
+git show db37d18c8:docs/incoming/Canonical_Histories_and_Infinite_Fibers_Package.zip > ch.zip      # source 23
 ```
 
 Both editions of source 13 contain every file, including the excluded
@@ -882,6 +994,47 @@ either shipped or listed above as not shipped for another reason. The
 largest shipped file is `data/21-planar-shuttle-local-quartic-certificate.json`
 (267,097 bytes), which `code/21-planar-shuttle-code-build_local_quartic.py`
 regenerates with the same content (CRLF line ends on Windows).
+
+**Sources 22 and 23 (batch 82, cluster M2).** The 70 emitted circuit files
+of the two sources (JSON circuits and textual DAGs; 4,189,675 bytes) are not
+shipped: source 22's `reproducibility/circuits/` (18 files, 909,949 bytes),
+`folded-clocks/circuits/` (16 files, 908,106 bytes) and the eight copies of
+the base circuits in `folded-clocks/reference/`; source 23's
+`canonical-height/circuits/` (18 files, 932,729 bytes) and the ten circuit
+copies in `canonical-height/reference/{base,folded}/circuits/`. The shipped
+receipts `data/22-clean-clocks-emission.json`,
+`data/22-clean-clocks-folded-emission.json` (which also lists the eight
+reference copies) and `data/23-canonical-fibers-canonical-emission.json`
+record the SHA-256 of the 18, 16 and 18 emitted files. The archives contain
+all of them, so `uc.zip` and `ch.zip` above retrieve the exact bytes. To
+rebuild them instead, in scratch copies of the two extracted archives
+(`unbounded-clean-clock-release-20261003/`, `canonical-fiber-release-20261003/`):
+
+1. in `unbounded-clean-clock-release-20261003/reproducibility/`:
+   `python -B emit_clean_clocks.py` (it reads
+   `source/three_mass_unbounded_interface.json`, a byte copy of the research
+   tree's `Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/three_mass_unbounded_interface.json`);
+2. copy the eight nonempty `circuits/*.json` (not `zero-step-*`) into
+   `../folded-clocks/reference/`, then in `folded-clocks/`:
+   `python -B emit_folded_clocks.py`;
+3. copy the two `reproducibility/circuits/zero-step-*.json` into
+   `canonical-fiber-release-20261003/canonical-height/reference/base/circuits/`
+   and the eight `folded-clocks/circuits/*.json` into
+   `canonical-height/reference/folded/circuits/`, then in `canonical-height/`:
+   `python -B emit_canonical_clocks.py`;
+4. check with each emitter's `--check` mode, or compare SHA-256 values with
+   the three receipts.
+
+At this write (Windows, Python 3.14.4) the whole chain was rerun on fresh
+copies of the archives with every circuit file deleted and the raw receipt
+taken from the repository: all 70 files were rebuilt byte for byte
+(4,189,675 bytes) in about three seconds, and the three emission receipts
+came out unchanged. On Windows step 3 needs POSIX path strings: the
+emitter keys its reference manifest by `str(path)` (line 16 of
+`code/23-canonical-fibers-emit_canonical_clocks.py`), so run it on POSIX or
+WSL, or in a copy whose `str(p.relative_to(root))` is replaced by
+`p.relative_to(root).as_posix()` (what the run here did; the delivered file
+is unchanged). Steps 1 and 2 ran unchanged.
 
 ## Labels and numbering
 
@@ -966,6 +1119,22 @@ source 20's is Appendix K, after Part III's, so that no earlier letter
 changed. The figures of sources 19–21 are Figures 6–9 and their captioned
 tables Tables 11–13; the new front tables are uncaptioned. Part VII is the
 last Part before the appendices.
+
+Batch 82 (cluster M2: Part VIII) added 73 labels, 699 in all, and removed or
+renamed none (the `.aux` files of a build of the previous text and of the new
+build give the same number to every one of the 626 earlier labels, and the
+61 earlier bibliography entries keep their numbers; the 11 new ones are
+62–72): source 22's 31 labels as `smc:uc:` plus their delivered names (9
+delivered; 22 added to its sections and subsections and to its fibre
+theorem `smc:uc:thm:fibers`), source 23's 36 as `smc:ch:` (22 delivered; 14
+added to subsections), and the new Part `smc:uc:part` and the five front
+subsections `smc:uc:sec:batch82`, `smc:uc:sec:notation`,
+`smc:uc:sec:relation`, `smc:uc:sec:status` and `smc:uc:sec:frontquestions`.
+Source 22's Section *n* is Section *n* + 140 here (Sections 141–149) and
+source 23's *n* + 149 (150–158); equations are numbered by section (the
+sources numbered theirs consecutively). Part VIII has no figure, captioned
+table or appendix, so no earlier number or letter changed; it is the last
+Part before the appendices.
 
 ## Setting and notation
 
@@ -1068,6 +1237,36 @@ Their `\N` is `\NN` here (source 18 printed `ℕ`, sources 19–21 printed
 `ℤ≥0`, the same set), and the maximum norm `\norm` of sources 19–21 is
 renamed because Part IV's `\norm` differs. No other symbol was renamed and
 no normalization changed.
+
+Part VIII (sources 22 and 23) keeps its sources' letters too; the table of
+Section 1.23 lists those with another meaning in the other source or in
+Part V. The ones most likely to be misread:
+
+- `h`, `ℓ`, `t`, `L` — source 15's `h` is the source horizon (a number of
+  source instructions); source 22's `h` is the outer packet height, its `ℓ`
+  the number of source instructions and its `t` the raw native time; source
+  23's `h` is the outer height, its `t` the trace length (source 22's `ℓ`),
+  its `ℓ` the number of AND lanes (source 22's `L`) and its `L` a dyadic
+  multiplier (source 22's `K₀`).
+- `θ`, `F`, `U` — source 15 writes `Θ`, `N_h` and `T_cl` for the forward
+  native duration, the final payload and the clean time.
+- **Unique and infinite** — Part V's unique natural witness is at a fixed
+  horizon; Part VIII has no horizon and infinite fibres. Source 23's
+  "canonical" outer history is unique; its witness tuples are not, so
+  reading "canonical" as single-fold is false.
+- **Native** — the unblocked radius-four clock model ("native time"), and
+  the inherited 22-coordinate AND and Pell block ("native fibre").
+- **Compact** — a compressed history certificate without reverse witnesses,
+  not a compact real domain.
+- **Unbounded** — unbounded running time for one fixed source with the raw
+  payload `x + 1` as input; halting there depends only on `ν₂(x+1)` and
+  `ν₃(x+1)`, so it is not an ordinary-input loader.
+
+Their `\N` is `\NN` here and prints `{0, 1, 2, …}`, as both sources define
+it; source 23's own renaming of a native integer `R` to `ρ` is its own. Their
+`\sha` hash display is set as a breakable path instead of loading
+`seqsplit`, and one file name in Section 142 is set as a breakable path for
+the line width. No other symbol was renamed and no normalization changed.
 
 ## Status: what is claimed, and what is not
 
@@ -1210,6 +1409,23 @@ The report claims conventional mathematical proofs, by its sources, for:
   essential (Theorem 137.1), and a one-step quartic with 614 auxiliaries,
   693 residuals, 79 external variables and 3403 terms, unique over the
   reals (Theorem 138.1).
+- **Part VIII (sources 22 and 23, batch 82).** Conditional on the research
+  tree's raw residue-history interface and native AND/Pell results (pinned at
+  `ad634b2d1`) and on source 15's clean-target theorem: for an eligible fixed
+  source, a horizon-free polynomial `Q_R(x, U; z, θ) = P_R(x, F, θ; z) +
+  (2θ + 192(F + x + 1) + 16 − U)²` whose positive zeros are exactly the first
+  exact whole-configuration targets at time `U` (Theorem 141.1); retained
+  chronology and an exact no-wrap clock; every accepted nonempty fibre is
+  infinite (Theorem 146.1); complete ledgers 604/479/477/480 operations and
+  60/58/58/58 witnesses, phase four one multiplication more, folded
+  603/478/476/479, exact degrees 2344/1192/1192/1192 with modular
+  leading-component certificates; witness-free zero-step circuits
+  `(384x + 400 − U)²`; the raw interface's valuation invariance. Source 23:
+  the canonical cap `η + κ = S + 1` forces the least dyadic height above `S`
+  (Lemma 152.1) and keeps completeness (`z_i < N_i ≤ τ_i ≤ θ`); outer
+  uniqueness and the entire-fibre projection (Theorems 150.1, 154.1);
+  fixed-scale native infinitude with only `j, o, y_aux` varying
+  (Theorem 155.1); ledgers 608/483/481/484 with 61/59/59/59 coordinates.
 
 **Credit and re-derived results.** Part I's convex-quadratic rigidity
 theorem and compression barrier (Theorem 13.1, Corollary 13.2) are a special
@@ -1270,6 +1486,21 @@ local quartic. A note in Section 1.19 adds that, by
 certificates in the class of polynomials nonnegative on the real orthant
 (an observation of this write, not reviewed).
 
+**Re-derived and inherited material of Part VIII (batch 82, cluster M2).**
+Source 22's Section 143 restates source 15's wrapper, target and clock
+(`smc:ct:thm:restore`, `smc:ct:thm:equiv`, `smc:ct:thm:clock`) and its
+Section 145 the research tree's residue-history and exact-clock arguments;
+source 23's Section 153.1 restates source 22's no-wrap argument, and its
+fixture, zero-step, sanity and raw-limit passages repeat source 22's (its
+two repeated tables are printed once, in source 22). The clean-time bridge
+is the research-tree note's own sketch (its lines 96–98), which source 22
+completes and costs. Source 23's Theorem 155.1 is implied by Report 25's
+classification (`fup:nf:thm:class`, `fixed-universal-polynomials` Part III)
+and is printed as a second route. New, and credited to their sources: the
+complete emitted and audited composition, the exact degrees, the folded
+schedules and the infinite-fibre theorem (source 22); the canonical height,
+the entire-fibre projection and the matrix argument (source 23).
+
 The report does **not** claim:
 
 - historical priority or exhaustive novelty (all four sources say so); a
@@ -1280,7 +1511,11 @@ The report does **not** claim:
   horizon, a single-fold or finite-fold Diophantine representation of c.e.
   sets, or any improvement of the repository's 75- and 87-operation bounds;
   the skeleton, schema or horizon is compiler data, and row, residual or
-  variable counts are not operation counts;
+  variable counts are not operation counts (dated note of 3 October 2026,
+  batch 82 M2: still true of the report as a whole and of a universal
+  source; Part VIII gives fixed-arity polynomials without a horizon for four
+  fixed nonuniversal sources of Part V's automaton, with infinite witness
+  fibres, so not a finite-fold representation);
 - that the published 13-meta-signal, 21-rule universal machine of
   Durand-Lose 2009 or its input loader has been transcribed (Part III
   transcribes a different universal machine); that any Part converts an
@@ -1347,6 +1582,20 @@ The report does **not** claim:
   mass, radius, essential cells, degree or auxiliaries, a classification of
   malformed orbits, an unbounded-time or finite-fold representation; for all
   four, novelty or priority;
+- for Part VIII (batch 82, cluster M2; collected in Section 1.25): for
+  source 22, an arbitrary c.e. ordinary-input loader (halting on the raw
+  interface depends only on two valuations of `x + 1`), a universal source or
+  numerical universal bound, optimality, a rational- or real-zero theorem, a
+  materialized positive native Pell witness, a fixed universal target, a
+  stationary halt or later recurrence, lower bounds from the degrees, a
+  re-proof of the native Pell theorem, finite-foldness (its representations
+  are not finite-fold) or any multiplicity limit for other representations;
+  for source 23, a general finite-fold MRDP claim, an ordinary-input loader,
+  optimality, a new Pell classification, a materialized native seed, a total
+  polynomial map `(x, U) ↦ o(x, U)` or all-tuple normalization, that the
+  matrix family enumerates the fibre, rational or real zero sets, a minimal
+  circuit or a new universal bound, a free fresh-entry transformation for
+  every reversible program; for both, novelty for what they inherit;
 - any semantics at or after an accumulation point; that the clock discovers
   accumulation;
 - NP-hardness, an efficient first-hit enumerator, or that the denominator
@@ -1374,7 +1623,9 @@ and source 17's seven questions; Table 3 pairs Parts I and II. Batch 79 answers 
   2012 stacks instead of the 13-type construction named there.
 - Part II's question `smc:sd:q:conservative` (exploit conservative bounded
   populations) is answered in part, at a fixed horizon, by Parts III and IV;
-  neither encodes unbounded histories in fixed arity.
+  neither encodes unbounded histories in fixed arity (dated note of 3 October
+  2026: Part VIII does, for fixed sources of Part V's three-mass automaton,
+  not for signal machines).
 - Part II's `smc:sd:q:universal` (transcribe the 13-label table) stays open.
 
 Batch 80 (Parts V and VI) answers, in dated `[write]` notes (Section 1.16):
@@ -1430,6 +1681,25 @@ notes (Section 1.21):
   by source 18's selector elimination and four-witness certificate; all
   other questions of sources 18–21 (six of source 19, five of source 20,
   three of source 21 and source 18's directions) are open.
+
+Batch 82, cluster M2 (Part VIII), answers or touches, in dated `[write]`
+notes (Section 1.26):
+
+- source 14's `smc:tm:q:unbounded` and source 15's `smc:ct:q:unbounded` (a
+  costed unbounded-time certificate with degree, ledger and fibre
+  properties): **answered for fixed eligible sources**, conditional on the
+  inherited theorems — exact degrees 2344/1192, ledgers 604/479/477/480
+  (603/478/476/479 folded, 608/483/481/484 canonical), 60/58/58/58 positive
+  witnesses, and infinite fibres, also after canonicalization of the outer
+  history; the unique witnesses of Part V do not survive, and the emitted
+  representations are not finite-fold;
+- the universal-source questions (`smc:tm:q:source`, `smc:ct:q:universal`)
+  and source 15's `smc:ct:q:fixedtarget` are not answered by Part VIII (four
+  nonuniversal sources; an input-dependent target);
+- Part II's `smc:sd:q:conservative` is touched (fixed arity for fixed
+  sources of the three-mass automaton; open as posed for signal machines).
+
+Sources 22 and 23 state no questions of their own.
 
 ## Relation to neighbouring reports and to the formal project
 
@@ -1552,7 +1822,9 @@ treated signal machines before batch 78 apart from the programme's review.
   two releases on which source 19's sharp boundary rests, as its Part II;
   its Part I (Reports 14 and 15) proves with source 17 that five particles
   are the exact one-dimensional binary threshold (`fpa:bc:cor:sharp`), and
-  Report 26, the other release, is placed there for a later write. Source
+  Report 26, the other release, is printed there as Part VI (written in
+  `d2043bbd0`, before the M4 write, which still called it unwritten; the
+  batch-82 M2 write corrected the six places). Source
   18's chart compiler is a second route to `qoc:rn:lem:gates` of
   `quadratic-orthant-certificates` Part VI and Part I's union quartic;
   source 20's membership quartic is a second route to `cdc:of:thm:singlefoldsl`
@@ -1566,6 +1838,33 @@ treated signal machines before batch 78 apart from the programme's review.
   sources bears on the project README's universal operation bounds: all
   their quartics are for one fixed rule and one fixed input, with
   input-dependent arity, or for one local transition (source 21).
+- **Part VIII (batch 82, cluster M2) and the neighbouring reports and the
+  research tree.** [`fixed-universal-polynomials`](../fixed-universal-polynomials)
+  Part III prints Report 25, the sequel of source 23: its Theorem
+  `fup:nf:thm:class` classifies the entire native fibre (17 coordinates
+  fixed, five parametrized by two integer indices), which implies source
+  23's Theorem 155.1, and its transport corollary
+  (`fup:nf:sec:transport`) is conditional on source 23's Theorem 154.1.
+  [`five-particle-binary-automata`](../five-particle-binary-automata) prints
+  Reports 19 and 20, from which source 22 distinguishes itself, as Parts IV
+  and V, and Report 28's uncited remark on infinite native Pell witness
+  fibres refers to source 23 (a note there says so, by this path). The
+  research tree (`Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/`)
+  holds the pinned interface Part VIII builds on and later work on the same
+  circuits: a factored first Pell coefficient (`bbfe44d90`), an endpoint
+  projection (`06a9631b1`), a target-free height (`9393b0f29`), a
+  time-free-height refutation (`c8f08eb6e`) and its one-step exceptions
+  (`d400c01ee`) for the native-time circuits; the direct clean clock
+  (`8aabb1453`; 597/472/470/473 operations, 59/57/57/57 witnesses, 19
+  comparisons, reviewed, not attributed to source 22) and an input-free
+  height refutation (`735f62a6a`) for clean time. None supersedes a
+  statement of Part VIII, and none makes a fibre claim. Placement beside the
+  formal project confers no formal status: the Lean development has no
+  cellular-automaton module, the imported residue-history, native AND and
+  Pell results are research-wip notes with checked receipts, not Lean
+  declarations, and neither source uses `Diophantine.mrdp`. The project
+  README's universal operation bounds are untouched (four fixed
+  nonuniversal sources, raw payload input).
 
 ## Reviews and patches
 
@@ -1745,6 +2044,32 @@ except where a source itself shipped the patched program (source 12).
   source 19's corollary and are quoted after it. No patch exists for any
   batch-82 source; the delivered programs are shipped unpatched, including
   the harness defects listed under "Rerunning the programs".
+- Batch 82, cluster M2 (Part VIII). `review_event_budget_clean_clock_intake.md`
+  (commit `8aabb1453`) is a scoped intake of source 22 together with
+  Report 20 (`five-particle-binary-automata` Part V): it read the theorem,
+  the folding addendum and the inherited clean-wrapper theorem, executed no
+  archived Python, and found "no newly identified defect in their stated
+  theorem scopes"; it confirms fixed arity per fixed source without an
+  external horizon (inherited from the native/Pell packed-history theorem),
+  infinite fibres, integer domains and the raw `x + 1` input, calls the
+  five-gate fold a genuine paid saving, and notes that "compact" is not a
+  compact real domain. The same commit adds `three_mass_direct_clean_clock.md`
+  with its independent review `review_three_mass_direct_clean_clock.md`
+  (PASS), a new composition for the same four sources (597/472/470/473
+  operations, 59/57/57/57 positive witnesses, 19 comparisons) whose counts
+  "must not be attributed to these reports";
+  `three_mass_input_free_height_obstruction.md` (commit `735f62a6a`) then
+  refutes one further height deletion there (596/471/469/472, false zeros
+  at infinitely many inputs). `review_incoming_negative_index_fibers.md`
+  (commit `0055e1c4d`), section "Report25 and Report22: fibers, not a
+  competing soundness result", takes in source 23 as the earlier
+  fixed-slice infinitude and does not certify its canonical-height circuit
+  costs. `reviewed_report_archive_replay.md` (commit `ceb7222e9`) lists
+  source 23's archive as a reviewed intake and source 22's as relocation
+  only (it predates the intake of source 22). The raw interface was reviewed
+  in `review_three_mass_unbounded_interface.md` (`ad634b2d1`). No patch
+  exists for either source; the delivered programs are shipped unpatched,
+  including the Windows path defects listed under "Rerunning the programs".
 
 ## Build
 
@@ -1827,6 +2152,23 @@ labels with the same numbers and the same 48 bibliography numbers. Source
 their delivered vector PDFs (embedded TrueType fonts, no Type 3 fonts),
 included unchanged from `figures/`. Part VII is the last Part before the
 appendices, so a later Part can follow it without renumbering.
+
+The batch-82 write of cluster M2 (Part VIII: two sources, five front
+subsections, dated notes, one provenance paragraph, eleven bibliography
+entries appended last, four macros, and six corrected mentions of Report 26)
+takes the report to 320 pages (unnumbered title page, then pages 1–319). The
+log has no errors, warnings, undefined references or citations, multiply
+defined labels, duplicate destinations or overfull boxes, and the same four
+underfull bibliography lines as before. The `.aux` of a build of the
+previous text (280 pages) has the same 626 labels with the same numbers and
+the same 61 bibliography numbers. To keep the longer title-page text on one
+page, the title page's vertical spaces, the abstract's paragraph skip and
+the status line's font size were reduced (no other page changed its
+layout). The title page, Sections 1.21–1.23 with the new notation table
+(pages 44–46), the opening of Part VIII (pages 255–256), Theorem 155.1
+(page 277), the end of source 23 (page 283), the provenance table of Part
+VIII (page 296) and the last bibliography page (page 319) were rendered and
+inspected. Part VIII has no figure.
 
 ## Rerunning the programs
 
@@ -2056,6 +2398,38 @@ git show db37d18c8:docs/incoming/Binary_Planar_Four_Particle_Shuttle_Package.zip
 - Not rerun for any of them: the PDF builds, the figure scripts (matplotlib)
   and the shell wrappers as such.
 
+Sources 22 and 23 (batch 82, cluster M2) — restore the delivered layouts
+from the arrival archive, never in the report directory (`uc.zip` and
+`ch.zip` as above; they unpack to `unbounded-clean-clock-release-20261003/`
+and `canonical-fiber-release-20261003/`). The entry points are
+`python -B verify_release.py`, then
+`python -B replay.py --output <new directory outside the release>` (source
+23 also `python -B release_checks.py`); the replays authenticate the sealed
+inventory, copy the packets into normal and optimized work areas and run
+every emitter and checker there, so they leave the release unchanged. They
+need the delivered layout and cannot run on the shipped, prefixed files. On
+Windows they fail for reasons that are not mathematical, and the delivered
+programs are not patched here: several checkers key hash tables by native
+path strings (`str(path.relative_to(root))`; source 22's
+`code/22-clean-clocks-check_emitted_circuits.py` lines 382, 393 and 394 and
+`code/22-clean-clocks-folded-check_folded_clocks.py` lines 423 and 425,
+source 23's `code/23-canonical-fibers-emit_canonical_clocks.py` line 16 and
+`code/23-canonical-fibers-check_canonical_height.py` line 380 and
+`code/23-canonical-fibers-check_canonical_height_proof.py` line 31), and
+`replay.py` starts its children isolated (`-I -S`, with `PYTHON*` variables
+removed), so a `sitecustomize` or `PYTHONUTF8` setting does not reach them.
+Run on POSIX or WSL. At placement, with POSIX path strings and LF writes
+emulated in scratch copies, every delivered command of both replays passed
+in normal and optimized mode on byte-unchanged copies (source 22: six base
+and four folded commands per mode, plus the release checks, 36 s and 28 s;
+source 23: eleven commands per mode, release checks 14 s and 16 s); source
+22's secondary degree checker rejects `-O`, as designed, and its full
+auditor recomputes every degree certificate in both modes. The independent
+audit receipts reproduced except for the checker's own SHA-256 after a
+one-line `as_posix` patch in a scratch copy. The emitters alone regenerate
+the excluded circuits ("Reconstructing the excluded data"); that chain was
+rerun at this write.
+
 ## Discrepancies and disclosures
 
 - The shipped build scripts keep the delivered layout:
@@ -2214,9 +2588,8 @@ git show db37d18c8:docs/incoming/Binary_Planar_Four_Particle_Shuttle_Package.zip
   placement the two charts also reproduced every state through `t < 2500`
   for `d = 6`; a `[write]` note in Section 98 says so.
 - Source 19's sharp four-versus-five boundary (Corollary 101.2) inherits its
-  upper half from batch-82 Reports 16 and 26 (the first printed in
-  `five-particle-binary-automata`, the second placed there and not yet
-  written); its own review and the research tree's say so, and a `[write]`
+  upper half from batch-82 Reports 16 and 26 (printed in
+  `five-particle-binary-automata` as Parts II and VI); its own review and the research tree's say so, and a `[write]`
   note after the corollary states it. Source 19 cites source 17 only in its
   lineage appendix and one aside; `[write]` notes at each shared step credit
   source 17 (and source 16 at Lemma 104.1).
@@ -2225,3 +2598,33 @@ git show db37d18c8:docs/incoming/Binary_Planar_Four_Particle_Shuttle_Package.zip
   stationary inverse carry bracketed precisions in the article.
 - Source 18's PDF metadata name the author "Mathematical research report";
   the author lines of sources 18–21 are quoted at their openings.
+- Sources 22 and 23 (batch 82, cluster M2): delivered names in shipped
+  texts. The shipped READMEs, theorems, addenda and reviews name the
+  delivered layout (`reproducibility/`, `folded-clocks/`, `canonical-height/`,
+  `native-fibers/`, `inherited-source/`, `audit/…`, `MANIFEST.json`,
+  `original-MANIFEST.json`, `verify_manifest.py`, `replay.py`,
+  `report21.tex`, `report22.tex`), and so do `data/22-clean-clocks-report21-replay.json`,
+  `data/23-canonical-fibers-frozen-before.json`, `report22-qa.json` and the
+  two `delivery-provenance.json` records, which also list the unshipped
+  manifests, release tools, byte copies and circuit files with their
+  hashes; `code/22-clean-clocks-build.sh` and `code/23-canonical-fibers-build.sh`
+  build the unshipped `report21.tex` and `report22.tex`;
+  `code/23-canonical-fibers-check_provenance.py` and
+  `check_combined_fibers.py` read the delivered tree, and the emitters read
+  the excluded reference circuits. None of the unshipped files they name
+  is promised here; all survive in `db37d18c8`. The `[write]` paragraphs
+  "The release in this report" at the end of Sections 149 and 158 give the
+  shipped names.
+- The 70 circuit files of sources 22 and 23 are excluded as regenerable
+  (above); the emission receipts that list them are shipped. The pinned
+  research-tree files and source 15's theorem, which both archives carried
+  as byte copies, are cited at their repository paths and were unchanged
+  there at this write.
+- Source 23's repeated fixture and sanity tables are printed once (in
+  source 22); bracketed pointers carry their contents.
+- The batch-82 M4 write had called Report 26 "placed but not yet written" in
+  `five-particle-binary-automata` in six places (the threshold table,
+  Sections 1.16 and 1.17, the note after Corollary 101.2 and Appendix J),
+  although it was printed there as Part VI in `d2043bbd0` before that write;
+  the M2 write corrected them, with no change to the conditional status of
+  source 19's boundary.
