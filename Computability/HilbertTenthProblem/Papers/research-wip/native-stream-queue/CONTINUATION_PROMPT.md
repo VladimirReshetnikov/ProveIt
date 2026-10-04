@@ -154,6 +154,9 @@
 > improvement. The universal84/187 and85/155 points remain unchanged.
 >
 >
+> The [uniform two-primary cutoff](complete83_outer_family_uniform_two_primary.md), with [independent proof challenge](review_complete83_outer_family_uniform_two_primary.md), proves that every permitted outer-family member with n>=9 passes the power-of-two cubed-scale condition for every original powers-of-five compiler. The exact complement identity pc(Dmask)=|E| and the fixed support bound give pc(MC)>4d/5. Counting every bit in the unchanged low cells, rather than one bit per cell, and bounding the high deficits by ell<3d/2+1 removes the compiler-dependent threshold. Fresh author arithmetic checks and root's independent quantified proof challenge pass; n=1 and n=5 are not decided here. The odd-primary conditions, complete noncanonical zeros and universal83 remain open. No compiler numeral, source instruction or arithmetic bound changes.
+>
+>
 > The [eventual two-primary success theorem](complete83_outer_family_two_primary.md), with [independent carry and source review](review_complete83_outer_family_two_primary.md), removes the power-of-two condition on an explicit infinite tail of the actual-compiler non-dyadic outer family. For Astar=64(4dK+4d+1), ell=bitlength(Astar), every permitted n>=3ell+5 has v2(M_r(X))=popcount(r)>=3v2(q)+1. Low repeated MC digits exclude denominator resonances; three disjoint high complement blocks provide the population bound. The proof keeps all compiler numerals fixed and retains the corrected missing-constant identities and extra-factor congruence in a numbered review remark. Fresh independent exact expansions and digit checks corroborate the quantified argument without materializing X, Y or Pell witnesses. Full completion on this tail now depends only on the odd-prime scale conditions, which remain unproved; no full zero, rejected input or universal83 bound is claimed.
 >
 >
