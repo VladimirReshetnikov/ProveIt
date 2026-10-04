@@ -435,8 +435,14 @@ search, physical simulation or theorem-prover claim; no OEIS submission.
   `AUDIT.md` (its `inputs/closure-dependencies/`) ship there,
   byte-identical, as `38-low-arity-la-ONE_WITNESS.md` and
   `38-low-arity-audit-la-AUDIT.md`; this report prints the classification
-  as a restatement with a `[write]` note, not as new. A reciprocal note
-  for SMC Part XIII is proposed separately.
+  as a restatement with a `[write]` note, not as new. SMC Part XIII is now
+  written (`61c9e3eb2`) and carries the reciprocal note, at the end of its
+  `smc:la:sec:classification` and in its README. In return (batch 91,
+  4 October 2026) a dated `[write]` note after this report's note on the
+  restatement (Section 6) gives the printed places there: Theorem
+  `smc:la:thm:classification` (with the fixed-dimensional extension in the
+  same section), Section `smc:la:sec:one` (one witness) and Section
+  `smc:la:sec:costs`; it adds no label, macro, package or bibliography entry.
 - **Transseries volumes** (`Analysis/Transseries/docs/series-and-transseries/`).
   Part I's Sections 9–12 apply the method of Chapter 8, "Connected
   labelled graphs: every exponential layer", of
@@ -625,6 +631,15 @@ pages (front matter pages 1–7, Part I from page 7, Part II from page
 22, Appendix A from page 32, Appendix C from page 35), no undefined
 references or citations, no multiply-defined labels, no duplicate
 destinations and no overfull boxes.
+
+The batch-91 reciprocal note (4 October 2026; one dated `[write]`
+paragraph in Section 6 after the note on the restatement of Report 69's
+classification, Theorem 6.2; no label, macro, package or bibliography
+entry) leaves the build at 38 pages with every Part and appendix on the
+same page and the same log (no warnings, no overfull boxes, the same nine
+underfull lines, none in the note); every `.aux` label number is unchanged
+against a build of the committed text, and only equation (9) moves, from
+page 11 to 12. Its page (10) was rendered and inspected.
 
 ## Delivered path → shipped path
 

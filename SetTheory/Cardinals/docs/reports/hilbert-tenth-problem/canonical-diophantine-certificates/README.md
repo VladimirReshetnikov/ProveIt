@@ -3624,9 +3624,33 @@ control), and re-proves least action (`cdc:sp:lem:leastaction`,
 notes after those questions and in Part XX's setting paragraph say so. Its
 `POWER` macro is Lemma `ptr:ai:lem:exp` of
 [periodic-turmite-first-revisits](../periodic-turmite-first-revisits/)
-(Part III, Report 42), credited in a note; a reciprocal note there is
-proposed for a separate commit. No neighbouring report was edited in this
-write.
+(Part III, Report 42), credited in a note; the reciprocal note there is
+described below. No neighbouring report was edited in this write.
+
+**Reciprocal notes (batch 91, 4 October 2026).** One dated note here, after
+the note that follows `cdc:fx:lem:subset`:
+[group-theoretic-substrates](../group-theoretic-substrates/), Part VI
+(Research Report 55, written in `b93c4a0b5`), uses the same expanded
+containment system (three `POWER` calls, the extraction equation and the
+two strict slacks) in its fixed-arity certificate for the research
+programme's five-register matrix countdown, and proves `cdc:fx:lem:subset`
+again as `gts:cm:lem:sub`; neither text cites the other, and its packing
+review read the source notes of manuscript 26's packet
+`sandpile-repeated-target-20261004` as data. In the other direction,
+[periodic-turmite-first-revisits](../periodic-turmite-first-revisits/)
+gains a dated note after `ptr:ai:lem:exp` naming the `POWER` macro of
+manuscripts 24–27 (and of group-theoretic-substrates Part VI and
+signal-machine-collision-certificates Parts X–XIII), and
+[fixed-universal-polynomials](../fixed-universal-polynomials/) a dated
+paragraph in its Section 0.5 saying that the r.e.-complete polynomials of
+`cdc:rp:cor:recomplete` and `cdc:us:cor:hardness` are not ordinary-input
+universal polynomials and do not bear on the 84-operation record. No note
+adds a label, macro, package or bibliography entry. The note here leaves
+the build at 742 pages with the same clean log and the same single
+underfull line, and every `.aux` label number unchanged against a build of
+the committed text; it moves the material of printed pages 644–659
+(Sections 265–284) one page later, and later pages are unchanged.
+Its page (printed 644) was rendered and inspected.
 
 ## Build
 
@@ -3648,7 +3672,7 @@ latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 The recorded build has 742 pages (196 before batch 62, 306 before batch 63,
 338 before batch 78, 419 after Part XV, 449 after Part XVI,
 451 after the reciprocal notes, 452 after restoring the XVI organization row,
-509 after Part XVII, 571 after manuscripts 19 and 20, 605 after Part XIX, 607 after the batch-79 reciprocal notes, 608 after the batch-80 correction notes, still 608 after the batch-80 reciprocal note, 652 after Part XX, still 652 after the batch-82 reciprocal note and after the batch-83 reciprocal note, 742 after Part XXI),
+509 after Part XVII, 571 after manuscripts 19 and 20, 605 after Part XIX, 607 after the batch-79 reciprocal notes, 608 after the batch-80 correction notes, still 608 after the batch-80 reciprocal note, 652 after Part XX, still 652 after the batch-82 reciprocal note and after the batch-83 reciprocal note, 742 after Part XXI, still 742 after the batch-91 reciprocal note),
 with no errors, warnings, undefined references or citations, multiply
 defined labels, duplicate destinations or overfull boxes; the one underfull
 line (in manuscript 01's introduction, Section 3.2) is the same as in the batch-62 build. Batch 63 adds

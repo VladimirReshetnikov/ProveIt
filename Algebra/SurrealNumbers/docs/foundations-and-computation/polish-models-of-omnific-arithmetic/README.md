@@ -1,8 +1,8 @@
 # Polish Models of Omnific Arithmetic
 
-**Polish Presburger models for Glazer's Question 2, Borel presentations and support barriers, continuous Presburger arithmetic, local compactness, Polish series fields, Baire-category rigidity, nonsplit models, a claimed ATR₀ bound for Question 1, locally compact cones, elementary embeddings and Polish submodels of lexicographic models, local geometric codes and a countable arithmetic core, and Polish group completions and the size of class manifolds**
+**Polish Presburger models for Glazer's Question 2, Borel presentations and support barriers, continuous Presburger arithmetic, local compactness, Polish series fields, Baire-category rigidity, nonsplit models, a claimed ATR₀ bound for Question 1, locally compact cones, elementary embeddings and Polish submodels of lexicographic models, local geometric codes and a countable arithmetic core, Polish group completions and the size of class manifolds, Borel Presburger orders in one real dimension, the exponent-group threshold, and rational rank and self-embeddings of Levi-Civita fields**
 
-Merged research report, built from fifteen manuscripts dated 3 and 4 October
+Merged research report, built from eighteen manuscripts dated 3 and 4 October
 2026 on one subject: Elliot Glazer's *A Topological Tennenbaum Theorem*
 (arXiv:2311.13699) meets the repository's omnific arithmetic. Seven are
 manuscripts 03 to 09 of batch 86: 03, 04 and 05 arrived in `31fdc6571` and
@@ -15,6 +15,9 @@ of batch 89, which arrived in `7c0f2d9f9` and was placed in `23adb85f9`
 (Part X); it is source 16, by its file prefix. Two are manuscripts 01 and 03
 of batch 90, which arrived in `a162e4386` and were placed in `12076b2e8`
 (Parts XI and XII); they are sources 17 and 18, by their file prefixes.
+Three are manuscripts 01, 02 and 05 of batch 92, which arrived in `9dc8db274`
+and were placed in `e24ce2ce0` (Parts XIII to XV); they are sources 19, 20
+and 21, by their file prefixes.
 
 | Source | Manuscript | Archive | Pin | Placed | Printed as |
 |---|---|---|---|---|---|
@@ -33,6 +36,9 @@ of batch 90, which arrived in `a162e4386` and were placed in `12076b2e8`
 | 16 | batch 89, manuscript 02: *Elementary Embeddings and Polish Submodels of Lexicographic Presburger Arithmetic: Matrix normal forms, closed images, and two sharp ordinal thresholds* (23 pages, A4) | `Glazer_ProveIt_Embeddings_and_Thresholds` | `0f084afa9` | `23adb85f9` | Part X (Sections 127–138), Appendices W, X |
 | 17 | batch 90, manuscript 01: *Local Geometric Codes and Topological Arithmetic: Partial exponentiation, interval discontinuities, and a canonical countable arithmetic core* (30 pages, letter) | `local_geometric_codes_research` | `7c0f2d9f9` | `12076b2e8` | Part XI (Sections 139–150), Appendices Y, Z |
 | 18 | batch 90, manuscript 03: *Polish Group Completions and the Size of Class Manifolds: An intrinsic cancellation criterion and a local rank approach to Glazer's manifold question* (31 pages, A4) | `glazer_proveit_topology_research` | `2b7b388ba` | `12076b2e8` | Part XII (Sections 151–166), Appendices AA, AB |
+| 19 | batch 92, manuscript 01: *One Real Dimension, Arbitrarily Complicated Arithmetic: Order normal forms, Borel-complete classification, and measurable automorphism rigidity for Polish Presburger models* (22 pages, A4) | `One_Real_Dimension_Arithmetic` | `a32e1b139` | `e24ce2ce0` | Part XIII (Sections 167–181; Section 182 written for the report), Appendices AC, AD |
+| 20 | batch 92, manuscript 02: *The Exponent-Group Threshold for Polish Omnific Arithmetic: Separated grids, an induction-free root obstruction, and finite-support surreal semirings* (23 pages, A4) | `Glazer_ProveIt_Exponent_Threshold` | `9fe62865d` | `e24ce2ce0` | Part XIV (Sections 183–194), Appendices AE, AF |
+| 21 | batch 92, manuscript 05: *Rational Rank and Self-Embeddings of Levi-Civita Fields: A sharp co-Hopfian dichotomy, proper immediate self-copies, and integer-part obstructions* (20 pages, A4) | `Levi_Civita_Rank_and_Self_Embeddings` | `9fe62865d` | `e24ce2ce0` | Part XV (Sections 195–209), Appendix AG |
 
 The pins of 03–05 are 28 to 35 commits before `3d2177df4`, those of 06–09 33
 to 43 commits before `0bd0e5527`, those of 10 and 12–15 44 to 51 commits
@@ -68,22 +74,38 @@ manuscript (the scale and fusion construction it reuses), source 18 at most
 `birthday-cutoffs-and-hereditary-sets` (Part VIII), the new report
 `cantor-families-of-surreal-subfields` and the research-report collection's
 `measurable-box-games` (Part II).
+Sources 19, 20 and 21 (batch 92) are pinned 48 (`a32e1b139`) and 52
+(`9fe62865d`) commits before `e24ce2ce0`, when this report had Parts I–X and
+Parts I–IX; none of them read this report's article (source 20 read its
+README). Every repository file they read is unchanged between its pin and the
+placement except this README; the catalogue commit `cd514f61b` has since
+added pointers to the Presburger, surreal and root READMEs. They share at most
+1.02% of their word 8-grams with this report (source 19, mostly Part IX and
+the bibliography), at most 0.52% with any earlier source's manuscript, and
+0.11–0.14% with each other. Batch 92's other three manuscripts (03, 04, and 06
+of `afd7ffabb`) became Parts III and IV of the research-report collection's
+`measurable-box-games` (`e38f368c2`).
 
 **Status.** Unrefereed research drafts: 03, 08, 10, 12, 13 and 14 "prepared
 with ChatGPT", 09 and 15 "prepared with AI assistance", 05 "AI-assisted"; 04,
 06, 07 and 16 describe themselves as research reports prepared for Vladimir
 Reshetnikov (16's delivery README calls it AI-assisted, with internal
 AI-assisted proof reviews); 17 is "prepared with ChatGPT" and 18 "prepared
-with AI assistance". **Nothing in this report is formalized**, and
+with AI assistance"; 19 and 21 are research manuscripts "prepared with
+ChatGPT", and 20 is "developed with ChatGPT". **Nothing in this report is
+formalized**, and
 priority of its results is **not established**. Part VIII prints a **claimed**
 answer to Glazer's Question 1 that **has not been independently reviewed**,
 and Part XI a **claimed**, unreviewed ATR₀ upper bound for its local theorem.
+Part XV shows that Lemma 4.2.4 of the Kuhlmann–Serra preprint
+arXiv:2107.03362v3 is **false as stated** (Remark 204.2, a counterexample
+checked by this report); no repository text relies on that lemma.
 
 ## Files
 
 ```
 article.tex                                   the report, standalone LaTeX with an internal bibliography (pdfLaTeX)
-article.pdf                                   the compiled report, 450 pages (title page, abstract page, then pages 1-448)
+article.pdf                                   the compiled report, 538 pages (title page, abstract page, then pages 1-536)
 README.md                                     this guide
 05-omnific-presburger-CLAIM_LEDGER.md         05's claim ledger, as delivered (05's own theorem numbers)
 05-omnific-presburger-SOURCES.md              05's sources and priority record, as delivered
@@ -100,6 +122,13 @@ README.md                                     this guide
 17-local-codes-PROOF_STATUS.txt               17's proof and verification status, as delivered
 17-local-codes-SOURCE_AUDIT.txt               17's source, pin and novelty audit, as delivered
 18-polish-completions-PROOF_AUDIT.txt         18's proof audit and review record, as delivered
+19-one-real-dimension-CLAIMS.md               19's claim and verification boundaries, as delivered (19's own numbering)
+20-exponent-threshold-PROOF_AUDIT.md          20's proof audit and limitations, as delivered (20's own numbering)
+20-exponent-threshold-SOURCES.md              20's source provenance and scope of inspection, as delivered
+21-levi-civita-rank-audit-proof-audit.md      21's proof audit and literature correction, as delivered (21's own numbering)
+22-hilbert-orders-PROOF_REVIEW.md             placed for Part XVI in 5e4d8eed8, not yet written into this report
+22-hilbert-orders-SOURCES.md                  placed for Part XVI in 5e4d8eed8, not yet written
+23-borel-summability-SOURCE_AND_PROOF_AUDIT.md  placed for Part XVII in 5e4d8eed8, not yet written
 code/
   03-borel-presentations-verify.py            03: exact-rational checks (84,388 assertions), stdlib only
   04-polish-presburger-Makefile               04: delivered Makefile (names delivery paths)
@@ -124,6 +153,15 @@ code/
   16-presburger-embeddings-verify_examples.py 16: exact rational checks (11,243, seed 231113699), writes beside itself
   17-local-codes-verify_local_arithmetic.py   17: finite diagnostics (14,953 assertions, seed 20261004), stdlib only; writes beside itself without an argument
   18-polish-completions-build.sh              18: delivered build (latexmk or three pdflatex passes on polish_completions_class_manifolds.tex); 18 ships no checks
+  19-one-real-dimension-build.sh              19: delivered build (checks/verify_finite.py, three pdflatex passes on one_real_dimension.tex), names delivery paths
+  19-one-real-dimension-checks-verify_finite.py  19: exact finite checks (181,071, seed 20261004), stdlib only; writes results.json beside itself without --output
+  20-exponent-threshold-build.sh              20: delivered build (verify.py, three pdflatex passes on article.tex beside itself)
+  20-exponent-threshold-verify.py             20: exact finite diagnostics (13,034 assertions, seed 20261004), stdlib only; writes verification_results.json beside itself
+  21-levi-civita-rank-Makefile                21: delivered Makefile (latexmk article.tex; check target writes audit/checks.json)
+  21-levi-civita-rank-code-check_identities.py   21: exact finite checks (2,931), stdlib only; prints its record
+  22-hilbert-orders-build.sh                  placed for Part XVI in 5e4d8eed8, not yet written
+  22-hilbert-orders-verify.py                 placed for Part XVI in 5e4d8eed8, not yet written
+  23-borel-summability-verification.py        placed for Part XVII in 5e4d8eed8, not yet written
 data/
   03-borel-presentations-provenance.json      03's pin, inspected paths, theorem locations, PDF and test record
   03-borel-presentations-verification.json    recorded run of 03's checks
@@ -140,12 +178,22 @@ data/
   16-presburger-embeddings-BUILD_REPORT.json  16's build record: PDF and LaTeX checks, archive members, SHA-256 of 8 files
   16-presburger-embeddings-verification_results.json  recorded run of 16's checks
   17-local-codes-local_arithmetic_diagnostics.json   recorded run of 17's diagnostics
+  19-one-real-dimension-SOURCE_MANIFEST.json  19's literature, pin, the two READMEs it read with blob hashes, and its Library files
+  19-one-real-dimension-checks-results.json   recorded run of 19's checks
+  20-exponent-threshold-verification_results.json  recorded run of 20's diagnostics (Python 3.13.5)
+  21-levi-civita-rank-audit-build-summary.json   21's build record for its own 20-page PDF
+  21-levi-civita-rank-audit-checks.json       recorded run of 21's checks
+  21-levi-civita-rank-audit-sources.json      21's pin, inspected files and literature versions
+  22-hilbert-orders-BUILD_REPORT.json         placed for Part XVI in 5e4d8eed8, not yet written
+  22-hilbert-orders-verification_results.json placed for Part XVI in 5e4d8eed8, not yet written
+  23-borel-summability-verification_results.json  placed for Part XVII in 5e4d8eed8, not yet written
 ```
 
 Every delivered file is byte-identical to the delivery. Not shipped (they
 survive in the archives of `31fdc6571`, `fb8414869`, `fa0a0576e`,
-`7c0f2d9f9` and `a162e4386`): the fifteen delivered PDFs; the checksum
-manifests of 03, 04, 05, 08, 10, 12, 14 and 18 (all verified at placement;
+`7c0f2d9f9`, `a162e4386` and `9dc8db274`): the eighteen delivered PDFs; the
+checksum manifests of 03, 04, 05, 08, 10, 12, 14, 18, 19, 20 and 21 (all
+verified at placement;
 06, 07, 09, 13, 15, 16 and 17 shipped none, 13's `provenance.json`, 15's `source_manifest.json` and 16's
 `BUILD_REPORT.json` carrying hashes that were verified too); the manuscripts
 of all sources except 05 (merged into `article.tex`; 05's was the staged
@@ -154,7 +202,10 @@ of batch 87, 14's `SOURCE_AUDIT.txt` and 15's `source_manifest.json`, and
 one of batch 90, 18's `SOURCE_RECORD.txt`, because each contains a third
 party's personal profile address, which no tracked file carries. Appendix E
 summarizes their verified content without that address.
-Sources 06, 07 and 15 shipped no code or data.
+Sources 06, 07 and 15 shipped no code or data. The files with prefixes `22-`
+and `23-` were placed in `5e4d8eed8` (batch 93B) for Parts XVI and XVII,
+which are not yet written; this README lists them but does not describe their
+content.
 
 ## Labels
 
@@ -162,12 +213,13 @@ Every label carries the prefix `pma:`. Part I (05 and 04) uses `pma:pr:`, Part
 II (03) `pma:bor:`, Part III (07 and 06) `pma:cp:`, Part IV (08) `pma:lc:`,
 Part V (09) `pma:ser:`, Part VI (12 and 10) `pma:br:`, Part VII (13)
 `pma:nsp:`, Part VIII (14) `pma:atr:`, Part IX (15) `pma:lcc:`, Part X (16)
-`pma:emb:`, Part XI (17) `pma:lgc:`, Part XII (18) `pma:gcm:`, and text written
+`pma:emb:`, Part XI (17) `pma:lgc:`, Part XII (18) `pma:gcm:`, Part XIII (19)
+`pma:ord:`, Part XIV (20) `pma:egt:`, Part XV (21) `pma:rk:`, and text written
 for the merge bare `pma:` or a part prefix (for
 example `pma:sec:boundary`, `pma:cp:sec:meet`, `pma:br:sec:meet`,
-`pma:br:prop:meet`). The report has 923 labels: the 422 of the batch-86 writes
-(all kept), 286 of the batch-87 write, 76 of the batch-89 write and 139 of the
-batch-90 write. The
+`pma:br:prop:meet`, `pma:ord:sec:meet`). The report has 1156 labels: the 422
+of the batch-86 writes (all kept), 286 of the batch-87 write, 76 of the
+batch-89 write, 139 of the batch-90 write and 233 of the batch-92 write. The
 batch-87 ones are 123 of sources 12 and 10 and 4 added in Part VI, 41 of 13
 and 9 added, 37 of 14 and 1 added, all 52 of 15, the four part labels, and 15
 labels added to unlabelled questions of Parts I, III and IV so that notes can
@@ -193,7 +245,21 @@ propositions `pma:gcm:prop:rings`, `pma:gcm:prop:lc`); the part labels
 other parts (`pma:bor:q:minimal`, `pma:br:q:completion`,
 `pma:br:s10:q:completion`, `pma:atr:q:strength`, `pma:atr:q:weaker`,
 `pma:atr:q:parameters`, `pma:lcc:q:connected`, `pma:lcc:q:completion`:
-Questions 28.7, 88.3, 88.4, 115.1–115.3, 126.2, 126.3). No label was renamed
+Questions 28.7, 88.3, 88.4, 115.1–115.3, 126.2, 126.3). The batch-92 ones
+are the 59 labels of source 19 with the prefix `pma:ord:` and 20 added (its
+nine questions `pma:ord:q:…`, its snapshot subsection, two examples and
+conclusion, and, written for the report, `pma:ord:rem:choice`,
+`pma:ord:sec:meet`, `pma:ord:prop:shear`, `pma:ord:prop:abstract`,
+`pma:ord:prop:lcclass`, `pma:ord:cor:boundary`, `pma:ord:rem:complexity`);
+the 62 labels of source 20 with the prefix `pma:egt:` and 14 added (its twelve
+questions, its first and last sections); the 54 labels of source 21 with the
+prefix `pma:rk:` and 15 added (its twelve questions, its conclusion, its
+appendix and the remark `pma:rk:rem:ks` written for the report); the part
+labels `pma:part:ord`, `pma:part:egt`, `pma:part:rk`; and six added to
+unlabelled questions of other parts (`pma:lc:q:orders`,
+`pma:ser:q:supportcompletions`, `pma:ser:q:integerparts`,
+`pma:lcc:q:boundary`, `pma:lcc:q:threshold`, `pma:lcc:q:isocomplexity`:
+Questions 57.3, 73.5, 73.8, 126.4, 126.5 and 126.6). No label was renamed
 or removed, and every earlier label keeps its number.
 
 In Part I, ten labels of 04 that coincide with labels of 05 take the
@@ -280,6 +346,18 @@ letters). 17's records (`17-local-codes-PROOF_STATUS.txt`,
 "Question 12.2" of source 14's manuscript, which are Theorem 111.1 and
 Question 115.2 here; 18's `18-polish-completions-PROOF_AUDIT.txt` cites none.
 
+In Parts XIII–XV, 19's Section k is Section 166+k, 20's is 182+k and 21's is
+194+k, with statement numbers otherwise unchanged; Section 182 (where Part
+XIII meets Parts IV, IX and XII) was written for the report. Their "Research
+questions" share the theorem counter: 19's are Questions 180.1–180.9, 20's
+193.1–193.12 and 21's 208.1–208.12. Their appendices are Appendices AC, AD
+(19), AE, AF (20) and AG (21). The delivered records cite the sources' own
+numbers: 19's `19-one-real-dimension-CLAIMS.md` cites its Appendix A
+(Appendix AC here); 20's `20-exponent-threshold-PROOF_AUDIT.md` uses 20's
+theorem numbers (its Theorems 1.1, 1.2 and 4.4 are 183.1, 183.2 and 186.4
+here); 21's `21-levi-civita-rank-audit-proof-audit.md` uses 21's (its
+Theorems 5.2, 6.2 and 11.3 are 199.2, 200.2 and 205.3).
+
 ## Glazer's questions, his speculation, and priority
 
 Glazer's Question 2 (p. 8) asks whether some uncountable Polish space
@@ -331,6 +409,13 @@ the report itself (read on 4 October 2026); source 18 reads it with
 "connected" (a proper-class disjoint sum of lines is a manifold) and in its
 own class theory, and resolves it only under extra hypotheses (Question
 165.6).
+
+**Batch 92.** Sources 19, 20 and 21 answer neither question and say so; 19
+calls itself a continuation, not a new claim to the answer to Question 2.
+Source 20's one-root theorem (Theorem 183.2) weakens the open
+induction of Glazer's Corollary 1 to Euclidean division plus one integer-root
+axiom, for discretely ordered rings with Borel multiplication; it is a ZFC
+theorem with no reverse-mathematical content and does not certify Part VIII.
 
 **Priority is not established** for any source; on 3 October 2026 the arXiv
 record of Glazer's paper still had one version (v1) and no journal
@@ -601,11 +686,83 @@ they exist. For α = ω, Theorems 129.1, 130.5, 130.7 and 133.1 are source
 extends 05's Theorem 11.7; Proposition 128.3 is Part III's Theorems 35.1 and
 35.9, and its omnific map is Theorem 40.1. Each is flagged.
 
+**Part XIII** (19). For a countable torsion-free `E` with unit `u` and
+`E/Zu` torsion-free divisible, every Borel (equivalently Baire-property,
+equivalently Δ⁰₂) Presburger order on `R × E` (usual × discrete topology) is,
+after a continuous shear fixing the unit, the three-layer order "ordered
+quotient `E/A` above `R` above an ordered pure subgroup `A ∋ u`"
+(Theorem 170.2, Corollary 170.6); continuous
+isomorphisms are `(ar + f(e), φ(e))` and the complete invariant is the
+countable ordered extension `(E,u,A,<_A,<_B)` (Theorem 171.1), with the
+continuous automorphism group computed and no rigid model
+(Corollary 171.2, Corollary 171.3); for `E = V ⊕ Z` the
+invariant is a pair of countable ordered divisible groups
+(Theorem 172.1). All cones are the analytic manifold `X_lc` with
+analytic addition (Theorem 173.1); a continuous family of these
+additions encodes countable linear orders (Theorem 174.2,
+Theorem 174.3), so isomorphism in normal-form codes is Borel complete
+and not Borel (Theorem 175.2, Corollary 175.3). On
+`R ×→ D ×→ Z` (printed `G^lo_D`) there are `2^𝔠` abstract and `𝔠` Borel
+automorphisms (Theorem 176.1); Remark 176.3
+(written for the report) shows that the `2^𝔠` need choice. Its Lemma
+169.1 is Part IX's Lemma 120.4, Lemma
+177.1 is Lemma 124.2, Theorem 177.2
+mirrors Theorem 124.3, and Lemma 173.2 is a special case of
+Theorem 153.1; each is flagged.
+
+**Section 182** (merge, written for the report). The unit can always be
+sheared into `E` (Proposition 182.1); abstract and
+topological isomorphism agree for all these models (Proposition
+182.2); with Theorems 153.1, 154.1 and 121.1, every
+uncountable locally compact Polish Presburger model with continuous addition
+and continuous partial subtraction is such a cone, so these models are
+classified by countable ordered extensions (Proposition
+182.3); with a prescribed boundary `N` the invariant is the
+ordered extension with `A ≅ N − N` (Corollary 182.4); and
+the isomorphism relations on codes of continuous operations on `X_lc` are not
+Borel (Remark 182.5).
+
+**Part XIV** (20). For `Γ ≤ R` and `A_Γ = Z ⊕ ⊕_{γ>0} R T^γ` (`T` positive
+infinite, leading-term order), the cone `P_Γ` has a Polish topology with
+continuous addition and Borel multiplication iff `Γ = 0` or `Γ = αZ`, and then
+a locally compact one with both operations continuous (Theorem 183.1).
+In any uncountable Polish cone of a discretely ordered commutative ring,
+Euclidean division with order-bounded remainder and integer `k`th roots for
+one `k ≥ 2`, with Borel multiplication, forbid continuous addition
+(Theorem 183.2); this is strictly weaker than open induction
+(Proposition 188.4); `P_Γ` always has division, and `k`th roots iff
+`Γ = kΓ` (Corollary 184.5, Theorem 185.1). Both rest on a
+separated-grid obstruction adapted from Glazer (Theorem 186.4). Also:
+the root-tower transition (Corollary 189.2), Borel exact-support
+presentations (Proposition 190.1), and the monus locus
+(Proposition 190.3). Its field and floor (Lemma 184.3,
+Theorem 184.4) are Part V's mirrored and `odg:thm:floor`
+restricted; its Proposition 187.2 is Theorem 38.1 reparametrized, and
+its Proposition 190.1 generalizes Theorem 24.3 with the same
+example.
+
+**Part XV** (21). For `k = R_alg` and a Q-subspace `0 ≠ Γ ≤ R`, every field
+embedding of the left-finite field `ℒ^Γ` into `ℒ^Δ` fixes `k`, scales the
+valuation and is continuous with closed image (Theorem 198.1,
+Theorem 198.2); every self-embedding of `ℒ^Γ` is onto iff
+`dim_Q Γ < ∞` (Theorem 195.1, Theorem 199.2, Theorem 200.2),
+with an unattained distance (Theorem 201.1), a Cantor family of
+`2^ℵ₀` closed immediate self-copies (Theorem 202.1), the embedding
+classification between exponent groups (Theorem 203.1), and the
+integer-part criterion (Theorem 205.3, Corollary 205.4).
+Proposition 204.1 and Remark 204.2 show that
+Lemma 4.2.4 of Kuhlmann–Serra, arXiv:2107.03362v3 ("im S = Hom⁺(G,U)") is
+false: on the Hahn field `k(t)` the character `u(n) = (1+t)^n` is summable but
+gives `t ↦ t + t²`, which is not onto, since `t ↦ −1 − t` fixes `t + t²`
+and moves `t`; the remark adds a complete, real closed counterexample. For
+`Γ = Q` the field is Part V's `ℒ_k` with `k = R_alg`, and its basic layer
+(Propositions 196.2–197.1, 205.2 and 206.1) generalizes Part V's; each is flagged.
+
 ## What the report does not claim
 
 Appendix F keeps every limitation, source by source (05: 9 items, 04: 8,
 03: 9, 07: 10, 06: 10, 08: 9, 09: 8, 12: 10, 10: 11, 13: 10, 14: 9, 15: 8,
-16: 9, 17: 10, 18: 11, merge: 19). In short: no priority for any source; Glazer's Question 1 is
+16: 9, 17: 10, 18: 11, 19: 10, 20: 9, 21: 9, merge: 23). In short: no priority for any source; Glazer's Question 1 is
 answered only by source 14's **claim**, unrefereed and not independently
 reviewed, an ATR₀ upper bound under a coding convention with declared
 inputs; no conclusion about variants of Question 2 with further hypotheses;
@@ -630,14 +787,22 @@ does not identify coded with ordinary exponentiation, and its ATR₀ bound is a
 claimed local upper bound; 18's criterion needs a linear natural order and
 continuous addition, gives no theorem for partially ordered cones, does not
 settle connected presentations, and does not resolve Glazer's manifold
-question; the finite checks are finite.
+question; 19's classification is for `R × E` with the product topology and the
+unit in `E` (Section 182 removes the last restriction), its Borel
+completeness is for countable structures in explicit codes, and its `2^𝔠`
+count needs `D ≠ 0` and choice; 20's obstructions need Borel multiplication
+(countably many scalar maps), do not treat multiplication-only presentations,
+and give no topological group on the signed ring; 21's fields are left-finite
+over `R_alg`, not full Hahn or real-coefficient fields, and its correction
+concerns the arXiv v3 text only, not the journal version or the maximal Hahn
+field; the finite checks are finite.
 
 Part I has 17 questions (four asked by both 04 and 05, merged in Section
 14.1), Part II 8, Part III 11 of 07 with 06's twelve numbered projects
 attached to the questions of the same subject, Part IV 8, Part V 12,
 Part VI 23 (12's eleven, each followed by 10's question on the same subject
 where there is one, and 10's four others), Part VII 9, Part VIII 8, Part IX
-11, Part X 12, Part XI 11, Part XII 12. One sentence of Question 14.4 is answered by 06's Theorem 38.1 (note after
+11, Part X 12, Part XI 11, Part XII 12, Part XIII 9, Part XIV 12, Part XV 12. One sentence of Question 14.4 is answered by 06's Theorem 38.1 (note after
 the question); 07's question on uniform definability bounds is answered for
 locally compact signed presentations by 08's Theorem 52.1; 08's Question 57.1
 is answered under 09's Borel-scalar hypothesis by Theorem 62.1 and, without
@@ -675,6 +840,22 @@ Parts VI and IX: on the cone of an uncountable discretely ordered ring every
 Polish topology with continuous addition has discontinuous partial
 subtraction, and an uncountable locally compact Polish Presburger model with
 continuous addition and partial subtraction is homeomorphic to `X_lc`.
+Until batch 92 the README went on: "Everything else is open." Batch 92
+(Parts XIII–XV) answers more, each with a dated note after the question:
+Part IV's Question 57.3 (classify the orders on `R^d × E`) for
+`d = 1`, by 19 (`d ≥ 2` stays open); Part IX's Questions
+126.5 (threshold orders and their automorphism groups) and 126.4
+(prescribed boundary), by 19 with Section 182 (the
+second is this report's reading, not stated by 19); Part IX's Question
+126.6 in part (lower bounds only); Part II's Question
+28.7 (a minimal arithmetic hypothesis), by 20 (division plus one root axiom
+suffice); Part V's Question 73.8 in part (transported
+integer parts), by 21; and, for uncountable locally compact Polish models with
+continuous partial subtraction only, Questions 14.12 and 103.5 (rigidity:
+none is rigid) and the model half of 43.2 (Section 182). Part V's Question
+73.5 (higher ordered rank) is not answered; 21
+extends the construction to every rational rank. 19's own question on group
+completions (Question 180.2) was already answered by Part XII.
 Everything else is open.
 
 ## Printed by citation, not reprinted as new
@@ -701,8 +882,10 @@ All labels exist at HEAD.
   surreal (`omnificFloor_spec`, `existsUnique_omnific_integerPart`,
   `omnificFloor_of_integer_negative_tail` in
   `Algebra/SurrealNumbers/Surreal/Foundations/OmnificFloor.lean`): Lemma 23.1
-  and 09's Theorem 70.1 are restrictions of it; neither is formalized as
-  stated.
+  and 09's Theorem 70.1 are restrictions of it, as are 20's
+  Theorem 184.4 (real coefficients, any `Γ ≤ R`) and 21's
+  Proposition 205.2; none is formalized as stated (20 names the
+  finite-support clause as an open formalization obligation).
 - `dsn:cor:openinduction` (definable-surreals-and-omnific-integers) and the
   Shepherdson paragraph of omnific-diophantine-geometry: the route of
   Theorem 23.2 and of 09's Proposition 70.6. Pending in
@@ -744,6 +927,34 @@ All labels exist at HEAD.
   the same Replacement bound on birthdays as Part XII's Corollary 163.3.
 - `swo:gcz:thm:main` (surreal-well-orders, Part XV): Glazer's nonconservativity
   of Global Choice over Zermelo set theory, which source 18 cites as context.
+- `sse:prop:valueaction` and `sse:an:top:criterion` (surreal-self-embeddings)
+  and `csf:lem:valuation-functor` (cantor-families-of-surreal-subfields): the
+  value action and the cofinal-image continuity criterion of which Part XV's
+  Theorem 198.1 is the Archimedean, left-finite instance (note after
+  it); none is formalized.
+- `odg:def:lem:twist` (omnific-diophantine-geometry), **proved in Lean** for
+  Hahn series (`characterTwist`, `support_twist`, `twist_inverse` in
+  `Algebra/SurrealNumbers/Surreal/HahnSeries/CharacterTwist.lean`): the
+  coefficient twist in 21's Theorem 198.2; the root-uniqueness
+  lemmas `pow_injective_near_one`, `binomialPower_rat_root_unique`,
+  `exists_unique_root_near_one` of `Surreal/HahnSeries/BinomialRoots.lean`
+  (mapped in `docs/FORMALIZATION.md`) are the full-Hahn uniqueness half of 21's
+  Lemma 197.2. The left-finite statements are not formalized.
+- Within the report, Part XIII re-proves Part IX's Lemmas 120.4 and 124.2
+  (Lemma 169.1, Lemma 177.1), mirrors Theorem
+  124.3 (Theorem 177.2), recovers the carrier `X_lc` of Theorems 120.5
+  and 121.1, the Archimedean computation of Section 123
+  (Lemma 174.1) and Part IV's Theorem 52.1 and Proposition 51.4
+  (Proposition 173.3), proves a special case of Theorem 153.1
+  (Lemma 173.2) by another route, and writes the elimination out
+  once more (Appendix AC). Part XIV's Lemma 184.3 is Part V's
+  Proposition 65.2 mirrored, its Proposition 185.2 generalizes
+  Theorem 38.2, Proposition 187.2 is Theorem 38.1,
+  Proposition 190.1 generalizes Theorem 24.3 with the same
+  example, and Proposition 187.3 at `Γ = Q` is Theorem 25.2. Part XV
+  re-proves, for every `Γ`, Part V's Proposition 65.2, Theorem 65.3,
+  Proposition 65.5, Theorem 68.2, Theorem 70.1 and the surreal map of Section
+  71. Each is noted where it occurs.
 
 ## Corrections and stale statements
 
@@ -828,6 +1039,30 @@ All labels exist at HEAD.
 - 17 and 18 describe this report as it stood at their pins (Parts I–V) and cite
   the batch-87 archives in `docs/incoming`, retired in `d151b39ca`; notes and
   bibliography entries give the current places.
+- **Batch 92.** Part XV records that Lemma 4.2.4 of the Kuhlmann–Serra
+  preprint arXiv:2107.03362v3 is false as stated
+  (Proposition 204.1, Remark 204.2, checked against the
+  preprint by this report; the Hilbert's-tenth routing had not checked it).
+  Six other reports of the collection cite the preprint; none uses the false
+  inclusion. This README's "Everything else is open." is quoted and re-scoped
+  above; counts ("fifteen") in the title page, abstract and Section 1 now say
+  eighteen, and to keep the abstract on one page Part I's sentence on the
+  coset-invariance hypothesis and its parenthetical description of the
+  self-embeddings were dropped, its Baire-model clause and priority clause
+  were shortened, Part II's opening sentence ("the other side of the same
+  boundary") was folded into the next, "on continuous Presburger arithmetic"
+  was dropped from Part III's opening sentence, the closing sentence was
+  shortened, and Parts XIII–XV joined the list of later parts. 19 does not know Part IX, which it re-proves in
+  part, or Part XII, which answers its group-completion question; 20 calls
+  this report the 349-page report of its pin; 19 and 21 cite sources 05, 08
+  and 09 as Library files. Notes give the current places. Two unproved
+  statements of the sources were found: 20's countable `DIV + Root_2` example
+  (proved in a `[merge]` note) and 21's extension of its proofs to larger
+  coefficient fields (kept inside its Question 208.5); 20's
+  Lemma 188.1 silently assumes uncountability (note).
+  Dated notes at Questions 14.12, 28.7, 43.2, 57.3, 73.5, 73.8, 103.5,
+  126.4, 126.5 and 126.6 and after Theorem 123.1
+  say what Parts XIII–XV prove; nothing earlier was deleted.
 
 ## Relations to the formal project and to neighbouring reports
 
@@ -963,10 +1198,47 @@ All labels exist at HEAD.
   routed 18 from its README only, ran no code, found no new arithmetic bound,
   did not certify 17's ATR₀ argument, and recorded that 18's group-completion
   claim merits a separate proof review, which has not been done.
+  The batch-92 archives were read at README level in `3c25fbb55`
+  (`review_latest_five_9dc8db274.md` and `.json`): members authenticated by
+  blob, SHA-256 and size, the three delivery READMEs read in full, no code run,
+  claims treated as routing information, and 21's correction of another paper
+  explicitly not checked there (this report checked it). The placement was
+  checked in `e663441d7` (`review_polish_placement_e24ce2ce0.md` and `.json`):
+  the sixteen staged files match archive members byte for byte. Neither is a
+  proof review.
+- **Parts XIII–XV and the formal projects.** 19 read the Presburger and
+  surreal READMEs, 20 the root README, the surreal catalogue, this README and
+  `Surreal/Foundations/OmnificFloor.lean`, 21 the surreal README,
+  `Surreal/HahnSeries/CharacterTwist.lean` and
+  `Surreal/HahnSeries/BinomialRoots.lean`; all unchanged at the placement
+  except this README. The Lean declarations they name exist and are formal
+  (`odg:thm:floor`, `odg:def:lem:twist`, the binomial root lemmas), but about
+  surreals and full Hahn series, not the finite-support and left-finite
+  statements of these parts. None of 19's, 20's or 21's proposed modules
+  exists; `docs/FORMALIZATION.md` maps no label of Parts XIII–XV, and
+  placement beside these projects confers no formal status.
+- [`surreal-self-embeddings`](../../surreal/surreal-self-embeddings/),
+  [`omnific-preserving-automorphisms`](../../surreal/omnific-preserving-automorphisms/)
+  and [`cantor-families-of-surreal-subfields`](../cantor-families-of-surreal-subfields/):
+  Part XV's Theorem 198.1 is the Archimedean instance of
+  `sse:prop:valueaction` and `sse:an:top:criterion` (and of
+  `csf:lem:valuation-functor`); its proper immediate self-copies and its
+  Cantor family are field-level analogues of sse's iterated images and csf's
+  Cantor families (different objects); opa, sse, `surcomplex-field-automorphisms`
+  and three other reports cite the Kuhlmann–Serra preprint whose Lemma 4.2.4
+  Part XV corrects, but only for the decomposition of given automorphisms.
+  21's Question 208.7 is the left-finite analogue of opa's
+  `opa:thm:criterion`. No question of these reports is answered.
+- [`discrete-initial-subgroups-and-omnific-normalization`](../../surreal/discrete-initial-subgroups-and-omnific-normalization/):
+  Part XV's integer part `ℐ^Q` is its Shepherdson ring (Part V's `I_k`), and
+  Part XIV's ring `A_Z` contains its ring `Z + XQ[X]`.
+- `SetTheory/Cardinals/docs/reports/ordinals-and-order-types/measurable-box-games`:
+  its Parts III and IV are the batch-92 siblings of Parts XIII–XV (box and hat
+  games; no shared theorem).
 
 ## Notation
 
-Section 1.3 has the full table, in three blocks. Parts I–II: 04's `G(D)`,
+Section 1.3 has the full table, in six blocks. Parts I–II: 04's `G(D)`,
 `M(D)`, `D_ω`, `M_ω`, `⊕_lex` are 05's `G_D`, `M_D`, `D_B`, `M_B`, `×→` (the
 same objects); 04's Baire homeomorphism `H` (charts `H_≥`, `H_>`) and integer
 code `h` are `Ψ`, `Ψ_≥`, `Ψ_>`, `ζ`; 03's ring `𝒜`, cone `𝒜_{≥0}`, rational
@@ -1007,6 +1279,24 @@ false reading**: continuity of `δ` is not continuity of the monus); its `G`,
 `Φ_A`, are local; its power set `𝒫(A)` is not Part II's Puiseux field `𝒫`;
 its class theory `GB^rep_{−Fnd} + AC` is its own notation. No normalization
 changed.
+Parts XIII–XV (sixth block): 19's `G_L = R ×→ D_L ×→ Z`, `M_L`, `G_D`, `M_D`
+are printed `G^lo_L`, `M^lo_L`, `G^lo_D`, `M^lo_D` (**tempting false
+readings**: Part IX's `G_L = V_L ×→ R ×→ Z` puts the coded scales *above* `R`,
+Part I's `G_D = D ×→ Z` has no real coordinate); 19's `D_L` is Part IX's `V_L`
+(same group and order) and printed so; its manifold `X` is `X_lc`; its `C`
+is Part IV's `C` and Part IX's `H = G^0`, its `I` is Part IV's `B_C` and Part
+IX's `C` (**letters exchanged**); its `\cfrak`, `\st`, `\repo` are the report's
+`𝔠`, `st`, `ProveIt`. 20's macro `\PP` (the positive part `pp_{>0}`) is renamed
+in the source only, because the report's `\PP` is Part II's cone; 20's `T` is
+positive **infinite** (Part II's `X`, Part III's `t`), `A_Q` is Part II's
+`A_fin` and `P_Z` Part III's cone of `Z + tR[t]`; `P_Γ` is not Part III's
+`P`. 21 indexes its fields by the **exponent group** (`ℒ_Γ`, `ℋ_Γ`, `ℐ_Γ`),
+Part V by the **coefficient field** (`ℒ_k`, `ℋ_k`, `ℐ_k`); 21's fields are
+printed with the exponent group as a superscript, `ℒ^Γ`, `ℋ^Γ`, `ℐ^Γ`, so
+that 21's `ℒ_Q` is not misread as Part V's `ℒ_k` with `k = Q` (`ℒ^Q` is Part
+V's `ℒ_{R_alg}`); 21's `t` is infinitesimal, as in Part V, and its metric
+`e^{−v}` is unbounded (Part V's is `min{1, 2^{−v}}`, same topology). No
+normalization changed.
 
 ## Delivered files that use delivery names
 
@@ -1083,6 +1373,31 @@ changed.
 - `code/18-polish-completions-build.sh` changes to its own directory and builds
   `polish_completions_class_manifolds.tex`, which is not shipped;
   `18-polish-completions-PROOF_AUDIT.txt` describes 18's own manuscript and PDF.
+- `code/19-one-real-dimension-build.sh` changes to its own directory, runs
+  `python3 checks/verify_finite.py --output checks/results.json` and three
+  `pdflatex` passes on `one_real_dimension.tex`, which is not shipped;
+  `code/19-one-real-dimension-checks-verify_finite.py` says "Run: python3
+  checks/verify_finite.py --output checks/results.json" and writes
+  `results.json` **beside itself** without `--output`.
+  `19-one-real-dimension-CLAIMS.md` uses 19's own numbering and describes its
+  own LaTeX build; `data/19-one-real-dimension-SOURCE_MANIFEST.json` names the
+  Library files `polish_presburger_glazer.pdf` (source 05) and
+  `article(20261004-024117).pdf` (source 08).
+- `code/20-exponent-threshold-build.sh` runs `verify.py` beside itself and three
+  `pdflatex` passes on `article.tex` beside itself, which is not shipped;
+  `code/20-exponent-threshold-verify.py` writes `verification_results.json`
+  **beside itself** (the path is fixed in the code).
+  `20-exponent-threshold-PROOF_AUDIT.md` uses 20's numbering;
+  `20-exponent-threshold-SOURCES.md` mentions a supplied professional-profile
+  page that could not be retrieved (no address).
+- `code/21-levi-civita-rank-Makefile` builds `article.tex` (not shipped) into
+  `build/` and copies `article.pdf` beside itself, and its `check` target runs
+  `code/check_identities.py` and writes `audit/checks.json`;
+  `code/21-levi-civita-rank-code-check_identities.py` prints its record.
+  `data/21-levi-civita-rank-audit-build-summary.json` and
+  `21-levi-civita-rank-audit-proof-audit.md` describe 21's own 20-page PDF and
+  numbering; `data/21-levi-civita-rank-audit-sources.json` names the Library
+  file `article(20261004-024447).pdf` (source 09).
 - The source texts merged into `article.tex` give their delivery names in
   their reproduction sections; notes after each give the shipped names.
 
@@ -1097,21 +1412,22 @@ latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 pdfLaTeX with `newpxtext`/`newpxmath`, `tcolorbox`, `cleveref`, `aliascnt`,
 `tikz` (07's figure). The build has no errors, no LaTeX, package or hyperref
 warnings, no overfull or underfull boxes, no undefined or multiply defined
-references and no duplicate destinations; 450 pages. Commit only
+references and no duplicate destinations; 538 pages. Commit only
 `article.pdf`, not the auxiliary files.
 
 ## Rerunning the finite checks
 
-All eleven programs need only Python 3.10+ and the standard library. Run them
-**on a copy** with the delivery names restored, never in this directory (05's,
-12's, 13's, 16's and 17's runners write beside themselves, 04's, 08's, 09's and 10's into
-the working directory, and the build scripts and Makefiles of 05, 08, 09, 10,
-12, 13, 14, 15, 16 and 18 would build a delivery-named source, some of them also
-rerunning checks, in place):
+All fourteen programs of Parts I–XV need only Python 3.10+ and the standard
+library. Run them **on a copy** with the delivery names restored, never in this
+directory (05's, 12's, 13's, 16's, 17's, 19's and 20's runners write beside
+themselves, 04's, 08's, 09's and 10's into the working directory, and the
+build scripts and Makefiles of 05, 08, 09, 10, 12, 13, 14, 15, 16, 18, 19, 20
+and 21 would build a delivery-named source, some of them also rerunning
+checks, in place):
 
 ```
 D=/path/to/this/report; S=/path/to/scratch     # a fresh directory
-mkdir -p $S/03 $S/04 $S/05 $S/08 $S/09 $S/10 $S/12 $S/13 $S/14 $S/16 $S/17
+mkdir -p $S/03 $S/04 $S/05 $S/08 $S/09 $S/10 $S/12 $S/13 $S/14 $S/16 $S/17 $S/19/checks $S/20 $S/21/code
 cp $D/code/05-omnific-presburger-polish_presburger.py $S/05/polish_presburger.py
 cp $D/code/05-omnific-presburger-verify.py            $S/05/verify.py
 cp $D/code/04-polish-presburger-verification.py       $S/04/verification.py
@@ -1124,6 +1440,9 @@ cp $D/code/13-beyond-split-verify.py                  $S/13/verify.py
 cp $D/code/14-atr0-tennenbaum-verify_finite_lemmas.py $S/14/verify_finite_lemmas.py
 cp $D/code/16-presburger-embeddings-verify_examples.py $S/16/verify_examples.py
 cp $D/code/17-local-codes-verify_local_arithmetic.py  $S/17/verify_local_arithmetic.py
+cp $D/code/19-one-real-dimension-checks-verify_finite.py $S/19/checks/verify_finite.py
+cp $D/code/20-exponent-threshold-verify.py            $S/20/verify.py
+cp $D/code/21-levi-civita-rank-code-check_identities.py $S/21/code/check_identities.py
 cd $S
 python 05/verify.py                                   # writes 05/verification_results.json
 python 04/verification.py --output 04/verification_results.json
@@ -1136,6 +1455,9 @@ python 13/verify.py                                   # writes 13/verification_r
 python 14/verify_finite_lemmas.py > 14/finite_check_results.txt
 python 16/verify_examples.py                          # writes 16/verification_results.json
 python 17/verify_local_arithmetic.py 17/local_arithmetic_diagnostics.json
+python 19/checks/verify_finite.py --output 19/checks/results.json
+python 20/verify.py                                   # writes 20/verification_results.json
+python 21/code/check_identities.py > 21/checks.json
 ```
 
 Tested with Python 3.14.4 on Windows: 05 reports `"status": "PASS"` and
@@ -1149,10 +1471,15 @@ families; 12 `"status": "PASS"` and 36,989 checks in 15 families (both seed
 batch 89: 16 `"all_checks_passed": true` and 11,243 checks in 13 categories
 (seed 231113699). For batch 90: 17 `"status": "passed"` and 14,953 assertions
 (1,692 beta-code, 900 scale, 12,180 buffer, 181 anchored; seed 20261004), in
-under a second; 18 ships no checks. The records of 10, 12, 13, 14, 16 and 17
+under a second; 18 ships no checks. For batch 92: 19 `"status": "PASS"` and
+181,071 checks in 23 families (seed 20261004), also under `python -O`; 20
+`"status": "PASS"` and 13,034 assertions in 20 groups; 21 `"status": "PASS"`
+and 2,931 checks in 13 families (7–25 s, 3–4 s and 56–77 s in the intake's
+and the write's runs). The records of 10, 12, 13, 14, 16, 17, 19 and 21
 equal the shipped ones
 byte for byte after
-removing the carriage returns that Windows text mode adds; the batch-86
+removing the carriage returns that Windows text mode adds, and 20's also
+except for the interpreter version (`3.14.4` for the recorded `3.13.5`); the batch-86
 records equal theirs except for the interpreter version (05, 03) and, on
 Windows, CRLF line endings. 04's stream API (`from verification import
 Stream, baire_add, ...`) works from `$S/04`. To rebuild a source's own PDF,
@@ -1165,7 +1492,13 @@ proved in the text, and 15 ships no executable checks. 16's checks verify
 finite rational examples only; they cannot see the choice-built functional, the
 transfinite normal form or any Baire-category argument. 17's diagnostics check
 finite CRT codes, integer scales and buffers only; they verify no nonstandard,
-uncountable, fusion or ATR₀ claim.
+uncountable, fusion or ATR₀ claim. 19's checks test finite shadows of its
+proofs (sign rules, residues, shears, permutations, the carrier transport);
+20's finite algebraic identities and grid estimates; 21's rational binomial,
+Neumann, telescoping and reflection identities. None decides an infinite
+isomorphism problem, a Polish topology, Borelness, completeness or real
+closedness. The `22-` and `23-` programs belong to the unwritten Parts XVI
+and XVII and are not covered here.
 
 ## Provenance
 
@@ -1204,6 +1537,17 @@ wording of the class-manifold question was checked against the Oberwolfach
 report (4 October 2026). Their bibliographies share the entries for Glazer,
 Enayat–Hamkins–Wcisło, Tserunyan, Simpson and Blass and prefix the rest
 `s17:` and `s18:`; their references were not re-checked otherwise.
+Parts XIII, XIV and XV are 19, 20 and 21 whole, with notes: their re-proofs of
+Parts I–V, IX and XII keep the sources' proofs and are flagged in notes; 20's
+title page, abstract and keywords are not printed, its conventions paragraph
+opens Part XIV; Section 182, Remark 176.3, the proof of 20's
+countable example and Remark 204.2 were written for the report;
+the six old questions were labelled. Their bibliographies share the entries
+for Glazer, Enayat–Hamkins–Wcisło, Jeřábek, Cooper, Blass, Kechris,
+Shamseddine–Berz and Ehrlich–Kaplan and prefix the rest `s19:`, `s20:`,
+`s21:`; the Kuhlmann–Serra preprint arXiv:2107.03362v3 was read for Remark
+204.2 on 4 October 2026, and the other references of 19–21 were
+not re-checked.
 Citation details checked on 3 October 2026: Glazer's arXiv record;
 Tserunyan's notes (dated November 26, 2025); Paran–Vo, Israel J. Math. 273
 (2026), no. 2, 979–1000 (online 11 December 2025); Enayat–Hamkins–Wcisło,

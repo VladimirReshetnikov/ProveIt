@@ -1516,6 +1516,22 @@ Parts VI–VIII here, and *canonical-diophantine-certificates* points to
 Table 3 from its Part XX paragraph "No effect on the universal bound".
 None of these notes adds a label, macro, package or bibliography entry.
 
+**Reciprocal note (batch 91, 4 October 2026).**
+[canonical-diophantine-certificates](../canonical-diophantine-certificates/),
+Part XXI (Research Reports 50, 52, 53, 54; batch 91, cluster A; written in
+`fb2287290`), holds two more fixed polynomials whose positive zero sets are
+recursively enumerable complete under imported simulation hypotheses
+(`cdc:rp:cor:recomplete`, `cdc:us:cor:hardness`; Reports 53 and 54): 3,865
+and 3,262 positive witnesses, exact degree 18, 17,275 and 14,571 gates, on
+one positive input coding a periodic sandpile instance. Their hardness goes
+through outside computable reductions (Cairns's vertex simulation; Report
+35's finite-total loader with the imported U15 encoder), not a paid
+arithmetic front end, so they are not ordinary-input universal polynomials
+and do not bear on the 84-operation record, as the research tree's review
+`review_new_sandpiles_0d7f51c44.md` (`bc6e1a62c`) also says; no shared
+theorem. A second dated paragraph in Section 0.5, after the batch-88 one,
+records it, with no label, macro, package or bibliography entry.
+
 ## Other discrepancies and hazards
 
 - **Stale upper-bound prose, kept byte for byte.** `11-grill-poly-arithmetic-README.md`
@@ -1641,3 +1657,10 @@ log (the same 22 underfull lines and the one enumitem warning) and every
 `.aux` label number and page unchanged against a build of the committed
 text; its page (printed page 23) was rendered and inspected. The page
 ranges in the file listing above are unchanged.
+
+The batch-91 reciprocal note (4 October 2026; a second dated paragraph in
+Section 0.5, on `canonical-diophantine-certificates` Part XXI; no label,
+macro, package or bibliography entry) likewise leaves the build at 242
+pages with the same log (the same 22 underfull lines and the one enumitem
+warning) and every `.aux` label number and page unchanged against a build of
+the committed text; its page (printed page 23) was rendered and inspected.

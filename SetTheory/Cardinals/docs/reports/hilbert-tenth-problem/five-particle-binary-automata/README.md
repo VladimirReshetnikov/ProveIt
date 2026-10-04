@@ -79,7 +79,7 @@ already in the collection are kept as marked second presentations.
 ```
 README.md                                       this guide
 article.tex                                     the report: standalone LaTeX, internal bibliography
-article.pdf                                     the compiled report, 231 pages
+article.pdf                                     the compiled report, 232 pages
 figures/accepting-orbit.pdf                     Report 15's Figure (raw five-particle trace of its accepting example)
 figures/14-five-binary-five-particle-trace.pdf  Report 14's figure (its accepting example's CA trace)
 ```
@@ -1070,6 +1070,17 @@ Report 32 is `../group-theoretic-substrates` Part V.
   `38-low-arity-qa-pred-tools-README68.md` (delivered inside Report 69's
   archive). Report 70's byte copies of both predecessors' tools and
   READMEs are not shipped here.
+- **SMC, batch 91 (Part IX; reciprocal note, 4 October 2026).** SMC source
+  24 (Report 49; written in `61c9e3eb2`) proves Report 26's
+  prospective-isolation lemma (`fpa:pi:lem:parallel`) again as
+  `smc:rt:lem:guard`, with the same isolation distance `2(b+r)` and radius
+  bound `3(b+r)`, for its own row format, crediting the mechanism to the
+  research tree's review `review_parallel_particle_reports.md`, and uses it
+  for a globally reversible binary rule of radius at most 90 realizing the
+  four-particle timing threshold (`smc:rt:thm:main`); SMC prints it as a
+  marked second route. A dated `[write]` note after the lemma's audit note
+  (Section 90, after Lemma 90.1) records it; no label, macro, package or bibliography entry
+  is added.
 
 ## Relation to the formal project
 
@@ -1494,10 +1505,10 @@ v2 page 10.
     latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 
 pdfLaTeX (MiKTeX), standalone with an internal bibliography; needs the two
-PDFs in `figures/`. The build of this text has 231 pages (Part I
+PDFs in `figures/`. The build of this text has 232 pages (Part I
 from page 24, Part II from 66, Part III from 91, Part IV from 117, Part V
-from 129, Part VI from 144, Part VII from 189, the provenance appendix from
-224), no undefined references or citations, no multiply-defined labels, no
+from 129, Part VI from 144, Part VII from 190, the provenance appendix from
+225), no undefined references or citations, no multiply-defined labels, no
 duplicate destinations and no overfull lines. The third write (Part VII)
 added one underfull line, in Report 71's delivered timestamp paragraph
 (Section 147.1), to the three of the second build; it defines Part VII's
@@ -1513,6 +1524,17 @@ no label, macro, package or bibliography entry) leave the build at 190
 pages with every Part on the same page, the same clean log and three
 underfull lines, none in the notes; their pages (64 and 167) were rendered
 and inspected.
+
+The batch-91 reciprocal note (4 October 2026: in Section 90, after the
+audit note that follows Lemma 90.1 `fpa:pi:lem:parallel`, on SMC Part IX's
+`smc:rt:lem:guard`; no label, macro, package or bibliography entry) takes
+the build from 231 to 232 pages: the note opens page 148, above Section 91,
+the text after it flows down until Report 27's opening, which moves from
+page 159 to 160, and every later page moves by one (Part VII from 189 to 190,
+the provenance appendix from 224 to 225). Every `.aux` label number is
+unchanged against a build of the committed text, and the log is the same
+(no warnings, no overfull boxes, the same four underfull lines, none in
+the note). The note's page (148) was rendered and inspected.
 
 ## Delivered path → shipped path
 
