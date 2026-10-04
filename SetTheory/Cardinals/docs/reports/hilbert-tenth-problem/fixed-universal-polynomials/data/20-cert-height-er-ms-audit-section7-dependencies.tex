@@ -1,0 +1,40 @@
+\begin{lemma}[Integer-coordinate Pell classification]\label{lem:pellclass}
+For integral $S\ge2$, every solution of
+$x^2-(S^2-1)y_*^2=1$ with $x,y_*>0$ is
+$(x,y_*)=(\chi_S(m),\psi_S(m))$ for a unique $m\ge1$.
+\end{lemma}
+\begin{proof}
+The discriminant is strictly between $(S-1)^2$ and $S^2$.
+For $y_*=1$ necessarily $x=S$. For $y_*>1$,
+$\sqrt{S^2-1}\,y_*<x<Sy_*$ and $x>(S-1)y_*$.
+Multiplication by $S-\sqrt{S^2-1}$ gives integral coordinates
+\[
+ x'=Sx-(S^2-1)y_*>0,\qquad 0<y_*'=Sy_*-x<y_*.
+\]
+They have the same norm. Descent ends at $(S,1)$ and then $(1,0)$;
+reversal proves the classification, and strict growth gives uniqueness.
+Only the integer-coordinate Pell problem is used, not a claim about
+all algebraic integers of the quadratic field.
+\end{proof}
+
+\begin{lemma}[Odd quotient polynomial]\label{lem:oddpoly}
+There are integer polynomials $Q_h$ such that
+\[
+ \chi_S(2h+1)=S Q_h(S^2),\quad
+ Q_0(Z)=1,\quad Q_1(Z)=4Z-3,\quad
+ Q_{h+2}=(4Z-2)Q_{h+1}-Q_h.
+\]
+They satisfy
+\begin{equation}\label{eq:Qidentities}
+ Q_h(0)=(-1)^h(2h+1),\qquad
+ Q_h(1-A^2)=(-1)^h\psi_A(2h+1).
+\end{equation}
+\end{lemma}
+\begin{proof}
+The step-two recurrence for $\chi$ proves the first assertion and
+the two initial values. The constant term follows by induction.
+For the second identity, the sequence $(-1)^h\psi_A(2h+1)$ has
+initial values $1,1-4A^2$ and recurrence coefficient $2-4A^2$,
+exactly the specialized polynomial recurrence.
+\end{proof}
+

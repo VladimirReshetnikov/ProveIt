@@ -1,0 +1,28 @@
+{
+  "checks": [
+    {
+      "capture": "stdout",
+      "expected": "evidence/expected_check_results.json",
+      "label": "authored-exact-checks",
+      "receipt": "evidence/expected_check_results.json",
+      "script": "evidence/check_unwrapped_family.py"
+    },
+    {
+      "capture": "stdout",
+      "expected": "evidence/independent/expected_audit_receipt.json",
+      "label": "independent-symbolic-audit",
+      "receipt": "evidence/independent/audit_receipt.json",
+      "script": "evidence/independent/check_audit.py"
+    },
+    {
+      "capture": "stdout",
+      "expected": "jacobi/expected_jacobi_receipt.json",
+      "label": "jacobi-addendum-exact-checks",
+      "receipt": "jacobi/expected_jacobi_receipt.json",
+      "script": "jacobi/check_jacobi_addendum.py",
+      "staging": "authenticated-external-portable-layout"
+    }
+  ],
+  "runtime": "Python 3.9+; SymPy 1.14.0 for the independent checker",
+  "schema": "report39-replay-plan-v1"
+}

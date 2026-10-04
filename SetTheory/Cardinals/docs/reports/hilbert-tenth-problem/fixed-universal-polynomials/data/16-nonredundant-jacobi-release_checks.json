@@ -1,0 +1,67 @@
+{
+  "addendum_unchanged_during_replay": true,
+  "checks": [
+    {
+      "cwd": "/",
+      "exit_code": 0,
+      "isolated_relocation": true,
+      "python_optimized": false,
+      "script": "check_jacobi_addendum.py",
+      "stdout_matches_expected": true
+    },
+    {
+      "cwd": "/",
+      "exit_code": 0,
+      "isolated_relocation": true,
+      "python_optimized": true,
+      "script": "check_jacobi_addendum.py",
+      "stdout_matches_expected": true
+    },
+    {
+      "cwd": "/",
+      "exit_code": 0,
+      "isolated_relocation": true,
+      "python_optimized": false,
+      "script": "inherited-family/check_unwrapped_family.py",
+      "stdout_matches_expected": true
+    },
+    {
+      "cwd": "/",
+      "exit_code": 0,
+      "isolated_relocation": true,
+      "python_optimized": true,
+      "script": "inherited-family/check_unwrapped_family.py",
+      "stdout_matches_expected": true
+    },
+    {
+      "cwd": "/",
+      "exit_code": 0,
+      "isolated_relocation": true,
+      "python_optimized": false,
+      "script": "inherited-family/independent/check_audit.py",
+      "stdout_matches_expected": true
+    },
+    {
+      "cwd": "/",
+      "exit_code": 0,
+      "isolated_relocation": true,
+      "python_optimized": true,
+      "script": "inherited-family/independent/check_audit.py",
+      "stdout_matches_expected": true
+    }
+  ],
+  "fresh_checker_safety_checks": [
+    "No assert AST nodes",
+    "Silent import",
+    "Fresh external output accepted",
+    "Existing external output preserved",
+    "In-packet output rejected",
+    "Expected mismatch rejected under normal and -O",
+    "Inherited source tamper rejected under normal and -O"
+  ],
+  "original_family_file_count": 22,
+  "original_family_unchanged": true,
+  "scope": "Reproducibility and failure handling; no upstream code/schedules executed",
+  "status": "PASS",
+  "sympy_version": "1.14.0"
+}

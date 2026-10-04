@@ -1,0 +1,262 @@
+\section{Small-norm descent for the free83 interface}
+\label{sec:smallnorm}
+To make the nonextension theorem self-contained, we prove the exact
+arithmetic lemma imported by its original research packet from
+Report43 \cite{smallnorm,freeaudit}. The variable $y_*$ below is the
+positive auxiliary coordinate, not the construction exponent $y$.
+
+\begin{lemma}[Small norms and the negative equality orbit]
+\label{lem:smallnorm}
+Let $H\ge2$, $v\ge0$, $y_*>0$ be integers and
+$N_*=Hv^2-(H-1)y_*^2$.
+\begin{enumerate}
+\item If $N_*<0$, then $N_*\le-(H-1)$.
+\item If $0<N_*<H$, then $N_*$ is a positive perfect square.
+\item If $N_*=-(H-1)$, every nonnegative-$v$ solution is
+\[
+ v=2(H-1)\psi_{2H-1}(r),\qquad y_*=\chi_{2H-1}(r),\qquad r\ge0.
+\]
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+If $N_*<0$, then $y_*>v$. Put $t_*=y_*-v\ge1$; then
+\begin{equation}\label{eq:smallidentity}
+ -N_*=(H-1)t_*^2+v\bigl(2(H-1)t_*-v\bigr).
+\end{equation}
+If $v\le2(H-1)t_*$, this is at least $H-1$. Otherwise negativity
+implies
+\[
+ v<\bigl(H-1+\sqrt{H(H-1)}\bigr)t_*<(2H-1)t_*.
+\]
+The integral transformation
+\begin{align*}
+ v'&=(2H-1)v-2(H-1)y_*=v-2(H-1)t_*,\\
+ y_*'&=(2H-1)y_*-2Hv=(2H-1)t_*-v
+\end{align*}
+has $0<v'<v$, $y_*'>0$, and preserves $N_*$ by expansion.
+Induction on $v$ proves the first assertion.
+
+If $0<N_*<H$, then $v\ge y_*+1$ would give
+$N_*=H(v^2-y_*^2)+y_*^2\ge H$, impossible. Thus $y_*\ge v$.
+When $y_*=v$ the norm is $v^2$. Otherwise $t_*\ge1$ and
+positivity in \eqref{eq:smallidentity} requires
+$v>2(H-1)t_*$. Also $v\ge(2H-1)t_*$ would give
+$N_*\ge Ht_*^2\ge H$, since the quadratic in $v$ is increasing
+beyond its positive root. The same descent has positive coordinates
+and smaller $v$, so eventually $y_*=v$; the norm is a square.
+
+For $N_*=-(H-1)$, descend while $v>2(H-1)t_*$.
+At a terminal point \eqref{eq:smallidentity} forces $t_*=1$ and
+$v=0$ or $2(H-1)$. The latter maps to $(v',y_*')=(0,1)$.
+The inverse transformation has matrix
+\[
+ \begin{pmatrix}2H-1&2(H-1)\\2H&2H-1\end{pmatrix}.
+\]
+Its iterates on $(0,1)$ are exactly the displayed Pell formula,
+as verified by the initial value and recurrence. Conversely every such
+iterate has the required norm. This includes $v=0$ at $r=0$.
+\end{proof}
+
+\begin{proposition}[Exhaustion of norm signs]\label{prop:signs}
+Under \eqref{eq:freenorms}--\eqref{eq:freeproduct} with $A\ge4$,
+$f,S,y_*>0$, one has $S\ge2$. If $\Na>0$, then
+$\Na=z^2$ for some positive integer $z$ with $z^2\mid\D$.
+If $\Na<0$, then necessarily
+\begin{equation}\label{eq:negativebranch}
+ f=1,\quad S=A,\quad \Ns=-1,\quad \Na=-\D,\quad
+ V=\pm2\D\psi_{2A^2-1}(r)\quad(r\ge0).
+\end{equation}
+\end{proposition}
+\begin{proof}
+Both norm factors are nonzero divisors of $\D$ and have the same
+sign. If $S=1$, then $\Ns=\D f^2-1>1$ is coprime to $\D$,
+contradicting divisibility. Set $H=S^2\ge4$.
+
+Suppose $\Na<0$. The small-norm lemma gives
+$|\Ns|(H-1)\le\D$, in particular $H-1\le\D$.
+If $f\ge2$, the strong equation and $|\Ns|\le\D$ instead give
+$H=\D f^2-\Ns\ge3\D$, a contradiction.
+Thus $f=1$. Write $b_*=-\Ns\ge1$; then $H=\D+b_*$ and
+$b_*(\D+b_*-1)\le\D$, forcing $b_*=1$.
+Consequently $S=A$, $\Ns=-1$, $\Na=-\D$.
+The equality orbit of Lemma~\ref{lem:smallnorm}, with $v=|V|$,
+gives the last formula.
+
+Suppose $\Na>0$; then $\Ns>0$. We show $\Na<H$.
+If $f\ge2$, $H\ge3\D>\D/\Ns=\Na$.
+If $f=1$, then $\D=H+\Ns$. The value $\Ns=1$ would imply
+$A^2-S^2=2$, impossible for positive integers, so $\Ns\ge2$.
+Now $\Ns H>H+\Ns=\D$, because $H\ge4$, giving
+$H>\D/\Ns=\Na$ again. Lemma~\ref{lem:smallnorm} makes
+$\Na$ a positive square, and its divisibility gives $z^2\mid\D$.
+\end{proof}
+
+\section{The nonsquarefree Pell lattice and residue separation}
+\label{sec:lattice}
+A tempting but incorrect shortcut is to assume every strong-$\D$
+solution has $f=\chi_A(m)$ and $S=\D\psi_A(m)$. When $\D$
+is nonsquarefree this can miss solutions. For example,
+$A=26$, $\D=675$ has $f=2,S=45$ satisfying
+$675\cdot2^2-45^2=675$; the least positive $\chi_{26}(m)$
+is $26$, not $2$. The correct lattice is the following.
+
+\begin{lemma}[Underlying integer Pell unit]\label{lem:lattice}
+Let $A\ge4$ be even and $\D=d b_0^2$ with $d$ squarefree.
+There exist even $a\ge2$, odd $b\ge1$, and odd $e\ge1$ with
+\[
+ a^2-db^2=1,\quad
+ A+b_0\sqrt d=(a+b\sqrt d)^e.
+\]
+Put $C_*=\psi_a(e)$ and $\delta_*=a^2-1=db^2$. Then
+\begin{equation}\label{eq:latticeidentities}
+ b_0=bC_*,\quad \D=\delta_*C_*^2,\quad
+ C_*\psi_A(t)=\psi_a(et)\quad(t\ge0).
+\end{equation}
+Every positive strong-$\D$ solution is exactly
+\begin{equation}\label{eq:stronglattice}
+ \D f^2-S^2=\D
+ \quad\Longleftrightarrow\quad
+ f=\chi_a(m),\quad S=\delta_*C_*\psi_a(m),\quad m\ge1.
+\end{equation}
+Moreover $\gcd(\chi_a(m),b_0)=1$ for every $m\ge0$.
+\end{lemma}
+\begin{proof}
+Since $\D\equiv3\pmod4$, both $b_0$ and $d$ are odd, and
+$d\equiv3\pmod4$. Also $d>1$ because $\D$ is not a square.
+Among positive integer-coordinate norm-one units for $d$, choose
+the least one $u_0=a+b\sqrt d>1$; existence is supplied by
+$A+b_0\sqrt d$. Every positive unit is a power of $u_0$:
+choose $k$ with $u_0^k\le u<u_0^{k+1}$; the quotient is an
+integer-coordinate norm-one unit in $[1,u_0)$, hence is one by
+minimality. Its coordinates have the claimed signs because for a
+positive real norm-one unit $w\ge1$, the conjugate is $w^{-1}$,
+so its two coordinates are nonnegative. This proves generation
+without requiring a classification of the full ring of integers.
+
+If $a$ were odd, the norm equation modulo four would force $b$ even,
+and all powers would have odd first coordinate, contrary to even $A$.
+Thus $a$ is even, $b$ is odd, and modulo two the coefficients of
+$u_0^k$ alternate between $(1,0)$ and $(0,1)$. Therefore the exponent
+$e$ representing $A+b_0\sqrt d$ is odd. Comparing coordinates and
+then powers proves \eqref{eq:latticeidentities}.
+
+If $\D f^2-S^2=\D$, then $b_0^2\mid S^2$, so $b_0\mid S$.
+Write $S=b_0s$; then $s^2=d(f^2-1)$, and squarefreeness gives
+$s=dv$. Thus $f^2-dv^2=1$, and generation gives
+$f=\chi_a(m)$, $v=b\psi_a(m)$ for $m\ge1$ because $S>0$.
+This proves \eqref{eq:stronglattice}; its converse follows from the norm.
+
+The norm also implies $\gcd(\chi_a(m),b)=1$. Suppose an odd prime
+$\ell_0$ divides both $\chi_a(m)$ and $C_*$.
+In the commutative ring
+$\mathbb F_{\ell_0}[s]/(s^2-\delta_*)$, the element $u=a+s$
+is a unit of norm one. The two divisibilities imply
+$u^{2m}=-1$ and $u^{2e}=1$. Raising these identities to $e$ and
+$m$, respectively, gives $-1=1$ because $e$ is odd, impossible.
+This ring argument remains valid if its quadratic is reducible or has
+a repeated root. The prime two does not divide $b_0=bC_*$.
+Thus $\gcd(\chi_a(m),b_0)=1$ as claimed.
+\end{proof}
+
+\begin{lemma}[Opposite-parity Pell residues]\label{lem:parity}
+For $a\ge2$, $m\ge1$, and $F_* =\chi_a(m)$, the sets
+\[
+ \{\pm\psi_a(t)\bmod F_*:t\ge0\text{ even}\},\qquad
+ \{\pm\psi_a(t)\bmod F_*:t\ge0\text{ odd}\}
+\]
+are disjoint.
+\end{lemma}
+\begin{proof}
+For the formal unit $u=a+\sqrt{a^2-1}$, its coefficientwise
+identity modulo $F_*$ is $u^{2m}=-1$; this follows from the
+norm and $\chi_a(m)\equiv0$. Reduction modulo $2m$ therefore
+changes only a sign. Reflection of a reduced rank $t$ to $2m-t$
+preserves the $\psi$ residue, because
+$u^{2m-t}=-u^{-t}$ has second coefficient $\psi_a(t)$.
+Both operations preserve parity. Hence every residue has a signed
+representative $\pm\psi_a(j)$ with $0\le j\le m$ and
+$j\equiv t\pmod2$.
+
+For $m=1$ the representatives are zero and one modulo $a\ge2$.
+For $m\ge2$ write $b_1=\psi_a(m)$, $b_2=\psi_a(m-1)$.
+Strict increase and recurrence give $b_1>(2a-1)b_2$, while
+$F_*=ab_1-b_2$. Consequently $b_1+b_2<F_*$:
+indeed $F_*-(b_1+b_2)=(a-1)b_1-2b_2>0$.
+Distinct-parity representatives have distinct indices, so a nonzero
+difference has absolute value less than $F_*$ and a positive sum is
+at most $b_1+b_2<F_*$. Neither can be zero modulo $F_*$.
+Zero and nonzero representatives are included in this argument.
+\end{proof}
+
+\section{Proof of the free83 nonextension theorem}
+\label{sec:freeproof}
+Assume for contradiction that \eqref{eq:freeV}--\eqref{eq:freeproduct}
+hold under Theorem~\ref{thm:free}'s hypotheses.
+
+\subsection{Positive auxiliary norms reduce to one}
+By Proposition~\ref{prop:signs}, $\Na=z^2>0$ with
+$z^2\mid\D=d b_0^2$. As $d$ is squarefree, $z\mid b_0$.
+Multiplying the strong equation by $z^2$ yields
+\[
+ \D(zf)^2-(zS)^2=\D.
+\]
+Lemma~\ref{lem:lattice} therefore gives $zf=\chi_a(m)$ for
+some $m\ge1$. Its coprimality conclusion forces $z=1$.
+Thus every positive branch has
+\begin{equation}\label{eq:unitbranch}
+ \Na=1,\quad \Ns=\D,\quad
+ f=\chi_a(m),\quad S=\delta_*C_*\psi_a(m),\quad m\ge1.
+\end{equation}
+This is a proof of normalization for this interface, rather than an
+assumed generic unit theorem for the full free83 polynomial.
+
+\subsection{The unit branch contradicts rank parity}
+By Lemma~\ref{lem:pellclass}, $\Na=1$ implies
+\[
+ SV=\varepsilon\chi_S(t_*),\quad y_*=\psi_S(t_*),\quad
+ t_*\ge1,\quad \varepsilon\in\{+1,-1\}.
+\]
+Divisibility by $S$ forces $t_*$ odd. Write $t_*=2h+1$.
+The strong identity makes $S^2\equiv-\D=1-A^2\pmod f$,
+so Lemma~\ref{lem:oddpoly} gives
+\[
+ V\equiv\varepsilon Q_h(1-A^2)
+ =\varepsilon(-1)^h\psi_A(t_*)\pmod f.
+\]
+The literal expression \eqref{eq:freeV} instead gives
+$V\equiv-c=-\psi_A(p)\pmod f$. Multiplying the resulting signed
+congruence by $C_*$, and using \eqref{eq:latticeidentities}, yields
+\[
+ \psi_a(et_*)\equiv\pm\psi_a(ep)\pmod{\chi_a(m)}.
+\]
+The first rank is odd because $e,t_*$ are odd; the second is even
+because $p$ is even. This contradicts Lemma~\ref{lem:parity}.
+We multiplied by $C_*$; no unproved division by $C_*$ modulo $f$
+is involved. The value of $R$ disappears in this step, so this
+positive-branch obstruction does not require $R$ to be odd.
+
+\subsection{The negative branch contradicts the literal parity}
+Proposition~\ref{prop:signs} forces the entire negative branch
+\eqref{eq:negativebranch}, and in particular makes $V$ even.
+But $f=1$ in \eqref{eq:freeV} gives
+\[
+ V=c(T-1)-R.
+\]
+The recurrence modulo two gives $\psi_A(p)\equiv p\pmod2$,
+so $c$ is even, whereas $R$ is odd. The displayed expression for
+$V$ is therefore odd, a contradiction. The equality orbit's
+$V=0$ case is also excluded. Positive and negative branches exhaust
+the nonzero product $\Na\Ns=\D>0$, proving
+Theorem~\ref{thm:free}.
+
+\subsection{Application to the authenticated Report45 tuples}
+Those tuples have $A=Y(X+1)+2\equiv2\pmod4$,
+$p\equiv0\pmod4$, $c=\psi_A(p)$, $R\equiv3\pmod4$, and
+$P_5=1$, exactly as recorded in Section~\ref{sec:setup}.
+Hence all satisfy the theorem's hypotheses. The independent free83
+audit initially certified the arithmetic theorem conditionally on these
+outer invariants because the historical construction directory was
+unavailable. The recovered authenticated Report45 construction supplied
+here verifies the invariants and closes that source-level application.
+It does not extend the conclusion to other outer tuples.
+

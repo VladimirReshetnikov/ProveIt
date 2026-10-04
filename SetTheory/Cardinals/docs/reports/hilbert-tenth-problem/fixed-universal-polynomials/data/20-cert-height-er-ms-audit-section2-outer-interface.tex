@@ -1,0 +1,94 @@
+\section{The fixed counterfamily and the literal interfaces}
+\label{sec:setup}
+We record the construction contract sufficiently explicitly to identify
+every coordinate used below. The full Chinese-remainder existence and
+positivity proof is in the supplied Report45 packet \cite{report45,base}.
+Our notation deliberately separates the height exponent $C$ from the
+packing expression $C_{\mathrm{pack}}$.
+
+\subsection{Compiler and packing data}
+The six genuine fixed ports are $B-1,K,\ell,b,M_C,M_F$, where
+\[
+ B=2^d,\quad d=5^a,\quad a\ge1,\quad \ell=2d,\quad K>0,
+\]
+$b\ge5$ is an odd power of five, and the inherited masks satisfy
+$M_F=M_{F,0}+B-1$, $0<M_C,M_{F,0}<B-1$, $M_C\equiv2\pmod4$.
+These are consequences of a genuine compiler, not a replacement
+definition by necessary numerical conditions.
+
+For $x\in\Pos$, set $I=\ell x+b$, $W=2^I$, and choose
+\begin{equation}\label{eq:radix}
+ M_*=\max\{I,\bl(K),61\},\quad
+ r=\max\{a,\lceil\log_5(4M_*)\rceil\},\quad t=5^r,\quad q=2^t.
+\end{equation}
+Larger $r$ also give family members; \eqref{eq:radix} is the least
+admissible choice for the global input bounds. All height and minimality
+statements hold for every allowed $r$. Define
+\[
+ J=\frac{q-1}{B-1},\quad Q=q^2-1,\quad
+ M_{\mathrm{mask}}=(M_C+qM_F)J,\quad m_3=(M_C+2M_F)\bmod3.
+\]
+The packing parameters $e,Z,\epsilon$ are those of Report45, with
+$1\le e\le60$, $1\le Z\le6t$, and
+\begin{align}
+ F&=(K+2^e)(W+Z)+1-\epsilon,\label{eq:pack}\\
+ \alpha&=q-F-2Z-W-\ell x,\nonumber\\
+ R&=(q^2-qF-Z)(q^2-1)+M_{\mathrm{mask}}.\nonumber
+\end{align}
+The residue-controlled branch parameters are
+\begin{equation}\label{eq:branches}
+\begin{array}{c|c|c|c|c}
+\text{branch}&R&p&n&y\\\hline
+\mathrm A\ (m_3\in\{1,2\})&6u-\epsilon&4u&3u&2u-1\\
+\mathrm B\ (m_3=0)&28v-1&20v&14v&15v-1
+\end{array}
+\end{equation}
+Here $\epsilon=+1$ if $m_3=2$, $\epsilon=-1$ if $m_3=1$,
+and $\epsilon=+1$ in Branch B. The CRT choice ensures
+$p\equiv e\pmod t$; it uses the actual packed $R$ above.
+The inherited proof supplies
+\begin{gather}
+ t\ge625,\quad 0<J,\alpha<q,\quad
+ F\le 2^{t/2+2}+2,\quad W+Z<2^{t/4+1},\label{eq:outerbounds}\\
+ 2^{3t}<R<q^4-q^3,\quad R\equiv3\pmod4,\quad
+ p\equiv0\pmod4,\quad p>I,\quad p>56t,\quad y\ge3t.\label{eq:rankbounds}
+\end{gather}
+In particular $I$ is odd, $p\ge16$, $y\ge3$, $n\ge3$, $R\ge8$,
+and $R<2p$ directly from \eqref{eq:branches}.
+
+\subsection{All witness definitions and retained factors}
+For $A\ge2$, our Pell notation is
+\begin{equation}\label{eq:pell}
+ (A+\sqrt{A^2-1})^j=\ch A j+\ps A j\sqrt{A^2-1}.
+\end{equation}
+Both sequences obey $z_{j+2}=2Az_{j+1}-z_j$ with initial pairs
+$(\chi_0,\chi_1)=(1,A)$, $(\psi_0,\psi_1)=(0,1)$.
+Set
+\begin{gather*}
+ w=2^{p-t},\quad s=2^{y-3t},\quad X=wq=2^p,\quad Y=sq^3=2^y,\quad E=XY,\\
+ a_0=Y(X+1),\quad A=a_0+2,\quad \D=A^2-1,\quad H_0=4a_0+3,\quad P=2XY^2+1,\\
+ D=\ch A p,\quad c=\ps A p,\quad \tau=\ch P n,\quad k=2\ps P n,\\
+ \eta=c-kY,\quad \zeta=k-\eta,\quad h=(k-2n)/E,\\
+ g_j=\frac{\ch A j-a_0\ps A j-2^j}{H_0},\quad
+ \rho=g_I,\quad \sigma=g_p-g_I,\quad \delta=\frac{\ps A I-I}{\D},\\
+ \ttt=1+\frac{(W+Z)(w-2^e)}{q-1}.
+\end{gather*}
+These expressions define integers by the proved construction.
+The ratio estimate needed later is
+\begin{equation}\label{eq:ratio}
+ 0<\frac c k-Y<\frac{4pY}{X}<1.
+\end{equation}
+Let $\kappa=\ps A I$, $\mu=\ch A I$,
+$C_{\mathrm{pack}}=q-F-Z-\alpha-\ell x=W+Z$. The five retained factors are
+\begin{align*}
+ N_{\mathrm{first}}&=\tau^2-XY^2(XY^2+1)k^2=1,\\
+ N_{\mathrm{main}}&=D^2-\D c^2=1,\qquad
+ N_{\mathrm{input}}=\mu^2-\D\kappa^2=1,\\
+ N_{\mathrm{index}}&=k-hE-R=\epsilon,\\
+ N_{\mathrm{transport}}&=(K+w)C_{\mathrm{pack}}+q-F-\ttt(q-1)=\epsilon.
+\end{align*}
+Their product is $P_5=1$, including the branch with two negative factors.
+The shared projections remain literally
+$\kappa=I+\delta\D$, $\mu=W+a_0\kappa+\rho H_0$, and
+$D=X+a_0c+(\rho+\sigma)H_0$.
+

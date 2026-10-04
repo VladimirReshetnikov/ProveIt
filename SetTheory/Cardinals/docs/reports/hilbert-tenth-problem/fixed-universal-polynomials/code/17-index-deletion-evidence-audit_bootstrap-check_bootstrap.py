@@ -1,0 +1,196 @@
+#!/usr/bin/env python3
+"""Independent finite supplements. Reads upstream JSON as inert data only.
+Never imports upstream code or evaluates an upstream schedule.
+All arithmetic below is newly authored Pell algebra, not a source interpreter.
+"""
+import hashlib, json
+from fractions import Fraction
+from math import gcd
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parent.parent
+OUT = ROOT / 'audit_bootstrap'
+checks = {}
+def require(ok, message):
+    if not ok: raise RuntimeError(message)
+
+def pell(A, n, mod=None):
+    require(A >= 2 and n >= 0, 'Pell domain')
+    D=A*A-1
+    out=(1,0); base=(A,1)
+    def mul(u,v):
+        z=(u[0]*v[0]+D*u[1]*v[1],u[0]*v[1]+u[1]*v[0])
+        return z if mod is None else (z[0]%mod,z[1]%mod)
+    while n:
+        if n&1: out=mul(out,base)
+        n//=2
+        if n: base=mul(base,base)
+    return out
+
+# Authenticate parent packets and verify source-only deletion structurally.
+scout=json.loads((ROOT/'scout.json').read_text())
+rows=[]
+for form in scout['forms']:
+    raw=(ROOT/form['parent']).read_bytes()
+    require(hashlib.sha256(raw).hexdigest()==form['parent_sha256'],'parent pin')
+    parent=json.loads(raw)['packet']; old={r[0]:r for r in parent['source']}; new={r[0]:r for r in form['source']}
+    require(len(new)==len(form['source']),'duplicate instruction')
+    deleted={k:old[k] for k in old.keys()-new.keys()}
+    expected={
+        'hpm1':['hpm1','*','h','UM'],
+        'index_difference':['index_difference','-','R10b','hpm1'],
+        'norm_index':['norm_index','-','index_difference','r_lhs'],
+        'norm_product':['norm_product','*','norm_four','norm_index']}
+    require(deleted==expected,'exact deletion')
+    require(set(new)==set(old)-set(expected),'no extra rows')
+    require({k:(old[k],new[k]) for k in new if old[k]!=new[k]}=={
+        'all_units':(['all_units','*','norm_product','norm_transport'],['all_units','*','norm_four','norm_transport'])},'only changed row')
+    require(form['free']==[x for x in parent['free'] if x!='h'],'free ports')
+    require(form['witnesses']==[x for x in parent['witnesses'] if x!='h'] and len(form['witnesses'])==17,'witnesses')
+    require('x' not in form['witnesses'],'ordinary input remains separate')
+    defined=set(form['free'])
+    for name,op,a,b in form['source']:
+        require(op in ('+','-','*'),'primitive operation')
+        require(all(type(x)==int or x in defined for x in (a,b)),'topology')
+        require(name not in defined,'SSA')
+        defined.add(name)
+    ops={op:sum(row[1]==op for row in form['source']) for op in ('*','+','-')}
+    require(ops['*']==form['ledger']['M'] and ops['+']+ops['-']==form['ledger']['A'],'ledger')
+    rows.append({'parent':form['parent'],'sha256':form['parent_sha256'],'ledger':form['ledger'],'witnesses':17})
+checks['inert_source_structure']=rows
+
+# Mod-4 unit-sign exclusions.
+count=0
+for D in (0,3):
+    for x in range(4):
+        for y in range(4):
+            require((x*x-D*y*y)%4!=3,'ordinary norm residue')
+            require((1+y*y-D*(x*x-1))%4!=3,'relaxed strong residue')
+            count+=2
+for S in range(4):
+    for v in range(4):
+        for y in range(4):
+            require((S*S*(v*v-y*y)+y*y)%4!=3,'aux norm residue')
+            count+=1
+checks['mod4_cases']=count
+
+# Explicit critical small-index inequalities, the only surviving X=2^p cases.
+small=[]
+for p,X in ((4,16),(5,32)):
+    Y=4096; A=Y*(X+1)+2; P=2*X*Y*Y+1; n=3
+    _,c=pell(A,p); _,kn=pell(P,n); k=2*kn
+    require(c<k*Y,'p<=5 exclusion at minimal Y')
+    ratio_bound=Fraction(18**3,4*16**2*Y**2) if p==4 else Fraction(34**4,2*32**2*Y)
+    require(Fraction(c,k*Y)<ratio_bound<1,'analytic endpoint upper bound')
+    small.append({'p':p,'X':X,'Y':Y,'n':n,'bound_numerator':ratio_bound.numerator,'bound_denominator':ratio_bound.denominator})
+checks['small_index_endpoints']=small
+
+# Recurrence projection, growth, ratio index bounds, and small-rank arithmetic.
+count=0
+for A in range(2,24):
+    D=A*A-1; a=A-2; H=4*a+3
+    if H>1:
+        for p in range(0,20):
+            ch,ps=pell(A,p)
+            require((ch-a*ps-pow(2,p,H))%H==0,'main projection recurrence')
+            count+=1
+    c=pell(A,6)[1]
+    require(c==32*A**5-32*A**3+6*A and c>A*D*D,'sixth index bound')
+    require(c*c>4*D and Fraction(c**4,D)>D+c,'ordinary f size margin')
+    for p in range(1,16):
+        c=pell(A,p)[1]
+        require(gcd(c,D)==gcd(p,D),'gcd(c,Delta)')
+        for n in range(1,16):
+            require(gcd(c,pell(A,n)[1])==pell(A,gcd(p,n))[1],'strong divisibility')
+            count+=1
+checks['projection_growth_gcd_cases']=count
+
+# Plus-sign step-down over a complete 4m residue period.
+count=0
+for A in range(2,9):
+    for m in range(2,15):
+        f=pell(A,m)[0]
+        for k in range(1,m+1):
+            target=pell(A,k)[0]%f
+            for n in range(4*m):
+                same=pell(A,n,f)[0]==target
+                require(same==(n%(4*m) in (k%(4*m),(-k)%(4*m))),'plus step-down')
+                count+=1
+checks['plus_step_down_cases']=count
+
+# Separate exact rank fixtures. They are NOT full-source zeros.
+fixtures=[]
+for A,p,kind in ((2,6,'normalized'),(2,6,'ordinary'),(2,7,'normalized'),(3,6,'ordinary')):
+    D=A*A-1; c=pell(A,p)[1]
+    m=p*c if kind=='normalized' else p*c//gcd(p,D)
+    f,z=pell(A,m)
+    Z=z if kind=='normalized' else D*z
+    require(Z%(c*c)==0,'rank fixture strong divisibility')
+    require(m%p==0 and m%c==0 and m>2*p,'fixture rank')
+    require(f>2*c and f*f>D+c,'fixture positivity margin')
+    require((f*f-D*Z*Z==1) if kind=='normalized' else (Z*Z==D*(f*f-1)),'fixture strong norm')
+    fixtures.append({'A':A,'p':p,'kind':kind,'c':c,'m':m,'f_bits':f.bit_length(),'scope':'main/strong subsystem only; not source-scaled or compiler zeros'})
+checks['rank_subsystem_fixtures']=fixtures
+
+# The small-fundamental-unit branch: A=chi_F(e) with e>1.
+# Modular checks only; no giant auxiliary witness is claimed materialized.
+count=0
+for F in range(2,6):
+    for e in (2,3,4):
+        A,L=pell(F,e); D=A*A-1; p=6; c=pell(A,p)[1]; U=(F*F-1)*L
+        require(D==(F*F-1)*L*L and L<A and c>A*D*D,'smaller fundamental setup')
+        require(pell(F,e*p)[1]==L*c,'Pell composition')
+        for b in range(1,2*e*p+1):
+            if U*pell(F,b,c*c)[1]%(c*c)==0:
+                require(b%(e*p)==0,'relaxed rank finite check')
+            count+=1
+checks['smaller_fundamental_modular_cases']=count
+
+# Fixed-minus unsquared parity bookkeeping for both signs and negative t.
+count=0
+for p in range(1,100,2):
+    r=(p-1)//2
+    for m in range(1,25):
+        for t in range(-5,6):
+            for eps in (-1,1):
+                ell=eps*p+2*m*t
+                if ell<=0: continue
+                v=(ell-1)//2
+                require(((-1)**v)*eps==(-1)**(r+m*t),'first parity sign')
+                require(((-1)**v)*eps*((-1)**t)==(-1)**(r+(m+1)*t),'second parity sign')
+                if (r+m*t)%2==1 and (r+(m+1)*t)%2==1:
+                    require(t%2==0 and p%4==3,'fixed-minus consequence')
+                count+=1
+checks['fixed_minus_parity_cases']=count
+
+# Exact first-index remainder without assuming integrality of h.
+count=0
+for X,Y in ((16,4096),(32,4096),(2,3),(7,11)):
+    E=X*Y; P=2*X*Y*Y+1
+    for R in range(7,min(100,E),4):
+        for n in range(R//2+1,R):
+            d=2*n-R; k=2*pell(P,n)[1]
+            require(1<=d<=R-2<E and d%2==1,'defect range')
+            require((k-R-1)%E==d-1 and k>R+1,'positive rational inverse / exact remainder')
+            require(((k-R-1)%E==0)==(2*n==R+1),'integrality criterion')
+            count+=1
+checks['defect_subsystem_cases']=count
+
+checks['status']='PASS: finite supplements and inert-source checks; universal reduction audited separately in AUDIT.md'
+checks['scope']='No upstream code or saved schedule executed. No full-source zero or deletion soundness established.'
+checks['release_replay_attribution']='Author reran reviewer-written mathematical checks after CLI/path-only hardening; independent reviewer did not rerun these release bytes.'
+import argparse
+ap=argparse.ArgumentParser(description=__doc__)
+ap.add_argument('--expect',type=Path,help='Byte-check this saved release replay receipt')
+ap.add_argument('--output',type=Path,help='Create a new external receipt; packet/existing paths rejected')
+args=ap.parse_args()
+if args.output:
+    target=args.output.resolve()
+    if target.is_relative_to(ROOT):raise RuntimeError('Refusing output inside frozen packet')
+    if target.exists():raise RuntimeError('Output must be a fresh external path')
+    if args.expect and target==args.expect.resolve():raise RuntimeError('Output cannot overwrite expected receipt')
+output=(json.dumps(checks,indent=2)+'\n').encode()
+if args.expect and args.expect.read_bytes()!=output:raise RuntimeError('Saved receipt byte mismatch')
+if args.output:
+    with args.output.open('xb') as f:f.write(output)
+print(output.decode(),end='')

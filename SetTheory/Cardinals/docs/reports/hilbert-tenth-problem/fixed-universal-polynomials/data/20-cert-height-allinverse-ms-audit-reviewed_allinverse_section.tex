@@ -1,0 +1,195 @@
+\section{A convergent all-orders analytic inverse algorithm}
+\label{sec:allinverse}
+A further separately audited extension \cite{allinverse,allaudit}
+supplies an all-orders analytic inverse with an explicit geometric
+tail. It is a Lagrange derivative algorithm in an auxiliary parameter;
+it does not claim that every inverse exponential sector has been
+rearranged into a canonical ordered transseries.
+
+\subsection{Holomorphic formulas without logarithmic winding}
+Fix one branch and a real center $r_0\ge100$. On the closed complex
+disk $|r-r_0|\le1/4$, write
+\[
+ p(r)=\alpha_*(r+\epsilon),\quad L(r)=\lambda_*(r+\epsilon),\quad
+ y(r)=L(r)-p(r)-1,
+\]
+where $(\alpha_*,\lambda_*,\epsilon)$ is
+$(2/3,1,1)$, $(2/3,1,-1)$, or $(5/7,5/4,1)$.
+Put $p_0=p(r_0)$, $y_0=y(r_0)$, $q_0=2^{-p_0}$.
+Here $2^z$ means $\exp(z\ln2)$. Define, in this order,
+\begin{align*}
+ d_c&=2^{-p}+2\,2^{-p-y},&
+ a_c&=2^{-2p-2y}(1+d_c)^{-2},\\
+ \ell_A&=L\ln2+\ln(1+d_c)+g(a_c),&
+ u_c&=\exp(-2p\ell_A),\\
+ b_c&=16u_c^2/(1-u_c)^4,&
+ \ell_S&=2p\ell_A-\ln2+2\ln(1-u_c)+g(b_c),\\
+ v_c&=\exp(-2r\ell_S).&&
+\end{align*}
+The logarithms $\ln(1+z)$ and $\ln(1-z)$ are their Taylor branches
+at zero, and $g$ is the convergent series from
+Theorem~\ref{thm:forward}. These formulas specify holomorphic
+logarithms $\ell_A,\ell_S$; they never take a principal
+$\log S$ or principal $\operatorname{arcosh}S$ on the complex disk,
+where the values of $S$ may wind around zero.
+Let $N(r)$ be the branch cubic \eqref{eq:Ncubics}, and define
+\begin{align}
+ E_c(r)=\frac1{\ln2}\bigl\{&2p(r)(r-1)[\ln(1+d_c)+g(a_c)]
+ +2(r-1)\ln(1-u_c)\nonumber\\
+ &+r g(b_c)-\tfrac12\ln(1-b_c)+\ln(1-v_c)\bigr\}.
+ \label{eq:complexE}
+\end{align}
+On the real axis this is exactly $\log_2\mathcal H(r)-N(r)$.
+We prove all required branch and nonvanishing assertions, rather than
+assuming that these formulas are well defined.
+
+\begin{lemma}[Uniform complex-disk bounds]\label{lem:disk}
+On a neighborhood of $|r-r_0|\le1/4$, $E_c$ and
+\[
+ D_c(r;r_0)=\frac{N(r)-N(r_0)}{r-r_0},\qquad
+ D_c(r_0;r_0)=N'(r_0),\qquad \mathfrak f(r)=E_c(r)/D_c(r;r_0)
+\]
+are holomorphic, and on the closed disk
+\begin{equation}\label{eq:diskbounds}
+ |E_c(r)|<18r_0^2q_0,\qquad |D_c(r;r_0)|>2r_0^2,\qquad
+ |\mathfrak f(r)|<\varepsilon_0:=16q_0<1/8.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Uniformly, $p_0\ge66$, $y_0\ge32$, and $|p(r)|<r_0$.
+The slopes of $p,y$ are positive and less than one, so
+\[
+ |2^{-p}|\le2^{1/4}q_0<(5/4)q_0,\quad
+ |2^{-y}|<(5/4)2^{-y_0},\quad |d_c|<2q_0\le2^{-65}.
+\]
+Also $|2^{-2p-2y}|<4q_0^2\,2^{-2y_0}$ and
+$|1+d_c|^{-2}<2$, whence $|a_c|<q_0^2$.
+The convergent series give, with $\Phi=\ln(1+d_c)+g(a_c)$,
+\begin{equation}\label{eq:Phi}
+ |\ln(1+d_c)|<4q_0,\qquad |g(a_c)|<q_0^2,\qquad
+ |\Phi|<5q_0.
+\end{equation}
+
+Write $h_c=r-r_0$ and $z_0=r_0+\epsilon$. The inequality
+$\operatorname{Re}((z_0+h_c)^2)\ge z_0^2-2z_0|h_c|-|h_c|^2$
+and $2/3\le\alpha_*\lambda_*\le25/28$ imply
+\[
+ \operatorname{Re}(pL)\ge\frac23
+ \left(r_0^2-\frac52r_0+\frac7{16}\right)\ge\frac35r_0^2.
+\]
+The last comparison follows by direct subtraction for $r_0\ge100$.
+As $5r_0q_0<1$, \eqref{eq:Phi} gives
+\[
+ \operatorname{Re}(p\ell_A)\ge\tfrac35r_0^2\ln2-1
+ >\tfrac12r_0^2\ln2.
+\]
+Therefore
+\begin{equation}\label{eq:ubdisk}
+ |u_c|<2^{-r_0^2}\le q_0^4,\qquad
+ |b_c|\le\frac{16q_0^8}{(1-q_0^4)^4}<32q_0^8<q_0^4.
+\end{equation}
+Here $p_0<r_0$ and $r_0^2\ge4r_0$ justify the first comparison.
+This validates the Taylor branches involving $u_c,b_c$. In particular
+\[
+ \ell_S=2pL\ln2-\ln2+Q_c,\qquad
+ Q_c=2p\Phi+2\ln(1-u_c)+g(b_c),\qquad |Q_c|<11r_0q_0.
+\]
+
+The cubic $r(r+\epsilon)^2$ differs from its center value by at most
+\[
+ \tfrac14(3r_0^2+4r_0+1)+\tfrac1{16}(3r_0+2)+\tfrac1{64}<r_0^2.
+\]
+Since $\alpha_*\lambda_*<1$, it follows that
+\[
+ \operatorname{Re}(rpL)\ge\tfrac23r_0(r_0-1)^2-r_0^2
+ \ge\tfrac35r_0^3.
+\]
+Using $22r_0^2q_0<1$ and $|r|\le r_0+1/4$ gives
+\[
+ \operatorname{Re}(r\ell_S)
+ \ge\tfrac65r_0^3\ln2-(r_0+1/4)\ln2-1>r_0^3\ln2,
+ \qquad |v_c|<2^{-2r_0^3}\le q_0^4.
+\]
+The elementary inequalities $5r_0q_0<1$ and $22r_0^2q_0<1$
+hold at $r_0=100$ using $q_0\le2^{-66}$; their left sides
+decrease thereafter because $p_0'\ge2/3$.
+
+Now $|2p(r-1)|<2r_0^2$ and $|r-1|<r_0$.
+The first numerator term in \eqref{eq:complexE} is less than
+$10r_0^2q_0$. By \eqref{eq:ubdisk}, the remaining terms have
+total modulus below
+\[
+ 4r_0q_0^4+2r_0q_0^4+q_0^4+2q_0^4
+ =(6r_0+3)q_0^4<r_0^2q_0.
+\]
+Since $1/\ln2<3/2$, this gives
+$|E_c|<(33/2)r_0^2q_0<18r_0^2q_0$.
+
+If $\gamma<2$ is the cubic's leading coefficient, then exactly
+\[
+ D_c(r_0+h_c;r_0)=N'(r_0)+\tfrac12N''(r_0)h_c+\gamma h_c^2.
+\]
+The real derivative bounds imply
+$|D_c|>3r_0^2-(3/2)r_0-1/8>2r_0^2$.
+Thus $D_c$ never vanishes and $|\mathfrak f|<9q_0<16q_0$.
+All series arguments have modulus strictly below one, with strict
+uniform bounds on the compact disk. Those bounds persist on a
+slightly larger disk, proving holomorphy on a neighborhood of its closure.
+\end{proof}
+
+\begin{theorem}[Lagrange inverse with an explicit tail]\label{thm:lagrange}
+Put $\rho_0=1/(8\varepsilon_0)>1$. The unique small solution of
+\begin{equation}\label{eq:himplicit}
+ h(z)=-z\,\mathfrak f(r_0+h(z)),\qquad h(0)=0,
+\end{equation}
+is holomorphic on a neighborhood of $|z|\le\rho_0$ and has
+$|h(z)|<1/4$ there. Its convergent Lagrange series is
+\begin{equation}\label{eq:lagrange}
+ h(z)=\sum_{n\ge1}\frac{(-z)^n}{n!}
+ \left.\frac{d^{n-1}}{dr^{n-1}}\bigl[\mathfrak f(r)^n\bigr]
+ \right|_{r=r_0}.
+\end{equation}
+At $z=1$, $r=r_0+h(1)$ is the exact inverse of
+$\log_2\mathcal H(r)=N(r_0)$ in the disk. For every $K\ge0$,
+\begin{equation}\label{eq:lagrangetail}
+ \left|h(1)-\sum_{n=1}^K\frac{(-1)^n}{n!}
+ \left.\frac{d^{n-1}}{dr^{n-1}}[\mathfrak f(r)^n]\right|_{r=r_0}\right|
+ \le\frac14\frac{\rho_0^{-K-1}}{1-\rho_0^{-1}}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+On $|h|=1/4$ and $|z|\le\rho_0$,
+$|z\mathfrak f(r_0+h)|<\rho_0\varepsilon_0=1/8<|h|$.
+Rouch\'e's theorem gives exactly one zero, counting multiplicity,
+of $h+z\mathfrak f(r_0+h)$ in the disk. It is therefore simple.
+The analytic implicit-function theorem, together with uniqueness,
+patches the local solution into one holomorphic function throughout
+the parameter disk and its neighborhood. Lagrange inversion at zero
+gives \eqref{eq:lagrange}. At $z=1$, multiplying
+\eqref{eq:himplicit} by $D_c(r_0+h;r_0)$ gives
+$N(r_0+h)+E_c(r_0+h)=N(r_0)$, the desired inverse equation.
+Finally Cauchy's coefficient estimate on $|z|=\rho_0$ is
+$|[z^n]h(z)|\le(1/4)\rho_0^{-n}$. Summing its geometric tail
+proves \eqref{eq:lagrangetail} and absolute convergence at $z=1$.
+\end{proof}
+
+For an actual $R\ge100$, take $N(r_0)=\log_2\mathcal H(R)$
+as in Theorem~\ref{thm:inverse}. Its localization gives
+$0<r_0-R<2d_0<1/4$, so this real $R$ is the unique root above;
+conjugation symmetry also makes $h(1)$ real. At an arbitrary center
+$r_0=100$, the inverse of the target $N(100)$ may instead lie
+slightly below $100$. The disk theorem then concerns the local
+analytic continuation, not an inverse constrained to the half-line
+$R\ge100$. This endpoint caveat does not affect the application
+starting from an actual $R\ge100$, where $r_0>R\ge100$.
+
+The first Lagrange term is $-E_c(r_0)/N'(r_0)$ and retains all
+forward scales. Its leading $2^{-p_0}$ part agrees with
+Theorem~\ref{thm:inverse}, while \eqref{eq:lagrangetail} makes
+the $n\ge2$ terms uniformly $O(q_0^2)$.
+Every finite derivative in \eqref{eq:lagrange} is computable by
+power-series arithmetic on the explicitly specified holomorphic
+functions. This is a genuinely convergent all-orders algorithm with
+a computable error bound. Its ordering is by the artificial parameter
+$z$, and it does not smooth the input's radix jumps.
+

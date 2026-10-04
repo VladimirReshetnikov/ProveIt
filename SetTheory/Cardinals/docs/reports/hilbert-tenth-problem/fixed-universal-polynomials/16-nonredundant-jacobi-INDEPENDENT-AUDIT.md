@@ -1,0 +1,18 @@
+# Independent mathematical audit
+
+Verdict: PASS, with the limitations stated below.
+
+The root proposal is preserved in `context/ROOT-LEMMA.md`; its 42-case receipt is historical corroboration only. This audit was independently reconstructed from the inherited theorem and the primary NIST Jacobi laws. The general fixed-modulus identity was then checked separately in response to the root's proposed strengthening.
+
+1. **Square and parity premises.** The theorem chooses q=B^(2x+2), an even square coprime to 3. Hence q^3 is a square and gcd(q,H)=gcd(q,3)=1. The inherited genuine MC parity establishes odd p0; L0 is even, so every selected p is odd. No arbitrary compiler masks or new compiler premise is introduced.
+2. **Composite denominators.** The argument uses Jacobi symbols, not a prime-modulus Legendre inference. NIST DLMF 27.9 explicitly extends reciprocity and the two supplementary laws to positive odd composite denominators. H and h0 need not be prime or squarefree.
+3. **Noncoprime cases.** For general w, gcd(w,H)=gcd(w,h0); when this exceeds one, both symbols in the fixed-modulus identity vanish. For the proposed thinnings w=1 modulo h0, both pairs are coprime. No reciprocity swap is made in the noncoprime case.
+4. **Signs and even w.** For the root's T=4h0, w=1 modulo 4, so both direct swaps have positive sign. For general w, strip powers of two: both supplementary signs are -1, and the two odd-part reciprocity signs cancel because H and h0 are 3 modulo 4. This proves J(X,H)=J(w,h0), including even w. The stronger thinning T=h0 follows.
+5. **Odd exponent.** H=3 modulo 8 implies J(2,H)=-1. Odd p makes J(2^p,H)=-1. This contradicts the thinned numerator's symbol +1, proving rho is strictly positive, not just potentially nonzero.
+6. **Fixed thinning.** The exact chain rule is g_T''(j)=T^2 g''(Tj), giving leading coefficient Kstar*T. Treating T as fixed yields the same uniform-frequency exponential-sum estimate and discrepancy order. The argument does not assume that the original shrinking-target hits themselves distribute over progressions.
+7. **Count.** The target interval has length kappa0/log(2TN). The error is o(N/log N), so half the main term survives eventually. N>=2T implies the advertised delta0*N/(32L0*log N) bound. N counts j. The original r- and w-scale counts are not silently reused.
+8. **Exact ratio and positivity.** The thinned fractional-part inequality is the exact parent hypothesis. Its interior margin and Binet-tail bound therefore apply unchanged, as do all positive reconstruction identities and strict eventual inequalities. The proof does not infer positivity from the finite checker fixtures.
+9. **Literal source residuals.** Raw29 keeps the Pell root and has residual rho only at the main projection. Positive21 replaces the root by Dpell-rho and has residual -rho(2Dpell-rho) only at the main norm. Their two sum-of-squares values are distinct and strictly positive.
+10. **Scope.** The result proves infinitely many genuine reduced-system misses and logical nonredundancy of the indicated comparison in each child. It excludes only this family and, more generally, the Jacobi symbol 0 or +1 sectors. It does not construct a full zero, exclude the symbol -1 sector, or settle global sign restoration.
+
+The finite tests exercise exact arithmetic and failure boundaries. They are not numerical evidence for the analytic existence theorem. The sealed parent proof and its independent audit remain the source for that theorem. No new upstream freshness claim or global novelty search is needed for this additive arithmetic lemma; source context remains pinned to the parent's immutable snapshots, and the newly used primary Jacobi source was read on 3 October 2026.

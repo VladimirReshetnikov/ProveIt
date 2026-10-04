@@ -1,0 +1,262 @@
+\section{Convergent log-height expansion and a controlled inverse}
+\label{sec:expansion}
+This section incorporates a separately completed and independently
+audited extension \cite{expansion,expansionaudit}. The forward result
+is an absolutely convergent identity in five dependent small arguments.
+The inverse result combines a convergent algebraic cubic inverse with
+the first exponentially small correction. It is not a complete
+all-orders exponential inverse expansion.
+
+\subsection{An exact identity and its convergent expansion}
+Keep the displayed completion, and write
+\begin{gather*}
+ \lambda_A=A+\sqrt{A^2-1},\quad
+ c=\frac{\lambda_A^p-\lambda_A^{-p}}{2\sqrt{A^2-1}},\quad
+ S=\frac{(\lambda_A^p-\lambda_A^{-p})^2}{4},\\
+ \lambda_S=S+\sqrt{S^2-1},\quad
+ B_*=2p(R-1),\quad a_*=A^{-2},\quad b_*=S^{-2},\quad
+ u_*=\lambda_A^{-2p},\quad v_*=\lambda_S^{-2R}.
+\end{gather*}
+The symbols $B_*,a_*,b_*$ are local analytic variables, not the
+compiler radix or fixed compiler ports. Let
+\[
+ g(z)=\ln\frac{1+\sqrt{1-z}}2\qquad(0\le z<1),\qquad
+ c_j=\frac{\binom{2j}{j}}{2j\,4^j}.
+\]
+All of $d_0,a_*,b_*,u_*,v_*$ belong to $(0,1)$.
+
+\begin{theorem}[Exact forward log-height formula]\label{thm:forward}
+The exact identity
+\begin{align}
+ (\ln2)(\log_2\mathcal H-N)
+ &=B_*\bigl[\ln(1+d_0)+g(a_*)\bigr]
+   +2(R-1)\ln(1-u_*)\nonumber\\
+ &\quad+R g(b_*)-\tfrac12\ln(1-b_*)+\ln(1-v_*)\label{eq:exactlog}
+\end{align}
+has the absolutely convergent all-orders expansion
+\begin{align}
+ (\ln2)(\log_2\mathcal H-N)
+ =\sum_{j\ge1}\biggl[&B_*\frac{(-1)^{j+1}d_0^j}{j}
+ -B_*c_j a_*^j-\frac{2(R-1)u_*^j}{j}\nonumber\\
+ &+\Bigl(\frac1{2j}-Rc_j\Bigr)b_*^j-\frac{v_*^j}{j}\biggr].
+ \label{eq:series}
+\end{align}
+After truncation at $j=k\ge1$, the absolute error in natural-log
+units is at most
+\begin{align}
+ \mathcal R_k={}&\frac{B_*d_0^{k+1}}{k+1}
+ +\frac{B_*a_*^{k+1}}{2(k+1)(1-a_*)}
+ +\frac{2(R-1)u_*^{k+1}}{(k+1)(1-u_*)}\nonumber\\
+ &+\frac{(R+1)b_*^{k+1}}{2(k+1)(1-b_*)}
+ +\frac{v_*^{k+1}}{(k+1)(1-v_*)}.\label{eq:tail}
+\end{align}
+Divide this bound by $\ln2$ for the error in $\log_2\mathcal H$.
+\end{theorem}
+\begin{proof}
+The identities
+\[
+ \lambda_A=2^L(1+d_0)e^{g(a_*)},\qquad
+ 2S=\lambda_A^{2p}(1-u_*)^2/2,
+\]
+and the auxiliary Pell formula give
+\[
+ \ln\mathcal H=(R-1)\ln(2S)+R g(b_*)
+ -\tfrac12\ln(1-b_*)+\ln(1-v_*).
+\]
+Substitution proves \eqref{eq:exactlog}, including the coefficient
+$R$ on $g(b_*)$ and the denominator correction.
+Differentiating gives
+\[
+ g'(z)=-\frac{(1-z)^{-1/2}-1}{2z},
+\]
+so integration of the convergent binomial series with $g(0)=0$
+yields $g(z)=-\sum_{j\ge1}c_jz^j$. The logarithm series then
+prove \eqref{eq:series}; each component is absolutely convergent.
+For \eqref{eq:tail}, use the alternating remainder for $\ln(1+d_0)$,
+$0<c_j\le1/(2j)$, and geometric tail bounds for the other arguments.
+For the $b_*$ coefficient the triangle inequality gives
+$|1/(2j)-Rc_j|\le(R+1)/(2j)$, requiring no guessed sign.
+\end{proof}
+
+This formula separates main and auxiliary radical corrections from
+their conjugate-power corrections. Grouping them by $j$ does not
+assert a single global asymptotic ordering in the ordinary input, nor
+remove the radix jumps. The arguments are dependent; that dependence
+does not affect convergence of the finite sum of convergent series.
+
+\begin{proposition}[Uniform leading correction]\label{prop:leading}
+For the family, and for the real interpolation below,
+\begin{equation}\label{eq:leading}
+ \left|\log_2\mathcal H-N-\frac{B_*d_0}{\ln2}\right|
+ <\frac{B_*d_0^2}{\ln2}.
+\end{equation}
+In particular $\log_2\mathcal H-N>0$, and
+\[
+ \log_2\mathcal H-N=
+ \frac{2p(R-1)}{\ln2}\,2^{-p}
+ \bigl(1+2^{1-y}+O(d_0)\bigr).
+\]
+The constant-one absolute remainder is the explicit statement
+\eqref{eq:leading}, before this rearrangement.
+\end{proposition}
+\begin{proof}
+Under $p\ge16$, $y\ge3$, $R\ge8$, $R<2p$, one has
+\begin{equation}\label{eq:smallarguments}
+ a_*,u_*,b_*,v_*\le d_0^2/16.
+\end{equation}
+Indeed $a_*<2^{-2p-2y}$ and $d_0\ge2^{-p}$.
+Also $\lambda_A>2XY+1=2^L+1$, so
+$u_*<2^{-2pL}$. For real as well as integral $p$, convexity gives
+\[
+ \lambda_A^{2p}>2^{2pL}+2p\,2^{(2p-1)L}>2^{2pL}+2,
+\]
+whence $S>2^{2pL-2}$, $b_*<2^{-4pL+4}$, and
+$v_*<2^{-2R(2pL-2)}$ since $\lambda_S>S$.
+Each of the latter three is at most $2^{-2p-4}$ by the stated
+hypotheses, proving \eqref{eq:smallarguments}.
+
+Use $|\ln(1+d_0)-d_0|\le d_0^2/2$,
+$|g(z)|\le z/[2(1-z)]$, and
+$|\ln(1-z)|\le z/(1-z)$. All four small arguments are below
+$1/2$. In \eqref{eq:exactlog}, the five error contributions after
+division by $B_*d_0^2$ are bounded respectively by
+\[
+ \frac12,\qquad\frac1{16},\qquad\frac1{8p},\qquad
+ \frac1{16p},\qquad\frac18.
+\]
+Their sum is at most $179/256<1$ for $p\ge16$.
+This proves \eqref{eq:leading}; positivity follows from $d_0<1$.
+\end{proof}
+
+\subsection{Real analytic interpolation and the cubic branch}
+For each branch separately, extend $p,y$ to affine real functions on
+$R\ge100$:
+\[
+\begin{array}{c|cc}
+&p(R)&y(R)\\\hline
+\mathrm A+&2(R+1)/3&(R+1)/3-1\\
+\mathrm A-&2(R-1)/3&(R-1)/3-1\\
+\mathrm B&5(R+1)/7&15(R+1)/28-1
+\end{array}
+\]
+Use the positive real formulas above to define $S(R)$ and
+\[
+ \mathcal H(R)=\frac{\sinh(R\theta(R))}{\sinh\theta(R)},\qquad
+ \theta(R)=\operatorname{arcosh}S(R)>0.
+\]
+At the integer family parameters this agrees exactly with the Pell
+witness. It is an analytic interpolation, not a claim that noninteger
+parameters are chart witnesses.
+
+$A,\lambda_A,\lambda_A^p$, and then $S$ strictly increase with $R$.
+For fixed $\theta>0$, the hyperbolic quotient strictly increases
+with $R>1$. For fixed $R>1$, its logarithmic derivative in $\theta$
+is $R\coth(R\theta)-\coth\theta>0$, since
+\[
+ \frac{d}{dz}(z\coth z)
+ =\frac{\sinh z\cosh z-z}{\sinh^2z}>0\qquad(z>0).
+\]
+Thus $\mathcal H(R)$ and $\log_2\mathcal H(R)$ are strictly
+increasing on each branch, independently of integer bit-length results.
+
+Let $N(R)$ be the cubic bit length minus one:
+\begin{equation}\label{eq:Ncubics}
+\begin{array}{ll}
+\mathrm A+:&(4R^3+4R^2-7R-1)/3,\\
+\mathrm A-:&(4R^3-12R^2+9R-1)/3,\\
+\mathrm B:&(25R^3+25R^2-39R-11)/14.
+\end{array}
+\end{equation}
+Direct differentiation gives, uniformly for $R\ge100$,
+\begin{equation}\label{eq:derivativebudget}
+ N'(R)>3R^2,\quad 0<N''(R)<12R,\quad
+ B_*(R)<2R^2,\quad 0<B_*'(R)/B_*(R)\le3/R.
+\end{equation}
+For example $B_*$ is respectively
+$\frac43(R^2-1)$, $\frac43(R-1)^2$, and $\frac{10}{7}(R^2-1)$.
+The cubic is increasing and unbounded on this interval.
+
+\begin{theorem}[One exponential inverse correction]\label{thm:inverse}
+Fix an actual or interpolated $R\ge100$, write
+$\ell_h=\log_2\mathcal H(R)$, and let $r_0\ge100$ be the
+unique root $N(r_0)=\ell_h$. Put $p_0=p(r_0)$, $y_0=y(r_0)$,
+and
+\[
+ \mathcal T(r)=\frac{2p(r)(r-1)}{(\ln2)N'(r)}\,2^{-p(r)}.
+\]
+Then
+\begin{equation}\label{eq:inverse64}
+ R=r_0-\mathcal T(r_0)+\varepsilon_h,\qquad
+ |\varepsilon_h|\le64\bigl(2^{-p_0-y_0}+2^{-2p_0}\bigr).
+\end{equation}
+\end{theorem}
+\begin{proof}
+Write $\ell_h=N(R)+E(R)$, where \eqref{eq:leading} makes
+$E(R)>0$. Thus $r_0>R$. For $\delta_r=r_0-R$ the mean-value
+theorem gives $\delta_r=E(R)/N'(\xi)$, $R<\xi<r_0$.
+Using \eqref{eq:derivativebudget}, $\ln2>2/3$, and
+\eqref{eq:leading} gives $0<\delta_r<2d_0<1$.
+Put $q_*=2^{-p(R)}$. Since $d_0=q_*(1+2/Y)<2q_*$,
+\[
+ \left|E(R)-\frac{B_*(R)q_*}{\ln2}\right|
+ \le\frac{B_*(R)}{\ln2}\bigl(2q_*/Y+4q_*^2\bigr).
+\]
+Also $B_*/((\ln2)N')<1$. Division by $N'(\xi)$ therefore
+contributes error at most $2q_*/Y+4q_*^2$.
+Replacing its principal denominator $N'(\xi)$ by $N'(R)$
+contributes at most
+\[
+ \frac{B_*q_*}{\ln2}
+ \frac{N'(\xi)-N'(R)}{N'(\xi)N'(R)}
+ <\frac{4q_*\delta_r}{R}<\frac{20q_*^2}{R}\le q_*^2/5.
+\]
+Here $N'(\xi)-N'(R)<12\xi(\xi-R)$ and
+$\delta_r<4q_*$ suffice; the displayed $20$ is deliberately loose.
+Furthermore
+\[
+ 0<\mathcal T(r)<2^{-p(r)},\qquad
+ |\mathcal T'/\mathcal T|
+ \le B_*'/B_*+N''/N'+p'\ln2<7/r+1<2.
+\]
+Thus changing $\mathcal T(R)$ to $\mathcal T(r_0)$ costs less
+than $2q_*\delta_r<8q_*^2$. Summing the errors gives less than
+$2q_*/Y+13q_*^2$.
+Finally $p',y'<1$ and $\delta_r<1$ imply
+$q_*<2\,2^{-p_0}$ and $Y^{-1}<2\,2^{-y_0}$.
+The total is bounded by
+$8\,2^{-p_0-y_0}+52\,2^{-2p_0}$, proving the stated looser
+constant $64$.
+\end{proof}
+
+The full rational prefactor in $\mathcal T(r)$ tends to
+$1/(3\ln2)$ in either A branch and $4/(15\ln2)$ in B.
+Replacing it by this limit incurs an extra
+$O(2^{-p_0}/r_0)$ term, generally too large to preserve
+\eqref{eq:inverse64}. Its evaluation point and full coefficient matter.
+
+\subsection{Convergent algebraic inverse to all orders}
+Let $\gamma=4/3$ in A and $\gamma=25/14$ in B, and put
+$s_h=(\ell_h/\gamma)^{1/3}$. The large cubic root has
+\begin{align*}
+ \mathrm A+:\quad r_0&=s_h-\tfrac13+\tfrac{25}{36}s_h^{-1}
+                         -\tfrac{11}{81}s_h^{-2}+O(s_h^{-3}),\\
+ \mathrm A-:\quad r_0&=s_h+1+\tfrac14s_h^{-1}
+                         +0\,s_h^{-2}+O(s_h^{-3}),\\
+ \mathrm B:\quad r_0&=s_h-\tfrac13+\tfrac{142}{225}s_h^{-1}
+                         -\tfrac{104}{2025}s_h^{-2}+O(s_h^{-3}).
+\end{align*}
+Direct substitution into \eqref{eq:Ncubics} proves the displayed
+coefficients. For convergence at all algebraic orders write
+$N(r)=\gamma r^3+b_2r^2+b_1r+b_0$, $r=s_h h$, $w_h=1/s_h$.
+The equation becomes
+\[
+ h^3+(b_2/\gamma)w_hh^2+(b_1/\gamma)w_h^2h
+ +(b_0/\gamma)w_h^3=1.
+\]
+At $(w_h,h)=(0,1)$ its derivative in $h$ is three. The analytic
+implicit-function theorem gives a unique convergent power series
+$h(w_h)$ near zero; its recursively determined coefficients supply
+all algebraic orders of the large real cubic root. No explicit
+convergence radius is asserted. Theorem~\ref{thm:inverse} adds the
+first controlled exponential correction beyond this algebraic branch.
+
