@@ -61,6 +61,22 @@ native valuation; fresh normal/optimized receipts pass. **Occurrence on
 a genuine compiler history remains unproved**, so gamma83 is unresolved
 and the established universal polynomial bound remains **84**.
 
+The [native ternary exclusion](Papers/research-wip/native-stream-queue/complete83_gamma_native_ternary_exclusion.md)
+gives an explicit digit class with **v3(m)=2 exactly**, so both gamma83
+power tests fail there for every number of squarings. The [independent review](Papers/research-wip/native-stream-queue/review_complete83_gamma_native_ternary_exclusion.md)
+checks the central-binomial recursion, native tail expansion and local-order
+argument; normal/optimized receipts pass. Its numerical example satisfies
+kernel range/population prerequisites but is not a compiled history.
+The 83-operation language remains unresolved.
+
+The [joint auxiliary/strong cut](Papers/research-wip/native-stream-queue/complete84_aux_strong_joint_cut.md)
+requires exactly five gates at its four independent computed ports. The
+proof covers scalar constants, reuse and cancellation; the [independent review](Papers/research-wip/native-stream-queue/review_complete84_aux_strong_joint_cut.md)
+checks its two-multiplication argument and full source integration. The
+saved regrouping is the identical 84-operation polynomial, with all
+producer costs retained. This local bound leaves extra registers,
+source-specific relations and changed producers open.
+
 The [local producer scout](Papers/research-wip/native-stream-queue/complete84_local_producer_scout.md) finds no
 saving among zero-, one- or two-operation replacements at70 actual84
 producer rows. It enumerates4741 aliases and719027 inner expressions;
@@ -198,6 +214,16 @@ conditional timed-chart proof and confirms the explicit binary certificate's
 Its generic compiler still assumes a bijective chart description; witness
 and square counts are not arithmetic operation counts. These scoped reviews
 do not certify an implemented rule-to-chart compiler or improve universality.
+
+The [fixed-context transfer](Papers/research-wip/native-stream-queue/matrix193_context_absorption.md)
+absorbs both program contexts into the existing 193 generator phases,
+reducing conditional target assembly from six to **3=2M+1A operations**.
+It preserves ordinary input and exact membership, with a program-specific
+fixed generator array. The complete fixture grows from 30 to 72 maximum
+coefficient bits. The [independent review](Papers/research-wip/native-stream-queue/review_matrix193_context_absorption.md)
+checks the unrestricted transfer, all entries and the accepted product;
+normal/optimized replays pass. Correct Pell indexing and an unbounded
+product certificate remain unpaid; the universal polynomial bound stays **84**.
 
 The [Gamma1(5) recoding](Papers/research-wip/native-stream-queue/matrix193_gamma1_recode.md)
 preserves all 193 generators and twenty letters with **Pell parameter 391**.
