@@ -28,6 +28,17 @@ this candidate. The [independent review](review_complete83_independent_gamma_sco
 and fresh normal/optimized receipts check the full source and criterion.
 The established universal minimum remains **84 operations**.
 
+The [gamma83 power tests](complete83_gamma_power_tests.md)
+give exact sufficient conditions for a false ordinary input, without
+factoring the native modulus H. On a genuine accepting history at input4
+for the positive-even language, `2^[2^e(H-1)]=1 mod H` permits input3;
+the corresponding H-3 test permits input1. Both shifts preserve positive
+width. The [independent review](review_complete83_gamma_power_tests.md)
+checks the full conditional implication, exact finite input fiber and
+native valuation; fresh normal/optimized receipts pass. **Occurrence on
+a genuine compiler history remains unproved**, so gamma83 is unresolved
+and the established universal polynomial bound remains **84**.
+
 The [local producer scout](complete84_local_producer_scout.md) finds no
 saving among zero-, one- or two-operation replacements at70 actual84
 producer rows. It enumerates4741 aliases and719027 inner expressions;
