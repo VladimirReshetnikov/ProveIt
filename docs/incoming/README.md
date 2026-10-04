@@ -423,6 +423,20 @@ earlier batches.
 10. **Every edited report is rebuilt.** A reciprocal remark added to a
     neighbouring report changes that report too. Rebuild its PDF, and update
     any page count its README states.
+11. **Unproved and wrong claims are never dropped** (Vladimir's standing
+    rule, 4 October 2026). This applies to claims of a source, of a review
+    and of the write itself, during the write, the audit and any later
+    review.
+    - An unproved claim moves to a "Further questions and research" section
+      of the Part, or to the report's existing questions section. It is
+      stated as an open question with its source credited, the argument
+      sketch it came with, and what is missing.
+    - A claim that is demonstrably wrong stays on record, with an explicit
+      proof of its failure or a concrete counterexample (a numbered remark)
+      whenever one can be given. Batch 92's correction of a lemma in the
+      Kuhlmann–Serra preprint by the counterexample t ↦ t + t² on k(t) is
+      the model.
+    - The commit message lists every claim so moved or refuted.
 
 ## 5. Catalogue
 
