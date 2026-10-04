@@ -448,6 +448,20 @@ Its generic compiler still assumes a bijective chart description; witness
 and square counts are not arithmetic operation counts. These scoped reviews
 do not certify an implemented rule-to-chart compiler or improve universality.
 
+The [positive CRT duration refinement](matrix193_positive_crt_duration.md)
+lowers the fixed-duration matrix bound further to **140h+7 operations**, with
+**31h+1 positive witnesses** and degree at most10. A fixed CRT choice of the
+sphere radius forces all eighteen sphere roots to be nonzero; positive signs,
+the nonsquare circle and shifted CRT quotients make25 local auxiliaries
+positive directly. Only six coordinates per step need paid offset conversion.
+The133-operation local grammar, ordinary input and matrix history relation
+are preserved with newly compiled constants, independent of input or duration.
+The [independent review](review_matrix193_positive_crt_duration.md) checks the
+full147/287 sources for h=1,2, uniform positivity proof and coefficient recipe;
+frozen normal/optimized receipts pass. Constants are substantially larger.
+This remains an integer fixed-duration result; unbounded fixed-arity packing
+and the universal84 bound are unchanged.
+
 The [centered CRT matrix selector](matrix193_centered_crt_selector.md)
 lowers the complete integer countdown from154 to **133=64M+69A**, with26
 auxiliary integer witnesses and exact degree10. A circle selects exactly96
