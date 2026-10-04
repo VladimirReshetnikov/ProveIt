@@ -77,6 +77,8 @@ in this scoped intake; no new universal bound is entered.
 
 The [new hat-query threshold review](review_hat_threshold_afd7ffabb.md) checks the main deterministic threshold2 proof chain in1147 TeX lines, authenticates all9 archive members and reads both provenance guides. The coloring/cylinder obstruction and rare-loss block construction support the inspected theorem with its deterministic, fairness and budget hypotheses. Expected query cost is not a paid arithmetic gate count: unbounded decision-tree depth, lookup and finite accepting-certificate compilation remain open. Packaged programs were not executed; remaining manuscript sections and external attribution are unreviewed.
 
+The [hat-surplus Part II publication review](review_hat_publication_95527cf73.md) confirms integration at95527cf73, retains65 old plus55 prefixed manuscript labels and checks all250 references. Its821 read lines cover provenance, the sound finite pairing/syndrome optimum and the effective-cost interface. The construction uses block-size-dependent Boolean computations and requires a computable sublinearity modulus for its effective general schedule; it supplies no paid fixed-arity halting compiler. Infinite growth/category proofs, external attribution and packaged programs remain outside this review.
+
 The [batch90 placement review](review_batch90_placement_12076b2e8.md)
 authenticates all32 added files against the53 pinned archive members at
 **12076b2e8**. Only the new Cantor-subfields report receives its article and
@@ -5206,6 +5208,7 @@ New research and the completed75-operation construction:
 
 | Artifact | Established result | Remaining boundary |
 |---|---|---|
+| [Hat-surplus Part II publication](review_hat_publication_95527cf73.md) | Integration at95527cf73;65+55+6 labels,250 resolved references; finite syndrome optimum and effective interface checked in821 read lines | General schedules need an effective modulus; per-player computation grows with block size; infinite claims and external attribution unreviewed |
 | [Full91 strong-root obstruction](complete84_full_independent_root_absorption.md) and [review](review_complete84_full_independent_root_absorption.md) | Any fixed integer-polynomial f=G on all67+24 literal independent values has finite whole input projection; actual conic/resultant and rational88 fallback | No new circuit or global lower bound; retained witnesses positive, signed-T domain handled explicitly;84/187 unchanged |
 | [New hat-query threshold review](review_hat_threshold_afd7ffabb.md) | Main expected-cost threshold2 proof checked;1147 TeX lines and9-member manifest; deterministic/coin/count/distance scopes retained | No Turing-complete substrate or fixed-arity paid integer compiler in inspected sections; variable tree lookup and termination unpaid |
 | [Batch90 placement](review_batch90_placement_12076b2e8.md) and [five later arrivals](review_latest_five_9dc8db274.md) |32 exact file transfers; eight host article/guides unchanged; latest five README texts read and42 members pinned | Five manuscript integrations pending at12076b2e8; later bodies unreviewed; no new paid compiler |
