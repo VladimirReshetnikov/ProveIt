@@ -1,0 +1,61 @@
+EXECUTED VERIFICATION SUMMARY
+Phase-Accurate Reversion of Complex Transseries
+
+Python 3.13.5; SymPy 1.14.0; mpmath 1.3.0
+Exact assertions passed: 710
+Numerical working precision: 160 decimal digits
+
+Mathematical status: exact finite algebraic checks and high-precision diagnostics;
+not Lean verification and not directed-rounding interval certificates.
+
+Numerical coverage:
+  Phase-accuracy parameter points: 12
+  Complex/real scaled inverse roots: 4
+  Decay-boundary sample radii: 4
+  Higher-height cutoff sample radii: 3
+  Moving Newton resolution parameter points: 10
+  Critical phase-normalization limit: 1 diagnostic
+
+Critical normalization (beta=1/2, sigma=3/2, k=1, w=1e12):
+  observed ratio = 1.20622991016903934282197
+  exact-limit evaluation exp(3/16) = 1.20623024942098071065559
+
+Exact Newton leading constants (m=2^(k+1)-1):
+  beta=1/3, k=0, m= 1: 1
+  beta=1/3, k=1, m= 3: -1/9
+  beta=1/3, k=2, m= 7: -1/729
+  beta=1/3, k=3, m=15: -1/4782969
+  beta=1/2, k=0, m= 1: 1
+  beta=1/2, k=1, m= 3: -1/8
+  beta=1/2, k=2, m= 7: -1/512
+  beta=1/2, k=3, m=15: -1/2097152
+  beta=2/3, k=0, m= 1: 1
+  beta=2/3, k=1, m= 3: -1/9
+  beta=2/3, k=2, m= 7: -1/729
+  beta=2/3, k=3, m=15: -1/4782969
+  beta=3/4, k=0, m= 1: 1
+  beta=3/4, k=1, m= 3: -3/32
+  beta=3/4, k=2, m= 7: -27/32768
+  beta=3/4, k=3, m=15: -2187/34359738368
+
+Moving resolution: first k with |N_k-G| <= 0.1 exp(-G^sigma).
+Errors are evaluated via the cancellation-free exact recurrence.
+  w=  16, sigma=1.0: k= 3, log(error/sector)=-20.365937351398060508
+  w=  16, sigma=2.0: k= 6, log(error/sector)=-149.18278323616858753
+  w=  64, sigma=1.0: k= 4, log(error/sector)=-35.141777595153631282
+  w=  64, sigma=2.0: k=10, log(error/sector)=-3189.8605948391915971
+  w= 256, sigma=1.0: k= 6, log(error/sector)=-237.15602179853884571
+  w= 256, sigma=2.0: k=13, log(error/sector)=-4615.0490205114767956
+  w=1024, sigma=1.0: k= 7, log(error/sector)=-148.45919682515784364
+  w=1024, sigma=2.0: k=17, log(error/sector)=-196021.49080705040525
+  w=4096, sigma=1.0: k= 9, log(error/sector)=-1276.3357092504071835
+  w=4096, sigma=2.0: k=21, log(error/sector)=-5543485.8999544825873
+
+Higher-height phase cutoff:
+  w=  100: sufficient N=15, log(phase tail)=-4.3539946927613853958
+  w= 1000: sufficient N=95, log(phase tail)=-8.523903535221604138
+  w=10000: sufficient N=678, log(phase tail)=-6.5022298636032341184
+
+Full coefficients, root diagnostics, and other numeric values are in verification.json.
+Recorded command: python verify.py --part all --out results
+Reproduction command preserving this record: python verify.py --out build/results

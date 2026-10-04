@@ -2,11 +2,11 @@
 
 This group holds two documents: the canonical volume, and the companion
 volume on combinatorial transseries consolidated from the three arrivals of
-2026-09-04 (see the end of this file). Beside them are fifty-six unmerged
+2026-09-04 (see the end of this file). Beside them are fifty-nine unmerged
 arrivals, fifty of 2026-09-29, one of 2026-09-30, one of 2026-10-01,
-three of 2026-10-02 and one of 2026-10-03, each filed whole with its PDF;
-all but the last were then amended editorially (see "Arrivals of
-2026-09-29 to 2026-10-02" below).
+three of 2026-10-02, one of 2026-10-03 and three of 2026-10-04, each filed
+whole with its PDF; all but the last four were then amended editorially
+(see "Arrivals of 2026-09-29 to 2026-10-04" below).
 
 The transseries Lean inventory and zero-gap result are computed by
 `Analysis/FabiusFunction/scripts/doc_audit.py --root
@@ -272,7 +272,7 @@ natural follow-up.  Note for future filing: on Windows a directory named
 deleted `combinatorial_transseries_and_inverses/`, which is why the
 companion's directory omits the "And".
 
-## Arrivals of 2026-09-29 to 2026-10-02 (unmerged)
+## Arrivals of 2026-09-29 to 2026-10-04 (unmerged)
 
 Fifty-one research packages arrived through the repository drop zone
 `docs/incoming/`: fifty on 2026-09-29, in nine deliveries (its batches 45
@@ -394,6 +394,23 @@ partition function for OEIS A306631 below. It pins the repository revision
 volume. The other eight archives went to the research-report collection
 under `SetTheory/Cardinals/docs/reports/`. It has not yet had the
 editorial pass.
+
+The fourteenth delivery (2026-10-04, the drop zone's batch 94) brought, in
+its first drop-zone commit, three transseries packages on complex
+reversion, the sheet-selective exact-radius, phase-accurate and q-cusp
+articles below; that commit has no other archive. The exact-radius article
+pins the repository revision `6cb1d86f1` and cites the Stokes-transport
+and moment-determinacy packages; the phase-accurate article pins
+`8e9cd6f00` and cites the reversion, Stokes-transport and non-Archimedean
+packages; the q-cusp article pins `8e9cd6f00` and cites only READMEs: this
+one, the project's, and those of the certified-inversion and critical Hahn
+packages. None cites another article of its own delivery, although they
+share tools: each proves the same derivative-disk root certificate
+(`prop:certificate`, `thm:disk`, and `lem:certificate`, the last normalized
+to derivative 1 and proved by contraction), and each states the same
+gluing identity `G₊ = G₋ ∘ J⁻¹` for inverse branches (`eq:inverse-gluing`,
+`prop:jump`, `eq:target-transition`). They have not yet had the editorial
+pass.
 
 All fifty-two packages of the nine deliveries, the Fekete and
 small-deviation ones included, were then amended in place by an editorial
@@ -2032,6 +2049,87 @@ inverse, so that conjecture stays open (`p3:rem:threshold`). Its CRLF
 in the root `.gitattributes`; its checksum ledger is not shipped. Not
 formalized.
 
+[`Sheet_Selective_Exact_Radii_Complex_Reversion/`](Sheet_Selective_Exact_Radii_Complex_Reversion/)
+holds *Complex Transseries Reversion: exact radii, sheet-selective critical
+geometry, and late exponential sectors* (25-page A4 PDF, 1,186-line source,
+an exact SymPy and 110-digit check program with two figures). For
+`Q(s) = −s exp(s + V(s))` with `V(0) = 0` and `sup|V| ≤ δ²/1000` on
+`|s| ≤ 1 + δ`, complex `V` allowed, it proves by a critical-circle argument
+(`thm:lambert`) that the selected inverse has Taylor radius exactly `|q_c|`,
+the modulus of the critical value `q_c`, which is the only singularity on
+that circle, a square-root branch point. This answers Research question 1
+of the Stokes-transport article
+(`Nonlinear_Stokes_Transport_Logarithmic_Inversion/article.tex:1006-1008`):
+`R_g = q_c(g)` for all large `g` (`cor:repo`), so the upper bound of its
+`thm:radius` is attained. Applied to the limit `v e^{−v}` of the
+moment-determinacy article's `lem:psi-limit`, the same theorem appears to
+answer that article's Q2 (`moment_determinacy_transseries.tex:1689-1697`)
+for small `y`; its author text does not claim this, and it is to be
+checked at the editorial pass. It adds all-order late coefficients, a boundary
+truncation profile, curvature and sector-order crossovers, curved-action
+normalization, and an entire example whose other-sheet critical value `q_f`
+has `q_f/q_c < 10^{−1081}` (`thm:foreign`). Its exact-core formula is
+`p0:thm:perturbed-inversion` (`transseries_and_inversion.tex:38014`),
+credited generically, and its `V = 0` case is the volume's Cayley Puiseux
+chart (`p1:eq:omega-master`, `:40899`), uncited; nor does it cite the
+moving-fold article's exact radius at a moving square-root branch value
+(`thm:atlas`, `Critical_Transseries_Moving_Fold/article.tex:427`), a
+different normal form. Its checksum ledger is not shipped. No claim was
+found wrong. Not formalized.
+
+[`Phase_Accurate_Reversion_Complex_Transseries/`](Phase_Accurate_Reversion_Complex_Transseries/)
+holds *Phase-Accurate Reversion of Complex Transseries: minimal action
+jets, sharp Newton stopping, and sectorial transport* (29-page A4 PDF,
+1,284-line source, an exact SymPy and 160-digit check program with its
+recorded output). It continues the reversion article's `thm:newton`
+(`reversion_and_one_exponential.tex:517`), whose Newton depth `2^{k+1} − 1`
+it credits, and asks how much of an inverse an exponential phase needs. For
+`z + az^β` it proves the exact Newton constant `(β(β−1)/2)^{2^k−1}`
+(`thm:newtonexact`), so `eq:newtonrate` is attained at every `k`; the
+non-Archimedean article's `thm:sharp`
+(`Reversion_Beyond_Archimedean_Valuations/article.tex:1009`), uncited,
+already shows attainment for another equation. It also proves the minimal
+positive-power phase jet with its constant (`thm:finitejet`), the sharp
+step condition `(2^{k+1}−1)(1−β) > σ` for `e^{−λG^σ}`
+(`thm:sharpthreshold`), and moving Newton counts
+`σ log₂ w − log₂ log w + O(1)` for sector resolution and height-two phases
+(`thm:resolution`, `thm:heightnewton`); `G = w + 1/w` with phase `e^z` has
+no finite expanded phase jet (`thm:infinitejet`). Its disk certificate
+(`thm:disk`) is `plt:thm:an-complex-enclosure`
+(`transseries_and_inversion.tex:21754`, there with `η = 1/4`), uncited,
+with every `η < 1` and added phase bounds;
+its mixed-sector inverse (`thm:analyticLB`) and transition law
+(`prop:jump`) re-prove the Stokes-transport article's `thm:transport` and
+`thm:jump`, credited generically. Its checksum ledger is not shipped. No
+claim was found wrong. Not formalized; its numerics are not interval
+certificates.
+
+[`Euler_Quotient_Inversion_Rational_q_Cusps/`](Euler_Quotient_Inversion_Rational_q_Cusps/)
+holds *Complex Transseries Reversion at q-Cusps: convergent normal forms,
+infinitely flat limits, logarithmic–Puiseux inverses, and recovery from
+cusp data* (27-page A4 PDF, 1,745-line source, an exact-rational and
+115-digit check program with its recorded output). For every Euler
+quotient `∏_{δ|N} (q^δ;q^δ)_∞^{r_δ}` at `q = ζe^{−t}`, `ζ = e^{2πih/k}`, it
+writes the eta law exactly as `C t^β e^{−A_k/t+Bt} H(e^{−a/t})`
+(`thm:cusp`) and sorts the inverse into four regimes by `A_k`, `β` and `B`
+(`thm:classification`). When all three vanish, an infinitely flat limit,
+every sheet is `t_ℓ = −a/(Λ_ℓ + V(s_ℓ))`, with a convergent correction and
+an explicit remainder (`thm:flat`, `cor:flat-tail`). At `q = 1` flatness
+needs four factors, and four realize every correction ramification degree
+(`thm:four`, `thm:ramification`); the actions at the divisor cusps recover
+`r` by a double Möbius inversion (`thm:recover`). It extends the
+companion's `t3:thm:endpoint` (`Combinatorial_Transseries_Inverses.tex:4395`)
+and `t3:eq:modularP` (`:4133`; Lean
+`Fabius.qPochhammerInfIn_exp_neg_modular`) to complex sheets and every
+rational cusp, and for Euler quotients it answers the q-Pochhammer
+monograph's open problem `qg:prob-root-of-unity-asymptotics`
+(`Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/exponents-and-q-series/q_pochhammer_q_binomial_monograph/chapters/12_limits_reciprocity_and_frontiers.tex:578`),
+which stays open for general `(a;ζe^{−t})_∞` and Bailey sums. Its
+`prop:finite` is that monograph's `thm:qm-carry`, and its `prop:jumps` is
+`p0:thm:perturbed-inversion`; it cites none of these. Its `code/verify.py`
+overwrites the recorded `data/verification.json`. Its checksum ledger is
+not shipped. No claim was found wrong. Not formalized.
+
 The optimal-truncation articles (q-multinomial, Gaussian binomial,
 theta-resolved, certified inversion, gamma core, inverse harmonic and the
 three direct-truncation articles) are sharp instances of
@@ -2053,7 +2151,7 @@ moment-determinacy article's least moment bound is compared with its flat
 defect, not with the actual truncation error; none of these is a sharp
 instance.
 
-Thirty checksum ledgers were verified in full on filing and not filed.
+Thirty-seven checksum ledgers were verified in full on filing and not filed.
 From the first delivery, these are the two `SHA256SUMS.txt` of the
 regularity and inverse-harmonic packages and the `SHA256SUMS` of the
 moving-fold package. From the second, they are the `SHA256SUMS` of the
@@ -2078,7 +2176,10 @@ the ninth, it is the `SHA256SUMS.txt` of the triangular package. The tenth
 delivery's package had none. From the eleventh, it is the `SHA256SUMS.txt`
 of the factorial-transseries package. From the twelfth, they are the
 `SHA256SUMS` of the abelian-squares and Catalan-recurrence packages and the
-`MANIFEST.sha256` of the Bessel package. The READMEs of the
+`MANIFEST.sha256` of the Bessel package. From the thirteenth, it is the
+`SHA256SUMS.txt` of the A306631 package. From the fourteenth, they are the
+`SHA256SUMS` of the exact-radius package and the `SHA256SUMS.txt` of the
+phase-accurate and q-cusp packages. The READMEs of the
 inverse-harmonic, moving-fold, certified-inversion, Stokes-transport,
 action-accumulation, near-linear and critical Hahn packages, and of the five
 fourth-delivery and five fifth-delivery packages that had one, now record
