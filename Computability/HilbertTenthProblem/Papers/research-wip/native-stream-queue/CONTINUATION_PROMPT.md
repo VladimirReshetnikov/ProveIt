@@ -141,7 +141,7 @@
 > ancillary placements at350b9a954 now have the bounded review linked below.
 > Batch93 reciprocal c70ced0dd and the Lean-scope correction b8bc36acc
 > also have the bounded review linked below. Transseries placement6132faa30
-> retains only commit-summary/diff-statistic intake. The unknot-recognition
+> now has an archive/placement and selected-interface review. The unknot-recognition
 > adaptation78333302d now has a bounded computational-interface review; its
 > imported source implementations and archives are not audited. Batch95
 > reciprocal ddb36da6c now has the bounded review linked below. The BCH
@@ -173,6 +173,9 @@
 >
 >
 > The [affine input-coupling theorem](complete83_affine_input_coupling.md), with [independent source and proof review](review_complete83_affine_input_coupling.md), controls joint cancellation between delta and rho in independent-gamma83. For fixed integer coefficient polynomials P,Q,S on exactly71 bounded exterior values, a full positive zero satisfying P delta+Q rho=S with (P,Q) nonzero is canonical or has R²<8t+4+ceil(log2(23L²)). Thus the noncanonical ordinary inputs are explicitly bounded; if this cutoff is at most49², every such zero is canonical. The nonsquare Pell-conic eliminant proves the height bound without separately bounding the two input witnesses. The simultaneous-zero coefficient sector remains unrestricted. Fresh author/reviewer checks authenticate the unchanged83 rows, all71 exterior values and ten literal input rows, with exact coefficient identities and normal/optimized receipt equality. No relation is added for free, no completeness result or new circuit is claimed, and no universal bound changes.
+>
+>
+> The [batch94B transseries placement review](review_transseries_6132faa30.md) reads all three guide/attribute diffs and 2,767 explicitly scoped lines of the action-cone and modular-cusp packages at6132faa30. All45 archive members,43 exact placements and43 manifest entries are authenticated; a [separate fresh reauthentication](reauth_transseries_6132faa30.md) checks the immutable records in862 checks. No correction was found in the selected interfaces. A computable proper-weight example shows that finite truncations, even with a computable size bound, need not admit uniform complete enumeration; this clarifies the source's retained effectivity questions. Analytic factor counts, finite wall counts and coefficient truncations supply no paid fixed-arity integer compiler. Full analytic proofs, external attribution, PDFs and supplied numerical programs remain outside this review.
 >
 >
 > The [batch-95 reciprocal review](review_new_reciprocal_ddb36da6c.md) reads all four text diffs at ddb36da6c and 888 selected cited-interface lines. The notes retain the difference between a one-way interpretation and a canonical comparison, the same-parameter birthday condition, Con(ZFC) and the class sort; no new correction was found. A [separate metadata reauthentication](reauth_new_reciprocal_ddb36da6c.md) verifies six diffs, 33 declared spans, unchanged label/bibliography inventories and all 25 label locators in 240 checks. PDFs are hashed only, and imported foundations and unread proofs remain outside certification. Single surreal representatives and fixed semantic formulas do not supply a finite ordinary-integer evaluator or improve the universal bound.
