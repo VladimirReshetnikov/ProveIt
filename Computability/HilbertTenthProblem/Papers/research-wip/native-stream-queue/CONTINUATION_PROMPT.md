@@ -131,6 +131,15 @@
 > the final polynomial is not nonnegative on the whole real orthant.
 > This is a decidable orbit component, so the universal bound stays **84**.
 >
+> The latest reciprocal-note reviews cover the
+> [five-particle cross-references](review_recent_reciprocal_five_particle.md)
+> and [sandpile/turmite cross-references](review_recent_reciprocal_sandpile.md).
+> These are scoped checks of the added claims and their cited local context;
+> they do not recertify the complete manuscripts or supply a new universal
+> operation bound. The separate [incoming topology triage](review_recent_incoming_glazer_scope.md)
+> records all 25 archive members and three complete README reads from the
+> new Presburger/omnific bundles, with no manuscript or program validation.
+>
 > The [Reports21–22 publication review](review_reports21_22_publication_20261003.md)
 > finds no scope conflict in the new signal-machine Part VIII. Both arrival
 > archives, all61 placed files and21 inherited byte comparisons match the
