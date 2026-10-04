@@ -556,6 +556,15 @@ Its generic compiler still assumes a bijective chart description; witness
 and square counts are not arithmetic operation counts. These scoped reviews
 do not certify an implemented rule-to-chart compiler or improve universality.
 
+The [bounded-high-quotient chart](Papers/research-wip/native-stream-queue/matrix193_bounded_high_output.md)
+reduces the balanced matrix construction from150 to **146 positive witnesses**
+at the same **2,462 operations** and exact degree35,587. Four signed high
+pairs become one positive hat each by subtracting an already paid half-scale.
+The [independent review](Papers/research-wip/native-stream-queue/review_matrix193_bounded_high_output.md) checks the
+full positive pullback, reverse tail bound and new degree tie, with64 fresh
+whole-source modular pullbacks and normal/optimized replays. The fixed-program
+recipe and ordinary input are preserved; the universal84 minimum is unchanged.
+
 The [balanced-output construction](Papers/research-wip/native-stream-queue/matrix193_balanced_output_scout.md)
 reduces the matrix route to **2,462=1,124M+1,338A** operations and **150 positive
 witnesses**, saving another 700 gates and two witnesses. Signed block
