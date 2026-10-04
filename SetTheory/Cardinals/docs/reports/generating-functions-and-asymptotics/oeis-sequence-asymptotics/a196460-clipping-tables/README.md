@@ -541,8 +541,9 @@ root. The complete map is at the end of this README.
   which 22 ship; it is not regenerable and is kept as the record.
 - **Git-ignored file types.** The 17 `.log` and 36 `.fls` files under
   `data/` match ignore rules (`.gitignore`, `SetTheory/Cardinals/.gitignore`)
-  and were committed with `git add -f`; a fresh `git add` of this
-  directory will not pick up changes to them.
+  and were committed with `git add -f`. They are now tracked, so ordinary
+  `git add` includes later changes to them. Newly created, untracked files
+  matching those ignore rules remain excluded from ordinary staging.
 - **Scope of reviews and receipts.** Manuscript 24's tool review covers a
   candidate snapshot that "precedes final README/QA assembly" and "is
   explicitly not the completed release manifest or a final terminal gate".
