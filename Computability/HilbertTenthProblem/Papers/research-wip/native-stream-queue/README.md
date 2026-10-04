@@ -24,6 +24,12 @@ limits, including the unreviewed ATR0 claim; no finite paid compiler was
 found. Root independently rechecked all616 byte mappings and the recorded
 Polish read spans. These arrivals do not change the84-operation bound.
 
+The [later reciprocal-note diff](review_batch87_reciprocal_notes_8d7d03c3e.md)
+covers all eight changed text diffs through2dd07f282.
+All708/236/553 article labels are unchanged and356 cited formalization
+labels resolve. The notes clarify source relationships and hypotheses;
+no finite paid compiler or arithmetic-bound change is introduced.
+
 The [independent-gamma83 scout](complete83_independent_gamma_scout.md)
 removes the private main/input quotient sum from the actual84 source,
 giving **83=47M+36A,18 positive witnesses, exact degree187**. Its
