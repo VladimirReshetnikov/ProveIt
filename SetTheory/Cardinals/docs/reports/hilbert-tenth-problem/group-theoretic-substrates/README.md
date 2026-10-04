@@ -637,7 +637,13 @@ semigroup, form this one.
   is explicitly not canonical; Part II compiles in the reverse direction.
   Its Part XIV uses "history-free" in another sense; its research-question
   remark on four-squares conversions is Part II's four-square caveat, also
-  repeated by sources 06 and 07.
+  repeated by sources 06 and 07. Since batch 83, its Part XX (manuscript 22,
+  Report 35, `cdc:lp:thm:loader`) drives a literal periodic sandpile loader
+  with the same `U_{15,2}` and the same imported program-to-tape encoder; its
+  provenance record says the pinned table was "supplied from the prior
+  matrix-semigroup construction". Neither report implements the encoder; no
+  shared theorem (reciprocal note of 3 October 2026 in Section 1's relation
+  list).
 - **[`liveness-beyond-halting`](../liveness-beyond-halting)**: no overlap.
 - **[`quadratic-orthant-certificates`](../quadratic-orthant-certificates)**
   (Parts III and V): the same `U_{15,2}` table and erratum
@@ -750,7 +756,10 @@ destinations, no overfull boxes. The log has three underfull lines: badness
 3118 in the `[write]` note on shipped file names at the start of Section 14
 (present since batch 76), badness 1147 in the proof of Theorem 45.2 (source
 07's text), and badness 2165 in the bibliography entry for Bogopolski and
-Ventura.
+Ventura. The batch-83 reciprocal note (3 October 2026; one item in Section
+1's relation list, no label, macro, package or bibliography entry) leaves
+the build at 154 pages with the same log and the same three underfull
+lines; its page (printed page 19) was rendered and inspected.
 
 ## Rerunning the programs
 
