@@ -148,6 +148,9 @@
 > improvement. The universal84/187 and85/155 points remain unchanged.
 >
 >
+> The [dyadic negative-offset exclusion](complete83_dyadic_negative_offset_exclusion.md), with [independent proof review](review_complete83_dyadic_negative_offset_exclusion.md), uses the actual modified compiler layout to prove that q=2^t and u<t force W=2^u and X=2^R, restoring positive rho=U/H. On the proposed W=2^u−q branch, the scalar layout bounds first force Z>Dmask·J; two packed-index residue exclusions make the central binomial term the unique least-valuation term. The recovered population threshold then forces the native mask and Z≤Dmask·J, a contradiction. The proof retains the scalar counterexample to omitting the second valuation guard. Independent fresh coefficient, inverse-population and origin-bit checks pass normally and under optimized Python; no predecessor program or giant tuple is evaluated. The surviving sectors are non-dyadic even q and dyadic q with u≥t and W=0. This conditional inverse leaves the universal 84-operation bound unchanged.
+>
+>
 > The [even-radix boundary](complete83_even_radix_boundary.md), with [independent proof and arithmetic review](review_complete83_even_radix_boundary.md), proves that every valid-slice shared-projection83 zero has even q: odd q makes the packed index even, contradicting R=3 mod4. The exact offset bounds then give X>2^(R−1), recover Y=M_r(X)/2 and reduce the cubed scale to four binomial terms modulo 2q³. A full positive parametric diagnostic at q=76, R=30,562,815, W=−28 and e=−540 shows that evenness and these scalar conditions do not restore H|U; its native AND checks explicitly fail and its fixed numerals are not certified compiler data. Fresh independent Legendre/Kummer, residue and truncation checks corroborate the proof without materializing huge witnesses or executing predecessor code. No source row or operation bound changes; actual valid-program soundness in the surviving sector remains open.
 >
 >
