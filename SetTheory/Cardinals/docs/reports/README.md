@@ -826,11 +826,42 @@ archives went to the surreal collection: Parts XI–XII of
 manuscript refutes a repository claim. Reciprocal notes for batches 87, 89
 and 90 are in `8d7d03c3e`, `fc1ad4275` and `e50dde15b`.
 
-A report that continues a formal project gains no formal status from it:
-each README names the project declarations it builds on and says that its
-own theorems are not formalized.
+Batch 91, twenty-four archives of one arrival commit (`0d7f51c44`), was
+the Hilbert's-tenth programme pipeline's Research Reports 49–71 (Report 68
+was never delivered; only its README survives) and one OEIS pair, placed
+by host in four commits. Reports 50 and 52–54 (`b0a536b63`, written in
+`fb2287290`) became Part XXI of
+[`canonical-diophantine-certificates`](hilbert-tenth-problem/canonical-diophantine-certificates):
+fixed-arity positive-integer sandpile polynomials of exact degree 18 on one
+raw input, which answer Part XX's packing question; Report 52 ships Report
+50 whole, staged once, and six passages of Cairns's paper that two of them
+call misprints were checked, each printed form failing. Fifteen Reports
+(49, 51, 56–67, 69; `d750d98dd`, `61c9e3eb2`) became Parts IX–XIII of
+[`signal-machine-collision-certificates`](hilbert-tenth-problem/signal-machine-collision-certificates):
+a reversible four-particle timing threshold, periodic and five-signal
+validity certificates, planar and projective returns, five-signal branching
+and exact clocks, and native-gap compilers; the write corrected Report 64's
+strict bound `25D/18 < T < 25D/9`, attained at `a = 1`, and Report 67's
+nine heavy evidence files (about 35 MB) are rebuilt by recipe. Report 55
+(`22a8ca89e`, `b93c4a0b5`) became Part VI of
+[`group-theoretic-substrates`](hilbert-tenth-problem/group-theoretic-substrates)
+(a degree-12 chronological matrix certificate with 184,016 gates and 41,309
+witnesses), and Reports 70–71 (`22a8ca89e`, `4cabe3899`) Part VII of
+[`five-particle-binary-automata`](hilbert-tenth-problem/five-particle-binary-automata)
+(smaller sufficient recognition radii, answering Report 26's first
+question). The OEIS pair (`ec8ae3dc7`, `9f924ac47`) opened the report
+described in the next paragraph. Reciprocal notes are in `1fdcaf5a6` and,
+for the signal-machine report, in its write. The Hilbert's-tenth research
+tree reviewed the archives before placement (`49b100cfd`, `a9ab9a698`,
+`bc6e1a62c`) and every publication after it (`316148ed5`, `f135cfb15`,
+`4187c07d3`, `e92064458`, `5b9101184`, and `c529380eb` on the reciprocal
+notes); `5b9101184` corrected summaries that could be read as one scalar
+witness, and `c529380eb` refuted, retaining them, four summaries that
+omitted the power theorem shared, with the containment lemma, by the
+sandpile and matrix Parts. Nothing was superseded, no manuscript refutes a repository claim,
+and the programme's 84-operation record is unchanged.
 
-The already written batch91 report
+The batch-91 report
 [`a196460-clipping-tables`](generating-functions-and-asymptotics/oeis-sequence-asymptotics/a196460-clipping-tables/)
 combines two manuscripts: the exact zero-versus-one positive-auxiliary
 classification for each fixed finite two-coordinate clipping table and fixed-order
@@ -838,9 +869,59 @@ asymptotic, logarithmic and inverse expansions for A196460; then uniform
 bounds for every truncation of its exact finite sector expansion. The latter
 do not make the logarithmic or inverse expansions uniform in growing order.
 Coefficients and degree may depend on the whole table; no uniform paid
-integer compiler is supplied. The publication review at `9f924ac47` checked
+integer compiler is supplied. The publication review of `9f924ac47`
+(`e92064458`) checked
 integration and these scope distinctions, not every analytic proof. It is
 unrefereed and not formalized.
+
+Batch 92, six archives in two arrival commits (`9dc8db274`, `afd7ffabb`),
+added Parts III and IV to
+[`measurable-box-games`](ordinals-and-order-types/measurable-box-games)
+(`e38f368c2`, written in `721cf8196`): adaptive box games beyond cylinder
+measurability, answering Part I's Q5 and Q2 for Borel and universally
+measurable outputs (the Baire-property clause stays open), and the exact
+expected-query threshold 2 for a divergent hat-guessing surplus, from two
+independent manuscripts proving the same answer by the same construction,
+merged with the more general one as base; the other settles Q9 for a larger
+family. The write refuted, retaining it, the batch-90 sentence that every
+other case of Q9 was open (Remark 15.1); the publication review
+`42b49fdbd` refuted, retaining it, the write's own sentence that every
+`q ≥ 3` case above `⌊m/q⌋` was open (Remark 15.2). Reciprocal notes went
+to `non-baire-translation-invariant-ideal` and
+`open-query-membership-games` (`9bffd43d5`). The other three archives
+became Parts XIII–XV of the surreal report
+`polish-models-of-omnific-arithmetic` (`e24ce2ce0`, `4af6f191d`), whose
+Part XV shows a lemma of a Kuhlmann–Serra preprint false as stated. Nothing
+was superseded, and no manuscript refutes a repository claim.
+
+Batch 93, six archives in two arrival commits (`2faa3b37a`, `de37a66d1`),
+added Part II to
+[`naming-elementary-embeddings`](ordinals-and-order-types/naming-elementary-embeddings)
+(`47a77daba`, written in `8a7f289b8`): commuting named actions, answering
+its Question 10.4 in full, Question 10.1 for commuting permutations and
+the fixed-action part of Question 10.10. Part VIII of the surreal report
+`birthday-cutoffs-and-hereditary-sets` is credited as prior at `κ = ω`, and
+one imported group-existence theorem is kept as an open check (Question
+23.13). The other five archives went to the surreal collection: Parts II–III
+of `definable-surreals-and-omnific-integers` and Parts XVI–XVII of
+`polish-models-of-omnific-arithmetic`. The reciprocal notes on Part II went
+to the birthday-cutoff report with its batch-95 write (`abba38172`); those
+on the surreal Parts are in `c70ced0dd`. The Hilbert's-tenth tree reviewed
+the publication of Part II (`c3da7b57a`) and found no defect within its
+scope. Nothing was superseded, and no manuscript refutes a repository
+claim.
+
+Batches 94 and 95 brought nothing here. Batch 94's five complex-transseries
+articles were filed whole under `Analysis/Transseries` as its fourteenth
+delivery (`ec91f8c7c`, `6132faa30`); one of them refutes the directional
+clause of a conjecture of the q-Pochhammer monograph there, corrected in
+`7389d7de4`. Of batch 95's four archives, two became Part IX of the surreal
+report `birthday-cutoffs-and-hereditary-sets` (`350b9a954`, `abba38172`)
+and two the fifteenth transseries delivery (`05304d5ec`).
+
+A report that continues a formal project gains no formal status from it:
+each README names the project declarations it builds on and says that its
+own theorems are not formalized.
 
 ## Rebuilding the manifest
 

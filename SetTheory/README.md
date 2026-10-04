@@ -10,8 +10,10 @@ collection of research reports on other subjects.
   (batch 89) continues this interface semantically: it computes exactly when
   naming elementary self-embeddings of urelement kernel models keeps
   Replacement, Collection and reflection in the expanded language, and
-  proposes a formalization route. It is unrefereed and not formalized; this
-  project's `Form` has no atom predicate or function symbols.
+  proposes a formalization route; its Part II (batch 93) reads `Zf.lean`
+  again for commuting named actions and proposes further milestones. It is
+  unrefereed and not formalized; this project's `Form` has no atom
+  predicate or function symbols.
 - [`ClosureAxiomatization/`](ClosureAxiomatization/) proves that replacing
   Pairing, Union, Infinity, and Replacement by the set-like-relation Closure
   schema is semantically and deductively equivalent to ordinary ZF.
