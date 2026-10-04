@@ -601,8 +601,28 @@ The first assertion is the subfield form of \lbl{sse:prop:valueaction} of \repo{
 \end{writenote}
 
 \begin{writenote}[Added 4 October 2026, batch~92]
-Part~XV of \repo{foundations-and-computation/polish-models-of-omnific-arithmetic} (batch-92 manuscript~05; AI-assisted, unrefereed, not formalized) uses the same integer comparisons for field embeddings $\mathcal L^\Gamma\to\mathcal L^\Delta$ between left-finite Levi-Civita fields with real algebraic coefficients and exponent groups $0\ne\Gamma,\Delta\le\R$, where the induced value-group map is multiplication by one real $\lambda>0$ (\lbl{pma:rk:thm:scaling}), and it classifies these embeddings by triples $(\lambda,c,u)$ (\lbl{pma:rk:thm:parameters}). Those fields are complete and uncountable, not countable subfields of $\No$, so \cref{csf:q:embeddings} is not answered. Its Cantor family of closed immediate self-copies of one Polish field (\lbl{pma:rk:thm:family}) is a different object from the Cantor families of countable subfields here.
+Part~XV of \repo{foundations-and-computation/polish-models-of-omnific-arithmetic} (batch-92 manuscript~05; AI-assisted, unrefereed, not formalized) uses the same integer comparisons for field embeddings $\mathcal L^\Gamma\to\mathcal L^\Delta$ between left-finite Levi-Civita fields with real algebraic coefficients and exponent groups $0\ne\Gamma,\Delta\le_\Q\R$ (nonzero rational vector subspaces), where the induced value-group map is multiplication by one real $\lambda>0$ (\lbl{pma:rk:thm:scaling}), and it classifies these embeddings by triples $(\lambda,c,u)$ (\lbl{pma:rk:thm:parameters}). Those fields are complete and uncountable, not countable subfields of $\No$, so \cref{csf:q:embeddings} is not answered. Its Cantor family of closed immediate self-copies of one Polish field (\lbl{pma:rk:thm:family}) is a different object from the Cantor families of countable subfields here.
 \end{writenote}
+
+\begin{remark}[The rational-vector-space hypothesis in the reciprocal note]
+\label[remark]{csf:rem:levi-civita-hypothesis}
+The batch-92 note originally wrote only
+$0\ne\Gamma,\Delta\le\R$ while citing the complete positive-character
+parametrization of \lbl{pma:rk:thm:parameters}. Read as allowing arbitrary
+additive subgroups, that formulation is false. Take
+$\Gamma=\Delta=\Z$ and let $k$ be the real algebraic numbers. The left-finite
+field is then the Laurent-series field $k((t))$, and
+\[
+ \sum_n a_nt^n\longmapsto\sum_n(-1)^n a_nt^n
+\]
+is a field automorphism with inverse itself. It sends $t$ to $-t$, so its
+leading character has $c(1)=-1$, excluded by the cited parametrization's
+condition $c(\gamma)>0$. The cited theorem assumes nonzero
+$\Q$-subspaces, under which its real-closedness and order argument applies.
+The corrected note retains that hypothesis; this counterexample concerns
+the unrestricted positive-character classification, not every possible
+valuation-scaling assertion for other exponent groups.
+\end{remark}
 
 \section{Finite supports and a compact Boolean family}
 \label{csf:sec:support}

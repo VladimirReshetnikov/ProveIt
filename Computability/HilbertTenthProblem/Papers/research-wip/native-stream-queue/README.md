@@ -119,18 +119,19 @@ The [three surreal publication reviews](review_surreal_publication_5c32fda02.md)
 The [Parts XI–XII publication review](review_polish_publication_4f03443e0.md) separates merge4f03443e0 from the actual Polish-report write dd26f917c. It retains all784 old labels among923, checks2500 references, maps101 delivered labels and authenticates six placed support files. The full README diff,2013 selected TeX lines and two status notes were read. The fixed beta decoder still carries an internal universal recurrence, and its ordinary-exponentiation recoder is open; the group-completion criterion gives topology, not a finite integer certificate. Main fusion/class-manifold proofs and external ATR₀/HMS dependencies are outside certification. Root independently checks immutable blobs,14 archive members, all16 read spans and placement/label mappings. No paid compiler bound changes.
 
 The CA, definable-operations, catalogue, matrix, sandpile, box, signal,
-commuting-action, Polish-threshold and batch91 reciprocal publications now
-have the bounded reviews linked below. All reported catalogue/box/signal/
-reciprocal corrections are applied, with edited PDFs rebuilt. The next
-unreviewed publication update is batch92 reciprocal notes9bffd43d5. The six
-new foundations/reversion archives have the bounded intake linked below;
-complex-transseries placementec91f8c7c retains only commit-summary/diff-statistic
-intake. Earlier guide-only and ancillary-placement reviews keep their exact
-boundaries. Padded
+commuting-action, Polish-threshold and batch91/92 reciprocal publications
+now have the bounded reviews linked below. All reported catalogue/box/signal/
+reciprocal corrections are applied, with edited PDFs rebuilt. The six new
+foundations/reversion archives have the bounded intake linked below; the
+complex-transseries placementec91f8c7c itself retains only commit-summary/
+diff-statistic intake. Earlier guide-only and ancillary-placement reviews
+keep their exact boundaries. Padded
 reversal now has complete129-operation sources:47 witnesses/SOS227/degree40
 or46 witnesses/SOS224/degree52. Native AND remains in the loader, so a
 cheaper loading/accepting-history compiler is still needed for a universal
 improvement. The universal84/187 and85/155 points remain unchanged.
+
+The [batch92 reciprocal-note review](review_reciprocal_9bffd43d5.md) reads all16 changed text diffs (390 raw lines) across ten reports at9bffd43d5, plus37 selected source spans (1,619 lines counting overlap). It authenticates48 before/after blobs, unchanged label/bibliography sequences in eight articles,47 explicit label references and three links; root independently rechecks these and both publication snapshots. The CSF note now retains nonzero rational-vector-space exponents; new Remark3.5 preserves the broader subgroup wording and refutes its positive-character classification by t→−t on the Laurent-series field. Both guides state the exponent hypotheses, and the SSE guide restores countability while retaining its original summary as an omitted cited-theorem hypothesis, without asserting the uncountable extension false. The edited CSF PDF rebuilds directly in three no-shell-escape passes to32 pages, with71 unique labels,129 resolved references,29 citations and no warnings or bad boxes; PDF page13 was visually checked. Forward summability remains distinct from invertibility; the selected game and integer-part interfaces give no paid compiler saving. External references, full manuscript proofs and historical program execution remain unreviewed.
 
 The [six-archive foundations and reversion intake](review_new_foundations_f300069cf.md) authenticates all75 regular members at their actual arrivals: foundations at ec91f8c7c, two reversion archives at516049bf9 and the Stokes pair atf300069cf. Complete guides/status/abstracts and selected birthday/graph and finite-action interfaces total2,548 read lines. Root independently authenticates all archive/member/read-span pins and the five complete checksum ledgers. The two foundations suggest a conditional comparison between quotient birthday and native birthday precedence, but complete round-trip proofs remain unread; ordinal-length storage and universal subset tests are not a paid ordinary-integer evaluator. Finite action bounds give growing finite enumeration, not fixed cost. Remaining bodies, external theorems, PDFs, supplied programs and analytic completion claims are explicitly outside this intake. The complex-transseries placement commit itself remains unreviewed. No universal arithmetic bound changes.
 
@@ -5317,6 +5318,7 @@ New research and the completed75-operation construction:
 
 | Artifact | Established result | Remaining boundary |
 |---|---|---|
+| [Batch92 reciprocal notes](review_reciprocal_9bffd43d5.md) | All16 text diffs;37 selected source spans; rational-space/countability hypotheses restored; retained Laurent-series counterexample;32-page CSF PDF rebuilt | Scoped interfaces only; no external/full-proof or archived execution certification; no universal bound change |
 | [Foundations/reversion six-archive intake](review_new_foundations_f300069cf.md) | 75 member pins; five complete checksum ledgers; 2,548 exact guide/abstract/interface lines | Full interpretation/completion proofs unread; birthday and finite-action interfaces supply no paid ordinary-integer compiler |
 | [Reciprocal notes1fdcaf5a6](review_reciprocal_1fdcaf5a6.md) | Complete13-text-diff review; shared POWER and containment verified; false exclusivity/tally retained and refuted;742/186-page corrected PDFs rebuilt | Source equation/interface comparison only; imported theorems, physical reductions and old DAG execution not recertified |
 | [Inline reversal129](native_binary_reversal_inline129.md) / [independent review](review_native_binary_reversal_inline129.md) | Two complete129=66M+63A sources:47 witnesses/SOS227/degree40, or46 witnesses/SOS224/degree52; positive-zero bijections and whole polynomials checked | Padded positive words only; degree/witness tradeoff, not a cheaper native AND or universal compiler |
