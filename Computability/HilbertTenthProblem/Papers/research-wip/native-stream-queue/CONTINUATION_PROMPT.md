@@ -619,6 +619,19 @@
 > and square counts are not arithmetic operation counts. These scoped reviews
 > do not certify an implemented rule-to-chart compiler or improve universality.
 >
+> The [joint matrix-state factor rewrite](matrix193_joint_state_factor.md)
+> reduces the four complete sources to **1,405 / 1,402 / 1,402 / 1,399 operations**.
+> Deferring paid powers through five state blocks removes twenty products and
+> restores ten, saving10M with no new witnesses or fixed numerals. The coefficient
+> component is540=292M+248A. Full polynomial identities preserve the same supplied
+> positive zeros, witness counts141/140/140/139 and exact degrees35,587/53,345/53,347/71,105.
+> The [independent review](review_matrix193_joint_state_factor.md) reconstructs
+> all5,608 rows, checks124 changed intermediate values per chart, fourteen restored
+> contributions, all16 complete coefficient words and each entire finalizer/output.
+> Fresh author and review normal/optimized checks pass. Earlier terminal/IDLE
+> maps retain ordinary-input scope; the separate universal84 bound is unchanged.
+>
+>
 > The [cleanup-tail fusion](matrix193_cleanup_tail_fusion.md) lowers the four
 > complete matrix sources to **1,415 / 1,412 / 1,412 / 1,409 operations**.
 > Two joint Horner evaluations absorb the X cleanup cubics into their paid
@@ -945,8 +958,10 @@
 > Paid scaled-power reuse removes one further coefficient multiplication; the
 > intermediate composition has 1,411 operations and 552 coefficient rows.
 > Its -20Q^12/Q^150 reuse and the private Q^162 deletion are already included.
-> Joint X cleanup/state Horner evaluation now removes two further multiplications,
-> giving 1,409 operations and 550 coefficient rows in the complete both-chart source.
+> Joint X cleanup/state Horner evaluation removes two further multiplications,
+> giving the intermediate 1,409 operations and 550 coefficient rows.
+> Joint state-factor deferral removes ten more multiplications, giving the
+> current 1,399 operations and 540 coefficient rows in the complete both-chart source.
 > None of these completed savings may be subtracted again.
 >
 > The [packed selected-output construction](matrix193_packed_output_scout.md)

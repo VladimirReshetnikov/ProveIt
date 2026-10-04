@@ -610,6 +610,18 @@ Its generic compiler still assumes a bijective chart description; witness
 and square counts are not arithmetic operation counts. These scoped reviews
 do not certify an implemented rule-to-chart compiler or improve universality.
 
+The [joint matrix-state factor rewrite](matrix193_joint_state_factor.md)
+reduces the four complete sources to **1,405 / 1,402 / 1,402 / 1,399 operations**.
+Deferring paid powers through five state blocks removes twenty products and
+restores ten, saving10M with no new witnesses or fixed numerals. The coefficient
+component is540=292M+248A. Full polynomial identities preserve the same supplied
+positive zeros, witness counts141/140/140/139 and exact degrees35,587/53,345/53,347/71,105.
+The [independent review](review_matrix193_joint_state_factor.md) reconstructs
+all5,608 rows, checks124 changed intermediate values per chart, fourteen restored
+contributions, all16 complete coefficient words and each entire finalizer/output.
+Fresh author and review normal/optimized checks pass. Earlier terminal/IDLE
+maps retain ordinary-input scope; the separate universal84 bound is unchanged.
+
 The [cleanup-tail fusion](matrix193_cleanup_tail_fusion.md) lowers the four
 complete matrix sources to **1,415 / 1,412 / 1,412 / 1,409 operations**.
 Two joint Horner evaluations absorb the X cleanup cubics into their paid
@@ -5015,6 +5027,7 @@ New research and the completed75-operation construction:
 
 | Artifact | Established result | Remaining boundary |
 |---|---|---|
+| [Joint matrix-state factors](matrix193_joint_state_factor.md) | Complete1405/1402/1402/1399;540 coefficient rows; ten fewer multiplications by exact whole-polynomial identity | Same witnesses/degrees and inherited ordinary-input scope; universal84 unchanged |
 | [Recoded two-program U21](residue_affine_sparse_recoded467.md) | **447 certificate /467=171M+296A**,7 comparisons,67 witnesses,two fixed program parameters,degree at most5160. | Direct470 successor; code41 bound holds at B>=128,h=2, retaining fixed dyadic C>=64,C>E. Same supplied positive zeros on valid slices. |
 | [Auxiliary-ordinate polynomial obstruction](complete84_auxiliary_ordinate_absorption.md) | All93 quotient/ordinate-independent values give R<=3*deg(G)+ceil(log2 L) and finite ordinary-input projection after y_aux=G. | Both V signs and signed G covered; G=0 impossible before native recovery. No circuit saving or claim for quotient-dependent expressions. |
 | [Matrix cleanup-tail fusion](matrix193_cleanup_tail_fusion.md) | **1,415/1,412/1,412/1,409** complete operations;141/140/140/139 witnesses; exact degrees35,587/53,345/53,347/71,105. | Joint Horner evaluation saves2M per complete source; identical full polynomials and supplied positive zeros,550 coefficient rows. |
