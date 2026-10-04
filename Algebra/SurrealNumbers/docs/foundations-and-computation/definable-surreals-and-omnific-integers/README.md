@@ -7,7 +7,7 @@ those numbers here). Prepared for Vladimir Reshetnikov.
 
 ```
 article.tex                                  the report, standalone LaTeX with an internal bibliography
-article.pdf                                  the compiled report, 55 pages
+article.pdf                                  the compiled report, 56 pages
 README.md                                    this guide
 04-hod-transcendence-AUDIT.md                source 04's research and verification audit, as delivered
 07-initial-core-SOURCE_AND_PROOF_AUDIT.md    source 07's source and proof audit, as delivered
@@ -285,6 +285,14 @@ Appendix A.3 records these.
   free-algebra universality of `No` and `Oz` over ZF by the first
   Kinna–Wagner principle (`hset:kw:thm:equivalences`); an unnumbered note
   after Lemma 8.1 (batch 89) records this.
+- [`cantor-families-of-surreal-subfields`](../cantor-families-of-surreal-subfields/)
+  (`csf:`, batch 90). Its Lemma 3.2 (`csf:lem:independence`) proves again the
+  case `K = k` (real algebraic numbers), `G = {0}`, exponents `b ω^q` with
+  `b ∈ {1, √2, √3, √5, …}` of Lemma 8.1, and uses it as the transcendence
+  basis of a countable real closed field whose Cantor family of subfields has
+  complete analytic embeddability (`csf:thm:universality`). A second
+  unnumbered note after Lemma 8.1 (batch 90) records this; it moves the page
+  count from 55 to 56 and changes no label number.
 - [`omnific-diophantine-geometry`](../../surreal/omnific-diophantine-geometry/)
   (`odg:`). Full-class antecedents of Theorem 4.1 (`odg:thm:fractions`) and of
   Section 16; its reconstruction section enters Proposition 15.3; its

@@ -150,6 +150,17 @@ order unit, and a continuum-sized differentially independent family
 (`hol:cf:thm:continuum`). Nothing transfers between those derivations and this
 report's.
 
+Lemma 3.1 of
+[cantor-families-of-surreal-subfields](../../foundations-and-computation/cantor-families-of-surreal-subfields/)
+(batch 90, `csf:`), the `Q`-linear independence of squarefree radical
+monomials, is the instance `M = Q`, `a_i = p_i` (distinct primes, square roots
+in `R`) of `tail:lem:signs`, so the Lean theorems
+`Surreal.TailSigns.linearIndependent_mono` and
+`Surreal.AlgebraicClosurePart.independentSquareClasses_prime` cover it; that
+report says so in a dated note after the lemma. The specialization is not
+itself a Lean declaration, and nothing else in that report is formalized.
+(README only, batch 90; the article is unchanged.)
+
 ## What was checked when this was fitted into the collection
 
 The headline claim — `dtrdeg_{B_0} H_0 = 2^{ℵ_0}` with the explicit `ξ_α` —

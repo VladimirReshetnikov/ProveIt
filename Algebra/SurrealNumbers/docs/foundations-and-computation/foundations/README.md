@@ -298,6 +298,16 @@ result as a check of the pinned revision.
   question 27.3" is corrected to 113.3 (`swo:n16.3`), the number that question
   has carried since that report's later parts were added. These batch-89
   edits move the page count from 95 to 96; no label number changed.
+- [polish-models-of-omnific-arithmetic](../polish-models-of-omnific-arithmetic/)
+  (batch 90): its Part XII (source 18) restates clauses 1–2 of
+  `found:thm:discrete` for sets of surreals in the native order topology
+  (`pma:gcm:prop:fine`, (ii)–(iii)), crediting `SignSequenceTopology.lean`, and
+  adds three fine-topology observations: nonempty open intervals are proper
+  classes, continuous maps from connected set spaces into `No^m` are constant
+  (compare `found:cor:nopaths`), and `No^m` is totally separated by clopen
+  subclasses (`pma:gcm:prop:fineseparated`); those three are not formalized.
+  An unnumbered "Related (batch 90)" note after the paragraph following
+  `found:thm:discrete` records this; the page count (96) and all label numbers are unchanged.
 
 ---
 

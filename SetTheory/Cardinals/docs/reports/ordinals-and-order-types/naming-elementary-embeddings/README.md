@@ -192,6 +192,26 @@ the details. Part XV of
 Replacement in the full-class rank models `(V_λ, P(V_λ))`: different models,
 no shared proof.
 
+**Named group actions at the finite cutoff (batch 90).** Part VIII of the
+same surreal report (its source 12, batch-90 manuscript 05, *Named Symmetries
+and Replacement*, labels `hset:ns:`; pinned to `8dc2592e9`, an ancestor of
+this report's placement, so it does not cite this report) proves at the finite
+cutoff the Replacement criterion for uniformly named actions of arbitrary pure
+set-sized groups; for finitely many named permutations its Theorem 58.1
+(`hset:ns:thm:full`) is Theorem 5.1(2) here (independent proofs, neither
+claimed first; this report also covers non-surjective injections and every
+uncountable cutoff). It adds the graded levels `R_k` (Theorem 59.1), the
+observation that the one-cycle-of-each-length example of Example 5.5
+satisfies every `R_k` (Theorem 60.1, Example 60.2), two involutions realizing
+every finite level (Theorem 61.3, a finite-cutoff counterpart of Corollary
+7.9), and the survival of pure-valued Collection under every such naming
+(Theorem 63.1). A dated note at the end of Section 5 records this. Its
+Questions 65.1, 65.3, 65.6 and 65.12 are the finite-cutoff counterparts of
+Questions 10.7, 10.5, 10.9 and 10.12 here, and its Question 65.4 meets
+Question 10.4; Theorems 5.1(1) and 6.1 answer its Question 65.2 in part, and
+Theorems 7.5 and 7.7 its Question 65.11, for finitely many named injections
+(a sentence added to the note "Status of the questions" of Section 10).
+
 **Neighbouring reports.**
 
 - `birthday-cutoffs-and-hereditary-sets`, subsection "Transfer of Kunen's
@@ -217,8 +237,14 @@ no shared proof.
   share no theorem.
 - In this category, `../measurable-box-games/` also answers a Glazer paper
   and cites arXiv:2312.11902 but shares no theorem or notation;
-  `../lexicographic-well-orderings-of-reals/` concerns pure ZFC. No other
-  report in ProveIt treats urelements or cites Glazer–Yao or Yao.
+  `../lexicographic-well-orderings-of-reals/` concerns pure ZFC. Apart from
+  Parts VI–VIII of `birthday-cutoffs-and-hereditary-sets` (above) and Part XII
+  of `polish-models-of-omnific-arithmetic` (batch 90, which cites Glazer–Yao
+  as context for its class theory without Foundation), no report in ProveIt
+  treats urelements or cites Glazer–Yao or Yao's dissertation. (Corrected 4
+  October 2026, batch 90: this sentence had said "no other report", which was
+  already stale for Parts VI–VII; the article's sentence in Section 1.4 named
+  them and gains a dated note for Parts VIII and XII.)
 
 **Stale claims.** None. The manuscript's repository statements are true at
 the pin and at the write.
@@ -266,7 +292,7 @@ No statement, proof, number or non-claim of the manuscript was changed.
 README.md                         this guide (replaces the delivered README.md, staged under this name)
 SOURCE_AUDIT.md                   delivered source and proof audit: literature used, pin, files inspected, limits
 article.tex                       the report (delivered article.tex; labels prefixed, [write] notes)
-article.pdf                       compiled report, 30 pages (unnumbered title page, pages i-ii, then pages 1-27)
+article.pdf                       compiled report, 31 pages (unnumbered title page, pages i-ii, then pages 1-28)
 code/build.sh                     delivered three-pass pdfLaTeX build of the article.tex in its own directory
 code/verify_finite.py             finite regression checks: component swaps and real-marker coding (standard library)
 data/verification_results.json    recorded run of verify_finite.py (Python 3.13.5, 125,582 assertions)
@@ -338,10 +364,12 @@ latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 B=$(mktemp -d); cp article.tex code/build.sh "$B/"; cd "$B"; bash build.sh
 ```
 
-The committed PDF was built the first way with MiKTeX: 30 pages; no errors
+The committed PDF was built the first way with MiKTeX: 31 pages (30 before
+the batch-90 reciprocal notes, 4 October 2026); no errors
 or warnings, no undefined references or citations, no multiply defined
 labels, no duplicate PDF destinations, no overfull or underfull boxes. The
-delivered `build.sh` on a copy also succeeds (30 pages). The delivered
+delivered `build.sh` on a copy also succeeded (30 pages, before the batch-90
+notes; not rerun since). The delivered
 source, built the first way, gives 27 pages and one duplicate-destination
 warning (`page.1`), removed as described under Labels.
 

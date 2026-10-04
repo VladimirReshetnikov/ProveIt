@@ -462,6 +462,15 @@ uncountable θ this is the case M = N of Lemma 26.1 (`univ:gs:lem:boundary`). A
 dated note, "[Added 3 October 2026, batch 81: …]", after the paragraph following
 that lemma records it (no label, number or page count changed).
 
+**[cantor-families-of-surreal-subfields](../cantor-families-of-surreal-subfields/)**
+(batch 90, `csf:`) also indexes real closed fields by the subsets of a set,
+countable relative real closures `K_A` inside one countable surreal field, but
+there embeddability is not inclusion as in Theorem 27.4
+(`univ:gs:thm:boolean`): it is embeddability of colored rank orders
+(`csf:thm:colored-coding`) and a complete analytic quasiorder
+(`csf:thm:main`). Different objects, no shared proof; a dated note after the
+paragraph following the proof of Theorem 27.4 records the contrast.
+
 **[computable-surreals](../computable-surreals/)**: its `prop:topology` is the
 universe-relative form of set-indexed convergence; the same-ordinal setting here
 needs no lower-universe smallness. **[genetic-gaps-and-primitives](../../surreal/genetic-gaps-and-primitives/)**
