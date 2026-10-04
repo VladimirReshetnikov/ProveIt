@@ -1,11 +1,11 @@
 # Five-Particle Binary Automata
 
-**Reversible universality, a literal universal source, startup and cellular clocks, exact lazy evaluation, quartic certificates and a parallel replacement rule**
+**Reversible universality, a literal universal source, startup and cellular clocks, exact lazy evaluation, quartic certificates, a parallel replacement rule and smaller sufficient radii**
 
-This is a research report dated 3 October 2026, built from ten
-manuscripts: "Research Reports" 14–20 and 26–28 of one AI-assisted research
-pipeline, delivered as batch 82 (clusters M1 and M2) of ProveIt's incoming
-reports. They concern one object, the binary, number-conserving, globally
+This is a research report dated 3–4 October 2026, built from twelve
+manuscripts: "Research Reports" 14–20, 26–28, 70 and 71 of one AI-assisted
+research pipeline, delivered as batch 82 (clusters M1 and M2) and batch 91
+(cluster W4) of ProveIt's incoming reports. They concern one object, the binary, number-conserving, globally
 reversible cellular automaton that Report 15's compiler builds, fed with the
 explicit universal source of Report 16; Report 14 is a sibling construction
 for binary conservative (not necessarily reversible) automata. Reports 20
@@ -13,9 +13,12 @@ and 26–28 certify that automaton (Report 20), replace its ordered execution
 by two parallel involutions with the same admissible dynamics (Report 26),
 and evaluate (Report 27) and certify (Report 28) the new rule. Parts I–IV
 (Reports 14–19) were written by the first write (`e6a410588`), Parts V–VI
-(Reports 20, 26–28) by a second write the same day.
+(Reports 20, 26–28) by a second write the same day. Part VII (Reports 70
+and 71, delivered a day later) replaces the parallel rule by two further
+full-shift extensions of the same admissible dynamics with smaller sufficient
+radii; it was added by a third write on 4 October 2026.
 
-| Report | batch-82 archive | Archive (main file) | Pin | Placed | Printed as |
+| Report | archive (batch-82 number unless stated) | Archive (main file) | Pin | Placed | Printed as |
 |---|---|---|---|---|---|
 | 15 (base) | 15 | `Reversible_Binary_Five_Particle_Package.zip` (`report15.tex` + 3 `\input` files, 21-page PDF) | none (no repository commit named) | `bca6383e9` | Part I, Sections 4–17 |
 | 14 | 23 | `five-particle-binary-portable.zip` (`report/five-particle-binary-compiler.tex`, 24 pp.) | none | `bca6383e9` | Part I, Sections 18–32 |
@@ -27,6 +30,8 @@ and evaluate (Report 27) and certify (Report 28) the new rule. Parts I–IV
 | 26 | 20 | `Two_Parallel_Conservative_Involutions_Package.zip` (`report26.tex`, 16 pp.) | none | `7d2b1b245` | Part VI (first), Sections 89–100 |
 | 27 | 18 | `Sparse_Parallel_Particle_Evaluation_Package.zip` (`report27.tex`, 11 pp.) | none | `7d2b1b245` | Part VI (second), Sections 101–110 |
 | 28 | 03 | `Canonical_Parallel_Quartic_Certificates_Package.zip` (`report28.tex`, 19 pp.) | none | `7d2b1b245` | Part VI (third), Sections 111–126 |
+| 70 | batch 91: 22 | `Two_scale_recognition_radius_sources.zip` (`Report70/Report70.tex`, the flattened form of seven `manuscript/` modules, 21 pp.) | none (pins Report 26's archive by SHA-256) | `22a8ca89e` | Part VII (first), Sections 127–139 |
+| 71 | batch 91: 23 | `Shorter_exactness_windows_sources.zip` (`Report71/Report71.tex`, flattened from six modules, 13 pp.) | none (pins Report 70's release manifest and PDF) | `22a8ca89e` | Part VII (second), Sections 140–148 |
 
 All ten archives arrived unchanged in `db37d18c8` and survive there
 (`git show db37d18c8:docs/incoming/<archive> > <archive>`). No manuscript
@@ -43,13 +48,30 @@ Placement commits: `bca6383e9` (M1, Reports 14–19) and `7d2b1b245` (M2,
 Reports 20 and 26–28; the same placement filed M2's Reports 21–22 in
 `../signal-machine-collision-certificates`, for its Part VIII).
 
+Reports 70 and 71 (batch 91, manuscripts 22 and 23, cluster W4) arrived
+unchanged in `0d7f51c44` and survive there
+(`git show 0d7f51c44:docs/incoming/<archive> > <archive>`); placement commit
+`22a8ca89e`, which also filed batch-91 manuscript 07 (Report 55) in
+`../group-theoretic-substrates`. Neither names a ProveIt commit or an author
+(the PDF metadata says "Research report"); both are dated 4 October 2026.
+Report 70 pins Report 26's archive (`20a23b1ee22a…`, the committed
+`Two_Parallel_Conservative_Involutions_Package.zip` of `db37d18c8`), Report
+19's universal receipt and the source table `fa61d06178d7…`, which its
+package does not contain (it is Report 17's `source.json`, rebuilt below).
+Report 71 pins Report 70's release manifest `0f96f8aa8bba…` and PDF
+`d061fda50f26…`, both equal to the files of the delivered Report 70 archive
+(checked for this write), and Report 26's archive.
+
 **Status.** AI-assisted research manuscripts (Report 14's delivery README:
 "prepared with AI assistance"); unrefereed; not formalized. The
 Hilbert's-tenth research programme has read Reports 16, 18, 19, 20 and
 26–28 in reviews or scoped intakes that found no defect (none executed the
-archived suites), and has not reviewed Reports 14, 15 and 17 (see
-"Relation to the formal project"). Every result, proof, example, question
-and limitation of the ten manuscripts is printed; re-proofs of results
+archived suites), has read Reports 70 and 71 in part in a scoped intake that
+found no correction but did not re-audit their main proofs, and has not
+reviewed Reports 14, 15 and 17 (see "Relation to the formal project").
+The audits and reviews shipped with Reports 70 and 71 were made by the same
+AI-assisted pipeline. Every result, proof, example, question and limitation
+of the twelve manuscripts is printed; re-proofs of results
 already in the collection are kept as marked second presentations.
 
 ## Files
@@ -57,7 +79,7 @@ already in the collection are kept as marked second presentations.
 ```
 README.md                                       this guide
 article.tex                                     the report: standalone LaTeX, internal bibliography
-article.pdf                                     the compiled report, 190 pages
+article.pdf                                     the compiled report, 231 pages
 figures/accepting-orbit.pdf                     Report 15's Figure (raw five-particle trace of its accepting example)
 figures/14-five-binary-five-particle-trace.pdf  Report 14's figure (its accepting example's CA trace)
 ```
@@ -509,11 +531,256 @@ data/28-parallel-quartic-test-oracle-receipt.json
 data/28-parallel-quartic-test.log
 ```
 
+*Part VII (batch 91, cluster W4).* Placed by `22a8ca89e`; 233 files.
+
+**Report 70 (batch 91, manuscript 22), prefix `70-two-scale-`** — 91 files (10 at the root, 9 in `code/`, 72 in `data/`). Root: the proof packet's README, proof (`pp-PROOF.md`) and original independent proof audit, the radius-two appendix note, the fresh static proof audit (`audit-static-FRESH_AUDIT.md`) and fresh radius-two graph audit (`audit-r2-AUDIT.md`), the manuscript review (`msr-`), the release-tool review (`rtr-`), the primary-source check and the predecessor-contract note. `code/`: the two radius-two appendix programs and the graph checker (mathematical programs), the static authenticator, two review scripts and the presentation tools (`build_report70.py`, `release70.py`, `selftest70.py`). `data/`: input pins, release and packet manifests, the radius-two certificate (428 tables, 423 collisions) and its receipts, the graph audit's tables and potentials, the resource ledger, authentication and preservation receipts, the manuscript review's extracted text and page records, and build, recorder and review receipts.
+
+```
+70-two-scale-audit-r2-AUDIT.md
+70-two-scale-audit-static-FRESH_AUDIT.md
+70-two-scale-msr-REVIEW.md
+70-two-scale-pp-INDEPENDENT_AUDIT.md
+70-two-scale-pp-PROOF.md
+70-two-scale-pp-README.md
+70-two-scale-pp-appendix-RADIUS_TWO.md
+70-two-scale-qa-PRIMARY_SOURCE_CHECK.md
+70-two-scale-qa-pred-contract-README.md
+70-two-scale-rtr-REVIEW.md
+code/70-two-scale-audit-r2-check_radius2_graph.py
+code/70-two-scale-audit-static-authenticate_static.py
+code/70-two-scale-pp-appendix-radius2_algebra.py
+code/70-two-scale-pp-appendix-verify_radius2_algebra.py
+code/70-two-scale-rtr-independent_review.py
+code/70-two-scale-rtr-supplemental_review.py
+code/70-two-scale-tools-build_report70.py
+code/70-two-scale-tools-release70.py
+code/70-two-scale-tools-selftest70.py
+data/70-two-scale-INPUT_PINS.json
+data/70-two-scale-RELEASE_MANIFEST.json
+data/70-two-scale-audit-r2-audit-result.json
+data/70-two-scale-audit-r2-independent-graph-potentials.json
+data/70-two-scale-audit-r2-independently-enumerated-tables.txt
+data/70-two-scale-audit-r2-original-metadata-after.tsv
+data/70-two-scale-audit-r2-original-sha256-after.txt
+data/70-two-scale-audit-static-AUDIT_MANIFEST.json
+data/70-two-scale-audit-static-authentication-receipt.json
+data/70-two-scale-audit-static-authentication-run.txt
+data/70-two-scale-audit-static-original-state-after.json
+data/70-two-scale-frozen-proof-packet-freeze-receipt.json
+data/70-two-scale-msr-CANDIDATE_METADATA_BEFORE.tsv
+data/70-two-scale-msr-EXTRACTED_TEXT.txt
+data/70-two-scale-msr-FROZEN_SOURCE_METADATA_AFTER.tsv
+data/70-two-scale-msr-PAGE_QA.tsv
+data/70-two-scale-msr-PAGE_RENDER_DIMENSIONS.txt
+data/70-two-scale-msr-PAGE_RENDER_METADATA.tsv
+data/70-two-scale-msr-PRESERVATION.txt
+data/70-two-scale-msr-RENDER_METHOD.txt
+data/70-two-scale-msr-REVIEWED_INPUTS.txt
+data/70-two-scale-msr-SOURCE_EQUIVALENCE.txt
+data/70-two-scale-pp-appendix-radius2-enumeration-receipt.json
+data/70-two-scale-pp-appendix-radius2-verification-receipt.txt
+data/70-two-scale-pp-appendix-radius2_certificate.json
+data/70-two-scale-pp-dependency-authentication.json
+data/70-two-scale-pp-deps-release-manifest.json
+data/70-two-scale-pp-deps-source-pins.json
+data/70-two-scale-pp-manifest.json
+data/70-two-scale-pp-resource-ledger.json
+data/70-two-scale-qa-AUTHORING_HISTORY.json
+data/70-two-scale-qa-LOCKED_REPLAY_EQUALITY.json
+data/70-two-scale-qa-ORIGINAL_INPUTS_UNCHANGED.json
+data/70-two-scale-qa-OWNER_VISUAL_REVIEW.json
+data/70-two-scale-qa-RELEASE_PREPARATION.json
+data/70-two-scale-qa-REVIEW_ACCEPTANCE.json
+data/70-two-scale-qa-ROOT_MANUSCRIPT_ACCEPTANCE.json
+data/70-two-scale-qa-SELFTEST_RECEIPT.json
+data/70-two-scale-qa-SOURCE_MANIFEST_VERIFICATION.json
+data/70-two-scale-qa-SOURCE_ORIGINS.json
+data/70-two-scale-qa-locked-build-BUILD_RECEIPT.json
+data/70-two-scale-qa-locked-build-PAGE_INVENTORY.json
+data/70-two-scale-qa-locked-build-PREFLIGHT.json
+data/70-two-scale-qa-locked-build-RECORDER_INPUT_UNION.json
+data/70-two-scale-qa-locked-build-compile-1.fls
+data/70-two-scale-qa-locked-build-compile-1.stdout
+data/70-two-scale-qa-locked-build-compile-2.fls
+data/70-two-scale-qa-locked-build-compile-2.stdout
+data/70-two-scale-qa-locked-build-format.fls
+data/70-two-scale-qa-locked-build-pdfinfo.stdout
+data/70-two-scale-qa-pred-contract-ADAPTATION.diff
+data/70-two-scale-rtr-COMBINED_REVIEW_RECEIPT.json
+data/70-two-scale-rtr-EVIDENCE_MANIFEST.json
+data/70-two-scale-rtr-INDEPENDENT_PNG_REFERENCE_VALIDATION.json
+data/70-two-scale-rtr-INDEPENDENT_PREDECESSOR_DIFF.txt
+data/70-two-scale-rtr-INDEPENDENT_REVIEW_RECEIPT.json
+data/70-two-scale-rtr-ORIGINAL_45_FILES_VERIFIED.json
+data/70-two-scale-rtr-ORIGINAL_DIRECTORIES_VERIFIED.json
+data/70-two-scale-rtr-ORIGINAL_IDENTITIES_AFTER.json
+data/70-two-scale-rtr-SUPPLEMENTAL_REVIEW_RECEIPT.json
+data/70-two-scale-rtr-candidate-manifest.json
+data/70-two-scale-rtr-direct-build-RECORDER_INPUT_UNION.json
+data/70-two-scale-rtr-direct-build-compile-1.fls
+data/70-two-scale-rtr-direct-build-compile-2.fls
+data/70-two-scale-rtr-direct-build-format.fls
+data/70-two-scale-rtr-relocated-build-RECORDER_INPUT_UNION.json
+data/70-two-scale-rtr-relocated-build-compile-1.fls
+data/70-two-scale-rtr-relocated-build-compile-2.fls
+data/70-two-scale-rtr-relocated-build-format.fls
+data/70-two-scale-rtr-review-run.stdout
+data/70-two-scale-rtr-supplemental-run.stdout
+data/70-two-scale-tools-BUILD_DEPENDENCIES_LOCK.json
+```
+
+**Report 71 (batch 91, manuscript 23), prefix `71-short-windows-`** — 142 files (6 at the root, 12 in `code/`, 124 in `data/`). Root: the proof packet's README, proof and preservation note, the fresh independent audit (`audit-fresh-AUDIT.md`), the manuscript review and the release-tool review. `code/`: the static affine checker (`pp-check_static_algebra.py`) and the audit's static re-check (`audit-fresh-static_certificates.py`) (mathematical programs), authentication and provenance helpers bound to the original absolute paths, the owner-review verifier, two review scripts and the presentation tools. `data/`: input pins, manifests, the static-algebra certificate and run, preservation and authentication receipts, the three tool-adaptation diffs against Report 70, the v3 halting-qualifier diff and page-difference record, and the bootstrap, locked-build, self-test and review receipts and logs of versions 2 and 3.
+
+```
+71-short-windows-audit-fresh-AUDIT.md
+71-short-windows-msr-REVIEW.md
+71-short-windows-pp-PRESERVATION.md
+71-short-windows-pp-PROOF.md
+71-short-windows-pp-README.md
+71-short-windows-rtr-REVIEW.md
+code/71-short-windows-audit-fresh-authenticate.py
+code/71-short-windows-audit-fresh-check_original_copies.py
+code/71-short-windows-audit-fresh-static_certificates.py
+code/71-short-windows-pp-check_static_algebra.py
+code/71-short-windows-pp-evidence-authenticate_inputs.py
+code/71-short-windows-qa-owner-review-verify.py
+code/71-short-windows-rtr-review71.py
+code/71-short-windows-rtr-supplement71.py
+code/71-short-windows-tools-build_report71.py
+code/71-short-windows-tools-provenance71.py
+code/71-short-windows-tools-release71.py
+code/71-short-windows-tools-selftest71.py
+data/71-short-windows-INPUT_PINS.json
+data/71-short-windows-RELEASE_MANIFEST.json
+data/71-short-windows-audit-fresh-MANIFEST.json
+data/71-short-windows-audit-fresh-after.json
+data/71-short-windows-audit-fresh-before.json
+data/71-short-windows-audit-fresh-original-copies.json
+data/71-short-windows-audit-fresh-preservation.json
+data/71-short-windows-audit-fresh-static-certificates.json
+data/71-short-windows-msr-REVIEW_RESULT.json
+data/71-short-windows-pp-dependency-origins.json
+data/71-short-windows-pp-evidence-after.json
+data/71-short-windows-pp-evidence-before.json
+data/71-short-windows-pp-evidence-preservation-receipt.json
+data/71-short-windows-pp-manifest.json
+data/71-short-windows-pp-static-algebra-certificate.json
+data/71-short-windows-pp-static-algebra-run.json
+data/71-short-windows-qa-ADAPTATION_build_report71.py.diff
+data/71-short-windows-qa-ADAPTATION_release71.py.diff
+data/71-short-windows-qa-ADAPTATION_selftest71.py.diff
+data/71-short-windows-qa-AUTHORING_HISTORY.json
+data/71-short-windows-qa-LOCKED_REPLAY_EQUALITY.json
+data/71-short-windows-qa-ORIGINAL_ENDPOINT_BEFORE.json
+data/71-short-windows-qa-ORIGINAL_ENDPOINT_FINAL.json
+data/71-short-windows-qa-OWNER_REVIEW_VERIFICATION.json
+data/71-short-windows-qa-OWNER_VISUAL_REVIEW.json
+data/71-short-windows-qa-RELEASE_PREPARATION.json
+data/71-short-windows-qa-REVIEW_ACCEPTANCE.json
+data/71-short-windows-qa-ROOT_MANUSCRIPT_ACCEPTANCE.json
+data/71-short-windows-qa-SELFTEST_RECEIPT.json
+data/71-short-windows-qa-SOURCE_MANIFEST_FINAL.json
+data/71-short-windows-qa-SOURCE_ORIGINS.json
+data/71-short-windows-qa-V3_HALTING_QUALIFIER.diff
+data/71-short-windows-qa-V3_PAGE_DIFFERENCE.json
+data/71-short-windows-qa-auth-fail-bootstrap-v1-compile-3.stdout
+data/71-short-windows-qa-bootstrap-v2-BUILD_RECEIPT.json
+data/71-short-windows-qa-bootstrap-v2-PRESERVATION_AFTER.json
+data/71-short-windows-qa-bootstrap-v2-RECORDER_INPUT_UNION.json
+data/71-short-windows-qa-bootstrap-v2-compile-1.fls
+data/71-short-windows-qa-bootstrap-v2-compile-2.fls
+data/71-short-windows-qa-bootstrap-v2-compile-3.stdout
+data/71-short-windows-qa-bootstrap-v2-format.fls
+data/71-short-windows-qa-bootstrap-v3-BUILD_RECEIPT.json
+data/71-short-windows-qa-bootstrap-v3-PRESERVATION_AFTER.json
+data/71-short-windows-qa-bootstrap-v3-RECORDER_INPUT_UNION.json
+data/71-short-windows-qa-bootstrap-v3-compile-1.fls
+data/71-short-windows-qa-bootstrap-v3-compile-2.fls
+data/71-short-windows-qa-bootstrap-v3-compile-3.stdout
+data/71-short-windows-qa-bootstrap-v3-format.fls
+data/71-short-windows-qa-locked-v2-BUILD_RECEIPT.json
+data/71-short-windows-qa-locked-v2-PAGE_INVENTORY.json
+data/71-short-windows-qa-locked-v2-PREFLIGHT.json
+data/71-short-windows-qa-locked-v2-PRESERVATION_AFTER.json
+data/71-short-windows-qa-locked-v2-RECORDER_INPUT_UNION.json
+data/71-short-windows-qa-locked-v2-Report71.log
+data/71-short-windows-qa-locked-v2-Report71.txt
+data/71-short-windows-qa-locked-v2-compile-1.fls
+data/71-short-windows-qa-locked-v2-compile-1.stdout
+data/71-short-windows-qa-locked-v2-compile-2.fls
+data/71-short-windows-qa-locked-v2-compile-2.stdout
+data/71-short-windows-qa-locked-v2-format.fls
+data/71-short-windows-qa-locked-v2-pdfinfo.stdout
+data/71-short-windows-qa-locked-v3-BUILD_RECEIPT.json
+data/71-short-windows-qa-locked-v3-PAGE_INVENTORY.json
+data/71-short-windows-qa-locked-v3-PRESERVATION_AFTER.json
+data/71-short-windows-qa-locked-v3-RECORDER_INPUT_UNION.json
+data/71-short-windows-qa-locked-v3-Report71.log
+data/71-short-windows-qa-locked-v3-Report71.txt
+data/71-short-windows-qa-locked-v3-compile-1.fls
+data/71-short-windows-qa-locked-v3-compile-1.stdout
+data/71-short-windows-qa-locked-v3-compile-2.fls
+data/71-short-windows-qa-locked-v3-compile-2.stdout
+data/71-short-windows-qa-locked-v3-format.fls
+data/71-short-windows-qa-locked-v3-pdfinfo.stdout
+data/71-short-windows-qa-prior-acc-v2-LOCKED_REPLAY_EQUALITY.json
+data/71-short-windows-qa-prior-acc-v2-OWNER_VISUAL_REVIEW.json
+data/71-short-windows-qa-rt-selftests-deterministic-archive-a.stdout
+data/71-short-windows-qa-rt-selftests-deterministic-archive-b.stdout
+data/71-short-windows-qa-rt-selftests-deterministic-flatten.stdout
+data/71-short-windows-qa-rt-selftests-fresh-format-bootstrap.stdout
+data/71-short-windows-qa-rt-selftests-input-authentication.stdout
+data/71-short-windows-qa-rt-selftests-locked-rebuild-pdf-equality.stdout
+data/71-short-windows-qa-rt-selftests-manifest-generation.stdout
+data/71-short-windows-qa-rt-selftests-manifest-verification.stdout
+data/71-short-windows-qa-rt-selftests-metadata-preserving-extraction.stdout
+data/71-short-windows-qa-rt-selftests-reject-hardlinked-input.stdout
+data/71-short-windows-qa-rt-selftests-reject-original-source-overlap.stdout
+data/71-short-windows-qa-rt-selftests-reject-output-symlink-ancestor.stdout
+data/71-short-windows-qa-rt-selftests-reject-release-overlap.stdout
+data/71-short-windows-qa-rt-selftests-reject-source-symlink-ancestor.stdout
+data/71-short-windows-rtr-REVIEW_SEAL.json
+data/71-short-windows-rtr-receipts-ADAPTATION_VERIFICATION.json
+data/71-short-windows-rtr-receipts-COMMANDS.json
+data/71-short-windows-rtr-receipts-EXTRA_ADVERSARIAL_RECEIPT.json
+data/71-short-windows-rtr-receipts-ORIGINALS_AFTER.json
+data/71-short-windows-rtr-receipts-PRESERVATION.json
+data/71-short-windows-rtr-receipts-READ_BEFORE_RUN.txt
+data/71-short-windows-rtr-receipts-REPLAY_AND_ARCHIVE_EQUALITY.json
+data/71-short-windows-rtr-receipts-REVIEW_RESULT.json
+data/71-short-windows-rtr-receipts-REVIEW_RUN.stdout
+data/71-short-windows-rtr-receipts-SOURCE_AFTER.json
+data/71-short-windows-rtr-receipts-SUPPLEMENTAL_INDEPENDENT_CHECKS.json
+data/71-short-windows-rtr-receipts-actual-locked-build.stdout
+data/71-short-windows-rtr-receipts-build-BUILD_RECEIPT.json
+data/71-short-windows-rtr-receipts-build-PAGE_INVENTORY.json
+data/71-short-windows-rtr-receipts-build-RECORDER_INPUT_UNION.json
+data/71-short-windows-rtr-receipts-build-compile-1.fls
+data/71-short-windows-rtr-receipts-build-compile-2.fls
+data/71-short-windows-rtr-receipts-build-format.fls
+data/71-short-windows-rtr-receipts-deterministic-flatten.stdout
+data/71-short-windows-rtr-receipts-provenance-original-endpoints.stdout
+data/71-short-windows-rtr-receipts-relocated-build-RECORDER_INPUT_UNION.json
+data/71-short-windows-rtr-receipts-relocated-build-compile-1.fls
+data/71-short-windows-rtr-receipts-relocated-build-compile-2.fls
+data/71-short-windows-rtr-receipts-relocated-build-format.fls
+data/71-short-windows-rtr-receipts-relocated-provenance.stdout
+data/71-short-windows-rtr-receipts-synthetic-hostile-selftests.stdout
+data/71-short-windows-rtr-receipts-test-authenticated-extraction.stdout
+data/71-short-windows-rtr-receipts-test-deterministic-archive-a.stdout
+data/71-short-windows-rtr-receipts-test-deterministic-archive-b.stdout
+data/71-short-windows-rtr-receipts-test-manifest-generate.stdout
+data/71-short-windows-rtr-receipts-test-manifest-verify.stdout
+data/71-short-windows-rtr-receipts-zip-payload-tamper.stdout
+data/71-short-windows-seal-seal-receipt.json
+data/71-short-windows-tools-BUILD_DEPENDENCIES_LOCK.json
+```
+
 The three files `certificate-section.tex`, `clean-target-section.tex` and
 `verification-details.tex`, which `bca6383e9` placed so that the delivered
 base would build, are inlined in `article.tex` and no longer exist here.
-The delivered PDFs, checksum ledgers and delivery READMEs of Reports 14–20
-and 26–28 are not shipped; this README replaces them, and `article.pdf` is a build of
+The delivered PDFs, checksum ledgers and delivery READMEs of Reports 14–20,
+26–28, 70 and 71 are not shipped; this README replaces them, and `article.pdf` is a build of
 `article.tex`. (The files `16-literal-source-README.md`,
 `17-startup-README.md`, `18-cell-clock-README.md`,
 `14-five-binary-compiler-README.md` and similar are READMEs of
@@ -543,11 +810,22 @@ delivered name, plus 13 written ones: `fpa:part:five`, `fpa:part:six`,
 unlabelled sections. Total 317 in the `.aux` (311 `\label` commands in the
 source, plus the six Part labels set through the `\fpapart` macro).
 
+The third write (Part VII) kept all 317 labels and added 90: the 84
+delivered labels of Reports 70 (49, `fpa:tr:`) and 71 (35, `fpa:sw:`), each
+sub-prefix followed by the delivered name, plus 6 written ones:
+`fpa:part:seven`, `fpa:rep:<r>:first`/`fpa:rep:<r>:last` for r = 70, 71,
+and `fpa:sec:partseven:questions` on the Part's closing section.
+The two Reports deliver eleven identical label names (`thm:main`,
+`lem:phase`, `eq:ahead`, `eq:behind`, `eq:commit`, `eq:constants`,
+`eq:direct`, `eq:dispatch`, `eq:endpoint`, `eq:free`, `eq:mutual`); the
+sub-prefixes keep them apart. Total 407 in the `.aux` (400 `\label`
+commands in the source plus the seven Part labels).
+
 Sections and theorems are numbered continuously (Theorem *n.m* is in
 Section *n*); Sections 1–3 are the front matter and Appendix A the
 provenance. Reports 15 and 16 number their displays by hand, (1), (2), …,
 and cite them as "(3)"; those numbers are kept and are local to the
-Report. Displays of Reports 14, 17, 18, 20 and 26–28 are numbered (*n.m*) by section;
+Report. Displays of Reports 14, 17, 18, 20, 26–28, 70 and 71 are numbered (*n.m*) by section;
 Report 27's statements, numbered 1, 2, … through the delivered Report, are
 numbered by section here, and the appendices of Reports 27 and 28 are
 ordinary sections.
@@ -579,6 +857,18 @@ printed `Ht_*`, because Report 28 uses `H_*` for an isolation distance.
 Internally, Report 26's `\N` (printing ℤ≥0) and Report 28's `\N`
 (printing ℕ₀) are `\Nge` and `\Nzero`, Report 27's `\code` and `\C` are
 `\file` and `\calC`; they print as delivered.
+
+Part VII has a third table (Section 2). Reports 70 and 71 write `α` for the
+number of zero-update branches, which the other Parts call `a`, because `a`
+is their recognition radius; `F_26`, `E_26`, `P_26` are Report 26's
+parallel rule and blocks (Part VI's `F_new`, `E_∥`, `P_∥`), not the ordered
+rule `F_old`; `F_*`, `E_*` (Report 70) and `F_s`, `E_s`, `P_s` (Report 71;
+`s` for "short") are new rules and blocks; `H = max{2(b+a), b+r}` replaces
+Report 26's `2(b+r)`; `m` is also a marker and `p` also a de Bruijn
+potential in Report 70. No printed symbol changed. Internally, the two
+Reports' `\N` (printing ℤ≥0) is `\Nge`, and Report 70's `\Fold`, `\Eold`,
+`\Pold` (printing `F_26`, `E_26`, `P_26`) are `\Ftwosix`, `\Etwosix`,
+`\Ptwosix`, because `\Fold` prints `F_old` in Part VI.
 
 ## What the report claims
 
@@ -641,6 +931,36 @@ Internally, Report 26's `\N` (printing ℤ≥0) and Report 28's `\N`
   elsewhere; witness count `4 max(n − 1, 0) + T(w_E + w_P)`; the
   two-particle example has 1,494 witnesses, 1,502 residuals and 12,595
   monomials; a linear witness-height bound (Section 119).
+- **Part VII (Reports 70, 71).** Report 70, Theorem 128.1: a full-shift
+  involution lemma with separate write, recognition and control radii
+  `b ≤ a ≤ r`, isolation `H = max{2(b+a), b+r}` and radius at most
+  `b + a + H`, preserving every recognition and selection decision;
+  Theorem 127.1: with a mutually unique guarded choice at each anchor
+  (Lemma 129.1) and Report 26's phase block (Lemma 131.1, restated),
+  `F_* = P_26 ∘ E_*` agrees with Report 26's rule on the whole admissible
+  doubled micrograph and has sufficient radius `108D + 149 + 3J`
+  (55,027,013 for the universal ledger, against 91,711,698); a
+  four-particle input `{0, 5, 500, 505}` separates the two rules (Section
+  135); Theorem 136.1: the injective number-conserving binary rules of
+  radius two are exactly the five shifts (428 conservative tables, 423
+  explicit collisions; the count 428 is Fukś–Sullivan's). Report 71,
+  Theorem 140.1: with triple exactness `b` instead of `3b + 1` in both
+  blocks, `F_s = P_s ∘ E_s` agrees with both predecessors on admissible
+  states and has sufficient radius `76D + 105 + 3J`, or `76D + 104 + 3J`
+  for the same rule (38,722,713 and 38,722,712); malformed inputs separate
+  each new block from both predecessors (Section 145), and the pair
+  exactness `L` cannot be changed for these templates and selector
+  (Section 146). Together they answer Report 26's first question (dated
+  note in Section 100). Section 149 (written) keeps every claim of the two
+  Reports, of their reviews and of the write that this report does not
+  prove as an open item with what is missing: Report 70's reliance on the
+  undelivered Report 68's "accepted" presentation contract (checked as far
+  as the shipped tools allow: Report 70's three tools are Report 68's,
+  shipped in SMC, plus the shipped adaptation diff), the priority of the
+  radius-two classification, the literature status of its conservation
+  criterion, true and minimal radii, Report 26's own rule at isolation
+  `b + r`, evaluators and certificates for the new rules, and an
+  independent audit of the main proofs. No claim was found false.
 
 Section ranges are in the table above.
 
@@ -663,12 +983,30 @@ optimality claim; only a mass-two exporter exists; its 10000 prefactor and
 height bound are conservative). Report 26 claims neither radius optimality
 nor novelty of the two-involution architecture; its rule agrees with the
 old one only on admissible states (the new radius bound is worse for tiny
-sources, 978 against 540). Report 27 finishes no universal startup or
+sources, 978 against 540; dated note, 4 October 2026: Reports 70 and 71
+give 581 and 409, or 408 by Report 71's same-rule refinement; 409 and 408
+are below 540; each bound is for its own new rule). Report 27 finishes no universal startup or
 Turing step and gives no worst-case sublinear-in-`F` bound. Report 28 is a
 fixed-horizon family whose arity grows with `T` (no fixed-arity unbounded
 representation, no finite-fold consequence, no uniqueness over ℝ, ℚ or
 signed auxiliaries); no universal-source polynomial was emitted, and its
 mass-five certificate tests at horizons two and three were not completed.
+Reports 70 and 71 give sufficient bounds, not measured or minimum radii,
+and spatial radii, not arithmetic gate counts; each defines a new
+full-shift rule that differs from Report 26's on malformed inputs, so
+Report 27's evaluator, Report 28's certificates and every earlier
+arbitrary-input evaluator, certificate, budget or circuit count do not
+transfer, and neither supplies a new-rule evaluator, template array, truth
+table or arithmetic certificate. The universal source table is absent from
+both packages and its universality and normalization are inherited
+premises; no novelty, priority, minimum universal radius or radius-three
+construction is claimed; Report 70's radius-two classification is limited
+to uniform symmetric radius-two binary rules (not partitioned,
+time-dependent, second-order, nonuniform or larger-alphabet models), and
+the Schranko–de Oliveira full text was not obtained. Report 71's
+support refinement changes no rule; its pair-padding counterexamples
+concern only the unchanged templates and selector; it corrects neither
+predecessor.
 
 ## Relation to neighbouring reports
 
@@ -720,6 +1058,18 @@ Report 32 is `../group-theoretic-substrates` Part V.
   dependency audit cites Report 16's finite `U_{15,2}` input convention
   (loader and machine table) for the input hardness of its fixed matrix
   semigroup only; a reciprocal note (batch 82) in Part II records it.
+- **SMC, batch 91 (Part VII).** Report 70's radius-two conservation
+  criterion (Lemma 136.2) is the radius-two analogue of the de Bruijn
+  potential with which SMC source 16 (Report 11, Part VI) certifies the
+  five conservative elementary rules (`smc:su:sec:checks`); a `[write]`
+  note says so. Report 70's presentation tools adapt those of Reports 66
+  and 68: Report 66 is placed in SMC for its Part XIII (prefix
+  `36-bounded-cert-`, `d750d98dd`), and Report 68 (*Gaussian fluctuations
+  of encoded gap counts and inverse ranks*) was never delivered to
+  ProveIt; only its README survives, as SMC's
+  `38-low-arity-qa-pred-tools-README68.md` (delivered inside Report 69's
+  archive). Report 70's byte copies of both predecessors' tools and
+  READMEs are not shipped here.
 
 ## Relation to the formal project
 
@@ -751,7 +1101,19 @@ Python; all stress that the Reports supply no smaller arithmetic compiler,
 paid ordinary-input loader or unbounded fixed-arity history encoding.
 Dated notes in the article's Section 1.6 record them;
 `review_binary_planar_four_particle31.md` (`16f50dcc6`) concerns
-Report 31 (SMC Part VII). Its note `neary_woods_explicit_universal_tm.md`
+Report 31 (SMC Part VII). For Part VII (third write), the scoped intake
+`review_new_arithmetic_0d7f51c44.md` (`a9ab9a698`, 4 October 2026, eight
+arrivals of `0d7f51c44`) read the delivery READMEs of Reports 70 and 71
+completely and the spans of Report70.tex lines 44–77, 448–509, 621–641
+(abstract and Sections 127, 134, 137 here) and Report71.tex lines 40–71,
+310–359, 435–437 (abstract and Sections 140, 144, 148); it found no
+correction, calls the results "sufficient radii, not arithmetic gates or
+minimum-radius theorems", records that earlier arbitrary-input
+certificates and evaluators do not transfer, and states that Report 71's
+complete recognition/geometry proof and Report 70's full-shift theorem were
+not re-audited. It found no paid construction below the programme's
+84-operation unbounded ordinary-input bound in these archives. The note is
+cited at the opening of Part VII. Its note `neary_woods_explicit_universal_tm.md`
 transcribes the same Neary–Woods table. Placement beside a formal
 development confers no formal status: **no statement of this report is
 formalized**, and no Lean or Rocq declaration is cited.
@@ -850,6 +1212,93 @@ end of this README.
 - **Report 26's lemma hypothesis.** `0 ≤ b ≤ r` is stated but `b ≤ r` is
   not used in the proof (placement finding; a `[write]` note in Section 90).
 
+Part VII (Reports 70 and 71):
+
+- **Renames.** The archives' top directories (`Report70/`, `Report71/`) are
+  dropped, nested paths are flattened with `-` after the prefix, and long
+  directory names are shortened: `science/proof-packet/` → `pp-`,
+  `qa/manuscript-review/` → `msr-`, `qa/release-tool-review/` and
+  `qa/release-tools-review/` → `rtr-`, `audits/fresh-audit-radius2/` →
+  `audit-r2-`, `audits/fresh-audit-static/` → `audit-static-`,
+  `audits/fresh-independent/` → `audit-fresh-`, `qa/predecessor-contract/`
+  → `qa-pred-contract-`, `science/frozen-packet-archive/` → `frozen-`,
+  `science/source-packet-seal/` → `seal-`, `qa/release-tool-selftests/` →
+  `qa-rt-selftests-`, `qa/prior-acceptance-v2/` → `qa-prior-acc-v2-`,
+  `qa/authoring-failures/` → `qa-auth-fail-`, `science/proof-packet/dependencies/`
+  → `pp-deps-`; no basename changed. Programs go to `code/`,
+  JSON, logs, diffs and text receipts to `data/`, Markdown to the root. The
+  complete map is at the end of this README.
+- **Delivery names in shipped text.** Every shipped proof, audit, review,
+  manifest and receipt names delivery paths (`science/proof-packet/…`,
+  `audits/…`, `qa/…`, `RELEASE_MANIFEST.json`, `original/report26.zip`,
+  `dependencies/…`), and so does the article's text. Several programs are
+  bound to the authors' absolute paths (`/workspace/…`): Report 70's
+  `audit-static-authenticate_static.py`, `rtr-independent_review.py`,
+  `rtr-supplemental_review.py` and `tools-release70.py`; Report 71's
+  `audit-fresh-authenticate.py`, `audit-fresh-check_original_copies.py`,
+  `audit-fresh-static_certificates.py` (whose input path must be repointed;
+  next section), `pp-evidence-authenticate_inputs.py`,
+  `qa-owner-review-verify.py`, `rtr-review71.py`, `rtr-supplement71.py`,
+  `tools-provenance71.py` and `tools-release71.py` (all in `code/`).
+- **Unshipped files named by shipped ones.** The delivered PDFs and `.tex`
+  files (both Reports' flattened sources and their 13 `manuscript/`
+  modules, Report 70's `RECONSTRUCTED_FLATTENED.tex` = `Report70.tex`),
+  delivery READMEs, 27 checksum ledgers (`*.sha256`, `SHA256SUMS`,
+  `MANUSCRIPT_PINS.json`, `SOURCE_SHA256_*` and similar, all verified at
+  placement), 47 page renders (pdftoppm outputs of the delivered PDFs at
+  120 or 130 dpi; one of them, Report 71's `qa/locked-v2/pages/page-10.png`,
+  renders the superseded v2 PDF, whose only textual change is in
+  `data/71-short-windows-qa-V3_HALTING_QUALIFIER.diff`), the two container
+  ZIPs (`science/frozen-packet-archive/…zip`,
+  `science/source-packet-seal/…zip`, every member shipped), and the four
+  empty stdout files. All survive in `0d7f51c44`.
+- **Byte copies not shipped twice.** Both packages carry Report 26's
+  archive (`original/report26.zip`, = the committed archive of
+  `db37d18c8`), Report 70 also its readable `report26.tex`/`report26.pdf`
+  (members of that archive), and copies of files this report already ships:
+  `26-parallel-involutions-PROOF.md`, `-audit-lemma.md`,
+  `-audit-preservation.md`, `-references-prior-art-audit.md`,
+  `data/26-parallel-involutions-resource-ledger.json`,
+  `data/19-lazy-eval-evidence-universal-receipt.json`,
+  `data/19-lazy-eval-evidence-audit-universal-count.json` and
+  `16-literal-source-compiler-reference-COMPILER_PROOF.md` (Report 15's
+  compiler proof). Report 71's predecessor proof packet and "accepted"
+  audits are copies of Report 70's files (shipped once, under
+  `70-two-scale-`). Report 70's `qa/predecessor-contract/` holds Report 66's
+  and Report 68's presentation tools and Report 68's README, staged in
+  `../signal-machine-collision-certificates` (`36-bounded-cert-`,
+  `38-low-arity-`) and not shipped here, plus a copy of Report 66's
+  delivery README, which no report ships (it survives in `0d7f51c44`).
+  Copies of QA files shared with batch-91 manuscripts 16, 18, 19 and 20
+  are staged with those manuscripts in SMC; thirteen tiny TeX
+  format and font-map logs (5,768 bytes and 43–68 bytes) that the placement
+  plan attributed to manuscripts 13 and 14 were not staged there either and
+  survive only in `0d7f51c44`.
+- **Report 68 never delivered.** Report 70 cites "the fully inspected
+  accepted Report 68 presentation contract" (Section 138 and
+  `70-two-scale-qa-pred-contract-README.md`); Report 68 is in no batch and
+  not in the repository. A `[write]` note says so, and Section 149, item 1
+  records the check made for this write: reversing
+  `data/70-two-scale-qa-pred-contract-ADAPTATION.diff` on Report 70's
+  `build_report70.py`, `release70.py` and `selftest70.py` gives exactly
+  SMC's `code/38-low-arity-qa-pred-tools-{build_report68,release68,selftest68}.py`
+  with "68" renamed "70". The acceptance of Report 68 itself stays
+  unverified; nothing mathematical rests on it.
+- **Stale sentence in a shipped file.** `71-short-windows-pp-README.md`
+  says "fresh independent review pending"; the review was completed before
+  delivery (`71-short-windows-audit-fresh-AUDIT.md`, disposition PASS).
+- **Report 71's versions.** The delivered article is the third build; the
+  second differs only by the words "For a halting run" (page 10;
+  `data/71-short-windows-qa-V3_PAGE_DIFFERENCE.json`). Both versions'
+  build records are shipped (`qa-locked-v2-`, `qa-locked-v3-`,
+  `qa-bootstrap-v2-`, `qa-bootstrap-v3-`); the v1 failure log is
+  `data/71-short-windows-qa-auth-fail-bootstrap-v1-compile-3.stdout`.
+- **Concurrent changes during Report 71's source packet.** Its source
+  packet saw 49 new entries and one changed directory time in the live
+  Report 70 tree between its two observations (article Section 147.1,
+  `71-short-windows-pp-PRESERVATION.md`); its inputs were the pinned frozen
+  copies.
+
 ## Rerunning the checks
 
 Delivered programs are byte-identical and unpatched, and many write their
@@ -923,6 +1372,59 @@ Hazards measured at placement (Windows, Python 3.14.4, on copies):
   were not run as a whole (each over three minutes and Linux-oriented);
   their components were.
 
+Reports 70 and 71 (Part VII). Their release, build and self-test tools
+(`release70.py`, `release71.py`, `build_report70.py`, `build_report71.py`,
+`selftest70.py`, `selftest71.py`, `provenance71.py`) authenticate the
+delivered tree by an external manifest digest, POSIX file modes and
+nanosecond modification times, and the builds need the authors' locked TeX
+toolchain. They are not portable to Windows (on a copy of the delivered
+tree, `release70.py verify` stops with "Canonical absolute path required")
+and cannot run in this directory, whose names differ from the delivered
+layout. To use them, extract the archive
+on a POSIX host (`git show 0d7f51c44:docs/incoming/Two_scale_recognition_radius_sources.zip > r70.zip`,
+likewise `Shorter_exactness_windows_sources.zip`) and follow the delivery
+README there. The mathematical programs are standard-library Python and can
+be run directly on copies; each was rerun this way for the write (Windows,
+Python 3.14.4, about 1–2 s each), and the outputs equal the shipped ones
+after CRLF→LF:
+
+- Radius-two appendix: copy `code/70-two-scale-pp-appendix-radius2_algebra.py`
+  and `code/70-two-scale-pp-appendix-verify_radius2_algebra.py` into a new
+  directory `<copy>/proof-packet/appendix/` as `radius2_algebra.py` and
+  `verify_radius2_algebra.py`; `python3 -I radius2_algebra.py` writes
+  `radius2_certificate.json` beside itself (= `data/70-two-scale-pp-appendix-radius2_certificate.json`)
+  and prints the enumeration receipt
+  (= `data/70-two-scale-pp-appendix-radius2-enumeration-receipt.json`);
+  `python3 -I verify_radius2_algebra.py` prints
+  `data/70-two-scale-pp-appendix-radius2-verification-receipt.txt`.
+- Graph audit: the appendix directory must hold exactly six files, the two
+  programs above as `radius2_algebra.py` and `verify_radius2_algebra.py`
+  plus `RADIUS_TWO.md` (= `70-two-scale-pp-appendix-RADIUS_TWO.md`),
+  `radius2_certificate.json`, `radius2-enumeration-receipt.json` and
+  `radius2-verification-receipt.txt` (the shipped `data/` files of those
+  names); copy `code/70-two-scale-audit-r2-check_radius2_graph.py` to
+  `<copy>/fresh-audit-radius2/check_radius2_graph.py` and run
+  `python3 -I -B check_radius2_graph.py` there. It writes
+  `independently-enumerated-tables.txt` and `independent-graph-potentials.json`
+  (equal to the shipped `data/70-two-scale-audit-r2-*` files) and
+  `audit-result.json`, which differs from the shipped one only in the
+  recorded file modes, times and listing order.
+- Report 71's static checker: copy `code/71-short-windows-pp-check_static_algebra.py`
+  to a new directory as `check_static_algebra.py`; `python3 -I
+  check_static_algebra.py` writes `static-algebra-certificate.json` and
+  prints the run record (= `data/71-short-windows-pp-static-algebra-certificate.json`
+  and `data/71-short-windows-pp-static-algebra-run.json`).
+- Report 71's audit re-check: copy
+  `code/71-short-windows-audit-fresh-static_certificates.py` to a new
+  directory, change its line 111 (`source = Path('/workspace/…')`) on the
+  copy to the path of a copy of the certificate above, and run `python3 -I
+  -B static_certificates.py`; it writes `static-certificates.json`
+  (= `data/71-short-windows-audit-fresh-static-certificates.json`).
+
+The remaining Part VII programs (authenticators, provenance and review
+scripts) check historical absolute paths or the delivered release layout
+and were not run.
+
 ## Reconstructing the excluded data
 
 Vladimir, 2026-10-02: "Exclude heavy regenerable artifacts". Eighteen
@@ -981,16 +1483,27 @@ holds for Python 3.14 and GNU gzip, not for Python 3.11–3.13. Report 27's
 treat these files as mandatory: rebuild them first, or run from the
 archive.
 
+Part VII (Reports 70 and 71) excludes no heavy generated file. Its 47
+unshipped page renders are `pdftoppm -png -r 120` (130 for Report 70's
+manuscript review) outputs of the delivered PDFs, which are in the archives;
+the placement reproduced them byte for byte except Report 71's superseded
+v2 page 10.
+
 ## Build
 
     latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 
 pdfLaTeX (MiKTeX), standalone with an internal bibliography; needs the two
-PDFs in `figures/`. The build of this text has 190 pages (Part I
-from page 19, Part II from 61, Part III from 86, Part IV from 112, Part V
-from 124, Part VI from 139, the provenance appendix from 183), no undefined
-references or citations, no multiply-defined labels, no duplicate
-destinations and no overfull lines. The second write widened the table of
+PDFs in `figures/`. The build of this text has 231 pages (Part I
+from page 24, Part II from 66, Part III from 91, Part IV from 117, Part V
+from 129, Part VI from 144, Part VII from 189, the provenance appendix from
+224), no undefined references or citations, no multiply-defined labels, no
+duplicate destinations and no overfull lines. The third write (Part VII)
+added one underfull line, in Report 71's delivered timestamp paragraph
+(Section 147.1), to the three of the second build; it defines Part VII's
+macros and two colours in the preamble and makes the date printed at each
+Report opening a macro (`\fpareportdate`), so Parts I–VI print 3 October
+2026 as before. The second write widened the table of
 contents' section-number and page-number boxes (three-digit numbers) and
 set `\emergencystretch` to 2em, as Reports 27 and 28 do; this also removed
 the one overfull line of the first build (Report 14's Section 31). The two
@@ -1004,7 +1517,7 @@ and inspected.
 ## Delivered path → shipped path
 
 <details>
-<summary>All 397 files shipped from the archives: 248 of Reports 14–19 and 149 of Reports 20 and 26–28 (`article.tex`, `README.md` and the three inlined inputs of the base, rewritten or removed in the write, omitted)</summary>
+<summary>All 630 files shipped from the archives: 248 of Reports 14–19, 149 of Reports 20 and 26–28, and 233 of Reports 70 and 71 (`article.tex`, `README.md` and the three inlined inputs of the base, rewritten or removed in the write, omitted)</summary>
 
 `five-particle-binary-portable.zip` (path inside the archive → shipped path):
 
@@ -1451,6 +1964,249 @@ parallel-quartic-release-20261003/research/test_example_validation.py  ->  code/
 parallel-quartic-release-20261003/research/test_multisource.py  ->  code/28-parallel-quartic-test_multisource.py
 parallel-quartic-release-20261003/research/test_supplement.py  ->  code/28-parallel-quartic-test_supplement.py
 parallel-quartic-release-20261003/research/verify_example.py  ->  code/28-parallel-quartic-verify_example.py
+```
+
+`Two_scale_recognition_radius_sources.zip` (Report 70; path inside the archive → shipped path):
+
+```
+Report70/INPUT_PINS.json  ->  data/70-two-scale-INPUT_PINS.json
+Report70/RELEASE_MANIFEST.json  ->  data/70-two-scale-RELEASE_MANIFEST.json
+Report70/audits/fresh-audit-radius2/AUDIT.md  ->  70-two-scale-audit-r2-AUDIT.md
+Report70/audits/fresh-audit-radius2/audit-result.json  ->  data/70-two-scale-audit-r2-audit-result.json
+Report70/audits/fresh-audit-radius2/check_radius2_graph.py  ->  code/70-two-scale-audit-r2-check_radius2_graph.py
+Report70/audits/fresh-audit-radius2/independent-graph-potentials.json  ->  data/70-two-scale-audit-r2-independent-graph-potentials.json
+Report70/audits/fresh-audit-radius2/independently-enumerated-tables.txt  ->  data/70-two-scale-audit-r2-independently-enumerated-tables.txt
+Report70/audits/fresh-audit-radius2/original-metadata-after.tsv  ->  data/70-two-scale-audit-r2-original-metadata-after.tsv
+Report70/audits/fresh-audit-radius2/original-sha256-after.txt  ->  data/70-two-scale-audit-r2-original-sha256-after.txt
+Report70/audits/fresh-audit-static/AUDIT_MANIFEST.json  ->  data/70-two-scale-audit-static-AUDIT_MANIFEST.json
+Report70/audits/fresh-audit-static/FRESH_AUDIT.md  ->  70-two-scale-audit-static-FRESH_AUDIT.md
+Report70/audits/fresh-audit-static/authenticate_static.py  ->  code/70-two-scale-audit-static-authenticate_static.py
+Report70/audits/fresh-audit-static/authentication-receipt.json  ->  data/70-two-scale-audit-static-authentication-receipt.json
+Report70/audits/fresh-audit-static/authentication-run.txt  ->  data/70-two-scale-audit-static-authentication-run.txt
+Report70/audits/fresh-audit-static/original-state-after.json  ->  data/70-two-scale-audit-static-original-state-after.json
+Report70/qa/AUTHORING_HISTORY.json  ->  data/70-two-scale-qa-AUTHORING_HISTORY.json
+Report70/qa/LOCKED_REPLAY_EQUALITY.json  ->  data/70-two-scale-qa-LOCKED_REPLAY_EQUALITY.json
+Report70/qa/ORIGINAL_INPUTS_UNCHANGED.json  ->  data/70-two-scale-qa-ORIGINAL_INPUTS_UNCHANGED.json
+Report70/qa/OWNER_VISUAL_REVIEW.json  ->  data/70-two-scale-qa-OWNER_VISUAL_REVIEW.json
+Report70/qa/PRIMARY_SOURCE_CHECK.md  ->  70-two-scale-qa-PRIMARY_SOURCE_CHECK.md
+Report70/qa/RELEASE_PREPARATION.json  ->  data/70-two-scale-qa-RELEASE_PREPARATION.json
+Report70/qa/REVIEW_ACCEPTANCE.json  ->  data/70-two-scale-qa-REVIEW_ACCEPTANCE.json
+Report70/qa/ROOT_MANUSCRIPT_ACCEPTANCE.json  ->  data/70-two-scale-qa-ROOT_MANUSCRIPT_ACCEPTANCE.json
+Report70/qa/SELFTEST_RECEIPT.json  ->  data/70-two-scale-qa-SELFTEST_RECEIPT.json
+Report70/qa/SOURCE_MANIFEST_VERIFICATION.json  ->  data/70-two-scale-qa-SOURCE_MANIFEST_VERIFICATION.json
+Report70/qa/SOURCE_ORIGINS.json  ->  data/70-two-scale-qa-SOURCE_ORIGINS.json
+Report70/qa/locked-build/BUILD_RECEIPT.json  ->  data/70-two-scale-qa-locked-build-BUILD_RECEIPT.json
+Report70/qa/locked-build/PAGE_INVENTORY.json  ->  data/70-two-scale-qa-locked-build-PAGE_INVENTORY.json
+Report70/qa/locked-build/PREFLIGHT.json  ->  data/70-two-scale-qa-locked-build-PREFLIGHT.json
+Report70/qa/locked-build/RECORDER_INPUT_UNION.json  ->  data/70-two-scale-qa-locked-build-RECORDER_INPUT_UNION.json
+Report70/qa/locked-build/compile-1.fls  ->  data/70-two-scale-qa-locked-build-compile-1.fls
+Report70/qa/locked-build/compile-1.stdout  ->  data/70-two-scale-qa-locked-build-compile-1.stdout
+Report70/qa/locked-build/compile-2.fls  ->  data/70-two-scale-qa-locked-build-compile-2.fls
+Report70/qa/locked-build/compile-2.stdout  ->  data/70-two-scale-qa-locked-build-compile-2.stdout
+Report70/qa/locked-build/format.fls  ->  data/70-two-scale-qa-locked-build-format.fls
+Report70/qa/locked-build/pdfinfo.stdout  ->  data/70-two-scale-qa-locked-build-pdfinfo.stdout
+Report70/qa/manuscript-review/CANDIDATE_METADATA_BEFORE.tsv  ->  data/70-two-scale-msr-CANDIDATE_METADATA_BEFORE.tsv
+Report70/qa/manuscript-review/EXTRACTED_TEXT.txt  ->  data/70-two-scale-msr-EXTRACTED_TEXT.txt
+Report70/qa/manuscript-review/FROZEN_SOURCE_METADATA_AFTER.tsv  ->  data/70-two-scale-msr-FROZEN_SOURCE_METADATA_AFTER.tsv
+Report70/qa/manuscript-review/PAGE_QA.tsv  ->  data/70-two-scale-msr-PAGE_QA.tsv
+Report70/qa/manuscript-review/PAGE_RENDER_DIMENSIONS.txt  ->  data/70-two-scale-msr-PAGE_RENDER_DIMENSIONS.txt
+Report70/qa/manuscript-review/PAGE_RENDER_METADATA.tsv  ->  data/70-two-scale-msr-PAGE_RENDER_METADATA.tsv
+Report70/qa/manuscript-review/PRESERVATION.txt  ->  data/70-two-scale-msr-PRESERVATION.txt
+Report70/qa/manuscript-review/RENDER_METHOD.txt  ->  data/70-two-scale-msr-RENDER_METHOD.txt
+Report70/qa/manuscript-review/REVIEW.md  ->  70-two-scale-msr-REVIEW.md
+Report70/qa/manuscript-review/REVIEWED_INPUTS.txt  ->  data/70-two-scale-msr-REVIEWED_INPUTS.txt
+Report70/qa/manuscript-review/SOURCE_EQUIVALENCE.txt  ->  data/70-two-scale-msr-SOURCE_EQUIVALENCE.txt
+Report70/qa/predecessor-contract/ADAPTATION.diff  ->  data/70-two-scale-qa-pred-contract-ADAPTATION.diff
+Report70/qa/predecessor-contract/README.md  ->  70-two-scale-qa-pred-contract-README.md
+Report70/qa/release-tool-review/COMBINED_REVIEW_RECEIPT.json  ->  data/70-two-scale-rtr-COMBINED_REVIEW_RECEIPT.json
+Report70/qa/release-tool-review/EVIDENCE_MANIFEST.json  ->  data/70-two-scale-rtr-EVIDENCE_MANIFEST.json
+Report70/qa/release-tool-review/INDEPENDENT_PNG_REFERENCE_VALIDATION.json  ->  data/70-two-scale-rtr-INDEPENDENT_PNG_REFERENCE_VALIDATION.json
+Report70/qa/release-tool-review/INDEPENDENT_PREDECESSOR_DIFF.txt  ->  data/70-two-scale-rtr-INDEPENDENT_PREDECESSOR_DIFF.txt
+Report70/qa/release-tool-review/INDEPENDENT_REVIEW_RECEIPT.json  ->  data/70-two-scale-rtr-INDEPENDENT_REVIEW_RECEIPT.json
+Report70/qa/release-tool-review/ORIGINAL_45_FILES_VERIFIED.json  ->  data/70-two-scale-rtr-ORIGINAL_45_FILES_VERIFIED.json
+Report70/qa/release-tool-review/ORIGINAL_DIRECTORIES_VERIFIED.json  ->  data/70-two-scale-rtr-ORIGINAL_DIRECTORIES_VERIFIED.json
+Report70/qa/release-tool-review/ORIGINAL_IDENTITIES_AFTER.json  ->  data/70-two-scale-rtr-ORIGINAL_IDENTITIES_AFTER.json
+Report70/qa/release-tool-review/REVIEW.md  ->  70-two-scale-rtr-REVIEW.md
+Report70/qa/release-tool-review/SUPPLEMENTAL_REVIEW_RECEIPT.json  ->  data/70-two-scale-rtr-SUPPLEMENTAL_REVIEW_RECEIPT.json
+Report70/qa/release-tool-review/candidate-manifest.json  ->  data/70-two-scale-rtr-candidate-manifest.json
+Report70/qa/release-tool-review/direct-build/RECORDER_INPUT_UNION.json  ->  data/70-two-scale-rtr-direct-build-RECORDER_INPUT_UNION.json
+Report70/qa/release-tool-review/direct-build/compile-1.fls  ->  data/70-two-scale-rtr-direct-build-compile-1.fls
+Report70/qa/release-tool-review/direct-build/compile-2.fls  ->  data/70-two-scale-rtr-direct-build-compile-2.fls
+Report70/qa/release-tool-review/direct-build/format.fls  ->  data/70-two-scale-rtr-direct-build-format.fls
+Report70/qa/release-tool-review/independent_review.py  ->  code/70-two-scale-rtr-independent_review.py
+Report70/qa/release-tool-review/relocated-build/RECORDER_INPUT_UNION.json  ->  data/70-two-scale-rtr-relocated-build-RECORDER_INPUT_UNION.json
+Report70/qa/release-tool-review/relocated-build/compile-1.fls  ->  data/70-two-scale-rtr-relocated-build-compile-1.fls
+Report70/qa/release-tool-review/relocated-build/compile-2.fls  ->  data/70-two-scale-rtr-relocated-build-compile-2.fls
+Report70/qa/release-tool-review/relocated-build/format.fls  ->  data/70-two-scale-rtr-relocated-build-format.fls
+Report70/qa/release-tool-review/review-run.stdout  ->  data/70-two-scale-rtr-review-run.stdout
+Report70/qa/release-tool-review/supplemental-run.stdout  ->  data/70-two-scale-rtr-supplemental-run.stdout
+Report70/qa/release-tool-review/supplemental_review.py  ->  code/70-two-scale-rtr-supplemental_review.py
+Report70/science/frozen-packet-archive/proof-packet-freeze-receipt.json  ->  data/70-two-scale-frozen-proof-packet-freeze-receipt.json
+Report70/science/proof-packet/INDEPENDENT_AUDIT.md  ->  70-two-scale-pp-INDEPENDENT_AUDIT.md
+Report70/science/proof-packet/PROOF.md  ->  70-two-scale-pp-PROOF.md
+Report70/science/proof-packet/README.md  ->  70-two-scale-pp-README.md
+Report70/science/proof-packet/appendix/RADIUS_TWO.md  ->  70-two-scale-pp-appendix-RADIUS_TWO.md
+Report70/science/proof-packet/appendix/radius2-enumeration-receipt.json  ->  data/70-two-scale-pp-appendix-radius2-enumeration-receipt.json
+Report70/science/proof-packet/appendix/radius2-verification-receipt.txt  ->  data/70-two-scale-pp-appendix-radius2-verification-receipt.txt
+Report70/science/proof-packet/appendix/radius2_algebra.py  ->  code/70-two-scale-pp-appendix-radius2_algebra.py
+Report70/science/proof-packet/appendix/radius2_certificate.json  ->  data/70-two-scale-pp-appendix-radius2_certificate.json
+Report70/science/proof-packet/appendix/verify_radius2_algebra.py  ->  code/70-two-scale-pp-appendix-verify_radius2_algebra.py
+Report70/science/proof-packet/dependencies/release-manifest.json  ->  data/70-two-scale-pp-deps-release-manifest.json
+Report70/science/proof-packet/dependencies/source-pins.json  ->  data/70-two-scale-pp-deps-source-pins.json
+Report70/science/proof-packet/dependency-authentication.json  ->  data/70-two-scale-pp-dependency-authentication.json
+Report70/science/proof-packet/manifest.json  ->  data/70-two-scale-pp-manifest.json
+Report70/science/proof-packet/resource-ledger.json  ->  data/70-two-scale-pp-resource-ledger.json
+Report70/tools/BUILD_DEPENDENCIES_LOCK.json  ->  data/70-two-scale-tools-BUILD_DEPENDENCIES_LOCK.json
+Report70/tools/build_report70.py  ->  code/70-two-scale-tools-build_report70.py
+Report70/tools/release70.py  ->  code/70-two-scale-tools-release70.py
+Report70/tools/selftest70.py  ->  code/70-two-scale-tools-selftest70.py
+```
+
+`Shorter_exactness_windows_sources.zip` (Report 71; path inside the archive → shipped path):
+
+```
+Report71/INPUT_PINS.json  ->  data/71-short-windows-INPUT_PINS.json
+Report71/RELEASE_MANIFEST.json  ->  data/71-short-windows-RELEASE_MANIFEST.json
+Report71/audits/fresh-independent/AUDIT.md  ->  71-short-windows-audit-fresh-AUDIT.md
+Report71/audits/fresh-independent/MANIFEST.json  ->  data/71-short-windows-audit-fresh-MANIFEST.json
+Report71/audits/fresh-independent/after.json  ->  data/71-short-windows-audit-fresh-after.json
+Report71/audits/fresh-independent/authenticate.py  ->  code/71-short-windows-audit-fresh-authenticate.py
+Report71/audits/fresh-independent/before.json  ->  data/71-short-windows-audit-fresh-before.json
+Report71/audits/fresh-independent/check_original_copies.py  ->  code/71-short-windows-audit-fresh-check_original_copies.py
+Report71/audits/fresh-independent/original-copies.json  ->  data/71-short-windows-audit-fresh-original-copies.json
+Report71/audits/fresh-independent/preservation.json  ->  data/71-short-windows-audit-fresh-preservation.json
+Report71/audits/fresh-independent/static-certificates.json  ->  data/71-short-windows-audit-fresh-static-certificates.json
+Report71/audits/fresh-independent/static_certificates.py  ->  code/71-short-windows-audit-fresh-static_certificates.py
+Report71/qa/ADAPTATION_build_report71.py.diff  ->  data/71-short-windows-qa-ADAPTATION_build_report71.py.diff
+Report71/qa/ADAPTATION_release71.py.diff  ->  data/71-short-windows-qa-ADAPTATION_release71.py.diff
+Report71/qa/ADAPTATION_selftest71.py.diff  ->  data/71-short-windows-qa-ADAPTATION_selftest71.py.diff
+Report71/qa/AUTHORING_HISTORY.json  ->  data/71-short-windows-qa-AUTHORING_HISTORY.json
+Report71/qa/LOCKED_REPLAY_EQUALITY.json  ->  data/71-short-windows-qa-LOCKED_REPLAY_EQUALITY.json
+Report71/qa/ORIGINAL_ENDPOINT_BEFORE.json  ->  data/71-short-windows-qa-ORIGINAL_ENDPOINT_BEFORE.json
+Report71/qa/ORIGINAL_ENDPOINT_FINAL.json  ->  data/71-short-windows-qa-ORIGINAL_ENDPOINT_FINAL.json
+Report71/qa/OWNER_REVIEW_VERIFICATION.json  ->  data/71-short-windows-qa-OWNER_REVIEW_VERIFICATION.json
+Report71/qa/OWNER_VISUAL_REVIEW.json  ->  data/71-short-windows-qa-OWNER_VISUAL_REVIEW.json
+Report71/qa/RELEASE_PREPARATION.json  ->  data/71-short-windows-qa-RELEASE_PREPARATION.json
+Report71/qa/REVIEW_ACCEPTANCE.json  ->  data/71-short-windows-qa-REVIEW_ACCEPTANCE.json
+Report71/qa/ROOT_MANUSCRIPT_ACCEPTANCE.json  ->  data/71-short-windows-qa-ROOT_MANUSCRIPT_ACCEPTANCE.json
+Report71/qa/SELFTEST_RECEIPT.json  ->  data/71-short-windows-qa-SELFTEST_RECEIPT.json
+Report71/qa/SOURCE_MANIFEST_FINAL.json  ->  data/71-short-windows-qa-SOURCE_MANIFEST_FINAL.json
+Report71/qa/SOURCE_ORIGINS.json  ->  data/71-short-windows-qa-SOURCE_ORIGINS.json
+Report71/qa/V3_HALTING_QUALIFIER.diff  ->  data/71-short-windows-qa-V3_HALTING_QUALIFIER.diff
+Report71/qa/V3_PAGE_DIFFERENCE.json  ->  data/71-short-windows-qa-V3_PAGE_DIFFERENCE.json
+Report71/qa/authoring-failures/bootstrap-v1/compile-3.stdout  ->  data/71-short-windows-qa-auth-fail-bootstrap-v1-compile-3.stdout
+Report71/qa/bootstrap-v2/BUILD_RECEIPT.json  ->  data/71-short-windows-qa-bootstrap-v2-BUILD_RECEIPT.json
+Report71/qa/bootstrap-v2/PRESERVATION_AFTER.json  ->  data/71-short-windows-qa-bootstrap-v2-PRESERVATION_AFTER.json
+Report71/qa/bootstrap-v2/RECORDER_INPUT_UNION.json  ->  data/71-short-windows-qa-bootstrap-v2-RECORDER_INPUT_UNION.json
+Report71/qa/bootstrap-v2/compile-1.fls  ->  data/71-short-windows-qa-bootstrap-v2-compile-1.fls
+Report71/qa/bootstrap-v2/compile-2.fls  ->  data/71-short-windows-qa-bootstrap-v2-compile-2.fls
+Report71/qa/bootstrap-v2/compile-3.stdout  ->  data/71-short-windows-qa-bootstrap-v2-compile-3.stdout
+Report71/qa/bootstrap-v2/format.fls  ->  data/71-short-windows-qa-bootstrap-v2-format.fls
+Report71/qa/bootstrap-v3/BUILD_RECEIPT.json  ->  data/71-short-windows-qa-bootstrap-v3-BUILD_RECEIPT.json
+Report71/qa/bootstrap-v3/PRESERVATION_AFTER.json  ->  data/71-short-windows-qa-bootstrap-v3-PRESERVATION_AFTER.json
+Report71/qa/bootstrap-v3/RECORDER_INPUT_UNION.json  ->  data/71-short-windows-qa-bootstrap-v3-RECORDER_INPUT_UNION.json
+Report71/qa/bootstrap-v3/compile-1.fls  ->  data/71-short-windows-qa-bootstrap-v3-compile-1.fls
+Report71/qa/bootstrap-v3/compile-2.fls  ->  data/71-short-windows-qa-bootstrap-v3-compile-2.fls
+Report71/qa/bootstrap-v3/compile-3.stdout  ->  data/71-short-windows-qa-bootstrap-v3-compile-3.stdout
+Report71/qa/bootstrap-v3/format.fls  ->  data/71-short-windows-qa-bootstrap-v3-format.fls
+Report71/qa/locked-v2/BUILD_RECEIPT.json  ->  data/71-short-windows-qa-locked-v2-BUILD_RECEIPT.json
+Report71/qa/locked-v2/PAGE_INVENTORY.json  ->  data/71-short-windows-qa-locked-v2-PAGE_INVENTORY.json
+Report71/qa/locked-v2/PREFLIGHT.json  ->  data/71-short-windows-qa-locked-v2-PREFLIGHT.json
+Report71/qa/locked-v2/PRESERVATION_AFTER.json  ->  data/71-short-windows-qa-locked-v2-PRESERVATION_AFTER.json
+Report71/qa/locked-v2/RECORDER_INPUT_UNION.json  ->  data/71-short-windows-qa-locked-v2-RECORDER_INPUT_UNION.json
+Report71/qa/locked-v2/Report71.log  ->  data/71-short-windows-qa-locked-v2-Report71.log
+Report71/qa/locked-v2/Report71.txt  ->  data/71-short-windows-qa-locked-v2-Report71.txt
+Report71/qa/locked-v2/compile-1.fls  ->  data/71-short-windows-qa-locked-v2-compile-1.fls
+Report71/qa/locked-v2/compile-1.stdout  ->  data/71-short-windows-qa-locked-v2-compile-1.stdout
+Report71/qa/locked-v2/compile-2.fls  ->  data/71-short-windows-qa-locked-v2-compile-2.fls
+Report71/qa/locked-v2/compile-2.stdout  ->  data/71-short-windows-qa-locked-v2-compile-2.stdout
+Report71/qa/locked-v2/format.fls  ->  data/71-short-windows-qa-locked-v2-format.fls
+Report71/qa/locked-v2/pdfinfo.stdout  ->  data/71-short-windows-qa-locked-v2-pdfinfo.stdout
+Report71/qa/locked-v3/BUILD_RECEIPT.json  ->  data/71-short-windows-qa-locked-v3-BUILD_RECEIPT.json
+Report71/qa/locked-v3/PAGE_INVENTORY.json  ->  data/71-short-windows-qa-locked-v3-PAGE_INVENTORY.json
+Report71/qa/locked-v3/PRESERVATION_AFTER.json  ->  data/71-short-windows-qa-locked-v3-PRESERVATION_AFTER.json
+Report71/qa/locked-v3/RECORDER_INPUT_UNION.json  ->  data/71-short-windows-qa-locked-v3-RECORDER_INPUT_UNION.json
+Report71/qa/locked-v3/Report71.log  ->  data/71-short-windows-qa-locked-v3-Report71.log
+Report71/qa/locked-v3/Report71.txt  ->  data/71-short-windows-qa-locked-v3-Report71.txt
+Report71/qa/locked-v3/compile-1.fls  ->  data/71-short-windows-qa-locked-v3-compile-1.fls
+Report71/qa/locked-v3/compile-1.stdout  ->  data/71-short-windows-qa-locked-v3-compile-1.stdout
+Report71/qa/locked-v3/compile-2.fls  ->  data/71-short-windows-qa-locked-v3-compile-2.fls
+Report71/qa/locked-v3/compile-2.stdout  ->  data/71-short-windows-qa-locked-v3-compile-2.stdout
+Report71/qa/locked-v3/format.fls  ->  data/71-short-windows-qa-locked-v3-format.fls
+Report71/qa/locked-v3/pdfinfo.stdout  ->  data/71-short-windows-qa-locked-v3-pdfinfo.stdout
+Report71/qa/manuscript-review/REVIEW.md  ->  71-short-windows-msr-REVIEW.md
+Report71/qa/manuscript-review/REVIEW_RESULT.json  ->  data/71-short-windows-msr-REVIEW_RESULT.json
+Report71/qa/owner-review-verify.py  ->  code/71-short-windows-qa-owner-review-verify.py
+Report71/qa/prior-acceptance-v2/LOCKED_REPLAY_EQUALITY.json  ->  data/71-short-windows-qa-prior-acc-v2-LOCKED_REPLAY_EQUALITY.json
+Report71/qa/prior-acceptance-v2/OWNER_VISUAL_REVIEW.json  ->  data/71-short-windows-qa-prior-acc-v2-OWNER_VISUAL_REVIEW.json
+Report71/qa/release-tool-selftests/deterministic-archive-a.stdout  ->  data/71-short-windows-qa-rt-selftests-deterministic-archive-a.stdout
+Report71/qa/release-tool-selftests/deterministic-archive-b.stdout  ->  data/71-short-windows-qa-rt-selftests-deterministic-archive-b.stdout
+Report71/qa/release-tool-selftests/deterministic-flatten.stdout  ->  data/71-short-windows-qa-rt-selftests-deterministic-flatten.stdout
+Report71/qa/release-tool-selftests/fresh-format-bootstrap.stdout  ->  data/71-short-windows-qa-rt-selftests-fresh-format-bootstrap.stdout
+Report71/qa/release-tool-selftests/input-authentication.stdout  ->  data/71-short-windows-qa-rt-selftests-input-authentication.stdout
+Report71/qa/release-tool-selftests/locked-rebuild-pdf-equality.stdout  ->  data/71-short-windows-qa-rt-selftests-locked-rebuild-pdf-equality.stdout
+Report71/qa/release-tool-selftests/manifest-generation.stdout  ->  data/71-short-windows-qa-rt-selftests-manifest-generation.stdout
+Report71/qa/release-tool-selftests/manifest-verification.stdout  ->  data/71-short-windows-qa-rt-selftests-manifest-verification.stdout
+Report71/qa/release-tool-selftests/metadata-preserving-extraction.stdout  ->  data/71-short-windows-qa-rt-selftests-metadata-preserving-extraction.stdout
+Report71/qa/release-tool-selftests/reject-hardlinked-input.stdout  ->  data/71-short-windows-qa-rt-selftests-reject-hardlinked-input.stdout
+Report71/qa/release-tool-selftests/reject-original-source-overlap.stdout  ->  data/71-short-windows-qa-rt-selftests-reject-original-source-overlap.stdout
+Report71/qa/release-tool-selftests/reject-output-symlink-ancestor.stdout  ->  data/71-short-windows-qa-rt-selftests-reject-output-symlink-ancestor.stdout
+Report71/qa/release-tool-selftests/reject-release-overlap.stdout  ->  data/71-short-windows-qa-rt-selftests-reject-release-overlap.stdout
+Report71/qa/release-tool-selftests/reject-source-symlink-ancestor.stdout  ->  data/71-short-windows-qa-rt-selftests-reject-source-symlink-ancestor.stdout
+Report71/qa/release-tools-review/REVIEW.md  ->  71-short-windows-rtr-REVIEW.md
+Report71/qa/release-tools-review/REVIEW_SEAL.json  ->  data/71-short-windows-rtr-REVIEW_SEAL.json
+Report71/qa/release-tools-review/receipts/ADAPTATION_VERIFICATION.json  ->  data/71-short-windows-rtr-receipts-ADAPTATION_VERIFICATION.json
+Report71/qa/release-tools-review/receipts/COMMANDS.json  ->  data/71-short-windows-rtr-receipts-COMMANDS.json
+Report71/qa/release-tools-review/receipts/EXTRA_ADVERSARIAL_RECEIPT.json  ->  data/71-short-windows-rtr-receipts-EXTRA_ADVERSARIAL_RECEIPT.json
+Report71/qa/release-tools-review/receipts/ORIGINALS_AFTER.json  ->  data/71-short-windows-rtr-receipts-ORIGINALS_AFTER.json
+Report71/qa/release-tools-review/receipts/PRESERVATION.json  ->  data/71-short-windows-rtr-receipts-PRESERVATION.json
+Report71/qa/release-tools-review/receipts/READ_BEFORE_RUN.txt  ->  data/71-short-windows-rtr-receipts-READ_BEFORE_RUN.txt
+Report71/qa/release-tools-review/receipts/REPLAY_AND_ARCHIVE_EQUALITY.json  ->  data/71-short-windows-rtr-receipts-REPLAY_AND_ARCHIVE_EQUALITY.json
+Report71/qa/release-tools-review/receipts/REVIEW_RESULT.json  ->  data/71-short-windows-rtr-receipts-REVIEW_RESULT.json
+Report71/qa/release-tools-review/receipts/REVIEW_RUN.stdout  ->  data/71-short-windows-rtr-receipts-REVIEW_RUN.stdout
+Report71/qa/release-tools-review/receipts/SOURCE_AFTER.json  ->  data/71-short-windows-rtr-receipts-SOURCE_AFTER.json
+Report71/qa/release-tools-review/receipts/SUPPLEMENTAL_INDEPENDENT_CHECKS.json  ->  data/71-short-windows-rtr-receipts-SUPPLEMENTAL_INDEPENDENT_CHECKS.json
+Report71/qa/release-tools-review/receipts/actual-locked-build.stdout  ->  data/71-short-windows-rtr-receipts-actual-locked-build.stdout
+Report71/qa/release-tools-review/receipts/build-BUILD_RECEIPT.json  ->  data/71-short-windows-rtr-receipts-build-BUILD_RECEIPT.json
+Report71/qa/release-tools-review/receipts/build-PAGE_INVENTORY.json  ->  data/71-short-windows-rtr-receipts-build-PAGE_INVENTORY.json
+Report71/qa/release-tools-review/receipts/build-RECORDER_INPUT_UNION.json  ->  data/71-short-windows-rtr-receipts-build-RECORDER_INPUT_UNION.json
+Report71/qa/release-tools-review/receipts/build-compile-1.fls  ->  data/71-short-windows-rtr-receipts-build-compile-1.fls
+Report71/qa/release-tools-review/receipts/build-compile-2.fls  ->  data/71-short-windows-rtr-receipts-build-compile-2.fls
+Report71/qa/release-tools-review/receipts/build-format.fls  ->  data/71-short-windows-rtr-receipts-build-format.fls
+Report71/qa/release-tools-review/receipts/deterministic-flatten.stdout  ->  data/71-short-windows-rtr-receipts-deterministic-flatten.stdout
+Report71/qa/release-tools-review/receipts/provenance-original-endpoints.stdout  ->  data/71-short-windows-rtr-receipts-provenance-original-endpoints.stdout
+Report71/qa/release-tools-review/receipts/relocated-build-RECORDER_INPUT_UNION.json  ->  data/71-short-windows-rtr-receipts-relocated-build-RECORDER_INPUT_UNION.json
+Report71/qa/release-tools-review/receipts/relocated-build-compile-1.fls  ->  data/71-short-windows-rtr-receipts-relocated-build-compile-1.fls
+Report71/qa/release-tools-review/receipts/relocated-build-compile-2.fls  ->  data/71-short-windows-rtr-receipts-relocated-build-compile-2.fls
+Report71/qa/release-tools-review/receipts/relocated-build-format.fls  ->  data/71-short-windows-rtr-receipts-relocated-build-format.fls
+Report71/qa/release-tools-review/receipts/relocated-provenance.stdout  ->  data/71-short-windows-rtr-receipts-relocated-provenance.stdout
+Report71/qa/release-tools-review/receipts/synthetic-hostile-selftests.stdout  ->  data/71-short-windows-rtr-receipts-synthetic-hostile-selftests.stdout
+Report71/qa/release-tools-review/receipts/test-authenticated-extraction.stdout  ->  data/71-short-windows-rtr-receipts-test-authenticated-extraction.stdout
+Report71/qa/release-tools-review/receipts/test-deterministic-archive-a.stdout  ->  data/71-short-windows-rtr-receipts-test-deterministic-archive-a.stdout
+Report71/qa/release-tools-review/receipts/test-deterministic-archive-b.stdout  ->  data/71-short-windows-rtr-receipts-test-deterministic-archive-b.stdout
+Report71/qa/release-tools-review/receipts/test-manifest-generate.stdout  ->  data/71-short-windows-rtr-receipts-test-manifest-generate.stdout
+Report71/qa/release-tools-review/receipts/test-manifest-verify.stdout  ->  data/71-short-windows-rtr-receipts-test-manifest-verify.stdout
+Report71/qa/release-tools-review/receipts/zip-payload-tamper.stdout  ->  data/71-short-windows-rtr-receipts-zip-payload-tamper.stdout
+Report71/qa/release-tools-review/review71.py  ->  code/71-short-windows-rtr-review71.py
+Report71/qa/release-tools-review/supplement71.py  ->  code/71-short-windows-rtr-supplement71.py
+Report71/science/proof-packet/PRESERVATION.md  ->  71-short-windows-pp-PRESERVATION.md
+Report71/science/proof-packet/PROOF.md  ->  71-short-windows-pp-PROOF.md
+Report71/science/proof-packet/README.md  ->  71-short-windows-pp-README.md
+Report71/science/proof-packet/check_static_algebra.py  ->  code/71-short-windows-pp-check_static_algebra.py
+Report71/science/proof-packet/dependency-origins.json  ->  data/71-short-windows-pp-dependency-origins.json
+Report71/science/proof-packet/evidence/after.json  ->  data/71-short-windows-pp-evidence-after.json
+Report71/science/proof-packet/evidence/authenticate_inputs.py  ->  code/71-short-windows-pp-evidence-authenticate_inputs.py
+Report71/science/proof-packet/evidence/before.json  ->  data/71-short-windows-pp-evidence-before.json
+Report71/science/proof-packet/evidence/preservation-receipt.json  ->  data/71-short-windows-pp-evidence-preservation-receipt.json
+Report71/science/proof-packet/manifest.json  ->  data/71-short-windows-pp-manifest.json
+Report71/science/proof-packet/static-algebra-certificate.json  ->  data/71-short-windows-pp-static-algebra-certificate.json
+Report71/science/proof-packet/static-algebra-run.json  ->  data/71-short-windows-pp-static-algebra-run.json
+Report71/science/source-packet-seal/seal-receipt.json  ->  data/71-short-windows-seal-seal-receipt.json
+Report71/tools/BUILD_DEPENDENCIES_LOCK.json  ->  data/71-short-windows-tools-BUILD_DEPENDENCIES_LOCK.json
+Report71/tools/build_report71.py  ->  code/71-short-windows-tools-build_report71.py
+Report71/tools/provenance71.py  ->  code/71-short-windows-tools-provenance71.py
+Report71/tools/release71.py  ->  code/71-short-windows-tools-release71.py
+Report71/tools/selftest71.py  ->  code/71-short-windows-tools-selftest71.py
 ```
 
 </details>

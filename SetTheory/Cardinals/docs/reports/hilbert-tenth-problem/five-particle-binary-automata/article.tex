@@ -47,6 +47,15 @@
 \newcommand{\file}[1]{\texttt{\detokenize{#1}}}
 \newcommand{\calC}{\mathcal C}\newcommand{\gebit}{\operatorname{ge}}\newcommand{\bitlen}{\operatorname{bits}}
 \newcommand{\sha}[1]{\begin{quote}\small\ttfamily\seqsplit{#1}\end{quote}}
+% Part VII (Reports 70 and 71): their preamble macros. Clashes are renamed internally:
+% their \N (printing Z_{>=0}) -> \Nge; Report 70's \Fold, \Eold, \Pold (printing F_{26}, E_{26}, P_{26}) -> \Ftwosix, \Etwosix, \Ptwosix,
+% because \Fold prints F_old in Part VI. Nothing printed changed.
+\newcommand{\Estar}{E_*}\newcommand{\Fstar}{F_*}
+\newcommand{\Etwosix}{E_{26}}\newcommand{\Ptwosix}{P_{26}}\newcommand{\Ftwosix}{F_{26}}
+\newcommand{\Rec}{\mathcal R}\newcommand{\Sel}{\mathcal S}
+\newcommand{\Es}{E_s}\newcommand{\Ps}{P_s}\newcommand{\Fs}{F_s}\newcommand{\Cand}{\mathcal C_P}
+\definecolor{accent}{RGB}{25,83,129}\definecolor{muted}{RGB}{100,106,113}
+\newcommand{\fpareportdate}{3 October 2026}
 \lstset{basicstyle=\small\ttfamily,columns=fullflexible,keepspaces=true,breaklines=true,showstringspaces=false,frame=none,aboveskip=7pt,belowskip=7pt}
 \newcommand{\wtag}{\textup{[write]}}
 \newif\iffpaafterpart
@@ -59,29 +68,29 @@
   {\Large\bfseries #2\par}
   \ifx\relax#3\relax\else\smallskip{\large #3\par}\fi
   \medskip{\small #4\par}
-  {\small 3 October 2026\par}
+  {\small \fpareportdate\par}
   \end{center}}
 \newenvironment{reportabstract}[1]{\begin{quote}\small\textbf{Abstract of Report #1, as delivered.}\ }{\end{quote}}
-\title{Five-Particle Binary Automata\\[6pt]\large Reversible universality, a literal universal source,\\startup and cellular clocks, exact lazy evaluation,\\quartic certificates and a parallel replacement rule}
-\author{Research Reports 14--20 and 26--28 of one AI-assisted research pipeline\\\small merged from ten manuscripts (batch 82, clusters M1 and M2)}
-\date{3 October 2026}
-\hypersetup{pdftitle={Five-Particle Binary Automata},pdfauthor={Research Reports 14-20 and 26-28 (AI-assisted)}}
+\title{Five-Particle Binary Automata\\[6pt]\large Reversible universality, a literal universal source,\\startup and cellular clocks, exact lazy evaluation,\\quartic certificates, a parallel replacement rule\\and smaller sufficient radii}
+\author{Research Reports 14--20, 26--28, 70 and 71 of one AI-assisted research pipeline\\\small merged from twelve manuscripts (batch 82, clusters M1 and M2; batch 91, cluster W4)}
+\date{3--4 October 2026}
+\hypersetup{pdftitle={Five-Particle Binary Automata},pdfauthor={Research Reports 14-20, 26-28, 70 and 71 (AI-assisted)}}
 
 \begin{document}
 \maketitle
 \thispagestyle{empty}
 \begin{abstract}
-One fixed kind of object runs through ten research reports: a one-dimensional cellular automaton on the full binary shift that conserves the number of ones, is often globally reversible, and computes with exactly five ones. Part~\ref{fpa:part:one} proves that five particles suffice. Report~15 compiles every finite partial-injective guarded two-counter machine with a terminal halt into a globally reversible, number-conserving binary automaton of explicit finite radius, by an all-input isolated-swap lemma and a reflection argument; Report~14 compiles every deterministic two-counter program into a binary conservative automaton and instantiates it with a literal 8,408-row universal source (radius 756,787). With the separately proved four-mass decision theorem (Report~12), five is the exact particle threshold in both classes. Part~\ref{fpa:part:two} (Report~16) prints a literal universal reversible two-counter source, 122,622 controls and 141,561 rows, with a clean loader and all-input proofs; on its clean family positive return and periodicity of the fixed automaton are r.e.-complete with least period exactly $2\Theta+2$. Part~\ref{fpa:part:three} (Reports~17 and~18) changes four history tags to remove an empty-startup cost of about $8\cdot10^{13}$ steps (138 executed steps remain), proves paired-boundary domination of the clocks and first-encounter optimality among $2^{233}$ static orientations, and lifts both to the automaton's clock through the identity $\Theta=\lambda M+\mathrm{TV}(A^2)+\mathrm{TV}(B^2)+U$. Part~\ref{fpa:part:four} (Report~19) evaluates the frozen ordered product of 269,291,358,255 involutions exactly on every finite support without building it. Part~\ref{fpa:part:five} (Report~20) certifies that ordered rule by a degree-four sum of squares whose natural fiber is a singleton exactly when $T$ steps complete within a budget of $K$ changing factors, using $T+K$ rounds and no array over the factors. Part~\ref{fpa:part:six} (Reports~26--28) replaces the ordered product by two parallel full-shift involutions that agree with it on every admissible state (sufficient radius $180D+258+9J$, that is 91,711,698 for the universal source), evaluates the new rule exactly on every finite support with at most $n+2$ discovery calls per step, and certifies it at each fixed horizon by a quartic with a unique natural witness. Both compilers come with fixed-horizon degree-four sum-of-squares certificates whose natural fibers are empty or singletons. These are AI-assisted research manuscripts with executable audits; they are unrefereed, not formalized, and make no novelty or priority claim. Re-proofs of results printed in neighbouring reports of the collection are kept as marked second presentations.
+One fixed kind of object runs through twelve research reports: a one-dimensional cellular automaton on the full binary shift that conserves the number of ones, is often globally reversible, and computes with exactly five ones. Part~\ref{fpa:part:one} proves that five particles suffice. Report~15 compiles every finite partial-injective guarded two-counter machine with a terminal halt into a globally reversible, number-conserving binary automaton of explicit finite radius, by an all-input isolated-swap lemma and a reflection argument; Report~14 compiles every deterministic two-counter program into a binary conservative automaton and instantiates it with a literal 8,408-row universal source (radius 756,787). With the separately proved four-mass decision theorem (Report~12), five is the exact particle threshold in both classes. Part~\ref{fpa:part:two} (Report~16) prints a literal universal reversible two-counter source, 122,622 controls and 141,561 rows, with a clean loader and all-input proofs; on its clean family positive return and periodicity of the fixed automaton are r.e.-complete with least period exactly $2\Theta+2$. Part~\ref{fpa:part:three} (Reports~17 and~18) changes four history tags to remove an empty-startup cost of about $8\cdot10^{13}$ steps (138 executed steps remain), proves paired-boundary domination of the clocks and first-encounter optimality among $2^{233}$ static orientations, and lifts both to the automaton's clock through the identity $\Theta=\lambda M+\mathrm{TV}(A^2)+\mathrm{TV}(B^2)+U$. Part~\ref{fpa:part:four} (Report~19) evaluates the frozen ordered product of 269,291,358,255 involutions exactly on every finite support without building it. Part~\ref{fpa:part:five} (Report~20) certifies that ordered rule by a degree-four sum of squares whose natural fiber is a singleton exactly when $T$ steps complete within a budget of $K$ changing factors, using $T+K$ rounds and no array over the factors. Part~\ref{fpa:part:six} (Reports~26--28) replaces the ordered product by two parallel full-shift involutions that agree with it on every admissible state (sufficient radius $180D+258+9J$, that is 91,711,698 for the universal source), evaluates the new rule exactly on every finite support with at most $n+2$ discovery calls per step, and certifies it at each fixed horizon by a quartic with a unique natural witness. Part~\ref{fpa:part:seven} (Reports~70 and~71) gives two further full-shift extensions of the same admissible dynamics with smaller sufficient radii, by separating a short recognition radius from the contextual control radius and then shortening the triple exactness windows: $108D+149+3J$ and $76D+105+3J$ (55,027,013 and 38,722,713 for the universal source); each new rule differs from Report~26's on malformed inputs, and Report~70 adds that the only injective number-conserving binary rules of radius two are the five shifts. Both compilers of Part~\ref{fpa:part:one} come with fixed-horizon degree-four sum-of-squares certificates whose natural fibers are empty or singletons. These are AI-assisted research manuscripts with executable audits; they are unrefereed, not formalized, and make no novelty or priority claim. Re-proofs of results printed in neighbouring reports of the collection are kept as marked second presentations.
 \end{abstract}
 \clearpage
 {\small\setlength{\parskip}{0pt}\tableofcontents}
 \clearpage
 
 \section{The series and this report}\label{fpa:sec:series}
-\wtag\ Sections~\ref{fpa:sec:series}--\ref{fpa:sec:nonclaims} and Appendix~\ref{fpa:app:provenance} were written when the six manuscripts were merged into this report (batch~82, cluster~M1, 3~October 2026); text added inside the manuscripts' own sections at that time is marked \wtag. Parts~\ref{fpa:part:five} and~\ref{fpa:part:six} (Reports~20 and~26--28; batch~82, cluster~M2) were added by a second write on the same day, which extended these sections and the appendix and marks its additions to the manuscripts in the same way. Everything else is the text of the ten manuscripts, with labels prefixed and the corrections listed in Appendix~\ref{fpa:app:provenance}.
+\wtag\ Sections~\ref{fpa:sec:series}--\ref{fpa:sec:nonclaims} and Appendix~\ref{fpa:app:provenance} were written when the six manuscripts were merged into this report (batch~82, cluster~M1, 3~October 2026); text added inside the manuscripts' own sections at that time is marked \wtag. Parts~\ref{fpa:part:five} and~\ref{fpa:part:six} (Reports~20 and~26--28; batch~82, cluster~M2) were added by a second write on the same day, which extended these sections and the appendix and marks its additions to the manuscripts in the same way.  Part~\ref{fpa:part:seven} (Reports~70 and~71; batch~91, cluster~W4) was added by a third write on 4~October 2026, which extended these sections and the appendix and marks its additions in the same way. Everything else is the text of the twelve manuscripts, with labels prefixed and the corrections listed in Appendix~\ref{fpa:app:provenance}.
 
-\subsection{Ten Reports on one automaton}\label{fpa:sec:six}
-The ten manuscripts are ``Research Reports'' 14--20 and 26--28 of one AI-assisted research pipeline. They concern one object: the binary, number-conserving, globally reversible cellular automaton that Report~15's compiler builds from a reversible two-counter source, together with the explicit universal source that Report~16 feeds it. Report~14 is a sibling construction in the wider class of binary conservative (not necessarily reversible) automata. Reports~20 and~26--28 certify that automaton, replace its ordered execution by a parallel rule with the same admissible dynamics, and evaluate and certify the new rule.
+\subsection{Twelve Reports on one automaton}\label{fpa:sec:six}
+The twelve manuscripts are ``Research Reports'' 14--20, 26--28, 70 and~71 of one AI-assisted research pipeline. They concern one object: the binary, number-conserving, globally reversible cellular automaton that Report~15's compiler builds from a reversible two-counter source, together with the explicit universal source that Report~16 feeds it. Report~14 is a sibling construction in the wider class of binary conservative (not necessarily reversible) automata. Reports~20 and~26--28 certify that automaton, replace its ordered execution by a parallel rule with the same admissible dynamics, and evaluate and certify the new rule; Reports~70 and~71 replace the new rule by two further extensions of the same admissible dynamics with smaller sufficient radii.
 \begin{center}
 \small
 \begin{tabular}{@{}lcp{0.47\textwidth}p{0.17\textwidth}l@{}}
@@ -98,10 +107,12 @@ Report & archive & delivered title (pages) & here & labels\\
 26 & 20 & \emph{Two parallel conservative involutions} (16) & Part~\ref{fpa:part:six}, first & \texttt{fpa:pi:}\\
 27 & 18 & \emph{Sparse evaluation of a two involution particle cellular automaton} (11) & Part~\ref{fpa:part:six}, second & \texttt{fpa:sp:}\\
 28 & 03 & \emph{A fixed horizon quartic compiler for the parallel particle rule} (19) & Part~\ref{fpa:part:six}, third & \texttt{fpa:pq:}\\
+70 & 91:22 & \emph{Two scale recognition for the binary five particle compiler} (21) & Part~\ref{fpa:part:seven}, first & \texttt{fpa:tr:}\\
+71 & 91:23 & \emph{Shorter exactness windows for the binary five particle compiler} (13) & Part~\ref{fpa:part:seven}, second & \texttt{fpa:sw:}\\
 \bottomrule
 \end{tabular}
 \end{center}
-Report~15 is printed first because it is the base of the merge and because Reports~16--19 build on its compiler; Report~14 was written about forty minutes before Report~15 (archive member times 19:58 and 20:38 on 2~October 2026) and neither cites the other. Reports~20 and~26--28 follow in Report order: Report~20, the only one of the four about the old ordered rule, has a Part of its own, and the three Reports on the new rule share Part~\ref{fpa:part:six}. The archive names and the files each Report contributed are listed in Appendix~\ref{fpa:app:provenance} and in the report's \texttt{README.md}.
+Report~15 is printed first because it is the base of the merge and because Reports~16--19 build on its compiler; Report~14 was written about forty minutes before Report~15 (archive member times 19:58 and 20:38 on 2~October 2026) and neither cites the other. Reports~20 and~26--28 follow in Report order: Report~20, the only one of the four about the old ordered rule, has a Part of its own, and the three Reports on the new rule share Part~\ref{fpa:part:six}. Archive numbers are those of batch~82, except ``91:22'' and ``91:23'', which are manuscripts~22 and~23 of batch~91. Reports~70 and~71, delivered a day later, follow in Report order as Part~\ref{fpa:part:seven}; the Reports numbered in between concern other objects (Section~\ref{fpa:sec:map}). The archive names and the files each Report contributed are listed in Appendix~\ref{fpa:app:provenance} and in the report's \texttt{README.md}.
 
 \subsection{Where the rest of the series is printed}\label{fpa:sec:map}
 The Reports cite one another by number, and so does this report. The whole series is filed in the Hilbert's-tenth-problem category of the research-report collection (directory \path{SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/}):
@@ -119,9 +130,12 @@ Reports & where printed\\
 23--25, 33, 34 & \path{fixed-universal-polynomials} (batch~82M3)\\
 29--31 & SMC Part~VII, sources~19--21 (mass four in every dimension, orbit geometry, a binary planar shuttle; batch~82M4)\\
 32 & \path{group-theoretic-substrates}, Part~V (a universal matrix semigroup; batch~82M3)\\
+66, 67, 69 & SMC, placed for its Part~XIII (native-gap certificates and compilers; batch~91, \texttt{d750d98dd}); Report~70's presentation tools adapt those of Reports~66 and~68\\
+68 & never delivered to ProveIt; only its README survives, as SMC's \path{38-low-arity-qa-pred-tools-README68.md} (delivered inside the archive of Report~69)\\
+70, 71 & this report, Part~\ref{fpa:part:seven} (two-scale recognition and shorter exactness windows; batch~91)\\
 \bottomrule
 \end{longtable}}
-Some of these destinations were placed in the same batch and may be written after this report; they are cited by path and Report number.
+Some of these destinations were placed in the same batch and may be written after this report; they are cited by path and Report number. The rows for Reports~66--71 were added by the third write (4~October 2026); Reports between~35 and~65 of the same pipeline are filed elsewhere in the collection or were not delivered, and none of them is cited by this report.
 
 \subsection{How the Reports depend on one another}\label{fpa:sec:deps}
 \begin{center}
@@ -158,7 +172,7 @@ An arrow points from a Report to one that uses it. Report~12 supplies the matchi
 \draw[->,dashed] (ari)--(p20); \draw[->,dashed] (ari.south) |- (p28.east);
 \end{tikzpicture}
 \end{center}
-Report~20 certifies Report~15's ordered rule and uses Report~19's candidate lemma; Report~26 keeps Report~15's templates, replaces their execution, and takes Report~19's universal ledger; Report~27 evaluates Report~26's rule; Report~28 certifies it and uses Report~27's evaluator as a test oracle. The dashed box is the arithmetic layer that Reports~20 and~28 prove again: Report~20 cites it as Report~8 (SMC source~13), Report~28 cites only Knuth, and CDC is credited in notes.
+Report~20 certifies Report~15's ordered rule and uses Report~19's candidate lemma; Report~26 keeps Report~15's templates, replaces their execution, and takes Report~19's universal ledger; Report~27 evaluates Report~26's rule; Report~28 certifies it and uses Report~27's evaluator as a test oracle. Reports~70 and~71 (Part~\ref{fpa:part:seven}) keep Report~26's templates and admissible graph, compare their bounds with Report~26's, and use Report~19's universal ledger; Report~70 keeps Report~26's phase block, and Report~71 pins Report~70's release and replaces both blocks. The dashed box is the arithmetic layer that Reports~20 and~28 prove again: Report~20 cites it as Report~8 (SMC source~13), Report~28 cites only Knuth, and CDC is credited in notes.
 
 \subsection{What the Parts prove}\label{fpa:sec:overview}
 \begin{itemize}
@@ -168,12 +182,13 @@ Report~20 certifies Report~15's ordered rule and uses Report~19's candidate lemm
 \item \textbf{Part~\ref{fpa:part:four} (Report~19).} A source-sized lazy evaluator equals the frozen ordered product of 269,291,358,255 involutions on every finite support, inverse included (Theorem~\ref{fpa:lz:thm:main}).
 \item \textbf{Part~\ref{fpa:part:five} (Report~20).} For a fixed accepted source, mass $n$, horizon $T$ and budget $K$, a sum of squares of quadratic residuals has a singleton natural auxiliary fiber exactly when the literal ordered product completes $T$ steps with at most $K$ changing factors (and meets a prescribed endpoint, if any), and an empty one otherwise (Theorem~\ref{fpa:eb:thm:main}). It uses $T+K$ rounds over $C=\binom n2[\Delta+3+4\max(n-2,0)]$ occupied-pair candidate slots (170 at mass five for the universal source) and no array over the $F$ factors. Implemented are a scheduler reference and a mass-two exporter (612 witnesses, 616 residuals, 4,573 expanded monomials); an arbitrary-mass exporter is not.
 \item \textbf{Part~\ref{fpa:part:six} (Reports~26--28).} Report~26: $F_{\mathrm{new}}=P_\parallel\circ E_\parallel$, a product of two full-shift, number-conserving involutions, agrees with the ordered rule on the entire admissible doubled micrograph, has sufficient radius $180D+258+9J$ (91,711,698 for the universal source) and is time-symmetric (Theorem~\ref{fpa:pi:thm:main}), by a prospective-isolation lemma of radius $3(b+r)$ (Lemma~\ref{fpa:pi:lem:parallel}); it differs from the ordered rule on malformed inputs. Report~27: a sparse evaluator equals the new rule on every finite support, with at most $n+2$ raw-discovery calls per step (Theorem~\ref{fpa:sp:thm:main}), and runs 128 universal startup steps. Report~28: for a fixed source, mass $n$, horizon $T$ and direction, a polynomial of degree at most four in $4n$ external naturals has exactly one natural witness at accepted endpoint pairs of the new rule and none elsewhere (Theorem~\ref{fpa:pq:thm:main}); its witness count $4\max(n-1,0)+T(w_E+w_P)$ grows with $T$, and its two-particle example has 1,494 witnesses, 1,502 residuals and 12,595 monomials.
+\item \textbf{Part~\ref{fpa:part:seven} (Reports~70 and~71).} Report~70: a full-shift involution lemma with separate write, recognition and control radii $b\le a\le r$, isolation at $H=\max\{2(b+a),b+r\}$ and radius at most $b+a+H$ (Theorem~\ref{fpa:tr:thm:two-scale}); with Report~26's phase block it gives $F_*=P_{26}\circ E_*$, which agrees with Report~26's rule on the whole admissible doubled micrograph and has sufficient radius $108D+149+3J$ (55,027,013 for the universal ledger; Theorem~\ref{fpa:tr:thm:main}); an explicit four-particle input separates $F_*$ from Report~26's rule; independently, the injective number-conserving binary rules of radius two are exactly the five shifts (Theorem~\ref{fpa:tr:thm:radius-two}). Report~71: with triple exactness shortened from $3b+1$ to $b$ in both blocks, $F_s=P_s\circ E_s$ agrees with both predecessors on admissible states and has sufficient radius $76D+105+3J$, or $76D+104+3J$ for the same rule (38,722,713 and 38,722,712; Theorem~\ref{fpa:sw:thm:main}); malformed inputs separate each new block from both predecessors, and the pair exactness $L$ cannot be changed for these templates and this selector (Section~\ref{fpa:sw:sec:pair-padding}).
 \end{itemize}
 
 \subsection{Questions answered inside the series and elsewhere}\label{fpa:sec:answered}
-Inside this report: Report~15's first research question (a literal universal reversible source) is answered by Part~\ref{fpa:part:two}; Report~15's limit on periodicity conclusions (the missing no-blocking premise) is supplied for Report~16's clean family by Corollary~\ref{fpa:ls:cor:period}; Report~16's first two questions (initialization cost; a lazy indexed compiler) are answered by Part~\ref{fpa:part:three} and Part~\ref{fpa:part:four}; Report~17's open old/new cellular-clock comparison is settled by Report~18, and its lazy-evaluator question by Report~19. In Parts~\ref{fpa:part:five}--\ref{fpa:part:six}: Report~26's second question (a lazy evaluator for the new rule) is answered by Report~27, its third (an arithmetic certificate for the new selection mechanism) by Report~28 at each fixed horizon, and Report~27's arithmetic-verifier question by Report~28; Report~20's next step (an arbitrary-mass emitter for the ordered rule) and Report~16's certificate-tradeoff question stay open. Dated notes stand at each of these questions.
+Inside this report: Report~15's first research question (a literal universal reversible source) is answered by Part~\ref{fpa:part:two}; Report~15's limit on periodicity conclusions (the missing no-blocking premise) is supplied for Report~16's clean family by Corollary~\ref{fpa:ls:cor:period}; Report~16's first two questions (initialization cost; a lazy indexed compiler) are answered by Part~\ref{fpa:part:three} and Part~\ref{fpa:part:four}; Report~17's open old/new cellular-clock comparison is settled by Report~18, and its lazy-evaluator question by Report~19. In Parts~\ref{fpa:part:five}--\ref{fpa:part:six}: Report~26's second question (a lazy evaluator for the new rule) is answered by Report~27, its third (an arithmetic certificate for the new selection mechanism) by Report~28 at each fixed horizon, and Report~27's arithmetic-verifier question by Report~28; Report~20's next step (an arbitrary-mass emitter for the ordered rule) and Report~16's certificate-tradeoff question stay open. In Part~\ref{fpa:part:seven} (4~October 2026): Report~26's first question, whether type-specific support geometry can reduce $H=2(b+r)$, is answered affirmatively for the compiler's templates by Reports~70 and~71, each for a new full-shift rule; Report~70's further directions (a smaller common exclusion bound; a practical evaluator or arithmetic certificate for its rule) stay open. Dated notes stand at each of these questions.
 
-Reports~20 and~26--28 answer no question of a neighbouring report. Reports~14--19 bear on questions of two neighbouring reports (labels of those reports are given in typewriter type):
+Reports~20, 26--28, 70 and~71 answer no question of a neighbouring report. Reports~14--19 bear on questions of two neighbouring reports (labels of those reports are given in typewriter type):
 \begin{center}
 \small
 \begin{tabular}{@{}p{0.43\textwidth}p{0.08\textwidth}p{0.42\textwidth}@{}}
@@ -190,16 +205,16 @@ QOC \path{qoc:um:thm:poly}: certificates for the 8,408-row source & 14 & bears o
 \end{center}
 
 \subsection{Relation to the collection and to the formal project}\label{fpa:sec:relation}
-\textbf{Re-proofs.} Several passages re-derive results already printed in the collection; they are kept, as second presentations, with a \wtag\ pointer naming the host statement and without any novelty claim: Report~14's Section~\ref{fpa:bc:sec:universal} (the 528- and 8,408-instruction programs and their proofs are QOC Part~V's Lemmas \path{qoc:um:lem:virtual} and \path{qoc:um:lem:prime}); the Neary--Woods table and its $(u_{10},b)$ discrepancy in Reports~14 and~16 (printed once in QOC Part~III, after Table \path{qoc:wf:tab:tm}); Report~16's front end (Section~\ref{fpa:ls:sec:frontend}); Report~15's clean-target wrapper (Section~\ref{fpa:sec:clean}), which is the forward/inverse/bridge construction of SMC source~15 (Report~10, Theorem \path{smc:ct:thm:restore}) for guarded sources, and is Bennett's uncomputation~\cite{fpa:bennett}; Report~16's history and prime-encoding invariants (Sections~\ref{fpa:ls:sec:history}--\ref{fpa:ls:sec:composition}), which make literal the existence argument of SMC Part~IV, \S\path{smc:sl:sec:safe}. Within this report the compiler clock $\tau_e(c)=3+2(Z+c)+\Delta_e-4S$ is printed in five Reports (equation~\eqref{fpa:eq:clock}, \eqref{fpa:ls:eq:caclock}, Report~17's Section~\ref{fpa:st:sec:ca}, \eqref{fpa:cc:eq:rowtime}, and Report~26's \eqref{fpa:pi:eq:clock}), and Report~19 restates Report~15's ledger; the later occurrences carry pointers. In Parts~\ref{fpa:part:five}--\ref{fpa:part:six}: the circuit-to-quartic layer of Reports~20 and~28 (signed pairs, comparison, equality, Boolean gates, topological uniqueness) is the canonical circuit lemma \path{cdc:pt:lem:circuit} of \path{canonical-diophantine-certificates} (CDC) with \path{cdc:pt:lem:signed} and \path{cdc:mem:lem:compare}, printed also in SMC Part~IV (\path{smc:sl:eq:cmp}, \path{smc:sl:eq:eq}, and Report~20's constant division in \S\path{smc:sl:sec:presburger-quartic}); Report~28's bitonic sorter is CDC's Proposition \path{cdc:mem:prop:comparator-cost} and \S\path{cdc:mem:subsec:bitonic}; Report~27's Lemma~\ref{fpa:sp:lem:parallel} restates Report~26's Lemma~\ref{fpa:pi:lem:parallel}, and Reports~27 and~28 restate Report~26's rule and radii. Neither Report~20 nor Report~28 cites CDC; each of these passages carries a \wtag\ credit, and none is claimed as new.
+\textbf{Re-proofs.} Several passages re-derive results already printed in the collection; they are kept, as second presentations, with a \wtag\ pointer naming the host statement and without any novelty claim: Report~14's Section~\ref{fpa:bc:sec:universal} (the 528- and 8,408-instruction programs and their proofs are QOC Part~V's Lemmas \path{qoc:um:lem:virtual} and \path{qoc:um:lem:prime}); the Neary--Woods table and its $(u_{10},b)$ discrepancy in Reports~14 and~16 (printed once in QOC Part~III, after Table \path{qoc:wf:tab:tm}); Report~16's front end (Section~\ref{fpa:ls:sec:frontend}); Report~15's clean-target wrapper (Section~\ref{fpa:sec:clean}), which is the forward/inverse/bridge construction of SMC source~15 (Report~10, Theorem \path{smc:ct:thm:restore}) for guarded sources, and is Bennett's uncomputation~\cite{fpa:bennett}; Report~16's history and prime-encoding invariants (Sections~\ref{fpa:ls:sec:history}--\ref{fpa:ls:sec:composition}), which make literal the existence argument of SMC Part~IV, \S\path{smc:sl:sec:safe}. Within this report the compiler clock $\tau_e(c)=3+2(Z+c)+\Delta_e-4S$ is printed in five Reports (equation~\eqref{fpa:eq:clock}, \eqref{fpa:ls:eq:caclock}, Report~17's Section~\ref{fpa:st:sec:ca}, \eqref{fpa:cc:eq:rowtime}, and Report~26's \eqref{fpa:pi:eq:clock}), and Report~19 restates Report~15's ledger; the later occurrences carry pointers. In Parts~\ref{fpa:part:five}--\ref{fpa:part:six}: the circuit-to-quartic layer of Reports~20 and~28 (signed pairs, comparison, equality, Boolean gates, topological uniqueness) is the canonical circuit lemma \path{cdc:pt:lem:circuit} of \path{canonical-diophantine-certificates} (CDC) with \path{cdc:pt:lem:signed} and \path{cdc:mem:lem:compare}, printed also in SMC Part~IV (\path{smc:sl:eq:cmp}, \path{smc:sl:eq:eq}, and Report~20's constant division in \S\path{smc:sl:sec:presburger-quartic}); Report~28's bitonic sorter is CDC's Proposition \path{cdc:mem:prop:comparator-cost} and \S\path{cdc:mem:subsec:bitonic}; Report~27's Lemma~\ref{fpa:sp:lem:parallel} restates Report~26's Lemma~\ref{fpa:pi:lem:parallel}, and Reports~27 and~28 restate Report~26's rule and radii. Neither Report~20 nor Report~28 cites CDC; each of these passages carries a \wtag\ credit, and none is claimed as new. In Part~\ref{fpa:part:seven}: Report~70's Lemma~\ref{fpa:tr:lem:phase} restates Report~26's phase block; its Sections~\ref{fpa:tr:sec:source}, \ref{fpa:tr:sec:templates} and~\ref{fpa:tr:sec:clocks} restate the source interface, templates, clocks and clean targets of Reports~15 and~26, and Report~71's Section~\ref{fpa:sw:sec:definitions} restates Report~70's with its new exactness predicate; Report~70's conservation criterion (Lemma~\ref{fpa:tr:lem:potential}) is the radius-two analogue of the de~Bruijn-graph potential that SMC source~16 (Report~11) uses for the elementary rules (\S\path{smc:su:sec:checks}), and its count of 428 conservative tables is Fuk\'s and Sullivan's~\cite{fpa:tr:fuks}. Each of these passages carries a \wtag\ pointer.
 
-\textbf{Reviews.} At the time of the first write (cluster~M1) the Hilbert's-tenth research programme (\path{Computability/HilbertTenthProblem/}) had \emph{not} reviewed Reports~14--19; for Report~16 see the dated note at the end of this paragraph. Its note \path{Papers/research-wip/native-stream-queue/reviewed_report_archive_replay.md} (commit \texttt{ceb7222e9}), which restores the batch's archives from an earlier revision for replays, lists the six archives of this report as ``Relocation only'' and states that relocation is not a scientific review. Its review \path{Papers/research-wip/native-stream-queue/review_parallel_particle_reports.md} (commit \texttt{fb7e3cb47}) covers Reports~26--28 (Part~\ref{fpa:part:six}), found no defect, and notes that the inherited template geometry and source simulation of Reports~15--17 remain a dependency it did not reconstruct; its review \path{review_binary_planar_four_particle31.md} (commit \texttt{16f50dcc6}) concerns Report~31 (SMC Part~VII) and separates it from the five-particle line. The programme's note \path{neary_woods_explicit_universal_tm.md} transcribes the same Neary--Woods table. \wtag\ (3~October 2026, second write.) Since the first write, the programme's \path{review_literal_universal_reversible_source16.md} (commit \texttt{69730d3e8}) has reviewed Report~16: it scans all 141,561 primitive rows of the pinned source independently, finds no source-interface or arithmetic contradiction, and records Report~16's literal-source and clean-nonblocking obligations as closed, while keeping Report~15's compiler theorem and the Neary--Woods universality theorem as explicit dependencies. Three scoped intakes followed, each reading the proofs without executing the archived Python: \path{review_cellular_clock_domination18_intake.md} (commit \texttt{735f62a6a}) finds that Report~18's central clock-domination proof passes and closes the CA-clock comparison for the fixed history-bit orientation class; \path{review_lazy_ordered_evaluator19_intake.md} (commit \texttt{c875bad40}) finds no gap in Report~19's finite-support argument, as a proof intake rather than an implementation audit; and \path{review_event_budget_clean_clock_intake.md} (commit \texttt{8aabb1453}) reads Report~20's complete proof (Part~\ref{fpa:part:five}) and identifies no new defect within its stated scope. All three stress what the Reports do not supply: a smaller arithmetic compiler, a paid ordinary-input loader, or an unbounded fixed-arity history representation. Reports~14, 15 and~17 have no review.
+\textbf{Reviews.} At the time of the first write (cluster~M1) the Hilbert's-tenth research programme (\path{Computability/HilbertTenthProblem/}) had \emph{not} reviewed Reports~14--19; for Report~16 see the dated note at the end of this paragraph. Its note \path{Papers/research-wip/native-stream-queue/reviewed_report_archive_replay.md} (commit \texttt{ceb7222e9}), which restores the batch's archives from an earlier revision for replays, lists the six archives of this report as ``Relocation only'' and states that relocation is not a scientific review. Its review \path{Papers/research-wip/native-stream-queue/review_parallel_particle_reports.md} (commit \texttt{fb7e3cb47}) covers Reports~26--28 (Part~\ref{fpa:part:six}), found no defect, and notes that the inherited template geometry and source simulation of Reports~15--17 remain a dependency it did not reconstruct; its review \path{review_binary_planar_four_particle31.md} (commit \texttt{16f50dcc6}) concerns Report~31 (SMC Part~VII) and separates it from the five-particle line. The programme's note \path{neary_woods_explicit_universal_tm.md} transcribes the same Neary--Woods table. \wtag\ (3~October 2026, second write.) Since the first write, the programme's \path{review_literal_universal_reversible_source16.md} (commit \texttt{69730d3e8}) has reviewed Report~16: it scans all 141,561 primitive rows of the pinned source independently, finds no source-interface or arithmetic contradiction, and records Report~16's literal-source and clean-nonblocking obligations as closed, while keeping Report~15's compiler theorem and the Neary--Woods universality theorem as explicit dependencies. Three scoped intakes followed, each reading the proofs without executing the archived Python: \path{review_cellular_clock_domination18_intake.md} (commit \texttt{735f62a6a}) finds that Report~18's central clock-domination proof passes and closes the CA-clock comparison for the fixed history-bit orientation class; \path{review_lazy_ordered_evaluator19_intake.md} (commit \texttt{c875bad40}) finds no gap in Report~19's finite-support argument, as a proof intake rather than an implementation audit; and \path{review_event_budget_clean_clock_intake.md} (commit \texttt{8aabb1453}) reads Report~20's complete proof (Part~\ref{fpa:part:five}) and identifies no new defect within its stated scope. All three stress what the Reports do not supply: a smaller arithmetic compiler, a paid ordinary-input loader, or an unbounded fixed-arity history representation. Reports~14, 15 and~17 have no review. \wtag\ (4~October 2026, third write.) The programme's scoped intake \path{review_new_arithmetic_0d7f51c44.md} (commit \texttt{a9ab9a698}) read Reports~70 and~71 in part, found no correction, and states that Report~70's full-shift theorem and Report~71's recognition and geometry proof were not re-audited (Part~\ref{fpa:part:seven}).
 
-\textbf{Formal status.} No statement of this report is formalized in Lean or Rocq, and none of the Reports cites a declaration; the report's placement in the collection confers no formal status. Report~15's research question~5 and Report~16's question~4 propose mechanizing the trusted cores; Report~14's question~4 proposes formalizing its full-shift extension; Report~26's question~4 proposes formalizing its lemma and corridor partition.
+\textbf{Formal status.} No statement of this report is formalized in Lean or Rocq, and none of the Reports cites a declaration; the report's placement in the collection confers no formal status. Report~15's research question~5 and Report~16's question~4 propose mechanizing the trusted cores; Report~14's question~4 proposes formalizing its full-shift extension; Report~26's question~4 proposes formalizing its lemma and corridor partition, and Report~70's last section its anchor and signed-corridor arguments.
 
 \section{Conventions and notation}\label{fpa:sec:notation}
-\textbf{Labels and numbering.} Every label carries the prefix \texttt{fpa:}: Report~15's labels are \texttt{fpa:} followed by the delivered name, and the other Reports use the sub-prefixes \texttt{fpa:bc:} (14), \texttt{fpa:ls:} (16), \texttt{fpa:st:} (17), \texttt{fpa:cc:} (18) and \texttt{fpa:lz:} (19); labels added in the write are those beginning \texttt{fpa:sec:}, \texttt{fpa:part:} and \texttt{fpa:app:}, the labels \texttt{fpa:rep:}$r$\texttt{:first} and \texttt{fpa:rep:}$r$\texttt{:last} on the first and last section of Report~$r$, and \texttt{fpa:lz:sec:pinned} and \texttt{fpa:lz:sec:bytes} on two unlabelled sections of Report~19. Parts~\ref{fpa:part:five}--\ref{fpa:part:six} use the sub-prefixes \texttt{fpa:eb:} (Report~20), \texttt{fpa:pi:} (26), \texttt{fpa:sp:} (27) and \texttt{fpa:pq:} (28) followed by the delivered names; their write added \texttt{fpa:part:five}, \texttt{fpa:part:six}, the labels \texttt{fpa:rep:}$r$\texttt{:first} and \texttt{fpa:rep:}$r$\texttt{:last} for $r=20,26,27,28$, and \texttt{fpa:eb:sec:source}, \texttt{fpa:eb:sec:proof} and \texttt{fpa:pq:sec:sorting} on three unlabelled sections. Sections and theorems are numbered continuously through the report (Theorem $n.m$ is the $m$th numbered statement of Section~$n$). Reports~15 and~16 number their displays by hand, $(1)$, $(2)$, \dots, and their prose cites them as ``(3)'', ``(26)''; these numbers are kept as delivered and are \emph{local to the Report}: in Part~\ref{fpa:part:one} a bare $(n)$ is Report~15's display~$n$, in Part~\ref{fpa:part:two} it is Report~16's. Displays that the Reports number automatically (Reports~14, 17, 18, 20 and~26--28) are numbered $(n.m)$ by section, so they cannot be confused with the hand-numbered ones.
+\textbf{Labels and numbering.} Every label carries the prefix \texttt{fpa:}: Report~15's labels are \texttt{fpa:} followed by the delivered name, and the other Reports use the sub-prefixes \texttt{fpa:bc:} (14), \texttt{fpa:ls:} (16), \texttt{fpa:st:} (17), \texttt{fpa:cc:} (18) and \texttt{fpa:lz:} (19); labels added in the write are those beginning \texttt{fpa:sec:}, \texttt{fpa:part:} and \texttt{fpa:app:}, the labels \texttt{fpa:rep:}$r$\texttt{:first} and \texttt{fpa:rep:}$r$\texttt{:last} on the first and last section of Report~$r$, and \texttt{fpa:lz:sec:pinned} and \texttt{fpa:lz:sec:bytes} on two unlabelled sections of Report~19. Parts~\ref{fpa:part:five}--\ref{fpa:part:six} use the sub-prefixes \texttt{fpa:eb:} (Report~20), \texttt{fpa:pi:} (26), \texttt{fpa:sp:} (27) and \texttt{fpa:pq:} (28) followed by the delivered names; their write added \texttt{fpa:part:five}, \texttt{fpa:part:six}, the labels \texttt{fpa:rep:}$r$\texttt{:first} and \texttt{fpa:rep:}$r$\texttt{:last} for $r=20,26,27,28$, and \texttt{fpa:eb:sec:source}, \texttt{fpa:eb:sec:proof} and \texttt{fpa:pq:sec:sorting} on three unlabelled sections. Part~\ref{fpa:part:seven} uses \texttt{fpa:tr:} (Report~70) and \texttt{fpa:sw:} (Report~71) followed by the delivered names. The two Reports deliver eleven identical label names (\texttt{thm:main}, \texttt{lem:phase}, \texttt{eq:ahead}, \texttt{eq:behind}, \texttt{eq:commit}, \texttt{eq:constants}, \texttt{eq:direct}, \texttt{eq:dispatch}, \texttt{eq:endpoint}, \texttt{eq:free}, \texttt{eq:mutual}), which the two sub-prefixes keep apart. The third write added \texttt{fpa:part:seven}, \texttt{fpa:rep:}$r$\texttt{:first}, \texttt{fpa:rep:}$r$\texttt{:last} for $r=70,71$, and \texttt{fpa:sec:partseven:questions} on its closing section of further questions. Sections and theorems are numbered continuously through the report (Theorem $n.m$ is the $m$th numbered statement of Section~$n$). Reports~15 and~16 number their displays by hand, $(1)$, $(2)$, \dots, and their prose cites them as ``(3)'', ``(26)''; these numbers are kept as delivered and are \emph{local to the Report}: in Part~\ref{fpa:part:one} a bare $(n)$ is Report~15's display~$n$, in Part~\ref{fpa:part:two} it is Report~16's. Displays that the Reports number automatically (Reports~14, 17, 18, 20, 26--28, 70 and~71) are numbered $(n.m)$ by section, so they cannot be confused with the hand-numbered ones.
 
-\textbf{Delivery paths.} The Reports name their files by their paths inside the delivered archives (for instance \code{source/source.json}, \code{reproducibility/run\_checks.py}, \code{companions/report15/}, \dots). Those names are kept in the text. The \texttt{README.md} of this report maps every delivery path to its shipped name (shipped files carry the prefixes \path{14-five-binary-}, \path{15-rev-five-}, \path{16-literal-source-}, \path{17-startup-}, \path{18-cell-clock-}, \path{19-lazy-eval-}, \path{20-event-budget-}, \path{26-parallel-involutions-}, \path{27-sparse-parallel-} and \path{28-parallel-quartic-}), and lists the files that are not shipped: byte copies of other files, the delivered PDFs and checksum ledgers, the companion copies of Reports~12 and~15, and eighteen heavy generated files (among them both \code{source.json} tables, each 32,034,272 bytes) that the shipped programs rebuild in seconds (README, ``Reconstructing the excluded data''). Parts~\ref{fpa:part:five}--\ref{fpa:part:six} exclude in the same way Report~27's copy of the universal source with its two universal traces (and their byte-identical optimized copies), and Report~20's gzip of the source.
+\textbf{Delivery paths.} The Reports name their files by their paths inside the delivered archives (for instance \code{source/source.json}, \code{reproducibility/run\_checks.py}, \code{companions/report15/}, \dots). Those names are kept in the text. The \texttt{README.md} of this report maps every delivery path to its shipped name (shipped files carry the prefixes \path{14-five-binary-}, \path{15-rev-five-}, \path{16-literal-source-}, \path{17-startup-}, \path{18-cell-clock-}, \path{19-lazy-eval-}, \path{20-event-budget-}, \path{26-parallel-involutions-}, \path{27-sparse-parallel-}, \path{28-parallel-quartic-}, \path{70-two-scale-} and \path{71-short-windows-}), and lists the files that are not shipped: byte copies of other files, the delivered PDFs and checksum ledgers, the companion copies of Reports~12 and~15, and eighteen heavy generated files (among them both \code{source.json} tables, each 32,034,272 bytes) that the shipped programs rebuild in seconds (README, ``Reconstructing the excluded data''). Parts~\ref{fpa:part:five}--\ref{fpa:part:six} exclude in the same way Report~27's copy of the universal source with its two universal traces (and their byte-identical optimized copies), and Report~20's gzip of the source. Part~\ref{fpa:part:seven} does not ship the page renders of the two delivered PDFs, the checksum ledgers, the container ZIPs whose every member is shipped, or the byte copies of Report~26's archive and of files already shipped by Parts~\ref{fpa:part:two}--\ref{fpa:part:six} (README).
 
 \textbf{Notation.} No symbol of a Report was renamed: each Part uses its Report's symbols. The same letter often means different things in different Reports; the table lists the collisions. In the text written for the merge, these notions are named in words.
 \begin{center}
@@ -258,10 +273,35 @@ $\mathbb N$ & $\mathbb N$, with zero & Report~26: $\mathbb Z_{\ge0}$; Report~28:
 \end{center}
 Tempting false readings in Parts~\ref{fpa:part:five}--\ref{fpa:part:six}: Report~20's $\mathcal F$ (the ordered rule) is not Report~28's $\mathcal F$ (the parallel rule), and the two rules differ on malformed supports; Report~20's $b$ counts branches, while $b$ in Reports~26--28 is a radius; Report~20's $C$ counts slots, not Report~28's height constant $C(s,n)$; Report~26's $K=3b+1$ is a radius, not Report~20's budget.
 
+In Part~\ref{fpa:part:seven} the constants $m$, $p$, $D=2m+4p$, $S=2D+2$, $B_2=D+1$, $L=3D+4$, $b=B_3=4D+5$, $K=3b+1$, $Z=10b+10+2J$ and $J$ mean what they mean in Report~26, and $\mathbb N$ is $\mathbb Z_{\ge0}$. The third table lists the collisions of Reports~70 and~71 with the rest of the report. No printed symbol of either Report changed.
+\begin{center}
+\small
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.12\textwidth}p{0.42\textwidth}p{0.38\textwidth}@{}}
+\toprule
+symbol & Reports~70--71 (Part~\ref{fpa:part:seven}) & elsewhere in this report\\
+\midrule
+\endhead
+$a$, $\alpha$ & $a$ the recognition radius ($3b+1$ in Report~70's edge block, $b$ in Report~71's); $\alpha$ the number of zero-update branches & $a$ the number of zero-update branches (Reports~15--28); Report~14: a counter value\\
+$r$, $r_P$ & $r=Z+J$ the control radius of the edge block; $r_P$ the phase read radius ($K$ in Report~70, $b$ in Report~71) & Report~26: the read radius ($r_E=Z+J$, $r_P=K$); Report~20: $r=D+3$\\
+$H$, $H_P$ & $H=\max\{2(b+a),b+r\}$, which is $b+r$ for the compiler; $H_P$ the phase isolation distance, $2(b+K)$ in Report~70 and $4b$ in Report~71 & Report~26: $H=2(b+r)$; Report~20: a head-to-marker offset; $H_q$ a home mode throughout\\
+$F_{26}$, $E_{26}$, $P_{26}$ & Report~26's rule and blocks, that is $F_{\mathrm{new}}$, $E_\parallel$, $P_\parallel$ of Part~\ref{fpa:part:six}; $F_{70}$, $E_{70}$, $P_{70}$ (Report~71) are Report~70's $F_*$, $E_*$ and $P_{26}$ & $F_{\mathrm{old}}$ in Part~\ref{fpa:part:six} is the \emph{ordered} rule of Report~15, not $F_{26}$\\
+$E_s$, $P_s$, $F_s$ & Report~71's blocks and rule; $s$ stands for ``short'' & $s\in\{-1,+1\}$ the side of a phase triple, also in Part~\ref{fpa:part:seven}; $s=\max\{r,b+2a\}$ a read radius in Report~70\\
+$T_u$ & the local controlled involution at anchor $u$ & $T$ a horizon (Reports~20, 28), Report~26's block map $T(x)$\\
+$\mathcal R$, $\mathcal S$, $\rho$ & recognized-anchor set, selected-anchor set, recognition predicate ($\rho_g$ for type $g$) & $R$ a radius throughout; $\rho$ a parity bit in Report~16\\
+$C_u(x)$, $\mathcal C_P(x)$ & the guarded edge types at anchor $u$; the typed phase-key set & Report~26: $C(x)$ the raw-key set; Report~20: $C$ the slot count\\
+$m$, $p$ & $m$ the number of controls, but also the selected old marker $m$ (Report~70) and $m_0$, $m_1$ (Report~71); $p$ the nonzero-update branches, but an integer potential on de~Bruijn vertices in Lemma~\ref{fpa:tr:lem:potential} & $m$, $p$ the counts only\\
+$f$, $g$ & Report~70's radius-two appendix: $f$ a five-input local rule and $g=f-c$ an edge weight; elsewhere $g$ an endpoint type & $g$ an endpoint type (Reports~26--28)\\
+$A$, $C$, $N$, $t$, $w$ & a corridor's departure and arrival markers, its length $N=w(C-A)$, the oriented head position $t$, the direction $w$ & Report~20: ledger counts $A$, slot count $C$; Report~28: $W(T)$ the witness count\\
+$\ell_g$ & the exactness radius of type $g$: $3B_g+1$ in Report~70; $L$ for pairs and $b$ for triples in Report~71 & Report~27: an exactness radius; Report~28: $\lambda_g$\\
+\bottomrule
+\end{longtable}
+\end{center}
+Tempting false readings in Part~\ref{fpa:part:seven}: $F_{26}$ is Report~26's \emph{parallel} rule $F_{\mathrm{new}}$, not the ordered rule $F_{\mathrm{old}}$ of Part~\ref{fpa:part:six}; $a$ is a radius, not the zero-update count, which these two Reports call $\alpha$; the four bounds $180D+258+9J$, $108D+149+3J$, $76D+105+3J$ and $76D+104+3J$ are sufficient radii of three different full-shift rules ($F_{26}$, $F_*$ and $F_s$, the last two bounds for the same rule) that agree on admissible states, not successive radii of one automaton; and they are spatial radii, not arithmetic gate counts.
+
 Tempting false readings in Parts~\ref{fpa:part:one}--\ref{fpa:part:four}: Report~14's $D=m+2p$ is not Report~15's $D=2m+4p$ (they count different alphabets, and $p$ is not the same count); the two radius bounds $30D+37$ (Report~14) and eq.~(18) (Report~15, quadratic in $D$) bound different automata; Report~16's $K$ is a horizon, not Report~14's contact distance; $J$ in ``$J1$'' is a Turing state, not a class cutoff.
 
 \section{Status and non-claims}\label{fpa:sec:nonclaims}
-The ten Reports are AI-assisted research manuscripts; Report~14's delivery README says ``prepared with AI assistance''. They are unrefereed and not formalized; the research programme has reviewed Reports~16, 18, 19, 20 and~26--28, by reading their proofs and running only its own checkers, and has not reviewed Reports~14, 15 and~17 (Section~\ref{fpa:sec:relation}). Each Report states its own limits; all of them are kept in its text, and they are collected here.
+The twelve Reports are AI-assisted research manuscripts; Report~14's delivery README says ``prepared with AI assistance''. They are unrefereed and not formalized; the research programme has reviewed Reports~16, 18, 19, 20 and~26--28, by reading their proofs and running only its own checkers, has read Reports~70 and~71 in a scoped intake that did not re-audit their main proofs, and has not reviewed Reports~14, 15 and~17 (Section~\ref{fpa:sec:relation}). Each Report states its own limits; all of them are kept in its text, and they are collected here.
 \begin{itemize}
 \item \textbf{Report~15.} Mathematical proofs with independent computational and mathematical audits, not proof-assistant formalizations or claims of novelty or priority. Universality is in an effective finite-input halting-observation sense; there is no claim of intrinsic universality, real-time simulation, efficient input conversion, radius optimality, or a printed universal binary truth table. The universal source of Corollary~\ref{fpa:cor:universal} is existential in Report~15 (Part~\ref{fpa:part:two} materializes one); the executable example is finite and accepting, not universal. The radius bound is an upper bound, and writing the truth table would be impractical. The certificate horizon is a compiler argument; no unbounded single-fold representation follows; the paid variant concerns the nonnegative orthant with natural initial counters, not unrestricted reals. Periodicity and positive return need an extra no-blocking premise for general sources. The threshold depends on Report~12's separate proof. The Alhazov--Imai construction was not inspected in full; an incomplete search is not a novelty argument; no first-construction claim is made.
 \item \textbf{Report~14.} No reversibility, intrinsic universality, efficient input preparation, efficient CA time or minimal radius is claimed. The universal truth table ($2^{1,513,575}$ rows) and the 1,272,679,260 indexed cases are specified, not materialized; universality rests on the Neary--Woods source and all-input proofs, not on table size. The horizon is fixed at emission; there is no unbounded single-fold representation and no universal-polynomial record; the $h=1$ universal schema is not an accepting universal computation. The sharp threshold depends on Report~12, excludes infinite backgrounds, active zero-weight states, several unit labels, signed weights and nonuniform rules, and is not a priority claim; the literature search was limited. The loader is not a polynomial-time map in the length of the Turing-machine input. Finite tests do not replace the proofs.
@@ -270,9 +310,11 @@ The ten Reports are AI-assisted research manuscripts; Report~14's delivery READM
 \item \textbf{Report~18.} The comparison holds within the fixed static-orientation, recorder, prime-template and compiler class. No novelty, optimal universal-machine size, unrestricted speedup or host-runtime claim; no uniform ratio of arrival times, no equal-time alignment; no automaton orbit or giant rule array was executed; symbolic factor and radius counts are not allocated objects.
 \item \textbf{Report~19.} An implementation-equivalence result, not a new universality proof, a proof-assistant formalization or a novelty claim. No constant-time or polylogarithmic cost guarantee; the 128 universal microsteps do not complete startup or a Turing transition; no eager universal comparison was made; the benchmark's resource figures are environment-specific.
 \item \textbf{Report~20.} A fixed-parameter finite-schema theorem, with no real-witness, unknown-horizon, finite-fold MRDP, mass-two universality, novelty or optimality claim. Only a scheduler reference and a mass-two coefficient exporter are implemented; the arbitrary-mass exporter is not. The prefactor 10000 and the height bound are conservative theorem-level bounds, not measured counts. The universal count $C=170$ is a slot count, not witnesses, equations or operations, and no practical universal quartic exporter is claimed. No polynomial-in-$\log J$ preprocessing; no unconditional small budget on malformed supports, where cascades occur; uniqueness is over natural auxiliaries only; finite and mutation tests corroborate and do not prove. The macro allocation is not a claim about exact gate counts per macro; the height bound concerns accepting fibers, not adversarial submitted values; the construction does not inherit the lazy evaluator's smaller test count; the release manifest is an integrity record, not a proof of authorship or authenticity.
-\item \textbf{Report~26.} Neither radius optimality nor novelty of the two-involution architecture is claimed; no universal new-rule evaluation or truth table is produced. Agreement holds on admissible states only: the new rule differs on malformed inputs, so the radius comparison is between sufficient bounds of two different full-shift automata, and the new bound is worse for tiny sources (978 against 540). Universal-source statements are inherited conditionally; the universal-source theorem is not re-proved and no universal template array is materialized or executed. Report~19's evaluator and Report~20's certificates do not transfer to the new rule; Report~26 supplies no arithmetic compiler, fibers or gate counts. Finite tests are corroboration, the release seal is not a signature, and nothing is formalized.
+\item \textbf{Report~26.} Neither radius optimality nor novelty of the two-involution architecture is claimed; no universal new-rule evaluation or truth table is produced. Agreement holds on admissible states only: the new rule differs on malformed inputs, so the radius comparison is between sufficient bounds of two different full-shift automata, and the new bound is worse for tiny sources (978 against 540). \wtag\ (4~October 2026.) For that source Reports~70 and~71 give 581 and 409 (408 by Report~71's same-rule refinement), the latter below 540; each bound belongs to its own new rule (Part~\ref{fpa:part:seven}). Universal-source statements are inherited conditionally; the universal-source theorem is not re-proved and no universal template array is materialized or executed. Report~19's evaluator and Report~20's certificates do not transfer to the new rule; Report~26 supplies no arithmetic compiler, fibers or gate counts. Finite tests are corroboration, the release seal is not a signature, and nothing is formalized.
 \item \textbf{Report~27.} An implementation theorem on finite supports. The universal benchmark does not finish startup, a Turing-machine step or a halting computation, and no eager universal oracle is built. No worst-case sublinear-in-$F$ bound and no polynomial-in-$\log J$ claim; hash costs are expected, not worst case. No new Diophantine compiler, universal equation or gate count. The architecture is attributed to prior work; no priority, radius minimality or novelty. The universal source's universality is inherited, not proved again; arbitrary-support equality rests on the proof, not on the malformed roundtrips; the timings are machine-specific observations, not guarantees. Full replay requires Linux; not a proof-assistant formalization.
 \item \textbf{Report~28.} A fixed-horizon family, not a fixed-arity unbounded-time representation, and no finite-fold MRDP consequence; no uniqueness over $\mathbb R$, $\mathbb Q$ or signed auxiliaries. It certifies an exact requested endpoint, not an observer or halting predicate; the witness-height bound covers accepted endpoint pairs only. No universal-source polynomial was emitted; only the pair example is fully expanded; the mass-five certificate tests at horizons two and three were not completed. Costs are current implementation costs, not lower bounds or improvements over certificates with other semantics. No polynomial-in-$\log J$ claim; the expanded verifier checks only the delivered polynomial; the code is research software, not formally verified; historical ordered-rule tests certify no new-rule support.
+\item \textbf{Report~70.} Sufficient bounds, not measured or minimum radii; no external novelty or priority, minimum universal radius, radius-three construction or universal implementation is claimed, and the marker, landscape and two-involution architecture is attributed to prior work. The universal source table is absent from the package; universality and normalization are inherited premises, neither re-proved nor executed; the universal number is an inherited-ledger substitution. The new full-shift rule differs from Report~26's off the admissible set; old arbitrary-input evaluators, Diophantine certificates, ordered-factor budgets and circuit costs do not transfer, and no new-rule simulator, template array, truth table or arithmetic evaluator is supplied; effective existence of the local rule is not a practical evaluator or a template-independent running-time bound. The radius-two appendix is independent of the main proof and limited to uniform, time-independent, symmetric radius-two binary rules (no claim for larger neighbourhoods or for partitioned, time-dependent, second-order, nonuniform or larger-alphabet models); the count 428 is established literature; the Schranko--de~Oliveira full text was not obtained and no priority over it is claimed. Not a proof-assistant formalization; the release manifest is an internal consistency check, not a signature, and reproducible typesetting is not a proof.
+\item \textbf{Report~71.} Sufficient bounds, not measured or minimal radii; the one-site support refinement changes no rule, and the phase boundary predicates still read the full old write interval. The universal source table is absent; universality and normalization are inherited premises. The pair-padding counterexamples concern only the unchanged templates and selector with an enabled nonzero branch, not other encodings or rules, and are not failures of involutivity. No new-rule evaluator, arbitrary-input arithmetic certificate, priority claim or proof-assistant formalization; it corrects neither predecessor. Its source packet observed concurrent changes in the live Report~70 tree; preservation records are endpoint observations, not atomic snapshots.
 \end{itemize}
 
 \fpapart{Five particles suffice in binary automata (Reports 15 and 14)}{fpa:part:one}
@@ -6895,6 +6937,8 @@ A composition has radius bounded by the sum, hence
 \end{equation}
 These are sufficient radii. The new bound is not pointwise smaller for every tiny source: for a two-control, one zero-update branch example with $D=4$ and $J=0$, the old bound is $540$ and the new bound is $978$. The improvement claimed for the universal ledger is a comparison of sufficient bounds for that source. No proof that either bound is minimal is offered. A sharper special-purpose separation argument could conceivably improve them.
 
+\wtag\ (4~October 2026.) For this source Report~70's bound (Theorem~\ref{fpa:tr:thm:main}) is $108\cdot4+149=581$, still above 540, and Report~71's (Theorem~\ref{fpa:sw:thm:main}) is $76\cdot4+105=409$, or $408$ by its same-rule refinement, below 540. Each is a sufficient radius of a different full-shift rule with the same admissible dynamics; the sentence above remains true of Report~26's bound.
+
 The literal family still has
 \[
  8pD+29p+m+a
@@ -7008,6 +7052,8 @@ Several concrete next steps follow from the present result.
 \item Which other conservative finite-particle simulations admit the same singleton-key property on their intended encodings? The general lemma alone does not guarantee that intended dynamics survive the stronger filter.
 \end{enumerate}
 \wtag\ (3~October 2026.) Question~2 is answered by Report~27 (Theorem~\ref{fpa:sp:thm:main}): complete sparse discovery of every competing type-anchor key, on malformed and multihead supports too, with at most $n+2$ raw-discovery calls per step and no template array. Question~3 is answered at each fixed horizon by Report~28 (Theorem~\ref{fpa:pq:thm:main}): a degree-four certificate on arbitrary finite supports of a fixed mass, malformed ones included, with source-uniform resource ledgers; its witness arity grows affinely with the horizon, so no unknown-horizon certificate is supplied. Questions~1, 4 and~5 remain open. For Question~1, a randomized probe run at placement on small synthetic families found no counterexample with $H$ reduced to $2(b+r)-1$ or to $b+r$; that is weak evidence, not a proof.
+
+\wtag\ (4~October 2026.) Question~1 is answered affirmatively for the literal templates by Part~\ref{fpa:part:seven}. Report~70 (Theorem~\ref{fpa:tr:thm:two-scale}) recognizes candidates by a guard-free geometric predicate of radius $a$, so that the contextual guard radius $r$ is paid only by the local control, and isolates at $H=\max\{2(b+a),b+r\}$, which is $b+r$ for the compiler; the edge block's radius falls from $3(b+r)$ to $b+a+H$ and the sufficient radius of the whole rule from $180D+258+9J$ to $108D+149+3J$. Report~71 (Theorem~\ref{fpa:sw:thm:main}) shortens triple exactness to $b$ in both blocks and reaches $76D+105+3J$. Both control cooperative recognition births and the eligibility of rejected anchors, as the question requires, but each does so for a new full-shift rule that differs from $F_{\mathrm{new}}$ on malformed inputs; neither lowers the isolation distance of Report~26's own typed-key rule. The randomized probe above is therefore consistent with these results but neither proves nor is proved by them; whether Report~26's own rule stays an involution at $H=b+r$ is open (Section~\ref{fpa:sec:partseven:questions}, item~5). Report~70 leaves further type-dependent reductions of the common exclusion bound open (Section~\ref{fpa:tr:sec:future}).
 
 These are open development directions here, not completed improvements. The completed conclusion is a rigorously defined binary full-shift replacement whose two individually conservative involutions preserve the entire intended five-particle dynamics with the explicit sufficient radius~\eqref{fpa:pi:eq:newradius}.
 
@@ -7823,17 +7869,1093 @@ Relative item & Role\\\midrule\endhead
 \end{longtable}
 The exact release inventory, rather than this thematic map, determines the required files. Neither this report nor its archive contains a claim that historical ordered-rule tests certify arbitrary new-rule supports.
 
+\fpapart{Smaller sufficient radii for the parallel rule: two-scale recognition and shorter exactness windows (Reports 70 and 71)}{fpa:part:seven}
+\renewcommand{\fpareportdate}{4 October 2026}
+
+\wtag\ (Batch~91, 4~October 2026.) The two Reports of this Part keep the literal endpoint templates, the five-particle encoding and the whole admissible doubled micrograph of Report~26 (Part~\ref{fpa:part:six}) and lower the sufficient radius of a two-involution full-shift extension of the same admissible dynamics. Report~70 separates a short geometric recognition radius $a$ from the contextual control radius $r$ in the edge block (isolation distance $\max\{2(b+a),b+r\}$ in place of Report~26's $2(b+r)$) and keeps Report~26's phase block: sufficient radius $108D+149+3J$ in place of $180D+258+9J$. Report~71 shortens triple exactness from $3b+1$ to $b$ in both blocks: $76D+105+3J$, or $76D+104+3J$ by a support refinement for the same rule. For the inherited universal ledger ($D=509\,508$, $J=0$) the bounds are $91\,711\,698$ (Report~26), $55\,027\,013$ (Report~70) and $38\,722\,713$, or $38\,722\,712$ (Report~71). Together they answer Report~26's first question (dated note in Section~\ref{fpa:pi:sec:questions}). Each Report defines a \emph{new} full-shift rule: Report~26's $F_{\mathrm{new}}$ (written $F_{26}$ in this Part), Report~70's $F_*$ and Report~71's $F_s$ agree on every admissible state and differ on explicit malformed inputs (Sections~\ref{fpa:tr:sec:witness} and~\ref{fpa:sw:sec:malformed}). Consequently Report~27's evaluator (Theorem~\ref{fpa:sp:thm:main}) and Report~28's quartic certificates (Theorem~\ref{fpa:pq:thm:main}), which are for Report~26's rule, neither evaluate nor certify $F_*$ or $F_s$, and neither Report of this Part supplies an evaluator or a certificate; admissible semantic statements transfer through the proved agreement. The bounds are sufficient radii, not measured or minimum radii, and spatial radii, not arithmetic gate counts. Report~70 also classifies the injective number-conserving binary rules of radius two (Section~\ref{fpa:tr:sec:radius-two}), independently of its main proof.
+
+The Hilbert's-tenth programme read both Reports in a scoped intake, \path{Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/review_new_arithmetic_0d7f51c44.md} (commit \texttt{a9ab9a698}, 4~October 2026, together with six other archives of the same arrival). It read both delivery READMEs completely and, of the articles, Report~70's abstract and Sections~\ref{fpa:tr:sec:main}, \ref{fpa:tr:sec:resources} and~\ref{fpa:tr:sec:scope} and Report~71's abstract and Sections~\ref{fpa:sw:sec:result}, \ref{fpa:sw:sec:consequences} and the conclusion; it found no correction. It records that the bounds are sufficient radii, not arithmetic gates or minimum-radius theorems; that both Reports keep the absent universal-source table as an inherited premise; that earlier arbitrary-input transition certificates, circuit counts, ordered-factor budgets and evaluators do not transfer; and that Report~71's support-bound argument was read but neither Report~71's complete recognition and geometry proof nor Report~70's full-shift theorem was re-audited. It found in these archives no paid arithmetic construction below the programme's 84-operation unbounded ordinary-input bound, and notes that the radius results would first need a new arbitrary-input arithmetic implementation and cost audit. No other review of either Report exists; the audits and reviews shipped with them were made by the same AI-assisted pipeline. Claims of the two Reports, of their reviews and of this write that are not proved here are collected, with what is missing, in Section~\ref{fpa:sec:partseven:questions} at the end of this Part.
+
+\reportopening{70}{Two scale recognition for the binary five particle compiler}{A smaller sufficient radius with exact trajectory preservation}{Research report 70}
+
+\begin{reportabstract}{70}
+We separate a short geometric recognition radius from a longer contextual-control radius in a parallel conservative involution. If local involutions write radius $b$, recognition reads radius $a$, and control reads radius $r$, with $b\le a\le r$, isolation at distance $H=\max\{2(b+a),b+r\}$ and a finite prospective recognition test give a full-shift involution of radius at most $b+a+H$. The proof preserves all recognition and selection decisions, including initially rejected anchors and cooperative candidate births.
+
+Applying this lemma to the literal binary five-particle compiler, while retaining its phase block, gives sufficient radius $108D+149+3J$ in place of Report 26's $180D+258+9J$. The encoding, every admissible forward and inverse trajectory, exact clocks, reflections, halt observer and clean-target construction are unchanged. The inherited universal-source ledger yields $55\,027\,013$ instead of $91\,711\,698$, approximately a forty percent reduction in the proved upper bound. This is a new full-shift rule; an explicit four-particle input distinguishes it from Report 26. A separate complete finite certificate leaves only the five shifts among the 428 conservative binary five-input tables. Neither result is a priority or minimum-radius claim. No new-rule simulator, universal template array, arithmetic evaluator or universal-source execution is supplied.
+\end{reportabstract}
+
+\wtag\ Delivered as \path{Two_scale_recognition_radius_sources.zip} (batch~91, manuscript~22; arrival \texttt{0d7f51c44}), dated 4~October 2026; files placed by \texttt{22a8ca89e} with the prefix \path{70-two-scale-}. No author is named and no ProveIt commit is pinned. Report~70 continues Report~26, whose archive it pins by SHA-256 (\texttt{20a23b1ee22a\ldots}, the committed \path{Two_Parallel_Conservative_Involutions_Package.zip} of \texttt{db37d18c8}, whose files are this report's \path{26-parallel-involutions-} files). Its Theorem~\ref{fpa:tr:thm:two-scale} refines Report~26's Lemma~\ref{fpa:pi:lem:parallel}: for $a=r$ its constants are that lemma's, $H=2(b+r)$ and radius $3(b+r)$, but the selection is by recognized anchor through a state-dependent local involution, not by typed key. Lemma~\ref{fpa:tr:lem:mutual}, the guard-free anchor argument of Section~\ref{fpa:tr:sec:preservation}, the witness of Section~\ref{fpa:tr:sec:witness} and Theorem~\ref{fpa:tr:thm:radius-two} are new here; Lemma~\ref{fpa:tr:lem:phase} restates Report~26's phase block, and Sections~\ref{fpa:tr:sec:source}, \ref{fpa:tr:sec:templates} and~\ref{fpa:tr:sec:clocks} restate the source interface, templates, clocks and clean targets of Reports~15 and~26 (notes there). Report~70 writes $\alpha$ for the number of zero-update branches, which Parts~\ref{fpa:part:one}--\ref{fpa:part:six} call $a$, because it reserves $a$ for the recognition radius (Section~\ref{fpa:sec:notation}). Its macros \verb|\N| (printing $\mathbb Z_{\ge0}$) and \verb|\Fold|, \verb|\Eold|, \verb|\Pold| (printing $F_{26}$, $E_{26}$, $P_{26}$) are \verb|\Nge|, \verb|\Ftwosix|, \verb|\Etwosix|, \verb|\Ptwosix| here, because \verb|\Fold| prints $F_{\mathrm{old}}$ in Part~\ref{fpa:part:six}; nothing printed changed. Its table of contents is omitted. Its four architecture references carry the same locators as Report~26's and are the existing entries; its Morita reference is the existing entry~\cite{fpa:morita2012}, and entries for Fuk\'s--Sullivan and Schranko--de~Oliveira are added.
+
+\section{Objects and principal result}\label{fpa:rep:70:first}\label{fpa:tr:sec:main}
+A configuration is $x\in\X$. A particle is a site whose bit is one. A cellular automaton (CA) is a translation-equivariant map with a finite, uniform local radius. Number conservation means preservation of the ordinary number of ones on every finite-particle configuration. We do not equate divergent sums on infinite inputs.
+
+The starting point is Report 26's two-block rule $\Ftwosix=\Ptwosix\circ\Etwosix$. Its finite endpoint templates come from the earlier guarded-swap compiler. We retain those literals, their type-specific write windows, their guards and their signed five-particle encoding. We change only the edge block's full-shift selection mechanism, and retain $\Ptwosix$ exactly.
+
+\begin{theorem}[Source uniform radius reduction]\label{fpa:tr:thm:main}
+For every finite source satisfying the interface in Section~\ref{fpa:tr:sec:source}, there is a binary CA
+\[
+\Fstar=\Ptwosix\circ\Estar
+\]
+with these properties.
+\begin{enumerate}
+\item Both $\Estar$ and $\Ptwosix$ are involutions on the entire binary full shift, and each preserves ordinary finite particle number.
+\item The forward and inverse maps agree with Report 26 on the entire admissible doubled micrograph: all natural-counter homes, both signs of all strict intermediates of enabled source edges, and all translations.
+\item If $m$ is the number of controls, $p$ the number of nonzero-update branches, and $J$ the common finite counter-class cut, then
+\begin{equation}\label{fpa:tr:eq:main-radius}
+R(\Fstar)\le108D+149+3J,\qquad D=2m+4p.
+\end{equation}
+\item The inverse is $\Estar\circ\Ptwosix$. Each of the two individually conservative involutions is a time reverser for $\Fstar$.
+\end{enumerate}
+\end{theorem}
+
+The geometric recognition predicate ignores contextual guards but retains each template's exactness window. Different types at the same integer anchor contribute \emph{one} recognized anchor. A symmetric before-and-after uniqueness test makes the guarded choice at that anchor reversible even on malformed inputs. It is essential to prove geometric anchor uniqueness independently of guarded type uniqueness; Sections~\ref{fpa:tr:sec:templates}--\ref{fpa:tr:sec:preservation} do so directly from every literal endpoint.
+
+The main theorem is source-uniform and its proof is mathematical. The numerical universal corollary inherits exactly Report 26's source and normalization dependencies; this report does not re-establish or materialize that universal source. Section~\ref{fpa:tr:sec:resources} states the complete ledger and dependency boundary. Section~\ref{fpa:tr:sec:witness} shows that the new rule and Report 26 really differ off the admissible set. The independent radius-two classification in Section~\ref{fpa:tr:sec:radius-two} does not enter the radius-reduction proof.
+
+\section{The two scale full shift lemma}\label{fpa:tr:sec:lemma}
+\subsection{Recognition and reversible local control}
+Write $I_t(u)=[u-t,u+t]\cap\Z$. Fix integers $0\le b\le a\le r$ and a translation-covariant Boolean predicate $\rho(x,u)$ determined by $x|_{I_a(u)}$. Its recognized-anchor set is
+\[
+\Rec(x)=\{u\in\Z:\rho(x,u)=1\}.
+\]
+For each integer $u$, let $T_u$ be the corresponding translate of a fixed everywhere-defined configuration involution. Assume:
+\begin{enumerate}
+\item $T_u$ fixes every coordinate outside $I_b(u)$
+\item Its replacement word on $I_b(u)$ is determined by $x|_{I_r(u)}$
+\item It preserves the sum of bits on $I_b(u)$
+\item $T_u x\ne x$ implies $\rho(x,u)=1$
+\end{enumerate}
+The map $T_u$ may be the identity on an input, including a recognized input. It need not be a fixed transposition chosen independently of $x$; its entire state-dependent definition must be an involution.
+
+Set
+\begin{equation}\label{fpa:tr:eq:H}
+H=\max\{2(b+a),b+r\}.
+\end{equation}
+Select $u\in\Sel(x)$ precisely when
+\begin{align}
+&u\in\Rec(x),\label{fpa:tr:eq:selected-rec}\\
+&\Rec(x)\cap I_H(u)=\{u\},\label{fpa:tr:eq:selected-isol}\\
+&\Rec(T_u x)=\Rec(x).\label{fpa:tr:eq:selected-pros}
+\end{align}
+Define $A(x)$ by applying all selected local replacements simultaneously and leaving every other site unchanged. The last test compares recognition before and after just one hypothetical $T_u$. It is neither a recursive eligibility test nor a comparison restricted to currently selected anchors.
+
+\begin{theorem}[Separated recognition and control]\label{fpa:tr:thm:two-scale}
+The map $A$ is a translation-equivariant, finite-number-conserving involution on $\X$. For every bi-infinite configuration,
+\[
+\Rec(Ax)=\Rec(x),\qquad \Sel(Ax)=\Sel(x),\qquad A^2x=x.
+\]
+Its radius is at most
+\begin{equation}\label{fpa:tr:eq:abstract-radius}
+b+a+\max\{2(b+a),b+r\}.
+\end{equation}
+\end{theorem}
+
+\subsection{Finite local meaning of the prospective test}
+A change in $I_b(u)$ can affect $\rho(x,v)$ only when its read interval meets that write interval, hence only for $|v-u|\le b+a$. Thus~\eqref{fpa:tr:eq:selected-pros} is equivalent to the finite family
+\[
+\rho(T_u x,v)=\rho(x,v)\qquad (v\in I_{b+a}(u)).
+\]
+These recognition windows have union $I_{b+2a}(u)$. Constructing the hypothetical replacement additionally reads $I_r(u)$, so the prospective test is determined by
+\begin{equation}\label{fpa:tr:eq:prospective-read}
+I_s(u),\qquad s=\max\{r,b+2a\}.
+\end{equation}
+Selected anchors have pairwise distance greater than $H\ge2b$. Their write intervals are therefore disjoint. This defines $A$ coordinatewise even for an arbitrary dense infinite input.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[x=0.79cm,y=0.75cm,>=Latex,font=\small]
+\draw[->,muted] (-6.1,0)--(6.1,0);
+\draw[densely dashed,muted] (0,-0.25)--(0,4.45);
+\node[below] at (0,0) {$u$};
+\draw[line width=3pt,accent] (-1,0.8)--(1,0.8);
+\node[right] at (1.15,0.8) {write $I_b(u)$};
+\draw[line width=1.2pt] (-2,1.7)--(2,1.7);
+\draw (-2,1.55)--(-2,1.85) (2,1.55)--(2,1.85);
+\node[right] at (2.15,1.7) {recognition $I_a(u)$};
+\draw[line width=1.2pt] (-3.35,2.6)--(3.35,2.6);
+\draw (-3.35,2.45)--(-3.35,2.75) (3.35,2.45)--(3.35,2.75);
+\node[above] at (0,2.63) {prospective recognition data $I_{b+2a}(u)$};
+\draw[line width=1.2pt,accent] (-4.8,3.8)--(4.8,3.8);
+\draw[accent] (-4.8,3.65)--(-4.8,3.95) (4.8,3.65)--(4.8,3.95);
+\node[above,accent] at (0,3.83) {local control $I_r(u)$};
+\node[align=center] at (0,-1.0) {$|w-u|>H$ keeps every other selected write $I_b(w)$\\outside both $I_r(u)$ and $I_{b+2a}(u)$};
+\end{tikzpicture}
+\caption{Read and write roles at an isolated anchor. The schematic shows the compiler regime $r\ge b+2a$; the abstract theorem allows either order. The separation conditions are $H\ge b+r$ and $H\ge2b+2a$. Isolation itself reads $I_{H+a}(u)$.}
+\label{fpa:tr:fig:windows}
+\end{figure}
+
+\subsection{Recognition invariance on arbitrary inputs}
+Fix any potential recognition anchor $v$, whether initially recognized or absent. Its read interval $I_a(v)$ meets at most one selected write interval: meeting those at distinct $u,w$ would imply
+\[
+|u-w|\le|u-v|+|v-w|\le2(b+a)\le H,
+\]
+contradicting isolation. After the simultaneous update, the word read by $\rho(\,\cdot\,,v)$ is therefore its original word or exactly its word after a single selected $T_u$. In the latter case the prospective test at $u$ preserves its value. Consequently $\Rec(Ax)=\Rec(x)$ on the full shift. This explicitly excludes cooperative births or deaths caused jointly by different selected replacements.
+
+\subsection{Every selection decision is invariant}
+Consider \emph{any} recognized isolated anchor $u$, including one whose prospective test fails. Every selected $w\ne u$ is another recognized anchor and hence satisfies $|w-u|>H$. Since
+\[
+H\ge b+r,\qquad H\ge2b+2a,
+\]
+its write interval misses both $I_r(u)$ and $I_{b+2a}(u)$. Therefore every other selected update leaves the full local-control and prospective-comparison data at $u$ unchanged.
+
+If $u$ is unselected, no update at $u$ occurs either. Its prospective test remains false, so it stays unselected. If $u$ is selected, the test data after all updates are those in $T_u x$. Because $T_u$ is an involution, testing there interchanges the two sides of
+\[
+\Rec(T_u x)=\Rec(x).
+\]
+The equality remains true. Recognition invariance preserves isolation. Nonisolated recognized anchors remain nonisolated, and absent anchors remain absent. Hence $\Sel(Ax)=\Sel(x)$, including every rejected status.
+
+A recognized isolated anchor with $T_u x=x$ passes prospectivity and is selected, but writes nothing. Its local identity choice remains unchanged because other selected writes miss $I_r(u)$. Thus identity actions are covered rather than tacitly removed from the selected set. The proof does not assert preservation of every internal guarded-template label; it preserves exactly the recognition and selection data needed for inversion.
+
+\subsection{Involution conservation and radius}
+At the second application, the same anchors are selected. The local-control word at each selected $u$ contains its own first image and no modification from any other selected write. The involution $T_u$ therefore restores that write block. All other sites remain fixed, proving $A^2=\id$.
+
+Disjoint equal-weight finite replacements conserve ordinary finite mass. In particular, on a finite input a nonidentity replacement requires at least one input particle in its block; only finitely many such disjoint blocks can act. Translation covariance is inherited from the predicates and translated local maps.
+
+For an output coordinate $i$, only anchors in $I_b(i)$ can write it. Isolation at such an anchor reads radius $H+a$, local control reads $r$, and prospectivity reads $\max\{r,b+2a\}$. But
+\[
+H+a\ge r,\qquad H+a\ge b+2a.
+\]
+Thus the output depends only on $I_{b+H+a}(i)$, proving~\eqref{fpa:tr:eq:abstract-radius}. This finishes Theorem~\ref{fpa:tr:thm:two-scale}. No finite-support reduction, source semantics, empirical trajectory argument or proof-assistant execution is used.
+
+\section{A reversible choice among templates}\label{fpa:tr:sec:choice}
+Fix a finite type family $G$. Type $g$ has a write set $W_g\subseteq I_b(0)$ and two distinct equal-weight endpoint words. Let $\tau_{g,u}$ transpose these words on $u+W_g$, fix every other word there, and fix all coordinates outside that type-specific window. This is an everywhere-defined involution.
+
+Let $c_g(x,u)$ be its exact guarded candidate predicate, reading at most $I_r(u)$ and implying that the endpoint word is present. At one integer anchor put
+\[
+C_u(x)=\{g\in G:c_g(x,u)=1\}.
+\]
+Define
+\begin{equation}\label{fpa:tr:eq:mutual}
+T_u x=\begin{cases}
+\tau_{g,u}x,&C_u(x)=\{g\}\ \text{and}\ C_u(\tau_{g,u}x)=\{g\},\\
+x,&\text{otherwise}.
+\end{cases}
+\end{equation}
+Both uniqueness tests range over \emph{all} edge types at the same anchor. There is no priority rule or tie-breaking choice.
+
+\begin{lemma}[Mutual uniqueness]\label{fpa:tr:lem:mutual}
+The map in~\eqref{fpa:tr:eq:mutual} is an everywhere-defined, equal-weight involution. It writes only $I_b(u)$ and its replacement word is determined by $I_r(u)$.
+\end{lemma}
+\begin{proof}
+If the rule acts with type $g$, its image $y$ has $C_u(y)=\{g\}$ and $\tau_{g,u}y=x$, with $C_u(x)=\{g\}$. The same symmetric test therefore acts in reverse. If the rule does not act, it fixes its input and fixes it again. This covers zero candidates, competing candidates and candidate creation in the hypothetical image. Each possible action preserves weight. Evaluating $c_h(\tau_{g,u}x,u)$ needs no expanded radius: inside $W_g$ the replacement is known, and every unchanged bit is already in $I_r(u)$ because $b\le r$. Thus the before-and-after choice uses only that original radius-$r$ word.
+\end{proof}
+
+This construction does not require source-domain or source-image disjointness to be globally reversible. Those hypotheses enter later, solely to prove that the intended admissible transition is accepted. For an empty family, take every $C_u$ and $\Rec$ empty and every $T_u=\id$; all uniform upper bounds still apply.
+\section{The source and five particle geometry}\label{fpa:tr:sec:source}
+\subsection{The complete source interface}
+The source is a finite deterministic partial injection on $Q\times\Nge^2$. Its $m$ controls include a designated halt control $h$ with no outgoing branch. A branch $e:q\to q'$ selects the left or right counter, with side $v\in\{-1,+1\}$ and index $j$, changes it by $\Delta\in\{-1,0,+1\}$, and has a Boolean domain guard $G_e$. Guards use finitely many tests $c_j=k$ or $c_j>k$. Enabled updates have natural outputs. Branch domains at each source control are disjoint, and \emph{actual branch images} at each target control are disjoint, on all natural-counter IDs, including unreachable ones.
+
+The exact image predicate is
+\begin{equation}\label{fpa:tr:eq:image-guard}
+I_e(c')=G_e(c'-\Delta\mathbf e_j)\ \wedge\ (c'-\Delta\mathbf e_j\in\Nge^2).
+\end{equation}
+Fix $J\ge0$ such that every domain and every exact image predicate is determined by the classes $0,1,\ldots,J,>J$ of both counters. Write $p$ for the number of nonzero-update branches and $\alpha$ for the number of zero-update branches. We reserve $a$ for the recognition radius. Other controls may be stuck on some IDs; stuckness at a nonfinal control is not designated halting.
+
+These are the authenticated compiler's mathematical source assumptions. In particular, an exact reverse guard cannot be replaced by the forward guard. The construction below specifies finite Boolean predicates directly; no source parser or compiler program is executed to justify them.
+
+\subsection{Signed modes and encoding}
+There are $m+2p$ unsigned modes: $H_q$ for each control, and $O_e,I_e$ for each nonzero branch. Give each signed mode a distinct gap $d(u^\pm)\in\{1,\ldots,D\}$, where
+\begin{equation}\label{fpa:tr:eq:constants}
+\begin{gathered}
+D=2m+4p,\qquad S=2D+2,\qquad B_2=D+1,\qquad L=3D+4,\\
+b=B_3=L+D+1=4D+5,\qquad K=3b+1,\qquad Z=10b+10+2J.
+\end{gathered}
+\end{equation}
+A head at anchor $x$ consists of $\{x,x+d(u^\pm)\}$. Its anchor is always the leftmost head particle, also during leftward motion. At origin zero the home encoding is
+\begin{equation}\label{fpa:tr:eq:home}
+\operatorname{Enc}(q,c_\ell,c_r)^\pm
+=\{-(Z+c_\ell),0,Z+c_r,S,S+d(H_q^\pm)\}.
+\end{equation}
+The three singletons are unlabelled left endpoint, origin and right endpoint. Their gaps are at least $Z$. The head is the unique pair at separation at most $D$; all head-to-marker distances exceed $D$. The configuration has exactly five particles in a binary zero background. Neither an extra track nor a spatial parity pattern, external phase schedule or clock particle is present.
+
+\subsection{The precise admissible graph}
+An enabled zero-update branch is one unsigned home-to-home microedge. For a nonzero enabled branch, with origin $o$ and selected old marker $m$, set $m'=m+v\Delta$. Its subdivision is:
+\begin{enumerate}
+\item Dispatch the home head from $o+S$ to mode $O_e$ at $o+vS$, using $G_e$ on old counters
+\item Move the outbound anchor by $v$ until it reaches $m-vS$
+\item Replace marker $m$ by $m'$ and change to $I_e$ at $m'-vS$
+\item Move the inbound anchor by $-v$ until it reaches $o+vS$
+\item Commit to $H_{q'}$ at $o+S$, using $I_e$ on post counters
+\end{enumerate}
+The unsigned admissible set contains all homes in $Q\times\Nge^2$ and \emph{only} the strict intermediate configurations of enabled subdivisions. A merely geometric moving packet with a false branch guard is excluded. The doubled set contains both signs of every such node and all translations.
+
+Intermediate nodes retain the branch label. Outbound modes retain old counters, inbound modes retain post counters, and the head anchor locates the position on a unique corridor. Distinct branches cannot share an intermediate node. Exact source-image disjointness prevents merging at homes. The unsigned micrograph is therefore a partial injection. For every unsigned edge $c\to c'$, its doubled edge joins $c^+$ to $c'^-$; the phase matching joins the two signs of each node.
+
+\section{All literal templates and local predicates}\label{fpa:tr:sec:templates}
+Every displayed support below is a binary word with exactly those occupied sites and zeros elsewhere in its \emph{type-specific} interval $W_g=I_{B_g}(0)$. Pair types have $B_g=B_2$; triple types have $B_g=b$. The invariant template anchor is zero in the display, not necessarily a particle or the current head anchor. The map $\tau_{g,u}$ exchanges just these words on $u+W_g$ and retains all other coordinates.
+
+\subsection{Edge templates}
+For each moving mode $u$, its forward direction is $w=v$ for $O_e$ and $w=-v$ for $I_e$. Its free pair is
+\begin{equation}\label{fpa:tr:eq:free}
+\{0,d(u^+)\}\longleftrightarrow\{w,w+d(u^-)\}.
+\end{equation}
+The invariant anchor is the \emph{predecessor} head anchor. Marker-contact travel uses
+\begin{align}
+\{0,wt,wt+d(u^+)\}&\longleftrightarrow
+\{0,w(t+1),w(t+1)+d(u^-)\},\label{fpa:tr:eq:behind}\\[-2pt]
+&\hspace{-3cm} S\le t\le L,\notag\\
+\{0,-wt,-wt+d(u^+)\}&\longleftrightarrow
+\{0,-w(t-1),-w(t-1)+d(u^-)\},\label{fpa:tr:eq:ahead}\\[-2pt]
+&\hspace{-3cm} S+1\le t\le L.\notag
+\end{align}
+The first family is behind travel and the second ahead travel; both are anchored at the contacted marker. For a nonzero branch there are three interactions:
+\begin{align}
+\{0,S,S+d(H_q^+)\}&\longleftrightarrow
+\{0,vS,vS+d(O_e^-)\},\label{fpa:tr:eq:dispatch}\\
+\{0,-vS,-vS+d(O_e^+)\}&\longleftrightarrow
+\{v\Delta,v\Delta-vS,v\Delta-vS+d(I_e^-)\},\label{fpa:tr:eq:endpoint}\\
+\{0,vS,vS+d(I_e^+)\}&\longleftrightarrow
+\{0,S,S+d(H_{q'}^-)\}.\label{fpa:tr:eq:commit}
+\end{align}
+Dispatch~\eqref{fpa:tr:eq:dispatch} uses $G_e$, the endpoint~\eqref{fpa:tr:eq:endpoint} is unguarded, and commit~\eqref{fpa:tr:eq:commit} uses $I_e$. The endpoint anchor remains the \emph{old} marker coordinate even when the actual marker moves. Each zero-update branch contributes
+\begin{equation}\label{fpa:tr:eq:direct}
+\{0,S,S+d(H_q^+)\}\longleftrightarrow
+\{0,S,S+d(H_{q'}^-)\},
+\end{equation}
+guarded by $G_e=I_e$.
+
+Every support fits in its specified write interval. Every triple has exactly one close pair of gap at most $D$, and its singleton has distance greater than $D$ from both pair particles. This remains true at distance $L+1$ and at shifted endpoint images. Distinct signed gaps make the two endpoints distinct and nontranslates.
+
+\subsection{Raw recognition and guarded control}
+For edge type $g$, put $\ell_g=3B_g+1$. Define
+\begin{equation}\label{fpa:tr:eq:raw}
+\rho_g(x,u)=1\quad\Longleftrightarrow\quad
+\{i\in I_{\ell_g}(u):x_i=1\}\in\{u+P_g,u+Q_g\}.
+\end{equation}
+The short predicate and guarded type set are
+\[
+\rho(x,u)=\bigvee_{g\in G_E}\rho_g(x,u),\qquad
+C_u(x)=\{g:\rho_g(x,u)\ \text{and its contextual guard holds}\}.
+\]
+Recognition has radius $a=K=3b+1$. It retains the \emph{individual} pair exactness radius $L$ and triple exactness radius $K$. Taking every pair to be exact on the common larger write interval $I_b$ would be wrong: a valid free head can have a marker at distance $L+1<b$. Such a particle must survive a pair replacement.
+
+Home-interaction guards read the sites
+\[
+u-(Z+k),\quad u+(Z+k),\qquad 0\le k\le J.
+\]
+For either counter, exactly one occupied read selects its finite class; all-zero reads mean $>J$; multiple occupied reads make the guard false. These deterministic finite-word conventions specify guards even on malformed inputs. They read outside every write interval and remain unchanged by an endpoint swap. All exactness and guard predicates read at most
+\[
+r=Z+J=10b+10+3J.
+\]
+Use~\eqref{fpa:tr:eq:mutual} to define $T_u$. It is a radius-$r$ controlled involution with write bound $b$. A nonidentity action has a guarded candidate and hence a raw recognized anchor. Theorem~\ref{fpa:tr:thm:two-scale} therefore applies and defines $\Estar$ on every bi-infinite binary word.
+
+\subsection{The unchanged phase block}\label{fpa:tr:sec:phase}
+For each moving mode retain the phase pair
+\[
+\{0,d(u^+)\}\longleftrightarrow\{0,d(u^-)\},
+\]
+and, for $s\in\{-1,+1\}$ and $S\le t\le L$, the phase triples
+\[
+\{0,st,st+d(u^+)\}\longleftrightarrow
+\{0,st,st+d(u^-)\}.
+\]
+For each control retain the home-phase triple
+\[
+\{0,S,S+d(H_q^+)\}\longleftrightarrow
+\{0,S,S+d(H_q^-)\}.
+\]
+There are no contextual phase guards. To specify $\Ptwosix$ \emph{exactly}, keep Report 26's typed keys, rather than coalescing them into anchors. A phase key is $k=(g,u)$ satisfying the radius-$\ell_g$ exactness predicate. Let $\mathcal C_P(x)$ be the full typed-key set. Put $r_P=K$ and $H_P=2(b+r_P)$. Select $k$ when there is no other typed key with anchor within $H_P$ of $u$ and
+\begin{equation}\label{fpa:tr:eq:phase-pros}
+\mathcal C_P(\tau_k x)=\mathcal C_P(x).
+\end{equation}
+This equality is a finite check on keys within $b+r_P$ of $u$. Apply all selected transpositions simultaneously. This is the unchanged Report 26 definition.
+
+\begin{lemma}[Retained phase involution]\label{fpa:tr:lem:phase}
+The map $\Ptwosix$ is a full-shift conservative involution with radius at most $3(b+r_P)=12b+3$.
+\end{lemma}
+\begin{proof}
+Selected typed keys have distinct anchors more than $2(b+r_P)$ apart, hence disjoint write intervals. A typed candidate's radius-$r_P$ read meets at most one selected write, so~\eqref{fpa:tr:eq:phase-pros} preserves the entire candidate set, including absent keys. The prospective test at $u$ reads only $I_{b+2r_P}(u)$. For any isolated typed key, every other selected write misses that interval. A rejected key's test is unchanged; a selected key's own transposition interchanges the two candidate sets in the equality. Recognition and isolation are invariant, as are all selection decisions. A second application reverses the same disjoint transpositions. Equal weight gives finite conservation. Isolation reads $H_P+r_P$ about its key, so an output coordinate reads at most $b+H_P+r_P=3(b+r_P)$.
+\end{proof}
+
+This typed-key proof applies to dense and infinite configurations and to an empty family. It avoids assuming that the earlier \emph{ordered} phase-gate product was itself a full-shift involution. Only the already parallel Report 26 phase block is retained here.
+
+\wtag\ $\Ptwosix$ is Report~26's phase block $P_\parallel$ of Theorem~\ref{fpa:pi:thm:main} (Section~\ref{fpa:pi:sec:preservation}), and Lemma~\ref{fpa:tr:lem:phase} is Report~26's Lemma~\ref{fpa:pi:lem:parallel} applied with read radius $r_P=K=3b+1$; its radius $R_P=12b+3$ is Report~26's (Section~\ref{fpa:pi:sec:resources}). The proof is restated, not new.
+\section{Agreement on every admissible state}\label{fpa:tr:sec:preservation}
+The global involution proof is independent of source semantics. To retain the intended computation, we must additionally prove that all intended local transitions pass the new filters. Guarded type uniqueness alone does not prove the required \emph{guard-free anchor} statement. We establish it directly from the literal templates.
+
+\subsection{Every raw match uses the actual head}
+At every admissible node there is exactly one particle pair with gap at most $D$, the head. Markers are separated by at least $Z$; head-marker distances are at least $S-D=D+2>D$. Every endpoint template has exactly one close pair, so every raw match must use that actual head. Its distinct gap determines the signed mode. A triple's remaining displayed particle must be one of the three markers.
+
+A fixed triple has diameter at most $2b<Z$, but that observation alone would not exclude \emph{different} types using different nearby markers. The literal formulas give the stronger fact that every triple places its singleton within $L+1$ of the actual head anchor. Because $Z>2(L+1)$, at most one marker can lie in that range. The signed mode, side and distance then determine the possible travel type, subject to the partitions below. The third marker cannot supply a remote alternative.
+
+Other markers lie outside the intended triple's exactness window. For a current-marker anchor their distances are at least $Z>K$. For a reverse endpoint's old-marker anchor they are at least $Z-1>K$, since the actual marker moved by at most one. All intended triple exactness conditions therefore hold. Free-pair exactness is addressed separately by its own radius $L$.
+
+\subsection{Homes and same anchor branch alternatives}
+At a plus home $H_q^+$, only forward dispatch or direct types with source $q$ have the correct signed gap. Their home endpoint has head anchor $u+S$ and singleton $u$, forcing the integer anchor to be the origin. At a minus home $H_q^-$, only reverse commit or direct types with target $q$ match, again at that origin. No moving free pair, moving travel triple or other interaction has the same signed gap.
+
+Omitting guards may thus expose several raw \emph{types} at a home, but all have the same integer anchor. The raw recognized set is empty or the singleton origin. Its guarded set $C_o(x)$ is empty or a singleton: source-domain disjointness applies at plus homes, and exact-image disjointness at minus homes. The class reads recover the actual counter classes because the interaction head stays within $b<Z$ of the origin.
+
+If reverse commit is enabled at post counters $c'$, predicate~\eqref{fpa:tr:eq:image-guard} supplies a genuine natural predecessor $c=c'-\Delta\mathbf e_j$ satisfying $G_e(c)$. It enters that enabled subdivision, not an arbitrary guard-invalid moving packet. Forward dispatch similarly uses the true domain. Direct zero-update transitions use $G_e=I_e$. A blocked home may have raw recognition while all guarded candidates are absent; then its local map is identity, which is harmless.
+
+\subsection{Both signed corridor partitions}\label{fpa:tr:sec:corridors}
+Orient the moving corridor in its forward direction $w$. Let $A$ be its departure marker, $C$ its arrival marker, and $x$ the head anchor. Put
+\[
+N=w(C-A)\ge Z,\qquad t=w(x-A),\qquad S\le t\le N-S.
+\]
+For outbound travel $w=v$ and $N=Z+c$. For inbound travel $w=-v$ and $N=Z+c+\Delta$. Natural-output guards ensure the latter is still at least $Z$. This notation covers both physical directions without reflecting the head-anchor convention.
+
+For plus states, the free predecessor key is $x$, so pair exactness means $L<t<N-L$. The literal triple ranges complete the following disjoint exhaustive partition:
+\begin{center}
+\begin{tabular}{lll}\toprule
+Plus case & Oriented head position & Raw anchor\\\midrule
+Behind travel & $S\le t\le L$ & $A$\\
+Free travel & $L+1\le t\le N-L-1$ & $x$\\
+Ahead travel & $N-L\le t\le N-S-1$ & $C$\\
+Forward interaction & $t=N-S$ & as below\\\bottomrule
+\end{tabular}
+\end{center}
+For minus states, the free inverse key is $x-w$, with oriented coordinate $t-1$. Hence pair exactness means $L<t-1<N-L$, yielding:
+\begin{center}
+\begin{tabular}{lll}\toprule
+Minus case & Oriented head position & Raw anchor\\\midrule
+Reverse interaction & $t=S$ & as below\\
+Behind inverse travel & $S+1\le t\le L+1$ & $A$\\
+Free inverse travel & $L+2\le t\le N-L$ & $x-w$\\
+Ahead inverse travel & $N-L+1\le t\le N-S$ & $C$\\\bottomrule
+\end{tabular}
+\end{center}
+These intervals include every equality case and have no overlaps or gaps. A behind triple from plus $t=L$ arrives at minus $t=L+1$, but its free predecessor key still sees marker $A$ at distance $L$, so a free inverse cannot compete. An ahead free move begins at marker distance $L+1$ and ends at minus distance $L$; reverse ahead triples reach only distance $L-1$. At the forward wall there is no travel beyond distance $S$, and at the reverse wall no travel from behind distance $S-1$ is permitted.
+
+Within a triple range, the signed gap, the unique possible marker, its side and its integer distance specify exactly one type. The free pair is the unique type on its free interval. All these statements concern the guard-free endpoint geometry.
+
+\subsection{Interaction walls and old marker anchors}
+The four moving walls have these forced interactions:
+\begin{enumerate}
+\item Outbound minus at $t=S$: reverse dispatch at the origin $A$
+\item Outbound plus at $t=N-S$: forward endpoint at the old selected marker $m=C$
+\item Inbound plus at $t=N-S$: forward commit at the origin $C$
+\item Inbound minus at $t=S$: reverse endpoint at the old marker coordinate $m=m'-v\Delta$
+\end{enumerate}
+The last anchor is not generally the actual current marker $m'$. In~\eqref{fpa:tr:eq:endpoint}, its singleton has offset $v\Delta$ and its head anchor has offset $v\Delta-vS$. Both force the same old anchor in the reverse orientation.
+
+For the matching mode, the candidate singleton location forces precisely the stated wall. Reverse outbound dispatch requires a marker at $x-vS$, forward outbound endpoint at $x+vS$, inbound commit at $x-vS$, and reverse inbound endpoint a current marker at $x+vS$. In the oriented corridor those are respectively the behind or ahead wall indicated above. The third marker cannot occupy a competing contact location. Branch-specific signed $O_e/I_e$ gaps exclude all other branch interactions. The corridor tables exclude travel at the same wall.
+
+Reverse dispatch retains the old counters of its enabled source edge, so $G_e$ is true there. Forward commit retains that edge's post counters, so its exact $I_e$ is true. Endpoint interactions need no contextual guard. Thus every admissible moving node has exactly one raw anchor and exactly its intended guarded type there. The definition of admissibility, restricting intermediates to \emph{enabled} subdivisions, is essential to this guard argument.
+
+\subsection{The two endpoints keep the same recognized anchor}
+Every intended microedge has two admissible signed endpoints. Their invariant raw anchor is:
+\begin{itemize}
+\item The predecessor head anchor for free travel
+\item The contacted unchanged marker for triple travel
+\item The unchanged origin for dispatch, commit and direct transitions
+\item The old endpoint-marker coordinate for endpoint transitions in both orientations
+\end{itemize}
+At an intended edge of type $g$ and anchor $u$, the previous arguments give
+\[
+\Rec(x)=\{u\}=\Rec(\tau_{g,u}x),\qquad
+C_u(x)=\{g\}=C_u(\tau_{g,u}x).
+\]
+At homes several raw types can coexist, but they still count as just this one anchor. The local mutual-uniqueness test therefore chooses the intended transposition. Isolation and prospective raw-anchor invariance pass automatically. At a missing edge the local maps are identity whether or not raw recognition remains. Hence $\Estar$ equals the intended doubled edge matching on \emph{every} admissible input.
+
+For the retained phase block, a home has its unique home-phase triple. A moving state has the free phase pair when every marker is farther than $L$ from its unchanged head anchor, and otherwise the unique phase triple at distance $S,\ldots,L$ from the one nearby marker. The phase action fixes all markers, the head anchor and unsigned mode. Thus its free/near/home case and typed key are unchanged, and its filters pass. It is the sign flip throughout the admissible set.
+
+Both restricted blocks preserve that set. Report 26 has exactly the same doubled edge matching and phase flip there. Consequently $\Fstar=\Ftwosix$ and $\Fstar^{-1}=\Ftwosix^{-1}$ on the entire admissible doubled micrograph, proving the agreement assertion of Theorem~\ref{fpa:tr:thm:main}. This is not a claim about only one forward orbit or a bounded set of counters.
+\section{Exact clocks observations and targets}\label{fpa:tr:sec:clocks}
+On an admissible plus node with a successor, $\Fstar$ advances one unsigned microedge and retains plus. On a minus node with a predecessor, it goes back one microedge and retains minus. At a missing edge it flips sign in one step. The two mathematical submaps are composed into one time-independent CA step.
+
+For a nonzero branch at old selected counter $c$, the outbound and return travel lengths are $Z+c-2S$ and $Z+c+\Delta-2S$. Including the three interactions gives the unchanged clock
+\begin{equation}\label{fpa:tr:eq:clock}
+\tau_e(c)=3+2(Z+c)+\Delta-4S.
+\end{equation}
+A zero-update branch takes one microedge. The proof preserves each physical step, not just source-level reachability or an asymptotic slowdown.
+
+Since both factors are full-shift involutions,
+\[
+\Fstar^{-1}=\Estar\Ptwosix,\qquad
+\Estar\Fstar\Estar=\Fstar^{-1},\qquad
+\Ptwosix\Fstar\Ptwosix=\Fstar^{-1}.
+\]
+For a predecessor-free start and a finite forward path of $T$ microedges, the reflected cycle has exactly $2T+2$ states. Partial injectivity excludes any earlier repeated unsigned node: a repetition would propagate backward to a predecessor of the start. An infinite forward path has no repetition and no positive return. Nonfinal stuck homes also cause reflection. Consequently positive return is equivalent to designated halting only under the additional hypothesis that nonhalting inputs have infinite forward source paths, with no nonfinal blocking.
+
+The anchored halt word on $[0,S+D]$ has ones precisely at $0,S,S+d(H_h^+)$. Its length is
+\[
+3D+3.
+\]
+The counter endpoints lie outside this word. Unique signed gaps distinguish it from every other mode. On valid trajectories it occurs exactly when the forward source run reaches $h$: a backward traversal could not first enter a new halt home without an outgoing edge from $h$, which has no exits.
+
+For a clean exact target, require a \emph{control-wide} no-incoming initial control $q_0$, and a no-outgoing halt $h$. A single predecessor-free input ID is insufficient for the wrapper. Use controls $F(q),B(q)$ and a terminal $H$. Include each branch forward, its inverse backward with domain $I_e$, and the zero-update true-guard bridges
+\[
+F(h)\longrightarrow B(h),\qquad B(q_0)\longrightarrow H.
+\]
+Reverse branches exchange domains and exact images. The control-wide empty boundary slots make the bridges compatible with determinism and partial injectivity on all IDs. The new counts are
+\[
+m'=2m+1,\qquad p'=2p,\qquad \alpha'=2\alpha+2,
+\]
+with the same $J$. Recompute \emph{all} geometry constants for this enlarged source. The target $\operatorname{Enc}(H,c_\ell,c_r)^+$ restores the input counters; it is input-dependent, not one constant universal target. If the original run reaches $h$, the first bridge starts its exact reversed history. The no-incoming control $q_0$ cannot occur internally, so the second bridge fires exactly after that history has been undone. If the original run never reaches $h$, neither bridge can lead to $H$. Later CA reflections only retrace the same component. Thus target occurrence is equivalent to original designated halting.
+
+For a halting run, let $\Theta$ be its original forward physical microedge count using those enlarged constants. Equation~\eqref{fpa:tr:eq:clock} satisfies $\tau(c,\Delta)=\tau(c+\Delta,-\Delta)$, and zero-update clocks are one in either direction. Thus the first target time is $2\Theta+2$, and the full reflected period is $4\Theta+6$. For the inherited one-increment clean example, $D=18$, $J=1$, $S=38$, $Z=782$ and $\Theta=1416$, giving times $2834$ and $5670$. These values are semantic consequences of the unchanged admissible paths; no trajectory has been rerun here.
+
+\wtag\ Equation~\eqref{fpa:tr:eq:clock} is Report~15's clock~\eqref{fpa:eq:clock} and Report~26's~\eqref{fpa:pi:eq:clock}; the clean-target wrapper is Report~15's (Section~\ref{fpa:sec:clean}), and its numbers are those of Report~26's clean-target example (Section~\ref{fpa:pi:sec:clocks}).
+
+\section{The exact radius and resource ledger}\label{fpa:tr:sec:resources}
+For the edge block, substitute
+\[
+a=3b+1,\qquad r=Z+J=10b+10+3J.
+\]
+The difference
+\[
+(b+r)-2(b+a)=3b+8+3J\ge0
+\]
+gives $H=b+r$. Therefore
+\begin{align}
+R(\Estar)&\le b+a+H=5b+Z+J+1=15b+11+3J,\label{fpa:tr:eq:edge-radius}\\
+R(\Ptwosix)&\le12b+3,\notag\\
+R(\Fstar)&\le27b+14+3J=108D+149+3J.\notag
+\end{align}
+This proves the radius assertion of Theorem~\ref{fpa:tr:thm:main}. Report 26 instead used edge typed-key recognition with the common read radius $r$, exclusion $2(b+r)$ and edge radius $3(b+r)$. Its total was $180D+258+9J$. The present decrease is
+\[
+72D+109+6J.
+\]
+These are comparisons of \emph{sufficient upper bounds}, not measured local radii or a proof of optimality. The edge safety mechanism changes the full-shift rule.
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabular}{lrrr}\toprule
+Quantity & Increment source & Clean sample & Universal ledger\\\midrule
+$m,p,\alpha$ & $2,1,0$ & $5,2,2$ & $122\,622,66\,066,75\,495$\\
+$D,J$ & $8,0$ & $18,1$ & $509\,508,0$\\
+$b$ & $37$ & $77$ & $2\,038\,037$\\
+$a=3b+1$ & $112$ & $232$ & $6\,114\,112$\\
+$r=Z+J$ & $380$ & $783$ & $20\,380\,380$\\
+$H=b+r$ & $417$ & $860$ & $22\,418\,417$\\
+New edge bound & $566$ & $1\,169$ & $30\,570\,566$\\
+Unchanged phase bound & $447$ & $927$ & $24\,456\,447$\\
+New total bound & $1\,013$ & $2\,096$ & $55\,027\,013$\\
+Report 26 total bound & $1\,698$ & $3\,507$ & $91\,711\,698$\\
+Decrease & $685$ & $1\,411$ & $36\,684\,685$\\
+Endpoint template count & $95$ & $353$ & $269\,291\,358\,255$\\
+Observer length & $27$ & $57$ & $1\,528\,527$\\\bottomrule
+\end{tabular}
+\caption{Exact integer substitutions in source-uniform formulas. The last column inherits the same universal-source premise as Report 26 and does not assert a newly materialized universal rule. Each valid encoding still has exactly five particles over $\{0,1\}$.}
+\label{fpa:tr:tab:ledger}
+\end{table}
+
+There are still
+\begin{equation}\label{fpa:tr:eq:types}
+8pD+29p+m+\alpha
+\end{equation}
+endpoint templates across the two families. Indeed there are $4p$ pair types, $8pD+23p+m$ unguarded triples and $2p+\alpha$ contextual triples. Each of $2p$ moving modes contributes behind positions $S,\ldots,L$, ahead positions $S+1,\ldots,L$, and two sides of phase positions $S,\ldots,L$; $L-S=D+2$ yields the formula. These are alternatives evaluated within two global involutions, not two inexpensive arithmetic gates. Boolean work may still depend on the type count.
+
+\subsection{The inherited universal numerical corollary}
+The unchanged Report 19 receipt records
+\[
+m=122\,622,\quad p=66\,066,\quad\alpha=75\,495,\quad J=0,
+\]
+so $D=509\,508$. Substitution gives $55\,027\,013$, a decrease of $36\,684\,685$ from Report 26's $91\,711\,698$, approximately forty percent. The cited source table has SHA-256
+\begin{center}\footnotesize\ttfamily
+fa61d06178d718511232a80a05e02192d940fde3c273f0c202f0623253b2ade3.
+\end{center}
+That table is \emph{not} contained in this packet or the recovered Report 26 archive. Its authenticated receipt, counts and prior audit are retained. The source's historical construction, universality and required normalizations remain inherited premises, exactly as in Report 26. No universal source, interpreter, template array, truth table or new-rule evaluator was constructed or run for this report.
+
+\wtag\ Report~70's copy of that receipt is byte-identical to \path{data/19-lazy-eval-evidence-universal-receipt.json} (Part~\ref{fpa:part:four}) and is not shipped again. The table \texttt{fa61d06178d7\ldots} is Report~17's \code{source.json}: absent from Report~70's package, as Report~70 says, but rebuilt byte for byte from shipped files of this report (README, ``Reconstructing the excluded data'').
+
+The source-uniform radius proof does not need a universal table. Conversely, the arithmetic substitution does not supply a new universality proof. The finite-pattern and clean-target consequences transfer through the inherited source theorem and the proved admissible agreement, with their original hypotheses. The stronger periodicity/return consequence retains the no-nonfinal-blocking condition.
+
+\section{A four particle input separates the full shift rules}\label{fpa:tr:sec:witness}
+Take ordered controls $(q,h)$, one true-guard right increment $q\to h$, and $J=0$. Its exact image guard is right-counter positivity, expressible by classes $0,>0$. The literal inherited signed-mode order assigns gaps
+\[
+H_q^+:1,\ H_q^-:2,\ H_h^+:3,\ H_h^-:4,\
+O_e^+:5,\ O_e^-:6,\ I_e^+:7,\ I_e^-:8.
+\]
+Here $D=8$, $b=37$, $L=28$, $a=112$ and $Z=r=380$. Let
+\[
+X=\{0,5,500,505\}.
+\]
+Each cluster has just two particles and the intercluster gap is at least $495>2b$. No triple can fit. The only close pairs have gap five, so the only edge raw anchors and guarded candidates are free $O_e$ at $0$ and $500$. Their endpoint words are
+\[
+\{0,5\}\longleftrightarrow\{1,7\}
+\]
+and the 500-translate. Their own radius-$L$ exactness windows contain precisely their pair.
+
+Report 26's edge exclusion is $2(b+r)=834$; the two candidates reject one another. Thus $\Etwosix(X)=X$. The new exclusion is $H=b+r=417$, so both anchors are isolated. At each anchor the guarded type is unique before and after its hypothetical swap. Its reverse free key remains the same predecessor key: the new leftmost particle is $u+1$, so subtracting its direction one recovers $u$. No cross-cluster close pair or triple can arise. Both individual hypothetical swaps preserve the recognized set $\{0,500\}$. Hence
+\[
+\Estar(X)=\{1,7,501,507\}.
+\]
+The unchanged phase exclusion is $H_P=2(b+3b+1)=298$. On $X$ the free phase anchors are $0,500$; on $\Estar(X)$ they are $1,501$. Their separation is $500$, and each hypothetical sign flip keeps the same phase typed-key set. The phase pair exchange is $\{0,5\}\leftrightarrow\{0,6\}$ about its leftmost anchor. Therefore
+\begin{equation}\label{fpa:tr:eq:malformed}
+\Ftwosix(X)=\{0,6,500,506\},\qquad
+\Fstar(X)=\{1,6,501,506\}.
+\end{equation}
+This is a direct finite local-word calculation. It does not execute a CA simulator. The input has four particles and no valid marker triple; it is outside the admissible five-particle simulation. Equation~\eqref{fpa:tr:eq:malformed} rules out identifying the two full-shift maps merely by changing a radius constant.
+
+\wtag\ Since $\Fstar(X)\ne\Ftwosix(X)$, the sparse evaluator of Report~27 and the quartic certificates of Report~28 (Part~\ref{fpa:part:six}), which are for $\Ftwosix=F_{\mathrm{new}}$, neither evaluate nor certify $\Fstar$ (Section~\ref{fpa:tr:sec:scope}).
+\section{A separate complete radius two certificate}\label{fpa:tr:sec:radius-two}
+This section is independent of the two-scale construction. It concerns a uniform binary rule $f:\{0,1\}^5\to\{0,1\}$ on the symmetric neighborhood $[-2,2]$.
+
+\begin{theorem}[Certified radius two classification]\label{fpa:tr:thm:radius-two}
+If the CA with local rule $f$ conserves particle number on finite configurations and is injective on the full binary shift, then
+\[
+f(x_{-2},x_{-1},x_0,x_1,x_2)=x_j
+\quad\text{for some }j\in\{-2,-1,0,1,2\}.
+\]
+Thus only the five coordinate shifts satisfy both requirements at radius at most two.
+\end{theorem}
+
+The proof combines a complete finite parameterization of conservative tables with 423 explicit collision witnesses. The known count of 428 conservative five-input binary tables is recorded in Fuk\'s and Sullivan~\cite{fpa:tr:fuks}; it is not a novelty claim. The fresh independent audit additionally derived a graph parameterization, reproduced all 428 tables and checked the supplied witnesses without running either original appendix program. We give that self-contained completeness argument here.
+
+\wtag\ The conservation criterion of Lemma~\ref{fpa:tr:lem:potential} below is the radius-two analogue of the potential on the four-vertex de~Bruijn graph with which SMC source~16 (Report~11, Part~VI of \path{signal-machine-collision-certificates}) certifies the five conservative elementary rules (\S\path{smc:su:sec:checks}); whether the lemma's exact form is in the literature on number-conserving automata cited in Section~\ref{fpa:pi:sec:prior} was not checked, and no attribution is made (Section~\ref{fpa:sec:partseven:questions}, item~3). Theorem~\ref{fpa:tr:thm:radius-two} is new in the collection; Report~70 claims no priority for it. The ``fresh independent audit'' is shipped as \path{70-two-scale-audit-r2-AUDIT.md}, the original appendix programs as \path{code/70-two-scale-pp-appendix-radius2_algebra.py} and \path{code/70-two-scale-pp-appendix-verify_radius2_algebra.py}.
+
+\subsection{Conservation is an integer graph potential}
+The binary order-four de Bruijn graph has sixteen four-bit vertices. A five-bit word $abcde$ is an edge from $abcd$ to $bcde$, with weight
+\[
+g(abcde)=f(abcde)-c.
+\]
+The graph is strongly connected: appending the four bits of a target vertex reaches it from any vertex.
+
+\begin{lemma}[Conservation criterion]\label{fpa:tr:lem:potential}
+The binary table $f$ is number-conserving on finite configurations if and only if there is an integer potential $p$ on the vertices, normalized by $p(0000)=0$, such that
+\begin{equation}\label{fpa:tr:eq:coboundary}
+f(abcde)=c+p(bcde)-p(abcd)
+\end{equation}
+on every edge.
+\end{lemma}
+\begin{proof}
+Conservation first forces $f(00000)=0$, since the zero configuration must remain zero. Fix a periodic binary word and place $M$ copies between infinite zero tails. Except at a bounded number of boundary sites, the difference of output and input particle counts is $M$ times the sum of $g$ over one period. Boundary contributions are bounded independently of $M$. Conservation gives $0=M\delta+O(1)$ for all positive $M$, so $\delta=0$.
+
+Every directed closed walk of the graph gives overlapping windows of a periodic binary word, so its total weight is zero. Define $p(v)$ as the weight of a directed path from $0000$ to $v$. If two paths are chosen, append the same directed return path to $0000$. Both closed walks have zero weight, and the path weights coincide. Thus $p$ is well-defined and integer-valued. Appending one edge proves~\eqref{fpa:tr:eq:coboundary}.
+
+Conversely, the zero self-loop in~\eqref{fpa:tr:eq:coboundary} gives $f(00000)=0$. For a finite configuration, summing output minus input bits telescopes the differences of consecutive four-bit-window potentials. Both tails eventually equal $0000$, so the sum is zero. This proves finite number conservation.
+\end{proof}
+
+\subsection{A complete finite enumeration}
+A spanning tree of the underlying undirected graph has fifteen edges. Choose a Boolean output of $f$ on each tree edge. Its directed difference $f-c$ uniquely determines every potential from $p(0000)=0$, using the negative difference when traversing the edge backward. Equation~\eqref{fpa:tr:eq:coboundary} then forces all thirty-two outputs. Retain a choice exactly when all forced values are Boolean.
+
+There are exactly $2^{15}=32\,768$ choices. Every conservative table occurs because its own tree outputs recover its potential. Different retained choices cannot give the same table because the chosen tree-edge outputs themselves differ. Every retained table is conservative by Lemma~\ref{fpa:tr:lem:potential}. Hence this enumeration is exhaustive without using a prior census as an assumption.
+
+The independently written checker uses the following five-bit edge indices, in tree traversal order:
+\[
+1,16,2,3,8,24,5,18,6,7,20,28,11,13,15.
+\]
+Words are indexed in binary order $00000,\ldots,11111$. Six edges are traversed against their directed orientation. The recorded finite calculation rejects $32\,340$ non-Boolean assignments and retains $428$ distinct complete tables, with no duplicates. The package includes the sorted table set and an integer potential for every retained table.
+
+The original appendix reaches the same census from the leading-zero conservation identity
+\begin{equation}\label{fpa:tr:eq:identity}
+f(x_1,\ldots,x_n)=x_1+\sum_{k=1}^{n-1}
+\bigl[f(0^k,x_2,\ldots,x_{n-k+1})-f(0^k,x_1,\ldots,x_{n-k})\bigr]
+\end{equation}
+with $n=5$ and $f(00000)=0$. It enumerates the other fifteen leading-zero outputs. A separately written original verifier uses the spatially reversed identity. The graph audit above supplies a third, independently derived completeness route. Original programs and their receipts are retained as inert evidence; the Report 70 build and release tools execute none of them.
+
+\subsection{All nonprojections have explicit collisions}
+For each of the 423 nonprojection tables, the JSON certificate supplies a word length $\ell$, distinct binary words $a,b$ of that length, and a common output word $y$. For each cyclic index $i$, it records the equations
+\[
+f(a_{i-2},a_{i-1},a_i,a_{i+1},a_{i+2})=y_i
+=f(b_{i-2},b_{i-1},b_i,b_{i+1},b_{i+2}).
+\]
+Repeating $a$ and $b$ bi-infinitely gives distinct full-shift inputs with equal images. Fundamental period need not equal the displayed word length. Each record is therefore a proof of noninjectivity, not a heuristic that a long trajectory appears irreversible.
+
+The fresh graph audit checks table membership, all integer types and ranges, distinct inputs, uniqueness of the 423 rule records, every collision equation, and that the records together with the five projections cover the independently enumerated 428 tables. Its $4062$ local bit equalities are exactly
+\[
+2(164\cdot4+179\cdot5+80\cdot6).
+\]
+The histogram of first witnessed lengths is 164 at length four, 179 at length five and 80 at length six. A separate bounded check in that audit exhausts all words of lengths one through six, confirming these are the first collision lengths for the corresponding rules. Only the listed collision equalities and complete table coverage are needed for Theorem~\ref{fpa:tr:thm:radius-two}.
+
+The remaining tables are explicitly:
+\begin{center}
+\begin{tabular}{cr}\toprule
+Coordinate offset $j$ in $F(x)_i=x_{i+j}$ & Rule integer\\\midrule
+$-2$ & $4\,294\,901\,760$\\
+$-1$ & $4\,278\,255\,360$\\
+$0$ & $4\,042\,322\,160$\\
+$1$ & $3\,435\,973\,836$\\
+$2$ & $2\,863\,311\,530$\\\bottomrule
+\end{tabular}
+\end{center}
+The output on input word index $w$ is bit $w$ of the rule integer. Each map has inverse coordinate offset $-j$; particle displacement has the opposite sign to $j$. All are full-shift bijections. This completes the finite-certificate proof.
+
+\subsection{What the classification does and does not imply}
+A nontrivial computationally universal binary, uniform, time-independent, number-conserving, full-shift-reversible CA in this symmetric-radius convention must therefore have radius at least three. This does not construct a radius-three universal example, classify larger neighborhoods or close the gap to the sufficient upper bound in~\eqref{fpa:tr:eq:main-radius}. It does not apply unchanged to partitioned, time-dependent, second-order, nonuniform or larger-alphabet models.
+
+Schranko and de Oliveira's 2011 paper~\cite{fpa:tr:schranko} studies reversible number-conserving rule derivation and representation. A bounded renewed search verified its bibliographic entry on the author's publication list but did not obtain its full text; the publisher route was unavailable. Accordingly this report does not attribute a precise five-input classification to that paper or claim priority over it. The result here is an independently certified project appendix. Morita's 96-state four-neighbor construction~\cite{fpa:morita2012} is a distinct model and supplies no binary five-particle radius bound.
+\section{Dependencies certificate transport and attribution}\label{fpa:tr:sec:scope}
+\subsection{What transports from earlier reports}
+The exact admissible agreement theorem transports semantic computation statements: an encoded source computation, its observer event, physical time or clean target has the same meaning under $\Fstar$. The transport must explicitly use admissibility of all involved states and the original certificate's hypotheses.
+
+It does not transport an arbitrary-input evaluator or verifier. Report 19's evaluator implements an earlier ordered full-shift rule, and Report 26's program implements its own parallel rule. Equation~\eqref{fpa:tr:eq:malformed} already separates $\Fstar$ from the latter. Old ordered-factor event budgets, malformed-state arithmetic transition fibers, Diophantine circuits and circuit-size counts cannot be relabelled as new-rule results. An arbitrary-input verifier for $\Fstar$ would have to encode the complete raw recognition, same-anchor mutual uniqueness, isolation, hypothetical recognition test and simultaneous update. None is supplied here.
+
+\wtag\ Report~19's evaluator is Part~\ref{fpa:part:four}; Report~26's program is \path{code/26-parallel-involutions-parallel_particles.py}. The same holds for Report~27's sparse evaluator and Report~28's quartic certificates, which are for Report~26's rule.
+
+The construction is a finite mathematical definition of a local Boolean rule. This gives effective existence in principle, but not an implemented new-rule evaluator, practical universal evaluation, small arithmetic circuit or template-independent running-time bound. The sufficient radius does not measure the work needed to evaluate its enormous local truth table.
+
+\subsection{Established architectural precedents}
+Marker automorphisms, conserved recognition data and products of involutions predate this construction. The bounded primary-source audit retained from Report 26 supplies the following precise attributions.
+
+Boyle, Lind and Rudolph's marker replacements implement simultaneous local data permutations; their Theorem 2.6 constructs a product of two marker involutions~\cite{fpa:blr}. Arbitrary data permutations need not conserve particle number. Equal-weight permutations provide a conservative specialization, which is an observation rather than a separate theorem attributed to that paper.
+
+Toffoli and Margolus discuss conserved-landscape permutations in Section 5.3 and conservative local block operations in Section 5.5~\cite{fpa:tm}. The landscape must remain identifiable to undo the update. Their illustrative binary flip is not itself number-conserving. Section citations refer to the inspected corrected author-uploaded reprint in the inherited audit, not newly verified original pagination.
+
+Maldonado, Moreira and Gajardo's Proposition 2 uses invariance of recognized left, right and malformed classes to extend a reversible partitioned CA~\cite{fpa:mmg}. That recognition-preservation proof is particularly close conceptually. Their radius-one pair-update map fixes its malformed class; this assertion does not describe the entire composition with its shift factor. Their universal time-symmetric conservative constructions use a larger alphabet, and their time-reversing involution need not itself conserve numeric mass.
+
+Gajardo, Kari and Moreira's Proposition 1 identifies time-symmetric CAs with products of two CA involutions~\cite{fpa:gkm}. The identities in Section~\ref{fpa:tr:sec:clocks} instantiate that standard algebra. A reversible CA is not automatically a product of two individually conservative binary CA involutions; here those properties are proved for each factor.
+
+The specific quantitative statement proved in this report separates recognition radius $a$ from control radius $r$, obtains~\eqref{fpa:tr:eq:abstract-radius}, and shows that its guard-free anchor predicate preserves every intended edge of this literal compiler. Neither the architectural ideas nor the lower-radius appendix are presented as externally new. The bounded search and inaccessible 2011 full text do not support a priority claim.
+
+\section{Evidence and reproducible presentation}\label{fpa:tr:sec:evidence}
+The companion release retains the complete frozen proof packet, its original independent proof audit, the complete fresh static and radius-two audit directories, and the original Report 26 archive as an \emph{inert} ZIP. The original archive contains scientific code and historical execution receipts. It is preserved for authentication and provenance, not invoked by the report tools.
+
+The frozen proof packet has external manifest SHA-256
+\begin{center}\footnotesize\ttfamily
+f1c19ca86641cbf5ebaed81d0c78e82563258753bbf8f38f2f46229247b71fa0
+\end{center}
+and its authenticated Report 26 archive has SHA-256
+\begin{center}\footnotesize\ttfamily
+20a23b1ee22aed461942da4def6bade2bd55d777fce1fe49b6ff83248b7442e4.
+\end{center}
+The fresh combined audit manifest is pinned by
+\begin{center}\footnotesize\ttfamily
+3bfe65db1ad9c0aab9fd13641cfbad843a292d2c2dbec444fa0f7ebb856876b1.
+\end{center}
+Its accepted proof audit independently checks the full-shift lemma, literal templates, every signed boundary, resource arithmetic, malformed witness and inherited limits. Its radius-two audit derives the graph criterion, enumerates all tables and directly checks every collision. The source and audit files are copied without changing bytes, modes or modification times; their full copied inventories are recorded separately.
+
+The mathematical proof is not proof-assistant formalized. During Report 70 authoring, no archived or upstream scientific program, source-machine interpreter, trajectory simulator, saved schedule or Lean program is executed. The only report executions are presentation and release operations. The fresh audit's independently authored static checks are already completed evidence, not newly rerun author programs.
+
+The editable flattened \file{Report70.tex} matches the modular manuscript. The Report70-owned tools adapt the fully inspected accepted Report 68 presentation contract, with the corresponding Report 66 sources also compared. A build uses an allowlisted environment, a fresh local TeX format and font map, disabled shell escape, three passes, and the union of the format and every pass's recorded inputs. A locked replay checks interpreter and executable hashes, all recorded system TeX/font inputs and selected maps. Its lock does not inventory shared libraries, Python's standard library or the operating system. Reproducible typesetting is evidence about the presentation, not a theorem prover.
+
+\wtag\ Report~68 (\emph{Gaussian fluctuations of encoded gap counts and inverse ranks}) was never delivered to ProveIt: only its README survives, as \path{38-low-arity-qa-pred-tools-README68.md} in \path{signal-machine-collision-certificates}, delivered inside the archive of Report~69. Report~66 is placed in the same report (prefix \path{36-bounded-cert-}). Report~70's copies of their READMEs and presentation tools are not shipped here. What can be checked of the sentence above is recorded in Section~\ref{fpa:sec:partseven:questions}, item~1. Of the companion release, this report ships the proof packet, the two fresh audits, the input pins and the review and build records; the Report~26 archive and its readable \LaTeX\ and PDF are the committed archive of \texttt{db37d18c8} and its members, and every member of the frozen-packet ZIP is shipped (README).
+
+The release manifest records the exact descendant inventory, bytes, modes and nanosecond modification times. Its digest must be obtained outside the archive; an internally self-consistent manifest is not an external signature. The tools reject extra entries, symlinks, special files, hardlinks and unsafe output aliases. The supplied extractor restores authenticated descendant modification times that ordinary ZIP extractors may discard. Manifest-file metadata and the newly created top-level root's metadata are outside the inventory boundary. Read-access times and original creation/change times are not transported as integrity claims.
+
+The README gives authentication, locked-build and deterministic-archive commands with the final manuscript and dependency pins. The original science and independent audit programs remain inert during all those operations. Automated PNG structure checks are distinct from the required visual inspection of every rendered page. Independent manuscript and release-tool review records are retained with the completed package.
+
+\section{Further mathematical directions}\label{fpa:rep:70:last}\label{fpa:tr:sec:future}
+The remaining large scale comes primarily from unary gap encoding of the signed head modes: $D=2m+4p$. Reducing the source mode count or replacing that finite-mass head encoding would be a different construction and could change exact clocks. The present result improves the coefficient without changing those objects.
+
+Two immediate technical directions remain. First, type-dependent geometric separation might reduce a common exclusion bound further, but any argument must protect all isolated rejected controls and exclude cooperative recognition births, not merely keep current writes disjoint. Second, a practical evaluator or arithmetic certificate should prove complete candidate discovery on arbitrary malformed multihead inputs; valid-orbit simulation tests alone would not establish that contract. Formalizing the anchor and signed-corridor arguments could help prevent confusion between current and predecessor head anchors or between current and old marker anchors.
+
+The completed conclusion is narrower and exact: the same five-particle admissible dynamics admits a new conservative binary full-shift extension, composed of two involutions, with the sufficient radius in~\eqref{fpa:tr:eq:main-radius}. The universal number remains an inherited-ledger substitution and the radius-two result remains an independent finite classification.
+
+\reportopening{71}{Shorter exactness windows for the binary five particle compiler}{A companion to Report 70}{Research Report 71}
+
+\begin{reportabstract}{71}
+The conservative binary five-particle compiler admits a further reduction in its sufficient radius. Keep pair exactness $L=3D+4$, but shorten triple exactness from $3b+1$ to $b=4D+5$ in both its edge and phase blocks. We define both new blocks on every bi-infinite binary input, prove that each is a number-conserving involution, and prove all-anchor recognition equivalence and exact forward and inverse agreement on the entire admissible doubled micrograph. The resulting rule has sufficient radius $76D+105+3J$, where $D=2m+4p$ and $J$ is the source's finite counter-class cut. A changed-output-support argument improves this to $76D+104+3J$ for the very same rule; the boundary-read predicates are unchanged.
+
+The inherited universal-source ledger gives $38\,722\,713$, or $38\,722\,712$ with the support refinement. Its source table remains absent and universality remains an inherited premise. Explicit malformed inputs distinguish each new block and the composition from both predecessors. Pair-padding counterexamples concern only the unchanged templates and selector with an enabled nonzero branch. There is no new-rule evaluator, arbitrary-input arithmetic certificate, minimum-radius or priority claim.
+\end{reportabstract}
+
+\wtag\ Delivered as \path{Shorter_exactness_windows_sources.zip} (batch~91, manuscript~23; arrival \texttt{0d7f51c44}), dated 4~October 2026; files placed by \texttt{22a8ca89e} with the prefix \path{71-short-windows-}. No author is named and no ProveIt commit is pinned. Report~71 pins Report~70's release manifest (\texttt{0f96f8aa8bba\ldots}) and PDF (\texttt{d061fda50f26\ldots}); both are the files of the delivered Report~70 archive (checked at placement and again for this write), so the predecessor it pins is the text printed just before it. It also pins Report~26's archive, as Report~70 does. Section~\ref{fpa:sw:sec:definitions} restates Report~70's source interface, templates and admissible graph (Sections~\ref{fpa:tr:sec:source}--\ref{fpa:tr:sec:templates}) with the new exactness predicate~\eqref{fpa:sw:eq:exactness}; the safety and agreement proofs of Sections~\ref{fpa:sw:sec:safety}--\ref{fpa:sw:sec:geometry} follow Report~70's pattern for the shorter windows, and Report~70's radius-two classification is not used. Report~71's \verb|\N| is \verb|\Nge| here; its macros \verb|\Es|, \verb|\Ps|, \verb|\Fs| (the subscript $s$ stands for ``short'', not for the side $s$ of the phase triples) and \verb|\Cand| print as delivered. The text printed is the delivered third version; the second differed only by the words ``For a halting run'' in the definition of $\Theta$ (Section~\ref{fpa:sw:sec:consequences}; shipped \path{data/71-short-windows-qa-V3_HALTING_QUALIFIER.diff}).
+
+\section{Result and comparison}\label{fpa:rep:71:first}\label{fpa:sw:sec:result}
+Write $I_t(u)=[u-t,u+t]\cap\Z$, with both endpoints included. A configuration is an arbitrary $x\in\X$. Number conservation means preservation of the ordinary number of ones on finite-support inputs; no divergent infinite sums are compared. Report 26 and Report 70 give full-shift extensions of a common five-particle simulation. This report changes \emph{both} blocks of that extension. It does not correct either predecessor's definition or claimed sufficient bound.
+
+\begin{theorem}\label{fpa:sw:thm:main}
+For every finite source satisfying Section~\ref{fpa:sw:sec:definitions}, the maps defined below give a binary CA $\Fs=\Ps\circ\Es$. Both factors are full-shift, number-conserving involutions. On every natural-counter home, both signs of every strict intermediate of an enabled source-edge subdivision, and every translate, they equal the common predecessor edge matching and sign flip. Consequently both forward and inverse dynamics and exact clocks are unchanged. Moreover,
+\begin{align}
+R(\Es)&\le13b+10+3J,&R(\Ps)&\le6b,\notag\\
+R(\Fs)&\le19b+10+3J=76D+105+3J.\label{fpa:sw:eq:main}
+\end{align}
+For the same rule, $R(\Ps)\le6b-1$ and $R(\Fs)\le76D+104+3J$.
+\end{theorem}
+
+\begin{table}[htbp]\centering\small
+\begin{tabular}{lccc}\toprule
+Construction & Triple exactness & Total sufficient bound & Inherited ledger\\\midrule
+Report 26 & $3b+1$ & $180D+258+9J$ & $91\,711\,698$\\
+Report 70 & $3b+1$ & $108D+149+3J$ & $55\,027\,013$\\
+Report 71, main & $b$ & $76D+105+3J$ & $38\,722\,713$\\
+Same rule, support refinement & $b$ & $76D+104+3J$ & $38\,722\,712$\\\bottomrule
+\end{tabular}
+\caption{Bounds, not measured or minimum radii. Pair exactness remains $L$ in every row. The final column substitutes $D=509\,508,J=0$ and inherits the same universal-source premise.}
+\label{fpa:sw:tab:comparison}
+\end{table}
+
+Report 70 supplies broader architectural background, attribution, clean-target details and a separate radius-two classification. That classification is not repeated or used here. The complete definitions and proof obligations for the present theorem follow.
+
+\wtag\ Report~26's bound is Theorem~\ref{fpa:pi:thm:main}, Report~70's Theorem~\ref{fpa:tr:thm:main}. For the smallest source of Report~26's comparison (two controls and one zero-update branch, $D=4$, $J=0$; Section~\ref{fpa:pi:sec:resources}) the four rows of the table give $978$, $581$, $409$ and $408$, against the ordered rule's $540$.
+\section{Source, geometry and complete endpoint families}\label{fpa:sw:sec:definitions}
+\subsection{Source interface and admissibility}
+The source is a finite deterministic partial injection on $Q\times\Nge^2$. A branch $e:q\to q'$ selects side $v\in\{-1,+1\}$ and its corresponding counter index $j$ (left for $v=-1$, right for $v=+1$), updates that counter by $\Delta\in\{-1,0,+1\}$, and has domain predicate $G_e$. Enabled outputs are natural. Branch domains at each control and actual branch images at each target control are disjoint on \emph{all} natural-counter IDs, including unreachable ones. The exact image predicate is
+\[
+I_e(c')=G_e(c'-\Delta\mathbf e_j)\ \wedge\ (c'-\Delta\mathbf e_j\in\Nge^2).
+\]
+Both $G_e$ and $I_e$ depend only on classes $0,1,\ldots,J,>J$ of the two counters. There is a designated halt control with no outgoing branch. Other controls may be stuck; such blocking is not designated halting.
+
+Let $m\ge1$ count controls, $p$ nonzero-update branches, and $\alpha$ zero-update branches. The unsigned modes are homes $H_q$ and outbound/inbound modes $O_e,I_e$ for each nonzero branch. Give all signed modes distinct gaps in $\{1,\ldots,D\}$, and set
+\begin{equation}\label{fpa:sw:eq:constants}
+\begin{gathered}
+D=2m+4p,\quad S=2D+2,\quad B_2=D+1,\quad L=3D+4,\\
+b=L+D+1=4D+5,\quad Z=10b+10+2J,\quad r=Z+J.
+\end{gathered}
+\end{equation}
+Thus $D\ge2$, $J\ge0$ and $r\ge3b$. A head in signed mode $u^\sigma$ at $x$ is the pair $\{x,x+d(u^\sigma)\}$. Its anchor is always its leftmost particle, including during leftward motion. At origin zero a home is
+\[
+\operatorname{Enc}(q,c_\ell,c_r)^\sigma
+=\{-(Z+c_\ell),0,Z+c_r,S,S+d(H_q^\sigma)\}.
+\]
+The three markers have separations at least $Z$. The encoding uses exactly five particles over a binary zero background.
+
+An enabled zero-update edge is one unsigned home-to-home microedge. For a nonzero edge, let $o$ be the origin, $m_0$ the selected old marker, and $m_1=m_0+v\Delta$. Dispatch changes the home head at $o+S$ to $O_e$ at $o+vS$. Its anchor travels by $v$ to $m_0-vS$. The endpoint interaction moves the marker to $m_1$ and changes the head to $I_e$ at $m_1-vS$. The head travels by $-v$ to $o+vS$, then commits to $H_{q'}$ at $o+S$. Dispatch reads $G_e$ on old counters; commit reads $I_e$ on post counters.
+
+The admissible unsigned graph consists of every natural-counter home and \emph{only} strict intermediates of enabled subdivisions. Guard-invalid moving geometry is excluded. Branch-specific modes distinguish intermediates, and exact image disjointness prevents mergers at homes, so this graph is a partial injection. Double it by signs: each unsigned edge $c\to c'$ gives an edge $c^+\leftrightarrow c'^-$; phase pairs $c^+\leftrightarrow c^-$. Include all translates.
+
+\subsection{Literal edge endpoints}
+All displayed sets are offsets from the invariant template anchor zero. For a moving mode $u$, write $d_+=d(u^+)$, $d_-=d(u^-)$, and use direction $w=v$ for $O_e$, $w=-v$ for $I_e$. The free pair and near-travel triples are
+\begin{align}
+\{0,d_+\}&\longleftrightarrow\{w,w+d_-\},\label{fpa:sw:eq:free}\\
+\{0,wt,wt+d_+\}&\longleftrightarrow
+\{0,w(t+1),w(t+1)+d_-\},&&S\le t\le L,\label{fpa:sw:eq:behind}\\
+\{0,-wt,-wt+d_+\}&\longleftrightarrow
+\{0,-w(t-1),-w(t-1)+d_-\},&&S+1\le t\le L.\label{fpa:sw:eq:ahead}
+\end{align}
+For each nonzero branch, the interaction templates are
+\begin{align}
+\{0,S,S+d(H_q^+)\}&\longleftrightarrow
+\{0,vS,vS+d(O_e^-)\},\label{fpa:sw:eq:dispatch}\\
+\{0,-vS,-vS+d(O_e^+)\}&\longleftrightarrow
+\{v\Delta,v\Delta-vS,v\Delta-vS+d(I_e^-)\},\label{fpa:sw:eq:endpoint}\\
+\{0,vS,vS+d(I_e^+)\}&\longleftrightarrow
+\{0,S,S+d(H_{q'}^-)\}.\label{fpa:sw:eq:commit}
+\end{align}
+Their guards are respectively $G_e$, none, and $I_e$. For a zero-update branch use
+\begin{equation}\label{fpa:sw:eq:direct}
+\{0,S,S+d(H_q^+)\}\longleftrightarrow
+\{0,S,S+d(H_{q'}^-)\},\qquad G_e=I_e.
+\end{equation}
+Each branch type remains distinct, even when several branches share a geometric home endpoint. There is no priority ordering.
+
+\subsection{Literal phase endpoints and exactness}
+The phase family contains, for each moving mode, the pair and both sides of the near triples
+\begin{align}
+\{0,d_+\}&\longleftrightarrow\{0,d_-\},\label{fpa:sw:eq:phase-free}\\
+\{0,st,st+d_+\}&\longleftrightarrow\{0,st,st+d_-\},
+\quad s\in\{-1,+1\},\quad S\le t\le L,\label{fpa:sw:eq:phase-near}
+\end{align}
+and for each control the home triple
+\begin{equation}\label{fpa:sw:eq:phase-home}
+\{0,S,S+d(H_q^+)\}\longleftrightarrow\{0,S,S+d(H_q^-)\}.
+\end{equation}
+There is no free-home phase type and no contextual phase guard.
+
+For either family let $P_g,Q_g$ denote the displayed endpoints and put $B_g=B_2$ for a pair, $B_g=b$ for a triple. The local map $\tau_{g,u}$ exchanges their complete words on $I_{B_g}(u)$, fixes every other word there, and fixes all sites outside that interval. The supports fit: free edges lie in $[-1,D+1]$; behind edges in $[-L-1,L+D+1]$; ahead edges in $[-L,L+D]$; home interactions in $[-S,S+D]$; endpoint interactions in $[-S-1,S+D+1]$. Each lies in its declared window. Phase supports satisfy the sharper bounds in Section~\ref{fpa:sw:sec:refinement}. Distinct signed gaps make the two words distinct; their weights are equal. Thus every $\tau_{g,u}$ is an everywhere-defined conservative involution.
+
+The \emph{new} geometric predicate in both families is
+\begin{equation}\label{fpa:sw:eq:exactness}
+\ell_g=\begin{cases}L&\text{pair},\\b&\text{triple},\end{cases}
+\qquad
+\rho_g(x,u)\ \Longleftrightarrow\
+\{i\in I_{\ell_g}(u):x_i=1\}\in\{u+P_g,u+Q_g\}.
+\end{equation}
+In particular, the pair writes only $I_{B_2}(u)$, not the common $I_b(u)$. Arbitrary bits outside its small write window are preserved, including particles at distances between $L$ and $b$. Zero-filling the common window would define a different, incorrect rule.
+
+For edge types let $c_g$ be $\rho_g$ conjoined with its contextual guard, when present. For each counter, the guard reads $u\pm(Z+k)$, $0\le k\le J$: exactly one occupied read selects that finite class, no occupied read selects $>J$, and multiple occupied reads reject the guard. These conventions are finite Boolean definitions on malformed inputs too. All class sites lie outside every rewrite. Hence $c_g$ is invariant under its own $\tau_{g,u}$, and it reads radius at most $r$.
+
+\begin{figure}[htbp]\centering
+\begin{tikzpicture}[x=0.64cm,y=0.65cm,>=Stealth,font=\small]
+\draw[muted] (-4.4,0)--(4.4,0);
+\draw[accent,very thick] (-1.4,0)--(1.4,0);
+\draw[muted,densely dashed] (-4.2,0.15)--(-4.2,1.0) (4.2,0.15)--(4.2,1.0);
+\draw[accent] (-1.4,-0.15)--(-1.4,0.85) (1.4,-0.15)--(1.4,0.85);
+\draw[<->,muted] (-4.2,1.2)--node[fill=white]{old triple exactness $I_{3b+1}(u)$}(4.2,1.2);
+\draw[<->,accent] (-1.4,-0.6)--node[below]{new triple exactness and write window $I_b(u)$}(1.4,-0.6);
+\fill (0,0) circle (2pt);\node[below=3pt] at (0,0){$u$};
+\fill[muted] (3.0,0) circle (2pt);\node[above=4pt] at (3.0,0){extra bit};
+\end{tikzpicture}
+\caption{Schematic window comparison, not a full configuration or a scale drawing. On admissible matches, remote markers lie beyond both windows. On malformed inputs an extra particle between the two boundaries can change recognition; Section~\ref{fpa:sw:sec:malformed} gives exact examples.}
+\end{figure}
+\section{Full-shift definition and safety of both new blocks}\label{fpa:sw:sec:safety}
+\subsection{Edge: mutual guarded uniqueness and raw-anchor selection}
+At every integer anchor use the \emph{full} guarded type set
+\[
+C_u(x)=\{g\text{ in the edge family}:c_g(x,u)\}.
+\]
+Define
+\begin{equation}\label{fpa:sw:eq:mutual}
+T_u(x)=
+\begin{cases}
+\tau_{g,u}x,&C_u(x)=\{g\}=C_u(\tau_{g,u}x),\\
+x,&\text{otherwise}.
+\end{cases}
+\end{equation}
+Both uniqueness tests include all types. If the first case acts, the same unique type passes in the image and reverses it; otherwise the input is fixed. Thus $T_u^2=\id$ even with zero, multiple, conflicting or newly enabled types. It writes only $I_b(u)$ and preserves weight there. Its replacement word is determined by $I_r(u)$: hypothetical tests use already known replacement bits and otherwise unchanged input bits in that same window, adding no radius.
+
+Coalesce geometric types only at the raw-anchor level:
+\[
+\Rec(x)=\{u\in\Z:\rho_g(x,u)\text{ for some edge type }g\}.
+\]
+Recognition reads radius $a=b$, since $L\le b$. Nonidentity $T_u$ implies $u\in\Rec(x)$. Set
+\begin{equation}\label{fpa:sw:eq:edge-select}
+H=\max\{2(b+a),b+r\}=b+r.
+\end{equation}
+Select $u$ if $u\in\Rec(x)$, no other $v\in\Rec(x)$ has $|v-u|\le H$, and
+\begin{equation}\label{fpa:sw:eq:edge-prospective}
+\Rec(T_ux)=\Rec(x).
+\end{equation}
+Apply all selected $T_u$ simultaneously to define $\Es$. The equality compares \emph{raw integer anchors}, not guarded types or already eligible anchors. Only anchors within $b+a=2b$ of $u$ can change recognition. Their recognition words lie in $I_{b+2a}(u)=I_{3b}(u)$. Together with $T_u$'s control word this makes the prospective test a finite radius-$r$ test.
+
+\begin{lemma}\label{fpa:sw:lem:edge}
+The map $\Es$ is a number-conserving involution on $\X$, with radius at most $3b+r=13b+10+3J$.
+\end{lemma}
+\begin{proof}
+Distinct selected centers are farther apart than $H$ and have disjoint write intervals. If a radius-$b$ recognition window met writes at two selected centers $u,w$, then $|u-w|\le4b\le H$, a contradiction. Every post-update recognition word therefore equals its old word or the word after exactly one selected $T_u$. That update passed~\eqref{fpa:sw:eq:edge-prospective}; hence
+\[
+\Rec(\Es x)=\Rec(x)
+\]
+at every integer anchor on every bi-infinite input. This covers initially absent anchors, dense malformed configurations, and potential cooperative births or deaths.
+
+Now take any recognized isolated anchor $u$, whether selected or rejected. Every other selected $w$ has $|w-u|>H=b+r$, so its write misses $I_r(u)$, which contains all control and prospective data. The complete status analysis is:
+\begin{enumerate}
+\item An isolated rejected anchor's determining word is unchanged, so its failed prospective test remains failed.
+\item A selected anchor sees precisely its own $T_u$ image. The equality $T_u^2=\id$ interchanges the two recognized sets in~\eqref{fpa:sw:eq:edge-prospective}, preserving success.
+\item A nonisolated recognized anchor stays nonisolated by recognition-set invariance; it remains blocked even if its guarded types change.
+\item An absent anchor remains absent by the same invariance.
+\item A recognized isolated identity control passes prospectivity harmlessly. Its protected radius-$r$ word prevents a new control from appearing there on the second application.
+\end{enumerate}
+Thus the \emph{entire} selected-anchor set is invariant. Each selected control sees only its own prior image on reapplication and undoes its disjoint change. Therefore $\Es^2=\id$.
+
+Equal-weight changes on disjoint blocks conserve finite particle number. A finite-support input permits only finitely many nontrivial changes, since each uses an original occupied site in its disjoint block; finite support is preserved. No total on infinite inputs is needed.
+
+For locality, a changed output coordinate has a writing anchor within $b$. Isolation reads $H+b$ about that anchor and dominates radius-$r$ control/prospectivity. Thus $R(\Es)\le b+(H+b)=3b+r$. Finite Boolean tests and translation covariance make this a binary CA. Closed intervals and exclusion at distances $\le H$ are used throughout.
+\end{proof}
+
+\subsection{Phase: typed keys and its own prospective filter}
+This is a new phase block, not the former phase map with a relabelled radius. Keep the type-anchor keys
+\[
+\Cand(x)=\{(g,u):g\text{ in the phase family and }\rho_g(x,u)\}.
+\]
+Endpoint orientation is not part of a key, but type is. Put $r_P=b$ and $H_P=2(b+r_P)=4b$. Select $k=(g,u)$ if it is a candidate, no \emph{other} candidate key has anchor within $H_P$ of $u$ (including another type at $u$), and
+\begin{equation}\label{fpa:sw:eq:phase-prospective}
+\Cand(\tau_kx)=\Cand(x).
+\end{equation}
+Apply the selected transpositions simultaneously to define $\Ps$. The equality requires only all phase types at anchors within $b+r_P=2b$ of $u$, so it reads $I_{b+2r_P}(u)=I_{3b}(u)$.
+
+\begin{lemma}\label{fpa:sw:lem:phase}
+The map $\Ps$ is a number-conserving full-shift involution with radius at most $6b$.
+\end{lemma}
+\begin{proof}
+Selected writes are disjoint. A radius-$b$ candidate window cannot meet two of them, because then their centers would be at distance at most $4b$. Each post-update candidate predicate consequently sees no rewrite or exactly one individually prospectively stable rewrite. Thus the \emph{complete typed candidate set} is invariant, including initially absent keys and keys of other types.
+
+For every isolated candidate, any other selected write misses its radius-$3b$ prospective-decision window: the center distance is greater than $4b$, the write radius is $b$. An isolated rejected key therefore keeps its failed prospective test. A selected key's own involution interchanges the sets in~\eqref{fpa:sw:eq:phase-prospective}, preserving success. Nonisolated keys stay blocked and noncandidates stay absent. Hence the entire selected-key set is invariant and a second application reverses the same disjoint involutions. Equal weights give finite conservation and finite support as in Lemma~\ref{fpa:sw:lem:edge}.
+
+Isolation reads $H_P+r_P=5b$ about a candidate anchor; prospectivity reads $3b$. A possibly writing anchor lies within $b$ of an output site, so $R(\Ps)\le6b$. No uniqueness theorem is assumed on malformed phase inputs: multiple same-anchor types are competing keys and are rejected by typed isolation. This differs deliberately from raw-anchor coalescing in the edge block.
+\end{proof}
+\section{All-anchor admissible agreement}\label{fpa:sw:sec:geometry}
+Full-shift safety alone does not establish simulation preservation. We now show that shortening exactness creates no admissible match at \emph{any} integer anchor, then classify every intended edge and phase case.
+
+\subsection{The close pair and the only possible singleton}
+Every admissible configuration has exactly one occupied pair at distance at most $D$, the head. Head-marker distances are at least $S-D=D+2>D$, and marker-marker distances are at least $Z$. Every literal endpoint likewise contains a unique close pair; every triple's singleton has distance greater than $D$ from both head sites. This includes the reverse behind endpoint at distance $L+1$ and the shifted endpoint interaction.
+
+Thus any new raw match, at any anchor, must use the actual head pair. Its distinct signed gap fixes the signed mode and endpoint orientation; any displayed singleton must be an actual marker. Every triple singleton lies within $L+1$ of the actual head anchor: near-travel distances lie in $S,\ldots,L+1$, and all interaction distances are $S$. Since
+\[
+Z>2(L+1),
+\]
+at most one actual marker can support \emph{any} triple using this head. This common head-to-marker bound excludes cross-template competition; bounding only one template's diameter would not suffice.
+
+For a fixed endpoint and actual head pair, the offsets force the invariant anchor. Ordinary triples anchor at the singleton marker. Only the reverse endpoint uses an anchor one site from its current singleton, as detailed below. Other markers are therefore at least $Z$ from an ordinary anchor, or $Z-1$ from the old endpoint anchor. Since
+\[
+Z-1>3b+1>b,
+\]
+they lie outside both old and new triple exactness windows. All three displayed particles fit in $I_b$. Consequently a geometric triple match on an admissible state satisfies old exactness $3b+1$ if and only if it satisfies new exactness $b$. Pair predicates are literally unchanged. This proves all-anchor, all-type old/new geometric recognition equivalence; the following classification makes the boundaries and guards explicit.
+
+\subsection{Homes and multiple raw branch types}
+At $H_q^+$ only outgoing dispatch/direct forward endpoints contain its gap, all at the origin. At $H_q^-$ only incoming commit/direct reverse endpoints contain its gap, again at the origin. No moving free or travel template uses a home gap. Hence raw edge anchors are empty or a singleton, although several raw types may occur there.
+
+At plus homes the full guarded set is empty or a singleton by source-domain disjointness; at minus homes it is empty or a singleton by \emph{exact actual-image} disjointness. Class reads are faithful: counter markers encode the classes while the head lies inside $b<Z$. The reverse image guard includes existence of natural pre-counters and therefore enters only an enabled subdivision. Replacing it with the forward guard would not justify this conclusion. If there is no enabled incident edge, every control $T_u$ is identity even when raw branch types occur at the origin. Direct zero-update edges retain $G_e=I_e$.
+
+\subsection{Both signed corridors and every equality case}
+Let $w$ be a moving mode's direction, $A$ its departure marker and $C$ its destination marker. With head anchor $x$, write
+\[
+N=w(C-A)\ge Z,\qquad t=w(x-A),\qquad S\le t\le N-S.
+\]
+Outbound has $w=v$ and $N=Z+c$; inbound has $w=-v$ and $N=Z+c+\Delta\ge Z$, since enabled post-counters are natural. The third marker is remote. Since $N>2(L+1)$, the intervals below are disjoint and exhaustive.
+
+For a plus head the free key is $x$, so pair exactness requires $L<t<N-L$. For a minus head the free key is $x-w$, \emph{not} $x$, so pair exactness requires $L<t-1<N-L$. Converting to integer ranges gives:
+\begin{table}[htbp]\centering\small
+\begin{tabular}{llll}\toprule
+Sign & Incidence & Range of $t$ & Invariant key\\\midrule
+plus & behind travel & $S\le t\le L$ & $A$\\
+plus & free travel & $L+1\le t\le N-L-1$ & $x$\\
+plus & ahead travel & $N-L\le t\le N-S-1$ & $C$\\
+plus & forward interaction & $t=N-S$ & as below\\\midrule
+minus & reverse interaction & $t=S$ & as below\\
+minus & behind inverse & $S+1\le t\le L+1$ & $A$\\
+minus & free inverse & $L+2\le t\le N-L$ & $x-w$\\
+minus & ahead inverse & $N-L+1\le t\le N-S$ & $C$\\\bottomrule
+\end{tabular}
+\caption{Complete raw edge partition. The head remains leftmost within its pair for $w=-1$ too; the two particles are not reflected in order.}
+\label{fpa:sw:tab:corridor}
+\end{table}
+
+In particular, a behind triple takes plus departure distance $L$ to minus distance $L+1$. At the image, the free predecessor key still sees $A$ at distance $L$, so inverse free recognition fails. At the ahead boundary, a free step takes plus arrival distance $L+1$ to minus distance $L$. The same predecessor key sees $C$ at distance $L+1$, so inverse free recognition succeeds; the inverse ahead-triple range ends at current arrival distance $L-1$ and cannot compete.
+
+At plus arrival distance $S$, travel has already ended and only the forward interaction remains. At minus departure distance $S$, inverse travel has not begun and only the reverse interaction remains. The adjacent $S+1$ and $N-S-1$ positions are exactly the listed travel cases. These are signed algebraic statements valid for $w=\pm1$. Within any triple range, the signed gap, unique possible marker, side and integer distance determine exactly one type. No extra match arises from shortening, by the all-anchor argument above.
+
+\subsection{Every interaction and the old endpoint key}
+There are four moving interaction incidences:
+\begin{enumerate}
+\item Outbound minus at departure is reverse dispatch, at the origin, with its true domain guard because the corridor is enabled.
+\item Outbound plus at arrival is forward endpoint, at the old selected marker $m_0$.
+\item Inbound minus at departure is reverse endpoint, at the \emph{old} key $m_0=m_1-v\Delta$, not the current marker $m_1$.
+\item Inbound plus at arrival is forward commit, at the origin, with its true exact image guard because the post-counters came from the enabled branch.
+\end{enumerate}
+In the reverse endpoint word~\eqref{fpa:sw:eq:endpoint}, the singleton offset is $v\Delta$ and the head-anchor offset is $v\Delta-vS$. Both independently force $u=m_1-v\Delta=m_0$. The actual marker-head distance is still $S$; only the invariant key is shifted. Other markers remain beyond $Z-1>3b+1$, so both exactness tests hold. This proves the old-key assertion for both physical sides $v=\pm1$ and both update signs $\Delta=\pm1$.
+
+Branch-specific outbound/inbound gaps exclude all other branches' interactions. Within the same branch an actual singleton can fit the interaction only at its stated wall, where the corridor partition excludes travel. The third marker is outside the possible $L+1$ singleton range. Hence every moving admissible state has exactly one raw type-anchor, with the required guard true.
+
+\subsection{The desired edge and phase selections all pass}
+For every intended doubled edge, its paired endpoint is again admissible. Both endpoints have the same guarded singleton $\{g\}$ at the same invariant key: predecessor head anchor for free travel, contacted marker for near travel, origin for dispatch/commit/direct, and old marker for endpoint interaction. Their entire raw-anchor sets are the same singleton. Therefore $T_u$ is the intended swap and
+\[
+\Rec(x)=\{u\}=\Rec(T_ux).
+\]
+Mutual uniqueness, isolation and full prospectivity pass. At missing edges all controls are identities, so $\Es$ fixes the state. This covers all source branches and counter sizes, both signs, every translate and both reflection ends.
+
+At a home the sole phase candidate is its home type at the origin. At a moving state the free phase key is the unchanged head anchor $x$ for \emph{both} signs. It is a candidate exactly when every marker is farther than $L$ from $x$. Otherwise a unique marker has distance in $S,\ldots,L$, and its side and distance specify the sole near-phase triple. The close-pair and cross-template marker argument excludes every other candidate at every anchor; shortening introduces none.
+
+A phase swap fixes every marker, the head anchor and the unsigned mode, changing only the signed gap. Its free/near/home case, type and key therefore do not change. Its full typed candidate set is the same singleton before and after, so typed isolation and prospectivity pass. Thus $\Ps$ is the exact sign flip on the entire admissible graph. This completes admissible agreement, including inverse agreement because the inverse composition is $\Es\Ps$.
+\section{Radius, unchanged dynamics and exact scope}\label{fpa:sw:sec:consequences}
+Lemmas~\ref{fpa:sw:lem:edge} and~\ref{fpa:sw:lem:phase} give
+\[
+R(\Fs)\le R(\Es)+R(\Ps)\le19b+10+3J=76D+105+3J.
+\]
+Both factors preserve the admissible set and equal the predecessors' restricted blocks, so every forward step and every inverse step is unchanged. Also
+\[
+\Fs^{-1}=\Es\Ps,\qquad \Es\Fs\Es=\Fs^{-1},\qquad
+\Ps\Fs\Ps=\Fs^{-1}.
+\]
+These are two individually conservative involutions and time reversers.
+
+\subsection{A support refinement for the very same rule}\label{fpa:sw:sec:refinement}
+Every phase endpoint lies in $I_{L+D}=I_{b-1}$. For a positive near endpoint the extremum is $t+d=L+D=b-1$, including the equality $t=L,d=D$. The two negative-side head sites lie in $[-L,-S+D]$, and their singleton is at zero, so the full negative near support lies in $[-L,0]$. Home endpoints lie in $[0,S+D]$ and free endpoints in $[0,D]$. Thus every complete phase endpoint word has zeros at both $-b$ and $b$.
+
+On any non-endpoint word the transposition is identity; on either endpoint word the two boundary zeros remain zero. Therefore no phase transposition can change an output site at either boundary, on \emph{any} input. The triple predicate nevertheless still reads those two zeros; the transposition still reads the complete $I_b$ word. No predicate, transposition, isolation threshold $H_P=4b$ or prospective test has changed.
+
+Eligibility still reads radius $5b$ about its anchor. Only the anchors that can \emph{actually change} a specified output site now lie within $b-1$ rather than $b$. The output is determined by its old bit and those possible changes, proving for the same map
+\begin{equation}\label{fpa:sw:eq:refined}
+R(\Ps)\le6b-1,\qquad R(\Fs)\le19b+9+3J=76D+104+3J.
+\end{equation}
+This is an upper-bound refinement, not a smaller-window definition or a minimum-radius theorem. The simple common-support observation does not apply to edge endpoints: a positive reverse-behind endpoint at $t=L,d_-=D$ reaches $L+1+D=b$.
+
+\begin{table}[htbp]\centering\small
+\begin{tabular}{rrrrrr}\toprule
+$D$ & $J$ & Edge bound & Phase, main & Total, main & Same-rule refinement\\\midrule
+$8$ & $0$ & $491$ & $222$ & $713$ & $712$\\
+$18$ & $1$ & $1\,014$ & $462$ & $1\,476$ & $1\,475$\\
+$509\,508$ & $0$ & $26\,494\,491$ & $12\,228\,222$ & $38\,722\,713$ & $38\,722\,712$\\\bottomrule
+\end{tabular}
+\caption{Exact substitutions into sufficient bounds. The last row is conditional on the inherited universal-source ledger.}
+\end{table}
+
+\subsection{Clocks, observers, targets and dependencies}
+For a nonzero source edge at old selected counter $c$, the travel lengths remain $Z+c-2S$ and $Z+c+\Delta-2S$. Its three interactions give the unchanged physical clock
+\[
+\tau_e(c)=3+2(Z+c)+\Delta-4S.
+\]
+A zero-update edge still takes one step. The binary alphabet, five particles and anchored halt-observer length $3D+3$ are unchanged. A missing graph edge still causes a one-step sign reflection.
+
+For a halting run, let $\Theta$ be the original forward computation's total physical microedge time, the sum of its inherited clocks using the enlarged wrapper source's constants. The clean-target first time $2\Theta+2$ and reflected period $4\Theta+6$ transport with their original hypotheses. In particular, the clean-target bridge requires a \emph{control-wide} predecessor-free initial normalization, not just one predecessor-free input ID, and all constants must be recomputed for that enlarged source. Its target restores the input counters and is input-dependent. Equivalence of positive return or periodicity with designated halting additionally requires no nonfinal blocking on the claimed source-input family; a nonfinal stuck home otherwise reflects and cycles too. Report 70 gives the full wrapper construction.
+\wtag\ Report~70's wrapper is in Section~\ref{fpa:tr:sec:clocks}; it is Report~15's (Section~\ref{fpa:sec:clean}).
+
+The endpoint-template count remains $8pD+29p+m+\alpha$. Two mathematical involutions do not imply two cheap arithmetic factors or template-independent Boolean evaluation cost. Old source programs, malformed-input transition fibers, circuit counts, ordered-factor budgets, schedules, and arithmetic or Diophantine certificates do not become implementations or arbitrary-input certificates of this new full-shift map. Semantic admissible witnesses transfer through the proved agreement; malformed certificates do not transfer automatically.
+
+The inherited universal receipt records $m=122\,622$, $p=66\,066$, $\alpha=75\,495$, $J=0$, hence $D=509\,508$. Its source-table SHA-256 is
+\begin{center}\footnotesize\ttfamily
+fa61d06178d718511232a80a05e02192d940fde3c273f0c202f0623253b2ade3.
+\end{center}
+That table is absent from the preserved Report 26 archive and this evidence packet. Its ledger, historical universality and required normalizations remain inherited premises. The source-uniform theorem does not require a universal table; the numerical substitution does not prove universality anew. No universal source, template array, new-rule evaluator or truth table was materialized or executed here.
+
+\section{Actual malformed inequalities for both blocks}\label{fpa:sw:sec:malformed}
+Take ordered controls $(q,h)$, one true-guard right increment $q\to h$, and $J=0$. Its exact image is right-counter positivity, expressible by classes $0,>0$. Use the inherited literal gap order
+\[
+H_q^\pm:1,2;\quad H_h^\pm:3,4;\quad O^\pm:5,6;\quad I^\pm:7,8.
+\]
+Thus $D=8$, $S=18$, $B_2=9$, $L=28$, $b=37$, old triple exactness $K=112$, and $Z=r=380$. Write $E_{26},E_{70}$ for the predecessor edge blocks and $P_{26}=P_{70}$ for their shared phase block.
+
+\subsection{Triple shortening changes each block separately}
+Let $X=\{0,18,23,80\}$. Its sole close pair is $\{18,23\}$, gap five, so every match must use this $O^+$ head. Only singleton $0$ is within $L+1=29$ of head anchor $18$; particle $80$ is $62$ away. The free pair fails exactness because its radius-$28$ window contains $0$. The only geometric edge type is behind $O$ at $t=18$, key $0$; the only geometric phase type is near $O$ on the positive side at distance $18$, key $0$. Both old triple predicates see particle $80$ in $I_{112}(0)$ and fail. Thus all predecessor blocks fix $X$.
+
+New triple exactness sees precisely $\{0,18,23\}$ in $I_{37}(0)$. The edge endpoint is $\{0,19,25,80\}$, with $O^-$ gap six. Its sole inverse-behind type has key $0$ at current distance $19$; the free inverse key $18$ still sees marker $0$. Particle $80$ cannot support another triple. Both guarded uniqueness tests and raw prospectivity pass, so
+\begin{equation}\label{fpa:sw:eq:edge-witness}
+\Es(X)=\{0,19,25,80\}\ne E_{26}(X)=E_{70}(X)=X.
+\end{equation}
+Directly on $X$, the sole near-phase key flips gap five to six, preserving the same singleton typed candidate set:
+\begin{equation}\label{fpa:sw:eq:phase-witness}
+\Ps(X)=\{0,18,24,80\}\ne P_{26}(X)=P_{70}(X)=X.
+\end{equation}
+On $\Es(X)$ the sole near-phase key at distance $19$ flips gap six back to five. Hence
+\begin{equation}\label{fpa:sw:eq:composite-witness}
+\Fs(X)=\{0,19,24,80\},\qquad F_{26}(X)=F_{70}(X)=X.
+\end{equation}
+These are direct endpoint-word deductions on a four-particle malformed input, not simulator outputs or mere differences between written definitions.
+
+\subsection{The smaller phase exclusion also changes behavior}
+Let $Y=\{0,5,200,205\}$. There are exactly two free $O$ phase keys, at $0$ and $200$. No triple can use a singleton within $29$ of either head; the clusters each have two particles, separated by more than $2b$. Each individual phase flip preserves both keys and creates no cross-cluster close pair. New $H_P=4b=148$ permits both, whereas old $H_P=2(b+3b+1)=298$ rejects both. Every edge version rejects its two raw anchors, since $200\le417\le834$. Therefore
+\[
+\Fs(Y)=\Ps(Y)=\{0,6,200,206\},\qquad F_{26}(Y)=F_{70}(Y)=Y.
+\]
+
+\wtag\ $E_{26}$, $P_{26}$, $F_{26}$ are Report~26's $E_\parallel$, $P_\parallel$, $F_{\mathrm{new}}$, and $E_{70}$, $F_{70}$ are Report~70's $\Estar$, $\Fstar$. Report~27's evaluator and Report~28's certificates, which are for $F_{26}$, therefore evaluate and certify neither $\Fs$ nor $\Fstar$.
+
+\section{Why the retained pair padding matters}\label{fpa:sw:sec:pair-padding}
+The following counterexamples concern failure of admissible simulation agreement with the \emph{unchanged literal families and stated selector}. They require an enabled nonzero branch, hence an admissible moving corridor. They are not universal lower bounds over other encodings or rules, nor failures of full-shift involutivity.
+
+Suppose the pair exactness integer were $B_2\le\ell<L$. In an enabled corridor take a plus head at departure distance $t=L$. The intended behind triple remains recognized at departure marker $A$. The free pair at head key $x$ would now also pass exactness: $A$ lies at distance $L>\ell$, while the other markers are remote. These are distinct raw anchors only $L$ apart, within $H$. They conflict, so selection rejects the intended travel edge. The corridor contains this position because $N\ge Z>2(L+1)$.
+
+Conversely, for any integer $\ell>L$, a plus head at departure distance $L+1$ loses its intended free pair because the departure marker is inside the enlarged window. No behind-plus template extends past $L$, the other markers cannot provide a triple, and this is not an interaction wall. Thus no edge type performs the intended free step. This persists even if enlarged-read locality bookkeeping is adjusted; retaining the old read bound when $\ell>b$ would be an additional locality error, unnecessary to the counterexample.
+
+Exactly $L$ is therefore the retained pair padding for this particular literal free/contact subdivision and selector. Redesigned contact ranges, recognition, encoding or selection are outside the claim.
+\section{Evidence, provenance and reproducible presentation}\label{fpa:sw:sec:provenance}
+This companion article is based on the complete short-exactness proof and a fresh independent mathematical/static audit. The audit's disposition is pass without mathematical correction. It checks the endpoint families, all-input status arguments, every signed boundary and old-marker case, malformed inequalities, affine substitutions and same-rule support refinement. It limits the pair-padding examples as in Section~\ref{fpa:sw:sec:pair-padding}. These inputs are retained in full as inert evidence, with their source bytes, modes and nanosecond modification times preserved.
+
+The externally supplied source manifest and proof pins are respectively
+\begin{center}\footnotesize\ttfamily
+72f8024c49a364bfd26ccc9f0e89d128e4390c1bf045477aa3d584bba3eaea31\\
+d2229bcae33affd26eefb513e942891edf1d09c8b8d9e32ab1f8220fd2ea9962.
+\end{center}
+The fresh independent audit manifest and audit-text pins are respectively
+\begin{center}\footnotesize\ttfamily
+befa9a29fd2c31a93bfecdda67794a830e5ebbedc71c4c76b85fd3fb4f161614\\
+09cca9ebcc31338b083a502f3345e7825869fcdf043350ce16421d4ef5f7b9bd.
+\end{center}
+The sealed Report 70 predecessor has manifest and PDF pins
+\begin{center}\footnotesize\ttfamily
+0f96f8aa8bba3eb581070a3db48798ecba3ef0c49daa47a124e62b6754ee30e1\\
+d061fda50f26cad711e4f20d028d126d1ce232469425b0745728eed014895010.
+\end{center}
+Report 70 is a separate, unchanged companion release. Its radius-two appendix is neither duplicated nor a premise of the present theorem. The inherited proof/audit dependencies and source archive provenance remain available in the evidence, including the Report 26 archive pin
+\begin{center}\footnotesize\ttfamily
+20a23b1ee22aed461942da4def6bade2bd55d777fce1fe49b6ff83248b7442e4.
+\end{center}
+
+\wtag\ The two Report~70 pins are those of the delivered Report~70 archive, whose article is printed before this Report; the Report~26 archive pin is that of the committed archive of \texttt{db37d18c8}. The source packet, its seal and the fresh audit are shipped with the prefixes \path{71-short-windows-pp-}, \path{71-short-windows-seal-} and \path{71-short-windows-audit-fresh-}; the predecessor proof packet and the ``accepted'' audits consist of byte copies of Report~70's files, of Report~26's archive and of files of Parts~\ref{fpa:part:two}, \ref{fpa:part:four} and~\ref{fpa:part:six}, which are shipped once, and of checksum ledgers, which are not shipped (README).
+
+\subsection{Historical preservation is qualified precisely}
+The short-exactness source packet observed its frozen inputs at 15:24:54.675013 and 15:32:53.244416 UTC on 4 October 2026. Its 49 frozen entries matched, but the separately observed live Report 70 tree was \emph{not} static: 49 new file/directory entries appeared and the existing \file{qa} directory's modification time changed. The source packet identifies these as concurrent activity, not edits made by its worker. Its mathematical inputs were the pinned frozen sources, not the changing Report 70 QA tree.
+
+The later independent audit covered 117 frozen objects and 204 live Report 70 objects. Its observations at 15:39:29.924008 and 15:48:32.615844 UTC had no endpoint differences. That later equality does not erase the earlier live-tree qualification. The present release's own source-origin and before/after records separately document its preservation interval. All such comparisons are endpoint observations, not atomic snapshots or proof that a tree remained continuously static between observations. Access times are outside this preservation scope and may change through reading.
+
+\subsection{What was executed and what authentication establishes}
+The mathematical proof is not proof-assistant formalized. No author or upstream scientific program, source interpreter, CA/physical/trajectory simulator, saved schedule or Lean was run for this article. Scientific helper programs and receipts are retained as inert source evidence. The new executable work is limited to inspected presentation, file/JSON/hash authentication, archive operations and release-tool tests. Reproducible typesetting is evidence about presentation, not a theorem prover.
+
+The owned presentation tools adapt fully inspected Report 70 tools. The flattened \file{Report71.tex} matches the modular manuscript. Builds use an allowlisted environment, fresh local TeX format and font map, shell escape disabled, three TeX passes and the union of the format and every pass's recorded inputs. Locked replay checks interpreter/executable hashes and all recorded system TeX/font inputs and selected maps. Its scope does not inventory shared libraries, Python's standard library or the operating system. Every rendered page receives visual review in addition to automated PNG structural validation.
+
+The release manifest records the exact descendant inventory, bytes, modes and nanosecond modification times. Authentication uses an external manifest digest and rejects unsafe paths, extra entries, symlinks, special files and hardlinks. Deterministic ZIP creation is paired with an authenticated extractor that restores descendant modes and modification times. The manifest file's metadata and newly created top-level root's metadata lie outside that inventory boundary; access times and creation/change times are not transported as integrity claims. Digests authenticate identity relative to supplied pins; they are not digital signatures, proof of authorship or a proof of the missing source theorem.
+
+The README contains the final manuscript and dependency pins, authentication and locked-build commands, and deterministic archive/extraction instructions. The final release retains manuscript review, presentation-tool review and release-check receipts. No prior malformed evaluator, arithmetic certificate or universal-source execution is claimed as new evidence. No external-priority survey or radius minimality result is asserted.
+
+\section{Conclusion}\label{fpa:rep:71:last}
+Triple exactness can be shortened to its write radius in both newly defined conservative blocks, because the literal admissible geometry leaves every other marker beyond even the old window. Pair padding cannot be changed in the same way without disrupting the unchanged subdivision. The new full-shift extension preserves every admissible forward and inverse step, with main sufficient bound $76D+105+3J$ and same-rule support refinement $76D+104+3J$. The conditional universal numerical value is $38\,722\,712$; its inherited-source qualifications remain essential.
+
+
+\renewcommand{\fpaheadL}{Five-particle binary automata}\renewcommand{\fpaheadR}{Part VII}
+\section{Further questions and research for Part~VII}\label{fpa:sec:partseven:questions}
+\wtag\ (Third write, 4~October 2026.) An unproved claim is never dropped from this collection: it is kept as an open item, with its source, the argument offered and what is missing. This section collects such claims of Reports~70 and~71, of their shipped reviews, of the programme's intake (\texttt{a9ab9a698}) and of this write. Report~70's own directions are in Section~\ref{fpa:tr:sec:future}; Report~71 states none. No claim of the two Reports was found false.
+\begin{enumerate}
+\item \emph{Report~68, never delivered} (a numbered remark rather than a question). Report~70 states (Section~\ref{fpa:tr:sec:evidence}, and \path{70-two-scale-qa-pred-contract-README.md}) that its presentation tools ``adapt the fully inspected accepted Report 68 presentation contract''. Report~68 was never delivered to ProveIt, so its inspection and acceptance cannot be checked; that part of the sentence stays unverified. What the shipped files allow was checked for this write: reversing the shipped adaptation diff (\path{data/70-two-scale-qa-pred-contract-ADAPTATION.diff}) on Report~70's \path{build_report70.py}, \path{release70.py} and \path{selftest70.py} gives exactly Report~68's three tools as shipped in \path{signal-machine-collision-certificates} (\path{code/38-low-arity-qa-pred-tools-*}), with ``68'' renamed ``70''. Nothing mathematical in this Part rests on Report~68. Missing: Report~68's archive.
+\item \emph{Priority of the radius-two classification.} Report~70 claims none for Theorem~\ref{fpa:tr:thm:radius-two}: its search found the bibliographic record of Schranko and de~Oliveira~\cite{fpa:tr:schranko} but not the text, so whether that paper already classifies the conservative injective five-input binary rules is open. The finite certificate itself was rerun on copies for this write (428 conservative tables, 423 explicit collisions, five shifts; README, ``Rerunning the checks''). Missing: the 2011 paper and a literature search.
+\item \emph{The conservation criterion in the literature} (this write). Lemma~\ref{fpa:tr:lem:potential} is proved in Report~70 and is the radius-two analogue of SMC source~16's elementary-rule certificate. Whether its exact de~Bruijn-potential form is stated in the number-conserving literature cited in Section~\ref{fpa:pi:sec:prior} (Boccara--Fuk\'s, Durand--Formenti--R\'oka, Moreira) was not checked; the note at the start of Section~\ref{fpa:tr:sec:radius-two} attributes nothing. Missing: inspection of those papers.
+\item \emph{True and minimal radii.} Both Reports prove sufficient bounds only: $108D+149+3J$ for $F_*$, and $76D+105+3J$ (or $76D+104+3J$) for $F_s$. The actual radii of these rules are not computed, and no lower bound is known for two-involution extensions of these admissible dynamics beyond the radius three that Report~70's classification gives for any computationally universal binary, number-conserving, injective rule (Section~\ref{fpa:tr:sec:radius-two}). Report~71 shows that the pair exactness cannot be moved from $L$ for the unchanged templates and selector (Section~\ref{fpa:sw:sec:pair-padding}), so a further reduction needs redesigned contact ranges, recognition, encoding or selection (Report~71) or type-dependent geometric separation (Report~70, Section~\ref{fpa:tr:sec:future}, first direction). Missing: any lower-bound argument for this encoding, and any computation of a true radius.
+\item \emph{Report~26's own rule at isolation $b+r$.} The M2 placement's randomized probe (dated note in Section~\ref{fpa:pi:sec:questions}) found no counterexample when Report~26's typed-key selection isolates at $b+r$ or $2(b+r)-1$ instead of $2(b+r)$. Reports~70 and~71 do not decide this, because each changes the recognition and hence the rule. Open: is Report~26's construction still an involution, and still in agreement on admissible states, with isolation $b+r$? Missing: a proof or a counterexample.
+\item \emph{Evaluators and arithmetic certificates for $F_*$ and $F_s$} (Report~70, Sections~\ref{fpa:tr:sec:scope} and~\ref{fpa:tr:sec:future}; the programme's intake). Neither rule has an implemented evaluator or an arbitrary-input arithmetic certificate. Report~27 (Theorem~\ref{fpa:sp:thm:main}) and Report~28 (Theorem~\ref{fpa:pq:thm:main}) supply both for $F_{26}$ by complete raw-key discovery and prospective rediscovery; the natural route for $F_*$ and $F_s$ is the same with recognition by anchor, mutual guarded uniqueness and, for $F_s$, the shorter windows. Missing: the construction, its completeness proof on malformed multihead supports, and its cost audit.
+\item \emph{Independent checking of the main proofs.} The programme's intake read the statements and resource sections but did not re-audit Report~70's full-shift theorem or Report~71's recognition and geometry proof; the audits that accept them (\path{70-two-scale-audit-static-FRESH_AUDIT.md}, \path{70-two-scale-pp-INDEPENDENT_AUDIT.md}, \path{71-short-windows-audit-fresh-AUDIT.md}) were made by the same pipeline. No simulator of either rule was run; the malformed witnesses of Sections~\ref{fpa:tr:sec:witness} and~\ref{fpa:sw:sec:malformed} are finite hand calculations, rechecked by hand for this write. Missing: an independent audit of Theorems~\ref{fpa:tr:thm:two-scale}, \ref{fpa:tr:thm:main} and~\ref{fpa:sw:thm:main}, or a formalization of the anchor and signed-corridor arguments (Report~70's suggestion).
+\end{enumerate}
 
 \appendix
 \renewcommand{\fpaheadL}{Five-particle binary automata}\renewcommand{\fpaheadR}{Appendix}
 
 \section{Provenance of the merge}\label{fpa:app:provenance}
-\wtag\ This report was built from \textbf{six manuscripts}, all delivered on 3~October 2026 as batch~82 of ProveIt's incoming reports (cluster~M1) and arriving unchanged in commit \texttt{db37d18c8}. Their files were placed by commit \texttt{bca6383e9}; the text was merged by the write that added this appendix. \wtag\ (Second write, 3~October 2026.) Four further manuscripts of the same batch (cluster~M2), arriving in the same commit, were added as Parts~\ref{fpa:part:five}--\ref{fpa:part:six}; their files were placed by commit \texttt{7d2b1b245}. The report is now built from \textbf{ten manuscripts}.
+\wtag\ This report was built from \textbf{six manuscripts}, all delivered on 3~October 2026 as batch~82 of ProveIt's incoming reports (cluster~M1) and arriving unchanged in commit \texttt{db37d18c8}. Their files were placed by commit \texttt{bca6383e9}; the text was merged by the write that added this appendix. \wtag\ (Second write, 3~October 2026.) Four further manuscripts of the same batch (cluster~M2), arriving in the same commit, were added as Parts~\ref{fpa:part:five}--\ref{fpa:part:six}; their files were placed by commit \texttt{7d2b1b245}. The report is now built from \textbf{ten manuscripts}. \wtag\ (Third write, 4~October 2026.) Two manuscripts of batch~91 (cluster~W4), arriving unchanged in commit \texttt{0d7f51c44}, were added as Part~\ref{fpa:part:seven}; their files were placed by commit \texttt{22a8ca89e}. The report is now built from \textbf{twelve manuscripts}.
 \begin{center}
 \small
 \begin{tabular}{@{}p{0.07\textwidth}p{0.29\textwidth}p{0.13\textwidth}p{0.42\textwidth}@{}}
 \toprule
-Report & archive (batch-82 number) & file prefix & contribution and printed place\\
+Report & archive (batch-82 number unless stated) & file prefix & contribution and printed place\\
 \midrule
 15 & \path{Reversible_Binary_Five_Particle_Package.zip} (15) & \path{15-rev-five-} & base: \path{report15.tex} with its three \verb|\input| files (inlined here) and figure; Sections~\ref{fpa:rep:15:first}--\ref{fpa:rep:15:last}\\
 14 & \path{five-particle-binary-portable.zip} (23) & \path{14-five-binary-} & \path{report/five-particle-binary-compiler.tex} and its figure; Sections~\ref{fpa:rep:14:first}--\ref{fpa:rep:14:last}\\
@@ -7845,10 +8967,12 @@ Report & archive (batch-82 number) & file prefix & contribution and printed plac
 26 & \path{Two_Parallel_Conservative_Involutions_Package.zip} (20) & \path{26-parallel-involutions-} & \path{report26.tex}; Part~\ref{fpa:part:six}, first: Sections~\ref{fpa:rep:26:first}--\ref{fpa:rep:26:last}\\
 27 & \path{Sparse_Parallel_Particle_Evaluation_Package.zip} (18) & \path{27-sparse-parallel-} & \path{report27.tex}; Part~\ref{fpa:part:six}, second: Sections~\ref{fpa:rep:27:first}--\ref{fpa:rep:27:last}\\
 28 & \path{Canonical_Parallel_Quartic_Certificates_Package.zip} (03) & \path{28-parallel-quartic-} & \path{report28.tex}; Part~\ref{fpa:part:six}, third: Sections~\ref{fpa:rep:28:first}--\ref{fpa:rep:28:last}\\
+70 & \path{Two_scale_recognition_radius_sources.zip} (batch~91: 22) & \path{70-two-scale-} & \path{Report70.tex}, the flattened form of its seven \path{manuscript/} modules; Part~\ref{fpa:part:seven}, first: Sections~\ref{fpa:rep:70:first}--\ref{fpa:rep:70:last}\\
+71 & \path{Shorter_exactness_windows_sources.zip} (batch~91: 23) & \path{71-short-windows-} & \path{Report71.tex}, the flattened form of its six modules; Part~\ref{fpa:part:seven}, second: Sections~\ref{fpa:rep:71:first}--\ref{fpa:rep:71:last}\\
 \bottomrule
 \end{tabular}
 \end{center}
-\textbf{Pins.} No manuscript names a ProveIt commit, so none has a repository pin; each is dated 3~October 2026. The Reports pin one another by SHA-256: Report~16 pins Report~15's compiler (\texttt{f95a6028c9d3\ldots}); Report~17 pins Report~16's source (\texttt{38c586706fa1\ldots}); Reports~18 and~19 pin Report~17's source (\texttt{fa61d06178d7\ldots}); Reports~14--16 pin Report~12 (\texttt{803bf0c4194b\ldots}, the \LaTeX\ source of SMC source~17). The file prefixes are the series' Report numbers rather than batch numbers, because batch numbers 13, 15 and 16 coincide with other Reports' numbers. Reports~20 and~26--28 name no ProveIt commit either. They pin Report~15's compiler (\texttt{f95a6028c9d3\ldots}), Report~19's evaluator (\texttt{42e8aa65c05f\ldots}, Reports~20, 27 and~28) and Report~17's source (\texttt{fa61d06178d7\ldots}, Reports~20 and~27); Report~27 pins Report~26's scientific manifest (\texttt{141f1ecf4e34\ldots}), and Report~28 pins Report~26's evaluator (\texttt{2c8b6396\ldots}) and Report~27's (\texttt{785082d12162\ldots}).
+\textbf{Pins.} No manuscript names a ProveIt commit, so none has a repository pin; each is dated 3~October 2026. The Reports pin one another by SHA-256: Report~16 pins Report~15's compiler (\texttt{f95a6028c9d3\ldots}); Report~17 pins Report~16's source (\texttt{38c586706fa1\ldots}); Reports~18 and~19 pin Report~17's source (\texttt{fa61d06178d7\ldots}); Reports~14--16 pin Report~12 (\texttt{803bf0c4194b\ldots}, the \LaTeX\ source of SMC source~17). The file prefixes are the series' Report numbers rather than batch numbers, because batch numbers 13, 15 and 16 coincide with other Reports' numbers. Reports~20 and~26--28 name no ProveIt commit either. They pin Report~15's compiler (\texttt{f95a6028c9d3\ldots}), Report~19's evaluator (\texttt{42e8aa65c05f\ldots}, Reports~20, 27 and~28) and Report~17's source (\texttt{fa61d06178d7\ldots}, Reports~20 and~27); Report~27 pins Report~26's scientific manifest (\texttt{141f1ecf4e34\ldots}), and Report~28 pins Report~26's evaluator (\texttt{2c8b6396\ldots}) and Report~27's (\texttt{785082d12162\ldots}). Reports~70 and~71 name no ProveIt commit either; both are dated 4~October 2026 and name no author. Report~70 pins Report~26's archive (\texttt{20a23b1ee22a\ldots}, the committed archive of \texttt{db37d18c8}), Report~19's universal receipt and the absent source table \texttt{fa61d06178d7\ldots}; Report~71 pins Report~70's release manifest (\texttt{0f96f8aa8bba\ldots}) and PDF (\texttt{d061fda50f26\ldots}), both equal to the delivered Report~70 archive's files, and Report~26's archive.
 
 \textbf{Where the merge had to choose.}
 \begin{enumerate}
@@ -7862,11 +8986,15 @@ Report & archive (batch-82 number) & file prefix & contribution and printed plac
 \item \emph{Parts~V--VI: bibliography.} Reports~26 and~27's entries for Boyle--Lind--Rudolph, Toffoli--Margolus, Gajardo--Kari--Moreira and Maldonado--Moreira--Gajardo are merged (Report~26's URLs and Report~27's DOIs together); Report~20's ``Report~8'' entry points to SMC Part~IV and its ``Report~19'' entry to Part~\ref{fpa:part:four}; entries for Reports~26 and~27, which Report~28 names without citing, are added; seven entries on partitioned and number-conserving automata are added for the lineage note in Section~\ref{fpa:pi:sec:prior}.
 \item \emph{Parts~V--VI: macros and symbols.} Report~26's \verb|\N| ($\mathbb Z_{\ge0}$) and Report~28's \verb|\N| ($\mathbb N_0$) are \verb|\Nge| and \verb|\Nzero| internally, Report~27's \verb|\code| and \verb|\C| are \verb|\file| and \verb|\calC|; these print as delivered. One printed symbol changed: Report~20's height bound $H_*$ is printed $\mathrm{Ht}_*$, because Report~28 uses $H_*$ for an isolation distance.
 \item \emph{Parts~V--VI: appendices and receipts.} The appendices of Reports~27 and~28 are ordinary sections. A footnote in Report~28's Section~\ref{fpa:pq:sec:release} qualifies its statement that all receipts retain pinned identities (two archived supplement receipts predate the final compiler).
+\item \emph{Part~VII: placement and order} (third write). Reports~70 and~71 answer Report~26's first question and keep its templates and admissible graph, so they form a Part of this report rather than a new one; Report~70 is printed first because Report~71 pins it. The file prefixes are the Report numbers, as in Parts~I--VI.
+\item \emph{Part~VII: duplicates.} Report~71 restates Report~70's source interface, templates and admissible graph with its new exactness predicate; both are printed. Report~70's phase lemma restates Report~26's phase block, and its source, template, clock and clean-target sections restate Reports~15 and~26; each carries a pointer. Nothing was deleted. Both packages carry byte copies of Report~26's archive and files, of Report~19's universal receipts and of Report~16's copy of Report~15's compiler proof, which are shipped once (README).
+\item \emph{Part~VII: unproved claims.} Claims of the two Reports, of their shipped reviews, of the programme's intake and of this write that this report does not prove are not dropped; they are collected as open items, with source, argument and what is missing, in Section~\ref{fpa:sec:partseven:questions}. None of them was found false; the one claim resting on the undelivered Report~68 concerns presentation tooling only and was checked as far as the shipped files allow.
+\item \emph{Part~VII: labels, macros and bibliography.} The eleven label names the two Reports share are kept apart by the sub-prefixes \texttt{fpa:tr:} and \texttt{fpa:sw:}. Report~70's \verb|\Fold| (printing $F_{26}$) clashes with Part~VI's \verb|\Fold| ($F_{\mathrm{old}}$) and is \verb|\Ftwosix| here, with \verb|\Eold|, \verb|\Pold| renamed \verb|\Etwosix|, \verb|\Ptwosix| to match; \verb|\N| is \verb|\Nge|; no printed symbol changed. Report~70's entries for Boyle--Lind--Rudolph, Toffoli--Margolus, Maldonado--Moreira--Gajardo, Gajardo--Kari--Moreira and Morita are the existing entries; Fuk\'s--Sullivan and Schranko--de~Oliveira are added. Report~71 has no bibliography. Both tables of contents are dropped, and the Report openings print the delivered date, 4~October 2026.
 \end{enumerate}
 
 \textbf{Correction of a citation (dated 3~October 2026).} Reports~14, 16, 17 and~18 cite Neary and Woods as \emph{Fundamenta Informaticae} 91 (2009), 105--126, with DOI \path{10.3233/FI-2009-0008}, and Reports~14 and~16 call the page range 123--144 incorrect. The DOI \path{10.3233/FI-2009-0008} belongs to a different paper (Han, Salomaa and Wood, \emph{Nondeterministic state complexity of basic operations for prefix-free regular languages}, Fundamenta Informaticae 90 (2009), 93--106). The publisher's record of the Neary--Woods paper is volume~91, issue~1, pages 123--144, DOI \path{10.3233/FI-2009-0036} (checked against Crossref on 3~October 2026), as quadratic-orthant-certificates already cites it; 105--126 is the pagination of the author-hosted PDF, which the author-deposited archive flags as incorrect. The merged bibliography entry~\cite{fpa:nw} follows the publisher; the page locators ``printed p.~121'' and ``printed p.~123'' in the Reports refer to the author-hosted PDF. The Reports' sentences are kept, each followed by a dated note; the delivered audit and provenance files that repeat the old DOI are byte-identical and listed in the README.
 
-\textbf{Labels.} The six manuscripts carry 194 labels (Report~14: 59, 15: 40, 16: 23, 17: 30, 18: 31, 19: 11); all are kept with their prefixes, and the write added the labels named in Section~\ref{fpa:sec:notation}. The four manuscripts of Parts~V--VI carry 82 labels (Report~20: 22, 26: 33, 27: 6, 28: 21); all are kept with their sub-prefixes, and the second write added 13 (Section~\ref{fpa:sec:notation}).
+\textbf{Labels.} The six manuscripts carry 194 labels (Report~14: 59, 15: 40, 16: 23, 17: 30, 18: 31, 19: 11); all are kept with their prefixes, and the write added the labels named in Section~\ref{fpa:sec:notation}. The four manuscripts of Parts~V--VI carry 82 labels (Report~20: 22, 26: 33, 27: 6, 28: 21); all are kept with their sub-prefixes, and the second write added 13 (Section~\ref{fpa:sec:notation}). The two manuscripts of Part~\ref{fpa:part:seven} carry 84 labels (Report~70: 49, Report~71: 35), eleven of them with the same delivered names; all are kept with their sub-prefixes, and the third write added 6 (Section~\ref{fpa:sec:notation}).
 
 \clearpage
 \renewcommand{\fpaheadR}{References}
@@ -7881,7 +9009,7 @@ K.~Morita. \emph{Universality of a reversible two-counter machine}. Theoretical 
 K.~Morita and K.~Imai. \emph{Number-conserving reversible cellular automata and their computation-universality}. RAIRO Theoretical Informatics and Applications \textbf{35}(3) (2001), 239--258. \href{https://www.numdam.org/item/ITA_2001__35_3_239_0/}{Primary publisher record}. In particular Lemma~3.5 and Theorem~3.6.
 
 \bibitem{fpa:morita2012}
-K.~Morita. \emph{Universality of One-Dimensional Reversible and Number-Conserving Cellular Automata}. 2012. \href{https://arxiv.org/abs/1208.2760}{arXiv:1208.2760}.
+K.~Morita. \emph{Universality of One-Dimensional Reversible and Number-Conserving Cellular Automata}. 2012. \href{https://arxiv.org/abs/1208.2760}{arXiv:1208.2760}. \wtag\ Report~70 cites it as EPTCS~90 (2012), 142--150, for Morita's 96-state four-neighbour reversible number-conserving automaton, a model distinct from the binary five-particle compiler.
 
 \bibitem{fpa:alhazovimai}
 A.~Alhazov and K.~Imai. \emph{Particle Complexity of Universal Finite Number-Conserving Cellular Automata}. CANDAR 2016, 209--214. \href{https://doi.org/10.1109/CANDAR.2016.0045}{doi:10.1109/CANDAR.2016.0045}; \href{https://ieeexplore.ieee.org/document/7818615}{publisher abstract}. The five-particle numerical upper bound is attributed at abstract level; the full construction was not available to, or inspected by, the reviews of Reports~14 and~15.
@@ -7969,6 +9097,12 @@ B.~Durand, E.~Formenti and Zs.~R\'oka. \emph{Number-conserving cellular automata
 
 \bibitem{fpa:moreira03}
 A.~Moreira. \emph{Universality and decidability of number-conserving cellular automata}. Theoretical Computer Science \textbf{292}(3) (2003), 711--721. DOI \href{https://doi.org/10.1016/S0304-3975(02)00065-8}{10.1016/S0304-3975(02)00065-8} (Crossref, checked 3~October 2026). \wtag\ Added in the write; not inspected.
+
+\bibitem{fpa:tr:fuks}
+H.~Fuk\'s and K.~Sullivan. \emph{Enumeration of number-conserving cellular automata rules with two inputs}. 2007 preprint, Theorem~1 and Section~2. \url{https://arxiv.org/pdf/0711.1349}. Report~70: the count 428 of conservative five-input binary tables; its primary-source check (\path{70-two-scale-qa-PRIMARY_SOURCE_CHECK.md}) records the counts 1, 2, 5, 22, 428 on PDF page~2. \wtag\ Added from Report~70's bibliography.
+
+\bibitem{fpa:tr:schranko}
+A.~Schranko and P.~P.~B.~de~Oliveira. \emph{Derivation and representation of one-dimensional, reversible, number-conserving cellular automata rules}. Journal of Cellular Automata \textbf{6}(1) (2011), 77--89. Report~70: bibliographic record checked on the author's publication list, \url{https://professor.mackenzie.br/pedrob/RESEARCH/PAPERS/publications-Themes.html}; full text not obtained, so no theorem or priority is attributed to it. \wtag\ Added from Report~70's bibliography.
 
 \bibitem{fpa:lzaudit}
 \emph{Independent audit of the lazy ordered reversible evaluator}. Report~19's audit narrative, addendum, executable checks and hash-linked receipts, shipped as \path{19-lazy-eval-audit-design.md}, \path{19-lazy-eval-audit-addendum.md} and the \path{19-lazy-eval-} files of \path{code/} and \path{data/}.
