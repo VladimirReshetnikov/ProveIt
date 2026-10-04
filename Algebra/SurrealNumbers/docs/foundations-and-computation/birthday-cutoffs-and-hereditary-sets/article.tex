@@ -8,7 +8,7 @@
 \usepackage{xcolor,fancyhdr,xurl,aliascnt}
 \usepackage{tabularx,mathrsfs}\usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=green!35!black,urlcolor=blue!45!black]{hyperref}
 \usepackage[nameinlink,noabbrev]{cleveref}
-\hypersetup{pdftitle={Birthday Cutoffs and Hereditary Sets},pdfauthor={Merged research report for the Surreal project},pdfsubject={Birthday cutoffs, hereditary set universes, bi-interpretation, elementary inclusions, axiom spectra, outer models, surcomplex orientation, Replacement-free surreal cuts, atom-support spectra and choiceless surreal universality}}
+\hypersetup{pdftitle={Birthday Cutoffs and Hereditary Sets},pdfauthor={Merged research report for the Surreal project},pdfsubject={Birthday cutoffs, hereditary set universes, bi-interpretation, elementary inclusions, axiom spectra, outer models, surcomplex orientation, Replacement-free surreal cuts, atom-support spectra, choiceless surreal universality and named atom symmetries}}
 \pagestyle{fancy}\fancyhf{}
 \fancyhead[L]{\small Birthday cutoffs and hereditary sets}
 \fancyhead[R]{\small\thepage}
@@ -128,6 +128,15 @@
 \newcommand{\lc}{\operatorname{lc}}
 \newcommand{\lm}{\operatorname{lm}}
 \newcommand{\hookord}{\mathrel{\lhook\joinrel\longrightarrow_{\!\mathrm{ord}}}}
+% Part VIII (batch 90): symbols of source 12; its predicate E is \Act here
+% (Convention in Part VIII).
+\newcommand{\At}{\mathsf{At}}
+\newcommand{\Act}{\mathsf{Act}}
+\newcommand{\MAct}{\mathcal M_{\Act}}
+\newcommand{\Rep}{\mathsf{Rep}}
+\newcommand{\abs}[1]{\lvert #1\rvert}
+\newcommand{\calT}{\mathcal T_{\Gamma}}
+\newcommand{\calQ}{\mathcal Q_{\Gamma}}
 \newcolumntype{Y}{>{\raggedright\arraybackslash}X}
 \newenvironment{resultbox}{\par\medskip\noindent\begin{minipage}{\linewidth}\setlength{\parindent}{0pt}\hrule\medskip}{\medskip\hrule\end{minipage}\par\medskip}\begin{document}
 \hypersetup{pageanchor=false}
@@ -186,14 +195,16 @@ Two later parts work below ZFC. Over Zermelo set theory without Replacement,
 bounding the birthdays of definable surreal families is ordinal bounding (with a
 hierarchy axiom, Replacement), and kernel models with atoms have exact Collection
 spectra; over ZF, universality of the surreals for free fields on all sets is
-exactly the first Kinna--Wagner principle.\end{abstract}
+exactly the first Kinna--Wagner principle; named atom symmetries preserving
+Replacement are classified.\end{abstract}
 \end{minipage}
 \vfill
 {\footnotesize Built from five manuscripts written independently in relation to the
 \repo{VladimirReshetnikov/Surreal} project,\par
 all pinned to commit \texttt{4f26455}, and merged after placement commit
 \texttt{d4e71b7};
-Parts VI--VII (batch 89) add two more, pinned to \texttt{2b7b388}, placed by \texttt{23adb85}.\par
+Parts VI--VII (batch 89) add two more, pinned to \texttt{2b7b388}, placed by \texttt{23adb85};
+Part VIII (batch 90) one, pinned to \texttt{8dc2592}, placed by \texttt{12076b2}.\par
 An AI-assisted research draft with written proofs and finite regression checks;
 not refereed;\par not a claim of any Lean formalization. The global
 bi-interpretation is prior announced work of Chen--Hamkins--Yang.\par}
@@ -420,7 +431,16 @@ $\No$ iff it injects into the power set of an ordinal; universality of $\No$ and
 $\Oz$ for free algebras on all sets is exactly the first Kinna--Wagner
 principle; optimal set-sized real-closed targets; sharp transcendence bounds in
 two permutation models and, in ZFA, an ordered field with no surreal embedding
-(\cref{hset:kw:thm:equivalences,hset:kw:thm:universal,hset:kw:thm:orderedcounter}).\end{itemize}
+(\cref{hset:kw:thm:equivalences,hset:kw:thm:universal,hset:kw:thm:orderedcounter});
+\item in Part~VIII (source 12, added in batch~90), in the finite-kernel
+urelement model with a named action of a pure group on the atoms: Replacement
+holds exactly when all orbits are finite and only finitely many atoms lie in
+finitely repeated finite orbit types (for finitely many named permutations,
+already in the research-report collection); Replacement for outputs with at most
+$k$ atoms is decided by the centralizer orbits of size at most $k$; two
+involutions realize every finite level; and pure-valued Collection, hence the
+whole pure surreal universe, survives every such naming
+(\cref{hset:ns:thm:full,hset:ns:thm:graded,hset:ns:thm:strict,hset:ns:thm:purecollection}).\end{itemize}
 
 \subsection{Five manuscripts, one report}
 \label{hset:sub:merge}
@@ -540,6 +560,16 @@ setting, hypotheses and notation convention and ends with its non-claims and
 provenance (\cref{hset:zr:sec:provenance,hset:kw:sec:provenance}). Nothing in
 Parts~I--V was renumbered; dated notes in Parts~II and~V record where the new
 parts bear on them.
+
+\paragraph{A further part.} [Added 4 October 2026, batch~90.] Part~VIII prints
+source~12 (batch-90 manuscript 05, \emph{Named Symmetries and Replacement};
+files \texttt{12-named-symmetries-}, labels \texttt{hset:ns:}), pinned to commit
+\texttt{8dc2592e9}, delivered in commit \texttt{a162e4386} and placed by commit
+\texttt{12076b2e8}: \cref{hset:ns:part}. It continues source 10 at the finite
+cutoff, answering its \cref{hset:zr:q:expansions} for named group actions, and
+it keeps its own setting, notation convention (\cref{hset:ns:conv:notation}) and
+closing provenance (\cref{hset:ns:sec:provenance}). Nothing earlier was
+renumbered; dated notes in Part~VI point to it.
 \subsection{Conventions and renamed symbols}
 \label{hset:sub:conventions}
 
@@ -3853,7 +3883,8 @@ bounded search result, not proof of absence.
 
 \noindent[Added 3 October 2026, batch~89: this subsection lists the non-claims
 of sources 02, 05, 06, 07 and 09. Those of sources 10 and 11 are collected in
-\cref{hset:zr:sub:nonclaims,hset:kw:sub:nonclaims}.]
+\cref{hset:zr:sub:nonclaims,hset:kw:sub:nonclaims}. Added 4 October 2026,
+batch~90: those of source 12 are in \cref{hset:ns:sub:nonclaims}.]
 \paragraph{Source 02.}
 The full-class interpretation is Chen--Hamkins--Yang's prior announced work; its
 contributions are the bounded refinement and its consequences, with priority not
@@ -4141,6 +4172,13 @@ intervals over the 127 sign words of length at most 6, 2,187 depth-two
 assignments (576 separated), 1,050 negative-code comparisons and 4,032 atom
 transpositions; source 11 passed 20,595 assertions with seed 20261003. Their
 provenance is in \cref{hset:zr:sub:provenance,hset:kw:sub:provenance}.]
+
+\noindent[Added 4 October 2026, batch~90: source 12's finite program
+(\cref{hset:ns:sec:verification}) was rerun with Python 3.14.4 on a copy, with
+an explicit output path; it passed 203 checks, 35 of them brute-force
+comparisons over all permutations of at most seven points, and reproduced its
+recorded file exactly, apart from line endings. Its provenance is in
+\cref{hset:ns:sub:provenance}.]
 \section{Conclusion}
 
 Birthday truncation has a precise set-theoretic effect. At an epsilon-number
@@ -4164,7 +4202,9 @@ elements are born.
 \noindent[Added 3 October 2026, batch~89: Parts~VI and~VII, which follow, add two
 further manuscripts: the weak-base form of the eternity--Replacement
 equivalence with the atom-support spectra of kernel models, and choiceless
-universality of the surreal numbers.]
+universality of the surreal numbers. Added 4 October 2026, batch~90: Part~VIII,
+after them, adds a third, on named atom symmetries and Replacement in the
+finite-kernel model.]
 \part{Replacement-free surreal cuts, definable families and atom-support spectra}\label{hset:zr:part}
 
 \section{Source 10: question, results, notation and relation to Part II}
@@ -4924,6 +4964,18 @@ In $\Mker_\kappa$, expanded by any fixed finite list of ambient-definable predic
 Let $w$ be an internal set, and suppose that for each $x\in w$ some pure $y$ satisfies a fixed formula in the expansion. Relativize that formula and the added predicates to the ambient universe. Ambient Collection produces a set of suitable witnesses. Separate away any extraneous nonpure members, obtaining a set $S$ of pure witnesses covering every index. A set of pure objects is pure, so $S\in \Mker_\kappa$. This same $S$ witnesses the original internal Collection instance.
 \end{proof}
 
+\noindent[Added 4 October 2026, batch~90: source 12 (\cref{hset:ns:part})
+proves, independently, the case $\kappa=\omega$ of this theorem for the graph
+$\Act$ of a named action of a pure set-sized group on the atoms
+(\cref{hset:ns:thm:purecollection}), by a second route: it bounds the least pure
+ranks of witnesses by ambient Replacement and separates them from one pure
+stage. With it, the identity of pure structures
+(\cref{hset:zr:prop:pureidentity}), the surreal schemes and the no-go
+corollary below extend to such actions and to the graded levels
+$\mathsf R_k$ of Replacement for outputs with at most $k$ atoms
+(\cref{hset:ns:prop:surrealinvariance,hset:ns:cor:surreal,hset:ns:cor:invisible};
+\cref{hset:ns:rem:companion}).]
+
 \begin{corollary}[All six surreal schemes survive]
 \label{hset:zr:cor:surrealsurvive}
 Every scheme $\OB,\Gr,\UB,\SC,\DCI,\NIB$ holds in $(\Mker_\kappa,E)$, including its instances using $E$ and arbitrary internal parameters, despite the failure of full Replacement in \cref{hset:zr:thm:expandedthreshold}.
@@ -5090,6 +5142,20 @@ and full Collection, by a criterion on the components of the named injections
 (Theorem~5.1, \lbl{nee:thm:profile}; Theorem~7.5, \lbl{nee:thm:collection}).
 This answers the question for that family only; the general classification
 stays open.]
+
+\noindent[Added 4 October 2026, batch~90: answered for a second family at
+$\kappa=\omega$, the graphs $\Act$ of uniformly named actions of pure set-sized
+groups, by source 12 (\cref{hset:ns:part}; \cref{hset:ns:rem:expansions}).
+Replacement holds iff every orbit is finite and only finitely many atoms lie in
+finite orbit types that occur finitely often (\cref{hset:ns:thm:full}); the
+support growth of uniquely definable outputs is measured by the levels
+$\mathsf R_k$, which hold, for $k\ge1$, iff every orbit is finite and only
+finitely many atoms have an orbit of size at most $k$ under the centralizer
+$\mathcal Z$ of the named action (\cref{hset:ns:thm:graded}); so the group that
+must remain is $\mathcal Z$. Full Collection fails at $\kappa=\omega$ for every
+such expansion. For finitely many named permutations this criterion is the
+case $\kappa=\omega$ of the one cited in the preceding note. Arbitrary
+predicates, and group actions at uncountable $\kappa$, stay open.]
 
 \begin{question}[Reflection spectra rather than Collection spectra]\label{hset:zr:q:reflection}
 In controlled kernel models, determine which additional features separate partial reflection from full reflection while the pure surreal structure remains fixed. Seek a precise comparison with the more elaborate models of Glazer--Yao, rather than assuming the cardinal-capacity invariant alone controls reflection.
@@ -6212,6 +6278,1132 @@ case of a lemma of another report (\cref{hset:kw:rem:other}). (iii) The two
 new parts follow Part~V, so that no existing number changes; both are printed
 after this report's conclusion and before its appendices.
 
+\part{Named symmetries and Replacement}\label{hset:ns:part}
+
+\section{Source 12: question, results, notation and relation to the report}
+\label{hset:ns:sec:intro}\label{hset:ns:sec:motivation}
+
+This part was added in batch~90. It prints one further manuscript, written
+independently of the seven above: \emph{Named Symmetries and Replacement: An
+exact orbit criterion, a strict kernel hierarchy, and invariance of the pure
+surreal universe}, ``Prepared for Vladimir Reshetnikov with ChatGPT'', 3 October
+2026. It is batch-90 manuscript 05 and \emph{source 12} in this report's local
+numbering; its shipped files carry the prefix \texttt{12-named-symmetries-}. It
+was pinned to repository commit \texttt{8dc2592e9}, arrived in commit
+\texttt{a162e4386} and was placed in commit \texttt{12076b2e8}. Its provenance,
+the mechanical changes made in printing it, and its non-claims are in
+\cref{hset:ns:sec:provenance}. Inside this part, ``this manuscript'', ``this
+article'', ``this draft'', ``here'', ``our'' and ``we'' refer to source 12.
+
+Source 12 continues \cref{hset:zr:part}: the ``earlier companion working note''
+it names is source 10, which it read outside the repository and from which it
+assumes no theorem. Its pin predates both \cref{hset:zr:part} and the
+research-report collection's report
+\repo{SetTheory/Cardinals/docs/reports/ordinals-and-order-types/naming-elementary-embeddings},
+whose principal theorem already contains source 12's full criterion
+(\cref{hset:ns:thm:full}) for finitely many named permutations. Source 12's
+introduction, written without that report, must not be read as claiming that
+case new; \cref{hset:ns:rem:nee} states what each proves.
+
+\begin{resultbox}
+\textbf{Research status (source 12).} The finite-kernel construction and its classical symmetry argument are established mathematics. The exact classifications and hierarchy are proved in this manuscript as proposed refinements; their historical priority has not been established. This is an unrefereed research draft, not a claim to have resolved a named published conjecture or to have obtained independent Lean/Rocq verification. Elliot Glazer is neither a coauthor nor an endorser.
+\end{resultbox}
+
+\paragraph{Source 12's summary.} Let $\Mker_\omega$ be the universe of sets and urelements with finite actual atom kernel, inside an ambient universe with Choice and a set $A$ of infinitely many atoms. We classify which uniformly named actions of a pure set-sized group preserve Replacement. The answer has two independent parts: every atom orbit must be finite, and only finitely many atoms may belong to finite transitive orbit types occurring with finite positive multiplicity.
+
+A sharper classification measures the atom kernel of an output. Write $\mathsf R_k$ for Replacement restricted to outputs involving at most $k$ atoms. For $k\ge1$, this holds exactly when all group orbits are finite and only finitely many atoms have centralizer orbit of size at most $k$. We construct, for every $d\ge1$, two involutions whose separate expansions satisfy full Replacement, whereas their joint expansion satisfies precisely the finite levels $\mathsf R_k$ with $k<d$. All joint atom orbits are finite. A single permutation can satisfy every fixed finite level while failing full Replacement.
+
+Every example has the same pure sets and hence the same pure sign-sequence surreal field. More strongly, Collection for pure-valued relations survives even formulas using the added symmetries and impure parameters. We give complete proofs, explicit failure witnesses, a distinction between separate symbols and a uniform evaluator, 203 finite regression checks, and a formalization roadmap.
+
+\subsection{Why this is an appropriate intersection}
+Elliot Glazer and Bokai Yao's \emph{Reflection Principles in ZFU} studies the interaction of Collection, reflection, and urelements, including small-kernel permutation constructions \cite{GlazerYao}. Glazer's work on global versus local choice in Zermelo set theory also emphasizes sensitivity to foundational hypotheses \cite{GlazerChoice}. These publications, rather than an inference from a professional profile, supply the research-interest side of the intersection.
+
+The ProveIt repository supplies the other side: it develops surreal numbers from sign sequences and explicitly distinguishes formalized results from research drafts. Its surreal README and formalization ledger provide the relevant entry points \cite{ProveItSurrealNS}. The question pursued here is not a new algebraic identity inside $\No$. It is a foundational limitation on what an unchanged, richly structured surreal universe can reveal about the surrounding universe of sets.
+
+The classical finite-kernel model already separates Replacement from Collection. Hamkins and Yao explain this construction and attribute its Replacement argument to L\'evy \cite{HamkinsYao}. Our earlier companion working note (source 10, printed as \cref{hset:zr:part}) examined small-kernel models and the effect of naming an atom enumeration. Naming an enumeration is a direct way to make many atoms individually accessible. Naming an involution is much subtler: it reveals only a reversible pairing. The central question is therefore:
+
+\begin{resultbox}
+\textbf{Classification problem.} Which named atom symmetries preserve Replacement in the finite-kernel universe, and how much of Replacement can fail while all pure surreal constructions remain available?
+\end{resultbox}
+
+We resolve this problem for every uniformly named action of a pure set-sized group. We also determine a strict hierarchy that records how many atoms a definable output is permitted to involve. These are questions formulated and answered here; they are not presented as previously advertised open conjectures of Glazer or Yao.
+
+\subsection{The main conclusions}
+Write $\mathcal Z=\Aut_\Gamma(A)$ for the group of atom permutations commuting with the named action. The two kinds of orbit must not be confused: $\Gamma a$ is the orbit generated by the \emph{named} symmetries, whereas $\mathcal Z a$ is the orbit under symmetries that \emph{remain available} after the action has been named.
+
+\begin{description}[style=nextline,leftmargin=0pt,labelwidth=0pt,labelsep=0pt,font=\normalfont\bfseries]
+\item[Exact full criterion (\cref{hset:ns:thm:full}).]
+Full Replacement holds precisely when every $\Gamma$-orbit is finite and the union of all finitely repeated finite orbit types is finite.
+\item[Exact bounded-kernel criterion (\cref{hset:ns:thm:graded}).]
+For $k\ge1$, Replacement for outputs with at most $k$ atoms holds precisely when every $\Gamma$-orbit is finite and $\{a:\abs{\mathcal Z a}\le k\}$ is finite.
+\item[Sharp hierarchy using two involutions (\cref{hset:ns:thm:strict}).]
+For each $d\ge1$, two individually harmless involutions jointly give exactly the levels $\mathsf R_k$ for $k<d$. No infinite joint orbit is needed.
+\item[The limit gap (\cref{hset:ns:thm:single}).]
+One permutation with one cycle of each finite length satisfies every fixed $\mathsf R_k$ but not full Replacement.
+\item[Surreal invariance (\cref{hset:ns:thm:purecollection,hset:ns:cor:surreal}).]
+All examples preserve the entire pure universe, and even expanded-language Collection for pure-valued relations. Consequently pure surreal-valued Replacement and set-indexed cut interpolation survive.
+\end{description}
+
+The logical content is stronger than an isolated bad example. The classification identifies all obstructions within the specified model family, and the hierarchy locates the first possible failure exactly.
+
+\subsection{Scope, attribution, and limits}
+The background symmetry method is classical; we do not rename it as a discovery. Our contribution within this draft is the orbit-type obstruction, the centralizer-size refinement with arbitrary parameters, and their sharp realizations. The proofs below are self-contained after the ambient set-theoretic assumptions and the standard surreal simplicity theorem have been specified. The finite computation checks only finite group-action calculations, not the infinitary metatheorems.
+
+Glazer--Yao's 2026 separation results concern reflection and Collection in a broader range of urelement models \cite{GlazerYao}. We do not strengthen those published separation theorems here. Our models retain Choice, and their full Collection already fails in the reduct. What changes is \emph{Replacement in the expanded language}. This distinction prevents an apparent but false conflict with equivalences that assume Replacement as part of the base theory.
+
+
+\subsection{Notation of this part}
+\label{hset:ns:sub:notation}
+
+\begin{convention}[Symbols of source 12]\label{hset:ns:conv:notation}
+Source 12 was written without knowledge of this report, and several of its
+symbols already mean something else here. In this part:
+\begin{center}\small
+\begin{longtable}{@{}P{0.25\textwidth}P{0.24\textwidth}P{0.43\textwidth}@{}}
+\toprule
+Notion in source 12 & Here & Do not confuse with\\
+\midrule\endhead
+Ambient universe with atoms $A$, Choice, Replacement and Collection & $\Uk=V(A)$ (source: $U$) & ---; the same setting as \cref{hset:zr:sec:supportmodels}\\
+Finite-kernel universe $\{x:\card{\kerat(x)}<\omega\}$ & $\Mker_\omega$ (source: $M=M_{\mathrm{fin}}(A)$); over the atom set $A^{(d)}$, $\Mker_\omega(A^{(d)})$ & the ground model $M$ of \cref{hset:part:outer}. It \emph{is} the kernel model $\Mker_\kappa$ of \cref{hset:zr:part} at $\kappa=\omega$, and the model $M_\omega(A)$ of \repo{naming-elementary-embeddings}\\
+Atom kernel $A\cap\TC(\{x\})$ & $\kerat(x)$ & the same operator as in \cref{hset:zr:part}; not a kernel of a homomorphism\\
+Named action graph, a ternary predicate & $\Act(g,a,b)$ (source: $E$) & the enumeration predicate $E$ of \cref{hset:zr:sec:expansion}, which names a bijection from $\kappa$ onto $\kappa$ atoms, and source 11's $E_m$, $E_\xi$. $\Act$ is the graph of a group action, $E$ an injection of ordinals into atoms\\
+Expanded structure & $\MAct=(\Mker_\omega,\in,\At,\Act)$ (source: $\mathcal M_E$) & Part VI's $(\Mker_\kappa,E)$\\
+Exceptional set & $X_{\Act}$ (source: $X_E$) & ---\\
+Centralizer $\Aut_\Gamma(A)$ of the named action; pointwise stabilizer of a finite $F\subseteq A$ in it & $\mathcal Z$, $\mathcal Z_{(F)}$ (source: $H$, $H_{(F)}$) & $H_\kappa$, the hereditary-size universe; source 11's acting group $H$ (renamed $G_0$ in \cref{hset:kw:conv:notation}); $\Z$, the integers; $\Zf$\\
+Replacement in the expanded language; its restriction to outputs with at most $k$ atoms & $\mathsf{Rep}$; $\mathsf R_k$ & $\RepB$, one Replacement instance at $\beth_\omega$; $\R$, the reals\\
+The named group; codes of transitive actions; pointed codes & $\Gamma$; $\calT$, $\calQ$ & the collection's value groups $\Gamma$ (as in $F_\Gamma$, $K_\Gamma$); $\Q$; the component-type set $\mathcal T_r$ of \repo{naming-elementary-embeddings}\\
+Type strata; centralizer orbits of a pointed code & $A_t$, $T_q$; $P_{q,i}$ & $T_\sigma$, the sign container of \cref{hset:zr:part}; $T(i,a,b)$, the evaluator relation of \cref{hset:ns:thm:evaluator}\\
+Definable selectors & $B(q)$, $B_k(q,i)$ & the birthday structures $\B_\lambda$; the type blocks $B_t$ of \repo{naming-elementary-embeddings}\\
+Atoms with centralizer orbit of size at most $k$ & $D_k$ & the small-type part $D_\kappa(\boldsymbol f)$ of \repo{naming-elementary-embeddings}, its counterpart for full Replacement\\
+Finite reservoirs; the atoms of exact period $n$ (\cref{hset:ns:ex:limit}) & $B_F$, $C_F$; $C_n$ & the relation codes $C=(\delta,r,t)$ and the surcomplex structures $\C_\lambda$\\
+Orbit-type counts; number of cycles of length $n$; a rotation offset (proof of \cref{hset:ns:lem:odd}) & $n_t$, $d_t$, $m_t$; $c_n$; $c$ & $c$, the conjugation\\
+The two named involutions and their rotation & $\sigma$, $\tau$; $r=\tau\sigma$ & the generic ordinal $\sigma$ and the cofinality $\tau=\cf\kappa$ of \cref{hset:zr:part}; the relation word $r$ of a code\\
+The structures with two named involutions & $\mathcal N_d$ & the expansions $\mathcal N_{\kappa,\boldsymbol f}$ of \repo{naming-elementary-embeddings} (objects of the same kind)\\
+Pure rank bound in the proof of \cref{hset:ns:thm:purecollection} & $\zeta$, $V^{\mathrm{pure}}_\zeta$ (source: $\beta$) & $\beta$, reserved for the first new birthday (\cref{hset:conv:notation})\\
+Index set of the odd $n\ge3$ (proof of \cref{hset:ns:thm:strict}) & $I$ & $\I$, the interpreted universe\\
+The group $\bigoplus_{i<\omega}\Z/2\Z$ (proof of \cref{hset:ns:thm:evaluator}) & $V$ & the universe $V$ and its stages $V_\alpha$\\
+Kernel bound in \cref{hset:ns:q:kernelbounds} & $\lambda\le\kappa$, cardinals & the epsilon-number cutoffs $\lambda$ of Parts I--V\\
+\bottomrule
+\end{longtable}
+\end{center}
+Equations are numbered within sections here, not consecutively as in the
+source. Typography only: source 12's sans-serif theory names (ZFC, ZFU) and its
+roman superscript in $V^{\mathrm{pure}}_\zeta$ are set as in the rest of this
+report. No other symbol was renamed.
+\end{convention}
+
+\subsection{Relation to Part VI and to the collection}
+\label{hset:ns:sub:relation}
+
+\begin{remark}[Question~\ref{hset:zr:q:expansions} for named group actions]
+\label{hset:ns:rem:expansions}
+Source 10's \cref{hset:zr:q:expansions} asks to classify the predicates $P$ for
+which $(\Mker_\kappa,P)$ retains Replacement or full Collection, whether the
+first failure is measured by the support growth of uniquely $P$-definable
+outputs, and how much of the permutation group must remain available to force
+kernel confinement. Source 12 answers all three parts for $\kappa=\omega$ and
+for $P$ the graph $\Act$ of a uniformly named action of a pure set-sized group.
+\begin{itemize}
+\item Replacement holds iff every $\Gamma$-orbit is finite and the exceptional
+set $X_{\Act}$ is finite (\cref{hset:ns:thm:full}).
+\item Support growth is measured by the levels $\mathsf R_k$: for $k\ge1$,
+$\mathsf R_k$ holds iff every orbit is finite and only finitely many atoms have
+centralizer orbit of size at most $k$ (\cref{hset:ns:thm:graded}); the first
+failing level is the least $d$ with $D_d$ infinite, or there is none and only
+full Replacement fails (\cref{hset:ns:cor:level}).
+\item The group that remains is the centralizer $\mathcal Z$: a unique output's
+kernel is a union of $\mathcal Z_{(F)}$-orbits (\cref{hset:ns:lem:invariant}).
+For the trivial action $\mathcal Z=\Sym(A)$, whose stabilizer
+$\mathcal Z_{(F)}$ has the singletons of $F$ and the infinite set $A\setminus F$
+as its orbits, so the lemma gives source 10's kernel confinement,
+\cref{hset:zr:lem:confinement}, at $\kappa=\omega$.
+\item Full Collection fails at $\kappa=\omega$ for every such expansion, already
+in the reduct (\cref{hset:ns:prop:nocollection}), so the Collection half of the
+question has no content at this cutoff.
+\end{itemize}
+Source 10's enumeration predicate $E$ is not the graph of a group action. But
+the uniform evaluator of \cref{hset:ns:thm:evaluator}, with the parameter $a_0$,
+defines the injection $i\mapsto a_{e_i}$ of $\omega$ onto a set of $\omega$
+atoms, that is, an instance of $E$ at $\kappa=\omega$, and Replacement fails at
+domain size $\omega$, as \cref{hset:zr:thm:expandedthreshold} predicts; this
+comparison is an observation of this merge. The question stays open for
+arbitrary predicates, for group actions at uncountable $\kappa$
+(\cref{hset:ns:q:kernelbounds}) and for named relational structures
+(\cref{hset:ns:q:relational}). A dated note after
+\cref{hset:zr:q:expansions} records this answer beside the earlier one, for
+named lifts of finitely many atom injections at every $\kappa$, in
+\repo{naming-elementary-embeddings} (\cref{hset:ns:rem:nee}).
+\end{remark}
+
+\begin{remark}[The companion: source 10]
+\label{hset:ns:rem:companion}
+Source 12's setting is source 10's at $\kappa=\omega$, and several of its
+statements are cases or refinements of source 10's; both proofs are printed.
+\begin{itemize}
+\item \Cref{hset:ns:prop:basic} gives, for every named action, the axioms of
+\cref{hset:zr:thm:supportbase} other than Replacement at $\kappa=\omega$, with
+expanded Separation proved as in \cref{hset:zr:prop:expandedseparation};
+Replacement of the reduct is the trivial action in \cref{hset:ns:thm:full}.
+\Cref{hset:ns:prop:nocollection} is the
+case $\kappa=\omega$ of \cref{hset:zr:thm:limitspectrum}, with the same
+witnesses, sets of $n$ atoms. Both sources credit the model to L\'evy, through
+Hamkins--Yao.
+\item \Cref{hset:ns:lem:invariant} refines \cref{hset:zr:lem:confinement}: there
+every atom permutation is available, and invariance forces
+$\kerat(y)\subseteq\kerat(w)\cup\kerat(p)$; here only the centralizer of the
+named action acts. \Cref{hset:ns:lem:reservoir} isolates the last step of the
+proof of \cref{hset:zr:thm:supportbase}.
+\item \Cref{hset:ns:thm:purecollection} is the case $\kappa=\omega$, $P=\Act$, of
+\cref{hset:zr:thm:purecollection}, which allows any fixed finite list of
+ambient-definable predicates. Source 10 collects witnesses by ambient Collection
+and separates the pure ones; source 12 bounds their least pure ranks by ambient
+Replacement and separates them from a pure stage $V^{\mathrm{pure}}_\zeta$.
+\Cref{hset:ns:prop:surrealinvariance} is \cref{hset:zr:prop:pureidentity} at
+$\kappa=\omega$. The four items of \cref{hset:ns:cor:surreal} are, for named
+actions, the set-graph scheme $\Gr$, a birthday bound, surreal Collection $\SC$
+and definable-cut interpolation $\DCI$, by the mechanism of
+\cref{hset:zr:cor:surrealsurvive}.
+\item \Cref{hset:ns:cor:invisible} extends \cref{hset:zr:cor:nogo} in two ways:
+from the enumeration predicate to named group actions, and from full
+Replacement to the graded levels. One pure surreal universe carries the whole
+hierarchy of \cref{hset:ns:thm:strict}.
+\item The finite-kernel model is not a permutation model
+(\cref{hset:ns:rem:support}); in particular it is not the basic Fraenkel model of
+\cref{hset:kw:sec:fm}, where source 11 bounds transcendence degrees by atom
+supports.
+\end{itemize}
+Dated notes after \cref{hset:zr:thm:purecollection} and after
+\cref{hset:zr:q:expansions} point here.
+\end{remark}
+
+\begin{remark}[The report on named elementary embeddings]
+\label{hset:ns:rem:nee}
+Batch-89 manuscript 05, placed in commit \texttt{23adb85f9} as the
+research-report collection's report
+\repo{SetTheory/Cardinals/docs/reports/ordinals-and-order-types/naming-elementary-embeddings}
+(\emph{Naming Elementary Embeddings: Atom Components, Replacement, and
+Reflection}; AI-assisted, unrefereed, not formalized), names the canonical lifts
+$j_{f_1},\dots,j_{f_r}$ of finitely many atom injections as function symbols in
+the kernel models $M_\kappa(A)=\Mker_\kappa$. Source 12 did not know it: its pin
+\texttt{8dc2592e9} is an ancestor of that placement.
+\begin{itemize}
+\item \emph{The full criterion.} For permutations, naming the atom maps and
+naming their lifts give definitionally equivalent languages: the lift is
+definable from the atom map (\cref{hset:ns:prop:lift}), and the lift restricted
+to atoms is the atom map; the uniform action of the free group on the named maps
+is definable (\cref{hset:ns:prop:finitewords}). Its orbits are that report's
+components and its finite transitive types are that report's finite component
+types, so that report's small-type part $D_\omega(\boldsymbol f)$, the union of
+the finite type blocks, is $X_{\Act}$ once every component is finite. That
+report's Theorem~5.1(2) (\lbl{nee:thm:profile}, ``Component-profile
+criterion'') is therefore \cref{hset:ns:thm:full} for finitely many named
+permutations; that report printed it in ProveIt before source 12 arrived, with
+an independent proof. That report also covers non-surjective injections and every uncountable
+$\kappa$ (its Theorem~5.1(1)), which source 12 does not. New in source 12 are
+arbitrary pure set-sized group actions, the graded levels $\mathsf R_k$
+(\cref{hset:ns:thm:graded,hset:ns:cor:level}), the uniform-evaluator
+separation (\cref{hset:ns:thm:evaluator}) and the explicit hierarchy below.
+\item \emph{One cycle of each length.} That report's Example~5.5
+(\lbl{nee:ex:finite}) is \cref{hset:ns:ex:limit}; there only the failure of
+Replacement is proved, while \cref{hset:ns:thm:single} adds that every
+$\mathsf R_k$ holds.
+\item \emph{Two safe names, jointly unsafe.} That report's Corollary~7.9
+(\lbl{nee:cor:jointunsafe}) gives two permutations at the cutoff $\aleph_1$ whose
+one-symbol expansions have Replacement, Collection and reflection and whose
+joint expansion fails Replacement. \Cref{hset:ns:thm:strict} is a finite-cutoff,
+graded sharpening: at $\kappa=\omega$, two involutions with finite joint orbits
+fail exactly the levels $\mathsf R_k$ with $k\ge d$.
+\item \emph{Questions.} That report's Theorems~5.1(1) and~6.1
+(\lbl{nee:thm:robust}) answer \cref{hset:ns:q:kernelbounds} in part, and its
+Theorems~7.5 and~7.7 (\lbl{nee:thm:collection}, \lbl{nee:thm:reflection})
+answer \cref{hset:ns:q:reflection} in part, both for finitely many named
+injections (dated notes after the two questions). Its Questions~10.7 (general
+atom ideals), 10.5 (other bounded-degree signatures), 10.9 (minimal complexity
+of failed instances) and~10.12 (machine-checked certificates) are the
+counterparts of \cref{hset:ns:q:ideals,hset:ns:q:relational,hset:ns:q:complexity,hset:ns:q:formalization},
+and its Question~10.4 (commuting named automorphisms) meets
+\cref{hset:ns:q:generators}.
+\item \emph{Kunen.} As the dated note following \cref{hset:thm:kunen}
+records for that report's lifts, every named
+symmetry here fixes every pure set, so none bears on \cref{hset:thm:kunen}.
+\end{itemize}
+The two manuscripts were written independently; neither is claimed first, and
+both credit the finite-kernel model to L\'evy through Hamkins--Yao (that report
+also to Yao).
+\end{remark}
+
+\section{The finite-kernel universe and the expanded language}
+\label{hset:ns:sec:setup}
+
+\subsection{Ambient assumptions and set/class boundaries}
+Work in an ambient well-founded universe $\Uk=V(A)$ of sets with urelements, satisfying Choice, Replacement, and Collection, with $A$ a set of infinitely many atoms. Extensionality applies to sets, atoms have no members, and the ordinary cumulative hierarchy over $A$ is available. The pure sets form a universe satisfying $\ZFC$. This is an external metatheoretic setting. It can be interpreted by tagged well-founded constructions in ordinary set theory; no assertion that $\ZFC$ proves the existence of a transitive set model of itself is intended.
+
+For every object $x$, including an atom, let
+\[
+ \kerat(x)=A\cap\TC(\{x\}),\qquad
+ \Mker_\omega=\{x\in \Uk:\abs{\kerat(x)}<\omega\}.
+\]
+The universe $\Mker_\omega$ is a definable class, not a set in $\Uk$. It contains every atom separately, every finite set of atoms, and every pure set. It does not contain $A$, or any infinite set of atoms. For a set $w$,
+\begin{equation}\label{hset:ns:eq:kernelunion}
+ \kerat(w)=\bigcup_{x\in w}\kerat(x).
+\end{equation}
+For an atom $a$, $\kerat(a)=\{a\}$. The empty set and all ordinals are pure.
+
+\begin{remark}[Kernel is not permutation support]\label{hset:ns:rem:support}
+The condition is that only finitely many atoms actually occur in the transitive closure. It is not the condition that an object is fixed by the pointwise stabilizer of some finite set of atoms. An infinite atom set can have empty permutation support but cannot belong to $\Mker_\omega$. Thus $\Mker_\omega$ is not, by definition, the usual full hereditarily symmetric Fraenkel universe.
+\end{remark}
+
+Fix a pure set-coded group $\Gamma$. Let an external action of $\Gamma$ on $A$ be given. We name its graph by a ternary relation
+\[
+ \Act(g,a,b)\quad\Longleftrightarrow\quad
+ g\in\Gamma,\ a,b\in A,\ \text{and }g\cdot a=b.
+\]
+It is false on invalid arguments. The group code is an allowed pure parameter. The resulting structure is
+\[
+ \MAct=(\Mker_\omega,\in,\At,\Act).
+\]
+The relation $\Act$ is an ambient set, but it need not be an element of $\Mker_\omega$. Naming a predicate does not assert that its graph is an internal set. Later, a named atom permutation can likewise be read as its binary graph, false off the atoms. Equivalently it may be made a total function by fixing all non-atoms; the hereditary lift considered in \cref{hset:ns:prop:lift} is a different, explicitly defined total function.
+
+For every fixed formula $\varphi$, its interpretation in $\Mker_\omega$ is given externally by restricting quantifiers to finite-kernel objects and replacing $\Act$ by the given action graph. This is ordinary formula-by-formula relativization. We never use an internal truth predicate for all formulas.
+
+\subsection{Axioms that cannot be damaged in this construction}
+\begin{proposition}\label{hset:ns:prop:basic}
+For every action $\Act$, $\MAct$ satisfies the urelement versions of Extensionality, Foundation, Infinity, Pairing, Union, Power Set, Choice, and full Separation in the expanded language. Its transitive closure operation and the predicate ``$\abs{\kerat(x)}\le k$'' are absolute to $\Uk$ for $x\in \Mker_\omega$ and $k<\omega$.
+\end{proposition}
+\begin{proof}
+The class $\Mker_\omega$ is transitive. Pairing and Union preserve finite kernels. Every ambient subset of a member $w\in \Mker_\omega$ has kernel contained in $\kerat(w)$; hence every such subset belongs to $\Mker_\omega$, and the ambient power set of $w$ itself has finite kernel. This proves Power Set and also proves expanded Separation: for a fixed formula, the externally separated subset of $w$ still has kernel contained in $\kerat(w)$.
+
+An ambient well-order of $w$ has a graph whose kernel is contained in $\kerat(w)$, so that graph is in $\Mker_\omega$. This proves the well-ordering form of Choice. Alternatively an ambient choice function on an internal family has no new atoms. Foundation and set Extensionality are inherited; $\omega$ gives Infinity.
+
+The ambient transitive closure of $\{x\}$ has the same atom kernel as $x$, so it belongs to $\Mker_\omega$. It is also the internal transitive closure, by transitivity and minimality. The finite bijections witnessing kernel sizes belong to $\Mker_\omega$, and an internal bijection is an ambient one. This proves the final assertion.
+\end{proof}
+
+\begin{proposition}\label{hset:ns:prop:nocollection}
+Full Collection fails in every $\MAct$, already for a formula not using $\Act$.
+\end{proposition}
+\begin{proof}
+For every $n\in\omega$ there is a set of exactly $n$ atoms in $\Mker_\omega$. If an internal set $v$ collected such witnesses for all $n$, then every one of them would be contained in the finite set $\kerat(v)$. Taking $n>\abs{\kerat(v)}$ is impossible.
+\end{proof}
+This is the classical obstruction \cite{HamkinsYao}. Our interest is the finer behavior of unique witnesses, where automorphisms can force all outputs into one common finite atom reservoir.
+
+\subsection{Replacement and its kernel-bounded fragments}
+\begin{definition}\label{hset:ns:def:Rk}
+For a fixed metatheoretic $k\in\omega$, the scheme $\mathsf R_k$ asserts the following for every formula $\varphi(x,y,p)$ in the expanded language and all parameters $w,p\in \Mker_\omega$, with $w$ a set:
+\begin{align*}
+ &\MAct\models\forall x\in w\ \exists!y\ \varphi(x,y,p),\\
+ &\MAct\models\forall x\in w\ \forall y\bigl(\varphi(x,y,p)\to\abs{\kerat(y)}\le k\bigr)
+\end{align*}
+imply that the range $\{y:\exists x\in w\ \varphi(x,y,p)\}$ is a set in $\Mker_\omega$. The scheme $\Rep$ is the same assertion without the bound on output kernels.
+\end{definition}
+Finite tuples of parameters may be packed into one parameter. Range and graph versions are equivalent here: after forming the range, Separation on the product with $w$ gives the graph, and conversely projections of an internal graph remain internal.
+
+For fixed $k$, $\mathsf R_{k+1}$ implies $\mathsf R_k$. Every output in $\Mker_\omega$ has a finite kernel, but a definable family may have unbounded finite kernel sizes. Consequently the external collection of all schemes $\mathsf R_k$ need not imply $\Rep$. A principal example below establishes that it does not.
+
+\section{The symmetry calculus}
+\label{hset:ns:sec:symmetry}
+
+\subsection{Lifting atom symmetries}
+An ambient permutation $h$ of $A$ extends uniquely by well-founded recursion to an automorphism $\widehat h$ of $\Uk$:
+\[
+ \widehat h(a)=h(a)\quad(a\in A),\qquad
+ \widehat h(x)=\{\widehat h(z):z\in x\}\quad(x\text{ a set}).
+\]
+It preserves finite kernels and restricts to $\Mker_\omega$. It fixes every pure object. If $h$ fixes $\kerat(x)$ pointwise, then $\widehat h(x)=x$, by induction through the transitive closure.
+
+The atom permutations that preserve the named relation are exactly
+\[
+ \mathcal Z=\Aut_\Gamma(A)
+ =\{h\in\Sym(A):h(g\cdot a)=g\cdot h(a)\text{ for all }g,a\}.
+\]
+We usually omit the hat when such a permutation acts on arbitrary objects. For a finite set $F\subseteq A$, let $\mathcal Z_{(F)}$ be its pointwise stabilizer.
+
+\begin{lemma}[Unique outputs have invariant kernels]\label{hset:ns:lem:invariant}
+Suppose $w,p\in \Mker_\omega$, $F=\kerat(w)\cup\kerat(p)$, $x\in w$, and $y$ is the unique object satisfying $\varphi(x,y,p)$ in $\MAct$. Then every $h\in \mathcal Z_{(F)}$ fixes $y$, and $\kerat(y)$ is a union of $\mathcal Z_{(F)}$-orbits on atoms.
+\end{lemma}
+\begin{proof}
+Every such $h$ fixes $x$ and $p$, and it is an automorphism of the expanded structure. Hence $\varphi(x,h(y),p)$ holds. Uniqueness gives $h(y)=y$. Transitive closure is equivariant, so $h[\kerat(y)]=\kerat(y)$. This is exactly invariance of the kernel, which means it is a union of orbits.
+\end{proof}
+
+\begin{lemma}[Finite reservoir principle]\label{hset:ns:lem:reservoir}
+Fix a definable total functional relation on $w\in \Mker_\omega$. If there is an ambient finite set $B\subseteq A$ containing the kernel of every output, then its range belongs to $\Mker_\omega$.
+\end{lemma}
+\begin{proof}
+Relativize the fixed defining formula to $\Mker_\omega$. Ambient Replacement produces its range $v$ as a set in $\Uk$. Equation \eqref{hset:ns:eq:kernelunion} gives $\kerat(v)\subseteq B$, so $v\in \Mker_\omega$.
+\end{proof}
+The reservoir need not be definable in $\Mker_\omega$. Its external existence is sufficient to prove the internal scheme. In contrast, to refute the scheme we must exhibit a genuinely definable internal family. This difference is why the coding arguments below are indispensable.
+
+\subsection{Finite transitive types and the centralizer}
+Assume for this subsection that all $\Gamma$-orbits on $A$ are finite. Let $t$ range over isomorphism types of finite transitive $\Gamma$-sets. Choose a representative $O_t$ externally, and write
+\[
+ n_t=\abs{O_t},\qquad d_t=\abs{\Aut_\Gamma(O_t)},\qquad
+ m_t=\text{number of components of type }t\text{ in }A.
+\]
+Let $A_t$ be the union of those components. Types with $m_t=0$ may be ignored. The group $\Gamma$ is fixed, so ``isomorphic'' always means equivariant for that fixed group, not after changing its generators by a group automorphism.
+
+\begin{lemma}[Size of a centralizer orbit]\label{hset:ns:lem:centralizer}
+For $a\in A_t$, the following hold.
+\begin{enumerate}
+\item If $m_t$ is infinite, then $\mathcal Z a$ is infinite.
+\item If $m_t$ is finite, then $\abs{\mathcal Z a}=m_t d_t$.
+\item The automorphism group of $O_t$ acts freely on $O_t$. In particular $d_t$ divides $n_t$, and $A_t$ contains $n_t/d_t$ centralizer orbits when $0<m_t<\omega$.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+An equivariant automorphism of a transitive $\Gamma$-set is determined by the image of one point: if it fixes $a$, it fixes every $g\cdot a$. Therefore the action of $\Aut_\Gamma(O_t)$ on $O_t$ is free, so each of its orbits has $d_t$ elements.
+
+An element of $\mathcal Z$ sends a component to an isomorphic component, and its restriction is an equivariant isomorphism. Conversely, every equivariant isomorphism from one component to another extends to an element of $\mathcal Z$: for distinct components use the isomorphism in one direction and its inverse in the other, fixing all remaining components; for the same component extend an automorphism by the identity.
+
+For each target component of type $t$, the possible images of a fixed point form an orbit of size $d_t$. There are $m_t$ disjoint target components. This proves the first two assertions, and the last follows by counting.
+\end{proof}
+
+The factor is $m_td_t$, not $m_tn_t$. A transitive action can have a trivial automorphism group. The odd dihedral actions below exploit precisely this possibility.
+
+\section{A pure set of codes that detects finite exceptional strata}
+\label{hset:ns:sec:codes}
+
+\subsection{Labeled action codes}
+No canonical choice of one representative per isomorphism type is needed inside $\Mker_\omega$. Define the pure set
+\begin{equation}\label{hset:ns:eq:codes}
+ \calT=\{(n,\rho):1\le n<\omega,\ \rho:\Gamma\to\Sym(n)
+   \text{ is a homomorphism acting transitively on }n\}.
+\end{equation}
+It is a set because the group code, every $n$, and every finite symmetric group are pure, and the required function sets and their countable union exist in the pure universe. Thus $\calT\in \Mker_\omega$ without using any expanded-language Replacement.
+
+For $q=(n,\rho)\in\calT$, an \emph{equivariant realization} is an injective map $f:n\to A$ satisfying
+\begin{equation}\label{hset:ns:eq:realization}
+ \forall g\in\Gamma\ \forall i<n\quad
+ \Act(g,f(i),f(\rho(g)(i))).
+\end{equation}
+Every such map has finite kernel and belongs to $\Mker_\omega$. Its image is a whole $\Gamma$-orbit: it is invariant and transitive. Conversely an isomorphism from the coded action onto a finite atom orbit is such a realization.
+
+Define the formulas
+\begin{align*}
+ \operatorname{Type}_q(a)&\quad\Longleftrightarrow\quad
+  \At(a)\ \land\ \exists f\ \exists i<n\ (f\text{ realizes }q\land f(i)=a),\\
+ \operatorname{Point}_{q,i}(a)&\quad\Longleftrightarrow\quad
+  \At(a)\ \land\ \exists f\ (f\text{ realizes }q\land f(i)=a).
+\end{align*}
+These are single first-order definitions with variables $q,i,a$. Quantification over $g\in\Gamma$ is allowed because $\Gamma$ is an internal pure set. Each realization graph is an internal finite-kernel object. Hence the definitions have exactly their intended ambient meanings.
+
+Externally, the first formula defines the stratum $A_t$ corresponding to $q$. The second defines a centralizer orbit of a point in that type, or the empty class if the type is absent. We denote these external atom subsets by $T_q$ and $P_{q,i}$ respectively.
+
+\subsection{Total finite-output selectors}
+\begin{lemma}[Definable selectors]\label{hset:ns:lem:selectors}
+There are expanded-language formulas defining the following total functions on pure set domains:
+\begin{align*}
+ B(q)&=
+ \begin{cases}T_q,&T_q\text{ is finite},\\ \varnothing,&T_q\text{ is infinite},\end{cases}
+ &&q\in\calT,\\
+ B_k(q,i)&=
+ \begin{cases}P_{q,i},&\abs{P_{q,i}}\le k,\\ \varnothing,&\abs{P_{q,i}}>k,\end{cases}
+ &&(q,i)\in\calQ:=\{(q,i):q=(n,\rho)\in\calT,\ i<n\}.
+\end{align*}
+Every value is a finite set of atoms in $\Mker_\omega$; the values of $B_k$ have kernel size at most $k$.
+\end{lemma}
+\begin{proof}
+Abbreviate the single formula
+\[
+ \Phi(q,z)\quad\Longleftrightarrow\quad
+ z\text{ is a finite set}\ \land\
+ \forall a\ (a\in z\leftrightarrow\operatorname{Type}_q(a)).
+\]
+Then define $B(q)=y$ by
+\[
+ \Phi(q,y)\ \lor\ \bigl(y=\varnothing\ \land\ \neg\exists z\ \Phi(q,z)\bigr).
+\]
+Set Extensionality makes the first possible value unique. It exists in $\Mker_\omega$ exactly when the external stratum is finite. If it does not exist, the second disjunct gives the unique value $\varnothing$. When the stratum is empty the first disjunct gives $\varnothing$ and the second is false, with no ambiguity.
+
+For $B_k$ replace the type predicate by the pointed predicate and require $z$ to have at most $k$ members. All exact finite sets involved belong to $\Mker_\omega$, so the same argument applies. The domain $\calQ$ is pure and set-sized. The functions are definable classes on internal sets; this lemma does not assert that their graphs belong to $\Mker_\omega$.
+\end{proof}
+This construction detects both finite multiplicity and the smaller pointed orbits. It uses neither an internal set of all atoms nor a choice of one atom from each component.
+
+\section{The exact criterion for full Replacement}
+\label{hset:ns:sec:full}
+Define the ambient exceptional set
+\begin{equation}\label{hset:ns:eq:exceptional}
+ X_{\Act}=\bigcup\{A_t:0<m_t<\omega\},
+\end{equation}
+where only finite transitive orbit types occur in the union. This definition still makes sense if some other atom orbits are infinite.
+
+\begin{theorem}[Full Replacement classification]\label{hset:ns:thm:full}
+For a uniformly named action of a pure set-sized group on $A$,
+\[
+ \boxed{\quad
+ \MAct\models\Rep
+ \quad\Longleftrightarrow\quad
+ \bigl(\forall a\in A\ \abs{\Gamma a}<\omega\bigr)
+ \ \land\ \abs{X_{\Act}}<\omega.
+ \quad}
+\]
+\end{theorem}
+\begin{proof}
+\emph{Necessity of finite generated orbits.}
+Suppose $\Gamma a$ is infinite for some atom $a$. The formula $\Act(g,a,y)$, with parameter $a$, defines a total atom-valued function on the pure set $\Gamma$. Its range is $\Gamma a$. No internal set can be this infinite set of atoms. Therefore Replacement fails, already with outputs of kernel size one.
+
+\emph{Necessity of a finite exceptional set.}
+Consider the definable selector $B$ from \cref{hset:ns:lem:selectors}. A finite type stratum is exactly a stratum with finitely many components, since every component of that type has the same positive finite size. Every realized finite orbit type is represented by a code in $\calT$. Consequently
+\[
+ \bigcup_{q\in\calT}B(q)=X_{\Act}
+\]
+externally. If Replacement held, the range of $B$ would be an internal set, and its union would be the internal atom set $X_{\Act}$. Thus $X_{\Act}$ would be finite.
+
+\emph{Sufficiency.}
+Assume every $\Gamma$-orbit is finite and $X_{\Act}$ is finite. Let $w,p\in \Mker_\omega$ and let $\varphi$ define unique outputs on $w$. Put
+\[
+ F=\kerat(w)\cup\kerat(p),\qquad
+ B_F=X_{\Act}\cup\bigcup_{a\in F}\Gamma a.
+\]
+This is an ambient finite set of atoms.
+
+We claim that every atom outside $B_F$ has infinite orbit under $\mathcal Z_{(F)}$. Such an atom $b$ is in an infinitely repeated finite orbit type, and its component does not meet $F$. At most finitely many components meet $F$. Infinitely many isomorphic components remain disjoint from $F$, and equivariant swaps from the component of $b$ to each of them belong to $\mathcal Z_{(F)}$. The images of $b$ are therefore infinitely many distinct atoms.
+
+By \cref{hset:ns:lem:invariant}, the finite kernel of each unique output is invariant under $\mathcal Z_{(F)}$. It cannot contain an atom with an infinite $\mathcal Z_{(F)}$-orbit. Thus every output kernel is contained in $B_F$. The finite reservoir principle now puts the range in $\Mker_\omega$, as required.
+\end{proof}
+
+\begin{corollary}\label{hset:ns:cor:finitegroup}
+Every action of a finite pure group preserves full Replacement. In particular, naming one atom permutation of finite order, including an arbitrary involution, preserves Replacement.
+\end{corollary}
+\begin{proof}
+Every orbit has size at most $\abs{\Gamma}$. A finite group has only finitely many transitive action types, since these are represented by its coset actions on subgroups. Therefore only finitely many finite strata can contribute to $X_{\Act}$, and each is finite.
+\end{proof}
+
+Taking the trivial group recovers Replacement for the classical reduct $(\Mker_\omega,\in,\At)$. There is one transitive type, a singleton, with infinitely many copies; hence $X_{\Act}=\varnothing$.
+
+\begin{remark}[Two distinct obstructions]
+Infinite generated orbits are an accessibility obstruction: one parameter already generates infinitely many atoms. Infinitely many finitely repeated finite types are a definable identification obstruction: no single orbit is large, but a pure code can identify each entire exceptional finite stratum. The latter is not excluded by local finiteness of the action.
+\end{remark}
+
+\section{The exact bounded-kernel criterion}
+\label{hset:ns:sec:graded}
+For every metatheoretic $k\in\omega$ define the ambient set
+\[
+ D_k=\{a\in A:\abs{\mathcal Z a}\le k\}.
+\]
+When every $\Gamma$-orbit is finite, \cref{hset:ns:lem:centralizer} gives the explicit formula
+\begin{equation}\label{hset:ns:eq:Dk}
+ D_k=\bigcup\{A_t:0<m_t<\omega,\ m_td_t\le k\}.
+\end{equation}
+Also $X_{\Act}=\bigcup_{k<\omega}D_k$ in that case.
+
+\begin{theorem}[Kernel-bounded Replacement classification]\label{hset:ns:thm:graded}
+For every uniformly named action as above:
+\begin{enumerate}
+\item $\MAct\models\mathsf R_0$ without any hypothesis on its orbits.
+\item For every fixed $k\ge1$,
+\[
+ \boxed{\quad
+ \MAct\models\mathsf R_k
+ \quad\Longleftrightarrow\quad
+ \bigl(\forall a\in A\ \abs{\Gamma a}<\omega\bigr)
+ \ \land\ \abs{D_k}<\omega.
+ \quad}
+\]
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+For $k=0$, every output is pure. The ambient range set is then pure and belongs to $\Mker_\omega$, so \cref{hset:ns:lem:reservoir} applies with the empty reservoir.
+
+Now fix $k\ge1$. An infinite $\Gamma$-orbit gives the atom-valued counterexample from \cref{hset:ns:thm:full}; its outputs have kernel size one. Thus $\mathsf R_k$ requires all generated orbits to be finite.
+
+Assume this necessary condition. For each pointed code $(q,i)$, $P_{q,i}$ is either empty or one full $\mathcal Z$-orbit, by the component-isomorphism argument in \cref{hset:ns:lem:centralizer}. Every atom occurs in at least one such pointed code. Therefore the selector $B_k$ satisfies
+\[
+ \bigcup_{(q,i)\in\calQ}B_k(q,i)=D_k.
+\]
+If $D_k$ were infinite, $\mathsf R_k$ would collect its finite subsets $B_k(q,i)$ into a set, and Union would give the infinite atom set $D_k$ in $\Mker_\omega$. This is impossible. Necessity follows.
+
+For sufficiency suppose all generated orbits are finite and $D_k$ is finite. Consider a definable total functional relation on $w\in \Mker_\omega$, with parameter $p$, all of whose outputs have kernel size at most $k$. Let $F=\kerat(w)\cup\kerat(p)$. Form the finite reservoir
+\begin{equation}\label{hset:ns:eq:gradedreservoir}
+ C_F=D_k\ \cup\ \bigcup_{a\in F}\Gamma a\ \cup\
+ \bigcup\{A_t:0<m_t<\omega,\ A_t\cap F\ne\varnothing\}.
+\end{equation}
+There are only finitely many types touched by $F$, and each stratum in the last union is finite. Thus $C_F$ really is finite.
+
+We show that every atom $b\notin C_F$ has a $\mathcal Z_{(F)}$-orbit of size greater than $k$. If its type is infinitely repeated, its component misses $F$, and infinitely many untouched isomorphic components yield an infinite orbit under the stabilizer. If its type is finitely repeated, the whole stratum is disjoint from $F$, by the last term of \eqref{hset:ns:eq:gradedreservoir}. All equivariant automorphisms and component swaps supported on that stratum fix $F$, so the $\mathcal Z_{(F)}$-orbit of $b$ equals its $\mathcal Z$-orbit. Its size exceeds $k$ because $b\notin D_k$.
+
+Every output kernel is invariant under $\mathcal Z_{(F)}$ and has at most $k$ elements. It therefore cannot contain $b\notin C_F$. All output kernels are contained in $C_F$, and the finite reservoir principle completes the proof.
+\end{proof}
+
+\begin{remark}[Why the parameter correction matters]\label{hset:ns:rem:parameter}
+Using only $D_k\cup\bigcup_{a\in F}\Gamma a$ in \eqref{hset:ns:eq:gradedreservoir} would be wrong. A parameter can fix one component of a finitely repeated type and thereby prevent that component from being exchanged with another. The remaining centralizer orbits can shrink. The correct argument includes the \emph{whole finitely repeated stratum} whenever its type is touched by $F$. This is the essential extra step needed to prove the scheme for arbitrary impure parameters rather than merely for parameter-free definitions.
+\end{remark}
+
+\begin{corollary}[First failing level]\label{hset:ns:cor:level}
+Assume all generated orbits are finite. If a least positive integer $d$ with infinite $D_d$ exists, then $\MAct$ satisfies $\mathsf R_k$ exactly for $k<d$. If every $D_k$ is finite but $\bigcup_kD_k$ is infinite, all fixed finite levels hold and full Replacement fails.
+\end{corollary}
+This yields an exact spectrum, not just lower and upper estimates.
+
+\section{One permutation: a complete classification and a limit gap}
+\label{hset:ns:sec:single}
+
+\subsection{From a named permutation to a uniform action}
+Let $\pi$ be a named permutation of atoms. The action of $\mathbb Z$ by finite iteration is first-order definable from $\pi$: a finite path witnesses $\pi^n(a)=b$ for $n\ge0$, and inverse paths handle negative $n$. Every individual path is a finite-kernel set, regardless of whether the whole orbit is finite. Thus this definition does not use Replacement in the expanded language. Conversely $\pi$ is the action of $1$. The two presentations are definitionally equivalent for the schemes at issue.
+
+Let $c_n$ be the ambient number of cycles of exact length $n$. For a transitive $n$-cycle, the equivariant automorphism group is the cyclic group of order $n$, acting by rotations. Hence $d_n=n$.
+
+\begin{theorem}[Single-permutation spectrum]\label{hset:ns:thm:single}
+For a named atom permutation $\pi$:
+\begin{enumerate}
+\item Full Replacement holds if and only if all cycles are finite and
+\[
+ \bigcup\{\text{atoms in cycles of length }n:0<c_n<\omega\}
+\]
+is finite.
+\item If all cycles are finite, then every fixed $\mathsf R_k$ holds.
+\item If there is an infinite cycle, $\mathsf R_1$ fails.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+The first and third assertions are immediate from the classifications. For the second, the only lengths contributing to $D_k$ satisfy $nc_n\le k$. In particular $n\le k$, and for each such $n$ the whole stratum has at most $k$ atoms. There are finitely many possible $n$, so $D_k$ is finite. Apply \cref{hset:ns:thm:graded}.
+\end{proof}
+
+\begin{example}[Every finite level without full Replacement]\label{hset:ns:ex:limit}
+Take atoms externally labeled
+\[
+ A=\{a_{n,i}:n\ge2,\ i\in\mathbb Z/n\mathbb Z\},\qquad
+ \pi(a_{n,i})=a_{n,i+1}.
+\]
+There is exactly one cycle of each length $n\ge2$. All $\mathsf R_k$ hold, but $X_{\Act}=A$ is infinite, so full Replacement fails. An explicit failing function is
+\[
+ n\longmapsto C_n=\{a:\text{$a$ has exact $\pi$-period $n$}\},\qquad n\ge2.
+\]
+Its $n$th value is an internal set of $n$ atoms. Its range cannot be a set, since its union is $A$.
+\end{example}
+
+The assertion ``every fixed $\mathsf R_k$ holds'' is a metatheoretic statement about all the fixed-bound schemes. It must not be conflated with a schema allowing an internally varying bound $k(x)$ across the domain. In \cref{hset:ns:ex:limit}, the bound $k(n)=n$ is already enough to reveal the failure.
+
+\begin{example}[Infinite order can still be harmless]\label{hset:ns:ex:safe}
+Instead take infinitely many cycles of each positive finite length. Every finite orbit type is infinitely repeated, so $X_{\Act}=\varnothing$ and full Replacement holds. The permutation has infinite order, because its cycle lengths are unbounded. Thus finite order is sufficient but not necessary for preservation.
+\end{example}
+
+\begin{corollary}[Minimal signature for a bounded-level failure]\label{hset:ns:cor:onevs2}
+A single involution never destroys Replacement. A single arbitrary permutation with only finite cycles cannot destroy any fixed $\mathsf R_k$. Two involutions suffice to destroy any prescribed positive level while preserving all lower ones, as proved next.
+\end{corollary}
+
+\section{Two involutions realize every finite threshold}
+\label{hset:ns:sec:strict}
+
+\subsection{The elementary infinite-orbit mechanism}
+First consider atoms $a_z$ indexed externally by $z\in\mathbb Z$, with
+\[
+ \sigma(a_z)=a_{-z},\qquad \tau(a_z)=a_{1-z}.
+\]
+Both are involutions. Each separate expansion satisfies Replacement by \cref{hset:ns:cor:finitegroup}. But $\tau\sigma(a_z)=a_{z+1}$, so the joint expansion has an infinite generated orbit and fails $\mathsf R_1$. This example illustrates one obstruction, but does not show that finite joint orbits are insufficient. The following construction does.
+
+\subsection{Odd dihedral components with repeated copies}
+Fix $d\ge1$. Externally label the atoms by
+\begin{equation}\label{hset:ns:eq:Ad}
+ A^{(d)}=\{a_{n,i,j}:n\ge3\text{ odd},\ i\in\mathbb Z/n\mathbb Z,\ 0\le j<d\}.
+\end{equation}
+These labels specify the ambient construction; they are \emph{not} predicates or an enumeration inside the model. Name just two atom involutions:
+\begin{equation}\label{hset:ns:eq:involutions}
+ \sigma(a_{n,i,j})=a_{n,-i,j},\qquad
+ \tau(a_{n,i,j})=a_{n,1-i,j}.
+\end{equation}
+Let $r=\tau\sigma$, so that $r(a_{n,i,j})=a_{n,i+1,j}$. The generated group action can be taken to be that of the pure infinite dihedral group, or equivalently of the free group on the two named symbols with their involution relations. Uniform evaluation of finite words is definable by finite paths.
+
+\begin{lemma}[Rigidity of an odd component]\label{hset:ns:lem:odd}
+On a single component $\{a_{n,i,j}:i\in\mathbb Z/n\mathbb Z\}$ with $n$ odd, an equivariant automorphism commuting with both $\sigma$ and $\tau$ is the identity. Between two copies with the same $n$, there is exactly one equivariant isomorphism: it preserves $i$.
+\end{lemma}
+\begin{proof}
+A bijection commuting with the rotation $r$ has the form $i\mapsto i+c$. Commutation with $\sigma$ requires
+\[
+ -i+c=-i-c\pmod n,
+\]
+so $2c=0\pmod n$. Since $n$ is odd, $c=0$. The same computation applies between two separately labeled copies.
+\end{proof}
+
+\begin{lemma}[Exact centralizer]\label{hset:ns:lem:strictcentralizer}
+For the joint action \eqref{hset:ns:eq:involutions},
+\[
+ \mathcal Z\cong\prod_{\substack{n\ge3\\ n\text{ odd}}}\Sym(d),
+\]
+where the $n$th factor permutes the $d$ copies of the $n$-component. Every $\mathcal Z$-orbit has exactly $d$ atoms, namely
+\[
+ \{a_{n,i,j}:0\le j<d\}
+\]
+for a fixed $n,i$.
+\end{lemma}
+\begin{proof}
+Any commuting permutation preserves the exact period under $r$, so it cannot exchange components with different $n$. It must permute the $d$ components with a fixed $n$. By \cref{hset:ns:lem:odd}, once the target copy is chosen, the map inside the component is forced to preserve $i$. Conversely arbitrary copy permutations at each $n$ commute with both named involutions. This proves the product description and the orbit formula.
+\end{proof}
+
+\begin{theorem}[A strict hierarchy from two individually harmless involutions]\label{hset:ns:thm:strict}
+For every integer $d\ge1$, let
+\[
+ \mathcal N_d=(\Mker_\omega(A^{(d)}),\in,\At,\sigma,\tau)
+\]
+be the structure just constructed. Then:
+\begin{enumerate}
+\item Each of its one-involution reducts satisfies full Replacement.
+\item Every joint atom orbit is finite.
+\item For every fixed $k\in\omega$,
+\[
+ \mathcal N_d\models\mathsf R_k\quad\Longleftrightarrow\quad k<d.
+\]
+\item A pure-domain, parameter-free definable family of $d$-atom sets explicitly witnesses the failure at $d$.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+The first assertion follows from \cref{hset:ns:cor:finitegroup}. For each $n,j$, the rotation makes the $n$-element component transitive, and neither involution changes $n$ or $j$. Hence all joint orbits are finite.
+
+By \cref{hset:ns:lem:strictcentralizer}, $D_k=\varnothing$ for $k<d$, whereas $D_k=A^{(d)}$ for $k\ge d$. The latter set is infinite. The exact spectrum follows from \cref{hset:ns:thm:graded}, including the always-valid level zero.
+
+For the explicit failure, let $I=\{n\in\omega:n\ge3\text{ and }n\text{ odd}\}$. Define
+\begin{equation}\label{hset:ns:eq:witness}
+ Y_n=\{a:\At(a),\ \sigma(a)=a,\ \text{and $a$ has exact $r$-period }n\}.
+\end{equation}
+The period test is first-order definable using a finite $r$-path and the condition that no smaller positive iterate returns to $a$. In each odd $n$-component, $\sigma(i)=i$ means $2i=0$, so its unique solution is $i=0$. Thus
+\[
+ Y_n=\{a_{n,0,j}:0\le j<d\},\qquad \abs{\kerat(Y_n)}=d.
+\]
+For each $n\in I$, this finite set belongs to the model and is uniquely characterized by \eqref{hset:ns:eq:witness}. The family is total and definable with no impure parameters. A set of all its values would have infinite atom kernel, since these nonempty values are pairwise disjoint for different $n$. Its range therefore does not exist internally.
+\end{proof}
+
+\begin{corollary}[Failure at the atom-valued level]\label{hset:ns:cor:atomfailure}
+For $d=1$, the two involutions individually preserve full Replacement but jointly fail even atom-valued Replacement, although every joint orbit is finite.
+\end{corollary}
+\begin{proof}
+In this case the unique atom fixed by $\sigma$ and of exact $r$-period $n$ is itself a definable output. These atoms form an infinite family indexed by the pure set $I$.
+\end{proof}
+
+\subsection{What the construction explains}
+For $d>1$, there is no parameter-free way to choose one of the $d$ atoms in $Y_n$ uniformly: the remaining $\Sym(d)$ symmetry can exchange them. A finite parameter set can break this symmetry in only finitely many component types. The corrected reservoir argument in \cref{hset:ns:rem:parameter} handles those finitely many exceptions. Therefore arbitrary parameter use does not turn the failure at $d$ into a failure below $d$.
+
+No appeal to the failure of Choice is involved. Every internal set is well-orderable. The difficulty is that the collection of all $Y_n$ is not an internal set to which Choice can first be applied. This is exactly the distinction between individual finite existence and set-indexed collection of those objects.
+
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}Xccc@{}}
+\toprule
+Expansion & Joint orbits & Fixed $\mathsf R_k$ & Full $\Rep$\\
+\midrule
+One finite-order permutation & Finite & All & Yes\\
+One cycle of each length $n\ge2$ & Finite & All & No\\
+Infinitely many cycles of every length & Finite & All & Yes\\
+Two reflections of $\mathbb Z$ & Infinite & Only $k=0$ & No\\
+Two involutions on $A^{(d)}$ & Finite & Exactly $k<d$ & No\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\section{Separate symbols, uniform evaluation, and named automorphisms}
+\label{hset:ns:sec:language}
+
+\subsection{Finite tuples of permutations}
+\begin{proposition}\label{hset:ns:prop:finitewords}
+For finitely many named atom permutations $\pi_1,\ldots,\pi_s$, their uniform action by words in a pure free group is definable by finite-path formulas. Consequently \cref{hset:ns:thm:full,hset:ns:thm:graded} apply to finite-permutation languages without adding a new set-existence assumption.
+\end{proposition}
+\begin{proof}
+A group word has finite length and uses generator symbols or their inverses. For a fixed word and starting atom, each next point exists uniquely. Its finite evaluation trace is an ambient finite set of atoms and therefore an internal object. A single formula says that a trace follows the word, with inverse steps expressed by the reversed generator relation. The endpoint is unique. This defines the evaluator uniformly on the pure set of reduced words. Conversely each generator action is a special case of the evaluator. Formula translation preserves all the schemes.
+\end{proof}
+
+\subsection{An infinite signature is not a uniform evaluator}
+\begin{proposition}[Finite-symbol principle]\label{hset:ns:prop:language}
+For an arbitrary family of separately named atom permutations, full Replacement holds in the resulting first-order language if and only if it holds in every finite-symbol reduct. The same assertion holds for each fixed $\mathsf R_k$.
+\end{proposition}
+\begin{proof}
+Every first-order formula contains only finitely many nonlogical symbols. Its scheme instance therefore occurs in one finite-symbol reduct. The converse follows by restricting the language.
+\end{proof}
+
+This does not authorize quantifying over the names of all those symbols. Such quantification becomes possible only after an additional uniform evaluator has been supplied.
+
+\begin{theorem}[Separate involutions safe; a uniform evaluator unsafe]\label{hset:ns:thm:evaluator}
+There is a countable language naming involutions $(\tau_i)_{i<\omega}$ such that the expansion satisfies full Replacement, but adding a single relation $T(i,a,b)$ for their uniform evaluation destroys $\mathsf R_1$.
+\end{theorem}
+\begin{proof}
+Let $V=\bigoplus_{i<\omega}\mathbb Z/2\mathbb Z$ be the pure group of finitely supported binary sequences. Take atoms $a_v$ labeled externally by $v\in V$, and define
+\[
+ \tau_i(a_v)=a_{v+e_i}.
+\]
+Each $\tau_i$ is an involution. Any finite list of these generators acts through a finite group. Its expansion satisfies full Replacement by \cref{hset:ns:cor:finitegroup}. The finite-symbol principle gives Replacement for the entire language of separate symbols.
+
+Now add the relation $T(i,a,b)\leftrightarrow b=\tau_i(a)$ for $i\in\omega$. With parameter $a_0$, it defines on the pure set $\omega$ the function
+\[
+ i\longmapsto a_{e_i}.
+\]
+These are distinct atoms. Its range is not an internal set, so $\mathsf R_1$ fails. The external labels $v$ were never part of the original language; the added evaluator is exactly the new uniform information used in this argument.
+\end{proof}
+
+\subsection{The same results for automorphisms of the membership universe}
+The named atom permutations can also be viewed as named automorphisms of the whole universe $\Mker_\omega$. This is not a different source of pathology.
+
+\begin{proposition}[Definability of a hereditary lift]\label{hset:ns:prop:lift}
+For a named atom permutation $\pi$, the graph of its canonical hereditary lift $\widehat\pi$ is first-order definable over $\Mker_\omega$ without assuming expanded Replacement. The analogous assertion holds uniformly for a pure set-coded group action.
+\end{proposition}
+\begin{proof}
+For a given object $x$, use the internal set $D=\TC(\{x\})$. In the ambient universe, the graph of $\widehat\pi\restr D$ has kernel contained in
+\[
+ \kerat(x)\cup\pi[\kerat(x)],
+\]
+which is finite. Therefore this graph belongs to $\Mker_\omega$.
+
+A formula characterizes it as a function $f$ on the transitive set $D$ such that $f(a)=\pi(a)$ for atoms in $D$ and, for every set $z\in D$,
+\[
+ \forall u\ \bigl(u\in f(z)\leftrightarrow\exists v\in z\ u=f(v)\bigr),
+\]
+with $f(z)$ required to be a set. Well-founded induction proves uniqueness. Asking for such a function with $f(x)=y$ therefore defines $y=\widehat\pi(x)$. This formula uses an existing graph on one transitive closure, not a class-sized graph. For a fixed $g\in\Gamma$, replace $\pi(a)$ by the relation $\Act(g,a,b)$; the argument is uniform in $g$.
+\end{proof}
+Thus the hierarchy may equivalently be stated as a hierarchy produced by naming two involutive automorphisms of the membership universe. Their individual well-founded recursive behavior is not enough to guarantee that Replacement survives their joint naming.
+
+\section{Why pure surreal mathematics cannot see these failures}
+\label{hset:ns:sec:surreal}
+
+\subsection{A stronger pure-output theorem}
+\begin{theorem}[Expanded Collection for pure-valued relations]\label{hset:ns:thm:purecollection}
+Let $\Act$ be any named action, including one violating the criteria above. Let $w,p\in \Mker_\omega$, with $w$ a set, and let $\varphi$ be an expanded-language formula. If
+\[
+ \MAct\models\forall x\in w\ \exists y\ (y\text{ is pure}\land\varphi(x,y,p)),
+\]
+then there is a pure set $b\in \Mker_\omega$ such that
+\[
+ \MAct\models\forall x\in w\ \exists y\in b\ \varphi(x,y,p).
+\]
+In particular, full Replacement for pure-valued functions holds, even with impure parameters and occurrences of $\Act$.
+\end{theorem}
+\begin{proof}
+Relativize the fixed formula to $\Mker_\omega$ in the ambient universe. For each $x\in w$, let $\alpha_x$ be the least pure rank at which a pure witness appears. This least ordinal exists because a witness exists. Ambient Replacement bounds the ordinals $\alpha_x$ by an ordinal $\zeta$. Now define in $\Uk$
+\[
+ b=\{y\in V_\zeta^{\mathrm{pure}}:\exists x\in w\ \varphi^{\Mker_\omega}(x,y,p)\},
+\]
+choosing $\zeta$ sufficiently large that every least-rank witness belongs to $V_\zeta^{\mathrm{pure}}$. This is an ambient set of pure objects, hence is itself pure and belongs to $\Mker_\omega$. It collects witnesses for the internal relation. No global choice of witnesses, and no internal expanded Replacement, has been used.
+
+When the relation is functional, its exact ambient range consists entirely of pure objects and is a pure set. Alternatively use Separation after the preceding Collection assertion to obtain that range internally.
+\end{proof}
+The proof is valid for any fixed additional predicates that are externally definable from ambient set parameters, not merely actions. Its strength comes from retaining all pure ranks, not from any special property of the centralizer.
+
+\subsection{The sign-sequence surreal class is unchanged}
+Use the pure sign-sequence presentation
+\[
+ \No=\bigcup_{\alpha\in\Ord}\{-,+\}^{\alpha},
+\]
+where $-$ and $+$ are two fixed distinct pure objects. A surreal number is a set-coded function of ordinal length, and its birthday is that length. This is the familiar sign-expansion presentation, also central to the repository's construction \cite{Gonshor,ProveItSurrealNS}.
+
+\begin{proposition}[Pure invariance]\label{hset:ns:prop:surrealinvariance}
+The structures $\Uk$ and $\Mker_\omega$ have identical pure sets, pure ordinals, and pure sign-sequence surreal numbers. Any relation or operation defined by a fixed formula whose quantifiers are restricted to the pure universe has the same interpretation in both.
+\end{proposition}
+\begin{proof}
+An ambient object is pure exactly when its kernel is empty, so every ambient pure object lies in $\Mker_\omega$; conversely every object pure in $\Mker_\omega$ is ambiently pure by \cref{hset:ns:prop:basic}. Membership on these objects is unchanged. Induction on formulas restricted to the pure domain proves the last assertion. In particular the ordinal and sign-sequence definitions are identical.
+\end{proof}
+
+This applies to the ordinary pure constructions of the surreal ordered field, its complexification, and the omnific integers. It does not validate every unrefereed claim in a repository report, and it does not identify an atom-enriched presentation with the pure presentation without an explicit coding theorem.
+
+\begin{corollary}[Surreal-valued Replacement and cuts]\label{hset:ns:cor:surreal}
+For every named action $\Act$, all of the following hold in $\MAct$, for expanded-language formulas with arbitrary internal parameters.
+\begin{enumerate}
+\item Every definable set-domain surreal-valued function has an internal set range and graph.
+\item The birthdays of its values are bounded by an ordinal.
+\item Every definable relation on an internal set with surreal witnesses has an internal set collecting surreal witnesses.
+\item Given definable total functions $\ell:I\to\No$ and $r:J\to\No$ on internal sets, with $\ell(i)<r(j)$ for all $i,j$, there is a unique simplest surreal strictly between all the lower and upper values.
+\end{enumerate}
+\end{corollary}
+\begin{proof}
+Surreal values are pure, so the first and third assertions follow from \cref{hset:ns:thm:purecollection}. The range of birthday lengths is a pure set of ordinals; its union, or a larger successor ordinal, bounds every birthday. For the last assertion, collect both ranges into actual pure sets $L,R$. They satisfy $L<R$ in the unchanged surreal order. The standard simplicity theorem supplies the unique shortest sign sequence between these set bounds \cite{Gonshor}. Its pure code belongs to $\Mker_\omega$.
+\end{proof}
+
+\subsection{A non-recoverability statement}
+\begin{corollary}\label{hset:ns:cor:invisible}
+Pure surreal-valued Replacement, pure surreal-valued Collection, and definable set-indexed surreal cut interpolation do not together imply $\mathsf R_1$ in the urelement setting of this article. More generally, the entire hierarchy of \cref{hset:ns:thm:strict} is compatible with one and the same pure surreal universe.
+\end{corollary}
+\begin{proof}
+Apply \cref{hset:ns:cor:surreal} to $\mathcal N_1$, which fails $\mathsf R_1$. For the second assertion, build the countable atom sets $A^{(d)}$ over a fixed pure universe. All resulting structures have that same pure universe and its canonical surreal class; their kernel-bounded spectra are different by \cref{hset:ns:thm:strict}.
+\end{proof}
+
+There is no contradiction with a theorem that recovers full Replacement from ordinal or surreal bounding over a \emph{pure} base theory with additional hierarchy axioms. The present ambient theory has objects with nonempty atom kernels. The missing sets would contain infinitely many atoms, whereas every pure surreal code has empty kernel. The type of the output matters.
+
+\section{Finite verification and a formalization roadmap}
+\label{hset:ns:sec:verification}
+
+\subsection{The finite algorithm}
+The accompanying program, shipped as \path{code/12-named-symmetries-verify_orbit_spectra.py}, uses only the Python standard library. A finite action is supplied as a tuple of permutations on $\{0,\ldots,N-1\}$. Its generated components are found by graph traversal. To find every equivariant isomorphism between two transitive components of size $n$, the algorithm tries each possible image of one base point and propagates it along generator and inverse-generator edges. Inconsistent assignments are rejected.
+
+\begin{proposition}[Correctness of the base-image algorithm]\label{hset:ns:prop:algorithm}
+For two finite transitive actions with the same generator labels, the base-image propagation algorithm returns exactly their equivariant bijections. With $s$ generators and $n$ points in each action it uses $O(sn^2)$ elementary transition checks, with $O(n)$ working memory per candidate beyond stored input and output.
+\end{proposition}
+\begin{proof}
+Any equivariant map is forced by the image of one point, because every point is reached by a generator word. Therefore a genuine isomorphism follows the algorithm's propagation and is never rejected. Conversely a successful propagation gives a total map commuting with every generator and inverse. Its image is a nonempty invariant subset of the transitive target, hence is the whole target. Equal finite cardinalities then make it bijective. There are $n$ candidate base images; each propagation visits at most $n$ points and checks $2s$ edges per point. This gives the stated bound.
+\end{proof}
+
+To compute centralizer orbits on a disjoint union, the program considers all equivariant isomorphisms between pairs of generated components. Each such isomorphism extends to a global commuting permutation, as in \cref{hset:ns:lem:centralizer}; their point images therefore give the exact centralizer orbit relation. This avoids enumerating the potentially factorial-size centralizer itself.
+
+\subsection{Executed checks and what they establish}
+The delivered script was run successfully and produced the record shipped as \path{data/12-named-symmetries-verification_results.json}. It reports \textbf{203 checks}, including \textbf{35 independent brute-force comparisons} with enumeration of every permutation on domains of size at most seven. The cases include regular cycles, odd dihedral components with repeated copies, finite disjoint unions of distinct odd lengths, and malformed input rejection. Even dihedral lengths provide negative controls: the local centralizer has two elements rather than one, so the oddness hypothesis is tested rather than silently ignored.
+
+\begin{center}
+\begin{tabular}{@{}rrrr@{}}
+\toprule
+Odd cycle length $n$ & Copies $d$ & Centralizer orbit size & Fixed atoms per $n$\\
+\midrule
+3 & 1 & 1 & 1\\
+3 & 5 & 5 & 5\\
+9 & 2 & 2 & 2\\
+9 & 9 & 9 & 9\\
+19 & 5 & 5 & 5\\
+19 & 9 & 9 & 9\\
+\bottomrule
+\end{tabular}
+\end{center}
+A finite truncation itself has only finitely many atoms and does \emph{not} exhibit a failure of Replacement. The computations check the finite component facts used in the infinite proofs. The passage from infinitely many components to nonexistence of an internal range is proved mathematically in \cref{hset:ns:thm:strict}, not numerically tested.
+
+\subsection{A staged Lean/Rocq development}
+The repository distinguishes mathematical statements, executable checks, and audited formal proofs \cite{ProveItSurrealNS}. A compatible implementation should preserve that separation.
+
+\paragraph{Stage 1: finite actions.}
+Formalize the facts that equivariant maps from a transitive action are determined by a base image, that the automorphism group acts freely, and that its orbit size multiplies by the number of repeated components. Then formalize the two odd-dihedral permutations and their centralizer orbit calculation. This stage needs no surreal theory and no urelement model theory.
+
+\paragraph{Stage 2: the kernel and automorphism interface.}
+Use a well-founded set-with-atoms representation, with an explicit atom sort disjoint from sets. Prove transitive-closure absoluteness, the kernel union identity, and hereditary extension of atom permutations. The finite reservoir lemma should have separate hypotheses for ambient range existence and for a finite atom bound. In particular, it must not assume the very expanded Replacement scheme that it is intended to prove.
+
+\paragraph{Stage 3: formulas and relativization.}
+Use explicit first-order syntax for $\in$, $\At$, and the action relation. Prove the automorphism-invariance theorem by induction on formulas. Code the pure set $\calT$ of finite actions and the selectors from \cref{hset:ns:lem:selectors}. This is the necessity half of the classification and is not supplied merely by verifying group-theoretic facts.
+
+\paragraph{Stage 4: the classification.}
+Derive \cref{hset:ns:thm:full,hset:ns:thm:graded}, retaining the parameter-sensitive reservoir \eqref{hset:ns:eq:gradedreservoir} as a named lemma. A theorem statement should quantify over each formula and its finite parameter tuple, rather than over an unproved class of arbitrary internal functions.
+
+\paragraph{Stage 5: pure output and surreal specialization.}
+Prove \cref{hset:ns:thm:purecollection} at the universe level and only then specialize to the pure sign-sequence representation. A universe-bounded Lean type of surreals is a set-sized approximation in a larger metatheory; it should not be silently treated as an internal set of all class surreals. The interface must state which universe bounds are being used.
+
+\paragraph{Trust boundary.}
+No Lean or Rocq proof files are claimed in this package. A program checking finitely many permutations does not certify the set-theoretic metatheorems. Conversely, a formal theorem with a hypothesis explicitly assuming the finite reservoir property would certify a conditional implication, not the actual action classification, until that property is discharged.
+
+\section{Further research questions}
+\label{hset:ns:sec:questions}
+The following are proposed continuation problems. They are open within the scope of this manuscript; no claim is made that each is absent from the wider literature.
+
+\begin{question}[General ideals of allowed atom kernels]\label{hset:ns:q:ideals}
+Replace finite kernels by an ideal $\mathscr I$ on $A$. Which conditions on an action and its parameter stabilizers are necessary and sufficient for expanded Replacement in $\Mker_{\mathscr I}=\{x:\kerat(x)\in\mathscr I\}$? A sufficient condition should bound all permissible invariant output kernels in one member of $\mathscr I$. The main difficulty is an equally sharp, definable necessity argument.
+\end{question}
+\noindent[Added 4 October 2026, batch~90: this is source 10's
+\cref{hset:zr:q:ideals}, specialized to named group actions, and the
+counterpart of Question~10.7 (``General atom ideals'') of
+\repo{naming-elementary-embeddings}, asked there for named lifts. None of the
+three is answered.]
+
+\begin{question}[Infinite kernel bounds and singular thresholds]\label{hset:ns:q:kernelbounds}
+For $\abs{\kerat(x)}<\kappa$, classify Replacement restricted to outputs of kernel size below $\lambda\le\kappa$. Determine where cofinality enters and whether an orbit-size formula analogous to \eqref{hset:ns:eq:Dk} remains exact. Infinite equivariant realization graphs are no longer automatically allowed, so the coding lemma itself must be reanalyzed.
+\end{question}
+\noindent[Added 4 October 2026, batch~90: answered in part, for finitely many
+named atom injections instead of group actions and for full Replacement only,
+by \repo{naming-elementary-embeddings} (\cref{hset:ns:rem:nee}). For every
+uncountable $\kappa$, its Theorem~5.1(1) (\lbl{nee:thm:profile}) shows that
+Replacement survives the naming exactly when the union $D_\kappa(\boldsymbol f)$
+of the component-type blocks of cardinality below $\kappa$ has cardinality below
+$\kappa$: a criterion of the kind asked for, at the level $\lambda=\kappa$. Its
+Theorem~6.1 (\lbl{nee:thm:robust}) locates the cofinality: for every infinite
+$\kappa$ and $\card A\ge\kappa$, every expansion by one name keeps Replacement
+iff $\cf\kappa>\omega$, and every expansion by $r\ge2$ names iff
+$\cf\kappa>2^{\aleph_0}$. Still open: the levels $\lambda<\kappa$, actions of
+arbitrary pure groups at uncountable $\kappa$, and whether a centralizer-orbit
+formula like \eqref{hset:ns:eq:Dk} stays exact.]
+
+\begin{question}[Arbitrary relational atom structures]\label{hset:ns:q:relational}
+Let a relational structure $\mathcal A$ be named on the atoms, rather than a group action. Is a useful exact criterion expressible in terms of finite orbits of $\Aut(\mathcal A)_{(F)}$ together with definability of their families? The group-action proof has a special advantage: finite transitive actions admit a pure set of uniform codes. General structures may lack a comparable finite-orbit coding theorem.
+\end{question}
+
+\begin{question}[Restricted generator classes]\label{hset:ns:q:generators}
+Two involutions already realize every finite threshold. Under what additional restrictions---commuting generators, bounded exponent of the generated group, or a prescribed finitely generated group---does such a hierarchy remain possible? Commuting involutions generate a finite group, so \cref{hset:ns:cor:finitegroup} gives a genuine obstruction in that case.
+\end{question}
+\noindent[Added 4 October 2026, batch~90: Question~10.4 (``Commuting named
+automorphisms'') of \repo{naming-elementary-embeddings} asks for the sharp
+threshold for a fixed number of commuting named permutations, at uncountable
+cutoffs. The remark on commuting involutions above is its case $\kappa=\omega$
+for involutions. Neither question is answered.]
+
+\begin{question}[Effective presentations]\label{hset:ns:q:effective}
+For computable atom actions of a fixed finitely generated group, determine the descriptive or computability-theoretic complexity of the full and bounded-kernel criteria. Local finiteness, multiplicity of finite types, and eventual finiteness of exceptional strata introduce different quantifier patterns. The current finite checker is not a decision procedure for infinite presentations.
+\end{question}
+
+\begin{question}[Complexity of the failure formulas]\label{hset:ns:q:complexity}
+Find optimal syntactic bounds for the selectors $B$ and $B_k$, and for the explicit period witnesses $Y_n$. Does the hierarchy remain strict for specific restricted formula classes, such as bounded formulas in a carefully chosen language? The coding of exact periods and complete type strata must be included in any complexity accounting.
+\end{question}
+
+\begin{question}[Joining safe expansions]\label{hset:ns:q:joining}
+Characterize pairs of locally finite actions whose separate expansions preserve Replacement and whose joint expansion also does. Our examples show that separate preservation and finite joint orbits are not sufficient. An effective criterion should describe how joint orbit types split the infinitely repeated types of the reducts.
+\end{question}
+
+\begin{question}[Uniform evaluators in larger signatures]\label{hset:ns:q:evaluators}
+Determine exactly which internal coding or amenability conditions make a family of separately named operations equivalent to one uniformly indexed operation. \Cref{hset:ns:thm:evaluator} shows that the passage can change even atom-valued Replacement. A language translation theorem must account for this distinction explicitly.
+\end{question}
+
+\begin{question}[Quantitative reservoirs]\label{hset:ns:q:reservoirs}
+For a given action satisfying $\mathsf R_k$, bound the size of the reservoir $C_F$ in terms of $k$, the number of parameter atoms, and the finite types they meet. Can such bounds support a compositional proof rule for definable functions, with a mechanically tracked atom budget?
+\end{question}
+
+\begin{question}[Atom-enriched surreal encodings]\label{hset:ns:q:enriched}
+Which enrichments of the pure surreal presentation can detect the missing atom collections? Pure-valued schemes cannot do so by \cref{hset:ns:cor:invisible}. Any proposed enrichment should state whether it supplies a uniform encoding of atoms by pure objects, because that addition can itself destroy the preservation results it is meant to test.
+\end{question}
+
+\begin{question}[Reflection and Collection in expanded models]\label{hset:ns:q:reflection}
+Investigate analogues of the orbit criterion for models with larger kernels in which Collection holds before expansion. How do naming actions and uniform evaluators interact with the Tail and Small Violations of Choice hypotheses studied by Glazer and Yao? Our finite-kernel examples cannot answer this, because they already fail Collection in the reduct.
+\end{question}
+\noindent[Added 4 October 2026, batch~90: answered in part, for finitely many
+named atom injections, by \repo{naming-elementary-embeddings}
+(\cref{hset:ns:rem:nee}). At an uncountable successor cardinal $\kappa$, where
+the kernel model $\Mker_\kappa$ satisfies Collection before the expansion
+(\cref{hset:zr:thm:successorspectrum}), full Collection survives the naming
+exactly when fewer than $\kappa$ component types are realized (its
+Theorem~7.5, \lbl{nee:thm:collection}), and full transitive reflection is
+equivalent to Collection in these expansions (its Theorem~7.7,
+\lbl{nee:thm:reflection}); its Corollary~7.9 (\lbl{nee:cor:jointunsafe}) and
+Example~7.10 show that two names safe one at a time need not be safe together.
+Still open: actions of arbitrary pure groups, uniform evaluators, and the
+interaction with Glazer--Yao's Tail and Small Violations of Choice hypotheses.]
+
+\begin{question}[A fully audited formalization]\label{hset:ns:q:formalization}
+Carry out the five stages of \cref{hset:ns:sec:verification}, with a theorem ledger separating finite computation, semantic metatheorems, and the surreal specialization. The most informative first milestone is the graded reservoir lemma with parameters: it is both reusable and the point at which a plausible abbreviated proof most easily becomes incorrect.
+\end{question}
+
+\section{Conclusion of source 12, audit and provenance}
+\label{hset:ns:sec:provenance}
+
+\subsection{Conclusion}
+The same finite-kernel universe can behave very differently depending on which symmetries are named. The exact obstruction to full Replacement is not simply an infinite generated orbit. A locally finite action can also expose infinitely many finite exceptional strata through a pure set of action codes.
+
+At bounded kernel size, the remaining symmetry is decisive. Centralizer orbits of size at most $k$ are precisely the atoms accessible to invariant outputs with that atom budget, up to finitely many types affected by parameters. This gives an exact classification and a strict hierarchy realized by two involutions. A different phenomenon occurs at the limit: all fixed finite budgets can be safe while unbounded finite budgets are not.
+
+Throughout these separations the pure universe, including the canonical surreal field, remains unchanged. Even formulas mentioning the named symmetries retain pure-valued Collection. Consequently an extensive theory of pure surreal numbers is not, by itself, an adequate test of ambient Replacement in the presence of urelements. The output sort, the parameter kernels, and the uniformity of the language are essential parts of the theorem.
+
+\subsection{Proof dependencies and a compact audit}
+\label{hset:ns:app:audit}
+
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{0.27\textwidth}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
+\toprule
+Result & Mathematical dependencies & Principal audit issue\\
+\midrule
+Full criterion & Invariant kernels; finite reservoirs; type selector & Finite orbit types alone do not suffice; multiplicity matters.\\
+Bounded criterion & Centralizer orbit sizes; pointed selector; corrected reservoir & Parameters can shrink finite centralizer orbits.\\
+Two-involution hierarchy & Odd-dihedral rigidity; $d$ repeated copies; bounded criterion & External labels must not be added to the language.\\
+All finite levels without full Replacement & Single-cycle centralizer; unbounded finite cycle lengths & Fixed metatheoretic bounds differ from a varying internal bound.\\
+Uniform-evaluator separation & Finite-symbol principle; finite generated subgroups & Separate operation names cannot be quantified over uniformly.\\
+Pure-output theorem & Ambient formula relativization; pure rank bounds & No internal truth predicate or expanded Replacement is assumed.\\
+Surreal specialization & Identical pure universes; pure-output theorem; simplicity & Class surreals are not treated as an internal set.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The central mathematical claims do not depend on any unrefereed theorem from ProveIt. The repository supplies motivation, a relevant pure presentation, and a potential formalization destination. The external foundational assumptions are fixed in \cref{hset:ns:sec:setup}; all scheme failures are witnessed by explicit formulas or the uniform selectors in \cref{hset:ns:sec:codes}.
+
+\subsection{Source and reproducibility record}
+\label{hset:ns:sub:record}
+The repository snapshot used for the source comparison is commit
+\begin{center}
+\texttt{8dc2592e951b3402951060a15b61d65162aadc0f}.
+\end{center}
+The inspected surreal README has blob hash
+\begin{center}
+\texttt{18478d58670c384953fb85dcd1a6d931c644aa32}.
+\end{center}
+The article does not claim a full repository audit or a build of that snapshot. The mathematical source comparison used Glazer--Yao v1 (25 February 2026), Hamkins--Yao v2 (5 December 2022, subsequently published in 2024), and Glazer's 2023 preprint. The earlier companion note is a project-local working manuscript, not a peer-reviewed source.
+
+The delivered package contained the manuscript's \LaTeX{} source, the compiled PDF, the finite verification script and its actual JSON output, a source-audit note, and a Makefile, and was run from the package directory as
+\begin{quote}\ttfamily
+python3 verify\_orbit\_spectra.py\par
+latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
+\end{quote}
+The verification script requires Python 3.10 or newer and no third-party modules. Compilation of the delivered manuscript required the standard packages named in its source, including \texttt{newpxtext}, \texttt{newpxmath}, and \texttt{tcolorbox}. Font files are not included.
+
+\noindent[Added 4 October 2026, batch~90: in this report the script, its
+record, the audit note and the Makefile are shipped byte-identical as
+\path{code/12-named-symmetries-verify_orbit_spectra.py},
+\path{data/12-named-symmetries-verification_results.json},
+\path{12-named-symmetries-source_audit.md} and
+\path{code/12-named-symmetries-Makefile}; the manuscript's source and PDF are
+not shipped. Without \texttt{-{}-output} the script writes
+\path{verification_results.json} into the current directory, so run it with an
+explicit output path outside this directory; the report's README gives the
+command. The README blob above is also the blob of the surreal README at the
+placement commit.]
+
+\subsection{Non-claims of source 12}
+\label{hset:ns:sub:nonclaims}
+Every limitation stated by source 12, in its manuscript, its README or its
+source audit, is kept; most appear at their point of use. Collected: the
+manuscript is an unrefereed research draft prepared with ChatGPT; the
+finite-kernel model and its symmetry method are classical (L\'evy, through
+Hamkins--Yao) and are not claimed as discoveries; the classifications and the
+hierarchy are proposed refinements whose historical priority has not been
+established; no named published conjecture is claimed solved, and Glazer--Yao's
+reflection and Collection separations are neither strengthened nor presented as
+open; Elliot Glazer is neither a coauthor nor an endorser; no Lean or Rocq
+verification is claimed, and no proof files are included; the 203 finite checks
+validate finite centralizer and witness calculations only, not the infinite
+model constructions or the Replacement schemes, and a finite truncation of an
+example does not refute Replacement; the ambient metatheory has Choice, there is
+no claim that ZFC proves the existence of a transitive set model of itself, and
+formulas are relativized one at a time, with no internal truth predicate; the
+models retain Choice and already fail full Collection in the reduct, so what
+changes is Replacement in the expanded language; pure invariance does not
+validate any unrefereed claim of a repository report and does not identify an
+atom-enriched presentation with the pure one; the central claims do not depend
+on any unrefereed theorem of ProveIt; the research questions are open within the
+manuscript's scope, with no claim that each is absent from the literature; the
+repository was inspected read-only at the pin, not audited or built, and no
+repository file was modified. This merge adds one: for finitely many named
+permutations, \cref{hset:ns:thm:full} is not new in ProveIt
+(\cref{hset:ns:rem:nee}).
+
+\subsection{Provenance of this part}
+\label{hset:ns:sub:provenance}
+
+\paragraph{The manuscript.} Source 12 is batch-90 manuscript 05, delivered as
+the archive \path{Named_Symmetries_and_Replacement.zip} (335,558 bytes; inner
+directory \path{named_symmetries_replacement/}) in commit \texttt{a162e4386} and
+placed in commit \texttt{12076b2e8}. It names the repository commit
+\texttt{8dc2592e9} as its snapshot, a merge commit of 3 October 2026 that is an
+ancestor of the batch-89 placement \texttt{23adb85f9}; at the pin neither
+\cref{hset:zr:part} nor \repo{naming-elementary-embeddings} existed, which is
+why source 12 calls source 10 a project-local working note (it read it
+outside the repository) and does not cite that report. The surreal README it
+inspected has the same blob \texttt{18478d586} at the pin and at the placement,
+and its statements about it (the sign-sequence construction and the distinction
+between formalized results and AI-assisted research reports) are true. Its
+manuscript (\path{article.tex}, 915 lines, 51 labels; a 23-page PDF), README, PDF
+and checksum file \path{MANIFEST.sha256} (7 of 7 entries verified at placement)
+are not shipped; they survive in the arrival commit. Shipped, byte-identical:
+\path{12-named-symmetries-source_audit.md},
+\path{code/12-named-symmetries-verify_orbit_spectra.py},
+\path{code/12-named-symmetries-Makefile} and
+\path{data/12-named-symmetries-verification_results.json}. The Hilbert's-tenth
+programme routed the six batch-90 archives in commit \texttt{bcc1a4438}
+(\path{Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/review_polish_partx_c9bc70d8f.md}):
+for this one it verified the archive hash and read only the delivery README
+(lines 1--71), ran nothing, made no correctness finding, and recorded a
+finite-atom-kernel Replacement result with finite centralizer diagnostics and
+no arithmetic compiler.
+
+\paragraph{How it is printed.} The text from source 12's title-page abstract
+and status box to its appendices is printed in full, in its order: the status
+box and the abstract open \cref{hset:ns:sec:intro}, its Section~1 follows them
+as three subsections, and its two appendices became subsections of this
+section. Every delivered label carries the prefix \texttt{hset:ns:}; its twelve
+research questions, numbered 1--12 there, are Questions~65.1--65.12 here, with
+labels \texttt{hset:ns:q:}\dots, and its section numbers $2,\dots,12$ are
+$55,\dots,65$, so that its Theorem~5.1 is \cref{hset:ns:thm:full}. The symbols
+renamed are listed in \cref{hset:ns:conv:notation}; equations are numbered
+within sections; delivered file names are replaced by the shipped ones, and the
+sentence of the reproducibility record describing the delivered package is put
+in the past tense; its citations of the companion note became references to
+\cref{hset:zr:part}, and its other references use this report's bibliography
+entries. Added for this report: \cref{hset:ns:sub:notation,hset:ns:sub:relation},
+the label of the remark ``Kernel is not permutation support'', the bracketed
+dated notes, this subsection and the preceding one. No mathematical statement or
+proof of source 12 was changed.
+
+\paragraph{Where the merge had to choose.} (i) Placement: source 12 answers
+\cref{hset:zr:q:expansions} for named group actions at $\kappa=\omega$ and
+continues source 10's Section~35 (\cref{hset:ns:rem:expansions,hset:ns:rem:companion}),
+and it has surreal content; it was therefore placed here rather than as a second
+part of \repo{naming-elementary-embeddings}, whose principal theorem it
+generalizes at $\kappa=\omega$ (\cref{hset:ns:rem:nee}). (ii) Its full criterion
+is printed with its own proof, although for finitely many permutations it is
+that report's Theorem~5.1(2), and its pure-valued Collection theorem with its
+own proof, although it is a case of \cref{hset:zr:thm:purecollection}. (iii) Its
+predicate $E$ was renamed $\Act$, rather than left beside source 10's
+enumeration predicate $E$, and its centralizer $H$ was renamed $\mathcal Z$.
+(iv) The part follows Part~VII, so that no existing number changes, and is
+printed before this report's appendices.
+
 \appendix
 \section{Formula expansion and size checks}
 \label{hset:app:formulas}
@@ -6337,7 +7529,9 @@ arithmetic.
 \bibitem{Gonshor}
 H. Gonshor, \emph{An Introduction to the Theory of Surreal Numbers},
 London Mathematical Society Lecture Note Series 110, Cambridge University
-Press, 1986. \url{https://doi.org/10.1017/CBO9780511629143}.
+Press, 1986. \url{https://doi.org/10.1017/CBO9780511629143}. Source 12 cites
+the sign-expansion presentation and the simplicity theorem as classical
+background.
 
 \bibitem{vdDE}
 L. van den Dries and P. Ehrlich, ``Fields of surreal numbers and
@@ -6444,21 +7638,25 @@ arXiv:2002.07739, 2020. \url{https://arxiv.org/abs/2002.07739}.
 \raggedright
 E. Glazer, ``Global choice is not conservative over local choice for Zermelo
 set theory,'' arXiv:2312.11902, 2023; version 3, 2024.
-\url{https://arxiv.org/abs/2312.11902}. Cited by source 10.
+\url{https://arxiv.org/abs/2312.11902}. Cited by sources 10 and 12; no
+theorem of it is used in either.
 
 \bibitem{GlazerYao}
 E. Glazer and B. Yao, ``Reflection Principles in ZFU,'' arXiv:2602.21970v1,
 25 February 2026. \url{https://arxiv.org/abs/2602.21970}. Source 10 uses
 Proposition 1, Proposition 17 and the small-kernel-model discussion; source 11
 uses the urelement and permutation-model framework (Section 3.1), not a claimed
-extension of their reflection theorems.
+extension of their reflection theorems; source 12 cites Sections 1.1 and 3.1
+for kernels, Collection and small-kernel permutation methods.
 
 \bibitem{HamkinsYao}
 J. D. Hamkins and B. Yao, ``Reflection in second-order set theory with abundant
 urelements bi-interprets a supercompact cardinal,'' \emph{The Journal of
 Symbolic Logic} \textbf{89} (2024), 1007--1043; arXiv:2204.09766.
 \url{https://arxiv.org/abs/2204.09766}. The elementary support examples used
-for comparison by source 10 are in \S1.5.
+for comparison by source 10 are in \S1.5. Source 12 cites version 2 (5 December
+2022) and its discussion ``Consequences of nonrigidity for urelement set
+theory'' for the finite-kernel model and the attribution to L\'evy.
 
 \bibitem{YaoForcing}
 B. Yao, ``Axiomatization and Forcing in Set Theory with Urelements,''
@@ -6485,6 +7683,16 @@ sources 10 and 11.
 \url{https://github.com/VladimirReshetnikov/ProveIt/tree/2b7b388ba81a3355b19a7c2d2fe797e92f572355/Algebra/SurrealNumbers}.
 Source 11 recorded the README blob \texttt{18478d58670c384953fb85dcd1a6d931c644aa32}
 and linked the branch \texttt{main}.
+
+\bibitem{ProveItSurrealNS}
+V. Reshetnikov and repository contributors, ProveIt repository, surreal-number
+development and documentation, README \path{Algebra/SurrealNumbers/README.md}
+at commit \texttt{8dc2592e951b3402951060a15b61d65162aadc0f} (blob
+\texttt{18478d58670c384953fb85dcd1a6d931c644aa32}, the same as in
+\cite{ProveItSurreal}), inspected 3 October 2026 by source 12.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/8dc2592e951b3402951060a15b61d65162aadc0f/Algebra/SurrealNumbers/README.md}.
+The README distinguishes audited formalization from AI-assisted, unrefereed
+research reports.
 
 \bibitem{ProveItClosure}
 V. Reshetnikov, ProveIt repository, Closure axiomatization of set theory,

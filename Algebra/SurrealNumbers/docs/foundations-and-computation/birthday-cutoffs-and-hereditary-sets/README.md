@@ -6,15 +6,18 @@ independently on the same day, all pinned to repository commit
 `4f2645599121fa872c7104995e47f86f0382351f` and placed by commit `d4e71b7`;
 extended on 3 October 2026 (batch 89) by Parts VI and VII, which print two
 further manuscripts pinned to commit `2b7b388ba` and placed by commit
-`23adb85f9`. Prepared for Vladimir Reshetnikov.
+`23adb85f9`; extended on 4 October 2026 (batch 90) by Part VIII, which prints
+one more manuscript pinned to commit `8dc2592e9` and placed by commit
+`12076b2e8`. Prepared for Vladimir Reshetnikov.
 
 ```
 article.tex      the report, standalone LaTeX with an internal bibliography
-article.pdf      the compiled report, 116 pages
+article.pdf      the compiled report, 143 pages
 README.md        this guide
 02-birthday-cutoffs-SOURCE_AUDIT.md                source 02's source and novelty audit, as delivered
 10-cuts-replacement-PROOF_STATUS.md                source 10's proof and provenance status note, as delivered
 11-choiceless-universality-SOURCES_AND_STATUS.md   source 11's sources, scope and provenance note, as delivered
+12-named-symmetries-source_audit.md                source 12's source and proof audit, as delivered
 code/            02-birthday-cutoffs-verify_finite.py            (source 02)
                  05-birthdays-recover-sets-check_finite_models.py (source 05)
                  05-birthdays-recover-sets-build.sh              (source 05, see "Build")
@@ -25,6 +28,8 @@ code/            02-birthday-cutoffs-verify_finite.py            (source 02)
                  10-cuts-replacement-verify_finite.py            (source 10)
                  10-cuts-replacement-build.sh                    (source 10, see "Build")
                  11-choiceless-universality-verify_finite.py     (source 11)
+                 12-named-symmetries-verify_orbit_spectra.py     (source 12)
+                 12-named-symmetries-Makefile                    (source 12, see "Build")
 data/            02-birthday-cutoffs-verification.json, -verification_summary.tex, -build.json
                  05-birthdays-recover-sets-finite_checks.json, -repository_audit.json
                  06-hereditary-size-orientation-finite_checks.txt
@@ -32,15 +37,19 @@ data/            02-birthday-cutoffs-verification.json, -verification_summary.te
                  09-bounded-arithmetic-verification_report.json, -build_report.json
                  10-cuts-replacement-finite_checks.json, -build_validation.json
                  11-choiceless-universality-verification_results.json
+                 12-named-symmetries-verification_results.json
 ```
 
-Every label in `article.tex` carries the prefix `hset:` (296 labels). Batch 37
+Every label in `article.tex` carries the prefix `hset:` (372 labels). Batch 37
 added `hset:rem:cutoffgaps` and changed no other number. Batch 89 added 140:
 65 `hset:zr:` labels in Part VI (source 10's 42 delivered labels with the
 prefix, its ten questions, and thirteen for the added numbered theorems,
 convention, remarks and sections), 74 `hset:kw:` labels in Part VII (source
 11's 52 delivered labels, its twelve questions, and ten added), and
-`hset:q:axiomatics` on the existing Question 21.7. No earlier label was
+`hset:q:axiomatics` on the existing Question 21.7. Batch 90 added 76, all
+`hset:ns:` labels in Part VIII: source 12's 51 delivered labels with the
+prefix, its twelve questions, and thirteen for the added part, sections,
+convention, remarks and subsections. No earlier label was
 renamed or removed and no earlier number changed. All 69
 labels of the delivered base text (source 09) survive with that prefix; three of
 them (`hset:prop:powerset`, `hset:sec:extensions`, `hset:app:verification`) now
@@ -146,6 +155,50 @@ carrier `No_{<λ}`; its `c` (an injection) and source 10's `c` (a separator) are
 not the conjugation. Macro names only: source 10's `\SG`, `\Coll`, `\Ord`,
 `\ZFC` and `\bday` clashed with this report's macros and were mapped.
 
+## A further part (batch 90)
+
+| Source | Batch-90 manuscript | Archive (arrival `a162e4386`) | Pin | Placement | Printed as |
+|---|---|---|---|---|---|
+| **12** | 05, *Named Symmetries and Replacement: An exact orbit criterion, a strict kernel hierarchy, and invariance of the pure surreal universe* ("Prepared for Vladimir Reshetnikov with ChatGPT", 3 October 2026) | `Named_Symmetries_and_Replacement.zip` (335,558 bytes) | `8dc2592e9` | `12076b2e8` | Part VIII, Sections 54–66, labels `hset:ns:`, files `12-named-symmetries-` |
+
+The pin `8dc2592e9` is a merge commit of 3 October 2026 and an ancestor of the
+batch-89 placement `23adb85f9`: at the pin neither Part VI nor
+[naming-elementary-embeddings](../../../../../SetTheory/Cardinals/docs/reports/ordinals-and-order-types/naming-elementary-embeddings/)
+existed. Source 12 read source 10 (its "earlier companion working note")
+outside the repository and assumes none of its theorems; it does not cite that
+report. It inspected the surreal README, whose blob `18478d586` is the same at
+the pin and now. Part VIII prints it in full, in its order (status box and
+abstract, then every section, its two appendices as subsections of Section 66),
+with labels prefixed, its twelve research questions labelled as Questions
+65.1–65.12, and the renamed symbols of Convention 54.1. No mathematical
+statement or proof was changed. Not shipped (they survive in the arrival
+commit `a162e4386`): the manuscript (`article.tex`, 915 lines, 51 labels), its
+README, its PDF (23 pages) and its checksum file `MANIFEST.sha256` (7 of 7
+entries verified at placement). Section 66 holds its non-claims and
+provenance.
+
+**Why here.** Source 12 answers source 10's Question 38.6
+(`hset:zr:q:expansions`, "Classify predicates P for which (M^ker_κ, P) retains
+Replacement ... How much of the permutation group must remain available to
+force kernel confinement?") for κ = ω and the graphs of uniformly named
+actions of pure set-sized groups (Remark 54.2); its Section 63 continues Part
+VI's Section 35 (its Theorem 63.1 is the case κ = ω of Theorem 35.2,
+`hset:zr:thm:purecollection`, by a second route); and it has surreal content
+(the pure sign-sequence `No` and set-indexed cut interpolation survive every
+naming). The alternative, a second part of naming-elementary-embeddings, was
+considered at placement: that report's principal theorem is source 12's full
+criterion for finitely many named permutations (Remark 54.4).
+
+**Renamed in Part VIII** (Convention 54.1, each with the tempting false
+reading). Source 12's named-action predicate `E` is `Act` (not source 10's
+enumeration predicate `E`, Section 34), its structure `𝓜_E` is `𝓜_Act` and its
+exceptional set `X_E` is `X_Act`; its finite-kernel universe `M = M_fin(A)` is
+`M^ker_ω` (the kernel model of Part VI at κ = ω, not the ground model `M` of
+Part III); its ambient universe `U` is `𝒰`; its centralizer `H = Aut_Γ(A)` is
+`𝒵` (not `H_κ`); its pure rank bound `β` is `ζ` (`β` is reserved). Its
+involutions `σ`, `τ` and its `c`, `C_n`, `B(q)`, `D_k`, `I`, `V` keep their
+letters, with the readings to avoid listed in the convention.
+
 ## What the report claims
 
 Numbers refer to the built `article.pdf`. `B_λ = (No_{<λ}; 0,1,+,−,·,<,b)` with
@@ -239,11 +292,50 @@ Numbers refer to the built `article.pdf`. `B_λ = (No_{<λ}; 0,1,+,−,·,<,b)` 
     ordered model an ordered field all of whose finite coordinate subfields
     embed has no embedding into the internal `No` (Theorem 49.1); a global
     embedding is exactly a compatible family (Theorem 49.3).
+12. **Part VIII: named symmetries and Replacement (source 12).** In the
+    finite-kernel model `M^ker_ω` over an infinite set of atoms (ambient Choice,
+    Replacement, Collection), expanded by the graph `Act` of a uniformly named
+    action of a pure set-sized group Γ: the base axioms and expanded Separation
+    hold and full Collection fails (Propositions 55.2–55.3); a unique output's
+    kernel is a union of orbits of the centralizer `𝒵` (Lemma 56.1), and
+    `𝒵`-orbits of a type with `m_t` copies have size `m_t d_t` (Lemma 56.3).
+    Replacement holds iff every Γ-orbit is finite and the union `X_Act` of the
+    finitely repeated finite orbit types is finite (Theorem 58.1); every finite
+    group is harmless (Corollary 58.2). For `k ≥ 1`, Replacement for outputs
+    with at most `k` atoms, `R_k`, holds iff every orbit is finite and only
+    finitely many atoms have `𝒵`-orbit of size at most `k` (Theorem 59.1),
+    which fixes the first failing level (Corollary 59.3). One permutation:
+    finite cycles give every `R_k`, one cycle of each length gives every `R_k`
+    but not Replacement (Theorem 60.1, Example 60.2). For every `d ≥ 1`, two
+    involutions, each harmless alone and with finite joint orbits, give exactly
+    the levels `k < d` (Theorem 61.3). Separately named involutions are safe
+    while their uniform evaluator destroys `R_1` (Theorem 62.3); lifts to the
+    membership universe are definable (Proposition 62.4). Pure-valued
+    Collection survives every naming (Theorem 63.1), so the pure universe, the
+    sign-sequence `No`, surreal-valued Replacement and set-indexed cut
+    interpolation are unchanged (Proposition 63.2, Corollary 63.3), and no
+    pure-surreal scheme implies `R_1` (Corollary 63.4). For finitely many named
+    permutations Theorem 58.1 is not new in ProveIt: it is Theorem 5.1(2) of
+    naming-elementary-embeddings (Remark 54.4).
 
 ## What the report does not claim
 
-Section 20.6 lists every non-claim of sources 02–09, and Subsections 39.4 and
-53.3 those of sources 10 and 11; none was dropped.
+Section 20.6 lists every non-claim of sources 02–09, and Subsections 39.4,
+53.3 and 66.4 those of sources 10, 11 and 12; none was dropped.
+
+- **Part VIII.** Source 12 is an unrefereed draft prepared with ChatGPT, not
+  Lean- or Rocq-checked; the finite-kernel model and its symmetry method are
+  classical (Lévy, through Hamkins–Yao); its classifications are proposed
+  refinements without established priority; it solves no named conjecture and
+  neither strengthens nor reopens Glazer–Yao's separations; Glazer is not a
+  coauthor or endorser. Its 203 finite checks validate finite centralizer
+  calculations only, and a finite truncation of an example refutes nothing.
+  Its ambient metatheory has Choice; formulas are relativized one at a time,
+  with no truth predicate; the models already fail Collection in the reduct, so
+  only expanded Replacement changes. Pure invariance validates no unrefereed
+  repository claim and does not identify an atom-enriched presentation with
+  the pure one. It inspected the repository read-only and audited or built
+  nothing.
 
 - **Later parts.** Sources 10 and 11 are unrefereed and AI-assisted (source 11
   calls itself AI-generated), not Lean- or Rocq-checked, and claim no
@@ -322,6 +414,19 @@ VI and VII add their own questions (Questions 38.1–38.10 and 51.1–51.12, lab
 answered for full-class rank models only (`surreal-well-orders` Part XV), and
 that Questions 38.6 and 38.7 are answered for one family of expansions, or
 bear on it, in `naming-elementary-embeddings`; all stay open.
+
+Since batch 90, Question 38.6 (`hset:zr:q:expansions`) is also answered at
+κ = ω for a second family, the graphs of uniformly named actions of pure
+set-sized groups, by source 12 (Theorems 58.1 and 59.1; dated note after the
+question, Remark 54.2); arbitrary predicates and group actions at uncountable
+κ stay open. A dated note after Theorem 35.2 records that source 12's Theorem
+63.1 is its case κ = ω. Part VIII adds Questions 65.1–65.12
+(`hset:ns:q:`); dated notes record that Questions 65.2 (infinite kernel
+bounds) and 65.11 (Collection and reflection in expanded models) are answered
+in part, for finitely many named injections, by naming-elementary-embeddings
+(its Theorems 5.1(1), 6.1, 7.5 and 7.7), that Question 65.1 is Question 38.4
+and that report's Question 10.7 for named group actions, and that Question
+65.4 meets that report's Question 10.4. All twelve stay open.
 
 ## Stale statements corrected (Section 1.5)
 
@@ -416,6 +521,19 @@ injections are amenable elementary self-embeddings fixing every pure set
 (`nee:thm:lifts`, `nee:thm:initial`, `nee:thm:profile`), so they do not bear on
 Theorem 18.3.
 
+Since batch 90 (Remark 54.4) Part VIII bears on that report more directly.
+Naming finitely many atom permutations and naming their lifts are
+definitionally equivalent (Propositions 62.1 and 62.4), so that report's
+Theorem 5.1(2) (`nee:thm:profile`, at the finite cutoff) is source 12's
+Theorem 58.1 for finitely many named permutations; that report printed it
+first in ProveIt, with an independent proof, and also treats non-surjective
+injections and every uncountable κ. Source 12, written without knowing it,
+extends the finite-cutoff criterion to actions of arbitrary pure set-sized
+groups and adds the graded levels `R_k`. Its Example 60.2 is that report's
+Example 5.5 (`nee:ex:finite`), with every `R_k` added; its Theorem 61.3 is a
+finite-cutoff, graded counterpart of that report's Corollary 7.9
+(`nee:cor:jointunsafe`, at ℵ₁). Neither is claimed first.
+
 **[definable-surreals-and-omnific-integers](../definable-surreals-and-omnific-integers/)**:
 source 11's double-monomial independence (Theorem 43.1) is the case `K = R`,
 `G = {0}` of its Lemma 8.1 (`dsn:lem:cosets`, "Disjoint support cosets");
@@ -446,10 +564,18 @@ development formalizes ZF itself (for example `Repl_form`, `ZFax` in
 `SetTheory/ZF/Lean/ZF/Zf.lean`), not Zermelo set theory without Replacement,
 urelements or permutation models.
 
+Source 12 names the surreal README and formalization ledger
+(`Algebra/SurrealNumbers/README.md`, `docs/FORMALIZATION.md`) as entry points and
+proposes a five-stage Lean/Rocq development (Section 64.3); none of it exists,
+and no urelement theory is formalized anywhere in ProveIt (the formula type
+`Form` of `Logic/FirstOrder/Lean/FirstOrder/Fol.lean` has `∈` and `=` only, no
+atom predicate).
+
 ## What was run
 
 - `latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex` (MiKTeX):
-  116 pages (115 after the batch-89 write, before its two reciprocal notes;
+  143 pages (116 before the batch-90 Part VIII;
+  115 after the batch-89 write, before its two reciprocal notes;
   62 before batch 89; 61 before the batch-37 Remark 15.9; still 62 after the
   two batch-80 notes and the batch-81 note); no errors, undefined
   references or citations, multiply defined labels, duplicate destinations,
@@ -461,6 +587,12 @@ urelements or permutation models.
   assignments of which 576 separated, 1,050 negative-code comparisons, 4,032
   atom transpositions; the record embeds the script's SHA-256, unchanged by
   byte-identical staging), 11 (20,595 assertions, seed 20261003).
+- Source 12 (batch 90), with Python 3.14.4, on a copy with an explicit
+  `--output`: passed 203 checks, 35 of them brute-force comparisons against
+  every permutation of domains of at most seven points (seed 20261003), and
+  reproduced `data/12-named-symmetries-verification_results.json` exactly
+  apart from line endings. Its checks cover finite centralizer and witness
+  calculations only.
 - All five finite programs, with Python 3.14.4, on copies (commands below). Each
   passed and reproduced its delivered record exactly apart from line endings
   (CRLF on Windows): 02 (65,025 prefix comparisons, 1,538 bits, 173,880
@@ -512,7 +644,23 @@ python code/10-cuts-replacement-verify_finite.py --output /tmp/hset/10.json
 #   compare with data/10-cuts-replacement-finite_checks.json
 python code/11-choiceless-universality-verify_finite.py --output /tmp/hset/11.json
 #   compare with data/11-choiceless-universality-verification_results.json
+python code/12-named-symmetries-verify_orbit_spectra.py --output /tmp/hset/12.json
+#   compare with data/12-named-symmetries-verification_results.json
 ```
+
+Always pass `--output` to source 12's program as well: without it, it writes
+`verification_results.json` into the current directory.
+`code/12-named-symmetries-Makefile` is source 12's delivered Makefile, kept
+byte-identical: its `verify` target runs `python3 verify_orbit_spectra.py
+--output verification_results.json` and its `pdf` target runs `latexmk` on
+`article.tex`, both in the delivery layout. In the shipped layout the first
+names an unshipped file and the second would build this report, not source
+12's manuscript; do not run it here. `12-named-symmetries-source_audit.md`
+also uses delivery names (`verify_orbit_spectra.py`), and records that "the
+PDF was compiled", meaning source 12's own 23-page PDF, which is not shipped;
+source 12's manuscript and PDF are in
+`git show a162e4386:docs/incoming/Named_Symmetries_and_Replacement.zip`.
+Section 66.3 prints its reproducibility record with the shipped names.
 
 Always pass `--output` to the programs of sources 10 and 11: without it,
 source 11's program writes `verification_results.json` into `code/` beside
@@ -567,3 +715,16 @@ Hilbert's-tenth programme routed the batch-89 archives in `6aadaa4f2`
 (`Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/review_topology_surreal_arrivals_20261003.md`):
 bounded reads, nothing run, no correctness finding, and no Diophantine
 compiler or arithmetic saving in either source.
+
+Source 12 inspected `8dc2592e9` read-only (the surreal README, blob
+`18478d586`, and the root README for orientation; no audit or build) and
+modified nothing, as its `12-named-symmetries-source_audit.md` records. Its
+repository statements (the sign-sequence construction and the distinction
+between formalized results and AI-assisted reports) are true at the pin and
+now. Its companion note is now Part VI, not a project-local file; its
+`MANIFEST.sha256` is not shipped. The Hilbert's-tenth programme routed the
+batch-90 archives in `bcc1a4438`
+(`Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/review_polish_partx_c9bc70d8f.md`):
+for this archive it verified the ZIP hash and read only the delivery README
+(lines 1–71), ran nothing, made no correctness finding, and found finite
+centralizer diagnostics but no arithmetic compiler.
