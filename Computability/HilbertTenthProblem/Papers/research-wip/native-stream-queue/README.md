@@ -545,6 +545,17 @@ Its generic compiler still assumes a bijective chart description; witness
 and square counts are not arithmetic operation counts. These scoped reviews
 do not certify an implemented rule-to-chart compiler or improve universality.
 
+The [structured coefficient evaluator](matrix193_structured_coefficient_scout.md)
+reduces the complete matrix construction to **1,756=795M+961A operations**,
+with150 positive witnesses and unchanged exact degree35,587. Factoring the
+actual word triples replaces1,344 Horner rows by638 paid live rows. The
+[independent review](review_matrix193_structured_coefficient_scout.md)
+reconstructs all96 paired matrices,51 triples and four complete coefficient
+polynomials, then checks the entire literal source substitution. Author and
+independent normal/optimized receipts pass. The full polynomial is unchanged;
+this standalone saving does not yet include hat packing or the146-witness
+chart, and the universal84 frontier remains unchanged.
+
 The [edge-hat packing rewrite](matrix193_hat_packing_scout.md)
 reduces the complete matrix source to **2,390=1,134M+1,256A operations**,
 with150 positive witnesses and unchanged exact degree35,587. Shared fixed
