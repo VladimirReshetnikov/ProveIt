@@ -111,6 +111,19 @@
 > native residue filters, with no prescribed-history realization or bound on
 > the full order gcd. The 83-operation language remains unresolved.
 >
+> The [small-prime digit rules](complete83_gamma_small_prime_digit_rules.md)
+> extend the genuine-history filter for actual compilers with an even
+> window-selector count and odd tile-alphabet size. For E=dh, each accepted
+> input has witnesses with **gcd(Delta,2^(6E)-1)=3**, coprime quotient
+> **(2^(6E)-1)/9**, and v3(m)<=1. This adds finite control of primes such
+> as7,151 and331. A separate complete digit-state theorem shows that scalar
+> congruences and finite lower digits alone leave every native-formula
+> residue possible at the listed bases other than1, modulo5,7,13,17, when
+> higher digits are unrestricted. These extensions are not asserted to be histories. The [independent review](review_complete83_gamma_small_prime_digit_rules.md)
+> checks both proofs, all75 prefix certificates and the corrected weighted
+> congruence. Fresh normal/optimized receipts pass. Compiler parity remains
+> a hypothesis, and independent-gamma83 remains unresolved.
+>
 > The [finite native prime filter](complete83_gamma_native_finite_prime_avoidance.md)
 > strengthens the accepting-history construction: for every fixed adequate
 > spatial padding h there are genuine positive witnesses with
