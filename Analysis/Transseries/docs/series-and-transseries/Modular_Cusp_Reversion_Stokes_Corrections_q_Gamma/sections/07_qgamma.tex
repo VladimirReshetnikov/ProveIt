@@ -1,0 +1,262 @@
+\section{\texorpdfstring{\(q\)}{q}-gamma at rational special values}
+\label{sec:qgamma}
+
+The \(q\)-gamma function is defined, for \(0<q<1\), by
+\[
+ \Gamma_q(x)=
+ (1-q)^{1-x}\frac{(q;q)_\infty}{(q^x;q)_\infty}
+ \qquad\text{\cite[Equation 5.18.4]{dlmf-qgamma}}.
+\]
+For the complex sector used here, set \(q=\ee^{-t}\),
+\(q^x=\ee^{-tx}\), and continue the powers from positive \(t\).
+For fixed \(0<x<1\), all product factors remain nonzero when
+\(\Re t>0\).  The explicit local branches near \(t=0\) suffice
+for the inverse results.
+
+\subsection{An exact modular completion for rational arguments}
+
+\begin{theorem}[Rational-argument multiplication product]
+\label{thm:qgamma-completion}
+Let \(k\ge2\) be an integer, and define
+\[
+ \mathcal G_k(t)=\prod_{r=1}^{k-1}\Gamma_{\ee^{-t}}(r/k).
+\]
+Then, for \(\Re t>0\), with the specified branches,
+\begin{equation}\label{eq:qgamma-completion}
+ \mathcal G_k(t)=C_k(t)\,\mathcal A_k(Q),
+ \qquad Q=\ee^{-4\pi^2/t},
+ \qquad \mathcal A_k(Q)=\frac{P(Q)^k}{P(Q^k)},
+\end{equation}
+where
+\begin{equation}\label{eq:qgamma-normalizer}
+ C_k(t)=
+ \frac{(2\pi)^{(k-1)/2}}{\sqrt{k}}
+ \left(\frac{1-\ee^{-t}}{t}\right)^{(k-1)/2}
+ \exp\left(\frac{k-1/k}{24}t\right).
+\end{equation}
+The factor \(C_k\) is holomorphic and nonzero near \(t=0\),
+and
+\(\mathcal A_k(Q)=1-kQ+\bigO(Q^2)\).
+\end{theorem}
+\begin{proof}
+Splitting positive integers into their residue classes modulo \(k\)
+gives
+\[
+ \prod_{r=1}^{k-1}(q^{r/k};q)_\infty
+       =\frac{P(q^{1/k})}{P(q)}.
+\]
+The powers of \(1-q\) add to \((k-1)/2\).  Consequently
+\[
+ \mathcal G_k(t)=
+ (1-\ee^{-t})^{(k-1)/2}\,
+ \frac{P(\ee^{-t})^k}{P(\ee^{-t/k})}.
+\]
+Apply the \(q=1\) modular formula separately to numerator and
+denominator.  Their essential exponentials cancel exactly.
+The power constants give
+\((2\pi/t)^{(k-1)/2}/\sqrt{k}\);
+the regular exponential is
+\(\exp((k-1/k)t/24)\).
+The dual nome of the denominator is \(Q^k\).
+This proves \cref{eq:qgamma-completion,eq:qgamma-normalizer}.
+The function \((1-\ee^{-t})/t\) has removable value \(1\)
+at the origin, giving the stated analytic root.
+Finally, \(P(Q)=1-Q+\bigO(Q^2)\), while \(P(Q^k)=1+\bigO(Q^k)\).
+\end{proof}
+
+Thus the \emph{normalized observable}
+\[
+ \widehat{\mathcal G}_k(t)=\mathcal G_k(t)/C_k(t)
+\]
+has a flat cusp value \(1\).
+Setting
+\(y=(1-\widehat{\mathcal G}_k)/k\), the analytic nome inverse
+starts \(Q=y+\cdots\), and then
+\(t=-4\pi^2/\log Q\).
+This is an exact completion of the entire perturbative
+\(q\to1\) expansion for these multiplication products.
+
+Every coefficient is arithmetic:
+\begin{equation}\label{eq:qgamma-lambda}
+ [Q^n]\log\mathcal A_k(Q)
+ =-k\sigma_{-1}(n)
+   +{\bf1}_{k\mid n}\,\sigma_{-1}(n/k).
+\end{equation}
+Combining this with \cref{eq:euler-recurrence,eq:psi-lagrange}
+computes the inverse to arbitrary order by finite rational
+arithmetic.
+For example,
+\[
+ \mathcal A_3(Q)=1-3Q+6Q^3-3Q^4-6Q^7+6Q^9+\cdots .
+\]
+
+\subsection{The half-argument theta completion and a sparse inverse}
+
+For \(k=2\), \(\mathcal G_2(t)=\Gamma_{\ee^{-t}}(1/2)\), and
+\begin{equation}\label{eq:qgamma-half}
+ \Gamma_{\ee^{-t}}(1/2)
+ =\sqrt{\pi}\left(\frac{1-\ee^{-t}}t\right)^{1/2}
+   \ee^{t/16}\,
+   \frac{P(Q)^2}{P(Q^2)},\qquad Q=\ee^{-4\pi^2/t}.
+\end{equation}
+The Jacobi product gives
+\begin{equation}\label{eq:theta-completion}
+ \frac{P(Q)^2}{P(Q^2)}
+ =\vartheta_4(0,Q)
+ =1+2\sum_{n\ge1}(-1)^nQ^{n^2}
+ =1-2Q+2Q^4-2Q^9+2Q^{16}-\cdots .
+\end{equation}
+Here \(\vartheta_4(0,Q)\) is the theta function with nome \(Q\);
+the product convention agrees with
+\cite[Equation 20.5.4]{dlmf-theta}.
+This identity concerns a convergent \(Q\)-series, so its
+lacunarity is exact.
+
+Let
+\[
+ y=\frac{1-\widehat{\mathcal G}_2(t)}2
+   =Q-Q^4+Q^9-Q^{16}+\cdots .
+\]
+Lagrange inversion yields
+\begin{align}
+ Q(y)={}&y+y^4+4y^7-y^9+22y^{10}
+            -13y^{12}+140y^{13}+\bigO(y^{14}),\label{eq:theta-inverse}\\
+ \ell(y)=\log(Q(y)/y)
+       ={}&y^3+\frac72y^6-y^8+\frac{55}{3}y^9
+             -12y^{11}+\frac{455}{4}y^{12}
+             +\bigO(y^{13}).\label{eq:theta-log-inverse}
+\end{align}
+Consequently the principal positive inverse is
+\begin{equation}\label{eq:qgamma-normalized-inverse}
+ t=\frac{4\pi^2}{\log(1/y)-\ell(y)},\qquad q=\ee^{-t},
+\end{equation}
+and all other small-nome branches are obtained by the coherent
+logarithm lifts in \cref{eq:all-flat-sheets} with \(\nu=1\).
+
+The sparse inverse has a simple support explanation.
+Writing
+\[
+ y=QH(Q),\qquad
+ H(Q)=1-Q^3+Q^8-Q^{15}+Q^{24}-\cdots ,
+\]
+the support of \(H-1\) is \(\{n^2-1:n\ge2\}\).
+Its additive monoid is exactly
+\[
+ \langle3,8\rangle=\{3a+8b:a,b\in\N\}.
+\]
+The elements \(3,8\) occur.  If \(3\nmid n\), then \(n^2-1\)
+is a multiple of \(3\); if \(3\mid n\), then
+\(n^2-1=8+(n^2-9)\), also in the monoid.
+It follows from \cref{eq:ell-lagrange} that every exponent of
+\(\ell\) belongs to \(\langle3,8\rangle\).
+The absent powers are therefore structural, rather than
+accidental numerical zeros.
+
+\subsection{Reverting the original \texorpdfstring{\(q\)}{q}-gamma value}
+
+The normalized flat observable and the raw \(q\)-gamma value
+have different inverses.
+For the latter set
+\begin{align}
+ w&=\log\left(\Gamma_{\ee^{-t}}(1/2)/\sqrt{\pi}\right),\notag\\
+ G(t)&=\frac12\log\left(\frac{1-\ee^{-t}}t\right)+\frac{t}{16},
+ &L(Q)&=\log\vartheta_4(0,Q).
+ \label{eq:raw-gamma-log}
+\end{align}
+\Cref{eq:qgamma-half} is exactly
+\[
+ w=G(t)+L(\ee^{-4\pi^2/t}).
+\]
+The analytic background begins
+\begin{equation}\label{eq:gamma-background}
+ G(t)=-\frac{3}{16}t+\frac1{48}t^2
+       -\frac1{5760}t^4+\frac1{362880}t^6+\cdots ,
+ \qquad G'(0)=-\frac3{16}.
+\end{equation}
+Hence it has an ordinary local inverse
+\[
+ t_0=G^{-1}(w)=-\frac{16}{3}w+\frac{256}{81}w^2
+                 +\bigO(w^3).
+\]
+Also \(L(Q)=-2Q-2Q^2+\cdots\).
+Applying \cref{thm:finite-endpoint} with \(S=4\pi^2\) gives
+\begin{equation}\label{eq:raw-gamma-inverse}
+ t=t_0+\frac{2}{G'(t_0)}Q_0
+       +\sum_{n\ge2}d_n(t_0)Q_0^n,\qquad
+ Q_0=\ee^{-4\pi^2/t_0}.
+\end{equation}
+The first correction is asymptotic to \(-32Q_0/3\).
+For every \(n\ge1\),
+\begin{equation}\label{eq:gamma-leading-poles}
+ d_n(t_0)\sim
+ \frac{(-1)^n n^{n-1}}{n!}
+ (4\pi^2)^{n-1}\left(\frac{32}{3}\right)^n
+ t_0^{2-2n}.
+\end{equation}
+The exact convergent form is
+\[
+ t=t_0+t_0^2U\left(t_0,\frac{\ee^{-4\pi^2/t_0}}{t_0^2}\right),
+\]
+with the uniform error bound \cref{eq:endpoint-tail}.
+
+Thus the raw function has a nonzero sectorial derivative
+\(-3\sqrt{\pi}/16\) at its limiting value.
+Its algebraic inverse is well defined as an asymptotic core, and
+the flat correction supplies the additional terms.
+The raw function does not become holomorphic across \(t=0\):
+the nonconstant flat factor in \cref{eq:qgamma-half}
+still obstructs such an extension.
+The ordinary derivative and the essential boundary singularity
+are compatible.
+
+For a direct inversion of the raw value rather than its logarithm,
+write
+\(G_{\rm raw}(t)=\sqrt{\pi}\ee^{G(t)}\).
+The first displacement is
+\[
+ \frac{2G_{\rm raw}(t_0)}{G_{\rm raw}'(t_0)}Q_0
+   =\frac{2}{G'(t_0)}Q_0,
+\]
+so both descriptions agree.
+
+The exponential action can also be expressed directly in the output
+deficit.  Let
+\[
+ z=1-\frac{\Gamma_{\ee^{-t}}(1/2)}{\sqrt\pi},\qquad
+ 1-\ee^{G(t_0(z))}=z.
+\]
+Ordinary analytic reversion of this background gives
+\[
+ t_0(z)=\frac{16}{3}z+\frac{472}{81}z^2+\bigO(z^3),\qquad
+ \frac1{t_0(z)}=\frac{3}{16z}-\frac{59}{288}+\bigO(z).
+\]
+Substitution into the first term of \cref{eq:raw-gamma-inverse}
+therefore proves the explicit beyond-all-orders correction
+\begin{equation}\label{eq:gamma-deficit-action}
+ t-t_0(z)\sim
+ -\frac{32}{3}\ee^{59\pi^2/72}
+ \ee^{-3\pi^2/(4z)}\qquad (z\downarrow0).
+\end{equation}
+The transformed action \(3\pi^2/4\) and its nontrivial constant
+prefactor both depend on retaining the correct analytic core.
+
+The uniformity region is a strict decay sector for \(t_0\);
+a path on which \(\Re(4\pi^2/t_0)\) ceases to grow requires
+a different description.
+
+\subsection{Which notion of a critical point is involved?}
+
+There are several distinct questions involving \(q\)-gamma:
+varying its argument \(x\) at a fixed base, varying \(q\) toward a
+root of unity, removing a regular background, or letting both
+variables move.
+The special values above concern the base limit \(q\to1\)
+at fixed rational arguments.
+The ordinary minimum of \(x\mapsto\Gamma_q(x)\), its motion
+with \(q\), and a joint critical double scaling are different
+problems.  The repository already contains results on that
+minimum and the ordinary base expansion \cite{repo-qmono}.
+Our theorem supplies exact modular sectors for specific rational
+multiplication products and a justified reversion of those sectors.
+It does not identify every critical point of a general
+\(q\)-special function.

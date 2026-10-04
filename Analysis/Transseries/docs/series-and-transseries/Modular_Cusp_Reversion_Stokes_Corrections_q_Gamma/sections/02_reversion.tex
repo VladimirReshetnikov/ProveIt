@@ -1,0 +1,260 @@
+\section{Two quantitative reversion engines}\label{sec:engines}
+
+\subsection{An exact core and all exponential coefficients}
+
+Consider a function in a phase coordinate \(v\),
+\begin{equation}\label{eq:core-form}
+ F(v)=G(v)+L(\ee^{-\lambda v}),\qquad
+ L(z)=\sum_{n\ge1}a_nz^n,
+\end{equation}
+where \(L\) is holomorphic at zero.
+Choose a solution \(v_0\) of \(G(v_0)=w\), with \(G'(v_0)\ne0\).
+The solution \(v_0\) is a \emph{chosen core branch}; the theorem below
+does not claim that the core is globally one-to-one.
+
+Define its divided difference
+\[
+ D_{v_0}(u)=
+ \begin{cases}
+ (G(v_0+u)-G(v_0))/u,&u\ne0,\\
+ G'(v_0),&u=0.
+ \end{cases}
+\]
+It is holomorphic wherever the translated core is holomorphic.
+Writing \(v=v_0+u\), \(\xi=\ee^{-\lambda v_0}\), converts the
+inverse equation exactly to
+\begin{equation}\label{eq:core-implicit}
+ u+\frac{L(\xi\ee^{-\lambda u})}{D_{v_0}(u)}=0.
+\end{equation}
+
+\begin{theorem}[Exact-core reversion]\label{thm:core-inverse}
+Suppose \(D_{v_0}\) is holomorphic and nonzero on a neighborhood of
+\(|u|\le r\), and for some \(\rho>0\), \(0<\kappa<1\),
+\[
+ \left|\frac{L(z\ee^{-\lambda u})}{D_{v_0}(u)}\right|
+ \le\kappa r
+ \qquad (|u|\le r,\ |z|\le\rho).
+\]
+The equation has one simple root \(u=U(v_0,z)\) in \(|u|<r\),
+holomorphic in \(z\) and any holomorphic core parameters.  It has a
+convergent expansion
+\[
+ U(v_0,z)=\sum_{n\ge1}U_n(v_0)z^n.
+\]
+Put \(a_n^{(j)}=[z^n]L(z)^j\).  Every coefficient is
+\begin{equation}\label{eq:all-core-coefficients}
+ U_n(v_0)=
+ \sum_{j=1}^n\frac{(-1)^j a_n^{(j)}}{j!}
+ \left.
+ \frac{\mathrm d^{j-1}}{\mathrm du^{j-1}}
+ \left(\frac{\ee^{-n\lambda u}}{D_{v_0}(u)^j}\right)
+ \right|_{u=0}.
+\end{equation}
+For \(\eta=|z|/\rho<1\), the tail after degree \(N\) satisfies
+\begin{equation}\label{eq:core-tail}
+ \left|U(v_0,z)-\sum_{n=1}^NU_n(v_0)z^n\right|
+ \le \frac{\kappa r\,\eta^{N+1}}{1-\eta}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+On \(|u|=r\), the second term of \cref{eq:core-implicit} is
+strictly smaller than \(u\).  Rouch\'e's theorem counts exactly one
+zero, with multiplicity.  It is therefore simple.
+The holomorphic implicit-function theorem gives its local analytic
+dependence; uniqueness glues the local functions.  At a root,
+\(|U|\le\kappa r\).
+
+Introduce a scalar \(s\) in the equation
+\(u=-sL(z\ee^{-\lambda u})/D_{v_0}(u)\).
+Lagrange--B\"urmann gives
+\[
+ u=\sum_{j\ge1}\frac{(-s)^j}{j!}
+ \left.\partial_u^{j-1}
+ \left(L(z\ee^{-\lambda u})^jD_{v_0}(u)^{-j}\right)
+ \right|_{u=0}.
+\]
+For a fixed coefficient of \(z^n\), only \(j\le n\) contributes,
+so coefficient comparison is finite and is valid formally before
+any evaluation of \(s\).  Since
+\[
+ [z^n]L(z\ee^{-\lambda u})^j
+ =a_n^{(j)}\ee^{-n\lambda u},
+\]
+setting \(s=1\) yields \cref{eq:all-core-coefficients}.
+The coefficients agree with the analytic solution by uniqueness.
+Cauchy's estimate on the \(z\)-disk and the bound
+\(|U|\le\kappa r\) give \cref{eq:core-tail}.
+\end{proof}
+
+For \(d=G'(v_0)\) and \(g_2=G''(v_0)\), the first two terms are
+\begin{align}
+ U_1&=-\frac{a_1}{d},\label{eq:U1}\\
+ U_2&=-\frac{a_2}{d}
+       -\frac{\lambda a_1^2}{d^2}
+       -\frac{g_2a_1^2}{2d^3}.\label{eq:U2}
+\end{align}
+Thus a leading exponential coefficient that cancels causes no
+division by zero: the formula never divides by \(a_1\).
+
+For the elementary core
+\begin{equation}\label{eq:elementary-core}
+ G(v)=av+b\Log v+c/v+d_0,
+\end{equation}
+all \(U_n\) are rational functions of
+\(v_0,a,b,c,\lambda,a_1,\ldots,a_n\).
+The only possible finite denominator loci are \(v_0=0\) and
+\(G'(v_0)=0\); the power of the latter denominator is at most
+\(2n-1\).  Indeed, at most \(j-1\) derivatives fall on
+\(D^{-j}\), which produces at most \(D^{-(2j-1)}\).
+If \(L\) starts in degree \(\nu\), only
+\(j\le\lfloor n/\nu\rfloor\) contributes.
+This is a useful algebraic stability statement under cancellation.
+
+If \(a\ne0\) in \cref{eq:elementary-core}, then on a fixed
+\(u\)-disk, \(D_{v_0}(u)\to a\) as \(v_0\to\infty\).
+The hypotheses therefore hold uniformly for large \(v_0\) in a
+strict decay sector \(\Re(\lambda v_0)\to+\infty\).
+When \(a=0\), that uniform assertion need not hold with the same
+disk and scaling.  The next theorem addresses a different degeneration.
+
+\subsection{A regular finite endpoint with an essential correction}
+
+Let \(G\) be holomorphic near \(0\), \(g_1=G'(0)\ne0\), and
+consider, on a strict decay sector,
+\begin{equation}\label{eq:finite-endpoint-form}
+ F(t)=G(t)+L(\ee^{-S/t}),\qquad L(0)=0,\quad S\ne0.
+\end{equation}
+The exact inverse is close to the ordinary analytic inverse of \(G\),
+but differentiating the exponential introduces \(t^{-2}\).
+This determines the correct uniform scale.
+
+\begin{theorem}[Sharp finite-endpoint feedback scale]
+\label{thm:finite-endpoint}
+Let \(t_0=G^{-1}(w)\) be the local core inverse and
+\(Q_0=\ee^{-S/t_0}\).
+There is a holomorphic function \(U(t_0,\xi)\) on a fixed bidisk,
+with \(U(t_0,0)=0\), such that for sufficiently small \(t_0\) in
+any strict decay subsector the unique nearby inverse is
+\begin{equation}\label{eq:endpoint-exact}
+ t=t_0+t_0^2U\left(t_0,\frac{Q_0}{t_0^2}\right)
+   =t_0+\sum_{n\ge1}d_n(t_0)Q_0^n.
+\end{equation}
+Writing \(U(t_0,\xi)=\sum_{n\ge1}U_n(t_0)\xi^n\),
+\[
+ d_n(t_0)=t_0^{2-2n}U_n(t_0).
+\]
+Hence \(d_n\) has pole order at most \(2n-2\).
+If \(a_1=L'(0)\ne0\), this order is exact, and
+\begin{equation}\label{eq:tree-leading-poles}
+ U_n(0)=\frac{(-1)^n n^{n-1}}{n!}
+ S^{n-1}\left(\frac{a_1}{g_1}\right)^n .
+\end{equation}
+If \(|U|\le M\) on \(|t_0|\le r_0,\ |\xi|\le R\), then
+for \(\eta=|Q_0|/(R|t_0|^2)<1\),
+\begin{equation}\label{eq:endpoint-tail}
+ \left|t-t_0-\sum_{n=1}^Nd_n(t_0)Q_0^n\right|
+ \le |t_0|^2\,\frac{M\eta^{N+1}}{1-\eta}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Set \(t=t_0+t_0^2u\), and temporarily regard
+\(\xi=Q_0/t_0^2\) as independent.  The identity
+\[
+ \ee^{-S/t}=
+ Q_0\exp\left(\frac{Su}{1+t_0u}\right)
+\]
+transforms \(F(t)=G(t_0)\), after division by \(t_0^2\), into
+\begin{align*}
+ 0={}&
+ u\int_0^1G'(t_0+s t_0^2u)\,\mathrm ds\\
+ &+\xi\exp\left(\frac{Su}{1+t_0u}\right)
+ L_1\left(t_0^2\xi
+       \exp\left(\frac{Su}{1+t_0u}\right)\right),
+ \qquad L_1(z)=L(z)/z.
+\end{align*}
+This is jointly holomorphic across \(t_0=0\).
+Its derivative in \(u\) at the origin is \(g_1\).
+The implicit-function theorem gives \(U\) on a fixed bidisk.
+On a strict decay subsector,
+\(Q_0/t_0^2\to0\), so the physical substitution is valid.
+The translated point remains in the sector after a harmless shrinking.
+
+At \(t_0=0\), the equation becomes
+\[
+ g_1U(0,\xi)+a_1\xi\ee^{S U(0,\xi)}=0.
+\]
+On the branch \(W(0)=0\),
+\begin{equation}\label{eq:endpoint-lambert}
+ U(0,\xi)=-\frac1S
+ W\left(\frac{Sa_1}{g_1}\xi\right).
+\end{equation}
+Lagrange inversion for \(W\ee^W=z\) gives
+\(W(z)=\sum_{n\ge1}(-n)^{n-1}z^n/n!\), proving
+\cref{eq:tree-leading-poles}.
+The displayed numbers are nonzero when \(Sa_1g_1\ne0\).
+Finally, Cauchy's estimate in \(\xi\), followed by multiplication
+by \(|t_0|^2\), proves \cref{eq:endpoint-tail}.
+\end{proof}
+
+The first displacement is
+\[
+ t-t_0=-\frac{a_1}{G'(t_0)}Q_0
+       +\bigO\left(\frac{|Q_0|^2}{|t_0|^2}\right).
+\]
+For fixed \(N\), the uniform next scale is
+\(\bigO(|Q_0|^{N+1}/|t_0|^{2N})\), not a uniform
+\(\bigO(|Q_0|^{N+1})\).
+The nonzero leading poles in \cref{eq:tree-leading-poles}
+show why that distinction cannot be removed in general.
+The theorem extends to \(L(t,z)\) holomorphic in two variables
+with \(L(t,0)=0\); the limiting coefficient is then
+\(\partial_zL(0,0)\).
+
+\subsection{A complex residual certificate}
+
+A lower bound on \(|F'|\) by itself is insufficient for a global
+complex inverse error estimate.  For example, \(\ee^v\) has
+no zero derivative but takes equal values at points differing by
+\(2\pi\ii\).  The following stronger condition is elementary and usable.
+
+\begin{proposition}[Residual-to-root certificate]\label{prop:residual}
+Let \(D=\{v:|v-\widehat v|\le r\}\), and suppose \(F\) is
+holomorphic on a neighborhood of \(D\).
+If \(a\ne0\), \(0\le\theta<1\), and
+\[
+ \sup_D|F'(v)-a|\le\theta|a|,
+ \qquad |F(\widehat v)-w|\le(1-\theta)|a|r,
+\]
+then \(F(v)=w\) has a unique root \(v_*\) in \(D\), and
+\[
+ |\widehat v-v_*|
+ \le \frac{|F(\widehat v)-w|}{(1-\theta)|a|}.
+\]
+For any \(v_1,v_2\in D\),
+\[
+ |F(v_1)-F(v_2)|\ge(1-\theta)|a|\,|v_1-v_2|.
+\]
+\end{proposition}
+\begin{proof}
+The map \(T(v)=v-(F(v)-w)/a\) has Lipschitz constant at most
+\(\theta\) on the convex disk.  The residual assumption makes it a
+self-map of the closed disk.  The contraction theorem gives its
+unique fixed point.  Integration along the segment from \(v_1\)
+to \(v_2\) gives
+\[
+ F(v_1)-F(v_2)=a(v_1-v_2)+
+ \int_{v_2}^{v_1}(F'(v)-a)\,\mathrm dv,
+\]
+and the reverse triangle inequality proves the claimed lower bound
+and hence the residual estimate.
+\end{proof}
+
+For \(t=1/v\), transporting the result uses the exact identity
+\[
+ \left|\frac1v-\frac1{v_*}\right|
+ =\frac{|v-v_*|}{|v|\,|v_*|}.
+\]
+A certificate should therefore include the branch disk as well as
+the residual.  This avoids applying a real mean-value argument
+where cancellation along a complex path is possible.
+

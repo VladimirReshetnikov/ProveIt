@@ -2,10 +2,10 @@
 
 This group holds two documents: the canonical volume, and the companion
 volume on combinatorial transseries consolidated from the three arrivals of
-2026-09-04 (see the end of this file). Beside them are fifty-nine unmerged
+2026-09-04 (see the end of this file). Beside them are sixty-one unmerged
 arrivals, fifty of 2026-09-29, one of 2026-09-30, one of 2026-10-01,
-three of 2026-10-02, one of 2026-10-03 and three of 2026-10-04, each filed
-whole with its PDF; all but the last four were then amended editorially
+three of 2026-10-02, one of 2026-10-03 and five of 2026-10-04, each filed
+whole with its PDF; all but the last six were then amended editorially
 (see "Arrivals of 2026-09-29 to 2026-10-04" below).
 
 The transseries Lean inventory and zero-gap result are computed by
@@ -409,7 +409,26 @@ share tools: each proves the same derivative-disk root certificate
 (`prop:certificate`, `thm:disk`, and `lem:certificate`, the last normalized
 to derivative 1 and proved by contraction), and each states the same
 gluing identity `G₊ = G₋ ∘ J⁻¹` for inverse branches (`eq:inverse-gluing`,
-`prop:jump`, `eq:target-transition`). They have not yet had the editorial
+`prop:jump`, `eq:target-transition`). Its second drop-zone commit brought
+two more transseries packages, the modular-cusp and action-cone articles
+below, and no other archive; they are new articles, not editions of the
+first three. The modular-cusp article pins `6cb1d86f1` and cites the
+canonical volume, the companion, the reversion, moving-fold, q-multinomial
+and theta-truncation packages and the q-Pochhammer monograph, and names
+the Gaussian-binomial crossover package without a link; the action-cone
+article pins `8e9cd6f00` and cites the canonical volume and the reversion,
+Stokes-transport, resonance-block, negative-ray, moving-fold, critical Hahn
+and finite-jet packages. Neither cites an article of its delivery. The
+modular-cusp article and the q-cusp article of the first commit prove
+several of the same theorems independently, in different notation: the
+cusp normal form, the four inverse regimes, the flat logarithmic–Puiseux
+inverse with its remainder and the four-factor minimum, with the same
+`(1,2,3,6)` example; they share no text beyond preamble boilerplate and are
+not editions of each other. The action-cone article shares only tools with
+the exact-radius article, although both have the same title head and file
+name: the exact-core Lagrange formula (`eq:core-lagrange` in both), a
+Rouché disk root and the gluing identity (`eq:finite-transition` there);
+every main theorem differs. None of the five has yet had the editorial
 pass.
 
 All fifty-two packages of the nine deliveries, the Fekete and
@@ -2126,9 +2145,98 @@ monograph's open problem `qg:prob-root-of-unity-asymptotics`
 (`Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/exponents-and-q-series/q_pochhammer_q_binomial_monograph/chapters/12_limits_reciprocity_and_frontiers.tex:578`),
 which stays open for general `(a;ζe^{−t})_∞` and Bailey sums. Its
 `prop:finite` is that monograph's `thm:qm-carry`, and its `prop:jumps` is
-`p0:thm:perturbed-inversion`; it cites none of these. Its `code/verify.py`
+`p0:thm:perturbed-inversion`; it cites none of these. Its cusp normal form,
+four regimes, flat inverse and four-factor minimum are proved again,
+independently, by the modular-cusp article in
+`Modular_Cusp_Reversion_Stokes_Corrections_q_Gamma/` below, which is not
+an edition of it. Its `code/verify.py`
 overwrites the recorded `data/verification.json`. Its checksum ledger is
 not shipped. No claim was found wrong. Not formalized.
+
+[`Modular_Cusp_Reversion_Stokes_Corrections_q_Gamma/`](Modular_Cusp_Reversion_Stokes_Corrections_q_Gamma/)
+holds *Complex Transseries Reversion at Modular Cusps: Stokes corrections,
+flat critical values, arbitrary ramification, and q-gamma special values*
+(36-page A4 PDF, 2,740-line source in ten files, three exact-rational and
+80- to 360-digit check programs with recorded outputs). For
+`log(a;ζe^{−t})_∞`, `|a| < 1`, `ζ` a primitive `m`-th root of unity, it
+gives the Borel transform of the normalized remainder `R_a` in closed form,
+meromorphic on `ℂ` with explicit poles and residues
+(`thm:cyclotomic-borel`), its exact radius (`cor:cb-large-order`), uniform
+Gevrey-one bounds and the positive-ray sum `R_a` (`thm:cb-gevery-laplace`,
+so spelled). For `m = 1`, `a = e^{−1}` the rays `0` and `π/4` are both
+pole-free with convergent Laplace integrals, yet their sums differ by
+`−Σ_{n≥1} log(1 − e^{−(4π²n+2πi)/t}) ≠ 0`
+(`thm:direction-counterexample`). This refutes the directional clause of
+the q-Pochhammer monograph's `conj:cyclotomic-resurgent-inverse`, which
+commit `7389d7de4` corrected
+(`Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/exponents-and-q-series/q_pochhammer_q_binomial_monograph/chapters/07_certification_and_frontiers.tex:757`,
+with the proof re-done in `rem:cyclotomic-direction-counterexample`,
+`:889`): equality now holds on the positive ray, other directions carry the
+explicit residue (Stokes) correction, the Gevrey, continuation and
+positive-ray clauses are proved by this article for fixed compact `K`,
+and the inverse
+paragraph stays open. For fixed `a` this also separates the sectors of
+`(a;ζe^{−t})_∞` itself, beyond the Euler quotients of the q-cusp article,
+in the monograph's open problem `qg:prob-root-of-unity-asymptotics`, which
+stays open for Bailey sums and inverse branches. Its cusp normal form,
+four-regime table, flat inverse with certified tail and four-factor minimum
+(`thm:cusp-normal-form`, `thm:flat-inverse`, `thm:flat-tail`,
+`thm:four-factors`) independently re-prove `thm:cusp`,
+`thm:classification`, `thm:flat`, `cor:flat-tail`, `thm:four` and
+`thm:ramification` of `Euler_Quotient_Inversion_Rational_q_Cusps/` above,
+with its `(1,2,3,6)` example (`eq:example6`). New here: three eta factors
+realize every ramification order (`thm:three-factors`); the rational
+q-gamma multiplication products are exactly `C_k(t)P(Q)^k/P(Q^k)`,
+`Q = e^{−4π²/t}` (`thm:qgamma-completion`; `θ₄` at `k = 2`, with a sparse
+inverse); and the raw `Γ_q(1/2)` inverse has Lambert-W leading poles
+(`thm:finite-endpoint`, `eq:gamma-leading-poles`). Its exact-core
+reversion (`thm:core-inverse`) is `p0:thm:perturbed-inversion`, credited
+generically; at `ν = 1` on the real axis its flat inverse is the
+companion's `t3:thm:endpoint`, uncited, and its `θ₄` flat term is that of
+the gamma-core article's `thm:half`
+(`Gamma_Core_q_to_1_Crossover/Gamma_Core_Transseries.tex:1043`), uncited.
+Its CRLF `data/inverse_errors.csv` is kept byte for byte by a `-text` line
+in the root `.gitattributes`; its checksum ledger is not shipped. No claim
+was found wrong. Not formalized; its numerics are not interval
+certificates.
+
+[`Action_Cones_Quartic_Boundaries_Complex_Reversion/`](Action_Cones_Quartic_Boundaries_Complex_Reversion/)
+holds *Complex Transseries Reversion: Geometry, Exact Convergence, Quartic
+Criticality, and Sharp Borel Bounds* (34-page A4 PDF, 2,364-line source,
+two mpmath check programs with recorded outputs and tables, three figures).
+For finitely many complex actions `λ_j` it proves that the action map is
+proper exactly when `0 ∉ conv{λ_j}`, exactly when the actions have a common
+decay direction, with optimal margin `dist(0, conv{λ_j})` (`thm:cone`). It
+builds a completion independent of the sorting direction
+(`thm:completion`), shows that two noncollinear actions force dense
+ordering walls in the actual inverse (`thm:dense-walls`), and counts the
+walls of the `1, i` atlas exactly, `2Σφ(k) − 1` (`thm:exact-atlas`). For
+`z + ae^{−z} + be^{−iz}` it finds the exact absolute-convergence domain by
+entropy maximization, with degree law `N^{−3/2}`, or `N^{−5/4}` at balanced
+moduli (`thm:exact-domain`), a `4/3`-power boundary law
+(`cor:boundary-law`) and a uniform quartic crossover with its first
+correction (`thm:quartic-crossover`). It sharpens the negative-ray
+article's `lem:fineinverse`
+(`Negative_Ray_Summation_Exponential_Feedback/article.tex:872`), which it
+credits, to an optimal `I_1` majorant (`thm:bessel`) with optimal
+half-plane thresholds `τ + √a`, `τ + 2√a` (`thm:halfplane`). For the sine
+kernel `ζ²/(sin πζ · sin παζ)` it gives period-uniform off-axis bounds and
+filtered continuation by the Kamimoto–Sauzin theorem (`thm:sine-uniform`,
+`thm:filtered`), part of the resonance-block article's questions 6 and 10
+(`Resonance_Block_Summation_Transseries/article.tex:1583`, `:1621`); the
+singularity types and later sheets stay open. Its convergent action
+expansion (`thm:exp-inverse`) is the action-accumulation article's
+`thm:tree` (`action_accumulation_and_inversion.tex:349`) for complex
+actions, and its cone criterion uses the mechanism of the non-Archimedean
+article's `thm:separator` (`Reversion_Beyond_Archimedean_Valuations/article.tex:1307`),
+both uncited; its weighted inversion (`thm:weighted`) and gluing identity
+re-prove the Stokes-transport article's `thm:transport` and `thm:jump`,
+credited generically. Its README and `Makefile` call bare `python`, and
+both programs overwrite the recorded outputs in place. Its checksum ledger
+is not shipped. No mathematical claim was found wrong; it misnames the
+heading of the resonance-block question 10 and counts the canonical
+source's lines one too many. Not formalized; its numerics are not interval
+certificates.
 
 The optimal-truncation articles (q-multinomial, Gaussian binomial,
 theta-resolved, certified inversion, gamma core, inverse harmonic and the
@@ -2151,7 +2259,7 @@ moment-determinacy article's least moment bound is compared with its flat
 defect, not with the actual truncation error; none of these is a sharp
 instance.
 
-Thirty-seven checksum ledgers were verified in full on filing and not filed.
+Thirty-nine checksum ledgers were verified in full on filing and not filed.
 From the first delivery, these are the two `SHA256SUMS.txt` of the
 regularity and inverse-harmonic packages and the `SHA256SUMS` of the
 moving-fold package. From the second, they are the `SHA256SUMS` of the
@@ -2178,8 +2286,9 @@ of the factorial-transseries package. From the twelfth, they are the
 `SHA256SUMS` of the abelian-squares and Catalan-recurrence packages and the
 `MANIFEST.sha256` of the Bessel package. From the thirteenth, it is the
 `SHA256SUMS.txt` of the A306631 package. From the fourteenth, they are the
-`SHA256SUMS` of the exact-radius package and the `SHA256SUMS.txt` of the
-phase-accurate and q-cusp packages. The READMEs of the
+`SHA256SUMS` of the exact-radius package, the `SHA256SUMS.txt` of the
+phase-accurate and q-cusp packages and the two `MANIFEST.sha256` of the
+modular-cusp and action-cone packages. The READMEs of the
 inverse-harmonic, moving-fold, certified-inversion, Stokes-transport,
 action-accumulation, near-linear and critical Hahn packages, and of the five
 fourth-delivery and five fifth-delivery packages that had one, now record
