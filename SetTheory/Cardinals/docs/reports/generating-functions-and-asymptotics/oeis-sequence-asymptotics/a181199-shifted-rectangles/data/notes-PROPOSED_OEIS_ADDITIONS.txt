@@ -1,0 +1,41 @@
+DRAFT ONLY — NOT SUBMITTED TO OEIS
+Prepared October 3, 2026
+
+Target: A181199
+
+The existing leading asymptotic is attributed to Vaclav Kotesovec,
+February 27, 2023, based on Christoph Koutschan's conjectured recurrence.
+Preserve that attribution. The attached unrefereed article gives a direct
+proof independent of the recurrence and a general fixed-height theorem.
+A stable public manuscript link and independent review should precede
+any proposed change of status in OEIS.
+
+Possible FORMULA addition:
+
+a(n) = 9*5^(5*n+1/2)/(2^17*Pi^2*n^12) *
+ (1 + 48/(5*n) + 5233/(100*n^2) + 1028391/(5000*n^3)
+    + 60248377/(100000*n^4) + 273939939/(250000*n^5)
+    + O(n^(-6))).
+
+General COMMENT for the fixed-height family A181196:
+
+Let T_m(n) count m-by-n arrays and fix m. Put d=m*(m-1)/2,
+J_m=Product(j!,j=0..m-1), M_m(n)=(m*n)!/(n!)^m. Then
+
+T_m(n) = M_m(n)*J_m/(4*n)^d *
+ (1 + m*(m^2-1)/(12*n)
+    + m^2*(m^2-1)*(m^2+2)/(288*n^2) + O_m(n^(-3))).
+
+There is a full inverse-power expansion with rational coefficients given
+by a finite standardized-binomial moment formula in the article.
+
+The ordinary generating function Sum(T_m(n)*z^n,n>=0), T_m(0)=1,
+is algebraic over Q(z) exactly when m=1 or m=2.
+
+Separate A181198 specialization:
+
+T_4(n) = 3*256^n/(1024*sqrt(2)*Pi^(3/2)*n^(15/2)) *
+ (1 + 75/(16*n) + 6905/(512*n^2) + O(n^(-3))).
+
+Do not mark either conjectured sequence recurrence as proved on the
+strength of this article: no such proof is supplied.

@@ -1,0 +1,1427 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{amsmath,amsthm}
+\usepackage{newtxtext,newtxmath}
+\usepackage[margin=1in,headheight=15pt]{geometry}
+\usepackage{microtype}
+\usepackage{mathtools,booktabs,array,longtable}
+\usepackage{graphicx,enumitem,fancyhdr}
+\usepackage[most]{tcolorbox}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,
+ urlcolor=MidnightBlue,pdftitle={Fixed-height shifted rectangles: asymptotics and algebraicity},
+ pdfauthor={Research report prepared for Vladimir Reshetnikov}}
+\urlstyle{same}
+\definecolor{inkblue}{HTML}{173752}
+\definecolor{pale}{HTML}{F2F5F8}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textsc{Fixed-height shifted rectangles}}
+\fancyhead[R]{\small OEIS research report}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{14pt}
+\setlist{nosep,leftmargin=*}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{question}{Research question}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Pp}{\mathbb P}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\N}{\mathbb N}
+\newcommand{\1}{\mathbf 1}
+\newcommand{\fall}[2]{#1^{\underline{#2}}}
+\newcommand{\eps}{\varepsilon}
+\DeclareMathOperator{\Tr}{Tr}
+\DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\sgn}{sgn}
+\newtcolorbox{resultbox}{colback=pale,colframe=inkblue,boxrule=0.6pt,
+ arc=1mm,left=9pt,right=9pt,top=7pt,bottom=7pt,breakable}
+
+\begin{document}
+\begin{titlepage}
+\vspace*{0.45in}
+{\color{inkblue}\large\textsc{Enumerative combinatorics \& asymptotic analysis}\par}
+\vspace{0.3in}
+{\color{inkblue}\Huge\bfseries Fixed-height\par shifted rectangles\par}
+\vspace{0.25in}
+{\Large An unconditional proof of the A181199 asymptotic,\par
+all-order expansions, and an algebraicity dichotomy\par}
+\vspace{0.35in}
+{\large Prepared for Vladimir Reshetnikov\par}
+{\large October 3, 2026\par}
+\vspace{0.35in}
+\begin{resultbox}
+For every fixed number of rows $m$, let $T_m(n)$ count the $m\times n$
+arrays increasing in rows, columns, diagonals, and downward antidiagonals.
+The principal result is
+\[
+T_m(n)\sim
+\frac{\sqrt m\,\prod_{j=0}^{m-1}j!}
+ {2^{m(m-1)}(2\pi)^{(m-1)/2}}
+\frac{m^{mn}}{n^{(m^2-1)/2}}.
+\]
+The proof supplies every inverse-power correction, proves the asymptotic
+conjecture in OEIS A181199, and implies that
+$\sum_{n\ge0}T_m(n)z^n$ is algebraic if and only if $m\le2$.
+\end{resultbox}
+\vspace{0.18in}
+\noindent\textbf{Abstract.}
+We split the order-polytope model of a shifted rectangle at a fixed numerical
+threshold. Except for an explicitly bounded exponentially small boundary
+contribution, its enumeration is an expectation under independent binomial
+random variables, weighted by a squared Vandermonde and a rational pair
+interaction. The shifted hook formula identifies the weight exactly.
+Standardized binomial moments are polynomials in $1/n$, so the expectation
+has an effective all-order expansion with rational coefficients. Its leading
+Gaussian integral gives the constant above; the first two corrections are
+proved as explicit polynomials in $m$. We obtain the conjectured constant
+$9\sqrt5/(2^{17}\pi^2)$ for A181199 and five correction terms, a universal
+limiting ratio to ordinary rectangular tableaux, nonalgebraicity at every
+height at least three, and Gaussian-ensemble laws for random intermediate
+row lengths. Complete proofs, an exact-arithmetic coefficient engine,
+independent enumerators, and a source/status audit are included.
+
+\vfill
+\noindent\small\textbf{Status.} AI-assisted, unrefereed research manuscript.
+The theorems have proofs below, but have not been independently peer reviewed
+or proof-assistant verified. Historical priority is not certified. No
+conjectured recurrence is used as a premise, and none is claimed proved here.
+\end{titlepage}
+
+{\fontsize{9.5}{10.5}\selectfont\setlength{\parskip}{0pt}\tableofcontents}
+\newpage
+
+\section{The problem, the open target, and the source audit}
+
+For positive integers $m,n$, consider arrays $(a_{i,j})$ containing each
+integer in $\{1,\ldots,mn\}$ exactly once, subject to
+\begin{align}
+ a_{i,j}&<a_{i,j+1},&a_{i,j}&<a_{i+1,j},\\
+ a_{i,j}&<a_{i+1,j+1},&a_{i,j+1}&<a_{i+1,j},
+ \label{eq:arrayconditions}
+\end{align}
+whenever the indicated cells exist. Write $T_m(n)$ for their number, and
+set $T_m(0)=1$. The diagonal inequality is redundant once row and column
+increase are imposed. The downward-antidiagonal inequality is not.
+
+These numbers form the array A181196. Its fixed-height rows include
+A181197 for $m=3$, A181198 for $m=4$, and A181199 for $m=5$
+\cite{oeis196,oeis197,oeis198,oeis199}. Throughout this article, \emph{$m$ is
+fixed and the row length $n$ tends to infinity}. Interchanging these two
+parameters changes the problem: already $T_2(n)=C_{n-1}$ for $n\ge1$,
+whereas $T_m(2)=1$ for every $m$.
+
+\subsection{The conjecture resolved here}
+The A181199 entry inspected on October 3, 2026, labels the following formula
+as a conjecture of Vaclav Kotesovec, dated February 27, 2023:
+\begin{equation}
+ T_5(n)\sim \frac{9\,5^{5n+1/2}}{2^{17}\pi^2n^{12}}.
+ \label{eq:oeisconj}
+\end{equation}
+The entry says it was based on Christoph Koutschan's conjectured recurrence.
+Kauers and Koutschan discuss the relevant guessed recurrences and finite-sum
+conjectures for heights four and five in their 2023 article
+\cite{KK,oeis199}. We do not assume those recurrences. We prove
+\eqref{eq:oeisconj} directly from the combinatorial definition and extend it
+to every fixed height.
+
+\subsection{What is established background, and what is contributed}
+The shifted hook product and the order-statistics interpretation are
+classical tools, not new inventions of this report. Sun's treatment of
+shifted strips gives both tools and proves enumeration results in several
+small cases \cite{Sun}. The known height-three leading asymptotic in
+A181197 is recovered, not newly conjectured. Chan's transfer-matrix theory
+concerns repeating strips with a fixed number of cells in each row; in the
+notation here that is the regime with $n$ fixed and $m$ growing
+\cite{Chan}. Its constant-coefficient recurrences do not supply a
+fixed-height asymptotic in $n$.
+
+The contributions developed in this manuscript are the exact
+random-threshold reduction with a boundary bound, the resulting all-height
+all-order theorem, universal first and second corrections, an algebraicity
+classification, and intermediate-shape limit laws. These statements are
+proved below. The source review did not locate these statements in the
+works inspected, but that observation is not an exhaustive priority search.
+In particular, a formula's continued ``conjecture'' label in OEIS is not by
+itself proof that no published proof exists.
+
+\subsection{Relationship to ProveIt}
+The repository was inspected at revision
+\texttt{6bf7f30d0352f7596e70928b3d4f304914075907}. Identifier searches for
+A181198 and A181199 returned no matching repository report. This is a
+limited search result, not a claim to have audited every repository file.
+The existing path-forest reports distinguish unconditional expansions,
+conjectured recurrences, and inverse-index approximations
+\cite{ProveIt}. We retain that separation. No theorem in that report is a
+mathematical dependency of the present proof, and the standard inverse-index
+method in Section~\ref{sec:inverse} is not presented as new.
+
+\begin{resultbox}
+\textbf{Scope of the resolution.} Equation~\eqref{eq:oeisconj} is proved
+here. The order-two recurrence for A181198 and the order-three recurrence
+for A181199 are \emph{not} proved here. The asymptotic series is an all-order
+Poincar\'e expansion, with a fixed truncation order; no Borel summability,
+Stokes data, or complete exponentially improved transseries is asserted.
+\end{resultbox}
+
+\section{Main results}
+Set
+\begin{equation}
+ d=\binom m2,\qquad J_m=\prod_{j=0}^{m-1}j!,\qquad
+ M_m(n)=\frac{(mn)!}{(n!)^m},\qquad \alpha_m=\frac{m^2-1}{2},
+ \label{eq:normalizations}
+\end{equation}
+and define
+\begin{equation}
+ K_m=\frac{\sqrt m\,J_m}{4^d(2\pi)^{(m-1)/2}}.
+ \label{eq:Km}
+\end{equation}
+The multinomial coefficient $M_m(n)$ counts all row-increasing arrays,
+before imposing any comparisons between different rows.
+
+\begin{theorem}[All orders at fixed height]\label{thm:main}
+For every fixed integer $m\ge1$ there is a uniquely determined sequence
+$c_{m,j}\in\Q$, with $c_{m,0}=1$, such that, for every fixed $L\ge0$,
+\begin{equation}
+ T_m(n)=M_m(n)\frac{J_m}{(4n)^d}
+ \left(\sum_{j=0}^{L}\frac{c_{m,j}}{n^j}
+       +O_{m,L}(n^{-L-1})\right).
+ \label{eq:mainM}
+\end{equation}
+Every coefficient is given by the finite moment formula
+\eqref{eq:coefficientformula}. In particular,
+\begin{equation}
+ c_{m,1}=\frac{m(m^2-1)}{12},\qquad
+ c_{m,2}=\frac{m^2(m^2-1)(m^2+2)}{288}.
+ \label{eq:c12}
+\end{equation}
+Equivalently, there are rational $b_{m,j}$, $b_{m,0}=1$, such that
+\begin{equation}
+ T_m(n)=K_m m^{mn}n^{-\alpha_m}
+ \left(\sum_{j=0}^{L}\frac{b_{m,j}}{n^j}
+       +O_{m,L}(n^{-L-1})\right),
+ \label{eq:mainK}
+\end{equation}
+where
+\begin{align}
+ b_{m,1}&=\frac{(m^2-1)^2}{12m},\\
+ b_{m,2}&=\frac{(m^2-1)(m^6+3m^2-1)}{288m^2}.
+ \label{eq:b12}
+\end{align}
+\end{theorem}
+
+\begin{corollary}[A181199, with five corrections]\label{cor:A181199}
+With $a(n)=T_5(n)$,
+\begin{align}
+ a(n)=\frac{9\,5^{5n+1/2}}{2^{17}\pi^2n^{12}}
+ \bigg(&1+\frac{48}{5n}+\frac{5233}{100n^2}
+       +\frac{1028391}{5000n^3}\notag\\
+       &+\frac{60248377}{100000n^4}
+       +\frac{273939939}{250000n^5}+O(n^{-6})\bigg).
+ \label{eq:A181199exp}
+\end{align}
+\end{corollary}
+
+\begin{theorem}[Algebraicity dichotomy]\label{thm:algebraic}
+The ordinary generating function
+\[
+ F_m(z)=\sum_{n\ge0}T_m(n)z^n
+\]
+is algebraic over $\Q(z)$ if and only if $m=1$ or $m=2$.
+The same classification holds for algebraicity over $\mathbb C(z)$.
+\end{theorem}
+
+\begin{corollary}[A universal comparison with ordinary rectangles]
+Let $f^{(n^m)}$ count ordinary standard Young tableaux of rectangular shape
+with $m$ rows of length $n$. For fixed $m$,
+\begin{align}
+\frac{T_m(n)}{f^{(n^m)}}=2^{-m(m-1)}\bigg(&1+
+ \frac{m(m^2-1)}{4n}\notag\\
+ &+\frac{m^2(m^2-1)(m^2-2)}{32n^2}+O_m(n^{-3})\bigg).
+ \label{eq:rectangle-ratio}
+\end{align}
+Thus the extra antidiagonal comparisons retain a positive limiting fraction
+$2^{-m(m-1)}$ of ordinary rectangular tableaux.
+\end{corollary}
+
+The constant is not obtained by treating the comparisons as independent.
+It comes from two shifted-hook denominators, one for each side of a
+threshold cut. Their product is the essential feature of the proof.
+The distributional counterpart is given in Section~\ref{sec:GUE}.
+
+\section{Prefix states and the shifted hook product}
+
+\subsection{The exact state space}
+Fill an array by inserting $1,2,\ldots,mn$ in order. At any intermediate
+stage let $x_i$ be the number of filled cells in row $i$. Row increase means
+that the filled cells in each row are a prefix. The legal states satisfy
+\begin{equation}
+ n\ge x_1\ge x_2\ge\cdots\ge x_m\ge0,
+ \qquad x_i=x_{i+1}\Longrightarrow x_i\in\{0,n\}.
+ \label{eq:states}
+\end{equation}
+Indeed, placing a filled cell in row $i+1$, column $j<n$, forces the cell
+in row $i$, column $j+1$, to have already been filled. When the lower row
+has length $n$, column increase forces the upper row to be full as well.
+Conversely, these conditions make the filled set an order ideal of the
+array poset. They therefore characterize the prefix states exactly.
+
+A transition increases $x_i$ by one. For $i>1$ it is allowed precisely when
+\begin{equation}
+ x_{i-1}\ge x_i+2
+ \quad\hbox{or}\quad (x_i=n-1\hbox{ and }x_{i-1}=n),
+ \label{eq:transition}
+\end{equation}
+with $x_i<n$; the first row has only the latter upper bound. Empty rows
+can tie, and completed rows can tie. Forgetting either exception would
+change the sequence.
+
+For a legal state $\lambda=(\lambda_1,\ldots,\lambda_m)$ define its rotated
+complement by
+\begin{equation}
+ \lambda^c=(n-\lambda_m,\ldots,n-\lambda_1).
+ \label{eq:complement}
+\end{equation}
+Rotation through $180$ degrees, together with reversal of the numerical
+labels, preserves the comparisons. Thus suffix enumeration at $\lambda$
+is prefix enumeration at $\lambda^c$.
+
+\subsection{Interior states}
+Call a state \emph{interior} when
+\begin{equation}
+ n>\lambda_1>\cdots>\lambda_m>0.
+ \label{eq:interior}
+\end{equation}
+Every path ending there has avoided the completed-row boundary. After
+removing trailing zero parts, it is a chain of strict partitions obtained
+by adding one box at a time. Such chains are standard shifted tableaux.
+If $g^\lambda$ denotes their number and $k=|\lambda|$, the shifted hook
+product is
+\begin{equation}
+ g^\lambda=\frac{k!}{\prod_i\lambda_i!}
+ \prod_{i<j}\frac{\lambda_i-\lambda_j}{\lambda_i+\lambda_j}.
+ \label{eq:shiftedhook}
+\end{equation}
+This standard formula appears, for example, in Sun's account \cite{Sun}.
+Appendix~\ref{app:hook} proves it directly from the strict-partition
+recursion; no shifted-tableau enumeration result is needed without proof.
+
+For an interior state both $\lambda$ and $\lambda^c$ are strict positive
+partitions. Consequently, the prefix and suffix counts are simultaneously
+available in product form. This is why cutting \emph{in the middle}, rather
+than tracking the first completed row, is effective for asymptotics.
+
+\section{An exact random-threshold reduction}
+
+\subsection{Order statistics and the cut}
+Take $m$ independent rows, each consisting of $n$ independent uniform
+random numbers in $(0,1)$, sorted increasingly. Let $\mathcal A$ be the event
+that the comparisons between rows also hold. Every interleaving of these
+sorted rows has the same probability, so
+\begin{equation}
+ \Pp(\mathcal A)=\frac{T_m(n)}{M_m(n)}.
+ \label{eq:probability}
+\end{equation}
+This is the order-statistics form of the order-polytope interpretation
+\cite{Sun}; it also follows immediately by sorting all $mn$ samples at once.
+
+Fix $p\in(0,1)$ and let $X_i$ count the entries in row $i$ below $p$.
+Before conditioning on $\mathcal A$, the variables $X_i$ are independent
+$\operatorname{Bin}(n,p)$. Conditional on these counts, the samples below
+$p$ and above $p$ are independent sorted uniforms in their respective
+intervals. When the count vector is an interior state $\lambda$, the
+conditional probability of satisfying all comparisons below the cut is
+\[
+ \frac{g^\lambda}{k!/\prod_i\lambda_i!}.
+\]
+The analogous suffix probability uses $\lambda^c$. All comparisons across
+the cut are automatic because the prefix is an order ideal. Multiplying
+and using \eqref{eq:shiftedhook} gives
+\begin{equation}
+ \Pp(\mathcal A\mid X=\lambda)=R_n(\lambda),\qquad
+ R_n(x)=\prod_{i<j}
+ \frac{(x_i-x_j)^2}{(x_i+x_j)(2n-x_i-x_j)}.
+ \label{eq:Rweight}
+\end{equation}
+The weight is symmetric in the coordinates. Equal interior coordinates
+give zero, and all distinct coordinates have exactly one decreasing order.
+
+\begin{theorem}[Interior sum and explicit boundary error]\label{thm:cut}
+Let $X_1,\ldots,X_m$ be independent $\operatorname{Bin}(n,p)$ variables and
+$\mathcal I=\{1\le X_i\le n-1\text{ for all }i\}$. Then
+\begin{equation}
+ \frac{T_m(n)}{M_m(n)}=
+ \frac1{m!}\E\left[\1_{\mathcal I}R_n(X)\right]+E_{m,n}(p),
+ \label{eq:exactcut}
+\end{equation}
+where the error is nonnegative and satisfies
+\begin{equation}
+ 0\le E_{m,n}(p)\le m\bigl(p^n+(1-p)^n\bigr).
+ \label{eq:boundary}
+\end{equation}
+For $p=1/2$ the expectation is the finite rational sum
+\begin{equation}
+ I_m(n)=2^{-mn}
+ \sum_{n>x_1>\cdots>x_m>0}
+ \left(\prod_{i=1}^m\binom n{x_i}\right)
+ \prod_{i<j}\frac{(x_i-x_j)^2}{(x_i+x_j)(2n-x_i-x_j)},
+ \label{eq:interiorsum}
+\end{equation}
+and
+\begin{equation}
+ 0\le T_m(n)-M_m(n)I_m(n)\le 2m\,2^{-n}M_m(n).
+ \label{eq:exactbound}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The contribution to $\Pp(\mathcal A)$ from interior count vectors is the
+sum of their binomial probabilities times \eqref{eq:Rweight}. Symmetry
+converts this decreasing-vector sum into $1/m!$ times the unrestricted
+expectation on $\mathcal I$. The remaining event is
+$\mathcal A\cap\mathcal I^c$. It has nonnegative probability, at most the
+probability that some row has all its samples on one side of the cut.
+A union bound gives \eqref{eq:boundary}. The specialization is immediate.
+\end{proof}
+
+\begin{remark}[A useful pointwise bound]\label{rem:Rbound}
+For $0\le x,y\le n$,
+$|x-y|\le x+y$ and $|x-y|\le2n-x-y$. Thus every factor of
+$R_n$ lies in $[0,1]$ whenever its denominator is nonzero. In particular,
+$0\le R_n\le1$ on $\mathcal I$. No uncontrolled singularity is hidden
+near the endpoints in \eqref{eq:exactcut}.
+\end{remark}
+
+The boundary estimate is an exact, nonasymptotic statement. It is deliberately
+simple and is not claimed sharp. Since the main probability is of order
+$n^{-d}$, this exponentially small additive error is negligible relative
+to every term of the inverse-power expansion.
+
+\section{Gaussian reduction and an effective all-order theorem}
+
+\subsection{The scaled integrand}
+Use $p=1/2$ and put
+\begin{equation}
+ Y_i=\frac{2X_i-n}{\sqrt n},\qquad
+ \Delta(y)=\prod_{i<j}(y_i-y_j),\qquad
+ q_{ij}(y)=(y_i+y_j)^2.
+\end{equation}
+The pair weight becomes exactly
+\begin{equation}
+ R_n(X)=(4n)^{-d}\Delta(Y)^2
+ \prod_{i<j}\left(1-\frac{q_{ij}(Y)}{4n}\right)^{-1}
+ \quad\hbox{on }\mathcal I.
+ \label{eq:scaledweight}
+\end{equation}
+Let $h_r(q)$ be the complete homogeneous polynomial of degree $r$ in the
+$d$ variables $q_{ij}$, defined by
+\begin{equation}
+ \prod_{i<j}(1-uq_{ij})^{-1}=\sum_{r\ge0}h_r(q)u^r.
+ \label{eq:hdef}
+\end{equation}
+In particular $h_0=1$. For $m=1$, the empty product is one and $h_r=0$
+for $r>0$.
+
+\subsection{Polynomial standardized moments}
+A variable $Y_i$ has the same law as
+$n^{-1/2}(\eps_1+\cdots+\eps_n)$, where the $\eps_j$ are independent
+symmetric signs. Its moment generating function is
+\begin{equation}
+ \E e^{tY_i}=
+ \left(\cosh(t/\sqrt n)\right)^n.
+ \label{eq:mgf}
+\end{equation}
+For every fixed nonnegative integer $k$, its $k$th moment is exactly a
+polynomial $\mu_k(z)$ at $z=1/n$. One convenient formal definition is
+\begin{equation}
+ \sum_{k\ge0}\mu_k(z)\frac{t^k}{k!}
+ =\exp\left(\frac1z\log\cosh(t\sqrt z)\right).
+ \label{eq:moments}
+\end{equation}
+The apparent singularity at $z=0$ is removable in the formal expansion.
+Odd moments vanish, and
+\begin{align}
+ \mu_0&=1,&\mu_2&=1,&\mu_4&=3-2z,\\
+ \mu_6&=15-30z+16z^2,&
+ \mu_8&=105-420z+588z^2-272z^3.
+ \label{eq:momentexamples}
+\end{align}
+For $k=2s>0$, the degree is at most $s-1$. This follows either by grouping
+terms according to equal sign indices, or from the moment--cumulant formula:
+a partition into even blocks contributes
+$z^{s-\#\text{blocks}}$ times a product of sign cumulants.
+
+Define a linear functional $\mathcal E_z:\Q[y_1,\ldots,y_m]\to\Q[z]$ by
+\begin{equation}
+ \mathcal E_z(y_1^{k_1}\cdots y_m^{k_m})=
+ \prod_{i=1}^m\mu_{k_i}(z).
+ \label{eq:Ez}
+\end{equation}
+Then $\mathcal E_{1/n}$ is the exact expectation for the independent
+variables $Y_i$. At $z=0$, it is expectation under independent standard
+normal variables.
+
+\subsection{The coefficient formula}
+\begin{proposition}[Finite formula for each coefficient]\label{prop:formula}
+For $j\ge0$, the coefficient in \eqref{eq:mainM} is
+\begin{equation}
+ \boxed{\displaystyle
+ c_{m,j}=\frac1{m!J_m}
+ \sum_{r=0}^{j}\frac1{4^r}
+ [z^{j-r}]\,\mathcal E_z\!\left(\Delta(y)^2h_r(q(y))\right).}
+ \label{eq:coefficientformula}
+\end{equation}
+The formula uses finite polynomials and rational arithmetic. It does not
+require previously computed sequence terms or a guessed recurrence.
+\end{proposition}
+
+\subsection{Uniform error control}
+We supply the estimates that justify the formal calculation.
+Let
+\[
+ \mathcal C_n=\{|Y_i|\le\sqrt n/2\text{ for all }i\}.
+\]
+Since $\cosh t\le e^{t^2/2}$, Chernoff's inequality gives
+\begin{equation}
+ \Pp(\mathcal C_n^c)\le2m e^{-n/8}.
+ \label{eq:central-tail}
+\end{equation}
+The same moment generating function bound implies that the absolute moments
+of every fixed degree of the $Y_i$ are bounded uniformly in $n$.
+
+On $\mathcal C_n$, each $q_{ij}(Y)/(4n)$ lies in $[0,1/4]$. Taylor's theorem
+applied to the finite product in \eqref{eq:scaledweight} therefore gives,
+for every fixed $L$,
+\begin{align}
+ \prod_{i<j}\left(1-\frac{q_{ij}(Y)}{4n}\right)^{-1}
+ &=\sum_{r=0}^{L}\frac{h_r(q(Y))}{(4n)^r}+\mathcal R_{L,n}(Y),\\
+ |\mathcal R_{L,n}(Y)|
+ &\le C_{m,L}n^{-L-1}(1+\|Y\|)^{2L+2}.
+ \label{eq:taylorbound}
+\end{align}
+To see the second bound, differentiate the product $L+1$ times with respect
+to $1/n$. Every differentiated term has total numerator degree $2L+2$;
+all denominators are bounded below by fixed powers of $3/4$.
+After multiplication by $\Delta(Y)^2$, the expected remainder is still
+$O_{m,L}(n^{-L-1})$ by the uniform moment bounds.
+
+We may replace polynomial expectations on $\mathcal C_n$ by unrestricted
+ones with exponentially small error. For example, Cauchy--Schwarz,
+\eqref{eq:central-tail}, and a uniform moment bound control the difference
+for every fixed polynomial. For the original rational weight, use
+$R_n\le1$ from Remark~\ref{rem:Rbound}. After restoring the factor
+$(4n)^d$, its discarded tail is only a fixed polynomial in $n$ times an
+exponential. The endpoint error \eqref{eq:boundary} behaves similarly.
+We have consequently proved
+\begin{equation}
+ \frac{T_m(n)}{M_m(n)}=
+ \frac{(4n)^{-d}}{m!}
+ \left(\sum_{r=0}^{L}\frac{
+ \mathcal E_{1/n}(\Delta^2h_r)}{(4n)^r}
+ +O_{m,L}(n^{-L-1})\right).
+ \label{eq:beforecollect}
+\end{equation}
+This establishes \eqref{eq:coefficientformula} after collecting powers.
+It also proves that parity effects cannot occur in the algebraic sector:
+the moments are exact polynomials in $1/n$, on both parity subsequences.
+
+\subsection{The leading Gaussian integral}
+For independent standard normals $G_1,\ldots,G_m$,
+\begin{equation}
+ \E\Delta(G)^2=m!\prod_{j=0}^{m-1}j!=m!J_m.
+ \label{eq:gaussZ}
+\end{equation}
+Here is an elementary verification. Replace the monomials in the
+Vandermonde determinant by the monic Hermite polynomials $H_j$, whose
+squared norms for standard normal measure are $j!$. The determinant is
+unchanged because this basis change is unit triangular. Expanding the
+square and using orthogonality leaves the $m!$ matching permutations,
+each contributing $\prod j!$.
+
+Thus $c_{m,0}=1$. Finally, Stirling's expansion gives
+\begin{equation}
+ M_m(n)\sim \sqrt m\,(2\pi n)^{(1-m)/2}m^{mn},
+\end{equation}
+which proves the leading constant and exponent in \eqref{eq:mainK}.
+More explicitly, the complete conversion between the two normalizations is
+\begin{equation}
+ \sum_{j\ge0}b_{m,j}z^j=
+ \left(\sum_{j\ge0}c_{m,j}z^j\right)
+ \exp\left(\sum_{r\ge1}
+ \frac{B_{2r}}{2r(2r-1)}
+ (m^{1-2r}-m)z^{2r-1}\right),
+ \label{eq:stirling-convert}
+\end{equation}
+where $B_{2r}$ are Bernoulli numbers. All uses of this identity are formal,
+or truncated to a fixed finite order with Stirling's remainder estimate
+\cite{DLMFgamma}. This completes the proof of Theorem~\ref{thm:main}, apart
+from the explicit evaluations in the next section.
+
+\section{Universal first and second corrections}
+
+The finite formula is already an all-order algorithm. To obtain short
+formulas valid at every height, it is better to keep the Vandermonde
+weight intact rather than expand it into individual monomials.
+
+\subsection{An exact binomial Vandermonde normalization}
+Define the normalized binomial ensemble by weighting the independent $Y_i$
+with $\Delta(Y)^2$. Its normalizing factor is
+\begin{equation}
+ Z_m(n)=\E\Delta(Y)^2
+   =m!J_m\prod_{j=0}^{m-1}\frac{\fall n j}{n^j}.
+ \label{eq:binomZ}
+\end{equation}
+This identity is valid for $n\ge m-1$ (and interpreted as zero when the
+support cannot accommodate $m$ distinct points).
+
+For completeness, let $X\sim\operatorname{Bin}(n,1/2)$ and define $K_j(X)$
+by
+\[
+ (1+t)^X(1-t)^{n-X}=\sum_{j=0}^n K_j(X)t^j.
+\]
+Multiplying two such generating functions and taking expectation gives
+$(1+st)^n$. Hence the $K_j$ are orthogonal and
+$\E K_j^2=\binom nj$. Their leading coefficient as polynomials in
+$Y=(2X-n)/\sqrt n$ is $n^{j/2}/j!$. The corresponding monic polynomials
+therefore have squared norms
+\[
+ h_j=j!\,\fall n j/n^j.
+\]
+The same determinant argument as in \eqref{eq:gaussZ} proves
+\eqref{eq:binomZ}. These are the symmetric Krawtchouk polynomials; the
+standard orthogonal-polynomial framework is recorded in \cite{DLMFpoly}.
+
+Put
+\begin{equation}
+ A=\binom m3,\qquad B=\frac{m(m-1)^2(m-2)}{12}.
+\end{equation}
+Expanding the finite product in \eqref{eq:binomZ} gives
+\begin{equation}
+ \frac{Z_m(n)}{m!J_m}=1-\frac A n+\frac{A^2-B}{2n^2}+O_m(n^{-3}).
+ \label{eq:Zexpand}
+\end{equation}
+Indeed, $A=\sum_{j<m}\sum_{k<j}k$ and
+$B=\sum_{j<m}\sum_{k<j}k^2$.
+
+\subsection{The first pair statistic}
+Let $p_r=\sum_iY_i^r$. The first complete homogeneous polynomial is
+\begin{equation}
+ S_1=h_1(q)=\sum_{i<j}(Y_i+Y_j)^2=(m-2)p_2+p_1^2.
+ \label{eq:S1}
+\end{equation}
+Write $\langle\cdot\rangle_n$ for expectation in the normalized binomial
+Vandermonde ensemble. The monic polynomial recurrence is
+\[
+ yP_j(y)=P_{j+1}(y)+\beta_jP_{j-1}(y),\qquad
+ \beta_j=j\left(1-\frac{j-1}{n}\right).
+\]
+The diagonal coefficient is zero by symmetry. The norm quotient proves
+the displayed value of $\beta_j$.
+
+We need the standard finite-projection identities
+\begin{align}
+ \langle p_2\rangle_n&=\beta_m+2\sum_{j=1}^{m-1}\beta_j
+ =m^2-\frac{m(m-1)(2m-1)}{3n},\\
+ \langle p_1^2\rangle_n&=\beta_m
+ =m-\frac{m(m-1)}n.
+ \label{eq:traceidentities}
+\end{align}
+They can be seen directly from the determinant ensemble: multiplication
+by $y$ is tridiagonal in the orthonormal basis, with off-diagonal entries
+$\sqrt{\beta_j}$. The mean of a linear statistic is its multiplication
+operator's trace on degrees $0,\ldots,m-1$. Its variance is the squared
+norm of the part crossing that projection. For $p_1$ only the edge from
+degree $m-1$ to degree $m$ crosses, giving $\beta_m$.
+These trace rules also follow by expanding
+$\E\prod_i(1+t f(Y_i))$ as a determinant of the moment matrix and taking
+the first two derivatives at $t=0$.
+
+Consequently,
+\begin{equation}
+ \langle S_1\rangle_n=s_{10}+\frac{s_{11}}n,
+ \quad
+ s_{10}=m(m-1)^2,\quad
+ s_{11}=-\frac{m(m-1)(2m^2-5m+5)}3.
+ \label{eq:s10s11}
+\end{equation}
+
+\subsection{The second pair statistic in the Gaussian limit}
+Let $\langle\cdot\rangle_0$ denote the Gaussian Vandermonde ensemble.
+Since
+\[
+ h_2(q)=\frac12\left(S_1^2+\sum_{i<j}(Y_i+Y_j)^4\right),
+\]
+and
+\[
+ \sum_{i<j}(Y_i+Y_j)^4=(m-8)p_4+4p_1p_3+3p_2^2,
+\]
+we need only a few Gaussian moments:
+\begin{align}
+ \langle p_2^2\rangle_0&=m^2(m^2+2),&
+ \langle p_2p_1^2\rangle_0&=m(m^2+2),\\
+ \langle p_1^4\rangle_0&=3m^2,&
+ \langle p_4\rangle_0&=2m^3+m,&
+ \langle p_1p_3\rangle_0&=3m^2.
+ \label{eq:gaussmoments}
+\end{align}
+There is no need to invoke random-matrix integration to establish these.
+Scaling and translation of the Gaussian integral give
+\begin{equation}
+ \left\langle e^{t p_2+s p_1}\right\rangle_0
+ =(1-2t)^{-m^2/2}
+ \exp\left(\frac{ms^2}{2(1-2t)}\right).
+\end{equation}
+This proves the first three identities by differentiation. Translation
+integration by parts, using $\Delta(y+c\mathbf1)=\Delta(y)$, gives
+$\langle p_1p_3\rangle_0=3\langle p_2\rangle_0=3m^2$.
+Finally, in the Hermite multiplication matrix, the degree-$j$ diagonal
+entry of the fourth power is $6j^2+6j+3$; summing over $0\le j<m$ yields
+$2m^3+m$. Thus
+\begin{equation}
+ H_{20}:=\langle h_2(q)\rangle_0
+ =\frac{m(m-1)(m^4-3m^3+10m^2-18m+16)}2.
+ \label{eq:H20}
+\end{equation}
+
+\subsection{Collecting the terms}
+Combining \eqref{eq:Zexpand}, \eqref{eq:s10s11}, and \eqref{eq:H20},
+\begin{align}
+ c_{m,1}&=-A+\frac{s_{10}}4,\\
+ c_{m,2}&=\frac{A^2-B}{2}+
+           \frac{-As_{10}+s_{11}}4+\frac{H_{20}}{16}.
+\end{align}
+Straight polynomial simplification gives \eqref{eq:c12}.
+The first Stirling logarithm coefficient is
+$u_1=(m^{-1}-m)/12$, so
+$b_{m,1}=c_{m,1}+u_1$ and
+$b_{m,2}=c_{m,2}+u_1c_{m,1}+u_1^2/2$. This proves \eqref{eq:b12}.
+
+The ordinary rectangular hook product is
+\[
+ f^{(n^m)}=M_m(n)J_m\prod_{j=0}^{m-1}\frac{n!}{(n+j)!}.
+\]
+Its finite rising-factorial expansion, combined with \eqref{eq:c12},
+proves \eqref{eq:rectangle-ratio}.
+
+\section{OEIS specializations and numerical checks}
+
+\subsection{Low-height controls}
+For $m=1$, $T_1(n)=1$. For $m=2$, the usual strict-ballot argument gives
+$T_2(n)=C_{n-1}$ for $n\ge1$; equivalently,
+\begin{equation}
+ T_2(n)=\binom{2n}{n}\frac1{2(2n-1)}
+ =\binom{2n}{n}\frac1{4n}
+   \sum_{j\ge0}\frac1{(2n)^j}.
+\end{equation}
+Thus $c_{2,j}=2^{-j}$ at every order. This is a useful exact control of
+both the normalization and the coefficient generator.
+
+For height three, the theorem recovers the existing A181197 leading term
+\cite{oeis197} and gives
+\begin{equation}
+ T_3(n)=\frac{\sqrt3\,27^n}{64\pi n^4}
+ \left(1+\frac{16}{9n}+\frac{755}{324n^2}+O(n^{-3})\right).
+\end{equation}
+For height four, corresponding to A181198,
+\begin{equation}
+ T_4(n)=\frac{3\,256^n}{1024\sqrt2\,\pi^{3/2}n^{15/2}}
+ \left(1+\frac{75}{16n}+\frac{6905}{512n^2}+O(n^{-3})\right).
+ \label{eq:A181198exp}
+\end{equation}
+The leading constants are consequences of the general theorem, not inputs
+fitted from these sequences.
+
+\subsection{Five corrections in multinomial normalization}
+Table~\ref{tab:coeffs} reports exact output of \eqref{eq:coefficientformula}.
+Only the compact multinomial normalization is used in this table.
+The archive also supplies the corresponding $b_{m,j}$.
+
+\begin{table}[ht]
+\centering
+\caption{Coefficients $c_{m,j}$ in \eqref{eq:mainM}; $c_{m,0}=1$.}
+\label{tab:coeffs}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{c r r r r r}
+\toprule
+$m$ & $c_{m,1}$ & $c_{m,2}$ & $c_{m,3}$ & $c_{m,4}$ & $c_{m,5}$\\
+\midrule
+2 & $1/2$ & $1/4$ & $1/8$ & $1/16$ & $1/32$\\
+3 & $2$ & $11/4$ & $23/8$ & $45/32$ & $-57/16$\\
+4 & $5$ & $15$ & $33$ & $789/16$ & $93/16$\\
+5 & $10$ & $225/4$ & $1819/8$ & $22045/32$ & $1353$\\
+6 & $35/2$ & $665/4$ & $8939/8$ & $92351/16$ & $731621/32$\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{How much the corrections improve A181199}
+For $m=5$, let $L_5(n)=K_5\,5^{5n}n^{-12}$ and
+$A_{5,L}(n)=L_5(n)\sum_{j=0}^L b_{5,j}n^{-j}$.
+Table~\ref{tab:numerics} shows the signed relative error
+$A_{5,L}(n)/T_5(n)-1$. Its values are numerical diagnostics, not rigorous
+interval enclosures. The counts at $n=10,20,40$ were independently
+regenerated by the row-state dynamic program and compared with OEIS;
+$n=80$ is an OEIS reference value, not regenerated in this run
+\cite{b199}.
+
+\begin{table}[ht]
+\centering
+\caption{A181199: signed relative errors of successive truncations.}
+\label{tab:numerics}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{r r r r r}
+\toprule
+$n$ & $L=0$ & $L=1$ & $L=2$ & $L=5$\\
+\midrule
+10 & $-6.37190\cdot10^{-1}$ & $-2.88893\cdot10^{-1}$ & $-9.90345\cdot10^{-2}$ & $1.42184\cdot10^{-3}$\\
+20 & $-3.90471\cdot10^{-1}$ & $-9.78967\cdot10^{-2}$ & $-1.81550\cdot10^{-2}$ & $1.97547\cdot10^{-5}$\\
+40 & $-2.16403\cdot10^{-1}$ & $-2.83393\cdot10^{-2}$ & $-2.71080\cdot10^{-3}$ & $2.67266\cdot10^{-7}$\\
+80 & $-1.13941\cdot10^{-1}$ & $-7.61418\cdot10^{-3}$ & $-3.69269\cdot10^{-4}$ & $3.76974\cdot10^{-9}$\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The leading term alone converges rather slowly at height five because
+$b_{5,1}=9.6$. This explains why the constant is difficult to recognize
+reliably from modestly sized data without correction terms. The proof,
+however, does not use the numerical agreement.
+
+\section{A complete algebraicity classification}\label{sec:algebraicity}
+
+We now prove Theorem~\ref{thm:algebraic}. The argument uses the classical
+Newton--Puiseux property: an algebraic function has a convergent fractional
+power expansion at a finite point, with algebraic coefficients when both
+the defining polynomial and the expansion point are algebraic. It has no
+logarithmic leading singularity. This is standard algebraic-function
+background; see the algebraic-function treatment in \cite{FS}.
+
+Put $R_m=m^{-m}$ and rescale
+\[
+ G_m(z)=F_m(R_mz)=\sum_{n\ge0}v_nz^n,\qquad
+ v_n=R_m^nT_m(n).
+\]
+For $m\ge2$, Theorem~\ref{thm:main} gives
+\begin{equation}
+ v_n=K_m n^{-\alpha_m}(1+O(n^{-1})).
+ \label{eq:vn}
+\end{equation}
+In particular the radius of convergence of $G_m$ is exactly one.
+
+\subsection{Odd heights: a logarithmic obstruction}
+Suppose $m\ge3$ is odd. Then $\alpha_m$ is a positive integer. Set
+$q=\alpha_m-1$. The coefficient of $z^k$ in $G_m^{(q)}(z)$ is
+\[
+ \frac{(k+q)!}{k!}v_{k+q}=\frac{K_m}{k}+O(k^{-2})
+ \quad(k\longrightarrow\infty).
+\]
+After a harmless adjustment of finitely many terms, subtraction of
+$K_m\sum_{k\ge1}z^k/k$ leaves an absolutely summable coefficient sequence.
+Therefore, along the real interval $z\uparrow1$,
+\begin{equation}
+ G_m^{(q)}(z)=K_m\log\frac1{1-z}+O(1).
+ \label{eq:logsing}
+\end{equation}
+A nonzero logarithmic divergence is incompatible with a Puiseux expansion.
+If $F_m$ were algebraic, so would be its rescaling and every derivative;
+\eqref{eq:logsing} is a contradiction.
+
+\subsection{Even heights: a transcendental-amplitude obstruction}
+Suppose $m\ge4$ is even. Now $q=\alpha_m-1/2=(m^2-2)/2$ is an integer.
+The derivative coefficients satisfy
+\[
+ [z^k]G_m^{(q)}(z)=K_m k^{-1/2}+O(k^{-3/2}).
+\]
+Since
+$[z^k](1-z)^{-1/2}=1/\sqrt{\pi k}+O(k^{-3/2})$, coefficient subtraction
+again leaves an absolutely summable series. Hence
+\begin{equation}
+ G_m^{(q)}(z)=K_m\sqrt\pi\,(1-z)^{-1/2}+O(1),
+ \qquad z\uparrow1.
+ \label{eq:halfsing}
+\end{equation}
+If the function were algebraic over $\Q(z)$, the leading coefficient in
+this Puiseux expansion at the algebraic point $z=1$ would be algebraic.
+But
+\begin{equation}
+ K_m\sqrt\pi=
+ \frac{\sqrt m\,J_m}{4^d2^{(m-1)/2}}
+ \pi^{-(m-2)/2}
+ \label{eq:amplitude}
+\end{equation}
+is a nonzero algebraic multiple of a nonzero integer power of $\pi^{-1}$.
+It is transcendental: otherwise that power of $\pi$, and hence $\pi$
+itself, would be algebraic. This contradiction uses only the classical
+transcendence of $\pi$.
+
+\subsection{The two algebraic cases and descent of constants}
+The exceptional cases are explicit:
+\[
+ F_1(z)=\frac1{1-z},\qquad
+ F_2(z)=1+zC(z),\qquad
+ C(z)=\frac{1-\sqrt{1-4z}}{2z}.
+\]
+Thus $m=1,2$ are algebraic.
+
+Finally, a rational-coefficient power series algebraic over
+$\mathbb C(z)$ is algebraic over $\Q(z)$. Indeed, fix finite degree bounds
+for a nonzero polynomial relation. Equating all coefficients gives a
+homogeneous linear system with rational entries in finitely many unknown
+polynomial coefficients. The descending chain of solution spaces
+stabilizes after finitely many independent equations. A nonzero complex
+solution therefore implies a nonzero rational solution. This proves the
+asserted classification over either field.
+
+\begin{remark}
+Nonalgebraicity does not imply non-D-finiteness. Logarithmic singularities,
+and half-integer singularities with transcendental connection constants,
+are compatible with D-finite functions. The guessed recurrences for
+heights four and five remain separate questions.
+\end{remark}
+
+\section{Gaussian laws for intermediate shapes}\label{sec:GUE}
+
+The same reduction describes typical partially filled arrays, not only
+their total number. We give both a randomized numerical cut and a fixed
+number of inserted labels; these are different probability models.
+
+\subsection{A cut at a fixed numerical level}
+Choose a tableau uniformly among the $T_m(n)$ arrays. Independently choose
+$mn$ uniform random numbers in $(0,1)$, sort them, and place them in the
+array in increasing order of its integer labels. This produces the uniform
+order-statistics model conditioned on $\mathcal A$.
+For a fixed $p\in(0,1)$ let $X_i$ be the number of row-$i$ entries below
+$p$ and set
+\begin{equation}
+ Z_i=\frac{X_i-np}{\sqrt{np(1-p)}}.
+\end{equation}
+
+\begin{theorem}[Gaussian Vandermonde limit]\label{thm:gue}
+For fixed $m$ and fixed $p\in(0,1)$, the decreasing vector $Z$ converges in
+distribution to the probability density
+\begin{equation}
+ \frac{e^{-\|z\|^2/2}\Delta(z)^2}{(2\pi)^{m/2}J_m},
+ \qquad z_1>z_2>\cdots>z_m,
+ \label{eq:GUEdensity}
+\end{equation}
+with respect to $m$-dimensional Lebesgue measure. Polynomial moments of
+fixed degree converge as well.
+\end{theorem}
+
+\begin{proof}
+For interior decreasing $x$, the exact conditional mass is
+\[
+ \frac{\prod_i\Pp(\operatorname{Bin}(n,p)=x_i)R_n(x)}
+      {T_m(n)/M_m(n)}.
+\]
+In bounded sets of standardized coordinates, the local central limit
+estimate for the binomial mass follows directly from Stirling's formula.
+Moreover,
+\[
+ x_i-x_j=\sqrt{np(1-p)}(z_i-z_j),
+\]
+whereas the two denominator factors in \eqref{eq:Rweight} are asymptotic
+to $2np$ and $2n(1-p)$. Thus
+\[
+ R_n(x)=(4n)^{-d}\Delta(z)^2(1+o(1))
+\]
+uniformly on every bounded set. Divide by
+$T_m(n)/M_m(n)\sim J_m(4n)^{-d}$ and use the lattice mesh
+$1/\sqrt{np(1-p)}$ in every coordinate. The Riemann sums converge to
+\eqref{eq:GUEdensity}.
+
+To justify passage beyond bounded sets, first restrict every $x_i/n$ to a
+fixed compact interval inside $(0,1)$ containing $p$. There the pair
+denominators are bounded below by a constant times $n^2$, and binomial
+local bounds give a Gaussian upper bound times a fixed polynomial in the
+standardized coordinates. This is integrable, with every polynomial
+moment. Outside that macroscopic interval, Chernoff bounds and $R_n\le1$
+give an exponentially small contribution even after division by the
+order-$n^{-d}$ conditioning probability. The boundary term satisfies the
+same conclusion by \eqref{eq:boundary}. This proves tightness and moment
+convergence. Normalization of the limit is \eqref{eq:gaussZ}, with the
+factor $m!$ removed on the decreasing chamber.
+\end{proof}
+
+The density \eqref{eq:GUEdensity} is the ordered eigenvalue density of the
+Gaussian unitary ensemble in the normalization with Gaussian factor
+$e^{-\sum z_i^2/2}$. This terminology is optional: the theorem and its
+normalization have already been specified by an explicit density.
+
+\subsection{A deterministic fraction of the labels}
+Let $\Lambda_i(k)$ be the number of cells in row $i$ occupied by labels
+$1,\ldots,k$ of a uniformly random tableau. Fix $p\in(0,1)$ and take
+$k=\lfloor mnp\rfloor$.
+
+\begin{theorem}[Trace-zero limit at deterministic time]\label{thm:tracezero}
+The vector
+\[
+ \left(\frac{\Lambda_i(k)-np}{\sqrt{np(1-p)}}\right)_{i=1}^m
+\]
+converges to the density
+\begin{equation}
+ \frac{e^{-\|z\|^2/2}\Delta(z)^2}{(2\pi)^{(m-1)/2}J_m}
+ \label{eq:tracezerodensity}
+\end{equation}
+on $\{z_1>\cdots>z_m,\ \sum_i z_i=0\}$, with respect to Euclidean
+$(m-1)$-dimensional measure on the trace-zero hyperplane.
+\end{theorem}
+
+\begin{proof}
+In the preceding randomized-cut construction, the total number $K$ of
+samples below $p$ is $\operatorname{Bin}(mn,p)$ and is independent of the
+integer tableau. Conditioning on $K=k$ therefore gives precisely
+$\Lambda(k)$. For an interior vector $x$ of total size $k$, divide the
+mass used in the preceding proof by $\Pp(K=k)$.
+The latter is asymptotic to $(2\pi mnp(1-p))^{-1/2}$.
+The lattice $\{x\in\mathbb Z^m:\sum x_i=k\}$ has Euclidean covolume
+$\sqrt m$. In standardized coordinates its cell volume is
+$\sqrt m\,(np(1-p))^{-(m-1)/2}$. These factors give exactly the density
+\eqref{eq:tracezerodensity} under the local binomial estimate.
+
+For domination, use the same compact macroscopic region as before.
+The product of local binomial upper bounds on the hyperplane, after the
+additional conditioning, is bounded by a fixed polynomial times a Gaussian
+in the standardized coordinates, times the hyperplane lattice-cell
+volume. Its tails are uniformly summable. Outside the macroscopic region,
+the extra factor $1/\Pp(K=k)=O(\sqrt n)$ cannot overcome an exponential
+Chernoff bound. This proves convergence of the hyperplane Riemann sums.
+
+Finally, $\Delta$ is invariant under common translation. Orthogonally
+splitting $\R^m$ into the trace-zero hyperplane and the unit trace direction
+shows that the full Gaussian Vandermonde integral is $\sqrt{2\pi}$ times
+the trace-zero integral. Equation~\eqref{eq:gaussZ} then verifies the
+normalization in \eqref{eq:tracezerodensity}.
+\end{proof}
+
+This theorem concerns one fixed macroscopic time. It is not a claim of
+process convergence to a noncolliding Brownian bridge; proving tightness
+in a path space and identifying the joint time laws require additional
+work.
+
+\section{Ratios, eventual log-convexity, and inversion}\label{sec:inverse}
+
+\subsection{Consecutive ratios}
+Write $\alpha=\alpha_m$ and $b_1=b_{m,1}$. For $m\ge2$, the all-order
+expansion gives
+\begin{equation}
+ \frac{T_m(n+1)}{T_m(n)}=m^m
+ \left(1-\frac\alpha n+
+ \frac{\alpha(\alpha+1)/2-b_1}{n^2}+O_m(n^{-3})\right).
+ \label{eq:ratio}
+\end{equation}
+Hence $T_m(n)$ is eventually strictly increasing. Expanding
+$\log T_m(n)$ at $n-1,n,n+1$ with enough terms also gives
+\begin{equation}
+ \log T_m(n+1)-2\log T_m(n)+\log T_m(n-1)
+ =\frac\alpha{n^2}+O_m(n^{-3})>0
+\end{equation}
+for sufficiently large $n$. Thus it is eventually strictly log-convex.
+These statements do not identify the smallest valid $n$.
+
+\subsection{Inverting the asymptotic profile}
+Put $\lambda=m\log m$, $K=K_m$, and $L=\log(y/K)$. The large solution of
+\[
+ \lambda x-\alpha\log x=L
+\]
+is
+\begin{equation}
+ x_0=-\frac\alpha\lambda
+ W_{-1}\!\left(-\frac\lambda\alpha e^{-L/\alpha}\right),
+ \label{eq:inverseW}
+\end{equation}
+where $W_{-1}$ is the real branch taking values at most $-1$
+\cite{DLMFW}. The branch choice matters: the principal branch describes
+the small, irrelevant solution. In elementary logarithmic form,
+\begin{equation}
+ x_0=\frac{L+\alpha\log L-\alpha\log\lambda}{\lambda}
+ +O_m\left(\frac{\log L}{L}\right).
+\end{equation}
+
+Let $\ell_2=b_{m,2}-b_{m,1}^2/2$. Formal inversion of the continuous
+asymptotic profile gives
+\begin{equation}
+ x=x_0-\frac{b_{m,1}}{\lambda x_0}
+ -\frac{\alpha b_{m,1}/\lambda^2+\ell_2/\lambda}{x_0^2}
+ +O_m(x_0^{-3}).
+ \label{eq:inversecorrection}
+\end{equation}
+To verify it, insert $x=x_0+\delta$ into
+$\lambda x-\alpha\log x+b_{m,1}/x+\ell_2/x^2=L$ and compare the
+coefficients of $x_0^{-1}$ and $x_0^{-2}$.
+Along the exact values $y=T_m(n)$, the approximation in
+\eqref{eq:inversecorrection} returns $n+O_m(n^{-3})$.
+The higher inverse terms are obtained by the same recursive substitution.
+This inversion technique is standard and also used elsewhere in ProveIt;
+its application here is a consequence of the new expansion, not a new
+inversion method.
+
+For an arbitrary target $y$, the least integer index attaining it is a
+staircase function. An asymptotic estimate alone must not be rounded and
+advertised as an exact threshold certificate. Near an integer transition,
+explicit upper and lower bounds for the neighboring sequence values are
+required. The finite interior sum and its boundary error
+\eqref{eq:exactbound} supply one possible, though not always computationally
+efficient, route to such bounds.
+
+\section{Reproducibility and computational scope}
+
+\subsection{Exact coefficient generation}
+The program \texttt{code/coefficients.py} implements
+\eqref{eq:coefficientformula} using Python's exact rational arithmetic.
+It avoids expanding the squared Vandermonde in full. For any symmetric
+polynomial $P$ and any product measure with identical one-variable moments,
+\begin{equation}
+ \mathcal E_z(\Delta^2P)=m!
+ \sum_{\sigma\in S_m}\sgn(\sigma)\,
+ \mathcal E_z\left(P\prod_{i=0}^{m-1}y_{i+1}^{\,i+\sigma(i)}\right).
+ \label{eq:collapseperms}
+\end{equation}
+Expand the two Vandermonde determinants, permute the integration variables
+in one expansion, and use symmetry of $P$ to prove this identity.
+Only $m!$ permutations remain. Equal sorted exponent profiles are grouped
+before evaluating products of moment polynomials.
+
+The $h_r$ are generated from \eqref{eq:hdef}; the standardized moments are
+generated from sign cumulants. The Stirling conversion
+\eqref{eq:stirling-convert} is also done with rational numbers. The method
+is practical for modest fixed $m$ and moderate order. Its permutation
+factor makes it unsuitable as presently implemented for large $m$;
+no claim of polynomial complexity in $m$ is made.
+
+\subsection{Independent enumeration and exact finite identities}
+The program \texttt{code/tableaux.py} supplies two enumerators: a row-state
+dynamic program using \eqref{eq:transition}, and an independent bitmask
+linear-extension enumerator using the cell-level predecessor relation.
+The latter is intentionally restricted to small arrays. Neither uses a
+conjectured recurrence.
+
+The verification run recorded in the archive passed 471 checks in the
+following suites:
+\begin{center}
+\begin{tabular}{p{0.76\textwidth}r}
+\toprule
+Suite & Checks\\
+\midrule
+Bitmask-poset versus row-state enumeration & 27\\
+Interior prefix counts versus the shifted hook product & 238\\
+Threshold split, rational interior sum, and boundary inequality & 120\\
+Exact Catalan control, $n=1,\ldots,30$ & 30\\
+Selected A181198 values, independently regenerated & 12\\
+Selected A181199 values, independently regenerated & 12\\
+Universal corrections versus the coefficient engine, $m=1,\ldots,6$ & 30\\
+Standardized binomial-moment controls & 2\\
+\bottomrule
+\end{tabular}
+\end{center}
+The independently regenerated OEIS comparisons use $n=1,\ldots,10,20,40$
+for each of heights four and five \cite{b198,b199}. The threshold identity
+is checked for $1\le m\le5$ and $1\le n\le8$.
+These are finite corroborations of the proofs, not substitutes for them.
+
+\subsection{Commands and data provenance}
+From the archive's top-level directory:
+\begin{verbatim}
+python3 code/verify.py
+python3 code/coefficients.py --height 5 --order 5
+python3 code/numerics.py
+bash build.sh
+\end{verbatim}
+The first two commands use the Python standard library only.
+The numerical diagnostics additionally use \texttt{mpmath}; they were run
+with 90 decimal digits. The PDF build requires a conventional LaTeX
+installation with the packages listed in the preamble.
+
+The reference integers in \texttt{data/oeis\_selected.json} were transcribed
+from the entry pages and b-files inspected during the source audit. They
+are not outputs of the coefficient engine. Counts regenerated independently
+are saved separately in \texttt{data/exact\_regenerated.json}. Values at
+$n=80$ appear only as reference inputs to numerical diagnostics. Full
+third-party articles are not redistributed in this archive.
+
+\section{Further research questions and proposed approaches}
+
+The following questions are not presented as solved. They are chosen to
+continue the present line of work rather than to restate the resolved
+leading-term conjecture.
+
+\begin{question}[Prove the specific height-four and height-five recurrences]
+Can the exact enumeration be transformed into a finite hypergeometric sum
+or a Pfaffian identity that admits a compact creative-telescoping
+certificate for the recurrences in A181198 and A181199?
+\end{question}
+The random-threshold expression is exact only after adding its boundary
+part. For a recurrence proof that part cannot be discarded. A useful first
+step is an exact decomposition according to the number of full and empty
+rows at the cut, followed by shifted-skew-tableau formulas for those
+boundary states. A proof should compare the resulting operator with the
+published guessed operator, not merely generate more confirming terms.
+
+\begin{question}[Polynomial dependence of every correction on height]
+For each fixed $j$, is $c_{m,j}$ a polynomial in $m$ of degree at most $3j$?
+Can its factorization and denominator structure be described uniformly?
+\end{question}
+The formulas for $j=1,2$ support this degree scale. The question beyond
+those orders is not proved here. A promising approach is to reorganize
+\eqref{eq:coefficientformula} as Gaussian matrix moments or as connected
+cumulant diagrams, in which the powers of $m$ count index loops. This could
+replace factorial-in-$m$ computation with symbolic fixed-order formulas.
+
+\begin{question}[A growing-height transition]
+For what growth rates $m=m(n)$ does the leading fixed-height formula remain
+relatively accurate? Is the natural first transition governed by $m^3/n$?
+\end{question}
+The coefficient $c_{m,1}\sim m^3/12$ suggests this parameter in multinomial
+normalization. It does not establish a uniform regime. A proof would need
+uniform Vandermonde moment bounds and a growing-dimension tail analysis.
+For $m^3/n$ of order one, connected logarithmic corrections may require
+resummation rather than ordinary fixed-order truncation.
+
+\begin{question}[Exponentially small sectors and sharp boundary asymptotics]
+What is the true leading asymptotic of the discarded boundary term
+$E_{m,n}(1/2)$, and how does it combine with large deviations of the
+interior expectation?
+\end{question}
+The bound $2m2^{-n}$ is sufficient for every inverse power but is not an
+asymptotic formula. Configurations with a row empty or full give a natural
+finite hierarchy of lower-dimensional boundary strata. Computing their
+constants could produce a genuine transseries beyond the algebraic sector,
+and could clarify the signs and optimal truncation of the coefficients.
+
+\begin{question}[A full path-process limit]
+Do the centered row-length processes of a uniform tableau converge to a
+trace-zero noncolliding Gaussian bridge on compact time intervals inside
+$(0,1)$? What are the entrance and exit scalings near the endpoints?
+\end{question}
+Theorem~\ref{thm:tracezero} establishes one-time marginals only. A proof of
+process convergence would require multi-cut enumeration, control of
+increments, and tightness. The complement symmetry provides a useful
+constraint on any proposed entrance/exit description.
+
+\begin{question}[Certified asymptotic enclosures and integer thresholds]
+Can the moment expansion be packaged into efficient explicit upper and
+lower bounds with practical constants, avoiding the $\binom{n-1}{m}$-term
+interior sum?
+\end{question}
+On a central region the pair interaction has a positive geometric
+expansion. Combining its finite partial sums with concentration bounds and
+exact moment determinants could give certified intervals. These would
+turn the inverse approximations into exact index decisions away from a
+quantified transition zone.
+
+\begin{question}[D-finiteness versus nonalgebraicity at arbitrary height]
+Is $F_m(z)$ D-finite for every fixed $m$, and how does the minimal
+annihilating order grow with $m$?
+\end{question}
+Theorem~\ref{thm:algebraic} settles the algebraic/nonalgebraic distinction,
+not the D-finite/non-D-finite one. An exact finite-dimensional differential
+system in the fixed-height regime would be a stronger structural result.
+The opposite-orientation constant-width transfer matrix does not answer
+this question.
+
+\section{Conclusion}
+A shifted rectangle admits a particularly effective asymptotic cut: both
+sides of an interior threshold state are ordinary strict shifted shapes.
+The two shifted hook products turn the count into a binomial Vandermonde
+expectation, with an explicitly controlled boundary error. This gives a
+proof of the A181199 leading constant independent of all guessed
+recurrences, an effective all-order expansion for every fixed height,
+and universal correction polynomials through second order.
+
+The consequences go beyond adding coefficients to an OEIS entry. The
+same constant yields a complete algebraicity dichotomy for the fixed-height
+generating functions, while the same exact weight identifies Gaussian
+laws for typical intermediate shapes. The remaining recurrence, uniformity,
+and exponentially small questions are separate, concrete targets with
+clear starting points.
+
+\appendix
+\section{A direct proof of the shifted hook product}\label{app:hook}
+
+Let $\lambda_1>\cdots>\lambda_r>0$ be a strict partition of $k$, and put
+\[
+ H(\lambda)=\frac{k!}{\prod_i\lambda_i!}
+ \prod_{i<j}\frac{\lambda_i-\lambda_j}{\lambda_i+\lambda_j}.
+\]
+We prove that it satisfies the strict-partition path recursion
+\begin{equation}
+ H(\lambda)=\sum_i H(\lambda-e_i),
+ \label{eq:hookrec}
+\end{equation}
+where only valid strict-partition removals are included and a trailing zero
+part is deleted. Together with $H(\varnothing)=1$, this proves
+\eqref{eq:shiftedhook} by induction.
+
+For a valid removal,
+\begin{equation}
+ \frac{H(\lambda-e_i)}{H(\lambda)}
+ =\frac{\lambda_i}{k}
+ \prod_{j\ne i}
+ \frac{\lambda_i-\lambda_j-1}{\lambda_i-\lambda_j}
+ \frac{\lambda_i+\lambda_j}{\lambda_i+\lambda_j-1}.
+ \label{eq:removalratio}
+\end{equation}
+The same expression is zero for an invalid removal causing equal positive
+parts. If the last part is one, deleting its resulting zero gives the
+same ratio, since the extra zero factors cancel. Thus it suffices to prove
+\begin{equation}
+ \sum_i\lambda_i
+ \prod_{j\ne i}
+ \frac{\lambda_i-\lambda_j-1}{\lambda_i-\lambda_j}
+ \frac{\lambda_i+\lambda_j}{\lambda_i+\lambda_j-1}=k.
+ \label{eq:rationalidentity}
+\end{equation}
+
+Consider the rational function
+\[
+ R(z)=\prod_{j=1}^r
+ \frac{z-\lambda_j-1}{z-\lambda_j}
+ \frac{z+\lambda_j}{z+\lambda_j-1},\qquad
+ f(z)=(z-\tfrac12)R(z).
+\]
+Its possible finite poles are the disjoint sets $\lambda_i$ and
+$1-\lambda_i$. Direct substitution gives $R(1-z)=R(z)$ and hence
+$f(1-z)=-f(z)$. The residues at the paired poles are equal. At
+$z=\lambda_i$, the residue is the negative of the $i$th summand in
+\eqref{eq:rationalidentity}.
+
+At infinity, each pair of factors contributes $-2\lambda_j/z^2$ to the
+first nonconstant term, so
+\[
+ R(z)=1-\frac{2k}{z^2}+O(z^{-3}),\qquad
+ f(z)=z-\tfrac12-\frac{2k}{z}+O(z^{-2}).
+\]
+The sum of finite residues is the coefficient of $z^{-1}$, namely $-2k$.
+On the other hand it is minus twice the left side of
+\eqref{eq:rationalidentity}. The identity follows, proving
+\eqref{eq:hookrec} and the hook product. All operations here are rational
+identities; the residue language can equivalently be replaced by partial
+fractions.
+
+\section{An implementation-independent coefficient specification}
+
+For a fixed height $m$ and requested order $L$, the following finite recipe
+fully specifies the coefficient calculation.
+
+First compute $h_0,\ldots,h_L$ from
+$\prod_{i<j}(1-u(y_i+y_j)^2)^{-1}$ modulo $u^{L+1}$.
+Next compute the sign cumulants $\kappa_r$ from
+\[
+ \log\cosh t=\sum_{r\ge1}\kappa_r\frac{t^r}{r!}.
+\]
+The even values begin $\kappa_2=1$, $\kappa_4=-2$, $\kappa_6=16$,
+$\kappa_8=-272$; the odd values vanish. The moment polynomials can be
+computed recursively as
+\begin{equation}
+ \mu_0(z)=1,\qquad
+ \mu_k(z)=\sum_{\substack{2\le r\le k\\r\text{ even}}}
+ \binom{k-1}{r-1}\kappa_r z^{r/2-1}\mu_{k-r}(z)
+ \quad(k>0),
+ \label{eq:momentrec}
+\end{equation}
+with $\mu_k=0$ for odd $k$.
+Apply \eqref{eq:collapseperms} to each $h_r$, evaluate each monomial by
+\eqref{eq:Ez}, retain powers through $z^{L-r}$, and combine them as in
+\eqref{eq:coefficientformula}. Finally apply the formal exponential
+\eqref{eq:stirling-convert}. This recipe is sufficient to reproduce the
+printed coefficients independently of the shipped Python code.
+
+For $m=5$, the two outputs through order five are
+\begin{align*}
+ (c_{5,j})_{j=0}^5&=
+ \left(1,10,\frac{225}{4},\frac{1819}{8},\frac{22045}{32},1353\right),\\
+ (b_{5,j})_{j=0}^5&=
+ \left(1,\frac{48}{5},\frac{5233}{100},\frac{1028391}{5000},
+ \frac{60248377}{100000},\frac{273939939}{250000}\right).
+\end{align*}
+The first two nonconstant entries in each row also have the independent
+symbolic derivation in Section~6. Higher printed entries are exact
+evaluations of the proved finite formula, not inferred from observed
+numerical errors.
+
+\begin{thebibliography}{99}
+\bibitem{oeis196} The OEIS Foundation Inc.,
+\emph{A181196: arrays increasing in four directions}.
+\url{https://oeis.org/A181196}. Inspected October 3, 2026.
+
+\bibitem{oeis197} The OEIS Foundation Inc.,
+\emph{A181197: the three-row sequence}.
+\url{https://oeis.org/A181197}. Inspected October 3, 2026.
+
+\bibitem{oeis198} The OEIS Foundation Inc.,
+\emph{A181198: the four-row sequence}.
+\url{https://oeis.org/A181198}. Inspected October 3, 2026.
+
+\bibitem{oeis199} The OEIS Foundation Inc.,
+\emph{A181199: the five-row sequence}.
+\url{https://oeis.org/A181199}. The entry attributes the asymptotic conjecture
+to V. Kotesovec and the guessed recurrence to C. Koutschan.
+Inspected October 3, 2026.
+
+\bibitem{b198} C. Koutschan, with earlier terms from A. P. Heinz,
+\emph{Table for A181198, $n=1,\ldots,100$}.
+\url{https://oeis.org/A181198/b181198.txt}. Selected values inspected
+October 3, 2026.
+
+\bibitem{b199} C. Koutschan, with earlier terms from A. P. Heinz,
+\emph{Table for A181199, $n=1,\ldots,100$}.
+\url{https://oeis.org/A181199/b181199.txt}. Selected values inspected
+October 3, 2026.
+
+\bibitem{KK} M. Kauers and C. Koutschan,
+\emph{Some D-finite and some possibly D-finite sequences in the OEIS},
+Journal of Integer Sequences \textbf{26} (2023), article 23.4.5.
+\url{https://arxiv.org/abs/2303.02793}.
+The arXiv PDF inspected has Section 6.4 on the two shifted-rectangle
+sequences; pagination differs from that cited on the OEIS pages.
+
+\bibitem{Sun} P. Sun,
+\emph{Enumeration of standard Young tableaux of shifted strips with
+constant width}, Electronic Journal of Combinatorics \textbf{24}(2)
+(2017), P2.41. Preprint: \url{https://arxiv.org/abs/1506.07256}.
+The inspected preprint states the shifted hook product and the
+order-statistics model and treats both parameter orientations explicitly.
+
+\bibitem{Chan} B. T. Chan, \emph{Periodic P-partitions},
+European Journal of Combinatorics (2023).
+Preprint, revised 2020: \url{https://arxiv.org/abs/1803.05594}.
+Used here to distinguish fixed row length from fixed number of rows.
+
+\bibitem{FS} P. Flajolet and R. Sedgewick,
+\emph{Analytic Combinatorics}, Cambridge University Press, 2009.
+Author-maintained companion site: \url{https://ac.cs.princeton.edu/}.
+Standard background on algebraic generating functions and Puiseux
+singularities; no specific sequence theorem is attributed to this source.
+
+\bibitem{DLMFgamma} NIST Digital Library of Mathematical Functions,
+\S5.11, \emph{Asymptotic expansions of the gamma function}.
+\url{https://dlmf.nist.gov/5.11}. Inspected October 3, 2026.
+
+\bibitem{DLMFpoly} NIST Digital Library of Mathematical Functions,
+\S18.19, \emph{Hahn class: definitions}.
+\url{https://dlmf.nist.gov/18.19}. Orthogonal-polynomial background;
+the normalization used in this paper is derived explicitly.
+
+\bibitem{DLMFW} NIST Digital Library of Mathematical Functions,
+\S4.13, \emph{Lambert $W$-function}.
+\url{https://dlmf.nist.gov/4.13}. Inspected October 3, 2026.
+
+\bibitem{ProveIt} V. Reshetnikov, \emph{ProveIt repository}.
+\url{https://github.com/VladimirReshetnikov/ProveIt}.
+Revision inspected: \texttt{6bf7f30d0352f7596e70928b3d4f304914075907}.
+In particular, the README for
+\texttt{a189281-path-forest-expansions} under
+\texttt{SetTheory/Cardinals/docs/reports/} was read for the repository's
+source/status distinctions. It is not a dependency of the mathematical
+proofs in this article.
+\end{thebibliography}
+\end{document}
