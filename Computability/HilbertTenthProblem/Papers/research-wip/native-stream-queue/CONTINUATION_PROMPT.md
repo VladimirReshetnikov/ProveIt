@@ -48,17 +48,19 @@
 > are specified by an existence proof, not materialized. The established
 > universal bound remains **84 operations**.
 >
-> The [free auxiliary coefficient scout](complete83_free_coefficient_scout.md)
-> emits an **83-operation, degree-111 candidate**, whose **universality is unproved**.
-> Supplying S instead of computing i*Delta*c² saves one multiplication but loses
-> its divisibility condition. Every full positive84 zero has new full positive
-> candidate extensions, at the same accepted input, whose literal inverse i is
-> nonintegral. Both odd-index cases are proved; no false accepted input is shown.
-> The [independent review](review_complete83_free_coefficient_scout.md) reconstructs
-> all 83 gates and both complete graph maps, expands 2,114 factor coefficients,
-> and proves the uniform degree. Fresh normal/optimized receipts and the separate
-> proof challenge pass. Generic divisor/sign cases and accepted-input soundness
-> remain open; the established universal minimum stays **84 operations**.
+> The [prime-index free-coefficient83 collapse](free_coefficient83_prime_outer_collapse.md)
+> refutes the inherited compiler representation of the **83=46M+37A**,
+> 18-witness, exact-degree111 source. Every positive input on every valid
+> compiler slice has infinitely many full positive zeros with original
+> positive alpha and input root. A reduced prime main-index progression,
+> Vinogradov equidistribution and a positive auxiliary CRT reconstruction
+> give all seven intended factors `(1,1,1,1,1,1,Delta)`. This supplies actual
+> false membership on the rejecting compiler, without relying on nonunit
+> factor cases. The [source review](review_free_coefficient83_prime_outer_collapse_source.md)
+> and [mathematical review](review_free_coefficient83_prime_outer_collapse_math.md)
+> pass, together with fresh normal/optimized exact component receipts.
+> Prime distribution is an explicit existence dependency; no enormous full
+> zero is numerically materialized. The established universal bound stays84.
 >
 > The [materialized nonunit diagnostic](complete83_nonunit_positive_diagnostic.md)
 > evaluates all83 rows at a positive supplied tuple and obtains factors
@@ -68,7 +70,8 @@
 > accepted compiled input. The [independent review](review_complete83_nonunit_positive_diagnostic.md)
 > reconstructs all25 supplied integers and83 registers and independently
 > recovers all four Pell indices. Author and review pass fresh installed
-> normal/optimized replay. Valid-program soundness of83 remains open.
+> normal/optimized replay. The separate prime-index proof above now refutes
+> valid-program soundness; this diagnostic alone does not establish it.
 >
 > The [native index mismatch](free_coefficient83_native_alias.md) strengthens
 > that proof obstruction: a scaled Pell family retains positive integral h and
