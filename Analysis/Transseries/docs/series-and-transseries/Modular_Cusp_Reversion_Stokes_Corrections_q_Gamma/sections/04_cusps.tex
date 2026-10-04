@@ -1,0 +1,259 @@
+\section{Exact modular normal forms at rational cusps}\label{sec:cusps}
+
+The modular formula below is classical.  Its role here is to provide
+an exact analytic representative, including phases, whose inverse
+can then be studied without losing a flat term.
+The eta transformation and the Dedekind-sum multiplier are given in
+\cite[Equations 23.18.5--23.18.7]{dlmf-eta}; an elementary proof of the
+transformation is available in \cite{kong-teo}.
+
+\subsection{One factor with all phases specified}
+
+For integers \(H,K\), \(K>0\), \((H,K)=1\), write
+\[
+ s(H,K)=\sum_{\ell=1}^{K-1}
+ \frac{\ell}{K}
+ \left(\frac{H\ell}{K}
+       -\left\lfloor\frac{H\ell}{K}\right\rfloor-\frac12\right),
+ \qquad s(H,1)=0 .
+\]
+Fix a cusp \(h/k\), and for each positive integer \(d\) put
+\[
+ g_d=(d,k),\qquad H_d=\frac{dh}{g_d},\qquad K_d=\frac{k}{g_d}.
+\]
+Choose \(a_d\) with \(a_dH_d\equiv-1\pmod{K_d}\), and define
+\[
+ \rho_d=\ee^{2\pi\ii a_d/K_d}.
+\]
+For \(K_d=1\), set \(\rho_d=1\).
+The value of \(\rho_d\) is independent of the chosen representative
+of \(a_d\).
+
+\begin{lemma}[One-factor cusp identity]\label{lem:one-cusp}
+If \(\tau=h/k+\ii t/(2\pi)\) and \(\Re t>0\), then
+\begin{align}
+ \eta(d\tau)
+ ={}&\exp\left(\pi\ii\left[
+          \frac{dh}{12k}-s(H_d,K_d)\right]\right)
+ \left(\frac{2\pi g_d}{kd\,t}\right)^{1/2}\notag\\
+ &\quad{}\times
+ \exp\left(-\frac{\pi^2g_d^2}{6dk^2t}\right)
+ P\left(\rho_d
+       \exp\left(-\frac{4\pi^2g_d^2}{dk^2t}\right)\right).
+ \label{eq:one-cusp}
+\end{align}
+The square root is the branch positive for \(t>0\).
+\end{lemma}
+\begin{proof}
+Choose \(b_d\in\Z\) so that
+\[
+ \gamma_d=
+ \begin{pmatrix}a_d&b_d\\K_d&-H_d\end{pmatrix}
+ \quad\hbox{has determinant }1.
+\]
+A direct calculation gives
+\[
+ \gamma_d(d\tau)=\frac{a_d}{K_d}
+                  +\frac{2\pi\ii}{K_d^2d\,t}.
+\]
+The eta multiplier, in the convention of \cite{dlmf-eta}, is
+\[
+ \epsilon(\gamma_d)=
+ \exp\left(\pi\ii\left[
+      \frac{a_d-H_d}{12K_d}+s(H_d,K_d)\right]\right),
+\]
+and
+\[
+ \eta(\gamma_d z)
+   =\epsilon(\gamma_d)\,[-\ii(K_dz-H_d)]^{1/2}\eta(z).
+\]
+At \(z=d\tau\), the square root equals
+\((K_ddt/(2\pi))^{1/2}\).
+Insert the product definition of eta at \(\gamma_d(d\tau)\)
+and solve for \(\eta(d\tau)\).  The \(a_d\) phase cancels, leaving
+\(\pi\ii H_d/(12K_d)-\pi\ii s(H_d,K_d)\).
+Since \(H_d/K_d=dh/k\), this is \cref{eq:one-cusp}.
+All transformations take place in the upper half-plane:
+\(\Re t>0\) implies \(\Re(1/t)>0\), so the dual product converges.
+\end{proof}
+
+\subsection{A finite product quotient}
+
+Let \(\mathcal D\) be a finite set of distinct positive integers
+with nonzero integer exponents \(r_d\).
+Set
+\begin{align}
+ B&=\sum_{d\in\mathcal D}r_d,&
+ D&=\sum_{d\in\mathcal D}dr_d,\notag\\
+ A_{h,k}&=\frac{\pi^2}{6k^2}
+         \sum_{d\in\mathcal D}\frac{r_dg_d^2}{d},&
+ N&=\lcm\{d:d\in\mathcal D\},\label{eq:cusp-constants}\\
+ S&=\frac{4\pi^2}{k^2N},&
+ M_d&=\frac{Ng_d^2}{d},\qquad Q=\ee^{-S/t}.\notag
+\end{align}
+Each \(M_d\) is a positive integer.  Define
+\begin{equation}\label{eq:R-general}
+ R(Q)=\prod_{d\in\mathcal D}P(\rho_dQ^{M_d})^{r_d},
+\end{equation}
+and the nonzero constant
+\begin{equation}\label{eq:kappa}
+ \kappa_{h,k}=
+ \prod_{d\in\mathcal D}
+       \left(\frac{2\pi g_d}{kd}\right)^{r_d/2}
+ \exp\left(-\pi\ii
+       \sum_{d\in\mathcal D}r_ds(H_d,K_d)\right).
+\end{equation}
+
+\begin{theorem}[Exact finite-product cusp normal form]
+\label{thm:cusp-normal-form}
+For \(q=\ee^{2\pi\ii h/k-t}\), \(\Re t>0\),
+\begin{equation}\label{eq:raw-cusp}
+ \prod_{d\in\mathcal D}P(q^d)^{r_d}
+ =\kappa_{h,k}\,t^{-B/2}
+   \exp\left(-\frac{A_{h,k}}t+\frac{Dt}{24}\right)R(Q).
+\end{equation}
+For the eta quotient,
+\begin{equation}\label{eq:eta-cusp}
+ \prod_{d\in\mathcal D}\eta(d\tau)^{r_d}
+ =\kappa_{h,k}\ee^{\pi\ii hD/(12k)}
+    t^{-B/2}\exp\left(-\frac{A_{h,k}}t\right)R(Q).
+\end{equation}
+These are exact holomorphic identities, not finite asymptotic
+expansions.
+\end{theorem}
+\begin{proof}
+Multiply \cref{eq:one-cusp} with the indicated integer powers.
+The equality \(g_d^2/d=M_d/N\) puts all exponentials on the
+common grid \(Q^{M_d}\).
+For the raw product, use
+\[
+ P(q^d)=\ee^{-\pi\ii d\tau/12}\eta(d\tau).
+\]
+This removes the phase \(\ee^{\pi\ii dh/(12k)}\) and introduces
+\(\ee^{dt/24}\).  The finite products of the remaining constants
+give \cref{eq:kappa}.
+Negative integer powers cause no difficulty because each factor
+is nonzero in its disk.
+\end{proof}
+
+At \(q=1\), the formula reduces to
+\[
+ P(\ee^{-dt})=
+ \sqrt{\frac{2\pi}{dt}}\,
+ \ee^{-\pi^2/(6dt)+dt/24}
+ P(\ee^{-4\pi^2/(dt)}).
+\]
+The extension to a rational cusp is not just replacement of
+\(t\) by \(k^2t\): the factors \(g_d\) and phases \(\rho_d\)
+also change.
+
+\subsection{Arithmetic coefficients and resonant cancellation}
+
+The logarithm of the dual product is convergent for \(|Q|<1\):
+\begin{align}
+ L(Q)=\log R(Q)&=\sum_{n\ge1}\lambda_nQ^n,\notag\\
+ \lambda_n&=
+ -\sum_{\substack{d\in\mathcal D\\M_d\mid n}}
+ r_d\,\sigma_{-1}(n/M_d)\,\rho_d^{n/M_d}.
+ \label{eq:lambda-arithmetic}
+\end{align}
+This follows by expanding
+\(\log P(z)=-\sum_{n\ge1}\sigma_{-1}(n)z^n\).
+If \(R(Q)=\sum_{n\ge0}c_nQ^n\), then
+\begin{equation}\label{eq:euler-recurrence}
+ c_0=1,\qquad
+ nc_n=\sum_{j=1}^n j\lambda_jc_{n-j}.
+\end{equation}
+Thus all coefficients belong to the cyclotomic number field generated
+by the finitely many \(\rho_d\).
+No numerical cancellation test is needed.
+
+The first nonzero coefficient of \(R-1\) equals the first nonzero
+coefficient of \(L\).  It must be found \emph{after} the finite sum
+in \cref{eq:lambda-arithmetic}, because distinct factors can cancel
+at the same action.
+For arbitrary phase-product representations the cancellation can
+even be complete.  For example, separating even and odd factors gives
+\[
+ P(-Q)=\frac{P(Q^2)^3}{P(Q)P(Q^4)}.
+\]
+The constant case must therefore be included whenever a general
+phase-product input is allowed.
+
+For \(0<r<1\),
+\begin{equation}\label{eq:log-product-bound}
+ \sup_{|Q|\le r}|\log R(Q)|
+ \le \sum_{d\in\mathcal D}|r_d|\,
+            \frac{r^{M_d}}{(1-r^{M_d})^2}.
+\end{equation}
+Indeed
+\(\sum_{\ell,n\ge1}|z|^{\ell n}/\ell
+ \le |z|/(1-|z|)^2\).
+Together with Cauchy's formula, this supplies explicit coefficient
+and tail estimates.
+
+\subsection{The four cusp regimes}
+
+Taking logarithms of \cref{eq:raw-cusp} and setting \(v=1/t\)
+gives
+\begin{equation}\label{eq:log-core-cusp}
+ \log F=
+ -A_{h,k}v+\frac B2\Log v+\frac{D}{24v}
+ +\log\kappa_{h,k}+L(\ee^{-Sv}).
+\end{equation}
+This is the exact-core form of \cref{eq:elementary-core}.
+A local logarithm of the nonzero target is understood.
+
+\begin{center}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{.24\textwidth}>{\raggedright\arraybackslash}p{.28\textwidth}>{\raggedright\arraybackslash}X@{}}
+\toprule
+Condition & Perturbative behavior & Appropriate inverse coordinate\\
+\midrule
+\(A_{h,k}\ne0\) &
+Exponential--power core &
+\(v=1/t\), with a linear--logarithmic or Lambert core\\
+\(A_{h,k}=0,\ B\ne0\) &
+Power of \(t\) &
+A chosen algebraic power branch, then exponential corrections\\
+\(A_{h,k}=B=0,\ D\ne0\), raw products &
+Nonconstant analytic background &
+The finite-endpoint theorem after taking logarithms\\
+\(A_{h,k}=B=D=0\), raw products &
+Constant plus flat terms &
+Puiseux inverse in \(Q\), then a logarithm\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+For eta quotients the \(D/(24v)\) term is absent, so
+\(A_{h,k}=B=0\) already gives the last regime.
+This difference is why a normalization cannot be omitted when
+identifying a flat critical value.
+
+For completeness, the equation
+\(av+b\Log v=w-d_0\), when \(ab\ne0\), has the local expression
+\[
+ v=\frac ba\,W_j\left(
+       \frac ab\,\ee^{(w-d_0)/b}\right),
+\]
+with the \(W\)-branch chosen to satisfy the original logarithm
+equation.  Exponentiating an equation can otherwise introduce a
+spurious sheet.  A nonzero \(c/v\) can be retained in the exact
+core or treated by a separate analytic core correction.
+
+The common nome in \cref{eq:cusp-constants} is convenient and need
+not be primitive.  Replacing \(Q\) by \(Q^g\) changes a displayed
+vanishing order.  The constructions below have nonzero consecutive
+exponents \(m,m+1\), so their ramification cannot be removed by
+such a rescaling.  All ramification statements elsewhere are
+relative to the stated coordinate \(Q\).
+
+Finally, for a fixed family of dilations the physical condition
+\(Q\to0\) is exactly
+\[
+ \frac{\Re(1/t)}{k^2}\longrightarrow+\infty.
+\]
+On the real radial path this is \(k^2t\to0\).
+A fixed-cusp expansion therefore does not imply a uniform
+small-nome approximation when the denominator \(k\) grows as fast
+as \(t^{-1/2}\).

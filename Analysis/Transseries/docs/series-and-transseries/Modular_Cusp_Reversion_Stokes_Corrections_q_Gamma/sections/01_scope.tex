@@ -1,0 +1,236 @@
+\section{Scope, results, and relation to the repository}\label{sec:scope}
+
+In this article, \emph{series reversal} means \emph{compositional reversion}:
+given a relation \(y=f(t)\), determine and justify a local inverse \(t=g(y)\).
+It does not mean reversing the order of coefficients or taking \(1/f\).
+The central issue is that an inverse may need a different asymptotic scale
+from the original function.  The elementary example
+\[
+ y=\ee^{-S/t},\qquad
+ t=-\frac{S}{\Log y+2\pi\ii j},\qquad j\in\Z,
+\]
+already exchanges an exponential scale for a logarithmic covering.
+If the exponential is multiplied by a power of \(t\), Lambert \(W\)
+enters.  If a leading correction is \(Q^m\), a Puiseux root enters before
+the logarithm.  If the original coefficients are divergent, a choice of
+Borel summation direction enters as well.
+
+These mechanisms are often discussed separately.  Here they are joined in
+an exact class arising from modular \(q\)-products.  The resulting theorems
+include branch data and error bounds; they do not depend on promoting an
+uncontrolled formal substitution to an analytic identity.
+
+\subsection{What is proved}
+
+The main results have five distinct roles.
+\begin{enumerate}[leftmargin=*,itemsep=4pt]
+\item \Cref{thm:cyclotomic-borel,thm:direction-counterexample} give an
+explicit Borel transform for the fixed-argument cyclotomic \(q\)-Pochhammer
+logarithm and a counterexample to one directional-equality assertion in
+the repository.  The general resurgence mechanism is classical; the
+point here is to state and prove the correctly normalized specialization.
+\item \Cref{thm:core-inverse,thm:finite-endpoint} give two practical
+reversion engines.  One treats an exact dominant core with a convergent
+exponential tail.  The other treats a regular finite endpoint perturbed by
+\(\ee^{-S/t}\), and identifies the sharp scale and all leading coefficient
+poles.
+\item \Cref{thm:cusp-normal-form,thm:flat-inverse} give the exact
+normal form at every rational cusp and a convergent inverse when all
+perturbative core terms cancel.
+\item \Cref{thm:three-factors,thm:four-factors} construct arbitrary
+finite ramification with minimal numbers of factors: three eta factors
+for the two eta balances, four Euler-product factors for all three raw
+product balances.
+\item \Cref{thm:qgamma-completion} and the subsequent half-argument
+calculation apply the theory to rational special values of \(q\)-gamma,
+both before and after removal of their analytic background.
+\end{enumerate}
+
+A precise negative conclusion is part of the result:
+a Borel ray containing no pole need not produce the same sum as another
+such ray.  A precise positive conclusion is equally important:
+after fixing the summation and logarithm sheets, an inverse can be
+constructed with every exponential contribution retained and with a
+geometric remainder.
+
+\subsection{Existing results that must be credited}
+
+The source comparison is pinned to commit
+\texttt{6cb1d86f19ebf9f54c8d985b141b84233b6eab66}.
+The \repo{} transseries volume and companion already contain exact-core
+inversion, Lagrange--B\"urmann formulas, exponential corrections, and
+positive-real \(q\)-product completions \cite{repo-trans,repo-companion}.
+The support-controlled reversion and moving-fold reports already discuss
+finite action grids, grouped resonances, and analytic critical charts
+\cite{repo-reversion,repo-fold}.  The present argument does not claim
+those principles as new.
+
+The relevant source base also extends beyond the Transseries directory.
+The \(q\)-Pochhammer monograph contains complex fixed-argument expansions,
+cyclotomic asymptotic base inverses, exact eta completions at \(q=1,-1\),
+ordinary finite ramification, and regular \(q\)-gamma base inversion
+\cite{repo-qmono}.  It would therefore be incorrect to describe the
+repository as confined to positive real \(q\).  Its frontier chapter
+contains the named conjecture
+\texttt{conj:cyclotomic-resurgent-inverse}, whose directional-equality
+clause we test below.
+
+The literature also goes substantially beyond a purely formal calculus.
+Van der Hoeven proves formal compositional inversion in an appropriate
+transseries field and develops a separate complex theory with
+composition-domain restrictions \cite{vdh-book,vdh-complex}.
+Edgar studies composition, recursion, and convergence
+\cite{edgar}.  Marmi and Sauzin treat Borel transforms at roots-of-unity
+resonances for a general cohomological equation
+\cite[Sections 4.2--4.3]{marmi-sauzin}.  Their framework includes the
+Lambert series used here.  Explicit quantum-dilogarithm Borel poles and
+Stokes jumps are developed by Garoufalidis and Kashaev
+\cite{garoufalidis-kashaev}; more recent \(q\)-Pochhammer modular
+resurgence is treated by Fantini and Rella \cite{fantini-rella}.
+Sauzin establishes nonlinear resurgent substitution and inversion under
+the required analytic estimates \cite{sauzin}.
+
+Our contribution is an explicit development within this established
+framework: a correction of a specific repository assertion, exact
+logarithmic cusp inversion with arithmetic coefficient generation,
+sharp factor-count constructions, and the finite-endpoint feedback
+analysis for modular \(q\)-gamma corrections.  These are proved below.
+A worldwide priority claim, or the resolution of unrestricted complex
+transseries inversion, would go beyond the evidence.
+
+\subsection{Notation and domain conventions}
+
+We use \(\N=\{0,1,2,\ldots\}\).  Put
+\[
+ P(z)=\prod_{n=1}^{\infty}(1-z^n),\qquad |z|<1.
+\]
+This is holomorphic and nonzero in the unit disk, and its logarithm is
+the unique analytic logarithm with \(\log P(0)=0\).
+The eta function is
+\[
+ \eta(\tau)=\ee^{\pi\ii\tau/12}P(\ee^{2\pi\ii\tau}),
+ \qquad \Im\tau>0.
+\]
+For an integer \(n\ge1\), let
+\(\sigma_{-1}(n)=\sum_{d\mid n}d^{-1}\).
+A root of unity is written
+\(\zeta=\ee^{2\pi\ii h/k}\), with \(k\ge1\) and \((h,k)=1\);
+the cusp \(q=1\) is represented by \(h=0,k=1\).
+We use
+\[
+ q=\zeta\ee^{-t},\qquad \Re t>0,\qquad
+ \sectors=\{t:0<|t|<t_*,\ |\arg t|\le\pi/2-\delta\}.
+\]
+Here \(0<\delta<\pi/2\), and every asymptotic statement on
+\(\sectors\) is uniform on the displayed closed subsector unless
+explicitly qualified.
+
+The symbol \(\Log\) denotes a specified branch or logarithm lift.
+A logarithm of a holomorphic unit equal to \(1\) at the origin always
+means its germ with value \(0\) there.  Thus a logarithm sheet is not
+silently reset during continuation.  For complex \(q=\ee^{-t}\) and
+rational \(x\), the definition of \(q^x\) is \(\ee^{-tx}\);
+this is the branch used in the \(q\)-gamma applications.
+
+\section{Complex reversion: formal data and analytic realization}
+\label{sec:complex-framework}
+
+\subsection{Three different meanings of a transseries inverse}
+
+There are three levels of assertion.
+A \emph{formal inverse} is an identity in a specified complete algebra
+of series, where the relevant substitutions are defined.
+An \emph{asymptotic inverse} is a sectorial function with controlled
+remainders after truncation.
+An \emph{exact convergent inverse representation} is an identity
+obtained by substituting small functions into a convergent analytic
+series.  Such a representation is stronger than its asymptotic expansion,
+but does not supply all possible divergent or oscillatory transseries.
+
+For example, if \(U(z_1,z_2)\) is analytic near \((0,0)\), then
+\[
+ U\bigl(\ee^{-\alpha/t},\ee^{-\beta/t}\bigr)
+ =\sum_{p,q\ge0}u_{p,q}\ee^{-(p\alpha+q\beta)/t}
+\]
+converges whenever both arguments lie in a suitable polydisk.
+It is an asymptotic transseries on a sector only when their real
+exponential rates decay there.  If \(p\alpha+q\beta\) agrees for two
+different pairs, their coefficients must be added before the leading
+term is identified.  No denominator involving an action difference is
+needed for this addition.
+
+\begin{proposition}[Finite complex actions]\label{prop:finite-actions}
+Let \(F(u,\mathbf z)\) be holomorphic near \((0,\mathbf0)\), with
+\(F(0,\mathbf0)=0\) and \(F_u(0,\mathbf0)\ne0\).  There is a unique
+holomorphic germ \(u=U(\mathbf z)\) with \(U(\mathbf0)=0\) and
+\(F(U(\mathbf z),\mathbf z)=0\).
+If \(z_j(t)=\ee^{-\alpha_j/t}\), and a closed sector satisfies
+\[
+ \Re(\alpha_j/t)\ge c/|t| \quad (1\le j\le r)
+\]
+for a fixed \(c>0\), then \(U(\mathbf z(t))\) is an exact convergent
+sectorial transseries.  Its action support is contained in
+\(\N\alpha_1+\cdots+\N\alpha_r\), and equal actions are grouped by
+finite sums at each bounded exponential height.
+\end{proposition}
+\begin{proof}
+The holomorphic implicit-function theorem gives \(U\) and a polydisk
+of convergence.  Shrinking the sector radius puts all \(z_j(t)\)
+in any smaller such polydisk.  Absolute convergence permits grouping.
+On a fixed interior ray, the real part of
+\(\sum n_j\alpha_j/t\), divided by \(1/|t|\), is at least
+\(c\sum n_j\).  Consequently only finitely many multiindices lie below
+a fixed height.  This proves both the finite grouping assertion and
+the usual asymptotic interpretation of degree truncations.
+\end{proof}
+
+The finite-action result is standard analytic infrastructure.  It remains
+useful because it says exactly which operation is legitimate.  An
+arbitrary countable action family would additionally require control of
+accumulation, coefficient summability, and substitution.  An arbitrary
+complex direction may not meet a common decay cone at all.
+
+\subsection{Why a global complex claim fails}
+
+The size of \(\ee^{-1/t}\) changes when
+\(\Re(1/t)\) changes sign.  The two functions
+\[
+ f_0(t)=t,\qquad f_1(t)=t+\ee^{-1/t}
+\]
+have the same algebraic asymptotic series on every closed right
+subsector, but different inverses there.  Thus an algebraic expansion
+does not determine exponentially small inverse information.
+The exact normalizations in the following sections are what supply it.
+
+A finite-point critical example is
+\(f(t)=t^m\).  Its inverse requires an \(m\)-th root; it is not an
+ordinary Taylor series at the critical value when \(m>1\).
+At a flat cusp, \(\ee^{-1/t}\), even a Puiseux scale alone is
+insufficient: a logarithm is unavoidable.
+For arbitrary complex exponential actions, a sector may also contain
+oscillatory pairs of comparable size.  A total real ordering of
+monomials cannot simply be imported unchanged into that situation.
+These distinctions are consistent with the composition restrictions
+in the complex transseries literature \cite{vdh-complex}.
+
+\subsection{A formal coefficient ring is not a summation theorem}
+
+For coefficients in a complete formal algebra, an equation
+\[
+ u=-\Phi(u,\mathbf z),\qquad \Phi(0,\mathbf0)=0,
+\]
+with a suitably invertible linearization can be solved by coefficient
+recursion.  In a \(\mathbf z\)-adic algebra, every coefficient uses
+finitely many preceding coefficients.  That fact proves formal
+existence and uniqueness.  It does not give bounds after substituting
+a physical exponential scale.
+
+For a resurgent extension, it is also insufficient that each
+coefficient is individually resurgent.  An analytic series in a
+second variable must have geometric coefficient bounds in the
+relevant resurgent seminorms.  Sauzin's nonlinear implicit theorem
+provides the appropriate setting \cite{sauzin}.  Our convergent
+cusp theorems meet their analytic needs directly through ordinary
+holomorphic estimates; our Borel calculations specify the
+summation data rather than assuming it.
+

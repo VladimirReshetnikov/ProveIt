@@ -1,0 +1,126 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=27mm,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,tabularx}
+\usepackage{graphicx,xcolor,enumitem,fancyhdr}
+\usepackage[hidelinks]{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\definecolor{ink}{RGB}{22,44,66}
+\definecolor{accent}{RGB}{24,88,116}
+\hypersetup{colorlinks=true,linkcolor=accent,citecolor=accent,urlcolor=accent,
+pdftitle={Complex Transseries Reversion at Modular Cusps},
+pdfauthor={Independent research study prepared with ChatGPT}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Complex transseries reversion}
+\fancyhead[R]{\small Modular cusps and \(q\)-analogs}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{1.2em}
+\setlength{\emergencystretch}{2em}
+\allowdisplaybreaks[2]
+\setcounter{tocdepth}{2}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{question}[theorem]{Research question}
+\newcommand{\C}{\mathbb C}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathbb N}
+\newcommand{\D}{\mathbb D}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\ee}{\mathrm e}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\Log}{\operatorname{Log}}
+\newcommand{\Li}{\operatorname{Li}}
+\newcommand{\Res}{\operatorname{Res}}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\lcm}{\operatorname{lcm}}
+\newcommand{\sgn}{\operatorname{sgn}}
+\newcommand{\Borel}{\mathcal B}
+\newcommand{\Lap}{\mathcal L}
+\newcommand{\bigO}{\mathcal O}
+\newcommand{\coef}[2]{[#1^{#2}]}
+\newcommand{\Poch}{P}
+\newcommand{\repo}{\texttt{ProveIt}}
+\newcommand{\sectors}{\mathcal S_\delta}
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\centering
+\vspace*{8mm}
+{\large\color{accent} RESEARCH ARTICLE\par}
+\vspace{8mm}
+{\Huge\bfseries\color{ink} Complex Transseries\\[2mm]
+Reversion at Modular Cusps\par}
+\vspace{8mm}
+{\Large Stokes corrections, flat critical values,\\
+arbitrary ramification, and \(q\)-gamma special values\par}
+\vspace{8mm}
+{\large An independent study of the \repo{} research questions\par}
+\vspace{3mm}
+{4 October 2026\par}
+\vfill
+\begin{minipage}{0.91\textwidth}
+\begin{abstract}
+Compositional inversion of a complex transseries requires a domain, a branch,
+and a summation prescription.  We develop an explicit framework in which
+those data remain visible throughout reversion, and apply it to
+\(q\)-Pochhammer products at roots of unity.  First, an elementary
+Mittag--Leffler calculation gives the meromorphic Borel transform of the
+fixed-argument cyclotomic logarithm, all its poles and residues, uniform
+Gevrey estimates, and its exact positive-ray Laplace sum.  A nonzero
+residue correction disproves the unrestricted directional-equality clause
+of the \repo{} conjecture \texttt{conj:cyclotomic-resurgent-inverse};
+the appropriate replacement includes a specified summation direction
+and Stokes corrections.  The resurgence itself is established literature,
+which we explicitly identify.
+
+Second, exact eta transformations reduce finite product quotients at every
+rational cusp to an elementary exponential--power core times a convergent
+series in a dual nome.  When the core cancels, we prove a convergent
+logarithmic--Puiseux inverse, compute every coefficient, index all local
+inverse sheets, and give an explicit truncation bound.  Three eta factors
+realize every ramification order and are minimal for the two eta balances.
+Four unnormalized Euler-product factors realize every ramification order
+while cancelling all three perturbative balances; four are necessary.
+
+Third, rational \(q\)-gamma special values have exact modular completions.
+The half-argument completion is a theta function, whose lacunary series
+yields an explicit logarithmic inverse.  For the original, unnormalized
+\(q\)-gamma value we instead prove a regular-core inverse theorem with
+sharp feedback scale \(t_0^{-2}\ee^{-S/t_0}\); its leading pole coefficients
+are controlled by Lambert \(W\).  Exact rational calculations and high
+precision complex checks accompany the proofs.  The results concern
+specified formal or analytic classes and do not assert a global
+inversion or summability theorem for unrestricted complex transseries.
+\end{abstract}
+\end{minipage}
+\vfill
+{\small Source comparison pinned to \repo{} commit\\
+\texttt{6cb1d86f19ebf9f54c8d985b141b84233b6eab66}.}
+\end{titlepage}
+\pagenumbering{roman}
+\hypersetup{pageanchor=true}
+{\small\setlength{\parskip}{0pt}\tableofcontents}
+\clearpage
+\pagenumbering{arabic}
+\input{sections/01_scope.tex}
+\input{sections/02_reversion.tex}
+\input{sections/03_borel.tex}
+\input{sections/04_cusps.tex}
+\input{sections/05_flat.tex}
+\input{sections/06_constructions.tex}
+\input{sections/07_qgamma.tex}
+\input{sections/08_verification_future.tex}
+\input{sections/09_references.tex}
+\end{document}

@@ -1,0 +1,497 @@
+% Standalone section; no preamble.  Standard amsmath/amssymb/amsthm are sufficient.
+% Suggested bibliography keys appear below.  This is a self-contained
+% specialization of established q-difference resurgence, not a claim that
+% resurgence of the q-Pochhammer symbol is newly discovered.
+
+\section{Cyclotomic Borel transforms and the necessary Stokes correction}
+\label{sec:cyclotomic-borel-correction}
+
+The repository's conjecture \texttt{conj:cyclotomic-resurgent-inverse} \cite{repo-qfrontier}
+contains two different issues: resurgence of the normalized logarithm of
+the product, and identification of all its directional sums with one fixed
+analytic function.  The first issue admits an explicit answer throughout
+the stated disk $|a|<1$.  The second identification is false as written:
+different nonsingular Laplace rays can give different functions even where
+both integrals converge and the original product is defined.  The
+correction is an explicitly computable exponentially small term.
+
+This analysis belongs to an established literature.  Marmi and Sauzin
+\cite[\S4.2--4.3, especially Theorem~4.3]{marmi-sauzin} study Borel
+transforms at arbitrary root-of-unity resonances for the cohomological
+equation.  Their general solution
+$f_g(q,z)=\sum_{r\geq1}g_r z^r/(q^r-1)$ includes the present logarithm
+when $g(z)=-\log(1-z)$.  Their variable is $\eta=\log(q/\zeta)=-t$,
+and their theorem is formulated for $\eta f_g$; differentiation in the
+Borel variable gives the normalization used below.  Garoufalidis and
+Kashaev \cite{garoufalidis-kashaev} give explicit poles, residues, and
+Stokes transformations for Faddeev's quantum dilogarithm.  The more recent
+work of Fantini and Rella \cite[\S3]{fantini-rella} studies
+$q$-Pochhammer resurgence and the correction terms needed to reconstruct
+particular $q$-series.  Our purpose is a directly checkable specialization,
+with uniform error bounds and a concrete repair of the repository's
+normalization claim.
+
+\subsection{Normalization and the exact Borel transform}
+
+Let $m\geq1$, let $h$ be an integer coprime to $m$, and put
+$\zeta=\exp(2\pi i h/m)$.  For $|a|<1$ and $\Re t>0$, define
+\begin{equation}
+ L_a(t)=\log(a;\zeta e^{-t})_\infty
+       =-\sum_{r=1}^{\infty}
+          \frac{a^r}{r(1-\zeta^r e^{-rt})}.
+ \label{eq:cb-log-definition}
+\end{equation}
+Here and below the logarithm is defined by its convergent series.  Set
+\begin{align}
+ S_{-1}(a)&=-\frac{\operatorname{Li}_2(a^m)}{m^2},\label{eq:cb-action}\\
+ S_0(a)&=\frac{1}{2m}\log(1-a^m)
+       -\sum_{\substack{r\geq1\\m\nmid r}}
+          \frac{a^r}{r(1-\zeta^r)},\label{eq:cb-constant}\\
+ R_a(t)&=L_a(t)-\frac{S_{-1}(a)}{t}-S_0(a).
+ \label{eq:cb-normalization}
+\end{align}
+For $j\in\mathbb Z\setminus\{0\}$, let
+\begin{equation}
+ \omega_j=\frac{2\pi i j}{m},\qquad
+ p_j\in\{1,\ldots,m\},\qquad hp_j\equiv j\pmod m.
+ \label{eq:cb-indices}
+\end{equation}
+The convention $p_j=m$ represents the zero residue class.
+
+\begin{theorem}[Explicit cyclotomic Borel transform]
+\label{thm:cyclotomic-borel}
+The normalized function $R_a(t)$ has a formal expansion
+$\widetilde R_a(t)=\sum_{n\geq1}c_n(a)t^n$ with
+\begin{equation}
+ c_n(a)=\sum_{r\geq1}a^r r^{n-1}
+       \sum_{\substack{j\ne0\\j\equiv hr\pmod m}}
+          \omega_j^{-n-1}\qquad(n\geq1).
+ \label{eq:cb-coefficients}
+\end{equation}
+Its Borel transform, with the convention
+$\mathcal B(t^n)=\xi^{n-1}/(n-1)!$, is
+\begin{equation}
+ B_{a,\zeta}(\xi)
+ =\sum_{j\ne0}\frac{1}{\omega_j^2}
+   \frac{a^{p_j}\exp(p_j\xi/\omega_j)}
+        {1-a^m\exp(m\xi/\omega_j)}.
+ \label{eq:cb-borel}
+\end{equation}
+For $a\ne0$, choose any $\lambda$ with $a=e^{-\lambda}$; necessarily
+$\Re\lambda>0$.  The complete set of singularities is
+\begin{equation}
+ \Sigma_{a,\zeta}
+ =\left\{\xi_{j,n}:=
+       \omega_j\left(\lambda+\frac{2\pi i n}{m}\right):
+       j\in\mathbb Z\setminus\{0\},\ n\in\mathbb Z\right\}.
+ \label{eq:cb-poles}
+\end{equation}
+These points are distinct, nonzero, and locally finite.  Every singularity
+is a simple pole, with
+\begin{equation}
+ \operatorname*{Res}_{\xi=\xi_{j,n}} B_{a,\zeta}(\xi)
+ =-\frac{\exp(2\pi i n p_j/m)}{m\omega_j}.
+ \label{eq:cb-residues}
+\end{equation}
+Thus the Borel germ extends as a single-valued meromorphic function on
+$\mathbb C$, in particular along every path avoiding
+$\Sigma_{a,\zeta}$.  For $a=0$ it is identically zero.
+\end{theorem}
+
+\begin{proof}
+For a fixed $r\geq1$, let
+$J_r=\{j\ne0:j\equiv hr\pmod m\}$ and put
+\[
+ \kappa_r=\begin{cases}
+  1/2,&m\mid r,\\
+  (1-\zeta^r)^{-1},&m\nmid r.
+ \end{cases}
+\]
+The Mittag--Leffler expansion of the hyperbolic cotangent, after
+subtraction of its value at zero and removal of a possible pole at zero,
+gives
+\begin{equation}
+ \frac{1}{1-\zeta^r e^{-z}}
+ =\frac{{\bf1}_{m\mid r}}{z}+\kappa_r
+  -z\sum_{j\in J_r}
+       \frac{1}{\omega_j^2(1-z/\omega_j)}.
+ \label{eq:cb-kernel}
+\end{equation}
+For clarity, the nonconstant part of the partial-fraction expansion is
+$\sum_{j\in J_r}[(z-\omega_j)^{-1}+\omega_j^{-1}]$,
+which equals the last term in \eqref{eq:cb-kernel}.  This subtracted series
+converges normally on compact sets away from its poles.  The identity
+also follows immediately from
+$1/(1-e^{-w})=1/2+(1/2)\coth(w/2)$ after a purely imaginary translation.
+
+Substitute $z=rt$ in \eqref{eq:cb-kernel}, multiply by $-a^r/r$, and
+sum over $r$.  The pole and constant contributions are precisely
+\eqref{eq:cb-action} and \eqref{eq:cb-constant}.  Consequently
+\begin{equation}
+ R_a(t)=t\sum_{r\geq1}a^r
+             \sum_{j\in J_r}
+               \frac{1}{\omega_j^2(1-rt/\omega_j)}.
+ \label{eq:cb-exact-kernel}
+\end{equation}
+All relevant series converge absolutely for each $\Re t>0$; this follows,
+for example, from the denominator estimate in the next theorem with a
+closed subsector containing $t$.  Expanding the rational factor formally
+gives \eqref{eq:cb-coefficients}.  Applying the Borel transform gives
+\[
+ B_{a,\zeta}(\xi)
+ =\sum_{r\geq1}a^r\sum_{j\in J_r}
+          \omega_j^{-2}e^{r\xi/\omega_j}.
+\]
+In a sufficiently small disk about zero, these series converge
+absolutely.  For a given $j$, the permitted $r$ are $p_j+\ell m$,
+$\ell\geq0$; their geometric sum is \eqref{eq:cb-borel}.
+
+The denominator of its $j$th summand vanishes exactly when
+$\xi/\omega_j=\lambda+2\pi i n/m$.  At such a point the numerator is
+$\exp(2\pi i n p_j/m)$ and the derivative of the denominator is
+$-m/\omega_j$, proving \eqref{eq:cb-residues}.  Moreover
+\[
+ \Im\xi_{j,n}=\frac{2\pi j}{m}\Re\lambda.
+\]
+In a bounded disk this bounds $|j|$, and then bounds $|n|$.  It also shows
+that equality of two locations forces equality first of $j$, then of
+$n$.  In particular, there is no cancellation between summands at a pole.
+Finally the tail of \eqref{eq:cb-borel} is locally $O(j^{-2})$, since
+$\xi/\omega_j\to0$ and $1-a^m\ne0$.  This proves normal convergence away
+from the displayed poles and completes the continuation argument.
+Changing the logarithm $\lambda$ merely reindexes $n$.
+\end{proof}
+
+\begin{corollary}[Exact convergence radius and large-order coefficients]
+\label{cor:cb-large-order}
+For $a\ne0$, the convergence radius of the Borel germ is exactly
+\begin{equation}
+ d(a,m)=\frac{2\pi}{m}
+        \min_{n\in\mathbb Z}\left|\lambda+\frac{2\pi i n}{m}\right|.
+ \label{eq:cb-exact-radius}
+\end{equation}
+It depends on the order $m$ but not on the choice of primitive $m$th
+root $\zeta$.  The formal expansion has optimal Gevrey order one: it
+does not have Gevrey order $s<1$.
+Let $P_0$ be the finite set of poles of modulus $d(a,m)$, let $d_1>d(a,m)$
+be the next pole modulus, and fix $d(a,m)<b<d_1$.  Then
+\begin{equation}
+ \frac{c_n(a)}{(n-1)!}
+ =-\sum_{\sigma\in P_0}
+       \frac{\operatorname{Res}_{\xi=\sigma}B_{a,\zeta}(\xi)}{\sigma^n}
+   +O\!\left(b^{-(n-1)}\right)
+ \qquad(n\to\infty).
+ \label{eq:cb-large-order}
+\end{equation}
+The finite sum is kept intact; it may cancel on subsequences, as it must
+for the vanishing even coefficients when $m=1$.
+\end{corollary}
+
+\begin{proof}
+Minimizing \eqref{eq:cb-poles} first over $j$ gives $|j|=1$, proving
+\eqref{eq:cb-exact-radius}.  None of these poles is removable by
+\eqref{eq:cb-residues}.  If $|c_n|\leq CA^n(n!)^s$ for some $s<1$,
+the Borel transform would have infinite convergence radius, a
+contradiction.  Finally subtract from $B_{a,\zeta}$ the finitely many
+principal parts $\operatorname{Res}_{\sigma}B/(\xi-\sigma)$ for
+$\sigma\in P_0$.  The difference is holomorphic on $|\xi|<d_1$.
+Cauchy's coefficient bound on $|\xi|=b$ and the geometric expansion of
+each subtracted principal part give \eqref{eq:cb-large-order}.
+\end{proof}
+
+\subsection{Uniform Gevrey bounds and reconstruction of the product}
+
+\begin{theorem}[Uniform remainders and positive-ray reconstruction]
+\label{thm:cb-gevery-laplace}
+Fix $0<\rho<1$ and $0<\delta<\pi/2$, and write
+$\ell=-\log\rho$.  Uniformly for $|a|\leq\rho$ and
+$|\arg t|\leq\pi/2-\delta$, for every integer $N\geq1$,
+\begin{equation}
+ \left|R_a(t)-\sum_{n=1}^{N-1}c_n(a)t^n\right|
+ \leq
+ \frac{m\pi}{6\rho\sin\delta}
+ \left(\frac{m}{2\pi\ell}\right)^N
+ (N-1)!\,|t|^N.
+ \label{eq:cb-gevery-bound}
+\end{equation}
+The Borel transform is uniformly bounded on the real axis:
+\begin{equation}
+ \sup_{\xi\in\mathbb R}|B_{a,\zeta}(\xi)|
+ \leq \frac{m^2\rho}{12(1-\rho^m)}.
+ \label{eq:cb-real-bound}
+\end{equation}
+More generally it is holomorphic and uniformly bounded on every closed
+horizontal strip $|\Im\xi|\leq b$ with
+$b<2\pi\ell/m$.  For all $\Re t>0$,
+\begin{equation}
+ R_a(t)=\int_0^{\infty}e^{-\xi/t}B_{a,\zeta}(\xi)\,d\xi.
+ \label{eq:cb-positive-laplace}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+If $|\arg t|\leq\pi/2-\delta$, then the argument of $rt/\omega_j$
+is separated from the positive real axis by at least $\delta$.  Hence
+\[
+ |1-rt/\omega_j|\geq\sin\delta
+ \qquad(r\geq1,\ j\ne0).
+\]
+Use the finite geometric identity
+$ (1-u)^{-1}=\sum_{k=0}^{N-2}u^k+u^{N-1}(1-u)^{-1}$
+in \eqref{eq:cb-exact-kernel}; for $N=1$ the finite sum is empty.
+The exact remainder equals
+\[
+ t^N\sum_{r\geq1}a^r r^{N-1}
+       \sum_{j\in J_r}
+        \frac{\omega_j^{-N-1}}{1-rt/\omega_j}.
+\]
+Its absolute value is at most
+\[
+ \frac{|t|^N}{\sin\delta}
+ \sum_{r\geq1}\rho^r r^{N-1}
+ \cdot 2\zeta(N+1)\left(\frac{m}{2\pi}\right)^{N+1}.
+\]
+Here $\zeta(s)$ denotes the Riemann zeta function, not the root of unity.
+Since
+\[
+ \sum_{r\geq1}e^{-\ell r}r^{N-1}
+ \leq e^{\ell}\int_0^{\infty}e^{-\ell x}x^{N-1}\,dx
+ =\frac{(N-1)!}{\rho\ell^N},
+\]
+and $\zeta(N+1)\leq\zeta(2)=\pi^2/6$, the stated constant follows.
+The integral estimate can be checked termwise by integrating on
+$[r,r+1]$; enlarging $[1,\infty)$ to $[0,\infty)$ only increases it.
+
+For real $\xi$, all exponentials $e^{\xi/\omega_j}$ have modulus one.
+Thus the absolute value of the rational factor in
+\eqref{eq:cb-borel} is at most $\rho/(1-\rho^m)$, while
+$\sum_{j\ne0}|\omega_j|^{-2}=m^2/12$.
+For the horizontal strip, use
+\[
+ |a^m e^{m\xi/\omega_j}|
+ \leq \rho^m\exp\!\left(\frac{m^2b}{2\pi|j|}\right)
+ \leq \rho^m\exp\!\left(\frac{m^2b}{2\pi}\right)<1.
+\]
+The numerator is uniformly bounded as well, proving the strip assertion.
+
+Finally, on the positive real Borel ray the double series before the
+geometric summation is absolutely dominated by
+$\sum_r\rho^r\sum_{j\ne0}|\omega_j|^{-2}$.
+Fubini's theorem and $\Re(1/t)>0$ give
+\[
+ \int_0^{\infty}e^{-\xi/t}e^{r\xi/\omega_j}\,d\xi
+ =\frac{t}{1-rt/\omega_j}.
+\]
+Equation \eqref{eq:cb-exact-kernel} now proves
+\eqref{eq:cb-positive-laplace}.
+\end{proof}
+
+\subsection{Admissible rays and accumulation of Stokes directions}
+
+For a ray avoiding \eqref{eq:cb-poles}, define
+\begin{equation}
+ \mathcal S_\theta\widetilde R_a(t)
+ =\int_{0}^{e^{i\theta}\infty}
+           e^{-\xi/t}B_{a,\zeta}(\xi)\,d\xi.
+ \label{eq:cb-directional-sum}
+\end{equation}
+For each fixed $a$ and each such direction, the Borel transform is bounded
+on the ray, so this integral converges whenever
+$\Re(e^{i\theta}/t)>0$.
+Indeed there are only finitely many profiles
+\[
+ F_p(w)=\frac{a^p e^{pw}}{1-a^m e^{mw}},
+ \qquad p=1,\ldots,m,
+\]
+and two ray orientations for $w=\xi/\omega_j$.  If $\Re w\to-\infty$
+the profile tends to zero.  If $\Re w\to+\infty$, it is asymptotic to
+$-a^{p-m}e^{(p-m)w}$, which is bounded because $p\leq m$.  If
+$\Re w=0$, the denominator is bounded below by $1-|a|^m$.  In the
+remaining compact part of each profile ray, avoidance of its zeros gives
+a positive minimum for the denominator.  Summing $O(|\omega_j|^{-2})$
+proves the assertion.  No Diophantine condition is being tacitly assumed;
+the bound is for fixed $a$ and a fixed nonsingular ray, and need not stay
+bounded when the ray or parameter approaches a singular configuration.
+
+This raywise statement requires a distinction from a theorem asserting
+analyticity in an infinite angular Borel sector.  For fixed $a\ne0$, the
+directions of \eqref{eq:cb-poles} accumulate at both real directions as
+$n\to\pm\infty$.  In particular, although the positive real ray itself
+is nonsingular and \eqref{eq:cb-positive-laplace} holds, there is no open
+angular sector about that ray which is free of all Borel poles.  Its
+horizontal-strip continuation is the relevant substitute.  The poles
+are locally finite in the Borel plane; it is their \emph{directions} that
+accumulate, at points tending to infinity.  These statements are
+compatible, and they should not be conflated with the assumptions on a
+finite collection of actions used in a particular transseries chart.
+
+Whenever a deformation from an admissible contour $\gamma_-$ to
+$\gamma_+$ sweeps the poles in a set $P$, with vanishing closing
+integrals and an absolutely convergent residue sum, the residue theorem
+gives the exact identity
+\begin{equation}
+ \mathcal S_+\widetilde R_a(t)-\mathcal S_-\widetilde R_a(t)
+ =\sum_{(j,n):\,\xi_{j,n}\in P}
+       \frac{e^{2\pi i n p_j/m}}{j}e^{-\xi_{j,n}/t}.
+ \label{eq:cb-stokes-general}
+\end{equation}
+The orientation convention is that the contour formed by
+$\gamma_-$ followed by $-\gamma_+$ encloses $P$ counterclockwise.
+Equivalently, its right side is
+$-2\pi i\sum_{\xi\in P}\operatorname{Res}_\xi
+ [e^{-\xi/t}B_{a,\zeta}(\xi)]$.
+The contour hypotheses are stated explicitly; the next proposition
+checks them with elementary estimates in the case needed to disprove
+the repository's assertion.
+
+\subsection{A concrete counterexample to direction-independent normalization}
+
+\begin{proposition}[Two nonsingular rays give different sums]
+\label{thm:direction-counterexample}
+Take $m=1$, $\zeta=1$, and $a=e^{-1}$.  Both the positive real ray and
+the ray of angle $\pi/4$ avoid every Borel singularity, and their
+Laplace integrals converge for every $t>0$.  They satisfy
+\begin{align}
+ \mathcal S_{\pi/4}\widetilde R_a(t)-R_a(t)
+ &=\sum_{j=1}^{\infty}\sum_{n=1}^{\infty}
+       \frac{1}{j}
+       \exp\!\left[-\frac{j(4\pi^2n+2\pi i)}{t}\right]
+       \label{eq:cb-counterexample-sum}\\
+ &=-\sum_{n=1}^{\infty}
+       \log\!\left(1-
+          \exp\!\left[-\frac{4\pi^2n+2\pi i}{t}\right]\right).
+       \label{eq:cb-counterexample-product}
+\end{align}
+The logarithms in the second line are their convergent power-series
+branches.  The difference is nonzero for every $t=1/N$, $N\geq1$ an
+integer, and for all sufficiently small positive $t$.
+\end{proposition}
+
+\begin{proof}
+For $m=1$, pairing the summands $j$ and $-j$ in
+\eqref{eq:cb-borel} gives
+\begin{equation}
+ B_{a,1}(\xi)=-\frac{1}{4\pi^2}
+  \sum_{j=1}^{\infty}\frac{1}{j^2}
+  \left(
+   \frac{ae^{i\xi/(2\pi j)}}{1-ae^{i\xi/(2\pi j)}}
+   +\frac{ae^{-i\xi/(2\pi j)}}{1-ae^{-i\xi/(2\pi j)}}
+  \right).
+ \label{eq:cb-mone-borel}
+\end{equation}
+The poles in the open wedge $0<\arg\xi<\pi/4$ are precisely
+\[
+ \xi=4\pi^2jn+2\pi i j,\qquad j,n\geq1,
+\]
+each with residue $i/(2\pi j)$.  No pole lies on either boundary ray:
+in the upper half-plane a pole on the diagonal would require
+$4\pi^2jn=2\pi j$, or $2\pi n=1$.
+
+To justify contour rotation despite the infinitely many Stokes directions
+near zero, rotate \emph{each paired $j$th summand} first.  Put
+$\xi=2\pi j u$.  Close the sector from the positive real $u$-axis to
+the diagonal along the vertical line
+$\Re u=(2M+1)\pi$, with $M\to\infty$.  On this vertical segment both
+numbers $ae^{iu}$ and $ae^{-iu}$ are negative real.  Each quotient
+$ae^{\pm iu}/(1-ae^{\pm iu})$ therefore has modulus at most one.
+For $t>0$, the modulus of the exponential kernel there is
+$\exp[-2\pi j(2M+1)\pi/t]$; the segment length grows only linearly in
+$M$.  The closing integral consequently tends to zero.
+
+The residue theorem, with the indicated orientation, gives for this
+paired summand
+\[
+ (\mathcal S_{\pi/4}-\mathcal S_0)_j
+ =\frac{1}{j}\sum_{n\geq1}
+          e^{-j(4\pi^2n+2\pi i)/t}.
+\]
+The integrals over either infinite ray can be summed over $j$ by the
+bounded-profile estimate and $\sum j^{-2}<\infty$; the displayed
+residue sums are absolutely convergent.  Summing proves
+\eqref{eq:cb-counterexample-sum}, because
+$\mathcal S_0\widetilde R_a=R_a$ by
+\eqref{eq:cb-positive-laplace}.  Summation first over $j$ gives
+\eqref{eq:cb-counterexample-product}.
+
+For $t=1/N$ all factors $e^{-2\pi i j/t}$ equal one, so every term in
+\eqref{eq:cb-counterexample-sum} is positive real.  More generally, as
+$t\downarrow0$,
+\[
+ \mathcal S_{\pi/4}\widetilde R_a(t)-R_a(t)
+ =e^{-(4\pi^2+2\pi i)/t}
+       \bigl(1+O(e^{-4\pi^2/t})\bigr),
+\]
+since every other pair $(j,n)$ has $jn\geq2$.  This also proves
+nonvanishing for all sufficiently small positive $t$.
+\end{proof}
+
+Consequently the conjecture's uniform Gevrey assertion, meromorphic
+continuation assertion, and positive-ray reconstruction are valid in
+the stated fixed-parameter disk.  Its demand that \emph{every}
+nonsingular convergent directional sum equal the single fixed product
+is refuted.  One can either keep the positive-ray normalization or attach
+the explicit Stokes correction to each other contour.  Keeping only the
+algebraic expansion cannot distinguish these functions.
+
+\subsection{The corresponding correction for an inverse branch}
+
+The preceding computation does not, by itself, establish every functional
+analytic hypothesis in a parameter-dependent resurgent implicit-function
+theorem.  It does establish the exact transformation that any such
+theorem must respect.  Suppose on a common sector that
+\[
+ F_+(a,t)=F_-(a,t)+D(a,t),
+\]
+where $F_\pm$ are two sectorial determinations of $L_a$ and $D$ is the
+residue correction.  Let $v_\pm(t)$ be the corresponding sectorial data,
+and let $a_\pm(t)$ be chosen local solutions of
+\[
+ F_\pm(a_\pm,t)=F_\pm(a_0,t)+v_\pm(t).
+\]
+Set
+\begin{align*}
+ H_-(a,t)&=F_-(a,t)-F_-(a_0,t)-v_-(t),\\
+ E(a,t)&=D(a,t)-D(a_0,t)-(v_+(t)-v_-(t)).
+\end{align*}
+Then the exact relation is
+\begin{equation}
+ H_-(a_+(t),t)=-E(a_+(t),t).
+ \label{eq:cb-inverse-exact}
+\end{equation}
+If $A_-(w,t)$ denotes the chosen local inverse of $a\mapsto H_-(a,t)$,
+this is equivalently
+\begin{equation}
+ a_+(t)=A_-\bigl(-E(a_+(t),t),t\bigr),
+ \qquad a_-(t)=A_-(0,t).
+ \label{eq:cb-inverse-map}
+\end{equation}
+Existence and uniqueness here are local analytic statements, requiring
+nonvanishing of $\partial_aH_-$ and sufficiently small perturbations
+within the chosen inverse chart.
+
+For a precise first-order version, insert a scalar parameter $\epsilon$
+and solve $H_-(a_\epsilon,t)+\epsilon E(a_\epsilon,t)=0$ near
+$\epsilon=0$.  Differentiating the ordinary implicit equation gives
+\begin{equation}
+ \left.\frac{\partial a_\epsilon(t)}{\partial\epsilon}
+ \right|_{\epsilon=0}
+ =-\frac{E(a_-(t),t)}{\partial_aH_-(a_-(t),t)}.
+ \label{eq:cb-inverse-first-jump}
+\end{equation}
+This formulation avoids an unproved uniform error estimate when either
+derivatives or inverse radii depend on $t$.  It also makes the
+normalization essential: the correction at the reference point $a_0$
+and any jump in the target $v$ must both be included.
+
+For inversion with a fixed target $y$ rather than a subtracted reference
+value, the same statement reads
+\[
+ F_+(\,\cdot\,,t)^{-1}
+   =\bigl(F_-(\,\cdot\,,t)+D(\,\cdot\,,t)\bigr)^{-1}
+\]
+on the chosen local branch.  Thus, whenever a resurgent algebra and its
+summation maps satisfy the required composition and implicit-function
+closure hypotheses, the Stokes map acts on the \emph{equation and its
+target}, and the transformed equation is then inverted.  Inversion does
+not remove the Stokes correction.
+
