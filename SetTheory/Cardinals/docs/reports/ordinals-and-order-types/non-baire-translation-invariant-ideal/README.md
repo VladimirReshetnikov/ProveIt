@@ -113,3 +113,14 @@ property. No theorem is shared.
 finitely many hats, whose success set is conull but meager and
 Σ⁰₂-complete: a measure-versus-category contrast in ZFC, built without any
 choice-built irregular object. No theorem is shared.
+
+[Batch 92, 4 October 2026.] Part III of `measurable-box-games` answers two
+of the three clauses of that report's Q2: for blind outputs measurable for
+the full product-topology Borel σ-algebra, or universally measurable
+relative to it, the optimal guarantee is still ⌊m/q⌋ (its Theorem 39.2,
+through the completion regularity of its Corollaries 32.3 and 32.6). The
+Baire-property clause, the one for which this report was named the nearest
+in spirit, stays open: its Proposition 42.1 reduces Baire-property outputs
+to countably many coordinates on an invariant comeagre set, and the example
+after it shows that such a set can be null, so the measure-theoretic
+averaging proof does not transfer. No theorem is shared.

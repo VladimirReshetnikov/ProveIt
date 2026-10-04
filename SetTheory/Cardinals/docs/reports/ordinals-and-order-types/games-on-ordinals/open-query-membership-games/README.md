@@ -1121,6 +1121,15 @@ and nobody here guesses an unread coordinate. No theorem is shared.
 [Batch 90, 4 October 2026.] Its Part II adds the infinite hat game, where
 each player's target is its own hat and its constructed strategies read
 finitely many other hats; still no theorem is shared with this report.
+[Batch 92, 4 October 2026.] Its Part IV counts adaptive queries as a
+resource in that hat game: for deterministic decision trees reading other
+players' hats, a common bound on query depth makes a divergent excess of
+correct guesses null and meagre, the least uniform expected query budget
+permitting a divergent positive excess is exactly two, and the finite
+parameter pairs attaining the first-moment bound at minimum inspection
+depth are classified (their failure sets are affine codes). These are
+budgets for trees that read coordinates, not open-set queries about a
+hidden point; still no theorem is shared.
 
 ## Sources and attribution
 
