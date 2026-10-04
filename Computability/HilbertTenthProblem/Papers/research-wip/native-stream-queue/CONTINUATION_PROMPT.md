@@ -114,6 +114,17 @@
 > This chart drops the main exponent congruence and is distinct from the
 > unresolved independent-gamma83. The universal bound remains84.
 >
+> The [nine-gate auxiliary frontier](complete84_auxiliary_nine_gate_frontier.md)
+> shows that any nine-gate replacement in the stated independent paid-port
+> model must use exactly5M+4A. It must contain one genuine cancellation that
+> produces one of seventeen specified monomials. A pure-product quotient cone
+> and every three-addition circuit exceed the budget. The
+> [independent review](review_complete84_auxiliary_nine_gate_frontier.md) and a second mathematical
+> challenge checked the unrestricted addition placements and specialization
+> arguments; fresh normal/optimized source receipts pass. These are necessary
+> conditions: existence of a nine-gate circuit remains open, and the complete
+> attaining source remains84 operations,18 witnesses and degree187.
+>
 > The [mixed auxiliary-cut bound](complete84_auxiliary_mixed_cut.md)
 > proves that joint V and Delta*f² production needs at least seven gates with
 > arbitrary mixed arithmetic. Retaining the two actual quotient-coefficient
