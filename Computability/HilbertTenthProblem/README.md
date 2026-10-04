@@ -669,6 +669,17 @@ Its generic compiler still assumes a bijective chart description; witness
 and square counts are not arithmetic operation counts. These scoped reviews
 do not certify an implemented rule-to-chart compiler or improve universality.
 
+The [shared matrix-action fusion](Papers/research-wip/native-stream-queue/matrix193_shared_action_fusion.md)
+lowers the four complete sources to **1,399 / 1,396 / 1,396 / 1,393 operations**.
+Combining two scaled input rows before applying their common fixed matrix
+saves4M+2A per chart. The coefficient component is534=288M+246A; all supplied
+coordinates, every retained old value and each full polynomial are unchanged.
+Witness counts141/140/140/139 and exact degrees35,587/53,345/53,347/71,105 remain.
+The [independent review](Papers/research-wip/native-stream-queue/review_matrix193_shared_action_fusion.md) reconstructs
+all5,584 rows, verifies the eight-port identity, all16 coefficient words and
+every actual finalizer under the same computed Q. Fresh normal/optimized
+checks pass. Earlier terminal/IDLE inverse scopes and universal84 are unchanged.
+
 The [joint matrix-state factor rewrite](Papers/research-wip/native-stream-queue/matrix193_joint_state_factor.md)
 reduces the four complete sources to **1,405 / 1,402 / 1,402 / 1,399 operations**.
 Deferring paid powers through five state blocks removes twenty products and
