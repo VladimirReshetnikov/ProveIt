@@ -13,7 +13,7 @@
 \usepackage[colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,
  urlcolor=MidnightBlue,pdftitle={Polish Models of Omnific Arithmetic},
  pdfauthor={Merged research report for the Surreal project},
- pdfsubject={Polish models of Presburger arithmetic for Glazer's Question 2, Borel presentations and support barriers in omnific arithmetic, continuous Presburger arithmetic, local compactness and arithmetic rigidity, Polish topologies on Hahn, Puiseux and Levi-Civita fields, Baire-category rigidity, nonsplit Polish Presburger models and stream computation, a claimed ATR0 bound for Glazer's Question 1, and locally compact cones}]{hyperref}
+ pdfsubject={Polish models of Presburger arithmetic for Glazer's Question 2, Borel presentations and support barriers in omnific arithmetic, continuous Presburger arithmetic, local compactness and arithmetic rigidity, Polish topologies on Hahn, Puiseux and Levi-Civita fields, Baire-category rigidity, nonsplit Polish Presburger models and stream computation, a claimed ATR0 bound for Glazer's Question 1, locally compact cones, and elementary embeddings and Polish submodels of lexicographic Presburger models}]{hyperref}
 \usepackage{bookmark}
 \usepackage[nameinlink,noabbrev]{cleveref}
 \usepackage{listings}
@@ -187,6 +187,8 @@
 \newcommand{\Xlc}{X_{\mathrm{lc}}}
 \newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
 \newtcolorbox{statementbox}{}
+% ---- source 16 (Part X) ----
+\newcommand{\rstr}{\mathbin{\upharpoonright}}
 
 \begin{document}
 
@@ -201,10 +203,10 @@
 {\Large Polish Presburger models for Glazer's Question~2,
 Borel presentations and support barriers, continuous Presburger arithmetic,
 local compactness, Polish series fields, Baire-category rigidity,
-nonsplit models, a claimed $\mathsf{ATR}_0$ bound for Question~1, and
-locally compact cones\par}
+nonsplit models, a claimed $\mathsf{ATR}_0$ bound for Question~1,
+locally compact cones, and elementary embeddings of lexicographic models\par}
 \vspace{5mm}
-{\large Built from twelve manuscripts dated October 3 and 4, 2026\par}
+{\large Built from thirteen manuscripts dated October 3 and 4, 2026\par}
 \vspace{4mm}
 \vfill
 \begin{minipage}{\textwidth}
@@ -221,6 +223,8 @@ Manuscripts 07 (the base text of Part~III), 06 (Part~III, marked \src{06}),
 Batch-87 manuscripts 03, 01, 04--06 (sources 12, 10, 13--15): arrival
 \texttt{fa0a0576e}, placement \texttt{d151b39ca}; pins \texttt{0f084afa9}
 (12, 15), \texttt{6fef5383b} (10, 14), \texttt{eab47e330} (13).
+Batch-89 manuscript 02 (source 16, Part~X): arrival \texttt{7c0f2d9f9},
+placement \texttt{23adb85f9}, pin \texttt{0f084afa9}.
 Their titles and contributions are in \cref{pma:sec:sources}; the provenance
 of every section is in \cref{pma:app:provenance}, and the non-claims of
 every source are collected in \cref{pma:app:nonclaims}.
@@ -277,7 +281,7 @@ ordered ring with both operations continuous, $0$ is isolated, which is
 Glazer's Theorem~1 with $\mathsf{PA}$ weakened to $\mathsf{PA}^-$.
 Part~IV shows that a discretely ordered ring whose additive group is
 Hausdorff, locally compact and second countable with Borel order is
-countable and discrete, with no regularity assumed of multiplication, and
+countable and discrete, whatever its multiplication, and
 classifies the locally compact Borel $\Z$-groups as $\R^d\times E$. Part~V
 shows that a full Hahn field $k((t^\Gamma))$ admits a Polish additive topology
 with Baire order and Borel scalar maps exactly when $k$ is countable and
@@ -285,20 +289,23 @@ $\Gamma\cong\Z$; the Puiseux field over a countable field admits none, its
 Levi-Civita completion exactly one; and every integer part of such a field is
 countable and closed discrete.
 
-Parts~VI--IX add five later manuscripts: a discretely ordered ring whose
+Parts~VI--X add six later manuscripts: a discretely ordered ring whose
 additive group has a Hausdorff Baire ccc topology and whose positive cone has
 the Baire property is countable and discrete, whatever its multiplication
 (VI); nonsplit Polish Presburger models exist on every countable core, with
 computable discontinuity sets and optimal revision numbers (VII); a
 manuscript claims, without independent review, that Glazer's Theorem~2 is
-provable in $\mathsf{ATR}_0$ (VIII); and the locally compact cones of Borel
-ordered Polish groups are the countable sums of lines and closed rays (IX).
+provable in $\mathsf{ATR}_0$ (VIII); the locally compact cones of Borel
+ordered Polish groups are the countable sums of lines and closed rays (IX);
+and all self-embeddings of $(\Q^\alpha\lex\Z)_{\ge0}$, $\alpha$ countable,
+are continuous exactly when $\alpha\le\omega$ and have closed images exactly
+when $\alpha<\omega\cdot2$ (X; the counterexamples use choice).
 
-The report merges twelve manuscripts written independently on these subjects;
+The report merges thirteen independently written manuscripts;
 it states which source proved each result, prints shared results once or as
 marked second routes, keeps every source's limitations, and cites the
 collection's earlier results instead of reprinting them as new. It is an
-AI-assisted draft: it has not been refereed, and nothing in it has been
+unrefereed AI-assisted draft, and nothing in it has been
 formalized.
 \end{abstract}
 \end{minipage}
@@ -311,7 +318,7 @@ formalized.
 
 \section{Scope, sources and conventions}\label{pma:sec:intro}
 
-This report collects twelve manuscripts, dated October 3 and 4, 2026, on one
+This report collects thirteen manuscripts, dated October 3 and 4, 2026, on one
 subject: where Elliot Glazer's topological Tennenbaum programme meets the
 repository's omnific arithmetic. Their common spine is the question which
 arithmetic operations of a Polish or standard Borel presentation of a
@@ -344,6 +351,12 @@ exact continuity and optimal computation from streams. \Cref{pma:part:atr}
 (prefix \texttt{pma:atr:}) is source~14, which claims an $\mathsf{ATR}_0$
 proof of Glazer's Theorem~2. \Cref{pma:part:lcc} (prefix \texttt{pma:lcc:}) is
 source~15: locally compact cones and the limits of multiplication.
+
+A thirteenth manuscript, source~16 of batch~89, continues Parts~I and~III.
+\Cref{pma:part:emb} (prefix \texttt{pma:emb:}) is source~16: elementary
+embeddings and Polish elementary submodels of the ordinal-indexed models
+$(\Q^\alpha\lex\Z)_{\geq0}$, with two sharp ordinal thresholds.
+
 
 \subsection{Glazer's paper and its two questions}\label{pma:sec:glazer}
 
@@ -469,7 +482,7 @@ journal reference (October 3, 2026). The answer is an elementary
 construction; an earlier publication of it, or a published variant of the
 question, may exist.
 
-\subsection{Twelve manuscripts, one report}\label{pma:sec:sources}
+\subsection{Thirteen manuscripts, one report}\label{pma:sec:sources}
 
 \begin{center}\small
 \begin{tabular}{@{}P{.07\textwidth}P{.37\textwidth}P{.12\textwidth}P{.34\textwidth}@{}}
@@ -619,6 +632,37 @@ sources~13, 14 and~15; it is printed once, in \cref{pma:part:nsp}, and flagged
 in Parts~VIII and~IX. No two of the five are editions of one another: the placement measured
 under 0.8\% shared word 8-grams between any two of them.
 
+\paragraph{Source of Part X \writetag.} (Batch~89.) Source~16 is
+manuscript~02 of batch~89. It arrived in commit \texttt{7c0f2d9f9} with three
+other manuscripts, a fifth arriving in \texttt{8ea27d6c0}, and all five were
+placed in \texttt{23adb85f9}; the other four went to
+\fn{surreal-well-orders}, \fn{birthday-cutoffs-and-hereditary-sets} and the
+research-report collection's \fn{naming-elementary-embeddings}. It is numbered
+by its file prefix~16 (the batch-87 numbers end at~15). Its pin
+\texttt{0f084afa9} is an ancestor of the placement; at the pin this report
+was the delivered base text of Part~I. It names this report's questions on
+endomorphisms and on elementary-submodel lattices and answers them for its
+family, so it is a part of this report, not a report of its own. It is not an
+edition of any source: the placement measured 1.24\% shared word 8-grams with
+this report, shared Presburger phrasing. It describes itself as prepared for
+Vladimir Reshetnikov; its delivery README calls it AI-assisted.
+
+\begin{center}\small
+\begin{tabular}{@{}P{.07\textwidth}P{.37\textwidth}P{.12\textwidth}P{.34\textwidth}@{}}
+\toprule
+Source & Manuscript (delivered pages) & Pin & Printed as\\
+\midrule
+16 & \emph{Elementary Embeddings and Polish Submodels of Lexicographic
+Presburger Arithmetic: Matrix normal forms, closed images, and two sharp
+ordinal thresholds} (23, A4); archive
+\fn{Glazer_ProveIt_Embeddings_and_Thresholds}; batch~89, manuscript~02 &
+\texttt{0f084afa9} & \cref{pma:part:emb};
+\cref{pma:emb:app:qe,pma:emb:app:ledger}\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+
 \paragraph{Reading conventions.} In \cref{pma:part:pr}, unmarked text is
 source~05's; text from source~04 is marked \src{04} (statements in their
 titles, inserted passages in the sentence that introduces them). In
@@ -628,7 +672,8 @@ unmarked text is source~07's and text from source~06 is marked \src{06}; in
 source~09 respectively. In \cref{pma:part:br} unmarked text is
 source~12's and text from source~10 is marked \src{10}; in
 \cref{pma:part:nsp,pma:part:atr,pma:part:lcc} all unmarked text is that of
-sources~13, 14 and~15 respectively. Text written for this
+sources~13, 14 and~15 respectively, and in \cref{pma:part:emb} that of
+source~16. Text written for this
 report is marked \mergetag{} (a mathematical observation combining the
 sources, with proof) or \writetag{} (editorial notes: provenance, citations of
 the collection, corrections). Phrases such as ``this manuscript'' or ``this
@@ -672,14 +717,18 @@ Parts~I, III and~IV so that notes can cite them:
 \replabel{pma:cp:q:spaces}, \replabel{pma:cp:q:nonsplit},
 \replabel{pma:cp:q:connected}, \replabel{pma:lc:q:weakenborel},
 \replabel{pma:lc:q:sizespectra}, \replabel{pma:lc:q:strength} and
-\replabel{pma:lc:q:certified}.
+\replabel{pma:lc:q:certified}. \Cref{pma:part:emb} uses \texttt{pma:emb:}
+(source~16; its introduction lists the labels added), and the batch-89 write
+labelled four further questions of \cref{pma:part:pr}:
+\replabel{pma:pr:q:coefficientgroups}, \replabel{pma:pr:q:lattices},
+\replabel{pma:pr:q:surrealcutoffs} and \replabel{pma:pr:q:embeddingcategories}.
 
 \subsection{Notation}\label{pma:sec:notation}
 
 The sources use clashing symbols. The table fixes the convention of
 this report; renamed symbols are marked $\to$. Its second block, for
 Parts~III--V, was added with them. The third block, for
-Parts~VI--IX, was added with those.
+Parts~VI--IX, was added with those, and the fourth, for Part~X, with it.
 
 \begin{center}\small
 \begin{longtable}{@{}P{.27\textwidth}P{.30\textwidth}P{.37\textwidth}@{}}
@@ -750,6 +799,18 @@ Components (15) & $H=G^0$ and its infinitesimal subgroup $C$ & source~08's $C$ a
 Models on a countable order (15) & $M_L$, $G_L$, $D_L$, $V_L$ ($L$ italic) & not Part~I's Laurent model $\ML=M_{\mathrm L}$\\
 Locally compact carrier (15) & $\Xlc$ & 15 only\\
 Typography & $\IOpen$, $\Pres$, \repo, $\monus$ & 12's roman $\mathrm{IOpen}$, $\mathrm{Pres}$, 13's \texttt{\textbackslash dotminus} and 14's \texttt{ProveIt} $\to$ these (same meaning)\\
+\midrule
+\multicolumn{3}{@{}l}{\emph{Part X (source 16)}}\\
+\midrule
+Coefficient group (16) & $H_\alpha=\Q^\alpha$ (full product, discrete coordinates, lexicographic), $G_\alpha=H_\alpha\times\Z$ ordered as $H_\alpha\lex\Z$, $M_\alpha=(G_\alpha)_{\ge0}$ & kept: $H_\alpha$ is Part~III's $A_\alpha$ (source~07), not renamed because source~16's $A$ is a matrix; $H_\omega$ is Part~I's $D_{\mathrm B}$. Tempting false reading: $H_\alpha$ is not Part~VI's principal hull $H_a$, source~07's convex subgroup $H_s$, source~08's $H_d\subseteq\Oz$ or source~15's $H=G^0$\\
+Finite-support vectors (16) & $D_{\mathrm B}=\Q^\omega$, $D_{\mathrm B}^{\mathrm{fin}}=\Q^{(\omega)}$; dual $H_\alpha^\circ=\Q^{(\alpha)}$, pairing $\langle c,h\rangle$, annihilator $V^\perp$ & 16: $D$, $D_{\mathrm{fin}}$ $\to$ $D_{\mathrm B}$, $D_{\mathrm B}^{\mathrm{fin}}$ (the same group as Part~I's); $D$ is the generic divisible group in Parts~I and~VII\\
+Valuation, pivots (16) & $v(h)$, the first nonzero index; pivot map $p$; pivot subset $S\subseteq\alpha$; $\otp(S)$ & $v$ and $p$ as in source~04's \cref{pma:pr:thm:matrices}; $p$ elsewhere is the predecessor; $S$ is not source~04's shift $S$ (\cref{pma:pr:ex:shifts})\\
+Matrices and maps (16) & $A=(a_{ji})$, left inverse $L$, $U_V$, $E_S$, quotient map $B$, projection $\pi$ & local to \cref{pma:part:emb}; $A$ is not Part~III's group $A$ or $A_\alpha$, $B$ not the Baire coefficient group\\
+Wild functional, shear (16) & $\varphi$ (exists by choice); $\mathrm{Sh}_\varphi$; graph space $W_\varphi$ & 16: $S_\varphi$ $\to$ $\mathrm{Sh}_\varphi$, because $S$ is the pivot subset; not Part~I's shift $\sigma$\\
+Terminal tail (16) & $\alpha=\lambda+n$, $K_\alpha\cong\Q^n$ & 16's local $K$ in the proof of \cref{pma:emb:thm:belowtwo} $\to$ $K_\alpha$ (the same set); not source~13's core $K$ or source~14's $K_*$\\
+Restriction, lexicographic sum (16) & $x\rstr\omega$; $\lex$ & 16's macro \texttt{\textbackslash res} ($\upharpoonright$) $\to$ \texttt{\textbackslash rstr}, because Part~I's \texttt{\textbackslash res} is $\res$; 16's roman $\mathrm{lex}$ $\to$ $\lex$\\
+Omnific map (16) & $\iota_\alpha$, exponents $\gamma_i=(i+1)^{-1}$ & $=$ Part~III's $J_\alpha$, $\varepsilon_\beta$ (\cref{pma:cp:thm:omnific}); Part~I's $\iota_{\mathrm B}$ for $\alpha=\omega$\\
+Local letters (16) & $N$, $\Gamma=N-N$ in the proof of \cref{pma:emb:thm:subspaces} & 16: $S$, $K$ $\to$ $N$, $\Gamma$, because $S$ is the pivot subset\\
 \bottomrule
 \end{longtable}
 \end{center}
@@ -845,9 +906,21 @@ uses. The notes of Parts~VII and~VIII cite \replabel{isg:cf:prop:family},
 Nothing in Parts~VI--IX is formalized, and placement beside these projects
 confers no formal status.
 
+\paragraph{Part X.} Source~16 read this report at its pin (source~05's
+delivered text), the batch-86 archives then in \fn{docs/incoming} (now
+Parts~III--V and source~03 of
+\fn{discrete-initial-subgroups-and-omnific-normalization}),
+\fn{Logic/PresburgerArithmetic/README.md} and
+\fn{Algebra/SurrealNumbers/README.md}. Its descriptions are correct at the
+pin; the two READMEs have changed since only by the catalogue's counts and
+pointers. Its formalization route (\cref{pma:emb:sec:surreal}) proposes
+modules that do not exist; the Presburger project's Lean and Rocq files are
+about the ordinary integers. Nothing in Part~X is formalized, and
+\fn{docs/FORMALIZATION.md} maps none of its labels.
+
 \subsection{The status statements of the sources}\label{pma:sec:status}
 
-The twelve manuscripts state their status as follows; these statements apply
+The thirteen manuscripts state their status as follows; these statements apply
 to the parts of this report taken from them.
 
 \begin{tcolorbox}[title=Source 05: status and scope]
@@ -962,12 +1035,27 @@ ProveIt sources, and a research agenda. Historical priority and a
 machine-checked formalization of these extensions are not claimed.
 
 \end{tcolorbox}
+\begin{tcolorbox}[title=Source 16: status (from its title page)]
+
+The article supplies mathematical proofs and explicitly
+credits the existing Presburger constructions, Hahn-group theory, and
+topological linear algebra. It resolves specified structural questions
+for this family of models; it does not claim a literature-certified
+breakthrough or a new solution of Glazer's already-addressed Question 2.
+The accompanying computations check finite rational examples, not the
+infinite theorems. No new proof-assistant formalization is asserted.
+
+\end{tcolorbox}
 
 \noindent\writetag{} Source~14's claimed answer to Glazer's Question~1 has not
 been independently reviewed (\cref{pma:part:atr}).
 
 \noindent
-Every limitation and non-claim of the twelve sources is also listed, source by
+\noindent\writetag{} Source~16 did not see source~04's results on the Baire
+model, which it proves again for $\alpha=\omega$ (\cref{pma:part:emb}).
+
+\noindent
+Every limitation and non-claim of the thirteen sources is also listed, source by
 source, in \cref{pma:app:nonclaims}.
 
 \part{Polish Presburger models}\label{pma:part:pr}
@@ -3300,6 +3388,17 @@ is the shift $S$ of \cref{pma:pr:ex:shifts} (source~04), with pivots
 $p(k)=k+1$. Source~05 adds the intersection of the iterated images; source~04
 adds the insertion map $E$, whose image is closed and nowhere dense.
 
+\noindent\writetag{} (Batch~89.) Source~16 (\cref{pma:part:emb}) proves
+\cref{pma:pr:prop:embeddingreduction,pma:pr:thm:matrices,pma:pr:cor:imagetopology}
+again, without having seen them, and extends them and \cref{pma:pr:thm:shift}
+to the cones $M_\alpha=(\Q^\alpha\lex\Z)_{\geq0}$ for every countable
+ordinal~$\alpha$ (\cref{pma:emb:thm:dictionary,pma:emb:thm:matrix,pma:emb:thm:closedimage,pma:emb:thm:core}).
+Automatic continuity of all self-embeddings fails from $\alpha=\omega+1$ on,
+and closedness of all their images from $\alpha=\omega\cdot2$ on
+(\cref{pma:emb:thm:shear,pma:emb:thm:densethreshold}; both counterexamples use
+choice).
+
+
 \section{A compactness obstruction independent of multiplication}
 \label{pma:pr:sec:compact}
 
@@ -3613,6 +3712,16 @@ continuity; sources~13 and~15 settle \cref{pma:pr:q:connected} and
 (\cref{pma:part:lcc}). Notes after these questions give the details; the
 other questions, and the remaining parts of these, stay open.
 
+\noindent\writetag{} (Batch~89.) Source~16 (\cref{pma:part:emb}) answers
+\cref{pma:pr:q:lattices,pma:pr:q:embeddingcategories} for the cones
+$(\Q^\alpha\lex\Z)_{\geq0}$, $\alpha$ a countable ordinal, and the clause of
+\cref{pma:pr:q:coefficientgroups} on continuous order-preserving
+endomorphisms for the groups $\Q^\alpha$; it asks
+\cref{pma:pr:q:connected} and the first sentence of
+\cref{pma:pr:q:surrealcutoffs} again. Notes after these questions say what
+stays open.
+
+
 The following questions are proposed directions arising from the proved
 results. Except where explicitly linked to the source question, their
 status is not presented as a certification that the literature has no
@@ -3674,6 +3783,10 @@ and source~15's \cref{pma:lcc:thm:general-inherited-cones} gives the locally
 compact case with its exact carrier. For a topology on the cone alone the
 question stays open (\cref{pma:nsp:q:connected}).
 
+\noindent\writetag{} (Batch~89.) Source~16 asks it again
+(\cref{pma:emb:q:connected}); none of its carriers is connected.
+
+
 \begin{question}[Multiplication and growth orders \src{05, 04}]\label{pma:pr:q:multiplication}
 \emph{Source 05}: Can one give an equally explicit Polish continuous-addition
 Presburger model whose underlying additive structure admits a unital semiring
@@ -3726,13 +3839,28 @@ shows that $0$ is isolated in every zero-dimensional locally compact
 continuous-addition presentation. Presentations not inherited from a Polish
 group remain open (\cref{pma:lcc:question:zero-dimensional}).
 
-\begin{question}[Classifying admissible coefficient groups]
+\begin{question}[Classifying admissible coefficient groups]\label{pma:pr:q:coefficientgroups}
 Which divisible ordered Polish abelian groups have $G_\delta$ positive
 cone? \Cref{pma:pr:thm:criterion} turns this into an exact criterion for the
 split construction. Can their possible underlying topologies, order
 ranks, and continuous order-preserving endomorphisms be classified under
 useful additional hypotheses?
 \end{question}
+
+\noindent\writetag{} (Batch~89.) For the groups $\Q^\alpha$, $\alpha$ a
+countable ordinal (discrete coordinates, lexicographic order), the clause on
+continuous order-preserving endomorphisms is answered by source~16 for the
+strictly order-preserving ones, the order embeddings: they are the row-finite
+rational matrices with strictly increasing pivot map and positive pivots
+(\cref{pma:emb:thm:matrix}); every order embedding of $\Q^\alpha$ into itself
+is continuous exactly when $\alpha\leq\omega$
+(\cref{pma:emb:thm:autocont,pma:emb:thm:shear}, the discontinuous ones built
+with choice); and these groups have $F_\sigma$, hence $G_\delta$, positive
+cones (\eqref{pma:emb:eq:sign}; \cref{pma:cp:thm:baire}). Weakly monotone
+endomorphisms, the discontinuous order embeddings for $\alpha>\omega$
+(\cref{pma:emb:q:endomorphisms}), other coefficient groups and the rest of
+the question stay open.
+
 
 \begin{question}[Continuity of a richer definable language]
 How much of Presburger definable choice can be made continuous in one
@@ -3760,7 +3888,7 @@ is attained (\cref{pma:nsp:thm:arity}); and no uniform algorithm computes the
 optimum for a fixed parameter (\cref{pma:nsp:thm:parameters}). A bound on
 revisions is not a bound on running time or on the coordinates read.
 
-\begin{question}[Polish elementary-submodel lattices]
+\begin{question}[Polish elementary-submodel lattices]\label{pma:pr:q:lattices}
 Which lattices of closed or clopen elementary submodels can occur in a
 Polish continuous-addition Presburger model? The real model has only two
 Polish elementary submodels with inherited topology, whereas the Baire
@@ -3768,7 +3896,27 @@ model has infinitely many proper clopen elementary self-copies with
 standard intersection. What intermediate behaviors can be realized?
 \end{question}
 
-\begin{question}[Canonical surreal cutoffs and topologies]
+\noindent\writetag{} (Batch~89.) Answered by source~16 for the family
+$M_\alpha=(\Q^\alpha\lex\Z)_{\geq0}$, $\alpha$ a countable ordinal, which
+contains the Baire model $M_\omega=\MB$. Its elementary submodels that are
+Polish in the inherited topology are the $M_V$ for the closed $\Q$-subspaces
+$V$ of $\Q^\alpha$ (\cref{pma:emb:thm:subspaces}); they form a complete
+lattice, with meet the intersection and join the closure of the sum,
+anti-isomorphic to the lattice of all subspaces of the finite-support space
+$\Q^{(\alpha)}$ (\cref{pma:emb:thm:lattice}); each is clopen exactly when its
+pivot subset omits finitely many coordinates, and closed nowhere dense
+otherwise (\cref{pma:emb:thm:orbits}), and is isomorphic to $M_{\otp(S)}$
+for its pivot subset $S$ (\cref{pma:emb:cor:types}). The clopen self-copies
+intersect in the terminal tail, the standard copy exactly when $\alpha$ is
+$0$ or a limit, and the closed submodels that are intersections of clopen
+self-copies are exactly those containing that tail
+(\cref{pma:emb:thm:core,pma:emb:thm:approximation}). For $\alpha>\omega$ an
+automorphism can move a clopen elementary submodel onto a dense non-Polish one
+(\cref{pma:emb:prop:moveclopen}, built with choice). Which lattices occur in
+other Polish continuous-addition Presburger models stays open.
+
+
+\begin{question}[Canonical surreal cutoffs and topologies]\label{pma:pr:q:surrealcutoffs}
 Find useful explicit birthday bounds for the two fixed-support omnific
 images and formalize the coefficient-topology transport inside those
 cutoffs. More generally, which support sets admit Polish coefficient
@@ -3776,6 +3924,11 @@ topologies with continuous addition and full Presburger induction on
 the resulting positive cone? Such a classification should keep ring
 closure separate from additive closure.
 \end{question}
+
+\noindent\writetag{} (Batch~89.) Source~16 asks the first sentence again for
+the whole family $M_\alpha$ (\cref{pma:emb:q:birthday}); its realization is
+Part~III's \cref{pma:cp:thm:omnific}.
+
 
 \subsection{Further questions of source 04}\label{pma:pr:sec:q04}
 
@@ -3803,6 +3956,12 @@ for which the retraction is automatically continuous. Its
 \cref{pma:nsp:thm:countable-core-transfer} gives nonsplit uncountable perfect
 Polish models from every countable nonsplit $\Z$-group, locally compact or
 homeomorphic to Baire space. What can occur in general is not classified.
+
+\noindent\writetag{} (Batch~89.) Source~16's \cref{pma:emb:q:presentations}
+asks which Polish continuous-addition Presburger models have a Polish group
+completion with a discrete standard integer coordinate; the note after it
+points here and to \cref{pma:lc:q:completion}.
+
 
 \begin{question}[Rigidity with continuous addition]\label{pma:pr:q:rigidity}
 Is there an uncountable rigid Presburger model with a Polish topology making
@@ -3832,13 +3991,31 @@ equalities and residue conditions alone does not suffice, so the proposed
 fragment is too small (\cref{pma:nsp:sec:continuity}); and the target-valued
 Baire class is determined separately (\cref{pma:nsp:sec:baire}).
 
-\begin{question}[Embedding categories for other coefficient groups]
+\begin{question}[Embedding categories for other coefficient groups]\label{pma:pr:q:embeddingcategories}
 Extend \cref{pma:pr:thm:matrices} to products of ordered coefficient groups other
 than $\Q$, and to countable support systems with more complicated growth
 orders. Which hypotheses force every order embedding to be continuous?
 Which image topologies replace the finite-versus-infinite omitted-pivot
 dichotomy?
 \end{question}
+
+\noindent\writetag{} (Batch~89.) Answered by source~16 for products $\Q^\alpha$
+indexed by countable ordinals, with rational coefficients. The continuous
+order embeddings $\Q^\alpha\to\Q^\beta$ are the row-finite matrices with
+increasing positive pivots (\cref{pma:emb:thm:matrix}); they have continuous
+left inverses and closed images (\cref{pma:emb:thm:closedimage}), and Borel
+ones are continuous (\cref{pma:emb:thm:borel}). Every order embedding of
+$\Q^\alpha$ into itself is continuous exactly when $\alpha\leq\omega$
+(\cref{pma:emb:thm:autocont,pma:emb:thm:shear}), and has closed image exactly
+when $\alpha<\omega\cdot2$ (\cref{pma:emb:thm:belowtwo,pma:emb:thm:densethreshold});
+the failures are built with choice (\cref{pma:emb:rem:choice}). The
+finite-versus-infinite omitted-pivot dichotomy persists for the images of
+continuous embeddings and for every closed submodel
+(\cref{pma:emb:thm:orbits}); from $\omega\cdot2$ on, discontinuous
+self-embeddings can have dense non-Borel images. Coefficient groups other than
+$\Q$ and index orders that are not well ordered stay open
+(\cref{pma:emb:q:othergroups,pma:emb:q:beyondordinals}).
+
 
 \begin{question}[Effective truth versus effective operations]\label{pma:pr:q:effectivetruth}
 The Baire presentation has computable addition and fixed division, but not
@@ -6430,6 +6607,12 @@ Theorem~\ref{pma:cp:thm:baire} places each corresponding model on Baire space.
 
 The invariant uses addition. It does not by itself distinguish the pure
 underlying linear orders; no classification of those pure orders is claimed.
+
+\noindent\writetag{} (Batch~89.) Source~16 sharpens this: $M_\alpha$
+elementarily embeds into $M_\beta$ exactly when $\alpha\leq\beta$
+(\cref{pma:emb:cor:hierarchy}), and it classifies the embeddings and the
+Polish elementary submodels of the family (\cref{pma:part:emb}).
+
 
 \subsection{The optimal number of models is the continuum}
 
@@ -21016,6 +21199,1651 @@ zero-dimensional presentations should be pursued together with a
 group-completion criterion, with the polynomial example serving as
 a test case for every proposed general theorem.
 
+\part{Elementary embeddings and Polish submodels of lexicographic Presburger arithmetic}\label{pma:part:emb}
+
+\noindent\writetag{} This part is source~16, manuscript~02 of batch~89,
+\emph{Elementary Embeddings and Polish Submodels of Lexicographic Presburger
+Arithmetic: Matrix normal forms, closed images, and two sharp ordinal
+thresholds} (23 pages, A4, dated October~3, 2026; ``prepared for Vladimir
+Reshetnikov''; its delivery calls it AI-assisted, with internal AI-assisted
+proof reviews). It arrived in commit \texttt{7c0f2d9f9}, as archive
+\fn{Glazer_ProveIt_Embeddings_and_Thresholds}, and was placed in
+\texttt{23adb85f9}; it is pinned to \texttt{0f084afa9}, 70 commits before the
+placement. Its file prefix in this report is \fn{16-presburger-embeddings-}.
+It continues \cref{pma:part:pr,pma:part:cp}: it takes the family
+$M_\alpha=(\Q^\alpha\lex\Z)_{\geq0}$ of \cref{pma:cp:thm:baire,pma:cp:thm:ordinals}
+($\alpha$ a countable ordinal, rational coordinates discrete) and classifies its
+elementary embeddings, its elementary submodels that are Polish in the
+inherited topology, and two ordinal thresholds, for continuity of all
+self-embeddings ($\alpha\leq\omega$) and for closedness of all their images
+($\alpha<\omega\cdot2$). All unmarked text in this part is source~16's; its
+twelve sections are Sections~\ref{pma:emb:sec:position}--\ref{pma:emb:sec:future}
+(its Section~$k$ is Section~$126+k$), and its two appendices are
+\cref{pma:emb:app:qe,pma:emb:app:ledger}.
+
+\paragraph{What was already here.} At its pin this report was the delivered base
+text of \cref{pma:part:pr} (source~05), and the manuscripts of Parts~III--V
+were archives in \fn{docs/incoming}; source~16 read both, and credits the
+construction of $M_\alpha$ to them. It did not see source~04: that manuscript
+was placed in \texttt{3d2177df4}, an ancestor of the pin, but as a member of a
+merge it was not staged, and its text entered the report only with the write
+\texttt{ae7b9ab74}, after the pin. So the case $\alpha=\beta=\omega$ of
+source~16's embedding results proves again, without credit, source~04's
+\cref{pma:pr:prop:embeddingreduction} (all unital additive maps are elementary
+embeddings $T\times\mathrm{id}$), \cref{pma:pr:thm:matrices} (the
+increasing-positive-pivot matrices, automatically continuous) and
+\cref{pma:pr:cor:imagetopology} (closed images, clopen exactly when finitely
+many pivots are omitted), and source~05's \cref{pma:pr:thm:shift} is the
+simplest case of its \cref{pma:emb:thm:core}. Its model construction
+(\cref{pma:emb:prop:baire}) is \cref{pma:cp:thm:baire} (source~07) and
+\cref{pma:cp:thm:ordinals} (source~06), and its omnific realization
+(\cref{pma:emb:sec:surreal}) is \cref{pma:cp:thm:omnific}. Each of these is
+printed with source~16's proof and flagged in its title or in a note. New to the
+report are the transfinite cases: the classification of continuous embeddings
+and of all Polish elementary submodels for every countable $\alpha$, the pivot
+normal form, ambient orbits and the lattice, the two thresholds, the
+automorphism counts and the intersection of all self-copies. Priority is not
+established.
+
+\paragraph{Use of choice.} The discontinuous and non-Borel maps of
+\cref{pma:emb:sec:threshold,pma:emb:sec:second} are built from a nonzero
+$\Q$-linear functional on $\Q^\omega$ vanishing on the finite-support vectors,
+which source~16 obtains with the axiom of choice (a Hamel basis of a
+quotient). So the negative halves of clauses~(5) and~(6) of
+\cref{pma:emb:thm:main}, \cref{pma:emb:thm:shear}, the value $2^{\cc}$ in
+\cref{pma:emb:thm:cardinality}, \cref{pma:emb:prop:moveclopen} and
+\cref{pma:emb:thm:densethreshold} are theorems of ZFC, not of ZF;
+\cref{pma:emb:rem:choice} \mergetag{} shows that ZF with dependent choice
+does not prove them unless it is inconsistent.
+
+\paragraph{Questions answered.} Source~16 answers, for its family, Part~I's
+\cref{pma:pr:q:lattices} (Polish elementary-submodel lattices; its ``Research
+question~8'') and \cref{pma:pr:q:embeddingcategories} (embedding categories
+beyond \cref{pma:pr:thm:matrices}, for ordinal-indexed rational products),
+and the clause of \cref{pma:pr:q:coefficientgroups} on continuous
+order-preserving endomorphisms, for the groups $\Q^\alpha$ (its ``Research
+question~5''). Dated notes after those questions say what is answered. Its
+questions on connected carriers and on arbitrary Polish presentations repeat
+questions of Parts~I, III, IV, VII and~IX that Parts~VII and~IX answer in part;
+notes after them point there instead of reopening them.
+
+\paragraph{Labels and notation.} Every label of source~16 takes the prefix
+\texttt{pma:emb:}. Labels were added to its unlabelled corollary on orbit
+counts, two examples and its twelve questions, so that notes can cite them,
+and \replabel{pma:emb:rem:choice} was written for this report; four
+questions of \cref{pma:part:pr} were labelled for the notes
+(\replabel{pma:pr:q:coefficientgroups}, \replabel{pma:pr:q:lattices},
+\replabel{pma:pr:q:surrealcutoffs}, \replabel{pma:pr:q:embeddingcategories}).
+The fourth block of the table in \cref{pma:sec:notation} lists the symbols.
+In short: source~16's $H_\alpha=\Q^\alpha$ is Part~III's $A_\alpha$, kept
+because $A$ is its matrix; its $G_\alpha$ and $M_\alpha$ are Part~III's; its
+$D=\Q^\omega$ and $D_{\mathrm{fin}}$ are printed $D_{\mathrm B}$ and
+$D_{\mathrm B}^{\mathrm{fin}}$ (Part~I's Baire coefficient group); its shear
+$S_\varphi$ is printed $\mathrm{Sh}_\varphi$, because $S$ is its pivot subset;
+its restriction symbol is printed $\rstr$; its lexicographic sum is printed
+$\lex$; in two proofs local letters were renamed ($S$, $K$ to $N$, $\Gamma$ in
+the proof of \cref{pma:emb:thm:subspaces}; $K$ to $K_\alpha$ in the proof of
+\cref{pma:emb:thm:belowtwo}, where it is the terminal tail of
+\cref{pma:emb:sec:core}). No normalization changed.
+
+\paragraph{Files.} Its finite checks are shipped as
+\fn{code/16-presburger-embeddings-verify_examples.py} with the recorded run
+\fn{data/16-presburger-embeddings-verification_results.json} (11{,}243 exact
+checks); its build record, source audit and proof-review record as
+\fn{data/16-presburger-embeddings-BUILD_REPORT.json},
+\fn{16-presburger-embeddings-SOURCE_AUDIT.md} and
+\fn{16-presburger-embeddings-PROOF_REVIEW.md}. The Hilbert's-tenth programme
+routed the archive without a correctness finding (\cref{pma:app:provenance}).
+Nothing in this part is formalized.
+
+\section{The research intersection and the contribution}
+\label{pma:emb:sec:position}
+
+The useful intersection is topological model theory of arithmetic,
+with a second connection to ordered Hahn groups and the omnific
+integers. Glazer's \emph{A Topological Tennenbaum Theorem}
+\cite{Glazer} rules out uncountable Polish models of sufficiently strong
+arithmetic with the indicated regularity of their operations. Its final
+Question 2 asks whether an uncountable Polish space can support
+Presburger arithmetic with continuous addition. This is a question
+about addition and first-order induction in the additive language;
+multiplication is absent.
+
+The current ProveIt corpus already contains affirmative constructions.
+The maintained manuscript \cite{s16:RepoMain} treats the positive cones of
+$\R\lex\Z$ and $\Q^\omega\lex\Z$. It classifies elementary
+submodels of the real-coordinate model and constructs shift
+self-embeddings of the rational-sequence model. Its further-research
+questions ask for classifications of continuous coefficient-group
+endomorphisms and of Polish elementary-submodel lattices. A separate
+incoming manuscript \cite{s16:RepoOrdinal} already introduces the
+countable-ordinal family used here. We therefore take the construction
+of the models as prior work and study their structure.
+
+This distinction matters. Repeating the positive construction would
+not constitute a new answer for this repository. Nor does the present
+article settle Glazer's separate Question 1 about proving his theorem
+in $\mathsf{ATR}_0$. Instead, we solve a precise family of follow-up
+questions and exhibit two different failures of topological rigidity.
+
+\noindent\writetag{} At source~16's pin \texttt{0f084afa9} the
+``maintained manuscript'' \cite{s16:RepoMain} was source~05's delivered text,
+now the base of \cref{pma:part:pr} (its real-model results are
+\cref{pma:pr:thm:realendos,pma:pr:thm:submodels}, the shift
+\cref{pma:pr:thm:shift}); the ``separate incoming manuscript''
+\cite{s16:RepoOrdinal} was source~06, now part of \cref{pma:part:cp}, whose
+\texttt{thm:ordinals} is \cref{pma:cp:thm:ordinals}. The two questions it
+names are Part~I's \cref{pma:pr:q:coefficientgroups,pma:pr:q:lattices}. The
+self-embeddings of the rational-sequence model were already classified, by
+source~04, which source~16 did not see (introduction of this part).
+
+
+\subsection{A statement of the main answer}
+
+Fix a countable ordinal $\alpha$. All products below are full products,
+not finite-support sums. Set
+\begin{equation}
+ H_\alpha=\Q^\alpha,\qquad
+ G_\alpha=H_\alpha\times\Z,\qquad
+ \one=(0,1),\qquad
+ M_\alpha=(G_\alpha)_{\geq0}.
+ \label{pma:emb:eq:family}
+\end{equation}
+The first nonzero rational coordinate determines the sign in
+$H_\alpha$; in $G_\alpha$, the $H_\alpha$ coordinate dominates the
+integer coordinate. Every rational coordinate and the integer
+coordinate have the discrete topology. The topology on $M_\alpha$ is
+the subspace topology from $G_\alpha$.
+
+\begin{theorem}[Structural classification and thresholds]
+\label{pma:emb:thm:main}
+For countable ordinals $\alpha,\beta$ the following hold.
+\begin{enumerate}[label=\textup{(\arabic*)}]
+\item $M_\alpha$ is a Polish model of the full first-order theory of
+$(\N;0,1,+,<)$, with continuous addition. For $\alpha\geq\omega$
+its underlying space is homeomorphic to Baire space.
+\item Every map $M_\alpha\to M_\beta$ preserving $0$, $1$, and
+addition is an elementary embedding. Such a map exists exactly when
+$\alpha\leq\beta$.
+\item The Borel embeddings are exactly the continuous embeddings.
+They are described by row-finite rational matrices with strictly
+increasing pivot map $p:\alpha\to\beta$ and positive pivot entries.
+Every such embedding has closed image.
+\item The elementary submodels of $M_\alpha$ are precisely
+$M_V=(V\lex\Z)_{\geq0}$ for $\Q$-linear subspaces
+$V\leq H_\alpha$. The inherited topology is Polish exactly when
+$V$ is closed. Closed subspaces have canonical pivot subsets
+$S\subseteq\alpha$ and are order-topologically isomorphic to
+$\Q^S$. The corresponding submodel is isomorphic to
+$M_{\otp(S)}$.
+\item Every elementary self-embedding of $M_\alpha$ is continuous
+if and only if $\alpha\leq\omega$.
+\item Every elementary self-embedding of $M_\alpha$ has closed
+image if and only if $\alpha<\omega\cdot2$.
+\end{enumerate}
+\end{theorem}
+
+All claims are proved below. Parts (1) and the underlying arithmetic
+construction are included for completeness and attributed to the
+existing work. The ordered normal forms, their model-theoretic
+consequences, and the precise combination of thresholds are the focus
+of this article.
+
+\noindent\writetag{} \textbf{What this report already contained.}
+Clause~(1) is \cref{pma:cp:thm:baire} (source~07) and
+\cref{pma:cp:thm:ordinals} (source~06) for infinite $\alpha$; for finite
+$\alpha$ it is elementary. For $\alpha=\beta=\omega$, the first sentence of
+clause~(2) is source~04's \cref{pma:pr:prop:embeddingreduction} (proved there
+for arbitrary divisible coefficient groups, as \cref{pma:emb:thm:dictionary} is
+here), and clauses~(3) and~(5) are source~04's
+\cref{pma:pr:thm:matrices,pma:pr:cor:imagetopology}. That the $M_\alpha$ are
+pairwise nonisomorphic is \cref{pma:cp:thm:spectrum}. Clause~(4) has the real
+model's \cref{pma:pr:thm:submodels} as its counterpart. The rest, in particular
+everything about $\alpha>\omega$, is new to the report.
+
+
+\begin{center}
+\small
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{28mm}>{\raggedright\arraybackslash}p{40mm}>{\raggedright\arraybackslash}p{41mm}>{\raggedright\arraybackslash}p{29mm}@{}}
+\toprule
+Coordinate rank & All self-embeddings continuous? & All self-embedding
+images closed? & Number of automorphisms\\
+\midrule
+$0$ & Yes & Yes & $1$\\
+$0<\alpha<\omega$ & Yes; all are onto & Yes & $\aleph_0$\\
+$\alpha=\omega$ & Yes & Yes & $\cc$\\
+$\alpha=\omega+n$, $0<n<\omega$ & No & Yes & $2^{\cc}$\\
+$\alpha\geq\omega\cdot2$ & No & No & $2^{\cc}$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Relation to established mathematics}
+
+Quantifier elimination for Presburger arithmetic is classical
+\cite{Haase}; we give the needed uniform argument in
+\cref{pma:emb:app:qe}. Ordered Hahn groups and their automorphisms have a
+substantial literature. Kuhlmann and Serra \cite{s16:KS} develop the
+valuation and skeleton framework and matrix descriptions in relevant
+Hahn settings. Serra's dissertation \cite{s16:Serra}, especially its
+discussion of strong additivity, already explains closely related
+automatic behavior for discrete ranks and failures beyond them.
+Continuity for discrete-field products and preservation of formal
+infinite sums are also studied by Freni \cite{s16:Freni}. The unordered
+closed-subspace theory belongs to classical linearly compact duality;
+see, for example, \cite{s16:CGB}.
+
+We do not claim these general mechanisms as new. The proofs here
+specialize them, make the positive-cone and elementary-embedding
+interfaces explicit, and extract the exact orbit, lattice, and
+closed-image consequences. The source audit found no statement of this
+complete package in the inspected ProveIt reports or cited sources.
+That limited audit does not establish historical priority.
+
+\noindent\writetag{} (Batch~89.) For the repository the audit was
+incomplete through no fault of its own: the case $\alpha=\beta=\omega$ of the
+dictionary, the matrix classification, automatic continuity and the image
+topology was already proved by source~04 (\cref{pma:pr:sec:reduction,pma:pr:sec:bairemaps}),
+which had been placed but not yet written into this report at source~16's
+pin. The package is new for transfinite $\alpha$ and as a package.
+
+
+\subsection{Foundations and conventions}
+
+We work in ZFC. Every $\alpha$ is a set ordinal, and every product,
+matrix, subspace, and collection of submodels appearing in a fixed
+instance is a set. An elementary submodel always has the \emph{inherited}
+topology unless another topology is specified. A map called Borel is
+Borel measurable between the indicated Polish spaces. ``Clopen'' means
+both closed and open. We use $\cc=2^{\aleph_0}$.
+
+The product topology is essential. At transfinite coordinate ranks it
+can differ sharply from both the lexicographic order topology and the
+Hahn valuation topology. The discontinuous maps below are
+discontinuous for the product topology specified in \eqref{pma:emb:eq:family}.
+
+\section{The arithmetic and topology of the models}
+\label{pma:emb:sec:models}
+
+\subsection{Why the positive cone satisfies full Presburger arithmetic}
+
+\begin{definition}
+A $\Z$-group is an ordered abelian group with least positive element
+$1$, such that for every standard positive integer $m$ and every $g$
+there are unique $q$ and $r\in\{0,\ldots,m-1\}$ with
+$g=mq+r1$.
+\end{definition}
+
+The group $G_\alpha$ is a $\Z$-group. It is discretely ordered because
+any element with positive coefficient part is greater than every
+standard integer, whereas the zero coefficient part leaves the usual
+order on $\Z$. For division, write $n=mq+r$ in $\Z$. Then
+\begin{equation}
+ (h,n)=m(h/m,q)+(0,r).
+ \label{pma:emb:eq:division}
+\end{equation}
+The coefficient group is uniquely divisible. The same formula works in
+the positive cone: if $h>0$ then $h/m>0$, and if $h=0$ then ordinary
+nonnegative division applies.
+
+The classical quantifier-elimination theorem says that the theory of
+$\Z$-groups eliminates quantifiers after adding the predicates
+$g\equiv_m h$, for every standard $m\geq2$. Its complete theory is
+that of $(\Z;0,1,+,-,<)$. Relativizing group formulas to the
+nonnegative cone gives the complete theory of
+$(\N;0,1,+,<)$. This includes every first-order induction instance in
+the additive language. It is much stronger than verifying finitely many
+associativity or division axioms.
+
+In our split groups, congruences have a particularly simple meaning:
+\begin{equation}
+ (h,n)\equiv_m(h',n')\quad\Longleftrightarrow\quad
+ n\equiv n'\pmod m.
+ \label{pma:emb:eq:congruence}
+\end{equation}
+This identity will make elementary embeddings almost entirely a problem
+about ordered $\Q$-vector spaces.
+
+\subsection{Polishness and the role of the missing boundary}
+
+The group $H_\alpha$ is a countable product of countable discrete
+Polish spaces. Choose a bijective enumeration $(i_k)$ of an infinite
+$\alpha$; a compatible complete metric is
+\[
+ d(h,h')=\sum_{k\geq0}2^{-k-1}
+       \mathbf{1}_{h_{i_k}\ne h'_{i_k}}.
+\]
+This enumeration specifies a topology, not the lexicographic priority
+of coordinates, which remains the ordinal order on $\alpha$.
+
+For $i<\alpha$, the condition $h_j=0$ for every $j<i$ is closed.
+Since each rational coordinate is discrete,
+\begin{equation}
+ H_\alpha^{>0}=
+ \bigcup_{i<\alpha}
+ \{h:h_j=0\ (j<i),\ h_i>0\}
+ \label{pma:emb:eq:sign}
+\end{equation}
+is $F_\sigma$. The negative cone is likewise $F_\sigma$, so the
+positive and nonnegative cones are both $G_\delta$ as well. It follows
+that
+\begin{equation}
+ M_\alpha=(H_\alpha^{>0}\times\Z)
+       \cup(\{0\}\times\N)
+ \label{pma:emb:eq:cone}
+\end{equation}
+is $G_\delta$ in $G_\alpha$: finite unions of $G_\delta$ sets are
+$G_\delta$ in a metric space. A $G_\delta$ subspace of a Polish space
+is Polish \cite{Kechris}. Addition is the restriction of the continuous
+group operation and preserves the cone.
+
+\begin{remark}
+The cone need not be closed in its ambient group. For example, when
+$\alpha\geq\omega$, $(e_k,-1)\in M_\alpha$ converges to
+$(0,-1)\notin M_\alpha$, where $e_k$ has one nonzero coordinate at
+$k$. Thus completeness is obtained from the $G_\delta$ theorem, not
+by claiming that the displayed ambient metric remains complete on the
+cone.
+\end{remark}
+
+\begin{proposition}[Baire-space carrier; for $\alpha\geq\omega$, \cref{pma:cp:thm:baire,pma:cp:thm:ordinals}]
+\label{pma:emb:prop:baire}
+If $\alpha\geq\omega$ is countable, $M_\alpha$ is homeomorphic to
+$\N^\N$. If $\alpha<\omega$, it is countable and discrete.
+\end{proposition}
+\begin{proof}
+The finite case is immediate. In the infinite case the cone is
+zero-dimensional and Polish. We show that no compact subset has
+nonempty interior. Let a basic coefficient cylinder, with integer
+coordinate fixed and only finitely many rational coordinates prescribed,
+meet the cone. It contains a smaller cylinder in which positivity is
+already decided at a finite natural-number coordinate. To see this,
+use an already prescribed positive first nonzero coordinate if it
+occurs before the first unprescribed natural coordinate; otherwise put
+a positive rational at that first unprescribed coordinate and zero at
+the earlier unprescribed ones. A prescribed negative first nonzero
+coordinate before this point would contradict the assumed nonempty
+intersection with the cone.
+
+Choose a later natural coordinate that is still unprescribed. It can
+take every rational value while all these points remain in the smaller
+cylinder. The projection of a compact set to a discrete rational
+coordinate is finite. Therefore the cylinder cannot be contained in a
+compact set. In particular there are no isolated points and the space
+is nowhere locally compact. The standard characterization of Baire
+space as the nonempty zero-dimensional Polish space that is nowhere
+locally compact now applies \cite{Kechris}.
+\end{proof}
+
+\noindent\writetag{} The cylinder argument is the one of
+\cref{pma:cp:thm:baire} (source~07) and \cref{pma:cp:thm:ordinals}
+(source~06); for $\alpha=\omega$, \cref{pma:pr:thm:baire} gives an explicit,
+computable homeomorphism.
+
+
+\section{From arithmetic homomorphisms to ordered linear embeddings}
+\label{pma:emb:sec:dictionary}
+
+The following observation removes any ambiguity about which arithmetic
+maps are being classified.
+
+\begin{theorem}[The homomorphism dictionary; $=$ \cref{pma:pr:prop:embeddingreduction} \src{04}]
+\label{pma:emb:thm:dictionary}
+Let $A,B$ be divisible ordered abelian groups and let
+$M_A=(A\lex\Z)_{\geq0}$, $M_B=(B\lex\Z)_{\geq0}$.
+Every map $f:M_A\to M_B$ preserving $0$, $1$, and addition has the
+unique form
+\begin{equation}
+ f(a,n)=(T(a),n),
+ \label{pma:emb:eq:map}
+\end{equation}
+where $T:A\to B$ is a strictly order-preserving $\Q$-linear
+embedding. Conversely every such $T$ defines such an $f$, and $f$ is
+elementary in the full Presburger language.
+\end{theorem}
+\begin{proof}
+The cancellative positive cone generates its ordered group by
+differences. Hence $f$ extends uniquely to a group homomorphism
+$F:A\times\Z\to B\times\Z$ fixing $(0,1)$: define
+$F(u-v)=f(u)-f(v)$ for $u,v\geq0$. This is well-defined because
+$u-v=u'-v'$ implies $u+v'=u'+v$.
+
+The maximal divisible subgroup of the split group is
+\[
+ \bigcap_{m\geq1}m(A\times\Z)=A\times\{0\}.
+\]
+A homomorphism sends this subgroup into the analogous subgroup of the
+target. Consequently $F(a,n)=(T(a),n)$ for an additive map $T$, which
+is $\Q$-linear because divisibility is unique in ordered groups.
+
+If $a>0$, the element $(a,-1)$ belongs to $M_A$. Its image
+$(T(a),-1)$ can belong to $M_B$ only if $T(a)>0$. Thus $T$ strictly
+preserves positivity. Applying this to differences proves that $T$ is
+injective and preserves and reflects order.
+
+Conversely such a $T$ plainly preserves the positive cone and the
+operations. The extended map preserves and reflects equality, order,
+and every congruence by \eqref{pma:emb:eq:congruence}. Quantifier elimination
+therefore makes the group embedding elementary. Restricting quantified
+variables to the nonnegative cone proves elementarity of $f$.
+\end{proof}
+
+\noindent\writetag{} This is source~04's
+\cref{pma:pr:prop:embeddingreduction}, with the same hypotheses and
+conclusion. Both proofs extend $f$ to the group of differences and use the
+maximal divisible subgroup $A\times\{0\}$; they obtain strict positivity of
+$T$ differently (source~04 from $x=y+1+u$ for $x>y$, source~16 from the
+positive element $(a,-1)$).
+
+
+\begin{corollary}[for $\MB$, \cref{pma:pr:cor:imagetopology} \src{04}]
+\label{pma:emb:cor:allhom}
+For the models $M_\alpha$, ``unital additive homomorphism'' and
+``elementary embedding'' describe the same maps. Injectivity,
+order preservation, and elementarity need not be imposed separately.
+\end{corollary}
+
+\subsection{The valuation spectrum}
+
+For $0\ne h\in H_\alpha$, put
+\[
+ v(h)=\min\{i<\alpha:h_i\ne0\}.
+\]
+Two nonzero elements have the same value exactly when their absolute
+values are Archimedean equivalent, meaning that each is bounded by a
+standard positive integer multiple of the other. Indeed their first
+nonzero rational coefficients have a finite rational ratio. If
+$v(x)<v(y)$, then $|x|>n|y|$ for every positive integer $n$.
+
+An order-preserving linear embedding $T:H_\alpha\to H_\beta$
+therefore induces a strictly increasing map
+\begin{equation}
+ p:\alpha\longrightarrow\beta,
+ \qquad p(i)=v(T(e_i)),\qquad v(T(h))=p(v(h)).
+ \label{pma:emb:eq:pivotvaluation}
+\end{equation}
+The last equality follows from Archimedean equivalence. In particular,
+an embedding exists only if $\alpha\leq\beta$. If that ordinal
+inequality holds, inserting zeros outside an initial copy of $\alpha$
+gives a continuous ordered linear embedding. Thus elementary
+embeddability among this family is exactly ordinal comparison.
+
+\begin{corollary}[An ordinal hierarchy on a fixed topological carrier; extends \cref{pma:cp:thm:spectrum}]
+\label{pma:emb:cor:hierarchy}
+For $\omega\leq\alpha,\beta<\omega_1$, all the carriers
+$M_\alpha$ are homeomorphic to Baire space, but
+\[
+ M_\alpha\text{ elementarily embeds into }M_\beta
+ \quad\Longleftrightarrow\quad \alpha\leq\beta.
+\]
+The same equivalence holds when the embedding is required to be
+continuous or Borel. Two members are isomorphic exactly when their
+indices agree.
+\end{corollary}
+
+\noindent\writetag{} Its last sentence is \cref{pma:cp:thm:spectrum}
+(source~07; source~06's \cref{pma:cp:thm:ordinals}), proved there by the
+Archimedean classes; the embeddability equivalence is new.
+
+
+\section{Borel maps, finite dependence, and matrix normal forms}
+\label{pma:emb:sec:matrix}
+
+\subsection{A countable-index Baire lemma}
+
+\begin{lemma}
+\label{pma:emb:lem:countindex}
+A subgroup with the Baire property and countable index in a Polish
+group is open. In particular a Borel subgroup of countable index is
+open, and a $G_\delta$ subgroup of a Polish group is closed.
+\end{lemma}
+\begin{proof}
+Countably many cosets cover the group. The Baire category theorem
+implies that the subgroup is nonmeagre. A set with the Baire property
+that is nonmeagre is comeagre in some nonempty open set. The usual
+Baire argument then shows that its difference set contains a
+neighborhood of the identity: sufficiently small translates of that
+open set overlap, and the two comeagre subsets have a common point
+there. For a subgroup the difference set is the subgroup itself, so
+it is open.
+
+For the final assertion, a $G_\delta$ subgroup $K$ is dense and
+comeagre in its closure $L$, which is a Polish group. Every translate
+$x+K$, $x\in L$, is also comeagre in $L$ and intersects $K$.
+Hence $x\in K-K=K$, so $K=L$.
+\end{proof}
+
+\begin{lemma}[Continuous functionals]
+\label{pma:emb:lem:finite}
+A $\Q$-linear functional $\ell:\Q^I\to\Q$, where $I$ is
+countable and all factors are discrete, is continuous if and only if
+it depends on finitely many coordinates. If it is Borel, it is
+continuous.
+\end{lemma}
+\begin{proof}
+For continuity, the inverse image of zero contains a basic open
+subgroup in which finitely many coordinates vanish. The functional
+therefore factors through that finite coordinate projection.
+Conversely every finite rational linear combination of coordinates is
+continuous. If $\ell$ is Borel, its kernel is a Borel subgroup of
+countable index, since $\Q$ is countable. Apply
+\cref{pma:emb:lem:countindex}.
+\end{proof}
+
+\begin{theorem}[Borel equals continuous for arithmetic embeddings]
+\label{pma:emb:thm:borel}
+For an elementary embedding $f:M_\alpha\to M_\beta$ and its
+coefficient map $T$, the following are equivalent:
+\[
+ f\text{ is Borel};\qquad T\text{ is Borel};\qquad
+ T\text{ is continuous};\qquad f\text{ is continuous}.
+\]
+\end{theorem}
+\begin{proof}
+The coefficient positive and negative cones are Borel by
+\eqref{pma:emb:eq:sign}. If $f$ is Borel, define $T(h)$ by taking the
+coefficient part of $f(h,0)$ when $h\geq0$, and the negative of the
+coefficient part of $f(-h,0)$ otherwise. This is a Borel definition on
+two Borel pieces. Every coordinate of a Borel $T$ is a Borel linear
+functional, hence continuous by \cref{pma:emb:lem:finite}. Product-topology
+continuity follows. A continuous $T$ restricts to a continuous $f$,
+and any continuous $f$ is Borel.
+\end{proof}
+
+\subsection{The exact matrices}
+
+\begin{definition}
+A matrix $A=(a_{ji})_{j<\beta,\,i<\alpha}$ is row-finite if for each
+$j$ only finitely many $a_{ji}$ are nonzero. It has increasing positive
+pivots if there is a strictly increasing $p:\alpha\to\beta$ with
+\begin{equation}
+ a_{ji}=0\quad(j<p(i)),\qquad a_{p(i),i}>0.
+ \label{pma:emb:eq:pivots}
+\end{equation}
+\end{definition}
+
+\begin{theorem}[Matrix classification; for $\alpha=\beta=\omega$, \cref{pma:pr:thm:matrices} \src{04}]
+\label{pma:emb:thm:matrix}
+The continuous elementary embeddings $M_\alpha\to M_\beta$ are
+exactly
+\begin{equation}
+ (h,n)\longmapsto(Ah,n),\qquad
+ (Ah)_j=\sum_{i<\alpha}a_{ji}h_i,
+ \label{pma:emb:eq:matrix}
+\end{equation}
+where $A$ is row-finite with increasing positive pivots. Each displayed
+sum is finite. The pivot map is uniquely determined by the embedding.
+\end{theorem}
+\begin{proof}
+For a continuous $T$, \cref{pma:emb:lem:finite} supplies each matrix row.
+The columns are $T(e_i)$. Their first nonzero entries obey
+\eqref{pma:emb:eq:pivots} by \eqref{pma:emb:eq:pivotvaluation}, and positivity gives
+positive pivots.
+
+Conversely let $h\ne0$ have first nonzero coordinate $i$. All
+coordinates of $Ah$ before $p(i)$ vanish: columns indexed below $i$
+are multiplied by zero, while those indexed at least $i$ have no
+entry that early. At the pivot itself,
+\[
+ (Ah)_{p(i)}=a_{p(i),i}h_i.
+\]
+Its sign is the sign of $h_i$. Thus $A$ is a strictly ordered linear
+embedding, and row-finiteness gives continuity. Apply
+\cref{pma:emb:thm:dictionary}.
+\end{proof}
+
+\noindent\writetag{} For $\alpha=\beta=\omega$ this is source~04's
+\cref{pma:pr:thm:matrices}, which is stronger there: it assumes no continuity
+(\cref{pma:emb:thm:autocont} below) and adds that the map is onto exactly
+when $p$ is the identity.
+
+
+\subsection{Why the images are closed even at limit ranks}
+
+\begin{lemma}[Finite ancestry]
+\label{pma:emb:lem:ancestry}
+Suppose each vertex $i$ of a well-ordered index set has finitely many
+designated predecessors, all strictly below $i$. Then each vertex has
+only finitely many ancestors obtained by repeatedly taking designated
+predecessors.
+\end{lemma}
+\begin{proof}
+Form the tree of finite predecessor paths starting at the vertex. It
+is finitely branching. An infinite such tree would have an infinite
+branch by K\"onig's lemma, giving an infinite descending sequence in
+a well-order. Thus the tree and its set of labels are finite.
+\end{proof}
+
+\begin{theorem}[A continuous left inverse and a closed image; for $\alpha=\beta=\omega$, \cref{pma:pr:cor:imagetopology} \src{04}]
+\label{pma:emb:thm:closedimage}
+Every matrix embedding in \cref{pma:emb:thm:matrix} admits a continuous
+$\Q$-linear left inverse $L:H_\beta\to H_\alpha$. Its group image
+is closed, and its cone image is a closed elementary submodel with
+inherited Polish topology.
+\end{theorem}
+\begin{proof}
+At row $p(i)$, columns indexed above $i$ vanish. Define recursively
+\begin{equation}
+ (Ly)_i=\frac{1}{a_{p(i),i}}
+ \left(y_{p(i)}-\sum_{k<i}a_{p(i),k}(Ly)_k\right).
+ \label{pma:emb:eq:leftinverse}
+\end{equation}
+Each sum is finite. Although the recursion is indexed by an ordinal,
+\cref{pma:emb:lem:ancestry} shows that each output coordinate ultimately
+depends on only finitely many input coordinates. Thus $L$ is a
+continuous row-finite linear map. Transfinite induction in
+\eqref{pma:emb:eq:leftinverse} gives $LA=\mathrm{id}$.
+
+Now $AL$ is a continuous projection and
+\[
+ \operatorname{im} A=\{y:ALy=y\}=\ker(\mathrm{id}-AL),
+\]
+which is closed in the Hausdorff group $H_\beta$. The cone image is
+$(\operatorname{im} A\times\Z)\cap M_\beta$, because order is reflected. It
+is closed in the Polish space $M_\beta$, and $L$ restricts to its
+continuous inverse parametrization.
+\end{proof}
+
+The finite-ancestry argument is important. A naive sequence of
+transfinite row subtractions could alter a limit coordinate
+infinitely often. Row-finiteness alone does not justify that naive
+procedure. Equation \eqref{pma:emb:eq:leftinverse} and the well-founded
+dependency argument supply the missing control.
+
+\noindent\writetag{} For $\alpha=\beta=\omega$ the recursion
+\eqref{pma:emb:eq:leftinverse} is source~04's recovery formula
+\eqref{pma:pr:eq:pivotrecovery}, where no ancestry lemma is needed because
+every pivot row has finitely many predecessors, and the closed image is part
+of \cref{pma:pr:cor:imagetopology}.
+
+
+\section{All elementary submodels and their Polish topology}
+\label{pma:emb:sec:submodels}
+
+\begin{theorem}[Elementary submodels are coefficient subspaces; extends \cref{pma:pr:thm:submodels}]
+\label{pma:emb:thm:subspaces}
+The elementary submodels of $M_\alpha$ are precisely
+\[
+ M_V=(V\lex\Z)_{\geq0},\qquad V\leq_\Q H_\alpha.
+\]
+The model $M_V$ is Polish in the inherited topology if and only if
+$V$ is closed in $H_\alpha$.
+\end{theorem}
+\begin{proof}
+If $V$ is a rational linear subspace, $V\lex\Z$ is a $\Z$-group
+and its inclusion preserves and reflects congruences as well as
+order. Quantifier elimination makes its cone elementary.
+
+Conversely let $N\preccurlyeq M_\alpha$ and set $\Gamma=N-N$ inside
+$G_\alpha$. If $a,b\in N$ and $a-b\geq0$, the equation $b+x=a$
+has a unique solution in the ambient cone. Elementarity puts that
+solution in $N$. Thus $N=\Gamma\cap M_\alpha$. The subgroup $\Gamma$
+contains $(0,n)$ for every standard integer $n$. Subtracting integer
+coordinates yields $\Gamma=V\times\Z$ for an additive subgroup
+$V\leq H_\alpha$. The unique standard division of $(v,0)$ has
+remainder zero and quotient $(v/m,0)$. For $v\geq0$ elementarity
+puts this quotient in $N$; negatives follow by subtraction. Hence $V$
+is divisible and therefore a rational linear subspace.
+
+If $V$ is closed, $M_V$ is closed in $M_\alpha$ and is Polish.
+Conversely, if $M_V$ is Polish, its integer-coordinate-zero slice is
+clopen in $M_V$ and is homeomorphic to $V^{\geq0}$. Thus
+$V^{\geq0}$ is a Polish subspace of the Polish space $H_\alpha$,
+so it is $G_\delta$. Its negative is also $G_\delta$, and
+\[
+ V=V^{\geq0}\cup(-V^{\geq0})
+\]
+is $G_\delta$. By \cref{pma:emb:lem:countindex} the subgroup $V$ is closed.
+\end{proof}
+
+Polishness here cannot be replaced by merely admitting some abstract
+Polish presentation. A nonclosed $V$ might be algebraically isomorphic
+to a closed space, but the inherited topology is the issue being
+classified.
+
+\noindent\writetag{} For the real model this is source~05's
+\cref{pma:pr:thm:submodels}, with the same proof; there only two elementary
+submodels are Polish, here one for each closed subspace of $H_\alpha$.
+
+
+\subsection{The finite-support annihilator}
+
+Write $H_\alpha^\circ=\Q^{(\alpha)}$ for the finite-support dual,
+with pairing
+\[
+ \langle c,h\rangle=\sum_{i<\alpha}c_i h_i.
+\]
+For $V\leq H_\alpha$ define
+$V^\perp=\{c\in H_\alpha^\circ:\langle c,v\rangle=0\text{ for all }v\in V\}$.
+
+\begin{lemma}[Cylinder separation]
+\label{pma:emb:lem:annihilator}
+For every linear subspace $V\leq H_\alpha$,
+\[
+ \cl(V)=(V^\perp)^\perp.
+\]
+\end{lemma}
+\begin{proof}
+Each finite-support functional is continuous, so its kernel contains
+$\cl(V)$ whenever it contains $V$. For the reverse inclusion, if
+$h\notin\cl(V)$ then a finite coordinate set $F$ separates $h$
+from $V$: $h\rstr F\notin\pi_F(V)$. Finite-dimensional linear
+algebra supplies a functional on $\Q^F$ vanishing on $\pi_F(V)$
+but not on $h\rstr F$. Extend it by zero outside $F$.
+\end{proof}
+
+\subsection{Canonical ordered normal form}
+
+\begin{theorem}[Pivot normal form of a closed subspace]
+\label{pma:emb:thm:normalform}
+Let $V\leq H_\alpha$ be closed. There is a unique subset
+$S\subseteq\alpha$, its valuation spectrum
+\[
+ S=\{v(x):0\ne x\in V\},
+\]
+with the following description. For each $i\notin S$ there are
+unique finitely many coefficients $b_{is}\in\Q$, $s\in S$, $s<i$,
+such that
+\begin{equation}
+ V=\left\{x:\ x_i=\sum_{\substack{s\in S\\s<i}}b_{is}x_s
+                    \text{ for every }i\notin S\right\}.
+ \label{pma:emb:eq:subnormal}
+\end{equation}
+The coordinates $(x_s)_{s\in S}$ are arbitrary. The resulting
+parametrization $\Q^S\to V$ is an ordered topological linear
+isomorphism.
+\end{theorem}
+\begin{proof}
+Let $\ell_i$ be the coordinate functional restricted to $V$. Scan
+the ordinal $\alpha$ in increasing order, selecting $i$ precisely
+when $\ell_i$ is not in the algebraic span of the previously selected
+functionals. Let $S$ be the selected set. The selected functionals
+are linearly independent. Every unselected $\ell_i$ is a finite
+linear combination of selected $\ell_s$, $s<i$; the coefficients
+are unique by independence. This proves the necessary equations in
+\eqref{pma:emb:eq:subnormal}.
+
+Given arbitrary $c\in\Q^S$, define $x_s=c_s$ at selected
+coordinates and define the remaining $x_i$ by those finite equations.
+We claim $x\in V$. Any finite-support functional annihilating $V$
+becomes, after substituting these equations, a finite linear
+combination of the independent selected functionals which vanishes
+on $V$. Every coefficient in that combination is therefore zero,
+so the original functional also vanishes at $x$. Since $V$ is
+closed, \cref{pma:emb:lem:annihilator} gives $x\in V$.
+
+All coordinates of the parametrization are finite linear combinations
+of the $c_s$, so it is continuous; its inverse is coordinate
+restriction. If $c$ first becomes nonzero at $s\in S$, all earlier
+unselected coordinates are combinations of earlier, zero, selected
+coordinates. Thus the first nonzero coordinate of $x$ is $s$ and
+has value $c_s$. The parametrization preserves order. It also shows
+that the selected set is exactly the valuation spectrum, making $S$
+intrinsic.
+\end{proof}
+
+This proof uses finite linear duality to handle limit coordinates.
+It does not select successive vectors and hope that an infinite
+elimination process converges at the limit.
+
+\begin{corollary}[Isomorphism types]
+\label{pma:emb:cor:types}
+Every inherited-Polish elementary submodel of $M_\alpha$ is
+order-topologically and arithmetically isomorphic to a unique
+$M_\beta$, $\beta\leq\alpha$. All such $\beta$ occur.
+For $\alpha=\omega$, a Polish elementary submodel is either a
+countable discrete $M_k$ for $k<\omega$, or an elementary self-copy
+of $M_\omega$.
+\end{corollary}
+\begin{proof}
+Use $\beta=\otp(S)$ in \cref{pma:emb:thm:normalform} and
+\cref{pma:emb:thm:dictionary}. Uniqueness follows from the Archimedean rank
+of the coefficient group. A coordinate subspace supported on an
+initial segment $\beta$ realizes every $\beta\leq\alpha$.
+\end{proof}
+
+\section{Orbits, quotients, and the complete submodel lattice}
+\label{pma:emb:sec:lattice}
+
+\begin{theorem}[Ambient conjugacy and quotient topology]
+\label{pma:emb:thm:orbits}
+Let $V,W$ be closed coefficient subspaces of $H_\alpha$.
+\begin{enumerate}[label=\textup{(\arabic*)}]
+\item A continuous ordered linear automorphism sends $V$ to $W$
+if and only if their pivot subsets agree. The same criterion holds
+for arbitrary ambient arithmetic automorphisms of $M_\alpha$
+sending $M_V$ onto $M_W$.
+\item If $S$ is the pivot subset of $V$, then as topological vector
+spaces
+\[
+ H_\alpha/V\ \cong\ \Q^{\alpha\setminus S}.
+\]
+\item $M_V$ is clopen in $M_\alpha$ exactly when
+$\alpha\setminus S$ is finite. Otherwise it is closed and nowhere
+dense.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+Let $E_S$ be the coordinate subspace supported on $S$. Using the
+coefficients in \eqref{pma:emb:eq:subnormal}, define
+\[
+ (U_Vx)_s=x_s\ (s\in S),\qquad
+ (U_Vx)_i=x_i+\sum_{s<i,\,s\in S}b_{is}x_s\ (i\notin S).
+\]
+This is row-finite lower triangular with diagonal one. Its inverse
+subtracts the same finite combinations, since selected coordinates
+are fixed. It is a continuous ordered automorphism and sends $E_S$
+onto $V$. If $V,W$ have the same $S$, use $U_WU_V^{-1}$.
+
+Every ordered automorphism induces an order automorphism of the
+ordinal rank $\alpha$, and this must be the identity. Therefore it
+preserves valuation spectra even if no regularity is assumed. This
+proves the converse assertion about orbits.
+
+Conjugating by $U_V$ reduces the quotient to $H_\alpha/E_S$,
+which is the product on the complementary coordinates. The
+subspace $E_S$ is open precisely when only finitely many coordinates
+are required to vanish. If it is not open it has empty interior,
+as does any closed subgroup which is not open.
+
+For the positive cone, openness of $V$ implies openness of $M_V$.
+Conversely suppose $M_V$ is open. At $(0,0)$ it contains a
+neighborhood specified by finitely many coefficient coordinates;
+thus the nonnegative half of the corresponding basic open subgroup
+is contained in $V$. Negating shows that the entire subgroup lies
+in $V$, so $V$ is open. To prove nowhere density when the missing
+set is infinite, conjugate to $E_S$. Given a point of $M_{E_S}$
+and a neighborhood prescribing finitely many coordinates $F$,
+choose $j\in(\alpha\setminus S)\setminus F$. Adding the positive
+coefficient vector $e_j$ preserves the cone and the prescribed
+coordinates, but leaves $E_S$. Thus no point of $M_{E_S}$ is
+interior, and the nonopen closed submodel is nowhere dense.
+\end{proof}
+
+\noindent\writetag{} For the image of a self-embedding of $M_\omega$, the
+dichotomy of~(3) is source~04's \cref{pma:pr:cor:imagetopology}; here it holds
+for every closed elementary submodel and every countable $\alpha$.
+
+
+\begin{remark}
+If $\alpha\setminus S$ is infinite countable, the quotient is a
+\emph{full product} of copies of $\Q$. Its algebraic dimension over
+$\Q$ is $\cc$, not $\aleph_0$. Counting the missing pivots as
+though they were a Hamel basis would give an incorrect codimension.
+\end{remark}
+
+\begin{corollary}\label{pma:emb:cor:orbitcount}
+For $\alpha=\omega$ there are exactly $\cc$ ambient automorphism
+orbits of Polish elementary submodels, and already $\cc$ orbits of
+uncountable elementary self-copies. In the latter case they are all
+abstractly isomorphic, but need not be conjugate inside the ambient
+model.
+\end{corollary}
+\begin{proof}
+The pivot subsets are exactly the subsets of $\omega$; the infinite
+ones give self-copies. There are $\cc$ of each. All automorphisms of
+$M_\omega$ will be shown continuous in \cref{pma:emb:sec:threshold}, so
+the same count holds without a topological qualification.
+\end{proof}
+
+\begin{theorem}[The lattice]
+\label{pma:emb:thm:lattice}
+The inherited-Polish elementary submodels of $M_\alpha$ form a
+complete lattice. Under $V\mapsto M_V$ its operations are
+\[
+ \bigwedge_t M_{V_t}=M_{\bigcap_tV_t},\qquad
+ \bigvee_t M_{V_t}=M_{\cl(\sum_tV_t)}.
+\]
+The lattice is order anti-isomorphic to the lattice of all linear
+subspaces of the finite-support space $\Q^{(\alpha)}$, by taking
+annihilators.
+\end{theorem}
+\begin{proof}
+Intersections of closed linear subspaces are closed, and the smallest
+closed linear subspace containing a family is the closure of its
+algebraic sum. The correspondence with elementary submodels follows
+from \cref{pma:emb:thm:subspaces}.
+
+The annihilator map reverses inclusion and is injective on closed
+subspaces by \cref{pma:emb:lem:annihilator}. If $W\leq\Q^{(\alpha)}$,
+then $W^\perp$ is closed. If $c\notin W$, ordinary linear algebra
+on $\Q^{(\alpha)}/W$ gives a functional which vanishes on $W$ but
+not on $c$. Every algebraic functional on the finite-support space
+is evaluation against a point of the full product $\Q^\alpha$.
+Thus $(W^\perp)^\perp=W$, proving surjectivity and the claimed
+anti-isomorphism.
+\end{proof}
+
+This answers the repository's elementary-submodel-lattice question for
+the displayed family. It does not classify the lattices of arbitrary
+Polish presentations of arbitrary Presburger models.
+
+\noindent\writetag{} The question is Part~I's \cref{pma:pr:q:lattices}
+(source~05's); a dated note after it records this answer.
+
+
+\section{The first threshold: automatic continuity fails at \texorpdfstring{$\omega+1$}{omega+1}}
+\label{pma:emb:sec:threshold}
+
+\begin{theorem}[Automatic continuity through $\omega$; for $\alpha=\omega$, \cref{pma:pr:thm:matrices} \src{04}]
+\label{pma:emb:thm:autocont}
+Every elementary self-embedding of $M_\alpha$ is continuous when
+$\alpha\leq\omega$. If $\alpha<\omega$, every such embedding
+is an automorphism. For $\alpha=\omega$, all embeddings are exactly
+the increasing-positive-pivot matrices; row-finiteness follows
+automatically from their pivot condition.
+\end{theorem}
+\begin{proof}
+Finite products are discrete. A strictly increasing self-map of a
+finite ordinal is the identity, so the corresponding finite
+triangular matrix has nonzero diagonal and is invertible.
+
+Now let $T:H_\omega\to H_\omega$ be any ordered linear
+embedding, without a regularity assumption. Its pivot map
+$p:\omega\to\omega$ is strictly increasing and hence
+$p(n)\geq n$. If $h$ vanishes in its first $n$ coordinates, then
+either $h=0$ or $v(h)\geq n$. Equation
+\eqref{pma:emb:eq:pivotvaluation} implies that $T(h)$ vanishes in its
+first $p(n)$ coordinates. These finite-coordinate kernels form the
+neighborhood basis of zero, proving continuity. The matrix
+description follows from \cref{pma:emb:thm:matrix}. In any output row $j$
+only columns with $p(i)\leq j$ can contribute; there are finitely
+many of them.
+\end{proof}
+
+\noindent\writetag{} For $\alpha=\omega$ this is the automatic continuity of
+source~04's \cref{pma:pr:thm:matrices,pma:pr:cor:imagetopology}, proved there
+by the same filtration argument \eqref{pma:pr:eq:filtration}; the finite case
+is new to the report.
+
+
+\subsection{A functional invisible on every finite-support vector}
+
+Let
+\[
+ D_{\mathrm B}=\Q^\omega,\qquad D_{\mathrm B}^{\mathrm{fin}}=\Q^{(\omega)}.
+\]
+The finite-support subspace is dense and proper. Choose a nonzero
+linear functional
+\begin{equation}
+ \varphi:D_{\mathrm B}\longrightarrow\Q,
+ \qquad \varphi(D_{\mathrm B}^{\mathrm{fin}})=0.
+ \label{pma:emb:eq:wildphi}
+\end{equation}
+Such a functional is obtained by choosing a nonzero functional on
+$D_{\mathrm B}/D_{\mathrm B}^{\mathrm{fin}}$ and composing with the quotient map. This is
+an algebraic use of Choice. A continuous functional vanishing on a
+dense subspace would vanish everywhere, so $\varphi$ is
+discontinuous. By \cref{pma:emb:lem:finite} it is not Borel.
+
+\noindent\writetag{} \textbf{Choice.} The functional $\varphi$ is the only
+nonconstructive object of this part. Everything built from it,
+\cref{pma:emb:thm:shear}, the value $2^{\cc}$ in
+\cref{pma:emb:thm:cardinality}, \cref{pma:emb:prop:moveclopen},
+\cref{pma:emb:thm:densethreshold}, \cref{pma:emb:ex:stages} and the
+negative halves of clauses~(5) and~(6) of
+\cref{pma:emb:thm:main}, is proved in ZFC. The next remark shows that choice
+cannot be removed altogether.
+
+\begin{remark}[Discontinuous self-embeddings need a set without the Baire property \mergetag]\label{pma:emb:rem:choice}
+Work in ZF with dependent choice. If some elementary embedding
+$f:M_\alpha\to M_\beta$ between members of the family ($\alpha,\beta$
+countable) is not continuous, then some subset of a Polish space does not have
+the Baire property. Consequently, in a model of ZF with dependent choice in
+which every set of reals has the Baire property, which exists if ZF is
+consistent \cite{s16:Shelah}, every elementary embedding between members of
+the family is continuous, given by a matrix as in \cref{pma:emb:thm:matrix}
+and has closed image (\cref{pma:emb:thm:closedimage}); there the thresholds
+of clauses~(5) and~(6) of \cref{pma:emb:thm:main} do not occur.
+\end{remark}
+\begin{proof}
+By \cref{pma:emb:thm:dictionary}, $f=(T,\mathrm{id})$ with $T$ an ordered
+$\Q$-linear embedding, and $f$ is continuous if $T$ is. If $T$ is not
+continuous for the product topology, some coordinate functional
+$\ell=\pi_j\circ T:H_\alpha\to\Q$ is not continuous. Its kernel is a subgroup
+of countable index of the Polish group $H_\alpha$, because $\Q$ is countable.
+If the kernel had the Baire property it would be open by
+\cref{pma:emb:lem:countindex}, whose proof uses only countably many choices,
+and then $\ell$, constant on the cosets of an open subgroup, would be
+continuous. Hence the kernel lacks the Baire property, and $H_\alpha$ is
+homeomorphic to Baire space or countable discrete. In the model described,
+every coordinate functional is therefore continuous, and
+\cref{pma:emb:thm:matrix,pma:emb:thm:closedimage} apply.
+\end{proof}
+
+\noindent This bears on source~16's \cref{pma:emb:q:weakchoice}: a non-Borel
+ordered automorphism of $M_{\omega+1}$ yields a set of reals without the Baire
+property. Whether a weaker hypothesis than choice produces one, and whether
+the converse holds, is not settled here. The remark was written for this
+report and has not been independently reviewed.
+
+
+\begin{theorem}[A non-Borel elementary automorphism]
+\label{pma:emb:thm:shear}
+For every countable $\alpha>\omega$, define
+\begin{equation}
+ (\mathrm{Sh}_\varphi x)_i=
+ \begin{cases}
+ x_\omega+\varphi(x\rstr\omega),&i=\omega,\\
+ x_i,&i\ne\omega.
+ \end{cases}
+ \label{pma:emb:eq:shear}
+\end{equation}
+This is an ordered linear automorphism of $H_\alpha$, with inverse
+$\mathrm{Sh}_{-\varphi}$. Its induced automorphism of $M_\alpha$ is neither
+continuous nor Borel. It fixes every finite-support coefficient
+vector.
+\end{theorem}
+\begin{proof}
+Linearity and the inverse formula are immediate. If the first nonzero
+coordinate of $x$ is below $\omega$, that coordinate is unchanged
+and still decides the sign. If all coordinates below $\omega$
+vanish, the added functional is zero, so every coordinate of $x$
+is unchanged. Thus the first nonzero coordinate and its sign are
+preserved in every case.
+
+The coordinate-$\omega$ functional of $\mathrm{Sh}_\varphi$ contains the
+noncontinuous summand $\varphi(x\rstr\omega)$, so
+$\mathrm{Sh}_\varphi$ is discontinuous. \Cref{pma:emb:thm:borel} makes the induced
+cone automorphism non-Borel. Finally \eqref{pma:emb:eq:wildphi} proves
+the finite-support assertion.
+\end{proof}
+
+Together \cref{pma:emb:thm:autocont,pma:emb:thm:shear} prove the exact first
+threshold. The shear preserves the Hahn valuation $v$, and is
+continuous for the associated finer valuation topology. There is no
+contradiction: in the product topology, no neighborhood can demand
+that all the infinitely many coordinates below $\omega$ vanish.
+
+\subsection{The size of the discontinuous automorphism group}
+
+\begin{theorem}[Exact cardinalities]
+\label{pma:emb:thm:cardinality}
+For countable $\alpha$,
+\[
+ |\Aut(M_\alpha)|=
+ \begin{cases}
+ 1,&\alpha=0,\\
+ \aleph_0,&0<\alpha<\omega,\\
+ \cc,&\alpha=\omega,\\
+ 2^{\cc},&\alpha>\omega.
+ \end{cases}
+\]
+For every infinite countable $\alpha$, exactly $\cc$
+automorphisms are continuous, equivalently Borel.
+\end{theorem}
+\begin{proof}
+Finite-rank automorphisms are finite triangular rational matrices
+with positive diagonal, giving a countably infinite set in nonzero
+rank. At rank $\omega$, matrices supply at most $\cc$ maps and
+arbitrary positive rational diagonal sequences supply at least
+$\cc$.
+
+The quotient $D_{\mathrm B}/D_{\mathrm B}^{\mathrm{fin}}$ has cardinality $\cc$: $D_{\mathrm B}$
+has that cardinality and each coset is countable. Over a countable
+field an infinite-dimensional vector space has the cardinality of
+its Hamel basis, so this quotient has dimension $\cc$. Its linear
+functionals to $\Q$ number $\aleph_0^{\cc}=2^{\cc}$.
+Distinct functionals give distinct shears. There are at most
+$\cc^{\cc}=2^{\cc}$ maps on a set of cardinality $\cc$,
+which proves equality for $\alpha>\omega$.
+
+Continuous maps on a separable space into a Hausdorff space of
+cardinality $\cc$ are determined by their values on a countable
+dense subset, so there are at most $\cc$ of them. Positive rational
+diagonal sequences again attain this bound. Use \cref{pma:emb:thm:borel}
+for the Borel assertion.
+\end{proof}
+
+\noindent\writetag{} For $\alpha=\omega$, source~04's
+\cref{pma:pr:cor:imagetopology} identifies the automorphisms as the infinite
+lower triangular rational matrices with positive diagonal; the count $\cc$ and
+the counts for $\alpha>\omega$ are new. The value $2^{\cc}$ uses choice
+(note above). The dimension count for $\Q^\omega/\Q^{(\omega)}$ is the
+rational, full-product counterpart of the collection's
+\replabel{rvs:eu:thm:fullcodim} and \replabel{rvs:eu:cor:continuum}
+(\fn{real-vector-space-structure}: the finite-support part of a real Hahn field
+has codimension equal to its dimension), and that report's subsection
+``Product topology versus algebraic dimension'' contrasts, as the paragraph
+after \cref{pma:emb:thm:shear} does here, the coefficientwise topology, in which the
+finite-support vectors are dense, with the valuation topology.
+
+
+\subsection{A clopen submodel can become dense under an algebraic automorphism}
+
+\begin{proposition}
+\label{pma:emb:prop:moveclopen}
+For $\alpha>\omega$, the shear $\mathrm{Sh}_\varphi$ sends the clopen
+coefficient subspace $\{x:x_\omega=0\}$ to
+\begin{equation}
+ W_\varphi=\{y:y_\omega=\varphi(y\rstr\omega)\},
+ \label{pma:emb:eq:graphspace}
+\end{equation}
+which is dense, proper, and non-Borel. The corresponding elementary
+cone submodel is also dense and non-Borel, and is not Polish in its
+inherited topology.
+\end{proposition}
+\begin{proof}
+The image equation is immediate. A nonzero rational functional onto
+$\Q$ is surjective. Every fiber of $\varphi$ is dense, since it
+contains a translate of the dense subspace $D_{\mathrm B}^{\mathrm{fin}}$.
+Thus any finite cylinder and any prescribed value of coordinate
+$\omega$ meet $W_\varphi$. It is proper because the value at
+$\omega$ is determined by the preceding block.
+
+The subgroup $W_\varphi$ has countable index: it is the kernel of
+$y\mapsto y_\omega-\varphi(y\rstr\omega)$, onto $\Q$. If
+it were Borel, \cref{pma:emb:lem:countindex} would make it open and hence
+closed, contradicting its being dense and proper.
+
+For density in the cone, any finite cylinder meeting the cone
+contains one whose positivity is decided in the first $\omega$
+coordinates, as in \cref{pma:emb:prop:baire}. The prescribed functional
+value can still be attained there: first choose a vector in the
+desired fiber, then change finitely many coordinates to meet the
+cylinder and force a positive first free coordinate. These changes
+do not change $\varphi$. If the cone submodel were Borel, its
+integer-zero slice and the negative of that slice would make
+$W_\varphi$ Borel. Finally apply \cref{pma:emb:thm:subspaces}.
+\end{proof}
+
+For $\alpha=\omega+1$, this does \emph{not} yet give a nonclosed
+image of a self-embedding: the coordinate hyperplane has rank
+$\omega$, not $\omega+1$. That distinction leads to the second
+threshold.
+
+\section{The second threshold: nonclosed self-images start at \texorpdfstring{$\omega\cdot2$}{omega times 2}}
+\label{pma:emb:sec:second}
+
+\begin{theorem}[Closed images below the second infinite block]
+\label{pma:emb:thm:belowtwo}
+If $\alpha<\omega\cdot2$, every elementary self-embedding of
+$M_\alpha$ has closed image, even when the embedding is non-Borel.
+\end{theorem}
+\begin{proof}
+For $\alpha\leq\omega$ use
+\cref{pma:emb:thm:autocont,pma:emb:thm:closedimage}. Otherwise
+$\alpha=\omega+n$ with $0<n<\omega$. Let $T$ be the
+ordered coefficient embedding and $p$ its increasing rank map.
+The last $n$ positions must be fixed by $p$: an increasing self-map
+of an ordinal sends $i$ to at least $i$, and there is no room to
+move any of the final finitely many positions to the right.
+Also every finite rank maps below $\omega$, since infinitely many
+increasing finite-rank images cannot fit in a finite terminal block.
+
+Let $K_\alpha=\{x:x\rstr\omega=0\}\cong\Q^n$. The restriction
+$T\rstr K_\alpha$ is finite triangular with nonzero diagonal, hence maps
+$K_\alpha$ onto itself. The quotient map induced by $T$ on
+$H_\alpha/K_\alpha\cong H_\omega$ is an ordered embedding $B$.
+By the first-threshold theorem, $B$ is continuous and has closed
+image. Moreover
+\[
+ \operatorname{im} T=\pi^{-1}(\operatorname{im} B),
+\]
+where $\pi:H_\alpha\to H_\omega$ is the coordinate projection.
+One inclusion is immediate; for the other, realize the desired
+quotient coordinate by an image under $T$ and correct the remaining
+terminal coordinates using the surjectivity of $T\rstr K_\alpha$. Thus
+$\operatorname{im} T$ is closed. Its cone is closed in $M_\alpha$.
+\end{proof}
+
+\begin{theorem}[A dense proper non-Borel elementary self-copy]
+\label{pma:emb:thm:densethreshold}
+For every countable $\alpha\geq\omega\cdot2$ there is an
+elementary self-embedding of $M_\alpha$ whose image is dense,
+proper, and non-Borel. In particular its image is not Polish in the
+inherited topology.
+\end{theorem}
+\begin{proof}
+Use the functional $\varphi$ from \eqref{pma:emb:eq:wildphi}. Define
+$T:H_\alpha\to H_\alpha$ by
+\begin{align}
+ (Tx)_k&=x_k &&(k<\omega),\notag\\
+ (Tx)_\omega&=\varphi(x\rstr\omega),\notag\\
+ (Tx)_{\omega+k+1}&=x_{\omega+k} &&(k<\omega),\label{pma:emb:eq:denseself}\\
+ (Tx)_i&=x_i &&(\omega\cdot2\leq i<\alpha).\notag
+\end{align}
+This is linear and injective. If the first nonzero input coordinate
+lies in the first block, its position and sign are unchanged. If
+it is $\omega+k$, the first block is zero and the new functional
+coordinate is zero, so the first nonzero output is at
+$\omega+k+1$, with the same coefficient. If it lies at or after
+$\omega\cdot2$, all earlier output coordinates vanish and that
+coordinate is unchanged. Therefore $T$ is an ordered embedding.
+
+Its image is exactly the graph space $W_\varphi$ of
+\eqref{pma:emb:eq:graphspace}, with all coordinates other than
+$\omega$ unconstrained. Indeed the shift of the second block can
+be reversed on every coordinate after $\omega$, and the later
+blocks are fixed. \Cref{pma:emb:prop:moveclopen} proves all the asserted
+topological and Borel properties. The cone map is elementary by
+\cref{pma:emb:thm:dictionary}.
+\end{proof}
+
+The two thresholds answer different questions. At $\omega+1$, an
+automorphism can destroy the topological regularity of a submodel
+while still mapping the entire ambient structure onto itself. At
+$\omega\cdot2$, there is enough space after the first limit
+coordinate to shift an infinite tail and make the graph itself a
+self-copy. \Cref{pma:emb:thm:belowtwo,pma:emb:thm:densethreshold} establish that
+this extra space is necessary.
+
+\section{The intersection of self-copies and clopen approximation}
+\label{pma:emb:sec:core}
+
+Every ordinal $\alpha$ has a unique expression
+\[
+ \alpha=\lambda+n,
+\]
+where $n<\omega$ and $\lambda$ is zero or a limit ordinal. Define
+its terminal coefficient tail
+\[
+ K_\alpha=\{x\in H_\alpha:x_i=0\text{ for }i<\lambda\}
+             \cong\Q^n.
+\]
+
+\begin{theorem}[The unavoidable terminal tail; extends \cref{pma:pr:thm:shift}]
+\label{pma:emb:thm:core}
+The intersection of the images of all elementary self-embeddings of
+$M_\alpha$ is exactly
+\[
+ (K_\alpha\lex\Z)_{\geq0}.
+\]
+The same intersection is obtained using only continuous embeddings
+with clopen image. Thus the intersection is the standard copy of
+$\N$ exactly when $\alpha$ is zero or a nonzero limit ordinal.
+For $0<\alpha<\omega$ it is the entire model.
+\end{theorem}
+\begin{proof}
+The final $n$ ranks are fixed by every increasing self-map of
+$\alpha$, as in \cref{pma:emb:thm:belowtwo}. The restriction of any
+coefficient embedding to $K_\alpha$ is finite triangular and onto,
+so every image contains this tail.
+
+If $s<\lambda$, deleting the coordinate $s$ from $\alpha$
+leaves an ordered set of order type $\alpha$. Explicitly,
+$s+\omega\leq\lambda$; shift $s+k$ to $s+k+1$ for $k<\omega$
+and fix all coordinates outside $[s,s+\omega)$. This gives an
+order isomorphism from $\alpha$ onto $\alpha\setminus\{s\}$.
+Repeated deletion proves the corresponding finite-removal assertion.
+The coordinate hyperplane $x_s=0$
+is therefore a clopen ordered self-copy of $H_\alpha$, and its
+cone is a clopen elementary self-copy. Intersect these hyperplanes
+over all $s<\lambda$. Exactly $K_\alpha$ remains. If
+$\lambda=0$ there are no such coordinates, and the preceding
+surjectivity argument already gives the assertion.
+\end{proof}
+
+\noindent\writetag{} For $\alpha=\omega$ the terminal tail is $0$ and the
+intersection is the standard copy, as in source~05's \cref{pma:pr:thm:shift},
+which obtains it from the iterates of one shift; the theorem extends that to
+all self-embeddings and every countable $\alpha$.
+
+
+\begin{theorem}[Exactly which closed submodels are intersections of clopen self-copies]
+\label{pma:emb:thm:approximation}
+Let $V\leq H_\alpha$ be closed. Then $M_V$ is an intersection
+of clopen elementary self-copies of $M_\alpha$ if and only if
+$K_\alpha\subseteq V$. When this condition holds, a descending
+countable sequence of such self-copies suffices.
+\end{theorem}
+\begin{proof}
+Necessity follows from \cref{pma:emb:thm:core}. For sufficiency, enumerate
+the countably many coordinates and let $F_m$ be the first $m$ of
+them. Put
+\[
+ V_m=\pi_{F_m}^{-1}(\pi_{F_m}(V)).
+\]
+These are descending clopen linear subspaces and
+$\bigcap_mV_m=V$ by closedness. They contain $K_\alpha$.
+Each $V_m$ has only finitely many missing pivots, because it
+contains the subgroup vanishing on $F_m$. None of the missing
+pivots is in the terminal tail, since that tail is contained in
+$V_m$. Deleting finitely many nonterminal positions leaves the
+order type $\alpha$ unchanged. By \cref{pma:emb:thm:normalform}, each
+$V_m$ is therefore a continuous ordered self-copy of $H_\alpha$.
+Their cones have the required properties.
+\end{proof}
+
+In particular every Polish elementary submodel of $M_\omega$ is
+an intersection of descending clopen self-copies. This includes
+finite-rank submodels and the standard copy. At $\omega+1$, the
+standard copy cannot arise this way: every self-copy contains the
+last rational scale.
+
+\section{Concrete examples and what finite calculations can certify}
+\label{pma:emb:sec:examples}
+
+\begin{example}[A clopen shift and a nowhere-dense self-copy; $=$ \cref{pma:pr:ex:shifts} \src{04}]\label{pma:emb:ex:shifts}
+In $H_\omega$, the shift
+\[
+ (Tx)_0=0,\qquad (Tx)_{j+1}=x_j
+\]
+has pivot map $p(j)=j+1$ and image $x_0=0$, which is clopen.
+The embedding
+\[
+ (Ux)_{2j}=x_j,\qquad (Ux)_{2j+1}=0
+\]
+has pivot map $p(j)=2j$ and closed nowhere-dense image. Both
+induce elementary self-copies of the same Baire-space arithmetic
+model. The difference is the finiteness or infinitude of the missing
+pivot set.
+\end{example}
+
+\begin{example}[A non-coordinate closed submodel]
+Let
+\[
+ V=\{x\in\Q^\omega:x_{2j+1}=x_{2j}+2x_{2j-2}\ (j\geq0)\},
+\]
+where $x_{-2}=0$. Its pivot set is the even coordinates. The map
+\[
+ c\longmapsto x,\qquad x_{2j}=c_j,\qquad
+ x_{2j+1}=c_j+2c_{j-1},\quad c_{-1}=0,
+\]
+is a continuous ordered parametrization. The model $M_V$ is a
+nowhere-dense elementary self-copy. Its quotient coefficient space
+is another full rational product. Replacing the right-hand side by
+zero gives a conjugate submodel, because the pivot set is unchanged.
+\end{example}
+
+\begin{example}[A finite projection normal form]
+Consider the equations in five rational coordinates
+\[
+ x_1=2x_0,\qquad x_3=x_0-x_2,
+\]
+with $x_0,x_2,x_4$ free. The pivot subset is $\{0,2,4\}$.
+The ambient triangular automorphism
+\[
+ (x_0,x_1,x_2,x_3,x_4)\longmapsto
+ (x_0,x_1+2x_0,x_2,x_3+x_0-x_2,x_4)
+\]
+sends the corresponding coordinate subspace to this graph. Its
+inverse subtracts the two indicated expressions. This is the
+finite-coordinate version of \cref{pma:emb:thm:orbits}.
+\end{example}
+
+\begin{example}[Two independent infinite stages]\label{pma:emb:ex:stages}
+At rank $\omega+1$, the shear
+$(x,z)\mapsto(x,z+\varphi(x))$ is onto, although non-Borel.
+At rank $\omega\cdot2$, write the two blocks as $(x,y)$.
+The map
+\[
+ (x,(y_0,y_1,\ldots))\longmapsto
+ (x,(\varphi(x),y_0,y_1,\ldots))
+\]
+is an elementary self-embedding onto a dense graph. The extra
+infinite block makes room for insertion; one terminal coordinate
+does not.
+\end{example}
+
+The package includes an exact rational script checking finite
+instances of the triangular inverse, the pivot parametrization,
+order preservation, and standard quotient and remainder. Every
+calculation uses rational arithmetic. These checks are useful for
+detecting indexing or sign errors in examples.
+
+They cannot verify the existence of $\varphi$, the transfinite
+normal-form theorem, Baire category arguments, or quantifier
+elimination on infinite structures. In fact every wild shear above
+agrees with the identity on all finite-support vectors. No test
+suite confined to such vectors can distinguish it from the identity.
+The distinction is established by the proof and its hypotheses.
+
+\section{Realization in the omnific integers and a formalization route}
+\label{pma:emb:sec:surreal}
+
+\subsection{Set-sized fixed-support normal forms}
+
+The ProveIt surreal development gives an additional concrete
+interpretation of the coefficient models \cite{s16:RepoSurreal}.
+For $i<\alpha$, regard the ordinal $i+1$ as a positive surreal and
+put
+\[
+ \gamma_i=(i+1)^{-1}.
+\]
+Then $\gamma_i>0$ and $\gamma_i>\gamma_j$ whenever $i<j$.
+The exponent set is reverse well-ordered. Conway normal forms
+therefore give a well-defined map
+\begin{equation}
+ \iota_\alpha(h,n)=
+       \sum_{i<\alpha}h_i\omega^{\gamma_i}+n.
+ \label{pma:emb:eq:omnific}
+\end{equation}
+Zero coefficients are omitted. Normal-form addition is coefficientwise,
+and the leading term decides the order. Thus $\iota_\alpha$ is
+an additive ordered embedding. Every exponent in its nonconstant
+part is positive and the constant term is an ordinary integer, so
+its values are omnific integers in the standard normal-form
+description \cite{s16:Gonshor,s16:RepoSurreal}.
+
+\noindent\writetag{} For infinite $\alpha$ the map $\iota_\alpha$ is
+$J_\alpha$ of \cref{pma:cp:thm:omnific} (source~07), with the same exponents
+$1/(i+1)$, and for $\alpha=\omega$ it is Part~I's $\iota_{\mathrm B}$
+(\cref{pma:pr:thm:omnific}); the set-size argument of the next paragraph is
+source~07's (\cref{pma:cp:sec:surreal}). Source~16 adds the finite $\alpha$.
+\cite{s16:RepoSurreal} is the Surreal project's README.
+
+
+The coefficient topology is transported along $\iota_\alpha$.
+It is not being identified with a topology on the entire proper
+class $\No$. Every fixed image is a set: its domain
+$\Q^\alpha\times\Z$ is a set, and Replacement collects its
+normal-form values. Taking the supremum of their birthdays supplies
+a set ordinal bounding the image. No collection of all surreal
+subclasses or class-sized matrix algebra is required.
+
+This realization preserves the additive ordered structure used in
+the paper. It does not assert ring closure of the fixed exponent
+support. Matrix maps and wild shears should accordingly be read as
+additive arithmetic maps of these fragments.
+
+\subsection{Why the limit-coordinate obstruction is meaningful here}
+
+At rank $\omega+1$, the monomial indexed by $\omega$ lies after
+all the monomials with finite indices. The shear changes its
+coefficient by a linear functional of the entire earlier infinite
+coefficient block. Every finite sum of monomials is fixed, yet
+some infinite normal forms move. This is an explicit instance of
+the distinction between ordinary linearity and strong additivity
+in Hahn-type settings \cite{s16:KS,s16:Serra,s16:Freni}.
+
+At rank $\omega$, every coordinate has only finitely many
+predecessors. The combination of order preservation and the full
+product structure forces the finite dependence proved above.
+At rank $\omega+1$, valuation preservation alone no longer forces
+product-topology continuity.
+
+\subsection{A tractable proof-assistant decomposition}
+
+The repository's existing Presburger decision procedure works over
+ordinary integers \cite{s16:RepoPresburger}. Its correctness should not
+be silently treated as a formalization of arbitrary nonstandard
+$\Z$-groups. A suitable extension has the following modules.
+\begin{enumerate}
+\item Define $\Z$-groups with standard division and prove generic
+Presburger quantifier elimination. The periodic predicates in the
+Cooper step must be invariant under complete congruence classes,
+not merely under a single standard successor shift.
+\item Prove the positive-cone/group-completion dictionary and the
+maximal divisible subgroup identity. These isolate the arithmetic
+content of \cref{pma:emb:thm:dictionary,pma:emb:thm:subspaces}.
+\item Formalize lexicographic products on a well-ordered index type,
+their valuation spectrum, and row-finite linear maps. The main
+algebraic certificate is the positive pivot condition.
+\item Formalize finite-support dual separation and the greedy
+coordinate-functional construction. This avoids uncontrolled
+transfinite row operations.
+\item Add the Polish $G_\delta$ and Baire-category lemmas, then
+derive the topology of the cone and closed subgroup results.
+\item Treat the non-Borel constructions in a separate module whose
+explicit hypothesis is a nonzero functional annihilating the
+finite-support subspace. Prove the shear and graph theorems from
+that hypothesis before proving its existence using a basis theorem.
+\end{enumerate}
+
+This route keeps the constructive matrix calculations separate from
+the Choice-dependent existence of wild maps. The present package
+contains ordinary proofs and executable examples, not completed
+Lean or Rocq implementations of these modules.
+
+\noindent\writetag{} Module~1 is the porting requirement of
+\cref{pma:pr:sec:formalrepo}, already named by sources~05 and~04: the
+repository's Cooper lemmas assume invariance under one standard shift and are
+stated over the integers. No module of this list exists in the repository.
+
+
+\section{Further research questions and proposed next steps}
+\label{pma:emb:sec:future}
+
+The following questions are deliberately more precise than a request
+for a general classification of all Polish arithmetic. Each states
+what has been settled here and what is still missing. Except where
+the original source is named, they are proposed questions, not
+certifications that the literature contains no answer.
+
+\begin{question}[Effective normal forms]\label{pma:emb:q:effective}
+For computable row-finite presentations of closed subspaces of
+$\Q^\omega$, under which effective hypotheses can the pivot set,
+the reduced coefficients, and a continuous left inverse be computed?
+The proof uses finite-dimensional linear dependence, but an arbitrary
+closed-set code need not provide the needed dependence information.
+Determine the exact oracle or limit-computation complexity.
+\end{question}
+
+\begin{question}[Computable ordinal ranks]\label{pma:emb:q:computable}
+For computable ordinals $\alpha>\omega$, give effective versions
+of the finite-ancestry argument from a row-finite triangular matrix
+code. A mathematical well-order guarantees termination of the
+dependency recursion; a useful certified implementation should
+expose that well-foundedness and quantify the cost of inverse rows.
+\end{question}
+
+\begin{question}[Weak choice and the first threshold]\label{pma:emb:q:weakchoice}
+What weak choice principle suffices to produce a nonzero
+$\Q$-linear functional on
+$\Q^\omega/\Q^{(\omega)}$? Does the existence of a non-Borel
+ordered automorphism of $M_{\omega+1}$ characterize a familiar
+principle over a choiceless base? The shear theorem reduces one
+direction to a very specific linear-functional existence statement.
+This connects directly to Glazer's interest in choice principles.
+\end{question}
+
+\noindent\writetag{} \Cref{pma:emb:rem:choice} \mergetag{} gives one
+direction: a non-Borel ordered automorphism of $M_{\omega+1}$ yields a set of
+reals without the Baire property, so ZF with dependent choice does not prove
+that one exists, if ZF is consistent. The rest of the question is open.
+
+
+\begin{question}[All algebraic endomorphisms at higher ranks]\label{pma:emb:q:endomorphisms}
+For $\alpha>\omega$, classify the noncontinuous ordered
+embeddings by successor and limit blocks. The continuous maps are
+completely described here, and the two thresholds are exact, but
+the complete algebraic endomorphism monoid at ranks such as
+$\omega^2$ remains to be analyzed in a usable normal form.
+\end{question}
+
+\noindent\writetag{} This is what remains of the endomorphism clause of
+Part~I's \cref{pma:pr:q:coefficientgroups} for the groups $\Q^\alpha$: the
+continuous order-preserving endomorphisms are classified
+(\cref{pma:emb:thm:matrix}), the discontinuous ones for $\alpha>\omega$ are
+not.
+
+
+\begin{question}[Which dense elementary subspaces are self-images?]\label{pma:emb:q:denseimages}
+At $\omega\cdot2$ one dense graph is realized as a self-image.
+For a general $\Q$-subspace $V\leq H_\alpha$, characterize
+when $V$ is order-isomorphic to $H_\alpha$. Closedness allows
+the finite-support annihilator theorem; without it, the valuation
+spectrum alone no longer controls the space.
+\end{question}
+
+\begin{question}[Definability complexity of images]\label{pma:emb:q:complexity}
+Can one prescribe the descriptive complexity of a proper elementary
+self-image at a fixed higher rank? Every Borel embedding has a
+closed image, but an image of a non-Borel embedding can itself be
+closed. Determine which nonclosed Borel, analytic, or projective
+coefficient subspaces can arise as algebraic self-images.
+\end{question}
+
+\begin{question}[Other coefficient groups]\label{pma:emb:q:othergroups}
+Replace the rational factors by other ordered Archimedean groups,
+or mix discrete rational and usual real factors. Which versions of
+the orbit classification and the two thresholds survive? The
+rational proof uses unique divisibility, a countable discrete
+codomain for every coordinate, and finite-dimensional linear
+duality; each has a different role.
+\end{question}
+
+\noindent\writetag{} This is the part of Part~I's
+\cref{pma:pr:q:embeddingcategories} (source~04) that source~16 leaves open; it
+answers the rest for countable ordinal index sets with rational coefficients
+(note after that question).
+
+
+\begin{question}[Orders beyond countable ordinals]\label{pma:emb:q:beyondordinals}
+For a countable linear index order that is not well-ordered, work
+with a genuine Hahn product of well-ordered supports. The full
+product is no longer the appropriate carrier. Determine when it
+is a standard Borel or Polish space and how rank automorphisms
+alter the classification. Existing Hahn-group theory provides
+the natural starting point.
+\end{question}
+
+\begin{question}[Arbitrary Polish Presburger presentations]\label{pma:emb:q:presentations}
+Which Polish continuous-addition Presburger models admit a Polish
+group completion with a discrete standard integer coordinate?
+The split family here has both properties by construction. A
+general answer would identify the reach of the subspace method
+and the precise additional phenomena in nonsplit models.
+\end{question}
+
+\noindent\writetag{} Answered in part. Among Polish group presentations,
+source~13's \cref{pma:nsp:thm:polish-group-unit-splitting} shows that a
+continuous integer-coordinate retraction exists exactly for the algebraically
+split ones, where it is automatic, and its
+\cref{pma:nsp:thm:countable-core-transfer} gives nonsplit Polish models; this
+is Part~I's \cref{pma:pr:q:beyondsplit} (note there). Whether a given Polish
+cone has a Polish group completion at all is source~08's
+\cref{pma:lc:q:completion}, asked again in Parts~V, VI and~IX; it is open.
+
+
+\begin{question}[Connected carriers]\label{pma:emb:q:connected}
+Can a connected uncountable Polish space support a
+continuous-addition Presburger model? None of the rational-product
+carriers here is connected. The matrix classification does not
+settle this broader question from the repository.
+\end{question}
+
+\noindent\writetag{} This is Part~I's \cref{pma:pr:q:connected}, Part~III's
+\cref{pma:cp:q:connected} and source~13's \cref{pma:nsp:q:connected}. It is
+answered negatively for cones whose topology is inherited from a Polish
+topological $\Z$-group (note after \cref{pma:pr:q:connected}) and is open for
+other monoid topologies.
+
+
+\begin{question}[Formalization as the next deliverable]\label{pma:emb:q:formal}
+Implement the rational-$\omega$ case first: the homomorphism
+dictionary, automatic continuity, positive-pivot matrices,
+closed images, and the closed-submodel correspondence. This is a
+finite collection of theorem interfaces and gives the largest
+immediate gain before introducing transfinite coordinate ranks.
+\end{question}
+
+\noindent\writetag{} Compare Part~I's \cref{pma:pr:q:formal}; at
+$\alpha=\omega$ the listed interfaces are those of
+\cref{pma:pr:prop:embeddingreduction,pma:pr:thm:matrices,pma:pr:cor:imagetopology,pma:pr:thm:submodels}.
+
+
+\begin{question}[Sharp surreal birthday bounds]\label{pma:emb:q:birthday}
+For the fixed support in \eqref{pma:emb:eq:omnific}, replace the abstract
+Replacement bound by useful explicit birthday estimates uniform
+in $\alpha$. Then formalize the transported coefficient topology
+inside one specified set-sized surreal cutoff.
+\end{question}
+
+\noindent\writetag{} For $\alpha=\omega$ this is the first sentence of
+Part~I's \cref{pma:pr:q:surrealcutoffs} (source~05).
+
 \appendix
 
 \section{Worked examples and an audit of the hypotheses (source 05)}
@@ -21652,6 +23480,113 @@ cites four repository files by unversioned addresses; the notes in its
 bibliography entries give the pinned ones. Notes after the statements
 concerned correct each of these.
 
+\paragraph{Source of Part X.} (Batch~89.) Batch~89 had five archives: four
+arrived in commit \texttt{7c0f2d9f9} and one in \texttt{8ea27d6c0}, and all
+five were placed in \texttt{23adb85f9}. Manuscript~02 is source~16 of this
+report; the other four went to \fn{surreal-well-orders} (Part~XV),
+\fn{birthday-cutoffs-and-hereditary-sets} (Parts~VI and~VII) and the
+research-report collection's \fn{naming-elementary-embeddings}. Source~16's pin
+\texttt{0f084afa9} is 70 commits before the placement. Of the repository files
+it read, this report's \fn{article.tex} has since become the merged report,
+the Presburger and surreal READMEs changed only by the catalogue's counts and
+pointers, and the batch-86 archives it compared were placed in
+\texttt{0bd0e5527}; the other files are unchanged. No two batch-89 manuscripts
+share more than 0.33\% of their word 8-grams, and source~16 shares 1.24\% with
+this report (Presburger phrasing).
+
+\begin{center}\small
+\begin{tabular}{@{}P{.07\textwidth}P{.30\textwidth}P{.14\textwidth}P{.40\textwidth}@{}}
+\toprule
+Source & Archive (batch 89 no.) & Pin & Contributes\\
+\midrule
+16 & \fn{Glazer_ProveIt_Embeddings_and_Thresholds} (02) & \texttt{0f084afa9} & \cref{pma:part:emb} except its introduction, the notes and \cref{pma:emb:rem:choice}; \cref{pma:emb:app:qe,pma:emb:app:ledger}; staged code, data, source audit and proof review (prefix \fn{16-presburger-embeddings-})\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Written for this report in Part~X: its introduction, the notes marked
+\writetag, \cref{pma:emb:rem:choice} \mergetag{} with the note after it, the
+labels added, the additions to \cref{pma:sec:intro} (the paragraph on
+Part~X, its sources table, the fourth block of the notation table, the
+status box), the notes at Part~I's questions on coefficient groups, lattices,
+surreal cutoffs and embedding categories and the pointers after
+\cref{pma:pr:q:connected,pma:pr:q:beyondsplit}, at the end of
+\cref{pma:pr:sec:bairemaps} and after \cref{pma:cp:thm:spectrum}, the four
+bibliography notes, the entry \cite{s16:Shelah}, and these paragraphs.
+
+\paragraph{Where Part X chose.}
+\begin{itemize}
+\item \emph{One source, printed whole.} Source~16's twelve sections are
+Sections~\ref{pma:emb:sec:position}--\ref{pma:emb:sec:future} and its two
+appendices \cref{pma:emb:app:qe,pma:emb:app:ledger}. Its title page,
+abstract and table of contents are not printed separately: its status
+paragraph is in \cref{pma:sec:status}, and the abstract of this report
+summarizes it.
+\item \emph{Printed again with a flag.} Results of Parts~I and~III that
+source~16 proves again keep its proofs and name the earlier statement in
+their titles: \cref{pma:emb:prop:baire} (\cref{pma:cp:thm:baire,pma:cp:thm:ordinals}),
+\cref{pma:emb:thm:dictionary} and \cref{pma:emb:cor:allhom}
+(\cref{pma:pr:prop:embeddingreduction,pma:pr:cor:imagetopology}),
+\cref{pma:emb:thm:matrix,pma:emb:thm:autocont} for $\alpha=\beta=\omega$
+(\cref{pma:pr:thm:matrices}), \cref{pma:emb:thm:closedimage} for
+$\alpha=\beta=\omega$ (\cref{pma:pr:cor:imagetopology}) and the first
+example of \cref{pma:emb:sec:examples} (\cref{pma:pr:ex:shifts}).
+\Cref{pma:emb:thm:subspaces,pma:emb:thm:core,pma:emb:cor:hierarchy} are
+flagged as extending \cref{pma:pr:thm:submodels,pma:pr:thm:shift,pma:cp:thm:spectrum},
+and the omnific map $\iota_\alpha$ is identified with
+\cref{pma:cp:thm:omnific} in a note. Source~16's quantifier-elimination
+appendix is printed as \cref{pma:emb:app:qe}, a fourth write-up of a
+classical theorem already printed three times.
+\item \emph{Questions.} Source~16's twelve questions are printed in its own
+part, numbered with the report's shared counter; those that repeat questions of
+other parts carry notes pointing to them, and the questions they answer
+carry dated notes.
+\item \emph{Renamed.} Source~16's $D$, $D_{\mathrm{fin}}$, $S_\varphi$, its
+\texttt{\textbackslash res} and its roman $\mathrm{lex}$, and local letters in
+two proofs (\cref{pma:sec:notation}); its $H_\alpha$ is kept. No normalization
+changed. Its bibliography entries for Glazer, Enayat--Hamkins--Wcis\l o,
+Haase and Kechris are this report's; the others carry the prefix
+\texttt{s16:}.
+\item \emph{Labels added} to unlabelled statements: \replabel{pma:emb:cor:orbitcount},
+\replabel{pma:emb:ex:shifts}, \replabel{pma:emb:ex:stages} and the twelve
+\texttt{pma:emb:q:} labels; and the four Part~I question labels listed in
+\cref{pma:sec:sources}.
+\end{itemize}
+
+\paragraph{Intake checks for Part X.} Source~16's suite was rerun on a copy
+(Python~3.14.4, standard library only): 11{,}243 exact checks in thirteen
+categories pass (seed 231113699), and the record equals the shipped one after
+removing the carriage returns that Windows text mode adds. Source~16 delivered
+no checksum manifest; the hashes of its build record
+(\fn{data/16-presburger-embeddings-BUILD_REPORT.json}) verified, 8 of 8. The
+write read every proof of source~16 without finding a gap; that reading is
+not a review.
+
+\paragraph{Review elsewhere in the repository (Part X).} The Hilbert's-tenth
+programme routed the five batch-89 archives in commit \texttt{6aadaa4f2}:
+\fn{Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/review_topology_surreal_arrivals_20261003.md},
+with a receipt (\fn{review_topology_surreal_arrivals_20261003.json}). It
+authenticated every archive member, read bounded ranges of source~16 (its
+exclusion of multiplication and of ring closure, the dependence of the
+non-Borel shears on a functional annihilating the finite-support vectors, its
+questions on effective normal forms), ran no code and found no new
+Diophantine source. It is a routing decision, not a proof review, and it has
+no correctness finding.
+
+\paragraph{Stale statements and files of the delivery (Part X).} Source~16
+describes this report as it stood at its pin (Part~I's base text), whose
+``Research questions~5 and~8'' are Part~I's
+\cref{pma:pr:q:coefficientgroups,pma:pr:q:lattices}, and cites the batch-86
+archives in \fn{docs/incoming}, retired since; its novelty statement omits
+source~04's results, which it had no way to see. Notes in \cref{pma:part:emb}
+and in its bibliography entries correct each of these. Not shipped: its PDF,
+its manuscript (merged) and its delivery README; it delivered no checksum
+manifest. Its source audit, shipped as delivered, says that a supplied
+LinkedIn profile could not be retrieved (no address is given) and cites a
+public Epoch AI article as Glazer's author biography, the article this report
+cites as \cite{s14:Epoch}.
+
+
 \section{Limitations and non-claims of the sources}\label{pma:app:nonclaims}
 
 Every limitation stated by a source is kept. They are grouped by source; the
@@ -22026,6 +23961,42 @@ computation is offered as a certificate, and none is shipped.
 problems.
 \end{enumerate}
 
+\paragraph{Source 16.}
+\begin{enumerate}[label=16.\arabic*]
+\item AI-assisted, internally reviewed by two AI agents (record shipped as
+\fn{16-presburger-embeddings-PROOF_REVIEW.md}), not refereed and not a
+literature-certified breakthrough; no new Lean or Rocq formalization; its six
+proposed modules are a plan, and the repository's integer Presburger
+procedure is not a formalization of arbitrary $\Z$-groups.
+\item The classification and the thresholds concern the family $M_\alpha$
+only; the lattices of arbitrary Polish presentations of arbitrary Presburger
+models are not classified.
+\item The family $M_\alpha$ and its Baire-space carrier are prior work, and
+the positive construction is not a new answer to Glazer's Question~2;
+Glazer's Question~1 is not resolved.
+\item Hahn-group matrix methods and strong additivity (Kuhlmann--Serra,
+Serra), formal infinite sums (Freni) and linearly compact duality
+(Castellano--Giordano Bruno) are credited and not claimed; Presburger
+quantifier elimination is classical, proved in the appendix only for
+completeness.
+\item Historical priority is not established; the source audit was bounded,
+not exhaustive.
+\item The finite checks (11{,}243 assertions) cover finite matrix identities,
+example normal forms, signs and standard division; they do not verify
+infinite products, ordinal recursion, Baire category, elementarity or the
+existence of the non-Borel functional, and no test confined to finite-support
+vectors can tell a wild shear from the identity.
+\item Multiplication is absent; the omnific realization is additive and
+ordered, with a transported coefficient topology, without ring closure and
+without a topology on the proper class $\No$.
+\item The discontinuity statements concern the product topology (the shears
+are continuous for the valuation topology); Polishness is that of the
+inherited topology, and a nonclosed subspace may be abstractly isomorphic to
+a closed one.
+\item The non-Borel constructions use choice; the questions are proposed
+directions, not certified open problems.
+\end{enumerate}
+
 \paragraph{The merge.}
 \begin{enumerate}[label=M.\arabic*]
 \item The affirmative answer concerns Question~2 as printed. Glazer
@@ -22064,6 +24035,18 @@ record what the batch-87 sources prove; those answers are unrefereed and
 unformalized like the rest of the report. A question not named in such a note,
 and every part of a named question that a note does not say is answered, stays
 open.
+\item (Batch~89.) The notes of \cref{pma:part:emb} that identify its results
+for $\alpha=\omega$ with source~04's and source~07's, and the statements
+there of what is new to the report, are this report's; source~16 does not make
+them.
+\item \Cref{pma:emb:rem:choice} was written for this report and has not been
+independently reviewed; it rests on Shelah's consistency theorem
+\cite{s16:Shelah} as an input and does not decide which weak choice principle
+suffices for the discontinuous maps.
+\item The notes answering Part~I's questions on coefficient groups (one
+clause), lattices and embedding categories record what source~16 proves for
+its family; those answers are unrefereed and unformalized, and the rest of
+each question stays open.
 \end{enumerate}
 
 \section{An explicit induction check after quantifier elimination (source 07)}
@@ -23170,6 +25153,170 @@ delivered as \fn{source_manifest.json} and is not shipped (it contains a third
 party's personal profile address); \cref{pma:app:provenance} summarizes its
 verified content. The ``earlier repository manuscript'' is \cref{pma:part:pr}.
 
+
+\section{The precise quantifier-elimination input (source 16)}
+\label{pma:emb:app:qe}
+
+For completeness, this appendix records why the arithmetic argument
+is valid in every $\Z$-group, rather than relying on calculations
+over the standard integers. The theorem itself is classical
+\cite{Haase,s16:RepoMain}.
+
+Work in the group language with all congruence predicates. Put a
+quantifier-free formula into disjunctive normal form. Negated
+inequalities and equalities can be expressed using the linear order;
+negated congruences are finite disjunctions of the other standard
+residues. Thus it suffices to eliminate an existential variable from
+a conjunction of affine equalities, inequalities, and congruences.
+
+Choose a positive common multiple $L$ of the absolute values of all
+nonzero coefficients of the quantified variable $x$, taking $L=1$
+if there are none. Replace $Lx$ by $y$ and add
+$y\equiv_L0$. After correcting signs, a constraint
+$a x<t$, $a>0$, becomes $y<(L/a)t$. A congruence
+$m\mid(a x+s)$ becomes
+\[
+ (mL/a)\mid\bigl(y+(L/a)s\bigr).
+\]
+This equivalence is valid in a torsion-free group: multiplying both
+the dividend and modulus by $L/a$ preserves divisibility, with
+cancellation providing the reverse implication. Equalities can
+be normalized in the same way; if one remains, substitute its
+specified value and check the other constraints.
+
+In the equality-free case the conjunction has the form
+\[
+ \bigwedge_i\ell_i<y\quad\land\quad
+ \bigwedge_j y<u_j\quad\land\quad P(y),
+\]
+where $P$ is a conjunction of congruences. Let $N$ be a standard
+common multiple of their moduli, using $N=1$ if there are none.
+Then $P(y)$ depends only on the complete congruence class of $y$
+modulo $N$. This is stronger than merely knowing
+$P(y)\leftrightarrow P(y+N)$ by a single standard shift.
+
+If there is a lower bound, choose a maximal $\ell$ from the
+finite list. Any witness $y>\ell$ has the same residue as one
+of the finitely many candidates
+\[
+ \ell+1,\ \ell+2,\ \ldots,\ \ell+N.
+\]
+Choose the candidate strictly above $\ell$ with that residue.
+Standard division of the positive element $y-\ell$ shows the
+candidate is at most $y$. It therefore preserves every upper
+bound as well. The maximum can be selected in a finite
+disjunction of comparisons between the $\ell_i$.
+
+If there are upper bounds but no lower bounds, choose a minimal
+$u$ and use the candidates $u-1,\ldots,u-N$. A witness can
+be replaced by the same-residue candidate at least as large as
+it and still strictly below $u$. If there are no bounds, standard
+division replaces any witness by one of
+$0,\ldots,N-1$. In every case existence is equivalent to a
+finite quantifier-free disjunction. Iterating eliminates all
+quantifiers.
+
+Every closed quantifier-free sentence in the expanded language
+has the same truth value in every $\Z$-group, because its terms
+are standard integer multiples of $1$ and standard congruences
+have their prescribed residues. Thus the theory is complete and
+agrees with the standard integer group. Finally a formula over
+the positive cone is interpreted in the group by restricting
+every quantified variable to $\geq0$. This proves the input
+used throughout the paper.
+
+\noindent\writetag{} This is the classical theorem printed as source~05's
+\cref{pma:pr:thm:qe}, source~04's \cref{pma:pr:s04:thm:qe} and source~06's
+\cref{pma:cp:app:qe}; it is printed again because it is source~16's, and its
+remark on invariance under complete congruence classes is the coset invariance
+of \cref{pma:pr:lem:finite,pma:pr:thm:boundary}. ``\cite{s16:RepoMain}'' is
+source~05's delivered text, now \cref{pma:part:pr}.
+
+\section{Claim ledger and source boundary (source 16)}
+\label{pma:emb:app:ledger}
+
+\small
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{44mm}>{\raggedright\arraybackslash}p{67mm}>{\raggedright\arraybackslash}p{32mm}@{}}
+\toprule
+Claim & Evidence and scope & Status\\
+\midrule\endhead
+Polish Presburger cone construction &
+\Cref{pma:emb:sec:models}; existing ProveIt main and ordinal reports;
+classical $\Z$-group theory & Prior construction, reproved\\
+Unital homomorphisms are elementary embeddings &
+\Cref{pma:emb:thm:dictionary}; explicit divisible-group and congruence
+argument & Proved here in general split form\\
+Continuous matrix classification and closed image &
+\Cref{pma:emb:thm:matrix,pma:emb:thm:closedimage}; finite-dependence and
+finite-ancestry proofs & Proved specialization and extension\\
+Closed-submodel normal forms, orbits, lattice &
+\Cref{pma:emb:thm:subspaces,pma:emb:thm:normalform,pma:emb:thm:orbits,pma:emb:thm:lattice};
+finite-support dual separation & Proved for this family\\
+Automatic-continuity threshold &
+\Cref{pma:emb:thm:autocont,pma:emb:thm:shear}; rank argument and non-Borel shear &
+Exact theorem; related Hahn phenomena credited\\
+Closed-image threshold &
+\Cref{pma:emb:thm:belowtwo,pma:emb:thm:densethreshold}; terminal-tail quotient
+and shifted graph & Exact theorem for all countable ordinals\\
+Self-copy core and clopen intersections &
+\Cref{pma:emb:thm:core,pma:emb:thm:approximation}; fixed terminal ranks and finite
+coordinate approximations & Proved here\\
+Omnific interpretation &
+\Cref{pma:emb:sec:surreal}; normal-form existence and fixed-support
+addition & Additive and ordered; topology transported\\
+Finite example calculations &
+Included rational verification script and recorded output &
+Executed checks only\\
+Proof-assistant verification &
+No new Lean or Rocq files supplied; modules proposed in
+\cref{pma:emb:sec:surreal} & Not claimed\\
+Historical priority or major breakthrough &
+Bounded source and repository audit & Not certified\\
+\bottomrule
+\end{longtable}
+\normalsize
+
+\noindent\writetag{} For $\alpha=\beta=\omega$ the rows on the dictionary, the
+matrix classification, the closed image and automatic continuity were proved
+first by source~04 (\cref{pma:pr:prop:embeddingreduction,pma:pr:thm:matrices,pma:pr:cor:imagetopology}),
+and the omnific interpretation is source~07's \cref{pma:cp:thm:omnific};
+notes in \cref{pma:part:emb} give the details.
+
+\subsection*{Repository snapshot}
+The inspected repository snapshot is \snap, with commit timestamp
+October 3, 2026, 19:50:54 Pacific time. The main relevant text is
+\fn{Algebra/SurrealNumbers/docs/foundations-and-computation/polish-models-of-omnific-arithmetic/article.tex}.
+Its named research questions on coefficient endomorphisms and Polish
+elementary-submodel lattices determine the specific follow-up problem.
+The incoming ordinal-family source and other existing arithmetic
+archives were checked to avoid presenting their constructions as new.
+The archive's source audit gives the exact paths and limits of this
+comparison.
+
+\noindent\writetag{} The source audit is shipped as
+\fn{16-presburger-embeddings-SOURCE_AUDIT.md}. The archives it compared are now
+\cref{pma:part:cp} (\fn{polish_presburger_article}, source~06;
+\fn{polish_presburger_research}, source~07), \cref{pma:part:lc}
+(\fn{glazer_proveit_local_compactness}) and \cref{pma:part:ser}
+(\fn{Polish_Hahn_Puiseux_Levi_Civita_Research}), and the standard-cut
+manuscript \fn{Glazer_ProveIt_Arithmetic_Research} is source~03 of
+\fn{Algebra/SurrealNumbers/docs/surreal/discrete-initial-subgroups-and-omnific-normalization};
+all were placed in \texttt{0bd0e5527}, after source~16's pin.
+
+\subsection*{Proof review}
+Independent mathematical reviews were used to challenge the statements
+before delivery. They particularly checked the distinction between a
+$G_\delta$ cone and a closed cone, inherited versus abstract
+Polishness, finite-support versus full-product codimension, the
+limit-coordinate inversion argument, and the different thresholds for
+map continuity and image closedness. This is ordinary mathematical
+review of an AI-assisted manuscript, not external refereeing or a
+formal proof certificate.
+
+\noindent\writetag{} The review record is shipped as
+\fn{16-presburger-embeddings-PROOF_REVIEW.md}; its reviewers are AI agents of
+the delivering session. The intake has not reviewed the proofs.
+
 \begin{thebibliography}{99}
 \small\raggedright
 
@@ -23805,5 +25952,70 @@ Vladimir Reshetnikov and ProveIt contributors.
 \emph{OmnificAlgebraDiscreteness.lean}.
 Same pinned commit as above.
 \href{https://github.com/VladimirReshetnikov/ProveIt/blob/0f084afa9be466593ffa6aff37749e78c0adc733/Algebra/SurrealNumbers/Surreal/Foundations/OmnificAlgebraDiscreteness.lean}{Pinned topology source}.
+\bibitem{s16:KS}
+Salma Kuhlmann and Michele Serra,
+\emph{Automorphisms of valued Hahn groups},
+arXiv:2302.06290v4, February 26, 2026.
+\href{https://arxiv.org/html/2302.06290v4}{Versioned text}.
+The Hahn sum/product distinction and scope of the matrix section
+are relevant to the attribution in this article.
+\bibitem{s16:Serra}
+Michele Serra,
+\emph{Automorphism groups of Hahn groups and Hahn fields},
+doctoral dissertation, University of Konstanz, 2021.
+See the discussion of strong additivity in Section 2.4 and
+the later higher-rank examples.
+\href{https://d-nb.info/124743740X/34}{Repository PDF}.
+\bibitem{s16:Freni}
+Pietro Freni,
+\emph{On Vector Spaces with Formal Infinite Sums},
+Applied Categorical Structures 34, article 15 (2026).
+\href{https://doi.org/10.1007/s10485-025-09844-w}{doi:10.1007/s10485-025-09844-w};
+\href{https://arxiv.org/abs/2303.08000}{arXiv:2303.08000}.
+\bibitem{s16:CGB}
+Ilaria Castellano and Anna Giordano Bruno,
+\emph{Algebraic entropy in locally linearly compact vector spaces},
+in \emph{Rings, Polynomials, and Modules}, 2017, 103--127.
+\href{https://doi.org/10.1007/978-3-319-65874-2_6}{doi:10.1007/978-3-319-65874-2\_6};
+\href{https://arxiv.org/abs/1612.01899}{arXiv:1612.01899}.
+Section 2 records the linearly compact duality background.
+\bibitem{s16:Gonshor}
+Harry Gonshor,
+\emph{An Introduction to the Theory of Surreal Numbers},
+London Mathematical Society Lecture Note Series 110,
+Cambridge University Press, 1986.
+\href{https://doi.org/10.1017/CBO9780511629143}{doi:10.1017/CBO9780511629143}.
+\bibitem{s16:RepoMain}
+Vladimir Reshetnikov, ProveIt research corpus,
+\emph{Polish Presburger Arithmetic inside the Omnific Integers},
+maintained manuscript at the snapshot \snap.
+\fn{Algebra/SurrealNumbers/docs/foundations-and-computation/polish-models-of-omnific-arithmetic/article.tex}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/0f084afa9be466593ffa6aff37749e78c0adc733/Algebra/SurrealNumbers/docs/foundations-and-computation/polish-models-of-omnific-arithmetic/article.tex}{Pinned source}.
+\writetag{} This report, as it stood at source~16's pin: then the delivered text of batch-86 source~05, now the base of \cref{pma:part:pr}; Parts~III--IX were placed or written later.
+\bibitem{s16:RepoOrdinal}
+Vladimir Reshetnikov, ProveIt research corpus,
+incoming archive \fn{docs/incoming/polish_presburger_article.zip},
+member \fn{polish_presburger/polish_presburger.tex},
+at the same snapshot. The theorem labelled \texttt{thm:ordinals}
+already constructs the countable-ordinal family.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/0f084afa9be466593ffa6aff37749e78c0adc733/docs/incoming/polish_presburger_article.zip}{Pinned archive}.
+\writetag{} Source~06 of this report, now in \cref{pma:part:cp} (its \texttt{thm:ordinals} is \cref{pma:cp:thm:ordinals}); the archive was retired from \fn{docs/incoming} in \texttt{0bd0e5527} and remains at the pinned address.
+\bibitem{s16:RepoPresburger}
+Vladimir Reshetnikov, ProveIt,
+\emph{Presburger arithmetic is decidable},
+\fn{Logic/PresburgerArithmetic/README.md}, same snapshot.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/0f084afa9be466593ffa6aff37749e78c0adc733/Logic/PresburgerArithmetic/README.md}{Pinned source}.
+\writetag{} The formal Presburger project's README (\cref{pma:sec:repo}).
+\bibitem{s16:RepoSurreal}
+Vladimir Reshetnikov, ProveIt,
+\fn{Algebra/SurrealNumbers/README.md}, same snapshot.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/0f084afa9be466593ffa6aff37749e78c0adc733/Algebra/SurrealNumbers/README.md}{Pinned source}.
+\writetag{} The Surreal project's README; unchanged at the placement except for the catalogue's pointers.
+\bibitem{s16:Shelah}
+Saharon Shelah, \emph{Can you take Solovay's inaccessible away?},
+\emph{Israel Journal of Mathematics} 48 (1984), 1--47.
+\writetag{} Cited for \cref{pma:emb:rem:choice} (written for this report): if
+ZF is consistent, so is ZF with dependent choice and ``every set of reals has
+the Baire property''.
 \end{thebibliography}
 \end{document}
