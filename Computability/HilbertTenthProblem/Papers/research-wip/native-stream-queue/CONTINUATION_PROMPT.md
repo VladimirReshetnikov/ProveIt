@@ -154,6 +154,22 @@
 > improvement. The universal84/187 and85/155 points remain unchanged.
 >
 >
+> The [source-coupled input-lifting theorem](complete83_source_coupled_input_lifting.md)
+> constructs exact linear resonances at every odd radix prime while preserving
+> the actual fixed compiler and, for sufficiently large family parameters,
+> positive outer slack. The normalized exponential difference is a bijection
+> on each prime-power input residue space. If every central binomial valuation
+> is at least2a, the required common CRT input fits within A representatives,
+> where A is the odd part of q. The binary condition remains the separate,
+> input-invariant test `pc(R)>=3v2(q)+2`. The
+> [independent review](review_complete83_source_coupled_input_lifting.md)
+> checks the complete proof, the literal supplied-port interface and fresh
+> finite residue/carry examples; normal/optimized receipts passed before freeze.
+> Both central-carry hypotheses remain unproved for the constructed larger z.
+> This is conditional completion of the unchanged83 source, with no actual
+> compiler zero, rejected input or new universal operation bound asserted.
+>
+>
 > The [odd-primary carry budget and source obstruction](complete83_odd_primary_carry_budget.md)
 > prove the exact quotient-carry identities at linear and quadratic resonances.
 > A linear tie still needs additional quotient carries; an unbounded family

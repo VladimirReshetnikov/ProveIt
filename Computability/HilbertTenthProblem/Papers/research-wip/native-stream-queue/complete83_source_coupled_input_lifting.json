@@ -1,0 +1,467 @@
+{
+  "affine_interval": {
+    "cases": 9024,
+    "five_excluded": true,
+    "odd_A_below": 1500
+  },
+  "carry_and_binary": {
+    "binary_four_term_cases": 488,
+    "carry_cases": 267,
+    "direct_binomial_cases": 186
+  },
+  "composed_crt": {
+    "A": 21,
+    "R": 503,
+    "ell": 6,
+    "full_M_mod_2q3": 0,
+    "input_k": 12,
+    "prime_data": [
+      {
+        "central": 2,
+        "depth": 2,
+        "input_residue": 0,
+        "normalized_root": 1,
+        "p": 3
+      },
+      {
+        "central": 2,
+        "depth": 1,
+        "input_residue": 5,
+        "normalized_root": 1,
+        "p": 7
+      }
+    ],
+    "q": 42,
+    "r": 251,
+    "scope": "local two-prime algebra example; no compiler constants or full source zero",
+    "u": 77,
+    "u0": 5
+  },
+  "local_lifts": {
+    "direct_integer_checks": 45,
+    "local_lifts": 48,
+    "permutation_residues": 1380,
+    "scope": "signed exponential algebra; not positive full-source zeros"
+  },
+  "scope": {
+    "actual_compiler_zero_exhibited": false,
+    "conditional_binary_hypothesis": "popcount(R) >= 3*v2(q)+2",
+    "conditional_odd_carry_hypothesis": "v_p(binomial(2r,r)) >= 2*v_p(A)",
+    "new_universal_operation_bound": false,
+    "predecessor_programs_executed": false,
+    "source_changed": false
+  },
+  "source_binding": {
+    "literal_outer_rows": [
+      [
+        "repunit",
+        "*",
+        "Bm1",
+        "Jrep"
+      ],
+      [
+        "q",
+        "+",
+        "repunit",
+        1
+      ],
+      [
+        "Lbig",
+        "*",
+        "q",
+        "q"
+      ],
+      [
+        "q_minus_F",
+        "-",
+        "q",
+        "F"
+      ],
+      [
+        "q_minus_FZ",
+        "-",
+        "q_minus_F",
+        "Z"
+      ],
+      [
+        "C_after_alpha",
+        "-",
+        "q_minus_FZ",
+        "alpha"
+      ],
+      [
+        "scaled_t",
+        "*",
+        "twice_cell_bits",
+        "x"
+      ],
+      [
+        "marked_rhs",
+        "-",
+        "C_after_alpha",
+        "scaled_t"
+      ],
+      [
+        "W",
+        "-",
+        "marked_rhs",
+        "Z"
+      ],
+      [
+        "odd_index",
+        "+",
+        "scaled_t",
+        "inner_bits"
+      ],
+      [
+        "gap_product",
+        "*",
+        "repunit",
+        "q_minus_F"
+      ],
+      [
+        "gap",
+        "+",
+        "gap_product",
+        "q_minus_FZ"
+      ],
+      [
+        "Lm1",
+        "-",
+        "Lbig",
+        1
+      ],
+      [
+        "rproduct",
+        "*",
+        "gap",
+        "Lm1"
+      ],
+      [
+        "qMF",
+        "*",
+        "q",
+        "MF"
+      ],
+      [
+        "mask_factor",
+        "+",
+        "MC",
+        "qMF"
+      ],
+      [
+        "mask",
+        "*",
+        "mask_factor",
+        "Jrep"
+      ],
+      [
+        "r_lhs",
+        "+",
+        "rproduct",
+        "mask"
+      ],
+      [
+        "kinner",
+        "+",
+        "Kconstant",
+        "w"
+      ],
+      [
+        "innerC",
+        "*",
+        "kinner",
+        "marked_rhs"
+      ],
+      [
+        "transport_partial",
+        "+",
+        "innerC",
+        "q_minus_F"
+      ],
+      [
+        "local_rhs",
+        "*",
+        "transport_quotient",
+        "repunit"
+      ],
+      [
+        "norm_transport",
+        "-",
+        "transport_partial",
+        "local_rhs"
+      ]
+    ],
+    "ordinary_input": "x",
+    "pins": {
+      "complete75_half_binomial_compiler.md": "68edf3bc40238ccf47b023d7358e4be62664a2d78a60b6fae19de14b67208117",
+      "complete83_even_radix_boundary.md": "eba3e2944154dd7ff28e5b20d5e32e8ee6a0138b515c8e5f3846979dadaaa8dc",
+      "complete83_nondyadic_outer_family.json": "8041d3661c0cfc9c29ca25c99d08567e45a2ceed3dbca29caf22b792a8c97dd1",
+      "complete83_nondyadic_outer_family.md": "42281ee2c1cf99851d4fe67fcfe6f61322fd721d8ebd8ec539983a6edcc44d23",
+      "complete83_odd_prime_boundary.md": "59fb701504a8cab48a4c29b8167ffe459c049feed00dc6a821003747e8a856da",
+      "complete83_shared_projection_math.md": "1a9923b7202bef2e5a640b3b27c942423b9d9829d9fc6e7f4b55fa5c4d91053c",
+      "complete83_shared_projection_scout.json": "dd9e105d295bf2fb3e3b0246234bb68cb78487ee919405bc052f2b67a9def34c"
+    },
+    "positive_witnesses": 18,
+    "scope": "inert row authentication; no full DAG evaluation"
+  },
+  "source_sha256": "2d95450b60f1c480a5f9145b20e167567bc18ea984778d5c334b8c082043f2cd",
+  "synthetic_family_cases": [
+    {
+      "K": 2,
+      "d": 5,
+      "positive_R": false,
+      "scope": "synthetic congruence test only",
+      "shape": "plus",
+      "threshold": false
+    },
+    {
+      "A": 63,
+      "Hreq": 1,
+      "K": 3,
+      "R": 7348092277175,
+      "binary_population_condition": true,
+      "d": 5,
+      "g": 1,
+      "input_lift_k": 0,
+      "odd_carry_budget": true,
+      "prime_signatures": [
+        {
+          "a": 2,
+          "central": 14,
+          "depth": 2,
+          "p": 3,
+          "tau": 0
+        },
+        {
+          "a": 1,
+          "central": 6,
+          "depth": 1,
+          "p": 7,
+          "tau": 0
+        }
+      ],
+      "q": 2016,
+      "scope": "synthetic fixed numerals; not an actual compiler instance",
+      "shape": "minus",
+      "threshold": false,
+      "x0": 9,
+      "z": 373
+    },
+    {
+      "K": 7,
+      "d": 5,
+      "positive_R": false,
+      "scope": "synthetic congruence test only",
+      "shape": "plus",
+      "threshold": false
+    },
+    {
+      "A": 63,
+      "Hreq": 1,
+      "K": 8,
+      "R": 8586340719515,
+      "binary_population_condition": true,
+      "d": 5,
+      "g": 1,
+      "input_lift_k": 0,
+      "odd_carry_budget": true,
+      "prime_signatures": [
+        {
+          "a": 2,
+          "central": 14,
+          "depth": 2,
+          "p": 3,
+          "tau": 0
+        },
+        {
+          "a": 1,
+          "central": 7,
+          "depth": 1,
+          "p": 7,
+          "tau": 0
+        }
+      ],
+      "q": 2016,
+      "scope": "synthetic fixed numerals; not an actual compiler instance",
+      "shape": "minus",
+      "threshold": false,
+      "x0": 9,
+      "z": 121
+    },
+    {
+      "A": 33554433,
+      "Hreq": 1,
+      "K": 2,
+      "R": 100430634610476648184448878914345737018420361814667799036155,
+      "binary_population_condition": true,
+      "d": 25,
+      "g": 3,
+      "input_lift_k": 0,
+      "odd_carry_budget": true,
+      "prime_signatures": [
+        {
+          "a": 1,
+          "central": 63,
+          "depth": 2,
+          "p": 3,
+          "tau": 1
+        },
+        {
+          "a": 1,
+          "central": 32,
+          "depth": 1,
+          "p": 11,
+          "tau": 0
+        },
+        {
+          "a": 1,
+          "central": 15,
+          "depth": 1,
+          "p": 251,
+          "tau": 0
+        },
+        {
+          "a": 1,
+          "central": 10,
+          "depth": 1,
+          "p": 4051,
+          "tau": 0
+        }
+      ],
+      "q": 562949970198528,
+      "scope": "synthetic fixed numerals; not an actual compiler instance",
+      "shape": "plus",
+      "threshold": true,
+      "x0": 27,
+      "z": 8422162681
+    },
+    {
+      "A": 67108863,
+      "Hreq": 1,
+      "K": 3,
+      "R": 25710965798271371971394857539932918372613607775724230804504555,
+      "binary_population_condition": true,
+      "d": 25,
+      "g": 1,
+      "input_lift_k": 0,
+      "odd_carry_budget": true,
+      "prime_signatures": [
+        {
+          "a": 1,
+          "central": 57,
+          "depth": 1,
+          "p": 3,
+          "tau": 0
+        },
+        {
+          "a": 1,
+          "central": 11,
+          "depth": 1,
+          "p": 2731,
+          "tau": 0
+        },
+        {
+          "a": 1,
+          "central": 6,
+          "depth": 1,
+          "p": 8191,
+          "tau": 0
+        }
+      ],
+      "q": 2251799780130816,
+      "scope": "synthetic fixed numerals; not an actual compiler instance",
+      "shape": "minus",
+      "threshold": true,
+      "x0": 11,
+      "z": 1207959529
+    },
+    {
+      "A": 33554433,
+      "Hreq": 1,
+      "K": 7,
+      "R": 100428988374837896150145965156103878008527728729913445843055,
+      "binary_population_condition": true,
+      "d": 25,
+      "g": 3,
+      "input_lift_k": 0,
+      "odd_carry_budget": true,
+      "prime_signatures": [
+        {
+          "a": 1,
+          "central": 59,
+          "depth": 2,
+          "p": 3,
+          "tau": 1
+        },
+        {
+          "a": 1,
+          "central": 36,
+          "depth": 1,
+          "p": 11,
+          "tau": 0
+        },
+        {
+          "a": 1,
+          "central": 14,
+          "depth": 1,
+          "p": 251,
+          "tau": 0
+        },
+        {
+          "a": 1,
+          "central": 10,
+          "depth": 1,
+          "p": 4051,
+          "tau": 0
+        }
+      ],
+      "q": 562949970198528,
+      "scope": "synthetic fixed numerals; not an actual compiler instance",
+      "shape": "plus",
+      "threshold": false,
+      "x0": 21,
+      "z": 3724542061
+    },
+    {
+      "A": 67108863,
+      "Hreq": 1,
+      "K": 8,
+      "R": 25710896835976428929185128944025023583425659109806201137790955,
+      "binary_population_condition": true,
+      "d": 25,
+      "g": 1,
+      "input_lift_k": 0,
+      "odd_carry_budget": true,
+      "prime_signatures": [
+        {
+          "a": 1,
+          "central": 75,
+          "depth": 1,
+          "p": 3,
+          "tau": 0
+        },
+        {
+          "a": 1,
+          "central": 10,
+          "depth": 1,
+          "p": 2731,
+          "tau": 0
+        },
+        {
+          "a": 1,
+          "central": 10,
+          "depth": 1,
+          "p": 8191,
+          "tau": 0
+        }
+      ],
+      "q": 2251799780130816,
+      "scope": "synthetic fixed numerals; not an actual compiler instance",
+      "shape": "minus",
+      "threshold": true,
+      "x0": 9,
+      "z": 1207959529
+    }
+  ]
+}

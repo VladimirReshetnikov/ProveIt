@@ -140,6 +140,21 @@ or46 witnesses/SOS224/degree52. Native AND remains in the loader, so a
 cheaper loading/accepting-history compiler is still needed for a universal
 improvement. The universal84/187 and85/155 points remain unchanged.
 
+The [source-coupled input-lifting theorem](complete83_source_coupled_input_lifting.md)
+constructs exact linear resonances at every odd radix prime while preserving
+the actual fixed compiler and, for sufficiently large family parameters,
+positive outer slack. The normalized exponential difference is a bijection
+on each prime-power input residue space. If every central binomial valuation
+is at least2a, the required common CRT input fits within A representatives,
+where A is the odd part of q. The binary condition remains the separate,
+input-invariant test `pc(R)>=3v2(q)+2`. The
+[independent review](review_complete83_source_coupled_input_lifting.md)
+checks the complete proof, the literal supplied-port interface and fresh
+finite residue/carry examples; normal/optimized receipts passed before freeze.
+Both central-carry hypotheses remain unproved for the constructed larger z.
+This is conditional completion of the unchanged83 source, with no actual
+compiler zero, rejected input or new universal operation bound asserted.
+
 The [odd-primary carry budget and source obstruction](complete83_odd_primary_carry_budget.md)
 prove the exact quotient-carry identities at linear and quadratic resonances.
 A linear tie still needs additional quotient carries; an unbounded family
@@ -5401,6 +5416,7 @@ New research and the completed75-operation construction:
 
 | Artifact | Established result | Remaining boundary |
 |---|---|---|
+| [Source-coupled odd-prime input lifting](complete83_source_coupled_input_lifting.md) | Exact linear resonance representatives fit positive outer slack eventually; normalized input bijections and CRT give conditional simultaneous odd-prime completion. Independently reviewed. | Requires odd central valuations at least2a and a separate binary population condition; no actual full source zero or universal83 result. |
 | [Odd-primary carry budget and source obstruction](complete83_odd_primary_carry_budget.md) | Exact quotient-carry identities; actual positive F=Kz family forbids A² dividing R+1 or R+3 for n>=5. Independent proof/source challenge and fresh receipts pass. | Excludes simultaneous deep-resonance strategies only; mixed branches, sufficient quotient carries and odd-primary completion remain open. |
 | [Sparse compiler coefficients: n>=5 binary cutoff](complete83_outer_family_sparse_two_primary.md) | Actual clause sparsity bounds the three high-digit population losses by less than d/2; every permitted n>=5 passes the full two-primary condition. Independent proof/source review and fresh finite checks pass. | n=1, odd-primary completion, full positive source zero and universal83 remain unproved. |
 | [Uniform two-primary cutoff9](complete83_outer_family_uniform_two_primary.md) and [independent proof challenge](review_complete83_outer_family_uniform_two_primary.md) | Every allowed n>=9 passes the2-primary scale condition, uniformly across original compiler numerals, using actual fixed-mask density | n=1/5 and all odd-primary completion remain outside this packet; no full zero or universal83 |
