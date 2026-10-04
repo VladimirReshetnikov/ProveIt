@@ -42,6 +42,14 @@
 > a genuine compiler history remains unproved**, so gamma83 is unresolved
 > and the established universal polynomial bound remains **84**.
 >
+> The [joint auxiliary/strong cut](complete84_aux_strong_joint_cut.md)
+> requires exactly five gates at its four independent computed ports. The
+> proof covers scalar constants, reuse and cancellation; the [independent review](review_complete84_aux_strong_joint_cut.md)
+> checks its two-multiplication argument and full source integration. The
+> saved regrouping is the identical 84-operation polynomial, with all
+> producer costs retained. This local bound leaves extra registers,
+> source-specific relations and changed producers open.
+>
 > The [local producer scout](complete84_local_producer_scout.md) finds no
 > saving among zero-, one- or two-operation replacements at70 actual84
 > producer rows. It enumerates4741 aliases and719027 inner expressions;
