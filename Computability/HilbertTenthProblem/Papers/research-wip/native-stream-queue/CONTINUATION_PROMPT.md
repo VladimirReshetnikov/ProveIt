@@ -451,6 +451,19 @@
 > and square counts are not arithmetic operation counts. These scoped reviews
 > do not certify an implemented rule-to-chart compiler or improve universality.
 >
+> The [centered CRT matrix selector](matrix193_centered_crt_selector.md)
+> lowers the complete integer countdown from154 to **133=64M+69A**, with26
+> auxiliary integer witnesses and exact degree10. A circle selects exactly96
+> labels; centered doubled coefficients use three-square sphere certificates.
+> All row doublings, CRT quotient uses and the full countdown are paid. The
+> [independent review](review_matrix193_centered_crt_selector.md) checks the
+> complete107/133 sources and the lower-degree125/151 alternatives. For fixed h,
+> the positive representation costs **165h+7**, with **31h+1 positive witnesses**
+> and degree at most10; full h=1,2 arrays are saved. Installed normal/optimized
+> receipts pass. The smaller arithmetic count uses larger fixed numerals;
+> integer exactness does not extend to real witnesses. Arbitrary-duration
+> fixed-arity packing remains unpaid, so the universal bound stays84.
+>
 > The [integer CRT matrix selector](matrix193_crt_selector.md)
 > lowers the full countdown from1179 to **154=73M+81A**, with35 auxiliary
 > integer witnesses and exact degree10. Fixed CRT tables, seven interval
