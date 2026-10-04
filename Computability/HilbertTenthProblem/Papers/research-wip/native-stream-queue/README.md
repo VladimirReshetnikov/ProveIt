@@ -72,6 +72,17 @@ checks all83 rows by a formal rational substitution and expands the complete
 so this remains an arithmetic obstruction, not a compiler counterexample.
 Fresh installed normal/optimized receipts pass; the universal bound stays84.
 
+The [publication integration review](review_reports_publication_20261003.md)
+finds no conflict in the checked sandpile and particle-report additions.
+All 24 selected Reports 35–38 archive members and 119 placed particle
+evidence files retain their reviewed bytes. The separate
+[source18 intake](review_timed_four_mass_source18_intake.md) reads the complete
+conditional timed-chart proof and confirms the explicit binary certificate's
+73 coefficients and nonnegative-real exactness at integer inputs.
+Its generic compiler still assumes a bijective chart description; witness
+and square counts are not arithmetic operation counts. These scoped reviews
+do not certify an implemented rule-to-chart compiler or improve universality.
+
 The [Report38 fixed-lane Boolean fixture](fixed_lane_boolean_occurrence38.md)
 compares three complete quartics for an occurrence query on an externally
 certified affine lane. The [independent affine rewrite](review_fixed_lane_boolean_occurrence38_affine.md)
