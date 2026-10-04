@@ -55,6 +55,17 @@ this candidate. The [independent review](review_complete83_independent_gamma_sco
 and fresh normal/optimized receipts check the full source and criterion.
 The established universal minimum remains **84 operations**.
 
+The [squared-scale charts](complete83_squared_scale_collapse.md) emit two
+complete **83=46M+37A** sources, with18 positive witnesses and exact degrees
+**156 and174**. Both are **refuted on every positive input** of every
+inherited modified compiler. The historical population construction now
+transfers through the current first root, direct-w transport and positive
+Bezout quotient. Complete pullbacks and uniform degree leaders are checked
+in the [independent review](review_complete83_squared_scale_collapse.md);
+fresh normal/optimized receipts pass. These are distinct from both the
+upper-ratio deletion and unresolved independent-gamma83. The established
+universal polynomial bound remains84.
+
 The [upper-ratio deletion](complete83_upper_ratio_deletion_collapse.md)
 emits a distinct **83=47M+36A**,18-witness,degree187 source by supplying
 k instead of eta+zeta. It is **refuted on every positive input** for every
