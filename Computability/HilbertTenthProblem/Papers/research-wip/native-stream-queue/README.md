@@ -169,6 +169,16 @@ Its generic compiler still assumes a bijective chart description; witness
 and square counts are not arithmetic operation counts. These scoped reviews
 do not certify an implemented rule-to-chart compiler or improve universality.
 
+The [Gamma1(5) recoding](matrix193_gamma1_recode.md)
+preserves all 193 generators and twenty letters with **Pell parameter 391**.
+Two explicit graphs prove faithfulness and first-row injectivity, giving
+the same **6=4M+2A** conditional target assembly as the kernel recoding.
+Its largest coefficient uses 30 magnitude bits, versus 29 for the kernel
+alternative; total coefficient bits also increase. The [independent review](review_matrix193_gamma1_recode.md)
+checks the graph argument, complete array and accepted product, and fresh
+normal/optimized receipts pass. The exact Pell index and unbounded product
+certificate remain unpaid; the universal polynomial bound stays **84**.
+
 The [kernel first-row recoding](matrix193_kernel_row_projection.md)
 keeps all 193 generators while reducing the varying target to two integers.
 A kernel subgroup makes each block uniquely determined by its first row;
