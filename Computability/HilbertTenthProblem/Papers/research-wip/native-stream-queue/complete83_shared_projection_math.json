@@ -1,0 +1,269 @@
+{
+  "author_pins": {
+    "complete83_shared_projection_scout.json": "dd9e105d295bf2fb3e3b0246234bb68cb78487ee919405bc052f2b67a9def34c",
+    "complete83_shared_projection_scout.py": "2ff8bede5f08b0bc452ca50a432ebc6dbcad5ddd18bd5da5acc2b1d5b189ae9c"
+  },
+  "binomial_evidence": {
+    "M_modulus": 139264,
+    "all_j_at_least_two_valuation_lower_bound": 18,
+    "central_bits": 49014,
+    "first_coefficient_bits": 49014,
+    "modulus": 262144,
+    "q_cubed_valuation": 12,
+    "v2_X": 9,
+    "v2_Y": 12,
+    "v2_central": 13,
+    "v2_first_coefficient": 7,
+    "v2_first_term": 16,
+    "v2_r_plus_one": 6
+  },
+  "dependency_pins": {
+    "../../1980/EXPLORATION_FIXED_MINUS_INDEX_PARITY.md": "47a2c5b69f3c87b7a1ddc61ef84757023de291b63d1330e2c8dc9b40e811ab8b",
+    "complete84_joint_root_cut.md": "79cfda9e870ad63a848fb454266d1bca98f2117393edc57f99108b4c1cce780c",
+    "complete84_scaled_strong_output.json": "8b2bc5d0b4db90c168107b7ded2cb4ca08df0098ed190851a3db4f1e49a9c0cf",
+    "complete84_scaled_strong_output.md": "01eb7df6688c08c6788a3c7a1cc272ca5ffc1a87734fd622dbec8a64ae974ade",
+    "pell_kernel_half_binomial42.md": "0df596859d84aa1cf1d4636457937274e8fdac0c1f8da3196962d911be232992",
+    "review_complete74_asymmetric_scale_math.md": "a7f8d64389597c5a8fff93bad1f023dfc440d736bb9d77f2acd549e758aa0b58",
+    "review_complete85_auxiliary_bezout_math.md": "77a4071be471db23642cabddc5bd4880debfa53441bf3640c3c45523e9bdb36d"
+  },
+  "fixed_diagnostic_numerals": {
+    "Bm1": 15,
+    "Kconstant": 28,
+    "MC": 14,
+    "MF": 19,
+    "inner_bits": 1,
+    "twice_cell_bits": 8
+  },
+  "guarded_rows": [
+    [
+      "repunit",
+      "*",
+      "Bm1",
+      "Jrep"
+    ],
+    [
+      "q",
+      "+",
+      "repunit",
+      1
+    ],
+    [
+      "Lbig",
+      "*",
+      "q",
+      "q"
+    ],
+    [
+      "n2",
+      "*",
+      "Lbig",
+      "q"
+    ],
+    [
+      "wn2",
+      "*",
+      "w",
+      "q"
+    ],
+    [
+      "sn2",
+      "*",
+      "s",
+      "n2"
+    ],
+    [
+      "q_minus_F",
+      "-",
+      "q",
+      "F"
+    ],
+    [
+      "q_minus_FZ",
+      "-",
+      "q_minus_F",
+      "Z"
+    ],
+    [
+      "C_after_alpha",
+      "-",
+      "q_minus_FZ",
+      "alpha"
+    ],
+    [
+      "scaled_t",
+      "*",
+      "twice_cell_bits",
+      "x"
+    ],
+    [
+      "marked_rhs",
+      "-",
+      "C_after_alpha",
+      "scaled_t"
+    ],
+    [
+      "W",
+      "-",
+      "marked_rhs",
+      "Z"
+    ],
+    [
+      "odd_index",
+      "+",
+      "scaled_t",
+      "inner_bits"
+    ],
+    [
+      "gap_product",
+      "*",
+      "repunit",
+      "q_minus_F"
+    ],
+    [
+      "gap",
+      "+",
+      "gap_product",
+      "q_minus_FZ"
+    ],
+    [
+      "Lm1",
+      "-",
+      "Lbig",
+      1
+    ],
+    [
+      "rproduct",
+      "*",
+      "gap",
+      "Lm1"
+    ],
+    [
+      "qMF",
+      "*",
+      "q",
+      "MF"
+    ],
+    [
+      "mask_factor",
+      "+",
+      "MC",
+      "qMF"
+    ],
+    [
+      "mask",
+      "*",
+      "mask_factor",
+      "Jrep"
+    ],
+    [
+      "r_lhs",
+      "+",
+      "rproduct",
+      "mask"
+    ],
+    [
+      "kinner",
+      "+",
+      "Kconstant",
+      "w"
+    ],
+    [
+      "innerC",
+      "*",
+      "kinner",
+      "marked_rhs"
+    ],
+    [
+      "transport_partial",
+      "+",
+      "innerC",
+      "q_minus_F"
+    ],
+    [
+      "local_rhs",
+      "*",
+      "transport_quotient",
+      "repunit"
+    ],
+    [
+      "norm_transport",
+      "-",
+      "transport_partial",
+      "local_rhs"
+    ],
+    [
+      "gam",
+      "*",
+      "sigma",
+      "a4m5"
+    ],
+    [
+      "shared_main_partial",
+      "+",
+      "D1",
+      "shared_projection"
+    ],
+    [
+      "R14",
+      "+",
+      "shared_main_partial",
+      "gam"
+    ],
+    [
+      "exponent_rhs",
+      "+",
+      "exponent_partial",
+      "shared_projection"
+    ]
+  ],
+  "outer_values": {
+    "C": 1,
+    "R": 49023,
+    "W": 0,
+    "X_bits": 49023,
+    "X_mod_q": 0,
+    "high_AND": 0,
+    "high_mask": 3,
+    "low_AND": 0,
+    "low_mask": 15,
+    "native_MF": 4,
+    "offset_e": -512,
+    "popcount_R": 14,
+    "q": 16,
+    "r": 24511,
+    "transport_norm": 1,
+    "transport_positive": true,
+    "u": 9,
+    "w_mod_q_minus_one": 6
+  },
+  "proof_sha256": "1a9923b7202bef2e5a640b3b27c942423b9d9829d9fc6e7f4b55fa5c4d91053c",
+  "ratio_hypothesis_clarification": [
+    "Pretyping: X>=16, r>=24, 6XY^2>a suffice for the strict lower Pell estimate.",
+    "That lower estimate gives a>X^(r+1)/3>=16^(r+1)/3>8r, hence 4r/a<1/2 before using the upper estimate.",
+    "The coarse inequality a>R alone would not establish the upper-estimate premise; no such inference is made.",
+    "For this diagnostic X>2^(R-1), so theta<1/2; independently checked 24r<X+1 gives 12r/(X+1)<1/2."
+  ],
+  "rejected_input_counterexample_claimed": false,
+  "scope": "Finite scalar and binomial evidence only. No valid-program instance or native Pell tuple is materialized.",
+  "source_ledger": {
+    "A": 37,
+    "M": 46,
+    "positive_witnesses": 18,
+    "total": 83
+  },
+  "source_sha256": "38f9d62c9160a2ac24bc75bfe635db0823bd4e09289e767242538a743b698d88",
+  "supplied_outer_values": {
+    "F": 4,
+    "Jrep": 1,
+    "Z": 1,
+    "alpha": 2,
+    "x": 1
+  },
+  "unmaterialized": [
+    "Y",
+    "c",
+    "main Pell tuple",
+    "normalized auxiliary tuple"
+  ],
+  "valid_compiler_recipe_certified": false
+}
