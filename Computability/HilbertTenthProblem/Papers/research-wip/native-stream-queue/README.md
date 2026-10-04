@@ -1,5 +1,24 @@
 # WIP: native queue streams and research continuation
 
+The [quadratic root elimination](complete90_signed_root_elimination.md)
+gives a complete universal polynomial with **90=52M+38A operations**,
+**17 positive witnesses**, and **uniform exact degree 406**. It deletes the
+strong root `f`, retains all 67 parent rows independent of `f`, and pays for
+23 new rows computing the full quadratic field norm. Every row and supplied
+port is live. On the full retained positive domain, `D>c>0` makes the inverse
+denominator nonzero before any native equations are imposed. Each new zero
+therefore restores a unique nonzero integer `f`; the accepted signed-quotient
+positivity theorem and literal `(f,T)→(-f,-T)` symmetry force `f>0`.
+Deletion and restoration give a bijection of complete positive zero sets,
+preserving the ordinary input and unchanged valid fixed-program recipe.
+The [independent review](review_complete90_signed_root_elimination.md)
+rebuilds the full source, verifies the output identities and exact degree,
+and checks the uniformly nonzero coefficient `1024*Bm1^252`. Root repeats
+fresh normal/optimized author and reviewer receipts; a separate mathematical
+challenge finds no gap. The naive degree bound is 426. This is a new witness
+tradeoff; **84/187 with 18 witnesses** remains the minimum-operation choice,
+and **85/155**, **86/131** and the other degree tradeoffs remain available.
+
 The [reduced auxiliary coefficient](complete85_reduced_auxiliary_degree.md)
 gives a complete **85=47M+38A**, **18-witness** universal polynomial of
 **uniform exact degree155**, improving the previous **85/175** choice.
@@ -5222,6 +5241,7 @@ New research and the completed75-operation construction:
 
 | Artifact | Established result | Remaining boundary |
 |---|---|---|
+| [Complete quadratic root elimination](complete90_signed_root_elimination.md), [review](review_complete90_signed_root_elimination.md) | Complete universal **90=52M+38A**, **17 positive witnesses**, uniform exact degree **406**; unique positive restoration of deleted f on identical retained coordinates; full source/leader checked | Depends on the unchanged valid compiler recipe and accepted signed-domain theorem;84/187/18 remains the operation minimum; no global witness or operation optimum |
 | [OEIS manuscript placement](review_oeis_placement_ec8ae3dc7.md) | All285 files match760 original members; first article/guide installed unchanged; selected fixed-table arity proof checked with unbounded positive inputs | Second main manuscript unintegrated; table-dependent polynomial size/degree; analytic proofs, builds and a uniform paid universal compiler unverified |
 | [Batch91 ancillary placement](review_batch91_placements_22a8ca89e.md) | 2030 added files/42954437 bytes matched to original archives;22 ZIP retirements;8 unchanged host article/guide blobs; normal/optimized receipts agree | Main manuscript integration absent at these checkpoints; no additional mathematical certification or paid compiler improvement |
 | [Signed quotient domain restoration](complete84_signed_quotient_soundness_scout.md) and [review](review_complete84_signed_quotient_soundness.md) | Valid full compiler recipe forces signed T positive on the same zero tuple; by symmetry also signed f with positive T | Requires actual mask/scale recipe and full source; no unrestricted signed or local-subsystem theorem; no new circuit count |

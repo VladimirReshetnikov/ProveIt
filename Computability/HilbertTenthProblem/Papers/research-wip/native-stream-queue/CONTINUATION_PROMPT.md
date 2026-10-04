@@ -3,6 +3,26 @@
 > **Current established universal bounds:74 certificate operations /84 polynomial operations.**
 > **Current minimum polynomial:84=47M+37A,18 positive witnesses,exact degree187.**
 >
+> The [quadratic root elimination](complete90_signed_root_elimination.md)
+> gives a complete universal polynomial with **90=52M+38A operations**,
+> **17 positive witnesses**, and **uniform exact degree 406**. It deletes the
+> strong root `f`, retains all 67 parent rows independent of `f`, and pays for
+> 23 new rows computing the full quadratic field norm. Every row and supplied
+> port is live. On the full retained positive domain, `D>c>0` makes the inverse
+> denominator nonzero before any native equations are imposed. Each new zero
+> therefore restores a unique nonzero integer `f`; the accepted signed-quotient
+> positivity theorem and literal `(f,T)→(-f,-T)` symmetry force `f>0`.
+> Deletion and restoration give a bijection of complete positive zero sets,
+> preserving the ordinary input and unchanged valid fixed-program recipe.
+> The [independent review](review_complete90_signed_root_elimination.md)
+> rebuilds the full source, verifies the output identities and exact degree,
+> and checks the uniformly nonzero coefficient `1024*Bm1^252`. Root repeats
+> fresh normal/optimized author and reviewer receipts; a separate mathematical
+> challenge finds no gap. The naive degree bound is 426. This is a new witness
+> tradeoff; **84/187 with 18 witnesses** remains the minimum-operation choice,
+> and **85/155**, **86/131** and the other degree tradeoffs remain available.
+>
+>
 > The [reduced auxiliary coefficient](complete85_reduced_auxiliary_degree.md)
 > gives a complete **85=47M+38A**, **18-witness** universal polynomial of
 > **uniform exact degree155**, improving the previous **85/175** choice.
