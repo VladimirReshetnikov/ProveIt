@@ -138,7 +138,7 @@
 > foundations/reversion archives have the bounded intake linked below; the
 > complex-transseries placementec91f8c7c itself retains only commit-summary/
 > diff-statistic intake. The newer foundations placement350b9a954,
-> transseries placements6132faa30 and05304d5ec, batch93 reciprocal c70ced0dd,
+> transseries placement6132faa30, batch93 reciprocal c70ced0dd,
 > Lean-scope correction b8bc36acc and foundations publication abba38172
 > have only commit-summary/diff-statistic intake here. Earlier guide-only and
 > ancillary-placement reviews keep their exact boundaries. Padded
@@ -158,6 +158,9 @@
 >
 >
 > The [affine input-coupling theorem](complete83_affine_input_coupling.md), with [independent source and proof review](review_complete83_affine_input_coupling.md), controls joint cancellation between delta and rho in independent-gamma83. For fixed integer coefficient polynomials P,Q,S on exactly71 bounded exterior values, a full positive zero satisfying P delta+Q rho=S with (P,Q) nonzero is canonical or has R²<8t+4+ceil(log2(23L²)). Thus the noncanonical ordinary inputs are explicitly bounded; if this cutoff is at most49², every such zero is canonical. The nonsquare Pell-conic eliminant proves the height bound without separately bounding the two input witnesses. The simultaneous-zero coefficient sector remains unrestricted. Fresh author/reviewer checks authenticate the unchanged83 rows, all71 exterior values and ten literal input rows, with exact coefficient identities and normal/optimized receipt equality. No relation is added for free, no completeness result or new circuit is claimed, and no universal bound changes.
+>
+>
+> The [Mellin–Borel/Stokes placement review](review_mellin_stokes_placement_05304d5ec.md) authenticates all 20 changed paths at 05304d5ec: 16 placed files exactly match 18 archive members, with both retired checksum ledgers verified. It reads all 241 modified-guide diff lines, 466 delivered guide/review lines and 978 selected manuscript lines. Conditional finite reflection/Vandermonde, selected inverse and ramification interfaces pass; the guide now repeats the reflection domain (0,1), retaining its earlier broad phrase and excluded a=0 input in a numbered remark. A [separate fresh reauthentication](reauth_cyclotomic_mellin_reviews.md) of this and the cyclotomic review checks 68 blob records, 23 diffs, 35 spans and their archive/placement records without executing either collector. Full Mellin contour proofs, external conjecture/priority claims, PDFs and supplied numerical programs remain unreviewed. Finite phase counts and analytic exponential actions do not provide a paid ordinary-integer compiler or change the universal bound.
 >
 >
 > The [cyclotomic directional-correction review](review_cyclotomic_7389d7de4.md) reads all three textual diffs at 7389d7de4, the full new counterexample and its 497-line Borel source, plus bounded moving-parameter interfaces. The pole-free positive and diagonal rays have different convergent sums; the contour sign and nonvanishing proof pass. General rotation and inverse assertions remain conjectural. The only new defect is a missing exponent in the positive-ray majorant, corrected with its old false identity and counterexample retained in Remark 36.17. Direct three-pass compilation of the edited monograph and installed index processing give 412 pages, 1,129 unique labels and 2,043 resolved references with Libertinus fonts and no bad boxes; the generic manual-index reminder remains, while index stability and PDF page 320 were checked. Full Mellin proofs, unrelated manuscript claims and historical numerical/validator evidence remain outside scope. No finite integer compiler or arithmetic-bound improvement follows.
