@@ -235,6 +235,17 @@
 > and square counts are not arithmetic operation counts. These scoped reviews
 > do not certify an implemented rule-to-chart compiler or improve universality.
 >
+> The [grouped matrix choices](matrix193_grouped_row_choices.md) save
+> **24 additions** in each complete local source: **2015=1103M+912A** for
+> four synchronized coordinates and **2041=1115M+926A** with the countdown.
+> Grouping identical upper actions preserves the exact real/integer zero
+> relation and the full `LOAD^x TILE*` semantics; off-zero polynomial values
+> change. The [independent review](review_matrix193_grouped_row_choices.md)
+> checks both full arrays, exact degrees192/194 and all counter guards;
+> fresh normal/optimized replays pass. Fixed-duration counting gives
+> 2042h+7 gates and5h signed witnesses. Unbounded fixed-arity packing
+> remains unpaid, so the established universal bound remains84.
+>
 > The [five-register countdown compiler](matrix193_countdown_rows.md)
 > combines four synchronized row coordinates with one signed counter starting
 > at ordinary x. Its 97 choices force exactly x loader steps before the tile
