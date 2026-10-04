@@ -111,6 +111,19 @@ maps and four complete degree expansions; normal/optimized receipts pass.
 This chart drops the main exponent congruence and is distinct from the
 unresolved independent-gamma83. The universal bound remains84.
 
+The [auxiliary-ordinate substitution theorem](complete84_auxiliary_ordinate_absorption.md)
+rules out every fixed polynomial replacement y_aux=G(E) with infinite input
+projection, where E contains all70 computed and23 supplied values independent
+of the auxiliary quotient and y_aux. At every resulting positive zero,
+**2d*x+b<R<=3*deg(G)+ceil(log2 L)**, with L the coefficient norm, at least1.
+The proof recovers an odd auxiliary Pell index n>=R for either sign of V,
+then uses y_aux>f^(R-1) and the bound |E_j|<=f^3. Signed nonzero G restores
+the parent by y_aux=|G|. The G=0 sector is empty by a full-source divisibility
+identity before native recovery. The [independent proof review](review_complete84_auxiliary_ordinate_absorption.md)
+checks the complete93-value boundary and the noncircular sign/zero arguments.
+Fresh normal/optimized source checks pass. This excludes a substitution
+class while retaining universal84; quotient-dependent substitutions remain open.
+
 The [exterior auxiliary-substitution theorem](complete84_exterior_auxiliary_absorption.md)
 rules out every fixed polynomial replacement i=G(E) with an infinite input
 projection in its nonzero sector. E consists of all 64 computed values and
@@ -4989,6 +5002,7 @@ New research and the completed75-operation construction:
 
 | Artifact | Established result | Remaining boundary |
 |---|---|---|
+| [Auxiliary-ordinate polynomial obstruction](complete84_auxiliary_ordinate_absorption.md) | All93 quotient/ordinate-independent values give R<=3*deg(G)+ceil(log2 L) and finite ordinary-input projection after y_aux=G. | Both V signs and signed G covered; G=0 impossible before native recovery. No circuit saving or claim for quotient-dependent expressions. |
 | [Matrix cleanup-tail fusion](matrix193_cleanup_tail_fusion.md) | **1,415/1,412/1,412/1,409** complete operations;141/140/140/139 witnesses; exact degrees35,587/53,345/53,347/71,105. | Joint Horner evaluation saves2M per complete source; identical full polynomials and supplied positive zeros,550 coefficient rows. |
 | [Recoded one-program U21](residue_affine_sparse_recoded468.md) | **448 certificate /468=171M+297A**,7 comparisons,67 witnesses,one fixed program,degree at most5091. | Bounded injective codes and paid selector bases save3 operations from471; same supplied positive zeros, explicit full-output correction. |
 | [Actual positive-complement86 collapse](complete75_positive_complement86_all_input_collapse.md) | The specific86-operation candidate accepts every positive input on every actual modified compiler slice. | Full19-positive-coordinate existence proof and exact rejecting-program corollary; Dirichlet/CRT/rotation plus complete normalized lift. No giant zero materialized;75/87 unchanged. |

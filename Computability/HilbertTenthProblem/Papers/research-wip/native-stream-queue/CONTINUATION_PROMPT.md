@@ -114,6 +114,20 @@
 > This chart drops the main exponent congruence and is distinct from the
 > unresolved independent-gamma83. The universal bound remains84.
 >
+> The [auxiliary-ordinate substitution theorem](complete84_auxiliary_ordinate_absorption.md)
+> rules out every fixed polynomial replacement y_aux=G(E) with infinite input
+> projection, where E contains all70 computed and23 supplied values independent
+> of the auxiliary quotient and y_aux. At every resulting positive zero,
+> **2d*x+b<R<=3*deg(G)+ceil(log2 L)**, with L the coefficient norm, at least1.
+> The proof recovers an odd auxiliary Pell index n>=R for either sign of V,
+> then uses y_aux>f^(R-1) and the bound |E_j|<=f^3. Signed nonzero G restores
+> the parent by y_aux=|G|. The G=0 sector is empty by a full-source divisibility
+> identity before native recovery. The [independent proof review](review_complete84_auxiliary_ordinate_absorption.md)
+> checks the complete93-value boundary and the noncircular sign/zero arguments.
+> Fresh normal/optimized source checks pass. This excludes a substitution
+> class while retaining universal84; quotient-dependent substitutions remain open.
+>
+>
 > The [exterior auxiliary-substitution theorem](complete84_exterior_auxiliary_absorption.md)
 > rules out every fixed polynomial replacement i=G(E) with an infinite input
 > projection in its nonzero sector. E consists of all 64 computed values and
