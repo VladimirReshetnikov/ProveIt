@@ -186,6 +186,14 @@ operation bound. The separate [incoming topology triage](review_recent_incoming_
 records all 25 archive members and three complete README reads from the
 new Presburger/omnific bundles, with no manuscript or program validation.
 
+The [five later topology/surreal reports](review_topology_surreal_arrivals_20261003.md)
+are separately routed at their `7c0f2d9f9` and `8ea27d6c0` arrivals.
+All36 members and the exact selected read spans are authenticated. The
+inspected additive embeddings, class-choice coding, support spectra and
+named-map results supply no finite ordinary-input polynomial or paid
+arithmetic schedule. This is scoped research routing, not full theorem
+approval; no archived code executes and the arithmetic frontier is unchanged.
+
 The [six-archive Baire/Polish review](review_baire_polish_arithmetic_intake.md)
 authenticates the later arrival at `fa0a0576e` and records its exact read scope.
 The [independent audit](review_baire_polish_arithmetic_intake_independent.md)
