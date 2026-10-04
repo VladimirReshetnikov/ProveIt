@@ -162,6 +162,20 @@ or46 witnesses/SOS224/degree52. Native AND remains in the loader, so a
 cheaper loading/accepting-history compiler is still needed for a universal
 improvement. The universal84/187 and85/155 points remain unchanged.
 
+The [sparse-coefficient two-primary theorem](Papers/research-wip/native-stream-queue/complete83_outer_family_sparse_two_primary.md)
+strengthens the actual outer-family cutoff to **every permitted n>=5**.
+The literal clause census gives `pc(K)<=30M`, `v2(K)=3ab`, `M<3b`, and
+`b>=125`. Counting the populations of the three high-digit deficits proves
+that their combined loss is less than `d/2`; the two or more unchanged
+low mask cells then give `pc(r)>3D+1`. The inherited unique-central-term
+argument supplies the full binary cubed-scale divisibility condition.
+The [independent review](Papers/research-wip/native-stream-queue/review_complete83_outer_family_sparse_two_primary.md)
+checks the complete proof and literal compiler spans, with fresh36 synthetic
+clause cases,16400 subtraction identities and13440 signed deficit cases;
+normal/optimized receipts passed before freezing. Author and predecessor
+helpers were not replayed. The first member n=1 and every odd-primary
+completion remain open; no full source zero or universal83 result follows.
+
 The [uniform two-primary cutoff](Papers/research-wip/native-stream-queue/complete83_outer_family_uniform_two_primary.md), with [independent proof challenge](Papers/research-wip/native-stream-queue/review_complete83_outer_family_uniform_two_primary.md), proves that every permitted outer-family member with n>=9 passes the power-of-two cubed-scale condition for every original powers-of-five compiler. The exact complement identity pc(Dmask)=|E| and the fixed support bound give pc(MC)>4d/5. Counting every bit in the unchanged low cells, rather than one bit per cell, and bounding the high deficits by ell<3d/2+1 removes the compiler-dependent threshold. Fresh author arithmetic checks and root's independent quantified proof challenge pass; n=1 and n=5 are not decided here. The odd-primary conditions, complete noncanonical zeros and universal83 remain open. No compiler numeral, source instruction or arithmetic bound changes.
 
 The [eventual two-primary success theorem](Papers/research-wip/native-stream-queue/complete83_outer_family_two_primary.md), with [independent carry and source review](Papers/research-wip/native-stream-queue/review_complete83_outer_family_two_primary.md), removes the power-of-two condition on an explicit infinite tail of the actual-compiler non-dyadic outer family. For Astar=64(4dK+4d+1), ell=bitlength(Astar), every permitted n>=3ell+5 has v2(M_r(X))=popcount(r)>=3v2(q)+1. Low repeated MC digits exclude denominator resonances; three disjoint high complement blocks provide the population bound. The proof keeps all compiler numerals fixed and retains the corrected missing-constant identities and extra-factor congruence in a numbered review remark. Fresh independent exact expansions and digit checks corroborate the quantified argument without materializing X, Y or Pell witnesses. Full completion on this tail now depends only on the odd-prime scale conditions, which remain unproved; no full zero, rejected input or universal83 bound is claimed.

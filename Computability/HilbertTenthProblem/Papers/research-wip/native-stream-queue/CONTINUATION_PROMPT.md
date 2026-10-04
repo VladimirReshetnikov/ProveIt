@@ -154,6 +154,21 @@
 > improvement. The universal84/187 and85/155 points remain unchanged.
 >
 >
+> The [sparse-coefficient two-primary theorem](complete83_outer_family_sparse_two_primary.md)
+> strengthens the actual outer-family cutoff to **every permitted n>=5**.
+> The literal clause census gives `pc(K)<=30M`, `v2(K)=3ab`, `M<3b`, and
+> `b>=125`. Counting the populations of the three high-digit deficits proves
+> that their combined loss is less than `d/2`; the two or more unchanged
+> low mask cells then give `pc(r)>3D+1`. The inherited unique-central-term
+> argument supplies the full binary cubed-scale divisibility condition.
+> The [independent review](review_complete83_outer_family_sparse_two_primary.md)
+> checks the complete proof and literal compiler spans, with fresh36 synthetic
+> clause cases,16400 subtraction identities and13440 signed deficit cases;
+> normal/optimized receipts passed before freezing. Author and predecessor
+> helpers were not replayed. The first member n=1 and every odd-primary
+> completion remain open; no full source zero or universal83 result follows.
+>
+>
 > The [uniform two-primary cutoff](complete83_outer_family_uniform_two_primary.md), with [independent proof challenge](review_complete83_outer_family_uniform_two_primary.md), proves that every permitted outer-family member with n>=9 passes the power-of-two cubed-scale condition for every original powers-of-five compiler. The exact complement identity pc(Dmask)=|E| and the fixed support bound give pc(MC)>4d/5. Counting every bit in the unchanged low cells, rather than one bit per cell, and bounding the high deficits by ell<3d/2+1 removes the compiler-dependent threshold. Fresh author arithmetic checks and root's independent quantified proof challenge pass; n=1 and n=5 are not decided here. The odd-primary conditions, complete noncanonical zeros and universal83 remain open. No compiler numeral, source instruction or arithmetic bound changes.
 >
 >

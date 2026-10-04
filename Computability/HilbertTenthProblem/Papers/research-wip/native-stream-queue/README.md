@@ -140,6 +140,20 @@ or46 witnesses/SOS224/degree52. Native AND remains in the loader, so a
 cheaper loading/accepting-history compiler is still needed for a universal
 improvement. The universal84/187 and85/155 points remain unchanged.
 
+The [sparse-coefficient two-primary theorem](complete83_outer_family_sparse_two_primary.md)
+strengthens the actual outer-family cutoff to **every permitted n>=5**.
+The literal clause census gives `pc(K)<=30M`, `v2(K)=3ab`, `M<3b`, and
+`b>=125`. Counting the populations of the three high-digit deficits proves
+that their combined loss is less than `d/2`; the two or more unchanged
+low mask cells then give `pc(r)>3D+1`. The inherited unique-central-term
+argument supplies the full binary cubed-scale divisibility condition.
+The [independent review](review_complete83_outer_family_sparse_two_primary.md)
+checks the complete proof and literal compiler spans, with fresh36 synthetic
+clause cases,16400 subtraction identities and13440 signed deficit cases;
+normal/optimized receipts passed before freezing. Author and predecessor
+helpers were not replayed. The first member n=1 and every odd-primary
+completion remain open; no full source zero or universal83 result follows.
+
 The [uniform two-primary cutoff](complete83_outer_family_uniform_two_primary.md), with [independent proof challenge](review_complete83_outer_family_uniform_two_primary.md), proves that every permitted outer-family member with n>=9 passes the power-of-two cubed-scale condition for every original powers-of-five compiler. The exact complement identity pc(Dmask)=|E| and the fixed support bound give pc(MC)>4d/5. Counting every bit in the unchanged low cells, rather than one bit per cell, and bounding the high deficits by ell<3d/2+1 removes the compiler-dependent threshold. Fresh author arithmetic checks and root's independent quantified proof challenge pass; n=1 and n=5 are not decided here. The odd-primary conditions, complete noncanonical zeros and universal83 remain open. No compiler numeral, source instruction or arithmetic bound changes.
 
 The [eventual two-primary success theorem](complete83_outer_family_two_primary.md), with [independent carry and source review](review_complete83_outer_family_two_primary.md), removes the power-of-two condition on an explicit infinite tail of the actual-compiler non-dyadic outer family. For Astar=64(4dK+4d+1), ell=bitlength(Astar), every permitted n>=3ell+5 has v2(M_r(X))=popcount(r)>=3v2(q)+1. Low repeated MC digits exclude denominator resonances; three disjoint high complement blocks provide the population bound. The proof keeps all compiler numerals fixed and retains the corrected missing-constant identities and extra-factor congruence in a numbered review remark. Fresh independent exact expansions and digit checks corroborate the quantified argument without materializing X, Y or Pell witnesses. Full completion on this tail now depends only on the odd-prime scale conditions, which remain unproved; no full zero, rejected input or universal83 bound is claimed.
@@ -5371,6 +5385,7 @@ New research and the completed75-operation construction:
 
 | Artifact | Established result | Remaining boundary |
 |---|---|---|
+| [Sparse compiler coefficients: n>=5 binary cutoff](complete83_outer_family_sparse_two_primary.md) | Actual clause sparsity bounds the three high-digit population losses by less than d/2; every permitted n>=5 passes the full two-primary condition. Independent proof/source review and fresh finite checks pass. | n=1, odd-primary completion, full positive source zero and universal83 remain unproved. |
 | [Uniform two-primary cutoff9](complete83_outer_family_uniform_two_primary.md) and [independent proof challenge](review_complete83_outer_family_uniform_two_primary.md) | Every allowed n>=9 passes the2-primary scale condition, uniformly across original compiler numerals, using actual fixed-mask density | n=1/5 and all odd-primary completion remain outside this packet; no full zero or universal83 |
 | [Eventual two-primary success](complete83_outer_family_two_primary.md) and [independent review](review_complete83_outer_family_two_primary.md) | Explicit fixed-compiler threshold makes the2-primary cubed-scale condition automatic on the constructed non-dyadic family tail | Odd-primary scale conditions remain open; no actual full source zero or universal83 conclusion |
 | [BCH import and finite-coefficient review](review_bch_ad52ef11e.md) and [independent challenge](review_bch_ad52ef11e_independent.md) | Formal word-cut interface, denominator bound and126 independent matrix coefficient checks; analytic inverse domain corrected with retained counterexample/PDF rebuild | Bounded rational evaluation is not an unbounded history compiler; general Lie/analytic proofs, Lean build and original papers unreviewed |
