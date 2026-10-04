@@ -3471,6 +3471,18 @@ zero tests, with instruction/control chronology also paid. The raw
 484-operation/61-witness option has degree at most7024. This is another
 complete universal route, above260 and the separate75/87 bounds.
 
+The [U21 prime-selector recentering](residue_affine_sparse_prime_recenter.md)
+reduces the complete one-program source to **466=171M+295A** and the
+two-program source to **465=171M+294A**, with67 positive witnesses each.
+The paid identity G17=A3+D9 replaces17G17+D9+D14 by18G17+D14-A3,
+removing one addition while retaining every state code and the entire
+polynomial. Certificate costs are446/445; degree bounds remain5091/5160.
+The [independent review](review_residue_affine_sparse_prime_recenter.md)
+reconstructs all931 rows, verifies the actual selector supports, every full
+control word and complete output identity, and checks both original interfaces.
+Fresh normal/optimized checks pass. Each source preserves its own parent's
+supplied positive zeros; the separate universal84 bound is unchanged.
+
 The [joint U21 control recoding](residue_affine_sparse_joint_recoding.md)
 reduces the complete one-program source to **467=171M+296A** operations and
 the two-program source to **466=171M+295A**, each with67 positive witnesses.
@@ -5064,6 +5076,7 @@ New research and the completed75-operation construction:
 
 | Artifact | Established result | Remaining boundary |
 |---|---|---|
+| [U21 prime-selector recentering](residue_affine_sparse_prime_recenter.md) | One-program466/two-program465 operations,67 witnesses; one addition saved by exact full-polynomial identity | Same codes and separate fixed-program interfaces; degree bounds5091/5160, universal84 unchanged |
 | [Joint U21 control recoding](residue_affine_sparse_joint_recoding.md) | One-program467/two-program466 complete operations,67 witnesses each; one fewer addition per array | Each own-parent supplied positive zero set preserved; degree bounds5091/5160, no cross-interface map or universal84 improvement |
 | [Strong Pell-root absorption](complete84_strong_root_absorption.md) | Fixed polynomial f=G on85 auxiliary-independent values has finite input projection, including signed G and an empty zero sector | Uses the signed-T rank lemma; substitutions depending on auxiliary coordinates remain outside this theorem |
 | [Signed auxiliary-quotient absorption](complete84_signed_quotient_absorption.md) | Every fixed polynomial T=G on93 T/y-independent values has finite input projection; G=0 impossible | Direct signed-domain rank/bounds only; no full signed-T compiler transfer or operation reduction |
