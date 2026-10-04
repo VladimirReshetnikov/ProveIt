@@ -1,0 +1,1371 @@
+{
+  "conclusion": "No all-value identity in this finite grammar lowers the complete paid total below 84.",
+  "grammar": {
+    "cost": "All binary operations live at the complete original polynomial output",
+    "leaves": "Free ports, constants 0..4, and strictly earlier original registers",
+    "operations": [
+      "+",
+      "-",
+      "*"
+    ],
+    "replacement_shapes": [
+      "alias a",
+      "op(a,b)",
+      "op(a,op(b,c))",
+      "op(op(b,c),a)",
+      "op(v,v), v=op(a,b)"
+    ],
+    "targets": "All source names except norm_* and all_units/seven_units/polynomial"
+  },
+  "limitations": [
+    "Not a global arithmetic lower bound",
+    "Not a positive-zero-only search",
+    "Does not exploit valid fixed-numeral recipe relations",
+    "Does not use later registers, multiple simultaneous rewrites, or new coordinates",
+    "Finite-field matches are not asserted to be exact identities",
+    "Exact degree is inherited with the unchanged source, not re-proved here"
+  ],
+  "new_universal_upper_bound_claim": false,
+  "packet": {
+    "all_ring_relation": "F84=A*F85 on the identical supplied coordinates",
+    "coordinate_map": "identity",
+    "exact_degree": 187,
+    "factor_exact_degrees": [
+      22,
+      18,
+      32,
+      60,
+      7,
+      2,
+      46
+    ],
+    "factor_values_at_positive_zeros": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      "A"
+    ],
+    "factors": [
+      "norm_first",
+      "norm_main",
+      "norm_input",
+      "norm_aux",
+      "norm_index",
+      "norm_transport",
+      "norm_strong"
+    ],
+    "fixed_numerals": [
+      "Bm1",
+      "Kconstant",
+      "twice_cell_bits",
+      "inner_bits",
+      "MC",
+      "MF"
+    ],
+    "free": [
+      "Jrep",
+      "F",
+      "alpha",
+      "transport_quotient",
+      "f",
+      "h",
+      "i",
+      "auxiliary_quotient",
+      "s",
+      "w",
+      "tau_root",
+      "eta",
+      "zeta",
+      "y_aux",
+      "Z",
+      "delta",
+      "rho",
+      "sigma",
+      "x",
+      "Bm1",
+      "Kconstant",
+      "twice_cell_bits",
+      "inner_bits",
+      "MC",
+      "MF"
+    ],
+    "full_polynomial_identity": false,
+    "ledger": {
+      "A": 37,
+      "M": 47,
+      "core_A": 36,
+      "core_M": 41,
+      "core_total": 77,
+      "finalizer_A": 1,
+      "finalizer_M": 6,
+      "finalizer_total": 7,
+      "total": 84
+    },
+    "normalized": true,
+    "ordinary_input": "x",
+    "output": "polynomial",
+    "same_positive_zero_tuples": true,
+    "scope": "Complete ordinary universal polynomial on the unchanged valid fixed-program recipe; no global circuit optimality claim.",
+    "source": [
+      [
+        "tau_square",
+        "*",
+        "tau_root",
+        "tau_root"
+      ],
+      [
+        "repunit",
+        "*",
+        "Bm1",
+        "Jrep"
+      ],
+      [
+        "q",
+        "+",
+        "repunit",
+        1
+      ],
+      [
+        "Lbig",
+        "*",
+        "q",
+        "q"
+      ],
+      [
+        "n2",
+        "*",
+        "Lbig",
+        "q"
+      ],
+      [
+        "wn2",
+        "*",
+        "w",
+        "q"
+      ],
+      [
+        "sn2",
+        "*",
+        "s",
+        "n2"
+      ],
+      [
+        "UM",
+        "*",
+        "wn2",
+        "sn2"
+      ],
+      [
+        "R10b",
+        "+",
+        "eta",
+        "zeta"
+      ],
+      [
+        "ksn2",
+        "*",
+        "R10b",
+        "sn2"
+      ],
+      [
+        "first_root_base",
+        "*",
+        "UM",
+        "ksn2"
+      ],
+      [
+        "first_next",
+        "+",
+        "first_root_base",
+        "R10b"
+      ],
+      [
+        "first_product",
+        "*",
+        "first_root_base",
+        "first_next"
+      ],
+      [
+        "norm_first",
+        "-",
+        "tau_square",
+        "first_product"
+      ],
+      [
+        "R10a",
+        "+",
+        "ksn2",
+        "eta"
+      ],
+      [
+        "R12",
+        "+",
+        "UM",
+        "sn2"
+      ],
+      [
+        "cam2",
+        "*",
+        "R10a",
+        "R12"
+      ],
+      [
+        "D1",
+        "+",
+        "wn2",
+        "cam2"
+      ],
+      [
+        "gamma_sum",
+        "+",
+        "rho",
+        "sigma"
+      ],
+      [
+        "a4",
+        "*",
+        4,
+        "R12"
+      ],
+      [
+        "a4m5",
+        "+",
+        "a4",
+        3
+      ],
+      [
+        "gam",
+        "*",
+        "gamma_sum",
+        "a4m5"
+      ],
+      [
+        "R14",
+        "+",
+        "D1",
+        "gam"
+      ],
+      [
+        "L15",
+        "*",
+        "R14",
+        "R14"
+      ],
+      [
+        "a_square",
+        "*",
+        "R12",
+        "R12"
+      ],
+      [
+        "A",
+        "+",
+        "a_square",
+        "a4m5"
+      ],
+      [
+        "c2",
+        "*",
+        "R10a",
+        "R10a"
+      ],
+      [
+        "Ac2",
+        "*",
+        "A",
+        "c2"
+      ],
+      [
+        "norm_main",
+        "-",
+        "L15",
+        "Ac2"
+      ],
+      [
+        "norm_pair",
+        "*",
+        "norm_first",
+        "norm_main"
+      ],
+      [
+        "q_minus_F",
+        "-",
+        "q",
+        "F"
+      ],
+      [
+        "q_minus_FZ",
+        "-",
+        "q_minus_F",
+        "Z"
+      ],
+      [
+        "C_after_alpha",
+        "-",
+        "q_minus_FZ",
+        "alpha"
+      ],
+      [
+        "scaled_t",
+        "*",
+        "twice_cell_bits",
+        "x"
+      ],
+      [
+        "marked_rhs",
+        "-",
+        "C_after_alpha",
+        "scaled_t"
+      ],
+      [
+        "W",
+        "-",
+        "marked_rhs",
+        "Z"
+      ],
+      [
+        "odd_index",
+        "+",
+        "scaled_t",
+        "inner_bits"
+      ],
+      [
+        "index_product",
+        "*",
+        "delta",
+        "A"
+      ],
+      [
+        "index_rhs",
+        "+",
+        "odd_index",
+        "index_product"
+      ],
+      [
+        "difference_multiple",
+        "*",
+        "index_rhs",
+        "R12"
+      ],
+      [
+        "exponent_partial",
+        "+",
+        "W",
+        "difference_multiple"
+      ],
+      [
+        "modulus_multiple",
+        "*",
+        "rho",
+        "a4m5"
+      ],
+      [
+        "exponent_rhs",
+        "+",
+        "exponent_partial",
+        "modulus_multiple"
+      ],
+      [
+        "mu2",
+        "*",
+        "exponent_rhs",
+        "exponent_rhs"
+      ],
+      [
+        "kappa2",
+        "*",
+        "index_rhs",
+        "index_rhs"
+      ],
+      [
+        "scaled_kappa2",
+        "*",
+        "A",
+        "kappa2"
+      ],
+      [
+        "norm_input",
+        "-",
+        "mu2",
+        "scaled_kappa2"
+      ],
+      [
+        "norm_triple",
+        "*",
+        "norm_pair",
+        "norm_input"
+      ],
+      [
+        "aux_y2",
+        "*",
+        "y_aux",
+        "y_aux"
+      ],
+      [
+        "hpm1",
+        "*",
+        "h",
+        "UM"
+      ],
+      [
+        "index_difference",
+        "-",
+        "R10b",
+        "hpm1"
+      ],
+      [
+        "gap_product",
+        "*",
+        "repunit",
+        "q_minus_F"
+      ],
+      [
+        "gap",
+        "+",
+        "gap_product",
+        "q_minus_FZ"
+      ],
+      [
+        "Lm1",
+        "-",
+        "Lbig",
+        1
+      ],
+      [
+        "rproduct",
+        "*",
+        "gap",
+        "Lm1"
+      ],
+      [
+        "qMF",
+        "*",
+        "q",
+        "MF"
+      ],
+      [
+        "mask_factor",
+        "+",
+        "MC",
+        "qMF"
+      ],
+      [
+        "mask",
+        "*",
+        "mask_factor",
+        "Jrep"
+      ],
+      [
+        "r_lhs",
+        "+",
+        "rproduct",
+        "mask"
+      ],
+      [
+        "norm_index",
+        "-",
+        "index_difference",
+        "r_lhs"
+      ],
+      [
+        "kinner",
+        "+",
+        "Kconstant",
+        "w"
+      ],
+      [
+        "innerC",
+        "*",
+        "kinner",
+        "marked_rhs"
+      ],
+      [
+        "transport_partial",
+        "+",
+        "innerC",
+        "q_minus_F"
+      ],
+      [
+        "local_rhs",
+        "*",
+        "transport_quotient",
+        "repunit"
+      ],
+      [
+        "norm_transport",
+        "-",
+        "transport_partial",
+        "local_rhs"
+      ],
+      [
+        "L16",
+        "*",
+        "f",
+        "f"
+      ],
+      [
+        "auxiliary_Tf",
+        "*",
+        "auxiliary_quotient",
+        "f"
+      ],
+      [
+        "auxiliary_Tf_minus_one",
+        "-",
+        "auxiliary_Tf",
+        1
+      ],
+      [
+        "auxiliary_c_Tf",
+        "*",
+        "R10a",
+        "auxiliary_Tf_minus_one"
+      ],
+      [
+        "auxiliary_R_f2",
+        "*",
+        "r_lhs",
+        "L16"
+      ],
+      [
+        "aux_u_rhs",
+        "-",
+        "auxiliary_c_Tf",
+        "auxiliary_R_f2"
+      ],
+      [
+        "H2",
+        "*",
+        "aux_u_rhs",
+        "aux_u_rhs"
+      ],
+      [
+        "aux_square_gap",
+        "-",
+        "H2",
+        "aux_y2"
+      ],
+      [
+        "aux_coefficient_root",
+        "*",
+        "i",
+        "Ac2"
+      ],
+      [
+        "R16",
+        "*",
+        "aux_coefficient_root",
+        "aux_coefficient_root"
+      ],
+      [
+        "scaled_f_square",
+        "*",
+        "A",
+        "L16"
+      ],
+      [
+        "norm_strong",
+        "-",
+        "scaled_f_square",
+        "R16"
+      ],
+      [
+        "L17",
+        "*",
+        "R16",
+        "aux_square_gap"
+      ],
+      [
+        "norm_aux",
+        "+",
+        "L17",
+        "aux_y2"
+      ],
+      [
+        "norm_four",
+        "*",
+        "norm_triple",
+        "norm_aux"
+      ],
+      [
+        "norm_product",
+        "*",
+        "norm_four",
+        "norm_index"
+      ],
+      [
+        "all_units",
+        "*",
+        "norm_product",
+        "norm_transport"
+      ],
+      [
+        "seven_units",
+        "*",
+        "all_units",
+        "norm_strong"
+      ],
+      [
+        "polynomial",
+        "-",
+        "seven_units",
+        "A"
+      ]
+    ],
+    "unrestricted_signed_zero_equivalence": false,
+    "witness_domain": "strictly positive integers",
+    "witnesses": [
+      "Jrep",
+      "F",
+      "alpha",
+      "transport_quotient",
+      "f",
+      "h",
+      "i",
+      "auxiliary_quotient",
+      "s",
+      "w",
+      "tau_root",
+      "eta",
+      "zeta",
+      "y_aux",
+      "Z",
+      "delta",
+      "rho",
+      "sigma"
+    ]
+  },
+  "parent_pins": {
+    "complete84_scaled_strong_output.json": "8b2bc5d0b4db90c168107b7ded2cb4ca08df0098ed190851a3db4f1e49a9c0cf",
+    "complete84_scaled_strong_output.md": "01eb7df6688c08c6788a3c7a1cc272ca5ffc1a87734fd622dbec8a64ae974ade",
+    "complete84_scaled_strong_output.py": "8b4dd58c849ae79751f1be6638f1b9e3f9072a714c5479eadf1039f10d0c7737"
+  },
+  "predecessor_Python_executed": false,
+  "search": {
+    "constants": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "counts": {
+      "multiplication_zero_rejections": 70,
+      "one_operation_matches": 70,
+      "pair_expressions": 719027,
+      "shared_temporary_matches": 55,
+      "targets": 70,
+      "two_operation_matches": 994,
+      "zero_operation_alias_matches": 0,
+      "zero_operation_alias_tests": 4741
+    },
+    "free_port_evaluations": {
+      "Bm1": [
+        996066705,
+        189439246,
+        942450415
+      ],
+      "F": [
+        660539401,
+        238241246,
+        628823102
+      ],
+      "Jrep": [
+        116120305,
+        265196126,
+        832143022
+      ],
+      "Kconstant": [
+        319603202,
+        27102216,
+        893297897
+      ],
+      "MC": [
+        15414291,
+        737058912,
+        552876100
+      ],
+      "MF": [
+        290275006,
+        250567280,
+        316443069
+      ],
+      "Z": [
+        637777866,
+        200112990,
+        645856266
+      ],
+      "alpha": [
+        818120327,
+        974615484,
+        48549623
+      ],
+      "auxiliary_quotient": [
+        958060412,
+        984070975,
+        627800263
+      ],
+      "delta": [
+        171235993,
+        929995904,
+        729437777
+      ],
+      "eta": [
+        602754895,
+        873196298,
+        911917183
+      ],
+      "f": [
+        88218018,
+        19713538,
+        772388950
+      ],
+      "h": [
+        376135048,
+        600776399,
+        142640690
+      ],
+      "i": [
+        722647383,
+        418337580,
+        38708978
+      ],
+      "inner_bits": [
+        374788751,
+        56049575,
+        959584544
+      ],
+      "rho": [
+        316190421,
+        756451729,
+        174708905
+      ],
+      "s": [
+        597068436,
+        851001885,
+        644246254
+      ],
+      "sigma": [
+        241735898,
+        839962090,
+        415611331
+      ],
+      "tau_root": [
+        325927462,
+        780015864,
+        235966080
+      ],
+      "transport_quotient": [
+        624782419,
+        853919949,
+        733838527
+      ],
+      "twice_cell_bits": [
+        347569505,
+        620337805,
+        860746544
+      ],
+      "w": [
+        80294673,
+        413233398,
+        839528599
+      ],
+      "x": [
+        180139877,
+        48605073,
+        920858136
+      ],
+      "y_aux": [
+        132743375,
+        802278443,
+        390051138
+      ],
+      "zeta": [
+        833763698,
+        168280654,
+        185825867
+      ]
+    },
+    "lower_cost_candidates": [],
+    "moduli": [
+      1000000007,
+      1000000009,
+      998244353
+    ],
+    "parent_free_liveness": 25,
+    "parent_gate_liveness": 84,
+    "parent_paid_ledger": {
+      "A": 37,
+      "M": 47,
+      "total": 84
+    },
+    "per_target": [
+      {
+        "minimum_surviving_cost": 84,
+        "one_operation_matches": 1,
+        "shared_temporary_matches": 4,
+        "target": "tau_square",
+        "two_operation_matches": 10,
+        "zero_operation_matches": 0
+      },
+      {
+        "minimum_surviving_cost": 84,
+        "one_operation_matches": 1,
+        "shared_temporary_matches": 0,
+        "target": "repunit",
+        "two_operation_matches": 9,
+        "zero_operation_matches": 0
+      },
+      {
+        "minimum_surviving_cost": 84,
+        "one_operation_matches": 1,
+        "shared_temporary_matches": 0,
+        "target": "q",
+        "two_operation_matches": 27,
+        "zero_operation_matches": 0
+      },
+      {
+        "minimum_surviving_cost": 84,
+        "one_operation_matches": 1,
+        "shared_temporary_matches": 5,
+        "target": "Lbig",
+        "two_operation_matches": 13,
+        "zero_operation_matches": 0
+      },
+      {
+        "minimum_surviving_cost": 84,
+        "one_operation_matches": 1,
+        "shared_temporary_matches": 0,
+        "target": "n2",
+        "two_operation_matches": 12,
+        "zero_operation_matches": 0
+      },
+      {
+        "minimum_surviving_cost": 84,
+        "one_operation_matches": 1,
+        "shared_temporary_matches": 0,
+        "target": "wn2",
+        "two_operation_matches": 11,
+        "zero_operation_matches": 0
+      },
+      {
+        "minimum_surviving_cost": 84,
+        "one_operation_matches": 1,
+        "shared_temporary_matches": 0,
+        "target": "sn2",
+        "two_operation_matches": 12,
+        "zero_operation_matches": 0
+      },
+      {
+        "minimum_surviving_cost": 84,
+        "one_operation_matches": 1,
+        "shared_temporary_matches": 0,
+        "target": "UM",
+        "two_operation_matches": 15,
+        "zero_operation_matches": 0
+      },
+      {
+        "minimum_surviving_cost": 84,
+        "one_operation_matches": 1,
+        "shared_temporary_matches": 0,
+        "target": "R10b",
+        "two_operation_matches": 11,
+        "zero_operation_matches": 0
+      },
+      {
+        "minimum_surviving_cost": 84,
+        "one_operation_matches": 1,
+        "shared_temporary_matches": 0,
+        "target": "ksn2",
+        "two_operation_matches": 13,
+        "zero_operation_matches": 0
+      },
+      {
+        "minimum_surviving_cost": 84,
+        "one_operation_matches": 1,
+        "shared_temporary_matches": 0,
+        "target": "first_root_base",
+        "two_operation_matches": 15,
+        "zero_operation_matches": 0
+      },
+      {
+        "minimum_surviving_cost": 84,
+        "one_operation_matches": 1,
+        "shared_temporary_matches": 0,
+        "target": "first_next",
+        "two_operation_matches": 15,
+        "zero_operation_matches": 0
+      },
+      {
+        "minimum_surviving_cost": 84,
+        "one_operation_matches": 1,
+        "shared_temporary_matches": 0,
+        "target": "first_product",
+        "two_operation_matches": 14,
+        "zero_operation_matches": 0
+      },
+      {
+        "minimum_surviving_cost": 84,
+        "one_operation_matches": 1,
+        "shared_temporary_matches": 0,
+        "target": "R10a",
+        "two_operation_matches": 17,
+        "zero_operation_matches": 0
+      },
+      {
+        "minimum_surviving_cost": 84,
+        "one_operation_matches": 1,
+        "shared_temporary_matches": 0,
+        "target": "R12",
+        "two_operation_matches": 14,
+        "zero_operation_matches": 0
+      },
+      {
+        "minimum_surviving_cost": 84,
+        "one_operation_matches": 1,
+        "shared_temporary_matches": 0,
+        "target": "cam2",
+        "two_operation_matches": 11,
+        "zero_operation_matches": 0
+      },
+      {
+        "minimum_surviving_cost": 84,
+        "one_operation_matches": 1,
+        "shared_temporary_matches": 0,
+        "target": "D1",
+        "two_operation_matches": 13,
+        "zero_operation_matches": 0
+      },
+      {
+        "minimum_surviving_cost": 84,
+        "one_operation_matches": 1,
+        "shared_temporary_matches": 0,
+        "target": "gamma_sum",
+        "two_operation_matches": 11,
+        "zero_operation_matches": 0
+      },
+      {
+        "minimum_surviving_cost": 84,
+        "one_operation_matches": 1,
+        "shared_temporary_matches": 2,
+        "target": "a4",
+        "two_operation_matches": 18,
+        "zero_operation_matches": 0
+      },
+      {
+        "minimum_surviving_cost": 84,
+        "one_operation_matches": 1,
+        "shared_temporary_matches": 0,
+        "target": "a4m5",
+        "two_operation_matches": 20,
+        "zero_operation_matches": 0
+      },
+      {
+        "minimum_surviving_cost": 84,
+        "one_operation_matches": 1,
+        "shared_temporary_matches": 0,
+        "target": "gam",
+        "two_operation_matches": 11,
+        "zero_operation_matches": 0
+      },
+      {
+        "minimum_surviving_cost": 84,
+        "one_operation_matches": 1,
+        "shared_temporary_matches": 0,
+        "target": "R14",
+        "two_operation_matches": 15,
+        "zero_operation_matches": 0
+      },
+      {
+        "minimum_surviving_cost": 84,
+        "one_operation_matches": 1,
+        "shared_temporary_matches": 5,
+        "target": "L15",
+        "two_operation_matches": 12,
+        "zero_operation_matches": 0
+      },
+      {
+        "minimum_surviving_cost": 84,
+        "one_operation_matches": 1,
+        "shared_temporary_matches": 5,
+        "target": "a_square",
+        "two_operation_matches": 12,
+        "zero_operation_matches": 0
+      },
+      {
+        "minimum_surviving_cost": 84,
+        "one_operation_matches": 1,
+        "shared_temporary_matches": 0,
+        "target": "A",
+        "two_operation_matches": 15,
+        "zero_operation_matches": 0
+      },
+      {
+        "minimum_surviving_cost": 84,
+        "one_operation_matches": 1,
+        "shared_temporary_matches": 5,
+        "target": "c2",
+        "two_operation_matches": 12,
+        "zero_operation_matches": 0
+      },
+      {
+        "minimum_surviving_cost": 84,
+        "one_operation_matches": 1,
+        "shared_temporary_matches": 0,
+        "target": "Ac2",
+        "two_operation_matches": 12,
+        "zero_operation_matches": 0
+      },
+      {
+        "minimum_surviving_cost": 84,
+        "one_operation_matches": 1,
+        "shared_temporary_matches": 0,
+        "target": "q_minus_F",
+        "two_operation_matches": 16,
+        "zero_operation_matches": 0
+      },
+      {
+        "minimum_surviving_cost": 84,
+        "one_operation_matches": 1,
+        "shared_temporary_matches": 0,
+        "target": "q_minus_FZ",
+        "two_operation_matches": 14,
+        "zero_operation_matches": 0
+      },
+      {
+        "minimum_surviving_cost": 84,
+        "one_operation_matches": 1,
+        "shared_temporary_matches": 0,
+        "target": "C_after_alpha",
+        "two_operation_matches": 14,
+        "zero_operation_matches": 0
+      },
+      {
+        "minimum_surviving_cost": 84,
+        "one_operation_matches": 1,
+        "shared_temporary_matches": 0,
+        "target": "scaled_t",
+        "two_operation_matches": 9,
+        "zero_operation_matches": 0
+      },
+      {
+        "minimum_surviving_cost": 84,
+        "one_operation_matches": 1,
+        "shared_temporary_matches": 0,
+        "target": "marked_rhs",
+        "two_operation_matches": 15,
+        "zero_operation_matches": 0
+      },
+      {
+        "minimum_surviving_cost": 84,
+        "one_operation_matches": 1,
+        "shared_temporary_matches": 0,
+        "target": "W",
+        "two_operation_matches": 19,
+        "zero_operation_matches": 0
+      },
+      {
+        "minimum_surviving_cost": 84,
+        "one_operation_matches": 1,
+        "shared_temporary_matches": 0,
+        "target": "odd_index",
+        "two_operation_matches": 17,
+        "zero_operation_matches": 0
+      },
+      {
+        "minimum_surviving_cost": 84,
+        "one_operation_matches": 1,
+        "shared_temporary_matches": 0,
+        "target": "index_product",
+        "two_operation_matches": 10,
+        "zero_operation_matches": 0
+      },
+      {
+        "minimum_surviving_cost": 84,
+        "one_operation_matches": 1,
+        "shared_temporary_matches": 0,
+        "target": "index_rhs",
+        "two_operation_matches": 15,
+        "zero_operation_matches": 0
+      },
+      {
+        "minimum_surviving_cost": 84,
+        "one_operation_matches": 1,
+        "shared_temporary_matches": 0,
+        "target": "difference_multiple",
+        "two_operation_matches": 11,
+        "zero_operation_matches": 0
+      },
+      {
+        "minimum_surviving_cost": 84,
+        "one_operation_matches": 1,
+        "shared_temporary_matches": 0,
+        "target": "exponent_partial",
+        "two_operation_matches": 17,
+        "zero_operation_matches": 0
+      },
+      {
+        "minimum_surviving_cost": 84,
+        "one_operation_matches": 1,
+        "shared_temporary_matches": 0,
+        "target": "modulus_multiple",
+        "two_operation_matches": 13,
+        "zero_operation_matches": 0
+      },
+      {
+        "minimum_surviving_cost": 84,
+        "one_operation_matches": 1,
+        "shared_temporary_matches": 0,
+        "target": "exponent_rhs",
+        "two_operation_matches": 15,
+        "zero_operation_matches": 0
+      },
+      {
+        "minimum_surviving_cost": 84,
+        "one_operation_matches": 1,
+        "shared_temporary_matches": 5,
+        "target": "mu2",
+        "two_operation_matches": 12,
+        "zero_operation_matches": 0
+      },
+      {
+        "minimum_surviving_cost": 84,
+        "one_operation_matches": 1,
+        "shared_temporary_matches": 5,
+        "target": "kappa2",
+        "two_operation_matches": 12,
+        "zero_operation_matches": 0
+      },
+      {
+        "minimum_surviving_cost": 84,
+        "one_operation_matches": 1,
+        "shared_temporary_matches": 0,
+        "target": "scaled_kappa2",
+        "two_operation_matches": 12,
+        "zero_operation_matches": 0
+      },
+      {
+        "minimum_surviving_cost": 84,
+        "one_operation_matches": 1,
+        "shared_temporary_matches": 4,
+        "target": "aux_y2",
+        "two_operation_matches": 10,
+        "zero_operation_matches": 0
+      },
+      {
+        "minimum_surviving_cost": 84,
+        "one_operation_matches": 1,
+        "shared_temporary_matches": 0,
+        "target": "hpm1",
+        "two_operation_matches": 13,
+        "zero_operation_matches": 0
+      },
+      {
+        "minimum_surviving_cost": 84,
+        "one_operation_matches": 1,
+        "shared_temporary_matches": 0,
+        "target": "index_difference",
+        "two_operation_matches": 20,
+        "zero_operation_matches": 0
+      },
+      {
+        "minimum_surviving_cost": 84,
+        "one_operation_matches": 1,
+        "shared_temporary_matches": 0,
+        "target": "gap_product",
+        "two_operation_matches": 16,
+        "zero_operation_matches": 0
+      },
+      {
+        "minimum_surviving_cost": 84,
+        "one_operation_matches": 1,
+        "shared_temporary_matches": 0,
+        "target": "gap",
+        "two_operation_matches": 21,
+        "zero_operation_matches": 0
+      },
+      {
+        "minimum_surviving_cost": 84,
+        "one_operation_matches": 1,
+        "shared_temporary_matches": 0,
+        "target": "Lm1",
+        "two_operation_matches": 35,
+        "zero_operation_matches": 0
+      },
+      {
+        "minimum_surviving_cost": 84,
+        "one_operation_matches": 1,
+        "shared_temporary_matches": 0,
+        "target": "rproduct",
+        "two_operation_matches": 12,
+        "zero_operation_matches": 0
+      },
+      {
+        "minimum_surviving_cost": 84,
+        "one_operation_matches": 1,
+        "shared_temporary_matches": 0,
+        "target": "qMF",
+        "two_operation_matches": 12,
+        "zero_operation_matches": 0
+      },
+      {
+        "minimum_surviving_cost": 84,
+        "one_operation_matches": 1,
+        "shared_temporary_matches": 0,
+        "target": "mask_factor",
+        "two_operation_matches": 12,
+        "zero_operation_matches": 0
+      },
+      {
+        "minimum_surviving_cost": 84,
+        "one_operation_matches": 1,
+        "shared_temporary_matches": 0,
+        "target": "mask",
+        "two_operation_matches": 10,
+        "zero_operation_matches": 0
+      },
+      {
+        "minimum_surviving_cost": 84,
+        "one_operation_matches": 1,
+        "shared_temporary_matches": 0,
+        "target": "r_lhs",
+        "two_operation_matches": 13,
+        "zero_operation_matches": 0
+      },
+      {
+        "minimum_surviving_cost": 84,
+        "one_operation_matches": 1,
+        "shared_temporary_matches": 0,
+        "target": "kinner",
+        "two_operation_matches": 11,
+        "zero_operation_matches": 0
+      },
+      {
+        "minimum_surviving_cost": 84,
+        "one_operation_matches": 1,
+        "shared_temporary_matches": 0,
+        "target": "innerC",
+        "two_operation_matches": 12,
+        "zero_operation_matches": 0
+      },
+      {
+        "minimum_surviving_cost": 84,
+        "one_operation_matches": 1,
+        "shared_temporary_matches": 0,
+        "target": "transport_partial",
+        "two_operation_matches": 20,
+        "zero_operation_matches": 0
+      },
+      {
+        "minimum_surviving_cost": 84,
+        "one_operation_matches": 1,
+        "shared_temporary_matches": 0,
+        "target": "local_rhs",
+        "two_operation_matches": 14,
+        "zero_operation_matches": 0
+      },
+      {
+        "minimum_surviving_cost": 84,
+        "one_operation_matches": 1,
+        "shared_temporary_matches": 4,
+        "target": "L16",
+        "two_operation_matches": 10,
+        "zero_operation_matches": 0
+      },
+      {
+        "minimum_surviving_cost": 84,
+        "one_operation_matches": 1,
+        "shared_temporary_matches": 0,
+        "target": "auxiliary_Tf",
+        "two_operation_matches": 9,
+        "zero_operation_matches": 0
+      },
+      {
+        "minimum_surviving_cost": 84,
+        "one_operation_matches": 1,
+        "shared_temporary_matches": 0,
+        "target": "auxiliary_Tf_minus_one",
+        "two_operation_matches": 37,
+        "zero_operation_matches": 0
+      },
+      {
+        "minimum_surviving_cost": 84,
+        "one_operation_matches": 1,
+        "shared_temporary_matches": 0,
+        "target": "auxiliary_c_Tf",
+        "two_operation_matches": 12,
+        "zero_operation_matches": 0
+      },
+      {
+        "minimum_surviving_cost": 84,
+        "one_operation_matches": 1,
+        "shared_temporary_matches": 0,
+        "target": "auxiliary_R_f2",
+        "two_operation_matches": 13,
+        "zero_operation_matches": 0
+      },
+      {
+        "minimum_surviving_cost": 84,
+        "one_operation_matches": 1,
+        "shared_temporary_matches": 0,
+        "target": "aux_u_rhs",
+        "two_operation_matches": 13,
+        "zero_operation_matches": 0
+      },
+      {
+        "minimum_surviving_cost": 84,
+        "one_operation_matches": 1,
+        "shared_temporary_matches": 6,
+        "target": "H2",
+        "two_operation_matches": 13,
+        "zero_operation_matches": 0
+      },
+      {
+        "minimum_surviving_cost": 84,
+        "one_operation_matches": 1,
+        "shared_temporary_matches": 0,
+        "target": "aux_square_gap",
+        "two_operation_matches": 13,
+        "zero_operation_matches": 0
+      },
+      {
+        "minimum_surviving_cost": 84,
+        "one_operation_matches": 1,
+        "shared_temporary_matches": 0,
+        "target": "aux_coefficient_root",
+        "two_operation_matches": 13,
+        "zero_operation_matches": 0
+      },
+      {
+        "minimum_surviving_cost": 84,
+        "one_operation_matches": 1,
+        "shared_temporary_matches": 5,
+        "target": "R16",
+        "two_operation_matches": 14,
+        "zero_operation_matches": 0
+      },
+      {
+        "minimum_surviving_cost": 84,
+        "one_operation_matches": 1,
+        "shared_temporary_matches": 0,
+        "target": "scaled_f_square",
+        "two_operation_matches": 12,
+        "zero_operation_matches": 0
+      },
+      {
+        "minimum_surviving_cost": 84,
+        "one_operation_matches": 1,
+        "shared_temporary_matches": 0,
+        "target": "L17",
+        "two_operation_matches": 13,
+        "zero_operation_matches": 0
+      }
+    ],
+    "seed": 841037
+  },
+  "source_sha256": "472f6d1afba2cbc138d7be94dba1004031ac92b9af458ed1a3099d4393736194",
+  "status": "PASS"
+}

@@ -15,6 +15,16 @@ bound remains **74**; the lower-degree **85/175** and other reviewed choices
 remain available. Earlier entries retain their historical counts; the current
 minimum polynomial count is **84**, with no global optimality claim.
 
+The [local producer scout](complete84_local_producer_scout.md) finds no
+saving among zero-, one- or two-operation replacements at70 actual84
+producer rows. It enumerates4741 aliases and719027 inner expressions;
+all1064 matching schedules retain at least84 live gates. Modular values
+serve only as rejection filters, and full-output liveness charges every
+retained consumer. The [source and coverage review](review_complete84_local_producer_scout.md)
+and fresh normal/optimized replays pass. This excludes only the stated
+single-producer all-value grammar, leaving joint identities and sound
+coordinate changes open.
+
 The [outer-slack 83 candidate](complete83_outer_slack_collapse.md) saves
 one addition by supplying alpha+Z, giving a fully paid **83=47M+36A**
 source with 18 positive witnesses and exact degree 187. **Its inherited
@@ -125,6 +135,17 @@ conditional timed-chart proof and confirms the explicit binary certificate's
 Its generic compiler still assumes a bijective chart description; witness
 and square counts are not arithmetic operation counts. These scoped reviews
 do not certify an implemented rule-to-chart compiler or improve universality.
+
+The [faithful parabolic obstruction](u15_faithful_parabolic_obstruction.md)
+shows that the universal U15 block W=(01)^3 11 stays hyperbolic under
+**every faithful SL2(Z) representation**, with a stated GL2(Z) extension.
+The proof combines a nonabelian quotient, primitive homology and the
+rank-two surface classification; it is not a finite matrix search.
+The [independent review](review_u15_faithful_parabolic_obstruction.md)
+checks the primary surface premise and word argument, and normal/optimized
+receipts pass. Thus changing faithful two-by-two matrix constants cannot
+make this block an affine input loader. Other physical encodings, higher
+dimensions and certificates with additional witnesses remain outside.
 
 The [U15 repeated-block interface](u15_unary_block_interface.md) gives an
 effective universal family `U_S W^x V_S` in the actual193-generator source,
