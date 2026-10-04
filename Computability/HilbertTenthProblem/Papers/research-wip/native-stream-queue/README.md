@@ -203,6 +203,24 @@ checks the unrestricted transfer, all entries and the accepted product;
 normal/optimized replays pass. Correct Pell indexing and an unbounded
 product certificate remain unpaid; the universal polynomial bound stays **84**.
 
+The [integral-basis target floor](matrix193_integral_target_floor.md)
+proves that no change of integral unimodular basis lowers those three
+generic target gates while retaining first-row injectivity on the entire
+inherited group. Every one- or two-gate frame has a lower-unipotent
+collision. The [independent review](review_matrix193_integral_target_floor.md)
+checks the unrestricted residue/Pell classification and gate argument.
+This leaves projections justified only on smaller product sets open and
+is not a universal Diophantine lower bound.
+
+The [rational-basis extension](matrix193_rational_target_floor.md)
+classifies every rational lattice invariant under the inherited group:
+up to scaling there are exactly two. Both yield the same attained
+three-gate floor when the entire group remains integral and its first-row
+projection remains injective. The [independent review](review_matrix193_rational_target_floor.md)
+checks both unrestricted classifications; fresh normal/optimized replays
+pass. Smaller product sets and other projections remain open, and the
+exact Pell index and unbounded membership certificate remain unpaid.
+
 The [Gamma1(5) recoding](matrix193_gamma1_recode.md)
 preserves all 193 generators and twenty letters with **Pell parameter 391**.
 Two explicit graphs prove faithfulness and first-row injectivity, giving
