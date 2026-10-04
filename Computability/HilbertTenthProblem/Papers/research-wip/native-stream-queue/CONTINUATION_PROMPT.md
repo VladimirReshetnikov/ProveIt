@@ -58,6 +58,16 @@
 > and fresh normal/optimized receipts check the full source and criterion.
 > The established universal minimum remains **84 operations**.
 >
+> The [upper-ratio deletion](complete83_upper_ratio_deletion_collapse.md)
+> emits a distinct **83=47M+36A**,18-witness,degree187 source by supplying
+> k instead of eta+zeta. It is **refuted on every positive input** for every
+> inherited valid compiler: the retained first-index, shared input, original
+> bound and current auxiliary factors all complete positively, while the
+> restored zeta is negative. The [independent review](review_complete83_upper_ratio_deletion_collapse.md)
+> checks the literal current-source transfer and all seven factor values;
+> normal/optimized replays pass. This closes the current version of the
+> historical upper-ratio failure and does not settle independent-gamma83.
+>
 > The [gamma83 power tests](complete83_gamma_power_tests.md)
 > give exact sufficient conditions for a false ordinary input, without
 > factoring the native modulus H. On a genuine accepting history at input4
