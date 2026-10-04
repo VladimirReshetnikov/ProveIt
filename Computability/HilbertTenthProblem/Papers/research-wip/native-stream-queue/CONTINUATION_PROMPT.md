@@ -103,6 +103,16 @@
 > This chart drops the main exponent congruence and is distinct from the
 > unresolved independent-gamma83. The universal bound remains84.
 >
+> The [monomial-rescaling bound](first_norm_monomial_scaling_bound.md)
+> shows that every nonzero monomial multiple of the first norm still needs
+> at least 3M and 2A at its six dependent paid inputs. Each bound permits
+> unboundedly many operations of the other kind. The
+> [independent review](review_first_norm_monomial_scaling_bound.md)
+> checks the quantified degree and factorization arguments and the actual84
+> source cut; normal/optimized replays pass. This excludes four-gate monomial
+> rescalings in that component, while joint computations, other paid registers
+> and nonmonomial positive multipliers remain available.
+>
 > The [simultaneous shared-fork scout](complete84_shared_fork_scout.md)
 > finds no saving in a larger finite rewrite grammar: two producer outputs,
 > a shared binary intermediate, at most three new gates, and later independent
