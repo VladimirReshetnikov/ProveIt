@@ -689,8 +689,10 @@ Report 32 is `../group-theoretic-substrates` Part V.
   of SMC Part IV's §`smc:sl:sec:safe`. Report 15's clean-target wrapper is
   SMC source 15's (`smc:ct:thm:restore`, Bennett's uncomputation),
   credited in a `[write]` note. SMC source 19 (Report 29) cites Report 16
-  for its four-versus-five boundary. SMC's own text is not changed by
-  either write.
+  for its four-versus-five boundary. SMC's own text was not changed by
+  either write; dated reciprocal notes of batch 82 (3 October 2026) there
+  record these answers at each question, at the threshold table and at
+  source 17's non-claims.
 - **`../quadratic-orthant-certificates` (QOC).** Report 14's 8,408-row
   source is QOC Part V's (source 16); its Section 26 re-derives
   `qoc:um:lem:virtual` and `qoc:um:lem:prime` (kept as a marked second
@@ -712,7 +714,12 @@ Report 32 is `../group-theoretic-substrates` Part V.
   theorem to Report 20 is SMC's `smc:sl:thm:core`.
 - **SMC Part VIII (Report 22, source 23).** Report 28's uncited remark on
   "infinite native Pell witness fibers" refers to it; a `[write]` note
-  says so.
+  says so, and a reciprocal note (batch 82, 3 October 2026) names its
+  fixed-scale infinitude theorem `smc:ch:thm:infinite`.
+- **`../group-theoretic-substrates` Part V (Report 32).** Its delivered
+  dependency audit cites Report 16's finite `U_{15,2}` input convention
+  (loader and machine table) for the input hardness of its fixed matrix
+  semigroup only; a reciprocal note (batch 82) in Part II records it.
 
 ## Relation to the formal project
 
@@ -986,7 +993,13 @@ references or citations, no multiply-defined labels, no duplicate
 destinations and no overfull lines. The second write widened the table of
 contents' section-number and page-number boxes (three-digit numbers) and
 set `\emergencystretch` to 2em, as Reports 27 and 28 do; this also removed
-the one overfull line of the first build (Report 14's Section 31).
+the one overfull line of the first build (Report 14's Section 31). The two
+batch-82 reciprocal notes (3 October 2026: in Section 34.1 after the loader,
+and in Section 111, appended to the note on Report 28's Pell-fibre remark;
+no label, macro, package or bibliography entry) leave the build at 190
+pages with every Part on the same page, the same clean log and three
+underfull lines, none in the notes; their pages (64 and 167) were rendered
+and inspected.
 
 ## Delivered path → shipped path
 

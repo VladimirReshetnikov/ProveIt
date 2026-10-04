@@ -650,7 +650,19 @@ The report does **not** claim:
   the raw value by a prime needs natural values (that report's real
   assignment `e = 1`, `u = 1/2`), so those certificates are exact over the
   naturals only. A dated note after the lemma records this; no theorem is
-  shared.
+  shared. Reciprocal note (batch 82, 3 October 2026): the chart compiler of
+  that report's source 18 (`smc:tq:prop:compiler`) uses the same inactive
+  gate `(E − e_i) Z_i`; a second dated note after the lemma.
+- **[`five-particle-binary-automata`](../five-particle-binary-automata)**
+  (batch 82). Its Report 14 uses Part V's 8,408-row prime-coded source and
+  re-derives `qoc:um:lem:virtual` and `qoc:um:lem:prime` as a marked
+  second presentation; its degree-four certificate for that source
+  (`10,750h` witnesses, `2,344h + 1` squares, Section 28 there) is weaker
+  than `qoc:um:thm:poly` but adds a row for the automaton's clock. Its
+  Report 16's front end is Part V's 528-row program, byte for byte.
+  Reports 14 and 16 record the Neary–Woods `(u10,b)` discrepancy again.
+  Reciprocal notes (batch 82, 3 October 2026) after Theorem
+  `qoc:um:thm:poly` and after Table `qoc:wf:tab:tm` record this.
 - **This report's own questions.** Part IV answers in part Part I's question
   "Add dynamic membranes without witness multiplicity" (one step, histories
   modulo renaming) and covers division and dissolution, which Part I's
@@ -662,7 +674,13 @@ The report does **not** claim:
 - **[`group-theoretic-substrates`](../group-theoretic-substrates)**,
   **[`probabilistic-quantum-and-continuous-computation`](../probabilistic-quantum-and-continuous-computation)**,
   **[`stochastic-and-thermal-exactness`](../stochastic-and-thermal-exactness)**:
-  no overlap.
+  no shared theorem. Since batch 82, Part V of `group-theoretic-substrates`
+  (Report 32) prints Part III's machine table a third time
+  (`gts:um:tab:machine`; its serialized table is byte-identical to
+  `data/16-universal-membrane-tm_table.json`) and drives a fixed
+  229-generator positive semigroup in SL₄(ℤ) with it
+  (`gts:um:thm:semigroup`); a dated note after Table `qoc:wf:tab:tm`
+  records this.
 - **The Hilbert-tenth-problem research programme** (read-only for this
   report), `Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/`,
   reviewed all six archives on the day they arrived (source 17's review
@@ -864,7 +882,15 @@ citations, multiply defined labels, duplicate destinations or overfull or
 underfull boxes, and five "Infinite glue shrinkage" messages (seven in a
 rebuild of the previous text in the same environment). All 307 labels and
 56 bibliography entries keep their numbers (compared in the `.aux`), and
-the page of the note (page 136) was rendered and inspected.
+the page of the note (page 136) was rendered and inspected. The batch-82
+reciprocal notes (3 October 2026: after Table `qoc:wf:tab:tm`, after
+Theorem `qoc:um:thm:poly`, after Lemma `qoc:rn:lem:gates`, and three
+sentences in Section 1's relation list; no label, macro, package or
+bibliography entry) leave the total at 170 pages, with no errors, warnings,
+undefined references or citations, multiply defined labels, duplicate
+destinations or overfull or underfull boxes, and six "Infinite glue
+shrinkage" messages; the pages of the first two notes (printed pages 74
+and 121) were rendered and inspected.
 
 The article is generated reproducibly from the delivered manuscripts by
 merge scripts with anchored insertions (Parts IV–VI were appended to the

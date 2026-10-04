@@ -656,7 +656,11 @@ this write, so Part V cites it by report name only. Its regime is the opposite
 one (a dense nonclosed range instead of a bounded inverse).
 [`group-theoretic-substrates`](../group-theoretic-substrates) and
 [`signal-machine-collision-certificates`](../signal-machine-collision-certificates)
-have no overlap. The research note
+share no theorem with it. Since batch 82, Part V of `group-theoretic-substrates`
+(Report 32) is a fixed-semigroup counterpart of Part I's PCP-to-mortality
+reduction `ste:ee:thm:pcp`, with the target rather than the instance as
+input (229 matrices in SL₄(ℤ), `gts:um:thm:semigroup`); a dated
+reciprocal note (3 October 2026) after that theorem records it. The research note
 `Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/matrix_pcp_trace.md`
 uses the same radix-three PCP tiles as Part I's front end, without its fourth
 coordinate and idempotent connector.
@@ -687,7 +691,10 @@ pages: no LaTeX warnings at all (no undefined references or citations, no
 multiply defined labels, no duplicate destinations), no overfull boxes, and
 six underfull lines (badness at most 2799), all in batch-78 text (three
 `[write]` notes and the bibliography) and identical to the committed build
-before batch 79.
+before batch 79. The batch-82 reciprocal note after Theorem
+`ste:ee:thm:pcp` (3 October 2026; no label, macro, package or bibliography
+entry) leaves the total at 177 pages with the same clean log and the same
+six underfull lines; its page (printed page 28) was rendered and inspected.
 
 ## Rerunning the programs
 

@@ -2693,6 +2693,18 @@ the formula and the quartic are that source's; this report supplies only
 the degree lower bound, as that report already says. No question of this
 report is answered.
 
+**Reciprocal note (batch 82, cluster M4).** Cluster M4 added source 18 and
+Part VII to
+[signal-machine-collision-certificates](../signal-machine-collision-certificates/)
+(written in `9b3977008`). One dated note of 3 October 2026, without a new
+label, follows the batch-79 note after the discussion of
+`cdc:of:thm:singlefoldsl` (Part XI): that report's source 20 gives, in its
+appendix section `smc:og:app:quartic` (`smc:og:thm:quartic`), a canonical
+membership quartic for the visited set of a fixed input of mass at most
+four, a second route at a higher degree to that theorem for those
+semilinear sets, which that report credits here. No question of this
+report is answered.
+
 Part XVII (manuscripts 17 and 18) relies on no formal declaration either.
 17 cites, as the classical input of its order-two theorem, the
 single-fold unary exponential representation `JM1984.RM.re_sfu` and
@@ -2892,7 +2904,7 @@ latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 The recorded build has 652 pages (196 before batch 62, 306 before batch 63,
 338 before batch 78, 419 after Part XV, 449 after Part XVI,
 451 after the reciprocal notes, 452 after restoring the XVI organization row,
-509 after Part XVII, 571 after manuscripts 19 and 20, 605 after Part XIX, 607 after the batch-79 reciprocal notes, 608 after the batch-80 correction notes, still 608 after the batch-80 reciprocal note, 652 after Part XX),
+509 after Part XVII, 571 after manuscripts 19 and 20, 605 after Part XIX, 607 after the batch-79 reciprocal notes, 608 after the batch-80 correction notes, still 608 after the batch-80 reciprocal note, 652 after Part XX, still 652 after the batch-82 reciprocal note),
 with no errors, warnings, undefined references or citations, multiply
 defined labels, duplicate destinations or overfull boxes; the one underfull
 line (in manuscript 01's introduction, Section 3.2) is the same as in the batch-62 build. Batch 63 adds
@@ -3020,6 +3032,16 @@ entries of the conventions table are split into separate formulas so that
 they can break. The title page, Sections 3.21–3.23, the opening and
 conventions of Part XX, Figure 4, the review section with its table, the
 provenance list and the bibliography were rendered and inspected.
+
+The batch-82 reciprocal note (one dated paragraph in Section 90.4.2, after
+the batch-79 note following `cdc:of:thm:singlefoldsl`; no label, macro,
+package or bibliography entry) leaves the build at 652 pages, with no
+errors, warnings, undefined references or citations, multiply defined
+labels, duplicate destinations or overfull boxes and the same single
+underfull line; the log has seventeen informational "Infinite glue
+shrinkage" messages (fourteen were recorded for the Part XX build; no
+rebuild of the previous text was compared). Its page (printed page 271)
+was rendered and inspected.
 
 ## Rerunning the checks
 
@@ -4448,6 +4470,14 @@ same decisions.
   (batch 80, cluster K2)" above). It cites that report's labels by name;
   no label was added, renamed or renumbered, and no printed text was
   changed.
+- **Batch-82 reciprocal note (cluster M4).** One dated `[write]` note of
+  3 October 2026, in Part XI after the batch-79 note that follows the
+  discussion of `cdc:of:thm:singlefoldsl`, points to source 20 of Part VII
+  of `signal-machine-collision-certificates` (written in `9b3977008`): a
+  canonical membership quartic, a second route at a higher degree (see
+  "Reciprocal note (batch 82, cluster M4)" above). It cites that report's
+  labels by name; no label was added, renamed or renumbered, and no
+  printed text was changed.
 - **Batch 80, cluster K1 (corrected code edition of 21).** A dated
   `[write]` note "Added 2 October 2026 (batch 80): corrected code edition"
   after the batch-79 review note in `cdc:et:sec:reproduce`; a `[write]`

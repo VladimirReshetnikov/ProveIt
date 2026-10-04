@@ -1649,8 +1649,9 @@ Batch 80 (Parts V and VI) answers, in dated `[write]` notes (Section 1.16):
   and 15's fourth questions (integer-state convention) in part by Part VI;
   source 16's four-versus-five boundary by source 17.
 
-Part IV's first question (print a safe universal source) stays open, and so
-do the other questions of Parts V and VI. Part IV's non-claims "exact-target
+Part IV's first question (print a safe universal source) stays open within
+this report (see the batch-82 reciprocal notes below), and so do the other
+questions of Parts V and VI. Part IV's non-claims "exact-target
 undecidability, … a minimum universal mass, or that three particles suffice"
 remain true of Part IV.
 
@@ -1700,6 +1701,37 @@ notes (Section 1.26):
   sources of the three-mass automaton; open as posed for signal machines).
 
 Sources 22 and 23 state no questions of their own.
+
+Reciprocal notes of batch 82 (3 October 2026, dated `[write]` notes at
+each place) record what
+[`five-particle-binary-automata`](../five-particle-binary-automata), a
+separate report, answers here:
+
+- Part IV's first question (print a safe universal source): **answered in
+  substance outside this report** by its Part II (Report 16: 122,622
+  controls, 141,561 literal rows, a clean loader and all-input proofs) for
+  Report 15's guarded syntax; a table in source 13's pulse interface is
+  still not printed. Source 14's `smc:tm:q:source` and source 15's
+  `smc:ct:q:universal` are **answered in part** (not in their separated
+  syntax; no rule of the three-mass automaton is frozen); Part VIII still
+  does not address them;
+- the binary upper bound and the reversible numerical threshold left open
+  by Part IV's fourth question, by source 17's non-claims and by the mass-5
+  cell of the threshold table: its Part I (Reports 14 and 15, Corollaries
+  27.1 and 16.1 there) builds five-particle universal binary and globally
+  reversible binary automata, so with source 17 the one-dimensional
+  threshold is **exactly five**, without the Alhazov–Imai paper (source
+  17's non-claim stays true of source 17);
+- source 14's `smc:tm:q:mass` and source 15's `smc:ct:q:mass` (the sharp
+  reversible threshold for integer-state automata): **answered, five**,
+  since a globally reversible binary automaton is an integer-state one; what
+  remains is re-scoped to the number of weight-one types
+  (`smc:fm:q:severalunits`).
+
+A further note after Theorem 44.1 (`smc:sl:thm:two`) records that source 19
+extends decidability with one weight-one symbol to mass four in every
+dimension. Reports 14 and 15 are AI-assisted and unrefereed and are not
+printed in this report.
 
 ## Relation to neighbouring reports and to the formal project
 
@@ -2169,6 +2201,18 @@ layout). The title page, Sections 1.21–1.23 with the new notation table
 (page 277), the end of source 23 (page 283), the provenance table of Part
 VIII (page 296) and the last bibliography page (page 319) were rendered and
 inspected. Part VIII has no figure.
+
+The batch-82 reciprocal notes (3 October 2026: one row of the questions
+concordance, the mass-5 cell of the threshold table in Section 1.12, dated
+notes in Sections 1.15, 1.16 and 1.21, after Theorem 44.1, at Part IV's
+first and fourth questions (Section 48), at Questions `smc:tm:q:source`,
+`smc:tm:q:mass`, `smc:ct:q:universal` and `smc:ct:q:mass`, in Section 81
+(source 16) and after Corollary 83.2 (source 17);
+no label, numbered environment, macro, package or bibliography entry) leave
+the report at 320 pages with the same clean log, the same four underfull
+bibliography lines and the same 699 labels. The concordance page (page 24),
+the front questions (page 38) and Part V's questions (page 157) were
+rendered and inspected.
 
 ## Rerunning the programs
 

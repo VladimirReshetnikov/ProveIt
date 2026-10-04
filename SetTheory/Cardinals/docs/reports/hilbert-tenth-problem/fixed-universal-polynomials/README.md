@@ -50,9 +50,9 @@ original's QA as `qa/v0-*`. Nothing of archive 12 is staged; its open question
 ```
 README.md     this guide (it replaces source 11's delivery README, which survives in the arrival archive)
 article.tex   the report: standalone LaTeX, one bibliography per source at the end of its Part
-article.pdf   the compiled report, 125 pages (unnumbered title page; contents pages 1-6; front
-              matter 7-15; Part I 16-38; Part II 39-54; Part III 55-72; Part IV 73-105;
-              Part V 106-124)
+article.pdf   the compiled report, 126 pages (unnumbered title page; contents pages 1-6; front
+              matter 7-15; Part I 16-39; Part II 40-55; Part III 56-73; Part IV 74-106;
+              Part V 107-125)
 ```
 
 The other 297 files are the six sources' audit and provenance notes (root),
@@ -896,7 +896,12 @@ placed by `7d2b1b245` as source 23 of `../signal-machine-collision-certificates`
 in its Part VIII (labels `smc:ch:`); its
 fixed-scale native infinitude is a corollary of Theorem 25.2.1. Report 32, a
 fixed universal matrix semigroup from the same batch, is Part V of
-`../group-theoretic-substrates`. Part I bears on, without answering, the
+`../group-theoretic-substrates`. Reciprocal notes (batch 82, 3 October
+2026) record that Report 32's delivered dependency audit cites Part I's
+ordinary-input frame (`fup:gp:eq:frame`) for the input hardness of its
+semigroup only, and that SMC Part VIII prints Report 22's projection and
+fixed-scale infinitude as `smc:ch:thm:projection` and
+`smc:ch:thm:infinite`. Part I bears on, without answering, the
 instantiation questions `ste:ta:q:instantiate`
 (`../stochastic-and-thermal-exactness`), `pwh:oc:q:numerical`
 (`../polynomial-witness-histories`), the explicitness boundary of
@@ -962,4 +967,9 @@ latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 (pdfLaTeX; standard packages only). At the batch-83 write (Part V) the build
 had no errors, no undefined references or citations, no multiply defined
 labels, no duplicate PDF destinations and no overfull boxes; it gives 125
-pages (102 before Part V).
+pages (102 before Part V). The batch-82 reciprocal notes (3 October 2026;
+two dated notes, in Section 23.3 after equation (23.1) `fup:gp:eq:frame` and
+in Section 25.12; no label, macro, package or bibliography entry) take it to
+126 pages with no errors, warnings or overfull boxes (its nine underfull
+lines are in the front matter's tables, which precede both notes); the note in Part I moves every later page by
+one, and its page (printed page 20) was rendered and inspected.
