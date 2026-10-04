@@ -580,6 +580,24 @@
 > and square counts are not arithmetic operation counts. These scoped reviews
 > do not certify an implemented rule-to-chart compiler or improve universality.
 >
+> The [combined IDLE/affine construction](matrix193_idle_affine_reuse.md)
+> incorporates the577-row coefficient component into all four IDLE-free sources.
+> Every complete polynomial is identical to its immediate IDLE-free parent,
+> and the current matrix alternatives are:
+>
+> | Computed controller hats | Operations | Positive witnesses | Exact degree |
+> |---|---:|---:|---:|
+> | None | 1,617 | 145 | 35,587 |
+> | LOAD or SWITCH | 1,614 | 144 | 53,347 |
+> | LOAD and SWITCH | 1,611 | 143 | 71,107 |
+>
+> The [independent review](review_matrix193_idle_affine_reuse.md) checks all6,456 rows,
+> all16 coefficient words/2,704 entries, full identities and degree transfers.
+> Fresh author and independent normal/optimized checks pass. Positive zero tuples
+> are identical to each immediate IDLE-free parent; comparison with ancestors
+> retaining IDLE preserves ordinary input through fresh witnesses. The established
+> universal84 bound remains unchanged.
+>
 > The [IDLE-free matrix sources](matrix193_idle_free_scout.md) remove one positive
 > witness and four paid gates from each controller variant. Exact edge-sum and
 > controller-word cancellations give these complete arrays:
@@ -730,7 +748,8 @@
 > above, with four complete sources and unchanged degrees. Its reverse proof
 > preserves only ordinary input through fresh histories/native witnesses.
 > The LOAD/SWITCH charts and IDLE savings must not be counted again. The
-> separate affine coefficient saving is not yet in the IDLE packet itself.
+> paid affine coefficient reuse is also included in the four-source composition
+> above; its current smallest array is1,611 operations with143 witnesses.
 >
 > The [packed selected-output construction](matrix193_packed_output_scout.md)
 > lowers the matrix route to **3,162=1,467M+1,695A** operations and **152 positive

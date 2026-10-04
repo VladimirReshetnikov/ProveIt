@@ -577,6 +577,24 @@ Its generic compiler still assumes a bijective chart description; witness
 and square counts are not arithmetic operation counts. These scoped reviews
 do not certify an implemented rule-to-chart compiler or improve universality.
 
+The [combined IDLE/affine construction](matrix193_idle_affine_reuse.md)
+incorporates the577-row coefficient component into all four IDLE-free sources.
+Every complete polynomial is identical to its immediate IDLE-free parent,
+and the current matrix alternatives are:
+
+| Computed controller hats | Operations | Positive witnesses | Exact degree |
+|---|---:|---:|---:|
+| None | 1,617 | 145 | 35,587 |
+| LOAD or SWITCH | 1,614 | 144 | 53,347 |
+| LOAD and SWITCH | 1,611 | 143 | 71,107 |
+
+The [independent review](review_matrix193_idle_affine_reuse.md) checks all6,456 rows,
+all16 coefficient words/2,704 entries, full identities and degree transfers.
+Fresh author and independent normal/optimized checks pass. Positive zero tuples
+are identical to each immediate IDLE-free parent; comparison with ancestors
+retaining IDLE preserves ordinary input through fresh witnesses. The established
+universal84 bound remains unchanged.
+
 The [IDLE-free matrix sources](matrix193_idle_free_scout.md) remove one positive
 witness and four paid gates from each controller variant. Exact edge-sum and
 controller-word cancellations give these complete arrays:
