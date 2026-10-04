@@ -72,6 +72,20 @@ checks all83 rows by a formal rational substitution and expands the complete
 so this remains an arithmetic obstruction, not a compiler counterexample.
 Fresh installed normal/optimized receipts pass; the universal bound stays84.
 
+The [uniform binary timed-orbit certificate](timed_binary_shuttle18_projection.md)
+reduces an explicit source18 polynomial from **39 operations and four natural
+witnesses to 31=8M+23A and two witnesses**, still at exact degree four.
+Spatial equations recover phase and cycle; nonnegative external time proves
+the restored cycle is natural. Shared clocks, a duplicate square and an
+integer-valued Boolean term provide the remaining savings. The
+[independent source review](review_timed_binary_shuttle18_projection.md) and
+[mathematical challenge](review_timed_binary_shuttle18_projection_math.md)
+verify the full maps, corrections and required domains. All six complete
+sources are saved. Normal/optimized installed replays pass. The result
+retains nonnegative-real witness exactness at integer external inputs;
+the final polynomial is not nonnegative on the whole real orthant.
+This is a decidable orbit component, so the universal bound stays **84**.
+
 The [publication integration review](review_reports_publication_20261003.md)
 finds no conflict in the checked sandpile and particle-report additions.
 All 24 selected Reports 35–38 archive members and 119 placed particle
@@ -82,6 +96,28 @@ conditional timed-chart proof and confirms the explicit binary certificate's
 Its generic compiler still assumes a bijective chart description; witness
 and square counts are not arithmetic operation counts. These scoped reviews
 do not certify an implemented rule-to-chart compiler or improve universality.
+
+The [matrix power-block analysis](matrix193_power_block_obstruction.md)
+provides an exact **8=4M+4A unary target loader**, with zero witnesses, for
+one valid input family of the actual 193-generator source. Universality of
+that unary family and a complete unbounded membership certificate remain
+unproved. Its separate decision theorem rules out replacing all accepted
+finite-input histories by a computably bounded number of powered constant
+blocks, even with shared exponents and Presburger constraints. For fixed
+unary templates the accepted set is ultimately periodic. The
+[independent review](review_matrix193_power_block_obstruction.md) checks
+all 3,088 matrix entries, eight live gates and the ordered-language proof;
+fresh installed normal/optimized receipts pass. Nonlinear exponent
+constraints and witness-dependent bases remain outside this obstruction.
+The established universal bound stays **84 operations**.
+
+The [matrix Report32 publication review](review_matrix32_publication_20261003.md)
+also passes within its stated scope. It checks the original main-body
+transcription, two displayed collisions, literal matrix statistics,
+declared evaluator charges and initial fiber counts. The fixed semigroup's
+inherited universality, external finite-tape encoder, growing certificate
+arity and infinite fibers across lengths remain explicit. The prior
+197/193-generator reductions are not universal arithmetic bounds.
 
 The [Report38 fixed-lane Boolean fixture](fixed_lane_boolean_occurrence38.md)
 compares three complete quartics for an occurrence query on an externally
