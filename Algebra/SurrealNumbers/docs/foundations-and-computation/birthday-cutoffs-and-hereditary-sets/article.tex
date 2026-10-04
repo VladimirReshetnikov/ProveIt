@@ -6,9 +6,9 @@
 \usepackage{amsmath,amssymb,amsthm,mathtools}
 \usepackage{microtype,booktabs,longtable,array,enumitem}
 \usepackage{xcolor,fancyhdr,xurl,aliascnt}
-\usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=green!35!black,urlcolor=blue!45!black]{hyperref}
+\usepackage{tabularx,mathrsfs}\usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=green!35!black,urlcolor=blue!45!black]{hyperref}
 \usepackage[nameinlink,noabbrev]{cleveref}
-\hypersetup{pdftitle={Birthday Cutoffs and Hereditary Sets},pdfauthor={Merged research report for the Surreal project},pdfsubject={Birthday cutoffs, hereditary set universes, bi-interpretation, elementary inclusions, axiom spectra, outer models and surcomplex orientation}}
+\hypersetup{pdftitle={Birthday Cutoffs and Hereditary Sets},pdfauthor={Merged research report for the Surreal project},pdfsubject={Birthday cutoffs, hereditary set universes, bi-interpretation, elementary inclusions, axiom spectra, outer models, surcomplex orientation, Replacement-free surreal cuts, atom-support spectra and choiceless surreal universality}}
 \pagestyle{fancy}\fancyhf{}
 \fancyhead[L]{\small Birthday cutoffs and hereditary sets}
 \fancyhead[R]{\small\thepage}
@@ -90,7 +90,46 @@
 \newcommand{\repo}[1]{\nolinkurl{#1}}
 \newcommand{\repoSHA}{\texttt{4f2645599121fa872c7104995e47f86f0382351f}}
 \newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
-\begin{document}
+% Parts VI and VII (batch 89): symbols of sources 10 and 11, renamed where they
+% collide with the symbols above (Conventions in Parts VI and VII).
+\newcommand{\Zf}{\mathsf{Z}_{\!f}}
+\newcommand{\Hier}{\mathsf{Hier}}
+\newcommand{\ZFUR}{\mathrm{ZFU}_{\mathrm R}}
+\newcommand{\ZF}{\mathrm{ZF}}
+\newcommand{\ZFA}{\mathrm{ZFA}}
+\newcommand{\AC}{\mathrm{AC}}
+\newcommand{\KWP}{\mathrm{KWP}}
+\newcommand{\OB}{\mathsf{OB}}
+\newcommand{\Gr}{\mathsf{Gr}}
+\newcommand{\UB}{\mathsf{UB}}
+\newcommand{\SC}{\mathsf{SC}}
+\newcommand{\DCI}{\mathsf{DCI}}
+\newcommand{\NIB}{\mathsf{NIB}}
+\newcommand{\CollS}{\mathsf{Collection}}
+\newcommand{\ReplS}{\mathsf{Replacement}}
+\newcommand{\kerat}{\operatorname{ker}}
+\newcommand{\Mker}{M^{\mathrm{ker}}}
+\newcommand{\Uk}{\mathcal U}
+\newcommand{\signs}{\{-,+\}}
+\newcommand{\pref}{\preccurlyeq}
+\newcommand{\restr}{\mathbin{\upharpoonright}}
+\newcommand{\seq}[1]{\langle #1\rangle}
+\newcommand{\Oz}{\mathbf{Oz}}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathbb N}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\Frac}{\operatorname{Frac}}
+\newcommand{\trdeg}{\operatorname{trdeg}}
+\newcommand{\Fix}{\operatorname{Fix}}
+\newcommand{\Sym}{\operatorname{Sym}}
+\newcommand{\im}{\operatorname{im}}
+\newcommand{\lc}{\operatorname{lc}}
+\newcommand{\lm}{\operatorname{lm}}
+\newcommand{\hookord}{\mathrel{\lhook\joinrel\longrightarrow_{\!\mathrm{ord}}}}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newenvironment{resultbox}{\par\medskip\noindent\begin{minipage}{\linewidth}\setlength{\parindent}{0pt}\hrule\medskip}{\medskip\hrule\end{minipage}\par\medskip}\begin{document}
 \hypersetup{pageanchor=false}
 \begin{titlepage}
 \centering
@@ -142,13 +181,19 @@ structure has no nontrivial elementary self-embedding. For surcomplex numbers
 with conjugation and coordinate birthday, each real elementary embedding has
 exactly two lifts, and one nonreal parameter, but no set of real parameters,
 defines an orientation.
-\end{abstract}
+
+Two later parts work below ZFC. Over Zermelo set theory without Replacement,
+bounding the birthdays of definable surreal families is ordinal bounding (with a
+hierarchy axiom, Replacement), and kernel models with atoms have exact Collection
+spectra; over ZF, universality of the surreals for free fields on all sets is
+exactly the first Kinna--Wagner principle.\end{abstract}
 \end{minipage}
 \vfill
 {\footnotesize Built from five manuscripts written independently in relation to the
 \repo{VladimirReshetnikov/Surreal} project,\par
 all pinned to commit \texttt{4f26455}, and merged after placement commit
-\texttt{d4e71b7}.\par
+\texttt{d4e71b7};
+Parts VI--VII (batch 89) add two more, pinned to \texttt{2b7b388}, placed by \texttt{23adb85}.\par
 An AI-assisted research draft with written proofs and finite regression checks;
 not refereed;\par not a claim of any Lean formalization. The global
 bi-interpretation is prior announced work of Chen--Hamkins--Yang.\par}
@@ -362,7 +407,20 @@ parameter threshold for a definable orientation (source 06), the
 mutual-interpretation versus bi-interpretation distinction (sources 05, 06, 09,
 after Je\v{r}\'abek), and, under GBC, the elementary self-embeddings of the full
 structure (source 07) (\cref{hset:sec:surcomplex}).
-\end{itemize}
+\item in Part~VI (source 10, added in batch~89), over Zermelo set theory with
+Foundation and without Replacement or Choice: simplest separators of set cuts
+without Replacement, the equivalence of six definable-family schemes with
+ordinal bounding and, over an explicit hierarchy axiom, with full Replacement
+and Collection (the weak-base form of \cref{hset:thm:eternity-replacement}); the
+exact Collection spectra of kernel urelement models; and a language-sensitive
+separation that pure surreal structures cannot see
+(\cref{hset:zr:thm:A,hset:zr:thm:B,hset:zr:thm:C});
+\item in Part~VII (source 11, added in batch~89), over ZF: a set injects into
+$\No$ iff it injects into the power set of an ordinal; universality of $\No$ and
+$\Oz$ for free algebras on all sets is exactly the first Kinna--Wagner
+principle; optimal set-sized real-closed targets; sharp transcendence bounds in
+two permutation models and, in ZFA, an ordered field with no surreal embedding
+(\cref{hset:kw:thm:equivalences,hset:kw:thm:universal,hset:kw:thm:orderedcounter}).\end{itemize}
 
 \subsection{Five manuscripts, one report}
 \label{hset:sub:merge}
@@ -468,6 +526,20 @@ bi-interpretation is printed as the announced theorem of Chen--Hamkins--Yang,
 not as a result of source 07. (iv) Symbols were renamed as listed in
 \cref{hset:sub:conventions}.
 
+\paragraph{Two later parts.} [Added 3 October 2026, batch~89.] Parts~VI and~VII
+print two further manuscripts, written independently of the five above and of
+each other, both pinned to commit \texttt{2b7b388ba}, delivered in commit
+\texttt{7c0f2d9f9} and placed by commit \texttt{23adb85f9}. Source~10
+(batch-89 manuscript 03, \emph{Surreal Cuts, Replacement, and Atom-Support
+Spectra}; files \texttt{10-cuts-replacement-}, labels \texttt{hset:zr:}) is
+\cref{hset:zr:part}; source~11 (batch-89 manuscript 04, \emph{Surreal
+Universality Without Choice}; files \texttt{11-choiceless-universality-},
+labels \texttt{hset:kw:}) is \cref{hset:kw:part}. The numbers 10 and 11
+continue this directory's local sequence after 09. Each part keeps its own
+setting, hypotheses and notation convention and ends with its non-claims and
+provenance (\cref{hset:zr:sec:provenance,hset:kw:sec:provenance}). Nothing in
+Parts~I--V was renumbered; dated notes in Parts~II and~V record where the new
+parts bear on them.
 \subsection{Conventions and renamed symbols}
 \label{hset:sub:conventions}
 
@@ -528,6 +600,10 @@ relations (\lbl{found:rem:simplicity} of the foundations report); prefix is
 defined below from order and birthday, and is never identified with
 precedence.
 
+\noindent[Added 3 October 2026, batch~89: Parts~VI and~VII keep these
+conventions and add their own (\cref{hset:zr:conv:notation,hset:kw:conv:notation}),
+where their sources' $\mathsf H$, $\mathsf{SG}$, $M_\kappa$, $S_\kappa$,
+$K_\kappa$, $C_\alpha$, $\beta$ and $\delta$ are renamed.]
 \subsection{Relation to the collection and corrected repository statements}
 \label{hset:sub:repo}
 
@@ -2149,6 +2225,16 @@ This argument applies in particular to definable functions.
 This corollary genuinely uses regularity; the equivalence of the theorem does
 not.
 
+\noindent[Added 3 October 2026, batch~89: the same principle on a weak base.
+Source~10 (\cref{hset:zr:part}) proves over Zermelo set theory with Foundation,
+without Replacement or Choice, that bounding the birthdays of definable
+set-indexed families of surreals, even strictly inside $(-1,0)$, is equivalent
+to ordinal bounding, and, over an explicit hierarchy axiom, to full Replacement
+and Collection (\cref{hset:zr:thm:equivalence,hset:zr:thm:ranked}). That is not
+this theorem: it is an internal scheme equivalence over a weaker base theory,
+uses only the order of sign sequences, and does not apply to $H_\kappa$ unless
+$H_\kappa$ satisfies that base theory. \Cref{hset:zr:rem:eternity} compares the
+two and records where they combine.]
 \subsection{Power Set and packing a birthday fiber}
 
 \begin{lemma}[Power Set in a hereditary-size universe; sources 02, 06, 09]
@@ -2695,6 +2781,16 @@ ordinal-graph coding of \cref{hset:thm:choice} and notes that the theorem here
 concerns a different statement and is unchanged. The two open problems just
 named are not affected.]
 
+\noindent[Added 3 October 2026, batch~89: an injection counterpart over ZF.
+Source~11 (\cref{hset:kw:part}) proves that a set $X$ injects into $\No$ iff it
+injects into $\Pow(\alpha)$ for some ordinal $\alpha$
+(\cref{hset:kw:thm:coding}), so that universality of $\No$ for free fields on
+all sets is exactly the first Kinna--Wagner principle
+(\cref{hset:kw:thm:equivalences}). The sets injecting into $\No$ form a wider
+class than $\HWO$: $\Pow(\omega)$ always injects into $\No$
+(\cref{hset:kw:rem:choice}). An injection names elements; it does not recover a
+set as the coding here does. \Cref{hset:thm:choice} and the two open problems of
+\cref{hset:rem:answered-choice} are unchanged.]
 \part{Outer models}\label{hset:part:outer}
 
 Throughout this part, $M\subseteq N$ are transitive models of ZFC with the same
@@ -3738,6 +3834,9 @@ named longstanding conjecture is resolved. Priority is not certified by any of
 the five targeted literature and repository searches; ``not found'' is a
 bounded search result, not proof of absence.
 
+\noindent[Added 3 October 2026, batch~89: this subsection lists the non-claims
+of sources 02, 05, 06, 07 and 09. Those of sources 10 and 11 are collected in
+\cref{hset:zr:sub:nonclaims,hset:kw:sub:nonclaims}.]
 \paragraph{Source 02.}
 The full-class interpretation is Chen--Hamkins--Yang's prior announced work; its
 contributions are the bounded refinement and its consequences, with priority not
@@ -3798,7 +3897,8 @@ noncardinal cutoffs (answered here for epsilon numbers), ill-founded models of a
 surreal-arithmetic theory, quantifier elimination for an order-and-simplicity
 language, and a universal embedding theorem without Global Choice. The finite
 tests do not verify the theorems.
-
+[Added 3 October 2026, batch~89: the last of these is answered in part by
+source~11; see the note after \cref{hset:q:axiomatics}.]
 \paragraph{Source 07.}
 It omitted the Chen--Hamkins--Yang credit and presented the full-class
 bi-interpretation as a proposed contribution; that is corrected in
@@ -3853,7 +3953,9 @@ source 07's noncardinal-cutoff questions: answered by source 09 for epsilon
 numbers.
 \item Source 09's fourth target, the choice-free analogue: answered for the
 full-class graph coding by source 06 (\cref{hset:rem:answered-choice}).
-\end{itemize}
+\item Source 06's universal embedding theorem without Global Choice: answered in
+part, over ZF and with a ZFA counterexample, by source 11 (\cref{hset:kw:part});
+see the note after \cref{hset:q:axiomatics}. [Added 3 October 2026, batch~89.]\end{itemize}
 
 \paragraph{Still open.}
 \begin{question}[Cutoffs that are not epsilon numbers]
@@ -3899,7 +4001,7 @@ named (source 05)? \Cref{hset:thm:threshold} concerns the language with
 conjugation.
 \end{question}
 
-\begin{question}[Axiomatics and formalization]
+\begin{question}[Axiomatics and formalization]\label{hset:q:axiomatics}
 Establish definitional equivalence, or its failure, between $\Et$ and $\Pack$
 and particular published axiom formulations of surreal arithmetic, once
 finalized (source 09); analyse ill-founded models of such a theory, quantifier
@@ -3909,6 +4011,22 @@ interpretation, beginning with the prefix, bit and pairing lemmas, then the
 certificate verifier and its hereditary-size bound (sources 05, 06, 07, 09).
 \end{question}
 
+\noindent[Added 3 October 2026, batch~89: the third item, ``a universal
+embedding theorem without Global Choice'', is answered in part by source~11
+(\cref{hset:kw:part}). Over ZF, a set $X$ carries an $X$-indexed algebraically
+independent family of positive infinite omnific integers, equivalently
+$\R(T_X)$ embeds in $\No$ over $\R$, iff $X$ injects into the power set of an
+ordinal; so universality for the free fields on all sets is exactly the first
+Kinna--Wagner principle (\cref{hset:kw:thm:equivalences}), with optimal
+set-sized real-closed targets $U_\kappa$ (\cref{hset:kw:thm:universal}). Every
+linear order on a well-orderable set order-embeds in $\No$
+(\cref{hset:kw:prop:wellordered}). In the ordered Mostowski permutation model, a
+model of ZFA, an ordered field whose finitely generated coordinate subfields all
+embed in order has no field embedding into the internal $\No$
+(\cref{hset:kw:thm:orderedcounter}). Still open: universality for prescribed
+orders and for general ordered fields without choice, and any transfer of the
+ZFA example to ZF (\cref{hset:kw:q:prescribed,hset:kw:q:kwporder,hset:kw:q:fields}).
+The other items of this question are not affected.]
 The collection's Lean library already contains relevant sign-sequence
 infrastructure (prefix truncation, the failure of birthday precedence to be
 prefix simplicity, Hessenberg agreement of ordinal arithmetic), but none of the
@@ -3998,6 +4116,14 @@ transfinite well-foundedness, cardinal bounds, bi-interpretability, Replacement
 equivalences, forcing statements, or any large-cardinal assertion; those rest on
 the written proofs and the explicitly imported classical theorems.
 
+\noindent[Added 3 October 2026, batch~89: the finite programs of sources 10 and
+11 are described in \cref{hset:zr:sec:checks,hset:kw:sec:reproduce}. Both were
+rerun with Python 3.14.4 on copies; both passed and reproduced their recorded
+files exactly, apart from line endings: source 10 checked 8,256 endpoint
+intervals over the 127 sign words of length at most 6, 2,187 depth-two
+assignments (576 separated), 1,050 negative-code comparisons and 4,032 atom
+transpositions; source 11 passed 20,595 assertions with seed 20261003. Their
+provenance is in \cref{hset:zr:sub:provenance,hset:kw:sub:provenance}.]
 \section{Conclusion}
 
 Birthday truncation has a precise set-theoretic effect. At an epsilon-number
@@ -4017,6 +4143,2043 @@ unit are specified; omitting the unit preserves mutual interpretation but leaves
 a two-element obstruction to bi-interpretation. The decisive structure is not the
 field alone: it is the field with a carefully specified memory of how its
 elements are born.
+
+\noindent[Added 3 October 2026, batch~89: Parts~VI and~VII, which follow, add two
+further manuscripts: the weak-base form of the eternity--Replacement
+equivalence with the atom-support spectra of kernel models, and choiceless
+universality of the surreal numbers.]
+\part{Replacement-free surreal cuts, definable families and atom-support spectra}\label{hset:zr:part}
+
+\section{Source 10: question, results, notation and relation to Part II}
+\label{hset:zr:sec:overview}
+
+This part was added in batch~89. It prints one further manuscript, written
+independently of the five merged above:
+\emph{Surreal Cuts, Replacement, and Atom-Support Spectra: Exact principles for
+definable families, weak set theories, and changes of language}, ``Prepared for
+Vladimir Reshetnikov with ChatGPT'', 3 October 2026. It is batch-89 manuscript
+03 and \emph{source 10} in this report's local numbering; its shipped files
+carry the prefix \texttt{10-cuts-replacement-}. It was pinned to repository
+commit \texttt{2b7b388ba} (``Catalogue batches 81 to 86''), arrived in commit
+\texttt{7c0f2d9f9} and was placed in commit \texttt{23adb85f9}. Its provenance,
+the mechanical changes made in printing it, and its finite checks are in
+\cref{hset:zr:sec:provenance}. Inside this part, ``this manuscript'', ``this
+article'', ``here'' and ``we'' refer to source 10, and its own Theorems~A--C are
+\cref{hset:zr:thm:A,hset:zr:thm:B,hset:zr:thm:C}.
+
+\begin{resultbox}
+\textbf{Status and attribution (source 10).} This is an unrefereed research
+manuscript, not a claim of an independently certified breakthrough. Classical
+simplicity and small-support arguments are credited explicitly. The exact
+formulations, comparisons, and refinements are proved here, but their
+historical priority has not been established. No Lean or Rocq verification of
+the new manuscript is claimed.
+\end{resultbox}
+
+\paragraph{Source 10's summary.} We investigate the intersection of Elliot Glazer's work on weak set theories and reflection with the sign-sequence and foundational developments in the ProveIt repository. The central distinction is between an actual set of surreal bounds and a formula assigning a unique surreal to each member of a set. Over Zermelo set theory with Foundation, actual set cuts have unique simplest interpolants, without Replacement. In contrast, interpolation for definable set-indexed families is equivalent to ordinal bounding, to Replacement for surreal-valued functions, and even to strict upper bounding inside the single interval $(-1,0)$. On a separately specified cumulative-hierarchy base, these schemes are equivalent to full Replacement and Collection.
+
+A complementary atom-support analysis explains why the conclusion cannot simply be transferred to urelement theories. We give a uniform proof and an exact domain-size analysis for the classical small-kernel models $\Mker_\kappa$. All have the same pure sets and the same pure surreal structures. For a limit cardinal $\kappa$, Collection first fails at domain size $\cf\kappa$; for a successor cardinal it holds without a domain-size restriction. Naming an external enumeration of $\kappa$ atoms changes the picture: both Replacement and Collection first fail at $\cf\kappa$, although Collection for pure-valued relations, including all surreal-valued relations, still holds. Complete mathematical proofs, a finite regression checker, an explicit $V_{\omega+\omega}$ countermodel, and a formalization plan are supplied.
+
+\subsection{Why this intersection is substantive}
+Glazer's paper on global choice over Zermelo set theory demonstrates that the precise language and axiom scheme matter when Replacement is absent \cite{GlazerChoice}. His joint 2026 paper with Bokai Yao separates Collection from several reflection principles in urelement set theory formulated with Replacement \cite{GlazerYao}. These provide two concrete prompts: which closure assertions actually require Replacement, and which failures remain invisible when one looks only at pure mathematical objects?
+
+ProveIt has two relevant components: a surreal development organized around sign sequences, and an independent first-order set-theoretic development, including a Closure axiomatization equivalent to ZF \cite{ProveItSurreal,ProveItClosure}. The repository also contains a substantial report on old surreal fields in larger universes \cite{ProveItUniverses}. The present question is different: rather than adding new pure sequences by passing between ZFC universes, we first weaken set-existence axioms and then vary atom supports while keeping \emph{all pure sets fixed}.
+
+The research question answered here is therefore:
+\begin{quote}
+What is the exact strength of surreal cut interpolation for definable set-indexed families, and how far can such a pure-structure principle detect failures of Replacement, Collection, or reflection in the ambient universe?
+\end{quote}
+This is a question formulated and resolved within this investigation. We do not identify it with an already named, established open conjecture.
+
+\subsection{Three main results}
+The notation $\Zf$ means Zermelo set theory with Foundation but without Replacement or Choice. The additional hierarchy axiom $\Hier$ (source 10's $\mathsf H$, renamed in \cref{hset:zr:conv:notation}) will be stated explicitly in \cref{hset:zr:sec:base}; it must not be suppressed.
+
+\begin{theorem}[A local surreal test for ordinal bounding; source 10's Theorem~A; \cref{hset:zr:thm:equivalence,hset:zr:thm:ranked}]
+\label{hset:zr:thm:A}
+Over $\Zf$, the following schemes are equivalent: ordinal bounding for definable set-indexed functions; existence of set graphs for such surreal-valued functions; surreal upper bounding; Collection for surreal-valued relations; interpolation for definable set-indexed surreal cuts; and strict upper bounding of definable families inside $(-1,0)$. Over $\Zf+\Hier$, each is also equivalent to full Replacement and full Collection.
+\end{theorem}
+The construction detecting unbounded ordinals is elementary: a minus sign followed by plus signs, with birthday $\alpha+2$, encodes the ordinal $\alpha$ inside $(-1,0)$. The nontrivial foundational issue is showing that ordinary set-cut interpolation does \emph{not} already use the principle being characterized.
+
+\begin{theorem}[Exact Collection spectra of cardinal-support models; source 10's Theorem~B; \cref{hset:zr:thm:supportbase,hset:zr:cor:classification}]
+\label{hset:zr:thm:B}
+Work in a full urelement universe with Choice and a set $A$ of atoms, where $|A|\geq\kappa$ and $\kappa$ is infinite. Put
+\[
+\Mker_\kappa=\{x:|\kerat(x)|<\kappa\}.
+\]
+Then $\Mker_\kappa$ satisfies Replacement and Choice and contains all pure sets. If $\kappa$ is a limit cardinal, including $\omega$, Collection holds for every domain of size below $\cf\kappa$ and fails for a domain of size exactly $\cf\kappa$. If $\kappa$ is a successor cardinal, full Collection holds.
+\end{theorem}
+The finite-support and countable-support mechanisms are classical; the exact uniform spectrum is the refinement developed in this presentation. The connection to established work is recorded in \cref{hset:zr:sec:literature}. The same spectrum, for the same models, is proved independently in the research-report collection (\cref{hset:zr:rem:nee}).
+
+\begin{theorem}[A language-sensitive separation invisible to surreals; source 10's Theorem~C; \cref{hset:zr:thm:expandedthreshold,hset:zr:cor:surrealsurvive}]
+\label{hset:zr:thm:C}
+Let $E$ name, as an external predicate, a bijection from $\kappa$ onto a set of $\kappa$ atoms. In $(\Mker_\kappa,E)$, Replacement and Collection both hold for all domains of size below $\cf\kappa$ and both fail at size $\cf\kappa$. Nevertheless, full Collection for pure-valued relations, and consequently every surreal principle in \cref{hset:zr:thm:A}, holds even for formulas using $E$ and impure parameters.
+\end{theorem}
+Thus the restriction to pure objects is not merely a technicality. The same pure surreal universe can coexist with very different ambient set-existence principles.
+
+\subsection{What is established, and what is not}
+\label{hset:zr:sec:literature}
+Conway's cut construction and Gonshor's sign-sequence presentation are established foundations of surreal theory \cite{Conway,Gonshor}; Bertram provides a recent related pure-set treatment \cite{Bertram}. The elementary simplicity theorem itself is not new. Here its construction is reorganized to exhibit a proof over a base without Replacement.
+
+Small-kernel methods are also established. Hamkins and Yao discuss the finite-support model, crediting the Replacement argument to L\'evy, and the countable-support model satisfying Collection \cite[\S1.5]{HamkinsYao}. Glazer--Yao's Proposition 1 identifies the common-atom-base obstruction to Collection; their small-kernel permutation models provide much stronger reflection separations than are attempted here \cite{GlazerYao}. Yao's earlier work treats the broader axiomatization and forcing setting \cite{YaoForcing}.
+
+The present contribution is a self-contained theorem package: an explicit weak-base equivalence, a fixed-interval ordinal detector, the sharp support-capacity classification with domain-size thresholds, and its language-sensitive comparison with pure surreal principles. These are proposed as useful research results and formalization targets. The sources consulted do not certify their priority; in particular, a generalization of a classical support argument must not automatically be advertised as a breakthrough.
+
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}P{0.30\textwidth}Y@{}}
+\toprule
+Component & Evidential status \\
+\midrule
+Ordinary surreal simplicity & Classical result; a bounded-container proof is supplied. \\
+Weak-base equivalence and rank countermodel & Fully argued in this manuscript; not machine-checked. \\
+Support-model mechanism & Classical method, explicitly credited; generalized proofs supplied. \\
+Exact thresholds and predicate expansion & Proved in this manuscript; priority not independently established. \\
+Finite verification & Executed regression tests, not a proof of transfinite statements. \\
+Reflection separations of Glazer--Yao & External results used for context, not claimed as our discoveries. \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\subsection{Notation of this part}
+\label{hset:zr:sub:notation}
+
+\begin{convention}[Symbols of source 10]\label{hset:zr:conv:notation}
+Source 10 was written without knowledge of this report, and several of its
+symbols already mean something else here. In this part:
+\begin{center}\small
+\begin{longtable}{@{}P{0.25\textwidth}P{0.22\textwidth}P{0.45\textwidth}@{}}
+\toprule
+Notion in source 10 & Here & Do not confuse with\\
+\midrule\endhead
+Zermelo set theory with Foundation, no Replacement, no Choice & $\Zf$ & ---\\
+Hierarchy axiom (existence and coverage of the stages $V_\alpha$) & $\Hier$ (source: $\mathsf H$) & $H_\kappa$, the hereditary-size universe of Parts I--V\\
+Set-graph scheme & $\Gr$ (source: $\mathsf{SG}$) & $\SG(\cdot)$, the sign-graph operator of \cref{hset:sec:biinterpretation}; $\Gr$ asserts that a definable family has a \emph{set} graph\\
+Collection scheme, and its restriction to domains of size $<\tau$ & $\CollS$, $\CollS_{<\tau}$ & the collector $\Coll(C)$ of \cref{hset:thm:collector}\\
+Ordinal bounding, upper bounding, surreal Collection, definable-cut interpolation, bounding inside $(-1,0)$ & $\OB$, $\UB$, $\SC$, $\DCI$, $\NIB$ & ---\\
+Kernel (small-support) model $\{x:\card{\kerat(x)}<\kappa\}$ & $\Mker_\kappa$ (source: $M_\kappa$) & the transitive models $M$, $N$ of \cref{hset:part:outer} and $\B^M_\kappa$; the full-class rank models of the report \repo{foundations-and-computation/surreal-well-orders}, Part~XV\\
+Rank-initial countermodel $V_{\omega+\omega}$ & $V_\theta$, $\theta=\omega+\omega$ (source: $M=V_\theta$) & the ground model $M$ of \cref{hset:part:outer}\\
+Urelement set theory with Replacement & $\ZFUR$ & theories named ZFU that include Collection\\
+Ambient urelement universe; kernel; atom base & $\Uk$; $\kerat(x)$; $V_\alpha(B)$ & ---\\
+Generic ordinal variables & $\zeta$ (source: $\beta$), $\sigma$ (source: $\delta$) & $\beta$, reserved for the first new birthday, and $\delta$, reserved for a code domain (\cref{hset:conv:notation})\\
+Ordinal detector in $(-1,0)$ & $\nu_\alpha$ & the hereditary cardinals $\nu_i$ in the proof of \cref{hset:thm:eternity-replacement}\\
+Birthday bound $\sup\{\bd(x)+1\}$ of a cut & $\lambda$, any ordinal & the epsilon-number cutoffs $\lambda$ of Parts I--V\\
+A separator of a cut & $c$ & the conjugation $c$ of \cref{hset:sec:surcomplex}\\
+Sign container $\{s:\bd(s)\le\sigma\}$ & $T_\sigma$ & $\TC$\\
+Birthday & $\bd(s)$, the length of $s$ & the same function; here it is an ordinal, not a surreal ordinal\\
+\bottomrule
+\end{longtable}
+\end{center}
+Only the order of sign sequences is used in this part: no field operation and
+no birthday \emph{symbol} of a structure $\B_\lambda$ occurs. Typography only:
+source 10's sans-serif theory names ZF, ZFC and $\ZFUR$ are set as in the rest
+of this report.
+\end{convention}
+
+\subsection{Relation to Part II and to the rest of the collection}
+\label{hset:zr:sub:relation}
+
+\begin{remark}[The weak-base form of Theorem~\ref{hset:thm:eternity-replacement}]
+\label{hset:zr:rem:eternity}
+Source 10 did not know this report. Its spine is the same principle as
+\cref{hset:thm:eternity-replacement} (source 09's): \emph{Replacement is exactly
+the bounding of birthdays of definable families of surreals}. The two
+statements live on different bases, and neither contains the other.
+\begin{itemize}
+\item \Cref{hset:thm:eternity-replacement} is a theorem of ZFC about two set
+structures at an uncountable cardinal $\kappa$: the eternity scheme $\Et$
+(\cref{hset:sec:growth}), a scheme of the birthday-field language evaluated in
+$\B_\kappa$ for families indexed by embedded ordinals, holds iff the
+hereditary-size universe $H_\kappa$ satisfies Replacement. Its proof uses the
+bi-interpretation of \cref{hset:part:spine} and, in the converse direction,
+ambient Replacement and Choice.
+\item Source 10's \cref{hset:zr:thm:equivalence,hset:zr:thm:ranked} are
+internal scheme equivalences over the weak theory $\Zf$ in the ordinary
+membership language, with sign sequences as sets and only their order used.
+Over $\Zf$ alone birthday bounding is ordinal bounding $\OB$; it becomes full
+Replacement (and Collection) only over $\Zf+\Hier$, and no Choice is used.
+\Cref{hset:zr:cor:individual} is the per-family form, the counterpart of a
+single instance of $\Et$. New beside $\Et$ is $\NIB$: a strict bound can
+always be sought inside the one interval $(-1,0)$.
+\item The bases differ: $H_\kappa$ need not satisfy Power Set
+(\cref{hset:lem:H-background} does not list it), which $\Zf$ contains, and
+$\Hier$ can fail in $H_\kappa$. Where $H_\kappa$ does satisfy $\Zf+\Hier$, for
+example at an uncountable $\kappa$ with $\kappa=\beth_\kappa$, where
+$H_\kappa=V_\kappa$, \cref{hset:zr:thm:ranked} applies inside $H_\kappa$, and
+together with \cref{hset:thm:eternity-replacement} it gives: $\B_\kappa\models\Et$
+iff $H_\kappa$ satisfies any one of the six schemes of
+\cref{hset:zr:thm:equivalence}, read in $H_\kappa$. This combination is an
+observation of this merge, not a statement of either source.
+\end{itemize}
+Source 10's $V_{\omega+\omega}$ countermodel (\cref{hset:zr:prop:rankmodel})
+has the same shape as the failures recorded in \cref{hset:sec:growth}: every
+member of a definable family exists, but the family cannot be collected; compare
+the $\beth_\omega$ instance $\RepB$ (\cref{hset:thm:beth}) and the cofinal
+power-tower sequence at $\varepsilon_0$ that defeats $\Et$. Source 10's
+Replacement-free set-cut theorem (\cref{hset:zr:thm:setcut}) is a different
+statement from the Replacement-free arithmetic certificates of
+\cref{hset:sec:certificates}: the latter compute field operations inside
+$H_\kappa$, the former constructs the simplest separator of a set cut from the
+order alone.
+\end{remark}
+
+\begin{remark}[The same Collection spectrum in two collections]
+\label{hset:zr:rem:nee}
+Batch-89 manuscript 05, placed as the research-report collection's new report
+\repo{SetTheory/Cardinals/docs/reports/ordinals-and-order-types/naming-elementary-embeddings}
+(\emph{Naming Elementary Embeddings: Atom Components, Replacement, and
+Reflection}, pinned to the same commit; AI-assisted, unrefereed, not
+formalized), works with the same kernel models, written $M_\kappa(A)$ there
+after Yao's ideal construction. Its lemma ``No new atoms in a unique
+base-language output'' (Lemma~2.3, \lbl{nee:lem:nonew}) and its ``Known kernel-ideal
+theorem, specialized'' (Theorem~2.4, \lbl{nee:thm:base}) are \cref{hset:zr:lem:confinement}
+and \cref{hset:zr:thm:supportbase}. Its lemmas ``Automatic small-domain
+Collection'' (Lemma~7.1, \lbl{nee:lem:smallcoll}) and ``The limit-cutoff obstruction is
+already bounded'' (Lemma~7.2, \lbl{nee:lem:limitcoll}), with its corollary ``Exact local
+spectrum at limit cutoffs'' (Corollary~7.3, \lbl{nee:cor:limitspectrum}), prove
+\cref{hset:zr:lem:smallcollection,hset:zr:thm:limitspectrum} for the same models
+and for their expansions by named atom injections, with the added information
+that the failing instance at a limit cardinal has a $\Delta_0$ matrix. Its
+``Full Collection criterion'' (Theorem~7.5, \lbl{nee:thm:collection}) proves full Collection
+at successor cardinals, as in \cref{hset:zr:thm:successorspectrum}, by a
+reservoir argument for named tuples. The two manuscripts were written
+independently on the same pin; neither is claimed first, and both credit the
+mechanism to Hamkins--Yao, L\'evy, Glazer--Yao and Yao. This part prints source
+10's proofs. That report's dated note after its Corollary~7.6 compares the two:
+its failing instance at a limit cardinal collects injection graphs with a
+$\Delta_0$ matrix, where source 10 collects sets of atoms of prescribed
+cardinalities, and its successor-case reservoir consists of whole components,
+so that the permutations commute with the named maps. Source 10's enumeration predicate $E$
+(\cref{hset:zr:sec:expansion}) and that report's named lifts of atom injections
+are different expansions of the same models, and their theorems are different.
+\end{remark}
+
+\begin{remark}[Full-class rank models]
+\label{hset:zr:rem:swo}
+Batch-89 manuscript 01, placed as Part~XV of the report
+\repo{foundations-and-computation/surreal-well-orders} (its source 31), computes
+for the two-sorted full-class rank models $(V_\lambda,\Pow(V_\lambda))$ at every
+limit $\lambda>\omega$ the domains on which class Replacement and Collection
+hold: exactly those of size below $\cf\lambda$. At $\lambda=\omega+\omega$ this
+contains the failure of \cref{hset:zr:prop:rankmodel} for the one
+\emph{definable} family $n\mapsto\omega+n$. The failure of $\NIB$ there, and the
+weak-base equivalences, are source 10's own.
+\end{remark}
+
+\section{The base theories and the meaning of a family}
+\label{hset:zr:sec:base}
+
+\subsection{Zermelo set theory without hidden Replacement}
+\begin{definition}
+$\Zf$ consists of Extensionality, Empty Set, Pairing, Union, Power Set, Infinity, the full Separation scheme, and Foundation, in classical first-order logic. It does not contain Replacement or Choice.
+\end{definition}
+We use ordinary set encodings of ordered pairs and functions. The usual finite constructions---Cartesian products, restrictions, domains and ranges of \emph{set relations}, and finite tagged unions---are available in this theory. For example, $X\times Y$ is obtained by Separation from a sufficiently iterated power set of $X\cup Y$. No image of an arbitrary definable class function is presupposed.
+
+All appearances of a class in the weak-base half of source 10 abbreviate a first-order formula with finitely many set parameters. An assertion quantified over formulas is an external scheme: there is one first-order assertion for each formula. There is no set of all formulas together with an unrestricted truth predicate for the universe, and no quantification over arbitrary subclasses of a proper class.
+
+\begin{definition}[Definable set-indexed family]
+A formula $\varphi(i,s,p)$ presents a surreal family on a set $I$ if
+\[
+\forall i\in I\;\exists!s\,[s\in\No\land\varphi(i,s,p)].
+\]
+We write $s_i$ for its unique value. This notation does not assert that $\{(i,s_i):i\in I\}$ is a set.
+\end{definition}
+The distinction is essential. If a family is given \emph{as a set function}, its range is a set in $\Zf$. If it is only given by a formula satisfying the displayed condition, forming its range is a Replacement-type step.
+
+\subsection{A separately named hierarchy hypothesis}
+\begin{definition}[The hierarchy axiom $\Hier$]
+The following two assertions constitute $\Hier$.
+First, for every ordinal $\alpha$ there is a set function $h$ with domain $\alpha+1$ satisfying
+\[
+h(0)=\varnothing,\qquad h(\zeta+1)=\Pow(h(\zeta)),\qquad
+h(\lambda)=\bigcup_{\zeta<\lambda}h(\zeta)
+\]
+for the relevant successor and nonzero limit indices. Second, every set $x$ belongs to $h(\alpha)$ for some such $\alpha,h$.
+\end{definition}
+The unions in this definition are unions of ranges of restrictions of a \emph{set function}. Uniqueness and coherence of the hierarchy segments follow by induction along an ordinal. Consequently $V_\alpha$ is unambiguously definable under $\Hier$.
+
+ZF proves $\Hier$ by its usual recursion and rank constructions. We do not assume that $\Hier$ follows from $\Zf$. Our characterization over plain $\Zf$ is a characterization of ordinal bounding; only after adjoining $\Hier$ do we identify it with full Replacement. The model in \cref{hset:zr:sec:countermodel} satisfies $\Zf+\Hier$ but not Replacement, so $\Hier$ itself does not trivialize the result.
+
+\subsection{Two different ambient settings}
+The first half of source 10 concerns pure set theory and the sign-sequence order. The later support-model construction takes place externally in a full well-founded universe with atoms and Choice. We write $\ZFUR$ for urelement set theory formulated with Replacement, rather than building Collection into its name. This prevents an ambiguity in the literature: some authors use ``ZFU'' for a theory already containing Collection.
+
+In the atom setting, Extensionality applies to sets, and atoms have no members. A tagged interpretation in ordinary ZFC can be used to implement the background urelement universe. No new large-cardinal assumption is needed for the constructions here. When a class model is mentioned, satisfaction is used formula by formula through relativization; a universal class truth predicate is not introduced.
+
+\section{Sign sequences and bounded containers}
+\label{hset:zr:sec:signs}
+
+\begin{definition}
+A surreal sign sequence is a function $s:\alpha\to\signs$ for an ordinal $\alpha$. Its birthday is $\bd(s)=\alpha$. The empty sequence is $0$, and the one-sign sequence $(-)$ is denoted by $-1$.
+\end{definition}
+We distinguish the two signs from the numerical values of these named surreals. For comparison, use the order
+\[
+-\;<\;\text{termination}\;<\;+.
+\]
+Two unequal sequences are compared at the first position where their signs differ or where precisely one terminates. Such a position exists and has a least ordinal index. This defines a linear order. Write $p\pref s$ if $p$ is an initial segment of $s$, possibly equal to $s$.
+
+Only this ordered tree is needed. We do not invoke the recursive definitions of surreal addition, multiplication, exponentiation, or real closedness in the weak base.
+
+\begin{lemma}[Bounded sign container]
+\label{hset:zr:lem:container}
+For every ordinal $\sigma$, the class
+\[
+T_\sigma=\{s\in\No:\bd(s)\leq\sigma\}
+\]
+is a set in $\Zf$.
+\end{lemma}
+\begin{proof}
+Every such function is a subset of $\sigma\times\signs$. Separate from $\Pow(\sigma\times\signs)$ the graphs which are functions whose domains are ordinals. These domains are subsets of $\sigma$, hence are at most $\sigma$. Conversely every sign sequence of length at most $\sigma$ occurs. This uses Power Set and Separation, not Replacement.
+\end{proof}
+
+\begin{lemma}[Set families have bounded birthdays]
+\label{hset:zr:lem:setbounds}
+If $S$ is a set of sign sequences, there is an ordinal $\gamma$ with $\bd(s)\leq\gamma$ for every $s\in S$. Moreover,
+\[
+\lambda=\sup\{\bd(s)+1:s\in S\}
+\]
+is an ordinal available in $\Zf$, and $\bd(s)<\lambda$ for all $s\in S$.
+\end{lemma}
+\begin{proof}
+The union $\bigcup S$ is a set relation, so its domain exists. This domain is the union of the ordinal domains of the members of $S$, and is therefore an ordinal $\gamma$. Every $\bd(s)$ is at most $\gamma$. To avoid assuming that the displayed successor image is a set, define directly
+\[
+\lambda=\{\xi\in\gamma+1:\exists s\in S\ (\xi\leq\bd(s))\}.
+\]
+This is a downward-closed set of ordinals, equals the indicated supremum, and has the desired strict bound. When $S$ is empty, it is $0$.
+\end{proof}
+
+\begin{lemma}[All-plus ordinal codes]
+\label{hset:zr:lem:ordcode}
+For an ordinal $\alpha$, let $o_\alpha$ be the all-plus sequence of length $\alpha$. Then $\alpha<\zeta$ if and only if $o_\alpha<o_\zeta$. For every sign sequence $s$,
+\[
+s\leq o_{\bd(s)}<o_{\bd(s)+1}.
+\]
+In particular, $o_\alpha<s$ implies $\alpha<\bd(s)$.
+\end{lemma}
+\begin{proof}
+These comparisons follow at the first negative sign, or at the first termination position when no earlier negative sign occurs. Each code is constructed directly as a constant function on its given ordinal. There is no appeal to a set containing all ordinal codes.
+\end{proof}
+
+\begin{lemma}[One bounded interval contains an ordinal detector]
+\label{hset:zr:lem:negativecode}
+For each ordinal $\alpha$, define $\nu_\alpha$ on $\alpha+2$ by
+\[
+\nu_\alpha(\xi)=
+\begin{cases}
+-,&\xi=0,\\
++,&0<\xi<\alpha+2.
+\end{cases}
+\]
+Then
+\[
+-1<\nu_\alpha<0,\qquad
+\alpha<\zeta\Longleftrightarrow\nu_\alpha<\nu_\zeta.
+\]
+For every negative sign sequence $c$ of birthday $\sigma$,
+\[
+c<\nu_\sigma.
+\]
+Consequently $\nu_\alpha<c<0$ implies $\alpha<\bd(c)$.
+\end{lemma}
+\begin{proof}
+The first sign makes the sequence negative, and the plus at position $1$ makes it greater than $-1$. Adding more trailing plus signs increases its value. Right addition by the finite ordinal $2$ is strictly increasing, giving the equivalence involving $\alpha$ and $\zeta$.
+
+A negative $c$ has a minus at position $0$. If it has another minus, then $\nu_\sigma$ is larger at the first such position. If it has only plus signs after position $0$, then it is a proper initial segment of $\nu_\sigma$ and the latter has a plus at its termination position. Thus $c<\nu_\sigma$. If $\alpha\geq\sigma$, monotonicity would give $\nu_\alpha\geq\nu_\sigma>c$, proving the last assertion.
+\end{proof}
+
+\section{Actual set cuts: a Replacement-free simplicity proof}
+\label{hset:zr:sec:setcuts}
+
+\begin{theorem}[Set-cut interpolation with a birthday bound]
+\label{hset:zr:thm:setcut}
+In $\Zf$, let $L,R$ be sets of sign sequences with $L<R$, meaning $l<r$ for every $l\in L$ and $r\in R$. Empty sides are allowed. There is a unique simplest separator $c$ satisfying
+\[
+L<c<R.
+\]
+Every separator extends $c$ as a sign sequence. In particular, $c$ is the unique separator of least birthday, and
+\[
+\bd(c)\leq\lambda,
+\qquad
+\lambda=\sup\{\bd(x)+1:x\in L\cup R\}.
+\]
+\end{theorem}
+\begin{proof}
+By \cref{hset:zr:lem:setbounds}, $\lambda$ is a set ordinal, and every endpoint has birthday below $\lambda$. The proof takes place inside the set $T_\lambda$ of \cref{hset:zr:lem:container}.
+
+For a prefix $p$, say it has a left obstruction if some $l\in L$ satisfies $p\leq l$, and a right obstruction if some $r\in R$ satisfies $r\leq p$. The two obstructions cannot occur together: they would yield $r\leq p\leq l<r$. If neither occurs, $p$ is a separator. Otherwise prescribe the next sign to be plus for a left obstruction and minus for a right obstruction.
+
+Call $p\in T_\lambda$ a \emph{good path} if, for every $\zeta<\bd(p)$, the restriction $p\restr\zeta$ is not yet a separator and the sign $p(\zeta)$ is the prescribed sign at that restriction. Good paths form a set $G$ by Separation. The empty path belongs to $G$.
+
+\emph{Compatibility.} Any two good paths are compatible. At a first disagreement they would have the same earlier prefix but different prescribed signs, contrary to the rule's uniqueness. Hence one extends the other.
+
+The union $p_* = \bigcup G$ is therefore a sign sequence of length at most $\lambda$. It is itself good: each of its sign positions already belongs to some good path, whose earlier restrictions coincide with its own. Thus $p_*\in G$.
+
+We verify the invariant
+\begin{align}
+\label{hset:zr:eq:invariant}
+l\in L,\ p\not\pref l&\ \Longrightarrow\ l<p,\\
+\notag
+r\in R,\ p\not\pref r&\ \Longrightarrow\ p<r
+\end{align}
+for every good path $p$. It is vacuous at the empty path. Suppose the prescribed extension is $p^+$, obtained by appending plus. Any left endpoint not extending $p^+$ either was already separated from $p$, equals $p$, or takes minus at the next position; in every case it is below $p^+$. A left obstruction ensures some $l\geq p$, and all right endpoints exceed this $l$. Therefore a right endpoint that still extends $p$ cannot equal $p$ or take minus next. Right endpoints not extending $p$ remain separated at their earlier comparison position. This proves the invariant for $p^+$. The minus case is symmetric.
+
+At a limit path, an endpoint not extending that path already fails to extend some shorter prefix: use a position past its first disagreement or its termination. The invariant at that prefix persists in all later extensions. Induction along the set ordinal $\lambda+1$ proves \eqref{hset:zr:eq:invariant}.
+
+If $\bd(p_*)<\lambda$ and $p_*$ were not a separator, appending its prescribed sign would yield a good path longer than the union of all good paths, a contradiction. If $\bd(p_*)=\lambda$, no endpoint can extend $p_*$, since every endpoint has smaller birthday. The invariant then says that $p_*$ is a separator. Set $c=p_*$.
+
+Finally let $q$ be any separator. Induction along a good path shows that $q$ extends that path. At a plus step, an extension of the current prefix that terminates or takes minus is at most the prefix and hence at most the obstructing left endpoint; it cannot be $q$. The minus step is symmetric. At limits, extension follows by union. Thus $q$ extends $c$. Since $c$ itself separates, it is the unique separator of least birthday.
+\end{proof}
+
+\begin{remark}[Why this is not an invocation of class recursion]
+The proof does not first build a class-length recursion and then take its image. It separates \emph{all good approximations from one set container} and takes their union. Every induction is along a given set ordinal. The set-existence steps are precisely those available in $\Zf$.
+\end{remark}
+
+\begin{proposition}[Sharpness]
+\label{hset:zr:prop:sharp}
+The birthday bound in \cref{hset:zr:thm:setcut} cannot be uniformly lowered. For a nonzero successor $\lambda=\zeta+1$, the cut $(\{o_\zeta\},\varnothing)$ has simplest separator $o_\lambda$. For a nonzero limit $\lambda$, the cut
+\[
+L=\{o_\zeta:\zeta<\lambda\},\qquad R=\varnothing
+\]
+has simplest separator $o_\lambda$.
+\end{proposition}
+\begin{proof}
+In the successor case, a separator of birthday at most $\zeta$ is excluded by \cref{hset:zr:lem:ordcode}, and $o_{\zeta+1}$ works. In the limit case, $L$ is a set by Separation in $T_\lambda$; it is not being formed by an unbounded image operation. Any separator $c$ must have birthday at least $\lambda$, because $o_\zeta<c$ gives $\zeta<\bd(c)$ for every $\zeta<\lambda$. Again $o_\lambda$ works. The empty cut has simplest separator $0$ and bound $0$.
+\end{proof}
+
+\section{The equivalence theorem for definable surreal families}
+\label{hset:zr:sec:equivalence}
+
+\subsection{Six schemes}
+All formulas below may have arbitrary set parameters in the language under consideration.
+
+\begin{definition}
+The schemes are as follows.
+\begin{enumerate}[label=(\arabic*)]
+\item $\OB$: every definable function $i\mapsto\alpha_i$ from a set into the ordinals has an ordinal $\gamma$ such that $\alpha_i<\gamma$ for all indices.
+\item $\Gr$: every definable set-indexed surreal family has a set graph.
+\item $\UB$: every definable set-indexed surreal family has a strict surreal upper bound.
+\item $\SC$: if $I$ is a set and $\forall i\in I\,\exists s\in\No\,\varphi(i,s,p)$, there is a set $S\subseteq\No$ with $\forall i\in I\,\exists s\in S\,\varphi(i,s,p)$.
+\item $\DCI$: if two definable families $(l_i)_{i\in I}$ and $(r_j)_{j\in J}$ have set index domains and satisfy $l_i<r_j$ for all $i,j$, there is a surreal $c$ with $l_i<c<r_j$ for all $i,j$.
+\item $\NIB$: every definable set-indexed family of elements of $(-1,0)$ has a strict upper bound that also lies in $(-1,0)$.
+\end{enumerate}
+\end{definition}
+The right bound $0$ is not an acceptable witness to $\NIB$. This is why the last scheme is stronger than the tautological assertion that a family in $(-1,0)$ is bounded in $\No$.
+
+\begin{theorem}[Exact weak-base equivalence]
+\label{hset:zr:thm:equivalence}
+Over $\Zf$,
+\[
+\boxed{\quad
+\OB\ \Longleftrightarrow\ \Gr\ \Longleftrightarrow\ \UB
+\ \Longleftrightarrow\ \SC\ \Longleftrightarrow\ \DCI
+\ \Longleftrightarrow\ \NIB.\quad}
+\]
+\end{theorem}
+\begin{proof}
+\emph{$\OB\Rightarrow\Gr$.} Given a definable family $s_i$, its birthdays are uniquely defined ordinals. Choose $\gamma$ bounding them. Every value lies in the set $T_\gamma$. The graph is now a subset of $I\times T_\gamma$, defined by the original formula, and exists by Separation.
+
+\emph{$\Gr\Rightarrow\UB$.} The range of the set graph is a set $S$. By \cref{hset:zr:lem:setbounds}, all birthdays are at most an ordinal $\gamma$. The all-plus sequence $o_{\gamma+1}$ strictly bounds every member of $S$.
+
+\emph{$\UB\Rightarrow\OB$.} Apply $\UB$ to the definable family $o_{\alpha_i}$. If $c$ strictly bounds it, \cref{hset:zr:lem:ordcode} gives $\alpha_i<\bd(c)$ for every $i$.
+
+\emph{$\OB\Rightarrow\SC$.} For each $i$, let $\alpha_i$ be the least birthday of a surreal witness to $\varphi(i,s,p)$. The least ordinal exists without a choice of witnesses for the whole family: for each fixed $i$, one witness supplies an ordinal interval in which Separation and well-ordering locate a minimum. The definition of $\alpha_i$ is functional, so $\OB$ gives $\alpha_i<\gamma$ uniformly. The set $T_\gamma$ is then a collecting set of possible witnesses. If desired, separate from it the witnesses relevant to at least one index. No choice function selecting a particular witness is needed.
+
+\emph{$\SC\Rightarrow\Gr$.} Apply $\SC$ to a functional surreal family. Its unique values all lie in a set $S$. Separate the graph inside $I\times S$.
+
+\emph{$\Gr\Rightarrow\DCI$.} Obtain set graphs and set ranges for the two families. Apply \cref{hset:zr:thm:setcut} to these actual sets.
+
+\emph{$\DCI\Rightarrow\NIB$.} For a nonempty family in $(-1,0)$, use it as the left family and use the constant right family $\{0\}$. Any separator is automatically greater than $-1$. For an empty family, $\nu_0$ works. Equivalently one can adjoin $-1$ to the left family using a finite tagged union of index sets.
+
+\emph{$\NIB\Rightarrow\OB$.} Given ordinal values $\alpha_i$, apply $\NIB$ to $\nu_{\alpha_i}$. Its negative upper bound $c$ yields $\alpha_i<\bd(c)$ by \cref{hset:zr:lem:negativecode}.
+\end{proof}
+
+\begin{corollary}[The obstruction for an individual family]
+\label{hset:zr:cor:individual}
+For a given definable set-indexed surreal family, the following are equivalent in $\Zf$: its graph is a set; its range is contained in a set of sign sequences; and its birthdays admit an ordinal bound. Mere numerical boundedness of its values is not equivalent to these conditions.
+\end{corollary}
+\begin{proof}
+A set graph has a set range and hence bounded birthdays. A birthday bound provides the container needed to separate the graph. The counterexample to the last possible equivalence is given in \cref{hset:zr:sec:countermodel}.
+\end{proof}
+
+\begin{remark}[Restricted domains and restricted formulas]
+The proof preserves the index domain in most implications. The passage from a negative interval to a cut uses only a singleton right side. Thus the ordinal-detector implications already hold for a fixed domain such as $\omega$. One must not conclude that the $\omega$-restricted scheme implies Replacement on \emph{all} domains. Similarly, the transformations of formulas are explicit, but this article does not assert optimal preservation of their position in the L\'evy hierarchy.
+\end{remark}
+
+\section{When the test becomes full Replacement}
+\label{hset:zr:sec:ranked}
+
+\begin{theorem}[Ranked-base characterization]
+\label{hset:zr:thm:ranked}
+Over $\Zf+\Hier$, each of the six schemes in \cref{hset:zr:thm:equivalence} is equivalent to full Replacement and to full Collection. No Choice is required.
+\end{theorem}
+\begin{proof}
+Replacement forms the set of ordinal outputs of a definable function and therefore gives $\OB$.
+
+Conversely assume $\OB$ and consider a total relation
+\[
+\forall i\in I\;\exists y\,\varphi(i,y,p).
+\]
+By $\Hier$, for each $i$ there is some ordinal $\alpha$ such that a suitable witness lies in $V_\alpha$. Define
+\[
+\alpha_i=\min\{\alpha:\exists y\in V_\alpha\,\varphi(i,y,p)\}.
+\]
+This is a uniquely defined ordinal, even when the witness is not unique. As before, a least element of the nonempty ordinal class is obtained by bounding the minimization with one witness and using Separation. By $\OB$, some $\gamma$ bounds all $\alpha_i$. Monotonicity of the cumulative hierarchy shows that $V_\gamma$ collects witnesses for every $i$. This proves Collection.
+
+Finally, for a functional relation, Collection puts the unique outputs inside a set, and Separation removes extraneous members and forms the graph. Thus Collection implies Replacement. Combining with \cref{hset:zr:thm:equivalence} proves the assertion.
+\end{proof}
+
+\begin{resultbox}
+\textbf{The precise conclusion.} Actual set-cut interpolation is a theorem of $\Zf$. Definable set-indexed cut interpolation is equivalent to ordinal bounding over $\Zf$. It is equivalent to full Replacement over the \emph{explicitly stronger base} $\Zf+\Hier$.
+\end{resultbox}
+
+This is an exact diagnosis of a common informal shortcut. The expression $\{s_i:i\in I\}$ cannot be inserted into the ordinary cut construction until its existence as a set has been justified. In a rank-complete pure universe, justifying that step for all formulas has the full strength of Replacement.
+
+\section{An explicit omitted cut in a rank-initial universe}
+\label{hset:zr:sec:countermodel}
+
+We now work externally in ZFC. Let
+\[
+\theta=\omega+\omega,\qquad\text{and consider the structure }(V_\theta,\in).
+\]
+All assertions about $V_\theta$ below refer to its internal membership structure. In particular, ``a set'' in $V_\theta$ means an element of $V_\theta$.
+
+\begin{proposition}
+\label{hset:zr:prop:rankmodel}
+$V_\theta$ satisfies $\Zf+\Hier$ and Choice, but fails $\OB$, Replacement, and $\NIB$.
+\end{proposition}
+\begin{proof}
+The ordinal $\theta$ is a limit and is closed below itself under adding any fixed finite ordinal. Pairing, Union, and Power Set increase the ranks of the finitely many input objects by only a finite amount, so their required outputs remain below $\theta$. Every subset of an element of $V_\theta$ is again in $V_\theta$, giving Separation for formulas interpreted in $V_\theta$. Infinity and Foundation hold, and Extensionality is inherited from transitivity.
+
+For every $\alpha<\theta$, the hierarchy segment $\seq{V_\zeta:\zeta\leq\alpha}$ has rank at most $\alpha$ plus a fixed finite coding overhead, and therefore belongs to $V_\theta$. Every member of $V_\theta$ belongs to a sufficiently high stage below $\theta$. This gives $\Hier$. An ambient well-ordering of any $x\in V_\theta$ is a relation on $x$ of rank bounded by the rank of $x$ plus a finite amount, so it also belongs to $V_\theta$. Hence $V_\theta$ satisfies Choice.
+
+The formula $n\mapsto\omega+n$, for $n\in\omega$, defines a total ordinal-valued family in $V_\theta$. Every value exists there, but these values are cofinal in $\theta=\Ord^{V_\theta}$. They have no internal ordinal bound, so $\OB$ fails. Replacement fails as well.
+
+Finally define $s_n=\nu_{\omega+n}$. Each individual sign sequence has birthday $\omega+n+2$ and, with ordinary pair coding, rank below $\theta$. Thus it belongs to $V_\theta$, and $V_\theta$ recognizes
+\[
+\forall n\in\omega\quad -1<s_n<0.
+\]
+Given any negative $c\in\No^{V_\theta}$, its birthday $\sigma$ is below $\theta$. Choose $n$ with $\omega+n\geq\sigma$. By \cref{hset:zr:lem:negativecode},
+\[
+c<\nu_\sigma\leq\nu_{\omega+n}=s_n.
+\]
+There is therefore no negative strict upper bound for this definable family. This refutes $\NIB$ and presents an omitted definable cut with right side $\{0\}$.
+\end{proof}
+
+\begin{remark}[What is and is not missing]
+The family is externally countable. Internally, however, it is only a formula assigning one existing object to each natural number; its graph is not an element of $V_\theta$. Every \emph{actual set cut} in $V_\theta$ still has an interpolant by \cref{hset:zr:thm:setcut}. Also, $0$ is an upper bound for the displayed family. What fails is an upper bound \emph{strictly below $0$}, not ordinary numerical boundedness.
+\end{remark}
+
+This countermodel shows that the distinction survives Choice, the existence of all internal hierarchy stages, and the existence of each individual member of the family. The omitted resource is the ability to collect the entire definable family into one set.
+
+\section{Urelements: rank bounds versus atom-base bounds}
+\label{hset:zr:sec:tworesources}
+
+For an object $x$ in a full well-founded urelement universe, its kernel $\kerat(x)$ is the set of atoms occurring in the transitive closure of $\{x\}$. An object is pure if its kernel is empty. For a set $B$ of atoms define the hierarchy
+\[
+V_0(B)=B,\qquad V_{\alpha+1}(B)=\Pow(V_\alpha(B))\cup B,
+\]
+with unions at nonzero limit stages, and put $V(B)=\bigcup_{\alpha\in\Ord}V_\alpha(B)$ as a class abbreviation. An object lies in $V(B)$ exactly when its kernel is contained in $B$.
+
+There are now two independent resources: the height $\alpha$ and the atom base $B$. In the pure case the base is always empty. With atoms, an ordinal bound on heights need not control the supports of witnesses.
+
+\begin{proposition}[A two-resource witness criterion]
+\label{hset:zr:prop:tworesources}
+Suppose the required set hierarchies over atom bases and kernels exist. For a total relation on a set $I$, the following are equivalent:
+\begin{enumerate}[label=(\roman*)]
+\item there is a set collecting witnesses;
+\item there are a set $B$ of atoms and an ordinal $\gamma$ such that every index has a witness in $V_\gamma(B)$.
+\end{enumerate}
+If ordinal bounding is available, condition (ii) is equivalent to the existence of a single atom base $B$ such that every index has some witness in $V(B)$.
+\end{proposition}
+\begin{proof}
+A collecting set $W$ has a kernel $B=\kerat(W)$ and belongs to some $V_\eta(B)$. Its members then all lie in a sufficiently high common stage over $B$, giving (ii). Conversely $V_\gamma(B)$ itself is a collecting set.
+
+For the last assertion, fix a common base $B$ and assign to each index the least ordinal stage over $B$ containing a witness. This assignment is functional. Ordinal bounding bounds all its values, producing a common $\gamma$. The reverse implication is immediate.
+\end{proof}
+
+In $\ZFUR$, Replacement supplies ordinal bounding. The resulting common-base characterization is precisely the mechanism highlighted by Glazer--Yao, Proposition 1 \cite{GlazerYao}. Our use of it is to separate what a pure surreal detector can see from what it cannot: birthdays measure ordinal height, whereas pure sign sequences carry no atom kernel at all.
+
+\section{Cardinal-support models and their basic axioms}
+\label{hset:zr:sec:supportmodels}
+
+Fix a full urelement universe $\Uk$ with Choice, containing a \emph{set} $A$ of all its atoms. Let $\kappa$ be an infinite cardinal with $|A|\geq\kappa$, with cardinalities computed in $\Uk$. Define the class
+\[
+\Mker_\kappa=\{x\in\Uk:|\kerat(x)|<\kappa\}.
+\]
+It contains every atom individually and every pure set, but does not contain the set of all atoms. Thus its atoms form a proper class \emph{internally}, even though $A$ is a set in the ambient universe.
+
+The restriction is on kernel cardinality, not on the cardinality or rank of the whole object. For a permitted base $B$, every stage $V_\alpha(B)$, at every ordinal height, belongs to $\Mker_\kappa$.
+
+\begin{lemma}[Kernel confinement of a unique output]
+\label{hset:zr:lem:confinement}
+Suppose $w,p\in \Mker_\kappa$, $x\in w$, and a formula has a unique output $y\in \Mker_\kappa$ for $x,p$, when interpreted in $\Mker_\kappa$. Then
+\[
+\kerat(y)\subseteq K,
+\qquad K=\kerat(w)\cup\kerat(p).
+\]
+\end{lemma}
+\begin{proof}
+Every permutation of $A$ extends by rank recursion to an automorphism of $\Uk$ and preserves $\Mker_\kappa$, because it preserves kernel cardinalities. Suppose $a\in\kerat(y)\setminus K$. As $\kappa$ is infinite, the union $K\cup\kerat(y)$ has size below $\kappa$. Choose an atom $b$ outside this union. The transposition swapping $a$ and $b$ fixes $K$ pointwise, hence fixes $x$ and $p$. It moves $\kerat(y)$ and therefore moves $y$.
+
+The image of $y$ is another output satisfying the same formula in $\Mker_\kappa$, by invariance under this automorphism. This contradicts uniqueness.
+\end{proof}
+
+\begin{theorem}[The base support model]
+\label{hset:zr:thm:supportbase}
+For every such infinite $\kappa$, $\Mker_\kappa$ is a model of $\ZFUR+\AC$. It is transitive, has every ambient subset of each of its sets, and has exactly the same pure sets as $\Uk$.
+\end{theorem}
+\begin{proof}
+Membership can only decrease kernels, so the class is transitive. Subsets do not increase kernels; hence every ambient subset of an internal set is internal, and the ambient power set of an internal set is itself internal. Pairing and finite unions use only finite unions of kernels of size below an infinite $\kappa$, again of size below $\kappa$. Union similarly adds no atoms beyond those already in the input's kernel. Extensionality, Foundation, and Infinity follow immediately. Separation follows by relativizing a fixed formula to the definable class $\Mker_\kappa$ and taking a subset of the given set.
+
+For Replacement, suppose a formula assigns a unique internal output to every member of a set $w$, with parameter tuple coded by $p$. Ambient Replacement forms its range $W$; relativization to $\Mker_\kappa$ is a legitimate fixed ambient formula. By \cref{hset:zr:lem:confinement}, every output has kernel contained in $K=\kerat(w)\cup\kerat(p)$. Therefore $\kerat(W)\subseteq K$ and $W\in \Mker_\kappa$. This proves every internal Replacement instance.
+
+For Choice, an ambient well-ordering of a set $w\in \Mker_\kappa$ has kernel contained in $\kerat(w)$, so that well-ordering belongs to $\Mker_\kappa$. Finally every pure set has empty kernel and is included; no impure object becomes pure by passing to this transitive model.
+\end{proof}
+
+\begin{lemma}[Agreement about cardinalities of internal sets]
+\label{hset:zr:lem:cardagreement}
+For every $w\in \Mker_\kappa$, its cardinality as computed in $\Mker_\kappa$ equals its ambient cardinality. Cofinalities of pure ordinals also agree.
+\end{lemma}
+\begin{proof}
+An ambient bijection between $w$ and its initial ordinal has kernel contained in $\kerat(w)$, so it is internal. Conversely an internal bijection is an ambient bijection. For cofinality, every function between pure ordinals is pure, so the two universes have exactly the same candidate cofinal maps.
+\end{proof}
+
+\section{The exact Collection spectrum}
+\label{hset:zr:sec:spectrum}
+
+Write $\CollS_{<\tau}$ for the scheme restricting index sets to cardinality below $\tau$. Saying that Collection fails at $\tau$ means that one explicit formula has a total witness relation on a domain of cardinality $\tau$ with no collecting set. It is not a quantification over a set of all schemes.
+
+\begin{lemma}[The small-domain positive bound]
+\label{hset:zr:lem:smallcollection}
+For every infinite $\kappa$, $\Mker_\kappa$ satisfies $\CollS_{<\cf\kappa}$.
+\end{lemma}
+\begin{proof}
+Let $w\in \Mker_\kappa$ have size $\lambda<\cf\kappa$, and suppose every $x\in w$ has an internal witness to a fixed formula. In the ambient universe, Collection followed by Choice gives a family of internal witnesses $y_x$. Each has a kernel of size below $\kappa$. A union of fewer than $\cf\kappa$ sets, each of size below $\kappa$, has size below $\kappa$; this is the usual cofinality calculation in the ambient universe with Choice. Consequently
+\[
+\left|\kerat\bigl(\{y_x:x\in w\}\bigr)\right|
+\leq\left|\bigcup_{x\in w}\kerat(y_x)\right|<\kappa.
+\]
+The selected range is therefore an internal collecting set. By \cref{hset:zr:lem:cardagreement}, the domain-size hypothesis is the same internally and externally.
+\end{proof}
+
+\begin{theorem}[Limit-cardinal failure at the exact threshold]
+\label{hset:zr:thm:limitspectrum}
+Let $\kappa$ be a limit cardinal, with $\omega$ included in this terminology, and set $\tau=\cf\kappa$. Then
+\[
+\Mker_\kappa\models\CollS_{<\tau},
+\qquad
+\Mker_\kappa\not\models\CollS_{\tau}.
+\]
+For every cardinal $\lambda\geq\tau$, Collection also fails on a domain of size $\lambda$.
+\end{theorem}
+\begin{proof}
+The positive assertion is \cref{hset:zr:lem:smallcollection}. Choose a pure sequence of cardinals $(\mu_i)_{i<\tau}$ below $\kappa$, cofinal in $\kappa$. For $\kappa=\omega$, use finite cardinals. The sequence and its domain belong to $\Mker_\kappa$ because they are pure.
+
+Consider the relation
+\[
+\varphi(i,B):\quad B\text{ is a set of atoms and }|B|=\mu_i.
+\]
+Every $i<\tau$ has a witness: select an ambient set $B\subseteq A$ of size $\mu_i$. Both $B$ and a bijection witnessing its cardinality have kernels of size below $\kappa$, so they are internal.
+
+If $W\in \Mker_\kappa$ collected such witnesses, put $\rho=|\kerat(W)|<\kappa$. Some $\mu_i$ exceeds $\rho$. But every atom set $B\in W$ satisfies $B\subseteq\kerat(W)$ and cannot have size $\mu_i$. This is a contradiction.
+
+For a larger domain, extend the same relation by giving a harmless fixed witness, such as the empty set, to the additional indices. A collecting set for the enlarged relation would collect witnesses for the original one.
+\end{proof}
+
+\begin{theorem}[The successor-cardinal case]
+\label{hset:zr:thm:successorspectrum}
+If $\kappa=\mu^+$ for an infinite cardinal $\mu$, then $\Mker_\kappa$ satisfies full Collection, with no restriction on the size of its index set.
+\end{theorem}
+\begin{proof}
+Let a formula with parameter $p$ have a witness for every $x\in w$. Set $K=\kerat(w)\cup\kerat(p)$; its size is at most $\mu$. Choose a set $B\subseteq A\setminus K$ of size $\mu$. This is possible because $|A|\geq\mu^+$.
+
+Given one internal witness $y$, its kernel outside $K$ has size at most $\mu$. There is a permutation of $A$ fixing $K$ pointwise and sending these remaining atoms into $B$. To justify extension to a permutation, choose an injection onto a subset of $B$ and biject the two complementary parts of $A\setminus K$; both complements have cardinality $|A|$. The resulting automorphism fixes $x,p$ and preserves $\Mker_\kappa$. Thus an appropriate witness exists in $V(K\cup B)$ for every $x$.
+
+For each $x$ take the least stage of this fixed-base hierarchy containing a witness. Replacement in $\Mker_\kappa$, already proved in \cref{hset:zr:thm:supportbase}, bounds these ordinal stages. A sufficiently high set $V_\gamma(K\cup B)$ belongs to $\Mker_\kappa$ and collects all the required witnesses.
+\end{proof}
+
+\begin{corollary}[Complete capacity classification]
+\label{hset:zr:cor:classification}
+For an infinite cardinal $\kappa$, $\Mker_\kappa$ satisfies full Collection if and only if $\kappa$ is a successor cardinal. If it is not, the least domain cardinality at which Collection fails is $\cf\kappa$.
+\end{corollary}
+
+The distinction is not simply regular versus singular. For example, $\omega$ is regular but the finite-support model fails countable Collection. A regular uncountable limit cardinal has failure first at that cardinal. A successor cardinal, by contrast, has a largest permitted infinite support size, and the common-reservoir argument works for domains of arbitrary cardinality.
+
+\subsection{Prescribing the first failure}
+\begin{corollary}
+\label{hset:zr:cor:arbitrarythreshold}
+For every infinite regular cardinal $\tau$, there is a cardinal-support model whose least Collection-failure domain has size $\tau$, while its pure universe is unchanged from the ambient one.
+\end{corollary}
+\begin{proof}
+Choose $\kappa=\aleph_\tau$ and an ambient set of at least $\kappa$ atoms. Since $\tau$ is an infinite regular ordinal, $\kappa$ is a limit cardinal with $\cf\kappa=\tau$. The latter equality follows from continuity and strict increase of the aleph sequence: an index-cofinal sequence gives the upper bound, while a shorter cofinal sequence of ordinals below $\aleph_\tau$ would yield a shorter cofinal sequence of indices below $\tau$. Apply \cref{hset:zr:thm:limitspectrum}.
+\end{proof}
+
+\section{Naming an enumeration: exact failure of Replacement}
+\label{hset:zr:sec:expansion}
+
+Fix $A_0\subseteq A$ of size $\kappa$, and an ambient bijection
+\[
+e:\kappa\longrightarrow A_0.
+\]
+Its graph has kernel $A_0$, so it is not a set of $\Mker_\kappa$. Nevertheless it can be named as an external binary predicate $E$ on the domain of that model. We analyze the expansion $(\Mker_\kappa,E)$ with \emph{Separation and other schemes understood in the expanded language}.
+
+This is a controlled instance of language sensitivity. It is not a reproof of Glazer's global-choice theorem, which concerns a different pure-set situation \cite{GlazerChoice}. The shared lesson is that adjoining a predicate can add functional definitions to which a scheme must apply.
+
+\begin{proposition}[Elementary axioms survive the expansion]
+\label{hset:zr:prop:expandedseparation}
+The expansion $(\Mker_\kappa,E)$ satisfies the urelement versions of $\Zf$ and Choice, including full Separation for formulas using $E$.
+\end{proposition}
+\begin{proof}
+The structural axioms and Choice are unchanged. For an expanded-language formula, replace $E$ by its ambient set graph and relativize quantifiers to $\Mker_\kappa$. Ambient Separation gives a subset of the specified internal set. Every such subset is internal by \cref{hset:zr:thm:supportbase}, so expanded Separation holds.
+\end{proof}
+
+\begin{theorem}[The exact expanded-language threshold]
+\label{hset:zr:thm:expandedthreshold}
+For every infinite $\kappa$, let $\tau=\cf\kappa$. In $(\Mker_\kappa,E)$, both Collection and Replacement hold for all domains of cardinality below $\tau$, and both fail on a domain of cardinality exactly $\tau$.
+\end{theorem}
+\begin{proof}
+The positive argument in \cref{hset:zr:lem:smallcollection} does not use invariance under atom permutations. It uses only ambient Collection and Choice to gather fewer than $\cf\kappa$ witnesses, followed by a kernel-size calculation. It therefore works unchanged for formulas involving the ambient predicate $E$. This gives Collection, and hence Replacement, on all smaller domains.
+
+Choose a pure strictly increasing cofinal sequence $(\alpha_i)_{i<\tau}$ in $\kappa$. The sequence is an internal set and may be used as a parameter. The expanded language defines, for each $i<\tau$, the unique set
+\[
+Y_i=e\,``\,\alpha_i.
+\]
+Each individual $Y_i$ belongs to $\Mker_\kappa$ because $|\alpha_i|<\kappa$. Its characterization uses $E$ and the cofinal sequence, not an internally existing graph of $e$.
+
+If the range $\{Y_i:i<\tau\}$ were an internal set, its union would be the set $A_0$, since the $\alpha_i$ are cofinal in $\kappa$. But $A_0$ has kernel cardinality $\kappa$ and is not internal. Replacement therefore fails for this functional family. A collecting set for these unique witnesses would have kernel containing their union $A_0$, so Collection fails for the same family.
+\end{proof}
+
+\begin{example}[Countable supports]
+Let $\kappa=\aleph_1$. The reduct $\Mker_{\aleph_1}$ satisfies full Collection. After naming an enumeration of $\aleph_1$ atoms, all countable-domain Collection and Replacement instances still hold, but both schemes fail at domain size $\aleph_1$. No pure set, sign sequence, or ordinary set function between pure objects has changed.
+\end{example}
+
+\begin{example}[Singular support capacity]
+Let $\kappa=\aleph_\omega$. In the reduct, Replacement holds on all domains but countable Collection fails. In the expansion, the sets $e\,``\,\aleph_n$ form a uniquely specified countable family with no internal range set. Thus countable Replacement now fails as well.
+\end{example}
+
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}l>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
+\toprule
+Capacity & Replacement in $\Mker_\kappa$ & First Collection failure in $\Mker_\kappa$ & First failure of both in $(\Mker_\kappa,E)$ \\
+\midrule
+$\omega$ & All domains & $\omega$ & $\omega$ \\
+$\aleph_1$ & All domains & None & $\aleph_1$ \\
+$\aleph_\omega$ & All domains & $\omega$ & $\omega$ \\
+$\aleph_{\omega_1}$ & All domains & $\omega_1$ & $\omega_1$ \\
+General limit $\kappa$ & All domains & $\cf\kappa$ & $\cf\kappa$ \\
+General successor $\kappa$ & All domains & None & $\kappa$ \\
+\bottomrule
+\end{tabularx}
+\end{center}
+Here ``first failure'' refers to the cardinality of the index domain. The table is an exact consequence of the preceding proofs, not a numerical experiment.
+
+\section{Why pure surreal structures cannot see the support obstruction}
+\label{hset:zr:sec:blindness}
+
+\begin{proposition}[Identity of pure structures]
+\label{hset:zr:prop:pureidentity}
+The pure universe of $\Mker_\kappa$ is the pure universe of $\Uk$. Therefore their sign-sequence classes, birthdays, prefix relations, ordinal codes, and all set-coded relations between pure objects are identical. Any specified operation defined solely within the pure universe has the same interpretation in both.
+\end{proposition}
+\begin{proof}
+Every pure object has empty kernel and is internal, and membership on these objects is unchanged. Every set made entirely from pure objects is itself pure. Thus the two pure membership structures are identical. Induction on a formula whose quantifiers are restricted to pure objects proves agreement on all such definitions. Apply this to sign sequences and the stated relations.
+\end{proof}
+
+This assertion is deliberately restricted to pure definitions. A formula with unrestricted quantification over impure objects can have different truth values in the two universes, even when its free variables happen to be pure.
+
+\begin{theorem}[Pure-valued Collection survives definable expansions]
+\label{hset:zr:thm:purecollection}
+In $\Mker_\kappa$, expanded by any fixed finite list of ambient-definable predicates, Collection holds for every total relation whose witnesses are required to be pure. Index sets and parameters may be impure. In particular, this holds in $(\Mker_\kappa,E)$.
+\end{theorem}
+\begin{proof}
+Let $w$ be an internal set, and suppose that for each $x\in w$ some pure $y$ satisfies a fixed formula in the expansion. Relativize that formula and the added predicates to the ambient universe. Ambient Collection produces a set of suitable witnesses. Separate away any extraneous nonpure members, obtaining a set $S$ of pure witnesses covering every index. A set of pure objects is pure, so $S\in \Mker_\kappa$. This same $S$ witnesses the original internal Collection instance.
+\end{proof}
+
+\begin{corollary}[All six surreal schemes survive]
+\label{hset:zr:cor:surrealsurvive}
+Every scheme $\OB,\Gr,\UB,\SC,\DCI,\NIB$ holds in $(\Mker_\kappa,E)$, including its instances using $E$ and arbitrary internal parameters, despite the failure of full Replacement in \cref{hset:zr:thm:expandedthreshold}.
+\end{corollary}
+\begin{proof}
+Surreal sign sequences and ordinals are pure. Hence \cref{hset:zr:thm:purecollection} gives $\SC$ and collects ordinal witnesses. Set graphs can then be separated using expanded Separation; their kernels are contained in the kernel of the index domain. The pure range sets have pure ordinal birthday bounds and pure interpolants, all of which are internal. The arguments of \cref{hset:zr:thm:equivalence} apply directly to these sign sequences.
+\end{proof}
+
+There is no contradiction with \cref{hset:zr:thm:ranked}. The hierarchy axiom used there is a cofinal \emph{pure} hierarchy covering every object of an atom-free universe. No pure $V_\alpha$ contains an atom. In the urelement setting, the varying atom base is an additional resource not controlled by ordinal bounding.
+
+\begin{corollary}[No pure-surreal characterization of ambient Collection]
+\label{hset:zr:cor:nogo}
+Across urelement models of the kind constructed here, no statement or scheme depending only on the pure surreal structure can characterize full ambient Collection. Even the enlarged package of all definable surreal-valued Collection and interpolation instances does not characterize it. Across the displayed predicate expansions, that package does not characterize full ambient Replacement either.
+\end{corollary}
+\begin{proof}
+Within an ambient universe with enough atoms, compare a successor-capacity model and a limit-capacity model. Their pure universes, and hence their pure surreal structures, are identical, while full Collection holds in the former and fails in the latter. Both have all the surreal schemes by Replacement or \cref{hset:zr:thm:purecollection}.
+
+For Replacement, compare the same $\Mker_\kappa$ with an empty interpretation of the extra predicate and with the enumeration interpretation $E$. The first expansion is definitionally equivalent to the reduct and satisfies full Replacement. The second fails it by \cref{hset:zr:thm:expandedthreshold}, while satisfying all the surreal schemes by \cref{hset:zr:cor:surrealsurvive}.
+\end{proof}
+
+\subsection{Reflection and the limit of the conclusion}
+Full first-order reflection to transitive sets implies Collection: reflect simultaneously the totality assertion for a witness relation and the relation itself, with the index set and parameters included. The reflecting set then supplies genuine witnesses for all indices. This standard implication is also explicit in Glazer--Yao's analysis \cite{GlazerYao}. Thus our limit-capacity models fail this full reflection principle.
+
+We do not obtain Glazer--Yao's finer separations between partial reflection, supertransitive partial reflection, and full reflection. Nor do we exclude a useful \emph{mixed} surreal--atom theory. Naming atom kernels or permitting atom-labelled objects can expose exactly the data that the pure structure forgets. The obstruction concerns the proposed pure detector, not the possibility of any formalization of urelement set theory.
+
+\section{A formalization route for ProveIt}
+\label{hset:zr:sec:formalization}
+
+\subsection{Repository alignment and inspection boundary}
+The inspected tree snapshot was identified by commit
+\begin{center}
+\texttt{2b7b388ba81a3355b19a7c2d2fe797e92f572355}.
+\end{center}
+The relevant repository locations are:
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}P{0.48\textwidth}Y@{}}
+\toprule
+Location & Role in a future development \\
+\midrule
+\path{Algebra/SurrealNumbers/Surreal/Foundations/} & Sign-sequence and cut infrastructure; connect the order-level result to the existing surreal representation. \\
+\path{SetTheory/ZF/} & Object-language formulas, theories, and model semantics. \\
+\path{SetTheory/ClosureAxiomatization/} & Example of maintaining both semantic directions and a deductive equivalence. \\
+\path{Algebra/SurrealNumbers/docs/foundations-and-computation/surreal-fields-across-universes/} & Related but distinct universe-comparison report; useful for terminology and avoiding duplicate claims. \\
+\bottomrule
+\end{tabularx}
+\end{center}
+This was a targeted README and directory inspection, not a full source audit or a successful build of the repository. The repository's existing kernel-audit claims do not transfer to the present manuscript. No purportedly checked declaration name is invented here.
+
+\noindent[Added 3 October 2026, batch~89: the four locations exist unchanged at
+the placement commit \texttt{23adb85f9}; the commit \texttt{2b7b388ba} named
+above is the commit ``Catalogue batches 81 to 86''. Source 10 did not inspect
+this report, whose Part~II proves the cardinal-cutoff form of its spine
+(\cref{hset:zr:rem:eternity}). Placement beside the Lean libraries confers no
+formal status: no statement of this part is formalized, and none of the module
+names below exists in the repository.]
+
+\subsection{Separate object-level strength from host-level resources}
+A theorem about ordinary Lean types can use host-level function types, images, ordinal recursion, and classical choice without recording whether these correspond to Replacement or Choice inside a weak object theory. Consequently proving a cut theorem for a universe-polymorphic surreal type is not by itself a formal proof that $\Zf$ proves that theorem.
+
+The proposed formalization should have two layers. The first is a conventional order-theoretic library proving the sign comparisons and the finite-container construction. The second interprets the same constructions in arbitrary models of the explicitly listed weak axioms. A function type in the host must not silently substitute for an internal set graph.
+
+In particular, ``$\varphi$ defines a functional family'' and ``there is an internal graph for $\varphi$'' should be different predicates. Their equivalence is one of the conclusions under investigation, not an implementation convenience.
+
+\subsection{Suggested modules and proof order}
+The following are proposed module names, not existing files.
+\begin{enumerate}
+\item \texttt{WeakSignSequences}: internal function graphs on ordinals, lexicographic comparison, prefix, bounded containers, and all-plus and negative ordinal codes.
+\item \texttt{SetCutSimplicity}: the set of good paths, compatibility, its union, the separation invariant, and the unique simplest interpolant with its birthday bound.
+\item \texttt{DefinableFamilySchemes}: syntactic transformations implementing the six implications, with explicit parameters and index domains.
+\item \texttt{RankedReplacement}: the hierarchy axiom, least-stage witnesses, and the equivalence with Collection and Replacement.
+\item \texttt{AtomKernelModels}: tagged urelement semantics, kernel operations, permutation action, and the proof of kernel confinement.
+\item \texttt{CapacitySpectra}: the small-domain union bound, cofinal support-size obstruction, and the successor reservoir argument.
+\item \texttt{PredicateExpansion}: interpretation of an external enumeration, expanded Separation, exact failure families, and pure-valued Collection.
+\end{enumerate}
+The set-cut lemma should be completed before importing any full-ZF surreal construction into the weak-base argument. Its proof has a natural bounded interface: a fixed ordinal $\lambda$ and the set $T_\lambda$.
+
+\subsection{Trust boundaries and quantification}
+A satisfactory formal artifact would explicitly audit at least four boundaries. First, it would specify the object theory rather than merely a list of host axioms. Second, it would distinguish each standard formula instance from a single internal assertion quantifying over formula codes. Third, it would not represent all subsets of a proper class by a host powerset. Fourth, it would distinguish the original language from its expansion by $E$ when stating Separation and Replacement.
+
+For the support models, one can formalize an external set-sized model and its interpreted submodel, or a definable class interpretation in a stronger metatheory. The theorem is relative: it constructs a model from an ambient model. It is not an assertion that a consistent first-order theory proves its own consistency.
+
+\section{Executable finite checks and reproducibility}
+\label{hset:zr:sec:checks}
+The accompanying program, shipped as \path{code/10-cuts-replacement-verify_finite.py} (delivered as \path{code/verify_finite.py}), uses only the Python standard library. It represents a finite sign sequence by a tuple of $-1$ and $+1$, with termination compared as $0$. It implements the obstruction rule from \cref{hset:zr:thm:setcut}, then independently enumerates candidates to check separation, unique minimum birthday, and the prefix property.
+
+The recorded run, shipped as \path{data/10-cuts-replacement-finite_checks.json} (delivered as \path{data/finite_checks.json}), completed with the following results:
+\begin{center}
+\begin{tabular}{@{}lr@{}}
+\toprule
+Check & Number \\
+\midrule
+Sign words of birthday at most $6$ & $127$ \\
+Endpoint intervals, including empty sides & $8\,256$ \\
+Assignments to left/right/neither at depth $2$ & $2\,187$ \\
+Separated assignments among these & $576$ \\
+Negative-code comparisons and birthday implications & $1\,050$ \\
+Atom-transposition checks & $4\,032$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+Every test passed. Endpoint intervals suffice for all finite sets of bounds from the depth-six endpoint universe, since a nonempty finite left set has a maximum and a nonempty finite right set has a minimum. The depth-two assignment check separately exercises the implementation on nonsingleton sets.
+
+The atom test verifies the local combinatorial fact used by the confinement proof: a swap outside a fixed parameter support fixes that support while moving a witness support containing exactly one of the swapped atoms. It does not simulate a model of set theory or a singular cardinal.
+
+In the delivered layout the run was
+\begin{verbatim}
+python3 code/verify_finite.py --output data/finite_checks.json
+\end{verbatim}
+followed by two \texttt{pdflatex} passes of the delivered manuscript. With the
+shipped names, run the program on a copy and pass an explicit output path
+outside this directory (the report's \path{README.md} gives the commands). For
+this merge it was rerun with Python 3.14.4 on a copy: it passed and reproduced
+the recorded file exactly, apart from line endings.
+The tests cannot establish a transfinite induction, an axiom-scheme equivalence, an internal cardinal calculation, or a relative-consistency claim. Those depend on the mathematical proofs above. The delivered archive also contained a README, a proof-status note and a build script; the proof-status note is shipped as \path{10-cuts-replacement-PROOF_STATUS.md} and the build script as \path{code/10-cuts-replacement-build.sh} (it builds the delivered manuscript in the delivered layout, not this report), while the delivery README, the manuscript and its PDF are not shipped (\cref{hset:zr:sec:provenance}).
+
+\section{Further research questions and proposed projects}
+\label{hset:zr:sec:questions}
+The questions below are a research agenda arising from the proved results. Their status is ``not resolved in this manuscript''; no claim is made that every formulation is globally new or currently open in the literature.
+
+\begin{question}[Remove or characterize the hierarchy hypothesis]\label{hset:zr:q:hierarchy}
+Over plain $\Zf$, determine the exact relationship between $\OB$ and full Replacement without assuming $\Hier$. Identify the weakest rank-coverage or tier-coverage principle that turns the equivalence in \cref{hset:zr:thm:equivalence} into full Replacement, and give explicit models distinguishing the relevant choices of coverage axiom.
+\end{question}
+The point is not to omit $\Hier$ typographically. A useful answer must analyze the existence of ranks and hierarchy segments inside the weak model.
+
+\begin{question}[Formula-complexity accounting]\label{hset:zr:q:complexity}
+Determine the optimal correspondence between restricted $\Sigma_n$ or $\Pi_n$ instances of ordinal bounding, surreal graph existence, and interval bounding. In particular, quantify the complexity increase caused by ``least birthday of a witness'' and by the good-path definition.
+\end{question}
+A precise answer would turn the full-scheme result into a hierarchy of proof-theoretic characterizations.
+
+\begin{question}[Domain spectra in weak pure models]\label{hset:zr:q:domainspectra}
+For models of $\Zf+\Hier$, classify the index-domain sizes on which the six equivalent principles hold. Which initial segments of cardinalities can occur, and how are they constrained by definable cofinal maps into the model's ordinals?
+\end{question}
+The $V_{\omega+\omega}$ example gives failure already on $\omega$, but the general domain spectrum deserves a separate analysis. Internal and external cardinalities must be kept distinct.
+
+\noindent[Added 3 October 2026, batch~89: for the two-sorted \emph{full-class}
+rank models $(V_\lambda,\Pow(V_\lambda))$ the domain spectrum of class
+Replacement and Collection is computed in Part~XV of
+\repo{foundations-and-computation/surreal-well-orders}: exactly the domains of
+size below $\cf\lambda$ (\cref{hset:zr:rem:swo}). The question above, for the
+\emph{definable} schemes in arbitrary models of $\Zf+\Hier$, is not answered
+there and stays open.]
+
+\begin{question}[Beyond cardinality ideals]\label{hset:zr:q:ideals}
+Replace $|\kerat(x)|<\kappa$ by membership of the kernel in a permutation-invariant ideal $\mathscr I$ on the atoms. Give necessary and sufficient conditions on $\mathscr I$ for Replacement, for Collection on a specified class of domains, and for a common-reservoir argument.
+\end{question}
+The cardinal-capacity calculation suggests that the relevant invariants combine union closure, available support sizes, and the action of permutations fixing parameter kernels. An arbitrary ideal need not have the fresh-atom property used in \cref{hset:zr:lem:confinement}.
+
+\begin{question}[Mixed surreal--atom witnesses]\label{hset:zr:q:mixed}
+Design a natural two-sorted extension of the sign-sequence structure whose witnesses encode both a birthday and an atom base. Can a local interpolation or extension principle in this richer structure characterize full Collection without merely restating the two-resource criterion by definition?
+\end{question}
+A successful construction should remain mathematically recognizable and should explain how automorphisms act on the added data.
+
+\begin{question}[Admissible language expansions]\label{hset:zr:q:expansions}
+Classify predicates $P$ for which $(\Mker_\kappa,P)$ retains Replacement or full Collection. Can the first failure be characterized in terms of the support growth of uniquely $P$-definable outputs? How much of the permutation group must remain available to force kernel confinement?
+\end{question}
+The enumeration predicate supplies a sharp negative case. Predicates invariant under every atom permutation supply an immediate positive mechanism, but intermediate stabilizer groups are more interesting.
+
+\noindent[Added 3 October 2026, batch~89: for one further family of predicates,
+the graphs of canonical lifts of finitely many atom injections, the report
+\repo{SetTheory/Cardinals/docs/reports/ordinals-and-order-types/naming-elementary-embeddings}
+(\cref{hset:zr:rem:nee}) decides exactly when the expansion keeps Replacement
+and full Collection, by a criterion on the components of the named injections
+(Theorem~5.1, \lbl{nee:thm:profile}; Theorem~7.5, \lbl{nee:thm:collection}).
+This answers the question for that family only; the general classification
+stays open.]
+
+\begin{question}[Reflection spectra rather than Collection spectra]\label{hset:zr:q:reflection}
+In controlled kernel models, determine which additional features separate partial reflection from full reflection while the pure surreal structure remains fixed. Seek a precise comparison with the more elaborate models of Glazer--Yao, rather than assuming the cardinal-capacity invariant alone controls reflection.
+\end{question}
+The present models are intentionally homogeneous and do not reproduce those finer separations.
+
+\noindent[Added 3 October 2026, batch~89: the same report shows, for the kernel
+models expanded by named lifts, that full transitive reflection is equivalent
+to Collection there (Theorem~7.7, \lbl{nee:thm:reflection}), and that partial transitive
+reflection of assertions $\forall x\in w\,\exists y\,\delta$ with $\Delta_0$
+matrix is $\Delta_0$ Collection, which fails at limit cutoffs, although each
+single true $\exists y\,\delta$ reflects (Proposition~8.1, \lbl{nee:prop:partial}). It bears on
+this question but does not reproduce Glazer--Yao's separations; the question
+stays open.]
+
+\begin{question}[Weaker power-set assumptions]\label{hset:zr:q:powerset}
+The good-path proof uses the set $\Pow(\lambda\times\signs)$. Determine whether a restricted binary-sequence existence axiom suffices in place of full Power Set, and whether interpolation over such a base becomes equivalent to additional Collection or recursion principles.
+\end{question}
+This asks for a genuinely different lower-strength construction, not a proof that secretly retains the same function-space container.
+
+\begin{question}[Constructive variants]\label{hset:zr:q:constructive}
+Analyze which parts of the six-scheme equivalence survive intuitionistic logic. The current comparison rule uses a first disagreement and decidable alternatives between obstructions, while least-witness birthday selection also has classical content. A constructive version should specify which order and cut notions replace these choices.
+\end{question}
+
+\begin{question}[A proof-assistant benchmark with semantic safeguards]\label{hset:zr:q:benchmark}
+Implement the weak-base and expanded-language results in ProveIt, using the same internal formula language for the positive and negative directions. Include regression tests that intentionally try to confuse a definable family with a set graph, or to use a reduct's Replacement instance after adjoining $E$.
+\end{question}
+Such a benchmark would test more than symbolic algebra: it would test whether an automated proof pipeline preserves the intended theory and language across an argument.
+
+\section{Conclusion of source 10, ledger and provenance}
+\label{hset:zr:sec:provenance}
+
+\subsection{Conclusion}
+The phrase ``a set-indexed family of surreal numbers'' conceals two different assertions. A family already represented by a set graph supports the ordinary simplicity construction in Zermelo set theory without Replacement. A merely definable functional family can fail to have that graph. Uniformly repairing this failure is equivalent to ordinal bounding, and on an explicit pure cumulative-hierarchy base it is equivalent to full Replacement and Collection. The obstruction is visible inside the single interval $(-1,0)$.
+
+Urelements expose a second direction of failure. Pure sign sequences retain ordinal height but forget atom bases. Cardinal-support models keep the entire pure universe unchanged while varying the exact domain threshold for Collection. An external atom enumeration can additionally destroy Replacement, with an exact cofinality threshold, even though every pure-valued witness relation still satisfies Collection.
+
+These results provide a concrete intersection between weak-set-theoretic research and surreal formalization. Their most useful lesson is operational: record the language, the index domain, the birthday bound, and the atom support separately. Each is mathematically consequential, and none should be supplied silently by the notation or by the proof assistant's host theory.
+
+\subsection{A compact dependency and limitation ledger}
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}P{0.34\textwidth}YY@{}}
+\toprule
+Result & Assumptions & Important exclusion \\
+\midrule
+Set-cut simplicity & $\Zf$, actual sets of endpoints & No arbitrary definable images assumed. \\
+Six-scheme equivalence & $\Zf$, all instances in one fixed language & No assertion of full Replacement without a hierarchy hypothesis. \\
+Full Replacement characterization & $\Zf+\Hier$ & Pure, atom-free cumulative hierarchy. \\
+$V_{\omega+\omega}$ example & External ZFC & The missing family is not an internal sequence. \\
+$\Mker_\kappa$ construction & Full ambient urelement universe with Choice; $|A|\geq\kappa$; infinite $\kappa$ & Internal proper-class atoms are an ambient set. \\
+Collection spectrum & Same ambient assumptions & Restricted by domain size, not witness rank. \\
+Enumeration expansion & Ambient set predicate $E$, not an internal graph & Reduct Replacement cannot be reused in the expansion. \\
+Pure-valued Collection & Ambient-definable finite predicate expansion & Does not collect arbitrary impure witnesses. \\
+Finite checks & Ordinary Python execution & No transfinite or kernel-level verification. \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\subsection{Bibliographic and repository audit notes}
+The research inspection used Glazer's 2023/2024 global-choice paper, the February 2026 Glazer--Yao preprint, the Hamkins--Yao treatment of classical kernel models, Yao's axiomatization paper, and the listed ProveIt pages. The live arXiv version of the Glazer--Yao paper inspected was version 1. No private professional information about Glazer was needed; the match of interests is established by his mathematical publications rather than inferred from a job title.
+
+\begin{samepage}
+The limited search did not establish a published occurrence of the exact six-scheme formulation or of the combined spectrum-and-expansion package. That absence is not evidence sufficient to establish priority. Classical results and close precedents are credited in \cref{hset:zr:sec:literature}.
+\par
+\end{samepage}
+
+\subsection{Non-claims of source 10}
+\label{hset:zr:sub:nonclaims}
+Every limitation stated by source 10, in its manuscript or in its proof-status
+note, is kept; most appear at their point of use. Collected: the manuscript is
+unrefereed; classical simplicity (Conway, Gonshor, Bertram) and the
+small-support arguments (Hamkins--Yao \S1.5 with L\'evy; Glazer--Yao,
+Proposition~1; Yao) are credited, and neither the six-scheme package nor the
+spectra is claimed to have priority; no Lean or Rocq development is included
+or claimed checked; the finite tests do not test infinite cardinals, class
+semantics or full axiom schemes; the full-Replacement conclusion in pure weak
+set theory assumes $\Hier$; the first half uses only the sign-sequence order, not
+a field construction in the weak base; internal proper-class atoms can form a
+set in the ambient universe; cardinal computations in the support models use
+ambient Choice; Replacement for a reduct is not Replacement for an expanded
+language; pure-valued Collection is not Collection for impure witnesses; the
+models are relative interpretations, not consistency proofs; the expansion by
+$E$ is not a reproof of Glazer's global-choice theorem; Glazer--Yao's reflection
+separations are background, not results here; the repository inspection was
+targeted at READMEs and directory organization, not a source audit or a build.
+No named conjecture is resolved.
+
+\subsection{Provenance of this part}
+\label{hset:zr:sub:provenance}
+
+\paragraph{The manuscript.} Source 10 is batch-89 manuscript 03, delivered as
+the archive \path{Surreal_Cuts_Replacement_Atom_Support_Spectra.zip} in commit
+\texttt{7c0f2d9f9} and placed in commit \texttt{23adb85f9}. It names the
+repository commit \texttt{2b7b388ba} (``Catalogue batches 81 to 86'') as its
+inspected snapshot, and all the paths it names exist, unchanged, at the
+placement commit. Its manuscript (\path{article.tex}, 926 lines, 45 labels; a
+23-page PDF), its README, its PDF and its checksum file \path{SHA256SUMS}
+(8 of 8 entries verified at placement) are not shipped; they survive in the
+arrival commit. Shipped, byte-identical: \path{10-cuts-replacement-PROOF_STATUS.md},
+\path{code/10-cuts-replacement-verify_finite.py},
+\path{code/10-cuts-replacement-build.sh},
+\path{data/10-cuts-replacement-finite_checks.json} and
+\path{data/10-cuts-replacement-build_validation.json} (source 10's own record
+of its 23-page build, not of this report). The Hilbert's-tenth programme
+routed the batch-89 archives in commit \texttt{6aadaa4f2}
+(\path{Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/review_topology_surreal_arrivals_20261003.md}):
+it read bounded ranges, ran nothing, made no correctness finding, and
+concluded that none of them gives a Diophantine compiler or an arithmetic
+saving.
+
+\paragraph{How it is printed.} The text from source 10's title-page status box
+and abstract to its appendices is printed in full, in its order, as
+\cref{hset:zr:sec:overview}--\cref{hset:zr:sec:provenance}: the status box and
+the abstract open \cref{hset:zr:sec:overview}, its Section~1 became the next
+three subsections, and its two appendices became subsections of this section. Every delivered label carries
+the prefix \texttt{hset:zr:}; its ten questions gained labels
+\texttt{hset:zr:q:}\dots; its Theorems~A--C are numbered
+(\cref{hset:zr:thm:A,hset:zr:thm:B,hset:zr:thm:C}). The symbols renamed are
+listed in \cref{hset:zr:conv:notation}; the countermodel of
+\cref{hset:zr:sec:countermodel} is written $V_\theta$ instead of $M$; delivered
+file names are replaced by the shipped ones; its references to Conway, Gonshor
+and Bertram use this report's bibliography entries. Added for this report:
+\cref{hset:zr:sub:notation,hset:zr:sub:relation}, the bracketed dated notes,
+this subsection and the preceding one. No mathematical statement or proof of
+source 10 was changed.
+
+\paragraph{Where the merge had to choose.} (i) Placement: source 10 cites no
+report of the collection; it is placed here because its spine is the weak-base
+form of \cref{hset:thm:eternity-replacement} (\cref{hset:zr:rem:eternity}).
+(ii) Its Collection spectrum for the kernel models is printed in full here, with
+its own proofs, although the research-report collection prints the same theorem
+from an independent manuscript (\cref{hset:zr:rem:nee}). (iii) Its hierarchy
+axiom and set-graph scheme were renamed rather than left to collide with
+$H_\kappa$ and $\SG$.
+
+\part{Surreal universality without choice}\label{hset:kw:part}
+
+\section{Source 11: question, results, notation and relation to the report}
+\label{hset:kw:sec:intro}
+
+This part was also added in batch~89. It prints the manuscript \emph{Surreal
+Universality Without Choice: Exact coding strength, set-sized universal fields,
+and finite-transcendence collapse}, ``A research manuscript prepared for
+Vladimir Reshetnikov'', October 3, 2026. It is batch-89 manuscript 04 and
+\emph{source 11} in this report's local numbering; its shipped files carry the
+prefix \texttt{11-choiceless-universality-}. It names the repository commit
+\texttt{2b7b388ba} (``Catalogue batches 81 to 86''; source 11 calls it a ``tree
+identifier'', but it is a commit), arrived in commit \texttt{7c0f2d9f9} and was
+placed in commit \texttt{23adb85f9}. Its provenance and the mechanical changes
+made in printing it are in \cref{hset:kw:sec:provenance}. Inside this part,
+``this manuscript'', ``here'', ``our'' and ``we'' refer to source 11.
+
+\begin{resultbox}
+\textbf{Research intersection (source 11).} Choiceless set theory and permutation models, as in the work of Elliot Glazer and Bokai Yao, meet the sign-sequence, Hahn-series, and omnific-integer foundations developed in the ProveIt repository.
+
+\medskip
+\textbf{Status.} The manuscript supplies complete mathematical arguments for the stated deductions from explicitly identified classical background. It is an AI-generated, unrefereed research draft, not a Lean- or Rocq-checked development. Historical novelty is not certified. It does not claim to solve the reflection problems studied by Glazer and Yao, nor to transfer an atom-model counterexample automatically to pure set theory.
+
+\medskip
+\textbf{Main message.} Freely naming independent surreal coordinates costs exactly one powerset-of-an-ordinal code. Preserving a given order is a separate requirement. In symmetric atom models, finite support places a sharp finite bound on how many independent coordinates any one representation can retain.
+\end{resultbox}
+
+\paragraph{Source 11's summary.} We calibrate several universality assertions for the surreal numbers over set theory without the axiom of choice. For every set $X$, an injection $X\to\No$ exists if and only if $X$ injects into the powerset of an ordinal. An explicit double-monomial construction upgrades any such injection to algebraically independent positive infinite omnific integers. Consequently, the existence of embeddings of all free integer polynomial rings into $\Oz$, or all free real rational-function fields into $\No$, is exactly the first Kinna--Wagner principle.
+
+For every infinite initial ordinal $\kappa$, we construct a set-sized real-closed subfield $U_\kappa\subseteq\No$, equinumerous with $\Pow(\kappa)$ without choice, which realizes precisely the free real rational-function fields whose variable sets inject into $\Pow(\kappa)$. The cardinal upper bound uses canonical fraction and root codes rather than an unjustified choice of quotient representatives.
+
+An orbit-factorization theorem then yields sharp bounds in permutation models. A polynomial representation into the pure surreals supported by $s$ atoms has image-field transcendence degree at most $s+1$ in the basic Fraenkel model, and at most $2s+1$ in the ordered Mostowski model. Both bounds are attained. The latter model contains an ordered rational-function field with no embedding into its surreals, although every finitely generated-over-$\R$ coordinate subfield embeds in order. Compatible local embeddings would produce a global one, so the missing ingredient is coherence, not a defect of the finite algebra.
+
+We separate coding universality from prescribed-order universality, give an ordinal convex-resolution criterion for order embeddings, identify the precise foundations required by the proofs, and propose a formalization and research program.
+
+\subsection{The research question}
+The slogan that the surreal numbers are a universal ordered field suppresses several different quantifiers. Does one wish to assign distinct surreal coordinates to the elements of a set? To assign algebraically independent coordinates? To embed a field as a field, or as a field with its already specified order? Must the embedding belong to the universe in which the field was constructed? These questions coincide much less often when choice is unavailable.
+
+This distinction provides a concrete meeting point between two research programs. Glazer and Yao's \emph{Reflection Principles in ZFU} studies how assertions that agree under choice can separate when urelements and permutation symmetries are present \cite{GlazerYao}. ProveIt's surreal-number project develops sign-sequence foundations, normal forms, the real-closed surreal field, and the omnific-integer subring; it also explicitly distinguishes research claims from checked declarations \cite{ProveItSurreal}. Our subject is the choice cost of \emph{representing labelled algebra inside those fields}.
+
+The relevant weak-choice principle is classical. With the indexing convention of Karagila and Schilhan \cite{KaragilaSchilhan},
+\begin{equation}\label{hset:kw:eq:kwp}
+\KWP_1:\qquad
+\forall X\ \exists\alpha\in\Ord\quad X\hookrightarrow\Pow(\alpha).
+\end{equation}
+Its coding formulation is not a new principle introduced here. Our contribution is an explicit algebraic calibration, a set-sized optimal target at each code level, and a quantitative analysis of how symmetry defeats the same constructions internally.
+
+\subsection{What is proved, and what is not claimed}
+The principal questions answered in this manuscript are as follows.
+\begin{description}[style=nextline,leftmargin=0pt,labelsep=0pt]
+\item[How much choice is required to realize arbitrary independent variables in $\No$ or $\Oz$?]
+Exactly $\KWP_1$, for the free-algebra assertions specified in \cref{hset:kw:thm:equivalences}. The result is an equivalence over $\ZF$, not merely an implication from choice.
+\item[Can one use an optimal set-sized real-closed target at a fixed ordinal code level?]
+Yes. The field $U_\kappa$ of \cref{hset:kw:thm:universal} has the same cardinality, in the sense of an actual bijection, as $\Pow(\kappa)$.
+\item[What does finite support force a polynomial representation to forget?]
+It identifies variables in the same stabilizer orbit. In two standard atom models this gives the sharp bounds $s+1$ and $2s+1$ of \cref{hset:kw:thm:fraenkel,hset:kw:thm:mostowski}.
+\item[Does finite-stage embeddability ensure a global surreal embedding?]
+No, in the ordered permutation model. It does so precisely when the finite-stage maps can be assembled coherently, as formalized in \cref{hset:kw:thm:coherence}.
+\end{description}
+These are natural questions formulated and answered here; they are not presented as named, previously published open problems. The elementary coding observation, finite normal-form identities, polynomial universal property, and standard permutation-model construction are established machinery. The possible novelty lies in the exact combined statements and the quantitative refinements. A targeted literature review did not establish historical priority for those formulations.
+
+\subsection{Reading paths}
+For the main positive results, read \cref{hset:kw:sec:background,hset:kw:sec:coding,hset:kw:sec:independence,hset:kw:sec:universal}. For the negative results, read \cref{hset:kw:sec:orbits,hset:kw:sec:fm,hset:kw:sec:counterexample}. The prescribed-order issue is isolated in \cref{hset:kw:sec:order,hset:kw:sec:resolutions}. The final sections discuss proof boundaries, formalization, and research questions. All displayed embeddings into a proper class have set-sized domains and set graphs.
+
+\subsection{Notation of this part}
+\label{hset:kw:sub:notation}
+
+\begin{convention}[Symbols of source 11]\label{hset:kw:conv:notation}
+In this part:
+\begin{center}\small
+\begin{longtable}{@{}P{0.25\textwidth}P{0.22\textwidth}P{0.45\textwidth}@{}}
+\toprule
+Notion in source 11 & Here & Do not confuse with\\
+\midrule\endhead
+Birthday of a sign sequence & $\bd(s)$, an ordinal (source: $\operatorname{b}$) & the same function; Parts I--V regard its value as a surreal ordinal\\
+Sign sequences of length at most $\alpha$ & $\No_{\le\alpha}$ $(=\No_{<\alpha+1})$ & the cutoff carrier $\No_{<\lambda}$ of Parts I--V: at an infinite initial $\kappa$, $\No_{\le\kappa}$ also contains the sequences of length exactly $\kappa$\\
+Sign sequences of length exactly $\kappa$ & $\mathbb S_\kappa=\{-,+\}^\kappa$ (source: $S_\kappa$) & $S_\kappa$, sources 05 and 06's name for the carrier $\No_{<\kappa}$ (\cref{hset:conv:notation})\\
+Free real field on $\mathbb S_\kappa$ & $\mathcal R_\kappa$ (source: $K_\kappa$) & the collection's $K$, a complex field, and source 09's $K_\lambda$ (renamed $\No_{<\lambda}$)\\
+Sign-to-subset code & $\operatorname{enc}_\alpha(s)$ (source: $C_\alpha$) & the relation codes $C=(\delta,r,t)$ of \cref{hset:sec:codes}\\
+Least code level, least birthday level & $\operatorname{cl}(X)$, $\operatorname{bl}(X)$ (source: $\rho(X)$, $\beta(X)$) & $\beta$, the first new birthday, and $\varrho$, the eternity bound\\
+A group acting on variables & $G_0$ (source: $H$) & $H_\kappa$, the hereditary-size universe\\
+Generic ordinal variable & $\zeta$ (source: $\beta$) & $\beta$ (reserved)\\
+An injection $X\to\Pow(\alpha)$ in \cref{hset:kw:thm:coding} & $c$ & the conjugation $c$ of \cref{hset:sec:surcomplex}\\
+Omnific integers; first Kinna--Wagner principle & $\Oz$; $\KWP_1$ & ---\\
+Length of a convex resolution; limit stages & $\theta$; $\lambda$ & the pairing width $\theta$ of \cref{hset:sec:bits}; the epsilon-number cutoffs $\lambda$\\
+Permutation model; atom support size & $W$; $s$ & $s$ also denotes a sign sequence, as in the source\\
+\bottomrule
+\end{longtable}
+\end{center}
+Source 11's exponent sums $E_m$ and the equivalence relations $E_\xi$ of a
+convex resolution are its own two uses of $E$; neither is the enumeration
+predicate $E$ of \cref{hset:zr:part}. Typography only: theory names (ZF, ZFA,
+AC, $\KWP$) are set upright, as in the rest of this report.
+\end{convention}
+
+\subsection{Relation to the rest of the report and to the collection}
+\label{hset:kw:sub:relation}
+
+\begin{remark}[The open item of Question~\ref{hset:q:axiomatics}, re-scoped]
+\label{hset:kw:rem:question}
+\Cref{hset:q:axiomatics} lists, as source 06's open item, ``a universal
+embedding theorem without Global Choice''. Source 11 answers it in part, over ZF:
+coordinate universality (every set of variables realized by algebraically
+independent surreals, or every free real rational-function field embedded in
+$\No$) is exactly $\KWP_1$ (\cref{hset:kw:thm:equivalences}); at each code level
+the set-sized real-closed field $U_\kappa$ is an optimal target
+(\cref{hset:kw:thm:universal}); every linear order whose underlying set is
+well-orderable order-embeds in $\No$ (\cref{hset:kw:prop:wellordered}), and
+order embeddability is characterized by convex resolutions
+(\cref{hset:kw:thm:resolution}); and in a ZFA permutation model an ordered field
+all of whose finitely generated coordinate subfields embed has no embedding
+(\cref{hset:kw:thm:orderedcounter}). It leaves open universality for prescribed
+orders and for general ordered fields without choice (its
+\cref{hset:kw:q:prescribed,hset:kw:q:kwporder,hset:kw:q:fields}), and any ZF
+transfer of the ZFA counterexample. Source 11 did not know this report.
+\end{remark}
+
+\begin{remark}[Comparison with the choice-free Section~\ref{hset:sec:choice}]
+\label{hset:kw:rem:choice}
+\Cref{hset:thm:choice} (source 06) identifies, over ZF, the range of the pointed
+ordinal-graph \emph{interpretation} of sets: exactly $\HWO$, the sets whose
+transitive closure is well-orderable. \Cref{hset:kw:thm:coding} concerns
+\emph{injections} of a set into $\No$: $X\hookrightarrow\No$ iff
+$X\hookrightarrow\Pow(\alpha)$ for some $\alpha$. The second class is the wider
+one. If $x\in\HWO$ then $x\subseteq\TC(\{x\})$ is well-orderable and so injects
+into an ordinal; but $\Pow(\omega)$ always injects into $\No$ (take $\alpha=\omega$),
+while in a model of ZF where $\Pow(\omega)$ is not well-orderable it is not in
+$\HWO$ (\cref{hset:prop:internal-choice} uses the same hypothesis). Under Choice
+both classes are everything. A set coded by a surreal in the sense of
+\cref{hset:thm:choice} is recovered as a set; an injection into $\No$ only names
+its elements. This comparison is an observation of this merge.
+\end{remark}
+
+\begin{remark}[Other reports]
+\label{hset:kw:rem:other}
+(i) \Cref{hset:kw:thm:double} is the case $K=\R$, $G=\{0\}$ of Lemma~8.1
+(\lbl{dsn:lem:cosets}, ``Disjoint support cosets'', that report's source 04) of
+\repo{foundations-and-computation/definable-surreals-and-omnific-integers}: a
+nonzero real has normal-form support $\{0\}$, and distinct Conway monomials
+$e_x$ have no nonzero integer relation, so the family $\omega^{e_x}$ is
+algebraically independent over $\R$. Source 11's proof is printed as its own;
+new beside that lemma are the omnific-integer conclusion, the free-algebra
+calibration and the ZF framing. (ii) The report
+\repo{foundations-and-computation/surreal-well-orders} proves over GB without
+set choice that Global Choice holds iff $\No$ has a class well-order (its
+Theorem~13.1, \lbl{swo:cf:choice}; see the dated note after
+\cref{hset:rem:answered-choice}); source 11 instead works with sets and no
+global principle, and calibrates coordinate universality by $\KWP_1$. That
+report also records the ZFC count $\card{\No_{<\kappa}}=2^{<\kappa}$; source
+11's \cref{hset:kw:prop:capacity} is a ZF bijection at the closed bound
+$\No_{\le\kappa}$. Its Part~XV (batch-89 manuscript 01) studies countable global
+choice over Zermelo set theory: a related theme, different theorems.
+(iii) No other report of the collection treats Kinna--Wagner principles,
+permutation models or choiceless universality.
+\end{remark}
+
+\section{Foundations, notation, and the surreal interface}
+\label{hset:kw:sec:background}
+
+\subsection{Set theory and classes}
+Unless otherwise specified, the positive results are theorems over $\ZF$. We use classes only as definable predicates and definable operations on sets. Equivalently, one may work in a conservative class-theoretic presentation without adding set choice or global choice. The permutation-model sections work in $\ZFA$: set theory with a \emph{set} of atoms. This is a special setting within urelement theories, not the unrestricted proper-class-of-atoms setting of all results in \cite{GlazerYao}.
+
+A surreal number is represented by a function
+\[
+s:\zeta\longrightarrow\{-,+\},\qquad \zeta\in\Ord.
+\]
+Its birthday is $\bd(s)=\zeta$. The totality $\No$ of such functions is a proper class. We write
+\[
+\No_{\le\alpha}=\bigcup_{\zeta\le\alpha}\{-,+\}^{\zeta}.
+\]
+This is a set. An expression $f:X\to\No$ means that $f$ is a set of ordered pairs, its domain is the set $X$, and every value satisfies the defining predicate for $\No$. Replacement therefore applies to the values and to their birthdays. We never take a powerset of $\No$.
+
+In $\ZFA$, the signs, ordinals, and sign sequences are pure sets: their transitive closures contain no atoms. Atom permutations fix each surreal number pointwise. A function whose arguments involve atoms need not be pure, even if all its values are surreals. This difference drives the counterexamples.
+
+\subsection{The standard surreal facts used}
+We use the following classical interface, with no choice principle added to the ambient set theory. Conway's foundational construction is the underlying reference \cite{Conway}; Costin and Ehrlich explicitly develop their positive surreal theory in a class framework without set or class choice \cite{CostinEhrlich}.
+\begin{enumerate}[label=(S\arabic*)]
+\item $\No$ is an ordered real-closed field containing the canonically embedded ordered field $\R$.
+\item The Conway monomial map $x\mapsto\omega^x$ is strictly increasing, has positive values, and satisfies
+\[
+\omega^{x+y}=\omega^x\omega^y,\qquad\omega^0=1.
+\]
+Here $\omega^x$ denotes Conway's monomial, not the separate Gonshor exponential function.
+\item If $x_1>\cdots>x_n$ and $r_i\in\R\setminus\{0\}$, the finite normal form
+\[
+\sum_{i=1}^n r_i\omega^{x_i}
+\]
+is nonzero and has the sign of $r_1$. In particular, distinct monomials are linearly independent over $\R$.
+\item A surreal is omnific when its normal-form exponents are nonnegative and its constant coefficient is an ordinary integer. These numbers form the subring $\Oz$. In particular, a monomial $\omega^e$ with $e>0$ is a positive infinite omnific integer.
+\item For set-sized $A,B\subseteq\No$ with $A<B$, there is a unique simplest surreal strictly between them. This is the usual set-cut construction.
+\end{enumerate}
+Only finite normal forms are needed for the independence and symmetry theorems. The set-sized real-closed-target theorem additionally uses real closedness. No theorem about arbitrary rearrangements of infinite Hahn sums, surreal integration, or sharp product birthdays is used.
+
+\begin{remark}[Three meanings of support]
+A polynomial has a finite \emph{variable support}; a Hahn or Conway series has a \emph{normal-form support}; an object in a permutation model has an \emph{atom support}. They are different notions. In particular, a polynomial homomorphism with finite atom support can have a domain with infinitely many variables.
+\end{remark}
+
+\subsection{Algebra on arbitrary sets of variables}
+For any set $X$, let $\N^{(X)}$ be the set of finitely supported functions $X\to\N$. The ring $k[T_X]$ consists of finitely supported coefficient functions on $\N^{(X)}$. Addition is pointwise and multiplication is finite convolution. This definition requires no ordering or enumeration of $X$. If $k$ is a field, the resulting ring is a domain, and its fraction field is denoted $k(T_X)$.
+
+An embedding of $\R$-algebras fixes the specified copy of $\R$. A unital field homomorphism is automatically injective. A field embedding, unless explicitly called ordered, need not preserve a prescribed order on the source. Finite transcendence degrees below are ordinary nonnegative integers; no existence of an arbitrary infinite transcendence basis is assumed.
+
+\section{The exact coding strength of a surreal coordinate set}
+\label{hset:kw:sec:coding}
+
+\begin{theorem}[Ordinal-code equivalence]\label{hset:kw:thm:coding}
+For every set $X$, the following are equivalent over $\ZF$:
+\[
+X\hookrightarrow\No
+\qquad\Longleftrightarrow\qquad
+\exists\alpha\in\Ord\quad X\hookrightarrow\Pow(\alpha).
+\]
+The same equivalence holds in $\ZFA$ with pure sign-sequence surreals.
+\end{theorem}
+\begin{proof}
+Suppose first that $j:X\to\No$ is injective. By Replacement, the set of birthdays of its values exists. Let
+\[
+\alpha=\sup\{\bd(j(x)):x\in X\},
+\]
+with $\alpha=0$ if $X=\varnothing$. Every value belongs to $\No_{\le\alpha}$.
+
+For a sign sequence $s$ of length $\zeta\le\alpha$, put
+\begin{equation}\label{hset:kw:eq:signcode}
+\operatorname{enc}_\alpha(s)=
+\{2\cdot\xi+1:\xi<\zeta\}
+\ \cup\
+\{2\cdot\xi:\xi<\zeta\text{ and }s(\xi)=+\}.
+\end{equation}
+This is a subset of the ordinal $2\cdot\alpha$. Multiplication here is ordinal multiplication on the indicated side: $2\cdot\alpha$ is the sum of $\alpha$ consecutive two-point blocks. The odd position of each block records whether the sign is defined; the even position records whether it is positive. Thus the code uniquely determines both the domain and every sign, so $\operatorname{enc}_\alpha$ is injective. Composing with $j$ proves the forward implication.
+
+Conversely, given an injection $c:X\to\Pow(\alpha)$, let $s_x$ be the sign sequence of exact length $\alpha$ defined by
+\[
+s_x(\xi)=+\ \Longleftrightarrow\ \xi\in c(x).
+\]
+Different codes give different surreals. This definition uses only Separation and Replacement and works unchanged when the members of $X$ are atoms or sets involving atoms.
+\end{proof}
+
+\begin{remark}[Why definedness must be encoded]
+Coding a sign sequence solely by its positive positions loses information: the empty sequence and the one-symbol sequence $-$ would both have empty code. The first half of \eqref{hset:kw:eq:signcode} prevents that error. Padding by a third symbol, as in \cref{hset:kw:sec:resolutions}, is an alternative.
+\end{remark}
+
+\begin{proposition}[Exact birthday capacity]\label{hset:kw:prop:capacity}
+For every infinite initial ordinal $\kappa$, there is a bijection
+\[
+\No_{\le\kappa}\ \simeq\ \Pow(\kappa)
+\]
+in $\ZF$. For a finite ordinal $n$,
+\[
+|\No_{\le n}|=2^{n+1}-1.
+\]
+\end{proposition}
+\begin{proof}
+Subsets of $\kappa$ inject into the sign sequences of exact length $\kappa$. In the other direction, \eqref{hset:kw:eq:signcode} maps $\No_{\le\kappa}$ into $\Pow(2\cdot\kappa)$. The ordinal $2\cdot\kappa$ is equipotent with $\kappa$: finite products of an infinite well-orderable cardinal do not require choice. Transporting subsets along such a bijection and applying Cantor--Bernstein gives the result. At finite $n$, sum the $2^i$ sign sequences of each length $0\le i\le n$.
+\end{proof}
+
+\begin{corollary}[Coincidence of least code and birthday budgets]\label{hset:kw:cor:budgets}
+Let $X$ be an infinite set admitting the embeddings in \cref{hset:kw:thm:coding}. Define
+\[
+\operatorname{cl}(X)=\min\{\alpha:X\hookrightarrow\Pow(\alpha)\},\qquad
+\operatorname{bl}(X)=\min\{\alpha:X\hookrightarrow\No_{\le\alpha}\}.
+\]
+Then $\operatorname{cl}(X)=\operatorname{bl}(X)$, and their common value is an infinite initial ordinal.
+\end{corollary}
+\begin{proof}
+Each minimum exists by taking the least ordinal below an existing witness. Neither is finite, since a set injecting into a finite set is finite. If an infinite witness ordinal $\alpha$ is not initial, replace it by its initial ordinal $\kappa<\alpha$. Subsets of $\alpha$ and of $\kappa$ are equipotent. Moreover, the proof of \cref{hset:kw:prop:capacity} shows $\No_{\le\alpha}\hookrightarrow\Pow(\kappa)\hookrightarrow\No_{\le\kappa}$. Thus a least witness is initial. At infinite initial ordinals the two target sets have equal capacity by \cref{hset:kw:prop:capacity}.
+\end{proof}
+The finite restriction matters. A three-element set fits into $\No_{\le1}$, whereas it does not fit into $\Pow(1)$.
+
+\section{Double monomials and free-algebra universality}
+\label{hset:kw:sec:independence}
+
+\begin{theorem}[Uniform algebraic independence]\label{hset:kw:thm:double}
+Let $j:X\to\No$ be an injection. Define
+\begin{equation}\label{hset:kw:eq:double}
+e_x=\omega^{j(x)},\qquad t_x=\omega^{e_x}.
+\end{equation}
+Then $(t_x)_{x\in X}$ is algebraically independent over $\R$. Every $t_x$ is a positive infinite omnific integer. Evaluation gives embeddings
+\[
+\Z[T_X]\hookrightarrow\Oz,
+\qquad
+\R[T_X]\hookrightarrow\No,
+\qquad
+\R(T_X)\hookrightarrow\No.
+\]
+All these maps are definable from $j$ and have set graphs.
+\end{theorem}
+\begin{proof}
+The numbers $e_x$ are distinct Conway monomials. By finite normal-form uniqueness they are linearly independent over $\R$, and in particular over $\Z$.
+
+For $m\in\N^{(X)}$, define the finite sum
+\[
+E_m=\sum_{x\in X}m(x)e_x.
+\]
+If $m\ne n$, the finite linear combination $\sum_x(m(x)-n(x))e_x$ is nonzero. Hence $E_m\ne E_n$. The multiplication law for Conway monomials gives
+\[
+\prod_x t_x^{m(x)}=\omega^{E_m}.
+\]
+Now take a nonzero polynomial, written after collecting like monomials as
+\[
+p=\sum_{m\in F}a_mT^m,
+\]
+where $F$ is finite and every $a_m\ne0$. Evaluation produces
+\begin{equation}\label{hset:kw:eq:normal-evaluation}
+p(t)=\sum_{m\in F}a_m\omega^{E_m}.
+\end{equation}
+The exponents are distinct. They can be sorted because they form a finite subset of a linear order. The resulting finite normal form is nonzero, proving algebraic independence.
+
+Each $e_x>0$, regardless of the sign or magnitude of $j(x)$. Thus $t_x=\omega^{e_x}$ has a single positive exponent and is a positive infinite element of $\Oz$. In \eqref{hset:kw:eq:normal-evaluation}, every nonconstant monomial has exponent $E_m>0$. If the coefficients are integers, the only possible constant coefficient is an integer, so the value is omnific. Evaluation is therefore injective on both polynomial rings in the stated targets. Since nonzero denominators do not vanish, the real polynomial embedding extends uniquely to its fraction field. Replacement on the set of polynomials and fractions gives the graphs of the maps.
+\end{proof}
+
+\begin{example}[Why the second monomial layer is needed]
+An arbitrary injective assignment $j$ does not make $\omega^{j(x)}$ algebraically independent. For labels $j(x_0)=0$, $j(x_1)=1$, and $j(x_2)=2$, the assigned values are $1,\omega,\omega^2$, and two immediate polynomial relations hold. The second layer in \eqref{hset:kw:eq:double} makes the \emph{exponents} linearly independent before using them to build algebraically independent monomials.
+\end{example}
+
+\begin{example}[A concrete leading-term calculation]
+With two labels $j(a)=0$ and $j(b)=1$, the double-monomial values are
+$t_a=\omega$ and $t_b=\omega^\omega$. For instance,
+\[
+T_b^2-3T_aT_b+T_a^5
+\quad\longmapsto\quad
+\omega^{2\omega}-3\omega^{\omega+1}+\omega^5>0.
+\]
+The three displayed exponents are distinct and decreasing. This illustrates the proof mechanism: a formal monomial becomes a Conway monomial, and the greatest surviving exponent certifies nonvanishing. The products and sums in these exponents are surreal field operations, not the ordinal multiplication used in the coding formula.
+\end{example}
+
+\begin{corollary}[Independent infinitesimal coordinates]\label{hset:kw:cor:infinitesimal}
+Under the hypotheses of \cref{hset:kw:thm:double}, the numbers
+\[
+u_x=t_x^{-1}=\omega^{-e_x}
+\]
+are algebraically independent positive infinitesimals. They are not omnific integers.
+\end{corollary}
+\begin{proof}
+They are infinitesimal because $-e_x<0$. A polynomial relation among finitely many inverses, multiplied by a sufficiently large product of the corresponding $t_x$, would give a nonzero polynomial relation among the $t_x$. Their negative normal-form exponents exclude them from $\Oz$.
+\end{proof}
+
+\begin{theorem}[Equivalent forms of coordinate universality]\label{hset:kw:thm:equivalences}
+For a set $X$, the following conditions are equivalent over $\ZF$:
+\begin{enumerate}[label=(\roman*)]
+\item $X\hookrightarrow\Pow(\alpha)$ for some ordinal $\alpha$;
+\item $X\hookrightarrow\No$;
+\item $X\hookrightarrow\Oz$;
+\item there is a unital ring embedding $\Z[T_X]\hookrightarrow\Oz$;
+\item there is an $\R$-algebra embedding $\R[T_X]\hookrightarrow\No$;
+\item there is an $\R$-field embedding $\R(T_X)\hookrightarrow\No$;
+\item there is an $X$-indexed algebraically independent family over $\R$ consisting of positive infinite omnific integers.
+\end{enumerate}
+Consequently, the universal closure over all sets $X$ of any of these assertions is exactly $\KWP_1$.
+\end{theorem}
+\begin{proof}
+The equivalence of (i) and (ii) is \cref{hset:kw:thm:coding}. From (ii), \cref{hset:kw:thm:double} gives (iv)--(vii) and also (iii). Conversely, (iii) implies (ii) by inclusion. An embedding in (iv), (v), or (vi) assigns distinct values to the distinct indeterminates: otherwise it kills the nonzero polynomial $T_x-T_y$. Thus each yields (ii). Algebraic independence likewise gives distinct values, so (vii) yields (ii). Universal closure and \eqref{hset:kw:eq:kwp} prove the last statement.
+\end{proof}
+
+\begin{remark}[Not an equivalence with full choice]
+In pure $\ZF$, $\KWP_1$ is weaker than $\AC$; Cohen's first model is a standard example satisfying the former and not the latter, as reviewed in \cite{KaragilaSchilhan}. Thus these \emph{free-algebra} universality assertions do not recover the well-ordering theorem. They also do not yet assert anything about preserving an independently prescribed order on $X$ or on a field.
+\end{remark}
+
+\section{An optimal set-sized real-closed target}
+\label{hset:kw:sec:universal}
+
+The preceding theorem places all realizations in the proper class $\No$. It is useful, both mathematically and for formalization, to obtain a target that is an ordinary set and has exactly the required coding capacity.
+
+Fix an infinite initial ordinal $\kappa$. Let
+\[
+\mathbb S_\kappa=\{-,+\}^{\kappa},\qquad
+ t_s=\omega^{\omega^s}\quad(s\in \mathbb S_\kappa),
+\]
+where each $s$ is identified with its surreal value. Set
+\begin{equation}\label{hset:kw:eq:Uk}
+\mathcal R_\kappa=\R(t_s:s\in \mathbb S_\kappa),\qquad
+U_\kappa=\{u\in\No:u\text{ is algebraic over }\mathcal R_\kappa\}.
+\end{equation}
+The notation on the right initially defines a class; the next proof shows that it is a set.
+
+\subsection{A choice-free coding lemma}
+\begin{lemma}[Finite syntax at a powerset level]\label{hset:kw:lem:syntax}
+Let $\kappa$ be an infinite initial ordinal. Suppose that $D$ and $B$ inject into $\Pow(\kappa)$, that $D$ is linearly ordered, and that $B$ is a field with a fixed linear order on its underlying set. Then each of the following admits an injection into $\Pow(\kappa)$:
+\[
+B[T_D],\qquad B(T_D),\qquad
+\text{any ordered algebraic extension of }B(T_D).
+\]
+For the last assertion the extension is a set, or is a definable class in which each polynomial has only finitely many roots and ordered root indexing applies.
+\end{lemma}
+\begin{proof}
+Finite lists of subsets of $\kappa$ can be encoded by a subset of $\kappa$: first tag the list length and each entry in $\omega\times\kappa$, then use a fixed bijection $\omega\times\kappa\simeq\kappa$. These are well-orderable sets, so this bijection needs no choice. Naturals and finite auxiliary flags can be accommodated by additional tags.
+
+Every finite subset of $D$ can be uniquely listed in increasing order. A monomial is therefore coded by an increasing finite variable list together with its positive integer exponents. Monomials are linearly ordered by comparing exponent vectors at the greatest variable where they differ. Every finite polynomial has a unique list of its nonzero terms in this order. Encoding these lists and their coefficients proves the assertion for polynomials.
+
+A fraction requires more care. It would be invalid, without further argument, to infer that an arbitrary quotient of a $\Pow(\kappa)$-codable set is again $\Pow(\kappa)$-codable. Instead use the unique reduced representative
+\begin{equation}\label{hset:kw:eq:reduced}
+\frac{p}{q},\qquad \gcd(p,q)=1,\qquad\lc(q)=1,
+\end{equation}
+with $0$ represented as $0/1$.
+
+Here leading coefficients are taken with respect to the preceding largest-variable monomial order. They exist because a polynomial has finitely many terms. The polynomial ring in an arbitrary set of variables over a field is a unique factorization domain in the finite sense needed here: put $p$ and $q$ in the ring generated by their finite union of variables and use finite-variable factorization. A factor cannot introduce a new variable, since degree in that variable is additive in a polynomial domain. Gcds computed in the finite subring therefore remain gcds in the full ring. Dividing out a gcd and scaling by the leading coefficient of the denominator produces \eqref{hset:kw:eq:reduced}. Uniqueness follows from coprimality and cancellation in a UFD. These are existence-and-uniqueness arguments, not selections from an unstructured family of equivalence classes. Thus a fraction is injected into a pair of polynomial codes.
+
+Finally, an algebraic element $a$ of an ordered extension has a unique monic minimal polynomial over $B(T_D)$. Attach to it the position of $a$ among the finitely many roots of that polynomial \emph{in the extension}, in increasing order. Polynomial plus finite index uniquely determines $a$. This is an injection into finite lists of field elements with a natural-number tag, and hence into $\Pow(\kappa)$.
+\end{proof}
+
+\begin{remark}
+The order on $D$ is not required to be a well-order, and the monomial order is not claimed to well-order all monomials. Only the maximum of each finite support and compatibility with addition of exponent vectors are used. Finite-variable gcd theory can use a separate finite enumeration when proving existence; the normalization in \eqref{hset:kw:eq:reduced} makes the answer independent of that temporary enumeration.
+\end{remark}
+
+\begin{theorem}[Optimal code-level universal field]\label{hset:kw:thm:universal}
+Over $\ZF$, for every infinite initial ordinal $\kappa$, the class $U_\kappa$ in \eqref{hset:kw:eq:Uk} is a set-sized real-closed subfield of $\No$ and
+\begin{equation}\label{hset:kw:eq:Uk-card}
+U_\kappa\simeq\Pow(\kappa).
+\end{equation}
+For every set $X$,
+\begin{align}
+X\hookrightarrow\Pow(\kappa)
+&\quad\Longleftrightarrow\quad
+\R(T_X)\hookrightarrow_{\R}U_\kappa,\label{hset:kw:eq:univ-real}\\
+X\hookrightarrow\Pow(\kappa)
+&\quad\Longleftrightarrow\quad
+\Z[T_X]\hookrightarrow U_\kappa\cap\Oz.
+\label{hset:kw:eq:univ-omnific}
+\end{align}
+The embeddings in \eqref{hset:kw:eq:univ-real} do not have to preserve a separately prescribed order on the source.
+\end{theorem}
+\begin{proof}
+By \cref{hset:kw:thm:double}, the $t_s$ are algebraically independent over $\R$. The set of finite rational expressions in them is a set, and their evaluation is definable. Replacement gives the set $\mathcal R_\kappa$, together with an isomorphism from $\R(T_{\mathbb S_\kappa})$.
+
+For each nonzero polynomial $p\in \mathcal R_\kappa[Y]$, there are at most $\deg p$ distinct roots in the field $\No$. Its definable class of roots is therefore a finite set. More explicitly, the assertion that a definable class has at most $n$ members allows its members to be collected using finite induction; this is not a choice principle. The roots form a linearly ordered finite set. The function that assigns to $(p,i)$ its $i$-th root, when present, and $0$ otherwise is a definable function on a set. Replacement shows that the union of all these root sets is a set. It is exactly $U_\kappa$.
+
+Algebraic elements are closed under field operations, so $U_\kappa$ is an ordered field algebraic over $\mathcal R_\kappa$. If $a>0$ belongs to it, its positive square root in $\No$ is algebraic over $\mathcal R_\kappa$ and thus lies in $U_\kappa$. If an odd-degree polynomial has coefficients in $U_\kappa$, take one of its roots in the real-closed field $\No$. Its finitely many coefficients are algebraic over $\mathcal R_\kappa$, and algebraicity is transitive, so the root belongs to $U_\kappa$. The usual square-root/odd-degree criterion proves that $U_\kappa$ is real closed. This is a real closure of $\mathcal R_\kappa$ inside the chosen ordered field $\No$.
+
+For the cardinal upper bound, $\mathbb S_\kappa\simeq\Pow(\kappa)$ by its definition and is linearly ordered by surreal order. The reals inject into $\Pow(\omega)$ by their rational Dedekind cuts, and thus into $\Pow(\kappa)$. Apply \cref{hset:kw:lem:syntax}, using canonical reduced fractions and minimal-polynomial/root-index codes. It gives an injection $U_\kappa\hookrightarrow\Pow(\kappa)$. Conversely, $s\mapsto t_s$ injects $\mathbb S_\kappa$ into $U_\kappa$. Cantor--Bernstein proves \eqref{hset:kw:eq:Uk-card}.
+
+Suppose now $c:X\hookrightarrow\Pow(\kappa)$. Convert each code to its length-$\kappa$ sign sequence $s_x$, and send $T_x$ to $t_{s_x}$. Algebraic independence gives the embedding into $\mathcal R_\kappa\subseteq U_\kappa$, and integer polynomial values are omnific. This proves the forward implications in \eqref{hset:kw:eq:univ-real} and \eqref{hset:kw:eq:univ-omnific}. Either embedding sends distinct variables to distinct elements of $U_\kappa$; compose with its established code to obtain $X\hookrightarrow\Pow(\kappa)$.
+\end{proof}
+
+\subsection{What optimality means here}
+The theorem is sharp in a precise coding sense. Any set-sized target that contains an injective realization of $\mathbb S_\kappa$ many independent variables must admit an injection from $\Pow(\kappa)$. Our field attains that lower bound and is real closed. We are \emph{not} claiming that every ordered field whose underlying set injects into $\Pow(\kappa)$ order-embeds in $U_\kappa$.
+
+Nor do we claim a sharp explicit birthday bound for $U_\kappa$. Such a bound exists by Replacement because $U_\kappa$ is a set. This qualitative fact must not be confused with an optimal formula for birthdays under multiplication, inversion, or taking algebraic roots.
+
+\section{Prescribed order is a different universality problem}
+\label{hset:kw:sec:order}
+
+Let $L$ be a linearly ordered set. The free abelian group $\Z^{(L)}$ has a largest-variable order: for distinct $m,n$, let $\ell$ be the greatest member of the finite set on which they differ, and declare
+\begin{equation}\label{hset:kw:eq:revlex}
+m<n\quad\Longleftrightarrow\quad m(\ell)<n(\ell).
+\end{equation}
+This is a translation-invariant linear order. Define an order on $\R[T_L]$ by saying that a nonzero polynomial is positive when the coefficient of its greatest monomial is positive. Extend it to the fraction field, denoted $F(L)$.
+
+\begin{lemma}[Largest-term ordering]\label{hset:kw:lem:orderedfield}
+The preceding construction makes $F(L)=\R(T_L)$ an ordered field over $\R$, without requiring a well-order of $L$. Its variables are positive and satisfy
+\[
+\ell<\ell'\quad\Longrightarrow\quad T_\ell<T_{\ell'}.
+\]
+Every order automorphism of $L$ induces an order automorphism of $F(L)$.
+\end{lemma}
+\begin{proof}
+Translation invariance in \eqref{hset:kw:eq:revlex} is immediate because adding the same vector leaves the greatest differing coordinate and the sign of the difference unchanged. A polynomial has a finite nonempty set of monomials, hence a greatest one. If $m_0,n_0$ are the greatest monomials of nonzero $p,q$, then $m_0+n_0$ is the unique greatest exponent vector arising in their product: any strict decrease in either summand strictly decreases the sum. Consequently,
+\[
+\lm(pq)=\lm(p)+\lm(q),\qquad \lc(pq)=\lc(p)\lc(q).
+\]
+This proves closure of positive elements under multiplication. For addition, unequal leading monomials retain the greater positive term, while equal leading monomials have positive coefficient sum. Exactly one of $p,-p$ is positive for nonzero $p$. These observations give an ordered domain, whose order extends uniquely to its fraction field. The largest variable in $T_{\ell'}-T_\ell$ is $\ell'$, with coefficient $1$. All definitions are preserved by an order automorphism of $L$.
+\end{proof}
+
+\begin{theorem}[Exact reduction of order universality]\label{hset:kw:thm:order}
+For every linearly ordered set $L$, over $\ZF$,
+\[
+L\hookord\No
+\quad\Longleftrightarrow\quad
+F(L)\hookord\No.
+\]
+In the forward direction the field embedding fixes $\R$.
+\end{theorem}
+\begin{proof}
+Suppose $j:L\hookord\No$. Use $t_\ell=\omega^{\omega^{j(\ell)}}$ as in \cref{hset:kw:thm:double}. For distinct exponent vectors $m,n$, the sign of
+\[
+E_m-E_n=\sum_\ell(m(\ell)-n(\ell))\omega^{j(\ell)}
+\]
+is determined by the greatest $\ell$ where the coefficient is nonzero, because $j$ preserves order and finite normal-form signs are determined by the greatest exponent. Thus $m<n$ in \eqref{hset:kw:eq:revlex} exactly when $E_m<E_n$ in $\No$. The sign of an evaluated polynomial is its largest-term coefficient, so the resulting polynomial and fraction-field embeddings preserve order.
+
+Conversely, restricting any ordered embedding $F(L)\to\No$ to the strictly increasing family of variables gives an ordered injection of $L$.
+\end{proof}
+
+\begin{proposition}[Well-orderable domains]\label{hset:kw:prop:wellordered}
+Every linear order whose underlying set is well-orderable order-embeds into $\No$ in $\ZF$.
+\end{proposition}
+\begin{proof}
+Fix one well-ordering and its enumeration $(x_\xi)_{\xi<\theta}$. Recursively assign to $x_\xi$ the simplest surreal between the images of earlier elements below it and the images of earlier elements above it. Those two collections are sets, are separated by the induction hypothesis, and the simplest choice is unique. Transfinite recursion and Replacement construct a set graph of length $\theta$. No new choice is made at any stage. The result preserves all comparisons.
+\end{proof}
+
+\begin{remark}[A gap that must not be silently bridged]
+An injection of the underlying set of $L$ into $\Pow(\alpha)$ gives it \emph{some} surreal-induced order. It does not say that an already specified order on $L$ is respected. Thus \cref{hset:kw:thm:equivalences} is not, by itself, a proof that $\KWP_1$ implies ordered universality for all linear orders or all ordered fields. We leave that implication as a separately stated research question rather than conflating it with the proved equivalence.
+\end{remark}
+
+\section{A convex-resolution criterion for ordered embeddings}
+\label{hset:kw:sec:resolutions}
+
+There is a choice-free combinatorial certificate for the missing prescribed-order requirement.
+
+\begin{definition}
+A \emph{ternary convex resolution of length $\theta$} of a linear order $L$ is a sequence $(E_\xi)_{\xi\le\theta}$ of equivalence relations on $L$ such that:
+\begin{enumerate}[label=(\alph*)]
+\item $E_0=L\times L$ and $E_\theta$ is equality;
+\item the relations refine with increasing $\xi$, and every equivalence class is convex in $L$;
+\item at a limit $\lambda\le\theta$, $E_\lambda=\bigcap_{\xi<\lambda}E_\xi$;
+\item every $E_\xi$-class is partitioned into at most three $E_{\xi+1}$-classes.
+\end{enumerate}
+A binary resolution is defined by replacing three with two.
+\end{definition}
+
+\begin{theorem}[Order-coding certificate]\label{hset:kw:thm:resolution}
+For a set-sized linear order $L$, the following are equivalent over $\ZF$:
+\begin{enumerate}[label=(\roman*)]
+\item $L$ order-embeds into $\No$;
+\item $L$ has a ternary convex resolution of some ordinal length;
+\item $L$ has a binary convex resolution of some ordinal length.
+\end{enumerate}
+A ternary resolution of length $\theta$ produces an order embedding into sign sequences of exact length $2\cdot\theta$.
+\end{theorem}
+\begin{proof}
+Suppose $j:L\hookord\No$. Bound the birthdays of its range by an ordinal $\theta$. Pad each sign sequence to length $\theta$ with the symbol $0$ after it ends, using $-<0<+$. Surreal comparison is precisely lexicographic comparison of these padded strings. Let $xE_\xi y$ mean that their first $\xi$ symbols agree. Prefix classes in a lexicographic order are convex; each splits into at most three next-symbol classes, limit relations are intersections, and equality of the whole padded strings gives $x=y$. Thus (i) implies (ii).
+
+Now suppose a ternary resolution is given. Inside each $E_\xi$-class, its finitely many $E_{\xi+1}$-classes inherit a linear order. Label them by $0,1,2$ according to their number of predecessors; unused labels do not matter. This requires no selection of class representatives. For $x\in L$, let $d_x(\xi)$ be the label of the child containing $x$.
+
+If $x\ne y$, there is a least stage at which they cease to be equivalent. It is a successor stage: at a limit, the intersection condition would give an earlier separating stage. Thus their label strings first differ at the corresponding coordinate. Convexity says that $x<y$ precisely when the first differing label of $x$ is smaller. Therefore $x\mapsto d_x$ order-embeds $L$ into $\{0,1,2\}^{\theta}$ in lexicographic order.
+
+Replace each digit by a two-sign block
+\[
+0\mapsto --,\qquad 1\mapsto -+,\qquad 2\mapsto ++.
+\]
+Concatenating $\theta$ blocks gives a sign sequence of length $2\cdot\theta$. The replacement preserves the first differing coordinate comparison, hence gives (i). It also gives a binary convex resolution by equality of prefixes of these fixed-length sign sequences. Thus (ii) implies (iii), and (iii) implies (ii) trivially.
+\end{proof}
+
+The theorem does not identify an optimal resolution length. Its value is to isolate a checkable \emph{order-sensitive} certificate, distinct from the unconstrained powerset coding of the underlying set.
+
+\section{Orbit factorization of polynomial representations}
+\label{hset:kw:sec:orbits}
+
+The negative theory begins with a general algebraic lemma that does not mention surreals, atoms, or choice principles.
+
+Let a group $G_0$ act on a set $X$. It acts on $k[T_X]$ by permuting variables and fixing the coefficient field $k$. Let $X/G_0$ denote the set of its orbits. Put
+\begin{equation}\label{hset:kw:eq:orbitideal}
+I_{G_0}=(T_x-T_y:x,y\text{ belong to the same }G_0\text{-orbit}).
+\end{equation}
+
+\begin{theorem}[Orbit quotient and factorization]\label{hset:kw:thm:orbit}
+There is a canonical $k$-algebra isomorphism
+\[
+k[T_X]/I_{G_0}\ \cong\ k[T_{X/G_0}].
+\]
+If $D$ is a $k$-algebra on which $G_0$ acts trivially and a $k$-algebra homomorphism $\phi:k[T_X]\to D$ satisfies
+\[
+\phi(h\cdot p)=\phi(p)\qquad(h\in G_0),
+\]
+then it factors uniquely through this quotient. If $X/G_0$ has $q<\omega$ members and $D$ is a field, then
+\begin{equation}\label{hset:kw:eq:orbitbound}
+\trdeg_k\Frac(\im\phi)\le q.
+\end{equation}
+Equality holds precisely when the $q$ orbit values are algebraically independent over $k$; in that case $\ker\phi=I_{G_0}$.
+\end{theorem}
+\begin{proof}
+The orbit map $x\mapsto[x]$ induces a surjective homomorphism
+\[
+\pi:k[T_X]\longrightarrow k[T_{X/G_0}].
+\]
+It kills $I_{G_0}$. Conversely, in $k[T_X]/I_{G_0}$ all variables from one orbit have the same residue. Assign to an orbit this uniquely determined residue; existence follows from the nonemptiness of the orbit, and uniqueness follows from the defining relations. This is a function defined by a unique-value condition, not a choice of representatives. The polynomial universal property gives an inverse to the induced map from the quotient. The isomorphism follows.
+
+Invariance gives $\phi(T_x)=\phi(T_{hx})$, so $I_{G_0}\subseteq\ker\phi$ and the unique factorization follows. With $q$ orbits the image field is generated over $k$ by their $q$ values. Its transcendence degree is at most $q$. By finite field theory it equals $q$ exactly when those values are algebraically independent. Equivalently, the factored map from $k[T_{X/G_0}]$ is injective, which is exactly the assertion that the original kernel is $I_{G_0}$.
+\end{proof}
+
+\begin{corollary}[Obstruction for fraction fields]\label{hset:kw:cor:fieldcollapse}
+If a $G_0$-orbit in $X$ has two members, there is no invariant unital field homomorphism $k(T_X)\to D$ to a field with trivial $G_0$-action.
+\end{corollary}
+\begin{proof}
+Such a map would kill the nonzero element $T_x-T_y$ for two variables in that orbit. A unital homomorphism from a field has zero kernel.
+\end{proof}
+
+\begin{remark}[Coinvariants, not invariant polynomials]
+The quotient in \cref{hset:kw:thm:orbit} identifies variables. It is not the invariant subring $k[T_X]^{G_0}$, whose structure can be quite different. Confusing these two constructions would invalidate the transcendence bound.
+\end{remark}
+
+\section{Sharp support bounds in two permutation models}
+\label{hset:kw:sec:fm}
+
+\subsection{The model framework}
+Start with a ground universe of $\ZFA+\AC$ with a set $A$ of atoms. A permutation group $G$ on $A$ acts recursively on sets, fixing pure sets. Let the normal filter of subgroups be generated by the pointwise stabilizers
+\[
+\Fix_G(S)=\{g\in G:g(a)=a\text{ for every }a\in S\}
+\]
+of finite subsets $S\subseteq A$. The hereditarily symmetric sets form the usual full Fraenkel--Mostowski model $W$. The permutation-model construction and its set-theoretic setting are standard; \cite[Section 3.1]{GlazerYao} provides a recent primary-source presentation of this machinery.
+
+Every set of $W$ has some finite atom support $S$: it is fixed by every member of $\Fix_G(S)$. Every pure ground set belongs to $W$, and the pure part is unchanged. In particular, the reals, ordinals, and surreals of $W$ are pure. Each atom permutation fixes each of them individually.
+
+A map $\phi$ in $W$ with pure values and support $S$ therefore satisfies
+\begin{equation}\label{hset:kw:eq:symmetry}
+\phi(g\cdot x)=g\cdot\phi(x)=\phi(x)
+\qquad(g\in\Fix_G(S)).
+\end{equation}
+For polynomial domains the induced action permutes indeterminates. This turns the algebraic factorization theorem into a precise internal obstruction.
+
+\subsection{The basic Fraenkel model}
+Take $A$ infinite and $G=\Sym(A)$, with finite supports.
+
+\begin{theorem}[The $s+1$ bound]\label{hset:kw:thm:fraenkel}
+In the basic Fraenkel model, let
+\[
+\phi:\R[T_A]\longrightarrow\No
+\]
+be an internal $\R$-algebra homomorphism with atom support $S$, where $|S|=s<\omega$. Then
+\begin{equation}\label{hset:kw:eq:fraenkelbound}
+\trdeg_\R\Frac(\im\phi)\le s+1.
+\end{equation}
+All variables indexed by $A\setminus S$ have the same image. For every finite $S$ the bound is attained by a homomorphism supported by $S$. No such homomorphism is injective, and there is no internal unital field homomorphism $\R(T_A)\to\No$.
+\end{theorem}
+\begin{proof}
+The stabilizer $G_0=\Fix_G(S)$ has exactly $s+1$ orbits on $A$: the $s$ singletons in $S$ and the infinite complement $A\setminus S$. Any two atoms in that complement can be swapped while all of $S$ is fixed. Equation \eqref{hset:kw:eq:symmetry} and \cref{hset:kw:thm:orbit} prove the collapse and the bound. Two distinct atoms outside $S$ give a nonzero difference in the kernel. The field assertion follows from \cref{hset:kw:cor:fieldcollapse}.
+
+For sharpness, choose a listing $S=\{a_1,\ldots,a_s\}$ of this one finite set. Assign distinct members $z_0,\ldots,z_s$ of a pure algebraically independent family, for example
+\[
+z_i=\omega^{\omega^i},\qquad 0\le i\le s,
+\]
+by sending $T_{a_i}$ to $z_i$ and every variable outside $S$ to $z_0$. This assignment and its polynomial evaluation graph are supported by $S$ and hereditarily symmetric: each individual input polynomial involves only finitely many atoms, while every output is pure. Thus the map belongs to $W$. Its orbit values are algebraically independent, giving equality in \eqref{hset:kw:eq:fraenkelbound}. This construction uses only the finite choice of a listing of one given finite set, which is available without $\AC$.
+\end{proof}
+
+\subsection{The ordered Mostowski model}
+Now take an atom set $A$ with a dense linear order without endpoints externally isomorphic to $(\Q,<)$, and let
+\[
+G=\Aut(A,<)
+\]
+with the same finite-support filter. The ordered set $(A,<)$ itself belongs to the symmetric model: its order relation is invariant under the whole group.
+
+\begin{lemma}[Stabilizer orbit count]\label{hset:kw:lem:intervalorbits}
+If $S=\{a_1<\cdots<a_s\}\subseteq A$, the pointwise stabilizer of $S$ has exactly $2s+1$ orbits:
+\[
+\{a_1\},\ldots,\{a_s\},\quad
+(-\infty,a_1),(a_1,a_2),\ldots,(a_s,\infty).
+\]
+For $s=0$, there is just the orbit $A$.
+\end{lemma}
+\begin{proof}
+Order preservation and fixation of $S$ prevent movement between the displayed pieces. Within any one interval, any chosen atom can be sent to any other by an order automorphism fixing all the endpoints in $S$. To justify existence, work in the ground universe with its fixed external countable presentation of the dense order. Extend the finite increasing partial map consisting of the fixed points of $S$ and the proposed movement by the standard back-and-forth construction. At each alternating stage put the next unused domain or range point into the corresponding nonempty interval. Density and absence of endpoints ensure success. The resulting bijection is order preserving and fixes $S$. Thus each interval is a single orbit. This external argument computes the chosen permutation group; it does not put a countable enumeration of $A$ into the symmetric model.
+\end{proof}
+
+\begin{theorem}[The $2s+1$ bound]\label{hset:kw:thm:mostowski}
+In the ordered Mostowski model, every internal $\R$-algebra homomorphism
+\[
+\phi:\R[T_A]\longrightarrow\No
+\]
+with a support $S$ of size $s$ satisfies
+\begin{equation}\label{hset:kw:eq:mostowskibound}
+\trdeg_\R\Frac(\im\phi)\le 2s+1.
+\end{equation}
+For every finite $S$, equality is attained by a map supported by $S$. No such map is injective, and there is no internal unital field homomorphism $\R(T_A)\to\No$.
+\end{theorem}
+\begin{proof}
+Apply \cref{hset:kw:thm:orbit} to the $2s+1$ orbits of \cref{hset:kw:lem:intervalorbits}, using \eqref{hset:kw:eq:symmetry}. Every interval contains distinct atoms, so the kernel contains a nonzero variable difference; the field assertion follows as before.
+
+The orbits themselves have a canonical finite order, alternating intervals and singletons. Assign to these ordered orbits the algebraically independent pure values $z_0,\ldots,z_{2s}$ from the proof of \cref{hset:kw:thm:fraenkel}. The resulting evaluation map is supported by $S$, belongs to the symmetric model, and has algebraically independent orbit values. This attains the bound.
+\end{proof}
+
+\begin{corollary}[Exact kernels at maximum dimension]\label{hset:kw:cor:sharpkernel}
+For each of the sharpness examples above, the entire kernel is generated by differences between variables in the same stabilizer orbit. There are no further polynomial relations among the orbit values.
+\end{corollary}
+This follows from the last clause of \cref{hset:kw:thm:orbit}. The upper bounds apply to any chosen support, not necessarily a smallest support. As the support size varies, maps of arbitrarily large finite image-field transcendence degree exist, but no one internal map has infinite image-field transcendence degree.
+
+\subsection{Why pure coordinates recover well-orderability in these models}
+\begin{proposition}\label{hset:kw:prop:purewellorder}
+In either full permutation model just described, for any internal set $X$ the following are equivalent: $X$ injects into a pure set; $X$ is well-orderable internally; $X$ injects into the internal $\No$.
+\end{proposition}
+\begin{proof}
+A pure set belongs to the unchanged pure ground universe, which satisfies choice. It has a pure well-order, and that well-order also belongs to the symmetric model. An internal injection into the pure set therefore pulls back an internal well-order of $X$. Conversely, a well-order identifies $X$ with an ordinal, which is pure and embeds into $\No$.
+
+An injection into $\No$ has a set-sized range; its range is a set of pure objects and is itself pure. Thus it gives an injection into a pure set. Alternatively, apply \cref{hset:kw:thm:coding} and use the purity of $\Pow(\alpha)$ in the full permutation model.
+\end{proof}
+There is no conflict with $\KWP_1$ being strictly weaker than choice in pure $\ZF$. The preceding proposition makes an additional assumption: the unchanged pure part of these particular atom models already satisfies choice. It is not a theorem about arbitrary models of $\ZFA$.
+
+\section{An ordered field with all finite stages embeddable but no global embedding}
+\label{hset:kw:sec:counterexample}
+
+\begin{theorem}[Internal ordered-field counterexample]\label{hset:kw:thm:orderedcounter}
+In the ordered Mostowski model $W$, the set-sized ordered field
+\[
+F(A)=\R(T_a:a\in A)
+\]
+with the largest-variable order of \cref{hset:kw:lem:orderedfield} has no unital field homomorphism into $\No^W$, even when order preservation is not required. Nevertheless, for every finite $J\subseteq A$, the subfield $F(J)$ has an internal ordered $\R$-embedding into $\No^W$, and
+\[
+F(A)=\bigcup_{J\in[A]^{<\omega}}F(J).
+\]
+\end{theorem}
+\begin{proof}
+The polynomial ring, fraction-field equivalence relation, and field operations are invariant under every order automorphism of $A$. Each expression is hereditarily symmetric, since it uses only finitely many atoms and pure real coefficients. The largest-variable order is invariant by \cref{hset:kw:lem:orderedfield}. Hence the ordered field is an object of $W$.
+
+An internal field homomorphism into $\No^W$ would have a finite atom support. Restricting it to $\R[T_A]$ gives a map whose values are fixed by the stabilizer, whether or not the homomorphism fixes every real. In particular, two variables from one nonsingleton interval orbit have the same image. Their nonzero difference cannot be killed by a unital field homomorphism. This is a contradiction.
+
+For a finite $J=\{a_1<\cdots<a_n\}$, the order-preserving map $a_i\mapsto i$ is a set map supported by $J$. The construction of \cref{hset:kw:thm:order} gives an ordered embedding $F(J)\to\No^W$. Its graph is supported by $J$ and hereditarily symmetric, so it belongs to $W$. Every rational expression uses only finitely many variables, proving the union identity.
+\end{proof}
+
+\begin{remark}[Scope of the counterexample]
+This proves a failure of ordered-field universality in a model of $\ZFA$. It is \emph{not} asserted to be a counterexample in pure $\ZF$. Removing atoms while preserving a statement about embeddings into the entire internal surreal class requires a separate transfer argument; none is supplied here. The external countability of $A$ also causes no contradiction: an external enumeration can produce an external embedding, but such an enumeration and embedding do not belong to $W$.
+\end{remark}
+
+\subsection{The exact coherence obstruction}
+\begin{theorem}[Gluing compatible coordinate embeddings]\label{hset:kw:thm:coherence}
+Let $L$ be a set-sized linear order in $\ZF$ or $\ZFA$. A global ordered $\R$-embedding $F(L)\to\No$ exists if and only if there is a set-indexed family
+\[
+(\phi_J:F(J)\hookord\No)_{J\in[L]^{<\omega}}
+\]
+of ordered $\R$-embeddings satisfying
+\begin{equation}\label{hset:kw:eq:compat}
+J\subseteq K\quad\Longrightarrow\quad\phi_K|_{F(J)}=\phi_J.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Restrict a global embedding to obtain the family; Replacement gives its set code. Conversely, take the union of the graphs of the $\phi_J$. This union is a set. If an element lies in both $F(J)$ and $F(K)$, compare both maps with $\phi_{J\cup K}$ using \eqref{hset:kw:eq:compat}; their values agree. Thus the union is a function on $F(L)$. Any finitely many arguments and their algebraic relations lie in one $F(J)$, so the union is an order-preserving field homomorphism. The same observation shows injectivity.
+\end{proof}
+
+For the field in \cref{hset:kw:thm:orderedcounter}, each finite stage has an ordered embedding but no compatible family exists internally. This is not a claim that first-order compactness fails, and it does not concern the existence of a model of a finitely satisfiable first-order theory. The target is the particular internal class $\No$, and the obstruction is the demanded compatibility and internal existence of its coordinate map.
+
+\subsection{Finite polynomial tests can all succeed}
+\begin{proposition}[Finite separation without a faithful representation]\label{hset:kw:prop:finite-separation}
+In either of the two permutation models, every finite family of nonzero polynomials in $\R[T_A]$ is simultaneously nonzero under some internal $\R$-algebra homomorphism to $\No$. Nevertheless, no one internal homomorphism is injective.
+\end{proposition}
+\begin{proof}
+Let $J$ be the finite union of the variable supports of the given polynomials. Assign algebraically independent pure surreal values to the variables in $J$, and assign a fixed pure value, say $0$, to every other variable. The evaluation map is supported by $J$ and belongs to the model. Its restriction to $\R[T_J]$ is injective by algebraic independence, so it preserves the nonzeroness of every polynomial in the family. Nonexistence of an injective map follows from \cref{hset:kw:thm:fraenkel,hset:kw:thm:mostowski}.
+\end{proof}
+
+Equivalently, for each nonzero polynomial there exists a map not killing it, but no single map avoids all nonzero kernels. One may describe the intersection of all these kernels as zero, provided that phrase is read as a first-order quantification over maps, not as the formation of a set of all maps into a proper class.
+
+\section{Proof audit and relation to the existing repository}
+\label{hset:kw:sec:audit}
+
+\subsection{Dependency boundary}
+The main logical dependencies are short:
+\[
+\begin{gathered}
+\text{sign sequences + Replacement}
+\ \Longrightarrow\ \text{ordinal-code equivalence},\\
+\text{finite normal forms + monomial multiplication}
+\ \Longrightarrow\ \text{free-algebra equivalence},\\
+\text{canonical fraction/root codes + real closedness}
+\ \Longrightarrow\ U_\kappa,\\
+\text{polynomial orbit quotient + finite atom support}
+\ \Longrightarrow\ \text{sharp collapse bounds}.
+\end{gathered}
+\]
+The negative construction does not assume any speculative research claim from ProveIt's other subjects. The positive algebraic construction uses only the standard surreal interface in \cref{hset:kw:sec:background}. Thus an unrelated error in an unrefereed repository report would not affect the mathematical dependency chain here.
+
+\subsection{A ledger of theorem status}
+\begin{longtable}{@{}P{0.24\textwidth}P{0.40\textwidth}P{0.29\textwidth}@{}}
+\toprule
+Result & Mathematical status in this manuscript & Novelty / checking status \\
+\midrule
+\endhead
+Ordinal-code equivalence & Direct proof in $\ZF$ and $\ZFA$; exact birthday capacity included & Elementary consequence of sign coding; no priority claim \\
+\addlinespace
+Double-monomial family & Explicit finite-normal-form proof; free rings and fields calibrated & Classical ingredients; combined formulation developed here \\
+\addlinespace
+Optimal field $U_\kappa$ & Set existence, real closedness, and two cardinal injections proved without quotient-choice shortcut & Candidate synthesis/refinement; independent review needed \\
+\addlinespace
+Convex resolution & Necessary and sufficient order-coding certificate proved & Related to ordered coding; historical novelty not established \\
+\addlinespace
+Orbit factorization & Full algebraic proof, with finite-dimensional equality criterion & Standard universal-property mechanism \\
+\addlinespace
+$s+1$ and $2s+1$ bounds & Exact stabilizer counts, upper bounds, and sharp constructions & Quantitative application developed here; priority unverified \\
+\addlinespace
+Ordered-field failure & Internal counterexample in the stated $\ZFA$ permutation model & No automatic pure-$\ZF$ transfer asserted \\
+\addlinespace
+Coherent gluing & Set-graph union proof; finite separation distinguished & Standard gluing mechanism, applied to fixed target \\
+\bottomrule
+\end{longtable}
+
+No theorem in this manuscript is presented as already kernel-checked. The supplied finite tests detect mistakes in finite encodings and algebraic identities but do not prove a theorem about all ordinals, arbitrary models, or proper classes.
+
+\subsection{The choice issue in a Lean audit}
+ProveIt's surreal README reports a standard-axiom audit allowing \texttt{propext}, \texttt{Quot.sound}, and \texttt{Classical.choice}; it maps checked statements separately from research claims \cite{ProveItSurreal}. That is valuable evidence about the declared Lean foundation. It is not a certificate that a theorem is provable over \emph{object-theoretic} $\ZF$ without choice.
+
+There are two defensible routes for the present results. One can formalize enough constructive set and ordinal coding to avoid the choice axiom in the relevant dependency chains. Alternatively, one can work in Lean's ordinary classical metatheory while explicitly formalizing a model of $\ZF$ or $\ZFA$ and proving that the relevant internal statements follow from the designated object-theoretic axioms. Metatheoretic choice then does not silently become internal choice; the semantic or syntactic theorem must enforce that distinction.
+
+A theorem about every type in a universe is also not literally a theorem about the proper class of all sets. The birthday-bounded targets $\No_{\le\alpha}$ and the fields $U_\kappa$ offer useful set-sized interfaces, but a formalization must still record which universe contains each type and which internal sets it represents.
+
+\noindent[Added 3 October 2026, batch~89: the description of
+\path{Algebra/SurrealNumbers/README.md} is accurate at the pinned commit
+\texttt{2b7b388ba} and at the placement commit \texttt{23adb85f9}; the README
+blob source 11 inspected, \texttt{18478d586}, is unchanged. No module named
+below exists in the repository, and no statement of this part is formalized;
+placement in this report confers no formal status.]
+
+\subsection{A proposed module decomposition}
+The following are suggested module responsibilities, not names of files already implemented in the repository.
+\begin{description}[style=nextline,leftmargin=0pt,labelsep=0pt]
+\item[OrdinalSignCoding]
+Define variable-length sign functions, the definedness code \eqref{hset:kw:eq:signcode}, its decoder, and fixed-length subset encoding. Prove the birthday-capacity theorem with explicit ordinal pairings.
+\item[DoubleMonomialIndependence]
+Abstract the finite-normal-form leading-term property. Prove that distinct monomials are linearly independent and that the double-monomial substitution is an injective multivariate-polynomial homomorphism. Derive the omnific range condition separately from the real-coefficient assertion.
+\item[CanonicalFieldCodes]
+Normalize multivariate fractions by gcd and leading coefficient, code algebraic roots by minimal polynomial and root index, and construct the set-sized relative real closure.
+\item[OrbitPolynomialQuotient]
+Formalize the group action on variables, the orbit-indexed polynomial algebra, the quotient isomorphism, and finite transcendence bounds. This module can be independent of surreal theory.
+\item[InternalSymmetryBridge]
+Formalize finite-support evaluation into a pure target inside a specified permutation model. The semantic statement that an internal map has a finite support is indispensable; a theorem only about an externally chosen group action is not yet the model-theoretic conclusion.
+\item[OrderedFreeFieldAndCoherence]
+Construct the largest-variable order using finite supports, prove the ordered embedding reduction, and formalize gluing of compatible finite-stage maps by a set union.
+\end{description}
+
+\section{Further research questions and concrete next targets}
+\label{hset:kw:sec:questions}
+
+The following are proposed research directions. Except where a cited paper explicitly supplies a status, they should not be read as claims that the literature has left each formulation open. A literature check and, where appropriate, contact with specialists should precede any priority claim.
+
+\begin{question}[Pure-set prescribed-order universality]\label{hset:kw:q:prescribed}
+What is the exact strength over $\ZF$ of the assertion that every set-sized linear order embeds in $\No$? In particular, can one construct a pure-$\ZF$ analogue of the ordered-field counterexample in \cref{hset:kw:thm:orderedcounter}?
+\end{question}
+The atom proof isolates the desired obstruction but does not transfer it. A useful first target is a pure symmetric extension containing a linearly ordered set with no ordinal-length convex resolution. One must analyze its \emph{internal} sign sequences and maps rather than merely preserve a low-rank atom surrogate.
+
+\begin{question}[Does $\KWP_1$ supply an order-sensitive code?]\label{hset:kw:q:kwporder}
+Does $\KWP_1$ imply that every linear order admits a binary convex resolution of some ordinal length?
+\end{question}
+By \cref{hset:kw:thm:resolution}, this is exactly the missing implication from coordinate universality to prescribed-order universality. A possible approach is to study a given order on a subset of $\Pow(\alpha)$ and ask whether membership coordinates can be converted into a continuous sequence of convex refinements. Arbitrary coordinate cuts need not be convex, which is the concrete obstruction to the naive argument.
+
+\begin{question}[Optimal convex-resolution height]\label{hset:kw:q:resolutionheight}
+For an order that embeds in $\No$, how does its least binary resolution length compare with the least birthday bound of an ordered embedding?
+\end{question}
+The proof gives conversions with a factor of two at the ternary-to-binary step, but no optimality statement. Fixed-length and variable-length sign representations should be distinguished. Finite chains, ordinal orders, reversed ordinal orders, and lexicographic products provide initial test cases.
+
+\begin{question}[Explicit birthday bounds for $U_\kappa$]\label{hset:kw:q:birthdaybounds}
+Find useful explicit ordinal bounds for the birthdays of all members of the field $U_\kappa$ defined in \eqref{hset:kw:eq:Uk}.
+\end{question}
+Existence is immediate from its set-sizedness, but an effective bound requires controlling the two monomial operations and algebraic root formation. A conservative closure ordinal for a specified finite-expression grammar is a reasonable first goal; a sharp product-birthday formula should not be assumed.
+
+\begin{question}[More general fields at a fixed code level]\label{hset:kw:q:fields}
+Which additional hypotheses on a prescribed ordered field $K$ with $K\hookrightarrow\Pow(\kappa)$ guarantee an ordered embedding into $U_\kappa$ or into a canonically enlarged target of the same coding capacity?
+\end{question}
+Free rational-function fields with induced orders are handled here. Algebraic ordered extensions, valuations with order-embeddable value groups, and fields given by a coherent tower of simple ordered extensions are natural successive cases. The existence of a chosen transcendence basis must not be silently assumed.
+
+\begin{question}[Higher Kinna--Wagner levels]\label{hset:kw:q:higherkw}
+Is there a natural algebraic representation problem, not merely a relabelling of the definition, whose exact strength is $\KWP_n$ for $n>1$?
+\end{question}
+Ordinary surreal elements have one-level ordinal subset codes. Higher levels might arise from unordered families of coordinates, quotient presentations, or structured moduli. The challenge is to exhibit algebraically meaningful invariants whose coding genuinely requires the extra powerset level.
+
+\begin{question}[Orbit profiles beyond the two examples]\label{hset:kw:q:orbitprofiles}
+For a permutation group $G$ on atoms, how precisely does the function
+\[
+S\longmapsto |A/\Fix_G(S)|
+\]
+control the transcendence spectra of pure-target polynomial representations?
+\end{question}
+The finite-orbit case is settled by \cref{hset:kw:thm:orbit}. Infinite orbit sets introduce a new coding issue: a sharp realization requires enough independent pure coordinates indexed by the orbit set. Applying \cref{hset:kw:thm:equivalences} to that quotient suggests an exact two-part criterion, combining orbit count and ordinal-code availability.
+
+\begin{question}[Minimal supports and essential dimension]\label{hset:kw:q:minimalsupports}
+Can one recover a lower bound on the least atom-support size of a map from the transcendence degree of its image, and when is the bound exact for every map?
+\end{question}
+Our inequalities immediately give $s\ge d-1$ in the basic model and $s\ge\lceil(d-1)/2\rceil$ in the ordered model. They are sharp as existential bounds. A finer classification would distinguish maps with redundant support from those whose support is essential and relate this to the structure of their kernels.
+
+\begin{question}[Real closures under symmetry]\label{hset:kw:q:realclosures}
+What is the strongest ordered-algebraic enlargement of the source in \cref{hset:kw:thm:orderedcounter} that can be constructed internally while retaining an explicit pure-target obstruction?
+\end{question}
+An externally selected real closure is not automatically an internal object with the desired action. A canonical construction through real-algebraic root codes, if it can be made equivariant over the ordered field, is a promising route. Any such extension would inherit nonembeddability by restriction to the original rational-function field.
+
+\begin{question}[Choice strength of compatible local embeddings]\label{hset:kw:q:compatible}
+For which families of subfields does the existence of an individual embedding for every member imply a compatible family of embeddings into a fixed real-closed target?
+\end{question}
+The union theorem proves what compatibility would accomplish, not that it can be obtained. Separate chains with specified extension maps, directed systems indexed by finite subsets, and unrestricted systems. A useful target is an exact weak-choice principle for one sharply specified family rather than an undifferentiated appeal to compactness.
+
+\begin{question}[Residual separation and inverse limits of representations]\label{hset:kw:q:inverselimits}
+Can the finite-separation phenomenon of \cref{hset:kw:prop:finite-separation} be organized as a failure of a natural inverse-limit existence principle, with a precise choice calibration?
+\end{question}
+For each finite variable set, consider its space of faithful coordinate assignments and restriction maps. The naive inverse system need not have surjective transition maps with a fixed birthday bound. Understanding that issue is essential before invoking any inverse-limit or compactness theorem.
+
+\begin{question}[Object-theoretic formal verification]\label{hset:kw:q:formal}
+Can the $\ZF$ equivalence and the $\ZFA$ counterexample be checked in one repository development with an explicit audit of internal versus metatheoretic choice?
+\end{question}
+The shortest first milestone is the orbit polynomial quotient plus the finite-normal-form independence lemma. The hard foundational milestone is a bridge from hereditarily symmetric internal maps to stabilizer invariance, together with set-coded surreal targets. Such a development would test the semantics of the statement, not just the algebra of the displayed proof.
+
+\section{Reproducibility and limits of the computational evidence}
+\label{hset:kw:sec:reproduce}
+
+The accompanying Python program, shipped as \path{code/11-choiceless-universality-verify_finite.py} (delivered as \path{verify_finite.py}), uses only the standard library and a fixed random seed. It checks the finite definedness encoding, fixed-length ternary-to-binary order encoding, distinct exponent-vector substitution, translation invariance of largest-variable order, leading terms of polynomial products, and finite permutation-orbit quotient identities. It also checks simultaneous evaluation as a ring homomorphism by exact integer arithmetic. The supplied deterministic run passed 20,595 assertions; this count is evidence only about the finite checks just described.
+
+These checks are deliberately finite. A finite linearly ordered set has only the identity order automorphism, so its automorphism group is \emph{not} a valid finite simulation of the ordered Mostowski model. The program does not pretend otherwise. Infinite interval transitivity is proved by the ground-model back-and-forth argument in \cref{hset:kw:lem:intervalorbits}; ordinal recursion, class size, and model existence are mathematical arguments, not outputs of the script.
+
+In the delivered layout the local checks were reproduced by
+\begin{verbatim}
+python3 verify_finite.py
+\end{verbatim}
+followed by two \texttt{pdflatex} passes of the delivered manuscript. Without
+\texttt{--output} the program writes \path{verification_results.json} beside
+itself; with the shipped names, run it on a copy or pass an explicit output
+path outside this directory (the report's \path{README.md} gives the
+commands). The recorded run is shipped as
+\path{data/11-choiceless-universality-verification_results.json}. For this merge
+the program was rerun with Python 3.14.4 on a copy: it passed and reproduced the
+recorded file exactly, apart from line endings. The delivered archive contained
+the source, compiled PDF, verification script and its result file, a README, a
+source-and-status note and a checksum file; of these only the script, the
+result file and the source-and-status note
+(\path{11-choiceless-universality-SOURCES_AND_STATUS.md}) are shipped
+(\cref{hset:kw:sec:provenance}). No font files are distributed.
+
+\section{Conclusion of source 11, checklist and provenance}
+\label{hset:kw:sec:provenance}
+
+\subsection{Conclusion}
+Surreal universality is not one assertion. For unconstrained independent variables, the exact obstruction is ordinal subset coding, and double Conway monomials convert that code into omnific algebra. This conversion can be carried out inside an optimally sized real-closed field at each infinite ordinal code level. When an existing order must be preserved, a convex resolution, rather than a mere injection of underlying sets, supplies the relevant certificate.
+
+In permutation models the obstruction becomes quantitative. A pure-valued map supported by finitely many atoms cannot distinguish variables that its stabilizer moves into one another. The number of stabilizer orbits is therefore a sharp upper bound on the independent transcendence retained by the image. In the ordered model this produces an actual ordered field with no internal surreal embedding, while every finite coordinate stage embeds and every finite polynomial test can succeed.
+
+The resulting program is concrete: distinguish coding from order, distinguish external from internal maps, and distinguish finite satisfiability from coherent realization. These distinctions are both mathematically substantive and well suited to a proof-assistant audit of choiceless surreal algebra.
+
+\subsection{A compact checklist for reviewing the main proofs}
+\label{hset:kw:app:checklist}
+A referee or formalizer can focus first on the following points.
+\begin{enumerate}
+\item In \cref{hset:kw:thm:coding}, check both definedness and signs in the code, the side of ordinal multiplication, and the Replacement bound for the image birthdays.
+\item In \cref{hset:kw:thm:double}, check that the inner monomials are linearly independent, not merely distinct; this is what separates evaluated exponent vectors. Check the positive-exponent condition separately for the omnific conclusion.
+\item In \cref{hset:kw:lem:syntax}, check uniqueness of normalized fractions in the full arbitrary-variable polynomial ring. A surjection from a coded syntax set is not enough for the cardinal upper bound without a canonical code of each value.
+\item In \cref{hset:kw:thm:universal}, verify collection of the algebraic roots as a set, and use the root index in the actual ordered extension. No choice of one root from each polynomial is made.
+\item In \cref{hset:kw:thm:order}, compare the two leading-term orders rather than assuming an arbitrary algebraic embedding preserves order.
+\item In \cref{hset:kw:thm:resolution}, use continuity at limits to justify that a first separation occurs at a successor stage.
+\item In \cref{hset:kw:thm:orbit}, distinguish the orbit quotient from the invariant subring, and avoid selecting one representative from every orbit.
+\item In \cref{hset:kw:thm:fraenkel,hset:kw:thm:mostowski}, apply atom support to the \emph{graph of the map}; pure values alone do not constrain an external map.
+\item In \cref{hset:kw:thm:orderedcounter}, verify that the source ordered field is an internal object and that the forbidden map is internal. Do not transfer the conclusion from $\ZFA$ to $\ZF$ without proof.
+\item In \cref{hset:kw:thm:coherence}, require a single set-coded compatible family; separate existence of each finite-stage map is weaker.
+\end{enumerate}
+
+\subsection{Non-claims of source 11}
+\label{hset:kw:sub:nonclaims}
+Every limitation stated by source 11, in its manuscript or in its
+source-and-status note, is kept; most appear at their point of use. Collected:
+the manuscript is AI-generated and unrefereed and is not a Lean- or
+Rocq-checked development; the novelty of its exact formulations is not
+established, and its twelve questions are proposed targets, not catalogued
+open problems; it claims no solution of Glazer and Yao's reflection questions
+or of another named problem; the atom-model counterexample is a result in ZFA,
+and no ZF transfer is supplied or asserted; universality for prescribed orders
+does not follow from $\KWP_1$ in what is proved; no sharp birthday bound for
+$U_\kappa$ is claimed; $\KWP_1$ and its coding form are classical
+(Karagila--Schilhan), as are sign coding, normal forms, the polynomial and UFD
+facts, real-closed-field facts and the permutation-model construction; the
+finite script checks encodings and algebraic identities only, does not
+construct symmetric models, prove independence or check real closedness, and
+does not use finite chains as a model of $\Aut(\Q,<)$; the proposed modules are
+a roadmap; the repository was not modified, built or verified.
+
+\subsection{Provenance of this part}
+\label{hset:kw:sub:provenance}
+
+\paragraph{The manuscript.} Source 11 is batch-89 manuscript 04, delivered as
+the archive \path{Glazer_Surreal_Choice_Research.zip} in commit
+\texttt{7c0f2d9f9} and placed in commit \texttt{23adb85f9}. It records the
+README blob \texttt{18478d586} of \path{Algebra/SurrealNumbers/README.md}
+(unchanged at the placement commit) and the identifier \texttt{2b7b388ba},
+which it calls a ``main-tree'' identifier, ``not asserted to be a commit
+identifier''; it is in fact the commit ``Catalogue batches 81 to 86''. Its
+bibliography linked the surreal README through the moving branch
+\texttt{main}; the entry \cite{ProveItSurreal} here gives the pinned commit.
+Its manuscript (\path{article.tex}, 911 lines, 64 labels; a 22-page PDF), README,
+PDF and checksum file \path{SHA256SUMS} (6 of 6 entries verified at placement)
+are not shipped; they survive in the arrival commit. Shipped, byte-identical:
+\path{11-choiceless-universality-SOURCES_AND_STATUS.md},
+\path{code/11-choiceless-universality-verify_finite.py} and
+\path{data/11-choiceless-universality-verification_results.json}. The
+source-and-status note keeps the delivered wording about the identifier
+\texttt{2b7b388ba} and mentions a profile page given to the authoring session
+as an identifying pointer, without a URL. The Hilbert's-tenth programme's
+routing review of commit \texttt{6aadaa4f2} covers this archive too
+(\cref{hset:zr:sub:provenance}).
+
+\paragraph{How it is printed.} The text from source 11's title-page boxes and
+abstract to its appendix is printed in full, in its order: the title-page
+boxes and the abstract open \cref{hset:kw:sec:intro}, its Section~1 follows
+them, and its appendix became a subsection of this section. Every delivered
+label carries the prefix \texttt{hset:kw:}, and its twelve questions gained
+labels \texttt{hset:kw:q:}\dots. The symbols renamed are listed in
+\cref{hset:kw:conv:notation}; delivered file names are replaced by the shipped
+ones; its references to Glazer--Yao and to Conway use this report's
+bibliography entries. Added for this report:
+\cref{hset:kw:sub:notation,hset:kw:sub:relation}, the bracketed dated note,
+this subsection and the preceding one. No mathematical statement or proof of
+source 11 was changed.
+
+\paragraph{Where the merge had to choose.} (i) Placement: source 11 cites no
+report of the collection; it is placed here because it answers in part the
+open item of \cref{hset:q:axiomatics} and is the injection counterpart of
+\cref{hset:thm:choice} (\cref{hset:kw:rem:question,hset:kw:rem:choice}).
+(ii) \Cref{hset:kw:thm:double} is printed with its own proof although it is a
+case of a lemma of another report (\cref{hset:kw:rem:other}). (iii) The two
+new parts follow Part~V, so that no existing number changes; both are printed
+after this report's conclusion and before its appendices.
 
 \appendix
 \section{Formula expansion and size checks}
@@ -4245,5 +6408,62 @@ tree,'' \emph{Journal of Logic and Analysis} \textbf{3} (2011), article 1,
 P. Ehrlich and E. Kaplan, ``Surreal ordered exponential fields,''
 arXiv:2002.07739, 2020. \url{https://arxiv.org/abs/2002.07739}.
 
-\end{thebibliography}
+
+\bibitem{GlazerChoice}
+\raggedright
+E. Glazer, ``Global choice is not conservative over local choice for Zermelo
+set theory,'' arXiv:2312.11902, 2023; version 3, 2024.
+\url{https://arxiv.org/abs/2312.11902}. Cited by source 10.
+
+\bibitem{GlazerYao}
+E. Glazer and B. Yao, ``Reflection Principles in ZFU,'' arXiv:2602.21970v1,
+25 February 2026. \url{https://arxiv.org/abs/2602.21970}. Source 10 uses
+Proposition 1, Proposition 17 and the small-kernel-model discussion; source 11
+uses the urelement and permutation-model framework (Section 3.1), not a claimed
+extension of their reflection theorems.
+
+\bibitem{HamkinsYao}
+J. D. Hamkins and B. Yao, ``Reflection in second-order set theory with abundant
+urelements bi-interprets a supercompact cardinal,'' \emph{The Journal of
+Symbolic Logic} \textbf{89} (2024), 1007--1043; arXiv:2204.09766.
+\url{https://arxiv.org/abs/2204.09766}. The elementary support examples used
+for comparison by source 10 are in \S1.5.
+
+\bibitem{YaoForcing}
+B. Yao, ``Axiomatization and Forcing in Set Theory with Urelements,''
+arXiv:2212.13627; \emph{The Journal of Symbolic Logic},
+DOI:10.1017/jsl.2024.58. \url{https://arxiv.org/abs/2212.13627}.
+
+\bibitem{KaragilaSchilhan}
+A. Karagila and J. Schilhan, ``Intermediate models and Kinna--Wagner
+Principles,'' arXiv:2409.07352v1, 11 September 2024.
+\url{https://arxiv.org/abs/2409.07352}. Used by source 11 for the convention and
+standard status of the Kinna--Wagner principles.
+
+\bibitem{CostinEhrlich}
+O. Costin and P. Ehrlich, ``Integration on the Surreals,'' arXiv:2208.14331v5,
+4 July 2024. \url{https://arxiv.org/abs/2208.14331}. Its positive development
+adopts a class framework without set or class choice; source 11 needs only the
+elementary surreal interface, not its integration results.
+
+\bibitem{ProveItSurreal}
+V. Reshetnikov, ProveIt repository, surreal-number development and its status
+README \path{Algebra/SurrealNumbers/README.md}, at commit
+\texttt{2b7b388ba81a3355b19a7c2d2fe797e92f572355}, inspected 3 October 2026 by
+sources 10 and 11.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/2b7b388ba81a3355b19a7c2d2fe797e92f572355/Algebra/SurrealNumbers}.
+Source 11 recorded the README blob \texttt{18478d58670c384953fb85dcd1a6d931c644aa32}
+and linked the branch \texttt{main}.
+
+\bibitem{ProveItClosure}
+V. Reshetnikov, ProveIt repository, Closure axiomatization of set theory,
+\path{SetTheory/ClosureAxiomatization}, README and project organization at
+commit \texttt{2b7b388ba}, inspected 3 October 2026 by source 10.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/2b7b388ba81a3355b19a7c2d2fe797e92f572355/SetTheory/ClosureAxiomatization}.
+
+\bibitem{ProveItUniverses}
+The collection's report \repo{foundations-and-computation/surreal-fields-across-universes}
+(\emph{Surreal Fields Across Set-Theoretic Universes}), README at commit
+\texttt{2b7b388ba}, inspected 3 October 2026 by source 10; unrefereed; used to
+distinguish its topic from the present one.\end{thebibliography}
 \end{document}
