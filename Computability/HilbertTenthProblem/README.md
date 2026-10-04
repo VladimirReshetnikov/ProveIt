@@ -610,6 +610,16 @@ Its generic compiler still assumes a bijective chart description; witness
 and square counts are not arithmetic operation counts. These scoped reviews
 do not certify an implemented rule-to-chart compiler or improve universality.
 
+The [coefficient power reuse](Papers/research-wip/native-stream-queue/matrix193_coefficient_power_reuse.md)
+removes24 multiplications per complete source by reusing earlier paid packing
+powers at nine coefficient outputs. Its553=305M+248A component appears in
+four full arrays costing1,593 /1,590 /1,590 /1,587, with unchanged witnesses,
+exact degrees and positive zero tuples. These arrays branch from the earlier
+IDLE/affine source and do not yet include the separate grouped-population edit.
+The [independent review](Papers/research-wip/native-stream-queue/review_matrix193_coefficient_power_reuse.md) checks the actual exponent identities,
+all24 private deletions and the complete source/interface boundary. Full local,
+coefficient and output identities plus fresh normal/optimized replays pass.
+
 The [grouped population reuse](Papers/research-wip/native-stream-queue/matrix193_grouped_population_reuse.md)
 saves25 additions in each complete matrix array. The total edge population
 reuses24 additions already needed for disjoint selector groups; one duplicate
