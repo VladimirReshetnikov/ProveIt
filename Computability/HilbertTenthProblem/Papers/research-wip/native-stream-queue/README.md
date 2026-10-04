@@ -583,6 +583,29 @@ Its generic compiler still assumes a bijective chart description; witness
 and square counts are not arithmetic operation counts. These scoped reviews
 do not certify an implemented rule-to-chart compiler or improve universality.
 
+The [selector/scaled-power composition](matrix193_selector_scaled_composition.md)
+combines both arithmetic edits in four complete matrix sources:
+
+| Controller chart | M | A | Operations | Positive witnesses | Exact degree |
+|---|---:|---:|---:|---:|---:|
+| None |685|732|1,417|141|35,587|
+| Flow |684|730|1,414|140|53,345|
+| Population |684|730|1,414|140|53,347|
+| Both |683|728|1,411|139|71,105|
+
+The [scaled-power reuse](matrix193_scaled_power_reuse.md) uses an existing
+negative multiple of Q^12 with Q^150 to replace two Q^162-related products
+by one. Its [independent review](review_matrix193_scaled_power_reuse.md)
+checks the private deletion and all paid dependencies. The combined sources
+retain the 242 shared-selector rows and use the same complete 552-row
+coefficient arrays as that separate branch. Entire polynomial identities
+preserve immediate-parent positive zeros and exact degrees; all 5,656 rows
+are live. Fresh normal/optimized replays pass. The earlier terminal/IDLE
+comparisons retain ordinary-input scope, and universal84 is unchanged.
+The [independent composition review](review_matrix193_selector_scaled_composition.md)
+checks the full source identities, both literal components and actual finalizers;
+its separate normal/optimized replays also pass.
+
 The [shared selector blocks](matrix193_selector_block_sharing.md) reduce the
 complete matrix sources to **1,418 / 1,415 / 1,415 / 1,412 operations**, with
 141 / 140 / 140 / 139 positive witnesses and unchanged exact degrees

@@ -591,6 +591,29 @@
 > and square counts are not arithmetic operation counts. These scoped reviews
 > do not certify an implemented rule-to-chart compiler or improve universality.
 >
+> The [selector/scaled-power composition](matrix193_selector_scaled_composition.md)
+> combines both arithmetic edits in four complete matrix sources:
+>
+> | Controller chart | M | A | Operations | Positive witnesses | Exact degree |
+> |---|---:|---:|---:|---:|---:|
+> | None |685|732|1,417|141|35,587|
+> | Flow |684|730|1,414|140|53,345|
+> | Population |684|730|1,414|140|53,347|
+> | Both |683|728|1,411|139|71,105|
+>
+> The [scaled-power reuse](matrix193_scaled_power_reuse.md) uses an existing
+> negative multiple of Q^12 with Q^150 to replace two Q^162-related products
+> by one. Its [independent review](review_matrix193_scaled_power_reuse.md)
+> checks the private deletion and all paid dependencies. The combined sources
+> retain the 242 shared-selector rows and use the same complete 552-row
+> coefficient arrays as that separate branch. Entire polynomial identities
+> preserve immediate-parent positive zeros and exact degrees; all 5,656 rows
+> are live. Fresh normal/optimized replays pass. The earlier terminal/IDLE
+> comparisons retain ordinary-input scope, and universal84 is unchanged.
+> The [independent composition review](review_matrix193_selector_scaled_composition.md)
+> checks the full source identities, both literal components and actual finalizers;
+> its separate normal/optimized replays also pass.
+>
 > The [shared selector blocks](matrix193_selector_block_sharing.md) reduce the
 > complete matrix sources to **1,418 / 1,415 / 1,415 / 1,412 operations**, with
 > 141 / 140 / 140 / 139 positive witnesses and unchanged exact degrees
@@ -855,7 +878,7 @@
 > materialized. The overall universal frontier remains 84.
 >
 > The former coefficient-evaluation and bounded-high proposals are now
-> implemented and reviewed in the combined source above. The new553-gate shared
+> implemented and reviewed in the combined source above. The current552-gate shared
 > coefficient component and controller/packing interfaces are the current
 > arithmetic targets; the four high-pair witness removals are already included.
 >
@@ -876,6 +899,9 @@
 > whereas power reuse preserves every polynomial value on identical inputs.
 > Shared selector blocks further remove 46M+46A, reaching 1,412 operations.
 > Their 242-row component already includes all nine shared runs and paid joins.
+> Paid scaled-power reuse removes one further coefficient multiplication; the
+> complete composition now has 1,411 operations and 552 coefficient rows.
+> Its -20Q^12/Q^150 reuse and the private Q^162 deletion are already included.
 > None of these completed savings may be subtracted again.
 >
 > The [packed selected-output construction](matrix193_packed_output_scout.md)
