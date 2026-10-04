@@ -180,6 +180,16 @@
 > and square counts are not arithmetic operation counts. These scoped reviews
 > do not certify an implemented rule-to-chart compiler or improve universality.
 >
+> The [fixed-context transfer](matrix193_context_absorption.md)
+> absorbs both program contexts into the existing 193 generator phases,
+> reducing conditional target assembly from six to **3=2M+1A operations**.
+> It preserves ordinary input and exact membership, with a program-specific
+> fixed generator array. The complete fixture grows from 30 to 72 maximum
+> coefficient bits. The [independent review](review_matrix193_context_absorption.md)
+> checks the unrestricted transfer, all entries and the accepted product;
+> normal/optimized replays pass. Correct Pell indexing and an unbounded
+> product certificate remain unpaid; the universal polynomial bound stays **84**.
+>
 > The [Gamma1(5) recoding](matrix193_gamma1_recode.md)
 > preserves all 193 generators and twenty letters with **Pell parameter 391**.
 > Two explicit graphs prove faithfulness and first-row injectivity, giving
