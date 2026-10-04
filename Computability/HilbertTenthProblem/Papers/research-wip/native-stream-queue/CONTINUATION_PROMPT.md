@@ -146,12 +146,29 @@
 > imported source implementations and archives are not audited. Batch95
 > reciprocal ddb36da6c now has the bounded review linked below. The BCH
 > history/adaptation abb123637/ad52ef11e now has a bounded formal-interface
-> review, an analytic-domain correction and a rebuilt combined PDF. Earlier guide-only and
+> review, an analytic-domain correction and a rebuilt combined PDF. The six archives
+> at62846e17a,7be14aa84,fb9f5884b and26e036956 now have authenticated intake
+> reviews: four complete manuscript reads, selected atom/hat interfaces and
+> a separate hat endpoint-dependency challenge. Earlier guide-only and
 > ancillary-placement reviews keep their exact boundaries. Padded
 > reversal now has complete129-operation sources:47 witnesses/SOS227/degree40
 > or46 witnesses/SOS224/degree52. Native AND remains in the loader, so a
 > cheaper loading/accepting-history compiler is still needed for a universal
 > improvement. The universal84/187 and85/155 points remain unchanged.
+>
+>
+> The [hat endpoint follow-up](review_hat_endpoint_26e036956.md) adds the
+> missing418 lines of covariance, Fourier and aggregate-cost dependencies,
+> completing the630-line model-to-endpoint proof interval at26e036956.
+> Private-seed and finite-public-seed nonattainment at expected query cap1 pass
+> two mathematical challenges. The proof uses marginal cost caps and never
+> assumes the same cap after conditioning on a seed. Its nonsharp private
+> success gap does not settle the open positive-probability question.
+> A fresh scalar example illustrates why correlated costs defeat the analogous
+> independence argument; it is explicitly not a hat strategy. Fresh metadata
+> and scalar checks pass before freezing, with no supplied program replay.
+> Upper constructions and the full article remain outside this follow-up;
+> query counts still provide no paid Diophantine operation saving.
 >
 >
 > The [three action/randomness intake reviews](review_new_actions_26e036956.md)

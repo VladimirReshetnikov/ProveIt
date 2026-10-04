@@ -133,12 +133,28 @@ adaptation78333302d now has a bounded computational-interface review; its
 imported source implementations and archives are not audited. Batch95
 reciprocal ddb36da6c now has the bounded review linked below. The BCH
 history/adaptation abb123637/ad52ef11e now has a bounded formal-interface
-review, an analytic-domain correction and a rebuilt combined PDF. Earlier guide-only and
+review, an analytic-domain correction and a rebuilt combined PDF. The six archives
+at62846e17a,7be14aa84,fb9f5884b and26e036956 now have authenticated intake
+reviews: four complete manuscript reads, selected atom/hat interfaces and
+a separate hat endpoint-dependency challenge. Earlier guide-only and
 ancillary-placement reviews keep their exact boundaries. Padded
 reversal now has complete129-operation sources:47 witnesses/SOS227/degree40
 or46 witnesses/SOS224/degree52. Native AND remains in the loader, so a
 cheaper loading/accepting-history compiler is still needed for a universal
 improvement. The universal84/187 and85/155 points remain unchanged.
+
+The [hat endpoint follow-up](review_hat_endpoint_26e036956.md) adds the
+missing418 lines of covariance, Fourier and aggregate-cost dependencies,
+completing the630-line model-to-endpoint proof interval at26e036956.
+Private-seed and finite-public-seed nonattainment at expected query cap1 pass
+two mathematical challenges. The proof uses marginal cost caps and never
+assumes the same cap after conditioning on a seed. Its nonsharp private
+success gap does not settle the open positive-probability question.
+A fresh scalar example illustrates why correlated costs defeat the analogous
+independence argument; it is explicitly not a hat strategy. Fresh metadata
+and scalar checks pass before freezing, with no supplied program replay.
+Upper constructions and the full article remain outside this follow-up;
+query counts still provide no paid Diophantine operation saving.
 
 The [three action/randomness intake reviews](review_new_actions_26e036956.md)
 at **26e036956** authenticate all22 archive members and read4086 selected
@@ -5486,6 +5502,7 @@ New research and the completed75-operation construction:
 
 | Artifact | Established result | Remaining boundary |
 |---|---|---|
+| [Hat endpoint dependency challenge](review_hat_endpoint_26e036956.md) | Adds418 proof lines, completing model-to-endpoint coverage193–822; private and finite-public exclusions pass with marginal cost caps and correct conditioning. | Positive-probability private success and upper constructions remain outside the conclusion; scalar correlated-cost example is not a hat strategy or arithmetic compiler. |
 | [Commuting injections, atom actions and hat randomness](review_new_actions_26e036956.md) | All22 members authenticated; complete commuting proof read and148 finite cases independently recomputed; exact selected atom/hat interfaces reviewed. | Other atom/hat proofs remain outside scope. Pure codes and free-computation query bounds do not supply paid integer compilers; no arithmetic saving. |
 | [Borel flows and finite-window criteria](review_new_borel_flows_fb9f5884b.md) | Full1724-line proof read; nine-member archive and cited BCH interface authenticated. Exact flow/time-one scope and infinite-rank nonclosure checked. | One malformed reference recorded; saved5372 checks not replayed. No effective certificate producer, paid compiler or arithmetic improvement; divisible-group scope retained. |
 | [Support complexity, certificates and effective boundaries](review_new_support_complexity_fb9f5884b.md) | Full1629-line manuscript and pinned Lean interface read; eight-member archive authenticated. Two new computability deductions distinguish infinite certificates from ordinary existential integer witnesses. | No paid finite compiler; supplied finite tests not rerun, external foundations accepted at stated scope, PDF and historical Library question unverified. |
