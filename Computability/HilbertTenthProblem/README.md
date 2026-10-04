@@ -127,6 +127,16 @@ retains nonnegative-real witness exactness at integer external inputs;
 the final polynomial is not nonnegative on the whole real orthant.
 This is a decidable orbit component, so the universal bound stays **84**.
 
+The [Reports21–22 publication review](Papers/research-wip/native-stream-queue/review_reports21_22_publication_20261003.md)
+finds no scope conflict in the new signal-machine Part VIII. Both arrival
+archives, all61 placed files and21 inherited byte comparisons match the
+reviewed sources; the [byte record](Papers/research-wip/native-stream-queue/review_reports21_22_publication_20261003.json)
+is saved. The historical fixed-source counts604/479/477/480, exact integer
+domains, unique outer history and infinite native fibers remain distinct.
+These are nonuniversal fixtures; the later direct clean-clock savings are
+separately attributed. No archived software or rebuild was executed, and
+this publication check adds no circuit-cost or universal-bound theorem.
+
 The [publication integration review](Papers/research-wip/native-stream-queue/review_reports_publication_20261003.md)
 finds no conflict in the checked sandpile and particle-report additions.
 All 24 selected Reports 35–38 archive members and 119 placed particle
