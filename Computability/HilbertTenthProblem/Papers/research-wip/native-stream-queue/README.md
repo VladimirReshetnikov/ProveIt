@@ -1,5 +1,24 @@
 # WIP: native queue streams and research continuation
 
+The [reduced auxiliary coefficient](complete85_reduced_auxiliary_degree.md)
+gives a complete **85=47M+38A**, **18-witness** universal polynomial of
+**uniform exact degree155**, improving the previous **85/175** choice.
+One new subtraction replaces the auxiliary coefficient by `Delta*(f²-1)`;
+all other83 parent definitions and the seven finalizer rows remain literal.
+The actual full outputs satisfy
+`Fnew-F84=P5*Ns*(Ns-Delta)*(V²-y²)`.
+An integer-unit argument and the strong factor's modulo4 sign force
+`Ns=Delta` at every integer zero with `Delta!=0`; at `Delta=0` both outputs
+vanish. Thus the complete integer zero sets agree at identical supplied
+coordinates, while universality uses the parent's unchanged positive
+fixed-program slices. The [independent review](review_complete85_reduced_auxiliary_degree.md)
+reconstructs all85 paid rows, proves the exact seven factor degrees
+**22,18,32,28,7,2,46**, and checks the complete degree155 leading form with
+uniformly nonzero coefficient `-32*Bm1^92`. The naive gate bound is165.
+All25 supplied ports and18 witnesses remain live. General minimum-operation
+**84/187**, the comparison count **74**, and lower-degree choices such as
+**86/131** remain available; this is an improved operation/degree tradeoff.
+
 The [scaled strong output](complete84_scaled_strong_output.md) lowers the
 complete universal polynomial to **84=47M+37A operations**, with **18 positive
 witnesses and uniform exact degree 187**. Reusing the paid main coefficient
@@ -11,7 +30,7 @@ The [independent review](review_complete84_scaled_strong_output.md) checks
 all 84 gates, the complete output identity and the uniform degree argument;
 a separate mathematical challenge and fresh normal/optimized replays pass.
 The gate-propagated degree 197 is only an upper bound. The comparison-system
-bound remains **74**; the lower-degree **85/175** and other reviewed choices
+bound remains **74**; the lower-degree **85/155** and other reviewed choices
 remain available. Earlier entries retain their historical counts; the current
 minimum polynomial count is **84**, with no global optimality claim.
 
@@ -5118,6 +5137,7 @@ New research and the completed75-operation construction:
 
 | Artifact | Established result | Remaining boundary |
 |---|---|---|
+| [Reduced auxiliary coefficient](complete85_reduced_auxiliary_degree.md) | Complete85=47M+38A,18 witnesses, uniform exact degree155; identical integer zero tuples to84/187 | Improves85/175; universality on inherited positive fixed slices, minimum count84 and86/131 unchanged |
 | [PartX publication and six arrivals](review_polish_partx_c9bc70d8f.md) | Actual Presburger PartX present atc9bc70d8f;708→784 labels,55 delivered labels retained; six ZIPs/53 members authenticated | Bounded text scope; no paid compiler found; local beta-code recurrence/recoding obligations remain |
 | [Shared fixed-matrix action](matrix193_shared_action_fusion.md) | Complete1399/1396/1396/1393;534 coefficient rows; saves4M+2A per chart by full-polynomial identity | Same supplied tuples, witnesses and exact degrees; inherited ordinary-input scope, universal84 unchanged |
 | [Multiplier-dependent strong-root absorption](complete84_multiplier_dependent_root_absorption.md) | Fixed polynomial f=G on88 f/T/y-independent values, including i and S,S², has finite input projection | Integer Cauchy bound versus strong-rank growth; quotient/ordinate-dependent substitutions remain outside this theorem |
