@@ -4117,6 +4117,18 @@ Program counter, conditional jumps, acceptance and the ordinary-input
 morphism remain unpaid. Independent review adds192 full identities
 (96 signed) and128 physical prefixes/1,616 steps, including355 left moves.
 
+The [five-report literal-ant review](review_periodic_ant40_48_intake.md)
+authenticates590 archive members and records the precise proof/source
+coverage. Reports40/42/44 supply an all-length positive sentinel recoder,
+periodic-board initialization and accepting endpoint for a fixed U15
+halting language, with an additional paid Cantor pairing for one input.
+The scoped review checks the1055-row recoder's228 residual identities,
+source ledgers and primary machine interface; physical templates, the
+full native-history theorem and the published simulation remain inherited.
+Its complete cost conventions and program-to-tape encoding boundary are
+kept explicit. These reports substantially extend the earlier toggle
+component but do not improve the established84-operation bound.
+
 The [ant coefficient/fusion intake](review_ant47_48_intake.md) reviews the
 later complete source grammars separately from their inherited simulation
 proofs. Two checked refinements share [the endpoint power](periodic_ant_endpoint_reuse48.md)
