@@ -6,6 +6,14 @@ February 2021 talk, a synthesized review of them with cross-validation, and a
 seventh, faster exact recognizer written on top of their ideas, nine
 proposals for accelerating it, the integrated result, and a Rust port.
 
+It was merged into ProveIt on 4 October 2026 from the standalone `Knots`
+repository, with its history. Not carried over: the experimental Bend 2 port
+`bend/` (its results stay recorded in the report's Bend section,
+`synthesis/bend.tex`), Lackenby's lecture slides (all rights reserved; see
+`docs/`), and the repository's Bend-only agent instructions. Everything here
+is MIT-0 like the rest of ProveIt, except the third-party material in `docs/`
+(see `docs/LICENSE`).
+
 **Bottom line.** No archive, and not the new package either, implements a
 recognizer with a proved quasi-polynomial bound. The accelerated hierarchy
 operations on the last slide of the talk have no published algorithmic
@@ -19,7 +27,7 @@ in `synthesis/report.pdf`.
 
 | Path | Contents |
 |---|---|
-| `docs/` | the source material: the 109-page talk `quasipolynomial-talk.pdf`, and the arXiv source and PDF of Lackenby's July 2026 preprint *Incompressible surfaces, hierarchies and unknot recognition* (arXiv:2607.23350v1) in `docs/arXiv-2607.23350v1/` |
+| `docs/` | the source material: a pointer to the 109-page talk `quasipolynomial-talk.pdf` (not redistributed here; https://people.maths.ox.ac.uk/lackenby/quasipolynomial-talk.pdf), and the arXiv source and PDF of Lackenby's July 2026 preprint *Incompressible surfaces, hierarchies and unknot recognition* (arXiv:2607.23350v1) in `docs/arXiv-2607.23350v1/` |
 | `reports/` | the six original archives (`*.zip`) and their extracted contents in `01/` .. `06/` |
 | `synthesis/` | the synthesized report (`report.tex`, `report.pdf`), the cross-validation scripts and data, and the table generator |
 | `fast/` | `fastunknot` 0.2 (Python): polynomial and width-bounded filters plus a scanning (Bar-Natan) Khovanov backend; tests, examples, ablation |
@@ -47,7 +55,7 @@ cd synthesis && sh build.sh
 ## Packaging the repository as a ZIP
 
 ```sh
-python make_archive.py            # writes Knots.zip at the root
+python make_archive.py            # writes UnknotRecognition.zip in this directory
 python make_archive.py --all-pdf  # same, but keeps every PDF
 ```
 
@@ -73,9 +81,8 @@ or rebuild it with `pdflatex` (twice):
 The report PDFs inside `proposals/01` .. `09` are omitted by the same rule
 (each has its `.tex` beside it).
 
-PDFs without a same-name source are always included: the talk
-`docs/quasipolynomial-talk.pdf` and the preprint's figure PDFs in
-`docs/arXiv-2607.23350v1/`.
+PDFs without a same-name source are always included: the preprint's figure
+PDFs in `docs/arXiv-2607.23350v1/`.
 
 ## Test status (last observed 18 September 2026)
 
@@ -101,6 +108,16 @@ nuanced status; see `synthesis/README.md`, `fast/README.md` and
 `rust/README.md` before rerunning any of them. Everything reported in
 `synthesis/report.pdf` comes from completed runs; several experiments are
 long-running because old configurations run into their time caps on purpose.
+
+## Notes for contributors
+
+- The reference implementations are `fast/` (Python, the most complete and
+  best tested) and `rust/`. A port must reproduce their ranks and verdicts;
+  compare against them, not against memory.
+- Speed claims need paired measurements: see the timing caveats in
+  `fast/README.md`.
+- Never claim a quasi-polynomial bound: every implementation here is
+  exponential in the worst case (`synthesis/report.pdf`).
 
 ## Status of the quasi-polynomial target
 

@@ -2,10 +2,13 @@
 
 Source material shared by all six attempts and by the synthesis.
 
-* `quasipolynomial-talk.pdf`: Marc Lackenby, *Unknot recognition in
-  quasi-polynomial time*, February 2021, 109 PDF pages including
-  progressive-reveal duplicates. Page references in the archives' reports and
-  in `../synthesis/report.pdf` are physical page numbers of this file.
+* `quasipolynomial-talk.pdf` (not included in ProveIt): Marc Lackenby,
+  *Unknot recognition in quasi-polynomial time*, February 2021, 109 PDF pages
+  including progressive-reveal duplicates, available from the author at
+  https://people.maths.ox.ac.uk/lackenby/quasipolynomial-talk.pdf.
+  No license is stated, so the file is not redistributed in this public
+  repository. Page references in the archives' reports and in
+  `../synthesis/report.pdf` are physical page numbers of that file.
 
 Map of the talk (physical pages):
 

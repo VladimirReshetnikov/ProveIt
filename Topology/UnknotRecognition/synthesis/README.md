@@ -8,7 +8,9 @@ The synthesized report on the six archives and on the new recognizer.
   recognizer; assessment; the nine acceleration proposals, 0.2 and the Rust
   port (`acceleration.tex`); the later constant-factor work on the Python
   package, its negative results, and how it was measured (`round3.tex`); the port to
-  Bend 2 and what its parallelism delivered (`bend.tex`).
+  Bend 2 and what its parallelism delivered (`bend.tex`; the port itself,
+  directory `bend/` of the standalone Knots repository, was not carried into
+  ProveIt).
 * `build.sh`: regenerates the tables and runs `pdflatex` twice.
 * `make_tables.py`: writes `tables/*.tex` from the JSON files in `data/` and
   from `../fast/results/benchmark.json`.

@@ -6,7 +6,9 @@ Bend 2 (version 2.0.10) is a pure, total, affine functional language that compil
 through C to native code and promises parallelism for free: a parallel let
 \texttt{a b = f(x) g(y)} forks, the type checker guarantees that the two calls
 share nothing, and the result cannot depend on the number of threads. The
-algorithm of \texttt{fastunknot} was ported to it (directory \texttt{bend/}) to
+algorithm of \texttt{fastunknot} was ported to it (directory \texttt{bend/} of the
+standalone Knots repository; the port was not carried into ProveIt when that
+repository was merged on 4~October 2026) to
 find out what that promise is worth for this problem. Nothing in this section
 changes the complexity discussion: the scan is exponential in the boundary
 width, in every language.
