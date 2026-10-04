@@ -2400,6 +2400,25 @@ This is the appropriate obstruction: persistent exponential-scale
 oscillation in an arithmetic P-recursive sequence requires exponentially
 large upward transitions somewhere. The deletion estimate prevents them
 for the permutation counts.
+[Added 3 October 2026, batch~85: the collection report
+\lean{generating-functions-and-asymptotics/oeis-sequence-asymptotics/a182220-source-boundary}
+proves, as its Lemma~8.1 (\code{sbd:lem:jump}), a complementary and
+elementary \emph{sufficient} condition: if a nonnegative sequence $(c_n)$,
+integers $N_r\to\infty$ and constants $\alpha<\beta$ satisfy
+$c_{N_r-j}=\exp(\alpha N_r+o(N_r))$ for every fixed $j\ge0$ and
+$c_{N_r+1}=\exp(\beta N_r+o(N_r))$, then $(c_n)$ is not P-recursive;
+neither integrality nor an exponential bound is needed.
+Corollary~\ref{dsr:nh:cor:jumps} makes upward jumps necessary for
+oscillation; that lemma makes a jump after a plateau of every fixed length
+fatal. It applies to the boundary diagonals of the triangle A182162
+(extensional acyclic digraphs by number of sources), which jump at every
+power of two, so that the present criterion cannot exclude their
+P-recursiveness; it does not apply to $\tht(n)$, whose forward increases
+are at most polynomial by~\eqref{dsr:nh:eq:deletion}.
+Example~\ref{dsr:nh:ex:parity}, which is P-recursive and passes from rate
+$\log2$ at odd indices to rate $\log3$ at even ones, shows that the
+plateau hypothesis (every fixed $j$) cannot be reduced to a single
+preceding term.]
 
 \section{Proof of non-P-recursiveness and all arithmetic sections}
 \label{dsr:nh:sec:mainproof}
