@@ -158,6 +158,17 @@ Its generic compiler still assumes a bijective chart description; witness
 and square counts are not arithmetic operation counts. These scoped reviews
 do not certify an implemented rule-to-chart compiler or improve universality.
 
+The [faithful parabolic obstruction](Papers/research-wip/native-stream-queue/u15_faithful_parabolic_obstruction.md)
+shows that the universal U15 block W=(01)^3 11 stays hyperbolic under
+**every faithful SL2(Z) representation**, with a stated GL2(Z) extension.
+The proof combines a nonabelian quotient, primitive homology and the
+rank-two surface classification; it is not a finite matrix search.
+The [independent review](Papers/research-wip/native-stream-queue/review_u15_faithful_parabolic_obstruction.md)
+checks the primary surface premise and word argument, and normal/optimized
+receipts pass. Thus changing faithful two-by-two matrix constants cannot
+make this block an affine input loader. Other physical encodings, higher
+dimensions and certificates with additional witnesses remain outside.
+
 The [U15 repeated-block interface](Papers/research-wip/native-stream-queue/u15_unary_block_interface.md) gives an
 effective universal family `U_S W^x V_S` in the actual193-generator source,
 with the fixed eight-bit input block W=01010111. Its matrix has trace -8942;
