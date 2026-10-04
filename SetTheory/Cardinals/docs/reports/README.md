@@ -2,14 +2,14 @@
 
 # Research reports
 
-One hundred and eighty-nine independent mathematical research packages, unpacked
+One hundred and ninety-one independent mathematical research packages, unpacked
 from the
 archives in which they were delivered and grouped by subject.  Each directory
 holds a typeset article with its LaTeX source, a `README.md`, and in most cases
 verification code together with the recorded output of running it.
 
 **[`manifest.pdf`](manifest.pdf)** ([source](manifest.tex)) is the catalogue: it
-numbers all one hundred and eighty-nine reports, names the problem each one attacks
+numbers all one hundred and ninety-one reports, names the problem each one attacks
 and the
 result it claims, and records the archives each directory came from.  These are
 AI-assisted drafts; none is refereed or machine-checked, and the manifest
@@ -17,7 +17,7 @@ records what each report claims rather than verifying it.
 
 | Category | Reports |
 |---|---:|
-| [`ordinals-and-order-types/`](ordinals-and-order-types) — friendly order types, wqo powersets and statures, transfinite words, ordinal arithmetic, games, graph minors, filter sites and their Booleanizations, ideals, lattice congruences, lexicographic orders of the well-orderings of the reals | 20 |
+| [`ordinals-and-order-types/`](ordinals-and-order-types) — friendly order types, wqo powersets and statures, transfinite words, ordinal arithmetic, games, graph minors, filter sites and their Booleanizations, ideals, lattice congruences, lexicographic orders of the well-orderings of the reals, measurable box games and hat guessing, named elementary embeddings in urelement set theory | 22 |
 | [`enumerative-combinatorics/`](enumerative-combinatorics) — parking functions, pattern avoidance, preorder and order polytopes, numerical semigroups, lattice arrays, tropical degree, mesh patterns, skew partitions, polyomino growth, first pattern failures, pyramidal Frobenius numbers, valley-monotone bargraphs, bridgeless toroidal maps | 26 |
 | [`hankel-determinants/`](hankel-determinants) — Somos and elliptic, Catalan and ballot, Cigler's conjectures, growth and runs, arithmetic numerators | 10 |
 | [`log-concavity-and-unimodality/`](log-concavity-and-unimodality) — cluster variables, chromatic coefficients, Stirling rows, independence systems, MDS codes, binomial decompositions, Bernoulli entropy, matching-rank normalization, preorder gamma polynomials | 14 |
@@ -29,8 +29,8 @@ records what each report claims rather than verifying it.
 | [`graph-theory/`](graph-theory) — mutual visibility, domination roots, minimal dominating sets | 3 |
 | [`jacobian-conjecture/`](jacobian-conjecture) — fibers and dynamics of Keller maps: Gao's five-dimensional map, arithmetic fibers, weighted rigidity and dynamical degrees of the three-variable counterexample | 4 |
 | [`galois-theory-and-radicals/`](galois-theory-and-radicals) — bad characteristics of radical solvers, Fourier–Kummer charts, finite separating ranges for sextic resolvents | 2 |
-| [`hilbert-tenth-problem/`](hilbert-tenth-problem) — witness-faithful Diophantine certificates for discrete computation; Diophantine laws of probabilistic, quantum and continuous computation; recurrence and liveness beyond halting; groups as Diophantine substrates; signal-machine collision certificates; exact events in stochastic and thermal systems; quadratic orthant certificates; polynomial witness histories; smooth Diophantine finalizers; five-particle binary automata; fixed universal polynomials; periodic turmite first revisits | 12 |
-| **Total** | **189** |
+| [`hilbert-tenth-problem/`](hilbert-tenth-problem) — witness-faithful Diophantine certificates for discrete computation; Diophantine laws of probabilistic, quantum and continuous computation; recurrence and liveness beyond halting; groups as Diophantine substrates; signal-machine collision certificates; exact events in stochastic and thermal systems; quadratic orthant certificates; polynomial witness histories; smooth Diophantine finalizers; five-particle binary automata; fixed universal polynomials; periodic turmites and a literal Langton ant | 12 |
+| **Total** | **191** |
 
 ## Later deliveries
 
@@ -744,6 +744,84 @@ Presburger arithmetic, went to the surreal collection (the new report
 `polish-models-of-omnific-arithmetic` and an addition to
 `discrete-initial-subgroups-and-omnific-normalization`). No manuscript
 refutes a repository claim.
+
+Batch 87, six archives in one arrival commit, opened one report here:
+[`measurable-box-games`](ordinals-and-order-types/measurable-box-games)
+(Glazer's choiceless box-game paradox: exact minimax `⌊m/q⌋` for blind
+cylinder-measurable outputs, a fair measure extension for countable teams,
+executable maps as recursively sliceable cube matchings, the counts
+`F_n = 1, 2, 9, 232, 206065, …` with an all-orders asymptotic expansion,
+and a conditional Busy Beaver comparison; Glazer's question itself is
+answered only for that class). It is the collection's first report on
+box, hat or guessing games. The other five archives, on Baire-category
+rigidity, nonsplit models, a claimed ATR₀ answer to Glazer's Question 1 of
+the Topological Tennenbaum paper and locally compact cones, became Parts
+VI–IX of the surreal collection's `polish-models-of-omnific-arithmetic`;
+the box-game report's Q1 is a different question. Nothing was superseded,
+and no manuscript refutes a repository claim; two provenance files naming
+a third party's personal profile URL were not staged.
+
+Batch 88, ten archives in one arrival commit, all "Research Reports"
+39–48 of the Hilbert's-tenth programme's pipeline, was placed in two
+clusters that share no theorem. Reports 40, 42, 44, 47 and 48 became Parts
+II–IV of
+[`periodic-turmite-first-revisits`](hilbert-tenth-problem/periodic-turmite-first-revisits)
+and answer its question 3: a literal periodic Langton ant simulating the
+fixed Neary–Woods machine U15 with at most two visits per cell, a fixed
+polynomial initializing its board from two sentinel integers, and one fixed
+polynomial with 465 positive witnesses and exact degree 2,304,000
+recognizing U15's sentinel-pair halting language, rebuilt from the
+literals 1 and 3 in 14,658,934 operations. It is not an ordinary-input
+universal polynomial and leaves the programme's 84-operation record
+unchanged; seven primitive cell maps derived from a third-party paper's
+figure sources are credited and not covered by MIT-0. Reports 39, 41, 43,
+45 and 46 became Parts VI–VIII of
+[`fixed-universal-polynomials`](hilbert-tenth-problem/fixed-universal-polynomials)
+(nonredundant main comparisons, the failure of first-index deletion, and
+the free-coefficient 83 and square/product 82 candidates below the
+record, with a table of every such candidate). Report 44 is a recovered
+edition rebuilt after a filesystem reset, Report 45's main theorem is a
+second route to a research-tree theorem, and Report 46 ships Report 45
+whole; byte copies were staged once and 27 heavy regenerable files of
+about 156 MB were excluded with recipes. Reciprocal notes went to
+[`canonical-diophantine-certificates`](hilbert-tenth-problem/canonical-diophantine-certificates)
+(Part XX) and between the two reports (`f7ca8360b`). No manuscript
+refutes a repository claim.
+
+Batch 89, five archives in two arrival commits, opened
+[`naming-elementary-embeddings`](ordinals-and-order-types/naming-elementary-embeddings)
+(Yao's urelement kernel models after finitely many canonical elementary
+atom lifts are named: Replacement holds exactly when the small component
+types are few, one name is harmless iff `cf κ > ω` and two or more iff
+`cf κ > 2^ℵ₀`, a CH characterization at `ℵ₂`, and exact Collection and
+reflection criteria). It contains no surreal mathematics and continues the
+formal projects `SetTheory/ZF` and `SetTheory/BoundedConsistency`
+semantically, without formalizing anything. Its Collection spectrum is
+proved independently in Part VI of the surreal report
+`birthday-cutoffs-and-hereditary-sets`, printed there with its own proofs.
+The other four archives went to the surreal collection
+(`surreal-well-orders` Part XV, `polish-models-of-omnific-arithmetic`
+Part X, `birthday-cutoffs-and-hereditary-sets` Parts VI–VII). Nothing was
+superseded, and no manuscript refutes a repository claim.
+
+Batch 90, six archives in one arrival commit, added Part II to
+[`measurable-box-games`](ordinals-and-order-types/measurable-box-games)
+(Eldredge's infinite binary hat game: a computable strategy with surplus
+`log₂ n + O(1)` and, for every positive `g = o(n)`, one with surplus
+eventually above any multiple of `g`, answering both questions of his
+Remark 6.8; its finite corollary settles Part I's question Q9 for one
+family). Part VIII of the surreal report `birthday-cutoffs-and-hereditary-sets`
+(named symmetries) has, for finitely many named permutations, the `κ = ω`
+case of `naming-elementary-embeddings`' component criterion as a case of
+its orbit criterion for named group actions, proved independently; both
+reports carry dated cross-references. The other five
+archives went to the surreal collection: Parts XI–XII of
+`polish-models-of-omnific-arithmetic`, a fourth source of
+`discrete-initial-subgroups-and-omnific-normalization`, Part VIII of
+`birthday-cutoffs-and-hereditary-sets` and the new report
+`cantor-families-of-surreal-subfields`. Nothing was superseded, and no
+manuscript refutes a repository claim. Reciprocal notes for batches 87, 89
+and 90 are in `8d7d03c3e`, `fc1ad4275` and `e50dde15b`.
 
 A report that continues a formal project gains no formal status from it:
 each README names the project declarations it builds on and says that its

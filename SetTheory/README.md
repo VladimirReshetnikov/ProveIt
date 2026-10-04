@@ -5,7 +5,13 @@ collection of research reports on other subjects.
 
 - [`ZF/`](ZF/) supplies reusable first-order ZF syntax/axioms, semantic
   bridges, internal set algebra, and the finite-recursion theorem needed by
-  the Closure result.
+  the Closure result. The research report
+  [`Cardinals/docs/reports/ordinals-and-order-types/naming-elementary-embeddings`](Cardinals/docs/reports/ordinals-and-order-types/naming-elementary-embeddings/)
+  (batch 89) continues this interface semantically: it computes exactly when
+  naming elementary self-embeddings of urelement kernel models keeps
+  Replacement, Collection and reflection in the expanded language, and
+  proposes a formalization route. It is unrefereed and not formalized; this
+  project's `Form` has no atom predicate or function symbols.
 - [`ClosureAxiomatization/`](ClosureAxiomatization/) proves that replacing
   Pairing, Union, Infinity, and Replacement by the set-like-relation Closure
   schema is semantically and deductively equivalent to ordinary ZF.
@@ -16,7 +22,7 @@ collection of research reports on other subjects.
   synthesis's ZFC theorems about a single witness in Mathlib's `ZFSet`. The
   Lean library closes nineteen published results with `admit`, which no
   other ProveIt set-theory project does; `Cardinals/Cardinals/README.md`
-  lists them and its audit exposes them. The directory also holds 189
+  lists them and its audit exposes them. The directory also holds 191
   research reports without Lean counterparts, on ordinals and
   well-quasi-orders, Hankel determinants, supercongruences, tetration,
   log-concavity, graphs, automata, enumerative combinatorics,

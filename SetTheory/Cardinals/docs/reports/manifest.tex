@@ -17,7 +17,7 @@
 \hypersetup{%
   pdftitle={A manifest of the research reports in docs/reports},
   pdfauthor={Vladimir Reshetnikov},
-  pdfsubject={Catalogue of 189 independent mathematical research packages}}
+  pdfsubject={Catalogue of 191 independent mathematical research packages}}
 
 \definecolor{Ink}{HTML}{16324F}
 \definecolor{Accent}{HTML}{4E5C3D}
@@ -53,30 +53,33 @@
 
 \begin{center}
   {\LARGE\bfseries\color{Ink} A manifest of \texttt{docs/reports}}\\[0.6em]
-  {\large One hundred and eighty-nine independent mathematical research packages,\\
+  {\large One hundred and ninety-one independent mathematical research packages,\\
    classified by subject}\\[1.0em]
   {\normalsize Vladimir Reshetnikov}\\[0.3em]
-  {\normalsize 3 October 2026}
+  {\normalsize 4 October 2026}
 \end{center}
 
 \vspace{0.8em}
 
 \section{Scope and conventions}
 
-This document catalogues the one hundred and eighty-nine research packages stored
+This document catalogues the one hundred and ninety-one research packages stored
 under \dir{docs/reports}.  The collection originally held one hundred and four reports; after two
 consolidations it contributes one hundred and two maintained reports. The
-other eighty-seven came through ProveIt's incoming-reports procedure
+other eighty-nine came through ProveIt's incoming-reports procedure
 (\dir{docs/incoming}) --- six in batch~36, one each in batches~40, 41
 and~44, two in batch~60, one each in batches~62 and~70, three in
 batch~72, sixteen in batch~73, two in batch~74, three in batch~75, two in
 batch~76, thirty-four in batch~77, three in batch~78, two in
-batch~79, two in batch~82, one in batch~83, five in batch~85 and one in
-batch~86 --- whose archives remain in the repository's history.  Later batches
+batch~79, two in batch~82, one in batch~83, five in batch~85 and one each
+in batches~86, 87 and~89 --- whose archives remain in the repository's
+history.  Later batches
 also extended existing reports; their entries name the batch.  Batch~80
 opened no report here: it extended one report and replaced the programs of
-three Parts by corrected code editions.  Batches~81 and~84 brought
-nothing here; their manuscripts, like part of batches~83 and~86, went to
+three Parts by corrected code editions; batches~88 and~90 likewise only
+extended reports.  Batches~81 and~84 brought
+nothing here; their manuscripts, like part of batches~83, 86, 87, 89
+and~90, went to
 the surreal-number collection, and one batch-85 manuscript went to
 \dir{Analysis/Transseries}.
 The next paragraphs describe the historical collection before those two
@@ -162,7 +165,7 @@ original archive names are recorded with every entry.
  & \dir{friendly-order-types} & 3\\
  & \dir{games-on-ordinals} & 3\\
  & \dir{transfinite-words} & 1\\
- & (top level) & 6\\
+ & (top level) & 8\\
 \midrule
 \dir{generating-functions-and-asymptotics} & \dir{oeis-sequence-asymptotics} & 64\\
  & \dir{binary-product-coefficient-counts} & 3\\
@@ -193,7 +196,7 @@ original archive names are recorded with every entry.
 \midrule
 \dir{hilbert-tenth-problem} & --- & 12\\
 \midrule
-\multicolumn{2}{l}{\textbf{Total}} & \textbf{189}\\
+\multicolumn{2}{l}{\textbf{Total}} & \textbf{191}\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -476,10 +479,12 @@ is sufficient, not necessary), remain open.}
 
 \subsection{Order-theoretic invariants without a subcategory}
 
-Six reports whose objects sit outside every subcategory above: the minor order
+Eight reports whose objects sit outside every subcategory above: the minor order
 on finite graphs, two on sites of filters on $\omega$, congruences of finite
-lattices, a translation-invariant ideal, and the lexicographic order of the
-well-orderings of the reals.
+lattices, a translation-invariant ideal, the lexicographic order of the
+well-orderings of the reals, measurable prediction in Glazer's box games and
+hat guessing (batches~87 and~90), and named elementary embeddings in
+urelement set theory (batch~89).
 
 \entry{Ordinal complexity of graph minors}
 {ordinals-and-order-types/graph-minor-ordinals}
@@ -580,6 +585,78 @@ arguments as second routes.  Each answers a question of another: the ZFC
 non-embedding into $\mathcal W_\kappa$, which one had only under
 $2^{<\kappa}<2^\kappa$, and the cut and character spectra and the quotient
 another had asked about.}}
+
+\entry{Countable information, uncountably many boxes: measurable prediction and hat-guessing surplus}
+{ordinals-and-order-types/measurable-box-games}
+{article.pdf}{batch~87: glazer\_box\_games\_research.zip (Part~I); batch~90: hat\_guessing\_research.zip (Part~II)}
+{Part~I takes up the question that ends Section~5 of Glazer's
+\emph{A choiceless box game paradox} (arXiv:2211.10474): does ZF prove that
+three players facing continuum many boxes of bits can guarantee that at most
+one of them guesses wrong?  It separates a measurable choice of box and
+guess, a measurable success event and actual executability, and answers the
+question for the first class only.  For a standard Borel set of boxes,
+alphabet size $q$ and $m$ blind output maps measurable for the cylinder
+$\sigma$-algebra, the guaranteed number of correct guesses is exactly
+$\lfloor m/q\rfloor$, without assuming the success events measurable; a
+countable team has a fair simultaneous measure extension; measurable
+success forces a countable target range; a continuous selector has a success
+event of inner measure~$0$ and outer measure~$1$.  Blind binary maps on $n$
+boxes are labelled perfect matchings of the cube, executable maps exactly
+the recursively sliceable ones (the two classes first differ at four
+boxes); their number $F_n=1,2,9,232,206065,\dots$ satisfies an exact
+recurrence and the all-orders expansion
+$F_n=e^{\gamma2^n}n^{-1}(1-\tfrac3{2n}+\tfrac{17}{4n^2}-\tfrac{12}{n^3}+O(n^{-4}))$
+with a growth constant $\gamma\approx0.438158$, not Euler's; a doubly
+exponential rarity bound, information inequalities, an oracle extraction of
+finite losing prefixes, and a Busy Beaver comparison that is conditional on
+an encoding and uses a program-length running-time function, not Rado's
+score function.  Neither counting sequence was in the OEIS on 3~October
+2026.  Part~II (batch~90) answers both questions of Eldredge's Remark~6.8
+(arXiv:2508.02828) on the surplus $D_n=S_n-n/2$ of correct guesses in the
+infinite binary hat game: Hamming-syndrome blocks give a computable
+strategy with $D_n=\log_2n+O(1)$ almost surely, and for every positive
+$g=o(n)$ a continuous strategy with $D_n/g(n)\to\infty$, so no sublinear
+envelope is universal; the coding mechanism is credited to
+Ebert--Merkle--Vollmer.  Its finite corollary settles Part~I's
+question~Q9 for $N=2a(2^r-1)$ binary players and threshold $a2^r$: the
+optimum is exactly $1-2^{-r}$, over legal trees and blind maps alike.
+Glazer's question itself is not answered; Part~I's Q1 is not the
+``Question~1'' of the surreal report
+\dir{polish-models-of-omnific-arithmetic}.  The Hilbert's-tenth programme
+reviewed Part~I's computability claims (\texttt{f15962acd}, not its
+probability, enumeration or asymptotic claims) and routed Part~II's
+archive from its READMEs only (\texttt{bcc1a4438}).  No priority; not
+formalized.}
+
+\entry{Naming elementary embeddings: atom components, Replacement and reflection}
+{ordinals-and-order-types/naming-elementary-embeddings}
+{article.pdf}{batch~89: Naming\_Elementary\_Embeddings\_Research.zip}
+{In Yao's kernel-ideal models $M_\kappa(A)$ of urelement set theory with
+Replacement and choice (objects whose transitive closures involve fewer
+than $\kappa$ atoms), every injection $f$ of the atoms lifts to a canonical
+amenable elementary self-embedding $j_f$ fixing every pure set, and the
+initial elementary self-embeddings are exactly these lifts.  When finitely
+many lifts are named, so that the schemes range over formulas containing
+them, Replacement holds exactly when the small type blocks of the atom
+graph have fewer than $\kappa$ atoms (for $\kappa=\omega$: finite components
+and a finite small part).  Hence every one-name expansion keeps Replacement
+iff $\mathrm{cf}\,\kappa>\omega$, every expansion by two or more names iff
+$\mathrm{cf}\,\kappa>2^{\aleph_0}$, and at $\aleph_2$ universal two-name
+preservation is equivalent, externally, to CH (a characterization, not a
+proof or refutation of CH).  Collection fails at limit cutoffs already for
+$\Delta_0$ formulas of the base language and holds in full exactly at an
+uncountable successor $\kappa$ with fewer than $\kappa$ component types;
+full transitive reflection has the same criterion; two individually safe
+automorphisms can be jointly unsafe.  The kernel-ideal construction is
+Yao's and the lifting idea is not claimed new.  The same Collection spectrum
+is proved independently in Part~VI of the surreal report
+\dir{birthday-cutoffs-and-hereditary-sets}, whose Part~VIII (batch~90)
+contains the case $\kappa=\omega$ of the criterion for finitely many named
+permutations, proved independently.  It continues
+the formal projects \dir{SetTheory/ZF} and \dir{SetTheory/BoundedConsistency}
+semantically and proposes a formalization route; their formula type has no
+atom predicate, and nothing here is formalized.  Unrefereed; priority not
+established.}
 
 \section{Automata and formal languages}
 
@@ -3718,8 +3795,11 @@ the latter on the programme's own fixed universal polynomial, and extended
 the signal-machine report (Parts~VI--VIII) and the group-substrate report
 (Part~V); batch~83 opened \dir{periodic-turmite-first-revisits} and added
 Part~XX to the canonical certificates and Part~V to the fixed universal
-polynomials.  The last three entries below are batch~82's and~83's new
-reports.  None of the
+polynomials; batch~88 added Parts~II--IV to the turmite report (a literal
+periodic Langton ant and a Diophantine certificate for the fixed machine it
+simulates) and Parts~VI--VIII to the fixed universal polynomials (the
+candidates below the 84-operation record).  The last three entries below
+are batch~82's and~83's new reports.  None of the
 reports' own theorems is formalized; each README names the project
 declarations it builds on or relates to.
 
@@ -3832,8 +3912,15 @@ nonnegative real zero natural, with the same summand count, degree, support
 and coefficient height, by an argument different from the real gates of
 \dir{quadratic-orthant-certificates}, which it credits.  The research tree's
 review is printed with its findings, among them a real-algebraic limit on
-fixed-arity compression.  Merged from twenty-three manuscripts; not a Lean
-formalization.}
+fixed-arity compression.  Dated notes of batch~88 record that Parts~II--IV
+of \dir{periodic-turmite-first-revisits} build the turmite analogue of
+Part~XX for the same machine (no shared theorem, and no ordinary-input
+loader), and that the candidates below the 84-operation record are
+tabulated with their status in \dir{fixed-universal-polynomials}, whose
+Parts~VII--VIII refute the first-index deletions and the square/product~82
+candidate (one 83-operation candidate there is still unresolved).  Merged
+from twenty-three manuscripts;
+not a Lean formalization.}
 
 \entry{Diophantine laws of probabilistic, quantum and continuous computation}
 {hilbert-tenth-problem/probabilistic-quantum-and-continuous-computation}
@@ -4245,8 +4332,9 @@ formalization.}
 
 \entry{Fixed universal polynomials: a literal Grill instance, exact degree laws, native witness fibers and index restoration}
 {hilbert-tenth-problem/fixed-universal-polynomials}
-{article.pdf}{batch~82: Fixed\_Universal\_Grill\_Polynomial\_Package~(1).zip (base), Native\_Grill\_Exact\_Degree\_Laws\_Package.zip, Entire\_Native\_Witness\_Fiber\_Package.zip, Failure\_of\_Positive\_Index\_Restoration\_Package.zip, Counterexample\_Height\_Expansions\_and\_Rotation\_Discrepancy\_Package.zip; batch~83: Exact\_Negative\_Index\_Obstruction\_for\_Positive\_Diophantine\_Interfaces\_Package.zip; superseded, not printed: Fixed\_Universal\_Grill\_Polynomial\_Package.zip (batch~82)}
-{Six ``Research Reports'' (23 revision~1, 24, 25, 33, 34, 37) on the
+{article.pdf}{batch~82: Fixed\_Universal\_Grill\_Polynomial\_Package~(1).zip (base), Native\_Grill\_Exact\_Degree\_Laws\_Package.zip, Entire\_Native\_Witness\_Fiber\_Package.zip, Failure\_of\_Positive\_Index\_Restoration\_Package.zip, Counterexample\_Height\_Expansions\_and\_Rotation\_Discrepancy\_Package.zip; batch~83: Exact\_Negative\_Index\_Obstruction\_for\_Positive\_Diophantine\_Interfaces\_Package.zip; batch~88: Nonredundant\_Main\_Comparisons\_in\_Positive\_Diophantine\_Certificates\_Package.zip (Part~VI), Failure\_of\_First\_Index\_Deletion\_Package.zip (Part~VII), Structural\_Obstructions\_for\_the\_Free\_Coefficient\_83\_Candidate\_Package.zip, Full\_Positive\_Collapse\_of\_the\_Square\_Product\_82\_Candidate\_Package.zip, Exact\_Certificate\_Height\_and\_an\_Even\_Rank\_Obstruction\_Package.zip (Part~VIII); superseded, not printed: Fixed\_Universal\_Grill\_Polynomial\_Package.zip (batch~82)}
+{Eleven ``Research Reports'' (23 revision~1, 24, 25, 33, 34, 37, 39, 41, 43,
+45, 46) on the
 Hilbert's-tenth programme's own fixed universal polynomial and its native
 arithmetic block, built on its research artifacts at pinned commits.
 Part~I: one literal 397{,}488-phase Grill program and a complete circuit of
@@ -4264,16 +4352,35 @@ rotation discrepancy and a Kesten obstruction.  Part~V (batch~83): for the
 two interfaces left open there, an exact necessary-and-sufficient
 arithmetic predicate for a full positive zero with negative restored index,
 with positive reconstruction of every witness; whether the predicate ever
-passes stays open.  Results that re-derive research-tree constructions are
+passes stays open.  Part~VI (batch~88): on explicit thinned scale
+progressions every condition of that predicate but one congruence holds
+infinitely often while the congruence fails, so the main projection and
+the main norm are nonredundant on positive tuples, and every odd-index hit
+of the congruence needs a Jacobi symbol~$-1$ (its analytic existence proof
+was not recertified by the programme).  Part~VII: deleting the
+first-index quotient from the tree's 85- and 86-operation polynomials
+gives 81- and 82-operation candidates with full positive zeros at every
+input and every genuine compiler, so with the empty-set compiler they
+accept a rejected input.
+Part~VIII, three sources on the one- and two-operation reductions of the
+84-operation polynomial: structural constraints on every full positive
+zero of the free-coefficient~83 candidate (which the research tree has
+since refuted), infinitely many positive zeros of the square/product~82
+candidate at every input (a second construction of a research-tree
+theorem), and the exact height of the displayed certificates with an
+even-rank obstruction.  ``82'' and ``83'' name several polynomials; a
+front-matter table lists every candidate below the record with its status.
+Results that re-derive research-tree constructions are
 credited there; Report~23's first edition is superseded by its
 revision; a 61\,MB circuit and a 1.6\,MB program are rebuilt by the shipped
 code; two third-party papers are not redistributed.  No new MRDP theorem,
-optimality or operation record is claimed; the programme reviewed every
+optimality or operation record is claimed, and no Part lowers the
+84-operation record; the programme reviewed every
 source but certifies only parts of some; not a Lean formalization.}
 
-\entry{Periodic turmite first revisits}
+\entry{Periodic turmites: first revisits, a literal Langton ant and its Diophantine certificate}
 {hilbert-tenth-problem/periodic-turmite-first-revisits}
-{article.pdf}{batch~83: Polynomial\_First\_Revisit\_and\_Exact\_Pattern\_Queries\_for\_Turmites\_Package.zip}
+{article.pdf}{batch~83: Polynomial\_First\_Revisit\_and\_Exact\_Pattern\_Queries\_for\_Turmites\_Package.zip (Part~I); batch~88: Literal\_Periodic\_Langton\_Ant\_and\_Visit\_Boundary\_Package.zip (Part~II), Arithmetic\_Initialization\_for\_a\_Periodic\_Langton\_Ant\_Package.zip, Complete\_Positive\_Certificate\_for\_the\_Literal\_Periodic\_Ant\_Package.zip (Part~III), Exact\_Structured\_Construction\_of\_the\_Fixed\_Ant\_Coefficients\_Package.zip, Exact\_Fusion\_of\_the\_Ant\_Background\_Polynomials\_Package.zip (Part~IV)}
 {For an explicit cyclic L/R turmite on a periodic colour tile with finitely
 many binary-encoded defects and a binary start, the first repeated lattice
 position is decidable in polynomial bit time: the algorithm returns the
@@ -4286,8 +4393,29 @@ which is formalized in \dir{Logic/PresburgerArithmetic}, is a second,
 unexecuted proof), and proves that no undecidable language reduces to
 globally one-visit runs read by such observations.  This is the negative
 side of two research-tree notes on ant and toggle-router universality;
-turmite universality itself is third-party.  Nothing after the first
-revisit, no loader or universal atlas, no novelty.  From one manuscript,
-reviewed by the programme without a defect; not a Lean formalization.}
+turmite universality itself is third-party.  Part~I claims nothing after
+the first revisit, no loader or universal atlas, no novelty.  Parts~II--IV
+(batch~88, Research Reports 40, 42, 44, 47 and~48) answer its open
+question on a literal two-visit interface: one fixed doubly periodic
+binary background, a fixed
+start and a finite loader make the binary RL ant (Langton's ant) simulate
+the fixed fifteen-state Neary--Woods machine $U_{15}$, visiting every cell
+at most twice, with halting read off a residue-and-heading port; with
+Part~I this gives a sharp one-versus-two-visit boundary.  A fixed
+polynomial system initializes the board from two positive sentinel
+integers, and one fixed polynomial $F_2$ with 465 positive witnesses and
+exact degree 2{,}304{,}000 recognizes halting of $U_{15}$ on the two
+sentinel-decoded side words (Report~44, a recovered edition); its literal
+source shrinks from 2{,}307{,}457 operations with prescribed coefficients
+to 14{,}658{,}934 from the literals 1 and~3 (Reports 47 and~48), and
+further in later programme packets.  $F_2$ recognizes a fixed
+r.e.-complete language only through the published $U_{15}$ encoding: it is
+not an ordinary-input loader for the programme's input convention and does
+not bear on its 84-operation record.  Seven primitive cell maps are
+numerical data taken from the figure sources of Maldonado, Gajardo,
+Hellouin de Menibus and Moreira, credited and not covered by MIT-0; 27
+heavy regenerable files were excluded with recipes.  From six manuscripts,
+each reviewed by the programme without a defect (it certified only what it
+read); not a Lean formalization.}
 
 \end{document}

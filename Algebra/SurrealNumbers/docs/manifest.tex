@@ -17,7 +17,7 @@
 \hypersetup{%
   pdftitle={The surreal and surcomplex reports},
   pdfauthor={Vladimir Reshetnikov},
-  pdfsubject={Catalogue of sixty-eight research reports on surreal and surcomplex numbers}}
+  pdfsubject={Catalogue of sixty-nine research reports on surreal and surcomplex numbers}}
 
 \definecolor{Ink}{HTML}{16324F}
 \definecolor{Accent}{HTML}{4E5C3D}
@@ -60,7 +60,7 @@
 
 \begin{center}
  {\LARGE\bfseries\color{Ink} The surreal and surcomplex reports}\\[8pt]
- {\large Sixty-eight mathematical research packages,\\
+ {\large Sixty-nine mathematical research packages,\\
  on the surreal field, its algebraic closure, its quaternion algebra,\\
  their reach into physics, and the foundations and computation of all of them}\\[10pt]
  {\small October 2026}
@@ -71,7 +71,7 @@
 \section*{Scope}
 \addcontentsline{toc}{section}{Scope}
 
-This document catalogues the sixty-eight research packages stored under
+This document catalogues the sixty-nine research packages stored under
 \dir{docs}.  Each entry names the problem the report attacks, the result it
 claims, and the delivery it arrived in.
 
@@ -106,7 +106,7 @@ commutativity behind for Hamilton's division algebra $\mathbb{H}_{\No}$ over
 $\No$.  Two, under \dir{docs/physics}, address physical models: the first asks what
 surreal scalars do and do not buy in general relativity; the second asks the
 same of finite quantum operations and gauge models. Neither claims an
-experimental prediction.  The last eleven, under
+experimental prediction.  The last twelve, under
 \dir{docs/foundations-and-computation}, stand outside all of these: they are
 about the subject rather than inside it, asking in what foundation this
 mathematics legally lives, how one computes with it exactly, which surreal
@@ -116,8 +116,9 @@ birthday cutoff remembers, which surreals and omnific integers are
 definable, how omnific integers can be named exactly, and how large-cardinal
 embeddings act on normal forms, which restricted exponential languages
 over omnific integers are decidable, how the well-orders of the proper
-class $\No$ compare lexicographically, and which Polish topologies
-Presburger and omnific arithmetic admit.
+class $\No$ compare lexicographically, which Polish topologies
+Presburger and omnific arithmetic admit, and how countable real closed
+subfields of $\No$ form a Cantor family.
 
 These reports were previously part of a larger collection, in a repository
 whose subject was elsewhere; they were moved here with their git history.
@@ -169,8 +170,8 @@ and the three-space report four; individual entries record further expansions.
 The five earlier omnific reports are merges, grown by later additions: the
 Diophantine report assembles fifteen manuscripts, the quotient report
 twenty-four, the preserving-automorphism report fifteen, the groups and lattices
-report five and the initial-subgroup report three (its third added in
-batch~86). The continued-fraction report
+report five and the initial-subgroup report four (its third added in
+batch~86, its fourth in batch~90). The continued-fraction report
 is a written single-source report. The polytope report merges twelve
 manuscripts, six from each of batches 58 and 59, into ten Parts on three
 spines, and the vector-space report three independent manuscripts of
@@ -1217,7 +1218,7 @@ formalization, priority not certified.}
 
 \entry{Discrete initial subgroups and omnific normalization}
 {surreal/discrete-initial-subgroups-and-omnific-normalization}
-{article.pdf}{two manuscripts, delivered 23~September 2026; batch~86: Glazer\_ProveIt\_Arithmetic\_Research.zip}
+{article.pdf}{two manuscripts, delivered 23~September 2026; batch~86: Glazer\_ProveIt\_Arithmetic\_Research.zip; batch~90: Perfect\_Transcendence\_Gaps\_Package.zip}
 {Is every discretely ordered initial subgroup of $\No$ isomorphic to an
 initial subgroup of the omnific integers?  This question of Ehrlich and
 Kaplan (arXiv v1 Question~2; \emph{J. Symbolic Logic} 2018, Question~9.1)
@@ -1251,8 +1252,24 @@ the report's question on arithmetic fragments: no nonstandard model of
 $\mathsf{I}\Delta_0$ has an initially realizable additive group, while
 open induction does not suffice.  It also corrects Lemma~2.7 of an
 Enayat--\L e\l yk--Visser preprint (the ideal with quotient $\Z$ need not
-be unique) and proves the repair.  Not refereed, no Lean formalization,
-priority not certified.}
+be unique) and proves the repair.  A fourth source (batch~90), on standard
+systems of nonstandard models of Peano arithmetic and again written without
+reference to initial subgroups, proves that for every nonstandard
+$M\models\mathsf{PA}$ the canonical profinite residue image of its
+difference ring is exactly the ring of profinite integers whose residue
+sequences are computable from a member of the standard system, whose
+idempotents recover that system; this answers the report's question on
+canonical residue images for $\mathsf{PA}$, while for $\mathsf{I}\Delta_0$,
+which the question names, it stays open.  With Scott's theorem the write
+adds that the images of countable models are exactly these rings for
+countable Scott sets.  Its other results (a perfect transcendence gap over
+analytic subfields of $\R$ and $\Q_p$ after countably many parameters, real
+and $p$-adic scalar fields computable from the standard system of a Borel
+model, a Hahn transfer and an omnific family) answer no question of the
+report; several were already in the collection or, set-sized, in the Lean
+development, and every Borel statement rests on Glazer's theorem that Borel
+models do not have full standard system, cited from seminar slides.  Not
+refereed, no Lean formalization of the new results, priority not certified.}
 
 \entry{Exact precision and algebraic rigidity of omnific continued fractions}
 {surreal/omnific-continued-fractions}
@@ -2514,7 +2531,7 @@ no Lean formalization, priority not certified.}
 
 \section{Foundations and computation}
 
-Eleven reports that take the rest of the collection, or the surreal field as a
+Twelve reports that take the rest of the collection, or the surreal field as a
 set-theoretic object, as their object.  The first three range over the whole subject; the others emphasize set
 theory, definability and computability, including a restricted exponential
 language for omnific arithmetic.  Each of
@@ -2523,15 +2540,18 @@ two on 21~September 2026, and in those two the hazard was not overlap but a
 collision of near-identical names.  The next two, on universes and birthday
 cutoffs, are merges of four and five
 manuscripts delivered on 22~September 2026, each proving one spine several
-times under different hypotheses.  Two more, from batch 27, address definable
+times under different hypotheses; the birthday-cutoff report gained three
+more Parts from batches~89 and~90.  Two more, from batch 27, address definable
 surreals and omnific integers (two manuscripts) and omnific notations
 (three). The critical-point-defects report now integrates four manuscripts,
 and the exponential-relations report treats a restricted exponential
 language for omnific integers.  The report from batch~80 merges four
 independent manuscripts on the lexicographic orders of the well-orders of
-$\No$, and eighteen more from batches~81 and~83; the newest, from
-batch~86, merges seven manuscripts on Glazer's question on Polish models
-of Presburger arithmetic.
+$\No$, and nineteen more from batches~81, 83 and~89; the report from
+batch~86 merges seven manuscripts on Glazer's question on Polish models
+of Presburger arithmetic, and eight more from batches~87, 89 and~90; the
+newest, from batch~90, is a single-source report on a Cantor space of
+countable surreal subfields.
 
 \entry{Foundations for surreal and surcomplex mathematics}
 {foundations-and-computation/foundations}
@@ -2663,7 +2683,7 @@ Not refereed, no Lean verification, priority not certified.}
 
 \entry{Birthday cutoffs and hereditary sets}
 {foundations-and-computation/birthday-cutoffs-and-hereditary-sets}
-{article.pdf}{five manuscripts, delivered 22~September 2026}
+{article.pdf}{five manuscripts, delivered 22~September 2026; batch~89: Surreal\_Cuts\_Replacement\_Atom\_Support\_Spectra.zip (Part~VI), Glazer\_Surreal\_Choice\_Research.zip (Part~VII); batch~90: Named\_Symmetries\_and\_Replacement.zip (Part~VIII)}
 {Which set universe does a bounded piece of surreal arithmetic remember?  The
 ordered field is real closed and sees nothing, but once birthday is named, the
 surreals born below an epsilon number $\lambda$ interpret the hereditary sets
@@ -2685,9 +2705,31 @@ is the theorem announced by Chen--Hamkins--Yang, recorded in
 written proof as that announced theorem, not as a new result.  \emph{Merged
 from five manuscripts proving one spine at different cutoff classes; the most
 general is the base, and two arithmetic certificates and two set codings are
-kept as different proofs.}  Five finite suites pass; a finite check proves no
-infinite theorem.  Not refereed, no Lean verification, priority not
-certified.}
+kept as different proofs.}  Part~VI (batch~89): over Zermelo set theory
+with Foundation and without Replacement or Choice, every set cut has a
+simplest separator of controlled birthday, six schemes on definable surreal
+families are equivalent to ordinal bounding and, with a hierarchy axiom,
+to full Replacement and Collection ($V_{\omega+\omega}$ fails them), and in
+urelement kernel models Collection first fails at $\mathrm{cf}\,\kappa$
+for limit $\kappa$ while pure-valued Collection and the six surreal schemes
+survive the naming of an enumeration of the atoms; this Collection spectrum
+is proved independently in the research-report collection's
+\nolinkurl{naming-elementary-embeddings}.  Part~VII (batch~89): over ZF a
+set embeds into $\No$ iff it injects into some $\mathcal P(\alpha)$,
+coordinate universality of $\No$ and $\Oz$ for free rings and fields is
+exactly a choice principle $\mathsf{KWP}_1$, set-sized universal fields
+$U_\kappa$, sharp transcendence bounds in Fraenkel--Mostowski permutation
+models, and an ordered field there with no embedding into the internal
+$\No$; it answers in part the report's question on universal embedding
+without global choice.  Part~VIII (batch~90): naming a pure group action on
+the atoms of the finite-kernel model keeps Replacement iff every orbit is
+finite and only finitely many atoms lie in finitely repeated finite orbit
+types; graded levels, two involutions realizing every finite level, and
+invariance of the pure surreal universe under every such naming; for
+finitely many permutations its criterion is a case already printed in
+\nolinkurl{naming-elementary-embeddings}, proved independently.  Eight
+finite suites pass; a finite check proves no infinite theorem.  Not
+refereed, no Lean verification, priority not certified.}
 
 
 \entry{Definable surreal numbers and omnific integers}
@@ -2767,7 +2809,7 @@ proof review and Lean formalization remain pending.}
 
 \entry{Lexicographic orders of well-orderings of the surreal numbers}
 {foundations-and-computation/surreal-well-orders}
-{article.pdf}{twenty-two manuscripts: four delivered 2~October 2026 (batch~80), six (batch~81) and twelve (batch~83) on 3~October 2026}
+{article.pdf}{twenty-three manuscripts: four delivered 2~October 2026 (batch~80), six (batch~81), twelve (batch~83) and one (batch~89: global\_choice\_surreal\_coding.zip) on 3~October 2026}
 {How do the well-orders of the proper class $\No$ compare lexicographically,
 and what does the comparison see?  For sets of surreals the enumeration
 order behaves as for every infinite linear alphabet: cardinality,
@@ -2818,14 +2860,25 @@ histories equivalent over GBC to strong comparability, with the complete
 theory of the external order of set-sized models (the strongest unreviewed
 claim).  Results proved by several sources are printed once and credited
 to all; later dated notes went to the reals report, the birthday-cutoff
-and universes reports and the notation guide.
+and universes reports and the notation guide.  Part~XV (batch~89, one
+manuscript printed whole): over Zermelo set theory a selector on small
+sets and a uniform assignment of injections are interconvertible without
+Replacement; countable global choice with expanded Separation is not
+conservative over $\mathsf{ZC}$, conditional on an interface to Glazer's
+published countermodels whose match is unreviewed (the source itself asks
+for expert review); and in the full-class rank models
+$(V_\lambda,\mathcal P(V_\lambda))$ at every limit height the existence of
+class bijections with the sign carrier, birthday-monotone ones, universal
+set coding and class Replacement are characterized by cardinal arithmetic
+of $\lambda$, which extends the inaccessible model of the earlier Parts to
+every limit height and answers one research question in part.
 Proof review pending; not refereed, no Lean formalization (four
 inputs it uses are proved in Lean on the sign carrier), priority not
 certified.}
 
 \entry{Polish models of omnific arithmetic}
 {foundations-and-computation/polish-models-of-omnific-arithmetic}
-{article.pdf}{seven manuscripts of batch~86, dated 3 and 4~October 2026: three (Parts I--II), then four more (Parts III--V)}
+{article.pdf}{fifteen manuscripts dated 3 and 4~October 2026: seven of batch~86 (three for Parts I--II, then four for Parts III--V); batch~87: Baire\_Category\_Arithmetic\_Rigidity.zip (base) + Glazer\_ProveIt\_Baire\_Rigidity.zip (Part~VI), polish\_presburger\_frontiers.zip (Part~VII), glazer\_atr0\_research.zip (Part~VIII), polish\_arithmetic\_package.zip (Part~IX); batch~89: Glazer\_ProveIt\_Embeddings\_and\_Thresholds.zip (Part~X); batch~90: local\_geometric\_codes\_research.zip (Part~XI), glazer\_proveit\_topology\_research.zip (Part~XII)}
 {Does Presburger arithmetic have an uncountable Polish model with
 continuous addition (Glazer's Question~2), and where does Polishability
 fail in omnific arithmetic?  Part~I answers the question as printed
@@ -2880,9 +2933,50 @@ one; code domains are $\Sigma^0_2$-, $\Pi^0_3$- and $\Pi^1_1$-complete;
 countable-parameter Polish hulls, of which exactly $2^{\aleph_0}$ cover the
 Hahn field; and a common countable integer part with the omnific floor
 formula, a Baire-class-one floor and open induction.  Repetitions of
-Part~I in the new manuscripts are flagged in their titles.  Glazer's remark that he expects an affirmative answer to his
-Question~1 to give a negative answer to Question~2 is quoted; neither
-question is otherwise settled, and priority is not established.  The
+Part~I in the new manuscripts are flagged in their titles.
+Part~VI (batch~87, two manuscripts proving one theorem by different
+proofs): in a Hausdorff Baire ordered group with a Baire-property cone some
+neighbourhood of~$0$ is order-bounded, so a discretely ordered ring with
+such an additive topology satisfying the countable chain condition is
+countable and discrete whatever its multiplication; no uncountable
+discretely ordered ring has a Polish additive topology with Borel order,
+which answers Part~IV's question on removing local compactness negatively,
+makes several earlier results corollaries and makes a hypothesis of Part~V
+redundant; three topologies on $\Z+t\R[t]$ show the hypotheses are needed.
+Part~VII: explicit nonsplit $\Z$-groups (one is a group of
+\dir{discrete-initial-subgroups-and-omnific-normalization}) give
+$2^{\aleph_0}$ nonsplit uncountable Polish Presburger models; definable
+functions are piecewise quotient-affine with a branch-limit continuity
+criterion, and truth revisions on stream inputs have an exact computable
+optimum for parameter-free formulas.  Part~VIII \emph{claims}, unrefereed
+and not independently reviewed, an affirmative answer to Glazer's
+Question~1: his Theorem~2 is provable in $\mathsf{ATR}_0$ under a stated
+coding convention, with parts of the bookkeeping resting on declared
+inputs.  Part~IX: locally compact cones of Borel ordered Polish groups are
+classified (an uncountable one is homeomorphic to a countable sum of lines
+and closed rays) and carry exactly $2^{\aleph_0}$ continuous-addition
+Presburger models, realized inside $\Oz$.  Part~X (batch~89): for the cones
+of $\Q^\alpha\times\Z$ with $\alpha$ countable, unital additive maps are
+elementary embeddings, Borel ones are continuous row-finite pivot matrices
+with closed images, the Polish elementary submodels form a complete
+lattice, all self-embeddings are continuous iff $\alpha\le\omega$ and have
+closed images iff $\alpha<\omega\cdot2$; the non-Borel maps use choice.
+Part~XI (batch~90): one internal $\beta$-coded geometric progression forces
+a discontinuous multiplier in every uncountable interval of its indices, a
+localization of Part~VIII under incomparable hypotheses, with a canonical
+countable arithmetic core; its $\mathsf{ATR}_0$ bound is a claimed sketch.
+Part~XII (batch~90): a cone topology with continuous addition and linear
+natural order extends to a Hausdorff group topology on the group of
+differences exactly when partial subtraction is continuous, uniquely, and
+the group is then Polish (locally compact) with the cone; this answers the
+group-completion question that several earlier Parts asked, and its second
+half brings Glazer's question on the size of class manifolds into the
+repository, resolved only under extra hypotheses.  Glazer's remark that he
+expects an affirmative answer to his Question~1 to give a negative answer
+to Question~2 is quoted; apart from Part~VIII's unreviewed claim neither
+question is otherwise settled, and priority is not established.
+Question~Q1 of \dir{measurable-box-games} (research-report collection) is
+a different question of Glazer's.  The
 $\Z$-group facts, the lightface $\Pi^1_1$ results of
 \dir{omnific-notations}, the omnific floor and open induction are cited, not
 reprinted; the periodicity lemmas of the Lean and Rocq project
@@ -2894,7 +2988,43 @@ a Borel-presentation manuscript on the other side of the same boundary
 (Part~II), two independent texts sharing a title (Part~III, base the one
 with the weaker realization hypothesis), and one each for Parts~IV and~V;
 an eighth manuscript of the same delivery became an addition to
-\dir{discrete-initial-subgroups-and-omnific-normalization}.}
+\dir{discrete-initial-subgroups-and-omnific-normalization}; then eight
+more, two of them proving Part~VI's theorem by different proofs (base the
+one with the weaker hypotheses) and one each for Parts~VII--XII.  Their
+re-proofs of earlier Parts are flagged where they occur.}
 Nothing in the report is formalized.  Proof review pending; not refereed.}
+
+\entry{A Cantor space of surreal subfields}
+{foundations-and-computation/cantor-families-of-surreal-subfields}
+{article.pdf}{batch~90: Surreal\_Subfield\_Cantor\_Research.zip}
+{How do the countable real closed subfields of one explicit countable
+surreal field vary with a parameter?  The relative real closures $K_A$ in
+$\No$, over the real algebraic numbers, of the monomials
+$\omega^{b\omega^q}$ with $(q,b)\in A$, $q$ rational and $b$ either $1$ or
+the square root of a prime, are indexed by the subsets $A$ of a countable
+index set; every element
+has a unique finite generator support, and $A\mapsto K_A$ is a
+homeomorphism of the Cantor space onto a closed family of elementary
+subfields of one countable field, with clopen membership tests and a
+complete Boolean coordinate lattice.  In the rank-one family, embeddability
+and isomorphism of the fields are those of their rational exponent sets,
+so isomorphism is Borel complete for countable structures; embeddability
+of a fixed source of order type $\omega^*$ is analytic-complete, already
+on targets of countable transcendence degree, and admits no total Borel
+witness solver.  Colored countable orders are coded into the family without
+color predicates, so embeddability on it is a complete analytic quasiorder;
+the unrestricted theorem for countable real closed fields is
+Calderoni--Marker--Motto Ros--Shani's, credited, and the contribution
+claimed is its realization inside one fixed surreal field with explicit
+components.  A source of finite transcendence degree has an open
+embedding locus and an infinite one a locus with empty interior; category
+and measure zero--one laws give two generic regimes, the analytic-complete
+locus of the fixed source being comeager and conull and that of the
+ambient field meager and null.  One finite algebraic lemma is an instance
+of a Lean theorem; one lemma re-proves a case of a lemma of
+\dir{definable-surreals-and-omnific-integers}, credited.  No question of
+Glazer's is claimed solved, and the Cantor topology is on parameters, not
+on $\No$.  From one manuscript; not refereed, no Lean formalization of its
+theorems, priority not established.}
 
 \end{document}
