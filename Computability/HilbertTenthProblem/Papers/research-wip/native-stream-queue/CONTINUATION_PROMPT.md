@@ -250,6 +250,9 @@
 > universal operation point remains84/187/18.
 >
 >
+> The [native seven-carry obstruction](gamma83_seven_carry_obstruction.md), with [independent proof review](review_gamma83_seven_carry_obstruction.md), excludes the proposed quartic target `H=3[p(10p−9)]^f` for **every f≥1** on the established simultaneous7/31 filtered histories. The same local argument forbids factor parameters k≡1,3,5 mod7; the original ternary filter separately excludes3|k in the sufficient quartic prime-pair family. On31-filtered histories with3|R before the7 filter, k=10 instead requires every base7 digit of (R−1)/2 to be at most3, plus the recorded digit-count residue. Numbered remarks retain the earlier k=10 proposal and root's failed k=30 replacement. The sufficient quartic criterion remains valid; other histories and factor shapes are not excluded, and independent-gamma83 remains unresolved.
+>
+>
 > The [quartic gamma83 period criterion](gamma83_quartic_complement.md), with [independent arithmetic review](review_gamma83_quartic_complement.md), proves `m|3` on the established `v3(Delta)=1` native subclass whenever `2^[2^e(H^4−81)]=1 mod H`. It also weakens the complementary hypothesis to `oddpart(ord_rad(u)(2)) | u^4−1` for actual `H=3u^f`, `3∤u`. The small **nonnative** example H=2379 proves strictness over both older linear-exponent tests. A new prime-pair target `u=p(10p−9)` permits f=1 under the recorded mod31/dyadic conditions, but the actual half-binomial must additionally satisfy `13−2(R/5)+18(C/31)=0 mod31`. Neither CRT compatibility nor the new modular screen proves native occurrence. Fresh independent arithmetic checks supplement the proofs; a numbered review remark retains the failed preliminary k=4 strictness comparison. Independent-gamma83 and the universal84 bound remain unchanged.
 >
 >
