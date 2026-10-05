@@ -53,6 +53,16 @@
 \newenvironment{writenote}[1][]{\par\smallskip\begingroup\small
  \noindent\textbf{[write]}\if\relax\detokenize{#1}\relax\else~\textbf{#1.}\fi\ }%
  {\par\endgroup\smallskip}
+% Part II (batch 98): macros of manuscript 07 that Part I does not define
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\Law}{\mathcal L}
+\newcommand{\Geom}{\operatorname{Geom}_0}
+\newcommand{\Exp}{\operatorname{Exp}}
+\newcommand{\Ber}{\operatorname{Bernoulli}}
+\newcommand{\TV}{d_{\mathrm{TV}}}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\lprepo}{\texttt{0f93381e8932d3aee3d5c2abfb5c98d128d49b9c}}
+\titleformat{\part}[display]{\LARGE\sffamily\bfseries\color{ink}}{\partname~\thepart}{0.3em}{}
 
 \begin{document}
 \hypersetup{pageanchor=false}
@@ -106,8 +116,21 @@ search. No OEIS edit or repository change has been submitted.\par}
 \end{titlepage}
 \hypersetup{pageanchor=true}
 
+\paragraph{Editorial note (5 October 2026, batch 98).}
+Since batch~98 the report has two Parts. Part~I is the report described on
+the title page: manuscript~04 of batch~74, on the pattern $132$. Part~II
+(Section~\ref{fpf:lp:sec:front} onwards) adds manuscript~07 of batch~98,
+which answers Part~I's first research question: it treats the patterns
+$1(r+1)r\cdots2$ for every $r\ge2$, with exact enumeration for all $r$ and,
+for every fixed $r\ge3$, a critical law of a different kind (a tight,
+heavy-tailed deficit instead of the beta law), a displaced coexistence
+window and local complex zeros. Its labels carry the prefix
+\texttt{fpf:lp:}. Appendices~A and~B, after Part~II, belong to Part~I.
+
 \tableofcontents
 \newpage
+
+\part{The pattern 132: proof of the A273821 conjecture and a critical phase transition}
 
 \section{The question, the answer, and the scope of the claim}\label{fpf:sec:question}
 
@@ -247,6 +270,14 @@ repository's Lean and Rocq developments, confers no formal status: nothing in
 this report is formalized.
 \end{writenote}
 
+\begin{writenote}[Added 5 October 2026, batch~98]
+The note above describes Part~I, which is still printed in full. Since
+batch~98 the report also has Part~II, built from a second manuscript; its
+provenance is in Section~\ref{fpf:lp:sec:provenance}. The statement that
+no other report of the collection treats A273821 or its statistic remains
+true.
+\end{writenote}
+
 \section{A minimum-insertion model for Catalan permutations}\label{fpf:sec:insertion}
 
 \subsection{The active suffix}
@@ -381,6 +412,13 @@ For example, the row at size $5$ is
 The off-diagonal formula gives $T(5,3)=[x](2C^3+C^4)=6+4=10$.
 The row sums to $42=C_5$. This example is computed from the insertion
 argument, not used to infer it.
+
+\begin{writenote}[Added 5 October 2026, batch~98]
+Part~II proves the analogue for the patterns $1(r+1)r\cdots2$ by the same
+insertion argument: Theorem~\ref{fpf:lp:thm:gf}, with the positive formula
+\eqref{fpf:lp:eq:positive-formula}, which is
+\eqref{fpf:eq:convolution} at $r=2$ (Table~\ref{fpf:lp:tab:routes}).
+\end{writenote}
 
 \subsection{Summation of the columns}
 \begin{theorem}[Proof of the posted generating-function conjecture]
@@ -1101,6 +1139,16 @@ odd powers of $z$ gives every fixed inverse-power order of the partition
 function by the same transfer argument.
 \end{proof}
 
+\begin{writenote}[Added 5 October 2026, batch~98]
+Part~II's Theorem~\ref{fpf:lp:thm:subcritical} is this theorem for every
+pattern $1(r+1)r\cdots2$ (with $2$ replaced by
+$y_c=\sec^2(\pi/(r+2))$); at $r=2$ its function $L_2$ is $P$. Part~II also
+writes the limit law as an independent sum of geometric variables
+(Theorem~\ref{fpf:lp:thm:geometric} and the note after it). At $y=y_c$ and
+$r\ge3$ the critical behaviour differs from Theorem~\ref{fpf:thm:beta}
+(Theorem~\ref{fpf:lp:thm:critical}).
+\end{writenote}
+
 \subsection{Above the transition}
 For $y>2$ put
 \begin{equation}\label{fpf:eq:super-amplitude}
@@ -1546,6 +1594,25 @@ entry formulas where possible, and the critical exponents and limiting
 laws. The safe-state process is no longer the same binary reset process;
 its analysis is the substantive new step.
 
+\begin{writenote}[Added 5 October 2026, batch~98: answered in Part~II]
+Part~II answers this question for every $r\ge2$. The safe-site rule stated
+here is \eqref{fpf:lp:eq:safe-rule}; the safe-state process is solved by
+the Chebyshev polynomials $\Delta_r$ (Lemmas~\ref{fpf:lp:lem:safe}
+and~\ref{fpf:lp:lem:spectrum}; the safe counts are classical, by Chow and
+West). The first-failure generating function is
+Theorem~\ref{fpf:lp:thm:gf}, and the entry formula is the finite positive
+sum \eqref{fpf:lp:eq:positive-formula}; a two-binomial closed form like
+\eqref{fpf:eq:main-binomial} is not given for $r\ge3$. The critical weight
+is $y_c=\sec^2(\pi/(r+2))$, and for every fixed $r\ge3$ Part~II proves the
+subcritical law (Theorems~\ref{fpf:lp:thm:subcritical}
+and~\ref{fpf:lp:thm:geometric}), a tight critical deficit with masses
+$\asymp m^{-3/2}$, total-variation rate $n^{-1/2}$ and moment threshold
+$\frac12$ (Theorems~\ref{fpf:lp:thm:critical} and~\ref{fpf:lp:thm:moments}),
+the supercritical law (Theorem~\ref{fpf:lp:thm:supercritical}) and a
+displaced window (Theorem~\ref{fpf:lp:thm:window}). Uniformity in $r$ and
+joint limits $r=r(n)$ remain open (Part~II's questions~1 and~2).
+\end{writenote}
+
 \paragraph{2. Joint first-failure and suffix statistics.}
 Retain the active suffix length at the first failing insertion and at the
 final permutation. Derive a multivariate generating function and determine
@@ -1553,6 +1620,11 @@ whether the critical beta law admits a useful joint limit with either
 suffix statistic. The convolution \eqref{fpf:eq:convolution} retains the
 failing state $j$ and is a starting point, but the joint limit is not
 proved here.
+
+\begin{writenote}[Added 5 October 2026, batch~98]
+Still open. Part~II's question~7 generalizes it to every $r$ and adds the
+early-versus-late phase indicator.
+\end{writenote}
 
 \paragraph{3. A fully uniform higher-order theory.}
 The leading square-root crossover and the bulk critical correction are
@@ -1570,6 +1642,14 @@ $M(\lambda)=e^\lambda\int_0^1e^{-\lambda u^2}\,\dd u$ should govern local
 complex scaling. Establish the requisite complex-uniform convergence,
 locate its zeros, and connect them to the accumulation of zeros of $Z_n$.
 Real-window convergence alone does not supply this theorem.
+
+\begin{writenote}[Added 5 October 2026, batch~98]
+Still open at $r=2$ (Part~II's question~5 restates it). For the patterns
+$1(r+1)r\cdots2$ with $r\ge3$, Part~II locates local sequences of zeros
+through the complex-uniform window limit $2a_r+P_re^{-s}$
+(Theorem~\ref{fpf:lp:thm:zeros}); that function and its window are
+different from $M(\lambda)$ here.
+\end{writenote}
 
 \paragraph{5. The polynomial factors $H_k$.}
 Determine the geometry and asymptotic distribution of the zeros of $H_k$
@@ -1593,6 +1673,10 @@ The insertion tree already supplies an encoding, but a transparent
 object-level bijection may explain the two-binomial cancellation and the
 critical beta law without generating functions.
 
+\begin{writenote}[Added 5 October 2026, batch~98]
+Part~II's question~8 asks the same for every $r$.
+\end{writenote}
+
 \paragraph{8. Kernel-checked enumeration and reusable analytic interfaces.}
 Implement the exact layer in Lean and use it as a test case for a reusable
 interface between finite combinatorial enumeration, rational generating
@@ -1600,6 +1684,11 @@ functions over the Catalan extension, and asymptotic statements with
 explicit remainders. The distinction between exact algebraic identities,
 formal transseries, and analytic estimates should remain visible in the
 theorem signatures and audit output.
+
+\begin{writenote}[Added 5 October 2026, batch~98]
+Part~II's question~10 extends this to the positive formula for every $r$
+and to certified sampling; nothing in either Part is formalized.
+\end{writenote}
 
 \subsection{Conclusion}
 The posted conjecture for A273821 is accessible through the first insertion
@@ -1611,6 +1700,1836 @@ separation of exponential sectors, and a weighted transition from bounded
 first-failure time to bounded final deficit, with a beta law exactly at
 criticality. The exact formulas, rather than numerical extrapolation,
 support every asserted asymptotic regime.
+
+\part{Longer patterns: exact enumeration, critical condensation and a displaced window}
+\label{fpf:lp:part}
+
+\section{Provenance, scope and notation of Part II}\label{fpf:lp:sec:front}
+
+[Added 5 October 2026, batch~98.] Part~II was added in the write of
+batch~98. It answers the first proposed research question of Part~I
+(Section~\ref{fpf:sec:formal}, question~1): it replaces $132$ by
+$\tau_r=1(r+1)r\cdots2$ for every $r\ge2$, keeping global $123$
+avoidance, and determines the first-failure generating function, a positive
+coefficient formula, and, for every fixed $r\ge3$, the subcritical,
+critical and supercritical laws, a displaced coexistence window and local
+complex zeros. It is built from one manuscript, printed in full in
+Sections~\ref{fpf:lp:sec:question}--\ref{fpf:lp:app:moments}. Where it
+proves a statement of Part~I again (the case $r=2$), its proof is kept, the
+Part~I statement is named, and the overlap is recorded in
+Table~\ref{fpf:lp:tab:routes}. Additions of this write are set as
+\textsf{[write]} notes; none of them changes a statement of the manuscript.
+
+\subsection{Provenance}\label{fpf:lp:sec:provenance}
+
+Part~II is manuscript~07 of batch~98 of ProveIt's incoming-reports intake,
+the archive \nolinkurl{First_Pattern_Failure_Beyond_132.zip} (24~files,
+1{,}044{,}533 bytes), which arrived in commit \texttt{2172df76a} and was
+placed in this report by commit \texttt{0fba5167f}. Its article is titled
+\emph{First Pattern Failure Beyond~$132$: Exact enumeration, critical
+condensation, and a logarithmic transition window. An extension of OEIS
+A273821} (23~pages, dated 5~October 2026); its title page reads ``An
+AI-assisted research manuscript'', and its PDF metadata names ``ChatGPT'' as
+author. Its pinned repository commit is
+\texttt{0f93381e8932d3aee3d5c2abfb5c98d128d49b9c} (4~October 2026,
+19:54~PDT), recorded in its article, its delivery README and its
+\texttt{provenance.json}. The directory of this report is unchanged between
+that commit and the placement commit, so the manuscript read Part~I exactly
+as it stands. Its delivery README describes the text as having ``two
+independent AI proof audits''; no audit file was delivered.
+
+The writing step changed the manuscript only as follows. Every label carries
+the prefix \texttt{fpf:lp:} (the prefix \texttt{fpf:} alone would have made
+eleven labels collide with Part~I's). The manuscript's \texttt{cleveref}
+references are written with \verb|\ref|, which this report uses; its
+citations of the host report are references to Part~I; and the symbols of
+Table~\ref{fpf:lp:tab:dictionary} are renamed. Part~I's macros print two
+symbols differently: a falling factorial is $\fall{M}{h}$ (the manuscript
+prints $(M)^{\underline h}$), and a differential is $\dd$ (the manuscript's
+macro adds a thin space). The manuscript's sections~1--11 are
+Sections~\ref{fpf:lp:sec:question}--\ref{fpf:lp:sec:verification}
+(manuscript section~$n$ is Section~$n+14$, and its item and equation
+$n.m$ is $(n+14).m$); its section~12 is
+Section~\ref{fpf:lp:sec:future}, and its Appendices~A and~B are
+Sections~\ref{fpf:lp:app:audit} and~\ref{fpf:lp:app:moments}. Part~I's
+Appendices~A and~B follow Part~II and belong to Part~I.
+
+\paragraph{Scope and non-claims of manuscript~07, kept.}
+The unrefined enumeration of permutations avoiding both patterns is
+classical: Chow and West~\cite{fpf-lp-cw}, Theorem~3.1, give the Chebyshev
+quotient and growth constant; Krattenthaler~\cite{fpf-lp-kratt},
+Theorem~9, gives a Dyck-path formulation, and his Theorem~8 marks
+occurrences rather than first failure; first-ascent stopping statistics in
+Catalan permutations predate the manuscript~\cite{fpf-lp-firstascent}. The
+$r=2$ first-failure formula, the beta law and the identity
+$Z_n(2)=(n+2)\binom{2n}n-4^n$ are Part~I's and are credited. Its scope
+ledger (Table~\ref{fpf:lp:tab:scope}) ``does not assert that no equivalent
+refinement exists elsewhere''; no worldwide priority is claimed. The
+theorems of Sections~\ref{fpf:lp:sec:kernel}--\ref{fpf:lp:sec:zeros} fix
+$r\ge3$ and their constants carry no claimed uniformity as $r\to\infty$;
+Theorem~\ref{fpf:lp:thm:growing} is an iterated limit and does not commute
+the limits; no joint $r=r(n)$ theorem is asserted. The zero theorem is
+local, for each fixed zero index: it does not order the zeros globally,
+describe all of them, or settle Part~I's $r=2$ zero question. Numerical
+values and root residuals are not interval certificates, the coexistence
+curves converge slowly, and the proofs do not rely on the computations. The
+manuscript is not peer reviewed and is not formalized in Lean or Rocq; its
+research questions are proposals, ``not represented as established open
+problems''.
+
+\subsection{What Part II adds, and its second routes}\label{fpf:lp:sec:claims}
+
+\begin{table}[htbp]
+\centering\small
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{.19\textwidth}>{\raggedright\arraybackslash}p{.34\textwidth}>{\raggedright\arraybackslash}p{.39\textwidth}@{}}
+\toprule
+Topic & Part I ($\tau_2=132$) & Part II ($\tau_r$, $r\ge2$)\\
+\midrule
+Exact counts &
+$T(n,k)$ as a difference of two binomials
+\eqref{fpf:eq:main-binomial}, via the convolution
+\eqref{fpf:eq:convolution} &
+the generating function $F_r$ and the finite positive sum
+\eqref{fpf:lp:eq:positive-formula} for every $r\ge2$; no two-term closed
+form for $r\ge3$\\
+Fixed columns &
+all-orders expansion (Theorem~\ref{fpf:thm:fixed-all}) &
+leading term with growth constant $4$ for every $r$
+\eqref{fpf:lp:eq:fixed-column}\\
+Subcritical weights &
+$0<y<2$ (Theorem~\ref{fpf:thm:subcritical}) &
+$0<y<y_c$, $y_c=\sec^2(\pi/(r+2))$; an independent geometric sum
+(Theorem~\ref{fpf:lp:thm:geometric})\\
+Critical weight &
+$K_n/n\Rightarrow\Beta(1,\frac12)$ (Theorem~\ref{fpf:thm:beta}) &
+for $r\ge3$ a tight deficit with mass $\asymp m^{-3/2}$, sharp
+total-variation rate and the full moment threshold
+(Theorems~\ref{fpf:lp:thm:critical}, \ref{fpf:lp:thm:moments})\\
+Supercritical weights &
+$y>2$ (Theorem~\ref{fpf:thm:supercritical}) &
+$y>y_c$, $r\ge3$, as an exponential tilt of the critical law
+(Theorem~\ref{fpf:lp:thm:supercritical})\\
+Window &
+$y=2e^{\lambda/n}$ (Theorem~\ref{fpf:thm:window}) &
+displaced by $(\frac12\log n+\log\log n)/n$, two-point mixture
+(Theorem~\ref{fpf:lp:thm:window})\\
+Complex zeros &
+open (question~4) &
+local zeros for $r\ge3$ (Theorem~\ref{fpf:lp:thm:zeros}); $r=2$ still
+open\\
+Long patterns &
+--- &
+iterated limit $K_r^\infty/r^2\Rightarrow\mathcal W$ with a Wasserstein bound
+(Theorem~\ref{fpf:lp:thm:growing})\\
+\bottomrule
+\end{tabular}
+\caption{Part II against Part I.}
+\label{fpf:lp:tab:claims}
+\end{table}
+
+\begin{table}[htbp]
+\centering\small
+\renewcommand{\arraystretch}{1.12}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{.31\textwidth}>{\raggedright\arraybackslash}p{.62\textwidth}@{}}
+\toprule
+Part I & Part II at $r=2$\\
+\midrule
+Lemmas~\ref{fpf:lem:active} and~\ref{fpf:lem:descendants} &
+Lemma~\ref{fpf:lp:lem:active}: the same lemmas, with the same proof; they do
+not depend on $r$\\
+Lemma~\ref{fpf:lem:safe-count}, \eqref{fpf:eq:safe-tail} &
+Lemma~\ref{fpf:lp:lem:safe} at $r=2$, proved through generating functions
+instead of the last reset\\
+Theorem~\ref{fpf:thm:convolution}, \eqref{fpf:eq:main-gf} &
+Theorem~\ref{fpf:lp:thm:gf} at $r=2$: the same first-failure decomposition
+(the \textsf{[write]} note after its proof)\\
+\eqref{fpf:eq:main-asymptotic} &
+\eqref{fpf:lp:eq:fixed-column} at $r=2$ (the \textsf{[write]} note after it)\\
+Theorem~\ref{fpf:thm:subcritical} &
+Theorem~\ref{fpf:lp:thm:subcritical} at $r=2$, since $L_2(y)=P(y)$; the same
+square-root transfer\\
+\eqref{fpf:eq:Z2}, \eqref{fpf:eq:F2} &
+the same computation of $F_2(x,2)$ (Section~\ref{fpf:lp:sec:supercritical})\\
+Theorem~\ref{fpf:thm:supercritical}, \eqref{fpf:eq:freeenergy} &
+the formulas \eqref{fpf:lp:eq:super-Z}, \eqref{fpf:lp:eq:super-law} and
+\eqref{fpf:lp:eq:free-energy} at $r=2$ (a \textsf{[write]} observation;
+Theorem~\ref{fpf:lp:thm:supercritical} itself is proved for $r\ge3$ only)\\
+\bottomrule
+\end{tabular}
+\caption{Results of Part~I proved again by manuscript~07 at $r=2$.}
+\label{fpf:lp:tab:routes}
+\end{table}
+
+What is new to the repository: everything for $r\ge3$; the geometric
+decomposition and the long-pattern limit for every $r$, including $r=2$;
+the uniform two-index estimate; the critical, supercritical, window and zero
+theorems for $r\ge3$; the worked example $r=3$; and the exact-moment
+calculation. The safe counts and the Chebyshev spectrum are classical
+(Chow--West), and the diagonal of Theorem~\ref{fpf:lp:thm:gf} is the
+Chow--West safe count.
+
+\subsection{Notation}\label{fpf:lp:sec:notation}
+
+Part~I's $T$, $Z_n$, $F$, $K_n$, $C$, $C_n$, $a_{k,d}$ and $D_d$ are the cases
+$r=2$ of Part~II's $T_r$, $Z_{n,r}$, $F_r$, $K_r$, and the same $C$, $C_n$,
+$a_{k,d}$ and $D_d$. Table~\ref{fpf:lp:tab:dictionary} lists the symbols of
+manuscript~07 renamed in Part~II. No normalization is changed.
+
+\begin{table}[htbp]
+\centering\small
+\renewcommand{\arraystretch}{1.12}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{.31\textwidth}>{\raggedright\arraybackslash}p{.17\textwidth}>{\raggedright\arraybackslash}p{.44\textwidth}@{}}
+\toprule
+Notion & Part II & Manuscript 07 (and the clash)\\
+\midrule
+Chebyshev polynomial $\sum_j(-u)^j\binom{r+1-j}j$ & $\Delta_r(u)$ & $D_r(u)$ (Part~I's descendant series $D_d(x)$ and deficit $D_n$)\\
+descendant series $C(x)^{d+1}$ & $D_d(x)$, as in Part~I & $H_d$ (Part~I's polynomial factor $H_k(n)$)\\
+coefficients of $\Delta_r$ & $\delta_j$ & $d_j$ (its own constant $d_r$)\\
+$-\rho_r\Delta_r'(\rho_r)$ & $\vartheta_r$ & $d_r$ (Part~I's suffix state $d$ and $d_1(k)$)\\
+constants of the uniform estimate & $\Theta_r$, $\Theta_r'$ & $A_r$, $A_r'$ (its own safe-state series $A_d$ at $d=r$; Part~I's $A_k^*$, $A_{n,k}$)\\
+prefix--deficit generating function & $\mathcal G_r(u,t)$, $g_m(u)$ & $G_r(z,t)$, $g_m(z)$ (its geometric variables $G_j$; Part~I's $G_k$)\\
+kernel weights $\rho_r^k4^{-m}T_r(k+m,k)$ & $\varpi_{k,m}$ & $w_{k,m}$ (the exponent $w_n(s)$ of Lemma~\ref{fpf:lp:lem:competition})\\
+$\sqrt{1-4x}$ and $\sqrt{1-t}$ & $z$, as in Part~I & $s$ (its window and Laplace variable $s$)\\
+$\sqrt{1-y}$ in \eqref{fpf:lp:eq:D-two-roots} & $\nu$ & $v$ (its $v=y_c/y$ of Section~\ref{fpf:lp:sec:supercritical})\\
+Bernoulli summand & $I$ & $B$ (its ballot numbers $B(m,p)$)\\
+long-pattern limit variable & $\mathcal W$ & $W$ (Part~I's Lambert $W_{-1}$)\\
+Wasserstein distance (cost $|x-y|$) & $d_{\mathrm W}$ & $W_1$ (tempting misreading: Lambert's $W_{-1}$)\\
+window functions & $\varphi_n(s)$, $\varphi(s)$ & $f_n(s)$, $f(s)$ (Part~I's free energy $f(y)$)\\
+order of an integer moment & $h$ & $\ell$ (Part~I's deficit $\ell=n-k$)\\
+Fibonacci numbers & $\operatorname{Fib}(j)$ & $F_j$ (its generating function $F_r$)\\
+\bottomrule
+\end{tabular}
+\caption{Symbols of manuscript~07 renamed in Part~II.}
+\label{fpf:lp:tab:dictionary}
+\end{table}
+
+The following symbols keep manuscript~07's meaning inside Part~II and mean
+something else in Part~I. The unnormalized critical masses $p_{r,m}$ and
+their total $P_r$ are not Part~I's limit law $p_k$ and its generating
+function $P(y)$; but $L_2(y)=P(y)$ (the \textsf{[write]} note after
+Theorem~\ref{fpf:lp:thm:subcritical}), and $p_{2,m}=b_m/2$ with $b_m$ of
+\eqref{fpf:eq:b-critical} (the \textsf{[write]} note in
+Section~\ref{fpf:lp:sec:kernel}). The deficit is $M$ (Part~I writes $D_n$
+or $\ell$), and $M_r$, $M_{n,r}^{(y)}$ are not Part~I's window
+normalization $M(\lambda)$. The ballot numbers are $B(m,p)=[x^m]C(x)^p$,
+so $B(m,j+1)=b(m,j)$ of \eqref{fpf:eq:ballot}. The root $\rho_r$ of
+$\Delta_r$ lies in the $u$-plane; Part~I's $\rho=1/(2y)$ in the proof of
+Theorem~\ref{fpf:thm:supercritical} lies in the $x$-plane. The series
+$L_r(y)$ is not Part~I's logarithmic series $L_C$, $L_\beta$; $a_r$ is not
+Part~I's $a=\log4$ or $a_m(k)$; $y_n(s)$ is not Part~I's $y_n=2e^{\lambda/n}$;
+$b_n=\frac12\log n+\log\log n$ is not Part~I's $b_\ell$ or $b=\frac32$; the
+free energy $f_r$ is Part~I's $f$ at $r=2$. The geometric parameters $q_j$,
+$q_0$, the number of roots $h_r$, the variables $\beta_y$, $\gamma_j$,
+$E_j$, $U_{r+1}$ (Chebyshev), $\eta_r$, $\epsilon_n$, the generic $p_m$,
+$P$, $a$, $\alpha$, $L$ of Lemma~\ref{fpf:lp:lem:competition}, and the
+local $N=r+2$, $S_r$, $Q_n$, $R$ are the manuscript's and unrelated to
+Part~I's $q$, $h_0,h_1$, $\beta$, $\gamma_j$, $E_j$, $U$, $\eta_y$,
+$\varepsilon$, $p_k$, $P$, $a$, $N$, $S(n,k)$, $Q_k$ and $R_{n,k}$.
+The zeros $z_{n,j}$ of Theorem~\ref{fpf:lp:thm:zeros} are not values of
+$z=\sqrt{1-4x}$. The two figures are the delivered files and print the
+manuscript's legends: there $\pi_m=p_{3,m}/P_3$ is the limiting deficit law
+at $r=3$, and $a$, $P$ stand for $a_3$, $P_3$.
+
+\section{The question and the contribution}
+\label{fpf:lp:sec:question}
+
+An occurrence of a pattern in a permutation means an order-isomorphic
+subsequence; the positions need not be consecutive. For \(r\ge2\), put
+\[
+ \tau_r=1(r+1)r\cdots2.
+\]
+For \(\pi\in\Av_n(123)\), let \(K_r(\pi)\) be the largest \(k\) such
+that the subsequence consisting of the \(k\) largest values of \(\pi\),
+in their original order, avoids \(\tau_r\). Thus \(K_r=n\) when the
+whole permutation avoids both patterns. If \(K_r=k<n\), the next smaller
+value is the first one whose inclusion creates \(\tau_r\).
+
+Write
+\begin{equation}\label{fpf:lp:eq:counts}
+ T_r(n,k)=\#\{\pi\in\Av_n(123):K_r(\pi)=k\},\qquad
+ Z_{n,r}(y)=\sum_{k=1}^n T_r(n,k)y^k.
+\end{equation}
+For real \(y>0\), the associated probability measure assigns weight
+\(y^{K_r(\pi)}/Z_{n,r}(y)\) to \(\pi\). We denote its prefix and deficit
+by \(K_{n,r}^{(y)}\) and \(M_{n,r}^{(y)}=n-K_{n,r}^{(y)}\).
+The word ``prefix'' refers to the successive restriction to largest
+values, not to consecutive positions of the original permutation.
+
+At \(r=2\), \(T_r\) is David Callan's triangle A273821
+\cite{oeis273821}. Its OEIS page still marks a generating function
+conjectural in the retrieved record (retrieved by the manuscript on
+4~October 2026, local date). Part~I of this report, however, already
+proves that formula and studies its critical beta law. Its
+Section~\ref{fpf:sec:formal}, first proposed research question,
+specifically asks for the extension to \(1(r+1)r\cdots2\), including exact
+enumeration and critical laws. That is the question answered here. The
+inspected repository snapshot is \lprepo. The source is in
+\begin{center}\small
+\nolinkurl{SetTheory/Cardinals/docs/reports/enumerative-combinatorics/}\par
+\nolinkurl{a273821-first-pattern-failure/article.tex}.
+\end{center}
+
+\subsection{What is prior, and what is proved here}
+
+The unrefined enumeration of permutations avoiding both patterns is
+classical. Reverse-complement fixes \(123\) and changes \(\tau_r\) to
+\(r(r-1)\cdots1(r+1)\). Chow--West \cite{fpf-lp-cw}, Theorem 3.1, give the
+corresponding Chebyshev quotient and growth constant; Krattenthaler
+\cite{fpf-lp-kratt}, Theorem 9, supplies a Dyck-path formulation, while his
+Theorem 8 marks occurrences rather than first failure. Related stopping
+statistics in Catalan permutations also predate this work
+\cite{fpf-lp-firstascent}. We rederive the needed safe-state formulas
+because the suffix information, rather than only the total count, is
+essential.
+
+\begin{table}[ht]
+\centering\small
+\begin{tabular}{@{}p{0.31\linewidth}p{0.61\linewidth}@{}}
+\toprule
+Statement & Contribution boundary \\
+\midrule
+Safe-class Chebyshev quotient and growth & Classical Chow--West enumeration. \\
+First-failure formula and beta law for \(r=2\) & Already proved in Part~I (the ProveIt report). \\
+All-\(r\) first-failure refinement & Exact formula and finite positive coefficient sum proved here. \\
+Uniform two-index estimate & Proved here; supplies the error control for critical limits and moments. \\
+Critical laws for \(r\ge3\) & Discrete heavy-tailed deficit, sharp variation rate, moment threshold. \\
+Shifted coexistence and local complex zeros & Proved here with uniform complex error control. \\
+Growing-pattern behavior & Iterated limit and explicit Wasserstein bound; no joint \(r=r(n)\) theorem. \\
+\bottomrule
+\end{tabular}
+\caption{The precise scope of the article. The literature search is targeted;
+this ledger does not assert that no equivalent refinement exists elsewhere.}
+\label{fpf:lp:tab:scope}
+\end{table}
+
+\subsection{A preview of the change of critical behavior}
+
+Define
+\begin{equation}\label{fpf:lp:eq:critical-location}
+ \rho_r=\frac1{4\cos^2(\pi/(r+2))},\qquad
+ \Lambda_r=\rho_r^{-1},\qquad y_c=4\rho_r.
+\end{equation}
+For \(r=2\), \(y_c=2\); for \(r\ge3\), \(1<y_c<2\).
+The following comparison concerns fixed \(r\) and \(n\to\infty\).
+
+\begin{table}[ht]
+\centering\small
+\begin{tabular}{@{}p{0.19\linewidth}p{0.33\linewidth}p{0.36\linewidth}@{}}
+\toprule
+Weight & \(r=2\), prior result & \(r\ge3\), present result \\
+\midrule
+\(0<y<y_c\) & \(K\) has a discrete limit & \(K\) has an explicit geometric-sum limit \\
+\(y=y_c\) & \(K/n\Rightarrow\mathrm{Beta}(1,1/2)\) & \(n-K\) has a discrete limit; \(K/n\to1\) \\
+\(y>y_c\) & \(n-K\) has a discrete limit & \(n-K\) has an exponentially decaying limit \\
+Coexistence & A window of order \(1/n\) at \(2\) & A window of order \(1/n\), displaced by \((\log n)/n\) \\
+\bottomrule
+\end{tabular}
+\caption{The smallest pattern is exceptional. The critical deficit for
+\(r\ge3\) is tight but its finite-size mean diverges as \(\sqrt n\).}
+\label{fpf:lp:tab:phases}
+\end{table}
+
+The asymptotic estimates below use conventional singularity analysis
+\cite{fpf-lp-fo}. The key uniform estimate is proved directly by one-variable
+coefficient extraction and a contour bound, so the moving-window argument
+does not rely on an unproved interchange of limits.
+
+\section{Exact first-failure enumeration}
+\label{fpf:lp:sec:enumeration}
+
+Put
+\begin{equation}\label{fpf:lp:eq:C-D}
+ C(x)=\frac{2}{1+\sqrt{1-4x}},\qquad
+ \Delta_r(u)=\sum_{j=0}^{\lfloor(r+1)/2\rfloor}
+             (-u)^j\binom{r+1-j}{j}.
+\end{equation}
+The square root is the germ equal to one at the origin. In particular,
+\(C(0)=1\), \(C=1+xC^2\), and
+\[
+ \Delta_0=1,\quad \Delta_1=1-u,\quad \Delta_r=\Delta_{r-1}-u\Delta_{r-2}.
+\]
+
+\begin{theorem}[The whole first-failure family]\label{fpf:lp:thm:gf}
+For every integer \(r\ge2\), as an identity of formal power series,
+\begin{equation}\label{fpf:lp:eq:main-gf}
+ \boxed{\displaystyle
+ F_r(x,y):=\sum_{n\ge1}\sum_{k=1}^n T_r(n,k)x^ny^k
+ =\frac{u\Delta_{r-2}(u)}{\Delta_r(u)}
+  +\frac{x u^r C(x)^{r+1}}{\Delta_r(u)(1-uC(x))},\qquad u=xy.}
+\end{equation}
+Let \(e_h=[u^h]\Delta_r(u)^{-1}\), with \(e_h=0\) for \(h<0\), and set
+\begin{equation}\label{fpf:lp:eq:ballot}
+ B(m,p)=[x^m]C(x)^p
+ =\frac{p}{2m+p}\binom{2m+p}{m}\qquad(m\ge0,\ p\ge1).
+\end{equation}
+Then, for \(n>k\ge r\),
+\begin{equation}\label{fpf:lp:eq:positive-formula}
+ T_r(n,k)=\sum_{j=r}^k e_{k-j}B(n-k-1,j+1).
+\end{equation}
+Off the diagonal, \(T_r(n,k)=0\) when \(k<r\). On the diagonal,
+\begin{equation}\label{fpf:lp:eq:safe-total}
+ \sum_{n\ge1}T_r(n,n)u^n=\frac{u\Delta_{r-2}(u)}{\Delta_r(u)},\qquad
+ 1+\sum_{n\ge1}T_r(n,n)u^n=\frac{\Delta_{r-1}(u)}{\Delta_r(u)}.
+\end{equation}
+All terms in \eqref{fpf:lp:eq:positive-formula} are nonnegative. Every row
+sums to the Catalan number \(C_n=(n+1)^{-1}\binom{2n}{n}\).
+\end{theorem}
+
+\subsection{Insertion of successive minima}
+
+Deleting the minimum of a nonempty permutation and standardizing gives
+its unique parent. Reverse this operation, starting from the one-entry
+permutation. Let \(d\) be the length of the terminal decreasing run of
+consecutive positions. An insertion site is indexed by the number \(j\)
+of old entries to its right.
+
+\begin{lemma}[Active sites and descendants]\label{fpf:lp:lem:active}
+In a \(123\)-avoiding permutation of state \(d\), insertion of a new
+minimum preserves \(123\) avoidance precisely at \(0\le j\le d\).
+Appending it, \(j=0\), gives state \(d+1\); the other sites give state
+\(j\). The generating function for descendants obtained by any number
+of further allowed insertions is \(C(x)^{d+1}\).
+\end{lemma}
+\begin{proof}
+Any new increasing triple must start at the inserted minimum. Such a
+triple exists exactly when the suffix to its right contains an increasing
+pair. That suffix must therefore decrease, proving the active-site rule.
+If the minimum is not appended, the decreasing suffix on its right is
+separated from the preceding entries by an ascent, proving the state rule.
+
+For the descendant series \(D_d\), this gives
+\[
+ D_d=1+x\sum_{j=1}^{d+1}D_j.
+\]
+The solution with all constant terms one is unique coefficient by
+coefficient: the coefficient of degree \(m\) uses only degree \(m-1\)
+at finitely many states. The proposed solution satisfies it because
+\[
+ x\sum_{j=1}^{d+1}C^{j+1}
+ =(C-1)(1+C+\cdots+C^d)=C^{d+1}-1.
+\]
+Starting from state one, the number of size-\(n\) permutations is
+\([x^{n-1}]C^2=C_n\).
+\end{proof}
+
+\begin{writenote}[Added 5 October 2026, batch~98: a second route]
+Lemma~\ref{fpf:lp:lem:active} is Part~I's Lemma~\ref{fpf:lem:active}
+together with Lemma~\ref{fpf:lem:descendants}, proved in the same way; it
+does not involve \(r\). The manuscript names the descendant series
+\(H_d\); it is Part~I's \(D_d\).
+\end{writenote}
+
+If the current permutation avoids \(\tau_r\), a new occurrence has to
+start at the new minimum. At an active site the right suffix decreases,
+so the insertion creates \(\tau_r\) exactly when \(j\ge r\). Safe
+insertions thus have the state rule
+\begin{equation}\label{fpf:lp:eq:safe-rule}
+ d\longrightarrow d+1,\ 1,2,\ldots,\min(d,r-1).
+\end{equation}
+An occurrence, once created, cannot disappear when smaller entries are
+inserted. This monotonicity makes a decomposition at the first failing
+insertion exact.
+
+\subsection{The safe suffix distribution}
+
+Let \(a_{k,d}\) count safe size-\(k\) permutations of suffix state \(d\),
+and \(A_d(u)=\sum_{k\ge1}a_{k,d}u^k\).
+
+\begin{lemma}[Safe states and their tails]\label{fpf:lp:lem:safe}
+For \(1\le d\le r-1\),
+\begin{equation}\label{fpf:lp:eq:safe-states}
+ A_d(u)=\frac{u^d\Delta_{r-d}(u)}{\Delta_r(u)},
+\end{equation}
+and, for \(d\ge r-1\),
+\[
+ A_d(u)=\frac{u^d(1-u)}{\Delta_r(u)}.
+\]
+The two expressions agree at \(d=r-1\). In particular,
+\begin{equation}\label{fpf:lp:eq:safe-tail}
+ \sum_{d\ge1}A_d(u)=\frac{u\Delta_{r-2}(u)}{\Delta_r(u)},\qquad
+ \sum_{d\ge j}A_d(u)=\frac{u^j}{\Delta_r(u)}\quad(j\ge r).
+\end{equation}
+\end{lemma}
+\begin{proof}
+With \(A_0=0\), the state equations from \eqref{fpf:lp:eq:safe-rule} are
+\[
+ A_d=\mathbf1_{d=1}u+uA_{d-1}+u\sum_{e\ge d}A_e
+       \quad(1\le d\le r-1),\qquad
+ A_d=uA_{d-1}\quad(d\ge r).
+\]
+They determine every coefficient uniquely; in size \(k\) only states
+\(d\le k\) occur. For the proposed expressions, summation gives
+\[
+ \sum_{e\ge d}A_e
+ =\frac{u^d\Delta_{r-d-1}(u)}{\Delta_r(u)}\quad(1\le d\le r-1).
+\]
+This identity follows by telescoping the recurrence for \(\Delta\), with
+the geometric tail at \(d=r-1\). For \(d\ge2\), subtraction of the two
+successive formulas for \(A_d\) then gives the required equation. At
+\(d=1\), it is the identity \(\Delta_{r-1}=\Delta_r+u\Delta_{r-2}\).
+Summing the geometric tail proves the second assertion of
+\eqref{fpf:lp:eq:safe-tail}.
+\end{proof}
+
+\begin{writenote}[Added 5 October 2026, batch~98: the case \(r=2\)]
+At \(r=2\), \(\Delta_2=1-2u\) and every state is covered by the second
+formula: \(A_d(u)=u^d(1-u)/(1-2u)\), whose coefficients are
+\(a_{d,d}=1\) and \(a_{k,d}=2^{k-d-1}\) for \(k>d\); the tail is
+\(u^j/(1-2u)\). This is Part~I's Lemma~\ref{fpf:lem:safe-count} with
+\eqref{fpf:eq:safe-tail}, obtained from the state equations instead of the
+position of the last reset.
+\end{writenote}
+
+\begin{proof}[Proof of Theorem~\ref{fpf:lp:thm:gf}]
+The diagonal is the safe class and contributes the first term of
+\eqref{fpf:lp:eq:main-gf}. Suppose the first failure occurs after \(k\)
+safe entries, at a site with \(j\ge r\) entries to the right. The safe
+prefix must have suffix state at least \(j\); its generating function
+is \(u^j/\Delta_r(u)\). The failing insertion contributes \(x\), not
+\(xy\), because it does not increase \(K_r\). By
+Lemma~\ref{fpf:lp:lem:active}, subsequent insertions contribute
+\(C(x)^{j+1}\). Summing gives
+\[
+ \frac{x}{\Delta_r(u)}\sum_{j\ge r}u^jC(x)^{j+1}
+ =\frac{x u^rC(x)^{r+1}}{\Delta_r(u)(1-uC(x))}.
+\]
+Coefficient extraction proves \eqref{fpf:lp:eq:positive-formula}; the
+ballot identity \eqref{fpf:lp:eq:ballot} follows from Lagrange inversion of
+\(C=1+xC^2\). Positivity of \(e_h\) also follows from the positive-root
+factorization in Lemma~\ref{fpf:lp:lem:spectrum} below. The insertion
+decomposition partitions all \(123\)-avoiding permutations, giving the row
+sums.
+\end{proof}
+
+\begin{writenote}[Added 5 October 2026, batch~98: a second route]
+At \(r=2\), \(e_h=2^h\) and \(B(m,j+1)=b(m,j)\) of \eqref{fpf:eq:ballot},
+so \eqref{fpf:lp:eq:positive-formula} is Part~I's convolution
+\eqref{fpf:eq:convolution}, the diagonal \eqref{fpf:lp:eq:safe-total} is
+\(u/(1-2u)\), and \eqref{fpf:lp:eq:main-gf} is \eqref{fpf:eq:main-gf}. The
+proof above is the proof of Theorem~\ref{fpf:thm:convolution} carried out
+for every \(r\). The diagonal for general \(r\) is the classical
+Chow--West safe count \cite{fpf-lp-cw}.
+\end{writenote}
+
+\subsection{Specializations and an exact recurrence}
+
+For \(r=2\), \(\Delta_2=1-2u\), and \eqref{fpf:lp:eq:main-gf} becomes
+exactly the repository's proved A273821 formula \eqref{fpf:eq:main-gf}. For
+\(r=3\),
+\begin{equation}\label{fpf:lp:eq:r3-gf}
+ F_3(x,y)=\frac{u(1-u)}{1-3u+u^2}
+ +\frac{x u^3C(x)^4}{(1-3u+u^2)(1-uC(x))}.
+\end{equation}
+Its diagonal is \(T_3(n,n)=\operatorname{Fib}(2n-1)\), with the usual
+Fibonacci convention \(\operatorname{Fib}(1)=\operatorname{Fib}(2)=1\). This
+diagonal identity is classical.
+
+\begin{writenote}[Added 5 October 2026, batch~98: a proof of the diagonal identity]
+The manuscript cites no source for it; it follows from
+\eqref{fpf:lp:eq:r3-gf}. Since \(\operatorname{Fib}(m+2)=
+3\operatorname{Fib}(m)-\operatorname{Fib}(m-2)\), the sequence
+\(\psi_n=\operatorname{Fib}(2n-1)\) satisfies
+\(\psi_n=3\psi_{n-1}-\psi_{n-2}\) for \(n\ge3\), with \(\psi_1=1\),
+\(\psi_2=2\). Hence \((1-3u+u^2)\sum_{n\ge1}\psi_nu^n=u-u^2\), which is the
+diagonal term \(u(1-u)/(1-3u+u^2)\) of \eqref{fpf:lp:eq:r3-gf}. (Checked by
+series expansion through \(n=40\) in this write.)
+\end{writenote}
+
+Let \(\delta_j=(-1)^j\binom{r+1-j}{j}\). Multiplication by \(\Delta_r\)
+gives, off the diagonal and for \(n>k\ge r\),
+\begin{equation}\label{fpf:lp:eq:recurrence}
+ T_r(n,k)=-\sum_{j=1}^{\lfloor(r+1)/2\rfloor}
+ \delta_jT_r(n-j,k-j)+B(n-k-1,k+1).
+\end{equation}
+Terms outside the defined triangle are zero. The diagonal is supplied
+by \eqref{fpf:lp:eq:safe-total}. This recurrence fills all rows through size
+\(N\) in \(O(rN^2)\) arithmetic operations, apart from the bit cost of
+the integer arithmetic and ballot coefficients.
+
+For the first possible failing column,
+\[
+ T_r(n,r)=B(n-r-1,r+1)\qquad(n>r).
+\]
+More generally, every fixed column \(k\ge r\) has growth constant four:
+\begin{equation}\label{fpf:lp:eq:fixed-column}
+ T_r(n,k)\sim\frac{4^n}{\sqrt\pi\,n^{3/2}}
+ \sum_{j=r}^k e_{k-j}\frac{(j+1)2^j}{4^{k+1}}.
+\end{equation}
+This follows term by term from the finite positive formula and
+Stirling's formula for \eqref{fpf:lp:eq:ballot}. Thus the fixed-column part
+of the repository question has a positive explicit answer for every \(r\).
+
+\begin{writenote}[Added 5 October 2026, batch~98: the case \(r=2\)]
+With \(e_h=2^h\), the constant in \eqref{fpf:lp:eq:fixed-column} is
+\(2^{-k-2}\sum_{j=2}^k(j+1)=(k-1)(k+4)/2^{k+3}=p_k\), so
+\eqref{fpf:lp:eq:fixed-column} at \(r=2\) is Part~I's
+\eqref{fpf:eq:main-asymptotic}; Part~I's Theorem~\ref{fpf:thm:fixed-all}
+gives the full expansion there.
+\end{writenote}
+
+\section{The spectral data and the subcritical law}
+\label{fpf:lp:sec:subcritical}
+
+\begin{lemma}[Classical Chebyshev spectrum]\label{fpf:lp:lem:spectrum}
+The polynomial \(\Delta_r\) satisfies
+\begin{equation}\label{fpf:lp:eq:chebyshev}
+ \Delta_r(u)=u^{(r+1)/2}U_{r+1}\!\left(\frac1{2\sqrt u}\right),
+\end{equation}
+understood as a polynomial identity. Its simple roots are
+\[
+ \rho_{r,j}=\frac1{4\cos^2(j\pi/(r+2))},\qquad
+ 1\le j\le h_r:=\lfloor(r+1)/2\rfloor.
+\]
+They are positive and increasing. In particular, \(\rho_r=\rho_{r,1}\)
+is the unique root of smallest modulus and
+\begin{equation}\label{fpf:lp:eq:d-r}
+ \vartheta_r:=-\rho_r\Delta_r'(\rho_r)>0.
+\end{equation}
+\end{lemma}
+\begin{proof}
+The right side of \eqref{fpf:lp:eq:chebyshev} has the same recurrence and
+first two values as \(\Delta_r\). The usual formula
+\(U_j(\cos\theta)=\sin((j+1)\theta)/\sin\theta\) gives the roots,
+with the opposite cosine roots paired by squaring. Consequently
+\(\Delta_r(u)=\prod_{j=1}^{h_r}(1-u/\rho_{r,j})\).
+The derivative at the first root is negative. This also proves the
+nonnegativity of the coefficients of \(1/\Delta_r\).
+\end{proof}
+
+Define, for \(0<y<y_c\),
+\begin{equation}\label{fpf:lp:eq:L}
+ L_r(y)=
+ \frac{2^{r-2}(y/4)^r\bigl((r+1)-ry/2\bigr)}
+ {\Delta_r(y/4)(1-y/2)^2}.
+\end{equation}
+In particular \(L_r(1)=1\), as follows either from Catalan row sums or
+from \(\Delta_r(1/4)=(r+2)/2^{r+1}\).
+
+\begin{theorem}[Subcritical prefix distribution]\label{fpf:lp:thm:subcritical}
+For fixed \(r\ge2\) and \(0<y<y_c\),
+\begin{equation}\label{fpf:lp:eq:sub-z}
+ Z_{n,r}(y)=\frac{4^n}{\sqrt\pi\,n^{3/2}}
+               \bigl(L_r(y)+O(n^{-1})\bigr).
+\end{equation}
+The random variable \(K_{n,r}^{(y)}\) converges to a discrete variable
+\(K_r^{(y)}\) with probability generating function
+\begin{equation}\label{fpf:lp:eq:sub-pgf}
+ \E t^{K_r^{(y)}}=\frac{L_r(yt)}{L_r(y)}.
+\end{equation}
+For some \(R>1\),
+\[
+ \sum_{k\ge0}R^k\left|
+ \Prob(K_{n,r}^{(y)}=k)-\Prob(K_r^{(y)}=k)\right|=O(n^{-1}).
+\]
+The constants may depend on \(r\) and \(y\). In particular, all fixed
+moments converge.
+\end{theorem}
+\begin{proof}
+Let \(z=\sqrt{1-4x}\). In \eqref{fpf:lp:eq:main-gf}, \(u=xy=y(1-z^2)/4\)
+has no term linear in \(z\), while \(C(x)=2-2z+O(z^2)\). Direct
+expansion gives the coefficient of \(z\) as \(-2L_r(y)\). Both
+denominators stay away from zero at \(x=1/4\) for \(|y|<y_c\), because
+\(y_c\le2\). The expression is analytic in a dented neighborhood of
+that point, uniformly when \(y\) stays in a smaller disk. Expansion
+through the next odd power and the coefficient formula for
+\((1-4x)^{1/2}\) prove \eqref{fpf:lp:eq:sub-z}. The remaining integer
+powers are analytic locally and the next singular contribution has order
+\(4^nn^{-5/2}\). This is the elementary square-root case of the transfer
+principle \cite{fpf-lp-fo}.
+
+Apply the same expansion at \(yt\) on a fixed circle \(|t|=R_1>1\)
+with \(yR_1<y_c\), and divide by \eqref{fpf:lp:eq:sub-z}. The resulting
+probability generating functions differ uniformly by \(O(n^{-1})\).
+Cauchy's coefficient estimate gives an error \(O(R_1^{-k}n^{-1})\).
+Summing after multiplication by any fixed \(1<R<R_1\) proves the
+assertion, including that the limiting coefficients form a probability
+distribution.
+\end{proof}
+
+\begin{writenote}[Added 5 October 2026, batch~98: the omitted expansion, and the case \(r=2\)]
+The manuscript states the coefficient of \(z\) without the computation.
+The first term of \eqref{fpf:lp:eq:main-gf} is a function of \(u\) alone,
+hence even in \(z\). In the second, \(x u^r/\Delta_r(u)\) is even in
+\(z\) and equals \(\frac14(y/4)^r/\Delta_r(y/4)\) at \(z=0\), while
+\(C=2/(1+z)\) gives \(\mathrm dC/\mathrm dz=-2\) at \(z=0\), so
+\[
+ \frac{\mathrm d}{\mathrm dz}\,\frac{C^{r+1}}{1-uC}\Big|_{z=0}
+ =-2\,\frac{(r+1)2^r(1-y/2)+2^{r+1}y/4}{(1-y/2)^2}
+ =-2^{r+1}\,\frac{(r+1)-ry/2}{(1-y/2)^2}.
+\]
+Multiplying, the coefficient of \(z\) is \(-2L_r(y)\), and
+\([x^n](1-4x)^{1/2}=-\frac{4^n}{2\sqrt\pi n^{3/2}}(1+O(n^{-1}))\) gives
+the leading term of \eqref{fpf:lp:eq:sub-z}. (Checked symbolically for
+\(r=2,\dots,7\) in this write.)
+
+At \(r=2\), \(\Delta_2(y/4)=1-y/2\) and
+\(L_2(y)=y^2(3-y)/\bigl(2(2-y)^3\bigr)=P(y)\) of \eqref{fpf:eq:limit-data}.
+Since \(C_n=\frac{4^n}{\sqrt\pi n^{3/2}}(1+O(n^{-1}))\),
+Theorem~\ref{fpf:lp:thm:subcritical} at \(r=2\) is Part~I's
+Theorem~\ref{fpf:thm:subcritical} with the weighted error of
+Theorem~\ref{fpf:thm:limitlaw}, proved by the same square-root transfer.
+\end{writenote}
+
+\subsection{A positive independent-sum representation}
+
+Our convention is that \(G\sim\Geom(q)\), for \(0\le q<1\), means
+\(\Prob(G=m)=(1-q)q^m\) for \(m\ge0\).
+
+\begin{theorem}[Geometric decomposition]\label{fpf:lp:thm:geometric}
+Put
+\[
+ q_j=y\cos^2\!\frac{j\pi}{r+2}\quad(1\le j\le h_r),\qquad
+ q_0=y/2,\qquad \beta_y=\frac1{1+r(1-q_0)}.
+\]
+For \(0<y<y_c\), all \(q_j,q_0<1\), and
+\begin{equation}\label{fpf:lp:eq:independent}
+ K_r^{(y)}\ \overset{d}=\
+ r+\sum_{j=1}^{h_r}G_j+G+I G',
+\end{equation}
+where all variables are independent,
+\(G_j\sim\Geom(q_j)\), \(G,G'\sim\Geom(q_0)\), and
+\(I\sim\Ber(\beta_y)\).
+\end{theorem}
+\begin{proof}
+Factor \(\Delta_r(yt/4)\) using Lemma~\ref{fpf:lp:lem:spectrum}. After
+extracting its normalized geometric factors and \(t^r\), the remaining
+factor of \(L_r(yt)/L_r(y)\) is
+\[
+ \frac{1-q_0}{1-q_0t}
+ \left(1-\beta_y+\beta_y\frac{1-q_0}{1-q_0t}\right).
+\]
+This is the generating function of \(G+I G'\), proving the claim.
+\end{proof}
+
+At \(y=1\), write \(K_r^\infty=K_r^{(1)}\). The distribution of
+\(V_r=G+IG'\) becomes especially simple:
+\begin{equation}\label{fpf:lp:eq:V}
+ \Prob(V_r=m)=\frac{r+m+1}{(r+2)2^{m+1}},\qquad m\ge0.
+\end{equation}
+Logarithmic differentiation of \(\Delta_r\), or the independent sum, gives
+\begin{align}
+ \E K_r^\infty
+  &=\frac{r(r+1)}6+r+1+\frac2{r+2},\label{fpf:lp:eq:mean-K}\\
+ \Var K_r^\infty
+  &=\frac{r(r+1)(r+3)(r+4)}{90}
+       +2+\frac6{r+2}-\frac4{(r+2)^2}.\label{fpf:lp:eq:var-K}
+\end{align}
+For example, \(\E K_3^\infty=32/5\). The identities needed for these
+computations are
+\[
+ \Delta_r(1/4)=\frac{r+2}{2^{r+1}},\qquad
+ -\frac{\Delta_r'(1/4)}{4\Delta_r(1/4)}=\frac{r(r+1)}6,
+\]
+and the corresponding second logarithmic derivative. They follow by
+expanding the two-root formula for \(\Delta_r\) in
+Section~\ref{fpf:lp:sec:growing}.
+
+\begin{writenote}[Added 5 October 2026, batch~98: the case \(r=2\)]
+At \(r=2\), \(h_2=1\) and \(q_1=y/2=q_0\): the limit law of Part~I's
+Theorem~\ref{fpf:thm:subcritical} is that of \(2+G_1+G+IG'\) with three
+independent \(\Geom(y/2)\) variables and \(I\sim\Ber(1/(3-y))\). At
+\(y=1\) this gives mean \(9/2\) and variance \(21/4\), as in
+\eqref{fpf:eq:limit-data}. Part~I does not contain this representation.
+\end{writenote}
+
+For fixed \(r\ge3\), as \(y\uparrow y_c\), only \(q_1=y/y_c\)
+approaches one. All the other independent summands stay tight. Therefore
+\begin{equation}\label{fpf:lp:eq:sub-edge-exp}
+ (1-y/y_c)K_r^{(y)}\Rightarrow\Exp(1).
+\end{equation}
+For \(r=2\), all three geometric contributions become large and
+\(\beta_y\to1\), giving instead a gamma limit of shape three in this
+\emph{iterated} limit. Neither assertion substitutes for a theorem with
+\(y=y(n)\); that moving problem is handled in Section~\ref{fpf:lp:sec:window}.
+
+\section{An iterated limit for long forbidden patterns}
+\label{fpf:lp:sec:growing}
+
+The geometric decomposition makes it possible to let the pattern length
+grow \emph{after} the permutation-size limit has been taken. It also
+gives a quantitative comparison rather than only a Laplace-transform
+calculation.
+
+\begin{theorem}[Long-pattern law with an explicit rate]\label{fpf:lp:thm:growing}
+Let \(E_j\), \(j\ge1\), be independent exponentials of rate one and put
+\begin{equation}\label{fpf:lp:eq:W}
+ \mathcal W=\sum_{j\ge1}\frac{E_j}{\pi^2j^2}.
+\end{equation}
+The sum is finite almost surely and in \(L^1\). With \(d_{\mathrm W}\)
+denoting the Wasserstein distance for the cost \(|x-y|\),
+\begin{equation}\label{fpf:lp:eq:W1}
+ d_{\mathrm W}\!\left(\Law\!\left(\frac{K_r^\infty}{(r+2)^2}\right),
+ \Law(\mathcal W)\right)
+ \le\frac{9r^2+28r+32}{6(r+2)^3}.
+\end{equation}
+In particular, \(K_r^\infty/r^2\Rightarrow \mathcal W\), and
+\begin{equation}\label{fpf:lp:eq:laplace-W}
+ \E e^{-s\mathcal W}=\frac{\sqrt{s}}{\sinh\sqrt{s}}\quad(s\ge0),\qquad
+ \E \mathcal W=\frac16,\qquad\Var \mathcal W=\frac1{90}.
+\end{equation}
+The quotient at \(s=0\) is interpreted by continuity.
+\end{theorem}
+\begin{proof}
+Let \(N=r+2\), \(h=h_r\), and
+\(\gamma_j=-2\log\cos(\pi j/N)\). Couple the geometricals in
+\eqref{fpf:lp:eq:independent}, at \(y=1\), by
+\[
+ G_j=\left\lfloor E_j/\gamma_j\right\rfloor.
+\]
+Indeed \(\Prob(G_j\ge m)=e^{-m\gamma_j}
+=\cos^{2m}(\pi j/N)\). Since
+\(-2\log\cos\theta\ge\theta^2\) on \([0,\pi/2)\),
+\[
+ 0\le S_r:=\frac1{N^2}\sum_{j=1}^hG_j\le \mathcal W.
+\]
+The trigonometric sum implicit in \eqref{fpf:lp:eq:mean-K} gives
+\[
+ \E(\mathcal W-S_r)=\frac16-\frac{r(r+1)}{6N^2}
+ =\frac{3r+4}{6N^2}.
+\]
+Choose \(V_r\) independently, as in \eqref{fpf:lp:eq:V}; then
+\(\E V_r=1+2/N\). The triangle inequality in this coupling yields
+\[
+ \E\left|\frac{r+V_r}{N^2}+S_r-\mathcal W\right|
+ \le\frac{r+1+2/N}{N^2}+\frac{3r+4}{6N^2},
+\]
+which simplifies to \eqref{fpf:lp:eq:W1}. The series for \(\mathcal W\) has
+finite expectation \(\sum_j(\pi^2j^2)^{-1}=1/6\), hence is finite almost
+surely. Independence and monotone convergence give the product of its
+Laplace transforms. Euler's product for \(\sinh\), recorded in
+\cite{fpf-lp-dlmf}, reduces that product to \eqref{fpf:lp:eq:laplace-W}.
+Summing the variances gives \(1/90\). Finally \(N^2/r^2\to1\).
+\end{proof}
+
+For a direct algebraic check, put \(\nu=\sqrt{1-y}\). The recurrence for
+\(\Delta_r\) gives
+\begin{equation}\label{fpf:lp:eq:D-two-roots}
+ \Delta_r(y/4)=
+ \frac{(1+\nu)^{r+2}-(1-\nu)^{r+2}}{2^{r+2}\nu}.
+\end{equation}
+At \(y=e^{-s/r^2}\), \(r\nu\to\sqrt{s}\); substitution into
+\eqref{fpf:lp:eq:L} again gives \(L_r(e^{-s/r^2})\to\sqrt{s}/\sinh\sqrt{s}\).
+This is an independent consistency check of the scale and constants.
+
+The order of limits matters. The theorem concerns
+\(\lim_{r\to\infty}\lim_{n\to\infty}\), with \(r\) fixed in the
+inner limit. No assertion is made here for arbitrary choices \(r=r(n)\).
+The spectral gap used later shrinks with \(r\), so such a joint theorem
+requires additional estimates.
+
+\section{A uniform estimate in prefix size and deficit}
+\label{fpf:lp:sec:kernel}
+
+From this point through Section~\ref{fpf:lp:sec:zeros}, fix \(r\ge3\). We
+often omit \(r\) from \(\rho_r,\vartheta_r\) and from constants. The strict
+inequality \(\rho<1/2\) is essential.
+
+Define a series with nonnegative coefficients by
+\begin{equation}\label{fpf:lp:eq:residue-series}
+ \mathcal P_r(t)=\frac1{\vartheta_r}\left[
+ \rho_r\Delta_{r-2}(\rho_r)
+ +\frac{(t/4)\rho_r^r C(t/4)^{r+1}}{1-\rho_r C(t/4)}\right]
+ =\sum_{m\ge0}p_{r,m}t^m.
+\end{equation}
+It has finite positive total mass
+\begin{equation}\label{fpf:lp:eq:P}
+ P_r=\mathcal P_r(1)=\frac1{\vartheta_r}\left[
+ \rho_r\Delta_{r-2}(\rho_r)
+ +\frac{2^{r-1}\rho_r^r}{1-2\rho_r}\right].
+\end{equation}
+Set
+\begin{equation}\label{fpf:lp:eq:a}
+ a_r=\frac{2^{r-2}\rho_r^r\bigl((r+1)-2r\rho_r\bigr)}
+ {\vartheta_r\sqrt\pi(1-2\rho_r)^2}>0.
+\end{equation}
+These are unnormalized coefficients: the probability law used below
+will have probabilities \(p_{r,m}/P_r\).
+
+\begin{lemma}[The residue tail]\label{fpf:lp:lem:tail}
+As \(m\to\infty\),
+\begin{equation}\label{fpf:lp:eq:p-tail}
+ p_{r,m}=a_r m^{-3/2}+O_r(m^{-5/2}).
+\end{equation}
+Consequently
+\begin{equation}\label{fpf:lp:eq:tail-sum}
+ \sum_{m>n}p_{r,m}=2a_r n^{-1/2}+O_r(n^{-3/2}).
+\end{equation}
+\end{lemma}
+\begin{proof}
+With \(z=\sqrt{1-t}\), the expansion
+\(C(t/4)=2-2z+2z^2+O(z^3)\) gives
+\begin{equation}\label{fpf:lp:eq:P-local}
+ \mathcal P_r(t)=P_r-2\sqrt\pi\,a_r\sqrt{1-t}+O(1-t).
+\end{equation}
+For clarity, the linear coefficient before division by \(\vartheta_r\) is
+minus
+\[
+ \frac{2^{r-1}\rho_r^r}{1-2\rho_r}
+ \left(r+1+\frac{2\rho_r}{1-2\rho_r}\right).
+\]
+There is a convergent expansion in powers of \(z\) near zero. The next
+noninteger power of \(1-t\) is \((1-t)^{3/2}\). On \(|t|\le1\),
+\(\rho_r|C(t/4)|\le2\rho_r<1\), so the denominator does not vanish;
+the same holds in a sufficiently small dented extension near \(t=1\).
+There are no other singularities on the unit circle. Applying the
+square-root coefficient formula, including its next-order error, yields
+\eqref{fpf:lp:eq:p-tail}. Finally
+\(\sum_{m>n}m^{-3/2}=2n^{-1/2}+O(n^{-3/2})\), by integral comparison
+with the one-step endpoint error; the sum of the remainder is
+\(O(n^{-3/2})\).
+\end{proof}
+
+\begin{theorem}[Uniform two-index residue approximation]\label{fpf:lp:thm:kernel}
+There exist constants \(\Theta_r<\infty\) and \(0<\eta_r<1\) such that
+\begin{equation}\label{fpf:lp:eq:kernel}
+ \boxed{\displaystyle
+ \left|\rho_r^k4^{-m}T_r(k+m,k)-p_{r,m}\right|
+ \le \Theta_r\eta_r^k(m+1)^{-3/2}\qquad(k,m\ge0).}
+\end{equation}
+Here \(T_r(0,0)=0\), and all entries with \(k=0\) are zero.
+The constants depend on \(r\), but neither index is restricted.
+\end{theorem}
+\begin{proof}
+Mark prefix and deficit separately:
+\begin{equation}\label{fpf:lp:eq:separate-gf}
+ \mathcal G_r(u,t):=\sum_{k,m\ge0}T_r(k+m,k)u^kt^m
+ =\frac{u\Delta_{r-2}(u)+t u^rC(t)^{r+1}/(1-uC(t))}{\Delta_r(u)}.
+\end{equation}
+Choose
+\(\rho_r<R<\min(\rho_{r,2},1/2)\), where a missing second root is
+omitted. On \(|u|=R\), \(\Delta_r(u)\) is bounded away from zero.
+For each fixed \(m\), let \(g_m(u)=[t^m]\mathcal G_r(u,t/4)\).
+The only pole of \(g_m\) between a small circle about zero and
+\(|u|=R\) is the simple pole at \(u=\rho_r\). Its principal part is
+\(p_{r,m}/(1-u/\rho_r)\). Thus Cauchy's formula and the residue theorem
+give
+\[
+ 4^{-m}T_r(k+m,k)-p_{r,m}\rho_r^{-k}
+ =\frac1{2\pi\ii}\int_{|u|=R}g_m(u)u^{-k-1}\,\dd u.
+\]
+
+It remains to bound \(g_m\) uniformly in \(m\). For integers \(p,m\ge1\),
+\begin{equation}\label{fpf:lp:eq:ballot-bound}
+ [t^m]C(t/4)^p
+ =4^{-m}\frac{p}{2m+p}\binom{2m+p}{m}
+ \le\frac{p2^{p-1}}{\sqrt\pi\,m^{3/2}}.
+\end{equation}
+Indeed \(\binom{2m+p}{m}\le2^p\binom{2m}{m}\), since each successive
+ratio \((2m+j)/(m+j)\le2\), and
+\(\binom{2m}{m}\le4^m/\sqrt{\pi m}\).
+Expand \((1-uC)^{-1}\) geometrically in the numerator of
+\eqref{fpf:lp:eq:separate-gf}. Bound \eqref{fpf:lp:eq:ballot-bound} reduces
+the resulting majorant to a constant times
+\(\sum_{j\ge0}(r+j+1)(2R)^j\), which converges. The leading factor
+\(t/4\) only shifts the coefficient index; the cases \(m=0,1\) have
+finite bounds and can be absorbed into the constant. Therefore
+\[
+ \sup_{|u|=R}|g_m(u)|\le \Theta_r'(m+1)^{-3/2}.
+\]
+Multiply the contour estimate by \(\rho_r^k\), and take
+\(\eta_r=\rho_r/R<1\).
+\end{proof}
+
+\begin{remark}[Why this estimate is stronger than a pointwise limit]
+\label{fpf:lp:rem:pointwise}
+For each fixed deficit, a simple residue calculation already predicts
+\(p_{r,m}\). It does not by itself control deficits growing with \(n\),
+moments dominated by rare large deficits, or a moving weight. The summable
+factor \((m+1)^{-3/2}\) in \eqref{fpf:lp:eq:kernel} supplies exactly those
+missing controls. The possibility of choosing \(R<1/2\) is the analytic
+distinction between \(r\ge3\) and \(r=2\).
+\end{remark}
+
+\begin{writenote}[Added 5 October 2026, batch~98: the series at \(r=2\), and why the estimate fails there]
+The definitions \eqref{fpf:lp:eq:residue-series} make sense at \(r=2\):
+\(\rho_2=\frac12\), \(\Delta_0=1\), \(\vartheta_2=1\), and, writing
+\(z=\sqrt{1-t}\) so that \(C(t/4)=2/(1+z)\) and \(t=(1-z)(1+z)\),
+\[
+ \mathcal P_2(t)=\frac12+\frac t{16}\,\frac{C(t/4)^3}{1-C(t/4)/2}
+ =\frac12+\frac{1-z}{2z(1+z)}
+ =\frac12+\frac12\bigl((1-t)^{-1/2}-C(t/4)\bigr).
+\]
+By the series identity in the proof of Theorem~\ref{fpf:thm:supercritical},
+\(p_{2,0}=\frac12\) and \(p_{2,m}=4^{-m}\binom{2m}{m-1}/2\) for
+\(m\ge1\): \(p_{2,m}=b_m/2\) for the positive critical weights \(b_m\) of
+Part~I's \eqref{fpf:eq:b-critical}. (Checked through \(m=30\) in this
+write.) Their sum diverges, because \(b_m\sim(\pi m)^{-1/2}\); this is the
+vanishing of \(1-2\rho_2\) in \eqref{fpf:lp:eq:P}, and it is why the
+critical law at \(r=2\) is Part~I's beta law instead of
+Theorem~\ref{fpf:lp:thm:critical}. The pointwise limit
+\(\rho_2^k4^{-m}T_2(k+m,k)\to p_{2,m}\) as \(k\to\infty\) still holds, by
+\eqref{fpf:eq:fixed-deficit}. But \eqref{fpf:lp:eq:kernel} is false at
+\(r=2\) for every choice of constants: since \(T_2(1+m,1)=0\) for
+\(m\ge1\), its left side at \(k=1\) is
+\(p_{2,m}\sim\frac12(\pi m)^{-1/2}\), which is not
+\(O\bigl((m+1)^{-3/2}\bigr)\). For \(r\ge3\) the same column gives
+\(p_{r,m}\sim a_rm^{-3/2}\), consistent with \eqref{fpf:lp:eq:kernel}.
+So the restriction \(r\ge3\) of
+Sections~\ref{fpf:lp:sec:kernel}--\ref{fpf:lp:sec:zeros} is necessary for
+this estimate, not only for its proof.
+\end{writenote}
+
+\section{Critical condensation and the full moment threshold}
+\label{fpf:lp:sec:critical}
+
+\begin{theorem}[Critical partition function and deficit law]
+\label{fpf:lp:thm:critical}
+At \(y=y_c\),
+\begin{equation}\label{fpf:lp:eq:critical-Z}
+ Z_{n,r}(y_c)=4^n\left(P_r-\frac{2a_r}{\sqrt n}
+                                  +O_r(n^{-3/2})\right).
+\end{equation}
+The deficit \(M_{n,r}^{(y_c)}\) converges to a variable \(M_r\) with
+\begin{equation}\label{fpf:lp:eq:critical-law}
+ \Prob(M_r=m)=\frac{p_{r,m}}{P_r},\qquad
+ \E t^{M_r}=\frac{\mathcal P_r(t)}{P_r}.
+\end{equation}
+With total variation defined as one half the sum of absolute mass
+differences, the convergence rate has the sharp leading term
+\begin{equation}\label{fpf:lp:eq:critical-TV}
+ \TV\bigl(\Law(M_{n,r}^{(y_c)}),\Law(M_r)\bigr)
+ =\frac{2a_r}{P_r\sqrt n}+O_r(n^{-3/2}).
+\end{equation}
+Moreover,
+\begin{equation}\label{fpf:lp:eq:prob-tail}
+ \Prob(M_r=m)\sim\frac{a_r}{P_r}m^{-3/2},\qquad
+ \Prob(M_r\ge m)\sim\frac{2a_r}{P_r}m^{-1/2}.
+\end{equation}
+In particular, \(K_{n,r}^{(y_c)}/n\to1\) in probability.
+\end{theorem}
+\begin{proof}
+Write \(\varpi_{k,m}=\rho_r^k4^{-m}T_r(k+m,k)\). At \(y_c=4\rho_r\),
+\[
+ 4^{-n}Z_{n,r}(y_c)=\sum_{m=0}^n\varpi_{n-m,m}.
+\]
+For any fixed \(0<\eta<1\), splitting at \(k=n/2\) shows
+\begin{equation}\label{fpf:lp:eq:error-sum}
+ \sum_{k=0}^n\eta^k(n-k+1)^{-3/2}=O(n^{-3/2}).
+\end{equation}
+Thus Theorem~\ref{fpf:lp:thm:kernel} replaces the sum by
+\(\sum_{m\le n}p_{r,m}\) with error \(O(n^{-3/2})\). Equation
+\eqref{fpf:lp:eq:tail-sum} proves \eqref{fpf:lp:eq:critical-Z}.
+
+Let \(Q_n\) be the law with probabilities
+\(p_{r,m}/\sum_{j\le n}p_{r,j}\), for \(0\le m\le n\).
+The sum of absolute errors in the unnormalized weights is
+\(O(n^{-3/2})\), so normalization gives
+\(\TV(\Law(M_{n,r}^{(y_c)}),Q_n)=O(n^{-3/2})\).
+The total variation between a probability law and its conditioning to
+\(m\le n\) is exactly its omitted tail mass. Hence
+\[
+ \TV(Q_n,\Law(M_r))=\frac1{P_r}\sum_{m>n}p_{r,m}.
+\]
+The triangle inequality, in both directions, now proves
+\eqref{fpf:lp:eq:critical-TV}. The tail statements follow from
+Lemma~\ref{fpf:lp:lem:tail}. Tightness of the deficits implies
+\(M_{n,r}^{(y_c)}/n\to0\).
+\end{proof}
+
+The limiting deficit has infinite mean. This is compatible with tightness:
+most probability mass remains near small deficits, while rare large
+deficits dominate the expectation. The following theorem quantifies
+this distinction for every positive moment.
+
+\begin{theorem}[Critical moment threshold]\label{fpf:lp:thm:moments}
+For real \(b>0\), as \(n\to\infty\),
+\begin{equation}\label{fpf:lp:eq:all-moments}
+ \E\bigl(M_{n,r}^{(y_c)}\bigr)^b=
+ \begin{cases}
+  \E M_r^b+o(1),&0<b<1/2,\\[2pt]
+  (a_r/P_r)\log n+O_r(1),&b=1/2,\\[2pt]
+  \displaystyle\frac{a_r}{P_r(b-1/2)}\,n^{b-1/2}(1+o(1)),&b>1/2.
+ \end{cases}
+\end{equation}
+In particular,
+\begin{equation}\label{fpf:lp:eq:first-two-moments}
+ \E M_{n,r}^{(y_c)}\sim\frac{2a_r}{P_r}\sqrt n,
+ \qquad
+ \Var(M_{n,r}^{(y_c)})\sim\frac{2a_r}{3P_r}n^{3/2}.
+\end{equation}
+For every positive integer \(h\), both ordinary and falling-factorial
+moments have leading term
+\begin{equation}\label{fpf:lp:eq:factorial-moments}
+ \E\bigl(M_{n,r}^{(y_c)}\bigr)^h
+ \sim\E\fall{M_{n,r}^{(y_c)}}{h}
+ \sim\frac{2a_r}{P_r(2h-1)}n^{h-1/2}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+After multiplying \eqref{fpf:lp:eq:kernel} by \(m^b\) and summing along
+\(k+m=n\), the error is \(O(n^{b-3/2})\): for \(k\le n/2\) the
+factor \(m^{b}(m+1)^{-3/2}\) is \(O(n^{b-3/2})\), and for
+\(k>n/2\) exponential decay absorbs any fixed power of \(n\).
+Thus the unnormalized moment is governed by
+\(\sum_{m\le n}m^bp_{r,m}\). Insert \eqref{fpf:lp:eq:p-tail}. The leading
+power sum converges for \(b<1/2\), is logarithmic at \(b=1/2\), and
+has equivalent \(n^{b-1/2}/(b-1/2)\) for \(b>1/2\). The next-order
+tail gives a smaller contribution in every case. Division by
+\eqref{fpf:lp:eq:critical-Z} proves \eqref{fpf:lp:eq:all-moments}.
+For the variance, the squared mean is \(O(n)\), lower order than
+\(n^{3/2}\). A falling factorial is a monic polynomial whose other
+terms have smaller degree, proving \eqref{fpf:lp:eq:factorial-moments}.
+\end{proof}
+
+\section{Supercritical weights and the phase diagram}
+\label{fpf:lp:sec:supercritical}
+
+\begin{theorem}[Supercritical deficit as an exponential tilt]
+\label{fpf:lp:thm:supercritical}
+For fixed \(y>y_c\), let \(v=y_c/y<1\). Then, for some \(0<\xi<1\),
+\begin{equation}\label{fpf:lp:eq:super-Z}
+ Z_{n,r}(y)=\left(\frac y{\rho_r}\right)^n
+                   \bigl(\mathcal P_r(v)+O_r(\xi^n)\bigr).
+\end{equation}
+The limiting deficit law is
+\begin{equation}\label{fpf:lp:eq:super-law}
+ \Prob(M_r^{(y)}=m)=\frac{p_{r,m}v^m}{\mathcal P_r(v)},\qquad
+ \E t^{M_r^{(y)}}=\frac{\mathcal P_r(vt)}{\mathcal P_r(v)}.
+\end{equation}
+Convergence in total variation is exponentially fast for each fixed
+\(y>y_c\). The constants and \(\xi\) may depend on \(y\).
+\end{theorem}
+\begin{proof}
+Normalize \eqref{fpf:lp:eq:counts} by \((y/\rho_r)^n\) and put \(m=n-k\).
+The sum becomes \(\sum_{m\le n}v^m\varpi_{n-m,m}\). The uniform estimate
+replaces this by \(\sum_{m\le n}v^mp_{r,m}\), with absolute error
+bounded by a constant times
+\(\sum_{m\le n}v^m\eta_r^{n-m}(m+1)^{-3/2}\).
+This is \(O(\xi^n)\) for any fixed
+\(\max(v,\eta_r)<\xi<1\). The omitted series tail has the same type
+of bound. Applying the estimate to absolute coefficient differences
+before normalization proves the total-variation assertion.
+\end{proof}
+
+The free energy, meaning the exponential growth rate of the weighted
+count, is therefore
+\begin{equation}\label{fpf:lp:eq:free-energy}
+ f_r(y):=\lim_{n\to\infty}\frac1n\log Z_{n,r}(y)
+ =\begin{cases}\log4,&0<y\le y_c,\\
+                 \log(y/\rho_r),&y>y_c.
+   \end{cases}
+\end{equation}
+Its one-sided derivative with respect to \(\log y\) jumps from zero
+to one. In that precise sense the transition is first order.
+The critical endpoint belongs to the late-failure phase in the law of
+\(K/n\), despite the critical deficit's heavy tail.
+
+For comparison, at \(r=2\) both \(\Delta_2(xy)\) and \(1-xyC(x)\)
+vanish at \((x,y)=(1/4,2)\). Directly from \eqref{fpf:lp:eq:main-gf}, with
+\(z=\sqrt{1-4x}\),
+\[
+ F_2(x,2)=\frac1{2z^3}-\frac1{z^2}+\frac3{2z}-1.
+\]
+Thus
+\(Z_{n,2}(2)=(n+2)\binom{2n}{n}-4^n\), the prior identity
+\eqref{fpf:eq:Z2} of Part~I. Its leading prefactor is \(\sqrt n\), rather
+than the constant prefactor in \eqref{fpf:lp:eq:critical-Z}. The extra
+vanishing factor explains why the \(r=2\) beta law cannot be extended
+unchanged to longer patterns.
+
+\begin{writenote}[Added 5 October 2026, batch~98: the case \(r=2\)]
+The displayed \(F_2(x,2)\) is Part~I's \eqref{fpf:eq:F2}, and the
+coefficient extraction is the one in the proof of
+Theorem~\ref{fpf:thm:critical-exact}. Although
+Theorem~\ref{fpf:lp:thm:supercritical} is proved only for \(r\ge3\), its
+formulas hold at \(r=2\) by Part~I's
+Theorem~\ref{fpf:thm:supercritical}: with \(v=2/y\), the computation in the
+previous \textsf{[write]} note gives
+\(\mathcal P_2(v)=\frac12+\frac{C(\rho)^3}{8y\{1-C(\rho)/2\}}
+=\mathcal A(y)\) with \(\rho=1/(2y)\), and \(p_{2,m}v^m/\mathcal P_2(v)\)
+is the law \eqref{fpf:eq:super-law}; also \(y/\rho_2=2y\), so
+\eqref{fpf:lp:eq:free-energy} at \(r=2\) is \eqref{fpf:eq:freeenergy}.
+(The amplitude identity was checked to 50 digits at \(y=3,5,7\) in this
+write.)
+\end{writenote}
+
+\section{A displaced coexistence window}
+\label{fpf:lp:sec:window}
+
+The critical limiting law describes \(y=y_c\). It does not locate the
+finite-size region in which early and late failures both have substantial
+probability. We first prove a general endpoint-sum lemma, then apply
+the uniform estimate.
+
+\subsection{Competition between a summable tail and a geometric weight}
+
+\begin{lemma}[Endpoint competition]\label{fpf:lp:lem:competition}
+Let \(p_m\ge0\), \(P=\sum_{m\ge0}p_m\in(0,\infty)\), and suppose
+\(p_m\sim a m^{-\alpha}\), with \(a>0\) and \(\alpha>1\). For
+complex \(s\), set
+\[
+ w_n(s)=(\alpha-1)\log n+\log\log n+s,
+ \qquad
+ S_n(s)=\sum_{m=0}^np_m
+             \exp\!\left[-w_n(s)\frac{n-m}{n}\right].
+\]
+Then, locally uniformly for \(s\in\mathbb C\),
+\begin{equation}\label{fpf:lp:eq:competition}
+ n^{\alpha-1}\log n\,S_n(s)
+ \longrightarrow Pe^{-s}+\frac a{\alpha-1}.
+\end{equation}
+The part with \(m\le n/2\) contributes \(Pe^{-s}\); the other part
+contributes \(a/(\alpha-1)\).
+\end{lemma}
+\begin{proof}
+All estimates below are uniform when \(s\) lies in a fixed compact
+set. Write \(w=w_n(s)\) and \(L=(\alpha-1)\log n\).
+For \(m\le n/2\), factor out \(e^{-w}\). Up to \(m\le n/L^2\),
+\(e^{wm/n}=1+o(1)\) uniformly, and the partial sum of \(p_m\) tends
+to \(P\). On the remaining interval,
+\[
+ \sum_{n/L^2<m\le n/2}p_m|e^{wm/n}|
+ \le e^{\Re w/2}\,O((n/L^2)^{1-\alpha})=o(1).
+\]
+The last estimate follows because its power of \(n\) is
+\(- (\alpha-1)/2<0\), whereas its other factors are powers of
+\(\log n\). This proves that the late endpoint contributes
+\(e^{-w}(P+o(1))\).
+
+For \(m>n/2\), put \(k=n-m\). Uniformly on
+\(0\le k\le n/\sqrt L\),
+\(p_{n-k}=a n^{-\alpha}(1+o(1))\). The remaining weighted sum is
+negligible: on \(n/\sqrt L<k<n/2\), the coefficients are
+\(O(n^{-\alpha})\), and the sum of exponential weights is at most
+\(O(n e^{-c\sqrt L})\), for a fixed \(c>0\).
+For the principal range the geometric sum gives
+\[
+ \sum_{k\ge0}e^{-wk/n}
+ =\frac1{1-e^{-w/n}}\sim\frac n w.
+\]
+Absolute sums obey the same bounds, so the uniform coefficient error
+does not depend on cancellation when \(s\) is complex. Hence the
+early endpoint contributes \(a n^{1-\alpha}/w\,(1+o(1))\).
+Now \(e^{-w}=n^{1-\alpha}(\log n)^{-1}e^{-s}\), and
+\(w/\log n\to\alpha-1\), proving \eqref{fpf:lp:eq:competition}.
+\end{proof}
+
+For real \(s\), the same proof gives two conditional laws for the
+probability weights defining \(S_n\). Conditional on \(m\le n/2\),
+the variable \(m\) converges in total variation to \(p_m/P\).
+Conditional on \(m>n/2\), the variable \(k=n-m\) is asymptotically
+geometric with success probability \(1-e^{-w/n}\), in total variation, and
+\((w/n)k\Rightarrow\Exp(1)\). To see the variation assertions,
+use the same two cutoffs: on the principal range the relative weights
+are uniform approximations, while the absolute mass of the complements
+tends to zero. This also shows that the conclusions remain valid under
+an error whose total absolute mass is negligible relative to \(S_n\).
+
+\subsection{The window and its two conditional limits}
+
+For \(n\ge3\), define
+\begin{equation}\label{fpf:lp:eq:window-param}
+ b_n=\frac12\log n+\log\log n,\qquad
+ y_n(s)=y_c\exp\!\left[-\frac{b_n+s}{n}\right].
+\end{equation}
+
+\begin{theorem}[The logarithmically displaced window]\label{fpf:lp:thm:window}
+For every fixed \(r\ge3\), locally uniformly for complex \(s\),
+\begin{equation}\label{fpf:lp:eq:window-Z}
+ \boxed{\displaystyle
+ \sqrt n\log n\,4^{-n}Z_{n,r}(y_n(s))
+ \longrightarrow 2a_r+P_r e^{-s}.}
+\end{equation}
+For real \(s\), under the probability measure with weight \(y_n(s)^K\),
+\begin{equation}\label{fpf:lp:eq:mixture}
+ \frac{K_{n,r}^{(y_n(s))}}n
+ \Rightarrow (1-\omega_r(s))\delta_0+\omega_r(s)\delta_1,
+ \qquad
+ \omega_r(s)=\frac{P_re^{-s}}{2a_r+P_re^{-s}}.
+\end{equation}
+Writing \(\epsilon_n=(b_n+s)/n\), which is positive for all sufficiently
+large \(n\) for each fixed real \(s\), the early phase satisfies
+\begin{equation}\label{fpf:lp:eq:early}
+ \TV\!\left(
+ \Law(K_{n,r}^{(y_n(s))}\mid K_{n,r}^{(y_n(s))}\le n/2),
+ \Geom(e^{-\epsilon_n})\right)\longrightarrow0,
+\end{equation}
+and hence \(\epsilon_n K\Rightarrow\Exp(1)\) under that conditioning.
+The late phase satisfies
+\begin{equation}\label{fpf:lp:eq:late}
+ \TV\!\left(
+ \Law(n-K_{n,r}^{(y_n(s))}\mid K_{n,r}^{(y_n(s))}>n/2),
+ \Law(M_r)\right)\longrightarrow0.
+\end{equation}
+\end{theorem}
+\begin{proof}
+By \eqref{fpf:lp:eq:kernel}, uniformly for \(s\) in a fixed compact subset
+of \(\mathbb C\),
+\begin{equation}\label{fpf:lp:eq:window-convolution}
+ 4^{-n}Z_{n,r}(y_n(s))
+ =\sum_{m=0}^np_{r,m}e^{-(b_n+s)(n-m)/n}+O_r(n^{-3/2}).
+\end{equation}
+Indeed \(\Re(b_n+s)>0\) for all sufficiently large \(n\), so the
+absolute exponential weight is at most one; the error is bounded by
+\eqref{fpf:lp:eq:error-sum}. Apply Lemma~\ref{fpf:lp:lem:competition} with
+\(\alpha=3/2\), \(a=a_r\), and \(P=P_r\). The scaled error is
+\(O((\log n)/n)\), which tends to zero. This proves the asserted
+complex-uniform limit, not only its real restriction.
+
+For real \(s\), the two endpoint contributions in the lemma are positive.
+Their normalized limits give the two weights in \eqref{fpf:lp:eq:mixture}.
+The coefficient errors have total absolute mass \(O(n^{-3/2})\),
+negligible compared with the mass of either endpoint,
+which has order \(n^{-1/2}/\log n\). Thus the lemma's conditional
+variation estimates pass to the actual permutation distribution.
+The possible boundary term at \(K=n/2\) has negligible mass, so its
+assignment to the early phase does not affect the conditional limits.
+In the early phase, \(K/n\to0\) because \(n\epsilon_n\to\infty\);
+in the late phase, the deficit is tight. This proves all assertions.
+\end{proof}
+
+The center can be normalized to eliminate the model-dependent constants.
+Put
+\begin{equation}\label{fpf:lp:eq:centered-window}
+ s_r^*=\log\frac{P_r}{2a_r},\qquad
+ \widetilde y_n(s)=y_c\exp\!\left[-\frac{b_n+s_r^*+s}{n}\right].
+\end{equation}
+Then the late-phase weight is exactly the limiting logistic expression
+\(1/(1+e^s)\), and the limit in \eqref{fpf:lp:eq:window-Z}, divided by
+\(2a_r\), is \(1+e^{-s}\).
+
+The displacement is essential. If instead \(y_n=y_c e^{-c/n}\)
+for a fixed real \(c\), dominated convergence in the convolution gives
+\(4^{-n}Z_{n,r}(y_n)\to P_re^{-c}\), and the deficit still converges
+to \(M_r\). Such a window sees only the late phase.
+
+The reason for the extra \(\log\log n\) is explicit. Late failures
+have mass about \(P_re^{-w}\), while early failures have mass about
+\(a_r n^{-1/2}/w\). Equating them gives
+\(w e^{-w}=(a_r/P_r)n^{-1/2}\). The large solution is expressible
+using the negative real branch of Lambert \(W\); expanding that equation
+gives precisely \(b_n+s_r^*+o(1)\). This is a way to understand the
+center, not an exact finite-size formula for the weight giving a
+half-and-half split.
+
+\begin{writenote}[Added 5 October 2026, batch~98: relation to Part~I's window]
+Part~I's Theorem~\ref{fpf:thm:window} is the \(r=2\) analogue: there the
+window \(y=2e^{\lambda/n}\) has order \(1/n\) and is not displaced, and the
+limit is a continuous tilt \eqref{fpf:eq:window-density} of the beta law,
+not a two-point mixture. Theorem~\ref{fpf:lp:thm:window} does not apply at
+\(r=2\) (Lemma~\ref{fpf:lp:lem:competition} needs \(P<\infty\); see the
+\textsf{[write]} note in Section~\ref{fpf:lp:sec:kernel}). The Lambert-\(W\)
+reading of the centre in the previous paragraph is a heuristic of the
+manuscript; it is carried as an open item in
+Section~\ref{fpf:lp:sec:future} (question~3).
+\end{writenote}
+
+\section{Complex zeros near the displaced window}
+\label{fpf:lp:sec:zeros}
+
+The coefficients of \(Z_{n,r}(y)\) are nonnegative, so it has no positive
+real zeros. The complex version of Theorem~\ref{fpf:lp:thm:window}
+nevertheless locates zeros approaching the positive critical point from off
+the real axis.
+
+\begin{theorem}[Local complex zero asymptotics]\label{fpf:lp:thm:zeros}
+Fix \(r\ge3\) and an integer \(j\). For all sufficiently large \(n\),
+there is a zero \(z_{n,j}\) of \(Z_{n,r}\) satisfying
+\begin{equation}\label{fpf:lp:eq:zeros}
+ z_{n,j}=y_c\exp\!\left[-\frac{
+ \tfrac12\log n+\log\log n+\log(P_r/(2a_r))
+ +(2j+1)\pi\ii+o(1)}{n}\right].
+\end{equation}
+More precisely, in the \(s\)-coordinate of \eqref{fpf:lp:eq:window-param},
+there is exactly one zero, counted with multiplicity, in each sufficiently
+small fixed disk about
+\(s_r^*+(2j+1)\pi\ii\), for all large \(n\).
+On any compact region whose boundary contains no zero of
+\(2a_r+P_re^{-s}\), the total number of zeros eventually equals that
+of the limiting function.
+\end{theorem}
+\begin{proof}
+The entire functions
+\(\varphi_n(s)=\sqrt n\log n\,4^{-n}Z_{n,r}(y_n(s))\)
+converge locally uniformly to \(\varphi(s)=2a_r+P_re^{-s}\).
+The zeros of \(\varphi\) are precisely the displayed \(s\)-values, and are
+simple because \(\varphi'(s)=2a_r\) there. On the boundary of a
+sufficiently small disk about one of them, \(|\varphi|\) has positive
+minimum. For large \(n\), \(|\varphi_n-\varphi|<|\varphi|\) on the
+boundary, so Rouch\'e's theorem gives one zero inside. Shrinking the disk
+proves convergence of its location. The exponential map defining
+\(y_n(s)\) is locally one-to-one and has nonzero derivative, so
+multiplicity is preserved and the image is a zero of \(Z_{n,r}\). The same
+boundary argument proves the compact-region assertion.
+\end{proof}
+
+In particular, the pair corresponding to imaginary coordinates
+\(\pm\pi\) has imaginary distance asymptotic to \(\pi y_c/n\) from
+the real axis, while its real displacement from \(y_c\) is of order
+\((\log n)/n\). The theorem concerns these local sequences of zeros.
+It does not assert that they are globally the closest zeros, describe
+all zeros of \(Z_{n,r}\), or settle the original \(r=2\) zero problem.
+
+\section{A worked example: first failure of \texorpdfstring{\(1432\)}{1432}}
+\label{fpf:lp:sec:example}
+
+For \(r=3\), the algebraic constants simplify to
+\begin{align}
+ \rho_3&=\frac{3-\sqrt5}{2},&
+ \Lambda_3&=\frac{3+\sqrt5}{2},&
+ y_c&=6-2\sqrt5,\label{fpf:lp:eq:golden1}\\
+ P_3&=\frac{5-\sqrt5}{2},&
+ a_3&=\frac4{\sqrt\pi},&
+ s_3^*&=\log\frac{(5-\sqrt5)\sqrt\pi}{16}.
+ \label{fpf:lp:eq:golden2}
+\end{align}
+Numerically \(y_c=1.5278640450\ldots\) and
+\(s_3^*=-1.1835694676\ldots\).
+The critical deficit generating function is
+\begin{equation}\label{fpf:lp:eq:golden-pgf}
+ \E t^{M_3}=\frac15+
+ \frac{\sqrt5-2}{20}
+ \frac{tC(t/4)^4}{1-\frac{3-\sqrt5}{2}C(t/4)}.
+\end{equation}
+Thus exactly one fifth of the limiting critical mass has zero deficit:
+\begin{equation}\label{fpf:lp:eq:golden-moments}
+ \Prob(M_3=0)=\frac15,\qquad
+ \E M_{n,3}^{(y_c)}\sim
+ \frac{16}{\sqrt\pi(5-\sqrt5)}\sqrt n
+ =3.266011343\ldots\sqrt n.
+\end{equation}
+The equality \(M=0\) means that the entire permutation avoids \(1432\).
+The remaining mass has a heavy tail, even though \(K/n\to1\).
+
+\begin{table}[ht]
+\centering\small
+\begin{tabular}{@{}r l r@{}}
+\toprule
+\(n\) & Row \(T_3(n,1),\ldots,T_3(n,n)\) & Row sum \\
+\midrule
+3 & \(0,0,5\) & 5 \\
+4 & \(0,0,1,13\) & 14 \\
+5 & \(0,0,4,4,34\) & 42 \\
+6 & \(0,0,14,17,12,89\) & 132 \\
+7 & \(0,0,48,62,53,33,233\) & 429 \\
+8 & \(0,0,165,219,199,149,88,610\) & 1430 \\
+\bottomrule
+\end{tabular}
+\caption{Exact rows from the positive formula, independently checked by
+direct permutation inspection and an insertion-state recurrence.}
+\label{fpf:lp:tab:exact}
+\end{table}
+
+\begin{figure}[p]
+\centering
+\includegraphics[width=\linewidth]{figures/02-longer-patterns-critical_deficit.pdf}
+\caption{Critical behavior for \(r=3\). The left panel compares the
+finite-size deficit masses at \(n=4000\), the exact limiting generating
+function \eqref{fpf:lp:eq:golden-pgf}, and its power-law tail. The right
+panel shows the slowly converging normalized mean. Counts are computed with
+integer arithmetic before numerical normalization. The curves are
+diagnostics of the proved limits, not finite-input error certificates.}
+\label{fpf:lp:fig:critical}
+\end{figure}
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{@{}r r r@{}}
+\toprule
+\(n\) & \(\E_{y_c}M/\sqrt n\) &
+ \(\Prob_{y_n(0)}(K>n/2)\) \\
+\midrule
+100  & 1.8319121364 & 0.4402574792 \\
+400  & 2.4626378672 & 0.3918548955 \\
+1200 & 2.7801973301 & 0.3667208049 \\
+4000 & 2.9925079412 & 0.3427198278 \\
+\midrule
+Limit & 3.2660113430 & 0.2344110035 \\
+\bottomrule
+\end{tabular}
+\caption{Convergence at the critical point and at \(s=0\) in the
+uncentered window \eqref{fpf:lp:eq:window-param}. The limiting window weight
+at \(s=0\) is \(P_3/(P_3+2a_3)\), not one half.}
+\label{fpf:lp:tab:numerical}
+\end{table}
+
+\begin{figure}[p]
+\centering
+\includegraphics[width=0.96\linewidth]{figures/02-longer-patterns-coexistence_window.pdf}
+\caption{The late-failure probability for \(r=3\) in the displaced
+window \eqref{fpf:lp:eq:window-param}. Finite-size values use exact integer
+coefficients; the limit is \(\omega_3(s)\). Even at \(n=4000\), the
+finite curves remain visibly separated from the limit. The theorem
+asserts convergence and does not provide a small finite-size error at
+these sizes.}
+\label{fpf:lp:fig:window}
+\end{figure}
+
+For additional perspective, numerical root finding with exact polynomial
+coefficients gives the values in Table~\ref{fpf:lp:tab:zeros}. They approach
+the root coordinate predicted by Theorem~\ref{fpf:lp:thm:zeros}, but slowly.
+Small numerical residuals validate the displayed approximate roots; they do
+not certify their global ordering among all polynomial zeros.
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{@{}r r r@{}}
+\toprule
+\(n\) & \(\Re s\) & \(\Im s\) \\
+\midrule
+100  & -0.6966203849 & 5.4649985806 \\
+400  & -0.8067427947 & 4.8600345465 \\
+1200 & -0.8602682888 & 4.5128712955 \\
+4000 & -0.9150779479 & 4.2367353381 \\
+\midrule
+Predicted limit & -1.1835694676 & 3.1415926536 \\
+\bottomrule
+\end{tabular}
+\caption{Numerical zeros near the first upper-half-plane branch in the
+\(s\)-coordinate. The computations use 55 decimal digits; they are
+diagnostic, not interval-certified root enclosures.}
+\label{fpf:lp:tab:zeros}
+\end{table}
+
+\begin{writenote}[Added 5 October 2026, batch~98: data sources]
+Tables~\ref{fpf:lp:tab:numerical} and~\ref{fpf:lp:tab:zeros} agree digit
+for digit with the shipped files \texttt{critical\_moments.csv},
+\texttt{coexistence\_probabilities.csv} and
+\texttt{complex\_zero\_diagnostics.csv}, and the rows of
+Table~\ref{fpf:lp:tab:exact} are in \texttt{exact\_small\_tables.csv}
+(all four in \texttt{data/}, with the prefix
+\texttt{02-longer-patterns-}). The intake's
+independent check reproduced \(\rho_3\), \(y_c\), \(P_3\), \(a_3\),
+\(s_3^*\), \(2a_3/P_3\), \(P_3/(P_3+2a_3)\) and \(\Prob(M_3=0)=\frac15\)
+to 40 digits.
+\end{writenote}
+
+\newpage
+\section{Verification, reproducibility, and formalization}
+\label{fpf:lp:sec:verification}
+
+The proofs above are independent of the computations. Finite enumeration
+can detect errors in the model, indices, or formulas, while the uniform
+estimate is what establishes the asymptotic conclusions. The archive
+contains two complementary programs using only the Python standard
+library for their core verification.
+
+\begin{table}[ht]
+\centering\small
+\begin{tabular}{@{}p{0.48\linewidth}p{0.43\linewidth}@{}}
+\toprule
+Independent check & Executed scope \\
+\midrule
+Literal subsequence tests on permutations & Every permutation of sizes 1--9; \(r=2,\ldots,6\). \\
+First-failure and suffix-state insertion DP & \(n\le40\), \(r=2,\ldots,6\). \\
+Safe-state tails, support, diagonal, Catalan sums & \(n\le120\), \(r=2,\ldots,6\). \\
+Direct series substitution in the bivariate GF & Five integer values of \(y\), \(n\le40\), \(r=2,\ldots,6\). \\
+Rational normalization, mean, variance & \(r=2,\ldots,60\), with independent spectral-sum checks. \\
+Integer recurrence for the figures & Selected \(r=3\) rows through \(n=4000\); 166 entries independently checked by the finite binomial sum. \\
+\bottomrule
+\end{tabular}
+\caption{Verification actually executed. Detailed counts and outcomes
+are preserved in the JSON records.}
+\label{fpf:lp:tab:verification}
+\end{table}
+
+The literal enumeration inspected 409,113 permutations, including all
+6,917 permutations avoiding \(123\) in those sizes. The figures' program
+performed 7,990,003 integer recurrence updates and verified the Catalan
+sums of all nine rows it computed. Numerical normalization and plotting
+then use floating-point arithmetic; the optional complex roots use
+\texttt{mpmath}. The additional limit-law audit includes large-index
+critical-moment comparisons and the exact arithmetic underlying the
+Wasserstein bound. The saved output distinguishes these comparisons
+from exact rational identities.
+
+\subsection{Reproduction}
+
+From the extracted article directory, run
+\begin{verbatim}
+python3 code/verify_first_failure.py
+python3 code/make_figures.py
+latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
+\end{verbatim}
+The first command uses only the standard library and also runs
+\texttt{audit\_limit\_laws.py}. The figure command needs the dependencies
+listed in \texttt{requirements.txt}. The included figure PDFs and data
+can be used directly, so rebuilding the article alone does not require
+Python. Programs write fresh outputs to \texttt{data/} and
+\texttt{figures/}; the delivery README describes the output paths.
+No program needs a network connection.
+
+\begin{writenote}[Added 5 October 2026, batch~98: the shipped layout]
+The commands above are for the delivered archive. In this report the
+manuscript's files carry the prefix \texttt{02-longer-patterns-} in
+\texttt{code/}, \texttt{data/} and \texttt{figures/}, with
+\texttt{requirements.txt} and \texttt{provenance.json} in \texttt{data/};
+the delivery README, article and PDF are not shipped. The two verification
+programs import each other by their delivered names, and every program
+writes unprefixed files under \texttt{data/} and \texttt{figures/}: run in
+place, \texttt{verify\_first\_failure.py} would overwrite Part~I's
+\texttt{data/verification\_summary.json}. Run them only on a copy with the
+delivered names restored; the README gives the commands. Rerun so on
+5~October 2026 (Python~3.14.4), the verifier passed in 39~s with its CSV
+byte-identical, its summary identical up to the elapsed time, and the
+limit-law audit identical up to last-place floating-point digits; the
+figure program passed in 3~min~16~s with the zero diagnostics
+byte-identical and the other tables equal to relative \(9\cdot10^{-16}\).
+\end{writenote}
+
+\subsection{A concrete route to proof-assistant formalization}
+
+The first formalization target should be the combinatorial meaning of
+the coefficients. Define pattern occurrence using order-preserving
+maps of finite position sets, and define restriction to the largest
+\(k\) values. Prove that inserting a new minimum and deleting it are
+inverse operations after standardization. Then establish the active-site
+lemma and show that a first \(\tau_r\) occurrence is created exactly
+at sites \(j\ge r\). These steps connect the count to permutations;
+a formal identity between rational generating functions alone would
+not make that connection.
+
+The next layer is algebraic: safe-state recurrences, the tail
+\(u^j/\Delta_r(u)\), the Catalan descendant series, and the coefficient
+formula. It can be checked with formal power series and finite sums.
+The Chebyshev factorization and the geometric distribution give further
+isolated targets, including exact moments and the coupling inequality.
+
+The analytic layer should state \eqref{fpf:lp:eq:kernel} with explicit
+quantifiers over both indices and over constants depending on \(r\).
+From that interface, the critical laws and the endpoint lemma use
+ordinary estimates for positive series. The complex-zero result adds
+local uniform convergence and Rouch\'e's theorem. Nothing in this
+article is claimed to have been formalized in Lean or Rocq, and the
+repository's other formal developments do not change that status.
+
+\section{Further questions and research}
+\label{fpf:lp:sec:future}
+
+The following questions are specific continuations of the results proved
+here. They are proposed research directions; except where a source is
+named, they are not represented as established open problems from the
+literature.
+
+\begin{writenote}[Added 5 October 2026, batch~98: how this list is kept]
+Questions~1--10 are manuscript~07's section~12, printed in full. By the
+repository's rule for unproved claims, questions~11 and~12 add the two
+assertions of the manuscript that this Part does not prove (each with its
+source, its sketch and what is missing). Where a question coincides with
+one of Part~I's (Section~\ref{fpf:sec:formal}), both are kept and each
+carries a note. No claim of the manuscript was found to be false.
+\end{writenote}
+
+\begin{enumerate}[leftmargin=*,label=\textbf{\arabic*.}]
+\item \textbf{A joint large-permutation, long-pattern theorem.}
+Determine conditions on \(r=r(n)\) under which
+\(K_{n,r}^{(1)}/r^2\Rightarrow \mathcal W\). The natural starting range is
+\(r^2=o(n)\), but the current fixed-\(r\) error constants are not
+uniform there. When \(r\) is of order \(\sqrt n\), the finite ceiling
+\(K\le n\) interacts with the limit law and should create a new
+crossover. No particular joint limiting formula is asserted here.
+
+\item \textbf{Uniformity as the critical weight approaches one.}
+Since \(y_c=\sec^2(\pi/(r+2))=1+\pi^2/(r+2)^2+O(r^{-4})\),
+the weighted transition moves toward the unweighted model as the pattern
+grows. Develop a theory in which this displacement competes with the
+\((\log n)/n\) displacement of Theorem~\ref{fpf:lp:thm:window}. This
+requires keeping the spectral gap and the tail constants uniform in \(r\).
+
+\item \textbf{Higher-order coexistence asymptotics.}
+Expand the endpoint convolution beyond its limit, including terms in
+\((\log\log n)/\log n\), \(1/\log n\), and \(n^{-1/2}\).
+The sizeable discrepancies in Table~\ref{fpf:lp:tab:numerical} make this
+practically useful. A worthwhile endpoint is a rigorously controlled
+approximation to the actual finite-size median transition weight.
+
+\begin{writenote}[Added 5 October 2026, batch~98: the centre, what is proved and what is not]
+The manuscript explains the centre of the window by the equation
+\(we^{-w}=(a_r/P_r)n^{-1/2}\), whose large (Lambert-\(W_{-1}\)) solution
+expands to \(b_n+s_r^*+o(1)\) (Section~\ref{fpf:lp:sec:window}), and calls
+this ``not an exact finite-size formula''. Its leading order is in fact a
+consequence of Theorem~\ref{fpf:lp:thm:window}. For fixed \(n\), the tilted
+laws of \(K\) form an exponential family in \(\log y\), so
+\(\Prob_{y}(K>n/2)\) is continuous and strictly increasing in \(y\), from
+\(0\) to \(1\); let \(y_n^{\mathrm{med}}\) be the weight where it equals
+\(\frac12\), and write it as \(\widetilde y_n(\sigma_n)\) in the centred
+coordinate \eqref{fpf:lp:eq:centered-window}. The proof of
+Theorem~\ref{fpf:lp:thm:window} shows that
+\(\Prob_{\widetilde y_n(s)}(K>n/2)\to1/(1+e^s)\) for each real \(s\). For
+\(\varepsilon>0\) the limits at \(s=\mp\varepsilon\) lie on either side of
+\(\frac12\), so by monotonicity \(|\sigma_n|<\varepsilon\) for all large
+\(n\): \(\sigma_n\to0\), that is,
+\(y_n^{\mathrm{med}}=y_c\exp[-(b_n+s_r^*+o(1))/n]\). What remains open is
+the rate of \(\sigma_n\to0\), which is this question; at \(r=3\) the
+finite-size late probability at \(s=0\) of the uncentred window is still
+\(0.343\) at \(n=4000\) against the limit \(0.234\)
+(Table~\ref{fpf:lp:tab:numerical}).
+\end{writenote}
+
+\item \textbf{Effective constants in the uniform estimate.}
+The proof permits a concrete contour radius \(R\) and explicit
+majorants. Optimize these choices to produce usable numerical values
+of \(\Theta_r\) and \(\eta_r\), then propagate them through the critical
+and coexistence estimates. This would turn the present asymptotic laws
+into certified finite-input error bounds.
+
+\item \textbf{The original \(r=2\) complex-zero problem.}
+The source report asks about zeros near \(y=2\). The present zero
+theorem applies to \(r\ge3\); \(r=2\) has a different limiting
+function because of the additional vanishing factor. Prove its
+complex-uniform scaling limit and analyze the resulting entire
+function's zeros, preserving that distinction.
+
+\begin{writenote}[Added 5 October 2026, batch~98]
+This is Part~I's question~4 (Section~\ref{fpf:sec:formal}), which stays
+open; Part~I proposes \(M(\lambda)\) of \eqref{fpf:eq:window-normalization}
+as the governing function. At \(r\ge3\) the corresponding function is
+\(2a_r+P_re^{-s}\) (Theorem~\ref{fpf:lp:thm:zeros}).
+\end{writenote}
+
+\item \textbf{Global zeros for the longer-pattern family.}
+Determine whether the local pair in Theorem~\ref{fpf:lp:thm:zeros} is
+eventually closest to the positive real axis in an appropriate region.
+Describe the other accumulation curves, and prove a zero-counting measure
+limit. The local Rouch\'e argument gives no such global information.
+
+\begin{writenote}[Added 5 October 2026, batch~98]
+The 55-digit roots of Table~\ref{fpf:lp:tab:zeros} (scaled residuals at
+most \(10^{-55}\) in \texttt{complex\_zero\_diagnostics.csv}) are not
+interval enclosures, and neither their position among all zeros of
+\(Z_{n,3}\) nor the slow approach to the predicted coordinate
+(\(\Im s=4.24\) at \(n=4000\) against \(\pi\)) is proved; both belong to
+this question.
+\end{writenote}
+
+\item \textbf{Joint statistics at the failure event.}
+Mark the suffix length immediately before failure, the failing site,
+and the final suffix length. The proof of Theorem~\ref{fpf:lp:thm:gf}
+retains the site variable \(j\), so a multivariate refinement is
+accessible. Determine its dependence on the heavy-tailed deficit and on
+the early-versus-late phase indicator.
+
+\begin{writenote}[Added 5 October 2026, batch~98]
+This generalizes Part~I's question~2 (joint first-failure and suffix
+statistics at \(r=2\)) to every \(r\) and adds the phase indicator; neither
+is answered.
+\end{writenote}
+
+\item \textbf{A direct path interpretation of first failure.}
+Chow--West and Krattenthaler identify the safe counts with bounded-height
+Dyck paths. Find a bijection carrying \(K_r\) to a natural path stopping
+statistic, not merely preserving the total number of safe objects.
+It may explain the geometric spectrum and the law \(\mathcal W\) at the
+level of individual combinatorial objects.
+
+\begin{writenote}[Added 5 October 2026, batch~98]
+Part~I's question~7 asks the same at \(r=2\).
+\end{writenote}
+
+\item \textbf{Other forbidden-pattern families.}
+Find classes whose safe transfer matrix has a dominant eigenvalue
+strictly below the unrestricted Catalan growth constant, and whose
+continuation law has a summable power tail. Establish hypotheses under
+which a uniform analogue of \eqref{fpf:lp:eq:kernel} holds. Then
+Lemma~\ref{fpf:lp:lem:competition} predicts the displacement
+\((\alpha-1)\log n+\log\log n\) in the exponent for a tail
+\(m^{-\alpha}\). The key difficulty is deriving the uniform kernel,
+not applying the endpoint lemma afterward.
+
+\item \textbf{Kernel-checked enumeration and certified sampling.}
+Formalize the positive coefficient formula and use it for exact sampling
+conditioned on \(K=k\). The independent geometric representation already
+samples the infinite-size subcritical law. Compare exact finite-size
+sampling with that approximation, and make the error bounds executable.
+
+\begin{writenote}[Added 5 October 2026, batch~98]
+Part~I's question~8 asks for the \(r=2\) exact layer in Lean; nothing in
+either Part is formalized.
+\end{writenote}
+
+\item \textbf{The predicted displacement in other families}
+(\textsf{[write]}, from question~9 and Lemma~\ref{fpf:lp:lem:competition}).
+The manuscript's ``predicts'' in question~9 is conditional: the
+displacement \((\alpha-1)\log n+\log\log n\) follows from
+Lemma~\ref{fpf:lp:lem:competition} only for a family that has a uniform
+estimate of the form \eqref{fpf:lp:eq:kernel} with a tail
+\(p_m\sim am^{-\alpha}\) of finite total mass. No family other than
+\(\tau_r\), \(r\ge3\), is shown here to have one, and the \textsf{[write]}
+note in Section~\ref{fpf:lp:sec:kernel} shows that \(\tau_2\) does not.
+What is missing is the uniform kernel for any second family.
+
+\item \textbf{Priority and the cited theorem numbers}
+(\textsf{[write]}, from the manuscript's Section~\ref{fpf:lp:app:audit}).
+The manuscript reports a targeted literature search that found no
+treatment of the longer-pattern first-failure refinement; it does not claim
+worldwide priority, and this write did not extend the search. The
+attributions of the safe counts to Chow--West, Theorem~3.1, and of the
+Dyck-path formulation and occurrence marking to Krattenthaler, Theorems~9
+and~8, are the manuscript's; this write did not recheck the theorem numbers
+against the papers. The reverse-complement step that matches \(\tau_r\)
+with Chow--West's pattern \(r(r-1)\cdots1(r+1)\) was rechecked.
+\end{enumerate}
+
+\section{Source audit and statement boundaries}
+\label{fpf:lp:app:audit}
+
+The repository was read at \lprepo. The full host article, its README,
+the research-report catalogue, and the checked-out enumerative and
+generating-function research directories were searched for this statistic.
+The inspected host still lists the general family in its first proposed
+research question; no later treatment was found in that scoped search.
+This is a snapshot-specific report, not a claim about every branch or
+uninspected file.
+
+\begin{writenote}[Added 5 October 2026, batch~98]
+Rechecked at the placement commit: outside this report, the repository
+mentions A273821 only in the collection's README and manifest, the intake
+README, a review catalogue and a \texttt{.gitattributes} file (listings and
+paths, not treatments); the pattern
+\(1(r+1)r\cdots2\) occurs only here, and no Lean or Rocq file mentions
+A273821. The host's question is now answered by this Part (the dated note
+at Part~I's question~1).
+\end{writenote}
+
+The direct OEIS retrieval identified the original \(r=2\) triangle and
+its displayed prefix. The safe enumeration was cross-checked against
+the primary Chow--West and Krattenthaler papers. The literature search
+also checked the first-ascent predecessor and standard singularity
+analysis. It found no independent treatment of the exact longer-pattern
+first-failure refinement, but does not establish worldwide priority.
+
+The distinctions relevant to reuse are:
+\begin{itemize}[leftmargin=*]
+\item Theorem \ref{fpf:lp:thm:gf} is exact for every integer \(r\ge2\).
+The \(r=2\) specialization is prior within ProveIt.
+\item Theorems \ref{fpf:lp:thm:kernel}--\ref{fpf:lp:thm:zeros} fix \(r\ge3\).
+Their constants have no claimed uniformity as \(r\to\infty\).
+\item The growing-pattern theorem applies to \(K_r^\infty\), the
+already-taken \(n\to\infty\) limit. It does not commute the limits.
+\item The complex-zero theorem is local in the scaled variable, for
+each fixed zero index. It does not assert a global ordering of roots.
+\item Numerical values and small root residuals are not interval
+certificates. The proofs of limit theorems are the analytic arguments,
+not those computations.
+\end{itemize}
+
+\section{A short exact-moment calculation}
+\label{fpf:lp:app:moments}
+
+Formula \eqref{fpf:lp:eq:D-two-roots} expands as the polynomial identity
+\begin{equation}\label{fpf:lp:eq:D-derivative}
+ \Delta_r(u)=2^{-r-1}\sum_{j\ge0}\binom{r+2}{2j+1}(1-4u)^j,
+ \qquad
+ \Delta_r^{(m)}(1/4)=2^{-r-1}(-4)^m m!\binom{r+2}{2m+1}.
+\end{equation}
+Terms with out-of-range binomial coefficients are zero. It follows that
+\[
+ \frac{\Delta_r'(1/4)}{\Delta_r(1/4)}=-\frac{2r(r+1)}3,
+ \qquad
+ \frac{\Delta_r''(1/4)}{\Delta_r(1/4)}
+ =\frac4{15}r(r+1)(r-1)(r-2).
+\]
+These two identities determine the mean and variance of
+\(\sum_jG_j\) by differentiating
+\(\Delta_r(1/4)/\Delta_r(t/4)\) at \(t=1\). Adding \(r+V_r\), where
+\[
+ \E V_r=1+\frac2{r+2},\qquad
+ \Var V_r=2+\frac6{r+2}-\frac4{(r+2)^2},
+\]
+gives \eqref{fpf:lp:eq:mean-K}--\eqref{fpf:lp:eq:var-K}. This derivation
+also justifies the finite trigonometric sum used in the Wasserstein proof
+without importing a separate summation theorem.
 
 \appendix
 \section{Additional exact identities and coefficients}
@@ -1754,6 +3673,39 @@ Project path: \texttt{Analysis/Transseries/README.md}.
 The README records the independent transseries library, canonical inversion
 volume, and combinatorial companion; these are contextual rather than
 logical dependencies of the proofs here.
+\bibitem{fpf-lp-cw}
+Timothy Y. Chow and Julian West, \emph{Forbidden subsequences and
+Chebyshev polynomials}, Discrete Mathematics \textbf{204} (1999),
+119--128. \href{https://doi.org/10.1016/S0012-365X(98)00384-7}
+{doi:10.1016/S0012-365X(98)00384-7}.
+Author-hosted primary text: \url{https://timothychow.net/chebyshev.pdf}.
+Cited by Part~II.
+
+\bibitem{fpf-lp-kratt}
+Christian Krattenthaler, \emph{Permutations with restricted patterns
+and Dyck paths}, Advances in Applied Mathematics \textbf{27} (2001),
+510--530. \href{https://doi.org/10.1006/aama.2001.0747}
+{doi:10.1006/aama.2001.0747}.
+\url{https://arxiv.org/abs/math/0002200}. Cited by Part~II.
+
+\bibitem{fpf-lp-firstascent}
+Samuel Connolly, Zachary Gabor, and Anant Godbole,
+\emph{The location of the first ascent in a $123$-avoiding
+permutation}, Integers \textbf{15} (2015), A13.
+\url{https://arxiv.org/abs/1401.2691}. Cited by Part~II.
+
+\bibitem{fpf-lp-fo}
+Philippe Flajolet and Andrew Odlyzko, \emph{Singularity analysis of
+generating functions}, SIAM Journal on Discrete Mathematics
+\textbf{3} (1990), 216--240.
+\href{https://doi.org/10.1137/0403019}{doi:10.1137/0403019}.
+\url{https://algo.inria.fr/flajolet/Publications/FlOd90b.pdf}.
+Cited by Part~II.
+
+\bibitem{fpf-lp-dlmf}
+NIST Digital Library of Mathematical Functions, Section 4.36,
+\emph{Infinite products and partial fractions}, equation 4.36.1.
+\url{https://dlmf.nist.gov/4.36.E1}. Cited by Part~II.
 \end{thebibliography}
 
 \end{document}
