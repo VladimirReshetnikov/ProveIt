@@ -74,7 +74,7 @@ any statement of this report.
 ```
 article.tex   the merged report, standalone LaTeX with an internal bibliography (source 62's
               delivered article/relaxed-binary-trees.tex, rewritten as the merged text)
-article.pdf   the compiled report, 175 pages
+article.pdf   the compiled report, 176 pages
 README.md     this guide (replaces source 62's delivered README.md)
 ```
 
@@ -401,6 +401,11 @@ labels of the restatements replaced by pointers (101's `eq:S`, `eq:R`; 103's `eq
 101 had no label and received `sec:result`. Report 100's Section k is Section k + 66,
 Report 101's k + 79, Report 103's k + 91; Section 66 is Part V's guide and Section 105 its
 question register. Notes added then are marked **[write, 5 October 2026, batch 102]**.
+The record of the intake's independent check of the batch-102 write (5 October 2026: an
+unlabelled dated paragraph at the end of Section 105, a dated note in Section 66.5, a
+sharpened uniqueness sentence in the proof of Remark 66.2 and two added sentences in the
+proof of Corollary 66.3) added no label and renumbered none (`.aux`
+files of the committed and the new text compared: all 563 entries keep their numbers).
 
 Sections are numbered through the report: source 62's Section k is Section k; source 15's
 is k + 15; source 18's k + 29; source 66's k + 37; source 29's k + 46; source 48's k + 52.
@@ -471,7 +476,37 @@ The readings most likely to mislead:
   automaton d₄ = −5429z²/19440, c₄, σ₇, b_n/(8n b_{n−1}) through n^{−7/3} and the explicit
   X^{−1/3} term of the inverse. Proved at the write: Remarks 66.1 (positivity in Part I),
   66.2 (σ_m = 2 s_m for every m, ℓ_j = h_j) and Corollary 66.3 (Report 100's compacted
-  formal expansions are genuine).
+  formal expansions are genuine). Corollary 66.3 has two dependencies, stated in its proof
+  since the independent check: that Report 101's printed b₁…b₆ are the coefficients of its
+  Theorem 80.2 rests on Report 100's exact certificate suite (a certified finite
+  computation, not a step derived in the text), and γ_c > 0 comes, through Report 101 and
+  Part II, from the published compacted lower bound. Unlike Remark 66.1, it is therefore
+  not free of external input.
+- *[Independent check, 5 October 2026.]* An adversarial check made by the intake after the
+  write (`3e71ff1e6`) reread Lemma 72.1 (restart positivity, with circularity specifically
+  in mind), Remarks 66.1 and 66.2 and Corollary 66.3 with the write's proofs, and the
+  coefficient conversions between Reports 100, 101, 103 and Parts I, II, IV. It found no
+  counterexample and no mathematical error: everything valid, with two dependencies of
+  Corollary 66.3 left unstated (above). Both are now stated in the proof, in the check's
+  wording; the opening sentence of Section 66.5 ("use only results printed in this
+  report") now reads "printed or cited" and names the corollary's dependence on the
+  published lower bound, with a dated note keeping the first wording. Remark 66.2's proof
+  adopts the check's optional precision: uniqueness of the formal solution holds within
+  the polynomial–Airy class (P_j A + Q_j A′ with polynomial P_j, Q_j), and fails over all
+  smooth functions because of a Bi-type homogeneous solution; Part IV takes its uniqueness
+  proof from Part II's paragraph. No other statement or number changed. The check used
+  its own programs and transcribed every printed value afresh: exact counts to n = 3000,
+  matching all 350 OEIS b-file terms of A082161 and all 372 of A254789; double-precision
+  runs of the restart to n = 3000 from N = 10, 50, 100, 300, 1000, with the restarted
+  projections bounded away from zero and 1 − a_n(w) of order N^{−1/3}; 76/76 conversion
+  identities in its own truncated power-series arithmetic, by a ratio route different from
+  the write's, difference zero; ratio residuals at n = 500, 1000, 2000, 3000 reproducing
+  Report 100's table digit for digit, residual · n^{10/3} bounded; b₄, b₅, b₆ recovered by
+  fits that take only b₁, b₂, b₃ as input (b₄ to eight digits, b₅ to four or five, b₆ to
+  two or three); and the extrapolated amplitudes 166.95208957422 (relaxed) and
+  173.1267048501473 (compacted), equal to the printed values and uncertified evidence
+  only. The record is an unlabelled dated paragraph at the end of Section 105. This was a
+  careful reading with numerical tests, not a formal verification.
 
 ## What is not claimed
 
@@ -495,6 +530,9 @@ The readings most likely to mislead:
   G⁽⁴⁾₃₀₀₀ = 76.4383234197) are uncertified evidence. Reports 101 and 103 still take
   positivity from published lower bounds (compacted; for 103 with the comparison
   b_n ≥ 2^{n−1} c_n); whether Lemma 72.1's argument can replace them is open (Question V.5).
+  Corollary 66.3 inherits the compacted lower bound in the same way, and the
+  identification of Report 101's printed b₁…b₆ with its theorem's coefficients is a
+  certified finite computation (Report 100's exact suite), not a derivation in the text.
   Report 103's remark that the transformed arrays printed on pp. 11:6–11:7 of the AofA 2020
   paper give 5/4 instead of 3/2 at one entry when read uniformly was **not** checked against
   the paper (Question V.4); Report 103 says it is not a claim that the published theorem is
@@ -541,13 +579,15 @@ BibTeX):
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The build of 5 October 2026 has 0 errors, 0 warnings (no undefined references or
-citations, no multiply defined labels, no duplicate destinations) and 0 overfull boxes,
-and gives 175 pages: title, abstract and contents pp. 1–7, Part 0 (guide) pp. 8–16,
-Part I pp. 16–38, Part II pp. 38–55, Part III pp. 55–88, Part IV pp. 88–99, Part V
-pp. 99–171 (guide Section 66 pp. 99–105, Report 100 pp. 105–129, Report 101 pp. 129–146,
-Report 103 pp. 146–169, Section 105 pp. 169–171), Appendix A pp. 171–174, references
-pp. 174–175. (The build of 2 October 2026, before Part V, had 98 pages.) The contents use a
+The build of 5 October 2026 (rebuilt the same day after the independent check, with four
+pdfLaTeX passes in a scratch copy) has 0 errors, 0 warnings (no undefined references or
+citations, no multiply defined labels, no duplicate destinations) and 0 overfull or
+underfull boxes, and gives 176 pages: title, abstract and contents pp. 1–7, Part 0
+(guide) pp. 8–16, Part I pp. 16–38, Part II pp. 38–55, Part III pp. 55–88, Part IV
+pp. 88–99, Part V pp. 99–171 (guide Section 66 pp. 99–105, Report 100 pp. 105–129,
+Report 101 pp. 129–146, Report 103 pp. 146–169, Section 105 pp. 169–171), Appendix A
+pp. 172–175, references pp. 175–176. (The build of 2 October 2026, before Part V, had 98
+pages; the batch-102 write had 175.) The contents use a
 2em number box for Sections 66–105 (`\airwidertoc`), since 100–105 have three digits.
 
 ## Rerunning the programs
@@ -636,6 +676,10 @@ G₁₀₀₀ = 102.077189105… (printed …106, last-digit rounding) and G⁽�
 SymPy recomputation at the write confirms every conversion between printed coefficients
 (b ↦ ratio for all three models, b ↦ d for 101, d ↦ c for 103 including c₄, agreement of
 b₁…b₃ and d₁…d₃ with Parts I, II, IV, and σ_m = 2 s_m for m = 3…6), difference zero.
+The intake's independent check after the write (5 October 2026; Part V summary above,
+and the end of Section 105) used its own programs: exact counts to n = 3000 against the
+full OEIS b-files, 76/76 conversion identities by a different ratio route, fits recovering
+b₄…b₆ from b₁…b₃, and the restart positivity runs.
 
 The shipped logs and `data/102-103-dfa-checks-data-exact.json`, like source 62's and 15's
 fixtures and `data/48-dfa-A331120.seq`, contain initial terms of OEIS A082161, A254789 and
