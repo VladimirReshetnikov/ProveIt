@@ -173,6 +173,22 @@
 > improvement. The universal84/187 and85/155 points remain unchanged.
 >
 >
+> The [six-report analytic triage](review_new_analytic_reports_e88ed8bf6.md)
+> reviews the new e88ed8bf6 archives through complete guide reads and selected
+> exact interfaces, with101 regular members authenticated. Fixed polynomial
+> certificates, order-dependent coefficient algorithms and infinite-profile
+> limit theorems supply no paid universal integer compiler in the inspected
+> material. Analytic Borel completion is distinguished from exact integer
+> counting. A new review-side spectral lemma gives a concrete boundary:
+> for a strictly positive degree-one Markov mask with uniformly computable-real
+> coefficients, a core eigenvalue lies on the critical circle exactly when
+> the encoded machine does not halt. This rules out a uniform finite
+> existential integer graph for that equality on arbitrary coefficient-program
+> indices; explicit rational/algebraic representations are outside the
+> obstruction. No full-manuscript certification or arithmetic saving is claimed.
+> 84/187/18 and the unresolved independent-gamma83 status remain unchanged.
+>
+>
 > The [actual Borel publication review](review_borel_write_20262718e.md)
 > checks the integration of four manuscripts as Parts XVIII–XXI at20262718e:
 > the full guide diff, selected article/proof interfaces,33 archive members,

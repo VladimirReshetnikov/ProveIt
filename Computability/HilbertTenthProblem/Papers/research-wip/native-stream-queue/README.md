@@ -158,6 +158,21 @@ or46 witnesses/SOS224/degree52. Native AND remains in the loader, so a
 cheaper loading/accepting-history compiler is still needed for a universal
 improvement. The universal84/187 and85/155 points remain unchanged.
 
+The [six-report analytic triage](review_new_analytic_reports_e88ed8bf6.md)
+reviews the new e88ed8bf6 archives through complete guide reads and selected
+exact interfaces, with101 regular members authenticated. Fixed polynomial
+certificates, order-dependent coefficient algorithms and infinite-profile
+limit theorems supply no paid universal integer compiler in the inspected
+material. Analytic Borel completion is distinguished from exact integer
+counting. A new review-side spectral lemma gives a concrete boundary:
+for a strictly positive degree-one Markov mask with uniformly computable-real
+coefficients, a core eigenvalue lies on the critical circle exactly when
+the encoded machine does not halt. This rules out a uniform finite
+existential integer graph for that equality on arbitrary coefficient-program
+indices; explicit rational/algebraic representations are outside the
+obstruction. No full-manuscript certification or arithmetic saving is claimed.
+84/187/18 and the unresolved independent-gamma83 status remain unchanged.
+
 The [actual Borel publication review](review_borel_write_20262718e.md)
 checks the integration of four manuscripts as Parts XVIII–XXI at20262718e:
 the full guide diff, selected article/proof interfaces,33 archive members,
@@ -5793,6 +5808,7 @@ New research and the completed75-operation construction:
 
 | Artifact | Established result | Remaining boundary |
 |---|---|---|
+| [Six analytic reports](review_new_analytic_reports_e88ed8bf6.md), [discrete](triage_discrete_e88ed8bf6.md), [Hankel/occupancy](triage_exotic_e88ed8bf6.md), [Fabius/spectral](triage_order_free_e88ed8bf6.md) |101 members authenticated; complete guides and selected exact interfaces; computable-real mask boundary equality encodes nonhalting even in a three-dimensional core. | No full-proof audit or paid universal compiler; coefficient representation, varying order and infinite certificates remain charged interfaces. |
 | [Actual Borel publication review](review_borel_write_20262718e.md), [support challenge](review_borel_support_20262718e.md), [flow challenge](review_pma_borel_flow_interfaces_20262718e.md), [root corrections](review_borel_write_20262718e_root.md) | Four actual Parts:33 members,17 placements,268 routes; selected proofs checked; zero-group summaries, citation premise and review scope corrected with retained remarks;744-page PDF built. | Exact scoped reads and inherited proofs distinguished; Borel/certificate interfaces supply no paid integer compiler or universal arithmetic saving. |
 | [Multiway Hadamard packing](hadamard_next_arithmetic.md), [review](review_hadamard_next_arithmetic.md), [root binding](hadamard_next_arithmetic.json), [saved arrays](hadamard_next_arithmetic_checks.json) | All-k carry-free central band; fully paid finite cyclic trajectory, exact degree6 and `(13n+18)T+11n-1` operations with given numerals. | Direct guarded evaluation is cheaper by `18T+2n-2`; variable-width loaders and unbounded-history compiler remain unpaid. |
 | [Native gamma83 restrictions](gamma83_native_next.md), [review](review_gamma83_native_next.md), [binding](gamma83_native_next.json) | Reciprocal-Eisenstein irreducibility of `H_r(T^k)`; genuine filtered `H=3u^f` forces `gcd(f,30)=1`, order30 modulo31 and `u=1+4q^3 mod8q^3`. | Formal irreducibility does not control specialized factorization; prime-power occurrence and the independent-gamma83 alias problem remain open. |
