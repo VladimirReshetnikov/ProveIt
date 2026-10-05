@@ -3811,7 +3811,16 @@ ceiling when its error interval straddles an integer.
 contain it. Its numerical starting point is the batch-97 intake's
 observation, by integrating \eqref{l7g:eq:ODE} from $z=-0.02$ to $z=-1+10^{-6}$
 at 40 digits, that $\sqrt{1+z}\,A'(z)$ approaches about $-0.0975$; the
-proof below makes that rigorous and does not use the integration.} The
+proof below makes that rigorous and does not use the integration.
+Dated note (4~October 2026): an independent adversarial check of
+Propositions~\ref{l7g:hp:prop:minusone} and~\ref{l7g:hp:prop:hamburger},
+Theorem~\ref{l7g:hp:thm:nostieltjes} and
+Corollary~\ref{l7g:hp:cor:rstar}, made by the intake after this write,
+found no gap: it recomputed $B_-$ by ODE integration matched to the two
+local solutions at $z=-1$ (agreement with the ${}_2F_1$ form to about
+$10^{-61}$), the alternating-series bounds in exact fractions, $D_6(1)$
+and the finite data behind Corollary~\ref{l7g:hp:cor:rstar}. It is a
+careful reading, not a formal verification or an external review.} The
 analytic continuation of $A$ along the segment $(-1,0]$ exists by
 Section~\ref{l7g:sec:singularity} (the only singular points of
 \eqref{l7g:eq:ODE} are $0$, $\rho$, $-1$). Its exponents at $z=-1$ are $0$
@@ -3984,7 +3993,10 @@ Proposition~\ref{l7g:hp:prop:hamburger} does not assert that such a
 measure exists. It makes manuscript~07's suggested route concrete: the only
 candidate is the measure whose Cauchy transform is $A(1/\varsigma)/\varsigma$,
 determined by the jumps of $A$ across $(-\infty,-1]$ and $[\rho,\infty)$,
-and the question is whether that candidate is positive.
+and the question is whether that candidate is positive. (The jumps cannot
+see an atom at $x=0$, which corresponds to $z=\infty$; such an atom is
+excluded because the exponents of \eqref{l7g:eq:ODE} at $z=\infty$ are
+$1/3$ and $2/3$, so $A(z)=O(|z|^{-1/3})$ there.)
 
 \subsection{Reproducibility, computations, and proof boundaries}\label{l7g:hp:sec:computations}
 \paragraph{The shipped programs.}
