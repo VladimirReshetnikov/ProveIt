@@ -173,6 +173,60 @@
 > improvement. The universal84/187 and85/155 points remain unchanged.
 >
 >
+> The [four Borel-report placement reviews](review_borel_placement_54ece48ab.md)
+> authenticate all21 changed paths at54ece48ab:17 exact ancillary additions,
+> four archive retirements,33 members and29 checksum entries. The host guide,
+> article and PDF remain unchanged with17 Parts; XVIII–XXI remain planned
+> writes. Earlier complete manuscript challenges retain their distinct group,
+> support, Borel and effective-presentation hypotheses. The original broken
+> flow reference and pending qualifications remain recorded. Root independently
+> checks45 immutable blobs, all placements and20 span records. Supplied
+> programs and builds stay inert; no paid universal compiler is added.
+>
+>
+> The [Beyond Ord placement followup](review_beyond_ord_placement_111c38012.md)
+> authenticates all17 changed paths at111c38012:13 ancillary files exactly
+> match the four retired archives, whose27 member hashes agree with the
+> original intake. The host guide, article and PDF remain unchanged with15
+> literal Part headings. The proposed Part XVI and its planned corrections
+> are not yet manuscript changes. Fresh root metadata checks pass normally
+> and under optimized Python; no supplied programs or prior helpers run.
+> The earlier bounded proof coverage remains, with no new arithmetic result.
+>
+>
+> The [atom-actions / commuting-injections placement review](review_atom_injection_placement_27f200305.md)
+> checks all nine changed paths at27f200305: seven exact ancillary copies
+> and two archive retirements. All14 members and eight delivered manifest
+> entries are authenticated. The host guide, article, PDF and source audit
+> are unchanged, retaining two Parts and146 labels; Part III remains a
+> planned manuscript write. Earlier scoped atom and full commuting proof
+> coverage is inherited without expanding it. Root independently checks the
+> mappings, eleven read spans and immutable blobs. No supplied code or build
+> runs, and no paid arithmetic compiler or bound changes.
+>
+>
+> The [hat-randomness placement review](review_hat_placement_635a3e026.md)
+> authenticates all six changed paths at635a3e026: five ancillary files exactly
+> match the retired eight-member archive. The host guide, article and PDF
+> are unchanged, and the source still has four Part headings; the commit's
+> Part V title does not establish manuscript publication. Three new read
+> spans cover241 lines. The previous endpoint review remains at its recorded
+> scope; supplied finite checks and builds were not replayed. Root independently
+> checks every mapping, diff, host blob and read span. No arithmetic bound changes.
+>
+>
+> The [two-type ordinal promise obstruction](ordinal_two_type_effectivity_boundary.md)
+> and [root proof challenge](review_ordinal_two_type_effectivity_boundary.md)
+> strengthen the earlier invalid-code decoder boundary. A uniformly decidable
+> order is always a well-order, of type omega when a machine halts and
+> omega+1 otherwise. Thus even this two-type promise does not permit effective
+> semantic normalization or finite verifiable existential witnesses for the
+> upper type on arbitrary program indices. The generated lower-type side
+> still has halting-time certificates. Explicit constructor syntax, restricted
+> coefficient systems and oracle interfaces remain outside this obstruction;
+> no claim of a defective Beyond Ord theorem or new arithmetic bound is made.
+>
+>
 > The [four Beyond Ord archive reviews](review_beyond_ord_e3839ad2c.md)
 > authenticate all27 members delivered at e3839ad2c, all16 delivered checksum
 > entries, and38 read spans covering2,468 lines plus446 context lines.
