@@ -183,7 +183,10 @@ order) and Proposition~\ref{shr:h5:prop:nothyper} (A181199 obeys no
 first-order recurrence). Dated notes at the end of Section~1.3, after
 Remark~8.1, at Research questions~1, 6, 7, 8 and~11, after the notes of
 Sections~11.3 and~23.3, after Remark~\ref{shr:bp:rem:constructive} and in
-Section~\ref{shr:bp:sec:further} say so.
+Section~\ref{shr:bp:sec:further} say so. The intake's independent check
+of the write (5~October 2026, end of Section~\ref{shr:sa:sec:further})
+added Propositions~\ref{shr:h4:prop:higher} and~\ref{shr:h5:prop:higher}:
+recurrences of lower degree and higher order for both sequences.
 \end{writenote}
 
 {\fontsize{9.5}{10.5}\selectfont\setlength{\parskip}{0pt}\tableofcontents}
@@ -3559,7 +3562,13 @@ or three (Proposition~\ref{shr:h5:prop:nothyper}). The small orders are
 explained by the Pfaffian reductions of Parts~\ref{shr:h4:part}
 and~\ref{shr:h5:part}, which leave one period at height four and two at
 height five. Open: the degrees over all orders, order two against three at
-$m=5$ (items~(F5) and~(F9)), and the growth with $m$.
+$m=5$ (items~(F5) and~(F9)), and the growth with $m$. (Added 5~October
+2026, after the intake's independent check: at $m=4$ the smallest degree
+is eight at order three and seven at orders four to eight,
+Proposition~\ref{shr:h4:prop:higher}; at $m=5$ there are recurrences of
+order four and degree $18$ and of order five and degree $16$,
+Proposition~\ref{shr:h5:prop:higher}. The degrees at higher orders stay
+open.)
 \end{writenote}
 
 \begin{question}[Describe event-rank limit laws]
@@ -4288,6 +4297,7 @@ is $[w(t)^2/2]_0^1=1/(8N^4)$. By \eqref{shr:h4:eq:K0},
 \begin{equation}
  J_0=\frac{K_0}N-\frac1{8N^4}
      =\frac HN-\frac1{8N^4}.
+ \label{shr:h4:eq:J0}
 \end{equation}
 Thus
 \begin{equation}
@@ -5417,9 +5427,131 @@ $\deg q_2=9+\deg\rho\ge9$.
 The same proof works over $\mathbb C$ in place of $\Q$. The proposition
 says nothing about recurrences of order three or more: a left multiple of
 the operator by a rational operator can have polynomial coefficients of
-lower degree, and whether this happens here is item~(F5) below. The
-corresponding statement at height five is
+lower degree, and Proposition~\ref{shr:h4:prop:higher} below shows that
+this happens here. (Revised 5~October 2026 after the intake's independent
+check, recorded at the end of Section~\ref{shr:sa:sec:further}; this
+sentence first ended ``and whether this happens here is item~(F5)
+below''.) The corresponding statement at height five is
 Proposition~\ref{shr:h5:prop:nothyper}.
+
+Proposition~\ref{shr:h4:prop:higher} was found and proved by the intake's
+independent check, 5~October 2026; it is neither the manuscript's nor the
+write's. Below, $E$ is the forward shift, $Ef(n)=f(n+1)E$, and
+$L=p_2(n)E^2+p_1(n)E+p_0(n)$ is the operator of
+Theorem~\ref{shr:h4:thm:oeis}; a product $(\sum_kQ_kE^k)L$ with rational
+$Q_k$ is taken in the Ore ring $\Q(n)[E]$.
+
+\begin{proposition}[\textbf{[check]} Lower degree at orders three to eight]
+\label{shr:h4:prop:higher}
+Let $a_n=T_4(n)$ (A181198).
+\begin{enumerate}[label=(\alph*),leftmargin=*]
+\item The left multiple
+\[
+ \frac{3E+4(1673n+942)}{7n^2+14n+6}\,L=\sum_{j=0}^{3}q_j(n)E^j
+\]
+has the polynomial coefficients
+\begin{align*}
+ q_3&=9(n+2)(n+3)^3(2n+5)(3n+7)(3n+8),\\
+ q_2&=12(n+2)(2n+3)(15057n^6+97156n^5+222866n^4+200444n^3\\
+    &\hspace{14mm}+33411n^2-21546n+6340),\\
+ q_1&=-32(2n+1)(4n+3)(4n+5)(86996n^5-17552n^4-200235n^3\\
+    &\hspace{14mm}-68149n^2+40579n+13581),\\
+ q_0&=-256(2n-1)^2(2n+1)(4n-1)(4n+1)(4n+3)(4n+5)(1673n+942),
+\end{align*}
+and $\sum_{j=0}^3q_j(n)a_{n+j}=0$ for every $n\ge1$: A181198 obeys a
+recurrence of order three and degree eight.
+\item The left multiple
+\[
+ \Bigl(\frac{E^2}{7n^2+28n+27}
+ -\frac{4(7315n^2+21945n+16406)\,E}{(7n^2+14n+6)(7n^2+28n+27)}
+ +\frac{239136}{7n^2+14n+6}\Bigr)L=\sum_{j=0}^{4}\tilde q_j(n)E^j
+\]
+has the polynomial coefficients
+\begin{align*}
+ \tilde q_4&=3(n+3)(n+4)^3(2n+7)(3n+10)(3n+11),\\
+ \tilde q_3&=-4(n+3)(2n+5)(29879n^5+358932n^4+1691327n^3\\
+    &\hspace{14mm}+3891444n^2+4346534n+1869504),\\
+ \tilde q_2&=32(2n+3)(1069163n^6+8737560n^5+26637818n^4\\
+    &\hspace{14mm}+34145688n^3+7805720n^2-19807932n-12702660),\\
+ \tilde q_1&=-256(2n+1)(4n+3)(4n+5)(321716n^4-767080n^3\\
+    &\hspace{14mm}-1948559n^2-1282655n-449532),\\
+ \tilde q_0&=-15304704(2n-1)^2(2n+1)(4n-1)(4n+1)(4n+3)(4n+5),
+\end{align*}
+and $\sum_{j=0}^4\tilde q_j(n)a_{n+j}=0$ for every $n\ge1$: A181198 obeys
+a recurrence of order four and degree seven.
+\item Every recurrence of A181198, in the sense of this subsection, holds
+for every $n\ge1$. No recurrence of order at most three has degree below
+eight, and no recurrence of order at most eight has degree below seven.
+Hence the smallest degree of a recurrence of order $r$ is nine for $r=2$,
+eight for $r=3$, and seven for $4\le r\le8$.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+(a) and (b). Since $7(n+1)^2-1=7n^2+14n+6$ and $7n^2+28n+27$ is
+$7n^2+14n+6$ at $n+1$, the first quadratic divides $p_0(n)$ and
+$p_2(n+1)$, and the second divides $p_0(n+1)$ and $p_2(n+2)$. Expanding the products with $Ef(n)=f(n+1)E$,
+the coefficient of $E^j$ is $\sum_kQ_k(n)p_{j-k}(n+k)$ ($p_i=0$ for
+$i\notin\{0,1,2\}$); clearing the denominators and comparing coefficients
+gives the displayed polynomials, a finite identity over $\Q[n]$ checked
+exactly. The quadratic $7n^2+14n+6$ has discriminant $28$ and no rational
+zero, so neither quadratic vanishes at an integer, and for $n\ge1$
+\[
+ \sum_jq_j(n)a_{n+j}=\frac{3\,(La)(n+1)+4(1673n+942)\,(La)(n)}{7n^2+14n+6}=0
+\]
+by Theorem~\ref{shr:h4:thm:oeis}; the same argument with three terms
+proves (b).
+
+(c) Let $R=\sum_{j=0}^rq_jE^j$ be a recurrence of order $r$, valid for
+$n\ge n_0$; by Proposition~\ref{shr:h4:prop:minimal}, $r\ge2$. Since $p_2\ne0$,
+right division by $L$ in $\Q(n)[E]$ gives unique rational functions
+$Q_0,\ldots,Q_{r-2}$, $s_0$, $s_1$ with
+$R=\bigl(\sum_{k=0}^{r-2}Q_kE^k\bigr)L+s_1E+s_0$. Comparing the
+coefficients of $E^{r},E^{r-1},\ldots,E^2$ determines them from the top:
+$Q_{r-2}=q_r/p_2(n+r-2)$ and
+\[
+ Q_k=\frac{q_{k+2}-Q_{k+1}(n)\,p_1(n+k+1)-Q_{k+2}(n)\,p_0(n+k+2)}{p_2(n+k)}
+ \qquad(k=r-3,\ldots,0),
+\]
+with $Q_k=0$ for $k>r-2$; then $s_1=q_1-Q_0p_1-Q_1(n)p_0(n+1)$ and
+$s_0=q_0-Q_0p_0$. By induction from the top, the denominator of $Q_k$
+divides $\prod_{i=k}^{r-2}p_2(n+i)$, and those of $s_0$, $s_1$ divide
+$\prod_{i=0}^{r-2}p_2(n+i)$. The real zeros of $p_2$ are $-2$, $-5/3$,
+$-3/2$, $-4/3$, $-1$ and $\pm1/\sqrt7$, all below one, so no
+$p_2(n+i)$ with $i\ge0$ vanishes at an integer $n\ge1$, and every $Q_k$,
+$s_0$, $s_1$ is finite there. At such $n$ the coefficient identity gives
+\[
+ (Ra)(n)=\sum_{k=0}^{r-2}Q_k(n)\,(La)(n+k)+s_1(n)a_{n+1}+s_0(n)a_n .
+\]
+For $n\ge n_0$ the left side and every $(La)(n+k)$ vanish, so
+$s_1(n)a_{n+1}+s_0(n)a_n=0$ there. Multiplied by a common denominator,
+this is a polynomial relation of order at most one that holds for all
+large $n$; by the cases of order zero and one in the proof of
+Proposition~\ref{shr:h4:prop:minimal} both of its coefficients vanish
+identically, so $s_0=s_1=0$. Hence
+$(Ra)(n)=\sum_kQ_k(n)(La)(n+k)=0$ for every $n\ge1$, by
+Theorem~\ref{shr:h4:thm:oeis}. This proves the first assertion.
+
+Now let $R$ have order at most $\bar r$ and degree at most $d$, and write
+$q_j=\sum_{i=0}^dx_{ji}n^i$ for $0\le j\le\bar r$, with $x_{ji}=0$ for $j$
+above the order of $R$. By the first assertion the vector
+$(x_{ji})\ne0$ solves the integer linear system
+$\sum_{j,i}n^ia_{n+j}x_{ji}=0$, $n=1,\ldots,N$, whose $(\bar r+1)(d+1)$
+columns are indexed by $(j,i)$ and whose entries are the exact values of
+$a_n$ that Theorem~\ref{shr:h4:thm:oeis} determines from $a_1=a_2=1$. For
+$(\bar r,d,N)=(3,7,72)$ the $72\times32$ matrix has rank $32$ over $\Q$,
+and for $(\bar r,d,N)=(8,6,103)$ the $103\times63$ matrix has rank $63$
+(exact fraction-free computation; also full rank modulo $2^{61}-1$, which
+by itself implies full rank over $\Q$; recorded in \texttt{data/\allowbreak check-\allowbreak lower-\allowbreak order-\allowbreak recurrences.\allowbreak json}). So no such $R$
+exists. Proposition~\ref{shr:h4:prop:minimal} gives degree nine at order
+two, (a) gives degree eight at order three, and (b) and its shifts
+$\sum_{j=0}^4\tilde q_j(n+k)a_{n+k+j}=0$, $1\le k\le4$, give degree seven at
+orders four to eight.
+\end{proof}
+
+Proposition~\ref{shr:h5:prop:higher} is the height-five counterpart. The
+coefficients of (a) and (b) and the ranks used in (c) are also in
+\texttt{data/\allowbreak check-\allowbreak lower-\allowbreak order-\allowbreak recurrences.\allowbreak json}.
 
 \subsection{Further questions and research recorded at the write}
 \label{shr:h4:sec:further}
@@ -5434,10 +5566,19 @@ The labels continue those of Section~\ref{shr:bp:sec:further}.
 \item \emph{Minimality of the A181198 recurrence} (the placement; no claim
 in the manuscript). Settled for the order, and for the degree among
 recurrences of order two, by Proposition~\ref{shr:h4:prop:minimal}.
-Still open: whether some recurrence of order three or more has polynomial
-coefficients of degree below nine. Missing: a degree bound for left
-multiples $QL$ with $Q$ a rational operator, or an exhaustive search over
-small orders and degrees.
+At orders three to eight it is settled by
+Proposition~\ref{shr:h4:prop:higher}: the smallest degree is eight at
+order three and seven at each order from four to eight. Still open:
+whether some recurrence of order nine or more has degree below seven.
+Missing: a degree bound for left multiples $QL$ that holds at every order
+(the rank computation in the proof of
+Proposition~\ref{shr:h4:prop:higher} treats each range of orders
+separately). (Re-scoped 5~October 2026 after the intake's independent
+check, which found and proved Proposition~\ref{shr:h4:prop:higher}; this
+item first read: ``Still open: whether some recurrence of order three or
+more has polynomial coefficients of degree below nine. Missing: a degree
+bound for left multiples $QL$ with $Q$ a rational operator, or an
+exhaustive search over small orders and degrees.'')
 \item \emph{Numerical constants} (Sections~\ref{shr:h4:sec:asymptotics}
 and~\ref{shr:h4:sec:inverse}). The manuscript constructs $E_K$, $N_K$,
 $C_K$, $H_K$, $W_K$, $X_K$ and the onset \eqref{shr:h4:eq:thresholdonset}
@@ -7372,13 +7513,27 @@ from the $y$-contiguity \eqref{shr:h5:eq:y-contig} and the moment closure
 independent proofs of one identity. In the same way \eqref{shr:h5:eq:T1},
 \eqref{shr:h5:eq:T2}, \eqref{shr:h5:eq:U-final} and the scalar identities
 \eqref{shr:h5:eq:scalar-identities} are \eqref{shr:h4:eq:trB},
-\eqref{shr:h4:eq:trB2}, \eqref{shr:h4:eq:UH}, \eqref{shr:h4:eq:I} and
-\eqref{shr:h4:eq:K0} with the same proofs, and \eqref{shr:h5:eq:transfer},
+\eqref{shr:h4:eq:trB2}, \eqref{shr:h4:eq:UH}, \eqref{shr:h4:eq:I},
+\eqref{shr:h4:eq:K0} and~\eqref{shr:h4:eq:J0} with the same proofs, and \eqref{shr:h5:eq:transfer},
 \eqref{shr:h5:eq:andreief} and Lemma~\ref{shr:h5:lem:indicator} are
 \eqref{shr:h4:eq:transfer}, Lemma~\ref{shr:h4:lem:andreief} and
 \eqref{shr:h4:eq:indicator} with $m=5$. The kernels $K$, $W$, $h$ and their
+scalars depend on $n$ only, not on the height, so these identities are the
+same statements after renaming Part~III's $\alpha$, $\beta$ to Part~IV's
+$f$, $b$. Where the printed forms differ they agree by $c=1/(2N^2)$ and
+$\int e=0$: thus $c^2/2=1/(8N^4)$ in \eqref{shr:h4:eq:I}, and the term
+$\int e$ of \eqref{shr:h4:eq:trB} is absent from \eqref{shr:h5:eq:T1}.
+Part~IV's $J_0=I$ in \eqref{shr:h5:eq:scalar-identities} is Part~III's
+display~\eqref{shr:h4:eq:J0} combined with \eqref{shr:h4:eq:I}. The proof
+of Lemma~\ref{shr:h4:lem:Zirr} uses only the recurrence, which Part~IV
+proves for its own $Z_n$; so Proposition~\ref{shr:h5:prop:nothyper} below
+does not depend on this identification of the integrals. (Reworded
+5~October 2026 after the intake's independent check, recorded at the end
+of Section~\ref{shr:sa:sec:further}. The list above first cited only
+\eqref{shr:h4:eq:I} and~\eqref{shr:h4:eq:K0} for the scalar identities,
+and the last sentence first read: ``The kernels $K$, $W$, $h$ and their
 scalars depend on $n$ only, not on the height, so these identities are
-literally the same statements.
+literally the same statements.'')
 \end{remark}
 
 \begin{proposition}[\textbf{[write]} A181199 is not hypergeometric]
@@ -7431,6 +7586,83 @@ Whether A181199 obeys a recurrence of order two is item~(F9) below. At
 height four, excluding order one settled the question; at height five it
 leaves orders two and three.
 
+As at height four, the degree drops at higher order.
+Proposition~\ref{shr:h5:prop:higher} was found and proved by the intake's
+independent check, 5~October 2026; it is neither the manuscript's nor the
+write's. Notation as before Proposition~\ref{shr:h4:prop:higher}, with
+$L_{\rm OEIS}=\sum_{j=0}^3c_j(n)E^j$ the operator of
+Theorem~\ref{shr:h5:thm:operator} and $Q$ the polynomial of
+\eqref{shr:h5:eq:PQD}.
+
+\begin{proposition}[\textbf{[check]} Orders four and five at height five]
+\label{shr:h5:prop:higher}
+Let $a_n=T_5(n)$ (A181199).
+\begin{enumerate}[label=(\alph*),leftmargin=*]
+\item There are polynomials $e_0,\ldots,e_4$ of degree $18$ and
+$U_0,U_1\in\Q[n]$ of degree five with
+\[
+ \sum_{j=0}^4e_j(n)E^j=\frac{U_1(n)E+U_0(n)}{Q(n+1)}\,L_{\rm OEIS},
+\]
+and $\sum_{j=0}^4e_j(n)a_{n+j}=0$ for every $n\ge1$: A181199 obeys a
+recurrence of order four and degree $18$.
+\item There are polynomials $g_0,\ldots,g_5$ of degree $16$ and
+$V_0,V_1,V_2\in\Q[n]$ with
+\[
+ \sum_{j=0}^5g_j(n)E^j=\Bigl(\frac{V_2(n)E^2}{Q(n+2)}
+ +\frac{V_1(n)E}{Q(n+1)Q(n+2)}+\frac{V_0(n)}{Q(n+1)}\Bigr)L_{\rm OEIS},
+\]
+and $\sum_{j=0}^5g_j(n)a_{n+j}=0$ for every $n\ge1$: A181199 obeys a
+recurrence of order five and degree $16$.
+\item If A181199 has no recurrence of order two, then every recurrence of
+A181199 holds for every $n\ge1$, and the smallest degree of a recurrence is
+$24$ at order three, $18$ at order four and $16$ at order five.
+\end{enumerate}
+The polynomials $e_j$, $g_j$, $U_k$ and $V_k$ are given in
+\texttt{data/\allowbreak check-\allowbreak lower-\allowbreak order-\allowbreak recurrences.\allowbreak json}.
+\end{proposition}
+
+\begin{proof}
+(a) and (b). Expanding the right sides with $Ef(n)=f(n+1)E$, clearing the
+denominators and comparing coefficients with the left sides is a finite
+identity over $\Q[n]$, checked exactly from the data file and the
+coefficients of Appendix~\ref{shr:h5:app:literal}. By
+Section~\ref{shr:h5:sec:sum-operator}, $Q(x)>0$ for every real $x\ge1$, so
+for $n\ge1$ every coefficient of the rational left factors is finite, and
+in (a)
+\[
+ \sum_{j=0}^4e_j(n)a_{n+j}
+ =\frac{U_1(n)\,(L_{\rm OEIS}a)(n+1)+U_0(n)\,(L_{\rm OEIS}a)(n)}{Q(n+1)}=0
+\]
+by Theorem~\ref{shr:h5:thm:operator}; (b) is the same with three terms.
+
+(c) Let $R$ be a recurrence of order $r$, valid for $n\ge n_0$; by
+Proposition~\ref{shr:h5:prop:nothyper} and the hypothesis, $r\ge3$. As in
+the proof of Proposition~\ref{shr:h4:prop:higher}, right division by
+$L_{\rm OEIS}$ gives
+$R=\bigl(\sum_{k=0}^{r-3}W_kE^k\bigr)L_{\rm OEIS}+s_2E^2+s_1E+s_0$, where
+the denominators of the $W_k$ and $s_j$ divide
+$\prod_{i=0}^{r-3}c_3(n+i)$. The real zeros of $c_3$ \eqref{shr:h5:eq:c3}
+are $-3$, $-11/4$, $-8/3$, $-5/2$, $-7/3$, $-9/4$, $-2$, $-3/2$ and those
+of $Q$, which lie below one since $Q(x)>0$ for $x\ge1$; so no $c_3(n+i)$
+with $i\ge0$ vanishes at an integer $n\ge1$. For $n\ge n_0$ it follows that
+$s_2(n)a_{n+2}+s_1(n)a_{n+1}+s_0(n)a_n=0$; after clearing denominators
+this is a polynomial relation of order at most two, which the hypothesis
+and Proposition~\ref{shr:h5:prop:nothyper} force to be trivial. So
+$s_0=s_1=s_2=0$, and $(Ra)(n)=\sum_kW_k(n)(L_{\rm OEIS}a)(n+k)=0$ for every
+$n\ge1$. The linear-algebra step of the proof of
+Proposition~\ref{shr:h4:prop:higher} then applies, with the exact values
+that Theorem~\ref{shr:h5:thm:operator} determines from $a_1=a_2=1$,
+$a_3=16$: for $(\bar r,d,N)=(3,23,126)$, $(4,17,120)$ and $(5,15,126)$ the
+matrices have full column rank $96$, $90$ and $96$ over $\Q$. So no
+recurrence of order at most three has degree below $24$, none of order at
+most four has degree below $18$, and none of order at most five has degree
+below $16$; Theorem~\ref{shr:h5:thm:operator}, (a) and (b) attain these
+degrees.
+\end{proof}
+
+Without the hypothesis of (c), the same ranks show only that no recurrence
+of those orders and degrees holds for every $n$ in the range of rows.
+
 \subsection{Further questions and research recorded at the write}
 \label{shr:h5:sec:further}
 
@@ -7441,8 +7673,22 @@ over $\Q(n)$ ``is not a proof that order three is minimal''.
 \begin{enumerate}[label=(F\arabic*),leftmargin=*,start=9]
 \item \emph{Minimality of the A181199 recurrence} (the manuscript's
 non-claim after Research question~17; the placement). Proposition~\ref{shr:h5:prop:nothyper}
-excludes order one. Open: whether some recurrence of order two exists, and
-the smallest degree at orders three and more. Sketch: if
+excludes order one, and Proposition~\ref{shr:h5:prop:higher} gives
+recurrences of order four and degree $18$ and of order five and degree
+$16$, and the smallest degrees $24$, $18$ and $16$ at orders three, four
+and five if order two is excluded. Open: whether some recurrence of order
+two exists; the smallest degrees at orders three to five without that
+hypothesis, and at orders six and more. Evidence, not proof: no recurrence
+of order at most two and degree at most $60$ holds for every
+$5\le n\le214$, since the $210\times183$ integer matrix $(n^ia_{n+j})$
+($0\le j\le2$, $0\le i\le60$) with those rows has rank $183$ over $\Q$
+(exact computation, recorded in \texttt{data/\allowbreak check-\allowbreak lower-\allowbreak order-\allowbreak recurrences.\allowbreak json}). This is not a proof, because a
+recurrence need only hold for large $n$, and for a recurrence of order two
+nothing like Proposition~\ref{shr:h5:prop:higher}(c) shows that it holds
+from $n=5$. (Re-scoped 5~October 2026 after the intake's independent
+check, which found and proved Proposition~\ref{shr:h5:prop:higher}; this
+item first read: ``Open: whether some recurrence of order two exists, and
+the smallest degree at orders three and more.'') Sketch: if
 $a_{n+2}=r_1(n)a_{n+1}+r_0(n)a_n$ with rational $r_0,r_1$, then
 $\Delta_n=a_{n+1}-a_n=-\tfrac{27}4H_n\sum_{i=1}^{n-1}I_i$
 \eqref{shr:h5:eq:sum-increment} satisfies
@@ -8399,6 +8645,7 @@ Part~\ref{shr:part:one}'s \eqref{shr:eq:b12}, since $c_j(m)=b_{m,j}$:
 \end{remark}
 
 \subsection{Further questions and research recorded at the write}
+\label{shr:sa:sec:further}
 Under Vladimir Reshetnikov's standing rule, the unproved and outline-level
 claims of the two manuscripts are recorded here. None of them is wrong as
 far as the intake could check; the intake confirmed the height-five and
@@ -8438,6 +8685,84 @@ and~\ref{shr:h5:part} supply the operators, and
 Propositions~\ref{shr:h4:prop:minimal} and~\ref{shr:h5:prop:nothyper}
 bound their orders.
 \end{enumerate}
+
+\textbf{Independent check of the write (dated note, 5~October 2026).}
+An independent adversarial check of the batch-101 write of Parts~III--V,
+made by the intake after the write (\texttt{ca1668212}), reread every
+result the write added: Lemma~\ref{shr:h4:lem:Zirr},
+Proposition~\ref{shr:h4:prop:minimal} with the remark after it and
+item~(F5), Remark~\ref{shr:h5:rem:sameZ},
+Proposition~\ref{shr:h5:prop:nothyper} with item~(F9), and
+Remark~\ref{shr:sa:rem:logc2}. It found all of them valid, with no
+counterexample and no gap in any proof chain. Two changes followed.
+Remark~\ref{shr:h5:rem:sameZ} called Part~IV's transfer, rank-two and
+scalar identities ``literally the same statements'' as Part~III's; they
+are the same after renaming Part~III's $\alpha$, $\beta$ to Part~IV's $f$,
+$b$, and Part~IV's $J_0=I$ corresponds to the display
+\eqref{shr:h4:eq:J0}, which the remark did not cite. The remark is
+reworded where it stands, with a dated note keeping the first wording. And
+the question left open after Proposition~\ref{shr:h4:prop:minimal} and in
+item~(F5), whether a recurrence of order three or more has degree below
+nine, has an answer: the check found and proved
+Propositions~\ref{shr:h4:prop:higher} and~\ref{shr:h5:prop:higher}, now
+printed with their proofs. Items~(F5) and~(F9) are re-scoped with dated
+notes keeping their first wording.
+
+The check used neither the delivered programs nor the write's. Its own
+counter, in~C, is a dynamic program over the order ideals of the literal
+$m\times n$ poset (row, column and antidiagonal relations), each ideal
+given by its row lengths; it runs modulo fourteen primes below $2^{62}$
+and recombines by the Chinese remainder theorem, which is exact because
+$a_n\le M_n$ and $M_{64}$ is below the product of the primes. It gave
+$T_4(n)$ and $T_5(n)$ for $n\le64$. On these counts the operator of
+Theorem~\ref{shr:h4:thm:oeis} has residual zero for $n=1,\ldots,62$ and the
+identity of Theorem~\ref{shr:h4:thm:main} holds for $n\le63$; the operator
+of Theorem~\ref{shr:h5:thm:operator}, with its coefficients typed from
+Appendix~\ref{shr:h5:app:literal}, has residual zero for $n=1,\ldots,61$;
+and the printed sums of Theorems~\ref{shr:h4:thm:sum}
+and~\ref{shr:h5:thm:sum} equal the counts for $2\le n\le64$ and
+$1\le n\le64$. Ingredients of the proofs were tested on the same counts:
+the affine formula \eqref{shr:h4:eq:affine} for $n\le64$ and the first
+difference \eqref{shr:h5:eq:target-diff} for $n\le63$, with $Z_n$ from
+\eqref{shr:h4:eq:Zrec} and $Z_1=1/3$ (and $Z_1,Z_2,Z_3=1/3,13/45,461/1680$
+by direct triangle integrals); $Y_1=0$ and $Y_n>0$ for $2\le n\le12$,
+consistent with the proof of Proposition~\ref{shr:h5:prop:nothyper}, which
+needs $Y_n\ne0$ only for large $n$. In SymPy the check confirmed the hinge
+identities of both reports. For Report~231: the divergence certificate
+\eqref{shr:h4:eq:polycert}, the slanted-edge identity, the edge flux
+\eqref{shr:h4:eq:edgeflux} (also against direct integration for $n\le6$),
+the cancellation of the $Z_n$ coefficient with the rational return $D_n$,
+$q_n=J_{n+1}/J_n$ \eqref{shr:h4:eq:qforcing}, and the three coefficient
+identities in the proof of Theorem~\ref{shr:h4:thm:oeis}. For Report~233:
+the $\gamma$-bridge \eqref{shr:h5:eq:gamma-bridge} with $\gamma_1=1/3$,
+$[Z_n](F_{n+1}-\rho_nF_n)=2\rho_nu(n)$ with the matching constant term,
+\eqref{shr:h5:eq:Pplus} and \eqref{shr:h5:eq:Qplus} coefficient by
+coefficient, and the factorization
+\eqref{shr:h5:eq:operator-factorization}, through the exact right division
+of the new operators by $L_{\rm OEIS}$ with zero remainder. For the
+minimality statements it computed ranks of the matrices $(n^ia_{n+j})$
+modulo $2^{61}-1$ and $2^{62}-57$. At height four: no solution of order one
+and degree at most $50$, and at order two a solution space of dimension
+exactly $\max(0,d-8)$ for every degree $d\le40$, which confirms the
+order-two statement of Proposition~\ref{shr:h4:prop:minimal} in that
+range. At height five: no solution of order one or two and degree at most
+$60$ on the windows used (for order two, $5\le n\le214$), and at order
+three nullity $0$ up to degree $23$ and $1$ at degree $24$. The same
+computations, with equations from $n=30$, located the degrees of
+Propositions~\ref{shr:h4:prop:higher} and~\ref{shr:h5:prop:higher}, and
+the right division by the proved operators turned them into proofs.
+
+Before printing, the session that applied the check re-derived the four
+operators of those propositions by exact Ore multiplication and right
+division (SymPy~1.14.0) and found zero residual for $n=1,\ldots,234$ on
+terms generated by Theorems~\ref{shr:h4:thm:oeis}
+and~\ref{shr:h5:thm:operator}; those terms agree with the check's counts
+for $n\le64$ and with this report's row-state program
+(\texttt{code/tableaux.py}) for $n\le18$ at height four and $n\le14$ at
+height five. It redid the rank computations of both proofs exactly over
+$\Q$ (python-flint~0.8.0), with equations from $n=1$. The check was a
+careful reading with exact computations, not a formal verification or an
+external review.
 
 \appendix
 \section{A direct proof of the shifted hook product}\label{shr:app:hook}
