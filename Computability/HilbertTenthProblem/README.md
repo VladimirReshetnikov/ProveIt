@@ -233,6 +233,22 @@ Fresh metadata/finite-height checks pass before freezing; the PDF and external
 bibliography were not independently verified. No paid integer compiler or
 operation saving is supplied, and the established universal84 bound remains.
 
+The [fixed-prime quotient-carry theorem](Papers/research-wip/native-stream-queue/complete83_fixed_prime_quotient_carries.md)
+and [independent review](Papers/research-wip/native-stream-queue/review_complete83_fixed_prime_quotient_carries.md) remove
+the odd-scale hypothesis on explicit infinite subsequences of each fixed
+original compiler. Forcing quotient digits at a fixed finite set of primes
+retains the exact linear depths and gives enough central-binomial carries
+to fit every remaining odd-prime input congruence into the positive interval.
+The complete supported factor exceeds Bn; its squared gain exceeds6ell.
+A quantitative CRT search keeps the enlarged selector below the source slack
+for all sufficiently large subsequence parameters. Thus A³ divides Y with
+positive outer/input coordinates and exact transport. The enlarged-z binary
+population condition is still open: the earlier small-z proof does not apply,
+so full18-witness source zeros remain conditional and no universal83 result
+is claimed. Fresh author and independent checks authenticate the literal
+source interface and corroborate the new lemmas; neither evaluates an actual
+compiler instance or executes a predecessor program.
+
 The [aggregate positive input budget](Papers/research-wip/native-stream-queue/complete83_aggregate_input_budget.md)
 uses the whole positive input interval in the unchanged83 source. Its exact
 least CRT representative must satisfy `ell*k0<S0`; a sufficient guarantee is
