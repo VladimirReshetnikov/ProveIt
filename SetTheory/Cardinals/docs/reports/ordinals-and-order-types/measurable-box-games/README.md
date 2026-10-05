@@ -4,9 +4,11 @@
 all-orders asymptotic expansion (Part I); no universal sublinear bound for
 measurable hat guessing (Part II); adaptive box games beyond cylinder
 measurability (Part III); two queries in expectation: sharp information
-thresholds and the exact inspection cost of infinite hat guessing (Part IV)**
+thresholds and the exact inspection cost of infinite hat guessing (Part IV);
+one inspection in expectation: exact randomness thresholds for infinite hat
+guessing (Part V)**
 
-A research report in four Parts, built from five manuscripts. Part I (3 October
+A research report in five Parts, built from six manuscripts. Part I (3 October
 2026) is a manuscript on Elliot Glazer's *A choiceless box game paradox*
 (arXiv:2211.10474). Part II (added 4 October 2026) is a manuscript on the
 surplus of correct guesses in Nathaniel Eldredge's infinite binary hat game
@@ -18,12 +20,17 @@ the success events of adaptive box players and answers Part I's questions Q2
 open) and Q5. Part IV (added the same day) merges two independent manuscripts
 that determine the cost of inspecting hats needed for a divergent surplus —
 exactly two expected queries per player — answering Part II's Research question
-29.2; one of them also settles Q9 for a larger family. The author lines of
-Parts I–III and of Part IV's source 04 read "Prepared for Vladimir Reshetnikov"
-or "Research report prepared for …" and carry no AI wording; **Part IV's base,
-source 06, has no author line, and its PDF metadata name the author as
-"ChatGPT research report"**. Like the other deliveries of the intake, all five
-are AI-assisted.
+29.2; one of them also settles Q9 for a larger family. Part V (added 4
+October 2026, batch 96) determines the same cost when random bits are free:
+the admissible uniform expected caps are `(1, ∞)` with private coins or a
+finite-valued public seed and `[1, ∞)` with a public seed of countably infinite
+support, answering the almost-sure clauses of Part IV's Research question 57.2.
+The author lines of Parts I–III, of Part IV's source 04 and of Part V read
+"Prepared for Vladimir Reshetnikov" or "Research report/manuscript prepared
+for …" and carry no AI wording; **Part IV's base, source 06, has no author
+line, and its PDF metadata name the author as "ChatGPT research report"; Part
+V's PDF metadata name the author as "OpenAI ChatGPT"**. Like the other
+deliveries of the intake, all six are AI-assisted.
 
 | Source | Manuscript | Archive | Pin | Placed | Printed as |
 |---|---|---|---|---|---|
@@ -32,11 +39,14 @@ are AI-assisted.
 | 03 | batch 92, manuscript 03 | `adaptive_box_games_research.zip` (485,758 bytes; inner directory `adaptive_box_games/`, main file `adaptive_box_games.tex`, 1,207 lines, 29-page US Letter PDF), arrival commit `9dc8db274` | `1afa38bf9` (`1afa38bf984377eb85a5569cf6376054994a17a5`, its `\snap` macro, Section 30 and bibliography entries 15–16) | `e38f368c2` | Part III: Sections 30–44, Appendices F–G |
 | 04 | batch 92, manuscript 04 | `hat_inspection_frontier.zip` (491,169 bytes; inner directory `hat_inspection_frontier/`, main file `hat_inspection_frontier.tex`, 2,319 lines, 31-page A4 PDF), arrival commit `9dc8db274` | `9fe62865d` (`9fe62865dc30d71256183466b744b98ebf7e64d6`, Section 59.2, bibliography entry 29) | `e38f368c2` | Part IV, second source: Sections 59–69 |
 | 05 | batch 92, manuscript 06 | `hat_query_thresholds_package.zip` (478,565 bytes; inner directory `hat_query_thresholds/`, main file `hat_query_thresholds.tex`, 1,919 lines, 26-page US Letter PDF), arrival commit `afd7ffabb` | `9fe62865d` (its `\pin` macro, Section 45.4 and bibliography entries 26–28) | `e38f368c2` | Part IV, base: Sections 45–58 |
+| 06 | batch 96, manuscript 04 | `hat_randomness_frontier.zip` (442,103 bytes; inner directory `hat_randomness_frontier/`, main file `hat_randomness_frontier.tex`, 1,660 lines, 24-page US Letter PDF), arrival commit `26e036956` | `715a716a3` (`715a716a3002b1e9f28daa2d81c009a392851b94`, Section 70.1 and bibliography entry 36) | `635a3e026` | Part V: Sections 70–81, Appendices H–I |
 
 The source numbers are this report's local sequence (they are the file
-prefixes `01`–`05`); the batch-92 manuscripts 04 and 06 keep their batch
+prefixes `01`–`06`); the batch-92 manuscripts 04 and 06 keep their batch
 numbers in the article ("source 04", "source 06"), so source 06 has the file
-prefix `05-hat-queries-`.
+prefix `05-hat-queries-`. Part V is a single source; the article calls it "this
+Part" or "the manuscript", never "source 06" (which there means Part IV's
+base), and its files carry the prefix `06-hat-randomness-`.
 
 **Status:** AI-assisted, unrefereed, not formalized: no Lean or Rocq
 declaration exists for any statement of this report, and its place in the
@@ -46,7 +56,7 @@ theorems rest on the written proofs only. **Historical priority is not
 established** for any Part; Part II explicitly disclaims priority for its
 coding mechanism (Ebert–Merkle–Vollmer 2003) and for the slow-density
 phenomenon, and Part IV's block construction is Eldredge's (his
-Proposition 6.6), credited by both of its sources.
+Proposition 6.6), credited by both of its sources and by Part V.
 
 ## Part I
 
@@ -570,7 +580,11 @@ From source 04 (Sections 59–69), besides its own versions of the shared core:
 - The threshold is `sup_i E Q_i = 2` for **deterministic** trees; individual
   means are below 2; with free randomness the problem changes (a public coin
   breaks the positive-probability lower bound, private coins make every
-  `C > 1` sufficient), and the randomized optimum is open.
+  `C > 1` sufficient), and the randomized optimum is open. [Batch 96, 4
+  October 2026: that was the state at the batch-92 write. Part V determines
+  the randomized optimum for almost-sure divergence (see Part V below); with
+  private coins, divergence with positive probability at a cap of at most 1
+  is still open, Research question 81.1.]
 - Divergence is not eventual positivity (Remark 61.4); the average cost `3/2`
   is attained, not claimed optimal; finite bounds beyond one query are not
   claimed optimal.
@@ -625,6 +639,185 @@ From source 04 (Sections 59–69), besides its own versions of the shared core:
   Leighton, *Hat guessing games* (2008), which its text never cites; the
   entry is kept and cited from Section 45.5, unchecked.
 
+## Part V
+
+### The question
+
+Part IV's Research question 57.2, "The exact randomized expected-cost
+threshold": Theorem 55.2 gives almost-sure divergence with free private coins
+under every uniform expected cap `C > 1`. Is 1 optimal? Is the boundary
+attained? How do positive-probability and almost-sure divergence compare, and
+private coins, shared coins and randomness obtained from charged hat queries?
+Research question 68.6 asks the same for a public seed, separating costs
+averaged over the seed from costs conditional on it, and charged random bits.
+One manuscript, written against `715a716a3` (after the batch-92 write and its
+review; the report's `article.tex` is the same blob there and at the
+placement), answers the almost-sure clauses. Cost is `sup_i E Q_i`, with `Q_i`
+the number of hats player `i` inspects and the expectation over hats **and all
+seeds**; success is `D_n → +∞` almost surely.
+
+### What it proves
+
+Section numbers are the manuscript's plus 69.
+
+- **Theorem 70.1 (threshold table):** admissible caps `[2, ∞)` without
+  randomness (attained); `(1, ∞)` with independent private seeds; `(1, ∞)`
+  with a finite-valued public seed and private seeds; `[1, ∞)` with a public
+  seed of countably infinite support chosen by the strategy (attained, every
+  `E Q_i < 1`).
+- **Lemmas 71.2, 72.1, Proposition 72.2:** fairness; `E(Y_iY_j) =
+  E[∂_j f_i ∂_i f_j]`, `|E Y_iY_j| ≤ E(J_ij J_ji)`; `max(0, n − q_I) ≤ Var F_I ≤
+  n + q_I` with any external randomness (for deterministic trees the identity
+  and the upper bound are Part IV's Lemma 64.1 and Theorem 64.2; the lower
+  bound is new).
+- **Theorem 73.1, Corollary 73.2, Proposition 73.3:** projection onto the
+  players who inspect nothing: `P(F_I < 0), P(F_I > 0) ≥ z_I²/(12n(n+q_I)) ≥
+  (n−q_I)_+²/(12n(n+q_I))` under any (even public, correlated) randomness; a
+  cap `C < 1` forces `P(F_n < 0) ≥ (1−C)²/(12(1+C))`; `P(F_n > 0) → 1` forces
+  `liminf q_n/n ≥ 1`; a sharper private bound `z²/(4(3z+1)(n+q))`.
+- **Lemma 74.1, Corollary 74.4, Theorems 74.5–74.6:** owner-indexed Walsh
+  accounting: `q̄_n ≤ n + κ` gives `Var F_n ≤ 4‖P_{≤2}F_n‖² + 3κ` and
+  `P(F_n < 0) ≥ (1 − 3κ/v_n)_+²/5184`; for deterministic strategies,
+  almost-sure divergence forces `Σ_{i≤n} E Q_i − n → +∞`, and
+  `liminf (Σ_{i≤n} E Q_i − n)/Var F_n ≥ 1` when `P(F_n < 0) → 0`. Lemma 74.2
+  (Bonami's fourth-moment bound) and Lemma 74.3 (Part IV's Proposition 64.7,
+  squared) are re-proofs.
+- **Lemma 75.1, Theorem 75.2, Corollary 75.4, Theorem 75.5:** a stopped
+  supermartingale lemma; **with independent private seeds and `E Q_i ≤ 1` for
+  every `i`, `P(D_n → +∞) < 1`**, indeed `≤ 1 − 1/5184`; the same with a
+  public seed that is almost surely finitely valued.
+- **Lemmas 76.1–76.2, Theorem 76.3, Lemma 76.4:** Part IV's early-stopping Eldredge block with private
+  activation (law, query tails), a general stage schedule, and deletion of
+  finitely many stages.
+- **Propositions 77.1–77.2:** re-proofs of Part IV's Theorem 55.2 and of the
+  almost-sure clause of Theorem 53.3.
+- **Theorem 78.1, Corollary 78.2, Theorem 78.3, Corollary 78.4:** one shared
+  integer `Θ` with `P(Θ = 0) = 1 − p`, `P(Θ = t) = p·2^(−t)`, disabling stage
+  `ν` iff `Θ ≥ ν` (blocks of `k_ν = 4^ν` pairs, private activation
+  `ϑ_ν = p·2^(1−ν)`): **`D_n → +∞` almost surely with `E Q_i < 1` for every
+  `i` and `sup_i E Q_i = 1`**; `H(Θ) = h₂(p) + 2p` bits, arbitrarily small;
+  a prescribed countably supported seed permits the endpoint iff it has
+  infinitely many values of positive probability; so does any public
+  variable with such a countably valued function (a uniform one on `[0, 1]`).
+- **Propositions 79.1–79.3:** query tails `P(Q > t) ≤ 2^(−t)`, count and
+  distance `O(log i)`; private strategies with `E Q_i → 1` and Cesàro
+  average → 1 (supremum above 1); public two-valued mixtures give
+  positive-probability divergence under every cap `C > 0` and success
+  probability arbitrarily close to 1 at cap 1.
+- **Added by the write, with proofs:** Remark 75.6 (counterexample to the
+  delivered wording of Theorem 75.5), **Corollary 75.7** (a prescribed public
+  seed with values in a standard Borel space permits the cap 1 iff it is not
+  almost surely finitely valued), **Corollary 75.8** (if the cap must hold
+  conditionally on the public seed, `P(D_n → +∞) ≤ 1 − 1/5184`; the admissible
+  caps are `(1, ∞)` with private coins and `[2, ∞)` without: the conditional
+  clause of Research question 68.6).
+- Section 80: provenance table, finite verification, a formalization order;
+  Section 81: Research questions 81.1–81.10 (the manuscript's) and
+  81.11–81.13 (claims the write moved there); Appendices H–I: proof map and
+  notation, reproduction.
+
+Of the host's questions: **57.2 is answered except for its private
+positive-probability clause** (Research question 81.1; the charged-query
+clause is the deterministic threshold 2 of Theorem 53.3, the write's
+observation); 68.6 is answered in its unconditional and conditional
+variants, its charged-bit variant is open (81.7); 57.10 and 68.10 are
+answered in their asymptotic form (least asymptotic average cost 1, approached
+with or without randomness; the deterministic padding is the write's
+observation), not for prescribed rates; 57.8 and 68.11 are not answered
+(Lemma 74.3 is Proposition 64.7, which already sharpened Proposition 49.4;
+Theorem 74.6 is new). Dated notes after Sections 57 and 68 record this.
+
+### Corrections and claims moved (standing rule of 4 October 2026)
+
+- **Refuted as worded, corrected in place, kept on record.** Definition 71.1
+  called a public seed finite-valued when it "has a finite set of possible
+  values of positive probability", and Theorem 75.5 assumed "finite
+  positive-probability support {t_1, …, t_s}". Read literally (finitely many
+  atoms, possibly a diffuse part) the theorem is false: with `U` uniform on
+  `(0, 1]`, `B` an independent fair bit and `Θ = BU`, the only atom is `0`,
+  yet `g(Θ) = 1 + ⌊−log₂ Θ⌋` (and `g(0) = 0`) has exactly the law of Theorem
+  78.1 with `p = 1/2`, so that theorem's strategy wins almost surely with
+  every `E Q_i < 1` (Remark 75.6; a uniform seed has no atoms at all and
+  Corollary 78.4 covers it). The proof uses `Σ_r p_r = 1` twice. Both now
+  read `P(Θ ∈ {t_1, …, t_s}) = 1`, with the delivered wording in dated notes;
+  Corollary 75.7 shows that this is exactly the boundary.
+- **Corrected in place, kept on record.** The abstract's "With a countably
+  supported public seed and independent private randomness, the admissible
+  caps are `[1, ∞)`" is false for a prescribed finitely supported seed; it
+  now reads "a public seed of countably infinite support" (Theorem 78.3; the
+  threshold table's "of our choice" and the delivered `README.txt` were
+  right).
+- **Moved to Research questions 81.11–81.13**, with source, sketch and what is
+  missing: the heuristic "A finite-prefix probability estimate alone would not
+  settle that issue" (Section 79.3; 81.11, with the write's example showing
+  that sign bounds alone cannot give probability zero outside the cap-one
+  class); the measure-theoretic preliminaries of Section 71 (81.12: the
+  simultaneous null-set removal and the `L²`-limit extension of Lemma 74.2 are
+  proved in notes; regular conditional probabilities and the reduction to
+  fair-bit tapes are classical, quoted and unused by the printed proofs); and
+  the statement that the main proofs "were also independently reviewed during
+  preparation" (Section 80.2 and the source audit; 81.13: no reviewer, scope
+  or record is named).
+- Research questions 81.1–81.10 stay open as printed.
+
+### What Part V does not claim
+
+- It is not a Lean or Rocq formalization: English proofs and exact finite
+  checks; the dependency order of Section 80.3 is "a proposed route", not
+  existing declarations. No proof-assistant check or external peer review.
+- Novelty is assessed against the pin and the listed sources "without
+  asserting exhaustive priority"; the resolved question means the almost-sure
+  clauses of 57.2 as formulated, not all variants of infinite hat or
+  choiceless box games; Glazer's continuum-box questions are not claimed
+  solved.
+- The deterministic threshold 2 and private sufficiency above 1 are Part IV's
+  (Theorems 53.3, 55.2), reproduced and "not claimed new"; the covariance and
+  variance bounds are credited to Part IV; hypercontractivity is classical
+  (Bonami, Beckner); the block rule is Eldredge's.
+- The private positive-probability threshold at cap ≤ 1 is open (only
+  `≤ 1 − 1/5184` is proved). Constants of Theorem 73.1, Proposition 73.3,
+  Corollary 74.4 and the coefficient 1 of Theorem 74.6 are not claimed optimal.
+- Costs are averaged over hats and all seeds; the public construction does not
+  keep the cap conditional on each public outcome (and Corollary 75.8 shows
+  that no strategy can). The construction is computable for dyadic `p` but "a
+  mathematical existence algorithm rather than an efficient practical team
+  protocol"; Theorem 78.3 needs effective tail information to be effective;
+  entropy is neither support size nor the bits an exact sampler reads.
+- The finite checks do not prove the infinite theorems; the public-gate checks
+  assert no almost-sure success.
+
+### Checks made at the write (batch 96)
+
+- **Pin.** `715a716a3` ("Construct a non-dyadic outer family with actual
+  compiler constants fixed", 4 October 2026, 15:48 UTC−7) is an ancestor of the
+  placement and postdates the batch-92 write `721cf8196` and the review
+  `42b49fdbd`; the report's `article.tex` blob `8af80fe9` is the same at the
+  pin and at the placement, so every Part IV number the manuscript cites
+  (Theorems 53.3, 55.2, 64.2, Lemma 64.1, Questions 57.2, 68.6, Section 62,
+  Section 60.3's mixing) matches the printed text.
+- **Repository claims** all hold, including "the repository proves the
+  stronger probability-zero conclusion below 2" (Theorem 53.3) and that no
+  zero-inspection projection occurs in Parts I–IV. Two re-proofs are credited
+  only generically by the manuscript and are now named: Lemma 74.2 (Part IV's
+  (49.1) and Lemma 61.1) and Lemma 74.3 (Proposition 64.7 with Remark 64.8).
+  Nothing in Parts I–IV is refuted; no retraction.
+- **Program** on a scratch copy (Python 3.14.4, Windows): the verifier passed
+  ("Logical checks: 499552") in about 3 s and reproduced
+  `data/06-hat-randomness-results.json` after CR stripping. An independent
+  write-time program (not shipped) checked by brute force the activated block
+  law (`k ≤ 4`, `β ∈ {1/2, 1/4}`), the active query mean `2 − 2^(−(2k−2))`
+  (`k ≤ 5`), identity (78.5) and its bound, the entropy formula, the walk
+  moments of Theorem 73.1 (`k ≤ 40`) and the law used in Remark 75.6.
+- **Proofs.** The whole manuscript was read and every main proof followed;
+  apart from the defect of Theorem 75.5's wording, no gap was found.
+- **Editorial changes** (Section 70.4): labels prefixed; `\cref` converted (the
+  delivered PDF prints "Use theorem 3.2 and square" for a proposition: its
+  cleveref named every statement sharing the theorem counter "theorem");
+  equations renumbered within sections; the letter renamings of Section 70.5;
+  Beckner (1975) added as entry 37 and this report at the pin as entry 36;
+  Eldredge and Glazer cited as entries 10 and 1. Beckner's paper was not
+  checked.
+
 ## Relation to the repository
 
 **Formal status.** No statement of any Part is formalized in Lean or Rocq.
@@ -640,7 +833,9 @@ horizon `H` or `BB_time` of Section 12. Part II proposes encoding its finite
 tables with the list-coding interfaces (Section 28.2); no such development
 exists. Parts III and IV propose formalization stages (Sections 43.3, 56.3
 and 66) and Part IV's sources read the list-coding files (unchanged since);
-no Lean or Rocq file states any of their results.
+no Lean or Rocq file states any of their results. Part V proposes a
+dependency order (Section 80.3) and reads no Lean or Rocq file; none states
+any of its results.
 
 **Review in the Hilbert's-tenth research tree.** Before Part I's placement,
 another session reviewed all six batch-87 archives at their arrival revision
@@ -688,6 +883,19 @@ supersede the README-only intake of source 04. Not reviewed there: Section 45,
 Proposition 49.4, Section 50, Theorem 54.4, Proposition 54.5, Sections 57–58
 and all of source 04. Both leave that programme's arithmetic bounds
 unchanged; no scope correction follows. Sections 30.3 and 45.5 record them.
+For batch 96, `review_new_actions_26e036956.md` (commit `18825ee16`) read Part
+V's delivery `README.txt`, `VERIFY_NOTES.txt` and `SOURCE_AUDIT.txt` in full
+and the manuscript's lines 104–262, 681–822 and 1039–1477 (Sections 70–71, 75,
+78–80), ran no program and found no defect there; the follow-up
+`review_hat_endpoint_26e036956.md` (commit `1eab36bb3`) read lines 263–680 as
+well (the whole interval 193–822, Sections 71–75) and passed the private and
+finite-public exclusions with their analytic dependencies, adding a scalar
+example of correlated costs that shows why independence is needed. Neither
+certifies Sections 76–77 (block, scheduling, upper constructions), on which
+Sections 78–79 depend; neither changes the programme's arithmetic bounds. Both
+read Theorem 75.5 with a purely atomic seed; the write found that its
+delivered wording admits more and is then false (Remark 75.6). Section 70.4
+records them; neither review is edited.
 
 **Neighbouring reports.** None shares a theorem or a question with any
 Part. Before batch 90 nothing in ProveIt treated box, hat, guessing or
@@ -712,7 +920,7 @@ other.
 - `../games-on-ordinals/open-query-membership-games` also counts adaptive
   queries and certifies finite budgets; Part IV's query costs concern
   observed hats in a guessing game, not open-set queries about a hidden point;
-  no theorem is shared.
+  no theorem is shared. The same holds for Part V's randomized costs.
 - The five sister manuscripts of batch 87 concern Glazer's *other* question
   paper, *A Topological Tennenbaum Theorem* (arXiv:2311.13699), and became
   Parts VI–IX of
@@ -734,7 +942,17 @@ after Part II's questions (29.2 answered; 29.4 and 29.5 at minimum depth;
 29.10 still open), and Remark 15.1, which refutes the batch-90 sentence
 "Every other (m,q,n,t) remains open" (it was false when written; it stays on
 record). The line above the contents now announces four Parts. No other
-sentence of Parts I–II became false.
+sentence of Parts I–II became false. Batch 96 (Part V) made three sentences
+of Part IV stale, each kept and followed by a dated note: source 06's "it
+does not determine the optimal randomized threshold" (Section 55, with the
+batch-92 note after it), its ledger's "the optimal randomized boundary is
+left open" (Section 58) and the batch-92 status note's "the sharp randomized
+thresholds stay open" (after Section 68). Dated notes also record the status
+of Research questions 57.2, 57.8, 57.10 (after Section 57) and 68.6, 68.10,
+68.11 (after Section 68), Part V at Section 1.4, after source 04's public-coin
+remark (Section 60.3) and after Remark 64.8; the line above the contents
+announces five Parts, and the Part IV non-claim above has a dated
+addition. No existing claim is refuted by Part V.
 
 ## Notation
 
@@ -772,11 +990,35 @@ geometric variable (and in source 06 a visibility graph), `Q_i` a query count
 04's indicator macro with an argument prints as before through a new macro
 `\indic`, its "almost surely" macro as those words.
 
+Part V (table in Section 70.5) renames five of its manuscript's letters, all
+because Part IV uses them otherwise: the public seed `T` is `Θ` (Part IV's `T`
+is a player role); the stage index `m` is `ν` (source 06's `m` and Part V's
+verifier's `m` are pairs per block, here `k_ν`); the public disabling
+probability `α_m` is `ϑ_ν` (Theorem 55.2's `α` is the activation
+probability, here `β`); the slack `K` is `κ` and the zero-inspection count
+`K(R)` is `ζ(R)`; the seed-conditional cumulative cost `B_n` is `q̄_n` (for
+deterministic strategies it equals source 04's `B_n`). Its two-argument
+`\norm{x}{p}` prints with Part IV's one-argument `\norm` and a subscript; its
+`\one` is Part I's `\ind`; its `\as` prints "almost surely"; `\pos` and
+`\negpart` are new macros. `F_n = 2D_n` as in Part IV.
+
 ## Labels
 
 Every label carries the prefix `mbg:`; Part II's carry `mbg:hat:`, Part
 III's `mbg:ext:`, Part IV's `mbg:qry:` (source 06) and `mbg:insp:` (source
-04). **335 labels** after the batch-92 review (126 before; none removed or renamed): the
+04), Part V's `mbg:rnd:`. **427 labels** since the batch-96 write (335 before;
+none removed or renamed): Part V's 80 delivered labels, prefixed `mbg:rnd:`
+with every reference updated, and twelve added by the write
+(`mbg:rnd:part`, `mbg:rnd:sec:place`, `mbg:rnd:sec:notation`,
+`mbg:rnd:def:randomness`, `mbg:rnd:rem:finite-valued`,
+`mbg:rnd:cor:prescribed`, `mbg:rnd:cor:conditional`, `mbg:rnd:q:heuristic`,
+`mbg:rnd:q:measure`, `mbg:rnd:q:review`, `mbg:rnd:app:map`,
+`mbg:rnd:app:repro`). All 335 earlier labels and all 35 earlier bibliography
+numbers print as before (compared with a build of the committed text), and
+each of the 80 delivered labels prints its manuscript number shifted by 69
+(compared with a standalone build of the manuscript), except that the
+manuscript's consecutively numbered equations (1)–(38) are numbered within
+sections, (70.1)–(79.1). **335 labels** after the batch-92 review (126 before; none removed or renamed): the
 199 delivered labels of the three batch-92 manuscripts (62, 66 and 71),
 prefixed with every reference updated, and ten added by the write and review —
 `mbg:ext:part`, `mbg:ext:sec:provenance`, `mbg:ext:sec:notation`,
@@ -881,20 +1123,55 @@ The batch-92 write:
   coding are one entry each, entries 14, 26–28); new entries 14–35 follow
   Part II's.
 
+The batch-96 write:
+
+- appended Part V (manuscript 04 of batch 96) after Part IV, before the shared
+  bibliography; the line above the contents announces five Parts;
+- numbered Part V's sections by the offset 69 (appendices H–I, continuing
+  Part III's letters, Part IV having none), equations within sections; its
+  Research questions 1–10 are 81.1–81.10;
+- added dated `[write]` notes: in Part I, Section 1.4 (five Parts); in Part
+  IV, after Theorem 55.2, after the questions of Section 57 (57.2, 57.8,
+  57.10), after the ledger of Section 58, after the public-coin remark of
+  Section 60.3, after Remark 64.8, after the questions of Section 68 (68.6,
+  68.10, 68.11), and a dated addition to bibliography entry 10 (Eldredge); in
+  Part V, at its head (two corrections; offsets), Sections 70.4–70.5
+  (provenance, notation), after Theorem 70.1, Definition 71.1 (corrected),
+  the measure-theoretic paragraph of Section 71, Example 72.3, Lemmas 74.2
+  and 74.3, Theorem 75.5 (corrected), after Remark 75.6 and Corollaries
+  75.7–75.8, Lemma 76.2, Propositions 77.1, 77.2 and 79.3, Section 80.2
+  (shipped names), after Section 81's questions, before Research questions
+  81.11–81.13 and in Appendix I; one-line `[write]` pointers replace the two
+  sentences moved to 81.11 and 81.13;
+- added Remark 75.6 and Corollaries 75.7–75.8 (the write's, with proofs) and
+  Research questions 81.11–81.13 (claims moved there);
+- printed the title page as the Part heading with abstract and status box;
+  converted the manuscript's `\cref` (the report does not load `cleveref`) to
+  `\ref` with each statement's own kind (the delivered PDF printed every
+  lemma, proposition and corollary reference as lower-case "theorem");
+  rewrote its two-argument `\norm`; set `\one`, `\as` and `\repo` as
+  described under Notation; added `tabularx` and the macros `\pos`,
+  `\negpart` to the preamble, which change nothing in Parts I–IV;
+- cited the manuscript's Eldredge and Glazer entries as entries 10 and 1; new
+  entries 36 (this report at Part V's pin) and 37 (Beckner 1975).
+
 No statement, proof or non-claim of any manuscript was changed, apart from
 the disclosed renamings, the pointer proofs and the one corrected typo of
-Part IV.
+Part IV, and Part V's two corrections (Theorem 75.5's hypothesis with
+Definition 71.1, and one sentence of its abstract), each kept on record in a
+dated note.
 
 ## Files
 
 ```text
 README.md                                         this guide (replaces Part I's delivered README.md, staged under this name)
-article.tex                                       the report: Parts I-IV (delivered article.tex, hat_guessing_growth.tex, adaptive_box_games.tex, hat_query_thresholds.tex with hat_inspection_frontier.tex), labels prefixed, [write] notes
-article.pdf                                       compiled report, 144 pages (unnumbered title page, then pages 1-143)
+article.tex                                       the report: Parts I-V (delivered article.tex, hat_guessing_growth.tex, adaptive_box_games.tex, hat_query_thresholds.tex with hat_inspection_frontier.tex, hat_randomness_frontier.tex), labels prefixed, [write] notes
+article.pdf                                       compiled report, 175 pages (unnumbered title page, then pages 1-174)
 02-hat-surplus-source_audit.txt                   Part II: delivered source and claim audit (source_audit.txt)
 04-hat-inspection-PROOF_STATUS.txt                Part IV, source 04: delivered proof-status record (PROOF_STATUS.txt)
 04-hat-inspection-SOURCE_AUDIT.txt                Part IV, source 04: delivered source and claim audit (SOURCE_AUDIT.txt)
 05-hat-queries-SOURCE_NOTES.txt                   Part IV, source 06: delivered source snapshot and contribution audit (SOURCE_NOTES.txt)
+06-hat-randomness-SOURCE_AUDIT.txt                Part V: delivered source and contribution audit (SOURCE_AUDIT.txt)
 code/verify_certificates.py                       Part I: exact finite enumerations and certificate checks (standard library)
 code/formal_series.py                             Part I: exact rational formal-series coefficients through a chosen degree
 code/Makefile                                     Part I: delivered targets pdf, verify, clean (delivery layout; see below)
@@ -909,6 +1186,9 @@ code/04-hat-inspection-verify_finite.py           Part IV, source 04: exhaustive
 code/04-hat-inspection-build.sh                   Part IV, source 04: three pdflatex passes of the unshipped manuscript (build.sh)
 code/05-hat-queries-verify_hat_queries.py         Part IV, source 06: block and query-algorithm verifier (verify_hat_queries.py)
 code/05-hat-queries-verify_orbit_bounds.py        Part IV, source 06: one-query enumeration and orbit verifier (verify_orbit_bounds.py)
+code/06-hat-randomness-verify_finite.py           Part V: exact finite verifier, 499,552 checks (verify_finite.py)
+code/06-hat-randomness-VERIFY_NOTES.txt           Part V: scope and limits of the finite checks (VERIFY_NOTES.txt)
+code/06-hat-randomness-Makefile                   Part V: delivered targets verify, pdf, clean (delivery layout)
 data/certificates.json                            Part I: the four-box non-executable blind rule and the three-box team with P(score >= 2) = 3/4
 data/verification_report.json                     Part I: recorded run of verify_certificates.py
 data/formal_series_report.json                    Part I: recorded run of formal_series.py --degree 10
@@ -919,6 +1199,7 @@ data/03-adaptive-extensions-finite_results.json   Part III: recorded output of t
 data/04-hat-inspection-verification.json          Part IV, source 04: recorded run, 19 cases (data/verification.json)
 data/05-hat-queries-hat_query_verification.json   Part IV, source 06: recorded block-verifier run (hat_query_verification.json)
 data/05-hat-queries-orbit_verification.json       Part IV, source 06: recorded orbit-verifier run (orbit_verification.json)
+data/06-hat-randomness-results.json               Part V: recorded verifier run (results.json)
 figures/02-hat-surplus-block_prefix.pdf           Part II: Figure 1, included by article.tex
 figures/02-hat-surplus-block_prefix.png           Part II: raster copy of Figure 1 (not used by the article)
 ```
@@ -935,7 +1216,10 @@ and IV: placement (`e38f368c2`) added the prefixes `03-adaptive-extensions-`,
 `code/`, outputs in `data/`, audits and notes at the report root, and moved
 Part III's methods text to `code/` (as Part II's `code/README.txt`); no staged
 file has CR bytes. The batch-92 packages ship no licence file; their code is
-the packages' own and falls under the repository's MIT-0.
+the packages' own and falls under the repository's MIT-0. Part V: placement
+(`635a3e026`) added the prefix `06-hat-randomness-`, put the verifier,
+Makefile and verification notes in `code/`, the recorded output in `data/` and
+the source audit at the root; no CR bytes; no licence file (MIT-0 applies).
 
 **Licence.** `code/02-hat-surplus-LICENSE.txt` is the Part II package's own
 licence for its original code: permission to use, copy, modify, publish,
@@ -967,6 +1251,10 @@ delivered 26-page `hat_query_thresholds.pdf` (439,236 bytes, metadata author
 `SHA256SUMS.txt` (eight entries, verified 8/8 at placement, dropped by
 repository policy):
 `git show afd7ffabb:docs/incoming/hat_query_thresholds_package.zip > <scratch>/hat_query_thresholds_package.zip`.
+Part V — `hat_randomness_frontier.tex` (Sections 70–81 and Appendices H–I),
+the delivered 24-page `hat_randomness_frontier.pdf` (403,617 bytes, metadata
+author "OpenAI ChatGPT") and `README.txt`; no checksum manifest:
+`git show 26e036956:docs/incoming/hat_randomness_frontier.zip > <scratch>/hat_randomness_frontier.zip`.
 Nothing was excluded as heavy.
 
 Delivered text that names the delivery layout or a file not shipped:
@@ -1014,6 +1302,19 @@ accept `--output`); `05-hat-queries-SOURCE_NOTES.txt` (the retired archive
 path); the article's Section 56 (delivery names; a note there gives the
 shipped ones). Source 06's verifier and its delivered README call the T role
 D.
+Part V — `code/06-hat-randomness-Makefile` (`python3 verify_finite.py` and
+`latexmk … hat_randomness_frontier.tex` in one flat directory);
+`code/06-hat-randomness-VERIFY_NOTES.txt` (`verify_finite.py`,
+`results.json`); `code/06-hat-randomness-verify_finite.py` (its docstring and
+default output `results.json` beside itself, so run in place it would add an
+unprefixed `code/results.json`; it accepts `--output`); the article's Section
+80.2 and Appendix I (delivery names; notes there give the shipped ones). The
+verifier's notation differs from the article's: its `m` is the number `k` of
+pairs in a block, `alpha` the activation probability `β`, `epsilon` the
+probability that the public gate is off, `K` the slack `κ`.
+`06-hat-randomness-SOURCE_AUDIT.txt` says the main proofs "were independently
+reviewed during preparation" (Research question 81.13 records that this
+cannot be checked) and mentions "the LinkedIn page" without an address.
 
 ## Rerun the checks (on a scratch copy)
 
@@ -1123,11 +1424,30 @@ without. The build script `code/04-hat-inspection-build.sh` compiles the
 unshipped `hat_inspection_frontier.tex`; to rebuild the delivered PDF,
 extract the archive (see "Not shipped") and run it there.
 
+**Part V.** The verifier writes `results.json` beside itself unless given
+`--output`; run it on a scratch copy with an explicit output path. Python 3.10
+or newer, standard library only. From this directory:
+
+```sh
+D=$(pwd); T=$(mktemp -d)
+cp code/06-hat-randomness-verify_finite.py "$T/verify_finite.py"
+cd "$T"
+py verify_finite.py --output results_rerun.json   # "Logical checks: 499552." ... "Results written to results_rerun.json"
+tr -d '\r' < results_rerun.json | cmp -s - "$D/data/06-hat-randomness-results.json" && echo "same  results.json"
+```
+
+At the write (4 October 2026, Python 3.14.4, Windows) it ran in about 3 s and
+printed `same`; on Windows the output has 9,164 CR bytes (text mode), hence the
+`tr`. The JSON has no timestamps or version fields. The shipped Makefile
+(`make verify`, `make pdf`) needs the delivery layout and the unshipped
+`hat_randomness_frontier.tex`: extract the archive (see "Not shipped") and run
+it there.
+
 ## Build the PDF
 
 pdfLaTeX with newtxtext/newtxmath, amsthm, geometry, microtype, mathtools,
 booktabs, longtable, array, enumitem, xcolor, fancyhdr, titlesec, tcolorbox,
-xurl, graphicx, listings, tikz, pgfplots and hyperref; the bibliography is
+xurl, graphicx, listings, tikz, pgfplots, tabularx and hyperref; the bibliography is
 inline. The
 article includes `figures/02-hat-surplus-block_prefix.pdf`, so copy it too.
 Build in a scratch copy:
@@ -1156,6 +1476,14 @@ warning reports the intentionally disabled shell escape. PDF pages 29 and
 131 were visually inspected for the new remark and repaired indicator. The
 immutable [publication review](../../../../../../Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/review_box_publication_721cf8196.md)
 retains both original findings and its exact proof-read limits.
+
+The batch-96 write rebuilt the report as above with MiKTeX (4 October 2026):
+175 pages; no errors or warnings, no undefined references or citations, no
+multiply defined labels, no duplicate PDF destinations, no overfull or
+underfull boxes. The log has six informational lines "Infinite glue shrinkage
+found in box being split" (four in a build of the committed text, 144 pages,
+made the same way). Printed pages 1, 111, 142–144, 146, 156, 168 and 174
+(PDF pages 2, 112, 143–145, 147, 157, 169 and 175) were rendered and inspected.
 
 ## Provenance
 
@@ -1194,7 +1522,15 @@ retains both original findings and its exact proof-read limits.
   article (2025) and, uncited in its text, Butler–Hajiaghayi–Kleinberg–Leighton
   (2008). Batch 92, manuscripts 06 (arrival `afd7ffabb`) and 04 (arrival
   `9dc8db274`); placement `e38f368c2`; written in the batch-92 write phase.
-- Merge choices. Parts I–III are single sources. Manuscripts 03, 04 and 06
+- Part V, sources cited by the manuscript: Eldredge, arXiv:2508.02828v2 (the
+  block rule and the Glazer–Wang attribution); Glazer, arXiv:2211.10474; this
+  report at the pin `715a716a3` (4 October 2026, after the batch-92 write and
+  review; the report's `article.tex` is the same blob there and at the
+  placement), an ancestor of the placement; Beckner, *Inequalities in Fourier
+  analysis*, Ann. of Math. 102 (1975) 159–182. Batch 96 of `docs/incoming`,
+  manuscript 04 of eleven; arrival `26e036956`, placement `635a3e026`, written
+  in the batch-96 write phase (4 October 2026).
+- Merge choices. Parts I–III and V are single sources. Manuscripts 03, 04 and 06
   were placed here, not as reports of their own, because they answer named
   questions of this report (Q2, Q5; 29.2; Q9, 29.4, 29.5). Part IV merges 06
   (base) and 04, which prove the same core by the same construction; the
@@ -1203,4 +1539,8 @@ retains both original findings and its exact proof-read limits.
   replaced by pointers to source 06's identical arguments, its other shared
   proofs kept as second routes — are described in Section 45.6 and under
   "How the two sources are merged" above. Placing manuscript 02 of batch 90 as
-  Part II was the only earlier choice.
+  Part II was the only earlier choice. Manuscript 04 of batch 96 answers Part
+  IV's named Research question 57.2 and was placed as Part V for that reason;
+  it re-proves several Part IV statements (Theorems 53.3 and 55.2, Lemma 64.1,
+  Theorem 64.2, Proposition 64.7 and the Bonami bound), printed in place with
+  dated notes naming them, as the manuscript is printed whole.

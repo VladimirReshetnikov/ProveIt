@@ -71,6 +71,10 @@
 \newcommand{\norm}[1]{\left\lVert #1\right\rVert}
 \DeclareMathOperator{\Var}{Var}
 \DeclareMathOperator{\Inf}{Inf}
+% Part V (batch 96, manuscript 04) package and macros
+\usepackage{tabularx}
+\newcommand{\pos}[1]{\left(#1\right)_{+}}
+\newcommand{\negpart}[1]{\left(#1\right)_{-}}
 \newtcolorbox{resultbox}{colback=paperblue,colframe=accent,boxrule=0.6pt,arc=1mm,left=9pt,right=9pt,top=7pt,bottom=7pt,breakable}
 % [write] Notes added when the manuscript joined ProveIt's research-report
 % collection (batch 87, 3 October 2026) are set in this environment.
@@ -109,7 +113,7 @@ with a rational algorithm for every further asymptotic coefficient. We also prov
 {\footnotesize\textbf{[write]} Filed in ProveIt's research-report collection as \texttt{ordinals-and-order-types/measurable-box-games} (batch~87, manuscript~02; label prefix \texttt{mbg:}). Provenance, the checks made at intake, and the notation table are in Sections~\ref{mbg:sec:provenance} and~\ref{mbg:sec:notation}.\par}
 \end{titlepage}
 \hypersetup{pageanchor=true}
-{\footnotesize\noindent\textbf{[write]} Since 4 October 2026 the report has four Parts: Part~\ref{mbg:hat:part} (from Section~\ref{mbg:hat:sec:introduction}; batch~90, labels \texttt{mbg:hat:}) treats surplus in hat guessing and settles Q9 for one family; Part~\ref{mbg:ext:part} (from Section~\ref{mbg:ext:sec:setting}; batch~92, labels \texttt{mbg:ext:}) classifies the extensions of the product measure to adaptive success events and answers Q2 in part and Q5; Part~\ref{mbg:qry:part} (from Section~\ref{mbg:qry:sec:introduction}; batch~92, two merged manuscripts, labels \texttt{mbg:qry:} and \texttt{mbg:insp:}) determines the inspection cost of divergent surplus in hat guessing and settles Q9 for a larger family. Part~\ref{mbg:part:one}'s numbering is unchanged.\par}
+{\footnotesize\noindent\textbf{[write]} Since 4 October 2026 the report has five Parts: Part~\ref{mbg:hat:part} (from Section~\ref{mbg:hat:sec:introduction}; batch~90, labels \texttt{mbg:hat:}) treats surplus in hat guessing and settles Q9 for one family; Part~\ref{mbg:ext:part} (from Section~\ref{mbg:ext:sec:setting}; batch~92, labels \texttt{mbg:ext:}) classifies the extensions of the product measure to adaptive success events and answers Q2 in part and Q5; Part~\ref{mbg:qry:part} (from Section~\ref{mbg:qry:sec:introduction}; batch~92, two merged manuscripts, labels \texttt{mbg:qry:} and \texttt{mbg:insp:}) determines the inspection cost of divergent surplus in hat guessing and settles Q9 for a larger family; Part~\ref{mbg:rnd:part} (from Section~\ref{mbg:rnd:sec:introduction}; batch~96, labels \texttt{mbg:rnd:}) determines that cost when free random bits are allowed and answers the almost-sure clauses of Research question~57.2. Part~\ref{mbg:part:one}'s numbering is unchanged.\par}
 \tableofcontents
 \newpage
 
@@ -168,6 +172,10 @@ Since 4 October 2026 this report has two Parts. Part~\ref{mbg:part:one} is the b
 
 \begin{writenote}[Added 4 October 2026, batch~92]
 Since the batch-92 write (4 October 2026) this report has four Parts; Parts~\ref{mbg:part:one} and~\ref{mbg:hat:part} are printed as before (their sections, statements, equations, labels and bibliography numbers are unchanged). Part~\ref{mbg:ext:part} is manuscript~03 of batch~92, \emph{Adaptive Box Games Beyond Cylinder Measurability}, pinned at commit \texttt{1afa38bf9} (provenance: Section~\ref{mbg:ext:sec:provenance}). It answers Research question~Q2 for full product-topology Borel and for universally measurable outputs (Theorem~\ref{mbg:ext:thm:minimax}), reduces its Baire-property clause without settling it (Proposition~\ref{mbg:ext:prop:category}), and answers Q5 (Theorems~\ref{mbg:ext:thm:density} and~\ref{mbg:ext:thm:polytope}). Part~\ref{mbg:qry:part} merges manuscripts~06 (the base) and~04 of batch~92, both pinned at commit \texttt{9fe62865d}, which independently determine the inspection cost of divergent surplus in Eldredge's hat game, answering Part~\ref{mbg:hat:part}'s Research question~29.2; manuscript~04 also settles Q9 for the parameters $(m(2^r-1),2,m(2^r-1))$ and the threshold $m2^{r-1}$, for every $m\ge1$ (provenance and the merge: Sections~\ref{mbg:qry:sec:provenance}--\ref{mbg:qry:sec:merge}). The notes after the questions of Section~\ref{mbg:sec:questions} record what is now answered. The neighbouring reports named above share no theorem with Parts~\ref{mbg:ext:part}--\ref{mbg:qry:part}; \nolinkurl{non-baire-translation-invariant-ideal} remains the nearest in spirit to Q2's open Baire-property clause.
+\end{writenote}
+
+\begin{writenote}[Added 4 October 2026, batch~96]
+Since the batch-96 write (4 October 2026) this report has five Parts; Parts~\ref{mbg:part:one}--\ref{mbg:qry:part} are printed as before (their sections, statements, equations, labels and bibliography numbers are unchanged). Part~\ref{mbg:rnd:part} is manuscript~04 of batch~96, \emph{One Inspection in Expectation}, pinned at commit \texttt{715a716a3} (provenance: Section~\ref{mbg:rnd:sec:place}). It determines the uniform expected inspection caps that admit almost-sure divergent surplus in Eldredge's hat game when random bits are free: $(1,\infty)$ with independent private seeds or a finite-valued public seed, $[1,\infty)$ with a public seed of countably infinite support. This answers the almost-sure clauses of Part~\ref{mbg:qry:part}'s Research question~57.2 (the notes after Sections~\ref{mbg:qry:sec:random} and~\ref{mbg:qry:sec:questions}). It bears on none of Q1--Q12 below, and the neighbouring reports named above share no theorem with it.
 \end{writenote}
 
 \subsection{Notation used in this report}
@@ -5467,6 +5475,10 @@ optimal randomized threshold.
 Source~04 treats the other convention, a free \emph{public} coin with costs averaged over it, in Section~\ref{mbg:insp:sec:model}: mixing the optimal strategy with probability~$\epsilon$ and a zero-query strategy gives uniform expected cost at most $2\epsilon$ with divergence of probability at least~$\epsilon$, so its positive-probability lower bound fails in that model. The two observations are complementary; the sharp randomized thresholds are Research questions~\ref{mbg:qry:sec:questions}.2 and~\ref{mbg:insp:sec:questions}.6.
 \end{writenote}
 
+\begin{writenote}[Added 4 October 2026, batch~96]
+The sentence above that the theorem ``does not determine the optimal randomized threshold'', and the preceding note's reference to the sharp randomized thresholds as open questions, describe the state before batch~96. Part~\ref{mbg:rnd:part} determines the thresholds for almost-sure divergence. With free private coins the admissible uniform caps are exactly $(1,\infty)$: below~$1$ no randomness helps (Corollary~\ref{mbg:rnd:cor:costone}), and at~$1$ almost-sure divergence is impossible (Theorem~\ref{mbg:rnd:thm:private-no-one}; its probability is at most $1-1/5184$, Corollary~\ref{mbg:rnd:cor:private-gap}). So the theorem above is optimal, and its strict bound $C>1$ cannot be relaxed to $C\ge1$. The same holds with a finite-valued public seed (Theorem~\ref{mbg:rnd:thm:finite-public}), whereas a public seed of countably infinite support attains the cap~$1$ with $\E Q_i<1$ for every player (Theorems~\ref{mbg:rnd:thm:public-endpoint} and~\ref{mbg:rnd:thm:support}). Proposition~\ref{mbg:rnd:prop:private-upper} reprints the theorem above with its proof. Whether private coins at a cap of at most~$1$ allow divergence with positive probability is open (Research question~\ref{mbg:rnd:sec:future}.1).
+\end{writenote}
+
 \section{Finite certificates, reproducibility, and formalization}
 \label{mbg:qry:sec:verification}
 
@@ -5728,6 +5740,14 @@ null set, and a finite certificate from its soundness theorem.
 All twelve questions stay open as printed; the write searched no literature for them. Several coincide with source~04's questions of Section~\ref{mbg:insp:sec:questions}, as the note there lists. Two of source~04's results bear on them without answering them: its Theorem~\ref{mbg:insp:thm:fin-trace} gives finite teams of depth $k=2^{r-1}-1$ with $\Prb(F\le0)=2^{-r}$, so $\alpha_k\le1/(2(k+1))$ for those~$k$ in question~\ref{mbg:qry:sec:questions}.1, against the lower bounds of~\eqref{mbg:qry:eq:adaptive}; and its Section~\ref{mbg:insp:con-section} computes the endpoint central limit theorem, the variance and the realized and maximal costs of the critical schedule, the first steps of questions~\ref{mbg:qry:sec:questions}.10--\ref{mbg:qry:sec:questions}.11.
 \end{writenote}
 
+\begin{writenote}[Status of Research questions 57.2, 57.8 and 57.10, 4 October 2026, batch~96]
+\textbf{57.2 is answered except for one clause}, by Part~\ref{mbg:rnd:part}. \emph{Is $1$ optimal when random bits are free and private?} Yes: no cap below~$1$ admits almost-sure divergence, whatever the randomness (Corollary~\ref{mbg:rnd:cor:costone}), and every cap above~$1$ does (Theorem~\ref{mbg:qry:thm:randomcost}). \emph{Is the boundary value attained?} Not with private coins (Theorem~\ref{mbg:rnd:thm:private-no-one}) or a finite-valued public seed (Theorem~\ref{mbg:rnd:thm:finite-public}); yes with a shared seed of countably infinite support, with $\E Q_i<1$ for every player and arbitrarily small shared entropy (Theorems~\ref{mbg:rnd:thm:public-endpoint}, \ref{mbg:rnd:thm:support} and Corollary~\ref{mbg:rnd:cor:entropy}); a prescribed public variable with values in a standard Borel space permits it exactly when it is not almost surely finitely valued (Corollary~\ref{mbg:rnd:cor:prescribed}, the write's). \emph{Positive probability versus almost-sure divergence:} with a public coin every cap $C>0$ admits divergence with positive probability (Proposition~\ref{mbg:rnd:prop:public-mixture}); with private coins at a cap of at most~$1$ only $\Prb(D_n\to+\infty)\le1-1/5184$ is known (Corollary~\ref{mbg:rnd:cor:private-gap}), and whether that probability can be positive is Research question~\ref{mbg:rnd:sec:future}.1. \emph{Randomness generated by charged hat queries:} a strategy that makes its random bits by inspecting hats is deterministic, so Theorem~\ref{mbg:qry:thm:threshold} applies and the threshold is~$2$, for positive-probability and almost-sure divergence alike (the write's observation).
+
+\textbf{57.8 is not answered.} Part~\ref{mbg:rnd:part}'s Lemma~\ref{mbg:rnd:lem:spectral-sign} is source~04's Proposition~\ref{mbg:insp:var-spectral-escape}, which already shows that the low-degree fraction of $\Var(F_n)$ tends to~$0$ when $\Prb(F_n>0)\to1$, at most $2\cdot3^d\sqrt{\Prb(F_n<0)}$, sharpening the bound $e^{2k}/(1+e^{2k})$ that Proposition~\ref{mbg:qry:prop:spectral} gives. Part~\ref{mbg:rnd:part} adds an owner-indexed accounting of the Fourier mass (Lemma~\ref{mbg:rnd:lem:energy}) and the variance-scale overhead of Theorem~\ref{mbg:rnd:thm:variance-overhead}: for deterministic strategies with $\Prb(F_n<0)\to0$, $\liminf_n\bigl(\sum_{i\le n}\E Q_i-n\bigr)/\Var(F_n)\ge1$.
+
+\textbf{57.10 is answered in its asymptotic form, not for prescribed rates.} Whatever the randomness, $\Prb(F_n>0)\to1$ forces $\liminf_nn^{-1}\sum_{i\le n}\E Q_i\ge1$ (Corollary~\ref{mbg:rnd:cor:costone}); for deterministic strategies almost-sure divergence forces $\sum_{i\le n}\E Q_i-n\to+\infty$ (Theorem~\ref{mbg:rnd:thm:aggregate}); averages tending to~$1$ are attained with private seeds and with a public seed (Proposition~\ref{mbg:rnd:prop:asymptotic}). They are attained deterministically too, as the question's remark on padding suggests (the write's observation): after the $j$-th block of the strategy of Theorem~\ref{mbg:qry:thm:threshold}, insert $N_j$ neutral pairs (one inspection each, exactly one correct guess per pair), with $N_j$ growing so fast that the block players have density tending to~$0$. A completed neutral pair adds nothing to the surplus and a prefix ending inside one changes it by $\pm1/2$, so $D_n\to+\infty$ almost surely; every player costs at most~$2$, the neutral ones exactly~$1$, so the average cost tends to~$1$. The rates asked for remain open. The other questions stay as the preceding note says.
+\end{writenote}
+
 \section{Conclusions and contribution ledger}
 \label{mbg:qry:sec:conclusions}
 
@@ -5785,6 +5805,10 @@ Not performed; the executable finite checks and the proposed
 formalization obligations are stated separately.\\
 \bottomrule
 \end{longtable}
+
+\begin{writenote}[Added 4 October 2026, batch~96]
+The ledger's ``the optimal randomized boundary is left open'' records the state at the batch-92 write. Part~\ref{mbg:rnd:part} determines that boundary for almost-sure divergence (the note after Theorem~\ref{mbg:qry:thm:randomcost}); for positive-probability divergence with private coins it remains open (Research question~\ref{mbg:rnd:sec:future}.1).
+\end{writenote}
 
 \section{The question and the research intersection}
 \label{mbg:insp:sec:intro}
@@ -6058,6 +6082,10 @@ None of the proofs uses post-assignment communication.
 
 \begin{writenote}[Added 4 October 2026, batch~92]
 Theorem~\ref{mbg:insp:thm:main-frontier}(1) is the probability part of source~06's Corollary~\ref{mbg:qry:cor:bounded} (proved here as Theorem~\ref{mbg:insp:obs-no-divergence}); its part~(2), for every nondecreasing cost, is this source's alone (Theorem~\ref{mbg:insp:cost-frontier}); its part~(3) is Propositions~\ref{mbg:insp:con-query-distribution} and Theorems~\ref{mbg:insp:con-rate-theorem}--\ref{mbg:insp:var-strong-law}; its mean case is source~06's Theorem~\ref{mbg:qry:thm:threshold}. Theorem~\ref{mbg:insp:thm:main-other} is this source's alone (Theorem~\ref{mbg:insp:var-weighted} and Section~\ref{mbg:insp:sec:fin}). The public-coin remark above and source~06's Theorem~\ref{mbg:qry:thm:randomcost} on private coins are complementary (the note after it).
+\end{writenote}
+
+\begin{writenote}[Added 4 October 2026, batch~96]
+The ``separate analysis'' asked for above is Part~\ref{mbg:rnd:part}. With the unconditional cost convention used above, a public seed of countably infinite support permits almost-sure divergence at uniform cost exactly~$1$ (Theorem~\ref{mbg:rnd:thm:public-endpoint}), a finite-valued one does not (Theorem~\ref{mbg:rnd:thm:finite-public}), and Proposition~\ref{mbg:rnd:prop:public-mixture} extends the mixture above to every cap $C>0$ and to success probabilities arbitrarily close to~$1$ at cap~$1$. With a budget conditional on the seed the admissible caps are $(1,\infty)$ with private coins and $[2,\infty)$ without (Corollary~\ref{mbg:rnd:cor:conditional}, the write's).
 \end{writenote}
 
 
@@ -7095,6 +7123,10 @@ tails for each player do not by themselves provide such an aggregate
 relative-error estimate.
 \end{remark}
 
+\begin{writenote}[Added 4 October 2026, batch~96]
+Part~\ref{mbg:rnd:part} extends Lemma~\ref{mbg:insp:var-covariance} and the unweighted case of Theorem~\ref{mbg:insp:var-weighted} to strategies with external randomness and adds the lower bound $\max\{0,n-\sum_{i\le n}\E Q_i\}\le\Var(T_n)$ (Lemma~\ref{mbg:rnd:lem:covariance}, Proposition~\ref{mbg:rnd:prop:variance}); it re-proves Proposition~\ref{mbg:insp:var-spectral-escape} and this remark as Lemma~\ref{mbg:rnd:lem:spectral-sign}, and combines them with an owner-indexed Fourier accounting (Lemma~\ref{mbg:rnd:lem:energy}, Theorems~\ref{mbg:rnd:thm:aggregate}--\ref{mbg:rnd:thm:variance-overhead}).
+\end{writenote}
+
 
 \section{Sharp inspection cost for finite first-moment extremizers}
 \label{mbg:insp:sec:fin}
@@ -7859,6 +7891,10 @@ over individual costs, rather than only their finite examples.
 All twelve questions stay open; source~06 settles one value asked for in 68.2 (below). The write searched no literature for them. \emph{Overlaps with source~06's questions of Section~\ref{mbg:qry:sec:questions}:} 68.1 is 57.3; 68.2 asks about the same quantity as 57.1, since $1-p_k$ is source~06's $\alpha_k$; 68.6 and 57.2 overlap (randomized thresholds, public and private coins); 68.8 is 57.9; 68.9 is close to 57.11; 68.10 is 57.10; 68.11 is close to 57.8; 68.7 and 57.6 both separate query count from query distance. \emph{Partial answers in this report:} for 68.2, source~06's Theorem~\ref{mbg:qry:thm:onequery} gives $p_1=3/4$, so the trace bound $p_{2^{r-1}-1}\ge1-2^{-r}$ is an equality at $k=1$ ($r=2$), and its sparse-support bound~\eqref{mbg:qry:eq:adaptive} gives the lower bound $1-p_k\ge c^{\rm ad}_k$; for 68.6, source~06's Theorem~\ref{mbg:qry:thm:randomcost} shows that with free \emph{private} coins every uniform expected cap $C>1$ admits almost-sure divergence, while the sharp randomized thresholds stay open. 68.5 retains the open part of Part~\ref{mbg:part:one}'s Q9 and of Part~\ref{mbg:hat:part}'s Research questions~29.4--29.5 (see the notes after the questions of Sections~\ref{mbg:sec:questions} and~\ref{mbg:hat:sec:questions}).
 \end{writenote}
 
+\begin{writenote}[Status of Research questions 68.6, 68.10 and 68.11, 4 October 2026, batch~96]
+The preceding note's ``the sharp randomized thresholds stay open'' describes the state before batch~96. \textbf{68.6 is answered in two of its three variants} by Part~\ref{mbg:rnd:part} (details in the note after the questions of Section~\ref{mbg:qry:sec:questions}). With a public seed and unconditional expectations, the sharp almost-sure cap is~$1$; it is attained exactly when the seed is not almost surely finitely valued (Theorems~\ref{mbg:rnd:thm:finite-public}, \ref{mbg:rnd:thm:public-endpoint} and~\ref{mbg:rnd:thm:support}, Corollary~\ref{mbg:rnd:cor:prescribed}), and every cap $C>0$ admits positive-probability divergence (Proposition~\ref{mbg:rnd:prop:public-mixture}), the separation the question mentions. With expectations conditional on the seed, the admissible caps are $(1,\infty)$ with private coins and $[2,\infty)$ without (Corollary~\ref{mbg:rnd:cor:conditional}, the write's). The third variant, charging for random bits, is open (Research question~\ref{mbg:rnd:sec:future}.7). \textbf{68.10}, like 57.10, is answered in its asymptotic form: the least asymptotic average cost compatible with almost-sure divergence is~$1$, approached with or without randomness; its dependence on prescribed growth and visibility is open. \textbf{68.11} is not answered: Proposition~\ref{mbg:insp:var-spectral-escape} is re-proved as Lemma~\ref{mbg:rnd:lem:spectral-sign}, and Theorem~\ref{mbg:rnd:thm:variance-overhead} adds a relation between cost overhead and variance for deterministic strategies.
+\end{writenote}
+
 \section{What has been resolved}
 \label{mbg:insp:sec:resolved}
 
@@ -7893,6 +7929,1767 @@ Hamming failure code.
 These conclusions are conventional mathematical proofs with
 independent finite diagnostics. They do not replace the remaining
 formalization work or establish bibliographic priority.
+
+
+% ============ Part V (batch 96, manuscript 04; local source 06) ============
+\clearpage
+\fancyhead[R]{\small Part~V: randomness and inspection}
+\part{One inspection in expectation: exact randomness thresholds for infinite hat guessing, endpoint separation, and arbitrarily small shared entropy}
+\label{mbg:rnd:part}
+
+% Part V continues the section numbers after Part IV (offset 69): the
+% manuscript's Section k is Section k+69 (Sections 70-81) and its Appendices
+% A-B are Appendices H-I; equations stay numbered within sections, as in
+% Part IV (the manuscript numbered them consecutively).
+\setcounter{section}{69}
+\renewcommand{\thesection}{\arabic{section}}
+\renewcommand{\theHsection}{rnd.\arabic{section}}
+\makeatletter\gdef\Hy@chapapp{\Hy@chapterstring}\makeatother
+
+\noindent{\large \emph{One Inspection in Expectation: Exact randomness thresholds for infinite hat guessing, endpoint separation, and arbitrarily small shared entropy}. Research manuscript prepared for Vladimir Reshetnikov, 4 October 2026.\par}
+
+\paragraph{Abstract.}
+Countably many players receive independent fair binary hats. Each player
+must guess their own hat after adaptively inspecting other hats, with no
+communication. We study strategies whose excess of correct guesses
+$D_n$ tends to $+\infty$ almost surely, under a uniform bound on the
+expected number of inspections per player. The existing deterministic
+threshold is $2$, and the inspected \repo\ manuscript constructs
+independent-private-randomness strategies under every cap greater than
+$1$, leaving the randomized boundary open.
+
+We determine that boundary. With independent private randomness the
+admissible caps are exactly $(1,\infty)$; adding any finite-valued public
+seed does not change this interval. With a public seed of countably
+infinite support and independent private randomness, the admissible caps are
+$[1,\infty)$. At the public endpoint every individual expected cost can
+be strictly less than $1$. A single shared nonnegative integer suffices,
+and its Shannon entropy can be arbitrarily small and positive. More
+generally, for a fixed countably supported public seed, endpoint
+attainment is possible exactly when its support is infinite.
+
+The lower bounds combine a projection onto players who make no
+inspections, an accounting of Fourier coefficients according to the
+player whose hat they contain, and a stopped supermartingale argument.
+For a finite team of size $n$ with total expected cost $q$, we obtain
+$\Prb(D_n<0)\ge (n-q)_+^2/[12n(n+q)]$, valid even for correlated public
+randomness. A further deterministic theorem shows that almost-sure
+divergence forces cumulative expected inspection cost minus $n$ to tend
+to infinity. We give full proofs, explicit constructions, an exact
+finite verifier, a source and novelty audit, and further research
+questions. The almost-sure clauses of the inspected repository's
+Question 57.2 are thereby resolved; its private positive-probability
+variant remains open.
+
+\begin{resultbox}
+\textbf{Status.} The mathematical deliverable consists of English
+proofs and exact finite checks. It is not a Lean or Rocq formalization.
+Novelty is assessed against the specified repository snapshot and the
+primary sources listed below, without asserting exhaustive priority.
+\end{resultbox}
+
+\begin{writenote}[Corrected 4 October 2026, batch~96]
+\emph{Two corrections, both kept on record.} (1)~The second paragraph of the abstract read, as delivered: ``With a countably supported public seed and independent private randomness, the admissible caps are $[1,\infty)$.'' That is false for a prescribed seed with finitely many values, where the admissible caps are $(1,\infty)$ (Theorem~\ref{mbg:rnd:thm:finite-public}); the manuscript's own threshold table (Theorem~\ref{mbg:rnd:thm:frontier}: ``of our choice''), Theorem~\ref{mbg:rnd:thm:support} and its delivered \texttt{README.txt} (``countably infinite supported'') state it correctly, and the sentence above is corrected to match. (2)~Definition~\ref{mbg:rnd:def:randomness} called a public seed \emph{finite-valued} when it has finitely many values of positive probability; read literally, that admits seeds with a diffuse part, and then Theorem~\ref{mbg:rnd:thm:finite-public} is false. Both the definition and the theorem now state the hypothesis the proof uses, $\Prb(\Theta\in\{t_1,\ldots,t_s\})=1$; Remark~\ref{mbg:rnd:rem:finite-valued} gives a counterexample to the literal wording, with its proof, and Corollary~\ref{mbg:rnd:cor:prescribed} the exact boundary for a prescribed public seed. With the corrected definition the abstract's ``any finite-valued public seed'' is right as printed.
+\end{writenote}
+
+\begin{writenote}[Added 4 October 2026, batch~96]
+This Part is manuscript~04 of batch~96 of ProveIt's incoming-reports intake, printed in full after Part~\ref{mbg:qry:part}; in this report's local sequence it is source~06 (file prefix \texttt{06-hat-randomness-}), not to be confused with Part~\ref{mbg:qry:part}'s ``source~06'', which is a manuscript of batch~92. It answers the almost-sure clauses of Part~\ref{mbg:qry:part}'s Research question~57.2 (and part of 68.6); provenance, the checks made at the write and the notation table are in Sections~\ref{mbg:rnd:sec:place} and~\ref{mbg:rnd:sec:notation}. Like Parts~\ref{mbg:part:one}--\ref{mbg:qry:part} it is AI-assisted, unrefereed and not formalized. \textbf{The manuscript's Section~$k$ is Section~$k+69$ here (Sections~70--81) and its Appendices~A--B are Appendices~\ref{mbg:rnd:app:map}--\ref{mbg:rnd:app:repro}; its statement $k.m$ is $(k+69).m$, and its Research questions~1--10 are 81.1--81.10.} The manuscript numbered its equations consecutively, (1)--(38); here they are numbered within sections, as in Part~\ref{mbg:qry:part} (the correspondence is in Section~\ref{mbg:rnd:sec:place}). Thus its Theorems~1.1, 6.2, 6.5 and~9.1 are Theorems~\ref{mbg:rnd:thm:frontier}, \ref{mbg:rnd:thm:private-no-one}, \ref{mbg:rnd:thm:finite-public} and~\ref{mbg:rnd:thm:public-endpoint}. Its references to the ``inspected report'' or ``repository'' and to its Theorems~53.3 and~55.2, Lemma~64.1, Theorem~64.2, Questions~57.2 and~68.6 and Section~62 mean Part~\ref{mbg:qry:part} of the present report, whose numbering was the same at the manuscript's pin as it is now. Apart from the editorial changes of Section~\ref{mbg:rnd:sec:place}, the letter renamings of Section~\ref{mbg:rnd:sec:notation} (the public seed is $\Theta$ here, $T$ in the manuscript), the two corrections above, and the dated \textbf{[write]} notes, no statement, proof, number or non-claim of the manuscript was changed. Results added by the write carry ``[write]'' in their headings; claims that the manuscript states without proof are collected, with their sketches, as Research questions~\ref{mbg:rnd:q:heuristic}--\ref{mbg:rnd:q:review} at the end of Section~\ref{mbg:rnd:sec:future}.
+\end{writenote}
+
+\section{Research intersection and principal results}
+\label{mbg:rnd:sec:introduction}
+
+\subsection{Why this topic is an intersection with Glazer's work}
+
+Eldredge explicitly credits Elliot Glazer and Charles Wang with
+suggesting the study of the excess of correct guesses
+$S_n-n/2$ in the infinite hat game, immediately before Proposition 6.6
+of \cite{hat:Eldredge}. That proposition constructs a measurable strategy
+with excess tending to infinity almost surely. Glazer's own work on
+choiceless box games \cite{GlazerBox} gives broader context for his interest
+in prediction games and the relation between probability and choice.
+The present article concerns a countable, measurable, finite-inspection
+model; no choice-based nonmeasurable strategy is needed.
+
+The \repo\ research report on measurable box and hat games develops the
+inspection-cost version of this direction \cite{rnd:ProveIt}. Its Theorem
+55.2 gives almost-sure divergent excess using independent private coins
+under every uniform expected cap $C>1$. Its Question 57.2 asks whether
+$1$ is optimal, whether the endpoint is attained, and how the answers
+depend on the meaning of randomized success. This is the concrete
+question addressed here.
+
+All repository comparisons refer to commit
+\begin{center}
+\texttt{715a716a3002b1e9f28daa2d81c009a392851b94}.
+\end{center}
+The precise path and stable source labels are given in
+Section~\ref{mbg:rnd:sec:provenance}. This matters because the manuscript combines
+several reports and its section numbers can change in later revisions.
+
+\subsection{A complete almost-sure threshold table}
+
+Let $Q_i$ be player $i$'s number of inspections and put
+\begin{equation}
+ \mathcal C=\sup_{i\ge1}\E Q_i.
+ \label{mbg:rnd:eq:uniform-cost}
+\end{equation}
+The expectation includes hats and all external randomness. An
+\emph{admissible cap} $C$ means that some legal strategy satisfies
+$\mathcal C\le C$ and $D_n\to+\infty$ almost surely.
+
+\begin{theorem}[Complete almost-sure classification]
+\label{mbg:rnd:thm:frontier}
+For independent fair binary hats, the admissible uniform expected
+inspection caps are as follows.
+\begin{center}
+\normalfont
+\begin{tabularx}{\textwidth}{@{}Xcc@{}}
+\toprule
+Randomness available & Admissible caps & Infimum attained?\\
+\midrule
+None: deterministic algorithms & $[2,\infty)$ & Yes\\
+Independent private seeds & $(1,\infty)$ & No\\
+A finite-valued public seed and private seeds & $(1,\infty)$ & No\\
+A countably supported public seed of our choice and private seeds
+& $[1,\infty)$ & Yes\\
+Arbitrary public randomness & $[1,\infty)$ & Yes\\
+\bottomrule
+\end{tabularx}
+\end{center}
+For the public endpoint, one can have $\E Q_i<1$ for every individual
+player, while $\sup_i\E Q_i=1$. The effective shared random variable can
+have arbitrarily small positive Shannon entropy.
+\end{theorem}
+
+The deterministic line and the private upper bound above $1$ are inputs
+from the inspected report; they are reproduced with proofs for
+completeness. The randomized lower bounds, the exclusion of a finite
+shared seed at the endpoint, the public endpoint construction, and the
+shared-support and entropy refinements are the contributions developed
+in this article.
+
+\begin{writenote}[Added 4 October 2026, batch~96]
+Where each row is proved: the deterministic row is Theorem~\ref{mbg:qry:thm:threshold} (Part~\ref{mbg:qry:part}, also for positive-probability success), re-proved for almost-sure success in Proposition~\ref{mbg:rnd:prop:deterministic}; for private seeds, caps below~$1$ are excluded by Corollary~\ref{mbg:rnd:cor:costone} (even with shared seeds), the cap~$1$ by Theorem~\ref{mbg:rnd:thm:private-no-one}, and every cap above~$1$ is Theorem~\ref{mbg:qry:thm:randomcost}, reproduced as Proposition~\ref{mbg:rnd:prop:private-upper}; the finite-valued row is Theorem~\ref{mbg:rnd:thm:finite-public}, with ``finite-valued'' in the corrected sense of Definition~\ref{mbg:rnd:def:randomness}; the last two rows are Theorem~\ref{mbg:rnd:thm:public-endpoint}. In those two rows the strategy chooses its public variable. For a \emph{prescribed} public variable the answer depends on its law: Theorem~\ref{mbg:rnd:thm:support} and Corollary~\ref{mbg:rnd:cor:coarsening} decide it, and Corollary~\ref{mbg:rnd:cor:prescribed} (the write's) gives the boundary for every public variable with values in a standard Borel space: the endpoint is attained unless the variable is almost surely finitely valued. The table uses the unconditional cost convention~\eqref{mbg:rnd:eq:uniform-cost}; if the cap must hold conditionally on the public outcome, the admissible caps are $(1,\infty)$ for every public seed (Corollary~\ref{mbg:rnd:cor:conditional}, the write's).
+\end{writenote}
+
+\subsection{The distinctions that make the theorem precise}
+
+Three distinctions are essential. First, $D_n\to+\infty$ almost surely
+is different from merely having positive probability of that event.
+Second, the infimum $1$ need not itself be achievable. Third, averaging
+cost over a public random variable is different from requiring the same
+cap conditional on every public outcome. Our public construction uses
+the unconditional convention in \eqref{mbg:rnd:eq:uniform-cost}.
+
+The theorem is about correct-guess excess, not a positive limiting
+advantage in the fraction of correct guesses. Every individual guess
+remains correct with probability $1/2$, and $\E D_n=0$ at every finite
+prefix. The constructions exploit rare losses and dependencies to
+produce almost-sure positive divergence without changing these finite
+expectations.
+
+\subsection{Provenance and place in this report}
+\label{mbg:rnd:sec:place}
+
+\begin{writenote}[Added 4 October 2026, batch~96]
+\emph{Source.} This Part is a single manuscript, printed in full: manuscript~04 of batch~96 of ProveIt's incoming-reports intake, delivered as the archive \texttt{hat\_\allowbreak randomness\_\allowbreak frontier.zip} (442,103 bytes, eight members; inner directory \texttt{hat\_\allowbreak randomness\_\allowbreak frontier/}, main file \texttt{hat\_\allowbreak randomness\_\allowbreak frontier.tex} of 1,660 lines, a 24-page US Letter PDF) in the arrival commit \texttt{26e036956} (4 October 2026, 16:34 UTC$-$7, together with two other batch-96 archives), and placed in commit \texttt{635a3e026}. Its verifier, Makefile and verification notes are shipped in \texttt{code/}, its recorded output in \texttt{data/} and its source audit at the report root, all with the prefix \texttt{06-hat-randomness-}, the next number of this report's local sequence. Its author line reads ``Research manuscript prepared for Vladimir Reshetnikov''; \textbf{its PDF metadata name the author as ``OpenAI ChatGPT''} (the \texttt{pdfauthor} field of its \texttt{\textbackslash hypersetup}). It was placed here, not as a report of its own, because it answers a named question of this report: Part~\ref{mbg:qry:part}'s Research question~57.2, ``The exact randomized expected-cost threshold'', in its almost-sure clauses, and in part Research question~68.6 (the notes after Sections~\ref{mbg:qry:sec:questions} and~\ref{mbg:insp:sec:questions}).
+
+\emph{Pin.} The manuscript was written against \texttt{715a716a3002b1e9f28daa2d81c009a392851b94} (Section~\ref{mbg:rnd:sec:introduction} and bibliography entry~\cite{rnd:ProveIt}), the commit ``Construct a non-dyadic outer family with actual compiler constants fixed'' of 4 October 2026, 15:48 (UTC$-$7), an ancestor of the placement. It postdates the batch-92 write of Parts~\ref{mbg:ext:part}--\ref{mbg:qry:part} (\texttt{721cf8196}) and the review that added Remark~\ref{mbg:insp:rem:q9-divisor-cases} (\texttt{42b49fdbd}); the report's \texttt{article.tex} is the same blob, \texttt{8af80fe9}, at the pin and at the placement, so the manuscript read Parts~\ref{mbg:part:one}--\ref{mbg:qry:part} exactly as they are printed here.
+
+\emph{Repository claims, checked at the write.} The deterministic threshold~$2$ is Theorem~\ref{mbg:qry:thm:threshold} (for positive-probability and for almost-sure divergence; the sentence after Proposition~\ref{mbg:rnd:prop:deterministic}, that the repository proves the probability-zero conclusion below~$2$, is right); private sufficiency for every $C>1$ is Theorem~\ref{mbg:qry:thm:randomcost}; the covariance identity and the bound $\Var\le n+\sum\E Q_i$ are Lemma~\ref{mbg:insp:var-covariance} and Theorem~\ref{mbg:insp:var-weighted}, stated there for deterministic trees (the extension to seeds is this manuscript's); Section~62 is the path-cost frontier of source~04; the public mixing at small cost is the remark of Section~60.3; Research questions~57.2 and~68.6 read as quoted. The labels the manuscript names, \texttt{mbg:qry:thm:randomcost}, \texttt{var-covariance} and \texttt{var-weighted} (the last two carry the prefix \texttt{mbg:insp:}), exist. The manuscript's statement that no zero-inspection projection occurs in the report is true of Parts~\ref{mbg:part:one}--\ref{mbg:qry:part}. Two of its results re-prove statements of Part~\ref{mbg:qry:part} that it credits only in general terms: Lemma~\ref{mbg:rnd:lem:bonami} is the fourth-moment bound of Lemma~\ref{mbg:qry:lem:sign}'s proof~\eqref{mbg:qry:eq:bonami} and of Lemma~\ref{mbg:insp:obs-hypercontractivity}, and Lemma~\ref{mbg:rnd:lem:spectral-sign} is source~04's Proposition~\ref{mbg:insp:var-spectral-escape} with Remark~\ref{mbg:insp:var-approximate-degree}, with the same proof (notes at both lemmas). No repository claim is refuted, and nothing is retracted. No Lean or Rocq file of ProveIt states any result of this Part; the dependency order of Section~\ref{mbg:rnd:sec:provenance} is a proposal.
+
+\emph{Reviews in the Hilbert's-tenth research tree.} Two reviews read the delivered manuscript at its arrival revision. \nolinkurl{Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/review_new_actions_26e036956.md} (commit \texttt{18825ee16}) inventoried the three archives of the arrival commit, read the delivery \texttt{README.txt}, \texttt{VERIFY\_\allowbreak NOTES.txt} and \texttt{SOURCE\_\allowbreak AUDIT.txt} in full and the manuscript's lines 104--262, 681--822 and 1039--1477 (here Sections~70--71, 75 and~78--80), found no defect in them, ran no program, and states that it does not certify the Fourier and zero-inspection bounds, the finite block, the scheduling proof or the full threshold table. The follow-up \nolinkurl{review_hat_endpoint_26e036956.md} beside it (commit \texttt{1eab36bb3}) read lines 263--680 as well, so that the whole dependency interval 193--822 (Sections~71--75) is covered, and passed the private and finite-public exclusions, the constants $1/5184$ and $1/20736$, the fourth-moment induction with its countable-coordinate extension and the stopped-process lemma; it gives a scalar example of correlated nonnegative costs with mean one whose partial sums minus their count diverge, to show why the independence in Lemma~\ref{mbg:rnd:lem:supermartingale} is needed (not a hat strategy, and not a counterexample to the manuscript). Neither review certifies the block, scheduling and upper constructions of Sections~76--77, on which the constructions of Sections~78--79 depend, and neither changes the arithmetic bounds of that programme (expected hat inspections are not arithmetic operations). \textbf{Both reviews read the finite-public theorem with a purely atomic seed}: the endpoint review's argument conditions on ``each positive-mass public outcome'', which exhausts the probability space only when $\Prb(\Theta\in\{t_1,\ldots,t_s\})=1$. Under that reading their PASS stands; the literal hypothesis of Definition~\ref{mbg:rnd:def:randomness} admits more, and Remark~\ref{mbg:rnd:rem:finite-valued} records the failure. The write found this at placement; neither review is edited.
+
+\emph{Checks at the write.} The whole manuscript was read, every main proof followed. The shipped verifier, run on a scratch copy with \texttt{--output} (Python 3.14.4, Windows, about 3~s), printed ``Logical checks: 499552'' and reproduced the shipped \texttt{results.json} byte for byte once the 9,164 CR bytes of Windows text mode are stripped. An independent program (not shipped) checked exactly the activated block law of Lemma~\ref{mbg:rnd:lem:block} by brute force for $k\le4$ and $\beta\in\{1/2,1/4\}$ ($\E\Delta=0$, $\Prb(\Delta=1)=\beta k4^{-k}$), the active query mean $2-2^{-(2k-2)}$ of Lemma~\ref{mbg:rnd:lem:block-cost} for $k\le5$, the identity~\eqref{mbg:rnd:eq:public-cost-s} and its bound below~$1$, the entropy formula~\eqref{mbg:rnd:eq:entropy}, the walk moments used in Theorem~\ref{mbg:rnd:thm:zero} for $k\le40$, and the law used in Remark~\ref{mbg:rnd:rem:finite-valued}. Eldredge's credit to Glazer and Wang before his Proposition~6.6 was checked at Part~\ref{mbg:hat:part}'s write (Section~\ref{mbg:hat:sec:provenance}); Beckner's paper was not checked.
+
+\emph{Editorial changes in printing this Part.} The 80 delivered labels carry the prefix \texttt{mbg:rnd:}, with every reference updated; the write added twelve, each \texttt{mbg:rnd:} followed by \texttt{part}, \texttt{sec:place}, \texttt{sec:notation}, \texttt{def:randomness}, \texttt{rem:finite-valued}, \texttt{cor:prescribed}, \texttt{cor:conditional}, \texttt{q:heuristic}, \texttt{q:measure}, \texttt{q:review} (Research questions~81.11--81.13), \texttt{app:map} or \texttt{app:repro} (Appendices~\ref{mbg:rnd:app:map}--\ref{mbg:rnd:app:repro}). Sections, statements and equations are renumbered as stated at the head of this Part; the manuscript's equations (1), (2)--(4), (5)--(6), (7)--(12), (13)--(22), (23)--(24), (25)--(29), (30), (31)--(37) and (38) are \eqref{mbg:rnd:eq:uniform-cost}, (71.1)--(71.3), (72.1)--(72.2), (73.1)--(73.6), (74.1)--(74.10), (75.1)--(75.2), (76.1)--(76.5), \eqref{mbg:rnd:eq:private-schedule}, (78.1)--(78.7) and \eqref{mbg:rnd:eq:public-tail}. Its separately counted Research questions~1--10 share the statement counter here. The manuscript referred to statements through \texttt{cleveref}, which this report does not load; since its lemmas, propositions and corollaries share the theorem counter, its PDF printed every such reference as ``theorem'' (and sections as ``section''), in lower case. Here each reference names the statement's own kind (``Use Proposition~\ref{mbg:rnd:prop:variance} and square'' where the delivered PDF says ``Use theorem 3.2 and square''). Its two-argument norm macro, $\lVert x\rVert_p$ written \texttt{\textbackslash norm\{x\}\{p\}}, is printed with Part~\ref{mbg:qry:part}'s one-argument \texttt{\textbackslash norm} and an explicit subscript (the printed symbols are unchanged); its \texttt{\textbackslash one} is Part~\ref{mbg:part:one}'s \texttt{\textbackslash ind}; its \texttt{\textbackslash as}, ``almost surely'' in words, is printed as those words (Part~\ref{mbg:hat:part}'s \texttt{\textbackslash as} is ``a.s.''); its \texttt{\textbackslash pos} and \texttt{\textbackslash negpart} ($(\cdot)_+$, $(\cdot)_-$) are new macros of the preamble, with the package \texttt{tabularx}; its unused \texttt{\textbackslash score} and \texttt{\textbackslash ind} are not defined. \repo\ is set in Part~\ref{mbg:part:one}'s typewriter style rather than small capitals, and remarks in Part~\ref{mbg:part:one}'s upright style. The title page became the Part heading, the abstract and the status box above; the manuscript's own table of contents is the report's. The letters renamed are listed in Section~\ref{mbg:rnd:sec:notation}. Bibliography: the manuscript's Eldredge and Glazer entries are the works of entries~\cite{hat:Eldredge} and~\cite{GlazerBox} and are cited by those numbers; its entry for this report at the pin is entry~\cite{rnd:ProveIt}; Beckner's \emph{Inequalities in Fourier analysis} is the new entry~\cite{rnd:Beckner}. The manuscript was set in Latin Modern; here it takes Part~\ref{mbg:part:one}'s fonts and layout, so line and page breaks differ from the delivered PDF.
+\end{writenote}
+
+\subsection{Notation in this Part}
+\label{mbg:rnd:sec:notation}
+
+\begin{writenote}[Added 4 October 2026, batch~96]
+The manuscript's letters are kept except five, renamed because Part~\ref{mbg:qry:part}, which this Part continues and re-proves in places, uses the same letters for different objects:
+\begin{itemize}
+\item the public seed $T$ is $\Theta$ (Part~\ref{mbg:qry:part}'s $T$ is a player role, which this Part keeps as $T_j$; source~04's $T_n$ is $2D_n$);
+\item the stage index $m$ of Sections~76--79 is $\nu$ (in source~06 of Part~\ref{mbg:qry:part}, and in this Part's verifier, $m$ is the number of pairs in a block, which here is $k_\nu$);
+\item the public disabling probability $\alpha_m=\Prb(T\ge m)$ is $\vartheta_\nu=\Prb(\Theta\ge\nu)$ (in Theorem~\ref{mbg:qry:thm:randomcost} $\alpha$ is the private \emph{activation} probability, which is $\beta$, $\beta_\nu$ here);
+\item the slack $K$ of Lemma~\ref{mbg:rnd:lem:energy}, Corollary~\ref{mbg:rnd:cor:aggregate-quantitative}, Theorem~\ref{mbg:rnd:thm:aggregate}, Lemma~\ref{mbg:rnd:lem:supermartingale} and Corollary~\ref{mbg:rnd:cor:private-gap} is $\kappa$, and the number $K(R)$ of zero-inspection players in Theorem~\ref{mbg:rnd:thm:zero} is $\zeta(R)$;
+\item the hat-averaged cumulative cost $B_n=\sum_{i\le n}\E_XQ_i$ of Section~74, a function of the seeds, is $\bar q_n$; its mean is the unconditional $q_n$ of~\eqref{mbg:rnd:eq:finite-notation}, and for deterministic strategies $\bar q_n=q_n$ is source~04's $B_n$ of Theorem~\ref{mbg:insp:var-weighted}.
+\end{itemize}
+No normalization changes. The middle column of the table gives the meaning in this Part, the right column a meaning elsewhere in the report that is \emph{not} meant.
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.17\textwidth}>{\raggedright\arraybackslash}p{0.45\textwidth}>{\raggedright\arraybackslash}p{0.30\textwidth}}
+\toprule
+Symbol & Meaning in Part~V & \emph{not}: meaning elsewhere\\
+\midrule
+\endhead
+$X_i$, $f_i$, $Y_i$, $x_i$ & hat sign, guess sign, correctness sign $X_if_i$; hat bit (Section~76.1) & Part~I's $X_I$, Part~III's $X$\\
+$R$, $U_i$, $\Theta$ & all external randomness; private seed of player~$i$; the public seed (manuscript's $T$) & Part~II's $R_k$; Part~IV's $R_k$\\
+$F_I$, $F_n$, $D_n$ & $\sum_{i\in I}Y_i$; $F_n=2D_n$ (Part~IV's $F_n$, source~04's $T_n$); surplus & Part~I's $F_n$ (sliceable matchings)\\
+$q_I$, $q_n$, $z_I$, $z_n$ & total expected cost, over hats and seeds; total zero-inspection probability & Part~I's alphabet size $q$; Part~IV's budget $q(i)$\\
+$\bar q_n$, $I_n$ & hat-averaged cost after fixing all seeds (manuscript's $B_n$); total influence & Part~I's $B_n$; source~04's $B_n$ (equal for deterministic trees); Part~II's $B_k$\\
+$\mathcal C$, $C$ & uniform cost $\sup_i\E Q_i$; a cap & Part~IV's $C_\phi$; Part~I's group $C$\\
+$J_{ij}$, $\partial_jf_i$, $\Inf$ & indicator that $i$ inspects $j$; discrete derivative; influence & ---\\
+$Z(R)$, $\zeta(R)$, $W$, $\mathcal G$ & zero-inspection set, its size (manuscript's $K(R)$); the projected walk; the conditioning $\sigma$-algebra & Part~III's $G$\\
+$a_{i,A}$, $p_A$, $b_A$, $V_j$ & owner coefficients; owner energy; Fourier coefficient of $F_n$; degree-$j$ variance & source~04's $p_k$ (68.2)\\
+$P_{\le d}$, $\ell_d$, $v$, $v_n$, $a_d$ & low-degree projection; its mass; variance; $(d-1)/(d+1)$ & Part~II's $a$\\
+$\kappa$ & slack in $\bar q_n\le n+\kappa$; a lower level in Lemma~\ref{mbg:rnd:lem:supermartingale} (manuscript's $K$) & Part~III's kernel $K$; Part~IV's field $K$\\
+$T_\rho$ & noise operator, $\rho=1/\sqrt3$ (Lemma~\ref{mbg:rnd:lem:bonami}) & the $T$ role; source~04's $T_n$\\
+$S_j$, $T_j$, $A_j$, $A$, $\beta$ & block roles; activation indicators and their number; activation probability & $S_n$; Part~III's $\alpha$; Part~IV's $\alpha$ (06's activation, here $\beta$)\\
+$\nu$, $k_\nu$, $L_\nu$, $\beta_\nu$, $\vartheta_\nu$ & stage index (manuscript's $m$); pairs per block; blocks per stage; activation; public disabling probability (manuscript's $\alpha_m$) & Part~I's measure $\nu$; source~06's $m$ (pairs per block)\\
+$G$, $\Delta$, $E_\nu$, $a_\nu$ & geometric variable; block excess; enumerated seed values; their tail mass & Part~III's good set $G$\\
+$h_2$, $H$, $p$ & binary entropy; Shannon entropy in bits; the dyadic parameter of~\eqref{mbg:rnd:eq:public-law} & Part~I's horizon $H$\\
+81.1--81.13 & Research questions of this Part & 57.x, 68.x; Part~I's Q1--Q12\\
+\bottomrule
+\end{longtable}
+\end{writenote}
+
+\section{Model, legal algorithms, and notation}
+\label{mbg:rnd:sec:model}
+
+Let $X_1,X_2,\ldots$ be independent random signs with
+$\Prb(X_i=1)=\Prb(X_i=-1)=1/2$. Player $i$ outputs a sign
+\begin{equation}
+ f_i=f_i(X_{-i},R),\qquad Y_i=X_i f_i,
+ \label{mbg:rnd:eq:prediction}
+\end{equation}
+where $R$ denotes all external randomness and is independent of the
+hats. The output is computed by a measurable adaptive decision tree.
+At each step, the algorithm either stops and guesses or selects a hat
+index different from $i$. Selection may depend on previous answers and
+the seed accessible to that player. It cannot depend on uninspected
+hats. All algorithms terminate almost surely. Our constructions in fact
+make finitely many inspections on every hat assignment.
+
+One inspection reveals one individual hat. Computation and the allowed
+external random bits are free. Inspecting a hat to obtain a random bit
+still costs one inspection. Repeated inspections can be removed; allowing
+them and charging for them only makes the lower bounds stronger.
+
+The sign $Y_i$ is $+1$ for a correct guess and $-1$ for an incorrect one.
+For a finite set $I$ of scored players define
+\begin{equation}
+ F_I=\sum_{i\in I}Y_i,\quad n=|I|,\quad
+ q_I=\sum_{i\in I}\E Q_i,\quad
+ z_I=\sum_{i\in I}\Prb(Q_i=0).
+ \label{mbg:rnd:eq:finite-notation}
+\end{equation}
+For the prefix $I=\{1,\ldots,n\}$ write $F_n,q_n,z_n$. Then
+\begin{equation}
+ D_n=\#\{i\le n:Y_i=1\}-\frac n2=\frac{F_n}{2}.
+ \label{mbg:rnd:eq:surplus}
+\end{equation}
+No argument restricts a scored player's inspections to the scored
+prefix: they may inspect any other hats.
+
+\begin{definition}[Private and public randomness]
+\label{mbg:rnd:def:randomness}
+In the private model, $R=(U_i)_{i\ge1}$, the $U_i$ are independent, and
+player $i$ can use only $U_i$. In the public-plus-private model, players
+also observe a common random variable $\Theta$, independent of the hats and
+of all $U_i$. The algorithm at $i$ may depend on $(\Theta,U_i)$. A
+finite-valued public seed takes its values in a finite set
+$\{t_1,\ldots,t_s\}$ almost surely: $\Prb(\Theta\in\{t_1,\ldots,t_s\})=1$.
+A countably supported public seed takes its values in a countable set
+almost surely; it may have infinitely many values of positive probability.
+\end{definition}
+
+\begin{writenote}[Corrected 4 October 2026, batch~96]
+As delivered, the last two sentences of this definition read: ``A finite-valued public seed has a finite set of possible values of positive probability. A countably supported public seed may have infinitely many such values.'' Read literally, the first sentence also covers a seed with finitely many atoms and a diffuse part (a uniform variable on $[0,1]$ has no atoms at all), and for such seeds Theorem~\ref{mbg:rnd:thm:finite-public} fails: Remark~\ref{mbg:rnd:rem:finite-valued}. The proofs of Theorems~\ref{mbg:rnd:thm:finite-public} and~\ref{mbg:rnd:thm:support} use the reading printed above (the atoms carry all the probability), and Theorem~\ref{mbg:rnd:thm:frontier}, Theorem~\ref{mbg:rnd:thm:support} and the delivered \texttt{README.txt} are right under it.
+\end{writenote}
+
+These formulations include ordinary private or public fair-bit tapes.
+If all randomness is public, independent coordinates of one public
+tape can serve as the activation variables used in our construction.
+For the small-entropy theorem, however, only the variable $\Theta$ is shared;
+the activation coins remain private.
+
+\begin{lemma}[Finite-prefix fairness]
+\label{mbg:rnd:lem:fairness}
+For every legal strategy and every $i$,
+$\E(Y_i\mid R)=0$. Consequently $\E F_I=0$ and $\E D_n=0$.
+\end{lemma}
+\begin{proof}
+Conditional on $R$ and all hats other than $X_i$, the guess $f_i$ is
+fixed while $X_i$ is an independent fair sign. Averaging gives zero.
+\end{proof}
+
+Regular conditional probabilities can be taken in standard Borel seed
+spaces. Equivalently, all proofs may be carried out on products of fair
+bit tapes. When a tree is only almost-surely terminating, null sets can
+be discarded simultaneously for the countably many players and the
+finitely or countably many coordinate flips used below.
+
+\begin{writenote}[Added 4 October 2026, batch~96]
+The last sentence has a one-line proof: a coordinate flip is a measure-preserving bijection of the product of hat and seed spaces, so the image of a null set under any of the countably many flips (and finite compositions of flips) used below is null, and a countable union of null sets is null. The endpoint review cited in Section~\ref{mbg:rnd:sec:place} checks the same point. The first two sentences are not used by any proof as printed: every conditioning below is either on an atom of positive probability or is an application of Fubini's theorem to the product of the hat space with the (independent) seed space, which needs only the standing assumption that each player's algorithm is jointly measurable in hats and seeds, as in Proposition~\ref{mbg:qry:prop:randomdepth}. The existence of regular conditional probabilities on standard Borel spaces and the reduction of standard Borel seeds to fair-bit tapes are classical theorems quoted without proof; Research question~\ref{mbg:rnd:q:measure} records this.
+\end{writenote}
+
+\section{Covariance and inspection cost}
+\label{mbg:rnd:sec:variance}
+
+The deterministic forms of the following covariance identity and
+variance estimate already occur as Lemma 64.1 and Theorem 64.2 of
+\cite{rnd:ProveIt}. We include their proofs and the extension to external
+randomness because they are the analytic input to the new lower bound.
+
+For $j\ne i$, set
+\[
+ \partial_j f_i=
+ \frac{f_i(X^{j,+},R)-f_i(X^{j,-},R)}{2},
+\]
+where $X^{j,\pm}$ is the hat sequence with coordinate $j$ replaced by
+$\pm1$. Write $J_{ij}$ for the indicator that player $i$ ever inspects
+hat $j$.
+
+\begin{lemma}[Mutual inspection bounds covariance]
+\label{mbg:rnd:lem:covariance}
+For distinct players $i,j$,
+\begin{equation}
+ \E(Y_iY_j)=\E[(\partial_j f_i)(\partial_i f_j)],
+ \qquad
+ |\E(Y_iY_j)|\le\E(J_{ij}J_{ji})\le\E J_{ij}.
+ \label{mbg:rnd:eq:covariance}
+\end{equation}
+\end{lemma}
+\begin{proof}
+Condition on $R$ and all hats except $X_i,X_j$. Blindness to one's own
+hat lets us write $f_i=a+X_jb$ and $f_j=c+X_id$, with all four
+coefficients independent of $X_i,X_j$. Averaging
+$X_iX_j(a+X_jb)(c+X_id)$ leaves $bd$, proving the identity.
+
+The event of inspecting $j$ is unchanged when $X_j$ is flipped: the two
+transcripts agree until a first inspection of $j$, and either both
+reach that inspection or neither does. It is also unchanged when $X_i$
+is flipped. If $J_{ij}=0$, the output does not change under flipping
+$X_j$. Thus $|\partial_j f_i|\le J_{ij}$, which proves both bounds.
+For almost-sure termination, remove the exceptional null set and its
+images under the relevant coordinate flips.
+\end{proof}
+
+\begin{proposition}[Variance sandwich]
+\label{mbg:rnd:prop:variance}
+If $q_I<\infty$, then
+\begin{equation}
+ \max\{0,n-q_I\}\le\Var(F_I)\le n+q_I.
+ \label{mbg:rnd:eq:variance}
+\end{equation}
+\end{proposition}
+\begin{proof}
+The diagonal terms in $\E F_I^2$ sum to $n$. By
+Lemma~\ref{mbg:rnd:lem:covariance}, the sum of the absolute values of all ordered
+off-diagonal terms is at most
+\[
+ \sum_{i\in I}\sum_{j\in I\setminus\{i\}}\E J_{ij}
+ \le\sum_{i\in I}\E Q_i=q_I.
+\]
+The possible inspections outside $I$ only increase the right side.
+Fairness identifies the second moment with the variance.
+\end{proof}
+
+\begin{example}[Why zero variance is possible]
+Pair players consecutively. In each pair let the first copy the
+partner's hat and the second guess its opposite. Exactly one guess is
+correct in each pair. Thus a complete team of $n$ paired players has
+$F_I=0$ surely, with $q_I=n$. The lower endpoint of
+\eqref{mbg:rnd:eq:variance} is attained in this example.
+\end{example}
+
+\begin{writenote}[Added 4 October 2026, batch~96]
+For deterministic trees, Lemma~\ref{mbg:rnd:lem:covariance} is source~04's Lemma~\ref{mbg:insp:var-covariance}, which bounds $|\E(Y_iY_j)|$ by $\sqrt{\Inf_j(g_i)\Inf_i(g_j)}$, and the upper bound of Proposition~\ref{mbg:rnd:prop:variance} is the unweighted case of Theorem~\ref{mbg:insp:var-weighted}. New here are the seeds (arbitrary external randomness independent of the hats), the bound by the probability $\E(J_{ij}J_{ji})$ of mutual inspection, and the lower bound $n-q_I$. The lower bound is consistent with Remark~\ref{mbg:insp:var-sharpness}, which says that there is no comparable positive lower bound in terms of $n$ alone: its opposite-copy pairs, the example above, have $q_I=n$.
+\end{writenote}
+
+\section{The projection onto players making no inspections}
+\label{mbg:rnd:sec:zero}
+
+\subsection{A quantitative sign obstruction}
+
+\begin{theorem}[Zero-inspection sign bound]
+\label{mbg:rnd:thm:zero}
+For every finite nonempty team $I$ with $q_I<\infty$, under any external
+randomness independent of the hats,
+\begin{equation}
+ \Prb(F_I<0),\ \Prb(F_I>0)
+ \ \ge\ \frac{z_I^2}{12n(n+q_I)}
+ \ \ge\ \frac{(n-q_I)_+^2}{12n(n+q_I)}.
+ \label{mbg:rnd:eq:zero-bound}
+\end{equation}
+The seeds may be arbitrarily correlated or completely public.
+\end{theorem}
+\begin{proof}
+Whether a player makes zero inspections is decided before seeing any
+hat. Thus
+\[
+ Z(R)=\{i\in I:Q_i=0\},\qquad \zeta(R)=|Z(R)|
+\]
+depend only on $R$. On this event the player's output is a constant
+sign $a_i(R)$. Put
+\[
+ W=\sum_{i\in Z(R)}a_i(R)X_i,
+ \qquad
+ \mathcal G=\sigma\bigl(R,(\ind_{\{i\in Z(R)\}}X_i)_{i\in I}\bigr).
+\]
+We claim
+\begin{equation}
+ \E(F_I\mid\mathcal G)=W.
+ \label{mbg:rnd:eq:zero-projection}
+\end{equation}
+The zero-inspection players' scores are known under this conditioning.
+For any other scored player, their own hat is still unconditioned and
+fair, and their guess is independent of that hat. Its conditional
+expected score is therefore zero. In particular, other players are
+allowed to inspect hats belonging to $Z(R)$; this does not affect the
+argument.
+
+Conditional Jensen, applied to the positive and negative parts, gives
+\[
+ \E\negpart{F_I}\ge\E\negpart{W},\qquad
+ \E\pos{F_I}\ge\E\pos{W}.
+\]
+Given $R$, $W$ is a simple symmetric random walk of length $\zeta$. If
+$W_k$ is such a walk of fixed length $k$, then
+\[
+ \E W_k^2=k,\qquad \E W_k^4=3k^2-2k\le3k^2.
+\]
+H\"older's inequality in the form
+\[
+ \E W_k^2\le(\E|W_k|)^{2/3}(\E|W_k|^4)^{1/3}
+\]
+implies $\E|W_k|\ge\sqrt{k/3}$, including $k=0$. Since $0\le \zeta\le n$,
+\[
+ \E|W|\ge\frac{\E\sqrt \zeta}{\sqrt3}
+ \ge\frac{\E \zeta}{\sqrt{3n}}=\frac{z_I}{\sqrt{3n}}.
+\]
+The distribution of $W$ is symmetric, so its two part expectations are
+both $\E|W|/2$. Consequently
+\[
+ \frac{z_I}{2\sqrt{3n}}
+ \le\E\negpart{F_I}
+ \le\sqrt{\Prb(F_I<0)\E F_I^2}.
+\]
+Use Proposition~\ref{mbg:rnd:prop:variance} and square. The positive part gives the same
+bound. Finally $\Prb(Q_i>0)\le\E Q_i$, because $Q_i$ is a nonnegative
+integer, and hence $z_I\ge n-q_I$.
+\end{proof}
+
+\begin{corollary}[Universal lower threshold and stability]
+\label{mbg:rnd:cor:costone}
+If $\sup_i\E Q_i\le C<1$, then
+\begin{equation}
+ \Prb(F_n<0)\ge\frac{(1-C)^2}{12(1+C)}>0
+ \quad\text{for every }n.
+ \label{mbg:rnd:eq:uniform-negative}
+\end{equation}
+In particular, almost-sure positive divergence is impossible even with
+arbitrary shared randomness. More generally,
+\begin{equation}
+ \Prb(F_n>0)\longrightarrow1
+ \quad\Longrightarrow\quad
+ \liminf_n\frac{q_n}{n}\ge1.
+ \label{mbg:rnd:eq:average-necessary}
+\end{equation}
+If additionally $q_n=O(n)$, the same high-probability condition implies
+$z_n=o(n)$.
+\end{corollary}
+\begin{proof}
+Substitute $q_n\le Cn$ in \eqref{mbg:rnd:eq:zero-bound}. If the average-cost
+conclusion failed, some subsequence would satisfy
+$q_n\le(1-\varepsilon)n$, contradicting a sign probability tending to
+one. For the last assertion, put $\delta_n=\Prb(F_n<0)$ and use
+\begin{equation}
+ z_n\le\sqrt{12n(n+q_n)\delta_n}.
+ \label{mbg:rnd:eq:stability}
+\end{equation}
+\end{proof}
+
+The sign bound is useful independently of the infinite game: a team
+with total inspection budget appreciably below its size cannot make
+positive excess overwhelmingly likely. The constants are explicit but
+are not asserted to be optimal.
+
+\subsection{An improvement for independent private seeds}
+
+\begin{proposition}[Private zero-inspection estimate]
+\label{mbg:rnd:prop:private-zero}
+With independent private seeds,
+\begin{equation}
+ \Prb(F_I<0),\ \Prb(F_I>0)
+ \ge\frac{z_I^2}{4(3z_I+1)(n+q_I)}.
+ \label{mbg:rnd:eq:private-zero}
+\end{equation}
+In particular, if $q_n\le Cn$ and $C<1$, then
+\[
+ \liminf_n\Prb(F_n<0)\ge\frac{1-C}{12(1+C)}.
+\]
+\end{proposition}
+\begin{proof}
+Let $p_i=\Prb(Q_i=0)$. The summands in $W$ from
+\eqref{mbg:rnd:eq:zero-projection} are independent and have probabilities
+$p_i/2,p_i/2,1-p_i$ of taking values $1,-1,0$. Therefore
+\[
+ \E W^2=z_I,\qquad
+ \E W^4=3z_I^2+\sum_{i\in I}(p_i-3p_i^2)
+ \le3z_I^2+z_I.
+\]
+The same interpolation gives $\E|W|\ge z_I/\sqrt{3z_I+1}$.
+Finish as in Theorem~\ref{mbg:rnd:thm:zero}. The function $z^2/(3z+1)$ is increasing
+for $z\ge0$; substitute $z_n\ge(1-C)n$ and take the limit inferior.
+\end{proof}
+
+\section{Fourier accounting and a necessary cumulative surplus of cost}
+\label{mbg:rnd:sec:fourier}
+
+The preceding estimate becomes trivial when $q_n\ge n$. To analyze
+the exact boundary with private seeds, we first fix every seed and
+study deterministic decision trees. The total cost need not be bounded
+player by player.
+
+\subsection{Walsh coefficients with their owning players}
+
+On the countable product of fair signs, write
+$\chi_A(X)=\prod_{j\in A}X_j$ for a finite set $A\subset\N$.
+These characters form an orthonormal basis of $L^2$. A guess $f_i$ has
+no dependence on $X_i$, so multiplication by $X_i$ gives an expansion
+\begin{equation}
+ Y_i=\sum_{A\ni i}a_{i,A}\chi_A,
+ \qquad \sum_{A\ni i}a_{i,A}^2=1.
+ \label{mbg:rnd:eq:owner-expansion}
+\end{equation}
+For a scored prefix of length $n$, define
+\[
+ p_A=\sum_{\substack{i\le n\\i\in A}}a_{i,A}^2,
+ \qquad b_A=\sum_{\substack{i\le n\\i\in A}}a_{i,A},
+ \qquad V_j=\sum_{|A|=j}b_A^2.
+\]
+Thus $b_A$ is the Fourier coefficient of $F_n$ and
+\begin{equation}
+ \sum_Ap_A=n,\quad
+ b_A^2\le |A|p_A,\quad
+ V_1=\sum_{|A|=1}p_A.
+ \label{mbg:rnd:eq:owner-counts}
+\end{equation}
+The last equality uses the fact that a singleton coefficient has only
+one possible owner. This is the decisive constraint absent from an
+arbitrary collection of Boolean functions.
+
+For a sign-valued Boolean function, the influence of coordinate $j$ is
+$\E(\partial_j f)^2$. Parseval gives
+\[
+ \Inf(f_i)=\sum_A(|A|-1)a_{i,A}^2\le\E Q_i,
+\]
+because changing an uninspected coordinate cannot change the output.
+Set $\bar q_n=\sum_{i\le n}\E_X Q_i$, with expectation now only over hats.
+Then
+\begin{equation}
+ I_n:=\sum_A(|A|-1)p_A\le \bar q_n,
+ \qquad
+ I_n-n=\sum_A(|A|-2)p_A.
+ \label{mbg:rnd:eq:influence-budget}
+\end{equation}
+All sums are over finite subsets of the countable hat set. Finite
+expected cost makes the relevant influence sums finite; otherwise the
+inequalities with an infinite right side are harmless.
+
+\begin{lemma}[Quadratic mass forced by near-unit aggregate cost]
+\label{mbg:rnd:lem:energy}
+If $\bar q_n\le n+\kappa$ for $\kappa\ge0$, then
+\begin{equation}
+ \Var(F_n)\le4\norm{P_{\le2}F_n}_{2}^2+3\kappa,
+ \label{mbg:rnd:eq:energy}
+\end{equation}
+where $P_{\le d}$ denotes orthogonal projection onto Walsh degrees at
+most $d$.
+\end{lemma}
+\begin{proof}
+By \eqref{mbg:rnd:eq:influence-budget},
+\[
+ \sum_{|A|\ge3}(|A|-2)p_A\le V_1+\kappa.
+\]
+For $|A|\ge3$, one has $|A|\le3(|A|-2)$. Therefore
+\[
+ \sum_{j\ge3}V_j
+ \le\sum_{|A|\ge3}|A|p_A\le3V_1+3\kappa.
+\]
+Add $V_1+V_2$ and use $V_1+V_2=\norm{P_{\le2}F_n}_{2}^2$.
+\end{proof}
+
+\subsection{A self-contained low-degree moment bound}
+
+We need only an elementary case of the classical hypercontractive
+inequality associated with Bonami and Beckner; see \cite{rnd:Beckner}.
+Here is a proof of the exact form used, so no general hypercontractive
+theorem is an unproved dependency of the endpoint argument.
+
+\begin{lemma}[Fourth moments of bounded-degree Walsh polynomials]
+\label{mbg:rnd:lem:bonami}
+If $L$ has Walsh degree at most $d$, then
+\begin{equation}
+ \norm{L}_{4}\le3^{d/2}\norm{L}_{2}.
+ \label{mbg:rnd:eq:bonami}
+\end{equation}
+This holds for $L^2$ limits of such polynomials on countably many hats.
+\end{lemma}
+\begin{proof}
+Let $T_\rho$ multiply the coefficient of $\chi_A$ by $\rho^{|A|}$,
+with $\rho=1/\sqrt3$. Induction on the number of coordinates proves
+$\norm{T_\rho f}_{4}\le\norm{f}_{2}$ for every finite-coordinate $f$.
+Indeed write $f=A+X_mB$. Conditional averaging over $X_m$ yields
+\[
+ \norm{T_\rho f}_{4}^4
+ =\E\bigl[(T_\rho A)^4+6\rho^2(T_\rho A)^2(T_\rho B)^2
+                   +\rho^4(T_\rho B)^4\bigr].
+\]
+If $a=\norm{A}_{2}$ and $b=\norm{B}_{2}$, induction and Cauchy--Schwarz bound
+this by
+$a^4+2a^2b^2+b^4/9\le(a^2+b^2)^2=\norm{f}_{2}^4$.
+For a degree-$d$ polynomial $L$, apply this to the polynomial with
+coefficients $\rho^{-|A|}\widehat L(A)$. Its $L^2$ norm is at most
+$3^{d/2}\norm{L}_{2}$.
+
+Finally, conditional expectations onto increasing finite sets of hats
+approximate a bounded-degree $L^2$ function. Applying the finite
+inequality to differences shows that these approximations are Cauchy
+in $L^4$, and proves the stated extension.
+\end{proof}
+
+\begin{writenote}[Added 4 October 2026, batch~96]
+This is the bound~\eqref{mbg:qry:eq:bonami} in the proof of Lemma~\ref{mbg:qry:lem:sign} (source~06 of Part~\ref{mbg:qry:part}) and source~04's Lemma~\ref{mbg:insp:obs-hypercontractivity}, classical (Bonami~\cite{qry:Bonami}, Beckner~\cite{rnd:Beckner}); the manuscript credits it so, and its proof is a third route. The extension in its last paragraph, written out: let $L\in L^2$ have Walsh degree at most~$d$, and let $L_N=\E(L\mid X_1,\ldots,X_N)=\sum_{A\subseteq\{1,\ldots,N\}}\widehat L(A)\chi_A$. Each $L_N$, and each difference $L_N-L_M$, is a polynomial of degree at most~$d$ in finitely many coordinates, so $\norm{L_N-L_M}_{4}\le3^{d/2}\norm{L_N-L_M}_{2}\to0$ by Parseval. Hence $L_N$ converges in $L^4$, and so in $L^2$, where its limit is $L$; therefore $\norm{L}_{4}=\lim\norm{L_N}_{4}\le3^{d/2}\lim\norm{L_N}_{2}=3^{d/2}\norm{L}_{2}$. Source~04's proof of Proposition~\ref{mbg:insp:var-spectral-escape} uses Fatou's lemma for the same step.
+\end{writenote}
+
+\begin{lemma}[Low-degree mass prevents one-sided concentration]
+\label{mbg:rnd:lem:spectral-sign}
+Let $\E F=0$, $v=\norm{F}_{2}^2>0$, and
+$\ell_d=\norm{P_{\le d}F}_{2}^2$. Then
+\begin{equation}
+ \Prb(F<0),\ \Prb(F>0)
+ \ge \frac{\ell_d^2}{4\,3^{2d}v^2}.
+ \label{mbg:rnd:eq:spectral-sign}
+\end{equation}
+In particular the denominator constant for $d=2$ is $324$.
+\end{lemma}
+\begin{proof}
+Put $L=P_{\le d}F$. Orthogonality, H\"older, Lemma~\ref{mbg:rnd:lem:bonami}, and
+interpolation give
+\[
+ \ell_d=\E FL
+ \le\norm{F}_{4/3}\norm{L}_{4}
+ \le3^{d/2}\sqrt{\ell_d}\,
+       \norm{F}_{1}^{1/2}\norm{F}_{2}^{1/2}.
+\]
+Thus $\ell_d\le3^d\norm{F}_{1}\norm{F}_{2}$.
+Since $F$ is centered,
+$\norm{F}_{1}=2\E\negpart F\le2\sqrt{\Prb(F<0)}\norm{F}_{2}$.
+Combine and square. Replace $F$ by $-F$ for the positive bound.
+\end{proof}
+
+\begin{writenote}[Added 4 October 2026, batch~96]
+This lemma is source~04's Proposition~\ref{mbg:insp:var-spectral-escape}, $\ell_d/v\le2\cdot3^d\sqrt{\Prb(F<0)}$, squared, with the same proof; its squared form is Remark~\ref{mbg:insp:var-approximate-degree}. The manuscript's provenance table credits ``related repository spectral-escape estimates'' without naming them. That proposition already sharpens source~06's Proposition~\ref{mbg:qry:prop:spectral}: when $\Prb(F_n>0)\to1$, the low-degree fraction of the variance tends to~$0$, not merely below $e^{2k}/(1+e^{2k})$. What this Part adds is its combination with the owner accounting of Lemma~\ref{mbg:rnd:lem:energy}: Corollary~\ref{mbg:rnd:cor:aggregate-quantitative} and Theorems~\ref{mbg:rnd:thm:aggregate}--\ref{mbg:rnd:thm:variance-overhead}.
+\end{writenote}
+
+\begin{corollary}[A quantitative aggregate-cost obstruction]
+\label{mbg:rnd:cor:aggregate-quantitative}
+For deterministic trees with $\bar q_n\le n+\kappa$ and
+$v_n=\Var(F_n)>0$,
+\begin{equation}
+ \Prb_X(F_n<0)
+ \ge\frac{1}{5184}\left(1-\frac{3\kappa}{v_n}\right)_+^2.
+ \label{mbg:rnd:eq:aggregate-negative}
+\end{equation}
+If $v_n\ge6\kappa$, the lower bound is at least $1/20736$.
+\end{corollary}
+\begin{proof}
+By Lemma~\ref{mbg:rnd:lem:energy}, $\ell_2\ge(v_n-3\kappa)/4$. Substitute in
+\eqref{mbg:rnd:eq:spectral-sign}.
+\end{proof}
+
+\subsection{Cumulative excess cost and its variance scale}
+
+\begin{theorem}[Necessary divergence of cumulative excess cost]
+\label{mbg:rnd:thm:aggregate}
+For deterministic legal strategies,
+\begin{equation}
+ F_n\longrightarrow+\infty\quad\Prb_X\text{-almost surely}
+ \quad\Longrightarrow\quad \bar q_n-n\longrightarrow+\infty.
+ \label{mbg:rnd:eq:aggregate-necessary}
+\end{equation}
+The same statement holds with total influence $I_n$ in place of $\bar q_n$.
+\end{theorem}
+\begin{proof}
+Almost-sure divergence implies $v_n=\E_X F_n^2\to\infty$ by Fatou's
+lemma, and $\Prb_X(F_n<0)\to0$ by bounded convergence. If $\bar q_n-n$
+did not tend to infinity, there would be a finite $\kappa\ge0$ and
+infinitely many $n$ with $\bar q_n\le n+\kappa$. Along that subsequence,
+\eqref{mbg:rnd:eq:aggregate-negative} contradicts the sign probabilities
+tending to zero. The proof of Lemma~\ref{mbg:rnd:lem:energy} uses only the influence
+bound, giving the last assertion.
+\end{proof}
+
+\begin{theorem}[A variance-scale necessary overhead]
+\label{mbg:rnd:thm:variance-overhead}
+Suppose a deterministic strategy has $v_n>0$ eventually and
+$\Prb_X(F_n<0)\to0$. Then
+\begin{equation}
+ \liminf_n\frac{\bar q_n-n}{v_n}\ge1.
+ \label{mbg:rnd:eq:variance-overhead}
+\end{equation}
+For every integer $d\ge2$, the finite quantitative inequality is
+\begin{equation}
+ \frac{\bar q_n-n}{v_n}\ge
+ \frac{d-1}{d+1}
+ -\frac{4d\,3^d}{d+1}\sqrt{\Prb_X(F_n<0)}.
+ \label{mbg:rnd:eq:variance-overhead-finite}
+\end{equation}
+Again $\bar q_n$ may be replaced by $I_n$.
+\end{theorem}
+\begin{proof}
+Write $\ell_d=\sum_{j\le d}V_j$ and $a_d=(d-1)/(d+1)$.
+For $|A|>d$, $|A|-2\ge a_d|A|$, so
+\[
+ \bar q_n-n\ge -V_1+\sum_{|A|>d}(|A|-2)p_A
+ \ge a_d(v_n-\ell_d)-V_1
+ \ge a_dv_n-\frac{2d}{d+1}\ell_d.
+\]
+The proof of Lemma~\ref{mbg:rnd:lem:spectral-sign} gives
+$\ell_d/v_n\le2\,3^d\sqrt{\Prb_X(F_n<0)}$, proving the finite form.
+First let $n$ tend to infinity with $d$ fixed, and then let $d$ tend
+to infinity. No claim of optimality of the constant $1$ is made here.
+\end{proof}
+
+\section{Why private randomness cannot attain the endpoint}
+\label{mbg:rnd:sec:private-endpoint}
+
+\subsection{An elementary stopped-process lemma}
+
+\begin{lemma}[Independent costs cannot produce certain positive drift]
+\label{mbg:rnd:lem:supermartingale}
+Let $c_1,c_2,\ldots$ be independent nonnegative integrable random
+variables with $\E c_i\le1$. Then
+\begin{equation}
+ \Prb\left(\sum_{i=1}^n(c_i-1)\longrightarrow+\infty\right)=0.
+ \label{mbg:rnd:eq:cost-supermartingale}
+\end{equation}
+It suffices instead that
+$\E(c_i\mid c_1,\ldots,c_{i-1})\le1$.
+\end{lemma}
+\begin{proof}
+Set $S_0=0$ and $S_n=\sum_{i\le n}(c_i-1)$. This is an integrable
+supermartingale with increments at least $-1$. Fix integers $\kappa\ge0$
+and $M\ge1$. Stop at the first crossing below $-\kappa$, the first crossing
+above or equal to $M$, or time $N$, whichever comes first. A lower
+crossing overshoots by at most one, so the stopped value is always at
+least $-\kappa-1$, and on an upper crossing it is at least $M$.
+
+The expected stopped value is at most zero. This follows directly by
+summing the conditional expected increments multiplied by the event
+that stopping has not yet occurred; the stopping time is bounded by
+$N$. Therefore
+\[
+ \Prb(\text{upper crossing before lower crossing and by }N)
+ \le\frac{\kappa+1}{M+\kappa+1}.
+\]
+Let $N\to\infty$, and then $M\to\infty$. The probability of being
+unbounded above without ever crossing below $-\kappa$ is zero. A real
+sequence tending to $+\infty$ has a finite global lower bound, so the
+event in \eqref{mbg:rnd:eq:cost-supermartingale} is contained in the countable
+union of these null events over $\kappa$.
+\end{proof}
+
+\subsection{Private endpoint exclusion}
+
+\begin{theorem}[No almost-sure private strategy at cap one]
+\label{mbg:rnd:thm:private-no-one}
+If the seeds are independent and private and $\E Q_i\le1$ for every
+$i$, then $\Prb(D_n\to+\infty)<1$.
+\end{theorem}
+\begin{proof}
+For a fixed private seed value $u_i$, define the deterministic
+hat-averaged cost
+\[
+ c_i(u_i)=\E_X Q_i(X_{-i},u_i).
+\]
+The random variables $c_i(U_i)$ are independent, nonnegative, and
+integrable, and $\E c_i(U_i)=\E Q_i\le1$.
+
+Suppose the joint probability of positive divergence were one.
+Fubini's theorem implies that for almost every complete private seed
+sequence $u$, the resulting deterministic strategy satisfies
+$F_n\to+\infty$ almost surely over hats. By Theorem~\ref{mbg:rnd:thm:aggregate},
+\[
+ \sum_{i\le n}(c_i(u_i)-1)\longrightarrow+\infty
+\]
+for almost every $u$. This contradicts Lemma~\ref{mbg:rnd:lem:supermartingale}.
+\end{proof}
+
+\begin{remark}[What independence does]
+The conditional costs are averaged over all hats, not over a particular
+hat realization. Their independence follows from the restriction that
+player $i$ uses only $U_i$. Fixing seeds is therefore a legitimate
+reduction to deterministic trees, while averaging the conditional costs
+across players gives an independent sequence. An arbitrary public seed
+destroys this last property. The public construction below shows that
+merely assuming $\E c_i\le1$ cannot replace it.
+\end{remark}
+
+\begin{corollary}[A nonsharp success gap at the private endpoint]
+\label{mbg:rnd:cor:private-gap}
+Under the hypotheses of Theorem~\ref{mbg:rnd:thm:private-no-one},
+\begin{equation}
+ \Prb(D_n\to+\infty)\le1-\frac1{5184}.
+ \label{mbg:rnd:eq:private-gap}
+\end{equation}
+\end{corollary}
+\begin{proof}
+By Lemma~\ref{mbg:rnd:lem:supermartingale}, almost every fixed seed sequence admits
+a finite $\kappa\ge0$ and infinitely many $n$ with $\bar q_n\le n+\kappa$.
+Let $p(u)$ be the conditional probability of divergence. If $p(u)>0$,
+Fatou's lemma still gives $v_n\to\infty$, since $F_n^2$ tends to
+infinity on an event of positive measure. Thus
+\eqref{mbg:rnd:eq:aggregate-negative} yields
+$\limsup_n\Prb_X(F_n<0\mid u)\ge1/5184$.
+On the divergence event, negative signs occur only finitely often;
+bounded convergence on that event gives
+$\limsup_n\Prb_X(F_n<0\mid u)\le1-p(u)$.
+Hence $p(u)\le1-1/5184$, with the inequality also true when $p(u)=0$.
+Integrate over $u$.
+\end{proof}
+
+\subsection{Any finite public seed is still insufficient}
+
+\begin{theorem}[Finite shared support does not attain cap one]
+\label{mbg:rnd:thm:finite-public}
+Let a public seed $\Theta$ take only finitely many values,
+$\Prb(\Theta\in\{t_1,\ldots,t_s\})=1$, and let the private seeds be independent of one
+another, of $\Theta$, and of the hats. If $\E Q_i\le1$ for every $i$, then
+almost-sure positive divergence is impossible.
+\end{theorem}
+
+\begin{writenote}[Corrected 4 October 2026, batch~96]
+The delivered hypothesis read ``Let a public seed $T$ have finite positive-probability support $\{t_1,\ldots,t_s\}$''. Read literally (finitely many atoms, possibly with a diffuse remainder) the theorem is false; Remark~\ref{mbg:rnd:rem:finite-valued} gives the counterexample and locates the step of the proof below that needs $\sum_rp_r=1$. The hypothesis printed above is what the proof uses. The two reviews of Section~\ref{mbg:rnd:sec:place} passed this proof under the same reading.
+\end{writenote}
+\begin{proof}
+Write $p_r=\Prb(\Theta=t_r)>0$ and
+\[
+ c_i(t_r,u_i)=\E_X Q_i(X_{-i},t_r,u_i).
+\]
+If the joint strategy won almost surely, conditioning on each $t_r$
+and then applying Fubini would show that, for almost every private seed
+sequence $u$, all $s$ resulting deterministic strategies win almost
+surely. Their cumulative conditional costs satisfy
+\[
+ \sum_{i\le n}c_i(t_r,u_i)-n\longrightarrow+\infty
+ \quad\text{for each }r
+\]
+by Theorem~\ref{mbg:rnd:thm:aggregate}.
+
+Define
+\[
+ z_i(u_i)=\sum_{r=1}^s p_r c_i(t_r,u_i).
+\]
+These are independent nonnegative random variables with
+$\E z_i(U_i)=\E Q_i\le1$. Since the sum over $r$ is finite,
+\[
+ \sum_{i\le n}(z_i(u_i)-1)
+ =\sum_{r=1}^s p_r
+       \left(\sum_{i\le n}c_i(t_r,u_i)-n\right)
+ \longrightarrow+\infty
+\]
+for almost every $u$, contradicting Lemma~\ref{mbg:rnd:lem:supermartingale}.
+\end{proof}
+
+This proof applies to any fixed finite number of shared fair bits, no
+matter how large. It does not extend to a countably infinite sum:
+termwise divergence of its summands cannot be interchanged with that
+sum. The next sections show that this distinction is exact.
+
+\begin{remark}[{[write]} The delivered hypothesis of Theorem~\ref{mbg:rnd:thm:finite-public} is false as worded]
+\label{mbg:rnd:rem:finite-valued}
+The manuscript stated Theorem~\ref{mbg:rnd:thm:finite-public} for a public seed with ``finite positive-probability support $\{t_1,\ldots,t_s\}$'', and Definition~\ref{mbg:rnd:def:randomness} called a seed finite-valued when it ``has a finite set of possible values of positive probability''. Under that wording the theorem is false. Let $U$ be uniform on $(0,1]$ and $B$ an independent fair bit, and let the public seed be $\Theta=BU$. Its only value of positive probability is~$0$, so the delivered hypothesis holds with $s=1$ and $t_1=0$. Put $g(0)=0$ and $g(\theta)=1+\lfloor-\log_2\theta\rfloor$ for $0<\theta\le1$. Then $\Prb(g(\Theta)=0)=1/2$ and, for $t\ge1$,
+\[
+ \Prb(g(\Theta)=t)=\tfrac12\,\Prb\bigl(2^{-t}<U\le2^{1-t}\bigr)=\tfrac12\,2^{-t},
+\]
+which is the law~\eqref{mbg:rnd:eq:public-law} with $p=1/2$. Let every player compute the shared integer $g(\Theta)$ (computation is free) and play the strategy of Theorem~\ref{mbg:rnd:thm:public-endpoint} with $p=1/2$ and that integer in place of its seed. That theorem uses only the law of the shared integer and its independence from the hats and the private activation coins, and both hold. Hence $D_n\to+\infty$ almost surely and $\E Q_i<1$ for every~$i$, although the delivered hypothesis of Theorem~\ref{mbg:rnd:thm:finite-public} is satisfied. (A uniform seed on $[0,1]$ has no values of positive probability at all; the manuscript's own Corollary~\ref{mbg:rnd:cor:coarsening} says that it permits the endpoint.)
+
+The proof of Theorem~\ref{mbg:rnd:thm:finite-public} uses $\sum_rp_r=1$ twice: conditioning on the values $t_r$ exhausts the probability space only then, and in general $\sum_rp_r\bigl(\sum_{i\le n}c_i(t_r,u_i)-n\bigr)=\sum_{i\le n}\bigl(z_i(u_i)-\sum_rp_r\bigr)$, so Lemma~\ref{mbg:rnd:lem:supermartingale} would need $\E z_i(U_i)\le\sum_rp_r$, while only $\E z_i(U_i)\le\E Q_i\le1$ is known. In the example $\sum_rp_r=1/2$, and $z_i(U_i)=\tfrac12c_i(0,U_i)$ has mean larger than $1/2$ for every $S$-player, because no stage is disabled when $g(\Theta)=0$. With the corrected hypothesis $\Prb(\Theta\in\{t_1,\ldots,t_s\})=1$ both uses are valid and the theorem stands. The next corollary shows that the corrected hypothesis is exactly the boundary.
+\end{remark}
+
+\begin{corollary}[{[write]} A prescribed public seed]
+\label{mbg:rnd:cor:prescribed}
+Let the public seed $\Theta$ take values in a standard Borel space, and allow independent private seeds. Some strategy using them has $D_n\to+\infty$ almost surely and $\sup_i\E Q_i\le1$ if and only if $\Prb(\Theta\in F)<1$ for every finite set~$F$; it can then be chosen with $\E Q_i<1$ for every~$i$.
+\end{corollary}
+\begin{proof}
+If $\Prb(\Theta\in F)=1$ for a finite $F$, Theorem~\ref{mbg:rnd:thm:finite-public} excludes such a strategy. Otherwise we construct a Borel function $g$ with countably many values, infinitely many of positive probability, and apply Corollary~\ref{mbg:rnd:cor:coarsening}; the strategy of Theorem~\ref{mbg:rnd:thm:support} that it uses has $\E Q_i<1$ for every~$i$. Let $A$ be the countable set of values of positive probability. If $A$ is infinite, put $g(\theta)=\theta$ on $A$ and $g=\ast$ off~$A$. If $A$ is finite, then $c=\Prb(\Theta\notin A)>0$. Let $\varphi$ be a Borel injection of the space into $[0,1]$ and $\mu(E)=\Prb(\varphi(\Theta)\in E,\ \Theta\notin A)$. A point of positive $\mu$-mass would be the image of a value of positive probability outside~$A$, so $\mu$ has no atoms and $x\mapsto\mu([0,x])$ is continuous, rising from $0$ to~$c$. Choose $x_0=-1$ and, by the intermediate value theorem, $x_j$ with $\mu([0,x_j])=c(1-2^{-j})$ for $j\ge1$. Put $g(\theta)=\theta$ on $A$, $g(\theta)=j$ when $\theta\notin A$ and $x_{j-1}<\varphi(\theta)\le x_j$, and $g=\ast$ elsewhere. Then $\Prb(g(\Theta)=j)=c2^{-j}>0$ for every $j\ge1$.
+\end{proof}
+
+\begin{corollary}[{[write]} A cap required conditionally on the public seed]
+\label{mbg:rnd:cor:conditional}
+Let a public seed $\Theta$, with values in any measurable space, be independent of the hats and of independent private seeds, and suppose that the cap holds conditionally on it: for almost every value $\theta$, the strategy obtained by fixing $\Theta=\theta$ has $\E Q_i\le1$ for every~$i$ (equivalently, $\E(Q_i\mid\Theta)\le1$ almost surely for every~$i$). Then
+\[
+ \Prb(D_n\to+\infty)\le1-\frac1{5184}.
+\]
+Under this conditional convention the admissible caps are therefore $(1,\infty)$ for every public seed, the endpoint is not attained, and without private seeds they are $[2,\infty)$.
+\end{corollary}
+\begin{proof}
+By independence the probability space is the product of the law of $\Theta$ with the space of hats and private seeds, and by the standing joint measurability Fubini's theorem applies. For fixed $\theta$, player~$i$ uses only $(\theta,U_i)$, so the strategy with $\Theta=\theta$ is a private strategy; for almost every $\theta$ it satisfies $\E Q_i\le1$ for all $i$ simultaneously (a countable intersection of full-measure sets). Corollary~\ref{mbg:rnd:cor:private-gap} bounds its probability of divergence by $1-1/5184$, and integrating over $\theta$ gives the displayed bound. Every cap $C>1$ is admissible by Proposition~\ref{mbg:rnd:prop:private-upper}, whose strategy ignores $\Theta$ and so satisfies the conditional cap; a cap $C\le1$ would give one at~$1$, which is excluded. Without private seeds, the strategy with $\Theta=\theta$ is deterministic, and if its uniform cap is below~$2$ its probability of divergence is zero by Theorem~\ref{mbg:qry:thm:threshold}; integrating again excludes every cap below~$2$, and Proposition~\ref{mbg:rnd:prop:deterministic} attains~$2$.
+\end{proof}
+
+\begin{writenote}[Added 4 October 2026, batch~96]
+Remark~\ref{mbg:rnd:rem:finite-valued} and Corollaries~\ref{mbg:rnd:cor:prescribed}--\ref{mbg:rnd:cor:conditional} are the write's, with complete proofs. Corollary~\ref{mbg:rnd:cor:conditional} answers the clause of Research question~68.6 that asks to distinguish expectations conditional on the seed from unconditional ones: with private seeds, the cap~$1$ is attained only under the unconditional convention of~\eqref{mbg:rnd:eq:uniform-cost}, and then only by public variables that are not almost surely finitely valued (Corollary~\ref{mbg:rnd:cor:prescribed}). The manuscript does not claim either corollary; it points at the conditional convention in Section~70.3 and leaves it there.
+\end{writenote}
+
+\section{The finite block and a general scheduling theorem}
+\label{mbg:rnd:sec:blocks}
+
+The matching constructions build on Eldredge's block rule
+\cite[Proposition 6.6]{hat:Eldredge} and the early-stopping implementation
+and private activation in \cite{rnd:ProveIt}. The block is recalled
+explicitly; the public stage deletion and its sharp support consequences
+are developed afterward.
+
+\subsection{Neutral pairs and the activated modification}
+
+For this section only, use hat bits $x_i\in\{0,1\}$, with $0$ black and
+$1$ white. A block of $k$ pairs is ordered
+\[
+ S_1,T_1,S_2,T_2,\ldots,S_k,T_k.
+\]
+The role symbol $T_j$ is unrelated to the public random variable $\Theta$.
+The neutral strategy has $S_j$ copy the hat of $T_j$, and $T_j$ guess
+the opposite of $S_j$'s hat. Each player makes one inspection, and each
+pair has exactly one correct guess.
+
+In the modified rule, $T_j$ still guesses the opposite of its partner.
+An \emph{active} $S_j$ does the following:
+\begin{enumerate}
+\item Inspect $T_j$. If its hat is white, guess white and stop.
+\item Otherwise inspect the other $2k-2$ visible hats in a fixed order.
+At the first white hat, guess black and stop.
+\item If all inspected hats are black, guess white.
+\end{enumerate}
+An inactive $S_j$ uses the neutral one-inspection rule. Let the
+activation indicators $A_1,\ldots,A_k$ be independent Bernoulli
+variables of parameter $\beta$, independent of all hats. Set
+$A=\sum_{j=1}^k A_j$.
+
+\begin{lemma}[Activated block law]
+\label{mbg:rnd:lem:block}
+The correct-guess excess $\Delta$ of a complete block is
+\begin{equation}
+ \Delta=
+ \begin{cases}
+ -A,&\text{if every hat is black},\\
+ A_j,&\text{if the sole white hat belongs to }S_j,\\
+ 0,&\text{otherwise}.
+ \end{cases}
+ \label{mbg:rnd:eq:block-law}
+\end{equation}
+Consequently
+\begin{equation}
+ \Prb(\Delta=1)=\beta k4^{-k},\qquad
+ \Prb(\Delta<0)\le4^{-k},\qquad \E\Delta=0.
+ \label{mbg:rnd:eq:block-probs}
+\end{equation}
+On a block that is not all black, each completed pair contributes
+either $0$ or $1$ excess, with at most one positive pair.
+\end{lemma}
+\begin{proof}
+An active $S_j$ departs from copying its partner exactly when all hats
+visible to it are black. If all hats are black, both members of an
+active pair guess white and lose, changing its neutral excess $0$ to
+$-1$. Inactive pairs remain neutral.
+
+If the sole white hat is at $S_j$, activation makes both members of
+that pair correct; without activation the pair is neutral. No other
+pair changes. If the sole white hat is at a $T$-player, or if at least
+two hats are white, no change in pair excess occurs. This proves the
+pointwise law. There are $k$ favorable singleton configurations, each
+of probability $4^{-k}$. The mean loss from the all-black case is
+$-\beta k4^{-k}$ and exactly cancels the mean positive contribution.
+\end{proof}
+
+\begin{lemma}[Exact expected cost and tails]
+\label{mbg:rnd:lem:block-cost}
+For an active $S$-player,
+\[
+ Q_S^{\mathrm{active}}\overset{d}=\min(G,2k-1),
+ \qquad \Prb(G=t)=2^{-t}\quad(t\ge1).
+\]
+For the activated block as a whole,
+\begin{align}
+ \E Q_S&=1+\beta\bigl(1-2^{-(2k-2)}\bigr),&
+ \E Q_T&=1,\label{mbg:rnd:eq:activated-cost}\\
+ \Prb(Q_S>t)&=\beta2^{-t}\quad(1\le t<2k-1),&
+ \Prb(Q_S>t)&=0\quad(t\ge2k-1).
+ \label{mbg:rnd:eq:activated-tail}
+\end{align}
+\end{lemma}
+\begin{proof}
+Continuation after $t$ inspections requires the first $t$ distinct
+inspected hats to be black. This has probability $2^{-t}$ until the
+visible hats are exhausted. Summing the tails gives active mean
+$2-2^{-(2k-2)}$. Mix this with the inactive cost $1$ using probability
+$\beta$.
+\end{proof}
+
+\begin{writenote}[Added 4 October 2026, batch~96]
+With $\beta=1$ these are Part~\ref{mbg:qry:part}'s block law and query law, Propositions~\ref{mbg:qry:prop:blocklaw} and~\ref{mbg:qry:prop:cost} (source~06, Section~\ref{mbg:qry:sec:block}, whose block has $m$ pairs where this one has~$k$) and source~04's Lemma~\ref{mbg:insp:con-block-score} and Proposition~\ref{mbg:insp:con-query-distribution}; the activated version, with its mean, is the computation in the proof of Theorem~\ref{mbg:qry:thm:randomcost}, where the activation probability is called $\alpha$. Eldredge's rule~\cite[Proposition~6.6]{hat:Eldredge} is the common source. The verifier of this Part writes $m$ for the pairs of a block and \texttt{alpha} for the activation probability, and in its public-gate checks the gate is off with probability \texttt{epsilon=alpha}; the printed $k$, $\beta$ and the disabling probability $\vartheta_\nu$ of Section~78 are the same quantities.
+\end{writenote}
+
+\subsection{Scheduling finitely many losses and infinitely many gains}
+
+\begin{theorem}[General private stage construction]
+\label{mbg:rnd:thm:schedule}
+Let stage $\nu$ contain $L_\nu$ consecutive disjoint blocks, each of $k_\nu$
+pairs, with independent private activation probability $\beta_\nu>0$.
+Assume $L_\nu,k_\nu$ are positive finite integers and
+\begin{equation}
+ \sum_\nu L_\nu4^{-k_\nu}<\infty,
+ \qquad
+ \sum_\nu L_\nu\beta_\nu k_\nu4^{-k_\nu}=\infty.
+ \label{mbg:rnd:eq:schedule-conditions}
+\end{equation}
+Then $D_n\to+\infty$ almost surely at every physical prefix.
+\end{theorem}
+\begin{proof}
+The first Borel--Cantelli lemma and the first series show that only
+finitely many blocks are all black. Their total negative contribution
+is almost surely finite, because each such block has finitely many
+players. By Lemma~\ref{mbg:rnd:lem:block}, positive block events have probabilities
+$\beta_\nu k_\nu4^{-k_\nu}$. They are independent across blocks, as their
+hats and activation coins are disjoint. The second series and the
+independent Borel--Cantelli lemma give infinitely many positive blocks.
+
+After the last all-black block, completed-pair excess never decreases,
+and infinitely many pairs increase it by one. A prefix ending inside a
+pair differs from the preceding completed-pair value by exactly
+$1/2$ or $-1/2$. This bounded error proves divergence at all prefixes,
+not merely at block endpoints.
+\end{proof}
+
+\begin{lemma}[Deletion of finitely many stages]
+\label{mbg:rnd:lem:deletion}
+Suppose a random public rule disables only finitely many stages almost
+surely, replaces all players in a disabled stage by constant
+zero-inspection guesses, and otherwise uses the strategy in
+Theorem~\ref{mbg:rnd:thm:schedule}. The resulting strategy still has
+$D_n\to+\infty$ almost surely.
+\end{lemma}
+\begin{proof}
+Define the potential activated strategy, including its private coins,
+on all stages before applying the public rule. Almost surely it has
+only finitely many all-black blocks and infinitely many positive
+blocks. Each disabled stage contains a finite number of players.
+Changing finitely many such stages changes only finitely many guesses
+on that realization. Beyond the last disabled player, the new and old
+excesses differ by one finite random constant.
+\end{proof}
+
+This lemma avoids a potential independence mistake: the actual positive
+events after public gating need not be independent. Independence is
+used only for the ungated potential blocks, followed by a pathwise
+finite-deletion argument.
+
+\section{The matching deterministic and private upper bounds}
+\label{mbg:rnd:sec:known-frontiers}
+
+\subsection{The established private construction above one}
+
+\begin{proposition}[Every private cap greater than one is attainable]
+\label{mbg:rnd:prop:private-upper}
+For every $C>1$, there is a strategy with independent private coins,
+$\sup_i\E Q_i<C$, and $D_n\to+\infty$ almost surely.
+\end{proposition}
+\begin{proof}
+Choose a dyadic $0<\beta<\min\{1,C-1\}$, and for $\nu\ge2$ take
+\begin{equation}
+ k_\nu=\nu,\qquad L_\nu=\left\lceil\frac{4^\nu}{\nu^2}\right\rceil,
+ \qquad\beta_\nu=\beta.
+ \label{mbg:rnd:eq:private-schedule}
+\end{equation}
+Then
+\[
+ \sum_\nu L_\nu4^{-\nu}<\infty,
+ \qquad
+ \sum_\nu L_\nu\beta \nu4^{-\nu}\ge\beta\sum_\nu\frac1\nu=\infty.
+\]
+Apply Theorem~\ref{mbg:rnd:thm:schedule}. By \eqref{mbg:rnd:eq:activated-cost}, every $S$
+mean is below $1+\beta<C$, and every $T$ mean is $1$.
+\end{proof}
+
+This is the construction in Theorem 55.2 of the inspected report. In
+combination with Theorem~\ref{mbg:rnd:thm:private-no-one}, it gives the exact open
+interval $(1,\infty)$ for private almost-sure success.
+
+\begin{writenote}[Added 4 October 2026, batch~96]
+This proposition is Theorem~\ref{mbg:qry:thm:randomcost} with the same proof: the schedule~\eqref{mbg:rnd:eq:private-schedule} is the $\varepsilon=1$ schedule of Theorem~\ref{mbg:qry:thm:construction}, $\lceil4^m/m^2\rceil$ blocks of $m$ pairs, and the activation probability $\beta$ is that theorem's~$\alpha$. The manuscript does not claim it as new.
+\end{writenote}
+
+\subsection{The deterministic reference point}
+
+\begin{proposition}[Deterministic admissible caps]
+\label{mbg:rnd:prop:deterministic}
+With no external randomness the almost-sure admissible caps are exactly
+$[2,\infty)$.
+\end{proposition}
+\begin{proof}
+For sufficiency, use \eqref{mbg:rnd:eq:private-schedule} with every $S$ always
+active, so $\beta=1$. The same two series prove divergence and the
+expected costs are $2-2^{-(2\nu-2)}$ for $S$, and $1$ for $T$.
+The supremum is $2$.
+
+For necessity, suppose all deterministic expectations are bounded by
+$C<2$. Remove repeated inspections. A tree with a reachable branch of
+length at least $L$ has expected cost at least
+\[
+ \sum_{t=0}^{L-1}2^{-t}=2(1-2^{-L}),
+\]
+because the event of following that branch for $t$ answers has
+probability $2^{-t}$. Thus all trees have a common finite depth bound
+$d$, depending only on $C$. The guess of each player is a Boolean
+polynomial of degree at most $d$: the indicator of a leaf is a product
+of at most $d$ one-coordinate factors. Therefore $F_n$ has degree at
+most $d+1$.
+
+Whenever $F_n$ is nonzero in $L^2$, Lemma~\ref{mbg:rnd:lem:spectral-sign} gives
+$\Prb(F_n<0)\ge[4\,3^{2d+2}]^{-1}$. Almost-sure divergence would force
+$\Var(F_n)\to\infty$ and these sign probabilities to tend to zero,
+a contradiction.
+\end{proof}
+
+The repository proves the stronger probability-zero conclusion below
+$2$ for deterministic strategies. The proof above establishes exactly
+the almost-sure comparison needed for Theorem~\ref{mbg:rnd:thm:frontier}, without
+importing the additional category or conditional-density arguments.
+
+\begin{writenote}[Added 4 October 2026, batch~96]
+The proposition is the almost-sure clause of Theorem~\ref{mbg:qry:thm:threshold}, and its proof is a second route: the sufficiency half is that theorem's $\varepsilon=1$ strategy; the path bound is Lemma~\ref{mbg:qry:lem:pathcost} (source~04's Lemma~\ref{mbg:insp:cost-path}); where Part~\ref{mbg:qry:part} then uses the finite-colouring obstruction (Corollary~\ref{mbg:qry:cor:bounded}) or the conditional sign bound (Theorem~\ref{mbg:insp:obs-no-divergence}) to reach probability zero, this proof uses the sign estimate of Lemma~\ref{mbg:rnd:lem:spectral-sign} with the degree bound, which suffices for almost-sure success. The degree bound is source~06's Lemma~\ref{mbg:qry:lem:degree}.
+\end{writenote}
+
+\section{A public endpoint with arbitrarily small shared entropy}
+\label{mbg:rnd:sec:public}
+
+\subsection{A single shared random integer}
+
+Fix a dyadic number $p$ with $0<p<1$. Let $\Theta$ be a shared nonnegative
+integer independent of all hats and private seeds, with law
+\begin{equation}
+ \Prb(\Theta=0)=1-p,\qquad
+ \Prb(\Theta=t)=p2^{-t}\quad(t=1,2,\ldots).
+ \label{mbg:rnd:eq:public-law}
+\end{equation}
+For stages $\nu\ge2$ define
+\begin{equation}
+ \vartheta_\nu=\Prb(\Theta\ge \nu)=p2^{1-\nu},\qquad
+ k_\nu=4^\nu,\qquad
+ L_\nu=\left\lceil\frac{4^{k_\nu}}{\nu^2}\right\rceil.
+ \label{mbg:rnd:eq:public-schedule}
+\end{equation}
+Stage $\nu$ contains $L_\nu$ blocks of $k_\nu$ pairs. All stages are finite,
+although their sizes grow very quickly.
+
+The public decision is simply:
+\begin{equation}
+ \text{disable stage }\nu\quad\Longleftrightarrow\quad \Theta\ge \nu.
+ \label{mbg:rnd:eq:disable}
+\end{equation}
+In a disabled stage every player makes a constant guess with no
+inspections. In an enabled stage, $T$-role players use the opposite
+partner rule, and each $S$-role player independently activates the
+modified rule with private probability $\vartheta_\nu$.
+
+\begin{theorem}[The public endpoint]
+\label{mbg:rnd:thm:public-endpoint}
+The strategy \eqref{mbg:rnd:eq:public-law}--\eqref{mbg:rnd:eq:disable} satisfies
+\begin{equation}
+ D_n\longrightarrow+\infty\quad\text{almost surely},
+ \qquad
+ \E Q_i<1\ \text{for every }i,
+ \qquad
+ \sup_i\E Q_i=1.
+ \label{mbg:rnd:eq:public-conclusion}
+\end{equation}
+Only the random integer $\Theta$ is shared; every activation coin can remain
+private.
+\end{theorem}
+\begin{proof}
+First ignore the public disabling. The potential activated blocks
+satisfy
+\begin{align*}
+ \sum_{\nu\ge2}L_\nu4^{-k_\nu}
+ &\le\sum_{\nu\ge2}\frac1{\nu^2}+\sum_{\nu\ge2}4^{-k_\nu}<\infty,\\
+ \sum_{\nu\ge2}L_\nu\vartheta_\nu k_\nu4^{-k_\nu}
+ &\ge\sum_{\nu\ge2}\frac{p2^{\nu+1}}{\nu^2}=\infty.
+\end{align*}
+Thus Theorem~\ref{mbg:rnd:thm:schedule} gives almost-sure divergence for the potential
+strategy. The variable $\Theta$ is finite almost surely, so it disables
+only the finite set of stages $2\le \nu\le \Theta$. Apply
+Lemma~\ref{mbg:rnd:lem:deletion} to obtain the same conclusion for actual play.
+
+The enabling event is independent of all hats and private coins, with
+probability $1-\vartheta_\nu$. By Lemma~\ref{mbg:rnd:lem:block-cost}, for players in
+stage $\nu$,
+\begin{align}
+ \E Q_S
+ &=(1-\vartheta_\nu)
+       \left[1+\vartheta_\nu\bigl(1-2^{-(2k_\nu-2)}\bigr)\right]\notag\\
+ &=1-\vartheta_\nu^2
+       -\vartheta_\nu(1-\vartheta_\nu)2^{-(2k_\nu-2)}<1,
+ \label{mbg:rnd:eq:public-cost-s}\\
+ \E Q_T&=1-\vartheta_\nu<1.
+ \label{mbg:rnd:eq:public-cost-t}
+\end{align}
+As $\nu\to\infty$, both expectations tend to $1$. There are players in
+every stage, so their supremum is exactly $1$.
+\end{proof}
+
+\subsection{Entropy and what is actually shared}
+
+\begin{corollary}[Arbitrarily small positive shared entropy]
+\label{mbg:rnd:cor:entropy}
+For every $\eta>0$, some public endpoint strategy in
+Theorem~\ref{mbg:rnd:thm:public-endpoint} uses a single shared variable with
+$0<H(\Theta)<\eta$, where entropy is measured in bits.
+\end{corollary}
+\begin{proof}
+Let $h_2(p)=-p\log_2p-(1-p)\log_2(1-p)$. Conditional on $\Theta>0$, the
+law is $\Prb(\Theta=t\mid \Theta>0)=2^{-t}$ for $t\ge1$, whose entropy is
+$\sum_{t\ge1}t2^{-t}=2$. Since $\Prb(\Theta>0)=p$,
+\begin{equation}
+ H(\Theta)=h_2(p)+2p.
+ \label{mbg:rnd:eq:entropy}
+\end{equation}
+This is positive for $p>0$ and tends to zero as $p\downarrow0$. Choose
+a sufficiently small positive dyadic $p$.
+\end{proof}
+
+The entropy refers to the effective shared variable $\Theta$, not to an
+entire infinite tape that may be used to sample it. Finite entropy does
+not mean finite support, nor does arbitrarily small entropy mean that
+an unbiased-bit sampler consumes an arbitrarily small expected number
+of bits. The theorem distinguishes these resources explicitly.
+
+There is also a direct finite-prefix implementation. Generate a
+Bernoulli-$p$ event from finitely many shared bits. If it fails, set
+$\Theta=0$. If it succeeds, let $\Theta$ be the position of the first terminating
+bit in an independent fair tape. To decide whether $\Theta\ge \nu$, a player
+needs only the first $\nu-1$ bits of that second tape. Thus every
+individual's gate decision uses finitely many bits even on the null
+tape that has no terminating bit. The activation probability
+$p2^{1-\nu}$ is dyadic, so it also has a finite-bit implementation.
+
+\subsection{The exact support boundary for a fixed public distribution}
+
+\begin{theorem}[Classification for a fixed countably supported seed]
+\label{mbg:rnd:thm:support}
+Let $\Theta$ have a prescribed countably supported distribution, and allow
+independent private seeds in addition. There exists an almost-sure
+winning strategy with $\sup_i\E Q_i\le1$ if and only if the set of
+positive-probability values of $\Theta$ is infinite.
+\end{theorem}
+\begin{proof}
+Finite support is excluded by Theorem~\ref{mbg:rnd:thm:finite-public}. For infinite
+support, enumerate its positive-mass values and let $E_\nu$ be the first
+$\nu$ of them. Then $E_\nu$ is increasing, its union has probability one,
+and
+\[
+ a_\nu=\Prb(\Theta\notin E_\nu)>0,\qquad a_\nu\longrightarrow0.
+\]
+Choose a dyadic $0<\beta_\nu\le a_\nu$, and an integer
+\[
+ k_\nu\ge\max\{\nu,2^\nu/\beta_\nu\},\qquad
+ L_\nu=\left\lceil\frac{4^{k_\nu}}{\nu^2}\right\rceil.
+\]
+Disable stage $\nu$ exactly when $\Theta\notin E_\nu$. Every public outcome of
+positive probability belongs to all sufficiently late $E_\nu$, so only
+finitely many stages are disabled. Potential private activation uses
+probability $\beta_\nu$.
+
+The bad-block probability series is at most
+$\sum \nu^{-2}+\sum4^{-k_\nu}<\infty$, while the positive-block series is
+at least
+$\sum\beta_\nu k_\nu/\nu^2\ge\sum2^\nu/\nu^2=\infty$.
+The scheduling and deletion lemmas prove almost-sure divergence.
+For every player in stage $\nu$,
+\[
+ \E Q_S\le(1-a_\nu)(1+\beta_\nu)
+ \le(1-a_\nu)(1+a_\nu)=1-a_\nu^2<1,
+ \qquad \E Q_T=1-a_\nu<1.
+\]
+These means tend to one, so the supremum is one.
+\end{proof}
+
+The theorem for a prescribed distribution is an existence result.
+Effective selection of the dyadic $\beta_\nu$ requires effective
+information about its tail probabilities. The explicit family in
+\eqref{mbg:rnd:eq:public-law} has no such effectiveness issue.
+
+\begin{corollary}[Shared variables admitting an infinite discrete image]
+\label{mbg:rnd:cor:coarsening}
+If a public random variable has a measurable countably valued function
+with infinitely many positive-probability values, then it permits the
+endpoint $1$ when supplemented by independent private seeds. In
+particular, a public uniform random variable on $[0,1]$ suffices.
+\end{corollary}
+\begin{proof}
+Use only that measurable function as the public seed and apply
+Theorem~\ref{mbg:rnd:thm:support}. A partition of $[0,1]$ into countably many intervals
+of positive lengths gives the uniform example.
+\end{proof}
+
+\section{Resource refinements and probability distinctions}
+\label{mbg:rnd:sec:refinements}
+
+\subsection{Geometric tails and local inspections at the public endpoint}
+
+\begin{proposition}[Individual resource bounds]
+\label{mbg:rnd:prop:resources}
+For the explicit public strategy in Theorem~\ref{mbg:rnd:thm:public-endpoint}, an
+$S$-player in stage $\nu$ satisfies
+\begin{equation}
+ \Prb(Q_S>t)=(1-\vartheta_\nu)\vartheta_\nu2^{-t}
+ \quad(1\le t<2k_\nu-1),
+ \label{mbg:rnd:eq:public-tail}
+\end{equation}
+and the tail is zero for $t\ge2k_\nu-1$. Every player's query count is
+stochastically dominated by a geometric variable with
+$\Prb(G=t)=2^{-t}$. The maximal number of inspections and the maximal
+distance $|j-i|$ of an inspected hat are both $O(\log i)$.
+\end{proposition}
+\begin{proof}
+For $t\ge1$, exceeding $t$ queries requires that the stage is enabled,
+the $S$-player is active, and the first $t$ queried hats are black.
+These events have the probabilities multiplied in
+\eqref{mbg:rnd:eq:public-tail}. At $t=0$ the probability of any query is
+$1-\vartheta_\nu\le1$. A $T$-player makes either zero or one query.
+
+All inspections are inside the same contiguous block of $2k_\nu$
+players. Thus count and distance are at most $2k_\nu-1$. If player $i$
+is in stage $\nu\ge3$, the preceding stage alone contains
+$2k_{\nu-1}L_{\nu-1}$ players. Hence, for all sufficiently large $\nu$,
+\[
+ \log_2 i\ge
+ 2k_{\nu-1}+\log_2(2k_{\nu-1})-2\log_2(\nu-1)\ge k_{\nu-1}.
+\]
+Since $k_\nu=4k_{\nu-1}$, one has $2k_\nu-1\le8\log_2 i$ eventually.
+The finitely many earlier players are absorbed into the $O$ constant.
+\end{proof}
+
+For example, for $1\le z<2$ the same domination gives
+\[
+ \sup_i\E z^{Q_i}\le\E z^G=\frac{z}{2-z}.
+\]
+Thus the endpoint separation persists with light individual query
+tails. The shared advantage is produced by dependencies across players
+and stages, not by allowing an individual count with an infinite mean.
+The construction is computable for dyadic $p$, although its rapidly
+growing stage sizes make it a mathematical existence algorithm rather
+than an efficient practical team protocol.
+
+\subsection{The asymptotic average cost really can equal one}
+
+\begin{proposition}[Asymptotic critical cost with private seeds]
+\label{mbg:rnd:prop:asymptotic}
+There is a purely private almost-sure winning strategy with
+\[
+ \E Q_i\longrightarrow1,
+ \qquad\frac1n\sum_{i\le n}\E Q_i\longrightarrow1.
+\]
+Its uniform supremum is strictly greater than one. The public endpoint
+strategy has both limits as well, and its uniform supremum is one.
+\end{proposition}
+\begin{proof}
+Use the potential, ungated construction of
+\eqref{mbg:rnd:eq:public-schedule}, with private activation
+$\beta_\nu=p2^{1-\nu}$ and no public variable. The two series used in
+Theorem~\ref{mbg:rnd:thm:public-endpoint} still prove divergence. Its expected costs
+are $1$ for $T$ and $1+\beta_\nu(1-2^{-(2k_\nu-2)})$ for $S$, tending to
+one from above. Their Ces\`aro averages tend to one. At least one $S$
+mean is greater than one, so its supremum is greater than one. The
+public assertion follows from \eqref{mbg:rnd:eq:public-cost-s} and
+\eqref{mbg:rnd:eq:public-cost-t}, which tend to one from below.
+\end{proof}
+
+Thus a limsup or average version of the resource objective has a
+different attainment question from the uniform cap in
+\eqref{mbg:rnd:eq:uniform-cost}. In the private model, attaining asymptotic
+average one is compatible with the necessary cumulative overhead
+tending to infinity.
+
+\subsection{Positive probability is a separate objective}
+
+\begin{proposition}[Public mixtures]
+\label{mbg:rnd:prop:public-mixture}
+For every $C>0$ a two-valued public seed, together with private seeds,
+permits positive-probability divergent excess with
+$\sup_i\E Q_i\le C$. At cap one, a finite public seed can make the
+success probability arbitrarily close to one, although it cannot make
+that probability exactly one.
+\end{proposition}
+\begin{proof}
+Let a private almost-sure winning strategy have uniform expected cost
+$c>1$. Run it when a public Bernoulli gate is on, of probability
+$r\in(0,1)$, and use constant zero-query guesses otherwise. The cost
+is at most $rc$ and the success probability is at least $r$. Choose
+$r>0$ with $rc\le C$.
+
+For the second assertion, given $0<\varepsilon<1$ choose a private cap
+$1<c<1/(1-\varepsilon)$, and turn the gate on with probability
+$1-\varepsilon$. The unconditional cap is below one and the success
+probability is at least $1-\varepsilon$.
+\end{proof}
+
+\begin{writenote}[Added 4 October 2026, batch~96]
+The first assertion extends the remark of Section~60.3 (source~04 of Part~\ref{mbg:qry:part}), which mixes the deterministic optimal strategy with a zero-query strategy for uniform cost at most $2\epsilon$ and divergence probability at least~$\epsilon$; mixing a private strategy of cost just above~$1$ instead roughly halves the cost for a given success probability, and the second assertion is new. The ``finite public seed'' here is two-valued, so Theorem~\ref{mbg:rnd:thm:finite-public} applies to it in its corrected form.
+\end{writenote}
+
+The public positive-probability infimum is therefore zero and is not
+attained. If all costs are zero, conditional on all seeds every
+correctness sign is a constant multiple of its independent owner hat;
+the score is an ordinary symmetric random walk and cannot tend to
+$+\infty$ with positive probability. For example, the elementary
+gambler's-ruin formula shows that such a walk hits every negative level
+almost surely.
+
+For independent private seeds at cap at most one, our proved result is
+the strict upper bound \eqref{mbg:rnd:eq:private-gap}, not a probability-zero
+theorem. Whether there exists any positive-probability winning strategy
+at a uniform private cap below or equal to one is left open.
+{\small\textbf{[write]} The manuscript's next sentence, a heuristic stated without proof, is Research question~\ref{mbg:rnd:q:heuristic} (moved there on 4 October 2026, batch~96).}
+
+\subsection{Why the expectation identities remain consistent}
+
+Every finite-prefix score is centered by Lemma~\ref{mbg:rnd:lem:fairness}. In an
+activated block, rare positive singleton configurations are exactly
+balanced in expectation by rarer but larger all-black losses. A
+schedule makes only finitely many loss blocks occur almost surely
+while retaining infinitely many positive blocks. The finite random
+total of loss sizes need not have a finite expectation.
+
+The public cost calculation adds a second instance of the same
+phenomenon. For almost every fixed complete seed realization, the
+deterministic necessary condition says that its cumulative
+hat-averaged cost minus the player count tends to infinity. Yet after
+averaging over the public variable, every individual cost is below one.
+The exceptional large values of $\Theta$ disable very large finite initial
+segments, and prevent interchange of limits and expectations. The
+finite-support theorem proves that a finite weighted sum of shared
+outcomes could not have achieved this effect.
+
+\section{Source audit, verification, and a formalization route}
+\label{mbg:rnd:sec:provenance}
+
+\subsection{What is inherited and what is proved here}
+
+The source inspected from \repo\ is
+\begin{quote}\small\ttfamily
+SetTheory/Cardinals/docs/reports/ordinals-and-order-types/\\
+measurable-box-games/article.tex
+\end{quote}
+at the commit specified in Section~\ref{mbg:rnd:sec:introduction}. The following table
+distinguishes the pre-existing results from the additional deductions.
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.27\textwidth}
+>{\raggedright\arraybackslash}p{0.32\textwidth}
+>{\raggedright\arraybackslash}p{0.35\textwidth}@{}}
+\toprule
+Topic & Inspected source & Status in this article\\
+\midrule
+\endhead
+Excess-growth direction & Eldredge, paragraph before Proposition 6.6;
+explicit Glazer--Wang attribution & Research connection and original
+measurable block construction.\\[4pt]
+Expected deterministic threshold $2$ & Repository Theorem 53.3 and
+Section 62 & Reproved for almost-sure success in
+Proposition~\ref{mbg:rnd:prop:deterministic}; not claimed new.\\[4pt]
+Private upper bound for every $C>1$ & Repository Theorem 55.2,
+\texttt{mbg:qry:thm:randomcost} & Reproduced in
+Proposition~\ref{mbg:rnd:prop:private-upper}; not claimed new.\\[4pt]
+Covariance and variance & Repository Lemma 64.1 and Theorem 64.2,
+\texttt{var-covariance} and \texttt{var-weighted} labels & Proved with
+random seeds included; credited as analytic inputs.\\[4pt]
+Low-degree sign estimates & Classical hypercontractivity; related
+repository spectral-escape estimates & A short self-contained proof;
+the method itself is established.\\[4pt]
+Zero-inspection projection & No counterpart found in inspected text &
+New finite sign bounds and average-cost stability,
+Theorem~\ref{mbg:rnd:thm:zero} and Proposition~\ref{mbg:rnd:prop:private-zero}.\\[4pt]
+Owner-coefficient accounting & Extends the repository's Fourier
+framework & New near-unit aggregate-cost and variance-overhead laws,
+Theorems~\ref{mbg:rnd:thm:aggregate} and~\ref{mbg:rnd:thm:variance-overhead}.\\[4pt]
+Randomized endpoint & Repository Question 57.2 and Question 68.6 &
+Private nonattainment; finite-public obstruction; countable-public
+attainment and small-entropy theorem.\\[4pt]
+Positive-probability private success & Part of Question 57.2 & Remains
+open below or at one; a nonsharp success gap is proved.\\
+\bottomrule
+\end{longtable}
+
+The source searches identify a concrete question answered and prevent
+the inherited constructions from being presented as new. They do not
+establish a global priority theorem. The manuscript's claims of a
+resolved question refer to the almost-sure clauses of the audited
+repository formulation, rather than to all variants of infinite hat
+or choiceless box games.
+
+\subsection{Exact finite verification}
+
+The accompanying \texttt{verify\_finite.py} uses Python's standard
+library, integer enumeration, and exact rational arithmetic. It
+contains no Monte Carlo experiment. Its recorded run reports
+\textbf{499,552 successful exact checks}. The following coverage is
+recorded in \texttt{results.json}.
+
+\begin{center}
+\begin{tabularx}{\textwidth}{@{}Xr@{}}
+\toprule
+Verification family & Coverage\\
+\midrule
+Activated blocks, $k=1,\ldots,5$, $\beta=1/2,1/4$
+& 74,896 hat/activation cases\\
+Public-gated versions, disabling probability $\beta$
+& 77,624 cases\\
+Constant, neutral, and privately thinned strategies
+& 8,946 additional cases\\
+Deterministic Fourier profiles & 195 profiles\\
+Scored Fourier prefixes & 691 prefixes\\
+Fourier prefixes satisfying the tested budget with $\kappa=0$
+& 445 prefixes\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The block checks verify actual transcripts, the absence of own-hat
+inspections, exact query means and tails, the all-black binomial loss
+law, positive-block probability, and completed-pair prefix control.
+The Fourier checks include every activation mask through four pairs,
+parity teams, and reproducibly generated Boolean truth tables. Scoring
+all prefixes of those finite teams also tests the bookkeeping when
+players inspect hats outside the scored prefix.
+
+These computations check finite algebra and implementations. They do
+not establish the infinite statements: those follow from the proofs
+using Borel--Cantelli, Fubini, Fourier approximation, and the stopped
+process lemma. {\small\textbf{[write]} The manuscript's next sentence, a statement about how it was prepared that the report cannot check, is Research question~\ref{mbg:rnd:q:review} (moved there on 4 October 2026, batch~96).} There is no
+claim of proof-assistant verification or external peer review.
+
+\begin{writenote}[Added 4 October 2026, batch~96]
+These file names are the delivery's. In the collection the verifier is shipped as \texttt{code/\allowbreak 06-hat-randomness-\allowbreak verify\_\allowbreak finite.py}, its recorded output as \texttt{data/\allowbreak 06-hat-randomness-\allowbreak results.json}, the verification notes as \texttt{code/\allowbreak 06-hat-randomness-\allowbreak VERIFY\_\allowbreak NOTES.txt}, the Makefile as \texttt{code/\allowbreak 06-hat-randomness-\allowbreak Makefile} and the source audit as \texttt{06-hat-randomness-\allowbreak SOURCE\_\allowbreak AUDIT.txt}, all byte-identical to the delivery. The verifier writes \texttt{results.json} beside itself unless given \texttt{--output}, so run in place it would add an unprefixed file to the report's \texttt{code/}; the report's \texttt{README.md} reruns it on a scratch copy with \texttt{--output}. At the write it passed there (Section~\ref{mbg:rnd:sec:place}), and the counts in the table above are those of the shipped JSON. The verifier's notation differs from the article's: its \texttt{m} is the number $k$ of pairs in a block, its \texttt{alpha} the activation probability~$\beta$, its \texttt{epsilon} the probability that the public gate is off, and its \texttt{K} the slack~$\kappa$.
+\end{writenote}
+
+\subsection{A practical dependency order for formalization}
+
+A formalization can separate finite combinatorics from measure theory.
+The following order avoids treating executable evidence as a substitute
+for the infinite proof.
+\begin{enumerate}
+\item Define finite adaptive decision trees with named queried
+coordinates and prove blindness to the owner coordinate. Prove the
+transcript invariance underlying Lemma~\ref{mbg:rnd:lem:covariance}.
+\item Prove the activated block identities and exact expected query
+counts over finite probability spaces. The provided verifier gives
+small examples for these definitions, but the formal theorem should
+quantify over arbitrary block size.
+\item Prove the zero-inspection conditional-expectation identity on a
+finite scored set, including hats outside that set. Deduce the two
+moment bounds and the finite sign estimate.
+\item Formalize the finite Walsh basis, owner-indexed Parseval
+identities, and the fourth-moment induction. Prove the aggregate
+inequality first for finitely many hat coordinates.
+\item Extend to countable products through conditional expectations
+onto increasing finite coordinate sets. Check that finite mean query
+cost bounds total influence in the limiting model.
+\item Prove the independent-cost stopped-process lemma by bounded
+stopping, then combine it with Fubini for the private and finite-public
+endpoint obstructions.
+\item Formalize the stage enumeration and the two Borel--Cantelli
+applications, followed by the finite-deletion lemma and public cost
+formulas. Prove the entropy identity as a separate real-series result.
+\end{enumerate}
+
+This is a proposed route into the repository's formal mathematics,
+not an assertion that these declarations already exist in its Lean or
+Rocq libraries. The article and verifier are delivered separately from
+the inspected source checkout.
+
+\section{Further research questions and topics}
+\label{mbg:rnd:sec:future}
+
+The questions below begin beyond the proved almost-sure frontier. In
+particular, the private endpoint and the finite-versus-infinite
+countable shared-support boundary are no longer listed as open in
+this model.
+
+\begin{question}[Positive-probability success with private seeds]
+Determine
+\[
+ \inf\left\{\sup_i\E Q_i:
+     \Prb(D_n\to+\infty)>0,\ \text{independent private seeds}\right\}.
+\]
+Does every private strategy of cap at most one actually have a null
+divergence event, or can it have a strictly intermediate success
+probability? The upper bound $1-1/5184$ on success probability does not
+answer the question.
+\end{question}
+
+\begin{question}[Optimal finite sign bounds]
+For fixed team size and total expected inspection cost, determine the
+smallest possible negative-excess probability. Can the constants in
+\eqref{mbg:rnd:eq:zero-bound} and \eqref{mbg:rnd:eq:private-zero} be improved to exact
+finite formulas? A useful first subproblem fixes the zero-inspection
+probabilities and allows arbitrary private decision trees afterward.
+\end{question}
+
+\begin{question}[Sharpness of the variance-overhead law]
+Is the coefficient $1$ in \eqref{mbg:rnd:eq:variance-overhead} optimal? Seek a
+sequence of legal deterministic teams whose sign probability tends to
+one and whose ratio of excess expected cost to variance tends to one,
+or prove a larger universal lower bound. The owner-coefficient
+inequalities specify where equality would have to concentrate.
+\end{question}
+
+\begin{question}[Growth at asymptotically unit cost]
+The private construction can have $\E Q_i\to1$ while its excess
+diverges. Characterize the possible rates of $D_n$ when the cumulative
+overhead $q_n-n$ is prescribed. Relate such rates to variance and
+uniform integrability rather than only to the largest individual
+expected cost.
+\end{question}
+
+\begin{question}[Public entropy versus finite-stage efficiency]
+Arbitrarily small positive shared entropy suffices for the infinite
+endpoint, but the explicit construction uses very large stages.
+Quantify the tradeoff among shared entropy, the first index at which a
+specified surplus is likely, and the available block sizes. Any such
+bound must distinguish entropy from finite support and from the
+expected number of fair bits read by an exact sampler.
+\end{question}
+
+\begin{question}[Correlated private sources without full publicity]
+Replace independent private seeds by a specified dependency graph,
+stationary process, exchangeable family, or local common sources.
+When does the conditional-cost process still satisfy a supermartingale
+condition? Which correlations can reproduce the countable public
+deletion mechanism without giving every player the same signal?
+\end{question}
+
+\begin{question}[Charging for randomness]
+Charge for reading private and public random bits as well as hats.
+How do the three cost scales interact? The theorem here treats
+external randomness as free, and its small-entropy conclusion alone
+does not determine a charged-bit frontier.
+\end{question}
+
+\begin{question}[Biased and multicolor hats]
+For independent biased binary hats, the natural baseline is the
+probability of the more common color, and blindly guessing need not
+produce a centered sign. For $q$ equiprobable colors, use excess over
+$n/q$. Determine whether an analogue of the private/public endpoint
+separation holds, and which orthogonal basis replaces the owner-sign
+accounting in the proofs.
+\end{question}
+
+\begin{question}[Distance and graph constraints at the endpoint]
+Our construction has worst-case query distance $O(\log n)$ and
+geometric individual tails. Determine necessary and sufficient
+visibility conditions for shared endpoint attainment. A prescribed
+distance profile may obstruct the very large coordinated stages even
+when it permits unbounded individual query counts.
+\end{question}
+
+\begin{question}[A mechanized endpoint certificate]
+Carry out the dependency order in Section~\ref{mbg:rnd:sec:provenance} in Lean or
+Rocq. The finite-public obstruction is a particularly compact target:
+it combines one Fourier inequality with a finite weighted-sum argument
+and a stopped-process lemma. The public construction additionally tests
+the formal handling of almost-sure finite deletion in an infinite
+sequence of finite blocks.
+\end{question}
+
+\begin{writenote}[Status of the questions, 4 October 2026, batch~96]
+All ten questions stay open as printed; the write searched no literature for them. Question~81.1 is the clause of Part~\ref{mbg:qry:part}'s Research question~57.2 that this Part leaves open (positive-probability success with private seeds at cap at most~$1$); Question~81.7 is the third clause of Research question~68.6 (charged random bits); Question~81.8 continues 57.9 and~68.8 for randomized strategies, and Question~81.9 continues 57.6 and~68.7. Corollary~\ref{mbg:rnd:cor:conditional} answers, in the negative, the variant of the endpoint question in which the cap must hold conditionally on the public seed; it does not touch Questions~81.1--81.10.
+\end{writenote}
+
+\subsection*{Further questions and research: claims stated without proof}
+
+\begin{writenote}[Added 4 October 2026, batch~96]
+Following the report's rule for unproved claims, the three statements below, made by the manuscript without proof, are recorded here as open questions with their source, the argument they came with, and what is missing; at their original places a \textbf{[write]} pointer replaces the first and the third, and the second stays in place with a note. Two statements of the manuscript were false as worded and are corrected where they stand, with the delivered wording kept: the definition of a finite-valued public seed and the hypothesis of Theorem~\ref{mbg:rnd:thm:finite-public} (Remark~\ref{mbg:rnd:rem:finite-valued}), and the sentence of the abstract on countably supported seeds (the note after the status box at the head of this Part). The constants of Theorem~\ref{mbg:rnd:thm:zero}, Proposition~\ref{mbg:rnd:prop:private-zero} and Corollary~\ref{mbg:rnd:cor:aggregate-quantitative} and the coefficient~$1$ of Theorem~\ref{mbg:rnd:thm:variance-overhead} are explicitly not claimed optimal by the manuscript; Questions~81.2 and~81.3 ask about them.
+\end{writenote}
+
+\begin{question}[{[write]} Finite-prefix estimates and the private positive-probability threshold]
+\label{mbg:rnd:q:heuristic}
+After stating that Question~81.1 is open, the manuscript added (Section~79.3): ``A finite-prefix probability estimate alone would not settle that issue.'' No argument is given. Make the statement precise and prove it: in what sense can lower bounds on the probabilities $\Prb(F_n<0)$ of finite prefixes not decide whether a private strategy with $\sup_i\E Q_i\le1$ diverges with positive probability? A sketch (the write's): the proof of Corollary~\ref{mbg:rnd:cor:private-gap} extracts from such bounds only $\Prb(D_n\to+\infty)\le1-c$ when $\limsup_n\Prb(F_n<0)\ge c$, and outside the cap-one class that implication cannot be improved to probability zero: if every player $i\ge2$ first inspects hat~$1$, plays Part~\ref{mbg:qry:part}'s critical strategy among the players $2,3,\ldots$ when that hat is $+1$ and guesses a constant otherwise, then $\Prb(D_n\to+\infty)=1/2$ while $\Prb(F_n<0)\to1/4$. What is missing is a statement about strategies with $\sup_i\E Q_i\le1$ and independent private seeds, and its proof.
+\end{question}
+
+\begin{question}[{[write]} Measure-theoretic preliminaries]
+\label{mbg:rnd:q:measure}
+Section~71 states without proof that regular conditional probabilities can be taken in standard Borel seed spaces, that all proofs may equivalently be carried out on products of fair-bit tapes, and that the exceptional null sets of almost-surely terminating trees can be discarded simultaneously for all players and coordinate flips; Lemma~\ref{mbg:rnd:lem:bonami} extends its fourth-moment bound to $L^2$ limits with a short sketch. The last two are proved in the notes after them (and were checked by the endpoint review of Section~\ref{mbg:rnd:sec:place}). The first two are classical theorems (existence of regular conditional distributions on standard Borel spaces; every standard Borel probability space is the image of the fair-bit product measure under a measurable map), quoted, not proved, and not used by any printed proof: the proofs condition only on atoms of positive probability or apply Fubini's theorem to the product of the hat space and the independent seed space, under the standing assumption, also made in Proposition~\ref{mbg:qry:prop:randomdepth}, that the seeded decision trees are jointly measurable. What is missing is a written reduction of standard Borel seeds to fair-bit tapes in this model, which a formalization along Research question~81.10 would need.
+\end{question}
+
+\begin{question}[{[write]} The manuscript's statement on independent review]
+\label{mbg:rnd:q:review}
+Section~80.2 of the manuscript said: ``The pivotal proof steps and the endpoint constructions were also independently reviewed during preparation''; its delivered source audit (\texttt{06-hat-randomness-\allowbreak SOURCE\_\allowbreak AUDIT.txt}, Section~5) says the same of ``the main proofs and endpoint constructions''. Neither names a reviewer, a scope or a record, so the report cannot check the statement, and it is kept as the manuscript's, without weight. The reviews this report can cite are those of Section~\ref{mbg:rnd:sec:place}: together they read Sections~70--75 and 78--80 and passed the private and finite-public exclusions with their analytic dependencies (the latter under the corrected hypothesis), and neither certifies the block, scheduling and upper constructions of Sections~76--77, which this write followed in full. What is missing is a review of record of Sections~76--77, and so of the constructions of Sections~78--79 and of the whole threshold table, or a proof-assistant check (Research question~81.10).
+\end{question}
+
+% Part V's appendices continue the letters after Part III's (Part IV has none).
+\setcounter{section}{7}
+\renewcommand{\thesection}{\Alph{section}}
+\renewcommand{\theHsection}{rnd.app.\Alph{section}}
+\makeatletter\gdef\Hy@chapapp{\Hy@appendixstring}\makeatother
+\section{Compact proof map and notation}
+\label{mbg:rnd:app:map}
+
+\begin{center}
+\begin{tabularx}{\textwidth}{@{}p{0.20\textwidth}X@{}}
+\toprule
+Symbol & Meaning\\
+\midrule
+$X_i$ & Independent fair owner-hat sign.\\
+$f_i$ & Guessed sign, excluding any dependence on $X_i$.\\
+$Y_i=X_if_i$ & Correctness sign: $+1$ correct, $-1$ incorrect.\\
+$F_n=2D_n$ & Signed score, twice the correct-guess excess.\\
+$Q_i$ & Number of individual hats inspected by player $i$.\\
+$q_n$ & Total expected cost, including all external randomness.\\
+$z_n$ & Sum of zero-inspection probabilities.\\
+$\bar q_n$ & Total hat-averaged cost after fixing every external seed.\\
+$I_n$ & Total influence of the deterministic guess functions.\\
+$p_A$ & Sum of squared contributions to support $A$ from its owners.\\
+$V_j$ & Variance of $F_n$ in Walsh degree $j$.\\
+$\Theta$ & Effective public random variable.\\
+$S_j,T_j$ & The two player roles within a neutral pair.\\
+$k_\nu,L_\nu$ & Pairs per block and number of blocks in stage $\nu$.\\
+$\vartheta_\nu,\beta_\nu$ & Public disabling and private activation probabilities.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The lower threshold below one follows from the zero-inspection
+projection and the variance bound. The private endpoint follows from
+owner-indexed Fourier accounting, the low-degree sign estimate, and
+the independent-cost stopping lemma. A finite public seed is handled
+by a finite weighted sum of its conditional costs. Public endpoint
+attainment follows from the activated block, a summable loss series,
+a divergent gain series, and deletion of finitely many finite stages.
+Finally, the entropy formula measures the effective shared integer.
+
+\section{Reproduction instructions and package contents}
+\label{mbg:rnd:app:repro}
+
+The package contains the article's source and compiled PDF, the exact
+verifier, its deterministic JSON output, a short verification note,
+a source audit, and a Makefile. With a standard TeX installation and
+Python 3.10 or newer, run
+\begin{verbatim}
+python3 verify_finite.py
+latexmk -pdf -interaction=nonstopmode -halt-on-error \
+  hat_randomness_frontier.tex
+\end{verbatim}
+The verifier is independent of LaTeX and uses no third-party Python
+package. Recompiling the article does not run or assume a proof
+assistant. The delivered PDF was compiled and its rendered pages
+inspected for layout defects.
+
+\begin{writenote}[Added 4 October 2026, batch~96]
+These commands and file names are the delivery's. In the collection the manuscript's source \texttt{hat\_\allowbreak randomness\_\allowbreak frontier.tex} and PDF and the delivered \texttt{README.txt} are not shipped (this Part is the source, built as part of the report's \texttt{article.tex}); they survive in the archive of the arrival commit \texttt{26e036956}. No checksum manifest was delivered. The shipped names are in the note of Section~80.2; the shipped \texttt{code/\allowbreak 06-hat-randomness-\allowbreak Makefile} still runs \texttt{python3 verify\_finite.py} and builds \texttt{hat\_\allowbreak randomness\_\allowbreak frontier.tex} in one flat directory, so it works only in the extracted archive. The report's \texttt{README.md} gives a rerun with the shipped names on a scratch copy (\texttt{py} for \texttt{python3} on this repository's Windows host).
+\end{writenote}
 
 \clearpage
 \fancyhead[R]{\small Research note}
@@ -7945,6 +9742,7 @@ DOI: \href{https://doi.org/10.48550/arXiv.2508.02828}
 See Theorem~4.1 and Proposition~6.6--Remark~6.8.
 {\small[write, 4 October 2026: the arXiv record lists v1 of 4 August 2025 and v2 of 24 October 2025, 20 pages, math.PR with math.LO; the v2 text was read at the write (Section~\ref{mbg:hat:sec:provenance}).]}
 {\small[write, 4 October 2026, batch~92: Part~\ref{mbg:qry:part}'s two sources cite the same v2, source~04 for Proposition~6.6 and Remarks~6.7--6.8, source~06 for the discussion before Proposition~6.6, Proposition~6.6, Remark~6.8 and Section~7.3, adding that its PDF is dated October~28, 2025.]}
+{\small[write, 4 October 2026, batch~96: Part~\ref{mbg:rnd:part} cites the same v2 (its \texttt{Eldredge}), for Proposition~6.6 and the Glazer--Wang attribution immediately before it.]}
 
 \bibitem{hat:EMV}
 Todd Ebert, Wolfgang Merkle, and Heribert Vollmer.
@@ -8160,5 +9958,29 @@ Anson Ho, Jean-Stanislas Denain, and Elliot Glazer.
 Samaritan Research, 6 June 2025.
 Author biography and institutional article, accessed 4 October 2026.
 \url{https://samaritan-research.org/gradient-updates/beyond-benchmark-scores-analysing-o3-mini-math-reasoning}.
+
+% Part V's entries (batch 96, manuscript 04); its Eldredge and Glazer entries
+% are hat:Eldredge and GlazerBox above.
+\bibitem{rnd:ProveIt}
+Vladimir Reshetnikov, \repo\ repository,
+\emph{Measurable box and hat games}, combined research manuscript,
+\nolinkurl{SetTheory/Cardinals/docs/reports/ordinals-and-order-types/measurable-box-games/article.tex},
+commit\par
+{\small\texttt{715a716a3002b1e9f28daa2d81c009a392851b94}},
+observed 4 October 2026.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/715a716a3002b1e9f28daa2d81c009a392851b94/SetTheory/Cardinals/docs/reports/ordinals-and-order-types/measurable-box-games/article.tex}{Versioned source}.
+Question 57.2; Theorems 53.3, 55.2, 64.2; Lemma 64.1;
+and the related Question 68.6. These are research-report statements,
+not automatically proof-assistant-certified results.
+{\small[write, 4 October 2026, batch~96: this is the present report at Part~\ref{mbg:rnd:part}'s pin, Parts~\ref{mbg:part:one}--\ref{mbg:qry:part} as printed here; its title page reads \emph{Countable Information, Uncountably Many Boxes}, and ``Measurable box and hat games'' is the manuscript's description.]}
+
+\bibitem{rnd:Beckner}
+William Beckner,
+Inequalities in Fourier analysis,
+\emph{Annals of Mathematics} (2) \textbf{102} (1975), no.~1, 159--182.
+\href{https://doi.org/10.2307/1970980}{doi:10.2307/1970980}.
+The bounded-degree fourth-moment consequence needed here is proved
+directly in Lemma~\ref{mbg:rnd:lem:bonami}.
+{\small[write, 4 October 2026, batch~96: not checked at the write; the delivered source audit also gives \url{https://annals.math.princeton.edu/1975/102-1/p11}.]}
 \end{thebibliography}
 \end{document}
