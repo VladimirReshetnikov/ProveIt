@@ -158,6 +158,20 @@ or46 witnesses/SOS224/degree52. Native AND remains in the loader, so a
 cheaper loading/accepting-history compiler is still needed for a universal
 improvement. The universal84/187 and85/155 points remain unchanged.
 
+The [hat-seed definition correction](review_hat_seed_definition_correction.md)
+and [root proof challenge](review_hat_seed_definition_correction_root.md)
+qualify the earlier endpoint reviews. Finitely many atoms do not imply
+probability-one finite support: both a uniform public seed and a law with
+one atom plus a continuous remainder admit the report's cap1 construction.
+The finite-public exclusion is valid under explicit concentration on its
+finite atom set; its written proof uses that missing mass-one premise.
+The abstract's countable-support sentence is separately clarified as a
+seed-of-our-choice claim or an infinite-support fixed-law claim. Original
+wording and prior unqualified assessments are retained with counterexamples;
+no frozen article or review is silently changed. Six source spans/559 lines
+and the explicit block/cost/divergence argument are checked without running
+supplied programs. This repairs review scope, not an arithmetic bound.
+
 The [four Borel-report placement reviews](review_borel_placement_54ece48ab.md)
 authenticate all21 changed paths at54ece48ab:17 exact ancillary additions,
 four archive retirements,33 members and29 checksum entries. The host guide,
@@ -237,8 +251,10 @@ Diophantine compiler or arithmetic improvement is supplied.
 The [hat endpoint follow-up](review_hat_endpoint_26e036956.md) adds the
 missing418 lines of covariance, Fourier and aggregate-cost dependencies,
 completing the630-line model-to-endpoint proof interval at26e036956.
-Private-seed and finite-public-seed nonattainment at expected query cap1 pass
-two mathematical challenges. The proof uses marginal cost caps and never
+Private-seed nonattainment at expected query cap1 passes the challenges.
+The finite-public conclusion requires probability-one finite support; the
+[definition correction](review_hat_seed_definition_correction.md) qualifies the earlier unqualified PASS.
+The proof uses marginal cost caps and never
 assumes the same cap after conditioning on a seed. Its nonsharp private
 success gap does not settle the open positive-probability question.
 A fresh scalar example illustrates why correlated costs defeat the analogous
@@ -253,7 +269,8 @@ member lines. The complete1887-line commuting-injections proof receives a
 mathematical challenge, and fresh code independently reproduces its148 finite
 presentation, necklace, subgroup and permutation cases. Atom-actions and
 hat-randomness receive the precisely listed interface reads; their remaining
-proofs are not certified by this packet. No defect was found in that scope.
+proofs are not certified by this packet. The original no-defect assessment
+is now qualified by the [hat-seed definition correction](review_hat_seed_definition_correction.md).
 Pure component codes are not finite integer loaders, and the hat threshold1
 charges inspections while computation and permitted randomness are free.
 Fresh normal/optimized receipts pass; no supplied program or builder ran.
@@ -5658,6 +5675,7 @@ New research and the completed75-operation construction:
 
 | Artifact | Established result | Remaining boundary |
 |---|---|---|
+| [Hat-seed definition correction](review_hat_seed_definition_correction.md) and [root challenge](review_hat_seed_definition_correction_root.md) | Atom-count reading fails for uniform and one-atom mixed laws; explicit cap1 counterexample; probability-one finite support repairs exclusion | Earlier no-correction assessments qualified and retained; abstract quantifier clarified; host manuscript write still pending |
 | [Four Borel-report placement reviews](review_borel_placement_54ece48ab.md) |21 changed paths,17 exact ancillary copies,33 members and29 checksums; unchanged guide/article/PDF with17Parts | XVIII–XXI remain intended writes; inherited proof scopes, broken flow reference and pending qualifications retained |
 | [Two-type ordinal promise boundary](ordinal_two_type_effectivity_boundary.md) and [root review](review_ordinal_two_type_effectivity_boundary.md) | Halting reduction uses only valid computable well-orders of types omega and omega+1; upper-type predicate has no effective finite existential certificates | Applies to arbitrary program presentations with semantic order-type meaning; explicit constructor syntax and generated lower-type certificates remain available |
 | [Beyond Ord placement followup](review_beyond_ord_placement_111c38012.md) |17 changed paths,13 exact ancillary copies and27 source members; unchanged host with15 Part headings | Part XVI write and proposed mathematical corrections remain plans; original bounded intake scope retained |
@@ -5671,7 +5689,7 @@ New research and the completed75-operation construction:
 | [Two derivations / Borel conjugacy review](review_two_derivations_78528873b.md) | Full1347-line proof review, exact scalar and simultaneous coordinate interface; new nonhalting reduction even for canonical pairs over Gamma=Z | Program-described coefficient supports differ from explicit finite lists; no uniform existential conjugacy test or paid universal compiler |
 | [Shorter selector search](complete83_subpower_selector_bound.md) and [independent proof review](review_complete83_subpower_selector_bound.md) | Improved coprime interval gives z,F<=Q^(1+o(1)); preserves previous positive odd-scale completion | Upper bound only; low Q digit and enlarged-z binary population remain uncontrolled |
 | [Fixed-prime quotient carries](complete83_fixed_prime_quotient_carries.md) and [independent review](review_complete83_fixed_prime_quotient_carries.md) | Unconditional odd-scale completion A³ divides Y on explicit sufficiently large subsequences of each fixed compiler, with positive input/slack and transport | Enlarged-z binary condition remains open; no actual complete zero, prescribed-input result or universal83 |
-| [Hat endpoint dependency challenge](review_hat_endpoint_26e036956.md) | Adds418 proof lines, completing model-to-endpoint coverage193–822; private and finite-public exclusions pass with marginal cost caps and correct conditioning. | Positive-probability private success and upper constructions remain outside the conclusion; scalar correlated-cost example is not a hat strategy or arithmetic compiler. |
+| [Hat endpoint dependency challenge](review_hat_endpoint_26e036956.md) | Adds418 proof lines, completing model-to-endpoint coverage193–822; private exclusion passes; finite-public exclusion needs probability-one finite support, per the [correction](review_hat_seed_definition_correction.md). | Positive-probability private success and upper constructions remain outside the conclusion; scalar correlated-cost example is not a hat strategy or arithmetic compiler. |
 | [Commuting injections, atom actions and hat randomness](review_new_actions_26e036956.md) | All22 members authenticated; complete commuting proof read and148 finite cases independently recomputed; exact selected atom/hat interfaces reviewed. | Other atom/hat proofs remain outside scope. Pure codes and free-computation query bounds do not supply paid integer compilers; no arithmetic saving. |
 | [Borel flows and finite-window criteria](review_new_borel_flows_fb9f5884b.md) | Full1724-line proof read; nine-member archive and cited BCH interface authenticated. Exact flow/time-one scope and infinite-rank nonclosure checked. | One malformed reference recorded; saved5372 checks not replayed. No effective certificate producer, paid compiler or arithmetic improvement; divisible-group scope retained. |
 | [Support complexity, certificates and effective boundaries](review_new_support_complexity_fb9f5884b.md) | Full1629-line manuscript and pinned Lean interface read; eight-member archive authenticated. Two new computability deductions distinguish infinite certificates from ordinary existential integer witnesses. | No paid finite compiler; supplied finite tests not rerun, external foundations accepted at stated scope, PDF and historical Library question unverified. |

@@ -173,6 +173,21 @@
 > improvement. The universal84/187 and85/155 points remain unchanged.
 >
 >
+> The [hat-seed definition correction](review_hat_seed_definition_correction.md)
+> and [root proof challenge](review_hat_seed_definition_correction_root.md)
+> qualify the earlier endpoint reviews. Finitely many atoms do not imply
+> probability-one finite support: both a uniform public seed and a law with
+> one atom plus a continuous remainder admit the report's cap1 construction.
+> The finite-public exclusion is valid under explicit concentration on its
+> finite atom set; its written proof uses that missing mass-one premise.
+> The abstract's countable-support sentence is separately clarified as a
+> seed-of-our-choice claim or an infinite-support fixed-law claim. Original
+> wording and prior unqualified assessments are retained with counterexamples;
+> no frozen article or review is silently changed. Six source spans/559 lines
+> and the explicit block/cost/divergence argument are checked without running
+> supplied programs. This repairs review scope, not an arithmetic bound.
+>
+>
 > The [four Borel-report placement reviews](review_borel_placement_54ece48ab.md)
 > authenticate all21 changed paths at54ece48ab:17 exact ancillary additions,
 > four archive retirements,33 members and29 checksum entries. The host guide,
@@ -259,8 +274,10 @@
 > The [hat endpoint follow-up](review_hat_endpoint_26e036956.md) adds the
 > missing418 lines of covariance, Fourier and aggregate-cost dependencies,
 > completing the630-line model-to-endpoint proof interval at26e036956.
-> Private-seed and finite-public-seed nonattainment at expected query cap1 pass
-> two mathematical challenges. The proof uses marginal cost caps and never
+> Private-seed nonattainment at expected query cap1 passes the challenges.
+> The finite-public conclusion requires probability-one finite support; the
+> [definition correction](review_hat_seed_definition_correction.md) qualifies the earlier unqualified PASS.
+> The proof uses marginal cost caps and never
 > assumes the same cap after conditioning on a seed. Its nonsharp private
 > success gap does not settle the open positive-probability question.
 > A fresh scalar example illustrates why correlated costs defeat the analogous
@@ -276,7 +293,8 @@
 > mathematical challenge, and fresh code independently reproduces its148 finite
 > presentation, necklace, subgroup and permutation cases. Atom-actions and
 > hat-randomness receive the precisely listed interface reads; their remaining
-> proofs are not certified by this packet. No defect was found in that scope.
+> proofs are not certified by this packet. The original no-defect assessment
+> is now qualified by the [hat-seed definition correction](review_hat_seed_definition_correction.md).
 > Pure component codes are not finite integer loaders, and the hat threshold1
 > charges inspections while computation and permitted randomness are free.
 > Fresh normal/optimized receipts pass; no supplied program or builder ran.
