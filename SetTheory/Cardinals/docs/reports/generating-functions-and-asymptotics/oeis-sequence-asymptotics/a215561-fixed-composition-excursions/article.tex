@@ -10,7 +10,7 @@
 \usepackage{mathrsfs}
 \hypersetup{colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black,
  pdftitle={Fixed-composition excursions: D-finiteness, transcendence, and all-order asymptotics for OEIS A215561},
- pdfsubject={Merged from two independent manuscripts (batch 73, manuscripts 61 and 42); Part IV from a third (batch 75, manuscript 03); Part V from a fourth (batch 77, manuscript 44)},
+ pdfsubject={Merged from two independent manuscripts (batch 73, manuscripts 61 and 42); Part IV from a third (batch 75, manuscript 03); Part V from a fourth (batch 77, manuscript 44); Part VI from bundle Reports 90 and 86 (batch 101)},
  pdfauthor={Research report prepared for Vladimir Reshetnikov}}
 \pagestyle{fancy}\fancyhf{}
 \fancyhead[L]{\small Fixed-composition excursions}
@@ -62,10 +62,10 @@
 \vspace{3mm}
 {\normalsize Merged from two independent manuscripts of the same day:\par
 \emph{Fixed-composition excursions} and
-\emph{Balanced Late-Growing Permutations}; Parts~IV and~V\par from a third and a fourth\par}
+\emph{Balanced Late-Growing Permutations}; Parts~IV and~V\par from a third and a fourth; Part~VI from two more\par}
 \vspace{3mm}
 {Prepared for Vladimir Reshetnikov\par}
-{October 1, 2026; Parts~IV and~V added October 2, 2026\par}
+{October 1, 2026; Parts~IV and~V added October 2, 2026;\par Part~VI added October 5, 2026\par}
 \vspace{2mm}
 \begin{minipage}{0.89\textwidth}
 \begin{abstract}
@@ -103,6 +103,8 @@ Kauers and Koutschan conjectured for A215570, by a positive
 Legendre-coefficient formula and a rational telescoping certificate, and
 computes $\alpha_{5,2},\ldots,\alpha_{5,8}$ exactly.
 Part~V, from a fourth, adds the first correction $\alpha_{4,1}$ of A215562.
+Part~VI, from two more, proves the main theorems a fifth and a sixth time and
+computes $\alpha_{5,2}$ without the recurrence.
 \end{abstract}
 \end{minipage}
 \vfill
@@ -172,18 +174,31 @@ A215562. Part~\ref{fce:ba:part} prints what it adds;
 Section~\ref{fce:ba:sec:intro} gives its provenance and
 Table~\ref{fce:ba:tab:overlap} the results it re-proves.
 
+(Addition of October~5, 2026, batch~101.) Two more independent reports on the
+same problem, bundle Reports~90 and~86 of a session bundle (here
+\textbf{sources~101-90} and~\textbf{101-86}; archives
+\path{A215561_Fixed_Alphabet_Asymptotics.zip} and
+\path{A215570_Balanced_Ballot_Asymptotics.zip}, arrival commit
+\texttt{60f54ea06}, placed in \texttt{f7c612c72}, no pins), prove the main
+theorems a fifth and a sixth time, the second for $r=5$ only.
+Part~\ref{fce:dx:part} prints what they add;
+Section~\ref{fce:dx:sec:intro} gives their provenance and
+Table~\ref{fce:dx:tab:overlap} the results they re-prove.
+
 \subsection{What each source contributed}\label{fce:sec:crosswalk}
 Table~\ref{fce:tab:crosswalk} lists every result and where it is printed.
 ``Both'' means the two sources prove the result independently; it is then
 printed once, with source~61's statement, and source~42's proof is printed
 as well when it follows a different route.
 
-\begin{table}[ht]
+\begin{table}[!ht]
 \centering\small
 \caption{Results of the sources. The rows below the first inner rule are
 source~75-03's additions (Part~IV), those below the second source~77-44's
-(Part~V); their re-proofs of other rows are listed in
-Tables~\ref{fce:kk:tab:overlap} and~\ref{fce:ba:tab:overlap}.}\label{fce:tab:crosswalk}
+(Part~V), those below the third sources~101-90's and~101-86's (Part~VI);
+their re-proofs of other rows are listed in
+Tables~\ref{fce:kk:tab:overlap}, \ref{fce:ba:tab:overlap}
+and~\ref{fce:dx:tab:overlap}.}\label{fce:tab:crosswalk}
 \begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.47\textwidth}l>{\raggedright\arraybackslash}p{0.33\textwidth}@{}}
 \toprule
 result & sources & printed as\\
@@ -224,6 +239,11 @@ exact $\alpha_{5,2},\ldots,\alpha_{5,8}$; second-order inverse for $r=5$ & 75-03
 \midrule
 first correction $\alpha_{4,1}$ of A215562 & 77-44 & Theorem~\ref{fce:ba:thm:alpha41}\\
 global mark arcs by an operator norm & 77-44 & Lemma~\ref{fce:ba:lem:global}\\
+\midrule
+recurrence-free $\alpha_{5,2}$; constant of $A^\circ_5(n)$; $A_r(m+n)\ge A_r(m)A_r(n)$ & 101-86 &
+ Theorem~\ref{fce:dx:thm:alpha52}, Propositions~\ref{fce:dx:prop:Bn}, \ref{fce:dx:prop:supermult}\\
+zero-step identity; extreme-unmarked Hessian, torus points & 101-90 &
+ Propositions~\ref{fce:dx:prop:zero}, \ref{fce:dx:prop:det}, Lemma~\ref{fce:dx:lem:torus}\\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -279,6 +299,18 @@ Section~\ref{fce:sec:future} and are listed in
 Section~\ref{fce:ba:sec:checks}; its package is described in
 Appendix~\ref{fce:app:package}.
 
+For sources~101-90 and~101-86 (Part~\ref{fce:dx:part}, October~5, 2026) the
+merge takes source~101-90, which treats every fixed alphabet, as the base and
+source~101-86 as its five-letter case. It prints in full what they add (the
+recurrence-free $\alpha_{5,2}$ with every intermediate value, the constant of
+the zero-free count, the supermultiplicativity of $A_r$, the zero-step
+identity, the extreme-unmarked determinant and torus count), prints their
+proofs of Theorems~\ref{fce:thm:main}--\ref{fce:thm:five} as second routes,
+mapped in Table~\ref{fce:dx:tab:map}, and lists everything else as a row of
+Table~\ref{fce:dx:tab:overlap}. Their questions are merged into
+Section~\ref{fce:sec:future}; their packages are described in
+Appendix~\ref{fce:app:package}.
+
 \subsection{Repository context and re-derived material}\label{fce:sec:repository}
 The bridge--excursion identity (Lemma~\ref{fce:lem:bridge} and
 \eqref{fce:lg:eq:exp}) is the composition-marked case, with coefficient
@@ -306,14 +338,17 @@ volume, unchanged since its pin \cite{proveit}); they are cited here, and
 no novelty is claimed for the inversion or rounding statements. The same
 holds for source~75-03's inversion of A215570, which also does not cite
 them (Section~\ref{fce:kk:sec:inverse}). (2026-10-02 note: the same holds for
-source~77-44's inverse, Remark~\ref{fce:ba:rem:inverse}.)
+source~77-44's inverse, Remark~\ref{fce:ba:rem:inverse}.) (2026-10-05 note: and for sources~101-90 and~101-86,
+Section~\ref{fce:dx:sec:inverse90}.)
 
 All three sources are AI-assisted and unrefereed. No Lean or Rocq development
 checks any statement of this report; the Lean theorems just named are
 general facts about ceilings and do not verify its asymptotic inputs, and
 its place in the research-report collection confers no formal status. Source~77-44
 (Part~\ref{fce:ba:part}) says nothing about AI assistance; it is unrefereed
-and not formalized either.
+and not formalized either. (2026-10-05 note: the same holds for sources~101-90
+and~101-86, Part~\ref{fce:dx:part}, whose receipts record only a pre-delivery
+approval by their producing pipeline.)
 
 \subsection{Notation}\label{fce:sec:notation}
 The two sources used different letters for the same objects and the same
@@ -336,7 +371,9 @@ $h$ for the depth of the most negative step; and $V$ for the step variance.
 Table~\ref{fce:tab:renamed} lists every renamed symbol; no normalization
 changed (source~75-03's $Q_r$ has the opposite sign; its other conventions
 are fixed in Section~\ref{fce:kk:sec:conventions}; source~77-44's step
-polynomial is $r$ times $P_r$, Section~\ref{fce:ba:sec:conventions}). A few letters keep two meanings in separate places, where the
+polynomial is $r$ times $P_r$, Section~\ref{fce:ba:sec:conventions}). (2026-10-05 note: the symbols of sources~101-90 and~101-86 are renamed in
+Table~\ref{fce:dx:tab:renamed}, Section~\ref{fce:dx:sec:conventions}, which
+also lists six tempting false readings.) A few letters keep two meanings in separate places, where the
 context fixes them: $q$ is the number of labelled steps in
 Part~\ref{fce:lg:part}, the tilted probabilities $q_i(\boldsymbol y)$ in
 Section~\ref{fce:sec:saddle}, and a root product in \eqref{fce:eq:sextic};
@@ -406,6 +443,8 @@ $c=-\min S_q$; $h=q-2$ & $h$; $d$ & $p_q$ (period) & $\nu$\\
 $\boldsymbol w$; $\boldsymbol z=\log\boldsymbol w$ & $\boldsymbol z$; $\boldsymbol y$ & $\eta=1-t/\rho$ & $x$ (with $t$ rescaled)\\
 $\mathcal B$ (bridge series) & $B(t;\boldsymbol x)$ & $F$, $F_2$ (sextic) & $X$, $e$\\
 $P_q(u)=\sum_iu^{s_i}$ & $rP_r(u)$ & $\kappa_q$, $\beta_q$, $C_q$ (inverse) & $\lambda$, $\beta$, $K_r$\\
+\midrule
+\multicolumn{4}{@{}l@{}}{sources 101-90 and 101-86: Table~\ref{fce:dx:tab:renamed} (Part~VI)}\\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -986,6 +1025,9 @@ row of ones to the support matrix and applying the Schur complement to
 its weighted Gram matrix. Here that affine determinant is, up to sign,
 $s_r-s_{r-1}=\delta$. This proves \eqref{fce:eq:detH}.
 \end{proof}
+(2026-10-05 note: with the two extreme steps unmarked the same argument gives
+$\det H_{\rm ex}=4h^2r^{-r}/V=(r-1)^2\det H$,
+Proposition~\ref{fce:dx:prop:det}.)
 
 \subsection{A uniform square-root expansion}
 Put
@@ -1052,7 +1094,10 @@ period is
 \end{equation}
 In the even case every excursion has even length, and the two length
 singularities give identical contributions on the admissible subsequence
-$N=rn$.
+$N=rn$. (2026-10-05 note: with the two \emph{extreme} steps unmarked instead,
+there are $r-1$ dominant mark points, each with $\nu$ time phases,
+Lemma~\ref{fce:dx:lem:torus}; the count depends on the coordinates and the
+constant does not, Remark~\ref{fce:dx:rem:invariant}.)
 
 More explicitly, on any compact part of the marker torus separated from
 $\one$, no kernel root can cross $|u|=1$ for $|t|\le1$. By compactness
@@ -1622,6 +1667,10 @@ Appending a fixed balanced excursion block containing one of each step
 is an injection from the $n$th class into the $(n+1)$st. Hence $A_r(n)$
 is nondecreasing; its proved asymptotic also gives
 $A_r(n+1)/A_r(n)\to r^r>1$, so it is eventually strictly increasing.
+(2026-10-05 note: concatenation gives more, $A_r(m+n)\ge A_r(m)A_r(n)$, so for
+$r\ge3$ the sequence increases strictly at every index,
+Proposition~\ref{fce:dx:prop:supermult}; source~101-86 states
+$A_5(n+1)\ge35A_5(n)$.)
 
 The continuous inverse predicts $N_r(Y)$ to bounded additive error.
 Taking a ceiling gives the exact threshold when an explicit inverse-error
@@ -1768,6 +1817,8 @@ claimed formula or a numerical certificate for $\alpha_{5,2}$.
 $\alpha_{5,2}=36/25-63\sqrt5/125=0.31302\ldots$ exactly, the limit of that
 column, Table~\ref{fce:kk:tab:alpha}; and its proved coefficient formula
 reproduces the $n=20,50$ rows, Theorem~\ref{fce:kk:thm:coefficient}.)
+(2026-10-05 note: Part~\ref{fce:dx:part} obtains the same $\alpha_{5,2}$ without the
+recurrence, by Gaussian moments, Theorem~\ref{fce:dx:thm:alpha52}.)
 
 At $Y=A_5(n)$, the Lambert core and its first correction give
 \begin{center}
@@ -2543,7 +2594,9 @@ $\alpha_{5,1}<0$; compare \eqref{fce:eq:inversefive}.
 Let $N_r(Y)=\min\{n:A_r(n)\ge Y\}$ for sufficiently large $Y$, as in
 Section~\ref{fce:sec:thresholds}. The sequence is eventually strictly
 increasing by \eqref{fce:lg:eq:ratio}, so this tail threshold is
-unambiguous. Let $x_M(Y)$ solve the logarithmic expansion truncated after
+unambiguous. (2026-10-05 note: for $r\ge3$ it is strictly increasing at every
+index, Proposition~\ref{fce:dx:prop:supermult}, so $N_r(Y)$ is unambiguous for
+every $Y$.) Let $x_M(Y)$ solve the logarithmic expansion truncated after
 $x^{-M}$. There exists $\varpi_{r,M}$ such that, for all large $Y$,
 \begin{equation}\label{fce:lg:eq:rounding}
  \left\lceil x_M(Y)-\varpi_{r,M}(\log Y)^{-M-1}\right\rceil
@@ -2658,7 +2711,9 @@ A215570 question of sources~61 and~42 is answered by source~75-03, and
 source~75-03's question on all orders for every row by
 Theorem~\ref{fce:thm:main}. (2026-10-02 note: the four questions of
 source~77-44, Part~\ref{fce:ba:part}, coincide with subsections below; they
-are listed in Section~\ref{fce:ba:sec:checks}.)
+are listed in Section~\ref{fce:ba:sec:checks}.) (2026-10-05 note: the questions of sources~101-90 and~101-86, Part~\ref{fce:dx:part},
+coincide with subsections below and are credited there;
+Section~\ref{fce:dx:sec:questions} lists them as items 101.1--101.6.)
 \subsection{Certify the explicit A215570 recurrence (resolved)}
 The sextic \eqref{fce:eq:sextic}, its specified formal branch, and a diagonal
 representation give a concrete input for creative telescoping. The next
@@ -2700,7 +2755,10 @@ degree-six kernel and compute a diagonal telescoper, ideally with a compact
 rational certificate. The degree bound $20$ suggests a larger problem than
 the five-symbol sextic but does not predict the minimal order; a smaller
 auxiliary coefficient representation, analogous to
-\eqref{fce:kk:eq:Lpositive}, would be especially valuable.
+\eqref{fce:kk:eq:Lpositive}, would be especially valuable. (2026-10-05 note: source~101-90 lists ``explicit minimal recurrences'' among its open
+questions; its D-finiteness proof by an $r$-section,
+\eqref{fce:dx:eq:rsection}, is again existence only; item~101.1 of
+Section~\ref{fce:dx:sec:questions}.)
 
 \subsection{Automate all-order coefficient extraction}
 The proof supplies finite algebraic operations, but a practical system
@@ -2729,7 +2787,17 @@ expansion. It also asks for the minimal polynomials and degrees of the
 constants \eqref{fce:eq:finiteconstant} and their dependence on parity,
 whether reciprocal symmetry reduces the generic subset-product degree
 bound substantially, and for rational isolating boxes of the inner roots
-that prove decimal intervals for $\kappa_r$.
+that prove decimal intervals for $\kappa_r$. (2026-10-05 note: source~101-86
+meets this target for $r=5$ at second order \emph{by the engine} rather than
+by the recurrence: Theorem~\ref{fce:dx:thm:alpha52} computes $\alpha_{5,2}$
+by exact Gaussian moments, in agreement with
+Proposition~\ref{fce:kk:prop:alpha}. Source~101-90 states the rule for every
+$r$ in marker coordinates, \eqref{fce:dx:eq:recipe}; evaluated at first order
+it reproduces $\alpha_{4,1}$ and $\alpha_{5,1}$ numerically,
+Remark~\ref{fce:dx:rem:recipecheck}. Its non-claim on the smallest field of
+the coefficients is item~101.5 of Section~\ref{fce:dx:sec:questions}, the
+engine item~101.6. The values $\alpha_{4,2}$, $\alpha_{4,3}$ and the rows
+$r=6,7,8$ remain open.)
 
 \subsection{Determine sharp asymptotic error constants}
 Turn the separated kernel contours and local Taylor bounds into explicit
@@ -2738,7 +2806,9 @@ intervals at finite $n$, certified threshold inversion near an integer
 boundary, and explicit eventual-log-convexity thresholds (source~42,
 project~4). Source~75-03 asks the same for the constant $C$ of its rounded
 threshold for A215570 (Section~\ref{fce:kk:sec:inverse}): explicit
-finite-$Y$ bounds that bracket exact threshold searches.
+finite-$Y$ bounds that bracket exact threshold searches. (2026-10-05 note: sources~101-86 and~101-90 ask the same for their inverses, which assert
+``no numerical error constant or unconditional exact-ceiling rule''; item~101.3
+of Section~\ref{fce:dx:sec:questions}.)
 
 \subsection{Determine the exponentially small sectors}
 The dominant expansion does not identify subdominant critical points,
@@ -2758,7 +2828,9 @@ recurrence has normalized characteristic roots $1,1,2/27$
 (Remark~\ref{fce:kk:rem:scope}). Determine the decomposition of the actual
 solution into its dominant and exponentially smaller components, with
 connection constants, and whether and how optimally truncated dominant
-expansions detect the third mode.
+expansions detect the third mode. (2026-10-05 note: sources~101-86
+and~101-90 list the smaller exponential sectors among their open questions;
+item~101.2 of Section~\ref{fce:dx:sec:questions}.)
 
 \subsection{Let the alphabet grow}
 Our estimates keep $r$ fixed. When $r=r(n)$ grows, kernel-root separation,
@@ -2773,7 +2845,11 @@ of $\log\kappa_r$ separately for even and odd $r$, and for a range of joint
 growth $r=r(n)$ in which the fixed-row formula remains uniform.
 Source~75-03 asks for the same simultaneous limit and, separately, for the
 column $n=1$ of the array, which is A147681; none of the fixed-row theorems
-settles that column problem.
+settles that column problem. (2026-10-05 note: source~101-90 asks for ``uniform
+regimes in which the alphabet size grows''; in its coordinates the
+multiplicity $2h$ and $\det H_{\rm ex}=12(r-1)/(r^r(r+1))$ show the
+$r$-dependence explicitly; item~101.4 of
+Section~\ref{fce:dx:sec:questions}.)
 
 \subsection{Resolve the mean size of the non-giant remainder}
 The limit gap $D_{\mathrm{dec}}$ has an $m^{-1/2}$ tail and infinite mean
@@ -2886,6 +2962,13 @@ Source~77-44 reaches the leading theorems a fourth time, by the same
 kernel, saddle and mark-extraction route, and contributes the first
 correction of the four-symbol row; the recurrence for that row is still
 open.
+
+Sources~101-90 and~101-86 reach the leading theorems a fifth and a sixth time
+by direct marked-excursion extraction in two further coordinate systems,
+which show that the number of dominant torus points belongs to the
+coordinates, not to the problem. They add a recurrence-free second correction
+for A215570, the constant of its zero-free count, and the supermultiplicativity
+that makes every row with $r\ge3$ strictly increasing at every index.
 
 %% ====================================================================
 %% Part IV (written 2026-10-02, batch 75): source 75-03, "Fixed-Content
@@ -3499,6 +3582,9 @@ The value $\alpha_{5,2}=0.31302\ldots$ is the limit of the last column of
 the diagnostic table of Section~\ref{fce:sec:checks}, which source~61 did not
 claim as a formula: at $n=50$ that column is $0.3111216$, and
 $\alpha_{5,2}+\alpha_{5,3}/50+\alpha_{5,4}/50^2=0.3111216$.
+(2026-10-05 note: source~101-86 computes $\alpha_{5,2}$ again without the
+recurrence, from the kernel and Gaussian moments alone,
+Theorem~\ref{fce:dx:thm:alpha52}; the two derivations agree.)
 Table~\ref{fce:kk:tab:errors} shows source~75-03's numerical check of the
 truncations.
 
@@ -3560,7 +3646,9 @@ second order,
 \end{equation}
 for $Y=A_5(n)$, $x_0=x_0(Y)$, $\lambda=5\log5$; here
 $b_2=\alpha_{5,2}-\tfrac12\alpha_{5,1}^2=(213-83\sqrt5)/500$, and the two
-coefficients are $\mu_1=0.0893010312$ and $\mu_2=0.0264800992$. The second
+coefficients are $\mu_1=0.0893010312$ and $\mu_2=0.0264800992$.
+(2026-10-05 note: source~101-86 derives the same second-order inverse from its own,
+recurrence-free $\alpha_{5,2}$, Section~\ref{fce:dx:sec:monotone}.) The second
 term accounts for the residual column of the inverse diagnostic table in
 Section~\ref{fce:sec:checks}: $\mu_2/x_0^2$ is $4.150\cdot10^{-4}$,
 $1.035\cdot10^{-4}$ and $1.059\cdot10^{-5}$ at $n=8,16,50$, against the
@@ -3985,6 +4073,1220 @@ Section~\ref{fce:sec:future} (``Automate all-order coefficient extraction'')
 is met for $r=4$ at first order; $\alpha_{4,2}$, $\alpha_{4,3}$ and the rows
 $r=6,7,8$ remain open.
 
+%% ====================================================================
+%% Part VI (written 2026-10-05, batch 101): bundle Reports 90 and 86
+%% (sources 101-90 and 101-86).  All labels of this Part carry the
+%% prefix fce:dx:.  It follows Part V, so no earlier number moves.
+%% ====================================================================
+\part{Direct excursion proofs: every fixed alphabet, and the second correction of A215570 without the recurrence}\label{fce:dx:part}
+
+Part~VI was added on October~5, 2026, in batch~101 of ProveIt's
+incoming-reports intake, from two reports of one session bundle (bundle
+Reports~90 and~86, here sources~101-90 and~101-86), after Part~V.
+Source~101-90 proves Theorem~\ref{fce:thm:main} and the D-finiteness part of
+Theorem~\ref{fce:thm:class} for every fixed alphabet, in marker coordinates
+that leave the two \emph{extreme} steps unmarked; source~101-86 proves them,
+and Theorem~\ref{fce:thm:five}, for the five-letter row after deleting the
+zero steps. They give a \emph{fifth} and a \emph{sixth} proof of results this
+report already has (after sources~61, 42, 75-03 and~77-44), and those
+results are not printed again: Table~\ref{fce:dx:tab:overlap} lists them and
+Table~\ref{fce:dx:tab:map} maps the second routes. What the two reports add
+is printed in full: source~101-86's computation of $\alpha_{5,2}$
+\emph{without} the recurrence of Part~IV, with every intermediate value
+(Theorem~\ref{fce:dx:thm:alpha52}); the leading constant of the zero-free
+count $A^\circ_5(n)$ (Proposition~\ref{fce:dx:prop:Bn}); the inequality
+$A_5(n+1)\ge35A_5(n)$ for every $n$ (Proposition~\ref{fce:dx:prop:supermult},
+generalized at this write); source~101-90's zero-step identity for every odd
+alphabet (Proposition~\ref{fce:dx:prop:zero}), its closed determinant
+(Proposition~\ref{fce:dx:prop:det}) and its account of the periodic torus
+points (Lemma~\ref{fce:dx:lem:torus}). The rest of the report is unchanged
+apart from the title page and abstract, paragraphs added to
+Sections~\ref{fce:sec:sources} and~\ref{fce:sec:choices} and to the
+conclusion (Section~23), dated notes that point here, rows added to
+Tables~\ref{fce:tab:crosswalk} and~\ref{fce:tab:renamed}, the merged research
+questions of Part~III and the package description of
+Appendix~\ref{fce:app:package}; no existing label or number was changed.
+Statements and proofs supplied by this write rather than by a source are
+marked \textup{[write]}.
+
+\section{Provenance, overlap and conventions of Part~VI}\label{fce:dx:sec:intro}
+\subsection{Two bundle reports}\label{fce:dx:sec:source}
+The two reports arrived in commit \texttt{60f54ea06} as archives of a
+177-archive session bundle and were placed in commit \texttt{f7c612c72}
+(batch~101).
+\begin{itemize}
+\item \textbf{Source 101-90} (bundle Report~90): \emph{Balanced ballot words
+over every fixed alphabet: exact constants, all algebraic orders, and
+inversion}, archive \path{A215561_Fixed_Alphabet_Asymptotics.zip}
+(248{,}562 bytes; a 474-line source with 24 labels and an 8-page US-letter
+PDF). It is the base of this Part, because it treats every fixed $r$.
+\item \textbf{Source 101-86} (bundle Report~86): \emph{Balanced five-letter
+ballot words: an all-orders asymptotic and its inverse}, archive
+\path{A215570_Balanced_Ballot_Asymptotics.zip} (246{,}773 bytes; a 433-line
+source with 21 labels and a 7-page US-letter PDF). It is the case $r=5$ in
+other coordinates, with one computation the others lack.
+\end{itemize}
+Both are dated October~1, 2026, with the author line ``Research note''.
+Neither names a ProveIt commit or path, and neither records a repository
+search. Their PDFs were created at 09:37 (101-86) and 10:16 PDT (101-90),
+about nine hours
+before this report's first placement (\texttt{6e193dd4f}, 19:16 PDT), so
+neither could have seen any part of it. They come from one session (an
+identical build script; $4.7$\,\% and $4.2$\,\% of their 8-word shingles are
+common, mostly boilerplate); against this report only 1.3\,\% (101-86) and 1.5\,\%
+(101-90) of their shingles occur, so there is no textual copying. They
+describe their novelty against the OEIS and the literature only, in the same
+words: a bounded primary-source check ``is a source-relative statement, not
+an exhaustive priority claim'' (101-86) and ``is not an exhaustive worldwide
+priority claim'' (101-90).
+
+Neither report says anything about AI assistance. Their receipts record a
+pre-delivery approval of the producing pipeline (in source~101-86's words,
+``Root and an independent research reviewer approved the complete proof and
+final transcription'') and
+an ``independent'' review file each; these are self-reported reviews, not
+refereeing (Section~\ref{fce:dx:sec:checks}). Both are unrefereed, and no Lean
+or Rocq development checks any statement of this Part. Their programs and
+data ship with the prefixes \texttt{101-90-alphabet-} and
+\texttt{101-86-five-} (Section~\ref{fce:dx:sec:checks},
+Appendix~\ref{fce:app:package}).
+
+The two reports keep these limitations, which this Part keeps with them.
+Source~101-90: the alphabet is fixed and ``uniformity when $r$ grows is a
+separate problem''; D-finiteness is an existence statement, and ``no
+particular guessed recurrence'' or minimal order is identified; no smaller
+exponential sectors and no explicit numerical remainder constants; root
+products for larger $r$ are ``orientation only''; its code checks examples
+and is ``not a general-purpose implementation''; and ``no assertion that
+their smallest field is $\Q(\gamma_r)$ is needed''. Source~101-86: its
+expansion is a Poincar\'e expansion of the dominant exponential sector,
+``not a complete description of every smaller exponential contribution'';
+it does not use, and does not prove, the order-three recurrence; its inverse
+keeps its integer-rounding qualification, with ``no numerical error constant
+or unconditional exact-ceiling rule'' and no exponentially improved error;
+a single ceiling is certified only away from shrinking neighbourhoods of
+integers; its finite checks ``supplement the analytic proof''; and the
+kernel method is classical \cite{bf}.
+
+\subsection{What the two reports re-prove}\label{fce:dx:sec:overlap}
+Table~\ref{fce:dx:tab:overlap} lists every result of the two reports that
+Parts~I--V already contain, and Table~\ref{fce:dx:tab:map} maps their proofs
+of Theorems~\ref{fce:thm:main}--\ref{fce:thm:five} beside the earlier ones.
+They are second routes: the theorems were proved, four times, before the two
+reports were written, and no novelty is claimed for them here.
+
+{\small
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.33\textwidth}>{\raggedright\arraybackslash}p{0.25\textwidth}>{\raggedright\arraybackslash}p{0.34\textwidth}@{}}
+\caption{Results of sources~101-90 and~101-86 that Parts~I--V already
+prove. Equation names are the sources' own labels.}\label{fce:dx:tab:overlap}\\
+\toprule
+source & printed here & comparison\\
+\midrule
+\endfirsthead
+\toprule
+source & printed here & comparison\\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+101-90, Theorem~1: every fixed row, all orders, $K_r$, real algebraic
+ $\alpha_{r,j}$; D-finiteness & Theorems~\ref{fce:thm:main},
+ \ref{fce:thm:class} & same statement (its $\gamma_r$ is $\kappa_r$); a
+ fifth proof, Sections~\ref{fce:dx:sec:hessian}--\ref{fce:dx:sec:recipe};
+ no transcendence statement\\
+101-90, \texttt{eq:oeisconstant} & $c(r)$ in \eqref{fce:eq:constant} & same; its
+ $\kappa_r$ is $c(r)$\\
+101-90, \texttt{eq:rootconstant}, \texttt{eq:Q} & Proposition~\ref{fce:prop:kappa}
+ & same; its $Q_r$ is $-Q_r$; inside roots counted by reciprocity, as
+ source~42 does; equal to Table~\ref{fce:tab:constants} for $2\le r\le12$
+ to 15 digits (checked at the intake)\\
+101-90, $\gamma_4$, $\gamma_5$ & Section~\ref{fce:sec:constants} & same
+ computation as sources~61 and~42 ($v=u+u^{-1}$, $v^3-2v=4$, $p+p^{-1}=2\varphi$); credited to Kotesovec
+ \cite{oeis4,oeis5}\\
+101-90, \texttt{eq:product}, \texttt{eq:bridge} & Lemmas~\ref{fce:lem:kernel},
+ \ref{fce:lem:bridge} & same; classical \cite{bf}; its residue proof is
+ source~61's first proof\\
+101-90, \texttt{eq:puiseux}, \texttt{eq:local} & \eqref{fce:eq:Elocal},
+ \eqref{fce:eq:amplitudes} & same, in its coordinates
+ (Section~\ref{fce:dx:sec:recipe})\\
+101-90, \texttt{eq:sigma}, \texttt{eq:det} & Lemma~\ref{fce:lem:hessian} &
+ other coordinates; Proposition~\ref{fce:dx:prop:det}, with
+ $\det H_{\rm ex}=(r-1)^2\det H$\\
+101-90, \texttt{eq:phases}, \texttt{eq:latticefactor} & Section~6.4,
+ \eqref{fce:eq:period} & coordinate variant: $r-1$ mark points instead of
+ one (Lemma~\ref{fce:dx:lem:torus}, Remark~\ref{fce:dx:rem:invariant})\\
+101-90, \texttt{eq:transfer}, \texttt{eq:As}, \texttt{eq:recipe} &
+ Section~\ref{fce:subsec:allorders}, Appendix~\ref{fce:app:algorithm},
+ \eqref{fce:lg:eq:Gj}--\eqref{fce:lg:eq:betas} & the same rule in marker
+ coordinates (Section~\ref{fce:dx:sec:recipe}); evaluated at this write for
+ $r=4,5$ (Remark~\ref{fce:dx:rem:recipecheck})\\
+101-90, $(\alpha_{2,1},\alpha_{2,2})$, $(\alpha_{3,1},\alpha_{3,2})$ &
+ \eqref{fce:lg:eq:r23corr} & same values (source~42)\\
+101-90, D-finiteness by an $r$-section & Theorem~\ref{fce:thm:class};
+ proof of Corollary~\ref{fce:cor:rays} & second route
+ (Section~\ref{fce:dx:sec:recipe})\\
+101-90, \texttt{eq:W}, \texttt{eq:inverse}, \texttt{eq:round} &
+ \eqref{fce:eq:lambertcore}, \eqref{fce:eq:inversefirst},
+ \eqref{fce:lg:eq:rounding}, \eqref{fce:lg:eq:loginverse} & same, for every
+ row (Section~\ref{fce:dx:sec:inverse90}); instances of
+ \texttt{p0:thm:perturbed-inversion} and \texttt{p0:thm:staircase}\\
+101-90, ``eventually strictly increasing'' & Section~\ref{fce:sec:thresholds}
+ & same; superseded by Proposition~\ref{fce:dx:prop:supermult}\\
+\midrule
+101-86, Theorem~1: leading term, all orders, $\alpha_{5,j}\in\Q(\sqrt5)$ &
+ Theorems~\ref{fce:thm:main}, \ref{fce:thm:five} & same; a sixth proof for
+ $r=5$ (Section~\ref{fce:dx:sec:five})\\
+101-86, $c_1=13(\sqrt5-5)/50$ & \eqref{fce:eq:fivecorrection} & same value; a
+ fifth computation (after Sections~\ref{fce:sec:correction},
+ \ref{fce:lg:sec:first}, \eqref{fce:kk:eq:eta} and source~77-44)\\
+101-86, $c_2=(180-63\sqrt5)/125$ & Proposition~\ref{fce:kk:prop:alpha},
+ Table~\ref{fce:kk:tab:alpha} & same value, \textbf{new route}: no
+ recurrence (Theorem~\ref{fce:dx:thm:alpha52})\\
+101-86, \texttt{eq:algebraic} & \eqref{fce:eq:sextic} & $-1$ times
+ \eqref{fce:eq:sextic} under $(x_1,\ldots,x_5)=(a,\ldots,e)$, term by term
+ (source~42's sign); derived by source~42's pair sums and products
+ (Remark~\ref{fce:rem:sextic42}), a fifth derivation\\
+101-86, \texttt{eq:zeros} & \eqref{fce:kk:eq:zeroinsert} & same\\
+101-86, \texttt{eq:four}: lattice factor $4$ & Section~6.4 & coordinate
+ variant (Section~\ref{fce:dx:sec:five}, Remark~\ref{fce:dx:rem:lattice})\\
+101-86, \texttt{eq:recipe}--\texttt{eq:cj} & Section~\ref{fce:subsec:allorders},
+ \eqref{fce:lg:eq:Gj}--\eqref{fce:lg:eq:betas} & the same rule in its
+ coordinates, with a Stirling factor for $\binom{5n}n$\\
+101-86, \texttt{eq:W}, \texttt{eq:inverse} & \eqref{fce:eq:lambertcore},
+ \eqref{fce:kk:eq:inversefive} & same; its $\ell_2$ is $b_2$; derived from
+ its own $\alpha_{5,2}$, so recurrence-free\\
+101-86, \texttt{eq:rounding} & \eqref{fce:lg:eq:rounding} with $r=5$ & same;
+ an instance of \texttt{p0:thm:staircase}\\
+\end{longtable}}
+
+{\small
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.2\textwidth}>{\raggedright\arraybackslash}p{0.26\textwidth}>{\raggedright\arraybackslash}p{0.23\textwidth}>{\raggedright\arraybackslash}p{0.22\textwidth}@{}}
+\caption{The proofs of Theorems~\ref{fce:thm:main}--\ref{fce:thm:five} in
+this report. Sources~101-90 and~101-86 are second routes.}\label{fce:dx:tab:map}\\
+\toprule
+statement & earlier proofs & source 101-90 & source 101-86\\
+\midrule
+\endfirsthead
+\toprule
+statement & earlier proofs & source 101-90 & source 101-86\\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+Theorem~\ref{fce:thm:main}, leading term and constant & 61
+ (Section~\ref{fce:sec:saddle}); 42 (Theorem~\ref{fce:lg:thm:general});
+ 75-03 (rate $n^{-1/5}$); 77-44 & extreme steps unmarked,
+ Sections~\ref{fce:dx:sec:hessian}--\ref{fce:dx:sec:torus} & $r=5$ only:
+ zero steps deleted, Proposition~\ref{fce:dx:prop:Bn}\\
+Theorem~\ref{fce:thm:main}, all orders, algebraic $\alpha_{r,j}$ & 61
+ (Section~\ref{fce:subsec:allorders}); 42
+ (Section~\ref{fce:lg:sec:allorders}); 75-03 ($r=5$,
+ Section~\ref{fce:kk:sec:saddle}); 77-44 & coefficient rule
+ \eqref{fce:dx:eq:recipe} & $r=5$: rule \eqref{fce:dx:eq:recipe5}\\
+Theorem~\ref{fce:thm:class}, D-finiteness & 61, 42, 75-03, 77-44 (full
+ diagonal) & $r$-section, then an ordinary diagonal
+ \eqref{fce:dx:eq:rsection} & full diagonal of the sextic\\
+Theorem~\ref{fce:thm:class}, transcendence ($r\ge3$) & 61 only & not
+ claimed & not claimed\\
+Theorem~\ref{fce:thm:five}, $\alpha_{5,1}$ & 61, 42, 75-03, 77-44 (four
+ contractions) & --- & fifth contraction,
+ Theorem~\ref{fce:dx:thm:alpha52}\\
+Theorem~\ref{fce:thm:five}, $\alpha_{5,j}\in\Q(\sqrt5)$ & 61; 75-03 & --- &
+ by the rule \eqref{fce:dx:eq:recipe5}\\
+$\alpha_{5,2}$ (beyond Theorem~\ref{fce:thm:five}) & 75-03 (from the
+ recurrence, Proposition~\ref{fce:kk:prop:alpha}) & --- & without the
+ recurrence, Theorem~\ref{fce:dx:thm:alpha52}\\
+\end{longtable}}
+
+\subsection{Conventions of Part~VI}\label{fce:dx:sec:conventions}
+Part~VI uses the merged notation of Section~\ref{fce:sec:notation}, and
+Table~\ref{fce:dx:tab:renamed} lists every renamed symbol of the two reports.
+Two new coordinate systems appear, each with its own phase and Hessian:
+\emph{extreme-unmarked} coordinates (source~101-90), which mark the $r-2$
+interior steps and leave $\pm h$ unmarked, carry the subscript ``ex''; the
+\emph{zero-free} coordinates of source~101-86, which mark two statistics of
+the four nonzero five-letter steps, carry the subscript ``$\circ$''. Both
+reports use the unnormalized step polynomial $\sum_iu^{s_i}$, as source~77-44
+does, so their critical times are $1/r$ and $1/4$, not $1$. No other
+normalization changed.
+
+{\small
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.2\textwidth}>{\raggedright\arraybackslash}p{0.2\textwidth}>{\raggedright\arraybackslash}p{0.24\textwidth}>{\raggedright\arraybackslash}p{0.27\textwidth}@{}}
+\caption{Renamed symbols of sources~101-90 and~101-86. A dash means that the
+source has no such object.}\label{fce:dx:tab:renamed}\\
+\toprule
+source 101-90 & source 101-86 & here & remark\\
+\midrule
+\endfirsthead
+\toprule
+source 101-90 & source 101-86 & here & remark\\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+$a_r(n)$ & $a_n$ & $A_r(n)$, $A_5(n)$ & \\
+$\gamma_r=E_r(1/r)$ & $E_c=4\beta$ & $\kappa_r$; $\kappa^\circ_4=4\varphi^{-2}$ & critical values\\
+$\kappa_r$ & --- & $c(r)$ & of \eqref{fce:eq:constant}\\
+$g$ ($\gcd$ of $h+s$) & --- & $\nu$ & time period \eqref{fce:eq:period}; not $g_r$\\
+$z$ (height) & $z$ (height) & $u$ & \\
+$u_j$; $a_j=\log u_j$ & $u,v$; $a,b$ & $z_j$; $y_j$; $z_A,z_D$; $y_A,y_D$ & marks; log marks\\
+--- & $A$, $D$, $H$ & $M_2$, $D_2$, height & counts of a word\\
+$q=r-2$ & --- & $d=r-2$ & not Part~II's $q$\\
+$\alpha_r=\frac{r+1}2$ & $3$ & $\beta$ & of Section~\ref{fce:sec:inverse}\\
+--- & $\beta=\frac{3-\sqrt5}2$ & $\varphi^{-2}$ & not that $\beta$\\
+$c_{r,j}$ & $c_j$ & $\alpha_{r,j}$, $\alpha_{5,j}$ & \\
+$c=r\log r$ & $c=5\log5$ & $\lambda$ & not $c(r)$\\
+$\sigma^2$, $\sigma^2(u)$ & $\sigma^2$ & $V$, $V(\boldsymbol y)$ & \\
+$\Psi-\log r$, $\Psi_\ell$ & $\Psi-\log4$, $\Psi_\ell$ & $\Phi_{\rm ex}$, $\Phi_{{\rm ex},\ell}$; $\Phi_\circ$, $\Phi_{\circ,\ell}$ & phases, as $\Phi$ of \eqref{fce:eq:phase}\\
+$\Sigma$; $C$ & $\Sigma$ & $H_{\rm ex}$; $C_{\rm ex}$; $H_\circ$ & not $H$, nor $C=H^{-1}$\\
+$E(t,u)$, $B(t,u)$ & $E(t,u,v)$; $\mathcal E$ & $\E_{\rm ex}$, $B_{\rm ex}$; $\E_\circ$; $\E$ & \\
+$E_r(t)$, $E_*(t)$ & --- & $\E_r(t)$, $\E^\circ_r(t)$ & length series\\
+$E_c(u)$ & $E_c$ & $\kappa_{\rm ex}(\boldsymbol y)$; $\kappa_\circ(\boldsymbol y)$ & as $\kappa(\boldsymbol y)$ of Section~\ref{fce:sec:saddle}\\
+$\rho(u)$, $\tau(u)$ & $\rho$, $\tau$ & $\rho_{\rm ex}$, $\tau_{\rm ex}$; $\rho_\circ$, $\tau_\circ$ & $\rho_{\rm ex}(0)=1/r$\\
+$\zeta_j$ & $\zeta=-\beta$ & $\alpha_j$; $\zeta=-\varphi^{-2}$ & inside roots\\
+$Q_r$ & --- & $-Q_r$ & \eqref{fce:eq:Q}\\
+$\omega$; $\alpha$; $\theta_j$ & $\omega$; $\alpha$; $\theta,\phi$ & $\phi_u$; $\phi_t$; $\theta_j$, $\theta_A,\theta_D$ & torus angles\\
+$A_s(u)$ & $A_j(u,v)$ & $\mathcal G_s$ & of \eqref{fce:lg:eq:Gj}\\
+$e_h(u)$ & $e_h$ & $\mathfrak e_h$ & not the weight $e$ of \eqref{fce:eq:sextic}\\
+$T_j(\lambda)$ & $T_j(\alpha)$ & $t_j(\gamma)$ & of \eqref{fce:lg:eq:transfer}\\
+$b_{r,j}$ & $b_j$ & $\mathsf b_{r,j}$; $\mathsf b^\circ_j$ & not the $b_j$ of Section~\ref{fce:sec:inverse}\\
+--- & $\ell_2$ & $b_2$ & of Section~\ref{fce:sec:inverse}\\
+--- & $d_j$ & $\mathfrak d_j$ & not $d=r-2$\\
+--- & $B_n$ & $A^\circ_5(n)$ & as in Part~IV\\
+--- & $V_j$; $A,B,C$ (root jets) & $\mathcal V_j$; $\varkappa_1,\varkappa_2,\varkappa_3$ & \\
+$\nu_0$, $\nu$; $x$; $I_r(x)$ & $\nu_0$, $\nu$; $y$; $N(y)$ & $x_0$, $x$; $Y$; $N_r(Y)$ & inversion\\
+$\omega=e^{2\pi i/r}$; $F(T,u)$ & --- & $e^{2\pi ij/r}$; $F^{(r)}(T;\boldsymbol z)$ & not $F_r$\\
+\end{longtable}}
+
+Six readings are tempting and false:
+\begin{itemize}
+\item Source~101-90's $\kappa_r$ is \emph{not} the $\kappa_r$ of this report: it
+is the OEIS-normalized $c(r)$ of \eqref{fce:eq:constant}, and its $\gamma_r$ is
+this report's $\kappa_r$. Copied verbatim, its display
+``$\kappa_r=\gamma_r/(\sqrt r\,2^{(r-1)/2})$'' would read
+$\kappa_r=\kappa_r/(\sqrt r\,2^{(r-1)/2})$.
+\item Source~101-90's $g$ (the $\gcd$ of the integers $h+s$) is $1$ for odd
+$r$ and $2$ for even $r$: it is the time period $\nu$, with the
+\emph{opposite} parity of $g_r=\gcd(2,r-1)$ of \eqref{fce:eq:steps}, which is
+$2$ for odd $r$; indeed $g_r=2/\nu$.
+\item Both reports use $z$ for the height variable and $u$ for marks; here
+$u$ is the height and $z$ (with $y=\log z$) the marks, as in
+Section~\ref{fce:sec:saddle}.
+\item Source~101-86's $\beta$ is $\varphi^{-2}=(3-\sqrt5)/2$, not the exponent
+$\beta=(r+1)/2$ of Section~\ref{fce:sec:inverse}, which source~101-90 calls
+$\alpha_r$; neither is a coefficient $\alpha_{r,j}$.
+\item The Gaussian-rule coefficients $\mathsf b_{r,j}$, $\mathsf b^\circ_j$
+(the sources' $b_{r,j}$, $b_j$) are corrections in powers of the length $N$,
+not the logarithmic coefficients $b_j$ of Section~\ref{fce:sec:inverse};
+source~101-86's $\ell_2$ is that $b_2$.
+\item The sources' $\nu_0,\nu$ are the inverse variable ($x_0,x$ here), not
+the time period $\nu$; and $H_{\rm ex}$, $H_\circ$ are Hessians in
+coordinates different from those of $H$ in \eqref{fce:eq:H}, with different
+determinants (Proposition~\ref{fce:dx:prop:det}).
+\end{itemize}
+
+\section{Every fixed alphabet with the extreme steps unmarked (source~101-90)}\label{fce:dx:sec:alphabet}
+\subsection{Zero steps for odd alphabets}\label{fce:dx:sec:zero}
+For odd $r$ the step set \eqref{fce:eq:steps} contains $0$. Write
+$\E_r(t)=\E(t,\ldots,t)$ for the length series of nonnegative excursions with
+unit step weights, and $\E^\circ_r(t)$ for the same series without the zero
+step; for a composition count, $A^\circ_r(n)$ counts zero-free nonnegative
+excursions with $n$ copies of each nonzero step.
+
+\begin{proposition}[Zero-step insertion (source~101-90)]\label{fce:dx:prop:zero}
+For odd $r\ge3$,
+\begin{equation}\label{fce:dx:eq:zero}
+ \E_r(t)=\frac1{1-t}\,\E^\circ_r\!\left(\frac t{1-t}\right),\qquad
+ \kappa_r=\frac r{r-1}\,\E^\circ_r\!\left(\frac1{r-1}\right),
+\end{equation}
+and \textup{[write]}, at balanced content,
+\begin{equation}\label{fce:dx:eq:zerobal}
+ A_r(n)=\binom{rn}{n}A^\circ_r(n)\qquad(n\ge0).
+\end{equation}
+\end{proposition}
+\begin{proof}[Proof \textup{[write; source~101-90 states the identity and the insertion factor]}]
+A zero step changes no height. Deleting the zero steps of a nonnegative
+excursion of length $m+k$ with $k$ zero steps therefore leaves a zero-free
+nonnegative excursion of length $m$, and conversely each of the
+$\binom{m+k}k$ ways of inserting $k$ zero steps into a zero-free excursion
+of length $m$ gives a nonnegative excursion; the two maps are inverse.
+Hence the length-$N$ coefficient of $\E_r$ is
+$\sum_{m+k=N}\binom{m+k}k[t^m]\E^\circ_r$, and
+$\sum_k\binom{m+k}kt^k=(1-t)^{-m-1}$ gives the first identity. Both series
+have nonnegative coefficients, and $\kappa_r=\E_r(1/r)$ is finite by
+\eqref{fce:eq:criticalvalue}; letting $t\uparrow1/r$, monotone convergence
+on both sides gives the second identity, with $t/(1-t)=1/(r-1)$ and
+$1/(1-t)=r/(r-1)$ at $t=1/r$. At balanced content the deletion is a bijection
+between the words counted by $A_r(n)$ and the pairs formed by a zero-free
+word counted by $A^\circ_r(n)$ and a set of $n$ positions, among $rn$, for
+the zero steps; this is \eqref{fce:dx:eq:zerobal}.
+\end{proof}
+The cases $r=3$ and $r=5$ of \eqref{fce:dx:eq:zerobal} are the derivation of
+$A_3(n)$ in Section~\ref{fce:sec:constants} and
+\eqref{fce:kk:eq:zeroinsert}. The number $\kappa^\circ_{r-1}:=\E^\circ_r(1/(r-1))$
+is the critical excursion value of the uniform zero-free walk on the $r-1$
+nonzero steps, so the second identity reads
+$\kappa_r/r=\kappa^\circ_{r-1}/(r-1)$. \textup{[write]} This agrees with the
+leading terms: Theorem~\ref{fce:lg:thm:general}, applied to both walks, gives
+$A_r(n)\sim\frac{\kappa_r}{rn}\frac{(rn)!}{(n!)^r}$ and
+$A^\circ_r(n)\sim\frac{\kappa^\circ_{r-1}}{(r-1)n}\frac{((r-1)n)!}{(n!)^{r-1}}$,
+and \eqref{fce:dx:eq:zerobal} turns the second into the first exactly when
+$\kappa_r/r=\kappa^\circ_{r-1}/(r-1)$. For $r=3$, $\kappa^\circ_2=2$ (Dyck
+paths) and $\kappa_3=3$; for $r=5$, $\kappa^\circ_4=4\varphi^{-2}$
+(Proposition~\ref{fce:dx:prop:Bn}) and $\kappa_5=5\varphi^{-2}=\frac52(3-\sqrt5)$.
+Source~101-90 adds a warning that applies to its own proof: the marked
+extraction below retains the zero letter, so the factor $\binom{rn}n$ is
+already included and must not be inserted a second time.
+
+\subsection{Extreme-unmarked coordinates and their Hessian}\label{fce:dx:sec:hessian}
+Let $s_2<\cdots<s_{r-1}$ be the interior steps (all steps other than $\pm h$),
+$d=r-2$, and give them marks $z_j=e^{y_j}$ ($2\le j\le r-1$), leaving the
+extreme steps $\pm h$ unmarked:
+\begin{equation}\label{fce:dx:eq:Pex}
+ P_{\rm ex}(u;\boldsymbol y)=u^{-h}+u^h+\sum_{j=2}^{r-1}e^{y_j}u^{s_j}.
+\end{equation}
+Let $\E_{\rm ex}(t;\boldsymbol z)$ and $B_{\rm ex}(t;\boldsymbol z)$ count
+nonnegative excursions and bridges with these weights. At length $N=rn$, the
+extracted interior counts $n$ and the two linear conditions (length $rn$,
+final height $0$) force both extreme counts to be $n$, because
+$s_r-s_1=2h\ne0$. Hence
+\begin{equation}\label{fce:dx:eq:exact}
+ A_r(n)=[t^{rn}z_2^n\cdots z_{r-1}^n]\,\E_{\rm ex}(t;\boldsymbol z),\qquad
+ [t^{rn}z_2^n\cdots z_{r-1}^n]\,B_{\rm ex}(t;\boldsymbol z)=\frac{(rn)!}{(n!)^r}.
+\end{equation}
+Near $\boldsymbol y=0$ let $\tau_{\rm ex}(\boldsymbol y)$ solve
+$\partial_uP_{\rm ex}=0$ with $\tau_{\rm ex}(0)=1$, and put
+$\rho_{\rm ex}=1/P_{\rm ex}(\tau_{\rm ex};\boldsymbol y)$ (so $\rho_{\rm ex}(0)=1/r$),
+$V(\boldsymbol y)=\tau_{\rm ex}^2\partial_u^2P_{\rm ex}/P_{\rm ex}$ at $u=\tau_{\rm ex}$,
+and
+\begin{equation}\label{fce:dx:eq:phaseex}
+ \Phi_{\rm ex}(\boldsymbol y)=\log P_{\rm ex}(\tau_{\rm ex}(\boldsymbol y);\boldsymbol y)
+ -\log r-\frac1r\sum_{j=2}^{r-1}y_j .
+\end{equation}
+At equal marks
+\begin{equation}\label{fce:dx:eq:variance}
+ V=\frac1r\sum_is_i^2=\begin{cases}(r^2-1)/12,&r\text{ odd},\\(r^2-1)/3,&r\text{ even},\end{cases}
+\end{equation}
+since $\frac2r\sum_{k=1}^hk^2=h(h+1)/3$ for $r=2h+1$, and
+$\frac2r\sum_{k=1}^{r/2}(2k-1)^2=(r^2-1)/3$ for even $r$.
+
+\begin{proposition}[Hessian in extreme-unmarked coordinates (source~101-90)]\label{fce:dx:prop:det}
+$\Phi_{\rm ex}$ is stationary at $0$, and its Hessian there is
+\begin{equation}\label{fce:dx:eq:Hex}
+ H_{\rm ex}=C_{\rm ex}-\frac{\boldsymbol v\boldsymbol v^{\mathsf T}}{V},\qquad
+ C_{\rm ex}=\frac1rI_d-\frac1{r^2}\one\one^{\mathsf T},\qquad
+ v_j=\frac{s_j}r ,
+\end{equation}
+the covariance of the marked step indicators after elimination of the height
+under the uniform step law. It is positive definite, and
+\begin{equation}\label{fce:dx:eq:detex}
+ \det H_{\rm ex}=\frac{4h^2}{r^rV}=\frac{12(r-1)}{r^r(r+1)}
+ =(r-1)^2\det H,
+\end{equation}
+with $\det H$ of \eqref{fce:eq:detH}; for $r=2$ the dimension is $0$ and both
+sides are $1$.
+\end{proposition}
+\begin{proof}[Proof (source~101-90)]
+Positivity: otherwise a nonzero linear combination of the marked indicators
+would be an affine function of the height at every step; it vanishes at the
+two unmarked extreme steps, which have different heights, so the affine
+function is zero, and then every coefficient vanishes. Determinant:
+$C_{\rm ex}$ has the eigenvalue $1/r$ on $\one^\perp$ and $2/r^2$ on $\one$, so
+$\det C_{\rm ex}=2/r^{r-1}$; the interior steps are symmetric, so
+$\boldsymbol v\perp\one$ and $C_{\rm ex}^{-1}\boldsymbol v=r\boldsymbol v$; and
+$\sum_js_j^2=rV-2h^2$. The matrix determinant lemma gives
+\[
+ \det H_{\rm ex}=\det C_{\rm ex}\Bigl(1-\frac{r\,|\boldsymbol v|^2}{V}\Bigr)
+ =\frac2{r^{r-1}}\cdot\frac{2h^2}{rV}=\frac{4h^2}{r^rV}.
+\]
+With \eqref{fce:dx:eq:variance}, $4h^2=(r-1)^2$ and $V=(r^2-1)/12$ for odd
+$r$, and $4h^2=4(r-1)^2$ and $V=(r^2-1)/3$ for even $r$; both give
+$12(r-1)/(r^r(r+1))$.
+\end{proof}
+\begin{proof}[Second proof of \eqref{fce:dx:eq:detex}, with the comparison \textup{[write]}]
+Follow the proof of Lemma~\ref{fce:lem:hessian}. Let $X$ take the value
+$(\boldsymbol1_{\{i=2\}},\ldots,\boldsymbol1_{\{i=r-1\}},s_i)$ with
+probability $1/r$. Its covariance matrix has Schur complement $H_{\rm ex}$
+in the last entry $V$, so its determinant is $V\det H_{\rm ex}$. Its $r$
+support points are affinely independent in dimension $r-1$, so that
+determinant is $r^{-r}$ times the square of the affine-simplex determinant,
+$\det\bigl(\begin{smallmatrix}1&x_i\end{smallmatrix}\bigr)_{i=1}^r$. Expanding
+along the interior rows, which carry the unit indicator vectors, leaves
+$\pm\det\bigl(\begin{smallmatrix}1&-h\\1&h\end{smallmatrix}\bigr)=\pm2h$.
+Hence $\det H_{\rm ex}=4h^2/(r^rV)$. The same argument with the top adjacent
+pair unmarked gives \eqref{fce:eq:detH}, with $\delta=s_r-s_{r-1}$ in place
+of $2h=s_r-s_1$. So $\det H_{\rm ex}/\det H=(2h/\delta)^2$, and $2h/\delta=r-1$
+in both parities ($2h=r-1$, $\delta=1$ for odd $r$; $2h=2(r-1)$, $\delta=2$
+for even $r$).
+\end{proof}
+For $r=4$ and $r=5$, $\det H_{\rm ex}=9/320$ and $8/3125$, against
+$\det H_4=1/320$ (Part~V) and $\det H=1/6250$ (Section~\ref{fce:sec:correction}).
+Source~101-90's program checks \eqref{fce:dx:eq:detex} exactly for
+$2\le r\le20$; the intake rechecked it for $2\le r\le12$.
+
+\subsection{The full torus and the exact periodicity factor}\label{fce:dx:sec:torus}
+\begin{lemma}[Dominant torus points (source~101-90)]\label{fce:dx:lem:torus}
+Let $|z_j|=|u|=1$ and $|t|=1/r$, and write $u=e^{i\phi_u}$,
+$t=e^{i\phi_t}/r$, $z_j=e^{i\theta_j}$. The kernel
+$u^h(1-tP_{\rm ex}(u;\boldsymbol z))$ vanishes on $|u|=1$ exactly at
+\begin{equation}\label{fce:dx:eq:phases}
+ \phi_u=\frac{\pi k}h,\qquad \phi_t=\pi k,\qquad
+ \theta_j\equiv-(h+s_j)\phi_u\pmod{2\pi},\qquad 0\le k<2h.
+\end{equation}
+These are $2h/\nu=r-1$ distinct mark points, each with $\nu$ time phases.
+At each of them the complete local expansion of the extraction
+\eqref{fce:dx:eq:exact} equals that at $(t,\boldsymbol z)=(1/r,\one)$ term
+by term, with phase factor one, so the total multiplicity is
+\begin{equation}\label{fce:dx:eq:copies}
+ \nu(r-1)=2h .
+\end{equation}
+\end{lemma}
+\begin{proof}[Proof (source~101-90, with the gauge computation written out \textup{[write]})]
+A zero requires equality in $|t\sum_iz_iu^{s_i}|\le1$ (with $z_1=z_r=1$), so
+$\phi_t+\theta_i+s_i\phi_u\equiv0$ for every $i$. The two unmarked extreme
+steps give $\phi_t-h\phi_u\equiv\phi_t+h\phi_u\equiv0$, hence
+$\phi_u=\pi k/h$ and $\phi_t=\pi k$, and then
+$\theta_j\equiv-\phi_t-s_j\phi_u=-(h+s_j)\phi_u$. Two values $k,k'$ give the
+same marks if and only if $2h$ divides $(k-k')(h+s_j)$ for every interior $j$. The
+$\gcd$ of the integers $h+s_j$ is $1$ for odd $r$ (it contains
+$h+(1-h)=1$) and $2$ for even $r$ (they are $2,4,\ldots,2h-2$), which is
+$\nu$; so there are $2h/\nu$ mark points, each reached by $\nu$ values of $k$
+whose time phases differ by $\pi h\equiv\pi$ when $\nu=2$ (for $r=2$ there
+are no marks: one mark point with $\nu=2$ time phases).
+
+For the gauge identity, the weight of a step of type $i$ at such a point is
+$e^{-i(\phi_t+s_i\phi_u)}$ (also for the extreme steps). Along a path of
+length $N$ and final height $0$ the product of these weights is
+$e^{-iN\phi_t}$, so
+$\E_{\rm ex}(t;\boldsymbol z_k\boldsymbol w)=\E_{\rm ex}(te^{-i\phi_t};\boldsymbol w)$
+identically, and likewise for $B_{\rm ex}$. In the Cauchy integral for
+\eqref{fce:dx:eq:exact} near $\boldsymbol z_k$ the factor
+$\boldsymbol z^{-n\one}$ contributes
+$e^{in\sum_j(\phi_t+s_j\phi_u)}=e^{ind\phi_t}$, since the interior steps sum
+to zero, and the time coefficient contributes $e^{-irn\phi_t}$. The total
+phase is $e^{-2in\phi_t}=e^{-2\pi ink}=1$. Since the identity is exact, every
+correction term is transported, not only the leading one.
+\end{proof}
+Away from small neighbourhoods of these finitely many points, compactness
+gives $\epsilon>0$ such that the kernel has no zero on $|u|=1$ for
+$|t|\le1/r+\epsilon$; Rouch\'e's theorem keeps $h$ roots inside, and their
+product is analytic even through collisions inside that group (by contour
+power sums and Newton's identities), so the excursion series and the bridge
+constant-term contour are analytic in the larger disk, uniformly on the outer
+mark arcs, and Cauchy's bound makes those coefficients exponentially smaller.
+This is the argument of Section~6.4, in other coordinates. Near each dominant
+point the positive Hessian $H_{\rm ex}$ gives a Gaussian saddle in $d$
+variables, and the bridge saddle reproduces the multinomial coefficient
+exactly (source~101-90's normalization check):
+\begin{equation}\label{fce:dx:eq:normcheck}
+ \frac{2h}{(2\pi)^{(r-1)/2}\sqrt V\sqrt{\det H_{\rm ex}}}\,r^NN^{-(r-1)/2}\Big|_{N=rn}
+ =\sqrt r\,(2\pi n)^{-(r-1)/2}r^{rn},
+\end{equation}
+because $2h/(\sqrt V\sqrt{\det H_{\rm ex}})=r^{r/2}$ by \eqref{fce:dx:eq:detex}.
+The excursion amplitude differs by $\kappa_r/N=\kappa_r/(rn)$, which proves
+\eqref{fce:eq:probability} and \eqref{fce:eq:constant} again, with all
+even/odd and zero-step normalizations.
+
+\begin{remark}[The count of dominant points depends on the coordinates \textup{[write]}]\label{fce:dx:rem:invariant}
+Section~6.4 finds \emph{one} dominant mark point with $\nu$ time phases;
+Lemma~\ref{fce:dx:lem:torus} finds $r-1$. Both are right: the count depends on
+which two steps are left unmarked, and the Gaussian determinant changes by
+exactly the compensating factor. Leave any two steps $s_a<s_b$ unmarked. The
+proof of Lemma~\ref{fce:dx:lem:torus} gives $\phi_t\equiv-s_a\phi_u$ and
+$(s_b-s_a)\phi_u\equiv0$, hence exactly $s_b-s_a$ dominant pairs (mark point,
+time phase); the gauge phase is
+$e^{-iN\phi_t+in\sum_{j\ne a,b}(\phi_t+s_j\phi_u)}
+=e^{in(s_a-s_b)\phi_u}=1$ at $N=rn$, so all of them contribute equally. The
+proof of \eqref{fce:dx:eq:detex} gives
+$\det H_{a,b}=(s_b-s_a)^2r^{-r}/V$. Therefore
+\begin{equation}\label{fce:dx:eq:invariant}
+ \frac{\#\{\text{dominant pairs}\}}{\sqrt{\det H_{a,b}}}
+ =\sqrt{r^rV}\quad\text{for every choice of }a<b ,
+\end{equation}
+which is $\nu/\sqrt{\det H}$ in the coordinates of Section~\ref{fce:sec:saddle}
+($s_b-s_a=\delta=\nu$) and $2h/\sqrt{\det H_{\rm ex}}$ here ($s_b-s_a=2h$).
+The ``$r-1$ dominant mark points'' of source~101-90's abstract are a property
+of its coordinates, not of the problem.
+\end{remark}
+
+\subsection{The local saddle, the coefficient rule, and D-finiteness}\label{fce:dx:sec:recipe}
+The weighted kernel formula \cite[Theorem~2]{bf} and the bridge identity
+\cite[Corollary~2]{bf} are Lemmas~\ref{fce:lem:kernel} and~\ref{fce:lem:bridge}:
+\begin{equation}\label{fce:dx:eq:product}
+ \E_{\rm ex}(t;\boldsymbol z)=\frac{(-1)^{h-1}}t\prod_{j=1}^hu_j(t;\boldsymbol z),
+ \qquad B_{\rm ex}=1+t\partial_t\log\E_{\rm ex},
+\end{equation}
+with $u_j$ the small roots of $u^h(1-tP_{\rm ex})$. Source~101-90 rechecks the
+bridge identity by the residue computation of source~61's first proof. The
+coalescing small root is
+$\tau_{\rm ex}-\tau_{\rm ex}\sqrt{2/V}\sqrt{1-t/\rho_{\rm ex}}+O(1-t/\rho_{\rm ex})$
+and the product of the other inside roots is analytic, so
+\begin{equation}\label{fce:dx:eq:local}
+ \E_{\rm ex}=\kappa_{\rm ex}(\boldsymbol y)\Bigl(1-\sqrt{2/V(\boldsymbol y)}\sqrt{1-t/\rho_{\rm ex}(\boldsymbol y)}
+ +O(1-t/\rho_{\rm ex})\Bigr),\qquad
+ \kappa_{\rm ex}(\boldsymbol y)=\E_{\rm ex}(\rho_{\rm ex}(\boldsymbol y);\boldsymbol y),
+\end{equation}
+and the bridge identity gives the bridge singularity
+$1/\sqrt{2V(1-t/\rho_{\rm ex})}$. At one critical time the coefficient
+amplitudes are therefore
+$\rho_{\rm ex}^{-N}N^{-3/2}\kappa_{\rm ex}/\sqrt{2\pi V}$ for excursions and
+$\rho_{\rm ex}^{-N}N^{-1/2}/\sqrt{2\pi V}$ for bridges, uniformly for complex
+marks near one, before the copies of \eqref{fce:dx:eq:copies} are summed.
+
+\emph{All orders.} The equal-mark critical kernel factors into the double
+factor $(u-1)^2$ and its inside and outside factors, which are pairwise
+coprime even if a stable group has repeated roots. Finite Hensel lifting
+(equivalently, the implicit equations for the coefficients of the three
+factors) produces their Taylor jets in time and marks and never divides by
+differences of roots in the same group; this is the analytic factorization of
+Section~\ref{fce:subsec:allorders}. With $t=\rho_{\rm ex}(1-x^2)$ and the
+branch whose first displacement is $-\tau_{\rm ex}\sqrt{2/V}\,x$,
+$\E_{\rm ex}=\sum_{k\ge0}\mathfrak e_k(\boldsymbol y)(1-t/\rho_{\rm ex})^{k/2}$,
+and uniform transfer gives the single-time expansion
+\begin{equation}\label{fce:dx:eq:transfer}
+ E^{\rm loc}_N(\boldsymbol y)=\rho_{\rm ex}(\boldsymbol y)^{-N}N^{-3/2}
+ \Bigl(\sum_{s=0}^J\mathcal G_s(\boldsymbol y)N^{-s}+O_{r,J}(N^{-J-1})\Bigr),\quad
+ \mathcal G_s=\sum_{k=0}^s\frac{\mathfrak e_{2k+1}}{\Gamma(-k-\frac12)}t_{s-k}(k+\tfrac12),
+\end{equation}
+with $t_j$ of \eqref{fce:lg:eq:transfer}; the time copies are summed
+afterwards. Let $\Phi_{{\rm ex},\ell}$ be the homogeneous degree-$\ell$ part of
+$\Phi_{\rm ex}$ and $G$ a centred Gaussian vector with covariance
+$H_{\rm ex}^{-1}$. Source~101-90's coefficient rule is
+\begin{equation}\label{fce:dx:eq:recipe}
+ \mathsf b_{r,j}=[x^{2j}]\,\Exp\Bigl[\sum_{s=0}^jx^{2s}
+ \frac{\mathcal G_s(ixG)}{\mathcal G_0(0)}
+ \exp\Bigl(\sum_{\ell=3}^{2j+2}i^\ell x^{\ell-2}\Phi_{{\rm ex},\ell}(G)\Bigr)\Bigr],
+ \qquad \alpha_{r,j}=r^{-j}\mathsf b_{r,j},
+\end{equation}
+where $\mathcal G_s(ixG)$ is the amplitude at the log marks
+$\boldsymbol y=ixG$, and the Gaussian expectation of a polynomial $F$ is
+$\bigl[\exp\bigl(\frac12\sum_{a,b}(H_{\rm ex}^{-1})_{ab}\partial_a\partial_b\bigr)F\bigr](0)$.
+Every letter, including a zero step, is retained, so $N=rn$ is the only
+rescaling: no Stirling or zero-insertion factor is multiplied in. This is
+source~42's rule \eqref{fce:lg:eq:wickseries}--\eqref{fce:lg:eq:betas}
+($\mathsf b_{r,j}=\chi_j/\mathcal G_0(0)$) in marker instead of lattice
+coordinates. Effective algebraicity follows as in
+Section~\ref{fce:subsec:allorders}: the root factors have algebraic
+coefficients, the phase jets and the covariance are rational, and the common
+$\sqrt\pi$ factors cancel. For the remainder, restrict the angular marks to
+radius $N^{-1/2+\varepsilon}$; Taylor remainders have a
+polynomial-times-Gaussian majorant, the rest of the local ball contributes
+$O(e^{-cN^{2\varepsilon}})$, the outer torus is exponentially small, and odd
+half-orders vanish under Gaussian integration; the gauge identity of
+Lemma~\ref{fce:dx:lem:torus} identifies all periodic contributions at every
+order, so no residue class of $n$ is missed.
+
+For $r=2,3$ the rule is checked by source~101-90's program from the Catalan
+and marked Motzkin kernels:
+$(\alpha_{2,1},\alpha_{2,2})=(-9/8,145/128)$ and
+$(\alpha_{3,1},\alpha_{3,2})=(-11/9,101/81)$, the values of
+\eqref{fce:lg:eq:r23corr} (source~42), and also those read off the closed forms
+$A_2(n)=\binom{2n}n/(n+1)$, $A_3(n)=(3n)!/((n!)^3(n+1))$.
+
+\begin{remark}[The rule at $r=4,5$, checked at this write \textup{[write]}]\label{fce:dx:rem:recipecheck}
+Source~101-90's package exercises \eqref{fce:dx:eq:recipe} only in dimension
+$d\le1$. At this write the rule was evaluated at $j=1$ for $r=2,3,4,5$ in
+extreme-unmarked coordinates, numerically: kernel roots by
+$40$-digit polynomial root finding, the coefficients in $x$ by Cauchy
+integrals on small circles, and the Gaussian expectation by a four-point
+Gauss--Hermite product rule, which is exact for the polynomial of degree at
+most six that occurs. It reproduces $\alpha_{2,1}$ and $\alpha_{3,1}$, and
+\[
+ r^{-1}\mathsf b_{4,1}=-0.50978468486767535307\ldots,\qquad
+ r^{-1}\mathsf b_{5,1}=-0.71862232585005467893\ldots,
+\]
+equal to $\alpha_{4,1}$ of Theorem~\ref{fce:ba:thm:alpha41} and to
+$\alpha_{5,1}$ of \eqref{fce:eq:fivecorrection} to $33$ and $34$ digits. This
+is numerical evidence that the rule as printed (the factor $r^{-j}$, the
+multiplicity \eqref{fce:dx:eq:copies}, the Hessian \eqref{fce:dx:eq:Hex}) is
+normalized correctly in dimensions $2$ and $3$; it is not an interval
+certificate, and the proof of the rule is the one above.
+\end{remark}
+
+\emph{D-finiteness by an $r$-section.} By \eqref{fce:dx:eq:product},
+$\E_{\rm ex}$ is algebraic. To write the slope-$r$ extraction
+\eqref{fce:dx:eq:exact} as an ordinary diagonal, source~101-90 first takes the
+$r$-section in time,
+\begin{equation}\label{fce:dx:eq:rsection}
+ F^{(r)}(T;\boldsymbol z)=\sum_{N\ge0}\bigl([t^{rN}]\E_{\rm ex}\bigr)T^N
+ =\frac1r\sum_{j=0}^{r-1}\E_{\rm ex}\bigl(e^{2\pi ij/r}T^{1/r};\boldsymbol z\bigr),
+\end{equation}
+a finite sum of algebraic functions with integer powers of $T$, hence
+algebraic over $\Q(T,\boldsymbol z)$; then
+$A_r(n)=[T^nz_2^n\cdots z_{r-1}^n]F^{(r)}$ is an ordinary diagonal, D-finite
+by Lipshitz's theorem \cite{lipshitz}. This is a second route to the
+D-finiteness of Theorem~\ref{fce:thm:class}, which takes the full diagonal of
+the $r$-variable series (and which source~101-90 mentions as an
+alternative); the proof of Corollary~\ref{fce:cor:rays} uses sections in the
+same way. It proves existence of a recurrence, not a particular or minimal
+one. Source~101-90 makes no transcendence statement.
+
+\subsection{Inversion for every row}\label{fce:dx:sec:inverse90}
+With $\lambda=r\log r$, $\beta=(r+1)/2$ and $x_0(Y)$ the Lambert core
+\eqref{fce:eq:lambertcore}, source~101-90 gives, for every $r$,
+\begin{equation}\label{fce:dx:eq:inverse}
+ x(Y)=x_0-\frac{\alpha_{r,1}}{\lambda x_0-\beta}
+ -\frac{b_2}{x_0(\lambda x_0-\beta)}+O_r(x_0^{-3}),\qquad
+ b_2=\alpha_{r,2}-\tfrac12\alpha_{r,1}^2 ,
+\end{equation}
+checked by substitution into $\log K_r+\lambda x-\beta\log x+\alpha_{r,1}/x+b_2/x^2$,
+which leaves a residual $O_r(x_0^{-3})$; its program verifies this
+symbolically for arbitrary $\beta$. \textup{[write]} Expanding
+$1/(\lambda x_0-\beta)=(\lambda x_0)^{-1}(1+\beta/(\lambda x_0)+O(x_0^{-2}))$
+turns \eqref{fce:dx:eq:inverse} into \eqref{fce:eq:inversefirst} exactly, so
+this is the inversion of Section~\ref{fce:sec:inverse}; for $r=5$ it is
+\eqref{fce:kk:eq:inversefive}, and its nested-logarithm form is
+Remark~\ref{fce:ba:rem:inverse}. Further terms are recursive, each with the
+fixed-order error inherited from the forward expansion. For the threshold
+$N_r(Y)=\min\{n:A_r(n)\ge Y\}$ source~101-90 states
+$N_r(Y)=\lceil x_J(Y)+\epsilon_J(Y)\rceil$ with
+$\epsilon_J(Y)=O_{r,J}((\log Y)^{-J-1})$, where $x_J$ is the large solution
+of the positive $J$-term approximation; ceilings of $x_J$ plus and minus an
+error bound give rigorous bounds, a single ceiling is certified only when that
+bracket avoids the integers, and ``no unqualified rule is asserted inside the
+boundary windows''. This is \eqref{fce:lg:eq:rounding}, an instance of
+\texttt{p0:thm:staircase} (Section~\ref{fce:sec:repository}), and its first
+consequence
+$N_r(Y)=(\log Y+\beta\log\log Y-\log K_r-\beta\log\lambda)/\lambda+O_r(1)$ is
+\eqref{fce:lg:eq:loginverse}. No novelty is claimed.
+
+\section{The five-letter row with the zero steps deleted (source~101-86)}\label{fce:dx:sec:five}
+\subsection{Two marks on the zero-free walk}\label{fce:dx:sec:marks}
+Map a letter $i$ to the step $3-i$; the words counted by $A_5(n)$ become
+nonnegative excursions with $n$ steps of each of $-2,\ldots,2$. Deleting the
+zero steps and choosing their positions gives
+\eqref{fce:kk:eq:zeroinsert}, $A_5(n)=\binom{5n}nA^\circ_5(n)$, where the
+$\binom{5n}n$ choices include positions before the first and after the last
+nonzero step. Source~101-86 then marks two statistics of a zero-free
+excursion: the number $M_2$ of steps $\pm2$ (mark $z_A=e^{y_A}$) and the
+signed difference $D_2=\#(+2)-\#(-2)$ (mark $z_D=e^{y_D}$). With
+\begin{equation}\label{fce:dx:eq:Pcirc}
+ P_\circ(u;z_A,z_D)=u+u^{-1}+z_A\bigl(z_Du^2+z_D^{-1}u^{-2}\bigr),\qquad
+ A^\circ_5(n)=[t^{4n}z_A^{2n}z_D^0]\,\E_\circ(t;z_A,z_D),
+\end{equation}
+length $4n$, $M_2=2n$, $D_2=0$ and final height $0$ force $n$ copies of each
+nonzero step. The kernel formula \cite[Theorem~2 and~(20)]{bf} gives
+\begin{equation}\label{fce:dx:eq:kernelcirc}
+ \E_\circ=-\frac{u_1(t)u_2(t)}{tz_A/z_D},\qquad
+ u^2-t\bigl(z_A/z_D+u+u^3+z_Az_Du^4\bigr)=0,
+\end{equation}
+with $u_1,u_2$ the small roots. Near $z_A=z_D=1$ let $\tau_\circ$ solve
+$\partial_uP_\circ=0$ with $\tau_\circ(1,1)=1$ (the implicit function theorem
+applies since $\partial_u^2P_\circ(1;1,1)=10$), and
+$\rho_\circ=1/P_\circ(\tau_\circ)$. At equal marks
+\[
+ u^2-\tfrac14(1+u+u^3+u^4)=-\tfrac14(u-1)^2(u^2+3u+1),
+\]
+so $\rho_\circ=1/4$, the other small root is $\zeta=-\varphi^{-2}$ and the
+remaining root is $-\varphi^2$. The critical equation
+$u^3\partial_uP_\circ=0$ factors as $(u-1)(u+1)(2u^2+u+2)=0$; $u=-1$ has
+$P_\circ=0$ and no finite critical time, and $2u^2+u+2=0$ gives the only
+other finite critical value $t=-4/9$. The square-root singularity at $\rho_\circ$
+is therefore isolated uniformly for marks in a small complex neighbourhood
+of $(1,1)$; source~101-86 takes ``a fixed outer radius between $1/4$ and
+$4/9$, with a slit from the moving critical value'' as the common transfer
+domain (a sketched step; the full argument of
+Section~\ref{fce:subsec:allorders} covers it). With
+$V_\circ=\tau_\circ^2\partial_u^2P_\circ/P_\circ$ and
+$\kappa_\circ=-\tau_\circ\zeta/(\rho_\circ z_A/z_D)$,
+\begin{equation}\label{fce:dx:eq:A0}
+ V_\circ=\frac52,\qquad \kappa_\circ=4\varphi^{-2},\qquad
+ \mathcal G_0(1,1)=\frac{4\varphi^{-2}}{\sqrt{5\pi}}
+\end{equation}
+at equal marks, and \eqref{fce:dx:eq:transfer} holds with $\rho_\circ$,
+$\tau_\circ$, $V_\circ$, analytic amplitudes $\mathcal G_j(z_A,z_D)$, and
+positive branches at the equal-mark point.
+
+\emph{The torus.} For $|z_A|=|z_D|=|u|=1$ and $|t|=1/4$, with angles
+$\theta_A,\theta_D,\phi_u,\phi_t$, a kernel zero on $|u|=1$ requires the four
+phases $\phi_t-\phi_u$, $\phi_t+\phi_u$, $\phi_t+\theta_A-\theta_D-2\phi_u$,
+$\phi_t+\theta_A+\theta_D+2\phi_u$ to vanish modulo $2\pi$, so the only mark
+points are
+\begin{equation}\label{fce:dx:eq:four}
+ (z_A,z_D)\in\{(1,1),(-1,-1),(-1,1),(1,-1)\}.
+\end{equation}
+Away from them, compactness, Rouch\'e's theorem (exactly two roots inside)
+and the analytic product of those two roots (by contour power sums and
+Newton's identities, through collisions) give an exponentially smaller
+contribution; the singularity of \eqref{fce:dx:eq:kernelcirc} at $t=0$ is
+removable. For every zero-free excursion $N-M_2$ and $M_2-D_2$ are even, so
+$\E_N(-z_A,z_D)=\E_N(z_A,-z_D)=(-1)^N\E_N(z_A,z_D)$ for the length-$N$
+coefficients; at $N=4n$ and $z_A$-degree $2n$ the four neighbourhoods
+contribute equally with positive phase. Source~101-86 calls the resulting
+factor $4$ the ``lattice factor''. It is the index of the sublattice carrying
+$(N,M_2,D_2)$, a property of these coordinates
+(Remarks~\ref{fce:dx:rem:invariant} and~\ref{fce:dx:rem:lattice}).
+
+\subsection{The leading constant of the zero-free count}\label{fce:dx:sec:Bn}
+\begin{proposition}[The constant of $A^\circ_5(n)$ (source~101-86)]\label{fce:dx:prop:Bn}
+Under the uniform law on the steps $-2,-1,1,2$, $\Var M_2=\frac14$,
+$\Var D_2=\frac12$, $\Var(\text{height})=\frac52$,
+$\Cov(D_2,\text{height})=1$, and the other covariances vanish (per step).
+The Hessian of
+$\Phi_\circ(y_A,y_D)=\log P_\circ(\tau_\circ;e^{y_A},e^{y_D})-\log4-y_A/2$
+at $0$ is therefore
+\begin{equation}\label{fce:dx:eq:Hcirc}
+ H_\circ=\operatorname{diag}\bigl(\tfrac14,\tfrac1{10}\bigr),\qquad \det H_\circ=\frac1{40},
+\end{equation}
+and
+\begin{equation}\label{fce:dx:eq:Bleading}
+ A^\circ_5(n)=\frac{4\mathcal G_0(1,1)}{2\pi\sqrt{\det H_\circ}}\,4^{4n}(4n)^{-5/2}\bigl(1+O(n^{-1})\bigr)
+ =\frac{\varphi^{-2}\,256^n}{\sqrt2\,\pi^{3/2}n^{5/2}}\bigl(1+O(n^{-1})\bigr).
+\end{equation}
+With
+\begin{equation}\label{fce:dx:eq:binom}
+ \binom{5n}n=\frac{\sqrt5}{2\sqrt{2\pi n}}\Bigl(\frac{3125}{256}\Bigr)^n
+ \Bigl(1-\frac7{80n}+O(n^{-2})\Bigr),
+\end{equation}
+this gives the leading constant $K_5=(3\sqrt5-5)/(8\pi^2)$ of
+\eqref{fce:eq:fivecorrection}.
+\end{proposition}
+\begin{proof}
+The covariances are elementary, and eliminating the height (the Schur
+complement in its entry $5/2$) changes only $\Var D_2$, to
+$\frac12-1/\frac52=\frac1{10}$; source~101-86 notes that this is also the
+implicit differentiation of $\partial_uP_\circ=0$. The real part of the phase
+on angular marks has a strict Gaussian maximum, its quadratic bound controls
+the intermediate arcs and the torus argument above the rest, so the factor
+$4$, the Gaussian integral in two variables and \eqref{fce:dx:eq:A0} give
+\eqref{fce:dx:eq:Bleading}; Stirling's formula gives \eqref{fce:dx:eq:binom}.
+\end{proof}
+\textup{[write]} Three consistency checks. (i) For the uniform zero-free walk,
+Theorem~\ref{fce:lg:thm:general} (source~42) gives
+$A^\circ_5(n)\sim\frac{\kappa^\circ_4}{4n}\frac{(4n)!}{(n!)^4}$, with
+$\kappa^\circ_4$ its critical excursion value; the small-root formula at the
+critical weights, as in Proposition~\ref{fce:prop:kappa}, gives
+$\kappa^\circ_4=(-1)^{3}\cdot4\cdot(-\varphi^{-2})=4\varphi^{-2}=\kappa_\circ$,
+and $(4n)!/(n!)^4\sim2\cdot256^n(2\pi n)^{-3/2}$ turns this into
+\eqref{fce:dx:eq:Bleading}. (ii) Dividing $K_55^{5n}n^{-3}$ by
+\eqref{fce:dx:eq:binom} gives the same constant,
+$K_5\cdot2\sqrt{2\pi}/\sqrt5=\varphi^{-2}/(\sqrt2\pi^{3/2})=0.0485048217\ldots$.
+(iii) Proposition~\ref{fce:dx:prop:zero} gives $\kappa_5=\frac54\kappa^\circ_4$.
+The ratio of $A^\circ_5(n)$ (source~101-86's shipped enumeration) to the right
+side of \eqref{fce:dx:eq:Bleading} is $0.93936$, $0.96907$, $0.97924$ at
+$n=10,20,30$. The constant of $A^\circ_5(n)$ was not printed before in this
+report (Part~IV reaches $A^\circ_5(n)$ only through $\Lambda_n$). It has the
+shape of Theorem~\ref{fce:ba:thm:alpha41}'s leading term for A215562, with
+$\varrho=\kappa_4/4$ replaced by $\varphi^{-2}=\kappa^\circ_4/4$: both count
+balanced excursions of a four-step walk, and Theorem~\ref{fce:lg:thm:general}
+gives every such count the form
+$\frac\kappa4\,256^n/(\sqrt2\,\pi^{3/2}n^{5/2})$.
+
+\subsection{The coefficient rule in these coordinates}\label{fce:dx:sec:recipe5}
+Let $\Phi_{\circ,\ell}$ be the homogeneous degree-$\ell$ part of $\Phi_\circ$ and
+$G=(G_A,G_D)$ a centred Gaussian with covariance
+$H_\circ^{-1}=\operatorname{diag}(4,10)$. With
+$\E_\circ=\sum_{k\ge0}\mathfrak e_k(z_A,z_D)(1-t/\rho_\circ)^{k/2}$, the
+amplitudes $\mathcal G_s$ are given by \eqref{fce:dx:eq:transfer}. Source~101-86
+sets $\mathsf b^\circ_0=1$ and
+\begin{equation}\label{fce:dx:eq:recipe5}
+ \mathsf b^\circ_j=[x^{2j}]\,\Exp\Bigl[\sum_{s=0}^jx^{2s}
+ \frac{\mathcal G_s(e^{ixG_A},e^{ixG_D})}{\mathcal G_0(1,1)}
+ \exp\Bigl(\sum_{\ell=3}^{2j+2}i^\ell x^{\ell-2}\Phi_{\circ,\ell}(G)\Bigr)\Bigr],
+\end{equation}
+so that $A^\circ_5(n)$ is the right side of \eqref{fce:dx:eq:Bleading} times
+$1+\sum_j\mathsf b^\circ_j(4n)^{-j}$. The binomial factor contributes
+\begin{equation}\label{fce:dx:eq:dj}
+ \sum_{j\ge0}\mathfrak d_jw^j=\exp\Bigl[\sum_{k\ge1}\frac{B_{2k}}{2k(2k-1)}
+ \bigl(5^{1-2k}-1-4^{1-2k}\bigr)w^{2k-1}\Bigr],
+\end{equation}
+with Bernoulli numbers $B_{2k}$ (Stirling's series for
+$\log(5n)!-\log n!-\log(4n)!$); so $\mathfrak d_1=-7/80$ and
+$\mathfrak d_2=\mathfrak d_1^2/2=49/12800$. Then
+\begin{equation}\label{fce:dx:eq:cj}
+ \alpha_{5,j}=\sum_{s=0}^j\mathfrak d_{j-s}\,\frac{\mathsf b^\circ_s}{4^s}.
+\end{equation}
+Only the Taylor coefficients able to reach degree $2j$ are needed; the
+$\mathfrak e_k$ follow by finite algebraic substitution in the quartic
+kernel. All Gaussian moments are rational and all normalized root jets at the
+base point lie in $\Q(\sqrt5)$, so \eqref{fce:dx:eq:recipe5}--\eqref{fce:dx:eq:cj}
+give $\alpha_{5,j}\in\Q(\sqrt5)$ for every $j$, the field statement of
+Theorem~\ref{fce:thm:five} by a second route. For the remainder,
+source~101-86 retains finitely many terms of the uniform Puiseux transfer,
+Taylor-expands amplitudes and phase in a neighbourhood of radius
+$N^{-1/2+\epsilon}$, bounds the Taylor remainders by a polynomial times a
+strictly weaker Gaussian and the complement by $O(e^{-cN^{2\epsilon}})$
+locally and exponentially small globally; ``no exponentially improved error
+is asserted''.
+
+\subsection{The second correction without the recurrence}\label{fce:dx:sec:alpha52}
+\begin{theorem}[Two corrections for A215570 by Gaussian moments (source~101-86)]\label{fce:dx:thm:alpha52}
+The rule \eqref{fce:dx:eq:recipe5}--\eqref{fce:dx:eq:cj}, evaluated in exact
+arithmetic in $\Q(\sqrt5)$, gives
+\begin{align}
+ \mathsf b^\circ_1&=-\frac{97}{20}+\frac{26\sqrt5}{25},&
+ \mathsf b^\circ_2&=\frac{681}{32}-\frac{77\sqrt5}{10},\notag\\
+ \alpha_{5,1}&=\frac{13(\sqrt5-5)}{50},&
+ \alpha_{5,2}&=\frac{180-63\sqrt5}{125}=\frac{36}{25}-\frac{63\sqrt5}{125}.
+ \label{fce:dx:eq:alpha52}
+\end{align}
+The recurrence of Theorem~\ref{fce:kk:thm:recurrence} is not used.
+\end{theorem}
+The ingredients follow; they are source~101-86's Section~5 together with the
+complete jets its program records (\path{data/101-86-five-second_correction.json}),
+which the theorem needs and the manuscript only names. Write $w=\log\tau_\circ$.
+The critical equation and the step polynomial are
+\[
+ 2\sinh w+4e^{y_A}\sinh(y_D+2w)=0,\qquad
+ P_\circ=2\cosh w+2e^{y_A}\cosh(y_D+2w),
+\]
+and their solution begins
+\[
+ w=-\tfrac25y_D-\tfrac2{25}y_Ay_D+\tfrac3{125}y_A^2y_D+\tfrac1{625}y_D^3
+ -\tfrac1{1875}y_A^3y_D+\tfrac7{9375}y_Ay_D^3+O(|\boldsymbol y|^5).
+\]
+\emph{Phase.} The homogeneous parts of $\Phi_\circ$ are
+\begin{align}\label{fce:dx:eq:phasejets}
+ \Phi_{\circ,2}&=\tfrac18y_A^2+\tfrac1{20}y_D^2,\qquad
+ \Phi_{\circ,3}=-\tfrac3{200}y_Ay_D^2,\qquad
+ \Phi_{\circ,4}=-\tfrac1{192}y_A^4-\tfrac1{125}y_A^2y_D^2-\tfrac{41}{60000}y_D^4,\notag\\
+ \Phi_{\circ,5}&=\tfrac1{100000}y_Ay_D^2\bigl(365y_A^2+82y_D^2\bigr),\notag\\
+ \Phi_{\circ,6}&=\tfrac1{2880}y_A^6+\tfrac{23}{37500}y_A^4y_D^2
+ +\tfrac{217}{1200000}y_A^2y_D^4+\tfrac{293}{22500000}y_D^6 ;
+\end{align}
+in derivatives, $\Phi_{aaa}=0$, $\Phi_{abb}=-\frac3{100}$,
+$\Phi_{aaaa}=-\frac18$, $\Phi_{aabb}=-\frac4{125}$, $\Phi_{bbbb}=-\frac{41}{2500}$
+($a=y_A$, $b=y_D$).
+
+\emph{Amplitude.} Source~101-86 computes the amplitude ``particularly
+economically'' from
+\[
+ \log\mathcal G_0=\log P_\circ-y_A-\operatorname{arcosh}(c_0)-\tfrac12\log V_\circ-\tfrac12\log(2\pi),
+ \qquad c_0=\cosh(y_D+2w)+\tfrac12e^{-y_A}\cosh w,
+\]
+which follows from the remaining small root:
+$\tau_\circ\zeta z_D=-\exp[-\operatorname{arcosh}(c_0)]$ (at equal marks
+$c_0=\frac32$ and $e^{-\operatorname{arcosh}(3/2)}=\varphi^{-2}$). The normalized
+amplitude $\mathfrak a_\circ=\mathcal G_0(e^{y_A},e^{y_D})/\mathcal G_0(1,1)$ has
+the homogeneous parts
+\begin{align}\label{fce:dx:eq:ampjets}
+ [\mathfrak a_\circ]_1&=\Bigl(\frac{\sqrt5}5-\frac{13}{20}\Bigr)y_A,\qquad
+ [\mathfrak a_\circ]_2=\Bigl(\frac{367}{800}-\frac{17\sqrt5}{100}\Bigr)y_A^2
+ +\Bigl(\frac{59}{1000}-\frac{3\sqrt5}{125}\Bigr)y_D^2,\notag\\
+ [\mathfrak a_\circ]_3&=\frac{y_A}{240000}\Bigl((25700\sqrt5-57275)y_A^2+(8496\sqrt5-16908)y_D^2\Bigr),\\
+ [\mathfrak a_\circ]_4&=\Bigl(\frac{81821}{768000}-\frac{2423\sqrt5}{48000}\Bigr)y_A^4
+ +\Bigl(\frac{35273}{800000}-\frac{1353\sqrt5}{50000}\Bigr)y_A^2y_D^2
+ +\Bigl(\frac{12517}{6000000}-\frac{23\sqrt5}{25000}\Bigr)y_D^4,\notag
+\end{align}
+that is, $\mathcal G_{0,a}/\mathcal G_0=1/\sqrt5-13/20$, $\mathcal G_{0,b}/\mathcal G_0=0$,
+$\mathcal G_{0,aa}/\mathcal G_0=367/400-17\sqrt5/50$ and
+$\mathcal G_{0,bb}/\mathcal G_0=59/500-6\sqrt5/125$.
+
+\emph{Transfer at equal marks.} Put $t=(1-x^2)/4$ and
+$v_\pm=\bigl(-1\pm\sqrt{9+4/t}\bigr)/2$ (the values of $u+u^{-1}$ at the roots
+of the kernel). The small roots are $(v_+-\sqrt{v_+^2-4})/2$ and
+$(v_-+\sqrt{v_-^2-4})/2$, and the odd Puiseux coefficients of
+\eqref{fce:dx:eq:kernelcirc} are
+\begin{equation}\label{fce:dx:eq:puiseux5}
+ \mathfrak e_1=4-\frac{12\sqrt5}5,\qquad
+ \mathfrak e_3=8-\frac{536\sqrt5}{125},\qquad
+ \mathfrak e_5=12-\frac{19108\sqrt5}{3125}.
+\end{equation}
+By \eqref{fce:dx:eq:transfer}, with $t_1(\frac12)=\frac38$,
+$t_2(\frac12)=\frac{25}{128}$, $t_1(\frac32)=\frac{15}8$ and the gamma ratios
+$-\frac32$, $\frac{15}4$,
+\begin{align}\label{fce:dx:eq:G1G2}
+ \frac{\mathcal G_1}{\mathcal G_0}(1,1)&=\frac38-\frac{3\mathfrak e_3}{2\mathfrak e_1}=-\frac{381-48\sqrt5}{200},\\
+ \frac{\mathcal G_2}{\mathcal G_0}(1,1)&=\frac{25}{128}-\frac{45\mathfrak e_3}{16\mathfrak e_1}
+ +\frac{15\mathfrak e_5}{4\mathfrak e_1}=\frac{53669}{16000}-\frac{411\sqrt5}{500}.\notag
+\end{align}
+\emph{The marked transfer correction.} The second-order rule needs
+$\mathcal G_1/\mathcal G_0$ to degree two in the marks. With
+$\mathcal V_j=(u\partial_u)^jP_\circ/P_\circ$ at $u=\tau_\circ$, expand the
+coalescing root as $\tau_\circ\exp(\varkappa_1x+\varkappa_2x^2+\varkappa_3x^3+\cdots)$;
+then
+\[
+ \varkappa_1^2=\frac2{\mathcal V_2},\qquad
+ \varkappa_2=-\frac{\mathcal V_3}{3\mathcal V_2^2},\qquad
+ \frac{\varkappa_3}{\varkappa_1}=\frac12+\frac{5\mathcal V_3^2}{36\mathcal V_2^3}-\frac{\mathcal V_4}{12\mathcal V_2^2},
+\]
+and implicit differentiation of $tP_\circ(\zeta(t))=1$ supplies the other small
+root, so that, as functions of the marks,
+\begin{equation}\label{fce:dx:eq:R3}
+ \frac{\mathfrak e_3}{\mathfrak e_1}=\frac32+\frac{5\mathcal V_3^2}{36\mathcal V_2^3}
+ -\frac{\mathcal V_4}{12\mathcal V_2^2}-\frac{\mathcal V_3}{3\mathcal V_2^2}
+ +\frac1{3\mathcal V_2}+\frac{P_\circ(\tau_\circ)}{\zeta\,\partial_uP_\circ(\zeta)} .
+\end{equation}
+This gives
+\begin{equation}\label{fce:dx:eq:G1jet}
+ \frac{\mathcal G_1}{\mathcal G_0}=-\frac{381}{200}+\frac{6\sqrt5}{25}
+ +\Bigl(\frac{33}{1000}+\frac{9\sqrt5}{125}\Bigr)y_A
+ +\Bigl(\frac{3\sqrt5}{250}-\frac{171}{10000}\Bigr)y_A^2
+ -\Bigl(\frac{3\sqrt5}{250}+\frac{339}{50000}\Bigr)y_D^2+O(|\boldsymbol y|^3).
+\end{equation}
+\emph{First order.} The Gaussian contraction at $j=1$ is
+\begin{equation}\label{fce:dx:eq:b1}
+ \mathsf b^\circ_1=\frac{\mathcal G_1}{\mathcal G_0}-2\frac{\mathcal G_{0,aa}}{\mathcal G_0}
+ -5\frac{\mathcal G_{0,bb}}{\mathcal G_0}-\frac35\frac{\mathcal G_{0,a}}{\mathcal G_0}-\frac{91}{100}
+ =-\frac{97}{20}+\frac{26\sqrt5}{25},
+\end{equation}
+where $-2\mathcal G_{0,aa}/\mathcal G_0-5\mathcal G_{0,bb}/\mathcal G_0$ is the
+amplitude Hessian against $H_\circ^{-1}$, $\Exp\Phi_{\circ,4}(G)=-\frac{31}{40}$ is the
+quartic phase term, $-\frac12\Exp\Phi_{\circ,3}(G)^2=-\frac{27}{200}$ the
+squared cubic term (their sum is $-\frac{91}{100}$), and
+$-\frac35\mathcal G_{0,a}/\mathcal G_0$ the amplitude--cubic cross term. Then
+$\alpha_{5,1}=\mathsf b^\circ_1/4-\frac7{80}$ by \eqref{fce:dx:eq:cj}.
+
+\emph{Second order.} At $j=2$, \eqref{fce:dx:eq:recipe5} needs the phase through
+degree six \eqref{fce:dx:eq:phasejets}, the amplitude through degree four
+\eqref{fce:dx:eq:ampjets}, $\mathcal G_1/\mathcal G_0$ through degree two
+\eqref{fce:dx:eq:G1jet} and $\mathcal G_2/\mathcal G_0$ at equal marks
+\eqref{fce:dx:eq:G1G2}. Gaussian integration, a finite exact computation that source~101-86's
+program performs and that neither the manuscript nor this Part prints term by
+term (every input is printed above), gives $\mathsf b^\circ_2$ of
+\eqref{fce:dx:eq:alpha52}, and
+\[
+ \alpha_{5,2}=\frac{\mathsf b^\circ_2}{16}-\frac{7\mathsf b^\circ_1}{320}+\frac{49}{12800}
+ =\frac{36}{25}-\frac{63\sqrt5}{125}.
+\]
+``This is finite exact arithmetic using the displayed coefficient rule; the
+sequence recurrence is not involved.''
+
+\textup{[write]} The last step is checked by hand: $\frac{681}{512}+\frac{679}{6400}
++\frac{49}{12800}=\frac{36}{25}$ and $-\frac{77}{160}-\frac{91}{4000}=-\frac{63}{125}$.
+The value equals $\alpha_{5,2}$ of Proposition~\ref{fce:kk:prop:alpha}, which
+source~75-03 obtained from the recurrence of
+Theorem~\ref{fce:kk:thm:recurrence} with $\alpha_{5,1}$ as an initial datum;
+the two derivations are independent (source~101-86 recomputes $\alpha_{5,1}$
+as well), and their agreement checks both. At the intake, the exact terms $A_5(n)$ of
+Theorem~\ref{fce:kk:thm:coefficient} give
+$n^3\bigl(A_5(n)/(K_55^{5n}n^{-3})-1-\alpha_{5,1}/n-\alpha_{5,2}/n^2\bigr)
+=-0.09501,-0.09534,-0.09550,-0.09556$ at $n=50,100,200,300$, approaching
+$\alpha_{5,3}=-0.0956673\ldots$ of Table~\ref{fce:kk:tab:alpha}. Source~101-86's
+amplitude, phase and transfer jets were reconstructed by its second program
+in another way (Section~\ref{fce:dx:sec:checks}).
+
+\subsection{Inversion, and monotonicity at every index}\label{fce:dx:sec:monotone}
+Source~101-86's inverse is the case $r=5$ of
+Section~\ref{fce:dx:sec:inverse90}: $x_0(Y)=-\frac3\lambda
+W_{-1}\bigl(-\frac\lambda3(K_5/Y)^{1/3}\bigr)$, $\lambda=5\log5$, and
+\eqref{fce:dx:eq:inverse} with $b_2=(213-83\sqrt5)/500$ (its $\ell_2$), which
+is \eqref{fce:kk:eq:inversefive}; since its $b_2$ comes from
+Theorem~\ref{fce:dx:thm:alpha52}, this second-order inverse is now also
+recurrence-free. Its rounded threshold
+$N_5(Y)=\lceil x_J(Y)+\epsilon_J(Y)\rceil$, $\epsilon_J=O_J((\log Y)^{-J-1})$,
+with the same qualification as in Section~\ref{fce:dx:sec:inverse90}, is
+\eqref{fce:lg:eq:rounding}. New is the discrete input.
+
+\begin{proposition}[Supermultiplicativity (source~101-86 for $m=1$, $r=5$; general form \textup{[write]})]\label{fce:dx:prop:supermult}
+For every $r\ge2$ and $m,n\ge0$,
+\begin{equation}\label{fce:dx:eq:supermult}
+ A_r(m+n)\ge A_r(m)\,A_r(n);\qquad\text{in particular}\qquad
+ A_5(n+1)\ge35\,A_5(n).
+\end{equation}
+For $r\ge3$, $A_r(1)\ge2$, so $A_r(n+1)\ge2A_r(n)>A_r(n)$ for every $n\ge0$;
+for $r=2$ the Catalan numbers have $A_2(0)=A_2(1)=1$ and increase strictly
+from $n=1$ on.
+\end{proposition}
+\begin{proof}[Proof \textup{[write; source~101-86's argument for one-copy words]}]
+Let $w$ have content $n\one$ and $w'$ content $m\one$, both satisfying
+\eqref{fce:eq:prefix}. The letters of $w$ sum to exactly $\frac{r+1}2rn$, so a
+prefix of $ww'$ of length $rn+k$ ($0\le k\le rm$) has sum
+$\frac{r+1}2rn+\sum_{j\le k}w'_j\le\frac{r+1}2(rn+k)$; shorter prefixes are
+prefixes of $w$. So $ww'$ is counted by $A_r(m+n)$, and $w,w'$ are recovered
+from $ww'$ by their lengths. For $r\ge3$ the words $12\cdots r$ and
+$213\cdots r$ are counted by $A_r(1)$: their prefixes of length $k\ge2$ have
+sum $k(k+1)/2\le\frac{r+1}2k$, and the first letter of the second is
+$2\le\frac{r+1}2$. Finally $A_r(n)\ge1$ (the word $(12\cdots r)^n$), and
+$A_5(1)=35$.
+\end{proof}
+Source~101-86 states only $A_5(n+1)\ge35A_5(n)$, by concatenation with any
+one of the $35$ valid one-copy words. Section~\ref{fce:sec:thresholds}
+appends one fixed block and concludes that $A_r(n)$ is nondecreasing and
+\emph{eventually} strictly increasing (also source~101-90, and
+Section~\ref{fce:lg:sec:inverse}); by
+Proposition~\ref{fce:dx:prop:supermult} it is strictly increasing at every
+index for $r\ge3$, with ratio at least $A_r(1)$ (the values
+$A_r(1)=1,3,7,35,139,1001$ for $r=2,\ldots,7$), so the threshold $N_r(Y)$ needs
+no tail qualification. \textup{[write]} By Fekete's lemma the
+supermultiplicativity also gives $\lim A_r(n)^{1/n}=\sup_nA_r(n)^{1/n}$, which
+is $r^r$ by Theorem~\ref{fce:thm:main}; this adds nothing beyond the trivial
+bound $A_r(n)\le(rn)!/(n!)^r\le r^{rn}$. The enumerations of both packages
+satisfy \eqref{fce:dx:eq:supermult} on their whole ranges ($r\le7$).
+
+\section{Computations, the lattice-peak theorem, stale claims and questions}\label{fce:dx:sec:end}
+\subsection{Source~101-86 and the lattice-peak transfer theorem}\label{fce:dx:sec:lattice}
+\begin{remark}[Not an instance; dated October~5, 2026]\label{fce:dx:rem:lattice}
+Part~II of the collection's report \emph{Theta Asymptotics for High-Power
+Ballot Sums} (\path{SetTheory/Cardinals/docs/reports/generating-functions-and-asymptotics/oeis-sequence-asymptotics/a357825-theta-ballot-power-sums},
+written in batch~98) proves a lattice-peak transfer theorem
+(\texttt{tbs:lpt:thm:transfer}, Theorem~15.1 there, and its multidimensional
+form \texttt{tbs:lpt:thm:multi}, Theorem~18.1): for power sums
+$S_n(r_n)=\sum_xC_{n,x}^{r_n}$ of a row on a moving lattice of mesh $d_n$,
+with growing exponents in the critical window
+$q_n=r_nd_n^2/\sigma_n^2\in K\subset(0,\infty)$,
+$S_n(r_n)/\Omega_n^{r_n}=\vartheta(q_n,\delta_n)+o(1)$, a theta factor that
+depends on the lattice phase $\delta_n$. Source~101-86's ``lattice factor~$4$''
+is \emph{not} an instance of it, for three reasons.
+\begin{enumerate}[label=(\roman*)]
+\item There is no power sum and no growing exponent: $A^\circ_5(n)$ is one
+coefficient, extracted by one Cauchy integral; in that theorem's terms
+$r_n\equiv1$.
+\item The factor counts the dominant points \eqref{fce:dx:eq:four} of the mark
+torus, all of phase one by the parity identities; equivalently, it is the
+index of the sublattice that carries the support of $(N,M_2,D_2)$, the
+classical periodicity factor of a lattice local limit theorem. Read as a
+lattice sum of a Gaussian, the extraction has a fixed mesh and a variance
+growing like $n$, so $q\asymp1/n\to0$: the fine-lattice regime, where
+Proposition~16.1 there (\texttt{tbs:lpt:prop:theta-regimes}) gives
+$\vartheta(q,\delta)=\sqrt{2\pi/q}\,(1+O(e^{-2\pi^2/q}))$, independent of the
+phase, and Remark~18.2 there (\texttt{tbs:lpt:rem:variants}) says to
+parametrize such a sublattice first, which turns the factor into its index.
+No theta oscillation arises, consistently with the complete, non-oscillating
+expansion of Theorem~\ref{fce:thm:main}.
+\item The factor depends on the coordinates: source~101-90's analogue is
+$2h=\nu(r-1)$ (Lemma~\ref{fce:dx:lem:torus}), the coordinates of
+Section~\ref{fce:sec:saddle} give $\nu$, and the combination
+\eqref{fce:dx:eq:invariant} with the Gaussian determinant is the same in all
+of them. \textup{[write]} For the zero-free walk with the steps $-2,-1$ marked
+and $1,2$ unmarked, there is one dominant point and $\det=1/640$; source~101-86
+has four points and $\det H_\circ=1/40=16/640$, and $4/\sqrt{1/40}=\sqrt{640}$.
+\end{enumerate}
+The same holds for source~101-90. That report's README lists source~101-86's
+archive among later arrivals ``not examined'' for its write; this remark
+records the examination.
+\end{remark}
+
+\subsection{The two packages}\label{fce:dx:sec:checks}
+Source~101-90 ships four programs and a driver
+(\path{code/101-90-alphabet-*}) with their recorded outputs
+(\path{data/101-90-alphabet-*}). \path{check_constants.py} checks the
+critical-multiplicity factorization and the inside-root count for
+$2\le r\le10$, the exact values $\kappa_2,\ldots,\kappa_5$ and $c(4)$, $c(5)$,
+and records numerical root products, which it labels orientation for $r\ge6$.
+\path{check_balanced_counts.py} enumerates content vectors directly for
+$r=2,\ldots,7$ up to $n=30,20,16,9,7,5$, against the Catalan and $r=3$ closed
+forms and OEIS initial terms. \path{check_lattice.py} checks the phase classes
+and gauge phases of Lemma~\ref{fce:dx:lem:torus}, the determinant
+\eqref{fce:dx:eq:detex} and the bridge normalization exactly for $2\le r\le20$
+(``PASS 19 alphabets''). \path{check_recipe_small.py} evaluates
+\eqref{fce:dx:eq:recipe} at $j=1,2$ for $r=2,3$ and verifies
+\eqref{fce:dx:eq:inverse} symbolically.
+
+Source~101-86 ships six programs and a driver (\path{code/101-86-five-*}),
+their outputs and a review constants file (\path{data/101-86-five-*}).
+\path{check_kernel.py} checks the sextic over the coefficient box
+$0\le n_i\le3$ ($1{,}024$ positions, $112$ nonzero excursion coefficients),
+the diagonal $1,35,18720,19369350$ and the zero-step removal, with
+$A^\circ_5(n)=1,7,416,42570$; \path{direct_terms.py} enumerates
+$A^\circ_5(n)$ for $n\le30$ by dynamic programming ($467{,}976$ states, no
+recurrence) and compares $\binom{5n}nA^\circ_5(n)$ with $13$ OEIS terms;
+\path{check_jets.py} reconstructs the first-order jets and $\alpha_{5,1}$;
+\path{check_second_correction.py} all the second-order jets of
+Section~\ref{fce:dx:sec:alpha52} and $\alpha_{5,2}$ (about $100$~s recorded);
+\path{check_auxiliary.py} the pair-product elimination of the sextic, the
+second inverse correction and $b_2$; and
+\path{audit-check_second_assembly_fast.py} (delivered as
+\path{checks/audit/check_second_assembly_fast.py}) reconstructs the implicit
+root, the phase, the amplitude (algebraically, without $\operatorname{arcosh}$
+Taylor series) and the transfer jets by finite power-series convolution and
+assembles the Gaussian contraction independently.
+
+\emph{What the second program does not do.} Source~101-86's README calls it
+the ``final independent check''. It reads the main checker's output
+\path{second_correction.json}: it takes the implicit root jet from there and
+only verifies it (the residual of the critical equation vanishes); it
+recomputes the phase, amplitude and transfer jets by another method and
+compares them with the recorded ones; and it then assembles
+$\mathsf b^\circ_2$ and $\alpha_{5,2}$ from the recorded jets, which it has
+just found equal to its own. It is therefore a verification of the main
+computation, not a derivation independent of its output.
+
+At the intake both suites were rerun on copies in their delivered layout
+(Python~3.14.4, SymPy~1.14.0): source~101-86's six jobs passed (``All exact
+checks passed''; $445$~s on a shared machine, against $131$~s recorded) and
+source~101-90's four (``All checks passed''; $24$~s, against $12$~s). Their
+regenerated outputs equal the shipped ones apart from line endings (three
+files each) or the recorded running time (three and two files). At this write
+the enumerated $A^\circ_5(n)$, $n\le30$, were found equal to
+$A_5(n)/\binom{5n}n$ from Theorem~\ref{fce:kk:thm:coefficient}, and both
+enumerations to satisfy \eqref{fce:dx:eq:supermult}.
+
+Both packages state their scope: finite checks ``supplement the analytic
+proof'' and use no guessed recurrence; source~101-90's code ``checks examples
+of that procedure; it is not a general-purpose implementation''. Their review
+files (\path{101-90-alphabet-structural_review.md},
+\path{101-86-five-structural_review.md}) review drafts that were not delivered
+(\path{leading_comparison.md} and \path{all_orders_and_inverse.md};
+\path{asymptotic_proof.md}), and their QA receipts record approvals by the
+producing pipeline. Source~101-86's \path{check_receipt.json} has a key,
+\texttt{independent\_portable\_replay\_passed}, that its driver does not write:
+it was added after the run. The report's README discloses these points.
+
+\subsection{Stale and coordinate-dependent claims of the two reports}\label{fce:dx:sec:stale}
+Nothing in either report was found to be wrong: every formula checked agrees
+with Parts~I--V and with the data. Three statements are stale against this
+report and are corrected here (5 October 2026).
+\begin{enumerate}[label=(\alph*)]
+\item Source~101-86 says that ``the particular conjectured order-three
+recurrence is still unproved here'' (its README; its abstract and its
+closing section say the proof does not use or prove it), and source~101-90 that ``no
+particular guessed recurrence'' is asserted. True of the reports, but the
+recurrence of Kauers and Koutschan is proved in Part~IV
+(Theorem~\ref{fce:kk:thm:recurrence}), for every $n\ge0$.
+\item Both report that a bounded source check ``found no proof of this exact
+balanced-content equivalent'' (101-86) or ``no prior proof of this precise
+full fixed-alphabet statement'' (101-90). As source-relative statements these
+are not false; as priority statements they are superseded: the reports were
+finished about nine hours before this report's first placement, and this
+report holds four proofs of the same day (sources~61, 42, 75-03, 77-44); the
+two reports' proofs are the fifth and the sixth.
+\item Source~101-90's abstract ``accounts explicitly for the $r-1$ dominant
+mark points''. Correct in its coordinates; the number is
+coordinate-dependent (Remark~\ref{fce:dx:rem:invariant}): Section~6.4 has one
+mark point.
+\end{enumerate}
+Source~101-90's ``the sequence is eventually strictly increasing'' is true and
+is strengthened by Proposition~\ref{fce:dx:prop:supermult}.
+
+\subsection{Further questions and research}\label{fce:dx:sec:questions}
+The open questions of the two reports coincide with questions of
+Section~\ref{fce:sec:future}, where they are now credited (dated notes of
+October~5, 2026); none is answered by this Part. Each is listed with its
+source, its sketch and what is missing.
+\begin{enumerate}[label=101.\arabic*]
+\item \emph{Explicit minimal recurrences} (101-90; its
+D-finiteness is existence only, and 101-86 does not touch the recurrence).
+Merged into ``Find and explain the fourth-row recurrence''. For $r=5$ an
+order-three recurrence is proved (Part~IV); its minimality, and every other
+row, remain open.
+\item \emph{Smaller exponential sectors} beyond the Poincar\'e expansion
+(101-86, 101-90). Merged into ``Determine the exponentially small sectors'';
+for A215570 the candidate is the $(2/27)^n$ mode of
+Remark~\ref{fce:kk:rem:scope}. Missing: connection constants and Stokes data.
+\item \emph{Effective error constants for the inversion} (101-86: ``no
+numerical error constant or unconditional exact-ceiling rule''; 101-90:
+``effective numerical error bounds for inversion''). Merged into ``Determine
+sharp asymptotic error constants''. Missing: explicit forms of the $O_J$ in
+\eqref{fce:dx:eq:inverse} and of $\epsilon_J$, which would certify the single
+ceiling outside an explicit window.
+\item \emph{A growing alphabet} (101-90: ``uniform regimes in which the
+alphabet size grows''). Merged into ``Let the alphabet grow''. Missing: root
+separation and Gaussian bounds uniform in $r$; the constants
+$\kappa_r$, $\det H_{\rm ex}=12(r-1)/(r^r(r+1))$ and the multiplicity $2h$
+of Lemma~\ref{fce:dx:lem:torus} all move with $r$.
+\item \emph{The field of the coefficients} (from 101-90's non-claim ``no
+assertion that their smallest field is $\Q(\gamma_r)$ is needed''). Merged into
+``Automate all-order coefficient extraction''. Every known value lies in
+$\Q(\kappa_r)$: $\alpha_{5,j}\in\Q(\sqrt5)=\Q(\kappa_5)$
+(Theorem~\ref{fce:thm:five}) and $\alpha_{4,1}\in\Q(\varrho)=\Q(\kappa_4)$
+(Theorem~\ref{fce:ba:thm:alpha41}). Is $\alpha_{r,j}\in\Q(\kappa_r)$ for every
+$r$ and $j$? The proofs only give the field generated by the coefficients of
+the inside root factor, which may be larger for $r\ge6$.
+\item \emph{An engine for every order} (101-86 shows that the Gaussian rule
+reaches $j=2$ for $r=5$ in exact arithmetic; 101-90's rule is general).
+Merged into ``Automate all-order coefficient extraction''. Missing: the
+values $\alpha_{4,2}$, $\alpha_{4,3}$ and the rows $r=6,7,8$, which no
+package computes.
+\end{enumerate}
+Two steps that the reports only sketch are \emph{not} open, because the
+theorems they serve are proved in full elsewhere in this report: source~101-86's
+common transfer domain (``a fixed outer radius between $1/4$ and $4/9$, with a
+slit'') and source~101-90's ``any other branch collision on the critical
+modulus is either one of the enumerated time copies or removable for the
+selected product'' (Section~6.4 and Section~\ref{fce:subsec:allorders}, and the
+operator-norm bound of Lemma~\ref{fce:ba:lem:global}).
+
 \appendix
 \section{A reproducible all-order construction}\label{fce:app:algorithm}
 For clarity, the finite procedure implicit in the proof can be organized
@@ -4038,7 +5340,11 @@ correction for $r=3$ and $r=5$. For $r=5$, source~75-03's program
 (Part~\ref{fce:kk:part}) replaces the saddle construction above the first
 order by the recurrence algorithm
 \eqref{fce:kk:eq:ckalgorithm}--\eqref{fce:kk:eq:dalgorithm} and covers every
-order; it has recorded $\alpha_{5,j}$ for $j\le8$.
+order; it has recorded $\alpha_{5,j}$ for $j\le8$. (2026-10-05 note: source~101-90 states the procedure in marker coordinates with the extreme
+steps unmarked, \eqref{fce:dx:eq:recipe}, and its program covers $r=2,3$ to
+second order; source~101-86's program carries it out for $r=5$ to second
+order in exact arithmetic, without the recurrence,
+Theorem~\ref{fce:dx:thm:alpha52}.)
 
 \section{Package contents and build instructions}\label{fce:app:package}
 The report ships the programs and recorded outputs of both sources under
@@ -4078,6 +5384,22 @@ receipts \path{data/77-44-bal-*}. Its driver checks the hash of its
 unshipped manuscript, so it runs only in the delivered layout, rebuilt from
 the arrival archive; three of its scripts write their JSON receipts beside
 themselves. The README gives the commands.
+
+Sources~101-90 and~101-86 (Part~\ref{fce:dx:part}, added October~5, 2026)
+contribute, under the prefixes \texttt{101-90-alphabet-} and
+\texttt{101-86-five-}, their drivers \path{code/101-90-alphabet-run_checks.py}
+and \path{code/101-86-five-run_checks.py}, their check programs in
+\path{code/} (source~101-86's review program as
+\path{code/101-86-five-audit-check_second_assembly_fast.py}), their recorded
+outputs, receipts and QA files in \path{data/}, and their review notes
+\path{101-90-alphabet-structural_review.md} and
+\path{101-86-five-structural_review.md} (Section~\ref{fce:dx:sec:checks}).
+The programs expect the delivered layout: each check program writes its JSON
+output beside itself in a directory \path{checks}, each driver writes
+\path{check_receipt.json} one level up, and source~101-86's review program,
+delivered in \path{checks/audit}, reads \path{../second_correction.json}. They
+must be run on a copy rebuilt in that layout, never in this directory; the
+README gives the commands.
 
 The computations use arbitrary-precision integers, rational arithmetic,
 SymPy and mpmath (the shipped \path{data/61-balanced-requirements.txt},
