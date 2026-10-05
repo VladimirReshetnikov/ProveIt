@@ -1,5 +1,20 @@
 # WIP: native queue streams and research continuation
 
+The [actual rejecting-compiler theorem](complete83_rejecting_compiler.md)
+and [independent semantic review](review_complete83_rejecting_compiler.md)
+**refute the shared-projection83 proposal with its inherited compiler
+recipe**. Both resonant binary proofs now combine with odd completion to
+produce all18 positive witnesses at unbounded ordinary inputs on every
+original powers-of-five modified75 compiler slice. The explicit normalized
+three-state program that enters a permanent loop has empty language,
+so its constructed inputs are false positives. The six source ports retain
+the required MF_native+B-1 shift. This is a quantified existence proof;
+no giant compiler export or Pell tuple is materialized, and acceptance at
+every input is not claimed. Historical open-status notes below are retained
+and superseded for this specific candidate. **84/187/18 remains the proved
+universal minimum-operation point**; unrelated83 constructions and the
+separate independent-gamma83 proposal are not refuted by this theorem.
+
 The [local norm unit guard](complete92_norm_unit_guard.md) gives a complete
 universal **92=52M+40A**, **17-positive-witness** polynomial of **uniform exact
 degree 325**, with exactly the same positive zero tuples as the reviewed90/406
@@ -5572,6 +5587,7 @@ New research and the completed75-operation construction:
 
 | Artifact | Established result | Remaining boundary |
 |---|---|---|
+| [Actual rejecting compiler for shared83](complete83_rejecting_compiler.md) and [independent semantic review](review_complete83_rejecting_compiler.md) | Unbounded positive inputs with full83 zeros on every original compiler slice; explicit empty-language program proves false positives | Refutes this source with its inherited recipe, not all83 constructions or every input; universal84/187/18 remains |
 | [PLUS](complete83_plus_resonant_population.md) / [MINUS](complete83_resonant_minus_binary.md) resonant binary proofs and [root review](review_complete83_resonant_binary.md) | Authentic compiler sparsity and exact resonant residues prove the binary scale on sufficiently large subpower tails in both shapes | Full-zero semantic consequence requires a specified program; no improved universal bound |
 | [Growing resonant selectors](complete83_growing_resonant_selectors.md) and [independent review](review_complete83_growing_resonant_selectors.md) | Shifted search forces h→infinity and log(h)/log(Q)→0 in both shapes; preserves positive odd-scale completion with doubled size bound | Binary population and complete source zeros require separate proofs |
 | [Two derivations / Borel conjugacy review](review_two_derivations_78528873b.md) | Full1347-line proof review, exact scalar and simultaneous coordinate interface; new nonhalting reduction even for canonical pairs over Gamma=Z | Program-described coefficient supports differ from explicit finite lists; no uniform existential conjugacy test or paid universal compiler |
@@ -5606,7 +5622,7 @@ New research and the completed75-operation construction:
 | [Even-radix shared83 boundary](complete83_even_radix_boundary.md) | All valid-slice zeros have even q; exact half-binomial/cubic scale; full q76 scalar completion with e=−540 | Scalar numerals are not a valid program; compiler soundness and universal83 remain open |
 | [Polish Parts XVI–XVII review](review_polish_borel_9a8894d0a.md) | Selected Borel-order/summability interfaces pass; three omitted-hypothesis findings corrected with retained counterexamples | Full proofs/external sources unreviewed; no effective flag/cutoff extractor or paid integer compiler |
 | [Definable-surreal publication review](review_definable_publication_c7d65e30b.md) | Scoped interface/provenance review; notation and proof-status corrections retained; clean 160-page direct build | Infinite/set-sized semantic codes are not a paid integer compiler; full proofs and source programs unreviewed |
-| [Shared-projection83 source and mathematics](complete83_shared_projection_scout.md) | 46M37A/18w/degree187; exact forward map; v=u and common-offset theorem; full scalar diagnostic with e=-512 | Valid-program soundness unresolved; H-divisibility absent; diagnostic is not a compiler/rejected-input counterexample |
+| [Shared-projection83 source and mathematics](complete83_shared_projection_scout.md) | 46M37A/18w/degree187; exact forward map; v=u and common-offset theorem; full scalar diagnostic with e=-512 | Inherited recipe now refuted by the [actual rejecting compiler](complete83_rejecting_compiler.md); the original scalar diagnostic remains distinct |
 | [Affine coupling on independent-gamma83](complete83_affine_input_coupling.md) | Exact71-value exterior; nondegenerate Pell-line relation gives R²<8t+4+ceil(log2(23L²)); independent full-source audit | Conditional constraint only; simultaneous coefficient zeros unrestricted; paid relation/completeness still required |
 | [Batch92 reciprocal notes](review_reciprocal_9bffd43d5.md) | All16 text diffs;37 selected source spans; rational-space/countability hypotheses restored; retained Laurent-series counterexample;32-page CSF PDF rebuilt | Scoped interfaces only; no external/full-proof or archived execution certification; no universal bound change |
 | [Foundations/reversion six-archive intake](review_new_foundations_f300069cf.md) | 75 member pins; five complete checksum ledgers; 2,548 exact guide/abstract/interface lines | Full interpretation/completion proofs unread; birthday and finite-action interfaces supply no paid ordinary-integer compiler |
