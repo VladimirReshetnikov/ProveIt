@@ -2010,9 +2010,19 @@ Let $r_n$ be a sequence of exponents with $q_n\in K$ for which (H1) and
  \end{equation}
 \end{enumerate}
 Then $S_n(r_n)/\Omega_n^{r_n}=\vartheta(q_n,\delta_n)+o(1)$, and
-\eqref{tbs:lpt:eq:explicitbound} holds for $n\ge n_0$ with its second term
+\eqref{tbs:lpt:eq:explicitbound} holds for all sufficiently large $n$ (so
+that, in addition to $n\ge n_0$, the window sites are admissible in the sense
+of (H3) for that $R$) with its second term
 replaced by $B_*\sum_{|j-\delta_n|>R}\ee^{-c_*|j-\delta_n|}$.
 \end{theorem}
+\noindent\emph{Dated note (5~October 2026).} The first version of this
+theorem, written at this write, said ``for $n\ge n_0$''; an independent
+check found that the window sites must also be admissible, as in
+Theorem~\ref{tbs:lpt:thm:transfer}'s ``sufficiently large $n$''. The
+independent check (a careful reading with exact-row numerics, not a formal
+verification) found the other results added at this write valid:
+the log-concavity criterion, the Mahonian and ballot instances, the
+theta-side tail, the completion of Theorem~19.1 and Corollary~19.2.
 
 \begin{proof}
 Repeat the proof of Theorem~\ref{tbs:lpt:thm:transfer}. The only change is
@@ -2621,13 +2631,17 @@ $A_1,\dots,A_4$ gives
 \]
 so $Q_1=R_1$ but
 $Q_2=\frac{u^6}{18}-\frac{u^4}{36}+\frac{2u^2}9-\frac7{60}\ne R_2$
-(compare \eqref{tbs:eq:R2}). Both expansions are valid; they expand
-different normalized quantities. At $n=400$, $1600$, $6400$ the
+(compare \eqref{tbs:eq:R2}). Both expansions are valid (the second by
+re-expanding Part~I's Theorem~\ref{tbs:thm:main}, not through the
+all-orders theorem of this Part, whose hypotheses for the ballot rows are
+still open, item~F7); they expand different normalized quantities. At $n=400$, $1600$, $6400$ the
 truncation after $\mathcal T_2$ of $a_n/\Omega_n^n$ has relative errors
 $-3.4\cdot10^{-6}$, $-2.1\cdot10^{-7}$, $-1.3\cdot10^{-8}$, and the
 truncation after $F_2$ of $a_n/\Acal_n$ (Theorem~\ref{tbs:thm:main})
 $7.9\cdot10^{-7}$, $5.0\cdot10^{-8}$, $3.2\cdot10^{-9}$, both
-$\OO(m^{-3/2})$; but $\mathcal T_2(q_n,\alpha_n)\approx0.108$ while
+$\OO(m^{-3/2})$ (they actually fall like $m^{-2}$, by a factor of~16 per
+step, because these $n$ all have phases near~$1/2$, where the odd
+third-order terms nearly vanish); but $\mathcal T_2(q_n,\alpha_n)\approx0.108$ while
 $F_2(\alpha_n)\approx1.090$ at these $n$. The identification is exact at
 every order after re-choosing the dictionary: take $q=8$ fixed,
 $t_n=m^{-1/2}$, and $\Omega_n$ with $\Omega_n^n=\ee^{-5/6}\Acal_n$. Then
