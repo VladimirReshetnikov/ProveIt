@@ -4,6 +4,7 @@
 \usepackage{lmodern,microtype}
 \usepackage[margin=27mm,headheight=14pt]{geometry}
 \usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{bm}
 \usepackage{booktabs,longtable,array,enumitem}
 \usepackage{tikz}
 \usepackage{xcolor}
@@ -35,6 +36,10 @@
 \newcommand{\calD}{\mathcal D}
 \newcommand{\calU}{\mathcal U}
 \DeclareMathOperator{\Log}{Log}
+\newcommand{\Cov}{\operatorname{Cov}}
+\DeclareMathOperator{\Dir}{Dirichlet}
+\DeclareMathOperator{\Unif}{Uniform}
+\newcommand{\wrt}[1]{\textup{[}\textsf{write:}~#1\textup{]}}
 \newenvironment{writenote}[1][]{\par\smallskip\begingroup\small
  \noindent\textbf{[write]}\if\relax\detokenize{#1}\relax\else~\textbf{#1.}\fi\ }%
  {\par\endgroup\smallskip}
@@ -70,8 +75,19 @@ threshold qualifications. The claims are conventional mathematical
 proofs, accompanied by reproducible checks, not Lean formalizations or
 independently peer-reviewed results.
 \end{abstract}
+\begin{writenote}[Added 5 October 2026, batch~98]
+Since batch~98 the report has two Parts. Part~I, summarized above, is the
+original report. Part~II (Section~\ref{vmb:cw:sec:front} onward) adds
+manuscript~04 of batch~98: it answers Part~I's extreme-height question with
+a lattice-Gumbel law for the maximum part, introduces a valley-weighted
+model with a first-order transition at an explicit critical weight, and
+proves critical-window, Dirichlet and Dirichlet-mixture laws, an exact
+height-tail identity with an expansion of the height-cutoff pole, and
+inverses of these expansions. Its labels carry the prefix \texttt{vmb:cw:}.
+\end{writenote}
 \tableofcontents
 \newpage
+\phantomsection\addcontentsline{toc}{part}{Part I.\texorpdfstring{\quad}{ } A pole hierarchy for valley-monotone compositions}
 
 \section{The question, the OEIS connection, and the scope of the result}
 
@@ -175,6 +191,15 @@ rounding steps of Sections~\ref{vmb:sec:accumulation}
 and~\ref{vmb:sec:inverse} are instances of the transseries-and-inversion
 volume \cite{vmb-tai}, as the notes there say; no transseries in that
 volume's sense is constructed here.
+\end{writenote}
+
+\begin{writenote}[Added 5 October 2026, batch~98]
+The note above describes Part~I, which was a single manuscript printed in
+full. Since batch~98 the report also has a Part~II, built from a second
+manuscript (manuscript~04 of batch~98, pin \texttt{70ab31a1e}, placed in
+commit \texttt{9353a7171}); Section~\ref{vmb:cw:sec:provenance} records its
+provenance and Section~\ref{vmb:cw:sec:notation} its notation, which differs
+from Part~I's in places listed there.
 \end{writenote}
 
 \section{A decomposition by minimum part}\label{vmb:sec:decomposition}
@@ -1139,6 +1164,22 @@ not additive: determine whether its logarithmic scale exhibits a lattice
 Gumbel law and quantify any periodic phase. No extreme-value law is
 claimed in this report.
 
+\begin{writenote}[Added 5 October 2026, batch~98: answered in part]
+The extreme-height half of this question is answered in Part~II:
+Theorem~\ref{vmb:cw:thm:gumbel} proves
+$\Prob(\mathsf H_n\le h)=\exp(-\alpha n\rho^h)(1+O(\log n/n))$ for the
+maximum part $\mathsf H_n$ in the window $n\rho^h\asymp1$, with the explicit
+intensity $\alpha=\rho^2P_1(\rho)/M$; \eqref{vmb:cw:eq:latticephase} gives the
+lattice laws along phase subsequences, so there is no single continuous
+Gumbel limit; and Theorem~\ref{vmb:cw:thm:independent} shows that the maximum
+is asymptotically independent of the Gaussian bottom-valley count. The
+sentence ``No extreme-value law is claimed in this report'' describes
+Part~I. The first half, a joint normal law for additive statistics
+(columns, ones, peak heights) with a nondegenerate covariance matrix, is not
+addressed by Part~II and stays open
+(Subsection~\ref{vmb:cw:sec:q-write}, item~7).
+\end{writenote}
+
 \subsection{Moving lower bounds and a crossover problem}
 Theorem~\ref{vmb:thm:leading} holds for fixed~\(j\), while
 Theorem~\ref{vmb:thm:W} describes large~\(j\). Determine a uniform estimate
@@ -1158,6 +1199,2103 @@ using the rapidly increasing minimum degrees of the kernels and
 fast truncated multiplication. Non-P-recursiveness rules out a fixed
 polynomial recurrence, not fast coefficient algorithms.
 
+%% ====================================================================
+%% Batch-98 addition (manuscript 04, "Critical Windows and Extreme
+%% Heights in Valley-Monotone Compositions"). All labels of Part II carry
+%% the prefix vmb:cw: (critical windows).
+%% ====================================================================
+\clearpage
+\phantomsection\part*{Part II.\quad Critical windows and extreme heights}
+\addcontentsline{toc}{part}{Part II.\texorpdfstring{\quad}{ } Critical windows and extreme heights}
+\label{vmb:cw:part}
+
+\noindent\emph{Sections~1--\ref{vmb:sec:future} and
+Appendices~A--B form the original
+report (Part~I) of 1~October 2026, unchanged except for dated notes. Part~II
+was added on 5~October 2026 in batch~98 of ProveIt's incoming-report intake,
+from one manuscript written against the pinned state of Part~I. It answers
+the extreme-height question of Part~I (Section~\ref{vmb:sec:future},
+``Joint limits and extreme heights''), introduces a valley-weighted model
+with a first-order transition, and develops its critical windows.
+Section~\ref{vmb:cw:sec:front} records the provenance and fixes the notation
+of the addition; its appendices follow Part~I's.}
+
+\section{Provenance, scope and notation of Part II}
+\label{vmb:cw:sec:front}
+
+\begin{writenote}[Added 5 October 2026, batch~98]
+This section was written in the batch-98 write, except
+Subsection~\ref{vmb:cw:sec:scope}, which prints the manuscript's own first
+section with the changes listed there.
+\end{writenote}
+
+\subsection{Provenance}
+\label{vmb:cw:sec:provenance}
+Part~II is manuscript~04 of batch~98, the archive
+\nolinkurl{OEIS_Bargraph_Critical_Windows_and_Extremes.zip}, which arrived in
+commit \texttt{2172df76a} and was placed in this report by commit
+\texttt{9353a7171}. Its article is titled \emph{Critical Windows and Extreme
+Heights in Valley-Monotone Compositions}, with the subtitle ``An OEIS
+A001523-linked continuation of ProveIt: phase coexistence, Dirichlet laws,
+and invertible exponential expansions'' (24~pages, dated October~4, 2026);
+its author line reads ``Research manuscript prepared for Vladimir
+Reshetnikov''. AI assistance is not stated in the manuscript. Its pinned
+repository commit is \texttt{70ab31a1ec77852d411bc8ca1fc81d86d0c9985e}
+(4~October 2026), and the article blob it read,
+\texttt{f37593705acecfdc8dc158e9079ae36887e96609}, is the text of Part~I as
+committed in the batch-75 write (\texttt{9891e1f5e}); Part~I had not changed
+between that pin and this write, so nothing in the manuscript is stale with
+respect to it. The manuscript's source notes are shipped as
+\texttt{02-critical-windows-SOURCE\_NOTES.md}; its programs and recorded
+outputs are shipped with the prefix \texttt{02-critical-windows-} in
+\texttt{code/} and \texttt{data/} (Section~\ref{vmb:cw:sec:checks}).
+
+The manuscript cites OEIS A001523 (accessed October~4, 2026), the 2024
+bargraph paper~\cite{FRV}, whose bibliographic record and OEIS linkage it
+checked but whose full publisher text \emph{was not accessible} in its
+session, Flajolet and Sedgewick~\cite{FS} (through the author-maintained page
+\url{https://algo.inria.fr/flajolet/Publications/books.html}), and Part~I at
+the pinned commit, which it treats as a research draft, ``not \ldots\ an
+independently reviewed publication''. In Part~II these references are printed
+as the entries \cite{OEIS}, \cite{FRV}, \cite{FS} of Part~I's bibliography,
+with the manuscript's access notes kept in this paragraph, and its citations
+of Part~I are printed as cross-references.
+
+\subsection{What Part II proves, and how it relates to Part I}
+\label{vmb:cw:sec:claims}
+Part~I proves the exponential law, the positive-pole hierarchy, the
+bottom-valley central limit theorem and a Boltzmann terminal limit for the
+uniform model. Part~II keeps the same objects and adds:
+\begin{itemize}[leftmargin=*,itemsep=1pt]
+\item the \emph{lattice-Gumbel law} of the maximum part,
+ $\Prob(\mathsf H_n\le h)=\exp(-\alpha n\rho^h)(1+O(\log n/n))$ in the
+ window $n\rho^h\asymp1$, its lattice phase, and the asymptotic independence
+ of $\mathsf H_n$ from the Gaussian bottom-valley count
+ (Theorems~\ref{vmb:cw:thm:gumbel} and~\ref{vmb:cw:thm:independent});
+\item a weighted model with three regimes in the bottom-valley weight~$u$,
+ the exact critical weight
+ $u_c=\rho_2(1-\rho_2)(1-\rho_2^2)/(1+\rho_2^4)$, a uniform $1/n$ critical
+ window and its all-orders expansion
+ (Theorems~\ref{vmb:cw:thm:three}, \ref{vmb:cw:thm:window},
+ Proposition~\ref{vmb:cw:prop:windowall});
+\item Dirichlet area laws at simultaneous critical weights on finitely many
+ levels (Theorem~\ref{vmb:cw:thm:dirichlet}) and the Dirichlet-mixture law of
+ the maximum part there (Theorem~\ref{vmb:cw:thm:mixed});
+\item an exact $q$-product tail identity and the expansion of the
+ height-cutoff pole to every exponential order
+ (Lemma~\ref{vmb:cw:lem:psi}, Theorem~\ref{vmb:cw:thm:cutoffseries});
+\item inverses of these expansions with rounding qualifications
+ (Section~\ref{vmb:cw:sec:inversion}).
+\end{itemize}
+It also re-proves parts of Part~I so as to be independent of them.
+Table~\ref{vmb:cw:tab:routes} lists every overlap. Where Part~II's statement
+coincides with Part~I's, Part~I's statement stands and Part~II's text is a
+second route; the generalizations are new.
+
+\begin{table}[htbp]
+\centering\small
+\renewcommand{\arraystretch}{1.12}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{.30\textwidth}>{\raggedright\arraybackslash}p{.62\textwidth}@{}}
+\toprule
+Part II & Relation to Part I or to the repository\\
+\midrule
+Lemma~\ref{vmb:cw:lem:decomp}, \eqref{vmb:cw:eq:Usum} &
+second route to Lemmas~\ref{vmb:lem:U}, \ref{vmb:lem:D} and
+\eqref{vmb:eq:Usum} (the decomposition is originally~\cite{FRV}); the
+weighted form \eqref{vmb:cw:eq:weightedrec} at every level is new and
+generalizes \eqref{vmb:eq:marked}, which marks level~1 only\\
+Lemma~\ref{vmb:cw:lem:poles} &
+second route to Theorem~\ref{vmb:thm:meromorphic}, Lemma~\ref{vmb:lem:roots}
+and Theorem~\ref{vmb:thm:leading} (same amplitudes $c_j$)\\
+Theorem~\ref{vmb:cw:thm:three} &
+its case $u=1$ (supercritical) is Theorem~\ref{vmb:thm:CLT}, and the
+tightness of the final block there is part of
+Theorem~\ref{vmb:thm:terminal}; the regimes $u\ne1$ are new\\
+Proposition~\ref{vmb:cw:prop:rounding} &
+its monotonicity argument is that of Proposition~\ref{vmb:prop:threshold};
+its ceilings are an instance of \texttt{p0:thm:staircase}~\cite{vmb-tai}\\
+\eqref{vmb:cw:eq:Wcrit}--\eqref{vmb:cw:eq:Wlog},
+\eqref{vmb:cw:eq:Wmulti}--\eqref{vmb:cw:eq:multiinverseimplicit},
+Theorem~\ref{vmb:cw:thm:inverseheight} &
+instances of \texttt{p0:thm:lambert-core}, \texttt{p0:thm:core-reversion}
+and \texttt{p0:thm:LB}~\cite{vmb-tai} (note in
+Section~\ref{vmb:cw:sec:inversion}); the constants are new\\
+everything else &
+new in this report: Theorems~\ref{vmb:cw:thm:three} ($u\ne1$),
+\ref{vmb:cw:thm:window}, \ref{vmb:cw:thm:dirichlet},
+\ref{vmb:cw:thm:cutoffseries}, \ref{vmb:cw:thm:gumbel},
+\ref{vmb:cw:thm:independent}, \ref{vmb:cw:thm:mixed},
+\ref{vmb:cw:thm:inverseheight}, Proposition~\ref{vmb:cw:prop:windowall},
+Lemmas~\ref{vmb:cw:lem:simplex}, \ref{vmb:cw:lem:psi},
+Corollaries~\ref{vmb:cw:cor:firstorder}, \ref{vmb:cw:cor:cov}\\
+\bottomrule
+\end{tabular}
+\caption{Overlaps of Part II with Part I and with the repository.}
+\label{vmb:cw:tab:routes}
+\end{table}
+
+\paragraph{Answered and open questions of Part~I.}
+Part~I's question ``Joint limits and extreme heights''
+(Section~\ref{vmb:sec:future}) asked two things. Its second half, whether the
+maximum height has a lattice Gumbel law and what its periodic phase is, is
+answered by Theorem~\ref{vmb:cw:thm:gumbel} and~\eqref{vmb:cw:eq:latticephase},
+and Theorem~\ref{vmb:cw:thm:independent} adds the joint law of the bottom-valley
+count and the maximum. Its first half, a joint normal law for additive
+statistics (columns, ones, peak heights) with a nondegenerate covariance
+matrix, is \emph{not} addressed by Part~II and stays open. Part~I's questions
+on the natural boundary and on moving lower bounds are restated, not
+answered, in Section~\ref{vmb:cw:sec:future}.
+
+\paragraph{What the write proved.}
+Five statements of the manuscript are supported only by a sketch, an
+analogy or a one-line remark. The write supplies proofs of them, each marked
+\textsf{[write]} and printed with its proof: the tilted multicritical window
+(Proposition~\ref{vmb:cw:prop:tilted}), the fixed-parameter phase-chamber
+classification (Proposition~\ref{vmb:cw:prop:chambers}), the conditional
+intensity of the critical maximum and its dependence on the area fractions
+(Proposition~\ref{vmb:cw:prop:conditional}), the multicritical rounding and
+critical quantile bounds (Proposition~\ref{vmb:cw:prop:roundingmulti}), and the
+monotonicity of the interpolated cutoff shift
+(Lemma~\ref{vmb:cw:lem:deltamono}). These proofs have not been independently
+reviewed. Section~\ref{vmb:cw:sec:future} lists them with the manuscript's
+open questions.
+
+\subsection{Notation}
+\label{vmb:cw:sec:notation}
+Part~II uses Part~I's names for every shared object. The manuscript uses
+several letters that Part~I uses for other objects, and overloads some
+internally ($a$, $b$, $c$, $C$, $D$, $T$, $p$, $x_0$, $a_r$).
+Table~\ref{vmb:cw:tab:notation} fixes the convention; every renaming is
+listed, and no normalization is changed. The macros \verb|\Pp| and
+\verb|\coef| of the manuscript are printed with Part~I's \verb|\Prob| and
+\verb|\coeff|; the manuscript's unused macros \verb|\cO| and \verb|\tr| are
+not carried over. Short identifications with Part~I set as
+\wrt{\ldots} were added in writing on 5~October 2026, like the
+\textsf{[write]} notes.
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{.30\textwidth}>{\raggedright\arraybackslash}p{.24\textwidth}>{\raggedright\arraybackslash}p{.38\textwidth}@{}}
+\caption{Notation of Part~II against the manuscript and Part~I.}
+\label{vmb:cw:tab:notation}\\
+\toprule
+Notion & Part II & Manuscript; remark\\
+\midrule
+\endfirsthead
+\toprule
+Notion & Part II & Manuscript; remark (continued)\\
+\midrule
+\endhead
+second positive pole & $\rho_2$ & $R$ (Part~I's $R$, $R_j$ are radii)\\
+pole at the $m$-level critical point & $\rho_{m+1}$ & $R_m$; also ``$R$'' in its Section~8\\
+radius beyond the dominant pole & $R$, $R_j$ (as in Theorem~\ref{vmb:thm:leading}) & $T$, $T_j$ (Part~I's $T$ is the limiting terminal block)\\
+moments of $Z$ at $\rho=\rho_1$ & $M=M_\rho$, $V=V_\rho$ of \eqref{vmb:eq:MV} & $M_\rho$, $V_\rho$\\
+critical moments at $\rho_2$ & $M_c$, $V_c$, $J_c$, $D_c=V_c/(2M_c^3)$ & $M$, $V$, $J$, $D$ (Part~I's $M,V$ are at $\rho$; Part~I's $D_j$ are series)\\
+window amplitude & $d_c$ & $d$ (not Part~I's $d(n)$)\\
+first window correction & $G_1(s)$ & $C_0(s)$ (equal by Proposition~\ref{vmb:cw:prop:windowall})\\
+leading coefficient at $m$ levels & $\kappa^{(m)}$, with $\kappa^{(1)}=\kappa$ & $C_m$ (Part~I's $C_k$ are amplitudes at $\rho_k$)\\
+critical counting polynomial & $\Pi_m(x)=\kappa^{(m)}x^m(1+\pi_1/x+\cdots)$ & $P_m$, $p_k$\\
+area in level-$j$ repeated units & $\mathcal A_{j,n}$ & $C_{j,n}$\\
+area of the final block & $|T_n|$ (Part~I's block $T_n$) & $T_n$\\
+Dirichlet coordinates & $\xi_0,\ldots,\xi_m$, $\bm\xi$ & $x_0,\ldots,x_m$, $\bm x$ (Part~I's $x_j=jt_j$; the manuscript's $x_0$ is also a leading inverse)\\
+area marks & $v_j$ & $t_j$ (Part~I's $t_j=-\log\rho_j$)\\
+product $\prod_{r\ge j}(1-q^r)^{-2}$ & $P_j(q)$, $P_1(q)$ (Section~\ref{vmb:sec:accumulation}) & $\mathcal P_j$, $\mathcal P$ (Part~I's $\calP_R$ is a set of poles)\\
+cutoff polynomials & $\varpi_{r-1}(h)$ & $Q_{r-1}(h)$ (Part~I's $Q_j$ is a series)\\
+order-$r$ cutoff coefficients & $A_r(q)$ & $a_r(q)$ in a proof, $A_r(q)$ in Appendix~B (the $a_j(q)$ of \eqref{vmb:cw:eq:generaltail} are level-$j$ coefficients; $a_1=A_1$ only)\\
+product coefficients & $\gamma_\ell(q)$ & $c_\ell(q)$ (Part~I's $c_j$ are amplitudes)\\
+capped amplitude & $\hat c_h$ & $c_h$\\
+level-2 numerator, Laurent constant & $B_2=E_2D_3$, $c_{2,0}$ & $A_2$, $d_{20}$\\
+nearby-pole numerator & $\Xi_n$, $\Xi_n(\rho_{m+1})\to a_*$ & $A_n$, $a$\\
+subcritical ratio & $\bar u=u/u_c$ & $a$\\
+height-window bounds & $\tau_-\le n\rho^h\le\tau_+$ & $a\le n\rho^h\le b$\\
+inverse shift & $a_c=\kappa_0/\kappa$ & $a$\\
+height centres & $\beta_n$, $\beta_n^{\mathrm{crit}}$, $\beta_p(n)$ & $b_n$, $b_n^{\mathrm{crit}}$, $b_p(n)$ (not the Laurent $b$, $b_0$)\\
+standard normal limit & $\chi$ & $Z$ (Part~I's $Z$ is the unit size)\\
+multicritical inverse correction & $\varphi$ & $h$ (a height elsewhere)\\
+number of minimal roots & $\nu$ & $p$\\
+log-series variables in \eqref{vmb:cw:eq:Wlog} & $z_c$, $\ell_1$, $\ell_2$ & $Z$, $L_1$, $L_2$ (its $L_m$ at $m=1$ is $L_c$)\\
+rounding constant & $C_*$ & $C$ (Part~I's $C$ is the growth amplitude)\\
+\midrule
+\multicolumn{3}{@{}l}{\emph{Kept, with a warning}}\\
+marked function & $F(q,u)$ & $=D(q,u)$ of \eqref{vmb:eq:marked}; not the interpolant $F_R$\\
+$\log(1/\rho)$ & $L$ & $=\log\lambda$, Part~I's $L$\\
+Gumbel intensities & $\alpha$, $\alpha_j^*$ & not the coefficients $\alpha_k(c)$ of \eqref{vmb:eq:alphas}\\
+weighted denominator & $Q_{j,u}$ & $Q_{j,1}=(1-q^j)Q_j$ with Part~I's $Q_j$\\
+lattice phase & $\theta$ & not the ratio $\theta$ of \eqref{vmb:eq:main-intro}\\
+cutoff shift & $\delta_h$, $\delta(h)$ & not the decay rate $\delta$ of \eqref{vmb:eq:interpolant}\\
+run kernel, $(1-q^j)^{-2}$ & $H_j$, $E_j$ & $H_j$ as in Part~I; $\mathsf H_n$ is the maximum part; $E_j$ is not $E_R$\\
+simplex & $\Delta_m$ & not the gap $\Delta$ of \eqref{vmb:eq:singleinverse}\\
+dominant amplitude of $D_j$ & $c_j$ & as in Theorem~\ref{vmb:thm:leading}\\
+\bottomrule
+\end{longtable}
+
+\subsection{The manuscript's research question, sources and contribution boundary}
+\label{vmb:cw:sec:scope}
+\begin{writenote}[Added 5 October 2026, batch~98]
+This subsection is the manuscript's first section; its three subsections
+are printed as unnumbered headings. Its citations of Part~I are printed as
+cross-references, and nothing else is changed.
+\end{writenote}
+
+\subsubsection*{The OEIS connection is structural}
+OEIS A001523 counts weakly unimodal compositions, or stacks. Its classical
+asymptotics are already known, so the present article does not present them
+as an open problem. Write
+\begin{equation}
+A(q)=\sum_{n\ge0}\mathrm{A001523}(n)q^n.
+\end{equation}
+The entry gives, among other formulas,
+\begin{equation}\label{vmb:cw:eq:oeis}
+ A(q)=1+\sum_{h\ge1}\frac{q^h}{1-q^h}
+              \prod_{r=1}^{h-1}(1-q^r)^{-2}.
+\end{equation}
+It also links the 2024 paper of Fl\'orez, Ram\'irez, and Villamizar on
+non-decreasing bargraphs \cite{OEIS,FRV}. The term ``non-decreasing'' refers
+to the heights of successive interior valley plateaux, not to all columns.
+We use the more explicit description \emph{valley-monotone}.
+
+The repository report \emph{A Pole Hierarchy for Valley-Monotone Compositions}
+(Part~I) rederives the minimum-part decomposition and proves its first
+counting and probability consequences. Its final research section asks
+whether maximum height has a lattice-Gumbel law and how joint statistics
+behave. Those are specific, documented questions addressed here. The target
+bargraph counting sequence is not identified with A001523: A001523 supplies
+the unimodal blocks. No unverified OEIS number for the target sequence is
+assigned.
+
+\subsubsection*{What is inherited and what is developed here}
+The symbolic decomposition, the unweighted dominant pole, the positive-pole
+hierarchy, and the bottom-valley central limit theorem are inherited from
+Part~I; the decomposition originates in \cite{FRV}. We give the short
+proofs needed to make the present article independent of unproved repository
+assertions. Meromorphic coefficient extraction, quasi-powers arguments,
+Lagrange inversion, and the appearance of simplex laws from products of
+simple poles are standard methods of analytic combinatorics \cite{FS}.
+
+The present continuation develops the following model-specific conclusions:
+the exact maximum-height intensity and its lattice phase; a weighted
+first-order transition with a uniform critical density; its finite-size
+scaling function and correction; a finite hierarchy of simultaneous critical
+weights with Dirichlet area sharing; the resulting mixed extreme-height
+law; and an explicit all-orders expansion and inversion for the moving
+height-cutoff pole. The maximum-height theorem answers the explicit question
+in Part~I. The weighted and multicritical formulations introduce and
+solve further questions rather than claim to settle a previously advertised
+OEIS conjecture.
+
+\subsubsection*{Audit and limitations}
+The repository source inspected was
+\begin{quote}\small\ttfamily
+SetTheory/Cardinals/docs/reports/\\
+enumerative-combinatorics/valley-monotone-bargraphs/\\
+article.tex
+\end{quote}
+at the snapshot identified by commit
+\texttt{70ab31a1ec77852d411bc8ca1fc81d86d0c9985e}; the fetched article blob
+was \texttt{f37593705acecfdc8dc158e9079ae36887e96609}.
+The relevant definitions, analytic results, and final research questions
+were read, not inferred from filenames. Targeted searches for the published
+bargraph title and for maximum-height, phase-transition, and Dirichlet
+refinements did not identify an earlier matching result. The publisher's
+complete article was not accessible in this session; its bibliographic
+record and the OEIS linkage were accessible. Consequently this is a bounded
+source audit, not an exhaustive novelty certificate. All decimals introduced
+below are numerical diagnostics unless explicitly described otherwise.
+
+\section{Minimum-part decomposition and analytic foundations}
+\label{vmb:cw:sec:foundations}
+
+\subsection{Objects and generating functions}
+A composition is a nonempty finite sequence of positive integers. Its area
+is the sum of its parts, and its height is its largest part. Collapse every
+maximal constant run to a single entry. An interior entry smaller than both
+neighbors represents one valley plateau. A composition is valley-monotone
+when the resulting valley heights are weakly increasing.
+
+Let $\calU_j$ and $\calD_j$ be, respectively, the nonempty unimodal and
+valley-monotone compositions with all parts at least $j$. Their ordinary
+generating functions are $U_j(q)$ and $D_j(q)$. Thus $U_1=A-1$.
+We use
+\begin{equation}\label{vmb:cw:eq:kernels}
+ H_j(q)=\frac{q^j}{1-q^j},\qquad
+ E_j(q)=(1-q^j)^{-2},\qquad
+ K_j(q)=H_j(q)U_{j+1}(q).
+\end{equation}
+The symbol $H_j$ counts a nonempty run at level $j$; it is not the random
+maximum height, which will be denoted $\mathsf H_n$.
+
+\begin{lemma}[Unique decomposition]\label{vmb:cw:lem:decomp}
+As formal power series,
+\begin{align}
+ U_j&=H_j+E_jU_{j+1},\label{vmb:cw:eq:Urec}\\
+ D_j&=H_j+\frac{E_jD_{j+1}}{1-K_j}.\label{vmb:cw:eq:Drec}
+\end{align}
+If each valley of height $j$ receives weight $u_j$, the corresponding
+weighted function satisfies
+\begin{equation}\label{vmb:cw:eq:weightedrec}
+ D_j(q;u_j,u_{j+1},\ldots)
+ =H_j(q)+\frac{E_j(q)D_{j+1}(q;u_{j+1},\ldots)}{1-u_jK_j(q)}.
+\end{equation}
+Only finitely many $u_j$ need differ from one.
+\end{lemma}
+\begin{proof}
+A unimodal object either is an all-$j$ run or has a nonempty central object
+with larger parts, flanked by two possibly empty $j$-runs. This proves
+\eqref{vmb:cw:eq:Urec}.
+
+For a valley-monotone object that is not all $j$, split at the runs of $j$.
+Each nonfinal block of larger parts must be unimodal: an interior valley
+there would have height larger than $j$ and would precede a valley of height
+$j$. Conversely, choosing unimodal nonfinal blocks and a valley-monotone
+final block creates no forbidden descent among valley heights. The unique
+form is
+\[
+ (\text{initial }j\text{-run})\,
+ (\calU_{j+1}\,\text{nonempty }j\text{-run})^*\,
+ \calD_{j+1}\,(\text{final }j\text{-run}).
+\]
+Every repeated block contributes exactly one height-$j$ valley. Its kernel
+is $K_j$, or $u_jK_j$ after marking. This proves both remaining formulas.
+\end{proof}
+
+\begin{writenote}[Added 5 October 2026, batch~98]
+\eqref{vmb:cw:eq:Urec} and \eqref{vmb:cw:eq:Drec} are \eqref{vmb:eq:Urec} and
+\eqref{vmb:eq:Drec} of Lemmas~\ref{vmb:lem:U} and~\ref{vmb:lem:D}, and this
+proof is a second route to them. The weighted form
+\eqref{vmb:cw:eq:weightedrec} at every level $j$ is new; at $j=1$ with
+$u_2=u_3=\cdots=1$ it is \eqref{vmb:eq:marked}.
+\end{writenote}
+
+Iterating \eqref{vmb:cw:eq:Urec} gives
+\begin{equation}\label{vmb:cw:eq:Usum}
+ U_j(q)=\sum_{h\ge j}\frac{q^h}{1-q^h}
+                   \prod_{r=j}^{h-1}(1-q^r)^{-2}.
+\end{equation}
+The unweighted target sequence $d(n)=\coeff qn D_1(q)$, with $d(0)=0$, begins
+\[
+1,2,4,8,16,32,64,128,256,512,1023,2042,4071,8106,16121,\ldots.
+\]
+The equality with $2^{n-1}$ through area ten is only an initial coincidence.
+
+\subsection{A local analytic foundation, with no global conjectures}
+\begin{lemma}[Dominant poles]\label{vmb:cw:lem:poles}
+For every fixed $j$, $U_j$ is analytic on $|q|<1$. There is a unique
+$\rho_j\in(0,1)$ such that $K_j(\rho_j)=1$, and
+\[
+ \rho_j<\rho_{j+1},\qquad \rho_j\longrightarrow1.
+\]
+The function $D_j$ is meromorphic on $|q|<1$. Its unique singularity on
+$|q|\le\rho_j$ is a simple pole at $\rho_j$. For some $R_j>\rho_j$,
+\begin{equation}\label{vmb:cw:eq:basepole}
+ \coeff qn D_j=c_j\rho_j^{-n}+O(R_j^{-n}),\qquad
+ c_j=\frac{E_j(\rho_j)D_{j+1}(\rho_j)}{M_j(\rho_j)}>0,
+\end{equation}
+where
+\begin{equation}\label{vmb:cw:eq:moments}
+ M_j(q)=\frac{qK_j'(q)}{K_j(q)},\qquad
+ V_j(q)=q\frac{\dd}{\dd q}M_j(q).
+\end{equation}
+\end{lemma}
+\begin{proof}
+For $|q|\le r<1$, the product in \eqref{vmb:cw:eq:Usum} is uniformly bounded by
+$\prod_{k\ge j}(1-r^k)^{-2}<\infty$, and the remaining summand is $O(r^h)$.
+This gives local normal convergence. For real $q$, $K_j(q)$ increases
+strictly from zero to infinity. Both $H_j>H_{j+1}$ and $U_{j+1}>U_{j+2}$,
+so $K_j>K_{j+1}$ and the roots are strictly ordered.
+
+For large $j$ and fixed $r<1$, all compositions with allowed parts at least
+$j$ are bounded coefficientwise by $S_j/(1-S_j)$, where
+$S_j(q)=q^j/(1-q)$ and $S_j(r)<1$. Thus $K_j=O(r^{2j})$ locally as
+$j\to\infty$, which proves $\rho_j\to1$. Iteration of \eqref{vmb:cw:eq:Drec}
+gives a locally normally convergent sum away from the locally finite zeros
+of $1-K_j$: its multiplier is $E_j/(1-K_j)=1+O(r^j)$ and its additive
+term is $H_j=O(r^j)$. This proves meromorphic continuation.
+
+For $k>j$, $K_k(\rho_j)<1$, so the higher-level factors are analytic on
+$|q|\le\rho_j$. The support of $K_j$ contains the consecutive degrees
+$2j+1$ and $2j+2$. Equality in the triangle inequality in
+$K_j(q)=1$, with $|q|=\rho_j$, therefore forces $q=\rho_j$. The pole is
+simple because $K_j'(\rho_j)>0$, and its numerator is positive. Subtract
+$c_j/(1-q/\rho_j)$ and apply Cauchy's coefficient bound on a slightly
+larger circle containing no other singularity.
+\end{proof}
+
+\begin{writenote}[Added 5 October 2026, batch~98]
+Lemma~\ref{vmb:cw:lem:poles} restates Theorem~\ref{vmb:thm:meromorphic},
+Lemma~\ref{vmb:lem:roots} and Theorem~\ref{vmb:thm:leading}, and its proof is
+a condensed second route to them. Its $\rho_j$ and $c_j$ are Part~I's: since
+$K_j(\rho_j)=1$, $M_j(\rho_j)=\rho_jK_j'(\rho_j)$ and the two formulas for $c_j$
+agree. The $S_j$ in the proof is Part~I's $S_J$ of
+Proposition~\ref{vmb:prop:tail} with $J=j-1$.
+\end{writenote}
+
+For real $q\in(0,1)$, $M_j(q)$ and $V_j(q)$ are the mean and variance of
+the positive integer distribution
+\begin{equation}\label{vmb:cw:eq:boltzmannkernel}
+ \Prob(Z_j=s)=\frac{\coeff qs K_j(q)\,q^s}{K_j(q)}.
+\end{equation}
+In particular $V_j(q)>0$. No natural-boundary assertion or classification of
+nonreal poles is required in this paper. \wrt{at $j=1$, $q=\rho$ this is
+Part~I's $Z$ of \eqref{vmb:eq:Z}, and $M_1(\rho)=M$, $V_1(\rho)=V$ are Part~I's
+moments \eqref{vmb:eq:MV}.}
+
+\section{A bottom-valley phase transition}
+\label{vmb:cw:sec:transition}
+Let $V_n$ count the valleys of height one. Give an area-$n$ object weight
+$u^{V_n}$, with $u>0$, and normalize these weights to obtain a probability
+measure $\Prob_{n,u}$. Define
+\begin{equation}\label{vmb:cw:eq:F}
+ F(q,u)=H_1(q)+\frac{B(q)}{1-uK(q)},\qquad
+ K=K_1,\quad B=E_1D_2,\quad f_n(u)=\coeff qn F(q,u).
+\end{equation}
+\wrt{this $F$ is Part~I's $D(q,u)$ of \eqref{vmb:eq:marked}, with the same $B$
+and $K$.} Put
+\begin{equation}\label{vmb:cw:eq:critical}
+ u_c=\frac1{K(\rho_2)},\quad
+ M_c=M_1(\rho_2),\quad V_c=V_1(\rho_2),\quad
+ J_c=\frac{u_c\rho_2^2K''(\rho_2)}2.
+\end{equation}
+At $\rho_2$ expand
+\begin{equation}\label{vmb:cw:eq:Blaurent}
+ B(q)=\frac b{1-q/\rho_2}+b_0+O(1-q/\rho_2),\qquad b>0.
+\end{equation}
+All these constants are defined analytically, not by their displayed decimals.
+
+\begin{theorem}[Three regimes]\label{vmb:cw:thm:three}
+For fixed $u>0$ the following statements hold.
+
+\smallskip\noindent
+\textbf{Subcritical regime, $u<u_c$.} Set $\bar u=u/u_c$. There is
+$R>\rho_2$ such that
+\begin{equation}\label{vmb:cw:eq:subcrit}
+ f_n(u)=\frac b{1-\bar u}\rho_2^{-n}+O(R^{-n}),\qquad
+ V_n\ \Longrightarrow\ \operatorname{Geom}_0(1-\bar u),
+\end{equation}
+where the limiting probability at $k\ge0$ is $(1-\bar u)\bar u^k$. The final
+$\calD_2$ block has area $n-O_{\Prob}(1)$.
+
+\smallskip\noindent
+\textbf{Supercritical regime, $u>u_c$.} Let $r=r(u)<\rho_2$ solve $uK(r)=1$.
+For some $R>r$,
+\begin{equation}\label{vmb:cw:eq:supercrit}
+ f_n(u)=\frac{B(r)}{M_1(r)}r^{-n}+O(R^{-n}),
+\end{equation}
+\begin{equation}\label{vmb:cw:eq:superCLT}
+ \frac{V_n-n/M_1(r)}{\sqrt{nV_1(r)/M_1(r)^3}}
+ \ \Longrightarrow\ \mathcal N(0,1).
+\end{equation}
+The final block has tight area, with an exponentially decaying limiting tail.
+
+\smallskip\noindent
+\textbf{Critical regime, $u=u_c$.} There is $R>\rho_2$ such that
+\begin{equation}\label{vmb:cw:eq:criticalcount}
+ f_n(u_c)=\rho_2^{-n}(\kappa n+\kappa_0)+O(R^{-n}),
+\end{equation}
+where
+\begin{equation}\label{vmb:cw:eq:kappas}
+ \kappa=\frac b{M_c},\qquad
+ \kappa_0=\frac b{M_c}+\frac{b_0}{M_c}+\frac{bJ_c}{M_c^2}.
+\end{equation}
+Moreover,
+\begin{equation}\label{vmb:cw:eq:uniform}
+ \frac{V_n}{n}\Longrightarrow\Unif[0,1/M_c],\quad
+ \frac{\E V_n}{n}\to\frac1{2M_c},\quad
+ \frac{\Var V_n}{n^2}\to\frac1{12M_c^2}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+When $u<u_c$, the denominator in \eqref{vmb:cw:eq:F} does not vanish on
+$|q|\le\rho_2$; only the pole of $B$ contributes. Uniformly for complex $v$
+near one,
+\[
+ \frac{f_n(uv)}{f_n(u)}\longrightarrow\frac{1-\bar u}{1-\bar uv}.
+\]
+This proves the geometric law. Marking the area outside the final block
+by an extra variable close to one leaves all exterior factors analytic at
+$\rho_2$; the same residue ratio gives a finite exponential moment for that
+area, uniformly for large $n$.
+
+For $u>u_c$, positivity and the consecutive kernel degrees give a unique
+simple pole $r<\rho_2$. Its coefficient is $B(r)/M_1(r)$. Analytically
+perturbing $u$ to $ue^s$ gives
+\[
+ \log\E_{n,u}e^{sV_n}
+ =n\log\frac{r(u)}{r(ue^s)}+O(1),
+\]
+with an analytic, uniformly controlled $O(1)$ term. Differentiating
+$\log K(r(ue^s))=-\log u-s$ gives first and second derivatives
+$1/M_1(r)$ and $V_1(r)/M_1(r)^3$ for the leading logarithmic moment
+generating function. Substitution $s=it/\sqrt n$ proves the central limit
+theorem. Since $B$ is analytic beyond $r$, the final block is exponentially
+tight.
+
+At criticality, put $t=1-q/\rho_2$. Then
+\[
+ 1-u_cK(q)=M_ct-J_ct^2+O(t^3).
+\]
+Using \eqref{vmb:cw:eq:Blaurent}, the singular part of $F$ is
+\[
+ \frac{b/M_c}{t^2}+\frac{b_0/M_c+bJ_c/M_c^2}{t}.
+\]
+Coefficient extraction proves \eqref{vmb:cw:eq:criticalcount}. The distributional
+limit is proved with its full scaling window in Theorem~\ref{vmb:cw:thm:window}
+below. Since every valley uses at least one part, $0\le V_n/n\le1$;
+weak convergence therefore also implies convergence of the first two
+moments and the variance statement.
+\end{proof}
+
+\begin{writenote}[Added 5 October 2026, batch~98]
+The ordinary model $u=1$ lies in the supercritical regime, where
+$r(1)=\rho$ and \eqref{vmb:cw:eq:superCLT} is Theorem~\ref{vmb:thm:CLT} with
+$\mu=1/M$, $\sigma^2=V/M^3$; the tightness of the final block at $u=1$ is
+part of Theorem~\ref{vmb:thm:terminal}. The regimes $u\le u_c$ and the
+supercritical regime at $u\ne1$ are new.
+\end{writenote}
+
+\begin{corollary}[A first-order transition]\label{vmb:cw:cor:firstorder}
+The exponential growth rate is
+\begin{equation}
+ \Lambda(u)=\lim_{n\to\infty}\frac1n\log f_n(u)
+ =\begin{cases}-\log \rho_2,&u\le u_c,\\-\log r(u),&u>u_c.
+ \end{cases}
+\end{equation}
+Its derivative with respect to $\log u$ jumps from $0$ to $1/M_c$ at $u_c$.
+\end{corollary}
+\begin{proof}
+The coefficient asymptotics give the formula. Implicit differentiation of
+$uK(r(u))=1$ gives $-\dd\log r/\dd\log u=1/M_1(r)$; now let $u\downarrow u_c$.
+\end{proof}
+
+The critical value has a compact exact expression in the second unweighted
+pole:
+\begin{equation}\label{vmb:cw:eq:ucclosed}
+ \boxed{\displaystyle
+ u_c=\frac{\rho_2(1-\rho_2)(1-\rho_2^2)}{1+\rho_2^4}.}
+\end{equation}
+Indeed, $K_2(\rho_2)=1$ gives $U_3(\rho_2)=(1-\rho_2^2)/\rho_2^2$, and
+\eqref{vmb:cw:eq:Urec} then gives
+$U_2(\rho_2)=(1+\rho_2^4)/(\rho_2^2(1-\rho_2^2))$.
+Numerically,
+\begin{align*}
+ \rho_2&=0.6285205937788026\ldots,&u_c&=0.1221810090081765\ldots,\\
+ M_c&=13.41194879035466\ldots,&1/M_c&=0.07456038012307058\ldots,\\
+ \kappa&=0.2326297632869357\ldots,&
+ \kappa_0&=-0.3327584620888633\ldots.
+\end{align*}
+The ordinary uniform model is $u=1>u_c$; the new transition is a weighted
+refinement, not a claim that the ordinary model is critical.
+
+\section{The critical window and all finite-size orders}
+\label{vmb:cw:sec:window}
+Define the entire function
+\begin{equation}\label{vmb:cw:eq:G}
+ G(z)=\int_0^1e^{zx}\,\dd x
+ =\begin{cases}(e^z-1)/z,&z\ne0,\\1,&z=0.\end{cases}
+\end{equation}
+The integral definition is preferable near $z=0$.
+
+\begin{theorem}[Uniform critical window]\label{vmb:cw:thm:window}
+Let $u_n(s)=u_c e^{s/n}$. Uniformly for $s$ in any fixed compact subset
+of $\C$,
+\begin{equation}\label{vmb:cw:eq:window}
+ \rho_2^nf_n(u_n(s))=\kappa nG(s/M_c)+G_1(s)+O(n^{-1}),
+\end{equation}
+where
+\begin{align}
+ D_c&=\frac{V_c}{2M_c^3},\qquad
+ d_c=b\left(-\frac12+\frac1{M_c}+\frac {J_c}{M_c^2}\right)+\frac{b_0}{M_c},
+ \label{vmb:cw:eq:Dd}\\
+ G_1(s)&=\frac b2+e^{s/M_c}(d_c+bD_cs).\label{vmb:cw:eq:C0}
+\end{align}
+For real $s$, under $\Prob_{n,u_n(s)}$ the random variable $V_n/n$ converges
+to the density
+\begin{equation}\label{vmb:cw:eq:tiltdensity}
+ p_s(x)=\frac{M_c e^{sx}}{G(s/M_c)}\,
+ \mathbf1_{[0,1/M_c]}(x).
+\end{equation}
+In particular $p_0$ is the uniform density in \eqref{vmb:cw:eq:uniform}.
+\end{theorem}
+
+\begin{proof}
+For $u$ near $u_c$, choose a fixed circle $|q|=R>\rho_2$ inside which the only
+singularities of $F(q,u)$ are the pole at $\rho_2$ and the nearby root $r(u)$ of
+$uK(r)=1$. Their grouped contribution is analytic in $u$, including at
+coalescence. When the roots are distinct, residue extraction gives
+\begin{equation}\label{vmb:cw:eq:twopoles}
+ \rho_2^nf_n(u_c e^\epsilon)
+ =\frac{b}{1-e^\epsilon}
+ +\frac{B(r)}{M_1(r)}\exp\!\left(n\log\frac{\rho_2}r\right)
+ +O((\rho_2/R)^n).
+\end{equation}
+The error is uniform near $\epsilon=0$: subtract the grouped principal
+parts, or equivalently use a fixed contour encircling both poles together.
+
+Write $r=\rho_2(1-\delta)$. Solving
+$u_cK(\rho_2(1-\delta))=e^{-\epsilon}$ gives
+\begin{equation}\label{vmb:cw:eq:deltacrit}
+ \delta=\frac\epsilon{M_c}+
+ \left(\frac {J_c}{M_c^3}-\frac1{2M_c}\right)\epsilon^2+O(\epsilon^3).
+\end{equation}
+Consequently
+\begin{equation}\label{vmb:cw:eq:logrcrit}
+ \log\frac{\rho_2}r=\frac\epsilon{M_c}+D_c\epsilon^2+O(\epsilon^3),
+ \qquad
+ \frac{B(r)}{M_1(r)}=\frac b\epsilon+d_c+O(\epsilon).
+\end{equation}
+Here $V_c=2J_c+M_c-M_c^2$. Also
+$b/(1-e^\epsilon)=-b/\epsilon+b/2+O(\epsilon)$.
+Insert $\epsilon=s/n$ into \eqref{vmb:cw:eq:twopoles}; the singular terms cancel
+and give \eqref{vmb:cw:eq:window}--\eqref{vmb:cw:eq:C0}. The cancellation is holomorphic,
+so the expansion is uniform also at $s=0$ and at complex zeros of $G$.
+It is an additive estimate, not a relative estimate at such zeros.
+
+For real $s,t$, the moment generating function of $V_n/n$ is
+\[
+ \frac{f_n(u_c e^{(s+t)/n})}{f_n(u_c e^{s/n})}
+ \longrightarrow\frac{G((s+t)/M_c)}{G(s/M_c)}.
+\]
+This is exactly the transform of \eqref{vmb:cw:eq:tiltdensity}. The bounded support
+of $V_n/n$ makes transform convergence sufficient and gives moment
+convergence as well.
+\end{proof}
+
+\begin{proposition}[All-orders window expansion]\label{vmb:cw:prop:windowall}
+For every $N\ge1$ there are entire functions $G_0,\ldots,G_N$ such that,
+uniformly on fixed compact $s$-sets,
+\begin{equation}\label{vmb:cw:eq:allwindow}
+ \rho_2^nf_n(u_c e^{s/n})
+ =\sum_{j=0}^{N}n^{1-j}G_j(s)+O(n^{-N}).
+\end{equation}
+Here $G_0(s)=\kappa G(s/M_c)$, $G_1$ is \eqref{vmb:cw:eq:C0}, and $G_j(0)=0$ for $j\ge2$.
+Every coefficient is obtained by finite series arithmetic from the local
+Taylor coefficients of $K$ and the Laurent coefficients of $B$ at $\rho_2$.
+\end{proposition}
+\begin{proof}
+Expand the analytic inverse root $r(u_c e^\epsilon)$, the Laurent series
+$B(r)/M_1(r)$, and $b/(1-e^\epsilon)$ in \eqref{vmb:cw:eq:twopoles} to a prescribed
+finite order. The exponential $\exp(n\log(\rho_2/r))$ is then expanded after
+$\epsilon=s/n$. At each order only finitely many Taylor coefficients are
+needed. The simple $1/\epsilon$ terms cancel; all remaining coefficient
+functions are polynomials in $s$ times $e^{s/M_c}$, together with a possible
+removable divided difference. They extend to entire functions. Analytic
+Taylor remainder bounds on a fixed $\epsilon$-disk prove the stated uniform
+remainder. At $s=0$, \eqref{vmb:cw:eq:criticalcount} has exactly a degree-one
+polynomial prefactor plus an exponentially small error, forcing all later
+coefficients to vanish.
+\end{proof}
+
+This is a genuine uniform coalescing-pole expansion. Treating the two
+residues separately and ignoring their cancellation would give divergent
+prefactors and an incorrect critical approximation.
+
+\section{A hierarchy of multicritical Dirichlet laws}
+\label{vmb:cw:sec:multi}
+The one-weight transition is the first member of a finite-level hierarchy.
+Fix $m\ge1$, mark valleys of heights $1,\ldots,m$, and leave all higher
+valleys unweighted. Set
+\begin{equation}\label{vmb:cw:eq:multiweights}
+ u_j^*=\frac1{K_j(\rho_{m+1})},\qquad
+ M_j^*=M_j(\rho_{m+1}),\qquad 1\le j\le m.
+\end{equation}
+Iteration of the weighted decomposition gives the exact identity
+\begin{equation}\label{vmb:cw:eq:multidecomp}
+ F_m(q,\bm u)=
+ \sum_{\ell=1}^{m}H_\ell(q)
+   \prod_{j=1}^{\ell-1}\frac{E_j(q)}{1-u_jK_j(q)}
+ +D_{m+1}(q)\prod_{j=1}^{m}\frac{E_j(q)}{1-u_jK_j(q)}.
+\end{equation}
+The last term is the branch that reaches level $m+1$. It has $m+1$ critical
+factors; the earlier branches have at most $m-1$.
+\wrt{at $m=1$, $\rho_{m+1}=\rho_2$, $u_1^*=u_c$, $M_1^*=M_c$ and $F_1=F$ of
+\eqref{vmb:cw:eq:F}.}
+
+\subsection{The elementary simplex mechanism}
+Write
+\[
+ \Delta_m=\{(\xi_1,\ldots,\xi_m):\xi_j\ge0,\ \textstyle\sum_{j=1}^m \xi_j\le1\},
+ \qquad \xi_0=1-\sum_{j=1}^m \xi_j.
+\]
+Integration on $\Delta_m$ means ordinary $m$-dimensional Lebesgue measure;
+its volume is $1/m!$.
+
+\begin{lemma}[Nearby simple poles]\label{vmb:cw:lem:simplex}
+Suppose $r_{i,n}=R_0\exp(\eta_i/n+O(\log n/n^2))$, $0\le i\le m$, where
+the real $\eta_i$ range over a compact set. Let $\Xi_n$ be
+analytic and uniformly bounded on a fixed disk $|q|\le R>R_0$, with
+$\Xi_n(R_0)=a_*+O(\log n/n)$. Then
+\begin{align}\label{vmb:cw:eq:simplexlemma}
+ &\coeff qn\left[\Xi_n(q)\prod_{i=0}^{m}(1-q/r_{i,n})^{-1}\right]\notag\\
+ &\hspace{8pt}=R_0^{-n}n^m\left[
+ a_*\int_{\Delta_m}\exp\left(-\sum_{i=0}^{m}\eta_i \xi_i\right)\dd\bm \xi
+ +O\left(\frac{\log n}{n}\right)\right].
+\end{align}
+If the root and amplitude errors omit $\log n$, so does the final error.
+Coincident $\eta_i$ cause no exception.
+\end{lemma}
+\begin{proof}
+First take $\Xi_n=1$. The coefficient is the finite sum over
+$k_0+\cdots+k_m=n$, $k_i\ge0$, of $\prod r_{i,n}^{-k_i}$. Dividing by
+$R_0^{-n}$ gives, uniformly for every summand,
+\[
+ \exp\left(-\sum_i\eta_i k_i/n\right)
+ \left(1+O(\log n/n)\right).
+\]
+The grid sum divided by $n^m$ is a Riemann sum on $\Delta_m$. Its integrand
+and first derivatives are uniformly bounded, so its error is $O(1/n)$.
+For general $\Xi_n$, convolve with its Taylor coefficients. Cauchy's bound
+makes their absolute values at radius $R_0$ geometrically summable, including
+one extra factor of the index. Shifting $n$ by that index changes the leading
+Riemann sum by $O((k+1)n^{m-1})$. Summation therefore multiplies the leading
+term by $\Xi_n(R_0)$ and adds only $O(R_0^{-n}n^{m-1})$. The assumed error in
+$\Xi_n(R_0)$ completes the proof.
+\end{proof}
+
+\begin{writenote}[Added 5 October 2026, batch~98]
+The manuscript states this lemma with its letters $R$ for the common pole
+location and $T$ for the radius, printed here as $R_0$ and $R$; it is applied
+at $R_0=\rho_{m+1}$, and $R_0=\rho_2$ when $m=1$.
+\end{writenote}
+
+\begin{theorem}[Multicritical count and area sharing]\label{vmb:cw:thm:dirichlet}
+At the weights \eqref{vmb:cw:eq:multiweights}, for some $R>\rho_{m+1}$,
+\begin{equation}\label{vmb:cw:eq:multicount}
+ \coeff qn F_m(q,\bm u^*)=\rho_{m+1}^{-n}\Pi_m(n)+O(R^{-n}),
+\end{equation}
+where $\Pi_m$ is a degree-$m$ polynomial with positive leading coefficient
+\begin{equation}\label{vmb:cw:eq:multilead}
+ \kappa^{(m)}=\frac{c_{m+1}}{m!}
+       \prod_{j=1}^{m}\frac{E_j(\rho_{m+1})}{M_j^*}.
+\end{equation}
+Let $\mathcal A_{j,n}$ be the total area in repeated units at level $j$, let
+$|T_n|$ be the area of the final $\calD_{m+1}$ block, and let $V_{j,n}$ count
+height-$j$ valleys. On the dominant branch,
+\begin{equation}\label{vmb:cw:eq:dirichlet}
+ \left(\frac{\mathcal A_{1,n}}n,\ldots,\frac{\mathcal A_{m,n}}n,\frac{|T_n|}n\right)
+ \Longrightarrow\Dir(1,\ldots,1),
+\end{equation}
+with $m+1$ coordinates, and
+\begin{equation}\label{vmb:cw:eq:countsareas}
+ \frac{M_j^*V_{j,n}-\mathcal A_{j,n}}n\longrightarrow0
+ \quad\text{in probability}.
+\end{equation}
+The total endpoint-run area is tight. The probability of an earlier branch
+is $O(n^{-2})$ (exponentially small when $m=1$).
+\end{theorem}
+\begin{proof}
+At $\rho_{m+1}$, the tail $D_{m+1}$ has one simple pole and each denominator in
+\eqref{vmb:cw:eq:multidecomp} has one simple zero. The highest Laurent coefficient
+is
+$c_{m+1}\prod E_j(\rho_{m+1})/M_j^*$, giving pole order $m+1$ and
+\eqref{vmb:cw:eq:multilead}. The other branches have pole order at most $m-1$.
+There are no other singularities on the first circle; subtraction of the
+finite Laurent principal part proves \eqref{vmb:cw:eq:multicount}. This also proves
+the earlier-branch probability estimate.
+
+Mark the area in the level-$j$ repeated units by replacing $K_j(q)$ with
+$K_j(qe^{v_j/n})$, and mark terminal area by replacing $D_{m+1}(q)$ with
+$D_{m+1}(qe^{v_0/n})$. Their poles move to
+$\rho_{m+1}e^{-v_j/n}$ and $\rho_{m+1}e^{-v_0/n}$. The remaining analytic factors are
+uniformly bounded and converge to their original values. Applying
+Lemma~\ref{vmb:cw:lem:simplex} and normalizing gives the moment generating function
+\[
+ m!\int_{\Delta_m}\exp\left(\sum_{i=0}^m v_i\xi_i\right)\dd\bm \xi,
+\]
+which is that of the stated Dirichlet distribution.
+
+If valley counts are simultaneously marked by $e^{s_j/n}$, the $j$th pole
+moves instead by logarithmic amount
+$-(v_j+s_j/M_j^*)/n+O(n^{-2})$. The joint limiting transform therefore
+identifies $V_{j,n}/n$ with $\xi_j/M_j^*$ and $\mathcal A_{j,n}/n$ with $\xi_j$.
+This proves \eqref{vmb:cw:eq:countsareas}. Endpoint-run marking affects only
+analytic factors; a small fixed positive exponential mark is allowed
+because $\rho_{m+1}<1$. The corresponding normalized coefficient ratio stays
+bounded, proving tightness with an exponential moment.
+\end{proof}
+
+\begin{writenote}[Added 5 October 2026, batch~98]
+At $m=1$, $c_2E_1(\rho_2)=c_2/(1-\rho_2)^2=b$ by
+Appendix~\ref{vmb:cw:app:laurent}, so $\kappa^{(1)}=b/M_c=\kappa$ and
+$\Pi_1(n)=\kappa n+\kappa_0$, consistent with
+\eqref{vmb:cw:eq:criticalcount}; for $m=1$ there is a single earlier branch,
+$H_1$, which is analytic at $\rho_2$.
+\end{writenote}
+
+\begin{corollary}[Macroscopic covariance]\label{vmb:cw:cor:cov}
+At the fully critical weights,
+\begin{align}
+ \frac{\E V_{j,n}}n&\longrightarrow\frac1{(m+1)M_j^*},\\
+ \frac{\Var V_{j,n}}{n^2}&\longrightarrow
+ \frac{m}{(m+1)^2(m+2)(M_j^*)^2},\\
+ \frac{\Cov(V_{i,n},V_{j,n})}{n^2}&\longrightarrow
+ -\frac1{(m+1)^2(m+2)M_i^*M_j^*}\quad(i\ne j).
+\end{align}
+\end{corollary}
+\begin{proof}
+The count densities are bounded. Their moments converge to those of
+$\xi_j/M_j^*$ under the uniform-simplex distribution. Integrating monomials
+on $\Delta_m$ gives the displayed means and covariances.
+\end{proof}
+
+\subsection{Finite-dimensional critical windows and phase chambers}
+For $u_{j,n}=u_j^*e^{s_j/n}$, the normalized leading coefficient is multiplied
+by
+\begin{equation}\label{vmb:cw:eq:multiwindow}
+ \mathcal G_m(\bm s)=m!\int_{\Delta_m}
+ \exp\left(\sum_{j=1}^m\frac{s_j\xi_j}{M_j^*}\right)\dd\bm \xi.
+\end{equation}
+The limiting area law is the Dirichlet law tilted by this exponential.
+The proof is the same nearby-pole argument. In particular the critical
+window has width $1/n$ in every logarithmic weight coordinate.
+
+\begin{proposition}[{[write]} The tilted multicritical window]\label{vmb:cw:prop:tilted}
+Let $\bm s$ range over a compact subset of $\mathbb R^m$ and
+$u_{j,n}=u_j^*e^{s_j/n}$. Then
+\[
+ \frac{\coeff qn F_m(q,\bm u_n)}{\coeff qn F_m(q,\bm u^*)}
+ =\mathcal G_m(\bm s)+O(n^{-1}),
+\]
+and, under $\Prob_{n,\bm u_n}$, the vector in \eqref{vmb:cw:eq:dirichlet}
+converges in law to the probability measure with density proportional to
+$\exp(\sum_{j=1}^m s_j\xi_j/M_j^*)$ on $\Delta_m$ (with respect to
+$\dd\bm\xi$), and \eqref{vmb:cw:eq:countsareas} holds.
+\end{proposition}
+\begin{proof}
+This proof was added in writing; the manuscript gives the sentence before
+the proposition. Each $u_j^*K_j$ has a simple zero of $1-u_j^*K_j$ at
+$\rho_{m+1}$, with $\dd\log(u_j^*K_j)/\dd\log q=M_j^*>0$ there. By the
+analytic implicit function theorem, for $\epsilon$ near~$0$ the equation
+$u_j^*e^{\epsilon}K_j(r)=1$ has a unique root near $\rho_{m+1}$,
+$\log(r/\rho_{m+1})=-\epsilon/M_j^*+O(\epsilon^2)$, and
+$1-u_j^*e^{\epsilon}K_j(q)=(1-q/r)g_j(q,\epsilon)$ with $g_j$ analytic and
+nonvanishing on a fixed disk $|q|\le R$, $R>\rho_{m+1}$, uniformly in
+$\epsilon$ (choose $R$ so that no other zero of $1-u_j^*K_j$ and no other
+pole of $D_{m+1}$ lies in $|q|\le R$; both sets are locally finite, and
+$\rho_{m+1}$ is the only singular point on $|q|=\rho_{m+1}$ by the
+triangle-inequality argument of Lemma~\ref{vmb:cw:lem:poles}). Write
+$D_{m+1}(q)=(1-q/\rho_{m+1})^{-1}g_0(q)$ likewise. With
+$\epsilon=s_j/n$, the dominant branch of \eqref{vmb:cw:eq:multidecomp} is
+$\Xi_n(q)\prod_{i=0}^m(1-q/r_{i,n})^{-1}$ with $r_{0,n}=\rho_{m+1}$,
+$\eta_0=0$, $\eta_j=-s_j/M_j^*$, root errors $O(n^{-2})$ and
+$\Xi_n=g_0\prod_jE_j/g_j$, whose value at $\rho_{m+1}$ is
+$a_*+O(1/n)$ with $a_*=c_{m+1}\prod_jE_j(\rho_{m+1})/M_j^*=m!\,\kappa^{(m)}$.
+Lemma~\ref{vmb:cw:lem:simplex} (without logarithms) gives
+$\rho_{m+1}^{-n}n^m[a_*\int_{\Delta_m}\exp(\sum_js_j\xi_j/M_j^*)\dd\bm\xi
++O(1/n)]$. The earlier branches have at most $m-1$ such factors, and the
+same lemma bounds their coefficients by $O(\rho_{m+1}^{-n}n^{m-2})$. Dividing
+by the case $\bm s=0$, whose integral is $1/m!$, gives the first claim.
+Adding the area marks $v_j/n$, $v_0/n$ of the proof of
+Theorem~\ref{vmb:cw:thm:dirichlet} shifts $\eta_i$ by $-v_i$; the ratio of the
+marked to the unmarked coefficient converges to
+$\int\exp(\sum_iv_i\xi_i+\sum_js_j\xi_j/M_j^*)\dd\bm\xi/
+\int\exp(\sum_js_j\xi_j/M_j^*)\dd\bm\xi$ for all real $\bm v$, which is the
+moment generating function of the tilted law; the variables are bounded,
+so this identifies the limit. The count-area identification is that of
+Theorem~\ref{vmb:cw:thm:dirichlet}, with $\eta_j$ shifted by the constant
+$-s_j/M_j^*$.
+\end{proof}
+
+There is also a complete fixed-parameter classification. For arbitrary
+positive weights $u_1,\ldots,u_m$, let $r_j$ solve $u_jK_j(r_j)=1$ and set
+\begin{equation}\label{vmb:cw:eq:chambers}
+ r_* =\min(r_1,\ldots,r_m,\rho_{m+1}).
+\end{equation}
+If precisely $\nu$ of these $m+1$ values equal $r_*$, then the dominant pole
+has order $\nu$ and the coefficients have form
+$r_*^{-n}$ times a degree-$(\nu-1)$ polynomial, plus an exponentially smaller
+error. To see noncancellation, take the suffix after the last active
+weighted level: all its inactive denominators are positive and finite at
+$r_*$. Its positive value, or its positive tail residue, is multiplied by
+exactly the active simple-pole factors. Earlier branches cannot remove this
+highest-order positive contribution. Thus the phase boundaries are the
+explicit equal-root hypersurfaces, not hypothetical singularities inferred
+from a numerical phase plot.
+
+\begin{proposition}[{[write]} Phase chambers]\label{vmb:cw:prop:chambers}
+In the setting of \eqref{vmb:cw:eq:chambers}, $r_*$ is the only singularity
+of $F_m(q,\bm u)$ on $|q|\le r_*$; it is a pole of order exactly $\nu$, and
+for some $R>r_*$,
+$\coeff qn F_m(q,\bm u)=r_*^{-n}\Pi(n)+O(R^{-n})$ with a polynomial $\Pi$ of
+degree $\nu-1$ and positive leading coefficient.
+\end{proposition}
+\begin{proof}
+This proof was added in writing, expanding the manuscript's sketch above.
+Each $r_j\in(0,1)$ exists and is unique, because $K_j$ increases from $0$ to
+$\infty$ on $(0,1)$. Call an index active if its value in
+\eqref{vmb:cw:eq:chambers} equals $r_*$ (the index $m+1$ standing for
+$\rho_{m+1}$). For $|q|\le r_*$ and $j\le m$,
+$|u_jK_j(q)|\le u_jK_j(|q|)\le u_jK_j(r_j)=1$, with equality only if
+$|q|=r_j=r_*$, and then, by the consecutive degrees $2j+1,2j+2$ in the
+support of $K_j$ (Lemma~\ref{vmb:cw:lem:poles}), only at $q=r_*$. So $1-u_jK_j$
+has no zero on $|q|\le r_*$ for inactive $j$ and only the simple zero $r_*$
+for active $j$ (simple because $K_j'(r_*)>0$). By
+Lemma~\ref{vmb:cw:lem:poles}, $D_{m+1}$ is analytic on $|q|\le r_*$ unless
+$m+1$ is active, and then its only singularity there is the simple pole
+$\rho_{m+1}=r_*$ with residue amplitude $c_{m+1}>0$. The functions $H_\ell$,
+$E_j$ are analytic on the unit disk. This proves the first claim, and the
+order of the pole of each branch of \eqref{vmb:cw:eq:multidecomp} is the
+number of active indices among its factors: $\#(\mathcal I\cap\{1,\ldots,\ell-1\})$
+for the branch $\ell\le m$, and $\nu$ for the final branch, where
+$\mathcal I$ is the active set. So the order of $F_m$ at $r_*$ is at most
+$\nu$, and the coefficient of $(1-q/r_*)^{-\nu}$ is the sum, over the branches
+attaining order $\nu$, of products of: $H_\ell(r_*)>0$ or the value
+$D_{m+1}(r_*)>0$ (inactive $m+1$) or the amplitude $c_{m+1}>0$ (active
+$m+1$); $E_j(r_*)>0$; $1/(1-u_jK_j(r_*))>0$ for inactive $j$ (since
+$u_jK_j(r_*)<u_jK_j(r_j)=1$); and $1/M_j(r_*)>0$ for active $j$, the
+leading coefficient of $1/(1-u_jK_j(q))$ at $r_*$ because
+$u_jr_*K_j'(r_*)=M_j(r_*)$ when $u_jK_j(r_*)=1$. The final branch always
+attains order $\nu$, so this sum is positive, the order is exactly $\nu$,
+and no cancellation occurs. Poles of the factors are locally finite, so a
+radius $R>r_*$ with no other singularity on $|q|\le R$ exists; subtracting
+the principal part at $r_*$ and applying Cauchy's bound on $|q|=R$ gives the
+expansion, with $\coeff qn(1-q/r_*)^{-k}=\binom{n+k-1}{k-1}r_*^{-n}$ giving
+the polynomial of degree $\nu-1$.
+\end{proof}
+
+\wrt{at $m=1$ the chambers are those of Theorem~\ref{vmb:cw:thm:three}:
+$\nu=1$ off $u_1=u_c$ and $\nu=2$ at $u_1=u_c$, where $r_1=\rho_2$.}
+
+\section{An exact height-tail identity and its exponential expansion}
+\label{vmb:cw:sec:heighttail}
+Let $U_j^{\le h}$ and $D_j^{\le h}$ count the same objects with every part
+at most $h$. For $h\ge j$,
+\begin{equation}\label{vmb:cw:eq:Utail}
+ U_j-U_j^{\le h}=U_{h+1}\prod_{r=j}^{h}(1-q^r)^{-2}.
+\end{equation}
+This is simply the tail of the maximum-part decomposition.
+Put
+\begin{equation}\label{vmb:cw:eq:Pj}
+ P_j(q)=\prod_{r=j}^{\infty}(1-q^r)^{-2},\qquad
+ P_1(q)=\prod_{r=1}^{\infty}(1-q^r)^{-2}.
+\end{equation}
+These products are analytic and nonzero for $|q|<1$. \wrt{they are the
+products $P_{j}$ of Section~\ref{vmb:sec:accumulation}, there used for
+$0<q<1$; they are not the pole sets $\calP_R$ of
+Theorem~\ref{vmb:thm:sectors}.}
+
+\begin{lemma}[An analytic two-variable tail]\label{vmb:cw:lem:psi}
+For $|q|<1$ define
+\begin{equation}\label{vmb:cw:eq:psi}
+ \Psi(q,z)=\sum_{k\ge0}zq^k(1-zq^k)
+                 \prod_{r=k+1}^{\infty}(1-zq^r)^2.
+\end{equation}
+The series is analytic in $(q,z)$ locally for $|q|<1$, including near $z=0$,
+and
+\begin{equation}\label{vmb:cw:eq:tailpsi}
+ U_j(q)-U_j^{\le h}(q)=P_j(q)\Psi(q,q^{h+1}).
+\end{equation}
+Its first coefficients are
+\begin{equation}\label{vmb:cw:eq:psifirst}
+ \Psi(q,z)=\frac z{1-q}-\frac{z^2}{(1-q)^2}+O(z^3).
+\end{equation}
+All coefficients are explicitly computable rational functions of $q$.
+\end{lemma}
+\begin{proof}
+On compact $|q|\le r<1$, $|z|\le Z$, the infinite products are uniformly
+bounded, while the summands are $O(r^k)$. This proves normal convergence.
+Multiply the maximum-part sum for $U_{h+1}$ by
+$\prod_{r=h+1}^\infty(1-q^r)^2$ and set $z=q^{h+1}$; the resulting
+summands are exactly those in \eqref{vmb:cw:eq:psi}. Equation~\eqref{vmb:cw:eq:Utail}
+then proves \eqref{vmb:cw:eq:tailpsi}.
+
+For an explicit coefficient procedure, write
+\[
+ \prod_{r=1}^\infty(1-zq^r)^2=\sum_{\ell\ge0}\gamma_\ell(q)z^\ell,
+ \qquad \gamma_{-1}=0.
+\]
+Summing the geometric series in $q^{k\ell}$ in \eqref{vmb:cw:eq:psi} gives
+\begin{equation}\label{vmb:cw:eq:psicoeff}
+ [z^\ell]\Psi(q,z)=\frac{\gamma_{\ell-1}(q)-\gamma_{\ell-2}(q)}{1-q^\ell}
+ \quad(\ell\ge1),
+\end{equation}
+with $\gamma_{-2}=0$ if needed. More explicitly,
+\begin{equation}\label{vmb:cw:eq:qbinomcoeff}
+ \gamma_\ell(q)=(-1)^\ell\sum_{a+b=\ell}
+ \frac{q^{a(a+1)/2+b(b+1)/2}}
+ {(q;q)_a(q;q)_b},\qquad
+ (q;q)_a=\prod_{r=1}^a(1-q^r).
+\end{equation}
+For completeness, the coefficient formula for one product follows by
+writing $Q(z)=\prod_{r\ge1}(1-zq^r)=(1-zq)Q(qz)$: comparison of coefficients
+recursively gives $[z^a]Q=(-1)^aq^{a(a+1)/2}/(q;q)_a$. Squaring proves
+\eqref{vmb:cw:eq:qbinomcoeff}. Since $\gamma_0=1$ and $\gamma_1=-2q/(1-q)$,
+\eqref{vmb:cw:eq:psifirst} follows.
+\end{proof}
+
+\wrt{in this proof $Z$ is a bound and $Q(z)$ a local product; neither is
+Part~I's $Z$ or $Q_j$, and the summation indices $a,b$ are local.}
+
+Set $K_j^{\le h}=H_jU_{j+1}^{\le h}$. The lemma implies, locally uniformly
+for real $q$ in a compact subinterval of $(0,1)$,
+\begin{equation}\label{vmb:cw:eq:generaltail}
+ K_j(q)-K_j^{\le h}(q)=a_j(q)q^h+O(q^{2h}),\qquad
+ a_j(q)=\frac{q^{j+1}P_{j+1}(q)}{(1-q^j)(1-q)}.
+\end{equation}
+Each differentiation adds at most a factor of order $h$ to the error
+scale. In particular
+\begin{equation}\label{vmb:cw:eq:K1tail2}
+ K(q)-K^{\le h}(q)
+ =P_1(q)q^{h+2}
+  -\frac{P_1(q)q^{2h+3}}{1-q}+O(q^{3h}).
+\end{equation}
+
+\subsection{The height-cutoff pole to all exponential orders}
+Write
+\begin{equation}\label{vmb:cw:eq:physicalconst}
+ \rho=\rho_1,\quad M_\rho=M_1(\rho),\quad V_\rho=V_1(\rho),\quad
+ \alpha=\frac{\rho^2P_1(\rho)}{M_\rho},\quad
+ L=\log(1/\rho).
+\end{equation}
+\wrt{so $M_\rho=M$ and $V_\rho=V$ of \eqref{vmb:eq:MV}, and $L=\log\lambda$
+is Part~I's $L$ of \eqref{vmb:eq:interpolant}.}
+For sufficiently large integer $h$, let $\widehat\rho_h$ be the root of
+$K^{\le h}(\widehat\rho_h)=1$ near $\rho$; it is the dominant pole of $D_1^{\le h}$.
+The hat distinguishes a maximum-height cutoff from the minimum-part poles
+$\rho_j$. Define
+\[
+ \delta_h=\log(\widehat\rho_h/\rho).
+\]
+
+\begin{theorem}[Height-cutoff exponential expansion]\label{vmb:cw:thm:cutoffseries}
+There are polynomials $\varpi_{r-1}(h)$ of degree at most $r-1$ such that, for
+every fixed $N\ge1$,
+\begin{equation}\label{vmb:cw:eq:cutoffall}
+ \delta_h=\sum_{r=1}^{N}\varpi_{r-1}(h)\rho^{rh}
+          +O_N(h^N\rho^{(N+1)h}).
+\end{equation}
+The first two terms are
+\begin{align}\label{vmb:cw:eq:cutofftwo}
+ \delta_h={}&\alpha\rho^h+
+ \left[\alpha^2(h+g)-\frac{\alpha\rho}{1-\rho}\right]\rho^{2h}
+ +O(h^2\rho^{3h}),\\
+ g={}&2+2\sum_{k\ge1}\frac{k\rho^k}{1-\rho^k}
+       -\frac{M_\rho^2+V_\rho}{2M_\rho}.\label{vmb:cw:eq:g}
+\end{align}
+The leading coefficient of every polynomial is
+\begin{equation}\label{vmb:cw:eq:treecoeff}
+ [h^{r-1}]\varpi_{r-1}(h)=\frac{r^{r-1}}{r!}\alpha^r.
+\end{equation}
+Thus the top-degree terms are precisely the expansion of
+$-W_0(-\alpha h\rho^h)/h$.
+\end{theorem}
+\begin{proof}
+Let $q=\rho e^\delta$ and $\epsilon=\rho^h$. The root equation is
+\[
+ K(\rho e^\delta)-1
+ =\sum_{r\ge1}A_r(\rho e^\delta)\epsilon^r e^{rh\delta},
+\]
+where the analytic $A_r$ are obtained from \eqref{vmb:cw:eq:psicoeff}
+(Appendix~\ref{vmb:cw:app:cutoff}); in
+particular $A_1(q)=q^2P_1(q)$ and
+$A_2(q)=-q^3P_1(q)/(1-q)$. At $\delta=0$ the derivative of the left
+side is $M_\rho>0$. For small $h\epsilon$, the implicit equation has a
+unique solution $\delta=O(\epsilon)$, and its derivative remains bounded
+away from zero.
+
+Substitute a formal series in $\epsilon$ and determine its coefficients
+successively. At order $r$, the unknown coefficient appears only as
+$M_\rho \varpi_{r-1}$. Taylor differentiation of $e^{rh\delta}$ shows
+inductively that its remaining right side is a polynomial in $h$ of degree
+at most $r-1$. The Taylor residual after $N$ terms is
+$O_N(h^N\epsilon^{N+1})$: all derivatives of the analytic $A_r$ and of
+$K$ are bounded on a fixed neighborhood, and the exponential factors are
+bounded because $h\delta\to0$. Division by the nonvanishing implicit
+derivative converts this residual into the claimed root error.
+
+For the first two coefficients, use
+\[
+ K(\rho e^\delta)-1=M_\rho\delta+
+       \frac{M_\rho^2+V_\rho}{2}\delta^2+O(\delta^3),
+\]
+and $\rho A_1'(\rho)/A_1(\rho)=2+
+2\sum k\rho^k/(1-\rho^k)$. This gives \eqref{vmb:cw:eq:cutofftwo}.
+To obtain degree $r-1$ in $h$, retain only the linear term on the left
+and $A_1(\rho)\epsilon e^{h\delta}$ on the right. Any nonlinear analytic
+term, derivative of $A_1$, or $A_r$ with $r\ge2$ lowers the possible degree.
+The reduced equation $\delta=\alpha\epsilon e^{h\delta}$ has solution
+$-W_0(-\alpha h\epsilon)/h$, whose Lagrange expansion yields
+\eqref{vmb:cw:eq:treecoeff}.
+\end{proof}
+
+The theorem is an all-orders statement in the ordered scales
+$\rho^{rh}$ multiplied by polynomials in $h$. It does not assert convergence
+of an unrestricted infinite asymptotic series, nor any Borel or Stokes
+property. The small argument of $W_0$ is on its analytic branch at zero.
+
+\begin{writenote}[Added 5 October 2026, batch~98]
+The manuscript writes $a_r(q)$ for the order-$r$ coefficients in this proof
+and $A_r(q)$ for the same functions in its Appendix~B; they are printed as
+$A_r$ in both places, since $a_j(q)$ of \eqref{vmb:cw:eq:generaltail} is a
+different family ($a_1=A_1$, but $a_2\ne A_2$). The manuscript's ledger calls
+this expansion a ``cutoff-pole transseries''; it is a finite-order expansion
+in the scales $h^k\rho^{rh}$ with no convergence, Borel or Stokes claim (as
+the paragraph above says), and is not called a transseries here, as for
+Theorem~\ref{vmb:thm:W} in Part~I.
+\end{writenote}
+
+\section{Tallest columns: a lattice-Gumbel law}
+\label{vmb:cw:sec:gumbel}
+Let $\mathsf H_n$ be the maximum part of a uniformly chosen unweighted
+valley-monotone composition of area $n$.
+
+\begin{theorem}[Uniform maximum-height law]\label{vmb:cw:thm:gumbel}
+Uniformly for integers $h=h(n)$ satisfying
+$0<\tau_-\le n\rho^h\le\tau_+<\infty$, with fixed $\tau_\pm$,
+\begin{equation}\label{vmb:cw:eq:gumbel}
+ \boxed{\displaystyle
+ \Prob(\mathsf H_n\le h)
+ =\exp(-\alpha n\rho^h)
+   \left(1+O_{\tau_\pm}\left(\frac{\log n}{n}\right)\right),}
+\end{equation}
+where $\alpha$ is defined in \eqref{vmb:cw:eq:physicalconst}. Numerically,
+\begin{equation}\label{vmb:cw:eq:heightnumbers}
+ \begin{gathered}
+ \rho=0.5059651577008067\ldots,\qquad
+ \alpha=0.4502021724631094\ldots,\\
+ L^{-1}=1.4678091752740682\ldots.
+ \end{gathered}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Choose a fixed radius $R$ strictly between $\rho$ and $\rho_2$, close
+enough to $\rho$ that $1-K$ has only its simple root there. Uniform
+convergence of $U_2^{\le h}$ to $U_2$ on this disk and Rouch\'e's theorem
+show that $1-K^{\le h}$ has exactly one nearby root, the cutoff root
+of Theorem~\ref{vmb:cw:thm:cutoffseries}. The higher-level truncated functions
+$D_2^{\le h}$ are uniformly analytic on this disk, by the same normally
+convergent decomposition used in Lemma~\ref{vmb:cw:lem:poles}. Consequently
+\begin{equation}\label{vmb:cw:eq:cappedcoef}
+ \coeff qn D_1^{\le h}=\hat c_h\widehat\rho_h^{-n}+O(R^{-n})
+\end{equation}
+with a uniform error for all sufficiently large $h$.
+
+We record a quantitative estimate for the numerator, rather than assume
+it. At a fixed real $q<\rho_2$, subtraction of the two level recurrences
+gives an error transported by the multipliers $E_j/(1-K_j)$, whose products
+are uniformly bounded for $j\ge2$. The additive kernel perturbation at
+level $j$ is bounded by a constant times
+\[
+ D_{j+1}(q)\,H_j(q)\,
+ P_{j+1}(q)\,q^{h+1}=O(q^{2j+h}).
+\]
+This is summable in $j$, while the final omitted tail has size $O(q^h)$.
+It follows that $D_2-D_2^{\le h}=O(q^h)$; differentiating the recurrences
+gives $O(hq^h)$ for the first derivative. The same estimates hold locally
+with absolute values. Together with the kernel derivative estimates, they
+imply
+\begin{equation}\label{vmb:cw:eq:residueconv}
+ \hat c_h/c_1=1+O(h\rho^h).
+\end{equation}
+Evaluation at the displaced root does not change this order because
+$\widehat\rho_h-\rho=O(\rho^h)$ and $h\rho^h\to0$.
+
+Divide \eqref{vmb:cw:eq:cappedcoef} by \eqref{vmb:cw:eq:basepole} at $j=1$. Theorem
+\ref{vmb:cw:thm:cutoffseries} gives
+$n\log(\widehat\rho_h/\rho)=\alpha n\rho^h+O(nh\rho^{2h})$.
+In the specified window, $h=O(\log n)$ and $\rho^h\asymp n^{-1}$.
+Both the exponential error and the residue-ratio error are therefore
+$O(\log n/n)$; the uniform Cauchy error is exponentially smaller.
+\end{proof}
+
+\begin{writenote}[Added 5 October 2026, batch~98]
+The residue-ratio estimate \eqref{vmb:cw:eq:residueconv} is argued in outline
+(``differentiating the recurrences gives $O(hq^h)$''); the write records it
+as complete in outline, not as an open question. The theorem answers the
+second half of Part~I's question ``Joint limits and extreme heights''
+(Section~\ref{vmb:sec:future}).
+\end{writenote}
+
+\subsection{The lattice phase must not be discarded}
+Define
+\begin{equation}\label{vmb:cw:eq:center}
+ \beta_n=\frac{\log(\alpha n)}L.
+\end{equation}
+If a subsequence satisfies $\{\beta_n\}\to\theta\in[0,1]$, then, at every
+integer $k$,
+\begin{equation}\label{vmb:cw:eq:latticephase}
+ \Prob(\mathsf H_n-\lfloor \beta_n\rfloor\le k)
+ \longrightarrow\exp\left(-\rho^{k-\theta}\right).
+\end{equation}
+These formulas define lattice distributions; when $\theta=1$, the result
+is understood as the one-sided endpoint phase. Different phases generally
+give different laws. The centered maximum therefore does not have a single
+phase-independent continuous Gumbel limit. Tightness follows by taking
+fixed large positive and negative $k$ in \eqref{vmb:cw:eq:latticephase}; in
+particular $\mathsf H_n=(\log n)/L+O_{\Prob}(1)$.
+
+\begin{theorem}[Gaussian counts and extremes are independent]\label{vmb:cw:thm:independent}
+Put $\mu=1/M_\rho$ and $\sigma^2=V_\rho/M_\rho^3$. Along any phase
+subsequence as above,
+\begin{equation}\label{vmb:cw:eq:independence}
+ \left(\frac{V_n-\mu n}{\sigma\sqrt n},
+       \mathsf H_n-\lfloor \beta_n\rfloor\right)
+ \Longrightarrow (\chi,Y_\theta),
+\end{equation}
+where $\chi$ is standard normal, $Y_\theta$ has \eqref{vmb:cw:eq:latticephase}, and
+the two limits are independent.
+\end{theorem}
+\begin{proof}
+Mark the valley count by $u=e^{s/\sqrt n}$ and impose the height cutoff.
+The untruncated root $r(u)$ is analytic near $u=1$ and differs from $\rho$
+by $O(n^{-1/2})$. The truncated-root displacement is, uniformly in this
+neighborhood,
+\[
+ \log\frac{r_h(u)}{r(u)}=
+ \frac{u\,a_1(r(u))}{M_1(r(u))}\,r(u)^h
+ +O(hr(u)^{2h}).
+\]
+For $h=\beta_n+O(1)$,
+$r(u)^h/\rho^h=1+O(\log n/\sqrt n)$ and the prefactor converges to
+$\alpha$. The marked coefficient ratio is therefore the ordinary
+quasi-power transform for $V_n$, multiplied by
+$\exp(-\alpha n\rho^h)(1+o(1))$. Set $s=it/\sigma$ and include the
+centering factor. The first term tends to $e^{-t^2/2}$ and the second tends
+to the lattice distribution function. Tightness of both coordinates and
+these mixed transforms identify the product limit.
+\end{proof}
+
+\wrt{$\mu$, $\sigma^2$ are those of Theorem~\ref{vmb:thm:CLT}, and $r(u)$ is
+the root used in its proof.}
+
+\section{Critical extreme heights are Dirichlet mixtures}
+\label{vmb:cw:sec:mixed}
+The ordinary Gumbel law does not remain unchanged at a critical point.
+Several macroscopic regions coexist, and each has its own rate of producing
+a column above the cutoff.
+
+Fix $m$ as in Section~\ref{vmb:cw:sec:multi}. Define
+\begin{equation}\label{vmb:cw:eq:alphas}
+ \alpha_j^*=\frac{u_j^*a_j(\rho_{m+1})}{M_j^*}\quad(1\le j\le m),\qquad
+ \alpha_0^*=\frac{a_{m+1}(\rho_{m+1})}{M_{m+1}(\rho_{m+1})},
+\end{equation}
+where $a_j$ is the explicit product in \eqref{vmb:cw:eq:generaltail}. Index zero
+refers to the final $\calD_{m+1}$ block, whose unmarked dominant kernel is
+$K_{m+1}$.
+
+\begin{theorem}[Joint critical window and height cutoff]\label{vmb:cw:thm:mixed}
+Let $\bm s$ range over a fixed compact subset of $\mathbb R^m$, set
+$u_{j,n}=u_j^*e^{s_j/n}$, and let integers $h=h(n)$ satisfy
+$0<\tau_-\le\tau_n:=n\rho_{m+1}^h\le \tau_+<\infty$. Then
+\begin{align}\label{vmb:cw:eq:mixture}
+ &\Prob_{n,\bm u_n}(\mathsf H_n\le h)\notag\\
+ &\quad=
+ \frac{\displaystyle\int_{\Delta_m}
+  \exp\left(\sum_{j=1}^m\frac{s_j\xi_j}{M_j^*}
+       -\tau_n\sum_{i=0}^m\alpha_i^*\xi_i\right)\dd\bm \xi}
+ {\displaystyle\int_{\Delta_m}
+  \exp\left(\sum_{j=1}^m\frac{s_j\xi_j}{M_j^*}\right)\dd\bm \xi}
+ +O\left(\frac{\log n}{n}\right).
+\end{align}
+At exact criticality this is the Laplace transform of
+$\sum_{i=0}^m\alpha_i^*X_i$, where
+$(X_0,\ldots,X_m)\sim\Dir(1,\ldots,1)$, evaluated at $\tau_n$.
+\end{theorem}
+
+\begin{proof}
+Truncate every unimodal and valley-monotone factor at height $h$ in
+\eqref{vmb:cw:eq:multidecomp}. For a fixed marked level $j\le m$, combine
+\eqref{vmb:cw:eq:generaltail} with the implicit derivative at $\rho_{m+1}$. Its nearby
+root satisfies
+\begin{equation}\label{vmb:cw:eq:mixedroots}
+ \log\frac{r_{j,n,h}}{\rho_{m+1}}
+ =\alpha_j^*\rho_{m+1}^h-\frac{s_j}{M_j^*n}
+ +O\left(h\rho_{m+1}^{2h}+\frac{h\rho_{m+1}^h}{n}+n^{-2}\right).
+\end{equation}
+Indeed, the derivative of $\log(u_j^*K_j(q))$ with respect to $\log q$
+is $M_j^*$; the kernel loss is $u_j^*a_j(\rho_{m+1})\rho_{m+1}^h$ to first order, and the
+logarithmic weight increment is $s_j/n$. Taylor's theorem and the
+derivative bound following \eqref{vmb:cw:eq:generaltail} give the error.
+
+The truncated terminal function $D_{m+1}^{\le h}$ has a nearby simple pole
+whose logarithmic displacement is
+$\alpha_0^*\rho_{m+1}^h+O(h\rho_{m+1}^{2h})$. Higher-level denominators are uniformly analytic
+on a fixed disk slightly larger than $\rho_{m+1}$. After factoring out these $m+1$
+nearby simple poles, the analytic numerator is uniformly bounded on that
+disk. At $\rho_{m+1}$ it differs from its critical untruncated value by
+$O(h\rho_{m+1}^h+n^{-1})$, by the recurrence estimate in the proof of
+Theorem~\ref{vmb:cw:thm:gumbel}. This estimate also handles the possible collision
+of some of the moved poles: the analytic factorization does not divide by
+their mutual differences.
+
+In the stated window, $\rho_{m+1}^h\asymp n^{-1}$ and $h=O(\log n)$, so
+\eqref{vmb:cw:eq:mixedroots} has the form required by Lemma~\ref{vmb:cw:lem:simplex},
+with
+\[
+ \eta_j=\tau_n\alpha_j^*-s_j/M_j^*,\qquad
+ \eta_0=\tau_n\alpha_0^*.
+\]
+Earlier branches in \eqref{vmb:cw:eq:multidecomp} have at most $m-1$ nearby pole
+factors and contribute $O(n^{-2})$ relatively (or an exponentially small
+amount for $m=1$). Apply the lemma to the dominant branch and divide by
+the corresponding untruncated coefficient with $\eta_0=0$ and
+$\eta_j=-s_j/M_j^*$. The denominator integral is bounded away from zero
+on every compact real $\bm s$-set. This proves \eqref{vmb:cw:eq:mixture}.
+\end{proof}
+
+\begin{writenote}[Added 5 October 2026, batch~98]
+The manuscript abbreviates $R=R_m$ in this section; every such $R$ is
+printed as $\rho_{m+1}$, and its window bounds $a,b$ as $\tau_\pm$. The
+intensities $\alpha_j^*$ are not the Lambert coefficients $\alpha_k(c)$ of
+\eqref{vmb:eq:alphas}.
+\end{writenote}
+
+\subsection{The first critical point in closed form}
+When $m=1$, let $\xi_1$ be the macroscopic fraction of area in the bottom-level
+renewal blocks. Then $\xi_1$ is uniform on $[0,1]$ at criticality. Writing
+$\alpha_1^*$ and $\alpha_0^*$ as in \eqref{vmb:cw:eq:alphas}, the critical-window
+height law becomes
+\begin{equation}\label{vmb:cw:eq:mixtureone}
+ \Prob_{n,u_c e^{s/n}}(\mathsf H_n\le h)
+ =\frac{e^{-\tau_n\alpha_0^*}
+       G\bigl(s/M_c-\tau_n(\alpha_1^*-\alpha_0^*)\bigr)}{G(s/M_c)}
+  +O(\log n/n).
+\end{equation}
+At $s=0$, this simplifies to
+\begin{equation}\label{vmb:cw:eq:twomix}
+ \frac{e^{-\tau_n\alpha_1^*}-e^{-\tau_n\alpha_0^*}}
+      {\tau_n(\alpha_0^*-\alpha_1^*)}+O(\log n/n),
+\end{equation}
+with the continuous extension when the two intensities coincide.
+The numerical constants are
+\begin{align*}
+ \alpha_1^*&=0.3053024072567406\ldots,\\
+ \alpha_0^*&=0.3765567576528582\ldots,\\
+ \frac1{\log(1/\rho_2)}&=2.1533787748784431\ldots.
+\end{align*}
+Thus critical maximum height has scale $2.1533\ldots\log n$, compared with
+$1.4678\ldots\log n$ in the ordinary unweighted model.
+
+The limiting expression is not a single exponential $e^{-c\tau}$ unless
+all active intensities coincide. Indeed, the second Taylor coefficient
+would otherwise force
+$\E(\sum\alpha_i^*X_i)^2=(\E\sum\alpha_i^*X_i)^2$, which fails for a
+nonconstant linear function on the simplex. This distinguishes an actual
+mixture from merely replacing the Gumbel intensity by its mean.
+
+For the lattice statement, take
+$\beta_n^{\mathrm{crit}}=\log n/\log(1/\rho_{m+1})$ and a subsequence with fractional
+parts tending to $\theta$. At integer $k$, put
+$\tau=\rho_{m+1}^{k-\theta}$ in \eqref{vmb:cw:eq:mixture}. The resulting distribution
+function is the phase-dependent Dirichlet mixture. Joint marking of the
+area fractions shows more: conditional on their limiting values $X_i$,
+the extreme-height distribution has intensity $\sum\alpha_i^*X_i$.
+Consequently the maximum is generally \emph{not} asymptotically independent
+of the critical macroscopic fractions, unlike the Gaussian independence
+in Theorem~\ref{vmb:cw:thm:independent}.
+
+\begin{proposition}[{[write]} Conditional intensity of the critical maximum]
+\label{vmb:cw:prop:conditional}
+In the setting of Theorem~\ref{vmb:cw:thm:mixed}, let $\bm X_n$ be the vector
+in \eqref{vmb:cw:eq:dirichlet} on the dominant branch (and $\bm X_n=0$ on the
+earlier branches), and let $\pi_{\bm s}$ be the probability measure on the
+simplex with density proportional to $\exp(\sum_{j=1}^ms_j\xi_j/M_j^*)$.
+Along any subsequence with $\tau_n\to\tau\in[\tau_-,\tau_+]$, for every
+continuous function $f$ on $[0,1]^{m+1}$,
+\begin{equation}\label{vmb:cw:eq:conditional}
+ \E_{n,\bm u_n}\bigl[f(\bm X_n);\,\mathsf H_n\le h\bigr]
+ \longrightarrow\int f(\bm\xi)\,
+ \exp\Bigl(-\tau\sum_{i=0}^m\alpha_i^*\xi_i\Bigr)\,\pi_{\bm s}(\dd\bm\xi).
+\end{equation}
+Thus, in the limit, $\bm X_n$ has law $\pi_{\bm s}$ and, conditionally on
+$\bm X=\bm\xi$, the event $\{\mathsf H_n\le h\}$ has probability
+$\exp(-\tau\sum_i\alpha_i^*\xi_i)$. The limits of $\bm X_n$ and of
+$\mathbf 1\{\mathsf H_n\le h\}$ are independent if and only if
+$\alpha_0^*=\alpha_1^*=\cdots=\alpha_m^*$.
+\end{proposition}
+\begin{proof}
+This proof was added in writing; the manuscript asserts the statement in
+the paragraph above. Mark areas as in the proof of
+Theorem~\ref{vmb:cw:thm:dirichlet}, by $v_j/n$ in the level-$j$ repeated units
+and $v_0/n$ in the final block, in the truncated decomposition of the proof
+of Theorem~\ref{vmb:cw:thm:mixed}. Replacing $q$ by $qe^{v_j/n}$ in
+$u_{j,n}K_j^{\le h}$ multiplies its root $r_{j,n,h}$ by exactly
+$e^{-v_j/n}$, and likewise for the cutoff pole of $D_{m+1}^{\le h}$; the
+remaining analytic factors, evaluated at $qe^{v/n}$, are uniformly bounded
+and change by $O(1/n)$ at $\rho_{m+1}$. Lemma~\ref{vmb:cw:lem:simplex} applies with
+$\eta_j=\tau_n\alpha_j^*-s_j/M_j^*-v_j$ and $\eta_0=\tau_n\alpha_0^*-v_0$, and
+the earlier branches contribute $O(n^{-2})$ relatively, as in that proof.
+Dividing by the unmarked untruncated coefficient gives, uniformly for
+$\bm v$ in compact subsets of $\mathbb R^{m+1}$,
+\[
+ \E_{n,\bm u_n}\bigl[e^{\langle\bm v,\bm X_n\rangle};\,\mathsf H_n\le h\bigr]
+ =\int e^{\langle\bm v,\bm\xi\rangle}
+ e^{-\tau_n\langle\bm\alpha^*,\bm\xi\rangle}\,\pi_{\bm s}(\dd\bm\xi)
+ +O\Bigl(\frac{\log n}n\Bigr),
+\]
+with $\langle\bm v,\bm\xi\rangle=\sum_{i=0}^mv_i\xi_i$. The left side is the
+Laplace transform of the finite measure
+$\mu_n(B)=\Prob_{n,\bm u_n}(\bm X_n\in B,\ \mathsf H_n\le h)$ on the compact
+set $[0,1]^{m+1}$. As $\tau_n\to\tau$, these transforms converge for every
+real $\bm v$ to that of
+$\mu(\dd\bm\xi)=e^{-\tau\langle\bm\alpha^*,\bm\xi\rangle}\pi_{\bm s}(\dd\bm\xi)$,
+whose total mass is positive. Hence the total masses converge, and the
+normalized probability measures, whose moment generating functions converge
+everywhere, converge weakly; so $\mu_n\to\mu$ weakly, which is
+\eqref{vmb:cw:eq:conditional}. With Proposition~\ref{vmb:cw:prop:tilted}
+($\bm X_n\Rightarrow\pi_{\bm s}$) this identifies the joint limit as stated.
+It is a product law exactly when $e^{-\tau\langle\bm\alpha^*,\bm\xi\rangle}$
+is $\pi_{\bm s}$-almost surely constant. Since $\pi_{\bm s}$ has a positive
+continuous density on the simplex and
+$\langle\bm\alpha^*,\bm\xi\rangle=\alpha_0^*+\sum_{j=1}^m(\alpha_j^*-\alpha_0^*)\xi_j$
+there, with $\tau>0$, this happens if and only if all $\alpha_i^*$ are equal.
+\end{proof}
+
+\wrt{at the first critical point the numerical values
+$\alpha_1^*=0.3053\ldots$ and $\alpha_0^*=0.3766\ldots$ above differ, so the
+critical maximum is not asymptotically independent of the area fraction
+there; these decimals are diagnostics, not interval certificates.}
+
+\section{Inversion of the new asymptotic expansions}
+\label{vmb:cw:sec:inversion}
+
+\subsection{Inverting the height-cutoff pole}\label{vmb:cw:sec:inverseheight}
+A discrete cutoff has no automatic real inverse. Here an exact analytic
+interpolation is available: for large real $h$ and real $q$ near $\rho$,
+define
+\begin{equation}\label{vmb:cw:eq:heightinterp}
+ \widehat K_h(q)=K(q)-H_1(q)P_2(q)\Psi(q,q^{h+1}).
+\end{equation}
+It agrees with the height-truncated kernel at every sufficiently large
+integer $h$. Its nearby root defines $\delta(h)$ as in
+Theorem~\ref{vmb:cw:thm:cutoffseries}. The derivative of the leading tail with
+respect to $h$ has the sign of $\log\rho<0$, while subsequent derivatives
+are smaller, so $\delta(h)$ is strictly decreasing for large $h$.
+
+\begin{lemma}[{[write]} The interpolated shift decreases]\label{vmb:cw:lem:deltamono}
+For all sufficiently large real $h$, $\widehat K_h(q)=1$ has a unique root
+$q=\rho e^{\delta(h)}$ with $\delta(h)$ small; $\delta$ is real analytic,
+$\delta(h)=\alpha\rho^h(1+O(h\rho^h))$, and $\delta'(h)<0$. At integers
+$h\ge2$, $\widehat K_h=K^{\le h}$ and $\delta(h)=\delta_h$.
+\end{lemma}
+\begin{proof}
+This proof was added in writing, expanding the one-line justification
+above. By \eqref{vmb:cw:eq:tailpsi} with $j=2$, $K-K^{\le h}=H_1(U_2-U_2^{\le h})
+=H_1P_2\Psi(q,q^{h+1})$ for integers $h\ge2$, which gives the agreement.
+Since $\Psi(q,z)=\sum_{\ell\ge1}\psi_\ell(q)z^\ell$ converges for small $|z|$,
+locally uniformly in $q$, we have
+$K(q)-\widehat K_h(q)=\sum_{r\ge1}A_r(q)q^{rh}$ with the $A_r$ of
+Appendix~\ref{vmb:cw:app:cutoff}, for all real $h$ large. Put
+$\Phi(\delta,h)=\widehat K_h(\rho e^\delta)-1
+=K(\rho e^\delta)-1-\sum_{r\ge1}A_r(\rho e^\delta)\rho^{rh}e^{rh\delta}$,
+analytic in $(\delta,h)$ for $|\delta|$ small and $h$ large. On
+$|\delta|\le1/h^2$, say, $rh|\delta|\le r/h$, so
+$\partial_\delta\Phi=M_\rho+O(h\rho^h)>0$ and the implicit function theorem
+gives a unique small root $\delta(h)$, analytic in $h$, with
+$\delta(h)=\alpha\rho^h(1+O(h\rho^h))$ by the first-order balance
+$M_\rho\delta=A_1(\rho)\rho^h+\cdots$ and $A_1(\rho)/M_\rho=\alpha$. Next,
+$\partial_h\Phi=-\sum_{r\ge1}r(\log\rho+\delta)A_r(\rho e^\delta)
+\rho^{rh}e^{rh\delta}=L\,A_1(\rho)\rho^h(1+O(h\rho^h))>0$, because
+$A_1(\rho)=\rho^2P_1(\rho)>0$ and $L=-\log\rho>0$. Hence
+$\delta'(h)=-\partial_h\Phi/\partial_\delta\Phi<0$.
+\end{proof}
+
+\begin{theorem}[Inverse exponential expansion]\label{vmb:cw:thm:inverseheight}
+Let $h(\delta)$ be the large real inverse of \eqref{vmb:cw:eq:heightinterp},
+where $\delta\downarrow0$, and put
+\begin{equation}\label{vmb:cw:eq:h0}
+ h_0=\frac{\log(\alpha/\delta)}L.
+\end{equation}
+Then
+\begin{equation}\label{vmb:cw:eq:inverseheight}
+ \boxed{\displaystyle
+ h(\delta)=h_0+\frac\delta L
+ \left(h_0+g-\frac{\rho}{\alpha(1-\rho)}\right)
+ +O(\delta^2h_0^2).}
+\end{equation}
+To every order it has an expansion in powers of $\delta$ whose coefficients
+are polynomials in $h_0$; the coefficient at $\delta^r$ has degree at most
+$r$.
+\end{theorem}
+\begin{proof}
+Set $\epsilon=\rho^h$. Formula~\eqref{vmb:cw:eq:cutofftwo} is
+\[
+ \delta=\alpha\epsilon+
+ \left[\alpha^2(h+g)-\frac{\alpha\rho}{1-\rho}\right]\epsilon^2
+ +O(h^2\epsilon^3).
+\]
+Solving first for $\epsilon$ and taking its logarithm gives
+\[
+ -Lh=\log(\delta/\alpha)
+ -\delta\left(h+g-\frac{\rho}{\alpha(1-\rho)}\right)
+ +O(\delta^2h^2).
+\]
+Here $h=h_0+O(\delta h_0)$, so substitution of $h_0$ in the first correction
+proves \eqref{vmb:cw:eq:inverseheight}. Repeating the same substitution with
+\eqref{vmb:cw:eq:cutoffall} gives the asserted polynomial structure at each finite
+order. The derivative of the logarithmic equation with respect to $h$ is
+$-L+O(\delta h)$, bounded away from zero, so every formal residual yields
+a corresponding asymptotic remainder. At order $N$, the remainder is
+$O_N(\delta^{N+1}h_0^{N+1})$.
+\end{proof}
+
+At integer cutoffs, a truncated inverse must be accompanied by a rounding
+interval. The exact interpolation supplies a well-defined crossing; a
+finite expansion supplies only an approximation to it. Its ceiling is
+unambiguous only when the approximation is separated from the integers by
+more than the proved remainder.
+
+\subsection{Critical counting inversion is almost exactly Lambert--\texorpdfstring{$W$}{W}}
+Let $L_c=\log(1/\rho_2)$ and $a_c=\kappa_0/\kappa$. The entire dominant-pole
+polynomial in \eqref{vmb:cw:eq:criticalcount} has the real interpolation
+\[
+ Y_c(x)=\kappa(x+a_c)e^{L_cx}.
+\]
+For sufficiently large $Y$ its inverse is exactly
+\begin{equation}\label{vmb:cw:eq:Wcrit}
+ \boxed{\displaystyle
+ x_c(Y)=\frac1{L_c}W_0\left(\frac{L_c}{\kappa}Ye^{L_ca_c}\right)-a_c.}
+\end{equation}
+This follows by putting $z=L_c(x+a_c)$ in $Y=Y_c(x)$. No additional
+inverse-power corrections to this specified interpolant are missing:
+all errors in replacing the actual coefficients by $Y_c(n)$ are
+exponentially smaller.
+
+For example, with $z_c=(L_c/\kappa)Ye^{L_ca_c}$, $\ell_1=\log z_c$, and
+$\ell_2=\log \ell_1$, ordinary series substitution in $W+\log W=\log z_c$ gives
+\begin{equation}\label{vmb:cw:eq:Wlog}
+ x_c(Y)=\frac1{L_c}\left(
+ \ell_1-\ell_2+\frac{\ell_2}{\ell_1}
+ +\frac{\ell_2(\ell_2-2)}{2\ell_1^2}
+ +O\left(\frac{\ell_2^3}{\ell_1^3}\right)\right)-a_c.
+\end{equation}
+The formula \eqref{vmb:cw:eq:Wcrit} is preferable numerically; \eqref{vmb:cw:eq:Wlog}
+exhibits the inverse-logarithmic scale.
+
+\begin{proposition}[Discrete crossing bounds]\label{vmb:cw:prop:rounding}
+For $Y>0$, define $N_c(Y)=\min\{n\ge1:f_n(u_c)\ge Y\}$. For some
+constant $C_*>0$, with $R$ as in \eqref{vmb:cw:eq:criticalcount},
+\begin{equation}\label{vmb:cw:eq:rounding}
+ \left\lceil x_c(Y)-C_*\frac{R^{-x_c(Y)}}Y\right\rceil
+ \le N_c(Y)\le
+ \left\lceil x_c(Y)+C_*\frac{R^{-x_c(Y)}}Y\right\rceil
+\end{equation}
+for all sufficiently large $Y$.
+\end{proposition}
+\begin{proof}
+Appending a part one creates no new valley and preserves all existing
+valley weights. It gives a weight-preserving injection from area $n$ to
+area $n+1$; the singleton $(n+1)$ is an additional object. Thus $f_n(u_c)$
+is strictly increasing. Near $x_c(Y)$, $Y_c'(x)\asymp Y$. The coefficient
+error $O(R^{-n})$ therefore moves the real crossing by at most a constant
+times $R^{-x_c(Y)}/Y$. A mean-value bound on a fixed neighborhood of the
+crossing proves the two inequalities; outside that neighborhood the leading
+exponential already separates the values. The displayed uncertainty tends
+to zero because $R>\rho_2$.
+\end{proof}
+
+\subsection{Multicritical counting inverses}
+At an $m$-level critical point, write
+$\Pi_m(x)=\kappa^{(m)}x^m(1+\pi_1/x+\cdots+\pi_m/x^m)$ and
+$L_m=\log(1/\rho_{m+1})$ \wrt{so $L_1=L_c$}. The leading inverse is
+\begin{equation}\label{vmb:cw:eq:Wmulti}
+ x_0(Y)=\frac m{L_m}W_0\left(
+       \frac{L_m}{m}(Y/\kappa^{(m)})^{1/m}\right).
+\end{equation}
+The inverse of $e^{L_mx}\Pi_m(x)$ is obtained to all algebraic orders by
+setting $x=x_0+\varphi$ in
+\begin{equation}\label{vmb:cw:eq:multiinverseimplicit}
+ \varphi=-\frac1{L_m}\left[
+ m\log(1+\varphi/x_0)+
+ \log\left(1+\frac{\pi_1}{x_0+\varphi}+\cdots+
+                    \frac{\pi_m}{(x_0+\varphi)^m}\right)\right].
+\end{equation}
+The right side and its derivative are $O(x_0^{-1})$, so local analytic
+Lagrange inversion is convergent for large $x_0$ and gives an effective
+coefficient algorithm. In particular,
+\[
+ x=x_0-\frac{\pi_1}{L_mx_0+m}+O(x_0^{-2}).
+\]
+The exponentially small coefficient remainder and the same injection give
+rounding bounds of the form \eqref{vmb:cw:eq:rounding}, with the corresponding
+polynomial interpolant and radius. These inversion tools are standard;
+the new input is the explicitly identified critical polynomial and its
+phase-dependent degree.
+
+\subsection{Height quantiles and their rounding phase}
+For fixed $p\in(0,1)$, define the integer quantile
+$h_p(n)=\min\{h:\Prob(\mathsf H_n\le h)\ge p\}$. The real leading crossing is
+\begin{equation}\label{vmb:cw:eq:heightquantile}
+ \beta_p(n)=\frac{\log(\alpha n)-\log(-\log p)}L.
+\end{equation}
+Theorem~\ref{vmb:cw:thm:gumbel} and the nonzero derivative of
+$\exp(-\alpha n\rho^x)$ at $x=\beta_p(n)$ imply, for some $C_p$,
+\begin{equation}\label{vmb:cw:eq:quantilerounding}
+ \left\lceil \beta_p(n)-C_p\frac{\log n}{n}\right\rceil
+ \le h_p(n)\le
+ \left\lceil \beta_p(n)+C_p\frac{\log n}{n}\right\rceil.
+\end{equation}
+A bare ceiling of \eqref{vmb:cw:eq:heightquantile} would omit the narrow but real
+rounding ambiguity. At criticality, replace the exponential by the monotone
+mixture Laplace transform in \eqref{vmb:cw:eq:mixture}; its unique positive real
+crossing in $\tau$ supplies the analogous quantile constant.
+
+\begin{proposition}[{[write]} Multicritical rounding and critical quantiles]
+\label{vmb:cw:prop:roundingmulti}
+\textup{(i)} At the weights \eqref{vmb:cw:eq:multiweights}, let
+$f^{(m)}_n=\coeff qn F_m(q,\bm u^*)$, $N_m(Y)=\min\{n\ge1:f^{(m)}_n\ge Y\}$,
+and let $x_m(Y)$ be the inverse of $Y_m(x)=e^{L_mx}\Pi_m(x)$ on its
+eventually increasing branch. With $R$ as in \eqref{vmb:cw:eq:multicount},
+there is $C_*>0$ such that, for all sufficiently large $Y$,
+\[
+ \left\lceil x_m(Y)-C_*\frac{R^{-x_m(Y)}}Y\right\rceil
+ \le N_m(Y)\le
+ \left\lceil x_m(Y)+C_*\frac{R^{-x_m(Y)}}Y\right\rceil.
+\]
+\textup{(ii)} In the setting of Theorem~\ref{vmb:cw:thm:mixed} with fixed
+$\bm s$, let $\Phi_{\bm s}(\tau)$ be the main term of
+\eqref{vmb:cw:eq:mixture} as a function of $\tau=\tau_n$. For fixed
+$p\in(0,1)$ it has a unique root $\tau_p>0$ of $\Phi_{\bm s}(\tau)=p$; put
+$\beta^{\mathrm{crit}}_p(n)=(\log n-\log\tau_p)/L_m$. Then
+$h_p(n)=\min\{h:\Prob_{n,\bm u_n}(\mathsf H_n\le h)\ge p\}$ satisfies, for
+some $C_p$ and all large $n$,
+\[
+ \left\lceil \beta^{\mathrm{crit}}_p(n)-C_p\frac{\log n}{n}\right\rceil
+ \le h_p(n)\le
+ \left\lceil \beta^{\mathrm{crit}}_p(n)+C_p\frac{\log n}{n}\right\rceil.
+\]
+The same argument, with $\Phi(\tau)=e^{-\alpha\tau}$ and
+Theorem~\ref{vmb:cw:thm:gumbel}, proves \eqref{vmb:cw:eq:quantilerounding}.
+\end{proposition}
+\begin{proof}
+This proof was added in writing; the manuscript states (i) and (ii) by
+analogy in the two paragraphs above.
+(i) Appending a part one to a valley-monotone composition creates no
+valley (the new last run is an endpoint run, and the run before it gains a
+smaller right neighbour, so it is not a valley) and removes none, so it is a
+weight-preserving injection from area $n$ to area $n+1$; the singleton
+$(n+1)$, of weight one, is not in its image. Hence $f^{(m)}_{n+1}>f^{(m)}_n$.
+By \eqref{vmb:cw:eq:multicount}, $f^{(m)}_n=Y_m(n)+O(R^{-n})$, and
+$Y_m'(x)=Y_m(x)(L_m+\Pi_m'(x)/\Pi_m(x))\asymp Y_m(x)$ for large $x$. The proof
+of Proposition~\ref{vmb:cw:prop:rounding} now applies verbatim with $Y_m$, $x_m$
+in place of $Y_c$, $x_c$.
+
+(ii) With $S=\sum_i\alpha_i^*\xi_i$, $\Phi_{\bm s}(\tau)$ is the expectation
+of $e^{-\tau S}$ under the tilted law $\pi_{\bm s}$ of
+Proposition~\ref{vmb:cw:prop:conditional}. Since $S\ge\min_i\alpha_i^*>0$,
+$\Phi_{\bm s}$ is continuous, $\Phi_{\bm s}(0)=1$, $\Phi_{\bm s}(\tau)\to0$
+as $\tau\to\infty$, and $\Phi_{\bm s}'(\tau)=-\E_{\pi_{\bm s}}[Se^{-\tau S}]<0$;
+so $\tau_p$ exists and is unique. Put $g(x)=\Phi_{\bm s}(n\rho_{m+1}^x)$ for
+real $x$, so $g(\beta^{\mathrm{crit}}_p(n))=p$ and
+$g'(x)=-L_m\tau\Phi_{\bm s}'(\tau)$ at $\tau=n\rho_{m+1}^x$, which is
+$\ge c>0$ while $\tau\in[\rho_{m+1}^2\tau_p,\tau_p/\rho_{m+1}^2]$. Apply
+Theorem~\ref{vmb:cw:thm:mixed} with $\tau_-=\rho_{m+1}^2\tau_p$,
+$\tau_+=\tau_p/\rho_{m+1}^2$; its error is at most $K\log n/n$ there. Let
+$\varepsilon_n=C_p\log n/n$ with $C_p>K/c$. The integer
+$h^+=\lceil\beta^{\mathrm{crit}}_p+\varepsilon_n\rceil$ has $\tau$ in that
+range and $g(h^+)\ge p+c\varepsilon_n$, so
+$\Prob(\mathsf H_n\le h^+)\ge p+c\varepsilon_n-K\log n/n>p$ and
+$h_p(n)\le h^+$. The integer $h^-=\lceil\beta^{\mathrm{crit}}_p-\varepsilon_n\rceil-1$
+lies in $[\beta^{\mathrm{crit}}_p-\varepsilon_n-1,\beta^{\mathrm{crit}}_p-\varepsilon_n)$,
+so its $\tau$ is in range and $g(h^-)<p-c\varepsilon_n$; hence
+$\Prob(\mathsf H_n\le h)\le\Prob(\mathsf H_n\le h^-)<p$ for every $h\le h^-$,
+and $h_p(n)\ge h^-+1$. These are the two ceilings.
+\end{proof}
+
+\begin{writenote}[Added 5 October 2026, batch~98: instances of repository results]
+As for Part~I's inverse (the notes in Sections~\ref{vmb:sec:accumulation}
+and~\ref{vmb:sec:inverse}), the inversion tools of this section are
+instances of the transseries-and-inversion volume~\cite{vmb-tai}, and the
+manuscript itself calls them standard. Writing $X=x+a_c$,
+$Y=Y_c(x)$ reads $L_cX+\log X=\log(Y/\kappa)+L_ca_c$, the Lambert core
+\texttt{p0:thm:lambert-core} with $a=L_c$, $b=1>0$ (principal branch); this
+is \eqref{vmb:cw:eq:Wcrit}, and \eqref{vmb:cw:eq:Wlog} is its standard
+logarithmic series. At $m$ levels the leading block
+$L_mx+m\log x=\log(Y/\kappa^{(m)})$ is the same core with $a=L_m$, $b=m$, giving
+\eqref{vmb:cw:eq:Wmulti}, and \eqref{vmb:cw:eq:multiinverseimplicit} is
+reversion about that core (\texttt{p0:thm:core-reversion}), i.e.\ Lagrange
+inversion (\texttt{p0:thm:LB}), which also underlies
+Theorem~\ref{vmb:cw:thm:inverseheight}. The reduced equation
+$\delta=\alpha\epsilon e^{h\delta}$ in the proof of
+Theorem~\ref{vmb:cw:thm:cutoffseries} is solved by the Lambert function in the
+same way. Propositions~\ref{vmb:cw:prop:rounding}
+and~\ref{vmb:cw:prop:roundingmulti}(i), and \eqref{vmb:cw:eq:quantilerounding},
+are the staircase theorem \texttt{p0:thm:staircase}, parts (1)--(2), whose
+generic arithmetic is formalized in Lean as \texttt{Fabius.staircase\_ceil}
+and \texttt{Fabius.staircase\_separation} in
+\nolinkurl{Analysis/FabiusFunction/Lean/FabiusFunction/StaircaseInversion.lean};
+those statements concern an arbitrary monotone interpolation and give no
+formal status to the propositions here. No novelty is claimed for the
+methods; the constants and the critical polynomials are specific to this
+report.
+\end{writenote}
+
+\section{Reproducible checks and numerical behavior}
+\label{vmb:cw:sec:checks}
+
+\subsection{Exact finite verification}
+The supplied \texttt{code/verify.py} uses only Python's standard library.
+It computes coefficients by triangular formal-series division over the
+integers. Independently it generates every composition through area fourteen,
+extracts plateau valleys directly, and compares six weighted or
+height-restricted settings. All $84$ comparisons pass. The settings include
+unweighted objects, maximum heights three and five, weight two at level one,
+and simultaneous weights two and three at levels one and two. It also checks
+A001523 through area twenty and retains unweighted coefficients through area
+$240$.
+
+The exact denominator for a marked level is
+\begin{equation}\label{vmb:cw:eq:exactden}
+ Q_{j,u}(q)=(1-q^j)^2-u q^j(1-q^j)U_{j+1}(q),
+\end{equation}
+and the numerator in $Q_{j,u}D_j$ is
+\begin{equation}\label{vmb:cw:eq:exactnum}
+ q^j(1-q^j)-u q^{2j}U_{j+1}(q)+D_{j+1}(q).
+\end{equation}
+Because $Q_{j,u}(0)=1$, no division of integers is needed. At height cap $h$,
+initialize $U_{h+1}=D_{h+1}=0$; without a cap, initializing at level $N+1$
+is exact through degree $N$. These are finite identities, not asymptotic
+approximations.
+
+\begin{writenote}[Added 5 October 2026, batch~98]
+$Q_{j,u}=(1-q^j)(1-q^j-uq^jU_{j+1})$, so $Q_{j,1}=(1-q^j)Q_j$ with Part~I's
+$Q_j$ of \eqref{vmb:eq:HKQ}, and \eqref{vmb:cw:eq:exactden}--\eqref{vmb:cw:eq:exactnum}
+at $u=1$ are the last line of \eqref{vmb:eq:algorithm}.
+\end{writenote}
+
+\subsection{Critical coefficients and the double pole}
+The numerical programs use $65$-digit \texttt{mpmath} arithmetic with a
+maximum level of $320$. Comparing levels $220$ and $320$ in $K(\rho_2)$ gives
+a difference about $1.43\cdot10^{-43}$. This is a convergence diagnostic,
+not a rigorous interval certificate. The exact critical constants are
+always the analytic quantities in \eqref{vmb:cw:eq:critical}--\eqref{vmb:cw:eq:kappas}.
+
+\begin{center}
+\begin{tabular}{@{}rrrr@{}}
+\toprule
+$n$ & $\rho_2^nf_n(u_c)-(\kappa n+\kappa_0)$ & $\E V_n/n$ & $\Var V_n/n^2$\\
+\midrule
+30  & $4.6043\cdot10^{-2}$ & $0.02736564$ & $0.00084894$\\
+60  & $2.2957\cdot10^{-3}$ & $0.03149433$ & $0.00065425$\\
+120 & $5.5586\cdot10^{-6}$ & $0.03413759$ & $0.00055328$\\
+240 & $3.2472\cdot10^{-11}$& $0.03564653$ & $0.00050604$\\
+\midrule
+Limit & $0$ & $0.03728019$ & $0.00046327$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The exponentially small residual concerns the coefficient formula. The
+moments need not converge exponentially: marking splits the double pole,
+and their leading finite-size corrections are algebraic.
+
+At $n=240$ the leading critical-window formula, its first correction, and
+the independently computed scaled coefficient are:
+\begin{center}
+\begin{tabular}{@{}rrrr@{}}
+\toprule
+$s$ & $\kappa nG(s/M_c)$ & with $G_1(s)$ & $\rho_2^nf_n(u_c e^{s/n})$\\
+\midrule
+$-4$ & $48.27503236$ & $48.32923935$ & $48.31748024$\\
+$0$  & $55.83114319$ & $55.49838473$ & $55.49838473$\\
+$4$  & $65.04998792$ & $64.24315456$ & $64.26440169$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The remaining error for nonzero $s$ is consistent with the proved $O(1/n)$
+scaled remainder; the table is not used to infer that bound.
+
+\subsection{Extreme heights and pole shifts}
+For the ordinary model, the exact finite coefficient ratio and the leading
+height prediction in \eqref{vmb:cw:eq:gumbel} give:
+\begin{center}
+\begin{tabular}{@{}rrrr@{}}
+\toprule
+$n$ & $h$ & exact $\Prob(\mathsf H_n\le h)$ & $e^{-\alpha n\rho^h}$\\
+\midrule
+60  &5& $0.39227262$ &$0.40832225$\\
+120 &6& $0.39622717$ &$0.40398216$\\
+240 &7& $0.39582494$ &$0.39963725$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The visible finite-size differences are retained rather than hidden by a
+fitted intensity. The pole-shift expansion itself converges much faster:
+\begin{center}
+\begin{tabular}{@{}rrr@{}}
+\toprule
+$h$ & relative error, first term & relative error, two terms\\
+\midrule
+8  & $-1.7175\cdot10^{-2}$ & $-4.3993\cdot10^{-4}$\\
+12 & $-1.6241\cdot10^{-3}$ & $-3.9517\cdot10^{-6}$\\
+16 & $-1.3958\cdot10^{-4}$ & $-2.9209\cdot10^{-8}$\\
+24 & $-8.8483\cdot10^{-7}$ & $-1.1741\cdot10^{-12}$\\
+32 & $-5.0260\cdot10^{-9}$ & $-3.7886\cdot10^{-17}$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Here ``relative error'' means approximation divided by the computed
+$\delta_h$, minus one.
+
+At the first critical point, the numerically evaluated finite weighted
+coefficient ratios and the
+mixture prediction \eqref{vmb:cw:eq:twomix} include
+\begin{center}
+\begin{tabular}{@{}rrrr@{}}
+\toprule
+$n$ & $h$ & computed critical CDF & mixture prediction\\
+\midrule
+120&7 &$0.19320378$&$0.20584639$\\
+120&8 &$0.37460867$&$0.36990049$\\
+240&9 &$0.28593991$&$0.28662767$\\
+240&10&$0.46399389$&$0.45564238$\\
+\bottomrule
+\end{tabular}
+\end{center}
+These computations use the explicit weighted recurrence, not samples from
+a Monte Carlo generator.
+
+Finally, at the two-level critical point,
+\[
+ \rho_3=0.6949152510\ldots,\quad
+ u_1^*=0.02240337599\ldots,\quad
+ u_2^*=0.21458477859\ldots.
+\]
+For $n=240$ and $(s_1,s_2)=(3,-2)$, the numerically evaluated coefficient ratio with the
+$1/n$ weight tilts is $1.0118132157\ldots$, whereas the limiting simplex
+integral is $1.0129148706\ldots$. For $(-3,2)$ the corresponding numbers
+are $0.9911396048\ldots$ and $0.9897390369\ldots$. These are additional
+finite checks of the multilevel construction, not substitutes for
+Theorem~\ref{vmb:cw:thm:dirichlet}.
+
+\subsection{Running the package}
+From the package directory:
+\begin{verbatim}
+python code/verify.py
+python code/symbolic_checks.py
+python code/numerics.py
+python code/critical_extremes.py
+pdflatex article.tex
+pdflatex article.tex
+\end{verbatim}
+The first script requires only Python's standard library; symbolic checks
+require \texttt{sympy}, and numerical diagnostics require \texttt{mpmath}.
+The data directory records the outputs. No external papers, repository
+source files, or font files are included. The scripts do not change the
+remote repository or submit anything to OEIS.
+
+\begin{writenote}[Added 5 October 2026, batch~98]
+The commands above describe the delivered package, not this repository. The
+four programs are shipped in \texttt{code/} and their outputs in
+\texttt{data/}, each under its delivered name with the prefix
+\texttt{02-critical-windows-} (for example
+\texttt{code/\allowbreak 02-critical-windows-\allowbreak verify.py}); the
+delivered article, its PDF and
+its build script are not shipped (this report's README gives the build
+command). The programs write unprefixed files into a sibling \texttt{data/}
+directory, \texttt{numerics.py} and \texttt{critical\_extremes.py} import
+\texttt{verify} and \texttt{numerics} by their delivered names (inside the
+repository those names would resolve to Part~I's programs, which lack the
+imported functions), and \texttt{critical\_extremes.py} reads
+\texttt{numerical\_checks.json}. The README therefore reruns them on a scratch
+copy with the delivered names restored. The rerun of the write (5~October
+2026, Python 3.13.5, SymPy 1.14.0, mpmath 1.3.0) passed: 84 enumeration checks
+and A001523 through area~20, five symbolic identity groups, and the two
+numerical programs, all four outputs equal to the shipped files as JSON (the
+bytes differ only by CRLF line ends written on Windows). In the data keys,
+\texttt{R} is $\rho_2$, \texttt{R3} is $\rho_3$, \texttt{P} is $P_1(\rho)$,
+\texttt{A} is $\alpha$, \texttt{physical\_M}, \texttt{physical\_V} are
+Part~I's $M$, $V$, \texttt{critical\_M}, \texttt{critical\_V},
+\texttt{Jc}, \texttt{critical\_D}, \texttt{critical\_d} are $M_c$, $V_c$,
+$J_c$, $D_c$, $d_c$, \texttt{critical\_height\_alpha1} and
+\texttt{critical\_height\_alpha2} are $\alpha_1^*$ and $\alpha_0^*$,
+\texttt{critical\_level2\_M} is $M_2(\rho_2)$, \texttt{shift} is $a_c$, and
+\texttt{u1}, \texttt{u2}, \texttt{M1}, \texttt{M2} of the two-level record are
+$u_1^*$, $u_2^*$, $M_1^*$, $M_2^*$ at $m=2$. Keys such as
+\texttt{exact\_cdf} and \texttt{exact\_ratio} denote the finite recurrence
+evaluated at approximate weights, not enclosures. The A001523 terms through
+area~20 hard-coded in \texttt{02-critical-windows-verify.py} are OEIS data
+(CC~BY-SA~4.0); the arrays of $D_1$, $U_2$, $D_2$ in
+\texttt{02-critical-windows-exact\_checks.json} are computed, not OEIS data.
+\end{writenote}
+
+\section{Further questions and research}
+\label{vmb:cw:sec:future}
+
+\begin{writenote}[Added 5 October 2026, batch~98]
+Subsections~\ref{vmb:cw:sec:q-pointprocess}--\ref{vmb:cw:sec:q-formal} are
+the manuscript's Section~11 (``Further research questions''), printed with
+its numbering of topics 1--7. Subsection~\ref{vmb:cw:sec:q-write} lists, under
+the repository's standing rule of 4~October 2026, every statement of the
+manuscript that it supports only by a sketch, an analogy or a one-line
+remark, with what the write did about each, and the part of Part~I's question
+that Part~II leaves open.
+\end{writenote}
+
+\subsection{A critical extremal point process}
+\label{vmb:cw:sec:q-pointprocess}
+Theorem~\ref{vmb:cw:thm:mixed} identifies the law of the largest column. A stronger
+next target is the joint distribution of the largest several column heights,
+with their plateau multiplicities and the levels of their renewal components.
+A natural conjecture is a component-marked Poisson limit conditional on the
+Dirichlet fractions, with a corresponding random-intensity mixture after
+conditioning is removed. The current maximum-height proof alone does not
+establish such a point-process limit: multiple columns in one unimodal unit
+can be dependent and must be controlled explicitly.
+
+\subsection{The first correction to the mixed extreme law}
+The present error in \eqref{vmb:cw:eq:mixture} is $O(\log n/n)$. Derive the full
+correction, including the perturbed residues, the next kernel-tail term,
+and the simplex boundary terms in the coefficient sum. The exact
+$\Psi$-expansion and the cutoff polynomials show that the correction should
+involve the lattice phase and powers of $\log n$. This would sharpen
+critical height quantiles beyond the current rounding band.
+
+\subsection{Growing numbers of critical levels}
+All multicritical theorems here keep $m$ fixed. Determine how fast $m=m(n)$
+may grow while the Dirichlet approximation remains uniform. Since
+$\rho_{m+1}\to1$, analytic neighborhoods shrink and the number of possible
+competing poles increases. Neither the fixed-$m$ simplex proof nor the
+fixed-minimum-part asymptotic theorem justifies this interchange of limits.
+
+\subsection{A local limit theorem for coexistence fractions}
+The bounded-support weak limits proved here determine macroscopic moments.
+A quantitative joint local limit for $(V_{1,n},\ldots,V_{m,n})$ would describe
+individual lattice probabilities, including faces of the simplex. Interior
+Gaussian fluctuations around a prescribed Dirichlet fraction should interact
+with boundary layers where one renewal family has only finitely many units.
+A uniform theorem across those layers remains to be proved.
+
+\subsection{Nonreal poles and optimal exponential errors}
+The proofs require a radius slightly beyond the dominant singularity, not a
+certification of the next singularity. Locate and certify the first several
+nonreal poles of the weighted and height-capped models. This would make the
+exponential remainder effective, identify oscillatory correction sectors,
+and improve the discrete counting inverses near difficult thresholds.
+
+\subsection{Natural boundaries and moving minimum parts}
+The unit-circle natural-boundary question and the moving-lower-bound crossover
+problem in Part~I remain separate questions. The present $q$-product
+identity may help study root-of-unity behavior, but it does not prove that
+singularities are noncancelling near every boundary point. Likewise, increasing
+height cutoff and increasing minimum part are different limits; the
+maximum-height theorem does not solve the latter crossover problem.
+
+\begin{writenote}[Added 5 October 2026, batch~98]
+These are Part~I's questions ``Is the unit circle a natural boundary?'' and
+``Moving lower bounds and a crossover problem'' (Section~\ref{vmb:sec:future}),
+restated; Part~II answers neither.
+\end{writenote}
+
+\subsection{Formalization and effective certificates}
+\label{vmb:cw:sec:q-formal}
+A first formalization target is the unique marked decomposition, including
+plateau semantics and height caps. Next come exact truncated-series identities
+and the elementary simplex coefficient lemma. Certified interval bounds for
+$u_c$, $\alpha$, and the critical intensities would be useful independently
+of a full complex-analytic formalization. The numerical agreement in this
+package is not a replacement for those certificates.
+
+\subsection{Sketched claims of the manuscript, and what remains of Part~I's question}
+\label{vmb:cw:sec:q-write}
+\begin{writenote}[Added 5 October 2026, batch~98]
+Each item names the manuscript's claim, its support there, and its status
+now. The proofs supplied in writing have not been independently reviewed;
+until they are, the items they settle should be read as settled only to that
+standard.
+\begin{enumerate}[leftmargin=*,itemsep=2pt]
+\item \emph{Conditional intensity of the critical maximum} (manuscript
+ Section~8.1; here the paragraph before
+ Proposition~\ref{vmb:cw:prop:conditional}). Claim: conditionally on the limiting
+ area fractions $X_i$, the extreme-height law has intensity
+ $\sum\alpha_i^*X_i$, so the critical maximum is generally not
+ asymptotically independent of the fractions. Support: one sentence (``Joint
+ marking of the area fractions shows more''). Missing: the simplex lemma with
+ simultaneous area marks and the cutoff, and the identification of the joint
+ limit. Status: proved in writing, Proposition~\ref{vmb:cw:prop:conditional},
+ which also makes ``generally'' exact (independence holds if and only if all
+ $\alpha_i^*$ coincide).
+\item \emph{Tilted multicritical window} (manuscript Section~5.2). Claim: the
+ weights $u_j^*e^{s_j/n}$ multiply the leading coefficient by
+ $\mathcal G_m(\bm s)$ and tilt the Dirichlet law. Support: ``The proof is the
+ same nearby-pole argument.'' Status: proved in writing,
+ Proposition~\ref{vmb:cw:prop:tilted}.
+\item \emph{Complete fixed-parameter classification} (manuscript
+ Section~5.2). Claim: with $\nu$ minimal roots, the pole has order $\nu$ and
+ the coefficients are $r_*^{-n}$ times a polynomial of degree $\nu-1$.
+ Support: a paragraph sketch (noncancellation through the suffix after the
+ last active level). Status: proved in writing,
+ Proposition~\ref{vmb:cw:prop:chambers}.
+\item \emph{Multicritical rounding and critical quantiles} (manuscript
+ Sections~9.3 and~9.4). Claims: rounding bounds ``of the form''
+ \eqref{vmb:cw:eq:rounding} at every multicritical point, and the critical
+ analogue of \eqref{vmb:cw:eq:quantilerounding} through the unique crossing of
+ the mixture transform. Support: analogy. Status: proved in writing,
+ Proposition~\ref{vmb:cw:prop:roundingmulti}.
+\item \emph{Monotonicity of the interpolated cutoff shift} (manuscript
+ Section~9.1). Claim: $\delta(h)$ is strictly decreasing for large real $h$.
+ Support: one line. Status: proved in writing,
+ Lemma~\ref{vmb:cw:lem:deltamono}.
+\item \emph{The residue ratio} \eqref{vmb:cw:eq:residueconv} in the proof of
+ Theorem~\ref{vmb:cw:thm:gumbel}: argued in outline; recorded as complete in
+ outline, not as an open question.
+\item \emph{Part~I's question ``Joint limits and extreme heights''}
+ (Section~\ref{vmb:sec:future}): its extreme-height half is answered
+ (Theorems~\ref{vmb:cw:thm:gumbel}, \ref{vmb:cw:thm:independent}). Its other
+ half stays open and is not addressed by the manuscript: a joint normal law
+ for the additive statistics that the renewal representation can mark (number
+ of columns, number of ones, peak heights), which needs a proof that the
+ relevant covariance matrix is nondegenerate.
+\end{enumerate}
+No claim of the manuscript was found to be wrong.
+\end{writenote}
+
+\section{Claim ledger and conclusion of Part II}
+\label{vmb:cw:sec:ledger}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.35\textwidth}>{\raggedright\arraybackslash}p{0.59\textwidth}@{}}
+\toprule
+Statement & Status and boundary\\
+\midrule
+\endfirsthead
+\toprule
+Statement & Status and boundary (continued)\\
+\midrule
+\endhead
+A001523 formulas and classical asymptotics & Prior literature and OEIS;
+not claimed as new. Only the block connection is used.\\[3pt]
+Minimum-part decomposition and unweighted simple pole & Prior results,
+reproved here to establish the hypotheses.\\[3pt]
+Bottom-valley phase transition & Proved for fixed positive weight; exact
+critical value, three regimes, and critical window are explicit.\\[3pt]
+All window orders & Finite-order, uniform additive expansions, with an
+algorithm from local Taylor and Laurent data.\\[3pt]
+Multicritical Dirichlet law & Proved for any fixed finite number of marked
+levels; no growing-level uniformity is asserted.\\[3pt]
+Ordinary maximum-height law & Proves the lattice-Gumbel question posed in
+the previous report, with explicit intensity and $O(\log n/n)$ window error.\\[3pt]
+Critical maximum-height law & Proved Dirichlet-mixture formula, including
+simultaneous $1/n$ weight tilts and a uniform height-window error.\\[3pt]
+Cutoff-pole expansion and inverse & All finite exponential orders with
+polynomial coefficients and explicit remainders; no unrestricted convergence
+or Stokes claim.\\[3pt]
+Discrete inverses and quantiles & Specified smooth interpolants plus two
+ceilings; no unconditional rounding shortcut.\\[3pt]
+Exact tests and numerical data & Independent finite integer checks pass;
+decimal values are reproducible diagnostics, not interval-certified constants.\\[3pt]
+Novelty and formal status & An extension of documented repository work;
+no exhaustive priority claim, no Lean verification, and no independent peer
+review are asserted.\\
+\bottomrule
+\end{longtable}
+
+\begin{writenote}[Added 5 October 2026, batch~98]
+``The previous report'' is Part~I. The row ``Cutoff-pole expansion and
+inverse'' was delivered as ``Cutoff-pole transseries and inverse''
+(see the note after Theorem~\ref{vmb:cw:thm:cutoffseries}); the table is set
+ragged-right. The statements
+completed in writing are listed in Subsection~\ref{vmb:cw:sec:q-write}.
+\end{writenote}
+
+The central conclusion is that the same OEIS-linked renewal decomposition
+supports two different kinds of randomness. In the ordinary unweighted
+regime, one renewal family occupies almost all the area, its valley count is Gaussian,
+and its tallest column obeys a lattice-Gumbel law independent of that count.
+At coexistence, several families share macroscopic area with a Dirichlet
+law; their joint extreme distribution retains that random allocation as a
+mixture intensity. The pole multiplicity controls the counting polynomial,
+the critical-window scale, the macroscopic covariance, and the appropriate
+Lambert-$W$ inverse. The exact height-tail identity makes the exponentially
+small cutoff corrections computable rather than merely qualitative.
+
+\clearpage
+\phantomsection\addcontentsline{toc}{part}{Appendices of Part I}
 \appendix
 \section{A coefficient recurrence suitable for exact checking}
 Let all series be truncated modulo~\(q^{N+1}\). For descending
@@ -1210,6 +3348,60 @@ search. No exhaustive priority claim, no Lean proof, and no independent
 peer review are asserted.\\
 \bottomrule
 \end{longtable}
+
+\clearpage
+\phantomsection\addcontentsline{toc}{part}{Appendices of Part II}
+\section{Computing the Laurent constants without unstable subtraction}
+\label{vmb:cw:app:laurent}
+At $\rho_2$, write
+\[
+ D_2(q)=\frac{c_2}{1-q/\rho_2}+c_{2,0}+O(1-q/\rho_2).
+\]
+Let
+\[
+ B_2(q)=E_2(q)D_3(q),\quad
+ M_2(\rho_2)=\rho_2K_2'(\rho_2),\quad J_2=\rho_2^2K_2''(\rho_2)/2.
+\]
+Since $K_2(\rho_2)=1$, direct expansion of \eqref{vmb:cw:eq:Drec} gives
+\begin{align}
+ c_2&=B_2(\rho_2)/M_2(\rho_2),\\
+ c_{2,0}&=H_2(\rho_2)+\frac{B_2(\rho_2)J_2}{M_2(\rho_2)^2}-\frac{\rho_2B_2'(\rho_2)}{M_2(\rho_2)},\\
+ b&=\frac{c_2}{(1-\rho_2)^2},\\
+ b_0&=\frac{c_{2,0}}{(1-\rho_2)^2}-\frac{2\rho_2c_2}{(1-\rho_2)^3}.
+\end{align}
+These formulas avoid subtracting two large nearby singular values of $B$.
+They are the formulas used in the numerical program.
+
+\begin{writenote}[Added 5 October 2026, batch~98]
+Here $c_2$ is the dominant amplitude of $D_2$ (as in
+Theorem~\ref{vmb:thm:leading}), not the amplitude $C_2$ of $D_1$ at $\rho_2$;
+the manuscript's $A_2$, $d_{20}$ and $M_2=RK_2'(R)$ are printed as $B_2$
+($B_2=E_2D_3$ is the level-2 analogue of $B=E_1D_2$), $c_{2,0}$ and
+$M_2(\rho_2)$.
+\end{writenote}
+
+\section{A fully finite prescription for all height-cutoff coefficients}
+\label{vmb:cw:app:cutoff}
+For a requested order $N$, compute $\gamma_0(q),\ldots,\gamma_{N-1}(q)$ by
+\eqref{vmb:cw:eq:qbinomcoeff} and then the first $N$ coefficients of $\Psi$ by
+\eqref{vmb:cw:eq:psicoeff}. Put
+\[
+ A_r(q)=H_1(q)P_2(q)\,[z^r]\Psi(q,z)\,q^r.
+\]
+These satisfy $K(q)-K^{\le h}(q)=\sum_{r\ge1}A_r(q)q^{rh}$.
+Now introduce a formal indeterminate $\epsilon$ and polynomials
+$\varpi_0(h),\ldots,\varpi_{N-1}(h)$. In
+\[
+ K\!\left(\rho\exp\left(\sum_{r=1}^N\varpi_{r-1}(h)\epsilon^r\right)\right)-1
+ =\sum_{r=1}^N A_r\!\left(\rho\exp\left(\sum_{\ell=1}^N
+              \varpi_{\ell-1}(h)\epsilon^\ell\right)\right)
+ \epsilon^r\exp\left(rh\sum_{\ell=1}^N\varpi_{\ell-1}(h)\epsilon^\ell\right),
+\]
+compare coefficients through $\epsilon^N$. At step $r$ divide the known
+residual by $M_\rho$ to obtain $\varpi_{r-1}$. Only derivatives of analytic
+functions at one ordinary point $\rho<1$ occur. Theorem
+\ref{vmb:cw:thm:cutoffseries} proves that this finite symbolic prescription has
+the asserted asymptotic meaning.
 
 \begingroup
 \raggedright
