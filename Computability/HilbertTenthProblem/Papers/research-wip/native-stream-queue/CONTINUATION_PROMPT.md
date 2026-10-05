@@ -173,6 +173,19 @@
 > improvement. The universal84/187 and85/155 points remain unchanged.
 >
 >
+> The [atom-action Part III publication review](review_atom_write_03683e579.md)
+> at **03683e579** checks the complete guide diff and1588 selected article
+> lines covering rooted codes, definable kernels, presentation effectivity,
+> Replacement and forcing. All146 old labels remain among284, and96 source
+> labels have valid destinations; this is not a complete merged-body audit.
+> Root independently authenticates44 blobs,14 members, eight manifest entries,
+> 14 read spans and all96 routes. The guide's false claim that no Part III
+> reviews existed is corrected at6d06f8952, retaining the original wording and
+> scope-qualified counterexample. Pure real/set parameters and the finite
+> commutative-presentation decision procedure supply no paid ordinary-integer
+> compiler. Source programs and the article/PDF are not rebuilt in this review.
+>
+>
 > The [hat Part V publication review](review_hat_write_a21208b3f.md) at
 > **a21208b3f** verifies the seed-support repairs and declared main-body
 > preservation:42 source statements,29 proofs,38 equations and all80 delivered
