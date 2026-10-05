@@ -1,0 +1,387 @@
+--- sealed/code/verify_cutoff.py
++++ repair/code/verify_cutoff.py
+@@ -1,34 +1,39 @@
++from repair_common import require, options, VerificationError
++ARGS = options('Exact analytical certificate; repaired acceptance checks')
+ """Exact elementary inequalities for the analytic m>=70 cutoff."""
+ from fractions import Fraction as F
+ from math import isqrt
+ from pathlib import Path
+ import json
+ 
+-def sqrt_bounds(x,scale=10**16):
+-    n=isqrt(x.numerator*scale**2//x.denominator)
+-    return F(n,scale),F(n+1,scale)
+-bs=[];lo=hi=F(1)
+-for j in range(1,13):
+-    bs.append((lo,hi))
+-    _,u=sqrt_bounds(1+lo*lo);l,_=sqrt_bounds(1+hi*hi)
+-    lo,hi=lo/(1+u),hi/(1+l)
+-for lo,hi in bs:assert lo<=hi
+-atlo=F(4,5);athi=F(5,6)
+-mean_upper=sum(atlo*hi/(1+atlo*hi)for lo,hi in bs)+atlo*F(2)**(1-len(bs))
+-mean_lower=sum(athi*lo/(1+athi*lo)for lo,hi in bs)
+-assert mean_upper<1<mean_lower
+-# theta=(1+sqrt2)/3 <81/100; T=pi^2(4+3sqrt2)/8 <11.
+-assert F(143,100)**2>2
+-assert F(10,7)**2>2
+-assert F(10)*(4+3*F(10,7))/8<11
+-q=F(206,225);d=140
+-assert (1+F(81,100)*atlo)/(1+atlo)==q
+-threshold=(F(275,36)*16)**2*(d+2)**2*d*q**(2*d)
+-assert threshold<1
+-ratio=F(143,142)*F(281,280)*q
+-assert ratio<1
+-# C>2. For d>=140, 2 < C^d/(16 sqrt(d)) follows from 2^d>32d.
+-assert 2**d>32*d
+-out={'all_checks_passed':True,'cutoff_m':70,'tangent_intervals':[[str(a),str(b)]for a,b in bs], 'saddle_mean_at_4_over_5_upper':str(mean_upper),'saddle_mean_at_5_over_6_lower':str(mean_lower),'tail_factor_bound':str(q),'threshold_squared':str(threshold),'successive_bound_ratio':str(ratio)}
+-(Path(__file__).resolve().parents[1]/'data'/'cutoff_certificate.json').write_text(json.dumps(out,indent=2)+'\n')
++def sqrt_bounds(x, scale=10 ** 16):
++    n = isqrt(x.numerator * scale ** 2 // x.denominator)
++    return (F(n, scale), F(n + 1, scale))
++bs = []
++lo = hi = F(1)
++for j in range(1, 13):
++    bs.append((lo, hi))
++    _, u = sqrt_bounds(1 + lo * lo)
++    l, _ = sqrt_bounds(1 + hi * hi)
++    lo, hi = (lo / (1 + u), hi / (1 + l))
++for lo, hi in bs:
++    require(lo <= hi, 'Failed exact check: lo <= hi')
++atlo = F(4, 5)
++athi = F(5, 6)
++mean_upper = sum((atlo * hi / (1 + atlo * hi) for lo, hi in bs)) + atlo * F(2) ** (1 - len(bs))
++mean_lower = sum((athi * lo / (1 + athi * lo) for lo, hi in bs))
++require(mean_upper < 1 < mean_lower, 'Failed exact check: mean_upper < 1 < mean_lower')
++require(F(143, 100) ** 2 > 2, 'Failed exact check: F(143, 100) ** 2 > 2')
++require(F(10, 7) ** 2 > 2, 'Failed exact check: F(10, 7) ** 2 > 2')
++require(F(10) * (4 + 3 * F(10, 7)) / 8 < 11, 'Failed exact check: F(10) * (4 + 3 * F(10, 7)) / 8 < 11')
++q = F(206, 225)
++d = 140
++require((1 + F(81, 100) * atlo) / (1 + atlo) == q, 'Failed exact check: (1 + F(81, 100) * atlo) / (1 + atlo) == q')
++threshold = (F(275, 36) * 16) ** 2 * (d + 2) ** 2 * d * q ** (2 * d)
++require(threshold < 1, 'Failed exact check: threshold < 1')
++ratio = F(143, 142) * F(281, 280) * q
++require(ratio < 1, 'Failed exact check: ratio < 1')
++require(2 ** d > 32 * d, 'Failed exact check: 2 ** d > 32 * d')
++out = {'all_checks_passed': True, 'cutoff_m': 70, 'tangent_intervals': [[str(a), str(b)] for a, b in bs], 'saddle_mean_at_4_over_5_upper': str(mean_upper), 'saddle_mean_at_5_over_6_lower': str(mean_lower), 'tail_factor_bound': str(q), 'threshold_squared': str(threshold), 'successive_bound_ratio': str(ratio)}
++(ARGS.output_dir / 'cutoff_certificate.json').write_text(json.dumps(out, indent=2) + '\n')
+ print('Exact cutoff inequalities pass; saddle is between4/5 and5/6; m>=70 suffices')
+--- sealed/code/check_trace_coverage.py
++++ repair/code/check_trace_coverage.py
+@@ -1,3 +1,4 @@
++from repair_common import require, options, VerificationError
+ """Independent standard-library validation of every saved parity trace.
+ 
+ This validates baseline vectors, all scalar error recurrences, dimensions,
+@@ -6,75 +7,114 @@
+ generator by exact identities and inequalities.
+ """
+ from pathlib import Path
+-from math import comb,factorial,gcd
++from math import comb, factorial, gcd
+ from functools import reduce
+ from fractions import Fraction as Q
+-import gzip,json,sys,hashlib
++import gzip, json, sys, hashlib
+ sys.set_int_max_str_digits(0)
+-BASE=Path(__file__).resolve().parents[1]/'data'/'certificates'
++ARGS = options('Verify all 68 saved traces, failing on incomplete or corrupt data')
++BASE = ARGS.data_dir / 'certificates'
+ 
+ def read_trace(path):
+-    opener=gzip.open if path.suffix=='.gz' else open
+-    with opener(path,'rt') as f:
+-        header=f.readline().split()
+-        scale=int(f.readline())
+-        even=tuple(map(int,f.readline().split()))
+-        odd=tuple(map(int,f.readline().split()))
+-        rows=[list(map(int,line.split())) for line in f]
+-    return header,scale,even,odd,rows
++    opener = gzip.open if path.suffix == '.gz' else open
++    with opener(path, 'rt') as f:
++        header = f.readline().split()
++        scale = int(f.readline())
++        even = tuple(map(int, f.readline().split()))
++        odd = tuple(map(int, f.readline().split()))
++        rows = [list(map(int, line.split())) for line in f]
++    return (header, scale, even, odd, rows)
+ 
+ def audit(m):
+-    p=BASE/f'parity_m{m:03d}.json'
+-    tp=Path(str(p)+'.trace.gz')
+-    if not tp.exists():tp=Path(str(p)+'.trace')
+-    if not p.exists() or not tp.exists():return None
+-    z=json.loads(p.read_text());head,S,ev,od,rows=read_trace(tp);d=2*m;D=2**(d-1)
+-    assert head==['TMP1',str(m),str(d),'256']
+-    assert z['m']==m and z['precision_bits']==256 and z['checked_response_orders']==d
+-    assert len(rows)==d+1
+-    assert all(len(row)==m+1-(n%2) for n,row in enumerate(rows))
+-    e=[1]
+-    for r in range(2,d):
+-        e=[(k+1)*(e[k] if k<len(e) else 0)+(r-k)*(e[k-1] if k else 0) for k in range(r)]
+-    den=factorial(d-1);g=reduce(gcd,e,den);e=[v//g for v in e];den//=g
+-    assert S==2**256*den**2==int(z['common_denominator'])
+-    assert rows[0][:-1]==[e[m-1+k]*(S//den) for k in range(m)]
+-    assert rows[0][-1]==0
+-    errors=[row[-1] for row in rows]
+-    for n in range(1,d+1):
+-        alpha,q=ev if n%2==0 else od
+-        assert alpha>=0 and q>0
+-        bound=alpha*D*sum(comb(d,j)*errors[n-j] for j in range(1,n+1))
+-        round_cost=d-1 if n%2==0 else d-2
+-        assert errors[n]==(bound+q-1)//q+round_cost
+-    v=rows[-1][:-1]
+-    mid=(v[0]+2*sum((-1)**k*v[k] for k in range(1,m)))*(-1)**m
+-    assert mid-errors[-1]==int(z['H_lower_numerator'])>0
+-    assert mid+errors[-1]==int(z['H_upper_numerator'])
+-    assert errors[-1]==int(z['error_radius_numerator'])
+-    lo,hi=Q(mid-errors[-1],S),Q(mid+errors[-1],S)
+-    exact=False;full=False
+-    ep=BASE/f'gmp_m{m:03d}.json'
+-    if not ep.exists():ep=BASE/f'm{m:03d}.json'
++    p = BASE / f'parity_m{m:03d}.json'
++    tp = Path(str(p) + '.trace.gz')
++    if not tp.exists():
++        tp = Path(str(p) + '.trace')
++    if not p.exists() or not tp.exists():
++        return None
++    z = json.loads(p.read_text())
++    head, S, ev, od, rows = read_trace(tp)
++    d = 2 * m
++    D = 2 ** (d - 1)
++    require(head == ['TMP1', str(m), str(d), '256'], "Failed exact check: head == ['TMP1', str(m), str(d), '256']")
++    require(z['m'] == m and z['precision_bits'] == 256 and (z['checked_response_orders'] == d), "Failed exact check: z['m'] == m and z['precision_bits'] == 256 and (z['checked_response_orders'] == d)")
++    require(len(rows) == d + 1, 'Failed exact check: len(rows) == d + 1')
++    require(all((len(row) == m + 1 - n % 2 for n, row in enumerate(rows))), 'Failed exact check: all((len(row) == m + 1 - n % 2 for n, row in enumerate(rows)))')
++    e = [1]
++    for r in range(2, d):
++        e = [(k + 1) * (e[k] if k < len(e) else 0) + (r - k) * (e[k - 1] if k else 0) for k in range(r)]
++    den = factorial(d - 1)
++    g = reduce(gcd, e, den)
++    e = [v // g for v in e]
++    den //= g
++    require(S == 2 ** 256 * den ** 2 == int(z['common_denominator']), "Failed exact check: S == 2 ** 256 * den ** 2 == int(z['common_denominator'])")
++    require(rows[0][:-1] == [e[m - 1 + k] * (S // den) for k in range(m)], 'Failed exact check: rows[0][:-1] == [e[m - 1 + k] * (S // den) for k in range(m)]')
++    require(rows[0][-1] == 0, 'Failed exact check: rows[0][-1] == 0')
++    errors = [row[-1] for row in rows]
++    for n in range(1, d + 1):
++        alpha, q = ev if n % 2 == 0 else od
++        require(alpha >= 0 and q > 0, 'Failed exact check: alpha >= 0 and q > 0')
++        bound = alpha * D * sum((comb(d, j) * errors[n - j] for j in range(1, n + 1)))
++        round_cost = d - 1 if n % 2 == 0 else d - 2
++        require(errors[n] == (bound + q - 1) // q + round_cost, 'Failed exact check: errors[n] == (bound + q - 1) // q + round_cost')
++    v = rows[-1][:-1]
++    mid = (v[0] + 2 * sum(((-1) ** k * v[k] for k in range(1, m)))) * (-1) ** m
++    require(mid - errors[-1] == int(z['H_lower_numerator']) > 0, "Failed exact check: mid - errors[-1] == int(z['H_lower_numerator']) > 0")
++    require(mid + errors[-1] == int(z['H_upper_numerator']), "Failed exact check: mid + errors[-1] == int(z['H_upper_numerator'])")
++    require(errors[-1] == int(z['error_radius_numerator']), "Failed exact check: errors[-1] == int(z['error_radius_numerator'])")
++    lo, hi = (Q(mid - errors[-1], S), Q(mid + errors[-1], S))
++    exact = False
++    full = False
++    ep = BASE / f'gmp_m{m:03d}.json'
++    if not ep.exists():
++        ep = BASE / f'm{m:03d}.json'
+     if ep.exists():
+-        ex=json.loads(ep.read_text());v=Q(ex['H_boundary_numerator'])/Q(ex['H_boundary_denominator'])
+-        assert lo<=v<=hi;exact=True
+-    fp=BASE/f'fixed_m{m:03d}.json'
++        ex = json.loads(ep.read_text())
++        v = Q(ex['H_boundary_numerator']) / Q(ex['H_boundary_denominator'])
++        require(lo <= v <= hi, 'Failed exact check: lo <= v <= hi')
++        exact = True
++    fp = BASE / f'fixed_m{m:03d}.json'
+     if fp.exists():
+-        old=json.loads(fp.read_text());l=Q(old['H_lower_numerator'])/Q(old['common_denominator']);u=Q(old['H_upper_numerator'])/Q(old['common_denominator'])
+-        assert max(lo,l)<=min(hi,u);full=True
+-    return {'m':m,'orders':d,'exact_rational_comparison':exact,
+-       'full_vector_comparison':full,'positive_margin_bits':mid.bit_length()-errors[-1].bit_length(),
+-       'json_sha256':hashlib.sha256(p.read_bytes()).hexdigest(),
+-       'trace_sha256':hashlib.sha256(tp.read_bytes()).hexdigest()}
++        old = json.loads(fp.read_text())
++        l = Q(old['H_lower_numerator']) / Q(old['common_denominator'])
++        u = Q(old['H_upper_numerator']) / Q(old['common_denominator'])
++        require(max(lo, l) <= min(hi, u), 'Failed exact check: max(lo, l) <= min(hi, u)')
++        full = True
++    return {'m': m, 'orders': d, 'exact_rational_comparison': exact, 'full_vector_comparison': full, 'positive_margin_bits': mid.bit_length() - errors[-1].bit_length(), 'json_sha256': hashlib.sha256(p.read_bytes()).hexdigest(), 'trace_sha256': hashlib.sha256(tp.read_bytes()).hexdigest()}
++def main():
++    out = {'range': [2, 69], 'certified_moments': 0, 'checked_response_orders': 0,
++           'missing': [], 'records': [], 'complete': False}
++    try:
++        manifest = json.loads((Path(__file__).resolve().parents[1] / 'input_manifest.json').read_text())
++        missing = []
++        corrupt = []
++        for rel, expected in manifest['certificate_sha256'].items():
++            path = ARGS.data_dir / rel
++            if not path.is_file():
++                missing.append(rel)
++            elif hashlib.sha256(path.read_bytes()).hexdigest() != expected:
++                corrupt.append(rel)
++        out['missing_files'] = missing
++        out['corrupt_files'] = corrupt
++        require(not missing, 'Incomplete certificate dataset: ' + ', '.join(missing))
++        require(not corrupt, 'Certificate SHA256 mismatch: ' + ', '.join(corrupt))
++        for m in range(2, 70):
++            r = audit(m)
++            require(r is not None, f'Missing JSON or trace for m={m}')
++            out['records'].append(r)
++        out['certified_moments'] = len(out['records'])
++        out['checked_response_orders'] = sum(r['orders'] for r in out['records'])
++        require(out['certified_moments'] == 68, 'Expected all 68 moment traces')
++        require(out['checked_response_orders'] == 4828, 'Expected 4828 response orders')
++        out['complete'] = True
++    except Exception as exc:
++        out['error'] = f'{type(exc).__name__}: {exc}'
++        (ARGS.output_dir / 'trace_checks.json').write_text(json.dumps(out, indent=2) + '\n')
++        print(out['error'], file=sys.stderr)
++        return 1
++    (ARGS.output_dir / 'trace_checks.json').write_text(json.dumps(out, indent=2) + '\n')
++    print('Verified all 68 moment traces and 4828 response orders; manifest integrity passed')
++    return 0
+ 
+-if __name__=='__main__':
+-    good=[];missing=[]
+-    for m in range(2,70):
+-        r=audit(m)
+-        if r is None:missing.append(m)
+-        else:good.append(r)
+-    out={'range':[2,69],'certified_moments':len(good),'checked_response_orders':sum(r['orders'] for r in good),
+-         'missing':missing,'records':good,'complete':not missing}
+-    (BASE.parent/'trace_checks.json').write_text(json.dumps(out,indent=2)+'\n')
+-    print('Verified',len(good),'moment traces;',out['checked_response_orders'],'response orders; missing:',missing)
++if __name__ == '__main__':
++    raise SystemExit(main())
+--- sealed/code/check_m2_response.py
++++ repair/code/check_m2_response.py
+@@ -1,21 +1,30 @@
++from repair_common import require, options, VerificationError
++ARGS = options('Exact analytical certificate; repaired acceptance checks')
+ """Exact normalized cubic certificate for H_(2,3)=-488/27."""
+ from fractions import Fraction as Q
+ from pathlib import Path
+ import json
+-N=6
++N = 6
+ 
+-def add(*a):return [sum((p[k]if k<len(p)else Q(0))for p in a)for k in range(N+1)]
+-def scale(a,c):return [c*x for x in a]
+-def mul(a,b):return [sum(a[j]*b[k-j]for j in range(k+1)if j<len(a)and k-j<len(b))for k in range(N+1)]
+-def power(a,n):
+- v=[Q(1)]
+- for _ in range(n):v=mul(v,a)
+- return v
+-L=list(map(Q,[1,0]))+[Q(1,3),Q(8),Q(536,27),-Q(488,27),-Q(90472,243)]
+-one=[Q(1),Q(1)]
+-res=add(scale(power(L,3),8),scale(mul(mul([Q(7),-Q(1)],one),power(L,2)),-2),mul(mul([Q(7),-Q(3)],power(one,3)),L),scale(power(one,6),-1))
+-assert all(x==0 for x in res)
+-assert 24-28+7==3
+-out={'all_checks_passed':True,'normalized_eigenvalue_x_coefficients':list(map(str,L)),'cubic_residual':list(map(str,res)),'simple_root_derivative':3,'H_2_3':'-488/27'}
+-(Path(__file__).resolve().parents[1]/'data'/'m2_response_certificate.json').write_text(json.dumps(out,indent=2)+'\n')
++def add(*a):
++    return [sum((p[k] if k < len(p) else Q(0) for p in a)) for k in range(N + 1)]
++
++def scale(a, c):
++    return [c * x for x in a]
++
++def mul(a, b):
++    return [sum((a[j] * b[k - j] for j in range(k + 1) if j < len(a) and k - j < len(b))) for k in range(N + 1)]
++
++def power(a, n):
++    v = [Q(1)]
++    for _ in range(n):
++        v = mul(v, a)
++    return v
++L = list(map(Q, [1, 0])) + [Q(1, 3), Q(8), Q(536, 27), -Q(488, 27), -Q(90472, 243)]
++one = [Q(1), Q(1)]
++res = add(scale(power(L, 3), 8), scale(mul(mul([Q(7), -Q(1)], one), power(L, 2)), -2), mul(mul([Q(7), -Q(3)], power(one, 3)), L), scale(power(one, 6), -1))
++require(all((x == 0 for x in res)), 'Failed exact check: all((x == 0 for x in res))')
++require(24 - 28 + 7 == 3, 'Failed exact check: 24 - 28 + 7 == 3')
++out = {'all_checks_passed': True, 'normalized_eigenvalue_x_coefficients': list(map(str, L)), 'cubic_residual': list(map(str, res)), 'simple_root_derivative': 3, 'H_2_3': '-488/27'}
++(ARGS.output_dir / 'm2_response_certificate.json').write_text(json.dumps(out, indent=2) + '\n')
+ print('Exact cubic confirms H_(2,3)=-488/27')
+--- sealed/code/check_m2_pressure.py
++++ repair/code/check_m2_pressure.py
+@@ -1,21 +1,33 @@
++from repair_common import require, options, VerificationError
++ARGS = options('Exact analytical certificate; repaired acceptance checks')
+ """Independent cubic certificate for the later negative m=2 pressure coefficient."""
+ from fractions import Fraction as F
+ from math import factorial
+ from pathlib import Path
+ import json
+-N=6
+-p=[F(0),F(-2),F(0),F(376,45),F(6836,189),F(105448,2025),F(-35360872,93555)]
+-def add(*polys):return [sum((v[i]if i<len(v)else 0)for v in polys)for i in range(N+1)]
+-def scale(v,c):return [c*x for x in v]
+-def mul(v,w):return [sum(v[j]*w[i-j]for j in range(i+1))for i in range(N+1)]
++N = 6
++p = [F(0), F(-2), F(0), F(376, 45), F(6836, 189), F(105448, 2025), F(-35360872, 93555)]
++
++def add(*polys):
++    return [sum((v[i] if i < len(v) else 0 for v in polys)) for i in range(N + 1)]
++
++def scale(v, c):
++    return [c * x for x in v]
++
++def mul(v, w):
++    return [sum((v[j] * w[i - j] for j in range(i + 1))) for i in range(N + 1)]
++
+ def exp(v):
+- q=[F(1)]
+- for n in range(1,N+1):q.append(sum(k*v[k]*q[n-k]for k in range(1,n+1))/n)
+- return q
+-C=[F((-1)**j*2**(2*j),factorial(2*j))for j in range(N+1)]
+-rho=exp(p);rho2=mul(rho,rho);rho3=mul(rho,rho2)
+-res=add(rho3,scale(rho2,F(-3,4)),scale(mul(C,rho2),-1),scale(rho,F(1,4)),scale(mul(C,rho),F(5,8)),[F(-1,8)])
+-assert all(v==0 for v in res)
+-out={'variable':'u=t^2','pressure_coefficients_through_u6':list(map(str,p)),'cubic':'lambda^3-(3/4+C)lambda^2+(1/4+5C/8)lambda-1/8','C':'cos(2t)','residual_through_u6':list(map(str,res)),'simple_root_derivative_at_lambda1_C1':'3/8','coefficient_t12':'-35360872/93555','all_checks_passed':True}
+-(Path(__file__).resolve().parents[1]/'data'/'m2_negative_higher_certificate.json').write_text(json.dumps(out,indent=2)+'\n')
+-print(json.dumps(out,indent=2))
++    q = [F(1)]
++    for n in range(1, N + 1):
++        q.append(sum((k * v[k] * q[n - k] for k in range(1, n + 1))) / n)
++    return q
++C = [F((-1) ** j * 2 ** (2 * j), factorial(2 * j)) for j in range(N + 1)]
++rho = exp(p)
++rho2 = mul(rho, rho)
++rho3 = mul(rho, rho2)
++res = add(rho3, scale(rho2, F(-3, 4)), scale(mul(C, rho2), -1), scale(rho, F(1, 4)), scale(mul(C, rho), F(5, 8)), [F(-1, 8)])
++require(all((v == 0 for v in res)), 'Failed exact check: all((v == 0 for v in res))')
++out = {'variable': 'u=t^2', 'pressure_coefficients_through_u6': list(map(str, p)), 'cubic': 'lambda^3-(3/4+C)lambda^2+(1/4+5C/8)lambda-1/8', 'C': 'cos(2t)', 'residual_through_u6': list(map(str, res)), 'simple_root_derivative_at_lambda1_C1': '3/8', 'coefficient_t12': '-35360872/93555', 'all_checks_passed': True}
++(ARGS.output_dir / 'm2_negative_higher_certificate.json').write_text(json.dumps(out, indent=2) + '\n')
++print(json.dumps(out, indent=2))
+--- sealed/code/run_all.py
++++ repair/code/run_all.py
+@@ -1,7 +1,26 @@
+-"""Quick exact validation of the included analytic and finite certificates."""
++"""Fail-closed quick validation, with preserved optimization level and read-only inputs."""
+ from pathlib import Path
+-import subprocess,sys
+-root=Path(__file__).resolve().parent
+-for name in ['verify_cutoff.py','check_trace_coverage.py','check_m2_response.py','check_m2_pressure.py']:
+- subprocess.run([sys.executable,str(root/name)],check=True)
+-print('All packaged certificate checks passed; use reproduce_all.py to regenerate every matrix enclosure')
++import subprocess,sys,json
++from repair_common import options
++
++def main():
++    args=options('Repaired quick validation of the original complete certificate data')
++    root=Path(__file__).resolve().parent
++    summary={'all_checks_passed':False,'completed_scripts':[],'optimization':sys.flags.optimize}
++    # Python -O is not automatically inherited through sys.executable alone.
++    flags=['-'+'O'*sys.flags.optimize] if sys.flags.optimize else []
++    try:
++        for name in ['verify_cutoff.py','check_trace_coverage.py','check_m2_response.py','check_m2_pressure.py']:
++            subprocess.run([sys.executable,*flags,str(root/name),'--data-dir',str(args.data_dir),'--output-dir',str(args.output_dir)],check=True)
++            summary['completed_scripts'].append(name)
++        summary['all_checks_passed']=True
++    except Exception as exc:
++        summary['error']=f'{type(exc).__name__}: {exc}'
++        (args.output_dir/'run_summary.json').write_text(json.dumps(summary,indent=2)+'\n')
++        print('Quick validation FAILED; no complete certificate claim',file=sys.stderr)
++        return 1
++    (args.output_dir/'run_summary.json').write_text(json.dumps(summary,indent=2)+'\n')
++    print('All four repaired quick checks passed, including all 68 traces; no matrix regeneration was performed')
++    return 0
++
++if __name__=='__main__':raise SystemExit(main())

@@ -180,6 +180,66 @@ incomplete for the other 64 orders). The full set and
 `code/reproduce_all.py` were not run.
 
 
+## Retrieving the delivered trace archives (ProveIt, 2026-10-05)
+
+The five trace archives arrived on 2026-10-05 (batch 99 of
+`docs/incoming/`) and are kept in arrival commit `60f54ea06` rather than
+filed here (44.7 MB of gzip data that Git cannot compress further, and
+regenerable byte for byte as described above); the editorial amendments
+below, written before they arrived, expected them in this directory. From
+the repository root, in Git Bash, on a copy of this directory:
+
+    cp -r Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/thue-morse/Thue_Morse_Integer_Pressure_Feedback_Boundary /tmp/fb
+    for k in 1 2 3 4 5; do
+      git cat-file blob 60f54ea06:docs/incoming/ProveIt_Thue_Morse_Boundary_Traces_${k}_of_5.zip > /tmp/traces_$k.zip
+      unzip -q -j -o /tmp/traces_$k.zip -d /tmp/fb/data/certificates
+    done
+    cd /tmp/fb && python3 code/run_all.py
+    python3 quick_checker_repair/code/run_all.py --data-dir data --output-dir /tmp/fb-repair
+
+The archive hashes are listed in `quick_checker_repair/recovery/RECOVERY_MAP.md`.
+Tested on filing (2026-10-05, on a copy, Python 3.14.4): the 68 traces match
+`trace_sha256` in `data/trace_checks.json`; `code/run_all.py` reports "All
+packaged certificate checks passed" and its four records in `data/rerun/`
+equal those in `data/` byte for byte; the repaired checker passes, also
+under `python -O`. The same session bundle also held a 45.3 MB complete
+package (`ProveIt_Thue_Morse_First_Feedback_Boundary.zip`): the batch-72
+source archive byte for byte, these 68 traces and the full ledger
+(186/186 verified); it too is kept only in `60f54ea06`.
+
+`quick_checker_repair/` (filed 2026-10-05, as delivered) is a separately
+delivered fail-closed repair of the four quick scripts; see its own
+`README.md`. It replaces their 26 assertions by explicit exceptions, checks
+the SHA-256 of all 158 certificate inputs, requires all 68 traces and 4,828
+response orders, and exits nonzero with a failure record otherwise. It was
+written against the scripts as delivered, not against `code/` as amended
+below. Its default output directory is its own recorded `results/` (written
+with CRLF on Windows), so pass `--output-dir` or run it on a copy; its
+`trace_checks.json` adds the keys `missing_files` and `corrupt_files`, so it
+does not regenerate `data/trace_checks.json` byte for byte (the amended
+`code/` does). `recovery/reconcile_archives.py` reads two byte copies of
+`../Thue_Morse_Integer_Pressure_Full_Range/chunks_manifest.json` and
+`../Thue_Morse_Integer_Pressure_Full_Range/finite/production_manifest.json`
+from its own directory, as `all_orders_chunks_manifest.json` and
+`all_orders_production_manifest.json`; they were not filed again, so copy
+them in before running it. Three delivered byte copies of `data/` records
+in its `results/` and its `SHA256SUMS` (29/29 verified) were not filed.
+
+**Note (ProveIt, 2026-10-05): the amended `code/` is fail-open under
+optimization.** Its checkers use 36 bare `assert`s, which `python -O` and
+`PYTHONOPTIMIZE` remove. Demonstrated on a copy with the traces: lowering
+`H_lower_numerator` of `data/certificates/parity_m002.json` by one makes
+`code/check_trace_coverage.py` raise `AssertionError` (exit 1) normally, but
+under `PYTHONOPTIMIZE=1` it prints "Verified 68 moment traces; 4828 response
+orders; missing: []" and exits 0. `quick_checker_repair/` rejects the same
+certificate (exit 1, also under `python -O`). It also exits 0 when traces
+are absent (see below). Until the two are reconciled, run `code/` without
+`-O` and treat `quick_checker_repair/` as the stricter checker. No program
+was changed; porting the fail-closed logic into `code/` (keeping
+`data/rerun/`, LF output and record compatibility), or pointing to the
+repair instead, is left to the deferred editorial pass.
+
+
 ## Editorial amendments (ProveIt, 2026-10-01)
 
 Made in the editorial pass after batch 72 of `docs/incoming/` (see

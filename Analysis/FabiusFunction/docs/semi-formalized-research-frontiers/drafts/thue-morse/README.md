@@ -202,6 +202,12 @@ of the integer pressure `p_m` beyond the missing coefficient at degree
   the first negative degree `N_m` satisfies `N_m/m → γ ≈ 6.663`, with a
   `log log m` correction, and each canonical feedback cluster has a
   rooted-tree leading asymptotic;
+- [`…_First_Return/`](Thue_Morse_Integer_Pressure_First_Return/)
+  (filed 2026-10-05): the first positive degree after `N_m` is
+  `M_m = 2σ_*m − Λ_*^{−1} log log(2m) + O(1)` with `M_m/m → 11.14501…`;
+  every even degree from `3.332·2m` to `5.55·2m` is negative (that `M_m`
+  is finite for every `m ≥ 2` already follows from the sign-change
+  package, which the article does not credit);
 - [`…_First_Negative_Data/`](Thue_Morse_Integer_Pressure_First_Negative_Data/):
   certified `N_m` for `2 ≤ m ≤ 128`.
 
@@ -211,12 +217,21 @@ archives and of `Thue_Morse_Integer_Pressure/article.tex` were not filed.
 A nine-page predecessor of the full-range package (*… for Large Integer
 Orders*, `m ≥ 4096`) and a duplicate archive were not filed.  The
 feedback-boundary and full-range packages name trace and interval
-archives that were not delivered; the dataset's intervals re-certify the
-full range's finite part (positive throughout `(2m, 6m)` for
-`2 ≤ m ≤ 128`, checked on filing).  Both sets can be regenerated from the
-filed producers and match their recorded hashes byte for byte (tested on
-filing for seven orders each; see each README's section "Reconstructing
-the trace archives" or "Reconstructing the interval archives").
+archives that arrived only later, on 2026-10-05; they are kept in arrival
+commit `60f54ea06` rather than filed, and with them both packages' checks
+complete (see each README's "Retrieving the delivered … archives").  The
+dataset's intervals independently re-certify the full range's finite
+part (positive throughout `(2m, 6m)` for `2 ≤ m ≤ 128`, checked on
+filing).  Both sets can also be regenerated from the filed producers and
+match their recorded hashes byte for byte (tested on filing for seven
+orders each; see each README's section "Reconstructing the trace
+archives" or "Reconstructing the interval archives").  The
+feedback-boundary package also holds a fail-closed repair of its quick
+checker in `quick_checker_repair/`; its own amended `code/` still relies
+on bare `assert`s, which `python -O` removes (reconciling the two is left
+to the editorial pass).  The first-return package's `verify_package.py`
+stops on its unfiled `inputs/` copies, and its checkers rewrite their
+certificates in place, so reruns go on a copy.
 The editorial pass of 2026-10-01 gave every package a dated series map
 naming these directories and the filed
 directory of every source it cites, and notes saying which package

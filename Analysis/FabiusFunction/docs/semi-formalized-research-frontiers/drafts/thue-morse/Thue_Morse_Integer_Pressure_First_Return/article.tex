@@ -1,0 +1,600 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}\usepackage[margin=25mm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,lmodern,microtype}
+\usepackage[hidelinks]{hyperref}\usepackage{xurl}
+\hypersetup{pdftitle={The First Return to Positive Coefficients in Integer Thue Morse Pressure},pdfauthor={Research note prepared for Vladimir Reshetnikov with OpenAI}}
+\setlength{\parskip}{2pt}
+\newtheorem{theorem}{Theorem}[section]\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\ev}{\operatorname{ev}}\newcommand{\GG}{\mathcal G}
+\newcommand{\Log}{\operatorname{Log}}
+\newcommand{\dist}{\operatorname{dist}}\newcommand{\Rea}{\operatorname{Re}}
+\title{The First Return to Positive Coefficients in\\Integer Thue--Morse Pressure}
+\author{Research note prepared for Vladimir Reshetnikov with OpenAI}
+\date{1 October 2026}
+\begin{document}\maketitle
+\begin{abstract}
+We locate the first return to a strictly positive Taylor coefficient after the first post-cancellation negative coefficient of integer Thue--Morse pressure. As $m\to\infty$, its degree is $2\sigma_*m-\Lambda_*^{-1}\log\log(2m)+O(1)$, where $5.572505<\sigma_*<5.572507$. A uniform three-model coefficient law near this transition has leading multipliers $2$, $-2\log_2(2m)$ and $3(\log_2(2m))^2$. A certified two-model bridge excludes any earlier return. The proof uses a boundary-layer Green norm, an entire connected two-pulse template, a positive logarithmic arctangent representation, and deformed saddle contours. Exact rational certificates verify the finite scalar inequalities. The onset is not effective; a refined rounding conclusion requires separation from the even lattice.
+\end{abstract}
+\paragraph{Status and dependencies.} This is unrefereed ordinary mathematics with reproducible exact arithmetic, not a Lean formalization. The unchanged preceding reports~\cite{Clusters,First}, including the canonical-cluster source archive and its earlier analytic prerequisites, are bundled with this report. Together they supply the normalized transfer model, atomic bounds and the exact product-envelope criterion recalled below. The new local norm, connected template, contour argument and certificates are given here. No broad priority claim is made.
+
+\section{Normalization and the coefficient law}
+Let $d=2m$ with integer $m\ge2$. We use the pressure germ
+\begin{equation}\label{eq:pressure}
+ P_m(t)=p_m(t/\pi)=d\log\cos t+\log\lambda(\tan t),
+\end{equation}
+where $\lambda(0)=1$ is the simple eigenvalue branch of
+\[
+ (V_af)(x)=\sum_{2y=x\pmod1}W_a(y)^d f(y),\qquad W_a(y)=\cos\pi y+a\sin\pi y.
+\]
+The logarithms vanish at zero. Put
+\[
+ H_a(x)=\prod_{j\ge1}(\cos(\pi x/2^j)+a\sin(\pi x/2^j)),
+ \quad L(a)=H_a(1/2),\quad g(a)=H_a(1)=aL(a).
+\]
+Thus $L(a)=(2/\pi)B(a)$, where
+$B(a)=\prod_{j\ge1}(1+ab_j)$ and $b_j=\tan(\pi/2^{j+1})$.
+The positive model is
+\[
+ \GG(t)=g(\tan t),\qquad
+ \mu(t)=t\GG'(t)/\GG(t),\qquad
+ A_k(d,N)=[t^N]\GG(t)^{kd},\qquad \ell=\log_2d.
+\]
+Its consecutive positive Taylor coefficients make $\mu$ strictly increasing from one to infinity on $(0,\pi/2)$. Define
+\[
+ I=[111/20,559/100]=[5.55,5.59].
+\]
+\begin{theorem}\label{thm:law}
+Uniformly over even integers $N$ with $N/d\in I$, as even $d\to\infty$,
+\begin{equation}\label{eq:law}
+ [t^N]P_m(t)
+ =2A_1(d,N)-(2\ell+O(1))A_2(d,N)
+                  +(3\ell^2+O(\ell))A_3(d,N).
+\end{equation}
+All implied constants are uniform on $I$.
+\end{theorem}
+For $k=1,2,3$ wherever $\sigma>k$, let $t_k(\sigma)\in(0,\pi/2)$ solve $k\mu(t_k)=\sigma$, and set
+\[
+ \Phi_k(\sigma)=k\log\GG(t_k)-\sigma\log t_k.
+\]
+There is a unique $\sigma_*\in I$ with $\Phi_2(\sigma_*)=\Phi_3(\sigma_*)$. Exact rational evaluation gives
+\begin{equation}\label{eq:crossbracket}
+ 5.572505<\sigma_*<5.572507.
+\end{equation}
+Write $\Lambda_* =\log(t_2(\sigma_*)/t_3(\sigma_*))>0$.
+\begin{corollary}\label{cor:cross}
+There is a constant $K$ such that, for all sufficiently large $m$, every even degree in $dI$ below
+\[
+ d\sigma_*-\Lambda_*^{-1}\log\log d-K
+\]
+has negative pressure coefficient, and every even degree in $dI$ above the same expression with $+K$ has positive coefficient.
+\end{corollary}
+Define the first post-cancellation negative degree and the first later positive degree by
+\[
+ N_m=\min\{N>2m:N\text{ even},\ [t^N]P_m<0\},\qquad
+ M_m=\min\{N>N_m:N\text{ even},\ [t^N]P_m>0\}.
+\]
+The earlier first-negative theorem~\cite{First} makes $N_m$ finite. The following result makes $M_m$ finite for all sufficiently large $m$ and identifies its asymptotic scale.
+\begin{theorem}\label{thm:return}
+As $m\to\infty$,
+\[
+ M_m=2\sigma_*m-\Lambda_*^{-1}\log\log(2m)+O(1),
+ \qquad 11.145010<\lim_{m\to\infty}M_m/m<11.145014.
+\]
+There is no earlier strictly positive coefficient after $N_m$ and before this bounded transition window. The onset is not effective. No assertion about subsequent sign changes or an unconditional exact floor formula is made.
+\end{theorem}
+The proof requires signs throughout the interval between the first-negative window and $5.55d$. Section~\ref{sec:bridge} supplies this additional bridge; the local three-model law alone would not identify the first return.
+
+\section{A Green inverse on the deformed contour disk}
+Let $h_0$ be the fixed function of $V_0$ normalized by $h_0(0)=1$, and let $Qf=f-f(0)h_0$. On periodic $C^1$ functions vanishing at zero put
+\[
+ \mathcal B_a=QV_a,\qquad q_a=QV_ah_0,\qquad \ev f=f(1/2).
+\]
+The atomic bounds are $\|h_0\|_\infty\le1$ and $\|h_0'\|_\infty\le\pi d$.
+The preceding report proves that the product envelope $h_R=H_R$ has both individual branch ratios at most one exactly when
+$(\log H_R)'(1/2)\le0$. Its critical radius satisfies
+\[
+ .573537286334<R_{\rm crit}<.573537286335.
+\]
+We need $R=14/25=.56$ and use the following uniform extension.
+
+\begin{lemma}\label{lem:fullgreen}
+For $1/2\le R\le R_{\rm crit}$, every complex $|a|\le R$, and every even $d\ge16384$, the weighted norm
+\[
+ N_0(f)=\sup_{x\notin\mathbb Z}\frac{|f(x)|}{\dist(x,\mathbb Z)h_R(\dist(x,\mathbb Z))^d},
+ \quad N_1(f)=\sup\frac{|f'(x)|}{h_R(\dist(x,\mathbb Z))^d},
+\]
+\[
+ \|f\|_d=N_0(f)+(199/200)^dN_1(f)/d
+\]
+satisfies $\|\mathcal B_a\|_d<4/5$. In particular the inverse norm is at most five, and $\|q_a\|_d\le32d$.
+\end{lemma}
+\begin{proof}
+Exact scalar checks give $H_{3/5}(1/2)<8/5$ and $(\log H_{3/5})'(1/2)>0$. Log-concavity and field monotonicity therefore give, on $[0,1/2]$,
+\[
+ 1\le h_R\le8/5,\quad -1/5<(\log h_R)'\le3\pi/5,
+ \quad h_R\text{ increasing on }[0,1/4].
+\]
+Also $RL(R)\le24/25$. The increasing secondary branch ratio $b_-(x)=H_R(1-x)/H_R(x)$ is at most one. It increases with $R$; evaluation at the rational upper bracket of $R_{\rm crit}$ proves $b_-(2/5)<1999/2000=\rho$. The other principal ratio is below $47/100$ at $2/5$, and the opposite secondary ratio has endpoint maximum at most $24/25$.
+
+The norm calculation of~\cite{Clusters}, now split at $x=1/100$ and $2/5$, gives
+\begin{align*}
+ N_0(\mathcal B_af)&\le\alpha_dN_0(f)+\tfrac12\gamma^dN_1(f),\\
+ N_1(\mathcal B_af)&\le7dN_0(f)+\beta_dN_1(f),\\
+ \alpha_d&=3/4+(5d+53)\gamma^d+(99/2)\rho^d,\quad
+ \beta_d=1/2+\rho^d/2,\quad \gamma=99/100.
+\end{align*}
+Here the near-zero secondary base is bounded by
+$(3/5+\sin(\pi/200))(8/5)<\gamma$. Its derivative contributes less than $3d\gamma^d$, and projection less than $2d\gamma^d$. The far coefficients are bounded by
+$1/2+(99/2)\rho^d+50(24/25)^d$ and
+$3/4+(47/100)^d/2+2(24/25)^d$.
+For $N_1$, the weight and projection derivatives cost less than $5d$ and $2d$ respectively.
+The two weighted row bounds are
+\[
+ \alpha_d+7(199/200)^d,\qquad
+ \beta_d+\tfrac d2(198/199)^d.
+\]
+At $d=16384$ their exact upper bounds are $.763676503203$ and $.500138146497$. The polynomial--exponential terms decrease thereafter by direct rational ratios. The same individual branch bounds give $N_1(q_a)\le16d$; integration near zero and direct amplitudes away from zero give $N_0(q_a)\le16d$.
+\end{proof}
+For $|z|\le1/10$ define
+\[
+ f_z=h_0+(1+z-\mathcal B_a)^{-1}q_a,\quad F_z=\ev f_z,
+ \quad \xi_z=a^dF_z-z.
+\]
+The inverse norm is at most ten. Evaluation costs $L_R^d/2$, so
+\begin{equation}\label{eq:Fz}
+ |F_z|\le161dL_R^d,\qquad |\partial_zF_z|\le1600dL_R^d.
+\end{equation}
+As $g_R=RL_R<1$, the map $z\mapsto a^dF_z$ is a contraction of the tenth disk for all sufficiently large $d$, uniformly on $|a|\le R$. Its unique small fixed point $\delta(a)$ is analytic on a neighborhood of the closed disk. Direct projection gives
+\begin{equation}\label{eq:param}
+ (1+z)f_z=V_af_z-\xi_zh_0.
+\end{equation}
+Thus $\lambda=1+\delta$ is the true eigenvalue branch, identified on the overlap with the earlier radius-one-half construction. It is nonzero, and its logarithm is analytic throughout the deformed contour domain.
+
+\section{A boundary-layer inverse near the saddle corridor}
+The corridor certificate covers
+\begin{equation}\label{eq:rect}
+ \mathcal K=\{a=u+iv:9/20\le u\le1/2,\ |v|\le33/100\}.
+\end{equation}
+All actual corridor points also satisfy $|a|\le14/25$. Put $h_a(x)=|H_a(x)|$ on $[0,1/2]$. The exact predicates proved below and checked in the supplied program are
+\begin{gather}\label{eq:base}
+ 1\le h_a\le8/5,\qquad
+ |H_{\pm a}(X)|\le |g(a)|h_a(\dist(X,\mathbb Z)),\quad 1\le X\le2,\\
+ h_a\text{ increases near zero},\qquad .58<|g(a)|<.9.\notag
+\end{gather}
+The endpoint equalities for the positive sign at $X=1,2$ are exact. The reflected branch ratio $h_a(1-x)/h_a(x)$ increases strictly to one; all nondominant branches have a fixed strict gap on the relevant compact subintervals.
+
+\paragraph{Finite verification and the edge reductions.}
+Write $w=v^2$. Each squared factor is exactly
+\[
+ (\cos\theta+u\sin\theta)^2+w\sin^2\theta.
+\]
+For $0\le x\le1$, $\Rea\ell_a'(x)$, with $\ell_a=\log H_a$, increases with $u,w$ and decreases with $x$. These signs follow by differentiating
+$\Rea[(a-t)/(1+at)]$; here $u>|v|$ and $t\ge0$. The logarithmic derivative of $h_a(1-x)/h_a(x)$ is therefore checked in 64 cells at the single worst field $(u,w)=(1/2,1089/10000)$.
+
+For $X=2-x$, its logarithmic ratio derivative is
+\[
+ -\frac\pi2\Rea\frac{\sin(\pi x/2)+a\cos(\pi x/2)}
+ {\cos(\pi x/2)-a\sin(\pi x/2)}
+ -\tfrac12\Rea\ell_a'(1-x/2)-\Rea\ell_a'(x).
+\]
+The first quotient increases with $u$ and decreases with $w$. The two other terms have the stated monotonicities. Sixty-four spatial cells and eight $w$ cells prove the expression negative. For $X=1+x$, $x\le1/16$, strict log-concavity holds up to $1+x$: its first-factor real part satisfies $u-\tan(\pi/32)>.35>|v|$. This gives a uniform negative derivative of the normalized left-edge ratio.
+
+The remaining modulus predicates cover compact interiors. Eighty-one adaptive binary cells verify the middle and opposite-image bounds, the secondary ratio away from zero, and the opposite-template inequalities used below. Twenty factors are retained; every omitted positive-real-part modulus exceeds one and is bounded above by a geometric product tail. For $H_{-a}$ the omitted moduli are at most one. All arithmetic is directed integer or rational arithmetic; accepted cells form a complete partition, not a sampled test.
+
+\begin{lemma}\label{lem:layer}
+Let $\chi_d(t)=\min(1,dt)$ and, on periodic $C^1$ functions vanishing at zero, put
+\[
+ M_0(f)=\sup_{x\notin\mathbb Z}\frac{|f(x)|}{\chi_d(t(x))h_a(t(x))^d},\qquad
+ M_1(f)=\sup\frac{|f'(x)|}{d h_a(t(x))^d},\quad t(x)=\dist(x,\mathbb Z).
+\]
+There is a fixed $\eta>0$ such that
+\[
+ \|(I-\mathcal B_a)^{-1}\|_{M_0+\eta M_1}=O(\log d)
+\]
+uniformly on an open neighborhood of the compact corridor.
+\end{lemma}
+\begin{proof}
+Use coordinates $x\in[-1/2,1/2]$. At a positive point the dominant branch halves $x$. At a negative point of modulus at most $2/5$ it also halves $x$; otherwise choose the branch sending it to $(1-|x|)/2>0$. Every dominant normalized base is at most one. Every other branch has a fixed upper bound $\rho<1$, by~\eqref{eq:base} and the certified compact gaps. A dominant path flips sign at most once, at its first step, and its $j$th coordinate satisfies
+\[
+ |y_j|\le(3/2)2^{-j}|x|.
+\]
+Its weights stay uniformly away from zero and have bounded logarithmic derivatives.
+
+Expand $\mathcal B_a^j=(V_a-P_a)^j$, where $P_af=a^df(1/2)h_0$. With $\omega(x)=h_a(t(x))^d$, a $V$ edge has normalized amplitude at most one. A projection edge $x\to1/2$ has normalized amplitude
+\[
+ |a|^d|h_0(x)|\omega(1/2)/\omega(x)
+ =|g(a)|^d|h_0(x)|/\omega(x)\le|g(a)|^d.
+\]
+All intermediate weights telescope, so repeated half-point evaluations introduce no extra factor. Apart from one dominant pure path, each of at most $3^j$ elementary paths has a factor $\gamma^d$, with some fixed $\gamma<1$.
+
+The remainder amplitude is at most $3^j\gamma^dM_0(f)$. Its normalized derivative is at most
+\begin{equation}\label{eq:patherror}
+ Cj3^j\gamma^{d-1}(M_0(f)+M_1(f)).
+\end{equation}
+A differentiated $V$ weight loses at most one power. A differentiated projection edge costs at most $\pi d|g(a)|^d$ before normalization. After a projection the evaluation coordinate is fixed, so later coordinate derivatives vanish; a derivative reaching $f$ on a pure path has factor $2^{-j}$. These observations prove~\eqref{eq:patherror} uniformly.
+
+Near zero the dominant path is the repeated half branch and vanishes at zero. So does the full output. Integrating the remainder derivative, using the increase of $h_a$, controls $M_0$ by the same error. Away from $t(x)<1/d$, the amplitude estimate suffices. At branch-selection boundaries use one-sided decompositions and continuity of the actual derivative.
+
+Choose $J=\lceil\log_2d\rceil+4$. The dominant path has $M_0$ norm at most $1/8$ at time $J$, and derivative row at most $C_0M_0+2^{-J}M_1$. For $j<J$ its $M_0$ norm is at most one. Choose $\eta C_0<1/8$. The error~\eqref{eq:patherror} tends to zero exponentially despite $J=O(\log d)$. Hence eventually
+\[
+ \|\mathcal B_a^J\|<1/2,\qquad
+ \sup_{j<J}\|\mathcal B_a^j\|\le2.
+\]
+The block inverse identity gives a bound $4J$.
+\end{proof}
+
+\paragraph{A periodic repair at the correct scale.}
+Let $b$ be a fixed smooth cutoff equal to one near zero and zero on $[2,\infty)$. Put
+\[
+ \phi_a(x)=H_a(x)^d+H_a(x-1)^d,
+\]
+\[
+ \psi_a(x)=\phi_a(x)-b(dx)H_a(x-1)^d-b(d(1-x))H_a(x)^d.
+\]
+The endpoint values are both one and the endpoint derivatives both $d\pi a$, so $\psi_a$ is periodic $C^1$. Its half-point value is $N_{\rm near}(a)=L(a)^d+L(-a)^d$. The repair has amplitude $O(|g|^d)$ and derivative $O(d|g|^d)$, because its support width is $O(1/d)$.
+The exact identity
+\[
+ V_a\phi_a-\phi_a=H_a(x+1)^d+H_a(x-2)^d
+\]
+and~\eqref{eq:base} show that $r_a=Q(V_a\psi_a-\psi_a)$ has layer norm $O(|g|^d)$. Its value vanishes at zero; one derivative and near-zero integration give this bound without a polynomial loss. The normalized frozen response satisfies
+\[
+ (I-\mathcal B_a)(f_F-\psi_a)=r_a.
+\]
+For the parameterized response,
+\[
+ (1+z-\mathcal B_a)(f_z-\psi_a)=r_a-z(\psi_a-h_0).
+\]
+The second source has bounded layer norm. Lemma~\ref{lem:layer} therefore gives, for $|z|\le c/\ell$,
+\begin{equation}\label{eq:layererror}
+ \|f_z-\psi_a\|_{M_0+\eta M_1}
+ \le C\ell(|g(a)|^d+|z|).
+\end{equation}
+
+\section{The local principal renewal equation}
+The true eigenvalue satisfies $\delta=a^dF_\delta$. Evaluation in~\eqref{eq:layererror}, followed by absorption, gives $|\delta|\le3|g|^d$ for large $d$. Define
+\[
+ Q_a(x)=\frac{H_a(1+x)}{g(a)H_a(x)},\quad x_n=2^{-n-1},\quad
+ S_d(z,a)=\sum_{n\ge0}(1+z)^{-n-1}(Q_a(x_n)^d-1).
+\]
+All denominators are nonzero on the corridor. Dividing~\eqref{eq:param} by $H_a(x)^d$ and iterating the principal branch gives the exact identity
+\begin{equation}\label{eq:renewalexact}
+ \frac{f_z(x)}{H_a(x)^d}=1+\sum_{n\ge0}(1+z)^{-n-1}
+ \left\{R_z(x2^{-n})-\xi_z\frac{h_0(x2^{-n})}{H_a(x2^{-n})^d}-z\right\},
+\end{equation}
+where $R_z(x)=W_a((1+x)/2)^df_z((1+x)/2)/H_a(x)^d$. The braces vanish at zero, so the sum and every fixed $z$ derivative converge locally uniformly when $|1+z|>1/2$. At the eigenvalue, $\xi_\delta=0$.
+
+\begin{lemma}\label{lem:scalarrenewal}
+Uniformly on the saddle corridor,
+\begin{equation}\label{eq:deltarenewal}
+ \delta=g^d+g^d\delta S_d(\delta,a)+O(\ell|g|^{3d}).
+\end{equation}
+\end{lemma}
+\begin{proof}
+On $y\in[1/2,3/4]$ the repair vanishes, so write
+$f_\delta(y)=H_a(y)^d+H_a(y-1)^d+e(y)$.
+Equation~\eqref{eq:layererror} gives
+\[
+ |(e/H_a^d)'(y)|\le Cd\ell|g|^d
+       [h_a(1-y)/h_a(y)]^d.
+\]
+The ratio in brackets increases with $y$. Integrating from $1/2$ to $(1+x)/2$ and multiplying by $H_a(1+x)^d/H_a(x)^d$ bounds the resulting secondary variation by
+\begin{equation}\label{eq:secondary}
+ Cd\ell|g|^{2d}x\,[b_+(x)/|g|]^d,
+\end{equation}
+where $b_+(x)=|W_a((1+x)/2)|h_a((1-x)/2)/h_a(x)$.
+The corridor certificate gives $b_+(x)/|g|<.99$ for $x\ge1/8$ and $b_+(x)/|g|\le e^{-x}$ near zero. The latter follows from $\Rea[1/(a-q)]>4/3$, $q=\tan(\pi x/2)<1/5$, and $\Rea\ell_a'>-1/2$. Thus the dyadic sum of~\eqref{eq:secondary} is $O(\ell|g|^{2d})$; the factor $d$ is removed by $\sum_n dx_ne^{-cdx_n}=O(1)$.
+
+The opposite spatial image contributes the vanishing difference
+\[
+ \frac{H_a(x-1)^d-(L(-a)/L(a))^dH_a(1+x)^d}{H_a(x)^d}.
+\]
+Its certified base is at most $.9|g|^2$, and its derivative is $O(d)$ times that base to power $d$. The derivative estimate loses one numerator power at a possible zero, never dividing by that zero. Its dyadic sum is exponentially below $|g|^{2d}$. The weights $(1+\delta)^{-n-1}$ preserve these bounds because $|\delta|=O(\kappa^d)$ for some $\kappa<1$.
+
+The secondary source in~\eqref{eq:renewalexact} is consequently
+$\delta Q_a(x_n)^d$ plus an error whose weighted sum is $O(\ell|g|^{2d})$. Evaluating at $1/2$ and multiplying by $g^d$ proves~\eqref{eq:deltarenewal}.
+\end{proof}
+The exact-base bounds give $|Q_a(x)|<1$ for $x>0$, uniformly away from zero, and $Q_a(x)=1-J(a)x+O(x^2)$ with $\Rea J(a)>c>0$. Splitting depths at $h=\lfloor\log_2d\rfloor$ yields
+\begin{equation}\label{eq:Sjets}
+ S_d(0,a)=-\ell+O(1),\qquad
+ \partial_zS_d(0,a)=\ell^2/2+O(\ell),\qquad
+ \partial_z^2S_d(z,a)=O(\ell^3)
+\end{equation}
+for $|z|\le c/\ell$. Indeed replacing $Q_a(x_n)^d$ by zero for $n<h$ and by one for $n\ge h$ has summable bounded error; its first depth moment costs $O(\ell)$. The sign of the first derivative comes from differentiating $(1+z)^{-n-1}$.
+Writing $b=g^d$, $S_0=S_d(0,a)$ and $S_1=\partial_zS_d(0,a)$, equation~\eqref{eq:deltarenewal} gives
+\[
+ \delta=b+b^2S_0+b^3(S_0^2+S_1)+O(\ell|b|^3).
+\]
+The terms $O(\ell^3|b|^4)$ are smaller. Taking the logarithm gives
+\begin{equation}\label{eq:local}
+ \log\lambda=b+b^2(S_0-1/2)+(3\ell^2/2+O(\ell))b^3.
+\end{equation}
+
+\section{An entire connected two-pulse template}
+For $L\ge1$ put
+\[
+ P_L(a)=\prod_{j=1}^L(\cos(\pi/2^j)+a\sin(\pi/2^j)),\qquad
+ E_L(a)=-P_L(a)H_a(1+2^{-L}).
+\]
+Splitting the spatial product gives the entire identities
+\[
+ E_L(a)=H_a(2^L+1),\qquad P_L(a)H_a(2^{-L})=H_a(1).
+\]
+The quotient notation for $P_L$ therefore introduces no poles. On every compact $a$ set, $E_L(a)=-g(a)^2+O(2^{-L})$. Hence
+\begin{equation}\label{eq:T2}
+ T_{2,d}(a)=\sum_{L\ge1}(E_L(a)^d-g(a)^{2d})-\tfrac12g(a)^{2d}
+\end{equation}
+is entire, by locally normal convergence. It equals $g^{2d}(S_0-1/2)$ on the local corridor. Thus~\eqref{eq:local} identifies the actual local second term with this globally continuable template.
+The opposite one-pulse and two-pulse images are exponentially below the cubic scale on that corridor, by the certified ratios. Consequently there and on its reflected copy,
+\begin{equation}\label{eq:localsymmetric}
+ \log\lambda=T_1+T_{2,d}(a)+T_{2,d}(-a)
+ +\tfrac32\ell^2\{g(a)^{3d}+g(-a)^{3d}\}+\mathcal R_d(a),
+\end{equation}
+where $T_1=g(a)^d+g(-a)^d$ and $|\mathcal R_d|\le C\ell|g(a)|^{3d}$ on the positive corridor, with the reflected bound on the negative one.
+
+\begin{lemma}\label{lem:T2coef}
+Uniformly for even $N$ with $3.3\le N/d\le5.59$,
+\[
+ [t^N]\{T_{2,d}(\tan t)+T_{2,d}(-\tan t)\}
+ =-(2\ell+O(1))A_2(d,N).
+\]
+\end{lemma}
+\begin{proof}
+The second-model saddles for this enlarged interval lie in $t\in[.34,.68621]$. On $z=te^{i\theta}$ let $a=\tan z=re^{i\phi}$. Exact bounds give $.32<r<.82$. The lower bound follows from $|z|=|\arctan a|\le\operatorname{atanh}|a|$ and $\operatorname{atanh}(.32)<.34$; the upper bound follows from the positive Taylor coefficients of the tangent.
+
+For $L\ge4$, apart from $a$ and a real constant, $E_L$ has one signed factor $a-\tau_L$, where $\tau_L=\tan(\pi/2^{L+1})<.1$, and otherwise positive factors $1+ba$. Retain the prefix and tail factors at spatial indices $2,3,4$: their tangent parameters exceed $1,.4,.19$, respectively, and are below $6/5$. Every selected product $rb<(.82)(6/5)<1$. The logarithmic modulus derivative with respect to $u=\cos\phi$ decreases with $u$. Its six positive terms minus the signed term therefore have the exact lower bound
+\[
+ 2\sum_{b\in\{1,2/5,19/100\}}\frac{(8/25)b}{(1+(8/25)b)^2}
+ -\frac{(8/25)(1/10)}{(8/25-1/10)^2}>1/100.
+\]
+All other terms are nonnegative. Real log-concavity gives
+$|E_L(r)|\le g(r)^2e^{-2\cdot2^{-L}}$. Hence
+\[
+ |E_L(\tan(te^{i\theta}))|
+ \le g(\tan t)^2e^{-c2^{-L}}e^{-c\theta^2}
+\]
+with uniform $c>0$. To pass between phases, use
+$\Im\tan(x+iy)=\sinh(2y)/(\cos(2x)+\cosh(2y))$: on these circles the argument is zero only at $\theta=0$, with positive derivative there. Compactness handles the rest of the circle.
+
+For $L=1,2,3$, exact interval subdivision of the entire radius--phase rectangle, including both signs of $a$, gives
+\[
+ |E_L(a)|<(99/100)g(\tan t)^2.
+\]
+The partitions have $97,41,63$ accepted boxes, respectively. The tangent routine uses its sine--hyperbolic formula, with explicit guards $2t<\pi/2$, the monotone argument ranges, and Taylor remainder $8\cdot2^{80}/80!<10^{-32}$. The infinite squared-product routine returns an upper bound only. This fixed strict gap can be weakened to the same Gaussian estimate.
+
+For $L\le h=\lfloor\log_2d\rfloor$, Cauchy's integral and the Gaussian bound make the sum of the $E_L^d$ coefficients $O(A_2)$, since $\sum_{j\ge0}e^{-c2^j}<\infty$. The $h$ subtracted baselines give exactly $-hA_2$.
+For $L>h$, keep the difference before integrating. Uniformly on the contour,
+\[
+ E_L(a)^d-g(a)^{2d}=g(a)^{2d}(Q_a(2^{-L})^d-1),\qquad
+ |Q_a(2^{-L})^d-1|\le Cd2^{-L}.
+\]
+The deep sum is $O(A_2)$ because $d\sum_{L>h}2^{-L}\le2$ and the positive model has uniform Gaussian modulus decay. The local limit supplies the matching $d^{-1/2}$ coefficient scale. The extra half-baseline changes only $O(A_2)$, and reflection doubles the even coefficient.
+\end{proof}
+
+\section{A logarithmic arctangent identity and spiral descent}
+The deformation uses $a=\tan t$ rather than a circular $t$ contour. The following positive representation makes its phase control elementary.
+\begin{lemma}\label{lem:atan}
+On $\mathbb C\setminus(-\infty,-1]$,
+\[
+ -\log\frac{\arctan\sqrt z}{\sqrt z}
+   =\int_1^\infty\log(1+z/s)\,d\nu(s),
+\]
+where $\nu$ is a positive measure of mass $1/2$ with density
+\[
+ \frac{1}{\sqrt s(s-1)
+ \left[\log^2\!\frac{\sqrt s+1}{\sqrt s-1}+\pi^2\right]}.
+\]
+\end{lemma}
+\begin{proof}
+Let $f(z)=\arctan\sqrt z/\sqrt z=\int_0^1(1+zu^2)^{-1}du$ and $G(z)=-\log f(z)$, normalized by $G(0)=0$. The imaginary part of $f$ is strictly negative in the upper half-plane and positive in the lower, while $f>0$ on $(-1,\infty)$. Hence $f$ is zero-free and $G$ is analytic on the slit plane.
+For $s>1$, with $L_s=\log((\sqrt s+1)/(\sqrt s-1))$,
+\[
+ f(-s+i0)=\frac{L_s-i\pi}{2\sqrt s},\qquad
+ \Im G(-s+i0)=\pi\eta(s),\quad
+ \eta(s)=\pi^{-1}\arctan(\pi/L_s).
+\]
+Cauchy's formula around the cut for $G(z)/z$ gives
+\[
+ G(z)/z=\int_1^\infty\frac{\eta(s)}{s(s+z)}\,ds.
+\]
+At infinity $G(z)=\tfrac12\Log z-\log(\pi/2)+O(|z|^{-1/2})$; near $-1$, $f(z)=-\tfrac12\Log(z+1)+O(1)$. Thus both circular remainders vanish. Integration by parts gives the claimed measure $d\nu=\eta'(s)ds$. Its endpoint masses are $\eta(1)=0$ and $\eta(\infty)=1/2$; its density is integrable at both ends. These bounds also justify differentiation on compact subsets.
+\end{proof}
+Put $D=a\,d/da$. The lemma gives
+\[
+ -D^2\log\arctan a=4\int_1^\infty
+       \frac{a^2/s}{(1+a^2/s)^2}\,d\nu(s),\qquad
+ D^2\log g(a)=\sum_j\frac{ab_j}{(1+ab_j)^2}.
+\]
+For $q=re^{i\theta}$,
+\[
+ \Rea\frac q{(1+q)^2}
+ =\frac{r((1+r^2)\cos\theta+2r)}{|1+q|^4},\qquad
+ \Im\frac q{(1+q)^2}
+ =\frac{r(1-r^2)\sin\theta}{|1+q|^4}.
+\]
+Both are nonnegative, and the real part is positive, for $0<r<1$, $0\le\theta<\pi/2$.
+
+Let $R=14/25$, $\phi_0=\pi/5$, and $r=\tan t_3(\sigma)\in(.45,.46)$. Define
+\[
+ a(\phi)=r e^{(c+i)\phi},\qquad
+ c=\log(R/r)/\phi_0,\qquad 0\le\phi\le\phi_0.
+\]
+The elementary bound $e^{9/40}>1+9/40+(9/40)^2/2>56/45$ gives $c<3/8<2/5$. If
+\[
+ \Delta(\phi)=\Rea\{3\log g(a(\phi))-\sigma\log\arctan a(\phi)\}
+                  -\{3\log g(r)-\sigma\log t_3\},
+\]
+then $\Delta(0)=\Delta'(0)=0$. Both the real and imaginary parts of
+$K=D^2(3\log g-\sigma\log\arctan)$ have the required nonnegative signs along the corridor. Thus
+\[
+ \Delta''=(c^2-1)\Rea K-2c\Im K
+ \le-\frac{21}{25}\,3\,\frac{(9/20)(4/5)}{(8/5)^4}
+ =-\frac{567}{4096}<-1/10.
+\]
+Consequently
+\begin{equation}\label{eq:spiral}
+ \Delta(\phi)\le-\phi^2/20.
+\end{equation}
+The real part of the corridor has concave logarithm and exceeds $.45$ at both endpoints. Its maximum is at most
+$(23/50)e^{9/128}<(23/50)(128/119)<1/2$.
+Its imaginary part increases to $R\sin(\pi/5)<.33$. Hence the whole corridor lies in~\eqref{eq:rect}. All these scalar comparisons are checked exactly. Conjugation and reflection give the other three corridors.
+
+\section{The outer arcs and coefficient integration}
+On the outer circle $a=Re^{i\phi}$, $\pi/5\le\phi\le\pi/2$, define
+\[
+ \Omega(a)=\max_{\epsilon=\pm1,\ 1\le X\le2}
+       |H_{\epsilon a}(X)|/h_R(\dist(X,\mathbb Z)).
+\]
+The independent exact certificate proves
+\begin{gather}\label{eq:outer}
+ \Omega(a)<(19/20)g_R,\qquad
+ |E_L(\pm a)|< (3/5)g_R^2\quad(L=1,2,3),\\
+ \frac{g_R^2}{|\arctan a|^\sigma}
+ <\frac{19}{20}\frac{g(r)^3}{t_3(\sigma)^\sigma},
+ \qquad \sigma\in I.\notag
+\end{gather}
+For $L\ge4$, the same angular argument as in Lemma~\ref{lem:T2coef}, now at $R=.56$, gives
+\[
+ |E_L(\pm a)|\le\frac{10000}{10361}e^{-2\cdot2^{-L}}g_R^2<g_R^2.
+\]
+The positive angular contribution minus the signed term exceeds $19/100$.
+
+The certificate covers 16 spatial/angular boxes for $\Omega$, 32 angular intervals per shallow depth and sign, and 41 arctangent intervals. It proves $|\arctan a|>5371/10000$ and $t_3(\sigma)<.43$. The logarithmic derivative of the last ratio in~\eqref{eq:outer} is $\log(t_3/|\arctan a|)<0$, so only $\sigma=111/20$ is needed. With the certified saddle bracket $[.423549203,.423549207]$, raising the comparison to power twenty gives an exact rational check. Its upper ratio is below $.95$.
+
+The repaired nearest-pair source has amplitude $O(\Omega^d)$ and derivative $O(d\Omega^d)$ in the real-radius weight. Lemma~\ref{lem:fullgreen} therefore gives
+\[
+ |F-N_{\rm near}|\le Cd(L_R\Omega)^d.
+\]
+Equation~\eqref{eq:Fz} and $\delta=a^dF_\delta$ also give
+$|\log\lambda-a^dF|\le Cd^2g_R^{2d}$. Hence
+\[
+ |\log\lambda-T_1|\le Cd^2g_R^{2d}
+\]
+on the outer arcs. Normal convergence of~\eqref{eq:T2}, the shallow bounds, and
+$|E_L(a)+g(a)^2|\le C2^{-L}$ imply the same bound for the two entire $T_2$ templates. The cubic model is bounded by $2g_R^{3d}\le2g_R^{2d}$.
+
+Complete the four spiral corridors by the two outer arcs around the imaginary axis. This is a Jordan contour $\Gamma$ enclosing zero in $|a|\le R$. The map $t=\arctan a$ is analytic and injective there, and
+\begin{equation}\label{eq:Cauchy}
+ [t^N]f(t)=\frac1{2\pi i}\int_\Gamma
+ \frac{f(\arctan a)}{(\arctan a)^{N+1}(1+a^2)}\,da.
+\end{equation}
+Subtract the global entire cubic template
+$\tfrac32\ell^2(g(a)^{3d}+g(-a)^{3d})$ from~\eqref{eq:localsymmetric}. The local error integral is, by~\eqref{eq:spiral},
+\[
+ O\!\left(\ell d^{-1/2}
+          [g(r)^3/t_3^\sigma]^d\right)=O(\ell A_3).
+\]
+The last equality uses only the ordinary uniform local limit for the positive model. The outer error and the removed cubic model are exponentially smaller by~\eqref{eq:outer}. We never infer a Gaussian prefactor from the corner where the two spiral branches meet.
+
+Contour invariance makes the full cubic-model integral exactly $2A_3$ for even $N$. The first model gives $2A_1$, and Lemma~\ref{lem:T2coef} gives the second term. Finally, $[t^N]d\log\cos t=O(d)$ by Cauchy's estimate on $|t|=1$, whereas $A_3$ has exponential base greater than nine on $I$. This proves Theorem~\ref{thm:law}.
+
+\section{The local sign window}
+For completeness, the positive model has a uniform local limit on every compact saddle range:
+\[
+ A_k(d,N)=\frac{\GG(t_k)^{kd}t_k^{-N}}
+ {\sqrt{2\pi k d\,\kappa(t_k)}}(1+O(d^{-1/2})),
+ \qquad \kappa(t)=t\mu'(t)>0.
+\]
+Its tilted coefficient law has span one, positive variance and uniformly bounded exponential moments. The Fourier expansion on a fixed small central arc has a uniform cubic Taylor remainder. Splitting its Gaussian-scaled variable at a small power of $d$ gives the displayed $O(d^{-1/2})$ relative error; the complementary arc has a strict modulus gap because consecutive coefficients are positive.
+
+The rate difference has derivative
+$(\Phi_3-\Phi_2)'=\log(t_2/t_3)>0$.
+Exact tests give opposite signs at $5.55$ and $5.59$, and the sharper bracket~\eqref{eq:crossbracket}. Thus
+\[
+ A_3/A_2=C(\sigma)e^{d(\Phi_3-\Phi_2)}(1+o(1))
+\]
+with $C$ positive and uniformly bounded. The first model is exponentially smaller than the second throughout $I$: their rate difference is increasing and its earlier crossing lies below $3.332$, as proved in the included prerequisite.
+Balancing $3\ell^2A_3$ against $2\ell A_2$ therefore gives
+$d\sigma_*-\Lambda_*^{-1}\log\log d+O(1)$. Uniform upper and lower bounds on $C$ and monotonicity of the rate difference give all signs in Corollary~\ref{cor:cross} outside a fixed-width window. No monotonicity of the actual coefficient sequence is assumed.
+
+\section{A certified bridge and the first return}\label{sec:bridge}
+Use the fixed contour starting at $9/20$, with corridors
+\[
+ a(q)=\frac9{20}\exp\!\left(5q\log\frac{56}{45}+i\pi q\right),
+ \qquad 0\le q\le1/5,
+\]
+and their conjugates and negatives, completed by the same radius-$14/25$ outer arcs. Its corridors remain inside~\eqref{eq:rect}, so the local renewal bound applies. This contour is not assumed to descend from its starting point: for the lower slopes its phase maximum is in the interior.
+
+Let $J=[33/10,111/20]$. The exact endpoint checker proves throughout each fixed corridor
+\begin{equation}\label{eq:bridgecorr}
+ \frac{|g(a(q))|^3}{|\arctan a(q)|^\sigma}
+ <\frac{199}{200}e^{\Phi_2(\sigma)}
+ \quad(\sigma=33/10,111/20),
+\end{equation}
+and on the outer arcs
+\begin{equation}\label{eq:bridgeouter}
+ \frac{g_R^2}{|\arctan a|^\sigma}
+ <\frac{199}{200}e^{\Phi_2(\sigma)}
+ \quad(\sigma=33/10,111/20).
+\end{equation}
+The corridor partitions have $14$ and $201$ full phase intervals. Their maximum certified ratio bounds are below $.961754$ and $.994971$; the outer bounds are below $.991344$ and $.939215$. These decimals describe strict rational powered comparisons, not acceptance tests. The certified second-saddle brackets are
+\[
+ .341384832<t_2(3.3)<.341384836,\qquad
+ .682144536<t_2(5.55)<.682144540.
+\]
+The program encloses the spiral exponential and trigonometric functions, then uses $70$ arctangent Taylor terms at each midpoint and the full-cell derivative bound
+\[
+ \left|\frac{d}{dq}\arctan a(q)\right|
+ \le\frac{R[5\log(56/45)+\pi]}{1-R^2}.
+\]
+This includes every interior phase maximum. The outer comparison uses the independently checked modulus lower bound $5371/10000$.
+
+Both endpoint inequalities hold uniformly throughout $J$. Indeed
+\[
+ \Phi_2'=-\log t_2,\qquad
+ \Phi_2''=-\frac1{2t_2\mu'(t_2)}<0.
+\]
+At each fixed contour point, the logarithm of either ratio in~\eqref{eq:bridgecorr}--\eqref{eq:bridgeouter} is affine in $\sigma$ minus the concave function $\Phi_2$. It is convex and is bounded above by the chord between the two certified endpoints.
+
+On a corridor the error after subtracting $T_1$ and the two $T_2$ templates is $O(\ell^2|g(a)|^{3d})$. On the outer arcs it is $O(d^2g_R^{2d})$. The preceding rate bounds and~\eqref{eq:Cauchy} make both errors exponentially smaller than $A_2$, uniformly in $J$. The checker also proves $e^{\Phi_2(3.3)}>5$; since $t_2<1$, the rate is increasing, so the cosine coefficients are negligible throughout $J$. Lemma~\ref{lem:T2coef} now gives the uniform bridge law
+\begin{equation}\label{eq:bridge}
+ [t^N]P_m=2A_1-(2\ell+O(1))A_2,
+ \qquad N\text{ even},\quad3.3\le N/d\le5.55.
+\end{equation}
+In particular all such coefficients with $N/d\ge3.332$ are negative for sufficiently large $d$, since the first model crossing is strictly below $3.332$.
+
+It remains to rule out an early return hidden next to the first negative coefficient. Proposition~7.1 of the unchanged first-negative report~\cite{First} gives a center
+\[
+ u_{12}=d\sigma_{12}-\frac{\log\log d}{\Lambda_{12}}
+       +\frac{\log((\log2)/C_{12})}{\Lambda_{12}},
+\]
+with an uncertainty band of width $O(1/\log d)$: all earlier even post-cancellation degrees are positive, and those just above the band are negative. On any fixed-width neighborhood of $u_{12}$ its quantitative saddle formula, also obtained from~\eqref{eq:bridge}, is
+\[
+ \frac{[t^N]P_m}{2A_1}
+ =1-e^{\Lambda_{12}(N-u_{12})}+O(1/\log d).
+\]
+Beyond a sufficiently large fixed distance, the increasing rate difference $\Phi_2-\Phi_1$ and uniform positive saddle prefactor bounds extend strict negativity through $5.55d$. Thus every even degree above $u_{12}+C/\log d$ and at most $5.55d$ is negative.
+
+For large $d$ the uncertainty band has length less than two, hence contains at most one even degree. If its coefficient is negative, that degree is $N_m$ and all subsequent bridge coefficients are negative. If it is zero or positive, $N_m$ is the next even degree, with the same conclusion. No monotonicity of the actual coefficients is assumed. The bridge overlaps the higher window, so Corollary~\ref{cor:cross} identifies the first return and proves Theorem~\ref{thm:return}.
+
+\paragraph{A qualified refined center.}
+Put $\kappa(t)=t\mu'(t)$ and evaluate the following quantities at $\sigma_*$:
+\[
+ C_* =\sqrt{\frac{2\kappa(t_2)}{3\kappa(t_3)}},\qquad
+ u_* =d\sigma_*-\frac{\log\log d}{\Lambda_*}
+          +\frac{\log((2\log2)/(3C_*))}{\Lambda_*}.
+\]
+For every fixed $B$, uniformly over even $N$ with $|N-u_*|\le B$, Theorem~\ref{thm:law} and the quantitative local limit give
+\[
+ \frac{[t^N]P_m}{2\ell A_2}
+ =-1+e^{\Lambda_*(N-u_*)}+O_B(1/\log d).
+\]
+Choose $B$ larger than the fixed-width bracket from Corollary~\ref{cor:cross}. There is then a constant $C$ such that every even degree after $N_m$ and below $u_*-C/\log d$ is negative, while every even degree between $u_*+C/\log d$ and $u_*+B$ is positive. Consequently,
+\[
+ \dist(u_*,2\mathbb Z)>C/\log d
+ \quad\Longrightarrow\quad M_m=2\lceil u_*/2\rceil.
+\]
+No assertion is made about how often the excluded close approaches occur.
+
+\section{Reproducibility and remaining scope}
+The archive contains the TeX, exact Python checkers, rational output certificates, hash manifest and unchanged preceding reports. The new checks require only the Python standard library and run with optimization enabled; no acceptance test disappears in that mode. Complete scalar domains are certified, while the operator and contour arguments remain ordinary mathematical proofs. Numerical orientations are never acceptance criteria.
+
+A disk-wide residual of order $|a|^{3d}$ after subtracting only $T_1,T_2$ would be false near zero: its $a^d$ coefficient still includes the positive omitted odd-image sum, beginning at $n=7$. The deformation avoids that invalid shortcut. The present bridge closes the gap needed for the first return; it does not determine later sign transitions or give an effective onset for the asymptotic theorem.
+
+\begin{thebibliography}{9}\small
+\bibitem{Clusters} \emph{Rooted Tree Asymptotics for Canonical Thue--Morse Pressure Clusters}, research report prepared for V.~Reshetnikov with OpenAI, 1 October 2026. Unchanged PDF, TeX and source archive included.
+\bibitem{First} \emph{First Negative Degrees in Integer Thue--Morse Pressure}, research report prepared for V.~Reshetnikov with OpenAI, 1 October 2026. Unchanged companion included; see Proposition~7.1.
+\bibitem{Fan} A.~H.~Fan, J.~Schmeling and W.~Shen, \emph{Multifractal Analysis of generalized Thue--Morse trigonometric polynomials}, arXiv:2212.13234. Related phase-dependent trigonometric-product context.\newline
+\url{https://arxiv.org/abs/2212.13234}
+\end{thebibliography}
+\end{document}
