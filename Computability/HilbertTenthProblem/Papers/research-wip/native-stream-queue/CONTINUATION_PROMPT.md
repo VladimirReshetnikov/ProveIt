@@ -173,6 +173,27 @@
 > improvement. The universal84/187 and85/155 points remain unchanged.
 >
 >
+> The [Beyond Ord placement followup](review_beyond_ord_placement_111c38012.md)
+> authenticates all17 changed paths at111c38012:13 ancillary files exactly
+> match the four retired archives, whose27 member hashes agree with the
+> original intake. The host guide, article and PDF remain unchanged with15
+> literal Part headings. The proposed Part XVI and its planned corrections
+> are not yet manuscript changes. Fresh root metadata checks pass normally
+> and under optimized Python; no supplied programs or prior helpers run.
+> The earlier bounded proof coverage remains, with no new arithmetic result.
+>
+>
+> The [atom-actions / commuting-injections placement review](review_atom_injection_placement_27f200305.md)
+> checks all nine changed paths at27f200305: seven exact ancillary copies
+> and two archive retirements. All14 members and eight delivered manifest
+> entries are authenticated. The host guide, article, PDF and source audit
+> are unchanged, retaining two Parts and146 labels; Part III remains a
+> planned manuscript write. Earlier scoped atom and full commuting proof
+> coverage is inherited without expanding it. Root independently checks the
+> mappings, eleven read spans and immutable blobs. No supplied code or build
+> runs, and no paid arithmetic compiler or bound changes.
+>
+>
 > The [hat-randomness placement review](review_hat_placement_635a3e026.md)
 > authenticates all six changed paths at635a3e026: five ancillary files exactly
 > match the retired eight-member archive. The host guide, article and PDF
