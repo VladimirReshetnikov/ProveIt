@@ -1,0 +1,444 @@
+{
+  "status": "PASS",
+  "timestamp_utc": "2026-10-02T06:29:58.961182+00:00",
+  "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "positive_controls": 2,
+  "mutations_per_mode": 31,
+  "rejected_mutations": 62,
+  "records": [
+    {
+      "mode": "normal",
+      "mutation": "bad_cut_load",
+      "exit_code": 1,
+      "expected_error_code": "CUT",
+      "stderr": "FAIL VerificationError: CUT: rational_four_triangles base staircase cuts: computed (Fraction(2, 1), Fraction(2, 1), Fraction(3, 1), Fraction(4, 1), Fraction(5, 1), Fraction(6, 1), Fraction(7, 1), Fraction(8, 1), Fraction(9, 1), Fraction(10, 1), Fraction(11, 1), Fraction(12, 1)), expected (Fraction(1, 1), Fraction(2, 1), Fraction(3, 1), Fraction(4, 1), Fraction(5, 1), Fraction(6, 1), Fraction(7, 1), Fraction(8, 1), Fraction(9, 1), Fraction(10, 1), Fraction(11, 1), Fraction(12, 1))"
+    },
+    {
+      "mode": "normal",
+      "mutation": "bad_expected_netflow",
+      "exit_code": 1,
+      "expected_error_code": "NETFLOW",
+      "stderr": "FAIL VerificationError: NETFLOW: rational_four_triangles: computed (Fraction(1, 1), Fraction(1, 1), Fraction(1, 1), Fraction(1, 1), Fraction(1, 1), Fraction(1, 1), Fraction(1, 1), Fraction(1, 1), Fraction(1, 1), Fraction(1, 1), Fraction(1, 1), Fraction(1, 1), Fraction(-12, 1)), expected (Fraction(1, 1), Fraction(2, 1), Fraction(1, 1), Fraction(1, 1), Fraction(1, 1), Fraction(1, 1), Fraction(1, 1), Fraction(1, 1), Fraction(1, 1), Fraction(1, 1), Fraction(1, 1), Fraction(1, 1), Fraction(-12, 1))"
+    },
+    {
+      "mode": "normal",
+      "mutation": "negative_edge",
+      "exit_code": 1,
+      "expected_error_code": "NONNEGATIVE",
+      "stderr": "FAIL VerificationError: NONNEGATIVE: rational_four_triangles base has a negative edge"
+    },
+    {
+      "mode": "normal",
+      "mutation": "row_margin_inconsistency",
+      "exit_code": 1,
+      "expected_error_code": "ROW_MARGIN",
+      "stderr": "FAIL VerificationError: ROW_MARGIN: rational_four_triangles: computed (Fraction(1, 1), Fraction(2, 1), Fraction(3, 1), Fraction(4, 1), Fraction(5, 1), Fraction(6, 1), Fraction(7, 1), Fraction(8, 1), Fraction(14, 3), Fraction(21, 4), Fraction(23, 4), Fraction(41, 6)), expected (Fraction(2, 1), Fraction(2, 1), Fraction(3, 1), Fraction(4, 1), Fraction(5, 1), Fraction(6, 1), Fraction(7, 1), Fraction(8, 1), Fraction(14, 3), Fraction(21, 4), Fraction(23, 4), Fraction(41, 6))"
+    },
+    {
+      "mode": "normal",
+      "mutation": "column_margin_inconsistency",
+      "exit_code": 1,
+      "expected_error_code": "COLUMN_MARGIN",
+      "stderr": "FAIL VerificationError: COLUMN_MARGIN: rational_four_triangles: computed (Fraction(1, 1), Fraction(2, 1), Fraction(3, 1), Fraction(4, 1), Fraction(5, 1), Fraction(6, 1), Fraction(7, 1), Fraction(11, 3), Fraction(17, 4), Fraction(19, 4), Fraction(35, 6), Fraction(12, 1)), expected (Fraction(2, 1), Fraction(2, 1), Fraction(3, 1), Fraction(4, 1), Fraction(5, 1), Fraction(6, 1), Fraction(7, 1), Fraction(11, 3), Fraction(17, 4), Fraction(19, 4), Fraction(35, 6), Fraction(12, 1))"
+    },
+    {
+      "mode": "normal",
+      "mutation": "missing_cell",
+      "exit_code": 1,
+      "expected_error_code": "SCHEMA",
+      "stderr": "FAIL VerificationError: SCHEMA: rational_four_triangles.completed complete support: computed {(4, 9), (3, 7), (4, 6), (5, 10), (8, 9), (2, 2), (2, 11), (1, 9), (10, 12), (2, 8), (11, 11), (6, 11), (7, 10), (6, 8), (3, 9), (5, 6), (4, 8), (3, 6), (5, 12), (8, 11), (9, 10), (8, 8), (2, 4), (1, 2), (1, 11), (2, 10), (1, 8), (7, 12), (6, 10), (3, 11), (4, 10), (3, 8), (5, 5), (9, 12), (8, 10), (1, 4), (2, 3), (2, 12), (1, 10), (6, 6), (6, 12), (3, 4), (4, 12), (3, 10), (5, 7), (8, 12), (1, 6), (9, 11), (2, 5), (1, 3), (1, 12), (7, 7), (4, 5), (3, 3), (3, 12), (5, 9), (4, 11), (10, 11), (2, 7), (1, 5), (7, 9), (6, 7), (4, 7), (3, 5), (4, 4), (5, 11), (5, 8), (9, 9), (1, 1), (11, 12), (2, 9), (1, 7), (10, 10), (2, 6), (7, 11), (6, 9), (7, 8)}, expected {(4, 9), (5, 10), (8, 9), (2, 2), (2, 11), (6, 11), (7, 10), (3, 6), (5, 12), (8, 11), (9, 10), (2, 4), (1, 8), (7, 12), (3, 8), (5, 5), (9, 12), (1, 10), (6, 6), (3, 10), (5, 7), (1, 3), (1, 12), (7, 7), (3, 3), (3, 12), (5, 9), (4, 11), (1, 5), (7, 9), (3, 5), (4, 4), (5, 11), (9, 9), (10, 10), (1, 7), (2, 6), (7, 11), (3, 7), (4, 6), (10, 12), (1, 9), (11, 11), (2, 8), (6, 8), (12, 12), (3, 9), (5, 6), (4, 8), (8, 8), (1, 2), (1, 11), (2, 10), (6, 10), (3, 11), (4, 10), (8, 10), (1, 4), (2, 3), (2, 12), (6, 12), (3, 4), (4, 12), (8, 12), (1, 6), (9, 11), (2, 5), (4, 5), (10, 11), (2, 7), (6, 7), (4, 7), (5, 8), (1, 1), (11, 12), (2, 9), (6, 9), (7, 8)}"
+    },
+    {
+      "mode": "normal",
+      "mutation": "duplicate_cell",
+      "exit_code": 1,
+      "expected_error_code": "SCHEMA",
+      "stderr": "FAIL VerificationError: SCHEMA: duplicate cell (1, 1) in rational_four_triangles.completed"
+    },
+    {
+      "mode": "normal",
+      "mutation": "invalid_fraction_denominator",
+      "exit_code": 1,
+      "expected_error_code": "RATIONAL",
+      "stderr": "FAIL VerificationError: RATIONAL: rational_four_triangles.q[1,1] must be a canonical rational string"
+    },
+    {
+      "mode": "normal",
+      "mutation": "noncanonical_fraction",
+      "exit_code": 1,
+      "expected_error_code": "RATIONAL",
+      "stderr": "FAIL VerificationError: RATIONAL: rational_four_triangles.q[1,1] canonical representation: computed '1/2', expected '2/4'"
+    },
+    {
+      "mode": "normal",
+      "mutation": "floating_point_rational",
+      "exit_code": 1,
+      "expected_error_code": "RATIONAL",
+      "stderr": "FAIL VerificationError: RATIONAL: rational_four_triangles.q[1,1] must be a canonical rational string"
+    },
+    {
+      "mode": "normal",
+      "mutation": "boolean_dimension",
+      "exit_code": 1,
+      "expected_error_code": "SCHEMA",
+      "stderr": "FAIL VerificationError: SCHEMA: rational_four_triangles.n must be a JSON integer, not boolean or float"
+    },
+    {
+      "mode": "normal",
+      "mutation": "unknown_fixture_field",
+      "exit_code": 1,
+      "expected_error_code": "SCHEMA",
+      "stderr": "FAIL VerificationError: SCHEMA: fixture keys: computed {'n', 'silently_ignored', 'cutoff_M', 'q', 'completed', 'name', 'triangles'}, expected {'n', 'cutoff_M', 'completed', 'name', 'q', 'triangles'}"
+    },
+    {
+      "mode": "normal",
+      "mutation": "invalid_support",
+      "exit_code": 1,
+      "expected_error_code": "SCHEMA",
+      "stderr": "FAIL VerificationError: SCHEMA: rational_four_triangles.completed.b below minimum"
+    },
+    {
+      "mode": "normal",
+      "mutation": "altered_expected_count",
+      "exit_code": 1,
+      "expected_error_code": "EXPECTED_COUNT",
+      "stderr": "FAIL VerificationError: EXPECTED_COUNT: n=3: computed 7, expected 8"
+    },
+    {
+      "mode": "normal",
+      "mutation": "missing_expected_count",
+      "exit_code": 1,
+      "expected_error_code": "SCHEMA",
+      "stderr": "FAIL VerificationError: SCHEMA: small_counts keys: computed {'2', '4', '3', '5', '0', '1', '6'}, expected {'2', '0', '3', '7', '4', '5', '6', '1'}"
+    },
+    {
+      "mode": "normal",
+      "mutation": "missing_fixture",
+      "exit_code": 1,
+      "expected_error_code": "FIXTURE_COVERAGE",
+      "stderr": "FAIL VerificationError: FIXTURE_COVERAGE: all fixtures in canonical order: computed ['rational_four_triangles', 'rational_endpoint', 'saturated_edges'], expected ['rational_four_triangles', 'rational_endpoint', 'saturated_edges', 'no_triangle_boundary']"
+    },
+    {
+      "mode": "normal",
+      "mutation": "cutoff_violation",
+      "exit_code": 1,
+      "expected_error_code": "CUTOFF",
+      "stderr": "FAIL VerificationError: CUTOFF: rational_four_triangles q begins before cutoff"
+    },
+    {
+      "mode": "normal",
+      "mutation": "bad_expected_q_load",
+      "exit_code": 1,
+      "expected_error_code": "Q_CUT",
+      "stderr": "FAIL VerificationError: Q_CUT: rational_four_triangles: computed (Fraction(0, 1), Fraction(0, 1), Fraction(0, 1), Fraction(0, 1), Fraction(0, 1), Fraction(0, 1), Fraction(0, 1), Fraction(40, 9), Fraction(177, 20), Fraction(211, 22), Fraction(31, 3), Fraction(409, 78)), expected (Fraction(1, 1), Fraction(0, 1), Fraction(0, 1), Fraction(0, 1), Fraction(0, 1), Fraction(0, 1), Fraction(0, 1), Fraction(40, 9), Fraction(177, 20), Fraction(211, 22), Fraction(31, 3), Fraction(409, 78))"
+    },
+    {
+      "mode": "normal",
+      "mutation": "q_exceeds_cut_capacity",
+      "exit_code": 1,
+      "expected_error_code": "Q_FEASIBILITY",
+      "stderr": "FAIL VerificationError: Q_FEASIBILITY: rational_four_triangles"
+    },
+    {
+      "mode": "normal",
+      "mutation": "wrong_but_feasible_completion",
+      "exit_code": 1,
+      "expected_error_code": "COMPLETION",
+      "stderr": "FAIL VerificationError: COMPLETION: rational_four_triangles singleton completion: computed {(1, 1): Fraction(1, 1), (1, 2): Fraction(0, 1), (1, 3): Fraction(0, 1), (1, 4): Fraction(0, 1), (1, 5): Fraction(0, 1), (1, 6): Fraction(0, 1), (1, 7): Fraction(0, 1), (1, 8): Fraction(0, 1), (1, 9): Fraction(0, 1), (1, 10): Fraction(0, 1), (1, 11): Fraction(0, 1), (1, 12): Fraction(0, 1), (2, 2): Fraction(2, 1), (2, 3): Fraction(0, 1), (2, 4): Fraction(0, 1), (2, 5): Fraction(0, 1), (2, 6): Fraction(0, 1), (2, 7): Fraction(0, 1), (2, 8): Fraction(0, 1), (2, 9): Fraction(0, 1), (2, 10): Fraction(0, 1), (2, 11): Fraction(0, 1), (2, 12): Fraction(0, 1), (3, 3): Fraction(3, 1), (3, 4): Fraction(0, 1), (3, 5): Fraction(0, 1), (3, 6): Fraction(0, 1), (3, 7): Fraction(0, 1), (3, 8): Fraction(0, 1), (3, 9): Fraction(0, 1), (3, 10): Fraction(0, 1), (3, 11): Fraction(0, 1), (3, 12): Fraction(0, 1), (4, 4): Fraction(4, 1), (4, 5): Fraction(0, 1), (4, 6): Fraction(0, 1), (4, 7): Fraction(0, 1), (4, 8): Fraction(0, 1), (4, 9): Fraction(0, 1), (4, 10): Fraction(0, 1), (4, 11): Fraction(0, 1), (4, 12): Fraction(0, 1), (5, 5): Fraction(5, 1), (5, 6): Fraction(0, 1), (5, 7): Fraction(0, 1), (5, 8): Fraction(0, 1), (5, 9): Fraction(0, 1), (5, 10): Fraction(0, 1), (5, 11): Fraction(0, 1), (5, 12): Fraction(0, 1), (6, 6): Fraction(6, 1), (6, 7): Fraction(0, 1), (6, 8): Fraction(0, 1), (6, 9): Fraction(0, 1), (6, 10): Fraction(0, 1), (6, 11): Fraction(0, 1), (6, 12): Fraction(0, 1), (7, 7): Fraction(7, 1), (7, 8): Fraction(0, 1), (7, 9): Fraction(0, 1), (7, 10): Fraction(0, 1), (7, 11): Fraction(0, 1), (7, 12): Fraction(0, 1), (8, 8): Fraction(47, 12), (8, 9): Fraction(15, 4), (8, 10): Fraction(0, 1), (8, 11): Fraction(1, 3), (8, 12): Fraction(0, 1), (9, 9): Fraction(1, 2), (9, 10): Fraction(17, 4), (9, 11): Fraction(0, 1), (9, 12): Fraction(1, 6), (10, 10): Fraction(1, 2), (10, 11): Fraction(19, 4), (10, 12): Fraction(0, 1), (11, 11): Fraction(3, 4), (11, 12): Fraction(5, 1), (12, 12): Fraction(41, 6)}, expected {(1, 1): Fraction(1, 1), (1, 2): Fraction(0, 1), (1, 3): Fraction(0, 1), (1, 4): Fraction(0, 1), (1, 5): Fraction(0, 1), (1, 6): Fraction(0, 1), (1, 7): Fraction(0, 1), (1, 8): Fraction(0, 1), (1, 9): Fraction(0, 1), (1, 10): Fraction(0, 1), (1, 11): Fraction(0, 1), (1, 12): Fraction(0, 1), (2, 2): Fraction(2, 1), (2, 3): Fraction(0, 1), (2, 4): Fraction(0, 1), (2, 5): Fraction(0, 1), (2, 6): Fraction(0, 1), (2, 7): Fraction(0, 1), (2, 8): Fraction(0, 1), (2, 9): Fraction(0, 1), (2, 10): Fraction(0, 1), (2, 11): Fraction(0, 1), (2, 12): Fraction(0, 1), (3, 3): Fraction(3, 1), (3, 4): Fraction(0, 1), (3, 5): Fraction(0, 1), (3, 6): Fraction(0, 1), (3, 7): Fraction(0, 1), (3, 8): Fraction(0, 1), (3, 9): Fraction(0, 1), (3, 10): Fraction(0, 1), (3, 11): Fraction(0, 1), (3, 12): Fraction(0, 1), (4, 4): Fraction(4, 1), (4, 5): Fraction(0, 1), (4, 6): Fraction(0, 1), (4, 7): Fraction(0, 1), (4, 8): Fraction(0, 1), (4, 9): Fraction(0, 1), (4, 10): Fraction(0, 1), (4, 11): Fraction(0, 1), (4, 12): Fraction(0, 1), (5, 5): Fraction(5, 1), (5, 6): Fraction(0, 1), (5, 7): Fraction(0, 1), (5, 8): Fraction(0, 1), (5, 9): Fraction(0, 1), (5, 10): Fraction(0, 1), (5, 11): Fraction(0, 1), (5, 12): Fraction(0, 1), (6, 6): Fraction(6, 1), (6, 7): Fraction(0, 1), (6, 8): Fraction(0, 1), (6, 9): Fraction(0, 1), (6, 10): Fraction(0, 1), (6, 11): Fraction(0, 1), (6, 12): Fraction(0, 1), (7, 7): Fraction(7, 1), (7, 8): Fraction(0, 1), (7, 9): Fraction(0, 1), (7, 10): Fraction(0, 1), (7, 11): Fraction(0, 1), (7, 12): Fraction(0, 1), (8, 8): Fraction(11, 3), (8, 9): Fraction(4, 1), (8, 10): Fraction(0, 1), (8, 11): Fraction(1, 3), (8, 12): Fraction(0, 1), (9, 9): Fraction(1, 4), (9, 10): Fraction(17, 4), (9, 11): Fraction(0, 1), (9, 12): Fraction(1, 6), (10, 10): Fraction(1, 2), (10, 11): Fraction(19, 4), (10, 12): Fraction(0, 1), (11, 11): Fraction(3, 4), (11, 12): Fraction(5, 1), (12, 12): Fraction(41, 6)}"
+    },
+    {
+      "mode": "normal",
+      "mutation": "triangle_coefficient_perturbation",
+      "exit_code": 1,
+      "expected_error_code": "TRIANGLE_CUT",
+      "stderr": "FAIL VerificationError: TRIANGLE_CUT: rational_four_triangles j=8: computed (Fraction(0, 1), Fraction(0, 1), Fraction(0, 1), Fraction(0, 1), Fraction(0, 1), Fraction(0, 1), Fraction(0, 1), Fraction(-1, 1), Fraction(-1, 1), Fraction(0, 1), Fraction(0, 1), Fraction(0, 1)), expected (Fraction(0, 1), Fraction(0, 1), Fraction(0, 1), Fraction(0, 1), Fraction(0, 1), Fraction(0, 1), Fraction(0, 1), Fraction(0, 1), Fraction(0, 1), Fraction(0, 1), Fraction(0, 1), Fraction(0, 1))"
+    },
+    {
+      "mode": "normal",
+      "mutation": "cut_preserving_triangle_cross_coupling",
+      "exit_code": 1,
+      "expected_error_code": "TRIANGLE_INDEPENDENCE",
+      "stderr": "FAIL VerificationError: TRIANGLE_INDEPENDENCE: rational_four_triangles j=8: computed (Fraction(0, 1), Fraction(0, 1), Fraction(0, 1), Fraction(0, 1), Fraction(0, 1), Fraction(0, 1), Fraction(0, 1), Fraction(0, 1), Fraction(1, 1), Fraction(1, 3), Fraction(0, 1), Fraction(0, 1)), expected (Fraction(0, 1), Fraction(0, 1), Fraction(0, 1), Fraction(0, 1), Fraction(0, 1), Fraction(0, 1), Fraction(0, 1), Fraction(0, 1), Fraction(1, 1), Fraction(0, 1), Fraction(0, 1), Fraction(0, 1))"
+    },
+    {
+      "mode": "normal",
+      "mutation": "missing_triangle",
+      "exit_code": 1,
+      "expected_error_code": "TRIANGLE_COVERAGE",
+      "stderr": "FAIL VerificationError: TRIANGLE_COVERAGE: rational_four_triangles: computed {8, 9, 10}, expected {8, 9, 10, 11}"
+    },
+    {
+      "mode": "normal",
+      "mutation": "altered_integer_choice",
+      "exit_code": 1,
+      "expected_error_code": "INTEGER_CHOICES",
+      "stderr": "FAIL VerificationError: INTEGER_CHOICES: rational_four_triangles j=8: computed (5, 6), expected (4, 6)"
+    },
+    {
+      "mode": "normal",
+      "mutation": "altered_choice_product",
+      "exit_code": 1,
+      "expected_error_code": "CHOICE_PRODUCT",
+      "stderr": "FAIL VerificationError: CHOICE_PRODUCT: rational_four_triangles: computed 36, expected 37"
+    },
+    {
+      "mode": "normal",
+      "mutation": "altered_margin_digest",
+      "exit_code": 1,
+      "expected_error_code": "MARGIN_DIGEST",
+      "stderr": "FAIL VerificationError: MARGIN_DIGEST: rational_four_triangles: computed '4d2d89fdb75c9e982c3ada36a13a969eeb6a684487045c9c70f20a471d9629d3', expected '0000000000000000000000000000000000000000000000000000000000000000'"
+    },
+    {
+      "mode": "normal",
+      "mutation": "unknown_expected_field",
+      "exit_code": 1,
+      "expected_error_code": "SCHEMA",
+      "stderr": "FAIL VerificationError: SCHEMA: expected document keys: computed {'fixtures', 'small_counts', 'sequence_source', 'silently_ignored', 'indexing', 'schema_version'}, expected {'small_counts', 'indexing', 'schema_version', 'fixtures', 'sequence_source'}"
+    },
+    {
+      "mode": "normal",
+      "mutation": "malformed_json",
+      "exit_code": 1,
+      "expected_error_code": "INPUT",
+      "stderr": "FAIL VerificationError: INPUT: cannot read /workspace/shared/tesler_report/checks/corruption_inputs_jwd12979/fixtures.json: Expecting property name enclosed in double quotes: line 1 column 2 (char 1)"
+    },
+    {
+      "mode": "normal",
+      "mutation": "duplicate_json_object_key",
+      "exit_code": 1,
+      "expected_error_code": "SCHEMA",
+      "stderr": "FAIL VerificationError: SCHEMA: duplicate JSON object key 'schema_version'"
+    },
+    {
+      "mode": "normal",
+      "mutation": "nonfinite_json_constant",
+      "exit_code": 1,
+      "expected_error_code": "SCHEMA",
+      "stderr": "FAIL VerificationError: SCHEMA: invalid JSON numeric constant NaN"
+    },
+    {
+      "mode": "normal",
+      "mutation": "empty_input",
+      "exit_code": 1,
+      "expected_error_code": "INPUT",
+      "stderr": "FAIL VerificationError: INPUT: cannot read /workspace/shared/tesler_report/checks/corruption_inputs_jwd12979/fixtures.json: Expecting value: line 1 column 1 (char 0)"
+    },
+    {
+      "mode": "optimized",
+      "mutation": "bad_cut_load",
+      "exit_code": 1,
+      "expected_error_code": "CUT",
+      "stderr": "FAIL VerificationError: CUT: rational_four_triangles base staircase cuts: computed (Fraction(2, 1), Fraction(2, 1), Fraction(3, 1), Fraction(4, 1), Fraction(5, 1), Fraction(6, 1), Fraction(7, 1), Fraction(8, 1), Fraction(9, 1), Fraction(10, 1), Fraction(11, 1), Fraction(12, 1)), expected (Fraction(1, 1), Fraction(2, 1), Fraction(3, 1), Fraction(4, 1), Fraction(5, 1), Fraction(6, 1), Fraction(7, 1), Fraction(8, 1), Fraction(9, 1), Fraction(10, 1), Fraction(11, 1), Fraction(12, 1))"
+    },
+    {
+      "mode": "optimized",
+      "mutation": "bad_expected_netflow",
+      "exit_code": 1,
+      "expected_error_code": "NETFLOW",
+      "stderr": "FAIL VerificationError: NETFLOW: rational_four_triangles: computed (Fraction(1, 1), Fraction(1, 1), Fraction(1, 1), Fraction(1, 1), Fraction(1, 1), Fraction(1, 1), Fraction(1, 1), Fraction(1, 1), Fraction(1, 1), Fraction(1, 1), Fraction(1, 1), Fraction(1, 1), Fraction(-12, 1)), expected (Fraction(1, 1), Fraction(2, 1), Fraction(1, 1), Fraction(1, 1), Fraction(1, 1), Fraction(1, 1), Fraction(1, 1), Fraction(1, 1), Fraction(1, 1), Fraction(1, 1), Fraction(1, 1), Fraction(1, 1), Fraction(-12, 1))"
+    },
+    {
+      "mode": "optimized",
+      "mutation": "negative_edge",
+      "exit_code": 1,
+      "expected_error_code": "NONNEGATIVE",
+      "stderr": "FAIL VerificationError: NONNEGATIVE: rational_four_triangles base has a negative edge"
+    },
+    {
+      "mode": "optimized",
+      "mutation": "row_margin_inconsistency",
+      "exit_code": 1,
+      "expected_error_code": "ROW_MARGIN",
+      "stderr": "FAIL VerificationError: ROW_MARGIN: rational_four_triangles: computed (Fraction(1, 1), Fraction(2, 1), Fraction(3, 1), Fraction(4, 1), Fraction(5, 1), Fraction(6, 1), Fraction(7, 1), Fraction(8, 1), Fraction(14, 3), Fraction(21, 4), Fraction(23, 4), Fraction(41, 6)), expected (Fraction(2, 1), Fraction(2, 1), Fraction(3, 1), Fraction(4, 1), Fraction(5, 1), Fraction(6, 1), Fraction(7, 1), Fraction(8, 1), Fraction(14, 3), Fraction(21, 4), Fraction(23, 4), Fraction(41, 6))"
+    },
+    {
+      "mode": "optimized",
+      "mutation": "column_margin_inconsistency",
+      "exit_code": 1,
+      "expected_error_code": "COLUMN_MARGIN",
+      "stderr": "FAIL VerificationError: COLUMN_MARGIN: rational_four_triangles: computed (Fraction(1, 1), Fraction(2, 1), Fraction(3, 1), Fraction(4, 1), Fraction(5, 1), Fraction(6, 1), Fraction(7, 1), Fraction(11, 3), Fraction(17, 4), Fraction(19, 4), Fraction(35, 6), Fraction(12, 1)), expected (Fraction(2, 1), Fraction(2, 1), Fraction(3, 1), Fraction(4, 1), Fraction(5, 1), Fraction(6, 1), Fraction(7, 1), Fraction(11, 3), Fraction(17, 4), Fraction(19, 4), Fraction(35, 6), Fraction(12, 1))"
+    },
+    {
+      "mode": "optimized",
+      "mutation": "missing_cell",
+      "exit_code": 1,
+      "expected_error_code": "SCHEMA",
+      "stderr": "FAIL VerificationError: SCHEMA: rational_four_triangles.completed complete support: computed {(4, 9), (3, 7), (4, 6), (5, 10), (8, 9), (2, 2), (2, 11), (1, 9), (10, 12), (2, 8), (11, 11), (6, 11), (7, 10), (6, 8), (3, 9), (5, 6), (4, 8), (3, 6), (5, 12), (8, 11), (9, 10), (8, 8), (2, 4), (1, 2), (1, 11), (2, 10), (1, 8), (7, 12), (6, 10), (3, 11), (4, 10), (3, 8), (5, 5), (9, 12), (8, 10), (1, 4), (2, 3), (2, 12), (1, 10), (6, 6), (6, 12), (3, 4), (4, 12), (3, 10), (5, 7), (8, 12), (1, 6), (9, 11), (2, 5), (1, 3), (1, 12), (7, 7), (4, 5), (3, 3), (3, 12), (5, 9), (4, 11), (10, 11), (2, 7), (1, 5), (7, 9), (6, 7), (4, 7), (3, 5), (4, 4), (5, 11), (5, 8), (9, 9), (1, 1), (11, 12), (2, 9), (1, 7), (10, 10), (2, 6), (7, 11), (6, 9), (7, 8)}, expected {(4, 9), (5, 10), (8, 9), (2, 2), (2, 11), (6, 11), (7, 10), (3, 6), (5, 12), (8, 11), (9, 10), (2, 4), (1, 8), (7, 12), (3, 8), (5, 5), (9, 12), (1, 10), (6, 6), (3, 10), (5, 7), (1, 3), (1, 12), (7, 7), (3, 3), (3, 12), (5, 9), (4, 11), (1, 5), (7, 9), (3, 5), (4, 4), (5, 11), (9, 9), (10, 10), (1, 7), (2, 6), (7, 11), (3, 7), (4, 6), (10, 12), (1, 9), (11, 11), (2, 8), (6, 8), (12, 12), (3, 9), (5, 6), (4, 8), (8, 8), (1, 2), (1, 11), (2, 10), (6, 10), (3, 11), (4, 10), (8, 10), (1, 4), (2, 3), (2, 12), (6, 12), (3, 4), (4, 12), (8, 12), (1, 6), (9, 11), (2, 5), (4, 5), (10, 11), (2, 7), (6, 7), (4, 7), (5, 8), (1, 1), (11, 12), (2, 9), (6, 9), (7, 8)}"
+    },
+    {
+      "mode": "optimized",
+      "mutation": "duplicate_cell",
+      "exit_code": 1,
+      "expected_error_code": "SCHEMA",
+      "stderr": "FAIL VerificationError: SCHEMA: duplicate cell (1, 1) in rational_four_triangles.completed"
+    },
+    {
+      "mode": "optimized",
+      "mutation": "invalid_fraction_denominator",
+      "exit_code": 1,
+      "expected_error_code": "RATIONAL",
+      "stderr": "FAIL VerificationError: RATIONAL: rational_four_triangles.q[1,1] must be a canonical rational string"
+    },
+    {
+      "mode": "optimized",
+      "mutation": "noncanonical_fraction",
+      "exit_code": 1,
+      "expected_error_code": "RATIONAL",
+      "stderr": "FAIL VerificationError: RATIONAL: rational_four_triangles.q[1,1] canonical representation: computed '1/2', expected '2/4'"
+    },
+    {
+      "mode": "optimized",
+      "mutation": "floating_point_rational",
+      "exit_code": 1,
+      "expected_error_code": "RATIONAL",
+      "stderr": "FAIL VerificationError: RATIONAL: rational_four_triangles.q[1,1] must be a canonical rational string"
+    },
+    {
+      "mode": "optimized",
+      "mutation": "boolean_dimension",
+      "exit_code": 1,
+      "expected_error_code": "SCHEMA",
+      "stderr": "FAIL VerificationError: SCHEMA: rational_four_triangles.n must be a JSON integer, not boolean or float"
+    },
+    {
+      "mode": "optimized",
+      "mutation": "unknown_fixture_field",
+      "exit_code": 1,
+      "expected_error_code": "SCHEMA",
+      "stderr": "FAIL VerificationError: SCHEMA: fixture keys: computed {'n', 'triangles', 'q', 'completed', 'name', 'silently_ignored', 'cutoff_M'}, expected {'n', 'triangles', 'q', 'completed', 'name', 'cutoff_M'}"
+    },
+    {
+      "mode": "optimized",
+      "mutation": "invalid_support",
+      "exit_code": 1,
+      "expected_error_code": "SCHEMA",
+      "stderr": "FAIL VerificationError: SCHEMA: rational_four_triangles.completed.b below minimum"
+    },
+    {
+      "mode": "optimized",
+      "mutation": "altered_expected_count",
+      "exit_code": 1,
+      "expected_error_code": "EXPECTED_COUNT",
+      "stderr": "FAIL VerificationError: EXPECTED_COUNT: n=3: computed 7, expected 8"
+    },
+    {
+      "mode": "optimized",
+      "mutation": "missing_expected_count",
+      "exit_code": 1,
+      "expected_error_code": "SCHEMA",
+      "stderr": "FAIL VerificationError: SCHEMA: small_counts keys: computed {'6', '0', '2', '3', '5', '4', '1'}, expected {'6', '0', '2', '5', '7', '1', '3', '4'}"
+    },
+    {
+      "mode": "optimized",
+      "mutation": "missing_fixture",
+      "exit_code": 1,
+      "expected_error_code": "FIXTURE_COVERAGE",
+      "stderr": "FAIL VerificationError: FIXTURE_COVERAGE: all fixtures in canonical order: computed ['rational_four_triangles', 'rational_endpoint', 'saturated_edges'], expected ['rational_four_triangles', 'rational_endpoint', 'saturated_edges', 'no_triangle_boundary']"
+    },
+    {
+      "mode": "optimized",
+      "mutation": "cutoff_violation",
+      "exit_code": 1,
+      "expected_error_code": "CUTOFF",
+      "stderr": "FAIL VerificationError: CUTOFF: rational_four_triangles q begins before cutoff"
+    },
+    {
+      "mode": "optimized",
+      "mutation": "bad_expected_q_load",
+      "exit_code": 1,
+      "expected_error_code": "Q_CUT",
+      "stderr": "FAIL VerificationError: Q_CUT: rational_four_triangles: computed (Fraction(0, 1), Fraction(0, 1), Fraction(0, 1), Fraction(0, 1), Fraction(0, 1), Fraction(0, 1), Fraction(0, 1), Fraction(40, 9), Fraction(177, 20), Fraction(211, 22), Fraction(31, 3), Fraction(409, 78)), expected (Fraction(1, 1), Fraction(0, 1), Fraction(0, 1), Fraction(0, 1), Fraction(0, 1), Fraction(0, 1), Fraction(0, 1), Fraction(40, 9), Fraction(177, 20), Fraction(211, 22), Fraction(31, 3), Fraction(409, 78))"
+    },
+    {
+      "mode": "optimized",
+      "mutation": "q_exceeds_cut_capacity",
+      "exit_code": 1,
+      "expected_error_code": "Q_FEASIBILITY",
+      "stderr": "FAIL VerificationError: Q_FEASIBILITY: rational_four_triangles"
+    },
+    {
+      "mode": "optimized",
+      "mutation": "wrong_but_feasible_completion",
+      "exit_code": 1,
+      "expected_error_code": "COMPLETION",
+      "stderr": "FAIL VerificationError: COMPLETION: rational_four_triangles singleton completion: computed {(1, 1): Fraction(1, 1), (1, 2): Fraction(0, 1), (1, 3): Fraction(0, 1), (1, 4): Fraction(0, 1), (1, 5): Fraction(0, 1), (1, 6): Fraction(0, 1), (1, 7): Fraction(0, 1), (1, 8): Fraction(0, 1), (1, 9): Fraction(0, 1), (1, 10): Fraction(0, 1), (1, 11): Fraction(0, 1), (1, 12): Fraction(0, 1), (2, 2): Fraction(2, 1), (2, 3): Fraction(0, 1), (2, 4): Fraction(0, 1), (2, 5): Fraction(0, 1), (2, 6): Fraction(0, 1), (2, 7): Fraction(0, 1), (2, 8): Fraction(0, 1), (2, 9): Fraction(0, 1), (2, 10): Fraction(0, 1), (2, 11): Fraction(0, 1), (2, 12): Fraction(0, 1), (3, 3): Fraction(3, 1), (3, 4): Fraction(0, 1), (3, 5): Fraction(0, 1), (3, 6): Fraction(0, 1), (3, 7): Fraction(0, 1), (3, 8): Fraction(0, 1), (3, 9): Fraction(0, 1), (3, 10): Fraction(0, 1), (3, 11): Fraction(0, 1), (3, 12): Fraction(0, 1), (4, 4): Fraction(4, 1), (4, 5): Fraction(0, 1), (4, 6): Fraction(0, 1), (4, 7): Fraction(0, 1), (4, 8): Fraction(0, 1), (4, 9): Fraction(0, 1), (4, 10): Fraction(0, 1), (4, 11): Fraction(0, 1), (4, 12): Fraction(0, 1), (5, 5): Fraction(5, 1), (5, 6): Fraction(0, 1), (5, 7): Fraction(0, 1), (5, 8): Fraction(0, 1), (5, 9): Fraction(0, 1), (5, 10): Fraction(0, 1), (5, 11): Fraction(0, 1), (5, 12): Fraction(0, 1), (6, 6): Fraction(6, 1), (6, 7): Fraction(0, 1), (6, 8): Fraction(0, 1), (6, 9): Fraction(0, 1), (6, 10): Fraction(0, 1), (6, 11): Fraction(0, 1), (6, 12): Fraction(0, 1), (7, 7): Fraction(7, 1), (7, 8): Fraction(0, 1), (7, 9): Fraction(0, 1), (7, 10): Fraction(0, 1), (7, 11): Fraction(0, 1), (7, 12): Fraction(0, 1), (8, 8): Fraction(47, 12), (8, 9): Fraction(15, 4), (8, 10): Fraction(0, 1), (8, 11): Fraction(1, 3), (8, 12): Fraction(0, 1), (9, 9): Fraction(1, 2), (9, 10): Fraction(17, 4), (9, 11): Fraction(0, 1), (9, 12): Fraction(1, 6), (10, 10): Fraction(1, 2), (10, 11): Fraction(19, 4), (10, 12): Fraction(0, 1), (11, 11): Fraction(3, 4), (11, 12): Fraction(5, 1), (12, 12): Fraction(41, 6)}, expected {(1, 1): Fraction(1, 1), (1, 2): Fraction(0, 1), (1, 3): Fraction(0, 1), (1, 4): Fraction(0, 1), (1, 5): Fraction(0, 1), (1, 6): Fraction(0, 1), (1, 7): Fraction(0, 1), (1, 8): Fraction(0, 1), (1, 9): Fraction(0, 1), (1, 10): Fraction(0, 1), (1, 11): Fraction(0, 1), (1, 12): Fraction(0, 1), (2, 2): Fraction(2, 1), (2, 3): Fraction(0, 1), (2, 4): Fraction(0, 1), (2, 5): Fraction(0, 1), (2, 6): Fraction(0, 1), (2, 7): Fraction(0, 1), (2, 8): Fraction(0, 1), (2, 9): Fraction(0, 1), (2, 10): Fraction(0, 1), (2, 11): Fraction(0, 1), (2, 12): Fraction(0, 1), (3, 3): Fraction(3, 1), (3, 4): Fraction(0, 1), (3, 5): Fraction(0, 1), (3, 6): Fraction(0, 1), (3, 7): Fraction(0, 1), (3, 8): Fraction(0, 1), (3, 9): Fraction(0, 1), (3, 10): Fraction(0, 1), (3, 11): Fraction(0, 1), (3, 12): Fraction(0, 1), (4, 4): Fraction(4, 1), (4, 5): Fraction(0, 1), (4, 6): Fraction(0, 1), (4, 7): Fraction(0, 1), (4, 8): Fraction(0, 1), (4, 9): Fraction(0, 1), (4, 10): Fraction(0, 1), (4, 11): Fraction(0, 1), (4, 12): Fraction(0, 1), (5, 5): Fraction(5, 1), (5, 6): Fraction(0, 1), (5, 7): Fraction(0, 1), (5, 8): Fraction(0, 1), (5, 9): Fraction(0, 1), (5, 10): Fraction(0, 1), (5, 11): Fraction(0, 1), (5, 12): Fraction(0, 1), (6, 6): Fraction(6, 1), (6, 7): Fraction(0, 1), (6, 8): Fraction(0, 1), (6, 9): Fraction(0, 1), (6, 10): Fraction(0, 1), (6, 11): Fraction(0, 1), (6, 12): Fraction(0, 1), (7, 7): Fraction(7, 1), (7, 8): Fraction(0, 1), (7, 9): Fraction(0, 1), (7, 10): Fraction(0, 1), (7, 11): Fraction(0, 1), (7, 12): Fraction(0, 1), (8, 8): Fraction(11, 3), (8, 9): Fraction(4, 1), (8, 10): Fraction(0, 1), (8, 11): Fraction(1, 3), (8, 12): Fraction(0, 1), (9, 9): Fraction(1, 4), (9, 10): Fraction(17, 4), (9, 11): Fraction(0, 1), (9, 12): Fraction(1, 6), (10, 10): Fraction(1, 2), (10, 11): Fraction(19, 4), (10, 12): Fraction(0, 1), (11, 11): Fraction(3, 4), (11, 12): Fraction(5, 1), (12, 12): Fraction(41, 6)}"
+    },
+    {
+      "mode": "optimized",
+      "mutation": "triangle_coefficient_perturbation",
+      "exit_code": 1,
+      "expected_error_code": "TRIANGLE_CUT",
+      "stderr": "FAIL VerificationError: TRIANGLE_CUT: rational_four_triangles j=8: computed (Fraction(0, 1), Fraction(0, 1), Fraction(0, 1), Fraction(0, 1), Fraction(0, 1), Fraction(0, 1), Fraction(0, 1), Fraction(-1, 1), Fraction(-1, 1), Fraction(0, 1), Fraction(0, 1), Fraction(0, 1)), expected (Fraction(0, 1), Fraction(0, 1), Fraction(0, 1), Fraction(0, 1), Fraction(0, 1), Fraction(0, 1), Fraction(0, 1), Fraction(0, 1), Fraction(0, 1), Fraction(0, 1), Fraction(0, 1), Fraction(0, 1))"
+    },
+    {
+      "mode": "optimized",
+      "mutation": "cut_preserving_triangle_cross_coupling",
+      "exit_code": 1,
+      "expected_error_code": "TRIANGLE_INDEPENDENCE",
+      "stderr": "FAIL VerificationError: TRIANGLE_INDEPENDENCE: rational_four_triangles j=8: computed (Fraction(0, 1), Fraction(0, 1), Fraction(0, 1), Fraction(0, 1), Fraction(0, 1), Fraction(0, 1), Fraction(0, 1), Fraction(0, 1), Fraction(1, 1), Fraction(1, 3), Fraction(0, 1), Fraction(0, 1)), expected (Fraction(0, 1), Fraction(0, 1), Fraction(0, 1), Fraction(0, 1), Fraction(0, 1), Fraction(0, 1), Fraction(0, 1), Fraction(0, 1), Fraction(1, 1), Fraction(0, 1), Fraction(0, 1), Fraction(0, 1))"
+    },
+    {
+      "mode": "optimized",
+      "mutation": "missing_triangle",
+      "exit_code": 1,
+      "expected_error_code": "TRIANGLE_COVERAGE",
+      "stderr": "FAIL VerificationError: TRIANGLE_COVERAGE: rational_four_triangles: computed {8, 9, 10}, expected {8, 9, 10, 11}"
+    },
+    {
+      "mode": "optimized",
+      "mutation": "altered_integer_choice",
+      "exit_code": 1,
+      "expected_error_code": "INTEGER_CHOICES",
+      "stderr": "FAIL VerificationError: INTEGER_CHOICES: rational_four_triangles j=8: computed (5, 6), expected (4, 6)"
+    },
+    {
+      "mode": "optimized",
+      "mutation": "altered_choice_product",
+      "exit_code": 1,
+      "expected_error_code": "CHOICE_PRODUCT",
+      "stderr": "FAIL VerificationError: CHOICE_PRODUCT: rational_four_triangles: computed 36, expected 37"
+    },
+    {
+      "mode": "optimized",
+      "mutation": "altered_margin_digest",
+      "exit_code": 1,
+      "expected_error_code": "MARGIN_DIGEST",
+      "stderr": "FAIL VerificationError: MARGIN_DIGEST: rational_four_triangles: computed '4d2d89fdb75c9e982c3ada36a13a969eeb6a684487045c9c70f20a471d9629d3', expected '0000000000000000000000000000000000000000000000000000000000000000'"
+    },
+    {
+      "mode": "optimized",
+      "mutation": "unknown_expected_field",
+      "exit_code": 1,
+      "expected_error_code": "SCHEMA",
+      "stderr": "FAIL VerificationError: SCHEMA: expected document keys: computed {'indexing', 'fixtures', 'schema_version', 'silently_ignored', 'sequence_source', 'small_counts'}, expected {'indexing', 'fixtures', 'sequence_source', 'schema_version', 'small_counts'}"
+    },
+    {
+      "mode": "optimized",
+      "mutation": "malformed_json",
+      "exit_code": 1,
+      "expected_error_code": "INPUT",
+      "stderr": "FAIL VerificationError: INPUT: cannot read /workspace/shared/tesler_report/checks/corruption_inputs_mz9gxfdq/fixtures.json: Expecting property name enclosed in double quotes: line 1 column 2 (char 1)"
+    },
+    {
+      "mode": "optimized",
+      "mutation": "duplicate_json_object_key",
+      "exit_code": 1,
+      "expected_error_code": "SCHEMA",
+      "stderr": "FAIL VerificationError: SCHEMA: duplicate JSON object key 'schema_version'"
+    },
+    {
+      "mode": "optimized",
+      "mutation": "nonfinite_json_constant",
+      "exit_code": 1,
+      "expected_error_code": "SCHEMA",
+      "stderr": "FAIL VerificationError: SCHEMA: invalid JSON numeric constant NaN"
+    },
+    {
+      "mode": "optimized",
+      "mutation": "empty_input",
+      "exit_code": 1,
+      "expected_error_code": "INPUT",
+      "stderr": "FAIL VerificationError: INPUT: cannot read /workspace/shared/tesler_report/checks/corruption_inputs_mz9gxfdq/fixtures.json: Expecting value: line 1 column 1 (char 0)"
+    }
+  ]
+}
