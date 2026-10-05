@@ -14,7 +14,11 @@ Lie algebra on `X`, `Y`.
 
 The Lean library is part of the ProveIt root workspace (`lake build BCH`,
 built one target at a time; see [`Lean/README.md`](Lean/README.md)). It is not
-imported by `ProveIt.lean`.
+imported by `ProveIt.lean`. On 4 October 2026 it was built there from the
+Mathlib cache (Lean 4.32.0, Mathlib `81a5d257`): all 30 modules, with no
+errors, warnings or `sorry`, and `#print axioms` reports only `propext`,
+`Classical.choice` and `Quot.sound` for both `BCH.bch_formula` and
+`BCH.bch_formula_formal`.
 
 ## Provenance
 
