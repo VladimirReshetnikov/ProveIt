@@ -180,6 +180,19 @@ or46 witnesses/SOS224/degree52. Native AND remains in the loader, so a
 cheaper loading/accepting-history compiler is still needed for a universal
 improvement. The universal84/187 and85/155 points remain unchanged.
 
+The [affine norm-pair rigidity theorem](Papers/research-wip/native-stream-queue/complete84_affine_norm_pair_rigidity.md)
+and [root proof challenge](Papers/research-wip/native-stream-queue/review_complete84_affine_norm_pair_rigidity.md)
+classify every invertible affine change preserving the product of the main
+and input Pell norms over the actual generic source field. Only separate
+reciprocal norm similitudes, with a possible pair swap, survive; fixing both
+ordinates leaves independent center signs. A fifteen-parameter exterior
+field and an explicit rational inverse bind the theorem to the84 source.
+On canonical positive zeros, the positive half-difference pair has norm at
+most1−(a+2)², so dividing the ordinary difference by2 does not restore a unit.
+This is a field/identity obstruction, not an arithmetic gate lower bound:
+cheaper evaluation of unchanged roots, nonlinear composition and more general
+positive-zero charts remain open. No source or universal bound changes.
+
 The [cross-block multiplication bound](Papers/research-wip/native-stream-queue/complete84_cross_block_next.md)
 and [independent review](Papers/research-wip/native-stream-queue/review_complete84_cross_block_next.md) show that
 six retained scale/first-norm/index monomials require at least eight

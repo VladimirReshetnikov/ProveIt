@@ -158,6 +158,19 @@ or46 witnesses/SOS224/degree52. Native AND remains in the loader, so a
 cheaper loading/accepting-history compiler is still needed for a universal
 improvement. The universal84/187 and85/155 points remain unchanged.
 
+The [affine norm-pair rigidity theorem](complete84_affine_norm_pair_rigidity.md)
+and [root proof challenge](review_complete84_affine_norm_pair_rigidity.md)
+classify every invertible affine change preserving the product of the main
+and input Pell norms over the actual generic source field. Only separate
+reciprocal norm similitudes, with a possible pair swap, survive; fixing both
+ordinates leaves independent center signs. A fifteen-parameter exterior
+field and an explicit rational inverse bind the theorem to the84 source.
+On canonical positive zeros, the positive half-difference pair has norm at
+most1−(a+2)², so dividing the ordinary difference by2 does not restore a unit.
+This is a field/identity obstruction, not an arithmetic gate lower bound:
+cheaper evaluation of unchanged roots, nonlinear composition and more general
+positive-zero charts remain open. No source or universal bound changes.
+
 The [cross-block multiplication bound](complete84_cross_block_next.md)
 and [independent review](review_complete84_cross_block_next.md) show that
 six retained scale/first-norm/index monomials require at least eight
@@ -5738,6 +5751,7 @@ New research and the completed75-operation construction:
 
 | Artifact | Established result | Remaining boundary |
 |---|---|---|
+| [Affine norm-pair rigidity](complete84_affine_norm_pair_rigidity.md), [review](review_complete84_affine_norm_pair_rigidity.md) | Exact affine product symmetries separate the two norm pairs; positive half-difference also fails the unit condition | Generic-field identity class only, not a gate lower bound or exclusion of nonlinear/positive-zero charts |
 | [Cross-block monomial bound and mask tie](complete84_cross_block_next.md), [review](review_complete84_cross_block_next.md) | Six targets need8M in the stated multiplication-only model; full outer refactor remains84=47M+37A with identical polynomial | No additions/cancellation/outside donors or changed charts; no unrestricted circuit optimum or saving |
 | [Atom-action Part III publication](review_atom_write_03683e579.md) | Selected kernel/effectivity/Replacement/forcing challenge;96 source-label routes; provenance claim corrected at6d06f8952 | Not a full merged-body/PDF audit; pure parameters and finite presentation effectivity do not lower universal arithmetic cost |
 | [Hat Part V write and corrections](review_hat_write_a21208b3f.md) | Seed repairs and source preservation checked; finite-public gap and label-collision errors corrected with Remark75.9; edited175-page PDF rebuilt | Selected proof scope only; no supplied verifier replay or arithmetic compiler bound |
