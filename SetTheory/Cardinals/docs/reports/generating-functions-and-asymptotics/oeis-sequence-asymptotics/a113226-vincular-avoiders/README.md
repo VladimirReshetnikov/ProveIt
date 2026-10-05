@@ -108,8 +108,10 @@ The write adds three results of its own, each marked [write]:
   index k is not Part II's block-pair grading;
 - Remark 20.1 proves the "farther chord parts" estimate, with a loss that
   is exponential in n;
-- Proposition 23.2 proves the displayed two-term reversion and the decay
-  of every reversion term.
+- Proposition 23.2 proves the displayed two-term reversion and a bound
+  O(X^{1−2k/3}(log X)^{−k}) for the k-th reversion term. The bounds decay
+  by X^{−2/3}/log X from term to term, the terms themselves need not (see
+  the independent check below).
 
 **Part IV (Report 94).** Everything in it is new except the k = 0 sector,
 whose expansion re-proves Part I's theorem (C_0 = D, c_{0,j} = a_j). It
@@ -134,6 +136,54 @@ The write adds Remark 27.3 [write]: B(x) < 2e^{−x}. The delivered numerics
 use this bound for their tail estimates but do not prove it. At intake,
 Theorem 28.1 was also checked numerically, independently of the delivered
 code, by contour quadrature for n = 6, 15 and 30.
+
+*[Independent check, 5 October 2026.]* After the write (`07fd071f8`), the
+intake made an independent adversarial check of the four write results
+(Remarks 19.1, 20.1, 27.3 and Proposition 23.2) and spot-checked Part IV's
+text, constants and table against the delivered manuscript.
+- **Verdicts.** The three remarks and Part IV are valid. Proposition 23.2
+  is valid except for one false sentence in (iii): "so successive terms
+  decrease by factors O(X^{−2/3}/log X), and the third term is of the
+  order of the remainder in (i)". That holds for the term *bounds* only.
+  The leading part of the k-th term,
+  (−1)^k/k! (3κ)^k (k/3)(k/3 − 1)⋯(k/3 − k + 2) X^{1−2k/3} Ψ^{−k},
+  vanishes when 3 | k. So the third term is 9κ³X^{−1}Ψ^{−4}(1 + O(1/log X))
+  and the fourth is −κ⁴X^{−5/3}Ψ^{−4}(1 + o(1)), and their ratio is of
+  order X^{−2/3}, with no log gain.
+- **What changed.** The sentence is replaced where it stands, and the proof
+  now derives the leading part and the third and fourth terms. A dated
+  note after the proof keeps the first wording and gives this
+  counterexample. Question 4 of Section 24.1 now says "the decrease of all
+  term bounds". Numerically the remainder of (i) equals the third term to
+  a relative 2.7·10⁻⁸ at X = 10¹⁰, so it is of order X^{−1}(log X)^{−4}.
+  The proved bound O(X^{−1}(log X)^{−3}) is therefore correct but one log
+  weaker than the truth; proving the sharper order is part of Question 4.
+- **Refinements adopted.** Remark 19.1(b) now gives the shifted grading
+  that does reproduce Part II, log H(z,u) = b_0 + Σ_{k≥1} u^k (b_k + c_{k−1}).
+  Remark 27.3 notes that its first bound is asymptotically sharp: both
+  sides are ~ e^{−x}/4.
+- **How it was checked.**
+  - Exact rational series: the I_{m,n} identity through z¹³, the block
+    sum through z¹⁵, and the shifted grading against Part II's L_n(u)
+    through z¹⁵.
+  - Proposition 23.2 at 60 digits, X = 10³…10¹⁰: the error ratios of (i)
+    and of the displayed formula. The k = 1, 2 Lagrange terms match the
+    printed groups to 10⁻³⁰. The third and fourth terms were evaluated
+    for X up to 10²⁰.
+  - Remark 27.3 on a logarithmic grid.
+  - Part IV:
+    - a word-level diff against the delivered manuscript, which showed only
+      the declared editorial changes;
+    - an independent evaluation of A(z) from the global branch, giving the
+      banks, the local branch, the period 4πi and the decomposition at
+      n = 6, 15 and 30;
+    - every printed constant, to every digit;
+    - a SymPy rebuild of S(h, y), giving c_{k,1} and c_{k,2} exactly;
+    - all six Q_k(n) entries of the table, to the 12 printed digits.
+- **The record.** The full record is a dated paragraph at the end of
+  Section 34, with a pointer in "About this report". This was a careful
+  reading with numerical tests, not a formal verification or an external
+  review.
 
 **Not claimed** (every source disclaimer is kept in the article):
 - convergence of any correction series;
@@ -173,10 +223,10 @@ Status of Part I's research questions (dated notes in Section 9):
 
 ```
 article.tex                                     the merged report, standalone LaTeX, internal bibliography
-article.pdf                                     the compiled report, 54 pages (title and contents pages 1–3,
+article.pdf                                     the compiled report, 56 pages (title and contents pages 1–3,
                                                 "About this report" pages 4–7, Part I pages 7–18,
-                                                Part II pages 18–26, Part III pages 27–40, Part IV pages 40–52,
-                                                Appendices A–B pages 53–54, references page 54)
+                                                Part II pages 18–26, Part III pages 27–41, Part IV pages 41–54,
+                                                Appendices A–B pages 55–56, references page 56)
 README.md                                       this guide
 04-asymptotics-proof.md                         source 04's proof revision (SHA-256 5398b71c…, pinned by its review), as delivered
 04-asymptotics-root-mathematical-review.md      source 04's proof review and independent a_1, a_2 check, as delivered
@@ -495,7 +545,9 @@ That made 92 labels. The batch-101 write added 101, for **193** in all
 
 No existing label is renamed, renumbered or removed. The `.aux` file of
 the new build was compared with a build of the committed text: all 92
-existing labels keep their numbers.
+existing labels keep their numbers. The independent check of 5 October
+2026 added no label, and its `.aux` comparison with the batch-101 build
+shows all 193 labels with unchanged numbers; only page numbers moved.
 
 **Part I keeps its delivered numbering exactly.** Its Sections 1–9,
 equations (1)–(36), Theorem 1.1 and Appendix A are unchanged. The front
@@ -609,13 +661,22 @@ changed. Nothing cites them.
   - **5 October 2026, batch 101**, in Parts III–IV: notes at their heads
     (provenance, numbering, reading conventions) and after the results they
     comment on.
+  - **5 October 2026, after the independent check:** the record paragraph
+    at the end of Section 34 and its pointer in item (xii); the dated note
+    after the proof of Proposition 23.2; and the added sentences in
+    Remarks 19.1(b) and 27.3.
 
   No statement of any source is changed.
 
 ## Standing rule: unproved and wrong claims
 
-No claim of Reports 87 and 94 was found wrong. Their unproved items are
-collected in the further-questions sections. Section 24.1 holds Report
+No claim of Reports 87 and 94 was found wrong. One sentence of the
+write's own Proposition 23.2(iii) was found wrong by the independent check.
+It said that the reversion terms themselves decrease by factors
+X^{−2/3}/log X, but this holds only for their bounds. It is corrected with
+a dated note that keeps the first wording and gives the explicit third and
+fourth terms as the counterexample. The unproved items of the two reports
+are collected in the further-questions sections. Section 24.1 holds Report
 87's; Section 34, with a dated note, holds Report 94's and the open parts
 of Part I's Questions 3 and 4. The items:
 - **Report 87:**
@@ -626,7 +687,7 @@ of Part I's Questions 3 and 4. The items:
     marks block pairs and isolated elements, not cycles);
   - that every finite truncation of the reversion (90) is justified. This
     is open in general; Proposition 23.2 [write] proves the displayed
-    truncation and the decay of every term;
+    truncation and a decaying bound for every term;
   - the "farther chord parts" estimate. This is proved by Remark 20.1
     [write], so it is not open.
 - **Report 94** (its own five questions):
@@ -755,7 +816,10 @@ latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
 The build uses pdfLaTeX (MiKTeX here) and needs the `lmodern`, `microtype`,
-`float`, `array` and `booktabs` packages. It gives 54 pages with 0 errors,
+`float`, `array` and `booktabs` packages. It gives 56 pages with 0 errors,
 0 warnings (no undefined references or citations, no multiply defined
 labels, no duplicate destinations) and no overfull or underfull boxes.
-Build in a scratch directory and keep only `article.pdf`.
+Build in a scratch directory and keep only `article.pdf`. The committed PDF
+was rebuilt on 5 October 2026 after the independent check, with four
+pdfLaTeX passes in a scratch copy. The batch-101 write had built to 54
+pages.

@@ -190,6 +190,9 @@ bibliographies are merged as for Part~II; new entries are \cite{clark},
 \ref{vav:hk:rem:bankbound} and Proposition~\ref{vav:dg:prop:reversion});
 unproved items of the two manuscripts are collected in
 Sections~\ref{vav:dg:sec:questions} and~\ref{vav:hk:sec:questions}.
+An independent check of the write, made afterwards, is recorded at the end
+of Section~\ref{vav:hk:sec:questions}; it corrected one sentence of
+Proposition~\ref{vav:dg:prop:reversion} (dated note after its proof).
 No statement of either manuscript is changed.
 \end{writenoteb}
 
@@ -1801,6 +1804,17 @@ $\sum_ku^k(b_k+c_k)=e^z-1+O(z^3)$ has $z^2$-coefficient $1/2$, whereas
 $\log H(z,u)=z+L_2(u)z^2/2+O(z^3)$ with $L_2(u)=u$ by
 \eqref{vav:rf:eq:cumulants}. (At intake the two were also compared
 numerically at $u=0.7$; they differ there, and agree at $u=1$.)
+In fact the grading of Part~II is a shifted one: substituting $s=zx$ in
+\eqref{vav:rf:eq:exact} and using $e^z-e^s=(1+a)b$ (with $a=e^s-1$,
+$b=e^{z-s}-1$) gives, for small $|z|$,
+$\log H(z,u)=z+\sum_{k\ge0}u^{k+1}(I_{k,k+1}+I_{k+1,k+1})$, and
+$I_{k,k+1}=I_{k+1,k}$ by $s\leftrightarrow z-s$; hence
+\[
+ \log H(z,u)=b_0+\sum_{k\ge1}u^k(b_k+c_{k-1}):
+\]
+$u$ marks $b_k$ with weight $k$ but $c_k$ with weight $k+1$. (This
+paragraph was added after the independent check recorded at the end of
+Section~\ref{vav:hk:sec:questions}.)
 \end{remark}
 \begin{writenoteb}
 Part~I identifies $T'$ (its $L'$) with the EGF of A136127 by Testart's
@@ -2107,9 +2121,17 @@ $k=2$ terms of \eqref{vav:dg:eq:invformal} with $q=q_K$;
 with its remainder $O(X^{-2/3}/\log X)$;
 \item[(iii)] for every $k\ge1$ the $k$-th term of
 \eqref{vav:dg:eq:invformal}, with $q=q_K$, is
-$O\bigl(X^{1-2k/3}(\log X)^{-k}\bigr)$; so successive terms decrease by
-factors $O(X^{-2/3}/\log X)$, and the third term is of the order of the
-remainder in (i).
+$O\bigl(X^{1-2k/3}(\log X)^{-k}\bigr)$; so the bounds for successive terms
+decrease by factors $X^{-2/3}/\log X$, and the bound for the third term is
+the remainder bound in (i). (The terms themselves need not decrease by this
+factor: the leading part of the $k$-th term is
+\[
+ \frac{(-1)^k}{k!}(3\kappa)^k\,\frac k3\Bigl(\frac k3-1\Bigr)\cdots
+ \Bigl(\frac k3-k+2\Bigr)X^{1-2k/3}\Psi^{-k}
+\]
+with the $k-1$ factors $\frac k3-i$, $0\le i\le k-2$; it vanishes when
+$3\mid k$, and thus the third term is $9\kappa^3X^{-1}\Psi^{-4}(1+O(1/\log X))$, while the
+fourth is $-\kappa^4X^{-5/3}\Psi^{-4}(1+o(1))$.)
 \end{enumerate}
 \end{proposition}
 \begin{proof}
@@ -2162,7 +2184,52 @@ $q_K^k/\Psi\in\mathcal S(X^{k/3}/\log X)$, and $g\mapsto\Psi^{-1}g'$ maps
 $\mathcal S(\mu)$ into $\mathcal S(\mu/(X\log X))$. The $k$-th term is
 therefore in $\mathcal S(X^{k/3}(X\log X)^{-(k-1)}(\log X)^{-1})
 =\mathcal S(X^{1-2k/3}(\log X)^{-k})$.
+
+For the leading part, write $q_K=3\kappa X^{1/3}+r$ with
+$r\in\mathcal S(\log X)$. Then
+$q_K^k-(3\kappa)^kX^{k/3}\in\mathcal S(X^{(k-1)/3}\log X)$, and by the same
+calculus replacing $q_K^k$ by $(3\kappa)^kX^{k/3}$ changes the $k$-th term
+by $\mathcal S(X^{2/3-2k/3}(\log X)^{1-k})$, a relative
+$O(X^{-1/3}\log X)$. In $(\Psi^{-1}\frac d{dX})^{k-1}(X^{k/3}/\Psi)$, expanded
+by Leibniz's rule, the summand in which every derivative falls on the power
+of $X$ is $\Psi^{-k}(X^{k/3})^{(k-1)}$; every other summand contains a
+derivative of order $m\ge1$ of some $\Psi^{-j}$, which lies in
+$\mathcal S(X^{-m}(\log X)^{-j-1})$, so it is in
+$\mathcal S(X^{1-2k/3}(\log X)^{-k-1})$. This gives the leading part stated
+in (iii), with relative error $O(1/\log X)$. For $k=4$ the coefficient of
+$\kappa^4X^{-5/3}\Psi^{-4}$ in it is
+$\frac1{24}\cdot81\cdot\frac43\cdot\frac13\cdot(-\frac23)=-1$. For $k=3$ it
+vanishes, and the first step gives the third term as
+$-\frac92\kappa^3\Psi^{-1}\bigl(\Psi^{-1}(X/\Psi)'\bigr)'
++O(X^{-4/3}(\log X)^{-2})$. Since $X\Psi'=1+O(1/X)$ and
+$X^2\Psi''=-1+O(1/X)$, direct differentiation gives
+$\Psi^{-1}\bigl(\Psi^{-1}(X/\Psi)'\bigr)'
+=X^{-1}(-2\Psi^{-4}+3\Psi^{-5})+O(X^{-2}(\log X)^{-3})$, so the third term
+is $9\kappa^3X^{-1}\Psi^{-4}-\frac{27}2\kappa^3X^{-1}\Psi^{-5}
++O(X^{-4/3}(\log X)^{-2})$.
 \end{proof}
+\noindent(Dated note, 5~October 2026: item~(iii) first ended ``so successive
+terms decrease by factors $O(X^{-2/3}/\log X)$, and the third term is of the
+order of the remainder in (i)'', and Question~4 of
+Section~\ref{vav:dg:sec:questions} spoke of ``the decrease of all terms''.
+Both statements are true of the term \emph{bounds} and false of the terms
+themselves. By the last paragraph of the proof, the third term $t_3$ is
+$9\kappa^3X^{-1}\Psi^{-4}(1+O(1/\log X))$, smaller than its bound by a
+factor of order $1/\log X$, and the fourth is
+$t_4=-\kappa^4X^{-5/3}\Psi^{-4}(1+o(1))$; so $t_4/t_3$ is of order
+$X^{-2/3}$, with no logarithmic gain. The independent check recorded at the
+end of Section~\ref{vav:hk:sec:questions} confirmed this numerically for
+$X=10^6,\ldots,10^{20}$: $t_3X\Psi^4$ runs from $10.8$ to $15.49$ (the
+two-term value above gives $15.48$ at $X=10^{20}$),
+$t_4X^{5/3}\Psi^4/(-\kappa^4)$ from $0.72$ to $0.935$, and
+$(t_4/t_3)X^{2/3}\log X$ grows in absolute value like $\log X$ (about
+$-2.0$ at $X=10^6$ and $-2.87$ at $X=10^{10}$). It also found that the remainder of (i) is $t_3$ up
+to a relative $-2.7\times10^{-8}$ at $X=10^{10}$, so that numerically it is
+of order $X^{-1}(\log X)^{-4}$: the bound $O(X^{-1}(\log X)^{-3})$ in (i)
+is proved and correct, but one logarithm weaker than the truth. A proof of
+the sharper order would follow from the general truncation asked for in
+that Question. Item~(i), item~(ii) and the decay of the term bounds are
+unchanged.)
 \begin{writenoteb}
 Theorem~\ref{vav:dg:thm:inverse} is the separation clause of the staircase
 theorem of the transseries volume (\texttt{p0:thm:staircase}) applied to
@@ -2256,7 +2323,7 @@ and limit laws for the number of cycles are open.
 \eqref{vav:dg:eq:invformal} (Section~\ref{vav:dg:sec:inverse}; sketched
 there by ``Taylor expansion of the finite models and the derivative
 estimate''). Proposition~\ref{vav:dg:prop:reversion} proves the displayed
-two-term truncation and the decrease of all terms; a proof that the
+two-term truncation and the decrease of all term bounds; a proof that the
 truncation after $m$ terms has error of the order of the $(m+1)$-st term,
 for every $m$, is missing (it should follow from Lagrange inversion with
 remainder in a $\lambda$-deformation $G(x)=G(X)-\lambda q_K(x)$ and the
@@ -2529,7 +2596,9 @@ For every $x>0$, $B(x)<2e^{-x}(1+q(x))^{-3}\le2e^{-x}$; in particular
 $\int_0^\infty B(x)\dd x<2$. Indeed $q\in(0,1)$ and
 $(1+q)/(1-q)=(1+q)^2/(1-q^2)=(1+q)^2e^{x}$, so
 $L=\atanh q=\tfrac12\log\frac{1+q}{1-q}=\tfrac x2+\log(1+q)>0$. Hence
-$L/q>L$ and $3L/q>\tfrac{3x}2+3\log(1+q)$, which gives the bound. The same
+$L/q>L$ and $3L/q>\tfrac{3x}2+3\log(1+q)$, which gives the bound. The
+first bound is asymptotically sharp, both sides being $\sim e^{-x}/4$ as
+$x\to\infty$ by \eqref{vav:hk:eq:banklimits}. The same
 identity gives $L=\acosh(e^{x/2})$ and the limit $L=x/2+\log2+O(e^{-x})$ used
 in Lemma~\ref{vav:hk:lem:banks}. The bound $B\le2e^{-x}$ is the one the
 delivered \path{code/07-sectors-check_sector_numerics.py} uses, in a comment
@@ -2924,6 +2993,99 @@ The phase in~\eqref{vav:hk:eq:finalpair} describes the first pair's sign changes
 
 \paragraph{Other combinatorial transforms.}
 The key global feature is a periodic exponential pullback with two different singular strengths. It is natural to seek other exact combinatorial EGFs with this structure and to test whether the same full-cut normalization supplies their beyond-all-orders terms. An application must verify its global branch and boundary decay separately; local singular expansions alone are insufficient.
+
+\paragraph{Independent check of the write (dated note, 5~October 2026).}
+An independent adversarial check of the batch-101 write of Parts~III
+and~IV (\texttt{07fd071f8}), made by the intake afterwards, reread the four
+write results, Remarks~\ref{vav:dg:rem:elizalde}, \ref{vav:dg:rem:farchord}
+and~\ref{vav:hk:rem:bankbound} and
+Proposition~\ref{vav:dg:prop:reversion}, and spot-checked Part~IV's text,
+constants and table against the delivered manuscript. It found the three
+remarks and Part~IV valid, and Proposition~\ref{vav:dg:prop:reversion}
+valid except for one sentence of item~(iii), which is false as written:
+the \emph{bounds} for successive reversion terms decrease by factors
+$X^{-2/3}/\log X$, but the terms themselves need not, because the leading
+part of the $k$-th term vanishes when $3\mid k$. That sentence and the
+matching word in Question~4 of Section~\ref{vav:dg:sec:questions} are
+corrected where they stand, and the proof now derives the leading part and
+the third and fourth terms; the dated note after the proof keeps the first
+wording, gives the counterexample, and records that the remainder in~(i),
+correctly bounded, is numerically one logarithm smaller than its bound.
+Two optional refinements were adopted:
+Remark~\ref{vav:dg:rem:elizalde}(b) now gives the shifted grading
+$\log H(z,u)=b_0+\sum_{k\ge1}u^k(b_k+c_{k-1})$, which does reproduce
+Part~II, and Remark~\ref{vav:hk:rem:bankbound} notes that its first bound
+is asymptotically sharp. No other statement or number changed; the check
+found no counterexample to any other statement and no gap in any proof
+chain.
+
+For Remark~\ref{vav:dg:rem:elizalde} the check rederived each step and
+tested it in exact rational series arithmetic:
+$I_{m,n}''=mn\,e^zI_{m-1,n-1}$ with $I_{m,n}(0)=I_{m,n}'(0)=0$ for
+$1\le m,n\le4$ through $z^{13}$; Elizalde's two recurrences for
+$k=1,\ldots,4$; $\sum_k(b_k+c_k)=T$ through $z^{15}$, with $T$ from the exact
+recurrence \eqref{vav:dg:eq:rec-t}; and the shifted grading against $L_n(u)$
+of \eqref{vav:rf:eq:cumulants} through $z^{15}$, where the unshifted grading
+fails already at $z^2$. Remark~\ref{vav:dg:rem:farchord} was checked by
+rederivation: the compactness of $K_1$, the contour and chord length, the
+modulus bound with its constant $M(\rho+\varepsilon_1)/(\pi r)$, the
+expansion of $r^{-n}$ and the ratio $O(e^{-c_1n})$ to the main term. For
+Proposition~\ref{vav:dg:prop:reversion}, with mpmath at 60~digits, the
+exact $x_K$ found by root-finding, $K=1,3$ and $X=10^3,\ldots,10^{10}$, the
+error of the truncation~(i) divided by $X^{-1}(\log X)^{-3}$ stays in
+$[0.44,0.86]$; the error of the displayed formula divided by
+$X^{-2/3}/\log X$ stays in $[-2.34,-2.11]$ for $K=3$ and $[-1.33,-1.11]$ for
+$K=1$; and the $k=1,2$ Lagrange terms, computed by nested numerical
+differentiation, equal the printed groups to $10^{-30}$. The intake
+comparison in the write note after that proposition was replicated
+($\lceil x_3\rceil=n$ for $n=100,\ldots,600$, ratio in
+$[-2.353,-2.333]$; the note's ``difference'' is the displayed formula minus
+$x_3$); the third and fourth terms were evaluated for
+$X=10^6,\ldots,10^{20}$, with the values given in the dated note after the
+proof. For Remark~\ref{vav:hk:rem:bankbound} both identities for $L$ hold
+to $10^{-25}$ on a logarithmic grid $10^{-6}\le x\le316$; the ratio of $B$
+to $2e^{-x}(1+q)^{-3}$ is below $1$ everywhere, one minus it being $0.950$
+at $x=10^{-6}$, $0.568$ at $x=1$, $3.3\times10^{-8}$ at $x=20$ and
+$4.0\times10^{-25}$ at $x=60$; and $\int_0^\infty B=0.144293678991\ldots$.
+
+For Part~IV, a word-level comparison of its text (write notes and the
+[write] remark removed, the label prefix stripped) with the delivered
+manuscript showed only the declared editorial changes: the abstract printed
+as a quotation, the added section labels, the reference to Report~87
+printed as \cite{hkprior}, and $\mathcal C_k(r)$ in all three places. The counts
+recomputed from \eqref{vav:dg:eq:rec-t}--\eqref{vav:dg:eq:rec-a} equal the
+601 terms of \path{data/06-diagonal-counts_600.json}. Evaluating $A(z)$
+from the global branch $F(e^{z/2})$ of \eqref{vav:hk:eq:F}, independently
+of the shipped script (which uses the local formula), the check confirmed
+the bank formula \eqref{vav:hk:eq:banks} for $k\in\{-1,0,1,2,3\}$ and
+$x\in\{0.3,2,7\}$, the local branch \eqref{vav:hk:eq:local} for
+$k\in\{-3,0,1,2\}$, the period $4\pi\ii$ (and that $2\pi\ii$ is not a
+period), and the decomposition \eqref{vav:hk:eq:sum} at $r=0.5$: the
+relative error of $\sum_{|k|\le6}H_k(n)$ is $3.5\times10^{-12}$,
+$3.5\times10^{-26}$ and $1.2\times10^{-35}$ at $n=6$, $15$ and $30$ (at
+$n=6$ it is $5.8\times10^{-17}$ with $|k|\le30$), within the rectangle bound
+\eqref{vav:hk:eq:recterror} wherever that bound lies above the working
+precision; $H_{-1}=\overline{H_1}$, $H_0$ is real, and
+$H_0/b_{30}-1=-7.5175154\times10^{-22}=-2\Rea H_1/b_{30}$, as the write note
+after Corollary~\ref{vav:hk:cor:pair} states. The printed constants
+$|\zeta_1|$, $|\zeta_2|$, $\kappa_1$, $C_1$, $c_{1,1}$, $\kappa_2$, $C_2$,
+$c_{1,2}$, $c_{2,1}$, $\rho/|\zeta_1|$ and $c-\Rea\kappa_1$ agree to every
+printed digit, and $g_k\pi/\sqrt{\zeta_k\kappa_k}=2\kappa_k$ holds on the
+principal branches for $k=0,1,2$. A SymPy rebuild of $S(h,y)$ from the definitions
+\eqref{vav:hk:eq:Tcal}--\eqref{vav:hk:eq:S} through $h^6$ cancels the
+negative and zero powers, reproduces \eqref{vav:hk:eq:S12} and
+\eqref{vav:hk:eq:S4}, and by Gaussian moments gives $c_{k,1}$ and $c_{k,2}$
+exactly as printed; $c_{0,2}$ is Part~I's $a_2$, and $c_{0,3}$ is Part~III's
+$c_3$. Finally, quadrature of the global branch (banks to $30$) reproduces
+all six entries $Q_k(n)$ of the table in Section~\ref{vav:hk:sec:checks} to
+the 12 printed digits (differences at most $5\times10^{-13}$) and the
+scaled remainders to $4\times10^{-9}$. A first run with coarse breakpoints
+for the oscillating bank integrand disagreed at $10^{-10}$; refined
+breakpoints, at 30, 50 and 60 digits and with both forms of the integrand,
+give one value, the printed one, so the discrepancy was the quadrature's.
+As in the source, these are numerical regressions, not interval
+certificates. This was a careful reading with numerical tests, not a
+formal verification or an external review.
 
 
 \appendix
