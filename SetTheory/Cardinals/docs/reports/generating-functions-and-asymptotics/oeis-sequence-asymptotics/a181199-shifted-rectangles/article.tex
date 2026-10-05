@@ -11,6 +11,7 @@
 \usepackage{hyperref}
 \hypersetup{colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,
  urlcolor=MidnightBlue,pdftitle={Fixed-height shifted rectangles: asymptotics and algebraicity},
+ pdfsubject={Part I: asymptotics and algebraicity; Part II: rational diagonals and rare boundary phases},
  pdfauthor={Research report prepared for Vladimir Reshetnikov}}
 \urlstyle{same}
 \definecolor{inkblue}{HTML}{173752}
@@ -44,11 +45,22 @@
 \DeclareMathOperator{\Tr}{Tr}
 \DeclareMathOperator{\Var}{Var}
 \DeclareMathOperator{\sgn}{sgn}
+% Part II (batch 98, manuscript 02) macros, as delivered; Part I's \fall is used
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\PP}{\mathbb P}
+\newcommand{\ind}{\mathbf 1}
+\newcommand{\rise}[2]{(#1)^{\overline{#2}}}
+\newcommand{\Diag}{\operatorname{Diag}}
+\newcommand{\Sym}{\mathfrak S}
+\newcommand{\Stirling}[2]{\genfrac{\{}{\}}{0pt}{}{#1}{#2}}
+\newcommand{\M}{\mathfrak M}
 \newtcolorbox{resultbox}{colback=pale,colframe=inkblue,boxrule=0.6pt,
  arc=1mm,left=9pt,right=9pt,top=7pt,bottom=7pt,breakable}
 % [write] Dated editorial notes added when the report was written into
 % ProveIt (batch 85); the delivered text is otherwise unchanged apart from
 % the label prefix shr: and the page anchors around the title page.
+% Part II (batch 98, manuscript 02) was added on 5 October 2026 with the
+% label prefix shr:bp:; its editorial changes are listed at its head.
 \newenvironment{writenote}[1][]{\par\smallskip\begingroup\small
  \noindent\textbf{[write]}\if\relax\detokenize{#1}\relax\else~\textbf{#1.}\fi\ }%
  {\par\endgroup\smallskip}
@@ -106,8 +118,35 @@ conjectured recurrence is used as a premise, and none is claimed proved here.
 \end{titlepage}
 \hypersetup{pageanchor=true}
 
+\begin{writenote}[Added 5 October 2026, batch~98: two Parts]
+Since 5 October 2026 this report has two Parts. Part~\ref{shr:part:one}
+(Sections~1--13 and Appendices~A--B) is the batch-85 manuscript described
+in the first note of Section~1.3, printed as before: its sections,
+equations, theorems, research questions and labels keep their numbers, and
+that note's ``a single manuscript, printed in full'' now describes
+Part~\ref{shr:part:one}. Part~\ref{shr:bp:part} (Sections~14--25 and
+Appendices~C--D) is manuscript~02 of batch~98, \emph{Rational diagonals and
+rare boundary phases in shifted rectangles} (4~October 2026, pinned at
+\texttt{db20eb379}), printed in full with the label prefix
+\texttt{shr:bp:}. It proves that $F_m$ is the diagonal of a rational power
+series, hence D-finite, for every fixed $m$
+(Theorem~\ref{shr:bp:thm:diagonal-main}), which answers the first half of
+Research question~7; the second half, the growth of the minimal order,
+stays open. It also proves a sharp all-order expansion for the number
+$R_m(n)$ of arrays whose first row is completed before the last row starts
+(Theorem~\ref{shr:bp:thm:rare-main}). That count is a small part of the
+boundary error of Theorem~\ref{shr:thm:cut}, not its asymptotic, so
+Research question~4 is not answered by it (Remark~\ref{shr:bp:rem:q4});
+the leading term of the boundary error is the write's
+Proposition~\ref{shr:bp:prop:boundary}. Dated notes at the end of
+Section~4.1, after Remark~8.1 and at Research questions~4 and~7 say so.
+\end{writenote}
+
 {\fontsize{9.5}{10.5}\selectfont\setlength{\parskip}{0pt}\tableofcontents}
 \newpage
+
+\part{An unconditional proof of the A181199 asymptotic, all-order expansions, and an algebraicity dichotomy}
+\label{shr:part:one}
 
 \section{The problem, the open target, and the source audit}
 
@@ -536,6 +575,14 @@ The boundary estimate is an exact, nonasymptotic statement. It is deliberately
 simple and is not claimed sharp. Since the main probability is of order
 $n^{-d}$, this exponentially small additive error is negligible relative
 to every term of the inverse-power expansion.
+
+\begin{writenote}[Added 5 October 2026, batch~98]
+The rate $2^{-n}$ of the bound at $p=1/2$ is the true one, but the bound
+is not sharp in its constant, nor, for $m\ge3$, in its power of $n$: the
+write's Proposition~\ref{shr:bp:prop:boundary} in Part~\ref{shr:bp:part}
+shows $E_{m,n}(1/2)\sim2^{1-n}3^{1-m}J_{m-1}(4n)^{-\binom{m-1}2}$, against
+the bound $2m\,2^{-n}$.
+\end{writenote}
 
 \section{Gaussian reduction and an effective all-order theorem}
 
@@ -1018,6 +1065,16 @@ are compatible with D-finite functions. The guessed recurrences for
 heights four and five remain separate questions.
 \end{remark}
 
+\begin{writenote}[Added 5 October 2026, batch~98]
+$F_m$ is in fact D-finite for every fixed $m$: it is the diagonal of a
+rational power series over $\Q$ (Part~\ref{shr:bp:part},
+Theorem~\ref{shr:bp:thm:diagonal-main}, through the multiple-binomial-sum
+theorem of Bostan, Lairez and Salvy). With Theorem~\ref{shr:thm:algebraic},
+$F_m$ is algebraic for $m\le2$ and transcendental but D-finite for $m\ge3$.
+That proof is an existence proof; it produces no operator, and the guessed
+recurrences for heights four and five remain unproved.
+\end{writenote}
+
 \section{Gaussian laws for intermediate shapes}\label{shr:sec:GUE}
 
 The same reduction describes typical partially filled arrays, not only
@@ -1394,6 +1451,31 @@ finite hierarchy of lower-dimensional boundary strata. Computing their
 constants could produce a genuine transseries beyond the algebraic sector,
 and could clarify the signs and optimal truncation of the coefficients.
 
+\begin{writenote}[Added 5 October 2026, batch~98: Question~4 re-scoped]
+Part~\ref{shr:bp:part} does not answer this question, although its
+introduction counts the non-sharp boundary bound among ``the two gaps
+addressed here''. Its rare count $R_m(n)$ is the part of the boundary event
+in which the first row is completed before the last row starts: it
+satisfies $R_m(n)\le M_m(n)E_{m,n}(1/2)$, and the ratio grows like $2^n$
+times a power of $n$ (Remark~\ref{shr:bp:rem:q4}). The leading asymptotic
+of $E_{m,n}(1/2)$ itself is the write's
+Proposition~\ref{shr:bp:prop:boundary}: exactly, $E_{m,n}(1/2)$ is twice
+the stratum with one boundary row (the last row empty at the cut, or, by
+symmetry, the first row full) plus $O(4^{-n})$, and
+\[
+ E_{m,n}(1/2)\sim2^{1-n}3^{1-m}J_{m-1}(4n)^{-\binom{m-1}2}.
+\]
+That proposition is unrefereed and checked numerically only on finite
+ranges. Still open: an all-order expansion of the boundary term (the
+one-row stratum is an interior sum with $m-1$ rows and an extra factor
+$x_i/(2n-x_i)$ per row, so the method of Section~5 should apply, but this
+has not been carried out); the constants of the deeper strata, with two or
+more rows empty or full at the cut, and of the rare sectors inside them
+(compare Research question~10 of Part~\ref{shr:bp:part}); their
+combination with large deviations of the interior expectation; and any
+transseries reading.
+\end{writenote}
+
 \begin{question}[A full path-process limit]
 Do the centered row-length processes of a uniform tableau converge to a
 trace-zero noncolliding Gaussian bridge on compact time intervals inside
@@ -1425,6 +1507,19 @@ system in the fixed-height regime would be a stronger structural result.
 The opposite-orientation constant-width transfer matrix does not answer
 this question.
 
+\begin{writenote}[Added 5 October 2026, batch~98: Question~7 answered in part]
+The first half is answered: for every fixed $m$, $F_m$ is the diagonal of
+a rational power series over $\Q$, hence D-finite, and $(T_m(n))$ is
+P-recursive (Part~\ref{shr:bp:part}, Theorem~\ref{shr:bp:thm:diagonal-main}:
+the exact sum of Theorem~\ref{shr:bp:thm:skeleton} over the $2m$ row births
+and completions, a finite sum of products of reflection determinants, is a
+multiple binomial sum in the sense of Bostan, Lairez and Salvy). The second
+half, how the minimal annihilating order (and degree) grows with $m$,
+remains open; it is Research question~11 of Part~\ref{shr:bp:part}. The
+existence proof supplies no operator, so the guessed recurrences of heights
+four and five (Research question~1) remain unproved.
+\end{writenote}
+
 \section{Conclusion}
 A shifted rectangle admits a particularly effective asymptotic cut: both
 sides of an interior threshold state are ordinary strict shifted shapes.
@@ -1440,6 +1535,1933 @@ generating functions, while the same exact weight identifies Gaussian
 laws for typical intermediate shapes. The remaining recurrence, uniformity,
 and exponentially small questions are separate, concrete targets with
 clear starting points.
+
+\clearpage
+\part{Rational diagonals and rare boundary phases in shifted rectangles}
+\label{shr:bp:part}
+
+\noindent{\Large D-finiteness at every fixed height and a sharp
+exponential refinement for OEIS A181199\par}
+\smallskip
+\noindent{\large Prepared for Vladimir Reshetnikov, October 4, 2026\par}
+\medskip
+
+\begin{resultbox}
+For every fixed height $m$, the generating function of the shifted-rectangle
+counts $T_m(n)$ is a diagonal of a rational function, hence D-finite.
+For $m\ge2$, let $R_m(n)$ count arrays in which row $1$ finishes before row $m$ starts. Then
+\[
+ R_m(n)\sim
+ \sqrt{\frac m2}\,(2\pi)^{-(m-2)/2}
+ \frac{\prod_{j=0}^{m-3}j!}{4^{\binom{m-2}{2}}9^{m-2}}
+ \left(\frac{m^m}{4}\right)^n n^{-(m-2)^2/2}.
+\]
+Both statements hold for all fixed heights, not only the tabulated cases.
+\end{resultbox}
+
+\paragraph{Abstract.}
+The fixed-height shifted-rectangle family combines strict inequalities
+between active rows with exceptional ties at empty and completed rows.
+We separate these boundary events from the intervening walks. The resulting
+finite sum of reflection determinants is a multiple binomial sum, proving
+rational diagonality and D-finiteness at every fixed height and resolving
+an explicit question in the preceding ProveIt report. We also count the
+rare failure of a common active phase. A first-completion cut gives a
+shifted-hook sum with an exponentially smaller remainder. A beta--binomial
+mixture then yields its sharp exponential rate, leading constant, effective
+all-order expansion, and a universal first correction. We compute three
+corrections at height five, describe the conditional Gaussian shape, and
+invert the rare-event profile. Exact verification programs and a source
+and status audit accompany the manuscript.
+
+\paragraph{Status.} AI-assisted, unrefereed research manuscript.
+The stated results have mathematical proofs below, but have not been
+independently peer reviewed or proof-assistant verified. Historical priority
+is not certified. The particular conjectured recurrences and finite-sum
+identities for A181198 and A181199 are \emph{not} proved here.
+
+\begin{writenote}[Added 5 October 2026, batch~98: provenance of Part~II]
+Part~II is a single manuscript, printed in full: manuscript~02 of batch~98
+of ProveIt's incoming-reports intake, \emph{Rational diagonals and rare
+boundary phases in shifted rectangles}, subtitled ``D-finiteness at every
+fixed height and a sharp exponential refinement for OEIS A181199'' and
+dated October~4, 2026 (a 1{,}656-line source with 97 labels and a 24-page
+PDF). Its title page reads ``Prepared for Vladimir Reshetnikov''; its PDF
+metadata name ``Research report prepared for Vladimir Reshetnikov''. No
+human author and no tool are named. It arrived as the archive
+\texttt{Shifted\_\allowbreak Rectangle\_\allowbreak Boundary\_\allowbreak Research.zip}
+(390{,}943 bytes, 22 files under a doubled wrapper directory of the same
+name) in commit \texttt{2172df76a} and was placed in commit
+\texttt{0fba5167f} (batch~98B) as an addition to this report. It pins the
+repository at commit \texttt{db20eb37982abc0f163c6d308d392f5ac4c9bc62}
+(4~October 2026; Section~\ref{shr:bp:sec:scope}). This report was not
+changed between the pin and the placement, so the manuscript read exactly
+the text printed as Part~\ref{shr:part:one}, and its citations of that text
+(Theorems~2.1 and~2.3, Research question~7) carry the right numbers. Its
+code, data and source notes are shipped with the prefix
+\texttt{02-boundary-phases-}; its \LaTeX\ source, README, PDF and checksum
+list are not shipped and survive in the archive of the arrival commit. The
+manuscript is unrefereed and AI-assisted; its proofs are ordinary
+mathematical proofs, nothing in it is formalized in Lean or Rocq, and its
+place in this report confers no formal status.
+
+\emph{What it answers.} Theorem~\ref{shr:bp:thm:diagonal-main} answers the
+first half of Part~\ref{shr:part:one}'s Research question~7 (D-finiteness
+at every fixed height), not its second half (Remark~\ref{shr:bp:rem:q7}).
+Theorem~\ref{shr:bp:thm:rare-main} is a sharp result about a sub-sector of
+the boundary event of Theorem~\ref{shr:thm:cut}; it does not answer
+Research question~4, which asks for the asymptotic of the whole boundary
+error (Remark~\ref{shr:bp:rem:q4}; the write's
+Proposition~\ref{shr:bp:prop:boundary} gives its leading term). Dated notes
+at both questions, at Remark~8.1 and at the end of Section~4.1 of
+Part~\ref{shr:part:one} say so.
+
+\emph{Overlap with Part~\ref{shr:part:one}, credited.} The two texts share
+1.98\,\% of their word 8-grams (214 of 10{,}822). The state space
+\eqref{shr:bp:eq:states} is \eqref{shr:eq:states}, re-derived; the shifted
+hook product \eqref{shr:bp:eq:hook} is imported (Appendix~\ref{shr:app:hook}
+proves it); \eqref{shr:bp:eq:gaussianZ} is \eqref{shr:eq:gaussZ} with $r$
+variables; \eqref{shr:bp:eq:binomialVdm} extends \eqref{shr:eq:binomZ} to a
+general success probability and is then mixed over the beta law;
+\eqref{shr:bp:eq:gue-moments} are the Gaussian limits of
+\eqref{shr:eq:traceidentities}; the Stirling factor \eqref{shr:bp:eq:outer}
+is the analogue of \eqref{shr:eq:stirling-convert};
+Lemma~\ref{shr:bp:lem:mixture} is a random-cut variant of
+Theorem~\ref{shr:thm:cut}, and Theorem~\ref{shr:bp:thm:shape} the analogue,
+for the rare event, of Theorem~\ref{shr:thm:gue}. The inversion of
+Section~\ref{shr:bp:sec:inverse} uses the apparatus of
+Section~\ref{shr:sec:inverse} with a different rate and power, and
+Corollary~\ref{shr:bp:cor:probability} imports Theorem~\ref{shr:thm:main}
+and Corollary~\ref{shr:cor:A181199} ($b_{5,1}=48/5$). Everything else is
+new to the repository. ``The preceding (ProveIt, repository, asymptotic)
+report'' in Part~II means Part~\ref{shr:part:one}.
+
+\emph{Editorial changes.} Section~$k$ of the manuscript is
+Section~$k+13$ here, its Appendices~A and~B are Appendices~C and~D, and its
+Research questions~1--8 are Research questions~8--15 (one counter runs
+through both Parts); theorem and equation numbers follow their sections.
+Every label carries the prefix \texttt{shr:bp:}, and one label was added
+(Remark~\ref{shr:bp:rem:constructive}). The manuscript's $d=\binom{m-2}2$
+is renamed $d_{\rm R}$ throughout, because Part~\ref{shr:part:one}'s $d$ is
+$\binom m2$; no normalization changes. Its three citations of its
+predecessor (the bibliography entry \texttt{prior}, whose pin and path this
+note records) now point to Part~\ref{shr:part:one}. Its title, subtitle,
+result box, abstract and status paragraph, from its title page, open this
+Part. Falling factorials are typeset as in Part~\ref{shr:part:one}
+($n^{\underline k}$, the manuscript's $(n)_{\underline k}$); rising
+factorials keep the manuscript's $(n)^{\overline k}$. The bibliographies
+are merged: the OEIS, Kauers--Koutschan and Sun entries are
+Part~\ref{shr:part:one}'s (the manuscript inspected the OEIS entries on
+4~October 2026 and arXiv~v2 of Kauers--Koutschan, its Section~6.4 and
+Conjectures~18--19), and Bostan--Lairez--Salvy \cite{BLS} is added. The
+\textbf{[write]} notes, Remarks~\ref{shr:bp:rem:q7}
+and~\ref{shr:bp:rem:q4}, Section~\ref{shr:bp:sec:boundary} with
+Proposition~\ref{shr:bp:prop:boundary}, and
+Section~\ref{shr:bp:sec:further} are new. No other statement, proof or
+number of the manuscript was changed.
+\end{writenote}
+
+\begin{writenote}[Added 5 October 2026, batch~98: notation of Part~II]
+Part~II keeps the manuscript's symbols except $d_{\rm R}$, and several of
+them clash with Part~\ref{shr:part:one}'s. Within Part~II every symbol has
+the meaning below; the right column gives Part~\ref{shr:part:one}'s
+meaning, the tempting false reading. Shared without change: $T_m(n)$,
+$F_m(z)$, $M_m(n)$, $\alpha_m$, $\Delta$, the hook count $g^\lambda$,
+$J_k=\prod_{j<k}j!$ (Part~II uses it at $k=r$), $W_{-1}$, and $\E$.
+{\footnotesize
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.17\linewidth}>{\raggedright\arraybackslash}p{0.43\linewidth}>{\raggedright\arraybackslash}p{0.34\linewidth}@{}}
+\toprule
+symbol & meaning in Part~II & \emph{not}: meaning in Part~\ref{shr:part:one}\\
+\midrule\endhead
+$d_{\rm R}$ & $\binom r2=\binom{m-2}2$, the manuscript's $d$ & $d=\binom m2$\\
+$d_s$, $b_s$, $r_s$ & completions, births and active rows among the first $s$ event letters (Section~\ref{shr:bp:sec:binomial}) & ---\\
+$r$ & the size of an active block in Sections~\ref{shr:bp:sec:events}--\ref{shr:bp:sec:words}; $m-2$ from Section~\ref{shr:bp:sec:cut} on & the degree of $h_r$, the index of $p_r$\\
+$R_m(n)$ & the rare count $\#\{D_1<B_m\}$ \eqref{shr:bp:eq:raredef} & $R_n(x)$ the pair weight; $R_m=m^{-m}$; $R(z)$\\
+$H_m(n)$; $H(a)$ & the core count \eqref{shr:bp:eq:coredef}; the indicator $\binom aa$ of $a\ge0$ \eqref{shr:bp:eq:Hdelta} & $H(\lambda)$, Hermite $H_j$, $H_{20}$\\
+$\mathcal K_m$; $K_r(u,v)$; $K$ & the rare constant \eqref{shr:bp:eq:rareK}; the chamber kernel; $\sum_ik_i$ in \eqref{shr:bp:eq:factorialmoment} & $K_m$ \eqref{shr:eq:Km}; Krawtchouk $K_j$\\
+$b^{\rm R}_{m,j}$; $b^{\rm total}_{5,1}$ & rare coefficients; Part~I's $b_{5,1}=48/5$ & $b_{m,j}$ of \eqref{shr:eq:mainK}\\
+$B_i$, $D_i$; $B$, $D$; $\mathsf B$, $\mathsf D$ & birth and completion ranks $a_{i,1}$, $a_{i,n}$; event letters; the birth and completion maps & $B=m(m-1)^2(m-2)/12$; Bernoulli $B_{2r}$ (also in \eqref{shr:bp:eq:outer})\\
+$\mathcal C_r(n)$ & the strict chamber \eqref{shr:bp:eq:chamber} & $\mathcal C_n$ the central event\\
+$\mathcal I$; $X_i$ & $\{1\le X_i\le n-2\}$; $\operatorname{Bin}(n,U)$ counts mixed over $U\sim\operatorname{Beta}(n,n+1)$ (Section~\ref{shr:bp:sec:beta}) & $\{1\le X_i\le n-1\}$; independent $\operatorname{Bin}(n,p)$\\
+$W_n(x)$ & the rare weight \eqref{shr:bp:eq:W} & $R_n(x)$ plays this role\\
+$Y_i$; $Z_{i,n}$, $V_n$, $V$ & $(2X_i-n)/\sqrt n$ for the mixed $X_i$; the components of \eqref{shr:bp:eq:scaling} & $Y_i$ the same formula for independent $X_i$; $Z_i$ standardized counts (Section~\ref{shr:sec:GUE})\\
+$\eps$; $\mathcal E_\eps$ & $n^{-1/2}$; the formal moment functional \eqref{shr:bp:eq:Qr} & $\eps_j$ random signs; $\mathcal E_z$ \eqref{shr:eq:Ez}\\
+$\Psi_r$; $\mathcal Q_r(z)$; $Q_m(n)$ & the interaction factor \eqref{shr:bp:eq:Psidef}; its normalized expectation (written $Q_r(0)=1$ once in \eqref{shr:bp:eq:Qr}); the common-phase count $T_{m,B^mD^m}(n)$ \eqref{shr:bp:eq:two-sector} & ---\\
+$A_m(z)$; $\mathcal A_{5,L}$, $\mathcal L_5$ & the Stirling factor \eqref{shr:bp:eq:outer}; truncations and leading term of \eqref{shr:bp:eq:five} & $A=\binom m3$, the event $\mathcal A$; $A_{5,L}$, $L_5$ for $T_5$\\
+$S_1$, $S_2$; $S_h(t)$; $\mathcal S$ & $\sum_iy_i$ and $\sum_iy_i^2$ (Section~\ref{shr:bp:sec:coefficients}); bounded-height Dyck series; the event that row $m$ starts after row~1 ends & $S_1=h_1(q)=\sum_{i<j}(Y_i+Y_j)^2$\\
+$p_i$, $q_i$; $p$ & rank marks \eqref{shr:bp:eq:marks}; a fixed success probability in \eqref{shr:bp:eq:binomialVdm} & $p$ the threshold, $p_r$ power sums, $q_{ij}$\\
+$P_j$; $P_1(y)$ & monic orthogonal polynomials of $\operatorname{Bin}(n,p)$ in $x$; the first coefficient of $\Psi_r$ \eqref{shr:bp:eq:P1} & monic orthogonal $P_j(y)$ of the binomial Vandermonde ensemble (Section~6.2)\\
+$\lambda_m$, $\beta_m$, $a$ & $m\log m-\log4$, $(m-2)^2/2$, $\log(y/\mathcal K_m)$ \eqref{shr:bp:eq:inverseparams} & $\lambda=m\log m$, $\beta_j$ recurrence coefficients, $L=\log(y/K)$\\
+$L$ & a truncation order; $|v|-|u|$ in Lemma~\ref{shr:bp:lem:kernel} & a truncation order; $\log(y/K)$\\
+$h(w)$ & the maximal Dyck height of a word & $h_r(q)$, $h_j$\\
+$C_a(n,p)$, $c_k$, $N_k$ & centred binomial moments and series coefficients (Appendix~\ref{shr:bp:app:algorithm}) & $c_{m,j}$, $C(z)$, $C_{n-1}$, $C_{m,L}$\\
+$\M$, $\Sym_r$, $\Diag$, $\ell_s$ & signed multinomial \eqref{shr:bp:eq:M}, the symmetric group, the diagonal, event labels \eqref{shr:bp:eq:rank} & ---\\
+\bottomrule
+\end{longtable}}
+\end{writenote}
+
+\section{The question and the scope of the answer}
+\label{shr:bp:sec:scope}
+
+\subsection{The OEIS family}
+For $m,n\ge1$, let $T_m(n)$ be the number of arrays
+$A=(a_{i,j})_{1\le i\le m,\,1\le j\le n}$ containing each of
+$1,\ldots,mn$ once, with increasing rows, columns, diagonals, and downward
+antidiagonals. Equivalently, the following comparisons suffice whenever
+the cells exist:
+\begin{equation}
+ a_{i,j}<a_{i,j+1},\qquad
+ a_{i,j}<a_{i+1,j},\qquad
+ a_{i,j+1}<a_{i+1,j}.
+ \label{shr:bp:eq:poset}
+\end{equation}
+The diagonal comparison follows from row and column increase.
+We set $T_m(0)=1$. This is the family A181196; the height-three, height-four,
+and height-five rows are A181197, A181198, and A181199
+\cite{oeis196,oeis197,oeis198,oeis199}.
+The direction of the limit matters: \emph{$m$ is fixed and $n$ grows}.
+A fixed-width strip theorem with a growing number of rows is a different
+statement.
+
+Kauers and Koutschan discuss the height-four and height-five problems in
+Section~6.4 of their 2023 paper \cite{KK}. The OEIS entries inspected for
+this report still label their displayed recurrences as conjectural:
+order two and degree nine for A181198, and order three and degree twenty-four
+for A181199. The same paper gives related finite-sum conjectures. These
+specific formulas are not used anywhere in our proofs.
+
+\subsection{What the preceding repository report already established}
+The report \emph{Fixed-height shifted rectangles} in ProveIt
+(Part~\ref{shr:part:one} of the present report) obtains an all-order expansion for $T_m(n)$, including
+\begin{equation}
+ T_m(n)\sim K_m m^{mn}n^{-\alpha_m},\qquad
+ \alpha_m=\frac{m^2-1}{2},\qquad
+ K_m=\frac{\sqrt m\prod_{j=0}^{m-1}j!}
+ {4^{\binom m2}(2\pi)^{(m-1)/2}}.
+ \label{shr:bp:eq:priorleading}
+\end{equation}
+It proves the leading asymptotic conjecture for A181199 without assuming
+its recurrence, and proves nonalgebraicity at every height $m\ge3$.
+Its Question~7 asks whether the generating function is D-finite for every
+fixed height. Its coarse exponentially small boundary bound is explicitly
+not claimed sharp. These are the two gaps addressed here.
+
+The repository snapshot used for the comparison is
+\begin{center}\small\ttfamily
+db20eb37982abc0f163c6d308d392f5ac4c9bc62.
+\end{center}
+The source/status file in the package records the exact report path,
+inspected literature, and limited identifier searches. We do not infer
+historical novelty merely from an OEIS conjecture label or a repository
+question.
+
+\subsection{New statements developed in this manuscript}
+Our exact-enumeration result is stronger than existence of an unspecified
+recurrence.
+\begin{theorem}[Rational diagonality at every fixed height]
+\label{shr:bp:thm:diagonal-main}
+For every fixed integer $m\ge1$,
+\[
+ F_m(z)=\sum_{n\ge0}T_m(n)z^n
+\]
+is the diagonal of a rational power series over $\Q$. In particular it is
+D-finite, and $(T_m(n))_{n\ge0}$ is P-recursive. More generally, each fixed
+ordering of row births and row completions has a rational-diagonal generating
+function, after assigning arbitrary rational values at $n=0,1$.
+\end{theorem}
+
+The proof, given in Sections~\ref{shr:bp:sec:events}--\ref{shr:bp:sec:binomial}, is a
+finite construction from chamber kernels. It provides at most $m(m-1)$
+free integer summation indices for each event ordering. This count concerns
+summation variables, not the number of variables in a minimal rational
+function or the order of a minimal differential equation.
+
+For $m\ge2$, write
+\begin{equation}
+ B_i=a_{i,1},\qquad D_i=a_{i,n},\qquad
+ R_m(n)=\#\{A:D_1<B_m\},\quad n\ge1,
+ \label{shr:bp:eq:raredef}
+\end{equation}
+and set $R_m(0)=0$. Thus $R_m(n)$ counts arrays for which the first row
+finishes before the last row starts. When $n\ge2$, its complement has all
+rows active simultaneously at some intermediate stage.
+Put
+\begin{equation}
+ r=m-2,\qquad d_{\rm R}=\binom r2,\qquad J_r=\prod_{j=0}^{r-1}j!,
+ \qquad J_0=1.
+ \label{shr:bp:eq:rnotation}
+\end{equation}
+Empty products are one, throughout. In the chamber formulas of
+Sections~\ref{shr:bp:sec:events}--\ref{shr:bp:sec:words}, $r$ may instead denote a general
+active-block size; from Section~\ref{shr:bp:sec:cut} onward it is $m-2$.
+
+\begin{theorem}[Sharp rare-boundary expansion]
+\label{shr:bp:thm:rare-main}
+For each fixed $m\ge2$ and each fixed $L\ge0$,
+\begin{equation}
+ R_m(n)=\mathcal K_m\left(\frac{m^m}{4}\right)^n n^{-r^2/2}
+ \left(\sum_{j=0}^{L}\frac{b_{m,j}^{\rm R}}{n^j}
+       +O_{m,L}(n^{-L-1})\right),
+ \label{shr:bp:eq:rareall}
+\end{equation}
+where
+\begin{equation}
+ \mathcal K_m=
+ \sqrt{\frac m2}\,(2\pi)^{-r/2}4^{-d_{\rm R}}9^{-r}J_r,
+ \qquad b_{m,0}^{\rm R}=1,
+ \label{shr:bp:eq:rareK}
+\end{equation}
+and all $b_{m,j}^{\rm R}$ are effectively computable rational numbers.
+The first correction is
+\begin{equation}
+ b_{m,1}^{\rm R}
+ =\frac{r(6r^3-52r^2-268r-283)}{72(r+2)}.
+ \label{shr:bp:eq:rare-b1}
+\end{equation}
+At $m=2$, the assertion reduces to the exact identity $R_2(n)=1$.
+\end{theorem}
+
+The proof occupies Sections~\ref{shr:bp:sec:cut}--\ref{shr:bp:sec:coefficients}.
+It is independent of \eqref{shr:bp:eq:priorleading}. The latter is used only when
+we subsequently divide $R_m(n)$ by $T_m(n)$.
+
+\begin{resultbox}
+\textbf{What has and has not been resolved.}
+The fixed-height D-finiteness question is answered affirmatively by an
+exact formula, and a sharp rare-event sector is obtained at every height.
+The published candidate low-order recurrences and finite sums remain
+unproved in this manuscript. Our all-order series are Poincar\'e expansions
+with fixed height and fixed truncation order. No Borel summability,
+Stokes constants, or complete exponentially improved transseries is claimed.
+\end{resultbox}
+
+\begin{remark}[\textbf{[write]} Research question~7 of Part~I is answered in part]
+\label{shr:bp:rem:q7}
+Added 5 October 2026, batch~98. The abstract printed at the head of this
+Part says that Theorem~\ref{shr:bp:thm:diagonal-main} resolves ``an
+explicit question in the preceding ProveIt report'', and the delivered
+README says ``This resolves Question~7''. That overstates it. Research
+question~7 of Part~\ref{shr:part:one} asks two things: whether $F_m$ is
+D-finite for every fixed $m$, \emph{and} ``how does the minimal annihilating
+order grow with $m$?''. Theorem~\ref{shr:bp:thm:diagonal-main} answers the
+first affirmatively. It says nothing about the second: the construction
+gives at most $m(m-1)$ summation indices, which the text above states is
+not a bound on the order of a minimal differential equation,
+Remark~\ref{shr:bp:rem:constructive} says that no minimal operator is
+produced, and the manuscript's own fourth research question (here Research
+question~11) asks for exactly this growth. The result box above (``The
+fixed-height D-finiteness question is answered affirmatively'') is
+accurate. The second half of Research question~7 stays open; a dated note
+at that question says so.
+\end{remark}
+
+\begin{remark}[\textbf{[write]} Research question~4 of Part~I is not settled by $R_m$]
+\label{shr:bp:rem:q4}
+Added 5 October 2026, batch~98. Section~\ref{shr:bp:sec:scope} lists the
+non-sharp boundary bound of Part~\ref{shr:part:one} among ``the two gaps
+addressed here''. The sharp question there, Research question~4, asks for
+the asymptotic of the boundary error $E_{m,n}(1/2)$ of
+Theorem~\ref{shr:thm:cut}. Part~II does not determine it. Its rare count
+is a different and much smaller sector. In the order-statistics model of
+Section~4.1, the rare arrays have every row-$1$ sample below every row-$m$
+sample, so at the cut $p=1/2$ either $X_1=n$ or $X_m=0$; hence the rare
+event lies inside the boundary event and
+\[
+ R_m(n)\le M_m(n)\,E_{m,n}(1/2)
+\]
+(Proposition~\ref{shr:bp:prop:boundary}(c), which also gives the growth
+of the ratio). Exact values, computed at intake from the definitions
+(row-state dynamic program for $T_m(n)$ and $R_m(n)$, the rational sum
+\eqref{shr:eq:interiorsum} for $I_m(n)$, and
+$M_m(n)E_{m,n}(1/2)=T_m(n)-M_m(n)I_m(n)$):
+\begin{center}\small
+\begin{tabular}{@{}rrrrr@{}}
+\toprule
+$m$ & $n$ & $M_m(n)E_{m,n}(1/2)/R_m(n)$ & $2^nE_{m,n}(1/2)$ &
+$E_{m,n}(1/2)/\bigl(2^{1-n}3^{1-m}J_{m-1}(4n)^{-\binom{m-1}2}\bigr)$\\
+\midrule
+3 & 8 & $4.892$ & $7.165\cdot10^{-3}$ & $1.0317$\\
+3 & 12 & $37.20$ & $4.835\cdot10^{-3}$ & $1.0444$\\
+3 & 16 & $357.5$ & $3.594\cdot10^{-3}$ & $1.0351$\\
+3 & 20 & $3907$ & $2.855\cdot10^{-3}$ & $1.0276$\\
+3 & 30 & $2.053\cdot10^{6}$ & $1.885\cdot10^{-3}$ & $1.0178$\\
+3 & 40 & $1.328\cdot10^{9}$ & $1.407\cdot10^{-3}$ & $1.0131$\\
+2 & 20 & $8.962\cdot10^{4}$ & $0.6817$ & $1.0226$\\
+2 & 80 & $5.104\cdot10^{22}$ & $0.6704$ & $1.0056$\\
+4 & 12 & $7.183$ & $1.381\cdot10^{-6}$ & $1.0311$\\
+4 & 20 & $374.2$ & $2.995\cdot10^{-7}$ & $1.0350$\\
+\bottomrule
+\end{tabular}
+\end{center}
+At $m=3$ the boundary error is $4.9$, $37$, $357$ and $3907$ times the rare
+count at $n=8$, $12$, $16$, $20$, and the factor keeps growing roughly like
+$2^n$. As a probability the boundary error is $2^{-n}$ times a power of
+$n$ (second column), while $R_m(n)/M_m(n)\le\binom{2n}n^{-1}$ is at most
+of order $4^{-n}$ by \eqref{shr:bp:eq:rare-upper}. So Theorem~\ref{shr:bp:thm:rare-main} is a
+sharp theorem about a sub-sector of the boundary event, not the sharp
+boundary asymptotic; Research question~4 stays open, re-scoped in a dated
+note there. The write's Proposition~\ref{shr:bp:prop:boundary} supplies
+its leading term (last column). The program used for the table is the
+intake's and is not shipped; the same numbers follow from the shipped
+enumerator \texttt{count} of \texttt{code/\allowbreak 02-boundary-phases-tableaux.py}
+and the sum \eqref{shr:eq:interiorsum}.
+\end{remark}
+
+\section{Boundary events and the exact walk model}
+\label{shr:bp:sec:events}
+
+\subsection{Prefix states, including both exceptional boundaries}
+Insert the labels $1,2,\ldots,mn$ in order, and let $x_i$ be the number of
+filled cells in row $i$. Row increase makes the filled cells in each row
+a prefix. The state space is exactly
+\begin{equation}
+ n\ge x_1\ge x_2\ge\cdots\ge x_m\ge0,
+ \qquad x_i=x_{i+1}\Longrightarrow x_i\in\{0,n\}.
+ \label{shr:bp:eq:states}
+\end{equation}
+Indeed, if a lower row has $j<n$ filled cells, its last filled cell forces
+cell $j+1$ in the row above to be filled. If the lower row is full, column
+increase forces the upper row to be full. Conversely these conditions
+make the filled set an order ideal of \eqref{shr:bp:eq:poset}. Consequently paths
+from $(0,\ldots,0)$ to $(n,\ldots,n)$ through \eqref{shr:bp:eq:states}, using unit
+steps $+e_i$, are in bijection with the arrays.
+
+A row is \emph{unborn}, \emph{active}, or \emph{completed} according as
+its coordinate is $0$, belongs to $\{1,\ldots,n-1\}$, or is $n$.
+Completed rows form a prefix and unborn rows a suffix. Thus the active rows
+always form one consecutive block, and their coordinates are strictly
+decreasing. The ties at zero and at $n$ cannot be discarded: forbidding
+either kind changes the enumeration.
+
+For $n\ge2$, birth and completion are different unit steps. Births occur
+in row order $1,\ldots,m$, and completions also occur in that order.
+Record a letter $B$ for a birth and $D$ for a completion. Every array gives
+a word $w$ of length $2m$ with $m$ letters of each kind and with at least
+as many $B$'s as $D$'s in every prefix. Such a word is a Dyck word, with
+$B$ interpreted as an up-step. Conversely the $i$th $B$ means the birth
+of row $i$, and the $i$th $D$ means the completion of row $i$; no further
+row-labeling data are needed.
+
+\subsection{The strict chamber between two events}
+For $r\ge0$ define
+\begin{equation}
+ \mathcal C_r(n)=\{(u_1,\ldots,u_r):n-1\ge u_1>\cdots>u_r\ge1\},
+ \qquad \mathcal C_0(n)=\{()\}.
+ \label{shr:bp:eq:chamber}
+\end{equation}
+During an interval with no birth or completion, its $r$ active coordinates
+move by $+e_i$ in this chamber. If $u,v\in\mathcal C_r(n)$, write
+$K_r(u,v)$ for the number of such walks from $u$ to $v$, including a
+zero-length walk when $u=v$.
+
+For an integer vector $a=(a_1,\ldots,a_r)$ define the everywhere-defined
+integer multinomial
+\begin{equation}
+ \M(a)=
+ \begin{cases}
+ (a_1+\cdots+a_r)!/(a_1!\cdots a_r!),&a_i\ge0\ \text{for all }i,\\
+ 0,&\text{otherwise},
+ \end{cases}
+ \qquad \M(())=1.
+ \label{shr:bp:eq:M}
+\end{equation}
+
+\begin{lemma}[Reflection kernel]
+\label{shr:bp:lem:kernel}
+For strict endpoints $u,v\in\mathcal C_r(n)$,
+\begin{equation}
+ K_r(u,v)=\sum_{\sigma\in\Sym_r}\sgn(\sigma)
+ \M(v_1-u_{\sigma(1)},\ldots,v_r-u_{\sigma(r)}).
+ \label{shr:bp:eq:kernel}
+\end{equation}
+Equivalently, when $L=|v|-|u|\ge0$,
+\begin{equation}
+ K_r(u,v)=L!\det_{1\le i,j\le r}\frac1{(v_i-u_j)!},
+ \label{shr:bp:eq:detkernel}
+\end{equation}
+where $1/k!=0$ for negative integers $k$. For $r=0$, the value is one.
+\end{lemma}
+
+\begin{proof}
+Consider the signed family of all unrestricted $+e_i$ walks from a
+permutation of $u$ to $v$. The number starting at
+$(u_{\sigma(1)},\ldots,u_{\sigma(r)})$ is the multinomial in
+\eqref{shr:bp:eq:kernel}. Cancel every walk that has a collision of two
+coordinates: choose its earliest collision time, breaking any tie by a
+fixed ordering of coordinate pairs, and exchange the histories of the
+colliding coordinates up to that time. The starting permutation is changed
+by a transposition, the endpoint and step set are unchanged, and the
+operation is an involution. Before the chosen time, all equality relations
+are preserved under this exchange, so the same collision is selected on
+the second application.
+
+A walk remaining after cancellation has no collisions. Its coordinate
+order cannot change, since a unit step cannot cross an integer coordinate
+without meeting it. Its strictly decreasing endpoint forces its starting
+permutation to be the identity, and it stays in the decreasing chamber.
+All coordinates are between $1$ and $n-1$: along an uncancelled walk each
+coordinate is nondecreasing and lies between its own endpoints. Thus no
+extra wall reflection is needed for the finite upper bound. The surviving
+walks are exactly those counted by $K_r(u,v)$.
+\end{proof}
+
+The proof is the classical reflection argument, included to specify
+precisely which walls are present. Formula~\eqref{shr:bp:eq:kernel}, rather than
+an unqualified factorial quotient, is the appropriate form for subsequent
+binomial-sum manipulations: it is defined even when an individual
+displacement is negative.
+
+\subsection{Birth and completion maps}
+If $v\in\mathcal C_r(n)$, a birth changes the active vector by
+\begin{equation}
+ \mathsf B(v)=(v_1,\ldots,v_r,1),
+ \quad\text{allowed if }r=0\text{ or }v_r\ge2.
+ \label{shr:bp:eq:Bmap}
+\end{equation}
+A completion changes it by
+\begin{equation}
+ \mathsf D(v)=(v_2,\ldots,v_r),
+ \quad\text{allowed if }r\ge1\text{ and }v_1=n-1.
+ \label{shr:bp:eq:Dmap}
+\end{equation}
+The completion step increases the old first active coordinate from $n-1$
+to $n$ before removing it. All previously completed coordinates are already
+$n$. These two maps account exactly for the exceptional boundary ties.
+
+\section{Finite binomial sums and rational diagonals}
+\label{shr:bp:sec:binomial}
+
+\subsection{The event-skeleton formula}
+Fix a Dyck word $w=w_1\cdots w_{2m}$. Let $b_s,d_s$ be the numbers of
+births and completions in its first $s$ letters, and set
+$r_s=b_s-d_s$, for $0\le s\le2m$. Let $u_s$ be the active vector
+immediately after event $s$, and $v_s$ the active vector immediately
+before event $s+1$. The initial vector is $u_0=()$.
+A skeleton consists of vectors $v_s\in\mathcal C_{r_s}(n)$ with
+\begin{equation}
+ u_{s+1}=
+ \begin{cases}
+ \mathsf B(v_s),&w_{s+1}=B,\\
+ \mathsf D(v_s),&w_{s+1}=D,
+ \end{cases}
+ \qquad 0\le s<2m,
+ \label{shr:bp:eq:skeletonmap}
+\end{equation}
+subject to the corresponding legality conditions. All $u_s$ are thereby
+affine expressions in earlier endpoint coordinates and the constants
+$1,n$. Define $T_{m,w}(n)$ to count arrays with this event word.
+
+\begin{theorem}[Exact finite-phase enumeration]
+\label{shr:bp:thm:skeleton}
+For $n\ge2$,
+\begin{equation}
+ T_{m,w}(n)=
+ \sum_{\text{legal skeletons for }w}
+ \prod_{s=0}^{2m-1}K_{r_s}(u_s,v_s),
+ \qquad
+ T_m(n)=\sum_{w\in\mathcal D_m}T_{m,w}(n),
+ \label{shr:bp:eq:skeleton}
+\end{equation}
+where $\mathcal D_m$ denotes the Dyck words with $m$ births.
+Each first sum can be written with at most $m(m-1)$ free integer indices,
+each ranging between $0$ and $n$, and with only affine equality and
+inequality constraints.
+\end{theorem}
+
+\begin{proof}
+Cut a valid prefix path immediately before and after every boundary event.
+The intervening pieces are chamber walks with the stated endpoints.
+Conversely, choosing a legal skeleton and one chamber walk in each interval
+reconstructs a unique full prefix path. The events each contribute a
+single unit step, and the intervals concatenate in a prescribed order;
+there is no additional interleaving factor. This proves the product and sum.
+
+There are initially $\sum_{s=0}^{2m-1}r_s$ endpoint slots. This sum is at
+most $m^2$: at each position $s$ the height is at most
+$\min(s,2m-s)$, with equality throughout for $B^mD^m$. Each of the $m$
+completion events fixes one different endpoint coordinate to $n-1$.
+Eliminating these coordinates leaves at most $m^2-m$ free slots. The
+chamber bounds, strict gaps, birth conditions, and all endpoint
+substitutions are affine in $n$ and the remaining coordinates.
+\end{proof}
+
+As a consistency check, every skeleton with nonzero weight satisfies
+\begin{equation}
+ \sum_{s=0}^{2m-1}(|v_s|-|u_s|)=m(n-2).
+ \label{shr:bp:eq:unmarkedsteps}
+\end{equation}
+Each of the $m$ rows has precisely $n-2$ non-event steps. Equivalently,
+telescoping the active sums adds one at a birth and removes $n-1$ at a
+completion, which gives the same identity.
+
+\subsection{An explicit binomial encoding of every constraint}
+For integers $a,b$, use
+$\binom ab=[t^b](1+t)^a$ when $b\ge0$, and zero when $b<0$.
+In particular,
+\begin{equation}
+ H(a)=\binom aa=\ind_{\{a\ge0\}},\qquad
+ \delta(a)=H(a)H(-a)=\ind_{\{a=0\}}.
+ \label{shr:bp:eq:Hdelta}
+\end{equation}
+Every affine inequality or equality in \eqref{shr:bp:eq:skeleton} is therefore
+a product of such factors. For example, strictness $v_i>v_{i+1}$ is
+$H(v_i-v_{i+1}-1)$, and a completion uses $\delta(v_1-n+1)$.
+Moreover, for $r\ge1$,
+\begin{equation}
+ \M(a_1,\ldots,a_r)=
+ \left(\prod_{i=1}^r H(a_i)\right)
+ \prod_{i=1}^{r-1}\binom{a_i+\cdots+a_r}{a_i}.
+ \label{shr:bp:eq:binomialM}
+\end{equation}
+If a displacement is negative the leading indicator makes the term zero;
+all other factors remain defined. If all displacements are nonnegative,
+the binomial product telescopes to the multinomial.
+
+Expand the fixed-size permutation sums in \eqref{shr:bp:eq:kernel}, replace each
+multinomial by \eqref{shr:bp:eq:binomialM}, sum each free coordinate from $0$ to
+$n$, and insert the legality factors. The result is a finite linear
+combination of bounded multiple sums of products of binomial coefficients
+with affine arguments. There are no reciprocal binomial coefficients,
+no factorial poles, and no hidden variable number of summation indices.
+
+\subsection{The imported diagonal theorem and its application}
+We use the following result of Bostan, Lairez, and Salvy
+\cite[Theorem~3.5 and Corollary~3.6]{BLS}: a univariate multiple binomial
+sum has a generating function that is the diagonal of a rational power
+series; such sequences are P-recursive. Their class is closed under affine
+index substitutions, products, sums, and finite partial summation.
+
+For clarity, consider a rational function regular at the origin, with
+expansion
+\[
+ Q(x_1,\ldots,x_k)=\sum q_{n_1,\ldots,n_k}x_1^{n_1}\cdots x_k^{n_k}.
+\]
+Its diagonal is
+\[
+ \Diag Q(z)=\sum_{n\ge0}q_{n,\ldots,n}z^n.
+\]
+A power series is D-finite if it satisfies a nonzero linear differential
+equation with polynomial coefficients. Equivalently its coefficient
+sequence satisfies a linear recurrence with polynomial coefficients.
+
+\begin{proof}[Proof of Theorem~\ref{shr:bp:thm:diagonal-main}]
+The preceding encoding exhibits $T_{m,w}(n)$, for $n\ge2$, as a multiple
+binomial sum. To define a sequence on all integers, multiply by $H(n-2)$
+and assign zero below two. The sums from $0$ to $n$ can first be interpreted
+as the extended partial sums of the binomial-sum algebra; the multiplier
+removes their values outside the intended range. Adding any finitely
+supported correction preserves that algebra, since shifted Kronecker
+deltas are allowed. The imported theorem gives a rational diagonal for
+each event-word sequence. Summing the finitely many words and adding the
+terms at $n=0,1$ gives $F_m$.
+
+This argument proves rational diagonality, not merely a heuristic closure
+claim about hypergeometric expressions. D-finiteness and P-recursiveness
+then follow from the same theorem. At $m=1$, one may also observe directly
+that $F_1(z)=1/(1-z)$.
+\end{proof}
+
+\begin{remark}[Constructive does not mean a compact telescoper is supplied]
+\label{shr:bp:rem:constructive}
+The skeleton and binomial formulas are explicit finite input to the
+rational-integral and diagonal constructions of \cite{BLS}. This is an
+effective existence proof. We have not carried out that elimination to
+produce a small rational function or a minimal differential operator for
+general $m$. In particular, it does not certify that either operator
+currently displayed in OEIS is the correct one.
+\end{remark}
+
+Combined with the previous report's algebraicity classification
+(Part~\ref{shr:part:one}, Theorem~\ref{shr:thm:algebraic}), the result places the entire family in a precise hierarchy:
+$F_m$ is algebraic for $m\le2$, and transcendental but D-finite for
+$m\ge3$. The nonalgebraicity part of that statement is inherited from the
+previous report, not reproved or claimed as new here.
+
+\section{Which event words occur, and which statistics remain D-finite?}
+\label{shr:bp:sec:words}
+
+\subsection{A complete realizability criterion}
+Let $h(w)$ be the maximum Dyck height of $w$.
+\begin{theorem}[Event-word realizability]
+\label{shr:bp:thm:realizability}
+For $m\ge1$, $n\ge2$, and $w\in\mathcal D_m$,
+\begin{equation}
+ T_{m,w}(n)>0\quad\Longleftrightarrow\quad h(w)\le n-1.
+ \label{shr:bp:eq:realizability}
+\end{equation}
+Consequently every Dyck word of semilength $m$ occurs as soon as $n\ge m+1$.
+\end{theorem}
+\begin{proof}
+At height $r$ there must be $r$ distinct active coordinates in
+$\{1,\ldots,n-1\}$, so $r\le n-1$ is necessary.
+
+For sufficiency, follow the prescribed word. Before a birth at active
+height $r$, the height bound implies $r\le n-2$. Move the existing
+coordinates, in top-to-bottom order, to
+$(n-1,n-2,\ldots,n-r)$. Each target dominates the present coordinate, since
+any decreasing vector in $\mathcal C_r(n)$ has $u_i\le n-i$. The moves
+are legal because the coordinate above has already reached its target.
+The last target is at least two, so a new coordinate one can be appended.
+Before a completion, simply move the top active coordinate to $n-1$ and
+complete that row. Neither operation creates any additional boundary
+event. Continuing to the end constructs a valid path with exactly $w$.
+\end{proof}
+
+The number of event words available at width $n$ is thus a classical
+bounded-height Dyck number. If $S_h(t)$ is its generating function by
+semilength with height at most $h$, the first-return decomposition gives
+\begin{equation}
+ S_0(t)=1,\qquad S_h(t)=\frac1{1-tS_{h-1}(t)}\quad(h\ge1).
+ \label{shr:bp:eq:boundedDyck}
+\end{equation}
+This counts possible event types, not arrays: the sector weights are
+generally far from equal.
+
+At $n=2$ there is only the alternating word $(BD)^m$, and $T_m(2)=1$.
+At $n=3$, height is at most two. A one-row active phase has only one
+coordinate to move, while a two-row active phase has the unique vector
+$(2,1)$. Thus each permitted word has weight one. Formula
+\eqref{shr:bp:eq:boundedDyck} gives $T_m(3)=2^{m-1}$ for $m\ge1$, recovering a
+known small-width formula \cite{Sun}, not a new one.
+
+\subsection{Small worked examples}
+For two rows and $n\ge2$, the alternating word has weight one. For the
+other word,
+\begin{align}
+ T_{2,BBDD}(n)
+ &=\sum_{a=2}^{n-1}\sum_{b=1}^{n-2}
+ K_2\bigl((a,1),(n-1,b)\bigr)\notag\\
+ &=\sum_{a=2}^{n-1}\sum_{b=1}^{n-2}
+ \bigl(\M(n-1-a,b-1)-\M(n-2,b-a)\bigr).
+ \label{shr:bp:eq:two-row}
+\end{align}
+This is an explicit binomial sum without exceptional denominator values.
+Adding one recovers $T_2(n)=C_{n-1}$, the usual Catalan control.
+
+At $m=3,n=4$, the sector weights are
+\begin{center}
+\begin{tabular}{@{}lrrrrr@{}}
+\toprule
+Event word & $BBBDDD$ & $BBDBDD$ & $BBDDBD$ & $BDBBDD$ & $BDBDBD$\\
+\midrule
+Number of arrays & $4$ & $16$ & $4$ & $4$ & $1$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Their sum is $29$, and the rare subcount is $25$. This also illustrates
+that having a full-height phase is possible but not yet typical at small
+width.
+
+\subsection{Birth and completion ranks}
+In a skeleton, immediately before event $s+1$ there are $d_s$ completed
+rows and $|v_s|$ cells in active rows. Hence its label is the affine form
+\begin{equation}
+ \ell_{s+1}=d_s n+|v_s|+1.
+ \label{shr:bp:eq:rank}
+\end{equation}
+Let $p_1,\ldots,p_m,q_1,\ldots,q_m$ be independent indeterminates and define
+\begin{equation}
+ T_m(n;\mathbf p,\mathbf q)
+ =\sum_A\prod_{i=1}^m p_i^{B_i}q_i^{D_i}.
+ \label{shr:bp:eq:marks}
+\end{equation}
+The birth and completion ranks are labels, not column positions.
+
+\begin{corollary}[Marked enumeration and moment totals]
+\label{shr:bp:cor:marks}
+For fixed $m$, the generating function in $n$ of
+$T_m(n;\mathbf p,\mathbf q)$ is a rational diagonal over
+$\Q(\mathbf p,\mathbf q)$. For every fixed polynomial $P$ with rational coefficients in the
+$2m$ event ranks,
+\[
+ n\longmapsto\sum_A P(B_1,\ldots,B_m,D_1,\ldots,D_m)
+\]
+is a multiple binomial sum and is P-recursive. The same statements hold
+within each fixed event sector.
+\end{corollary}
+\begin{proof}
+Insert the weights from \eqref{shr:bp:eq:rank} into \eqref{shr:bp:eq:skeleton}.
+They are geometric sequences with affine exponents over the indicated
+coefficient field. Polynomial weights are also in the binomial-sum
+algebra, since an integer index is $\binom{k}{1}$. The same closure proof
+applies. When $n=1$, use the appropriate finitely supported marked term;
+birth and completion coincide within a row only in this exceptional case.
+\end{proof}
+
+This proves the assertion for \emph{unnormalized moment totals}.
+An expectation divides by $T_m(n)$; P-recursiveness of such quotients is
+not asserted.
+Rotation of the array by $180$ degrees followed by replacement of each
+label $a$ by $mn+1-a$ gives the useful exact symmetry
+\begin{equation}
+ B_i\longleftrightarrow mn+1-D_{m+1-i},\qquad
+ T_{m,w}(n)=T_{m,\overline{w^{\rm rev}}}(n),
+ \label{shr:bp:eq:dual}
+\end{equation}
+where the bar interchanges $B$ and $D$.
+
+\section{A first-completion cut for the rare sector}
+\label{shr:bp:sec:cut}
+
+\subsection{The dominant rare configuration}
+For $m\ge2$ and $n\ge2$, define the core subcount
+\begin{equation}
+ H_m(n)=\#\{A:B_{m-1}<D_1<B_m\}.
+ \label{shr:bp:eq:coredef}
+\end{equation}
+For $m=2$ this equals $R_2(n)=1$. For $m\ge3$, the remainder has
+$D_1<B_{m-1}$: the first row finishes while at least the last two rows
+are still unborn. This extra separation will give an exponentially
+smaller rate.
+
+The classical shifted hook product for a strict positive partition
+$\lambda=(\lambda_1>\cdots>\lambda_k>0)$ is
+\begin{equation}
+ g^\lambda=
+ \frac{|\lambda|!}{\prod_i\lambda_i!}
+ \prod_{i<j}\frac{\lambda_i-\lambda_j}{\lambda_i+\lambda_j}.
+ \label{shr:bp:eq:hook}
+\end{equation}
+It counts chains of strict partitions obtained by adding one cell at a
+time, equivalently standard shifted tableaux; see \cite{Sun}. This is an
+imported classical enumeration formula, not a new hook theorem.
+
+\begin{proposition}[Exact core sum]
+\label{shr:bp:prop:core}
+With $r=m-2$, for all $m,n\ge2$,
+\begin{equation}
+ H_m(n)=
+ \sum_{n-2\ge x_1>\cdots>x_r\ge1}
+ g^{(n-1,x_1,\ldots,x_r)}
+ g^{(n,n-x_r,\ldots,n-x_1)}.
+ \label{shr:bp:eq:hookcore}
+\end{equation}
+For $r=0$ the sum has one term, equal to one.
+\end{proposition}
+\begin{proof}
+Immediately before the first completion, row $1$ has length $n-1$ and
+the last row is empty. In the core sector every intervening row is
+active, so their lengths are $n-2\ge x_1>\cdots>x_r\ge1$.
+Before this point no row has completed. Removing zero rows, the prefix
+path is a chain of strict partitions ending at $(n-1,x_1,\ldots,x_r)$,
+so it has the first hook count in \eqref{shr:bp:eq:hookcore}.
+
+The next step completes row $1$. Reverse all remaining steps and rotate
+rows; the complementary lengths are $(n,n-x_r,\ldots,n-x_1)$, a strict
+positive partition. Every reversed prefix stays in the strict-partition
+region until the endpoint. In particular, a coordinate equal to $n$ at
+the endpoint causes no repeated completed-row boundary, since all other
+parts are strictly smaller. Thus the suffix has the second hook count.
+Their label sets are fixed by the size of the prefix, and the intervening
+completion step is unique. The two chains concatenate bijectively to the
+core arrays.
+\end{proof}
+
+\subsection{Two useful nonasymptotic error bounds}
+Write
+\begin{equation}
+ M_m(n)=\frac{(mn)!}{(n!)^m}.
+ \label{shr:bp:eq:Mtotal}
+\end{equation}
+This counts all interleavings of $m$ individually sorted rows, before
+imposing cross-row comparisons.
+
+\begin{proposition}[Separation bounds]
+\label{shr:bp:prop:separation}
+For $m\ge2$ and $n\ge1$,
+\begin{equation}
+ R_m(n)\le\frac{M_m(n)}{\binom{2n}{n}}.
+ \label{shr:bp:eq:rare-upper}
+\end{equation}
+For $m\ge3$ and $n\ge2$,
+\begin{equation}
+ 0\le R_m(n)-H_m(n)\le\frac{M_m(n)}{\binom{3n}{n}}.
+ \label{shr:bp:eq:core-error}
+\end{equation}
+For $m=2$ the difference is zero.
+\end{proposition}
+\begin{proof}
+In a uniform row interleaving, restrict attention to rows $1$ and $m$.
+Of their $\binom{2n}{n}$ possible relative words, exactly one places all
+of row $1$ before all of row $m$. Dropping other comparisons bounds the
+rare sector and proves \eqref{shr:bp:eq:rare-upper}.
+
+For the remainder, rows $m-1$ and $m$ must both start after row $1$ has
+finished. Among the relative interleavings of these three rows, the
+probability that the first $n$ letters all come from row $1$ is
+\[
+ \frac{(2n)!/(n!)^2}{(3n)!/(n!)^3}=\frac1{\binom{3n}{n}}.
+\]
+Again dropping all other constraints gives an upper bound.
+\end{proof}
+
+These estimates have explicit constants and hold at finite $n$. Once
+the core asymptotic is known, \eqref{shr:bp:eq:core-error} is smaller than the
+core by a polynomial factor times $(16/27)^n$. It is therefore negligible
+at every inverse-power order on the rare scale. We do not claim that
+\eqref{shr:bp:eq:core-error} gives the sharp next exponential sector.
+
+\subsection{[write] The boundary error of Part~I's central cut}
+\label{shr:bp:sec:boundary}
+
+\begin{writenote}[Added 5 October 2026, batch~98]
+This subsection is the write's, not the manuscript's. It gives the leading
+asymptotic of the boundary error asked for in Research question~4 of
+Part~\ref{shr:part:one}, and places the rare sector of this Part inside
+that error (Remark~\ref{shr:bp:rem:q4}). It uses only
+Part~\ref{shr:part:one}'s model and estimates and the hook argument of
+Proposition~\ref{shr:bp:prop:core}. Like the rest of the report it is
+unrefereed; the exact identity (a) and the asymptotic (b) were checked
+against exact values for $m=2,3,4$ (table of Remark~\ref{shr:bp:rem:q4}).
+\end{writenote}
+
+\begin{proposition}[\textbf{[write]} Leading boundary error at the central cut]
+\label{shr:bp:prop:boundary}
+Let $m\ge1$, $n\ge2$, and let $E_{m,n}(1/2)$ be the boundary error of
+Theorem~\ref{shr:thm:cut} at $p=1/2$. Let $X'_1,\ldots,X'_{m-1}$ be
+independent $\operatorname{Bin}(n,1/2)$ variables,
+$\mathcal I'=\{1\le X'_i\le n-1\text{ for all }i\}$, and
+\[
+ W'_n(x)=\prod_{1\le i<j\le m-1}
+ \frac{(x_i-x_j)^2}{(x_i+x_j)(2n-x_i-x_j)}
+ \prod_{i=1}^{m-1}\frac{x_i}{2n-x_i}.
+\]
+\begin{enumerate}[label=(\alph*)]
+\item Exactly,
+\begin{equation}
+ E_{m,n}(1/2)=\frac{2^{1-n}}{(m-1)!}\,
+ \E\bigl[\ind_{\mathcal I'}W'_n(X')\bigr]+D_{m,n},
+ \qquad 0\le D_{m,n}\le 2m(m-1)\,4^{-n}.
+ \label{shr:bp:eq:boundary-exact}
+\end{equation}
+\item As $n\to\infty$,
+\begin{equation}
+ E_{m,n}(1/2)\sim 2^{1-n}\,3^{1-m}J_{m-1}\,(4n)^{-\binom{m-1}2},
+ \qquad J_{m-1}=\prod_{j=0}^{m-2}j!.
+ \label{shr:bp:eq:boundary-lead}
+\end{equation}
+\item Consequently
+$M_m(n)E_{m,n}(1/2)/T_m(n)\sim2^{1-n}3^{1-m}(4n)^{m-1}/(m-1)!$, and, for
+$m\ge2$, $R_m(n)\le M_m(n)E_{m,n}(1/2)$ for every $n\ge2$, with
+\[
+ \frac{M_m(n)E_{m,n}(1/2)}{R_m(n)}\sim
+ \frac{2\cdot3^{m-3}(m-2)!}{\sqrt\pi\,4^{m-2}}\;2^n\,n^{-(2m-3)/2}.
+\]
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+Use the order-statistics model of Section~4.1 at $p=1/2$: $X_i$ counts the
+row-$i$ samples below $1/2$, the $X_i$ are independent
+$\operatorname{Bin}(n,1/2)$, and the proof of Theorem~\ref{shr:thm:cut}
+identifies $E_{m,n}(1/2)$ with $\Pp(\mathcal A\cap\mathcal I^c)$.
+
+(a) On $\mathcal A$ the cells with values below $1/2$ form an order ideal,
+so $X$ is a prefix state \eqref{shr:eq:states}: $X_i=0$ forces
+$X_{i+1}=\cdots=X_m=0$, and $X_i=n$ forces $X_1=\cdots=X_i=n$. Hence on
+$\mathcal A\cap\mathcal I^c$ either exactly one coordinate lies in
+$\{0,n\}$, and then it is $X_m=0$ or $X_1=n$ with every other coordinate
+in $[1,n-1]$, or at least two coordinates lie in $\{0,n\}$. The second
+event, whose probability on $\mathcal A$ we call $D_{m,n}$, has
+probability at most $\binom m2(2\cdot2^{-n})^2=2m(m-1)4^{-n}$.
+
+Let $x=(x_1,\ldots,x_{m-1},0)$ with $n-1\ge x_1>\cdots>x_{m-1}\ge1$. As in
+Section~4.1, $\Pp(\mathcal A\mid X=x)$ is the product of a prefix and a
+suffix probability. Every prefix path to $x$ has last coordinate $0$ and
+first coordinate below $n$, so its states are strict partitions and the
+prefix count is $g^{(x_1,\ldots,x_{m-1})}$. The rotated complement
+\eqref{shr:eq:complement} of $x$ is $(n,n-x_{m-1},\ldots,n-x_1)$, a strict
+positive partition in which only the first part can reach $n$; as in the
+proof of Proposition~\ref{shr:bp:prop:core}, the suffix count is
+$g^{(n,n-x_{m-1},\ldots,n-x_1)}$. Dividing both counts by the multinomial
+numbers of interleavings and using \eqref{shr:eq:shiftedhook}, the pairs
+among $x_1,\ldots,x_{m-1}$ contribute
+$\frac{x_i-x_j}{x_i+x_j}\cdot\frac{x_i-x_j}{2n-x_i-x_j}$ and the pairs of
+the part $n$ with the parts $n-x_i$ contribute $\frac{x_i}{2n-x_i}$, so
+$\Pp(\mathcal A\mid X=x)=W'_n(x_1,\ldots,x_{m-1})$. The weight $W'_n$ is
+symmetric and vanishes at ties; summing over decreasing vectors and
+multiplying by $\Pp(X_m=0)=2^{-n}$, the stratum $\{X_m=0\}$ contributes
+$2^{-n}\E[\ind_{\mathcal I'}W'_n(X')]/(m-1)!$. Reflecting every sample
+$u\mapsto1-u$ and reversing the rows preserves the model and $\mathcal A$
+and maps $X$ to $(n-X_m,\ldots,n-X_1)$, so the stratum $\{X_1=n\}$
+contributes the same. This proves \eqref{shr:bp:eq:boundary-exact}. (For
+$m=1$ there are no pairs, $W'_n=1$, $D_{1,n}=0$, and
+$E_{1,n}(1/2)=2^{1-n}$.)
+
+(b) Put $c=\binom{m-1}2$, $Y_i=(2X'_i-n)/\sqrt n$ and
+$\mathcal C'_n=\{|Y_i|\le\sqrt n/2\text{ for all }i\}$; then
+$\mathcal C'_n\subset\mathcal I'$. On $\mathcal C'_n$, exactly as in
+\eqref{shr:eq:scaledweight},
+\[
+ (4n)^cW'_n(X')=\Delta(Y)^2
+ \prod_{i<j}\Bigl(1-\frac{(Y_i+Y_j)^2}{4n}\Bigr)^{-1}
+ \prod_{i}\frac{1+Y_i/\sqrt n}{3-Y_i/\sqrt n},
+\]
+where every pair factor lies in $[1,4/3]$ and every single factor in
+$[1/7,3/5]$. The right side is at most $(4/3)^c\Delta(Y)^2$, a uniformly
+integrable family because the moments of each fixed degree of the $Y_i$
+are bounded uniformly in $n$ (Section~5.4), and it converges to
+$3^{1-m}\Delta(y)^2$ uniformly on compact sets. Since $Y$ converges in
+distribution to a vector $G$ of independent standard normals,
+$(4n)^c\E[\ind_{\mathcal C'_n}W'_n(X')]\to3^{1-m}\E\Delta(G)^2
+=3^{1-m}(m-1)!\,J_{m-1}$ by \eqref{shr:eq:gaussZ} in $m-1$ variables.
+Off $\mathcal C'_n$, $0\le W'_n\le1$ (Remark~\ref{shr:rem:Rbound} and
+$x_i\le n$), and $\Pp(\mathcal C_n'^{\,c})\le2(m-1)e^{-n/8}$ by
+\eqref{shr:eq:central-tail}, which is $o(n^{-c})$. Inserting this into
+\eqref{shr:bp:eq:boundary-exact}, where $D_{m,n}=O(4^{-n})$ is
+$o(2^{-n}n^{-c})$, gives \eqref{shr:bp:eq:boundary-lead}.
+
+(c) The first relation is \eqref{shr:bp:eq:boundary-lead} divided by
+$T_m(n)/M_m(n)\sim J_m(4n)^{-\binom m2}$ \eqref{shr:eq:mainM}, since
+$J_m=(m-1)!\,J_{m-1}$ and $\binom m2-\binom{m-1}2=m-1$. In the same model
+the rare event $\{D_1<B_m\}$ is the event that every row-$1$ sample is
+below every row-$m$ sample. If the largest row-$1$ sample is below $1/2$,
+then $X_1=n$; otherwise the smallest row-$m$ sample exceeds $1/2$ and
+$X_m=0$. Either way $X\notin\mathcal I$, so
+$R_m(n)/M_m(n)=\Pp(\mathcal A\cap\{D_1<B_m\})
+\le\Pp(\mathcal A\cap\mathcal I^c)=E_{m,n}(1/2)$. The ratio follows from
+\eqref{shr:bp:eq:boundary-lead}, Theorem~\ref{shr:bp:thm:rare-main} and
+$M_m(n)\sim\sqrt m(2\pi n)^{(1-m)/2}m^{mn}$ (Section~5.5): the powers of
+$m^m$ cancel, $\sqrt m/\sqrt{m/2}=\sqrt2$,
+$(2\pi)^{(1-m)/2+(m-2)/2}=(2\pi)^{-1/2}$, $3^{1-m}9^{m-2}=3^{m-3}$,
+$J_{m-1}/J_{m-2}=(m-2)!$, $4^{-\binom{m-1}2+\binom{m-2}2}=4^{2-m}$, and the
+power of $n$ is $-\binom{m-1}2+\frac{1-m}2+\frac{(m-2)^2}2=-\frac{2m-3}2$.
+\end{proof}
+
+At $m=2$, (c) reads $\binom{2n}nE_{2,n}(1/2)\sim\frac{2}{3\sqrt\pi}2^n
+n^{-1/2}$, since $R_2(n)=1$. Part~(a) is also the first step of an
+all-order expansion: the expectation in
+\eqref{shr:bp:eq:boundary-exact} is an interior sum of Part~I's type with
+$m-1$ rows and one extra rational factor per row, so the method of
+Section~5 should expand it to every order in $1/n$. That expansion is not
+carried out here (Section~\ref{shr:bp:sec:further}).
+
+\section{A beta--binomial representation and the leading constant}
+\label{shr:bp:sec:beta}
+
+\subsection{A random cut at the first completion}
+Take $m$ independent rows of $n$ independent uniform random variables on
+$(0,1)$ and sort within each row. Their global ranks are uniform among
+the $M_m(n)$ row interleavings. Let $U$ be the maximum of the top row,
+and let $\mathcal S$ be the event that every entry in the bottom row
+exceeds $U$. Its probability is $\binom{2n}{n}^{-1}$.
+The joint density of $U$ and $\mathcal S$ is
+$n u^{n-1}(1-u)^n$. Consequently
+\begin{equation}
+ U\mid\mathcal S\sim\operatorname{Beta}(n,n+1).
+ \label{shr:bp:eq:betaU}
+\end{equation}
+Conditional on $U=u$ and $\mathcal S$, the numbers of middle-row samples
+below $u$ are independent variables
+\begin{equation}
+ X_i\mid U=u\sim\operatorname{Bin}(n,u),\qquad 1\le i\le r.
+ \label{shr:bp:eq:X}
+\end{equation}
+The $X_i$ are exchangeable but \emph{not} independent after integrating
+out $U$.
+
+Set $\mathcal I=\{1\le X_i\le n-2\text{ for all }i\}$ and define
+\begin{align}
+ W_n(x)&=
+ \prod_{i<j}\frac{(x_i-x_j)^2}{(x_i+x_j)(2n-x_i-x_j)}
+ \prod_{i=1}^{r}
+ \frac{(n-1-x_i)x_i}{(n-1+x_i)(2n-x_i)}.
+ \label{shr:bp:eq:W}
+\end{align}
+Denominators are positive on $\mathcal I$; equal coordinates give zero.
+Every pair factor and every single-coordinate factor belongs to $[0,1]$,
+so $0\le W_n\le1$ there.
+
+\begin{lemma}[Exact mixture identity]
+\label{shr:bp:lem:mixture}
+For all $m,n\ge2$,
+\begin{equation}
+ \frac{H_m(n)}{M_m(n)}=
+ \frac{1}{r!\binom{2n}{n}}
+ \E\bigl[\ind_{\mathcal I}W_n(X)\bigr],
+ \label{shr:bp:eq:mixture}
+\end{equation}
+with the beta--binomial law \eqref{shr:bp:eq:betaU}--\eqref{shr:bp:eq:X}.
+\end{lemma}
+\begin{proof}
+Given the counts $x$, the samples below $U$ in the top and middle rows
+are independent sorted uniforms. Relative to their unconstrained
+multinomial interleavings, the first hook count contributes
+\[
+ \prod_i\frac{n-1-x_i}{n-1+x_i}
+ \prod_{i<j}\frac{x_i-x_j}{x_i+x_j}
+\]
+when $x_1>\cdots>x_r$. Above $U$, the complementary hook count similarly
+contributes
+\[
+ \prod_i\frac{x_i}{2n-x_i}
+ \prod_{i<j}\frac{x_i-x_j}{2n-x_i-x_j}.
+\]
+All cross-cut comparisons are automatic for the legal prefix state.
+The product is $W_n(x)$. Distinct middle counts have exactly one decreasing
+ordering; the mixture law and the weight are symmetric in those counts.
+Thus summing over decreasing counts is $1/r!$ times the unrestricted
+expectation on $\mathcal I$. Multiplying by $\PP(\mathcal S)$ proves the
+identity. This is also a probabilistic derivation of \eqref{shr:bp:eq:hookcore}.
+\end{proof}
+
+\subsection{Scaling and the common Gaussian mode}
+Let
+\begin{equation}
+ \eps=n^{-1/2},\qquad Y_i=\frac{2X_i-n}{\sqrt n},\qquad
+ V_n=2\sqrt n\,(U-\tfrac12),\qquad
+ Z_{i,n}=\frac{2(X_i-nU)}{\sqrt n}.
+ \label{shr:bp:eq:scaling}
+\end{equation}
+Then $Y_i=Z_{i,n}+V_n$. A direct Laplace expansion of the beta density gives
+$V_n\Rightarrow V\sim N(0,1/2)$. Conditional binomial characteristic
+functions, uniformly for $U$ near $1/2$, give joint convergence
+\begin{equation}
+ (Z_{1,n},\ldots,Z_{r,n},V_n)
+ \ \Rightarrow\ (Z_1,\ldots,Z_r,V),
+ \label{shr:bp:eq:CLT}
+\end{equation}
+where the $Z_i$ are independent $N(0,1)$ variables and are independent of
+$V$. For example, expanding
+$(1-U+Ue^{2it/\sqrt n})^n e^{-2itnU/\sqrt n}$ gives the limiting factor
+$e^{-t^2/2}$ on $U=1/2+o(1)$; the beta mass outside that neighborhood tends
+to zero. The same argument applies to a fixed vector of $t_i$.
+
+\begin{writenote}[Added 5 October 2026, batch~98: the convergence \eqref{shr:bp:eq:CLT} in detail]
+The two sentences above are a sketch; here is the argument with its
+uniformity made explicit. The density of $U$ given $\mathcal S$ is
+$f(u)=n\binom{2n}n u^{n-1}(1-u)^n$, so for $|v|<\sqrt n$ the density of
+$V_n$ is
+\[
+ \sqrt n\,\binom{2n}n4^{-n}\Bigl(1-\frac v{\sqrt n}\Bigr)
+ \Bigl(1-\frac{v^2}n\Bigr)^{n-1}\longrightarrow\frac{e^{-v^2}}{\sqrt\pi},
+\]
+the $N(0,1/2)$ density, and Scheff\'e's lemma gives $V_n\Rightarrow V$.
+Conditionally on $U=u$ the $Z_{i,n}$ are independent with characteristic
+function $\varphi_n(t;u)=\bigl(\E e^{ih(\xi-u)}\bigr)^n$, where
+$h=2t/\sqrt n$ and $\xi$ is Bernoulli$(u)$. The cumulant function
+$\kappa(h)=\log\E e^{ih(\xi-u)}$ has $\kappa(0)=\kappa'(0)=0$,
+$\kappa''(0)=-u(1-u)$ and, since $|\E e^{ih(\xi-u)}|\ge1-h^2/8$, a third
+derivative bounded uniformly in $u\in[0,1]$ for $|h|\le1/2$. Hence
+$\log\varphi_n(t;u)=-2u(1-u)t^2+O(|t|^3/\sqrt n)$ uniformly in $u$, for
+$|t|\le\sqrt n/4$. As $|\varphi_n|\le1$,
+\[
+ \E\exp\Bigl(isV_n+i\sum_it_iZ_{i,n}\Bigr)
+ =\E\Bigl[e^{isV_n}e^{-2U(1-U)\sum_it_i^2}\Bigr]+o(1)
+ \longrightarrow\E e^{isV}\,e^{-\sum_it_i^2/2},
+\]
+because $2U(1-U)=\frac12-V_n^2/(2n)$ and $V_n\Rightarrow V$. This is
+\eqref{shr:bp:eq:CLT}.
+\end{writenote}
+
+Let $\Delta(y)=\prod_{i<j}(y_i-y_j)$. Algebraic substitution into
+\eqref{shr:bp:eq:W} gives the exact factorization
+\begin{equation}
+ W_n(X)=(4n)^{-d_{\rm R}}9^{-r}\Delta(Y)^2\Psi_r(\eps,Y)
+ \quad\text{on }\mathcal I,
+ \label{shr:bp:eq:Psidef0}
+\end{equation}
+where
+\begin{align}
+ \Psi_r(\eps,y)
+ &=\prod_{i<j}\left(1-\frac{\eps^2(y_i+y_j)^2}{4}\right)^{-1}\notag\\
+ &\quad\times\prod_{i=1}^{r}
+ \frac{9(1-2\eps^2-\eps y_i)(1+\eps y_i)}
+ {(3-2\eps^2+\eps y_i)(3-\eps y_i)}.
+ \label{shr:bp:eq:Psidef}
+\end{align}
+The factor $9^{-r}$ has a simple origin: at $x_i\sim n/2$, the interaction
+with the completed top row and the unborn bottom row tends to
+$(1/3)(1/3)=1/9$ for each middle row.
+
+\subsection{Gaussian normalization}
+For independent standard normal $Z_i$,
+\begin{equation}
+ \E\Delta(Z)^2=r!J_r.
+ \label{shr:bp:eq:gaussianZ}
+\end{equation}
+One elementary proof writes the Vandermonde determinant in the basis of
+monic Hermite polynomials. Their squared norms for the standard normal
+measure are $j!$; determinant expansion and orthogonality give
+$r!\prod_{j=0}^{r-1}j!$. The Hermite norms themselves follow from
+\[
+ \E\exp(tZ-t^2/2)\exp(sZ-s^2/2)=e^{ts}.
+\]
+Since adding a common scalar does not change a Vandermonde,
+\begin{equation}
+ \Delta(Z_1+V,\ldots,Z_r+V)=\Delta(Z).
+ \label{shr:bp:eq:translation}
+\end{equation}
+Thus the extra beta fluctuation contributes a common Gaussian shift, but
+does not alter the leading Vandermonde normalization.
+
+For completeness, moment convergence is justified by uniform tails.
+The beta density is proportional to
+$[u(1-u)]^{n-1}(1-u)$, and
+$u(1-u)=1/4-(u-1/2)^2$. It follows, by comparing the normalizing integral
+with its central part, that
+$\PP(|V_n|>t)\le C e^{-ct^2}$ in the relevant range, with harmless changes
+of constants near the endpoints. Conditional binomial exponential bounds
+give the same form for $Z_{i,n}$. In particular, all fixed moments of the
+$Y_i$ are uniformly bounded, and for any fixed $0<\eta<1/2$,
+\begin{equation}
+ \PP\{\max_i|Y_i|>n^\eta\}\le C_r e^{-c_r n^{2\eta}}.
+ \label{shr:bp:eq:tails}
+\end{equation}
+These facts also follow from the exact moment formula in the next section.
+
+\begin{writenote}[Added 5 October 2026, batch~98: explicit constants in \eqref{shr:bp:eq:tails}]
+The phrase ``with harmless changes of constants near the endpoints'' can be
+replaced by explicit constants. With $\delta=u-\frac12$, $1-u\le1$ and the
+standard bound $\binom{2n}n\le4^n/\sqrt{\pi n}$,
+\[
+ f(u)\le n\binom{2n}n\bigl(\tfrac14-\delta^2\bigr)^{n-1}
+ \le4\sqrt{n/\pi}\,e^{-4(n-1)\delta^2}.
+\]
+Integrating over $|\delta|>s$ and using $(s+v)^2\ge s^2+v^2$ gives
+$\PP(|U-\frac12|>s)\le2\sqrt{n/(n-1)}\,e^{-4(n-1)s^2}$; with
+$s=t/(2\sqrt n)$ and $n\ge2$, $\PP(|V_n|>t)\le2\sqrt2\,e^{-t^2/2}$ for all
+$t\ge0$. Given $U=u$, Hoeffding's inequality for the $n$ Bernoulli
+variables of row~$i$ gives $\PP(|Z_{i,n}|>t\mid U=u)\le2e^{-t^2/2}$,
+uniformly in $u$. Since $Y_i=Z_{i,n}+V_n$, it follows that
+$\PP(|Y_i|>t)\le5e^{-t^2/8}$ for all $n\ge2$ and $t\ge0$. This gives the
+uniform moment bounds, and \eqref{shr:bp:eq:tails} with $C_r=5r$ and
+$c_r=1/8$, with no exception near the endpoints.
+\end{writenote}
+
+On the central event in \eqref{shr:bp:eq:tails}, $\Psi_r\to1$ with denominators
+uniformly separated from zero. Outside it, $W_n\le1$ makes its contribution
+to \eqref{shr:bp:eq:mixture} smaller than any power of $n^{-1}$, even after
+multiplication by $n^{d_{\rm R}}$. Therefore
+\begin{equation}
+ \frac{H_m(n)}{M_m(n)}\sim
+ \frac{J_r}{\binom{2n}{n}(4n)^{d_{\rm R}}9^r}.
+ \label{shr:bp:eq:core-leading}
+\end{equation}
+Using Stirling's formula for $M_m(n)$ and $\binom{2n}{n}$ gives
+\eqref{shr:bp:eq:rareK} and the leading term of Theorem~\ref{shr:bp:thm:rare-main}.
+Finally \eqref{shr:bp:eq:core-error} transfers it to $R_m(n)$.
+The power is
+\[
+ \frac{m-1}{2}-\frac12+d_{\rm R}=\frac r2+\binom r2=\frac{r^2}{2},
+\]
+which explains the drop from the total-count exponent.
+
+\section{All-order coefficients and the universal first correction}
+\label{shr:bp:sec:coefficients}
+
+\subsection{Exact factorial moments of the mixture}
+For nonnegative integers $k_1,\ldots,k_r$, let $K=k_1+\cdots+k_r$.
+Conditional binomial factorial moments and the beta integral give
+\begin{equation}
+ \E\prod_{i=1}^r\fall{X_i}{k_i}
+ =\left(\prod_{i=1}^r\fall{n}{k_i}\right)
+ \frac{\rise{n}{K}}{\rise{2n+1}{K}}.
+ \label{shr:bp:eq:factorialmoment}
+\end{equation}
+Here falling and rising factorials are distinguished typographically.
+Every joint ordinary moment of $X$ is a finite rational function of $n$,
+by the Stirling-number identity
+$x^a=\sum_k \Stirling{a}{k}\fall{x}{k}$. Therefore every joint moment of
+$Y$ has an effective Laurent expansion in $\eps=n^{-1/2}$. For a monomial
+of total degree $A$, only powers of $\eps$ of parity $A$ occur.
+The bounded-moment argument above ensures that no negative powers survive.
+
+Let $\mathcal E_\eps$ be the linear functional on polynomials in
+$y_1,\ldots,y_r$ obtained by replacing each monomial by this formal moment
+expansion. Set
+\begin{equation}
+ \mathcal Q_r(z)=\frac1{r!J_r}
+ \mathcal E_\eps\!\left[\Delta(y)^2\Psi_r(\eps,y)\right]
+ \bigg|_{\eps^2=z},
+ \qquad Q_r(0)=1.
+ \label{shr:bp:eq:Qr}
+\end{equation}
+This is interpreted coefficient by coefficient, not as convergence of a
+formal infinite series. The symmetry
+$\Psi_r(-\eps,-y)=\Psi_r(\eps,y)$ shows that its coefficient of $\eps^k$
+has polynomial parity $k$. Since $\Delta^2$ has even total degree, the
+moment parity rule shows that the right-hand side of \eqref{shr:bp:eq:Qr}
+contains only even powers of $\eps$. Thus $\mathcal Q_r$ is a well-defined series
+in $z$ with rational coefficients.
+
+The remaining Stirling factor is
+\begin{equation}
+ A_m(z)=\exp\left\{
+ \sum_{k\ge1}\frac{B_{2k}}{2k(2k-1)}
+ \left(m^{1-2k}-m+2-2^{1-2k}\right)z^{2k-1}
+ \right\},
+ \label{shr:bp:eq:outer}
+\end{equation}
+where $B_{2k}$ are Bernoulli numbers. We obtain the explicit all-order rule
+\begin{equation}
+ \boxed{\displaystyle
+ b_{m,j}^{\rm R}=[z^j]A_m(z)\mathcal Q_{m-2}(z).}
+ \label{shr:bp:eq:coefficient-rule}
+\end{equation}
+For a prescribed $j$, all operations are finite: expand $\Psi$ through
+$\eps^{2j}$, take finitely many moments from
+\eqref{shr:bp:eq:factorialmoment}, and truncate \eqref{shr:bp:eq:outer} at $z^j$.
+
+\subsection{Why the formal calculation is an asymptotic theorem}
+\begin{proof}[Completion of the all-order part of Theorem~\ref{shr:bp:thm:rare-main}]
+Fix $L$. On $\max|Y_i|\le n^\eta$, choose any $0<\eta<1/2$.
+Each rational factor of \eqref{shr:bp:eq:Psidef} has denominator bounded away
+from zero for large $n$. Taylor expansion through order $2L+1$ has a
+remainder bounded by
+\[
+ C_{r,L}\eps^{2L+2}(1+\|Y\|)^{N_{r,L}}
+\]
+there, for some fixed exponent $N_{r,L}$. This follows either by finite
+geometric-series remainders in the displayed denominators, or by Taylor's
+formula on the line segment from $0$ to $\eps$; throughout that segment
+$|\eps Y_i|$ tends uniformly to zero. After multiplication by $\Delta^2$,
+uniform bounded moments bound the expected remainder by
+$O_{r,L}(n^{-L-1})$.
+
+The complement of the central event contributes exponentially little to
+the original weighted expectation, by $0\le W_n\le1$ and
+\eqref{shr:bp:eq:tails}. It also contributes exponentially little to each
+polynomial Taylor term, by the same tail bound and higher bounded
+moments. We may consequently replace each truncated polynomial expectation
+by its full exact expectation. Formula~\eqref{shr:bp:eq:factorialmoment} expands
+these rational functions to the desired order with an ordinary rational
+remainder estimate. The parity argument removes half-integral orders.
+This proves the Poincar\'e expansion specified by $\mathcal Q_r$.
+
+Stirling's formula with its fixed-order remainder yields $A_m$ and
+\eqref{shr:bp:eq:coefficient-rule}. Finally
+\[
+ \frac{M_m(n)/\binom{3n}{n}}
+ {M_m(n)/\{\binom{2n}{n}n^{d_{\rm R}}\}}
+ =n^{d_{\rm R}}\frac{\binom{2n}{n}}{\binom{3n}{n}}
+ =O_r\!\left(n^{d_{\rm R}}(16/27)^n\right).
+\]
+Thus the difference between $R_m$ and $H_m$ affects no coefficient of the
+rare-scale inverse-power expansion. All coefficients are rational by
+construction, and the case $r=0$ is the exact identity already noted.
+\end{proof}
+
+The theorem asserts effective coefficients and existence of fixed-order
+error constants. The package does not supply optimized numerical values
+for these constants or a rigorously certified onset of the asymptotic
+regime.
+
+\subsection{An exact Vandermonde identity}
+It is useful to derive the first correction without a large polynomial
+expansion. For $X\sim\operatorname{Bin}(n,p)$ consider
+\begin{equation}
+ F_x(t)=(1+(1-p)t)^x(1-pt)^{n-x}.
+\end{equation}
+The polynomial $P_j(x)=j![t^j]F_x(t)$ is monic of degree $j$. Direct
+binomial expectation gives
+\begin{equation}
+ \E F_X(t)F_X(s)=(1+p(1-p)ts)^n.
+\end{equation}
+Hence the $P_j$ are orthogonal and have squared norms
+$j!\fall{n}{j}[p(1-p)]^j$. Replacing Vandermonde columns by these monic
+polynomials and expanding the determinant gives, for independent
+binomial variables conditional on $U=p$,
+\begin{equation}
+ \E[\Delta(Y)^2\mid U=p]
+ =r!J_r\left(\prod_{j=0}^{r-1}\frac{\fall nj}{n^j}\right)
+ [4p(1-p)]^{d_{\rm R}}.
+ \label{shr:bp:eq:binomialVdm}
+\end{equation}
+Integrating the beta law,
+\begin{equation}
+ \E[U^{d_{\rm R}}(1-U)^{d_{\rm R}}]=
+ \frac{\rise n{d_{\rm R}}\rise{n+1}{d_{\rm R}}}{\rise{2n+1}{2d_{\rm R}}}.
+ \label{shr:bp:eq:betad}
+\end{equation}
+It follows by expanding these finite products that
+\begin{equation}
+ \frac{\E\Delta(Y)^2}{r!J_r}
+ =1-\frac{r(r-1)(2r-1)}{12n}+O_r(n^{-2}).
+ \label{shr:bp:eq:vdm-correction}
+\end{equation}
+This identity isolates the correction caused by finite binomial and beta
+moments before inserting the rational interaction factors.
+
+\subsection{Evaluation of the interaction correction}
+Write $S_1=\sum_i y_i$ and $S_2=\sum_i y_i^2$. Expanding
+\eqref{shr:bp:eq:Psidef} begins with
+\begin{equation}
+ \Psi_r(\eps,y)=1+\eps^2P_1(y)+O(\eps^3),\qquad
+ P_1(y)=\frac{9r-50}{36}S_2+\frac14S_1^2-\frac{4r}{3}.
+ \label{shr:bp:eq:P1}
+\end{equation}
+The $O(\eps^3)$ notation here denotes a formal polynomial expansion;
+the previous proof supplies its expectation-level meaning.
+
+Under the Gaussian law tilted by $\Delta(Z)^2$, two elementary identities
+are
+\begin{equation}
+ \E_*\sum_i Z_i^2=r^2,\qquad
+ \E_*\left(\sum_iZ_i\right)^2=r.
+ \label{shr:bp:eq:gue-moments}
+\end{equation}
+For the first, scale the Gaussian integral: the degree of $\Delta^2$ is
+$r(r-1)$ and the volume dimension is $r$, so differentiation in the
+Gaussian variance gives $r^2$. For the second, separate the center of
+mass from its orthogonal complement. The Vandermonde is independent of
+the center of mass, whose sum coordinate is $N(0,r)$.
+Since $Y_i=Z_i+V$ and $\Var V=1/2$, with the tilt still independent of $V$,
+\begin{equation}
+ \E_*S_2=r^2+r/2,\qquad
+ \E_*S_1^2=r+r^2/2.
+ \label{shr:bp:eq:shifted-moments}
+\end{equation}
+Substitution into \eqref{shr:bp:eq:P1} yields
+\begin{equation}
+ \E_*P_1=\frac{r(9r^2-41r-64)}{36}.
+\end{equation}
+Combining with \eqref{shr:bp:eq:vdm-correction}, the first coefficient of $\mathcal Q_r$ is
+\begin{equation}
+ [z]\mathcal Q_r(z)=\frac{r(3r^2-32r-67)}{36}.
+ \label{shr:bp:eq:q1}
+\end{equation}
+The first coefficient of $A_m$ is
+\begin{equation}
+ [z]A_m(z)=\frac18+\frac{1/m-m}{12}.
+ \label{shr:bp:eq:a1}
+\end{equation}
+Adding \eqref{shr:bp:eq:q1} and \eqref{shr:bp:eq:a1}, with $m=r+2$, gives
+\eqref{shr:bp:eq:rare-b1}. This proves the universal first correction independently
+of the higher-order implementation.
+
+\section{Height five, conditional shapes, and exponential separation}
+\label{shr:bp:sec:five}
+
+\subsection{Three corrections for the A181199 rare subcount}
+Applying \eqref{shr:bp:eq:coefficient-rule} at $m=5$ gives
+\begin{corollary}[Height-five rare expansion]
+\label{shr:bp:cor:five}
+For $R_5(n)=\#\{A:a_{1,n}<a_{5,1}\}$,
+\begin{align}
+ R_5(n)=&\frac{\sqrt5}{93312\pi^{3/2}}
+ \left(\frac{3125}{4}\right)^n n^{-9/2}\notag\\
+ &\times\left(1-\frac{1393}{120n}
+ +\frac{656449}{28800n^2}
+ +\frac{9833844689}{155520000n^3}
+ +O(n^{-4})\right).
+ \label{shr:bp:eq:five}
+\end{align}
+\end{corollary}
+The rational coefficients are finite evaluations of the proven formula,
+not a fit to sequence values. Appendix~\ref{shr:bp:app:algorithm} describes the
+implementation-independent arithmetic used to reproduce them.
+For comparison, the first three corrections at adjacent heights are
+\begin{center}\small
+\begin{tabular}{@{}crrr@{}}
+\toprule
+$m$ & $b_{m,1}^{\rm R}$ & $b_{m,2}^{\rm R}$ & $b_{m,3}^{\rm R}$\\
+\midrule
+$2$ & $0$ & $0$ & $0$\\[2pt]
+$3$ & $-199/72$ & $-6479/10368$ & $-491815/2239488$\\[2pt]
+$4$ & $-979/144$ & $74083/13824$ & $25693405/1990656$\\[2pt]
+$5$ & $-1393/120$ & $656449/28800$ & $9833844689/155520000$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Here $R_5$ is a newly considered refinement of the A181199 counting
+problem; it is not assigned a new OEIS identifier in this report.
+
+\subsection{How rare is the absence of a common active phase?}
+Let $Q_m(n)=T_{m,B^mD^m}(n)$ for $n\ge2$. Then exactly
+\begin{equation}
+ T_m(n)=Q_m(n)+R_m(n).
+ \label{shr:bp:eq:two-sector}
+\end{equation}
+Both $Q_m$ and $R_m$ separately have rational-diagonal generating
+functions: each is a fixed finite sum of the event sectors in
+Theorem~\ref{shr:bp:thm:diagonal-main}, up to the harmless terms at $n=0,1$.
+Using \eqref{shr:bp:eq:priorleading} from the preceding report gives
+\begin{corollary}[Rare-event probability]
+\label{shr:bp:cor:probability}
+For fixed $m\ge2$, a uniformly chosen shifted rectangle satisfies
+\begin{equation}
+ \PP(D_1<B_m)=\frac{R_m(n)}{T_m(n)}
+ \sim\frac{\sqrt\pi\,4^{2m-3}}
+ {9^{m-2}(m-2)!(m-1)!}\,n^{2m-5/2}4^{-n}.
+ \label{shr:bp:eq:rareprob}
+\end{equation}
+At height five, the first correction is
+\begin{equation}
+ \frac{R_5(n)}{T_5(n)}=
+ \frac{1024\sqrt\pi}{6561}\,n^{15/2}4^{-n}
+ \left(1-\frac{509}{24n}+O(n^{-2})\right).
+ \label{shr:bp:eq:rareprob5}
+\end{equation}
+\end{corollary}
+\begin{proof}
+Divide the leading constants and powers in
+\eqref{shr:bp:eq:rareall} and \eqref{shr:bp:eq:priorleading}. The factorial quotient is
+$J_{m-2}/J_m=1/((m-2)!(m-1)!)$, and the powers of $4$ give $4^{2m-3}$.
+For the correction at height five, the preceding report gives
+$b_{5,1}^{\rm total}=48/5$, so subtraction gives
+$-1393/120-48/5=-509/24$.
+\end{proof}
+
+Thus $Q_m$ has the same dominant-scale inverse-power expansion as $T_m$
+to every fixed order, yet their difference has the explicitly identified
+exponential scale $(m^m/4)^n$. This is a combinatorially defined,
+beyond-all-orders refinement. It does \emph{not} by itself identify a
+Stokes multiplier of a chosen analytic interpolation or summation of the
+dominant formal series. There may be other exponentially small structures
+inside $Q_m$, and the next boundary sector remains to be analyzed.
+
+\subsection{The middle shape conditioned on the rare event}
+The same argument gives a probabilistic limit theorem. Use the auxiliary
+uniform-sample model of Section~\ref{shr:bp:sec:beta}. Condition on a legal array
+and on $D_1<B_m$. Let $X_i$ count middle-row entries below the top-row
+maximum $U$, and use the scaling \eqref{shr:bp:eq:scaling}.
+
+\begin{theorem}[Rare conditional shape]
+\label{shr:bp:thm:shape}
+For fixed $m\ge3$, conditional on the rare event, the probability that all
+middle rows are active at the first completion tends to one. On that
+core event, the limiting joint law is
+\begin{equation}
+ (Y_1,\ldots,Y_r,V_n)\Rightarrow
+ (\Lambda_1+V,\ldots,\Lambda_r+V,V),
+ \label{shr:bp:eq:shape}
+\end{equation}
+where $V\sim N(0,1/2)$ is independent of
+$\Lambda_1>\cdots>\Lambda_r$, whose density on the decreasing chamber is
+\begin{equation}
+ \frac1{J_r}\Delta(\lambda)^2
+ \prod_{i=1}^r\frac{e^{-\lambda_i^2/2}}{\sqrt{2\pi}}.
+ \label{shr:bp:eq:orderedGaussian}
+\end{equation}
+All fixed polynomial moments converge as well.
+\end{theorem}
+\begin{proof}
+The first statement is \eqref{shr:bp:eq:core-error} divided by the asymptotic
+for $R_m$. In the mixture representation, conditioning on legality and
+the core multiplies the joint law by $W_n(X)$ and restricts the counts to
+the decreasing chamber. After normalization,
+\eqref{shr:bp:eq:Psidef0}, \eqref{shr:bp:eq:CLT}, and the tail estimates show that the
+limiting weight is $\Delta(Z+V)^2=\Delta(Z)^2$. It is independent of $V$,
+so the common Gaussian mode is not tilted. Restricting the $Z$ coordinates
+to decreasing order changes the normalization from $r!J_r$ to $J_r$.
+The tail estimates with additional polynomial factors give moment
+convergence. The omitted noncore configurations have exponentially small
+conditional probability; their scaled coordinates are bounded by
+$O(\sqrt n)$, so they do not affect any fixed moment.
+\end{proof}
+
+The auxiliary $U$ is a uniform-order-statistic realization of the
+combinatorial cut. The theorem is not a claim that a tableau itself
+contains real-valued sample times. In particular, its statement about
+$Y_i$, the scaled integer row lengths, is intrinsic; the joint statement
+with $U$ uses the specified coupling.
+
+\section{Inverting the rare-count asymptotic profile}
+\label{shr:bp:sec:inverse}
+
+For $m\ge3$ put
+\begin{equation}
+ \lambda_m=m\log m-\log4>0,\qquad
+ \beta_m=\frac{(m-2)^2}{2}>0,
+ \qquad a=\log(y/\mathcal K_m).
+ \label{shr:bp:eq:inverseparams}
+\end{equation}
+The leading continuous profile is
+$y=\mathcal K_m e^{\lambda_m x}x^{-\beta_m}$. Its large solution is
+\begin{equation}
+ x_0=-\frac{\beta_m}{\lambda_m}
+ W_{-1}\!\left(-\frac{\lambda_m}{\beta_m}e^{-a/\beta_m}\right),
+ \label{shr:bp:eq:lambert}
+\end{equation}
+where $W_{-1}$ is the real lower branch. The argument belongs to $(-1/e,0)$
+for sufficiently large $y$. The branch is forced by the requirement
+$x_0\to\infty$; the principal branch gives the small solution instead.
+Lambert-core inversion and inverse-power reversion are standard tools,
+also used for the total sequence in Part~\ref{shr:part:one}
+(Section~\ref{shr:sec:inverse}). Their application here
+uses the different rare-event rate and power.
+
+\begin{proposition}[Two corrections to the inverse profile]
+\label{shr:bp:prop:inverse}
+Write $b_1=b_{m,1}^{\rm R}$, $b_2=b_{m,2}^{\rm R}$,
+$\lambda=\lambda_m$, and $\beta=\beta_m$. The formal large inverse has
+\begin{equation}
+ x=x_0-\frac{b_1}{\lambda x_0}
+ -\frac{1}{x_0^2}
+ \left(\frac{b_2-b_1^2/2}{\lambda}
+       +\frac{\beta b_1}{\lambda^2}\right)
+ +O(x_0^{-3}).
+ \label{shr:bp:eq:inverse2}
+\end{equation}
+Every subsequent coefficient is obtained recursively from
+\eqref{shr:bp:eq:coefficient-rule}. For any fixed sufficiently long truncation
+of the real asymptotic profile, its genuine large real inverse has the
+corresponding finite expansion.
+\end{proposition}
+\begin{proof}
+Take logarithms:
+\[
+ \lambda x-\beta\log x+\log\left(1+b_1/x+b_2/x^2+\cdots\right)=a.
+\]
+Substitute $x=x_0+c_1/x_0+c_2/x_0^2+\cdots$ and use
+$\lambda x_0-\beta\log x_0=a$. At orders $x_0^{-1}$ and $x_0^{-2}$,
+\[
+ \lambda c_1+b_1=0,\qquad
+ \lambda c_2-\beta c_1+b_2-b_1^2/2=0.
+\]
+This gives \eqref{shr:bp:eq:inverse2}. At every later order the next unknown
+coefficient occurs linearly with nonzero coefficient $\lambda$.
+For a fixed real profile truncation, its logarithmic derivative tends to
+$\lambda>0$. Taylor's theorem or the real implicit function theorem then
+turns the recursive formal truncation into the stated inverse asymptotic.
+\end{proof}
+
+For height five, $b_2-b_1^2/2=-535/12$. Thus, with
+$\lambda=\log(3125/4)$ and $\beta=9/2$,
+\begin{equation}
+ x=x_0+\frac{1393}{120\lambda x_0}
+ +\frac1{x_0^2}
+ \left(\frac{535}{12\lambda}+\frac{4179}{80\lambda^2}\right)
+ +O(x_0^{-3}).
+ \label{shr:bp:eq:inverse5}
+\end{equation}
+The leading logarithmic scale can also be read without $W$:
+\[
+ x_0=\frac1\lambda\left(a+\beta\log a-\beta\log\lambda
+            +O\left(\frac{\log a}{a}\right)\right).
+\]
+
+\subsection{A discrete inverse is a staircase}
+The sequence $R_m(n)$ is eventually strictly increasing for $m\ge3$,
+since its successive ratio tends to $e^{\lambda_m}>1$.
+Define $N_m(y)=\min\{n\ge1:R_m(n)\ge y\}$ for large $y$.
+Let $\xi_L(y)$ be the large inverse of the truncated continuous profile
+\[
+ \mathcal K_m e^{\lambda_m x}x^{-\beta_m}
+ \sum_{j=0}^L b_{m,j}^{\rm R}x^{-j}.
+\]
+The fixed-order remainder and a logarithmic derivative bounded away from
+zero imply that, for some $C_{m,L}$ and all sufficiently large $y$,
+\begin{equation}
+ \left\lceil\xi_L(y)-C_{m,L}\xi_L(y)^{-L-1}\right\rceil
+ \le N_m(y)\le
+ \left\lceil\xi_L(y)+C_{m,L}\xi_L(y)^{-L-1}\right\rceil.
+ \label{shr:bp:eq:staircase}
+\end{equation}
+Indeed, the asymptotic relative error is $O(n^{-L-1})$, so the two smooth
+comparison profiles cross the target within that horizontal distance.
+When the two displayed ceilings coincide, their common value is the
+threshold. No such agreement can be asserted uniformly near integer
+crossings without explicit error constants and distance information.
+The package's numerical inverse checks are therefore profile diagnostics,
+not integer-threshold certificates.
+
+\begin{writenote}[Added 5 October 2026, batch~98: the inversion is an instance]
+As for Part~\ref{shr:part:one}'s \eqref{shr:eq:inverseW} (note at the end
+of Section~\ref{shr:sec:inverse}), \eqref{shr:bp:eq:lambert} is a case of
+Theorem~J.23 (\texttt{p0:thm:lambert-core}) of the transseries volume
+\texttt{Analysis/\allowbreak Transseries/\allowbreak docs/\allowbreak series-\allowbreak and-\allowbreak transseries/\allowbreak Transseries\_\allowbreak And\_\allowbreak Inversion/},
+with $a=\lambda_m>0$ and $b=-\beta_m<0$, whose branch rule for $b<0$
+selects $W_{-1}$; the caution about integer thresholds and
+\eqref{shr:bp:eq:staircase} are the separation condition of that volume's
+staircase theorem J.43 (\texttt{p0:thm:staircase}). The manuscript itself
+calls these tools standard. Two steps are argued in one sentence each and
+are recorded in Section~\ref{shr:bp:sec:further}: the last sentence of
+Proposition~\ref{shr:bp:prop:inverse} (that the genuine real inverse has
+the formal expansion) and the staircase \eqref{shr:bp:eq:staircase}, whose
+constant $C_{m,L}$ and range of validity are existential.
+\end{writenote}
+
+\section{Exact checks, numerical diagnostics, and reproducibility}
+\label{shr:bp:sec:computation}
+
+\subsection{Independent computations}
+The package includes three genuinely different finite enumerations:
+unit-step prefix-state dynamic programming; an independent bitmask
+order-ideal enumerator built directly from the cell comparisons; and an
+event-skeleton evaluator using the signed multinomial kernel. The hook
+core sum and the symbolic beta-moment expansion are separate again.
+No candidate OEIS recurrence is used to generate a test value.
+
+The verification script completed \textbf{1,954 exact checks}. The
+categories and counts are recorded in \texttt{data/verification.json}:
+\begin{center}\small
+\begin{tabular}{@{}lr@{}}
+\toprule
+Check & Number\\
+\midrule
+Independent poset enumeration versus prefix states & 28\\
+Reflection kernel versus independent chamber walks & 887\\
+Event decomposition versus prefix states & 25\\
+Event-word realizability and rotation symmetry & 640\\
+Rare event-word sum and the worked example & 21\\
+OEIS reference values (heights four and five) & 20\\
+Core lower bound, separation bound, and core error bound & 228\\
+Classical Catalan and small-width controls & 64\\
+Universal first correction and saved higher coefficients & 7\\
+Common-mode Gaussian moments and exact beta moments & 34\\
+\midrule
+Total & 1954\\
+\bottomrule
+\end{tabular}
+\end{center}
+The reference terms are small data excerpts from A181198 and A181199,
+with source URLs and access date in the audit. The tests regenerate these
+values rather than assuming their recurrence. Finite checks corroborate
+the arguments; they are not proofs of an infinite identity or a substitute
+for peer review.
+
+\subsection{Accuracy on the rare exponential scale}
+Let $\mathcal L_5(n)$ denote the leading term in \eqref{shr:bp:eq:five}, and put
+$\mathcal A_{5,L}(n)=\mathcal L_5(n)\sum_{j=0}^L b_{5,j}^{\rm R}n^{-j}$.
+The following entries are relative errors $\mathcal A_{5,L}(n)/R_5(n)-1$
+computed against exact integer rare counts.
+\begin{center}\small
+\begin{tabular}{@{}rrrrr@{}}
+\toprule
+$n$ & $L=0$ & $L=1$ & $L=2$ & $L=3$\\
+\midrule
+$10$ & $4.46198$ & $-1.87847$ & $-0.633499$ & $-0.288127$\\
+$20$ & $1.05994$ & $-0.135683$ & $-0.0183006$ & $-0.00201881$\\
+$40$ & $0.379221$ & $-0.0210405$ & $-0.00139232$ & $-0.0000296524$\\
+$60$ & $0.229776$ & $-0.00815163$ & $-0.000365317$ & $-0.00000531141$\\
+\bottomrule
+\end{tabular}
+\end{center}
+These values illustrate both the usefulness of the corrections and the
+slow onset of the leading asymptotic at height five. The negative
+first-order approximation at $n=10$ is not a contradiction: fixed-order
+asymptotic expansions are not guaranteed positive or accurate at small
+$n$.
+
+The core already captures the rare count particularly well at moderate
+width:
+\begin{center}\small
+\begin{tabular}{@{}rll@{}}
+\toprule
+$n$ & $R_5(n)/\mathcal L_5(n)$ & $H_5(n)/R_5(n)$\\
+\midrule
+$10$ & $0.183083833013$ & $0.862684900894$\\
+$20$ & $0.485450790529$ & $0.999319561936$\\
+$40$ & $0.725047021487$ & $0.999999971834$\\
+$60$ & $0.813156328776$ & $0.999999999998899$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The underlying integer values and 70-digit calculations are provided in
+\texttt{data/numerics.csv}. Displayed decimals are diagnostics, not
+interval enclosures.
+
+\subsection{Reproducing the package}
+From the package root, a Python environment with SymPy and mpmath can run
+\begin{verbatim}
+python code/verify.py
+python code/coefficients.py --height 5 --order 3
+python code/numerics.py
+python code/inverse_profile.py --index 60 --height 5
+\end{verbatim}
+The first command reruns the exact tests and writes their log. The second
+regenerates the three height-five rational corrections. The third
+regenerates the decimal comparison tables from exact rare counts.
+The fourth checks the inverse profile at a target obtained from an exact
+rare count; it is not a threshold-certification procedure.
+The tested environment is Python 3.13.5, SymPy 1.14.0, and mpmath 1.3.0.
+The standard-library enumerators themselves do not require either
+symbolic or numerical package. No Maple diagonal-elimination computation,
+Lean proof, or Rocq proof is claimed.
+
+\begin{writenote}[Added 5 October 2026, batch~98: the shipped layout]
+``The package'' in this section is the delivered archive. In ProveIt its
+files carry the prefix \texttt{02-boundary-phases-}:
+\begin{center}\footnotesize
+\begin{tabular}{@{}ll@{}}
+\toprule
+Delivered as & Shipped as\\
+\midrule
+\texttt{code/}\emph{name}\texttt{.py} (five scripts) & \texttt{code/02-boundary-phases-}\emph{name}\texttt{.py}\\
+\texttt{build.sh} & \texttt{code/02-boundary-phases-build.sh}\\
+\texttt{data/}\emph{name} (nine records) & \texttt{data/02-boundary-phases-}\emph{name}\\
+\texttt{requirements.txt} & \texttt{data/02-boundary-phases-requirements.txt}\\
+\texttt{notes/PROPOSED\_OEIS\_NOTE.md} & \texttt{data/02-boundary-phases-notes-PROPOSED\_OEIS\_NOTE.md}\\
+\texttt{notes/SOURCES\_AND\_STATUS.md} & \texttt{02-boundary-phases-notes-SOURCES\_AND\_STATUS.md}\\
+\bottomrule
+\end{tabular}
+\end{center}
+The scripts import one another and read and write \texttt{data/} under
+their delivered names (\texttt{verify.py} imports \texttt{tableaux}, and
+every script sets its root to the parent of \texttt{code/}), and
+\texttt{build.sh} changes to its own directory; so they run only on a copy
+with the delivered names restored, never in place, and the README of the
+report gives the commands. At intake (5~October 2026, on such a copy;
+Python~3.13.5, SymPy~1.14.0, mpmath~1.3.0) \texttt{verify.py} passed all
+1{,}954 checks in 66~s (the package recorded 23~s), \texttt{numerics.py},
+\texttt{coefficients.py --height 5 --order 3} and
+\texttt{inverse\_profile.py --index 60 --height 5} reproduced the shipped
+records after removal of carriage returns, and the only differences were
+the timing fields of \texttt{verification.json}, \texttt{verification.txt}
+and \texttt{numerics.json}. The check table above merges some of the
+script's sixteen categories (its $640=320+320$, $21=20+1$, $228=3\cdot76$,
+$7=4+3$ and $34=6+28$); the total agrees.
+
+\texttt{code/\allowbreak 02-boundary-phases-verify.py} embeds the first ten
+terms of A181198 and A181199 as reference values. They are OEIS content,
+published by The OEIS Foundation Inc.\ under the Creative Commons
+Attribution-ShareAlike 4.0 licence, so those values are third-party data
+under that licence, not MIT-0. The draft
+\texttt{data/\allowbreak 02-boundary-phases-notes-PROPOSED\_OEIS\_NOTE.md}
+is headed ``NOT SUBMITTED'' and stays so: nothing was submitted to OEIS by
+the package's author or by the intake, and its instruction not to remove
+the conjectural status of the displayed recurrences stands.
+\end{writenote}
+
+\section{Further research questions and concrete next steps}
+\label{shr:bp:sec:future}
+
+\begin{question}[Certify the particular low-order recurrences]
+Convert the event sum at heights four and five to a reduced rational
+integral, compute a telescoper, and compare it with the conjectured OEIS
+operators. A successful certificate must also control singular initial
+indices. This would settle a stronger statement than the existence theorem
+proved here and could resolve Conjectures~18 and~19 of \cite{KK}.
+\end{question}
+
+\begin{question}[Reduce the dimension of the exact formula]
+The bound $m(m-1)$ is deliberately structural rather than optimal. Can
+adjacent chamber kernels be convolved before summation, or can a
+Pfaffian/determinantal identity absorb the ordered births and deaths?
+A substantially smaller representation would make the constructive
+D-finiteness theorem computationally practical at larger heights.
+\end{question}
+
+\begin{question}[Determine deeper boundary sectors]
+The error in \eqref{shr:bp:eq:core-error} contains arrays for which two or more
+bottom rows are unborn at the first completion. Determine its sharp
+rate, constant, and all-order expansion, then stratify by the number of
+unborn rows and early completions. The crude multinomial bound supplies
+an upper rate, not the next asymptotic term.
+\end{question}
+
+\begin{question}[Find minimal differential complexity]
+How do the minimal recurrence order, polynomial degree, and minimal
+rational-diagonal dimension grow with $m$? Does the event decomposition
+impose a useful uniform bound much smaller than a general elimination
+bound? The conjectured small orders at heights four and five suggest
+substantial cancellation that the existence proof does not explain.
+\end{question}
+
+\begin{question}[Describe event-rank limit laws]
+Corollary~\ref{shr:bp:cor:marks} gives exact D-finite moment totals. Use these
+or the beta representation to derive joint laws for $B_i,D_i$, both
+unconditionally and under $D_1<B_m$. Determine whether the one-time
+conditional shape theorem extends to a process of interacting paths near
+the first completion.
+\end{question}
+
+\begin{question}[Make height growth uniform]
+The proofs fix $m$. Determine ranges $m=m(n)$ in which the Gaussian
+reduction and rare-sector asymptotics remain uniform. The dimensions of
+the Vandermonde and the interaction product grow quadratically, so fixed
+height error estimates cannot simply be reused. Identify the crossover
+between a probable common active phase and a boundary-dominated regime.
+\end{question}
+
+\begin{question}[Obtain certified finite-width bounds and inversion]
+Replace the existential remainders in \eqref{shr:bp:eq:rareall} by computable,
+useful bounds with explicit onset. Combine them with
+\eqref{shr:bp:eq:staircase} to certify integer thresholds, including inputs very
+close to an integer crossing. This requires more than high-precision
+floating-point evaluation of the asymptotic series.
+\end{question}
+
+\begin{question}[Generalize and formalize the finite-event method]
+Investigate unequal row lengths and other fixed-offset antidiagonal
+constraints whose active states may still be described by a finite
+collection of reflection chambers. Separately, formalize the prefix-state
+bijection, reflection involution, and binomial-sum encoding in a proof
+assistant. Each is a finite combinatorial component with a clear interface;
+a formal proof of the analytic rare-event expansion is a larger second
+stage.
+\end{question}
+
+\begin{writenote}[Added 5 October 2026, batch~98: the questions of Part~II and Part~I]
+The eight questions above are the manuscript's Research questions~1--8,
+numbered~8--15 here. Question~8 refines Part~\ref{shr:part:one}'s
+Research question~1 (a telescoper route from the event sum, and
+Conjectures~18--19 of \cite{KK}); Question~11 is the open second half of
+Part~\ref{shr:part:one}'s Research question~7; Questions~12, 13 and~14
+continue Research questions~5, 3 and~6 of Part~\ref{shr:part:one}.
+\end{writenote}
+
+\subsection{Further questions and research recorded at the write}
+\label{shr:bp:sec:further}
+
+Added 5 October 2026, batch~98, under Vladimir Reshetnikov's standing rule
+that unproved claims are recorded as open questions rather than dropped.
+Each item names its source, the argument it came with, and what is
+missing.
+\begin{enumerate}[label=(F\arabic*),leftmargin=*]
+\item \emph{Other exponentially small structures} (the manuscript, after
+Corollary~\ref{shr:bp:cor:probability}). The text says there ``may be
+other exponentially small structures inside $Q_m$, and the next boundary
+sector remains to be analyzed''. No argument is offered either way;
+Proposition~\ref{shr:bp:prop:boundary} shows that the boundary error of
+Part~\ref{shr:part:one}'s central cut has rate $2^{-n}$, far above the
+rare rate, but that error is an artefact of the cut, not a sector of
+$T_m$. Missing: a classification of the event sectors of
+Theorem~\ref{shr:bp:thm:skeleton} by exponential rate.
+\item \emph{All orders for the boundary error} (the write;
+Research question~4 of Part~\ref{shr:part:one}, re-scoped).
+Proposition~\ref{shr:bp:prop:boundary} gives the leading term of
+$E_{m,n}(1/2)$. Sketch: by \eqref{shr:bp:eq:boundary-exact} the leading
+stratum is an interior sum with $m-1$ independent binomial rows and the
+extra factor $\prod_i(1+\eps Y_i)/(3-\eps Y_i)$, whose odd powers of
+$\eps$ cancel in expectation by the symmetry $Y\mapsto-Y$; Section~5's
+moment polynomials and Taylor control should give an expansion in powers
+of $1/n$. Missing: writing that argument, computing its coefficients, and
+the analogous analysis of the $O(4^{-n})$ strata $D_{m,n}$ and of how the
+interior sum and the boundary terms combine.
+\item \emph{Sketch-level steps of Sections~\ref{shr:bp:sec:beta},
+\ref{shr:bp:sec:five} and~\ref{shr:bp:sec:inverse}.} The joint convergence
+\eqref{shr:bp:eq:CLT} and the tail bound \eqref{shr:bp:eq:tails} were
+sketches; the write's notes after them supply complete arguments. Still
+argued only in outline: the moment convergence in
+Theorem~\ref{shr:bp:thm:shape} (``the tail estimates with additional
+polynomial factors give moment convergence''; with the explicit tails it
+reduces to uniform integrability of $|Y|^kW_n(X)/\E W_n(X)$, which needs
+$W_n\le Cn^{-d_{\rm R}}\Delta(Y)^2$ on the central event and the
+exponential tails off it); the last sentence of
+Proposition~\ref{shr:bp:prop:inverse} (the genuine real inverse has the
+formal expansion: a real implicit-function argument, as in Theorem~J.23 of
+the transseries volume); and the staircase \eqref{shr:bp:eq:staircase},
+whose constant $C_{m,L}$ and threshold for ``sufficiently large $y$'' are
+existential (Research question~14 asks for explicit ones).
+\item \emph{Priority of Theorem~\ref{shr:bp:thm:diagonal-main}} (the
+manuscript and its source audit). The audit searched the OEIS entries,
+Kauers--Koutschan, Bostan--Lairez--Salvy, Sun and the web for the sequence
+identifiers with ``proved'', ``D-finite'', ``shifted rectangles'' and
+``diagonal'', and found no earlier proof; it did not search the general
+literature on D-finiteness of linear-extension counts of fixed-height
+posets or of walks in Weyl chambers, where the theorem might be a known
+special case. Missing: that search.
+\end{enumerate}
+
+\section{Conclusion}
+The obstruction in the shifted-rectangle model is not the strict
+interior walk but the coexistence of births, completions, and two kinds
+of boundary ties. Recording those events turns the exact enumeration into
+a finite binomial construction. That proves rational diagonality and
+D-finiteness for every fixed height without a guessed recurrence.
+
+The same boundaries also carry information invisible to the dominant
+inverse-power expansion. The absence of a common active phase has rate
+$4^{-n}$ relative to the main sequence, an explicit polynomial multiplier,
+and its own all-order expansion. A random first-completion cut exposes
+both the factor $9^{-r}$ and a Gaussian common mode independent of the
+Vandermonde repulsion. These statements are precise additions to the
+preceding asymptotic report. They leave clear next targets: compact
+operators, the specific OEIS recurrence certificates, and deeper
+exponential boundary strata.
 
 \appendix
 \section{A direct proof of the shifted hook product}\label{shr:app:hook}
@@ -1545,6 +3567,119 @@ symbolic derivation in Section~6. Higher printed entries are exact
 evaluations of the proved finite formula, not inferred from observed
 numerical errors.
 
+\section{A fully finite recipe for the exact sum}
+\label{shr:bp:app:exact}
+\begin{writenote}[Added 5 October 2026, batch~98]
+Appendices~C and~D belong to Part~\ref{shr:bp:part}: they are the
+manuscript's Appendices~A and~B.
+\end{writenote}
+For clarity, the diagonal theorem can be implemented without making any
+choices suggested by numerical data. The following recipe has fixed
+size once $m$ is fixed.
+
+First list all Dyck words of semilength $m$. For a chosen word, make one
+vector $v_s$ of length $r_s$ for each interval $0\le s<2m$, and replace
+the top coordinate before each completion by $n-1$. Sum every remaining
+coordinate from $0$ to $n$. Construct $u_0=()$ and the later $u_s$ using
+\eqref{shr:bp:eq:skeletonmap}. Insert $H$ factors for
+\[
+ v_{s,r_s}\ge1,\quad v_{s,1}\le n-1,\quad
+ v_{s,i}-v_{s,i+1}\ge1,
+\]
+where the conditions with coordinates are omitted when $r_s=0$.
+For a birth with $r_s>0$, also insert $H(v_{s,r_s}-2)$.
+The already substituted completion coordinate enforces its event condition.
+
+For each interval independently choose a permutation
+$\sigma_s\in\Sym_{r_s}$, multiply its sign, and set
+\[
+ a_{s,i}=v_{s,i}-u_{s,\sigma_s(i)}.
+\]
+Multiply the binomial product \eqref{shr:bp:eq:binomialM} for this displacement
+vector. Sum over the finitely many permutations and endpoint coordinates,
+and then over the words. This expression equals $T_m(n)$ for every
+$n\ge2$ by the bijective proof of Theorem~\ref{shr:bp:thm:skeleton}.
+
+The endpoint-coordinate order in this recipe can be arbitrary; using
+nested partial sums and then affine substitution of their upper bounds
+realizes the rectangular sums in the binomial-sum algebra. Values outside
+the intended polytope are killed by the explicit $H$ factors. In
+particular, one never applies a recurrence or divides by a factor that
+could vanish at a summation endpoint.
+
+The delivered evaluator uses the same formula more efficiently by
+iterating over decreasing endpoint tuples directly and caching suffix
+computations. That optimization changes neither the mathematical formula
+nor its fixed-dimensional binomial nature. It is not claimed to beat the
+prefix dynamic program for every input.
+
+\section{An implementation-independent coefficient algorithm}
+\label{shr:bp:app:algorithm}
+The symbolic routine can be reproduced using rational polynomial
+arithmetic alone. Here are sufficient details to fix every convention.
+For a nonnegative integer $a$, form the polynomial in $p$
+\begin{equation}
+ C_a(n,p)=\sum_{b=0}^a\sum_{k=0}^b
+ \binom ab2^b(-n)^{a-b}\Stirling{b}{k}\fall nk\,p^k.
+ \label{shr:bp:eq:centeredC}
+\end{equation}
+It is exactly $\E[(2X-n)^a\mid U=p]$.
+For a monomial $y_1^{a_1}\cdots y_r^{a_r}$, set $A=\sum_i a_i$ and
+multiply $\prod_i C_{a_i}(n,p)=\sum_{k=0}^A c_k(n)p^k$.
+Then
+\begin{equation}
+ \E\prod_iY_i^{a_i}
+ =n^{-A/2}\sum_{k=0}^A c_k(n)
+ \frac{\rise nk}{\rise{2n+1}k}.
+ \label{shr:bp:eq:moment-rational}
+\end{equation}
+A convenient common denominator is $\rise{2n+1}A$; its numerator is
+\begin{equation}
+ \sum_{k=0}^A c_k(n)\rise nk\rise{2n+1+k}{A-k}.
+ \label{shr:bp:eq:moment-numerator}
+\end{equation}
+Reverse the numerator and denominator polynomials and perform ordinary
+power-series division at $1/n=0$, retaining the extra factor $n^{-A/2}$.
+This is the exact moment functional $\mathcal E_\eps$ used in
+\eqref{shr:bp:eq:Qr}. It avoids repeated simplification of many separate
+rational functions.
+
+To expand the single-coordinate interaction in \eqref{shr:bp:eq:Psidef}, write
+\begin{equation}
+ \frac{1-(2+y^2)\eps^2-2y\eps^3}
+ {1-(6+y^2)\eps^2/9+2y\eps^3/9}
+ =\sum_{k\ge0}c_k(y)\eps^k.
+ \label{shr:bp:eq:single-series}
+\end{equation}
+With $c_k=0$ for $k<0$, its coefficients satisfy
+\begin{equation}
+ c_k=N_k+\frac{6+y^2}{9}c_{k-2}-\frac{2y}{9}c_{k-3},
+ \quad
+ N_0=1,\ N_2=-(2+y^2),\ N_3=-2y,
+ \label{shr:bp:eq:single-rec}
+\end{equation}
+and all other $N_k$ are zero. The pair interaction contributes the
+geometric series
+\[
+ \sum_{k\ge0}\frac{(y_i+y_\ell)^{2k}}{4^k}\eps^{2k},\qquad i<\ell.
+\]
+
+Multiply these finitely truncated factors, then multiply by
+$\Delta(y)^2$. Apply \eqref{shr:bp:eq:moment-rational} to each monomial, divide
+by $r!J_r$, and finally multiply by the truncated exponential
+\eqref{shr:bp:eq:outer}. No asymptotic fitting or guessed differential equation
+enters this calculation. For the height-five coefficients in
+\eqref{shr:bp:eq:five}, a truncation at $\eps^6$ suffices.
+
+As intermediate checks, the engine gives
+\[
+ [z]\mathcal Q_1=-\frac83,\qquad
+ [z]\mathcal Q_2=-\frac{119}{18},\qquad
+ [z]\mathcal Q_3=-\frac{34}{3},
+\]
+which also follow from \eqref{shr:bp:eq:q1}. The package stores exact coefficient
+strings and reruns their derivation in \texttt{code/verify.py}.
+
 \begin{thebibliography}{99}
 \bibitem{oeis196} The OEIS Foundation Inc.,
 \emph{A181196: arrays increasing in four directions}.
@@ -1581,6 +3716,13 @@ Journal of Integer Sequences \textbf{26} (2023), article 23.4.5.
 The arXiv PDF inspected has Section 6.4 on the two shifted-rectangle
 sequences; pagination differs from that cited on the OEIS pages.
 
+\bibitem{BLS}
+A. Bostan, P. Lairez, and B. Salvy,
+\emph{Multiple binomial sums},
+Journal of Symbolic Computation \textbf{80}, Part 2 (2017), 351--386.
+\url{https://arxiv.org/abs/1510.07487}.
+DOI: \href{https://doi.org/10.1016/j.jsc.2016.04.002}{10.1016/j.jsc.2016.04.002}.
+See Definition 1.1, Theorem 3.5, and Corollary 3.6.
 \bibitem{Sun} P. Sun,
 \emph{Enumeration of standard Young tableaux of shifted strips with
 constant width}, Electronic Journal of Combinatorics \textbf{24}(2)
