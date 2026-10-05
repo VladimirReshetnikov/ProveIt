@@ -1064,11 +1064,14 @@ explicit (proof below): with
 \[
 g_h(x)=\frac{2h-1}{h-1+x}-\log\frac{h-1+x}{h-x},\qquad 0\le x\le1,
 \]
-one has $Tg_h=hg_h$, and for every $n\ge1$, in $L^2[0,1]$,
+one has $Tg_h=hg_h$, and for every $n\ge1$ the distance in $L^2[0,1]$
+between the Bernstein-smoothed row and its projection is explicit:
 \[
 \Bigl\|\frac2{n!}\sum_{p=1}^nP_{n,p}B_{p-1,n}
--h^n\frac{\langle1,g_h\rangle}{\norm{g_h}^2}\,g_h\Bigr\|\le1.
+-h^n\frac{\langle1,g_h\rangle}{\norm{g_h}^2}\,g_h\Bigr\|^2
+=\int_0^1t^{2n}w(t)\dd t=2r_{2n}\sim\frac1{2n\log^2n}.
 \]
+So the distance is exactly $\sqrt{2r_{2n}}\sim(2n\log^2n)^{-1/2}\to0$.
 \emph{Proof.} For real $\lambda>h$, Lemma~\ref{ccp:lem:resolvent} gives
 $(\lambda-T)g_\lambda=D(\lambda)\cdot1$ with $g_\lambda=c/u-\log(u/v)$ the
 numerator of \eqref{ccp:eq:f}. For $\lambda\ge h>1$ both $u=\lambda-1+x$ and
@@ -1081,11 +1084,25 @@ with $h$ a simple isolated eigenvalue. Let $P$ be the orthogonal projection
 onto $\C g_h$. The self-adjoint operator $T$ leaves $g_h^\perp$ invariant;
 the spectrum of its restriction lies in that of $T$ and does not contain
 the isolated point $h$, which would otherwise be an eigenvalue with an
-eigenvector orthogonal to $g_h$. Hence the restriction has norm at most $1$,
-and $T^n1=h^nP1+T^n(1-P)1$ with $\norm{T^n(1-P)1}\le\norm{(1-P)1}\le1$.
-Lemma~\ref{ccp:lem:bernstein} identifies $T^n1$ with the Bernstein sum.
-$\square$ (Consistently, $\norm{P1}^2=2k$ is the atom of
-\eqref{ccp:eq:measure}.) Missing: passing from this $L^2$ statement about
+eigenvector orthogonal to $g_h$. Hence the restriction has spectrum in
+$[0,1]$. Since $P$ commutes with $T$,
+$T^n1=h^nP1+T^n(1-P)1$ with the two terms orthogonal, and
+$\norm{T^n(1-P)1}^2=\langle1,T^{2n}1\rangle-h^{2n}\norm{P1}^2
+=2b_{2n}-2kh^{2n}=2r_{2n}$ by \eqref{ccp:eq:moments}, $\norm{P1}^2=2k$
+(the atom of \eqref{ccp:eq:measure}) and \eqref{ccp:eq:spectral}; the
+asymptotic is \eqref{ccp:eq:equivalents}. In particular the distance is at
+most $\sqrt{1-2k}<0.57$ for every $n$ (by \eqref{ccp:eq:mass}) and tends
+to $0$. Lemma~\ref{ccp:lem:bernstein} identifies $T^n1$ with the Bernstein
+sum. $\square$ (Dated note, 5~October 2026: the first version of this
+question stated only a bound. Its display ended in ``$\le1$'' where the
+identity and its asymptotic now stand, and its proof ended ``Hence the
+restriction has norm at most $1$, and $T^n1=h^nP1+T^n(1-P)1$ with
+$\norm{T^n(1-P)1}\le\norm{(1-P)1}\le1$'', followed by the remark
+``Consistently, $\norm{P1}^2=2k$ is the atom of \eqref{ccp:eq:measure}''.
+An independent check made by the intake after the write found that bound
+valid but far from sharp and supplied the exact identity, in which the
+remark has become a step of the proof; see the end of this section.)
+Missing: passing from this $L^2$ statement about
 Bernstein-smoothed rows to the coefficients $P_{n,p}$ themselves, which
 needs a separate coefficient analysis, and the boundary behaviour.
 
@@ -1136,6 +1153,58 @@ not here; the intake checked only that it reproduces the 200 terms of the
 OEIS b-file. Missing: a reading of the four cited papers against the
 source's summaries, and an independent literature search.
 \end{enumerate}
+
+\paragraph{Independent check of the write (dated note, 5~October 2026).}
+An independent adversarial check of the two proofs this write supplied, made
+by the intake after the write, found both valid:
+Proposition~\ref{ccp:prop:disk} and the profile statement of
+Question~\ref{ccp:q:profile}. It found no counterexample and no gap in
+either proof chain. The profile bound ``$\le1$'' was true but far from
+sharp; it is replaced where it stands by the exact distance
+$\sqrt{2r_{2n}}$, with a dated note keeping the first wording. The check
+reread every step and tested the constants numerically with mpmath at 30--50
+digits, using the triangle, the density $w$ and the function $H$ of a copy
+of the shipped verifier \nolinkurl{code/verify_a196275.py}.
+
+For Proposition~\ref{ccp:prop:disk}: the interpolation identity
+$\ee^{F(n+1)}(1+S(n+1))=a_n$ holds to $10^{-30}$ for $n=1,2,5,10,20$;
+$M_H\approx1.480$, attained near $u\approx2.42$; $A_0(\frac14)=0.5126$;
+$1+q$ ranges over $[-0.177,0.9995]$ on $(0,1]$; the minimum of
+$4H(u)\log^2(1/u)$ on $(0,\ee^{-7}]$ is $4.07$, against the required $1$;
+and $I(X-\frac14)/I(X)$ is $1.19$ at $X=3$, $1.047$ at $X=5$ and $1.0003$ at
+$X=1000$, so the factor $2$ holds from $X=1.5$ on, far below the proof's
+$X_2\ge\ee^7$. On the circle $|u|=1/(4p)$ (48 points) at
+$X_*=3,4,8,20,40$, the ratio $\max|S(X_*+u)|/S_*$ is at most $1.171$
+(claimed: $2h^{1/4}\approx2.170$), $\min|1-\ee^{-G(u)}|/(p|u|)$ is at least
+$0.885$ (claimed: $0.45$), and $\max p|Q(u)|/S_*$ is at most $1.105$
+(claimed: $K\approx5.425$); the constants are crude, by factors of about $2$
+and $5$, but correct. The hypothesis $R\ge2$ of part~(4), that is
+$8KS_*\le\frac12$, fails at $X_*=3$ ($8KS_*\approx0.66$) and holds at
+$X_*=4$ ($8KS_*\approx0.31$) and beyond, since $S$ is decreasing; so in
+practice part~(4) applies from about $X_*=4$ on, although the proposition
+claims only some threshold $X_1$. At $X_*=4$ and $X_*=8$ the check took the
+Taylor coefficients of $Q$ by a discrete Fourier transform on $|u|=1/(8p)$,
+summed the Lagrange series \eqref{ccp:eq:lagrange}, and compared it with
+the root of $F(X)+\log(1+S(X))=F(X_*)$ found by \texttt{findroot}. The
+partial sums converge to that root (at $X_*=8$ the remainder after $M=6$ is
+$1.2\cdot10^{-24}$), every coefficient satisfies $|u_M|\le rR^{-M}$, and
+every remainder is far below the bound $(8KS_*)^{M+1}/(4p)$ (at $X_*=4$,
+$M=3$: $1.1\cdot10^{-12}$ against $1.2\cdot10^{-3}$). The two-sector formula
+\eqref{ccp:eq:twosectors} matches the first two Lagrange terms to $10^{-22}$;
+at $X_*=4$ its residual against the root is $6\cdot10^{-9}$, below
+$S_*^3/p\approx2\cdot10^{-7}$.
+
+For Question~\ref{ccp:q:profile}: at 50 digits $Tg_h-hg_h$ is about
+$10^{-51}$ at $x=0$, $0.1$, $0.37$, $0.5$, $0.9$ and $0.999$ (the direct
+verification works at $\lambda=h$ itself, so the limit $\lambda\downarrow h$
+in the proof is not even needed); $\langle1,g_h\rangle=(2h-1)(2-1/h)
+=2.26526856\ldots$; $\norm{P1}^2=0.683822263\ldots=2k$ to all digits; and
+$\langle1,T^n1\rangle=2b_n$ exactly for the Bernstein sums built from the
+triangle. The $L^2$ distance of the question equals $\sqrt{2r_{2n}}$ to ten
+digits at $n=1,2,5,10,20,45$, from $0.1408544543$ at $n=1$ to $0.0208060687$
+at $n=45$; the check then proved the identity, which the question now
+states. This was a careful reading with numerical tests, not a formal
+verification or an external review.
 
 \begingroup\small\setlength{\parskip}{0pt}
 \begin{thebibliography}{9}
