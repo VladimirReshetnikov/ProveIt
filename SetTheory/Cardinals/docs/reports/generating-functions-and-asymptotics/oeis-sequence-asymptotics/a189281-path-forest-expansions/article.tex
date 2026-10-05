@@ -8167,9 +8167,16 @@ truncation $\sum_{j\le40}c_jn^{-j}$ of Part~III's coefficients
 enclosures. The truncation at order~16 of Part~I's \cref{spf:tab:extra} lies
 inside at $n=1000$ and just outside at $n=100$ and $n=200$, as the omitted
 term of order $n^{-17}$ allows. At $n=1000$ the $E_{10}$ interval, of width
-$9.35$, contains $c_{11}+c_{12}/n=-59103-9.448$, an independent check of
-Part~I's $c_{11}$ and $c_{12}$, beyond the order through which Report~83
-itself computed coefficients. As in Part~I, the widening of the $E_{10}$
+$9.35$, contains $c_{11}+c_{12}/n=-59103-9.448$ but not $c_{11}$ alone: it
+is a check of Part~I's $c_{11}$ that also requires a correction $c_{12}/n$
+of the printed sign and rough size, beyond the order through which
+Report~83 itself computed coefficients. (Dated note, 5~October 2026: this
+sentence first called the containment ``an independent check of Part~I's
+$c_{11}$ and $c_{12}$''. With width $9.35$ the interval fixes
+$c_{11}+c_{12}/n$ only to within about $\pm4.7$, so it checks $c_{11}$ to
+about $0.01\,\%$ and excludes $c_{12}=0$, but it does not check the value
+of $c_{12}$; see the independent check recorded at the end of
+\cref{spf:cg:sec:questions}.) As in Part~I, the widening of the $E_{10}$
 interval at $n=1000$ is the factor $n^{11}$ magnifying the fixed Bonferroni
 width; it is a precision limit of this finite computation, and the
 convergence of $E_{10}(n)$ to $c_{11}$ is a consequence of
@@ -10510,6 +10517,77 @@ two-mark analogue of Corollary~\ref{spf:cor:distribution} and
 \cref{spf:mg:cor:law}, which Part~VII does not prove. Cyclic wraparound of
 positions or values, the other half of Part~I's question~6, is not treated
 by Report~232. Nothing in Part~VII is formalized.
+
+\paragraph{Independent check of the write (dated note, 5~October 2026).}
+An independent adversarial check of Parts~VI and~VII, made by the intake
+after the write (\texttt{e9994117b}), reread nine items:
+\cref{spf:fd:thm:bracket} and \cref{spf:fd:prop:digamma} with the write's
+proofs, the enclosures of \cref{spf:fd:tab:bonferroni} with the checks
+printed after them, Remarks~\ref{spf:cg:rem:marginals},
+\ref{spf:cg:rem:cycles}, \ref{spf:cg:rem:shapes}
+and~\ref{spf:cg:rem:rational}, the corrected H\"older step of
+\cref{spf:cg:lem:tail}, and the second coefficients $48$ and $28$ of
+\cref{spf:cg:thm:two}. It found all nine items valid, no counterexample,
+and no gap in any proof chain. One sentence of the write overstated what
+its numbers show: the checks after \cref{spf:fd:tab:bonferroni} called the
+$E_{10}$ interval at $n=1000$ an independent check of Part~I's $c_{11}$
+and $c_{12}$. With width $9.35$ that interval checks $c_{11}$ and requires
+only a correction $c_{12}/n$ of the printed sign and rough size. The
+sentence is corrected where it stands, with a dated note keeping the first
+wording. No other statement or number changed.
+
+The check used neither the delivered programs nor the write's. For
+\cref{spf:fd:thm:bracket} it re-derived every inequality of the proof with
+$C=2^{K+4}C_1$, including the case $K=0$ (where $\ell_K=0$) and general
+$r,s\ge1$, for which only $c_0=1$ and \cref{spf:thm:main} are used. For
+\cref{spf:fd:prop:digamma} it re-derived $\ell_2=-\frac52$, $\ell_3=4$ and
+the coefficient, sign and order of each of the five correction terms, and
+evaluated the display against the exact model root at 60~digits with
+$K=10$. The error times $\mathfrak X^4\log\mathfrak X$ is
+$13.29,\ldots,10.75$ for $\mathfrak X=20,\ldots,800$, the intake's values,
+and $10.14$ and $9.71$ at $\mathfrak X=3200$ and $12800$, decreasing slowly
+toward the predicted constant $-\ell_4=\frac{29}4$; the order
+$\mathfrak X^{-4}/\log\mathfrak X$ is thus attained, not merely an upper
+bound. For Remark~\ref{spf:cg:rem:cycles} it reread the case analysis and
+tested every pair $1\le r<s\le12$ by brute force (66 pairs, $s=2r$ and
+$s=3r$ among them): among all two-coloured graphs on four vertices that
+contain a cycle, the alternating square is the only one that embeds in both
+$S_n$ and $T_n$, and $i_S=i_T=4(n-r-s)$ by direct counting.
+
+It recomputed the Bonferroni sums of \cref{spf:fd:tab:bonferroni} exactly,
+by a formula different from Report~83's: each moment is a sum over
+profiles of the exact number of vertex-disjoint subpath collections of
+that profile in the two residue paths, valid for every $n$. The full
+alternating sum reproduces brute-force permutation counts for $n\le9$ and
+the OEIS values of A189281 at $n=10$, $14$, $20$, $26$ and~$30$. The three
+pairs $[S_J,S_{J+1}]$ equal the shipped rationals exactly; with $e$
+bracketed by Taylor sums, every printed endpoint encloses the true
+interval, and the width $9.35$ is right. Part~III's truncation at order~40
+lies inside all three enclosures, and Part~I's at order~16 just outside at
+$n=100$ and $n=200$ and inside at $n=1000$, as printed.
+
+For \cref{spf:cg:thm:two} it computed $\mathfrak B_1$ and $\mathfrak B_2$
+of both models exactly by a route independent of Report~232's M\"obius
+inversion and sign propagation. For each $n$ from $13$ to $21$ it
+enumerated every selected edge set with at most four edges in $S_n$ and in
+$T_n$, canonicalized the coloured graphs by brute force over vertex
+labellings, fitted each embedding count by a polynomial (confirmed at all
+nine points) and expanded the moments exactly in $1/n$; the same finite
+graph sums equal brute-force permutation moments for $n=6,\ldots,9$. It
+found $83$ source-realizable types for the camel and $87$ for the knight,
+the sizes of Report~232's catalogues. Every coefficient of
+\eqref{spf:cg:eq:B1}, \eqref{spf:cg:eq:B2camel} and
+\eqref{spf:cg:eq:B2knight} is recovered, hence
+$\mathfrak B_2(-1,-1)=48$ and $28$, and the cyclic types contribute exactly
+$4u^2v^2$, as Remark~\ref{spf:cg:rem:cycles} says. Richardson
+extrapolation of the OEIS b-files (A189358 to $n=24$, A137774 to $n=30$,
+fetched 5~October 2026) is consistent with $48$ and $28$; it is support
+only, the exact computation being decisive. The marginal parts of
+$\mathfrak B_1$ and $\mathfrak B_2$ in Remark~\ref{spf:cg:rem:marginals}
+were recomputed from Part~I's formulas; Remarks~\ref{spf:cg:rem:shapes}
+and~\ref{spf:cg:rem:rational} and the H\"older step were checked by
+reading. This was a careful reading with exact computations, not a formal
+verification.
 
 \section{A worked partition-lattice certificate (Report 232, Appendix A)}
 \label{spf:cg:app:worked}
