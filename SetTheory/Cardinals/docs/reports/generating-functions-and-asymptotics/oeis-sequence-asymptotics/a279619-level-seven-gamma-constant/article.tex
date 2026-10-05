@@ -9,7 +9,7 @@
 \usepackage{xurl}
 \usepackage{hyperref}
 \hypersetup{colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue,
- pdftitle={An exact gamma constant for A279619},pdfauthor={Research report prepared for Vladimir Reshetnikov (merged from three manuscripts)}}
+ pdftitle={An exact gamma constant for A279619},pdfauthor={Research report prepared for Vladimir Reshetnikov (merged from four manuscripts)}}
 \usepackage{bookmark}
 \newcommand{\file}[1]{\nolinkurl{#1}}
 \setlength{\parskip}{4pt}\setlength{\parindent}{1.2em}
@@ -31,6 +31,9 @@
 \newcommand{\mergenote}[1]{\textup{[}\emph{Merge note, batch 73O2:} #1\textup{]}}
 \newcommand{\writenote}[1]{\textup{[}\emph{Write note, 2026-10-02, batch 77P5:} #1\textup{]}}
 \newcommand{\Gm}{\mathcal G_7^{-}}\newcommand{\qq}{\mathfrak q}
+\newcommand{\hpnote}[1]{\textup{[}\emph{Write note, 2026-10-04, batch 97G:} #1\textup{]}}
+\newcommand{\TP}{\mathrm{TP}}\newcommand{\TN}{\mathrm{TN}}
+\newcommand{\stir}[2]{\left\{\begin{matrix}#1\\#2\end{matrix}\right\}}
 \newcounter{l7gtrsavedeq}
 \newtcolorbox{resultbox}{enhanced,breakable,colback=blue!3,colframe=MidnightBlue!65,
  boxrule=.5pt,arc=1pt,left=10pt,right=10pt,top=7pt,bottom=7pt}
@@ -45,11 +48,12 @@
 {\Large A279619: three independent proofs, all-orders asymptotics,\par and a recessive companion}\par
 \vspace{.18in}
 {\large Research report prepared for Vladimir Reshetnikov}\par
-{\large October 1, 2026; third derivation added October 2, 2026}\par
+{\large October 1, 2026; additions October 2 and October 4, 2026}\par
 {\normalsize Merged from two independent manuscripts of batch 73O2 of ProveIt's
 incoming-reports intake (manuscripts 58 and 56), with a third derivation from
 manuscript 32 of batch 77P5 (Sections~\ref{l7g:sec:provenance}
-and~\ref{l7g:tr:sec:third})}\par
+and~\ref{l7g:tr:sec:third}) and Hankel-positivity results from manuscript~07
+of batch 97 (Section~\ref{l7g:hp:sec:hankel})}\par
 \vspace{.12in}
 \begin{resultbox}
 \[
@@ -87,16 +91,19 @@ also construct a companion continued fraction, prove exact rational
 bracketing, and determine the amplitude and every correction term of its
 recessive solution. Applications include convolution powers, A183204,
 eventual log-convexity, and Lambert-$W$ inversion with a separate
-treatment of integer rounding. Exact symbolic certificates and rational
+treatment of integer rounding. A fourth manuscript, added later, proves
+strict log-convexity at every index and strict total positivity of order
+exactly five of the Hankel matrix $(a_{i+j})$; the report adds that no tail
+of the sequence is a Stieltjes moment sequence. Exact symbolic certificates and rational
 enclosures accompany numerical experiments. Classical inputs, previously
 calculated terms, sequence-specific deductions, and unsettled questions
 are explicitly distinguished.\par}
 \vfill
 \noindent\small
-Shipped with this report: verification programs of manuscripts 58 and 56
-and the replay program of manuscript 32, their recorded outputs, rational
-certificates, numerical tables, and manuscript 58's source audit (listed in
-the report's \file{README.md}).\\
+Shipped with this report: the programs of manuscripts 58, 56, 32 and 07,
+their recorded outputs, rational and polynomial certificates, numerical
+tables, and the source audits of manuscripts 58 and 07 (listed in the
+report's \file{README.md}).\\
 These are conventional mathematical proofs with computer-algebra checks,
 not Lean-certified theorems. Global priority is not claimed.
 \end{titlepage}
@@ -235,6 +242,20 @@ no existing section, theorem or equation number changes, with its own
 notation table (Table~\ref{l7g:tr:tab:notation}); its explicit
 convolution generator and its all-weight rounding brackets are
 Remarks~\ref{l7g:tr:rem:generator} and~\ref{l7g:tr:rem:ceiling}.}
+\hpnote{A fourth manuscript, manuscript~07 of batch 97 (\emph{A Sharp
+Positivity Threshold for OEIS A279619}, dated October 4, 2026), was written
+with this report in hand (it inspected revision \texttt{a21208b3f}) and
+answers research question~R6 of Section~\ref{l7g:cm:sec:further}: the
+sequence is strictly log-convex at every index, and its Hankel matrix
+$(a_{i+j})$ is strictly totally positive of order five but not totally
+nonnegative of order six, with an exact truncated-moment obstruction. It is
+printed as Section~\ref{l7g:hp:sec:hankel}, after
+Section~\ref{l7g:tr:sec:third} so that no existing number changes, with its
+own notation table (Table~\ref{l7g:hp:tab:notation}). Manuscript~07 calls
+the sequence $c_n$ and its corrections $a_j$, this report's letters swapped;
+it is rewritten in this report's notation. This write adds
+Subsection~\ref{l7g:hp:sec:minusone}: the generating function is singular
+at $z=-1$, so no tail of $(a_n)$ is a Stieltjes moment sequence.}
 
 \subsection{Notation of the two manuscripts}\label{l7g:sec:notation}
 The two manuscripts use several letters for different objects. This report
@@ -320,6 +341,12 @@ Section~\ref{l7g:sec:notation}; it lists the same five coefficients.}
 (Section~\ref{l7g:tr:sec:third}), with $p_m=c_m$ in its notation; it
 prints $c_1,\dots,c_6$, equal as rationals to \eqref{l7g:eq:cvalues} and
 \eqref{l7g:cm:eq:alpha-more}.}
+\hpnote{Manuscript~07 proves the expansion part of the theorem (existence
+of $C>0$ and of the full expansion with rational $c_j$) once more, by a
+recurrence-only stable-ratio argument without singularity analysis
+(Theorem~\ref{l7g:hp:thm:callorders}, printed as a marked second route,
+Remark~\ref{l7g:hp:rem:secondroute}). It prints $c_1,\dots,c_4$, equal to
+\eqref{l7g:eq:cvalues}, and takes the value of $C$ from this theorem.}
 
 \begin{theorem}[Exact critical and subcritical sums; manuscript~56]\label{l7g:cm:thm:sums}
 The generating function has the exact values
@@ -372,6 +399,15 @@ successive ratios is
 for all sufficiently large $n$. Increasing ratios are equivalent to
 strict log-convexity.
 \end{proof}
+\hpnote{The qualifier ``for all sufficiently large $n$'' is no longer
+needed: Proposition~\ref{l7g:hp:prop:logconvex} (manuscript~07) proves
+$a_{n+1}/a_n$ strictly increasing for every $n\ge0$, that is
+$a_{n-1}a_{n+1}>a_n^2$ for all $n\ge1$, by elementary ratio barriers, and
+Theorem~\ref{l7g:hp:thm:sharp} strengthens this to strict total positivity
+of order five of $(a_{i+j})$. The coefficients of \eqref{l7g:cm:eq:ratio}
+are $\omega_j/27$, $j\le4$, of Subsection~\ref{l7g:hp:sec:certificate},
+which continues them to order eleven, with a remainder proof
+(Proposition~\ref{l7g:hp:prop:Rallorders}).}
 Manuscript~58 proves the first three terms of \eqref{l7g:cm:eq:ratio} and
 eventual log-convexity through second differences of $\log a_n$
 (Section~\ref{l7g:sec:logratio}); the two increments are consistent,
@@ -1161,6 +1197,10 @@ Taking sufficiently many terms before forming second differences gives
 \]
 for sufficiently large $n$. Thus it is eventually strictly log-convex.
 No explicit smallest threshold is asserted.
+\hpnote{The smallest threshold is $n=1$: the sequence is strictly
+log-convex at every index (Proposition~\ref{l7g:hp:prop:logconvex},
+manuscript~07), and more strongly $(a_{i+j})$ is strictly totally positive
+of order five (Theorem~\ref{l7g:hp:thm:sharp}).}
 
 \section{A continued fraction and exact rational bracketing}\label{l7g:sec:continued}
 \subsection{The discrete Wronskian}
@@ -1967,6 +2007,21 @@ informative, but such a representation and positivity of its density
 are not established here. Potential consequences include explicit
 log-convexity thresholds, Hankel determinant signs, and alternative
 error bounds for coefficient asymptotics.
+\hpnote{Partly answered by manuscript~07 (Section~\ref{l7g:hp:sec:hankel}).
+The log-convexity threshold is $n=1$
+(Proposition~\ref{l7g:hp:prop:logconvex}); the Hankel matrix $(a_{i+j})$
+is $\TP_5$ but not $\TN_6$ (Theorem~\ref{l7g:hp:thm:sharp}), so $(a_n)$
+has no positive representing measure on $[0,\infty)$, while
+$a_0,\dots,a_{10}$ do have one and $a_{11}$ falls short by an exact amount
+(Theorem~\ref{l7g:hp:thm:moment}). This write adds that no tail
+$(a_{N+n})_{n\ge0}$ has one either (Theorem~\ref{l7g:hp:thm:nostieltjes}),
+because $A$ is singular at $z=-1$ (Proposition~\ref{l7g:hp:prop:minusone}),
+and that a positive measure on $\mathbb R$ with moments $a_n$, if one
+exists, is unique and supported in $[-1,27]$, a compact real support
+reflecting both characteristic roots, as anticipated above
+(Proposition~\ref{l7g:hp:prop:hamburger}). Its existence, and a direct
+integral formula, remain open (Subsection~\ref{l7g:hp:sec:further},
+item~1).}
 
 \subsection{Automated connection-constant recognition}
 For families of quadratic-coefficient recurrences with two distinct
@@ -2062,6 +2117,15 @@ closed gamma form.
 (Manuscript~58's companion adds the exact recessive amplitude
 $D_{\min}$ of \eqref{l7g:eq:Dgamma}, a connection datum of the recurrence
 at the root $-1$; the full matrices remain open.)
+\hpnote{Advanced at this write (Proposition~\ref{l7g:hp:prop:minusone}):
+continued along $(-1,0]$, $A=U_-+B_-\sqrt{1+z}\,V_-$ near $z=-1$, with an
+explicit hypergeometric expression for $B_-$ and $-0.2075<B_-<-0.1754$, so
+$A$ is genuinely singular at $-1$. The closed forms $B_-=-2\pi/\G$ and
+$U_-(0)=\G/(4\pi^2)$ are observed numerically, not proved
+(Subsection~\ref{l7g:hp:sec:further}, item~11). This is one connection
+datum between $0$ and $-1$, bearing also on R7 and on the question on
+exponentially improved asymptotics in Section~\ref{l7g:sec:further}; the
+full matrices remain open.}
 
 \item \textbf{Establish global log-convexity or stronger total positivity.}
 We proved eventual log-convexity. Exact computation suggests stronger
@@ -2069,6 +2133,15 @@ positivity phenomena. Seek a Stieltjes-moment representation, a
 continued fraction, or a production matrix proving log-convexity for all
 $n$ and perhaps total positivity of the Hankel matrix $(a_{i+j})$.
 (Overlaps ``Positive integral representations'' above.)
+\hpnote{Answered by manuscript~07 (Section~\ref{l7g:hp:sec:hankel}):
+log-convexity holds at every index (Proposition~\ref{l7g:hp:prop:logconvex});
+the Hankel matrix $(a_{i+j})$ is strictly totally positive of order exactly
+five (Theorem~\ref{l7g:hp:thm:sharp}); and there is no Stieltjes-moment
+representation, of the sequence (Theorems~\ref{l7g:hp:thm:sharp}
+and~\ref{l7g:hp:thm:moment}) or, by this write, of any of its tails
+(Theorem~\ref{l7g:hp:thm:nostieltjes}). The continued-fraction and
+production-matrix routes were not pursued. Whether a positive Hamburger
+measure exists remains open (Subsection~\ref{l7g:hp:sec:further}, item~1).}
 
 \item \textbf{Develop rigorous optimal truncation and exponentially small
 terms.}
@@ -2254,6 +2327,43 @@ fixed-weight generators as its contribution are not carried; they are
 replaced by the scope statement of Section~\ref{l7g:tr:sec:third}. (v) Its
 abstract and title page are replaced by this report's; its reproducibility
 section by the report README.}
+\item \hpnote{\textbf{A fourth manuscript}, added in batch 97:
+manuscript~07 of batch 97, \emph{A Sharp Positivity Threshold for OEIS
+A279619: strict total positivity through order five, a twelfth-moment
+obstruction, and all-orders Hankel asymptotics} (dated October 4, 2026;
+author line ``Research report prepared for Vladimir Reshetnikov''; 23-page
+PDF), archive \texttt{A279619\_Hankel\_Positivity.zip}, arrived in commit
+\texttt{e88ed8bf6} and placed in commit \texttt{a4542b8a3}. Its pin is
+\texttt{a21208b3ff14a07a4c8318dbf916d543acbef043}, the main-tree revision it
+inspected; this report's directory did not change between the pin and the
+placement. The placement staged its checker, its two generators and its
+Makefile (\file{code/97-07-hankel-*}), its certificates, records, logs,
+requirements and draft OEIS comment (\file{data/97-07-hankel-*}) and its
+source audit (\file{97-07-hankel-SOURCE_AUDIT.md}); its article, README,
+PDF and checksum manifest (18 of 18 entries verified at placement and
+retired) were not staged and survive in the arrival commit. It contributes
+Section~\ref{l7g:hp:sec:hankel} apart from
+Subsection~\ref{l7g:hp:sec:minusone}, and the notes marked ``batch 97G''.
+\textbf{Where this addition chose.} (i) A new last section, with equations
+numbered within it, so that no existing number changes. (ii) Its notation
+is rewritten in this report's (Table~\ref{l7g:hp:tab:notation}); in
+particular its sequence $c_n$ and corrections $a_j$ are this report's $a_n$
+and $c_j$. (iii) Results it shares with the report are printed once, by
+reference (the differential equation, $c_1,\dots,c_4$, the ratio
+coefficients through order four); its recurrence-only proof of the
+expansion is kept as a marked second route, and the value of $C$ is the
+report's. (iv) Its inverse for $D_r$ is printed with a note relating it to
+Section~\ref{l7g:sec:inversion} and to \texttt{t2:thm:balanced-inverse}.
+(v) Its citation of this report became internal references, its OEIS
+reference is \cite{l7g:oeis279619}, and its three literature references are
+added. (vi) Its two appendices became Subsections~\ref{l7g:hp:sec:base}
+and~\ref{l7g:hp:sec:computations}; its title page, abstract and
+reproducibility instructions are replaced by this report's and by the
+README. (vii) One unproved sentence (perturbation stability) is moved to
+the further questions (item~7). (viii) Added at this write:
+Subsection~\ref{l7g:hp:sec:minusone}, item~11 of
+Subsection~\ref{l7g:hp:sec:further}, and this write's additions to items 1,
+2, 3, 7 and 12 there; no claim of manuscript~07 was found wrong.}
 \end{itemize}
 
 \section{A third derivation of the constant (manuscript 32, batch 77P5)}\label{l7g:tr:sec:third}
@@ -2708,6 +2818,1461 @@ version (README).
 \renewcommand{\theequation}{\arabic{equation}}
 \renewcommand{\theHequation}{\arabic{equation}}
 
+\section{Hankel positivity: a sharp order-five threshold and the twelfth-moment obstruction (manuscript 07, batch 97)}\label{l7g:hp:sec:hankel}
+\setcounter{l7gtrsavedeq}{\value{equation}}\setcounter{equation}{0}
+\renewcommand{\theequation}{\thesection.\arabic{equation}}
+\renewcommand{\theHequation}{l7ghp.\arabic{equation}}
+
+\hpnote{This section is manuscript~07 of batch 97 (\emph{A Sharp Positivity
+Threshold for OEIS A279619: strict total positivity through order five, a
+twelfth-moment obstruction, and all-orders Hankel asymptotics}, dated
+October 4, 2026), rewritten in this report's notation. Unlike the three
+earlier sources, it was written with this report in hand: it inspected the
+repository at revision \texttt{a21208b3f}, at which this report was the
+text of Sections~\ref{l7g:sec:target}--\ref{l7g:tr:sec:third}, and it
+addresses research question~R6 of Section~\ref{l7g:cm:sec:further} (global
+log-convexity or stronger total positivity, perhaps through a
+Stieltjes-moment representation) and part of
+Section~\ref{l7g:sec:further}'s question on positive integral
+representations. Its gamma constant is this report's
+Theorem~\ref{l7g:th:main}, credited as prior work and not re-derived; none
+of its new sign or moment results uses it. Subsection~\ref{l7g:hp:sec:minusone}
+and Remark~\ref{l7g:hp:rem:secondroute} were added at this write and are
+marked there. Equations in this section are numbered within it.}
+
+What the section adds to the report is the following.
+(i)~Global strict log-convexity, $a_{n-1}a_{n+1}>a_n^2$ for every
+$n\ge1$, by an elementary ratio argument
+(Proposition~\ref{l7g:hp:prop:logconvex}); the report had only the eventual
+statement of Corollary~\ref{l7g:cm:cor:ratio} and
+Section~\ref{l7g:sec:logratio}.
+(ii)~The Hankel matrix $(a_{i+j})_{i,j\ge0}$ is strictly totally positive
+of order five but not totally nonnegative of order six
+(Theorem~\ref{l7g:hp:thm:sharp}), the positive half by 21 explicit rational
+polynomials with 1{,}090 positive coefficients and an exact,
+standard-library checker.
+(iii)~$a_0,\dots,a_{10}$ are the moments of a positive measure on
+$[0,\infty)$ supported at zero and five positive points, but $a_{11}$ is
+not: the least admissible eleventh moment is explicit and attained by a
+unique measure (Theorem~\ref{l7g:hp:thm:moment}).
+(iv)~A fixed-order asymptotic theorem, to every order, for shifted Hankel
+determinants of any sequence with a full power-law expansion, an explicit
+coefficient generator, and its A279619 instance
+(Theorems~\ref{l7g:hp:thm:general} and~\ref{l7g:hp:thm:hankelmain}); each
+fixed order of total positivity is restored by a sufficiently far shift
+(Corollary~\ref{l7g:hp:cor:eventual}).
+(v)~A recurrence-only route to the expansion part of
+Theorem~\ref{l7g:th:main} (Subsection~\ref{l7g:hp:sec:sequenceasympt}) and
+a Lambert-$W$ inverse for the Hankel determinants
+(Subsection~\ref{l7g:hp:sec:inverse}).
+(vi)~Added at this write: the generating function is singular at $z=-1$,
+with an explicit negative connection coefficient
+(Proposition~\ref{l7g:hp:prop:minusone}); hence no tail
+$(a_{N+n})_{n\ge0}$ is a Stieltjes moment sequence
+(Theorem~\ref{l7g:hp:thm:nostieltjes}), which answers manuscript~07's
+third question, and a positive Hamburger measure, if one exists, lives on
+$[-1,27]$ and charges every neighbourhood of $-1$
+(Proposition~\ref{l7g:hp:prop:hamburger}).
+
+\subsection{Notation}\label{l7g:hp:sec:notation}
+Manuscript~07 calls the sequence $c_n$ and its asymptotic corrections
+$a_j$: exactly this report's letters, swapped. This section uses the
+report's letters throughout, so $a_n$ is A279619 and $c_j$ are the
+corrections of \eqref{l7g:eq:dominant}. Its other symbols that collide with
+the report's are renamed as in Table~\ref{l7g:hp:tab:notation}, whose last
+column names the tempting false reading. No normalization changes: its
+$C$ is the report's $C$, its corrections are the report's $c_j$, and its
+generating function is $A$. Its own internal overloads ($E$ for three
+families, $\Delta$ for a finite difference and a Vandermonde product, $w$
+for a vector and for weights, $M$ for a matrix and for an order) are
+separated as well.
+
+\begin{center}\small
+\begin{longtable}{p{.28\textwidth}p{.20\textwidth}p{.14\textwidth}p{.26\textwidth}}
+\caption{Notation of manuscript~07 and of this section.}\label{l7g:hp:tab:notation}\\
+\toprule
+Object & Here & Manuscript 07 & Caution\\\midrule\endfirsthead
+\multicolumn{4}{l}{\small Table~\thetable, continued}\\
+\toprule
+Object & Here & Manuscript 07 & Caution\\\midrule\endhead
+the sequence A279619 & $a_n$ & $c_n$ & here $c_j$ are corrections\\
+its asymptotic corrections & $c_j$ & $a_j$ & here $a_n$ is the sequence\\
+generating function & $A(z)$ & $F(z)$ & here $F$ is ${}_2F_1(\frac1{12},\frac5{12};1;\cdot)$\\
+recurrence coefficients & $P_n$, $\widetilde Q_n$ & $p(n)$, $q(n)$ & $P_n$ as in \eqref{l7g:eq:integerrec}; there $Q_n=n^2\widetilde Q_n$\\
+backward ratio $a_n/a_{n-1}$ & $\varrho_n$ & $r_n$ & here $r$ is a characteristic root\\
+forward ratio $a_{n+1}/a_n$ & $\varrho_{n+1}$ & $R_n$ & here $R_n=a_nn^{3/2}/27^n$\\
+ratio map & $f_n$ & $f_n$; $F_n=f_{n+1}$ & ---\\
+elementary barriers & $\mathrm{lo}_n$, $\mathrm{hi}_n$ & $\ell_n^{\mathrm{basic}}$, $u_n^{\mathrm{basic}}$ & here $\ell_j$ are log coefficients\\
+ratio coefficients and series & $\omega_j$, $\Omega(t)$ & $b_j$, $B(t)$ & here $b_n$ is the companion, $B$ the singular coefficient\\
+barrier half-width & $\mathsf K$ & $K$ & here $K(k)$, $K_M$, $K_0$\\
+barrier polynomials & $\Pi_-(n)$, $\Pi_+(n)$ & $\ell(n)$, $h(n)$ & ---\\
+ratio enclosure & $\Pi_\pm(n)/n^{11}$ & $L(n)$, $U(n)$ & here $L$ is the companion limit, $U$ the analytic part\\
+barrier certificates & $\Xi_0$, $\Xi_-$, $\Xi_+$ & $E_0$, $E_-$, $E_+$ & here $\mathcal E_r$ is a formal operator\\
+normalized ratios & $\psi_k(n,y)$ & $x_k(n,R)$ & here $x_0(Y)$, $x_M$ are inverses\\
+normalized determinant & $\widehat D_r(n,y)$ & $d_r(n,R)$ & here $d_j$ are recessive coefficients\\
+positive denominators & $\mathrm{Den}_r(n)$, $\mathrm{Den}^*_r(n)$ & $E_r(n)$, $d(n)$ & here $D(z)=(1-27z)(1+z)$\\
+certificate polynomial & $\mathcal Q_r(n,u)$ & $Q_r(n,u)$ & here $Q(m)$, $Q_7$, $Q_n$\\
+its power and Bernstein coefficients & $\mathcal Q_{r,j}(n)$, $\mathcal Q^{\mathrm B}_{r,k}(n)$ & $q_{r,j}(n)$, $B_{r,k}(n)$ & here $q_j$ are inverse coefficients\\
+shifted Hankel matrix & $\mathbf H^{(N)}$ & $H^{(N)}$ & here $H$ is Clausen's ${}_3F_2$\\
+moment witness, its monic form & $\mathcal W(x)$, $\mathcal W_1(x)$ & $Q(x)$, $P(x)$ & here $P(w)$, $P_n$\\
+moment functional & $\mathfrak M$ & $\mathcal L$ & here $L$ is the companion limit\\
+least admissible eleventh moment & $a_{11}^{\min}$ & $m_{11}^{\min}$ & here $m$ is a convolution weight\\
+quadrature lemma: moments, matrices & $\mathsf m_k$, $\mathbf G_i$, $\mathbf J$ & $s_k$, $M,B,T,J$ & here $s=1-27z$\\
+nodes and weights there & $x_p$, $\varpi_p$ & $\lambda_\nu$, $w_\nu$ & here $\lambda=\log27$, $\nu=N+1$\\
+stable-error lemma: error, rate, constant, exponent & $\epsilon_n$, $\theta$, $K'$, $\gamma$ & $e_n$, $\theta$, $C_0$, $p$ & here $e_n=b_n-La_n$\\
+logarithmic scale & $\mathfrak z_n$ & $z_n$ & here $z$ is the GF variable\\
+formal correction series & $S_{27}(t)$ & $\mathcal A(t)$ & as in \eqref{l7g:eq:formalE}\\
+general sequence, base, corrections & $\mathsf s_n$, $\Lambda$, $\mathsf a_j$ & $s_n$, $\lambda$, $a_j$ & here $\lambda=\log27$\\
+power exponent (general) & $\alpha$ & $\alpha$ & same\\
+$\prod_{j<r}j!(\alpha)_j$ & $\mathcal V_r(\alpha)$ & $h_r(\alpha)$ & here $\mathsf h_i$ are gamma-ratio coefficients\\
+Hankel exponent $r\alpha+r(r-1)$ & $\alpha_r$ ($=r^2+\frac r2$) & $\kappa_r$, $\kappa$ & here $\kappa(\xi)$ is a Laplace weight\\
+Hankel leading constant & $C^{\mathrm H}_r$ & $A_r$, $A$ & here $A(z)$, $\Ast$\\
+Hankel corrections & $\mathfrak b_{r,j}$ & $\beta_{r,j}$ & here $\beta=3/2$ in Section~\ref{l7g:sec:inversion}\\
+normalized entries, differenced entries & $\mathcal Z_k(t)$, $\mathcal X_s(t)$ & $E_k(t)$, $\mathcal K_s(t)$ & here $\mathcal K_n=(n!)^2b_n$\\
+leading matrices, index matrix & $\mathbf P$, $\mathbf P_1$, $\mathbf N$ & $G$, $G_1$, $D$ & here $\G$ is the gamma product\\
+the trace $\operatorname{tr}(\mathbf P^{-1}\mathbf P_1)$ & $\mathcal T$ & $T$ & here $T(w)=15w^2+96w+85$\\
+row and column offsets & $g_i$, $g'_j$ & $u_i$, $v_j$ & here $u_n$ solutions, $v_j$ Frobenius coefficients\\
+Vandermonde product & $\operatorname{Vand}(g)$ & $\Delta(u)$ & here $\Delta$ is a forward difference\\
+least shift giving $\TP_r$ & $N^{\TP}_r$ & $N_r$ & here $N(Y)$, $N_M$\\
+inverse of $D_r$: rate, core, model & $r\lambda$, $x^{[r]}_0$, $\mathcal F^{[r]}_M$ & $L_r$, $x_0$, $F_M$ & here $x_0(Y)$ inverts $a_n$\\
+its log corrections & $\ell^{[r]}_1$, $\ell^{[r]}_2$ & $\beta_1$, $\gamma_2$ & here $\gamma_j$ in \eqref{l7g:eq:triangular}\\
+its discrete inverse, constants & $N^{[r]}(Y)$, $n^{[r]}_*$, $K^{[r]}_M$ & $T_r(Y)$, $n_*$, $K_{r,M}$ & here $N(Y)$, $K_M$ are for $a_n$\\
+\bottomrule
+\end{longtable}
+\end{center}
+Symbols introduced at this write (Subsection~\ref{l7g:hp:sec:minusone}):
+$s_-=1+z$, the local variable at $z=-1$, and the Puiseux data
+$U_-$, $B_-$, $V_-$ there, the analogues of $s$, $U$, $B$, $V$ at $\rho$
+in \eqref{l7g:eq:puiseux}; $\check w=1/w$, the reciprocal of the parameter
+$w$ of \eqref{l7g:eq:w} (the letter $u$ is kept for the Bernstein variable
+of Subsection~\ref{l7g:hp:sec:certificate}); $\mathcal S_\mu$, the
+Stieltjes transform of a measure $\mu$; and $r^*(N)$, the order of first
+failure of total nonnegativity. Throughout, a real matrix is \emph{strictly
+totally positive of order $r$}, written $\TP_r$, if every minor of size at
+most $r$ is strictly positive, and \emph{totally nonnegative of order
+$r$}, $\TN_r$, if these minors are nonnegative; row and column indices of
+a minor are listed increasingly, and ``strictly'' is said explicitly
+because naming conventions in the literature differ. For $r\ge1$, $n\ge0$,
+\begin{equation}\label{l7g:hp:eq:Ddef}
+ D_r(n)=\det[a_{n+i+j}]_{0\le i,j<r},\qquad D_0(n)=1,\qquad
+ \mathbf H^{(N)}=(a_{N+i+j})_{i,j\ge0}.
+\end{equation}
+The $D_r(n)$ are the contiguous minors of $\mathbf H^{(0)}$. (There is no
+other $D_r$ in the report; $D(z)$ and $D_{\min}$ keep their meanings.)
+A Hankel minor here is not an iteration of the nonlinear log-convexity
+operator; those are related but different objects.
+
+\subsection{The statements}\label{l7g:hp:sec:statements}
+Write the recurrence \eqref{l7g:eq:rec} as
+\begin{equation}\label{l7g:hp:eq:rec}
+ P_n=26n^2+13n+2,\qquad \widetilde Q_n=27n^2-27n+6,\qquad
+ (n+1)^2a_{n+1}=P_na_n+\widetilde Q_na_{n-1}.
+\end{equation}
+Only $a_0=1$, $a_1=2$ and \eqref{l7g:hp:eq:rec} are used for the global
+positivity and moment results; in particular they depend on no
+modular-form identity and on no assumed asymptotic formula. Since
+$P_n,\widetilde Q_n>0$ for $n\ge1$, every $a_n$ is positive. Manuscript~07
+writes the differential equation \eqref{l7g:eq:ODE} as
+$z(1-26z-27z^2)A''+(1-39z-54z^2)A'-2(1+3z)A=0$, manuscript~56's form; it
+is background for the analytic questions, and the sign proofs below work
+directly with the recurrence.
+
+\begin{theorem}[Sharp global order; manuscript~07]\label{l7g:hp:thm:sharp}
+The sequence is strictly log-convex at every index:
+$a_na_{n+2}>a_{n+1}^2$ for all $n\ge0$. More strongly, $\mathbf H^{(0)}$ is
+$\TP_5$, whereas
+\begin{equation}\label{l7g:hp:eq:negative}
+ D_6(1)=-26875777009408537346562624<0.
+\end{equation}
+Consequently five is the largest order of global total nonnegativity or
+strict total positivity, and $(a_n)$ is not a Stieltjes moment sequence.
+\end{theorem}
+The positive assertion covers \emph{all} minors of sizes one through five,
+with arbitrary gaps in their row and column indices, not merely the first
+few principal determinants; the reduction from contiguous minors to all
+minors is Subsection~\ref{l7g:hp:sec:certificate}. The negative minor uses
+rows $0,\dots,5$ and columns $1,\dots,6$ of $\mathbf H^{(0)}$.
+
+\begin{theorem}[Exact truncation boundary; manuscript~07]\label{l7g:hp:thm:moment}
+There is a positive measure supported at zero and five distinct positive
+points whose moments of degrees $0,\dots,10$ are $a_0,\dots,a_{10}$. Among
+all positive measures on $[0,\infty)$ with these eleven moments, the least
+possible moment of degree eleven is
+\begin{equation}\label{l7g:hp:eq:c11min}
+ a_{11}^{\min}=\frac{87170364947144797711187234}{6107572673541},
+\end{equation}
+attained by a unique such six-point measure. The actual value
+$a_{11}=14272471122560$ falls short by exactly
+\begin{equation}\label{l7g:hp:eq:repair}
+ a_{11}^{\min}-a_{11}=\frac{210335094301031002274}{6107572673541}
+ =34438410.4035\ldots.
+\end{equation}
+Thus eleven is the greatest length of an initial segment of $(a_n)$ that a
+positive measure on $[0,\infty)$ represents.
+\end{theorem}
+The distinction between a Stieltjes measure, on $[0,\infty)$, and a
+Hamburger measure, on all of $\mathbb R$, is essential: manuscript~07 rules
+out the former and not the latter, and a positive Hamburger representation
+remains open (Subsection~\ref{l7g:hp:sec:further};
+Proposition~\ref{l7g:hp:prop:hamburger} restricts where its support could
+lie).
+
+\begin{theorem}[Fixed-order Hankel asymptotics; manuscript~07]\label{l7g:hp:thm:hankelmain}
+For every fixed $r\ge1$ and every fixed $M\ge0$,
+\begin{equation}\label{l7g:hp:eq:mainexpansion}
+ D_r(n)=C^{\mathrm H}_r\,27^{rn}n^{-\alpha_r}
+ \left(\sum_{j=0}^{M}\frac{\mathfrak b_{r,j}}{n^j}
+       +O_{r,M}(n^{-M-1})\right),
+\end{equation}
+where
+\begin{equation}\label{l7g:hp:eq:Ar}
+ \alpha_r=r^2+\frac r2,\qquad
+ C^{\mathrm H}_r=C^r27^{r(r-1)}\prod_{j=0}^{r-1}j!\,(\tfrac32)_j,
+ \qquad \mathfrak b_{r,0}=1.
+\end{equation}
+All $\mathfrak b_{r,j}$ are rational, and
+\begin{equation}\label{l7g:hp:eq:beta1main}
+ \mathfrak b_{r,1}=-r\left(r+\frac12\right)
+ \left(r-1+\frac{215}{1512}\right).
+\end{equation}
+For every fixed $r$ there is $N^{\TP}_r$ such that $\mathbf H^{(N)}$ is
+$\TP_r$ for all $N\ge N^{\TP}_r$.
+\end{theorem}
+The general determinant mechanism is a consequence of classical
+finite-difference and Vandermonde algebra, developed in
+Subsection~\ref{l7g:hp:sec:general} in a usable all-orders form; the
+sequence-specific contribution is its combination with the sharp global
+order, the exact truncated-moment obstruction, and certificates covering
+every index. Manuscript~07 does not claim that asymptotic positivity
+methods for polynomial-recursive sequences are new: see Hou--Zhang
+\cite{l7g:hp:houzhang} and Mao--Pei \cite{l7g:hp:maopei}, whose iterated
+log-convexity must not be identified with $\TP_r$.
+
+\subsection{Global strict log-convexity}\label{l7g:hp:sec:ratios}
+Put $\varrho_n=a_n/a_{n-1}$ for $n\ge1$. The recurrence becomes
+\begin{equation}\label{l7g:hp:eq:rmap}
+ \varrho_{n+1}=f_n(\varrho_n),\qquad
+ f_n(x)=\frac{P_n+\widetilde Q_n/x}{(n+1)^2}.
+\end{equation}
+For $x>0$, $f_n$ is strictly decreasing: a lower bound for an input
+produces an upper bound for the next ratio.
+
+\begin{lemma}[Elementary ratio barriers]\label{l7g:hp:lem:basicbarriers}
+For every $n\ge3$,
+\begin{equation}\label{l7g:hp:eq:basicbarriers}
+ \mathrm{lo}_n:=\frac{27(2n-3)}{2n}<\varrho_n<
+ \mathrm{hi}_n:=\frac{54(n-1)}{2n+1}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+At $n=3$, $\varrho_3=168/11$. Direct rational simplification gives
+\begin{align}
+ f_n(\mathrm{hi}_n)-\mathrm{lo}_{n+1}
+ &=\frac{283n-277}{18(n-1)(n+1)^2}>0,\label{l7g:hp:eq:basiclower}\\
+ \mathrm{hi}_{n+1}-f_n(\mathrm{lo}_n)
+ &=\frac{136n^2-417n+162}{9(n+1)^2(2n-3)(2n+3)}>0;\label{l7g:hp:eq:basicupper}
+\end{align}
+with $n=3+t$ the second numerator is $136t^2+399t+135>0$. Since $f_n$ is
+decreasing, the two identities carry the bounds from $n$ to $n+1$.
+\end{proof}
+
+\begin{proposition}[Global strict log-convexity; manuscript~07]\label{l7g:hp:prop:logconvex}
+The ratios $\varrho_n$ are strictly increasing, stay below $27$ and
+converge to $27$; so $(a_n)$ is strictly log-convex at every index. For
+$n\ge3$,
+\begin{equation}\label{l7g:hp:eq:gap}
+ \varrho_{n+1}-\varrho_n>\frac{81}{2(n+1)(2n+1)}.
+\end{equation}
+Moreover $a_n^{1/n}$ is strictly increasing for $n\ge1$, with limit $27$,
+and $a_n/27^n$ is strictly decreasing.
+\end{proposition}
+\begin{proof}
+The barrier intervals are separated:
+$\mathrm{lo}_{n+1}-\mathrm{hi}_n=81/(2(n+1)(2n+1))>0$. Thus
+$\varrho_{n+1}>\varrho_n$ for $n\ge3$; the first comparisons follow from
+$\varrho_1=2$, $\varrho_2=11$, $\varrho_3=168/11$. Both barriers tend to
+$27$, and the upper ones are below $27$. Increasing ratios are exactly
+strict log-convexity. The root assertion follows by taking geometric means
+of the increasing positive ratios, and the last from $a_{n+1}/a_n<27$.
+\end{proof}
+This argument settles the global log-convexity question without computer
+assistance, and supplies the positive lower bounds and the limiting ratio
+used in Subsection~\ref{l7g:hp:sec:sequenceasympt}. The order-five result
+needs much tighter ratio control, not a stronger assumption on the
+sequence. (The increment \eqref{l7g:hp:eq:gap} is consistent with the
+asymptotic increment $81/(2n^2)$ in the proof of
+Corollary~\ref{l7g:cm:cor:ratio}.)
+
+\subsection{The exact Stieltjes obstruction and its optimal repair}\label{l7g:hp:sec:moments}
+\paragraph{A negative determinant is not a numerical instability.}
+Exact recurrence evaluation and integer determinant arithmetic give
+\begin{center}\small
+\begin{tabular}{rrr}
+\toprule
+$r$ & $D_r(0)$ & $D_r(1)$\\
+\midrule
+1 & $1$ & $2$\\
+2 & $18$ & $188$\\
+3 & $14132$ & $777000$\\
+4 & $504704088$ & $132810611472$\\
+5 & $839827568468592$ & $780401205934374816$\\
+6 & $66730435339909773988512$ & $-26875777009408537346562624$\\
+\bottomrule
+\end{tabular}
+\end{center}
+No floating-point determinant is used; the checker regenerates these
+entries from \eqref{l7g:hp:eq:rec}. If $a_n=\int_0^\infty x^n\,d\mu(x)$ for
+a positive measure, then for every polynomial $v(x)=\sum_{j=0}^5v_jx^j$,
+\[
+ \sum_{i,j=0}^5v_iv_ja_{i+j+1}=\int_0^\infty x\,v(x)^2\,d\mu(x)\ge0,
+\]
+so $(a_{i+j+1})_{0\le i,j\le5}$ would be positive semidefinite, contradicting
+\eqref{l7g:hp:eq:negative}. Its inertia is exactly $(5,1)$: its first five
+leading principal minors are positive and the sixth negative, so an
+$LDL^{\mathsf T}$ decomposition has five positive pivots and one negative
+pivot.
+
+\paragraph{A single polynomial witness.}
+The obstruction can be displayed without a determinant. Define
+\begin{align}\label{l7g:hp:eq:Qpoly}
+ \mathcal W(x)={}&6107572673541x^5-427862903728833x^4\notag\\
+       &+10913975768286866x^3-122491788886528941x^2\notag\\
+       &+570493806130562193x-782476408841608767.
+\end{align}
+For the linear functional $\mathfrak M[x^j]=a_j$, direct integer
+arithmetic gives
+\begin{equation}\label{l7g:hp:eq:Qnegative}
+ \mathfrak M[x\,\mathcal W(x)^2]=-1284636874239646271231341030632234
+\end{equation}
+and
+\begin{equation}\label{l7g:hp:eq:Qorthogonal}
+ \mathfrak M[x^{j+1}\mathcal W(x)]=0\qquad(0\le j\le4).
+\end{equation}
+These finite identities involve only $a_1,\dots,a_{11}$, and the checker
+verifies each. Since $x\mathcal W(x)^2\ge0$ on $[0,\infty)$,
+\eqref{l7g:hp:eq:Qnegative} certifies that no positive measure on
+$[0,\infty)$ has these moments.
+
+\paragraph{A finite spectral construction.}
+The positive truncated representation is given too, so that the
+obstruction is not overstated.
+
+\begin{lemma}[A zero-plus-positive-nodes quadrature; classical, proof as in manuscript~07]\label{l7g:hp:lem:quadrature}
+Let $\mathsf m_0,\dots,\mathsf m_{2m}$ be real numbers such that
+\[
+ \mathbf G_0=(\mathsf m_{i+j})_{0\le i,j\le m}\succ0,
+ \qquad \mathbf G_1=(\mathsf m_{i+j+1})_{0\le i,j<m}\succ0
+\]
+(positive definite). Then a positive measure supported at zero and $m$
+distinct positive points has the moments $\mathsf m_0,\dots,\mathsf m_{2m}$.
+\end{lemma}
+\begin{proof}
+Let $\mathbf G_2=(\mathsf m_{i+j+2})_{0\le i,j<m}$, a positive-definite
+principal submatrix of $\mathbf G_0$. Give the coefficient vectors of
+polynomials of degree at most $m-1$ the inner product
+$\langle u,v\rangle_{\mathbf G_1}=u^{\mathsf T}\mathbf G_1v$, and put
+$\mathbf J=\mathbf G_1^{-1}\mathbf G_2$. Then $\mathbf J$ is self-adjoint and
+positive definite for this inner product, and $\mathbf Je_k=e_{k+1}$ for
+$k<m-1$, because the $k$th column of $\mathbf G_2$ is the $(k+1)$st column
+of $\mathbf G_1$. So $e_0$ is cyclic: $e_0,\mathbf Je_0,\dots,\mathbf
+J^{m-1}e_0$ are the standard basis vectors. Consequently $\mathbf J$ has $m$
+distinct positive eigenvalues $x_1,\dots,x_m$, and the spectral weights
+$\varpi_p=\|\operatorname{proj}_{x_p}e_0\|_{\mathbf G_1}^2$ are all
+positive. For $0\le k\le2m-2$, split $k=i+j$ with $i,j\le m-1$:
+$\sum_{p=1}^m\varpi_px_p^k=\langle\mathbf J^ie_0,\mathbf J^je_0\rangle_{\mathbf
+G_1}=\mathsf m_{k+1}$. For $k=2m-1$ use
+$\langle\mathbf J^{m-1}e_0,\mathbf J\mathbf J^{m-1}e_0\rangle_{\mathbf G_1}
+=(\mathbf G_2)_{m-1,m-1}=\mathsf m_{2m}$. Thus $\sum_p\varpi_p\delta_{x_p}$
+has moments $\mathsf m_1,\dots,\mathsf m_{2m}$ in degrees $0,\dots,2m-1$.
+Put $\mathbf v=(\mathsf m_1,\dots,\mathsf m_m)^{\mathsf T}=\mathbf G_1e_0$.
+The total mass of the proposed positive nodes is
+$\sum_p\varpi_p/x_p=\langle e_0,\mathbf J^{-1}e_0\rangle_{\mathbf G_1}
+=\mathbf v^{\mathsf T}\mathbf G_2^{-1}\mathbf v$, and the Schur complement
+in $\mathbf G_0=\bigl[\begin{smallmatrix}\mathsf m_0&\mathbf v^{\mathsf T}\\
+\mathbf v&\mathbf G_2\end{smallmatrix}\bigr]$ is positive. Therefore
+\[
+ \mu=\bigl(\mathsf m_0-\mathbf v^{\mathsf T}\mathbf G_2^{-1}\mathbf v\bigr)\delta_0
+ +\sum_{p=1}^m\frac{\varpi_p}{x_p}\delta_{x_p}
+\]
+is a positive measure of the required kind.
+\end{proof}
+Apply the lemma with $m=5$ and $\mathsf m_j=a_j$: the determinant table and
+Sylvester's criterion show that both required matrices are positive
+definite, which proves representability through degree ten. The proof uses
+the eigenvalues themselves; numerically the five positive nodes are about
+$2.28210$, $7.53071$, $14.22768$, $20.69126$ and $25.32274$.
+
+\paragraph{The least possible twelfth term.}
+Now let $\mathbf G_1=(a_{i+j+1})_{0\le i,j<5}$ and
+$\mathbf g=(a_6,a_7,a_8,a_9,a_{10})^{\mathsf T}$. A putative eleventh
+moment $a'_{11}$ must make
+$\bigl[\begin{smallmatrix}\mathbf G_1&\mathbf g\\\mathbf g^{\mathsf T}&a'_{11}\end{smallmatrix}\bigr]$
+positive semidefinite; since $\mathbf G_1\succ0$, this is equivalent to
+\begin{equation}\label{l7g:hp:eq:schurlower}
+ a'_{11}\ge\mathbf g^{\mathsf T}\mathbf G_1^{-1}\mathbf g.
+\end{equation}
+The polynomial $\mathcal W_1=\mathcal W/6107572673541$ is the monic
+polynomial $x^5-\sum_{j=0}^4(\mathbf G_1^{-1}\mathbf g)_jx^j$. So, for any
+positive measure with the prescribed moments through degree ten and finite
+next moment $a'_{11}$,
+$\int x\,\mathcal W_1(x)^2\,d\mu(x)=a'_{11}-\mathbf g^{\mathsf T}\mathbf
+G_1^{-1}\mathbf g$. The six-point measure constructed above has its five
+positive nodes at the zeros of $\mathcal W_1$: the spectral quadrature makes
+the moments of the $x$-weighted measure agree through degree nine, and
+\eqref{l7g:hp:eq:Qorthogonal} then forces $\mathcal W_1$ to vanish at each
+node, by the invertibility of a Vandermonde matrix. Hence equality holds in
+\eqref{l7g:hp:eq:schurlower}. Conversely, equality forces support on
+$\{0\}\cup\{\mathcal W_1=0\}$, and the masses are then fixed by the first six
+moments; this is uniqueness at the minimum. Finally
+\[
+ a_{11}-\mathbf g^{\mathsf T}\mathbf G_1^{-1}\mathbf g=\frac{D_6(1)}{D_5(1)},
+\]
+which gives \eqref{l7g:hp:eq:c11min} and \eqref{l7g:hp:eq:repair}. Shorter
+initial segments inherit the same representing measure, and every longer one
+contains the impossible first twelve terms. This proves
+Theorem~\ref{l7g:hp:thm:moment}.
+
+\subsection{Exact certification of strict total positivity through order five}\label{l7g:hp:sec:certificate}
+\paragraph{Reduction to contiguous determinants.}
+The strict form of Fekete's criterion says that a finite matrix whose
+contiguous minors are all positive is totally positive; its finite-order
+version, that positivity of all contiguous minors of sizes at most $r$
+implies $\TP_r$, is Fallat--Johnson--Sokal \cite[Lemma~2.4]{l7g:hp:fjs}.
+The reduction can be seen in two stages. Restrict first to a consecutive
+block of at most $r$ rows and apply the full criterion to that rectangular
+matrix; this permits arbitrary column gaps. Then fix at most $r$ columns
+and apply the full criterion to the tall submatrix, whose contiguous minors
+were just shown positive; this permits arbitrary row gaps. Applying this to
+finite rectangles of an infinite matrix gives the infinite version. For
+$\mathbf H^{(0)}$ it therefore suffices to prove
+\begin{equation}\label{l7g:hp:eq:contiguousgoal}
+ D_r(n)>0\qquad(n\ge0,\ 1\le r\le5).
+\end{equation}
+The case $r=1$ is the positivity of $a_n$.
+
+\paragraph{A tighter ratio interval.}
+This subsection works with the forward ratio $\varrho_{n+1}=a_{n+1}/a_n$
+(manuscript~07's $R_n$), which satisfies $\varrho_{n+2}=f_{n+1}(\varrho_{n+1})$.
+The following rational numbers specify a polynomial; they are not an
+assumption that a divergent or unproved approximation bounds the ratios.
+\begin{center}\small
+\begin{tabular}{rr@{\qquad}rr}
+\toprule
+$j$ & $\omega_j$ & $j$ & $\omega_j$\\
+\midrule
+0 & $27$ & 6 & $65617849635/550731776$\\
+1 & $-81/2$ & 7 & $-1040841454725/7710244864$\\
+2 & $6315/112$ & 8 & $520118139886395/3454189699072$\\
+3 & $-56445/784$ & 9 & $-8041730705126175/48358655787008$\\
+4 & $30827295/351232$ & 10 & $988630328840718285/5416169448144896$\\
+5 & $-508917075/4917248$ & &\\
+\bottomrule
+\end{tabular}
+\end{center}
+($\omega_0,\dots,\omega_4$ are $27$ times the coefficients of
+\eqref{l7g:cm:eq:ratio}.) Define
+\begin{gather}
+ \mathsf K=\frac{14943122191587178247}{37913186137014272},\label{l7g:hp:eq:K}\\
+ \Pi_-(n)=\sum_{j=0}^{10}\omega_jn^{11-j}-\mathsf K,\qquad
+ \Pi_+(n)=\Pi_-(n)+2\mathsf K.\label{l7g:hp:eq:Pi}
+\end{gather}
+
+\begin{lemma}[Certified forward-ratio enclosure; manuscript~07]\label{l7g:hp:lem:tight}
+For every integer $n\ge5$,
+\begin{equation}\label{l7g:hp:eq:tight}
+ 0<\frac{\Pi_-(n)}{n^{11}}<\varrho_{n+1}<\frac{\Pi_+(n)}{n^{11}}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Consider the three rational polynomials
+\begin{align}
+ \Xi_0(n)&=\Pi_-(n),\label{l7g:hp:eq:barriercert0}\\
+ \Xi_-(n)&=\bigl[P_{n+1}\Pi_+(n)+\widetilde Q_{n+1}n^{11}\bigr](n+1)^{11}
+          -(n+2)^2\Pi_+(n)\Pi_-(n+1),\label{l7g:hp:eq:barriercertminus}\\
+ \Xi_+(n)&=(n+2)^2\Pi_-(n)\Pi_+(n+1)
+          -\bigl[P_{n+1}\Pi_-(n)+\widetilde Q_{n+1}n^{11}\bigr](n+1)^{11}.
+          \label{l7g:hp:eq:barriercertplus}
+\end{align}
+Every coefficient of each of $\Xi_0(5+x)$, $\Xi_-(5+x)$, $\Xi_+(5+x)$ is
+strictly positive; their degrees are $11$, $13$, $13$. The exact coefficient
+lists are \file{data/97-07-hankel-certificates.json}, checked as described
+below. It follows that $\Pi_-(n)>0$. Since $\Pi_+(n)>\Pi_-(n)>0$, the
+remaining signs give
+\begin{align*}
+ f_{n+1}\Bigl(\frac{\Pi_+(n)}{n^{11}}\Bigr)-\frac{\Pi_-(n+1)}{(n+1)^{11}}
+ &=\frac{\Xi_-(n)}{(n+2)^2\Pi_+(n)(n+1)^{11}}>0,\\
+ \frac{\Pi_+(n+1)}{(n+1)^{11}}-f_{n+1}\Bigl(\frac{\Pi_-(n)}{n^{11}}\Bigr)
+ &=\frac{\Xi_+(n)}{(n+2)^2\Pi_-(n)(n+1)^{11}}>0.
+\end{align*}
+At $n=5$, $\varrho_6=2628/127$, with exact positive margins
+\[
+ \varrho_6-\frac{\Pi_-(5)}{5^{11}}=\frac{82060445111646705659}{14694136472780800000000000},
+ \qquad
+ \frac{\Pi_+(5)}{5^{11}}-\varrho_6=\frac{1241292957438397992097}{117553091782246400000000000}.
+\]
+Since $f_{n+1}$ is decreasing on positive arguments, these inequalities and
+the base case prove the enclosure by induction.
+\end{proof}
+
+\paragraph{Determinants as polynomials in one unknown ratio.}
+Define rational functions $\psi_k(n,y)$ by
+\begin{equation}\label{l7g:hp:eq:xrec}
+ \psi_0=1,\qquad \psi_1=y,\qquad
+ \psi_{k+1}=\frac{P_{n+k}\psi_k+\widetilde Q_{n+k}\psi_{k-1}}{(n+k+1)^2}\quad(k\ge1).
+\end{equation}
+At $y=\varrho_{n+1}$ induction gives $\psi_k=a_{n+k}/a_n$, so
+\begin{equation}\label{l7g:hp:eq:normalizeddet}
+ \widehat D_r(n,y)=\det[\psi_{i+j}(n,y)]_{0\le i,j<r},\qquad
+ D_r(n)=a_n^r\,\widehat D_r(n,\varrho_{n+1}).
+\end{equation}
+Let $\mathrm{Den}_r(n)$ be the positive denominator
+\begin{center}\small
+\begin{tabular}{cl}
+\toprule
+$r$ & $\mathrm{Den}_r(n)$\\
+\midrule
+2 & $(n+2)^2$\\
+3 & $(n+2)^6(n+3)^4(n+4)^2$\\
+4 & $(n+2)^8(n+3)^8(n+4)^6(n+5)^4(n+6)^2$\\
+5 & $(n+2)^{10}(n+3)^{10}(n+4)^{10}(n+5)^8(n+6)^6(n+7)^4(n+8)^2$\\
+\bottomrule
+\end{tabular}
+\end{center}
+For $r=2,3,4,5$ the expression
+\begin{equation}\label{l7g:hp:eq:Qr}
+ \mathcal Q_r(n,u)=n^{11r}\,\mathrm{Den}_r(n)\,
+ \widehat D_r\Bigl(n,\frac{\Pi_-(n)+2\mathsf Ku}{n^{11}}\Bigr)
+\end{equation}
+is a polynomial in $n,u$ of degree at most $r$ in $u$; this identity is
+itself part of the certificate, not an unchecked simplification. Write
+$\mathcal Q_r(n,u)=\sum_{j=0}^r\mathcal Q_{r,j}(n)u^j$ and its Bernstein form
+\begin{equation}\label{l7g:hp:eq:bernstein}
+ \mathcal Q_r(n,u)=\sum_{k=0}^r\mathcal Q^{\mathrm B}_{r,k}(n)\binom rk u^k(1-u)^{r-k},
+ \qquad
+ \mathcal Q^{\mathrm B}_{r,k}(n)=\sum_{j=0}^k\frac{\binom kj}{\binom rj}\mathcal Q_{r,j}(n).
+\end{equation}
+Each $\mathcal Q^{\mathrm B}_{r,k}(5+x)$ has all coefficients strictly
+positive. This is exactly what is needed: for $0\le u\le1$ every Bernstein
+basis function is nonnegative and at least one is positive. Formula
+\eqref{l7g:hp:eq:bernstein} and \eqref{l7g:hp:eq:xrec} specify every
+certificate polynomial without a symbolic factorization chosen by hand.
+\begin{center}\small
+\begin{tabular}{lrrr}
+\toprule
+Polynomial family & Number & Degree after translation & Positive coefficients\\
+\midrule
+$\Xi_0$ & 1 & 11 & 12\\
+$\Xi_-,\Xi_+$ & 2 & 13 & 28\\
+$\mathcal Q^{\mathrm B}_{2,k}$, $0\le k\le2$ & 3 & 22 & 69\\
+$\mathcal Q^{\mathrm B}_{3,k}$, $0\le k\le3$ & 4 & 39 & 160\\
+$\mathcal Q^{\mathrm B}_{4,k}$, $0\le k\le4$ & 5 & 60 & 305\\
+$\mathcal Q^{\mathrm B}_{5,k}$, $0\le k\le5$ & 6 & 85 & 516\\
+\midrule
+Total & 21 & & 1090\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{proof}[Proof of the positive part of Theorem~\ref{l7g:hp:thm:sharp}]
+For $n\ge5$, Lemma~\ref{l7g:hp:lem:tight} places the true ratio at a unique
+$u\in(0,1)$ in \eqref{l7g:hp:eq:Qr}. Positivity of the translated
+coefficients and of the Bernstein basis gives $\mathcal Q_r(n,u)>0$; since
+$n$, $\mathrm{Den}_r(n)$ and $a_n$ are positive,
+\eqref{l7g:hp:eq:normalizeddet} gives $D_r(n)>0$ for $2\le r\le5$. For
+$0\le n\le4$ the twenty required determinants are computed exactly
+(Subsection~\ref{l7g:hp:sec:base}). Fekete's finite-order criterion proves
+$\mathbf H^{(0)}\in\TP_5$, and \eqref{l7g:hp:eq:negative} makes the order
+sharp. Strict log-convexity is the case of the $2\times2$ minors (and is
+proved independently in Proposition~\ref{l7g:hp:prop:logconvex}).
+\end{proof}
+
+\paragraph{Why the certificate replay is a proof, not a finite experiment.}
+The data file records each polynomial as a positive rational scale times a
+list of positive integer coefficients in $x=n-5$. A SymPy program
+regenerates these lists; separately, a Python-standard-library program
+checks the coefficient signs and verifies the claimed identities using only
+integers and exact fractions, without importing SymPy, mpmath or the
+generator. The degree argument that makes finite identity replay sufficient
+is this. For fixed $r$ put $m=2r-2$ and
+\[
+ \mathrm{Den}^*_r(n)=\prod_{j=2}^{m}(n+j)^2,\qquad \deg\mathrm{Den}^*_r=4r-6.
+\]
+By \eqref{l7g:hp:eq:xrec}, $\mathrm{Den}^*_r(n)\psi_k(n,y)$ is polynomial in
+$n,y$, of $n$-degree at most $4r-6$ and $y$-degree at most one, for $0\le
+k\le m$. After substituting $y=(\Pi_-(n)+2\mathsf Ku)/n^{11}$, every entry
+\[
+ \mathbf E_{ij}(n,u)=n^{11}\mathrm{Den}^*_r(n)\,
+ \psi_{i+j}\Bigl(n,\frac{\Pi_-(n)+2\mathsf Ku}{n^{11}}\Bigr)
+\]
+is polynomial of $n$-degree at most $4r+5$ and $u$-degree at most one. The
+identity to check is
+\begin{equation}\label{l7g:hp:eq:independentidentity}
+ \det\mathbf E(n,u)=\frac{\mathrm{Den}^*_r(n)^r}{\mathrm{Den}_r(n)}
+ \sum_{k=0}^r\mathcal Q^{\mathrm B}_{r,k}(n)\binom rk u^k(1-u)^{r-k}.
+\end{equation}
+The quotient $\mathrm{Den}^*_r(n)^r/\mathrm{Den}_r(n)$ is a polynomial, as
+the displayed exponents show. Both sides have $n$-degree at most $4r^2+5r$
+and $u$-degree at most $r$, so the checker verifies
+\eqref{l7g:hp:eq:independentidentity} at $4r^2+5r+1$ distinct integers $n$
+and the $r+1$ values $u=0,1/r,\dots,1$; univariate polynomial uniqueness,
+applied in $u$ and then in $n$, proves the full identity. That is
+$81+208+425+756=1470$ exact bivariate evaluation points. The barrier
+identities use degree bounds $11$ and $24$ before cancellation and are
+checked at $12$ and $25$ points. Thus the proof does not infer a universal
+sign from sampled signs: it verifies a polynomial identity of bounded
+degree, then proves its sign for every real $n\ge5$ from its coefficients;
+the remaining induction concerns the actual integer-indexed sequence.
+\hpnote{The intake re-derived this degree argument by hand
+($\mathrm{Den}^*_r(n)\psi_k$ has $n$-degree at most $2(k-1)$ by induction)
+and read the checker in full: it checks the degree bound of every
+certificate polynomial against $4r^2+5r$, including the
+$\mathrm{Den}^*_r{}^r/\mathrm{Den}_r$ multiplier, before interpolating.
+Given Fekete's classical criterion, the order-five certificate is a proof.
+Here $\mathbf E$ is the checker's matrix, called $M$ in manuscript~07.}
+
+\subsection{A recurrence-only route to the expansion of Theorem~\ref{l7g:th:main}}\label{l7g:hp:sec:sequenceasympt}
+\begin{remark}[A second route, not a new result]\label{l7g:hp:rem:secondroute}
+\hpnote{The expansion part of Theorem~\ref{l7g:th:main} (existence of $C>0$
+and of the full expansion with rational corrections) is proved in this
+report by Frobenius theory and singularity analysis, in
+Section~\ref{l7g:sec:allorders} (manuscripts 58 and 56) and
+Subsection~\ref{l7g:tr:sec:transfer} (manuscript~32). Manuscript~07
+proves it again by an elementary stable-ratio argument that uses only the
+recurrence; it is printed here as a marked second route of that kind. It
+does not determine the value of $C$, which is inherited from
+Theorem~\ref{l7g:th:main}, and it gives $c_1,\dots,c_4$ equal to
+\eqref{l7g:eq:cvalues}. Its formal ratio series extends the coefficients of
+Corollary~\ref{l7g:cm:cor:ratio} from order four to order eleven.}
+\end{remark}
+This subsection makes the analytic input to
+Theorem~\ref{l7g:hp:thm:hankelmain} independent of the rest of the
+report, except for the value of $C$.
+
+\paragraph{Formal coefficients and stability.}
+Let $t$ be a formal variable. Substituting $\varrho_{n+1}\sim\Omega(1/n)$
+in the recurrence gives the formal equation
+\begin{equation}\label{l7g:hp:eq:formalB}
+ (1+t)^2\Omega(t)\,\Omega\Bigl(\frac{t}{1-t}\Bigr)
+ -(26+13t+2t^2)\,\Omega\Bigl(\frac{t}{1-t}\Bigr)-(27-27t+6t^2)=0,
+ \qquad \Omega(t)=\sum_{j\ge0}\omega_jt^j,\quad\omega_0=27.
+\end{equation}
+For $m\ge1$ the coefficient of $\omega_m$ in the $t^m$ equation is $28$,
+and all other terms involve earlier coefficients, so
+\eqref{l7g:hp:eq:formalB} determines $\omega_m\in\Q$ uniquely. Its first
+eleven coefficients are the table of
+Subsection~\ref{l7g:hp:sec:certificate}; for example
+\[
+ \omega_{11}=-\frac{14905209005450163975}{75826372274028544},
+ \qquad \mathsf K=2|\omega_{11}|+1.
+\]
+This explains how the barrier was found; its validity was proved
+separately, by the polynomial inequalities.
+
+\begin{lemma}[A stable error estimate]\label{l7g:hp:lem:stable}
+If $|\epsilon_{n+1}|\le\theta|\epsilon_n|+K'n^{-\gamma}$ for all
+sufficiently large $n$, with $0<\theta<1$ and $\gamma>0$, then
+$\epsilon_n=O(n^{-\gamma})$.
+\end{lemma}
+\begin{proof}
+Iterate the inequality. In the resulting geometric convolution, the terms
+with indices at least $n/2$ contribute at most a constant times
+$n^{-\gamma}$; all earlier terms carry a factor at most $\theta^{n/2}$, and
+their total, with the initial error, is exponentially small compared with
+$n^{-\gamma}$.
+\end{proof}
+
+\begin{proposition}[All-orders ratio expansion; manuscript~07]\label{l7g:hp:prop:Rallorders}
+For every fixed $M\ge0$,
+\begin{equation}\label{l7g:hp:eq:Rallorders}
+ \varrho_{n+1}=\frac{a_{n+1}}{a_n}=\sum_{j=0}^{M}\omega_jn^{-j}+O_M(n^{-M-1}).
+\end{equation}
+\end{proposition}
+\begin{proof}
+Let $\Omega_M(n)=\sum_{j=0}^M\omega_jn^{-j}$. Formal coefficient matching
+gives $\Omega_M(n+1)-f_{n+1}(\Omega_M(n))=O_M(n^{-M-1})$. Both $\Omega_M(n)$
+and $\varrho_{n+1}$ tend to $27$, the latter by
+Proposition~\ref{l7g:hp:prop:logconvex}. Uniformly between these two
+arguments, $|f_{n+1}'(x)|=\widetilde Q_{n+1}/((n+2)^2x^2)\to1/27$, so for
+large $n$ it is bounded by a fixed $\theta<1$. The mean value theorem and
+Lemma~\ref{l7g:hp:lem:stable} applied to $\varrho_{n+1}-\Omega_M(n)$ prove
+the claim.
+\end{proof}
+
+\paragraph{The normalization constant and the full expansion.}
+Set $\mathfrak z_n=\log a_n-n\lambda+\frac32\log n$ for $n\ge1$. Because
+$\omega_1/27=-3/2$, \eqref{l7g:hp:eq:Rallorders} gives
+\[
+ \mathfrak z_{n+1}-\mathfrak z_n=\log\varrho_{n+1}-\lambda+\tfrac32\log(1+1/n)=O(n^{-2}).
+\]
+The increments are absolutely summable, so $\mathfrak z_n$ converges to a
+finite limit $\log C$; in particular $C>0$, and neither its positivity nor
+its existence is inferred from a numerical fit. At any finite order,
+subtract a polynomial in $1/n$ from $\mathfrak z_n$, solving its
+coefficients successively from the increment identity (the leading
+contribution of $\ell_jn^{-j}$ to the increment is $-j\ell_jn^{-j-1}$; the
+$\ell_j$ are those of \eqref{l7g:eq:logexp}); the remaining increment is as
+small as desired by Proposition~\ref{l7g:hp:prop:Rallorders}, and summing
+its tail proves the error bound for $\mathfrak z_n$. Exponentiation gives:
+
+\begin{theorem}[Recurrence-only all-orders expansion; manuscript~07]\label{l7g:hp:thm:callorders}
+There is a constant $C>0$ such that, for every fixed $M\ge0$,
+\begin{equation}\label{l7g:hp:eq:callorders}
+ a_n=C\,27^nn^{-3/2}\left(\sum_{j=0}^{M}c_jn^{-j}+O_M(n^{-M-1})\right),
+ \qquad c_0=1,
+\end{equation}
+with every $c_j$ rational; $c_1,\dots,c_4$ are the values in
+\eqref{l7g:eq:cvalues}.
+\end{theorem}
+For an explicit algorithm, with $S_{27}(t)=\sum_jc_jt^j$ as in
+\eqref{l7g:eq:formalE}, the ratio identity is
+\begin{equation}\label{l7g:hp:eq:AfromB}
+ \Omega(t)S_{27}(t)=27(1+t)^{-3/2}S_{27}\Bigl(\frac{t}{1+t}\Bigr);
+\end{equation}
+in the coefficient of $t^{m+1}$, the unknown $c_m$ has coefficient $27m$
+once everything is moved to the left. This is the triangular algorithm of
+the supporting code, a third generator beside \eqref{l7g:eq:triangular} and
+\eqref{l7g:tr:eq:cgamma}.
+
+The argument proves a Poincar\'e expansion: each finite truncation has its
+stated remainder. It does not assert convergence of the formal series, an
+optimal truncation theorem, or any determination of exponentially small
+sectors. Exponentially small terms are irrelevant to the fixed-order sign
+argument but may matter when the determinant order grows with $n$.
+
+\subsection{A general all-orders theorem for shifted Hankel determinants}\label{l7g:hp:sec:general}
+Consider a real sequence $(\mathsf s_n)$ with, for every fixed $M$,
+\begin{equation}\label{l7g:hp:eq:generalhyp}
+ \mathsf s_n=C\Lambda^nn^{-\alpha}
+ \left(\sum_{j=0}^{M}\mathsf a_jn^{-j}+O_M(n^{-M-1})\right),
+ \qquad C,\Lambda,\alpha>0,\quad \mathsf a_0=1.
+\end{equation}
+The coefficients may be real, and no moment representation is assumed.
+Put $\mathcal D_r(n)=\det[\mathsf s_{n+i+j}]_{0\le i,j<r}$ and
+\begin{equation}\label{l7g:hp:eq:halpha}
+ \mathcal V_r(\alpha)=\prod_{j=0}^{r-1}j!\,(\alpha)_j.
+\end{equation}
+
+\begin{theorem}[All orders, with an explicit first correction; manuscript~07]\label{l7g:hp:thm:general}
+For fixed $r\ge1$ the determinant has a full expansion
+\begin{equation}\label{l7g:hp:eq:generalD}
+ \mathcal D_r(n)=C^r\Lambda^{rn+r(r-1)}n^{-r\alpha-r(r-1)}\mathcal V_r(\alpha)
+ \left(1+\frac{\mathfrak b_{r,1}}n+\frac{\mathfrak b_{r,2}}{n^2}+\cdots\right),
+\end{equation}
+in the finite-truncation sense, with first correction
+\begin{equation}\label{l7g:hp:eq:generalbeta}
+ \mathfrak b_{r,1}=r(\alpha+r-1)\left(\frac{\mathsf a_1}{\alpha}-(r-1)\right).
+\end{equation}
+All later coefficients are given by the finite determinant generator
+\eqref{l7g:hp:eq:betagenerator}. If $\alpha$ and all $\mathsf a_j$ are
+rational, so are all $\mathfrak b_{r,j}$.
+\end{theorem}
+The general method is classical finite-difference and Vandermonde algebra
+and is not claimed as new; the explicit generator and the formula for
+$\mathfrak b_{r,1}$ are manuscript~07's presentation. (The report's
+neighbour \file{hankel-determinants/growth-and-runs/apery-hankel-determinant-growth}
+treats a growing order $r=sN$, a different regime.)
+
+\paragraph{Finite differences remove the degeneracy.}
+Substituting only the leading terms in the determinant is not legitimate:
+the leading normalized matrix has all entries equal to one and rank one, so
+the proof must resolve the cancellations. Put $t=1/n$. After factoring
+$C^r\Lambda^{rn+r(r-1)}n^{-r\alpha}$ (the factor $\Lambda^{i+j}$ of each
+entry being absorbed by the row and column scalings $\Lambda^i$,
+$\Lambda^j$), the formal normalized entries are $\mathcal Z_{i+j}(t)$, where
+\[
+ \mathcal Z_k(t)=\sum_{m\ge0}\mathsf a_mt^m(1+kt)^{-\alpha-m}.
+\]
+Take successive forward differences $\Delta$ in the row and in the column
+index; the corresponding triangular transformations have determinant one,
+and the $(i,j)$ entry becomes $\Delta^{i+j}\mathcal Z_0(t)$. Factoring
+$(-t)^i$ from row $i$ and $(-t)^j$ from column $j$ extracts $t^{r(r-1)}$,
+because $r(r-1)$ is even. The resulting entry depends only on $s=i+j$ and
+has the explicit expansion
+\begin{equation}\label{l7g:hp:eq:Kgenerator}
+ \mathcal X_s(t)=\sum_{h\ge0}t^h\sum_{m=0}^{h}\mathsf a_m(-1)^{h-m}
+ \frac{s!\,(\alpha+m)_{s+h-m}}{(s+h-m)!}\stir{s+h-m}{s},
+\end{equation}
+with Stirling numbers of the second kind, $\stir00=1$ and $\stir k0=0$ for
+$k>0$; it follows from $\Delta^sk^d|_{k=0}=s!\stir ds$. For $s=0$ it gives
+$\mathcal X_0(t)=\sum_h\mathsf a_ht^h$, as it should. At $t=0$ the
+transformed matrix is $\mathbf P=[(\alpha)_{i+j}]_{0\le i,j<r}$, with
+determinant exactly $\mathcal V_r(\alpha)$: factor $(\alpha)_i$ from row
+$i$; the remaining entries $(\alpha+i)_j$ are monic polynomials of degree
+$j$ evaluated at $\alpha,\alpha+1,\dots,\alpha+r-1$, whose determinant is
+the Vandermonde product $\prod_{j<r}j!$. Since $\alpha>0$ this leading
+determinant is strictly positive.
+
+\paragraph{The complete coefficient generator and the remainder.}
+The all-orders generator is the identity of formal power series (not an
+assertion of convergence)
+\begin{equation}\label{l7g:hp:eq:betagenerator}
+ \sum_{j\ge0}\mathfrak b_{r,j}t^j
+ =\frac{\det[\mathcal X_{i+j}(t)]_{0\le i,j<r}}{\mathcal V_r(\alpha)}.
+\end{equation}
+The coefficient of $t^M$ needs only $\mathsf a_0,\dots,\mathsf a_M$ and
+finitely many Stirling numbers. To justify the remainder, start from
+\eqref{l7g:hp:eq:generalhyp} truncated much further than the desired order,
+say with normalized remainder $O(t^{M'})$ where $M'\ge M+2r$. There are only
+finitely many shifts $0,\dots,2r-2$, so the bound is uniform over them;
+a fixed finite difference preserves it, and dividing the $(i,j)$ entry by
+$t^{i+j}$ changes it to at worst $O(t^{M'-2r+2})$, smaller than the
+requested error. The constant matrix $\mathbf P$ is nonsingular, so
+expanding the finite determinant preserves the order. This proves
+\eqref{l7g:hp:eq:generalD}, and shows why entrywise substitution without
+additional terms would have been insufficient.
+
+\paragraph{The first correction.}
+Let $\mathbf N=\operatorname{diag}(0,1,\dots,r-1)$ and
+$\mathbf P_1=[(\alpha)_{i+j+1}]$. By \eqref{l7g:hp:eq:Kgenerator},
+$[t]\,[\mathcal X_{i+j}(t)]=\frac{\mathsf a_1}{\alpha}\mathbf P_1
+-\frac12(\mathbf N\mathbf P_1+\mathbf P_1\mathbf N)$, so the derivative of
+the determinant gives
+\begin{equation}\label{l7g:hp:eq:tracebeta}
+ \mathfrak b_{r,1}=\frac{\mathsf a_1}{\alpha}\operatorname{tr}(\mathbf P^{-1}\mathbf P_1)
+ -\frac12\operatorname{tr}\bigl(\mathbf P^{-1}(\mathbf N\mathbf P_1+\mathbf P_1\mathbf N)\bigr).
+\end{equation}
+Since $\mathbf P_1=\alpha\mathbf P+\mathbf N\mathbf P+\mathbf P\mathbf N$,
+$\mathcal T:=\operatorname{tr}(\mathbf P^{-1}\mathbf P_1)=r\alpha+2\operatorname{tr}\mathbf N
+=r(\alpha+r-1)$. The first $r-1$ rows of $\mathbf P_1\mathbf P^{-1}$ are
+$e_1^{\mathsf T},\dots,e_{r-1}^{\mathsf T}$, because those rows of $\mathbf
+P_1$ are the next rows of $\mathbf P$; its first $r-1$ diagonal entries
+vanish, so $\operatorname{tr}(\mathbf N\mathbf P_1\mathbf P^{-1})=(r-1)\mathcal T$, and
+symmetry of $\mathbf P,\mathbf P_1$ gives the same value for the other
+trace. Thus $\mathfrak b_{r,1}=\mathcal T(\mathsf a_1/\alpha-(r-1))$, which
+is \eqref{l7g:hp:eq:generalbeta}.
+
+\paragraph{Specialization to A279619.}
+Theorem~\ref{l7g:th:main} (or Theorem~\ref{l7g:hp:thm:callorders}) with
+$\Lambda=27$, $\alpha=3/2$ and $\mathsf a_j=c_j$ proves the expansion part
+of Theorem~\ref{l7g:hp:thm:hankelmain}; then $\alpha_r=\frac32r+r(r-1)$,
+and \eqref{l7g:hp:eq:generalbeta} with $c_1=-215/1008$ is
+\eqref{l7g:hp:eq:beta1main}. The first two corrections produced by
+\eqref{l7g:hp:eq:betagenerator} are
+\begin{center}\small
+\begin{tabular}{crr}
+\toprule
+$r$ & $\mathfrak b_{r,1}$ & $\mathfrak b_{r,2}$\\
+\midrule
+1 & $-215/1008$ & $-1265/290304$\\
+2 & $-8635/1512$ & $31343875/1524096$\\
+3 & $-3239/144$ & $246722173/870912$\\
+4 & $-4751/84$ & $10336793/6048$\\
+5 & $-344465/3024$ & $1529842985/225792$\\
+6 & $-101075/504$ & $31599315995/1524096$\\
+\bottomrule
+\end{tabular}
+\end{center}
+(for $r=1$ they are $c_1,c_2$). For instance
+\begin{equation}\label{l7g:hp:eq:D2exp}
+ D_2(n)=\frac32C^2\,27^{2n+2}n^{-5}
+ \left(1-\frac{8635}{1512n}+\frac{31343875}{1524096n^2}+O(n^{-3})\right).
+\end{equation}
+The data file \file{data/97-07-hankel-asymptotic_coefficients.json} gives
+the corrections through order four for $1\le r\le6$; the algorithm works to
+any fixed order. No general closed expression for $\mathfrak b_{r,j}$ as a
+function of both indices is asserted beyond the generator.
+
+\subsection{Arbitrary gaps, eventual total positivity, and nonuniformity}\label{l7g:hp:sec:tails}
+Let $0\le g_0<\dots<g_{r-1}$ and $0\le g'_0<\dots<g'_{r-1}$ be fixed integer
+offsets, and $\operatorname{Vand}(g)=\prod_{i<j}(g_j-g_i)$, similarly for $g'$.
+
+\begin{proposition}[Fixed gaps; manuscript~07]\label{l7g:hp:prop:gaps}
+Under \eqref{l7g:hp:eq:generalhyp},
+\begin{equation}\label{l7g:hp:eq:gaps}
+ \det[\mathsf s_{n+g_i+g'_j}]_{0\le i,j<r}\sim
+ C^r\Lambda^{rn+\sum_ig_i+\sum_jg'_j}n^{-r\alpha-r(r-1)}
+ \operatorname{Vand}(g)\operatorname{Vand}(g')\prod_{j=0}^{r-1}\frac{(\alpha)_j}{j!},
+\end{equation}
+and the leading constant is strictly positive.
+\end{proposition}
+\begin{proof}[Proof (sketch, as given in manuscript~07)]
+Expand the normalized entry $(1+(g_i+g'_j)t)^{-\alpha}$ in monomials in
+$g_i$ and $g'_j$: the coefficient of $g_i^p{g'_j}^q$ is
+$(-1)^{p+q}(\alpha)_{p+q}t^{p+q}/(p!q!)$. In the determinant, the smallest
+nonvanishing row and column exponent sets are both $\{0,\dots,r-1\}$;
+finite Cauchy--Binet expansion gives the two Vandermonde factors and the
+determinant of $[(\alpha)_{p+q}/(p!q!)]$, whose value is
+$\prod_j(\alpha)_j/j!$. Every correction $\mathsf a_mt^m$, $m>0$,
+contributes only at higher total order, and taking the initial expansion to
+sufficiently high order controls the remainder as in
+Subsection~\ref{l7g:hp:sec:general}.
+\end{proof}
+For $g=g'=(0,\dots,r-1)$, \eqref{l7g:hp:eq:gaps} is the leading term of
+\eqref{l7g:hp:eq:generalD}, since then
+$\operatorname{Vand}(g)^2\prod_j(\alpha)_j/j!=\mathcal V_r(\alpha)$.
+
+The fixed-offset proposition alone would not justify a statement about all
+offsets simultaneously; the contiguous-minor criterion supplies that step.
+
+\begin{corollary}[Every fixed order is eventually restored; manuscript~07]\label{l7g:hp:cor:eventual}
+Under \eqref{l7g:hp:eq:generalhyp}, for each fixed $r$ there is an integer
+$N^{\TP}_r$ such that $(\mathsf s_{N+i+j})_{i,j\ge0}$ is $\TP_r$ whenever
+$N\ge N^{\TP}_r$.
+\end{corollary}
+\begin{proof}
+For each $1\le k\le r$ the leading constant in
+Theorem~\ref{l7g:hp:thm:general} is positive, so $\mathcal D_k(n)>0$ for
+all large $n$. Choose $N^{\TP}_r$ beyond these finitely many thresholds.
+Every contiguous minor of order at most $r$ of the shifted matrix is one of
+these determinants with shift at least $N^{\TP}_r$, and Fekete's criterion,
+applied to finite rectangles, proves the assertion.
+\end{proof}
+For A279619, $N^{\TP}_r=0$ for $r\le5$ (Theorem~\ref{l7g:hp:thm:sharp}).
+No optimal threshold is proved for $r\ge6$; the finite experiments of
+Subsection~\ref{l7g:hp:sec:computations} suggest specific small values but
+are not substituted for proof.
+
+\begin{remark}[Why the hypothesis and the order of quantifiers matter; manuscript~07]\label{l7g:hp:rem:quantifiers}
+A leading equivalent alone does not force even eventual log-convexity. For
+$0<\varepsilon<1$ and large $n$ the positive sequence
+$\mathsf s_n=n^{-\alpha}(1+\varepsilon(-1)^n/n)$ has $\mathsf s_n\sim
+n^{-\alpha}$, but
+$\mathsf s_n\mathsf s_{n+2}-\mathsf s_{n+1}^2
+=n^{-2\alpha}\bigl(4\varepsilon(-1)^n/n+O(n^{-2})\bigr)$, so its adjacent
+$2\times2$ determinants change sign indefinitely; the all-orders hypothesis
+rules out this algebraically large oscillation. Nor does
+Corollary~\ref{l7g:hp:cor:eventual} interchange its quantifiers: it says
+``for every fixed $r$, eventually in $N$'', not ``one $N$ for all $r$''.
+Even the first relative correction for A279619 grows cubically,
+$\mathfrak b_{r,1}=-r^3+O(r^2)$, so the fixed-$r$ expansion gives no uniform
+accuracy as $r$ grows with $n$; it suggests $r^3/n$ as a scale worth
+investigating, but is not a proof of a transition law. In particular no
+fixed-tail Stieltjes representation follows from the asymptotic theorem.
+\hpnote{Theorem~\ref{l7g:hp:thm:nostieltjes} below shows that none
+exists: for every $N$, $\mathbf H^{(N)}$ fails to be totally nonnegative at
+some finite order, which must tend to infinity with $N$ by
+Corollary~\ref{l7g:hp:cor:eventual}.}
+\end{remark}
+
+\subsection{Inverse scales for Hankel determinant growth}\label{l7g:hp:sec:inverse}
+\hpnote{The construction of this subsection is the mechanism of
+Section~\ref{l7g:sec:inversion} (and of Remark~\ref{l7g:tr:rem:ceiling})
+applied to $D_r(n)$ instead of $a_n$, with $\lambda$ replaced by $r\lambda$
+and $\beta=3/2$ by $\alpha_r$. Its Lambert-$W_{-1}$ core and triangular
+corrections are the instance $a=r\lambda$, $\beta_{\mathrm{CTI}}=-\alpha_r$,
+$q_j^{\mathrm{CTI}}=\ell^{[r]}_j$ of Theorem
+\texttt{t2:thm:balanced-inverse} of \cite{l7g:cti}: its $d_1$, $d_2$ are
+the two corrections in \eqref{l7g:hp:eq:inversecorrections} (checked by
+hand at this write), and its rounding statement has the form of the
+separation condition of \texttt{p0:thm:staircase} of \cite{l7g:tai}.
+Manuscript~07 cites neither, and no novelty is claimed for the method.}
+This subsection concerns a smooth asymptotic envelope; a discrete sequence
+has no unique continuous inverse. For fixed $r$ the large solution of
+$Y=C^{\mathrm H}_r\ee^{r\lambda x}x^{-\alpha_r}$ is
+\begin{equation}\label{l7g:hp:eq:Lambertinverse}
+ x^{[r]}_0(Y)=-\frac{\alpha_r}{r\lambda}
+ W_{-1}\Bigl(-\frac{r\lambda}{\alpha_r}\Bigl(\frac{C^{\mathrm H}_r}{Y}\Bigr)^{1/\alpha_r}\Bigr),
+\end{equation}
+with $W_{-1}$ the real lower branch of Lambert's function; this follows by
+multiplying $x\ee^{-r\lambda x/\alpha_r}=(C^{\mathrm H}_r/Y)^{1/\alpha_r}$ by
+$-r\lambda/\alpha_r$. Put $\ell^{[r]}_1=\mathfrak b_{r,1}$ and
+$\ell^{[r]}_2=\mathfrak b_{r,2}-\mathfrak b_{r,1}^2/2$, the first two
+coefficients of $\log\sum_j\mathfrak b_{r,j}t^j$ (the analogues of the
+$\ell_j$ of \eqref{l7g:eq:logexp}). Substituting into the logarithm of
+\eqref{l7g:hp:eq:mainexpansion} gives, with $x_0=x^{[r]}_0(Y)$, the formal
+inverse corrections
+\begin{equation}\label{l7g:hp:eq:inversecorrections}
+ x^{[r]}(Y)=x_0-\frac{\ell^{[r]}_1}{r\lambda\,x_0}
+ -\frac1{x_0^2}\Bigl(\frac{\alpha_r\ell^{[r]}_1}{(r\lambda)^2}+\frac{\ell^{[r]}_2}{r\lambda}\Bigr)
+ +O_r(x_0^{-3}).
+\end{equation}
+At each later order the new coefficient enters linearly with nonzero
+coefficient $r\lambda$, so the inverse expansion continues to every fixed
+order; for fixed $r$ its coefficients lie in $\Q(\log27)$ once the leading
+scale $x_0$ is separated. This is an algebraic-order inverse expansion; it
+does not resolve exponentially small inverse sectors or Stokes data.
+
+\paragraph{A rounding statement with the correct safeguard.}
+The ratio $D_r(n+1)/D_r(n)$ tends to $27^r>1$ by
+Theorem~\ref{l7g:hp:thm:hankelmain}, so there is $n^{[r]}_*$ beyond which
+these determinants are positive and increasing. Define
+$N^{[r]}(Y)=\min\{n\ge n^{[r]}_*:D_r(n)\ge Y\}$. For fixed $M\ge0$ let
+$x^{[r]}_M(Y)$ be the large root of the continuous truncation
+$\mathcal F^{[r]}_M(x)=C^{\mathrm H}_r\ee^{r\lambda x}x^{-\alpha_r}
+\sum_{j=0}^M\mathfrak b_{r,j}x^{-j}=Y$, which for large $Y$ exists uniquely
+on the increasing branch. There is a constant $K^{[r]}_M>0$ such that
+\begin{equation}\label{l7g:hp:eq:rounding}
+ \bigl\lceil x^{[r]}_M-K^{[r]}_M(x^{[r]}_M)^{-M-1}\bigr\rceil
+ \le N^{[r]}(Y)\le
+ \bigl\lceil x^{[r]}_M+K^{[r]}_M(x^{[r]}_M)^{-M-1}\bigr\rceil.
+\end{equation}
+Indeed, the relative error in $D_r(n)/\mathcal F^{[r]}_M(n)$ is
+$O(n^{-M-1})$, while $(\log\mathcal F^{[r]}_M)'(x)=r\lambda+O(1/x)$ is
+bounded away from zero; a displacement of the stated order therefore
+dominates the logarithmic error, and monotonicity gives the two integer
+bounds. \hpnote{As in Proposition~\ref{l7g:prop:rounding}, the brackets hold
+for all sufficiently large $Y$, a qualifier manuscript~07 leaves implicit.}
+The constants are existential, not an explicit numerical stopping rule; a
+finite asymptotic truncation cannot be rounded with an unconditional single
+ceiling when its error interval straddles an integer.
+
+\subsection{The singularity at \texorpdfstring{$z=-1$}{z=-1} and the absence of a Stieltjes tail (added at this write)}\label{l7g:hp:sec:minusone}
+\hpnote{This subsection is new at this write; manuscript~07 does not
+contain it. Its numerical starting point is the batch-97 intake's
+observation, by integrating \eqref{l7g:eq:ODE} from $z=-0.02$ to $z=-1+10^{-6}$
+at 40 digits, that $\sqrt{1+z}\,A'(z)$ approaches about $-0.0975$; the
+proof below makes that rigorous and does not use the integration.} The
+analytic continuation of $A$ along the segment $(-1,0]$ exists by
+Section~\ref{l7g:sec:singularity} (the only singular points of
+\eqref{l7g:eq:ODE} are $0$, $\rho$, $-1$). Its exponents at $z=-1$ are $0$
+and $\frac12$, so near $-1$ it has the form $U_-+B_-\sqrt{1+z}\,V_-$ with
+$U_-$, $V_-$ analytic; the question is whether $B_-\ne0$. Let
+$F(x)={}_2F_1(\frac1{12},\frac5{12};1;x)$ and $P$, $J$ be as in
+\eqref{l7g:eq:PTJ}.
+
+\begin{proposition}[The connection coefficient at $-1$; this write]\label{l7g:hp:prop:minusone}
+For $-1<z\le0$ put $\check w=\sqrt{(1+z)/(1-27z)}\in(0,1]$. Then the continuation
+of $A$ along $(-1,0]$ is
+\begin{equation}\label{l7g:hp:eq:minusoneGF}
+ A(z)=P(1/\check w)\,F\bigl(J(1/\check w)\bigr),
+\end{equation}
+where
+\[
+ P(1/\check w)=\Bigl(\frac{7(1+27\check w^2)}{15+96\check w+85\check w^2}\Bigr)^{1/4},\qquad
+ J(1/\check w)=\frac{1728(\check w-1)^7(\check w+1)}{(1+27\check w^2)(15+96\check w+85\check w^2)^3}.
+\]
+Consequently, with $s_-=1+z$,
+\begin{equation}\label{l7g:hp:eq:minusone}
+ A(z)=U_-(s_-)+B_-\sqrt{s_-}\,V_-(s_-),\qquad V_-(0)=1,
+\end{equation}
+where $U_-$, $V_-$ are analytic at $0$,
+\begin{equation}\label{l7g:hp:eq:Bminus}
+ U_-(0)=\Bigl(\frac7{15}\Bigr)^{1/4}F\bigl(-\tfrac{64}{125}\bigr),\qquad
+ B_-=\frac{4}{5\sqrt7}\Bigl(\frac7{15}\Bigr)^{1/4}
+ \Bigl(\frac{1008}{125}F'\bigl(-\tfrac{64}{125}\bigr)-F\bigl(-\tfrac{64}{125}\bigr)\Bigr),
+\end{equation}
+and $-0.2075<B_-<-0.1754$. In particular $A$ is singular at $z=-1$: its
+continuation has $A'(z)\to-\infty$ as $z\downarrow-1$.
+\end{proposition}
+\begin{proof}
+In the variable $w=1/\check w=\sqrt{(1-27z)/(1+z)}$ of \eqref{l7g:eq:w}, the
+segment $z\in(-1,0]$ is $w\in[1,\infty)$, traversed by the real-analytic
+diffeomorphism $w\mapsto z=(1-w^2)/(27+w^2)$. For $w\ge1$, $T(w)>0$, so
+$P(w)$ is positive and analytic, and $J(w)\le0$ because $(1-w)^7\le0$; as
+$F$ is analytic on $\mathbb C\setminus[1,\infty)$, the function
+$z\mapsto P(w(z))F(J(w(z)))$ is analytic on a complex neighbourhood of
+$(-1,0]$ (there $w(z)$ is analytic, its radicand being positive). By
+Proposition~\ref{l7g:prop:pullback} it equals $A$ near $z=0$ (germs at
+$w=1$), so by the identity theorem it is the continuation of $A$ along
+$(-1,0]$. Writing it in $\check w=1/w$ gives \eqref{l7g:hp:eq:minusoneGF}.
+
+The function $G(\check w)=P(1/\check w)F(J(1/\check w))$ is analytic on a neighbourhood of
+$[0,1]$: the displayed rational expressions are regular there,
+$15+96\check w+85\check w^2>0$, and $J(1/\check w)\le0$ for $0\le \check w\le1$. Write
+$G(\check w)=G_{\mathrm e}(\check w^2)+\check w\,G_{\mathrm o}(\check w^2)$ with $G_{\mathrm e}$,
+$G_{\mathrm o}$ analytic at $0$. Since $1-27z=28-27s_-$, we have
+$\check w^2=s_-/(28-27s_-)$, analytic at $s_-=0$, and
+$\check w=\sqrt{s_-}\,(28-27s_-)^{-1/2}$. Hence \eqref{l7g:hp:eq:minusone} holds
+with $U_-(s_-)=G_{\mathrm e}(s_-/(28-27s_-))$ and
+$B_-=G_{\mathrm o}(0)/\sqrt{28}=G'(0)/(2\sqrt7)$, provided $G'(0)\ne0$,
+which is shown next. At $\check w=0$: $P(\infty)=(7/15)^{1/4}$ and
+$J(\infty)=-1728/3375=-64/125$; logarithmic differentiation gives
+$(\log P(1/\check w))'|_{\check w=0}=\frac14\cdot(-\frac{96}{15})=-\frac85$ and
+$(\log|J(1/\check w)|)'|_{\check w=0}=-7+1-\frac{3\cdot96}{15}=-\frac{126}5$, so
+$\frac{d}{d\check w}J(1/\check w)|_{\check w=0}=\frac{8064}{625}$. Therefore
+\[
+ G'(0)=\Bigl(\frac7{15}\Bigr)^{1/4}\Bigl(\frac{8064}{625}F'\bigl(-\tfrac{64}{125}\bigr)
+ -\frac85F\bigl(-\tfrac{64}{125}\bigr)\Bigr),
+\]
+which gives \eqref{l7g:hp:eq:Bminus}. For the sign, let $-1<x<0$. The
+series $F(x)=\sum_kh_kx^k$, $h_k=(\frac1{12})_k(\frac5{12})_k/k!^2$,
+alternates with terms decreasing in modulus, since
+$h_{k+1}/h_k=(k+\frac1{12})(k+\frac5{12})/(k+1)^2<1$; hence
+$1-\frac5{144}|x|\le F(x)\le1$. Likewise
+$F'(x)=\frac5{144}\,{}_2F_1(\frac{13}{12},\frac{17}{12};2;x)$, and the last series alternates
+with decreasing terms because
+$(k+\frac{13}{12})(k+\frac{17}{12})<(k+1)(k+2)$; hence
+$\frac5{144}(1-\frac{221}{288}|x|)\le F'(x)\le\frac5{144}$. At
+$x=-\frac{64}{125}$ these give $\frac{221}{225}\le F\le1$ and
+$\frac5{144}\cdot\frac{683}{1125}\le F'\le\frac5{144}$, so
+\[
+ -\frac{23344}{28125}\le\frac{1008}{125}F'\bigl(-\tfrac{64}{125}\bigr)-F\bigl(-\tfrac{64}{125}\bigr)
+ \le\frac7{25}-\frac{221}{225}=-\frac{158}{225}.
+\]
+Multiplying by $\frac4{5\sqrt7}(\frac7{15})^{1/4}=0.24991\ldots$ gives the
+stated enclosure of $B_-$. Finally $A'(z)=\frac12B_-s_-^{-1/2}+O(1)$ as
+$s_-\downarrow0$.
+\end{proof}
+Numerically (mpmath, 50 digits)
+\[
+ U_-(0)=0.81408739831171111286\ldots,\qquad
+ B_-=-0.19550105237098325058\ldots,
+\]
+in agreement with the intake's ODE integration ($\frac12B_-=-0.09775\ldots$).
+The closed forms these values appear to have are recorded as a question in
+Subsection~\ref{l7g:hp:sec:further}. The number
+$-B_-/(2\sqrt\pi)=0.05515\ldots$ is the coefficient that the transfer
+\eqref{l7g:eq:transferexact} would attach to $(-1)^nn^{-3/2}$; whether it
+has a canonical meaning for $a_n$ itself, whose dominant expansion is only
+asymptotic, is the open question of Section~\ref{l7g:sec:further} on
+exponentially improved asymptotics, and nothing is claimed about it here.
+
+\begin{theorem}[No tail is a Stieltjes moment sequence; this write]\label{l7g:hp:thm:nostieltjes}
+For no $N\ge0$ is $(a_{N+n})_{n\ge0}$ a Stieltjes moment sequence.
+Equivalently, by Stieltjes' theorem \cite[Chapter~3]{l7g:hp:schmudgen}, for
+every $N$ at least one of $\mathbf H^{(N)}$, $\mathbf H^{(N+1)}$ is not
+positive semidefinite. In particular no $\mathbf H^{(N)}$ is totally
+nonnegative.
+\end{theorem}
+\begin{proof}
+Suppose $a_{N+n}=\int_{[0,\infty)}x^n\,d\mu(x)$ for all $n\ge0$, with $\mu$
+positive. Since $a_n\le27^n$ (Section~\ref{l7g:sec:singularity}), for every
+$\delta>0$,
+$\mu((27+\delta,\infty))\le27^{N+n}(27+\delta)^{-n}\to0$, so $\mu$ is
+supported in $[0,27]$. For $|z|<\rho$, dominated convergence gives
+\[
+ z^{-N}\Bigl(A(z)-\sum_{k<N}a_kz^k\Bigr)=\sum_{n\ge0}a_{N+n}z^n
+ =\int_{[0,27]}\frac{d\mu(x)}{1-xz}.
+\]
+The right side is analytic on $\mathbb C\setminus[\rho,\infty)$, a
+connected set containing $[-1,0]$. Hence the continuation of $A$ along
+$(-1,0]$ is the restriction of a function analytic at $z=-1$, and $A'(z)$
+stays bounded as $z\downarrow-1$, contradicting
+Proposition~\ref{l7g:hp:prop:minusone}. For the equivalent form: a
+Stieltjes moment sequence has both Hankel forms positive semidefinite
+(integrate $v(x)^2$ and $xv(x)^2$), and Stieltjes' theorem is the converse.
+If $\mathbf H^{(N)}$ were totally nonnegative, its principal minors and
+those of its submatrix $\mathbf H^{(N+1)}$ (rows from $1$, columns from
+$0$) would be nonnegative, so both would be positive semidefinite.
+\end{proof}
+
+\begin{corollary}[The order of first failure; this write]\label{l7g:hp:cor:rstar}
+Let $r^*(N)$ be the least $r$ such that $\mathbf H^{(N)}$ is not $\TN_r$.
+Then $r^*(N)<\infty$ for every $N\ge0$, $r^*(0)=6$, and $r^*(N)\to\infty$ as
+$N\to\infty$.
+\end{corollary}
+\begin{proof}
+Finiteness is Theorem~\ref{l7g:hp:thm:nostieltjes}, $r^*(0)=6$ is
+Theorem~\ref{l7g:hp:thm:sharp}, and $r^*(N)>r$ for $N\ge N^{\TP}_r$ by
+Corollary~\ref{l7g:hp:cor:eventual}.
+\end{proof}
+The finite data of Subsection~\ref{l7g:hp:sec:computations} fit this
+picture: the first negative contiguous minor $D_r(N)$ occurs at odd shifts
+$N=1,3,5,7,9,11$ for $r=6,9,12,15,17,20$, while all $D_r(N)$ with $r\le60$
+are positive at even $N\le12$.
+
+\begin{proposition}[Where a Hamburger measure could live; this write]\label{l7g:hp:prop:hamburger}
+If $a_n=\int_{\mathbb R}x^n\,d\mu(x)$ for a positive measure $\mu$, then
+$\mu$ is unique, $\operatorname{supp}\mu\subset[-1,27]$, $\mu(\{-1\})=0$,
+and $-1\in\operatorname{supp}\mu$.
+\end{proposition}
+\begin{proof}
+From $a_{2n}\le27^{2n}$, as above, $\operatorname{supp}\mu\subset[-27,27]$;
+compact support makes the moment problem determinate, so $\mu$ is unique.
+The function $\mathcal S_\mu(z)=\int d\mu(x)/(1-xz)$ is analytic off
+$(-\infty,-\rho]\cup[\rho,\infty)$ and equals $A$ for $|z|<\rho$. The ODE
+\eqref{l7g:eq:ODE} has no singular point in the simply connected domain
+$\mathcal U_-=\mathbb C\setminus\bigl((-\infty,-1]\cup[\rho,\infty)\bigr)$
+other than $z=0$, where $A$ is analytic; so $A$ continues to a single-valued
+analytic function on $\mathcal U_-$, and $\mathcal S_\mu=A$ on
+$\mathbb C\setminus\bigl((-\infty,-\rho]\cup[\rho,\infty)\bigr)$. In the
+variable $\varsigma=1/z$, $\mathcal S_\mu(1/\varsigma)/\varsigma=\int d\mu(x)/(\varsigma-x)$
+is the Cauchy transform of $\mu$, and it extends analytically across
+$\varsigma\in(-27,-1)$ (where $1/\varsigma\in(-1,-\rho)\subset\mathcal U_-$) with
+equal boundary values from both sides; by Stieltjes--Perron inversion
+$\mu$ vanishes on $(-27,-1)$. An atom at $-27$ or at $-1$ would make the
+Cauchy transform unbounded as $\varsigma\to-27$ or $\varsigma\to-1$ along
+the imaginary direction, whereas $A$ is analytic at $z=-\rho$ and bounded
+near $z=-1$ by \eqref{l7g:hp:eq:minusone}. So
+$\operatorname{supp}\mu\subset[-1,27]$ and $\mu(\{-1\})=0$. If $-1$ were not
+in the support, then $\operatorname{supp}\mu\subset[-1+\delta,27]$ for some
+$\delta>0$, $\mathcal S_\mu$ would be analytic near $z=-1$, and the argument of
+Theorem~\ref{l7g:hp:thm:nostieltjes} would contradict
+Proposition~\ref{l7g:hp:prop:minusone}.
+\end{proof}
+Proposition~\ref{l7g:hp:prop:hamburger} does not assert that such a
+measure exists. It makes manuscript~07's suggested route concrete: the only
+candidate is the measure whose Cauchy transform is $A(1/\varsigma)/\varsigma$,
+determined by the jumps of $A$ across $(-\infty,-1]$ and $[\rho,\infty)$,
+and the question is whether that candidate is positive.
+
+\subsection{Reproducibility, computations, and proof boundaries}\label{l7g:hp:sec:computations}
+\paragraph{The shipped programs.}
+File names here are the shipped ones (the delivered names are listed in the
+report's \file{README.md}). Three programs accompany manuscript~07:
+\begin{description}[leftmargin=1.5em,style=nextline]
+\item[\file{code/97-07-hankel-verify_certificates.py}]
+Python standard library only. Checks all positive coefficient lists, the
+bounded-degree polynomial identities, the ratio base case, the twenty
+initial determinants, the negative minor, the polynomial moment witness and
+the exact repair; any failed equality or inequality terminates with an
+error. Its recorded output is \file{data/97-07-hankel-verification_log.txt}.
+\item[\file{code/97-07-hankel-generate_certificates.py}]
+Exact SymPy arithmetic regenerating the 21 polynomials and their
+positive-coefficient representation; not imported by the checker.
+\item[\file{code/97-07-hankel-asymptotics_and_experiments.py}]
+Generates the sequence and the Hankel corrections through order four, the
+exact finite determinant tables, and high-precision comparisons with the
+asymptotic formulas; these comparisons are illustrations, not proofs of
+sign. Its standard output is \file{data/97-07-hankel-experiment_log.txt}.
+\end{description}
+No script uses network access. The tested versions are
+\file{data/97-07-hankel-requirements.txt} (SymPy 1.14.0, mpmath 1.3.0, the
+same pins as \file{data/58-gamma-requirements.txt}). Each record of
+\file{data/97-07-hankel-certificates.json} has fields \texttt{degree},
+\texttt{shift}, \texttt{scale} and \texttt{coefficients} and represents
+$\texttt{scale}\sum_{j}\texttt{coefficients}[j]\,(n-5)^j$, the scale a
+positive rational stored as an exact fraction and every coefficient a
+positive decimal integer; all coefficient vectors, not only hashes, are
+included. \file{data/97-07-hankel-moment_obstruction.json} holds the
+integer coefficients of $\mathcal W$, the value \eqref{l7g:hp:eq:Qnegative},
+the actual $a_{11}$, and the exact minimum and repair;
+\file{data/97-07-hankel-asymptotic_coefficients.json} records
+$c_0,\dots,c_4$ and $\mathfrak b_{r,0},\dots,\mathfrak b_{r,4}$ for
+$1\le r\le6$; the two CSV files hold exact small determinants and the signed
+asymptotic errors; \file{data/97-07-hankel-finite_sign_experiment.json}
+records its tested range so that it cannot be mistaken for a universal sign
+theorem. The mathematical certificate is the combination of the complete
+coefficient data, the exact defining formulas, the degree bounds and the
+replay program; manuscript~07's checksum manifest was an integrity aid
+only and is not shipped.
+
+\paragraph{Finite sign data beyond the proved global order.}
+Using exact Dodgson condensation,
+\begin{equation}\label{l7g:hp:eq:dodgson}
+ D_{r+1}(n)D_{r-1}(n+2)=D_r(n)D_r(n+2)-D_r(n+1)^2,
+\end{equation}
+the supporting experiment computed determinants through order fifteen, with
+all divisions exact and all divisors nonzero. For $0\le n\le200$ the
+negative shifts were:
+\begin{center}\small
+\begin{tabular}{cl}
+\toprule
+Orders $r$ & Shifts $n$ with $D_r(n)<0$ in the tested range\\
+\midrule
+$2,3,4,5$ & none\\
+$6,7,8$ & $1$\\
+$9,10,11$ & $1,3$\\
+$12,13,14$ & $1,3,5$\\
+$15$ & $3,5,7$\\
+\bottomrule
+\end{tabular}
+\end{center}
+These are finite exact data, not universal theorems; $D_{15}(1)>0$ warns
+against an overly simple monotone picture in $r$. The order-five result does
+not rely on this experiment. \hpnote{The intake reproduced the table exactly
+by fraction-free (Bareiss) elimination instead of condensation, and extended
+it: $D_r(0)>0$ for every $r\le120$; for $r\le60$, $D_r(N)>0$ at every even
+$N\le12$, while the first nonpositive $D_r(N)$ at $N=1,3,5,7,9,11$ has
+$r=6,9,12,15,17,20$. This was rerun at this write. Finite data only.}
+
+\paragraph{Numerical scale of the first corrections.}
+Signed relative errors $(\text{approximation}-D_r(n))/D_r(n)$, with the
+exact determinant computed first and compared in 100-digit arithmetic; the
+leading constant uses the value of $C$ from Theorem~\ref{l7g:th:main}:
+\begin{center}\small
+\begin{tabular}{rrrrr}
+\toprule
+$r$ & $n$ & Leading term & Through $n^{-1}$ & Through $n^{-2}$\\
+\midrule
+2 & 100 & $5.8326\cdot10^{-2}$ & $-2.1144\cdot10^{-3}$ & $6.2103\cdot10^{-5}$\\
+2 & 1000 & $5.7230\cdot10^{-3}$ & $-2.0623\cdot10^{-5}$ & $6.0402\cdot10^{-8}$\\
+3 & 100 & $2.4852\cdot10^{-1}$ & $-3.2311\cdot10^{-2}$ & $3.0587\cdot10^{-3}$\\
+3 & 1000 & $2.2717\cdot10^{-2}$ & $-2.8705\cdot10^{-4}$ & $2.6796\cdot10^{-6}$\\
+5 & 100 & $2.0385$ & $-1.4227$ & $0.63607$\\
+5 & 1000 & $0.12033$ & $-7.2867\cdot10^{-3}$ & $3.0403\cdot10^{-4}$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The order-five row at $n=100$ is kept on purpose: it shows why a formal
+large-$n$ expansion must not be treated as a small-$n$ sign certificate. The
+Bernstein proof is valid there regardless of the quality of the truncation.
+
+\paragraph{Trust and formalization boundary.}
+The elementary ratio proof and the general asymptotic arguments are
+conventional mathematical proofs. The global $\TP_5$ assertion also uses
+finite exact certificate arithmetic; the independent checker reduces trust
+in symbolic simplification to integer operations, fractions, determinant
+elimination, and polynomial uniqueness with the printed degree bounds. This
+is not a Lean proof and not a claim of proof-assistant verification. The
+statement depends on no numerical heuristic, but the executable proof
+relies on ordinary software execution and on the correctness of the
+accompanying reduction.
+
+\subsection{Scope and literature audit of manuscript 07}\label{l7g:hp:sec:audit}
+This report posed the positivity problem addressed here and supplied the
+gamma value and the rational corrections; those are not claimed as new by
+manuscript~07. It inspected the OEIS entry \cite{l7g:oeis279619}, on October 4,
+2026, and this report's text and research questions, and
+searched for A279619 together with ``Hankel'', ``positivity'', ``total
+positive'' and ``log-convexity'', and for asymptotic positivity of
+polynomial-recursive sequences. No inspected source stated the sharp
+$\TP_5$/not-$\TN_6$ classification or the exact twelfth-moment repair.
+This is a limited novelty audit, not a proof that no equivalent result
+exists. The strict contiguous-minor criterion is classical
+\cite{l7g:hp:fjs}; asymptotic approaches to log-convexity of
+polynomial-recursive and Ap\'ery-like sequences are established topics
+\cite{l7g:hp:houzhang,l7g:hp:maopei}; the finite-difference derivation is
+given in full so that its use needs no priority claim for the general
+method. The principal new items are the sequence-specific sharp order, the
+optimal truncated-moment obstruction, the explicit global certificates,
+and the associated Hankel expansions and inverse scales. Manuscript~07
+settles neither the Hamburger problem, nor the existence of a totally
+positive tail (settled negatively at this write,
+Theorem~\ref{l7g:hp:thm:nostieltjes}), nor a uniform growing-order
+asymptotic, nor the OEIS entry's congruence questions. It made no OEIS edit
+and no repository change. Its delivery included a draft OEIS comment
+(shipped as \file{data/97-07-hankel-OEIS_NOTE.txt}, headed ``UNSUBMITTED
+DRAFT --- REQUIRES REVIEW BEFORE ANY OEIS EDIT''); it has not been
+submitted, and this report does not submit it.
+
+\subsection{Further questions and research}\label{l7g:hp:sec:further}
+Items 1--10 are manuscript~07's ten questions, each with what this write
+adds; item~11 is new at this write, and item~12 turns manuscript~07's
+restriction of its finite sign data into a question. They are separated
+from the proved results above.
+
+\paragraph{1. A positive Hamburger measure (manuscript~07).}
+Is there a positive measure on $\mathbb R$ with moments $a_n$, that is, are
+the unshifted Hankel matrices positive semidefinite in every size? The
+order-six shifted obstruction does not answer this. Manuscript~07 suggests
+identifying the Cauchy transform $z^{-1}A(1/z)$ and proving its sign in the
+upper half-plane, rather than inferring positivity from real Taylor
+coefficients, and checking any proposed density globally, not only near
+the dominant endpoint. Proposition~\ref{l7g:hp:prop:hamburger} narrows the
+question: the measure, if it exists, is unique, lives on $[-1,27]$ and
+charges every neighbourhood of $-1$, and it is the Stieltjes--Perron
+inverse of the jumps of $A$ on its two cuts; what is missing is a proof that
+this inverse is positive. Evidence (finite, not proof): $D_r(0)>0$ for every
+$r\le120$, and $D_r(N)>0$ for $r\le60$ at every even $N\le12$, as positive
+semidefiniteness of $\int x^{2k}x^{i+j}\,d\mu$ would require, while odd
+shifts fail, as a measure with mass on $[-1,0)$ allows.
+
+\paragraph{2. Optimal tail thresholds (manuscript~07).}
+For $r\ge6$ determine the least $N^{\TP}_r$. Manuscript~07 reads its finite
+data as suggesting $N^{\TP}_6=2$ and the same value for orders seven and
+eight. Read with the same definition, the table of
+Subsection~\ref{l7g:hp:sec:computations} suggests $N^{\TP}_r=4$ for
+$r=9,10,11$, $6$ for $r=12,13,14$, and at least $8$ for $r=15$ (data only;
+contiguous minors with $n\le200$). These are targets for extending the
+rational ratio barriers and Bernstein certificates; an asymptotic expansion
+alone gives existence, not the optimal integer.
+
+\paragraph{3. Can a fixed tail be a Stieltjes moment sequence? (manuscript~07; answered).}
+Manuscript~07 asked whether some $(a_{N+n})_{n\ge0}$ is a Stieltjes moment
+sequence, noting that this is strictly stronger than eventual $\TP_r$.
+Theorem~\ref{l7g:hp:thm:nostieltjes} answers it negatively. Still open: the
+exact order of first failure $r^*(N)$ of Corollary~\ref{l7g:hp:cor:rstar},
+its growth rate, and whether the failing minors can always be taken
+contiguous at odd shifts, as the data suggest.
+
+\paragraph{4. The two-parameter sign boundary (manuscript~07).}
+Study $D_r(n)$ when both $r$ and $n$ grow. The cubic first correction
+suggests testing regimes such as $r^3/n=O(1)$, but a uniform expansion needs
+estimates beyond fixed-order asymptotics. The change of sign of $D_r(1)$ as
+$r$ increases also suggests studying the inertia, not only the determinant,
+of shifted Hankel blocks.
+
+\paragraph{5. Smaller symbolic certificates (manuscript~07).}
+Can the $\TP_5$ proof be shortened to elementary rational inequalities with
+low-degree numerators? The width-$O(n^{-11})$ ratio interval was chosen for
+a clean coefficientwise certificate, not proved optimal: one could lower the
+truncation order, move the centre, use a rational rather than polynomial
+approximation, or subdivide the ratio interval.
+
+\paragraph{6. Structure of the moment witness (manuscript~07).}
+The polynomial $\mathcal W$ comes from a finite moment problem. Is it the
+first member of a natural family of orthogonal or quasi-orthogonal
+polynomials tied to the differential equation of $A$? Do its coefficients
+and $a_{11}^{\min}$ have a conceptual expression? The finite spectral
+construction is a starting point but does not explain why the first failure
+occurs at five positive nodes.
+
+\paragraph{7. Nearby recurrences and positivity phase diagrams (manuscript~07).}
+Vary the coefficients of $(n+1)^2u_{n+1}=(an^2+bn+c)u_n+(dn^2+en+f)u_{n-1}$
+with positive initial data and identify regions with a prescribed largest
+global $\TP_r$ order; the objective is a rigorous phase diagram rather than
+a collection of examples. Manuscript~07 asserts in passing that ``the strict
+certificate inequalities persist under small perturbations at fixed
+normalization when appropriately controlled''. That sentence is unproved as
+stated: it gives no norm, no control and no argument. What is missing is a
+quantitative statement of how the barrier polynomials, the 1{,}090
+coefficients and the twenty base-case determinants depend on the
+recurrence coefficients (the barriers themselves are built from the
+recurrence's own ratio expansion), together with the observation that the
+asymptotic exponent and the best barriers change with the coefficients.
+
+\paragraph{8. Convolution powers and the square sequence (manuscript~07).}
+Determine the Hankel positivity order of the coefficients of $A^m$ for
+positive integers $m$ (for $m=2$, A183204), or of suitable real powers.
+Squaring a generating function convolves coefficients and does not square a
+moment sequence pointwise, so a preservation theorem must be proved, not
+assumed. Theorem~\ref{l7g:th:convolution} and
+Remark~\ref{l7g:tr:rem:generator} supply the fixed-power asymptotic input
+for Theorem~\ref{l7g:hp:thm:general}.
+
+\paragraph{9. Closed correction formulas and inverse bounds (manuscript~07).}
+Find explicit expressions for $\mathfrak b_{r,j}$ as functions of $r$ for
+more $j$, identify denominator patterns, and obtain rigorous remainder
+constants; these would turn the existential brackets
+\eqref{l7g:hp:eq:rounding} into certified algorithms (compare
+Section~\ref{l7g:sec:explicit} for $a_n$).
+
+\paragraph{10. A proof-assistant certificate pipeline (manuscript~07).}
+Formalize the recurrence, the ratio induction, the positive-coefficient
+criterion on $[0,\infty)$, Bernstein positivity on $[0,1]$ and exact
+polynomial interpolation, with a separate library theorem for the
+finite-order Fekete reduction. A formalization could import the positive
+coefficient vectors as integer data and prove
+\eqref{l7g:hp:eq:independentidentity} by exact interpolation. The target is a
+small reusable checker for other OEIS recurrences, not a transcription of
+one large coefficient list. (Compare Section~\ref{l7g:sec:formal}.)
+
+\paragraph{11. Closed forms at $z=-1$ (this write).}
+Numerically, to 200 digits and with an unrelated canary constant receiving
+coefficient zero in an integer-relation search,
+\[
+ U_-(0)=\frac{\G}{4\pi^2}=\frac23\Ast,\qquad
+ B_-=-\frac{2\pi}{\G}=\frac{B}{\sqrt3},\qquad
+ U_-(0)B_-=-\frac1{2\pi},
+\]
+the analogues of $\Ast=3\G/(8\pi^2)$, $B=-2\sqrt3\pi/\G$ and
+$B\Ast=-3\sqrt3/(4\pi)$ at $\rho$; equivalently
+$F(-\frac{64}{125})=(\frac{15}7)^{1/4}\G/(4\pi^2)$, where
+$-\frac{64}{125}=1728/j$ with $j=-3375$ the $j$-invariant of discriminant
+$-7$. A suggested route, not carried out: the point
+$\tau_-=\frac12+\frac{\ii}{2\sqrt7}$ satisfies, numerically,
+$w_7(\tau_-)=-\frac17$, hence $X_7(\tau_-)=-1$ by \eqref{l7g:cm:eq:X7}
+(where $X_7=-1$ is the double root $w_7=-\frac17$), and
+$z_7(\tau_-)=\G/(4\pi^2)$; the computation of
+Section~\ref{l7g:tr:sec:fricke} at $\tau_-$, with the branch continued along
+$\Re\tau=\frac12$, should give both values. Proving them would add the
+point $-1$ to the connection data asked for in question~R5 of
+Section~\ref{l7g:cm:sec:further}.
+
+\paragraph{12. Finite sign data (manuscript~07).}
+The sign table of Subsection~\ref{l7g:hp:sec:computations} covers $r\le15$
+and $0\le n\le200$ only; nothing outside that range is asserted. A proof
+for $r=6$ and all $n\ge2$ (which would give $N^{\TP}_6=2$, given $D_k(n)>0$
+for $k\le5$) is the natural first target for item~2.
+
+\subsection{All initial determinants needed in the global certificate}\label{l7g:hp:sec:base}
+The $r=1$ cases are positive by the recurrence. The twenty remaining base
+values for $0\le n\le4$, all regenerated by the independent exact checker:
+\begin{center}\small
+\begin{tabular}{ccr@{\qquad}ccr}
+\toprule
+$r$ & $n$ & $D_r(n)$ & $r$ & $n$ & $D_r(n)$\\
+\midrule
+2&0&$18$ & 4&0&$504704088$\\
+2&1&$188$ & 4&1&$132810611472$\\
+2&2&$19236$ & 4&2&$1249180621287984$\\
+2&3&$3356892$ & 4&3&$19147848994682842896$\\
+2&4&$813648528$ & 4&4&$578868348472601428779120$\\
+\midrule
+3&0&$14132$ & 5&0&$839827568468592$\\
+3&1&$777000$ & 5&1&$780401205934374816$\\
+3&2&$729706824$ & 5&2&$99981705616145401812192$\\
+3&3&$1259077127616$ & 5&3&$12149812258132224263957487360$\\
+3&4&$3565362281719392$ & 5&4&$3730588839202741103021612486642400$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\setcounter{equation}{\value{l7gtrsavedeq}}
+\renewcommand{\theequation}{\arabic{equation}}
+\renewcommand{\theHequation}{\arabic{equation}}
+
 \appendix
 \section{Checking the classical period normalization}\label{l7g:app:beta}
 
@@ -2987,6 +4552,37 @@ formula and a formula of Ramanujan}, The Ramanujan Journal \textbf{59}
 function identity}, The Ramanujan Journal \textbf{60} (2023), 885--911.
 Equation~(5) and the proof of Theorem~4.1. Cited by manuscript~32.
 \url{https://doi.org/10.1007/s11139-022-00584-2}.
+
+\bibitem{l7g:hp:fjs}
+S.~Fallat, C.~R.~Johnson and A.~D.~Sokal,
+\emph{Total positivity of sums, Hadamard products and Hadamard powers:
+results and counterexamples}, Linear Algebra and its Applications
+\textbf{520} (2017), 242--259; corrigendum \textbf{613} (2021), 393--396.
+Lemma~2.4, following Theorem~2.2, is the strict contiguous-minor criterion
+used in Section~\ref{l7g:hp:sec:hankel}. Corrected preprint:
+\url{https://arxiv.org/abs/1612.02210}. Cited by manuscript~07.
+
+\bibitem{l7g:hp:houzhang}
+Q.-H.~Hou and Z.-R.~Zhang,
+\emph{Asymptotic $r$-log-convexity and P-recursive sequences},
+Journal of Symbolic Computation \textbf{93} (2019), 21--33.
+\url{https://doi.org/10.1016/j.jsc.2018.04.012}; preprint
+\url{https://arxiv.org/abs/1609.07840}. Cited by manuscript~07 for context.
+
+\bibitem{l7g:hp:maopei}
+J.~Mao and Y.~Pei,
+\emph{The asymptotic log-convexity of Ap\'ery-like numbers},
+Journal of Difference Equations and Applications \textbf{29} (2023),
+no.~8, 799--813. \url{https://doi.org/10.1080/10236198.2023.2255308}.
+Cited by manuscript~07, which consulted the publisher's abstract and
+bibliographic data.
+
+\bibitem{l7g:hp:schmudgen}
+K.~Schm\"udgen, \emph{The Moment Problem}, Graduate Texts in Mathematics
+\textbf{277}, Springer, 2017. Used at this write for Stieltjes' theorem
+(Chapter~3) and for the standard facts on determinacy for compact support
+and on Stieltjes--Perron inversion; the chapter reference was not
+re-checked against the book.
 
 \end{thebibliography}
 \end{document}
