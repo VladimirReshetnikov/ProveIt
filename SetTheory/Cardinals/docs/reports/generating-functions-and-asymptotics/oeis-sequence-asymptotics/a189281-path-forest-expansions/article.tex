@@ -153,6 +153,25 @@ Dated notes in the questions of Parts~I--III, in Part~II and in
 \cref{spf:app:provenance} record what has changed. The conjectured
 recurrences of A189281 and A110128 are still not proved.
 
+\paragraph{Editorial note (5 October 2026, batch 101).}
+Since batch~101 the report has seven Parts. Part~VI
+(\cref{spf:fd:sec:front}) adds Report~83 of the session bundle, a third
+derivation of Part~I's main theorem, written on the same day as Parts~I
+and~II and independently of both; on Part~II's precedent it prints only
+what Report~83 adds: exact Bonferroni enclosures of the A189281 probability
+at $n=100$, $200$ and $1000$, the threshold bracket stated as a theorem, an
+inverse in the exact digamma coordinate, and four literature items.
+Part~VII (\cref{spf:cg:sec:front}) adds Report~232, which proves the joint
+all-orders expansion for two reciprocal forbidden gaps, with selected
+components that may contain cycles, and the second corrections of the camel
+and knight counts A189358 and A137774. Their labels carry the prefixes
+\texttt{spf:fd:} and \texttt{spf:cg:}. Dated notes in
+\cref{spf:sec:inverse,spf:sec:computation}, in
+Remark~\ref{spf:rem:clique-analogue}, in the questions of
+Parts~I--IV, in Part~IV's front matter and in \cref{spf:app:provenance}
+record what has changed. The conjectured recurrences of A189281 and A110128
+are still not proved.
+
 \newpage
 \tableofcontents
 \newpage
@@ -960,6 +979,18 @@ That report proves it at first order only, and the analytic step behind its
 expansion is sketched; its Remark~6.3 names a uniform factorial-moment bound
 of the type of Lemma~\ref{spf:lem:moment-bound} as the device that would make
 it rigorous.
+[Added 5 October 2026, batch~101: both statements of the last sentence are
+out of date, since 2 October 2026. That report's Part~II proves the
+analytic step for fixed $k$, with the bound $\E\fall{X_{n,k}}{M}\le(k-1)^M$
+for its own model (Theorem~II.3.1 there, label \texttt{bsw:rp:thm:bound}; see
+its Remark~II.6.3, \texttt{bsw:rp:rem:settles}), and its Part~III
+(batch~101) proves the step a second time and gives the local law to every
+fixed order,
+$\Pp(X_{n,k}=j)=\sum_{s\le J}N^{-s}[u^j]\bigl(e^{\lambda(u-1)}\mathcal
+P_s(u-1)\bigr)+\bigO_{k,j,J}(N^{-J-1})$ with $N=kn$, $\lambda=k-1$ and that
+report's polynomials $\mathcal P_s$ (Remark~III.7.5 there,
+\texttt{bsw:ut:rem:local}). It proves its bound directly; neither report
+uses the other's lemma.]
 \end{remark}
 
 \section{The two OEIS expansions, unconditionally}
@@ -1243,6 +1274,13 @@ step is formalized in Lean as \texttt{Fabius.staircase\_separation} in
 \path{Analysis/FabiusFunction/Lean/FabiusFunction/StaircaseInversion.lean}.
 That formalization is context only; it does not verify any statement of this
 report.]
+[Added 5 October 2026, batch 101: Part~VI states this bracket for
+$\mathcal A_M$ as a theorem, with a complete proof
+(\cref{spf:fd:thm:bracket}), and expands the model inverse in the exact
+digamma coordinate rather than in $z,w$ (\cref{spf:fd:prop:digamma});
+Part~VII proves the same bracket, with explicit envelope roots, for the
+camel and knight counts (\cref{spf:cg:thm:envelope}). Neither makes the
+constant or the onset explicit.]
 
 \section{Reproducible computations and exact certificates}
 \label{spf:sec:computation}
@@ -1340,6 +1378,11 @@ order-ten intervals become wider at larger $n$, especially for $\theta=2$:
 the factor $n^{11}$ magnifies the fixed Bonferroni width. This is an honest
 precision limit of that finite computation; increasing the cutoff addresses
 it without using a guessed recurrence.
+[Added 5 October 2026, batch 101: Part~VI adds exact enclosures of the
+oriented avoidance probability at $n=100$, $200$ and $1000$, with the
+cutoffs $S_{23}$, $S_{27}$ and $S_{29}$, from Report~83's program
+(\cref{spf:fd:tab:bonferroni}); at $n=1000$ the order-ten residual interval
+contains $c_{11}+c_{12}/n$ computed from \cref{spf:tab:extra}.]
 
 \subsection{Inverse diagnostics and reproducibility}
 
@@ -1567,6 +1610,19 @@ appropriate defect and prove an analogue of the uniform moment bound and
 finite coefficient formula. Cyclic boundaries are another natural test:
 short cycles can contribute at a finite algebraic order, whereas long cycles
 may only change a beyond-all-orders sector.
+[Added 5 October 2026, batch 101: answered for reciprocal pairs of gaps by
+Part~VII. For the absolute gaps $(r,s)$ and $(s,r)$, $r<s$, marked
+separately, the selected components are two-coloured graphs that may
+branch and contain cycles; the compatible ones are triangle-free and
+$2$-degenerate, are classified by their deficit $v-2c$ (not the defect of
+\cref{spf:sec:coefficients}), and have at most twice as many core edges as
+their deficit (\cref{spf:cg:lem:coreedges}). A uniform moment bound
+(\cref{spf:cg:lem:tail}) and a finite coefficient construction
+(\cref{spf:cg:thm:packing}, \eqref{spf:cg:eq:finiteextract}) give the joint
+all-orders expansion (\cref{spf:cg:thm:main}). Short cycles do contribute at
+a finite algebraic order: the alternating square at $n^{-2}$
+(\cref{spf:cg:rem:cycles}). Other gap sets, the directed model, more colours
+and cyclic boundaries remain open (\cref{spf:cg:sec:questions}).]
 
 \paragraph{7. Formalize the proof and build a certified coefficient library.}
 The finite profile identity, the stable tiling polynomial, and the integer
@@ -2372,6 +2428,10 @@ proportions, and the path balances that maximize the difference.
 \item \emph{Several gaps simultaneously.} The joint law of violations for
 several position/value gap pairs, with interacting edge colours and
 components containing cycles; a first target is two pairs sharing one gap.
+[Added 5 October 2026, batch 101: answered by Part~VII for the reciprocal
+pair $(r,s)$, $(s,r)$ of absolute gaps: joint law, interacting colours and
+components with cycles (\cref{spf:cg:thm:main,spf:cg:rem:cycles}). Two pairs
+sharing one gap, the first target named here, remains open.]
 \item \emph{Growing local counts and moderate deviations.} Extend
 \eqref{fga:eq:localall} to a quantified range $j=j(n)\to\infty$.
 \item \emph{Faster generation and certified errors.} Reduce the cost of
@@ -3697,6 +3757,13 @@ question~4). The graphs are then not unions of paths, and components may
 branch or cycle. Determine which sparse families still admit stable
 component polynomials and a finite hypergeometric normalization; a first
 project is a two-gap directed model of bounded component width.
+[Added 5 October 2026, batch 101: answered in part by Part~VII, for the
+absolute model with the reciprocal gaps $(r,s)$ and $(s,r)$: components
+branch and cycle, but compatible ones are triangle-free and $2$-degenerate
+(\cref{spf:cg:lem:coreedges}), and finite packing dictionaries with eventual
+embedding polynomials take the place of stable component polynomials
+(\cref{spf:cg:thm:packing,spf:cg:prop:mobius}). The directed two-gap model
+remains open.]
 \end{enumerate}
 Manuscript~03 suggests starting with questions~5 and~6 and the asymptotics of
 \eqref{spf:rc:eq:psi-recurrence}; questions~1 and~2 are the closest to the
@@ -3824,6 +3891,8 @@ exponentially small sectors, and no numerical value of the eventual rounding
 threshold. It proves no guessed OEIS recurrence, submitted no OEIS edit and
 changed no repository file. Its uniform theorem concerns one source forest
 and one target forest, not unions of differently coloured gap constraints.
+[Added 5 October 2026, batch 101: Part~VII treats one such union, two
+reciprocal fixed gaps marked separately (\cref{spf:cg:thm:main}).]
 The first shape-dependent term for a shortest path that grows with $n$ is
 left open; its short-path theorem is for fixed $L$, with constants not
 controlled as $L\to\infty$, so it licenses no substitution $L=L(n)$; in the
@@ -5948,6 +6017,17 @@ forest. Merely adding the single-gap answers would miss shared vertices,
 coincident events, and new connected components.
 [Note of the batch-97 write: this continues Part~I's question~6, Part~II's
 question~4 and Part~III's question~10.]
+[Added 5 October 2026, batch 101: answered for reciprocal pairs by
+Part~VII. The joint law with separate marks is \cref{spf:cg:thm:main}. The
+finite coloured subgraph counts that replace $\mathsf S_q$ are the products
+$i_S(H;n)\,i_T(H;n)$ of injective embedding counts of selected coloured
+graphs into the source and target graphs, eventual integer polynomials in
+$n$ (\cref{spf:cg:prop:identity,spf:cg:prop:mobius}). Cycles first affect
+the expansion at order $n^{-2}$, through the alternating square, and
+incompatible cycles, the orientation inconsistencies, contribute exactly
+zero (\cref{spf:cg:rem:cycles}). Part~VII has fixed gaps and no
+local-density form; more colours, gap pairs sharing a gap, the directed
+model and moving gaps remain open (\cref{spf:cg:sec:questions}).]
 
 \begin{question}[Growing observed counts; manuscript~05]
 \label[question]{spf:mg:q:counts}
@@ -7814,6 +7894,2676 @@ for finding transcription errors and for suggesting further questions, not
 for certifying a Stokes multiplier, a zero of $\delta_n$, or an onset for
 nearest-integer inversion.
 
+\part{Fixed-displacement permutations: a third derivation and its additions}
+\label{spf:fd:part}
+
+\section{Provenance, scope and notation of Part VI}
+\label{spf:fd:sec:front}
+
+[Added 5 October 2026, batch 101.] Part~VI was added in the write of
+batch~101. It is built from Report~83 of the session bundle and, on the
+precedent of Part~II, prints only what that report adds to Parts~I--V.
+Report~83 proves, for the oriented model $\theta=1$ at every fixed pair of
+offsets, Part~I's all-orders expansion of the avoidance probability, the
+stabilization of long path forests, a path-length comparison bound and a
+threshold inverse. Every one of these theorems is already in Parts~I
+and~II, in most cases in a stronger form; they are recorded as second (in
+places third or fourth) routes in \cref{spf:fd:tab:routes} and not
+reprinted. What is new is printed: three exact Bonferroni enclosures of
+the A189281 probability at $n=100$, $200$ and $1000$
+(\cref{spf:fd:sec:bonferroni}); the two-sided ceiling bracket for the
+threshold, stated explicitly, and the smooth-model inverse in the exact
+digamma coordinate (\cref{spf:fd:sec:inverse}); and four literature items
+that the rest of the report does not cite (\cref{spf:fd:sec:literature}).
+
+\subsection{Provenance}
+\label{spf:fd:sec:provenance}
+
+Report~83 is the archive
+\nolinkurl{Fixed_Displacement_Permutation_Asymptotics_Source.zip} of the
+session bundle of Reports 1--243, which arrived in commit
+\texttt{60f54ea06}; batch~101 placed it in this report in commit
+\texttt{f7c612c72}. It holds 22 files in one directory with a subdirectory
+\texttt{independent\_review/}, one of them the checksum manifest
+\texttt{manifest.json}, which lists the other 21 (all matched at the
+intake). Its article is titled \emph{Complete Asymptotic Expansions for
+Fixed-Displacement Permutations} (7~pages, dated 1~October 2026); its
+author line and its PDF metadata both read ``Research note prepared for
+Vladimir Reshetnikov with OpenAI''. Its pinned repository commit is
+\texttt{1512ef8356d10fef99e7caaa2753620f0c900c83} (2026-10-01,
+08:38~$-$07:00;~\cite{fdProveIt}), at which it inspected the transseries
+companion \path{Combinatorial_Transseries_Inverses} for its gamma-core and
+reversion tools.
+
+\paragraph{An independent same-day derivation.}
+The pin predates every source of this report. Manuscript~60 (Part~I)
+arrived in commit \texttt{aa43cc555} at 13:54 on 1~October 2026,
+manuscript~03 of batch~74 (Part~II) in \texttt{c664fc2f0} at 19:03, and
+Part~I was written in \texttt{2f13bec21} at 19:56; none of these commits,
+nor the placement \texttt{6e193dd4f}, is an ancestor of the pin. The
+archive of Report~83 was created at 16:33~UTC, before manuscript~60 even
+arrived. Report~83 is therefore a third derivation of Part~I's main
+theorem, written on the same day as the first two and independently of
+both; its text shares 76 of 3{,}425 word 8-grams (2.2\,\%) with this
+article, all of them bibliography strings, coefficient digits and the
+macro text of falling and rising factorials.
+
+\paragraph{Scope and non-claims of Report~83, kept.}
+It does not prove the guessed order-eight, degree-eleven recurrence of
+A189281 and uses no guessed recurrence: the work ``neither settles nor
+relies on'' it. The expansion is asymptotic, with ``no assertion of
+convergence''. It does not identify every flat or exponentially small
+sector, nor Stokes data, and its comparison theorem ``does not select a
+preferred analytic interpolation''. Its exact Bonferroni intervals are
+stored first; their decimal summaries are ``regression evidence, not the
+remainder proof''. It does not need or audit the global closure argument of
+Padhi's holonomicity note, which by its own README is not submitted or
+externally reviewed and contains no asymptotic expansion. Tauraso's and
+Mendelsohn's work are ``established antecedent methods, not new principles
+here''; Mendelsohn ``assumes the complete expansion exists''; and the
+bounded literature search ``is not a claim that no such source exists''.
+The proofs ``have been checked by direct derivation and exact
+computations'' and ``have not been externally refereed or formally
+verified''; its plain-text \path{06-fixed-disp-proof.md} is marked
+``awaiting independent review''. The gamma-core and reversion tools are the
+repository companion's, ``reused with credit''.
+
+\paragraph{Stale statements of Report~83.}
+[Added 5 October 2026, batch 101.] Report~83 states that a bounded search
+``located no source containing the complete directed-family expansion,
+quantitative path-length comparison, or threshold inverse stated here'',
+and its \path{06-fixed-disp-source_status.md} that the ProveIt companion
+``does not name A189281 or the fixed-displacement permutation family''.
+Both were true at its pin. They are not true of the repository today: all
+three results are in Part~I of this report (\cref{spf:thm:main},
+\cref{spf:thm:universality} and the last subsection of
+\cref{spf:sec:inverse}), placed in the evening of the same day. The
+delivered texts are kept; this note corrects them.
+
+\subsection{What Part VI adds}
+\label{spf:fd:sec:claims}
+
+\Cref{spf:fd:tab:routes} lists every result of Report~83 against the place
+where Parts~I--V already prove it. Report~83's coefficients of A189281
+through $n^{-10}$, $1,3,2,1,0,3,26,101,124,-1409,-13266$, are Part~I's
+\eqref{spf:eq:A189281} and are not new; Part~I's \cref{spf:tab:extra} goes to
+order~16 and Part~III to order~100. Report~83's closed forms of the first
+three coefficients for general $(r,s)$,
+\[
+ c_1^{(1)}=r+s-1,\qquad c_2^{(1)}=\frac{r^2-r+s^2-s}{2},\qquad
+ c_3^{(1)}=\frac{(r+s-1)(r^2-4rs+4r+s^2+4s-6)}{6},
+\]
+are Part~II's (\cref{fga:prop:c3}) and Part~III's
+(\cref{spf:rc:sec:integrality}). The new material is:
+\begin{itemize}
+\item three exact rational Bonferroni enclosures of the A189281 avoidance
+ probability, at $n=100$, $200$ and $1000$, the largest index certified
+ anywhere in this report (\cref{spf:fd:tab:bonferroni});
+\item the two-sided ceiling bracket for the threshold
+ $N(y)=\min\{n:A^{(1)}_{r,s}(n)\ge y\}$ stated as a theorem
+ (\cref{spf:fd:thm:bracket}); Part~I describes the mechanism in words and
+ names \texttt{p0:thm:staircase}, of which the bracket is an instance;
+\item the smooth-model inverse of A189281 in the exact digamma coordinate,
+ through relative order $X^{-3}$ (\cref{spf:fd:prop:digamma});
+\item Mendelsohn's 1956 paper, Teguia Tabuguia's 2025 guessing paper, Padhi's
+ holonomicity note in its repository form, and the August 2026 update of
+ the Spahn--Zeilberger author page (\cref{spf:fd:sec:literature});
+\item a third coefficient checker, by Newton forward differences, written
+ independently of both Report~83's own generator and Part~I's
+ (\cref{spf:fd:sec:files}).
+\end{itemize}
+
+\begin{table}[htbp]
+\centering\small
+\renewcommand{\arraystretch}{1.12}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{.31\textwidth}>{\raggedright\arraybackslash}p{.62\textwidth}@{}}
+\toprule
+Report 83 & Where Parts I--V already have it, and how the routes compare\\
+\midrule
+Theorem~1.1 (complete expansion, $\theta=1$, $u=-1$) &
+\cref{spf:thm:main} at $\theta=1$, $u=-1$, which also gives the whole law
+on every disk $|u|\le U$ and the absolute case; polynomiality of $c_J$ in
+$(r,s)$ is \cref{fga:prop:rs-degree} (total degree at most $J$, a stronger
+statement than Report~83's ``polynomial''); symmetry is
+Part~I's \eqref{spf:eq:arithmetic-preview}; independence of the residue class
+of $n$ is explained in \cref{spf:sec:target} and by \cref{spf:thm:stable}\\
+$c_1,c_2,c_3$ in closed form; coefficients of A189281 through $n^{-10}$ &
+\cref{fga:prop:c3}, \eqref{spf:eq:B2-oriented}; \eqref{spf:eq:A189281} and
+\cref{spf:tab:extra} (identical values)\\
+Lemma~2.1 (paired tilings) &
+Proposition~\ref{spf:prop:exact}, the Spahn--Zeilberger formula~\cite{spahn}
+at $u=-1$; also Part~V's \eqref{spf:bc:eq:tilings}\\
+Lemma~2.2: $\E\binom Xj\le\exp(Cj^2/n)/j!$ for $2j\le n/2$ &
+Lemma~\ref{spf:lem:moment-bound} gives $(\theta e^2)^k/k!$ for every $k$;
+\cref{fga:lem:momentbound} gives $\theta^k(1-2k/n)^{-2k}/k!$, the same
+device as Report~83's with an explicit constant\\
+cutoff $J\sim2(K+3)\log n/\log\log n$ &
+Part~II's $K_n=\lfloor(M+4)\log n/\log\log n\rfloor$ \eqref{fga:eq:Kn}\\
+Lemma~3.1 and (3.3)--(3.6): stable forest coefficient, finite
+rising/falling-factorial formula, paths of at least $2J$ vertices &
+\cref{spf:thm:stable} with the same formula \eqref{spf:eq:F} and the same
+Lagrange identity \eqref{spf:eq:lagrange-id}; Part~I needs only paths of
+at least $k$ vertices\\
+Section~4: defect filtration, $\exp(u/(1-u))$, Touchard sums &
+Part~I's \cref{spf:sec:coefficients} (defect filtration, finite
+differences) and \cref{fga:lem:defect}; Part~II also evaluates the dimer
+sums by Touchard polynomials (\cref{fga:tab:routes})\\
+Theorem~5.1: lengths at least $\delta n$; difference at most
+$\exp(-\gamma n\log n+\bigO_\gamma(n))$ for $\gamma<\min(\delta/2,1/4)$ &
+\emph{weaker} than \cref{spf:thm:universality}, which bounds the total
+variation of the whole law with every exponent $\eta'<\min(\eta,1/2)$;
+uniformity in the shapes is \cref{fga:thm:allorders,fga:cor:shortest}
+(shortest path $\gg\log n/\log\log n$) and \cref{spf:mg:thm:main} (no length
+hypothesis)\\
+Theorem~6.1 (threshold inversion) &
+the smooth model $\mathcal A_M$ and its inverse, last subsection of
+\cref{spf:sec:inverse}; stated explicitly here as
+\cref{spf:fd:thm:bracket}, an instance of \texttt{p0:thm:staircase}~\cite{tai}\\
+(6.3)--(6.4): all-orders formal Lagrange reversion around the gamma core &
+the transseries volume's gamma-carrier inversion (\texttt{p6:thm:gamma},
+\texttt{p0:thm:perturbed-inversion}~\cite{tai}), as
+Remark~\ref{spf:rem:inverse-apparatus} records for every Part; Report~83
+credits the companion\\
+(6.6): A189281 inverse in the exact digamma coordinate &
+new as a display (\cref{spf:fd:prop:digamma}); Part~I uses the Lambert
+coordinates $z,w$ (\cref{spf:thm:inverse-first,spf:thm:inverse-all})\\
+\bottomrule
+\end{tabular}
+\caption{Report~83's results against Parts~I--V. Only the last row and the
+items listed in \cref{spf:fd:sec:claims} are new.}
+\label{spf:fd:tab:routes}
+\end{table}
+
+\paragraph{The comparison theorem is weaker, not wrong.}
+Report~83's Theorem~5.1 takes $J=\lfloor\gamma n\rfloor$ Bonferroni terms,
+which agree for the two forest pairs by stabilization when every path has at
+least $2J\le\delta n$ vertices, and bounds each truncation error by its
+Lemma~2.2 at $J+1\le n/4$. The ranges are consistent and the proof is
+complete as far as the intake checked it. Part~I's
+\cref{spf:thm:universality} proves more: a total-variation bound for the
+whole law, with a larger range of exponents.
+
+\subsection{Notation}
+\label{spf:fd:sec:notation}
+
+Part~VI writes Report~83's objects in Part~I's notation, as listed in
+\cref{spf:fd:tab:dictionary}. No normalization is changed: Report~83's
+$d_j(r,s)$ is exactly $c_j^{(1)}(r,s)$, and its factorial macros mean what
+this report's $\fall xk$ and $\rise xk$ mean.
+
+\begin{table}[htbp]
+\centering\small
+\renewcommand{\arraystretch}{1.12}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{.31\textwidth}>{\raggedright\arraybackslash}p{.25\textwidth}>{\raggedright\arraybackslash}p{.36\textwidth}@{}}
+\toprule
+Notion & Part VI (Parts I--II) & Report 83 (and the clash)\\
+\midrule
+oriented counts & $A^{(1)}_{r,s}(n)$ & $a_{r,s}(n)$\\
+avoidance coefficients & $c_j^{(1)}(r,s)$ & $d_j(r,s)$ (Part~I's $d$ is the defect, its $d_j(w)$ inverse coefficients)\\
+expansion order & $K$ (Part~I: $M$) & $K$ (Part~I's $K$ is an edge degree)\\
+Bonferroni order & $J_{\mathrm B}$ & $J$ (Part~I's $J$ indexes $B_J$, $c_J$)\\
+selected edges; components; defect & $k$; $c$; $d=k-c$ & $j$; $c$; $D$\\
+profile (paths with $\ell$ vertices) & $\mathbf b=(b_\ell)$ & $\alpha=(\alpha_i)$\\
+tiling count & $C_{\mathcal P}(\mathbf b)$ & $C_r(n;\alpha)$\\
+marks; formal root; amplitude & $z_\ell$; $1+W$; $\mathcal D^{-1}$ & $x_i$; $\lambda=1+w$; $C_0$\\
+smooth model; its inverse & $\mathcal A_K$ at $\theta=1$; $x_K=\mathcal A_K^{-1}$ & $f_K$; $x_K$\\
+root of the gamma core & $\mathfrak X$ & $X$ (also its violation count, Part~I's $X$)\\
+digamma, trigamma at $\mathfrak X+1$ & $\psi_{\mathfrak X}$, $\psi'_{\mathfrak X}$ & $\psi$, $\psi'$ (Part~III's $\psi_i$)\\
+logarithm of the correction series & $\ell_K(x)$, coefficients $\ell_j$ \eqref{spf:eq:log-recursion} & $q(X)$ (Part~V's $q$)\\
+length fraction; flat exponent & $\delta$; $\gamma$ & $\delta$; $\gamma$ (Part~V's $\delta_n$, Part~III's $\gamma_A$)\\
+Touchard polynomials & $T_v$ (this table only) & $T_v$ (Part~V's $T_n(\lambda)$)\\
+\bottomrule
+\end{tabular}
+\caption{Notation of Report~83 against the report. The threshold $N(y)$ and
+the factorials agree.}
+\label{spf:fd:tab:dictionary}
+\end{table}
+
+\section{Exact Bonferroni enclosures at \texorpdfstring{$n=100$, $200$ and $1000$}{n = 100, 200 and 1000}}
+\label{spf:fd:sec:bonferroni}
+
+Report~83's \path{code/06-fixed-disp-check_bonferroni.py} evaluates the
+alternating partial sums $S_{J_{\mathrm B}}$ and $S_{J_{\mathrm B}+1}$ of
+\eqref{spf:eq:bonferroni} for A189281 exactly, from the stable profile
+counts \eqref{spf:eq:F}. It refuses to run outside the stable range: it
+requires $\lfloor n/2\rfloor\ge2(J_{\mathrm B}+1)$, which is more than
+\cref{spf:thm:stable} needs. Its output
+\path{data/06-fixed-disp-check_bonferroni.json} stores both endpoints as
+exact rationals. By the pointwise Bonferroni inequalities recalled after
+\eqref{spf:eq:bonferroni}, the smaller and the larger of the two sums
+enclose $\Pp(X=0)=\Aone(n)/n!$.
+
+\Cref{spf:fd:tab:bonferroni} prints these enclosures in Part~I's
+normalization \eqref{spf:eq:scaled-error}, at order $M=10$. The write
+recomputed the table from the shipped rationals with $e$ bracketed by
+rational Taylor sums, so every endpoint is rounded outward; the decimals
+stored in the JSON file, computed with 70-digit decimal arithmetic, lie
+inside these intervals.
+
+\begin{table}[htbp]
+\centering\small
+\renewcommand{\arraystretch}{1.17}
+\begin{tabular}{rrll}
+\toprule
+$n$ & $J_{\mathrm B}$ & Certified interval for $e\,\Aone(n)/n!$ & Certified interval for $E_{10}(n)$\\
+\midrule
+100  & 23 & $[1.030201000327020,\ 1.030201000327021]$ & $[-58916.80,\ -58916.77]$\\
+200  & 27 & $[1.015050125009789,\ 1.015050125009790]$ & $[-59083.680,\ -59083.679]$\\
+1000 & 29 & $[1.003002001000003,\ 1.003002001000004]$ & $[-59118.96,\ -59109.60]$\\
+\bottomrule
+\end{tabular}
+\caption{Report~83's exact Bonferroni enclosures of the A189281 avoidance
+probability, rounded outward by the batch-101 write. $E_{10}(n)$ is
+Part~I's scaled residual \eqref{spf:eq:scaled-error} at $M=10$, whose limit
+is $c_{11}=-59103$. The intervals certify these finite residuals only.}
+\label{spf:fd:tab:bonferroni}
+\end{table}
+
+\paragraph{Checks against Parts~I and~III.}
+[Note of the batch-101 write.] The intervals are consistent with the
+coefficients printed elsewhere in the report, which they did not use. The
+truncation $\sum_{j\le40}c_jn^{-j}$ of Part~III's coefficients
+(\path{data/03-rational-collapse-coefficients.json}) lies inside all three
+enclosures. The truncation at order~16 of Part~I's \cref{spf:tab:extra} lies
+inside at $n=1000$ and just outside at $n=100$ and $n=200$, as the omitted
+term of order $n^{-17}$ allows. At $n=1000$ the $E_{10}$ interval, of width
+$9.35$, contains $c_{11}+c_{12}/n=-59103-9.448$, an independent check of
+Part~I's $c_{11}$ and $c_{12}$, beyond the order through which Report~83
+itself computed coefficients. As in Part~I, the widening of the $E_{10}$
+interval at $n=1000$ is the factor $n^{11}$ magnifying the fixed Bonferroni
+width; it is a precision limit of this finite computation, and the
+convergence of $E_{10}(n)$ to $c_{11}$ is a consequence of
+\cref{spf:thm:main}, not of three samples.
+
+\section{The threshold inverse: a ceiling bracket and the exact-digamma display}
+\label{spf:fd:sec:inverse}
+
+Fix $r,s\ge1$ and $K\ge0$, put $\theta=1$, and write $A(n)=A^{(1)}_{r,s}(n)$,
+$c_j=c_j^{(1)}(r,s)$ and
+\[
+ \mathcal A_K(x)=e^{-1}\Gamma(x+1)\sum_{j=0}^{K}c_jx^{-j},
+\]
+which is Part~I's smooth model of the last subsection of
+\cref{spf:sec:inverse} with $M=K$. It is positive and strictly increasing
+on a half-line $[x_*,\infty)$; let $x_K=\mathcal A_K^{-1}$ there, and let
+$N(y)=\min\{n\ge0:A(n)\ge y\}$.
+
+\begin{theorem}[Threshold bracket; Report~83, Theorem~6.1]
+\label[theorem]{spf:fd:thm:bracket}
+There are constants $C=C_{r,s,K}$ and $y_0$ such that for every $y\ge y_0$
+\begin{equation}
+ \left\lceil x_K(y)-\varepsilon_K(y)\right\rceil\le N(y)\le
+ \left\lceil x_K(y)+\varepsilon_K(y)\right\rceil,\qquad
+ \varepsilon_K(y)=\frac{C\,x_K(y)^{-K-1}}{\log x_K(y)}.
+ \label{spf:fd:eq:bracket}
+\end{equation}
+In particular $N(y)=\lceil x_K(y)\rceil$ whenever the distance of $x_K(y)$
+from the integers exceeds $\varepsilon_K(y)$.
+\end{theorem}
+
+This is the staircase theorem \texttt{p0:thm:staircase} of the transseries
+volume~\cite{tai} applied to $\mathcal A_K$, as Part~I's remark at the end of
+\cref{spf:sec:inverse} already says in words; neither the constant $C$ nor
+the onset $y_0$ is explicit. Report~83 proves it in four sentences. The
+following proof spells out the two endpoint comparisons.
+
+\begin{proof}[Proof (completed by the batch-101 write)]
+Put $g=\log\mathcal A_K$, so $g(x)=\log\Gamma(x+1)-1+\ell_K(x)$ with
+$\ell_K(x)=\log\sum_{j\le K}c_jx^{-j}$, a convergent power series in $1/x$
+for large $x$ with $\ell_K(x)=\bigO(1/x)$ and $\ell_K'(x)=\bigO(x^{-2})$.
+Since $\psi(x+1)=\log x+\bigO(1/x)$, there is $x_1\ge\max(x_*,4)$ with
+$g'(x)\ge\frac12\log x$ for $x\ge x_1$. By \cref{spf:thm:main} at $u=-1$ and
+$\theta=1$ there are $C_1$ and $n_1\ge x_1$ such that
+$\eta_n=\log A(n)-g(n)$ satisfies $|\eta_n|\le C_1n^{-K-1}$ for $n\ge n_1$.
+Moreover $A(n+1)/A(n)=(n+1)\,\Pp_{n+1}(X=0)/\Pp_n(X=0)\to\infty$, so there
+is $n_2\ge n_1$ with $A$ strictly increasing on $[n_2,\infty)$. We may take
+$C_1>0$. Choose $C=2^{K+4}C_1$, and choose $y_0$ so large that for
+$y\ge y_0$ the point $x=x_K(y)$ satisfies $x\ge 2n_2+2$ and
+$\varepsilon_K(y)\le1$, and $y>\max_{n<n_2}A(n)$.
+
+\emph{Upper bound.} Let $m=\lceil x+\varepsilon_K\rceil$, so
+$m\ge x+\varepsilon_K$ and $x\le m\le x+2\le 2x$. By the mean value theorem
+and monotonicity of $\log$,
+$g(m)-g(x)\ge\frac12\log x\cdot(m-x)\ge\frac12C\,x^{-K-1}$. Hence, since
+$m\ge x$ gives $m^{-K-1}\le x^{-K-1}$,
+\[
+ \log A(m)-\log y=g(m)-g(x)+\eta_m\ge\bigl(\tfrac12C-C_1\bigr)x^{-K-1}>0 .
+\]
+So $A(m)\ge y$ and $N(y)\le m$.
+
+\emph{Lower bound.} Let $n$ be an integer with
+$n<\lceil x-\varepsilon_K\rceil$, that is, $n<x-\varepsilon_K$. If $n<n_2$
+then $A(n)<y$ by the choice of $y_0$. Otherwise let $n'$ be the largest
+integer with $n'<x-\varepsilon_K$; then $n_2\le n\le n'$, $x-n'>\varepsilon_K$
+and $n'\ge x-2\ge x/2$. For $\xi\in(n',x)$ we have
+$g'(\xi)\ge\frac12\log n'\ge\frac12\log(x/2)\ge\frac14\log x$, because
+$x\ge4$. Hence $g(x)-g(n')>\frac14\log x\cdot\varepsilon_K=\frac14C\,x^{-K-1}
+=2^{K+2}C_1x^{-K-1}$, while $\eta_{n'}\le C_1(x/2)^{-K-1}=2^{K+1}C_1x^{-K-1}$.
+Therefore
+\[
+ \log A(n')-\log y=\eta_{n'}-\bigl(g(x)-g(n')\bigr)
+ <\bigl(2^{K+1}-2^{K+2}\bigr)C_1x^{-K-1}<0,
+\]
+and by monotonicity on $[n_2,\infty)$, $A(n)\le A(n')<y$. Thus every
+$n<\lceil x-\varepsilon_K\rceil$ has $A(n)<y$, and
+$N(y)\ge\lceil x-\varepsilon_K\rceil$.
+
+The last assertion holds because, when $x$ is farther than $\varepsilon_K$
+from the integers, both ceilings in \eqref{spf:fd:eq:bracket} equal
+$\lceil x\rceil$.
+\end{proof}
+
+Report~83 also writes the model inverse as an all-orders formal Lagrange
+reversion around the exact gamma core. Let $\mathfrak X=\mathfrak X(y)$ be
+the root of
+\begin{equation}
+ \log\Gamma(\mathfrak X+1)-1=\log y,
+ \label{spf:fd:eq:core}
+\end{equation}
+and put $\psi_{\mathfrak X}=\psi(\mathfrak X+1)$ and
+$\psi'_{\mathfrak X}=\psi'(\mathfrak X+1)$. With $\ell(x)=\sum_{j\ge1}\ell_jx^{-j}$
+the formal logarithm of the correction series (Part~I's
+\eqref{spf:eq:log-recursion}), Report~83's (6.4) reads
+\begin{equation}
+ x(y)\sim\mathfrak X+\sum_{k\ge1}\frac{(-1)^k}{k!}
+ \left(\frac1{\psi_{\mathfrak X}}\frac{d}{d\mathfrak X}\right)^{k-1}
+ \left(\frac{\ell(\mathfrak X)^k}{\psi_{\mathfrak X}}\right).
+ \label{spf:fd:eq:reversion}
+\end{equation}
+Report~83 justifies only finite truncations of this series, by Taylor's
+theorem for $\mathcal A_K$; the series itself is formal
+(\cref{spf:fd:sec:questions}, question~2). Its first terms give a display
+that Parts~I--V do not contain.
+
+\begin{proposition}[A189281 inverse in the digamma coordinate; Report~83, (6.6)]
+\label[proposition]{spf:fd:prop:digamma}
+Let $(r,s)=(2,2)$, $K\ge3$, and $x=x_K(y)$. As $y\to\infty$,
+\begin{equation}
+ x=\mathfrak X-\frac3{\mathfrak X\psi_{\mathfrak X}}
+ +\frac5{2\mathfrak X^2\psi_{\mathfrak X}}
+ -\frac4{\mathfrak X^3\psi_{\mathfrak X}}
+ -\frac9{\mathfrak X^3\psi_{\mathfrak X}^2}
+ -\frac{9\psi'_{\mathfrak X}}{2\mathfrak X^2\psi_{\mathfrak X}^3}
+ +\bigO\!\left(\frac{\mathfrak X^{-4}}{\log\mathfrak X}\right).
+ \label{spf:fd:eq:digamma}
+\end{equation}
+\end{proposition}
+
+\begin{proof}[Proof (batch-101 write)]
+Report~83 states the display with its derivation from
+\eqref{spf:fd:eq:reversion}; here is the error bound. Write $G(x)=\log\Gamma(x+1)$ and $\ell_K$ as in the previous proof. For A189281,
+$\ell_K(x)=3x^{-1}-\frac52x^{-2}+4x^{-3}+\bigO(x^{-4})$ when $K\ge3$
+(Part~I's $\ell_1,\ell_2,\ell_3$; they depend only on $c_1,c_2,c_3$), and
+since $\ell_K(x)=L(1/x)$ with $L$ analytic at $0$, also
+$\ell_K'(x)=-3x^{-2}+\bigO(x^{-3})$ and $\ell_K''(x)=\bigO(x^{-3})$. On the
+other side $G'(x)=\psi(x+1)=\log x+\bigO(1/x)$, $0<G''(x)=\psi'(x+1)\le1/x$
+and $G'''(x)=\bigO(x^{-2})$. By \eqref{spf:fd:eq:core} the model equation
+$\log\mathcal A_K(x)=\log y$ is $G(x)+\ell_K(x)=G(\mathfrak X)$. Put
+$\delta=x-\mathfrak X$ and
+\[
+ \Phi(t)=G(\mathfrak X+t)-G(\mathfrak X)+\ell_K(\mathfrak X+t).
+\]
+For large $\mathfrak X$, $\Phi$ is increasing on $[-1,1]$ with
+$\Phi'\ge\frac12\log\mathfrak X$ there, $0<\Phi(0)=\ell_K(\mathfrak X)\le4/\mathfrak X$
+and $\Phi(-1)\le-\frac12\log\mathfrak X+\Phi(0)<0$; hence its root $\delta$
+lies in $(-1,0)$ and, by the mean value theorem,
+$|\delta|\le\Phi(0)/\inf\Phi'\le8/(\mathfrak X\log\mathfrak X)$.
+
+Taylor's theorem to second order in $G$ and to first order in $\ell_K$ gives
+\[
+ 0=\psi_{\mathfrak X}\delta+\tfrac12\psi'_{\mathfrak X}\delta^2
+ +\ell_K(\mathfrak X)+\ell_K'(\mathfrak X)\delta+\rho,\qquad
+ |\rho|\le\sup|G'''|\,\tfrac{|\delta|^3}6+\sup|\ell_K''|\,\tfrac{\delta^2}2
+ =\bigO(\mathfrak X^{-5}),
+\]
+the suprema over $[\mathfrak X-1,\mathfrak X+1]$. Abbreviate $\ell=\ell_K(\mathfrak X)$,
+$\ell'=\ell_K'(\mathfrak X)$. Dividing by $\psi_{\mathfrak X}\asymp\log\mathfrak X$,
+\[
+ \delta=-\frac{\ell}{\psi_{\mathfrak X}}-\frac{\ell'\delta}{\psi_{\mathfrak X}}
+ -\frac{\psi'_{\mathfrak X}\delta^2}{2\psi_{\mathfrak X}}
+ +\bigO\Bigl(\frac{\mathfrak X^{-5}}{\log\mathfrak X}\Bigr).
+\]
+The last three terms are $\bigO(\mathfrak X^{-3}/\log^2\mathfrak X)$, so
+$\delta=-\ell/\psi_{\mathfrak X}+\epsilon$ with
+$\epsilon=\bigO(\mathfrak X^{-3}/\log^2\mathfrak X)$. Substituting this on
+the right,
+\[
+ -\frac{\ell'\delta}{\psi_{\mathfrak X}}=\frac{\ell\ell'}{\psi_{\mathfrak X}^2}
+ +\bigO\Bigl(\frac{\mathfrak X^{-5}}{\log^3\mathfrak X}\Bigr),\qquad
+ -\frac{\psi'_{\mathfrak X}\delta^2}{2\psi_{\mathfrak X}}
+ =-\frac{\psi'_{\mathfrak X}\ell^2}{2\psi_{\mathfrak X}^3}
+ +\bigO\Bigl(\frac{\mathfrak X^{-5}}{\log^4\mathfrak X}\Bigr),
+\]
+so that
+$\delta=-\ell/\psi_{\mathfrak X}+\ell\ell'/\psi_{\mathfrak X}^2
+-\psi'_{\mathfrak X}\ell^2/(2\psi_{\mathfrak X}^3)+\bigO(\mathfrak X^{-5}/\log\mathfrak X)$;
+these are the terms $k=1,2$ of \eqref{spf:fd:eq:reversion}. Finally
+$-\ell/\psi_{\mathfrak X}$ gives the first three correction terms of
+\eqref{spf:fd:eq:digamma} with error $\bigO(\mathfrak X^{-4}/\log\mathfrak X)$;
+$\ell\ell'=-9\mathfrak X^{-3}+\bigO(\mathfrak X^{-4})$ gives
+$-9/(\mathfrak X^3\psi_{\mathfrak X}^2)$ with error
+$\bigO(\mathfrak X^{-4}/\log^2\mathfrak X)$; and
+$\ell^2=9\mathfrak X^{-2}+\bigO(\mathfrak X^{-3})$ with
+$\psi'_{\mathfrak X}\le1/\mathfrak X$ gives
+$-9\psi'_{\mathfrak X}/(2\mathfrak X^2\psi_{\mathfrak X}^3)$ with error
+$\bigO(\mathfrak X^{-4}/\log^3\mathfrak X)$.
+\end{proof}
+
+The display concerns the smooth model. For the counts it combines with
+\cref{spf:fd:thm:bracket}: if $\hat x(y)$ denotes the right side of
+\eqref{spf:fd:eq:digamma} without its remainder, then, since
+$x_K-\mathfrak X=\bigO(1/(\mathfrak X\log\mathfrak X))$ and $K\ge3$, there is
+a constant $E$ with
+$\lceil\hat x-E\mathfrak X^{-4}/\log\mathfrak X\rceil\le N(y)\le
+\lceil\hat x+E\mathfrak X^{-4}/\log\mathfrak X\rceil$ for all large $y$; and
+at the data $x_K(\Aone(n))=n+\bigO(n^{-K-1}/\log n)$. Since
+$\psi'_{\mathfrak X}\sim1/\mathfrak X$, the last two displayed terms are both
+of order $\mathfrak X^{-3}/\log^2\mathfrak X$ or smaller; keeping the
+digamma function exact, rather than expanding it in $\log\mathfrak X$, is
+what makes the display this short. Report~83 adds that the gamma core starts
+at $\log(ey)/W(\log(ey)/e)$; that is its leading order only, the next
+Stirling term being of order one (Part~I's $z$ of \eqref{spf:eq:Lambert} with
+$\log y$ shifted by one). [Note of the batch-101 write: the intake evaluated
+\eqref{spf:fd:eq:digamma} against the exact model root at 60 digits with
+$K=10$: the error times $\mathfrak X^4\log\mathfrak X$ is $13.29$, $12.72$,
+$12.14$, $11.60$, $11.14$, $10.75$ at $\mathfrak X=20$, $50$, $100$, $200$,
+$400$, $800$, bounded as the proposition asserts. This is evidence, not part
+of the proof.]
+
+\section{Literature that the rest of the report does not cite}
+\label{spf:fd:sec:literature}
+
+Report~83's \path{06-fixed-disp-source_status.md} records a primary-source
+check made on 1~October 2026. Four of its items are not cited elsewhere in
+this report; they are Report~83's readings, and the intake did not open the
+sources.
+\begin{itemize}
+\item \emph{Mendelsohn (1956)}~\cite{fdMendelsohn} develops a calculus of
+ Poisson and falling-factorial corrections for permutation problems under
+ a constant-coefficient operator recurrence. By Report~83's reading of its
+ printed page~240, the coefficient calculation \emph{assumes} that the
+ complete asymptotic series exists; its examples are rencontres, m\'enages,
+ rook-king successions and adjacent forbidden positions. It is an
+ antecedent of the correction calculus, not a proof of the present
+ remainder theorem. Part~VII cites it for the same reason.
+\item \emph{Teguia Tabuguia (2025)}~\cite{fdTabuguia}, Section~5.2,
+ re-obtains the A189281 recurrence by D-algebraic guessing and states it as
+ Conjecture~5.1; it does not prove it.
+\item \emph{Padhi's repository note}~\cite{fdPadhiNote}, \emph{Holonomicity
+ of the restricted permutation counts $a_{r,s}$ and $b_{r,s}$}, August 2026
+ (source blob \texttt{ec04817377b7531d19cbc0d9b0243242de682a95}), claims
+ holonomicity for every fixed $(r,s)$ through a bounded-seam construction.
+ It contains no asymptotic expansion and does not derive the guessed
+ operator; its README says it is not submitted or externally reviewed.
+ Part~I cites Padhi's arXiv preprint~\cite{padhi}, which the intake had
+ confirmed only as a record; the note is its repository form.
+\item \emph{The Spahn--Zeilberger author page}~\cite{fdSZpage} records, in
+ an update of 14~August 2026, Padhi's proposed solution of the
+ general-holonomicity challenge. The paper itself, cited by this report
+ as~\cite{spahn}, appeared as Enumerative Combinatorics and
+ Applications~3:2 (2023), S2R10.
+\end{itemize}
+Report~83 also reads Kauers and Koutschan~\cite{kauers} as calling the
+order-eight recurrence conjectural (their Conjecture~10), and Tauraso as
+proving the leading and first corrections of the absolute family; both are
+cited in Part~I.
+
+\section{Report 83's computations and shipped files}
+\label{spf:fd:sec:files}
+
+Report~83 ships five programs and seven recorded outputs, all prefixed
+\path{06-fixed-disp-}; below, the prefix is omitted.
+\begin{itemize}
+\item \path{code/compute_coefficients.py} (SymPy) implements only the finite
+ formula \eqref{spf:eq:F}, the expansion of logarithms of falling factorials
+ and Touchard sums, and writes \path{data/coefficients_2_2_10.json} and
+ \path{data/coefficients_2_2_5.json} (orders 10 and~5 at $(2,2)$).
+\item \path{code/check_stable_tilings.py} (standard library) checks 180
+ stable-profile identities by a path-composition dynamic program, 48
+ brute-force permutation cases through $n=8$ and the first 13 values of
+ A189281 (OEIS data, CC BY-SA~4.0), and writes
+ \path{data/check_stable_tilings.json}.
+\item \path{code/check_bonferroni.py} produces
+ \path{data/check_bonferroni.json} and \cref{spf:fd:tab:bonferroni}.
+\end{itemize}
+
+The two programs of its \path{independent_review/} directory are a third
+coefficient checker, independent of Report~83's generator and of Part~I's
+\path{code/path_forests.py}: it expands normalized falling products as
+truncated integer polynomials, inverts the denominator by a
+complete-homogeneous recurrence, and sums the polynomial dependence on the
+dimer count by Newton forward differences,
+\[
+ e\sum_{k\ge0}\frac{(-1)^kP(k)}{k!}=\sum_{j\ge0}\frac{(-1)^j\Delta^jP(0)}{j!},
+\]
+checking two interpolation points beyond the degree bound $2\ell$ at retained
+order~$\ell$ rather than fitting them. Its first program
+(\path{code/independent_review-check_coefficients.py}, prefix omitted as
+above) reconstructs the A189281 coefficients through order six, 30
+higher-defect profiles, 299 finite-difference checks, all 16 pairs
+$1\le r,s\le4$ through order three and 25 profile counts by fresh edge-subset
+enumeration; the second (\path{..._check_order_ten.py}) extends the
+reconstruction to order ten (139 profiles, 423 checks). Their outputs are
+\path{data/independent_review-check_coefficients.json},
+\path{data/independent_review-order_ten.json} and the log
+\path{..._order_ten_replay.log}, which holds both programs' output because the
+second imports the first, whose module code reruns. The audit
+\path{independent_review-AUDIT.md} at the report root reviews
+\path{proof.md}, the plain-text version of the proofs.
+
+All checks raise explicit exceptions, so Python's \texttt{-O} flag does not
+disable them. Every program writes its output beside itself under its
+delivered name and imports its sibling by that name; the report README gives
+a recipe that restores the delivered layout in a scratch copy. The intake
+ran the whole suite on such a copy in under three minutes: all outputs equal
+the shipped ones after removing the carriage returns that Windows adds.
+
+\begin{remark}[Text drift in Report~83, recorded]
+\label[remark]{spf:fd:rem:drift}
+[Batch-101 write.] Three sentences of the delivery are inaccurate, none of
+them mathematically. Its article says that the independent checker reaches
+order six; its audit says the reconstruction was ``subsequently extended''
+to order ten, and the shipped \path{..._check_order_ten.py} does reach
+ten, as its delivered README says. Its delivered README says that ``the
+delivered PDF is the same manuscript under a descriptive filename'', but
+the archive holds only \path{article.pdf}. And the gamma-core start
+$\log(ey)/W(\log(ey)/e)$ is a leading order only (see after
+\cref{spf:fd:prop:digamma}).
+\end{remark}
+
+\section{Further questions and research}
+\label{spf:fd:sec:questions}
+
+[Added 5 October 2026, batch 101.] Report~83 poses no research questions.
+The following are its unproved or unchecked claims, moved here under the
+intake's standing rule, with what is missing.
+\begin{enumerate}
+\item \emph{Explicit constants in the threshold bracket.}
+ \Cref{spf:fd:thm:bracket} asserts the existence of $C_{r,s,K}$ and of an
+ onset $y_0$; neither is computed. Explicit values need an effective
+ remainder in \cref{spf:thm:main}. This is Part~III's open onset question for
+ nearest-integer rounding and Part~I's question~8; Part~VII's effective
+ Newton certificate (\cref{spf:cg:prop:effective}) covers its smooth model
+ only.
+\item \emph{The all-orders reversion.} \eqref{spf:fd:eq:reversion} is
+ formal. Each finite truncation is justified, as in the proof of
+ \cref{spf:fd:prop:digamma}, but no statement uniform in the number of terms
+ is proved, and the series may diverge. Compare
+ \texttt{p0:thm:perturbed-inversion} of~\cite{tai}.
+\item \emph{Constants and sharpness of the flat comparison.} The constant
+ $C$ of Report~83's Lemma~2.2 and the $\bigO_\gamma(n)$ of its Theorem~5.1
+ are not explicit, and its range $\gamma<\min(\delta/2,1/4)$ is narrower
+ than Part~I's. Whether a bound $\exp(-\gamma n\log n)$ is sharp in $\gamma$
+ for some pair of forests is open; this is part of Part~I's question~3.
+\item \emph{Reported, not verified.} Padhi's proposed general holonomicity
+ proof and the August 2026 update of the Spahn--Zeilberger page are
+ reported by Report~83 and were not checked by the intake.
+\end{enumerate}
+No claim of Report~83 was found to be wrong. Nothing in Part~VI is
+formalized.
+
+\part{Reciprocal coloured gaps: a joint expansion, the camel and knight counts, and threshold inverses}
+\label{spf:cg:part}
+
+\section{Provenance, scope and notation of Part VII}
+\label{spf:cg:sec:front}
+
+[Added 5 October 2026, batch 101.] Part~VII was added in the write of
+batch~101. It is built from Report~232 of the session bundle, which treats
+two forbidden gaps at once: for fixed $1\le r<s$, the violations of the
+absolute gap $(r,s)$ (positions $r$ apart, values $s$ apart) and of the
+reciprocal gap $(s,r)$, marked separately. It proves an all-orders expansion
+of their joint marked generating function, uniform on compact sets of
+$\mathbb C^2$, in which selected components may contain cycles; computes the
+second correction in full for the camel and knight sequences A189358
+and A137774; and inverts both counts. This answers, for reciprocal pairs, the
+question of several forbidden gaps that the report asks four times: Part~I's
+question~6 (\cref{spf:sec:questions}), Part~II's question~4
+(\cref{fga:sec:questions}), Part~III's question~10
+(\cref{spf:rc:sec:questions}) and Part~IV's \cref{spf:mg:q:several}; dated
+notes there say what remains open. Each single-gap marginal of the joint
+expansion is Part~I's absolute expansion ($\theta=2$), and the write checks
+the printed coefficients against it (\cref{spf:cg:rem:marginals}). Report~232
+is new throughout apart from those marginals, so it is printed nearly in
+full, with its symbols renamed where they clash
+(\cref{spf:cg:tab:dictionary}), its headings marked, and bracketed notes of
+the write.
+
+\subsection{Provenance}
+\label{spf:cg:sec:provenance}
+
+Report~232 is the archive \nolinkurl{Report232.zip} of the session bundle of
+Reports 1--243, which arrived in commit \texttt{60f54ea06} (archive created
+2026-10-05, 09:25~UTC); batch~101 placed it in this report in commit
+\texttt{f7c612c72}, reversing the triage's proposal of a new report because
+this report names the problem four times. The archive holds ten files under
+\path{Report232/}, one of them the checksum manifest \path{SHA256SUMS}, which
+lists the other nine (all matched at the intake). Its article,
+\path{report.tex}, is titled \emph{Reciprocal coloured gap avoidance: Uniform
+expansions and factorial growth inverses} (27~pages, dated 5~October 2026,
+headed ``Report 232''); its author line reads ``A self-contained mathematical
+and computational report'' and its PDF metadata names ``Research report'' as
+author. It pins no repository commit and names no ProveIt path or file. One
+sentence of its literature section (``treat the present family separately
+from a one-source/one-target forest calculation'') echoes the non-claim of
+Part~IV that its uniform theorem ``concerns one source forest and one target
+forest, not unions of differently coloured gap constraints''; Part~IV was
+written in commit \texttt{eea159818} about five hours before the archive was
+made, so Report~232 probably saw it, but nothing records this. It does not
+cite this report.
+
+\paragraph{Scope and non-claims of Report~232, kept.}
+The leading $e^{-4}$ limits of the two chess-piece counts and the general
+methods (graph inclusion--exclusion, partition-lattice inversion, finite
+transfer matrices, analytic perturbation, Poisson correction polynomials)
+are classical and ``not claimed as inventions''; there is no worldwide
+priority claim, and its source comparison is ``bounded'', ``not a proof that
+no equivalent theorem exists elsewhere''; renaming a model or changing one
+gap ``would not establish a new theorem''. ``Fixed order'' asserts neither
+convergence of the $1/n$ series, nor uniformity for growing gaps, nor an
+effective error bound at a stated small $n$. The polynomial-identity
+thresholds ($n\ge12$ camel, $n\ge8$ knight) are not the onset of asymptotic
+accuracy, and the camel counterexample at $n=9$ is kept on purpose. The
+inverse constants and onset are not evaluated; $N(y)=\xi_K(y)+\smallo(1)$ is
+not uniform in $y$; the effective Newton certificate for $\tilde z\ge32$
+concerns the smooth model only; no exact rounding of a centre is asserted.
+The core-edge lemma uses the reciprocal two-gap structure and ``should not be
+silently extended'' to general unions of gaps. Third and higher coefficients
+exist, but no value is claimed; the higher coefficients of its inverse
+fixture are a method fixture, not coefficients of the sequences. Its
+numerical tests are ``consistency checks, not a substitute for the analytic
+remainder or an effective sequence onset''; it ships no third-party paper
+and no private review material, used no network access, and recommends
+external peer review for any publication claim.
+
+\subsection{What Part VII adds}
+\label{spf:cg:sec:claims}
+
+\begin{table}[htbp]
+\centering\small
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{.17\textwidth}>{\raggedright\arraybackslash}p{.34\textwidth}>{\raggedright\arraybackslash}p{.41\textwidth}@{}}
+\toprule
+Topic & Parts I--VI & Part VII (Report 232 of batch 101)\\
+\midrule
+Model &
+one gap $(r,s)$, one source and one target forest (Parts~I--IV) &
+two reciprocal gaps $(r,s)$ and $(s,r)$, $r<s$, absolute differences, marked
+separately (\cref{spf:cg:sec:model})\\
+Selected graphs &
+unions of paths; profiles with a defect (\cref{spf:sec:tilings}) &
+two-coloured graphs, cycles allowed; exact identity
+(\cref{spf:cg:prop:identity}); compatible graphs triangle-free and
+2-degenerate, with a \emph{deficit} (\cref{spf:cg:lem:coreedges})\\
+All-orders law &
+$e^{\theta u}\sum B_J(u)n^{-J}$ (\cref{spf:thm:main}) &
+$e^{2u+2v}\sum\mathfrak B_j(u,v)n^{-j}$, uniform on compact sets of
+$\mathbb C^2$, $\deg\mathfrak B_j\le2j$ (\cref{spf:cg:thm:main})\\
+Cycles &
+asked for (Part~I, question~6; \cref{spf:mg:q:several}) &
+first at order $n^{-2}$, through the alternating square $4u^2v^2$;
+incompatible cycles vanish exactly
+(\cref{spf:cg:sec:square}, \cref{spf:cg:rem:cycles})\\
+Explicit terms &
+$B_1$, $B_2$ for one gap \eqref{spf:eq:B1}, \eqref{spf:eq:B2-absolute} &
+$\mathfrak B_1$, $\mathfrak B_2$ for camel and knight; A189358
+$=e^{-4}n!(1+8/n+48/n^2+\cdots)$, A137774 $=e^{-4}n!(1+4/n+28/n^2+\cdots)$
+(\cref{spf:cg:thm:two}); covariance and interaction polynomials
+(\cref{spf:cg:sec:coefficients})\\
+Inverse &
+Lambert-$W$ inverse; ceiling bracket (\cref{spf:thm:inverse-all},
+\cref{spf:fd:thm:bracket}) &
+the same apparatus for these counts, with an effective Newton certificate
+for the quadratic models and $N_{\mathrm{camel}}\le N_{\mathrm{knight}}\le
+N_{\mathrm{camel}}+1$ (\cref{spf:cg:sec:coloured-inverses})\\
+\bottomrule
+\end{tabular}
+\caption{Part VII against Parts I--VI.}
+\label{spf:cg:tab:claims}
+\end{table}
+
+\begin{table}[htbp]
+\centering\small
+\renewcommand{\arraystretch}{1.12}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{.30\textwidth}>{\raggedright\arraybackslash}p{.63\textwidth}@{}}
+\toprule
+Parts I--VI & Report 232's use or route\\
+\midrule
+\cref{spf:thm:main} at $\theta=2$, offsets $(r,s)$ and $(s,r)$ &
+the marginals $v=0$ and $u=0$ of \cref{spf:cg:thm:main}; the printed
+$\mathfrak B_1$, $\mathfrak B_2$ restrict to \eqref{spf:eq:B1} and
+\eqref{spf:eq:B2-absolute}, and the marginal avoidance coefficients $4,10$
+(camel) and $2,2$ (knight) are Part~I's $c_1^{(2)},c_2^{(2)}$ and Part~II's
+general $C_1$, $C_2$ (\path{data/02-fixed-gap-general_pgf_first_three.txt});
+\cref{spf:cg:rem:marginals}\\
+Proposition~\ref{spf:prop:exact} &
+generalized from one pair of path forests to two-coloured graphs with
+cycles (\cref{spf:cg:prop:identity}); the method is classical, as
+Report~232 says\\
+Lemma~\ref{spf:lem:moment-bound} &
+its role is played by \cref{spf:cg:lem:tail}, proved differently, by four
+matchings and H\"older's inequality\\
+the defect filtration (\cref{spf:sec:coefficients}) &
+the deficit filtration and the geometric majorant
+(\cref{spf:cg:lem:coreedges,spf:cg:lem:highdeficit}); on cycles the two
+notions differ (\cref{spf:cg:sec:notation})\\
+\cref{spf:thm:inverse-all}, \cref{spf:mg:thm:inverse};
+\cref{spf:fd:thm:bracket} &
+the same Lambert-$W$ apparatus and the same ceiling bracket, an instance of
+\texttt{p0:thm:staircase}~\cite{tai}, with new coefficient input
+(\cref{spf:cg:sec:coloured-inverses}); Report~232's threshold envelope is
+more explicit than Part~IV's, which asserts no rounding threshold\\
+\bottomrule
+\end{tabular}
+\caption{Results of Parts~I--VI that Report~232 uses, generalizes or proves
+again.}
+\label{spf:cg:tab:routes}
+\end{table}
+
+\paragraph{Source and novelty ledger of Report~232, restated.}
+Report~232 credits the leading limits to Kot\v e\v sovec's
+compilation~\cite{cgKotesovec}, higher-order Poisson corrections for
+adjacency problems to Aspvall and Liang~\cite{cgAspvall}, the existence-assuming
+correction calculus to Mendelsohn~\cite{fdMendelsohn}, the occupancy-mask
+transfer construction and the Poisson limit for fixed forbidden exceedances to
+Flajolet and Sedgewick~\cite{cgFS}, small-subgraph asymptotics for static
+boards to Godsil and McKay~\cite{cgGodsil}, a one-direction generating
+function for the knight objects to Bagno, Eisenberg, Reches and
+Sigron~\cite{cgBagno}, and mod-Poisson methodology to M\'eliot, Nikeghbali
+and Visentin~\cite{cgModPoisson}. It claims as its own the two-sided
+reciprocal coloured finite-core expansion, its uniform factorial-scale
+summation bound, and the explicit mixed and cycle corrections for the two
+named sequences. It does not know this report; its marginal statements are
+Part~I's.
+
+\subsection{Notation}
+\label{spf:cg:sec:notation}
+
+Report~232 uses several letters for two or three objects, and several that
+mean something else in Parts~I--VI. \Cref{spf:cg:tab:dictionary} lists every
+renaming; no normalization is changed. The factorial power is written
+$\fall nh=n(n-1)\cdots(n-h+1)$, as in the rest of the report (Report~232:
+$(n)_h$).
+
+\paragraph{Defect and deficit count different things.}
+Part~I's \emph{defect} of a selected set is $d=k-c$, the number of selected
+edges minus the number of components; for a forest it is $v-2c$, the number
+of vertices minus twice the number of components. Report~232's
+\emph{deficit} is $\delta(H)=v(H)-2c(H)$ by definition. The two agree on
+forests and differ on graphs with cycles: the alternating square of
+\cref{spf:cg:sec:square} has deficit $2$ but $e-c=3$. It is the deficit that
+measures the order $n^{-\delta}$ at which a coloured graph enters, since each
+component has one translational freedom on each side while every vertex costs
+one power of $n$. The tempting false reading is that a selected graph with
+$e$ edges and $c$ components enters at order $n^{-(e-c)}$, as a path forest
+does; for the square that would be $n^{-3}$, and it enters at $n^{-2}$.
+
+\begin{table}[htbp]
+\centering\small
+\renewcommand{\arraystretch}{1.12}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{.33\textwidth}>{\raggedright\arraybackslash}p{.22\textwidth}>{\raggedright\arraybackslash}p{.37\textwidth}@{}}
+\toprule
+Notion & Part VII & Report 232 (and the clash)\\
+\midrule
+correction polynomials & $\mathfrak B_j(u,v;r,s)$, $\mathfrak B_{j,R}$ & $B_j(u,v;r,s)$, $B_{j,R}$ (Part~I's $B_J^{(\theta)}(u;r,s)$, one mark)\\
+counts & $A^{\mathrm{cg}}_{r,s}(n)$; $A(n)$ in \cref{spf:cg:sec:coloured-inverses} & $a_{r,s}(n)$; $a_n$ (Part~I's $a_j$, Part~IV's $a_q$)\\
+incident and disjoint mixed pairs & $\nu_{\mathrm{inc}}$, $\nu_{\mathrm{dis}}$ & $S$, $D$ (also its source graph $S_n$; Part~I's $D$)\\
+transfer matrix & $\mathbf T(\boldsymbol z)$ & $T(\boldsymbol z)$ (also its target graph $T_n$)\\
+auxiliary radius in \cref{spf:cg:lem:tail} & $U'$ & $T$\\
+connected homomorphism polynomial & $\alpha_Qn-\beta_Q$ & $A_Qn-B_Q$ (also its colours $A$, $B$)\\
+log-amplitude; spectral remainder & $\Omega(\boldsymbol z)$; $\varepsilon_n(\boldsymbol z)$ & $A(\boldsymbol z)$; $B_n(\boldsymbol z)$\\
+core automorphism factor & $\operatorname{aut}_{\boldsymbol t}$ & $A_{\boldsymbol t}$\\
+species support & $\mathsf P$ & $P$ (also its spectral projection $P(\boldsymbol z)$)\\
+avoidance coefficients of A189358, A137774 & $c_j$ & $c_j$ (not Part~I's $c_J^{(\theta)}(r,s)$)\\
+logarithmic coefficients & $\ell_j$, $a_j$ (Part~I's \eqref{spf:eq:log-recursion}, \eqref{spf:eq:a-coeff}) & $d_j$; $b_j$ and $\beta_j$\\
+model; its inverse; envelope roots & $\mathcal F_K$; $\xi_K(y)$; $\xi_K^\pm(y)$ & $F_K$; $h_K(y)$; $r_K^\pm(y)$ (its $h=|V(H)|$, offset $r$)\\
+correction series & $C_K(t)=1+\sum_{j\le K}c_jt^j$ & $Q_K(t)$ (its quotient $Q$, spectral part $Q(\boldsymbol z)$)\\
+Lambert seed & $\tilde L=\log y+4$, $\tilde z$, $\tilde w=\log\tilde z$ & $S$, $X$, $L$ (Part~I's $L=\log y$, $z$, $w$; its $X_n$, cutoff $L$)\\
+inverse shift; its coefficients & $\tilde t$; $D(1/\tilde z)=\sum d_j\tilde z^{-j}$ & $t$; $\delta(z)=\sum u_jz^j$ (its deficit $\delta$, mark $u$)\\
+Newton intermediate point & $\eta_j$ & $\xi_j$\\
+\bottomrule
+\end{tabular}
+\caption{Notation of Report~232 against Part~VII. Part~I's $d_j(w)$ and
+Report~232's $u_j$ are the same kind of inverse coefficient, in different
+coordinates.}
+\label{spf:cg:tab:dictionary}
+\end{table}
+
+The following symbols keep Report~232's meaning inside Part~VII and mean
+something else elsewhere in the report: the marks $u,v$ (Part~I has one mark
+$u$); $X_n,Y_n$, the two violation counts (Part~I's $X^{(\theta)}_{r,s,n}$);
+the colours $A$ and $B$; the source and target graphs $S_n$, $T_n$ (Part~IV's
+$\mathsf S_q$); the deficit $\delta$; $h=|V(H)|$, $h_0$ and the expansion
+variable $h$ of \eqref{spf:cg:eq:Phi} (Part~I's lengths); $c(H)$, the number
+of components; $L$, the edge cutoff $C\log n$ (Part~IV's path length);
+$D$, the largest support diameter in \cref{spf:cg:sec:packing}; $x,y,w_i$
+and $X,Y,W_i$, activities in \cref{spf:cg:sec:packing} (elsewhere $y$ is a
+threshold level); $Z_n$, the packing polynomial, and $Z$, a matching count;
+$\lambda(\boldsymbol z)$, $P(\boldsymbol z)$, $Q(\boldsymbol z)$, $F$, $F_1$,
+$\Phi$, $P_j$ of the spectral argument (Part~IV's $\lambda$, Part~I's
+$F_r$); $M_{k,l}$, mixed binomial moments; $N_S$, $N_T$, $N_{k,l,\boldsymbol
+t}$, counts; the constants $C$, $C_K$, $D_K$, $E_K$, $n_K$; and the
+digamma function $\psi$, always written with its argument (Part~III's
+$\psi_i$).
+
+\section{The model and the conclusions (Report 232)}
+\label{spf:cg:sec:model}
+
+\subsection{Two reciprocal constraints}
+Fix integers $1\le r<s$. Write $[n]=\{1,\ldots,n\}$ and let $\pi$ be uniform
+on the permutations of $[n]$. Define
+\begin{align}
+ X_n&=\#\{i\le n-r:|\pi(i+r)-\pi(i)|=s\},\\
+ Y_n&=\#\{i\le n-s:|\pi(i+s)-\pi(i)|=r\},\label{spf:cg:eq:model}\\
+ G_n(u,v;r,s)&=\E\bigl[(1+u)^{X_n}(1+v)^{Y_n}\bigr].\label{spf:cg:eq:pgf}
+\end{align}
+Empty index sets contribute zero. A mark is the increment from $1$, so that
+$u=v=0$ gives $G_n=1$ and $u=v=-1$ gives the avoidance probability. In
+particular, the exponential factor below is $e^{2u+2v}$, not
+$e^{2(u-1)+2(v-1)}$. [Note of the batch-101 write: in Part~I's notation
+$X_n=X^{(2)}_{r,s,n}$ and $Y_n=X^{(2)}_{s,r,n}$, so $G_n(u,0;r,s)$ and
+$G_n(0,v;r,s)$ are Part~I's $G^{(2)}_{r,s,n}(u)$ and $G^{(2)}_{s,r,n}(v)$.]
+
+There are two coloured graphs on $[n]$. The source graph $S_n$ has colour $A$
+for edges of length $r$ and colour $B$ for edges of length $s$. In the target
+graph $T_n$, those lengths are reversed. A source edge is a violation exactly
+when its image is an edge of the same colour in $T_n$. A selected subgraph
+means a selected \emph{edge set}: other edges between its vertices are
+irrelevant. This distinction matters for component counting and for the
+packing construction.
+
+Write $A^{\mathrm{cg}}_{r,s}(n)=n!\,G_n(-1,-1;r,s)$. For $r=1$, put $R=s$ and
+abbreviate $\mathfrak B_j(u,v;1,R)$ by $\mathfrak B_{j,R}(u,v)$. A permutation
+matrix already has one point in each row and column. Its points additionally
+avoid camel attacks when $(r,s)=(1,3)$, and knight attacks when
+$(r,s)=(1,2)$. Thus
+\[
+ A^{\mathrm{cg}}_{1,3}(n)=\mathrm{A189358}(n),\qquad
+ A^{\mathrm{cg}}_{1,2}(n)=\mathrm{A137774}(n)
+\]
+\cite{cgOeisCamel,cgOeisKnight}. No cyclic wraparound is imposed on positions
+or values.
+
+\begin{theorem}[Uniform joint expansion; Report~232]
+\label[theorem]{spf:cg:thm:main}
+For fixed positive distinct integers $r<s$ and each integer $K\ge0$, there
+are rational polynomials $\mathfrak B_j(u,v;r,s)$, $0\le j\le K$, such that
+$\mathfrak B_0=1$, $\deg\mathfrak B_j\le2j$, and for every fixed $U<\infty$,
+\begin{equation}
+ G_n(u,v;r,s)=e^{2u+2v}\sum_{j=0}^{K}\frac{\mathfrak B_j(u,v;r,s)}{n^j}
+       +\bigO_{r,s,K,U}(n^{-K-1})
+ \label{spf:cg:eq:main}
+\end{equation}
+uniformly for complex $|u|,|v|\le U$. The coefficient polynomials admit a
+finite exact-arithmetic construction. Equivalently, $\mathfrak B_j$ is
+determined by the mixed binomial moments through total marked degree $2j$,
+once the lower orders have been determined.
+\end{theorem}
+The quantifier ``fixed order'' permits every prescribed $K$, with constants
+and an eventual onset depending on $K$. It does not assert convergence of the
+infinite $1/n$ series, uniformity for growing gaps, or an effective numerical
+error bound at a stated small $n$.
+
+\begin{theorem}[The first two corrections; Report~232]
+\label[theorem]{spf:cg:thm:two}
+For $R\in\{2,3\}$,
+\begin{equation}
+ \mathfrak B_{1,R}(u,v)=-2R(u+v)-2(u^2+v^2).
+ \label{spf:cg:eq:B1}
+\end{equation}
+The second polynomials are
+\begin{align}
+ \mathfrak B_{2,3}(u,v)={}&2(u^4+v^4)+14(u^3+v^3)+22(u^2+v^2)\notag\\
+              &+8u^2v^2+12(u^2v+uv^2)+44uv,\label{spf:cg:eq:B2camel}\\
+ \mathfrak B_{2,2}(u,v)={}&2(u^4+v^4)+10(u^3+v^3)+10(u^2+v^2)\notag\\
+              &+8u^2v^2+4(u^2v+uv^2)+24uv.\label{spf:cg:eq:B2knight}
+\end{align}
+Consequently,
+\begin{align}
+ A^{\mathrm{cg}}_{1,3}(n)&=e^{-4}n!\left(1+\frac8n+\frac{48}{n^2}+\bigO(n^{-3})\right),\label{spf:cg:eq:camel}\\
+ A^{\mathrm{cg}}_{1,2}(n)&=e^{-4}n!\left(1+\frac4n+\frac{28}{n^2}+\bigO(n^{-3})\right).\label{spf:cg:eq:knight}
+\end{align}
+\end{theorem}
+The coefficient theorem is not a conclusion drawn by fitting a few numerical
+moments. Its logical order is: prove the uniform expansion and degree bound;
+construct every necessary exact embedding polynomial; then extract the
+finite coefficient data. \Cref{spf:cg:sec:exact,spf:cg:sec:cores,spf:cg:sec:packing,spf:cg:sec:assembly}
+give the proof and \cref{spf:cg:sec:coefficients} gives the finite
+calculation.
+
+\begin{remark}[The marginals are Part~I's absolute expansions]
+\label[remark]{spf:cg:rem:marginals}
+[Batch-101 write.] For every $j$ and every $1\le r<s$,
+\[
+ \mathfrak B_j(u,0;r,s)=B_j^{(2)}(u;r,s),\qquad
+ \mathfrak B_j(0,v;r,s)=B_j^{(2)}(v;s,r)=B_j^{(2)}(v;r,s).
+\]
+\emph{Proof.} By the note after \eqref{spf:cg:eq:pgf},
+$G_n(u,0;r,s)=G^{(2)}_{r,s,n}(u)$. \Cref{spf:cg:thm:main} at $v=0$ and
+Part~I's \cref{spf:thm:main} both expand this function, for each fixed
+complex $u$, as $e^{2u}\sum_{j\le K}P_j(u)n^{-j}+\bigO(n^{-K-1})$. Subtracting,
+$e^{2u}\sum_{j\le K}(\mathfrak B_j(u,0)-B_j^{(2)}(u))n^{-j}=\bigO(n^{-K-1})$;
+multiplying by $n^0,n^1,\ldots$ in turn and letting $n\to\infty$ shows that
+every difference vanishes at every $u$, so the polynomials agree. The same
+argument at $u=0$ gives the second identity, and the last equality is the
+symmetry in \eqref{spf:eq:arithmetic-preview}. $\square$
+
+At $(r,s)=(1,R)$, \eqref{spf:cg:eq:B1} restricts to
+$-2Ru-2u^2=B_1^{(2)}(u;1,R)$ of \eqref{spf:eq:B1}, and
+\eqref{spf:cg:eq:B2camel}, \eqref{spf:cg:eq:B2knight} restrict to
+$2u^4+14u^3+22u^2$ and $2u^4+10u^3+10u^2$, which are
+\eqref{spf:eq:B2-absolute} at $(1,3)$ and $(1,2)$. The marginal avoidance
+coefficients are therefore $c^{(2)}_1,c^{(2)}_2=4,10$ (camel) and $2,2$
+(knight), as Report~232 states in \cref{spf:cg:sec:interaction}; they are
+Part~I's and Part~II's values, a second route, and the printed polynomials
+pass this check exactly.
+\end{remark}
+
+\subsection{What is proved and what is numerical}
+The proofs establish \eqref{spf:cg:eq:main} and the inverse statements for all
+sufficiently large $n$ or thresholds. The code supplies finite checks and
+exact certificates, rather than proving an asymptotic remainder from
+numerical agreement. It uses rational arithmetic throughout its certificate
+path.
+
+The eventual embedding polynomials for graphs with at most four edges are
+safe for $n\ge12$ in the camel case and $n\ge8$ in the knight case. These are
+\emph{polynomial-identity thresholds}, not the onset of asymptotic accuracy.
+In fact, the camel fourth factorial-moment polynomial fails at $n=9$; the
+report preserves that counterexample explicitly
+\eqref{spf:cg:eq:counterexample}. Small-$n$ checks below the safe thresholds
+use actual edge-set counts instead of extrapolating the eventual
+polynomials.
+
+\section{Exact graph identities (Report 232)}
+\label{spf:cg:sec:exact}
+
+\subsection{Selected edges and injective embeddings}
+A coloured graph has no isolated vertices unless it is the empty graph. For
+such a graph $H$, let $h=|V(H)|$, $e_A(H),e_B(H)$ be the colour counts, and
+$\operatorname{aut}(H)=|\operatorname{Aut}(H)|$ be the colour-preserving
+automorphism count. Write $i_S(H;n)$ and $i_T(H;n)$ for the numbers of
+injective colour-preserving homomorphisms from $H$ into $S_n$ and $T_n$.
+These homomorphisms need not be induced.
+
+\begin{proposition}[Exact coloured graph identity; Report~232]
+\label[proposition]{spf:cg:prop:identity}
+For every $n$,
+\begin{equation}
+ G_n(u,v;r,s)=\sum_{[H]}
+ \frac{i_S(H;n)\,i_T(H;n)}{\operatorname{aut}(H)\fall n{|V(H)|}}
+ u^{e_A(H)}v^{e_B(H)}.
+ \label{spf:cg:eq:identity}
+\end{equation}
+The sum is over colour-preserving isomorphism types of selected source-edge
+sets, including the empty graph with contribution $1$. In particular only
+$|V(H)|\le n$ occurs.
+\end{proposition}
+\begin{proof}
+For a source edge $e$ let $I_e$ indicate that its image is a target edge of
+the same colour. Expanding the finite product
+\[
+ \prod_{e\in E_A(S_n)}(1+uI_e)
+ \prod_{e\in E_B(S_n)}(1+vI_e)
+\]
+selects an arbitrary coloured source-edge subset $F$. If its isomorphism type
+is $H$, the restriction of $\pi$ to its $h$ vertices is uniform over the
+$\fall nh$ injections into $[n]$. Exactly $i_T(H;n)$ restrictions satisfy
+every selected event. There are $i_S(H;n)/\operatorname{aut}(H)$ source-edge
+sets of type $H$: every such edge set has precisely $\operatorname{aut}(H)$
+isomorphisms from a fixed representative. Grouping the expectation by type
+gives \eqref{spf:cg:eq:identity}. The argument neither deletes cycles nor
+assumes the two colours independent.
+\end{proof}
+[Note of the batch-101 write: for a single gap the selected graphs are path
+forests and \eqref{spf:cg:eq:identity} specializes to Part~I's
+Proposition~\ref{spf:prop:exact}.]
+
+Put $N_S(H;n)=i_S(H;n)/\operatorname{aut}(H)$, and similarly for $T$. Then
+the contribution of $H$ may also be written
+\begin{equation}
+ \frac{\operatorname{aut}(H)N_S(H;n)N_T(H;n)}{\fall n{|V(H)|}}
+       u^{e_A(H)}v^{e_B(H)}.
+ \label{spf:cg:eq:unlabelled}
+\end{equation}
+Because $T_n$ is obtained by swapping colours, $N_T(H;n)=N_S(H^*;n)$, where
+$H^*$ is $H$ with its colours exchanged. This will simplify the exact checks.
+
+\subsection{Partition-lattice certificates}
+\begin{proposition}[Exact eventual embedding polynomials; Report~232]
+\label[proposition]{spf:cg:prop:mobius}
+For every finite coloured graph $H$, its injection counts into the two-gap
+source and target graphs are eventual polynomials in $n$ with integer
+coefficients. The unlabelled counts $N_S,N_T$ are eventual rational
+polynomials. An exact finite construction is
+\begin{equation}
+ i_S(H;n)=\sum_{\rho\in\Pi(V(H))}\mu(\rho)\,
+                 \operatorname{hom}(H/\rho,S_n),\qquad
+ \mu(\rho)=\prod_{\mathsf b\in\rho}(-1)^{|\mathsf b|-1}(|\mathsf b|-1)!.
+ \label{spf:cg:eq:mobius}
+\end{equation}
+Here $\Pi(V(H))$ is the set of partitions of the vertex set, and
+$\mathsf b$ runs over the blocks of $\rho$. The polynomials are valid for
+$n\ge s\,e(H)$; a more precise safe bound is the sum of the specified edge
+lengths. The same assertion holds for $T_n$.
+\end{proposition}
+\begin{proof}
+A map from $V(H)$ to $[n]$ has a kernel partition recording equal images.
+M\"obius inversion on the partition lattice isolates the discrete kernel,
+giving \eqref{spf:cg:eq:mobius}. A quotient with a loop contributes zero,
+since all gaps are positive. If two constraints on the same quotient pair
+demand distinct lengths, that quotient also contributes zero. Repeated
+identical constraints may be reduced to one.
+
+Consider a connected quotient $Q$. Fix a root and a spanning tree. Give each
+tree edge one of its two signs and propagate relative integer coordinates
+from root coordinate $0$. There are finitely many sign assignments. Retain
+an assignment precisely when every non-tree edge has its required absolute
+length. At this homomorphism stage coincident coordinates at distinct
+quotient vertices are allowed. Each valid relative assignment has span
+\[
+ d=\max_{w\in V(Q)}x_w-\min_{w\in V(Q)}x_w
+\]
+and exactly $\max(0,n-d)$ translations into $[n]$. Its span is at most the
+sum of the tree-edge lengths, hence at most the sum of the original edge
+lengths. For $n$ at least that bound its contribution is $n-d$. Thus the
+connected homomorphism polynomial is $\alpha_Qn-\beta_Q$, with
+$\alpha_Q,\beta_Q$ nonnegative integers. For a disconnected quotient its
+components map independently, so their homomorphism polynomials multiply.
+The finite integer linear combination \eqref{spf:cg:eq:mobius} is the claimed
+polynomial. Division by $\operatorname{aut}(H)$ gives the unlabelled count.
+All target lengths are also at most $s$, so the same safe threshold $se(H)$
+applies to both sides.
+\end{proof}
+The formula is an arithmetic certificate, not interpolation. Every sign
+assignment is tested against every constraint. In particular an incompatible
+cycle vanishes for a mathematical reason, not because it happens to be absent
+from a finite numerical sample.
+
+\subsection{The alternating square}
+\label{spf:cg:sec:square}
+For $(r,s)=(1,R)$, consider vertices at $0,1,R,R+1$, with $A$ edges
+$0$--$1$ and $R$--$(R+1)$ and $B$ edges $0$--$R$ and $1$--$(R+1)$.
+The permutation of these coordinates
+\[
+ (0,1,R,R+1)\longmapsto(0,R,1,R+1)
+\]
+interchanges the required lengths, so this coloured square embeds on both
+sides. Its colour-preserving automorphism group has order $4$. For
+$R=2,3$ all injective realizations are the translated alternating rectangle
+and its four labellings; the exact counts are
+\begin{equation}
+ i_S(H;n)=i_T(H;n)=4\max(0,n-R-1).
+ \label{spf:cg:eq:squarecount}
+\end{equation}
+To check exhaustiveness, the two equal-colour opposite sides have signed
+length $1$ and the other two have signed length $R$. Closing the square forces
+the two $1$ steps to cancel and the two $R$ steps to cancel; otherwise one
+would have $2=2R$. Distinctness forces the four corners of the stated
+rectangle. Hence for $n\ge\max(4,R+1)$ its exact graph contribution is
+\begin{equation}
+ \frac{4(n-R-1)^2}{\fall n4}\,u^2v^2
+       =\frac{4u^2v^2}{n^2}+\bigO(n^{-3}).
+ \label{spf:cg:eq:squareterm}
+\end{equation}
+For the camel there is also a source four-cycle using three length-$1$ edges
+and one length-$3$ edge. In the target, three signed $3$ steps cannot sum to
+a signed $1$ step. That cycle is incompatible and contributes zero. Both
+examples show why cycles must be tested rather than excluded wholesale.
+
+\section{Connected cores and positive tail bounds (Report 232)}
+\label{spf:cg:sec:cores}
+
+\subsection{Deficit measures the asymptotic cost}
+Let $c(H)$ be the number of connected components and $v(H)=|V(H)|$. Define
+the \emph{deficit}
+\begin{equation}
+ \delta(H)=v(H)-2c(H).
+ \label{spf:cg:eq:deficit}
+\end{equation}
+[Note of the batch-101 write: not Part~I's defect $k-c$; the two agree on
+forests only (\cref{spf:cg:sec:notation}).] A component consisting of one
+edge has deficit zero. Every other connected component has at least three
+vertices and positive deficit. The \emph{core} of $H$ is the union of its
+nontrivial components; throughout, ``nontrivial'' means having at least three
+vertices. If the core has $t$ components and $h_0$ vertices, then
+\begin{equation}
+ h_0=\delta+2t\le3\delta,
+ \label{spf:cg:eq:corevertices}
+\end{equation}
+since $t\le\delta$. Both source and target placements of each component have
+one translational freedom, whereas division by $\fall n{v(H)}$ costs one
+power of $n$ per vertex. Thus its leading scale is $n^{-\delta}$. We next
+make the required finite-core and tail claims precise.
+
+\begin{lemma}[Compatible cores have few edges; Report~232]
+\label[lemma]{spf:cg:lem:coreedges}
+Every graph admitting embeddings in both $S_n$ and $T_n$ is triangle-free
+and $2$-degenerate. Each of its connected components with $v\ge3$ vertices
+has at most $2v-4$ edges. Consequently its nontrivial core satisfies
+\begin{equation}
+ e_{\rm core}\le2\delta,\qquad h_0\le3\delta.
+ \label{spf:cg:eq:coreedges}
+\end{equation}
+For fixed $K$, only finitely many compatible core isomorphism types and
+component multiplicity vectors have deficit at most $K$.
+\end{lemma}
+\begin{proof}
+In any subgraph of $S_n$, the vertex with least coordinate has at most two
+neighbours to its right, at distances $r$ and $s$. Remove it and repeat. This
+is a degeneracy ordering with at most two later neighbours per vertex.
+
+Suppose a triangle is realizable in $S_n$. Order its three coordinates.
+The largest gap must equal the sum of the other two. With only $r<s$
+available, this forces $s=2r$ and length multiset $(r,r,s)$. After colour
+reversal, the target triangle would require length multiset $(s,s,r)$.
+The largest of these lengths cannot be the sum of the other two, so no
+three distinct real coordinates can realize it. A compatible triangle
+therefore cannot exist.
+
+For a triangle-free $2$-degenerate graph on $v\ge3$ vertices, remove $v-3$
+vertices in a degeneracy ordering. At most $2(v-3)$ edges are removed and
+at most two remain among the final three vertices. Hence $e\le2v-4$.
+Summing this inequality over core components gives $e_{\rm core}\le2\delta$.
+Equation~\eqref{spf:cg:eq:corevertices} gives the vertex bound. There are
+only finitely many coloured finite graphs on at most $3K$ vertices, proving
+finiteness.
+\end{proof}
+This lemma uses the reciprocal two-gap structure. A general union of many
+coloured gaps can admit triangles and has a different degree bound; the
+present theorem should not be silently extended to that setting.
+
+\begin{remark}[Cycles enter first at order $n^{-2}$]
+\label[remark]{spf:cg:rem:cycles}
+[Batch-101 write; this answers the cycle part of \cref{spf:mg:q:several}
+for reciprocal pairs.] Let $1\le r<s$. A compatible graph containing a cycle
+has a component with a cycle; by \cref{spf:cg:lem:coreedges} that cycle has
+at least four vertices, so the component has deficit $v-2\ge2$. Graphs
+containing cycles therefore enter \eqref{spf:cg:eq:identity} only at
+order $n^{-2}$ or later. At order $n^{-2}$ exactly one cyclic core can occur,
+a single component with four vertices and a cycle, that is a coloured
+four-cycle (a fifth edge would create a triangle). Among the six colour
+patterns of a four-cycle only the alternating one, $ABAB$, embeds on both
+sides:
+\begin{itemize}
+\item $AAAA$ and $BBBB$: four signed steps of one length return to the start
+ only by revisiting a vertex, so there is no source embedding;
+\item $AAAB$: three signed $r$ steps must sum to $\mp s$, which needs
+ $s\in\{r,3r\}$; in the target three signed $s$ steps must sum to $\mp r$,
+ impossible since $r<s$; $ABBB$ is impossible in the source for the same
+ reason;
+\item $AABB$ (adjacent equal colours): the two $A$ steps must be equal (else
+ a vertex repeats), so their sum is $\pm2r$, which must equal minus the sum
+ of the two $B$ steps, in $\{0,\pm2s\}$; this is impossible;
+\item $ABAB$: the steps close only as $a,b,-a,-b$, since $\pm2r=\pm2s$ is
+ impossible, which is the rectangle $\{0,r,s,r+s\}$ of
+ \cref{spf:cg:sec:square}, with $i_S=i_T=4\max(0,n-r-s)$ and
+ $\operatorname{aut}=4$, exactly as there with $R+1$ replaced by $r+s$.
+\end{itemize}
+In the resummation of \cref{spf:cg:sec:assembly}, the alternating-square core
+has one source and one target species, so $p_{0,\boldsymbol t}=1$ in
+\eqref{spf:cg:eq:packingleading}, and \eqref{spf:cg:eq:autfactor},
+\eqref{spf:cg:eq:normalization} and \eqref{spf:cg:eq:poissonsum} give its
+sector as $4u^2v^2e^{2u+2v}n^{-2}+\bigO(n^{-3})$. Hence the selected graphs
+with cycles contribute exactly $4u^2v^2$ to $\mathfrak B_2(u,v;r,s)$ for
+every $1\le r<s$, and nothing earlier; incompatible cycles, such as the
+camel's $AAAB$ square, contribute exactly zero.
+\end{remark}
+
+\subsection{A uniform exponential moment}
+\begin{lemma}[Long selected-edge tail; Report~232]
+\label[lemma]{spf:cg:lem:tail}
+For every real $s_0\ge0$ and every $n$,
+\begin{equation}
+ \E e^{s_0(X_n+Y_n)}\le\exp\{2(e^{4s_0}-1)\}.
+ \label{spf:cg:eq:exponentialbound}
+\end{equation}
+For any fixed $U>0$, any $U'>U$, and any nonnegative integer $L$,
+\begin{equation}
+ \sum_{k+l>L}U^{k+l}\E\left[\binom{X_n}{k}\binom{Y_n}{l}\right]
+ \le (U/U')^L\,
+    \exp\{2((1+U')^4-1)\}.
+ \label{spf:cg:eq:markedtail}
+\end{equation}
+In particular, the joint marked expansion can be truncated at
+$L=C_K\log n$ with uniform error $\bigO(n^{-K-1})$ on $|u|,|v|\le U$, by
+choosing $C_K$ sufficiently large.
+\end{lemma}
+\begin{proof}
+A single-length source graph is a disjoint union of paths, one for each
+residue class modulo its length. Alternately colouring each path's edges
+splits it into two matchings. Both source lengths together therefore split
+into four matchings. Each matching has at most $M=\lfloor n/2\rfloor$ edges.
+Let $Z$ count its violations.
+
+Select $k$ specified matching edges. After assigning the image vertices of
+the preceding $j$ edges, there are $n-2j$ unused target vertices. Whatever
+the preceding assignment, there are at most $2(n-2j)$ ordered pairs of
+unused vertices at a specified absolute difference: the graph of that
+length has maximum degree two. Dividing by $(n-2j)(n-2j-1)$ bounds the
+conditional probability by $2/(n-2j-1)$. Thus the probability of all $k$
+events is at most
+\[
+ \frac{2^k}{\prod_{j=0}^{k-1}(n-2j-1)}.
+\]
+The coefficient $\E\binom Zk$ sums over at most $\binom Mk$ selections.
+For $0\le j<k\le M$, $M-j\le n-2j-1$; hence
+\[
+ \E\binom Zk\le\frac{2^k}{k!}.
+\]
+For $t\ge0$, the binomial expansion gives
+$\E(1+t)^Z\le e^{2t}$. Take $t=e^{4s_0}-1$, so that
+$\E e^{4s_0Z}\le\exp\{2(e^{4s_0}-1)\}$, and apply H\"older's inequality with
+four exponents equal to four to the four matching counts. This proves
+\eqref{spf:cg:eq:exponentialbound}. No independence between the matchings
+was used.
+
+All mixed binomial moments are nonnegative. In the terms $k+l>L$, replace
+$U^{k+l}$ by at most $(U/U')^LU'^{k+l}$, sum the full binomial expansion,
+and apply \eqref{spf:cg:eq:exponentialbound} with $s_0=\log(1+U')$. This
+proves \eqref{spf:cg:eq:markedtail}. Choosing $C_K$ with
+$C_K\log(U'/U)>K+1$ gives the asserted error. At $U=0$ the statement is
+immediate, and a larger positive $U$ can always bound a given compact set.
+\end{proof}
+The bound controls the sum of absolute marked contributions, so it applies
+to complex marks and to $u=v=-1$ without invoking cancellation in
+inclusion--exclusion. [Note of the batch-101 write: Report~232 writes
+``Take $t=e^{s_0}-1$ and apply H\"older''; the exponent $4s_0$ is what
+H\"older's inequality with four factors requires, and it is the exponent in
+\eqref{spf:cg:eq:exponentialbound}. The write states the step that way. In
+the role it plays, this lemma replaces Part~I's
+Lemma~\ref{spf:lem:moment-bound}; the proof is different.]
+
+\subsection{A geometric majorant for large deficits}
+\begin{lemma}[High-deficit core tail; Report~232]
+\label[lemma]{spf:cg:lem:highdeficit}
+Fix $U,K$, and a cutoff $L=C\log n$. Within the exact selected-edge sum
+restricted to at most $L$ edges, the total absolute contribution of cores
+with deficit $\delta\ge K+1$ is $\bigO(n^{-K-1})$ uniformly on
+$|u|,|v|\le U$.
+\end{lemma}
+\begin{proof}
+The number of vertices of any retained graph is at most $2L$. For all
+sufficiently large $n$,
+\begin{equation}
+ \frac{n^v}{\fall nv}=\prod_{i=0}^{v-1}(1-i/n)^{-1}\le2
+ \qquad(0\le v\le2L),
+ \label{spf:cg:eq:denbound}
+\end{equation}
+since the logarithm is $\bigO(L^2/n)$. This is a uniform positive bound.
+
+A connected source component on $v$ vertices, anchored at its smallest
+coordinate, has support in $[0,s(v-1)]$: follow paths from the anchor, whose
+edge lengths are at most $s$. The number of possible supports of size $v$
+in this interval is at most an exponential $C_1^v$ depending only on $s$.
+There are at most $2v$ candidate source edges between the occupied vertices,
+so the possible selected edge sets cost another factor $2^{2v}$. Thus there
+are at most $C^v$ anchored connected source shapes (\cref{spf:cg:rem:shapes}).
+Given one fixed source component, choose the image of a fixed root in at most
+$n$ ways and the signs on a rooted spanning tree in at most $2^{v-1}$ ways.
+Ignoring target collisions and cycle consistency increases this count, so the
+component has at most $n2^{v-1}$ target maps.
+
+Suppose the core has deficit $\delta$, $t$ components, and
+$h_0=\delta+2t\le3\delta$ vertices. Write their positive deficits as an
+ordered composition of $\delta$ into $t$ parts. There are
+$\binom{\delta-1}{t-1}$ such compositions. For each one, ordered core source
+placements cost at most $n^tC^{h_0}$. Divide by $t!$ for unordered
+components. This division remains valid when abstract component types
+repeat: in an actual valid packing the placed nonempty vertex supports are
+disjoint and therefore the placed components are distinct; every unordered
+packing has exactly $t!$ orderings. Allowing repeated or intersecting
+placements in the ordered upper count only makes it larger.
+
+Let $j$ be the number of remaining isolated edges, with either colour
+allowed. Their source selections cost at most $(2n)^j/j!$, because the
+source has at most $2n$ edges. For each of them there are at most $2n$
+target assignments, giving $(2n)^j$. Core target assignments cost at most
+$n^tC^{h_0}$ after enlarging $C$. Divide by the falling factorial for
+$v=2j+h_0$ vertices and use \eqref{spf:cg:eq:denbound}. The absolute marking
+factor is at most $U^j\max(1,U)^{2h_0}$, a deliberately loose bound valid
+because the core has at most $2h_0$ edges. We obtain, with constants
+depending only on $r,s,U$,
+\begin{equation}
+ 2\,\frac{(4U)^j}{j!}\,
+ C_U^{3\delta}n^{-\delta}
+ \frac{\binom{\delta-1}{t-1}}{t!}.
+ \label{spf:cg:eq:sectorbound}
+\end{equation}
+This bounds the contribution directly in the marked graph sum; no
+momentwise cancellation or collision expansion is being assumed.
+
+Sum first over $j\ge0$, which contributes $e^{4U}$, and then over
+$1\le t\le\delta$. The latter sum is at most
+$\sum_t\binom{\delta-1}{t-1}=2^{\delta-1}$. Thus the full deficit-$\delta$
+sector is bounded by $C'_U(C''_U/n)^\delta$. Once $n>2C''_U$, summing over
+$\delta\ge K+1$ is a convergent geometric tail of order $n^{-K-1}$.
+The empty core is handled separately in the finite-core part of the proof.
+\end{proof}
+The absence of a factor growing with $L$ in the final error is important.
+Bounding each fixed-deficit moment crudely and then retaining a logarithmic
+loss would not by itself prove the remainder in \cref{spf:cg:thm:main}.
+
+\begin{remark}[The count of anchored shapes]
+\label[remark]{spf:cg:rem:shapes}
+[Batch-101 write: Report~232 asserts the bound $C_1^v$ without computing it;
+here is a value.] A support of size $v$ contains the anchor $0$ and $v-1$
+further points of $\{1,\ldots,s(v-1)\}$, so there are at most
+$\binom{s(v-1)}{v-1}\le\bigl(es(v-1)/(v-1)\bigr)^{v-1}=(es)^{v-1}$ supports,
+by $\binom mk\le(em/k)^k$. Each occupied vertex has at most two source
+neighbours to its right, so at most $2v$ candidate edges join occupied
+vertices and at most $4^v$ edge sets can be selected. Hence there are at most
+$(es)^{v-1}4^v\le(4es)^v$ anchored connected source shapes on $v$ vertices,
+and the proof above holds with $C_1=es$ and $C=4es$ before the enlargement
+made for the target maps.
+\end{remark}
+
+\section{A uniform finite-range packing lemma (Report 232)}
+\label{spf:cg:sec:packing}
+
+\subsection{Species and the exact finite matrix}
+A polymer species consists of a finite nonempty support
+$\mathsf P\subseteq\{0,\ldots,D\}$ with $\min\mathsf P=0$, together with a
+species identity and a type label. A placement translates its occupied
+support into $[n]$. A packing is an unordered set of placements whose
+occupied supports are pairwise disjoint. Their containing intervals are
+allowed to overlap. Distinct species may have the same support, and distinct
+species may have the same type. The identity can encode a selected coloured
+edge pattern, not just the occupied vertices.
+
+Assume exactly one species has type $x$, exactly one has type $y$, and
+$a_i$ species have type $w_i$, for $1\le i\le q$. Let
+$Z_n(x,y,\boldsymbol w)$ be the packing polynomial, including the empty
+packing, and for a fixed multi-index $\boldsymbol t\in\N^q$ put
+\[
+ N_{k,l,\boldsymbol t}(n)=[x^ky^l\boldsymbol w^{\boldsymbol t}]\,Z_n(x,y,\boldsymbol w),\qquad
+ |\boldsymbol t|=t_1+\cdots+t_q.
+\]
+An absent type with $a_i=0$ and $t_i>0$ makes this coefficient identically
+zero and may be discarded.
+
+\begin{theorem}[Factorial-scale packing expansion; Report~232]
+\label[theorem]{spf:cg:thm:packing}
+For every fixed finite species dictionary, multi-index $\boldsymbol t$, order
+$J\ge0$, and $C>0$, uniformly in nonnegative $k,l$ with $k+l\le C\log n$,
+\begin{equation}
+ n^{-(k+l+|\boldsymbol t|)}N_{k,l,\boldsymbol t}(n)
+ =\frac1{k!\,l!}\bigg\{\sum_{j=0}^{J}\frac{p_{j,\boldsymbol t}(k,l)}{n^j}
+ +\bigO\!\left(\frac{(1+k+l)^{2J+3}}{n^{J+1}}\right)\bigg\}.
+ \label{spf:cg:eq:packinglemma}
+\end{equation}
+The $p_{j,\boldsymbol t}$ are rational polynomials of total degree at most
+$2j$, and
+\begin{equation}
+ p_{0,\boldsymbol t}=\prod_{i=1}^{q}\frac{a_i^{t_i}}{t_i!}.
+ \label{spf:cg:eq:packingleading}
+\end{equation}
+Constants may depend on the displayed fixed parameters, but not on $n,k,l$.
+\end{theorem}
+\begin{proof}
+We give the finite matrix, the uniform analytic estimate, and the
+coefficient extraction separately. These are all needed: an expansion at
+fixed $k,l$ alone would not justify the final resummation.
+
+\paragraph{The occupancy matrix and both boundaries.}
+Use a $D$-bit mask $b=(b_0,\ldots,b_{D-1})$ immediately before scanning the
+current site. A set bit records a site already occupied by a polymer that
+began earlier, from the current site through $D-1$ sites ahead. If $b_0=1$,
+no species can begin here; shift the mask one site left. If $b_0=0$, either
+leave this site empty and shift, or begin one species $\mathsf P$ whose
+occupied sites avoid the preexisting mask. Insert all of $\mathsf P$,
+including its possible site $D$, then shift. This gives a $D$-bit next mask.
+Assign weight $1$ for no start and the species' type variable for a start,
+adding weights when transitions coincide. All supports contain their anchor
+$0$, so two species cannot begin at the same site in a valid packing.
+
+These rules define a finite matrix $\mathbf T(\boldsymbol z)$ polynomial in
+the activities $\boldsymbol z=(x,y,w_1,\ldots,w_q)$. With $e_0$ the
+empty-mask vector,
+\begin{equation}
+ Z_n(\boldsymbol z)=e_0^{\mathsf T}\,\mathbf T(\boldsymbol z)^n\,e_0.
+ \label{spf:cg:eq:transfer}
+\end{equation}
+The initial empty mask enforces the left boundary. After $n$ sites have
+been scanned, a polymer extending beyond $[n]$ leaves a nonempty mask.
+Requiring the final empty mask therefore enforces the right boundary
+exactly. Disjoint supports such as $\{0,3\}$ and $\{1,2\}$ are permitted:
+the mask tests occupied sites, not containing intervals.
+
+At zero activity every state shifts to zero within $D$ steps. Hence
+$\mathbf T(0)^D$ has all its rows concentrated in column zero, has rank one,
+and is idempotent. The eigenvalue $1$ of $\mathbf T(0)$ is algebraically
+simple, and all other eigenvalues are zero. The case $D=0$, if present, is a
+scalar matrix and follows by the same argument without the flushing step.
+
+\paragraph{Analytic spectral decomposition.}
+Finite-dimensional analytic perturbation at this isolated simple eigenvalue
+gives a complex polydisc about $0$ on which an analytic eigenvalue
+$\lambda(\boldsymbol z)$ and analytic spectral projection $P(\boldsymbol z)$
+exist, with $\lambda(0)=1$. Put
+\[
+ Q(\boldsymbol z)=\mathbf T(\boldsymbol z)-\lambda(\boldsymbol z)P(\boldsymbol z).
+\]
+Then $PQ=QP=0$. On a sufficiently small closed polydisc the spectrum of
+$Q$ is inside a circle $|\zeta|=\rho<1$. The contour formula for powers,
+\[
+ Q(\boldsymbol z)^n=\frac1{2\pi i}\int_{|\zeta|=\rho}
+ \zeta^n(\zeta I-Q(\boldsymbol z))^{-1}\,d\zeta,
+\]
+with a fixed uniformly bounded resolvent, gives
+$\|Q(\boldsymbol z)^n\|\le C_0\rho^n$. Let
+$\alpha(\boldsymbol z)=e_0^{\mathsf T}P(\boldsymbol z)e_0$. It satisfies
+$\alpha(0)=1$. Shrinking the polydisc again gives analytic logarithms
+$F=\log\lambda$ and $\Omega=\log\alpha$, and therefore
+\begin{equation}
+ Z_n(\boldsymbol z)=\exp\{nF(\boldsymbol z)+\Omega(\boldsymbol z)\}+\varepsilon_n(\boldsymbol z),\qquad
+ |\varepsilon_n(\boldsymbol z)|\le C_0\rho^n.
+ \label{spf:cg:eq:spectral}
+\end{equation}
+Both $F$ and $\Omega$ vanish at $0$.
+
+The linear part of $F$ is
+\begin{equation}
+ F_1(\boldsymbol z)=x+y+\sum_ia_iw_i.
+ \label{spf:cg:eq:linearF}
+\end{equation}
+Indeed a single fixed species of diameter $d$ has $n-d$ placements for
+$n\ge D$. Compare its linear activity coefficient in
+\eqref{spf:cg:eq:spectral}, divide by $n$, and let $n\to\infty$; Cauchy's
+estimate makes the corresponding coefficient of $\varepsilon_n$
+exponentially small. Each species contributes $1$ to $F_1$, and grouping
+species by type gives $a_i$.
+
+\paragraph{Scale every activity.}
+Write now $\boldsymbol z=(X,Y,W_1,\ldots,W_q)$ and scale \emph{all}
+activities by $1/n$, including the core markers $W_i$. Define
+\begin{equation}
+ \Phi(h,\boldsymbol z)=\frac{F(h\boldsymbol z)-hF_1(\boldsymbol z)}h+\Omega(h\boldsymbol z).
+ \label{spf:cg:eq:Phi}
+\end{equation}
+The apparent singularity at $h=0$ is removable. If $F_d,\Omega_d$ are
+homogeneous parts, then the coefficient of $h^j$ in $\Phi$ is
+$F_{j+1}(\boldsymbol z)+\Omega_j(\boldsymbol z)$, of degree at most $j+1$.
+Consequently
+\begin{equation}
+ e^{\Phi(h,\boldsymbol z)}=\sum_{j=0}^{J}P_j(\boldsymbol z)h^j+\text{remainder},
+ \qquad P_0=1,\quad\deg P_j\le2j.
+ \label{spf:cg:eq:Pj}
+\end{equation}
+For the degree bound, a product of exponent terms with positive orders
+$j_1,\ldots,j_a$ summing to $j$ has degree at most
+$\sum_i(j_i+1)=j+a\le2j$.
+
+Put $s_*=1+\sum_i|z_i|$. On the circle $|h|=c/s_*^2$, with one sufficiently
+small fixed $c>0$, the arguments $h\boldsymbol z$ lie in the analytic
+polydisc. The quadratic-and-higher part of $F$ contributes $\bigO(|h|s_*^2)$
+to \eqref{spf:cg:eq:Phi}, and $\Omega(h\boldsymbol z)$ contributes
+$\bigO(|h|s_*)$. Hence $|\Phi|$ is bounded on the whole circle independently
+of $\boldsymbol z$. Cauchy's Taylor estimate in $h$, evaluated at $h=1/n$
+when $n\ge2s_*^2/c$, gives
+\begin{equation}
+ \left|e^{\Phi(1/n,\boldsymbol z)}-\sum_{j=0}^{J}P_j(\boldsymbol z)n^{-j}\right|
+ \le C_Jn^{-J-1}s_*^{2J+2}.
+ \label{spf:cg:eq:analyticremainder}
+\end{equation}
+Combining \eqref{spf:cg:eq:spectral}--\eqref{spf:cg:eq:Phi},
+\[
+ Z_n(\boldsymbol z/n)=e^{F_1(\boldsymbol z)}e^{\Phi(1/n,\boldsymbol z)}+\varepsilon_n(\boldsymbol z/n).
+\]
+Thus the analytic remainder from the first term is bounded by the right
+side of \eqref{spf:cg:eq:analyticremainder} times
+$e^{\Re F_1(\boldsymbol z)}$.
+
+\paragraph{Extract coefficients at factorial-scale radii.}
+Use the Cauchy circles
+\[
+ |X|=\max(1,k),\qquad |Y|=\max(1,l),\qquad |W_i|=1.
+\]
+If $m=k+l\le C\log n$, then $s_*\le m+q+3$, so the previous estimate
+applies uniformly for all sufficiently large $n$. On the circles,
+\[
+ |e^{F_1(\boldsymbol z)}|\le C_1e^{\max(1,k)+\max(1,l)}.
+\]
+Stirling's upper bound for factorials gives, for every $k\ge0$,
+\begin{equation}
+ \frac{e^{\max(1,k)}}{\max(1,k)^k}
+       \le C_2\frac{\sqrt{k+1}}{k!}.
+ \label{spf:cg:eq:saddleradius}
+\end{equation}
+Cauchy's coefficient bound applied to \eqref{spf:cg:eq:analyticremainder},
+followed by \eqref{spf:cg:eq:saddleradius} for $k$ and $l$, now yields
+\[
+ \bigO\!\left(\frac{(1+m)^{2J+3}}{k!\,l!\,n^{J+1}}\right).
+\]
+The two square roots cost at most one extra power of $1+m$. The fixed
+$W_i$ coefficient circles have radius one and add only a constant. The
+spectral remainder contributes at most
+$C_0\rho^n/(\max(1,k)^k\max(1,l)^l)$, which is smaller than the same bound
+uniformly for $m\le C\log n$.
+
+Finally,
+\[
+ [X^kY^l\boldsymbol W^{\boldsymbol t}]\,Z_n(\boldsymbol z/n)
+       =n^{-(k+l+|\boldsymbol t|)}N_{k,l,\boldsymbol t}(n).
+\]
+Since
+\begin{equation}
+ [X^kY^l]\,e^{X+Y}X^aY^b
+       =\frac{\fall ka\,\fall lb}{k!\,l!},
+ \label{spf:cg:eq:fallingextraction}
+\end{equation}
+coefficient extraction from $e^{F_1}P_j$ yields a polynomial in $k,l$ of
+degree at most $2j$. The $W$ coefficients at $j=0$ give
+\eqref{spf:cg:eq:packingleading}. Rationality follows by expanding the
+finite matrix's characteristic equation at its simple eigenvalue $1$: its
+coefficients are rational and the nonzero linear derivative permits a
+rational recursive solution. The spectral projection and its amplitude
+also have rational Taylor recursions, hence so do $F,\Omega,P_j$ and the
+extracted coefficients (\cref{spf:cg:rem:rational}). This completes the
+proof.
+\end{proof}
+
+\begin{remark}[Rationality of the packing coefficients]
+\label[remark]{spf:cg:rem:rational}
+[Batch-101 write: the last step of the proof above is stated in two
+sentences; here it is in full.] Let $\chi(\zeta,\boldsymbol z)=\det(\zeta I-\mathbf T(\boldsymbol z))\in\Z[\zeta,\boldsymbol z]$.
+Since $1$ is a simple root of $\chi(\cdot,0)$,
+$\partial_\zeta\chi(1,0)\ne0$, and the formal implicit-function theorem gives
+a unique power series $\lambda(\boldsymbol z)$ with $\lambda(0)=1$ and
+$\chi(\lambda,\boldsymbol z)=0$; comparing coefficients degree by degree
+determines each coefficient by rational operations from earlier ones and
+division by $\partial_\zeta\chi(1,0)\in\Z\setminus\{0\}$, so
+$\lambda\in\Q[[\boldsymbol z]]$, and it is the Taylor series of the analytic
+eigenvalue. For a simple eigenvalue the spectral projection is
+$P=\operatorname{adj}(\lambda I-\mathbf T)/\partial_\zeta\chi(\lambda,\boldsymbol z)$
+near $0$. Indeed, at each $\boldsymbol z$ near $0$ the matrix
+$\lambda I-\mathbf T$ has rank one less than its size, so its adjugate is a
+multiple of $xy^{\mathsf T}$, where $x$ and $y$ span its right and left
+kernels; so is $P=xy^{\mathsf T}/(y^{\mathsf T}x)$; and the traces are
+$\operatorname{tr}\operatorname{adj}(\lambda I-\mathbf T)=\partial_\zeta\chi(\lambda,\boldsymbol z)\ne0$
+and $\operatorname{tr}P=1$. Its entries are therefore in $\Q[[\boldsymbol z]]$, hence so is
+$\alpha=e_0^{\mathsf T}Pe_0$ with $\alpha(0)=1$, and $\log\lambda$,
+$\log\alpha$, $\Phi$, $e^\Phi$, the $P_j$ and, by
+\eqref{spf:cg:eq:fallingextraction}, the $p_{j,\boldsymbol t}$ have rational
+coefficients. Independently, rationality of the $\mathfrak B_j$ themselves
+also follows from \eqref{spf:cg:eq:finiteextract}: each mixed binomial moment
+is, for $n\ge s(k+l)$, a finite sum of terms
+$i_Si_T/(\operatorname{aut}\fall nv)$ with integer polynomials $i_S,i_T$
+(\cref{spf:cg:prop:mobius}), so its expansion in $1/n$ has rational
+coefficients.
+\end{remark}
+
+\section{Assembly of the uniform expansion (Report 232)}
+\label{spf:cg:sec:assembly}
+
+We now prove \cref{spf:cg:thm:main}, including the normalization and the
+infinite isolated-edge summation.
+
+\subsection{Two finite polymer dictionaries for each core}
+Fix a compatible multiset of nontrivial connected coloured graph types.
+Let $t_Q$ be the multiplicity of type $Q$, let $\boldsymbol t=(t_Q)$,
+$t=\sum_Qt_Q$, and let $h_0=\sum_Qt_Qv(Q)$. Its deficit is
+$\delta=h_0-2t$. At fixed $\delta\le K$, there are finitely many such
+vectors by \cref{spf:cg:lem:coreedges}.
+
+For each connected type $Q$, list its normalized source realizations: the
+selected coloured edge patterns with minimum occupied coordinate $0$.
+Each has bounded diameter at most $s(v(Q)-1)$ and there are finitely many.
+Treat every distinct selected edge pattern as a separate species, marked by
+a common variable $w_Q$. Include one isolated $A$-edge species with marker
+$x$ and one isolated $B$-edge species with marker $y$. This is the source
+dictionary. Construct the target dictionary in the same fashion using the
+reversed lengths. The two dictionaries may have different numbers of
+species of a given type, but have the same finite type list.
+
+Packings correspond bijectively to selected edge sets with the prescribed
+component multiset. A component's minimum vertex is its unique anchor.
+Separate component supports must be vertex-disjoint. Unselected ambient
+edges joining distinct supports do not join components of the selected
+graph, so no further restriction is imposed. Species identity retains the
+selected edges even when distinct species have the same occupied support.
+Thus the hypotheses of \cref{spf:cg:thm:packing} apply on both sides.
+
+\subsection{Automorphisms and the denominator}
+Add $k$ isolated $A$ edges and $l$ isolated $B$ edges. Write $m=k+l$. The
+resulting abstract graph $H$ has $2m+h_0$ vertices and
+\begin{equation}
+ \operatorname{aut}(H)=2^mk!\,l!\,\operatorname{aut}_{\boldsymbol t},\qquad
+ \operatorname{aut}_{\boldsymbol t}=\prod_Q\operatorname{aut}(Q)^{t_Q}t_Q!.
+ \label{spf:cg:eq:autfactor}
+\end{equation}
+The factors $2^m$ orient the isolated edges, $k!\,l!$ permute identical
+isolated components within each colour, and $\operatorname{aut}_{\boldsymbol t}$
+accounts for the core components. This is the automorphism factor in
+\eqref{spf:cg:eq:unlabelled}; using the reciprocal factor here would be an
+error.
+
+Apply \cref{spf:cg:thm:packing} separately to source and target with
+$J=K-\delta$. Each unlabelled count has normalization $n^{m+t}/(k!\,l!)$.
+After multiplying the two counts, multiplying by \eqref{spf:cg:eq:autfactor},
+and dividing by $\fall n{2m+h_0}$, the leading scale is
+\begin{equation}
+ n^{2t-h_0}\frac{2^m}{k!\,l!}
+       =n^{-\delta}\frac{2^m}{k!\,l!}.
+ \label{spf:cg:eq:normalization}
+\end{equation}
+All fixed core constants are absorbed in the coefficient polynomials.
+
+For completeness, the remaining denominator factor has its own uniform
+expansion. Put $v=2m+h_0$. Then
+\begin{equation}
+ \log\frac{n^v}{\fall nv}
+       =\sum_{a\ge1}\frac{n^{-a}}a\sum_{i=0}^{v-1}i^a.
+ \label{spf:cg:eq:denlog}
+\end{equation}
+The inner power sum is a polynomial in $v$ of degree $a+1$. Its coefficient
+at order $n^{-j}$ after exponentiation has degree at most $2j$ in $m$:
+a product with total order $j$ has degree at most $j$ plus its number of
+factors. For a uniform remainder, regard the product
+$\prod_{i=0}^{v-1}(1-ih)^{-1}$ as analytic in $h$ on $|h|\le c/(1+m)^2$, with
+$h_0$ fixed and $c$ sufficiently small. Its logarithm is bounded on that
+circle, since $\sum_ii|h|=\bigO(1)$ and every factor stays away from zero.
+Cauchy's estimate gives a remainder
+\begin{equation}
+ \bigO\!\left((1+m)^{2J+2}n^{-J-1}\right)
+ \label{spf:cg:eq:denrem}
+\end{equation}
+uniformly for $m\le C\log n$.
+
+Multiplying the two packing expansions and this denominator expansion is
+legitimate on that range. Their fixed-order coefficients are polynomials
+and their errors have a uniform polynomial majorant. The core sector is
+therefore
+\begin{equation}
+ \begin{split}
+ &u^{e_A({\rm core})}v^{e_B({\rm core})}n^{-\delta}
+ \frac{2^{k+l}u^kv^l}{k!\,l!}\\
+ &\quad\times\left\{\sum_{j=0}^{K-\delta}
+ \frac{q_{j,\boldsymbol t}(k,l)}{n^j}
+ +\bigO\!\left(\frac{(1+k+l)^{d_K}}{n^{K-\delta+1}}\right)\right\},
+ \end{split}
+ \label{spf:cg:eq:coresector}
+\end{equation}
+with $\deg q_{j,\boldsymbol t}\le2j$ and some fixed exponent $d_K$. The
+precise value of $d_K$ is immaterial because the factorially weighted
+polynomial series is summable.
+
+\subsection{Resummation and the degree bound}
+Choose the logarithmic edge cutoff from \cref{spf:cg:lem:tail}. The actual
+constraint in the fixed-core sector is
+\[
+ k+l+e_{\rm core}\le L,
+\]
+not merely $k+l\le L$. Since $e_{\rm core}\le2K$ is fixed, this is only a
+bounded shift in the cutoff. For any fixed polynomial $q$, extending its
+factorially weighted sum from that range to all $k,l\ge0$ makes a
+superpolynomially small error. One direct bound groups by $m=k+l$:
+\[
+ \sum_{k+l=m}\frac{(2U)^{k+l}}{k!\,l!}(1+k+l)^d
+       =\frac{(4U)^m}{m!}(1+m)^d.
+\]
+Its tail from $C\log n-\bigO(1)$ has logarithm at most
+$-C\log n\log\log n+\bigO(\log n)$, so is smaller than every prescribed
+inverse power of $n$ eventually.
+
+The remainders in \eqref{spf:cg:eq:coresector} sum absolutely to
+$\bigO(n^{-K-1})$ because
+\[
+ \sum_{k,l\ge0}\frac{(2U)^{k+l}}{k!\,l!}(1+k+l)^{d_K}<\infty.
+\]
+Expand $q_{j,\boldsymbol t}$ in the falling-factorial basis
+$\fall ka\,\fall lb$. The exact Poisson summation identity is
+\begin{equation}
+ \sum_{k,l\ge0}\frac{2^{k+l}u^kv^l}{k!\,l!}\fall ka\,\fall lb
+       =e^{2u+2v}(2u)^a(2v)^b.
+ \label{spf:cg:eq:poissonsum}
+\end{equation}
+Hence the fixed-core order-$(\delta+j)$ contribution is $e^{2u+2v}$ times a
+rational polynomial of degree at most
+\[
+ e_{\rm core}+2j\le2\delta+2j.
+\]
+There are finitely many core vectors with $\delta\le K$.
+\Cref{spf:cg:lem:highdeficit} bounds all omitted deficits, and
+\cref{spf:cg:lem:tail} bounds all omitted selected-edge counts. Together
+these prove \eqref{spf:cg:eq:main}, uniformly for complex marks in the stated
+compact set. The empty core at leading order has one isolated-edge species
+of each colour on both sides. Its leading sum is exactly $e^{2u+2v}$, so
+$\mathfrak B_0=1$. This proves \cref{spf:cg:thm:main}.
+
+\subsection{Why finitely many moments suffice}
+The theorem's degree bound gives a finite extraction rule, not an extra
+hypothesis. Let $[n^{-j}]$ denote the coefficient in the proved expansion,
+and truncate a bivariate formal series to total marked degree at most $2j$.
+Then
+\begin{equation}
+ \mathfrak B_j(u,v)=\Bigl[e^{-2u-2v}\,[n^{-j}]\,G_n(u,v)\Bigr]_{\deg\le2j}.
+ \label{spf:cg:eq:finiteextract}
+\end{equation}
+The coefficients of $u^kv^l$ in $G_n$ are the mixed binomial moments.
+Moments through total degree $2j$ therefore determine every coefficient of
+$\mathfrak B_j$. Each such moment is obtained by the exact graph identity
+from graphs with at most $2j$ edges, and \cref{spf:cg:prop:mobius} computes
+every embedding polynomial. This supplies a second explicit finite
+construction besides expanding the occupancy matrices. It is computationally
+convenient at order two and remains finite at every fixed order.
+
+\section{Explicit mixed corrections and exact checks (Report 232)}
+\label{spf:cg:sec:coefficients}
+
+\subsection{The first correction by component sectors}
+Let $(r,s)=(1,R)$ with $R=2$ or $3$, and write
+$M_{k,l}=\E[\binom{X_n}{k}\binom{Y_n}{l}]$, $m=k+l$. The matching sector
+has source count
+\begin{equation}
+ \frac{n^m}{k!\,l!}\bigg[1-\frac1n\bigg\{
+ k+Rl+3\binom k2+3\binom l2+4kl\bigg\}
+ +\bigO\!\left(\frac{(1+m)^d}{n^2}\right)\bigg].
+ \label{spf:cg:eq:matchingcount}
+\end{equation}
+Here and below these expansions are uniform for $m\le C\log n$, with a
+fixed polynomial remainder as guaranteed by the packing lemma. The terms
+can also be read directly: a length-$d$ edge has $n-d$ placements; choosing
+distinct same-colour edges costs $\binom k2/n$; excluding incident
+same-colour pairs costs another $2\binom k2/n$; and cross-colour incidence
+costs $4kl/n$. Multiple exclusions affect only the next order. In the
+target count the linear boundary term is $Rk+l$.
+
+Multiply the two matching counts, the automorphism factor $2^mk!\,l!$, and
+the denominator expansion
+$n^{2m}/\fall n{2m}=1+m(2m-1)/n+\bigO((1+m)^4/n^2)$. The relative first
+coefficient in this sector simplifies to
+\begin{equation}
+ -(R-1)m-k^2-l^2-4kl.
+ \label{spf:cg:eq:matchingfirst}
+\end{equation}
+The only other deficit-one graphs are one two-edge path plus isolated
+edges. An $AA$ path contributes the relative coefficient $\binom k2$; a
+$BB$ path contributes $\binom l2$. A mixed $AB$ path has $4n+\bigO(1)$
+unlabelled source realizations and $4n+\bigO(1)$ target realizations, and
+contributes $4kl$. Triangles are incompatible by
+\cref{spf:cg:lem:coreedges}, so no further deficit-one term is missing.
+Combining with \eqref{spf:cg:eq:matchingfirst} gives
+\begin{equation}
+ M_{k,l}=\frac{2^m}{k!\,l!}
+ \left[1-\frac{Rm+\binom k2+\binom l2}{n}
+ +\bigO_{k,l}(n^{-2})\right].
+ \label{spf:cg:eq:momentfirst}
+\end{equation}
+This last display can be read for fixed $k,l$; the uniform resummation
+is supplied by \cref{spf:cg:sec:assembly}. Applying
+\eqref{spf:cg:eq:poissonsum} gives \eqref{spf:cg:eq:B1}.
+
+\subsection{An exact cross moment}
+For $R=2,3$ and $n\ge4$, the number of incident source $A,B$ edge pairs is
+\begin{equation}
+ \nu_{\mathrm{inc}}=4n-4R-2.
+ \label{spf:cg:eq:incidence}
+\end{equation}
+This follows by summing the four possible placements of a short edge at
+the endpoints of a long edge, with the boundary losses, or by a direct
+intersection count. The number of disjoint pairs is
+$\nu_{\mathrm{dis}}=(n-1)(n-R)-\nu_{\mathrm{inc}}$. An incident mixed path
+has automorphism count one and $\nu_{\mathrm{inc}}$ source and target
+realizations. A disjoint pair has automorphism count four and
+$\nu_{\mathrm{dis}}$ realizations on each side. Therefore
+\begin{equation}
+ \E[X_nY_n]=\frac{\nu_{\mathrm{inc}}^2}{\fall n3}+\frac{4\nu_{\mathrm{dis}}^2}{\fall n4}.
+ \label{spf:cg:eq:EXY}
+\end{equation}
+For the camel, $\nu_{\mathrm{inc}}=4n-14$, $\nu_{\mathrm{dis}}=n^2-8n+17$,
+and for $n\ge4$ this becomes
+\begin{equation}
+ \E[X_nY_n]=
+ \frac{4(n^4-12n^3+58n^2-139n+142)}{\fall n4}.
+ \label{spf:cg:eq:EXYcamel}
+\end{equation}
+Also $\E X_n=\E Y_n=2-6/n$, so
+\begin{equation}
+ \begin{split}
+ \operatorname{Cov}(X_n,Y_n)
+ &=\frac{4(2n^3-13n^2+7n+54)}{n^2(n-1)(n-2)(n-3)}\\
+ &=\frac8{n^2}-\frac4{n^3}+\bigO(n^{-4}).
+ \end{split}
+ \label{spf:cg:eq:covariance}
+\end{equation}
+The first-order expansion has no mixed term, yet the variables are not
+independent. Their covariance appears at second order.
+
+\subsection{The complete second polynomial}
+The degree bound $\deg\mathfrak B_2\le4$ reduces the computation to selected
+graphs with one through four edges. The exact catalogue has $83$
+source-realizable coloured types for $R=3$ and $87$ for $R=2$, including types
+whose target count is zero. To generate it without choosing a large arbitrary
+$n$, grow every connected selected edge set by adjoining an edge incident to
+its support, normalize its minimum coordinate to zero, and stop at four edges.
+Every connected graph has a connected edge ordering obtained from a spanning
+tree followed by its remaining edges, so this process is complete.
+Canonicalize the connected types and take all multisets with total edge
+count at most four. Disjoint translations realize every such multiset in
+a sufficiently large interval.
+
+For each type compute $N_S,N_T$ by \eqref{spf:cg:eq:mobius}. If $v=|V(H)|$,
+expand its denominator by
+\begin{equation}
+ \frac{n^v}{\fall nv}=1+\frac{\sigma_1(v)}n+
+ \frac{\sigma_1(v)^2+\sigma_2(v)}{2n^2}+\bigO(n^{-3}),
+ \label{spf:cg:eq:den2}
+\end{equation}
+where $\sigma_1(v)=v(v-1)/2$ and $\sigma_2(v)=v(v-1)(2v-1)/6$ (Report~232:
+$S_1$, $S_2$). Multiply
+$\operatorname{aut}(H)N_S(H;n)N_T(H;n)n^{-v}$ by this expression, retain
+orders through two, attach the colour monomial, and sum. Multiplication by
+the marked Taylor polynomial of $e^{-2u-2v}$ through degree four gives
+\eqref{spf:cg:eq:B2camel} and \eqref{spf:cg:eq:B2knight}. This is a finite
+rational calculation whose full graph-by-graph data are shipped in
+\path{data/07-coloured-gaps-fixtures-exact.json}.
+
+As compact checks on the coefficient extraction, \cref{spf:cg:tab:B2} lists
+every nonzero orbit of marked monomials under exchanging $u,v$. Its entries
+are coefficients of $\mathfrak B_2$.
+\begin{table}[htbp]
+\centering\small
+\begin{tabular}{lrr}
+\toprule
+Monomial or symmetric pair & Camel $R=3$ & Knight $R=2$\\
+\midrule
+$u^4,v^4$ &2&2\\
+$u^3,v^3$ &14&10\\
+$u^2,v^2$ &22&10\\
+$u^2v^2$ &8&8\\
+$u^2v,uv^2$ &12&4\\
+$uv$ &44&24\\
+\bottomrule
+\end{tabular}
+\caption{The nonzero coefficients of $\mathfrak B_{2,R}(u,v)$, one per orbit
+under $u\leftrightarrow v$ (Report~232's table).}
+\label{spf:cg:tab:B2}
+\end{table}
+The constant and pure linear coefficients vanish. Evaluating at
+$u=v=-1$ gives $48$ and $28$, respectively. The logarithms of the
+avoidance probabilities consequently satisfy
+\begin{equation}
+ \begin{split}
+ \log\bigl(A^{\mathrm{cg}}_{1,3}(n)/n!\bigr)&=-4+\frac8n+\frac{16}{n^2}+\bigO(n^{-3}),\\
+ \log\bigl(A^{\mathrm{cg}}_{1,2}(n)/n!\bigr)&=-4+\frac4n+\frac{20}{n^2}+\bigO(n^{-3}).
+ \end{split}
+ \label{spf:cg:eq:logavoid}
+\end{equation}
+
+\subsection{The mixed interaction missed by marginal multiplication}
+\label{spf:cg:sec:interaction}
+Let $G_n(u,0)G_n(0,v)$ be the product of the two marginal marked laws.
+Subtract its second correction polynomial from the actual $\mathfrak B_2$.
+The results are
+\begin{equation}
+ \begin{split}
+ \Delta_3(u,v)&=4u^2v^2+8uv,\\
+ \Delta_2(u,v)&=4u^2v^2-4u^2v-4uv^2+8uv.
+ \end{split}
+ \label{spf:cg:eq:interaction}
+\end{equation}
+The alternating square in \eqref{spf:cg:eq:squareterm} supplies the
+$4u^2v^2$ term. The remaining terms come from mixed component and exclusion
+interactions. It would therefore also be wrong to ascribe the whole
+second-order discrepancy solely to the square.
+
+For camel marginal avoidance, the first two coefficients are $4$ and $10$.
+Their product predicts $10+10+4^2=36$, whereas the actual joint coefficient
+is $48$, a difference of $12$. For knight they are $2$ and $2$; their
+product predicts $2+2+2^2=8$, whereas the actual coefficient is $28$, a
+difference of $20$. These are two instances of one coloured-gap theorem,
+with genuinely different mixed corrections. [Note of the batch-101 write:
+the marginal pairs $4,10$ and $2,2$ are Part~I's $c^{(2)}_1,c^{(2)}_2$ at
+offsets $(1,3)$ and $(1,2)$ (\cref{spf:cg:rem:marginals}). The write
+recomputed $\Delta_3$ and $\Delta_2$ from \eqref{spf:cg:eq:B1},
+\eqref{spf:cg:eq:B2camel}, \eqref{spf:cg:eq:B2knight} and
+\eqref{spf:eq:B2-absolute}, and the values $48$, $28$, $16$, $20$, by hand.]
+
+\subsection{Independent finite enumeration and the threshold warning}
+The checker separately enumerates all permutations for every $n=4,\ldots,9$
+and both $R=2,3$. It records the complete distribution of $(X_n,Y_n)$ and
+computes every mixed binomial moment through degree four. A different
+computation enumerates selected source-edge subsets and uses
+\eqref{spf:cg:eq:unlabelled} with actual finite-$n$ subgraph counts. All
+these moments agree. This test uses no eventual polynomial below its
+threshold. At $n=9$ the avoidance counts are $19480$ for knight and $22854$
+for camel.
+
+The camel fourth falling-factorial moment illustrates why this distinction
+is necessary. At $n=9$ direct enumeration gives
+\begin{equation}
+ 9!\,\E\fall{(X_9+Y_9)}4=12829728,
+ \label{spf:cg:eq:counterexample}
+\end{equation}
+while evaluating the eventual graph-polynomial expression at $9$ gives
+$13044000$, a discrepancy of $-214272$. Its safe validity threshold is
+$n\ge12$, so this is neither a contradiction nor a negligible rounding
+error. It is a concrete counterexample to an all-$n$ reading of that
+certificate. Knight's fourth-moment certificate is already valid at $9$,
+which exceeds its safe threshold $8$.
+
+The source and target embedding polynomials are also checked by direct
+selected-edge enumeration at their safe threshold, the next integer, and
+$n=16$. At the threshold some types can have zero realizations; at $16$
+every catalogue type occurs. The independent packing tests compare the
+occupancy scan with direct enumeration of disjoint translated placements
+for two dictionaries, $n=0,\ldots,9$, and all terms through four polymers.
+The dictionaries include equal supports with distinct species, distinct
+species of a common type, interlacing supports, and right-boundary cases.
+These finite checks target the proof mechanisms but do not replace their
+general proofs.
+
+\section{Controlled finite-model inverses for the coloured-gap counts (Report 232)}
+\label{spf:cg:sec:coloured-inverses}
+
+This section is a consequence of the all-fixed-order coloured-gap expansion.
+It does not posit a differentiable interpolation of the counting sequence.
+All comparisons with that sequence are made at integer arguments.
+The Lambert $W$ function and Stirling--Newton inversion are standard tools;
+no priority claim for those methods, or global historical priority for this
+specialization, is intended. [Note of the batch-101 write: the apparatus is
+Part~I's (\cref{spf:sec:inverse}, Remark~\ref{spf:rem:inverse-apparatus}), an
+instance of the transseries volume's gamma-carrier inversion and staircase
+theorem~\cite{tai}; the coordinates below are Part~I's with $\log y$ shifted
+by $4$ (\cref{spf:cg:tab:dictionary}).]
+
+\subsection{Input, logarithmic coefficients, and eventual monotonicity}
+
+Let $A(n)$ denote either $\mathrm{A189358}(n)$ (camel) or
+$\mathrm{A137774}(n)$ (knight). The previously proved expansion says that for
+every fixed $K\geq0$,
+\begin{equation}
+ A(n)=e^{-4}\Gamma(n+1)
+ \left(C_K(1/n)+\bigO_K(n^{-K-1})\right),\qquad
+ C_K(t)=1+\sum_{j=1}^Kc_jt^j.
+ \label{spf:cg:inv:input}
+\end{equation}
+The coefficients are consistent as $K$ varies and are computable by the
+finite coloured-core construction. In particular,
+\[
+ (c_1,c_2)=
+ \begin{cases}(8,48),&\text{camel},\\(4,28),&\text{knight}.
+ \end{cases}
+\]
+The logarithmic coefficients $\ell_j$ are determined, as in Part~I's
+\eqref{spf:eq:log-recursion}, by
+\[
+ \log\left(1+\sum_{j\geq1}c_jt^j\right)=\sum_{j\geq1}\ell_jt^j,
+ \qquad
+ \ell_j=c_j-\frac1j\sum_{i=1}^{j-1}i\,\ell_i\,c_{j-i}.
+\]
+Thus $(\ell_1,\ell_2)=(8,16)$ for camel and $(4,20)$ for knight.
+Since $A(n)/n!\to e^{-4}>0$, the counts are positive eventually, tend to
+infinity, and
+\[
+ \frac{A(n+1)}{A(n)}=(n+1)
+ \frac{A(n+1)/(n+1)!}{A(n)/n!}\sim n+1.
+\]
+Consequently $A(n)$ is strictly increasing eventually. This proof needs no
+interpolation or differentiation. The second-order expansion also gives
+\[
+ \frac{A(n+1)}{A(n)}=n+1-\frac{c_1}{n}+\bigO(n^{-2}).
+\]
+Indeed the difference of the two logarithmic expansions is
+$-c_1n^{-2}+\bigO(n^{-3})$; an uncontrolled derivative of a remainder has not
+been taken.
+
+Define the upper threshold by
+\[
+ N(y)=\min\{n\geq0:A(n)\geq y\}.
+\]
+For large $y$, this threshold lies in the strictly increasing tail. Any
+finitely many exceptional initial terms are excluded by taking $y$ above
+their maximum. Equalities at $A(n)=y$ are included in this definition.
+
+\subsection{Finite smooth model and a threshold-envelope theorem}
+
+For a fixed $K$, set $p=K+1$ and define, on a sufficiently large real
+half-line,
+\begin{equation}
+ \mathcal F_K(x)=\log\Gamma(x+1)-4+\log C_K(1/x).
+ \label{spf:cg:inv:finite-model}
+\end{equation}
+Here $C_K(1/x)>0$ eventually because it tends to $1$. The logarithm is the
+real logarithm. Direct differentiation of this explicitly given function
+and standard gamma-function estimates give
+\begin{align*}
+ \mathcal F_K'(x)&=\psi(x+1)-\frac{C_K'(1/x)}{x^2C_K(1/x)}
+             =\log x+\bigO(x^{-1}),\\
+ \mathcal F_K''(x)&=\psi'(x+1)+\frac{2C_K'(1/x)}{x^3C_K(1/x)}
+ +\frac{C_K''(1/x)}{x^4C_K(1/x)}
+ -\frac{C_K'(1/x)^2}{x^4C_K(1/x)^2}
+             =x^{-1}+\bigO(x^{-2}).
+\end{align*}
+In particular, $\mathcal F_K$ is eventually increasing and convex, tends to
+infinity, and has a unique inverse $\xi_K(y)$ there, defined by
+$\mathcal F_K(\xi_K(y))=\log y$.
+
+\begin{theorem}[Threshold envelope; Report~232]
+\label[theorem]{spf:cg:thm:envelope}
+There exist $C_K>0$ and $n_K$ such that
+\begin{equation}
+ |\log A(n)-\mathcal F_K(n)|\leq C_K n^{-p}\qquad(n\geq n_K).
+ \label{spf:cg:inv:integer-log-error}
+\end{equation}
+After enlarging the real lower endpoint if needed, the functions
+$\mathcal F_K(x)+C_Kx^{-p}$ and $\mathcal F_K(x)-C_Kx^{-p}$ are both strictly
+increasing. Let $\xi_K^-(y)$ and $\xi_K^+(y)$ be their respective inverse
+roots:
+\[
+ \mathcal F_K(\xi_K^-)+C_K(\xi_K^-)^{-p}=\log y,
+ \qquad
+ \mathcal F_K(\xi_K^+)-C_K(\xi_K^+)^{-p}=\log y.
+\]
+Then, for all sufficiently large $y$,
+\begin{equation}
+ \lceil \xi_K^-(y)\rceil\leq N(y)\leq\lceil \xi_K^+(y)\rceil.
+ \label{spf:cg:inv:threshold-exact-envelope}
+\end{equation}
+Moreover,
+\begin{equation}
+ \xi_K^{\pm}(y)=\xi_K(y)\pm
+ \frac{C_K\xi_K(y)^{-p}}{\mathcal F_K'(\xi_K(y))}\,(1+\smallo(1)).
+ \label{spf:cg:inv:root-displacements}
+\end{equation}
+Consequently, for some $D_K>0$ and every sufficiently large $y$,
+\begin{equation}
+ \left\lceil \xi_K(y)-D_K\frac{\xi_K(y)^{-p}}{\log \xi_K(y)}\right\rceil
+ \leq N(y)\leq
+ \left\lceil \xi_K(y)+D_K\frac{\xi_K(y)^{-p}}{\log \xi_K(y)}\right\rceil.
+ \label{spf:cg:inv:threshold-simple-envelope}
+\end{equation}
+\end{theorem}
+\begin{proof}
+Since $C_K(1/n)\to1$, taking the logarithm in \eqref{spf:cg:inv:input} proves
+\eqref{spf:cg:inv:integer-log-error}. The envelope derivatives differ from
+$\mathcal F_K'$ by only $\bigO(x^{-p-1})$, so both envelopes eventually
+increase. If an integer $n<\lceil\xi_K^-\rceil$, then $n<\xi_K^-$ and
+$\log A(n)\leq\mathcal F_K(n)+C_Kn^{-p}<\log y$, whenever $n$ is in the tail.
+The finitely many preceding indices are excluded by the choice of $y$.
+At $m=\lceil\xi_K^+\rceil$, instead,
+$\log A(m)\geq\mathcal F_K(m)-C_Km^{-p}\geq\log y$.
+These facts prove \eqref{spf:cg:inv:threshold-exact-envelope}, including its
+endpoint convention. The mean-value theorem, $\mathcal F_K'\sim\log x$, and
+then local comparison with $\xi_K$ give \eqref{spf:cg:inv:root-displacements}
+and \eqref{spf:cg:inv:threshold-simple-envelope}. For example, evaluating
+either envelope at $\xi_K\pm A'\xi_K^{-p}/\log\xi_K$, with $A'>C_K$ fixed,
+first traps its root in that interval and then permits the stated asymptotic
+evaluation.
+\end{proof}
+[Note of the batch-101 write: \eqref{spf:cg:inv:threshold-simple-envelope}
+is the bracket of Part~VI's \cref{spf:fd:thm:bracket} for these counts, and
+\eqref{spf:cg:inv:threshold-exact-envelope} its sharper form with explicit
+envelope roots; both are instances of \texttt{p0:thm:staircase}~\cite{tai}.
+In the lower-bound step, ``$n$ in the tail'' must include that the envelope
+$\mathcal F_K+C_Kx^{-p}$ is increasing on $[n,\xi_K^-]$, which the choice of
+the lower endpoint provides.]
+
+The constants and sequence onset in this theorem are not numerically
+certified by the present argument. The all-order proof supplies existence
+of remainder bounds; this section has not evaluated those constants or the
+associated onset. Thus these are eventual rigorous envelopes, not a claim
+that a particular finite $y$ has certified rounding merely because it is
+large in a numerical experiment. This is an absence of an explicit onset
+certificate, not a claim that effective constants cannot in principle be
+extracted from the finite proof.
+
+\subsection{Lambert--Newton inversion to any fixed order}
+
+Put
+\begin{equation}
+ \tilde L=\log y+4,\qquad
+ \tilde z=\frac{\tilde L}{W_0(\tilde L/e)},\qquad \tilde w=\log\tilde z.
+ \label{spf:cg:inv:W-seed}
+\end{equation}
+For large $y$, $\tilde L>0$ and $W_0$ is the positive real branch. Its
+defining identity gives the exact equation $\tilde z(\log\tilde z-1)=\tilde L$.
+Stirling's formula gives
+\[
+ \mathcal F_K(\tilde z)-\log y=\tfrac12\log(2\pi\tilde z)+\bigO(\tilde z^{-1}),
+ \qquad \xi_K(y)=\tilde z-\tfrac12+\bigO(\tilde w^{-1}).
+\]
+In particular, $\xi_K(y)=\tilde z+\bigO(1)$, and eventually
+$\tilde z-1<\xi_K(y)<\tilde z$. Define the fully specified finite iteration
+\begin{equation}
+ x_0=\tilde z,\qquad
+ x_{j+1}=x_j-
+ \frac{\log\Gamma(x_j+1)-4+\log C_K(1/x_j)-\log y}
+ {\psi(x_j+1)-C_K'(1/x_j)/(x_j^2C_K(1/x_j))}.
+ \label{spf:cg:inv:Newton}
+\end{equation}
+
+\begin{proposition}[Newton iteration; Report~232]
+\label[proposition]{spf:cg:prop:newton}
+For every fixed number $m$ of iterations,
+\begin{equation}
+ 0\leq x_m-\xi_K(y)
+ =\bigO_{K,m}\left((\tilde z\tilde w)^{-(2^m-1)}\right).
+ \label{spf:cg:inv:Newton-error}
+\end{equation}
+\end{proposition}
+\begin{proof}
+For all large $\tilde z$, the model is increasing and convex on
+$[\tilde z-1,\tilde z]$, with $\mathcal F_K'\geq\tilde w/2$ and
+$0<\mathcal F_K''\leq2/\tilde z$ there. Convexity implies
+$\xi_K\leq x_{j+1}\leq x_j\leq\tilde z$ for a Newton step starting above the
+root. Taylor's theorem at $x_j$, with a point $\eta_j$ between $\xi_K$ and
+$x_j$, then gives
+\[
+ x_{j+1}-\xi_K=
+ \frac{\mathcal F_K''(\eta_j)}{2\mathcal F_K'(x_j)}(x_j-\xi_K)^2
+ \leq \frac{2}{\tilde z\tilde w}(x_j-\xi_K)^2.
+\]
+The initial error is at most $1$, so induction even yields
+\begin{equation}
+ 0\leq x_m-\xi_K(y)\leq
+ \left(\frac{2}{\tilde z\tilde w}\right)^{2^m-1}
+ \label{spf:cg:inv:Newton-explicit-bound}
+\end{equation}
+whenever the stated interval bounds hold. This proves
+\eqref{spf:cg:inv:Newton-error}.
+\end{proof}
+
+Taking
+\[
+ m\geq\left\lceil\log_2(K+2)\right\rceil
+\]
+makes the Newton error $\bigO_K(\tilde z^{-K-1}/\log\tilde z)$, no larger in
+asymptotic order than the counting-expansion uncertainty. Thus a finite
+number of standard special-function evaluations gives an all-fixed-order
+inverse centre. Combining \eqref{spf:cg:inv:threshold-simple-envelope} with the
+Newton estimate, for a suitable $E_K>0$ one obtains
+\begin{equation}
+ \left\lceil x_m-E_K\frac{\tilde z^{-K-1}}{\log\tilde z}\right\rceil
+ \leq N(y)\leq
+ \left\lceil x_m+E_K\frac{\tilde z^{-K-1}}{\log\tilde z}\right\rceil
+ \label{spf:cg:inv:Newton-threshold}
+\end{equation}
+for all sufficiently large $y$. If fewer iterations are used, add
+$\bigO_{K,m}((\tilde z\log\tilde z)^{-(2^m-1)})$ to the envelope radius.
+
+\subsection{An effective Newton certificate for the displayed quadratic models}
+
+\begin{proposition}[Effective model bounds; Report~232]
+\label[proposition]{spf:cg:prop:effective}
+For $C_2(t)=1+8t+48t^2$ or $C_2(t)=1+4t+28t^2$, all the interval conditions
+in the proof of \cref{spf:cg:prop:newton} hold for every real
+$\tilde z\geq32$. Consequently \eqref{spf:cg:inv:Newton-explicit-bound} is
+then an effective bound for the exact finite-model root. The same bounds
+cover the truncations $C_0$ and $C_1$ of these two polynomials.
+\end{proposition}
+This certifies the finite models themselves, separately from the
+unevaluated counting remainder.
+\begin{proof}
+Write $C_2(1/x)=q(x)=1+a/x+b/x^2$ with $0\leq a\leq8$, $0\leq b\leq48$.
+For $x\geq31$, the standard positive real Stirling and digamma bounds give
+\[
+ 0<\log\Gamma(x+1)-x\log x+x-\tfrac12\log(2\pi x)<\frac1{12x},
+ \qquad \psi(x+1)\geq\log x.
+\]
+Also $0<\psi'(x+1)=\sum_{j\geq1}(x+j)^{-2}\leq1/x$.
+The numerator of $(\log q)''$ is
+\[
+ q''q-(q')^2=2ax^{-3}+(a^2+6b)x^{-4}+4abx^{-5}+2b^2x^{-6}\geq0.
+\]
+It follows that on $[\tilde z-1,\tilde z]$,
+\begin{align*}
+ \mathcal F_2'(x)&\geq\log x-8x^{-2}-96x^{-3}\geq\tilde w/2,\\
+ 0<\mathcal F_2''(x)&\leq x^{-1}+16x^{-3}+288x^{-4}\leq2/\tilde z.
+\end{align*}
+The last inequalities follow by replacing $x$ by $\tilde z-1\geq31$ and using
+$\tilde z/(\tilde z-1)\leq32/31$; all remaining rational errors decrease with
+$\tilde z$. At $x=\tilde z$, $\mathcal F_2(\tilde z)-\log y>0$. With
+$x_-=\tilde z-1\geq31$, the opposite endpoint satisfies
+\[
+ \mathcal F_2(x_-)-\log y
+ \leq-\tfrac12\log\frac{x_-}{2\pi}+\frac{97}{12x_-}+\frac{48}{x_-^2}<0.
+\]
+The right side decreases with $x_-$ and is negative at $31$: indeed
+$31/(2\pi)>4>e$, and $97/(12\cdot31)+48/31^2<1/2$.
+This proves the bracket and all claimed effective model bounds.
+No bound on the actual counting error has been inserted into this argument.
+\end{proof}
+[Note of the batch-101 write: the intake checked the two endpoint estimates
+and the derivative bounds by hand. In the first displayed bound,
+$C_2'(1/x)/(x^2C_2(1/x))\le(a+2b/x)x^{-2}\le8x^{-2}+96x^{-3}$; in the second,
+the three correction terms of $\mathcal F_2''$ are bounded by
+$2(a+2b/x)x^{-3}+2bx^{-4}$, since $q\ge1$ and the last term is negative.]
+
+\subsection{Explicit Lambert corrections}
+
+For the second-order models define
+\[
+ \tilde t=\frac{\log(2\pi\tilde z)}{2\tilde w},\qquad
+ a_1=c_1+\frac1{12},\qquad a_2=c_2-\frac{c_1^2}{2},\qquad
+ \tilde B=a_1+\frac{\tilde t^2-\tilde t}{2}.
+\]
+[Note of the batch-101 write: $a_1$ and $a_2$ are Part~I's logarithmic
+coefficients \eqref{spf:eq:a-coeff} for these counts (Report~232: $b_1$,
+$b_2$).]
+
+\begin{proposition}[Second-order inverse; Report~232]
+\label[proposition]{spf:cg:prop:second-inverse}
+\begin{equation}
+ \boxed{\begin{aligned}
+ \xi_2(y)={}&\tilde z-\tilde t-\frac{\tilde B}{\tilde z\tilde w}\\
+ &-\frac{a_2+a_1\tilde t+\tilde t^3/6-\tilde t^2/4+(\tilde t-1/2)\tilde B/\tilde w}{\tilde z^2\tilde w}
+ +\bigO\left(\frac{\tilde z^{-3}}{\tilde w}\right).
+ \end{aligned}}
+ \label{spf:cg:inv:explicit-second-inverse}
+\end{equation}
+The parameters are
+\[
+ (a_1,a_2)=
+ \begin{cases}(97/12,16),&\text{camel},\\(49/12,20),&\text{knight}.
+ \end{cases}
+\]
+\end{proposition}
+In particular the familiar common correction
+$-\tilde t=-1/2-\log(2\pi)/(2\log\tilde z)$ precedes the coloured-gap
+corrections. For the actual integer threshold, replace $\xi_2$ in
+\eqref{spf:cg:inv:threshold-simple-envelope} by the displayed expression
+without its remainder and enlarge the envelope constant. Two Newton steps
+from $\tilde z$ give another centre with the same $\bigO(\tilde z^{-3}/\tilde w)$
+counting precision.
+
+\begin{proof}[Derivation]
+Set $f(x)=x\log x-x$. Stirling and the explicit logarithm of $C_2$ give
+\[
+ \mathcal F_2(x)+4=f(x)+\tfrac12\log(2\pi x)+a_1x^{-1}+a_2x^{-2}+\bigO(x^{-3}).
+\]
+Substitute $x=\tilde z+D$ and $D=d_0+d_1/\tilde z+d_2/\tilde z^2$ into
+$\mathcal F_2(x)=\log y$, using $f(\tilde z)=\tilde L$. The coefficients of
+$1,\tilde z^{-1},\tilde z^{-2}$ are respectively
+\begin{align*}
+ &\tilde wd_0+\tilde w\tilde t,\\
+ &\tilde wd_1+(d_0^2+d_0)/2+a_1,\\
+ &\tilde wd_2+(d_0+1/2)d_1-d_0^3/6-d_0^2/4-a_1d_0+a_2.
+\end{align*}
+Their vanishing yields $d_0=-\tilde t$, $d_1=-\tilde B/\tilde w$, and the
+displayed $d_2$. The substitution residual is $\bigO(\tilde z^{-3})$,
+uniformly for the actual $\tilde t=1/2+\log(2\pi)/(2\tilde w)$, whose value
+is bounded. Since $\mathcal F_2'\asymp\tilde w$, the mean-value theorem turns
+that residual into $\bigO(\tilde z^{-3}/\tilde w)$ root error.
+\end{proof}
+
+The same calculation provides an explicit recurrence at every fixed order.
+Let $a_j$ be Part~I's coefficients \eqref{spf:eq:a-coeff} for these counts,
+$a_j=\ell_j+s_j$ with $s_{2r-1}=\mathcal B_{2r}/(2r(2r-1))$, $s_{2r}=0$ and
+$\mathcal B_{2r}$ a Bernoulli number (Report~232: $\beta_j=d_j+s_j$). Use the
+formal variable $\varsigma=1/\tilde z$, set $D(\varsigma)=\sum_{j=0}^Kd_j\varsigma^j$,
+and cancel successive coefficients through $\varsigma^K$ in
+\begin{equation}
+ \tilde w(D+\tilde t)+
+ \sum_{\rho=2}^{K+1}\frac{(-1)^\rho D^\rho\varsigma^{\rho-1}}{\rho(\rho-1)}
+ +\frac12\log(1+\varsigma D)
+ +\sum_{j=1}^Ka_j\varsigma^j(1+\varsigma D)^{-j}.
+ \label{spf:cg:inv:all-order-formal}
+\end{equation}
+Terms above degree $K$ are discarded. The coefficient at degree $j$ is
+$\tilde wd_j$ plus an expression depending only on earlier $d_i$, so the
+recurrence is finite and unique. For $j\geq1$, the resulting $d_j$ are
+bounded $\bigO_K(1/\tilde w)$ as $\tilde z\to\infty$, whereas
+$d_0=-\tilde t=\bigO(1)$. The same residual argument proves
+\[
+ \xi_K(y)=\tilde z+\sum_{j=0}^K\frac{d_j(\tilde w)}{\tilde z^j}
+           +\bigO_K\left(\frac{\tilde z^{-K-1}}{\tilde w}\right).
+\]
+When $K=0$, the sum over $\rho$ and the sum over $j$ in
+\eqref{spf:cg:inv:all-order-formal} are empty and its constant coefficient still
+correctly gives $d_0=-\tilde t$. Only the established $c_j$ through order $K$
+are needed. Expanding $\log C_2$ beyond second order does not establish the
+third coefficient of the counting sequence. [Note of the batch-101 write:
+this is Part~I's recursion \eqref{spf:eq:inverse-recursion} in the shifted
+coordinates; there $\kappa_\theta$ carries the constant $\frac12\log(2\pi)$,
+here $\tilde t$ does.]
+
+\subsection{Rounding and the distinction between a root and a staircase}
+
+Suppose a centre $\vartheta(y)$ has been proved to satisfy an envelope
+\[
+ \lceil \vartheta(y)-\varepsilon(y)\rceil\leq N(y)
+ \leq\lceil \vartheta(y)+\varepsilon(y)\rceil,
+ \qquad \varepsilon(y)\longrightarrow0.
+\]
+If $\operatorname{dist}(\vartheta(y),\mathbb Z)>\varepsilon(y)$, both ceilings
+coincide and $N(y)=\lceil \vartheta(y)\rceil$. If $2\varepsilon(y)<1$, the two
+endpoints differ by at most one, so at most two adjacent threshold values
+remain. Close to an integer, an exact evaluation of $A(n)$ or an effective
+one-sided remainder bound is needed to resolve the ambiguity.
+In particular an assertion of unqualified eventual exact rounding of the
+centre is not supplied by a big-$\mathrm O$ root error. Nor is
+$N(y)=\xi_K(y)+\smallo(1)$ valid uniformly for all large real $y$: the
+threshold is an integer-valued staircase. The inequalities above retain the
+essential integer convention.
+
+At the special level $y=A(n)$, one does have
+$\xi_K(A(n))=n+\bigO_K(n^{-K-1}/\log n)$, by
+\eqref{spf:cg:inv:integer-log-error} and the mean-value theorem. This useful
+inverse-at-the-data statement should not be confused with a uniform
+noninteger interpolation of $N(y)$.
+
+For comparison, the two counting expansions imply
+\[
+ \frac{A^{\rm camel}(n)}{A^{\rm knight}(n)}
+ =1+\frac4n+\frac4{n^2}+\bigO(n^{-3}),
+\]
+so eventually $A^{\rm camel}(n)>A^{\rm knight}(n)$ and
+$A^{\rm camel}(n)<A^{\rm knight}(n+1)$. Thus, at every sufficiently large
+level $y$, $N_{\rm camel}(y)\leq N_{\rm knight}(y)\leq N_{\rm camel}(y)+1$.
+This also follows directly at integer indices and makes no smoothness
+assumption about either sequence.
+
+\paragraph{Source boundary and reproducibility.}
+The only sequence-specific input is the independently audited coloured-core
+expansion. Standard special-function facts used here are the defining
+Lambert identity and the positive-real Stirling/digamma expansions and
+bounds; see the DLMF~\cite{dlmfW,dlmfGamma,cgDlmfPsi}. Those sources do not
+provide the coloured-gap inverse theorem. The accompanying script verifies
+the inverse algebra by exact symbolic arithmetic, checks the finite-model
+Newton bound numerically at high precision, and independently enumerates
+small avoidance counts. Numerical tests are consistency checks, not a
+substitute for the analytic remainder or an effective sequence onset.
+
+\section{Literature comparison and scope of the result (Report 232)}
+\label{spf:cg:sec:literature}
+
+\subsection{Leading limits and earlier corrections}
+The leading $e^{-4}$ limits for the two chess-piece permutation counts are
+classical. Kot\v e\v sovec's sixth-edition compilation gives the general
+finite-leaper leading-limit discussion on printed pages 622--624, tables
+including A137774 and A189358 on page 636, probability plots on page 637,
+and successive-ratio plots on page 638~\cite{cgKotesovec}. Those passages
+support the leading equivalences; they do not display the two correction
+polynomials proved here. The book's separate treatment of unrestricted
+leaper placements on pages 685--686 concerns a different model from a
+permutation with exactly one point in every row and column.
+
+Aspvall and Liang's \emph{Dinner Table Problem}~\cite{cgAspvall} is a
+particularly important antecedent. Part~I, printed pages 5--6, gives
+higher-order corrections for its original circular adjacency problem,
+derived from a recurrence and also accessible from its exact block formula.
+Higher-order Poisson corrections for permutation adjacency problems are
+therefore not a new general idea. Part~II, printed pages 7--12, proves a
+Poisson limit under factorial-moment bounds; its concluding estimate on
+page~10 is additive $\bigO(1/n)$. It does not by itself supply the
+arbitrary-order compact-complex remainder for the simultaneous swapped-gap
+model in \eqref{spf:cg:eq:model}. [Parts~I and~II here are those of
+Aspvall and Liang's report, not of this one.]
+
+Mendelsohn's 1956 paper~\cite{fdMendelsohn} develops asymptotic-series
+machinery for permutation restrictions, including a relative-position
+example. Its operator-recurrence framework in Section~5 requires a
+fixed-length constant-coefficient polynomial-in-shift recurrence; the
+subsequent coefficient calculation explicitly assumes existence of the
+complete asymptotic series. No such recurrence for the present counts is
+assumed or established here. The present proof supplies the existence and
+uniform remainder directly from finite cores and finite-range packings.
+[Note of the batch-101 write: Report~83 reads the same paper the same way;
+see \cref{spf:fd:sec:literature}.]
+
+\subsection{Which static-board results apply directly}
+Flajolet and Sedgewick's Proposition~V.11~\cite{cgFS}, in the discussion on
+pages 369--373, gives a leading Poisson limit for fixed forbidden
+exceedances $\pi(i)-i$. The finite occupancy-mask transfer construction on
+pages 370--371 is methodological prior art and is credited as such.
+Their Note~V.51 discusses succession gaps and broader forbidden gap sets.
+The source restrictions in the present problem concern \emph{two}
+permutation entries at a time and their difference; they are not fixed
+forbidden positions in a static permutation board.
+
+Similarly, Godsil and McKay~\cite{cgGodsil} develop sophisticated sparse
+subgraph asymptotics, including small-cycle corrections, for Latin
+rectangles using fixed forbidden-position bipartite graphs and rook
+polynomials. The conceptual use of small subgraphs is classical. Their
+static-board formula cannot simply be applied by calling the present
+selected-event graph a forbidden-position board: its edges constrain pairs
+of images. The exact two-sided product $i_S(H)i_T(H)$ in
+\eqref{spf:cg:eq:identity} records that difference.
+
+For the knight sequence, Bagno, Eisenberg, Reches and Sigron~\cite{cgBagno}
+identify the no-separator permutation objects and derive expectation
+results. Their Theorem~6.1 gives a generating function for one separator
+direction, equivalently one marginal orientation. It does not state the
+joint all-orders avoidance expansion of both reciprocal constraints.
+General mod-Poisson approximation schemes such as~\cite{cgModPoisson}
+provide broader approximation methodology under suitable residue-control
+hypotheses. They do not remove the need to prove the fixed-parameter
+$n^{-j}$ residue expansion in this particular coloured model.
+
+\subsection{A bounded comparison rather than a priority claim}
+The mathematical result established here is the two-sided reciprocal
+coloured finite-core expansion, its uniform factorial-scale summation
+bound, and the explicit mixed and cycle corrections for the two named
+sequences. Graph inclusion--exclusion, partition-lattice inversion,
+finite-state transfer matrices, analytic perturbation, and Poisson
+correction polynomials are standard tools. They are not claimed as
+inventions of this report.
+
+The inspected sources do not give the theorem in the form proved here.
+That is a bounded source comparison, not a proof that no equivalent theorem
+exists elsewhere. In particular, finding only the leading equivalent on an
+OEIS entry does not establish novelty, and renaming a model or changing
+one gap would not establish a new theorem. The reason to treat the present
+family separately from a one-source/one-target forest calculation is the
+simultaneous coloured structure and its compatible cyclic components.
+External peer review remains appropriate for any publication claim.
+[Note of the batch-101 write: the one-source/one-target forest calculation
+is Parts~I--IV of this report, whose marginal statements
+\cref{spf:cg:thm:main} reproduces (\cref{spf:cg:rem:marginals}).]
+
+\section{Reproducibility and certificate design (Report 232)}
+\label{spf:cg:sec:repro}
+
+\subsection{Contents and exact arithmetic}
+The companion archive is a complete source package. Its principal files are
+\begin{itemize}
+ \item \texttt{report.tex}, the single-file editable manuscript source;
+ \item \texttt{certificates.py}, the standard-library exact graph, moment,
+       catalogue, and packing checks;
+ \item \texttt{inverse\_checks.py}, exact inverse algebra and clearly labelled
+       high-precision finite-model diagnostics;
+ \item \texttt{build.py}, the deterministic full builder with guarded output;
+ \item \texttt{guard\_tests.py}, adversarial output-path and mutation checks;
+ \item \texttt{fixtures/exact.json} and \texttt{fixtures/inverse.json}, the
+       full expected outputs, regenerated and byte-compared during a build;
+ \item \texttt{Report232.pdf}, the compiled report, and a digest manifest.
+\end{itemize}
+[Note of the batch-101 write: here the four programs are shipped in
+\path{code/} and the two fixtures in \path{data/}, each with the prefix
+\path{07-coloured-gaps-} (the fixtures with \path{fixtures-} after the
+prefix); \texttt{report.tex}, the
+PDF, the delivered README and the digest manifest are not shipped. The
+report README says how to rerun the programs.] The graph certificates use ascending arrays of rational
+coefficients, encoded as integers or strings such as \texttt{5/2}; there is
+no expression parser or arbitrary evaluation of fixture contents. Graph
+labels in the machine files use colours $0,1$ for $A,B$. Every graph row
+includes the canonical component list, automorphism order, and source and
+target unlabelled embedding polynomials. The safe polynomial threshold is
+stored at model level and stated in this report.
+
+The checker reconstructs the catalogue and every polynomial from scratch,
+then verifies the full $\mathfrak B_1,\mathfrak B_2$, the independent
+permutation distributions, and the counterexample
+\eqref{spf:cg:eq:counterexample}. Stored fixtures are expected outputs, not
+computational inputs to the mathematical routines. All graph and packing
+arithmetic is exact. The inverse checker uses exact symbolic arithmetic for
+coefficient identities and separately uses 100-digit floating arithmetic for
+model roots. Its freely chosen higher-order method fixture exercises the
+formal inverse recurrence; it does not assert any uncomputed third or fourth
+coefficient of the counting sequence.
+
+\subsection{Running the build}
+The full build requires Python 3.11 or later, SymPy, mpmath, pdfLaTeX, and
+the ordinary LaTeX packages listed at the start of \texttt{report.tex}.
+No network access is used. From an extracted source package, run
+\begin{quote}
+\verb|python3 -B build.py --output /absolute/path/to/new-directory|
+\end{quote}
+The output directory must not exist, even as a dangling symlink. The builder
+rejects targets inside the source tree, targets whose parents cross a
+symlink, and existing targets. It uses exclusive creation after validation,
+so it never silently reuses a previous output directory. It snapshots the
+complete regular-file inventory and verifies the files' bytes after the
+build. Intermediate TeX files and regenerated fixtures are written in a
+separate temporary workspace. The output directory contains the PDF, the
+source ZIP, the flattened manuscript, the two regenerated fixtures, and an
+external build receipt.
+
+All Python guard checks are explicit exceptions rather than
+\texttt{assert} statements, so optimization does not disable them. Every
+child Python invocation includes \texttt{-B}, and optimized parent runs
+also pass \texttt{-O}. The decimal integer-string limit is set to 640.
+No bytecode cache is written. The package uses fixed ZIP timestamps and
+member order, fixed TeX metadata, and no volatile build-time text in the
+PDF. The build receipt records the environment separately, so it does not
+change the mathematical artifacts. [Note of the batch-101 write: the build
+needs the delivered layout (\texttt{report.tex}, \texttt{README.md},
+\texttt{SHA256SUMS} and \texttt{fixtures/} beside the scripts) and so runs
+only from a re-extraction of the archive in its arrival commit; the report
+README says so.]
+
+\subsection{What a successful replay establishes}
+A successful full build regenerates exact and inverse fixtures, compares
+them with the packaged fixtures, compiles the manuscript three times, checks
+for TeX errors and overfull boxes, and creates a deterministic archive. The
+normal and optimized builds must agree byte-for-byte on the PDF, ZIP, TeX,
+and fixture files. The release procedure tests this from two fresh
+extractions of the \emph{actual produced ZIP}, rather than merely rerunning
+a working directory. The complete regular-file inventory of each extraction
+is hashed before and after, and those files must remain unchanged. The
+supplied guard tests challenge existing files and directories, a dangling
+symlink, a symlinked parent, a path inside the source tree, and tampered or
+missing source manifests.
+
+The proof establishes the asymptotic theorem. These checks establish that
+the packaged finite calculations and build are replayable and that common
+boundary and normalization mistakes are caught. Neither a small-$n$
+comparison nor a high-precision model inverse is an effective certificate
+for the unknown onset of the sequence's asymptotic remainder. The package
+contains no third-party paper PDFs and no private review materials.
+
+\section{Further questions and research}
+\label{spf:cg:sec:questions}
+
+[Added 5 October 2026, batch 101.] This section keeps Report~232's six
+questions, under its title ``Further questions''. They are the unproved
+claims of Report~232 that this write found: Report~232 asserts the existence
+of effective constants (question~1), of higher coefficients (question~2) and
+of extensions (questions~3--6) without proving them, and the write found no
+demonstrably wrong claim. Its two steps argued at sketch level, the count of
+anchored shapes in \cref{spf:cg:lem:highdeficit} and the rationality step of
+\cref{spf:cg:thm:packing}, are completed in
+\cref{spf:cg:rem:shapes,spf:cg:rem:rational}; its slip in the H\"older step
+of \cref{spf:cg:lem:tail} is corrected in place with a note. Notes of the
+write after the list say what each continues.
+
+\begin{enumerate}[label=\textbf{Q\arabic*.},leftmargin=*]
+ \item \textbf{Effective constants.} The proof supplies finite constructions
+ and eventual bounds. Extracting usable explicit constants and onsets for
+ the complex-mark remainder would turn the threshold envelopes into
+ practical certified finite-level inverse algorithms. The effective
+ $\tilde z\ge32$ Newton result concerns only the displayed smooth model.
+ \item \textbf{Higher coefficients.} The moment rule reduces order $j$ to
+ graphs with at most $2j$ selected edges. Efficient canonicalization,
+ quotient caching, and sparse transfer operators could make orders three
+ and above accessible. Their existence is proved here, but no numerical
+ values for them are claimed.
+ \item \textbf{More colours and general gap sets.} The positive tail method
+ and finite dictionaries suggest extensions to arbitrary fixed finite gap
+ correspondences. Compatible triangles and denser cores change the
+ deficit-to-edge relation and hence the marked-degree bound. Each such
+ extension needs a stated structural inequality and its own proof.
+ \item \textbf{Growing offsets.} All constants here depend on fixed gaps.
+ If $r$ or $s$ grows with $n$, dictionary sizes, spans, and analytic
+ neighbourhoods change. The present compact-uniform theorem does not
+ automatically control that regime.
+ \item \textbf{Alternative exact recurrences.} A finite-state recurrence
+ for the full permutation counts, rather than the fixed-core packing
+ polynomials, might yield efficient numerical counts or independent
+ remainder estimates. No recurrence is inferred from the finite fixtures.
+ \item \textbf{Distributional refinements.} Uniformity on complex compact
+ marking sets gives access to fixed mixed derivatives and correction
+ measures. Quantitative norms for the whole joint distribution require
+ stating and proving an appropriate inversion estimate, rather than
+ reading a total-variation rate off a formal generating series.
+\end{enumerate}
+
+\paragraph{Notes of the batch-101 write on these questions.}
+Question~1 is Part~VI's question~1 for these counts. Question~2: at order
+three \cref{spf:cg:rem:cycles} already says which cyclic cores enter
+(coloured cycles and other cores of deficit three); the intake's
+Richardson extrapolation of the knight b-file (OEIS data, $n\le30$) gives
+$27.2$, $28.24$, $28.13$ for the second coefficient at orders 3--5, and of
+the camel b-file ($n\le24$) $49.1$, $46.6$, $50.0$ at orders 2--4, consistent
+with $28$ and $48$; this is evidence for \cref{spf:cg:thm:two}, not a third
+coefficient. Question~3 continues Part~I's question~6, Part~II's question~4
+and Part~III's question~10, and with it \cref{spf:mg:q:several}, all of which
+Part~VII answers for reciprocal pairs only (the dated notes there say so):
+still open are two pairs sharing one gap (Part~II's ``first target''), the
+directed two-gap model (Part~III), more than two colours, and moving gaps.
+Question~4 is Part~I's question~5 and Part~IV's \cref{spf:mg:cor:moving} for
+two colours; Part~IV's local-density method is the natural starting point.
+Question~5 is the two-gap analogue of Part~I's question~2. Question~6 is the
+two-mark analogue of Corollary~\ref{spf:cor:distribution} and
+\cref{spf:mg:cor:law}, which Part~VII does not prove. Cyclic wraparound of
+positions or values, the other half of Part~I's question~6, is not treated
+by Report~232. Nothing in Part~VII is formalized.
+
+\section{A worked partition-lattice certificate (Report 232, Appendix A)}
+\label{spf:cg:app:worked}
+
+Consider two disjoint $A$ edges in a single-length graph with gap $d$.
+There are $n-d$ total edges. Unordered distinct pairs number
+$\binom{n-d}{2}$. Incident pairs occur along each length-$d$ path and total
+$\max(0,n-2d)$. For $n\ge2d$ the exact matching polynomial is therefore
+\begin{equation}
+ N_{2A}(n)=\binom{n-d}{2}-(n-2d)
+ =\frac{n^2}{2}-\frac{2d+3}{2}n+\frac{d^2+5d}{2}.
+ \label{spf:cg:eq:twoedges}
+\end{equation}
+Its abstract graph has automorphism order $2^2\cdot2!=8$. For the camel,
+the source uses $d=1$ and target $d=3$, giving
+\[
+ N_S=\frac{n^2-5n+6}{2},\qquad
+ N_T=\frac{n^2-9n+24}{2}.
+\]
+Its exact graph term is $8N_SN_Tu^2/\fall n4$ where these polynomials are
+valid. The partition-lattice algorithm obtains the same expressions by
+summing quotient homomorphisms with their M\"obius factors, and does so for
+all graph types rather than requiring a separate geometric formula for each.
+For a mixed incident path the automorphism order is one, the source and
+target polynomial are both $4n-4R-2$, and its term is the first summand in
+\eqref{spf:cg:eq:EXY}. For a mixed disjoint pair the automorphism order is
+four, recovering the second summand. These small examples fix the
+normalization conventions of the machine-readable certificates.
+
+\section{Proof dependencies and limitations (Report 232, Appendix B)}
+\label{spf:cg:app:dependencies}
+
+The main theorem rests on four independently stated ingredients:
+\begin{enumerate}
+ \item the exact two-sided injection identity, including cyclic graphs;
+ \item a uniform exponential-moment tail for the number of selected edges;
+ \item a positive geometric bound for high-deficit cores;
+ \item the factorial-scale packing expansion for the finite low-deficit
+       dictionaries and its source--target normalization.
+\end{enumerate}
+The degree bound is proved only after those ingredients are combined.
+It is what makes the finite four-edge computation conclusive for
+$\mathfrak B_2$. The inverse section then uses the resulting integer
+asymptotic expansion, standard gamma-function estimates, and monotonicity of
+an explicitly defined finite model. It never differentiates an unknown
+sequence remainder.
+
+The reported computations establish exact rational identities and finite
+checks at stated ranges. They do not certify an effective counting-sequence
+onset, convergence of an infinite correction series, universal exact
+rounding of a smooth inverse, or worldwide historical priority. These
+limitations leave the proved compact-complex all-fixed-order expansion and
+the displayed mixed corrections intact.
+
 \addcontentsline{toc}{part}{Appendices}
 
 \appendix
@@ -8065,6 +10815,65 @@ bracketed notes of the write; their appendices are sections of their Parts.
 None of their statements was strengthened, and every one of their non-claims
 is kept in \cref{spf:mg:sec:front,spf:bc:sec:front}.
 
+\paragraph{Parts~VI and~VII (batch 101).}
+[Added 5 October 2026, batch 101.] Part~VI is built from Report~83 of the
+session bundle of Reports 1--243, the archive
+\nolinkurl{Fixed_Displacement_Permutation_Asymptotics_Source.zip} (22~files,
+a 7-page PDF), and Part~VII from Report~232, the archive
+\nolinkurl{Report232.zip} (10~files, a 27-page PDF). Both arrived in commit
+\texttt{60f54ea06} and were placed in commit \texttt{f7c612c72}. Report~83
+pins \texttt{1512ef835}~\cite{fdProveIt}; Report~232 pins nothing. Their
+articles, READMEs, PDFs and checksum manifests (\texttt{manifest.json},
+21/21, and \texttt{SHA256SUMS}, 9/9, verified at placement) are not shipped,
+nor is Report~83's \path{independent_review/replay.log}, a byte copy of its
+\path{check_coefficients.json}. Their other seventeen and six files are,
+byte-identical, with the prefixes \path{06-fixed-disp-} and
+\path{07-coloured-gaps-}; those files use the delivery names.
+
+\paragraph{Where the batch-101 merge had to choose.} Report~83 proves no
+theorem that Parts~I and~II lack, so on the precedent of Part~II it is a
+short Part: its re-derivations are recorded in \cref{spf:fd:tab:routes},
+and only its new material is printed, with the proof of its threshold
+bracket and the error bound of its digamma display completed by the write
+(\cref{spf:fd:thm:bracket,spf:fd:prop:digamma}). Report~232 is new throughout
+apart from its single-gap marginals, so it is printed nearly in full, its
+appendices as sections of its Part, after Part~VI so that no existing number
+changes. Its letters that clash are renamed (\cref{spf:cg:tab:dictionary}):
+its correction polynomials are written in fraktur type, $\mathfrak B_j$, to
+separate them from Part~I's $B_J$ and Part~IV's $\mathsf B_j$; its counts
+$A^{\mathrm{cg}}_{r,s}(n)$; its triply used $S$, $T$ and $\delta$ and doubly
+used $A$, $B$, $h$, $L$ and $P$ are split; and its inverse coordinates are
+Part~I's with a tilde. Its \emph{deficit} is kept as a separate notion from
+Part~I's \emph{defect}, with both readings printed
+(\cref{spf:cg:sec:notation}). Following the intake's standing rule, the
+write proves that the marginals are Part~I's
+(Remark~\ref{spf:cg:rem:marginals}) and that cycles first enter at order
+$n^{-2}$ (Remark~\ref{spf:cg:rem:cycles}), completes Report~232's two
+sketched steps (Remarks~\ref{spf:cg:rem:shapes} and~\ref{spf:cg:rem:rational}),
+corrects its slip in the H\"older step of \cref{spf:cg:lem:tail} in place
+with a note, and keeps its six questions and Report~83's four unproved items
+in the sections ``Further questions and research''
+(\cref{spf:fd:sec:questions,spf:cg:sec:questions}). The two reports share no
+theorem; they share one reference, Mendelsohn's paper, printed once.
+
+\paragraph{What the batch-101 write changed.} It added the batch-101
+editorial note; bracketed notes marked ``[Added 5 October 2026, batch 101]''
+at the end of Remark~\ref{spf:rem:clique-analogue} (the sibling report's
+tail estimate, stale since 2 October 2026), at the end of
+\cref{spf:sec:inverse}, after the Bonferroni intervals of
+\cref{spf:sec:computation}, in question~6 of \cref{spf:sec:questions}, in
+question~4 of \cref{fga:sec:questions}, in question~10 of
+\cref{spf:rc:sec:questions}, in the non-claims of \cref{spf:mg:sec:front} and
+after \cref{spf:mg:q:several}; Parts~VI and~VII (\cref{spf:fd:sec:front} to
+\cref{spf:cg:app:dependencies}); these three paragraphs; and fourteen
+bibliography entries. All its labels carry the prefixes \texttt{spf:fd:} and
+\texttt{spf:cg:}. No existing label was renamed or removed, no existing
+number changed, and no delivered sentence of an earlier manuscript was
+changed or removed. Report~232 is printed nearly in full with renamed
+symbols, headings marked with the report and bracketed notes of the write;
+none of the two reports' statements was strengthened, and every one of their
+non-claims is kept in \cref{spf:fd:sec:front,spf:cg:sec:front}.
+
 \begin{thebibliography}{99}
 \bibitem{oeis189281}
 OEIS Foundation Inc., \emph{A189281: Number of permutations $p$ of
@@ -8247,5 +11056,96 @@ Consulted by manuscript~06 on 4 October 2026.
 Library of Mathematical Functions, \emph{Section 2.11: Remainder terms;
 Stokes phenomenon}. \url{https://dlmf.nist.gov/2.11}. Consulted by
 manuscript~06 on 4 October 2026.
+\bibitem{fdProveIt}\begingroup\raggedright
+[Added in the batch-101 write, from Report 83.] V. Reshetnikov,
+\emph{ProveIt}, its transseries companion
+\path{Analysis/Transseries/docs/series-and-transseries/}\allowbreak
+\path{Combinatorial_Transseries_Inverses} and its incoming inventory,
+inspected 1 October 2026 at commit
+\nolinkurl{1512ef8356d10fef99e7caaa2753620f0c900c83}.
+\url{https://github.com/VladimirReshetnikov/ProveIt}.\par\endgroup
+
+\bibitem{fdMendelsohn}
+[Added in the batch-101 write, from Reports 83 and 232.] N. S. Mendelsohn,
+\emph{The asymptotic series for a certain class of permutation problems},
+Canadian Journal of Mathematics \textbf{8} (1956), 234--244.
+\url{https://doi.org/10.4153/CJM-1956-027-7}. Not opened by the intake.
+
+\bibitem{fdTabuguia}
+[Added in the batch-101 write, from Report 83.] B. Teguia Tabuguia,
+\emph{D-algebraic guessing}, arXiv:2510.26869 (2025), Section 5.2.
+\url{https://arxiv.org/abs/2510.26869}. Not opened by the intake.
+
+\bibitem{fdPadhiNote}\begingroup\raggedright
+[Added in the batch-101 write, from Report 83.] J. S. Padhi,
+\emph{Holonomicity of the restricted permutation counts $a_{r,s}$ and
+$b_{r,s}$}, repository note, August 2026, source blob
+\nolinkurl{ec04817377b7531d19cbc0d9b0243242de682a95}.
+\url{https://github.com/jaideepsaipadhi/restricted-permutations-holonomicity}.
+Not opened by the intake.\par\endgroup
+
+\bibitem{fdSZpage}\begingroup\raggedright
+[Added in the batch-101 write, from Report 83.] G. Spahn and
+D. Zeilberger, \emph{Counting permutations where the difference between
+entries located $r$ places apart can never be $s$}, Enumerative
+Combinatorics and Applications \textbf{3}:2 (2023), S2R10; author page
+\url{https://sites.math.rutgers.edu/~zeilberg/mamarim/mamarimhtml/perms.html},
+with its update of 14 August 2026, consulted by Report~83 on 1 October 2026.
+Not opened by the intake.\par\endgroup
+
+\bibitem{cgKotesovec}\begingroup\raggedright
+[Added in the batch-101 write, from Report 232.] V. Kot\v e\v sovec,
+\emph{Non-attacking chess pieces}, sixth edition, 2013, especially
+pp.~622--624 and 636--638.
+\url{https://www.kotesovec.cz/books/kotesovec_non_attacking_chess_pieces_2013_6ed.pdf}.\par\endgroup
+
+\bibitem{cgAspvall}\begingroup\raggedright
+[Added in the batch-101 write, from Report 232.] B. Aspvall and
+F. M. Liang, \emph{The dinner table problem}, Stanford Computer Science
+Technical Report CS-TR-80-829, December 1980, Parts I and II, pp.~1--12.
+\url{http://i.stanford.edu/pub/cstr/reports/cs/tr/80/829/CS-TR-80-829.pdf}.\par\endgroup
+
+\bibitem{cgFS}
+[Added in the batch-101 write, from Report 232.] P. Flajolet and
+R. Sedgewick, \emph{Analytic Combinatorics}, Cambridge University Press,
+2009, Section V.6, pp.~369--373, Proposition V.11 and Note V.51.
+\url{https://ac.cs.princeton.edu/home/AC.pdf}.
+
+\bibitem{cgGodsil}
+[Added in the batch-101 write, from Report 232.] C. D. Godsil and
+B. D. McKay, \emph{Asymptotic enumeration of Latin rectangles}, Journal of
+Combinatorial Theory, Series~B \textbf{48} (1990), 19--44.
+\url{https://users.cecs.anu.edu.au/~bdm/papers/LatinRectangles.pdf}.
+
+\bibitem{cgBagno}
+[Added in the batch-101 write, from Report 232.] E. Bagno, E. Eisenberg,
+S. Reches and M. Sigron, \emph{On the sparseness of the downsets of
+permutations via their number of separators}, Enumerative Combinatorics and
+Applications \textbf{1}(3) (2021), Article S2R21.
+\url{https://doi.org/10.54550/ECA2021V1S3R21}.
+
+\bibitem{cgModPoisson}
+[Added in the batch-101 write, from Report 232.] P.-L. M\'eliot,
+A. Nikeghbali and G. Visentin, \emph{Mod-Poisson approximation schemes and
+higher-order Chen--Stein inequalities}, preprint, 2022.
+\url{https://arxiv.org/abs/2210.13818}.
+
+\bibitem{cgOeisCamel}
+[Added in the batch-101 write, from Report 232.] OEIS Foundation Inc.,
+\emph{A189358}, the permutations avoiding camel attacks in Report~232's
+description.
+\url{https://oeis.org/A189358}.
+
+\bibitem{cgOeisKnight}
+[Added in the batch-101 write, from Report 232.] OEIS Foundation Inc.,
+\emph{A137774}, the permutations avoiding knight attacks in Report~232's
+description.
+\url{https://oeis.org/A137774}.
+
+\bibitem{cgDlmfPsi}
+[Added in the batch-101 write, from Report 232.] NIST Digital Library of
+Mathematical Functions, \emph{Section 5.15: Polygamma functions}.
+\url{https://dlmf.nist.gov/5.15}. Report~232 also cites Sections 4.13 and
+5.11, cited here as~\cite{dlmfW,dlmfGamma}.
 \end{thebibliography}
 \end{document}
