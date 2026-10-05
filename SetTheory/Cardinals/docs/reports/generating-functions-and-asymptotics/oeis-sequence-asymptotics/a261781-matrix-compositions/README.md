@@ -21,7 +21,7 @@ Manuscript 01 arrived with the rest of batch 85 in `317c1ce2e` (2026-10-03 17:53
 ```
 README.md                                   this guide (replaces the three delivered READMEs)
 article.tex                                 the merged report (LaTeX, internal bibliography)
-article.pdf                                 the compiled report, 90 pages
+article.pdf                                 the compiled report, 89 pages
 06-hankel-SOURCE_AUDIT.txt                  (06) its bounded source and contribution audit, as delivered
 01-two-poisson-provenance-SOURCES.md        (01) its sources and bounded priority audit, as delivered
 07-zero-laws-PROVENANCE.md                  (08) its sources and contribution boundary, as delivered
@@ -198,6 +198,7 @@ Manuscript 08's own limits (Part III; Section 23 and the places cited there, `07
 ## Relation to neighbouring material and formal status
 
 - **Method neighbour** [`a260700-parabolic-double-cosets`](../a260700-parabolic-double-cosets/) (prefix `pdc:`): the same two devices, a uniform extraction of the Fubini pole at log 2 (its section `pdc:sec:poles`) followed by an outer Stirling transform (`pdc:sec:outer`), for a different sequence; it cites Munarini–Poneti–Rinaldi as related work. No theorem is shared. Manuscript 06 found it in its repository search and assumes nothing from it.
+- **Sibling Poisson defect** [`a122399-surjection-diagonal`](../a122399-surjection-diagonal/) (prefix `a122:`), Part II (batch 98): for ordered partitions of an m-set with a map of an n-set to the blocks, the defect m − K tends to Poisson(e^{−c}/2) at n = m(log m + c), with an all-orders Touchard-summed expansion (its Theorems 13.1 and 15.1); its factor 1/2 comes from defects that are pairs (its Proposition 16.1), as its source note says of the parameter Lr/2 of Theorem 16.2 here (`mxc:tp:thm:defect`). No theorem is shared. A dated reciprocal note after Theorem 16.2 (added 5 October 2026, batch 98) records the pointer; it adds no label.
 - **Transseries volume** `Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex`: its Theorem `q2:thm:fubini` (exact pole-lattice transseries of the Fubini numbers) has the estimate (7.5) of both manuscripts as its one-pole truncation; its `p0:thm:perturbed-inversion` and `p0:thm:staircase` are the apparatus of which Section 18 is an instance. Manuscript 01 read the volume's overview README at its pin as motivation but cited neither theorem.
 - **Formal status.** Placement in the collection confers no formal status, and no formal development continues this report. The only ingredient formalized anywhere in the repository is the Fubini exponential generating function used in Section 7: `Fabius.fubini` (the definition F_n = Σ k! S(n,k)), `Fabius.egfA_fubini` and `Fabius.two_sub_exp_mul_egfA_fubini` ((2 − e^t) Σ F_n t^n/n! = 1), in `Analysis/FabiusFunction/Lean/FabiusFunction/OrderedBell.lean`. Nothing else stated in any Part is formalized; in particular nothing of Part III. Both batch-85 manuscripts propose the reduced denominator and its no-cancellation proof as a first formalization target (Section 10.1, Section 20), and manuscript 08 extends that stage by the cyclotomic multiplicities, degree identities and full-support CDF comparisons (Research question 16); these are proposals only.
 - No other report of the collection treats A261780, A261781 or A261784, and none treats the zeros of Hankel determinants of this family (checked at the batch-98 placement). Part III cites OEIS A001615 (Dedekind ψ) and Tóth's survey of gcd-sum functions for context only.
@@ -215,7 +216,7 @@ From a scratch directory holding a copy of `article.tex` and of the report's `da
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-pdfLaTeX (MiKTeX) produced the shipped `article.pdf`: 90 pages (55 before Part III was added), with no errors, no warnings, no undefined references or citations, no multiply defined labels, no duplicate destinations and no overfull or underfull boxes. Copy back only `article.pdf`. Manuscript 06's delivered PDF built cleanly in the same way (31 pages). Manuscript 08's `code/07-zero-laws-build.sh` builds its delivered `.tex`, which is not shipped; it does not build this article.
+pdfLaTeX (MiKTeX) produced the shipped `article.pdf`: 89 pages (55 before Part III was added; 90 before the batch-98 reciprocal note of 5 October 2026 after Theorem 16.2, which changed the later page breaks), with no errors, no warnings, no undefined references or citations, no multiply defined labels, no duplicate destinations and no overfull or underfull boxes. Copy back only `article.pdf`. Manuscript 06's delivered PDF built cleanly in the same way (31 pages). Manuscript 08's `code/07-zero-laws-build.sh` builds its delivered `.tex`, which is not shipped; it does not build this article.
 
 ## Rerunning the programs
 

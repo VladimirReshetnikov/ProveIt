@@ -41,7 +41,7 @@ them and corrected one identity (see "Part II" below).
 ```
 README.md                         this guide
 article.tex                       the report, Parts I and II (LaTeX, internal bibliography)
-article.pdf                       the compiled report, 50 pages (unnumbered title page, then pages 1-49)
+article.pdf                       the compiled report, 51 pages (unnumbered title page, then pages 1-50)
 source_audit.md                   the manuscript's source and claim audit, as delivered
 code/verify.py                    exact, symbolic and high-precision checks, tables and plots (SymPy, mpmath, Matplotlib)
 code/build.sh                     the delivered build script (runs verify.py --all, then pdflatex three times; see below)
@@ -182,6 +182,10 @@ Corrections made under Vladimir's standing rule (4 October 2026):
   heuristics of Sections 23.3 and 24; the inverse theorem for A357825 across
   parities (Remark 20.3 applies it per parity branch); the case M′ = 0 of
   Definition 17.1; the all-orders hypotheses for the ballot rows.
+  Item F8 (added 5 October 2026 by a batch-100 reciprocal note, not a claim
+  of the manuscript): the fibre hypotheses (H1), (H2e) that would make
+  Theorem 22.1 of `a022629-distinct-partition-norms` an instance of
+  Theorem 15.1.
 
 ## What is not claimed
 
@@ -258,6 +262,14 @@ them.
   contains `ProveIt_Critical_Theta_Power_Weighted_Distinct_Partitions.zip`
   and `A215570_Balanced_Ballot_Asymptotics.zip`, possibly further theta or
   ballot instances; they were not examined for this write.
+  *[Update, batch 100, 5 October 2026: the first of these is now Section 22
+  of [`a022629-distinct-partition-norms`](../a022629-distinct-partition-norms/)
+  (a theta multiplier for ∏(1 + k^α q^k) with α growing like
+  (2n)^{1/6}/log n). It is the lattice-peak mechanism in Fourier-dual form
+  but not an instance of Theorem 15.1 as proved: (H1) for its row
+  l ↦ P(S = n, R_{≥2} = l) is a fibre local limit theorem that neither report
+  proves, and (H2e) would need log-concavity in l (new item F8). Dated note
+  at the end of Section 21.1 (the two-instance statement).]*
 - [`ballot-polynomial-hankel-determinants`](../../../hankel-determinants/catalan-and-ballot/ballot-polynomial-hankel-determinants/)
   studies Hankel determinants of ballot moments, not growing powers; there
   is no overlap.
@@ -276,7 +288,8 @@ latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 
 The build needs `figures/phase_collapse.pdf` and `figures/oscillation.pdf`
 beside `article.tex`. pdfLaTeX (MiKTeX 26.2) produced the shipped
-`article.pdf`: 50 pages, with no errors, no warnings, no undefined
+`article.pdf`: 51 pages (50 before the batch-100 reciprocal note of
+5 October 2026), with no errors, no warnings, no undefined
 references or citations, no multiply defined labels, no duplicate
 destinations, no overfull boxes, and one underfull line in the bibliography
 (also present in a build of the delivered text). It contains no Type 3 font

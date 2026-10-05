@@ -108,6 +108,16 @@ Mahonian power sums, A380274 or A380275 (repository search, 2 October 2026).
 The pointer is made here and in the article's Section 9 note only; the
 ballot-sum report is not edited.
 
+*[Update, 5 October 2026, batch 98D.]* Question Q6 is now answered in a
+sufficient-hypothesis form by Part II of `a357825-theta-ballot-power-sums`
+(a general lattice-peak transfer theorem, labels `tbs:lpt:`), and its
+Proposition 21.1 proves that this report's critical window is an instance,
+with the local law from `mgp:eq:profileleading` and an exponential majorant
+from log-concavity (a reorganization of this report's own proof). The
+sentence above that "Q6 stays open" is superseded; the ballot-sum report
+now also points here. Part II writes ϑ(q,δ) for this report's Z_δ(q). Dated
+note after the Section 9 note of the article.
+
 ## Labels
 
 Every label carries the prefix `mgp:`: the manuscript's 26 labels, prefixed
@@ -118,7 +128,9 @@ before anything cited them, and `mgp:sec:note` for the added report note
 Changes to the manuscript's text: the label prefixes, the unnumbered report
 note after the abstract, three dated `[write]` notes (Sections 7, 8 and 9),
 PDF title metadata, and two preamble additions (`array`, a path macro). No
-statement, proof, symbol or number was changed.
+statement, proof, symbol or number was changed. A reciprocal note of 5 October 2026 (batch 98D), marked "[write,
+2026-10-05]", follows the Section 9 note; it adds no label and changes no
+number.
 
 ## Files
 

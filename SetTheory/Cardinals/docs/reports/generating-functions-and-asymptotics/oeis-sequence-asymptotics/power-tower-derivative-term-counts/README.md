@@ -842,6 +842,12 @@ Lehmer–Comtet numbers, A008296 or A293239.
   is a parity zero (true of the three functions here, not of `x^(sqrt x)` or
   of rational `1/2 < a < 1`). Its re-derivations of results here are marked
   as second routes there.
+  Its Part IV (batch 100, 5 October 2026, from bundle Report 59) adds Hermite
+  limits with an explicit first correction on fixed defects of `x^(sqrt x)`
+  and an `O_r(sqrt X)` cancellation bound per defect; its finiteness from
+  defect four at `a = 1/2` is a second route to its Theorem 16.1. A dated
+  note after Question 8 (Section 3.24.4) records this (no
+  label added).
 - [`a290268-unbounded-deficits`](../a290268-unbounded-deficits/) (batch 72A, same
   subcategory): A290268 at unbounded logarithmic deficit, in the depth
   coordinates of Section 3.15. It continues Conjecture 3.19, bears on

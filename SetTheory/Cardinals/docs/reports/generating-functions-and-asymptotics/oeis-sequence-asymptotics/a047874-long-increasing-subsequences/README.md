@@ -195,6 +195,11 @@ manuscript uses no repository theorem.
   `SetTheory/Cardinals/docs/reports/generating-functions-and-asymptotics/oeis-sequence-asymptotics/a181199-shifted-rectangles`
   (labels `shr:`) treats fixed-height shifted rectangles; it shares the
   rectangle tableau count but no theorem.
+  [Added 5 October 2026, batch 98: its Part II (labels `shr:bp:`) proves
+  D-finiteness of every fixed-height row by a different route — an exact
+  finite sum over row births and completions of reflection determinants,
+  which is a multiple binomial sum and hence a rational diagonal — and
+  still shares no theorem with this report.]
 - The rectangle formula (2.6) (`lis:eq:rectanglehook`) is the classical
   hook-length count printed as `t2:eq:tableaux` in
   `Analysis/Transseries/docs/series-and-transseries/Combinatorial_Transseries_Inverses/Combinatorial_Transseries_Inverses.tex`.

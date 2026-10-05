@@ -2810,6 +2810,53 @@ $n=40$, $q_n=3$ down to $0.020$ at $n=82$, $q_n=0.5$, decreasing like
 $1/n$. Whether the Mahonian rows satisfy the Gaussian (H2) itself is
 item F1 of Section~\ref{tbs:lpt:sec:questions}.
 
+\emph{[Write note, batch 100, 5 October 2026.]} A third occurrence of the
+mechanism, in Fourier-dual form, is Section~22 of
+\nolinkurl{oeis-sequence-asymptotics/a022629-distinct-partition-norms}
+(labels \code{dpn:ct:}, source 100-93 of batch 100). For
+$a_\alpha(n)=[q^n]\prod_{k\ge1}(1+k^\alpha q^k)$ with the power $\alpha$
+growing so that $\Lambda=\alpha(s-1)/M^{1/3}$ stays in a compact subset of
+$(0,\infty)$ ($t$ the exact saddle, $M=\ee^s$ its transition site), it proves
+\[
+ a_\alpha(n)=\frac{\ee^{F(t)+nt}}{\sqrt{2\pi B}}
+ \Bigl\{(2\pi Q_\perp)^{-1/2}\,\vartheta(1/Q_\perp,\mu_R)+o(1)\Bigr\},
+\]
+where $B$ is the variance of the size $S$, $\mu_R$ the mean number
+$R_{\ge2}$ of parts at least two, and $Q_\perp\to\pi^2/(3\Lambda^3)$ the
+variance of $R_{\ge2}$ after linear regression on $S$. Read with the row
+$l\mapsto C_{n,l}=\mathbb P(S=n,R_{\ge2}=l)$, $r_n=1$, $d_n=1$, $x_n=\mu_R$
+(so $\delta_n\equiv\mu_R\pmod1$), $q_n=1/Q_\perp$ and
+$\Omega_n=(2\pi\sqrt{BQ_\perp})^{-1}$, this is the conclusion of
+Theorem~\ref{tbs:lpt:thm:transfer}, but it is not proved as a corollary:
+hypothesis (H1) for this row is a local limit theorem for the pair
+$(S,R_{\ge2})$ on the fibre $S=n$, which that section does not state, and
+(H2e) would follow from log-concavity of the row in $l$
+(Proposition~\ref{tbs:lpt:prop:logconcave}), which is open. Its curvature
+scale $\sigma_n=\sqrt{Q_\perp}$ also stays bounded: the growing $\alpha$
+narrows the conditional law itself, instead of a growing power $r_n$ (the
+proof of Theorem~\ref{tbs:lpt:thm:transfer} uses only (H1)--(H3)). That
+section proves the summed statement directly by Fourier analysis; its
+Gaussian satellites, centred near $2\pi j/M$ with phases
+$\ee^{-2\pi i j\mu_R}$, are the Fourier modes of $\vartheta$ in the Poisson
+form used in the proof of Proposition~\ref{tbs:lpt:prop:theta-regimes}, and
+their damping $2\pi^2Q_\perp j^2$ is the fixed-resonance action of that
+report's Section~11 in a regime where it stays bounded. Its two limits along
+integer powers, $\vartheta$ at the phases $0$ and $\frac12$, are the
+two-cluster case of Corollary~\ref{tbs:lpt:cor:clusters}. Its
+theta-adjusted inverse has the form of Theorem~\ref{tbs:lpt:thm:inverse}
+with $G=\Psi_0$ and the theta term $\log\vartheta$ (plus a constant), and the
+regularity ratios hold, but there $G'=t\to0$, outside that theorem's slope
+hypothesis; the first-order shift of the threshold,
+$-t^{-1}\log\{(2\pi Q_\perp)^{-1/2}\vartheta(1/Q_\perp,\mu_R)\}$, is proved
+there directly (its Remark~22.10). It is of order at most $1/t$, and of exact
+order $1/t$ at phases away from the two per period where the logarithm
+vanishes (in particular near integer and half-integer $\mu_R$); its sign
+changes with the phase, which gives the conclusion of
+Corollary~\ref{tbs:lpt:cor:no-constant}. By
+\eqref{tbs:lpt:eq:theta-average}, the single Gaussian of that report is the
+phase average of the theta law. Proving (H1) and (H2e) for this row is
+item F8 of Section~\ref{tbs:lpt:sec:questions}.
+
 \section{A practical verification checklist for new OEIS arrays}\label{tbs:lpt:sec:checklist}
 
 For future applications, the theorem suggests a short proof architecture.
@@ -3047,6 +3094,17 @@ re-derives Theorem~\ref{tbs:thm:main} rather than merely matching it.
 Sketch: Part~I's window $|u|\le m^{1/12}$ and
 Lemma~\ref{tbs:lem:gaussian} with polynomial weights. Missing: the
 bookkeeping.
+\item \textbf{Fibre lattice peaks for growing norm powers.} Source: the
+batch-100 note at the end of Section~\ref{tbs:lpt:sec:two-instance}
+\emph{[write, 5 October 2026]}. Open: prove (H1) and (H2e) for the row
+$l\mapsto\mathbb P(S=n,R_{\ge2}=l)$ in the critical window of Section~22 of
+\nolinkurl{a022629-distinct-partition-norms}, making its Theorem~22.1 an
+instance of Theorem~\ref{tbs:lpt:thm:transfer}. Sketch: a two-dimensional
+Fourier integral over $(\theta,\omega)\in[-\pi,\pi]^2$ with the satellite and
+block estimates of that section; for (H2e), log-concavity of the row in $l$
+and Proposition~\ref{tbs:lpt:prop:logconcave}. Missing: the two-dimensional
+complement bound and log-concavity. (That report lists the same item as its
+question 100-93.7.)
 \end{enumerate}
 
 \section{Conclusion}\label{tbs:lpt:sec:conclusion}
