@@ -1,23 +1,35 @@
 # The Source Boundary of Extensional Acyclic Digraphs
 
-**An OEIS conjecture (A182220), finite-defect enumeration of the source
-triangle A182162, and dyadic non-holonomicity**
+**Part I: an OEIS conjecture (A182220), finite-defect enumeration of the source
+triangle A182162, and dyadic non-holonomicity. Part II: natural boundaries of
+the fixed-defect generating functions, at the source edge and at the source
+extremum**
 
-A research article dated 3 October 2026, built from one manuscript. Its title
-block reads "Prepared for Vladimir Reshetnikov / In the mathematical research
-context of the ProveIt repository", and its PDF author field "Research
-prepared for Vladimir Reshetnikov": the package names no human author and no
-tool.
+A two-part report built from three manuscripts. Part I (3 October 2026) is a
+single manuscript. Its title block reads "Prepared for Vladimir Reshetnikov / In
+the mathematical research context of the ProveIt repository", and its PDF
+author field "Research prepared for Vladimir Reshetnikov": it names no human
+author and no tool. Part II (added 5 October 2026) merges two independent
+manuscripts that answer Part I's first research question. Their title pages
+and PDF author fields name ChatGPT ("Research manuscript prepared with
+ChatGPT"; "Research prepared with ChatGPT").
 
 | Source | Manuscript | Archive | Pin | Placed | Printed as |
 |---|---|---|---|---|---|
-| 01 | batch 85, manuscript 07 | `OEIS_A182220_Source_Boundary_Research.zip` (wrapper directory `oeis_source_boundary/`, 864,793 bytes), arrival commit `9d6968c8a`; main file `article.tex` | `6bf7f30d0` (`6bf7f30d0352f7596e70928b3d4f304914075907`, quoted in Section 1.3, the bibliography entry for ProveIt and `SOURCES.md`) | `ddf8df5d5` (batch 85C) | the whole report |
+| 01 | batch 85, manuscript 07 | `OEIS_A182220_Source_Boundary_Research.zip` (wrapper `oeis_source_boundary/`, 864,793 bytes), arrival `9d6968c8a`; main file `article.tex` | `6bf7f30d0` (`6bf7f30d0352f7596e70928b3d4f304914075907`, quoted in Section 1.3, the bibliography entry for ProveIt and `SOURCES.md`) | `ddf8df5d5` (batch 85C) | Part I, Sections 1–13 and Appendices A–B |
+| 02 | batch 98, manuscript 01: *Natural Boundaries at the Source Edge of Extensional Acyclic Digraphs: Dense singularities, universal radial limits, and logarithmic growth for OEIS source-count diagonals* (5 October 2026; 22-page PDF) | `OEIS_EAD_Natural_Boundaries.zip` (wrapper `ead-natural-boundary/`, 1,061,332 bytes), arrival `2172df76a`; main file `ead_natural_boundaries.tex` | `d18416ec7` (`d18416ec7e187a0948248cb3077e37d7b089a8f9`, in its `PROVENANCE.md`, Section 1.1 and bibliography) | `b50febf79` (batch 98C) | Part II, merge member: files prefixed `02-source-edge-`, labels `sbd:edge:` |
+| 03 | batch 98, manuscript 05: *Natural Boundaries at the Source Extremum: Fixed deficits, dyadic radial limits, and local L^p growth* (5 October 2026 UTC; 23-page PDF) | `OEIS_Source_Boundaries.zip` (wrapper `oeis_natural_boundaries/`, 1,073,601 bytes), arrival `2172df76a`; main file `article.tex` | `d18416ec7` (same commit, in its `SOURCE_NOTES.txt`, Appendix B and bibliography) | `b50febf79` (batch 98C) | Part II, merge base: files prefixed `03-source-extremum-`, labels `sbd:xtm:` |
+
+At the pin `d18416ec7` this report consisted of Part I alone, unchanged from
+its batch-85 write (`eab47e330`) to the batch-98 placement; both Part II
+manuscripts read exactly that text. They are independent of each other (their
+shared word 8-grams are 2.7 % of 02's text and 2.3 % of 03's), not editions.
 
 **Status:** AI-assisted, unrefereed, not formalized: no Lean or Rocq
 declaration exists for any statement of this report. The proofs are
-conventional mathematical proofs; the exact integer computations check the
-finite statements on recorded ranges, and the Decimal computations are
-numerical diagnostics, not interval bounds.
+conventional mathematical proofs; the exact integer computations check finite
+statements on recorded ranges, and the floating-point computations (Decimal in
+Part I, mpmath in Part II) are numerical diagnostics, not interval bounds.
 
 ## What it proves
 
@@ -25,7 +37,10 @@ An *extensional acyclic digraph* (EAD) is a finite acyclic digraph whose
 vertices have pairwise distinct out-neighbourhoods. `u_m` = A001192(m) counts
 EAD isomorphism classes on `m` vertices (`u_0 = 1`), `u(n,k)` those with `k`
 sources (the labelled count `n! u(n,k)` is A182162), `q = ⌈log₂ n⌉`, and
-`b_n^(d) = u(n, n−q−d)` is the boundary diagonal at defect `d`.
+`b_n^(d) = u(n, n−q−d)` is the boundary diagonal at defect `d`, with
+generating function `B_d(z) = Σ b_n^(d) z^n`.
+
+### Part I
 
 - **Theorem 3.1 (complete source support).** An EAD on `n` vertices with
   exactly `k ≥ 1` sources exists iff `k ≤ n ≤ 2^(n−k)`; hence
@@ -54,8 +69,8 @@ sources (the labelled count `n! u(n,k)` is A182162), `q = ⌈log₂ n⌉`, and
   `[e^(λ_d), e^(λ_(d+1))]`, `λ_d = 2^d H(2^(−d))`; for `d = 0` this is
   `[1, 4]`.
 - **Lemma 8.1 (exponential-jump obstruction)** and **Theorem 8.2:** no
-  `b^(d)` and no `n! b^(d)` is P-recursive; `B_d(z) = Σ b_n^(d) z^n` is not
-  D-finite and has radius `e^(−λ_(d+1))` (`1/4` for `d = 0`).
+  `b^(d)` and no `n! b^(d)` is P-recursive; `B_d` is not D-finite and has
+  radius `R_d = e^(−λ_(d+1))` (`1/4` for `d = 0`).
 - Theorem 9.1: an all-orders expansion of `log b_n^(d)` away from `p = 1`,
   with `u_m` kept exact (Stirling and Bernoulli terms), and the exact
   fixed-deletion series near complete layers.
@@ -65,6 +80,55 @@ sources (the labelled count `n! u(n,k)` is A182162), `q = ⌈log₂ n⌉`, and
 - Section 11: the exact checks (Tables 1–2); Section 12: a formalization
   route (a plan only) and ten research questions; Appendix A: **draft**
   OEIS-facing statements (see below); Appendix B: a proof-status ledger.
+
+### Part II (Sections 14–25)
+
+With `c = 2^(d+1)`, `a = c − 1`, `R = R_d = a^a/c^c`, `L = log(1/t)`:
+
+- **Theorem 14.2 (both manuscripts; answers Part I's Question 1):** for every
+  fixed `d ≥ 0` the circle `|z| = R_d` is a **natural boundary** of `B_d`, and
+  at every root of unity `ζ` of power-of-two order
+  `B_d(R e^(−t) ζ)/B_d(R e^(−t)) = ζ(1 − aR)/(1 − aRζ) + O(t)` (the rate is
+  manuscript 03's; for `d = 0` the limits at `−1` and `i` are `−3/5` and
+  `(−3+12i)/17`).
+- **Theorem 14.3 (both):** `log B_d(R e^(−t)) = L²/(2 log 2) + L log L/log 2 +
+  O_d(L)`, also in modulus at every dyadic root; `B_d` grows faster than every
+  power of `1/t` along those radii, so no meromorphic continuation either.
+- **Theorem 14.4 (03; its log-level law also 02):** for every `p > 0` and
+  every open arc `I`, `∫_I |B_d(R e^(−t+iθ))|^p dθ` is within constant
+  factors of `B_d(R e^(−t))^p`: a strong natural boundary in Breuer–Simon's
+  sense, quantitatively.
+- Section 15: what Part II takes from Part I (a correspondence table), the
+  **chain lower bound** `2^C(m−1,2) ≤ u_m` (new to the report) and a
+  **bijective proof of Tomescu's deletion recurrence** (Proposition 15.4),
+  which Part I only quotes.
+- Sections 16–17 (03, with 02's versions as second routes): the uniform
+  geometric block profile (Lemma 16.1), the amplitude envelope and its
+  Stirling form, the discrete Laplace estimate and concentration of block
+  mass. Section 18: the proofs, and **02's abstract transfer lemma for
+  coherent dyadic blocks** (Lemma 18.1) with its second proof of the main
+  theorem.
+- Section 20: `B_d` is neither algebraic nor D-finite (a second route to Part
+  I's Theorem 8.2), finite combinations and transforms keep the boundary, and
+  **no bidisk**: for every real `v > 0`, `Σ_n (Σ_d b_n^(d) v^d) z^n` has
+  radius zero (03).
+- Section 21: **every residue class of power-of-two step** `2^s` has a natural
+  boundary, with explicit radial ratios (02, Theorem 21.1); and, by the
+  writing step (marked [write], proofs included, not independently
+  reviewed), a single-dominant-block Lemma 21.4 and **Theorem 21.5: every
+  arithmetic section, of any step `r ≥ 1`, has a natural boundary**, so every
+  arithmetic subsequence of `b^(d)` is non-P-recursive.
+- Section 22: the two packages' computations and diagnostics (Tables 4–5 and
+  the tables of Section 22.4–22.6, Figures 1–4); Section 23: first block and
+  amplitude corrections (03, Table 6); Section 24: thirteen merged further
+  questions, and the writing step's **Proposition 24.1**: the `O(L)` term
+  lies between `(−3 + φ)L` and `(−2 + φ)L` up to `o(L)`, where
+  `φ = 1 + y − 2^y` at `y = y₀(L)`, the fractional offset of `(L + log L)/log 2`;
+  if `log u_m = (log 2/2) m² + α m + o(m)`, the coefficient of `L` oscillates
+  between `α/log 2 − 3/2` and that plus `0.0861…`, so it has no limit (the
+  exact `u_m` for `m ≤ 64` suggest `α ≈ −0.744`; a numerical observation, not
+  a proof). Section 25: the mechanism, the source audits and Part II's
+  ledger.
 
 ## What is not claimed
 
@@ -79,38 +143,63 @@ sources (the labelled count `n! u(n,k)` is A182162), `q = ⌈log₂ n⌉`, and
   literature.
 - Not new either: the collapse to transitive sets, rigidity, the source sieve
   and total recurrence (Johnston's 2012 Maple program in A182162;
-  Policriti–Tomescu; Tomescu), and Tomescu's source-deletion recurrence used
-  by the code. The exact boundary formulas are short consequences of the
-  sieve, and the article says so.
-- No historical priority is established for the boundary refinements
-  (entropy profiles, rate intervals, non-P-recursiveness, the arc law); the
-  searches were limited. Wagner's ANALCO 2012 paper and Peddicord's 1962
-  paper were not read in full, Policriti–Tomescu only at abstract level; no
-  unchecked theorem from them is used.
-- No natural-boundary claim for `B_d` (Remark 8.3: non-D-finiteness does not
-  imply one); no asymptotic expansion of `u_m`; nothing for defects growing
-  with `n`; the expansion of Theorem 9.1 excludes the complete-layer edge
-  `p → 1`; the sampler is conditional on sampling the core.
+  Policriti–Tomescu; Tomescu), Tomescu's source-deletion recurrence, and the
+  covering estimate and source maximum that Part II re-proves from Part I.
+  The exact boundary formulas are short consequences of the sieve, and the
+  article says so.
+- No historical priority is established for the boundary refinements of
+  Part I or for the natural-boundary results of Part II; all searches were
+  limited. Wagner's ANALCO 2012 paper and its Algorithmica 2013 version,
+  Peddicord's 1962 paper and Policriti–Tomescu were not read in full; no
+  unchecked theorem from them is used. Breuer–Simon is used for terminology
+  only; its bounded-coefficient theorem is not applied.
+- Part I makes no natural-boundary claim for `B_d` (its Remark 8.3, Question
+  1 and ledger say so; dated notes there now point to Part II). Part II makes
+  no claim about radial behaviour at non-dyadic angles or at almost every
+  angle, about nonlinear differential algebraicity, about complex defect
+  fugacity, or about a further universal term in the phase law; nothing in
+  either Part is proved for defects growing with `n`, and there is no
+  asymptotic expansion of `u_m`. The expansion of Theorem 9.1 excludes the
+  complete-layer edge `p → 1`; the sampler is conditional on sampling the
+  core.
+- Part II's [write] results (Lemma 21.4, Theorem 21.5, Proposition 24.1) are
+  the writing step's own, with proofs, and have not been independently
+  reviewed; Proposition 24.1(ii) is conditional.
+- Manuscript 03 says "independent internal reviews" checked its proofs. The
+  intake could not verify that statement about its preparation; it is not
+  evidence of review (Part II, Section 24, item 13).
 - No Lean, Rocq or interval-arithmetic certification; Section 12.1 is a
   development plan, not a claim about existing declarations. The finite
   checks are tests, not proofs.
 - **Appendix A is draft OEIS text and stays so.** Nothing was submitted to
-  OEIS by the package's author (`STATUS.md`: "No GitHub mutation, OEIS
-  submission, or external publication") or by the intake; a dated `[write]`
-  note at the appendix says so. The intake did not search OEIS for the
-  boundary sequence `1, 1, 2, 1, 20, 20, 10, 2, 7128, …`, which the appendix
-  proposes as a possible new entry only after such a search.
+  OEIS by the packages' authors (`STATUS.md`: "No GitHub mutation, OEIS
+  submission, or external publication"; the Part II packages likewise made
+  "no repository commit, OEIS submission, or message") or by the intake; a
+  dated `[write]` note at the appendix says so. The intake did not search
+  OEIS for the boundary sequence `1, 1, 2, 1, 20, 20, 10, 2, 7128, …`, which
+  the appendix proposes as a possible new entry only after such a search.
 
 ## Checks made at intake
 
-On 3 October 2026 the intake read A182220 on `oeis.org`: its formula section
-lists four conjectural expressions (Karttunen 2013, Hurt 2014, Barry 2017,
-Krivilev August 2026), each equal to `n − ⌈log₂ n⌉` (checked for `n < 600`),
-and its 30 displayed terms agree. It read printed pages 26–29 of Tomescu's
-thesis (the PDF linked in the bibliography): the source bound is on p. 29,
-rigidity (Lemma 2.1.3) on p. 27, the deletion recurrence (Corollary 2.1.7)
-on p. 28, as the manuscript cites them. The delivered programs passed on
-scratch copies (see "Rerun the checks").
+Batch 85 (Part I). On 3 October 2026 the intake read A182220 on `oeis.org`:
+its formula section lists four conjectural expressions (Karttunen 2013, Hurt
+2014, Barry 2017, Krivilev August 2026), each equal to `n − ⌈log₂ n⌉`
+(checked for `n < 600`), and its 30 displayed terms agree. It read printed
+pages 26–29 of Tomescu's thesis (the PDF linked in the bibliography): the
+source bound is on p. 29, rigidity (Lemma 2.1.3) on p. 27, the deletion
+recurrence (Corollary 2.1.7) on p. 28, as the manuscript cites them. The
+delivered programs passed on scratch copies.
+
+Batch 98 (Part II). The placement read the main proofs of both manuscripts
+line by line and found no gap; independent mpmath checks confirmed the
+initial counts `U_0..8`, the first sixteen `b_n^(0)`, manuscript 03's first
+block and amplitude corrections (bounded scaled residuals), the agreement of
+the two manuscripts' leading amplitudes, and the example ratios `−3/5` and
+`(−3+12i)/17`; the three `u(n,k)` tables (Part I's and both packages') agree
+on all 1,759 positive cells with `n ≤ 64`. No claim of either manuscript was
+found false, and no repository claim was refuted. The write reran both
+suites on scratch copies (below) and checked its own Lemma 21.4, Theorem 21.5
+and Proposition 24.1 numerically (Part II, Section 22, last note).
 
 ## Relation to the repository
 
@@ -119,8 +208,8 @@ no formal development in ProveIt treats extensional digraphs, transitive-set
 enumeration or this triangle, and the report's place in the collection
 confers no formal status. The hereditarily-finite-set codings in
 `SetTheory/BoundedConsistency/Lean/BoundedZFCConsistency/Coding.lean` and
-`Logic/Interpretability/PAHF/Coq/PAHF.v` are syntax codings, unrelated. The
-manuscript uses no repository theorem.
+`Logic/Interpretability/PAHF/Coq/PAHF.v` are syntax codings, unrelated. No
+manuscript uses a repository theorem as a premise.
 
 **Neighbouring reports** (related, no shared theorem):
 
@@ -133,7 +222,11 @@ manuscript uses no repository theorem.
   length excludes P-recursiveness. The boundary sequences here do jump, so
   a003407's criterion cannot apply to them; a dated note after Lemma 8.1
   explains this, with a003407's example `3^n + (−3)^n + 2^n` showing why the
-  plateau hypothesis is needed.
+  plateau hypothesis is needed. Its Question `dsr:nh:q:boundary` asks for a
+  natural boundary of the 3AP-free permutation series; Part II's transfer
+  Lemma 18.1 (`sbd:edge:lem:transfer`) is a general sufficient criterion
+  (coherent dyadic blocks with a common nonvanishing profile), which bears on
+  that question by method only: nothing is proved there for A003407.
 - `Algebra/SurrealNumbers/docs/foundations-and-computation/birthday-cutoffs-and-hereditary-sets`:
   its `hset:lem:collapse` is the same classical Mostowski collapse as
   Lemma 2.1, for rooted codes.
@@ -141,84 +234,181 @@ manuscript uses no repository theorem.
   rooted identity trees, the other classical coding of hereditarily finite
   sets.
 
-**Stale claims.** The manuscript's repository statements (Section 1.3 and
-`SOURCES.md`: no treatment of A182220 found; the Mahonian growing-powers
-alternative rejected because
-`oeis-sequence-asymptotics/a380274-mahonian-growing-powers` exists) are true
-at the pin and at the time of writing, and stay as dated provenance.
+**Stale claims.** The manuscripts' repository statements are true at their
+pins and stay as dated provenance: Part I's (Section 1.3 and `SOURCES.md`: no
+treatment of A182220 found; the Mahonian growing-powers alternative rejected
+because `oeis-sequence-asymptotics/a380274-mahonian-growing-powers` exists)
+and Part II's (Part I's Question 1 open and its ledger saying "not proved").
+Part I's sentences that the natural boundary is open — Remark 8.3, Question 1
+of Section 12.2, the Conclusion and the ledger row — keep their text and gain
+dated `[write]` notes (5 October 2026). The delivered `STATUS.md` still says
+"No proof of a natural boundary for the extremizer generating functions B_d";
+it describes Part I's package and stays byte-identical.
 
 ## Notation
 
-The manuscript reuses several letters with local meanings (`d` as defect and
-in `d/dp`; `B_d` vs the Bernoulli numbers `B_{2j}`; `T = 2^m` vs the labelled
-count `T(n,k)` of Appendix A; `C`, `L`, `N`, `p`, `R`, `M`, `A`). The
-labelled count `E(n, a(n))` in eq. (11) is not defined in the text; it is
-`n! u(n, a(n))`. A table in the first `[write]` note (end of Section 1)
-fixes each meaning, with the tempting false reading that the phase
-`p = n/2^(q+d)` of Section 9 equals `ρ_n = n/2^q` (true only for `d = 0`). No
-symbol was renamed.
+Part I reuses several letters with local meanings (`d` as defect and in
+`d/dp`; `B_d` vs the Bernoulli numbers `B_{2j}`; `T = 2^m` vs the labelled
+count `T(n,k)` of Appendix A; `C`, `L`, `N`, `p`, `R`, `M`, `A`). The labelled
+count `E(n, a(n))` in eq. (11) is not defined in the text; it is
+`n! u(n, a(n))`. A table in the first `[write]` note (end of Section 1) fixes
+each meaning, with the tempting false reading that the phase
+`p = n/2^(q+d)` of Section 9 equals `ρ_n = n/2^q` (true only for `d = 0`).
+
+Part II writes everything in manuscript 03's letters and translates manuscript
+02's; its notation table (second note after the Part II heading) gives, for
+each symbol, its meaning in Part II, manuscript 02's symbol, and Part I's
+meaning. The clashes: `a` is `2^(d+1) − 1` (02's `a − 1`; not `a(n)`); 02's
+`a` is `c = 2^(d+1)`; 02's `ρ_d` is written `aR` (not the dyadic phase
+`ρ_n`); `K = 2^(q−1)` (02's `N`; not Part I's `N = 2^m`); `A_q = u_m C_q
+R^(K+1)` is 02's `c_q` (02's `A_q` is `u_m C_q`; not Part I's `A`); 02's
+`P_q(w)` is `P_q(Rw)`; `t` and `L = log(1/t)` are 02's `ε` and its `L`
+(which 02 also used for a source family); 02's `T(L)` is `𝒯(L)` (`T` is a
+real radius; Part I's `T = 2^m`); `h` is always `log 2` (02 also used `h` for
+the step `2^s`, now `r = 2^s`); 02's `H_{d,h,r0}` is `B_d^(r,r0)` (not the
+entropy `H`); 03's `λ_d` (coefficients of a combination) is `γ_d` (not
+Part I's `λ_d`); 03's `U_m` is `u_m`. No symbol of Part I was renamed.
 
 ## Labels
 
-Every label carries the prefix `sbd:`. The manuscript's 63 labels (44 `eq:`,
-9 `thm:`, 4 `lem:`, 4 `cor:`, 2 `prop:`) were prefixed before anything cited
-them, and every reference was updated (28 `\eqref`, 14 `\ref`). Five section
-labels were added for the notes (`sbd:sec:entropy`, `sbd:sec:expansion`,
-`sbd:sec:formal`, `sbd:sec:questions`, `sbd:app:oeis`), so the report has 68
-labels.
+Every label carries the prefix `sbd:`. Part I's 68 labels (63 delivered
+labels prefixed at the batch-85 write, plus five section labels) are
+unchanged: none lost or renumbered (checked against a build of the committed
+text). Part II adds 127 labels in `article.tex` — `sbd:xtm:` (76, manuscript
+03's and the merged statements), `sbd:edge:` (33, manuscript 02's), `sbd:wr:`
+(16, the writing step's results and Section 21.2), and `sbd:part:one`,
+`sbd:part:two` — for 195 labels in the source. Three more,
+`sbd:xtm:tab:computed-block-profiles`, `sbd:xtm:tab:computed-radial-errors`
+and `sbd:xtm:tab:computed-first-corrections`, come from the shipped table
+files, which `\sbdinput` reads with the prefix added to every label and
+`\eqref` name in them (the files themselves are unchanged); the build defines
+198 labels.
 
-The writing step also:
+The batch-98 write also:
 
-- added four dated `[write]` notes: end of Section 1 (provenance, Tomescu's
-  credit and the meaning of the OEIS label, the intake's OEIS check,
-  repository relations, the notation table), after Lemma 8.1 (the a003407
-  counterpart), end of Section 11 (shipped layout, the unshipped transcript,
-  the intake's rerun, the OEIS licence), and end of Appendix A (draft, not
-  submitted);
-- kept the title page out of the PDF page anchors (`pageanchor=false`), which
-  removes the duplicate `page.1` destination of the delivered source;
-- disabled the `--` ligature in typewriter text (microtype
-  `\DisableLigatures`): the delivered PDF printed `--max-n 64 --brute-n 7` in
-  Section 11.2 with en dashes;
-- let URL-style paths break after hyphens, and set the bibliography ragged
-  right (three underfull lines in the delivered build).
+- added a `\part` heading for Part I (`sbd:part:one`) and a dated note before
+  the contents on the two Parts; dated `[write]` notes at Remark 8.3, Question
+  1, after Question 10, in the Conclusion, after the ledger, and a bracketed
+  note in Section 11.1 pointing to the deletion-recurrence proof;
+- added an unnumbered heading "Appendices to Part I" before Appendix A, and a
+  `\clearpage` before Appendix B so that the ledger does not break across
+  pages (a breaking longtable makes the current LaTeX kernel log "Infinite
+  glue shrinkage found in box being split");
+- added macros `\C`, `\e`, `\ii`, `\dd` (as in the Part II manuscripts) and
+  `\sbdinput` to the preamble, and three bibliography entries (Wagner's
+  Algorithmica version, Breuer–Simon, DLMF).
 
-No statement, proof or number of the manuscript was changed.
+No statement, proof or number of any manuscript was changed, except that
+manuscript 02's symbols are translated as listed above.
 
 ## Files
 
 ```text
-README.md                    this guide (replaces the delivery README)
-article.tex                  the report (delivered main file; labels prefixed, four [write] notes)
-article.pdf                  compiled report, 23 pages
-SOURCES.md                   the package's source and provenance notes (as delivered)
-STATUS.md                    the package's proof and verification status (as delivered)
-manifest-entry.tex           the package's suggested catalogue paragraph (as delivered)
-code/verify.py               exact checks and brute-force enumeration (delivered at the package root)
-code/check_asymptotics.py    Decimal diagnostics of the first correction (delivered at the package root; imports verify.py)
-data/verification.json       recorded exact run: counts of checks and the n <= 7 enumeration
-data/source_triangle.csv     u(n,k) and n! u(n,k) for every positive cell, n <= 64 (1759 rows; CRLF)
-data/boundary_counts.csv     a(n), b_n^(0), b_n^(1), b_n^(2), n! b_n^(0) for n <= 64 (64 rows; CRLF)
-data/asymptotic_checks.csv   relative errors before and after the first correction (12 rows, 70 digits; CRLF)
-data/asymptotic-output.txt   printed transcript of check_asymptotics.py
+README.md                                    this guide (replaces the delivery READMEs)
+article.tex                                  the report (Part I as delivered with labels prefixed and dated notes; Part II merged by the writes)
+article.pdf                                  compiled report, 60 pages
+SOURCES.md                                   Part I package: source and provenance notes (as delivered)
+STATUS.md                                    Part I package: proof and verification status (as delivered)
+manifest-entry.tex                           Part I package: suggested catalogue paragraph (as delivered)
+02-source-edge-PROVENANCE.md                 manuscript 02: provenance and attribution (as delivered)
+03-source-extremum-SOURCE_NOTES.txt          manuscript 03: source and novelty audit (as delivered)
+code/verify.py                               Part I: exact checks and brute-force enumeration
+code/check_asymptotics.py                    Part I: Decimal diagnostics of the first correction (imports verify.py)
+code/02-source-edge-verify.py                02: exact checks, full-set generation, mpmath profile and radial diagnostics, figures
+code/02-source-edge-make_article_tables.py   02: writes data/article_tables.tex from data/validation.json
+code/02-source-edge-Makefile                 02: PDF build and regeneration targets (delivery names)
+code/03-source-extremum-verify.py            03: exact checks, DAG enumeration, diagnostics, tables, figures
+code/03-source-extremum-build.sh             03: two-pass pdflatex build (delivery names)
+data/verification.json                       Part I: recorded exact run
+data/source_triangle.csv                     Part I: u(n,k), n! u(n,k), n <= 64 (1759 rows; CRLF)
+data/boundary_counts.csv                     Part I: a(n), b_n^(0..2), n! b_n^(0), n <= 64 (CRLF)
+data/asymptotic_checks.csv                   Part I: first-correction diagnostics (12 rows; CRLF)
+data/asymptotic-output.txt                   Part I: transcript of check_asymptotics.py
+data/02-source-edge-requirements.txt         02: mpmath 1.3.0, matplotlib 3.10.8, numpy 2.3.5 (Python >= 3.11)
+data/02-source-edge-source_triangle.csv      02: u(n,k), n <= 64 (2080 rows; CRLF)
+data/02-source-edge-boundary_counts.csv      02: b_n^(d), n <= 128, d <= 3 (512 rows; CRLF)
+data/02-source-edge-core_counts.csv          02: u_m with the chain and upper bounds, m <= 64 (CRLF)
+data/02-source-edge-exhaustive_counts.csv    02: full sets by direct generation, n <= 7 (CRLF)
+data/02-source-edge-profiles.csv             02: complex block-profile evaluations (140 rows; CRLF)
+data/02-source-edge-profile_summary.csv      02: per-block coefficient l1 bounds (CRLF)
+data/02-source-edge-endpoint_amplitudes.csv  02: amplitudes c_q against the Stirling main term (CRLF)
+data/02-source-edge-radial_growth.csv        02: radial magnitudes with truncation bounds (CRLF)
+data/02-source-edge-radial_ratios.csv        02: radial ratios at dyadic roots (300 rows; CRLF)
+data/02-source-edge-validation.json          02: machine-readable run report
+data/02-source-edge-run-output.txt           02: run transcript (six progress lines, then the JSON report)
+data/02-source-edge-article_tables.tex       02: generated tables, input in Section 22
+data/03-source-extremum-requirements.txt     03: mpmath 1.3.0, matplotlib 3.10.8
+data/03-source-extremum-source_triangle.csv  03: u(n,s), n <= 64, including n = 0 (CRLF)
+data/03-source-extremum-core_counts.csv      03: U_m with the chain and upper bounds, m <= 64 (CRLF)
+data/03-source-extremum-block_profiles.csv   03: Q_q(R_d) for d <= 2, q = 5, 8, 11, 14 (CRLF)
+data/03-source-extremum-radial_ratios.csv    03: radial ratios at roots of order 4 and 8 (CRLF)
+data/03-source-extremum-extremal_scaled_coefficients.csv  03: b_n^(0) and log(b_n^(0) R^n) (CRLF)
+data/03-source-extremum-first_correction_checks.csv       03: first-correction residuals (CRLF)
+data/03-source-extremum-verification.json    03: machine-readable run report
+data/03-source-extremum-verification.txt     03: human-readable run report
+data/03-source-extremum-diagnostic_tables.tex       03: Tables 4-5, input in Section 22.2
+data/03-source-extremum-first_correction_tables.tex 03: Table 6, input in Section 23
+figures/02-source-edge-profile_convergence.pdf            02: Figure 3
+figures/02-source-edge-profile_convergence.png            02: PNG preview of Figure 3
+figures/02-source-edge-radial_behavior.pdf                02: Figure 4
+figures/02-source-edge-radial_behavior.png                02: PNG preview of Figure 4
+figures/03-source-extremum-dyadic_scaled_coefficients.pdf 03: Figure 1
+figures/03-source-extremum-dyadic_scaled_coefficients.png 03: PNG preview of Figure 1
+figures/03-source-extremum-radial_phase_convergence.pdf   03: Figure 2
+figures/03-source-extremum-radial_phase_convergence.png   03: PNG preview of Figure 2
 ```
 
 Every file except `README.md`, `article.tex` and `article.pdf` is
-byte-identical to the delivery. Placement moved `verify.py` and
-`check_asymptotics.py` to `code/` and staged the delivery README as
-`README.md`, which this guide replaces. Not shipped, and recoverable from the
-archive
-(`git show 9d6968c8a:docs/incoming/OEIS_A182220_Source_Boundary_Research.zip > <scratch>/a182220.zip`):
+byte-identical to its delivery. Part I's placement moved `verify.py` and
+`check_asymptotics.py` to `code/`. Part II's placement (`b50febf79`) staged
+39 files (21 of manuscript 02, 18 of manuscript 03; 1,863,648 bytes) under
+their prefixes: scripts in `code/`, records and requirements in `data/`,
+figures in `figures/`, source notes at the root. Delivery name → shipped name
+is the prefix plus the base name, with these moves: 02's `Makefile` →
+`code/02-source-edge-Makefile`, 02's root `requirements.txt` →
+`data/02-source-edge-requirements.txt`, 03's root `verify.py` and `build.sh` →
+`code/03-source-extremum-…`, 03's `requirements.txt` →
+`data/03-source-extremum-requirements.txt`. 03's `requirements.txt` is
+byte-identical to the generic requirements files of two other collection
+reports (`a082528-rounding-extinction`, `a277364-bell-asymptotics`).
 
-- the delivered 21-page `article.pdf` (437,459 bytes);
-- `SHA256SUMS`, the checksum manifest (14 of 14 entries verified at
-  placement; repository policy ships no checksum manifests);
-- `data/verification-output.txt` (2,127 bytes), which the delivery README
-  calls "human-readable output" but which is a **byte copy of
-  `data/verification.json`**: `verify.py` prints the JSON report it writes.
+Not shipped, and recoverable from the archives
+(`git show 9d6968c8a:docs/incoming/OEIS_A182220_Source_Boundary_Research.zip`,
+`git show 2172df76a:docs/incoming/OEIS_EAD_Natural_Boundaries.zip`,
+`git show 2172df76a:docs/incoming/OEIS_Source_Boundaries.zip`, each
+redirected into a scratch file):
 
-Nothing was excluded as heavy; the largest file, `data/source_triangle.csv`
-(852,626 bytes), is regenerated byte for byte by `verify.py` in seconds.
+- Part I: the delivered 21-page `article.pdf` (437,459 bytes); `SHA256SUMS`
+  (14 of 14 verified at placement); `data/verification-output.txt` (2,127
+  bytes), a **byte copy of `data/verification.json`** (`verify.py` prints
+  the JSON report it writes).
+- Manuscript 02: `ead_natural_boundaries.tex` (56,207 bytes), its 22-page PDF
+  (490,952 bytes) and `README.md` (5,040 bytes).
+- Manuscript 03: `article.tex` (61,075 bytes), its 23-page PDF (520,252
+  bytes), `README.txt` (4,995 bytes) and `SHA256SUMS.txt` (21 of 21 verified
+  at placement; repository policy ships no checksum manifests).
+
+Nothing was excluded as heavy; the largest Part II file,
+`data/03-source-extremum-source_triangle.csv` (386,435 bytes), is regenerated
+byte for byte in seconds.
+
+**Delivered text that names the delivery layout or a file not shipped.**
+`SOURCES.md`, `STATUS.md` and `manifest-entry.tex` as described for Part I
+below. `code/02-source-edge-Makefile` builds `ead_natural_boundaries.tex` and
+runs `code/verify.py` and `code/make_article_tables.py`;
+`02-source-edge-PROVENANCE.md` points to `README.md` and
+`data/validation.json`; `code/02-source-edge-make_article_tables.py` reads
+`data/validation.json` and writes `data/article_tables.tex` relative to its
+parent directory; `code/03-source-extremum-build.sh` builds `article.tex`
+into `article.pdf`; `data/03-source-extremum-verification.txt` names
+`diagnostic_tables.tex` and `first_correction_tables.tex`. All of these mean
+the delivered package layout. The Part I files: `SOURCES.md` and `STATUS.md`
+are unchanged (`STATUS.md`'s "The final PDF was compiled with pdfLaTeX"
+describes the delivered 21-page PDF); `manifest-entry.tex` calls itself "not
+uploaded or committed"; `code/verify.py`'s docstring says `python verify.py`
+from the package root; both Part I programs default their output to a
+`data/` directory next to the script. Part I's mentions of "the accompanying
+program" mean `code/verify.py`.
 
 **Third-party data.** `code/verify.py` embeds, as test fixtures, the first
 17 terms of A001192 and the first 25 flattened terms of A182162, copied from
@@ -226,32 +416,33 @@ The On-Line Encyclopedia of Integer Sequences (https://oeis.org). OEIS
 content is published by The OEIS Foundation Inc. under the Creative Commons
 Attribution-ShareAlike 4.0 licence (CC BY-SA 4.0); those fixture lists are
 third-party data under that licence, not MIT-0 like the rest of the
-repository. The program never contacts OEIS.
+repository. The Part II packages ship no OEIS data: every count is computed
+by their own code. No program contacts OEIS or the network.
 
-Delivered text that names the delivery layout or a file not shipped:
-`SOURCES.md` and `STATUS.md` are unchanged (`STATUS.md`'s "The final PDF was
-compiled with pdfLaTeX" describes the delivered 21-page PDF);
-`manifest-entry.tex` calls itself "not uploaded or committed" (it is now
-committed as a delivered file; the collection's own catalogue entry is
-separate); `code/verify.py`'s docstring says `python verify.py` from the
-package root; both programs default their output to a `data/` directory next
-to the script. The article's mentions of "the accompanying program" and
-`verify.py` mean `code/verify.py`.
+**Byte-level notes.** Every CSV file is CRLF throughout (Python's `csv`
+module); `-text` lines in `SetTheory/Cardinals/.gitattributes` (three for
+Part I, fifteen for Part II) keep their bytes. The JSON, text and `.tex`
+outputs are written in text mode, so on Windows a rerun emits them with CRLF
+where the shipped files are LF; compare after stripping `\r`. Runtime fields
+(`elapsed_seconds`, the Python version) and figure metadata change between
+runs; byte identity of those is not a reproducibility criterion (as
+manuscript 02's README says).
 
-**Byte-level notes.** The three CSV files are CRLF throughout (Python's `csv`
-module); three lines `docs/reports/…/a182220-source-boundary/data/<name>.csv
--text` in `SetTheory/Cardinals/.gitattributes` keep their bytes.
-`verify.py` writes `verification.json` in text mode, so on Windows a rerun
-emits it with CRLF where the shipped file is LF; compare after stripping
-`\r`.
+## Rerun the checks (on scratch copies only)
 
-## Rerun the checks (on a scratch copy)
+**Never run the programs in place.** Part I's `verify.py` defaults `--out` to
+`code/data/`, and `check_asymptotics.py` writes to `data/` next to the
+script. Manuscript 02's `verify.py` defaults `--out-dir` to the parent of
+`code/`, i.e. **this report's root**: run here, it would overwrite Part I's
+`data/boundary_counts.csv` and `data/source_triangle.csv` with files of the
+same names but different content, and write further unprefixed files into
+`data/` and `figures/`; its `make_article_tables.py` has no option and would
+look for `data/validation.json` here. Manuscript 03's `verify.py` writes
+`data/` and `figures/` beside itself, inside `code/`. Each recipe below
+rebuilds the delivered layout in a temporary directory (Git Bash, from this
+directory).
 
-Never run the programs in place: `verify.py` defaults `--out` to `code/data/`
-beside itself, and `check_asymptotics.py` has no output option and writes to
-`data/asymptotic_checks.csv` next to the script (in place it fails, or, once
-`verify.py` has created `code/data/`, writes there). Rebuild the delivered layout on a copy
-(Git Bash, from this directory; standard library only, Python 3.10 or later):
+Part I (standard library only, Python 3.10 or later):
 
 ```sh
 T=$(mktemp -d); X="$T/oeis_source_boundary"; mkdir -p "$X"
@@ -267,44 +458,89 @@ tr -d '\r' < "$T/verify.out" | cmp - data/verification.json && echo "stdout = ve
 tr -d '\r' < "$T/asym.out"   | cmp - data/asymptotic-output.txt && echo "transcript matches"
 ```
 
-(On a POSIX host use `python3` for `py`.) At intake (3 October 2026, Windows,
-Python 3.14.4) this printed `same` for all four files (the three CSV files
-byte for byte, `verification.json` after CRLF stripping) and both matches.
-The run checks 2,080 triangle cells by two recurrences (the marked-source
-sieve and Tomescu's deletion recurrence), 2,080 covering inequalities, 64
-extremizer counts and 354 finite-defect entries (`d ≤ 5`), the 17 + 25 OEIS
-fixture terms, and an exhaustive enumeration through `n = 7` (75,598 classes
-at `n = 7`) with its source rows and extremal arc distributions;
+At intake (3 October 2026, Windows, Python 3.14.4) this printed `same` for
+all four files and both matches. The run checks 2,080 triangle cells by two
+recurrences, 2,080 covering inequalities, 64 extremizer counts and 354
+finite-defect entries (`d ≤ 5`), the 17 + 25 OEIS fixture terms, and an
+exhaustive enumeration through `n = 7` (75,598 classes at `n = 7`);
 `check_asymptotics.py` confirms at `n = 192, 768, 3072, 12288` and
 `d = 0, 1, 2` that the first correction improves all 12 leading
-approximations. `--brute-n 0` skips the enumeration; `--max-n` extends the
-exact triangle.
+approximations.
+
+Part II (needs mpmath 1.3.0 and Matplotlib 3.10.8, and for 02 NumPy 2.3.5 and
+Python 3.11 or later):
+
+```sh
+U="uv run --no-project --python 3.12 --with mpmath==1.3.0 --with matplotlib==3.10.8 --with numpy==2.3.5 python"
+T=$(mktemp -d)
+E="$T/ead-natural-boundary"; mkdir -p "$E/code" "$E/data" "$E/figures"
+cp code/02-source-edge-verify.py "$E/code/verify.py"
+cp code/02-source-edge-make_article_tables.py "$E/code/make_article_tables.py"
+(cd "$E" && $U code/verify.py > "$T/02-run-output.txt" && $U code/make_article_tables.py)
+X="$T/oeis_natural_boundaries"; mkdir -p "$X"
+cp code/03-source-extremum-verify.py "$X/verify.py"
+(cd "$X" && $U verify.py --max-n 64 --brute-n 6 > "$T/03-stdout.txt")
+for f in "$E"/data/*; do b=$(basename "$f")
+  tr -d '\r' < "$f" | cmp -s - <(tr -d '\r' < "data/02-source-edge-$b") && echo "same  02 $b" || echo "DIFF  02 $b"; done
+for f in "$X"/data/*; do b=$(basename "$f")
+  tr -d '\r' < "$f" | cmp -s - <(tr -d '\r' < "data/03-source-extremum-$b") && echo "same  03 $b" || echo "DIFF  03 $b"; done
+```
+
+At the batch-98 write (5 October 2026, Windows, Python 3.12.13) manuscript
+02's run took about 77 s and manuscript 03's about 44 s (recorded: 15 s and
+10 s). All fifteen CSV files were reproduced byte for byte and the three
+`.tex` table files after stripping `\r`; `validation.json`, `run-output.txt`,
+`verification.json` and `verification.txt` printed `DIFF` only for the
+Python patch version and the elapsed time, and the figures were re-rendered
+(their bytes differ). Manuscript 02's run checks 2,080 triangle cells by two
+recurrences, 2,080 support and covering assertions, 242 finite-defect
+entries, 64 core bounds, 112 binomial spot checks and full sets through
+`n = 7` (75,598), and evaluates 140 profile points and 300 radial ratios at
+100 digits; manuscript 03's checks both triangles through `n = 64` (2,080
+cells), 242 finite-defect entries, 1,040 + 80 first-order coefficient
+identities, and enumerates 32,768 ordered graphs on six vertices (3,240
+extensional, 1,802 classes).
 
 ## Build the PDF
 
 pdfLaTeX (amsmath, amssymb, amsthm, mathtools, booktabs, array, longtable,
-enumitem, xcolor, graphicx, fancyhdr, hyperref, lmodern, microtype); the
-bibliography is embedded. Build in a scratch copy:
+enumitem, xcolor, graphicx, fancyhdr, hyperref, lmodern, microtype; expl3 for
+`\sbdinput`); the bibliography is embedded. The three table files and the four
+figure PDFs are inputs. Build in a scratch copy:
 
 ```sh
-B=$(mktemp -d); cp article.tex "$B/"; cd "$B"
-latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
+B=$(mktemp -d); mkdir -p "$B/data" "$B/figures"
+cp article.tex "$B/"; cp data/*_tables.tex "$B/data/"; cp figures/*.pdf "$B/figures/"
+cd "$B"; latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The committed PDF was built this way with MiKTeX: 23 pages; no errors or
-warnings, no undefined references or citations, no multiply defined labels,
-no duplicate PDF destinations, no overfull or underfull boxes. The delivered
-source, built the same way, gives 21 pages with one duplicate destination
-(`page.1`) and three underfull bibliography lines.
+The committed PDF was built this way with MiKTeX: 60 pages (Part I's 23
+pages before batch 98); no errors or warnings, no undefined references or
+citations, no multiply defined labels, no duplicate PDF destinations, no
+overfull or underfull boxes. Every table (1–6) and figure (1–4) appears;
+a missing input stops the build (manuscript 03's `\IfFileExists` guards,
+which would drop them silently, are not used).
 
 ## Provenance
 
-- Sources cited by the manuscript: OEIS A182220, A182162, A001192, A182161;
-  Tomescu, *Sets as Graphs* (PhD thesis, Udine, 2011); Policriti–Tomescu,
-  Inform. Process. Lett. 111 (2011) 787–791; Wagner, ANALCO 2012, 1–8;
-  Peddicord, Proc. AMS 13 (1962) 825–828.
-- Repository input: the pin `6bf7f30d0` (3 October 2026), used for a limited
-  non-duplication search; no repository theorem is used.
-- Batch 85 of `docs/incoming`, manuscript 07; arrival `9d6968c8a`, placement
-  `ddf8df5d5` (batch 85C), written in the batch-85 write phase
-  (3 October 2026). Single source, so the write made no merge choices.
+- Sources cited by Part I: OEIS A182220, A182162, A001192, A182161; Tomescu,
+  *Sets as Graphs* (PhD thesis, Udine, 2011); Policriti–Tomescu, Inform.
+  Process. Lett. 111 (2011) 787–791; Wagner, ANALCO 2012, 1–8; Peddicord,
+  Proc. AMS 13 (1962) 825–828. Added by Part II: Wagner, Algorithmica 66
+  (2013) 829–847; Breuer–Simon, Adv. Math. 226 (2011) 4902–4920; NIST DLMF
+  §5.11.
+- Repository inputs: the pins `6bf7f30d0` (3 October 2026; Part I) and
+  `d18416ec7` (4 October 2026; both Part II manuscripts), used for
+  non-duplication searches and as the text continued; no repository theorem
+  is used.
+- Part I: batch 85 of `docs/incoming`, manuscript 07; arrival `9d6968c8a`,
+  placement `ddf8df5d5` (batch 85C), written in `eab47e330` (3 October 2026).
+- Part II: batch 98, manuscripts 01 and 05; arrival `2172df76a`, placement
+  `b50febf79` (batch 98C), written by the batch-98 write (5 October 2026).
+  The merge chose manuscript 05 as base (same hypotheses, stronger on every
+  shared theorem); shared theorems are printed once and credited to both,
+  with manuscript 01's different proofs as marked second routes; everything
+  only in manuscript 01 is printed in full; the statements both re-prove
+  from Part I are printed as a correspondence table with the differing
+  routes; the question lists and ledgers are merged. The provenance notes at
+  the start of Part II give the details.
