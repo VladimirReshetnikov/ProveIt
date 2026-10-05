@@ -1,17 +1,20 @@
 # Corner Polyhedra and Schnyder Labelings
 
 **Polynomial exponents, non-D-finiteness and limiting amplitudes for OEIS
-A377922, A377920 and A377921 (Fusy–Narmanli–Schaeffer Conjecture 25)**
+A377922, A377920 and A377921 (Fusy–Narmanli–Schaeffer Conjecture 25), and a
+log-scale cone theorem for walks with a finite internal state**
 
-A research report dated 2 October 2026, built from two manuscripts, each
-printed in full. Part I's author line is "Research note"; Part II's is
-"Research addendum" (its PDF metadata also say "Research note"). Neither
-names a tool or an author.
+A research report dated 2 October 2026, built from three manuscripts, each
+printed in full; Part III was added on 5 October 2026. Part I's author line
+is "Research note"; Part II's is "Research addendum" (its PDF metadata also
+say "Research note"); Part III's is "Research report 112" (bundle Report
+112). None names a tool or an author.
 
 | Source | Manuscript | Archive | Pin | Placed | Printed as |
 |---|---|---|---|---|---|
 | 45 | batch 77, manuscript 45 | `oeis-bimodal-cone-research.zip`, arrival commit `096ee7b87` (wrapper `oeis-bimodal-cone-report/`, main file `article.tex`, 15-page PDF; PDF and `SHA256SUMS` not shipped) | none: no ProveIt commit is named; the only repository input was a GitHub code search, which returned nothing | `aa7345800` | Part I: Sections 1–10, Appendix A |
 | 46 | batch 77, manuscript 46 | `oeis-bimodal-full-asymptotics.zip`, arrival commit `096ee7b87` (wrapper `oeis-bimodal-amplitude-report/`, main file `addendum.tex`, 14-page PDF; manuscript, PDF, README, `SHA256SUMS`, `build.sh`, `requirements.txt` and the embedded Foundation copy not shipped) | none: no ProveIt commit is named; the repository input is source 45's code search | `aa7345800` | Part II: Sections 11–21 |
+| 47 | batch 103, cluster 103-A377922, manuscript 01; bundle Report 112 | `Geometric_OEIS_Sequences_Cone_Exponents_and_Inverses_Source.zip`, arrival commit `60f54ea06` (wrapper `report112/`, main file `report112.tex`, 19-page PDF; manuscript, PDF, README and `manifest.json` not shipped) | none: no ProveIt commit, path or search is named | `9c995cefe` | Part III: Sections 22–32 (Section 22 a guide written at the write) |
 
 **Status:** AI-assisted? Not stated by either delivery. Unrefereed, not
 formalized. Both parts are backed by exact symbolic checks and finite
@@ -23,6 +26,12 @@ Source 46 is an addendum to source 45: it embeds an unchanged copy of all 30
 files of source 45's package (byte-identical at placement), cites it as "the
 Foundation", and does not repeat its proofs. The copy is not shipped; source
 45 is printed once, as Part I.
+
+Source 47 (bundle Report 112, 2 October 2026) was written in a different
+session about eight hours later and shows no knowledge of sources 45 and 46.
+It proves the exponents again, on the logarithmic scale, as instances of a
+general theorem; its statements about the three sequences are weaker than
+Parts I–II and are printed as a second route, its new material in full.
 
 ## What it proves
 
@@ -62,6 +71,39 @@ Combin. 30(2) (2023), P2.17). Put `μ_P = 9/2`, `μ_S = 16/3`,
 - A Lambert-`W_{-1}` inverse with a vanishing-width two-ceiling bracket
   (Theorem 20.1).
 
+**Part III (source 47, bundle Report 112)**
+- Theorem 24.1 (Report 112's Theorem 2.1): a cone theorem for a
+  Markov-additive chain on `Z² × E` with a finite internal state (phase) set
+  `E` and unbounded steps with a uniform exponential moment, killed on leaving
+  the closed quadrant. Under hypotheses (H1)–(H5) (primitive phase matrix,
+  exponential moment, zero drift and positive definite covariance, no
+  secondary Fourier eigenvalue, legal seeds from both endpoint phases),
+  `K_n((0,a),(0,b)) = n^(-1-π/θ+o(1))` at every integer time; under
+  (H1)–(H4) the survival bound `P(τ > n) ≤ C_ε n^(-ν/2+ε)`. The method:
+  martingale functional limit theorem, Fourier-matrix local limit theorem,
+  an exact-time interior bridge (Lemma 24.2), Brownian wedge crossings over
+  geometric annuli and two first-hit prefixes glued at the exact time. New to
+  the report; Parts I–II disclaimed such a theorem.
+- Proposition 29.1: an explicit six-face sleeve injection from Schnyder
+  labelings of size `n` into those of size `n + 6` with non-isolated outer
+  white vertices, hence `s_{n-6} ≤ s̃_n ≤ s_n` for `n ≥ 8`. New. With Part
+  I's Theorem 1.1 it gives `s̃_n = Θ(μ_S^n n^(-α_S))` (Remark 29.3, proved at
+  the write).
+- Non-D-finiteness from the logarithmic law alone: nonnegative integer
+  coefficients with `a_n = Γ^n n^(-α+o(1))`, `α` irrational, are not those
+  of a D-finite series (Section 27; stated in general in Remark 27.1, at the
+  write). Part I's Lemma 9.2 needs `Θ` bounds.
+- The fixed-endpoint sandwich `e_{n-1} ≤ p_n ≤ e_{n+1}` (25.6), `e_L` the
+  corner paths of length `L` from `(0,0)` to `(1,1)`; the exponential-moment
+  certificate `189/13` for a whole Schnyder aggregate (26.7); the bounds
+  `4 < α_P < 5`, `6 < α_S < 7`; three references not cited in Parts I–II
+  (Denisov–Zhang 2025, Grama–Lauvergnat–Le Page 2020, Pham–Peigné–Son 2026).
+- A second route, weaker than Parts I–II, to everything Report 112 says about
+  the sequences: `p_n = μ_P^n n^(-α_P+o(1))`, the same for `s_n` and `s̃_n`,
+  non-D-finiteness of the three generating functions, and first-threshold
+  inverses with error `o(log log Y)` (Theorem 23.1). Table 2 maps every
+  result of Report 112 to its counterpart in Parts I–II.
+
 ## What is not claimed
 
 - **No numerical digits** of `κ_P` or `κ_S`, no rate of convergence and no
@@ -75,6 +117,15 @@ Combin. 30(2) (2023), P2.17). Put `μ_P = 9/2`, `μ_S = 16/3`,
 - No general cone theorem for Markov-modulated walks: the argument uses a
   fixed cycle buffer specific to these two tandem-walk models. Part II
   assumes no cone-killed local theorem for the two-state chain.
+  *[5 October 2026]* True of Parts I–II only. Part III's Theorem 24.1 is a
+  general cone theorem for walks with a finite internal state, at the
+  logarithmic scale; the report still has no general amplitude or `Θ`
+  theorem (Questions Q1–Q2 of Section 31.1).
+- Part III keeps all of Report 112's non-claims: no amplitude, no full
+  equivalent, no rate for the `o(1)` of Theorem 24.1, no claim at endpoint
+  phases without seeds, no `O(1)` inverse of its own; its finite checks
+  certify algebra and finite ranges, not the cone theorem, the limit
+  theorems, the sleeve injection for all maps or any asymptotic.
 - The counting bijections and conjectures are Fusy–Narmanli–Schaeffer's,
   the iid cone input (Theorems 2–3 of *Random walks in cones revisited*) is
   Denisov–Wachtel's, the non-D-finiteness step uses the
@@ -91,7 +142,19 @@ Those sentences
 describe source 45's own scope and are printed unchanged; dated `[write]`
 notes point to Part II. Still open after the merge: the values of `κ_P` and
 `κ_S`, rates, corrections, exact rounding, and other parity-dependent tandem
-models with a fixed cycle buffer (Part I, Section 10).
+models with a fixed cycle buffer (Part I, Section 10). *[5 October 2026]*
+For the last item, Part III's Theorem 24.1 gives the logarithmic-scale
+exponent for every chain satisfying (H1)–(H5), with or without a buffer;
+amplitudes and `Θ` bounds for such chains remain open.
+
+Report 112 (Part III) likewise calls the logarithmic power "the advance
+established here" and lists amplitudes, the limit of `s̃_n/s_n` and an
+`O(1)` inverse as open. It did not know Parts I–II, which settle all three
+(Theorem 11.1 and (11.4), giving the limit `(16/19)^3`; Lemma 9.5). Those
+sentences are printed unchanged with dated notes; Section 31 records which
+of Report 112's questions remain open, and Section 31.1 adds the write's
+own (an amplitude and a `Θ` form of Theorem 24.1, endpoints without seeds,
+steps not independently rechecked). No claim of Report 112 was found wrong.
 
 **Inversion mechanics.** Lemma 9.5 and Theorem 20.1 are instances of the
 transseries volume
@@ -100,7 +163,9 @@ the model equation `λr − α log r = log(Y/γ)` is `p0:thm:lambert-core`
 (`a = log μ`, `b = −α`, branch `W_{-1}`), its expansion is the first step
 of `p0:thm:lambert-centered`, and the ceiling bracket is the separation
 situation of `p0:thm:staircase`. No novelty is claimed for the inversion
-mechanics; dated notes in Sections 9.2 and 20 say so.
+mechanics; dated notes in Sections 9.2 and 20 say so. Part III's inverse
+(23.4), with error `o(log log Y)`, is the same instance at logarithmic
+precision (dated note in Section 28).
 
 ## Notation
 
@@ -119,10 +184,26 @@ guide lists them with the tempting false readings. The dangerous ones:
   amplitude; Part I's `β = k − α`, Part II's `β` a survival constant.
 - In both parts the roman `e` is the even parity state, not Euler's number.
 
+Part III keeps Report 112's letters and has its own clash table (Table 3,
+Section 22.4). The dangerous ones:
+
+- Report 112 works in half-scale (quotient) coordinates, `x = 2U + c`, so
+  its `Σ_P`, `Σ_S` and phase covariances `V^P_c`, `V^S_c` are **one quarter**
+  of the matrices with the same names in Parts I–II (Remark 22.1, proved at
+  the write, also converts drifts and correctors). Correlations, angles and
+  exponents agree.
+- Its `Γ_P`, `Γ_S` are `μ_P`, `μ_S`; its `ν = π/θ` is `p` (Part II's `ν` is a
+  probability law); its phases `0`, `1` are the states `e`, `o`; its `e_L`
+  is a path count, and its `e^t` is Euler's number.
+- Its `A`, `F`, `J`, `W`, `T`, `D`, `G`, `C`, `H`, `κ`, `E`, `K_n` and
+  `b_n` mean other things than the same letters in Parts I–II; Table 3 lists
+  them.
+
 ## Relation to the repository
 
-**Formal status.** No statement of this report is formalized in Lean or
-Rocq, and its place in the collection gives it no formal status. The only
+**Formal status.** No statement of this report, Part III included, is
+formalized in Lean or Rocq, and its place in the collection gives it no
+formal status. The only
 related formal statement is the generic staircase lemma
 `Fabius.staircase_separation` in
 `Analysis/FabiusFunction/Lean/FabiusFunction/StaircaseInversion.lean`, which
@@ -136,6 +217,20 @@ Weyl chamber by exact coefficient identities and mentions, without using,
 the Denisov–FitzGerald harmonic determinant; no theorem is shared. This
 pointer is made here only.
 
+*[5 October 2026]* Two bundle reports of the same day use Part III's method
+model by model: Report 111, the report `a348351-one-sided-rectangulations`
+in this directory (placed in `9c995cefe`), for one-sided rectangulations
+(A348351), and Report 123, for the inversion-sequence class A279571
+(arrival `60f54ea06`, not yet placed). The a348351 report's Remark 1.2
+(`osr:rem:cone`) checks that its bounded-step four-colour walk satisfies
+(H1)–(H5), so its exponent is an instance of Theorem 24.1
+(`cps:log:thm:cone`); its Remark 10.1 (`osr:rem:criterion`) generalizes
+Part I's Lemma 9.2 (`cps:lem:nonD`) to `μⁿn^(−α+o(1))`, as Part III's Remark
+27.1 does; its irrationality certificate (a conjugate of `2cos θ` below
+`−2`) differs from Lemma 9.1. Neither Report 111 nor Report 112 cites the
+other; Section 22.5 and a dated note after Lemma 9.2 say so. The reports
+share no text and stay separate.
+
 **Stale delivery statements.** Both literature receipts
 (`45-cone-literature-status.md`, `46-amp-literature-status.md`) and
 `data/45-cone-public-overlap-check.json` record that a GitHub code search of
@@ -143,12 +238,26 @@ ProveIt for A377920, A377921, A377922, "Schnyder" and "corner polyhedra"
 returned nothing. That was true on 2 October 2026 before placement; the only
 matches now are this report's files.
 
+Report 112 (Part III) names no ProveIt path or search. Its claims that
+amplitudes, the `s̃_n/s_n` limit and an `O(1)` inverse are open, and that no
+theorem covers these kernels with a full equivalent, describe the
+literature it checked; Parts I–II settle them for these two models (dated
+notes in Sections 23, 30 and 31).
+
 ## Labels
 
 Part I's labels carry the prefix `cps:` (source 45's 73 labels, prefixed
 before anything cited them); Part II's carry `cps:amp:` (source 46's 78
 labels). The merge added four: `cps:sec:guide`, `cps:tab:notation`,
-`cps:part:exponents`, `cps:part:amplitudes`. Total 155. Every label keeps its
+`cps:part:exponents`, `cps:part:amplitudes`. Total 155 before Part III.
+Part III added 86: `cps:part:logcone`, Report 112's 67 labels with the
+prefix `cps:log:`, and 18 of the write (`cps:log:sec:guide`, `…:sec:new`,
+`…:sec:provenance`, `…:sec:printing`, `…:sec:notation`, `…:sec:siblings`,
+`…:tab:map`, `…:tab:notation`, `…:rem:scale`, `…:rem:criterion`,
+`…:rem:theta`, `…:rem:rigid`, `…:sec:questions`, `…:q:amplitude`,
+`…:q:theta`, `…:q:seeds`, `…:q:unchecked`, `…:q:rates`). Total 241; no
+earlier label was renamed, lost or renumbered (checked against a build of
+the previous text). Every label keeps its
 source number: Part I's numbers are source 45's (checked against a build of
 the delivered `article.tex`), and Part II's are source 46's with 10 added to
 the section number (checked against a build of `addendum.tex`).
@@ -161,16 +270,31 @@ became source 45's `DWrevisited` (the same paper); and ten dated `[write]`
 notes (five in Part I's body, one in Appendix A, four in Part II). The editorial guide before Part I is unnumbered. No statement,
 proof, symbol or number of either manuscript was changed.
 
+Part III prints Report 112 in full as Sections 23–32 (its Section `k` is
+Section `k + 22`, its Theorem 2.1 is Theorem 24.1, its Proposition 7.1 is
+Proposition 29.1); Section 22 is a guide written at the write, with the map
+table (Table 2), the clash table (Table 3) and Remark 22.1. Apart from
+labels, macro names (`\E`, `\R`, `\Z`, `\Q`, `\C` mapped to this
+report's), the omitted title block, contents and running heads, and the
+citation key `DW` (now `DWrevisited`), nothing of Report 112 was changed;
+its equations are numbered within sections. The write added 29 notes dated
+`[write, 2026-10-05]`: six in the guide before Part I (and a dated
+paragraph in the abstract), four in Part I, one in Part II, eighteen in
+Part III, and four remarks of its own in Part III (22.1, 27.1, 29.3,
+29.4) and the further questions of Section 31.1.
+
 ## Files
 
 ```text
 README.md                                    this guide (replaces both delivery READMEs)
-article.tex                                  the report (source 45 delivered as article.tex, source 46 as addendum.tex)
-article.pdf                                  compiled report, 36 pages
+article.tex                                  the report (source 45 delivered as article.tex, source 46 as addendum.tex, source 47 as report112.tex)
+article.pdf                                  compiled report, 64 pages
 45-cone-literature-status.md                 source 45: bounded literature and overlap receipt (as delivered)
 45-cone-mathematical-verification.md         source 45: the delivery's own mathematical review (as delivered)
 46-amp-integrated-mathematical-review.md     source 46: the delivery's own review of the addendum with the Foundation
 46-amp-literature-status.md                  source 46: literature snapshot (source 45's, with a preface)
+47-logcone-checks-README.md                  source 47: what each exact check does and does not prove (delivered checks/README.md)
+47-logcone-checks-VALIDATION_SUMMARY.md      source 47: reader validation summary (delivered checks/VALIDATION_SUMMARY.md)
 code/45-cone-run_all.py                      Part I: runs the four checks below, writes results/verification-summary.json
 code/45-cone-verify_symbols.py               Part I: exact kernels, correctors, covariances, cycle laws, angles (SymPy)
 code/45-cone-independent_corner_checks.py    Part I: separate P algebra, 25,900 bounded cycle shapes, p_n to n = 15
@@ -180,6 +304,14 @@ code/45-cone-build.sh                        Part I: two-pass pdfLaTeX build of 
 code/46-amp-run_all.py                       Part II: integrity check, new algebra, isolated Foundation replay
 code/46-amp-verify_foundation.py             Part II: hashes the embedded Foundation copy (not shipped; see below)
 code/46-amp-verify_addendum.py               Part II: exact Brownian/Gamma, determinant, multiplier and inverse checks
+code/47-logcone-checks-validate.py           Part III: kernels, moments, Fourier witnesses, seeds, original-walk counts, sleeve (SymPy)
+code/47-logcone-checks-verify_sleeve.py      Part III: finite sleeve graph, colours, labels and root recovery (imported by validate.py)
+code/47-logcone-checks-run_validation.py     Part III: 57 named mutants in two modes and a fresh-directory replay
+code/47-logcone-integrity.py                 Part III: checks the package against manifest.json (not shipped)
+code/47-logcone-integrity_corruption_test.py Part III: corruption tests of integrity.py on temporary copies
+code/47-logcone-build.py                     Part III: double clean pdfTeX build of report112.tex (not shipped), byte equality required
+code/47-logcone-replay.py                    Part III: fresh replay from the original archive, PDF rebuild included
+code/47-logcone-seal.py                      Part III: rebuilds a deterministic ZIP from manifest.json
 data/45-cone-A377920.seq                     Part I: OEIS entry A377920 (s_n), oeisdata export da8d37c6 (CC BY-SA 4.0)
 data/45-cone-A377921.seq                     Part I: OEIS entry A377921 (rigid surfaces), same export
 data/45-cone-A377922.seq                     Part I: OEIS entry A377922 (p_n), same export
@@ -206,6 +338,18 @@ data/46-amp-verification-summary.json        Part II: run_all.py summary (Python
 data/46-amp-integrated-mathematical-review.json  Part II: hash-bound receipt of the review
 data/46-amp-provenance.json                  Part II: Foundation hashes and source provenance
 data/46-amp-visual-validation.json           Part II: layout check of the unshipped 14-page PDF
+data/47-logcone-checks-fixtures.json         Part III: expected rationals, seeds, finite prefixes (OEIS terms, CC BY-SA 4.0), scope limits
+data/47-logcone-checks-requirements.txt      Part III: sympy==1.14.0
+data/47-logcone-checks-results-ordinary.json Part III: recorded output of validate.py --json
+data/47-logcone-checks-results-ordinary.log  Part III: its stdout
+data/47-logcone-checks-results-optimized.json  Part III: the same under python -O
+data/47-logcone-checks-results-optimized.log Part III: its stdout
+data/47-logcone-checks-results-validation_manifest.json  Part III: every mutant, diagnostic and hash of run_validation.py
+data/47-logcone-checks-results-fresh_replay_manifest.json  Part III: the fresh-directory rerun
+data/47-logcone-checks-results-fresh_replay.log  Part III: its summary
+data/47-logcone-validation-integrity_campaign.json  Part III: recorded output of integrity_corruption_test.py (12 cases, 24 rejections)
+data/47-logcone-validation-quality_summary.json  Part III: reader-facing scope (proved / not proved)
+data/47-logcone-validation-sources.json      Part III: source ledger with locators
 ```
 
 Every file except `README.md`, `article.tex` and `article.pdf` is
@@ -216,13 +360,23 @@ byte-identical to its delivery. The delivered files have LF line endings.
 shipped name of source 46 with `46-amp-`. Scripts went from `scripts/` (and
 `build.sh` from the package root) to `code/`; `results/*`, `sources/*`,
 `requirements.txt` and `audit/*.json` to `data/`; `audit/*.md` and source
-46's `sources/literature-status.md` to the report root.
+46's `sources/literature-status.md` to the report root. Source 47's files
+carry `47-logcone-` followed by their delivered path with `/` replaced by
+`-` (so `checks/results/ordinary.json` is
+`data/47-logcone-checks-results-ordinary.json`): programs in `code/`,
+fixtures, requirements and records in `data/`, the two notes of `checks/`
+at the report root.
 
 **Not shipped** (all in the arrival commit): both delivered PDFs; both
 `SHA256SUMS` ledgers (verified 29/29 and 49/49 at placement); source 46's
 manuscript, README, `build.sh`, `requirements.txt` (identical to source
 45's), its embedded 30-file Foundation copy, and
 `results/foundation-integrity.json` (a SHA-256 ledger of that copy).
+Source 47's `report112.tex`, `report112.pdf`, `README.md` and
+`manifest.json` (a SHA-256 and size inventory of 25 files, verified 25/25
+at placement), all in arrival commit `60f54ea06`. Its
+`checks/requirements.txt` is a one-line pin that occurs many times in the
+repository; it is shipped for this report as delivered.
 
 **Delivered text that still uses delivery names.**
 - The article's Appendix A and Section 10, and source 45's delivered README
@@ -245,6 +399,15 @@ manuscript, README, `build.sh`, `requirements.txt` (identical to source
 - `46-amp-literature-status.md` points to
   `foundation/sources/public-overlap-check.json`, shipped as
   `data/45-cone-public-overlap-check.json`.
+- Source 47's two notes and its records name `checks/validate.py`,
+  `checks/results/…`, `report112.tex`, `report112.pdf`, `manifest.json` and
+  `report112_source_checks.zip` (the archive's build name; it was delivered
+  as `Geometric_OEIS_Sequences_Cone_Exponents_and_Inverses_Source.zip`).
+  `validate.py` imports `verify_sleeve` and reads `fixtures.json` beside
+  itself; `integrity.py`, `integrity_corruption_test.py` and `seal.py` need
+  `manifest.json`; `build.py` needs `report112.tex`; `replay.py` needs the
+  archive. Part III's Sections 31–32 describe that package; a dated note in
+  Section 32 says what is shipped.
 
 ## Rerunning the checks
 
@@ -297,6 +460,44 @@ output equals the delivered one modulo CR (119 s here on 2 October 2026; the
 placement run took 88 s). On a POSIX system it should pass as delivered. Do
 not run the archive's `build.sh` scripts in the repository.
 
+**Part III, exact checks** (from this directory, Git Bash; restores the
+delivered `checks/` names):
+
+```sh
+R=$(mktemp -d) && mkdir "$R/checks"
+cp code/47-logcone-checks-validate.py "$R/checks/validate.py"
+cp code/47-logcone-checks-verify_sleeve.py "$R/checks/verify_sleeve.py"
+cp data/47-logcone-checks-fixtures.json "$R/checks/fixtures.json"
+cd "$R" && uv run --no-project --with sympy==1.14.0 python checks/validate.py > ordinary.log
+uv run --no-project --with sympy==1.14.0 python checks/validate.py --json ordinary.json > /dev/null
+cd - && diff --strip-trailing-cr "$R/ordinary.log" data/47-logcone-checks-results-ordinary.log
+diff --strip-trailing-cr "$R/ordinary.json" data/47-logcone-checks-results-ordinary.json
+```
+
+On 5 October 2026 both runs took 8 s together here and matched the recorded
+log and JSON modulo CR. Add `-O` after `python` for the optimized records.
+
+**Part III, complete package** (integrity, mutation campaign, corruption
+tests; run from the archive, preferably on a POSIX system):
+
+```sh
+R=$(mktemp -d) && git show 60f54ea06:docs/incoming/Geometric_OEIS_Sequences_Cone_Exponents_and_Inverses_Source.zip > "$R/a.zip"
+cd "$R" && unzip -q a.zip && cd report112
+python3 integrity.py && python3 checks/validate.py && python3 integrity_corruption_test.py
+python3 checks/run_validation.py --output ../rv-out
+```
+
+At placement (on a copy, Windows) `integrity.py` passed 25/25,
+`integrity_corruption_test.py` passed in both modes (12 cases, 24
+rejections), and `run_validation.py` rejected all 57 mutants with their
+expected diagnostics and reproduced the recorded baselines modulo CR; its
+nested fresh-directory replay was cut by a 15-minute time box, so the
+replay manifest was not regenerated. `build.py` and `replay.py` were not
+run: they require pdfTeX from TeX Live 2025 for a byte-identical PDF, and
+`replay.py` the archive under its build name (pass `--archive`). Never run
+`run_validation.py` without `--output` in a directory whose
+`checks/results/` should be kept: it rewrites them.
+
 The archive of source 45 can be retrieved the same way:
 `git show 096ee7b87:docs/incoming/oeis-bimodal-cone-research.zip`. No
 delivered file was excluded as a heavy artifact (the largest is 46 KB), so
@@ -312,12 +513,14 @@ directory:
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The committed PDF was built in a scratch directory with MiKTeX. It has 36
-pages (title and contents 1–2, guide 3–6, Part I 7–20, Part II 21–34,
-Appendix A 34–35, references 36), with no errors, no undefined references or
-citations, no multiply defined labels, no duplicate PDF destinations and no
-overfull boxes. Three underfull lines remain in one `[write]` note of
-Section 20. The delivered manuscripts alone build without box warnings.
+The committed PDF was built in a scratch directory with MiKTeX on 5
+October 2026. It has 64 pages (title and contents 1–4, guide 5–8, Part I
+9–22, Part II 23–36, Part III 37–61, Appendix A 62–63, references 64), with
+no errors, no undefined references or citations, no multiply defined
+labels, no duplicate PDF destinations and no overfull boxes. Three
+underfull lines remain in one `[write]` note of Section 20, as before Part
+III; Part III adds none. The delivered manuscripts alone build without box
+warnings.
 
 ## Provenance
 
@@ -345,3 +548,23 @@ Section 20. The delivered manuscripts alone build without box warnings.
     papers; its `Foundation` entry is replaced by Part I; its uncited `OEIS`
     entry duplicates source 45's two OEIS entries and is omitted. Source 45's
     uncited entry for Denisov–Wachtel 2015 is kept, as delivered.
+- Source 47: batch 103 (cluster 103-A377922, manuscript 01), bundle Report
+  112, archive `Geometric_OEIS_Sequences_Cone_Exponents_and_Inverses_Source.zip`;
+  arrival `60f54ea06`, placement `9c995cefe`, written in the batch-103 write
+  phase (5 October 2026). No pin. Inputs: Fusy–Narmanli–Schaeffer,
+  Whitt (2007), Fischler–Rivoal, Denisov–Wachtel (2024), Denisov–Zhang
+  (2025), Grama–Lauvergnat–Le Page (2020), Pham–Peigné–Son (arXiv
+  2603.26228, cited from its abstract), the OEIS entries (CC BY-SA 4.0
+  prefixes in `data/47-logcone-checks-fixtures.json`). No "prepared for
+  private review" text, sandbox path or personal data.
+- Where the Part III write had to choose:
+  - Report 112 is printed in full, not reduced to pointers: its statements
+    about the sequences are where Theorem 24.1's hypotheses are checked, and
+    the new sandwich and moment certificate sit inside them. Table 2 marks
+    them as second routes.
+  - Its guide is a numbered Section 22, so Report 112's numbers shift by 22.
+  - Letters are kept, with a clash table and Remark 22.1 for the factor 4.
+  - Its bibliography: Fusy–Narmanli–Schaeffer, Fischler–Rivoal and
+    Denisov–Wachtel are the existing entries; Whitt, Denisov–Zhang,
+    Grama–Lauvergnat–Le Page and Pham–Peigné–Son are added; its uncited
+    OEIS entry is omitted.
