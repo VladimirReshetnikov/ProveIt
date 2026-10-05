@@ -44,9 +44,13 @@ arithmetic; neither certifies any asymptotic statement.
   was bounded and it disclaims novelty certification. The "Future
   questions" of Balashov–Bulavenko–Molybog (§5) do not ask for the second
   term, so no named question is answered. The intake did not find the term
-  in BBM, BLP, O'Neill's arXiv version or the OEIS entry, but did not
-  compare Leake–Morales (Adv. Appl. Math. 175 (2026) 103002) Theorem 1.2 in
-  detail and made no exhaustive search.
+  in BBM, BLP, either version of O'Neill or the OEIS entry, and
+  Leake–Morales (Adv. Appl. Math. 175 (2026) 103002) work at a coarser
+  scale: their Tesler bound, Theorem 1.2 of arXiv:2406.07838v3, is the lower
+  bound `log a_n ≥ (n/4) log² n − O(n log n)`. No exhaustive search was
+  made. (Updated 5 October 2026 after the independent check; this point
+  first said that the intake had read only O'Neill's arXiv version and had
+  not compared Leake–Morales Theorem 1.2 in detail.)
 - **Constants are non-effective.** No `O`-constant or threshold is
   explicit, including the bracket constant `D` of Theorem 10.1.
 
@@ -108,29 +112,75 @@ Added by the write (5 October 2026), marked `[write]`:
   sharp for this family.** For every `ρ ∈ 𝓡_n`,
   `Σ h(α_i) + Σ h(β_j) ≥ log n! + 2n log log n − O(n)`, because the bulk
   outgoing totals are at least `(√a/c)((1/2) log a − log c − 1/2)`. So the
-  `2n log log n` loss cannot be removed by estimating Lemma 9.1 better; it
-  needs a larger capacity term, more margin vectors or another counting
-  inequality.
+  `2n log log n` loss cannot be removed by estimating Lemma 9.1 better. The
+  last paragraph of the proof, added after the independent check, shows
+  that the count of margin vectors and the capacity estimate are sharp to
+  `O(n)` as well (`log |𝓡_n| ≤ (1/2) log n! + O(n)`,
+  `H_g(f^(ρ)) = C n^{3/2} − (1/4) log n! + O(n)`), so the loss needs a
+  larger capacity term, a larger or different family of margin vectors, or
+  another counting inequality. (The article keeps the first wording, "a
+  larger family of margin vectors", in a dated note.)
 - Notes: status (title page); Section 1.1 (provenance, credits, earlier
   bounds, novelty status, repository, indexing, notation table, collected
   non-claims); the intake comparison after Theorem 8.1; a note on
   Theorem 10.1 (what is inherited, the two forms agree, the bracket is
   non-effective and its width `2Ds + 2` is beaten by the correction term
   only by the factor `log x / log log x`); the shipped layout and intake
-  reruns (end of Section 11); Section 12.1. Four references the manuscript
-  omits: O'Neill 2018, Mészáros–Morales–Rhoades 2017, Armstrong–Garsia–
+  reruns (end of Section 11); Section 12.1, which ends with the record of
+  the independent check (below). Four references the manuscript omits: O'Neill 2018, Mészáros–Morales–Rhoades 2017, Armstrong–Garsia–
   Haglund–Rhoades–Sagan 2012, Haglund 2011.
 
 **Earlier bounds (added by the write; the manuscript does not cite them).**
 J. O'Neill, *On the poset and asymptotics of Tesler matrices*, Electron. J.
-Combin. **25**(2) (2018), #P2.4 (doi:10.37236/6877): Theorem 5.6 of
-arXiv:1702.00866v2 improves the lower bound `n! ≤ a_n` of
-Mészáros–Morales–Rhoades to `a_n ≥ (2n−3)!!` and tightens their
-`a_n ≤ 2^{n(n−1)/2}`, still `e^{O(n²)}`. O'Neill records Pak's Question 1.4,
-whether `a_n = e^{Θ(n²)}`; BBM's Corollary 37 answers it negatively, and so
-does this report's elementary upper bound (4.2) alone. These bounds do not
-reach the second term; the omission affects no proof, only the priority
-caveat.
+Combin. **25**(2) (2018), #P2.4 (doi:10.37236/6877): Theorem 43 of the
+journal version (Theorem 5.6 of arXiv:1702.00866v2) improves the lower bound
+`n! ≤ a_n` of Mészáros–Morales–Rhoades to `a_n ≥ (2n−3)!!` and tightens
+their `a_n ≤ 2^{n(n−1)/2}`, still `e^{O(n²)}`. O'Neill records Pak's
+question whether `a_n = e^{Θ(n²)}` as Question 4 (arXiv: Question 1.4), and
+in Remark 5 (arXiv: an unnumbered remark) the observation, which he
+attributes to a private communication of J. Pantone, that OEIS data suggest
+`log a_n = O(n^{1.6})`. BBM's Corollary 37 answers Pak's question
+negatively, and so does this report's elementary upper bound (4.2) alone:
+`log a_n ≤ U_n ≤ 2c Σ_{j≤n} √j ≤ C (n+1)^{3/2}` for every `n ≥ 1`, since
+`L(t) ≤ π²/(6t)` and `log(1 − e^{−t}) < 0`. Leake and Morales (§7.3 of
+arXiv:2406.07838v3, finished before they learned of BBM's preprint) still
+name `O(n²)` as the best known upper bound on `log a_n`. These bounds do
+not reach the second term; the omission affects no proof, only the
+priority caveat. (Corrected 5 October 2026 after the independent check:
+the write first cited only the arXiv numbers, Theorem 5.6 and Question 1.4,
+against the journal reference, and did not name Pantone; the every-`n`
+bound and the Leake–Morales remark were added.)
+
+**Independent check of the write (5 October 2026).** An adversarial check
+made by the intake after the write (`17d995b94`) read the article in full
+and found valid Remark 9.2 (statement and proof), the statements that BBM's
+Corollary 37 and, on its own, the bound (4.2) answer Pak's question, and
+every figure of Remark 4.1, with no counterexample and no gap in the proof
+of the remark. Four changes followed, each with a dated note in the article
+keeping the first wording: (1) Remark 9.2's "only by" conclusion
+presupposed two true but unproved upper bounds,
+`log |𝓡_n| ≤ (1/2) log n! + O(n)` and
+`H_g(f^(ρ)) ≤ C n^{3/2} − (1/4) log n! + O(n)`, and a different family of
+margin vectors need not be a larger one; the check's short proof of both
+bounds is now the last paragraph of the remark's proof (checked again step
+by step when it was inserted), and the remark and Question 1 say "a larger
+or different family"; (2) O'Neill is cited with both numberings (journal
+Theorem 43, Question 4, Remark 5; arXiv Theorem 5.6, Question 1.4), with
+the `n^{1.6}` observation attributed to Pantone; (3) Section 1.1 records the
+every-`n` bound `log a_n ≤ C (n+1)^{3/2}` and Leake–Morales §7.3; (4) the
+two comparisons that Question 6 listed as missing were made (the journal
+O'Neill has only the bounds of the arXiv version; Leake–Morales Theorem 1.2
+is a lower bound of order `n log² n`), so Question 6 now asks only for a
+literature search. The check tested the remark with mpmath at 30 digits
+(the `coth` form of `Q` to `2·10⁻²⁹`, the `κ` identity to `4·10⁻³⁰`, the
+chain of inequalities at `a = 1025` to `10⁷`, the summation allowance
+`(B_n + √n) log log n / n = 0.116` at `n = 10⁶`), reproduced every figure
+of Remark 4.1 with its own 50-digit programs (gaps `1.39235`, `14.9646`,
+`31.1373`, `41.0584`; quotient range `[−1.44258, −1.42127]`), and fetched
+both versions of O'Neill, BBM's journal PDF (SHA-256 equal to the
+`sources.json` fingerprint) and Leake–Morales arXiv v3. This was a careful
+reading with numerical tests, not a formal verification or an external
+review; the end of Section 12.1 of the article records it in full.
 
 ## What is not claimed
 
@@ -168,7 +218,10 @@ source, sketch and what is missing (Vladimir's standing rule of 4 October
 2026). The intake found **no false claim** in the source.
 
 1. **An `O(n)` remainder** (`tes:q:remainder`; source item 1), sharpened by
-   Remark 9.2: the loss is exact for the family used.
+   Remark 9.2: the loss is exact for the family used, and so are the count
+   of margin vectors and the capacity estimate; recovery needs a larger
+   capacity term, a larger or different family, or another counting
+   inequality.
 2. **A linear term** (`tes:q:linear`; item 2): does
    `(log a_n − C n^{3/2} + (3/4) n log n)/n` converge? Not to `B_U`; about
    −1.42 to −1.44 for `n ≤ 26` (Remark 4.1), inconclusive.
@@ -178,9 +231,11 @@ source, sketch and what is missing (Vladimir's standing rule of 4 October
    would give an `O(√x)` inverse error; a bounded-error inverse needs an
    `O(√n)` forward error.
 5. **Other cut profiles** (`tes:q:profiles`; item 5).
-6. **Priority of −3/4** (`tes:q:priority`): compare Leake–Morales
-   Theorem 1.2, the journal version of O'Neill, and the Tesler and Kostant
-   partition function literature.
+6. **Priority of −3/4** (`tes:q:priority`): search the Tesler and Kostant
+   partition function literature. The comparisons with Leake–Morales
+   Theorem 1.2 (a lower bound of order `n log² n`) and with the journal
+   version of O'Neill (the arXiv bounds only) were made by the independent
+   check; neither contains the coefficient (updated 5 October 2026).
 
 The dossier's tags map as U1 → Question 1, …, U5 → 5, U6 → 6.
 
@@ -271,7 +326,7 @@ compared). No statement, proof or number of the manuscript was changed.
 ```text
 README.md                       this guide (replaces the delivery README)
 article.tex                     the report (delivered report106.tex; labels prefixed, [write] additions)
-article.pdf                     compiled report, 19 pages
+article.pdf                     compiled report, 21 pages
 checks-README.md                scope and design of the exact suite (delivered checks/README.md)
 sanity-README.md                scope of the floating sanity check (delivered sanity/README.md)
 code/build.sh                   deterministic three-pass TeX Live build of report106.tex (delivered at the package root)
@@ -414,12 +469,15 @@ B=$(mktemp -d); cp article.tex "$B/"; cd "$B"
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The committed PDF was built this way with MiKTeX: 19 pages; no errors or
-warnings, no undefined references or citations, no multiply defined labels,
-no duplicate PDF destinations, no overfull or underfull boxes. (TeX notes
-once that it ignored infinite glue shrinkage where the notation table breaks
-across pages 4 and 5; the output is unaffected.) The delivered source built
-the same way gives 13 pages, equally clean. The article keeps the delivered
+The committed PDF was built with MiKTeX pdfLaTeX in a scratch copy (four
+passes, the last leaving the `.aux` unchanged), after the independent check
+of 5 October 2026: 21 pages; no errors or warnings, no undefined references
+or citations, no multiply defined labels, no duplicate PDF destinations, no
+overfull or underfull boxes. Every label keeps the number it had in the
+build of `17d995b94` (aux files compared); the notation table now fits on
+page 5, so the earlier note about ignored infinite glue shrinkage at its
+page break no longer applies. The delivered source built the same way gives
+13 pages, equally clean. The article keeps the delivered
 preamble lines that suppress PDF dates and trailer identifiers.
 
 ## From the delivery README
@@ -457,8 +515,11 @@ credited". Its other content, translated to the shipped names:
   Balashov, Bulavenko and Molybog, Electron. J. Combin. 33(2) (2026) #P2.25,
   Corollary 37; Brändén, Leake and Pak, Israel J. Math. 253 (2023) 43–90
   (arXiv:2008.05907v3, Theorem 2.1, §5.1); Leake and Morales, Adv. Appl.
-  Math. 175 (2026) 103002 (context); DLMF §23.18. Added by the write:
-  O'Neill, Electron. J. Combin. 25(2) (2018) #P2.4; Mészáros, Morales and
+  Math. 175 (2026) 103002 (context; the write cites Theorem 1.2, footnote 2
+  and §7.3 of arXiv:2406.07838v3); DLMF §23.18. Added by the write:
+  O'Neill, Electron. J. Combin. 25(2) (2018) #P2.4 (Theorem 43, Question 4,
+  Remark 5; arXiv:1702.00866v2 Theorem 5.6, Question 1.4; both versions
+  read); Mészáros, Morales and
   Rhoades, Selecta Math. 23 (2017) 425–454; Armstrong, Garsia, Haglund,
   Rhoades and Sagan, J. Comb. 3 (2012) 451–494; Haglund, Adv. Math. 227
   (2011) 2092–2106.

@@ -207,10 +207,13 @@ the collection confers no formal status.
 Report~112 of the same bundle (the same session and day; the bundle index
 records 08:51 UTC for Report~111 and 09:26 UTC for Report~112), filed by
 batch~103 as Part~III of \nolinkurl{a377922-corner-polyhedra-schnyder} in
-this collection (file prefix \nolinkurl{47-logcone-}, labels \nolinkurl{cps:log:}; written
-concurrently with this report), runs the method of
+this collection (file prefix \nolinkurl{47-logcone-}, labels
+\nolinkurl{cps:log:}; written by ProveIt in \nolinkurl{9b4001d29}, after this
+report), runs the method of
 Sections~\ref{osr:sec:perron}--\ref{osr:sec:gluing} as a general theorem. Its
-Theorem~2.1 (\nolinkurl{cps:log:thm:cone}) concerns a translation-invariant
+Theorem~2.1, printed there as Theorem~24.1 (\nolinkurl{cps:log:thm:cone};
+Report~112's Section~$k$ is Section~$k+22$ there), concerns a
+translation-invariant
 Markov-additive chain on $\Z^2\times E$, $E$ finite, with
 \textup{(H1)} a primitive phase matrix $P$; \textup{(H2)} a uniform
 exponential moment of the jumps; \textup{(H3)} zero stationary drift and a
@@ -251,8 +254,16 @@ So the exponent of Theorem~\ref{osr:thm:main} also follows from Report~112's
 theorem. The present report is the earlier, model-specific proof; its bounded
 steps make the annular transfer simpler (Report~112 handles exponential-tail
 jumps with relative-overshoot and bad-jump estimates). Its non-D-finiteness
-argument is the same as Report~112's Section~5. Neither report cites the
-other.
+argument is the same as Report~112's Section~5 (Section~27 there). Neither
+source manuscript cites the other; ProveIt's write of Part~III cites this
+remark and Remark~\ref{osr:rem:criterion} by number and label in its
+Section~22.5 (\nolinkurl{cps:log:sec:siblings}). (Dated note, 5~October
+2026: this remark first called Part~III ``written concurrently with this
+report'', cited its theorem only as ``Theorem~2.1'' and its
+non-D-finiteness section only as ``Section~5'', and ended ``Neither report
+cites the other.'' Part~III has since been written, prints the theorem as
+Theorem~24.1 and cites this report; the mathematical content of the remark
+is unchanged.)
 \end{remark}
 
 \emph{Notation} (a table of the letters the manuscript reuses; no symbol
@@ -551,14 +562,17 @@ $\lVert T(t)^j\rVert\le1$ for all $t$ and $j\ge0$. On the compact set
 $K=[-\pi,\pi]^2\setminus U$ every $T(t)$ has spectral radius below one, so by
 Gelfand's formula each $t\in K$ has an integer $k_t\ge1$ with
 $\lVert T(t)^{k_t}\rVert<1$; by continuity of $s\mapsto T(s)^{k_t}$ there are
-$\delta_t>0$ and an open neighbourhood $V_t$ of $t$ with
+$\delta_t\in(0,1)$ and an open neighbourhood $V_t$ of $t$ with
 $\lVert T(s)^{k_t}\rVert\le1-\delta_t$ for $s\in V_t$. Finitely many $V_t$
 cover $K$; let $k$ and $\delta$ be the largest $k_t$ and the smallest
 $\delta_t$ among them. For $s\in V_{t}$ and $j\ge0$, submultiplicativity and
 the bound $1$ on the remaining power give
 $\lVert T(s)^j\rVert\le(1-\delta)^{\lfloor j/k_t\rfloor}\le(1-\delta)^{j/k-1}$.
 So $\sup_{s\in K}\lVert T(s)^j\rVert$ decays exponentially in $j$, with no
-normality assumption.
+normality assumption. (The range $\delta_t\in(0,1)$, which keeps
+$(1-\delta)^{j/k-1}$ finite for $j<k$, was made explicit at the independent
+check recorded at the end of Section~\ref{osr:sec:further}; it read
+$\delta_t>0$.)
 \end{writenote}
 
 Fourier inversion, split into this neighborhood and its complement, now proves the local limit theorem. In the neighborhood put $t=u/\sqrt j$ and use dominated convergence. The error is bounded by its Fourier $L^1$ norm independently of the oscillatory spatial factor, hence uniformly in displacement:
@@ -932,15 +946,21 @@ $k-\alpha-\varepsilon>-1$ for small $\varepsilon$;
 $H^{(k)}(t)\asymp_\varepsilon(1-t)^{-(k+1-\alpha)\pm\varepsilon}$ with
 $k+1-\alpha>0$, so $H^{(k)}(t)\to\infty$ (finitely many omitted terms add a
 bounded polynomial) and
-$\log F^{(k)}(z)/\log(R-z)\to\alpha-k-1\notin\Q$, $R=\mu^{-1}$. The
+$\log F^{(k)}(z)/\log(R-z)\to\alpha-k-1\notin\Q$, $R=\mu^{-1}$ (if $F$
+were D-finite, $R$ would be algebraic: by Pringsheim's theorem it is a
+singularity of $F$, hence a root of the leading coefficient of an
+annihilating operator over $\Q[z]$). The
 coefficients of $F^{(k)}$, $(n+k)\cdots(n+1)a_{n+k}$, are integers with
 exponential bounds, so $F^{(k)}$ is a G-function if $F$ is D-finite, and the
 rest of the argument, including the descent from $\mathbb C(z)$ to $\Q(z)$,
 is unchanged. Since $\Theta(\mu^nn^{-\alpha})$ implies
 $\mu^nn^{-\alpha+o(1)}$, Lemma \nolinkurl{cps:lem:nonD} of
 \nolinkurl{a377922-corner-polyhedra-schnyder} (Part~I) is the special case
-with two-sided bounds. Report~112 (Part~III there, its Section~5) runs the
-same argument with $k=\lfloor\alpha\rfloor$ for its two sequences.
+with two-sided bounds. Report~112 (Part~III there, its Section~5, printed
+as Section~27) runs the same argument with the derivative order
+$m=\lfloor\alpha\rfloor$ (our $k$) for its two sequences, and its write
+states the criterion in general as Remark~27.1 there
+(\nolinkurl{cps:log:rem:criterion}).
 \end{remark}
 
 \section{Validation and remaining questions}\label{osr:sec:validation}
@@ -1055,9 +1075,11 @@ external inputs. The intake found no false claim in the source.
  arguments of the annular transfer, as the notes after
  Lemma~\ref{osr:lem:bridge} and at the end of the transfer subsection
  describe. The intake judged both correct in outline; Report~112's
- Theorem~2.1 (Remark~\ref{osr:rem:cone}) proves the same exponent for a
+ Theorem~2.1, Theorem~24.1 of \nolinkurl{a377922-corner-polyhedra-schnyder}
+ (Remark~\ref{osr:rem:cone}), proves the same exponent for a
  class containing this chain, with its own versions of these steps (its
- Lemma on exact-time interior bridges and its crossing bounds), which the
+ Lemma~2.2 on exact-time interior bridges, Lemma~24.2 there, and its
+ crossing bounds), which the
  intake did not check line by line either. Steps~1 and~2 (after
  Lemma~\ref{osr:lem:fclt} and in Section~\ref{osr:sec:llt}) are completed by
  the write.
@@ -1070,6 +1092,88 @@ external inputs. The intake found no false claim in the source.
  ProveIt. The source asks that the result be compared with subsequent
  specialist work before any publication or priority claim.
 \end{enumerate}
+
+\paragraph{Independent check of the write (dated note, 5~October 2026).}
+An independent adversarial check of the write (\nolinkurl{0c2cdf435}), made
+by the intake afterwards, examined the seven items the write supplied with
+proofs or relies on: Remark~\ref{osr:rem:cone} (hypotheses (H1)--(H5) and the
+start colour $\W$), Remark~\ref{osr:rem:lambert}, Remark~\ref{osr:rem:criterion},
+the note $a(n+1)\ge2a(n)$ in Section~\ref{osr:sec:inverse}, the notes
+completing steps~1 and~2 (after Lemma~\ref{osr:lem:fclt} and in
+Section~\ref{osr:sec:llt}), and the irrationality certificate of
+Section~\ref{osr:sec:nonD} on which the comparison in
+Section~\ref{osr:sec:provenance} rests. It found all seven valid, with no
+counterexample and no gap in any proof chain. Two changes followed. In the
+note completing step~2, ``there are $\delta_t>0$'' now reads
+$\delta_t\in(0,1)$: if some $T(t)^{k_t}$ vanished, $\delta_t=1$ would be
+allowed and $(1-\delta)^{j/k-1}$ would be $0$ to a negative power for $j<k$
+(cosmetic; marked there). Remark~\ref{osr:rem:criterion} now says why
+$R=\mu^{-1}$ is algebraic, which the general statement left implicit
+(Pringsheim's theorem places a singularity of $F$ at $R$, and the
+singularities of a D-finite function are roots of the leading coefficient
+of an operator over $\Q[z]$), and names Report~112's derivative order $m$,
+not $k$. Separately, Part~III of \nolinkurl{a377922-corner-polyhedra-schnyder}
+has been written since (\nolinkurl{9b4001d29}): Remark~\ref{osr:rem:cone},
+Remark~\ref{osr:rem:criterion} and Question~\ref{osr:q:sketches} now give its
+printed numbers (Theorem~24.1, Lemma~24.2, Section~27, Remark~27.1, read
+from its built PDF), and Remark~\ref{osr:rem:cone} records, in a dated note,
+that the write of Part~III cites this report.
+
+The check reread every step and used neither the delivered programs nor the
+write's. Its own programs (Python~3.14.4 with sympy~1.14.0, mpmath~1.3.0
+and NumPy) rebuilt the step table of Section~\ref{osr:sec:model} from the
+two weak inequalities and compared it with the printed table cell by cell;
+ran an exact big-integer transfer recursion over all start colours to
+$n=600$, which reproduces $a(0),\dots,a(16)$, all the terms the OEIS entry
+has (its b-file is synthesized from the entry); and, independently of the
+walk, counted by brute force the permutations of $[n]$ avoiding
+$2\text{-}41\text{-}3$, $3\text{-}14\text{-}2$, $2\text{-}14\text{-}3$ and
+$3\text{-}41\text{-}2$ for $n\le9$ (the literal four-point definition for
+$n\le7$, an equivalent interval criterion for $n\le9$), in agreement with
+the recursion. From the exact terms: $a(n+1)\ge2a(n)$ for every
+$1\le n\le599$, with equality at $n=1$, and it fails at $n=0$
+($a(1)=1<2a(0)$), so the restriction $n\ge1$ is needed; $a(n)\le(3+\s)\G^{n-1}$
+for $1\le n\le600$; and the observations in Question~\ref{osr:q:equivalent} (scaled terms and
+secant exponents at $n=50,\dots,599$) are correct roundings.
+
+For Remark~\ref{osr:rem:cone} and Section~\ref{osr:sec:perron}, exact algebra
+in $\Q(\s)$: $A^2>0$, $\det(tI-A)=t(t+1)(t^2-7t+8)$, $Ar=\G r$, $\pi P=\pi$
+with $\pi>0$, $\sum_c\pi_cm(c)=0$, $(I-P)h=m$ for the printed $h$, and
+$\Sigma$ from the corrected increments equal to~\eqref{osr:eq:cov}; $\Sigma$
+is unchanged when $h$ is shifted by a constant vector, which is the
+normalization point of the remark; $\Sigma$ is positive definite;
+$\rho=(29-7\s)/4\approx0.0345652$ and $\alpha=2.95692945950875353\ldots$; and
+the Hessian of $\log\lambda(e^u,e^v)$, by 40-digit finite differences,
+equals $\Sigma$ to 12 digits. Every edge from $(0,\W)$ leaves $Q$, so
+$K_L((0,\W),(0,\W))=0$ for $L\ge1$, and the dual seed probability is
+$p^*_{\W\W}(-v)=p_{\W\W}(v)=\G^{-1}\approx0.1798>0$. On a $401\times401$
+grid of the torus the Fourier spectral radius is at most $0.9981$ for
+$|t|\ge0.1$, $0.954$ for $|t|\ge0.5$ and $0.823$ for $|t|\ge1$, consistent
+with (H4). For the note after Lemma~\ref{osr:lem:fclt}: the hypotheses of
+Whitt's Theorem~2.1(ii) (the expected largest jump of the predictable
+quadratic variation and the expected squared largest jump of the
+martingale tend to zero, and the predictable quadratic variation converges
+to $t\Sigma$) follow from the deterministic jump bounds and the
+ergodic theorem; the largest coordinate of a corrected increment is
+$1.5428<3$, so the bound $3\sqrt2/R$ holds with room, and
+$\max_c\lVert V(c)\rVert=0.557$. For Remark~\ref{osr:rem:lambert}: the
+substitution $X=-(\alpha/g)w$, $we^w=z(L)$, was rederived; $z(L)$ lies in
+$(-1/e,0)$ exactly when $L>\alpha(1-\log(\alpha/g))\approx1.3477$; and
+$N(10^e)=33$, $74$, $142$, $278$ against $X_0=32.86$, $74.53$, $142.74$,
+$278.08$ for $e=20$, $50$, $100$, $200$, with $X_0$ minus the two-term
+form~\eqref{osr:eq:inverse} equal to $-0.58$, $-0.75$, $-0.82$, $-0.87$,
+drifting towards $-(\alpha/g)\log g\approx-0.9304$. For
+Remark~\ref{osr:rem:criterion}: the hypothesis $a_n=\mu^nn^{-\alpha+o(1)}$
+enters only through the Abelian comparison~\eqref{osr:eq:powersum}; no
+Tauberian step and no full equivalent is needed, and the case
+$k=0$ ($\alpha<1$) is covered. For the irrationality certificate:
+$2\cos\theta=(-29+7\s)/2$ has minimal polynomial $x^2+29x+2$ (discriminant
+$833=49\cdot17$), so it is an algebraic integer and the rational-non-integer
+route of \nolinkurl{cps:lem:irrational} is closed, while its conjugate
+$(-29-7\s)/2\approx-28.93<-2$ excludes a root of unity. This was a careful
+reading with numerical tests (exact rational, big-integer and $\Q(\s)$
+arithmetic, and floating-point grids that are not interval-certified), not
+a formal verification or an external review.
 
 \clearpage
 \begin{thebibliography}{9}
