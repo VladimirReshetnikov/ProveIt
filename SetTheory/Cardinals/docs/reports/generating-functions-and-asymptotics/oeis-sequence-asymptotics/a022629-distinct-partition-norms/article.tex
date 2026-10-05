@@ -3111,7 +3111,9 @@ truncation order, exact recovery at sequence values and the threshold off an
 $O(t^{J-1})$-neighbourhood of the integers, at the conservative scale; it
 agrees that no rounding rule holds for arbitrary thresholds.  In the critical
 window of growing powers the theta factor moves the threshold by an
-oscillating amount of order $M^{2/3}$ (Remark~\ref{dpn:ct:rem:shift}).}
+oscillating amount of order at most $M^{2/3}$, and of exactly that order away
+from two phases per period (Remark~\ref{dpn:ct:rem:shift}; dated note,
+5~October 2026: first written ``of order $M^{2/3}$'').}
 
 For computation one can solve directly in $t$: with
 $Z(t)=F(t)+t\kappa_1(t)-\tfrac12\log(2\pi B(t))$ and
@@ -4530,12 +4532,19 @@ replacement step transfers the sharp scale: with $D=2J+2$,
  a_\alpha(n)=\frac{\exp\{F_D(t_D)+nt_D\}}{\sqrt{2\pi B_D}}
  \Bigl\{1+\sum_{\ell=1}^{J-1}\mathcal E_\ell[D]+O_{\alpha,J}(\epsh^{J})\Bigr\}.
 \]
-Indeed the three changes in the proof above are relative $O(t^{D+1})$ (phase),
-$O(t^{D}/B)$ (saddle), and $O(t^{D+1-j}B^{-j/2})$ (each normalized cumulant
-with $j\le2J$), and $t^{D+1}/\epsh^J=\alpha^{D+1+J}s^{D+1+J}M^{J-D-1}\to0$; so
-Theorem~\ref{dpn:jh:thm:saddle} (with its $J-1$) at the lattice saddle gives
-the display.  This is a bookkeeping consequence of two proved theorems, not
-a new estimate.
+Indeed the changes in the proof above are: the phase, by relative
+$O(t^{D+1})$; the saddle, displaced by $\delta=O(t^{D}/B)$, which changes the
+variance by relative $O(|\kappa_3|\delta/B)=O(|\kappa_3|t^D/B^2)=O(t^Ds/M^2)$;
+and each normalized cumulant with $j\le2J$, by $O(t^{D+1-j}B^{-j/2})$ from the
+substitution and $O(|\kappa_{j+1}|\delta B^{-j/2})$ from the displacement.
+Since $t^{D+1}/\epsh^J=\alpha^{D+1+J}s^{D+1+J}M^{J-D-1}\to0$ and
+$t^Ds/(M^2\epsh^J)=\alpha^{D+J}s^{D+J+1}M^{J-D-2}\to0$, all of them are
+$o(\epsh^J)$, so Theorem~\ref{dpn:jh:thm:saddle} (with its $J-1$) at the
+lattice saddle gives the display.  This is a bookkeeping consequence of two
+proved theorems, not a new estimate.  (Dated note, 5~October 2026: the first
+version listed the saddle change as relative $O(t^{D}/B)$ and omitted the
+displacement terms; an independent check made by the intake after the write
+supplied them and found the conclusion unchanged.)
 \end{remark}
 
 For direct use, let $t^{\rm int}$ solve $-I_\alpha'(t^{\rm int})=n$ and put
@@ -5439,11 +5448,26 @@ $|n_\Theta-n_*|=O(1/t)$, on which window \eqref{dpn:ct:eq:windowM} gives
 $\Psi_0'=t(1+o(1))$, and $\mu_R$ moves by $O(1/(tM))=o(1)$ and $Q_\perp$ by
 $o(1)$, so $\log\Theta$ changes by $o(1)$.  With
 Theorem~\ref{dpn:ct:thm:inverse}, the threshold $N_\alpha(Y)$ is displaced from
-the single-Gaussian inverse by $-\log\Theta/t$, of exact order
-$1/t\asymp M^{2/3}$ and oscillating with the phase $\mu_R$; by the proof of
-Corollary~\ref{dpn:ct:cor:obstruction} it is near $-\log\Theta(0,\cdot)/t<0$
-and near $-\log\Theta(\frac12,\cdot)/t>0$ on every index interval of length a
-fixed multiple of $M$, so no constant correction of order $1/t$ is valid.
+the single-Gaussian inverse by $-\log\Theta/t$, oscillating with the phase
+$\mu_R$.  This displacement is of order at most $1/t\asymp M^{2/3}$, and of
+exact order $1/t$ at phases bounded away from the zeros of
+$\log\Theta(\cdot,Q_\perp)$.  These occur twice per phase period: with
+$q=e^{-2\pi^2Q}$ one has $\Theta(\mu,Q)=\vartheta_3(\pi\mu,q)$, whose Jacobi
+product $\prod_{m\ge1}(1-q^{2m})(1+2q^{2m-1}\cos2\pi\mu+q^{4m-2})$ is even
+and strictly decreasing in $\mu\in[0,\frac12]$, and
+$\Theta(0,Q)>1>\Theta(\frac12,Q)$, so $\log\Theta(\cdot,Q)$ vanishes exactly
+at $\mu\equiv\pm\mu_0(Q)\pmod1$ for one $\mu_0(Q)\in(0,\frac12)$; there the
+displacement is $o(1/t)$.  In particular it is of exact order $1/t$ near
+$\mu_R\in\mathbb Z$ and near $\mu_R\in\mathbb Z+\frac12$.  (Dated note,
+5~October 2026: the first version of this sentence read ``displaced from the
+single-Gaussian inverse by $-\log\Theta/t$, of exact order $1/t\asymp M^{2/3}$
+and oscillating with the phase $\mu_R$''; an independent check made by the
+intake after the write found that wording overstated at the two zeros of
+$\log\Theta$ per period, and the rest of the remark valid.)  By the proof of
+Corollary~\ref{dpn:ct:cor:obstruction} the displacement is near
+$-\log\Theta(0,\cdot)/t<0$ and near $-\log\Theta(\frac12,\cdot)/t>0$ on every
+index interval of length a fixed multiple of $M$, so no constant correction of
+order $1/t$ is valid.
 \end{remark}
 
 \begin{proposition}[Leading logarithm; source 100-93]\label{dpn:ct:prop:leadinglog}
@@ -5733,6 +5757,51 @@ step of its main chain was checked at placement.
 \end{enumerate}
 \noindent Source 100-89's question of a uniform theory for growing $\alpha$
 (question~100.7) is answered in the window by this section.
+
+\paragraph{Independent check of the write (dated note, 5~October 2026).}
+An independent adversarial check of the five results this write supplied in
+Sections~\ref{dpn:rb:sec:b100} and~\ref{dpn:ct:sec:theta}, made by the intake
+after the write, found Lemma~\ref{dpn:rb:lem:holo},
+Proposition~\ref{dpn:rb:prop:slope}, Remark~\ref{dpn:rb:rem:sharp} and the
+phase average \eqref{dpn:ct:eq:average} valid, and
+Remark~\ref{dpn:ct:rem:shift} valid with one overstatement (``of exact order
+$1/t$'', false at the two zeros of $\log\Theta$ per period); that wording and
+an understated displacement term in Remark~\ref{dpn:rb:rem:sharp} are
+corrected where they stand, with dated notes.  It found no counterexample and
+no gap in any proof chain.  It reread every step and tested them numerically
+against exact coefficients of $\prod_k(1+k^\alpha q^k)$, computed by a
+big-integer recursion to $n=4000$ for $\alpha=1,2,3$ (the first two are
+\OEIS{A022629} and \OEIS{A092484}) and by tilted binary64 recursions for
+$\alpha=1.5,6,8,10$.  For Lemma~\ref{dpn:rb:lem:holo} it evaluated the
+boundary functional at complex $\alpha$ by Euler--Maclaurin: it reproduces
+the printed $\xi_0(1),\dots,\xi_3(1)$, $\xi_0(2)$, $\xi_1(2)$ to 19--25 digits,
+satisfies the Cauchy--Riemann equations to $10^{-11}$ or better at four points
+(two with $\Re\alpha<1$), and its circle means about $\alpha=1,2$ reproduce the
+real constants to $4\cdot10^{-10}$.  For
+Proposition~\ref{dpn:rb:prop:slope} the numerical derivative of the inverse
+model matches \eqref{dpn:rb:eq:Psiprime} to $5\cdot10^{-11}$ or better ($\alpha=1,1.5,2,3$,
+$n=250$--$4000$, $J=1,2,3$), and both error terms stay bounded on their
+scales.  For Remark~\ref{dpn:rb:rem:sharp} the lattice--integral replacement
+alone is a stable multiple of $t^{D+1}$ ($\alpha=0.5,2,3$, $n\le8000$), and at
+$\alpha=1$ the full residual over $\epsh^J$ stays bounded, tending to $-3/8$
+for $J=1$ (the sharp $\mathcal E_1$); at $\alpha=2,3$ and $n\le4000$ the
+residual is dominated by the noncentral Fourier cells of
+Section~\ref{dpn:jh:sec:numerics}, exponentially small only asymptotically.
+For \eqref{dpn:ct:eq:average} both forms of \eqref{dpn:ct:eq:Theta}
+integrate to $1$ to 16 digits for $0.02\le Q\le3$.  For
+Remark~\ref{dpn:ct:rem:shift}, at exact lattice saddles ($\alpha=8$--$32$,
+$\Lambda=4,5$, about three phase periods)
+$|(n_\Theta-n_*)t+\log\Theta|\le6\cdot10^{-6}$ while $(n_\Theta-n_*)t$ ranges
+over $[-0.88,3.09]$ with both signs; at exact thresholds ($\alpha=6,8,10$,
+$n\approx2$--$3\cdot10^4$) the displacement changes sign with the phase and
+correlates with $-\log\Theta/t$ at $0.90$--$0.99$, with magnitudes still
+preasymptotic; this is an illustration only.  This was a careful reading with numerical tests, not a
+formal verification or an external review.  A numerical-method note: the
+closed form \eqref{dpn:rb:eq:xir}, evaluated with \texttt{mpmath.nsum} at
+$(r,\alpha)=(2,4.5)$ and $(3,5.5)$, differs from the Euler--Maclaurin functional
+by about $2\cdot10^{-7}$, the accuracy of \texttt{nsum} on these slowly
+convergent sums (compare the merge note after \eqref{dpn:rb:eq:xi0}); it is
+not a defect of the formula.
 
 \appendix
 \section{Reproduction guide and file manifest}
@@ -6163,7 +6232,11 @@ all of Section~\ref{dpn:ct:sec:theta} except the parts marked \wrt.
       (Lemma~\ref{dpn:rb:lem:holo}, Proposition~\ref{dpn:rb:prop:slope}); the
       sharp-scale form of its expansion (Remark~\ref{dpn:rb:rem:sharp}), the
       theta shift of the threshold (Remark~\ref{dpn:ct:rem:shift}) and the
-      phase average \eqref{dpn:ct:eq:average} are the write's.
+      phase average \eqref{dpn:ct:eq:average} are the write's.  An independent
+      check after the write found all five valid; one overstatement in
+      Remark~\ref{dpn:ct:rem:shift} and one understated term in
+      Remark~\ref{dpn:rb:rem:sharp} are corrected (dated note at the end of
+      Section~\ref{dpn:ct:sec:questions}).
 \item Source 100-93 is not presented as explaining this report's fixed-$\alpha$
       finite-size residuals: its hypotheses fail there, and its formula does
       not reproduce them (Section~\ref{dpn:ct:sec:relation}).  The intake's

@@ -486,7 +486,27 @@ s the exact-saddle transition site and its logarithm:
   of Theorem 11.1, so in this window Section 22 supplies the secondary
   saddles, phases and cell contributions that Section 11 leaves open. The
   write adds the phase average ∫_0^1 Θ dμ = 1 and the theta shift
-  −log Θ/t of the threshold (Remark 22.10).
+  −log Θ/t of the threshold (Remark 22.10: of order at most 1/t ≍ M^{2/3},
+  and of exact order 1/t away from the two phases per period where
+  log Θ(μ_R, Q_⊥) = 0, in particular near integer and half-integer μ_R).
+- *[Independent check, 5 October 2026.]* An adversarial check made by the
+  intake after the write found the five results the write supplied
+  (Lemma 21.3, Proposition 21.7, Remark 21.5, the phase average (22.46) and
+  Remark 22.10) valid, with no counterexample and no gap in any proof chain.
+  Two wordings were corrected where they stand, with dated notes: Remark
+  22.10 first said the threshold shift is "of exact order 1/t", false at the
+  two zeros of log Θ per period (and the forward pointer in Section 16.4 said
+  "of order M^{2/3}"); Remark 21.5 understated the saddle-displacement terms
+  (relative variance change O(t^D s/M²), not O(t^D/B)), with the conclusion
+  unchanged. The tests: exact coefficients of ∏(1 + k^α q^k) by a big-integer
+  recursion to n = 4000 for α = 1, 2, 3 (A022629, A092484) and tilted binary64
+  recursions for α = 1.5, 6, 8, 10; the boundary functional at complex α
+  (Cauchy–Riemann to 10⁻¹¹, the printed ξ_r to 19–25 digits); the slope
+  formula (21.23) to 5·10⁻¹¹; the residuals of Remark 21.5 on the sharp scale
+  (J = 1 tends to −3/8 at α = 1); and the theta shift at exact lattice
+  saddles (α = 8–32) and exact thresholds (α = 6, 8, 10). A careful reading
+  with numerical tests, not a formal verification; recorded in a dated note
+  at the end of Section 22.
 
 ## What is not claimed
 
@@ -629,7 +649,8 @@ From a scratch copy of this directory, run
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-pdfLaTeX (MiKTeX 26.2) produced the shipped `article.pdf`: 100 pages (an
+pdfLaTeX (MiKTeX 26.2) produced the shipped `article.pdf` (rebuilt for the
+independent check of the batch-100 write, 5 October 2026): 100 pages (an
 unnumbered title page, then pages 1–99), with no errors, no warnings, no
 undefined references or citations, no multiply defined labels, no duplicate
 destinations and no overfull or underfull boxes. The title page is wrapped in
