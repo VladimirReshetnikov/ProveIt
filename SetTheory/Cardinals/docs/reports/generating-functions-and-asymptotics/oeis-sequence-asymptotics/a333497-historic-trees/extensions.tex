@@ -17,6 +17,10 @@ The point $\rho_4$ is the unique singularity on the convergence circle. With $t=
 \end{equation}
 where $\mathcal F_4$ is holomorphic near zero and has constant and all three linear coefficients equal to one. The fixed-grade coefficient and inverse statements in Sections~\ref{his:sec:r4grades} and \ref{his:sec:r4inverse} hold. In particular, the first oscillatory relative correction has nonzero amplitude and order $n^{-11/2}$.
 \end{theorem}
+\begin{writenote}[Added 5 October 2026, batch~103]
+Part~III proves this theorem again (Theorem~\ref{his:o7:main}), adds $16800^{1/6}\le\rho_4\le840^{1/4}$, an explicit tridisk of convergence and a scalar-majorant proof that $C_4\ne0$, and proves that $G$ is not D-finite and A336009 is not P-recursive (Theorem~\ref{his:o7:notdfinite}).
+\end{writenote}
+
 
 \subsection{Finite blowup and the derivative upgrade}
 The following elementary observation works in every order, without claiming a universal power-law profile.
@@ -32,6 +36,10 @@ whenever the interval exists. If the solution were global, recursively take
 $u_j=(r!/H_r(x_j))^{1/r}$ and $x_{j+1}=x_j+u_j$. Then $H_r(x_j)\ge2^j$ but
 $x_j\le(r!)^{1/r}\sum_{k\ge0}2^{-k/r}<\infty$, contradicting continuity at the finite limit of the $x_j$. At a finite endpoint, bounded $H_r$ would bound $H_r^{(r)}$ and, by repeated integration, every lower derivative; the ODE would extend. Thus the increasing $H_r$ diverges there.
 \end{proof}
+\begin{writenote}[Added 5 October 2026, batch~103]
+Part~IV's Proposition~\ref{his:o59:blowup} sharpens this lemma to the enclosure $\min_jr_j\le\rho_r\le\max_jr_j$, $r_j=[A_r(r)_j]^{1/(r+j)}$.
+\end{writenote}
+
 For $r=4$, Astashova's Theorem~3 \cite{astashova2013} now gives
 \begin{equation}\label{his:eq:r4real}
  G(x)\sim840(\rho_4-x)^{-4}.
@@ -190,6 +198,10 @@ For every integer $r\ge30$, let $H_r^{(r)}=H_r^2$ with $H_r^{(j)}(0)=1$ for $0\l
 Consequently Burghart and Wagner's Conjecture~1 is false for every $m=r-1\ge29$. In particular, at $r=30$ it fails for the specified sequence of reduced $59$-historic trees.
 \end{theorem}
 The distinction between the ODE order $r$, conjecture parameter $m=r-1$, and historic-tree order $2m+1=2r-1$ is essential. The theorem identifies no replacement asymptotic, proves no periodic limiting profile, and makes no assertion that $m=29$ is the first failing parameter. The even-order historic-tree Conjecture~2 is not addressed.
+\begin{writenote}[Added 5 October 2026, batch~103]
+Part~IV (bundle Report~117, ``B-tree order~59'') proves the first case $r=30$ again, that is $m=29$ and historic-tree order $59$, by a cyclic-sign cone, a complete spectral count and the ordinary stable manifold; it claims nothing for $r>30$ and nothing about a first transition. Dictionary: Section~\ref{his:o59:sec:dictionary}.
+\end{writenote}
+
 
 \subsection{What a coefficient equivalent would force}
 For general $r\ge2$, put
@@ -323,6 +335,10 @@ The decreasing ratios make $\log b_j$ strictly concave. Its superlevel set $\{j:
 \begin{equation}\label{his:eq:orbitcone}
  Z(s)\in\mathcal C_3\setminus\{0\}\qquad(s\ge0).
 \end{equation}
+\begin{writenote}[Added 5 October 2026, batch~103]
+An elementary proof of \eqref{his:eq:orbitcone}, in every order and without \cite{weiss2021}, follows from Part~IV: the cone $\mathcal C_3$ equals Part~IV's cyclic cone (Remark~\ref{his:o59:rem:same-cone}), and the system $Z'=M(s)Z$ has the cyclic form to which Part~IV's Euler-step Lemma~\ref{his:o59:invariance} applies (Remark~\ref{his:o59:rem:every-r}). The cyclic count is the discrete Lyapunov function of Mallet-Paret and Smith (Remark~\ref{his:o59:rem:mps}).
+\end{writenote}
+
 
 \subsection{A spectral gap and a generalized stable manifold}
 The spectral separation theorem for nonsingular strictly sign-regular matrices \cite[Theorem~2(ii)--(iii)]{alseidi2019} applies to $T_r$ with $k=3$. Let $E_{\rm fast}$ be its top-three real spectral subspace and $E_{\rm slow}$ the invariant complement. It gives a strict modulus gap and
@@ -348,6 +364,10 @@ The essential high-order proof uses the elementary phase estimates above. As an 
  \underbrace{+,+,\ldots,+}_{28\ \mathrm{entries}},\quad-,\quad+,
 \]
 with no zero first-column entry or all-zero row. Thus $q$ has exactly two open-right-half-plane roots. At $r=29$ there are none. Polynomial greatest-common-divisor checks exclude repeated and imaginary-axis roots in these two finite cases; independent exact complex root counts agree. The order-$30$ compound graph replay visits all $\binom{30}{3}=4060$ vertices in each direction and checks all $11340$ transitions. These checks support the specific spectral crossing; they do not prove that a counting equivalent holds at every lower order or that $m=29$ is the first false case.
+\begin{writenote}[Added 5 October 2026, batch~103]
+At $r=30$ the complete spectral count is now a proved statement: Part~IV's Proposition~\ref{his:o59:spectrum-order} and Corollary~\ref{his:o59:spectral-count} (a modulus curve with monotone phase and seven exact inequalities).
+\end{writenote}
+
 
 \subsection{What is prior and what the obstruction adds}
 The polynomial \eqref{his:eq:chi} is already the characteristic polynomial in Chauvin, Gardy, Pouyanne, and Ton-That's \emph{B-urns} \cite[Section~4.1]{burns2016}. Their well-known urn transition at parameter $60$ concerns a real-part threshold $1/2$. The present blowup issue concerns crossing real part $0$, with the ODE-order parameter $r=30$. These are different thresholds for the same polynomial family; no affine identification with the parameter-$60$ polynomial is asserted.
