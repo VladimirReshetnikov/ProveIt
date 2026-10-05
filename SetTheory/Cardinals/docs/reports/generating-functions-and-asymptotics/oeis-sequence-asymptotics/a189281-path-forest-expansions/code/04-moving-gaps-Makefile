@@ -1,0 +1,19 @@
+PYTHON ?= python3
+
+.PHONY: all pdf verify symbolic inverse clean
+all: pdf verify
+
+pdf:
+	latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
+
+verify:
+	$(PYTHON) code/verify.py
+
+symbolic:
+	$(PYTHON) code/symbolic_checks.py
+
+inverse:
+	$(PYTHON) code/inverse_demo.py
+
+clean:
+	latexmk -c article.tex
