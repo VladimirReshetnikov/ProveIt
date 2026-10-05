@@ -155,15 +155,30 @@ adaptation78333302d now has a bounded computational-interface review; its
 imported source implementations and archives are not audited. Batch95
 reciprocal ddb36da6c now has the bounded review linked below. The BCH
 history/adaptation abb123637/ad52ef11e now has a bounded formal-interface
-review, an analytic-domain correction and a rebuilt combined PDF. The six archives
-at62846e17a,7be14aa84,fb9f5884b and26e036956 now have authenticated intake
-reviews: four complete manuscript reads, selected atom/hat interfaces and
-a separate hat endpoint-dependency challenge. Earlier guide-only and
+review, an analytic-domain correction and a rebuilt combined PDF. The seven archives
+at62846e17a,7be14aa84,fb9f5884b,26e036956 and78528873b now have authenticated
+intake reviews: five complete manuscript reads, selected atom/hat interfaces
+and a separate hat endpoint-dependency challenge. Earlier guide-only and
 ancillary-placement reviews keep their exact boundaries. Padded
 reversal now has complete129-operation sources:47 witnesses/SOS227/degree40
 or46 witnesses/SOS224/degree52. Native AND remains in the loader, so a
 cheaper loading/accepting-history compiler is still needed for a universal
 improvement. The universal84/187 and85/155 points remain unchanged.
+
+The [two-derivations intake review](Papers/research-wip/native-stream-queue/review_two_derivations_78528873b.md)
+at **78528873b** reads the complete1347-line manuscript and independently
+challenges the scalar coordinate, simultaneous normal form, finite-dimensional
+Lie classification and whole-field action boundary. All pass within their
+rank-one, left-finite, ordered coefficient-Borel hypotheses. A new review-side
+lemma fixes Gamma=Z and uses noncommuting pairs already in canonical form:
+conjugacy to one fixed pair is co-c.e.-complete for a uniformly computable
+family of coefficient-program presentations whose supports have at most two
+terms. The unknown terminal support bound is essential; the conclusion does
+not concern explicit finite coefficient lists or obstruct cutoff normalization.
+Thus Borel cross-sections and unique conjugators do not supply a uniform
+existential integer conjugacy test at this interface. Archive authentication
+and fresh checks leave the saved669 assertions unreplayed; no paid universal
+Diophantine compiler or arithmetic improvement is supplied.
 
 The [hat endpoint follow-up](Papers/research-wip/native-stream-queue/review_hat_endpoint_26e036956.md) adds the
 missing418 lines of covariance, Fourier and aggregate-cost dependencies,
