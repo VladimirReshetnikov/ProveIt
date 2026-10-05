@@ -3,6 +3,22 @@
 > **Current established universal bounds:74 certificate operations /84 polynomial operations.**
 > **Current minimum polynomial:84=47M+37A,18 positive witnesses,exact degree187.**
 >
+> The [actual rejecting-compiler theorem](complete83_rejecting_compiler.md)
+> and [independent semantic review](review_complete83_rejecting_compiler.md)
+> **refute the shared-projection83 proposal with its inherited compiler
+> recipe**. Both resonant binary proofs now combine with odd completion to
+> produce all18 positive witnesses at unbounded ordinary inputs on every
+> original powers-of-five modified75 compiler slice. The explicit normalized
+> three-state program that enters a permanent loop has empty language,
+> so its constructed inputs are false positives. The six source ports retain
+> the required MF_native+B-1 shift. This is a quantified existence proof;
+> no giant compiler export or Pell tuple is materialized, and acceptance at
+> every input is not claimed. Historical open-status notes below are retained
+> and superseded for this specific candidate. **84/187/18 remains the proved
+> universal minimum-operation point**; unrelated83 constructions and the
+> separate independent-gamma83 proposal are not refuted by this theorem.
+>
+>
 > The [local norm unit guard](complete92_norm_unit_guard.md) gives a complete
 > universal **92=52M+40A**, **17-positive-witness** polynomial of **uniform exact
 > degree 325**, with exactly the same positive zero tuples as the reviewed90/406
