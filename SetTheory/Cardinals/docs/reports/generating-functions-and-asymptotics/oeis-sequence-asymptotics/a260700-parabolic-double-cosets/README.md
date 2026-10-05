@@ -122,6 +122,17 @@ this one as its method neighbour; a dated `[write]` note in Section 9 here
 and names the exact pole-lattice formula `q2:thm:fubini` of the transseries
 volume.
 
+**A third neighbour (batch 100).** The collection report
+[`a007716-bipartite-multigraphs`](../a007716-bipartite-multigraphs/) (OEIS
+A007716 and A007718; bundle Reports 88 and 92) counts the matrices of
+A120733 — nonnegative, total sum n, no zero row or column — up to separate
+row and column permutations. Its weighted count Σ M_{k,l}(n)/(k! l!)
+(`bpm:eq:Z`) is A120733's sum with the factor 1/(k! l!), and it proves the
+relative equivalent a_n ~ B_n² e^{W(n)²/2}/n! (`bpm:thm:leading`) by Burnside
+and Bell-number saddles, not by a Fubini pole. No theorem is shared; a dated
+note in Section 9 here (added 5 October 2026) records the pointer, and that
+report already names A120733 as the labelled analogue.
+
 ## Notation
 
 Symbols are printed as delivered. A table in the first `[write]` note
@@ -144,7 +155,9 @@ set the bibliography ragged-right. No statement, proof or number of the
 manuscript was changed. A batch-85B reciprocal note (3 October 2026) added
 a fourth dated `[write]` note (Section 9, before the research questions)
 and a fourth bibliography entry (`pdc-mxc`); it adds no label (still 64)
-and the PDF stays at 19 pages.
+and the PDF stays at 19 pages. A batch-100 reciprocal note (5 October 2026) added a fifth dated
+`[write]` note after it and a fifth bibliography entry (`pdc-bpm`); it adds
+no label (still 64).
 
 ## Files
 

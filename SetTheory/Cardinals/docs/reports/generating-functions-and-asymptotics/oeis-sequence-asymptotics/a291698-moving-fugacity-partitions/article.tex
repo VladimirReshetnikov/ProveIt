@@ -450,6 +450,23 @@ Division proves (11), first for \(z>0\) and then throughout
 \(\Re z>0\) by analytic continuation, with consistent
 square-root branches.
 
+\begin{writenote}[Added 5 October 2026, batch~100: a $q$-dependent fugacity]
+Identity~(11) holds for every fixed $u>1$; at real $z=t$ it may be applied
+with a fugacity that depends on $q$. The report
+\nolinkurl{a126348-stable-hilbert-series} (bundle Report~84, placed in
+\texttt{36571ae0e}) treats $\prod_{k\ge1}(1+q^k/(1-q))$, OEIS A126348, the
+case $u=1/(1-e^{-t})$: with $\log u=\lambda$ there, (11) becomes its exact
+factorization $F(e^{-t})=e^{K(t)}\Theta/(Q;Q)_\infty$ (its Theorem~2.1,
+label \texttt{shs:thm:modular}) term by term, by the same proof. That
+manuscript did not cite this report (its pin predates the placement
+\texttt{4f11bc9c0}); the credit is recorded there. Its coefficient
+regime is different: the fugacity $1/(1-q)$ is large only near $q=1$, so
+its minor-arc bound leaves no resonance sectors, in contrast with the
+finitely many conjugate sectors of Theorem~2 here; and $\log u$ is about
+$\tfrac12\log n$ at its saddle, so it does not bear on question~10.3
+(fugacity with $\log u$ comparable to $n^{1/6}$).
+\end{writenote}
+
 \subsection{Uniform local amplitude over any fixed number of
 sectors}\label{mfp:uniform-local-amplitude-over-any-fixed-number-of-sectors}
 
@@ -1045,6 +1062,22 @@ The proof fixes $K$ and an auxiliary $J$ before sending $n$ to infinity. Extendi
 
 \subsection{The transition beyond polynomial fugacity}
 The first resonance scale is governed by $\sqrt n/L^3$, where $L=\log u$. Polynomial fugacity has $L\asymp\log n$, so every fixed nonprincipal sector is beyond all algebraic orders. A different regime should appear when $L$ is comparable to $n^{1/6}$, for which that damping is of order one. The present theorem does not cover that regime. A uniform theta-type crossover would need its own proof rather than an assumption that a Gaussian approximation remains accurate for a small part-count variance.
+
+\begin{writenote}[Added 5 October 2026, batch~100]
+A neighbouring model, not the regime asked for here, is treated in Part~II
+of the report
+\path{oeis-sequence-asymptotics/a271619-strict-twice-partitions} (Report~181
+of the session bundle; labels \texttt{stp:len:}): A358836,
+$\prod_{k\ge1}(1+q^k/(q;q)_k)$, a distinct-part product whose fugacity
+$1/(q;q)_k\to P(q)$ depends on $q$ itself, with $\log u\asymp A/t\asymp n^{1/4}$
+at its saddle. Its all-angle bound (Lemma~19.1 there) leaves no resonance
+sector, and its source audit says substitution into Theorems~1--2 here is not
+justified, so the regime $\log u\asymp n^{1/6}$ of this subsection remains
+open. Its expansion of $\log\prod_k(1+e^{\mu(z)}q^k)$ (equation~(96) there)
+is identity~(11) of this report at the complex fugacity $u=e^{\mu(z)}$,
+derived there independently, with a dual-term bound on a moving complex
+disk of radius $\asymp t^2$.
+\end{writenote}
 
 \subsection{Comparison with general q-product asymptotics}
 The endpoint expansion and modular ingredients are classical. The appropriate contribution to compare against the literature is the diagonal coefficient transfer with moving fugacity, explicit finite exponential sectors, and controlled inversion. The recent moving-argument product formulas cited in Section 9 may simplify effective remainder calculations. A broader search is still needed before making a publication-level novelty claim.

@@ -623,6 +623,17 @@ s the exact-saddle transition site and its logarithm:
   records that its Part I Section 6 (near-modulus-one Fourier peaks) is the
   same phenomenon class as Section 22 here, for a different product, and that
   its two competing charges do not answer project 7; no theorem is shared.
+  [Reciprocal notes, 5 October 2026, batch 100.] Its Part I's weight p(k)
+  (A271619) is not regularly varying and gives two competing charges
+  instead of one crossing, and its Part II's question 3 (A358836, Section
+  27 there) is the counterpart of project 5; dated notes after projects 5
+  and 7 here record both, and project 7 stays open.
+- **Sibling of the same screen (5 October 2026, batch 100).** The source
+  audit of [`a126348-stable-hilbert-series`](../a126348-stable-hilbert-series/)
+  (bundle Report 84) screened A022629 and A266891 together with A126348;
+  that report treats `∏(1 + qᵏ/(1 − q))`, a distinct-part product whose
+  fugacity depends on `q` rather than on the part `k`, and cites the same
+  Naranjo–Ramírez paper (*Integers* 26 (2026), A20). No shared theorem.
 - **Transseries.** The partition-number chapter of
   `Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion`
   (`transseries_and_inversion.tex`, label `p3:sec:top`, A000041) is a
@@ -650,7 +661,8 @@ latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
 pdfLaTeX (MiKTeX 26.2) produced the shipped `article.pdf` (rebuilt for the
-independent check of the batch-100 write, 5 October 2026): 100 pages (an
+independent check of the batch-100 write, 5 October 2026, and again after the
+batch-100 reciprocal notes the same day, with no label renumbered): 100 pages (an
 unnumbered title page, then pages 1–99), with no errors, no warnings, no
 undefined references or citations, no multiply defined labels, no duplicate
 destinations and no overfull or underfull boxes. The title page is wrapped in

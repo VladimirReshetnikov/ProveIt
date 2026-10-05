@@ -154,6 +154,10 @@ answered there (only its one-shore analogue). Its archive 78 was a
 byte-identical repeat of the batch-71 manuscript printed here as
 Part XIII. This report's article gains dated pointers marked "Added
 1 October 2026, batch 72" (listed under the answers below).
+[Updated 5 October 2026, batch 100: that report's Part VI (bundle Report 81)
+proves the third rank-six inequality as well, so only the fourth remains open
+at `nu = 6` with one weighted shore (Research question 85), and gives a
+`4×6` regular-minor matrix bearing on Research question 101.]
 
 **Continued in [`preorder-gamma-rank-ulc`](../../log-concavity-and-unimodality/preorder-gamma-rank-ulc) (batch 73).** On
 1 October 2026, eleven further manuscripts, delivered in eighteen archives,
@@ -1335,6 +1339,19 @@ Research questions 23, 24, 26, 28, 32 and 34):
   questions 96 and 98, and after Theorem 207.1. They refer to the other
   reports in prose, by report name and printed number; the bibliography
   is unchanged.
+- [Added 5 October 2026, batch 100.] Part VI of
+  [`matching-rank-normalization`](../../log-concavity-and-unimodality/matching-rank-normalization)
+  (bundle Report 81) proves the third rank-six inequality `9p_3² ≥ 16p_2p_4`
+  for every graph with unit left and arbitrary positive right activities
+  (its Corollary 45.2), so for Research question 85 only the fourth,
+  `8p_4² ≥ 15p_3p_5`, remains open at `nu = 6`. For Research question 101 it
+  proves the graph bound `G ⪰ dd^T/nu` at every matching number (Theorem
+  45.3) and shows that the rank-normalized form fails for a rank-three
+  `4×6` regular-minor matrix on a signed vector (Section 45.7); the
+  positive-field form holds for that matrix by an exact check recorded
+  there. Nothing in this report is refuted. The two dated pointers, marked
+  "Added 5 October 2026, batch 100", follow the batch-72 notes after
+  Research questions 85 and 101 and cite `[MRN]` by its current numbers.
 
 ## Not claimed
 
@@ -2072,13 +2089,13 @@ Part IV's against all three. Watch in particular:
 
 ```
 article.tex                                  the report, standalone LaTeX with an internal bibliography
-article.pdf                                  the compiled report, 375 pages, A4 (title p. 1, scope box and contents pp. 2–13,
+article.pdf                                  the compiled report, 376 pages, A4 (title p. 1, scope box and contents pp. 2–13,
                                              Part I pp. 14–26, Part II pp. 27–55, Part III pp. 56–80,
                                              Part IV pp. 81–122, Part V pp. 123–173, Part VI pp. 174–207,
                                              Part VII pp. 208–224, Part VIII pp. 225–251, Part IX pp. 252–278,
                                              Part X pp. 278–303, Part XI pp. 304–329, Part XII pp. 330–360,
-                                             Part XIII pp. 360–371, Part I's appendices pp. 371–373,
-                                             references pp. 373–375)
+                                             Part XIII pp. 361–371, Part I's appendices pp. 371–373,
+                                             references pp. 373–376)
 README.md                                    this guide
 STATUS.md                                    Part I: literature and claim status, 20 Sep 2026
 PROOF_AUDIT.md                               Part I: independent-review checklist
@@ -2500,7 +2517,9 @@ Part XI adds one macro (`\ULC`), and its figure uses the TikZ library
 `positioning`, already loaded; Part XII adds two macros (`\GammaD`,
 `\poly`); Part XIII adds none.
 No image or font files are needed.
-The shipped PDF (375 pages) was built on 1 October 2026, after the
+The shipped PDF (376 pages) was rebuilt on 5 October 2026, after the
+batch-100 reciprocal notes (375 pages before them), with a log identical in
+the respects listed here and no label renumbered. The 375-page PDF was built on 1 October 2026, after the
 batch-73 reciprocal notes, with MiKTeX (pdfTeX 1.40.26) by `latexmk`: no errors, no undefined or multiply defined
 references or citations, no duplicate destinations, no overfull boxes and
 no other LaTeX warnings; five underfull boxes, the same five as the build of

@@ -93,6 +93,14 @@ Five `[write]` notes were added (all of 2 October 2026):
    relation to `a022629-distinct-partition-norms` (below);
 5. in Appendix A: the shipped names of the programs.
 
+Two reciprocal `[write]` notes were added on 5 October 2026 (batch 100);
+neither adds a label (still 17) or changes a number:
+
+6. after the proof of (11), before Section 5.1: its specialization in
+   `a126348-stable-hilbert-series` (below);
+7. at the end of Section 10.3: the neighbouring model of
+   `a271619-strict-twice-partitions`, Part II (below).
+
 ## Files
 
 ```text
@@ -175,6 +183,22 @@ distinct-partition endpoint `√(2n)`, with conjugate resonance sectors),
 different sequences and no shared theorem; neither manuscript cites the
 other. That report is not edited by this write (a reciprocal note is a
 separate commit).
+
+**A specialization (5 October 2026, batch 100).**
+`oeis-sequence-asymptotics/a126348-stable-hilbert-series` uses identity
+(11) at the q-dependent fugacity `u = 1/(1 − q)` (its Theorem 2.1, which
+was written without knowledge of this report and now credits it); a
+`[write]` note at the end of Section 5's proof records this. Different
+regime: no resonance sectors there; question 10.3 is not affected.
+
+**Neighbouring report (added 5 October 2026, batch 100).**
+`oeis-sequence-asymptotics/a271619-strict-twice-partitions`, Part II
+(Report 181, A358836, `∏(1 + q^k/(q;q)_k)`, labels `stp:len:`) is a
+distinct-part product with a q-dependent fugacity (`log u ≍ n^{1/4}`); its
+equation (96) is identity (11) here at `u = e^{μ(z)}`, derived
+independently. It does not answer Section 10.3's question (the regime
+`log u ≍ n^{1/6}` stays open); a `[write]` note at the end of Section 10.3
+records this. Its Part I treats A271619 by a two-charge phase expansion.
 
 ## Rerun the checks (on a flat scratch copy)
 

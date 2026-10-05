@@ -107,6 +107,13 @@ treated in the collection:
   (batch 85): the shifted rectangles A181198/A181199 of the paper's
   Section 6.4. The A181199 leading asymptotic and all-order expansions are
   proved there; the guessed recurrences are not.
+  [Added 5 October 2026, batch 98: Part II of that report proves that the
+  generating function of every fixed-height row of A181196 (A181198 and
+  A181199 included) is the diagonal of a rational power series, hence
+  D-finite (its Theorem 14.1, via Bostan–Lairez–Salvy's multiple binomial
+  sums), so the Section 6.4 sequences are now proved D-finite; the
+  particular guessed recurrences and finite sums of Section 6.4
+  (Conjectures 18–19) remain unproved.]
 
 None of these reports uses this one's theorems. All are unrefereed and none
 is formalized.

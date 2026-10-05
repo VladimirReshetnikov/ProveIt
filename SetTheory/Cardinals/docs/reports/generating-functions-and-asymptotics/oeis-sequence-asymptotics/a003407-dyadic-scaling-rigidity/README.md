@@ -30,7 +30,7 @@ itself no formal status.
 article.tex                                    the report, standalone LaTeX with an internal bibliography (pdfLaTeX)
 article.pdf                                    the compiled report, 51 pages (title page; contents pages 2-4;
                                                Part I, Sections 1-14, pages 5-26; Part II, Sections 15-27,
-                                               pages 27-48; Appendices A-C pages 48-50; references pages 50-51)
+                                               pages 27-48; Appendices A-C pages 49-50; references pages 50-51)
 README.md                                      this guide
 SOURCE_AND_PROOF_AUDIT.md                      source 01's source and proof audit, as delivered
 02-nonholonomicity-SOURCE_AND_PROOF_AUDIT.md   source 02's source, novelty and claim-status audit, as delivered
@@ -117,7 +117,9 @@ Part II (Stanley; Garoufalidis 2009 and 2011; André).
 A batch-85 reciprocal note (3 October 2026) added one bracketed paragraph,
 marked "[Added 3 October 2026, batch 85]", after Corollary 19.6
 (`dsr:nh:cor:jumps`) in Part II; it adds no label (still 157) and moves no
-number.
+number. A batch-98 reciprocal note (5 October 2026) added a second bracketed
+paragraph, marked "[Added 5 October 2026, batch 98]", after
+Question 26.1 (`dsr:nh:q:boundary`); it adds no label and moves no number.
 
 ## What is claimed
 
@@ -345,6 +347,12 @@ integrality or an exponential bound. The source-boundary diagonals of
 A182162 satisfy it; theta(n) does not, and this report's Example 22.2
 (`dsr:nh:ex:parity`) shows why the plateau hypothesis is needed. Each report
 carries a dated note pointing to the other (here after Corollary 19.6).
+Since batch 98 (5 October 2026) that report's Part II proves natural boundaries for those diagonals through a general transfer lemma (its
+Lemma 18.1, `sbd:edge:lem:transfer`: coherent dyadic blocks with a common
+profile nonvanishing at the dyadic roots of unity). A second dated note
+here, after Question 26.1 (`dsr:nh:q:boundary`), records that the lemma
+bears on that question as a method only: no such block structure is known
+for theta(n), and the question stays open.
 
 ## Building
 
