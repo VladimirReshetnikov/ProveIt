@@ -2721,8 +2721,14 @@ $x=X/Z$ satisfies $F_K(x;\eta_\star,1/m)=\mathrm O_{a,K}(m^{-K-2})$. At
 $\hbar_1=0$, $F_0(x;\eta_\star,0)=\log x+\mathcal D(\eta_\star/x)$ is strictly
 increasing in $x$ with derivative $B(s)/x>0$ ($\varepsilon=\eta_\star/x$),
 by \eqref{rpc:cx:eq:envelope}, and vanishes at $x=\mathcal R(\eta_\star)$;
-so the case $K=0$ already places the exact $x$ within $\mathrm O(1/m)$ of
-$\mathcal R(\eta_\star)$. In the regime $N\ge am^2$ one has
+since $\eta_\star=\varepsilon x=\varepsilon e^{-\mathcal D(\varepsilon)+\mathrm O(1/m)}$
+by the forward theorem, $\eta_\star$ lies in a compact subset of $[0,e^2)$,
+and, as $B>1$, the case $K=0$ already places the exact $x$ within
+$\mathrm O(1/m)$ of $\mathcal R(\eta_\star)$. (Dated note, 5~October 2026:
+the first version read ``vanishes at $x=\mathcal R(\eta_\star)$; so the case
+$K=0$ already places\ldots'', stating the compactness of $\eta_\star$ only
+in the next sentence; the order was corrected after the independent check
+recorded at the head of \S\ref{rpc:cx:sec:questions}.) In the regime $N\ge am^2$ one has
 $\varepsilon\le\varepsilon_a$, hence $\eta_\star$ stays in a compact subset
 of $[0,e^2)$, on which $F_K$ is analytic near $(\mathcal R(\eta_\star),
 \eta_\star,0)$ and $\partial_xF_K=B(s)/x$ there is bounded away from zero.
@@ -2965,14 +2971,23 @@ finite data as proof that the limiting sign has already appeared.
 Evaluating $m(\mathcal D(\varepsilon)-\mathsf d_1\varepsilon^2)+E_0(\varepsilon)
 +E_1(\varepsilon)/m$ from the series \eqref{rpc:cx:eq:E0series},
 \eqref{rpc:cx:eq:E1series} and $\mathsf d_2,\mathsf d_3,\mathsf d_4$ on the
-slice $X=\tfrac34m^{9/4}$ gives $0.0028419$ at $m=96$, against the exact
-$\log(p_m(N)/\mathcal V_1(m,N))=0.0028414$ recorded in
-\nolinkurl{data/02-crossover-crossover_checks.csv} (with $N=19308$). The
+slice $X=\tfrac34m^{9/4}$ gives $0.0028418$ at $m=96$, $N=19308$, against
+the exact $\log(p_m(N)/\mathcal V_1(m,N))=0.0028414$ recorded in
+\nolinkurl{data/02-crossover-crossover_checks.csv}. The
 same truncated expression changes sign between $m=1373$ and $m=1374$ and
 tends to $\mathsf d_2/(3/4)^4=-0.0009998\ldots$. This locates the expected
 crossing; it is an estimate from a truncated expansion, with no bound on
 the omitted terms at that size, and is recorded as
 \S\ref{rpc:cx:sec:q-finitesize}.
+\emph{Dated note (5~October 2026).} The first version of this note read
+``gives $0.0028419$ at $m=96$, \ldots{} (with $N=19308$)''; $0.0028419$
+($0.002841865$) is the value of the expression at the real
+$X=\tfrac34\cdot96^{9/4}$, while at the integer $N=19308$, to which the
+exact value refers, it is $0.0028418$ ($0.002841819$). The independent
+check recorded at the head of \S\ref{rpc:cx:sec:questions} found the
+sign change at $m=1373/1374$ correct (values $+3.0\cdot10^{-8}$ and
+$-3.35\cdot10^{-7}$; the sign changes there both for the real $X$ and for
+the integer $N$) and its framing as an estimate appropriate.
 \end{writenote}
 
 For $Y=p_m(m^2)$, the first corrected inverse chart has relative
@@ -3061,6 +3076,30 @@ completed in Remarks~\ref{rpc:cx:rem:completion}
 and~\ref{rpc:cx:rem:inverse-completion}, every statement manuscript~09
 asserts is proved in its text, and the write found none of its claims to be
 false.
+
+\emph{Dated note (5~October 2026).} An independent adversarial check of
+the results added at this write, made by the intake after the write, found
+them valid: all six steps of Remark~\ref{rpc:cx:rem:completion},
+Remark~\ref{rpc:cx:rem:inverse-completion}, and the dated note in
+\S\ref{rpc:cx:sec:checks} with question~\ref{rpc:cx:sec:q-finitesize},
+which present the sign change at $m=1373/1374$ correctly as an estimate.
+The check was a careful reading with independent computations: its own
+implementation of the operator \eqref{rpc:cx:eq:Ejoperator} (its $E_1$
+agrees with \eqref{rpc:cx:eq:E1} to 12 digits); exact $p_m(N)$ by the
+recurrence for $m=10,\ldots,240$ and $N/m^2$ from $0.05$ to $10^4$
+($N\le3\cdot10^6$), whose residuals after $J=0,1,2$ corrections, scaled by
+$m^{J+1}$, approach $E_{J+1}$ uniformly in $N/m^2$; an independent
+second inverse coefficient $\omega_2$, with next remainder
+$\mathrm O(m^{-3})$; measured arc ratios for step~(iv) of
+Remark~\ref{rpc:cx:rem:completion}; and a recomputation of the truncated
+expression on the slice. It is not a formal verification or an external
+review. It led to three changes, each recorded with a dated note where it
+was made: the value at $m=96$ in the note of \S\ref{rpc:cx:sec:checks}
+($0.0028418$ at $N=19308$, not $0.0028419$); in
+Remark~\ref{rpc:cx:rem:inverse-completion}, the compactness of
+$\eta_\star$ in $[0,e^2)$ is now stated before the step $K=0$, which then
+gives $|\log x-\log\mathcal R(\eta_\star)|=\mathrm O(1/m)$; and numerical
+evidence in question~\ref{rpc:cx:sec:q-finitesize}.
 \end{writenote}
 
 \subsection{Are all entropy coefficients strictly negative?}
@@ -3226,6 +3265,19 @@ remainder constants in Theorem~\ref{rpc:cx:thm:uniform} at that size
 (question~\ref{rpc:cx:sec:q-constants}), or an exact count at $m\approx1.4\cdot10^3$,
 $N\approx8.1\cdot10^6$, where the dynamic program of
 \S\ref{rpc:cx:sec:checks} needs about $10^{10}$ big-integer additions.
+\emph{Dated note (5~October 2026): numerical evidence only.} The
+independent check recorded at the head of \S\ref{rpc:cx:sec:questions}
+computed $\log p_m(N)$ by floating-point quadrature of the Cauchy integral
+on the exact-saddle circle. Against exact counts it gives $0.0028414007$
+at $m=96$, $N=19308$ (the recorded value) and agrees to $2\cdot10^{-10}$ at
+$m=20$, $N=400$; the omitted minor arcs are of size $e^{-18}$ there and
+$e^{-530}$ at $m=1373$. On the integer slice
+$N=\operatorname{round}(\tfrac34m^{9/4}-m(m+1)/4)$ the actual
+$\log(p_m(N)/\mathcal V_1(m,N))$ is $+2.96\cdot10^{-8}$ at $m=1373$ and
+$-3.35\cdot10^{-7}$ at $m=1374$, so the actual counts also appear to change
+sign there. The computation takes seconds, but it is floating point and
+uncertified: it supports the estimate and replaces neither a proof nor an
+exact count.
 
 \section{Conclusion of Part~II}\label{rpc:cx:sec:conclusion}
 The restricted-partition family admits one centered, fixed-order

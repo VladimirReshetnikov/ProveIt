@@ -227,7 +227,7 @@ apart from the symbol renames listed above and the restored cross-references.
 ```text
 README.md                    this guide (replaces both delivery READMEs)
 article.tex                  the report (Part I delivered as restricted_partitions_cubic_boundary.tex)
-article.pdf                  compiled report, 52 pages
+article.pdf                  compiled report, 53 pages
 source_audit.md              Part I's source and repository audit, as delivered
 OEIS_update_draft.md         Part I's draft OEIS comments, NOT submitted, as delivered
 02-crossover-SOURCE_AUDIT.md Part II's source and novelty audit, as delivered (SOURCE_AUDIT.md)
@@ -349,7 +349,7 @@ latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
 (Neither `code/build.sh` nor `code/02-crossover-build.sh` builds the
-shipped layout.) The committed PDF was built in a scratch directory: 52
+shipped layout.) The committed PDF was built in a scratch directory: 53
 pages, no errors, no warnings, no undefined references or citations, no
 multiply defined labels, no duplicate PDF destinations, no overfull boxes;
 its four underfull-box notices, in the two bibliography entries with long
