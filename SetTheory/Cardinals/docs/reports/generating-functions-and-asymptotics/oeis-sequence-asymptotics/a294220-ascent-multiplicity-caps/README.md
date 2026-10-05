@@ -50,9 +50,9 @@ AI-assisted and unrefereed, and its exact checks are finite.
 
 ```
 article.tex        the merged report, standalone LaTeX with an internal bibliography
-article.pdf        the compiled report, 64 pages (title page and contents 1-3,
-                   Guide 3-10, Part I 11-24, Part II 24-31, Part III 31-64,
-                   references 64)
+article.pdf        the compiled report, 65 pages (title page and contents 1-3,
+                   Guide 3-10, Part I 11-24, Part II 24-31, Part III 31-65,
+                   references 65)
 README.md          this guide
 
 Source 47 (Part I), from oeis-bounded-multiplicity-family-report.zip
@@ -147,7 +147,9 @@ merge. Part III (5 October 2026) uses `amc:bm:` ("bounded"): Report 99's 119
 delivered labels keep their names after it (`amc:bm:thm:growth`,
 `amc:bm:cap:sharp`, …), plus `amc:part:bm` and `amc:bm:sec:further`; 212
 labels in all, none of the 91 renamed or renumbered (checked against a build
-of the committed text).
+of the committed text). The independent check of 5 October 2026 added an
+unlabelled paragraph and two clarifying sentences; no label was added and
+none renumbered (aux files compared).
 
 ## What is claimed
 
@@ -196,6 +198,38 @@ of the committed text).
   than Part I's. A `[write]` proposition after equation (140) proves Report
   99's unproved remark that for K = 1 the derivative bracket improves: it is
   1 + O((2/3)^R), with constant below 10.4 for R ≥ 2.
+- *[Independent check, 5 October 2026.]* An adversarial check made by the
+  intake after the write (`b71fda5be`) reread the seven additions of the
+  batch-102 write that state or prove something, five here and two in Part V
+  of `../a202058-ascent-000-growth/`, and found all seven valid, with no
+  counterexample, no gap in any proof chain, and every cited cross-reference
+  number correct. The five here: the K = 1 proposition after (140); the
+  r = 2 closed forms after Theorem 17.2; the identification at r = 2 of the
+  state (X_1, X_2, L) with Report 97's (m, h, L) and the sibling's Part I
+  state (s, u, k), which makes Corollary 18.3 a proof of Report 97's
+  O(N^4)-operation, O(N^3)-storage count; the R → b coefficient conversion
+  after (137); and the relation of Corollary 24.6 to Part I's cap inverse.
+  Two clarifications were adopted where they stand (no statement or number
+  changed, so no dated note): the r = 2 note now names the vector Report 97
+  evaluates, (−μ₂χ_s(1,1), −μ₂χ_t(1,1)), the gradient at zero of its
+  F(p,q) = −log χ(e^p, e^q), not a gradient of χ (it said "this gradient");
+  and the K = 1 note records that 10.4 is conservative (numerically
+  ε₁(R)(3/2)^R decreases from 6.80 at R = 2 to its limit
+  (2/3) log 3/log 2 ≈ 1.057). The tests, with the check's own programs:
+  every step of the K = 1 proof on real R ≥ 2, with
+  S = −ζ′(3) − (log 2)/8 = 0.111482845… and 18S/(λ − 1/2) = 10.3894409…;
+  40-digit quadratures of b_1 and b_2 (at least 36 digits), a numerical
+  gradient of χ and K = 3π²/8 − π − 1 by quadrature; exact E[X_1]/N and
+  E[X_2]/N at N = 50, 100, 150 approaching b_1, b_2 slowly; the three r = 2
+  state tables (this Part, Report 97, the sibling's Part I) identical level
+  by level through n = 35; brute force against the sorted transfer for
+  r = 2..5 (counts, endpoint histograms, the identities (68), the OEIS and
+  `data/53-bounded-data-expected_counts.json` fixtures); the prefix-sum
+  program of Corollary 18.3 against the sibling's exact counts for n ≤ 150;
+  SymPy conversions for m = 1, 2, 3 and the constants C_m a_m; quadrature of
+  T_2(R) at R = 100, 200; the Lambert root x_ε = b_0 + 1 and d_b/h(b) − 1
+  > 0 for b = 2..25. A careful reading with numerical tests, not a formal
+  verification. Printed as a dated paragraph at the end of §26.6.
 
 ## What is not claimed
 
@@ -298,7 +332,10 @@ pdfLaTeX with amsmath, amssymb, amsthm, booktabs, lmodern, microtype,
 hyperref, enumitem, longtable and array. The build of 5 October 2026
 (MiKTeX, 64 pages) had no errors, no undefined references or citations, no
 multiply defined labels or duplicate destinations, and no overfull or
-underfull boxes, like the build of the committed text. The log repeats
+underfull boxes, like the build of the committed text. The committed PDF
+was rebuilt on 5 October 2026 after the independent check, in a scratch
+copy with three pdfLaTeX passes: 65 pages, with the same clean log, and
+every label keeps its number (aux files compared). The log repeats
 pdfTeX notices "fontmap entry ... already exists, duplicates ignored"; they come
 from the `\pdfmapfile` lines both delivered sources carry and are harmless.
 
@@ -488,3 +525,6 @@ of the delivered packages:
   number of sectors, certified cap decisions, practical next steps); its
   remark "for K = 1 the stated common bound can be improved" was proved at
   the write. No claim was found to be wrong.
+- After the write, the independent check (5 October 2026, above) added the
+  dated paragraph at the end of §26.6 and the two clarifications in the
+  notes after Theorem 17.2 and after (140).

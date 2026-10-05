@@ -93,6 +93,35 @@ Write `T = 3π²/8`, `μ = 1/T = 8/(3π²) = 0.27018982304623405718…`, and
   which proves the root and ratio limits, the endpoint laws (as
   integrals) and a full large-deviation principle for every cap.
 
+*[Independent check, 5 October 2026.]* An adversarial check made by the
+intake after the write (`b71fda5be`) reread the seven additions of the
+batch-102 write that state or prove something, four concerning Part V and
+three in Part III of `../a294220-ascent-multiplicity-caps/`, and found all
+seven valid, with no counterexample, no gap in any proof chain, and every
+cited cross-reference number correct. The four here: the endpoint closed
+forms (Corollary 46.4, (276)) as the r = 2 case of the A294220 integrals
+b_j; the state (m, h, L) = Part I's (s, u, k) = the A294220 (X_1, X_2, L)
+at r = 2, so that its Corollary 18.3 proves the O(n^4)-operation,
+O(n^3)-storage count; the exclusion of the stretched factor for either sign
+of c (§42); and the `compute_distribution.cpp` run (§49). Nothing in Part V
+needed a change; the two clarifications adopted are in the A294220 report.
+The tests, with the check's own programs: 40-digit quadratures of b_1 and
+b_2 against 1 − 8/(3π) and 8(π+1)/(3π²) − 1 (at least 36 digits), a
+numerical gradient of χ, and K = 3π²/8 − π − 1 by quadrature; exact
+E[m]/n and E[h]/n at n = 50, 100, 150 approaching the limits slowly; the
+three state tables identical level by level through n = 35, every
+reachable state with m ≥ 0, h ≥ 1, 0 ≤ L ≤ m + h − 1; brute force against
+the sorted transfer for caps 2..5; the Corollary 18.3 prefix-sum program
+against `data/38-growth-exact_coefficients_395.txt` for n ≤ 150; the full
+polynomials H_n(s, t) of recurrence (219) for n ≤ 9; and a fresh build of
+`compute_distribution.cpp` (WinLibs g++ -O3, long double) to n = 400:
+cutoff 1e-120 equal to `data/38-growth-normalized_transfer_cut120.txt`
+rows 1–400 apart from line endings (Windows text-mode output in that run),
+largest deviation from the exact ratios 1.96e-17 for n ≤ 395; cutoff 1e-30
+deviations −4.685e-12, −3.332e-8, −7.315e-6 at n = 200, 300, 395. A careful
+reading with numerical tests, not a formal verification. Printed as a dated
+paragraph at the end of Section 50.
+
 **What no Part claims.** No Part proves the pointwise law
 `log c_n ~ (2/3)(log n)^2`, which is open in Part II (Conjecture 16.1),
 Part III (equation (76)) and Part IV (equation (160)). No Part proves
@@ -145,7 +174,7 @@ The numerals I–V name the Part that a delivered file belongs to.
 
 ```
 article.tex                                                   the merged report (standalone LaTeX, internal bibliography)
-article.pdf                                                   the compiled report, 101 pages
+article.pdf                                                   the compiled report, 102 pages
 README.md                                                     this guide
 figures/36-fine-correction-diagnostics.pdf                    II: Figure 1, included by article.tex
 figures/36-fine-correction-diagnostics.png                    II: the same figure as PNG (not used by the build)
@@ -503,7 +532,9 @@ is the Microsoft Store alias. In Git Bash, define a shim first:
   (9 s), and `./cd 400 1e-30` (3 s) gave ratio errors of −4.7e-12, −3.3e-8
   and −7.3e-6 at n = 200, 300, 395 against the exact table, which supports
   the delivered warning about that cutoff. The 1200-row long-double runs
-  were not repeated.
+  were not repeated. The independent check of 5 October 2026 rebuilt the
+  program and reproduced both runs (identical rows apart from line
+  endings; the same deviations).
 
 ## Labels
 
@@ -523,6 +554,9 @@ delivered labels keep their names after the sub-prefix (for example
 `a58:eg:thm:main`, `a58:eg:low:theorem`, `a58:eg:rat:joint`), plus
 `a58:part:eg` and `a58:eg:sec:further`; 385 labels in all, none of the
 280 renamed or renumbered (checked against a build of the committed text).
+The independent check of 5 October 2026 added an unlabelled paragraph at
+the end of Section 50; no label was added and none renumbered (aux files
+compared).
 
 The sub-prefixes were needed: the four manuscripts share 27 label names.
 `thm:main` occurs in all four. `eq:FK` (36, 37) and `eq:fk` (07, 08)
@@ -620,6 +654,9 @@ form); §49 (shipped files, the cutoff rerun, the operation count); the
 list of Section 50, "Further questions and research", a section added at
 the write; one after Part II's Conjecture 16.1 (neighbouring reports); and
 two in the front matter (Part V added; a294220 now shares theorems).
+After the write, the independent check (5 October 2026, see "What is
+claimed") added a dated paragraph at the end of Section 50 and changed
+nothing else.
 
 **OEIS data.** The b-file and the exact OEIS terms compared by the checks
 (`data/36-fine-numerics-oeis-b202058.txt`, the counts quoted in the
@@ -687,9 +724,11 @@ From a copy of this directory with `figures/` alongside:
 
 This uses pdfLaTeX with amsmath, amssymb, amsthm, mathtools, graphicx,
 booktabs, array, enumitem, hyperref, xurl, lmodern and microtype. The
-build at the batch-102 write (MiKTeX, 5 October 2026) gave 101 pages
-(front matter 1–11, Part I 12–20, Part II 21–39, Part III 40–61, Part IV
-62–75, Part V 76–101, references 101), with 0 errors, 0 undefined
+build after the independent check of the batch-102 write (MiKTeX,
+5 October 2026, three pdfLaTeX passes in a scratch copy; every label keeps
+its number, aux files compared) gave 102 pages (front matter 1–11, Part I
+12–20, Part II 21–39, Part III 40–61, Part IV 62–75, Part V 76–101,
+references 102), with 0 errors, 0 undefined
 references or citations, 0 multiply defined labels, 0 duplicate PDF
 destinations and 0 overfull boxes. Three underfull boxes remain, in the
 bibliography's URL lines, as in the build of the committed text. Build in a scratch directory and

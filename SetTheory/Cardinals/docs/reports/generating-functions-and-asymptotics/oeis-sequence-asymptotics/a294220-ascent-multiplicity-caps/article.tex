@@ -1210,7 +1210,7 @@ Here ``exponentially small'' means that for each fixed deviation $\eta>0$ there 
  b_1=1-\frac8{3\pi},\qquad b_2=\frac{8(\pi+1)}{3\pi^2}-1,\qquad
  \frac DN\to1-\frac4{3\pi},\qquad \frac AN\to\frac4{3\pi}+\frac8{3\pi^2}.
 \]
-These are the closed forms of Report~97, Corollary~46.4 and equation~(276) of the sibling report \repopath{a202058-ascent-000-growth}. \emph{Proof.} At $r=2$ the polynomial of \eqref{amc:bm:eq:chi} is $P_{\bu}(s)=s^2/2+u_1s+u_2$, so $\chi(u_1,u_2)=\int_0^\infty g(u_2+u_1s+s^2/2)\,ds$ is Report~97's $\chi(s,t)$ with $(s,t)=(u_1,u_2)$ (the second form of its equation~(281)). Section~\ref{amc:bm:sec:ratio} gives $b_j=-\mu_2\chi_{u_j}(1,1)$, and Report~97 evaluates this gradient as $(\mu_2(1+K),-\mu_2K)$ with $K=3\pi^2/8-\pi-1$ and $\mu_2=8/(3\pi^2)$. The last two limits follow from the formulas of Theorem~\ref{amc:bm:thm:endpoints}. A 30-digit quadrature of \eqref{amc:bm:eq:bj} agrees (checked at the write). Here $b_1$ is the limiting proportion of values used once ($X_1=N_1$) and $b_2$ that of available unused values ($X_2$). The endpoint laws are new in this report: Parts~\ref{amc:part:fc} and~\ref{amc:part:sec} have no statement about the shape of a typical word.
+These are the closed forms of Report~97, Corollary~46.4 and equation~(276) of the sibling report \repopath{a202058-ascent-000-growth}. \emph{Proof.} At $r=2$ the polynomial of \eqref{amc:bm:eq:chi} is $P_{\bu}(s)=s^2/2+u_1s+u_2$, so $\chi(u_1,u_2)=\int_0^\infty g(u_2+u_1s+s^2/2)\,ds$ is Report~97's $\chi(s,t)$ with $(s,t)=(u_1,u_2)$ (the second form of its equation~(281)). Section~\ref{amc:bm:sec:ratio} gives $b_j=-\mu_2\chi_{u_j}(1,1)$, and Report~97 evaluates the vector $(-\mu_2\chi_s(1,1),-\mu_2\chi_t(1,1))$, the gradient at zero of its $F(p,q)=-\log\chi(\ee^p,\ee^q)$, as $(\mu_2(1+K),-\mu_2K)$ with $K=3\pi^2/8-\pi-1$ and $\mu_2=8/(3\pi^2)$. The last two limits follow from the formulas of Theorem~\ref{amc:bm:thm:endpoints}. A 30-digit quadrature of \eqref{amc:bm:eq:bj} agrees (checked at the write). Here $b_1$ is the limiting proportion of values used once ($X_1=N_1$) and $b_2$ that of available unused values ($X_2$). The endpoint laws are new in this report: Parts~\ref{amc:part:fc} and~\ref{amc:part:sec} have no statement about the shape of a typical word.
 \end{writenotedated}
 
 \begin{proposition}\label{amc:bm:prop:capmonotone}
@@ -2330,7 +2330,7 @@ The term $k=2$ is $2^{-R-1}(1-R\lambda)=-(\lambda-1/R)L_0(R)$, with $L_0(R)=R2^{
 \]
 Since $\lambda-1/R\ge\lambda-1/2>0$, dividing by $(\lambda-1/R)L_0(R)$ gives $|\varepsilon_1(R)|\le\frac{27S}{\lambda-1/2}(2/3)^{R+1}=\frac{18S}{\lambda-1/2}(2/3)^R$. Numerically $S=0.11148\ldots$ and $\lambda-1/2=0.19314\ldots$, so the constant is below $10.4$. \qed
 
-\smallskip\noindent Thus the common bound of \eqref{amc:bm:cap:partial-derivative} improves at $K=1$ from relative order $R^{-1/2}(8/9)^R$ to $(2/3)^R$, the order of the first nonleading zeta mode. For $K\ge2$ the error term is set by the quadratic sector and is not improved by this argument.
+\smallskip\noindent Thus the common bound of \eqref{amc:bm:cap:partial-derivative} improves at $K=1$ from relative order $R^{-1/2}(8/9)^R$ to $(2/3)^R$, the order of the first nonleading zeta mode. For $K\ge2$ the error term is set by the quadratic sector and is not improved by this argument. The constant $10.4$ is conservative: numerically (40~digits, on a grid of step $0.01$ in $[2,60]$), $\varepsilon_1(R)$ is positive and $\varepsilon_1(R)(3/2)^R$ decreases from $6.80$ at $R=2$, where $\varepsilon_1=3.02$, towards its limit $\frac23\log3/\log2=1.057\ldots$, which the term $k=3$ sets.
 \end{writenotedated}
 
 \subsection{Canonical envelopes for the minimum cap}
@@ -2573,6 +2573,81 @@ Under the repository's standing rule every claim of Report~99 that is not proved
 \item \emph{Practical next steps} named in Report~99: certified integral bounds (all quadratures in this Part, including the table of $\mu_r$, are uncertified) and faster compact enumeration.
 \end{enumerate}
 \end{writenotedated}
+
+\paragraph{Independent check of the write (dated note, 5~October 2026).}
+An independent adversarial check, made by the intake after the write
+(\texttt{b71fda5be}), reread the seven additions of the batch-102 write
+that state or prove something, here and in Part~V of the sibling report
+\repopath{a202058-ascent-000-growth}. It found all seven valid, no
+counterexample and no gap in any proof chain, and it confirmed every
+cross-reference number they cite. Five concern this Part: the proposition
+for $K=1$ in the note after \eqref{amc:bm:cap:partial-derivative}; the
+closed forms at $r=2$ in the note after
+Theorem~\ref{amc:bm:thm:endpoints}; the identification at $r=2$ of the
+state $(X_1,X_2,L)$ with Report~97's $(m,h,L)$ and the sibling's Part~I
+state $(s,u,k)$, which makes Corollary~\ref{amc:bm:cor:algorithm} a proof
+of Report~97's count of $O(N^4)$ operations and $O(N^3)$ stored entries
+(note after that corollary); the conversion from $R$ to $b$ after
+\eqref{amc:bm:cap:coefficients}; and the relation to
+Section~\ref{amc:sec:capinverse} after
+Corollary~\ref{amc:bm:cap:two-candidates}. The other two, the exclusion of
+a stretched factor for either sign and the rerun of the delivered
+\texttt{compute\_distribution.cpp}, are recorded in the sibling report.
+Two clarifications were adopted where they stand; no statement or number
+changed. In the note after Theorem~\ref{amc:bm:thm:endpoints} the vector
+that Report~97 evaluates is now named: it is
+$(-\mu_2\chi_s(1,1),-\mu_2\chi_t(1,1))$, the gradient at zero of its
+$F(p,q)=-\log\chi(\ee^p,\ee^q)$, not a gradient of $\chi$ (the earlier
+wording said ``this gradient''). The note after
+\eqref{amc:bm:cap:partial-derivative} now records that the constant $10.4$
+is conservative.
+
+The check used its own programs. For the proposition it redid every step
+on real $R\ge2$: the identity $\Delta_1(R)=T_1(R)=R(\zeta(R+1)-1)$, which
+holds for every real $R>0$; the termwise differentiation; the term $k=2$;
+for $k\ge3$ the bounds $|1-R\log k|\le R\log k$ (as $R\log k\ge2\log3>1$)
+and $(3/k)^{R+1}\le(3/k)^3$; and the constants
+$S=-\zeta'(3)-(\log2)/8=0.111482845\ldots$ and
+$18S/(\lambda-\frac12)=10.3894409\ldots<10.4$. At 40~digits on a grid of
+$[2,60]$ it found $\varepsilon_1>0$ throughout, the largest value $6.799$
+of $|\varepsilon_1|(3/2)^R$ at $R=2$ (where $\varepsilon_1=3.022$, which
+the bound allows), and the limit $\frac23\log3/\log2=1.0566\ldots$; so the
+bound holds with room. For the closed forms, 40-digit quadratures of
+\eqref{amc:bm:eq:bj} agree with $b_1$ and $b_2$ to at least 36~digits; a
+numerical gradient of $\chi$ at $(1,1)$ gives $(\mu_2(1+K),-\mu_2K)$, with
+$K=3\pi^2/8-\pi-1=-0.44049\ldots$ also by quadrature; and an exact
+dynamic program gives $\mathbb E[X_1]/N=0.1802$, $0.1669$, $0.1621$ and
+$\mathbb E[X_2]/N=0.1361$, $0.1286$, $0.1259$ at $N=50,100,150$, falling
+slowly towards $b_1=0.15117\ldots$ and $b_2=0.11902\ldots$. For the
+state, the transfer \eqref{amc:bm:eq:transfer} at $r=2$ was matched case
+by case with Report~97's repeat and new transitions and with Part~I's four
+children in the sibling report (the same ascent test $i\ge L$, the same
+initial state $(1,1,1)$); the three state tables are identical level by
+level through $n=35$, and every reachable state has $m\ge0$, $h\ge1$ and
+$0\le L\le m+h-1$. Brute force against the sorted transfer, for $r=2$
+($N\le11$), $r=3,4$ ($N\le9$) and $r=5$ ($N\le8$), gives the same counts
+and the same endpoint histograms under \eqref{amc:bm:eq:histrelations},
+whose last identity also holds; the counts match the shipped OEIS fixtures
+for $r=2,\ldots,5$ and \repopath{data/53-bounded-data-expected_counts.json}.
+The prefix-sum dynamic program of Corollary~\ref{amc:bm:cor:algorithm},
+which is the algorithm Report~97 sketches, reproduces the sibling's
+\repopath{data/38-growth-exact_coefficients_395.txt} for $n\le150$; both
+reports count arithmetic operations, not bit operations. For the
+conversion, SymPy gives exactly the lists in $b$ for $m=2,3$, the list
+$(1,1,0,0)$ for $m=1$ (Part~\ref{amc:part:sec}'s $c_{1,1}=1$),
+$C_2a_2=8/(9\sqrt\pi)$, $C_3a_3=81\sqrt3/(32\pi)$, and in general
+$C_ma_m=m^{m+3/2}(m+1)^{-2}(2\pi)^{(1-m)/2}$, Part~\ref{amc:part:sec}'s
+constant; \eqref{amc:bm:cap:kappa} gives $-31/8$ and $-43/3$; and
+quadrature of $T_2(R)$ at $R=100$ and $200$ gives $35.6$ and $38.6$ for
+$R^2$ times the residual after the term $-31/(8R)$, consistent with the
+approach to $5437/128=42.48\ldots$ that the next coefficient predicts. For
+the relation to Section~\ref{amc:sec:capinverse}, the Lambert root of the
+leading model $C_0x2^{-x}=\epsilon$ with $C_0=2D$ is exactly $b_0+1$; the
+gap at $R=r+1$ is $\mu_\infty-\mu_r$, so $r_{\min}(\epsilon)=b_\varepsilon$;
+at $\varepsilon=h(n)$ one has $b_0=n$, and the corollary selects $n+1$, as
+Part~\ref{amc:part:fc}'s counterexamples require; and $d_b/h(b)-1$ is
+positive for $b=2,\ldots,25$, from $3.87$ at $b=2$ to $0.021$ at $b=25$. This was a
+careful reading with numerical tests, not a formal verification.
 
 
 
