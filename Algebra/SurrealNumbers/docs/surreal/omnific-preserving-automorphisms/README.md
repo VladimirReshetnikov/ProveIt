@@ -1988,6 +1988,14 @@ Appendix A.3 records these.
   for the real left-finite fields `L^Γ_R` with the valuation gain in place of
   the `s`-adic filtration (`pma:bsd:thm:explog`), by the same proof that the
   logarithm is a derivation. A dated note after Remark 69.4 records this.
+  Its Part XX (batch 96) extends that correspondence, for countable divisible
+  `Γ`, from a uniform positive gain to strict derivations and
+  tangent-to-identity automorphisms locally nilpotent on bounded exponent
+  windows (`pma:bfl:thm:strict`, `pma:bfl:cor:tangent`), transfers BCH
+  identities under a common positive gain (`pma:bfl:w-bch`), and shows that in
+  infinite rational rank a product of two time-one maps need not be a time-one
+  map (`pma:bfl:thm:timeone`); a second dated note after Remark 69.4 records
+  this.
 
 ## What was run
 
@@ -2042,7 +2050,8 @@ after Theorem 29.6 (same comparison, citation numbers included), and so does
 the batch-92 note after Theorem 5.1 (same comparison: 1,458 `.aux` labels,
 citation numbers included). The two batch-93 notes, after Corollary 9.11 and
 after Remark 69.4, took the build from 221 to 222 pages and changed no number
-(same comparison).
+(same comparison). The batch-96 note after Remark 69.4 leaves 222 pages and
+changes no number (same comparison).
 
 Fourteen of the shipped scripts can write files (thirteen check scripts and 16's build
 script; 19's `build.sh` creates two empty directories before failing, and 17's and 20's

@@ -36,7 +36,7 @@ wording was kept.
 
 ## Files
 
-- `article.pdf` — the full 28-page article, including proofs and background.
+- `article.pdf` — the full 29-page article, including proofs and background.
 - `article.tex` — self-contained LaTeX source with an inline bibliography.
 - `short-proof.pdf`, `short-proof.tex` — a one-page version of the decisive proof.
 - `references.bib` — reusable metadata for the six references.
@@ -113,6 +113,18 @@ algebraic extension of `R(x)`, extending embeddings correspond exactly to
 the surreal roots of the evaluated minimal polynomial; the image of its
 generator determines the extension. These are separate existence criteria,
 not a classification of all abstract Hahn-field embeddings.
+
+A note added on 4 October 2026 (batch 96) after the proof of Theorem 4.6
+(`thm:exact`) records a topological complement from Part XIX of the surreal
+report
+[`polish-models-of-omnific-arithmetic`](../../foundations-and-computation/polish-models-of-omnific-arithmetic/)
+(its Proposition 267.1, `pma:spc:prop:powerseries`; AI-assisted, unrefereed,
+not formalized): read as real arrays in the product topology, the
+source-summable families of that proof form a Π⁰₃-complete set, the
+coefficientwise source sum is Baire class 1 and nowhere continuous on it, and
+closed certificate spaces restore continuity. It does not affect the algebraic
+statements. The note moves the article from 28 to 29 pages; no label number
+changed.
 
 ## Run the exact checks
 

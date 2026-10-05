@@ -44,7 +44,7 @@ working tree](https://github.com/VladimirReshetnikov/Surreal/tree/251bd32/docs/f
 
 ## What this is
 
-`article.tex` / `article.pdf` — 96 pages, 26 numbered sections (21 main plus 5
+`article.tex` / `article.pdf` — 97 pages, 26 numbered sections (21 main plus 5
 appendices), 31 numbered theorem-environment results, 15 tables (11 longtables
 plus 4 inline), 9 Lean listings, 88 numbered non-claims, 58 bibliography
 entries. Standalone LaTeX: full preamble, internal `thebibliography`, no
@@ -306,7 +306,20 @@ result as a check of the pinned revision.
   `found:rem:conservativity` records this. The batch-80 note's "Research
   question 27.3" is corrected to 113.3 (`swo:n16.3`), the number that question
   has carried since that report's later parts were added. These batch-89
-  edits move the page count from 95 to 96; no label number changed.
+  edits move the page count from 95 to 96; no label number changed. Since
+  batch 96 its Part XVI (sources 34 and 35) proves, over GB with ZF sets and
+  no form of choice, that strong comparability of class well-orders is
+  equivalent to canonical condensation histories along `W+1`
+  (`swo:bo:hist:equivalence`, `swo:fc:gb-comparability`) and to a fixed-point
+  extension principle (`swo:fc:cor:FPE-CWO`, `swo:xvi:thm:choicefree`); those
+  histories are class-valued recursions that ETR supplies, and whether
+  comparability implies ETR stays open (Hamkins–Woodin's Question 7). Its
+  hereditary order `E ≅ Ord^[E]` (`swo:bo:her:wellorder`,
+  `swo:bo:her:fixedpoint`) is defined by finite witnesses and invokes no ETR.
+  An unnumbered "Related (batch 96, 4 October 2026)" note at the end of
+  `found:sub:etr` records this; it moves the page count from 96 to 97 (the
+  bibliography's last entries move to a new page), and no label number
+  changed.
 - [polish-models-of-omnific-arithmetic](../polish-models-of-omnific-arithmetic/)
   (batch 90): its Part XII (source 18) restates clauses 1–2 of
   `found:thm:discrete` for sets of surreals in the native order topology
@@ -333,7 +346,7 @@ Standard TeX Live or MiKTeX. Packages: `lmodern`, `geometry`, AMS, `mathrsfs`,
 `listings`, `xurl`, `needspace`, `hyperref`, `cleveref`. No external figures, no
 `.bib`, no bibliography processor, no shell escape.
 
-Final build status: **96 pages; 0 errors, 0 undefined references, 0 undefined
+Final build status: **97 pages; 0 errors, 0 undefined references, 0 undefined
 citations, 0 multiply-defined labels, 0 duplicate-destination warnings, 0
 overfull or underfull boxes, 0 warnings of any kind.**
 
@@ -347,7 +360,7 @@ never by their labels.
 
 ```
 article.tex   the maintained merged report
-article.pdf   96 pages
+article.pdf   97 pages
 code/         the five Lean files from M1 and M2, three since compiled  (verbatim)
 data/         the three build/audit records from M2 and M3                 (verbatim)
 ```

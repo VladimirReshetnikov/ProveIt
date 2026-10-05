@@ -571,7 +571,13 @@ Question 10.4 that meets Question 65.4 (its Theorem 15.3) and gives the prescrib
 finitely generated group case (graded hierarchy still open), answers Question 65.8
 in part (its Proposition 19.4, Theorem 19.3, Corollary 19.5), and asks Questions
 65.1, 65.6 and 65.12 again for its own actions (its Questions 23.9, 23.10, 23.12);
-all twelve stay open.
+all twelve stay open. Since batch 96 (dated notes of 4 October 2026), Part III
+of that report bears on Questions 65.1, 65.2, 65.6, 65.7 and 65.12: it
+answers Question 65.2 further in part (a centralizer-orbit formula at the level
+λ = κ > ω for finitely many named injections, its Corollary 27.2), gives a
+two-involution example outside the finite-orbit scope of Question 65.7, and
+asks Questions 65.1, 65.6 and 65.12 again (its Questions 37.6, 37.8, 37.12);
+all twelve still stay open.
 
 Since batch 95, Part IX adds Questions 79.1–79.20 (`hset:sf:q:`), merging the
 twelve of source 13 and the eleven of source 14 (intrinsic axioms, pure `Oz`,
@@ -709,6 +715,19 @@ its results are results of Part VIII, which is prior in the repository: dated
 notes after Remark 54.4, Corollary 58.2 and Theorem 62.3, and after Questions
 65.1, 65.2, 65.4, 65.6, 65.8 and 65.12, record each correspondence.
 
+Part III of naming-elementary-embeddings (batch 96, labels `nee:aa:` and
+`nee:ci:`, two manuscripts merged, pinned to `715a716a3`, written later and
+independently) classifies the connected types of finitely generated
+commutative monoids acting by injections (finitely many, `ℵ0` or `2^ℵ0`,
+according as the group completion `G` is finite, infinite with `d ≤ 1`, or has
+`d ≥ 2`, where `d` is the rank of `G/U`; its Theorem 30.4) and the resulting
+Replacement thresholds, and generalizes Lemma
+56.3 to injections and infinite components (its Lemma 26.3) for an exact
+pure-real definable kernel at every cutoff (its Theorem 27.1). Dated notes
+(4 October 2026) after Lemma 56.3 and after Questions 65.1, 65.2, 65.6, 65.7
+and 65.12 record what it bears on; it answers none of Part VIII's questions in
+full.
+
 **[definable-surreals-and-omnific-integers](../definable-surreals-and-omnific-integers/)**
 (Part III, batch 93, labels `dsn:op:`, its source 06): it interprets `(V,∈)`
 parameter-free in `(No; +, ·, <, Oz, Ω)`, a signature without birthday, by the same
@@ -820,7 +839,9 @@ historical execution records below remain separate from this fresh validation.
 ## What was run
 
 - `latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex` (MiKTeX):
-  212 pages (143 before the batch-95 Part IX and the batch-93 reciprocal notes
+  212 pages (unchanged by the batch-96 reciprocal notes in Part VIII, which
+  changed no label or citation number in the `.aux` comparison with a build
+  of the committed text; 143 before the batch-95 Part IX and the batch-93 reciprocal notes
   in Part VIII and after Theorem 16.5; the title page was set
   `\enlargethispage` and two title-page spaces were shortened to keep its
   provenance line on the page; 143 was
