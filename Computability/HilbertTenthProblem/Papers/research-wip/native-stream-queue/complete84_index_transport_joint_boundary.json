@@ -1,0 +1,87 @@
+{
+  "A_before_joint": 5,
+  "M_before_joint": 3,
+  "author_md_sha256": "0dc78b19b5f7c566dd944d1a307d70311b135d9cff062c6c43bf095750030d7f",
+  "consumers": {
+    "hpm1": [
+      "index_difference"
+    ],
+    "index_difference": [
+      "norm_index"
+    ],
+    "innerC": [
+      "transport_partial"
+    ],
+    "kinner": [
+      "innerC"
+    ],
+    "local_rhs": [
+      "norm_transport"
+    ],
+    "norm_index": [
+      "norm_product"
+    ],
+    "norm_transport": [
+      "all_units"
+    ],
+    "transport_partial": [
+      "norm_transport"
+    ]
+  },
+  "joint_A": 5,
+  "joint_M": 4,
+  "parent_json_sha256": "8b2bc5d0b4db90c168107b7ded2cb4ca08df0098ed190851a3db4f1e49a9c0cf",
+  "review_md_sha256": "819706ecfceb9627f1cad48737729d18b128d060480fdaefb75ef4d881b5a8ba",
+  "rows": [
+    [
+      "hpm1",
+      "*",
+      "h",
+      "UM"
+    ],
+    [
+      "index_difference",
+      "-",
+      "R10b",
+      "hpm1"
+    ],
+    [
+      "norm_index",
+      "-",
+      "index_difference",
+      "r_lhs"
+    ],
+    [
+      "kinner",
+      "+",
+      "Kconstant",
+      "w"
+    ],
+    [
+      "innerC",
+      "*",
+      "kinner",
+      "marked_rhs"
+    ],
+    [
+      "transport_partial",
+      "+",
+      "innerC",
+      "q_minus_F"
+    ],
+    [
+      "local_rhs",
+      "*",
+      "transport_quotient",
+      "repunit"
+    ],
+    [
+      "norm_transport",
+      "-",
+      "transport_partial",
+      "local_rhs"
+    ]
+  ],
+  "scope": "Inert pin, row and consumer check plus independent written proof review; no saved source evaluation or import.",
+  "status": "PASS"
+}

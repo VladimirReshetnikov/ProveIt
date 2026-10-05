@@ -258,6 +258,9 @@
 > and the proved universal operation point remains84/187/18.
 >
 >
+> The [joint index/transport bound](complete84_index_transport_joint_boundary.md), with [independent proof review](review_complete84_index_transport_joint_boundary.md), proves that the actual product `(k−R−hE)((K+w)C+U−tr)` requires **4M+5A=9 operations** at its nine paid, algebraically independent source coordinates. A support-dimension argument forces five additions, and a complete three-product classification excludes the quartic leader `−hE(wC−tr)`. The current schedule attains both bounds. This extends beyond the earlier finite replacement searches but retains a precise boundary: extra donor registers, cross-factor sharing, polynomial multipliers and positive-zero-only changes are not covered. No source array ran and the universal84 frontier is unchanged.
+>
+>
 > The [polynomial-scaled finalizer bound](complete84_scaled_finalizer_boundary.md), with [independent proof review](review_complete84_scaled_finalizer_boundary.md), proves that every nonzero polynomial multiple of P(U−Q)(Q(A−B)+B)−D needs at least3M+4A at the six specified paid ports. Newton support forces four additions despite cancellation; degree and the squarefree quartic leader force three multiplications. The actual cuts are algebraically independent, and the attaining source retains75 literal rows, pays2 products for P, then7 residual gates: still84=47M+37A. This closes arbitrary polynomial scaling across that whole subtraction boundary, while additional donor registers, interleaving, changed producers and other positive-zero presentations remain outside the result.
 >
 >
