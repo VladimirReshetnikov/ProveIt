@@ -2681,7 +2681,19 @@ $|\delta|\le1/h^2$, say, $rh|\delta|\le r/h$, so
 $\partial_\delta\Phi=M_\rho+O(h\rho^h)>0$ and the implicit function theorem
 gives a unique small root $\delta(h)$, analytic in $h$, with
 $\delta(h)=\alpha\rho^h(1+O(h\rho^h))$ by the first-order balance
-$M_\rho\delta=A_1(\rho)\rho^h+\cdots$ and $A_1(\rho)/M_\rho=\alpha$. Next,
+$M_\rho\delta=A_1(\rho)\rho^h+\cdots$ and $A_1(\rho)/M_\rho=\alpha$.
+The root is unique on a fixed neighbourhood, not only on $|\delta|\le1/h^2$:
+fix $\delta_0>0$ with $\rho e^{\delta_0}<1$. On real $|\delta|\le\delta_0$
+the tail $\sum_{r\ge1}A_r(\rho e^\delta)\rho^{rh}e^{rh\delta}$ and its
+$\delta$-derivative are $O(h(\rho e^{\delta_0})^h)$, so
+$\Phi(\cdot,h)\to K(\rho e^\delta)-1$ in $C^1$, uniformly on
+$|\delta|\le\delta_0$, as $h\to\infty$. The limit vanishes only at $\delta=0$
+and its derivative $\rho e^\delta K'(\rho e^\delta)$ is bounded below by a
+positive constant there, so for large $h$ the function $\Phi(\cdot,h)$ is
+strictly increasing on $[-\delta_0,\delta_0]$ and $\delta(h)$ is its only
+zero in that interval. (These four sentences were added on 5~October 2026
+after the independent check recorded in
+Subsection~\ref{vmb:cw:sec:q-write}.) Next,
 $\partial_h\Phi=-\sum_{r\ge1}r(\log\rho+\delta)A_r(\rho e^\delta)
 \rho^{rh}e^{rh\delta}=L\,A_1(\rho)\rho^h(1+O(h\rho^h))>0$, because
 $A_1(\rho)=\rho^2P_1(\rho)>0$ and $L=-\log\rho>0$. Hence
@@ -3235,6 +3247,32 @@ standard.
  relevant covariance matrix is nondegenerate.
 \end{enumerate}
 No claim of the manuscript was found to be wrong.
+
+\emph{Dated note (5~October 2026).} An independent adversarial check of
+the results added at this write, made by the intake after the write, found
+all of them valid: Propositions~\ref{vmb:cw:prop:tilted},
+\ref{vmb:cw:prop:chambers}, \ref{vmb:cw:prop:conditional} (both directions
+of its ``if and only if'') and~\ref{vmb:cw:prop:roundingmulti},
+Lemma~\ref{vmb:cw:lem:deltamono}, and the outline of the residue
+ratio~\eqref{vmb:cw:eq:residueconv}, whose factor~$h$ in $O(h\rho^h)$ is
+genuinely present. The check was a careful reading with independent
+computations: a new power-series implementation of the level
+decomposition with height cutoffs and area marks, validated against
+brute-force enumeration of compositions up to area~14; the constants
+$\rho$, $\rho_2$, $\rho_3$, $u_c$, $\alpha$, $\alpha_0^*$, $\alpha_1^*$ and
+$M_c$ recomputed to 40 digits; and exact-coefficient tests at $m=1$ and
+$m=2$ of the tilted window, of every chamber type, of the conditional
+law against the independence alternative (the first has error
+$O(\log n/n)$, the second a fixed gap), and of the rounding and quantile
+brackets. It is not a formal verification or an external review. One fix
+was made: the proof of Lemma~\ref{vmb:cw:lem:deltamono} established the
+uniqueness of the root only on $|\delta|\le1/h^2$, while the statement says
+``with $\delta$ small''; the proof now also gives uniqueness on a fixed
+neighbourhood $|\delta|\le\delta_0$ with $\rho e^{\delta_0}<1$, because the
+equation tends uniformly to $K(\rho e^\delta)-1$. The check also observed,
+numerically only, that $\widehat K_h=K^{\le h}$ holds at $h=1$ as well, so the
+restriction to integers $h\ge2$ in the lemma, which comes from the range
+$h\ge j$ of~\eqref{vmb:cw:eq:Utail}, is more cautious than needed.
 \end{writenote}
 
 \section{Claim ledger and conclusion of Part II}
