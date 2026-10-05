@@ -249,6 +249,9 @@
 > and the proved universal operation point remains84/187/18.
 >
 >
+> The [polynomial-scaled finalizer bound](complete84_scaled_finalizer_boundary.md), with [independent proof review](review_complete84_scaled_finalizer_boundary.md), proves that every nonzero polynomial multiple of P(U−Q)(Q(A−B)+B)−D needs at least3M+4A at the six specified paid ports. Newton support forces four additions despite cancellation; degree and the squarefree quartic leader force three multiplications. The actual cuts are algebraically independent, and the attaining source retains75 literal rows, pays2 products for P, then7 residual gates: still84=47M+37A. This closes arbitrary polynomial scaling across that whole subtraction boundary, while additional donor registers, interleaving, changed producers and other positive-zero presentations remain outside the result.
+>
+>
 > The [nonlinear two-norm classification](complete84_nonlinear_norm_next.md), with [independent proof review](review_complete84_nonlinear_norm_next.md), extends the actual-field restriction from affine maps to arbitrary polynomial re-factorizations: only separate norm similitudes or classical composition with a constant companion pair remain. A specific positive rational Cayley chart has no simultaneous integer outputs at any parent positive zero, since its determinant coefficient lies strictly between0 and1. Complete denominator-cleared evaluators cost87=49M+38A or98=56M+42A; these are implementation upper bounds, with all25 supplied ports live. Fresh root coefficient/graph checks and the independent proof pass. No operation saving, witness reduction or general circuit lower bound results.
 >
 >
