@@ -319,7 +319,17 @@ result as a check of the pinned revision.
   An unnumbered "Related (batch 96, 4 October 2026)" note at the end of
   `found:sub:etr` records this; it moves the page count from 96 to 97 (the
   bibliography's last entries move to a new page), and no label number
-  changed.
+  changed. Since batch 97 its Part XVII (source 36) proves over GB, with no
+  choice principle, that a finite-support term operator (with its
+  restriction property, and set-sized term collections on set inputs)
+  sending set well-orders to set well-orders sends class well-orders to class
+  well-orders (`swo:hn:ns:transfer`), applies this to the epsilon-term
+  functor (`swo:hn:ns:epsilon`), and multiplies its normal forms by class
+  isomorphisms given by one formula, with no recursive selection
+  (`swo:hn:ar:multiplication`); its Section XVII.8.3 separates such
+  finite-syntax recursion from class-valued ETR. An unnumbered "Related
+  (batch 97, 4 October 2026)" note after the batch-96 note records this; the
+  page count (97) and all label numbers are unchanged.
 - [polish-models-of-omnific-arithmetic](../polish-models-of-omnific-arithmetic/)
   (batch 90): its Part XII (source 18) restates clauses 1–2 of
   `found:thm:discrete` for sets of surreals in the native order topology

@@ -162,9 +162,9 @@ c_rel(1) ≈ 0.0206331502, c_full(1) ≈ −0.0036724054.
 
 ```
 apery_hankel_growth.tex                  the report (Parts I-III), standalone LaTeX with an internal bibliography
-apery_hankel_growth.pdf                  the compiled report, 52 pages (title and abstract, contents pp. 2-3,
-                                         Part I pp. 4-13, Part II pp. 14-30, Part III pp. 31-49,
-                                         Appendices A-C pp. 49-50, references pp. 51-52)
+apery_hankel_growth.pdf                  the compiled report, 53 pages (title and abstract, contents pp. 2-3,
+                                         Part I pp. 4-14, Part II pp. 15-31, Part III pp. 32-50,
+                                         Appendices A-C pp. 50-51, references pp. 52-53)
 README.md                                this guide
 Makefile                                 Part I's build file (make pdf)
 sources.md                               Part I's source audit (18 September 2026)
@@ -332,6 +332,16 @@ determinant is normalized as C^(−N(r+N−1)) H_N(r).
   (cited in an editorial paragraph after Corollary 27.1); no novelty is
   claimed for the inversion technique, and no Lambert-W block
   (`p0:thm:lambert-core`) occurs.
+- A contrast (batch 97): Section 17 of
+  [`a279619-level-seven-gamma-constant`](../../../generating-functions-and-asymptotics/oeis-sequence-asymptotics/a279619-level-seven-gamma-constant/)
+  proves that the Hankel matrix of the level-seven Apéry-like sequence
+  A279619 is strictly totally positive of order five but not totally
+  nonnegative of order six (its Theorem 17.1), and that no tail of A279619 is
+  a Stieltjes moment sequence (its Theorem 17.17), whereas Edgar's density
+  makes A005259 one. No theorem is shared: its fixed-order Hankel asymptotics
+  (Theorems 17.3 and 17.12) keep the order fixed, while Part III lets the
+  order N and the shift r = sN grow together. A bracketed note of
+  5 October 2026 at the end of Section 2 records this.
 
 ## Rerun the checks
 
@@ -482,7 +492,10 @@ AMS packages, tcolorbox, enumitem, xurl, graphics and hyperref is sufficient.
 The batch-77P5 build (MiKTeX, pdfLaTeX, 52 pages) has no errors, no LaTeX
 or package warnings at all (so no undefined references or citations,
 multiply defined labels or duplicate destinations), and no overfull or
-underfull boxes; the same holds for a build of the batch-73O1 text. The four
+underfull boxes; the same holds for a build of the batch-73O1 text. The
+batch-97G reciprocal note (end of Section 2) moves the page count from 52 to
+53 (Part I gains a page, and every later page shifts by one); its build is
+equally clean, and no label number changed. The four
 figure PDFs (Part I's and Part II's, as delivered) embed matplotlib Type 3
 fonts; they were not regenerated. Part III has no figures.
 

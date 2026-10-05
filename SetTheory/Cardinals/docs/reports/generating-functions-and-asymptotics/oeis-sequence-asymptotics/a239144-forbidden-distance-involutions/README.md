@@ -160,6 +160,15 @@ The only repository material on these objects is the transseries volume
 which this report's `r = 0` case re-derives, as the notes above say.
 Neither volume is edited by this write.
 
+A pointer added in batch 97 (a dated merge note after the proof of
+`fdi:thm:affine`): Part IV of
+[`a189281-path-forest-expansions`](../a189281-path-forest-expansions/)
+proves a uniform all-orders expansion for random bijections between two
+path forests by the same connected-cluster locality (its `spf:mg:thm:main`,
+`spf:mg:lem:cluster-local` and `spf:mg:prop:log-local`, Theorem 38.1,
+Lemma 40.1 and Proposition 48.1); the two reports share a method, not a
+theorem. That report's README already points here.
+
 ## Notation
 
 Source 19's notation is used throughout. Source 26 reuses many of its

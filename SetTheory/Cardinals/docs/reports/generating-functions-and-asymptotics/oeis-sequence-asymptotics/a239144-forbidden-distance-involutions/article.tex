@@ -23,7 +23,7 @@
 \newcommand{\floor}[1]{\left\lfloor #1\right\rfloor}
 \newcommand{\ceil}[1]{\left\lceil #1\right\rceil}
 \newcommand{\Tadj}{T^{\mathrm{adj}}}
-\newenvironment{mergenote}{\par\smallskip\begingroup\small\noindent\textbf{[Added 2 October 2026, batch 77.]}\ }{\endgroup\par\smallskip}
+\newenvironment{mergenote}[1][2 October 2026, batch 77]{\par\smallskip\begingroup\small\noindent\textbf{[Added #1.]}\ }{\endgroup\par\smallskip}
 \title{Fixed Forbidden Distances in Involutions\\\large Uniform expansions, two Gaussian sectors,\\and the adjacent-transposition law}
 \author{Research article and reproducibility companion (source 19)\\
 research note on OEIS A170941 and A217876 (source 26)\\[2pt]
@@ -378,6 +378,9 @@ Only supports connected in the line graph contribute to total degree $j$. Such a
 Setting every $x_e=z$ proves the first equality; \eqref{fdi:eq:logmatching} proves \eqref{fdi:eq:affine}. The finite pattern sum is an algorithm. Alternatively, after the theorem has justified affine dependence, two consecutive exact evaluations at $n>jr$ recover $u_j,v_j$; a third is a useful implementation check. Substituting \eqref{fdi:eq:affine} with $1/n=\eps^2$ into the universal generator proves the constant-coefficient conclusion.
 \end{proof}
 For $S=\varnothing$ the graph is empty and the assertion is immediate. The proof is structural; observing empirical linearity at a few values would not be a substitute.
+\begin{mergenote}[4 October 2026, batch 97]
+The same cluster mechanism appears for permutations in Part~IV (batch~97, manuscript~05) of the report \texttt{a189281-\allowbreak path-\allowbreak forest-\allowbreak expansions} in this directory. There a uniformly random bijection between the vertex sets of two directed path forests $\mathcal P$, $\mathcal V$ on $n$ vertices is scored by the number $X$ of edges of $\mathcal P$ mapped onto edges of $\mathcal V$, and $\E(1+u)^X$ has an all-orders expansion uniform over \emph{all} such pairs, with universal polynomial coefficients in the normalized subpath counts $a_q=\mathsf S_q(\mathcal P)/n$, $b_q=\mathsf S_q(\mathcal V)/n$ (its Theorem~38.1, \texttt{spf:mg:thm:main}). Its logarithmic decomposition $\log T_F=\sum_q\mathsf S_q(F)L_q$, built from connected rod clusters (its Lemma~40.1 and Proposition~48.1, \texttt{spf:mg:lem:cluster-local} and \texttt{spf:mg:prop:log-local}), is the path-forest counterpart of \eqref{fdi:eq:clusters}, and its exact counts $\mathsf S_q=\max(n-qr,0)$ for a gap $r$ (its equation~(46.2)) play the role of \eqref{fdi:eq:affine}. Neither theorem specializes to the other, and no theorem is shared.
+\end{mergenote}
 
 \subsection{First path power corrections}\label{fdi:sec:pathpower}
 For $S=\{1,\ldots,r\}$, write $G_n=P_n^r$. For sufficiently large $n$,
