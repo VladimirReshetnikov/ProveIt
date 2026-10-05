@@ -177,6 +177,17 @@ Height four: `a_n = T_4(n)` (A181198), `M_n = (4n)!/(n!)^4`, `b_n = a_n/M_n`.
   hypergeometric), and every recurrence of order two is a polynomial
   multiple of the OEIS operator, which is primitive; so the order two is
   minimal, and degree nine is minimal among order-two recurrences.
+- **Found and proved by the intake's independent check (5 October 2026,
+  after the write, with proof): Proposition 33.3.** The degree drops at
+  higher order: `((3E + 4(1673n+942))/(7n²+14n+6))·L` is a recurrence of
+  order three and degree eight, and a left multiple with denominators
+  `7n²+14n+6` and `7n²+28n+27` (neither has an integer zero) one of order
+  four and degree seven, both printed in full and valid for every `n ≥ 1`.
+  Every recurrence of A181198 is `QL` with the poles of `Q` at zeros of
+  shifts `p_2(n+k)`, `k ≥ 0`, all below one, so it holds for every `n ≥ 1`
+  (right division by `L` and Proposition 33.2's exclusion of order one);
+  exact ranks over `Q` then show that the smallest degree is nine at order
+  two, eight at order three and seven at each order from four to eight.
 
 ## What Part IV proves (Report 233)
 
@@ -210,8 +221,20 @@ Height five: `a_n = T_5(n)` (A181199), `M_n = (5n)!/(n!)^5`, `F_n = a_n/M_n`.
   42.1 (Part IV's period and its recurrence (34.17) are Part III's, proved
   twice independently — by a divergence certificate in Part III, by
   contiguity and a moment closure in Part IV — and the transfer, rank-two
-  and scalar identities coincide); **Proposition 42.2**: A181199 has no
-  recurrence of order zero or one, so the minimal order is two or three.
+  and scalar identities coincide after renaming Part III's `α, β` to Part
+  IV's `f, b`, Part IV's `J_0 = I` being Part III's (28.13) with (28.9);
+  reworded at the independent check, with a dated note keeping the first
+  wording, "literally the same statements"); **Proposition 42.2**: A181199
+  has no recurrence of order zero or one, so the minimal order is two or
+  three.
+- **Found and proved by the intake's independent check (5 October 2026,
+  after the write, with proof): Proposition 42.3.** A181199 obeys
+  recurrences of order four and degree 18 and of order five and degree 16,
+  left multiples of the OEIS operator with denominators `Q(n+1)` and
+  `Q(n+2)`, positive for `n ≥ 1`, so they hold for every `n ≥ 1`; their
+  coefficients are in `data/check-lower-order-recurrences.json`. If
+  A181199 has no recurrence of order two, the smallest degree is 24 at
+  order three, 18 at order four and 16 at order five.
 
 ## What Part V contains (Reports 85 and 91)
 
@@ -292,14 +315,20 @@ rule:
 - **Moved to "Further questions and research".** Part III (Section
   33.6): (F5) minimality of the A181198 recurrence — order and order-two
   degree settled by the write's Proposition 33.2, degree over all orders
-  open; (F6) the constants `E_K, N_K, C_K, H_K, W_K, X_K` constructed but
+  open [re-scoped 5 October 2026 after the independent check: degrees at
+  orders three to eight settled by Proposition 33.3, orders nine and more
+  open]; (F6) the constants `E_K, N_K, C_K, H_K, W_K, X_K` constructed but
   not evaluated; (F7) even heights six and more ("an analogous
   low-dimensional reduction would require new work"); (F8) the
   exponentially small content of the homogeneous mode (a non-claim). Part
   IV (Section 42.6): (F9) minimality of the A181199 recurrence — order one
   excluded by Proposition 42.2, order two against three open (the
   manuscript: the factorization "is not a proof that order three is
-  minimal"); (F10) the inverse constants `H_K, W_K, X_K` and the envelope
+  minimal") [re-scoped 5 October 2026 after the independent check:
+  Proposition 42.3 adds orders four and five, and the minimal degrees at
+  orders three to five if order two is excluded; as evidence, not proof,
+  no recurrence of order at most two and degree at most 60 holds for every
+  `5 ≤ n ≤ 214`]; (F10) the inverse constants `H_K, W_K, X_K` and the envelope
   onset, not evaluated. Part V (Section 45.2): (F11) the three outline
   steps of Report 85's Subsection 43.4 (growing-window exponentiation,
   uniform Poisson summation, the passage to the rounding statement (43.22));
@@ -368,7 +397,12 @@ rule:
   but unevaluated onsets; they leave at most two adjacent candidates near
   an integer and assert no unconditional rounding rule.]
 - Parts III–V (batch 101): no minimality claim by any manuscript (the
-  write's Propositions 33.2 and 42.2 are the only minimality statements);
+  write's Propositions 33.2 and 42.2 are the only minimality statements)
+  [added 5 October 2026: Propositions 33.3 and 42.3, found and proved by
+  the intake's independent check after the write, add degree statements at
+  orders three to eight (A181198) and three to five (A181199, conditional
+  on there being no recurrence of order two); whether A181199 obeys one of
+  order two stays open];
   no claim at heights `m ≥ 6`; Report 85's `m³/n` is a proposed scale only;
   Report 91 supplies no explicit rational function or operator; Reports 231
   and 233 searched the literature in a bounded way (231 also inspected
@@ -476,6 +510,55 @@ names (commands below), with the same results; the write also checked the
 algebra of Lemma 33.1 and Proposition 33.2 in SymPy (the value −1/2 of the
 forcing numerator at `n = −1/2`, `gcd(p_0, p_1, p_2) = 1`, all degrees 9)
 and Remark 45.1.
+
+**Independent check of the batch-101 write (5 October 2026).** An
+adversarial check made by the intake after the write (`ca1668212`) reread
+every result the write added — Lemma 33.1, Proposition 33.2 with the
+remark after it and item (F5), Remark 42.1, Proposition 42.2 with item
+(F9), and Remark 45.1 — and found all of them valid, with no
+counterexample and no gap in any proof chain. Two changes followed, both
+recorded where they stand with dated notes keeping the first wording.
+Remark 42.1's "literally the same statements" now says that the identities
+of Parts III and IV are the same after renaming Part III's `α, β` to Part
+IV's `f, b`, and cites Part III's display (28.13) — numbered but unlabelled
+before, now labelled `shr:h4:eq:J0`, which renumbers nothing — for Part
+IV's `J_0 = I`. And the open question of the remark after Proposition 33.2
+and of item (F5) has an answer: the check found and proved Propositions
+33.3 and 42.3, printed with their proofs (lower degrees at higher order;
+the A181199 operators of orders four and five, too long to print, are in
+`data/check-lower-order-recurrences.json`); items (F5) and (F9) are
+re-scoped. The check used neither the delivered programs nor the write's.
+Its own C counter, a dynamic program over the order ideals of the literal
+`m × n` poset (row lengths as states), run modulo fourteen primes below
+`2^62` and recombined by CRT (exact since `a_n ≤ M_n < ∏ p`), gave
+`T_4(n)` and `T_5(n)` for `n ≤ 64`. On these counts the headline operators
+have zero residual (Theorem 30.1 for `n = 1..62`; Theorem 34.2, coefficients
+typed from Appendix E, for `n = 1..61`), (26.3) holds for `n ≤ 63`, the
+printed sums of Theorems 30.2 and 34.1 equal the counts for `2 ≤ n ≤ 64`
+and `1 ≤ n ≤ 64`, the affine formula (28.21) holds for `n ≤ 64` and the
+first difference (34.14) for `n ≤ 63`. In SymPy it confirmed the hinge
+identities of Reports 231 and 233: the divergence certificate (29.4), the
+slanted-edge identity, the edge flux (29.8) (also against direct
+integration for `n ≤ 6`), the `Z_n` cancellation and rational return
+`D_n`, `q_n = J_(n+1)/J_n` (30.3), the three coefficient identities of
+Theorem 30.1, the γ-bridge (39.1) with `γ_1 = 1/3`, the `Z_n` and constant
+coefficients of `F_(n+1) − ρ_nF_n`, (E.4) and (E.12), and the factorization
+(39.17) through exact right division with zero remainder. Its minimality
+linear algebra (ranks modulo `2^61 − 1` and `2^62 − 57`) found no
+recurrence of order one and degree ≤ 50 at height four, an order-two
+solution space of dimension exactly `max(0, d − 8)` for `d ≤ 40` (confirming
+Proposition 33.2 there), none of order one or two and degree ≤ 60 at
+height five (order two on `5 ≤ n ≤ 214`), and, from `n = 30`, the degrees
+that Propositions 33.3 and 42.3 now prove. Before printing, the session
+that applied the check re-derived the four new operators by exact Ore
+multiplication and right division (SymPy 1.14.0), found zero residual for
+`n = 1..234` on terms generated by Theorems 30.1 and 34.2 (equal to the
+check's counts for `n ≤ 64` and to `code/tableaux.py`, run on a copy, for
+`n ≤ 18` and `n ≤ 14`), and redid the ranks of both proofs exactly over `Q`
+(python-flint 0.8.0) with equations from `n = 1`; those programs are not
+shipped. This was a careful reading with exact computations, not a formal
+verification or an external review; the end of Section 45.2 of the article
+records it in full.
 
 ## Relation to the repository
 
@@ -593,7 +676,11 @@ the note following Remark 8.1; at Research questions 1 (answered), 6
 questions 8 (answered) and 11 (advanced); and after item (F4) of Section
 24.1 (Report 91's earlier proof of Theorem 14.1). In this README the
 bracketed notes of 5 October 2026 under "What is not claimed" and
-"Neighbouring reports" do the same.
+"Neighbouring reports" do the same. After the independent check of the
+write (5 October 2026), sentences added to the note before the table of
+contents and to the note at Research question 11 point to Propositions
+33.3 and 42.3; Remark 42.1, the write's own sentence after Proposition
+33.2 and items (F5) and (F9) carry dated notes keeping their first wording.
 
 ## Notation
 
@@ -675,6 +762,15 @@ counter also counts the uncaptioned notation tables). In Reports 85 and 91
 equation `(k)` is `(43.k)` and `(44.k)`, and the theorem-like statements
 are renumbered through Sections 43 and 44, in their delivered order.
 
+The independent check of the batch-101 write (5 October 2026) added four
+labels, so the report has 490: `shr:h4:eq:J0` on the display (28.13),
+which was already numbered; `shr:h4:prop:higher` (Proposition 33.3);
+`shr:h5:prop:higher` (Proposition 42.3); and `shr:sa:sec:further` on
+Section 45.2. Checked against the `.aux` files of builds before and after:
+none of the 486 earlier labels was lost or changed its number. The new
+propositions are the last numbered statements of Sections 33 and 42, and
+their displays are unnumbered.
+
 The batch-85 write added four dated `[write]` notes to Part I (end of
 Section 1.3, after Corollary 2.4, end of Section 10.2, end of Section 11.3)
 and the title-page page anchors. The batch-98 write added the two `\part`
@@ -694,7 +790,12 @@ and 42.3 and of Sections 43 and 44; a note after Research questions 16–19
 and notes at the heads of Sections 43, 44 and Appendix E; Sections
 33.5–33.6, 42.5–42.6 and 45 (with Lemma 33.1, Propositions 33.2 and 42.2,
 Remarks 42.1 and 45.1); twelve dated notes in Parts I and II (named under "Stale
-claims"); three bibliography entries (`oeis198int`, `oeis199int`,
+claims") [after the write, the independent check added Propositions 33.3
+and 42.3 with their proofs and the paragraphs before them, the dated
+paragraph at the end of Section 45.2, the sentences of the notes before
+the table of contents and at Research question 11, and dated re-wordings
+of Remark 42.1, the remark after Proposition 33.2 and items (F5) and (F9)];
+three bibliography entries (`oeis198int`, `oeis199int`,
 `Lindemann`) and the macros of the new Parts. The predecessor citations of
 Reports 231 and 233 now point to Parts I and II, and Report 91's citation
 of Report 85 to Section 43. No other statement, proof, number or table of
@@ -705,7 +806,7 @@ the four manuscripts was changed.
 ```text
 README.md                                           this guide (replaces the six delivery READMEs)
 article.tex                                         the report, Parts I-V
-article.pdf                                         compiled report, 135 pages
+article.pdf                                         compiled report, 140 pages
 notes-SOURCES_AND_STATUS.md                         Part I's source and status audit (delivered as notes/SOURCES_AND_STATUS.md)
 02-boundary-phases-notes-SOURCES_AND_STATUS.md      Part II's source and status audit (delivered as notes/SOURCES_AND_STATUS.md)
 code/build.sh                                       Part I: three pdflatex passes (delivered at the package root; see below)
@@ -755,6 +856,7 @@ code/04-height-five-exact_algebra.py                Part IV: exact polynomial an
 code/04-height-five-printed_coefficients.py         Part IV: the Conjecture 19 polynomials and the four OEIS coefficients (transcribed)
 code/04-height-five-verify_certificate.py           Part IV: 58 uniform certificates, the 225 Pfaffian terms, finite checks n <= 20 (prints JSON)
 data/04-height-five-receipt.json                    Part IV: the verifier's deterministic receipt (delivered as code/receipt.json)
+data/check-lower-order-recurrences.json             Propositions 33.3 and 42.3: the four operators, their left quotients, the exact ranks (written at the independent check, 5 October 2026)
 code/05-strip-asymptotics-verify.py                 Part V, Report 85: runs the six programs below with -O (delivered as verify.py)
 code/05-strip-asymptotics-check_midpoint.py         Report 85: 60 small rectangles, 30 OEIS terms, 121 interior hook identities
 code/05-strip-asymptotics-gaussian_corrections.py   Report 85: matrix-entry Wick derivation of both corrections (SymPy)
@@ -779,8 +881,11 @@ data/06-strip-diagonals-CHECKS.json                 Report 91: the producer's ch
 data/06-strip-diagonals-SOURCES.json                Report 91: primary-source pointers and their roles
 ```
 
-Every file except `README.md`, `article.tex` and `article.pdf` is
-byte-identical to its delivery. Part I's placement moved `build.sh` to
+Every file except `README.md`, `article.tex`, `article.pdf` and
+`data/check-lower-order-recurrences.json` is byte-identical to its
+delivery. That data file was written by the intake's independent check of
+the batch-101 write (5 October 2026), not delivered; its `provenance`
+field says so, and it is ASCII with LF line ends. Part I's placement moved `build.sh` to
 `code/`, `requirements-numerics.txt` and `notes/PROPOSED_OEIS_ADDITIONS.txt`
 to `data/` (the latter as `notes-PROPOSED_OEIS_ADDITIONS.txt`), and
 `notes/SOURCES_AND_STATUS.md` to the report root as
@@ -990,14 +1095,16 @@ B=$(mktemp -d); cp article.tex "$B/"; cd "$B"
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The committed PDF was built this way with MiKTeX: 135 pages; no errors or
+The committed PDF was built this way with MiKTeX: 140 pages; no errors or
 warnings, no undefined references or citations, no multiply defined labels,
 no duplicate PDF destinations, no overfull or underfull boxes. The log
 reports "ignored: Infinite glue shrinkage found in box being split" three
 times, where a notation longtable breaks across a page (once for Part II's,
 as before the batch-101 write, and once each for Parts III and IV); it is
 TeX's notice, not a warning, and the output is correct. Before the
-batch-101 write the report had 55 pages, and before the batch-98 write 24.
+batch-101 write the report had 55 pages, and before the batch-98 write 24;
+the batch-101 write itself gave 135, and the independent check of that
+write, five more.
 Reports 231, 233, 85 and 91, built the same way from their delivered
 sources, give 25, 30, 7 and 9 pages. Part I's delivered source, built
 the same way, gives 22 pages with one duplicate `page.1` destination (the
