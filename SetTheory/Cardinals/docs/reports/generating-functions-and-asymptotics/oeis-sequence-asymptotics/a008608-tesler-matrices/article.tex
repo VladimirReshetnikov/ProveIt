@@ -21,6 +21,12 @@
 \newcommand{\Hg}{H_{\rm g}}\newcommand{\floor}[1]{\left\lfloor#1\right\rfloor}
 \setlength{\emergencystretch}{2em}
 \numberwithin{equation}{section}
+% Added by the ProveIt write phase (batch 103, 5 October 2026): dated notes
+% marked [write], and table packages for the notation table.
+\usepackage{array,longtable}
+\newenvironment{writenote}[1][]{\par\smallskip\begingroup\small
+ \noindent\textbf{[write]}\if\relax\detokenize{#1}\relax\else~\textbf{#1.}\fi\ }%
+ {\par\endgroup\smallskip}
 \title{\textbf{The Second Logarithmic Term for Regular Tesler Matrices}\\[7pt]\large A uniform entropy construction and integer throughput decomposition}
 \author{Research report 106\\Prepared for Vladimir}
 \date{2 October 2026}
@@ -36,6 +42,24 @@ The leading logarithmic equivalent is an established result of Balashov, Bulaven
 
 We give a two-sided refinement with lower loss $2n\log\log n+O(n)$, an explicit linear constant in the upper estimate, and the resulting next correction to the integer threshold inverse. Exact rational verification of finite combinatorial identities is supplied separately from floating-point sanity checks. An $O(n)$ remainder, multiplicative equivalent, amplitude, and full expansion remain unproved.
 \end{abstract}
+
+\begin{writenote}[Status and trust boundary, added 5 October 2026, batch~103]
+This is bundle Report~106, filed in ProveIt as a single-source research
+report (provenance, credits, notation and the collected non-claims are in
+Section~\ref{tes:sec:provenance}). It is AI-assisted, unrefereed and not
+formalized. Its title page reads ``Prepared for Vladimir'' (Vladimir
+Reshetnikov, who maintains the repository), as delivered. The leading term
+$\log a_n\sim Cn^{3/2}$, and with it the leading inverse
+$N(y)\sim(\log y/C)^{2/3}$, is due to Balashov, Bulavenko and
+Molybog~\cite[Corollary~37]{bbm}. The counting inequality of the lower bound
+is Theorem~2.1 of Br\"and\'en, Leake and Pak~\cite{blp}, used as an external
+input. New here are the coefficient $-3/4$ of $n\log n$ with the explicit
+two-sided bounds of Theorem~\ref{tes:thm:main}, and the second term of the
+integer inverse with an integer bracket (Theorem~\ref{tes:thm:inverse}).
+Whether the coefficient $-3/4$ is new to the literature is \emph{not}
+certified (Question~\ref{tes:q:priority}). All $O$-constants are
+non-effective, and the numerical checks are not interval certificates.
+\end{writenote}
 \begingroup
 \small
 \makeatletter
@@ -45,27 +69,27 @@ We give a two-sided refinement with lower loss $2n\log\log n+O(n)$, an explicit 
 \endgroup
 \newpage
 
-\section{Statement and relation to prior work}\label{sec:main}
+\section{Statement and relation to prior work}\label{tes:sec:main}
 All logarithms are natural. We use the matrix-size indexing $a_0=1$ and
 \[
 a_1,a_2,a_3,a_4,a_5,a_6,a_7,a_8
 =1,2,7,40,357,4820,96030,2766572.
 \]
 The OEIS entry starts at $n=1$ \cite{oeis}. Define
-\begin{equation}\label{eq:constants}
+\begin{equation}\label{tes:eq:constants}
 c=\frac\pi{\sqrt6},\qquad C=\frac{4c}{3}=\pi\sqrt{\frac8{27}},\qquad
 B_U=\frac34+\frac32\log c-\frac12\log(2\pi).
 \end{equation}
 Numerically, $B_U=0.204336693648386\ldots$; this decimal is descriptive and is not used in a proof.
 
-\begin{theorem}\label{thm:main}
+\begin{theorem}\label{tes:thm:main}
 For regular Tesler matrices, as $n\to\infty$,
 \begin{align}
-\log a_n&\ge Cn^{3/2}-\frac34n\log n-2n\log\log n-O(n),\label{eq:lowerintro}\\
-\log a_n&\le Cn^{3/2}-\frac34n\log n+B_Un+O(\sqrt n).\label{eq:upperintro}
+\log a_n&\ge Cn^{3/2}-\frac34n\log n-2n\log\log n-O(n),\label{tes:eq:lowerintro}\\
+\log a_n&\le Cn^{3/2}-\frac34n\log n+B_Un+O(\sqrt n).\label{tes:eq:upperintro}
 \end{align}
 In particular,
-\begin{equation}\label{eq:second}
+\begin{equation}\label{tes:eq:second}
 \log a_n=Cn^{3/2}-\frac34n\log n+O(n\log\log n),
 \qquad
 \lim_{n\to\infty}\frac{Cn^{3/2}-\log a_n}{n\log n}=\frac34.
@@ -85,26 +109,212 @@ Singleton elimination makes the upper bound inexpensive. For the lower bound, a 
 $Cn^{3/2}-\tfrac14\log(n!)-O(n)$. Each constructed bulk throughput is only $O(\sqrt j\log(j+1))$, so the two margin penalties together cost at most $\log(n!)+2n\log\log(n+1)+O(n)$. Independent local moves supply $\exp(\tfrac12\log(n!)-O(n))$ disjoint integer margin vectors. The three factorial coefficients therefore combine as
 $-\tfrac14-1+\tfrac12=-\tfrac34$.
 
-\section{Exact matrix interval and flow models}\label{sec:model}
+\subsection{Provenance, credits and reading conventions}\label{tes:sec:provenance}
+\begin{writenote}[Added 5 October 2026, batch~103]
+\emph{Provenance.} This report is Report~106 of the session bundle that
+ProveIt's \nolinkurl{docs/incoming} intake processed as batch~103: the
+archive \nolinkurl{A008608_Tesler_Second_Logarithmic_Term_Source.zip}
+(402{,}353 bytes, wrapper directory \nolinkurl{report106/}, 22 files),
+arrival commit \nolinkurl{60f54ea06}, placed in \nolinkurl{9c995cefe}. The
+text is the delivered \nolinkurl{report106.tex}, shipped as
+\nolinkurl{article.tex}. The delivered 13-page PDF
+\nolinkurl{report106.pdf}, the checksum manifest \nolinkurl{manifest.json}
+and its verifier \nolinkurl{verify_package.py} are not shipped; all three
+can be retrieved from the arrival commit. The package names no ProveIt
+commit, path or report, so the report has no pin. Its title page and PDF
+metadata say that it was prepared for Vladimir; it carries no ``prepared
+for private review'' line. It is a single-source report, so no merge choice
+was made. The write prefixed the 78 delivered labels with
+\nolinkurl{tes:} (``Tesler''), and added the notes marked [write], this
+subsection, Remarks~\ref{tes:rem:linear} and~\ref{tes:rem:penaltysharp},
+the references \cite{oneill,mmr,aghrs,haglund}, and
+Section~\ref{tes:sec:further}. No statement, proof or number of the source
+was changed. Theorem and equation numbers follow the section counter
+(Theorem~\ref{tes:thm:main} is Theorem~1.1, and so on).
+
+\emph{Inherited material.}
+\begin{itemize}
+\item \emph{The leading term} $\log a_n\sim Cn^{3/2}$ is Corollary~37 of
+ Balashov, Bulavenko and Molybog~\cite{bbm} (p.~17 of the journal version,
+ published 8~May 2026; their notation is $\mathcal L(1^n)=\ln T(1^n)$).
+ The manuscript credits it, together with the leading inverse
+ $N(y)\sim x$ of Theorem~\ref{tes:thm:inverse}, which follows from it.
+ The intake fetched the journal PDF, confirmed that its SHA-256 equals the
+ fingerprint in the delivered \nolinkurl{data/sources.json}, and checked
+ that the constant is $\pi\sqrt{8/27}=C$. Balashov, Bulavenko and Molybog
+ describe their result as a drastic improvement of Leake and
+ Morales~\cite[Theorem~1.2]{lm}.
+\item \emph{The counting inequality} of the lower bound is Theorem~2.1 of
+ Br\"and\'en, Leake and Pak~\cite{blp}, restated as
+ Theorem~\ref{tes:thm:BLP}; the note after that theorem records the
+ intake's comparison with the source.
+\item \emph{Classical inputs:} the Dedekind eta transformation
+ \cite[(23.18.5)]{dlmf} behind \eqref{tes:eq:modular}; the identification
+ of regular Tesler matrices with integral flows of netflow
+ $(1,\ldots,1,-n)$, that is, with the type~$A$ Kostant partition function
+ at that vector (OEIS~\cite{oeis}; see also~\cite{mmr}). The first-row
+ recursion \eqref{tes:eq:hookrec} is elementary and proved in the text.
+\end{itemize}
+
+\emph{Earlier bounds, not cited by the manuscript.} M\'esz\'aros, Morales
+and Rhoades~\cite[\S4]{mmr} gave $n!\le a_n\le2^{\binom n2}$ (as O'Neill
+reports them). O'Neill~\cite{oneill} raised the lower bound to
+$(2n-3)!!=\prod_{i=1}^{n-1}(2i-1)$ and tightened the upper bound, which
+stays of the form $\ee^{O(n^2)}$ (Theorem~5.6 of the arXiv version
+1702.00866v2, which the intake read; the journal version was not
+compared). O'Neill also records a question of Pak, whether
+$a_n=\ee^{\Theta(n^2)}$ (his Question~1.4, which Balashov, Bulavenko and
+Molybog recall in their Section~2), and an observation that OEIS data
+suggest $\log a_n=O(n^{1.6})$. Corollary~37 of~\cite{bbm} answers Pak's
+question in the negative; the elementary upper bound \eqref{tes:eq:Un} of
+this report gives the same answer on its own, since
+$U_n=O(n^{3/2})$. None of these bounds reaches the scale of the second
+term, so the omission of~\cite{oneill} affects no proof here; it bears only
+on the priority question below. The wider Tesler literature listed on the
+OEIS page (Haglund~\cite{haglund}; Armstrong, Garsia, Haglund, Rhoades and
+Sagan~\cite{aghrs}; \cite{mmr}) concerns diagonal harmonics, the Tesler
+polytope and weighted sums (judging by their titles); the
+intake did not search it for asymptotics.
+
+\emph{What is new, and its status.} New relative to the papers above and to
+the repository: the coefficient $-3/4$ of $n\log n$ with the two-sided
+bounds \eqref{tes:eq:lowerintro}--\eqref{tes:eq:upperintro}, and the second
+term $(2C)^{-1}\sqrt x\log x$ of the integer inverse with the bracket
+\eqref{tes:eq:explicitbracket}. The source's own literature check was
+bounded (``Scope of the refinement'' above). The ``Future questions'' of
+\cite[\S5]{bbm} do not ask for the second term, so the manuscript answers
+no named question. The intake found the coefficient $-3/4$ neither
+in~\cite{bbm}, \cite{blp} or the arXiv version of~\cite{oneill}, nor on the
+OEIS page (which has no asymptotic formula); it did not compare
+\cite[Theorem~1.2]{lm} in detail and made no exhaustive search. Novelty is
+therefore \emph{uncertified} (Question~\ref{tes:q:priority}).
+
+\emph{Repository.} Before batch~103 no file of ProveIt mentioned Tesler
+matrices, A008608, Lusztig data, the Kostant partition function or flow
+polytopes. The word ``contingency'' occurs only in
+\nolinkurl{a260700-parabolic-double-cosets} (tables counted by A120733),
+which shares no theorem with this report. No statement of this report is
+formalized in Lean or Rocq, and its place in the collection confers no
+formal status.
+
+\emph{Indexing.} The OEIS entry A008608 has offset~1 ($a_1=1$, $a_2=2$,
+$a_3=7$, \ldots); the manuscript adds $a_0=1$ (the empty array), which is a
+convention, not an OEIS term.
+
+\emph{Notation.} The manuscript reuses several letters. The table fixes
+each meaning; no symbol was renamed.
+
+\smallskip
+\begingroup\renewcommand{\arraystretch}{1.1}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.62in}>{\raggedright\arraybackslash}p{3.45in}>{\raggedright\arraybackslash}p{1.6in}@{}}
+\toprule
+Symbol & Meanings (where) & Not to be read as\\
+\midrule
+\endhead
+$c$, $C$ & $c=\pi/\sqrt6$ and $C=4c/3=\pi\sqrt{8/27}$
+ \eqref{tes:eq:constants} & \\
+$B_U$, $B_n$ & $B_U$ the constant of the upper bound
+ \eqref{tes:eq:constants}, \eqref{tes:eq:upperintro}; $B_n$ the width of
+ the terminal layer \eqref{tes:eq:B} & $B_U$ as a coefficient of $n$ in
+ $\log a_n$ (Remark~\ref{tes:rem:linear}); $B_n$ as $B_U$\\
+$\lambda$ & $\lambda_i=c/\sqrt i$ (Section~\ref{tes:sec:upper}),
+ $\lambda=c/\sqrt i$ (proof of Lemma~\ref{tes:lem:deficit}), any
+ $\lambda>0$ in \eqref{tes:eq:Etail}; the row sums
+ $\lambda_i=\sum_jk_{ij}$ of the cell bounds in
+ Theorem~\ref{tes:thm:BLP} & the $\lambda_i$ of
+ Theorem~\ref{tes:thm:BLP} as $c/\sqrt i$\\
+$K$, $k$ & $K$ absolute constants (proofs of
+ Lemmas~\ref{tes:lem:deficit}, \ref{tes:lem:terminal},
+ \eqref{tes:eq:terminalmass}, Proposition~\ref{tes:prop:bulk}); the
+ cell-bound matrix $K=(k_{ij})$ in $\CT_K$, $P_K$
+ (Section~\ref{tes:sec:capacity}) & \\
+$h$ & the entropy function $h(u)$ \eqref{tes:eq:entropyfunctions}; the
+ hook-sum vector $h=(h_1,\ldots,h_n)$ in \eqref{tes:eq:hookrec} & \\
+$T$, $S$ & $T(h)$ the number of matrices with hook sums $h$
+ \eqref{tes:eq:hookrec}; $T_i$ the cut loads of the profile
+ \eqref{tes:eq:q}; $T_i^\infty$ those of the untruncated profile
+ (Lemma~\ref{tes:lem:deficit}); $S_i(m)$ the cut loads of an interval array
+ \eqref{tes:eq:cuts} & $T_i$ as a count\\
+$L$ & $L(t)=\sum_\ell F(\ell t)$ \eqref{tes:eq:functions}; $L=\log y$
+ (Section~\ref{tes:sec:inverse}) & \\
+$G$ & a feasible real table $G$ (Lemma~\ref{tes:lem:capacityentropy});
+ $G(t)=Ct^{3/2}-\frac34t\log t$ (proof of
+ Theorem~\ref{tes:thm:inverse}) & \\
+$m$, $M$ & $m_{[a,b]}$ an interval array \eqref{tes:eq:cuts}; $m$ the
+ number of table rows in Theorem~\ref{tes:thm:BLP}; $m_\pm$ the bracket
+ points (proof of Theorem~\ref{tes:thm:inverse}); $M=1024$ the cutoff
+ \eqref{tes:eq:cutoff} & $M$ as a row count\\
+$u$, $v$ & $u\ge0$ the argument of $h$ and of \eqref{tes:eq:dualcell};
+ $u_i$, $v_j$ the truncated margins of Theorem~\ref{tes:thm:BLP} & \\
+$r$, $\rho$, $R$ & $r_j$ the real outgoing total at vertex $j$
+ \eqref{tes:eq:r-basic}; $\rho_j$ its integer replacement;
+ $\mathcal R_n$ the set of vectors $\rho$ \eqref{tes:eq:Nr}; $R(t)$
+ \eqref{tes:eq:functions}; $\R$ the reals & \\
+$x$, $y$, $z$ & formal variables $x_i$ \eqref{tes:eq:coefficient};
+ the variables $x_i$, $y_j$ of $P_K$; $y>1$ the threshold and
+ $x=(L/C)^{2/3}$ (Section~\ref{tes:sec:inverse}); $z$ in
+ \eqref{tes:eq:dualcell}, and $z=x+(2C)^{-1}\sqrt x\log x$ (proof of
+ Theorem~\ref{tes:thm:inverse}) & the $x$ of
+ Section~\ref{tes:sec:inverse} as a formal variable\\
+$t$, $s$ & $t>0$ the argument of $Q,F,L,R,E$; $t_j\in[0,w_j/2]$ the
+ triangle amounts \eqref{tes:eq:triangle}; $s\ge4\pi^2/c$ (proof of
+ Lemma~\ref{tes:lem:partition}) and $s=\sqrt x\log\log x$ (proof of
+ Theorem~\ref{tes:thm:inverse}) & $t_j$ as an argument $t$\\
+$D$, $N$ & $D_n$ the terminal entropy loss (proof of
+ Proposition~\ref{tes:prop:entropy}); $D$ the bracket constant
+ \eqref{tes:eq:explicitbracket}; $N(y)$ the integer threshold
+ \eqref{tes:eq:Ndef} & \\
+$f$ subscripts & $f_{[a,b]}$ indexed by intervals; in
+ \eqref{tes:eq:triangle} $f_{(j-1,j+1)}$ is indexed by the edge
+ $(j-1,j+1)$, which is the interval $[j,j+1]$ & an edge subscript as an
+ interval\\
+$\Cap$ & capacity (Section~\ref{tes:sec:capacity}); the preamble
+ redefines the \textsf{amssymb} command of that name (a double-intersection
+ symbol), which the text never uses & \\
+\bottomrule
+\end{longtable}
+\endgroup
+
+\emph{What is not claimed} (collected from the source): the leading
+equivalent and its leading inverse are not new; no $O(n)$ remainder,
+multiplicative equivalent, amplitude, full expansion or exhaustive novelty
+certification is claimed; exponentiating an $O(n\log\log n)$ error does not
+give a relative-error asymptotic, and $B_U$ is a constant in an upper
+bound, not a proved coefficient of $n$ in $\log a_n$; the bounded source
+check through 2~October 2026 does not certify novelty, and no priority claim
+is needed for the proof; the inverse error is asymptotic with an unspecified
+constant, not a certified numerical error bar or an $O(1)$ inverse; the
+proof invokes no fixed-dimensional saddle theorem in a growing dimension
+and no unproved local central limit approximation; the exact checks do not
+certify a uniform asymptotic estimate or replace any lemma, and their
+fixtures are manufactured, not the profile \eqref{tes:eq:q}; the floating
+sanity checks are not interval arithmetic and prove no analytic inequality;
+the snapshot hashes are regression snapshots, not authentication, and the
+corruption tests are no protection against simultaneous malicious edits;
+external scholarly PDFs are fingerprinted, not redistributed. Open
+questions are collected in Section~\ref{tes:sec:further}.
+\end{writenote}
+
+\section{Exact matrix interval and flow models}\label{tes:sec:model}
 A regular Tesler matrix is an upper-triangular matrix $A=(A_{ij})_{1\le i,j\le n}$ with entries in $\Z_{\ge0}$ and hook sums
-\begin{equation}\label{eq:hook}
+\begin{equation}\label{tes:eq:hook}
 A_{ii}+\sum_{k=i+1}^n A_{ik}-\sum_{k=1}^{i-1}A_{ki}=1
 \qquad(1\le i\le n).
 \end{equation}
-Associate $A_{ij}$ for $i<j$ with the edge $(i-1,j-1)$, and $A_{ii}$ with $(i-1,n)$, on the complete directed acyclic graph with vertices $0,1,\ldots,n$. Then \eqref{eq:hook} says that the net outflow is $1$ at each vertex $0,\ldots,n-1$, and $-n$ at vertex $n$.
+Associate $A_{ij}$ for $i<j$ with the edge $(i-1,j-1)$, and $A_{ii}$ with $(i-1,n)$, on the complete directed acyclic graph with vertices $0,1,\ldots,n$. Then \eqref{tes:eq:hook} says that the net outflow is $1$ at each vertex $0,\ldots,n-1$, and $-n$ at vertex $n$.
 
 For every interval $[a,b]$, $1\le a\le b\le n$, let $m_{[a,b]}$ be the flow on the edge $(a-1,b)$. Its cut loads are
-\begin{equation}\label{eq:cuts}
+\begin{equation}\label{tes:eq:cuts}
 S_i(m)=\sum_{a\le i\le b}m_{[a,b]},\qquad 1\le i\le n.
 \end{equation}
 Summing netflows to the left of the cut gives $S_i=i$. Conversely, differences of successive cut loads give all netflows, with the two endpoint conditions included. Thus
-\begin{equation}\label{eq:coefficient}
+\begin{equation}\label{tes:eq:coefficient}
 a_n=[x_1x_2^2\cdots x_n^n]
 \prod_{1\le a\le b\le n}(1-x_ax_{a+1}\cdots x_b)^{-1}.
 \end{equation}
 The staircase $1,2,\ldots,n$ consists of \emph{cut loads}; the netflow is the constant vector $(1,\ldots,1,-n)$. A staircase netflow would be a different counting problem.
 
-\begin{lemma}[Singleton elimination]\label{lem:singletons}
+\begin{lemma}[Singleton elimination]\label{tes:lem:singletons}
 The same $a_n$ counts the nonnegative integer arrays on intervals $a<b$ with nonsingleton cut loads at most $i$ at cut $i$.
 \end{lemma}
 \begin{proof}
@@ -116,53 +326,53 @@ These are the unique possible singleton values. They are nonnegative integers ex
 \end{proof}
 
 An independent exact recurrence follows by removing the first row of a Tesler matrix. If $T(h_1,\ldots,h_n)$ counts matrices of nonnegative integer hook-sum vector $h$, then
-\begin{equation}\label{eq:hookrec}
+\begin{equation}\label{tes:eq:hookrec}
 T(h_1,\ldots,h_n)=
 \sum_{\substack{x_2,\ldots,x_n\ge0\\x_2+\cdots+x_n\le h_1}}
 T(h_2+x_2,\ldots,h_n+x_n),\qquad T(\varnothing)=1.
 \end{equation}
 The omitted diagonal entry is $h_1-\sum x_j$; hence each summand has multiplicity one. In particular $a_n=T(1,\ldots,1)$. The supplied finite checker compares this recurrence with interval enumeration.
 
-\section{One dimensional partition and entropy estimates}\label{sec:analytic}
+\section{One dimensional partition and entropy estimates}\label{tes:sec:analytic}
 Put, for $t>0$ and $u\ge0$,
 \begin{gather}
 Q(t)=\frac1{\ee^t-1},\quad F(t)=-\log(1-\ee^{-t}),\quad
-L(t)=\sum_{\ell\ge1}F(\ell t),\quad R(t)=\sum_{\ell\ge1}\ell Q(\ell t),\label{eq:functions}\\
+L(t)=\sum_{\ell\ge1}F(\ell t),\quad R(t)=\sum_{\ell\ge1}\ell Q(\ell t),\label{tes:eq:functions}\\
 h(u)=(u+1)\log(u+1)-u\log u,\quad h(0)=0,\qquad
-E(t)=h(Q(t))=tQ(t)+F(t).\label{eq:entropyfunctions}
+E(t)=h(Q(t))=tQ(t)+F(t).\label{tes:eq:entropyfunctions}
 \end{gather}
 All these series converge absolutely at every positive argument. The function $h$ is increasing, with
-\begin{equation}\label{eq:hfacts}
+\begin{equation}\label{tes:eq:hfacts}
 h'(u)=\log(1+u^{-1})\le u^{-1}\quad(u>0),\qquad
 \log(1+u)\le h(u)\le\log(1+u)+1.
 \end{equation}
 The upper inequality follows from $u\log(1+1/u)\le1$; the value at zero is by continuity.
 
-\begin{lemma}[Partition estimates]\label{lem:partition}
+\begin{lemma}[Partition estimates]\label{tes:lem:partition}
 Uniformly for $0<t\le c$,
 \begin{align}
 L(t)&=\frac{\pi^2}{6t}+\frac12\log\frac{t}{2\pi}-\frac t{24}
-+O(\ee^{-4\pi^2/t}),\label{eq:L}\\
-R(t)&=\frac{\pi^2}{6t^2}-\frac1{2t}+O(1),\label{eq:R}\\
-\sum_{\ell\ge1}E(\ell t)&=\frac{\pi^2}{3t}+\frac12\log\frac{t}{2\pi}+O(1).\label{eq:Erow}
++O(\ee^{-4\pi^2/t}),\label{tes:eq:L}\\
+R(t)&=\frac{\pi^2}{6t^2}-\frac1{2t}+O(1),\label{tes:eq:R}\\
+\sum_{\ell\ge1}E(\ell t)&=\frac{\pi^2}{3t}+\frac12\log\frac{t}{2\pi}+O(1).\label{tes:eq:Erow}
 \end{align}
 Also $R(t)\le\pi^2/(6t^2)$ for every $t>0$.
 \end{lemma}
 \begin{proof}
 The classical Dedekind eta transformation \cite[\S23.18]{dlmf}, applied on the positive imaginary axis, gives the exact identity
-\begin{equation}\label{eq:modular}
+\begin{equation}\label{tes:eq:modular}
 L(t)=\frac{\pi^2}{6t}+\frac12\log\frac{t}{2\pi}-\frac t{24}
 +L(4\pi^2/t).
 \end{equation}
 Indeed, substitute $\eta(\mathrm i t/(2\pi))=
 \ee^{-t/24}\prod_{\ell\ge1}(1-\ee^{-\ell t})$ into
-$\eta(-1/\tau)=\sqrt{-\mathrm i\tau}\,\eta(\tau)$ and take logarithms. For $s\ge4\pi^2/c$, the series gives $L(s)=O(\ee^{-s})$, proving \eqref{eq:L}. Differentiating the exact identity, rather than an unspecified error term, gives
+$\eta(-1/\tau)=\sqrt{-\mathrm i\tau}\,\eta(\tau)$ and take logarithms. For $s\ge4\pi^2/c$, the series gives $L(s)=O(\ee^{-s})$, proving \eqref{tes:eq:L}. Differentiating the exact identity, rather than an unspecified error term, gives
 \[
 R(t)=\frac{\pi^2}{6t^2}-\frac1{2t}+\frac1{24}
 -\frac{4\pi^2}{t^2}R(4\pi^2/t).
 \]
-The last term is bounded uniformly on $(0,c]$, since $R(s)=O(\ee^{-s})$ for large $s$. This proves \eqref{eq:R}. Since
-$\sum E(\ell t)=tR(t)+L(t)$, \eqref{eq:Erow} follows.
+The last term is bounded uniformly on $(0,c]$, since $R(s)=O(\ee^{-s})$ for large $s$. This proves \eqref{tes:eq:R}. Since
+$\sum E(\ell t)=tR(t)+L(t)$, \eqref{tes:eq:Erow} follows.
 
 Finally $x/(\ee^{tx}-1)$ is decreasing for $x>0$. Its right Riemann sum is no greater than its integral, so
 \[
@@ -173,26 +383,26 @@ R(t)\le\int_0^\infty\frac{x}{\ee^{tx}-1}\dd x
 Positive summands justify the interchange.
 \end{proof}
 
-\begin{lemma}[Entropy tails]\label{lem:Etail}
+\begin{lemma}[Entropy tails]\label{tes:lem:Etail}
 The function $E$ is positive and decreasing, and
-\begin{equation}\label{eq:Eintegrals}
+\begin{equation}\label{tes:eq:Eintegrals}
 \int_0^\infty E(x)\dd x=\frac{\pi^2}{3},\qquad
 \int_0^\infty xE(x)\dd x=3\zeta(3).
 \end{equation}
 For every $\lambda>0$,
-\begin{equation}\label{eq:Etail}
+\begin{equation}\label{tes:eq:Etail}
 \sum_{\ell\ge1}\ell E(\ell\lambda)
 \le\frac{3\zeta(3)}{\lambda^2}+\frac{\pi^2}{3\lambda}.
 \end{equation}
 \end{lemma}
 \begin{proof}
-Differentiation gives $E'(t)=-t\ee^t/(\ee^t-1)^2<0$. Near zero $E(t)=O(1+|\log t|)$; at infinity $E(t)=O((1+t)\ee^{-t})$. Expanding $Q(x)=\sum_{k\ge1}\ee^{-kx}$ and $F(x)=\sum_{k\ge1}\ee^{-kx}/k$ proves \eqref{eq:Eintegrals} by termwise integration. For $x\in[(\ell-1)\lambda,\ell\lambda]$,
-$\ell\lambda\le x+\lambda$ and $E(\ell\lambda)\le E(x)$. Integrate their product and sum to obtain \eqref{eq:Etail}.
+Differentiation gives $E'(t)=-t\ee^t/(\ee^t-1)^2<0$. Near zero $E(t)=O(1+|\log t|)$; at infinity $E(t)=O((1+t)\ee^{-t})$. Expanding $Q(x)=\sum_{k\ge1}\ee^{-kx}$ and $F(x)=\sum_{k\ge1}\ee^{-kx}/k$ proves \eqref{tes:eq:Eintegrals} by termwise integration. For $x\in[(\ell-1)\lambda,\ell\lambda]$,
+$\ell\lambda\le x+\lambda$ and $E(\ell\lambda)\le E(x)$. Integrate their product and sum to obtain \eqref{tes:eq:Etail}.
 \end{proof}
 
-\section{The elementary upper bound}\label{sec:upper}
-Set $\lambda_i=c/\sqrt i$. Every array in Lemma~\ref{lem:singletons} has weighted energy at most $\sum_i i\lambda_i$. Summing the geometric series over all nonsingletons, without the cut constraints, therefore gives
-\begin{equation}\label{eq:boltzupper}
+\section{The elementary upper bound}\label{tes:sec:upper}
+Set $\lambda_i=c/\sqrt i$. Every array in Lemma~\ref{tes:lem:singletons} has weighted energy at most $\sum_i i\lambda_i$. Summing the geometric series over all nonsingletons, without the cut constraints, therefore gives
+\begin{equation}\label{tes:eq:boltzupper}
 a_n\le\exp\left(\sum_{i=1}^n i\lambda_i\right)
 \prod_{a<b}\left(1-\exp\left(-\sum_{k=a}^b\lambda_k\right)\right)^{-1}.
 \end{equation}
@@ -200,7 +410,7 @@ For example, this follows by multiplying each admissible array's indicator by
 $\exp(\sum_i i\lambda_i-\sum_{a<b}m_{[a,b]}\sum_{k=a}^b\lambda_k)\ge1$.
 
 Because $\lambda_i$ decreases, an interval of length $\ell$ ending at $j$ has energy at least $\ell\lambda_j$. Grouping by $j$, and extending lengths $2\le\ell\le j$ to all $\ell\ge2$, yields
-\begin{equation}\label{eq:Un}
+\begin{equation}\label{tes:eq:Un}
 \log a_n\le U_n:=\sum_{j=1}^n\left[
 c\sqrt j+L(c/\sqrt j)+\log(1-\ee^{-c/\sqrt j})\right].
 \end{equation}
@@ -210,20 +420,42 @@ For $0<t\le c$, Taylor's formula with a bounded remainder on this fixed interval
 \[
 \log(1-\ee^{-t})=\log t-\frac t2+O(t^2).
 \]
-Use Lemma~\ref{lem:partition}. The exponential remainders summed over $t=c/\sqrt j$ are bounded, $\sum j^{-1/2}=O(\sqrt n)$, and $\sum j^{-1}=O(\log n)$. Thus
-\begin{equation}\label{eq:upperfactorial}
+Use Lemma~\ref{tes:lem:partition}. The exponential remainders summed over $t=c/\sqrt j$ are bounded, $\sum j^{-1/2}=O(\sqrt n)$, and $\sum j^{-1}=O(\log n)$. Thus
+\begin{equation}\label{tes:eq:upperfactorial}
 U_n=2c\sum_{j=1}^n\sqrt j-\frac34\log(n!)
 +n\left(\frac32\log c-\frac12\log(2\pi)\right)+O(\sqrt n).
 \end{equation}
-The elementary sum estimate $\sum_{j=1}^n\sqrt j=\tfrac23n^{3/2}+O(\sqrt n)$ and Stirling's formula now give \eqref{eq:upperintro}, including the stated $B_U$.
+The elementary sum estimate $\sum_{j=1}^n\sqrt j=\tfrac23n^{3/2}+O(\sqrt n)$ and Stirling's formula now give \eqref{tes:eq:upperintro}, including the stated $B_U$.
 
-\section{An exactly feasible high entropy flow}\label{sec:feasible}
+\begin{remark}[{[write]}, 5 October 2026: $B_U$ is not the linear term]\label{tes:rem:linear}
+The constant $B_U=0.2043\ldots$ in \eqref{tes:eq:upperintro} bounds from
+above; it is not a coefficient of $n$ in $\log a_n$, and small cases suggest
+that the actual linear behaviour lies far below it. The intake evaluated
+$U_n$ of \eqref{tes:eq:Un} with the exact identity \eqref{tes:eq:modular}
+(40-digit floating point, \textsf{mpmath}; not interval arithmetic) and
+compared it with the exact $\log a_n$ of the first 26 terms of the OEIS
+b-file~\cite{oeis}. The inequality $\log a_n\le U_n$ holds for every
+$1\le n\le26$; the gap $U_n-\log a_n$ is $1.39$, $14.96$, $31.14$ and
+$41.06$ at $n=1$, $10$, $20$ and $26$. For $9\le n\le26$,
+\[
+\frac{\log a_n-Cn^{3/2}+\frac34n\log n}{n}\in[-1.443,\,-1.421],
+\]
+with the largest value $-1.4213$ at $n=10$ and a slow decrease after it
+($-1.4336$ at $n=20$, $-1.4426$ at $n=26$). At these sizes, therefore,
+$\log a_n\approx Cn^{3/2}-\frac34n\log n-1.4\,n$, about $1.6\,n$ below the
+upper estimate with $B_U$. Such small $n$ cannot separate a linear term from
+the allowance $2n\log\log n$ of \eqref{tes:eq:lowerintro} (at $n=26$,
+$2\log\log n\approx2.36$) or from lower-order terms, so the data are
+inconclusive about Question~\ref{tes:q:linear}.
+\end{remark}
+
+\section{An exactly feasible high entropy flow}\label{tes:sec:feasible}
 Fix once and for all
-\begin{equation}\label{eq:cutoff}
+\begin{equation}\label{tes:eq:cutoff}
 M=1024.
 \end{equation}
 For $1\le a\le b\le n$, define
-\begin{equation}\label{eq:q}
+\begin{equation}\label{tes:eq:q}
 q_{[a,b]}=\begin{cases}
 Q\bigl(c(b-a+1)/\sqrt a\bigr),&a\ge M,\\
 0,&a<M,
@@ -231,25 +463,25 @@ Q\bigl(c(b-a+1)/\sqrt a\bigr),&a\ge M,\\
 \qquad T_i=\sum_{a\le i\le b}q_{[a,b]}.
 \end{equation}
 There are at most $\ell$ intervals of length $\ell$ through cut $i$, and $a\le i$ implies $c/\sqrt a\ge c/\sqrt i$. Hence
-\begin{equation}\label{eq:Tbound}
+\begin{equation}\label{tes:eq:Tbound}
 0\le T_i\le R(c/\sqrt i)\le i.
 \end{equation}
 Fill the remaining cut load by singletons:
-\begin{equation}\label{eq:f}
+\begin{equation}\label{tes:eq:f}
 f_{[a,b]}=q_{[a,b]}\quad(a<b),\qquad
 f_{[i,i]}=q_{[i,i]}+i-T_i.
 \end{equation}
 This real array is nonnegative and has cut loads exactly $i$, hence exactly the required netflow. Define its geometric entropy by
 $\Hg(f)=\sum_{a\le b}h(f_{[a,b]})$.
 
-\begin{proposition}\label{prop:entropy}
-The flow \eqref{eq:f} satisfies
-\begin{equation}\label{eq:Hg}
+\begin{proposition}\label{tes:prop:entropy}
+The flow \eqref{tes:eq:f} satisfies
+\begin{equation}\label{tes:eq:Hg}
 \Hg(f)\ge Cn^{3/2}-\frac14\log(n!)-O(n).
 \end{equation}
 \end{proposition}
 \begin{proof}
-By monotonicity of $h$, it is enough to bound $\sum h(q_{[a,b]})$. First temporarily remove the terminal restriction $b\le n$ and the fixed initial cutoff. A full row at start $a$ contributes, by \eqref{eq:Erow},
+By monotonicity of $h$, it is enough to bound $\sum h(q_{[a,b]})$. First temporarily remove the terminal restriction $b\le n$ and the fixed initial cutoff. A full row at start $a$ contributes, by \eqref{tes:eq:Erow},
 \[
 \sum_{\ell\ge1}E(\ell c/\sqrt a)
 =2c\sqrt a-\frac14\log a+O(1).
@@ -262,37 +494,37 @@ D_n&=\sum_{a=1}^n\sum_{\ell>n-a+1}E(\ell c/\sqrt a)\\
 &\le\sum_{\ell\ge1}\ell E(\ell c/\sqrt n)
 \le\frac{3\zeta(3)}{c^2}n+\frac{\pi^2}{3c}\sqrt n.
 \end{align*}
-The first inequality uses $a\le n$, the decrease of $E$, and the fact that at most $\ell$ start positions contribute for a fixed omitted length. The last inequality is Lemma~\ref{lem:Etail}. Thus the terminal loss is $O(n)$, not merely an uncontrolled $o(n^{3/2})$.
+The first inequality uses $a\le n$, the decrease of $E$, and the fact that at most $\ell$ start positions contribute for a fixed omitted length. The last inequality is Lemma~\ref{tes:lem:Etail}. Thus the terminal loss is $O(n)$, not merely an uncontrolled $o(n^{3/2})$.
 \end{proof}
 
 Let $r_j$ denote the total outflow at vertex $j$, $0\le j<n$. Feasibility gives
-\begin{equation}\label{eq:r-basic}
+\begin{equation}\label{tes:eq:r-basic}
 r_0=1,\qquad \text{inflow at }j=r_j-1\ (1\le j<n),\qquad
 1\le r_j\le j+1.
 \end{equation}
 The last inequality holds because the outgoing edges of $j$ form a subset of cut $j+1$. The inflow at the terminal vertex is $n$.
 
-\begin{lemma}[Initial integer throughputs]\label{lem:initial}
+\begin{lemma}[Initial integer throughputs]\label{tes:lem:initial}
 For $0\le j<M$ with $j<n$, one has $r_j=j+1$.
 \end{lemma}
 \begin{proof}
 If $i=j+1<M$, no $q$ interval starts at or before $i$, so its outgoing row is just the singleton of value $i$. At $i=M$, every $q$ interval crossing cut $M$ starts at $M$. Consequently its entire row mass is $T_M$, and adding the singleton gap $M-T_M$ makes the outgoing total exactly $M$. This verifies the boundary case $j=M-1$ as well.
 \end{proof}
 
-\section{Load deficits and bulk throughput control}\label{sec:throughput}
+\section{Load deficits and bulk throughput control}\label{tes:sec:throughput}
 The main reason the margin penalty is manageable is that most outgoing totals are much smaller than the crude bound $j+1$.
 
-\begin{lemma}[Infinite load deficit]\label{lem:deficit}
+\begin{lemma}[Infinite load deficit]\label{tes:lem:deficit}
 Let $T_i^\infty$ be the load through cut $i$ in the uncut, untruncated array
 $q_{[a,b]}=Q(c(b-a+1)/\sqrt a)$, $1\le a\le i\le b<\infty$.
 Then
-\begin{equation}\label{eq:infinite-deficit}
+\begin{equation}\label{tes:eq:infinite-deficit}
 0\le i-T_i^\infty=O(\sqrt i).
 \end{equation}
 The same assertion holds after removing the fixed rows $a<M$.
 \end{lemma}
 \begin{proof}
-Put $\lambda=c/\sqrt i$. We already have $T_i^\infty\le R(\lambda)\le i$, and \eqref{eq:R} gives
+Put $\lambda=c/\sqrt i$. We already have $T_i^\infty\le R(\lambda)\le i$, and \eqref{tes:eq:R} gives
 \[
 R(\lambda)=i-\frac{\sqrt i}{2c}+O(1).
 \]
@@ -308,11 +540,11 @@ $V(t)=-Q'(t)=\ee^t/(\ee^t-1)^2$; this is positive and decreasing. It follows tha
 \le K\frac\lambda i\ell rV(\ell\lambda).
 \]
 After summing in $r$ and $\ell$, this part of the discrepancy is at most
-\begin{equation}\label{eq:Vsum}
+\begin{equation}\label{tes:eq:Vsum}
 K\frac\lambda i\sum_{\ell\ge1}\ell^3V(\ell\lambda)=O(\sqrt i).
 \end{equation}
 To check the last bound uniformly, use $V(t)=O(t^{-2})$ on $(0,1]$ and $V(t)=O(\ee^{-t})$ on $[1,\infty)$. Splitting at $\ell=1/\lambda$ gives
-$\sum\ell^3V(\ell\lambda)=O(\lambda^{-4})$; when $\lambda>1$ the bounded interval $1\le\lambda\le c$ is harmless. Since $\lambda=c/\sqrt i$, \eqref{eq:Vsum} is $O(\sqrt i)$.
+$\sum\ell^3V(\ell\lambda)=O(\lambda^{-4})$; when $\lambda>1$ the bounded interval $1\le\lambda\le c$ is harmless. Since $\lambda=c/\sqrt i$, \eqref{tes:eq:Vsum} is $O(\sqrt i)$.
 
 For all remaining lengths, the total homogeneous contribution is
 \[
@@ -320,34 +552,34 @@ For all remaining lengths, the total homogeneous contribution is
 =O\bigl(i^{3/2}\ee^{-c\sqrt i/2}\bigr)=O(\sqrt i).
 \]
 For sufficiently large $i$ this follows from the geometric-series tail; finitely many $i$ are absorbed in the constant. The inhomogeneous contribution is between zero and this homogeneous tail. Therefore
-$0\le R(\lambda)-T_i^\infty=O(\sqrt i)$, proving \eqref{eq:infinite-deficit}.
+$0\le R(\lambda)-T_i^\infty=O(\sqrt i)$, proving \eqref{tes:eq:infinite-deficit}.
 
 Finally, deleting $a<M$ changes a cut load by at most
 $\sum_{a<M}\sum_{\ell\ge1}Q(c\ell/\sqrt a)<\infty$.
 This constant does not depend on $i$ or $n$.
 \end{proof}
 
-\begin{lemma}[Terminal layer]\label{lem:terminal}
+\begin{lemma}[Terminal layer]\label{tes:lem:terminal}
 Put
-\begin{equation}\label{eq:B}
+\begin{equation}\label{tes:eq:B}
 B_n=\left\lceil\frac4c\sqrt n\log(n+1)\right\rceil.
 \end{equation}
-For $M\le i\le n-B_n$, the finite, cut-off loads in \eqref{eq:q} satisfy
+For $M\le i\le n-B_n$, the finite, cut-off loads in \eqref{tes:eq:q} satisfy
 $i-T_i=O(\sqrt i)$, uniformly in both $i$ and $n$.
 \end{lemma}
 \begin{proof}
 An interval crossing cut $i$ and removed by $b>n$ has length greater than $d=n-i$. Its missing load is therefore at most
 $\sum_{\ell>d}\ell Q(\ell c/\sqrt i)$.
 When $dc/\sqrt i\ge1$, compare $Q(t)\le(1-\ee^{-1})^{-1}\ee^{-t}$ and sum the geometric tail to bound this by
-\begin{equation}\label{eq:terminalmass}
+\begin{equation}\label{tes:eq:terminalmass}
 K(d\sqrt i+i+\sqrt i)\exp(-cd/\sqrt i).
 \end{equation}
-If $d\ge B_n$, the exponential is at most $(n+1)^{-4}$, whereas the prefactor is $O(n^{3/2}+n)$. The missing load is thus $O(1)$. Combine this with Lemma~\ref{lem:deficit}. If the displayed index range is empty, there is nothing to prove.
+If $d\ge B_n$, the exponential is at most $(n+1)^{-4}$, whereas the prefactor is $O(n^{3/2}+n)$. The missing load is thus $O(1)$. Combine this with Lemma~\ref{tes:lem:deficit}. If the displayed index range is empty, there is nothing to prove.
 \end{proof}
 
-\begin{proposition}[Uniform bulk bound]\label{prop:bulk}
+\begin{proposition}[Uniform bulk bound]\label{tes:prop:bulk}
 There is an absolute $K$ such that
-\begin{equation}\label{eq:rbulk}
+\begin{equation}\label{tes:eq:rbulk}
 r_j\le K\sqrt j\log(j+1)\qquad(M\le j\le n-B_n-1).
 \end{equation}
 The terminal set contains at most $B_n+1$ vertices and satisfies $r_j\le j+1$.
@@ -357,31 +589,31 @@ The full $q$ row at start $i$ has mass
 \[
 \sum_{\ell\ge1}Q(\ell c/\sqrt i)=O(\sqrt i\log(i+1)).
 \]
-For $\ell c/\sqrt i\le1$ use $Q(t)\le1/t$ and the harmonic sum; for larger arguments use an exponential tail. The outgoing row at vertex $j=i-1$ is a truncated $q$ row plus $i-T_i$. Lemma~\ref{lem:terminal} now proves \eqref{eq:rbulk}, after changing the constant to replace $i$ by $j$.
+For $\ell c/\sqrt i\le1$ use $Q(t)\le1/t$ and the harmonic sum; for larger arguments use an exponential tail. The outgoing row at vertex $j=i-1$ is a truncated $q$ row plus $i-T_i$. Lemma~\ref{tes:lem:terminal} now proves \eqref{tes:eq:rbulk}, after changing the constant to replace $i$ by $j$.
 \end{proof}
 
 A bound needed below is
-\begin{equation}\label{eq:boundarycost}
+\begin{equation}\label{tes:eq:boundarycost}
 B_n\log(n+1)=O(\sqrt n\log^2(n+1))=O(n).
 \end{equation}
 This uses $\log^2(n+1)=O(\sqrt n)$. It makes the entire endpoint layer inexpensive at the present precision, despite its growing size.
 
-\section{Independent integer margins from local triangles}\label{sec:triangles}
+\section{Independent integer margins from local triangles}\label{tes:sec:triangles}
 For each internal vertex $j=M,\ldots,n-1$, the edge $(j-1,j+1)$, equivalently interval $[j,j+1]$, has initial flow
-\begin{equation}\label{eq:wj}
+\begin{equation}\label{tes:eq:wj}
 w_j=Q(2c/\sqrt j).
 \end{equation}
 Choose $t_j\in[0,w_j/2]$ and replace the direct two-step edge by the same amount through the intermediate vertex:
 \begin{align}
 f_{(j-1,j+1)}&\longmapsto f_{(j-1,j+1)}-t_j,\notag\\
-f_{(j-1,j)}&\longmapsto f_{(j-1,j)}+t_j,\label{eq:triangle}\\
+f_{(j-1,j)}&\longmapsto f_{(j-1,j)}+t_j,\label{tes:eq:triangle}\\
 f_{(j,j+1)}&\longmapsto f_{(j,j+1)}+t_j.\notag
 \end{align}
 Here edge subscripts are used, rather than interval subscripts.
 
-\begin{lemma}[Independence and number of choices]\label{lem:triangles}
-All the moves \eqref{eq:triangle} can be made simultaneously. They preserve nonnegativity and every cut load. The move at $j$ increases $r_j$ by $t_j$ and leaves every other outgoing total unchanged. The choices making every outgoing total integral yield a set $\mathcal R_n$ of distinct integer throughput vectors with
-\begin{equation}\label{eq:Nr}
+\begin{lemma}[Independence and number of choices]\label{tes:lem:triangles}
+All the moves \eqref{tes:eq:triangle} can be made simultaneously. They preserve nonnegativity and every cut load. The move at $j$ increases $r_j$ by $t_j$ and leaves every other outgoing total unchanged. The choices making every outgoing total integral yield a set $\mathcal R_n$ of distinct integer throughput vectors with
+\begin{equation}\label{tes:eq:Nr}
 \log|\mathcal R_n|\ge\frac12\log(n!)-O(n).
 \end{equation}
 \end{lemma}
@@ -392,38 +624,38 @@ For $j\ge M$, $2c/\sqrt j\le1$, and $\ee^x-1\le2x$ on $[0,1]$ gives
 \[
 \frac{w_j}{2}\ge\frac{\sqrt j}{8c}\ge2.
 \]
-Every closed real interval of length $w_j/2$ contains at least $\lfloor w_j/2\rfloor$ integers. Since its length is at least two, this number is at least $\sqrt j/(16c)$. Choose $\rho_j\in\Z\cap[r_j,r_j+w_j/2]$ and set $t_j=\rho_j-r_j$. The early throughputs are already integers by Lemma~\ref{lem:initial}, and are unchanged. Consequently
+Every closed real interval of length $w_j/2$ contains at least $\lfloor w_j/2\rfloor$ integers. Since its length is at least two, this number is at least $\sqrt j/(16c)$. Choose $\rho_j\in\Z\cap[r_j,r_j+w_j/2]$ and set $t_j=\rho_j-r_j$. The early throughputs are already integers by Lemma~\ref{tes:lem:initial}, and are unchanged. Consequently
 \[
 |\mathcal R_n|\ge\prod_{j=M}^{n-1}\frac{\sqrt j}{16c}.
 \]
-Taking logarithms gives \eqref{eq:Nr}; replacing $(n-1)!$ by $n!$ costs only $\tfrac12\log n$. Distinct choices give distinct throughput vectors because each coordinate is independently specified. All statements are for sufficiently large $n$; finitely many smaller sizes may be absorbed in constants.
+Taking logarithms gives \eqref{tes:eq:Nr}; replacing $(n-1)!$ by $n!$ costs only $\tfrac12\log n$. Distinct choices give distinct throughput vectors because each coordinate is independently specified. All statements are for sufficiently large $n$; finitely many smaller sizes may be absorbed in constants.
 \end{proof}
 
-\begin{lemma}[Uniform entropy and throughput control]\label{lem:uniform}
+\begin{lemma}[Uniform entropy and throughput control]\label{tes:lem:uniform}
 Every resulting real flow $f^{(\rho)}$, $\rho\in\mathcal R_n$, satisfies
-\begin{equation}\label{eq:uniformH}
+\begin{equation}\label{tes:eq:uniformH}
 \Hg(f^{(\rho)})\ge Cn^{3/2}-\frac14\log(n!)-O(n).
 \end{equation}
-The bulk estimate \eqref{eq:rbulk} and exact bound $\rho_j\le j+1$ continue to hold, uniformly in the chosen vector.
+The bulk estimate \eqref{tes:eq:rbulk} and exact bound $\rho_j\le j+1$ continue to hold, uniformly in the chosen vector.
 \end{lemma}
 \begin{proof}
-Only the direct edge in a triangle loses flow. All singleton entropy changes are nonnegative. By \eqref{eq:hfacts}, each direct-edge loss costs at most
+Only the direct edge in a triangle loses flow. All singleton entropy changes are nonnegative. By \eqref{tes:eq:hfacts}, each direct-edge loss costs at most
 \[
 h(w_j)-h(w_j-t_j)\le h(w_j)-h(w_j/2)
 \le\int_{w_j/2}^{w_j}\frac{\dd u}{u}=\log2.
 \]
-The total entropy loss is at most $(n-M)\log2$, proving \eqref{eq:uniformH} by Proposition~\ref{prop:entropy}. Also
+The total entropy loss is at most $(n-M)\log2$, proving \eqref{tes:eq:uniformH} by Proposition~\ref{tes:prop:entropy}. Also
 $t_j\le w_j/2\le\sqrt j/(4c)$, using $\ee^x-1\ge x$. This preserves the bulk bound. The exact bound follows afresh from preserved cut feasibility.
 \end{proof}
 
-\section{Capacity counting with the triangular support}\label{sec:capacity}
+\section{Capacity counting with the triangular support}\label{tes:sec:capacity}
 We state precisely the external counting theorem used. For a nonnegative integer row vector $\alpha\in\Z_{\ge0}^{m}$, column vector $\beta\in\Z_{\ge0}^{p}$ of equal total, and cell-bound matrix $K=(k_{ij})$ with $k_{ij}\in\Z_{\ge0}\cup\{\infty\}$, let $\CT_K(\alpha,\beta)$ count nonnegative integer matrices with those margins and entries at most $k_{ij}$. Write
 \[
 P_K(x,y)=\prod_{i,j}\left(\sum_{\ell=0}^{k_{ij}}(x_i y_j)^\ell\right).
 \]
 An infinite upper bound means a convergent geometric series. Capacity is the infimum of $x^{-\alpha}y^{-\beta}P_K(x,y)$ over positive arguments in its convergence domain; divergent geometric factors are assigned $+\infty$. This is the positive-series convention of \cite[\S5.1]{blp}, rather than a rational evaluation beyond a pole.
 
-\begin{theorem}[Br\"and\'en--Leake--Pak]\label{thm:BLP}
+\begin{theorem}[Br\"and\'en--Leake--Pak]\label{tes:thm:BLP}
 With the preceding hypotheses, put
 \[
 \lambda_i=\sum_jk_{ij},\quad\gamma_j=\sum_i k_{ij},\quad
@@ -431,7 +663,7 @@ u_i=\min\{\alpha_i,\lambda_i-\alpha_i\},\quad
 v_j=\min\{\beta_j,\gamma_j-\beta_j\}.
 \]
 For feasible margins,
-\begin{equation}\label{eq:BLPexact}
+\begin{equation}\label{tes:eq:BLPexact}
 \CT_K(\alpha,\beta)\ge
 \left(\prod_{i=2}^{m}\frac{u_i^{u_i}}{(u_i+1)^{u_i+1}}\right)
 \left(\prod_{j=1}^{p}\frac{v_j^{v_j}}{(v_j+1)^{v_j+1}}\right)
@@ -439,16 +671,33 @@ For feasible margins,
 \end{equation}
 where the zero-margin factor is interpreted as one. Arbitrary zero patterns and infinite cell bounds are allowed.
 \end{theorem}
-The omission of one row factor is part of the source theorem. Only the case with all support row and column sums infinite is used below, so $u_i=\alpha_i$ and $v_j=\beta_j$. Inserting the omitted factor $\ee^{-h(\alpha_1)}\le1$ weakens \eqref{eq:BLPexact} to the convenient symmetric bound
-\begin{equation}\label{eq:BLPweak}
+The omission of one row factor is part of the source theorem. Only the case with all support row and column sums infinite is used below, so $u_i=\alpha_i$ and $v_j=\beta_j$. Inserting the omitted factor $\ee^{-h(\alpha_1)}\le1$ weakens \eqref{tes:eq:BLPexact} to the convenient symmetric bound
+\begin{equation}\label{tes:eq:BLPweak}
 \CT_K(\alpha,\beta)\ge
 \exp\left(-\sum_i h(\alpha_i)-\sum_jh(\beta_j)\right)
 \Cap_{\alpha,\beta}(P_K).
 \end{equation}
 No equal-margin hypothesis or complete rectangular support hypothesis is being added.
+\begin{writenote}[Intake comparison with the source of Theorem~\ref{tes:thm:BLP}, 5 October 2026]
+The intake compared Theorem~\ref{tes:thm:BLP} with Theorem~2.1 of the arXiv
+version 2008.05907v3 of~\cite{blp} (fetched; its SHA-256 equals the
+fingerprint in \nolinkurl{data/sources.json}). The restatement is
+faithful. The row product does start at $i=2$, which the source flags as
+intended (``not a typo''); the truncated margins are
+$\min\{\alpha_i,\lambda_i-\alpha_i\}$ and
+$\min\{\beta_j,\gamma_j-\beta_j\}$; the cell bounds are arbitrary elements
+of $\Z_{\ge0}\cup\{+\infty\}$, infinite bounds being handled there as limits
+of large finite ones; and \S5.1 there extends capacity to power series with
+nonnegative coefficients, which is the convention used here. The weakening
+\eqref{tes:eq:BLPweak} is valid as stated: with infinite row and column
+support sums $u_i=\alpha_i$ and $v_j=\beta_j$, each factor
+$x^x/(x+1)^{x+1}$ equals $\ee^{-h(x)}$, and the added factor
+$\ee^{-h(\alpha_1)}$ is at most one. Theorem~\ref{tes:thm:BLP} is an
+external input: ProveIt has not checked its proof.
+\end{writenote}
 
 Fix $\rho\in\mathcal R_n$. Use row indices $i=0,\ldots,n-1$ and column indices $j=1,\ldots,n$, allowing precisely the cells $i<j$. The row and column margins of $f^{(\rho)}$ are
-\begin{equation}\label{eq:margins}
+\begin{equation}\label{tes:eq:margins}
 \alpha=(1,\rho_1,\ldots,\rho_{n-1}),\qquad
 \beta=(\rho_1-1,\ldots,\rho_{n-1}-1,n).
 \end{equation}
@@ -457,96 +706,141 @@ $1+\sum\rho_j=\sum(\rho_j-1)+n$. Set $k_{ij}=\infty$ when $i<j$ and zero otherwi
 
 Every integer table with these margins is an integral flow of netflow $(1,\ldots,1,-n)$: the margin difference at internal vertex $j$ is $\rho_j-(\rho_j-1)=1$. Conversely every such flow with outgoing vector $\rho$ is one of these tables. Different $\rho$ give disjoint sets, since a flow uniquely determines its outgoing totals.
 
-\begin{lemma}[Entropy lower bound for capacity]\label{lem:capacityentropy}
+\begin{lemma}[Entropy lower bound for capacity]\label{tes:lem:capacityentropy}
 For any feasible nonnegative real table $G$ with margins $(\alpha,\beta)$ on this support,
-\begin{equation}\label{eq:capentropy}
+\begin{equation}\label{tes:eq:capentropy}
 \log\Cap_{\alpha,\beta}(P_K)\ge\sum_{i<j}h(G_{ij}).
 \end{equation}
 \end{lemma}
 \begin{proof}
 For $u\ge0$ and $0<z<1$,
-\begin{equation}\label{eq:dualcell}
+\begin{equation}\label{tes:eq:dualcell}
 -\log(1-z)-u\log z\ge h(u).
 \end{equation}
-For $u>0$ minimize the left side at $z=u/(1+u)$; for $u=0$ its infimum is zero. Apply \eqref{eq:dualcell} to $z=x_iy_j$ and $u=G_{ij}$. The margin identities imply
+For $u>0$ minimize the left side at $z=u/(1+u)$; for $u=0$ its infimum is zero. Apply \eqref{tes:eq:dualcell} to $z=x_iy_j$ and $u=G_{ij}$. The margin identities imply
 $\sum_{i<j}G_{ij}\log(x_i y_j)=\sum_i\alpha_i\log x_i+\sum_j\beta_j\log y_j$.
-Summing and taking the infimum over the positive convergence domain proves \eqref{eq:capentropy}. This is a one-sided elementary inequality; it assumes neither saddle existence nor strong duality.
+Summing and taking the infimum over the positive convergence domain proves \eqref{tes:eq:capentropy}. This is a one-sided elementary inequality; it assumes neither saddle existence nor strong duality.
 \end{proof}
 
-\section{Margin summation and completion of the theorem}\label{sec:summation}
-\begin{lemma}[Uniform margin penalty]\label{lem:penalty}
-For every $\rho\in\mathcal R_n$, the margins \eqref{eq:margins} satisfy
-\begin{equation}\label{eq:penalty}
+\section{Margin summation and completion of the theorem}\label{tes:sec:summation}
+\begin{lemma}[Uniform margin penalty]\label{tes:lem:penalty}
+For every $\rho\in\mathcal R_n$, the margins \eqref{tes:eq:margins} satisfy
+\begin{equation}\label{tes:eq:penalty}
 \sum_i h(\alpha_i)+\sum_jh(\beta_j)
 \le\log(n!)+2n\log\log(n+1)+O(n),
 \end{equation}
 with the same implied constant for all such vectors.
 \end{lemma}
 \begin{proof}
-Separate the fixed initial segment, the bulk, and the terminal layer. The initial segment has fixed integer margins and costs $O(1)$. The endpoint factors $h(1)+h(n)$ cost $O(\log(n+1))$. In the bulk, Lemma~\ref{lem:uniform} and \eqref{eq:hfacts} give
+Separate the fixed initial segment, the bulk, and the terminal layer. The initial segment has fixed integer margins and costs $O(1)$. The endpoint factors $h(1)+h(n)$ cost $O(\log(n+1))$. In the bulk, Lemma~\ref{tes:lem:uniform} and \eqref{tes:eq:hfacts} give
 \begin{align*}
 h(\rho_j)+h(\rho_j-1)
 &\le2\log(\rho_j+1)+2\\
 &\le\log j+2\log\log(j+1)+O(1).
 \end{align*}
-The constants are uniform because $j\ge M$. For the at most $B_n+1$ terminal vertices, use $\rho_j\le j+1$ to bound each pair by $O(\log(n+1))$. Their total is $O(n)$ by \eqref{eq:boundarycost}. Summing the bulk logarithms bounds them by $\log(n!)$ and $2n\log\log(n+1)$ respectively. This proves the claim.
+The constants are uniform because $j\ge M$. For the at most $B_n+1$ terminal vertices, use $\rho_j\le j+1$ to bound each pair by $O(\log(n+1))$. Their total is $O(n)$ by \eqref{tes:eq:boundarycost}. Summing the bulk logarithms bounds them by $\log(n!)$ and $2n\log\log(n+1)$ respectively. This proves the claim.
 \end{proof}
 
-\begin{proof}[Proof of Theorem~\ref{thm:main}]
-For each $\rho\in\mathcal R_n$, apply \eqref{eq:BLPweak}, Lemma~\ref{lem:capacityentropy} with $G=f^{(\rho)}$, and Lemmas~\ref{lem:uniform} and \ref{lem:penalty}. This gives at least
-\begin{equation}\label{eq:eachmargin}
+\begin{proof}[Proof of Theorem~\ref{tes:thm:main}]
+For each $\rho\in\mathcal R_n$, apply \eqref{tes:eq:BLPweak}, Lemma~\ref{tes:lem:capacityentropy} with $G=f^{(\rho)}$, and Lemmas~\ref{tes:lem:uniform} and \ref{tes:lem:penalty}. This gives at least
+\begin{equation}\label{tes:eq:eachmargin}
 \exp\left(Cn^{3/2}-\frac54\log(n!)-2n\log\log(n+1)-O(n)\right)
 \end{equation}
-integer flows with that margin vector. The estimate is uniform over the family. Summing its disjoint contributions and using \eqref{eq:Nr} yields
-\begin{equation}\label{eq:lowerfactorial}
+integer flows with that margin vector. The estimate is uniform over the family. Summing its disjoint contributions and using \eqref{tes:eq:Nr} yields
+\begin{equation}\label{tes:eq:lowerfactorial}
 \log a_n\ge Cn^{3/2}-\frac34\log(n!)-2n\log\log(n+1)-O(n).
 \end{equation}
-Stirling's formula and $n[\log\log(n+1)-\log\log n]=O(1)$ for large $n$ give \eqref{eq:lowerintro}. The upper bound is Section~\ref{sec:upper}. Since $\log\log n=o(\log n)$, both the expansion and limit in \eqref{eq:second} follow.
+Stirling's formula and $n[\log\log(n+1)-\log\log n]=O(1)$ for large $n$ give \eqref{tes:eq:lowerintro}. The upper bound is Section~\ref{tes:sec:upper}. Since $\log\log n=o(\log n)$, both the expansion and limit in \eqref{tes:eq:second} follow.
 \end{proof}
 
 \paragraph{Where the growing dimension is controlled.}
 The counting theorem applies for each finite $n$ with explicit margin factors. The feasible entropy, load deficit, boundary estimates, local entropy losses, and margin estimates all have constants independent of $n$. Therefore the proof does not invoke a fixed-dimensional saddle theorem in a growing dimension, nor an unproved local central limit approximation.
 
-\section{The integer threshold inverse}\label{sec:inverse}
+\begin{remark}[{[write]}, 5 October 2026: the margin penalty is sharp for this family]\label{tes:rem:penaltysharp}
+The loss $2n\log\log n$ in \eqref{tes:eq:lowerintro} is not slack in the
+estimate of Lemma~\ref{tes:lem:penalty}: for all sufficiently large $n$
+and every $\rho\in\mathcal R_n$,
+\[
+\sum_ih(\alpha_i)+\sum_jh(\beta_j)\ge\log(n!)+2n\log\log n-O(n),
+\]
+with an absolute implied constant. Hence, with \eqref{tes:eq:BLPexact} or
+\eqref{tes:eq:BLPweak} applied to these margins, the loss can be recovered
+only by a larger capacity term (an entropy gain of order $n\log\log n$ over
+$\Hg(f^{(\rho)})$), a larger family of margin vectors, or a counting
+inequality with smaller margin factors; see
+Question~\ref{tes:q:remainder}.
+
+\emph{Proof} ([write]). Let $M\le j\le n-B_n-1$ and $a=j+1$, so
+$M<a\le n-B_n$. The outgoing row of vertex $j$ consists of the intervals
+$[a,b]$, $a\le b\le n$; in $f$ it carries $q_{[a,b]}$ plus the
+nonnegative singleton gap $a-T_a$, and the triangle moves only raise its
+total, to $\rho_j\ge r_j$. Put $\tau=c/\sqrt a\le c/\sqrt M<1$ and
+$k=\lfloor1/\tau\rfloor$. Since
+$n-a+1>B_n\ge(4/c)\sqrt n\log(n+1)\ge\sqrt a/c\ge k$, every length
+$\ell\le k$ is present, and $Q(x)=\frac12\coth\frac x2-\frac12\ge
+\frac1x-\frac12$ gives
+\[
+\rho_j\ge\sum_{\ell=1}^{k}Q(\ell\tau)\ge\frac1\tau\log(k+1)-\frac k2
+\ge\frac{\sqrt a}{c}\Bigl(\frac12\log a-\log c-\frac12\Bigr).
+\]
+For $a\ge M=1024$ the bracket is at least $0.39\log a$, because
+$(\log c+\frac12)/\log1024<0.11$. By \eqref{tes:eq:hfacts},
+$h(\rho_j)\ge\log(\rho_j+1)\ge\log\rho_j$ and $h(\rho_j-1)\ge\log\rho_j$,
+so
+\[
+h(\rho_j)+h(\rho_j-1)\ge2\log\rho_j\ge\log a+2\log\log a-\kappa,
+\qquad\kappa=2\log c+2\log\tfrac1{0.39}.
+\]
+All other terms of the penalty are nonnegative. Summing over the bulk,
+$\sum_{a=M+1}^{n-B_n}\log a\ge\log(n!)-(M+B_n)\log n=\log(n!)-O(n)$ by
+\eqref{tes:eq:boundarycost}. For the double logarithms keep only
+$a\ge\sqrt n$, where $\log\log a\ge\log\log n-\log2$ (the other terms are
+positive once $a\ge3$): there are at least $n-B_n-\sqrt n$ such $a$ for
+large $n$, and $(B_n+\sqrt n)\log\log n=O(n)$, so
+$2\sum\log\log a\ge2n\log\log n-O(n)$. Finally $\kappa n=O(n)$.
+\qed
+\end{remark}
+
+\section{The integer threshold inverse}\label{tes:sec:inverse}
 Define
-\begin{equation}\label{eq:Ndef}
+\begin{equation}\label{tes:eq:Ndef}
 N(y)=\min\{n\ge0:a_n\ge y\},\qquad y>1.
 \end{equation}
 The sequence is nondecreasing: retain an interval array of size $n$, put all new intervals ending at $n+1$ equal to zero except the singleton $[n+1,n+1]$ of value $n+1$, and obtain an injective map to size $n+1$. The leading theorem implies $a_n\to\infty$, so the minimum exists.
 
-\begin{theorem}\label{thm:inverse}
+\begin{theorem}\label{tes:thm:inverse}
 Let $L=\log y$ and $x=(L/C)^{2/3}$. Then
 \begin{align}
 N(y)&=x+\frac1{2C}\sqrt x\log x
-+O(\sqrt x\log\log x)\label{eq:inversex}\\
++O(\sqrt x\log\log x)\label{tes:eq:inversex}\\
 &=\left(\frac LC\right)^{2/3}
 +\frac{L^{1/3}}{3C^{4/3}}\log\frac LC
-+O(L^{1/3}\log\log L).\label{eq:inverseL}
++O(L^{1/3}\log\log L).\label{tes:eq:inverseL}
 \end{align}
 The error is asymptotic with an unspecified constant, not a finite certified numerical error bar or an $O(1)$ inverse.
 \end{theorem}
 \begin{proof}
-Put $b_n=\log a_n$ and $G(t)=Ct^{3/2}-\tfrac34t\log t$ for $t>0$. Theorem~\ref{thm:main} gives
-\begin{equation}\label{eq:inverseerr}
+Put $b_n=\log a_n$ and $G(t)=Ct^{3/2}-\tfrac34t\log t$ for $t>0$. Theorem~\ref{tes:thm:main} gives
+\begin{equation}\label{tes:eq:inverseerr}
 b_n=G(n)+O(n\log\log n).
 \end{equation}
 By the definition of the minimum, the exact integer inequalities are
-\begin{equation}\label{eq:integerbracket}
+\begin{equation}\label{tes:eq:integerbracket}
 b_{N(y)-1}<L\le b_{N(y)}.
 \end{equation}
 They do not assume any continuous interpolation of $a_n$.
 
-First $N(y)\to\infty$, and $b_n\sim Cn^{3/2}$ in \eqref{eq:integerbracket} gives $N(y)\sim x$. Write $N=N(y)$. Applying \eqref{eq:inverseerr} at both $N$ and $N-1$ yields
+First $N(y)\to\infty$, and $b_n\sim Cn^{3/2}$ in \eqref{tes:eq:integerbracket} gives $N(y)\sim x$. Write $N=N(y)$. Applying \eqref{tes:eq:inverseerr} at both $N$ and $N-1$ yields
 \[
 G(N-1)\le L+O(x\log\log x),\qquad
 G(N)\ge L-O(x\log\log x).
 \]
 The mean value theorem gives
 $G(N)-G(N-1)=O(\sqrt x+\log x)=O(\sqrt x)$, since $N\sim x$. Hence the two inequalities together give the two-sided estimate
-\begin{equation}\label{eq:GN}
+\begin{equation}\label{tes:eq:GN}
 G(N)=L+O(x\log\log x).
 \end{equation}
-As $L=Cx^{3/2}$, equation \eqref{eq:GN} first implies
+As $L=Cx^{3/2}$, equation \eqref{tes:eq:GN} first implies
 $C(N^{3/2}-x^{3/2})=O(x\log x)$. Another mean value estimate on a fixed relative neighborhood of $x$ therefore gives
 $\delta:=N-x=O(\sqrt x\log x)$.
 Taylor expansion with this bound now gives
@@ -557,21 +851,36 @@ G(x+\delta)-L
 &=\frac{3C}{2}\sqrt x\,\delta-\frac34x\log x
 +O(\sqrt x\log^2x).
 \end{align*}
-Because $\sqrt x\log^2x=o(x\log\log x)$, comparison with \eqref{eq:GN} proves \eqref{eq:inversex}. Substitution of $x=(L/C)^{2/3}$ proves \eqref{eq:inverseL}.
+Because $\sqrt x\log^2x=o(x\log\log x)$, comparison with \eqref{tes:eq:GN} proves \eqref{tes:eq:inversex}. Substitution of $x=(L/C)^{2/3}$ proves \eqref{tes:eq:inverseL}.
 
 For an explicit asymptotic integer bracket, let
 $z=x+(2C)^{-1}\sqrt x\log x$ and $s=\sqrt x\log\log x$. There is a constant $D>0$ such that, for all sufficiently large $y$,
-\begin{equation}\label{eq:explicitbracket}
+\begin{equation}\label{tes:eq:explicitbracket}
 \lfloor z-Ds\rfloor<N(y)\le\lceil z+Ds\rceil.
 \end{equation}
 Indeed, at $m_-=\lfloor z-Ds\rfloor$ and $m_+=\lceil z+Ds\rceil$ the Taylor expansion gives
 \[
 G(m_\pm)-L=\pm\frac{3C}{2}D\,x\log\log x+o(x\log\log x).
 \]
-Choose $D$ larger than the constant needed to dominate the error in \eqref{eq:inverseerr}. Then $b_{m_-}<L\le b_{m_+}$, and monotonicity gives \eqref{eq:explicitbracket}. Rounding perturbs the smooth estimate by only $O(\sqrt x)$ in logarithmic count, already negligible here. This last argument verifies the integer bracketing directly rather than assuming that rounding a continuous inverse is valid.
+Choose $D$ larger than the constant needed to dominate the error in \eqref{tes:eq:inverseerr}. Then $b_{m_-}<L\le b_{m_+}$, and monotonicity gives \eqref{tes:eq:explicitbracket}. Rounding perturbs the smooth estimate by only $O(\sqrt x)$ in logarithmic count, already negligible here. This last argument verifies the integer bracketing directly rather than assuming that rounding a continuous inverse is valid.
 \end{proof}
 
-\section{Verification scope and reproducibility}\label{sec:verification}
+\begin{writenote}[On Theorem~\ref{tes:thm:inverse}, 5 October 2026]
+The leading inverse $N(y)\sim x$ follows from Corollary~37 of~\cite{bbm}
+and is not claimed as new; the second term $(2C)^{-1}\sqrt x\log x$ and the
+bracket \eqref{tes:eq:explicitbracket} are new here and use only
+Theorem~\ref{tes:thm:main} and the monotonicity $a_{n+1}\ge a_n$ proved
+before the theorem. The two forms agree: with $x=(L/C)^{2/3}$ one has
+$\sqrt x=(L/C)^{1/3}$ and $\log x=\frac23\log(L/C)$, so
+$(2C)^{-1}\sqrt x\log x=L^{1/3}\log(L/C)/(3C^{4/3})$. The constant $D$ and
+the threshold beyond which \eqref{tes:eq:explicitbracket} holds are not
+effective, so the bracket certifies no value of $N(y)$ at a given $y$; and
+since its width $2Ds+2$ grows like $\sqrt x\log\log x$ while the correction
+term grows like $\sqrt x\log x$, the correction dominates the uncertainty
+only by the factor $\log x/\log\log x$, slowly.
+\end{writenote}
+
+\section{Verification scope and reproducibility}\label{tes:sec:verification}
 The accompanying source package separates three kinds of evidence.
 \begin{enumerate}[leftmargin=*,itemsep=4pt]
 \item The analytic proof above establishes the asymptotic result. Its non-elementary counting input is the stated Br\"and\'en--Leake--Pak theorem; the classical eta transformation supplies the one-dimensional partition estimate.
@@ -581,12 +890,37 @@ The accompanying source package separates three kinds of evidence.
 The build instructions, dependency record, checksums, and source provenance are supplied with the editable \LaTeX{} source. The PDF is reproducible with the documented deterministic build settings. Source replay and visual page inspection are independent of the mathematical argument.
 
 \paragraph{Finite exact objects.}
-The rational fixtures are finite flows chosen to exercise cut/netflow conversion, singleton completion, simultaneous triangle updates, nonnegativity, integer margin enumeration, and disjointness of outgoing-margin classes. They need not equal the transcendental profile \eqref{eq:q}. The small-size enumerator checks \eqref{eq:hookrec} against the cut model and the published initial A008608 values. Deliberate perturbations test that the validation rejects inconsistencies rather than silently continuing.
+The rational fixtures are finite flows chosen to exercise cut/netflow conversion, singleton completion, simultaneous triangle updates, nonnegativity, integer margin enumeration, and disjointness of outgoing-margin classes. They need not equal the transcendental profile \eqref{tes:eq:q}. The small-size enumerator checks \eqref{tes:eq:hookrec} against the cut model and the published initial A008608 values. Deliberate perturbations test that the validation rejects inconsistencies rather than silently continuing.
 
 \paragraph{Finite floating observations.}
 The provided sanity program evaluates the genuine profile with $M=1024$ at $n=2048$ and $n=4096$, makes one integer choice at each internal triangle, and recomputes entropy and margins. For example, at $n=4096$ the observed maximal internal netflow residual is of order $10^{-12}$, while the entropy loss is less than $(n-M)\log2$. These are numerical consistency observations. A floating value of a theoretically valid bound is not itself a directed-rounding certificate.
 
-\section{Further questions}\label{sec:questions}
+\begin{writenote}[Shipped layout and intake reruns, 5 October 2026]
+In ProveIt the package is shipped in the repository's layout, not the
+delivered one: the programs are in \nolinkurl{code/}
+(\nolinkurl{verify_exact.py}, \nolinkurl{run_corruptions.py},
+\nolinkurl{build_fixtures.py}, from the delivered \nolinkurl{checks/};
+\nolinkurl{profile_sanity.py}, from \nolinkurl{sanity/}; and
+\nolinkurl{build.sh}), the fixtures, records and source list in
+\nolinkurl{data/}, and the two delivered sub-READMEs as
+\nolinkurl{checks-README.md} and \nolinkurl{sanity-README.md}; the report's
+\nolinkurl{README.md} says how to rerun them on a copy. At placement the
+intake ran the delivered verifier (21 of 21 files match the manifest), the
+corruption suite (``2 positive controls and 62 fail-closed corruption
+rejections'') and the floating sanity program, all on copies of the
+delivered layout; at the write it reran the exact verifier in both
+interpreter modes and the sanity program on a copy of the shipped files
+(Python~3.14.4, NumPy~2.3.5). The exact outputs equal the delivered ones
+after the carriage returns written by Windows are removed; the sanity run
+passes, with integer fields and residuals identical and entropies differing
+in the last three or four digits, as the package says floating results
+may. Separately, the intake checked \eqref{tes:eq:modular} against the
+direct series at $t=0.3$, $1$ and $c$ (to $10^{-40}$), the upper bound
+$\log a_n\le U_n$ for $n\le26$ (Remark~\ref{tes:rem:linear}), and the
+recursion \eqref{tes:eq:hookrec} against $a_1,\ldots,a_8$.
+\end{writenote}
+
+\section{Further questions}\label{tes:sec:questions}
 The present result leaves several concrete next steps.
 \begin{enumerate}[leftmargin=*,itemsep=5pt]
 \item \textbf{Remove the logarithm of a logarithm loss.} The lower proof pays for $O(\sqrt j\log j)$ throughputs via two separate margin factors. Showing $\log a_n=Cn^{3/2}-\tfrac34n\log n+O(n)$ would require recovering the resulting $2n\log\log n$ loss or a sharper counting argument. It does not follow from the estimates proved here.
@@ -596,6 +930,68 @@ The present result leaves several concrete next steps.
 \item \textbf{Generalize the cut profile carefully.} The feasibility comparison suggests studying other slowly varying cumulative loads. The netflow, boundary costs, entropy scale, and the availability of independent margin moves would all have to be checked anew; the present proof does not automatically supply a theorem for other profiles.
 \end{enumerate}
 
+
+\subsection{Further questions and research}\label{tes:sec:further}
+\begin{writenote}[Added 5 October 2026, batch~103]
+Following Vladimir Reshetnikov's standing rule of 4~October 2026, every
+claim of the source that is not proved in full is stated here as an open
+question, with its source, the argument offered and what is missing.
+Questions~\ref{tes:q:remainder}--\ref{tes:q:profiles} are the five items
+above, sharpened by the write's Remarks~\ref{tes:rem:linear}
+and~\ref{tes:rem:penaltysharp}; Question~\ref{tes:q:priority} concerns
+priority. The intake found no false claim in the source.
+\end{writenote}
+\begin{enumerate}
+\item\label{tes:q:remainder} \textbf{An $O(n)$ remainder} (source,
+ item~1). Is $\log a_n=Cn^{3/2}-\frac34n\log n+O(n)$? The upper bound
+ \eqref{tes:eq:upperintro} already has this form; the lower bound loses
+ $2n\log\log n$ through the two margin factors of
+ \eqref{tes:eq:BLPweak}, because the bulk throughputs are of order
+ $\sqrt j\log j$ (Proposition~\ref{tes:prop:bulk}). By
+ Remark~\ref{tes:rem:penaltysharp} that loss is exact for the family
+ $\mathcal R_n$: no sharper estimate of the margin factors removes it.
+ Missing: a capacity bound exceeding $\Hg(f^{(\rho)})$ by order
+ $n\log\log n$, a larger family of margin vectors (the triangle moves give
+ about $\sqrt j$ choices at vertex $j$, whereas the outgoing totals
+ themselves are of order $\sqrt j\log j$; this is a heuristic, not a
+ count), or a counting inequality with smaller margin factors.
+\item\label{tes:q:linear} \textbf{A linear term} (source, item~2). Does
+ $(\log a_n-Cn^{3/2}+\frac34n\log n)/n$ converge, and to what? $B_U$ comes
+ from the product bound \eqref{tes:eq:boltzupper} and is not that limit.
+ For $9\le n\le26$ the quotient lies in $[-1.443,-1.421]$ and decreases
+ slowly from $n=10$ on (Remark~\ref{tes:rem:linear}); this is far below
+ $B_U$ and too short a range to decide anything. The source names boundary
+ corrections, the optimized entropy action and the distribution of margin
+ classes as possible contributions.
+\item\label{tes:q:equivalent} \textbf{A relative-error equivalent}
+ (source, item~3): an amplitude, a determinant approximation or a full
+ expansion of $a_n$ itself. Missing: control of $\log a_n$ to $o(1)$,
+ including growing-dimensional lattice and non-Gaussian effects; nothing in
+ the present proof approaches this.
+\item\label{tes:q:inverse} \textbf{A sharper inverse} (source, item~4).
+ Given an $O(n)$ forward remainder (Question~\ref{tes:q:remainder}), the
+ argument of Theorem~\ref{tes:thm:inverse} would give
+ $N(y)=x+(2C)^{-1}\sqrt x\log x+O(\sqrt x)$, since $G'(n)\asymp\sqrt n$.
+ A bounded-error integer inverse would need a forward error $O(\sqrt n)$,
+ far beyond the present information.
+\item\label{tes:q:profiles} \textbf{Other cut profiles} (source, item~5).
+ Do analogues hold for flows with other slowly varying cumulative loads? The
+ netflow, the boundary costs, the entropy scale and the availability of
+ independent margin moves would all have to be checked anew; the present
+ proof supplies no theorem for other profiles.
+\item\label{tes:q:priority} \textbf{Priority of the coefficient $-3/4$}
+ (source, ``Scope of the refinement'', and the intake). Is the second term
+ new? The source's check was bounded and the source disclaims novelty
+ certification. The intake did not find the term in~\cite{bbm}
+ (whose ``Future questions'' do not ask for it), \cite{blp}, the arXiv
+ version of~\cite{oneill} (bounds only, of orders $\ee^{n\log n+O(n)}$
+ below and $\ee^{O(n^2)}$ above) or the OEIS entry. Missing: a comparison
+ with Theorem~1.2 of~\cite{lm} and with the journal version
+ of~\cite{oneill}, which the manuscript does not cite, and a search of the
+ Tesler-matrix and Kostant-partition-function literature
+ (\cite{haglund,aghrs,mmr} and the further references of the OEIS entry)
+ for second-order asymptotics.
+\end{enumerate}
 \begin{thebibliography}{9}
 \bibitem{oeis}
 OEIS Foundation, \emph{A008608: Regular Tesler matrices},
@@ -626,5 +1022,35 @@ Primary version checked: \href{https://arxiv.org/abs/2406.07838v3}{arXiv:2406.07
 NIST Digital Library of Mathematical Functions,
 \emph{Dedekind eta modular transformation}, \S23.18, Eq.\ (23.18.5),
 \url{https://dlmf.nist.gov/23.18.E5}. Accessed 2 October 2026.
+
+% The following four references were added by the ProveIt write
+% (batch 103, 5 October 2026); the manuscript does not cite them.
+\bibitem{oneill}
+J. O'Neill,
+\emph{On the poset and asymptotics of Tesler matrices},
+Electronic Journal of Combinatorics \textbf{25}(2) (2018), P2.4.
+\href{https://doi.org/10.37236/6877}{doi:10.37236/6877}.
+Version read by the intake: \href{https://arxiv.org/abs/1702.00866v2}{arXiv:1702.00866v2}, Theorem~5.6 and Question~1.4. [Added by the write.]
+
+\bibitem{mmr}
+K. M\'esz\'aros, A. H. Morales and B. Rhoades,
+\emph{The polytope of Tesler matrices},
+Selecta Mathematica (N.S.) \textbf{23} (2017), 425--454.
+\href{https://doi.org/10.1007/s00029-016-0241-2}{doi:10.1007/s00029-016-0241-2}. [Added by the write.]
+
+\bibitem{aghrs}
+D. Armstrong, A. Garsia, J. Haglund, B. Rhoades and B. Sagan,
+\emph{Combinatorics of Tesler matrices in the theory of parking functions and diagonal harmonics},
+Journal of Combinatorics \textbf{3}(3) (2012), 451--494.
+\href{https://doi.org/10.4310/JOC.2012.v3.n3.a7}{doi:10.4310/JOC.2012.v3.n3.a7}. [Added by the write.]
+
+\bibitem{haglund}
+J. Haglund,
+\emph{A polynomial expression for the Hilbert series of the quotient ring
+of diagonal coinvariants}, Advances in Mathematics \textbf{227}(5) (2011),
+2092--2106 (a condensed version appeared in the proceedings volume AO of
+Discrete Mathematics and Theoretical Computer Science, 2011),
+\href{https://doi.org/10.1016/j.aim.2011.04.013}{doi:10.1016/j.aim.2011.04.013}.
+[Added by the write.]
 \end{thebibliography}
 \end{document}
