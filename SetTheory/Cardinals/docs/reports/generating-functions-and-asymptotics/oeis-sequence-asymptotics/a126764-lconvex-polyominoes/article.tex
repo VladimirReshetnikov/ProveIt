@@ -2307,7 +2307,8 @@ The transfer argument of Section~\ref{lcp:tr:sec:transfer} was checked line
 by line at intake (the positivity induction, the low-index bound, the
 damping product, the interpolation constants, the saddle window and the
 Bessel collection) and again in this write, which spells out the last step
-in Lemma~\ref{lcp:tr:lem:hankel}.
+in Lemma~\ref{lcp:tr:lem:hankel}. An independent check of the write, made
+afterwards, is recorded at the end of Section~\ref{lcp:tr:sec:provenance}.
 
 \subsection{What Part III adds, what is proved twice, and three proofs of the main theorem}\label{lcp:tr:sec:cross}
 Part~III proves, from the same cited area generating function:
@@ -3167,7 +3168,7 @@ $|y|\le\rho t$, oriented upwards. Then
  \frac1{2\pi\ii}\int_Sz^\alpha\ee^{K/z+nz}\dd z
  =t^{\alpha+1}\bigl(I_{-\alpha-1}(2\lambda)+\varepsilon\bigr),\qquad
  |\varepsilon|\le2^{(|\alpha|+1)/2}\ee^{2\lambda-\lambda\rho^2/2}
- +\Gamma(|\alpha|+1)\,\ee^{1-\lambda}.
+ +\pi^{-1}\Gamma(|\alpha|+1)\,\ee^{1-\lambda}.
 \end{equation}
 \end{lemma}
 \begin{proof}
@@ -3211,6 +3212,13 @@ $x^\alpha\ee^{-\lambda(x+1/x)}\le x^{|\alpha|}\ee^{-x}\ee^{-(\lambda-1)x}
 $\frac1\pi\Gamma(|\alpha|+1)\ee^{1-\lambda}$. Hence
 $|\Phi_S-I_{-\alpha-1}(2\lambda)|$ is bounded as stated.
 \end{proof}
+\noindent(Dated note, 5~October 2026: the edge term in
+\eqref{lcp:tr:eq:hankel} first read $\Gamma(|\alpha|+1)\,\ee^{1-\lambda}$,
+without the factor $\pi^{-1}$ that the last step of the proof gives. Both
+bounds are true; the sharper one stands since the independent check
+recorded at the end of Section~\ref{lcp:tr:sec:provenance}. The extraction
+step below uses only the factor $\ee^{-\lambda}$ of this term, so nothing
+else changes.)
 
 \paragraph{The extraction step, completed (write, 5 October 2026).}
 Take $\rho=R_t/t=\sqrt{tB\log(1/t)}$, which is at most one for small $t$.
@@ -3401,8 +3409,9 @@ and $g(x)=x-3\log x$. For large $n$, $a_n\ge\mathcal A\ee^3/27$, and
 $z_0=z_0(a_n)\ge3$ satisfies $a_n=\mathcal A\ee^{z_0}/z_0^3$, that is
 $\log a_n=g(z_0)+\log\mathcal A$; this is the defining equation of $W_{-1}$
 after the substitution $w=-z_0/3$. Hence $g(z)-g(z_0)=-\lambda_1/z+\OO(z^{-2})$.
-Since $g$ is increasing on $[3,\infty)$ and $g(z)\to\infty$, also
-$z_0\to\infty$, and $g'\ge1/2$ on $[6,\infty)$ gives $z-z_0=\OO(1/z)$. By
+Since $g$ is increasing on $[3,\infty)$ and
+$g(z_0)=\log a_n-\log\mathcal A\to\infty$, also $z_0\to\infty$, and
+$g'\ge1/2$ on $[6,\infty)$ gives $z-z_0=\OO(1/z)$. By
 the mean value theorem $g(z)-g(z_0)=(z-z_0)(1-3/\xi)$ with $\xi$ between
 $z$ and $z_0$, so $z-z_0=-\lambda_1/z+\OO(z^{-2})=-\lambda_1/z_0+\OO(z_0^{-2})$
 (the sign agrees with the first correction of the display above). Therefore
@@ -3513,7 +3522,9 @@ increase $a_{n+1}\ge a_n+1$ ($n\ge1$), $N(a_n)=n$ and $N(y)=n+1$ for
 $a_n<y\le a_{n+1}$. If $N(y)-g(y)\to0$, choose $n$ with $a_n\ge y_1$ and
 $|N(y)-g(y)|<1/3$ for all $y\ge a_n$. Then $g(a_n)<n+1/3$, while
 $g(y)>n+2/3$ for $a_n<y\le a_{n+1}$; letting $y\downarrow a_n$, continuity
-gives $g(a_n)\ge n+2/3$, a contradiction.
+gives $g(a_n)\ge n+2/3$, a contradiction. (Only the jumps of $N$ are used,
+so nondecreasing $a_n\to\infty$ would suffice: the same argument works at
+any point where $N$ jumps.)
 \end{remark}
 
 \begin{writenote}[Added 5 October 2026, batch~101: an instance of repository results]
@@ -3870,6 +3881,69 @@ Section~\ref{lcp:ao:sec:provenance}.
  The archive survives in the arrival commit; retrieve it with
  \texttt{git show 60f54ea06:\allowbreak docs/\allowbreak incoming/\allowbreak L\_Convex\_\allowbreak Polyomino\_\allowbreak Area\_\allowbreak Asymptotics\_\allowbreak Source.zip}.
 \end{itemize}
+
+\paragraph{Independent check of the write (dated note, 5~October 2026).}
+An independent adversarial check of Part~III, made by the intake after the
+write (\texttt{e8055d890}), reread the five items of the write that carry
+a proof, Remarks~\ref{lcp:tr:rem:shift} (with its table),
+\ref{lcp:tr:rem:asc}, \ref{lcp:tr:rem:eta} and~\ref{lcp:tr:rem:step} and
+Lemma~\ref{lcp:tr:lem:hankel} with the extraction step after it, and
+spot-checked two steps of the manuscript: the Chebyshev interpolation
+inequality \eqref{lcp:tr:tr:9} with its application, and the strict
+increase $a_{n+1}\ge a_n+1$ of Section~\ref{lcp:tr:sec:inverse}. It found
+all seven items valid, no counterexample, and no gap in any proof chain.
+Three refinements of wording were adopted where they stand. The edge term
+of Lemma~\ref{lcp:tr:lem:hankel} now carries the factor $\pi^{-1}$ that its
+proof gives (dated note after the proof). Remark~\ref{lcp:tr:rem:eta} now
+writes out the step $g(z_0)=\log a_n-\log\mathcal A\to\infty$ behind
+$z_0\to\infty$. Remark~\ref{lcp:tr:rem:step} now notes that only the jumps
+of $N$ are used. No other statement or number changed.
+
+The check used neither the delivered programs nor the write's. In exact
+SymPy arithmetic, with $\sqrt K$ symbolic, it expanded $h(\ee^{-t})$ from
+the alternating series \eqref{lcp:tr:eq:T} and recovered $d_0,\ldots,d_8$
+of \eqref{lcp:tr:eq:dvalues} and Part~II's $b_m$ through $t^8$. It
+confirmed that the conversion \eqref{lcp:tr:eq:shift}, built from Part~II's
+$c^{\mathrm{II}}_s$, gives the $c_r$ of \eqref{lcp:tr:eq:cr} for $r\le5$
+(the table stops at $r=4$). Every entry of the table, the two displayed
+conversions, the exponent series, $c_r=b_r/\beta^r$, $b_1,\ldots,b_4$,
+$\lambda_1,\ldots,\lambda_4$, $\delta=CK/(2\sqrt\pi)$,
+$\mathcal A=\delta\beta^3$ and the closed form of $\eta$ agree exactly.
+For Remark~\ref{lcp:tr:rem:asc} it rederived the quoted recurrence from
+the monic Askey--Wilson recurrence at $c=d=0$. It then compared the
+${}_3\phi_2$ definition with that recurrence at the generic point
+$(x,a,b,q)=(0.3,0.4,-0.25,0.6)$, where they agree to $10^{-189}$ at
+200~digits. At $a=-b=\ii\sqrt q$, with both choices of $\sqrt q$, it compared
+the definition with $Q_n$ for $n\le11$ and $q=0.05$, $0.37$, $0.81$, with
+agreement to $10^{-122}$ or better. For Lemma~\ref{lcp:tr:lem:hankel} it
+computed the segment integral $\Phi_S$ by mpmath quadrature in 312 cases:
+13 values of $\alpha$ from $-7.3$ to $12$, six values of $\lambda$ from $1$
+to $60$, and $\rho\in\{0.05,0.2,0.5,1\}$. The error
+$|\Phi_S-I_{-\alpha-1}(2\lambda)|$ never exceeds the bound. Its largest
+ratio to the bound is $0.287$ for the bound as first printed and $0.900$
+for the sharpened one, both at $\alpha=9.5$, $\lambda=1$. The whole contour
+$\mathcal H$ reproduces $I_{-7/2}(6)$ to 30~digits. For
+Remark~\ref{lcp:tr:rem:eta} it evaluated $n-n_0(a_n)$, with $W_{-1}$ at
+50~digits, for every shipped term with $1\le n\le8000$. The bias decreases
+strictly on $2\le n\le8000$ and stays above $\eta=0.44724840598\ldots$. It
+matches the three values printed in Section~\ref{lcp:tr:sec:checks} to all
+14 digits, and Part~I's six values in Section~10.3 are its negatives to
+every printed digit. The quantity
+$(n-n_0(a_n)-\eta)\sqrt n$ rises from $1.07$ at $n=50$ to $1.33$ at
+$n=8000$, consistent with the next term of the expansion, about $1.37$.
+There is no real $W_{-1}$ value at $n=1$; rounding fails for
+$2\le n\le555$, last with bias $0.500036$, and succeeds for every
+$556\le n\le8000$. The observed onset $556$ is thus confirmed; it remains
+an observation. Finally, the check recomputed $a_0,\ldots,a_{1500}$ from
+scratch by another recurrence, for $y_n=u_n/p_n^2$, and found exact
+agreement with
+\texttt{data/\allowbreak 03-transfer-exact-exact\_coefficients\_8000.json},
+whose smallest increment for $1\le n<8000$ is $1$, attained only at $n=1$.
+For \eqref{lcp:tr:tr:9}, the Lebesgue sum on $|w|=1$ stays far below
+$4^{k-1}$ for $k\le15$, and the whole inequality, tested on
+$\varepsilon T_m$ with $m\le13$ and $k\le24$, reaches at most $0.22$ of its
+bound. This was a careful reading with numerical tests, not a formal
+verification or an external review.
 
 
 \appendix

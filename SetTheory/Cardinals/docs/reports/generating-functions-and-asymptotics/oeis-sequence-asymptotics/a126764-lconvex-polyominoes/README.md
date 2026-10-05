@@ -121,6 +121,29 @@ calls them `K`, `β` and `δ`. See "Notation" below.
   26.3); no continuous function `g` has `N(y) - g(y) → 0` for the step
   threshold (Remark 29.2); the coefficient conversion (Remark 24.1); a
   written-out proof of the limit `η` (Remark 29.1).
+- *[Independent check, 5 October 2026.]* An adversarial check made by the
+  intake after the write (`e8055d890`) found all seven items it examined
+  valid: Remarks 24.1, 26.3, 29.1 and 29.2, Lemma 28.1 with the extraction
+  step, and, as spot checks of the manuscript, the Chebyshev interpolation
+  inequality (28.8) and the strict increase. It found no counterexample and
+  no gap in any proof chain. Three refinements were adopted where they
+  stand: the edge term of Lemma 28.1 now carries the factor `1/π` that its
+  proof gives (dated note after the proof; the first bound was true but
+  looser), Remark 29.1 writes out `g(z_0) = log a_n - log 𝒜 → ∞`, and
+  Remark 29.2 notes that only the jumps of `N` are used. The tests, none of
+  which used the delivered or the write's programs: exact SymPy conversion
+  of Part II's shifted coefficients through `r = 5` (the table stops at 4)
+  with every table entry, `b_1..b_4`, `λ_1..λ_4`, `δ`, `𝒜` and `η`; the
+  `₃φ₂` definition against the quoted recurrence at a generic point (to
+  `1e-189`) and at `a = -b = i√q` for `n <= 11` and three values of `q`;
+  312 quadrature cases of the Hankel segment integral (largest ratio to the
+  bound 0.287 as first printed, 0.900 sharpened); `n - n_0(a_n)` for all
+  8000 shipped terms (strictly decreasing, above `η`, rounding failing for
+  `2 <= n <= 555` and correct for every `556 <= n <= 8000`); and an
+  independent recomputation of `a_0, …, a_1500` by another recurrence,
+  equal to the shipped coefficients. The record is a dated paragraph at the
+  end of Section 34. This was a careful reading with numerical tests, not a
+  formal verification or an external review.
 
 ## What is not claimed
 
@@ -303,7 +326,12 @@ apart from its labels, its citation keys and the pandoc command
 `\tightlist`; its Appendix A is Section 32, whose heading says so. The
 additions are the editorial Sections 24, 33 and 34, five remarks and a
 lemma headed "write", the paragraph after the lemma that completes the
-extraction step, and fourteen `[write]` notes.
+extraction step, and fourteen `[write]` notes. After the write, the
+intake's independent check (5 October 2026) added an unlabelled dated
+paragraph at the end of Section 34, a dated note after the proof of
+Lemma 28.1 (whose edge constant it sharpened), a pointer at the end of
+Section 24.2 and two clarifying sentences in Remarks 29.1 and 29.2; no
+label was added, and none was renumbered (aux files compared).
 
 ## Files
 
@@ -311,7 +339,7 @@ extraction step, and fourteen `[write]` notes.
 README.md                                     this guide (replaces the three delivery READMEs)
 article.tex                                   the report (Part I delivered as lconvex_asymptotics.tex; the manuscripts
                                               of Parts II and III are printed inside it)
-article.pdf                                   compiled report, 71 pages
+article.pdf                                   compiled report, 72 pages
 02-all-orders-mathematical-audit.md           Part II's internal analytic audit of its proof note (as delivered)
 02-all-orders-final-source-review.md          Part II's internal review of its final source (as delivered)
 02-all-orders-computational-review.md         Part II's code and reproducibility review (as delivered)
@@ -533,10 +561,13 @@ hyperref. From this directory:
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The committed PDF was built in a scratch directory. It has 71 pages, with
-no errors, no undefined references or citations, no multiply defined labels,
-no duplicate PDF destinations, and no overfull or underfull boxes. Part I
-alone built to 20 pages in batch 75, and Parts I–II to 39 pages in batch 77.
+The committed PDF was built in a scratch directory (rebuilt on
+5 October 2026 after the independent check, with four pdfLaTeX passes;
+every label keeps its number). It has 72 pages, with no errors, no
+undefined references or citations, no multiply defined labels, no duplicate
+PDF destinations, and no overfull or underfull boxes. Part I alone built to
+20 pages in batch 75, Parts I–II to 39 pages in batch 77, and Parts I–III
+to 71 pages in the batch-101 write.
 
 ## Provenance
 
