@@ -4107,7 +4107,8 @@ Tables~\ref{fce:tab:crosswalk} and~\ref{fce:tab:renamed}, the merged research
 questions of Part~III and the package description of
 Appendix~\ref{fce:app:package}; no existing label or number was changed.
 Statements and proofs supplied by this write rather than by a source are
-marked \textup{[write]}.
+marked \textup{[write]}. An independent check of the write, made afterwards,
+is recorded at the end of Section~\ref{fce:dx:sec:checks}.
 
 \section{Provenance, overlap and conventions of Part~VI}\label{fce:dx:sec:intro}
 \subsection{Two bundle reports}\label{fce:dx:sec:source}
@@ -4511,8 +4512,11 @@ in the last entry $V$, so its determinant is $V\det H_{\rm ex}$. Its $r$
 support points are affinely independent in dimension $r-1$, so that
 determinant is $r^{-r}$ times the square of the affine-simplex determinant,
 $\det\bigl(\begin{smallmatrix}1&x_i\end{smallmatrix}\bigr)_{i=1}^r$. Expanding
-along the interior rows, which carry the unit indicator vectors, leaves
-$\pm\det\bigl(\begin{smallmatrix}1&-h\\1&h\end{smallmatrix}\bigr)=\pm2h$.
+along the $d$ indicator columns, each of which has a single entry $1$ (in its
+interior row), leaves
+$\pm\det\bigl(\begin{smallmatrix}1&-h\\1&h\end{smallmatrix}\bigr)=\pm2h$
+\textup{[}corrected at the independent check; see the end of
+Section~\ref{fce:dx:sec:checks}\textup{]}.
 Hence $\det H_{\rm ex}=4h^2/(r^rV)$. The same argument with the top adjacent
 pair unmarked gives \eqref{fce:eq:detH}, with $\delta=s_r-s_{r-1}$ in place
 of $2h=s_r-s_1$. So $\det H_{\rm ex}/\det H=(2h/\delta)^2$, and $2h/\delta=r-1$
@@ -4594,7 +4598,10 @@ which two steps are left unmarked, and the Gaussian determinant changes by
 exactly the compensating factor. Leave any two steps $s_a<s_b$ unmarked. The
 proof of Lemma~\ref{fce:dx:lem:torus} gives $\phi_t\equiv-s_a\phi_u$ and
 $(s_b-s_a)\phi_u\equiv0$, hence exactly $s_b-s_a$ dominant pairs (mark point,
-time phase); the gauge phase is
+time phase). They are distinct: two of them whose $\phi_u$ differ by
+$\Delta\phi_u$ have the same marks and time phase only if
+$s_i\Delta\phi_u\equiv0$ for every step $s_i$, hence $\Delta\phi_u\equiv0$,
+because the steps have $\gcd$ one. The gauge phase is
 $e^{-iN\phi_t+in\sum_{j\ne a,b}(\phi_t+s_j\phi_u)}
 =e^{in(s_a-s_b)\phi_u}=1$ at $N=rn$, so all of them contribute equally. The
 proof of \eqref{fce:dx:eq:detex} gives
@@ -5031,7 +5038,13 @@ $\alpha_{5,1}=\mathsf b^\circ_1/4-\frac7{80}$ by \eqref{fce:dx:eq:cj}.
 degree six \eqref{fce:dx:eq:phasejets}, the amplitude through degree four
 \eqref{fce:dx:eq:ampjets}, $\mathcal G_1/\mathcal G_0$ through degree two
 \eqref{fce:dx:eq:G1jet} and $\mathcal G_2/\mathcal G_0$ at equal marks
-\eqref{fce:dx:eq:G1G2}. Gaussian integration, a finite exact computation that source~101-86's
+\eqref{fce:dx:eq:G1G2}. In \eqref{fce:dx:eq:recipe5},
+$\mathcal G_s(e^{y_A},e^{y_D})/\mathcal G_0(1,1)$ is the product of the ratio
+$\mathcal G_s/\mathcal G_0$ with the normalized amplitude $\mathfrak a_\circ$
+of \eqref{fce:dx:eq:ampjets}; with the bare ratio \eqref{fce:dx:eq:G1jet} in
+its place the contraction would give
+$\frac{665871}{40000}-\frac{14621\sqrt5}{2500}$ instead of $\mathsf b^\circ_2$
+\textup{[}added at the independent check\textup{]}. Gaussian integration, a finite exact computation that source~101-86's
 program performs and that neither the manuscript nor this Part prints term by
 term (every input is printed above), gives $\mathsf b^\circ_2$ of
 \eqref{fce:dx:eq:alpha52}, and
@@ -5212,6 +5225,103 @@ files (\path{101-90-alphabet-structural_review.md},
 producing pipeline. Source~101-86's \path{check_receipt.json} has a key,
 \texttt{independent\_portable\_replay\_passed}, that its driver does not write:
 it was added after the run. The report's README discloses these points.
+
+\paragraph{Independent check of the write (dated note, 5~October 2026).}
+An independent adversarial check of Part~\ref{fce:dx:part}, made by the intake
+after the write (\texttt{013b32fca}), reread every item that carries a proof
+or a printed value: Proposition~\ref{fce:dx:prop:zero} with its balanced form,
+Proposition~\ref{fce:dx:prop:det} with both proofs,
+Lemma~\ref{fce:dx:lem:torus} with the gauge computation,
+Remark~\ref{fce:dx:rem:invariant}, the consistency checks after
+Proposition~\ref{fce:dx:prop:Bn}, Theorem~\ref{fce:dx:thm:alpha52} with every
+printed jet and the hand check after it,
+Proposition~\ref{fce:dx:prop:supermult}, and item~(iii) of
+Remark~\ref{fce:dx:rem:lattice}. It found every item valid, no
+counterexample, and no gap in any proof chain; the hypotheses on $r$ (odd,
+even, and the case $r=2$) are stated correctly. Three refinements of wording
+were adopted where they stand; no statement or number changed. The second
+proof of \eqref{fce:dx:eq:detex} first expanded ``along the interior rows'',
+but an interior row $(1,x_i)$ has up to three nonzero entries; the one-term
+expansion is along the $d$ indicator columns, as the proof now says.
+Remark~\ref{fce:dx:rem:invariant} now says why its $s_b-s_a$ dominant pairs
+are distinct: a coincidence would force $s_i\Delta\phi_u\equiv0$ for every
+step, and the steps have $\gcd$ one. Section~\ref{fce:dx:sec:alpha52} now says
+that the rule \eqref{fce:dx:eq:recipe5} needs
+$\mathcal G_1(e^{y_A},e^{y_D})/\mathcal G_0(1,1)$, the product of the printed
+ratio \eqref{fce:dx:eq:G1jet} with the normalized amplitude
+$\mathfrak a_\circ$. Contracted with the bare ratio, the printed jets give
+$\frac{665871}{40000}-\frac{14621\sqrt5}{2500}=3.5694\ldots$ instead of
+$\mathsf b^\circ_2=4.0635\ldots$; the check made exactly this slip on its
+first pass.
+
+The check used neither the delivered programs nor the write's. Its own
+counters are a dynamic program over content vectors, straight from the
+prefix condition \eqref{fce:eq:prefix}, for $A_r(n)$ with $r=2,\ldots,7$ and
+$n\le12,9,6,5,3,3$, and a rolling dynamic program over the steps $\pm1,\pm2$
+with every prefix height nonnegative, for $A^\circ_5(n)$ with $n\le80$; neither
+uses a recurrence. They agree with each other
+($A_5(n)=\binom{5n}nA^\circ_5(n)$ for $n\le5$), and
+$\binom{5n}nA^\circ_5(n)$ equals Part~IV's formula
+(Theorem~\ref{fce:kk:thm:coefficient}) for every $n\le80$.
+
+For Section~\ref{fce:dx:sec:alphabet}, the coefficient identity
+\eqref{fce:dx:eq:zero} holds exactly for $r=3,5,7$ through length~$24$, and
+$\kappa_r/r=\kappa^\circ_{r-1}/(r-1)$ to $20$ digits for $r=3,5,7,9$. Exact
+determinants for $r=2,\ldots,15$ agree with both forms of
+\eqref{fce:dx:eq:detex} and with the ratio $(r-1)^2$, every $H_{\rm ex}$ is
+positive definite, and $\det H_{a,b}=(s_b-s_a)^2r^{-r}/V$ holds for every pair
+$a<b$. A brute-force enumeration of the torus points with exact rational
+angles, for $r=2,\ldots,13$, gives $r-1$ mark points with $\nu$ time phases
+each and gauge phase one for $n=1,\ldots,5$, and, for every pair $a<b$,
+exactly $s_b-s_a$ distinct dominant pairs, all of gauge phase one; a grid
+search for $r=4,5$ finds no other $\phi_u$. With the steps $1,2$ of the
+zero-free walk unmarked there is one dominant pair and the determinant is
+exactly $1/640$, as item~(iii) of Remark~\ref{fce:dx:rem:lattice} says.
+
+For Section~\ref{fce:dx:sec:five}, the covariances and the Schur value
+$1/10$ behind $H_\circ$ were confirmed, the constant of check~(ii) after
+Proposition~\ref{fce:dx:prop:Bn} to $20$ digits, $\mathfrak d_2=49/12800$
+numerically, and the three ratios at $n=10,20,30$ from the check's own
+counts ($0.93935647$, $0.96906977$, $0.97924208$). Richardson extrapolation
+of its own $A^\circ_5(n)$, $n\le80$, gives
+$\alpha_{5,2}=0.3130217393401059930098$, which agrees with
+\eqref{fce:dx:eq:alpha52} to $22$ digits; $\alpha_{5,1}$,
+$\mathsf b^\circ_1$ and $\mathsf b^\circ_2$ agree to at least $20$ digits,
+and $\alpha_{5,3}=-0.0956673363789441168$ agrees with
+$-\frac{407}{250}+\frac{4283\sqrt5}{6250}$ of Table~\ref{fce:kk:tab:alpha} in
+all $19$ digits. At $45$ digits it then recomputed every
+intermediate jet from its own definitions: the critical point by Newton's
+method, $\zeta$ as a kernel root, the amplitude as $\kappa/\sqrt{2\pi V}$,
+and $\mathfrak e_1,\mathfrak e_3,\mathfrak e_5$ and
+$\mathcal G_1/\mathcal G_0$ as Cauchy integrals in $x$, with the coalescing
+root chosen by continuity, using neither the $\operatorname{arcosh}$ formula
+nor \eqref{fce:dx:eq:R3}. The values $\mathfrak e_1,\mathfrak e_3,\mathfrak e_5$,
+$\mathcal G_0(1,1)$, $\mathcal G_1/\mathcal G_0(1,1)$ and
+$\mathcal G_2/\mathcal G_0(1,1)$ agree to $25$ digits; the twelve
+coefficients of $\Phi_{\circ,2},\ldots,\Phi_{\circ,6}$, the eight of
+\eqref{fce:dx:eq:ampjets} and the four of \eqref{fce:dx:eq:G1jet} agree
+within $4.2\cdot10^{-30}$, $1.2\cdot10^{-28}$ and $6.1\cdot10^{-29}$. The
+derivative list, $\Exp\Phi_{\circ,4}(G)=-\frac{31}{40}$,
+$-\frac12\Exp\Phi_{\circ,3}(G)^2=-\frac{27}{200}$, the decomposition
+\eqref{fce:dx:eq:b1}, the transfer constants and the gamma ratios were
+confirmed, and the formulas for $\varkappa_1,\varkappa_2,\varkappa_3$ and
+\eqref{fce:dx:eq:R3} were derived again by hand. An exact SymPy contraction
+of \eqref{fce:dx:eq:recipe5} with the printed jets and covariance
+$\operatorname{diag}(4,10)$ gives exactly $\mathsf b^\circ_1$ and
+$\mathsf b^\circ_2$ of \eqref{fce:dx:eq:alpha52}, so every input is indeed
+printed. The hand check after the theorem is correct. From the exact counts,
+$n^3(\cdots)=-0.0950085$ at $n=50$; with the next term $\alpha_{5,4}/n\approx0.033/n$
+fitted on $50\le n\le80$, the residual is predicted to be $-0.09534$,
+$-0.09550$, $-0.09556$ at $n=100,200,300$, as printed (those $n$ lie beyond
+the check's own counts). Proposition~\ref{fce:dx:prop:supermult} holds on all
+of its data, with $A_r(1)=1,3,7,35,139,1001$ for $r=2,\ldots,7$, and
+$A_5(n+1)\ge35A_5(n)$ for $n<80$, with the smallest ratio, exactly $35$, at
+$n=0$. In passing it confirmed that expanding $1/(\lambda x_0-\beta)$ turns
+\eqref{fce:dx:eq:inverse} into \eqref{fce:eq:inversefirst}, the normalization
+check \eqref{fce:dx:eq:normcheck}, and the values $1,35,18720,19369350$ and
+$A^\circ_5(n)=1,7,416,42570$ of Section~\ref{fce:dx:sec:checks}. This was a
+careful reading with numerical tests, not a formal verification or an
+external review.
 
 \subsection{Stale and coordinate-dependent claims of the two reports}\label{fce:dx:sec:stale}
 Nothing in either report was found to be wrong: every formula checked agrees

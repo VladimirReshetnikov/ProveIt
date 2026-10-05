@@ -85,7 +85,7 @@ research-report collection confers no formal status.
 
 ```
 article.tex                                         the merged report, standalone LaTeX, internal bibliography
-article.pdf                                         the compiled report, 88 pages (title page, whose status box runs onto a second page, then pages 1–86)
+article.pdf                                         the compiled report, 89 pages (title page, whose status box runs onto a second page, then pages 1–87)
 README.md                                           this guide
 61-balanced-SOURCES.md                              source 61's source and claim provenance, as delivered
 61-balanced-BUILD.md                                source 61's build and visual-QA receipt, as delivered
@@ -194,7 +194,12 @@ statement, equation and table keeps its number (checked against a build of
 the previous text): **223** in total. The batch-101 write added 71
 `fce:dx:` labels (Part VI) and renamed or removed none, and every existing
 section, statement, equation and table keeps its number (checked against a
-build of the committed text): **294** in total. Source 42's labels on
+build of the committed text): **294** in total. After the write, the
+intake's independent check (5 October 2026) added an unlabelled dated
+paragraph at the end of Section 38.2, a pointer to it in Part VI's
+introduction and three clarifications where they stand (the second proof of
+Proposition 36.2, Remark 36.4 and Section 37.4); no label was added, and
+none was renumbered (aux files compared). Source 42's labels on
 results printed once from source 61, and the delivered labels of sources
 75-03 (87), 77-44 (18), 101-90 (24) and 101-86 (21), are not used as such
 (Parts IV, V and VI label their own statements afresh).
@@ -313,6 +318,44 @@ New in Part VI (sources 101-90 and 101-86):
   Part II (no power sum, no growing exponent; read as a lattice sum it is
   the phase-independent fine-lattice limit; and it depends on the
   coordinates).
+- *[Independent check, 5 October 2026.]* An adversarial check made by the
+  intake after the write (`013b32fca`) reread Propositions 36.1 (with the
+  balanced form), 36.2 (both proofs) and 37.3, Lemma 36.3 with the gauge
+  computation, Remark 36.4, the consistency checks after Proposition 37.1,
+  Theorem 37.2 with every printed jet and the hand check, and Remark 38.1
+  (iii). Every item is valid, with no counterexample and no gap in any proof
+  chain; the hypotheses on r (odd, even, r = 2) are stated correctly. Three
+  refinements of wording were adopted where they stand, and no statement or
+  number changed: the second proof of Proposition 36.2 expands along the d
+  indicator columns (it first said "along the interior rows", which have up
+  to three nonzero entries; marked "corrected at the independent check");
+  Remark 36.4 says why its s_b − s_a dominant pairs are distinct (a
+  coincidence would force s_i Δφ_u ≡ 0 for every step, and the steps have
+  gcd one); and Section 37.4 says that the rule (37.8) needs the printed
+  ratio G_1/G_0 (37.17) multiplied by the normalized amplitude 𝔞_∘ (with the
+  bare ratio the contraction gives 665871/40000 − 14621√5/2500 = 3.5694…
+  instead of b°_2 = 4.0635…, a slip the check itself made on its first
+  pass). The tests, none of which used the delivered or the write's
+  programs: its own rolling DP over the steps ±1, ±2 for A°_5(n), n ≤ 80
+  (no recurrence), whose C(5n, n) A°_5(n) equals Part IV's formula
+  (Theorem 25.2) for every n ≤ 80; direct content-vector counts A_r(n) for
+  r = 2, …, 7 (n ≤ 12, 9, 6, 5, 3, 3); the coefficient identity (36.1)
+  exactly for r = 3, 5, 7 through length 24 and κ_r/r = κ°_{r−1}/(r − 1)
+  for r = 3, 5, 7, 9; exact determinants for r = 2, …, 15, including
+  det H_{a,b} = (s_b − s_a)² r^(−r)/V for every pair; torus points, time
+  phases and gauge phases by brute force with exact rational angles for
+  r = 2, …, 13; Richardson extrapolation of its own counts, which gives
+  α_{5,2} = 0.3130217393401059930098 (22 digits of (37.11)), b°_1, b°_2
+  and α_{5,1} to at least 20 digits and α_{5,3} to all 19 digits of
+  Table 6; a 45-digit recomputation of every intermediate jet from its own
+  definitions (Cauchy integrals, without the arcosh formula or (37.16)),
+  within 4.2·10^(−30) for the phase, 1.2·10^(−28) for the amplitude and
+  6.1·10^(−29) for the G_1/G_0 jet; an exact SymPy contraction of the
+  printed jets, which gives b°_1 and b°_2 exactly; and supermultiplicativity
+  on all of its data, with A_5(n+1) ≥ 35 A_5(n) for n < 80. The record is
+  an unlabelled dated paragraph at the end of Section 38.2. This was a
+  careful reading with numerical tests, not a formal verification or an
+  external review.
 
 New in Part V (source 77-44):
 
@@ -430,7 +473,9 @@ From this directory:
     latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 
 (or three `pdflatex` passes). The committed PDF was built this way with
-MiKTeX on 2026-10-05: 88 pages, no errors, warnings, undefined
+MiKTeX on 2026-10-05 (rebuilt the same day after the independent check,
+with four `pdflatex` passes in a scratch copy; every label keeps its
+number): 89 pages, no errors, warnings, undefined
 references, multiply defined labels, duplicate destinations or
 overfull/underfull boxes. (The title page's status box has run onto a
 second page since before Part VI; the page count above includes it.)
