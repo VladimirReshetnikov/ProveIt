@@ -180,6 +180,23 @@ or46 witnesses/SOS224/degree52. Native AND remains in the loader, so a
 cheaper loading/accepting-history compiler is still needed for a universal
 improvement. The universal84/187 and85/155 points remain unchanged.
 
+The [actual Borel publication review](Papers/research-wip/native-stream-queue/review_borel_write_20262718e.md)
+checks the integration of four manuscripts as Parts XVIII–XXI at20262718e:
+the full guide diff, selected article/proof interfaces,33 archive members,
+17 placements and268 original-label routes. Separate
+[support](Papers/research-wip/native-stream-queue/review_borel_support_20262718e.md) and
+[flow](Papers/research-wip/native-stream-queue/review_pma_borel_flow_interfaces_20262718e.md) challenges retain their
+exact reading scopes. The [root corrections](Papers/research-wip/native-stream-queue/review_borel_write_20262718e_root.md)
+repair two summaries omitting `Gamma={0}`, a dense-group citation lacking
+its dyadic-root hypothesis, and overstated archive-reading coverage.
+Numbered remarks preserve each claim and its counterexample or scope;
+the earlier flow sampling assessment is qualified by the publication's
+finite-rank counterexample and infinite-rank repair. The corrected PDF
+builds to744 pages with all1740 source labels preserved. These are bounded
+publication and interface reviews, not a new full-manuscript certification.
+No paid ordinary-integer compiler or arithmetic saving follows;
+84/187/18 remains the proved universal operation point.
+
 The [multiway Hadamard packing certificate](Papers/research-wip/native-stream-queue/hadamard_next_arithmetic.md)
 isolates a k-fold coefficientwise product in one central digit band using
 k-1 products after loading. A fully paid fixed-width, fixed-horizon cyclic

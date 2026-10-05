@@ -170,7 +170,7 @@ editorial fixes, which are applied; it is unrefereed.
 
 ```
 article.tex                                   the report, standalone LaTeX with an internal bibliography (pdfLaTeX)
-article.pdf                                   the compiled report, 743 pages (title page, abstract page, then pages 1-741)
+article.pdf                                   the compiled report, 744 pages (title page, abstract page, then pages 1-742)
 README.md                                     this guide
 05-omnific-presburger-CLAIM_LEDGER.md         05's claim ledger, as delivered (05's own theorem numbers)
 05-omnific-presburger-SOURCES.md              05's sources and priority record, as delivered
@@ -1038,12 +1038,26 @@ theorem. It re-proves Part II's Lemma 18.2, the scattered half of Theorem
 18.4, Theorem 20.2 and Corollary 20.4 in its own form (each flagged).
 
 **Section 270** (merge, written for the report). For countable Γ ≤ R the code
-set of all well-ordered supports is Σ⁰₂-complete for cyclic Γ ≠ 0 and
-Π¹₁-complete otherwise, and is standard Borel iff L is scattered (Proposition
-270.1); the effectivity sentence of 25's Section 264.2 holds, with the
+set of all well-ordered supports is the whole space for Γ = {0},
+Σ⁰₂-complete for nonzero cyclic Γ, and Π¹₁-complete for noncyclic Γ. With its
+inherited Borel structure it is standard Borel iff Γ is scattered
+(Proposition 270.1); the effectivity sentence of 25's Section 264.2 holds, with the
 reviewer's observation that the limit need not be computable (Remark 270.2);
 Question 268.12 keeps 25's unchecked attributions to Guevara–Uzcátegui and
 Hall–Knight–Lange.
+
+**Review remark 1 (Trivial-group correction).** The earlier guide called
+the code set Σ⁰₂-complete for cyclic Γ ≠ 0 and “Π¹₁-complete otherwise”.
+The latter claim fails at Γ = {0}: every support is a subset of a singleton,
+so every coefficient array is legal and the code set is the whole space.
+It cannot be Π¹₁-complete, since every continuous preimage of the whole
+space is again the whole domain. Proposition 270.1 already states this
+case correctly. The same false summary occurred in the Batch 96 commentary
+after Question 237.1 and is corrected there, with its counterexample retained
+as Review remark 1. The guide's standard-Borel criterion also used an unbound
+L, now replaced by Γ. For strong families,
+the proposition separately gives Σ⁰₂-completeness at Γ = {0}; that distinct
+predicate should not be confused with validity of a single support.
 
 **Part XX** (26). For a countable divisible Γ ≤ R and `ℒ^Γ_R`, every jointly
 Borel flow by field automorphisms fixes R and the valuation (Theorem 274.4);
@@ -1816,8 +1830,9 @@ change the article or certify its other proofs.
   formalized in `LaurentResidueChange.lean`, is the Γ = Z case of 23's
   rank-one image clause.
 
-- **Hilbert's-tenth reviews (batch 96).** All four archives were read in
-  full in `Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/`:
+- **Hilbert's-tenth reviews (batch 96).** All four manuscripts were read in
+  full and their archive members authenticated in
+  `Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/`:
   24 in `8dffc7af0` (`review_new_borel_62846e17a.md`, `.json`, `.py`), 25 in
   `3abf23ba1` (`review_new_support_complexity_fb9f5884b.md`, `.json`, `.py`),
   26 in `3d87c3d6b` (`review_new_borel_flows_fb9f5884b.md`, `.json`, `.py`) and
@@ -1828,7 +1843,17 @@ change the article or certify its other proofs.
   decidable Γ, Remark 255.4; two effective interface barriers for 25, Section
   270; co-c.e.-complete invariant equality for pairs over Z, Remark 300.4) are
   printed with credit and re-checked by the write. That directory is cited, not
-  edited.
+  edited by that write.
+
+  **Review remark 3 (The scope of the earlier reviews).** The earlier wording,
+  “All four archives were read in full”, overstated the recorded coverage:
+  all four PDFs were hash-only, and 27's saved JSON had selected human-read
+  spans despite being parsed in full. The complete manuscript reads and
+  archive authentication remain established. The historical “found no
+  correction” assessment also needs the later finite-rank counterexample
+  to 26's Remark 280.3, retained and repaired by Proposition 285.4. The
+  article now records these same qualifications in Review remark 3.
+
 - **Parts XVIII–XXI and the formal projects.** The Lean items under "Printed by
   citation" are the only formal statements involved; nothing of Parts
   XVIII–XXI is formalized, `docs/FORMALIZATION.md` maps none of their labels,
@@ -2097,7 +2122,7 @@ latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 pdfLaTeX with `newpxtext`/`newpxmath`, `tcolorbox`, `cleveref`, `aliascnt`,
 `tikz` (07's figure). The build has no errors, no LaTeX, package or hyperref
 warnings, no overfull or underfull boxes, no undefined or multiply defined
-references and no duplicate destinations; 743 pages. Commit only
+references and no duplicate destinations; 744 pages. Commit only
 `article.pdf`, not the auxiliary files.
 
 ## Rerunning the finite checks

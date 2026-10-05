@@ -6241,9 +6241,21 @@ No claim is made that every ordinal cutoff is preserved by inversion.
 by source~25 as \cref{pma:spc:nq5}, for the truncation-closed subfields of full
 Hahn fields over every dense exponent group, with the added clause: which
 support languages support continuous certified arithmetic? It is printed once,
-here; \cref{pma:spc:nq5} points back. Source~25's \cref{pma:spc:cor:roots}
+here; \cref{pma:spc:nq5} points back. Source~25's \cref{pma:spc:thm:groups}
 excludes the full field over every such group with a $\Pc$-complete code set;
 the question stays open.
+
+\paragraph{Review remark 2 (Density versus root closure).}
+The preceding commentary originally cited \cref{pma:spc:cor:roots} for
+every countable dense exponent group. That corollary requires a positive
+element admitting all dyadic divisions, which density does not imply.
+For example, $\Gamma=\Z+\sqrt2\Z$ is dense, but if
+$(a+b\sqrt2)/2^n\in\Gamma$ for every $n$, uniqueness of the two rational
+coefficients forces both integers $a,b$ to be divisible by every $2^n$,
+so both are zero. The stated exclusion remains valid by the cited group
+classification: a countable dense order without endpoints contains a copy
+of $\Q$. This corrects the supporting reference and retains the missing
+hypothesis of the original citation.
 
 \begin{question}[How much coefficient observability is necessary?]\label{pma:bor:q:observability}
 If only a selected family of coefficient combinations or truncations is
@@ -36741,10 +36753,22 @@ Polish field topologies; neither answers the other.
 
 \noindent\writetag{} (Batch~96.) Part~XIX makes the last sentence of the
 commentary exact: for countable $\Gamma\le\R$ the code set of all well-ordered
-supports is $\Sf$-complete for cyclic $\Gamma\ne0$ and $\Pc$-complete otherwise
+supports is the whole space for $\Gamma=\{0\}$, $\Sf$-complete for nonzero
+cyclic $\Gamma$, and $\Pc$-complete for noncyclic $\Gamma$
 (\cref{pma:spc:w-prop:archimedean}), against the $\Pt$ left-finite domain
 \eqref{pma:bsd:eq:borel-domain}. The question, on automatic summation, stays
 open.
+
+\paragraph{Review remark 1 (Trivial-group correction).}
+The earlier Batch~96 commentary above, and the guide's summary of
+\cref{pma:spc:w-prop:archimedean}, said ``$\Sf$-complete for cyclic
+$\Gamma\ne0$ and $\Pc$-complete otherwise''. The latter claim is false at
+$\Gamma=\{0\}$: every support is a subset of a singleton, so the code set
+is the whole coefficient space. Every continuous preimage of that set is
+the whole domain, which precludes $\Pc$-completeness.
+\Cref{pma:spc:w-prop:archimedean} already states this exception correctly.
+Its distinct strong-family predicate is $\Sf$-complete at $\Gamma=\{0\}$;
+that does not change validity of a single support.
 
 \subsection{Coefficient fields other than the reals}
 
@@ -41198,8 +41222,8 @@ about the limit $r_{\R}(X)$, and the next note shows that the limit need not be
 computable.
 \end{remark}
 
-\noindent\writetag{} (Batch~96.) The Hilbert's-tenth programme reviewed the
-whole archive in commit \texttt{3abf23ba1}
+\noindent\writetag{} (Batch~96.) The Hilbert's-tenth programme read the complete
+manuscript and authenticated the archive members in commit \texttt{3abf23ba1}
 (\fn{Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/review_new_support_complexity_fb9f5884b.md},
 with \fn{.py} and \fn{.json}): it found no mathematical defect within the
 classical inputs source~25 names, ran none of the delivered programs, and did
@@ -46581,7 +46605,8 @@ for this report, which found them correct and asked for four editorial fixes
 the statement), all applied. These readings are not reviews.
 
 \paragraph{Review elsewhere in the repository (Parts XVIII--XXI).} The
-Hilbert's-tenth programme read all four archives in full, in
+Hilbert's-tenth programme read all four manuscripts in full and authenticated
+their archive members, in
 \fn{Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/}:
 source~24 in \texttt{8dffc7af0} (\fn{review_new_borel_62846e17a.md}, with
 \fn{.json} and \fn{.py}), source~25 in \texttt{3abf23ba1}
@@ -46596,6 +46621,18 @@ re-checked by the write: the effectivity lemma \cref{pma:bct:rem:effective},
 two observations in \cref{pma:spc:w-sec:meet}, and the co-c.e.-complete
 invariant equality of \cref{pma:tdv:w-rem-review}; the review of source~26 notes
 that the first does not transfer to divisible $\Gamma$.
+
+\paragraph{Review remark 3 (The scope of the earlier reviews).}
+The earlier wording, ``read all four archives in full'', overstated those
+records. Each review explicitly says that its delivered PDF was hashed
+only, not read or rendered; source~27's saved JSON was parsed as data but
+only selected line ranges were read. The complete mathematical manuscripts
+were read, and every archive member was authenticated. Likewise ``found no
+correction'' records the intake assessments at that time: source~26's
+unqualified finite-sampling remark was missed and is false in finite rank,
+as the retained note after \cref{pma:bfl:n10.3} explains.
+\Cref{pma:bfl:w-sampling} proves the infinite-rank repair. These qualifications
+do not claim a new full-manuscript or PDF review.
 
 \paragraph{Stale statements and files of the delivery (Parts XVIII--XXI).}
 Source~24 describes Part~XVII as a draft in the user's library with no copy
