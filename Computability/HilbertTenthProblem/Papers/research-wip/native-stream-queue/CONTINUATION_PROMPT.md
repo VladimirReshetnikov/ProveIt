@@ -262,6 +262,17 @@
 > operation saving is supplied, and the established universal84 bound remains.
 >
 >
+> The [shared83 / independent-gamma83 comparison](shared83_to_gamma83_interface.md)
+> and [root proof review](review_shared83_to_gamma83_interface.md) identify the
+> exact rational coordinate map and its integral boundary H|U. The new shared
+> W=0 family cannot transfer: independent gamma's input norm is divisible by
+> H=4a+3, so its raw finalizer would force H to divide9, while the positive
+> domain gives H>=99. This obstruction holds before any compiler or Pell
+> decoding. The two83-operation sources are distinct; their rational identity
+> does not equate positive integer zero sets. Independent-gamma83 remains
+> unresolved for different outer data, and the universal bound stays84.
+>
+>
 > The [PLUS resonant population proof](complete83_plus_resonant_population.md)
 > and [MINUS resonant population proof](complete83_resonant_minus_binary.md),
 > with a [root mathematical review](review_complete83_resonant_binary.md),
