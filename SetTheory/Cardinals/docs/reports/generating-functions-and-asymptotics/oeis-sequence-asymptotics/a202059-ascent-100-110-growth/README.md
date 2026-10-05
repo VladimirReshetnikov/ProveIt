@@ -143,7 +143,9 @@ manuscripts share are thereby distinct). The write added 17: `a59:part`,
 `a59:g:rem:upperimplied`, `a59:g:cor:enonp`, `a59:g:rem:inverseimplied`)
 and seven front-matter and appendix labels (`a59:sec:guide`,
 `a59:tab:map`, `a59:sec:notation`, `a59:tab:notation`, `a59:sec:limits`,
-`a59:app:provenance`, `a59:tab:crosswalk`). 127 labels in all.
+`a59:app:provenance`, `a59:tab:crosswalk`). 127 labels in all. The
+corrections after the independent check of 5 October 2026 added no label
+and renumbered none (aux files compared).
 
 Sections are numbered continuously, so the manuscripts' numbers shift:
 Part I's Section `k` is Report 243's Section `k − 3`, Part II's Section `k`
@@ -224,12 +226,44 @@ in Part II), `M`, `r` (repeats or a triangle dimension), `q`, `E`, `N`,
 **Added by the write** (all marked `[write]`; proofs printed in place):
 Remark W1 (the leading order `L²/4` that Part I's remark after Lemma 5.1
 states without proof); Remark W2 (Report 242's relative asymptotic for
-`bₙ` implies Lemma 5.1); Remarks W3, W4, W6 (Part I implies Report 241's
+`bₙ` implies the estimate (5.3) of Lemma 5.1, not its single-term
+statement; corrected after the independent check, below); Remarks W3, W4, W6 (Part I implies Report 241's
 Theorem 1.1, Proposition 4.2 and Proposition 7.1); Corollary W5 (`eₙ` is
 not P-recursive, by Report 241's argument on Part I's bounds); the bounds
 `4^{−n(1+o(1))} ≤ dₙ/aₙ ≤ e^{o(n)}` and `4^{−n(1+o(1))} ≤ cₙ/aₙ ≤ 1`
 (note after Corollary 20.1); a comparison of `dₙ` with `bₙ` for `n ≤ 15`;
 dated notes; the front matter.
+
+*[Independent check, 5 October 2026.]* An adversarial check made by the
+intake after the write (`3ed50db4e`) reread W1–W6, the exponential-scale
+ratio bounds, the claim that Part I answers Report 241's question 1 for `a`
+and `e` (`κ = log 2 − 1`), the new question `dₙ ≤ bₙ` and every count in the
+tables and data files. It found no counterexample and no gap in any proof
+chain, and **one overclaim**: Remark W2 said that Report 242's Theorem 6.1
+implies Lemma 5.1 and that "Part I needs only the weaker one". The
+derivation is valid, but a relative asymptotic for the sum `b_N` gives only
+the sum estimate (5.3), not the lemma's second statement, the estimate for
+the single term `r = ⌊2n/log n⌋`, which Part I uses in (10.3); that one is
+in Report 242's Section 3 (the display after `pdt:eq:fixedalpha`, at
+`x* = 2N/L`), not in its Theorem 6.1. W2 and the two places of Section 1
+that repeated the claim are corrected where they stand, with a dated note
+in W2 keeping the first wording. Also adopted from the check: W1 sharpened
+from `𝓡 = L²/4 − L + O(1)` to `𝓡 = L²/4 − L + 1 + o(1)` (its own displays
+give it), and one sentence of W6 reworded so that the `d, c` case says only
+what the bracket (12.2) proves (dated notes in both). Methods: three
+independent counting methods (literal enumeration with index-triple tests to
+`n = 10`, an explicit-state dynamic program for all four classes to
+`n = 12`, compressed dynamic programs for 100 and 110 to `n = 20`), agreeing
+with the shipped CSV and source prefixes, Callan–Mansour Class 36 (adding
+`c₁₂ = 61255`) and the current OEIS A202059, A202060 (offset 0, `n ≤ 26`)
+and A098569 (`bₙ = A098569(n−1)`, offset 0); `eₙ` continues 16425, 73023,
+343861 (`n = 10..12`); an exact log-gamma check of W1 to `n = 10¹²`
+(`𝓡 − (L²/4 − L + 1)` = −1.5·10⁻², −7.6·10⁻⁴, −4.0·10⁻⁵, −1.9·10⁻⁸ at
+`n = 10⁴, 10⁶, 10⁸, 10¹²`); W2's expansion of `u` and Report 242's carrier
+(ratio 0.978 … 1.009 for `N = 20..400`); W6's error ratio 4.58, 4.58, 4.57,
+4.63, 4.76 at `L = 10¹⁰ … 10¹⁰⁰⁰⁰⁰`; W4 termwise for `n ≤ 15`. Recorded in
+an unlabelled dated paragraph at the end of Section 15. A careful reading
+with numerical tests, not a formal verification.
 
 ## What the report does not claim
 
@@ -261,7 +295,8 @@ Each Part closes with "Further questions and research" (Sections 15 and
 - **Moved or answered.** Neither manuscript states a claim without proof
   that had to be moved, and **nothing in either was found to be wrong**.
   Part I's one unproved aside (the error `𝓡` has leading order `L²/4`) is
-  proved in Remark W1.
+  proved in Remark W1, in the sharper form `𝓡 = L²/4 − L + 1 + o(1)` after
+  the independent check.
 - **Part II's three questions**, with dated notes: (1) the linear-order
   constant is **answered by Part I for `a` (and `e`)**: `κ = log 2 − 1`;
   for `d` and `c` it stays open, bracketed in `[−log 2 − 1, log 2 − 1]`;
@@ -271,9 +306,14 @@ Each Part closes with "Further questions and research" (Sections 15 and
   constants; the first sublinear correction and `eₙ/aₙ`; sharper skeleton
   and fiber counts; typical word structure; sharper inversion).
 - **Added by the write**: is `dₙ ≤ bₙ` for every `n`? It holds for
-  `n ≤ 15`, with equality for `n ≤ 8` and `d₉ = b₉ − 1` (the intake
-  dossier's observation), while `aₙ > bₙ` from `n = 5`; `dₙ ≥ bₙ e^{−o(n)}`
-  would settle the `110` constant. Data only.
+  `n ≤ 15` (the write's table), with equality for `n ≤ 8` and
+  `d₉ = b₉ − 1` (the intake dossier's observation), while `aₙ > bₙ` from
+  `n = 5`; `dₙ ≥ bₙ e^{−o(n)}` would settle the `110` constant. Data only.
+  *[5 October 2026, independent check:]* the table is reproduced exactly and
+  `dₙ ≤ bₙ` extends to `n ≤ 26` (`n ≤ 20` by the check's own dynamic
+  programs, `21 ≤ n ≤ 26` from the OEIS terms of A202060 and A098569); the
+  ratio `dₙ/bₙ` keeps falling, to 0.9268 at `n = 20` and 0.8192 at
+  `n = 26`, and `aₙ > bₙ` for `5 ≤ n ≤ 20` (dated note in Section 15).
 
 ## Relation to neighbouring reports
 
@@ -293,11 +333,17 @@ All in `SetTheory/Cardinals/docs/reports/generating-functions-and-asymptotics/oe
 - `a098569-self-modified-ascents` (new in batch 102, Report 242, labels
   `pdt:`, written in `3daaab24e`): Part I's comparison count is its `b_N`
   (`bₙ = A098569(n−1)`). Its Theorem 6.1 (`pdt:thm:elementary`) gives the
-  relative asymptotic of `b_N`, which implies Part I's Lemma 5.1, and its
-  Lemma 3.1 (`pdt:lem:global`) uses the same comparison phase `H_N` and the
-  same two gaps, `4 log 2 − 2` and `2 − 2 log 2` (Remark W2). Lemma 5.1 is
-  an elementary second route to a weaker statement; the two manuscripts do
-  not cite each other. That report's Section 1 already points here.
+  relative asymptotic of `b_N`, which implies the sum estimate (5.3) of
+  Part I's Lemma 5.1, and its Lemma 3.1 (`pdt:lem:global`) uses the same
+  comparison phase `H_N` and the same two gaps, `4 log 2 − 2` and
+  `2 − 2 log 2` (Remark W2). For the sum, Lemma 5.1 is an elementary second
+  route to a weaker statement. The lemma's single-term estimate at
+  `r = ⌊2n/log n⌋`, which Part I also uses (10.3), does **not** follow from
+  Theorem 6.1; it is in that report's Section 3 (the display after
+  `pdt:eq:fixedalpha`). The write first said that Theorem 6.1 implies the
+  whole lemma; corrected 5 October 2026 after the independent check. The
+  two manuscripts do not cite each other. That report's Section 1 already
+  points here.
 - `a336070-weak-ascents` (new in batch 102): a different object (weak
   ascent sequences, factorial root `6/π²`); no shared theorem.
 - No other report treats A202059 or A202060 (searched 5 October 2026).
@@ -403,7 +449,9 @@ latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 pdfLaTeX (MiKTeX), in a scratch copy; commit only `article.pdf`. The
 write's build: 44 pages, no errors, no warnings, no undefined or multiply
 defined references, no duplicate destinations, no overfull or underfull
-boxes. The log carries three "Infinite glue shrinkage found in box being
+boxes. Rebuilt on 5 October 2026 after the independent check with three
+pdfLaTeX passes: 45 pages, equally clean; all 127 labels keep their
+numbers (later pages shift by one). The log carries three "Infinite glue shrinkage found in box being
 split" messages, one from each longtable that breaks across pages (Tables
 1, 2 and 3), as in other reports with longtables. The delivered sources built
 alone give 16 and 13 pages with no warnings.

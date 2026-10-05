@@ -169,10 +169,16 @@ and~\ref{a59:g:rem:inverseimplied}); the extension of the
 non-P-recursiveness corollary to $e_n$ (Corollary~\ref{a59:g:cor:enonp});
 a proof of the leading order $L^2/4$ that Part~I's remark after
 Lemma~\ref{a59:lem:triangular} states; the observation that Report~242's
-relative asymptotic for $b_n$ implies Lemma~\ref{a59:lem:triangular}; a
-comparison of $d_n$ with $b_n$ for $n\le15$ (Section~\ref{a59:sec:questions});
+relative asymptotic for $b_n$ implies the estimate~\eqref{a59:eq:blog} of
+Lemma~\ref{a59:lem:triangular} (not its single-term statement); a
+comparison of $d_n$ with $b_n$ for $n\le15$, extended to $n\le26$ by the
+independent check (Section~\ref{a59:sec:questions});
 dated notes; the front matter. Nothing in either manuscript was found to be
-wrong.
+wrong. An independent check of the write, made by the intake after it,
+found the write's proofs valid and one of its claims too broad: the first
+wording of that observation, which said that Report~242's theorem implies
+the whole lemma. It is corrected where it stands, and the check is recorded
+at the end of Section~\ref{a59:sec:questions} (dated note, 5~October 2026).
 
 \paragraph{Relation to other reports in the repository.}
 The neighbouring reports named here are in the directory
@@ -201,10 +207,13 @@ is $\mathrm{A098569}(n-1)$, the number of self-modified ascent sequences of
 length~$n$. In the same batch~102, Report~242 of the bundle was written
 as the new report \path{a098569-self-modified-ascents} (labels
 \texttt{pdt:}); its Theorem~6.1 gives the relative asymptotic of $b_N$,
-which implies Lemma~\ref{a59:lem:triangular}, and its Lemma~3.1 uses the
+which implies the estimate~\eqref{a59:eq:blog} of
+Lemma~\ref{a59:lem:triangular}, and its Lemma~3.1 uses the
 same comparison phase and the same two gaps
-(Remark~\ref{a59:rem:report242}). Part~I's lemma is an elementary second
-route to a weaker statement. That report's Section~1 already points here.
+(Remark~\ref{a59:rem:report242}). For the sum, Part~I's lemma is an
+elementary second route to a weaker statement. The lemma's single-term
+estimate, which Part~I also uses, does not follow from that theorem; it is
+in that report's Section~3. That report's Section~1 already points here.
 \item \emph{Weak ascent sequences.} The new report \path{a336070-weak-ascents}
 (batch~102) treats a different object with factorial root $6/\pi^2$; no
 theorem is shared.
@@ -469,8 +478,14 @@ $q=n\bigl(1-\frac2L+O(\frac1n)\bigr)$, so $q^3/M^2=O(L^4/n)\to0$ and
  \frac{q(q-1)}{2M}=\frac{L^2}4\Bigl(1-\frac2L\Bigr)^2+O\Bigl(\frac{L^3}n\Bigr)
  =\frac{L^2}4-L+1+o(1).
 \]
-Hence $\mathcal R=L^2/4-L+O(1)$: unbounded, of leading order $L^2/4$, as
-stated.
+Hence $\mathcal R=L^2/4-L+1+o(1)$: unbounded, of leading order $L^2/4$, as
+stated. Report~242 states the same leading term after its display
+\texttt{pdt:eq:log-square}.
+
+[Dated note, 5 October 2026: the conclusion first read
+``$\mathcal R=L^2/4-L+O(1)$''. The sharper form, which the two displays
+above already give, is the independent check's; see the end of
+Section~\ref{a59:sec:questions}.]
 \end{wremark}
 
 \begin{wremark}[\wtag, 5 October 2026: a sharper statement in Report~242]\label{a59:rem:report242}
@@ -484,7 +499,14 @@ in the manuscript) the relative asymptotic
  \qquad u(u+2)e^u=2N,\quad P(u)=u^2+4u+2,
 \]
 for the same $b_N$ (its tables of size $N$ and dimension $m$ are $T(N,m)$
-of~\eqref{a59:eq:T}). It implies Lemma~\ref{a59:lem:triangular}. With
+of~\eqref{a59:eq:T}). It implies the estimate~\eqref{a59:eq:blog} of
+Lemma~\ref{a59:lem:triangular}; it does not give the lemma's second
+statement, the estimate for the single term $r=\lfloor2n/\log n\rfloor$,
+which Section~\ref{a59:sec:lower} uses in~\eqref{a59:eq:singlelower}. A
+relative asymptotic for the sum says nothing about one term away from its
+saddle $2N/(u+2)$. That statement is the display after
+\texttt{pdt:eq:fixedalpha} in that report's Section~3 (at $x_*=2N/L$),
+proved there by the same phase comparison as here. With
 $L=\log N$, the defining equation gives $u+\log u+\log(u+2)=L+\log2$, hence
 $u=L-2\log L+O(1)$, then $\log u,\log(u+2)=\log L+O(\log L/L)$, and so
 $u=L-2\log L+\log2+O(\log L/L)$. Since
@@ -492,9 +514,10 @@ $u(u+1)/(u+2)=u-1+O(1/L)$ and the remaining terms are $O(L^2)$,
 \[
  \log b_N=N(L-2\log L+\log2-1)+O(N\log L/L),
 \]
-which is~\eqref{a59:eq:blog}. Lemma~\ref{a59:lem:triangular} is thus an
-elementary second route to a weaker statement; Part~I needs only the weaker
-one. The two proofs share more than the conclusion: that report's
+which is~\eqref{a59:eq:blog}. For the sum, Lemma~\ref{a59:lem:triangular}
+is thus an elementary second route to a weaker statement, and the weaker one
+suffices for Part~I; the single-term estimate Part~I also needs is not a
+consequence of Theorem~6.1 there. The two proofs share more than the conclusion: that report's
 comparison phase (\texttt{pdt:eq:Hphase}) is exactly the $H_n$ of the
 proof above, and its global-exclusion Lemma~3.1 (\texttt{pdt:lem:global})
 uses the same two gaps, $(\log16-2)n=(4\log2-2)n$ below the window and
@@ -503,6 +526,17 @@ the same day and neither cites the other; the a098569 report already
 records this relation in its Section~1. Report~242 also records that the leading $N\log N$ scale of $b_N$ is
 prior and that finer logarithmic expressions were posted in OEIS by
 V\'aclav Kot\v{e}\v{s}ovec; Report~243 does not claim the estimate as new.
+
+[Dated note, 5 October 2026: this remark first read ``It implies
+Lemma~\ref{a59:lem:triangular}.''\ and ``Lemma~\ref{a59:lem:triangular} is
+thus an elementary second route to a weaker statement; Part~I needs only the
+weaker one'', and Section~\ref{a59:sec:guide} said the same in its list of
+what the write adds and in its bullet on Report~242. An independent check
+made by the intake after the write found the derivation valid and the claim
+too broad: Theorem~6.1 of Report~242 gives the first statement of
+Lemma~\ref{a59:lem:triangular}, not its single-term statement, which Part~I
+uses in~\eqref{a59:eq:singlelower}. The present wording is the check's; see
+the end of Section~\ref{a59:sec:questions}.]
 \end{wremark}
 \section{The refined increasing run encoding}\label{a59:sec:upper}
 The key improvement over the earlier occurrence encoding is to keep the index of each increasing run. This retains a triangular rather than rectangular candidate budget.
@@ -577,8 +611,10 @@ The exact appearance of the triangular term in \eqref{a59:eq:vandermonde} is use
 Proposition~\ref{a59:prop:finiteupper} implies that proposition
 (Remark~\ref{a59:g:rem:upperimplied}). On the inequality $u_n\le b_n$ that
 the paragraph above declines to claim: it fails for $a_n$ already at $n=5$
-($a_5=44>43=b_5$), while $d_n\le b_n$ holds for every $n\le15$ (data in
-Section~\ref{a59:sec:questions}, where the question is recorded).
+($a_5=44>43=b_5$), while $d_n\le b_n$ holds for every $n\le26$ (data in
+Section~\ref{a59:sec:questions}, where the question is recorded; the write
+checked $n\le15$, and the independent check of 5~October 2026 extended the
+range).
 \section{Subexponential skeleton cost and the large repeat tail}\label{a59:sec:uppercost}
 We now show that the extra skeleton information in \eqref{a59:eq:finiteupper} does not change the linear logarithmic constant. Let $L=\log n$ and
 \[
@@ -986,7 +1022,8 @@ question suggested by the data.
 \item \emph{Is $d_n\le b_n$ for every $n$?} The paragraph after
 Proposition~\ref{a59:prop:finiteupper} declines to claim $u_n\le b_n$. For
 $a_n$ it is false from $n=5$ on in the range below. For $d_n$ the
-inequality holds for $n\le15$, with equality for $n\le8$:
+inequality holds for $n\le15$, with equality for $n\le8$ (and, by the
+independent check, for $n\le26$; dated note below):
 \begin{center}
 \small
 \begin{tabular}{@{}rrrrr@{\qquad}rrrrr@{}}
@@ -1013,11 +1050,73 @@ A202059 and A202060 prefixes in \path{data/243-sharp-source_prefixes.json}
 $b_n$ computed exactly from~\eqref{a59:eq:T}. Missing: any injection or
 counting argument relating $110$-avoiders to the triangular arrays; the
 dossier of the intake found the first discrepancy, $d_9=b_9-1$.
+
+[Dated note, 5 October 2026: an independent recount made by the intake
+after the write reproduces every entry of the table and extends
+$d_n\le b_n$ to $n\le26$: for $n\le20$ by its own dynamic programs, and for
+$21\le n\le26$ from the OEIS terms of A202060 and A098569 (with
+$b_n=\mathrm{A098569}(n-1)$). The ratio $d_n/b_n$ keeps falling, to
+$0.9268$ at $n=20$ and $0.8192$ at $n=26$, while $a_n>b_n$ for
+$5\le n\le20$, with $a_{20}/b_{20}\approx8.71$. Still data only; see the
+end of this section.]
 \item For the record, the class $e_n$ of Part~I begins
 $1,1,2,4,10,27,83,276,1005,3923$ ($n=0,\dots,9$;
 \path{data/243-sharp-counts.csv}), so $e_9/a_9\approx0.366$; this bears on
 the open ratio $e_n/a_n$ above and decides nothing.
 \end{enumerate}
+
+\paragraph{Independent check of the write (dated note, 5~October 2026).}
+An independent adversarial check, made by the intake after the write
+(\texttt{3ed50db4e}), reread every addition of the write that states or
+proves something: Remarks~\ref{a59:rem:Rlead}, \ref{a59:rem:report242},
+\ref{a59:g:rem:implied}, \ref{a59:g:rem:upperimplied}
+and~\ref{a59:g:rem:inverseimplied}, Corollary~\ref{a59:g:cor:enonp}, the
+exponential-scale bounds on $d_n/a_n$ and $c_n/a_n$ in the note after
+Corollary~\ref{a59:g:cor:contradiction}, the statement that Part~I answers
+Part~II's question~1 for $a$ and $e$ with $\kappa=\log2-1$, question~(i)
+above, and every count in the tables and data files. It found no
+counterexample and no gap in any proof chain, and one overclaim.
+Remark~\ref{a59:rem:report242} said that Theorem~6.1 of Report~242 implies
+Lemma~\ref{a59:lem:triangular} and that Part~I needs only the weaker
+statement. Its derivation is valid, but a relative asymptotic for the
+sum~$b_N$ gives only~\eqref{a59:eq:blog}, not the lemma's estimate for the
+single term $r=\lfloor2n/\log n\rfloor$, which Part~I uses
+in~\eqref{a59:eq:singlelower} and which Report~242 proves separately, in
+its Section~3. That remark and the two places of
+Section~\ref{a59:sec:guide} that repeated the claim are corrected where they
+stand, with a dated note keeping the first wording. The check also sharpened
+Remark~\ref{a59:rem:Rlead} to $\mathcal R=L^2/4-L+1+o(1)$, which its own
+displays give, and reworded one sentence of
+Remark~\ref{a59:g:rem:inverseimplied} to say only
+what~\eqref{a59:eq:inversebracket} proves (dated notes there). The citations
+of Report~242 (\texttt{pdt:thm:elementary}, \texttt{pdt:eq:Hphase},
+\texttt{pdt:lem:global}) match that report.
+
+The counts were recomputed by three independent methods: a literal
+depth-first enumeration of all ascent sequences with explicit index-triple
+pattern tests ($n\le10$); an explicit-state dynamic program over
+per-value multiplicities, for all four classes ($n\le12$); and the check's
+own compressed dynamic programs for $100$ and $110$ ($n\le20$). They agree
+with each other, with \path{data/243-sharp-counts.csv} (all five columns,
+$n\le9$) and \path{data/243-sharp-source_prefixes.json}, with Callan and
+Mansour's Class~36 row through $n=11$ (the check adds $c_{12}=61255$), and
+with the current OEIS entries A202059 and A202060 (offset~$0$, $n\le26$) and
+A098569 ($b_n=\mathrm{A098569}(n-1)$ with offset~$0$). The class $e_n$
+continues $16425$, $73023$, $343861$ at $n=10,11,12$. For
+Remark~\ref{a59:rem:Rlead}, an exact log-gamma evaluation at
+$r=\lfloor2n/L\rfloor$ gives $\mathcal R-(L^2/4-L+1)=-1.5\cdot10^{-2}$,
+$-7.6\cdot10^{-4}$, $-4.0\cdot10^{-5}$ and $-1.9\cdot10^{-8}$ at
+$n=10^4,10^6,10^8,10^{12}$. For Remark~\ref{a59:rem:report242},
+$(u-L+2\log L-\log2)\,L/\log L$ is $2.0$, $2.7$, $3.0$, $3.2$, $3.3$ at
+$N=10^3,10^6,10^{10},10^{20},10^{40}$, bounded as claimed, and $b_N$ divided
+by Report~242's carrier is $0.978$, $0.998$, $1.006$, $1.009$, $1.009$ at
+$N=20,50,100,200,400$. For Remark~\ref{a59:g:rem:inverseimplied}, the
+difference of the two sides of its first display, divided by
+$L\mu^2/\lambda^3$, is $4.58$, $4.58$, $4.57$, $4.63$, $4.76$ at
+$L=10^{10},10^{30},10^{100},10^{1000},10^{100000}$. The termwise comparison
+of Remark~\ref{a59:g:rem:upperimplied} was checked exactly for every term
+with $n\le15$. This was a careful reading with numerical tests, not a formal
+verification or an external review.
 
 \part{Factorial logarithmic growth of pattern avoiding ascent sequences (Report 241)}\label{a59:g:part}
 \renewcommand{\PartMark}{Part II: Report 241}
@@ -1571,12 +1670,19 @@ and $1/w=\lambda^{-1}\bigl(1+\mu/\lambda+O(\mu^2/\lambda^2)\bigr)$. Therefore
 so~\eqref{a59:g:eq:inverse} says exactly
 $N_u(X)=L/\lambda+3\mu L/\lambda^2+O(L/\lambda^2)$. Theorem~\ref{a59:thm:inverse}
 gives $\nu_u(X)=L/\lambda+(3\mu+\gamma)L/\lambda^2+O(L\mu^2/\lambda^3)$ with
-$\gamma=1-\log2$ for $u=a,e$, and brackets with
-$\gamma\in[1-\log2,1+\log2]$ for $u=d,c$. Since $\mu^2/\lambda\to0$, either
+$\gamma=1-\log2$ for $u=a,e$, and, for $u=d,c$, bounds $\nu_u(X)$ below
+and above by the same expression with $\gamma=1-\log2$ and
+$\gamma=1+\log2$, respectively, and errors $O(L\mu^2/\lambda^3)$. Since $\mu^2/\lambda\to0$, either
 form implies~\eqref{a59:g:eq:inverse}, for all four classes. Part~I adds the
 determined coefficient $1-\log2$ of $L/\lambda^2$ for $a,e$ (it is hidden
 in Part~II's $O(L/w^2)$), and its error $O(L\mu^2/\lambda^3)$ is smaller
 than Part~II's $O(L/w^2)$; both still grow.
+
+[Dated note, 5 October 2026: the sentence on $u=d,c$ first read ``and
+brackets with $\gamma\in[1-\log2,1+\log2]$ for $u=d,c$'', which could be read
+as asserting that some such $\gamma$ exists. The present wording, the
+independent check's, says only what~\eqref{a59:eq:inversebracket} proves;
+see the end of Section~\ref{a59:sec:questions}.]
 \end{wremark}
 \section{Finite checks and reproducibility}\label{a59:g:sec:checks}
 The proof is the explicit injection and its inequalities; no fitted exponent or finite computation is needed to establish the limit. The accompanying Python verifies finite instances by methods kept separate from the construction's invariant argument.
@@ -1679,8 +1785,8 @@ limit point of $\kappa_u(n)$ lies in $[-\log2-1,\log2-1]$, equivalently that
 the normalized root has $\liminf\ge1/2$ and $\limsup\le2$; the existence
 of $\kappa$ and whether the three classes share it stay open, and are the
 first question of Section~\ref{a59:sec:questions}. The write's data there
-($d_n\le b_n$ for $n\le15$) bear on whether $\kappa_d=C_+$ and prove
-nothing.
+($d_n\le b_n$ for $n\le15$, for $n\le26$ after the independent check) bear
+on whether $\kappa_d=C_+$ and prove nothing.
 \item \emph{Open.} Part~I improves the error to
 $O(n(\log\log n)^2/\log n)$ for $a,e$, still $e^{o(n)}$, so no relative
 equivalent follows; Part~I says so and asks for the first sublinear
@@ -1826,7 +1932,11 @@ comparison'' and Report~241's ``Beyond two logarithmic orders'' are both now
 \texttt{laine} and \texttt{gsw} (after Lemma~\ref{a59:g:lem:entire-growth}).
 \item Added text: the editorial note, Sections~\ref{a59:sec:guide}--\ref{a59:sec:limits},
 the two Part openings, this appendix, and the notes, remarks and corollary
-marked \wtag. No other sentence, formula or reference of either manuscript
+marked \wtag; after the write, the paragraph recording the independent check
+at the end of Section~\ref{a59:sec:questions} and the dated notes it caused
+(in Remarks~\ref{a59:rem:Rlead}, \ref{a59:rem:report242}
+and~\ref{a59:g:rem:inverseimplied}, after Proposition~\ref{a59:prop:finiteupper},
+in Section~\ref{a59:sec:questions} and in Section~\ref{a59:g:sec:outlook}). No other sentence, formula or reference of either manuscript
 was changed.
 \end{itemize}
 
