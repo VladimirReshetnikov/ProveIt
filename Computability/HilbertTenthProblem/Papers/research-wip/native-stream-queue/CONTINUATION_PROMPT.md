@@ -173,6 +173,16 @@
 > improvement. The universal84/187 and85/155 points remain unchanged.
 >
 >
+> The [hat-randomness placement review](review_hat_placement_635a3e026.md)
+> authenticates all six changed paths at635a3e026: five ancillary files exactly
+> match the retired eight-member archive. The host guide, article and PDF
+> are unchanged, and the source still has four Part headings; the commit's
+> Part V title does not establish manuscript publication. Three new read
+> spans cover241 lines. The previous endpoint review remains at its recorded
+> scope; supplied finite checks and builds were not replayed. Root independently
+> checks every mapping, diff, host blob and read span. No arithmetic bound changes.
+>
+>
 > The [four Beyond Ord archive reviews](review_beyond_ord_e3839ad2c.md)
 > authenticate all27 members delivered at e3839ad2c, all16 delivered checksum
 > entries, and38 read spans covering2,468 lines plus446 context lines.

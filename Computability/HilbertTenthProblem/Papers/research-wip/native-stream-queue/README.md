@@ -158,6 +158,15 @@ or46 witnesses/SOS224/degree52. Native AND remains in the loader, so a
 cheaper loading/accepting-history compiler is still needed for a universal
 improvement. The universal84/187 and85/155 points remain unchanged.
 
+The [hat-randomness placement review](review_hat_placement_635a3e026.md)
+authenticates all six changed paths at635a3e026: five ancillary files exactly
+match the retired eight-member archive. The host guide, article and PDF
+are unchanged, and the source still has four Part headings; the commit's
+Part V title does not establish manuscript publication. Three new read
+spans cover241 lines. The previous endpoint review remains at its recorded
+scope; supplied finite checks and builds were not replayed. Root independently
+checks every mapping, diff, host blob and read span. No arithmetic bound changes.
+
 The [four Beyond Ord archive reviews](review_beyond_ord_e3839ad2c.md)
 authenticate all27 members delivered at e3839ad2c, all16 delivered checksum
 entries, and38 read spans covering2,468 lines plus446 context lines.
@@ -5609,6 +5618,7 @@ New research and the completed75-operation construction:
 
 | Artifact | Established result | Remaining boundary |
 |---|---|---|
+| [Hat-randomness placement review](review_hat_placement_635a3e026.md) | Five exact ancillary placements and one archive retirement;8 members,6 diffs and241 read lines authenticated | Guide/article/PDF unchanged; Part V publication not shown; prior proof scope retained and supplied checks inert |
 | [Four Beyond Ord archive reviews](review_beyond_ord_e3839ad2c.md) |27 members,16 checksum entries and2,914 precisely scoped archive/context lines; ordinal-code/effectivity distinctions retained; targeted choice-free power proof passes | Full GB-history, fixed-point and spectrum proofs unaudited; supplied code/PDFs inert; no paid integer compiler |
 | [Shared83 / independent-gamma83 interface](shared83_to_gamma83_interface.md) and [root review](review_shared83_to_gamma83_interface.md) | Exact rational map; integral inverse needs H\|U; raw input/finalizer excludes every positive independent-gamma tuple with W=0 | Blocks transfer of the new false-positive family; changed outer data and independent-gamma language remain unresolved |
 | [Actual rejecting compiler for shared83](complete83_rejecting_compiler.md) and [independent semantic review](review_complete83_rejecting_compiler.md) | Unbounded positive inputs with full83 zeros on every original compiler slice; explicit empty-language program proves false positives | Refutes this source with its inherited recipe, not all83 constructions or every input; universal84/187/18 remains |
