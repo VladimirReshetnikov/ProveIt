@@ -46,6 +46,26 @@
 \newenvironment{writenote}[1][]{\par\smallskip\begingroup\small
  \noindent\textbf{[write]}\if\relax\detokenize{#1}\relax\else~\textbf{#1.}\fi\ }%
  {\par\endgroup\smallskip}
+% Added by the ProveIt write phase (batch 98) for Part II: macros of the
+% two Part II manuscripts (\C, \e, \ii, \dd as there), and \sbdinput, which
+% inputs a shipped table file whose \label and \eqref names are those of
+% its manuscript, adding the Part II sub-prefix to each.
+\newcommand{\C}{\mathbb C}
+\newcommand{\e}{\mathrm e}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\dd}{\,\mathrm d}
+% (The file is read as tokens and every label and eqref name in it gains
+% the prefix; redefining the label command would not reach the floats,
+% which restore the kernel's definition.)
+\ExplSyntaxOn
+\tl_new:N \l__sbd_input_tl
+\NewDocumentCommand{\sbdinput}{mm}{
+ \file_get:nnN {#2} {} \l__sbd_input_tl
+ \regex_replace_all:nnN { \c{label} \cB\{ } { \c{label} \cB\{ #1 } \l__sbd_input_tl
+ \regex_replace_all:nnN { \c{eqref} \cB\{ } { \c{eqref} \cB\{ #1 } \l__sbd_input_tl
+ \tl_use:N \l__sbd_input_tl
+}
+\ExplSyntaxOff
 \allowdisplaybreaks[2]
 \setlist{nosep,leftmargin=1.6em}
 \setlength{\parskip}{0.25em}
@@ -101,8 +121,31 @@ finite defects; entropy; polynomial recurrences; exact sampling.
 \end{titlepage}
 \hypersetup{pageanchor=true}
 
+\begin{writenote}[Added 5 October 2026, batch~98: the two Parts]
+Since 5 October 2026 this report has two Parts. Part~\ref{sbd:part:one}
+(Sections~1--13 and Appendices~A and~B) is the batch-85 manuscript
+described in the first note of Section~1, printed as before: no section,
+equation, theorem, table or label of it changed number. Part~\ref{sbd:part:two}
+(Sections~\ref{sbd:xtm:sec:introduction}--\ref{sbd:xtm:app:audit}) merges two
+independent batch-98 manuscripts that answer Part~\ref{sbd:part:one}'s
+first research question (Section~\ref{sbd:sec:questions}): for every fixed
+defect $d$, the circle $|z|=R_d$ is a natural boundary of $B_d$
+(Theorem~\ref{sbd:xtm:thm:main-boundary}), with an explicit radial phase at
+every dyadic root of unity, a two-term radial growth law, an $L^p$
+comparison on every arc, natural boundaries for arithmetic sections, and
+further consequences. Both manuscripts are AI-assisted, unrefereed and
+unformalized; the provenance notes at the start of
+Part~\ref{sbd:part:two} give their sources, pins and the merge choices.
+Part~\ref{sbd:part:two} uses several letters ($a$, $\rho$, $T$, $L$, $N$,
+$K$, $A_q$, $h$) differently from Part~\ref{sbd:part:one}; its notation table
+fixes them. Dated notes at Remark~8.3, Question~1, the Conclusion and the
+proof-status ledger record the answer.
+\end{writenote}
+
 {\small\setlength{\parskip}{0pt}\tableofcontents}
 \newpage
+
+\part{The source boundary: finite-defect enumeration and dyadic non-holonomicity}\label{sbd:part:one}
 
 \section{Problem, contribution, and prior-art boundary}
 
@@ -889,6 +932,20 @@ series $B_d$ is also the exponential generating series of the labeled
 boundary counts.
 \end{remark}
 
+\begin{writenote}[Added 5 October 2026, batch~98]
+The stronger claim is now proved, in Part~\ref{sbd:part:two}: for every
+fixed $d\ge0$ the circle $|z|=R_d$ is a natural boundary of $B_d$
+(Theorem~\ref{sbd:xtm:thm:main-boundary}, proved independently by both
+Part~II manuscripts), and $B_d$ is unbounded, faster than every power of
+$1/t$, on the radius to every point $R_d\zeta$ with $\zeta$ a root of unity
+of power-of-two order. The natural boundary gives a second route to the
+non-D-finiteness of Theorem~\ref{sbd:thm:nonholonomic} and adds
+non-algebraicity (Corollary~\ref{sbd:xtm:cor:nonholonomic}). The remark's
+other caveat stands: nonlinear functional or differential equations are not
+excluded, and Part~\ref{sbd:part:two} lists this as an open question
+(Section~\ref{sbd:xtm:sec:future}).
+\end{writenote}
+
 \section{An all-orders expansion inside a dyadic block}\label{sbd:sec:expansion}
 
 The entropy law is uniform even at complete layers. More detailed
@@ -1105,6 +1162,9 @@ Here $u(1,1)=1$ and out-of-range entries are zero. The code verifies
 exact divisibility by $s$, equality of the two triangle constructions,
 the complete support theorem, the finite-defect formulas, and the
 covering inequalities.
+[Added 5 October 2026, batch~98: the recurrence \eqref{sbd:eq:deletionrec} is
+quoted here from Tomescu without proof; both Part~II manuscripts give a direct
+bijective proof, printed as Proposition~\ref{sbd:edge:prop:deletion}.]
 
 Third, for every $n\le7$, the program enumerates all graphs in which
 arcs point from a larger vertex index to a smaller one. It rejects
@@ -1243,6 +1303,23 @@ coefficients throughout its eventual support. A useful first target is
 an analysis of contributions from short intervals immediately after
 powers of two.
 
+\begin{writenote}[Added 5 October 2026, batch~98: answered]
+Yes, for every fixed $d\ge0$: Part~\ref{sbd:part:two} proves that
+$|z|=R_d$ is a natural boundary of $B_d$
+(Theorem~\ref{sbd:xtm:thm:main-boundary}). Two independent manuscripts of
+batch~98 prove it, both by the mechanism suggested here: on each dyadic
+block the coefficients just after the power of two, normalized, approach a
+geometric profile uniformly, and at roots of unity of power-of-two order
+the late blocks start in phase, so $B_d$ blows up along a dense set of
+radii. Part~\ref{sbd:part:two} adds the radial phase with an $O(t)$ rate,
+the two-term radial growth law, an $L^p$ comparison on every arc, natural
+boundaries for the arithmetic sections of the coefficient sequence (of
+power-of-two step in one manuscript, of every step in the writing step's
+Theorem~\ref{sbd:wr:thm:sections}), and the absence of a bidisk of
+convergence for the size-and-defect series. The proofs are unrefereed and
+not formalized.
+\end{writenote}
+
 \paragraph{2. A sharper small-core amplitude.}
 Combine an explicit, verified asymptotic expansion for $u_m$ with
 \eqref{sbd:eq:allorders}. Since $m\asymp\log n$, the resulting corrections
@@ -1303,6 +1380,15 @@ boundary formula can be proposed to OEIS with the historical upper-bound
 citation. No OEIS submission or repository commit was made during this
 work.
 
+\begin{writenote}[Added 5 October 2026, batch~98]
+Question~1 is answered in Part~\ref{sbd:part:two} (note above). The
+further questions of Part~\ref{sbd:part:two}
+(Section~\ref{sbd:xtm:sec:future}) take up Questions~3 (growing defects),
+6 (degree and arc statistics), 8 (restricted outdegree) and 10
+(formalization) again from the analytic side; they remain open as stated
+here.
+\end{writenote}
+
 \section{Conclusion}
 The source maximum has a short Boolean-capacity proof, and its known
 upper bound should not be confused with a new breakthrough. The
@@ -1326,6 +1412,2272 @@ formulas, uniform high-source estimates, complete growth-rate intervals,
 and non-holonomicity, with reproducible finite checks. Questions about
 historical priority, natural boundaries of the extremizer series,
 growing defects, and full formal verification remain explicitly separate.
+
+\begin{writenote}[Added 5 October 2026, batch~98]
+Of these, natural boundaries of the extremizer series are no longer open:
+Part~\ref{sbd:part:two} proves that $|z|=R_d$ is a natural boundary of
+$B_d$ for every fixed $d$. Priority, growing defects and formal
+verification remain separate, for Part~\ref{sbd:part:two} as well.
+\end{writenote}
+
+
+\clearpage
+\fancyhead[R]{\small Part~II: natural boundaries}
+\part{Natural boundaries at the source edge and at the source extremum}\label{sbd:part:two}
+
+\paragraph{Summary.}
+Let $u(n,s)$ count isomorphism classes of extensional acyclic digraphs with
+$n$ vertices and $s$ sources, and for a fixed defect $d\ge0$ let
+$b_n^{(d)}=u(n,n-\lceil\log_2n\rceil-d)$, with inadmissible terms zero, and
+$B_d(z)=\sum_{n\ge1}b_n^{(d)}z^n$, as in Part~\ref{sbd:part:one}. We prove
+that the circle of convergence
+\[
+ |z|=R_d,\qquad
+ R_d=\frac{(c_d-1)^{c_d-1}}{c_d^{c_d}},\qquad c_d=2^{d+1},
+\]
+is a natural boundary of $B_d$ for every fixed $d$. This answers
+Question~1 of Section~\ref{sbd:sec:questions}. The proof gives more than
+noncontinuation. At every root of unity $\zeta$ of power-of-two order, the
+quotient $B_d(R_d\e^{-t}\zeta)/B_d(R_d\e^{-t})$ has an explicit nonzero
+limit, with error $O_{d,\zeta}(t)$. Writing $L=\log(1/t)$, the logarithm of
+the radial magnitude is $L^2/(2\log2)+L\log L/\log2+O_d(L)$. On every
+nonempty open arc, every fixed positive power of the modulus has integral
+comparable to the positive radial value raised to that power, so the
+boundary is strong in a quantitative local $L^p$ sense. Every arithmetic
+subsequence of power-of-two step also has a natural boundary, and the
+joint size-and-defect series has no nontrivial bidisk of convergence.
+
+The mechanism is a uniform geometric limit for the normalized coefficients
+of each dyadic block, together with the common phase of the late block
+starts at dyadic roots of unity. All graph-counting estimates and analytic
+arguments are proved here; the counting identities inherited from
+Part~\ref{sbd:part:one} and from the classical literature are credited and
+re-proved, not claimed. Exact computations and numerical diagnostics
+accompany the proofs; the analytic conclusions do not rely on finite
+experiments. These are conventional proofs in unrefereed manuscripts, not
+formally verified, and not certified as historically first.
+
+\begin{writenote}[Added 5 October 2026, batch~98: provenance of Part~II]
+Part~II is a merge of two manuscripts, manuscripts~01 and~05 of batch~98 of
+ProveIt's incoming-reports intake. Both arrived in commit
+\nolinkurl{2172df76a} and were placed in this report by commit
+\nolinkurl{b50febf79} (batch~98C). Both pin the repository at commit
+\nolinkurl{d18416ec7e187a0948248cb3077e37d7b089a8f9}, at which this report
+consisted of the text printed here as Part~\ref{sbd:part:one}, without the
+batch-98 notes (it was unchanged from the pin to the placement); both answer
+its Question~1, independently of each other.
+\begin{center}\footnotesize
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.12\linewidth}>{\raggedright\arraybackslash}p{0.40\linewidth}>{\raggedright\arraybackslash}p{0.40\linewidth}@{}}
+\toprule
+ & source~05 (\emph{base}) & source~01\\
+\midrule
+archive & \nolinkurl{OEIS_Source_Boundaries.zip}, wrapper \nolinkurl{oeis_natural_boundaries/}, main file \nolinkurl{article.tex} (1{,}462 lines) & \nolinkurl{OEIS_EAD_Natural_Boundaries.zip}, wrapper \nolinkurl{ead-natural-boundary/}, main file \nolinkurl{ead_natural_boundaries.tex} (1{,}571 lines)\\
+title & \emph{Natural Boundaries at the Source Extremum: Fixed deficits, dyadic radial limits, and local $L^p$ growth} & \emph{Natural Boundaries at the Source Edge of Extensional Acyclic Digraphs: Dense singularities, universal radial limits, and logarithmic growth for OEIS source-count diagonals}\\
+date, author field & 5 October 2026 (UTC); ``Research manuscript prepared with ChatGPT'', PDF author ``ChatGPT'' & 5 October 2026; PDF author ``Research prepared with ChatGPT''\\
+shipped as & prefix \nolinkurl{03-source-extremum-}; labels \nolinkurl{sbd:xtm:} & prefix \nolinkurl{02-source-edge-}; labels \nolinkurl{sbd:edge:}\\
+contributes & every shared theorem in its stronger form: the $O(t)$ radial phase, the two-sided local $L^p$ comparison, the block profile on a disk larger than the circle; concentration of block mass; the no-bidisk theorem; first block and amplitude corrections & the abstract transfer lemma for coherent dyadic blocks; natural boundaries of all power-of-two arithmetic sections, with their radial ratios; second proofs of the radial law, the growth law and the log-level arc law; a direct proof of the deletion recurrence\\
+\bottomrule
+\end{tabular}
+\end{center}
+The two texts are not editions of one another: their shared word 8-grams
+are 2.7\,\% of manuscript~01's and 2.3\,\% of manuscript~05's, and their
+notation, proofs and extra results differ.
+The local file prefixes continue this report's sequence (the unprefixed
+Part~\ref{sbd:part:one} counts as~01) in archive order. Neither manuscript's
+\LaTeX\ source, PDF or delivery README is shipped; they survive in the
+archives of the arrival commit, and the report's README says how to
+retrieve them.
+
+\emph{Where the merge chose.} Manuscript~05 is the base: it has the same
+hypotheses as~01 (every fixed $d\ge0$) and is equal or stronger on every
+shared theorem. Theorems proved by both are printed once, in~05's form, and
+credited to both; where~01's proof differs it is printed as a marked second
+route. Everything only in~01 is printed in full: the transfer
+Lemma~\ref{sbd:edge:lem:transfer}, the arithmetic-section
+Theorem~\ref{sbd:edge:thm:subsequences} with its example and corollary, and
+the direct proof of the deletion recurrence. Statements that both
+manuscripts re-prove from Part~\ref{sbd:part:one} are printed as pointers
+(Section~\ref{sbd:xtm:sec:cores}), except where a proof differs or is new
+to the report. The two further-question lists are merged with each other
+and with Part~\ref{sbd:part:one}'s (Section~\ref{sbd:xtm:sec:future}); the
+two proof-status ledgers are merged in Section~\ref{sbd:xtm:app:audit}.
+Nothing was selected away.
+
+\emph{Overlap with Part~\ref{sbd:part:one}, credited.} Both manuscripts
+re-prove, for self-containment, the finite collapse and rigidity
+(Lemma~\ref{sbd:lem:collapse}, Corollary~\ref{sbd:cor:rigid}), the source
+support (Theorem~\ref{sbd:thm:support}), the intrinsic core and automatic
+covering at $d=0$ (\eqref{sbd:eq:union-core}, Lemma~\ref{sbd:lem:auto},
+Theorem~\ref{sbd:thm:classify}), the upper bound of
+Lemma~\ref{sbd:lem:ubound}, the marked-source sieve
+(Proposition~\ref{sbd:prop:marked}, Corollary~\ref{sbd:cor:sieve}), the
+finite-defect formula (Theorem~\ref{sbd:thm:defect}), the covering estimate
+(Theorem~\ref{sbd:thm:cover}), the radius \eqref{sbd:eq:radius} and the
+non-D-finiteness of Theorem~\ref{sbd:thm:nonholonomic}. Only the radius and
+non-D-finiteness are re-derived by a new route (from the block profile and
+the natural boundary). The chain lower bound for $u_m$ and the bijective
+proof of the deletion recurrence \eqref{sbd:eq:deletionrec} are new to the
+report. Neither manuscript uses a theorem of Part~\ref{sbd:part:one} as a
+premise.
+
+\emph{Editorial changes.} The manuscripts' references to ``the starting
+report'', ``the source report'' or ``the ProveIt report'' (their citations
+\nolinkurl{baseline} and \nolinkurl{repo-report}, whose pin and path this
+note records) now point to Part~\ref{sbd:part:one}. Their sections are
+renumbered and interleaved as Sections~\ref{sbd:xtm:sec:introduction}--%
+\ref{sbd:xtm:app:audit}; manuscript~05's two appendices are
+Sections~\ref{sbd:xtm:app:expansions} and~\ref{sbd:xtm:app:audit};
+manuscript~01's Appendices~A and~B are in Sections~\ref{sbd:xtm:sec:cores}
+and~\ref{sbd:xtm:app:audit}, and its Appendix~C (rebuilding its package) is
+replaced by the report's README. The symbols of manuscript~01 are translated
+into those of manuscript~05 (table below), and $u_m$ replaces~05's $U_m$.
+The bibliographies are merged into the report's. The shipped table files
+are input under their prefixed names, through a wrapper that adds the
+label sub-prefix to the names they define and cite; the figures are the
+shipped prefixed files. Manuscript~05 wrapped every table input and figure
+in \verb|\IfFileExists|, which silently drops a missing file; here they are
+input unconditionally, so the build fails if one is missing. Manuscript~05's
+inline table of small counts duplicates Part~\ref{sbd:part:one}'s table in
+Section~11.1 and manuscript~01's shipped table, and is not printed again.
+Statements marked [write] are the writing step's: two results with proofs
+(Lemma~\ref{sbd:wr:lem:dominant} with Theorem~\ref{sbd:wr:thm:sections}, and
+Proposition~\ref{sbd:wr:prop:orderL}), the notes, and the merged question
+list. No statement, proof or number of either manuscript was otherwise
+altered.
+
+\emph{Status and non-claims, kept from both sources.} Both manuscripts are
+unrefereed and prepared with ChatGPT; nothing in Part~II is formalized in
+Lean or Rocq, and its place in this report confers no formal status. Their
+limited literature searches certify no historical priority. The counting
+identities, collapse, rigidity, sieve, covering bound and source maximum
+are background (Tomescu's thesis \cite{tomescu}, Johnston's 2012 sieve in
+A182162 \cite{oeis162}, Policriti--Tomescu \cite{policriti},
+Part~\ref{sbd:part:one}), re-proved, not new. Wagner's results
+\cite{wagner,wagner13} are context, never premises (manuscript~01 could not
+access the full text of the journal version and read its abstract). Breuer
+and Simon \cite{breuersimon} supply terminology only; their
+bounded-coefficient theorem is not applied. Floating-point diagnostics are
+not interval-certified (truncation is bounded analytically, roundoff is not
+enclosed), and finite checks are tests, not proofs. Nothing is claimed about
+radial behaviour at non-dyadic angles or at almost every angle, about
+nonlinear differential algebraicity, or about complex defect fugacity.
+Manuscript~05's statement that ``independent internal reviews'' checked its
+proofs is reported as its own description of its preparation; the intake
+could not verify it, and it is not evidence of review (see
+Section~\ref{sbd:xtm:sec:future}). The manuscripts made no repository
+commit, OEIS submission or message to another person.
+\end{writenote}
+
+\begin{writenote}[Added 5 October 2026, batch~98: notation of Part~II]
+Part~II writes everything in manuscript~05's letters. The middle column
+gives manuscript~01's symbol for the same object; the right column gives
+the meaning the letter has in Part~\ref{sbd:part:one}, the tempting false
+reading. Shared notions keep Part~\ref{sbd:part:one}'s symbols: $u(n,s)$,
+$u_m$ (A001192; manuscript~05 writes $U_m$), $q=q(n)=\lceil\log_2n\rceil$,
+$b_n^{(d)}$, $B_d$, $R_d$, $\fall nm$.
+{\footnotesize
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.17\linewidth}>{\raggedright\arraybackslash}p{0.37\linewidth}>{\raggedright\arraybackslash}p{0.15\linewidth}>{\raggedright\arraybackslash}p{0.22\linewidth}@{}}
+\toprule
+symbol & meaning in Part~II & in source~01 & \emph{not}: Part~I's meaning\\
+\midrule\endhead
+$c=c_d$ & $2^{d+1}$ & $a$ & ($c$ a core element)\\
+$a=a_d$ & $c-1=2^{d+1}-1$ & $a-1$ & $a(n)=\mathrm{A182220}(n)$\\
+$R=R_d$ & $a^a/c^c=\e^{-\lambda_{d+1}}$, the radius \eqref{sbd:eq:radius} & $R_d$ & $R$ a removed family\\
+$aR$ & $(1-1/c)^c<\e^{-1}$ & $\rho_d$ & $\rho_n=n/2^q$, the dyadic phase\\
+$h$ & $\log 2$ & $\log2$; also the step $2^s$ & the order of a recurrence \eqref{sbd:eq:prec}\\
+$K=K_q$ & $2^{q-1}$; block $K<n\le2K$ & $N$ & ($N=2^m$ in Part~I)\\
+$m$, $k_0$ & $q+d$ (so $2^m=cK$); $k_0=K+1-m$ & $m$; $N+1-m$ & $m$ the core size (same)\\
+$C_q$ & $\binom{cK-m}{k_0}$ & $C_q(N+1)/u_m$ & $C$ a core; $C_1(m,p)$\\
+$A_q$ & $u_mC_qR^{K+1}$, the block amplitude & $c_q$ & $A=u_m\binom Mk$ (Theorem~\ref{sbd:thm:cover})\\
+$u_mC_q$ & the positive leading count of block $q$ & $A_q$ & ---\\
+$P_q(z)$ & block polynomial \eqref{sbd:xtm:eq:block-polynomial} in $z$ & $P_q(w)=P_q(Rw)$ & $P_n(z)=\sum_su(n,s)z^s$\\
+$g(z)$ & $1/(1-az)$; $g(Rw)$ is~01's profile & $1/(1-\rho w)$ & ---\\
+$E_d$ & the head polynomial; $E_{c,m}$ an amplitude coefficient & $E_d(w)$ & $E(n,a(n))$; $\E$ expectation\\
+$t$, $L$ & radial variable, $L=\log(1/t)$ & $\varepsilon$; $r=\e^{-\varepsilon}$; $L$ & $t$ marked sources; $L$ a source family, $L(z)$\\
+$\mathcal T(L)$ & $L^2/(2h)+L\log L/h$ & $T(L)$ & $T=2^m$; $T(n,k)$\\
+$T$ & a real radius, $R<T<1/a$ & --- & $T=2^m$\\
+$S_d(t)$ & $\sum_qA_q\e^{-t(K_q+1)}$ & $S(r)$, $S_\varepsilon$ & $S_\ell(m)$ power sums\\
+$p$ & a positive exponent ($L^p$) & $p$ & $p=n/T$ a phase\\
+$M$ & a positive power in \eqref{sbd:xtm:eq:superpole} & $M$ & $M=2^m-m$\\
+$D$, $D_t$, $F_t$ & an integer offset; $\sum nb_nR^n\e^{-tn}$; $B_d(R\e^{-t})$ & --- & ---\\
+$\gamma_d$ & coefficients of a finite combination $\sum\gamma_dB_d$ & $c_d$ & $\lambda_d=2^dH(2^{-d})$ (05 wrote $\lambda_d$)\\
+$r$, $r_0$ & a step $r\ge1$ and a residue $0\le r_0<r$ & $h=2^s$, $r_0$ & $r=2^m-n$\\
+$B_d^{(r,r_0)}$, $G_d^{(r,r_0)}$ & the residue-class series \eqref{sbd:edge:eq:filtered-series} & $H_{d,h,r_0}$, $G_{d,h,r_0}$ & $H$ the binary entropy\\
+$\alpha_q$, $\Pi_q$, $\Pi$ & amplitudes and polynomials of the abstract Lemma~\ref{sbd:edge:lem:transfer} & $c_q$, $P_q$, $P$ & $\alpha<\beta$ in Lemma~\ref{sbd:lem:jump}\\
+$\omega_q(t)$, $y_0(L)$, $q_t$, $\varphi$ & the write's block weights and phase, Section~\ref{sbd:wr:sec:dominant} & --- & $\Phi_d$ the entropy profile\\
+$\mathcal B(z,v)$ & the size-and-defect series \eqref{sbd:xtm:eq:bivariate} & --- & ---\\
+\bottomrule
+\end{longtable}}
+% [write] an uncaptioned longtable still steps the table counter
+\addtocounter{table}{-1}%
+\noindent Manuscript~01 used $h$ both for $\log2$ (its Lemma~7.1) and for the
+step $2^s$ (its Section~9); here $h$ is always $\log 2$. It used $L$ both
+for a source family and for $\log(1/\varepsilon)$, and $L_q=N+1$ for a block
+start; here $L$ is only $\log(1/t)$ and the block start is $K+1$. Its set
+$\mathcal D$ of dyadic roots of unity is written out in words. Within
+proofs, $C$, $C_d$, $\kappa$, $\eta$, $\epsilon$ and $\delta$ denote local
+constants.
+\end{writenote}
+
+\section{The question and the results}
+\label{sbd:xtm:sec:introduction}
+
+\subsection{From a source maximum to the number of near-extremizers}
+An extensional acyclic digraph is a finite directed graph with no directed
+cycle in which different vertices have different out-neighborhoods; these
+graphs encode finite transitive sets, an arc from $x$ to $y$ corresponding
+to $y\in x$. OEIS A001192 counts their isomorphism classes, and A182162
+refines their labeled counts by the number of sources
+\cite{oeis1192,oeis162}. The relevant OEIS entries distinguish the
+following quantities \cite{oeis220,oeis162,oeis1192,oeis161}.
+\begin{center}
+\begin{tabular}{@{}p{0.15\textwidth}p{0.73\textwidth}@{}}
+\toprule
+Entry & Quantity \\
+\midrule
+A001192 & $u_m$, the number of finite transitive sets of size $m$,
+equivalently EAD isomorphism classes.\\
+A182161 & $m!u_m$, the number of EADs on a fixed labeled vertex set.\\
+A182162 & $n!u(n,k)$, the labeled source-count triangle.\\
+A182220 & $n-\lceil\log_2n\rceil$, the maximum possible number of sources.\\
+\bottomrule
+\end{tabular}
+\end{center}
+The source maximum is
+\begin{equation}\label{sbd:xtm:eq:maximum}
+ s_{\max}(n)=n-q(n),\qquad q(n)=\lceil\log_2 n\rceil\quad(n\ge1),
+\end{equation}
+the quantity in A182220 \cite{oeis220}. Its elementary upper bound is in
+Tomescu's thesis, printed page~29 \cite{tomescu}; Part~\ref{sbd:part:one}
+supplies the matching construction and develops the enumeration near this
+boundary (Theorem~\ref{sbd:thm:support}).
+
+For a fixed integer $d\ge0$, as in \eqref{sbd:eq:boundary-def} and
+\eqref{sbd:eq:Bgf},
+\begin{equation}\label{sbd:xtm:eq:defect-definition}
+ b_n^{(d)}=
+ \begin{cases}
+ u(n,n-q(n)-d),&n-q(n)-d\ge1,\\
+ 0,&n-q(n)-d<1,
+ \end{cases}
+ \qquad
+ B_d(z)=\sum_{n\ge1}b_n^{(d)}z^n.
+\end{equation}
+Thus $d=0$ counts the source-maximizing graphs, and $d=1$ counts graphs
+with one fewer source. A fixed $d$ leaves a core of $q(n)+d$ nonsources,
+which is only logarithmic in $n$. When subsequences are extracted we also
+set $b_0^{(d)}=0$, and $\binom Mk=0$ for $k<0$ or $k>M$.
+
+Part~\ref{sbd:part:one} proves that each $B_d$ is not D-finite and has
+radius $R_d$ (Theorem~\ref{sbd:thm:nonholonomic}), and asks, in
+Section~\ref{sbd:sec:questions}, Question~1, whether its entire circle of
+convergence is a natural boundary; it distinguishes that question
+expressly from non-D-finiteness (Remark~8.3). Non-D-finiteness by itself
+would not answer it. The argument below identifies a dense set of radial
+singularities and quantifies their size.
+
+\subsection{Conventions and main theorems}
+All logarithms without a subscript are natural. A statement with an $O_d$
+remainder permits its constant to depend on $d$; it does not assert
+uniformity for a growing defect. For fixed $d$, set
+\begin{equation}\label{sbd:xtm:eq:constants}
+ c=c_d=2^{d+1},\qquad a=a_d=c-1,\qquad
+ R=R_d=\frac{a^a}{c^c},\qquad h=\log2.
+\end{equation}
+Then $R_d=\e^{-\lambda_{d+1}}$ is the radius \eqref{sbd:eq:radius} of
+Part~\ref{sbd:part:one}, since $cH(1/c)=c\log c-a\log a$, and
+$0<aR=(1-1/c)^c<1$. A \emph{dyadic root of unity} is a complex number $\zeta$
+with $\zeta^{2^j}=1$ for some integer $j\ge0$; these form a dense subset of
+the unit circle containing~$1$.
+
+\begin{definition}[source~01]\label{sbd:edge:def:boundary}
+The circle $|z|=R$ is a \emph{natural boundary} for a holomorphic function
+on $|z|<R$ if the function has no holomorphic continuation through any point
+of that circle. Continuation through a point means a holomorphic function
+on a neighborhood of the point that agrees with the original function on
+the portion inside its disk.
+\end{definition}
+
+\begin{theorem}[Natural boundary and quantitative radial phase; sources~05 and~01]
+\label{sbd:xtm:thm:main-boundary}
+For every fixed integer $d\ge0$, $B_d$ has radius of convergence $R_d$.
+The circle $|z|=R_d$ is a natural boundary. Moreover, for every fixed
+dyadic root of unity $\zeta$,
+\begin{equation}\label{sbd:xtm:eq:phase-main}
+ \frac{B_d(R_d\e^{-t}\zeta)}{B_d(R_d\e^{-t})}
+ =\zeta\frac{1-a_dR_d}{1-a_dR_d\zeta}
+   +O_{d,\zeta}(t)\qquad(t\downarrow0).
+\end{equation}
+The displayed limit is nonzero, and $B_d(R_d\e^{-t})\to+\infty$.
+\end{theorem}
+In manuscript~01's normalization ($\rho_d=a_dR_d$, $r=\e^{-t}$) the
+limit reads
+\begin{equation}\label{sbd:edge:eq:radial-ratio}
+ \lim_{r\uparrow1}\frac{B_d(R_dr\zeta)}{B_d(R_dr)}
+ =\frac{\zeta(1-a_dR_d)}{1-a_dR_d\zeta}.
+\end{equation}
+Manuscript~05 proves the theorem with the $O(t)$ rate
+(Section~\ref{sbd:xtm:sec:boundary}); manuscript~01 proves the limit
+\eqref{sbd:edge:eq:radial-ratio} and the natural boundary through the
+abstract transfer Lemma~\ref{sbd:edge:lem:transfer}
+(Section~\ref{sbd:edge:sec:transfer}).
+
+\begin{theorem}[Radial size; sources~05 and~01]
+\label{sbd:xtm:thm:main-growth}
+For each fixed $d\ge0$, with $L=\log(1/t)$ and
+$\mathcal T(L)=L^2/(2h)+L\log L/h$,
+\begin{equation}\label{sbd:xtm:eq:growth-main}
+ \log B_d(R_d\e^{-t})
+ =\frac{L^2}{2h}+\frac{L\log L}{h}+O_d(L).
+\end{equation}
+At every fixed dyadic root $\zeta$, the same formula holds for
+$\log|B_d(R_d\e^{-t}\zeta)|$, with the constant in the error allowed to
+depend on $\zeta$. In particular, for every fixed $M>0$,
+\begin{equation}\label{sbd:xtm:eq:superpole}
+ t^M\,|B_d(R_d\e^{-t}\zeta)|\longrightarrow\infty.
+\end{equation}
+\end{theorem}
+
+\begin{theorem}[Local $L^p$ comparison and growth; source~05, the log-level law also source~01]
+\label{sbd:xtm:thm:main-lp}
+Let $d\ge0$ and $p>0$ be fixed, and let $I$ be a nonempty bounded open
+interval of angles. For all sufficiently small $t>0$,
+\begin{equation}\label{sbd:xtm:eq:lp-comparison}
+ C_{d,p,I}^{-1}B_d(R_d\e^{-t})^p
+ \ \le\int_I |B_d(R_d\e^{-t+\ii\theta})|^p\dd\theta
+ \ \le C_{d,p,I}B_d(R_d\e^{-t})^p
+\end{equation}
+for a positive constant $C_{d,p,I}$. Consequently,
+\begin{equation}\label{sbd:xtm:eq:lp-growth}
+ \log\int_I |B_d(R_d\e^{-t+\ii\theta})|^p\dd\theta
+ =\frac{pL^2}{2h}+\frac{pL\log L}{h}+O_{d,p,I}(L).
+\end{equation}
+In particular these radial integral means tend to infinity on every
+nonempty open arc, for every $p>0$.
+\end{theorem}
+The logarithmic law \eqref{sbd:xtm:eq:lp-growth} is manuscript~01's
+Theorem~1.4, proved there by a different, single-point argument
+(Section~\ref{sbd:xtm:sec:lp}); the two-sided comparison
+\eqref{sbd:xtm:eq:lp-comparison} is manuscript~05's.
+
+Section~\ref{sbd:edge:sec:subsequences} proves a further stability result
+(manuscript~01): for every $s\ge0$ and $0\le r_0<2^s$ the series
+$\sum_{\ell\ge0}b_{2^s\ell+r_0}^{(d)}z^\ell$ has natural boundary
+$|z|=R_d^{2^s}$; the convention at $n=0$ does not affect this. The writing
+step extends it to every step $r\ge1$
+(Theorem~\ref{sbd:wr:thm:sections}). Section~\ref{sbd:xtm:sec:consequences}
+establishes a zero-radius result for positive defect fugacity
+(manuscript~05).
+
+\subsection{Normalization and the scope of the contribution}
+Extensional acyclic digraphs have no nontrivial automorphisms
+(Corollary~\ref{sbd:cor:rigid}). Hence the labeled count corresponding to
+$b_n^{(d)}$ is $n!b_n^{(d)}$, and $B_d$ is both the \emph{ordinary}
+generating function of the unlabeled counts and the \emph{exponential}
+generating function of the corresponding A182162 entries. The ordinary
+generating function of the labeled counts has radius zero; it is not the
+analytic function of Theorem~\ref{sbd:xtm:thm:main-boundary}.
+
+\begin{table}[htbp]
+\centering\small
+\caption{What Part~II inherits and what it proves (after manuscript~05's
+table; ``starting report'' is Part~I).}
+\label{sbd:xtm:tab:scope}
+\begin{tabular}{p{0.41\textwidth}p{0.50\textwidth}}
+\toprule
+Statement & Status in Part~II\\
+\midrule
+Source maximum and Boolean-core representation & In Part~I; re-proved
+with attribution.\\
+Marked-source sieve and core-count recurrence & Classical enumerative
+input; direct proofs included.\\
+Fixed-defect radius and non-D-finiteness & Already in Part~I;
+recovered by a different analytic argument.\\
+Natural boundary for every fixed defect & Resolves Part~I's
+Question~1.\\
+Radial phase with $O(t)$ error; two-term logarithmic growth & Additional
+quantitative theorems.\\
+Local $L^p$ comparison on every arc & Additional strong-boundary
+theorem.\\
+Power-of-two arithmetic sections & Natural boundaries, with explicit
+radial ratios (manuscript~01).\\
+No bidisk for the size-and-defect series & Additional obstruction
+to a holomorphic joint generating function.\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Finite transitive sets and their enumeration are classical
+\cite{peddicord,policriti,tomescu}; Wagner's work treats unrestricted
+asymptotic enumeration and several graph statistics
+\cite{wagner,wagner13}. These sources concern the background. The analytic
+conclusions follow from the elementary estimates proved below and require
+no imported precise asymptotic formula for $u_m$. Natural-boundary arguments
+using lacunary exponents have a long history; Breuer and Simon discuss both
+classical and strong natural boundaries \cite{breuersimon}. Manuscript~05
+uses their terminology, not their bounded-coefficient right-limit theorem:
+the normalized coefficients here are unbounded. The contribution is a proved
+application to this precise enumeration problem, with quantitative
+refinements. Limited primary-source searches by both manuscripts located no
+earlier treatment of these fixed-defect natural boundaries; that does not
+establish worldwide priority.
+
+\section{Finite graphs, finite sets and source cores: what Part~II takes from Part~I}
+\label{sbd:xtm:sec:cores}
+
+Both manuscripts begin by re-proving the combinatorial background, to make
+their analytic conclusions independently assessable. These statements are
+Part~\ref{sbd:part:one}'s and are not printed again; the table records the
+correspondence (the middle columns use the manuscripts' own numbering) and
+Remark~\ref{sbd:xtm:rem:routes} the proofs that differ.
+\begin{center}\footnotesize
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.34\linewidth}>{\raggedright\arraybackslash}p{0.20\linewidth}>{\raggedright\arraybackslash}p{0.20\linewidth}>{\raggedright\arraybackslash}p{0.16\linewidth}@{}}
+\toprule
+statement & source~05 & source~01 & Part~I\\
+\midrule
+finite collapse, rigidity, $n!u(n,s)$ labeled graphs & Lemma~2.1, Corollary~2.2 & Lemma~2.1 & Lemma~\ref{sbd:lem:collapse}, Corollary~\ref{sbd:cor:rigid}\\
+source support, $s_{\max}(n)=n-q(n)$ & Proposition~2.3 & Proposition~2.2 & Theorem~\ref{sbd:thm:support}\\
+intrinsic core $C=\bigcup F$, $F=C\cup L$, covering condition & \S2.3 & \S2.1 & \eqref{sbd:eq:union-core}, \eqref{sbd:eq:coreform}\\
+$u_m\le2^{\binom m2}$ & Lemma~2.4 & Lemma~4.1 & Lemma~\ref{sbd:lem:ubound}\\
+marked sources, inversion, total recurrence & Proposition~3.1 & Proposition~3.1 & Proposition~\ref{sbd:prop:marked}, Corollary~\ref{sbd:cor:sieve}\\
+finite-defect formula, $b_n^{(0)}=u_q\binom{2^q-q}{n-q}$ & Corollary~3.2 & Corollary~3.2; display after Lemma~2.3 & Theorem~\ref{sbd:thm:defect}, Theorem~\ref{sbd:thm:classify}\\
+covering estimate $0\le u_m\binom{2^m-m}k-u(m+k,k)\le m2^{-k}u_m\binom{2^m-m}k$ & Lemma~3.3 & Lemma~2.3 & Theorem~\ref{sbd:thm:cover}\\
+covering automatic at $d=0$ & after Lemma~3.3 & after Lemma~2.3 & Lemma~\ref{sbd:lem:auto}\\
+deletion recurrence & \S9.1 (sketch) & Appendix~A & \eqref{sbd:eq:deletionrec}, quoted\\
+\bottomrule
+\end{tabular}
+\end{center}
+In particular the covering estimate is used below in the form
+\begin{equation}\label{sbd:xtm:eq:covering-bound}
+ 0\le u_m\binom{2^m-m}k-u(m+k,k)
+ \le m2^{-k}u_m\binom{2^m-m}k\qquad(k\ge1,\ k\le2^m-m),
+\end{equation}
+which is \eqref{sbd:eq:cover}, and the finite-defect formula in the form
+\eqref{sbd:eq:defect}. Uniqueness of the intrinsic core prevents double
+counting, and the bound is uniform over the shape of the core. The two
+manuscripts add the following remarks to these background statements.
+Collapse and rigidity are classical facts of the graph representation of
+finite sets \cite{policriti,tomescu}; they explain why counting
+source-neighborhood families requires no division by automorphism groups
+(05). The upper source bound is explicitly on printed page~29 of Tomescu's
+thesis \cite{tomescu}, and the construction and the OEIS formula are
+background to the question solved here (01). The covering condition
+$\bigcup(C\cup L)=C$ matters because it has a small failure probability
+when $L$ is large (01). The source-sensitive enumeration is classical, the
+OEIS entries contain Johnston's implementation of the sieve and core
+recurrence \cite{oeis162,oeis1192}, and the identities are re-proved so
+that all normalizations and the exact computations can be checked within
+the manuscripts, where they also provide exact independent checks of the
+asymptotic reasoning (both). The covering estimate is useful even though
+$m2^{-k}$ can exceed one at small parameters: the upper error inequality
+is still true, while its asymptotic use has $k$ exponentially larger than
+$m$ (05). The analytic work below uses the positive approximation
+\eqref{sbd:xtm:eq:covering-bound} instead of the cancellation in
+\eqref{sbd:eq:defect}, whose alternating terms are an exact identity, not
+an asymptotic series (05, 01).
+
+\begin{remark}[Routes that differ from Part~I's]\label{sbd:xtm:rem:routes}
+(i) Manuscript~01's collapse proof assigns $x_v=\{x_w:v\to w\}$ and argues
+by set-theoretic rank: assignments at lower ranks are distinct by
+induction, extensionality separates those at the next rank, and different
+ranks give different sets. (ii) Its support construction takes \emph{any}
+transitive core $C$ of size $m$ and any $k$-family of available subsets
+containing $C$ itself (available because $C\notin C$); every core element
+is then covered. Part~\ref{sbd:part:one} and manuscript~05 use a directed
+path as the core. (iii) Manuscript~05 proves the inversion
+\eqref{sbd:eq:sieve} directly: if $f_t=\sum_{s\ge t}\binom st u(n,s)$, the
+coefficient of $u(n,j)$ in $\sum_{t\ge s}(-1)^{t-s}\binom ts f_t$ is
+$\binom js\sum_{t=s}^j(-1)^{t-s}\binom{j-s}{t-s}$, which vanishes unless
+$j=s$; and it obtains the total recurrence \eqref{sbd:eq:total-rec} from
+$\sum_{t=1}^s(-1)^{t-1}\binom st=1$ for $s\ge1$, since every nonempty
+acyclic graph has a source. Part~\ref{sbd:part:one} and manuscript~01 use
+the polynomial $P_n(z)=\sum_su(n,s)z^s$. (iv) Manuscript~05 bounds the
+covering failure by
+$\binom{2^{m-1}-m}k/\binom{2^m-m}k\le\bigl((2^{m-1}-m)/(2^m-m)\bigr)^k\le2^{-k}$.
+\end{remark}
+
+\subsection{The chain lower bound for the core count}
+The core count affects the singular strength even though it does not affect
+the exponential radius of the boundary sequence (01). The following
+two-sided bound is the only information about $u_m$ that the analytic
+arguments use. Its lower half is new to this report.
+
+\begin{lemma}[Elementary core-count bounds; sources~05 and~01]\label{sbd:xtm:lem:core-bounds}
+For every $m\ge1$,
+\begin{equation}\label{sbd:xtm:eq:core-bounds}
+ 2^{\binom{m-1}{2}}\le u_m\le2^{\binom m2}.
+\end{equation}
+Consequently $\log u_m=\tfrac h2m^2+O(m)$.
+\end{lemma}
+\begin{proof}
+The upper bound is Lemma~\ref{sbd:lem:ubound}. For the lower bound, use
+vertices $0,\ldots,m-1$. Require the arcs $i\to i-1$ for $1\le i<m$ and
+choose each arc $i\to j$ with $j<i-1$ independently. The largest member of
+$N^+(i)$ is $i-1$, so the neighborhoods are distinct. The required path
+makes the reachability order total; hence the topological order is unique.
+An isomorphism must preserve that order and therefore every vertex.
+Different arc choices are nonisomorphic, giving $2^{0+1+\cdots+(m-2)}$
+classes. There is no factorial loss in this construction. Taking
+logarithms proves the final assertion.
+\end{proof}
+
+\begin{proof}[Second route for the rigidity step (source~01)]
+In the same graphs, the longest directed path starting at vertex $i$ has
+length exactly $i$. These lengths are graph invariants and are all
+different, so an isomorphism between two such graphs preserves every
+vertex index, and different choices of optional arcs give different
+classes. There are $\sum_{i=1}^{m-1}(i-1)=(m-1)(m-2)/2$ optional arcs.
+Vertex~$0$ alone has the empty neighborhood.
+\end{proof}
+
+\begin{remark}[source~01]\label{sbd:edge:rem:m0}
+The range $m\ge1$ in \eqref{sbd:xtm:eq:core-bounds} matters: $u_0=1$,
+whereas substituting $m=0$ into the displayed lower power would give $2$.
+All asymptotic block arguments use $m\to\infty$.
+\end{remark}
+
+Wagner's work gives much sharper unrestricted enumeration and
+distributional results \cite{wagner,wagner13}. The elementary squeeze above
+already gives the exact quadratic coefficient needed for the radial laws,
+with no unspecified enumeration constant; none of the analytic theorems
+uses a sharp asymptotic formula for $u_m$.
+
+\subsection{A direct proof of the deletion recurrence}
+Part~\ref{sbd:part:one} quotes the source-deletion recurrence
+\eqref{sbd:eq:deletionrec} from Tomescu's Corollary~2.1.7 \cite{tomescu}
+and uses it only in its verification program. Both manuscripts prove it;
+manuscript~01's appendix gives the argument in full, and manuscript~05's
+Section~9.1 gives the same construction in brief.
+
+\begin{proposition}[Source deletion; sources~01 and~05]\label{sbd:edge:prop:deletion}
+For $n\ge2$ and $1\le s\le n$, with $u(1,1)=1$ and zero outside the valid
+source range,
+\begin{equation}\label{sbd:edge:eq:deletion-rec}
+ s\,u(n,s)
+ =\bigl(2^{n-s}-(n-1)\bigr)u(n-1,s-1)
+ +\sum_{j=0}^{n-s-1}
+ \binom{s+j}{j+1}2^{n-1-s-j}u(n-1,s+j),
+\end{equation}
+which is \eqref{sbd:eq:deletionrec} multiplied by $s$.
+\end{proposition}
+\begin{proof}
+Mark one source in a graph with $s$ sources and delete it. If no new
+source is exposed, the remaining graph has $s-1$ sources. The deleted
+vertex must avoid these sources, and its out-neighborhood must differ from
+all $n-1$ existing neighborhoods. There are $2^{n-s}-(n-1)$ choices. When
+such a remaining graph exists, the source-support bound guarantees this
+quantity is nonnegative.
+
+Otherwise let $j+1\ge1$ be the number of newly exposed sources. The
+remaining graph has $s+j$ sources. Choose exactly $j+1$ of them as
+neighbors of the vertex being restored; choose any subset of the other
+$n-1-s-j$ vertices as further neighbors. These neighborhoods are
+automatically distinct from every old neighborhood, because they contain
+an old source. This gives the summand in \eqref{sbd:edge:eq:deletion-rec}.
+Rigidity makes the number of choices of a marked source on the left
+exactly $s$. Thus the recurrence is independent of binomial inversion,
+while counting the same objects.
+\end{proof}
+
+\section{Dyadic blocks and their analytic profile}
+\label{sbd:xtm:sec:blocks}
+
+Fix $d$ for the remainder of the analytic argument and suppress its
+subscript in $c=c_d$, $a=c-1$ and $R=R_d$. On a block
+\begin{equation}\label{sbd:xtm:eq:block-parameters}
+ K=2^{q-1}<n\le2K,\qquad m=q+d,
+\end{equation}
+one has $q(n)=q$ and $2^m=cK$. For sufficiently large $q$, define
+\begin{equation}\label{sbd:xtm:eq:amplitude-definition}
+ k_0=K+1-m,\quad
+ C_q=\binom{cK-m}{k_0},\quad
+ A_q=u_mC_qR^{K+1}.
+\end{equation}
+All these quantities are positive. Choose a fixed lower block index
+$q_0=q_0(d)$ large enough that $k_0\ge1$ and $m\le K/2$ thereafter.
+The omitted initial coefficients make a polynomial $E_d(z)$. The
+normalization $u_mC_q$ is the positive leading count of the block, not
+necessarily the exact count $b_{K+1}^{(d)}$; for $d=0$ the two coincide.
+By the covering estimate \eqref{sbd:xtm:eq:covering-bound},
+\begin{equation}\label{sbd:edge:eq:eta}
+ b_{K+1+j}^{(d)}=u_m\binom{cK-m}{k_0+j}(1-\eta_{q,j}),\qquad
+ 0\le\eta_{q,j}\le m2^{-(k_0+j)}.
+\end{equation}
+Set
+\begin{equation}\label{sbd:xtm:eq:block-polynomial}
+ P_q(z)=\sum_{j=0}^{K-1}
+       \frac{b_{K+1+j}^{(d)}}{u_mC_q}z^j.
+\end{equation}
+The exact block decomposition is
+\begin{equation}\label{sbd:xtm:eq:block-decomposition}
+ B_d(z)=E_d(z)+\sum_{q\ge q_0}A_q(z/R)^{K+1}P_q(z),
+\end{equation}
+initially as a formal series and later as a convergent analytic identity.
+(Manuscript~01 writes the same decomposition in the variable $w=z/R$, with
+its $P_q(w)$ equal to $P_q(Rw)$ here and its amplitude $c_q$ equal to $A_q$.)
+
+\subsection{The uniform geometric profile}
+The relevant geometric parameter is safely inside the unit disk:
+\begin{equation}\label{sbd:xtm:eq:margin}
+ aR=\left(1-\frac1c\right)^c<\e^{-1}<1.
+\end{equation}
+Thus one may choose a real $T$ with $R<T<1/a$.
+
+\begin{lemma}[Quantitative block profile; source~05, source~01's Theorem~5.1]\label{sbd:xtm:lem:block-profile}
+For any fixed $0<T<1/a$, uniformly on $|z|\le T$,
+\begin{equation}\label{sbd:xtm:eq:block-profile}
+ P_q(z)=g(z)+O_{d,T}(m/K),\qquad g(z)=\frac1{1-az}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+First replace the count in \eqref{sbd:xtm:eq:block-polynomial} by its binomial
+proxy. Write
+\[
+ v_{q,j}=\frac{\binom{cK-m}{k_0+j}}{\binom{cK-m}{k_0}},
+ \qquad v_{q,0}=1.
+\]
+For $1\le j<K$ the product representation is
+\begin{equation}\label{sbd:xtm:eq:consecutive-ratios}
+ v_{q,j}=\prod_{s=1}^jr_s,\qquad
+ r_s=\frac{aK-s}{K+1-m+s}.
+\end{equation}
+The ratios are nonnegative and decrease with $s$. Since $m\le K/2$,
+\begin{equation}\label{sbd:xtm:eq:ratio-bounds}
+ r_s\le a+O_d(m/K),\qquad
+ |r_s-a|\le C_d\frac{m+s}{K}.
+\end{equation}
+Choose $\epsilon>0$ such that $(a+\epsilon)T<1$. For sufficiently
+large $q$, every $r_s$ is at most $a+\epsilon$. Telescoping the two
+products gives, for $j\ge1$,
+\begin{equation}\label{sbd:xtm:eq:product-difference}
+ |v_{q,j}-a^j|
+ \le\frac{C_d(mj+j^2)}{K}(a+\epsilon)^{j-1}.
+\end{equation}
+After multiplication by $T^j$ this is summable uniformly in $q$.
+The resulting error is $O_{d,T}(m/K)$. The missing geometric tail
+from $j=K$ onward is at most $(aT)^K/(1-aT)$ and satisfies the same bound.
+
+By the covering estimate, the error from replacing the actual
+coefficient by its proxy is at most $m2^{-k_0-j}v_{q,j}$. Its sum on
+$|z|\le T$ is bounded by
+\[
+ m2^{-k_0}\sum_{j=0}^{K-1}
+   \bigl((a+\epsilon)T/2\bigr)^j
+ =O_{d,T}(m2^{-k_0}).
+\]
+This is smaller than $m/K$ for large $q$. Combining the three
+bounds proves \eqref{sbd:xtm:eq:block-profile}.
+\end{proof}
+
+Manuscript~01 states the case $T=R$ in the variable $w=z/R$: with
+$aR=\rho_d$ in its notation,
+\begin{equation}\label{sbd:edge:eq:profile-limit}
+ \sup_{|w|\le1}\Bigl|P_q(Rw)-\frac1{1-aRw}\Bigr|
+ =O_d\Bigl(\frac{m+1}K\Bigr)=O_d(q2^{-q}),
+\end{equation}
+so the convergence includes the whole circle of convergence and is
+stronger than convergence of any fixed number of coefficients. Its proof
+is the same telescoping argument, in the normalized coefficients
+$v_{q,j}R^j$, whose consecutive ratios it writes exactly: for
+$0\le\ell\le K-2$,
+\begin{equation}\label{sbd:edge:eq:ratio-difference}
+ R\,r_{\ell+1}=R\frac{aK-1-\ell}{K+2+\ell-m},\qquad
+ R\,r_{\ell+1}-aR=R\frac{am-(2a+1)-c\ell}{K+2+\ell-m},
+\end{equation}
+so that $|Rr_{\ell+1}-aR|\le C_d(m+\ell+1)/K$ once $K\ge2m$, with a
+constant $C_d$; these ratios decrease with $\ell$, start near $aR<1$, and
+are eventually bounded by a fixed $\rho_0\in(aR,1)$. The covering error
+contributes at most $\delta_q/(1-\rho_0)$ with $\delta_q=m2^{-k_0}$, and
+the missing tail at most $(aR)^K/(1-aR)$.
+
+The coefficients of $B_d$ are eventually all positive. The lacunary
+structure is in the \emph{locations of dominant blocks}.
+Lemma~\ref{sbd:xtm:lem:block-profile} makes that concentration usable: it
+replaces each long block by a common nonvanishing analytic profile with a
+uniform error.
+
+\subsection{The size of a block amplitude}
+\begin{lemma}[Quadratic logarithmic amplitudes; source~05]\label{sbd:xtm:lem:amplitudes}
+There is a constant $C_d>0$ such that, for every sufficiently large $q$,
+\begin{equation}\label{sbd:xtm:eq:amplitude-envelope}
+ \exp\bigl(hq^2/2-C_dq\bigr)
+ \le A_q\le
+ \exp\bigl(hq^2/2+C_dq\bigr).
+\end{equation}
+In particular, $A_q\to\infty$ and $\log A_q=o(K)$.
+\end{lemma}
+\begin{proof}
+Falling factorial cancellation gives the exact identity
+\begin{equation}\label{sbd:xtm:eq:binomial-ratio}
+ \frac{C_q}{\binom{cK}{K}}
+ =\frac{aK\,\fall K{m-1}}{\fall{cK}m}
+ =ac^{-m}
+ \frac{\prod_{i=0}^{m-2}(1-i/K)}
+      {\prod_{i=0}^{m-1}(1-i/(cK))}.
+\end{equation}
+The logarithm of the product quotient is $O_d(m^2/K)$, so this
+quotient lies between $1/2$ and $2$ for large $q$.
+
+The binomial probability distribution with parameters $cK$ and $1/c$
+has a mode at $K$. Its mass there is
+$\binom{cK}{K}R^K$. The largest of its $cK+1$ masses is between
+$1/(cK+1)$ and $1$, hence
+\begin{equation}\label{sbd:xtm:eq:binomial-mode}
+ \frac1{cK+1}\le\binom{cK}{K}R^K\le1.
+\end{equation}
+Combining \eqref{sbd:xtm:eq:binomial-ratio}--\eqref{sbd:xtm:eq:binomial-mode} gives
+\begin{equation}\label{sbd:xtm:eq:amplitude-elementary}
+ \frac{Ra}{2c^m(cK+1)}u_m
+ \le A_q\le\frac{2Ra}{c^m}u_m.
+\end{equation}
+Now apply Lemma~\ref{sbd:xtm:lem:core-bounds}, $m=q+d$, and $\log K=(q-1)h$.
+Every contribution other than $hq^2/2$ is $O_d(q)$.
+\end{proof}
+
+The argument does not require Stirling's formula. When a more precise
+normalization is wanted, Stirling's expansion gives the following, which
+both manuscripts state (manuscript~01 as its Proposition~5.2, with the proof
+below; manuscript~05 as a display).
+
+\begin{proposition}[Stirling form of the amplitude; sources~05 and~01]\label{sbd:edge:prop:amplitude}
+For fixed $d$, as $q\to\infty$,
+\begin{equation}\label{sbd:xtm:eq:amplitude-stirling}
+ A_q=u_mc^{-m}R\sqrt{\frac{ca}{2\pi K}}
+             \left(1+O_d\left(\frac{m^2}{K}\right)\right).
+\end{equation}
+Consequently
+\begin{equation}\label{sbd:edge:eq:amplitude-log}
+ \log A_q=\frac{h}{2}q^2+O_d(q),
+ \qquad A_q\longrightarrow\infty.
+\end{equation}
+\end{proposition}
+\begin{proof}[Proof (source~01)]
+In \eqref{sbd:xtm:eq:binomial-ratio}, since $m=O_d(\log K)$, the product
+estimates $\fall K{m-1}=K^{m-1}(1+O(m^2/K))$ and
+$\fall{cK}m=(cK)^m(1+O_d(m^2/K))$ follow by summing $\log(1-j/K)$ and its
+counterpart. Stirling's formula, with its usual real positive remainder
+\cite{dlmf}, gives
+\begin{equation}\label{sbd:edge:eq:stirling-binomial}
+ \binom{cK}{K}
+ =R^{-K}\sqrt{\frac{c}{2\pi aK}}
+ \left(1+O_d(K^{-1})\right).
+\end{equation}
+Multiplying \eqref{sbd:xtm:eq:binomial-ratio} and
+\eqref{sbd:edge:eq:stirling-binomial} by $u_mR^{K+1}$ yields
+\eqref{sbd:xtm:eq:amplitude-stirling}. Taking logarithms and using
+Lemma~\ref{sbd:xtm:lem:core-bounds} gives
+$\log A_q=\tfrac h2m^2-m\log c-\tfrac12\log K+O_d(m)=\tfrac h2q^2+O_d(q)$;
+the positive quadratic term proves divergence.
+\end{proof}
+Section~\ref{sbd:xtm:app:expansions} gives a first correction to
+\eqref{sbd:xtm:eq:amplitude-stirling}.
+
+\section{Positive dyadic sums and concentration of block mass}
+\label{sbd:xtm:sec:dyadic-sums}
+
+The following purely analytic estimates will be applied to the amplitudes
+$A_q$. They also explain why a small uniform block error can be summed near
+the boundary with a quantitative remainder.
+
+\begin{lemma}[A discrete Laplace estimate; source~05, source~01's Lemma~7.1]\label{sbd:xtm:lem:laplace}
+Suppose $A_q>0$ for $q\ge q_0\ge1$ and
+\begin{equation}\label{sbd:xtm:eq:generic-envelope}
+ \e^{hq^2/2-Cq}\le A_q\le\e^{hq^2/2+Cq},\qquad h=\log2,
+\end{equation}
+after enlarging $C$ to include finitely many initial indices. Put
+\[
+ K_q=2^{q-1},\quad
+ S(t)=\sum_{q\ge q_0}A_q\e^{-t(K_q+1)},\quad
+ L=\log(1/t).
+\]
+Then $S(t)$ is finite for $t>0$, and
+\begin{equation}\label{sbd:xtm:eq:laplace-law}
+ \log S(t)=\frac{L^2}{2h}+\frac{L\log L}{h}+O_C(L)
+ \qquad(t\downarrow0).
+\end{equation}
+\end{lemma}
+\begin{proof}
+Finiteness follows because $t2^{q-1}$ eventually dominates any
+quadratic in $q$. The harmless common factor $\e^{-t}$ may be
+removed in the estimates. Let $X=L+\log L$ and
+$q_* =\lfloor X/h\rfloor+1$. Then
+\begin{equation}\label{sbd:xtm:eq:qstar}
+ \frac L2<tK_{q_*}\le L,\qquad q_* =X/h+O(1).
+\end{equation}
+The single $q_*$ term yields
+\[
+ \log S(t)\ge\tfrac h2q_*^2-Cq_*-L-t
+             =\frac{X^2}{2h}-O_C(L).
+\]
+
+For the upper bound set $Q=\lceil X/h\rceil+4$, so
+$tK_Q\ge8L$. For all sufficiently large $L$, $hQ+C\le2L$ and
+$h\le L$. Put $M=\exp(hQ^2/2+CQ)$. The terms with $q\le Q$
+have sum at most $QM$. For $q=Q+j$, $j\ge0$, their upper envelope
+divided by $M$ has logarithm at most
+\[
+ 2Lj+\tfrac h2j^2-8L2^j\le-5L2^j.
+\]
+Here $j\le2^j$ and $j^2\le2^{j+1}$ were used. This tail is
+summable and at most $M$ after increasing $L$ if needed. Therefore
+$S(t)\le(Q+1)M$, and
+$\log S(t)\le X^2/(2h)+O_C(L)$. Finally
+$(\log L)^2=O(L)$, so expanding $X^2$ proves the statement.
+\end{proof}
+
+\begin{proof}[Second proof of the upper bound (source~01)]
+Put $x=(L+\log L)/h$, $Q=\lceil x\rceil+3$ and
+$f(q)=\tfrac h2q^2+Cq-t2^{q-1}$. The head $q\le Q$ has $O(Q)$ terms, each
+at most $\exp(\tfrac h2Q^2+CQ)$, whose logarithm is
+$\mathcal T(L)+O(L)$, the term $(\log L)^2$ being absorbed. For the tail,
+$f(q+1)-f(q)=hq+\tfrac h2+C-t2^{q-1}$. At $q=Q$ the negative exponential
+term has magnitude at least $4L$, whereas $hQ=L+\log L+O(1)$; thus the
+difference is at most $-L$ for all sufficiently large $L$. Its subsequent
+differences are $h-t2^{q-1}<0$, so the same bound holds for every $q\ge Q$,
+and the tail is at most $\e^{f(Q)}/(1-\e^{-L})$, which has the same
+logarithmic upper bound as the head. For the lower bound manuscript~01 takes
+the single term $q=\lfloor x\rfloor$, for which $\tfrac h2q^2=\mathcal
+T(L)+O(L)$, $t2^{q-1}\le L/2$ and $q=O(L)$.
+\end{proof}
+
+\begin{lemma}[Negligible early blocks and a weighted error bound; source~05]
+\label{sbd:xtm:lem:concentration}
+Under the hypotheses of Lemma~\ref{sbd:xtm:lem:laplace}, let $q_*$ be as in
+\eqref{sbd:xtm:eq:qstar}. For any prescribed $A>0$, one can choose a fixed
+integer $D=D(C,A)$ such that
+\begin{equation}\label{sbd:xtm:eq:early-blocks}
+ \frac{\sum_{q_0\le q\le q_*-D}A_q\e^{-t(K_q+1)}}{S(t)}
+ =O_{C,A}(t^A).
+\end{equation}
+For every fixed $p>0$,
+\begin{equation}\label{sbd:xtm:eq:weighted-error}
+ \frac1{S(t)}\sum_{q\ge q_0}
+       \left(\frac q{K_q}\right)^p A_q\e^{-t(K_q+1)}
+ =O_{C,p}(t^p).
+\end{equation}
+\end{lemma}
+\begin{proof}
+Use the $q_*$ term as a lower bound for the denominator. Monotonicity
+of the upper envelope bounds the numerator of \eqref{sbd:xtm:eq:early-blocks}
+by $q_*\exp(h(q_*-D)^2/2+C(q_*-D))$. Thus the logarithm of its
+ratio to that lower bound is at most
+\begin{align*}
+ &\log q_*-hDq_*+\tfrac h2D^2+2Cq_*-CD+L+t\\
+ &\hspace{8mm}=\left(-D+\frac{2C}h+1\right)L+O_{C,D}(\log L).
+\end{align*}
+Taking $D>A+2C/h+2$ proves \eqref{sbd:xtm:eq:early-blocks}.
+
+For \eqref{sbd:xtm:eq:weighted-error}, choose such a $D$ with $A>p$.
+On $q\ge q_*-D$, the function $q/2^{q-1}$ is eventually decreasing,
+and \eqref{sbd:xtm:eq:qstar} gives
+\[
+ \frac q{K_q}\le\frac{q_*-D}{K_{q_*-D}}=O_D(t).
+\]
+This portion contributes $O(t^p)$. On earlier indices $q/K_q$ is
+bounded by an absolute constant, while their relative mass is
+$O(t^A)$. This proves the weighted estimate.
+\end{proof}
+
+The dominant block indices are therefore near $(L+\log L)/\log2$.
+Manuscript~05 uses only the one-sided concentration proved above; no
+unproved smooth approximation to the discrete maximizing index is needed.
+(Section~\ref{sbd:wr:sec:dominant} sharpens this: along most radii a
+single block carries almost all of the mass.)
+
+\section{Natural boundaries and radial asymptotics}
+\label{sbd:xtm:sec:boundary}
+
+\subsection{Convergence inside the stated circle}
+Choose $R<T<1/a$. Lemma~\ref{sbd:xtm:lem:block-profile} makes $P_q$
+uniformly bounded on $|z|\le T$, and Lemma~\ref{sbd:xtm:lem:amplitudes}
+bounds $A_q$ by a quadratic exponential in $q$. For $|z|\le rR$ with $r<1$,
+the series in \eqref{sbd:xtm:eq:block-decomposition} is dominated by
+\[
+ C\sum_{q\ge q_0}\exp(hq^2/2+C_dq)r^{2^{q-1}+1},
+\]
+which converges. Thus it defines an analytic function throughout $|z|<R$
+and agrees there with the original generating series.
+
+Let $S_d(t)$ be the sum in Lemma~\ref{sbd:xtm:lem:laplace} formed from these
+$A_q$. Lemma~\ref{sbd:xtm:lem:concentration}, with $p=1$ and $m=q+d=O_d(q)$,
+gives
+\begin{equation}\label{sbd:xtm:eq:sum-error}
+ \sum_{q\ge q_0}\frac mK A_q\e^{-t(K+1)}
+   =O_d(tS_d(t)).
+\end{equation}
+The polynomial $E_d$ is bounded near $|z|=R$, whereas
+\eqref{sbd:xtm:eq:laplace-law} shows $S_d(t)$ grows faster than every power
+of $1/t$. In particular $E_d/S_d=O(t)$.
+
+Substituting the uniform profile in \eqref{sbd:xtm:eq:block-decomposition}
+on the positive radius yields
+\begin{equation}\label{sbd:xtm:eq:positive-transfer}
+ B_d(R\e^{-t})=g(R\e^{-t})S_d(t)+O_d(tS_d(t)).
+\end{equation}
+Since $g(R)>0$, this tends to infinity. The radius of convergence is at
+most $R$, and hence is exactly $R$. Taking logarithms and using
+Lemma~\ref{sbd:xtm:lem:laplace} proves \eqref{sbd:xtm:eq:growth-main}.
+
+\begin{proof}[Second route to the radius (source~01)]
+At the block starts, $b_{K+1}^{(d)}R^{K+1}=A_q(1-\eta_{q,0})$ by
+\eqref{sbd:edge:eq:eta}, and $\log(A_q(1-\eta_{q,0}))/(K+1)\to0$ by
+\eqref{sbd:edge:eq:amplitude-log}. Therefore
+$(b_{K+1}^{(d)})^{1/(K+1)}\to R^{-1}$, so the radius is exactly $R$; this
+recovers \eqref{sbd:eq:radius} without Part~\ref{sbd:part:one}'s full
+entropy theorem. Convergence for $|z|<R$ follows as above from
+$\sum_qA_qr^{2^{q-1}+1}\le\sum_q\exp(C_dq^2-|\log r|2^{q-1})<\infty$ for
+$0<r<1$.
+\end{proof}
+
+\subsection{Alignment at dyadic roots}
+Fix $\zeta$ with $\zeta^{2^j}=1$. For every $q\ge j+1$, $K=2^{q-1}$ is
+divisible by its order, so
+\begin{equation}\label{sbd:xtm:eq:phase-align}
+ (\e^{-t}\zeta)^{K+1}=\zeta\e^{-t(K+1)}.
+\end{equation}
+Only finitely many blocks fail this relation; their contribution is a
+polynomial bounded as $t\downarrow0$. The same uniform block error and
+\eqref{sbd:xtm:eq:sum-error} therefore give
+\begin{equation}\label{sbd:xtm:eq:complex-transfer}
+ B_d(R\e^{-t}\zeta)
+ =\zeta g(R\e^{-t}\zeta)S_d(t)+O_{d,\zeta}(tS_d(t)).
+\end{equation}
+Divide by \eqref{sbd:xtm:eq:positive-transfer}. The denominators stay bounded
+away from zero, and replacing $\e^{-t}$ by $1$ changes $g$ by $O_d(t)$.
+This proves \eqref{sbd:xtm:eq:phase-main}. It also proves
+\eqref{sbd:xtm:eq:growth-main} for the complex radial magnitude and then
+\eqref{sbd:xtm:eq:superpole}, because $L^2/(2h)$ dominates $ML$.
+
+\subsection{Why dense radial divergence gives a natural boundary}
+The nonzero limit in \eqref{sbd:xtm:eq:phase-main} and the positive radial
+divergence show that $B_d$ is unbounded on the inward radius ending at
+$R\zeta$, for every dyadic root $\zeta$. It cannot be holomorphically
+continued through such a point: a holomorphic extension would be bounded
+on a smaller closed neighborhood of that point.
+
+Dyadic roots of unity are dense on the unit circle. If the original
+analytic germ extended through any point of $|z|=R$, it would extend
+through a small arc containing a dyadic point, contradicting the preceding
+paragraph. This proves Theorem~\ref{sbd:xtm:thm:main-boundary}.
+
+The stronger growth \eqref{sbd:xtm:eq:superpole} also excludes meromorphic
+continuation at each dyadic point. A meromorphic extension has either a
+removable singularity or a pole of finite order locally; neither can have
+this radial growth. Density then rules out meromorphic continuation through
+any arc. (Manuscript~01 argues the last step differently: a smaller arc
+would contain infinitely many dyadic blow-up points, incompatible with the
+locally discrete poles of a meromorphic function.) These boundary points
+are not isolated singularities, so the terminology ``isolated essential
+singularity'' does not apply.
+
+\subsection{A general transfer principle (source~01)}
+\label{sbd:edge:sec:transfer}
+Manuscript~01 isolates the analytic step from the graph enumeration. The
+lemma gives the limit \eqref{sbd:edge:eq:radial-ratio} without a rate, and
+applies to any series built from coherent dyadic blocks.
+
+\begin{lemma}[Coherent dyadic blocks; source~01]
+\label{sbd:edge:lem:transfer}
+Suppose, for $|w|<1$ and an integer $q_0\ge1$,
+\[
+ F(w)=E(w)+\sum_{q\ge q_0}\alpha_qw^{2^{q-1}+1}\Pi_q(w),
+\]
+where $E$ and every $\Pi_q$ are polynomials, $\alpha_q>0$, and the series
+converges locally uniformly. Suppose $\Pi_q\to\Pi$ uniformly on $|w|\le1$,
+$\Pi(1)>0$, and
+\[
+ S(r)=\sum_{q\ge q_0}\alpha_qr^{2^{q-1}+1}\longrightarrow\infty
+ \quad(r\uparrow1).
+\]
+Then for every dyadic root of unity $\zeta$,
+\begin{equation}\label{sbd:edge:eq:transfer}
+ \frac{F(r\zeta)}{S(r)}\longrightarrow\zeta\Pi(\zeta),
+ \qquad
+ \frac{F(r)}{S(r)}\longrightarrow\Pi(1).
+\end{equation}
+If $\Pi(\zeta)\ne0$ for every dyadic root of unity $\zeta$, then the unit
+circle is a natural boundary for $F$.
+\end{lemma}
+\begin{proof}
+Fix a dyadic root $\zeta$. For all sufficiently large $q$,
+$\zeta^{2^{q-1}}=1$. After moving finitely many blocks into the bounded
+head, the sum at $r\zeta$ is
+\[
+ \zeta\sum_q\alpha_qr^{2^{q-1}+1}\Pi_q(r\zeta).
+\]
+Given $\delta>0$, choose $Q$ such that
+$\sup_{|w|\le1}|\Pi_q(w)-\Pi(w)|<\delta$ for $q\ge Q$. After division by
+$S(r)$, the contribution of the finitely many indices below $Q$ tends to
+zero. The error from the remaining indices is at most $\delta$, because
+their normalized positive weights sum to at most one. Finally
+$\Pi(r\zeta)\to\Pi(\zeta)$. This proves the first limit; the case $\zeta=1$
+proves the second.
+
+If $\zeta\Pi(\zeta)\ne0$, the first limit implies $|F(r\zeta)|\to\infty$. A
+holomorphic continuation through $\zeta$ would be bounded on a smaller
+neighborhood and is therefore impossible. Every open arc contains such a
+dyadic point. A continuation through any point of the unit circle would
+contain an arc and would continue through one of those points, a
+contradiction.
+\end{proof}
+
+\begin{proof}[Second proof of Theorem~\ref{sbd:xtm:thm:main-boundary}, without the rate (source~01)]
+By \eqref{sbd:edge:eq:amplitude-log}, $A_q\to\infty$; in particular
+$\sum_qA_q=\infty$, and monotonicity of the nonnegative terms gives
+$S(r)\to\infty$. Apply Lemma~\ref{sbd:edge:lem:transfer} to
+$F(w)=B_d(Rw)$ with $\alpha_q=A_q$ and $\Pi_q(w)=P_q(Rw)$. By
+\eqref{sbd:edge:eq:profile-limit} the limiting profile is
+$\Pi(w)=1/(1-aRw)$, which is nonzero on the closed unit disk. Hence
+\[
+ \frac{B_d(Rr\zeta)}{S(r)}\longrightarrow\frac{\zeta}{1-aR\zeta},
+ \qquad
+ \frac{B_d(Rr)}{S(r)}\longrightarrow\frac1{1-aR},
+\]
+whose quotient is \eqref{sbd:edge:eq:radial-ratio}, and the circle
+$|z|=R$ is a natural boundary. With Lemma~\ref{sbd:xtm:lem:laplace} and
+\eqref{sbd:edge:eq:amplitude-log}, $B_d(R\e^{-t})\sim S_d(t)/(1-aR)$ gives
+$\log B_d(R\e^{-t})=\mathcal T(L)+O_d(L)$; at a fixed dyadic $\zeta$ the
+quotient in \eqref{sbd:edge:eq:radial-ratio} tends to a nonzero constant, so
+its logarithmic magnitude is bounded and convergent, which gives
+Theorem~\ref{sbd:xtm:thm:main-growth}. Finally
+$\log(t^M|B_d(R\e^{-t}\zeta)|)=\mathcal T(L)-ML+O_{d,\zeta}(L)\to+\infty$.
+\end{proof}
+
+\begin{example}[The first two defects; sources~05 and~01]\label{sbd:xtm:ex:d01}
+For $d=0$ one has $c=2$, $a=1$, and $R=1/4$. Therefore
+\begin{equation}\label{sbd:xtm:eq:d0-phase}
+ \frac{B_0(\tfrac14\e^{-t}\zeta)}{B_0(\tfrac14\e^{-t})}
+ =\frac{3\zeta}{4-\zeta}+O_\zeta(t).
+\end{equation}
+For $\zeta=-1$ the limit is $-3/5$; for $\zeta=\ii$ it is $(-3+12\ii)/17$.
+The negative real direction exhibits cancellation between individual
+coefficients, but that cancellation has an explicit nonzero limiting
+effect; the common phase of late dyadic blocks is what makes the limit
+determinable (manuscript~01). For $d=1$, $c=4$, $a=3$, and $R=27/256$. The
+radius becomes smaller, while the first two terms of the logarithmic radial
+growth remain exactly the same.
+\end{example}
+
+\begin{remark}[What the boundary theorem says; source~01]\label{sbd:edge:rem:says}
+The conclusion prohibits analytic continuation through every point of the
+circle. The explicit radial blow-up has been proved at the dense set of
+points $R\zeta$, $\zeta$ a dyadic root of unity. It does not assert
+pointwise radial blow-up at every irrational angle. Also, these are
+nonisolated boundary singularities; the classification of isolated
+singularities into removable points, poles and essential singularities is
+not directly applicable.
+\end{remark}
+
+\begin{remark}[Why the error stops at $O(L)$; sources~01 and~05]\label{sbd:edge:rem:orderL}
+The dominant block indices lie around
+\begin{equation}\label{sbd:edge:eq:dominant-index}
+ q\approx\frac{L+\log L}{\log2}.
+\end{equation}
+Changing $q$ by one changes $2^{q-1}$ by a factor of two, and the core
+bounds \eqref{sbd:xtm:eq:core-bounds} allow a linear uncertainty in
+$\log u_m$, which contributes at order $L$. Thus
+\eqref{sbd:xtm:eq:growth-main} does not imply an expansion with a fixed next
+coefficient times $L$. Both manuscripts add that the competition between
+adjacent blocks ``remains visible at order $L$'', so that a smooth saddle
+alone cannot justify a constant coefficient at that order; they argue this
+heuristically. It is stated as a question in
+Section~\ref{sbd:xtm:sec:future}, where
+Proposition~\ref{sbd:wr:prop:orderL} [write] proves it under a hypothesis on
+$u_m$ and gives unconditional bounds for the coefficient.
+\end{remark}
+
+\section{Large boundary values on every arc}
+\label{sbd:xtm:sec:lp}
+
+The radial theorem already implies singularities at a dense set. We now
+prove the stronger comparison in Theorem~\ref{sbd:xtm:thm:main-lp}. The
+issue is quantitative: one very large value on a tiny interval would not by
+itself give a fixed proportion of the radial $L^p$ size. Manuscript~05 uses
+a growing grid of dyadic points and a derivative bound.
+
+\subsection{A derivative bound from positivity}
+Write $F_t=B_d(R\e^{-t})>0$ and
+\begin{equation}\label{sbd:xtm:eq:angular-derivative}
+ D_t=\sum_{n\ge1}n b_n^{(d)}R^n\e^{-tn}.
+\end{equation}
+Absolute convergence inside the disk implies
+\[
+ \left|\frac\partial{\partial\theta}
+ B_d(R\e^{-t+\ii\theta})\right|\le D_t.
+\]
+Let $f(t)=\log F_t$. Differentiation of the positive series gives
+$-f'(t)=D_t/F_t$ and $f''(t)\ge0$: the latter is the variance of the index
+under the probabilities proportional to $b_n^{(d)}R^n\e^{-tn}$. Convexity
+implies
+\[
+ f(t/2)-f(t)\ge\frac t2\frac{D_t}{F_t}.
+\]
+By \eqref{sbd:xtm:eq:growth-main}, with $L$ replaced by $L+h$ at $t/2$,
+$f(t/2)-f(t)=O_d(L)$. Consequently
+\begin{equation}\label{sbd:xtm:eq:derivative-bound}
+ D_t\le C_d\frac Lt F_t
+\end{equation}
+for sufficiently small $t$.
+
+\subsection{A moving dyadic grid}
+Let $q_* =\lfloor(L+\log L)/h\rfloor+1$ as before. Choose a fixed large $D$
+so that the relative weight of all blocks $q<q_b=q_*-D$ is $O_d(t)$, using
+Lemma~\ref{sbd:xtm:lem:concentration}. Set $K_b=2^{q_b-1}$. Then
+\begin{equation}\label{sbd:xtm:eq:grid-size}
+ 2^{-D-1}\frac Lt<K_b\le2^{-D}\frac Lt.
+\end{equation}
+Consider all $K_b$ roots of unity $\zeta$ with $\zeta^{K_b}=1$, and their
+periodic angular lifts $\theta_j=2\pi j/K_b$ for $j\in\mathbb Z$. For every
+block $q\ge q_b$, its $K_q$ is a multiple of $K_b$, and the alignment
+\eqref{sbd:xtm:eq:phase-align} holds simultaneously for all these $\zeta$.
+
+The early blocks have modulus at most a fixed constant times their positive
+amplitude sum, because the $P_q$ are uniformly bounded. Their contribution
+divided by $S_d(t)$ is $O_d(t)$; the finite polynomial is smaller still.
+Also $\sup_{q\ge q_b}(m/K_q)=O_d(t)$ by \eqref{sbd:xtm:eq:grid-size}. The
+profile estimate is uniform in $\zeta$, so
+\begin{equation}\label{sbd:xtm:eq:uniform-grid}
+ \sup_{\zeta^{K_b}=1}
+ \left|\frac{B_d(R\e^{-t}\zeta)}{S_d(t)}
+               -\zeta g(R\e^{-t}\zeta)\right|=O_d(t).
+\end{equation}
+The rational profile has modulus at least $1/(1+aR)$ on the closed disk
+$|z|\le R$. Combining this with \eqref{sbd:xtm:eq:positive-transfer}, there
+is $\kappa_d>0$ such that
+\begin{equation}\label{sbd:xtm:eq:grid-lower}
+ |B_d(R\e^{-t}\zeta)|\ge\kappa_d F_t
+ \quad\hbox{for every }\zeta^{K_b}=1
+\end{equation}
+when $t$ is sufficiently small.
+
+This estimate is uniform over a grid whose order grows with $t$. It is
+proved directly by discarding negligible early blocks; it does not assume
+that the constant in the fixed-root Theorem~\ref{sbd:xtm:thm:main-boundary}
+was uniform in the order of the root.
+
+\subsection{Proof of the local comparison}
+By \eqref{sbd:xtm:eq:derivative-bound}, the modulus stays at least
+$\kappa_dF_t/2$ within angular distance
+\begin{equation}\label{sbd:xtm:eq:arc-width}
+ \delta_t=\eta_d\frac tL
+\end{equation}
+of each grid point, for a fixed sufficiently small $\eta_d>0$. Choose
+$\eta_d$ also small enough that these intervals are disjoint; this is
+possible by \eqref{sbd:xtm:eq:grid-size}, since the grid spacing is
+$2\pi/K_b$.
+
+Every fixed open interval $I$ contains a closed interval $J$ of positive
+length in its interior. The number of grid points in $J$ is at least
+$|J|K_b/(4\pi)$ for large $K_b$. Their intervals of radius $\delta_t$ lie in
+$I$ for small $t$. Their total length is bounded below by a positive
+constant depending only on $d$ and $I$, because $K_b\delta_t$ is bounded
+below in \eqref{sbd:xtm:eq:grid-size}--\eqref{sbd:xtm:eq:arc-width}. Hence
+\[
+ \int_I|B_d(R\e^{-t+\ii\theta})|^p\dd\theta
+ \ge c_{d,I}(\kappa_dF_t/2)^p.
+\]
+For the upper bound, coefficient positivity gives
+$|B_d(R\e^{-t+\ii\theta})|\le F_t$, so the integral is at most $|I|F_t^p$.
+This proves \eqref{sbd:xtm:eq:lp-comparison} for every $p>0$; no norm
+inequality restricted to $p\ge1$ has been used. Taking logarithms and using
+\eqref{sbd:xtm:eq:growth-main} proves \eqref{sbd:xtm:eq:lp-growth}.
+
+\begin{proof}[Second proof of the logarithmic law \eqref{sbd:xtm:eq:lp-growth} (source~01)]
+Set $\widetilde B(w)=B_d(Rw)=\sum_{n\ge1}\beta_nw^n$, where
+$\beta_n=b_n^{(d)}R^n\ge0$, and let $r=\e^{-t}$, $s=\e^{-t/2}$. Choose an
+angle $\theta_0$ in the interior of $I$ with $\zeta=\e^{\ii\theta_0}$ a
+dyadic root of unity. Equation \eqref{sbd:edge:eq:radial-ratio} supplies a
+constant $\kappa_\zeta>0$ such that, for all sufficiently small $t$,
+\begin{equation}\label{sbd:edge:eq:arc-point}
+ |\widetilde B(r\zeta)|\ge\kappa_\zeta \widetilde B(r).
+\end{equation}
+Nonnegativity and absolute convergence allow differentiation inside the
+disk. Since $x\e^{-tx/2}\le2/(\e t)$ for $x\ge0$,
+\begin{equation}\label{sbd:edge:eq:angular-derivative}
+ \sup_\theta
+ \left|\frac{\partial}{\partial\theta}\widetilde B(r\e^{\ii\theta})\right|
+ \le\sum_{n\ge1}n\beta_nr^n
+ \le\frac{2}{\e t}\sum_{n\ge1}\beta_ns^n
+ =\frac{2\widetilde B(s)}{\e t}.
+\end{equation}
+Take $\delta=\kappa_\zeta\e t\widetilde B(r)/(8\widetilde B(s))$. Because
+$\widetilde B(r)\le\widetilde B(s)$, this width tends to zero and eventually
+$(\theta_0-\delta,\theta_0+\delta)\subset I$. On that interval,
+\eqref{sbd:edge:eq:angular-derivative} changes $\widetilde B$ by at most
+$\kappa_\zeta\widetilde B(r)/4$; in particular
+$|\widetilde B(r\e^{\ii\theta})|\ge\kappa_\zeta\widetilde B(r)/2$. For every
+fixed $p>0$, integration over this interval gives
+\begin{equation}\label{sbd:edge:eq:arc-lower}
+ \int_I|\widetilde B(r\e^{\ii\theta})|^p\dd\theta
+ \ge
+ C_{\zeta,p}\,t\,
+ \frac{\widetilde B(r)^{p+1}}{\widetilde B(s)},
+\end{equation}
+while the upper bound is simply
+\begin{equation}\label{sbd:edge:eq:arc-upper}
+ \int_I|\widetilde B(r\e^{\ii\theta})|^p\dd\theta
+ \le |I|\widetilde B(r)^p.
+\end{equation}
+The radial growth theorem gives $\log\widetilde B(r)=\mathcal T(L)+O_d(L)$
+and $\log\widetilde B(s)=\mathcal T(L+\log2)+O_d(L)$, and direct expansion
+shows $\mathcal T(L+\log2)-\mathcal T(L)=O(L)$. Taking logarithms in
+\eqref{sbd:edge:eq:arc-lower} and \eqref{sbd:edge:eq:arc-upper} places the
+integral between $\exp(p\mathcal T(L)-O_{d,I,p}(L))$ and
+$\exp(p\mathcal T(L)+O_{d,I,p}(L))$, as required. This route uses a single
+dyadic point; it gives the logarithmic law but not the two-sided
+comparison \eqref{sbd:xtm:eq:lp-comparison}, whose lower bound loses the
+factor $t\widetilde B(r)/\widetilde B(s)$.
+\end{proof}
+
+\begin{remark}[Strong natural boundary; source~05]\label{sbd:xtm:rem:strong}
+Breuer and Simon call the unit circle a strong natural boundary when the
+radial local $L^1$ integrals are not uniformly bounded on any nonempty open
+arc \cite{breuersimon}. Apply this terminology to $w\mapsto B_d(R_dw)$.
+Theorem~\ref{sbd:xtm:thm:main-lp} proves that condition, and more: there is
+an actual limit $+\infty$, a comparison with the positive radial value, and
+a quantitative logarithmic law for every positive exponent $p$.
+\end{remark}
+
+\begin{remark}[source~01]\label{sbd:edge:rem:hardy}
+The theorem excludes a bounded radial $L^p$ integral on every fixed nonempty
+boundary arc, and in particular excludes membership in every Hardy class
+$H^p$, $p>0$, after normalization to the unit disk. For $0<p<1$, only the
+integral, not a norm inequality, is used. The conclusion makes no assertion
+about the existence or values of radial limits at almost every individual
+angle.
+\end{remark}
+
+\section{Consequences for generating functions and defect marking}
+\label{sbd:xtm:sec:consequences}
+
+\subsection{Algebraicity, differential equations, and labeling}
+\begin{corollary}[sources~05 and~01]\label{sbd:xtm:cor:nonholonomic}
+For each fixed $d$, $B_d$ is neither algebraic nor D-finite over $\C(z)$.
+The sequences $b_n^{(d)}$ and $n!b_n^{(d)}$ are not P-recursive. The
+ordinary generating function of $n!b_n^{(d)}$ has radius zero.
+\end{corollary}
+\begin{proof}
+An algebraic function has only finitely many possible finite branch points
+and poles: away from the zeros of the leading coefficient and discriminant
+of a square-free defining polynomial, the implicit function theorem
+supplies continuation. A solution of a linear differential equation with
+polynomial coefficients continues locally at every point where the leading
+coefficient is nonzero, by the existence theorem for analytic linear
+differential equations. Neither can have the natural boundary just proved.
+
+A polynomial-coefficient recurrence for the coefficients translates, by
+multiplying by powers of $z$ and summing, to a linear differential equation
+with polynomial coefficients for the generating function; initial terms
+contribute only a polynomial. Thus $b_n^{(d)}$ is not P-recursive. If
+$n!b_n^{(d)}$ had such a recurrence, write it with forward shifts. Division
+by $n!$ would replace each factorial quotient by a polynomial in $n$ and
+give one for $b_n^{(d)}$. Finally the finite positive radius $R_d$ implies
+a subsequence with $(b_n^{(d)})^{1/n}\to R_d^{-1}>0$, while
+$(n!)^{1/n}\to\infty$. The labeled ordinary series therefore has radius
+zero.
+\end{proof}
+
+\begin{proof}[Second route for non-algebraicity (source~01)]
+An algebraic function and all its derivatives belong to one
+finite-dimensional algebraic extension of $\C(z)$. Linear dependence of
+sufficiently many derivatives gives a differential equation over $\C(z)$,
+and clearing denominators gives a polynomial-coefficient equation; so an
+algebraic series is D-finite, and the D-finite case applies. Manuscript~01
+also notes that the equivalence between D-finite series and P-recursive
+coefficient sequences follows by coefficient extraction in the
+differential equation and the converse construction.
+\end{proof}
+
+The non-P-recursiveness conclusion was already proved in
+Part~\ref{sbd:part:one} (Theorem~\ref{sbd:thm:nonholonomic}, through the
+exponential-jump Lemma~\ref{sbd:lem:jump}); the natural boundary strengthens
+its complex-analytic explanation. It does not exclude nonlinear algebraic
+differential equations. That is a separate question
+(Section~\ref{sbd:xtm:sec:future}).
+
+For labeled counts $\ell_n^{(d)}=n!b_n^{(d)}$, the exponential generating
+function is exactly
+\[
+ \sum_{n\ge1}\ell_n^{(d)}\frac{z^n}{n!}=B_d(z).
+\]
+Thus the same boundary theorem describes labeled enumeration in its natural
+exponential normalization; the ordinary generating function of
+$\ell_n^{(d)}$, of radius zero, must not be confused with $B_d$
+(manuscript~01).
+
+\subsection{Finite combinations and elementary transformations}
+\begin{corollary}[sources~05 and~01]\label{sbd:edge:cor:mixtures}
+The radii are strictly decreasing in $d$: $R_0>R_1>\cdots$. If
+$\gamma_D\ne0$, the finite linear combination $\sum_{d=0}^D\gamma_dB_d(z)$,
+with complex coefficients, has natural boundary $|z|=R_D$. Adding to $B_d$
+any function holomorphic on a larger disk also preserves its natural
+boundary.
+\end{corollary}
+\begin{proof}
+As a function of real $c>1$,
+\[
+ \frac{\mathrm d}{\mathrm dc}
+ \log\frac{(c-1)^{c-1}}{c^c}=\log(1-1/c)<0,
+\]
+which gives the monotonicity. All terms with $d<D$ are analytic on a larger
+disk than $|z|<R_D$, so continuation of the combination would give
+continuation of the nonzero multiple $\gamma_DB_D$, which is impossible.
+This argument permits complex coefficients because only one summand has the
+smallest radius. The perturbation statement is the same subtraction
+argument.
+\end{proof}
+
+Changing finitely many coefficients does not alter a natural boundary.
+Neither does taking a derivative or a primitive: local continuation of a
+derivative can be integrated on a small disk and matched to the original
+function by an additive constant, while continuation of a primitive implies
+that of its derivative. These facts transfer the result to shifted or
+polynomially weighted enumerations without repeating the block proof
+(manuscript~05).
+
+\subsection{There is no analytic size-and-defect germ}
+For each $n$, only finitely many defects are admissible. Thus
+\begin{equation}\label{sbd:xtm:eq:bivariate}
+ \mathcal B(z,v)=\sum_{n\ge1}\sum_{d\ge0}b_n^{(d)}z^nv^d
+\end{equation}
+is a well-defined formal series, with a polynomial in $v$ as each
+coefficient of $z^n$.
+
+\begin{theorem}[Positive-fugacity obstruction; source~05]\label{sbd:xtm:thm:bivariate}
+For every fixed real $v>0$, the series
+\begin{equation}\label{sbd:xtm:eq:positive-fugacity}
+ \sum_{n\ge1}\left(\sum_{d\ge0}b_n^{(d)}v^d\right)z^n
+\end{equation}
+has radius zero. Consequently \eqref{sbd:xtm:eq:bivariate} is not a
+holomorphic germ at $(0,0)$ and has no nontrivial bidisk of convergence.
+\end{theorem}
+\begin{proof}
+Fix $D\ge0$. Nonnegativity gives $\sum_db_n^{(d)}v^d\ge v^Db_n^{(D)}$.
+Therefore
+\[
+ \limsup_{n\to\infty}
+ \left(\sum_db_n^{(d)}v^d\right)^{1/n}\ge R_D^{-1}.
+\]
+But
+\begin{equation}\label{sbd:xtm:eq:radius-asymptotic}
+ R_D=\frac1{c_D}\left(1-\frac1{c_D}\right)^{c_D-1}
+ \sim\frac1{\e c_D}\longrightarrow0.
+\end{equation}
+Since $D$ is arbitrary, the limsup is infinite. A holomorphic germ in two
+variables would have a convergent power series on some positive-radius
+bidisk, contradicting any sufficiently small positive choice of $v$.
+\end{proof}
+
+Keeping a defect fixed and summing over defects have different analytic
+consequences. More generally, let $w_d\ge0$ be weights independent of $n$,
+with $w_d>0$ for infinitely many $d$. Arbitrarily strong decay of $w_d$
+cannot restore a positive size radius for $\sum_{n,d}w_db_n^{(d)}z^n$:
+comparison with each fixed $D$ for which $w_D>0$ proves this extension. The
+argument does not assert zero radius for every nonzero \emph{complex} $v$,
+where signed or complex cancellation requires separate analysis.
+
+\section{Arithmetic sections}
+\label{sbd:edge:sec:subsequences}
+
+\subsection{Filtering one residue class of power-of-two step (source~01)}
+For a step $r\ge1$ and a residue $0\le r_0<r$ define
+\begin{equation}\label{sbd:edge:eq:filtered-series}
+ B_d^{(r,r_0)}(z)
+ =\sum_{\substack{n\ge1\\ n\equiv r_0\ (\mathrm{mod}\ r)}}
+       b_n^{(d)}z^n,\qquad
+ G_d^{(r,r_0)}(z)
+ =\sum_{\ell\ge0}b_{r\ell+r_0}^{(d)}z^\ell.
+\end{equation}
+(Here $r$ is a step, not Part~\ref{sbd:part:one}'s deletion number.) The
+convention $b_0^{(d)}=0$ gives
+\begin{equation}\label{sbd:edge:eq:subsequence-composition}
+ B_d^{(r,r_0)}(z)=z^{r_0}G_d^{(r,r_0)}(z^r).
+\end{equation}
+In this subsection $r=2^s$ with $s\ge0$. Let $j_0\in\{0,\ldots,2^s-1\}$ be
+the unique residue with $j_0\equiv r_0-1\pmod{2^s}$.
+
+\begin{theorem}[Dyadic subsequences retain a natural boundary; source~01]
+\label{sbd:edge:thm:subsequences}
+Let $r=2^s$. The radii of $B_d^{(r,r_0)}$ and $G_d^{(r,r_0)}$ are
+respectively $R_d$ and $R_d^r$, and their circles of convergence are
+natural boundaries. For every dyadic root of unity $\zeta$,
+\begin{equation}\label{sbd:edge:eq:filtered-ratio}
+ \lim_{t\downarrow0}
+ \frac{B_d^{(r,r_0)}(R_d\e^{-t}\zeta)}{B_d^{(r,r_0)}(R_d\e^{-t})}
+ =
+ \zeta^{1+j_0}
+ \frac{1-(a_dR_d)^r}{1-(a_dR_d)^r\zeta^r}.
+\end{equation}
+The logarithm of the positive radial value $B_d^{(r,r_0)}(R_d\e^{-t})$ has
+the same two-term expansion $\mathcal T(L)+O_{d,s}(L)$.
+\end{theorem}
+\begin{proof}
+For all sufficiently large $q$, $K=2^{q-1}$ is divisible by $r$. The
+allowed offsets $j=n-K-1$ in the block are then exactly $j\equiv j_0\pmod
+r$. The proof of Lemma~\ref{sbd:xtm:lem:block-profile} (or of
+\eqref{sbd:edge:eq:profile-limit}), restricted to these offsets, gives the
+uniform limit
+\begin{equation}\label{sbd:edge:eq:filtered-profile}
+ P_{q}^{(r,r_0)}(Rw)\longrightarrow
+ \sum_{\ell\ge0}(aRw)^{j_0+r\ell}
+ =
+ \frac{(aRw)^{j_0}}{1-(aRw)^r}
+ \qquad(|w|\le1),
+\end{equation}
+where $P_q^{(r,r_0)}$ keeps the terms of $P_q$ with $j\equiv j_0$. Indeed
+the sum of the absolute coefficient errors over a subset of offsets is no
+larger than over all offsets. The limiting profile at $w=1$ is the positive
+number $(aR)^{j_0}/(1-(aR)^r)$.
+
+The same block amplitudes $A_q$ and weights $\e^{-t(2^{q-1}+1)}$ occur.
+Lemma~\ref{sbd:edge:lem:transfer} therefore gives
+\eqref{sbd:edge:eq:filtered-ratio}, positive radial divergence, and a
+natural boundary for $B_d^{(r,r_0)}$. It also gives
+\[
+ B_d^{(r,r_0)}(R_d\e^{-t})
+ \sim\frac{(aR)^{j_0}}{1-(aR)^r}S_d(t),
+\]
+which proves the radial expansion.
+
+Absolute convergence and \eqref{sbd:edge:eq:subsequence-composition} show
+that $G_d^{(r,r_0)}$ is analytic for $|z|<R_d^r$. If it extended
+holomorphically through a point $z_0$ with $|z_0|=R_d^r$, choose any $w_0$
+with $w_0^r=z_0$. Composing the extension with $w\mapsto w^r$ and
+multiplying by $w^{r_0}$ would extend $B_d^{(r,r_0)}$ through $w_0$,
+contradicting its natural boundary. This proves the remaining claims.
+\end{proof}
+
+\begin{example}[source~01]\label{sbd:edge:ex:parity}
+For the even and odd subsequences of the extremal count, both series
+\[
+ \sum_{\ell\ge0}b_{2\ell}^{(0)}z^\ell,\qquad
+ \sum_{\ell\ge0}b_{2\ell+1}^{(0)}z^\ell
+\]
+have natural boundary $|z|=1/16$. For the corresponding filtered series in
+the original variable, the limiting profiles are $aRw/(1-(aRw)^2)$ and
+$1/(1-(aRw)^2)$, respectively, with $aR=1/4$.
+\end{example}
+
+\begin{corollary}[source~01]\label{sbd:edge:cor:dfinite}
+None of $B_d^{(2^s,r_0)}$ or $G_d^{(2^s,r_0)}$ is D-finite. In particular
+they are not algebraic over $\C(z)$, and every arithmetic subsequence
+$(b_{2^s\ell+r_0}^{(d)})_{\ell\ge0}$ is not P-recursive.
+\end{corollary}
+\begin{proof}
+As for Corollary~\ref{sbd:xtm:cor:nonholonomic}: a D-finite function
+continues analytically away from the finitely many zeros of its leading
+coefficient, so a full circle of noncontinuability is impossible, and an
+algebraic series is D-finite.
+\end{proof}
+The subsequence statement supplies additional non-P-recursive sequences;
+the case of $B_d$ itself is Corollary~\ref{sbd:xtm:cor:nonholonomic}.
+
+\subsection{A single dominant block, and sections of every step [write]}
+\label{sbd:wr:sec:dominant}
+Theorem~\ref{sbd:edge:thm:subsequences} uses that every late block starts at
+the same residue modulo $2^s$. For a step with an odd factor the starting
+residue $K_q+1\bmod r$ cycles with $q$, and both manuscripts leave such
+sections open (manuscript~05's Question~5: ``root-of-unity filters can
+introduce cancellation''; manuscript~01's Question~4). The writing step
+closes the natural-boundary part of that question. The input is a
+comparison of neighbouring blocks that is sharper than the envelope
+\eqref{sbd:xtm:eq:amplitude-envelope}; it holds because the ratio
+$u_{m+1}/u_m$ is known to within a factor $m+1$.
+
+For $t>0$ put $L=\log(1/t)$, $X=(L+\log L)/h$, and
+\begin{equation}\label{sbd:wr:eq:phase}
+ \omega_q(t)=A_q\e^{-t(K_q+1)},\qquad
+ y_0(L)=\lceil X\rceil-X\in[0,1),\qquad
+ q_t=1+\lceil X\rceil,
+\end{equation}
+so that $S_d(t)=\sum_{q\ge q_0}\omega_q(t)$ and $tK_{q_t}=L\,2^{y_0(L)}$.
+
+\begin{lemma}[A single dominant block; write]\label{sbd:wr:lem:dominant}
+Fix $d\ge0$ and $\delta\in(0,1/2]$, and let $c_\delta=(1-2^{-\delta})/4$.
+For all sufficiently small $t$ with $\delta\le y_0(L)\le1-\delta$,
+\begin{equation}\label{sbd:wr:eq:dominant}
+ \sum_{q\ne q_t}\omega_q(t)\le\e^{-c_\delta L}\,\omega_{q_t}(t).
+\end{equation}
+In particular $S_d(t)=\omega_{q_t}(t)\bigl(1+O(\e^{-c_\delta L})\bigr)$ along
+such $t$.
+\end{lemma}
+\begin{proof}
+\emph{Neighbouring amplitudes.} Proposition~\ref{sbd:prop:marked} with
+$n=m+1$ and $t=1$ gives $\sum_ss\,u(m+1,s)=u_m(2^m-m)$; every class counted
+by $u_{m+1}$ has between $1$ and $m+1$ sources, so
+\begin{equation}\label{sbd:wr:eq:core-ratio}
+ \frac{2^m-m}{m+1}\le\frac{u_{m+1}}{u_m}\le2^m-m,\qquad
+ \log\frac{u_{m+1}}{u_m}=hm+O(\log m).
+\end{equation}
+By \eqref{sbd:xtm:eq:amplitude-stirling},
+$\log A_q=\log u_{q+d}-(q+d)\log c-\tfrac12(q-1)h+O_d(1)$, with
+$\log c=(d+1)h$. Hence $\log A_{q+1}-\log A_q=hq+O_d(\log q)$, and since
+$K_{q+1}-K_q=K_q$,
+\begin{equation}\label{sbd:wr:eq:increment}
+ \log\omega_{q+1}(t)-\log\omega_q(t)=hq-t2^{q-1}+\epsilon_q,\qquad
+ |\epsilon_q|\le C_d\log q\quad(q\ge q_0).
+\end{equation}
+
+\emph{Blocks above $q_t$.} Write $q=q_t+k$ with $k\ge0$. Then
+$hq=L+\log L+h(1+y_0+k)$ and $t2^{q-1}=L2^{y_0+k}$, so the increment
+\eqref{sbd:wr:eq:increment} equals
+$L(1-2^{y_0+k})+\log L+h(1+y_0+k)+\epsilon_q$. Here
+$2^{y_0+k}-1\ge2^k(2^\delta-1)$, while
+$\log L+h(2+k)+C_d\log(2X+2+k)\le2^{k-1}(2^\delta-1)L$ for all $k\ge0$ once
+$L$ is large. So every increment with $q\ge q_t$ is at most
+$-(2^\delta-1)L/2$, and
+$\sum_{q>q_t}\omega_q\le2\e^{-(2^\delta-1)L/2}\omega_{q_t}$ for large $L$.
+
+\emph{Blocks below $q_t$.} For $q\le q_t-1$ one has
+$t2^{q-1}\le L2^{y_0-1}\le L2^{-\delta}$. If $hq\ge
+\tfrac12(1+2^{-\delta})L+C_d\log q$, the increment is at least
+$\tfrac12(1-2^{-\delta})L>0$. Otherwise $q\le(1+2^{-\delta})L/(2h)+O(\log
+L)$, so $q_t-q\ge(1-2^{-\delta})L/(2h)-O(\log L)$ and
+$t2^{q-1}=L2^{y_0+q-q_t}\le1$ for large $L$; then the increment is at least
+$hq-1-C_d\log q\ge1$ once $q\ge q_1$, a constant depending on $d$. Hence
+$\omega_q$ increases on $q_1\le q\le q_t$. At $q=q_t-1$,
+$hq=L+\log L+hy_0\ge L$, so the last increment is at least
+$L(1-2^{-\delta})-C_d\log q\ge\tfrac12(1-2^{-\delta})L$. Therefore
+$\sum_{q_1\le q<q_t}\omega_q\le q_t\e^{-(1-2^{-\delta})L/2}\omega_{q_t}$,
+with $q_t=O(L)$. The finitely many $q_0\le q<q_1$ have
+$\omega_q\le A_q=O_d(1)$, whereas $\log\omega_{q_t}\ge\tfrac h2q_t^2-C_dq_t-
+L2^{y_0}-t\ge L^2/(2h)-O_d(L)$ by \eqref{sbd:xtm:eq:amplitude-envelope}.
+Since $2^\delta-1\ge1-2^{-\delta}$, the three bounds give
+\eqref{sbd:wr:eq:dominant} for small $t$.
+\end{proof}
+
+\begin{theorem}[Every arithmetic section has a natural boundary; write]
+\label{sbd:wr:thm:sections}
+Fix $d\ge0$, a step $r\ge1$ and a residue $0\le r_0<r$. Then
+$B_d^{(r,r_0)}$ has radius $R_d$ and $G_d^{(r,r_0)}$ has radius $R_d^r$, and
+both circles of convergence are natural boundaries. More precisely, let
+$j_q\in\{0,\ldots,r-1\}$ be the residue of $r_0-1-K_q$ modulo $r$. For
+every dyadic root of unity $\zeta$ and every $\delta\in(0,1/2]$, as
+$t\downarrow0$ with $\delta\le y_0(L)\le1-\delta$,
+\begin{equation}\label{sbd:wr:eq:sections}
+ B_d^{(r,r_0)}(R_d\e^{-t}\zeta)
+ =\zeta\,\omega_{q_t}(t)\Bigl[\frac{(a_dR_d\zeta)^{j_{q_t}}}{1-(a_dR_d\zeta)^r}
+ +o(1)\Bigr],
+\end{equation}
+and $|B_d^{(r,r_0)}(R_d\e^{-t}\zeta)|\to\infty$ along such $t$, with
+logarithm $\mathcal T(L)+O_{d,r}(L)$. Consequently every arithmetic
+subsequence $(b_{r\ell+r_0}^{(d)})_{\ell\ge0}$ and
+$((r\ell+r_0)!\,b_{r\ell+r_0}^{(d)})_{\ell\ge0}$ is not P-recursive, and
+$B_d^{(r,r_0)}$, $G_d^{(r,r_0)}$ are neither D-finite nor algebraic.
+\end{theorem}
+\begin{proof}
+In block $q$ the coefficients with $n=K+1+j\equiv r_0\pmod r$ are those with
+$j\equiv j_q\pmod r$. Let $P_q^{(r,r_0)}$ keep exactly these terms of $P_q$.
+Since $(az)^{j_q}/(1-(az)^r)=\sum_{j\equiv j_q}(az)^j$, the three error terms
+in the proof of Lemma~\ref{sbd:xtm:lem:block-profile} (proxy against
+geometric coefficients, geometric tail beyond $K$, covering error) only lose
+nonnegative terms when restricted to $j\equiv j_q$, so for a fixed
+$T\in(R,1/a)$
+\[
+ \sup_{|z|\le T}\Bigl|P_q^{(r,r_0)}(z)-\frac{(az)^{j_q}}{1-(az)^r}\Bigr|
+ =O_{d,T}(m/K),
+\]
+uniformly in $q$, and the $P_q^{(r,r_0)}$ are uniformly bounded there, by
+$M_d$ say. The block decomposition \eqref{sbd:xtm:eq:block-decomposition}
+restricted to $n\equiv r_0$ reads
+$B_d^{(r,r_0)}(z)=E^{(r,r_0)}(z)+\sum_qA_q(z/R)^{K+1}P_q^{(r,r_0)}(z)$ with a
+polynomial head. Let $\zeta^{2^j}=1$. By \eqref{sbd:xtm:eq:phase-align},
+for $q>j$ the block $q$ contributes $\zeta\,\omega_q(t)P_q^{(r,r_0)}(R\e^{-t}\zeta)$
+at $z=R\e^{-t}\zeta$; the finitely many other blocks and the head are
+$O(1)$. Hence
+\[
+ \Bigl|B_d^{(r,r_0)}(R\e^{-t}\zeta)-\zeta\,\omega_{q_t}(t)
+ P_{q_t}^{(r,r_0)}(R\e^{-t}\zeta)\Bigr|
+ \le M_d\sum_{q\ne q_t}\omega_q(t)+O(1).
+\]
+By Lemma~\ref{sbd:wr:lem:dominant} the right side is
+$O(\e^{-c_\delta L}\omega_{q_t}(t))+O(1)=o(\omega_{q_t}(t))$. Moreover
+$P_{q_t}^{(r,r_0)}(R\e^{-t}\zeta)=(aR\e^{-t}\zeta)^{j_{q_t}}/(1-(aR\e^{-t}\zeta)^r)
++O(m/K)$, and replacing $\e^{-t}$ by $1$ changes this rational value by
+$O_r(t)$ uniformly in $j_{q_t}<r$. This proves \eqref{sbd:wr:eq:sections}.
+The bracket has modulus at least $(aR)^{r-1}/(1+(aR)^r)-o(1)>0$, and
+$\omega_{q_t}(t)=S_d(t)(1+o(1))\to\infty$ with
+$\log S_d(t)=\mathcal T(L)+O_d(L)$ by Lemma~\ref{sbd:xtm:lem:laplace}.
+Since $y_0(L)$ runs through $[0,1)$ infinitely often as $L\to\infty$ (it is
+continuous between its jumps, at which it returns from $0$ to $1$), such
+$t\downarrow0$ exist, and $B_d^{(r,r_0)}$ is unbounded on the radius to
+$R\zeta$. As in Section~\ref{sbd:xtm:sec:boundary}, it has no holomorphic
+continuation through $R\zeta$, and density of the dyadic roots gives the
+natural boundary. Its coefficients are nonnegative and dominated by those of
+$B_d$, so it is analytic in $|z|<R$ and its radius is exactly $R$. The
+statements for $G_d^{(r,r_0)}$ follow from
+\eqref{sbd:edge:eq:subsequence-composition} exactly as in the proof of
+Theorem~\ref{sbd:edge:thm:subsequences}. A D-finite or algebraic function
+cannot have a natural boundary (Corollary~\ref{sbd:xtm:cor:nonholonomic}),
+so $(b_{r\ell+r_0}^{(d)})$ is not P-recursive; a polynomial recurrence for
+$((r\ell+r_0)!\,b_{r\ell+r_0}^{(d)})$, written with forward shifts and
+divided by $(r\ell+r_0)!$, would give one for $(b_{r\ell+r_0}^{(d)})$,
+because $(r(\ell+i)+r_0)!/(r\ell+r_0)!$ is a polynomial in $\ell$.
+\end{proof}
+
+\begin{remark}[What Theorem~\ref{sbd:wr:thm:sections} does not say; write]\label{sbd:wr:rem:sections}
+For $r=2^s$, $j_q=j_0$ for all large $q$ and \eqref{sbd:wr:eq:sections}
+recovers Theorem~\ref{sbd:edge:thm:subsequences} along the restricted radii.
+When $r$ has an odd factor $r'>1$, $j_q$ depends on $2^{q-1}\bmod r'$, which
+is periodic in $q$ with period the order of $2$ modulo $r'$; the bracket in
+\eqref{sbd:wr:eq:sections} then changes with $q_t$, and nothing is proved
+about the existence of a radial ratio limit, about the radii with $y_0(L)$
+near $0$, where two blocks compete, or about non-dyadic angles. The theorem
+is the writing step's; it has not been independently reviewed. Its only
+inputs are Lemma~\ref{sbd:xtm:lem:block-profile}, the Stirling form
+\eqref{sbd:xtm:eq:amplitude-stirling}, Part~\ref{sbd:part:one}'s marked-source
+identity and the envelope \eqref{sbd:xtm:eq:amplitude-envelope}. A numerical
+illustration for $d=0$ and $r=3$ is in Section~\ref{sbd:xtm:sec:computation}.
+\end{remark}
+
+\section{Computation, checks, and examples}
+\label{sbd:xtm:sec:computation}
+
+\subsection{What the computations test}
+Each manuscript ships its own program, written independently of the other
+and of Part~\ref{sbd:part:one}'s (\nolinkurl{code/03-source-extremum-verify.py}
+and \nolinkurl{code/02-source-edge-verify.py}; the report's README gives the
+delivery names and a safe rerun). Both use exact integers for finite
+enumeration and identities, and both are error-detection companions to the
+proofs: no numerical result is used to prove a natural boundary, an
+asymptotic remainder, or the local $L^p$ theorem. In their packages,
+manuscript~05's checks are reproduced by \code{python3 verify.py} from the
+package directory (its PDF by \code{pdflatex} twice or its \code{build.sh}),
+and manuscript~01's by \code{python code/verify.py} and
+\code{python code/make_article_tables.py} (or its \code{Makefile}); neither
+program accesses the network. In this report these files carry the prefixes
+of the provenance note, and running them in place would write into the
+report's directories; the README gives a rerun on a scratch copy.
+
+Manuscript~05's program compares the marked-source sieve with the
+independent source-deletion recurrence \eqref{sbd:edge:eq:deletion-rec},
+and also performs a small exhaustive graph enumeration; these are three
+different routes to the same finite objects. The exhaustive method examines
+every graph whose arcs point from a larger to a smaller index. It rejects
+repeated neighborhoods, collapses the survivors to finite sets, and
+deduplicates the resulting transitive sets. Every acyclic isomorphism class
+has such an ordering, so this exhausts the small cases independently of
+either recurrence.
+
+Manuscript~01's program independently generates finite transitive sets: it
+starts with the empty transitive set and, from a transitive set $F$,
+adjoins each subset $x\subseteq F$ with $x\notin F$, deduplicating the
+resulting transitive sets $F\cup\{x\}$. Every nonempty finite transitive set
+can be reduced by deleting a source, so this generation is exhaustive.
+Nested immutable sets represent equality directly; no numerical coding with
+a truncated rank is used. Its exact arithmetic uses \eqref{sbd:eq:total-rec},
+\eqref{sbd:eq:sieve} and \eqref{sbd:eq:defect}, together with the deletion
+recurrence, and checks the initial core counts, the source maximum, the
+covering inequalities, the finite-defect formula and the elementary bounds
+\eqref{sbd:xtm:eq:core-bounds}.
+
+The small rows $u(n,s)$, $n\le7$, are those of Part~\ref{sbd:part:one}'s table
+in Section~11.1 (manuscript~05 prints them again, through $n=7$, with $q(n)$
+and $s_{\max}(n)$; that table is not repeated). In particular the
+source-maximizer counts begin $1,1,2,1,20,20,10,2,7128,8316,7128,4455,1980,
+594,108,9$ (Part~\ref{sbd:part:one}'s table in Section~11.2). The jump from
+$b_8^{(0)}=2$ to $b_9^{(0)}=7128$ reflects a change from a three-vertex to a
+four-vertex core. At the radius $1/4$, the first few entries in each
+sufficiently late block provide most of its analytic mass, as quantified by
+the profile $1/(1-z)$.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.96\textwidth]{figures/03-source-extremum-dyadic_scaled_coefficients.pdf}
+\caption{Normalized source-maximizer coefficients, computed from the exact
+formula $b_n^{(0)}=u_q\binom{2^q-q}{n-q}$ (manuscript~05). Positive
+coefficients occur throughout; the concentration just after dyadic block
+boundaries is the structure used by the proof.}
+\label{sbd:xtm:fig:blocks}
+\end{figure}
+
+\subsection{Finite verification and numerical diagnostics of manuscript~05}
+\label{sbd:xtm:subsec:verification-record}
+The exact verification covers both source triangles through $n=64$, the
+source support and row sums, the finite-defect formula for $0\le d\le3$ in
+this range, the covering inequalities, and the core-count bounds.
+Exhaustive collapse enumeration through $n=6$ independently checks the small
+rows. The machine-readable record
+\nolinkurl{data/03-source-extremum-verification.json} gives the actual
+counts of checks and records any failure.
+
+The recorded run compares 2,080 triangle cells and 242 admissible
+fixed-defect entries. Additional exact first-order product expansions check
+1,040 coefficient instances of the block correction and 80 instances of the
+amplitude coefficient of Section~\ref{sbd:xtm:app:expansions}. The
+independent six-vertex enumeration examines 32,768 ordered graphs, retains
+3,240 extensional graphs, and deduplicates them to 1,802 isomorphism
+classes.
+
+Numerical files examine the geometric block profile and the phase ratio in
+\eqref{sbd:xtm:eq:phase-main}. The profile tables use the exact
+first-coefficient normalization
+\[
+ Q_q(z)=\sum_{j=0}^{K-1}
+       \frac{b_{K+1+j}^{(d)}}{b_{K+1}^{(d)}}z^j
+       =\frac{P_q(z)}{P_q(0)}.
+\]
+The covering estimate gives $P_q(0)=1+O_d(m2^{-k_0})$, so $Q_q$ has the same
+geometric limit and asymptotic correction orders as $P_q$. The numerical
+files distinguish exact integer count evaluations from binomial-proxy
+calculations for very large blocks. Floating-point diagnostics are not
+interval certificates. The covering inequality supplies the mathematical
+reason the proxy is appropriate; any reported finite numerical tolerance is
+only a diagnostic unless explicitly enclosed by a proved bound.
+
+\sbdinput{sbd:xtm:}{data/03-source-extremum-diagnostic_tables.tex}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.98\textwidth]{figures/03-source-extremum-radial_phase_convergence.pdf}
+\caption{Numerical convergence to the complex phase limits for two dyadic
+roots (manuscript~05). The evaluations use exact coefficient prefixes and a
+covering-controlled proxy for large blocks. The plots are diagnostics, not
+proofs or interval-certified evaluations.}
+\label{sbd:xtm:fig:phase}
+\end{figure}
+
+For a specified $n$ and fixed $d$, \eqref{sbd:eq:defect} needs only $d+1$
+summands after $u_0,\ldots,u_{q(n)+d}$ are tabulated; as
+Part~\ref{sbd:part:one} says in Section~11.3, this is an arithmetic-operation
+statement, not a claim of constant bit complexity. Exact integer arithmetic
+is appropriate for the sieve; logarithms and the positive proxy are more
+stable for asymptotic diagnostics near a boundary. The proofs themselves use
+only the coarse bounds \eqref{sbd:xtm:eq:core-bounds}, not a long table of
+large core counts.
+
+\subsection{Analytic diagnostics of manuscript~01}
+Profile errors are evaluated at several roots of unity and compared with
+$1/(1-aRw)$. This tests indexing, the normalization $u_mC_q$, and the
+constants $R$ and $aR$; the proof of Lemma~\ref{sbd:xtm:lem:block-profile}
+supplies the uniform closed-disk result. The radial calculations compare
+\[
+ \frac{B_d(R_d\e^{-t}\zeta)}{B_d(R_d\e^{-t})}
+ \quad\hbox{with}\quad
+ \frac{\zeta(1-a_dR_d)}{1-a_dR_d\zeta}
+\]
+and record the logarithmic radial magnitude. For very large block starts,
+log-gamma evaluation and geometric truncation avoid constructing gigantic
+binomial coefficients. The recorded run uses 100 decimal working digits,
+exact coefficients through $n=512$, and the first 128 offsets of each later
+block through $q=60$. All $d+1$ terms of the finite-defect formula are
+retained. Monotone consecutive ratios bound the omitted within-block terms,
+and the upper core bound in \eqref{sbd:xtm:eq:core-bounds} bounds the
+infinite block tail. The largest evaluated relative truncation bound is
+$3.96\times10^{-58}$; a 100-versus-140-digit endpoint comparison differs by
+less than $2.47\times10^{-81}$. These are floating-point evaluations of
+analytic bounds, not interval-arithmetic certificates enclosing roundoff.
+The data files retain the actual tested ranges, counts, and errors; a small
+sampled profile error is not being identified with the supremum over a
+complex disk. In the shipped table file below, $N=K$, $\rho_d=a_dR_d$ and
+$\varepsilon=t$.
+
+\sbdinput{sbd:edge:}{data/02-source-edge-article_tables.tex}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{figures/02-source-edge-profile_convergence.pdf}
+\caption{Diagnostics of the dyadic block profile (manuscript~01). Each
+finite computation tests the normalization and the geometric limiting
+profile $(1-a_dR_dw)^{-1}$ (in the plot, $H_d(w)=(1-\rho_dw)^{-1}$ with
+$\rho_d=a_dR_d$). The second panel compares the endpoint amplitude with the
+main term of \eqref{sbd:xtm:eq:amplitude-stirling}. The closed-disk error
+estimate is proved in Lemma~\ref{sbd:xtm:lem:block-profile}.}
+\label{sbd:edge:fig:profiles}
+\end{figure}
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{figures/02-source-edge-radial_behavior.pdf}
+\caption{High-precision diagnostics of the radial limit and growth laws
+(manuscript~01). The exact limit constants and the two-term logarithmic
+expansion are proved in Section~\ref{sbd:xtm:sec:boundary}.}
+\label{sbd:edge:fig:radial}
+\end{figure}
+
+\begin{writenote}[Added 5 October 2026, batch~98: reruns and the write's checks]
+The writing step reran both programs on scratch copies in their delivered
+layouts (Python~3.12.13, mpmath~1.3.0, Matplotlib~3.10.8, NumPy~2.3.5):
+manuscript~01's \nolinkurl{verify.py} and \nolinkurl{make_article_tables.py}
+with default parameters (about 77\,s here, against a recorded 15\,s), and
+manuscript~05's \nolinkurl{verify.py --max-n 64 --brute-n 6} (about 44\,s,
+against 10\,s). All fifteen CSV files were reproduced byte for byte, the
+three \LaTeX\ table files up to Windows line endings; the JSON and text run
+records differ only in the Python patch version and the elapsed time. The
+three $u(n,k)$ tables shipped with this report (Part~\ref{sbd:part:one}'s
+and both manuscripts') agree on all 1{,}759 positive cells with $n\le64$.
+
+In a separate scratch computation (not shipped) the writing step checked
+the inputs of Section~\ref{sbd:wr:sec:dominant} and
+Proposition~\ref{sbd:wr:prop:orderL}: the bounds
+\eqref{sbd:wr:eq:core-ratio} hold exactly for $m\le63$; with the exact
+amplitudes $A_q$ for $d=0,1$ and $L\approx15,20,25,30$ chosen with
+$y_0(L)=1/2$, the predicted block $q_t$ is the largest term and
+$S_d(t)/\omega_{q_t}(t)=1.023$, $1.0035$, $1.00065$, $1.00009$; and for $d=0$,
+step $r=3$ and $L\approx20.2$ ($q_t=35$), the exact coefficients give
+$|B_0^{(3,0)}(\tfrac14\e^{-t}\zeta)|/\omega_{q_t}(t)=0.2427$ at $\zeta=-1$ and
+$0.24999$ at $\zeta=\ii$, against the values $0.2462$ and $0.24997$ of the
+bracket in \eqref{sbd:wr:eq:sections} (at $L\approx16.3$, $q_t=27$, they are
+$0.2319$ and $0.2504$; at $L\approx11.7$, $q_t=20$, where $j_{q_t}$ differs,
+$0.968$ and $1.00003$ against $0.985$ and $0.9999$). These are
+floating-point illustrations, not proofs.
+\end{writenote}
+
+\section{First corrections inside a dyadic block}
+\label{sbd:xtm:app:expansions}
+
+This section is manuscript~05's Appendix~A. The natural-boundary proof
+needs only an $O(m/K)$ error. The following refinements make the mechanism
+more explicit and provide additional finite algebra for verification.
+
+\begin{proposition}[First block correction; source~05]\label{sbd:xtm:prop:block-correction}
+For every fixed $0<T<1/a$,
+\begin{equation}\label{sbd:xtm:eq:block-correction}
+\begin{split}
+ P_q(z)={}&\frac1{1-az}
+ +\frac1K\left\{
+   \frac{(m-1)az}{(1-az)^2}
+       -\frac{cz}{(1-az)^3}\right\}\\
+ &\hspace{20mm}+O_{d,T}(m^2/K^2),\qquad |z|\le T.
+\end{split}
+\end{equation}
+\end{proposition}
+\begin{proof}
+From \eqref{sbd:xtm:eq:consecutive-ratios}, expansion of the logarithm gives
+\[
+ v_{q,j}=a^j\left[1+\frac1K
+    \left\{j(m-1)-\frac c{2a}j(j+1)\right\}
+    +\text{remainder}\right].
+\]
+To justify summation uniformly, fix $\rho<1$ with $(a+\epsilon)T<\rho$,
+where $\epsilon$ is as in the proof of
+Lemma~\ref{sbd:xtm:lem:block-profile}. Split the sum at
+$J=\lfloor K^{1/4}\rfloor$. On $j\le J$, Taylor's formula for each logarithm
+and then for the exponential bounds the weighted remainder by
+\[
+ \frac{C_{d,T}}{K^2}
+   (m^2j^2+j^4+m^2j+j^3)\rho^j.
+\]
+Here $m=O_d(\log K)$ ensures the expansions are uniform. The sum of these
+errors is $O_{d,T}(m^2/K^2)$. The tails $j>J$ of the exact product, the
+leading geometric series, and the polynomial correction are exponentially
+small in $J$, using the same ratio bound. The covering error is smaller
+still. Finally
+\[
+ \sum_{j\ge0}jw^j=\frac w{(1-w)^2},\qquad
+ \sum_{j\ge0}j(j+1)w^j=\frac{2w}{(1-w)^3},
+\]
+with $w=az$, give \eqref{sbd:xtm:eq:block-correction}.
+\end{proof}
+(In this proof $\rho$ is a local constant and $w$ a local variable.)
+
+\begin{proposition}[First amplitude correction; source~05]\label{sbd:xtm:prop:amplitude-correction}
+With the normalization \eqref{sbd:xtm:eq:amplitude-definition},
+\begin{equation}\label{sbd:xtm:eq:amplitude-correction}
+ A_q=u_mc^{-m}R\sqrt{\frac{ca}{2\pi K}}
+ \left[1+\frac{E_{c,m}}K+O_d(m^4/K^2)\right],
+\end{equation}
+where
+\begin{equation}\label{sbd:xtm:eq:amplitude-coefficient}
+ E_{c,m}=(m-1)-\frac a{2c}m(m-1)
+        +\frac{1/c-1-1/a}{12}.
+\end{equation}
+\end{proposition}
+\begin{proof}
+The product quotient in \eqref{sbd:xtm:eq:binomial-ratio} has logarithm
+\[
+ \frac1K\left((m-1)-\frac a{2c}m(m-1)\right)
+       +O_d(m^3/K^2).
+\]
+Exponentiation changes the relative remainder to $O_d(m^4/K^2)$. Stirling's
+expansion gives
+\[
+ \binom{cK}{K}R^K
+ =\sqrt{\frac c{2\pi aK}}
+ \left[1+\frac{1/c-1-1/a}{12K}+O_d(K^{-2})\right].
+\]
+Multiply these formulas and the prefactor $u_mRac^{-m}$.
+\end{proof}
+
+Neither proposition alone provides a further universal term in
+\eqref{sbd:xtm:eq:phase-main}. Summing a first correction introduces
+weighted averages of $m/K$ and $1/K$ over competing blocks.
+Lemma~\ref{sbd:xtm:lem:concentration} controls their order, but a limiting
+coefficient would require additional information about those averages.
+
+\sbdinput{sbd:xtm:}{data/03-source-extremum-first_correction_tables.tex}
+
+\section{Further questions and research}
+\label{sbd:xtm:sec:future}
+
+The natural-boundary question of Part~\ref{sbd:part:one} is settled by the
+preceding proofs. The following questions merge the two manuscripts' lists
+(manuscript~05's Section~10, ten items, and manuscript~01's Section~11,
+nine items) with each other, with the related questions of
+Part~\ref{sbd:part:one}'s Section~\ref{sbd:sec:questions}, and with the
+claims of either manuscript that are argued but not proved. Each is
+credited; the sources' status is relative to their inspected repository and
+sources, not a claim that every formulation is historically open.
+
+\begin{enumerate}[label=\textbf{\arabic*.},leftmargin=*]
+\item \textbf{The term of order $L$ and the discrete saddle} (05, Q1; 01,
+Q1 and Section~7.3). Determine the next term after $\mathcal T(L)$ in
+\eqref{sbd:xtm:eq:growth-main}, including its dependence on the position of
+the continuous maximizer relative to the integers. A sharper asymptotic for
+$u_m$ can refine the block amplitudes (manuscript~01: combine a fully
+verified precise asymptotic for $u_m$ with
+\eqref{sbd:xtm:eq:amplitude-stirling}), but the maximizing block index is
+an integer. Both manuscripts assert that rounding by a bounded amount
+changes the logarithm by order $L$, so that a smooth saddle alone cannot
+give a constant coefficient there, and ask for the correct phase variable
+and any periodic or switching behavior, and for an expression uniform
+through the crossover of two neighbouring dominant blocks. They argue this
+only heuristically (Remark~\ref{sbd:edge:rem:orderL}).
+Proposition~\ref{sbd:wr:prop:orderL} below [write] proves it under a
+hypothesis on $u_m$ and bounds the coefficient unconditionally. Missing: a
+proof of the hypothesis \eqref{sbd:wr:eq:alpha} (or of the oscillation
+without it), and the $o(L)$ terms.
+
+\item \textbf{Pointwise behavior at nondyadic angles} (05, Q2; 01, Q2). The
+theorems prove a natural boundary everywhere and radial blow-up at dyadic
+angles. They do not say that every irrational angle has the same radial
+limit or magnitude. At a root of unity of odd order the block phases cycle;
+at an irrational angle they may behave much more irregularly. Characterize
+limsup and liminf radial growth there and at typical angles, retaining
+possible cancellation between blocks; determine whether radial magnitudes
+are unbounded and whether normalized limits exist on suitable subsequences.
+
+\item \textbf{Angular transition scales and limiting profiles} (05, Q3; 01,
+Q3). Manuscript~05's proof uses a grid with spacing of order $t/L$ and shows
+that large values occupy positive measure in every fixed arc; manuscript~01
+says the dominant block index \eqref{sbd:edge:eq:dominant-index}
+``suggests'' a phase scale of order $t/L$ around a dyadic point. Neither
+proves a profile on that scale. Study the function on windows
+$\theta=\theta_0+xt/L$, $\e^{\ii\theta_0}$ dyadic, and on windows tied to
+individual block frequencies: is there an explicit limiting transition
+profile, or a family of subsequential profiles, including where two
+neighbouring blocks carry comparable mass? Lemma~\ref{sbd:wr:lem:dominant}
+identifies when one block dominates.
+
+\item \textbf{Exact local $L^p$ constants} (05, Q4).
+Theorem~\ref{sbd:xtm:thm:main-lp} gives comparison constants, not a limit
+for the ratio of the integral to $B_d(R_d\e^{-t})^p$. Determine whether that
+ratio converges or has a phase-dependent set of limit points. Parseval's
+identity makes $p=2$ a useful first target, but the competition between
+neighboring dyadic blocks must still be controlled.
+
+\item \textbf{Arithmetic sections} (05, Q5; 01, Q4). For fixed integers
+$r\ge2$ and $0\le r_0<r$, determine the analytic continuation of
+$\sum_nb_{rn+r_0}^{(d)}z^n$. Manuscript~05 notes that a natural boundary of
+the whole series does not automatically pass to a section: root-of-unity
+filters can introduce cancellation, and the block starting residues depend
+on $q$. Manuscript~01 proves the natural boundary for every step $2^s$
+(Theorem~\ref{sbd:edge:thm:subsequences}), and
+Theorem~\ref{sbd:wr:thm:sections} [write] proves it for every step. Still
+open for a step with an odd factor: whether the radial ratio at a dyadic
+root has a limit, or only the subsequential values that
+\eqref{sbd:wr:eq:sections} suggests, and the behaviour near radii where two
+blocks compete. Manuscript~01's question which phase alignments force dense
+singularities is answered at the level of natural boundaries.
+
+\item \textbf{Growing defects} (05, Q6; 01, Q5; Part~\ref{sbd:part:one},
+Question~3). Find useful uniform ranges for the counting and block
+estimates when $d$ grows with $q$ or $n$. The covering estimate remains
+available, and the simple condition $m=q+d=o(K)$ still favors the geometric
+profile, but the radius $R_d$ moves toward zero and the block geometry fixes
+$c=2^{d+1}$; the radius and even the right normalization may change, so
+this needs a fresh formulation rather than a substitution in an $O_d$
+bound. Theorem~\ref{sbd:xtm:thm:bivariate} rules out an ordinary
+holomorphic germ with positive defect marking; it does not rule out
+appropriate formal, rescaled, or summability-based descriptions.
+
+\item \textbf{Complex defect fugacity} (05, Q7). Analyze
+$\sum_db_n^{(d)}v^d$ for negative or nonreal $v$. The positive-fugacity
+proof cannot decide the effect of cancellation. Exact marked-source
+identities may reveal special values with substantially different growth.
+
+\item \textbf{Nonlinear differential algebraicity} (05, Q8; 01, Q9;
+Part~\ref{sbd:part:one}, Remark~8.3). Does some $B_d$ satisfy a nonlinear
+polynomial differential equation over $\C(z)$; are these series
+differentially algebraic or differentially transcendental? Natural
+boundaries prohibit linear differential equations here, but are not by
+themselves an obstruction to nonlinear differential algebraicity. No
+conclusion of Part~II settles it.
+
+\item \textbf{Other neighborhood capacities} (05, Q9;
+Part~\ref{sbd:part:one}, Question~8). For bounded outdegree $\Delta$,
+replace the Boolean capacity $2^m$ by $\sum_{j\le\Delta}\binom mj$.
+Determine which source boundaries are sharp and whether the resulting block
+spacing still yields complex noncontinuation. Fixed $\Delta$ and growing
+$\Delta$ may behave differently because their capacity scales differ.
+
+\item \textbf{Weighted source and arc statistics} (01, Q6;
+Part~\ref{sbd:part:one}, Questions~5 and~6). Mark the number of arcs or the
+source outdegree profile while counting graphs at a fixed source defect.
+Derive a multivariate analogue of the Boolean-core profile, and study the
+corresponding singularity sets as the marking parameter varies. The deleted
+core neighborhoods are a small but structured correction to a Boolean
+subset model.
+
+\item \textbf{Certified computation} (05, Q10; 01, Q7). Turn the explicit
+ratio and covering inequalities into an interval-arithmetic evaluator near
+a specified dyadic boundary point, combining exact core counts with
+explicit tail inequalities to enclose complex values and phase-ratio errors
+rigorously, and selecting the core cutoff, block cutoff and within-block
+truncation from a requested tolerance. The present code detects mistakes;
+it is not such a certificate. This is not needed for the analytic proofs.
+
+\item \textbf{Formal verification} (05, Q10; 01, Q8; Part~\ref{sbd:part:one},
+Question~10 and Section~\ref{sbd:sec:formal}). Turn the exact core
+recurrence, marked-source bijection, and covering estimate into reusable
+checked lemmas. A separate analytic development could formalize the
+positive dyadic-sum estimate and the dense-grid argument; manuscript~01
+names the general Lemma~\ref{sbd:edge:lem:transfer}, followed by the
+coefficientwise product bound \eqref{sbd:xtm:eq:product-difference}, as a
+compact first target, with the finite set and source-counting lemmas a
+separate exact component.
+
+\item \textbf{Independent review of Part~II} (05, README and source notes;
+the writing step). Manuscript~05's delivery README, its source notes and
+its ledger say that ``independent internal reviews'' or ``separate
+derivations'' checked the core counting, the block estimates, the radial
+transfer and the moving-grid argument. That is a statement about the
+manuscript's preparation which the intake could not verify; it is recorded
+as the source's statement, not as evidence. The intake read the main proofs
+of both manuscripts and found no gap, and the two manuscripts prove the
+shared theorems independently, but neither is a review. Missing: an
+external mathematical review of Part~II, including the writing step's
+Lemma~\ref{sbd:wr:lem:dominant}, Theorem~\ref{sbd:wr:thm:sections} and
+Proposition~\ref{sbd:wr:prop:orderL}.
+\end{enumerate}
+
+\begin{proposition}[The order-$L$ term; write]\label{sbd:wr:prop:orderL}
+Let $\varphi(y)=1+y-2^y$ and let $y_0(L)$ be as in \eqref{sbd:wr:eq:phase}.
+Fix $d\ge0$. As $t\downarrow0$, with $L=\log(1/t)$:
+\begin{enumerate}[label=(\roman*)]
+\item unconditionally,
+\begin{equation}\label{sbd:wr:eq:orderL-bounds}
+ \bigl(-3+\varphi(y_0(L))\bigr)L-o(L)\le
+ \log B_d(R_d\e^{-t})-\mathcal T(L)\le
+ \bigl(-2+\varphi(y_0(L))\bigr)L+o(L);
+\end{equation}
+\item if, for a constant $\alpha$,
+\begin{equation}\label{sbd:wr:eq:alpha}
+ \log u_m=\tfrac h2m^2+\alpha m+o(m)\qquad(m\to\infty),
+\end{equation}
+then
+\begin{equation}\label{sbd:wr:eq:orderL}
+ \log B_d(R_d\e^{-t})=\mathcal T(L)
+ +\Bigl(\frac\alpha h-\frac32+\varphi(y_0(L))\Bigr)L+o(L).
+\end{equation}
+\end{enumerate}
+On $[0,1]$, $\varphi\ge0$ vanishes only at the endpoints and attains its
+maximum $\varphi^*=1-(1+\log\log2)/\log2=0.08607\ldots$ at
+$y^*=-\log_2\log2$, and $y_0(L)$ takes every value in $[0,1)$ along sequences
+$L\to\infty$. Hence, under \eqref{sbd:wr:eq:alpha}, $(\log
+B_d(R_d\e^{-t})-\mathcal T(L))/L$ has $\liminf$ equal to $\alpha/h-3/2$ and
+$\limsup$ equal to $\alpha/h-3/2+\varphi^*$: the remainder of
+\eqref{sbd:xtm:eq:growth-main} has no fixed coefficient of $L$, but
+oscillates with the fractional part of $(L+\log L)/\log2$. The same holds,
+with the same constants and independently of $d$, for every fixed $d\ge0$.
+\end{proposition}
+\begin{proof}
+By \eqref{sbd:xtm:eq:positive-transfer},
+$\log B_d(R\e^{-t})=\log S_d(t)+\log g(R)+o(1)$, so it suffices to treat
+$S_d(t)=\sum_q\omega_q(t)$. By \eqref{sbd:xtm:eq:amplitude-stirling},
+$\log A_q=\log u_{q+d}-(q+d)(d+1)h-\tfrac12(q-1)h+O_d(1)$. Inserting the
+bounds \eqref{sbd:xtm:eq:core-bounds}, $\tfrac h2(m-1)(m-2)\le\log u_m\le
+\tfrac h2m(m-1)$ with $m=q+d$, gives
+\begin{equation}\label{sbd:wr:eq:A-envelope}
+ \tfrac h2q^2-3hq-C_d\le\log A_q\le\tfrac h2q^2-2hq+C_d,
+\end{equation}
+and \eqref{sbd:wr:eq:alpha} gives
+$\log A_q=\tfrac h2q^2+(\alpha-\tfrac32h)q+o(q)$. Since $S_d$ is increasing
+in each $A_q$, both parts follow from the claim: \emph{if
+$\log A_q=\tfrac h2q^2+\beta q+e_q$ with $e_q=o(q)$ and $|e_q|\le C'q$, then
+$\log S(t)=\mathcal T(L)+(\beta/h)L+L\varphi(y_0(L))+o(L)$.}
+
+To prove the claim write $X=(L+\log L)/h$ and $q=1+X+y$, so that $y$ runs
+through $y_0(L)+\mathbb Z$, and $t(K_q+1)=L2^y+t$. Expanding $\tfrac h2q^2$
+and $\beta q$ gives
+\begin{equation}\label{sbd:wr:eq:term}
+ \log\omega_q(t)=\mathcal T(L)+\frac\beta hL+L\varphi(y)
+ +\tfrac h2(1+y)^2+(1+y)\log L+\beta(1+y)+\frac{(\log L)^2}{2h}
+ +\frac\beta h\log L-t+e_q.
+\end{equation}
+For the lower bound take the single term $y=y_0(L)\in[0,1)$; all terms
+after $L\varphi(y)$ are then $O((\log L)^2)+o(L)$. For the upper bound,
+$\varphi$ is concave with $\varphi(0)=\varphi(1)=0$, so $\varphi\le0$ off
+$[0,1]$, and $y_0(L)$ is the only point of $y_0(L)+\mathbb Z$ in $[0,1)$;
+hence $\varphi(y)\le\varphi(y_0(L))$ for every admissible $y$. For $|y|\le Y$,
+a fixed bound, there are at most $2Y+2$ terms, each at most
+$\mathcal T(L)+(\beta/h)L+L\varphi(y_0(L))+o(L)$. For $y>Y\ge3$,
+$\varphi(y)\le-2^{y-1}$, while the other terms of \eqref{sbd:wr:eq:term}
+are $O\bigl((1+y)^2+(1+y)\log L+(\log L)^2\bigr)+C'(X+1+y)$; for $Y$ with
+$2^{Y-2}>C'/h+2$ and large $L$ these terms sum to at most
+$\exp(\mathcal T(L)+(\beta/h)L-2L)$. For $y<-Y$, $1+y<0$ and $q\ge1$ gives
+$|1+y|\le X$; then
+$L\varphi(y)+(1+y)\log L+\tfrac h2(1+y)^2
+\le(1+y)\bigl(L+\log L+\tfrac h2(1+y)\bigr)\le-\tfrac12|1+y|L$, so the term is
+at most $\mathcal T(L)+(\beta/h)L-|1+y|(L/2-|\beta|-C')+C'X+O((\log L)^2)$;
+there are at most $X+1=O(L)$ such terms, and for $Y$ with
+$(Y-1)/3>C'/h+2$ their sum is again at most
+$\exp(\mathcal T(L)+(\beta/h)L-2L)$ for large $L$. This proves the claim.
+Part~(i) follows with $\beta=-3h$ and $\beta=-2h$ ($e_q$ bounded), part~(ii)
+with $\beta=\alpha-\tfrac32h$. Finally $\varphi'(y)=1-h2^y$ vanishes at
+$y^*=-\log_2h\in(0,1)$, where $\varphi(y^*)=1-\log_2h-1/h=\varphi^*$, and
+$y_0(L)=\lceil X\rceil-X$ decreases continuously from near $1$ to $0$ on
+each interval between consecutive integer values of $X$.
+\end{proof}
+
+\begin{remark}[Numerical evidence for \eqref{sbd:wr:eq:alpha}; write]\label{sbd:wr:rem:alpha}
+The bounds \eqref{sbd:xtm:eq:core-bounds} only give $\alpha\in[-3h/2,-h/2]$
+if $\alpha$ exists. From the exact values of $u_m$ shipped with this report
+($m\le64$), $\log(u_{m+1}/u_m)-hm$ equals $-0.3974857\ldots$ to eight digits
+for $30\le m\le63$, which suggests \eqref{sbd:wr:eq:alpha} with
+$\alpha=-0.3974857\ldots-h/2\approx-0.7441$, hence a coefficient of $L$
+oscillating between about $-2.574$ and $-2.487$ for every $d$. This is a
+numerical observation, not a proof; Wagner's asymptotic enumeration
+\cite{wagner,wagner13}, which the intake did not read, may settle it. A
+synthetic check with $A_q=\exp(\tfrac h2q^2+\beta q)$ at $L$ up to $2\cdot10^5$
+reproduces \eqref{sbd:wr:eq:orderL}, with the difference between the two
+sides of order $(\log L)^2/L$.
+\end{remark}
+
+\section{Conclusions, source audits and proof-status ledger}
+\label{sbd:xtm:app:audit}
+
+\subsection{The mechanism (source~01)}
+The mechanism behind the answer has three parts. The source-covering
+estimate reduces exact graph counts to a binomial expression with a
+uniformly tiny relative error. The normalized binomial expression has a
+geometric profile across each late dyadic block. At dyadic roots of unity,
+the block starting exponents eventually have a common phase. The block
+amplitudes diverge, so the common profile forces nonzero radial growth at a
+dense set of boundary points. The elementary chain construction determines
+the quadratic logarithmic size of those amplitudes, and a discrete
+exponential-sum estimate then gives the first two radial growth terms. The
+arc-mean and subsequence results follow from the additional arguments
+stated above.
+
+For a reader interested only in the natural boundary, manuscript~01 names
+the necessary chain: the finite collapse (Lemma~\ref{sbd:lem:collapse}) and
+the intrinsic core identity \eqref{sbd:eq:union-core}; the covering estimate
+\eqref{sbd:xtm:eq:covering-bound}, giving the exact-to-binomial comparison;
+Lemma~\ref{sbd:xtm:lem:core-bounds} and
+Proposition~\ref{sbd:edge:prop:amplitude}, giving $A_q\to\infty$; the
+uniform profile \eqref{sbd:edge:eq:profile-limit} on the closed disk; and
+Lemma~\ref{sbd:edge:lem:transfer}, giving dense radial singularities. The
+exact sieve is used for reproducibility and contextual counting. The full
+entropy theorem of Part~\ref{sbd:part:one}, a gap theorem, and a precise
+unrestricted asymptotic formula for $u_m$ are not premises of this proof.
+
+\subsection{The repository snapshot and the literature checked}
+Both manuscripts inspected ProveIt at commit
+\begin{center}\small
+\nolinkurl{d18416ec7e187a0948248cb3077e37d7b089a8f9},
+\end{center}
+reading this report's \nolinkurl{article.tex} and README (then the text of
+Part~\ref{sbd:part:one}) under
+\begin{quote}\footnotesize\raggedright
+\nolinkurl{SetTheory/Cardinals/docs/reports/}\par
+\nolinkurl{generating-functions-and-asymptotics/oeis-sequence-asymptotics/}\par
+\nolinkurl{a182220-source-boundary/},
+\end{quote}
+\noindent manuscript~05 also the collection's report inventory and manuscript~01 a
+search of the collection's sources for the sequence identifiers and the
+natural-boundary question. Both identify the target as Section~12.2,
+Question~1 (Section~\ref{sbd:sec:questions} here), and manuscript~05 notes
+that the proof-status ledger records the natural boundary as not proved.
+Neither modified the repository; the inspection records the comparison
+made, not an exhaustive search of the literature.
+
+The OEIS entries A182220, A182162, A001192 (and, for manuscript~01,
+A182161) were read on 5 October 2026 (UTC). A182220 still labels the
+displayed logarithmic formulas conjectural in that retrieved version. The
+source maximum is not presented as a new discovery: the bound predates this
+report, and Part~\ref{sbd:part:one} already proves the matching
+construction. The new target is the complex continuation of the
+fixed-defect enumerations. The numerical tables of both packages are
+computed by their own code, not copied from OEIS.
+
+Tomescu's publicly available thesis was read at its counting chapter,
+including the source bound and the deletion recurrence. The publisher
+abstract of Policriti--Tomescu was inspected, as were the OEIS enumeration
+entries. Wagner's unrestricted asymptotic work is cited as context; none of
+its sharper results is an input to a proof here (manuscript~01 read the
+abstract and bibliographic record of the journal version, whose full text
+it could not access). Breuer--Simon's author text was read for the
+definition of a strong natural boundary and the scope of its general
+methods. The NIST DLMF supplies the Stirling expansion with its positive
+real remainder \cite{dlmf}. A bounded search for extensional-digraph natural
+boundaries did not locate a prior treatment of the present fixed-defect
+question; this is a statement about the search, not a theorem about
+priority. The verified claim of progress is that the exact question posed in
+Part~\ref{sbd:part:one} is answered by the proofs above.
+
+% [write] The ledger starts on a fresh page: a longtable that breaks across
+% pages makes the current kernel report "Infinite glue shrinkage found in
+% box being split" (longtable appends \vss before its mark update).
+\clearpage
+\subsection{Status ledger of Part~II}
+\begin{longtable}{p{0.40\textwidth}p{0.53\textwidth}}
+\toprule
+Result & Evidence and scope\\
+\midrule\endhead
+Finite collapse, rigidity, source support, marked-source sieve &
+Part~\ref{sbd:part:one}'s, classical or repository background; re-proved by
+both manuscripts.\\
+Sieve, recurrence, fixed-defect formula & Exact bijective and algebraic
+proofs; finite checks use independent methods.\\
+Deletion recurrence & Bijective proof (Proposition~\ref{sbd:edge:prop:deletion}),
+new to the report; the recurrence is Tomescu's.\\
+Core envelope and covering bound & Elementary inequalities proved for the
+full stated ranges; the chain lower bound, with no priority claim.\\
+Uniform block profile & Quantitative product and tail estimates; uniform on
+a disk larger than $|z|=R_d$ (05); error $O_d(q2^{-q})$ on the closed disk
+(01).\\
+Dyadic-sum growth and concentration & Explicit discrete estimates; no sharp
+core asymptotic assumed.\\
+Natural boundary for every fixed defect & Proved by both manuscripts;
+answers Part~\ref{sbd:part:one}'s Question~1.\\
+Universal dyadic radial phase, with $O(t)$ rate & Proved for every fixed $d$
+and every fixed dyadic root (05; the limit also by 01's transfer lemma).\\
+Two-term logarithmic radial growth & Proved with $O(L)$ remainder (both).\\
+Local $L^p$ comparison on every arc & Moving-grid and positivity proof,
+valid for every fixed $p>0$ and open arc (05); the log-level law also by a
+single-point proof (01).\\
+Power-of-two arithmetic sections & Proved (01,
+Theorem~\ref{sbd:edge:thm:subsequences}).\\
+Positive-fugacity zero radius & Proved for real $v>0$; no arbitrary
+complex-$v$ claim.\\
+First block and amplitude corrections & Taylor expansions with uniform
+remainders (Section~\ref{sbd:xtm:app:expansions}).\\
+Single dominant block; sections of every step; the order-$L$ term & The
+writing step's Lemma~\ref{sbd:wr:lem:dominant},
+Theorem~\ref{sbd:wr:thm:sections} and
+Proposition~\ref{sbd:wr:prop:orderL}: proofs included, not independently
+reviewed; part~(ii) of the proposition is conditional on
+\eqref{sbd:wr:eq:alpha}.\\
+Exact finite enumeration and recurrence checks & Reproducible
+computational checks, with recorded output; rerun at intake.\\
+Numerical diagnostics, profile and radial plots & Reproducible
+error-detection experiments; floating-point values are not certified
+enclosures.\\
+Independent mathematical checking & Manuscript~05 reports separate
+derivations of the core bound, profiles, radial estimates and local $L^p$
+argument; this is its own statement, not external peer review
+(Section~\ref{sbd:xtm:sec:future}, item~13).\\
+Lean or Rocq verification & Not performed; no such certification is
+claimed.\\
+Historical priority of the new analytic refinements & Not established by the
+limited literature searches.\\
+\bottomrule
+\end{longtable}
+
+\clearpage
+\fancyhead[R]{\small OEIS research}
+\part*{Appendices to Part~I}
+\addcontentsline{toc}{part}{Appendices to Part~I}
 
 \appendix
 \section{Suggested concise OEIS-facing statements}\label{sbd:app:oeis}
@@ -1370,6 +3722,9 @@ independent review. The intake did not search OEIS for the boundary
 sequence displayed above.
 \end{writenote}
 
+% [write] Added 5 October 2026 (batch 98): a fresh page keeps the ledger
+% from breaking across pages (see the comment before Part II's ledger).
+\clearpage
 \section{Proof-status ledger}
 \begin{longtable}{p{0.32\textwidth}p{0.61\textwidth}}
 \toprule
@@ -1392,6 +3747,15 @@ Natural boundary for $B_d$ & Not proved; proposed as a further question.\\
 Historical priority of refinements & Not established by the available search.\\
 \bottomrule
 \end{longtable}
+
+\begin{writenote}[Added 5 October 2026, batch~98]
+This ledger describes Part~\ref{sbd:part:one}. Its row ``Natural boundary
+for $B_d$: not proved'' is superseded: Part~\ref{sbd:part:two} proves the
+natural boundary for every fixed $d$
+(Theorem~\ref{sbd:xtm:thm:main-boundary}), in two independent unrefereed
+manuscripts and without formal verification. Part~\ref{sbd:part:two} has
+its own ledger (Section~\ref{sbd:xtm:app:audit}).
+\end{writenote}
 
 % [write] ragged right: the long URL and commit hash below left three underfull lines.
 \begingroup\raggedright
@@ -1453,6 +3817,27 @@ Vladimir Reshetnikov, \emph{ProveIt}, repository snapshot
 \code{6bf7f30d0352f7596e70928b3d4f304914075907},
 inspected October 3, 2026. Used for project context and a limited
 nonduplication search, not as a mathematical premise.
+
+% [write] Entries added for Part II (batch 98).
+\bibitem{wagner13}
+Stephan Wagner, \emph{Asymptotic enumeration of extensional acyclic
+digraphs}, Algorithmica \textbf{66}(4) (2013), 829--847,
+\url{https://doi.org/10.1007/s00453-012-9725-4}. Expanded version of
+\cite{wagner}; cited by both Part~II manuscripts as context only
+(manuscript~01 inspected the publisher's abstract and bibliographic record).
+
+\bibitem{breuersimon}
+Jonathan Breuer and Barry Simon, \emph{Natural boundaries and spectral
+theory}, Advances in Mathematics \textbf{226}(6) (2011), 4902--4920,
+\url{https://doi.org/10.1016/j.aim.2010.12.019}; author text
+\url{https://arxiv.org/abs/1002.0823}. Used in Part~II for terminology
+(strong natural boundary) only.
+
+\bibitem{dlmf}
+NIST Digital Library of Mathematical Functions, \emph{Section 5.11:
+Asymptotic Expansions of the Gamma Function}, especially formulas
+5.11.1--5.11.3 and the real positive remainder discussion in
+Section~5.11(ii), \url{https://dlmf.nist.gov/5.11}.
 \end{thebibliography}
 \endgroup
 \end{document}

@@ -86,12 +86,27 @@ exhaustive priority claim is made. The proofs have not been independently
 peer reviewed or formalized in Lean. Exact finite checks corroborate formulas;
 they do not replace the uniform estimates proved in the text.
 
+\paragraph{Editorial note (5 October 2026, batch 98).}
+Since batch~98 the report has two Parts. Part~I is the report described
+above, manuscript~05 of batch~74, unchanged except for dated notes.
+Part~II (\S\ref{rpc:cx:sec:front}) adds manuscript~09 of batch~98: one
+logarithmic expansion uniform for every $N\ge am^2$, the sharp centered
+threshold $X/m^{5/2}\to\infty$, a hierarchy of transition scales
+$m^{2+1/(2r)}$ with infinitely many nonzero constants, and an analytic
+inverse chart. It answers Part~I's research question~2 and proves
+Theorem~\ref{rpc:thm:centered}, the near-arc bound of
+Lemma~\ref{rpc:lem:arcs}, Corollary~\ref{rpc:cor:crossover} and the
+correction $-61/288$ again (Table~\ref{rpc:cx:tab:routes}). Its labels carry
+the prefix \texttt{rpc:cx:}.
+
 \clearpage
 \begingroup
 \setlength{\parskip}{0pt}
 \tableofcontents
 \endgroup
 \clearpage
+
+\part{The cubic boundary: sharp volume laws, uniform expansions, inverse charts and a Poisson law}
 
 \section{The OEIS problem, the source audit, and the scope of the results}\label{rpc:sec:intro}
 
@@ -216,6 +231,19 @@ $\prod(1+k^aq^k)$) concern different products. Sufficiency in the cubic
 criterion is the classical Erd\H{o}s--Lehner estimate, as
 \S\ref{rpc:sec:intro} says; the leading constant of A238608 is posted in
 that entry.
+\end{writenote}
+
+\begin{writenote}[Added 5 October 2026, batch~98: Part~II]
+The note above describes Part~I, the whole report as written in batch~74.
+Since batch~98 the report also has Part~II, built from a second manuscript
+(\S\ref{rpc:cx:sec:provenance}). Its Theorem~\ref{rpc:cx:thm:uniform} is
+one expansion uniform for every $N\ge am^2$, so it is matched uniformly to
+the compact-$\alpha$ regime of the neighbouring report; it answers the end
+$\alpha\to\infty$ of that report's question ``Uniform limits as the saddle
+moves to zero or infinity'', and proves that report's leading constant
+again \eqref{rpc:cx:eq:szekeres}. The sentence ``It does not answer that
+question'' remains true of Part~I alone. The end $\alpha\to0$ stays open
+(\S\ref{rpc:cx:sec:q-endpoint}).
 \end{writenote}
 
 \section{An elementary sharp criterion}\label{rpc:sec:elementary}
@@ -413,6 +441,14 @@ is at most one. Taking the minimum of the constants from the two cases proves
 the assertion.
 \end{proof}
 
+\begin{writenote}[Added 5 October 2026, batch~98]
+Lemma~\ref{rpc:cx:lem:small} of Part~II is \eqref{rpc:eq:neararc} with the same
+proof under the weaker hypothesis $\tau\le\bar s/m$;
+Lemma~\ref{rpc:cx:lem:large} bounds the integral over $1/m\le|\theta|\le\pi$ by
+$\mathrm O(\tau(1+\log m)e^{-cm})$ for every $\tau\le\bar s/m$, by reserving
+the factor $j=1$.
+\end{writenote}
+
 \subsection{Proof of the uniform theorem}
 \begin{proof}[Proof of Theorem~\ref{rpc:thm:centered}]
 Cauchy's formula, with $q=e^{-t}$, is
@@ -490,6 +526,15 @@ identify each exponentially small root-of-unity wave, provide a Stokes
 analysis, or specify an optimal truncation order growing with $m$.
 \end{remark}
 
+\begin{writenote}[Added 5 October 2026, batch~98]
+Part~II proves this theorem again, in logarithmic form, as the case
+$\varepsilon=m^2/M\le1/(c_0m)$ of Theorem~\ref{rpc:cx:thm:uniform}, which
+holds uniformly for every $N\ge am^2$
+(see the note after that theorem). Its minor-arc
+Lemma~\ref{rpc:cx:lem:large} replaces \eqref{rpc:eq:fararc} when
+$\tau\asymp1/m$, where the bound $(Cm\tau)^{\delta m}$ above is useless.
+\end{writenote}
+
 \section{Critical constants and explicit OEIS expansions}\label{rpc:sec:critical}
 
 \begin{corollary}[Critical crossover]\label{rpc:cor:crossover}
@@ -507,6 +552,15 @@ Furthermore,
  =(m-1)\log\left(1+\frac{m(m+1)}{4N}\right)\longrightarrow\frac1{4c}.
 \]
 \end{proof}
+
+\begin{writenote}[Added 5 October 2026, batch~98]
+A second route: Part~II derives \eqref{rpc:eq:crossover} from its uniform
+theorem \eqref{rpc:cx:eq:cubicrecover}, and the first correction
+$-61/(288m)$ of \eqref{rpc:eq:A238608} below as \eqref{rpc:cx:eq:a238608},
+checked by its symbolic script. In Part~II's centered normalization the
+cubic scale lies far above the first centered threshold $M\asymp m^{5/2}$
+(Theorem~\ref{rpc:cx:thm:boundary}).
+\end{writenote}
 
 \subsection{A general all-order logarithmic expansion}
 
@@ -1234,12 +1288,30 @@ first target is the $q=-1$ wave, followed by a uniform comparison of all
 remaining orders. This would turn the present fixed-order expansions into
 a substantially more complete transseries.
 
+\begin{writenote}[Added 5 October 2026, batch~98]
+Part~II poses the same question for $N\ge am^2$
+(\S\ref{rpc:cx:sec:q-waves}) and the optimal truncation of its expansion
+(\S\ref{rpc:cx:sec:q-truncation}).
+\end{writenote}
+
 \paragraph{2. A uniform bridge below the cubic scale.}
 Extend the centered analysis into $m^{5/2}\lesssim N\ll m^3$, where the
 centering factor can be large and the quadratic Bernoulli correction must
 itself be exponentiated. Match the resulting expansion to a small-parameter
 expansion of the Szekeres saddle. The precise validity range and matching
 error are more useful targets than simply recovering a leading logarithm.
+
+\begin{writenote}[Added 5 October 2026, batch~98: answered by Part~II]
+Theorem~\ref{rpc:cx:thm:uniform} gives one fixed-order expansion of
+$\log(p_m(N)/V_m(M))$ with remainder $\mathrm O_{a,J}(m^{-J-1})$ uniformly
+for every $N\ge am^2$, so it covers $m^{5/2}\lesssim N\ll m^3$ and the
+Szekeres regime $N\asymp m^2$ at once, with the matching built in
+(\S\ref{rpc:cx:sec:hierarchy}, \S\ref{rpc:cx:sec:oeis}). The exponentiated
+quadratic Bernoulli correction is the term $-m^5/(72M^2)$, and
+$M\asymp m^{5/2}$ is the exact threshold of the centered volume law
+(Theorem~\ref{rpc:cx:thm:boundary}), followed by the scales
+$m^{2+1/(2r)}$ (Theorem~\ref{rpc:cx:thm:hierarchy}).
+\end{writenote}
 
 \paragraph{3. Structural degree cancellation in logarithmic coefficients.}
 The general construction only immediately gives $\deg D_j\le3j$, while
@@ -1273,6 +1345,11 @@ but the global arc estimate depends on the weights' arithmetic distribution.
 Find hypotheses that separate a universal volume/cumulant law from genuine
 periodic obstructions.
 
+\begin{writenote}[Added 5 October 2026, batch~98]
+The same question for Part~II's centering hierarchy is
+\S\ref{rpc:cx:sec:q-weights}.
+\end{writenote}
+
 \paragraph{8. Certified inverse thresholds.}
 Combine explicit finite constants in the remainder bounds with monotonicity
 to produce intervals enclosing the integer inverse $Q(y)$. A useful algorithm
@@ -1280,12 +1357,21 @@ must report when its interval straddles two integers, rather than silently
 rounding a smooth chart. This is particularly important when $y$ lies very
 close to an exact sequence value.
 
+\begin{writenote}[Added 5 October 2026, batch~98]
+Part~II extends the question to $N\ge am^2$ (\S\ref{rpc:cx:sec:q-constants},
+with Proposition~\ref{rpc:cx:prop:threshold}).
+\end{writenote}
+
 \paragraph{9. A proof-producing asymptotic pipeline.}
 Starting from the finite-product generating function, automate power sums,
 Bernoulli coefficients, fixed-order remainder parameters, transseries
 substitution, and inverse reversion. The symbolic output should be a small
 certificate checkable independently, with numerical fitting excluded from
 the proof path.
+
+\begin{writenote}[Added 5 October 2026, batch~98]
+Part~II's formalization question is \S\ref{rpc:cx:sec:q-formal}.
+\end{writenote}
 
 \paragraph{10. OEIS and literature reconciliation.}
 Prepare a narrowly scoped, source-backed update for the affected entries:
@@ -1312,8 +1398,1912 @@ computable finite-size correction. The elementary criterion, all-order
 expansions, inverse charts, and probabilistic law form the substantive
 proof package supplied by this report.
 
+\part{Beyond the cubic boundary: uniform asymptotics for \texorpdfstring{$N\ge am^2$}{N >= a m\textasciicircum 2}, a crossover hierarchy and analytic inversion}
+\label{rpc:cx:part}
+
+\setlength{\emergencystretch}{3em}
+\section{Provenance, scope and notation of Part II}
+\label{rpc:cx:sec:front}
+
+[Added 5 October 2026, batch~98.] Part~II was added in the write of
+batch~98. It prints manuscript~09 of that batch in full, as
+\S\S\ref{rpc:cx:sec:scope}--\ref{rpc:cx:sec:conclusion}, in Part~I's
+setting: the same counts $p_m(N)$, the same centering
+$X=N+m(m+1)/4$ (Part~I's $M$) and the same centered volume. It answers
+Part~I's research question~2 and the end $\alpha\to\infty$ of a research
+question of the neighbouring report
+\texttt{a097356-\allowbreak sqrt-\allowbreak restricted-\allowbreak
+partitions}, and it proves several of Part~I's results again; those are
+named, not reprinted (Table~\ref{rpc:cx:tab:routes}). Its symbols that clash with
+Part~I's are renamed (Table~\ref{rpc:cx:tab:dictionary}). Text added in the
+write is marked \textsf{[write]}; the manuscript's statements, proofs,
+tables and numbers are otherwise unchanged.
+
+\subsection{Provenance}
+\label{rpc:cx:sec:provenance}
+
+Manuscript~09 of batch~98 of ProveIt's incoming-reports intake is the
+archive
+\texttt{OEIS\_\allowbreak Restricted\_\allowbreak Partitions\_\allowbreak Crossover.zip}
+(454{,}491 bytes, 21 files under one directory \texttt{partition\_crossover/}),
+which arrived in commit \texttt{2172df76a} (5~October 2026) and was placed in
+this report by commit \texttt{0fba5167f}. Its article is titled
+\emph{Beyond the Cubic Boundary: Uniform restricted-partition asymptotics,
+an infinite crossover hierarchy, and analytic inversion} (20~pages, an
+``OEIS research report'' dated 4~October 2026); its title page reads
+``Prepared for Vladimir Reshetnikov'', and its PDF metadata names ``OpenAI;
+research report prepared for Vladimir Reshetnikov'' as author. It describes
+itself as AI-generated, unrefereed and not formalized.
+
+It names no ProveIt commit. Its source audit
+(\nolinkurl{02-crossover-SOURCE_AUDIT.md}) read, through a GitHub connector on
+the default branch, the READMEs of this report and of
+\texttt{a097356-\allowbreak sqrt-\allowbreak restricted-\allowbreak
+partitions}, the collection README and selected search results. It
+reports the Git blob \texttt{ffeb1d4cf2ab\ldots} for this report's README:
+that is the README written in batch~74 (commit \texttt{f440ed3c0}),
+unchanged until this write, and the neighbouring report was unchanged
+since commit \texttt{31cf70f09}. So manuscript~09 saw both reports as they
+stood, but only their READMEs: it does not cite Part~I's theorems, lemmas
+or questions by number. The write added those pointers as dated notes. Its
+bibliography of eight entries is merged into this report's: its A238016 and
+A238608 entries are \cite{oeis238016,oeis238608} (it inspected them on
+4~October 2026), its Canfield, Sills--Zeilberger and O'Sullivan entries are
+\cite{canfield,sillszeilberger,osullivan} (it cites version~2, 2018, of
+O'Sullivan's preprint, and records that the journal web page dates
+Canfield's paper 21~November 1996, in the volume dated 1997), its entry for
+the neighbouring report is \cite{rpc-a097356}, and its entry for this
+report, which it says it used only for the scope statement, became
+references to Part~I. Its A097356 entry is \cite{rpc-cx-oeis097356}.
+
+\paragraph{Scope and non-claims of manuscript~09, kept.}
+It is an AI-generated, unrefereed research manuscript with conventional
+proofs, exact finite checks and high-precision diagnostics; no Lean or Rocq
+verification was run, and its proofs ``remain subject to expert review''.
+Szekeres' leading asymptotics (Canfield), the uncentered cubic law, the
+leading A238608 law and its correction $-61/288$ are classical or already
+in the repository and are not claimed; the saddle method,
+Euler--Maclaurin summation, Lagrange inversion and Lambert-$W$ inversion
+are classical tools. Its source audit was bounded, not exhaustive: ``There
+may be older equivalent results or coefficients'', and no priority claim is
+made. Its expansions hold at each fixed order, with no uniformity in a
+growing order and no convergence, Gevrey bound, Borel summability or optimal
+truncation of the $1/m$ series; calling the result a complete resurgent
+transseries ``would be too strong'', since the root-of-unity contributions,
+their actions, amplitudes and Stokes behaviour are not derived. It is not
+uniform as $N/m^2\to0$, and its endpoint statement at $\varepsilon\to4$
+concerns the entropy function only, not a partition regime. Nonvanishing
+and negativity of every $\mathsf d_r$ are not claimed. Its inverse charts are
+smooth asymptotic charts, not integer-rounding rules, with no explicit error
+constants; its numerics are 55-digit \texttt{mpmath} values, not interval
+certificates, and do not instantiate the remainder constants. Its
+second-transition samples ($m\le96$) have not reached the limiting sign. Its
+seven research questions are proposals. Its slice inversion is ``an
+application of the repository's transseries-inversion program, not a new
+inversion method''. It does not reprove or claim the floor-phase,
+three-exception or plateau results of the neighbouring report. It submitted
+nothing to the OEIS and committed nothing to the repository.
+
+\subsection{What Part II adds, and what it proves again}
+\label{rpc:cx:sec:claims}
+
+Table~\ref{rpc:cx:tab:claims} compares the two Parts topic by topic.
+Table~\ref{rpc:cx:tab:routes} lists the earlier results, of Part~I and of
+the neighbouring report, that manuscript~09 proves again, and the route it
+takes; none of them is reprinted.
+
+\begin{table}[htbp]
+\centering\small
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{.15\textwidth}>{\raggedright\arraybackslash}p{.37\textwidth}>{\raggedright\arraybackslash}p{.40\textwidth}@{}}
+\toprule
+Topic & Part I & Part II (manuscript 09 of batch 98)\\
+\midrule
+Uniform range &
+centered expansion for $N\ge c_0m^3$ (Theorem~\ref{rpc:thm:centered});
+dilute expansion for $N\ge m^3/\eta_0$ (Theorem~\ref{rpc:thm:dilute}) &
+one logarithmic expansion for $N\ge am^2$, every fixed $a>0$, no upper bound
+on $N$, with analytic coefficient functions of $\varepsilon=m^2/X$
+(Theorem~\ref{rpc:cx:thm:uniform})\\
+Minor arcs &
+near and far arcs for $\tau\le C_0m^{-2}$ (Lemma~\ref{rpc:lem:arcs}) &
+near arc for $t\le\bar s/m$; far-arc integral
+$\mathrm O(t(1+\log m)e^{-cm})$ by reserving the factor $j=1$
+(Lemmas~\ref{rpc:cx:lem:small} and~\ref{rpc:cx:lem:large})\\
+Volume law &
+$p_m(N)\sim V_m(N)$ iff $N/m^3\to\infty$; limit $e^{1/(4c)}$
+(Theorem~\ref{rpc:thm:iff}, Corollary~\ref{rpc:cor:crossover}) &
+$p_m(N)\sim V_m(X)$ iff $X/m^{5/2}\to\infty$; limit
+$\exp(-1/(72\lambda^2))$ (Theorem~\ref{rpc:cx:thm:boundary})\\
+Hierarchy &
+--- &
+transition scales $X\asymp m^{2+1/(2r)}$ with limits
+$\exp(\mathsf d_r/\lambda^{2r})$, rational $\mathsf d_r$, infinitely many
+nonzero, $\mathsf d_1,\ldots,\mathsf d_6<0$ (Theorem~\ref{rpc:cx:thm:hierarchy})\\
+Exact saddle &
+--- &
+Edgeworth expansion at the exact saddle, uniform for $N\ge am^2$
+(Theorem~\ref{rpc:cx:thm:finite})\\
+Inverse &
+cubic Lambert chart, exponential-sector and A238000 inverses
+(Theorem~\ref{rpc:thm:cubicinverse}, \eqref{rpc:eq:expinverse},
+\eqref{rpc:eq:diaginverse}) &
+analytic chart $\eta_\star=\varepsilon e^{-\mathcal D(\varepsilon)}$ on
+$[0,e^2)$ to every fixed order (Theorem~\ref{rpc:cx:thm:inverse-intro});
+threshold transfer (Proposition~\ref{rpc:cx:prop:threshold}); Lambert
+inverse on power-law slices \eqref{rpc:cx:eq:W}\\
+Coefficients &
+$L_1,\ldots,L_5$; A238608 through $m^{-5}$ &
+series of $\mathcal D$, $E_0$, $E_1$, $\mathcal R$, $\omega$; at $N=m^3$ only
+$-61/(288m)$\\
+Repeated parts &
+Poisson law and its correction (Theorems~\ref{rpc:thm:poisson},
+\ref{rpc:thm:pgf}) &
+---\\
+Checks &
+258 exact samples, $m\le60$, 90 digits &
+46 exact samples, $m\le96$, 55 digits\\
+\bottomrule
+\end{tabular}
+\caption{Part II against Part I.}
+\label{rpc:cx:tab:claims}
+\end{table}
+
+\begin{table}[htbp]
+\centering\small
+\renewcommand{\arraystretch}{1.12}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{.30\textwidth}>{\raggedright\arraybackslash}p{.63\textwidth}@{}}
+\toprule
+Earlier result & Manuscript 09's route\\
+\midrule
+Theorem~\ref{rpc:thm:centered} &
+Theorem~\ref{rpc:cx:thm:uniform} on $\varepsilon\le1/(c_0m)$, in
+logarithmic form: continuum saddle, scaled coordinate, reserved factor;
+the two expansions agree after re-expansion, checked at order $X^{-2}$ by
+\eqref{rpc:cx:eq:wavecheck}\\
+\eqref{rpc:eq:neararc} in Lemma~\ref{rpc:lem:arcs} &
+Lemma~\ref{rpc:cx:lem:small}, the same proof under $t\le\bar s/m$\\
+\eqref{rpc:eq:fararc} in Lemma~\ref{rpc:lem:arcs} &
+not reproved: replaced by Lemma~\ref{rpc:cx:lem:large}, a different bound
+that survives $\tau\asymp1/m$\\
+Corollary~\ref{rpc:cor:crossover} &
+\eqref{rpc:cx:eq:cubicrecover}, from Theorem~\ref{rpc:cx:thm:uniform}\\
+\eqref{rpc:eq:A238608}, first correction &
+\eqref{rpc:cx:eq:a238608}, also checked symbolically\\
+\eqref{rpc:eq:a1}, the term $j=1$ of \eqref{rpc:eq:centered} &
+\eqref{rpc:cx:eq:wavecheck}\\
+the notes on \texttt{p0:thm:staircase}, \texttt{p6:thm:gamma},
+\texttt{p0:thm:perturbed-inversion} in \S\ref{rpc:sec:inverse} &
+the same apparatus: Proposition~\ref{rpc:cx:prop:threshold} and
+\eqref{rpc:cx:eq:W}\\
+\texttt{srp:eq:u-one}, \texttt{srp:eq:constants-one} (neighbouring report) &
+\eqref{rpc:cx:eq:szekeres}, the Szekeres leading formula\\
+\texttt{srp:thm:allorders} (neighbouring report) &
+Theorem~\ref{rpc:cx:thm:uniform} on compact $\alpha$-ranges, in other
+coordinates\\
+\bottomrule
+\end{tabular}
+\caption{Results proved again by manuscript~09, and where Part~II records
+each route. Manuscript~09 did not know these labels; the write identified
+them.}
+\label{rpc:cx:tab:routes}
+\end{table}
+
+\subsection{Notation}
+\label{rpc:cx:sec:notation}
+
+Part~II keeps manuscript~09's notation except where a symbol clashes with
+Part~I or is used twice in the manuscript; Table~\ref{rpc:cx:tab:dictionary}
+fixes the convention, and the renamed objects are written in calligraphic
+or sans-serif type. No normalization is changed. The centered size $X$ is
+Part~I's $M$; the letter $X$ is kept because Part~II's statements are
+written in it. Unsubscripted $c$, $C$, $c'$, $\delta$ and their subscripted
+forms in proofs are generic constants, except in
+\S\ref{rpc:cx:sec:oeis}, where $N\sim cm^3$ uses Part~I's $c=N/m^3$.
+
+\begingroup\small
+\renewcommand{\arraystretch}{1.12}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{.27\textwidth}>{\raggedright\arraybackslash}p{.17\textwidth}>{\raggedright\arraybackslash}p{.14\textwidth}>{\raggedright\arraybackslash}p{.33\textwidth}@{}}
+\caption{Notation of manuscript~09 against Part~I. Part~II uses the second
+column; the last column names the Part~I symbol it must not be read as.}
+\label{rpc:cx:tab:dictionary}\\
+\toprule
+Notion & Part II & Manuscript 09 & Not to be read as (Part I)\\
+\midrule
+\endfirsthead
+\toprule
+Notion & Part II & Manuscript 09 & Not to be read as (Part I)\\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+centered size $N+m(m+1)/4$ & $X$ & $X$ & the same object as Part~I's $M$; not the gamma-background root $X$ of \S\ref{rpc:sec:inverse}\\
+centered volume & $V_m(X)$ & $V_m(X)$ & Part~I's $V_m(N)$ is the same function at $N$\\
+$m^2/X$ & $\varepsilon$ & $\varepsilon$ & the small constant $\varepsilon$ in the proof of Theorem~\ref{rpc:thm:centered}\\
+fixed constant in $N\ge am^2$ & $a$ & $a$ & $a_j(m)$, $a_q(m)$, $a_c(m)$\\
+regularized logarithm & $h(z)$ & $h(z)$ & the coefficients $h_j(m)$ of $\mathcal H_m$\\
+its mean $\int_0^1h(sx)\dd x$ & $H(s)$ & $H(s)$ & $\mathcal H_m(t)$\\
+$1-sH'(s)$ & $B(s)$ & $B(s)$ & the Bernoulli numbers $B_{2k}$ (used in both Parts)\\
+$1+s^2H''(s)$, $s^3f_3$, $s^4f_4$ & $\mathcal Q(s)$, $\mathcal Q_3$, $\mathcal Q_4$ & $Q(s)$, $Q_3$, $Q_4$ & the integer inverse $Q(y)$ of \S\ref{rpc:sec:inverse}; $Q(x,c)$ of Appendix~A\\
+continuum saddle; its bound & $s$; $\bar s$ & $s$; $S$ & the power sums $S_r(m)$\\
+entropy; its coefficients & $\mathcal D(\varepsilon)$; $\mathsf d_r$ & $D(\varepsilon)$; $d_r$ & $D_j(m)$, $D_c$; the inverse corrections $d_0$, $d_1$; $d$ in \eqref{rpc:eq:sde}\\
+hierarchy approximant & $\mathcal V_{r-1}(m,N)$ & $M_{r-1}(m,N)$ & $M$\\
+$\log F_m(e^{-t})$ & $\Lambda_m(t)$ & $L_m(t)$ & $L_r(c)$\\
+geometric variables & $\xi_j$ & $Z_j$ & $Z_m$\\
+Edgeworth coefficients; $\sum rk_r$ & $\mathcal C_j(t)$; $\mathsf R$ & $C_j(t)$; $R$ & $C_v$, $C_0$ in the proof of Theorem~\ref{rpc:thm:pgf}; $R_m(N)$\\
+modulus of the $j$th factor & $\varrho_j(\theta)$ & $R_j(\theta)$ & $R_m(N)$; note $\prod_j\varrho_j=\rho_m$ at $\tau=t$\\
+a large constant in Lemma~\ref{rpc:cx:lem:large} & $K_\ast$ & $K$ & the truncation order $K$\\
+Euler--Maclaurin terms & $\mathsf A_k(s)$ & $A_k(s)$ & $A_m$ of Lemma~\ref{rpc:lem:volume}; $\mathcal A_m(t)$\\
+local coordinate, $z=s\zeta$ & $\zeta$, $\phi_s(\zeta)$ & $w$, $\phi_s(w)$ & $w=W(ce^2L)$ in \eqref{rpc:eq:lambertbase}\\
+formal variable $m^{-1/2}$ & $\hbar$ & $u$ & the pgf variable $u$ of \S\ref{rpc:sec:poisson}\\
+standard normal variable & $g$ & $Y$ & the target value $Y$ below\\
+Gaussian coefficient operator & $\mathcal G(\hbar,s)$ & $G(u,s)$ & $G_q(x)$ of \eqref{rpc:eq:F0}\\
+inverse input & $Z$, $\eta_\star=m^2/Z$ & $Z$, $\eta$ & $\eta=m^3/N$ of Theorem~\ref{rpc:thm:dilute}; $Z_m$\\
+inverse factor; corrections & $\mathcal R(\eta_\star)$; $\omega$, $\omega_k$ & $R(\eta)$; $v$, $v_k$ & $R_m(N)$; $v$ is kept for the contour parameter $t=s(1+\ii v)/m$\\
+sample value; threshold & $Y$; $T_m(Y)$ & $Y$; $T_m(Y)$ & Part~I writes $y$; $T=m(m-1)/2$ in \eqref{rpc:eq:staircase}\\
+surrogate; its root & $\mathcal L_J(X)$; $X_J$ & $\mathcal L_J(X)$; $X_J$ & $L_r(c)$\\
+slice parameters & $\lambda,\gamma,\beta=\gamma-2$, $b_\lambda=2+\log\lambda$ & $\lambda,\gamma,\beta$, $b$ & $\lambda_r$, $\gamma_r(m)$, $\beta_j(m)$, $b=\log q$; $b_\lambda$ is the analogue of Part~I's $b_c$\\
+$\log Y$ & $L$ & $L$ & the same as Part~I's $L=\log y$\\
+\end{longtable}
+\endgroup
+
+\section{The research question and its precise scope}\label{rpc:cx:sec:scope}
+
+\subsection{Why this problem was selected}
+The finite Euler product
+\begin{equation}\label{rpc:cx:eq:gf}
+ F_m(q)=\prod_{j=1}^m\frac1{1-q^j},\qquad
+ p_m(N)=[q^N]F_m(q)
+\end{equation}
+occurs in several useful OEIS sequences. A238016 records
+$p_m(m^k)$ as a two-dimensional array; its quadratic and cubic columns
+are A206226 and A238608. A097356 is
+$p_{\lfloor\sqrt N\rfloor}(N)$~\cite{oeis238016,oeis238608,rpc-cx-oeis097356}.
+These are regular partition families with a common generating function,
+not isolated numerical coincidences.
+
+The selected repository reports are \emph{Three Exceptions Before Every
+Square}~\cite{rpc-a097356} and \emph{The Cubic Boundary for Restricted
+Partitions} (Part~I of this report). The former develops expansions when
+$N/m^2$ stays in a compact subset of $(0,\infty)$; the latter develops
+centered expansions for $N\ge c_0m^3$. The latter's scope statement
+explicitly says that it does not uniformly match the quadratic regime
+and identifies this as the zero-saddle end of its neighbor's research
+question. We address that end: $N/m^2$ may tend to infinity arbitrarily
+quickly. We do not address the opposite end $N/m^2\to0$ uniformly.
+
+\begin{writenote}[Added 5 October 2026, batch~98: where the cited statements are]
+Manuscript~09 read the two reports' READMEs only, so it cites no section or
+label of either. The ``scope statement'' is the README's section
+``Relation to the repository'', printed in the article as Part~I's
+provenance note (\S\ref{rpc:sec:provenance}); the centered expansion for
+$N\ge c_0m^3$ is Theorem~\ref{rpc:thm:centered}; the neighbour's question
+is \S14.6 of the report \texttt{a097356-\allowbreak sqrt-\allowbreak
+restricted-\allowbreak partitions}, ``Uniform limits as the saddle moves to
+zero or infinity'' (in its Section~14, label \texttt{srp:sec:future}),
+whose end $\alpha=N/m^2\to\infty$ is addressed here. The same task is Part~I's own
+research question~2 (\S\ref{rpc:sec:research}), ``A uniform bridge below the
+cubic scale''; \S\ref{rpc:cx:sec:hierarchy} answers it (see the dated note
+there).
+\end{writenote}
+
+The repository also identifies a Lean development of the finite-product
+identity in its Fabius-function project. We use the elementary identity
+\eqref{rpc:cx:eq:gf}, proved directly below, and do not import or claim any
+machine-checked asymptotic result.
+\begin{writenote}[Added 5 October 2026, batch~98]
+The Lean file is \nolinkurl{PartitionBoundedParts.lean} of the Fabius
+project, described with its full path in \S\ref{rpc:sec:proveit}; it
+declares \texttt{boundedCount} and proves
+\texttt{hasSum\_boundedCount\_mul\_pow}.
+Nothing in Part~II is formalized, and its place beside that development
+gives it no formal status.
+\end{writenote}
+
+\subsection{Historical boundary and novelty discipline}
+Szekeres' leading formula already joins the main restricted-partition
+regimes. Canfield's primary paper gives a proof and precise uniform
+ranges~\cite{canfield}. Consequently, a leading matching formula, or a
+consequence obtained merely by expanding that formula, should not be
+presented as a newly resolved historical conjecture. The posted leading
+law for A238608 is also already recorded in OEIS~\cite{oeis238608}.
+
+This report develops a uniform \emph{all-fixed-orders} expansion with an
+explicit treatment of arbitrarily small saddles; a centered hierarchy
+of successive approximation boundaries; a rational coefficient
+algorithm; and a corresponding inverse chart. These are extensions of
+the two inspected repository reports. Their organization and explicit
+formulas were not located in the bounded source search, but we do not
+claim that every consequence or coefficient is absent from the broader
+partition literature. The saddle method, Euler--Maclaurin summation,
+Lagrange inversion and Lambert-$W$ inversion are classical tools.
+
+There is another relevant distinction. For fixed $m$, $p_m(N)$ is a
+quasipolynomial, and its root-of-unity components are often called
+Sylvester waves~\cite{sillszeilberger,osullivan}. Here $m$ grows. We bound the
+noncentral arcs collectively; we do not construct the individual waves
+or claim optimal exponential accuracy.
+
+\subsection{Notation and meaning of an all-order statement}
+Throughout the main results, $m\to\infty$, $m,N$ are positive integers,
+and $a>0$ is fixed. Put
+\begin{equation}\label{rpc:cx:eq:center}
+ X=N+\frac{m(m+1)}4,\qquad
+ \varepsilon=\frac{m^2}{X},\qquad
+ V_m(X)=\frac{X^{m-1}}{m!\Gamma(m)}.
+\end{equation}
+The centered variable need not be integral. If $N\ge am^2$, then
+\begin{equation}\label{rpc:cx:eq:epsrange}
+ 0<\varepsilon<\varepsilon_a:=\frac1{a+1/4}<4.
+\end{equation}
+An error $\mathrm O_{a,J}(m^{-J-1})$ has one constant valid for all such $N$,
+including superexponentially large $N$. The order $J$ is fixed before
+$m\to\infty$. No uniformity in a growing $J$ is asserted.
+
+\section{Main results}\label{rpc:cx:sec:main}
+Define the regularized logarithm and its mean by
+\begin{equation}\label{rpc:cx:eq:hH}
+ h(z)=\log\frac{z}{2\sinh(z/2)},\qquad h(0)=0,
+ \qquad H(s)=\int_0^1h(sx)\dd x.
+\end{equation}
+On the positive real axis the logarithm is real. Near zero the analytic
+branch is fixed by $h(0)=0$. Write
+\begin{equation}\label{rpc:cx:eq:Bq}
+ B(s)=1-sH'(s)=1-h(s)+H(s),\qquad
+ \mathcal Q(s)=1+s^2H''(s).
+\end{equation}
+For $0<\varepsilon<4$, let $s=s(\varepsilon)>0$ be the unique solution of
+\begin{equation}\label{rpc:cx:eq:continuum-saddle}
+ \frac1\varepsilon=\frac1s-H'(s),\qquad\text{equivalently}\qquad
+ s=\varepsilon B(s).
+\end{equation}
+Existence, uniqueness and regularity will be proved in
+Section~\ref{rpc:cx:sec:profiles}. Set
+\begin{align}
+ \mathcal D(\varepsilon)&=\frac{s}{\varepsilon}-1-\log\frac{s}{\varepsilon}+H(s),
+       \label{rpc:cx:eq:D}\\
+ E_0(\varepsilon)&=\frac{h(s)}2+\log\frac{s}{\varepsilon}-\frac12\log \mathcal Q(s).
+       \label{rpc:cx:eq:E0}
+\end{align}
+At zero both functions are defined by continuity and equal zero.
+
+\begin{theorem}[Uniform centered expansion]\label{rpc:cx:thm:uniform}
+There are real-analytic functions $E_j$ on $[0,4)$, $j\ge1$, such that,
+for every $a>0$ and every fixed integer $J\ge0$,
+\begin{equation}\label{rpc:cx:eq:main}
+ \boxed{\quad
+ \log\frac{p_m(N)}{V_m(X)}
+ =m\mathcal D(\varepsilon)+E_0(\varepsilon)+\sum_{j=1}^J\frac{E_j(\varepsilon)}{m^j}
+       +\mathrm O_{a,J}(m^{-J-1}),\quad N\ge am^2.
+ \quad}
+\end{equation}
+Every $E_j$ has an even analytic germ at zero and satisfies $E_j(0)=0$.
+The same properties hold for $\mathcal D$ and $E_0$. A finite Gaussian-coefficient
+algorithm computes each $E_j$ from $h,H$ and Bernoulli numbers.
+\end{theorem}
+Here ``analytic on $[0,4)$'' means analytic in a neighborhood of each
+point of that half-open real interval, not one unspecified complex disk
+of radius four. Exponentiating \eqref{rpc:cx:eq:main} gives a relative error
+$1+\mathrm O_{a,J}(m^{-J-1})$ after retaining the displayed exponential.
+
+\begin{writenote}[Added 5 October 2026, batch~98: relation to Part~I]
+On the range $N\ge c_0m^3$ of Theorem~\ref{rpc:thm:centered} one has
+$\varepsilon\le1/(c_0m)$, and both theorems determine $\log(p_m(N)/V_m(X))$
+to $\mathrm O(m^{-K-1})$ uniformly there ($X$ is Part~I's $M$). They are
+therefore two expansions of one quantity and agree after re-expansion in
+$\varepsilon$; the first-wave check \eqref{rpc:cx:eq:wavecheck} is this
+agreement at order $X^{-2}$, against Part~I's $a_1$ term
+\eqref{rpc:eq:a1}. Theorem~\ref{rpc:cx:thm:uniform} is thus a second route to
+Theorem~\ref{rpc:thm:centered}, in logarithmic form, and extends it from
+$N\ge c_0m^3$ to $N\ge am^2$; manuscript~09 does not carry out the
+re-expansion beyond order $X^{-2}$. On compact $\alpha$-ranges it likewise
+covers, in other coordinates, the bounded-offset expansion
+\texttt{srp:thm:allorders} of the report
+\texttt{a097356-\allowbreak sqrt-\allowbreak restricted-\allowbreak
+partitions}, which uses the same regularized logarithm~$h$. The proof in
+\S\ref{rpc:cx:sec:em} is condensed; Remark~\ref{rpc:cx:rem:completion}
+completes it.
+\end{writenote}
+
+\begin{theorem}[Sharp centered boundary]\label{rpc:cx:thm:boundary}
+For every sequence with $N\ge am^2$,
+\begin{equation}\label{rpc:cx:eq:iff}
+ p_m(N)\sim V_m(X)
+ \quad\Longleftrightarrow\quad X/m^{5/2}\longrightarrow\infty.
+\end{equation}
+At the boundary, for each fixed $\lambda>0$,
+\begin{equation}\label{rpc:cx:eq:firstboundary}
+ X\sim\lambda m^{5/2}
+ \quad\Longrightarrow\quad
+ \frac{p_m(N)}{V_m(X)}\longrightarrow
+ \exp\!\left(-\frac1{72\lambda^2}\right).
+\end{equation}
+\end{theorem}
+This is not a change to the previously studied \emph{uncentered} cubic
+boundary: $V_m(N)$ and $V_m(X)$ are different approximations.
+
+Expand the entropy at zero as $\mathcal D(\varepsilon)=\sum_{r\ge1}\mathsf d_r\varepsilon^{2r}$.
+
+\begin{theorem}[Crossover hierarchy]\label{rpc:cx:thm:hierarchy}
+The coefficients are rational and satisfy
+\begin{equation}\label{rpc:cx:eq:d-lagrange}
+ \mathsf d_r=-\frac{[z^{2r}]B(z)^{2r+1}}{2r(2r+1)}.
+\end{equation}
+For a fixed $r$ with $\mathsf d_r\ne0$, define
+\begin{equation}\label{rpc:cx:eq:Mr}
+ \mathcal V_{r-1}(m,N)=V_m(X)
+     \exp\!\left(m\sum_{j=1}^{r-1}\mathsf d_j(m^2/X)^{2j}\right).
+\end{equation}
+Then
+\begin{equation}\label{rpc:cx:eq:hierarchy-limit}
+ X\sim\lambda m^{2+1/(2r)}
+ \quad\Longrightarrow\quad
+ \frac{p_m(N)}{\mathcal V_{r-1}(m,N)}
+       \longrightarrow \exp(\mathsf d_r/\lambda^{2r}).
+\end{equation}
+Infinitely many $\mathsf d_r$ are nonzero. In particular there are infinitely
+many distinct transition exponents accumulating at $2$ from above.
+The first six $\mathsf d_r$ are negative and are listed in
+Table~\ref{rpc:cx:tab:coefficients}. Nonvanishing and negativity for \emph{every}
+$r$ are not claimed.
+\end{theorem}
+
+\begin{theorem}[Uniform analytic inverse chart]\label{rpc:cx:thm:inverse-intro}
+Let $Y=p_m(N)$ with $N\ge am^2$, and define
+\begin{equation}\label{rpc:cx:eq:inverse-input}
+ Z=(Y m!\Gamma(m))^{1/(m-1)},\qquad \eta_\star=m^2/Z.
+\end{equation}
+For $0\le\eta_\star<e^2$ define $\varepsilon$ by
+\begin{equation}\label{rpc:cx:eq:inverse-core}
+ \eta_\star=\varepsilon e^{-\mathcal D(\varepsilon)},\qquad \mathcal R(\eta_\star)=e^{-\mathcal D(\varepsilon)}.
+\end{equation}
+The map is uniquely invertible and analytic, including at zero. With
+\begin{equation}\label{rpc:cx:eq:v}
+ \omega(\eta_\star)=\frac{-\mathcal D(\varepsilon)-E_0(\varepsilon)}{1-\varepsilon \mathcal D'(\varepsilon)},
+\end{equation}
+we have, uniformly in the stated sample-value regime,
+\begin{equation}\label{rpc:cx:eq:inverse-first}
+ X=Z\mathcal R(\eta_\star)\exp\!\left(\frac{\omega(\eta_\star)}m+\mathrm O_a(m^{-2})\right).
+\end{equation}
+There is an analytic inverse expansion to every fixed order in $1/m$.
+These are smooth asymptotic charts, not exact integer-rounding rules.
+\end{theorem}
+
+\section{Exact generating functions and a finite-saddle expansion}
+\label{rpc:cx:sec:finite}
+For each possible part $j$, its multiplicity contributes
+$1+q^j+q^{2j}+\cdots$. Multiplying these choices proves
+\eqref{rpc:cx:eq:gf} coefficient by coefficient. It also proves the exact
+recurrence
+\begin{equation}\label{rpc:cx:eq:dp}
+ p_m(N)=p_{m-1}(N)+p_m(N-m),
+\end{equation}
+where negative arguments have value zero, $p_m(0)=1$, and
+$p_0(N)=0$ for $N>0$.
+
+For $t>0$ let
+\begin{equation}
+ \Lambda_m(t)=\log F_m(e^{-t})=-\sum_{j=1}^m\log(1-e^{-jt}).
+\end{equation}
+Define positive cumulants
+\begin{equation}\label{rpc:cx:eq:cumulants}
+ \kappa_r(t)=\sum_{j=1}^m j^r
+       \sum_{\ell\ge1}\ell^{r-1}e^{-jt\ell},\qquad r\ge1.
+\end{equation}
+Then $(-1)^r\Lambda_m^{(r)}(t)=\kappa_r(t)$ and
+$\kappa_1(t)=\sum j/(e^{jt}-1)$.
+The function $\kappa_1$ decreases continuously from infinity to zero,
+so there is a unique exact saddle $t=t_{m,N}$ satisfying
+\begin{equation}\label{rpc:cx:eq:exact-saddle}
+ \kappa_1(t)=N.
+\end{equation}
+Since $j/(e^{jt}-1)\le1/t$, this saddle satisfies
+$t\le m/N\le1/(am)$.
+
+There is a useful probabilistic interpretation. Let independent $\xi_j$
+have the geometric distribution
+$\Pr(\xi_j=k)=(1-e^{-jt})e^{-jtk}$, $k\ge0$. Then
+\begin{equation}
+ p_m(N)=e^{Nt+\Lambda_m(t)}\Pr\!\left(\sum_{j=1}^m j\xi_j=N\right).
+\end{equation}
+At the exact saddle the random sum has mean $N$. Its centered
+characteristic function gives
+\begin{equation}\label{rpc:cx:eq:cauchy}
+ p_m(N)=\frac{e^{Nt+\Lambda_m(t)}}{2\pi}
+ \int_{-\pi}^{\pi}
+   \exp\{\Lambda_m(t-\ii\theta)-\Lambda_m(t)-\ii N\theta\}\dd\theta.
+\end{equation}
+
+\begin{lemma}[Uniform cumulant scale]\label{rpc:cx:lem:cumulants}
+For fixed $\bar s>0$ and fixed $r\ge1$, there are positive constants
+$c_{r,\bar s},C_{r,\bar s}$ such that, whenever $0<t\le \bar s/m$,
+\begin{equation}\label{rpc:cx:eq:cumulantscale}
+ c_{r,\bar s}mt^{-r}\le\kappa_r(t)\le C_{r,\bar s}mt^{-r}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+For $y>0$, the function
+$y^r\sum_{\ell\ge1}\ell^{r-1}e^{-y\ell}$ is positive and continuous.
+As $y\downarrow0$ it tends to $(r-1)!$, by a Riemann-sum comparison with
+$\int_0^\infty x^{r-1}e^{-x}\dd x$. Thus it is bounded above and
+away from zero on $[0,\bar s]$. Apply this observation to $y=jt$ in each
+summand of \eqref{rpc:cx:eq:cumulants}.
+\end{proof}
+
+\begin{theorem}[Exact-saddle expansion]\label{rpc:cx:thm:finite}
+For each fixed $J\ge0$, uniformly for $N\ge am^2$,
+\begin{equation}\label{rpc:cx:eq:finiteexp}
+ p_m(N)=\frac{e^{Nt+\Lambda_m(t)}}{\sqrt{2\pi\kappa_2(t)}}
+ \left(\sum_{j=0}^J \mathcal C_j(t)+\mathrm O_{a,J}(m^{-J-1})\right),
+\end{equation}
+where $\mathcal C_0=1$, $\mathcal C_j=\mathrm O_{a,j}(m^{-j})$, and
+\begin{equation}\label{rpc:cx:eq:Edgeworth}
+ \mathcal C_j=\sum_{\substack{k_3,k_4,\ldots\ge0\\
+               \sum_{r\ge3}(r-2)k_r=2j}}
+ (-1)^{\mathsf R/2}(\mathsf R-1)!!
+ \prod_{r\ge3}\frac1{k_r!}
+ \left(\frac{\kappa_r}{r!\kappa_2^{r/2}}\right)^{k_r},
+ \qquad \mathsf R=\sum_{r\ge3}rk_r.
+\end{equation}
+Only finitely many $k_r$ can be nonzero, and $\mathsf R$ is even under the
+constraint. In particular,
+\begin{equation}\label{rpc:cx:eq:C1}
+ \mathcal C_1=\frac{\kappa_4}{8\kappa_2^2}
+          -\frac{5\kappa_3^2}{24\kappa_2^3}.
+\end{equation}
+\end{theorem}
+The nontrivial uniformity issue in this theorem is not the formal
+Gaussian expansion: it is showing that the noncentral contour is
+negligible even when $t$ is extremely small. We do this next, then
+complete the proof.
+
+\section{A minor-arc estimate that survives an arbitrarily small saddle}
+\label{rpc:cx:sec:arcs}
+For any $0<t\le \bar s/m$, the modulus of the $j$th characteristic factor is
+\begin{equation}\label{rpc:cx:eq:Rj}
+ \varrho_j(\theta)=\frac{1-e^{-jt}}{|1-e^{-jt+\ii j\theta}|}
+ =\left(1+\frac{\sin^2(j\theta/2)}{\sinh^2(jt/2)}\right)^{-1/2}.
+\end{equation}
+This identity avoids cancellation and displays both relevant scales.
+
+\begin{lemma}[Small-angle product bound]\label{rpc:cx:lem:small}
+There is $c_{\bar s}>0$ such that
+\begin{equation}\label{rpc:cx:eq:student}
+ \prod_{j=1}^m\varrho_j(\theta)
+ \le\left(1+c_{\bar s}(\theta/t)^2\right)^{-m/2},
+ \qquad |\theta|\le1/m.
+\end{equation}
+\end{lemma}
+\begin{proof}
+On $|u|\le1/2$, $|\sin u|\ge c|u|$ for an absolute $c>0$.
+On $0\le v\le \bar s/2$, $\sinh v\le C_{\bar s}v$.
+Apply these bounds to $u=j\theta/2$ and $v=jt/2$ in
+\eqref{rpc:cx:eq:Rj}; the factor $j$ cancels. Multiply the $m$ resulting bounds.
+\end{proof}
+
+\begin{writenote}[Added 5 October 2026, batch~98: Part~I's near-arc bound]
+$\prod_j\varrho_j(\theta)$ is Part~I's $\rho_m(\theta)$ at $\tau=t$, and
+\eqref{rpc:cx:eq:Rj} is the factor identity in the proof of
+Lemma~\ref{rpc:lem:arcs}, since $4e^{-x}/(1-e^{-x})^2=1/\sinh^2(x/2)$.
+Lemma~\ref{rpc:cx:lem:small} is therefore \eqref{rpc:eq:neararc} with the same
+proof, under the weaker hypothesis $t\le\bar s/m$ in place of
+$\tau\le C_0m^{-2}$. Part~I's far-arc bound \eqref{rpc:eq:fararc},
+$(Cm\tau)^{\delta m}$, needs $Cm\tau<1$ and gives nothing when $\tau\asymp1/m$,
+which is the quadratic scale; Lemma~\ref{rpc:cx:lem:large} replaces it there.
+\end{writenote}
+
+\begin{lemma}[Macroscopic-angle bound]\label{rpc:cx:lem:large}
+For fixed $\bar s>0$, there are constants $c_{\bar s},C_{\bar s}>0$ such that, for all
+sufficiently large $m$,
+\begin{equation}\label{rpc:cx:eq:outerintegral}
+ \int_{1/m\le|\theta|\le\pi}\prod_{j=1}^m\varrho_j(\theta)\dd\theta
+       \le C_{\bar s}t(1+\log m)e^{-c_{\bar s}m}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+First we show
+\begin{equation}\label{rpc:cx:eq:sinsum}
+ \sum_{j=2}^m\sin^2(j\theta/2)\ge c m,
+       \qquad 1/m\le|\theta|\le\pi,
+\end{equation}
+for one absolute $c>0$. Fix a sufficiently large constant $K_\ast$.
+For $1/m\le|\theta|\le K_\ast/m$, set $u=m|\theta|$.
+The Riemann sums $m^{-1}\sum_{j=2}^m\sin^2(uj/(2m))$ converge
+uniformly on $u\in[1,K_\ast]$ to
+$\int_0^1\sin^2(ux/2)\dd x$. The continuous limiting function is
+strictly positive on that compact interval.
+For $K_\ast/m\le|\theta|\le\pi$, the geometric-sum estimate gives
+$|\sum_{j=1}^me^{\ii j\theta}|\le1/|\sin(\theta/2)|\le\pi/|\theta|$.
+Using $\sin^2 v=(1-\cos2v)/2$ proves \eqref{rpc:cx:eq:sinsum} when $K_\ast$ is
+large, after absorbing the deleted $j=1$ term.
+
+Since $jt\le \bar s$, \eqref{rpc:cx:eq:Rj} implies
+$\log \varrho_j(\theta)\le-c'_{\bar s}\sin^2(j\theta/2)$.
+Spend the factors $j=2,\ldots,m$ on \eqref{rpc:cx:eq:sinsum}; their product is
+at most $e^{-c_{\bar s}m}$. Keep the first factor separately:
+\begin{equation}
+ \varrho_1(\theta)\le\frac{\sinh(t/2)}{|\sin(\theta/2)|}
+               \le\frac{C_{\bar s}t}{|\sin(\theta/2)|}.
+\end{equation}
+Integrating its reciprocal-sine bound from $1/m$ to $\pi$ gives
+$\mathrm O(t(1+\log m))$, proving \eqref{rpc:cx:eq:outerintegral}.
+\end{proof}
+
+\begin{remark}[Why the factor $t$ matters]
+The principal integral has size $\kappa_2^{-1/2}\asymp t/\sqrt m$.
+An absolute tail estimate $\mathrm O(e^{-cm})$ would not establish a relative
+error uniformly in unbounded $N$: $t$ could be smaller than $e^{-m^2}$.
+The reserved $j=1$ factor in Lemma~\ref{rpc:cx:lem:large} supplies precisely the
+missing $t$. The proof does not require an upper growth condition on $N$.
+\end{remark}
+
+\subsection{Completion of the finite-saddle proof}
+Choose a fixed small $\delta>0$. The central window
+$|\theta|\le t m^{-1/2+\delta}$ lies inside $|\theta|\le1/m$ for
+large $m$. By Lemma~\ref{rpc:cx:lem:small} and the substitution $x=\theta/t$,
+the integral between these windows is
+\begin{equation}\label{rpc:cx:eq:intermediate}
+ \mathrm O\!\left(t m^{-1/2}e^{-c m^{2\delta}}\right).
+\end{equation}
+Indeed, on $|x|\le1$ the bound in \eqref{rpc:cx:eq:student} is Gaussian;
+on $|x|\ge1$ its integral is exponentially small in $m$.
+Lemma~\ref{rpc:cx:lem:large} handles the remaining contour. Both bounds are
+smaller than $t m^{-A}$ for every fixed $A$.
+
+Inside the central window use $y=\theta\sqrt{\kappa_2}$. Exact
+centering cancels the linear term, and the exponent is
+\begin{equation}
+ -\frac{y^2}2+
+ \sum_{r\ge3}\frac{\kappa_r(\ii y)^r}{r!\kappa_2^{r/2}}.
+\end{equation}
+The functions involved are analytic for $|\theta|<ct$, for any fixed
+$c<1$. Cauchy estimates and Lemma~\ref{rpc:cx:lem:cumulants} bound the
+coefficient of degree $r$ by a constant times $m^{1-r/2}$.
+For a prescribed $J$, take $\delta$ sufficiently small, Taylor-expand
+to a finite degree exceeding $2J+4$, and expand the exponential to the
+corresponding finite weight. The remainder is bounded by
+$m^{-J-1}$ times an integrable polynomial in $|y|$ times $e^{-c y^2}$.
+Terms of odd total degree integrate to zero on the symmetric window;
+extending the finitely many Gaussian-polynomial integrals to the full
+line costs an exponentially small error. The Gaussian moments are
+$\E g^{2k}=(2k-1)!!$ for $g\sim N(0,1)$.
+Grouping by $\sum(r-2)k_r=2j$ gives \eqref{rpc:cx:eq:Edgeworth}, with its sign
+$\ii^{\mathsf R}=(-1)^{\mathsf R/2}$. These estimates prove
+Theorem~\ref{rpc:cx:thm:finite}, including its fixed-order remainder.
+
+\begin{writenote}[Added 5 October 2026, batch~98: a direct derivative bound]
+The Cauchy estimate can be replaced by a bound valid for every real
+$\theta$: for $\operatorname{Re}t'>0$ the series
+$\Lambda_m^{(r)}(t')=(-1)^r\sum_jj^r\sum_\ell\ell^{r-1}e^{-jt'\ell}$
+converges absolutely, and $|e^{-j(t-\ii\theta)\ell}|=e^{-jt\ell}$, so
+$|\Lambda_m^{(r)}(t-\ii\theta)|\le\kappa_r(t)$. The Taylor remainder of order
+$R'+1$ along the segment from $t$ to $t-\ii\theta$ is therefore at most
+$|\theta|^{R'+1}\kappa_{R'+1}(t)/(R'+1)!$, which is
+$\mathrm O(m(|y|/\sqrt m)^{R'+1})$ by Lemma~\ref{rpc:cx:lem:cumulants}.
+\end{writenote}
+
+\section{Centering and the continuum saddle}\label{rpc:cx:sec:profiles}
+The elementary identity
+\begin{equation}\label{rpc:cx:eq:center-identity}
+ \frac1{1-e^{-z}}=z^{-1}e^{z/2}e^{h(z)}
+\end{equation}
+gives the exact formula
+\begin{equation}\label{rpc:cx:eq:centerexact}
+ Nt+\Lambda_m(t)=Xt-m\log t-\log(m!)+\sum_{j=1}^m h(jt).
+\end{equation}
+Thus the displacement $m(m+1)/4$ removes the entire linear term in the
+logarithm of the product. What remains, $h$, is even at the origin.
+This is why centering changes the first approximation boundary.
+
+The identity $(sH(s))'=h(s)$ proves the second expression for $B$ in
+\eqref{rpc:cx:eq:Bq}. Differentiating under the integral also gives
+\begin{align}
+ \mu(s):=\frac1s-H'(s)
+ &=\int_0^1\frac{x}{2}\coth(sx/2)\dd x
+   =\frac14+\int_0^1\frac{x}{e^{sx}-1}\dd x,
+       \label{rpc:cx:eq:mu}\\
+ -\mu'(s)&=\int_0^1\frac{x^2e^{sx}}{(e^{sx}-1)^2}\dd x>0.
+       \label{rpc:cx:eq:muderivative}
+\end{align}
+In particular $\mathcal Q(s)=-s^2\mu'(s)>0$.
+
+\begin{lemma}[Analytic saddle parametrization]\label{rpc:cx:lem:saddle}
+The map $s\mapsto\varepsilon=1/\mu(s)=s/B(s)$ is a strictly increasing
+bijection from $(0,\infty)$ onto $(0,4)$.
+Its inverse $s(\varepsilon)$ is real analytic there, extends analytically at
+zero, and is odd near zero. Moreover $B(s)>1$ for every $s>0$,
+$\mathcal Q(0)=1$, and $s(\varepsilon)=\varepsilon+\mathrm O(\varepsilon^3)$.
+\end{lemma}
+\begin{proof}
+Equations~\eqref{rpc:cx:eq:mu}--\eqref{rpc:cx:eq:muderivative} show strict
+monotonicity, $\mu(s)\to\infty$ at zero and $\mu(s)\to1/4$ at
+infinity. The nonzero derivative gives local analytic inverses.
+Near zero $h,H$ are even analytic functions, $B(0)=1$, and the analytic
+implicit-function theorem applies to $s-\varepsilon B(s)=0$. Symmetry and
+uniqueness make $s$ odd. Finally
+$B(s)=\int_0^1(sx/2)\coth(sx/2)\dd x>1$ because
+$u\coth u>1$ for $u>0$. The other limits follow directly.
+\end{proof}
+
+The continuum saddle for the main parameter $\varepsilon$ is $t=s/m$.
+For fixed $a>0$, $s$ ranges in the compact interval
+$[0,s(\varepsilon_a)]$. Thus the contour estimates of
+Section~\ref{rpc:cx:sec:arcs} apply to this saddle as well. It is not exactly
+$t_{m,N}$, but its discrepancy is absorbed by the analytic endpoint
+amplitude below; no claim that it is an exact mean is made.
+
+\section{Uniform Euler--Maclaurin analysis and a complete coefficient rule}
+\label{rpc:cx:sec:em}
+For every fixed truncation order, Euler--Maclaurin summation gives
+\begin{equation}\label{rpc:cx:eq:EM}
+ \sum_{j=1}^m h(js/m)
+ \sim mH(s)+\frac{h(s)}2+
+ \sum_{k\ge1}\frac{\mathsf A_k(s)}{m^{2k-1}},
+ \quad
+ \mathsf A_k(s)=\frac{B_{2k}}{(2k)!}s^{2k-1}h^{(2k-1)}(s).
+\end{equation}
+The Bernoulli numbers have $B_2=1/6$.
+The terms at zero in the derivative differences vanish because $h$ is
+even. This is a uniform fixed-order expansion on every compact
+$s$-interval, including zero, and on a sufficiently small complex
+neighborhood of that interval along the local saddle contour.
+To justify any requested remainder, apply Euler--Maclaurin with more
+terms than needed: the periodic Bernoulli remainder is bounded by the
+corresponding derivative supremum, which is uniform on that compact
+neighborhood. Thus no formal interchange with a singular endpoint is
+being used.
+
+\subsection{A nonsingular local coordinate}
+Use $z=s\zeta$ and define
+\begin{equation}\label{rpc:cx:eq:phase}
+ \phi_s(\zeta)=B(s)\zeta-\log \zeta+H(s\zeta).
+\end{equation}
+It satisfies
+\begin{equation}
+ \phi_s'(1)=0,\qquad \phi_s''(1)=\mathcal Q(s)>0.
+\end{equation}
+This coordinate is important: the derivatives of
+$z/\varepsilon-\log z+H(z)$ diverge as $s\to0$, whereas the derivatives of
+$\phi_s$ remain uniformly bounded near $\zeta=1$.
+Moreover $\mathcal Q(s)$ is uniformly bounded above and away from zero on the
+compact range relevant to $N\ge am^2$.
+
+The contour may be parametrized by $t=s(1+\ii v)/m$;
+reversing its orientation or replacing $v$ by $-v$ does not change the
+real result. With $v=y/\sqrt{m\mathcal Q(s)}$, the normalized saddle integral is
+Gaussian. Its leading term, using \eqref{rpc:cx:eq:centerexact} and
+\eqref{rpc:cx:eq:EM}, is
+\begin{equation}\label{rpc:cx:eq:continuum-leading}
+ \frac{e^{m(B(s)+H(s))}(m/s)^m}{m!}
+ \frac{s}{m\sqrt{2\pi m\mathcal Q(s)}}e^{h(s)/2}.
+\end{equation}
+Stirling's expansion of $\Gamma(m)$ shows that the ratio of
+\eqref{rpc:cx:eq:continuum-leading} to $V_m(X)$ is
+$\exp(m\mathcal D(\varepsilon)+E_0(\varepsilon))$ times the Stirling correction series.
+This proves the displayed forms of $\mathcal D$ and $E_0$.
+
+\subsection{An explicit all-order operator}
+The following formal prescription fixes every higher coefficient without
+an unspecified appeal to ``standard saddle coefficients.'' Let $\hbar$ be a
+formal variable and $g$ a standard normal variable, and put
+\begin{equation}
+ \zeta=1+\frac{\ii\hbar g}{\sqrt{\mathcal Q(s)}}.
+\end{equation}
+Define $\mathcal G(\hbar,s)$ by formally expanding
+\begin{align}\label{rpc:cx:eq:G}
+ \mathcal G(\hbar,s)=\E\exp\bigg\{&
+ \frac{\phi_s(\zeta)-\phi_s(1)+\hbar^2g^2/2}{\hbar^2}
+ +\frac{h(s\zeta)-h(s)}2\notag\\
+ &+\sum_{k\ge1}\mathsf A_k(s\zeta)\hbar^{4k-2}\bigg\}.
+\end{align}
+At every requested power of $\hbar$, this means finite Taylor expansion,
+followed by replacement of Gaussian monomials by their moments.
+The apparent negative power of $\hbar$ causes no problem: the saddle and
+quadratic terms cancel in the numerator. Odd coefficients vanish after
+Gaussian averaging. In particular $\mathcal G(0,s)=1$.
+
+For $j\ge1$ set
+\begin{equation}\label{rpc:cx:eq:Ejoperator}
+ E_j(\varepsilon)=[\hbar^{2j}]\left\{
+ \log \mathcal G(\hbar,s(\varepsilon))+
+ \sum_{k\ge1}\frac{B_{2k}}{2k(2k-1)}\hbar^{4k-2}\right\}.
+\end{equation}
+The second sum is the logarithmic Stirling series for $\Gamma(m)$,
+with $\hbar=m^{-1/2}$. Formula~\eqref{rpc:cx:eq:Ejoperator} is both a definition and
+an effective coefficient algorithm: only finitely many derivatives and
+Gaussian moments occur for any fixed $j$.
+
+\subsection{Proof of the uniform theorem}
+On the compact $s$-range, the derivatives in \eqref{rpc:cx:eq:G} and a fixed
+number of Euler--Maclaurin remainders have uniform bounds. The local
+Gaussian argument used for Theorem~\ref{rpc:cx:thm:finite} therefore gives a
+uniform finite expansion, with error $\mathrm O(m^{-J-1})$ after taking
+sufficiently many terms. The contour outside that window is negligible
+relative to its leading size $s/m^{3/2}$ by
+Lemmas~\ref{rpc:cx:lem:small}--\ref{rpc:cx:lem:large}, uniformly even as $s\to0$.
+The leading amplitude in \eqref{rpc:cx:eq:continuum-leading}, after
+normalization, stays positive and bounded away from zero. Thus the
+logarithm of the normalized expansion is legitimate for large $m$ and
+has coefficients \eqref{rpc:cx:eq:Ejoperator}.
+
+All operations defining those coefficients are analytic on a local
+complex neighborhood of each real $s$ in the compact range.
+The evenness of $h,H,\mathsf A_k$ and the oddness of $s(\varepsilon)$ give even germs
+in $\varepsilon$; the normalized phase uses $B(s)$ and $H(s\zeta)$, which are even
+in $s$ as well.
+
+Finally, at $s=0$ the phase is $\zeta-\log \zeta$, all $\mathsf A_k$ and $h$ vanish,
+and its inverse-Laplace integral is
+\begin{equation}\label{rpc:cx:eq:gamma-integral}
+ \frac1{2\pi\ii}\int_{1-\ii\infty}^{1+\ii\infty}
+          e^{m\zeta}\zeta^{-m}\dd \zeta=\frac{m^{m-1}}{\Gamma(m)}.
+\end{equation}
+It follows that $\mathcal G(\hbar,0)$ is exactly the reciprocal Stirling series
+appearing in \eqref{rpc:cx:eq:Ejoperator}; their logarithms cancel coefficient
+by coefficient. Hence $E_j(0)=0$ for all $j$.
+This establishes Theorem~\ref{rpc:cx:thm:uniform}. The evaluation at $s=0$ is
+an identity of asymptotic coefficient systems, not a statement that a
+finite partition problem has $\varepsilon=0$.
+
+\begin{remark}[\textsf{[write]} Completion of the proof of Theorem~\ref{rpc:cx:thm:uniform}; added 5 October 2026, batch~98]
+\label{rpc:cx:rem:completion}
+The proof above is condensed: it does not say on which circle Cauchy's
+formula is applied, why the continuum saddle may replace the exact one, or
+on which complex domain Euler--Maclaurin is uniform. The following fills
+these steps; it uses only Lemmas~\ref{rpc:cx:lem:small}
+and~\ref{rpc:cx:lem:large}, Lemma~\ref{rpc:cx:lem:saddle} and the
+displays of this section. Fix $a>0$ and put $\bar s=s(\varepsilon_a)$. For
+$N\ge am^2$, \eqref{rpc:cx:eq:epsrange} and the monotonicity in
+Lemma~\ref{rpc:cx:lem:saddle} give $0<s<\bar s$, where $s=s(\varepsilon)$.
+\begin{enumerate}[label=(\roman*)]
+\item \emph{The circle.} Apply Cauchy's formula on $|q|=e^{-\tau}$ with
+ $\tau=s/m$, the continuum saddle, so $\tau\le\bar s/m$ and both lemmas of
+ \S\ref{rpc:cx:sec:arcs} hold with $t=\tau$. With $t=\tau+\ii\theta$,
+ \[
+  p_m(N)=\frac{e^{N\tau}F_m(e^{-\tau})}{2\pi}\int_{-\pi}^{\pi}
+  \frac{e^{\ii N\theta}F_m(e^{-\tau-\ii\theta})}{F_m(e^{-\tau})}\dd\theta,
+ \]
+ and the modulus of the integrand is $\prod_j\varrho_j(\theta)$ with
+ $t=\tau$. Nothing in the argument uses the exact saddle $t_{m,N}$.
+\item \emph{The exponent in the window.} On the window
+ $|\theta|\le\tau m^{-1/2+\delta}$ write $t=s\zeta/m$, $\zeta=1+\ii v$,
+ $|v|\le m^{-1/2+\delta}$. Since $X=m^2/\varepsilon=m^2B(s)/s$, one has
+ $Xt=mB(s)\zeta$, and \eqref{rpc:cx:eq:centerexact} becomes
+ \[
+  Nt+\Lambda_m(t)=m\phi_s(\zeta)
+  +\Bigl(\sum_{j=1}^mh(js\zeta/m)-mH(s\zeta)\Bigr)
+  -m\log\frac sm-\log m!.
+ \]
+ The function $z/(2\sinh(z/2))$ has no zeros in the strip
+ $|\operatorname{Im}z|<2\pi$ (the zeros of $\sinh(z/2)$ other than $z=0$
+ are $2\pi\ii k$, $k\ne0$, and the quotient equals $1$ at $z=0$), so $h$ is
+ analytic and even there. Put $\rho_0=\min(1/2,\pi/\bar s)$. For
+ $0\le s\le\bar s$, $|\zeta-1|\le\rho_0$ and $0\le x\le1$ the point
+ $xs\zeta$ has $|\operatorname{Im}(xs\zeta)|\le\pi$, so $h$, $H$, $\phi_s$,
+ $h(s\zeta)$ and $\mathsf A_k(s\zeta)$ are analytic in $\zeta$ on
+ $|\zeta-1|\le\rho_0$, with bounds on all their derivatives that depend only
+ on $\bar s$ and the order. Euler--Maclaurin of order $2K$ for
+ $f(x)=h(xs\zeta/m)$ on $[0,m]$ gives the bracket as
+ $h(s\zeta)/2+\sum_{k\le K}\mathsf A_k(s\zeta)m^{1-2k}$ plus a remainder
+ at most a constant times $m\cdot(\bar s(1+\rho_0)/m)^{2K}$, uniformly:
+ $f(0)=0$, the odd derivatives of $f$ vanish at $x=0$ because $h$ is even,
+ $f^{(2k-1)}(m)=(s\zeta/m)^{2k-1}h^{(2k-1)}(s\zeta)$, and the remainder
+ integral is bounded by $m\sup|f^{(2K)}|$ times a constant depending on~$K$.
+\item \emph{The Gaussian step.} Here $\phi_s'(1)=0$ and
+ $\phi_s''(1)=\mathcal Q(s)\in[\mathcal Q_-,\mathcal Q_+]\subset(0,\infty)$
+ for $0\le s\le\bar s$. Put $\hbar=m^{-1/2}$ and $v=\hbar y/\sqrt{\mathcal Q(s)}$,
+ so that $\zeta=1+\ii\hbar y/\sqrt{\mathcal Q(s)}$, the quadratic part of
+ $m(\phi_s(\zeta)-\phi_s(1))$ is $-y^2/2$, and the window is
+ $|y|\le\sqrt{\mathcal Q(s)}\,m^{\delta}$. By Cauchy's estimates on
+ $|\zeta-1|\le\rho_0$, the Taylor term of degree $r\ge3$ of
+ $m(\phi_s(\zeta)-\phi_s(1))$ is $\mathrm O(\hbar^{r-2}|y|^r)$ uniformly in $s$.
+ The continuum saddle is a critical point of $\phi_s$ only, not of the whole
+ exponent: $(h(s\zeta)-h(s))/2$ has the linear term
+ $sh'(s)\,\ii\hbar y/(2\sqrt{\mathcal Q(s)})=\mathrm O(\hbar|y|)$, which is not
+ cancelled and is expanded together with the cubic and higher terms; it is the
+ term $(h(s\zeta)-h(s))/2$ of \eqref{rpc:cx:eq:G}, and it pairs with odd
+ terms after Gaussian averaging. For $\delta<1/6$ all these corrections,
+ and the Euler--Maclaurin remainders, are $\mathrm O(m^{-1/2+3\delta})$
+ uniformly on the window, so the exponent there is $-y^2/2+o(1)$. Taylor
+ expansion to a finite degree and expansion of the exponential to weight
+ $2J+2$ leave a remainder bounded by $m^{-J-1}$ times a polynomial in $|y|$
+ times $e^{-y^2/2}$, provided $\delta$ is small in terms of $J$ and the
+ Euler--Maclaurin order satisfies $K\ge J+1$. Extending the
+ Gaussian-polynomial integrals from the window to $\mathbb R$ costs
+ $\mathrm O(e^{-cm^{2\delta}})$. With the constant terms
+ $\mathsf A_k(s)\hbar^{4k-2}$ kept inside $\mathcal G$, as in
+ \eqref{rpc:cx:eq:G}, and $\dd\theta=\tau\hbar\,\dd y/\sqrt{\mathcal Q(s)}$,
+ the window contributes
+ \[
+  \frac{\tau}{\sqrt{2\pi m\mathcal Q(s)}}\,
+  \frac{e^{m(B(s)+H(s))+h(s)/2}(m/s)^m}{m!}
+  \bigl(\mathcal G_{2J}(\hbar,s)+\mathrm O(m^{-J-1})\bigr)
+ \]
+ to $p_m(N)$, where $\mathcal G_{2J}$ is the truncation of
+ \eqref{rpc:cx:eq:G} after $\hbar^{2J}$; with $\tau=s/m$ this is
+ \eqref{rpc:cx:eq:continuum-leading} times
+ $\mathcal G_{2J}+\mathrm O(m^{-J-1})$. Since
+ $e^{N\tau}F_m(e^{-\tau})=e^{m(B(s)+H(s))+h(s)/2+\mathrm O(1/m)}(m/s)^m/m!$
+ by (ii) at $\zeta=1$, the window integral, relative to
+ $e^{N\tau}F_m(e^{-\tau})$, has size $\asymp\tau m^{-1/2}$.
+\item \emph{The tails, relative to the window.} With $x=\theta/\tau$,
+ Lemma~\ref{rpc:cx:lem:small} bounds the integral over
+ $\tau m^{-1/2+\delta}\le|\theta|\le1/m$ by
+ \[
+  \tau\int_{m^{-1/2+\delta}\le|x|\le1}e^{-c'mx^2}\dd x
+  +\tau\int_{|x|\ge1}(1+cx^2)^{-m/2}\dd x
+  =\mathrm O\bigl(\tau e^{-c''m^{2\delta}}\bigr),
+ \]
+ using $(1+cx^2)^{-m/2}\le e^{-c'mx^2}$ for $|x|\le1$ and
+ $(1+cx^2)^{-m/2}\le(1+c)^{-(m-2)/2}(1+cx^2)^{-1}$ for $|x|\ge1$.
+ Lemma~\ref{rpc:cx:lem:large} bounds the integral over
+ $1/m\le|\theta|\le\pi$ by $C\tau(1+\log m)e^{-cm}$. Divided by the window
+ size $\asymp\tau m^{-1/2}$, both are $\mathrm O(m^{-A})$ for every $A$,
+ uniformly in $0<s\le\bar s$: the factor $\tau$ cancels. This is where
+ the reserved factor $j=1$ of Lemma~\ref{rpc:cx:lem:large} is essential,
+ since $\tau=s/m$ is unbounded below as $N/m^2\to\infty$.
+\item \emph{Normalization.} At $\zeta=1$ the exponent is
+ $m(B(s)+H(s))+h(s)/2+\sum_k\mathsf A_k(s)m^{1-2k}-m\log(s/m)-\log m!$,
+ up to the Euler--Maclaurin remainder. Combining (iii) and (iv) with this and
+ with Stirling's series for $\log\Gamma(m)$, exactly as for
+ \eqref{rpc:cx:eq:continuum-leading}, gives
+ $\log(p_m(N)/V_m(X))=m\mathcal D+E_0+\log\mathcal G_{2J}(\hbar,s)
+ +\sum_{k}B_{2k}\hbar^{4k-2}/(2k(2k-1))+\mathrm O(m^{-J-1})$. Since
+ $\mathcal G_{2J}=1+\mathrm O(m^{-1})$ uniformly, its logarithm may be expanded,
+ and the coefficients are \eqref{rpc:cx:eq:Ejoperator}.
+\item \emph{Analyticity and parity.} Each $[\hbar^{2j}]\log\mathcal G$ is a
+ polynomial in finitely many of $\phi_s^{(r)}(1)=(-1)^r(r-1)!+s^rH^{(r)}(s)$
+ ($r\ge2$), $s^kh^{(k)}(s)$, the derivatives of $\mathsf A_k(s\zeta)$ at
+ $\zeta=1$, and $\mathcal Q(s)^{-1}$: a monomial survives Gaussian averaging
+ only if its total degree in $g$ is even, so only integer powers of
+ $\mathcal Q(s)^{-1}$ occur. These are analytic on a neighbourhood of
+ $[0,\infty)$ (where $\mathcal Q>0$) and even in $s$, because $H$, $h$ and
+ $z^{2k-1}h^{(2k-1)}(z)$ are even, so $s^rH^{(r)}(s)$ and $s^kh^{(k)}(s)$
+ are even. Composition with the odd analytic $s(\varepsilon)$ of
+ Lemma~\ref{rpc:cx:lem:saddle} gives analytic $E_j$ on $[0,4)$ with even
+ germs at zero; $E_j(0)=0$ is the gamma-integral argument above, made
+ rigorous by the uniqueness of asymptotic expansions: the same Gaussian step
+ applied to \eqref{rpc:cx:eq:gamma-integral} gives
+ $\mathcal G(\hbar,0)\,e^m(2\pi m)^{-1/2}$ as the expansion of
+ $m^{m-1}/\Gamma(m)$.
+\end{enumerate}
+With (i)--(vi), the proof of Theorem~\ref{rpc:cx:thm:uniform} is complete
+at the level of detail of Part~I's proof of Theorem~\ref{rpc:thm:centered}.
+It has not been independently refereed.
+\end{remark}
+
+\section{Explicit coefficients and internal consistency checks}
+\label{rpc:cx:sec:coeff}
+The Bernoulli expansion is
+\begin{align}
+ h(z)&=-\sum_{r\ge1}\frac{B_{2r}}{2r(2r)!}z^{2r}
+       =-\frac{z^2}{24}+\frac{z^4}{2880}
+           -\frac{z^6}{181440}+\cdots,\label{rpc:cx:eq:hseries}\\
+ H(z)&=-\frac{z^2}{72}+\frac{z^4}{14400}
+           -\frac{z^6}{1270080}+\cdots.
+\end{align}
+These series converge in a neighborhood of zero; no assertion about
+convergence of the $1/m$ expansion follows from that fact.
+
+\subsection{The entropy coefficients}
+The envelope derivative of \eqref{rpc:cx:eq:D} is especially simple:
+\begin{equation}\label{rpc:cx:eq:envelope}
+ \varepsilon \mathcal D'(\varepsilon)=1-\frac{s(\varepsilon)}\varepsilon=1-B(s(\varepsilon)).
+\end{equation}
+Lagrange inversion applied to $s=\varepsilon B(s)$ yields
+\begin{equation}\label{rpc:cx:eq:s-lagrange}
+ [\varepsilon^{2r+1}]s(\varepsilon)
+       =\frac{[z^{2r}]B(z)^{2r+1}}{2r+1}.
+\end{equation}
+Integrating \eqref{rpc:cx:eq:envelope} with $\mathcal D(0)=0$ proves
+\eqref{rpc:cx:eq:d-lagrange}. For example,
+\begin{equation}
+ s(\varepsilon)=\varepsilon+\frac{\varepsilon^3}{36}
+ +\frac{41\varepsilon^5}{32400}
+ +\frac{3749\varepsilon^7}{57153600}+\mathrm O(\varepsilon^9).
+\end{equation}
+
+\begin{table}[ht]
+\centering
+\renewcommand{\arraystretch}{1.35}
+\begin{tabular}{ccl}
+\toprule
+$r$ & Transition exponent & $\mathsf d_r$ in $\mathcal D(\varepsilon)=\sum \mathsf d_r\varepsilon^{2r}$\\
+\midrule
+1 & $5/2$ & $-1/72$\\
+2 & $9/4$ & $-41/129600$\\
+3 & $13/6$ & $-3749/342921600$\\
+4 & $17/8$ & $-185201/411505920000$\\
+5 & $21/10$ & $-3045727/149376648960000$\\
+6 & $25/12$ & $-6551858030771/6679735362203904000000$\\
+\bottomrule
+\end{tabular}
+\caption{Exact rational coefficients, not numerical fits. Each listed
+nonzero coefficient produces the transition in
+Theorem~\ref{rpc:cx:thm:hierarchy}.}\label{rpc:cx:tab:coefficients}
+\end{table}
+
+\subsection{The first finite-size functions}
+Let
+\begin{equation}
+ f_2=s^{-2}+H''(s),\quad
+ f_3=-2s^{-3}+H'''(s),\quad
+ f_4=6s^{-4}+H''''(s).
+\end{equation}
+Expansion of \eqref{rpc:cx:eq:G} to degree two gives
+\begin{align}\label{rpc:cx:eq:E1}
+ E_1(\varepsilon)={}&\frac1{12}+\frac{s h'(s)}{12}
+ -\frac{h''(s)/2+h'(s)^2/4}{2f_2}
+ +\frac{h'(s)f_3}{4f_2^2}\notag\\
+ &+\frac{f_4}{8f_2^2}-\frac{5f_3^2}{24f_2^3}.
+\end{align}
+The $1/12$ is the Stirling correction, and $s h'(s)/12$ is the first
+Euler--Maclaurin correction. The remaining four terms are the vertical
+Gaussian saddle correction with amplitude $e^{h(s)/2}$.
+Although this display uses inverse powers of $s$, the expression has a
+removable singularity at zero. For stable evaluation use
+$\mathcal Q=s^2f_2$, $\mathcal Q_3=s^3f_3$, and $\mathcal Q_4=s^4f_4$.
+
+The first expansions are
+\begin{align}
+ E_0(\varepsilon)&=\frac{\varepsilon^2}{48}
+   +\frac{23\varepsilon^4}{51840}
+   +\frac{331\varepsilon^6}{32659200}+\mathrm O(\varepsilon^8),\label{rpc:cx:eq:E0series}\\
+ E_1(\varepsilon)&=\frac{\varepsilon^2}{36}
+   +\frac{13\varepsilon^4}{5760}
+   +\frac{30763\varepsilon^6}{195955200}+\mathrm O(\varepsilon^8).
+       \label{rpc:cx:eq:E1series}
+\end{align}
+
+\subsection{An independent check from the first central wave}
+The first nonconstant term in the centered product is
+$-t^2\sum_{j\le m}j^2/24$. Inverse Laplace extraction against $e^{Xt}t^{-m}$
+therefore gives the relative $X^{-2}$ correction
+\begin{equation}\label{rpc:cx:eq:wavecheck}
+ -\frac{(m-1)(m-2)}{24X^2}\sum_{j=1}^m j^2
+ =\frac1{X^2}\left(-\frac{m^5}{72}+\frac{m^4}{48}
+          +\frac{m^3}{36}-\frac{m^2}{48}-\frac m{72}\right).
+\end{equation}
+Its first three powers match exactly the $\varepsilon^2$ terms in
+$m\mathcal D,E_0,E_1/m$. This is a useful independent sign and normalization
+check. It is not used as a uniform approximation proof, since by itself
+it does not control all the other contour contributions.
+
+\begin{writenote}[Added 5 October 2026, batch~98]
+The left side of \eqref{rpc:cx:eq:wavecheck} is the $j=1$ term
+$a_1(m)\fall{(m-1)}{2}/M^2$ of Part~I's expansion \eqref{rpc:eq:centered},
+with $a_1=-S_2/24$ from \eqref{rpc:eq:a1} and $M=X$.
+\end{writenote}
+
+\section{The crossover hierarchy and its infinitude}\label{rpc:cx:sec:hierarchy}
+
+\begin{writenote}[Added 5 October 2026, batch~98: Part~I's question~2 answered]
+Part~I's research question~2 (\S\ref{rpc:sec:research}) asks to extend the
+centered analysis into $m^{5/2}\lesssim N\ll m^3$, where the quadratic
+Bernoulli correction must itself be exponentiated, and to match the result
+to a small-parameter expansion of the Szekeres saddle, with a precise
+validity range and matching error. Theorem~\ref{rpc:cx:thm:uniform} does
+this with no gap: one expansion, with remainder $\mathrm O_{a,J}(m^{-J-1})$,
+holds uniformly for every $N\ge am^2$, so it covers $N\ll m^3$, the scale
+$m^{5/2}$ and the compact-$\alpha$ Szekeres regime at once
+(\S\ref{rpc:cx:sec:oeis}). The exponentiated quadratic correction is the
+first entropy term $\mathsf d_1m\varepsilon^2=-m^5/(72X^2)$; this section
+shows that $m^{5/2}$ is the exact threshold of the centered volume law and
+that it is the first of infinitely many transition scales. The question's
+lower end, $N/m^2\to0$, is not part of it and stays open
+(\S\ref{rpc:cx:sec:q-endpoint}).
+\end{writenote}
+
+\subsection{A uniform dilute expansion}
+For fixed $r$, analyticity at zero and Theorem~\ref{rpc:cx:thm:uniform} give,
+whenever $\varepsilon\to0$,
+\begin{equation}\label{rpc:cx:eq:dilute-remainder}
+ \log\frac{p_m(N)}{\mathcal V_{r-1}(m,N)}
+ =\mathsf d_r m\varepsilon^{2r}
+ +\mathrm O_r\!\left(m\varepsilon^{2r+2}+\varepsilon^2+m^{-1}\right).
+\end{equation}
+In particular,
+\begin{equation}\label{rpc:cx:eq:entropy-physical}
+ \log\frac{p_m(N)}{V_m(X)}
+ =-\frac{m^5}{72X^2}-\frac{41m^9}{129600X^4}
+   -\frac{3749m^{13}}{342921600X^6}+\cdots,
+\end{equation}
+where the omitted endpoint and finite-size terms must be included when
+an actual numerical accuracy is specified. Equation~\eqref{rpc:cx:eq:main},
+not the isolated display \eqref{rpc:cx:eq:entropy-physical}, is the full formula.
+
+If $X\sim\lambda m^{2+1/(2r)}$, then
+$m\varepsilon^{2r}\to\lambda^{-2r}$ and every error in
+\eqref{rpc:cx:eq:dilute-remainder} tends to zero. This proves
+\eqref{rpc:cx:eq:hierarchy-limit}. More generally, within $X/m^2\to\infty$,
+if $X\gg m^{2+1/(2r)}$ the ratio tends to one. If instead
+$X\ll m^{2+1/(2r)}$, then its logarithm is asymptotic to
+$\mathsf d_rm\varepsilon^{2r}$; the ratio tends to zero when $\mathsf d_r<0$ and to infinity when
+$\mathsf d_r>0$.
+
+\subsection{Necessity in the sharp centered boundary}
+By Lemma~\ref{rpc:cx:lem:saddle} and \eqref{rpc:cx:eq:envelope},
+$\mathcal D'(\varepsilon)<0$ on $(0,4)$, so $\mathcal D(\varepsilon)<0$ there.
+Suppose first that $p_m(N)/V_m(X)\to1$ with $N\ge am^2$.
+If $\varepsilon$ did not tend to zero, a subsequence would remain in a compact
+subinterval bounded away from zero. The term $m\mathcal D(\varepsilon)$ would then tend
+to $-\infty$, while $E_0$ is bounded, a contradiction.
+Thus $\varepsilon\to0$, and
+\begin{equation}
+ \log\frac{p_m(N)}{V_m(X)}
+ =-\frac{m\varepsilon^2}{72}(1+\mathrm O(\varepsilon^2))
+        +\mathrm O(\varepsilon^2+m^{-1}).
+\end{equation}
+The logarithm can tend to zero only if $m\varepsilon^2\to0$.
+Conversely this condition makes the right side tend to zero.
+Since $m\varepsilon^2=m^5/X^2$, this proves \eqref{rpc:cx:eq:iff}; the same display
+proves \eqref{rpc:cx:eq:firstboundary}. This subsequence argument also covers
+oscillating choices of $N$ rather than only power-law inputs.
+
+\subsection{Why the hierarchy does not terminate}
+It remains to prove that $\mathcal D$ is not a polynomial. For $s>0$, direct
+integration of $h(s)=\log s-s/2-\log(1-e^{-s})$ yields
+\begin{equation}\label{rpc:cx:eq:Hli2}
+ H(s)=\log s-1-\frac s4+
+       \frac{\pi^2/6-\operatorname{Li}_2(e^{-s})}{s}.
+\end{equation}
+Consequently, as $s\to\infty$,
+\begin{align}
+ B(s)&=\frac s4+\frac{\pi^2}{6s}+\mathrm O(e^{-s}),\label{rpc:cx:eq:Blarge}\\
+ 4-\varepsilon(s)&\sim\frac{8\pi^2}{3s^2}.\label{rpc:cx:eq:epslarge}
+\end{align}
+The entropy has the endpoint expansion
+\begin{equation}\label{rpc:cx:eq:Dendpoint}
+ \mathcal D(\varepsilon)=\log4-2+
+       \frac{\pi}{2\sqrt6}\sqrt{4-\varepsilon}+\mathrm O(4-\varepsilon),
+       \qquad \varepsilon\uparrow4.
+\end{equation}
+For example, it follows by substituting \eqref{rpc:cx:eq:Blarge} and
+\eqref{rpc:cx:eq:Hli2} into $\mathcal D=B-1-\log B+H$; the leading deviation is
+$\pi^2/(3s)$ and \eqref{rpc:cx:eq:epslarge} gives the stated constant.
+Alternatively, \eqref{rpc:cx:eq:envelope} directly implies
+$\mathcal D'(\varepsilon)\to-\infty$.
+
+If only finitely many coefficients $\mathsf d_r$ were nonzero, $\mathcal D$ would equal a
+polynomial near zero. Analytic continuation along the real interval
+$(0,4)$ would make it that polynomial throughout, contradicting
+\eqref{rpc:cx:eq:Dendpoint}. Hence infinitely many $\mathsf d_r$ are nonzero, completing
+Theorem~\ref{rpc:cx:thm:hierarchy}.
+
+\begin{remark}[An analytic endpoint is not a uniform partition regime]
+Equation~\eqref{rpc:cx:eq:Dendpoint} concerns the function $\mathcal D$ itself.
+The uniform theorem has a fixed lower bound $N\ge am^2$ and does not
+allow $a\downarrow0$ with $m$. In particular the endpoint argument does
+not silently extend the partition expansion into the unrestricted
+Hardy--Ramanujan regime.
+\end{remark}
+
+\section{How the quadratic and cubic OEIS formulas fit together}
+\label{rpc:cx:sec:oeis}
+
+\subsection{The classical quadratic leading formula}
+Fix $\alpha>0$ and take $N=\alpha m^2$ along integral values.
+Let $s_\alpha$ solve
+\begin{equation}
+ \int_0^1\frac{x}{e^{s_\alpha x}-1}\dd x=\alpha.
+\end{equation}
+Rearrangement of the leading terms of Theorem~\ref{rpc:cx:thm:uniform} gives
+\begin{equation}\label{rpc:cx:eq:szekeres}
+ p_m(\alpha m^2)\sim
+ \frac{s_\alpha}{2\pi m^2
+ \sqrt{2\alpha-(2\alpha+1)e^{-s_\alpha}}}
+ \exp\!\left(m\{2\alpha s_\alpha
+                    -\log(1-e^{-s_\alpha})\}\right).
+\end{equation}
+This is a parametrization of the classical Szekeres leading formula,
+not a new leading asymptotic~\cite{canfield}.
+For clarity about the endpoint constant, $X/m^2=\alpha+1/4+1/(4m)$.
+That last $1/(4m)$ contributes $e^{s_\alpha/4}$ to the leading
+amplitude. Together with $e^{h(s_\alpha)/2}$ it produces the
+factor in \eqref{rpc:cx:eq:szekeres}; dropping it gives an incorrect constant.
+
+At $\alpha=1$, formula~\eqref{rpc:cx:eq:szekeres} recovers the leading law
+for A206226 and the square subsequence of A097356. The previous
+repository report's floor-phase and three-exception theorems are
+separate results and are not reproved or claimed here. Our theorem
+supplies a common expansion from the compact quadratic regime all the
+way through $\alpha\to\infty$.
+
+\begin{writenote}[Added 5 October 2026, batch~98]
+Formula \eqref{rpc:cx:eq:szekeres} is the leading constant of the report
+\texttt{a097356-\allowbreak sqrt-\allowbreak restricted-\allowbreak
+partitions} at $\alpha=1$ (its constants $u$ and $C$, labels
+\texttt{srp:eq:u-one} and \texttt{srp:eq:constants-one}; its $u$ is
+$s_1$), and of
+Canfield's account of Szekeres' formula~\cite{canfield}: a second route,
+not a new result. The intake's numerical check of \eqref{rpc:cx:eq:szekeres}
+at $\alpha=1$ against exact counts gives ratios $0.99223$, $0.99611$ and
+$0.99766$ at $m=48$, $96$, $160$, and $s_1=0.8146511367\ldots$, equal to
+that report's~$u$.
+\end{writenote}
+
+\subsection{Recovery of the uncentered cubic boundary}
+Let $N\sim cm^3$, $c>0$. Then $\varepsilon\sim1/(cm)$, so
+$m\mathcal D(\varepsilon)+E_0(\varepsilon)=o(1)$. On the other hand,
+\begin{equation}
+ \log\frac{V_m(X)}{V_m(N)}
+ =(m-1)\log\left(1+\frac{m(m+1)}{4N}\right)
+ \longrightarrow\frac1{4c}.
+\end{equation}
+Therefore
+\begin{equation}\label{rpc:cx:eq:cubicrecover}
+ p_m(N)\sim e^{1/(4c)}\frac{N^{m-1}}{m!\Gamma(m)}.
+\end{equation}
+This recovers the earlier repository and OEIS cubic law
+(Corollary~\ref{rpc:cor:crossover} of Part~I, and~\cite{oeis238608}); it is a compatibility check, not a claim
+that this law was missing.
+
+For the exact A238608 slice $N=m^3$, Stirling expansion and
+\eqref{rpc:cx:eq:main} give
+\begin{equation}\label{rpc:cx:eq:a238608}
+ p_m(m^3)=\frac{e^{2m+1/4}m^{m-3}}{2\pi}
+ \left(1-\frac{61}{288m}+\mathrm O(m^{-2})\right).
+\end{equation}
+The leading term is posted in OEIS, and the correction is already in
+the inspected cubic report. The symbolic verifier checks that the new
+uniform formulation reproduces it exactly.
+
+\begin{writenote}[Added 5 October 2026, batch~98]
+The correction $-61/(288m)$ is the first term of Part~I's
+\eqref{rpc:eq:A238608} and \eqref{rpc:eq:c1log}, and
+\eqref{rpc:cx:eq:cubicrecover} is Corollary~\ref{rpc:cor:crossover}: both
+are second routes through Theorem~\ref{rpc:cx:thm:uniform}, not new
+results. Part~I gives the A238608 expansion through $m^{-5}$.
+\end{writenote}
+
+\subsection{What the intermediate scales add}
+Between $m^2$ and $m^3$, retaining only the shift $N\mapsto X$ is not
+enough. At $X\asymp m^{5/2}$ the first entropy term becomes visible.
+After incorporating it, the next transition lies at $m^{9/4}$; the
+next lies at $m^{13/6}$, and so on for the nonzero coefficients.
+At fixed $N/m^2$, no finite number of these dilute entropy terms is a
+uniform substitute for the full analytic function $\mathcal D$. Thus the
+hierarchy explains both why many approximations work in a dilute range
+and why they eventually fail as the quadratic range is approached.
+
+\section{Analytic inversion and discrete thresholds}\label{rpc:cx:sec:inverse}
+
+\subsection{The leading inverse map}
+For $Z,\eta_\star$ in \eqref{rpc:cx:eq:inverse-input}, write $X=Zx$.
+Equation~\eqref{rpc:cx:eq:main} becomes
+\begin{equation}\label{rpc:cx:eq:inverse-eq}
+ 0=(m-1)\log x+m\mathcal D(\eta_\star/x)+E_0(\eta_\star/x)
+          +\frac{E_1(\eta_\star/x)}m+\cdots.
+\end{equation}
+Dividing by $m$, the leading equation is
+$\log x+\mathcal D(\eta_\star/x)=0$. Setting $\varepsilon=\eta_\star/x$ gives exactly
+\eqref{rpc:cx:eq:inverse-core}.
+By \eqref{rpc:cx:eq:envelope},
+\begin{equation}\label{rpc:cx:eq:inverse-monotone}
+ \frac{\mathrm d}{\mathrm d\varepsilon}(\varepsilon e^{-\mathcal D(\varepsilon)})
+   =e^{-\mathcal D(\varepsilon)}(1-\varepsilon \mathcal D'(\varepsilon))
+   =e^{-\mathcal D(\varepsilon)}B(s)>0.
+\end{equation}
+At zero this derivative is one; as $\varepsilon\uparrow4$, its image tends to
+$4e^{-(\log4-2)}=e^2$. This proves the existence and analyticity of the
+inverse chart on $[0,e^2)$.
+
+\subsection{First and all higher corrections}
+Put $x=\mathcal R(\eta_\star)e^{\omega/m+\mathrm O(m^{-2})}$ in
+\eqref{rpc:cx:eq:inverse-eq}. Its constant-order terms are
+\begin{equation}
+ (1-\varepsilon \mathcal D'(\varepsilon))\omega-\log\mathcal R+E_0(\varepsilon)=0,
+\end{equation}
+which proves \eqref{rpc:cx:eq:v} and \eqref{rpc:cx:eq:inverse-first}.
+More generally, insert
+\begin{equation}\label{rpc:cx:eq:inverse-all}
+ X=Z\mathcal R(\eta_\star)\exp\left(\sum_{k=1}^K\frac{\omega_k(\eta_\star)}{m^k}
+                            +\mathrm O_{a,K}(m^{-K-1})\right).
+\end{equation}
+At each new order the unknown $\omega_k$ enters linearly with coefficient
+$1-\varepsilon \mathcal D'(\varepsilon)=B(s)$, bounded away from zero. The remaining terms
+are already known analytic functions. This recursion, or the analytic
+implicit-function theorem applied separately to each finite truncation
+with parameter $1/m$, proves all fixed orders uniformly on the compact parameter ranges of the forward theorem.
+The finite forward remainder transfers through the same nonvanishing
+derivative. This completes Theorem~\ref{rpc:cx:thm:inverse-intro}.
+
+\begin{remark}[\textsf{[write]} The all-orders inverse in detail; added 5 October 2026, batch~98]
+\label{rpc:cx:rem:inverse-completion}
+The two sentences above are the whole argument for ``every fixed order''.
+Written out: put $\hbar_1=1/m$ and
+\[
+ F_K(x;\eta_\star,\hbar_1)=(1-\hbar_1)\log x+\mathcal D(\eta_\star/x)
+ +\sum_{j=0}^K\hbar_1^{\,j+1}E_j(\eta_\star/x).
+\]
+Dividing \eqref{rpc:cx:eq:main} (with $J=K$) by $m$ shows that the exact
+$x=X/Z$ satisfies $F_K(x;\eta_\star,1/m)=\mathrm O_{a,K}(m^{-K-2})$. At
+$\hbar_1=0$, $F_0(x;\eta_\star,0)=\log x+\mathcal D(\eta_\star/x)$ is strictly
+increasing in $x$ with derivative $B(s)/x>0$ ($\varepsilon=\eta_\star/x$),
+by \eqref{rpc:cx:eq:envelope}, and vanishes at $x=\mathcal R(\eta_\star)$;
+since $\eta_\star=\varepsilon x=\varepsilon e^{-\mathcal D(\varepsilon)+\mathrm O(1/m)}$
+by the forward theorem, $\eta_\star$ lies in a compact subset of $[0,e^2)$,
+and, as $B>1$, the case $K=0$ already places the exact $x$ within
+$\mathrm O(1/m)$ of $\mathcal R(\eta_\star)$. (Dated note, 5~October 2026:
+the first version read ``vanishes at $x=\mathcal R(\eta_\star)$; so the case
+$K=0$ already places\ldots'', stating the compactness of $\eta_\star$ only
+in the next sentence; the order was corrected after the independent check
+recorded at the head of \S\ref{rpc:cx:sec:questions}.) In the regime $N\ge am^2$ one has
+$\varepsilon\le\varepsilon_a$, hence $\eta_\star$ stays in a compact subset
+of $[0,e^2)$, on which $F_K$ is analytic near $(\mathcal R(\eta_\star),
+\eta_\star,0)$ and $\partial_xF_K=B(s)/x$ there is bounded away from zero.
+The analytic implicit-function theorem gives a root
+$x_K(\eta_\star,\hbar_1)$ analytic in $\hbar_1$ near $0$, uniformly in
+$\eta_\star$, with $\log x_K=\log\mathcal R+\sum_{k\le K}\omega_k\hbar_1^k
++\mathrm O(\hbar_1^{K+1})$, where $\omega_1=\omega$ of \eqref{rpc:cx:eq:v} and
+each $\omega_k$ solves a linear equation with coefficient $B(s)$, as stated.
+The mean-value theorem in $x$, with $|\partial_xF_K|$ bounded below, turns
+$F_K(x;\eta_\star,1/m)=\mathrm O(m^{-K-2})$ into
+$\log x-\log x_K=\mathrm O(m^{-K-2})$. Together these give
+\eqref{rpc:cx:eq:inverse-all}, uniformly on the regime.
+\end{remark}
+
+The first dilute inverse coefficients are
+\begin{align}
+ \mathcal R(\eta_\star)&=1+\frac{\eta_\star^2}{72}
+          +\frac{7\eta_\star^4}{259200}
+          +\frac{347\eta_\star^6}{2743372800}+\mathrm O(\eta_\star^8),
+          \label{rpc:cx:eq:Rseries}\\
+ \omega(\eta_\star)&=-\frac{\eta_\star^2}{144}
+          +\frac{67\eta_\star^4}{259200}
+          +\frac{653\eta_\star^6}{1371686400}+\mathrm O(\eta_\star^8).
+          \label{rpc:cx:eq:vseries}
+\end{align}
+For example the inverse parameter itself is
+\begin{equation}
+ \varepsilon=\eta_\star-\frac{\eta_\star^3}{72}
+       +\frac{43\eta_\star^5}{259200}
+       -\frac{5639\eta_\star^7}{2743372800}+\mathrm O(\eta_\star^9).
+\end{equation}
+These coefficients were generated by exact Lagrange inversion and
+checked by substitution into \eqref{rpc:cx:eq:inverse-core}.
+
+\subsection{A safe integer-threshold statement}
+Let $T_m(Y)=\min\{N\ge0:p_m(N)\ge Y\}$. The injection that adds a
+part of size one makes $p_m$ nondecreasing, but does not provide a
+canonical real interpolation. Define the smooth logarithmic surrogate
+\begin{equation}
+ \mathcal L_J(X)=\log V_m(X)+m\mathcal D(m^2/X)+E_0(m^2/X)
+                      +\sum_{j=1}^J\frac{E_j(m^2/X)}{m^j}.
+\end{equation}
+On any admissible compact parameter range,
+\begin{equation}\label{rpc:cx:eq:inverse-derivative}
+ \mathcal L_J'(X)=\frac{mB(s)-1+\mathrm O_a(1)}X
+                       \asymp_a\frac mX>0
+\end{equation}
+for sufficiently large $m$. Its leading derivative follows directly
+from \eqref{rpc:cx:eq:envelope}; the derivatives of the remaining analytic
+functions are bounded.
+
+\begin{proposition}[Threshold error transfer]\label{rpc:cx:prop:threshold}
+Suppose the true threshold and a fixed relative neighborhood of it lie
+in $N\ge am^2$. Let $X_J$ solve
+$\mathcal L_J(X_J)=\log Y$. Then
+\begin{equation}\label{rpc:cx:eq:threshold}
+ T_m(Y)=X_J-\frac{m(m+1)}4
+             +\mathrm O_{a,J}\left(\frac{X_J}{m^{J+2}}+1\right).
+\end{equation}
+\end{proposition}
+\begin{proof}
+Theorem~\ref{rpc:cx:thm:uniform} bounds the logarithmic error at every integer
+sample by $Cm^{-J-1}$. By \eqref{rpc:cx:eq:inverse-derivative}, moving the
+smooth root by $C'X_Jm^{-J-2}$ changes the surrogate logarithm by at
+least that amount, with either sign, if $C'$ is large enough.
+Round the two comparison locations outward to integers, adding a
+bounded displacement. The lower one has count below $Y$ and the upper
+one has count at least $Y$. Monotonicity supplies the bracket.
+\end{proof}
+A symbolic asymptotic expansion alone does not furnish an explicit
+numerical value of the error constant or an exact ceiling formula.
+Even a very small relative error can correspond to a large absolute
+index error when $X$ is enormous.
+
+\begin{writenote}[Added 5 October 2026, batch~98: an instance of repository results]
+For fixed $m\ge2$ the counts $p_m(N)$ are strictly increasing in $N\ge1$
+(the difference $p_m(N+1)-p_m(N)$ counts partitions of $N+1$ into parts
+from $\{2,\ldots,m\}$), so $T_m(Y)$ is the integer staircase of
+\texttt{p0:thm:staircase} in the transseries-and-inversion
+volume~\cite{rpc-tai}, and the proof above is that theorem's bracketing
+argument (its parts~(1)--(2)) with an explicit chart error. As in
+Part~I's dated notes in \S\ref{rpc:sec:inverse}, no novelty is claimed for
+the method.
+\end{writenote}
+
+\subsection{Lambert-\texorpdfstring{$W$}{W} inversion along a power-law slice}
+A complementary inverse lets $m$ vary on a fixed centered slice
+$X=\lambda m^\gamma$, $\gamma>2$, $\lambda>0$.
+Ignoring bounded integer rounding for the moment, Stirling gives
+\begin{align}\label{rpc:cx:eq:slice}
+ \log p_m(N)={}&(\gamma-2)m\log m+(2+\log\lambda)m
+ -\gamma\log m-\log(2\pi\lambda)\notag\\
+ &+m\mathcal D(\lambda^{-1}m^{2-\gamma})
+   +E_0(\lambda^{-1}m^{2-\gamma})
+   +\frac{E_1(\lambda^{-1}m^{2-\gamma})-1/6}{m}
+   +\mathrm O(m^{-2}).
+\end{align}
+For $L=\log Y$, $\beta=\gamma-2$ and $b_\lambda=2+\log\lambda$, the leading
+inverse is
+\begin{equation}\label{rpc:cx:eq:W}
+ m_0=\frac{L}{\beta W(e^{b_\lambda/\beta}L/\beta)}.
+\end{equation}
+Successive corrections are obtained by substituting $m=m_0+\Delta$
+into \eqref{rpc:cx:eq:slice}; the leading derivative is
+$\beta\log m_0+\beta+b_\lambda$. All the retained entropy sectors must be
+included in that substitution at their actual sizes. This is an
+application of the repository's transseries-inversion program, not a
+new inversion method. Bounded rounding of $N$ alters the continuous
+profile logarithm by $\mathrm O(m/X)$ and does not affect its leading
+asymptotic; exact thresholds still require an argument such as
+Proposition~\ref{rpc:cx:prop:threshold}.
+
+\begin{writenote}[Added 5 October 2026, batch~98: an instance of repository results]
+The ``repository's transseries-inversion program'' is the
+transseries-and-inversion volume~\cite{rpc-tai}: the core
+$\beta m\log m+b_\lambda m=L$, solved by the principal branch of $W$ in
+\eqref{rpc:cx:eq:W}, is the Lambert core of the inverse gamma function in
+\texttt{p6:thm:gamma}, and the substitution $m=m_0+\Delta$ is its perturbed
+inversion \texttt{p0:thm:perturbed-inversion}. At $\gamma=3$ one has
+$\beta=1$ and $m_0=L/W(\lambda e^2L)$, which is Part~I's cubic core
+\eqref{rpc:eq:lambertbase} with $c$ replaced by $\lambda$ (and $X\sim N$ on
+that slice, so $\lambda\sim c$).
+\end{writenote}
+
+\section{What kind of transseries has been obtained?}\label{rpc:cx:sec:transseries}
+The answer contains two different expansions.
+First, $\mathcal D(\varepsilon)$ is a genuinely convergent analytic germ in $\varepsilon$,
+with an effective rational coefficient formula. Second,
+\eqref{rpc:cx:eq:main} is a fixed-order asymptotic expansion in $1/m$, uniform
+in a compact continuum parameter. We have not proved convergence,
+Gevrey bounds, Borel summability or optimal truncation for the latter.
+
+On a power-law slice $X=\lambda m^\gamma$, its entropy factor resolves
+ordered exponential corrections
+\begin{equation}\label{rpc:cx:eq:sectors}
+ \exp\left(\sum_{r\ge1}
+ \mathsf d_r\lambda^{-2r}m^{\,1-2r(\gamma-2)}\right).
+\end{equation}
+Only finitely many exponents in \eqref{rpc:cx:eq:sectors} are nonnegative when
+$\gamma>2$. After those terms are retained in the exponent, the others
+can be expanded to any desired fixed algebraic order, together with
+the endpoint and $1/m$ functions. At a transition exponent the
+corresponding term is a nontrivial constant rather than a decaying
+correction. This is the precise sense in which the report supplies an
+exponential asymptotic hierarchy useful for transseries calculations.
+
+It would be too strong to call this a complete resurgent transseries.
+The exponentially small contributions of other roots of unity are
+not individually identified; their actions, amplitudes and possible
+Stokes behavior are not derived. The minor-arc estimates provide the
+uniform algebraic accuracy needed here, not a classification of every
+beyond-all-orders sector.
+
+\begin{writenote}[Added 5 October 2026, batch~98]
+Part~I states the same limitation for its centered theorem (the remark after
+the proof of Theorem~\ref{rpc:thm:centered}) and poses the individual waves
+as its question~1. Part~I's dilute expansion \eqref{rpc:eq:exp-transseries}
+does resolve genuine $q^{-m}$ sectors, but only for $N\ge m^3/\eta_0$
+(Theorem~\ref{rpc:thm:dilute}); nothing in Part~II resolves exponentially
+small sectors at the quadratic scale.
+\end{writenote}
+
+\section{Computational verification and reproducibility}\label{rpc:cx:sec:checks}
+The package contains independent exact and numerical checks. Exact
+arithmetic is used for the partition counts and rational symbolic
+identities. The evaluation of special functions and saddle roots uses
+55-digit \texttt{mpmath} arithmetic and is \emph{not} interval-certified.
+
+\subsection{Exact computations}
+The dynamic program uses \eqref{rpc:cx:eq:dp}. As an independent recurrence,
+logarithmic differentiation of \eqref{rpc:cx:eq:gf} gives
+\begin{equation}\label{rpc:cx:eq:divisor-rec}
+ Np_m(N)=\sum_{k=1}^N\sigma_m(k)p_m(N-k),\qquad
+ \sigma_m(k)=\sum_{\substack{d\mid k\\1\le d\le m}}d.
+\end{equation}
+The verifier compares these methods through $N=400$ for
+$m=2,3,5,8,12$, including exact divisibility of each recurrence
+numerator. It also reproduces the 17 displayed A238608 values at
+$m=0,\ldots,16$ from the retrieved OEIS entry~\cite{oeis238608}.
+In total it executes 4,017 exact arithmetic assertions.
+
+The symbolic script derives the six $\mathsf d_r$, the displayed $E_0,E_1$
+series and the inverse coefficients. It checks four identities:
+the implicit saddle equation, an independent entropy substitution,
+the inverse substitution, and the known cubic correction $-61/288$.
+The first-wave calculation \eqref{rpc:cx:eq:wavecheck} supplies a further
+transparent mathematical cross-check of the normalization.
+
+\subsection{Uniform-profile diagnostics}
+The numerical run stores 46 exact partition samples with $m\le96$ and
+$N\le268566$. It includes $N/m^2=1/4,1,4$, centered $m^{5/2}$ and
+$m^{9/4}$ slices, and cubic samples. Table~\ref{rpc:cx:tab:errors} displays
+signed logarithmic errors for $N=m^2$.
+Here $\mathcal L_0=\log V+m\mathcal D+E_0$ and
+$\mathcal L_1=\mathcal L_0+E_1/m$.
+
+\begin{table}[ht]
+\centering\small
+\begin{tabular}{rrrr}
+\toprule
+$m$ & $\log p_m(m^2)-\mathcal L_0$ &
+$\log p_m(m^2)-\mathcal L_1$ & $m^2(\log p-\mathcal L_1)$\\
+\midrule
+16 & $1.0858192\times10^{-3}$ & $-5.5491004\times10^{-5}$ & $-0.01420570$\\
+24 & $7.4303668\times10^{-4}$ & $-2.4472407\times10^{-5}$ & $-0.01409611$\\
+32 & $5.6443633\times10^{-4}$ & $-1.3708705\times10^{-5}$ & $-0.01403771$\\
+48 & $3.8104962\times10^{-4}$ & $-6.0670539\times10^{-6}$ & $-0.01397849$\\
+64 & $2.8756776\times10^{-4}$ & $-3.4054133\times10^{-6}$ & $-0.01394857$\\
+96 & $1.9289706\times10^{-4}$ & $-1.5102484\times10^{-6}$ & $-0.01391845$\\
+\bottomrule
+\end{tabular}
+\caption{Exact-count comparisons with the continuum expansion.
+The scaled errors support, but do not prove, the $\mathrm O(m^{-2})$ remainder.}
+\label{rpc:cx:tab:errors}
+\end{table}
+
+For the separate exact-saddle formula, the first Edgeworth correction
+reduces the signed logarithmic error at $m=96,N=9216$ from about
+$-1.06104\times10^{-3}$ to $4.92792\times10^{-7}$.
+Thus the finite-sum and continuum implementations provide distinct
+numerical tests of the analysis.
+
+\subsection{Crossover and inverse diagnostics}
+At the first centered transition with $\lambda=1/2$, the exact ratios
+$p_m(N)/V_m(X)$ are approximately $0.951023$ at $m=16$,
+$0.947144$ at $m=64$, and $0.946743$ at $m=96$.
+Their proved limit is $e^{-1/18}\approx0.945959$.
+The small bounded rounding used to select integer $N$ is recorded in
+the CSV data rather than suppressed.
+
+There is an instructive limitation in the second-transition samples.
+At $X\approx(3/4)m^{9/4}$ the ratio after removing only the first
+entropy term is still greater than one for every sampled $m\le96$,
+although its proved limiting constant is below one. The positive
+$E_0$ correction is still larger than the tiny second entropy effect
+at these sizes. We retain this evidence rather than presenting the
+finite data as proof that the limiting sign has already appeared.
+
+\begin{writenote}[Added 5 October 2026, batch~98: where the sign should change]
+Evaluating $m(\mathcal D(\varepsilon)-\mathsf d_1\varepsilon^2)+E_0(\varepsilon)
++E_1(\varepsilon)/m$ from the series \eqref{rpc:cx:eq:E0series},
+\eqref{rpc:cx:eq:E1series} and $\mathsf d_2,\mathsf d_3,\mathsf d_4$ on the
+slice $X=\tfrac34m^{9/4}$ gives $0.0028418$ at $m=96$, $N=19308$, against
+the exact $\log(p_m(N)/\mathcal V_1(m,N))=0.0028414$ recorded in
+\nolinkurl{data/02-crossover-crossover_checks.csv}. The
+same truncated expression changes sign between $m=1373$ and $m=1374$ and
+tends to $\mathsf d_2/(3/4)^4=-0.0009998\ldots$. This locates the expected
+crossing; it is an estimate from a truncated expansion, with no bound on
+the omitted terms at that size, and is recorded as
+\S\ref{rpc:cx:sec:q-finitesize}.
+\emph{Dated note (5~October 2026).} The first version of this note read
+``gives $0.0028419$ at $m=96$, \ldots{} (with $N=19308$)''; $0.0028419$
+($0.002841865$) is the value of the expression at the real
+$X=\tfrac34\cdot96^{9/4}$, while at the integer $N=19308$, to which the
+exact value refers, it is $0.0028418$ ($0.002841819$). The independent
+check recorded at the head of \S\ref{rpc:cx:sec:questions} found the
+sign change at $m=1373/1374$ correct (values $+3.0\cdot10^{-8}$ and
+$-3.35\cdot10^{-7}$; the sign changes there both for the real $X$ and for
+the integer $N$) and its framing as an estimate appropriate.
+\end{writenote}
+
+For $Y=p_m(m^2)$, the first corrected inverse chart has relative
+centered-$X$ errors $8.92656\times10^{-5}$ at $m=16$,
+$5.58154\times10^{-6}$ at $m=64$, and
+$2.48072\times10^{-6}$ at $m=96$.
+Multiplication by $m^2$ gives approximately $0.022852$,
+$0.022862$, and $0.022862$, consistent with
+\eqref{rpc:cx:eq:inverse-first}. These are sample-value diagnostics, not
+certificates for rounding arbitrary thresholds.
+
+\subsection{Package contents and commands}
+The source is self-contained LaTeX with an internal bibliography.
+The included files are:
+\begin{center}\small
+\begin{tabular}{p{0.35\textwidth}p{0.57\textwidth}}
+\toprule
+File & Role\\
+\midrule
+\texttt{article.tex}, \texttt{article.pdf} & This manuscript and its compiled PDF.\\
+\texttt{code/asymptotics.py} & Stable forward, finite-saddle and inverse numerical evaluators.\\
+\texttt{code/derive\_coefficients.py} & Exact rational coefficients and symbolic assertions.\\
+\texttt{code/verify.py} & Exact recurrences and 55-digit diagnostic comparisons.\\
+\texttt{data/} & Exact samples, coefficient JSON, diagnostic CSVs and execution records.\\
+\texttt{README.md}, \texttt{SOURCE\_AUDIT.md} & Build instructions, provenance and novelty limits.\\
+\bottomrule
+\end{tabular}
+\end{center}
+From the package root, run
+\begin{verbatim}
+python -m pip install -r requirements.txt
+python code/derive_coefficients.py
+python code/verify.py
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+\end{verbatim}
+The recorded environment is Python 3.13.5 and mpmath 1.3.0.
+Runtime and tool versions are evidence about the performed run, not
+assumptions of the mathematical theorems. No Lean or Rocq verification
+was performed, and the numerical calculations do not instantiate the
+constants in the uniform remainder proofs.
+
+\begin{writenote}[Added 5 October 2026, batch~98: the shipped layout]
+In this report every delivered file shipped carries the prefix
+\texttt{02-crossover-}: the three programs \texttt{asymptotics.py},
+\texttt{derive\_coefficients.py} and \texttt{verify.py} and the delivered
+\texttt{build.sh} are in \texttt{code/} (the build script compiles
+\texttt{article.tex}, which is now this report); the ten records,
+including the requirements file, are in \texttt{data/}; the two audits
+\texttt{SOURCE\_AUDIT.md} and \texttt{QA.md} are at the report root. Not shipped: the manuscript's
+\texttt{article.tex} and \texttt{article.pdf} (Part~II is its text),
+its \texttt{README.md}, \texttt{SHA256SUMS.txt} (verified, 20 of 20) and
+\texttt{data/symbolic\_run.txt}, a byte copy of the shipped coefficient
+file. \texttt{verify.py} imports \texttt{asymptotics} and reads
+\texttt{data/coefficients.json} by their delivered names, and the programs
+write unprefixed files into a \texttt{data/} directory beside
+\texttt{code/}, so they must be rerun on a copy with the delivered names
+restored, never in place; the report README gives the commands. On
+5~October 2026 such a rerun passed here: \texttt{verify.py} in 80~s (the
+record says 12.8~s), with the five CSV files byte-identical,
+\texttt{exact\_samples.json} identical up to line endings, and
+\texttt{verification\_summary.json} and the standard output (against
+\texttt{verification\_run.txt}) identical apart from
+\texttt{elapsed\_seconds} and line endings; \texttt{derive\_coefficients.py} in 14~s,
+reproducing \texttt{coefficients.json} up to line endings. The 17 A238608
+terms embedded in \texttt{verify.py} are OEIS data (CC~BY-SA~4.0).
+\end{writenote}
+
+\section{Further questions and research}\label{rpc:cx:sec:questions}
+The following questions are precise continuations, not results of this
+report.
+
+\begin{writenote}[Added 5 October 2026, batch~98: what this section holds]
+Questions \ref{rpc:cx:sec:q-negativity}--\ref{rpc:cx:sec:q-formal} are
+manuscript~09's own (its \S\S13.1--13.7), printed as delivered with dated
+notes. Questions \ref{rpc:cx:sec:q-truncation} and~\ref{rpc:cx:sec:q-finitesize}
+were moved here in the write, under the repository's standing rule that
+unproved claims are kept as questions: the first collects the non-claims of
+manuscript~09's \S\ref{rpc:cx:sec:transseries} and of its delivery README,
+the second its finite-size observation in \S\ref{rpc:cx:sec:checks}. Where a question
+overlaps one of Part~I's (\S\ref{rpc:sec:research}) or one of the report
+\texttt{a097356-\allowbreak sqrt-\allowbreak restricted-\allowbreak
+partitions}, the overlap is named and both sources are credited; the
+questions are printed once, here. Apart from the two condensed proofs
+completed in Remarks~\ref{rpc:cx:rem:completion}
+and~\ref{rpc:cx:rem:inverse-completion}, every statement manuscript~09
+asserts is proved in its text, and the write found none of its claims to be
+false.
+
+\emph{Dated note (5~October 2026).} An independent adversarial check of
+the results added at this write, made by the intake after the write, found
+them valid: all six steps of Remark~\ref{rpc:cx:rem:completion},
+Remark~\ref{rpc:cx:rem:inverse-completion}, and the dated note in
+\S\ref{rpc:cx:sec:checks} with question~\ref{rpc:cx:sec:q-finitesize},
+which present the sign change at $m=1373/1374$ correctly as an estimate.
+The check was a careful reading with independent computations: its own
+implementation of the operator \eqref{rpc:cx:eq:Ejoperator} (its $E_1$
+agrees with \eqref{rpc:cx:eq:E1} to 12 digits); exact $p_m(N)$ by the
+recurrence for $m=10,\ldots,240$ and $N/m^2$ from $0.05$ to $10^4$
+($N\le3\cdot10^6$), whose residuals after $J=0,1,2$ corrections, scaled by
+$m^{J+1}$, approach $E_{J+1}$ uniformly in $N/m^2$; an independent
+second inverse coefficient $\omega_2$, with next remainder
+$\mathrm O(m^{-3})$; measured arc ratios for step~(iv) of
+Remark~\ref{rpc:cx:rem:completion}; and a recomputation of the truncated
+expression on the slice. It is not a formal verification or an external
+review. It led to three changes, each recorded with a dated note where it
+was made: the value at $m=96$ in the note of \S\ref{rpc:cx:sec:checks}
+($0.0028418$ at $N=19308$, not $0.0028419$); in
+Remark~\ref{rpc:cx:rem:inverse-completion}, the compactness of
+$\eta_\star$ in $[0,e^2)$ is now stated before the step $K=0$, which then
+gives $|\log x-\log\mathcal R(\eta_\star)|=\mathrm O(1/m)$; and numerical
+evidence in question~\ref{rpc:cx:sec:q-finitesize}.
+\end{writenote}
+
+\subsection{Are all entropy coefficients strictly negative?}
+\label{rpc:cx:sec:q-negativity}
+The first six $\mathsf d_r$ are negative and infinitely many are nonzero.
+Is $[z^{2r}]B(z)^{2r+1}>0$ for every $r\ge1$? A positive integral or
+combinatorial representation of these diagonal coefficients would settle
+the question and make every exponent $2+1/(2r)$ an unconditional member
+of the hierarchy. The alternating Bernoulli coefficients of $B$ mean
+that coefficientwise positivity is not immediate.
+
+\begin{writenote}[Added 5 October 2026, batch~98: evidence]
+In exact rational arithmetic, by two independent routes (the Lagrange
+formula \eqref{rpc:cx:eq:d-lagrange}, and the series of
+$\mathcal D=s/\varepsilon-1-\log(s/\varepsilon)+H(s)$ after solving
+$s=\varepsilon B(s)$ by fixed-point iteration), $\mathsf d_1,\ldots,\mathsf d_{16}$
+all agree and are all negative; $\mathsf d_1,\ldots,\mathsf d_6$ are those of
+Table~\ref{rpc:cx:tab:coefficients}. This is evidence, not a proof; what is
+missing is an argument valid for every~$r$. An answer to
+question~\ref{rpc:cx:sec:q-largeorder} would give negativity for all large
+$r$ if the endpoint singularities dominate.
+\end{writenote}
+
+\subsection{What controls the large-order behavior of \texorpdfstring{$\mathsf d_r$}{d\_r}?}
+\label{rpc:cx:sec:q-largeorder}
+The real endpoint at $\varepsilon=4$ has a square-root singularity.
+Does it dominate the Taylor coefficients, or do nearer complex critical
+values of $s/B(s)$ intervene? Determine the radius of convergence,
+nearest singularities, and the leading large-$r$ law for $\mathsf d_r$.
+The endpoint analysis alone does not answer this complex-analytic question.
+
+\begin{writenote}[Added 5 October 2026, batch~98: a conjectural law and its evidence]
+If $\varepsilon=\pm4$ were the only singularities on the circle of
+convergence, with the local form \eqref{rpc:cx:eq:Dendpoint} at both
+($\mathcal D$ is even), the standard transfer from
+$\sqrt{1-\varepsilon/4}$ would give
+\[
+ \mathsf d_r\sim-\sqrt{\pi/6}\,(2r)^{-3/2}\,16^{-r}\qquad(r\to\infty),
+\]
+and hence negativity of all large $\mathsf d_r$. The exact values agree with
+this law to the ratios $0.869$, $0.955$, $0.987$ and $0.996$ at $r=1$, $7$,
+$12$ and~$16$, increasing monotonically in between. This is numerical
+evidence only. Two things are missing: a proof that $s/B(s)$ has no
+complex critical value of modulus at most~$4$ other than at the real ends,
+and a justification of the transfer, since the expansion of $\mathcal D$ at
+$\varepsilon=4$ in powers of $\sqrt{4-\varepsilon}$ carries corrections of
+size $e^{-s}$ with $s\asymp(4-\varepsilon)^{-1/2}$ (from
+\eqref{rpc:cx:eq:Hli2}), which are not analytic in $\sqrt{4-\varepsilon}$ at
+the endpoint.
+\end{writenote}
+
+\subsection{Can the opposite moving-saddle endpoint be made uniform?}
+\label{rpc:cx:sec:q-endpoint}
+Extend the expansion as $N/m^2\to0$, allowing $s\to\infty$.
+Here $\mathcal Q(s)\to0$, so the present compact-curvature proof is insufficient.
+A successful result should identify its maximal range and match to
+unrestricted-partition asymptotics rather than merely substituting a
+large $s$ into a compact-parameter theorem.
+
+\begin{writenote}[Added 5 October 2026, batch~98]
+This is the end $\alpha\to0$ of the question ``Uniform limits as the saddle
+moves to zero or infinity'' (Section~14.6) of the report
+\texttt{a097356-\allowbreak sqrt-\allowbreak restricted-\allowbreak
+partitions}; Theorem~\ref{rpc:cx:thm:uniform} answers its end
+$\alpha\to\infty$. Part~I's question~2 (\S\ref{rpc:sec:research}) does not
+include it.
+\end{writenote}
+
+\subsection{Can individual exponential waves be resolved?}
+\label{rpc:cx:sec:q-waves}
+Refine the collective minor-arc estimate into explicit contributions
+from the dominant nontrivial roots of unity. Determine the parameter
+ranges in which each contribution is visible, and how those ranges
+interact with the entropy hierarchy. This would move beyond fixed-order
+Poincar\'e expansions toward a genuine multi-sector transseries.
+
+\begin{writenote}[Added 5 October 2026, batch~98]
+The same question at the cubic scale is Part~I's question~1
+(``Optimal truncation and individual waves'', first target the $q=-1$
+wave), and at the quadratic scale it is Section~14.3 (``Exponential sectors
+and optimal truncation'') of the report
+\texttt{a097356-\allowbreak sqrt-\allowbreak restricted-\allowbreak
+partitions}. One uniform answer for $N\ge am^2$ would settle all three.
+\end{writenote}
+
+\subsection{Can the error constants support exact inversion?}
+\label{rpc:cx:sec:q-constants}
+Replace the existence of constants in the uniform expansion by
+computable interval bounds, then combine them with
+Proposition~\ref{rpc:cx:prop:threshold} to certify exact thresholds for large
+$Y$. The difficult issue is not obtaining many numerical digits of a
+saddle, but controlling all analytic remainders strongly enough to
+exclude neighboring integers.
+
+\begin{writenote}[Added 5 October 2026, batch~98]
+This is Part~I's question~8 (``Certified inverse thresholds''), extended
+from $N\ge c_0m^3$ to $N\ge am^2$; the separation condition of
+\texttt{p0:thm:staircase}(2) is the test such an interval must pass.
+\end{writenote}
+
+\subsection{How general is the centering hierarchy?}
+\label{rpc:cx:sec:q-weights}
+For restricted products $\prod_{j\le m}(1-q^{w_j})^{-1}$, centering by
+$\frac12\sum w_j$ again removes the linear term. Under regularity and
+aperiodicity assumptions on the weights, do analogues of $\mathcal D,E_j$ and
+an infinite hierarchy follow? Any extension must preserve a lattice
+span-one argument or explicitly account for residue classes; the
+reserved $j=1$ factor used here cannot simply be assumed available.
+
+\begin{writenote}[Added 5 October 2026, batch~98]
+This is Part~I's question~7 (``Other weight systems''), which also asks to
+separate a universal volume and cumulant law from periodic obstructions.
+The weights $w_j$ here are unrelated to the coordinate $\zeta$ of
+\S\ref{rpc:cx:sec:em}.
+\end{writenote}
+
+\subsection{Can the analytic proof be formalized efficiently?}
+\label{rpc:cx:sec:q-formal}
+A realistic route begins with the exact product, positivity and
+recurrences, then formalizes the two contour modulus lemmas, uniform
+Euler--Maclaurin bounds on a compact family, and the finite Gaussian
+coefficient operator. The formal challenge is managing quantitative
+uniformity and complex analytic remainders, not just verifying the
+listed rational coefficients.
+
+\begin{writenote}[Added 5 October 2026, batch~98]
+Part~I's formalization route (its Section~9)
+and its question~9 (``A proof-producing asymptotic pipeline'') propose the
+same layering for $N\ge c_0m^3$. Its starting point, the Lean file
+\nolinkurl{PartitionBoundedParts.lean} (\S\ref{rpc:sec:proveit}), formalizes
+the finite-product generating function only; no statement of Part~II is
+formalized.
+\end{writenote}
+
+\subsection{Convergence, Borel summability and optimal truncation of the \texorpdfstring{$1/m$}{1/m} series}
+\label{rpc:cx:sec:q-truncation}
+\emph{Moved here in the write (5 October 2026, batch~98), from
+manuscript~09's \S\ref{rpc:cx:sec:transseries}, its notation paragraph in
+\S\ref{rpc:cx:sec:scope} and its delivery README.} The expansion
+\eqref{rpc:cx:eq:main} is proved at every fixed order~$J$, with constants
+depending on~$J$. Manuscript~09 does not prove, and does not claim,
+convergence of $\sum_jE_j(\varepsilon)m^{-j}$, Gevrey bounds on the $E_j$,
+Borel summability, an optimal truncation order growing with $m$, or any
+uniformity in a growing $J$; in its words, calling the result a complete
+resurgent transseries ``would be too strong''. Determine the growth of
+$\sup_{0\le\varepsilon\le\varepsilon_a}|E_j(\varepsilon)|$ in $j$ (the
+operator \eqref{rpc:cx:eq:Ejoperator} makes the $E_j$ computable), the
+optimal truncation and the size of the resulting exponentially small error,
+and how that error compares with the root-of-unity contributions of
+question~\ref{rpc:cx:sec:q-waves}. Part~I's question~1 asks the same for
+its cubic expansion.
+
+\subsection{When does the second-transition sign appear?}
+\label{rpc:cx:sec:q-finitesize}
+\emph{Moved here in the write (5 October 2026, batch~98), from manuscript~09's
+\S\ref{rpc:cx:sec:checks}.} On the slice $X\approx\tfrac34m^{9/4}$ the ratio
+$p_m(N)/\mathcal V_1(m,N)$ exceeds one for every sampled $m\le96$, although
+its proved limit $\exp(\mathsf d_2/(3/4)^4)$ is below one; manuscript~09
+attributes this to the positive term $E_0$. The truncated expansion puts the
+change of sign between $m=1373$ and $m=1374$ (the dated note in
+\S\ref{rpc:cx:sec:checks}). Missing: a proof, which needs explicit
+remainder constants in Theorem~\ref{rpc:cx:thm:uniform} at that size
+(question~\ref{rpc:cx:sec:q-constants}), or an exact count at $m\approx1.4\cdot10^3$,
+$N\approx8.1\cdot10^6$, where the dynamic program of
+\S\ref{rpc:cx:sec:checks} needs about $10^{10}$ big-integer additions.
+\emph{Dated note (5~October 2026): numerical evidence only.} The
+independent check recorded at the head of \S\ref{rpc:cx:sec:questions}
+computed $\log p_m(N)$ by floating-point quadrature of the Cauchy integral
+on the exact-saddle circle. Against exact counts it gives $0.0028414007$
+at $m=96$, $N=19308$ (the recorded value) and agrees to $2\cdot10^{-10}$ at
+$m=20$, $N=400$; the omitted minor arcs are of size $e^{-18}$ there and
+$e^{-530}$ at $m=1373$. On the integer slice
+$N=\operatorname{round}(\tfrac34m^{9/4}-m(m+1)/4)$ the actual
+$\log(p_m(N)/\mathcal V_1(m,N))$ is $+2.96\cdot10^{-8}$ at $m=1373$ and
+$-3.35\cdot10^{-7}$ at $m=1374$, so the actual counts also appear to change
+sign there. The computation takes seconds, but it is floating point and
+uncertified: it supports the estimate and replaces neither a proof nor an
+exact count.
+
+\section{Conclusion of Part~II}\label{rpc:cx:sec:conclusion}
+The restricted-partition family admits one centered, fixed-order
+expansion throughout $N\ge am^2$ for each fixed $a>0$, without an upper
+bound on $N$. Its zero-saddle endpoint remains regular after a scaled
+local coordinate is used and one factor is reserved in the outer-arc
+bound. The result connects the repository's quadratic and cubic
+calculi and identifies a hierarchy of intermediate approximation scales.
+
+The first scale is $m^{5/2}$, distinct from the uncentered cubic
+boundary. Higher scales follow from explicit rational entropy
+coefficients, and the hierarchy is proved not to terminate. The same
+analytic entropy gives an invertible forward-to-inverse parameter map,
+with all fixed-order corrections and a separate threshold error rule.
+These are the proved conclusions of the report. Universal coefficient
+negativity, complete exponential sectors, the opposite endpoint,
+certified numerical thresholds and global priority remain outside its
+established scope.
+
+\setlength{\emergencystretch}{0pt}
+\addcontentsline{toc}{part}{Appendix to Part I}
 \appendix
 \section{A compact all-order coefficient recipe}
+\begin{writenote}[Added 5 October 2026, batch~98]
+This appendix belongs to Part~I.
+\end{writenote}
 
 For a requested order $K$, the following is a finite exact procedure.
 Compute $S_{2r}(m)$ for $1\le r\le K$ by Faulhaber's formula or finite
@@ -1413,6 +3403,12 @@ Vladimir Reshetnikov, \emph{ProveIt repository}, inspected module
 \texttt{PartitionBoundedParts.lean} (full path in Section~1.3),
 main branch, retrieved 1 October 2026.
 \url{https://github.com/VladimirReshetnikov/ProveIt}.
+
+\bibitem{rpc-cx-oeis097356}
+OEIS Foundation Inc., \emph{A097356: Number of partitions of $n$ into parts
+not greater than $\sqrt n$}. Entry by Reinhard Zumkeller; asymptotic
+comments by V.~Kote\v{s}ovec. Inspected 4 October 2026 by manuscript~09 of
+batch~98. \url{https://oeis.org/A097356}. Added in writing (batch~98).
 \end{thebibliography}
 \endgroup
 \end{document}

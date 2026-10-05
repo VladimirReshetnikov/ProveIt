@@ -1,0 +1,874 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=27mm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype,amsmath,amssymb,amsthm,mathtools,booktabs}
+\usepackage[colorlinks=true,linkcolor=blue,urlcolor=blue,citecolor=blue]{hyperref}
+\usepackage{xurl}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newcommand{\ii}{\mathrm{i}}
+\newcommand{\Li}{\operatorname{Li}}
+\newcommand{\Log}{\operatorname{Log}}
+\newcommand{\dd}{\,\mathrm{d}}
+\newcommand{\E}{\mathcal{G}}
+% [write] additions made when the report entered the collection (batch 100)
+\usepackage{array}
+\theoremstyle{definition}
+\newtheorem{question}[theorem]{Question}
+\theoremstyle{plain}
+\newenvironment{writenote}[1][]{\par\smallskip\begingroup\small
+ \noindent\textbf{[write]}\if\relax\detokenize{#1}\relax\else~\textbf{#1.}\fi\ }%
+ {\par\endgroup\smallskip}
+\title{Asymptotics and inverses for a stable Hilbert series\\\large The coefficients of OEIS A126348}
+\author{}
+\date{1 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We derive a relative all-orders expansion for the coefficients of
+$\prod_{k\ge1}(1+q^k/(1-q))$, a stable Hilbert series associated with top-degree
+Grothendieck and Lascoux polynomials. A quadratic logarithmic saddle provides
+a resummed leading term and rational correction functions, with a finite rule
+for every order and a uniform remainder. An exact Jacobi and eta factorization
+separately identifies convergent oscillatory sectors of the generating function.
+The coefficient theorem yields an explicit inverse with $o(1)$ error in the
+index on the sequence range, and qualified integer threshold rules.
+\end{abstract}
+
+\section{The coefficient theorem}
+Define
+\begin{equation}\label{shs:eq:F}
+ F(q)=\prod_{k\ge1}\left(1+\frac{q^k}{1-q}\right)
+     =\sum_{n\ge0}a_nq^n,\qquad |q|<1.
+\end{equation}
+The sequence begins $1,1,2,4,7,12,20,33,53,84,131$ and is
+A126348~\cite{oeis}. It counts colored partitions with distinct
+colors~\cite{NR}. Pan and Yu identify \eqref{shs:eq:F} as the Hilbert series
+of the stable span of top-degree Grothendieck and Lascoux
+polynomials~\cite[Proposition 6.10]{PY}.
+
+Put $c=\pi^2/6$ and
+\[
+ A(L)=\tfrac12L^2+L+c,\quad B(L)=L^2+L+2c,\quad
+ V(L)=L^2+3L+2c+1.
+\]
+For sufficiently large $n$, let $L=L_n>0$ be the unique solution of
+\begin{equation}\label{shs:eq:saddle}
+ n=e^{2L}A(L),\qquad t=e^{-L}.
+\end{equation}
+All expansion orders are fixed while $n\to\infty$.
+
+\begin{theorem}\label{shs:thm:coeff}
+For each integer $J\ge0$, there are rational functions
+$C_j\in\mathbb{Q}(c,L)$, with $C_0=1$, such that
+\begin{equation}\label{shs:eq:coeff}
+ a_n=\frac{\exp\{e^LB(L)-1\}}{\sqrt{2\pi e^{3L}V(L)}}
+ \left(\sum_{j=0}^{J}e^{-jL}C_j(L)
+ +O_J\bigl(e^{-(J+1)L}(1+L)^{J+1}\bigr)\right).
+\end{equation}
+Moreover, $C_j(L)=O_j((1+L)^j)$. A finite exact rule for all $C_j$ is
+provided in Section~\ref{shs:sec:rule}.
+\end{theorem}
+This is a coefficient equivalent, not only a logarithmic equivalent.
+Keeping \eqref{shs:eq:saddle} exact retains infinitely many corrections in
+inverse powers of $\log n$.
+
+For explicit formulas define
+\begin{equation}\label{shs:eq:Vrec}
+ V_0=\tfrac12L^2+c,\qquad V_j=(j+\partial_L)V_{j-1}.
+\end{equation}
+Thus $V_1=A$, $V_2=V$, and
+\begin{align*}
+ V_3&=3L^2+11L+6c+6,\\
+ V_4&=12L^2+50L+24c+35,\\
+ V_5&=60L^2+274L+120c+225,\\
+ V_6&=360L^2+1764L+720c+1624.
+\end{align*}
+Let $P_1=(5-L)/24$, $P_2=-1/9$, and
+\begin{align}
+ E_1&=\frac{V_4}{8V^2}-\frac{5V_3^2}{24V^3},\label{shs:eq:E1}\\
+ E_2&=-\frac{V_6}{48V^3}+\frac{7V_3V_5}{48V^4}
+ +\frac{35V_4^2}{384V^4}-\frac{35V_3^2V_4}{64V^5}
+ +\frac{385V_3^4}{1152V^6}.\label{shs:eq:E2}
+\end{align}
+The first two corrections are
+\begin{align}
+ C_1&=P_1+E_1,\label{shs:eq:C1}\\
+ C_2&=P_2+\tfrac12P_1^2+P_1E_1+E_2
+       -\frac1{48V}-\frac{(6-L)V_3}{48V^2}.\label{shs:eq:C2}
+\end{align}
+The last two terms of $C_2$ arise from the displaced amplitude.
+
+\subsection{Provenance, status and reading conventions}\label{shs:provenance}
+
+\begin{writenote}[Added 5 October 2026, batch~100]
+\emph{Provenance.} This report was built from one manuscript: Report~84
+of the session bundle placed as batch~100 of the repository's
+incoming-reports channel, archive
+\nolinkurl{ProveIt_A126348_Hilbert_Asymptotics_and_Inverses.zip}
+(wrapper directory \nolinkurl{A126348_Hilbert_Asymptotics_and_Inverses/};
+main file \nolinkurl{article.tex}, 450 lines, dated 1 October 2026, with a
+7-page PDF that is not shipped), arrival commit \texttt{60f54ea06}, placed
+in \texttt{36571ae0e}. The text from the title to the bibliography is the
+delivered manuscript, unchanged except for the label prefix
+\texttt{shs:}, this subsection, Section~\ref{shs:questions} and the other
+notes marked \textbf{[write]}. No statement, proof, number or symbol of it
+was changed, and no section, theorem or equation number moved. The
+delivered expanded derivation (\nolinkurl{derivation.md}), the delivery's
+internal analytic review (\nolinkurl{AUDIT.md}, dated 1 October 2026) and
+its source and scope audit (\nolinkurl{source_audit.md}) are shipped
+beside this article, byte-identical; the seven programs are in
+\nolinkurl{code/} and their recorded outputs in \nolinkurl{data/}.
+\emph{Pin.} The source audit checked the ProveIt snapshot
+\texttt{1512ef835} (1 October 2026). The manuscript continues no
+repository report.
+\emph{Status.} An unrefereed research manuscript from an AI-assisted
+delivery channel; its author line is empty. The delivery's provenance
+record (not shipped) gives its status as ``Analytic proof, independent
+coefficient reconstruction, and final article transcription reviewed;
+numerical onset not certified.'' The review meant there is the delivery
+pipeline's own (\nolinkurl{AUDIT.md}), not external peer review. Nothing
+in the report is formalized in Lean or Rocq, and its placement in the
+repository confers no formal status.
+\emph{Checks.} At intake and again at this write all seven delivered
+programs were rerun on a copy of the delivered layout; all sixteen
+regenerated outputs equal the shipped ones up to line endings. At intake
+the coefficients were regenerated independently through $n=6000$ from
+Somos's sum formula for A126348 (not from the product), the ratio of the
+residual after $C_1$ to $e^{-2L}C_2$ was found to tend to one (0.946,
+0.959, 0.974, 0.981 at $n=500$, 1000, 3000, 6000), and
+\eqref{shs:eq:modular} was confirmed to 60 digits at $t=0.3$, 0.7, 1.5.
+These are numerical diagnostics; the proofs of Sections~2--7 were checked
+by reading.
+\end{writenote}
+
+\begin{writenote}[Dated corrections to delivered text, 5 October 2026]
+(1) The delivered \nolinkurl{source_audit.md} reports that the snapshot
+\texttt{1512ef835} has ``no A126348, A022629, A266891, A124380 match''.
+That was true at the pin and is stale now: A022629 is the subject of the
+report \nolinkurl{a022629-distinct-partition-norms} (placed in
+\texttt{9df4ba51a}), A266891 is its Section~20 (\texttt{aa7345800}), and
+A124380 is the subject of \nolinkurl{a124380-signed-moment-asymptotics}
+(\texttt{4f11bc9c0}), all in this collection. The ranked screen of the
+source audit, which hands A022629, A124380 and A266891 to other work,
+describes sibling projects of the same session that are now placed; it
+raises no question for this report. A126348 itself is treated nowhere
+else in the repository. (2) The source audit says that the OEIS entry
+``defines'' A126348 by the product \eqref{shs:eq:F}. The OEIS name is
+``Limit of reversed rows of triangle A126347, in which row sums equal
+Bell numbers (A000110)''; the product is one of its three generating
+functions (entry read on 5 October 2026). (3) The delivered README's
+sentence ``Exact coefficient generation through 10000 is included'' means
+that the programs generate the coefficients; only eight selected values
+($n=50,\dots,10000$) are recorded, in
+\nolinkurl{data/coefficients_selected.json}.
+\end{writenote}
+
+\begin{writenote}[Reading conventions]
+The manuscript reuses several letters; no symbol was renamed. Five
+readings need care. \emph{The fugacity $1/(1-q)$ depends on $q$, not on
+the index~$n$}: \eqref{shs:eq:F} is a single power series, unlike the
+size-dependent fugacity $n^\alpha$ of
+\nolinkurl{a291698-moving-fugacity-partitions}, and the letter $u$ here is
+the theta phase $\lambda/t-1/2$, not a fugacity (the fugacity is
+$1/\delta=e^\lambda$). \emph{$Q$ has two meanings}: the modular nome
+$e^{-4\pi^2/t}$ in Section~\ref{shs:sec:modular}, and the cubic-and-higher
+phase series of Section~\ref{shs:sec:rule}, used also in
+Section~\ref{shs:sec:proof}. \emph{$N$ has two meanings}: the smooth
+function $N(L)=e^{2L}A(L)$ (with $N_0$ and $\widehat N$) in
+Section~\ref{shs:sec:inverse}, and the integer threshold
+$N(Y)=\min\{n\ge2:a_n\ge Y\}$ in Section~7. \emph{The calligraphic
+$\mathcal G$ of Section~\ref{shs:sec:rule} is a Gaussian moment
+functional} (its macro is named \verb|\E|); it is neither the partner
+logarithm $G(t)$ of \eqref{shs:eq:G} nor an expectation of $E_1,E_2$.
+\emph{$C_1$ in the proof of Lemma~\ref{shs:lem:complex} is an unnamed
+positive constant}, not the correction function $C_1(L)$ of
+\eqref{shs:eq:C1}; likewise $C$ in Section~7.
+
+\smallskip
+\noindent\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.15\linewidth}
+ >{\raggedright\arraybackslash}p{0.79\linewidth}@{}}
+\toprule
+symbol & meanings, by section \\
+\midrule
+$A,B,V$ & $A(L)$, $B(L)$, $V(L)$ of Section~1, with $V_j$ from
+ \eqref{shs:eq:Vrec} ($V_1=A$, $V_2=V$); $B_{2m}$ are Bernoulli numbers
+ (Section~\ref{shs:sec:log}); $B_1$ is the next inverse coefficient
+ (Section~\ref{shs:sec:inverse}). \\
+$c,C$ & $c=\pi^2/6$; $c_0,\dots,c_4$, $c_J$, $C$, $C_1$ (in the proof of
+ Lemma~\ref{shs:lem:complex}), $C_J$ are unnamed constants; $C_j(L)$,
+ $j\ge0$, are the correction functions of Theorem~\ref{shs:thm:coeff}. \\
+$D$ & $D_r(u)$ the sector amplitudes \eqref{shs:eq:Dr}; $D=|1-q|$ in
+ Section~\ref{shs:sec:proof}; $D_2=C_2-C_1^2/2$ and the operator
+ $D_y=e^{-L}V^{-1}\partial_L$ in Section~\ref{shs:sec:inverse}. \\
+$E,\mathcal G,G$ & $E_1,E_2$ of \eqref{shs:eq:E1}--\eqref{shs:eq:E2};
+ $\mathcal G$ the Gaussian moment functional; $G(t)$ the partner
+ logarithm \eqref{shs:eq:G}. \\
+$H,h$ & $H(L)=e^LB(L)$ the inverse carrier \eqref{shs:eq:carrier}, but
+ $H(\epsilon)=\sum h_k\epsilon^k$ in the recurrence of
+ Section~\ref{shs:sec:rule}; $h(L)$ the logarithmic forward correction of
+ Section~\ref{shs:sec:inverse}. \\
+$K$ & $K(t)$ the exact core exponent \eqref{shs:eq:K}; $K_0$ a large
+ fixed constant (Lemma~\ref{shs:lem:complex}). \\
+$L,t$ & $L=\log(1/t)$ with $t=e^{-L}$: the forward saddle $L_n$ of
+ \eqref{shs:eq:saddle} in Sections~1--5, but the root of the inverse
+ carrier \eqref{shs:eq:carrier} in Sections~\ref{shs:sec:inverse}--7.
+ In \nolinkurl{a291698-moving-fugacity-partitions}, $L=\log u$ is the
+ logarithm of the fugacity, which is $\lambda$ here. \\
+$P_j,p$ & $P_j(L)$ the coefficients of \eqref{shs:eq:logF}; $p(k)$ the
+ partition function in \eqref{shs:eq:Dr}. \\
+$Q,R$ & see above for $Q$; $R_J$ the logarithmic amplitude series of
+ Section~\ref{shs:sec:rule}; $R$ the sector cutoff of
+ Theorem~\ref{shs:thm:modular}. \\
+$r$ & the sector index of \eqref{shs:eq:sectors}; the radius $r=e^{-t}$
+ in Section~\ref{shs:sec:proof}; the summation index of $R_J$. \\
+$T$ & $T(L)=1+\tfrac32L+\tfrac12\log(2\pi V)$, not the saddle $t$. \\
+$u,w$ & $u=\lambda/t-1/2$ the theta phase; $w_k=r^k/(1-r)$ in the
+ minor-arc estimate, but $w=-\ii\epsilon X/\sqrt V$ in the central arc and
+ in Section~\ref{shs:sec:rule}. \\
+$\delta,\lambda$ & $\delta=1-q$, $\lambda=-\log\delta$; at complex $z$,
+ $\delta(z)=1-e^{-z}$ and $\lambda(z)=-\Log\delta(z)$. \\
+\bottomrule
+\end{tabular}
+\end{writenote}
+
+\section{An exact modular factorization}\label{shs:sec:modular}
+For real $t>0$ set
+\[
+ q=e^{-t},\quad \delta=1-q,\quad \lambda=-\log\delta,\quad
+ u=\lambda/t-1/2,\quad Q=e^{-4\pi^2/t}.
+\]
+Use $(z;q)_\infty=\prod_{k\ge0}(1-zq^k)$.
+\begin{theorem}\label{shs:thm:modular}
+The following identity is exact:
+\begin{align}
+ F(e^{-t})&=e^{K(t)}\frac{\Theta(u,t)}{(Q;Q)_\infty},\label{shs:eq:modular}\\
+ K(t)&=\frac{\lambda^2/2+c}{t}-\frac\lambda2+\frac t{12}-G(t),\label{shs:eq:K}\\
+ G(t)&=\log(-\delta;e^{-t})_\infty
+ =\sum_{j\ge1}\frac{(-1)^{j+1}\delta^j}{j(1-e^{-jt})},\label{shs:eq:G}\\
+ \Theta(u,t)&=\sum_{m\in\mathbb Z}e^{-2\pi^2m^2/t}e^{2\pi\ii m u}.
+\end{align}
+Writing $p(k)$ for the ordinary partition function, with $p(0)=1$, the
+normalized quotient has the exact convergent expansion
+\begin{align}
+ \frac{\Theta(u,t)}{(Q;Q)_\infty}
+ &=\sum_{r\ge0}D_r(u)e^{-2\pi^2r/t},\label{shs:eq:sectors}\\
+ D_r(u)&=\sum_{\substack{m\in\mathbb Z\,,\ m^2\le r\\r-m^2\ {\rm even}}}
+ p\left(\frac{r-m^2}{2}\right)e^{2\pi\ii m u}.\label{shs:eq:Dr}
+\end{align}
+For fixed $R$, the remainder after $r=R$ is
+$O_R(e^{-2\pi^2(R+1)/t})$ as $t\downarrow0$, uniformly in real $u$.
+\end{theorem}
+\begin{proof}
+Jacobi's triple product~\cite[17.8.1]{DLMF} gives
+\[
+ F(q)(-\delta;q)_\infty(q;q)_\infty
+ =\sum_{k\in\mathbb Z}e^{-tk^2/2+(\lambda-t/2)k}.
+\]
+Completing the square and applying Poisson summation turns the right side into
+\[
+ \sqrt{2\pi/t}\,e^{(\lambda-t/2)^2/(2t)}\Theta(u,t).
+\]
+The eta transformation~\cite[17.2.6\_1]{DLMF} is
+\[
+ (q;q)_\infty=\sqrt{2\pi/t}\,e^{-\pi^2/(6t)+t/24}(Q;Q)_\infty.
+\]
+The square-root factors cancel and $t/8-t/24=t/12$.
+Expanding the logarithms in the partner product gives \eqref{shs:eq:G},
+absolutely convergently since $0<\delta<1$. Multiply the theta series by
+$(Q;Q)_\infty^{-1}=\sum_{k\ge0}p(k)Q^k$ to obtain \eqref{shs:eq:Dr}.
+Its convergence and tail follow from $p(k)=e^{O(\sqrt k)}$.
+\end{proof}
+The first amplitudes are
+\[
+ D_0=1,\quad D_1=2\cos(2\pi u),\quad D_2=1,\quad
+ D_3=2\cos(2\pi u),\quad D_4=2+2\cos(4\pi u).
+\]
+These are exactly normalized oscillatory sectors of the generating
+function relative to the exact core $e^{K(t)}$. They do not by themselves
+identify exponentially small coefficient sectors.
+
+\begin{writenote}[Credit: a special case of a291698's identity (11), 5 October 2026]
+The identity \eqref{shs:eq:modular} is not new. It is the exact Jacobi
+identity~(11) of \nolinkurl{a291698-moving-fugacity-partitions}
+(Section~5 there, label
+\texttt{mfp:exact-jacobi-decomposition-and-the-finite-sector-proof}),
+which holds for $\prod_{k\ge1}(1+uq^k)$ with $q=e^{-z}$, for every fixed
+$u>1$ and $\Re z>0$, specialized pointwise to the fugacity $u=1/\delta(t)$.
+For real $t>0$ one has $0<\delta<1$, so this fugacity exceeds one and
+\eqref{shs:eq:F} is that product at $z=t$. With $\log(1/\delta)=\lambda$
+(called $L$ there), $u^{-1/2}=e^{-\lambda/2}$,
+$(-1/u;e^{-t})_\infty=(-\delta;e^{-t})_\infty=e^{G(t)}$, and
+$(-1)^je^{2\pi\ii j\lambda/t}=e^{2\pi\ii j(\lambda/t-1/2)}$, identity~(11)
+becomes \eqref{shs:eq:modular} term by term; the proof above (triple
+product, Gaussian Poisson summation, eta transformation) is the proof
+given there. The manuscript does not cite that report: its pin
+\texttt{1512ef835} predates the report's placement (\texttt{4f11bc9c0},
+2 October 2026). At this write both sides of~(11) at $u=1/\delta(t)$, and
+\eqref{shs:eq:modular}, were evaluated against the product at $t=0.3$,
+0.7, 1.5 with 50 digits (relative differences below $10^{-49}$).
+What this report adds is the use of the identity, not the identity: with a
+$q$-dependent fugacity it is an exact factorization of one power series;
+the sector expansion \eqref{shs:eq:sectors}--\eqref{shs:eq:Dr} (new, but
+elementary: the product of two absolutely convergent series); and its
+role in the uniform complex remainder of Lemma~\ref{shs:lem:complex}. The
+two models differ where it matters: the fugacity $n^\alpha$ of a291698 is
+constant during coefficient extraction and produces finitely many
+conjugate resonance sectors (its Theorem~2), whereas $1/(1-q)$ is large
+only near $q=1$, and the minor-arc bound \eqref{shs:eq:minor} leaves no
+resonance sectors at all. In Lean, the repository has the ingredients
+\texttt{hasSum\_jacobi\_triple\_product}
+(\nolinkurl{Analysis/FabiusFunction/Lean/FabiusFunction/JacobiTripleProduct.lean})
+and the eta inversion \texttt{Fabius.eta\_modularPoint\_neg\_inv}
+(\nolinkurl{.../FabiusFunction/QPochhammerModularAsymptotic.lean}); neither
+identity is formalized.
+\end{writenote}
+
+\section{The uniform logarithmic expansion}\label{shs:sec:log}
+Let $L=\log(1/t)$. Expansion of the exact core gives
+\begin{equation}\label{shs:eq:logF}
+ \log F(e^{-t})=\frac{L^2/2+c}{t}-1+
+ \sum_{j=1}^{J}t^jP_j(L)+O_J(t^{J+1}(1+L)),
+\end{equation}
+where every $P_j$ is affine in $L$. In addition to $P_1,P_2$ above,
+\[
+ P_3=\frac{2L+245}{5760},\quad P_4=-\frac{11}{900},\quad
+ P_5=-\frac{8L+2037}{1451520},\quad P_6=\frac{341}{52920}.
+\]
+For a finite coefficient rule, rewrite the $j$th term of $G$ as
+\[
+ \frac{(-1)^{j+1}(1-e^{-t})^{j-1}}
+ {j(1+e^{-t}+\cdots+e^{-(j-1)t})}.
+\]
+Only $j\le J+1$ contributes through degree $J$. Also
+$\lambda=L+t/2-t^2/24+t^4/2880-\cdots$.
+In \eqref{shs:eq:K}, the order-zero terms $L/2$ and $-L/2$ cancel, and
+the first term of $G$ is exactly one.
+
+For an independent symbolic route, Euler--Maclaurin gives
+\[
+ \log F(e^{-t})\sim-\frac{\Li_2(-e^\lambda)}{t}
+ -\frac12\log(1+e^\lambda)
+ -\sum_{m\ge1}\frac{B_{2m}t^{2m-1}}{(2m)!}\Li_{2-2m}(-e^\lambda).
+\]
+The reflection identity
+$-\Li_2(-e^\lambda)=\lambda^2/2+c+\Li_2(-e^{-\lambda})$
+recovers the same coefficients. We use the exact modular identity to
+justify the complex remainder.
+
+\begin{lemma}\label{shs:lem:complex}
+For a fixed sufficiently large $K_0$, uniformly on
+$|z-t|\le t/(K_0L^2)$, formula \eqref{shs:eq:logF} holds with $t$ replaced by
+$z$ and its displayed $L$ replaced by $\Log(1/z)$. The remainder is still
+$O_J(t^{J+1}(1+L))$.
+\end{lemma}
+\begin{proof}
+For small $t$, $|\delta(z)|\le2t<1$ and $\Re z\ge t/2$, so
+\[
+ |1-e^{-jz}|\ge1-e^{-j\Re z}\ge c_0\min(jt,1).
+\]
+The tail of \eqref{shs:eq:G} beyond $j=J+1$ is bounded by
+$C\sum_{j\ge J+2}(2t)^j/[j\min(jt,1)]=O_J(t^{J+1})$.
+Each earlier term has a removable singularity at zero. The function
+$\lambda(z)-\Log(1/z)$ is analytic there as well; the explicit logarithm
+accounts for the factor $1+L$.
+
+Furthermore $\Re(1/z)\sim1/t$ and
+$|\Im(\lambda(z)/z)|=O(1/(tL))$. The nonzero theta terms are bounded by
+\[
+ \exp\{-c_1m^2/t+C_1|m|/(tL)\},
+\]
+whose sum is $O(e^{-c_2/t})$. The dual Euler product obeys a similar
+bound. Analytic continuation of \eqref{shs:eq:modular} is valid on this
+neighborhood: $\delta(z)$ has positive real part, the small-fugacity
+partner has no zero, and the theta factor is close to one. These
+observations also specify the logarithm branches.
+\end{proof}
+The convergent exact $j$-series is not a convergence assertion for its
+power-log expansion at zero. Its individual terms have boundary
+root-of-unity singularities accumulating there. Our power-log statements
+are finite-truncation asymptotic statements.
+
+\begin{writenote}[Completion of the proof of Lemma~\ref{shs:lem:complex}, 5 October 2026]
+The last paragraph of the proof is condensed: ``the dual Euler product
+obeys a similar bound'', and the branches are named but not fixed. Here
+are the details; they use nothing beyond the manuscript's ingredients.
+Write $z=t(1+w)$ with $|w|\le\eta:=1/(K_0L^2)\le1/10$, and use the
+principal logarithm $\Log$ and the bound $|\Log(1+x)|\le2|x|$ for
+$|x|\le\frac12$.
+
+(a) \emph{Real part.} $\Re(1/z)=t^{-1}(1+\Re w)/|1+w|^2\ge
+t^{-1}(1-\eta)/(1+\eta)^2\ge1/(2t)$, and $\Re z\ge t(1-\eta)\ge t/2$.
+
+(b) \emph{The dual Euler product.} With $Q(z)=e^{-4\pi^2/z}$, (a) gives
+$|Q|\le e^{-2\pi^2/t}\le\frac12$. Hence
+$\ell_Q(z):=\sum_{k\ge1}\Log(1-Q^k)$ converges uniformly, with
+$|\ell_Q|\le2\sum_{k\ge1}|Q|^k\le4e^{-2\pi^2/t}$. It is analytic on the
+disc, real at $z=t$, and $e^{\ell_Q}=(Q;Q)_\infty$, which therefore has no
+zero there.
+
+(c) \emph{The theta factor.} Since $\delta(z)/z$ is analytic and close
+to $1$ for small $|z|$, and $\arg z$ is small,
+$\lambda(z)=\Log(1/z)+\varphi(z)$ with
+$\varphi(z)=-\Log(\delta(z)/z)=z/2-z^2/24+\cdots$, a power series with real
+coefficients. Thus
+\[
+ \frac{\lambda(z)}z=\frac{L-\Log(1+w)}{t(1+w)}+\frac{\varphi(z)}z .
+\]
+Here $|\Im(L/(1+w))|=L|\Im w|/|1+w|^2\le2L\eta=2/(K_0L)$,
+$|\Log(1+w)/(1+w)|\le3\eta\le1/(K_0L)$ for $L\ge3$, and, as
+$\varphi(z)/z$ is analytic with real Taylor coefficients,
+$|\Im(\varphi(z)/z)|=O(|\Im z|)=O(t\eta)$. So
+$|\Im(\lambda(z)/z)|\le4/(K_0tL)$ for small $t$, which is the bound
+$O(1/(tL))$ of the proof with an explicit constant. For $u(z)=\lambda(z)/z-1/2$
+and $m\ne0$,
+\[
+ \bigl|e^{-2\pi^2m^2/z}e^{2\pi\ii mu(z)}\bigr|
+ =e^{-2\pi^2m^2\Re(1/z)-2\pi m\Im u(z)}
+ \le\exp\Bigl\{-\frac{\pi^2m^2}t+\frac{8\pi|m|}{K_0tL}\Bigr\}
+ \le e^{-\pi^2m^2/(2t)}
+\]
+once $L\ge16/(\pi K_0)$. Hence
+$|\Theta(u(z),z)-1|\le2\sum_{m\ge1}e^{-\pi^2m/(2t)}\le4e^{-\pi^2/(2t)}\le\frac12$,
+so $\Log\Theta(u(z),z)$ is analytic on the disc, real at $z=t$ (where
+$\Theta$ is real and positive), and bounded by $8e^{-\pi^2/(2t)}$.
+
+(d) \emph{The core.} $|\delta(z)|\le|z|e^{|z|}\le2t<1$ and
+$\Re\delta(z)=1-e^{-\Re z}\cos\Im z>0$, so $\lambda(z)=-\Log\delta(z)$ is
+analytic. For $k\ge0$, $|\delta(z)e^{-kz}|\le2t$, so
+$G(z):=\sum_{k\ge0}\Log(1+\delta(z)e^{-kz})$ converges absolutely, and
+$e^{G(z)}=(-\delta(z);e^{-z})_\infty$. Expanding each logarithm and
+summing over $k$ first is legitimate because
+$\sum_{j\ge1}|\delta|^j/(j(1-e^{-j\Re z}))<\infty$; this gives
+\eqref{shs:eq:G} at complex~$z$.
+
+(e) \emph{Identity and branch.} Both sides of \eqref{shs:eq:modular},
+with $\lambda(z)$, $u(z)$, $Q(z)$ and $G(z)$ as above, are analytic on the
+disc and agree on its real diameter, hence on the whole disc. So
+$F(e^{-z})$ has no zero there, and $K(z)+\Log\Theta(u(z),z)-\ell_Q(z)$ is
+a continuous logarithm of it that is real at $z=t$; on the connected disc
+it is the only one, and it is the $\log F(e^{-z})$ of the lemma. By (b)
+and (c) it equals $K(z)+O(e^{-\pi^2/(2t)})$, and the error is
+$O(t^{J+1})$ for every $J$. The expansion of $K(z)$ is the first
+paragraph of the proof. This completes the proof.
+\end{writenote}
+\section{Coefficient extraction with the precise remainder}\label{shs:sec:proof}
+Write $r=e^{-t}$, $q=re^{\ii\theta}$, $D=|1-q|$, and
+$\alpha=(1-r)/D$. The triangle inequality gives
+$|F(q)|\le\prod_{k\ge1}(1+r^k/D)$.
+For $k\le\lfloor\lambda/t\rfloor$, $w_k=r^k/(1-r)\ge1$, and
+\[
+ \log(1+w_k)-\log(1+\alpha w_k)\ge(1-\alpha)/2.
+\]
+Since $D^2=(1-r)^2+2r(1-\cos\theta)$, uniformly for $|\theta|\le\pi$,
+\begin{equation}\label{shs:eq:minor}
+ \frac{|F(re^{\ii\theta})|}{F(r)}
+ \le\exp\left\{-c_3\frac Lt
+       \min\left(\frac{\theta^2}{t^2},1\right)\right\}.
+\end{equation}
+At $|\theta|\ge t/(K_0L^2)$ this is
+$\exp\{-\Omega(1/(tL^3))\}$, negligible to every power of $t$.
+All other roots of unity are suppressed simultaneously.
+
+Put $S(t)=(L^2/2+c)/t$. Then $-S'(t)=n$ and
+$(-1)^kS^{(k)}(t)=t^{-k-1}V_k(L)$.
+Cauchy's formula reads
+\[
+ a_n=\frac{e^{nt}}{2\pi}\int_{-\pi}^{\pi}
+ F(e^{-t+\ii\theta})e^{-\ii n\theta}\dd\theta.
+\]
+Set $\epsilon=\sqrt t$ and $X=\theta\sqrt V/t^{3/2}$, with central
+cutoff $|X|\le\epsilon^{-1/4}$. On the intermediate arc up to
+$|\theta|=t/(K_0L^2)$, Taylor's theorem gives
+\[
+ \Re\{S(t-\ii\theta)-S(t)-\ii n\theta\}\le-c_4X^2.
+\]
+The cubic-to-quadratic ratio is $O(|\theta|/t)=O(L^{-2})$.
+The remaining logarithmic amplitude changes by $O(t(1+L))$, which
+cannot affect this bound beyond the central cutoff.
+
+On the central arc, Lemma~\ref{shs:lem:complex} replaces the amplitude by its
+finite sum through degree $J$, with multiplicative error
+$O_J(t^{J+1}(1+L))$. The normalized integrand is
+$e^{-X^2/2}\exp(Q+R_J)$ with $Q,R_J$ as in Section~\ref{shs:sec:rule}.
+For a precise remainder, treat $\epsilon$ as complex while $L$ and real
+$X$ are fixed. On the auxiliary circle
+\[
+ |\epsilon|=\rho=\frac{c_J}{(1+L)^{1/2}(1+|X|)^3},
+\]
+$Q$ and $R_J$ are uniformly bounded. Indeed,
+$|w|=|\epsilon X|/\sqrt V\ll1$,
+$Q=O(|\epsilon|\,|X|^3/(1+L))$, and
+$R_J=O_J(|\epsilon|^2(1+L))$.
+The exact phase has a removable singularity at $\epsilon=0$ after its
+linear and quadratic terms have been separated. Cauchy's Taylor
+remainder through degree $2J+1$ is therefore bounded by
+\[
+ C_J|\epsilon|^{2J+2}(1+L)^{J+1}(1+|X|)^{6J+6}.
+\]
+For actual $\epsilon=\sqrt t$, $|\epsilon|\le\rho/2$ on the central
+cutoff for large $L$, because $\epsilon^{1/4}(1+L)^{1/2}\to0$.
+Gaussian integration yields exactly
+$O_J(t^{J+1}(1+L)^{J+1})$.
+Odd Taylor terms vanish on the symmetric interval. Extending the
+finitely many even moments to the real line costs an exponentially
+small error. Expansion through the odd degree before cancellation
+avoids a half-power loss.
+
+The Jacobian is $t^{3/2}/\sqrt V$ and $S(t)+nt=t^{-1}B(L)$.
+The constant amplitude is $e^{-1}$. These facts prove
+Theorem~\ref{shs:thm:coeff}, including its coefficient growth bound.
+
+\section{A finite coefficient rule}\label{shs:sec:rule}
+Let $\E$ be the Gaussian moment functional
+$\E(X^{2m})=(2m-1)!!$, $\E(X^{2m+1})=0$.
+For $w=-\ii\epsilon X/\sqrt V$, set
+\begin{align*}
+ Q&=\sum_{k\ge3}\frac{\ii^k\epsilon^{k-2}V_kX^k}{k!V^{k/2}},\\
+ R_J&=\sum_{r=1}^{J}\epsilon^{2r}(1+w)^rP_r(L-\log(1+w)).
+\end{align*}
+Then for $0\le j\le J$,
+\begin{equation}\label{shs:eq:rule}
+ C_j(L)=\E\left([\epsilon^{2j}]\exp(Q+R_J)\right).
+\end{equation}
+Only $k\le2j+2$ and $r\le j$ enter. Gaussian parity removes half-powers
+of $t$ and square roots of $V$, giving the asserted rational functions.
+For implementation, if $H(\epsilon)=\sum_{k\ge1}h_k\epsilon^k$ and
+$e^H=\sum b_k\epsilon^k$, use
+\[
+ b_0=1,\qquad b_n=\frac1n\sum_{k=1}^{n}k h_kb_{n-k}.
+\]
+The included independent symbolic reconstruction verifies
+\eqref{shs:eq:C1}--\eqref{shs:eq:C2}, odd cancellation, and computes $C_3$.
+
+\section{Growth inversion}\label{shs:sec:inverse}
+For a large target $Y$, put $y=\log Y$ and choose a new $L$ from
+\begin{equation}\label{shs:eq:carrier}
+ y=H(L):=e^LB(L).
+\end{equation}
+This inverse-carrier coordinate differs from the forward saddle at a
+preassigned $n$. Set
+\[
+ N_0=e^{2L}A(L),\quad T=1+\tfrac32L+\tfrac12\log(2\pi V),\quad
+ T'=\tfrac32+V'/(2V).
+\]
+\begin{theorem}\label{shs:thm:inverse}
+The explicit function
+\begin{equation}\label{shs:eq:Nhat}
+ \widehat N(Y)=N_0+e^LT+\frac{T^2+2TT'}{2V}-C_1(L)
+\end{equation}
+satisfies
+$\widehat N(a_n)=n+O(e^{-L}(1+L)^3)=n+o(1)$.
+Nearest-integer rounding therefore recovers the index on the sequence
+range for every sufficiently large $n$.
+\end{theorem}
+\begin{proof}
+Write $N(L)=e^{2L}A(L)$. Exactly,
+\begin{equation}\label{shs:eq:derivs}
+ H'=e^LV,\qquad N'=e^{2L}V,\qquad \frac{\dd N}{\dd H}=e^L.
+\end{equation}
+Define a positive smooth first-correction model $M_1(x)$ by the leading
+factor in \eqref{shs:eq:coeff} times $1+tC_1$, where $x=N(L)$.
+It is eventually increasing since $(\log M_1)'(x)=t(1+o(1))$.
+The forward logarithmic error $O(t^2L^2)$ becomes $O(tL^2)$ under its
+inverse.
+
+For a direct residual verification, let $H(L)=y$ and set
+\begin{align*}
+ \Delta_1&=tT/V,\\
+ \Delta_2&=t^2\left(\frac{TT'}{V^2}
+ -\frac{(V+V')T^2}{2V^3}-\frac{C_1}{V}\right).
+\end{align*}
+Substituting $\Delta_1+\Delta_2$ into
+\[
+ H(L+\Delta)-T(L+\Delta)
+ +\log\{1+e^{-(L+\Delta)}C_1(L+\Delta)\}=y
+\]
+leaves residual $O(t^2(1+L)^2)$. Its derivative is asymptotic to
+$t^{-1}V$, so the root error is $O(t^3)$. Expanding $N(L+\Delta)$ through
+degree two gives exactly \eqref{shs:eq:Nhat}, with index error
+$O(t(1+L)^2)$, proving the stated weaker bound.
+\end{proof}
+The term $-C_1(L)$ is unbounded of order $L$ and cannot be discarded in
+an inverse intended to recover integer indices.
+
+For all orders let
+\[
+ h(L)=-T+\log\left(1+\sum_{j\ge1}e^{-jL}C_j(L)\right),\qquad
+ D_y=e^{-L}V^{-1}\partial_L.
+\]
+The formal reversion rule is
+\begin{equation}\label{shs:eq:allinverse}
+ N(L)+\sum_{k\ge1}\frac{(-1)^k}{k!}
+ D_y^{k-1}\{e^Lh(L)^k\},\qquad H(L)=y.
+\end{equation}
+At each exponential order it involves finitely many terms. A finite
+smooth forward model and the same Taylor-residual proof turn each
+sufficiently deep truncation into a controlled range inverse.
+For $D_2=C_2-C_1^2/2$, the next correction after \eqref{shs:eq:Nhat} is
+$e^{-L}B_1$, where
+\[
+ B_1=-D_2-\frac{(TC_1)'}{V}
+ +\frac1{6V}\left(\frac{T^3+3T^2T'}{V}\right)'.
+\]
+A Lambert starting value for \eqref{shs:eq:carrier} is
+$L_0=2W(\sqrt y/2)$, solving $y=e^{L_0}L_0^2$; inverse-$L_0$
+corrections account for the rest of $B$. Keeping the carrier exact is
+usually simpler. In particular,
+\[
+ \widehat N(Y)\sim\frac{(\log Y)^2}{2(\log\log Y)^2}.
+\]
+
+\begin{writenote}[Status of this section, and the transseries volume, 5 October 2026]
+Theorem~\ref{shs:thm:inverse} is proved above; its proof gives the index
+error $O(e^{-L}(1+L)^2)$, and the stated $(1+L)^3$ is weaker, as the
+proof says. Three statements of the text after it are not proved in the
+manuscript and are recorded in Section~\ref{shs:questions}: that each
+deep truncation of \eqref{shs:eq:allinverse} is a controlled range
+inverse (Question~\ref{shs:q:allorders}); the formula for $B_1$
+(Question~\ref{shs:q:B1}); and that inverse-$L_0$ corrections account for
+the rest of $B$ (Question~\ref{shs:q:lambert}, settled there by a
+\textbf{[write]} proof). The \emph{method} of this section and the next is
+an instance of results of the companion transseries volume
+(\nolinkurl{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex}),
+which the manuscript does not cite; no novelty is claimed for it here.
+The Lambert start $L_0=2W(\sqrt y/2)$ solves $X+2\log X=\log y$, the
+dominant block of \texttt{p0:thm:lambert-core} with $a=1$, $b=2$ on its
+principal branch ($b>0$). The rule \eqref{shs:eq:allinverse} is the formal
+reversion of \texttt{p0:thm:perturbed-inversion} (core $F=H$, correction
+$E=h$, $\varepsilon=1$, operator $\mathcal D=D_y$), written in its
+Lagrange--B\"urmann form for the function $N$ of the root, with weight
+$N'/H'=e^L$ from \eqref{shs:eq:derivs}. The bracket and the
+separation caveat of Section~7 are \texttt{p0:thm:staircase}~(2), and
+nearest-integer rounding at $Y=a_n$ is its part~(3).
+\end{writenote}
+
+\section{Thresholds and scope}
+The $k=1$ factor of $F$ is $(1-q)^{-1}$. The remaining product has
+nonnegative coefficients, and its $k=2$ factor has positive coefficients
+in every degree at least two. Thus $a_n>a_{n-1}$ for all $n\ge2$.
+The threshold inverse $N(Y)=\min\{n\ge2:a_n\ge Y\}$ is well defined.
+For sufficiently large $Y$, it lies between the ceilings of
+\[
+ \widehat N(Y)\pm Ce^{-L}(1+L)^3
+\]
+for an appropriate constant $C$. This follows from monotonicity of the
+smooth model and the uniform forward error at neighboring integers.
+Eventually there are at most two candidate ceilings. A single ceiling
+is justified only when both bracket endpoints have the same ceiling.
+At $Y=a_n$, use nearest-integer rounding instead.
+
+Formal inversion, inversion on the sequence range, a threshold staircase,
+and inversion of an exact continuous interpolation are different objects.
+This paper treats the first three. It specifies no exact sequence
+interpolation, effective onset, coefficient-sector amplitudes, or Stokes
+classification. The normalized modular sectors belong to the generating
+function itself.
+
+\section{Checks and literature scope}
+The accompanying scripts reconstruct $P_1$ through $P_6$ independently
+from Euler--Maclaurin and the exact small-fugacity series. Gaussian
+extraction independently reproduces $C_1,C_2$ and odd cancellation.
+Exact integer coefficient generation and high-precision evaluation give
+these selected inverse errors:
+\begin{center}
+\begin{tabular}{rrr}\toprule
+$n$ & $N_0(a_n)-n$ & $\widehat N(a_n)-n$\\\midrule
+100 & $-24.644779$ & $-0.050465$\\
+1000 & $-81.976080$ & $-0.015455$\\
+10000 & $-261.371189$ & $-0.005225$\\\bottomrule
+\end{tabular}
+\end{center}
+The modular identity was checked to at least ninety decimal places at
+five positive arguments. These are diagnostics, not an effective-onset
+certificate; the theorems rest on the analytic proof.
+
+The live OEIS entry inspected on 1 October 2026 contains no asymptotic
+formula. The cited combinatorial papers establish interpretations and
+generating functions. Classical q-product expansions~\cite{McI} and a
+recent uniform q-Pochhammer expansion~\cite{AR} are relevant background.
+The latter's stated uniform corollary imposes a fixed lower bound on the
+real part of its logarithmic argument, which our moving fugacity leaves.
+The exact pairing here avoids that issue. A bounded literature search
+did not locate a published coefficient or inverse-growth theorem for
+A126348; this does not assert exhaustive absence.
+
+\begin{writenote}[Rechecks and shipped names, 5 October 2026]
+The OEIS entry, read again on 5 October 2026, still contains no
+asymptotic formula; its terms are licensed CC BY-SA~4.0, and none are
+shipped here (the recorded values are the programs' own computations).
+The five positive arguments of the modular check are
+$t=0.4,0.7,1.0,1.5,2.0$, with absolute residuals of order $10^{-101}$
+(\nolinkurl{data/modular_numeric_results.json}). The ``accompanying
+scripts'' are shipped as \nolinkurl{code/derive_symbolic.py},
+\nolinkurl{code/verify_symbolic_independent.py} (which also prints $C_3$),
+\nolinkurl{code/independent_reviewer_check.py},
+\nolinkurl{code/verify_numeric.py}, \nolinkurl{code/verify_inverse.py},
+\nolinkurl{code/verify_product.py} and \nolinkurl{code/verify_modular.py};
+\nolinkurl{derive_symbolic.py} recomputes $P_1,\dots,P_6$ but evaluates
+$C_2$ from the printed formula (a transcription check), while the two
+independent programs derive $C_1$ and $C_2$. The reference of
+Naranjo and Ram\'irez~\cite{NR} is also cited by
+\nolinkurl{a022629-distinct-partition-norms}, for the different product
+$\prod_k(1+kq^k)$. The report
+\nolinkurl{a271619-strict-twice-partitions}, placed with this one in
+\texttt{36571ae0e}, treats in its member manuscript (bundle Report~181, A358836) the product
+$\prod_k(1+q^k/(q;q)_k)$, another distinct-part product with a
+$q$-dependent decoration, also reduced by a Jacobi and eta
+factorization; the two reports share no theorem.
+\end{writenote}
+
+\section{Further questions and research}\label{shs:questions}
+
+\begin{writenote}[Added 5 October 2026, batch~100]
+This section is the write's. Under the repository's standing rule
+(4 October 2026) every claim of the manuscript that it states without
+proof is recorded here as an open question, with its source, the
+argument sketch it came with and what is missing. No claim of the
+manuscript was found to be wrong. One sketched step is completed
+elsewhere: the dual-product bound and the branches in the proof of
+Lemma~\ref{shs:lem:complex} (the \textbf{[write]} note after
+Section~\ref{shs:sec:log}). Question~\ref{shs:q:lambert} is settled
+below. The others are open.
+\end{writenote}
+
+\begin{question}[All-orders range inverse]\label{shs:q:allorders}
+\emph{Source:} Section~\ref{shs:sec:inverse}, after
+\eqref{shs:eq:allinverse}: ``A finite smooth forward model and the same
+Taylor-residual proof turn each sufficiently deep truncation into a
+controlled range inverse''; \nolinkurl{derivation.md} repeats it (``This
+proves an all-orders range reversion with controlled finite
+truncations''). \emph{Sketch:} take the positive smooth model given by
+Theorem~\ref{shs:thm:coeff} with $J=K$, note that its logarithm has
+derivative $t(1+o(1))$ in $x=N(L)$, and verify the truncation of
+\eqref{shs:eq:allinverse} through exponential order $e^{-KL}$ by a Taylor
+residual, as the proof of Theorem~\ref{shs:thm:inverse} does for $K=1$.
+That each order involves finitely many terms is elementary: the $k$th
+term of \eqref{shs:eq:allinverse} is $e^{-(k-2)L}$ times a function of
+polynomial growth in $L$. \emph{Missing:} the residual estimate for a
+general truncation, and the resulting bound
+$\widehat N_K(a_n)=n+O_K(e^{-KL}(1+L)^{m_K})$ with an explicit exponent
+$m_K$.
+\end{question}
+
+\begin{question}[The next inverse correction $B_1$]\label{shs:q:B1}
+\emph{Source:} Section~\ref{shs:sec:inverse}: with $D_2=C_2-C_1^2/2$ the
+next correction after \eqref{shs:eq:Nhat} is $e^{-L}B_1$,
+$B_1=-D_2-(TC_1)'/V+\frac1{6V}\bigl((T^3+3T^2T')/V\bigr)'$.
+\emph{Sketch} (\nolinkurl{derivation.md}, ``One additional inverse
+order''): keep the first three terms of \eqref{shs:eq:allinverse} and the
+second logarithmic amplitude coefficient; it is called ``an optional
+refinement''. The delivery's \nolinkurl{AUDIT.md} states that $B_1$ ``has
+the correct signs''. \emph{Evidence only:} at intake (5 October 2026,
+code independent of the delivery, $B_1$ with numerical differentiation)
+adding $e^{-L}B_1$ to $\widehat N(a_n)$ changed the error at $n=100$,
+$1000$, $10000$ from $-0.050465$, $-0.015455$, $-0.005225$ to
+$0.0088437$, $0.00094743$, $0.00011451$; the reduction is consistent
+with an error $O(e^{-2L}(1+L)^m)$. \emph{Missing:} a symbolic derivation
+of $B_1$ from \eqref{shs:eq:allinverse} and \eqref{shs:eq:C2}, and the
+range bound for $\widehat N+e^{-L}B_1$ by the residual argument with
+$J=2$; this is the case $K=2$ of Question~\ref{shs:q:allorders}.
+\end{question}
+
+\begin{question}[Corrections to the Lambert start]\label{shs:q:lambert}
+\emph{Source:} Section~\ref{shs:sec:inverse}: $L_0=2W(\sqrt y/2)$
+solves $y=e^{L_0}L_0^2$, and ``inverse-$L_0$ corrections account for the
+rest of $B$''; stated without proof.
+
+\emph{Settled at this write} (\textbf{[write]}, 5 October 2026): for
+large $y$ the root $L$ of \eqref{shs:eq:carrier} has a \emph{convergent}
+expansion
+\[
+ L=L_0+\sum_{k\ge1}d_kL_0^{-k},\qquad
+ d_1=-1,\quad d_2=\tfrac52-\tfrac{\pi^2}3,\quad
+ d_3=\pi^2-\tfrac{19}3,\quad
+ d_4=\tfrac{\pi^4}{18}-\tfrac{10\pi^2}3+\tfrac{209}{12},
+\]
+with $d_k\in\mathbb Q[\pi^2]$. \emph{Proof.} Taking logarithms,
+$\log y=L+2\log L+\log(1+1/L+2c/L^2)$ and $\log y=L_0+2\log L_0$.
+Subtracting and writing $L=L_0+\delta$, $s=1/L_0$, so that $L=L_0(1+\delta
+s)$ and $1/L=s/(1+\delta s)$, the root satisfies $\Gamma(\delta,s)=0$ with
+\[
+ \Gamma(\delta,s)=\delta+2\Log(1+\delta s)
+ +\Log\Bigl(1+\frac s{1+\delta s}+\frac{2cs^2}{(1+\delta s)^2}\Bigr).
+\]
+$\Gamma$ is analytic near $(0,0)$ with $\Gamma(0,0)=0$ and
+$\partial_\delta\Gamma(0,0)=1$, so by the implicit function theorem there
+are $\rho,\sigma>0$ and an analytic $\delta(s)$ on $|s|<\sigma$, with
+$\delta(0)=0$, such that for $|s|<\sigma$ it is the only zero of
+$\Gamma(\cdot,s)$ in $|\delta|<\rho$. The actual root lies in that disc
+for large $y$: the real function $\delta\mapsto\delta+2\log(1+\delta s)$
+has derivative at least $1$ for $\delta>-L_0$, and at the root it equals
+$-\log(1+1/L+2c/L^2)\in(-3/L,0)$, so $|\delta|\le3/L\to0$. Hence
+$\delta=\delta(1/L_0)$, a convergent power series in $1/L_0$; its
+coefficients follow by substituting $\delta=\sum_kd_ks^k$ into $\Gamma$
+and solving order by order. The values above were computed so with SymPy
+and checked against the exact root: at $y=10^{12}$ ($L_0=21.495\ldots$)
+the five-term sum (through $d_4$) leaves an error of $4.3\times10^{-6}$,
+of the size of $d_5L_0^{-5}$, where
+$d_5=\tfrac{35\pi^2}{3}-\tfrac{4\pi^4}{9}-\tfrac{763}{15}\approx20.99$;
+adding $d_5$ lowers it to $3\times10^{-7}$. (Dated note, 5~October 2026:
+the first version of this sentence gave $3\times10^{-7}$ for the five-term
+sum; an independent check made by the intake after the write found that
+figure belongs to the six-term sum, recomputed $d_1,\dots,d_4$ exactly and
+found the implicit-function argument valid.) \qed
+\end{question}
+
+\begin{question}[Effective onset]\label{shs:q:onset}
+\emph{Source:} Sections~7 and~8 and the delivery's status line: all
+statements are eventual, with no explicit $n_0$ or constants; the
+numerical table is ``diagnostics, not an effective-onset certificate''.
+\emph{Missing:} explicit constants in Lemma~\ref{shs:lem:complex}, in the
+minor-arc bound \eqref{shs:eq:minor} (the constants $c_0,c_3$), in the
+intermediate-arc and Cauchy-circle estimates of
+Section~\ref{shs:sec:proof}, and an interval-arithmetic check below the
+resulting onset. With them, the nearest-integer rule of
+Theorem~\ref{shs:thm:inverse} and the threshold bracket of Section~7 would
+become finite-input certificates.
+\end{question}
+
+\begin{question}[Exponentially small coefficient sectors and Stokes data]\label{shs:q:sectors}
+\emph{Source:} after Theorem~\ref{shs:thm:modular} and in Section~7: the
+sectors $D_r(u)e^{-2\pi^2r/t}$ belong to the generating function and ``do
+not by themselves identify exponentially small coefficient sectors''; no
+coefficient-sector amplitudes and no Stokes classification are given.
+\emph{Sketch available:} the minor-arc bound proves that the remainder is
+beyond every fixed power of $t$, and \eqref{shs:eq:sectors} gives the
+generating-function sectors exactly. \emph{Missing:} a transfer of the
+sectors $r\ge1$ through the saddle integral (the phase $u$ moves with
+$t$), the resulting coefficient-level amplitudes, and their Stokes
+behaviour. Whether such sectors are visible against the algebraic
+remainder of Theorem~\ref{shs:thm:coeff} at all is part of the question.
+\end{question}
+
+\begin{question}[An exact interpolation]\label{shs:q:interpolation}
+\emph{Source:} Section~7: formal inversion, range inversion, the
+threshold staircase and inversion of an exact continuous interpolation
+are different objects, and only the first three are treated; no exact
+sequence interpolation is specified (also \nolinkurl{derivation.md},
+``Inversion on the sequence range''). \emph{Context:} by
+\texttt{p0:thm:staircase}~(1) of the transseries volume, the threshold
+equals $\lceil\nu\rceil$ for \emph{every} admissible interpolation, so the
+integer results do not depend on a choice. \emph{Missing:} a canonical
+real-analytic interpolation of $(a_n)$ (for instance from the saddle
+integral at real $n$), its monotonicity, and its inverse.
+\end{question}
+\begin{thebibliography}{9}
+\bibitem{oeis} OEIS Foundation, A126348. \url{https://oeis.org/A126348}.
+\bibitem{PY} J. Pan and T. Yu, Top-degree components of Grothendieck and
+Lascoux polynomials, \emph{Algebraic Combinatorics} \textbf{7}(1)
+(2024), 109--135. \url{https://doi.org/10.5802/alco.326}.
+\bibitem{NR} B. J. Naranjo and J. L. Ram\'irez, On colored partitions and
+Euler-type identities, \emph{Integers} \textbf{26} (2026), A20.
+\url{https://math.colgate.edu/~integers/aa20/aa20.pdf}.
+\bibitem{DLMF} NIST Digital Library of Mathematical Functions, Sections
+17.2 and 17.8. \url{https://dlmf.nist.gov/17.2}; \url{https://dlmf.nist.gov/17.8}.
+\bibitem{McI} R. J. McIntosh, Some asymptotic formulae for q-shifted
+factorials, \emph{Ramanujan Journal} \textbf{3} (1999), 205--214.
+\url{https://doi.org/10.1023/A:1006949508631}.
+\bibitem{AR} A. Arabi Ardehali and H. Rosengren, A new product formula for
+$(z;q)_\infty$, with applications to asymptotics,
+\emph{Constructive Approximation} (2026), published 19 September.
+\url{https://doi.org/10.1007/s00365-026-09783-2}.
+\end{thebibliography}
+\end{document}

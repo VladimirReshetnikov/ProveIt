@@ -51,6 +51,20 @@
 % into ProveIt's research-report collection.
 \newcommand{\writenote}[1]{\par\smallskip\noindent
  \textit{[Write note, batch 73O1, 1 October 2026.]}\ #1\par\smallskip}
+% Batch 98 write (5 October 2026): Part II macros and its write notes.
+\newcommand{\writenoteB}[1]{\par\smallskip\noindent
+ \textit{[Write note, batch 98, 5 October 2026.]}\ #1\par\smallskip}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Q}{\mathbb Q}
+\DeclareMathOperator{\Cov}{Cov}
+\DeclareMathOperator{\cum}{cum}
+\newcommand{\TV}{d_{\mathrm{TV}}}
+\newcommand{\Normal}{\mathcal N}
+\newcommand{\ind}{\mathbf 1}
+\newcommand{\Jl}{\mathcal J}
+\newcommand{\LW}{\mathcal L}
+\newcommand{\sd}{\mathfrak d}
+\newcommand{\amp}{\mathsf A}
 \newtcolorbox{resultbox}{enhanced,breakable,colback=blue!2!white,
  colframe=MidnightBlue!65!black,boxrule=.5pt,arc=1mm,left=9pt,right=9pt,top=7pt,bottom=7pt}
 \title{\vspace{-1.1cm}\textbf{Partitions into Catalan Numbers}\\[5pt]
@@ -103,9 +117,23 @@ this note; everything else is the delivered text. As the abstract says,
 the OEIS entry states \emph{no} asymptotic conjecture: this report
 answers no posed question, it supplies the asymptotics the entry lacks.}
 
+\writenoteB{Since batch~98 the report has two Parts. Part~I is
+manuscript~39 of batch~73O1, as described above. Part~II
+(\cref{ctp:cl:sec:front}) merges manuscripts~06 and~10 of batch~98, which
+answer Part~I's questions~\ref{ctp:sec:future}.4 and~\ref{ctp:sec:future}.5
+and supply the growing-offset and moment results that
+Theorem~\ref{ctp:thm:largest} does not assert: the exact boundary of
+independence for the upper multiplicity process, corrected joint edge laws,
+uniform tails and all moments of the largest index, the limit law of the
+number of parts and its joint behaviour with the largest index, and the
+explicit law of that limit. Its labels carry the prefixes \texttt{ctp:cl:}
+and \texttt{ctp:te:}. Part~I is unchanged except for notes like this one and its Part heading.}
+
 \clearpage
 {\small\setlength{\parskip}{0pt}\tableofcontents}
 \clearpage
+
+\part{All-orders asymptotics, periodic corrections and inverse growth}
 
 \section{The problem, its status, and the contribution}
 \label{ctp:sec:intro}
@@ -1049,6 +1077,15 @@ integer-valued law. Pointwise convergence at the integer cutoffs gives
 the distributional assertion.
 \end{proof}
 
+\writenoteB{Part~II supplies what this theorem does not assert: the first
+correction $G_h(1+C_h/m)$ (\cref{ctp:cl:cor:maxcorrection}, proved in both
+batch-98 manuscripts), uniform two-sided tails and convergence of every
+polynomial and exponential moment (\cref{ctp:cl:lem:maxtails,ctp:te:cor:maxmom}),
+the first correction summed over every threshold
+(\cref{ctp:cl:thm:maxweighted}) with $\E J_n$ and $\Var J_n$ to $O(m^{-2})$
+\eqref{ctp:cl:eq:maxmean}--\eqref{ctp:cl:eq:maxvar}, and a growing-offset
+estimate for $|h|\le m^{1/8}$ (\cref{ctp:te:thm:growing}).}
+
 The local scale $4^{j-\theta}$ in this law is the same scale that produces
 the Fourier amplitude in \eqref{ctp:eq:phase-fourier}. Both results describe
 the bounded-width transition between parts that are typically available
@@ -1350,6 +1387,16 @@ far enough to justify moment convergence and asymptotics for the expected
 largest index. Neither extension follows automatically from the fixed-$h$
 statement.
 
+\writenoteB{Answered in Part~II: the joint conditional limit of the
+multiplicities near the largest part with an explicit first correction, in
+weighted $L^1$ for the whole upper process (\cref{ctp:cl:thm:edge}), with its
+first covariances (\cref{ctp:cl:cor:cov}) and, for finite index sets, in
+transform form jointly with the number of parts (\cref{ctp:te:thm:cutoff});
+estimates uniform in $h$, moment convergence, and the expected largest index
+to $O(m^{-2})$ (see the note after Theorem~\ref{ctp:thm:largest}). Higher
+orders and the growing range beyond $m^{1/8}$ remain open
+(\cref{ctp:cl:sec:future}).}
+
 \subsection{The number of parts and mixed conditioning}
 Introduce a marking variable for the total number of parts. Small allowed
 parts and the bounded-width cutoff have very different fluctuation scales.
@@ -1357,6 +1404,17 @@ Determine the correct normalization and a joint limit with $J_n$.
 A two-variable saddle may need a different treatment from a direct
 Gaussian approximation because the unit-part multiplicity can remain
 macroscopic on the scale $1/t$.
+
+\writenoteB{Answered in Part~II: the normalization is $t_nN_n$, whose limit
+is the non-Gaussian $W=\sum_k\mathbf E_k/c_k$, with every moment and a first
+correction (\cref{ctp:te:thm:length}); jointly with $J_n$ the limit is
+independent (\cref{ctp:cl:thm:joint}), and the first dependence is explicit
+(\cref{ctp:te:thm:maxjoint,ctp:cl:thm:mixedcov}). As anticipated here, the
+small parts are macroscopic on the scale $1/t$; the proofs mark the
+generating function by the number of parts
+(\cref{ctp:te:thm:operator,ctp:te:thm:length}) rather than use a
+two-variable Gaussian. A lattice local limit for $N_n$ remains open
+(\cref{ctp:cl:sec:future}).}
 
 \subsection{Fuss--Catalan and other gamma-quotient part sequences}
 Apply \cref{ctp:prop:general} to integer part sequences with a gamma-quotient
@@ -1404,6 +1462,2776 @@ a probabilistic consequence of the same local phase. What remains is not
 a missing leading argument, but sharper certification, higher explicit
 coefficients, secondary exponential sectors, wider statistics, and a
 systematic formalization.
+
+\writenoteB{The wider statistics near both endpoints of a partition are
+the subject of Part~II.}
+
+\part{Conditioning, joint limit laws and two-endpoint statistics}
+\label{ctp:cl:part}
+
+\section{Provenance, scope and notation of Part II}
+\label{ctp:cl:sec:front}
+
+\writenoteB{Part~II was added in the write of batch~98. It is built from two
+manuscripts, merged: manuscript~06 of batch~98 (the base) and manuscript~10
+of the same batch. Both continue Part~I at the same place: its
+Theorem~\ref{ctp:thm:largest}, which asserts no growing-offset or moment
+theorem, and its open questions~\ref{ctp:sec:future}.4 and~\ref{ctp:sec:future}.5. Each result
+of either manuscript is printed; a theorem proved in both is printed once,
+says so, and keeps the other proof as a marked second route
+(\cref{ctp:cl:tab:shared}). Text written in the write, rather than taken
+from a manuscript, is marked \emph{[write]}. Part~I is unchanged except for
+dated notes.}
+
+\subsection{Provenance}
+\label{ctp:cl:sec:provenance}
+
+\paragraph{Manuscript 06 (base).} The archive
+\nolinkurl{catalan_partition_laws.zip} (17~files) arrived in commit
+\texttt{2172df76a} and was placed in this report by commit
+\texttt{0fba5167f}. Its article \emph{Sharp Conditioning and Joint Limit
+Laws for Catalan Partitions: Upper multiplicities, a corrected edge
+distribution, and the total number of parts} (26~pages, dated October~5,
+2026) gives the author line ``A research article on OEIS A033552''; its PDF
+metadata names ``ChatGPT''. Its pinned repository commit is
+\texttt{ec4b972dba46c5f0557cdc55964f286c2bcd4899} (4~October 2026, 20:05
+Pacific). It contributes the exact conditioning toolkit at the precision
+needed (\cref{ctp:cl:sec:setup}), the complete total-variation criterion for
+the upper multiplicity process and its sharp rate
+(\cref{ctp:cl:sec:threshold}), the corrected joint law of the upper process
+in weighted~$L^1$ (\cref{ctp:cl:sec:edge}), the maximum expansion summed
+over all thresholds with the periodic mean and variance coefficients
+(\cref{ctp:cl:sec:moments}), the joint limit of the number of parts with
+the upper process (\cref{ctp:cl:sec:number}), the explicit distribution
+function of~$W$ (\cref{ctp:cl:sec:spectral}), the mass profile and
+Brownian bridge (\cref{ctp:cl:sec:bridge}) and a lacunary universality
+class (\cref{ctp:cl:sec:universal}). Files prefixed \texttt{02-laws-}.
+
+\paragraph{Manuscript 10.} The archive
+\nolinkurl{Catalan_Partition_Statistics_Research.zip} (23~files, one of
+them the checksum ledger \texttt{SHA256SUMS.txt}, which lists the other~22)
+arrived in the same commit and was placed by the same commit. Its article
+\emph{Two-Endpoint Statistics of Catalan Partitions: Non-Gaussian Length,
+All-Orders Conditioning, Phase-Dependent Extremes, and Inverse Tail
+Expansions} (24~pages, dated October~4, 2026) names ``AI-assisted research
+report prepared for Vladimir Reshetnikov'' as author on its title page and
+in its PDF metadata. Its pinned repository commit is
+\texttt{0f93381e8932d3aee3d5c2abfb5c98d128d49b9c} (4~October 2026, 19:54
+Pacific), and it records the blob it read of this report's
+\texttt{article.tex}, \texttt{39d225cc2}, which is that file's blob at both
+pins and immediately before this write. It contributes the conditioned
+Gaussian coefficient operator to every order (\cref{ctp:cl:sec:operator}),
+the sharp theory of the number of parts with the first correction, the
+cancellation in the mean and the small-part energies
+(\cref{ctp:cl:sec:number}), the cutoff vector jointly with the number of
+parts and the first endpoint dependence (\cref{ctp:cl:sec:edge}), the
+growing-offset estimate (\cref{ctp:cl:sec:moments}), the spectral
+coefficients with two-sided bounds, the natural boundary and the convergent
+inverse upper-tail expansion (\cref{ctp:cl:sec:spectral}). Files prefixed
+\texttt{03-endpoint-}.
+
+\paragraph{How the two relate.} The two manuscripts were written
+independently, against the same text of Part~I, and in the same model:
+the same exact saddle~$t_n$, the same continuous cutoff~$m$, the same
+$M=\lfloor m\rfloor$ and phase $\theta=m-M$ as
+Theorem~\ref{ctp:thm:largest}. Neither has a hypothesis the other lacks.
+Three theorems (the first correction of the maximum law, the two-sided
+tails and the joint limit law) and four smaller results are proved in both
+and are printed once (\cref{ctp:cl:tab:shared}); everything else is
+complementary. Each answers questions the other leaves open
+(\cref{ctp:cl:tab:answers}). Two independent codes agree to all printed
+digits where they compute the same number: at $n=10^6$ manuscript~06's
+maximal uncorrected and corrected CDF errors, $0.020100913$ and
+$0.003262362$, are the $h=-1$ differences of manuscript~10's
+\cref{ctp:te:tab:max}. The batch-98 dossier's hand checks
+and spot computations are summarized in \cref{ctp:cl:sec:checks}.
+
+\paragraph{Where the merge had to choose.} (1)~Base: manuscript~06, the
+more general text (a criterion for every cutoff sequence, the
+weighted-$L^1$ density expansion of the infinite upper process, the
+all-threshold maximum expansion, and a universality class). (2)~Notation:
+one convention for both, fixed in \cref{ctp:cl:sec:notation} before any
+use; the manuscripts use the same letters for different objects. (3)~A
+theorem proved in both keeps manuscript~06's label and statement; where
+manuscript~10's statement is stronger in some respect (the remainder in
+the survival expansion, the full-sequence form of the moment limits), its
+statement is printed. (4)~Questions of one manuscript answered by the other
+are not printed as open (\cref{ctp:cl:sec:future}).
+
+\subsection{What Part II answers}
+\label{ctp:cl:sec:answers}
+
+\begin{table}[htbp]
+\centering\small
+\renewcommand{\arraystretch}{1.12}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{.33\textwidth}>{\raggedright\arraybackslash}p{.6\textwidth}@{}}
+\toprule
+Question & Answer in Part II\\
+\midrule
+Part~I, Theorem~\ref{ctp:thm:largest}: ``a growing-$h$ or moment theorem is
+not being asserted'' &
+uniform two-sided tails (\cref{ctp:cl:lem:maxtails}), all polynomial and
+exponential moments, the maximum expansion summed over every threshold with
+an $O(m^{-2})$ weighted remainder (\cref{ctp:cl:thm:maxweighted}), the
+mean and variance of $J_n$ to $O(m^{-2})$ \eqref{ctp:cl:eq:maxmean}, a
+growing-offset estimate for $|h|\le m^{1/8}$ (\cref{ctp:te:thm:growing})\\
+Part~I, question~\ref{ctp:sec:future}.4 (joint statistics near the largest
+part, an explicit first correction, moments) &
+the corrected joint law of the whole upper process
+(\cref{ctp:cl:thm:edge}), its first covariances
+(\cref{ctp:cl:cor:cov}), the corrected maximum law
+(\cref{ctp:cl:cor:maxcorrection}), the cutoff vector as a transform
+(\cref{ctp:te:thm:cutoff}); and the exact boundary of independence
+(\cref{ctp:cl:thm:threshold,ctp:cl:thm:smalltail})\\
+Part~I, question~\ref{ctp:sec:future}.5 (the number of parts and mixed
+conditioning) &
+$t_nN_n\Rightarrow W=\sum_k\mathbf E_k/c_k$ with every moment and a first
+correction (\cref{ctp:te:thm:length}); the joint limit with the upper
+process and the maximum, with independence
+(\cref{ctp:cl:thm:joint}); the first endpoint dependence
+(\cref{ctp:te:thm:maxjoint}); and [write] the limit of
+$m\Cov(t_nN_n,J_n)$ (\cref{ctp:cl:thm:mixedcov})\\
+manuscript~06, question ``first finite-size interactions'' &
+the $1/m$ term of $\E(t_nN_n)$ vanishes (\cref{ctp:te:cor:mean},
+manuscript~10); $m\Cov(t_nN_n,J_n)$ converges ([write],
+\cref{ctp:cl:thm:mixedcov})\\
+manuscript~10, questions on all-orders largest-index moments, the
+expanding cutoff field and universality &
+first order answered by \eqref{ctp:cl:eq:maxmean}--\eqref{ctp:cl:eq:maxvar}
+(manuscript~06); the expanding upper window in total variation by
+\cref{ctp:cl:thm:threshold,ctp:cl:thm:smalltail}; universality in part by
+\cref{ctp:cl:prop:universal}\\
+\bottomrule
+\end{tabular}
+\caption{Questions answered in Part II. Partly answered questions stay
+open, re-scoped, in \cref{ctp:cl:sec:future}.}
+\label{ctp:cl:tab:answers}
+\end{table}
+
+\begin{table}[htbp]
+\centering\small
+\renewcommand{\arraystretch}{1.12}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{.27\textwidth}>{\raggedright\arraybackslash}p{.31\textwidth}>{\raggedright\arraybackslash}p{.34\textwidth}@{}}
+\toprule
+Result & Printed as & Second route kept\\
+\midrule
+First correction of the maximum law (06 Corollary~5.4, 10 Theorem~6.1,
+first line; $C_h=D_h$ identically) &
+\cref{ctp:cl:cor:maxcorrection}, proof from the $L^1$ edge expansion
+(06) &
+the tail-deletion amplitude and the coefficient operator (10), after it\\
+Two-sided uniform tails (06 Lemma~6.1, 10 Theorem~7.1) &
+\cref{ctp:cl:lem:maxtails} &
+the same argument in both; 10's exponential-moment consequence
+\eqref{ctp:te:eq:UI} added\\
+Joint limit of $(t_nN_n,J_n-M)$ (10 Corollary~7.3 is a marginal of 06
+Theorem~7.1) &
+\cref{ctp:cl:thm:joint} (06) &
+joint Laplace transforms at every cutoff (10), after it\\
+Survival function of $W$ (06 \eqref{ctp:cl:eq:Wdensity}, 10 Theorem~8.2) &
+\cref{ctp:te:thm:spectral}, 10's stronger remainder &
+06's partial-fraction bound, in the proof\\
+$S_1=1+4\pi/(9\sqrt3)$ (both) &
+\eqref{ctp:cl:eq:S1} &
+two evaluations of the same beta integral\\
+Mean and variance of $J_n$ (06 \eqref{ctp:cl:eq:maxmean}, 10
+Corollary~7.2) &
+06's $O(m^{-2})$ expansion &
+10's full-sequence $o(1)$ form, \cref{ctp:te:cor:maxmom}\\
+Ratio bound $p(n-v)/p(n)\le C\e^{-tv}$ (06 Corollary~3.2, 10 (3.12)) &
+\cref{ctp:cl:cor:ratio} &
+10's one-line derivation from the operator\\
+\bottomrule
+\end{tabular}
+\caption{Results proved in both manuscripts.}
+\label{ctp:cl:tab:shared}
+\end{table}
+
+\paragraph{Re-proofs of Part I.} Both manuscripts re-prove, at the
+precision they need, material of Part~I, and neither claims it as new:
+the conditioning identity in the proof of Theorem~\ref{ctp:thm:largest};
+the cumulant sizes of \cref{ctp:lem:cumulants}
+(\cref{ctp:cl:lem:cumulants}); the noncentral-arc estimates of
+Section~\ref{ctp:sec:saddle}, which manuscript~10 adapts explicitly and
+manuscript~06 extends uniformly to prefixes (\cref{ctp:cl:lem:fourier});
+and the all-orders saddle estimate \cref{ctp:thm:saddle}, of which
+manuscript~10's operator (\cref{ctp:te:thm:operator}) is the extension to
+marked amplitudes. The leading maximum law $G_h$ is Part~I's
+\eqref{ctp:eq:largest-cdf}. Manuscript~06's ``longer expansion for $p(n)$
+is not assumed as an unverified black box''; manuscript~10 ``do[es] not
+rebrand its counting theorem or its fixed-offset leading maximum law as
+new results''.
+
+\paragraph{Non-claims kept from manuscript 06.} The probabilistic
+framework is classical: the independent-process representation and the
+reduction of total variation to the law of the weighted sum are the
+general theory of Arratia and Tavar\'e \cite[Theorem~3]{arratia}, whose
+concrete form is proved here only to keep the arguments self-contained;
+Mutafchiev \cite[Theorem~1(i)]{mutafchiev} obtains non-Gaussian
+part-count products under hypotheses including a positive Meinardus pole,
+which do not cover this case because $\sum_kc_k^{-s}$ converges for every
+$\Re s>0$; the reciprocal-Catalan constant is OEIS A121839
+\cite{reciprocal} and is not introduced as new. ``A targeted search does
+not establish priority over all possible general partition theorems.'' No
+exhaustive bibliographic coverage, external peer review or proof-assistant
+verification is claimed, and the results are not formalized.
+\Cref{ctp:cl:thm:edge} is an $L^1$ statement: the corrected density need
+not be positive, and no $L^2$ density ratio is asserted. The independence
+in \cref{ctp:cl:thm:joint} is a limit statement; the finite-$n$ covariance
+is not zero. \Cref{ctp:cl:prop:universal}'s gcd condition is sufficient,
+not necessary, and pure powers are not covered. The numerical work has no
+interval certificates; finite-range maxima are not certified global
+suprema; the Fourier audit targets a continuous canonical mean, not an
+integer coefficient; the JSON fields marked exploratory are not claims, and
+its phase covariance is a limit of truncated-energy covariances (no
+$L^2$ total energy exists). Manuscript~06's ledger divides its claims into
+three levels: \emph{proved} (every numbered statement under its printed
+hypotheses), \emph{numerically checked} (the exact integer computations
+and floating evaluations of \cref{ctp:cl:sec:numerics}, which do not
+certify asymptotic constants) and \emph{proposed} (its further questions
+and the exploratory JSON fields).
+
+\paragraph{Non-claims kept from manuscript 10.} AI-assisted, unrefereed,
+not Lean-formalized; numerical values are not interval certificates. The
+conditioning approach is classical, with Fristedt \cite{fristedt} a
+central reference; Gaussian coefficient expansions, finite exponential
+partial fractions and Lagrange inversion are classical too. No publication
+priority is claimed: the search ``was not an exhaustive MathSciNet,
+zbMATH, or journal-archive priority investigation''. No new exact counting
+algorithm is given, so Pak's question \cite[\S2.5]{pak} is untouched, and
+no conjecture is attributed to the OEIS entry. The operator expansion is
+an all-orders Poincar\'e expansion, not a complete transseries: the
+$O(tm)$ marking corrections and the noncentral arcs are discarded.
+\Cref{ctp:te:thm:operator} is not a general transfer theorem for locally
+analytic amplitudes (\cref{ctp:te:rem:scope}). The exponent $1/8$ of
+\cref{ctp:te:thm:growing} is deliberately conservative, with no
+moderate-deviation optimality. The inverse tail is a sequential limit
+($n\to\infty$, then $\epsilon\downarrow0$), with no uniform finite-$n$
+quantile and no integer-quantile reconstruction. Hadamard's gap theorem is
+the one external input of the natural-boundary theorem, and no
+differential-algebraicity conclusion is drawn. Its transform comparison
+uses double precision; its independent cross-checks run only through the
+stated small ranges, not through $10^6$; a truncated corrected CDF may
+exceed one. Part~I ``is itself AI-assisted and unrefereed; its role here is
+to identify prior work and questions, not to provide independent validation
+of our answers.''
+
+\subsection{Notation}
+\label{ctp:cl:sec:notation}
+
+The two manuscripts use the same letters for different objects, and both
+reuse letters of Part~I. \Cref{ctp:cl:tab:notation} fixes one convention
+for Part~II, before any use; every renamed symbol is listed, and no
+normalization is changed. Symbols with the same meaning in Part~I and in
+both manuscripts keep Part~I's names: $c_k$, $F$, $p(n)$, $H(t)$, $K_r$,
+$t=t_n$, $r(x)$, $\alpha=\log4$, $m=m_n$, $M=\lfloor m\rfloor$,
+$\theta=\theta_n=m-M$, $B_r=t^rK_r(t)$, $E_1$, $J_n$ and $G_h$. All
+logarithms are natural; in particular manuscript~06's
+$\log4\,n/\log n$ in \eqref{ctp:cl:eq:countmoments} means
+$(\log4)\,n/\log n$, \emph{not} $\log_4n$ divided by anything.
+
+\begin{table}[htbp]
+\centering\footnotesize
+\renewcommand{\arraystretch}{1.1}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{.26\textwidth}>{\raggedright\arraybackslash}p{.17\textwidth}>{\raggedright\arraybackslash}p{.12\textwidth}>{\raggedright\arraybackslash}p{.12\textwidth}>{\raggedright\arraybackslash}p{.21\textwidth}@{}}
+\toprule
+Notion & Part II & ms.~06 & ms.~10 & not to be confused with\\
+\midrule
+independent geometric (Boltzmann) law & $\Q_t$ & $\Q_t$ & $\PP_t$ & Part~I's $Q(m)=tK_1(t)$\\
+uniform law on partitions of $n$ & $\PP_n$ & $\PP_n$ & $\PP_n$ & \\
+number of parts & $N_n$ & $N_n$ & $L_n$ & Part~I's threshold $N(y)$; Part~I's $L_j$\\
+largest part size & $c_{J_n}$ & $L_n$ & $c_{J_n}$ & \\
+exponential variables of mean one & $\mathbf E_k$ & $E_k$ & $E_k$ & Part~I's Gaussian corrections $E_j$\\
+$\E W^q$ & $\omega_q$ & $r!\,h_r$ & $\mu_q$ & Part~I's size coordinate $\mu$\\
+Laplace transform of $W$ & $\LW(s)$ & $\E\e^{sW}=\LW(-s)$ & $\mathcal L(s)$ & Part~I's $L_j$\\
+ideal edge rate $4^{j-\theta}$ & $u_j$ & $u_j$ & $v_j$ & \\
+actual edge rate $tc_{M+j}$ & $v_j$ & $v_j$ & $tc_{M+j}$ & manuscript~10's $v_j$\\
+marking variable of $Z_{M+j}$ & $x_j$ & --- & $u_j$ & \\
+mean, variance of $Y^{(\theta)}_j$ & $\bar y_j$, $w_j$ & $\mu_j$, $w_j$ & --- & \\
+limit of $J_n-M$ & $\Jl_\theta$ & $H_\theta$ & $Y_\theta$ & Part~I's $H(t)$, $\HH(m)$\\
+$\E\Jl_\theta$ & $\bar\Jl(\theta)$ & $b(\theta)$ & $\gamma(\theta)$ & Euler's $\gamma$; Part~I's $b_j$\\
+periodic mean coefficients of $J_n$ & $F_0,F_1$ & $F_0,F_1$ & $\psi$ ($=F_0$) & Part~I's $\Psi_\alpha$, $F(z)$\\
+periodic variance coefficients & $\mathcal V_0,\mathcal V_1$ & $V_0,V_1$ & $\sigma^2$ ($=\mathcal V_0$) & the tail sum $V_h$ at $h=0$\\
+tail sums & $A_h,V_h,U_h$ & $A_h,V_h,B_h$ & $S_{1,h},S_{2,h},U_h$ & $B_r$, $S_r$; Part~I's $A$, $U(m)$\\
+first correction of the maximum law & $C_h$ & $C_h$ & $D_h$ & Part~I's $C$, $D_\alpha$, $D_j$\\
+exact tail cumulants after $K$ & $\widehat T_{r,K}$ & $A_v$, $V_v$ & $T_r$ & 06's tail mass $T$\\
+tail-deletion amplitude & $\amp_K(\tau)$ & $Q_v(0)$ at $\tau=t$ & $A_K(\tau)$ & \\
+general and length amplitudes; jets & $\amp(\tau;t)$, $\amp_s$; $\mathsf a_\ell$ & --- & $A$, $A_s$; $a_\ell$ & Part~I's $\aset$; 06's fraction $a$\\
+Gaussian coefficient operator & $\Omega_J$ & --- & $\mathscr D_J$ & \\
+cutoff transform; its Euler operator & $\mathcal G_I(\mathbf u,\mathbf x)$; $\mathcal D_I$ & --- & $Q(\mathbf v,\mathbf u)$; $\mathcal D$ & \\
+limiting cylinder probabilities & $\pi_{\mathbf r}$ & --- & $Q_{\mathbf r}$ & \\
+small-part energies; their transform & $X_{k,n}$; $\Lambda_d$ & --- & $Y_{k,n}$; $Q(\mathbf s)$ & \\
+spectral coefficients of $W$ & $\sd_j$ & $b_k$ & $d_j$ & 06's TV curve $d(a)$; Part~I's $b_j$\\
+$\prod_{\ell\ge1}(1-2^{-\ell})$ & $\varpi$ & --- & $q_0$ & Part~I's $q_0(\theta)$\\
+survival series; $\mathcal T/(\sd_1z)$ & $\mathcal T(z)$; $\mathcal T_1(z)$ & --- & $T(z)$; $V(z)$ & \\
+upper $\epsilon$-quantile of $W$ & $\xi_\epsilon$ & --- & $q_\epsilon$ & \\
+periodic constant terms of $B_r$ & $\mathfrak b_r(\theta)$ & --- & $b_{r,0}(\theta)$ & Part~I's $b_j$\\
+ideal upper product law & $\Pi_{\theta,h}$ & $\mu_{\theta,h}$ & --- & \\
+Brownian bridge & $\mathbb B$ & $B$ & --- & $B_r$\\
+$v/(\e^v-1)$, $v^2\e^v/(\e^v-1)^2$ & $\varrho_1$, $\varrho_2$ & $a$, $b$ & --- & \\
+likelihood remainder; normalized tail & $\varepsilon_v$; $\widetilde W$ & $\mathcal R_v$; $W$ & --- & the limit $W$\\
+point and corrected point probabilities of $\Jl_\theta$ & $\mathfrak p_h$, $\mathfrak r_h$ & $q_h$, $r_h$ & --- & Part~I's $q_0,q_1$, $r(x)$\\
+compact parameter set; angle & $\mathcal K$; $y$ & ---; $y$ & $K$; $\varphi$ & the cutoff index $K$\\
+$\sum_hG_h(\theta)A_h(\theta)$ & $\Xi(\theta)$ & JSON ``gamma'' & --- & \\
+\bottomrule
+\end{tabular}
+\caption{Notation of Part II against the two manuscripts and Part~I. Part~II
+uses the second column throughout.}
+\label{ctp:cl:tab:notation}
+\end{table}
+
+The ideal edge family is indexed by the integer offset $j$ from $M$, the
+actual sizes by $k=M+j$. $K$ always denotes a cutoff index, $K_r(t)$ a
+cumulant; Part~I's Barnes constant $K$ does not occur in Part~II.
+$\Q$ is the measure, never Part~I's function $Q(m)$, which equals the
+scaled mean $B_1$ of~$\Q_t$.
+
+\section{Exact conditioning, saddle normalization and local estimates}
+\label{ctp:cl:sec:setup}
+
+\subsection{The model and the two statistics}
+With $c_k$, $F$ and $p(n)$ as in \eqref{ctp:eq:catalan}, the unit part is
+included once: $c_0=c_1=1$ does not give two kinds of part. For example
+$p(5)=4$, from $5$, $2+2+1$, $2+1+1+1$ and $1+1+1+1+1$. Let $Z_k$ be the
+multiplicity of $c_k$ under the uniform measure $\PP_n$ on the $p(n)$
+partitions of~$n$, and
+\begin{equation}\label{ctp:cl:eq:statistics}
+ N_n=\sum_{k\ge1}Z_k,\qquad J_n=\max\{k:Z_k>0\}\quad(n>0).
+\end{equation}
+$N_n$ counts parts with multiplicity; $J_n$ is the largest \emph{index},
+and the largest part size is $c_{J_n}$. ``Large'' refers to the size $c_k$,
+or its index $k$, not to the number of copies.
+
+There are about $\log_4n$ active sizes, and a typical active size carries
+mass of order $n/\log n$, although the number of copies varies enormously
+between small and large sizes. Three limits therefore coexist
+(manuscript~06): at a fixed small size the multiplicity is of order $1/t_n$
+with an exponential limit; a positive fraction of the active sizes has
+Gaussian mass fluctuations, which fixing the total mass turns into a
+bridge; and within a bounded number of indices of the largest used size
+the multiplicities stay discrete with a phase-dependent geometric law.
+Manuscript~10 puts the same point as two fluctuation scales: the saddle is
+Gaussian in the \emph{total size}, but both statistics keep non-Gaussian
+limits after conditioning on it, so a Gaussian approximation to either is
+structurally wrong.
+
+\subsection{Exact conditioning}
+For $t>0$ let $\Q_t$ make the $Z_k$ independent with
+\begin{equation}\label{ctp:cl:eq:geom}
+ \Q_t(Z_k=z)=(1-\e^{-tc_k})\e^{-tc_kz},\qquad z\in\{0,1,2,\ldots\},
+\end{equation}
+counting failures before the first success, and put
+$S=\sum_kc_kZ_k$. All moments of $S$ are finite, and almost surely only
+finitely many $Z_k$ are nonzero, since $\sum_k\Q_t(Z_k>0)=\sum_k\e^{-tc_k}<\infty$.
+
+\begin{lemma}[Conditioning and shifts]\label[lemma]{ctp:cl:lem:exact}
+For every $t>0$,
+\begin{equation}\label{ctp:cl:eq:condition}
+ \PP_n=\Q_t(\,\cdot\mid S=n),\qquad
+ \Q_t(S=n)=\frac{p(n)\e^{-tn}}{F(\e^{-t})}.
+\end{equation}
+For distinct indices $i_1,\ldots,i_d$ and nonnegative integers
+$b_1,\ldots,b_d$,
+\begin{equation}\label{ctp:cl:eq:survival}
+ \PP_n(Z_{i_\ell}\ge b_\ell,\ 1\le\ell\le d)=\frac{p(n-v)}{p(n)},\qquad
+ v=\sum_{\ell=1}^dc_{i_\ell}b_\ell,
+\end{equation}
+with $p(q)=0$ for $q<0$.
+\end{lemma}
+\begin{proof}
+Every multiplicity vector with weighted sum $n$ has $\Q_t$-probability
+$\e^{-tn}/F(\e^{-t})$. For the second identity remove $b_\ell$ copies of
+each specified part: this is a bijection with the partitions of $n-v$.
+\end{proof}
+
+The identity is exact, not an equivalence-of-ensembles assumption; it is
+the one used in the proof of Theorem~\ref{ctp:thm:largest}. With
+$H(t)=\log F(\e^{-t})$ and $K_r(t)=(-1)^rH^{(r)}(t)$ as in
+\eqref{ctp:eq:H-K}, the $K_r$ are the cumulants of $S$ under $\Q_t$, the
+saddle $t=t_n$ is the unique solution of $K_1(t_n)=\E_{\Q_{t_n}}S=n$
+\eqref{ctp:eq:saddle}, and, with $r(x)$ as in \eqref{ctp:eq:r},
+\begin{equation}\label{ctp:cl:eq:m}
+ r(m)=\log(1/t),\qquad M=\lfloor m\rfloor,\qquad\theta=m-M\in[0,1),
+ \qquad B_r=t^rK_r(t).
+\end{equation}
+This is Part~I's $m_n$ of \eqref{ctp:eq:m} and $\theta_n$ of
+Theorem~\ref{ctp:thm:largest}; the phase is \emph{not} obtained by rounding
+$\log_4n$. In interpolated notation $tc_m=1$, and exactly $M$ allowed sizes
+are at most $1/t$. Since $r'(1)=1/2$ and
+$r''(x)=\psi_1(x+\tfrac12)-\psi_1(x+2)>0$ (the trigamma function $\psi_1$
+decreases), $0<r'(x)<\alpha$ for $x\ge1$, $r'(x)=\alpha-3/(2x)+O(x^{-2})$
+and $r''(x)=O(x^{-2})$. With the ratio
+\eqref{ctp:eq:ratio}, $c_{k+1}/c_k=2(2k+1)/(k+2)\in[2,4)$,
+\begin{equation}\label{ctp:te:eq:ratio}
+ r(m+d)-r(m)=\alpha d-\frac{3d}{2m}+O\!\left(\frac{1+|d|+d^2}{m^2}\right)
+ \qquad(|d|\le m/2),
+\end{equation}
+by the differentiable Stirling expansion; its full expansion to each fixed
+order is Part~I's \eqref{ctp:eq:Dj}.
+
+\begin{lemma}[Active cumulants]\label[lemma]{ctp:cl:lem:cumulants}
+For each fixed integer $r\ge1$,
+\begin{equation}\label{ctp:cl:eq:cumulants}
+ B_r=(r-1)!\,m+O_r(1).
+\end{equation}
+For a prefix $S_K=\sum_{k\le K}c_kZ_k$ write $B_{r,K}$ for its scaled
+cumulants. If $K\le M$, then, uniformly in $K$,
+\begin{equation}\label{ctp:cl:eq:prefixcumulants}
+ B_{r,K}=(r-1)!\,K+O_r(1).
+\end{equation}
+Consequently
+\begin{align}
+ nt&=m+O(1),&\Var_{\Q_t}S&=\frac{m+O(1)}{t^2},\label{ctp:cl:eq:scale}\\
+ m&=\frac{\log n+\tfrac12\log\log n+\tfrac12\log(\pi/\alpha)}{\alpha}
+ +O\!\left(\frac{\log\log n}{\log n}\right),\label{ctp:cl:eq:mexplicit}
+\end{align}
+so that $m\sim\log n/\log4$ and $t\sim\log n/(n\log4)$.
+\end{lemma}
+\begin{proof}
+For $f_r(v)=v^r\sum_{\ell\ge1}\ell^{r-1}\e^{-\ell v}=v^r\Li_{1-r}(\e^{-v})$,
+$f_r(v)=(r-1)!+O_r(v)$ on $0<v\le1$, and $f_r$ decays exponentially times
+a polynomial on $v\ge1$. There are exactly $M$ active terms $tc_k\le1$, and
+by the ratio bound the sums of $tc_k$ over them and of the inactive
+$f_r(tc_k)$ are uniformly bounded. This proves both cumulant estimates.
+Stirling's expansion gives $r(m)=\alpha m-\tfrac32\log m-\tfrac12\log\pi+O(m^{-1})$;
+combine it with $\log n=r(m)+\log(m+O(1))$ and invert once.
+\end{proof}
+
+\Cref{ctp:cl:lem:cumulants} restates Part~I's \cref{ctp:lem:cumulants}
+(proved independently in both manuscripts, manuscript~10 with
+$f_r(v)=v^r\Li_{1-r}(\e^{-v})$); the prefix form and \eqref{ctp:cl:eq:mexplicit}
+are manuscript~06's additions. At the edge, for every fixed integer~$j$,
+\begin{equation}\label{ctp:cl:eq:edgerate}
+ v_j:=tc_{M+j}=u_j\left(1-\frac{3(j-\theta)}{2m}+O_j(m^{-2})\right),
+ \qquad u_j=4^{j-\theta}.
+\end{equation}
+The coefficient $3/2$ reappears in every corrected edge law.
+
+\subsection{Fourier bounds with uniform control}
+Weak convergence of $S$ alone would not suffice: conditioning on one lattice
+value needs a local estimate and control of all competing arcs. For the
+full sum ($K=\infty$) or a prefix, the characteristic function has modulus
+\begin{equation}\label{ctp:cl:eq:modulus}
+ |\phi_K(y)|=\prod_{k\le K}\left(1+\frac{4\e^{-tc_k}\sin^2(c_ky/2)}
+ {(1-\e^{-tc_k})^2}\right)^{-1/2},
+\end{equation}
+which for $K=\infty$ is Part~I's \eqref{ctp:eq:modulus}.
+
+\begin{lemma}[Integrated Fourier control]\label[lemma]{ctp:cl:lem:fourier}
+Fix $\varepsilon>0$. Uniformly for $K\ge\varepsilon m$,
+\begin{equation}\label{ctp:cl:eq:atomupper}
+ \sup_{\ell\in\Z}\Q_t(S_K=\ell)\le C_\varepsilon\,t/\sqrt m.
+\end{equation}
+If $K\le M$, put $\sigma_K^2=\Var S_K$. Then, uniformly for
+$\varepsilon m\le K\le M$,
+\begin{equation}\label{ctp:cl:eq:ullt}
+ \sup_{\ell\in\Z}\left|\sigma_K\Q_t(S_K=\ell)
+ -\phi\!\left(\frac{\ell-\E S_K}{\sigma_K}\right)\right|=o(1),
+ \qquad\phi(x)=\frac{\e^{-x^2/2}}{\sqrt{2\pi}}.
+\end{equation}
+The full sum has the same local limit theorem.
+\end{lemma}
+\begin{proof}
+Choose a fixed large $B$. For $|y|\le tm^B$ use all factors with $k\le K$
+and $c_k\le1/(tm^B)$; at least $\varepsilon m-O(\log m)$ are available when
+$0<\varepsilon\le1$. The elementary inequalities for $\sin$ and $1-\e^{-v}$
+give $|\phi_K(y)|\le(1+c(y/t)^2)^{-c_\varepsilon m}$, and the integral
+outside $|y|\le t\log m/\sqrt m$ within this range is smaller than
+$tm^{-L}$ for every fixed $L$. For $tm^B\le|y|\le\delta$, choose a fixed
+number $q$ of small part factors and then $\delta>0$ with $\delta c_q<1$;
+their product is at most $C_q(t/|y|)^q$, with integral $O_q(tm^{-B(q-1)})$.
+For $\delta\le|y|\le\pi$ the unit factor is $O_\delta(t)$, and the part-$2$
+and part-$5$ factors cannot both resonate, since $\sin y$ and $\sin(5y/2)$
+have no common zero on this compact set; one more $O_\delta(t)$ factor makes
+this integral $O_\delta(t^2)$. All the fixed factors used are eventually in
+every admissible prefix.
+
+On the central interval
+$\log\E\e^{\ii y(S_K-\E S_K)}=-\tfrac12\sigma_K^2y^2+\sum_{r\ge3}(\ii y)^r\kappa_{r,K}/r!$,
+with normalized cumulants $O_r(m^{1-r/2})$. After $z=\sigma_Ky$ the integrand
+converges in $L^1$ to $\e^{-z^2/2}$ by the bounds just proved, and Fourier
+inversion gives \eqref{ctp:cl:eq:ullt}: the factor
+$\e^{-\ii z(\ell-\E S_K)/\sigma_K}$ has modulus one, so the error is uniform
+in $\ell$. Integrating the absolute value proves \eqref{ctp:cl:eq:atomupper};
+for $\varepsilon>1$ retain the prefix $K=\lfloor m/2\rfloor$.
+\end{proof}
+
+The three arc ranges are those of Part~I, Section~\ref{ctp:sec:saddle},
+which manuscript~10 adapts in the same way for the full sum
+(\cref{ctp:te:thm:operator}); manuscript~06's addition is the uniformity
+over prefixes that keep a fixed fraction of the active sizes, which
+manuscript~10 also states for its tail bounds.
+
+\begin{corollary}[Uniform coefficient ratios]\label[corollary]{ctp:cl:cor:ratio}
+There is a constant $C$ such that for all large $n$ and every integer
+$v\ge0$,
+\begin{equation}\label{ctp:cl:eq:ratiobound}
+ \frac{p(n-v)}{p(n)}\le C\e^{-tv}.
+\end{equation}
+For each fixed $A<\infty$, uniformly for $0\le tv\le A$,
+\begin{equation}\label{ctp:cl:eq:ratiolimit}
+ \frac{p(n-v)}{p(n)}=\e^{-tv}(1+o(1)).
+\end{equation}
+\end{corollary}
+\begin{proof}
+By \cref{ctp:cl:lem:exact} the ratio is $\e^{-tv}\Q_t(S=n-v)/\Q_t(S=n)$.
+The denominator is $t(2\pi m)^{-1/2}(1+o(1))$. Use
+\eqref{ctp:cl:eq:atomupper} for the uniform bound and \eqref{ctp:cl:eq:ullt}
+for bounded $tv$, since $v/\sigma=O(m^{-1/2})$.
+\end{proof}
+
+\emph{Second route (manuscript~10).} The coefficient operator gives
+$\Q_t(S=n)=t(2\pi B_2)^{-1/2}(1+O(m^{-1}))$ (\cref{ctp:te:thm:operator});
+combined with \eqref{ctp:cl:eq:atomupper} for the full sum this is
+\eqref{ctp:cl:eq:ratiobound}, with $p(b)=0$ for $b<0$.
+
+\subsection{The displacement expansion needed at the edge}
+The following refinement records the term an uncentred normal approximation
+would miss.
+
+\begin{lemma}[A finite-tail likelihood expansion]\label[lemma]{ctp:cl:lem:edge-likelihood}
+Fix $h\in\Z$, put $K=M+h$, and let
+\[
+ T=\sum_{k>K}c_kZ_k,\qquad \widehat T_{1,K}=t\E_{\Q_t}T,\qquad
+ \widehat T_{2,K}=t^2\Var_{\Q_t}T,\qquad \delta_v=tT-\widehat T_{1,K}.
+\]
+For any upper multiplicity configuration $z$, its conditional likelihood
+relative to its $\Q_t$-law is
+\begin{equation}\label{ctp:cl:eq:likelihoodexp}
+ R_v(z)=1+\frac1m\left\{\delta_v+\frac{\widehat T_{2,K}-\delta_v^2}2\right\}
+ +\varepsilon_v(z),\qquad
+ |\varepsilon_v(z)|\le\frac{C_h}{m^2}(1+|\delta_v|^4).
+\end{equation}
+In particular $\E_{\Q_t}|\varepsilon_v|=O_h(m^{-2})$. All constants can be
+chosen uniformly in $\theta\in[0,1]$.
+\end{lemma}
+\begin{proof}
+The exact likelihood is $R_v(z)=\Q_t(S_K=n-T(z))/\Q_t(S=n)$. Every fixed
+cumulant of the scaled tail $tT$ is bounded uniformly: its first rate
+$tc_{K+1}$ is bounded below and later rates grow at least geometrically.
+So the scaled prefix cumulants satisfy
+$B_{2,K}=B_2-\widehat T_{2,K}=m+O_h(1)$ and $B_{3,K}=2m+O_h(1)$. With
+$y=t(\ell-\E S_K)$, central Fourier expansion gives
+\begin{equation}\label{ctp:cl:eq:displacement}
+ \Q_t(S_K=\ell)=\frac{t}{\sqrt{2\pi B_{2,K}}}\left[1+E_{1,K}
+ -\frac{y^2}{2B_{2,K}}-\frac{B_{3,K}\,y}{2B_{2,K}^2}
+ +O_h\!\left(\frac{1+|y|^4}{m^2}\right)\right],
+\end{equation}
+where $E_{1,K}=B_{4,K}/(8B_{2,K}^2)-5B_{3,K}^2/(24B_{2,K}^3)=-1/(12m)+O_h(m^{-2})$
+is the prefix analogue of Part~I's \eqref{ctp:eq:E1}. This is a polynomially
+bounded \emph{absolute} error expansion, not a relative approximation at a
+distant Gaussian tail. To see the remainder, set $x=y_{\rm Fourier}/t$,
+expand the displacement factor through degree three and use
+$|\e^{\ii a}-\sum_{q=0}^3(\ii a)^q/q!|\le|a|^4/4!$. The constant integral
+has its usual fourth/sixth cumulant correction; the linear displacement
+integral has leading term $-B_{3,K}y/(2B_{2,K}^2)$; the quadratic one gives
+$-y^2/(2B_{2,K})$ with next error $O(y^2m^{-2})$; the cubic one is
+$O(|y|^3m^{-2})$ by parity and the first odd cumulant; the fourth-order
+remainder is $O(y^4m^{-2})$, and further centred expansion errors are
+$O(m^{-2})$. The noncentral bounds of \cref{ctp:cl:lem:fourier}, at any
+fixed precision, are uniform in the displacement, whose Fourier factor has
+modulus one.
+
+For the numerator $y=\widehat T_{1,K}-tT=-\delta_v$. The denominator is
+$t(2\pi B_2)^{-1/2}(1-1/(12m)+O(m^{-2}))$. The common Edgeworth constant
+cancels, $\sqrt{B_2/B_{2,K}}=1+\widehat T_{2,K}/(2m)+O_h(m^{-2})$, and the
+linear term becomes $+\delta_v/m$. Bounded fourth moments of $tT$ give the
+$L^1$ version.
+\end{proof}
+
+\begin{remark}[Why the linear term matters]\label[remark]{ctp:cl:rem:linear}
+The term $+\delta_v/m$ comes from the positive skewness of the geometric
+variables. A purely Gaussian likelihood gives only
+$(\widehat T_{2,K}-\delta_v^2)/(2m)$ and the wrong first correction. The
+exact saddle normalization is also essential to the coefficient.
+\end{remark}
+
+\section{A conditioned Gaussian coefficient operator}
+\label{ctp:cl:sec:operator}
+
+This section is manuscript~10's. It extends Part~I's all-orders saddle
+estimate \cref{ctp:thm:saddle}, whose coefficients $E_j$ it contains as the
+unmarked case, to marked amplitudes. Its noncentral-arc analysis is that of
+Part~I, Section~\ref{ctp:sec:saddle}, and of \cref{ctp:cl:lem:fourier}; in
+manuscript~10 it yields the uniform bound
+$\sup_a\Q_t(S=a)\le Ct/\sqrt m$, which is \eqref{ctp:cl:eq:atomupper} for the
+full sum, and the same bound for every prefix keeping a fixed positive
+fraction of the active sizes and the parts $1,2,5$.
+
+\subsection{The finite operator}
+For a marked coefficient write
+\begin{equation}\label{ctp:te:eq:quotient}
+ \mathcal R_n(\amp)=\frac{[z^n]\{F(z)\amp(-\log z;t)\}}{p(n)}.
+\end{equation}
+The notation is local on the coefficient contour: in each application the
+full marked product is a single-valued power series in $z$. Set
+\begin{equation}\label{ctp:te:eq:aell}
+ \mathsf a_\ell=t^\ell\partial_\tau^\ell\amp(\tau;t)\big|_{\tau=t}.
+\end{equation}
+For $J\ge0$ and a jet $\mathsf a=(\mathsf a_0,\mathsf a_1,\ldots)$ define
+\begin{equation}\label{ctp:te:eq:operator}
+ \Omega_J[\mathsf a]=
+ \sum_{\substack{\ell,k_3,\ldots,k_{2J+2}\ge0\\
+ \ell+\sum_{r=3}^{2J+2}(r-2)k_r\le2J\\ \ell+R\ \mathrm{even}}}
+ \frac{(-1)^{(\ell-R)/2}(\ell+R-1)!!\,\mathsf a_\ell}{\ell!\,B_2^{(\ell+R)/2}}
+ \prod_{r=3}^{2J+2}\frac{B_r^{k_r}}{k_r!\,(r!)^{k_r}},
+ \qquad R=\sum_{r=3}^{2J+2}rk_r.
+\end{equation}
+Here $(-1)!!=1$ and $\mathbf1$ is the constant jet $(1,0,0,\ldots)$. The
+index set is finite. A term of weight $w=\ell+\sum(r-2)k_r$ has order
+$m^{-w/2}$ when the jet is bounded.
+
+\begin{theorem}[Conditioned Gaussian coefficient expansion]\label{ctp:te:thm:operator}
+For each fixed $J$, the marked products used in Part~II satisfy
+\begin{equation}\label{ctp:te:eq:operator-ratio}
+ \mathcal R_n(\amp)=\frac{\Omega_J[\mathsf a]}{\Omega_J[\mathbf1]}
+ +O_J(m^{-J-1}).
+\end{equation}
+The error is uniform on compact admissible sets of marking parameters and on
+$0\le\theta\le1$ for fixed cutoff offsets. This applies to the
+number-of-parts marks of \cref{ctp:cl:sec:number}, to finitely many
+fixed-small-part marks, to finitely many cutoff marks
+(\cref{ctp:te:thm:cutoff}) and to fixed-offset tail-deletion amplitudes,
+including their products. For a tail deletion with $|h|\le m^{1/8}$ the
+relative first-order remainder is instead bounded as in
+\cref{ctp:te:thm:growing}.
+\end{theorem}
+\begin{proof}
+Use $z=\e^{-(t+\ii y)}$ and $v=y/t$. At the saddle,
+\begin{equation}\label{ctp:te:eq:gaussian-exp}
+ H(t+\ii y)-H(t)+\ii ny=-\frac{B_2v^2}2+\sum_{r\ge3}\frac{(-\ii)^rB_rv^r}{r!},
+ \qquad
+ \amp(t+\ii y;t)=\sum_{\ell\ge0}\frac{\mathsf a_\ell(\ii v)^\ell}{\ell!}.
+\end{equation}
+Expand the second exponential and integrate against the centred Gaussian.
+Odd powers vanish. A term with indices $(\ell,k_r)$ has Gaussian moment
+$(\ell+R-1)!!B_2^{-(\ell+R)/2}$ and phase $\ii^\ell(-\ii)^R=(-1)^{(\ell-R)/2}$;
+these are the terms of \eqref{ctp:te:eq:operator}.
+
+The expansion also has an analytic remainder. In $|y|\le t/2$, derivatives
+of $H$ have Cauchy bounds from the absolutely convergent geometric sums
+\eqref{ctp:eq:H-K}; each fixed-order scaled derivative is $O(m)$. The
+amplitude jets of the stated classes are bounded on a fixed complex
+neighbourhood of $\tau/t=1$. On $|v|\le\log m/\sqrt m$, Taylor-expand to an
+order above $2J+2$, integrate the remainder against a Gaussian majorant and
+use parity: the first omitted even weight integrates to $O(m^{-J-1})$, and
+higher remainders are bounded by taking a few more Taylor terms. The
+Gaussian may be extended to the real line at a superpolynomially small
+error.
+
+Localization for the marks is proved, not inferred from local analyticity.
+A number-of-parts mark replaces the geometric rate $tc_k$ by $t(c_k+s)$;
+on a compact subset of $\Rea s>-1$ the total normalizing ratio is bounded
+above and below. For a complex mark the angular phase has an additional
+bounded multiple of $t$. In the central-tail estimate keep only the
+$m-O(\log m)$ sizes with $c_k\ge m$ and $c_k\le1/(tm^B)$; for them, outside
+the central window, $c_ky$ dominates the extra $O(t)$ phase, so the central
+bound \eqref{ctp:eq:central-tail-bound} holds with changed constants. The
+intermediate fixed-factor and outer $1,2,5$ estimates also survive the
+$O(t)$ phase perturbation. Finitely many small-part marks behave the same
+after their rates are shifted; finitely many cutoff marks can be omitted
+from the modulus bound, the $m-O(1)$ remaining factors still localizing the
+integral; a fixed-offset deletion retains $m-O(1)$ active sizes and all
+fixed small factors. So the noncentral integrals of every listed class are
+negligible to every inverse power. The unmarked denominator is the same
+Gaussian integral with jet $\mathbf1$, with leading term one after
+normalization; dividing the two expansions proves
+\eqref{ctp:te:eq:operator-ratio}.
+\end{proof}
+
+\begin{remark}[The scope of the amplitude condition]\label[remark]{ctp:te:rem:scope}
+Being analytic near $t$ alone does not imply \eqref{ctp:te:eq:operator-ratio}:
+an arbitrary amplitude could be large on another arc. The theorem asserts the
+estimate for the specified product amplitudes, with the noncentral bounds
+proved above; it does not assume a general coefficient-transfer theorem for
+locally analytic functions.
+\end{remark}
+
+\begin{remark}[{[write]} Re-reading the localization for marks]\label[remark]{ctp:te:rem:localization}
+The batch-98 dossier flagged this proof as compressed. The write checked
+its two steps. (1)~For a number-of-parts mark the marked factor is
+$|1-\e^{-x-\ii\psi}|^{-1}$ with $x=t(c_k+\Rea s)>0$ and
+$\psi=c_ky+t\Im s$; normalized by its value at $y=0$ it is
+$(1+4\e^{-x}\sin^2(\psi/2)/(1-\e^{-x})^2)^{-1/2}$, of the same form as the
+unmarked factor. For the retained sizes $c_k\ge m$ one has
+$|\psi|\ge c_k|y|/2$ as soon as $|y|\ge2t|s|/m$, far inside the central
+window, so the central bound survives; the small fixed factors keep the
+bound $O(t/|y|)$ with a constant depending on $1+\Rea s\ge c_{\mathcal K}>0$.
+(2)~``A fixed complex neighbourhood of $\tau/t=1$'' must be allowed to
+depend on the compact set~$\mathcal K$: the jets involve $\LW(s/(1+v))$
+(\cref{ctp:te:thm:length}), and $s/(1+v)$ stays in a compact subset of
+$\Rea s>-1$ only for $|v|\le\rho_{\mathcal K}$. Since the central window
+is $|v|\le\log m/\sqrt m\to0$, any $\rho_{\mathcal K}>0$ suffices. With
+these two readings the proof is complete as stated.
+\end{remark}
+
+At first order,
+\begin{align}
+ E_1&=\frac{B_4}{8B_2^2}-\frac{5B_3^2}{24B_2^3},\label{ctp:te:eq:eone}\\
+ \Omega_1[\mathsf a]&=\mathsf a_0(1+E_1)-\frac{\mathsf a_2}{2B_2}
+ -\frac{B_3\mathsf a_1}{2B_2^2},\label{ctp:te:eq:first-op}
+\end{align}
+where $E_1$ is Part~I's \eqref{ctp:eq:E1}. In particular
+$\Q_t(S=n)=t(2\pi B_2)^{-1/2}(1+O(m^{-1}))$, which gives the second route
+to \cref{ctp:cl:cor:ratio}.
+
+\begin{remark}[{[write]} The periodic constants of the scaled cumulants]\label[remark]{ctp:te:rem:bperiodic}
+Manuscript~10 writes (\cref{ctp:cl:sec:number})
+$B_r=(r-1)!\,m+\mathfrak b_r(\theta)+O_r(m^{-1})$ with
+\begin{equation}\label{ctp:te:eq:bzero}
+ \mathfrak b_r(\theta)=-(r-1)!\,\theta+
+ \sum_{j\in\Z}\bigl\{f_r(4^{j-\theta})-(r-1)!\,\ind_{\{j\le0\}}\bigr\}.
+\end{equation}
+For $r=1,2$ these are Part~I's coefficients: $\mathfrak b_1=q_0$ of
+\eqref{ctp:eq:q01} and $\mathfrak b_2=q_0+(1+q_0')/\alpha$ of
+\eqref{ctp:eq:B2exp}. Indeed, differentiating the lattice form
+\eqref{ctp:eq:phase-lattice}, with $g'(v)=-f_1(\e^v)+\ind_{\{v<0\}}$, gives
+$\Psi_\alpha'(\theta)=\frac\alpha2(1-2\theta)+\alpha\sum_j\{f_1(u_j)-\ind_{\{j\le0\}}\}$,
+so $q_0=-\tfrac12+\Psi_\alpha'/\alpha=\mathfrak b_1$; and since
+$f_2(v)=f_1(v)-vf_1'(v)$, $(1+q_0')/\alpha=\sum_j(f_2-f_1)(u_j)$, which
+adds up to $\mathfrak b_2$. The two manuscripts and Part~I thus use one
+and the same periodic coefficient algebra; the recursion
+\eqref{ctp:eq:B-recursion} produces every $\mathfrak b_r$ from $q_0$.
+\end{remark}
+
+\section{The sharp threshold for an independent upper process}
+\label{ctp:cl:sec:threshold}
+
+This section is manuscript~06's. For an integer $K\ge0$ let $\nu_{n,K}$ be
+the law of $(Z_k)_{k>K}$ under $\PP_n$ and $\Q_{t,K}$ its independent
+geometric law under $\Q_t$, on the countable space of finitely supported
+upper multiplicity vectors, and
+\[
+ \Delta_n(K)=\TV(\nu_{n,K},\Q_{t,K}),\qquad
+ \TV(P,Q)=\tfrac12\sum_z|P(z)-Q(z)|.
+\]
+
+\begin{theorem}[Complete cutoff criterion]\label{ctp:cl:thm:threshold}
+Let $\Phi$ be the standard normal distribution function, and
+\begin{equation}\label{ctp:cl:eq:d}
+ d(a)=2\left[\Phi\!\left(\sqrt{\frac{-\log a}{1-a}}\right)
+ -\Phi\!\left(\sqrt{\frac{-a\log a}{1-a}}\right)\right],\quad0<a<1,
+ \qquad d(0)=1,\quad d(1)=0.
+\end{equation}
+For every sequence of nonnegative integer cutoffs $K=K_n$,
+\begin{equation}\label{ctp:cl:eq:tvlimit}
+ \Delta_n(K)-d\bigl(\min\{K/M,1\}\bigr)\longrightarrow0.
+\end{equation}
+In particular
+\begin{equation}\label{ctp:cl:eq:iff}
+ \Delta_n(K)\to0\iff(M-K)_+=o(M):
+\end{equation}
+an upper window is asymptotically independent exactly when it contains
+$o(\log n)$ active sizes. If $K/M\to a\in(0,1)$ and
+$T_K=\sum_{k>K}c_kZ_k$, then
+\begin{equation}\label{ctp:cl:eq:criticalenergy}
+ \frac{t(T_K-\E_{\Q_t}T_K)}{\sqrt m}\ \xrightarrow[\PP_n]{\ d\ }\ \Normal(0,a(1-a)),
+\end{equation}
+with convergence of every fixed moment; under $\Q_t$ the limiting variance
+is $1-a$.
+\end{theorem}
+\begin{proof}
+Put $X=S_K$ and $T=S-X$. Independence under $\Q_t$ gives the exact
+likelihood and total-variation identities
+\begin{equation}\label{ctp:cl:eq:tv-exact}
+ R_n(T)=\frac{\Q_t(X=n-T)}{\Q_t(S=n)},\qquad
+ \Delta_n(K)=\tfrac12\E_{\Q_t}|R_n(T)-1|,
+\end{equation}
+the concrete Arratia--Tavar\'e reduction.
+
+Suppose first $K/M\to a\in(0,1)$. Write $\sigma^2=\Var S$,
+$\sigma_X^2=\Var X$, $\sigma_T^2=\Var T$ and $\widetilde W=(T-\E T)/\sigma_T$.
+Then $\sigma_X^2/\sigma^2\to a$ and $\widetilde W\Rightarrow\Normal(0,1)$, for
+instance by Lyapunov's condition: the third absolute centred moments sum to
+$O((m-K)/t^3)$, while $\sigma_T^3\asymp(m-K)^{3/2}/t^3$; the bounded set of
+inactive rates does not change this. The uniform local limit theorem and
+$n=\E X+\E T$ give, uniformly in $T$,
+\[
+ R_n(T)=\frac\sigma{\sigma_X}\exp\!\left(-\frac{\sigma_T^2\widetilde W^2}{2\sigma_X^2}\right)+o(1).
+\]
+The leading term is bounded, so the limit of \eqref{ctp:cl:eq:tv-exact} is
+$\frac12\E|a^{-1/2}\exp(-\frac{1-a}{2a}Z^2)-1|$ with $Z\sim\Normal(0,1)$.
+Multiplying the standard normal density by the likelihood inside the
+absolute value gives the density of $\Normal(0,a)$; the two densities cross
+at $|z|=\sqrt{-a\log a/(1-a)}$, and integrating their difference between
+the crossings gives \eqref{ctp:cl:eq:d}.
+
+If $K/M\to1$ with $K\le M$, then $\sigma_T^2/\sigma^2\to0$, the likelihood
+tends to one in probability and stays bounded, so $\Delta_n(K)\to0$. For
+$K\ge M$ project the upper process after $M$ onto that after $K$: total
+variation cannot increase. If $K/M\to0$, fix $0<\varepsilon<1$; eventually
+$K\le\lfloor\varepsilon M\rfloor$, and projection gives
+$\Delta_n(K)\ge\Delta_n(\lfloor\varepsilon M\rfloor)$, whose lower limit is
+at least $d(\varepsilon)$; let $\varepsilon\downarrow0$. Since
+$d(\varepsilon)\to1$, $\Delta_n(K)\to1$. This needs no local theorem for a
+suffix of Catalan sizes. For an arbitrary cutoff sequence extract a
+convergent subsequence of $\min(K/M,1)$; the three cases prove
+\eqref{ctp:cl:eq:tvlimit} along it. Continuity of $d$ and the fact that its
+only zero is at one give \eqref{ctp:cl:eq:iff}.
+
+Finally the same bounded likelihood weights the canonical tail normal
+limit, changing its variance from $1-a$ to $a(1-a)$. Uniform moment bounds
+for the canonical normalized tail follow from its cumulants; the likelihood
+is bounded by \cref{ctp:cl:lem:fourier}; applying these bounds at an order
+above the moment considered proves moment convergence.
+\end{proof}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=.9\textwidth]{figures/02-laws-tv_universality.pdf}
+\caption{The limiting total-variation distance $d(a)$ as a function of the
+unobserved prefix fraction $a$ (manuscript~06). The comparison is between
+complete upper multiplicity processes, not one statistic. The curve is
+computed from \eqref{ctp:cl:eq:d}; the markers are finite coefficient
+calculations at the indicated $n$ (\cref{ctp:cl:tab:tv}).}
+\label{ctp:cl:fig:tv}
+\end{figure}
+
+\subsection{A sharp rate for growing windows}
+
+\begin{theorem}[Rate inside the independent regime]\label{ctp:cl:thm:smalltail}
+Suppose $L=M-K\to\infty$ and $L=o(M)$. Then
+\begin{equation}\label{ctp:cl:eq:smalltail}
+ \Delta_n(K)\sim\phi(1)\frac Lm,\qquad\phi(1)=\frac{\e^{-1/2}}{\sqrt{2\pi}}.
+\end{equation}
+No assumption such as $L\gg\sqrt m$ is needed.
+\end{theorem}
+\begin{proof}
+Let $b=\sigma_T^2/\sigma^2\sim L/m$ and $\widetilde W=(T-\E T)/\sigma_T$.
+Keeping the first odd term in the Fourier proof gives the uniform local
+Edgeworth formula
+\begin{equation}\label{ctp:cl:eq:firstedgeworth}
+ \sigma_X\Q_t(X=\ell)=\phi(x)\left(1+\frac{\kappa_3(X)}{6\sigma_X^3}(x^3-3x)\right)
+ +O(m^{-1}),\qquad x=\frac{\ell-\E X}{\sigma_X}.
+\end{equation}
+On the central interval the logarithmic characteristic remainder after the
+cubic is $O(m^{-1}z^4)$; the cubic is imaginary and
+$|\e^{\ii u}-1-\ii u|\le u^2/2$, so the integrated error is at most
+$Cm^{-1}(z^4+z^6)\e^{-cz^2}$, and the three noncentral arc estimates are
+smaller. This proves \eqref{ctp:cl:eq:firstedgeworth} uniformly in the
+lattice target, for the prefix $X=S_K$ and for the full sum $X=S$. At
+$n=\E S$ its odd term vanishes, so $\Q_t(S=n)=\phi(0)\sigma^{-1}(1+O(m^{-1}))$.
+
+At $\ell=n-T$, $x=-\sqrt{b/(1-b)}\,\widetilde W$. Its Edgeworth term has
+expected absolute size $O(m^{-1/2}\sqrt b)=O(\sqrt L/m)$, by bounded first
+and third moments of $\widetilde W$, and the uniform remainder contributes
+$O(m^{-1})$; both are $o(L/m)$. So
+\[
+ \Delta_n(K)=\tfrac12\E|g_b(\widetilde W)-1|+o(L/m),\qquad
+ g_b(w)=(1-b)^{-1/2}\e^{-bw^2/(2(1-b))}.
+\]
+For $0\le b\le1/2$, $|g_b(w)-1-\frac b2(1-w^2)|\le Cb^2(1+w^4)$. Since
+$\widetilde W\Rightarrow\Normal(0,1)$ with uniformly bounded higher moments,
+$\E|1-\widetilde W^2|\to4\phi(1)$, and $\Delta_n(K)\sim b\phi(1)$.
+\end{proof}
+
+For example, observing the upper $M^{1/3}$ active indices gives distance
+asymptotic to $\phi(1)M^{-2/3}$; observing half of them gives distance
+tending to $d(1/2)=0.1660640749\ldots$ (\cref{ctp:cl:fig:tv}). These regimes cannot be told apart
+by convergence of a single fixed edge coordinate.
+
+\section{Corrected laws at the upper edge}
+\label{ctp:cl:sec:edge}
+
+\subsection{The corrected joint law of the upper process}
+For $\theta\in[0,1]$ let $(Y_j^{(\theta)})_{j\in\Z}$ be independent with
+\begin{equation}\label{ctp:cl:eq:idealgeom}
+ \PP(Y_j^{(\theta)}=z)=(1-\e^{-u_j})\e^{-u_jz},\qquad u_j=4^{j-\theta}.
+\end{equation}
+For each fixed $h$ the restriction to $j>h$ has almost surely finitely many
+nonzero coordinates; denote that upper law by $\Pi_{\theta,h}$. Define
+\begin{align}
+ \bar y_j&=\frac1{\e^{u_j}-1},& w_j&=\frac{\e^{u_j}}{(\e^{u_j}-1)^2},
+ \label{ctp:cl:eq:muw}\\
+ A_h&=\sum_{j>h}u_j\bar y_j,& V_h&=\sum_{j>h}u_j^2w_j,&
+ U_h&=\sum_{j>h}(j-\theta)u_j\bar y_j,\label{ctp:cl:eq:AVB}\\
+ T_h(z)&=\sum_{j>h}u_jz_j,& \delta_h(z)&=T_h(z)-A_h.\notag
+\end{align}
+Every sum converges, and all fixed moments of $T_h$ are bounded uniformly in
+$\theta\in[0,1]$. (These are manuscript~10's $S_{1,h}$, $S_{2,h}$ and $U_h$;
+$\bar y_j$ and $w_j$ are the mean and variance of $Y_j^{(\theta)}$.)
+
+\begin{theorem}[Corrected joint edge law]\label{ctp:cl:thm:edge}
+Fix $h\in\Z$. Let $\nu_{n,h}$ be the law of $(Z_{M+j})_{j>h}$ under $\PP_n$,
+and
+\begin{equation}\label{ctp:cl:eq:score}
+ \mathcal P_{\theta,h}(z)=\delta_h(z)+\frac{V_h-\delta_h(z)^2}2
+ +\frac32\sum_{j>h}(j-\theta)u_j(z_j-\bar y_j).
+\end{equation}
+Then, with $\theta=\theta_n$,
+\begin{equation}\label{ctp:cl:eq:edgeexp}
+ \int\left|\frac{\dd\nu_{n,h}}{\dd\Pi_{\theta,h}}(z)-1
+ -\frac{\mathcal P_{\theta,h}(z)}m\right|\dd\Pi_{\theta,h}(z)=O_h(m^{-2}).
+\end{equation}
+For each fixed $q\ge0$ the same holds after multiplying the integrand by
+$(1+T_h(z))^q$, with an $O_{h,q}(m^{-2})$ bound. In particular
+\begin{equation}\label{ctp:cl:eq:edge-tv-sharp}
+ \TV(\nu_{n,h},\Pi_{\theta,h})=\frac1{2m}\E_{\Pi_{\theta,h}}|\mathcal P_{\theta,h}|+O_h(m^{-2}),
+\end{equation}
+and the leading coefficient is positive at every phase: the approximation
+rate $1/\log n$ is sharp.
+\end{theorem}
+\begin{proof}
+First keep the actual geometric rates $v_j=tc_{M+j}$; the conditional law
+relative to that product is given by \cref{ctp:cl:lem:edge-likelihood}. We
+transport the product from $v_j$ to $u_j$ in $L^1$. Put
+$\eta_j=\log(v_j/u_j)$. The gamma-ratio expansion and its derivative bounds
+give
+\begin{equation}\label{ctp:cl:eq:eta}
+ |\eta_j|\le C_h(1+|j|)/m,\qquad
+ \left|\eta_j+\frac{3(j-\theta)}{2m}\right|\le C_h(1+j^2)/m^2,
+\end{equation}
+for all $j>h$ once $m$ is large: for positive $j-\theta$ use
+$0\le x-\log(1+x)\le x^2/2$; the finitely many negative offsets use ordinary
+Taylor expansion.
+
+Interpolate logarithmically, $\lambda_j(s)=u_j\e^{s\eta_j}$, $0\le s\le1$;
+all these rates are at least $c_h2^j$ for $j\ge0$. For a finite product with
+density $p_s$ the score is
+\[
+ L_s=\frac{\partial}{\partial s}\log p_s=\sum_{j>h}\eta_j\lambda_j(s)
+ \left(\frac1{\e^{\lambda_j(s)}-1}-Z_j\right),
+\]
+a sum of independent centred terms. Exponential decay of geometric moments
+at large rates and \eqref{ctp:cl:eq:eta} give $\E_sL_s^2=O_h(m^{-2})$ and
+$\E_s|L_s'|=O_h(m^{-2})$, uniformly in the finite truncation: all
+controlling series are polynomial factors in $j$ and the rates times an
+exponentially decaying function of the rate. Since $p_s''=p_s(L_s^2+L_s')$,
+Taylor's integral remainder in $L^1$ yields
+\[
+ \Q_{t}\bigl((Z_{M+j})_{j>h}\in\cdot\bigr)=\Pi_{\theta,h}
+ +\frac3{2m}\Bigl[\sum_{j>h}(j-\theta)u_j(Z_j-\bar y_j)\Bigr]\Pi_{\theta,h}
+ +O_{L^1,h}(m^{-2}),
+\]
+and finite products converge to the infinite upper products in total
+variation, so the uniform estimate passes to the limit.
+
+The same argument works with polynomial energy weights: $u_j\le C_h4^j$
+while $\lambda_j(s)\ge c_h2^j$, so the weighted geometric moments still have
+summable bounds. Replacing the actual centred energy and its variance in the
+quadratic conditioning score by $\delta_h,V_h$ changes that score times its
+product measure by $O_h(m^{-1})$ in weighted $L^1$: differences of the
+energy are sums of $(v_j-u_j)Z_j$, whose fixed polynomial moments are
+$O_h(m^{-1})$, and the differences of mean and variance obey the same
+bound; the factor $1/m$ makes this $O_h(m^{-2})$. Combining the two
+expansions proves \eqref{ctp:cl:eq:edgeexp} and its weighted version.
+
+The score has mean zero, since $\E\delta_h=0$ and $\E\delta_h^2=V_h$; the
+reverse triangle inequality gives \eqref{ctp:cl:eq:edge-tv-sharp}. It is not
+the zero variable: fixing all other coordinates at zero leaves a quadratic
+polynomial in any one coordinate with nonzero coefficient $-u_j^2/2$, and
+each such configuration has positive product probability.
+\end{proof}
+
+\begin{remark}[The corrected approximation is signed]\label[remark]{ctp:cl:rem:signed}
+$(1+\mathcal P_{\theta,h}/m)\Pi_{\theta,h}$ is a signed first-order
+approximation of total mass one; it need not be nonnegative on every remote
+configuration. The theorem is the $L^1$ bound \eqref{ctp:cl:eq:edgeexp}; it
+asserts no global positivity of the truncated density, and the proof needs
+no $L^2$ density ratio between the two infinite product measures.
+\end{remark}
+
+\begin{corollary}[First correlations of distinct large sizes]\label[corollary]{ctp:cl:cor:cov}
+For distinct fixed integers $i,j$,
+\begin{equation}\label{ctp:cl:eq:edgecov}
+ \Cov_{\PP_n}(Z_{M+i},Z_{M+j})=-\frac{u_iu_jw_iw_j}m+O_{i,j}(m^{-2}).
+\end{equation}
+\end{corollary}
+\begin{proof}
+Choose $h<\min(i,j)$ in \cref{ctp:cl:thm:edge}. Under the product law the
+centred coordinates are independent; in the expectation of
+$(Z_{M+i}-\bar y_i)(Z_{M+j}-\bar y_j)$ all linear terms of the score vanish
+and only the cross term of $-\delta_h^2/2$ survives, giving
+$-u_iu_jw_iw_j/m$. The product of the two mean displacements is
+$O(m^{-2})$, and the weighted remainder justifies the quadratic observable.
+\end{proof}
+
+So the asymptotically independent upper variables keep a specific negative
+interaction at first order. \emph{Second route.} The cross term of
+$-\frac12\mathcal D_I^2\mathcal G_I$ in manuscript~10's operator
+\eqref{ctp:te:eq:cutoff-C} gives the same $-u_iu_jw_iw_j/m$; the dossier
+checked this agreement by hand.
+
+\subsection{The cutoff vector jointly with the number of parts}
+Manuscript~10 states the edge law as a transform, for a finite set of
+offsets, jointly with the number of parts. Its edge part is the
+transform form of \cref{ctp:cl:thm:edge} (which is stronger: $L^1$, the
+infinite upper process, polynomial weights); the joint statement with
+$N_n$ is new. Let $I\subset\Z$ be finite and put, with $\LW$ the Laplace
+transform of $W$ \eqref{ctp:te:eq:L},
+\begin{equation}\label{ctp:te:eq:Q}
+ \mathcal G_I(\mathbf u,\mathbf x)=\prod_{j\in I}
+ \frac{1-\e^{-u_j}}{1-x_j\e^{-u_j}},\qquad
+ \mathcal D_I=\sum_{j\in I}u_j\partial_{u_j}.
+\end{equation}
+In a derivative the $u_j$ are independent variables, set to $4^{j-\theta}$
+afterwards. For $\mathbf x\in[0,1]^I$, and on a small complex neighbourhood
+of that cube, the denominators stay away from zero. Define
+\begin{equation}\label{ctp:te:eq:cutoff-C}
+ \mathcal C_I\mathcal G=-\frac32\sum_{j\in I}(j-\theta)u_j\partial_{u_j}\mathcal G
+ -\frac12(\mathcal D_I^2+\mathcal D_I)\mathcal G.
+\end{equation}
+
+\begin{theorem}[Cutoff vector and its joint law with the number of parts]\label{ctp:te:thm:cutoff}
+For fixed $I$ and compact admissible parameter sets,
+\begin{align}
+ \E\prod_{j\in I}x_j^{Z_{M+j}}&=\mathcal G_I+\frac{\mathcal C_I\mathcal G_I}m+O(m^{-2}),
+ \label{ctp:te:eq:cutoff-law}\\
+ \E\Bigl[\e^{-stN_n}\prod_{j\in I}x_j^{Z_{M+j}}\Bigr]&=\LW\mathcal G_I
+ +\frac1m\Bigl\{\LW\,\mathcal C_I\mathcal G_I-\frac{s^2\LW''\mathcal G_I}2
+ +s\LW'\mathcal D_I\mathcal G_I\Bigr\}+O(m^{-2}),\label{ctp:te:eq:joint-cutoff}
+\end{align}
+uniformly in $0\le\theta\le1$. Along any subsequence $\theta_n\to\theta$
+the cutoff multiplicities tend to independent geometric variables with
+parameters $\e^{-4^{j-\theta}}$, and this finite vector is independent of
+$W$ in the joint limit.
+\end{theorem}
+\begin{proof}
+The exact cutoff amplitude is a finite product of the factors of
+\eqref{ctp:te:eq:Q} with $u_j$ replaced by $\tau c_{M+j}$. At $\tau=t$,
+\eqref{ctp:cl:eq:edgerate} gives $tc_{M+j}=u_j(1-3(j-\theta)/(2m)+O_I(m^{-2}))$,
+which produces the first term of \eqref{ctp:te:eq:cutoff-C}. At the limiting
+arguments, the jets under $\tau=t(1+v)$ are $\mathsf a_0=\mathcal G_I$,
+$\mathsf a_1=\mathcal D_I\mathcal G_I$ and
+$\mathsf a_2=(\mathcal D_I^2-\mathcal D_I)\mathcal G_I$, and
+\eqref{ctp:te:eq:first-op} produces the second term.
+
+For the joint mark, the product of the length and cutoff amplitudes differs
+from the exact joint amplitude by $O_I(t)$, with the same bound for scaled
+derivatives: in the finitely many marked cutoff factors the extra mark
+changes $\e^{-\tau c}$ to $\e^{-\tau c-st}$, and $tc$ is bounded above and
+away from zero there. This is below every inverse power of $m$. The first
+two jets of $\LW(s/(1+v))\mathcal G_I((1+v)\mathbf u)$ give
+\[
+ -\frac{\mathsf a_2+2\mathsf a_1}2=-\frac{s^2\LW''\mathcal G_I}2+s\LW'\mathcal D_I\mathcal G_I
+ -\frac{\LW}2(\mathcal D_I^2+\mathcal D_I)\mathcal G_I;
+\]
+add the geometric-curvature correction to obtain \eqref{ctp:te:eq:joint-cutoff}.
+The leading product transform proves the joint limit and independence; its
+continuity at zero and at $\mathbf x=\mathbf1$ gives tightness. No
+independence at finite $n$ is assumed.
+\end{proof}
+
+\paragraph{Exact cylinder events.} For fixed nonnegative integers $r_j$ the
+limiting probability of $\{Z_{M+j}=r_j,\ j\in I\}$ is
+\begin{equation}\label{ctp:te:eq:cylinder}
+ \pi_{\mathbf r}(\mathbf u)=\prod_{j\in I}(1-\e^{-u_j})\e^{-r_ju_j},
+\end{equation}
+with first correction $\mathcal C_I\pi_{\mathbf r}/m$, by coefficient
+extraction in the marking variables or by the same amplitude argument
+applied to $\prod_{j\in I}(1-z^{c_{M+j}})z^{r_jc_{M+j}}$. With
+$T=\sum_{j\in I}(u_j/(\e^{u_j}-1)-r_ju_j)$ and
+$V_2=\sum_{j\in I}u_j^2\e^{u_j}/(\e^{u_j}-1)^2$,
+\begin{equation}\label{ctp:te:eq:cylinder-correction}
+ \frac{\mathcal C_I\pi_{\mathbf r}}{\pi_{\mathbf r}}=-\frac32\sum_{j\in I}(j-\theta)
+ \left(\frac{u_j}{\e^{u_j}-1}-r_ju_j\right)+\frac{V_2-T^2-2T}2.
+\end{equation}
+An independent finite-$n$ identity, used for verification, is
+\begin{equation}\label{ctp:te:eq:inclusion-exclusion}
+ \PP_n(Z_{M+j}=r_j\ (j\in I))=\sum_{A\subseteq I}(-1)^{|A|}
+ \frac{p\bigl(n-\sum_{j\in I}(r_j+\ind_{\{j\in A\}})c_{M+j}\bigr)}{p(n)},
+\end{equation}
+obtained by removing the specified copies and excluding further copies of
+the selected sizes; it needs no saddle approximation.
+
+\subsection{The corrected largest-index law}
+Define, as in Part~I's \eqref{ctp:eq:largest-cdf} and with the tail sums
+\eqref{ctp:cl:eq:AVB},
+\begin{equation}\label{ctp:cl:eq:G}
+ G_h(\theta)=\prod_{j>h}(1-\e^{-4^{j-\theta}}),\qquad
+ C_h(\theta)=-A_h+\frac{V_h-A_h^2}2-\frac32U_h,\qquad h\in\Z.
+\end{equation}
+$G_h$ tends to one as $h\to+\infty$ and to zero as $h\to-\infty$; it is the
+distribution function of $\Jl_\theta=\max\{j:Y_j^{(\theta)}>0\}$. All
+products and sums converge absolutely; for fixed $h$ they and all their
+phase derivatives are bounded on $[0,1]$, and $G_h$ is bounded away from
+zero there.
+
+\begin{corollary}[First correction to the maximum]\label[corollary]{ctp:cl:cor:maxcorrection}
+For every fixed $h\in\Z$, uniformly in the saddle phase,
+\begin{equation}\label{ctp:cl:eq:maxcorrection}
+ \PP_n(J_n-M\le h)=G_h(\theta)\left(1+\frac{C_h(\theta)}m\right)+O_h(m^{-2}).
+\end{equation}
+\end{corollary}
+\begin{proof}[Proof (manuscript 06)]
+The event is that all coordinates $j>h$ vanish. There $\delta_h=-A_h$, and
+the last score term equals $-\frac32U_h$. Apply \cref{ctp:cl:thm:edge}.
+\end{proof}
+
+\begin{proof}[Second proof (manuscript 10)]
+Set $K=M+h$. Removing all factors with index above $K$ gives the exact
+amplitude
+\begin{equation}\label{ctp:te:eq:tail-amp}
+ \amp_K(\tau)=\prod_{k>K}(1-\e^{-\tau c_k}),
+\end{equation}
+with scaled tail cumulants
+\begin{equation}\label{ctp:te:eq:Tr}
+ \widehat T_{r,K}=t^r\sum_{k>K}c_k^r\Li_{1-r}(\e^{-tc_k}).
+\end{equation}
+At fixed $h$ these are bounded, and the first jets are
+$\mathsf a_0=\amp_K(t)$, $\mathsf a_1=\amp_K(t)\widehat T_{1,K}$,
+$\mathsf a_2=\amp_K(t)(\widehat T_{1,K}^2-\widehat T_{2,K})$. The first
+conditioning correction is therefore
+\begin{equation}\label{ctp:te:eq:tail-exact-first}
+ \amp_K(t)\left\{\frac{\widehat T_{2,K}-\widehat T_{1,K}^2}{2B_2}
+ -\frac{B_3\widehat T_{1,K}}{2B_2^2}\right\}.
+\end{equation}
+The local expansion of the Catalan sizes gives
+\begin{equation}\label{ctp:te:eq:tail-phase}
+ \amp_K(t)=G_h(\theta)\left(1-\frac{3U_h(\theta)}{2m}+O_h(m^{-2})\right),\qquad
+ \widehat T_{1,K}=A_h+O_h(m^{-1}),\quad \widehat T_{2,K}=V_h+O_h(m^{-1}).
+\end{equation}
+To sum the size expansion, split $j-\theta$ at $m/2$: below it the
+derivatives of $\log(1-\e^{-u_j})$ have a summable superexponential majorant
+at the positive end and only finitely many negative $j$ occur; above it the
+whole tail is superexponentially small. So the errors in
+\eqref{ctp:te:eq:tail-phase} are uniform in the phase, and
+\eqref{ctp:te:eq:tail-exact-first}--\eqref{ctp:te:eq:tail-phase} with
+$B_2=m+O(1)$, $B_3=2m+O(1)$ give \eqref{ctp:cl:eq:maxcorrection}, in
+manuscript~10's form $C_h=-\frac32U_h+\frac12(V_h-A_h^2-2A_h)$.
+\end{proof}
+
+The correction has two sources. The term $-\frac32U_h$ records the
+polynomial perturbation of the geometric scale $4^k$ in the Catalan numbers;
+the other three terms are the effect of conditioning on the exact total
+size. Dropping either changes the first correction. In the alternative
+description of manuscript~06, let $u_j=\exp(\alpha(j-\theta))$ with
+variable $\alpha>0$; termwise differentiation gives
+$\partial_\theta G_h=-\alpha A_hG_h$,
+$\partial_\theta^2G_h=\alpha^2(A_h^2+A_h-V_h)G_h$ and
+$\partial_\alpha G_h=U_hG_h$, so that
+\begin{equation}\label{ctp:cl:eq:differentialcorrection}
+ G_hC_h=\left(\frac1{2\alpha}\partial_\theta-\frac1{2\alpha^2}\partial_\theta^2
+ -\frac32\partial_\alpha\right)G_h\Big|_{\alpha=\log4},
+\end{equation}
+the $\alpha$-derivative keeping $\theta,h$ fixed. This separates the
+conditioning derivatives from the polynomial factor $k^{-3/2}$ in Catalan
+growth, in the same way as $-\frac32\partial_\alpha\Psi_\alpha$ enters
+Part~I's \eqref{ctp:eq:D}.
+
+\begin{theorem}[The maximum jointly with the number of parts]\label{ctp:te:thm:maxjoint}
+For fixed $h\in\Z$, compact-uniformly in $\Rea s>-1$,
+\begin{equation}\label{ctp:te:eq:max-joint}
+ \E\bigl[\e^{-stN_n}\ind_{\{J_n\le M+h\}}\bigr]=G_h(\theta)\Bigl[\LW(s)+\frac1m
+ \Bigl\{C_h(\theta)\LW(s)-\frac{s^2\LW''(s)}2+A_h(\theta)\,s\LW'(s)\Bigr\}\Bigr]
+ +O_{h,\mathcal K}(m^{-2}).
+\end{equation}
+In particular
+\begin{equation}\label{ctp:te:eq:max-cov}
+ \Cov\bigl(tN_n,\ind_{\{J_n\le M+h\}}\bigr)=\frac{S_1\,G_h(\theta)A_h(\theta)}m+O_h(m^{-2}),
+\end{equation}
+and the leading coefficient is strictly positive.
+\end{theorem}
+\begin{proof}
+For the joint mark use the amplitude
+$\amp_s(\tau;t)\prod_{k>K}(1-\e^{-\tau c_k-st})$, with $\amp_s$ the length
+amplitude \eqref{ctp:te:eq:length-amplitude}. Its difference from
+$\LW(st/\tau)\amp_K(\tau)$, together with fixed scaled derivatives, is
+$O_h(tm)$ on the local neighbourhood. The product-jet calculation of
+\cref{ctp:te:thm:cutoff} gives \eqref{ctp:te:eq:max-joint}, the cross term
+being $s\LW'G_hA_h/m$. Differentiate at $s=0$ and subtract the product of
+the marginal expectations to obtain \eqref{ctp:te:eq:max-cov}; positivity is
+immediate from \eqref{ctp:cl:eq:G} and \eqref{ctp:cl:eq:AVB}.
+\end{proof}
+
+\section{Growing offsets, uniform tails and moments of the largest index}
+\label{ctp:cl:sec:moments}
+
+A fixed-threshold distributional limit does not imply a moment theorem, and
+a fixed-$h$ estimate does not justify substituting $h=h(n)$. This section
+supplies what Part~I's Theorem~\ref{ctp:thm:largest} withholds.
+
+\subsection{A uniform growing-window statement}
+The next result (manuscript~10) is formulated with the exact tail
+quantities \eqref{ctp:te:eq:Tr} precisely to avoid an uncontrolled
+replacement of them by their phase limits.
+
+\begin{theorem}[Growing-offset estimate]\label{ctp:te:thm:growing}
+There is a constant $C$ such that for all large $n$ and all integers
+$|h|\le m^{1/8}$, with $K=M+h$,
+\begin{equation}\label{ctp:te:eq:growing}
+ \frac{\PP_n(J_n\le K)}{\amp_K(t)}=1+\frac{\widehat T_{2,K}-\widehat T_{1,K}^2}{2B_2}
+ -\frac{B_3\widehat T_{1,K}}{2B_2^2}+O\!\left(\frac{(1+|h|)^4}{m^2}\right),
+\end{equation}
+the implicit constant being independent of $h$ and of the phase.
+\end{theorem}
+\begin{proof}
+Put $H_-=1+\max(0,-h)$. The ratio bound on consecutive sizes gives
+$\widehat T_{r,K}=O_r(H_-)$ for every fixed $r$, and the same geometric-sum
+estimates apply to derivatives on $|\tau/t-1|\le1/4$. Direct
+differentiation of $\log\amp_K$ and the exponential Bell recurrence give
+\begin{equation}\label{ctp:te:eq:relative-jets}
+ \frac{|t^\ell\amp_K^{(\ell)}(t)|}{\amp_K(t)}\le C_\ell H_-^\ell.
+\end{equation}
+On the central window the derivative remainder carries at most a factor
+$\exp(CH_-|y|/t)$, bounded because $H_-\log m/\sqrt m\to0$ in the stated
+range. Expand the relative amplitude and the phase as in
+\eqref{ctp:te:eq:gaussian-exp}. The retained terms have even weights zero
+and two; the first omitted even weight is four, and by
+\eqref{ctp:te:eq:relative-jets} it integrates to $O(H_-^4/m^2)$. Higher
+weights are bounded by continuing the Taylor expansion before estimating the
+remainder; their extra factors are powers of $H_-/\sqrt m$ and $m^{-1/2}$,
+uniformly small. The denominator correction changes the retained
+nonconstant terms by $O(H_-^2/m^2)$.
+
+Localization is uniform without dividing a crude full-product bound by a
+tiny $\amp_K(t)$: the numerator divided by $\amp_K(t)F(\e^{-t})$ is exactly
+the normalized prefix characteristic function. The prefix has at least
+$m-O(m^{1/8})$ active sizes and every fixed small factor, so the three arc
+estimates hold with uniform constants for the \emph{relative} integral.
+With the central estimate and \eqref{ctp:te:eq:first-op} this proves
+\eqref{ctp:te:eq:growing}.
+\end{proof}
+
+The exponent $1/8$ is deliberately conservative: the theorem gives a proved
+window growing to infinity, not an optimal moderate-deviation range or a
+uniform phase-polynomial formula for arbitrarily large $|h|$.
+
+\begin{remark}[{[write]} Re-reading the central-window remainder]\label[remark]{ctp:te:rem:growing}
+The dossier flagged this proof as compressed. The write checked that the
+relative amplitude is analytic and zero-free on $|\tau/t-1|\le1/4$ with
+$t(\log\amp_K)^{(\ell)}$-bounds $O_\ell(H_-)$: for $k>K$ the points
+$\tau c_k$ lie in the sector $|\arg z|\le\arcsin\frac14$, where
+$1-\e^{-z}$ vanishes only at $z=0$; the factors with $tc_k\le1$ (at most
+$H_-+1$ of them) contribute $O(1)$ each to $t\,\dd\log\amp_K/\dd\tau$, and the
+factors with $tc_k>1$ a geometrically convergent $O(1)$ in total. Bell's
+formula then gives \eqref{ctp:te:eq:relative-jets}; on the central window
+$|\log\amp_K(t+\ii y)-\log\amp_K(t)|\le CH_-|y|/t\le CH_-\log m/\sqrt m\to0$.
+A term of weight $w$ carries at most $w$ amplitude derivatives, hence is
+$O(H_-^wm^{-w/2})$; weight four is the stated error. The proof is complete
+as stated. The same argument applies verbatim when the amplitude also
+carries the number-of-parts mark of \cref{ctp:te:thm:length}, whose jets are
+bounded; this is used in \cref{ctp:cl:thm:mixedcov}.
+\end{remark}
+
+\subsection{Uniform two-sided tails}
+
+\begin{lemma}[Uniform two-sided tails]\label[lemma]{ctp:cl:lem:maxtails}
+There are positive constants $C,c$ such that for all large $n$ and all
+integers $r,h\ge0$,
+\begin{equation}\label{ctp:cl:eq:maxtails}
+ \PP_n(J_n-M>h)\le C\e^{-c2^h},\qquad
+ \PP_n(J_n-M\le-r)\le C\e^{-cr^2}.
+\end{equation}
+The same bounds hold for $\Jl_\theta$, uniformly in $\theta\in[0,1]$.
+Consequently, for every fixed $a>0$,
+\begin{equation}\label{ctp:te:eq:UI}
+ \sup_{n\ge n_0}\E\exp(a|J_n-M|)<\infty.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Right tail: the event that a size $c_k$ occurs has exact probability
+$p(n-c_k)/p(n)$ (remove one copy), so the union bound,
+\cref{ctp:cl:lem:exact} and \cref{ctp:cl:cor:ratio} give
+$\PP_n(J_n>M+h)\le C\sum_{k>M+h}\e^{-tc_k}$. Since $tc_M>1/4$ and successive
+sizes have ratio at least two, $tc_{M+h}\ge2^h/4$, and the sum is at most
+$C\e^{-c2^h}$.
+
+Left tail: first take $0\le r\le M/2$ and $K=M-r$. Independence before
+conditioning gives
+$\PP_n(J_n\le K)=\amp_K(t)\,\Q_t(S_K=n)/\Q_t(S=n)$; the event fixes the
+upper process at zero. The uniform prefix atom bound, divided by the full
+atom at its mean, is bounded by a constant, so
+\[
+ \PP_n(J_n\le K)\le C\prod_{k>K}(1-\e^{-tc_k})\le C\prod_{\ell=0}^{r-1}tc_{M-\ell}
+ \le C\,2^{-r(r-1)/2},
+\]
+since $tc_{M-\ell}\le2^{-\ell}$. For $M/2<r<M$ bound the event by the one at
+$r=\lfloor M/2\rfloor$ and reduce the constant in the Gaussian exponent; for
+$r\ge M$ the event is empty because $J_n\ge1$. The product-law bounds follow
+from the same elementary products and sums without conditioning. Summing
+the two tails against $\e^{ah}$ proves \eqref{ctp:te:eq:UI}.
+\end{proof}
+
+Both manuscripts prove this lemma, by the same argument;
+\eqref{ctp:te:eq:UI} is manuscript~10's statement of its consequence.
+
+\begin{corollary}[All maximum moments and a periodic mean]\label[corollary]{ctp:te:cor:maxmom}
+If $\theta_n\to\theta$, then $J_n-M\Rightarrow\Jl_\theta$, and all
+polynomial and real exponential moments converge. Define
+\begin{align}
+ \bar\Jl(\theta)&=\E\Jl_\theta=\sum_{h\ge0}(1-G_h(\theta))-\sum_{h\le-1}G_h(\theta),
+ \label{ctp:cl:eq:b}\\
+ F_0(\theta)&=\bar\Jl(\theta)-\theta,\qquad
+ \mathcal V_0(\theta)=\Var\Jl_\theta=\sum_{h\in\Z}(h-\bar\Jl(\theta))^2\,\mathfrak p_h(\theta),
+ \notag
+\end{align}
+where $\mathfrak p_h=G_h-G_{h-1}$. Then $F_0$ and $\mathcal V_0$ are smooth
+one-periodic functions and, along the full sequence,
+\begin{equation}\label{ctp:te:eq:maxmean}
+ \E J_n=m+F_0(\theta_n)+o(1),\qquad\Var J_n=\mathcal V_0(\theta_n)+o(1).
+\end{equation}
+\end{corollary}
+\begin{proof}
+For each phase $G_h\to0$ as $h\to-\infty$ and $G_h\to1$ as $h\to+\infty$, so
+it defines a proper integer law. \Cref{ctp:cl:cor:maxcorrection} gives
+convergence at every integer cutoff, and \cref{ctp:cl:lem:maxtails} uniform
+integrability for every polynomial and exponential function. Tail summation
+proves \eqref{ctp:cl:eq:b}, and the variance formula follows from the point
+probabilities. Uniform phase convergence on bounded $h$-ranges, followed by
+the uniform tails, proves \eqref{ctp:te:eq:maxmean} on the full sequence.
+Note that $G_h$ itself is \emph{not} one-periodic:
+\begin{equation}\label{ctp:te:eq:phase-shift}
+ G_h(\theta+1)=G_{h-1}(\theta),\qquad\Jl_{\theta+1}\stackrel d=\Jl_\theta+1,
+\end{equation}
+so $\bar\Jl(\theta+1)=\bar\Jl(\theta)+1$, while $F_0$ and $\mathcal V_0$
+are periodic; it would be wrong to call $\bar\Jl$ periodic. Differentiated
+lattice products have the same summable tails up to polynomial factors in
+$|h|$, so termwise differentiation proves smoothness.
+\end{proof}
+
+This (manuscript~10's) corollary supplies the moment conclusion missing from
+a fixed-$h$ statement and distinguishes a phase-dependent family of integer
+laws from a continuous extreme-value approximation.
+\Cref{ctp:cl:thm:maxweighted} below (manuscript~06) sharpens
+\eqref{ctp:te:eq:maxmean} to an expansion with $O(m^{-2})$ remainder.
+
+Every phase is realized by a subsequence: implicit differentiation of the
+saddle equations gives $\dd m/\dd n=t/(r'(m)B_2)\sim1/(n\log4)$, so $m(n)$
+is increasing, unbounded and has increments tending to zero, and rounding
+the real inverse of $m=j+\theta$ realizes any limiting phase (compare the
+proof of Part~I's \cref{ctp:cor:oscillation}). The phase family is a
+feature of the integer sequence, not an artificial continuous parameter.
+
+\subsection{The first correction summed over all thresholds}
+
+\begin{theorem}[A weighted expansion for the maximum]\label{ctp:cl:thm:maxweighted}
+Put $\mathfrak p_h(\theta)=G_h(\theta)-G_{h-1}(\theta)$ and
+$\mathfrak r_h(\theta)=G_h(\theta)C_h(\theta)-G_{h-1}(\theta)C_{h-1}(\theta)$.
+For every fixed $\lambda>0$,
+\begin{equation}\label{ctp:cl:eq:weightedmax}
+ \sum_{h\in\Z}\e^{\lambda|h|}\left|\PP_n(J_n-M=h)-\mathfrak p_h(\theta)
+ -\frac{\mathfrak r_h(\theta)}m\right|=O_\lambda(m^{-2}).
+\end{equation}
+So the first correction is valid for every polynomially or exponentially
+bounded function of the centred maximum.
+\end{theorem}
+\begin{proof}
+Let $E^{\max}_h$ be the error in \eqref{ctp:cl:eq:maxcorrection}. We prove
+$\sum_h\e^{\lambda|h|}|E^{\max}_h|=O_\lambda(m^{-2})$; successive differences
+then prove the theorem.
+
+\emph{Negative thresholds} $h=-r$, $0\le r\le M/2$. The prefix has at least
+$M/2$ active sizes, so the Fourier constants are uniform, and its removed
+scaled cumulants are $O_q(r+1)$. Repeating the displacement computation of
+\cref{ctp:cl:lem:edge-likelihood}, now expanding the variance ratio for
+$\widehat T_{2,K}/B_2\le1/2+o(1)$, gives at the all-zero configuration
+\[
+ R_v(0)=1+\frac{-\widehat T_{1,K}+(\widehat T_{2,K}-\widehat T_{1,K}^2)/2}m
+ +O\!\left(\frac{1+r^4}{m^2}\right).
+\]
+The inverse-variance replacements contribute $O((r+1)/m^2)$ before
+multiplication by the displacement, and all resulting terms fit the bound.
+Write $\varrho_1(v)=v/(\e^v-1)$ and $\varrho_2(v)=v^2\e^v/(\e^v-1)^2$. For
+$r\le M/2$ and $j>-r$ one has $m+j-\theta\ge m/2-O(1)$, so the proof of
+\eqref{ctp:cl:eq:eta}, with the logarithmic expansion on
+$(j-\theta)/m\ge-1/2-O(m^{-1})$, gives those bounds with a constant
+independent of $r$. The logarithmic derivatives of $\varrho_1$ and
+$\varrho_2$ vanish at zero to orders one and two; with \eqref{ctp:cl:eq:eta}
+and the geometric rate bounds this gives, uniformly in this range,
+\[
+ |\widehat T_{1,K}-A_{-r}|+|\widehat T_{2,K}-V_{-r}|\le C/m.
+\]
+For the all-zero product itself, Taylor expansion of $\log(1-\e^{-v})$ gives
+\[
+ \log\frac{\amp_K(t)}{G_{-r}}=-\frac{3U_{-r}}{2m}+O\!\left(\frac{1+r^3}{m^2}\right),
+ \qquad\left|\log\frac{\amp_K(t)}{G_{-r}}\right|\le C(1+r^2)/m,
+\]
+the cubic bound coming from summing the second-order rate errors over the
+$r$ small rates. Since $G_{-r}\le C\e^{-cr^2}$, exponentiating and
+multiplying the two expansions gives
+\[
+ |E^{\max}_{-r}|\le Cm^{-2}(1+r^4)G_{-r}\exp(C(1+r^2)/m)\le Cm^{-2}\e^{-c'r^2}.
+\]
+For $r>M/2$ the midpoint argument of \cref{ctp:cl:lem:maxtails} and the same
+Gaussian bound for $G_{-r}C_{-r}$ give this with smaller exponent constants;
+for $r\ge M$ the event is empty. All negative errors are summable with every
+exponential weight.
+
+\emph{Positive thresholds.} Use the weighted version of
+\cref{ctp:cl:thm:edge} for the upper process $j>0$. For every $h\ge0$,
+\[
+ \int_{\{z_j=0\text{ for all }j>h\}}\mathcal P_{\theta,0}(z)\,\dd\Pi_{\theta,0}(z)
+ =G_h(\theta)C_h(\theta):
+\]
+the free coordinates $1,\ldots,h$ have centred means, and their
+contribution to the expected quadratic energy cancels the corresponding
+variance term. So $E^{\max}_h$ is exactly the error of this marginal of the
+upper-process expansion. Its signed remainder measure has total mass zero,
+so the error on the event that all $j>h$ vanish is minus the error on the
+complement. On the complement the energy $T_0$ is at least $4^{h-\theta}$,
+so for fixed $\lambda$ the sum of the weights $\e^{\lambda h}$ over
+thresholds below the largest occupied upper index is at most
+$C_\lambda(1+T_0)^q$ for a fixed large $q$. The weighted $L^1$ bound of
+\cref{ctp:cl:thm:edge} proves $\sum_{h\ge0}\e^{\lambda h}|E^{\max}_h|=O_\lambda(m^{-2})$.
+\end{proof}
+
+\begin{remark}[{[write]} Re-reading the negative thresholds]\label[remark]{ctp:cl:rem:negative}
+The dossier flagged the negative-threshold step as compressed (``repeating
+the displacement computation'' uniformly for $r\le M/2$). The write checked
+it term by term. With $K=M-r\ge M/2$, the prefix scaled cumulants are
+$B_{2,K}=B_2-\widehat T_{2,K}$ with $\widehat T_{2,K}=O(r+1)$, so
+$\sqrt{B_2/B_{2,K}}=(1-\widehat T_{2,K}/B_2)^{-1/2}=1+\widehat T_{2,K}/(2m)+O(r^2/m^2)$,
+$B_{3,K}/(2B_{2,K}^2)=1/m+O(r/m^2)$, $1/B_{2,K}=1/m+O(r/m^2)$ and
+$E_{1,K}-E_1=O(r/m^2)$; at the all-zero configuration $y=\widehat T_{1,K}=O(r+1)$.
+The displacement expansion \eqref{ctp:cl:eq:displacement} is an absolute
+bound uniform over prefixes with at least $M/2$ active sizes (the prefix
+normalized cumulants are $O(m^{1-r/2})$ uniformly), and for $|y|\ge\sqrt m$
+both sides are $O(1+y^4/m^2)$, so it holds for every $r\le M/2$. The
+comparison $|\eta_j|\le C(1+|j|)/m$ for $j\ge-m/2$ follows from
+$\eta_j=-\frac32\log(1+(j-\theta)/m)+O(|j-\theta|/m^2)$. Collecting the terms
+gives the displayed $R_v(0)$, and the step is correct as stated. The two
+comparison bounds displayed in the proof are used again in
+\cref{ctp:cl:thm:mixedcov}.
+\end{remark}
+
+\subsection{Explicit mean and variance functions}
+With $\bar\Jl$ and $F_0$, $\mathcal V_0$ as in \cref{ctp:te:cor:maxmom}, let
+\begin{align}
+ F_1(\theta)&=-\sum_{h\in\Z}G_h(\theta)C_h(\theta),\label{ctp:cl:eq:F}\\
+ \mathcal V_1(\theta)&=-\sum_{h\in\Z}(2h+1)G_h(\theta)C_h(\theta)
+ -2\bar\Jl(\theta)F_1(\theta).\label{ctp:cl:eq:V}
+\end{align}
+The sums and their fixed derivatives converge uniformly. The weighted
+theorem and summation by parts give
+\begin{align}
+ \E J_n&=m+F_0(\theta)+\frac{F_1(\theta)}m+O(m^{-2}),\label{ctp:cl:eq:maxmean}\\
+ \Var J_n&=\mathcal V_0(\theta)+\frac{\mathcal V_1(\theta)}m+O(m^{-2}).\label{ctp:cl:eq:maxvar}
+\end{align}
+By \eqref{ctp:te:eq:phase-shift}, $F_0,F_1,\mathcal V_0,\mathcal V_1$ are
+smooth one-periodic functions; \cref{ctp:cl:fig:phase} plots $F_0$ and
+$\mathcal V_0$.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=.9\textwidth]{figures/02-laws-phase_functions.pdf}
+\caption{The leading periodic correction $F_0(\theta)=\E\Jl_\theta-\theta$
+and the limiting variance $\mathcal V_0(\theta)$ (manuscript~06's figure,
+whose axis labels write $H_\theta$ for $\Jl_\theta$). The phase dependence is
+small but persists as $n$ grows. These are numerical evaluations of
+convergent products and sums.}
+\label{ctp:cl:fig:phase}
+\end{figure}
+
+For orientation, numerical evaluations (illustrative, not interval
+certificates) give
+\[
+\begin{array}{c|rr}
+ \theta&0&1/2\\\hline
+ F_0(\theta)&-0.747936333&-0.745346630\\
+ F_1(\theta)&0.321333399&0.372111961\\
+ \mathcal V_0(\theta)&0.533729833&0.542646703\\
+ \mathcal V_1(\theta)&0.126361559&0.187492246
+\end{array}
+\]
+
+\subsection{The largest part size itself}
+The largest size is $c_{J_n}$. Along any subsequence $\theta_n\to\theta$,
+\begin{equation}\label{ctp:cl:eq:maxsize}
+ t_n\,c_{J_n}\Rightarrow4^{\Jl_\theta-\theta},
+\end{equation}
+and every fixed real power has convergent expectation. For positive and
+negative powers alike, $0<r'(x)<\log4$ for $x\ge1$ gives
+$|\log(t_nc_{M+h})|=|r(M+h)-r(m)|\le\log4\,|h-\theta|$ for every possible
+$J_n=M+h$, and the uniform exponential moments \eqref{ctp:te:eq:UI} give
+uniform integrability. So the largest part size has the same order
+$1/t_n\asymp n/\log n$ as the number of parts, although their limit laws
+differ (\cref{ctp:cl:sec:number}).
+
+\section{The number of parts}
+\label{ctp:cl:sec:number}
+
+\subsection{The limiting variable}
+Let $\mathbf E_1,\mathbf E_2,\ldots$ be independent exponential variables of
+mean one, and
+\begin{equation}\label{ctp:cl:eq:W}
+ W=\sum_{k\ge1}\frac{\mathbf E_k}{c_k},\qquad S_r=\sum_{k\ge1}c_k^{-r},\qquad
+ \omega_q=\E W^q.
+\end{equation}
+The series converges almost surely and in every $L^q$, since
+$\sum_k1/c_k<\infty$ and Minkowski's inequality applies (equivalently,
+the geometric lower bound on $c_k$ gives all moment bounds). Its Laplace
+transform is
+\begin{equation}\label{ctp:te:eq:L}
+ \LW(s)=\E\e^{-sW}=\prod_{k\ge1}\frac{c_k}{c_k+s},\qquad\Rea s>-1,
+\end{equation}
+converging locally uniformly on this half-plane, whose boundary is forced by
+the first exponential.
+
+\begin{theorem}[Number-of-parts law, first correction and all moments]\label{ctp:te:thm:length}
+As $n\to\infty$,
+\begin{equation}\label{ctp:te:eq:length-first}
+ \E\e^{-stN_n}=\LW(s)-\frac{s^2\LW''(s)}{2m}+O_{\mathcal K}(m^{-2})
+\end{equation}
+uniformly for $s$ in every compact $\mathcal K\subset\{\Rea s>-1\}$. In
+particular $tN_n\Rightarrow W$, and for every fixed integer $q\ge0$
+\begin{equation}\label{ctp:te:eq:moments}
+ t^q\E N_n^q=\omega_q\left(1-\frac{q(q-1)}{2m}\right)+O_q(m^{-2}).
+\end{equation}
+For every real $a<1$, $\E\e^{atN_n}\to\E\e^{aW}$, so all fixed absolute
+moments converge as well.
+\end{theorem}
+\begin{proof}
+With the marking variable $\e^{-st}$, the generating function marked by the
+number of parts is $\prod_k(1-\e^{-st}z^{c_k})^{-1}$; its amplitude
+relative to $F$ is
+\begin{equation}\label{ctp:te:eq:length-amplitude}
+ \amp_s(\tau;t)=\prod_{k\ge1}\frac{1-\e^{-\tau c_k}}{1-\e^{-\tau c_k-st}}.
+\end{equation}
+Uniformly on a small fixed complex neighbourhood of $\tau/t=1$ (depending
+on $\mathcal K$, \cref{ctp:te:rem:localization}) and on $\mathcal K$,
+\begin{equation}\label{ctp:te:eq:amplitude-approx}
+ \amp_s(\tau;t)=\LW(st/\tau)\{1+O_{\mathcal K}(tm)\};
+\end{equation}
+an exponentially small error such as $tm$ is below every fixed inverse power
+of~$m$. To prove it, put $g_0(x)=\log((1-\e^{-x})/x)$, with its analytic
+branch in the relevant right half-plane. After factoring the linear terms
+out of each factor, the remaining logarithm is
+$\sum_k[g_0(\tau c_k)-g_0(\tau c_k+st)]$. For $tc_k\le1$ each difference is
+$O_{\mathcal K}(t)$, and there are $O(m)$ terms; for $tc_k>1$ the bound
+$g_0'(x)=O(1/|x|)$ in the chosen sector gives a summable $O_{\mathcal K}(1/c_k)$,
+whose tail is $O_{\mathcal K}(t)$. Cauchy estimates give the same accuracy for
+any fixed number of scaled $\tau$-derivatives. (The kernel $g_0$ is the
+Laplace-product kernel of the Fabius-tree compilation cited after
+Part~I's \cref{ctp:lem:Fourier}; it is not Part~I's $g$.)
+
+So the jet may be replaced by
+\begin{equation}\label{ctp:te:eq:length-jet}
+ \mathsf a_\ell(s)=\frac{\dd^\ell}{\dd v^\ell}\LW\!\left(\frac s{1+v}\right)\Big|_{v=0},
+ \qquad \mathsf a_0=\LW,\quad\mathsf a_1=-s\LW',\quad\mathsf a_2=2s\LW'+s^2\LW''.
+\end{equation}
+Apply \eqref{ctp:te:eq:first-op} and divide by $1+E_1$. With $B_2=m+O(1)$
+and $B_3=2m+O(1)$ the two terms in $s\LW'$ cancel, and the remaining term is
+\eqref{ctp:te:eq:length-first}. Laplace convergence gives the
+distributional assertion; compact complex uniformity permits differentiation
+at $s=0$ by Cauchy's formula, and since the $q$th derivative of
+$s^2\LW''(s)$ at zero is $q(q-1)\LW^{(q)}(0)$ we obtain
+\eqref{ctp:te:eq:moments}. Evaluation at $s=-a$, $a<1$, proves
+exponential-moment convergence, and a slightly larger admissible exponential
+moment gives uniform integrability for every fixed power.
+\end{proof}
+
+\paragraph{An explicit all-orders construction.} By the proof and
+\cref{ctp:te:thm:operator}, for every fixed $J$,
+\begin{equation}\label{ctp:te:eq:length-all}
+ \E\e^{-stN_n}=\frac{\Omega_J[\mathsf a(s)]}{\Omega_J[\mathbf1]}+O_{J,\mathcal K}(m^{-J-1}),
+\end{equation}
+where \eqref{ctp:te:eq:length-jet} and \eqref{ctp:te:eq:operator} are finite
+constructive rules at each order. For the $q$th raw moment the jet is
+\begin{equation}\label{ctp:te:eq:moment-jet}
+ \mathsf a_\ell=\omega_q(-1)^\ell(q)_\ell,\qquad(q)_\ell=q(q+1)\cdots(q+\ell-1),
+\end{equation}
+since differentiating the leading amplitude in the mark gives
+$\omega_q(t/\tau)^q$. The exact $B_r$ keep the local phase without further
+expansion; to display an ordinary inverse-$m$ expansion write
+$B_r=(r-1)!\,m+\mathfrak b_r(\theta)+O_r(m^{-1})$ with $\mathfrak b_r$ as in
+\eqref{ctp:te:eq:bzero}. That series converges absolutely with all phase
+derivatives and defines a smooth one-periodic function; each higher
+coefficient comes from Taylor-expanding \eqref{ctp:te:eq:ratio} inside
+$f_r$ and summing polynomially weighted derivatives over the same lattice.
+Remainder justification: terms with $k<m/2$ differ from the small-$v$
+constant by an exponentially small summable error; terms with $k>3m/2$ have
+a superexponentially small sum; in between, the differentiable Stirling
+expansion of $r(m+d)-r(m)$ has remainder bounded by a fixed polynomial in
+$d$ times the requested inverse power of $m$, and the derivatives of
+$f_r(4^d)$ minus its small-$v$ constant decay exponentially at the negative
+end and superexponentially at the positive end. These bounds permit summing
+each remainder and termwise phase differentiation. So every fixed
+inverse-power coefficient of \eqref{ctp:te:eq:length-all} is determined by
+smooth one-periodic functions and derivatives of $\LW$: an all-orders
+Poincar\'e expansion in $m^{-1}$ with a phase coefficient algebra, the same
+algebra as Part~I's (\cref{ctp:te:rem:bperiodic}). It does not include the
+exponentially small noncentral-arc sectors of a complete transseries.
+
+\subsection{The first-order cancellation in the mean}
+
+\begin{corollary}[Mean through its first nonzero conditioning term]\label[corollary]{ctp:te:cor:mean}
+With $\omega_1=S_1$,
+\begin{equation}\label{ctp:te:eq:mean-refined}
+ t\E N_n=S_1\left(1+\frac{B_3-2B_2}{2B_2^2}\right)+O(m^{-3}).
+\end{equation}
+In particular $t\E N_n=S_1+O(m^{-2})$: there is no $m^{-1}$ term.
+Moreover
+\begin{equation}\label{ctp:cl:eq:S1}
+ S_1=1+\frac{4\pi}{9\sqrt3}=1.806133050770763489\ldots,\qquad
+ S_2=1.295732295098655075\ldots.
+\end{equation}
+\end{corollary}
+\begin{proof}
+For $q=1$, \eqref{ctp:te:eq:moment-jet} is $\mathsf a_\ell=S_1(-1)^\ell\ell!$.
+The weight-two terms of the operator give $S_1(B_3-2B_2)/(2B_2^2)$, already
+$O(m^{-2})$ by \cref{ctp:cl:lem:cumulants}. The weight-four terms have zero
+leading $m^{-2}$ coefficient: by the gamma benchmark
+(\cref{ctp:te:prop:gamma}), on setting $B_r=(r-1)!\,m$ the full formal
+moment quotient for $q=1$ is identically one, and replacing any leading
+cumulant by its $O(1)$ correction in a weight-four term adds a factor
+$O(m^{-1})$. The denominator correction changes the displayed $O(m^{-2})$
+term only by $O(m^{-3})$. Equation~\eqref{ctp:te:eq:length-all} with $J=2$
+proves \eqref{ctp:te:eq:mean-refined}.
+
+For the constant, the beta integral gives
+$1/c_k=(k+1)(2k+1)\int_0^1[x(1-x)]^k\dd x$. Summing from $k=0$ (temporarily
+including $c_0=1$) with $\sum_{k\ge0}(k+1)(2k+1)y^k=(1+3y)/(1-y)^3$,
+\[
+ \sum_{k\ge0}\frac1{c_k}=\int_0^1\frac{1+3x(1-x)}{(1-x(1-x))^3}\dd x
+ =16\int_0^1\frac{7-3y^2}{(3+y^2)^3}\dd y=2+\frac{4\pi}{9\sqrt3}.
+\]
+\emph{Route of manuscript 06:} an antiderivative of the last integrand is
+$\frac{64y}{3(3+y^2)^2}+\frac{8y}{3(3+y^2)}+\frac8{3\sqrt3}\arctan(y/\sqrt3)$.
+\emph{Route of manuscript 10:} the middle integral is elementary after
+$x=(1+u)/2$. Subtract the $k=0$ term.
+\end{proof}
+
+$S_1$ is the reciprocal-Catalan constant, OEIS A121839 \cite{reciprocal},
+whose entry sums from $k\ge1$ as here; it is not a new constant.
+\Cref{ctp:te:cor:mean} proves the cancellation that manuscript~06 asked
+about (\cref{ctp:cl:sec:future}) and that its recorded run shows
+numerically: $m^2(t\E N_n-S_1)=0.578$ at $n=10^6$.
+
+\begin{proposition}[Gamma benchmark for the universal coefficients]\label[proposition]{ctp:te:prop:gamma}
+If $B_r$ is formally replaced by $(r-1)!\,m$, the moment quotient for
+\eqref{ctp:te:eq:moment-jet} has the expansion of
+\begin{equation}\label{ctp:te:eq:gamma-benchmark}
+ \omega_q\frac{m^q\Gamma(m)}{\Gamma(m+q)}=\omega_q\prod_{j=0}^{q-1}(1+j/m)^{-1}
+\end{equation}
+for every integer $q\ge1$.
+\end{proposition}
+\begin{proof}
+These are the cumulants of the local phase $-m\log\tau$ at $t$, with $nt=m$.
+The inverse-Laplace Gaussian expansion for the unmarked model $\tau^{-m}$ has
+exact coefficient-density factor $n^{m-1}/\Gamma(m)$; multiplication by
+$\omega_q(t/\tau)^q$ changes the ratio to $\omega_qt^qn^q\Gamma(m)/\Gamma(m+q)$,
+which is \eqref{ctp:te:eq:gamma-benchmark}. This exact model determines the
+Gaussian formal coefficients; equivalently, expanding the finite product on
+the right and the finite sums of \eqref{ctp:te:eq:operator} verifies the
+identity to every prescribed order by formal Gaussian integration.
+\end{proof}
+
+\subsection{Cumulants, non-normality and lack of concentration}
+Expanding $\log\E\e^{sW}=-\sum_k\log(1-s/c_k)$ at zero,
+\begin{equation}\label{ctp:cl:eq:Wcumulants}
+ \cum_r(W)=(r-1)!\,S_r\qquad(r\ge1).
+\end{equation}
+For a finite recurrence for all moments, put $h_0=1$ and
+\begin{equation}\label{ctp:cl:eq:Wmoments}
+ rh_r=\sum_{j=1}^rS_jh_{r-j};\qquad\text{then}\qquad\omega_r=\E W^r=r!\,h_r.
+\end{equation}
+$\Var W=S_2>0$ and $\cum_3(W)=2S_3>0$, so $W$ is not Gaussian; numerically
+$2S_3/S_2^{3/2}\approx1.53685181130881994$. The number of parts therefore
+satisfies
+\begin{equation}\label{ctp:cl:eq:countmoments}
+ \E N_n\sim S_1\,\frac{(\log4)\,n}{\log n},\qquad
+ \Var N_n\sim S_2\left(\frac{(\log4)\,n}{\log n}\right)^2,
+\end{equation}
+that is $\Var N_n\sim S_2/t_n^2$. The limiting relative variance
+$S_2/S_1^2$ is positive: the number of parts does not concentrate around its
+mean on its natural scale, a Gaussian approximation would give the wrong
+limit law, and replacing the count by its mean is not an accurate
+description of a typical partition.
+
+\begin{corollary}[{[write]} The first variance correction]\label[corollary]{ctp:cl:cor:var}
+$t^2\Var N_n=S_2-\omega_2/m+O(m^{-2})$, where $\omega_2=S_2+S_1^2$.
+\end{corollary}
+\begin{proof}
+By \eqref{ctp:te:eq:moments} with $q=2$, $t^2\E N_n^2=\omega_2(1-1/m)+O(m^{-2})$,
+and by \cref{ctp:te:cor:mean} $(t\E N_n)^2=S_1^2+O(m^{-2})$; subtract.
+\end{proof}
+
+This is the field \texttt{variance\_first\_heuristic} of manuscript~06's
+recorded run ($0.8943857364718$ at $n=10^6$, where the exact value is
+$0.938223$, \cref{ctp:cl:tab:moments}), which that manuscript marked as an
+exploratory, unproved refinement; its field \texttt{m\_times\_variance\_error},
+$m(t^2\Var N_n-S_2)=-4.06$ at $n=10^6$, tends to $-\omega_2=-4.5578\ldots$ by
+the corollary.
+
+\subsection{Fixed small parts}
+For fixed $d$ let $X_{k,n}=tc_kZ_k$, $1\le k\le d$. Their joint Laplace
+transform has limit $\Lambda_d(\mathbf s)=\prod_{k=1}^d(1+s_k)^{-1}$ and
+first correction
+\begin{equation}\label{ctp:te:eq:smallparts}
+ \E\exp\Bigl(-\sum_{k=1}^ds_kX_{k,n}\Bigr)=\Lambda_d(\mathbf s)
+ -\frac1{2m}\sum_{i,j=1}^ds_is_j\partial_i\partial_j\Lambda_d(\mathbf s)+O(m^{-2}).
+\end{equation}
+To prove it, mark only these $d$ factors in \eqref{ctp:te:eq:length-amplitude};
+their limiting arguments are $s_k/(1+v)$. With
+$\mathcal D_{\mathbf s}=\sum_ks_k\partial_k$, $\mathsf a_1=-\mathcal D_{\mathbf s}\Lambda_d$ and
+$\mathsf a_2=(\mathcal D_{\mathbf s}^2+\mathcal D_{\mathbf s})\Lambda_d$, and
+$-(\mathsf a_2+2\mathsf a_1)/(2m)$ is the correction in
+\eqref{ctp:te:eq:smallparts}. So the $X_{k,n}$ tend to independent mean-one
+exponentials, while for $i\ne j$
+\begin{equation}\label{ctp:te:eq:smallcov}
+ \Cov(X_{i,n},X_{j,n})=-m^{-1}+O(m^{-2}).
+\end{equation}
+The independence is a limit statement; conditioning leaves a universal
+negative first dependence among fixed small-part energies.
+
+\subsection{Joint limit with the upper edge}
+
+\begin{theorem}[Joint count and edge limit]\label{ctp:cl:thm:joint}
+Along a subsequence with $\theta_n\to\theta\in[0,1]$, for every fixed
+integer $h$,
+\begin{equation}\label{ctp:cl:eq:joint}
+ \bigl(t_nN_n,\ (Z_{M+j})_{j>h},\ J_n-M\bigr)\Rightarrow
+ \bigl(W,\ (Y_j^{(\theta)})_{j>h},\ \Jl_\theta\bigr),
+\end{equation}
+the upper process on its countable space of finitely supported vectors and
+the maximum defined by the full two-sided family. $W$ is independent of that
+whole family. Every fixed mixed moment of $t_nN_n$ and $J_n-M$ converges:
+$\E[(t_nN_n)^p(J_n-M)^q]\to\omega_p\E\Jl_\theta^q$. Moreover, without a
+phase subsequence,
+\begin{equation}\label{ctp:cl:eq:mgf}
+ \lim_{n\to\infty}\E_{\PP_n}\e^{st_nN_n}=\E\e^{sW}=\prod_{k\ge1}(1-s/c_k)^{-1}
+ \qquad\text{for every real }s<1.
+\end{equation}
+\end{theorem}
+\begin{proof}[Proof (manuscript 06)]
+Fix finitely many small indices $i_1,\ldots,i_a$ and edge offsets
+$j_1,\ldots,j_b$. For nonnegative real thresholds $x_\ell$ prescribe
+$Z_{i_\ell}\ge\lceil x_\ell/t\rceil$, and for edge coordinates arbitrary
+fixed integer thresholds $d_\ell\ge0$. The shift $v$ of
+\eqref{ctp:cl:eq:survival} satisfies
+$tv\to\sum_\ell c_{i_\ell}x_\ell+\sum_\ell4^{j_\ell-\theta}d_\ell$, so by
+\eqref{ctp:cl:eq:ratiolimit} the joint survival probability tends to the
+exponential of minus this sum, which factorizes into the survival functions
+of independent $\mathbf E_{i_\ell}/c_{i_\ell}$ and $Y^{(\theta)}_{j_\ell}$.
+Finite inclusion--exclusion gives the joint finite-coordinate limit.
+
+For uniform control before summing all small multiplicities,
+\eqref{ctp:cl:eq:survival} and \eqref{ctp:cl:eq:ratiobound} give
+$\PP_n(Z_k\ge z)\le C\e^{-tc_kz}$, hence
+$\E_{\PP_n}Z_k^r\le C\Gamma(r+1)/(tc_k)^r$ for every real $r\ge1$, and,
+uniformly in large $n$,
+\begin{equation}\label{ctp:cl:eq:counttail}
+ \Bigl\|t\sum_{k>K}Z_k\Bigr\|_{L^r(\PP_n)}\le(C\Gamma(r+1))^{1/r}\sum_{k>K}\frac1{c_k}
+ \longrightarrow0\qquad(K\to\infty).
+\end{equation}
+With the finite-coordinate limit this proves $tN_n\Rightarrow W$ with all
+positive moments. For the upper process, truncate at a fixed large positive
+offset: a nonzero coordinate beyond it is uniformly unlikely by
+\cref{ctp:cl:lem:maxtails}, and geometric tails give tightness on the
+remaining finite set. For the maximum also truncate at a fixed large
+negative offset; the left tail makes losing the maximum arbitrarily
+unlikely. These truncations, the finite joint survival limit and
+\eqref{ctp:cl:eq:counttail} prove \eqref{ctp:cl:eq:joint} and the
+independence; uniform higher moments from \eqref{ctp:cl:eq:counttail} and
+\cref{ctp:cl:lem:maxtails}, with H\"older's inequality, give every mixed
+moment.
+
+For the moment generating function choose $0<s<s'<1$ and $y=\e^{s't}$. The
+power series $\prod_k(1-z^{c_k})/(1-yz^{c_k})$ has nonnegative coefficients,
+and convolution with \eqref{ctp:cl:eq:ratiobound} gives
+\[
+ \E_{\PP_n}\e^{s'tN_n}\le C\prod_{k\ge1}\frac{1-\e^{-tc_k}}{1-\e^{-t(c_k-s')}}
+ \le C\prod_{k\ge1}\frac{c_k}{c_k-s'}<\infty,
+\]
+since $(1-\e^{-x})/x$ decreases on $x>0$. This exponential uniform
+integrability and the distributional convergence give \eqref{ctp:cl:eq:mgf}
+for $0<s<1$; for $s\le0$ bounded convergence suffices. The product converges
+because $\sum_k1/c_k<\infty$.
+\end{proof}
+
+\begin{proof}[Second proof of the $(t_nN_n,J_n-M)$ marginal (manuscript 10)]
+\Cref{ctp:te:thm:maxjoint} gives the joint Laplace transforms with every
+integer cutoff, and marginal tightness follows from
+\cref{ctp:te:thm:length,ctp:cl:lem:maxtails}; these determine the joint law
+and its product form. For moments choose $0<a<1/2$ and $b>0$; by
+Cauchy--Schwarz and the exponential bounds,
+$\sup_n\E\e^{atN_n+b|J_n-M|}\le(\sup_n\E\e^{2atN_n})^{1/2}(\sup_n\E\e^{2b|J_n-M|})^{1/2}<\infty$,
+which is the needed mixed uniform integrability.
+\end{proof}
+
+The independence is a limit assertion. At finite $n$ many small parts
+compete for mass with large parts, and the exact covariance need not vanish
+(\cref{ctp:cl:tab:moments}): its first order is the next theorem.
+
+\begin{theorem}[{[write]} The first mixed covariance]\label{ctp:cl:thm:mixedcov}
+Let $\Xi(\theta)=\sum_{h\in\Z}G_h(\theta)A_h(\theta)$, a smooth one-periodic
+positive function. Along the full sequence,
+\begin{equation}\label{ctp:cl:eq:mixedcov}
+ m\Cov\bigl(t_nN_n,J_n\bigr)=-S_1\,\Xi(\theta_n)+O\!\left(\frac{(\log m)^{5/2}}m\right).
+\end{equation}
+\end{theorem}
+\begin{proof}
+Since $J_n-M=\sum_{h\ge0}\ind_{\{J_n>M+h\}}-\sum_{h\le-1}\ind_{\{J_n\le M+h\}}$
+and $M$ is deterministic,
+$\Cov(tN_n,J_n)=-\sum_{h\in\Z}\Cov(tN_n,\ind_{\{J_n\le M+h\}})$; the series
+converges absolutely by the tails below.
+
+\emph{Step 1: a per-threshold covariance uniform in $|h|\le m^{1/8}$.} Mark
+the tail-deleted product with the number-of-parts mark. Its amplitude is
+$\amp_s(\tau;t)\prod_{k>K}(1-\e^{-\tau c_k-st})$, which equals
+$\LW(st/\tau)\amp_K(\tau)$ up to a relative error
+$O(tm)+O(\sum_{k>K}c_k^{-1})$, exponentially small in $m$ for
+$|h|\le m^{1/8}$ (since $c_{M-r}\ge4^{-r}c_M$), with the same bound for
+scaled derivatives. Relative to $\amp_K(t)$ its jets are products of the bounded
+jets \eqref{ctp:te:eq:length-jet} with the relative jets
+\eqref{ctp:te:eq:relative-jets}, so they are $O(H_-^\ell)$, and the proof of
+\cref{ctp:te:thm:growing} (\cref{ctp:te:rem:growing}) gives, uniformly for
+$|h|\le m^{1/8}$, $s$ on the circle $|s|=\tfrac12$ and the phase,
+\[
+ \frac{\E[\e^{-stN_n}\ind_{\{J_n\le K\}}]}{\amp_K(t)}=\LW-\frac{X(s)}{2B_2}
+ -\frac{B_3Y(s)}{2B_2^2}+O\!\left(\frac{(1+|h|)^4}{m^2}\right),
+\]
+with the product jets
+$X=2s\LW'+s^2\LW''-2s\LW'\widehat T_{1,K}+\LW(\widehat T_{1,K}^2-\widehat T_{2,K})$
+and $Y=-s\LW'+\LW\,\widehat T_{1,K}$. The left side and the main terms are
+analytic in $|s|<1$, so Cauchy's formula transfers the bound to the
+derivative at $s=0$. With $\LW'(0)=-S_1$ this gives
+\[
+ \frac{\E[tN_n\ind_{\{J_n\le K\}}]}{\amp_K(t)}=S_1\Bigl[1+\frac{\widehat T_{2,K}-\widehat T_{1,K}^2}{2B_2}
+ -\frac{B_3\widehat T_{1,K}}{2B_2^2}\Bigr]+\frac{S_1\widehat T_{1,K}}{B_2}
+ +S_1\frac{B_3-2B_2}{2B_2^2}+O\!\left(\frac{(1+|h|)^4}{m^2}\right).
+\]
+Subtract $\E[tN_n]\,\PP_n(J_n\le K)/\amp_K(t)$, using
+\eqref{ctp:te:eq:mean-refined} and \eqref{ctp:te:eq:growing}: the bracket
+and the last displayed main term cancel up to
+$O(m^{-2})\cdot O((1+|h|)^2/m)$, so
+\[
+ \Cov\bigl(tN_n,\ind_{\{J_n\le K\}}\bigr)=\amp_K(t)\Bigl[\frac{S_1\widehat T_{1,K}}{B_2}
+ +O\!\left(\frac{(1+|h|)^4}{m^2}\right)\Bigr].
+\]
+At fixed $h$ this is \eqref{ctp:te:eq:max-cov}.
+
+\emph{Step 2: replacing exact tail quantities by phase functions.} For
+$h=-r$ with $0\le r\le M/2$, the comparison bounds in the proof of
+\cref{ctp:cl:thm:maxweighted} (\cref{ctp:cl:rem:negative}) give
+$|\log(\amp_K(t)/G_h)|\le C(1+h^2)/m$ and
+$|\widehat T_{1,K}-A_h|\le C/m$; for $h\ge0$ the same bounds hold with
+$C/m$, by \eqref{ctp:cl:eq:eta} and the geometric growth of the rates. With
+$A_h=O(1+|h|)$ and $1/B_2=1/m+O(m^{-2})$, for $h^2\le m$,
+\[
+ \Bigl|\Cov\bigl(tN_n,\ind_{\{J_n\le M+h\}}\bigr)-\frac{S_1G_hA_h}m\Bigr|
+ \le C\,G_h\frac{(1+|h|)^4}{m^2}.
+\]
+
+\emph{Step 3: summation.} Let $H=\lceil C_0\sqrt{\log m}\,\rceil$, so that
+$H\le m^{1/8}$ and $H^2\le m$ for large $m$. For $|h|>H$ use
+$|\Cov(tN_n,\ind_E)|\le\|tN_n-\E tN_n\|_2\,\PP_n(E)^{1/2}$ with $E$ or its
+complement: by \cref{ctp:te:thm:length} and \cref{ctp:cl:lem:maxtails} this
+is at most $C\e^{-c2^h}$ for $h>H$ and $C\e^{-ch^2}$ for $h<-H$, and the sum
+over $|h|>H$ is $O(m^{-3})$ once $C_0$ is large. The same holds for
+$\sum_{|h|>H}G_hA_h$, since $A_h\le C\e^{-c2^h}$ for $h\ge0$ and
+$G_{-r}\le4^{-r(r-1)/2}$. Over $|h|\le H$ the errors of Step~2 sum to
+$Cm^{-2}(\sum_{0\le h\le H}(1+h)^4+\sum_{r\ge1}\e^{-cr^2}(1+r)^4)=O(H^5/m^2)$.
+Altogether
+$m\Cov(tN_n,J_n)=-S_1\sum_hG_hA_h+O((\log m)^{5/2}/m)$.
+
+Finally $\Xi>0$ termwise; it converges with all phase derivatives by the
+bounds just used, and it is one-periodic because \eqref{ctp:te:eq:phase-shift}
+and $A_h(\theta+1)=A_{h-1}(\theta)$ shift the summation index.
+\end{proof}
+
+\begin{remark}[Status and numbers]\label[remark]{ctp:cl:rem:mixedcov}
+\Cref{ctp:cl:thm:mixedcov} proves the value manuscript~06 recorded in its
+run as \texttt{mixed\_covariance\_candidate\_at\_phase}, ``explicitly not
+claims'': $-S_1\Xi(\theta)$ is $-1.3205626659$ at the phase
+$\theta=0.35639\ldots$ of $n=10^6$, against the exact
+$m\Cov(t_nN_n,J_n)=-1.4368$ (its field \texttt{m\_times\_cov\_tN\_J}).
+The batch-98 dossier observed that the candidate is the sum over thresholds
+of manuscript~10's per-threshold covariance \eqref{ctp:te:eq:max-cov}; the
+write supplies the summable uniform remainder that this needs. The proof
+reuses the joint-mark form of \cref{ctp:te:thm:growing}
+(\cref{ctp:te:rem:growing}), which neither manuscript states. The next
+coefficient, and whether the remainder is $O(m^{-1})$ without the logarithm,
+remain open (\cref{ctp:cl:sec:future}). Manuscript~06's phase-function file
+records $\Xi$ as ``gamma'' with the caution that it is a limit of
+covariances of truncated energies, not the covariance of an $L^2$ total
+energy, which does not exist.
+
+\emph{Dated note (5~October 2026).} An independent adversarial check of
+the results added at this write, made by the intake after the write, found
+\cref{ctp:cl:thm:mixedcov}, \cref{ctp:cl:cor:var} and
+\cref{ctp:te:rem:bperiodic} valid. The check was a careful reading with
+independent computations: a floating-point recursion over residue classes
+for $p(n)$, the first two moments of $N_n$ and the threshold sums of $J_n$
+at 2500 values of $n$ in $[300,1.6\cdot10^7]$ ($m$ from $5.35$ to
+$13.40$), checked against a separate big-integer recursion to relative
+error $2\cdot10^{-15}$ and reproducing the printed $-1.4368$,
+$0.938223$, $-4.06$, $0.578$ and $-1.3205626659$; $\Xi$ by independent
+lattice sums; manuscript~10's operator with exact saddle cumulants for
+\cref{ctp:cl:cor:var}; and the constants of \cref{ctp:te:rem:bperiodic}
+to 37--50 digits at eight phases. It is not a formal verification or an
+external review. No fix was needed. The check made three further
+observations.
+(i)~\emph{A sharper remainder (argument sketched; the theorem is left as
+stated).} The proof of \cref{ctp:te:thm:growing} bounds its error by
+$O(H_-^4/m^2)$ with $H_-=1+\max(0,-h)$, which for $h>0$ is stronger than
+the stated $(1+|h|)^4$. Used in Step~1, together with the $C/m$ bounds of
+Step~2 for $h\ge0$, it makes the per-threshold error $O(m^{-2})$ uniformly
+in $0\le h\le m^{1/8}$. The positive thresholds then need summing only up
+to $H_+=\log_2\log m+O(1)$, beyond which the bound $C\e^{-c2^h}$ of Step~3
+sums to $O(m^{-2})$; on the negative side the weights
+$G_{-r}\le4^{-r(r-1)/2}$ already make the errors sum to $O(m^{-2})$. The
+same proof therefore gives the remainder $O(\log\log m/m)$ in
+\eqref{ctp:cl:eq:mixedcov}.
+(ii)~\emph{A closed form for $\Xi$.} Since
+$\partial_\theta G_h=-\alpha A_hG_h$ (with $\alpha=\log4$, as before
+\eqref{ctp:cl:eq:differentialcorrection}) and \eqref{ctp:cl:eq:b} may be
+differentiated termwise,
+\[
+ \Xi(\theta)=-\frac1\alpha\sum_{h\in\Z}\partial_\theta G_h(\theta)
+ =\frac{\bar\Jl\,'(\theta)}\alpha=\frac{1+F_0'(\theta)}\alpha,
+\]
+so \eqref{ctp:cl:eq:mixedcov} reads
+$m\Cov(t_nN_n,J_n)=-S_1(1+F_0'(\theta_n))/\alpha+O((\log m)^{5/2}/m)$, and $\Xi>0$
+says that $\bar\Jl$ is strictly increasing. The check confirmed the
+identity numerically to 15 digits at $\theta=0$, $0.35639$, $0.5$ and $0.8$.
+(iii)~\emph{Numerical evidence on the open question above.} The quantity
+$m\bigl(m\Cov(t_nN_n,J_n)+S_1\Xi(\theta_n)\bigr)$ is a clean periodic
+function of the phase, between $-1.33$ and $-1.03$ for $m\ge6.5$; at
+$\theta\approx0.35$ it takes the values $-1.281$, $-1.324$, $-1.332$,
+$-1.329$, $-1.322$, $-1.317$, $-1.313$ for $m$ from $7.35$ to $13.33$,
+with no logarithmic growth. This suggests, but does not prove, that the
+true remainder is $O(1/m)$.
+\end{remark}
+
+\section{The law of \texorpdfstring{$W$}{W}: spectral expansion, natural boundary and inverse tail}
+\label{ctp:cl:sec:spectral}
+
+The law of $W$ can be evaluated without simulation, and much more than a
+leading tail equivalent holds. Manuscript~06 gives the exponential
+expansion with a one-sided coefficient bound; manuscript~10 gives two-sided
+bounds, an explicit remainder and the analytic consequences. Define
+\begin{equation}\label{ctp:te:eq:residue}
+ \sd_j=\prod_{\substack{k\ge1\\k\ne j}}\frac{c_k}{c_k-c_j}
+ =\prod_{k\ne j}\Bigl(1-\frac{c_j}{c_k}\Bigr)^{-1},\qquad
+ \varpi=\prod_{\ell\ge1}(1-2^{-\ell})>0.
+\end{equation}
+For each $j$ the product converges, and $\operatorname{sign}(\sd_j)=(-1)^{j-1}$.
+
+\begin{lemma}[Two-sided bounds on the spectral coefficients]\label[lemma]{ctp:te:lem:d}
+For every $j\ge1$,
+\begin{equation}\label{ctp:te:eq:d-bound}
+ 4^{-j(j-1)/2}\le|\sd_j|\le\varpi^{-2}2^{-j(j-1)/2}.
+\end{equation}
+In particular $\sum_j|\sd_j|c_j^r<\infty$ for every fixed $r\ge0$.
+\end{lemma}
+\begin{proof}
+For $k<j$ write the absolute factor as $(c_k/c_j)/(1-c_k/c_j)$. The bounds
+$4^{-(j-k)}\le c_k/c_j\le2^{-(j-k)}$ make its product at least
+$4^{-j(j-1)/2}$ and at most $\varpi^{-1}2^{-j(j-1)/2}$. For $k>j$ each
+factor exceeds one, and their product is at most
+$\prod_{\ell\ge1}(1-2^{-\ell})^{-1}=\varpi^{-1}$. The last assertion follows
+from $c_j\le4^j$.
+\end{proof}
+
+\begin{theorem}[Exact survival expansion]\label{ctp:te:thm:spectral}
+For every real $x\ge0$,
+\begin{equation}\label{ctp:cl:eq:Wdensity}
+ \PP(W>x)=\sum_{j\ge1}\sd_j\e^{-c_jx},\qquad
+ f_W(x)=\sum_{j\ge1}c_j\sd_j\e^{-c_jx}.
+\end{equation}
+The series and each fixed derivative converge absolutely and uniformly on
+$x\ge0$. For $J\ge1$,
+\begin{equation}\label{ctp:te:eq:spectral-rem}
+ \Bigl|\PP(W>x)-\sum_{j=1}^J\sd_j\e^{-c_jx}\Bigr|
+ \le\frac{\varpi^{-2}2^{-J(J+1)/2}}{1-2^{-(J+1)}}\e^{-c_{J+1}x}.
+\end{equation}
+The law has a strictly positive smooth density on $x>0$, and
+\begin{equation}\label{ctp:te:eq:flat}
+ \sum_{j\ge1}\sd_j=1,\qquad\sum_{j\ge1}\sd_jc_j^r=0\quad(r=1,2,\ldots).
+\end{equation}
+\end{theorem}
+\begin{proof}
+For $W_N=\sum_{k\le N}\mathbf E_k/c_k$, partial fractions of the Laplace
+transform $\prod_{k\le N}c_k/(s+c_k)$ give
+$\PP(W_N>x)=\sum_{j\le N}\sd_j^{(N)}\e^{-c_jx}$ with
+$\sd_j^{(N)}=\prod_{k\le N,k\ne j}c_k/(c_k-c_j)$. The proof of
+\cref{ctp:te:lem:d} bounds these uniformly in $N$ (manuscript~06's route:
+$|\sd^{(N)}_j|\le C2^{-j(j-1)/2}$ from $c_{\ell+1}/c_\ell\ge2$). For fixed $j$,
+$\sd_j^{(N)}\to\sd_j$, and $W_N\to W$ almost surely; $W=\mathbf E_1+\sum_{k\ge2}\mathbf E_k/c_k$
+has a continuous law, so dominated convergence proves \eqref{ctp:cl:eq:Wdensity},
+and the last assertion of \cref{ctp:te:lem:d} gives the derivative bounds
+(since $c_k\le4^{k-1}$). For \eqref{ctp:te:eq:spectral-rem} factor out
+$\e^{-c_{J+1}x}$ and bound the coefficient tail by a geometric series:
+consecutive majorants have ratios at most $2^{-(J+1)}$.
+
+Flatness at zero: for every positive integer $R$, $W\ge W_R$, and
+integration over the simplex gives
+\begin{equation}\label{ctp:cl:eq:flatness}
+ \PP(W\le x)\le\PP(W_R\le x)\le\frac{x^R}{R!}\prod_{k=1}^Rc_k\qquad(x\ge0).
+\end{equation}
+With the smoothness already proved and $R$ arbitrary, all right derivatives
+of the distribution function vanish at zero; evaluating the uniform
+derivative series at zero gives \eqref{ctp:te:eq:flat}.
+
+Positivity: with $V=\sum_{k\ge2}\mathbf E_k/c_k$, convolution with
+$\mathbf E_1$ gives $f_W(x)=\e^{-x}\E[\e^V\ind_{\{V<x\}}]$ for $x>0$. For
+each $x>0$, $\PP(V<x)>0$: choose a far tail with expectation below $x/4$,
+use Markov's inequality for it, and require each of the finitely many
+preceding variables to be small.
+\end{proof}
+
+In particular $\PP(W>x)=\sd_1\e^{-x}+O(\e^{-2x})$ with
+$\sd_1=\prod_{k\ge2}(1-1/c_k)^{-1}$, and the first coefficients are
+\begin{align*}
+ \sd_1&=2.78827476752297890, &\sd_2&=-2.08690959322975775,\\
+ \sd_3&=0.31102280892305314, &\sd_4&=-0.01252727293482829,\\
+ \sd_5&=0.00013971276281143.
+\end{align*}
+The alternating signs are essential: the expansion is not a mixture of
+positive exponential laws. Near zero it cancels severely, exactly as
+\eqref{ctp:te:eq:flat} quantifies, and the distribution function is flat
+there: every derivative vanishes at $x=0$ \eqref{ctp:cl:eq:flatness}. At
+large $x$ the expansion is very effective, the rates growing geometrically.
+These are properties of the familiar infinite exponential convolution;
+their role here is to make the Catalan limit law explicit.
+
+\subsection{Smoothness without analytic continuation}
+The change of variable $z=\e^{-x}$ turns \eqref{ctp:cl:eq:Wdensity} into
+\begin{equation}\label{ctp:te:eq:T}
+ \mathcal T(z)=\sum_{j\ge1}\sd_jz^{c_j},\qquad\PP(W>x)=\mathcal T(\e^{-x}).
+\end{equation}
+$\mathcal T$ is not the partition generating function $F(z)$ and not the
+Laplace transform $\LW(s)$: three different analytic objects.
+
+\begin{theorem}[Natural boundary and non-D-finiteness]\label{ctp:te:thm:boundary}
+$\mathcal T$ has radius of convergence exactly one and is smooth on the
+closed unit disk: all its fixed holomorphic derivatives extend continuously
+to it. Nevertheless every point of $|z|=1$ is singular for analytic
+continuation, so $\mathcal T$ is not D-finite, and the analytic function
+$\PP(W>x)=\mathcal T(\e^{-x})$ on $\Rea x>0$ has the imaginary axis as a
+natural boundary. The Laplace transform $\LW(s)$ is meromorphic with simple
+poles at $-c_j$, $j\ge1$, and is also not D-finite.
+\end{theorem}
+\begin{proof}
+The upper bound of \eqref{ctp:te:eq:d-bound} gives uniform convergence on
+$|z|\le1$ of every differentiated series. The two-sided bound gives
+$\lim_j|\sd_j|^{1/c_j}=1$, because $j^2/c_j\to0$; so the radius is exactly
+one. We invoke one classical result: a power series of finite positive
+radius supported on exponents $\lambda_j$ with $\lambda_{j+1}/\lambda_j\ge1+\delta$
+for some $\delta>0$ has its circle of convergence as a natural boundary,
+Hadamard's gap theorem \cite[\S13, pp.~116--117]{hadamard}. Its hypotheses
+hold with $\lambda_j=c_j$ and $\delta=1$, by \eqref{ctp:eq:ratio}. A germ
+satisfying a linear differential equation with polynomial coefficients
+continues analytically along paths avoiding the finitely many zeros of the
+leading coefficient, so it cannot have a whole circle as natural boundary;
+$\mathcal T$ is not D-finite. Since $x\mapsto\e^{-x}$ is locally biholomorphic,
+a continuation across an imaginary-axis point would continue $\mathcal T$
+across the corresponding unit-circle point. Finally $\prod_j(1+s/c_j)$
+converges locally uniformly on the whole $s$-plane ($\sum1/c_j<\infty$), with
+exactly the distinct simple zeros $-c_j$; its reciprocal is $\LW$, and
+infinitely many finite poles again contradict a polynomial-coefficient
+linear differential equation.
+\end{proof}
+
+Even the singularity at $z=1$ has a direct reason: $\mathcal T(1)=1$ and all
+its positive-order derivatives there vanish by \eqref{ctp:te:eq:flat}, so a
+continuation near~$1$ would be locally the constant one, contradicting
+$\mathcal T(0)=0$. The gap theorem strengthens this to \emph{every} boundary
+point. This is a sequence-specific consequence of a classical theorem, not a
+new gap theorem, and no conclusion about differential \emph{algebraicity}
+is drawn from non-D-finiteness.
+
+\subsection{A convergent inverse upper-tail expansion}
+For $0<\epsilon<1$ let $\xi_\epsilon$ be the unique solution of
+\begin{equation}\label{ctp:te:eq:quantile}
+ \PP(W>\xi_\epsilon)=\epsilon;
+\end{equation}
+existence and uniqueness follow from \cref{ctp:te:thm:spectral}, and
+$\xi_\epsilon\to\infty$ as $\epsilon\downarrow0$. Put
+\begin{equation}\label{ctp:te:eq:V}
+ \mathcal T_1(z)=\frac{\mathcal T(z)}{\sd_1z}=1+\frac{\sd_2}{\sd_1}z
+ +\frac{\sd_3}{\sd_1}z^4+\frac{\sd_4}{\sd_1}z^{13}+\cdots;
+\end{equation}
+the sparsity of the exponents is inherited from the Catalan rates.
+
+\begin{theorem}[Inverse tail, all orders and first four coefficients]\label{ctp:te:thm:inverse}
+For small positive $\epsilon$ the following expansion converges:
+\begin{equation}\label{ctp:te:eq:inverse-all}
+ \xi_\epsilon=\log\frac{\sd_1}\epsilon-\sum_{r\ge1}\frac1r\Bigl(\frac\epsilon{\sd_1}\Bigr)^r
+ [z^r]\,\mathcal T_1(z)^{-r}.
+\end{equation}
+In particular
+\begin{equation}\label{ctp:te:eq:inverse-four}
+ \xi_\epsilon=\log\frac{\sd_1}\epsilon+\frac{\sd_2}{\sd_1^2}\epsilon
+ -\frac{3\sd_2^2}{2\sd_1^4}\epsilon^2+\frac{10\sd_2^3}{3\sd_1^6}\epsilon^3
+ +\Bigl(\frac{\sd_3}{\sd_1^5}-\frac{35\sd_2^4}{4\sd_1^8}\Bigr)\epsilon^4+O(\epsilon^5).
+\end{equation}
+At any fixed order the coefficients use only finitely many $\sd_j$.
+\end{theorem}
+\begin{proof}
+Put $y=\epsilon/\sd_1$ and $z=\e^{-\xi_\epsilon}$; the equation is
+$y=z\mathcal T_1(z)$ with $\mathcal T_1(0)=1$. The analytic inverse theorem
+gives a convergent inverse germ $z=z(y)$, so
+$\xi_\epsilon=\log(1/y)+\log\mathcal T_1(z(y))$ with the logarithm vanishing at
+$y=0$. The residue substitution $y=z\mathcal T_1(z)$, or one integration by
+parts in it, gives for $r\ge1$
+\[
+ [y^r]\log\mathcal T_1(z(y))=\frac1r[z^{r-1}]\frac{\mathcal T_1'(z)}{\mathcal T_1(z)^{r+1}}
+ =-\frac1r[z^r]\mathcal T_1(z)^{-r},
+\]
+which proves \eqref{ctp:te:eq:inverse-all} with convergence, not merely
+formal equality. Through order four replace $\mathcal T_1$ by
+$1+az+bz^4+O(z^{13})$ with $a=\sd_2/\sd_1$, $b=\sd_3/\sd_1$; the
+coefficients of $y,y^2,y^3,y^4$ are $a$, $-3a^2/2$, $10a^3/3$ and $b-35a^4/4$.
+\end{proof}
+
+The first new rate after $1$ and $2$ is $5$, so it first changes the inverse
+expansion at order $\epsilon^4$; before that every correction comes from
+reverting the first two exponentials, an example of sparse forward scales
+creating denser inverse scales. The natural boundary is no obstacle to the
+inverse germ at zero, since $\mathcal T'(0)=\sd_1\ne0$. The maximal
+convergence radius of \eqref{ctp:te:eq:inverse-all} is not identified;
+complex critical values of $\mathcal T$ may limit it before any boundary
+value does (\cref{ctp:cl:sec:future}).
+
+\paragraph{What this says about finite partitions.} For fixed
+$0<\epsilon<1$, convergence in distribution and strict positivity of $f_W$
+give convergence of the $(1-\epsilon)$-quantile of $tN_n$ (left-continuous
+inverse) to $\xi_\epsilon$; the lattice spacing $t$ tends to zero. This is a
+fixed-$\epsilon$ statement. Applying \eqref{ctp:te:eq:inverse-four}
+afterwards is a sequential regime, first $n\to\infty$ and then
+$\epsilon\downarrow0$; it proves no uniform formula for
+$\epsilon=\epsilon(n)\to0$ and reconstructs no exact integer quantile by
+rounding a truncation. That needs further tail and local-limit estimates
+(\cref{ctp:cl:sec:future}).
+
+\section{A logarithmic mass profile and a Gaussian bridge}
+\label{ctp:cl:sec:bridge}
+
+This section is manuscript~06's. The total mass is spread over many active
+sizes, although the number of parts is dominated by the smallest sizes.
+Define the cumulative mass profile
+\begin{equation}\label{ctp:cl:eq:profile}
+ \mathcal F_n(x)=\frac1n\sum_{k\le\lfloor xM\rfloor}c_kZ_k,\qquad0\le x\le1.
+\end{equation}
+
+\begin{theorem}[Mass profile and finite-dimensional fluctuations]\label{ctp:cl:thm:bridge}
+Under $\PP_n$,
+\begin{equation}\label{ctp:cl:eq:shape}
+ \sup_{0\le x\le1}|\mathcal F_n(x)-x|\to0\quad\text{in probability}.
+\end{equation}
+For every $0<x_1<\cdots<x_d<1$,
+\begin{equation}\label{ctp:cl:eq:bridgevector}
+ \bigl(\sqrt m(\mathcal F_n(x_i)-x_i)\bigr)_{i=1}^d\Rightarrow(\mathbb B(x_i))_{i=1}^d,
+\end{equation}
+the right side centred Gaussian with $\Cov(\mathbb B(x),\mathbb B(y))=\min(x,y)-xy$.
+Every fixed joint polynomial moment converges as well. This is a
+finite-dimensional Brownian-bridge theorem; a functional central limit
+theorem is not needed for \eqref{ctp:cl:eq:shape}.
+\end{theorem}
+\begin{proof}
+Put $K_i=\lfloor x_iM\rfloor$ and, under $\Q_t$,
+$R_i=(t/\sqrt m)\sum_{k>K_i}(c_kZ_k-\E_{\Q_t}c_kZ_k)$. The disjoint index
+bands between the cutoffs, and the final tail, are independent; their scaled
+second cumulants tend to their index-length fractions and their higher
+normalized cumulants vanish. So $(R_1,\ldots,R_d)$ converges under $\Q_t$ to
+a centred Gaussian vector $\mathbf G$ with covariance
+$C_{ij}=1-\max(x_i,x_j)$.
+
+The whole vector is measurable with respect to the tail after the earliest
+cutoff $K_1$. By the uniform prefix local theorem its conditioning
+likelihood is $x_1^{-1/2}\exp(-R_1^2/(2x_1))+o(1)$ uniformly over that tail,
+and the likelihoods are uniformly bounded. On the conditioning event
+$S=n=\E_{\Q_t}S$, $(t/\sqrt m)\sum_{k\le K_i}(c_kZ_k-\E_{\Q_t}c_kZ_k)=-R_i$
+exactly. The limit law is therefore that of $-\mathbf G$ weighted by
+$x_1^{-1/2}\exp(-\mathbf G_1^2/(2x_1))$, which integrates to one since
+$C_{11}=1-x_1$. Completing the square changes the covariance to
+\[
+ C_{ij}-\frac{C_{i1}C_{1j}}{x_1+C_{11}}=1-\max(x_i,x_j)-(1-x_i)(1-x_j)=\min(x_i,x_j)-x_ix_j.
+\]
+No local theorem for an arithmetically restricted suffix is used. By
+\cref{ctp:cl:lem:cumulants}, $t\E S_{K_i}=K_i+O(1)$ and $nt=m+O(1)$, so
+replacing canonical centring by $x_i$, and the normalization by that of
+\eqref{ctp:cl:eq:bridgevector}, changes the vector by $o(1)$; uniform higher
+canonical moments and the bounded likelihood give convergence of joint
+moments.
+
+Pointwise convergence of the profile follows. At zero it vanishes
+identically. At one, the scaled upper mass $t(S-S_M)$ is tight by the
+fixed-upper-process theorem and its moment bounds, so
+$1-\mathcal F_n(1)=O_{\PP_n}(m^{-1})$. A finite grid and monotonicity of
+$\mathcal F_n$ prove \eqref{ctp:cl:eq:shape}.
+\end{proof}
+
+For example, the first half of the active indices carries asymptotically
+half the total mass, with variance $1/4$ after the $\sqrt m$ normalization.
+This differs from the total part count, which has a nondegenerate limit
+after scaling by $t$: the distinction is whether multiplicities are weighted
+by $c_k$.
+
+\section{What is universal and what is Catalan-specific}
+\label{ctp:cl:sec:universal}
+
+The mechanism extends beyond one OEIS sequence, but its arithmetic
+hypotheses must be stated. The following proposition (manuscript~06)
+complements Part~I's \cref{ctp:prop:general}, which treats the counting
+asymptotics under the hypotheses of Section~\ref{ctp:sec:saddle}; it does
+not re-prove it.
+
+\begin{proposition}[A sufficient lacunary class]\label[proposition]{ctp:cl:prop:universal}
+Let $a_1<a_2<\cdots$ be positive integers such that
+\begin{enumerate}
+\item $a_1=1$, and some finite subset of $\{a_2,a_3,\ldots\}$ has greatest
+common divisor one;
+\item for all large $k$, $1<q_-\le a_{k+1}/a_k\le q_+<\infty$.
+\end{enumerate}
+For partitions with these allowed sizes let $t$ solve the weighted-mean
+equation and $M=\#\{k:ta_k\le1\}$. Then
+\cref{ctp:cl:thm:threshold,ctp:cl:thm:smalltail} hold with the same function
+$d(a)$ and constant $\phi(1)$, with $M$ in place of $m$. The total-count
+limit is $tN_n\Rightarrow\sum_{k\ge1}\mathbf E_k/a_k$ with all moments, and
+the normalized index mass profile and its finite-dimensional bridge have the
+same form.
+
+Suppose in addition an eventual smooth interpolation
+$\log a_k=r(k)$, $r(x)=\alpha x-\beta\log x+c+O(x^{-1})$ with $\alpha>0$, the
+remainder differentiable three times with bounds $O(x^{-1-\ell})$. Set
+$m=r^{-1}(\log(1/t))$ and $M=\lfloor m\rfloor$. Then the fixed-edge laws and
+their first correction have exactly the forms above, with
+$u_j=\e^{\alpha(j-\theta)}$ and $\frac32$ replaced by $\beta$, and the joint
+small-part/edge independence holds.
+\end{proposition}
+\begin{proof}
+The ratio bounds give scaled mean and variance $M+O(1)$ and other scaled
+cumulants $(r-1)!\,M+O_r(1)$. The central and intermediate Fourier estimates
+use a positive fraction of the active sizes and finitely many fixed factors.
+On the compact outer arcs the unit factor gives one $O(t)$ factor; by the
+finite gcd hypothesis the sines of the other selected sizes have no common
+zero there, so one gives a second. The proofs of the local theorem, the
+cutoff transition and the bridge therefore apply without change. The ratio
+bounds give $\sum_k1/a_k<\infty$, so the shift identity and moment
+domination prove the count limit. Under the interpolation hypothesis
+$ta_{M+j}=\e^{\alpha(j-\theta)}(1-\beta(j-\theta)/m+O_j(m^{-2}))$, and the
+$L^1$ product interpolation gives exactly the coefficient $\beta$ in the edge
+score; the same survival identities prove the joint independence. The scalar
+cumulant constants depending on the initial sizes cancel at first order.
+\end{proof}
+
+\begin{remark}[{[write]} Re-reading ``apply without change'']\label[remark]{ctp:cl:rem:universal}
+The dossier flagged this proof as compressed. The write checked each
+transfer. (1)~Outer arcs: a common zero of $\sin(a_ky/2)$ over the finite
+gcd-one set $F$ needs $ya_k\in2\pi\Z$ for all $k\in F$, hence $y\in2\pi\Z$, so
+on $\delta\le|y|\le\pi$ one factor of $F$ is $O_\delta(t)$, and with the unit
+factor the arc integral is $O(t^2)=o(t/\sqrt M)$ exponentially, as
+$t\le Cq_-^{-M}$. (2)~The likelihood expansion \eqref{ctp:cl:eq:likelihoodexp}
+uses only $B_2=m+O(1)$, $B_3=2m+O(1)$ and $E_1=-1/(12m)+O(m^{-2})$, which
+hold for every such sequence because $B_r=(r-1)!\,M+O_r(1)$ and $m-M\in[0,1)$;
+for large $n$ every initial $a_k$ is at most $1/t$ and $r$ is eventually
+increasing, so $M=\lfloor m\rfloor$ is the number of active sizes. (3)~The
+transport bound \eqref{ctp:cl:eq:eta} needs, for $d=j-\theta\ge-m/2$,
+$\eta_j=-\beta\log(1+d/m)+\varepsilon(m+d)-\varepsilon(m)$ with
+$\varepsilon(x)=O(1/x)$, $\varepsilon'(x)=O(x^{-2})$; both bounds of
+\eqref{ctp:cl:eq:eta} follow, with $\frac32$ replaced by $\beta$, using one
+derivative of the remainder. (4)~The tails of \cref{ctp:cl:lem:maxtails}
+hold with $2^h$ and $2^{-r(r-1)/2}$ replaced by $q_-^h$ and
+$q_-^{-r(r-1)/2}$. With these readings the proof is complete. Its scope is
+the first part's statistics and the first-order edge laws; the
+higher-order statements of \cref{ctp:cl:sec:moments,ctp:cl:sec:spectral}
+are not asserted for the class.
+\end{remark}
+
+The finite gcd condition is sufficient, not necessary. Pure powers of a
+fixed integer fail this condition; their resonant arcs need a separate
+argument, and the proposition does not justify applying the present
+outer-arc proof to them. For Catalan numbers the witnesses $1,2,5$ make the
+arithmetic check immediate (Part~I, Section~\ref{ctp:sec:saddle}). The
+division between universal and specific data is now clear: the Gaussian
+transition $d$ depends on the fraction of active variances retained; the
+growth rate~$4$ sets the edge lattice, and the Catalan exponent $\frac32$
+its first drift term; the entire small-size sequence determines the
+exponential-sum law~$W$.
+
+\section{Computation and numerical diagnostics}
+\label{ctp:cl:sec:numerics}
+
+Each manuscript ships its own programs: manuscript~06
+\path{code/02-laws-verify.py} and \path{code/02-laws-audit_correction.py},
+manuscript~10 \path{code/03-endpoint-catalan_statistics.py},
+\path{code/03-endpoint-verify.py} and \path{code/03-endpoint-verify_cutoff.py}.
+Neither is used as a substitute for an asymptotic proof. Manuscript~06's
+recorded run used Python 3.12.14, mpmath 1.3.0 and matplotlib 3.10.8 at 60
+decimal digits; manuscript~10's used Python 3.13.5, mpmath 1.3.0 and SymPy
+1.14.0 at 60 digits.
+
+\subsection{Exact coefficients and integer moment numerators}
+Both programs use arbitrary-precision integers for the finite Euler products
+needed up to $n$ (manuscript~10 for every $0\le n\le10^6$). When a part of
+size $c$ is added, the ascending update of the arrays $(p_s,A_s,B_s)$, which
+sum $1,N,N^2$ over the partitions of $s$, is
+\[
+ p_s\gets p_s+p_{s-c},\qquad A_s\gets A_s+A_{s-c}+p_{s-c},\qquad
+ B_s\gets B_s+B_{s-c}+2A_{s-c}+p_{s-c};
+\]
+the entries at $s-c$ already include the new part type, which allows
+repeated copies. Then $A_n/p_n=\E N_n$ and $B_n/p_n=\E N_n^2$. Prefix
+snapshots give the exact law of $J_n$ and the numerators for $N_nJ_n$ and the
+mixed first moments; manuscript~06 keeps all integer numerators in
+\texttt{data/02-laws-verification.json}. The exact counts $p(10^k)$,
+$k=2,\ldots,6$, both programs print equal those of Part~I,
+\cref{ctp:sec:computation}.
+
+For the total variation after $K$, let $p_K(q)$ count prefix partitions,
+$b_s$ tail partitions, and
+$F_{\rm tail}=\prod_{k>K}(1-\e^{-tc_k})^{-1}$. The exact reduction to tail
+mass gives
+\begin{equation}\label{ctp:cl:eq:numerictv}
+ \Delta_n(K)=\frac12\Bigl\{\sum_{s=0}^n\Bigl|\frac{b_sp_K(n-s)}{p(n)}
+ -\frac{b_s\e^{-ts}}{F_{\rm tail}}\Bigr|+1-\sum_{s=0}^n\frac{b_s\e^{-ts}}{F_{\rm tail}}\Bigr\}.
+\end{equation}
+The last term accounts for independent tail configurations whose mass
+exceeds~$n$; omitting it would understate the distance. The integer arrays
+are exact; saddles, infinite products and final ratios are numerical, at 60
+digits for the high-precision part and in floating summation for the long
+total-variation sums, with product and phase cutoffs recorded in the JSON.
+
+\begin{table}[htbp]
+\centering\small
+\input{data/02-laws-moments_table.tex}
+\caption{Exact integer count and moment numerators at the numerical saddle
+(manuscript~06; $N$ is $N_n$, $J$ is $J_n$). The limits of the last three
+columns are $S_1=1.80613305\ldots$, $S_2=1.29573230\ldots$ and zero
+(\cref{ctp:cl:thm:mixedcov} gives the rate of the last). The variance
+converges slowly, as \cref{ctp:cl:cor:var} predicts.}
+\label{ctp:cl:tab:moments}
+\end{table}
+
+\begin{table}[htbp]
+\centering\small
+\input{data/02-laws-edge_errors_table.tex}
+\caption{Maximum CDF errors over the recorded thresholds $-28\le h\le9$
+(manuscript~06). The leading approximation is $G_h$, the corrected one
+$G_h+G_hC_h/m$; the last column multiplies the corrected maximum error by
+$m^2$. Finite-range numerical maxima, not certified global error bounds.}
+\label{ctp:cl:tab:edge}
+\end{table}
+
+At $n=10^6$ there are only $M=11$ active sizes and $m=11.356392\ldots$. The
+observed CDF error falls from $0.020100913\ldots$ to $0.003262362\ldots$ after
+the correction (\cref{ctp:cl:tab:edge}), and the scaled count variance is still about $0.9382$
+against its limit $1.2957$. A large $n$ is not by itself evidence of a large
+effective asymptotic parameter.
+
+\begin{table}[htbp]
+\centering\small
+\input{data/02-laws-tv_table.tex}
+\caption{Total variation from exact coefficients and numerical products,
+against the limiting curve (manuscript~06). For each $n$ the cutoffs are near
+one quarter, one half and three quarters of $M$; the fractions vary because
+$M$ is an integer.}
+\label{ctp:cl:tab:tv}
+\end{table}
+
+\subsection{An independent central Fourier diagnostic}
+\texttt{code/02-laws-audit\_correction.py} works at fixed $\theta=0.37$ and
+$m=M+\theta$ for $M=20,40,80,160$, evaluating finite central Fourier integrals
+for the full and prefix products. Its target is the continuous canonical
+mean, not a prescribed integer $n$, so it is a separate check of the
+expansion and its signs, not an exact coefficient computation; the JSON
+records its part cutoff, integration endpoint, quadrature settings and the
+bound $t/2$ on the scaled change from rounding that mean to an integer. For
+$h=0$ the values of
+$m^2\bigl(\text{diagnostic}/G_0(0.37)-1-C_0(0.37)/m\bigr)$ are approximately
+$-0.054852$, $-0.049493$, $-0.046916$, $-0.045653$: bounded, as the
+second-order remainder requires. The script also tests $h=-2$ and $h=1$,
+including a case where the first coefficient is positive. Its NumPy/SciPy
+quadrature is not interval-certified.
+
+\subsection{Number-of-parts and edge comparisons (manuscript 10)}
+\Cref{ctp:te:tab:mean} compares $t\E N_n$ with its limit $S_1$ and with
+\eqref{ctp:te:eq:mean-refined}. Every error in this subsection means
+\emph{approximation minus the comparison value}, not relative error.
+
+\begin{table}[htbp]
+\centering\small
+\caption{The scaled mean and its first nonzero conditioning correction
+\eqref{ctp:te:eq:mean-refined}.}
+\label{ctp:te:tab:mean}
+\begin{tabular}{rrrrr}
+\toprule
+$n$ & $m_n$ & $t_n\E N_n$ & Limit error & Refined error\\
+\midrule
+$10^{2}$ & 4.5337 & 1.728648492 & $7.75\cdot10^{-2}$ & $1.11\cdot10^{-1}$\\
+$10^{3}$ & 6.2400 & 1.802456102 & $3.68\cdot10^{-3}$ & $2.00\cdot10^{-2}$\\
+$10^{4}$ & 7.9492 & 1.815524785 & $-9.39\cdot10^{-3}$ & $2.05\cdot10^{-3}$\\
+$10^{5}$ & 9.6549 & 1.812682904 & $-6.55\cdot10^{-3}$ & $8.50\cdot10^{-4}$\\
+$10^{6}$ & 11.3564 & 1.810616979 & $-4.48\cdot10^{-3}$ & $2.91\cdot10^{-4}$\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The cancellation of the $m^{-1}$ term does not make the limiting mean
+accurate at every moderate argument: at $n=100$ and $1000$ the refinement is
+worse than the limit itself, and it improves the error at the larger
+arguments, as an expansion in $1/\log n$ rather than $1/n$ allows.
+
+For a transform comparison let $R_J(s)$ be the operator quotient of
+\eqref{ctp:te:eq:length-all}; \cref{ctp:te:tab:laplace} uses $s=1$. The
+comparison transform comes from an independent weighted dynamic program,
+$f_n\gets f_n+\e^{-t}f_{n-c}$, normalized by $p(n)$; unlike the integer
+arrays it uses ordinary double precision, and the displayed precision
+reflects this.
+
+\begin{table}[htbp]
+\centering\small
+\caption{Number-of-parts Laplace transform at $s=1$: signed errors of
+exact-cumulant operator quotients.}
+\label{ctp:te:tab:laplace}
+\begin{tabular}{rrrrr}
+\toprule
+$n$ & Weighted DP & $R_1$ error & $R_2$ error & $R_3$ error\\
+\midrule
+$10^{2}$ & 0.223714912 & $-2.05\cdot10^{-2}$ & $-2.43\cdot10^{-2}$ & $-2.50\cdot10^{-2}$\\
+$10^{3}$ & 0.219620551 & $-2.73\cdot10^{-3}$ & $-4.39\cdot10^{-3}$ & $-4.37\cdot10^{-3}$\\
+$10^{4}$ & 0.223404483 & $6.83\cdot10^{-4}$ & $-5.45\cdot10^{-4}$ & $-6.71\cdot10^{-4}$\\
+$10^{5}$ & 0.228207266 & $7.17\cdot10^{-4}$ & $-8.79\cdot10^{-5}$ & $-1.28\cdot10^{-4}$\\
+$10^{6}$ & 0.231858951 & $4.90\cdot10^{-4}$ & $-2.00\cdot10^{-5}$ & $-1.98\cdot10^{-5}$\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The small-$n$ discrepancies include the discrete marking correction $O(tm)$
+of \eqref{ctp:te:eq:amplitude-approx}, beyond every fixed inverse-$m$ order
+asymptotically but not negligible in a finite table; more inverse-power terms
+do not guarantee monotone improvement.
+
+At $n=10^6$ the saddle is $m\approx11.3563921110$, so $M=11$.
+\Cref{ctp:te:tab:cutoff} compares four exact two-coordinate cylinder
+probabilities with the leading product law and the correction
+\eqref{ctp:te:eq:cylinder-correction}, and \cref{ctp:te:tab:max} the maximum
+CDF. The leading column of \cref{ctp:te:tab:max} is Part~I's fixed-offset law
+(compare Part~I's \cref{ctp:tab:largest}); the corrected column and the
+uniform and moment results are Part~II's.
+
+\begin{table}[htbp]
+\centering\small
+\caption{Exact multiplicities at indices $M$ and $M+1$ for $n=10^6$.}
+\label{ctp:te:tab:cutoff}
+\begin{tabular}{rrrr}
+\toprule
+$(Z_M,Z_{M+1})$ & Exact probability & Product limit & First correction\\
+\midrule
+$(0,0)$ & 0.396817585 & 0.416939910 & 0.400090956\\
+$(1,0)$ & 0.231522740 & 0.226512608 & 0.230976878\\
+$(0,1)$ & 0.049984689 & 0.036320274 & 0.048151337\\
+$(1,1)$ & 0.025229001 & 0.019731860 & 0.024758330\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+\centering\small
+\caption{Maximum CDF at $n=10^6$: exact value, leading phase law, corrected law.}
+\label{ctp:te:tab:max}
+\begin{tabular}{rrrr}
+\toprule
+$h$ & Exact CDF & $G_h(\theta)$ & $G_h(1+C_h/m)$\\
+\midrule
+$-1$ & 0.396814988 & 0.416915901 & 0.400077350\\
+$0$ & 0.898512343 & 0.912835901 & 0.898940702\\
+$1$ & 0.999997109 & 0.999942416 & 1.000012495\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+For $h=1$ the truncated correction slightly exceeds one; it must not be
+treated as a probability. Higher exact-cumulant orders need not improve
+monotonically: at this $h$ the errors of orders one, two and three are about
+$3.47\cdot10^{-4}$, $-4.73\cdot10^{-6}$ and $-4.41\cdot10^{-5}$. The data keep
+these unfavourable cases. (The exact $h=-1$ value of
+\cref{ctp:te:tab:max}, $0.396814988$, and Part~I's \cref{ctp:tab:largest},
+$0.39681499$, agree; the $(0,0)$ cylinder of \cref{ctp:te:tab:cutoff},
+$0.396817585$, is a different event, $Z_M=Z_{M+1}=0$ without the condition on
+higher indices.)
+
+The covariance prediction \eqref{ctp:te:eq:max-cov} can be checked from
+integer prefix length sums. At $n=10^6$, for $h=-1$ the exact covariance is
+about $0.068524922$ against the first prediction $0.063602248$; for $h=0$ the
+values are $0.035783824$ and $0.033892036$. Both show the predicted positive
+dependence. In the much rarer $h=1$ tail the first prediction is not
+relatively accurate at this argument; only its fixed-offset asymptotic status
+is asserted.
+
+\begin{table}[htbp]
+\centering\small
+\caption{Limiting upper quantiles of $W$ and signed inverse-series errors.}
+\label{ctp:te:tab:quantile}
+\begin{tabular}{rrrrr}
+\toprule
+$\epsilon$ & $\xi_\epsilon$ & Order 0 error & Order 2 error & Order 4 error\\
+\midrule
+$1\cdot10^{-1}$ & 3.300015038 & $2.80\cdot10^{-2}$ & $6.92\cdot10^{-5}$ & $3.49\cdot10^{-7}$\\
+$1\cdot10^{-2}$ & 5.627898046 & $2.70\cdot10^{-3}$ & $6.49\cdot10^{-8}$ & $3.24\cdot10^{-12}$\\
+$1\cdot10^{-3}$ & 7.932909782 & $2.69\cdot10^{-4}$ & $6.45\cdot10^{-11}$ & $3.22\cdot10^{-17}$\\
+$1\cdot10^{-6}$ & 14.840933331 & $2.68\cdot10^{-7}$ & $6.45\cdot10^{-20}$ & $3.21\cdot10^{-32}$\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\Cref{ctp:te:tab:quantile} concerns the limit variable $W$, not a finite-$n$
+statistic. The comparison quantile comes from high-precision evaluation of
+\eqref{ctp:cl:eq:Wdensity} and a bracketed scalar root finder; the truncation
+order is the largest power of $\epsilon$ kept after the logarithm. The small
+errors are consistent with convergence but are not interval enclosures; the
+convergence proof is \cref{ctp:te:thm:inverse}.
+
+\subsection{Finite checks recorded by the two runs}
+Manuscript~06's run passes: (1)~all 62 displayed terms of the inspected OEIS
+entry; (2)~the logarithmic-derivative recurrence
+$np(n)=\sum_{s=1}^n(\sum_{c_k\mid s}c_k)p(n-s)$ (Part~I's
+\eqref{ctp:eq:exact-recursion}) through $n=300$; (3)~exhaustive multiplicity
+enumeration of the numerators for $1,N,N^2,J,J^2,NJ$ through $n=40$;
+(4)~direct enumeration of full upper multiplicity vectors at $n=100$, $K=2$
+and a separate test parameter $t=0.08$, agreeing with
+\eqref{ctp:cl:eq:numerictv} (distance $0.5597111388\ldots$, which differs from
+the saddle value of \cref{ctp:cl:tab:tv} because the parameter differs);
+(5)~the tail-mass conditional probabilities sum to one within the recorded
+tolerance; and (6)~its counts at powers of ten equal Part~I's.
+
+Manuscript~10's run passes: the first 20 OEIS terms; all 301 counts through
+$n=300$ against the same recurrence; exhaustive recursion for the count and
+both length sums for $0\le n\le60$ (61 checks); 549 exact cutoff-cylinder
+inclusion--exclusion identities \eqref{ctp:te:eq:inclusion-exclusion} for
+small arguments and a symbolic check of the first-order joint
+product-operator identity (\texttt{03-endpoint-verify\_cutoff.py}); 15 exact
+gamma-benchmark comparisons (orders one to three, moments one to five); the
+finite partial-fraction identity for the first eight rates; the four
+inverse-tail coefficients; and, in floating point, 13 spectral-transform and
+boundary-flatness identities and four upper-quantile equations. The
+million-term computation is exact integer arithmetic, but the independent
+recurrence cross-check reaches only $300$, as the JSON records. No test count
+is a proof of the analytic remainder estimates; the code checks finite
+combinatorics and algebra and evaluates the formulas, but does not verify the
+contour arguments, certify numerical tails, or establish priority, and the
+million-term program is not a machine proof of the limit law. Conversely the
+proofs do not rely on extrapolating the tables.
+
+\subsection{Checks by the intake}
+\label{ctp:cl:sec:checks}
+\writenoteB{The batch-98 intake checked by hand the likelihood linear term
+(from $B_{3,K}=2m$ and $E_1=-1/(12m)$), the crossing point and $d(a)$ of
+\cref{ctp:cl:thm:threshold}, $\E|1-Z^2|=4\phi(1)$ of
+\cref{ctp:cl:thm:smalltail}, the transport score
+$\eta_j=-3(j-\theta)/(2m)$, \cref{ctp:cl:cor:maxcorrection} and
+\eqref{ctp:cl:eq:differentialcorrection}, the agreement of
+\cref{ctp:cl:cor:cov} with manuscript~10's operator, the mgf bound of
+\cref{ctp:cl:thm:joint}, the bridge covariance, the jet algebra of
+\cref{ctp:te:thm:length}, $\Cov(X_{i,n},X_{j,n})=-1/m$, the covariance sign of
+\cref{ctp:te:thm:maxjoint}, \cref{ctp:te:lem:d}, the remainder
+\eqref{ctp:te:eq:spectral-rem}, \cref{ctp:te:thm:boundary} and the Lagrange
+coefficients of \eqref{ctp:te:eq:inverse-four}; none failed. At 40 digits it
+recomputed $S_1$, $S_2$, $2S_3/S_2^{3/2}$, $d(1/2)$, $\sd_1,\ldots,\sd_5$,
+$\xi_{0.1}$ and $F_0,F_1,\mathcal V_0,\mathcal V_1$ at $\theta=0,\frac12$, all
+agreeing to the printed 9--10 digits, and $-S_1\Xi(\theta)=-1.3205626659$ at
+the phase of $n=10^6$. The write reran all four delivered programs on copies
+with the delivered names restored (Windows, Python 3.13.5): every CSV and
+\texttt{.tex} table and the phase-function JSON equal the shipped files up to
+line ends; the verification JSON files differ only in Python, platform, time
+and run-time strings and, for manuscript~06, in last-digit floats of the
+double-precision limits; the run times were 61, 19, 17 and 8~seconds. The
+write also verified \cref{ctp:te:rem:bperiodic} numerically: at the phase of
+$n=10^6$, $\mathfrak b_1=-0.496803$, $\mathfrak b_2=0.239194$ and
+$\mathfrak b_3=1.149217$.}
+
+\subsection{Reproduction as delivered}
+The delivered instructions, from the extracted archive directories, were
+\begin{verbatim}
+python code/verify.py                    # manuscript 06
+python code/audit_correction.py          # manuscript 06
+python -m pip install -r requirements.txt                          # 10
+python code/verify.py --max-n 1000000 --dps 60 --output rerun      # 10
+python code/verify_cutoff.py --max-n 1000000 --dps 60 --output rerun
+\end{verbatim}
+Manuscript~06's first command needs mpmath, and matplotlib for the figures;
+the second needs NumPy and SciPy. Manuscript~10's \texttt{--output} option
+keeps its shipped data unchanged; for a smaller run replace the million by
+10000.
+
+\writenoteB{In this report the programs carry the prefixes \texttt{02-laws-}
+and \texttt{03-endpoint-}, import each other and read and write data under
+their delivered, unprefixed names, and by default write into the shipped
+\texttt{data/} and \texttt{figures/}; manuscript~06's \texttt{verify.py} writes
+to the package root unless \texttt{--output} is given. Do not run them in the
+report directory. The report README gives the rerun route on a copy with the
+delivered names restored.}
+
+\section{Further questions and research}
+\label{ctp:cl:sec:future}
+
+The following are directions, not theorems claimed by Part~II; neither
+manuscript asserts that all are previously unposed. Each item names its
+source. Questions one manuscript asked and the other (or the write) answered
+are recorded as answered and not repeated as open.
+
+\paragraph{Answered within Part II.}
+(a)~Manuscript~06 asked for ``the possible cancellation of the first $1/m$
+correction in $\E(tN_n)$'': proved by manuscript~10
+(\cref{ctp:te:cor:mean}); as a consequence of \eqref{ctp:te:eq:mean-refined}
+and \cref{ctp:te:rem:bperiodic}, [write]
+$m^2(t\E N_n-S_1)=\frac{S_1}2\bigl(\mathfrak b_3(\theta)-2\mathfrak b_2(\theta)\bigr)+O(m^{-1})$,
+which is $0.6058$ at the phase of $n=10^6$ against the recorded
+$0.578$. (b)~Its ``$m\Cov(tN_n,J_n-M)$'': the limit is
+$-S_1\Xi(\theta)$ ([write], \cref{ctp:cl:thm:mixedcov}). (c)~All five
+fields of its \texttt{exploratory\_unproved\_refinements} are now accounted
+for: the mean error as in~(a), the two variance fields by
+\cref{ctp:cl:cor:var}, the two covariance fields by
+\cref{ctp:cl:thm:mixedcov}. (d)~Manuscript~10's ``all-orders largest-index
+moments'' at first order: \eqref{ctp:cl:eq:maxmean}--\eqref{ctp:cl:eq:maxvar}
+(manuscript~06). (e)~Its ``expanding cutoff field'' for the upper window in
+total variation: \cref{ctp:cl:thm:threshold,ctp:cl:thm:smalltail}
+(manuscript~06). (f)~Its universality question in part:
+\cref{ctp:cl:prop:universal}.
+
+\subsection{Uniform higher orders across the cutoff transition (06)}
+The regime $M-K\to\infty$, $M-K=o(M)$ has the universal leading constant
+$\phi(1)$, while a fixed upper cutoff has the phase-sensitive coefficient of
+\eqref{ctp:cl:eq:edge-tv-sharp}. Construct a uniform expansion connecting
+them and determine the next coefficient throughout
+$1\le M-K\le(1-\varepsilon)M$. The absolute value in the total-variation norm
+introduces moving zeros of the density correction, so extending the local
+Edgeworth expansion is not the whole problem.
+
+\subsection{Higher corrected joint laws and the expanding cutoff field (06, 10)}
+The proof of \cref{ctp:cl:thm:edge} is constructive: further displacement
+integrals and gamma-ratio coefficients should give
+$\dd\nu_{n,h}/\dd\Pi_{\theta,h}=1+\mathcal P_1/m+\mathcal P_2/m^2+\cdots$ with
+weighted $L^1$ remainders at every fixed order, ideally by a finite symbolic
+recurrence in centred tail energies and phase derivatives with automatic
+checks $\E\mathcal P_r=0$ (manuscript~06). Manuscript~10 asks how fast the
+finite index set of \cref{ctp:te:thm:cutoff} may grow while the joint law
+stays close in total variation to a product of geometric laws, and for an
+explicit correction operator for the whole transition field. For the upper
+window this is answered by \cref{ctp:cl:thm:threshold,ctp:cl:thm:smalltail};
+quantitative independence of the transition field from the low-index
+length variables, in total variation rather than for transforms, remains
+open.
+
+\subsection{Functional bridge and a simultaneous three-scale theorem (06)}
+\Cref{ctp:cl:thm:bridge} is finite-dimensional with a uniform law of large
+numbers. A functional limit needs tightness near both index endpoints; one
+route reserves finitely many small arithmetic witness factors for the
+conditioning local limit and controls the remaining increments by moments.
+A simultaneous theorem for the count limit, the whole bridge and the
+two-sided edge process on one product space would make the three-scale
+description precise; the topology and normalization at the lower endpoint
+must be specified first.
+
+\subsection{Local limits for the number of parts, and finite-size quantiles (06, 10)}
+Weak convergence of $tN_n$ with moments does not imply a lattice local
+limit. A natural target (06) is $\PP_n(N_n=\ell)=t\,f_W(t\ell)+o(t)$ in a
+stated range, with a version conditioned on a largest-index threshold; this
+is a two-variable coefficient problem whose Fourier analysis must handle the
+joint lattice generated by $(c_k,1)$. Manuscript~10 notes that the first
+\emph{formal} density correction suggested by \eqref{ctp:te:eq:length-first}
+is $-\tfrac12(x^2f_W(x))''/m$; compact Laplace control does not prove this
+density statement. A sufficiently uniform local theorem would transport the
+correction to finite-$n$ quantiles and give admissible simultaneous ranges
+$\epsilon=\epsilon(n)\downarrow0$, turning the sequential inversion of
+\cref{ctp:te:thm:inverse} into a finite-size inverse theorem.
+
+\subsection{The next mixed coefficient (06; [write])}
+\Cref{ctp:cl:thm:mixedcov} has remainder $O((\log m)^{5/2}/m)$. Determine the
+next coefficient of $m\Cov(tN_n,J_n)$ (at $n=10^6$ the exact value $-1.4368$
+differs from the limit $-1.3206$ by about $1.3/m$), and whether the logarithm
+can be removed: the write's summation uses only polynomial-in-$h$ errors up
+to $|h|\asymp\sqrt{\log m}$. A joint version of
+\cref{ctp:cl:thm:maxweighted} with the number-of-parts mark, as manuscript~06
+proposed (``a marked coefficient expansion with a uniform remainder in the
+marking parameter, followed by differentiated and weighted versions of the
+maximum-law expansion''), would settle both. \emph{Dated note
+(5~October 2026):} the independent check recorded in
+\cref{ctp:cl:rem:mixedcov} observed that the same proof already reduces
+the logarithmic factor to $\log\log m$, and that the numerics at
+$m\le13.4$ show no logarithmic growth; removing it altogether remains
+open.
+
+\subsection{Distinct sizes and near-edge holes (06)}
+Let $D_n=\#\{k:Z_k>0\}$. Manuscript~06 proposes, without proof, the edge
+description of $D_n-M$ as occupied sites above the cutoff minus missing
+sites below it,
+$-\sum_{j\le0}\ind_{\{Y_j^{(\theta)}=0\}}+\sum_{j\ge1}\ind_{\{Y_j^{(\theta)}>0\}}$;
+both limiting sums are almost surely finite. A theorem with moments needs a
+uniform small-rate bound on missing-site probabilities under conditioning, a
+different estimate from the large-multiplicity survival bound used for $N_n$.
+
+\subsection{Universality with minimal hypotheses (06, 10)}
+Remove or weaken the finite gcd hypothesis of \cref{ctp:cl:prop:universal}:
+pure integer powers have strong root-of-unity resonances but much of the
+same geometry, and a general theorem should distinguish a genuinely
+competing lattice contribution from a resonance negligible after integration
+(06). For $a_k\sim A\rho^kk^{-\beta}$ the local calculation predicts a
+length limit $\sum\mathbf E_k/a_k$, a cutoff scale $\rho^{j-\theta}$ and a
+curvature coefficient involving $\beta$ (10); \cref{ctp:cl:prop:universal}
+proves this at first order for its class, and a general theorem with minimal
+growth and lattice-smoothing hypotheses, separating the full-sequence
+dependence of the length law from the local-ratio dependence of the cutoff
+law, remains open. Fuss--Catalan and other gamma-quotient sequences are test
+cases whose noncentral-arc hypotheses must be checked, not inferred from
+their exponential growth; compare Part~I, question~\ref{ctp:sec:future}.6.
+
+\subsection{The optimal transition for a receding maximum cutoff (10)}
+\Cref{ctp:te:thm:growing} uses $|h|\le m^{1/8}$; its proof points to the
+ratio $|h|/\sqrt m$, the deleted tail having scaled mean of order $|h|$.
+Determine the optimal perturbative range, then the nonperturbative regime
+$h\asymp\sqrt m$, where the prefix saddle should move on the width scale of
+the full saddle. For $h$ proportional to $m$ a different large-deviation rate
+function is ``likely'' the right object (manuscript~10's expectation,
+unproved); the present Gaussian tail bound is not sharp enough to identify it.
+
+\subsection{All-orders largest-index moments (10)}
+First order is answered (item (d) above). Derive and normalize explicit
+higher inverse-$m$ corrections for the mean, variance and higher cumulants
+of $J_n$ by summing cutoff corrections with a proved summable remainder; the
+growing-window estimate is a starting point, but the exact tail amplitudes
+must be expanded uniformly in that window. A useful computational goal is a
+phase-function library with certified extrema and Fourier tails.
+
+\subsection{Small deviations of the limit law (10)}
+The survival expansion is excellent for large $x$, but cancellation makes it
+inefficient for $\PP(W\le x)$ as $x\downarrow0$. Determine the complete
+logarithmic small-deviation expansion, with its phase modulation and its
+inverse. The product $\LW(s)$ for large positive $s$ suggests a logarithmic
+saddle related to the partition-counting saddle of Part~I, but the sign and
+boundary factors differ (manuscript~10's suggestion, unproved).
+
+\subsection{The convergence radius of the inverse tail (10)}
+\Cref{ctp:te:thm:inverse} proves a positive radius without identifying it.
+Locate the nearest complex critical values of $\mathcal T$ and decide whether
+they, rather than the natural boundary, control the inverse germ; this would
+give sharp coefficient growth and a principled truncation rule. Neither
+non-D-finiteness nor the natural boundary answers it.
+
+\subsection{Exponential sectors and arithmetic secondary arcs (10)}
+The operator expansion keeps every algebraic order in $m^{-1}$ but discards
+the marking correction $O(tm)$ and the noncentral arcs. Determine their
+leading contributions and whether the roots of unity organize them into an
+exponentially improved expansion; such sectors can matter numerically before
+the inverse-$m$ series is accurate (\cref{ctp:te:tab:laplace}). This is the
+statistics counterpart of Part~I, question~\ref{ctp:sec:future}.3; any claim
+of a complete transseries must account for them.
+
+\subsection{Certified computation, sampling and formalization (06, 10)}
+Make the constants in the contour, moving-window and $L^1$ remainders and in
+the tail bounds explicit and computable, and implement the positive geometric
+tails with interval arithmetic. This would give certified total-variation
+tolerances for sampling only the large parts and certified evaluations of the
+periodic mean and variance functions (06), and finite-$n$ probability and
+integer-quantile decisions (10). An exact sampler for the whole partition
+must still handle the total-size constraint efficiently; an asymptotic law
+does not settle that algorithmic problem. A feasible formalization order is
+the finite Gaussian multi-index operator and the exact counting identities
+first, then the analytic localization and conditioning steps (10); compare
+Part~I, questions~\ref{ctp:sec:future}.1 and~\ref{ctp:sec:future}.8.
+
+\section{Conclusion of Part II}
+\label{ctp:cl:sec:conclusion}
+
+Catalan-part partitions have two sharply different endpoint scales. The
+number of parts is governed by an infinite convolution of exponentials, with
+a sparse exact exponential representation, a natural boundary and a
+convergent inverse-tail expansion; the largest index has a phase-dependent
+integer law. The common size constraint disappears at leading order between
+the endpoints, yet leaves explicit order-$1/\log n$ dependence, both inside
+the upper edge (\cref{ctp:cl:cor:cov}) and between the endpoints
+(\cref{ctp:te:thm:maxjoint,ctp:cl:thm:mixedcov}). For the whole upper
+process the conditioning can be neglected exactly when the observed window
+contains $o(\log n)$ active sizes, with the explicit curve $d(a)$ otherwise;
+uniform tails and the all-threshold expansion close the gap between a
+fixed-cutoff law and moment asymptotics; and in the bulk the mass fluctuates
+as a Brownian bridge in the normalized index. The Gaussian coefficient
+operator exposes the constraint without Gaussianizing the statistics
+themselves.
 
 \appendix
 \crefalias{section}{appendix}% write (batch 73O1): references print "appendix"
@@ -1521,6 +4349,10 @@ products in different saddle regimes and share only the standard
 saddle, Edgeworth and Lambert-$W$ toolkit; no proposition is proved in
 two of them.
 
+\writenoteB{Part~II, added in batch~98, records its own provenance in
+\cref{ctp:cl:sec:provenance}. No other report in the repository treats
+A033552; both batch-98 manuscripts became Part~II of this one.}
+
 \begin{thebibliography}{9}
 \bibitem{oeis}
 The OEIS Foundation Inc., \emph{The On-Line Encyclopedia of Integer
@@ -1581,5 +4413,39 @@ problem,'' \emph{Indagationes Mathematicae} \textbf{10} (1948),
 \path{Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/frontier-compilations/Geometric_Uniform_Convolutions_and_New_Frontiers/fabius-frontier-report-H.tex},
 section ``Mellin analysis and the hidden log-periodic phase'' (Lemma
 ``Mellin kernel'').
+
+\bibitem{arratia}
+[Added in the write of batch 98, from manuscript~06.] R.~Arratia and
+S.~Tavar\'e, ``Independent process approximations for random combinatorial
+structures,'' \emph{Advances in Mathematics} \textbf{104}(1) (1994),
+90--154. DOI:
+\href{https://doi.org/10.1006/aima.1994.1022}{10.1006/aima.1994.1022}.
+Author-hosted text:
+\url{https://www.columbia.edu/cu/simontavare/STpapers-pdf/AT94.pdf}.
+
+\bibitem{mutafchiev}
+[Added in the write of batch 98, from manuscript~06.] L.~Mutafchiev,
+``Limit theorems for the number of parts in a random weighted partition,''
+\emph{Electronic Journal of Combinatorics} \textbf{18}(1) (2011), Paper
+P206; see condition (M1) and Theorem~1(i).
+\url{https://www.combinatorics.org/ojs/index.php/eljc/article/download/v18i1p206/pdf/}.
+
+\bibitem{reciprocal}
+[Added in the write of batch 98, from manuscript~06.] The OEIS Foundation
+Inc., A121839, ``Decimal expansion of the reciprocal Catalan constant.''
+Entry inspected October 5, 2026. \url{https://oeis.org/A121839}.
+
+\bibitem{fristedt}
+[Added in the write of batch 98, from manuscript~10.] B.~Fristedt, ``The
+structure of random partitions of large integers,'' \emph{Transactions of
+the American Mathematical Society} \textbf{337}(2) (1993), 703--735.
+\url{https://doi.org/10.1090/S0002-9947-1993-1094553-1}.
+
+\bibitem{hadamard}
+[Added in the write of batch 98, from manuscript~10.] J.~Hadamard, ``Essai
+sur l'\'etude des fonctions donn\'ees par leur d\'eveloppement de Taylor,''
+\emph{Journal de Math\'ematiques Pures et Appliqu\'ees}, 4th series,
+\textbf{8} (1892), 101--186, especially Section~13, pp.~116--117.
+\url{https://www.numdam.org/item/JMPA_1892_4_8__101_0/}.
 \end{thebibliography}
 \end{document}

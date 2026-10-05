@@ -131,6 +131,32 @@ requires all 110), passed. Steps 1 and 2 were run verbatim, restricted to
 `m = 2, 5, 24, 40`. The full set was not regenerated.
 
 
+## Retrieving the delivered interval archives (ProveIt, 2026-10-05)
+
+The five interval archives arrived on 2026-10-05 (batch 99 of
+`docs/incoming/`) and are kept in arrival commit `60f54ea06` rather than
+filed here (hashes and sizes in `chunks_manifest.json`; regenerable byte for
+byte as described above); the editorial amendments below, written before
+they arrived, call them undelivered. From the repository root, in Git Bash:
+
+    cp -r Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/thue-morse/Thue_Morse_Integer_Pressure_Full_Range /tmp/fr
+    for k in 1 2 3 4 5; do
+      git cat-file blob 60f54ea06:docs/incoming/ProveIt_Thue_Morse_All_Orders_Intervals_0$k.zip > /tmp/intervals_$k.zip
+      unzip -q -o /tmp/intervals_$k.zip -d /tmp/fr
+    done
+    cd /tmp/fr && python3 finite/check_coverage.py && python3 finite/check_exact_reference.py && python3 finite/check_reference_provenance.py
+
+Tested on filing (2026-10-05, on a copy, Python 3.14.4): the five archives
+match `chunks_manifest.json`, all 110 files match `pressure_sha256` in
+`finite/production_manifest.json`, and the three checks pass
+(`finite/check_coverage.py`: "110 orders, 12320 positive intervals, 37070
+nonconstant response orders, 37180 state hashes"). These checkers, like those
+of `certificates/`, rely on bare `assert`s (37 in `finite/`, 45 in
+`certificates/`), which `python -O` and `PYTHONOPTIMIZE` remove, so run them
+without `-O`; the feedback-boundary package's `quick_checker_repair/` shows
+the fail-closed alternative. Porting it here is left to the editorial pass.
+
+
 ## Editorial amendments (ProveIt, 2026-10-01)
 
 Made in the editorial pass after batch 72 of `docs/incoming/` (see

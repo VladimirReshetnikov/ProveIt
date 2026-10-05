@@ -37,18 +37,29 @@
 \DeclareMathOperator{\Var}{Var}
 \DeclareMathOperator{\Res}{Res}
 \DeclareMathOperator{\Disc}{Disc}
-\hypersetup{pdftitle={Matrix Compositions: Exact Spectra, Hankel Products, and Uniform Asymptotics},pdfauthor={Part I: OpenAI ChatGPT, research prepared for Vladimir Reshetnikov; Part II: research report prepared for Vladimir Reshetnikov},pdfsubject={OEIS A261781 and A261784; rigorous recurrence, determinant, coverage, and diagonal results; merged report a261781-matrix-compositions (batch 85B)}}
+\hypersetup{pdftitle={Matrix Compositions: Exact Spectra, Hankel Products, and Uniform Asymptotics},pdfauthor={Part I: OpenAI ChatGPT, research prepared for Vladimir Reshetnikov; Part II: research report prepared for Vladimir Reshetnikov; Part III: OpenAI ChatGPT},pdfsubject={OEIS A261781 and A261784; rigorous recurrence, determinant, coverage, and diagonal results; the limiting law of the Hankel determinant zeros; merged report a261781-matrix-compositions (batches 85B and 98)}}
 % Added 3 October 2026, batch 85B: finite tables of manuscript 01, shipped as data/01-two-poisson-*.tex
 \makeatletter
 \newcommand{\tableinput}[1]{\@@input #1 }
 \makeatother
+% Added 5 October 2026, batch 98: notation of Part III (Table mxc:hz:tab:dictionary)
+\newcommand{\hzrho}{\rho^{\mathrm z}}
+\newcommand{\hznu}{\nu^{\mathrm z}}
+\newcommand{\hzhnu}{\widehat\nu^{\mathrm z}}
+\newcommand{\hzmu}{\mu^{\mathrm z}}
+\newcommand{\Cau}{\mathcal C}
+\newcommand{\dK}{d_{\mathrm K}}
+\newcommand{\gE}{\gamma_{\mathrm E}}
+\newcommand{\vM}{\Lambda_{\mathrm{vM}}}
 
 \title{\textbf{Matrix Compositions:\\ Exact Spectra, Hankel Products,\\ and Uniform Asymptotics}\\[8pt]
 \large OEIS A261781, its empty-row transition,\\ and refined asymptotics for A261784\\[6pt]
-\normalsize Part II: finite spectra, uniform asymptotics, and two Poisson limits}
+\normalsize Part II: finite spectra, uniform asymptotics, and two Poisson limits\\[2pt]
+\normalsize Part III: Cauchy limits, arithmetic atoms, and edge laws for the Hankel zeros}
 \author{Part I: OpenAI ChatGPT\\\small Research prepared for Vladimir Reshetnikov\\[4pt]
-\normalsize Part II: a research report prepared for Vladimir Reshetnikov}
-\date{October 3, 2026 (Pacific time); merged 3 October 2026 (batch 85B)}
+\normalsize Part II: a research report prepared for Vladimir Reshetnikov\\[4pt]
+\normalsize Part III: OpenAI ChatGPT}
+\date{October 3, 2026 (Pacific time); merged 3 October 2026 (batch 85B);\\ Part III added 5 October 2026 (batch 98)}
 \begin{document}
 \maketitle
 
@@ -104,6 +115,24 @@ p.~16]{mpr2009}, so only its minimality is new
 (Section~\ref{mxc:tp:sec:novelty}). Part~I's labels carry the prefix
 \texttt{mxc:}, Part~II's the prefix \texttt{mxc:tp:}; Appendix~\ref{mxc:app:provenance}
 records the provenance and every editorial change.
+
+\paragraph{Editorial note (5 October 2026, batch 98).}
+Since batch~98 the report has three Parts. Part~III
+(Section~\ref{mxc:hz:sec:front} onwards) is built from manuscript~08 of
+batch~98, which answers Part~I's Research question~7, on the limiting
+distribution of the zeros of the Hankel determinant of
+Theorem~\ref{mxc:thm:hankel}: after the factors at $u=0$ and $u=-1$ are
+removed, the zeros converge to the image on $\operatorname{Re}u=-\frac12$
+of a Cauchy law of scale $\frac12$, with explicit cyclotomic multiplicities,
+the sharp Kolmogorov constant $9/\pi^2$, an arithmetic edge law, the
+transition of the absolute moments and the limit under the full-degree
+normalization. Its re-derivation of Theorem~\ref{mxc:thm:hankel} is not
+reprinted. Part~III's labels carry the prefix \texttt{mxc:hz:}, and it
+renames manuscript~08's letters that clash with Parts~I and~II
+(Table~\ref{mxc:hz:tab:dictionary}). Dated notes in
+Sections~\ref{mxc:sec:scope}, \ref{mxc:sec:dictionary}, \ref{mxc:sec:hankel}
+and~\ref{mxc:sec:questions} and in Appendix~\ref{mxc:app:provenance} record
+what has changed. Part~III is AI-assisted, unrefereed and not formalized.
 
 \newpage
 \tableofcontents
@@ -217,7 +246,8 @@ $(2-e^t)\sum_q\mathsf F_qt^q/q!=1$, in
 \path{Analysis/FabiusFunction/Lean/FabiusFunction/OrderedBell.lean}
 \cite{leanob}. Nothing else stated in either Part is formalized, and
 placement beside the repository's formal projects confers no formal
-status.]
+status.] [Added 5 October 2026, batch 98: nor is anything stated in
+Part~III.]
 
 \subsection{Notation and conventions}
 Throughout, $n$ is total matrix mass, $k$ is the number of rows, and $C$ is
@@ -253,6 +283,9 @@ other symbols are unchanged. Normalizations are unchanged throughout:
 every rename is a change of letter only. All of Part~II is at column
 weight $u=1$, so its $A$, $T$, $c_k$, $d_k$ are the unweighted ones of
 Part~I.
+[Added 5 October 2026, batch 98: the renames of manuscript~08, the source of
+Part~III, are in its own Table~\ref{mxc:hz:tab:dictionary}; this table is
+unchanged.]
 
 {\small
 \setlength{\LTcapwidth}{\textwidth}
@@ -827,6 +860,13 @@ The multiplicity at $u=0$ is exactly $\sum_{j=1}^{k}j^2$.
 When its displayed exponent is positive, the multiplicity at $u=-1$
 is exactly $k(s-1)+2\binom{k+1}{3}$.  All other multiplicities follow
 by collecting the cyclotomic difference factors in the product.
+[Added 5 October 2026, batch 98: Part~III collects them. Each zero coming
+from a primitive $m$-th root of unity, $2\le m\le k-1$, has the multiplicity
+$\mathsf E_m(k)=2\sum_{i<j,\ m\mid q_{ij}}g_{ij}$, with
+$q_{ij}=(j-i)/g_{ij}$; every such order occurs
+(\eqref{mxc:hz:eq:E-exact}--\eqref{mxc:hz:eq:degree-cyclotomic}), and
+$\mathsf E_m(k)=k^2\log k/(\zeta(2)\psi(m))+O(k^2)$ uniformly in $m$
+(Proposition~\ref{mxc:hz:prop:multiplicity}).]
 
 
 
@@ -2316,6 +2356,17 @@ Section~\ref{mxc:sec:hankel} rules out a blanket appeal to total positivity.
 One should seek a model specific to these maximal minors, or a precise
 classification of which other minors have a definite sign.
 
+[Added 5 October 2026, batch 98: manuscript~08, the source of Part~III,
+asks the same question (its question~8, printed only here) and adds which
+arithmetic factors a successful model would have to explain: the gcd
+multiplicities, the degree lost at the trivial root of unity, and the
+positive factors $(1+u)^q-u^q$
+(Section~\ref{mxc:hz:sec:arithmetic}); it stresses that the target is the
+maximal determinant itself, since positivity of all smaller Hankel minors is
+not available as a general shortcut. Its zero analysis does not answer the
+question, which stays open. The classification of other minors is continued
+by Research question~\ref{mxc:hz:q:minors}.]
+
 \begin{question}[Recurrences in finite characteristic]
 What is the minimal eventual recurrence of the column $T(n,k)$ over
 $\mathbb F_p$, and how does it depend on $k$ and the prime $p$?
@@ -2348,6 +2399,22 @@ of small order. The answer should specify whether the zero measure is
 normalized by the full degree or by the degree remaining after the
 two exceptional factors are removed.
 
+[Added 5 October 2026, batch 98: answered in Part~III. Normalized by the
+degree remaining after the two exceptional factors are removed, the zero
+measure converges to the image on $\operatorname{Re}u=-\frac12$ of the
+Cauchy law of scale $\frac12$, with density $2/(\pi(1+4y^2))$ in the
+imaginary coordinate, and the Kolmogorov distance is
+$\sim(9/\pi^2)(\log k)/k$ (Theorem~\ref{mxc:hz:thm:main-bulk},
+Corollary~\ref{mxc:hz:ar:cor:sharp}). Roots of order $m$ carry the
+normalized mass $3\log k/(\zeta(2)\psi(m)k)+O_m(1/k)$ each
+(Corollary~\ref{mxc:hz:cor:fixed-atom}); the tails at height $\asymp k$
+follow a divisor-sum law, matched to the Cauchy tail at every intermediate
+height (Theorems~\ref{mxc:hz:thm:edge} and~\ref{mxc:hz:thm:transition});
+and under the full degree the limit is a three-component mixture determined
+by $\lim s/k^2$ (Theorem~\ref{mxc:hz:thm:main-full}). Finer questions,
+among them the second term of the distance and the last few zeros, are
+Research questions~\ref{mxc:hz:q:discrepancy}--\ref{mxc:hz:q:minors}.]
+
 \begin{question}[Which column models have the same coverage law?]
 Which replacements for the unrestricted column generating function
 $(1-z)^{-k}-1$ retain the window $n=k(\log k+s)$, and which alter its
@@ -2376,7 +2443,11 @@ without first formalizing saddle-point analysis.
 target (Section~\ref{mxc:tp:sec:future}). Nothing of either manuscript is
 formalized; the only formal neighbour is the Lean Fubini generating
 function cited in Section~\ref{mxc:sec:scope}, and this paragraph is a
-proposal, not a plan of the repository.]
+proposal, not a plan of the repository.] [Added 5 October 2026, batch 98:
+manuscript~08 extends the same first stage by the cyclotomic
+multiplicities, the exact degree identities and the full-support CDF
+comparisons, then the primitive-lattice error and the elementary CDF bound
+(Research question~\ref{mxc:hz:q:certificates}); also a proposal only.]
 
 For analytic work, the highest-value next targets are the near-diagonal
 boundary and a proved overlap with the coverage regime. The positive
@@ -3429,6 +3500,1960 @@ leading asymptotic already in the entry, Kot\v{e}\v{s}ovec's
 (18~February 2017, updated 20~April 2024), is not to be presented as new,
 nor described as labelled a conjecture.
 
+\part{Cauchy limits, arithmetic atoms, and edge laws for the Hankel zeros}
+\label{mxc:hz:part}
+
+\section{Provenance, scope and notation of Part III}\label{mxc:hz:sec:front}
+
+[Added 5 October 2026, batch 98.] Part~III was added in the write of
+batch~98. It is built from manuscript~08 of that batch, which answers
+Research question~7 of Part~I, ``The limiting distribution of determinant
+zeros'' (Section~\ref{mxc:sec:questions}). After the factors at $u=0$ and
+$u=-1$ are removed, the zeros of the maximal Hankel determinant
+$H_{k,s}(u)$ of Theorem~\ref{mxc:thm:hankel} converge to the image on the
+line $\operatorname{Re}u=-\frac12$ of a Cauchy law of scale $\frac12$.
+Manuscript~08 also determines the multiplicity of every root of small
+order, the sharp Kolmogorov rate, the tails at every height, the
+transition of the absolute moments and the limit under the full-degree
+normalization. Its Section~2 re-proves Theorem~\ref{mxc:thm:hankel} by the
+argument of Section~\ref{mxc:sec:hankel}; that proof is not reprinted
+(Remark~\ref{mxc:hz:rem:reproof}). Everything else of manuscript~08 is
+printed below, in the letters of Table~\ref{mxc:hz:tab:dictionary}.
+Bracketed notes marked ``[Note of the batch-98 write]'' and remarks marked
+``[write]'' are the write's; all other text of Part~III is manuscript~08's.
+
+\subsection{The manuscript}
+Manuscript~08 of batch~98 is the archive
+\nolinkurl{a261781_hankel_zero_laws.zip} (30~files in a wrapper directory
+of the same name), which arrived in commit \texttt{2172df76a} and was
+placed in this report by commit \texttt{0fba5167f}. Its article is titled
+\emph{Cauchy Limits, Arithmetic Atoms, and Edge Laws for
+Matrix-Composition Hankel Zeros}, subtitled ``An explicit continuation of
+the ProveIt study of OEIS A261781'' (29~pages; main file
+\texttt{a261781\_hankel\_zero\_laws.tex}, 2,041 lines, 110 labels; dated
+October~5, 2026). Its author line and PDF metadata read ``OpenAI
+ChatGPT'', with ``An OEIS-related research article''. Its pin is the
+repository commit \texttt{d18416ec7e187a0948248cb3077e37d7b089a8f9}
+(2026-10-04, 19:16~$-0700$) \cite{hzProveIt}, at which this report
+consisted of Parts~I and~II exactly as they stand: the text of this report
+did not change between the pin and the batch-98 write. Its source note, shipped
+as \path{07-zero-laws-PROVENANCE.md}, names the labels
+\texttt{mxc:thm:hankel} and \texttt{mxc:eq:weighted-hankel-product} and the
+question it answers.
+
+\paragraph{Status and non-claims of manuscript~08, kept.} Its proofs are
+mathematical proofs in an unrefereed research article; its computations
+are independent checks, not proofs of limits and not proof-assistant
+certificates. No exhaustive search for historical priority was made:
+targeted repository and public-source searches checked overlap and
+attribution only. Its proof tools are standard (finite spectral algebra,
+M\"obius inversion, elementary Fourier approximation and real-variable
+estimates); its contribution is the family-specific theorem set, not those
+tools. The exact determinant product is prior repository mathematics, which
+it re-derives for self-containment and credits to this report; the
+enumeration and the existence of an order-$\binom{k+1}2$ recurrence are
+published (\cite[Proposition~25]{mpr2009}), and it does not present
+recurrence existence as an OEIS conjecture newly solved. It claims no
+Lean or Rocq formalization and no OEIS submission. Its further non-claims
+are kept where they stand: the error in~\eqref{mxc:hz:eq:multiplicity-main}
+is absolute, not a uniform relative equivalent
+(Section~\ref{mxc:hz:sec:results}); total variation is not the right
+distance (Remark~\ref{mxc:hz:rem:mode}); normalizing the reduced zeros by
+the full degree gives a subprobability (Section~\ref{mxc:hz:sec:bulk});
+the smooth correction does not extend to indicators
+(Section~\ref{mxc:hz:sec:smooth}); the sharp constant comes without a
+quantitative error and the finite data lie far below it
+(Sections~\ref{mxc:hz:sec:sharp} and~\ref{mxc:hz:sec:computation}); the
+edge law does not describe the finitely many largest zeros
+(Section~\ref{mxc:hz:sec:edge}); and its questions are ``not claims that
+every formulation has been checked against all literature''
+(Section~\ref{mxc:hz:sec:questions}). Its source note adds that the
+statements were cross-checked by independent reviews in its own session,
+whose integration review corrected the range of a primitive angle, the
+absolute-value convention of the Kolmogorov distance, the nearest-integer
+notation and the domain of the primitive triangle count.
+
+\subsection{What Part III adds}
+Table~\ref{mxc:hz:tab:claims} sets Part~III against what Parts~I and~II
+already contain.
+
+{\small
+\renewcommand{\arraystretch}{1.12}
+\setlength{\LTcapwidth}{\textwidth}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{.17\textwidth}>{\raggedright\arraybackslash}p{.33\textwidth}>{\raggedright\arraybackslash}p{.42\textwidth}@{}}
+\caption{What Part~III adds. Research question~7 is answered; its finer
+continuations are Research questions~\ref{mxc:hz:q:discrepancy}
+to~\ref{mxc:hz:q:certificates}.}\label{mxc:hz:tab:claims}\\
+\toprule
+Topic & Parts I and II & Part III (manuscript~08 of batch~98)\\
+\midrule
+\endfirsthead
+\toprule
+Topic & Parts I and II & Part III (manuscript~08 of batch~98)\\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+Location and multiplicities &
+zeros other than $0,-1$ on $\operatorname{Re}u=-\frac12$; exact
+multiplicities at $0$ and $-1$; the others ``follow by collecting the
+cyclotomic difference factors'' (Section~\ref{mxc:sec:hankel}) &
+the cyclotomic factorization~\eqref{mxc:hz:eq:cyclotomic}, every order
+$2\le m\le k-1$ present, the exact count of distinct zeros, and
+$\mathsf E_m(k)=k^2\log k/(\zeta(2)\psi(m))+O(k^2)$ uniformly in $m$
+(Section~\ref{mxc:hz:sec:arithmetic})\\
+Limit law &
+asked in Research question~7 &
+the Cauchy law of scale $\frac12$, with the elementary bound
+$2G_k/\mathsf D_k$ and the sharp Kolmogorov constant $9/\pi^2$
+(Theorem~\ref{mxc:hz:thm:main-bulk},
+Corollary~\ref{mxc:hz:ar:cor:sharp})\\
+Corrections & --- &
+the first correction of smooth statistics
+(Theorem~\ref{mxc:hz:thm:smooth}); arithmetic CDF corrections at fixed and
+moving endpoints (Theorems~\ref{mxc:hz:ar:thm:fixed}
+and~\ref{mxc:hz:ar:thm:moving})\\
+Tails &
+asked in Research question~7 &
+the divisor-sum edge law at height $\asymp k$
+(Theorem~\ref{mxc:hz:thm:edge}), the exact extreme zeros
+(Proposition~\ref{mxc:hz:prop:extreme}), the expansion of the edge profile
+at the origin and a uniform transition formula for every height
+(Theorems~\ref{mxc:hz:thm:edge-small} and~\ref{mxc:hz:thm:transition})\\
+Moments & --- &
+the transition at $p=1$, with the constant term at $p=1$ and the constants
+above it (Theorem~\ref{mxc:hz:thm:main-edge})\\
+Normalization &
+asked in Research question~7 &
+the three-component limit of the full zero measure as $s/k^2\to\varkappa$
+(Theorem~\ref{mxc:hz:thm:main-full})\\
+\end{longtable}
+}
+
+\subsection{Notation of Part III}\label{mxc:hz:sec:notation}
+Manuscript~08 uses many letters that Parts~I and~II use for other objects.
+Part~III renames every such letter; the renames are changes of letter only,
+and no normalization is changed. Objects of manuscript~08 that collide with
+Latin letters of Parts~I and~II are written in sans-serif type, as Part~II
+did for $\mathsf F_q$ and $\mathsf W_n$; the three zero measures carry a
+superscript~$\mathrm z$. Table~\ref{mxc:hz:tab:dictionary} lists every
+rename with the false reading the delivered letter would have in this
+report. The figures of Section~\ref{mxc:hz:sec:computation} are delivered
+files and keep manuscript~08's letters; their captions translate them.
+
+{\small
+\setlength{\LTcapwidth}{\textwidth}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.28\textwidth}>{\raggedright\arraybackslash}p{0.18\textwidth}>{\raggedright\arraybackslash}p{0.14\textwidth}>{\raggedright\arraybackslash}p{0.31\textwidth}@{}}
+\caption{Manuscript~08's symbols and the letters used for them in Part~III.
+``False reading'' gives what the manuscript-08 letter means elsewhere in
+this report.}\label{mxc:hz:tab:dictionary}\\
+\toprule
+Notion & Part III & Ms.~08 & False reading if copied\\
+\midrule
+\endfirsthead
+\toprule
+Notion & Part III & Ms.~08 & False reading if copied\\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+Hankel size $\binom{k+1}2$ & written out ($d$ of Section~\ref{mxc:sec:hankel}) & $d_k$ & $d_k$ is the growth constant~\eqref{mxc:eq:fixedk}; in Part~III a bare $d$ is only a summation or divisor index\\
+$\binom{k+1}3$ & $c$, as in Section~\ref{mxc:sec:hankel} & $c_k$ & $c_k$ is the amplitude~\eqref{mxc:eq:fixedk}\\
+Reduced factor; its degree & $\mathsf R_k(u)$; $\mathsf D_k$ & $R_k(u)$; $D_k$ & $R_p(w)$ are kernel remainders; $D$, $D_u$, $D(\eta)$ are Part~I objects\\
+Exceptional exponents; constant & $\mathsf A_k$, $\mathsf B_{k,s}$; $\mathsf C_k$ & $A_k$, $B_{k,s}$; $C_k^{(0)}$ & $A(n,k)$ is a count, $B$, $B(u)$ are constants, $C$ counts columns\\
+Full degree $\deg H_{k,s}$ & $\deg H_{k,s}$ & $L_{k,s}$ & $L=\log2$\\
+Difference factor $(1+u)^q-u^q$ & $\mathsf U_q(u)$ & $F_q(u)$ & $F_k(z;u)$ is a generating function\\
+Primitive multiplicity & $\mathsf E_m(k)$ & $E_m(k)$ & $E_n(w)$, $E_j(\lambda)$, $E_n$\\
+Grid weight & $\mathcal W_k(q)$ & $W_k(q)$ & $\mathsf W_n(w)$ is the Stirling kernel, $W_N$ a diagonal diagnostic\\
+Zero measures on angles, on $Y$, on the line; full zero measure & $\hzrho_k$, $\hznu_k$, $\hzhnu_k$; $\hzmu_{k,s}$ & $\rho_k$, $\nu_k$, $\widehat\nu_k$; $\mu_{k,s}$ & $\rho$ is the pole ratio, $\nu_k=\E M$ in Section~\ref{mxc:sec:poisson}, $\mu_k(u)$ an amplitude\\
+Dirac masses & $\boldsymbol\delta_0$, $\boldsymbol\delta_{-1}$ & $\delta_0$, $\delta_{-1}$ & $\delta_k$ below is a displacement\\
+Angular distribution function & $\mathcal F_k(t)$ & $F_k(t)$ & $F_k(z;u)$; $\mathsf F_q$ are Fubini numbers\\
+Kolmogorov distance $\dK(\hznu_k,\Cau)$ & $\Delta^{\mathrm K}_k$ & $\Delta_k$ & $\Delta_{n,k}$ is the Stirling defect\\
+Absolute moments; their constant & $\mathsf M_p(k)$; $\mathcal M_p$ & $M_p(k)$; $C_p$ & $M$ is the zero-row count, $C_J$ a bracket constant\\
+Euler's constant & $\gE$ & $\gamma$ & $\gamma=\lim m/(\log k)^2$ in Corollary~\ref{mxc:cor:shifted-window}\\
+von Mangoldt function & $\vM$ & $\Lambda$ & $\Lambda$ is Part~II's inverse core\\
+$\lim s_k/k^2$; $\lim s/k^{p+1}$ & $\varkappa$; $\varkappa_p$ & $\tau$; $a$ & $\tau$ is a formal variable in~\eqref{mxc:eq:saddle-algorithm}; $a=1+u$ in Section~\ref{mxc:sec:hankel}\\
+Sign of a displacement & $\varsigma$ & $\sigma$ & $\sigma_{-1}(n)$, $\sigma_1(n)$ are divisor functions\\
+$\pi/\arctan(1/(2y))$; its reciprocal & $\Omega(y)$; $1/\Omega(y)$ & $\beta(y)$; $\delta(y)$ & $\beta_1,\beta_2,\beta_3$ are diagonal corrections\\
+$k/\Omega(y)$ & $\mathfrak m$ & $M$ & $M$ is the zero-row count\\
+Tail count & $\mathsf Z_k(y)$ & $\mathcal T_k(y)$ & $\mathcal T_a(x)$ are Part~II polynomials\\
+Counts without coprimality & $\mathsf P^\ast_\ell(Y)$, $\mathcal P^\ast(K,Q)$ & $B_\ell(Y)$, $\mathcal N(K,Q)$ & $\mathcal N(Y)$ is Part~II's integer threshold\\
+Primitive congruence count & $\mathsf P_m(X)$ & $P_m(X)$ & $P_j(t)$, $P_j(w)$, $P_r(w)$ are polynomials\\
+Fractional-part sum; logarithmic sums & $\mathcal S_k(t)$; $\mathcal S^{\mathrm{gap}}_k$, $\mathcal S^{\gcd}_k$ & $\mathcal A_k(t)$; $\mathcal A^{\log}_k$, $\mathcal B^{\log}_k$ & $\mathcal A^{[J]}(x)$ is a comparator, $\mathcal B(n,k)$ a saddle approximation\\
+Harmonic sawtooth sum and auxiliaries; harmonic numbers & $\mathsf Q_N(\theta)$, $\mathsf K_N(\theta)$, $\mathsf J_b(t)$; $\mathrm H_N$ & $Q_N$, $K_N$, $J_b$; $H_N$ & $Q_{n,k}$; $K$ a compact set; $J$, $J_q$; $H_{k,s}$ the determinant\\
+Sawtooth; trigonometric bounds; Bernoulli polynomials & $\overline{\mathrm B}_1(x)$; $\mathrm T^\pm$; $\mathrm B_3(v)$ & $s(x)$; $P^\pm$; $B_3(v)$ & $s$ is the Hankel shift\\
+Sawtooth lemma: displacement, exponent, constant, cutoff & $\widetilde\delta_k$, $\widetilde\alpha$, $\kappa$, $\mathsf N_k$ & $\eta_k$, $\beta$, $c$, $N_k$ & $\eta$ is the Poisson mean, $\beta=\beta_1$, $c=\binom{k+1}3$, $N$ the diagonal index\\
+Edge density; scaled measures & $-\Xi'(x)$; $\nu^{\mathrm e}_k$ & $\omega_{\rm edge}(x)$; $\lambda_k$ & $\omega_j$ are roots of unity, $\lambda=n/k$\\
+Grid error; cotangent sum; its regular part & $\mathrm{err}_q$; $\mathsf S_1(q)$; $\mathsf h(v)$ & $\epsilon_q$; $S_1(q)$; $h(v)$ & $\epsilon=1/k$; $h=n/k$\\
+Bernoulli-proof auxiliaries & $\Upsilon(v)$, $\mathcal I_3$; $n=d\ell$ & $F(v)$, $I$; $n=dm$ & $m$ is the cyclotomic order\\
+Homogeneous cyclotomic polynomial & $\Phi_m(X_1,X_2)$ & $\Phi_m(X,Y)$ & $Y$ is the imaginary coordinate\\
+\end{longtable}
+}
+
+Unchanged, with their meaning in Part~III: $g_{ij}=\gcd(i,j)$, as in
+Section~\ref{mxc:sec:hankel}; $q_{ij}=(j-i)/g_{ij}$ and a grid denominator
+$q$, not the denominator coefficients $q_i$ of Section~\ref{mxc:sec:exact};
+$H_{k,s}$ and $T_u(n,k)$, the objects of Section~\ref{mxc:sec:hankel}; the
+zero $u(t)$ and its angle $t$; the imaginary coordinate $Y$, not Part~II's
+threshold argument; $\Cau$, $\widehat\Cau$, $f_\Cau$, $F_\Cau$ for the
+Cauchy law; $\dK$ for the Kolmogorov distance (Part~I writes $\TV$ for
+total variation); $\psi$ (Dedekind), $\varphi$ (Euler) and $\mu(\cdot)$
+(M\"obius, only inside arithmetic sums, not the amplitude $\mu_k(u)$);
+$\sigma_{-1}(n)$ and $\sigma_1(n)$, divisor functions with their argument
+$(n)$, not the variance $\sigma_k^2$ of Section~\ref{mxc:sec:joint}; $\Xi$,
+$\mathcal H$ and $\mathcal P(K,Q)$; and the local letters $a,b,h,r,\ell,p,
+x,X,\alpha,\theta$, whose meaning is fixed where they occur ($a,b$ are
+coprime integers, not $1+u$ and $u$ of Section~\ref{mxc:sec:hankel}).
+
+\section{The zero measures and the main conclusions}\label{mxc:hz:sec:results}
+
+\subsection{An OEIS family with an arithmetic zero problem}
+Let $T_u(n,k)$ be the polynomial enumerating matrices with $k$ ordered
+rows, an arbitrary number of ordered columns, nonnegative integer entries,
+total sum $n$, and no zero row or column, each column receiving weight $u$
+(Section~\ref{mxc:sec:hankel}). At $u=1$ this is the triangle A261781
+\cite{oeis781}, and the diagonal $T_1(2n,n)$ is A261784 \cite{oeis784}.
+Matrix compositions were studied by Munarini, Poneti and Rinaldi
+\cite{mpr2009}, whose generating functions and recurrences are the
+enumerative foundation of the subject. Part~I supplies the weighted
+maximal Hankel factorization and asks what the limiting zero-counting
+measure is after the factors at $u=0$ and $u=-1$ have been removed, with
+tail information and the contribution of roots of small order. Part~III
+answers those parts of the question. It does not relabel the known
+enumeration or the determinant product as a new result, and it is an
+explicit extension of this report, not a claim that an exhaustive search
+has established historical priority.
+
+\subsection{Notation and the three zero measures}
+Throughout, $k,s$ are positive integers, $c=\binom{k+1}3$,
+$g_{ij}=\gcd(i,j)$ and $q_{ij}=(j-i)/g_{ij}$. With $H_{k,s}(u)$ the
+determinant of Theorem~\ref{mxc:thm:hankel}, define
+\begin{align}
+ \mathsf R_k(u)&=\prod_{1\le i<j\le k}
+       \bigl((1+u)^{q_{ij}}-u^{q_{ij}}\bigr)^{2g_{ij}},
+       \label{mxc:hz:eq:reduced-product}\\
+ G_k&=\sum_{i<j\le k}g_{ij},\qquad
+ \mathsf D_k=\deg\mathsf R_k=2(c-G_k).\label{mxc:hz:eq:degree}
+\end{align}
+The polynomials $\mathsf R_1$ and $\mathsf R_2$ are constant. Hence all
+probability measures normalized by $\mathsf D_k$ are defined only for
+$k\ge3$.
+
+Every zero of $\mathsf R_k$ has the form
+\begin{equation}\label{mxc:hz:eq:mobius-map}
+ u(t)=\frac1{e^{2\pi it}-1}
+     =-\frac12-\frac{i}{2}\cot(\pi t),\qquad 0<t<1.
+\end{equation}
+We use three measures, always counting multiplicity: $\hzrho_k$ on angles
+$t\in(0,1)$; $\hznu_k$ on the imaginary coordinate
+$Y=-\frac12\cot(\pi t)$; and $\hzhnu_k$ on the complex line
+$\operatorname{Re}u=-\frac12$. They are pushforwards of one another. The
+full zero measure of $H_{k,s}$, normalized by its full degree, is denoted
+by $\hzmu_{k,s}$.
+
+Write $\Cau$ for the probability distribution on $\mathbb R$ with density
+and cumulative distribution function
+\begin{equation}\label{mxc:hz:eq:cauchy}
+ f_\Cau(y)=\frac{2}{\pi(1+4y^2)},\qquad
+ F_\Cau(y)=\frac12+\frac1\pi\arctan(2y).
+\end{equation}
+Its image on the vertical line is $\widehat\Cau$. For real probability
+laws, $\dK$ is the supremum of the absolute difference of their cumulative
+distribution functions. We reserve $\mu(n)$ inside arithmetic sums for the
+M\"obius function; this is distinct from the measure $\hzmu_{k,s}$.
+
+\subsection{The main conclusions}
+
+\begin{theorem}[Bulk limit and arithmetic multiplicities]\label{mxc:hz:thm:main-bulk}
+As $k\to\infty$,
+\begin{equation}\label{mxc:hz:eq:degree-asymptotic}
+ \mathsf D_k=\frac{k^3}{3}-\frac{k^2\log k}{\zeta(2)}+O(k^2),
+ \qquad \hznu_k\Longrightarrow\Cau.
+\end{equation}
+If $\mathsf E_m(k)$ is the multiplicity of any zero associated with a
+primitive $m$-th root of unity, $m\ge2$, then
+\begin{equation}\label{mxc:hz:eq:multiplicity-main}
+ \mathsf E_m(k)=\frac{k^2\log k}{\zeta(2)\,\psi(m)}+O(k^2),
+ \qquad
+ \psi(m)=m\prod_{p\mid m}\Bigl(1+\frac1p\Bigr),
+\end{equation}
+with an absolute implied constant, uniform in $m$. Moreover,
+\begin{equation}\label{mxc:hz:eq:sharp-distance-main}
+ \dK(\hznu_k,\Cau)\sim
+ \frac{3}{2\zeta(2)}\frac{\log k}{k}
+ =\frac9{\pi^2}\frac{\log k}{k}.
+\end{equation}
+\end{theorem}
+
+The proofs are in Sections~\ref{mxc:hz:sec:arithmetic}--\ref{mxc:hz:sec:sharp}.
+The uniform error in~\eqref{mxc:hz:eq:multiplicity-main} is an absolute
+error, not a uniform relative equivalent for all growing $m$. It implies a
+relative equivalent when $\psi(m)=o(\log k)$; for larger $m$ it may be too
+large to reveal the leading term. The function $\psi$ is itself OEIS
+A001615 \cite{hzpsi}.
+
+\begin{theorem}[Extreme tails and moments]\label{mxc:hz:thm:main-edge}
+For each fixed $x>0$,
+\begin{equation}\label{mxc:hz:eq:edge-main}
+ k\,\hznu_k((kx,\infty))\longrightarrow
+ \Xi(x):=\frac3{\zeta(2)}
+       \sum_{n\ge1}\sigma_{-1}(n)(1-2\pi n x)_+^2,
+ \qquad \sigma_{-1}(n)=\sum_{d\mid n}\frac1d.
+\end{equation}
+The sum is finite. For every sequence $y_k\to\infty$ with $y_k=o(k)$,
+\begin{equation}\label{mxc:hz:eq:mesoscopic-main}
+ \hznu_k((y_k,\infty))\sim\frac1{2\pi y_k}.
+\end{equation}
+For the absolute moments $\mathsf M_p(k)=\int|Y|^p\dd\hznu_k(Y)$,
+\begin{align}
+ \mathsf M_p(k)&\longrightarrow
+ \frac{2^{-p}}{\cos(\pi p/2)},&&0<p<1,\label{mxc:hz:eq:subcritical-main}\\
+ \mathsf M_1(k)&=\frac1\pi\Bigl(\log k+\gE-\log\pi-\frac56+
+                \frac{\zeta'(2)}{\zeta(2)}\Bigr)
+       +O\Bigl(\frac{\log^2k}{k}\Bigr),\label{mxc:hz:eq:critical-main}\\
+ \mathsf M_p(k)&\sim \mathcal M_p k^{p-1},&&p>1,\label{mxc:hz:eq:supercritical-main}\\
+ \mathcal M_p&=\frac{12\zeta(p)\zeta(p+1)}
+ {(2\pi)^p(p+1)(p+2)\zeta(2)}.\label{mxc:hz:eq:moment-constant}
+\end{align}
+\end{theorem}
+
+Here $(z)_+=\max(z,0)$, and $\gE$ is Euler's constant.
+Sections~\ref{mxc:hz:sec:edge}--\ref{mxc:hz:sec:moments} give proofs,
+including a quantitative edge-to-bulk matching formula. The finite sum
+in~\eqref{mxc:hz:eq:edge-main} retains arithmetic structure that weak
+convergence cannot see.
+
+\begin{theorem}[Retaining the two exceptional factors]\label{mxc:hz:thm:main-full}
+If $s=s_k\ge1$ and $s_k/k^2\to\varkappa\in[0,\infty)$, then
+\begin{equation}\label{mxc:hz:eq:full-limit}
+ \hzmu_{k,s_k}\Longrightarrow
+ \frac{\boldsymbol\delta_0}{3(1+\varkappa)}
+ +\frac{1+3\varkappa}{3(1+\varkappa)}\boldsymbol\delta_{-1}
+ +\frac{\widehat\Cau}{3(1+\varkappa)}.
+\end{equation}
+If $s_k/k^2\to\infty$, the limit is $\boldsymbol\delta_{-1}$. For any
+fixed shift $s$, the limiting masses of the two point components and the
+Cauchy component are all $\frac13$.
+\end{theorem}
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{.27\textwidth}>{\raggedright\arraybackslash}p{.33\textwidth}>{\raggedright\arraybackslash}p{.32\textwidth}@{}}
+\toprule
+Scale or statistic & Result & Information retained\\
+\midrule
+Fixed imaginary coordinate & Cauchy law & Overall distribution\\
+Fixed cyclotomic order & Multiplicity proportional to $1/\psi(m)$
+ & Arithmetic concentration\\
+CDF error & Exact constant $9/\pi^2$ & Sharp global convergence rate\\
+Smooth statistic & Explicit $(\log k)/k$ correction & A universal first bias\\
+Height proportional to $k$ & Quadratic divisor-sum tail
+ & Extreme zeros and cutoff\\
+Moment order $p$ & Transition at $p=1$
+ & Failure of moment convergence above the threshold\\
+Shift $s$ proportional to $k^2$ & Three-component mixture
+ & Dependence on full-degree normalization\\
+\bottomrule
+\end{tabular}
+\caption{The results of Part~III concern different asymptotic questions
+about the same exact polynomial (manuscript~08).}
+\label{mxc:hz:tab:roadmap}
+\end{table}
+
+\subsection{The determinant foundation}
+
+Manuscript~08's Section~2 proves the determinant identity with explicit
+conventions, to connect the arithmetic to the OEIS objects without
+depending on an unexamined factorization. In Part~III's letters it reads
+\begin{equation}\label{mxc:hz:eq:prior-product}
+ H_{k,s}(u)=\mathsf C_k\,u^{\mathsf A_k}(1+u)^{\mathsf B_{k,s}}\mathsf R_k(u),
+ \qquad
+ \mathsf A_k=\tbinom{k+1}2+2c,\quad
+ \mathsf B_{k,s}=k(s-1)+2c,\quad
+ \mathsf C_k=\prod_{j=1}^k\binom kj^{j},
+\end{equation}
+which is~\eqref{mxc:eq:weighted-hankel-product} of
+Theorem~\ref{mxc:thm:hankel}, with $\mathsf A_k=\sum_{j\le k}j^2$.
+
+\begin{remark}[Manuscript~08's re-proof of Theorem~\ref{mxc:thm:hankel}; a pointer]\label{mxc:hz:rem:reproof}
+[Note of the batch-98 write.] Manuscript~08's Proposition~2.1 (``Prior
+maximal Hankel identity'') and its proof are a second derivation of
+Theorem~\ref{mxc:thm:hankel} by the same argument as
+Section~\ref{mxc:sec:hankel}, and it credits the identity to this report:
+the generating function and inclusion--exclusion
+\eqref{mxc:eq:gf}--\eqref{mxc:eq:ie}; the spectrum and residue weights
+\eqref{mxc:eq:weighted-hankel-spectrum}; the Vandermonde factorization
+\eqref{mxc:eq:weighted-hankel-vandermonde}; the root products,
+discriminant and resultant
+\eqref{mxc:eq:weighted-hankel-rootproducts}--\eqref{mxc:eq:weighted-hankel-resultant};
+and the sign count $\sum_j(j(k-j)+\binom j2)=2c$. It is not reprinted.
+Also shared with Section~\ref{mxc:sec:hankel}: the remark that the size
+$\binom{k+1}2$ is maximal for the positive-index Hankel matrix at $u>0$,
+that this does not assert positive definiteness of smaller minors, the
+reference to the different Cassini-type determinant of
+\cite[Proposition~21]{mpr2009}, and $H_{3,s}(u)=27u^{14}(1+u)^{3s+5}(1+2u)^2$.
+Manuscript~08 adds the small cases
+\[
+ H_{1,s}(u)=u(1+u)^{s-1},\qquad
+ H_{2,s}(u)=2u^5(1+u)^{2s},
+\]
+which explain why reduced zeros first occur at $k=3$, the example
+$T_u(2,2)=u+2u^2$, and the observation that the convention $s\ge1$ is
+essential because the constant polynomial part of the generating function
+contributes at $n=0$ (Part~I's~\eqref{mxc:eq:weighted-hankel-zero-correction}).
+The write checked $H_{1,s}$ and $H_{2,s}$ against~\eqref{mxc:hz:eq:prior-product}.
+\end{remark}
+
+\section{Cyclotomic multiplicities and the degree loss}\label{mxc:hz:sec:arithmetic}
+
+\subsection{An exact arithmetic description}
+
+Put $\mathsf U_q(u)=(1+u)^q-u^q$. For $q\ge2$, it has exactly $q-1$ simple
+roots $u(\ell/q)$, $1\le\ell<q$; $\mathsf U_1=1$. Indeed
+$((1+u)/u)^q=1$, and the root of unity $1$ has no finite preimage. Its
+absence is the degree cancellation in $\mathsf U_q$.
+
+For every integer $m\ge1$, define
+\begin{equation}\label{mxc:hz:eq:E-exact}
+ \mathsf E_m(k)=2\sum_{\substack{1\le i<j\le k\\m\mid q_{ij}}}g_{ij}.
+\end{equation}
+For $m\ge2$, this is the multiplicity of each primitive order-$m$ zero.
+The auxiliary value $\mathsf E_1(k)=2G_k$ counts the weighted degree lost
+at the excluded root of unity $1$; it does not describe a zero at a finite
+point.
+
+Let $\Phi_m(X_1,X_2)$ be the homogeneous cyclotomic polynomial
+\[
+ \Phi_m(X_1,X_2)=
+ \prod_{\substack{1\le a\le m\\(a,m)=1}}
+       (X_1-e^{2\pi ia/m}X_2).
+\]
+Factoring $X_1^q-X_2^q$, and using $X_1-X_2=1$ at $(X_1,X_2)=(1+u,u)$,
+proves the exact identities
+\begin{align}
+ \mathsf R_k(u)&=\prod_{m=2}^{k-1}
+          \Phi_m(1+u,u)^{\mathsf E_m(k)},\label{mxc:hz:eq:cyclotomic}\\
+ \mathsf D_k&=\sum_{m=2}^{k-1}\varphi(m)\mathsf E_m(k)
+     =2c-\mathsf E_1(k).\label{mxc:hz:eq:degree-cyclotomic}
+\end{align}
+The factors in~\eqref{mxc:hz:eq:cyclotomic} need not be monic: their
+leading coefficients are $\Phi_m(1,1)$, which are nonzero. The degree is
+nevertheless $\varphi(m)$.
+
+Every order $2\le m\le k-1$ occurs, since the pair $(i,j)=(1,m+1)$ has
+$q_{ij}=m$. Thus the number of distinct reduced zeros, ignoring
+multiplicity, is exactly $\sum_{m=2}^{k-1}\varphi(m)$. This is much smaller
+than $\mathsf D_k$, of cubic order, and explains why ignoring multiplicity
+changes the finite distribution substantially.
+
+For computation, it is useful to group first by the unreduced grid
+denominator $q$. Write
+\begin{equation}\label{mxc:hz:eq:W-exact}
+ \mathcal W_k(q)=
+ \sum_{\substack{q<b\le k\\(b,q)=1}}
+       \Bigl\lfloor\frac{k}{b}\Bigr\rfloor
+       \Bigl(\Bigl\lfloor\frac{k}{b}\Bigr\rfloor+1\Bigr).
+\end{equation}
+Then
+\[
+ \mathsf R_k=\prod_{q=1}^{k-1}\mathsf U_q^{\mathcal W_k(q)},\qquad
+ \mathsf E_m(k)=\sum_{\substack{q\le k-1\\m\mid q}}\mathcal W_k(q).
+\]
+To see this, set $i=ga$, $j=g(a+q)$, where $(a,q)=1$, and sum the
+multiplicity $2g$ over $1\le g\le\lfloor k/(a+q)\rfloor$.
+
+\subsection{A primitive-lattice estimate with uniform error}
+
+\begin{lemma}\label{mxc:hz:lem:primitive-congruence}
+For $X\ge1$ and any integer $m\ge1$, let
+\[
+ \mathsf P_m(X)=\#\{1\le a<b\le X:(a,b)=1,\ m\mid b-a\}.
+\]
+Uniformly in $m$,
+\begin{equation}\label{mxc:hz:eq:primitive-congruence}
+ \mathsf P_m(X)=\frac{X^2}{2\zeta(2)\,\psi(m)}+O(X\log(2X)).
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Without the coprimality condition, let
+\[
+ \mathsf P^\ast_\ell(Y)=\#\{1\le a<b\le Y:\ell\mid b-a\}.
+\]
+Writing the difference as $\ell h$ gives
+\[
+ \mathsf P^\ast_\ell(Y)=\sum_{\ell h<\lfloor Y\rfloor}
+             (\lfloor Y\rfloor-\ell h)
+          =\frac{Y^2}{2\ell}+O(Y),
+\]
+with an absolute error constant for all $\ell$, including $\ell>Y$.
+M\"obius inversion now gives
+\begin{align*}
+ \mathsf P_m(X)
+ &=\sum_{d\le X}\mu(d)\,
+       \mathsf P^\ast_{m/(m,d)}(X/d)\\
+ &=\frac{X^2}{2m}
+      \sum_{d\le X}\frac{\mu(d)(m,d)}{d^2}
+      +O\Bigl(X\sum_{d\le X}\frac1d\Bigr).
+\end{align*}
+The infinite-sum tail costs $O(X)$, uniformly in $m$, because
+$(m,d)/m\le1$. Its absolutely convergent Euler product is
+\[
+ \frac1m\sum_{d\ge1}\frac{\mu(d)(m,d)}{d^2}
+ =\frac1{m\zeta(2)}
+       \prod_{p\mid m}\frac{1-1/p}{1-1/p^2}
+ =\frac1{\zeta(2)\,\psi(m)}.
+\]
+This proves the estimate.
+\end{proof}
+
+\begin{proposition}[Uniform multiplicity asymptotic]\label{mxc:hz:prop:multiplicity}
+Equation~\eqref{mxc:hz:eq:multiplicity-main} holds, including $m=1$
+under the auxiliary convention $\mathsf E_1=2G_k$.
+\end{proposition}
+
+\begin{proof}
+Separate each pair by its gcd:
+\[
+ \mathsf E_m(k)=2\sum_{g\le k}g\,\mathsf P_m(k/g).
+\]
+Insert Lemma~\ref{mxc:hz:lem:primitive-congruence}. The main term is
+\[
+ \frac{k^2}{\zeta(2)\,\psi(m)}\sum_{g\le k}\frac1g.
+\]
+The total error is bounded by a constant times
+\[
+ k\sum_{g\le k}\log(2k/g)
+ =k\{k\log(2k)-\log(k!)\}=O(k^2).
+\]
+Replacing the harmonic sum by $\log k+O(1)$ preserves that error,
+uniformly in $m$.
+\end{proof}
+
+\begin{remark}[write]\label{mxc:hz:rem:large-m}
+[Note of the batch-98 write.] The uniformity in $m$ includes the orders
+$m\ge k$, at which no pair has $m\mid q_{ij}$ and $\mathsf E_m(k)=0$: there
+$\psi(m)\ge m\ge k$, so the main term is at most $k\log k/\zeta(2)$ and is
+itself $O(k^2)$. The statement is true there, and empty.
+\end{remark}
+
+The $m=1$ case and~\eqref{mxc:hz:eq:degree-cyclotomic}
+give~\eqref{mxc:hz:eq:degree-asymptotic}. The underlying average-gcd
+phenomenon is classical; see T\'oth \cite{hztoth} for context. The
+calculation above supplies the particular congruence refinement and all
+uniformity needed here.
+
+\begin{corollary}[Macroscopic multiplicity of a fixed arithmetic zero]
+\label{mxc:hz:cor:fixed-atom}
+For each fixed $m\ge2$ and integer $a$ with $1\le a<m$ and $(a,m)=1$,
+\begin{equation}\label{mxc:hz:eq:normalized-multiplicity}
+ \hzrho_k(\{a/m\})
+ =\frac{3}{\zeta(2)\,\psi(m)}\frac{\log k}{k}+O_m(1/k).
+\end{equation}
+In particular,
+\begin{equation}\label{mxc:hz:eq:central-atom}
+ \hznu_k(\{0\})=\frac1{\zeta(2)}\frac{\log k}{k}+O(1/k).
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+Divide~\eqref{mxc:hz:eq:multiplicity-main} by
+$\mathsf D_k=k^3/3+O(k^2\log k)$. The extra $O(\log^2k/k^2)$ term is
+$O(1/k)$. Use $\psi(2)=3$ for the second assertion.
+\end{proof}
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabular}{@{}cccl@{}}
+\toprule
+$m$&$\psi(m)$&Coefficient of $(\log k)/k$ per zero&
+Imaginary coordinates for small orders\\
+\midrule
+2&3&$1/\zeta(2)$&$0$\\
+3&4&$3/(4\zeta(2))$&$\pm1/(2\sqrt3)$\\
+4&6&$1/(2\zeta(2))$&$\pm1/2$\\
+5&6&$1/(2\zeta(2))$&$-\frac12\cot(\pi a/5),\ 1\le a<5$\\
+6&12&$1/(4\zeta(2))$&$\pm\sqrt3/2$\\
+\bottomrule
+\end{tabular}
+\caption{Small-order arithmetic concentrations (manuscript~08).
+Multiplicity is stated per primitive zero, not as the sum over all
+$\varphi(m)$ such zeros.}
+\label{mxc:hz:tab:arithmetic-atoms}
+\end{table}
+
+\section{The Cauchy limit and full normalization}\label{mxc:hz:sec:bulk}
+
+\subsection{A direct quantitative proof}
+
+Let $\mathcal F_k(t)=\hzrho_k((0,t])$, $0\le t\le1$. For $0\le t<1$, the
+$q$-grid contains $\lfloor qt\rfloor$ points among $1/q,\ldots,(q-1)/q$ at
+or below $t$. Thus
+\begin{equation}\label{mxc:hz:eq:cdf-exact}
+ \mathsf D_k(\mathcal F_k(t)-t)
+ =\sum_{i<j}2g_{ij}\bigl(t-\{q_{ij}t\}\bigr).
+\end{equation}
+Since the absolute value of each bracket is at most one,
+\begin{equation}\label{mxc:hz:eq:elementary-discrepancy}
+ \sup_{0\le t\le1}|\mathcal F_k(t)-t|
+ \le\frac{2G_k}{\mathsf D_k}
+ =\frac3{\zeta(2)}\frac{\log k}{k}+O(1/k).
+\end{equation}
+The identity at $t=1$ is interpreted separately: both cumulative
+distribution functions equal one.
+
+The function $Y(t)=-\frac12\cot(\pi t)$ is a strictly increasing bijection
+from $(0,1)$ to $\mathbb R$. Its inverse is $t=\frac12+\pi^{-1}\arctan(2y)$,
+so it sends the uniform distribution exactly to $\Cau$. It also preserves
+the Kolmogorov discrepancy.
+Equation~\eqref{mxc:hz:eq:elementary-discrepancy} therefore proves the
+weak limit and an effective, finite-$k$ bound.
+
+The logarithm cannot be removed from the rate. Symmetry about $t=\frac12$,
+with the central atom retained, gives
+\[
+ \mathcal F_k(1/2)-1/2=\frac{\mathsf E_2(k)}{2\mathsf D_k}
+ =\frac1{2\zeta(2)}\frac{\log k}{k}+O(1/k).
+\]
+The exact optimal leading constant requires a more delicate argument,
+given in Section~\ref{mxc:hz:sec:sharp}. In particular the central atom
+supplies a useful lower bound, but it does not locate the largest
+discrepancy.
+
+\begin{remark}[The mode of convergence]\label{mxc:hz:rem:mode}
+Every $\hznu_k$ is discrete, whereas $\Cau$ has a density. Their
+total-variation distance, defined as the supremum over measurable events,
+is therefore exactly one. Weak convergence and uniform
+cumulative-distribution convergence are the appropriate statements here.
+Similarly, weak convergence alone gives no convergence of the first or
+higher absolute moments.
+\end{remark}
+
+\subsection{Exceptional roots and growing Hankel shifts}
+
+By~\eqref{mxc:hz:eq:prior-product}, the full degree is
+\begin{equation}\label{mxc:hz:eq:full-degree}
+ \deg H_{k,s}=\mathsf A_k+\mathsf B_{k,s}+\mathsf D_k
+        =\tbinom{k+1}2+6c+k(s-1)-2G_k.
+\end{equation}
+The full zero measure satisfies the exact decomposition
+\begin{equation}\label{mxc:hz:eq:full-decomposition}
+ \hzmu_{k,s}
+ =\frac{\mathsf A_k}{\deg H_{k,s}}\boldsymbol\delta_0
+  +\frac{\mathsf B_{k,s}}{\deg H_{k,s}}\boldsymbol\delta_{-1}
+  +\frac{\mathsf D_k}{\deg H_{k,s}}\hzhnu_k.
+\end{equation}
+For $k\ge3$, the three components have disjoint supports. For $k=1,2$,
+the last component is absent; a zero exponent in an exceptional factor
+simply contributes no root.
+
+\begin{proof}[Proof of Theorem~\ref{mxc:hz:thm:main-full}]
+We have
+\[
+ \mathsf A_k/k^3\to1/3,\quad \mathsf D_k/k^3\to1/3,\quad
+ \mathsf B_{k,s}/k^3=1/3+s/k^2+o(1).
+\]
+If $s/k^2\to\varkappa<\infty$, divide~\eqref{mxc:hz:eq:full-decomposition}
+by its total degree and use $\hzhnu_k\Longrightarrow\widehat\Cau$. This
+gives~\eqref{mxc:hz:eq:full-limit}. If $s/k^2\to\infty$, the coefficient
+of $\boldsymbol\delta_{-1}$ tends to one, which proves the remaining
+assertion.
+\end{proof}
+
+Thus the shift has no effect whatever on the reduced zero measure, but has
+a genuine effect on full-degree normalization. In particular, normalizing
+only the retained zeros by the original full degree would produce a
+subprobability measure, with mass $1/[3(1+\varkappa)]$, rather than a
+Cauchy probability measure.
+
+\section{The first correction for smooth statistics}\label{mxc:hz:sec:smooth}
+
+The arithmetic jumps in Table~\ref{mxc:hz:tab:arithmetic-atoms} coexist
+with a particularly simple first correction after smooth averaging.
+
+\begin{theorem}\label{mxc:hz:thm:smooth}
+If $f$ is a twice continuously differentiable periodic function on
+$\mathbb R/\mathbb Z$, and $I_f=\int_0^1f(t)\dd t$, then
+\begin{equation}\label{mxc:hz:eq:smooth}
+ \int f\dd\hzrho_k
+ =I_f+\frac3{\zeta(2)}\frac{\log k}{k}(I_f-f(0))+O_f(1/k).
+\end{equation}
+Consequently, if $\phi\in C_c^2(\mathbb R)$, then
+\begin{equation}\label{mxc:hz:eq:smooth-vertical}
+ \int\phi(Y)\dd\hznu_k(Y)
+ =\Bigl(1+\frac3{\zeta(2)}\frac{\log k}{k}\Bigr)
+       \int_{\mathbb R}\phi(y)\frac{2\dd y}{\pi(1+4y^2)}
+       +O_\phi(1/k).
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The Fourier series of $f$ is absolutely convergent, and
+\[
+ |\widehat f(h)|\le\frac{\|f''\|_{L^1}}{4\pi^2h^2},\qquad h\ne0.
+\]
+Summing the Fourier series over a regular $q$-grid therefore gives
+\[
+ \sum_{\ell=0}^{q-1}f(\ell/q)=qI_f+\mathrm{err}_q,\qquad
+ |\mathrm{err}_q|\le\frac{\|f''\|_{L^1}}{12q}.
+\]
+After removing the term at zero and summing with the weights
+$\mathcal W_k(q)$, we obtain
+\begin{equation}\label{mxc:hz:eq:smooth-exact-remainder}
+ \mathsf D_k\int f\dd\hzrho_k
+ =2cI_f-2G_kf(0)+\sum_q\mathcal W_k(q)\,\mathrm{err}_q.
+\end{equation}
+From~\eqref{mxc:hz:eq:W-exact},
+\[
+ \mathcal W_k(q)\le
+ \sum_{b=q+1}^k\Bigl(\frac{k^2}{b^2}+\frac{k}{b}\Bigr)
+ \le\frac{2k^2}{q}.
+\]
+Thus the last sum in~\eqref{mxc:hz:eq:smooth-exact-remainder} is
+$O_f(k^2)$. Divide by $\mathsf D_k$, and use
+\[
+ \frac{2G_k}{\mathsf D_k}=\frac3{\zeta(2)}\frac{\log k}{k}+O(1/k).
+\]
+This proves~\eqref{mxc:hz:eq:smooth}. For $\phi\in C_c^2(\mathbb R)$, the
+pullback $f(t)=\phi(-\frac12\cot(\pi t))$ is periodic $C^2$ and is zero
+near $t=0,1$. Hence $f(0)=0$, and the change of variables
+in~\eqref{mxc:hz:eq:cauchy} gives~\eqref{mxc:hz:eq:smooth-vertical}.
+\end{proof}
+
+The coefficient in~\eqref{mxc:hz:eq:smooth} has a direct interpretation:
+the regular grids would include the angle zero, but that angle corresponds
+to the point at infinity under~\eqref{mxc:hz:eq:mobius-map}. Removing it and
+renormalizing creates the positive first bias in compactly supported
+smooth statistics. A discontinuous indicator cannot be substituted into
+this theorem. Its endpoint may hit a root of small order, and then the
+correction changes.
+
+\section{Arithmetic CDF corrections and the sharp constant}\label{mxc:hz:sec:sharp}
+
+We now refine the elementary
+bound~\eqref{mxc:hz:eq:elementary-discrepancy}. For $0\le t<1$, write
+\begin{equation}\label{mxc:hz:ar:eq:exact-cdf}
+ \mathsf D_k(\mathcal F_k(t)-t)=2G_kt-\mathcal S_k(t),\qquad
+ \mathcal S_k(t)=\sum_{i<j}2g_{ij}\{q_{ij}t\}.
+\end{equation}
+The endpoint $t=1$ is treated separately. All limits below use
+right-continuous CDFs unless a left limit is displayed.
+
+\begin{theorem}[Pointwise arithmetic correction]\label{mxc:hz:ar:thm:fixed}
+For every irrational $t\in(0,1)$,
+\[
+ \lim_{k\to\infty}\frac{k}{\log k}\bigl(\mathcal F_k(t)-t\bigr)
+ =\frac3{\zeta(2)}\Bigl(t-\frac12\Bigr).
+\]
+For a reduced rational $t=r/m\in(0,1)$,
+\[
+ \lim_{k\to\infty}\frac{k}{\log k}\bigl(\mathcal F_k(t)-t\bigr)
+ =\frac3{\zeta(2)}\Bigl(t-\frac12+\frac1{2\psi(m)}\Bigr).
+\]
+The corresponding left-continuous value $\mathcal F_k(t-)$ has the same
+limit with a minus sign before $1/(2\psi(m))$.
+\end{theorem}
+
+The right/left distinction records the atom at the primitive root:
+subtracting the formulas yields asymptotic normalized atom mass
+$3\log k/(\zeta(2)\psi(m)k)$.
+
+\begin{theorem}[Moving angles near rational points]\label{mxc:hz:ar:thm:moving}
+Suppose $t_k\in[0,1)$ and $t_k\to t_0$. If $t_0$ is irrational, then
+\[
+ \frac{k}{\log k}\bigl(\mathcal F_k(t_k)-t_k\bigr)
+ \longrightarrow\frac3{\zeta(2)}(t_0-1/2).
+\]
+If $t_0=r/m\in[0,1]$ is rational in lowest terms, assume
+$\delta_k=t_k-t_0\ne0$ has an eventually constant sign $\varsigma$, and
+\[
+ \alpha=\lim_{k\to\infty}
+ \min\Bigl\{1,\frac{\log(1/|\delta_k|)}{\log k}\Bigr\}
+ \quad\text{exists}.
+\]
+Then $0\le\alpha\le1$ and
+\begin{equation}\label{mxc:hz:ar:eq:moving}
+ \frac{k}{\log k}\bigl(\mathcal F_k(t_k)-t_k\bigr)
+ \longrightarrow
+ \frac3{\zeta(2)}\Bigl(t_0-\frac12+\frac{\varsigma\alpha}{2\psi(m)}\Bigr).
+\end{equation}
+If $t_k=t_0<1$ identically, the formula holds with $\varsigma=+1$,
+$\alpha=1$. Statements with eventual equality have the same meaning. For
+the endpoints $0=0/1$ and $1=1/1$, the permitted signs are, respectively,
+$+1$ and $-1$.
+\end{theorem}
+
+\begin{corollary}[Sharp Kolmogorov constant]\label{mxc:hz:ar:cor:sharp}
+\[
+ \sup_{0\le t\le1}|\mathcal F_k(t)-t|
+ \sim\frac{3}{2\zeta(2)}\frac{\log k}{k}
+ =\frac9{\pi^2}\frac{\log k}{k}.
+\]
+The same constant holds after the monotone change of coordinate
+$y=-\frac12\cot(\pi t)$, relative to the Cauchy distribution of scale
+$\frac12$.
+\end{corollary}
+
+\subsection{An exact uniform reduction}
+
+Write $\mathrm H_N=\sum_{q\le N}q^{-1}$ and
+$\mathsf Q_N(\theta)=\sum_{q\le N}\{q\theta\}/q$. All $O(1)$ constants in
+the following lemma are absolute and uniform in the real argument $t$.
+
+\begin{lemma}\label{mxc:hz:ar:lem:reduction}
+\begin{align}
+ 2G_k&=\frac{k^2}{\zeta(2)}\log k+O(k^2),\label{mxc:hz:ar:eq:g}\\
+ \mathsf D_k&=\frac{k^3}{3}+O(k^2\log k),\label{mxc:hz:ar:eq:d}\\
+ \frac{\mathcal S_k(t)}{k^2}
+ &=\sum_{d=1}^{\infty}\frac{\mu(d)}{d^2}\mathsf Q_k(dt)+O(1).
+ \label{mxc:hz:ar:eq:uniform-reduction}
+\end{align}
+\end{lemma}
+
+\begin{proof}
+Write $i=ga$, $j=gb$ with $(a,b)=1$. With $q=b-a$, coprimality is
+equivalent to $(q,b)=1$. Consequently
+\[
+ \mathcal S_k(t)=\sum_{b=2}^k h_b(h_b+1)\mathsf J_b(t),\quad
+ h_b=\lfloor k/b\rfloor,\quad
+ \mathsf J_b(t)=\sum_{\substack{1\le q<b\\(q,b)=1}}\{qt\}.
+\]
+Since $h_b(h_b+1)=(k/b)^2+O(k/b)$ and $0\le\mathsf J_b\le b$, this gives
+\[
+ \frac{\mathcal S_k(t)}{k^2}=\sum_{b\le k}\frac{\mathsf J_b(t)}{b^2}+O(1).
+\]
+M\"obius inversion, including the harmless $b=1$ term, yields
+\[
+ \sum_{b\le k}\frac{\mathsf J_b(t)}{b^2}
+ =\sum_{d\le k}\frac{\mu(d)}{d^2}
+ \mathsf K_{\lfloor k/d\rfloor}(dt),\qquad
+ \mathsf K_N(\theta)=\sum_{n\le N}\frac1{n^2}\sum_{q<n}\{q\theta\}.
+\]
+Interchanging the finite sums and using
+\[
+ \sum_{n=q+1}^N\frac1{n^2}=\frac1q+O(q^{-2})+O(N^{-1})
+ \qquad(1\le q<N)
+\]
+shows $\mathsf K_N(\theta)=\mathsf Q_N(\theta)+O(1)$ uniformly in $\theta$
+and $N$. Moreover,
+\[
+ \bigl|\mathsf Q_k(\theta)-\mathsf Q_{\lfloor k/d\rfloor}(\theta)\bigr|
+ \le O(1)+\log(2d).
+\]
+The convergent series $\sum_d(1+\log d)/d^2$ therefore allows us to replace
+all cutoffs by $k$. Extending the outer sum to infinity changes the result
+by at most $\mathrm H_k\sum_{d>k}d^{-2}=O(1)$,
+proving~\eqref{mxc:hz:ar:eq:uniform-reduction}.
+
+The gcd estimate is Proposition~\ref{mxc:hz:prop:multiplicity} at $m=1$,
+and the degree estimate follows from~\eqref{mxc:hz:eq:degree}.
+\end{proof}
+
+\subsection{The harmonic sawtooth lemma}
+
+This is the key step responsible for the sharp uniform constant. It uses
+only approximation of a Riemann-integrable periodic function by
+trigonometric upper and lower bounds, and a geometric-sum estimate. It
+does not use an unproved cancellation statement for M\"obius sums.
+
+\begin{lemma}[Harmonic sawtooth near a limiting angle]\label{mxc:hz:ar:lem:saw}
+Let $\theta_k\to\theta_0$ be a real sequence. If $\theta_0$ is irrational,
+then
+\[
+ \frac{\mathsf Q_k(\theta_k)}{\log k}\longrightarrow\frac12.
+\]
+Suppose instead that $\theta_0=a/b$ in lowest terms, $b\ge1$,
+$\widetilde\delta_k=\theta_k-\theta_0\ne0$ has eventually constant sign
+$\varsigma$, and
+\[
+ \widetilde\alpha=\lim_{k\to\infty}
+ \min\{1,\log(1/|\widetilde\delta_k|)/\log k\}
+\]
+exists. Then
+\begin{equation}\label{mxc:hz:ar:eq:sawlimit}
+ \frac{\mathsf Q_k(\theta_k)}{\log k}
+ \longrightarrow\frac12-\frac{\varsigma\widetilde\alpha}{2b}.
+\end{equation}
+For $\theta_k=a/b$ exactly, the limit is $1/2-1/(2b)$.
+\end{lemma}
+
+\begin{proof}
+Let $\overline{\mathrm B}_1(x)=\{x\}-1/2$. For every $\varepsilon>0$
+there exist real trigonometric polynomials $\mathrm T^-$ and $\mathrm T^+$
+with
+\[
+ \mathrm T^-(x)\le\overline{\mathrm B}_1(x)\le\mathrm T^+(x)\quad(x\in\mathbb R),\qquad
+ \Bigl|\int_0^1\mathrm T^{\pm}(x)\,dx\Bigr|\le\varepsilon.
+\]
+For completeness, first choose continuous periodic lower and upper bounds
+that agree with the sawtooth away from an arbitrarily small interval around
+its jump; then approximate these continuous functions uniformly by
+trigonometric polynomials and move the approximants down or up by their
+uniform approximation error. Their integrals can be made arbitrarily close
+to the sawtooth's zero integral.
+
+Here $\|x\|=\min_{n\in\mathbb Z}|x-n|$ denotes distance to the nearest
+integer. For $h\ne0$ and $\|h\theta\|>0$, a geometric sum followed by
+partial summation gives
+\begin{equation}\label{mxc:hz:ar:eq:harm-exp}
+ \Bigl|\sum_{q=M'+1}^{N}\frac{\exp(2\pi i hq\theta)}q\Bigr|
+ \le\frac{C}{(M'+1)\|h\theta\|},\qquad 0\le M'<N,
+\end{equation}
+with an absolute constant $C$. In the irrational case, for the finitely
+many nonzero frequencies in $\mathrm T^{\pm}$, each $\|h\theta_k\|$ is
+bounded away from zero for all sufficiently large $k$. The polynomial
+inequalities and~\eqref{mxc:hz:ar:eq:harm-exp} with $M'=0$ give
+\[
+ \Bigl|\sum_{q\le k}\frac{\overline{\mathrm B}_1(q\theta_k)}q\Bigr|
+ \le\varepsilon \mathrm H_k+O_{\varepsilon,\theta_0}(1).
+\]
+Divide by $\log k$ and let $\varepsilon\downarrow0$.
+
+Now suppose $\theta_0=a/b$ and $\widetilde\delta_k\ne0$. Fix
+$0<\kappa<1/(4b)$, and write
+\[
+ \mathsf N_k=\min\{k,\lfloor \kappa/|\widetilde\delta_k|\rfloor\}.
+\]
+For all large $k$, $\mathsf N_k\to\infty$. For $q\le\mathsf N_k$, the
+displacement $|q\widetilde\delta_k|$ is too small to cross a discontinuity
+unless $b\mid q$. We therefore have the exact identity
+\[
+ \mathsf Q_{\mathsf N_k}(\theta_k)
+ =\mathsf Q_{\mathsf N_k}(a/b)+\widetilde\delta_k\mathsf N_k
+   +\mathbf 1_{\{\varsigma=-1\}}
+       \sum_{\substack{q\le\mathsf N_k\\b\mid q}}\frac1q.
+\]
+Periodicity gives
+\[
+ \mathsf Q_N(a/b)=\frac{b-1}{2b}\log N+O_b(1),\qquad
+ \sum_{\substack{q\le N\\b\mid q}}q^{-1}=\frac1b\log N+O_b(1).
+\]
+Because $|\widetilde\delta_k\mathsf N_k|\le\kappa$, it follows that
+\begin{equation}\label{mxc:hz:ar:eq:low-harmonic}
+ \sum_{q\le\mathsf N_k}\frac{\overline{\mathrm B}_1(q\theta_k)}q
+ =-\frac{\varsigma}{2b}\log\mathsf N_k+O_b(1).
+\end{equation}
+
+It remains to control $\mathsf N_k<q\le k$, if this interval is nonempty.
+For every fixed nonzero integer $h$, if $b\nmid h$, then $\|h\theta_k\|$
+stays bounded away from zero. If $b\mid h$, then eventually
+$\|h\theta_k\|=|h\widetilde\delta_k|$ and
+$(\mathsf N_k+1)|\widetilde\delta_k|>\kappa$.
+Hence~\eqref{mxc:hz:ar:eq:harm-exp} bounds every nonconstant Fourier term
+over the high interval by a constant depending on $h,b,\kappa$,
+independently of $k$. Apply the polynomial bounds again to obtain
+\[
+ \Bigl|\sum_{q=\mathsf N_k+1}^k\frac{\overline{\mathrm B}_1(q\theta_k)}q\Bigr|
+ \le\varepsilon(\mathrm H_k-\mathrm H_{\mathsf N_k})+O_{\varepsilon,b,\kappa}(1).
+\]
+Consequently this high sum divided by $\log k$ tends to zero, by letting
+$\varepsilon\downarrow0$. Finally $\log\mathsf N_k/\log k\to\widetilde\alpha$,
+so~\eqref{mxc:hz:ar:eq:low-harmonic} proves~\eqref{mxc:hz:ar:eq:sawlimit}.
+The exactly rational case follows directly from the periodicity
+computation.
+\end{proof}
+
+[Note of the batch-98 write: manuscript~08 writes the lower summation limit
+in~\eqref{mxc:hz:ar:eq:harm-exp} as $M$; it is printed as $M'$ here because
+$M$ is the zero-row count of Part~I.]
+
+\subsection{Proofs of the arithmetic and sharp uniform results}
+
+\begin{proof}[Proof of Theorem~\ref{mxc:hz:ar:thm:moving}]
+If $t_0$ is irrational, every $dt_0$ is irrational. By
+Lemma~\ref{mxc:hz:ar:lem:saw}, $\mathsf Q_k(dt_k)/\log k\to1/2$ for every
+fixed $d$. Since $0\le\mathsf Q_k\le\mathrm H_k$ and $\sum d^{-2}<\infty$,
+dominated convergence in~\eqref{mxc:hz:ar:eq:uniform-reduction} gives
+\[
+ \frac{\mathcal S_k(t_k)}{k^2\log k}\longrightarrow\frac1{2\zeta(2)}.
+\]
+If $t_0=r/m$ is reduced, then $dt_0$ has reduced denominator $m/(d,m)$.
+The sign of $d\delta_k$ is $\varsigma$, and replacing $\delta_k$ by
+$d\delta_k$ does not change $\alpha$. Thus dominated convergence gives
+\[
+ \frac{\mathcal S_k(t_k)}{k^2\log k}
+ \longrightarrow\frac1{2\zeta(2)}
+ -\frac{\varsigma\alpha}{2m}\sum_{d\ge1}\frac{\mu(d)(d,m)}{d^2}.
+\]
+The absolutely convergent Euler product evaluates to
+\[
+ \sum_{d\ge1}\frac{\mu(d)(d,m)}{d^2}
+ =\prod_{p\mid m}(1-1/p)\prod_{p\nmid m}(1-1/p^2)
+ =\frac1{\zeta(2)}\prod_{p\mid m}\frac p{p+1}
+ =\frac m{\zeta(2)\psi(m)}.
+\]
+The same calculation with the exact rational case of
+Lemma~\ref{mxc:hz:ar:lem:saw} treats $\delta_k=0$ identically. Combining
+these limits with~\eqref{mxc:hz:ar:eq:exact-cdf}, \eqref{mxc:hz:ar:eq:g}
+and~\eqref{mxc:hz:ar:eq:d} proves all statements.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{mxc:hz:ar:thm:fixed}]
+The right-continuous formulas follow from
+Theorem~\ref{mxc:hz:ar:thm:moving}. The root multiset is invariant under
+$t\mapsto1-t$, so $\mathcal F_k(t-)=1-\mathcal F_k(1-t)$ for $0<t<1$. Apply
+the right-continuous formula at $1-t$, whose reduced denominator is again
+$m$, to obtain the left formula. Alternatively it follows by counting the
+multiples of $m$ in the exact fractional-part identity.
+\end{proof}
+
+\begin{proof}[Proof of Corollary~\ref{mxc:hz:ar:cor:sharp}]
+For the lower bound, fix any irrational $t\in(0,1/2)$ and use
+Theorem~\ref{mxc:hz:ar:thm:fixed}; then let this fixed $t$ decrease to
+zero.
+
+For the upper bound it suffices to examine an arbitrary subsequence of
+angles $t_k\in[0,1]$ at which the scaled absolute discrepancies approach
+their limsup. Terms with $t_k=1$ have discrepancy zero and may be
+discarded. After taking a subsequence, compactness gives $t_k\to t_0$. If
+$t_0$ is irrational, the absolute limit from
+Theorem~\ref{mxc:hz:ar:thm:moving} is strictly below $3/(2\zeta(2))$. If
+$t_0=r/m\in(0,1)$ is reduced, pass to a further subsequence on which
+either $t_k=t_0$ or $\delta_k$ has fixed sign and the truncated exponent
+has a limit $\alpha\in[0,1]$. The absolute limit is bounded by
+\[
+ \frac3{\zeta(2)}\Bigl(\Bigl|\frac rm-\frac12\Bigr|+\frac1{2\psi(m)}\Bigr)
+ \le\frac3{\zeta(2)}\Bigl(\frac12-\frac1m+\frac1{2m}\Bigr)
+ <\frac3{2\zeta(2)}.
+\]
+At $t_0=0$, the possible bracket in~\eqref{mxc:hz:ar:eq:moving} is
+$-1/2+\alpha/2\in[-1/2,0]$; exact $t_k=0$ gives zero. At $t_0=1$, it is
+$1/2-\alpha/2\in[0,1/2]$. These exhaust all subsequences and prove the
+upper bound. The coordinate map to the vertical line is strictly
+increasing, so it preserves Kolmogorov distance.
+\end{proof}
+
+\subsection{Interpretation and useful examples}
+
+At $t=1/2$, the right-continuous correction is
+$3/(2\zeta(2)\psi(2))=1/(2\zeta(2))$, and the left correction is its
+negative. For $t_k=t_0+k^{-\alpha}$ with rational $t_0\in(0,1)$ and
+$0<\alpha<1$, the rational correction is $\alpha$ times its exact
+right-continuous size. Approaching from below changes its sign. If
+$t_k=k^{-\alpha}$ with $0<\alpha<1$, then
+\[
+ \frac{k}{\log k}(\mathcal F_k(t_k)-t_k)
+ \longrightarrow-\frac{3(1-\alpha)}{2\zeta(2)}.
+\]
+If $t_k=1/\log k$, the limit is $-3/(2\zeta(2))$, explicitly realizing the
+sharp constant along a moving endpoint sequence. The sharp constant
+therefore reflects a logarithmic range of angles approaching an endpoint,
+rather than a single fixed rational atom.
+
+\section{The arithmetic law at the extreme scale}\label{mxc:hz:sec:edge}
+
+The Cauchy law has unbounded support. In contrast, the largest imaginary
+coordinate of a finite polynomial is approximately $k/(2\pi)$. To describe
+this range one must both rescale the coordinate and compensate for the
+small proportion of zeros there.
+
+\subsection{An exact tail count}
+
+For $y>0$, put
+\begin{equation}\label{mxc:hz:eq:beta}
+ \Omega(y)=\frac{\pi}{\arctan(1/(2y))}>2,\qquad
+ \mathsf Z_k(y)=\mathsf D_k\,\hznu_k((y,\infty)).
+\end{equation}
+A positive ordinate in a $q$-grid is $\frac12\cot(\pi r/q)$, $1\le r<q/2$.
+The condition that it exceed $y$ is exactly $q>\Omega(y)r$. For real
+$K>0$ and $Q\ge0$, define
+\[
+ \mathcal P(K,Q)=
+ \#\{(a,q)\in\mathbb Z_{>0}^2:(a,q)=1,\ a+q\le K,\ q>Q\}.
+\]
+Using the representation $i=ga$, $j=g(a+q)$, we obtain the exact formula
+\begin{equation}\label{mxc:hz:eq:tail-exact}
+ \mathsf Z_k(y)=2\sum_{g,r\ge1}g\,\mathcal P(k/g,\Omega(y)r).
+\end{equation}
+Every nonzero term satisfies $gr<k/\Omega(y)$, so this sum is finite. The
+strict inequality is important at a threshold that is itself a zero.
+
+\begin{lemma}[Primitive points in a truncated triangle]\label{mxc:hz:lem:triangle}
+Uniformly for $K\ge1$, $Q\ge0$,
+\begin{equation}\label{mxc:hz:eq:triangle}
+ \mathcal P(K,Q)=\frac{(K-Q)_+^2}{2\zeta(2)}+O(K\log(2K)),
+\end{equation}
+with an absolute implied constant.
+\end{lemma}
+
+\begin{proof}
+If $Q\ge K$, both the count and the main term vanish. Otherwise let
+$\mathcal P^\ast(K,Q)$ be the count without coprimality. Summing the
+possible positive values of $a$ for each $q>Q$, and comparing the linear
+function $K-v$ with its integral, gives
+\[
+ \mathcal P^\ast(K,Q)=\frac12(K-Q)^2+O(K+1)
+\]
+uniformly in $Q$. M\"obius inversion gives
+\[
+ \mathcal P(K,Q)=\sum_{d\le K}\mu(d)\mathcal P^\ast(K/d,Q/d).
+\]
+Its main term is $\frac12(K-Q)^2\sum_{d\le K}\mu(d)/d^2$, and its error is
+$O(\sum_{d\le K}(K/d+1))=O(K\log(2K))$. Extending the main sum to infinity
+costs only $O(K)$.
+\end{proof}
+
+\subsection{The edge tail, its density, and its cutoff}
+
+\begin{theorem}[Quantitative edge law]\label{mxc:hz:thm:edge}
+Let $\Xi$ be defined in~\eqref{mxc:hz:eq:edge-main}. For every fixed
+$\varepsilon>0$,
+\begin{equation}\label{mxc:hz:eq:edge-uniform}
+ \sup_{x\ge\varepsilon}
+ \bigl|k\hznu_k((kx,\infty))-\Xi(x)\bigr|
+ =O_\varepsilon(\log k/k).
+\end{equation}
+The same assertion holds for the two-sided tail with limit $2\Xi(x)$.
+\end{theorem}
+
+\begin{proof}
+Uniformly for $x\ge\varepsilon$,
+\[
+ \Omega(kx)=2\pi kx+\frac{\pi}{6kx}+O_\varepsilon(k^{-3}),
+ \qquad \Omega(kx)>2\pi kx.
+\]
+Thus all nonzero terms in~\eqref{mxc:hz:eq:tail-exact} belong to the fixed
+finite set $gr<1/(2\pi\varepsilon)$. Apply
+Lemma~\ref{mxc:hz:lem:triangle}; replacing $\Omega(kx)$ by $2\pi kx$ in the
+squared areas costs only $O_\varepsilon(1)$. We obtain
+\begin{align}
+ \mathsf Z_k(kx)
+ &=\frac1{\zeta(2)}\sum_{g,r\ge1}
+       g\Bigl(\frac{k}{g}-2\pi kxr\Bigr)_+^2
+       +O_\varepsilon(k\log k)\notag\\
+ &=\frac{k^2}{\zeta(2)}\sum_{g,r\ge1}\frac1g(1-2\pi xgr)_+^2
+       +O_\varepsilon(k\log k)\notag\\
+ &=\frac{k^2}{\zeta(2)}\sum_{n\ge1}\sigma_{-1}(n)(1-2\pi xn)_+^2
+       +O_\varepsilon(k\log k).\label{mxc:hz:eq:edge-lattice}
+\end{align}
+At a breakpoint $2\pi xgr=1$, the actual term is zero: $\Omega(kx)>2\pi kx$
+and a contributing $q$ would have to be both larger than $k/g$ and smaller
+than $k/g$. The area term is zero as well. Hence the proof does not
+exclude breakpoints. Divide~\eqref{mxc:hz:eq:edge-lattice} by
+$\mathsf D_k=k^3/3+O(k^2\log k)$, and multiply by $k$. Symmetry proves the
+two-sided statement.
+\end{proof}
+
+On $(0,\infty)$, $\Xi$ is decreasing, convex, continuously differentiable,
+and piecewise quadratic. Its negative derivative is
+\begin{equation}\label{mxc:hz:eq:edge-density}
+ -\Xi'(x)=\frac{12\pi}{\zeta(2)}\sum_{n\ge1}\sigma_1(n)(1-2\pi nx)_+,
+ \qquad \sigma_1(n)=\sum_{d\mid n}d.
+\end{equation}
+Thus the locally finite measures $\nu^{\mathrm e}_k(A)=k\,\hznu_k(kA)$ on
+$(0,\infty)$ converge vaguely to $-\Xi'(x)\dd x$. This follows first on
+intervals bounded away from zero by subtracting the tail limits, and then
+for compactly supported continuous functions by step-function
+approximation. The limit is not a probability measure: its mass diverges
+toward the origin.
+
+At $x_n=1/(2\pi n)$, the jump in the second derivative is
+\begin{equation}\label{mxc:hz:eq:edge-jump}
+ \Xi''(x_n^-)-\Xi''(x_n^+)=\frac{24\pi^2}{\zeta(2)}n^2\sigma_{-1}(n).
+\end{equation}
+Divisor sums are therefore recoverable from the slope changes of the edge
+density. On the outermost interval,
+\[
+ \frac1{4\pi}\le x\le\frac1{2\pi},
+ \qquad
+ \Xi(x)=\frac3{\zeta(2)}(1-2\pi x)^2.
+\]
+
+\begin{proposition}[Exact extreme zeros]\label{mxc:hz:prop:extreme}
+For $k\ge4$, the two zeros of largest absolute imaginary coordinate are
+\begin{equation}\label{mxc:hz:eq:extreme}
+ -\frac12\ \pm\ \frac{i}{2}\cot\frac{\pi}{k-1},
+\end{equation}
+each of algebraic multiplicity exactly two. In particular,
+\[
+ \max|\operatorname{Im}u|<\frac{k}{2\pi},\qquad
+ \frac{\max|\operatorname{Im}u|}{k}\longrightarrow\frac1{2\pi}.
+\]
+For $k=3$, the only reduced zero is $-1/2$, with multiplicity two.
+\end{proposition}
+
+\begin{proof}
+Every grid has $q=(j-i)/g_{ij}\le k-1$. The least positive angle entering a
+positive cotangent is $\pi/(k-1)$, attained only at $(i,j)=(1,k)$, $r=1$.
+That pair has $g_{ij}=1$; no other grid can produce this same extreme
+angle. The bound follows from $\cot z<1/z$ for $0<z<\pi/2$.
+\end{proof}
+
+The edge theorem describes a collection of order $k^2$ zeros with
+multiplicity, out of a total of order $k^3$. It does not describe a
+limiting process for the finitely many largest individual roots. The
+latter question is finer than~\eqref{mxc:hz:eq:edge-uniform}.
+
+\section{Matching the edge to the Cauchy tail}\label{mxc:hz:sec:matching}
+
+\subsection{A divisor-sum expansion with its constant}
+
+\begin{theorem}\label{mxc:hz:thm:edge-small}
+As $x\downarrow0$,
+\begin{equation}\label{mxc:hz:eq:edge-small}
+ \Xi(x)=\frac1{2\pi x}
+ -\frac3{2\zeta(2)}\log\frac1x
+ +\frac3{2\zeta(2)}\Bigl(\frac32-\gE\Bigr)
+ +O\Bigl(x\log\frac1x\Bigr).
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Put
+\[
+ \mathcal H(t)=\sum_{n\ge1}\sigma_{-1}(n)(1-tn)_+^2,
+ \quad X=1/t,\quad
+ \mathrm B_3(v)=v^3-\frac32v^2+\frac12v.
+\]
+Regroup the divisors as $n=d\ell$. The elementary finite-sum identity
+\[
+ \sum_{\ell=1}^{\lfloor v\rfloor}(v-\ell)^2
+ =\frac{\mathrm B_3(v)-\mathrm B_3(\{v\})}{3}
+\]
+then gives the exact equality
+\begin{equation}\label{mxc:hz:eq:bernoulli-exact}
+ \mathcal H(1/X)
+ =\frac X3\sum_{d\le X}\frac1{d^2}
+  -\frac12\sum_{d\le X}\frac1d+\frac{\lfloor X\rfloor}{6X}
+  -\frac1{3X^2}\sum_{d\le X}d\,\mathrm B_3(\{X/d\}).
+\end{equation}
+
+Define $\Upsilon(v)=v\,\mathrm B_3(\{1/v\})$ for $v>0$, with
+$\Upsilon(0)=0$. The periodic extension of $\mathrm B_3$ and its first
+derivative agree at integer endpoints. Thus $\Upsilon$ is continuous,
+$|\Upsilon(v)|\le Cv$, and away from zero $|\Upsilon'(v)|\le C(1+1/v)$.
+Splitting off $[0,1/X]$ and bounding the remaining Riemann-sum error by the
+integral of $|\Upsilon'|/X$ proves
+\begin{equation}\label{mxc:hz:eq:bernoulli-riemann}
+ \frac1{X^2}\sum_{d\le X}d\,\mathrm B_3(\{X/d\})
+ =\mathcal I_3+O(\log X/X),\qquad \mathcal I_3=\int_0^1\Upsilon(v)\dd v.
+\end{equation}
+Here
+\[
+ \mathcal I_3=\int_1^\infty\frac{\mathrm B_3(\{v\})}{v^3}\dd v
+   =\frac32\log(2\pi)-\frac{11}{4}.
+\]
+For clarity, the constant can be evaluated without a contour argument. Two
+integrations by parts using the periodic Bernoulli polynomials give
+\[
+ \mathcal I_3=\frac14+3\int_1^\infty\frac{\{v\}-1/2}{v}\dd v.
+\]
+The last integral converges by the zero mean of its periodic numerator. Its
+integral through $N+1$ is
+\[
+ N-(N+1/2)\log(N+1)+\log(N!),
+\]
+which tends to $\frac12\log(2\pi)-1$ by Stirling's formula.
+
+Finally,
+\[
+ \frac X3\sum_{d\le X}d^{-2}=\frac{\zeta(2) X}{3}-\frac13+O(X^{-1}),\quad
+ \sum_{d\le X}d^{-1}=\log X+\gE+O(X^{-1}),\quad
+ \frac{\lfloor X\rfloor}{6X}=\frac16+O(X^{-1}).
+\]
+Insert these and~\eqref{mxc:hz:eq:bernoulli-riemann}
+into~\eqref{mxc:hz:eq:bernoulli-exact}. The result is
+\begin{equation}\label{mxc:hz:eq:H-small}
+ \mathcal H(t)=\frac{\zeta(2)}{3t}-\frac12\log\frac1t
+       +\frac34-\frac{\gE}2-\frac12\log(2\pi)
+       +O\Bigl(t\log\frac1t\Bigr).
+\end{equation}
+Since $\Xi(x)=3\mathcal H(2\pi x)/\zeta(2)$, the $\log(2\pi)$ terms cancel,
+giving~\eqref{mxc:hz:eq:edge-small}.
+\end{proof}
+
+[Note of the batch-98 write: in the evaluation of $\mathcal I_3$, $N$ is a
+running integer of that display only, not the diagonal index of Part~I.]
+
+The leading term matches the Cauchy tail. The next term has exactly the
+scale that appears in the global discrepancy theorem. The remainder
+in~\eqref{mxc:hz:eq:edge-small} has not been differentiated; the density
+formula~\eqref{mxc:hz:eq:edge-density} follows directly from the exact
+finite sum.
+
+\subsection{One formula covering the entire intermediate range}
+
+\begin{theorem}[Uniform transition formula]\label{mxc:hz:thm:transition}
+For $y>0$, set $\mathfrak m=k/\Omega(y)$. If $\mathfrak m\le1$, both
+$\mathsf Z_k(y)$ and $\mathcal H(1/\mathfrak m)$ vanish. If
+$\mathfrak m\ge1$, then
+\begin{equation}\label{mxc:hz:eq:transition-count}
+ \mathsf Z_k(y)=\frac{k^2}{\zeta(2)}\mathcal H(1/\mathfrak m)
+       +O\bigl(k\mathfrak m\log(2\mathfrak m)\log(2k)\bigr),
+\end{equation}
+with an absolute implied constant. For sufficiently large $k$, its
+normalized form is
+\begin{equation}\label{mxc:hz:eq:transition}
+ \hznu_k((y,\infty))
+ =\frac1k\Xi\Bigl(\frac{\Omega(y)}{2\pi k}\Bigr)
+  +O\Bigl(\frac{\log(2\mathfrak m)\log(2k)}{\Omega(y)k}\Bigr),
+ \qquad \mathfrak m\ge1.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Apply Lemma~\ref{mxc:hz:lem:triangle} to~\eqref{mxc:hz:eq:tail-exact}
+without approximating $\Omega$. The squared areas regroup exactly into
+$k^2\mathcal H(\Omega/k)/\zeta(2)$. Only $gr<\mathfrak m$ contribute.
+Their total error is at most
+\[
+ Ck\sum_{g\le\mathfrak m}\Bigl\lfloor\frac{\mathfrak m}g\Bigr\rfloor\log(2k/g)
+ \le C'k\mathfrak m\log(2\mathfrak m)\log(2k).
+\]
+This proves~\eqref{mxc:hz:eq:transition-count}. Also
+$\mathcal H(1/\mathfrak m)=O(\mathfrak m)$ for $\mathfrak m\ge1$, for example
+by summing its divisor expression and using $\sum d^{-2}<\infty$. The
+normalization $\mathsf D_k=k^3/3+O(k^2\log k)$
+gives~\eqref{mxc:hz:eq:transition}; its extra normalization error is
+absorbed because $\log(2\mathfrak m)$ is bounded below by $\log2$.
+\end{proof}
+
+\begin{corollary}[All mesoscopic Cauchy tails]\label{mxc:hz:cor:mesoscopic}
+If $y_k\to\infty$ and $y_k=o(k)$, then
+\[
+ \hznu_k((y_k,\infty))\sim\frac1{2\pi y_k},\qquad
+ \hznu_k(\{|Y|>y_k\})\sim\frac1{\pi y_k}.
+\]
+\end{corollary}
+
+\begin{proof}
+Now $\Omega(y_k)\sim2\pi y_k$, so $\mathfrak m_k=k/\Omega(y_k)\to\infty$.
+Equations~\eqref{mxc:hz:eq:H-small} and~\eqref{mxc:hz:eq:transition} imply
+\[
+ \hznu_k((y_k,\infty))
+ =\frac1{\Omega(y_k)}
+  \Bigl[1+O\Bigl(
+  \frac{\log(2\mathfrak m_k)}{\mathfrak m_k}
+  +\frac{\log(2\mathfrak m_k)\log(2k)}{k}\Bigr)\Bigr].
+\]
+Both errors tend to zero; note that $\mathfrak m_k<k/2$. Symmetry gives the
+second formula.
+\end{proof}
+
+The exact effective argument in~\eqref{mxc:hz:eq:transition} is
+$\Omega(y)/(2\pi k)$. Replacing it by $y/k$ is justified for growing $y$,
+but would lose the correct Cauchy coordinate for bounded $y$. The
+mesoscopic result places no extra restriction such as $y=o(k/\log k)$.
+
+\section{The transition in absolute moments}\label{mxc:hz:sec:moments}
+
+The zeros are symmetric in their imaginary coordinate, so every signed odd
+moment is zero. Absolute moments reveal the heavy tail. For $p>0$, retain
+the notation $\mathsf M_p(k)=\int|Y|^p\dd\hznu_k(Y)$.
+
+\subsection{A uniform bound at every height}
+
+Before applying its multiplicity, a $q$-grid has at most $2q/\Omega(y)$
+points with $|Y|>y$. As $\sum_{i<j}g_{ij}q_{ij}=c$, we have the useful
+exact bound
+\begin{equation}\label{mxc:hz:eq:global-tail-bound}
+ \hznu_k(\{|Y|>y\})
+ \le\min\Bigl(1,\frac{4c}{\mathsf D_k\,\Omega(y)}\Bigr)
+ \le\min\Bigl(1,\frac{2c}{\pi\mathsf D_ky}\Bigr).
+\end{equation}
+The right-hand side is bounded by $\min(1,C/y)$ for an absolute constant
+and all $k\ge3$. The finitely many small $k$'s can be included after
+increasing the constant, since $2c/\mathsf D_k\to1$.
+
+\subsection{Orders below and above one}
+
+\begin{proof}[Proof of~\eqref{mxc:hz:eq:subcritical-main}]
+For a nonnegative random variable, the layer-cake identity gives
+\[
+ \mathsf M_p(k)=p\int_0^\infty y^{p-1}\hznu_k(\{|Y|>y\})\dd y.
+\]
+When $0<p<1$, \eqref{mxc:hz:eq:global-tail-bound} supplies an integrable
+majorant, $py^{p-1}\min(1,C/y)$. Weak convergence to the continuous Cauchy
+law gives convergence of the tails at every positive $y$. Dominated
+convergence proves moment convergence. Finally, the change of variables
+$z=2y$ evaluates the limit:
+\[
+ \int_{\mathbb R}|y|^p\frac{2\dd y}{\pi(1+4y^2)}
+ =\frac{2^{1-p}}{\pi}\int_0^\infty\frac{z^p}{1+z^2}\dd z
+ =\frac{2^{-p}}{\cos(\pi p/2)}.
+\]
+\end{proof}
+
+\begin{proof}[Proof of~\eqref{mxc:hz:eq:supercritical-main}]
+The exact cutoff in Proposition~\ref{mxc:hz:prop:extreme} and the
+layer-cake identity yield
+\[
+ k^{1-p}\mathsf M_p(k)
+ =p\int_0^{1/(2\pi)}x^{p-1}k\,\hznu_k(\{|Y|>kx\})\dd x.
+\]
+By~\eqref{mxc:hz:eq:global-tail-bound}, the integrand is at most a constant
+times $x^{p-2}$. This is integrable at zero exactly when $p>1$. The edge
+theorem and dominated convergence therefore give
+\begin{align*}
+ \lim_{k\to\infty}k^{1-p}\mathsf M_p(k)
+ &=\frac{6p}{\zeta(2)}\sum_{n\ge1}\sigma_{-1}(n)
+       \int_0^{1/(2\pi n)}x^{p-1}(1-2\pi nx)^2\dd x\\
+ &=\frac{12}{(2\pi)^p(p+1)(p+2)\zeta(2)}
+       \sum_{n\ge1}\frac{\sigma_{-1}(n)}{n^p}\\
+ &=\frac{12\zeta(p)\zeta(p+1)}{(2\pi)^p(p+1)(p+2)\zeta(2)}.
+\end{align*}
+Tonelli's theorem justifies the nonnegative interchange. The last
+Dirichlet-series identity follows directly by writing $n=d\ell$:
+\[
+ \sum_{n\ge1}\frac{\sigma_{-1}(n)}{n^p}
+ =\sum_{d,\ell\ge1}\frac1{d^{p+1}\ell^p}=\zeta(p+1)\zeta(p).
+\]
+\end{proof}
+
+This computation shows why cutting off a continuous Cauchy density at its
+largest zero would give the wrong higher-moment constants. The entire
+divisor-sum edge profile contributes. For instance,
+\begin{equation}\label{mxc:hz:eq:second-moment-asymptotic}
+ \mathsf M_2(k)\sim\frac{\zeta(3)}{4\pi^2}k.
+\end{equation}
+
+\subsection{The critical moment, with its constant term}
+
+\begin{lemma}\label{mxc:hz:lem:cot-absolute}
+Uniformly for integers $q\ge1$,
+\begin{equation}\label{mxc:hz:eq:cot-absolute}
+ \mathsf S_1(q):=\frac12\sum_{\ell=1}^{q-1}\Bigl|\cot\frac{\pi\ell}{q}\Bigr|
+ =\frac q\pi(\log q+\gE-\log\pi)+O(1).
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+By symmetry,
+\[
+ \mathsf S_1(q)=\sum_{\ell=1}^{\lfloor(q-1)/2\rfloor}\cot(\pi\ell/q).
+\]
+The function $\mathsf h(v)=\cot(\pi v)-1/(\pi v)$ extends smoothly across
+zero on $[0,1/2]$, and
+\[
+ \int_0^{1/2}\mathsf h(v)\dd v=\frac1\pi\log\frac2\pi.
+\]
+Subtract $q/(\pi\ell)$ in the sum. A Riemann-sum error $O(1)$, together
+with the harmonic-number expansion, gives
+\[
+ \mathsf S_1(q)=\frac q\pi\bigl(\log(q/2)+\gE+\log(2/\pi)\bigr)+O(1).
+\]
+The finitely many smallest values of $q$ are absorbed in the constant.
+\end{proof}
+
+Define the two weighted sums
+\[
+ \mathcal S^{\mathrm{gap}}_k=\sum_{i<j}(j-i)\log(j-i),\qquad
+ \mathcal S^{\gcd}_k=\sum_{i<j}(j-i)\log g_{ij}.
+\]
+For the first, grouping by $h=j-i$ and using a Riemann sum gives
+\begin{equation}\label{mxc:hz:eq:gap-log}
+ \mathcal S^{\mathrm{gap}}_k
+ =\sum_{h=1}^{k-1}h(k-h)\log h
+ =c\Bigl(\log k-\frac56\Bigr)+O(k^2\log k).
+\end{equation}
+The constant follows from $\int_0^1v(1-v)\log v\dd v=-5/36$ and
+$\int_0^1v(1-v)\dd v=1/6$. The integrable endpoint derivative also gives
+the displayed Riemann-sum error.
+
+For the second, let $\vM(n)$ be the von Mangoldt function:
+$\vM(p^a)=\log p$ for prime powers, and zero otherwise. The elementary
+identity $\log n=\sum_{d\mid n}\vM(d)$ gives the exact finite formula
+\begin{equation}\label{mxc:hz:eq:gcd-log-exact}
+ \mathcal S^{\gcd}_k=\sum_{d\le k}\vM(d)\,d\binom{\lfloor k/d\rfloor+1}{3}.
+\end{equation}
+Since
+\[
+ d\binom{\lfloor k/d\rfloor+1}{3}=\frac{k^3}{6d^2}+O(k^2/d),
+\]
+we obtain
+\begin{equation}\label{mxc:hz:eq:gcd-log}
+ \mathcal S^{\gcd}_k=-c\frac{\zeta'(2)}{\zeta(2)}+O(k^2\log^2k).
+\end{equation}
+For completeness, no prime number theorem is needed for this error:
+$\vM(d)\le\log d$ implies
+\[
+ \sum_{d\le k}\frac{\vM(d)}d=O(\log^2k),\qquad
+ \sum_{d>k}\frac{\vM(d)}{d^2}=O(\log k/k).
+\]
+Logarithmic differentiation of the absolutely convergent Euler product at
+$2$ gives $\sum_{d\ge1}\vM(d)/d^2=-\zeta'(2)/\zeta(2)$.
+
+\begin{proof}[Proof of~\eqref{mxc:hz:eq:critical-main}]
+Apply Lemma~\ref{mxc:hz:lem:cot-absolute} to each grid in the exact
+product. Since $gq=j-i$,
+\[
+ \mathsf M_1(k)=\frac{2}{\pi\mathsf D_k}
+     \bigl\{\mathcal S^{\mathrm{gap}}_k-\mathcal S^{\gcd}_k
+               +(\gE-\log\pi)c\bigr\}+O(G_k/\mathsf D_k).
+\]
+Insert~\eqref{mxc:hz:eq:gap-log} and~\eqref{mxc:hz:eq:gcd-log}. Because
+\[
+ \mathsf D_k=2(c-G_k),\qquad G_k=O(k^2\log k),
+\]
+the normalization correction multiplied by $\log k$ is $O(\log^2k/k)$.
+This proves
+\[
+ \mathsf M_1(k)=\frac{\log k+\gE-\log\pi-5/6+\zeta'(2)/\zeta(2)}{\pi}
+               +O(\log^2k/k).
+\]
+\end{proof}
+
+The constant after $(\log k)/\pi$ is approximately
+\begin{equation}\label{mxc:hz:eq:critical-constant}
+ \frac{\gE-\log\pi-5/6+\zeta'(2)/\zeta(2)}{\pi}
+ =-0.6273278444052116\ldots.
+\end{equation}
+In particular, a good numerical fit to the logarithmic coefficient alone
+can conceal a substantial finite constant.
+
+\subsection{An exact second moment and a shift-dependent example}
+
+The finite identity
+\[
+ \sum_{\ell=1}^{q-1}\cot^2\frac{\pi\ell}{q}=\frac{(q-1)(q-2)}3
+\]
+can be checked by logarithmically differentiating the finite sine product
+twice: $\sum_{\ell=0}^{q-1}\csc^2(z+\pi\ell/q)=q^2\csc^2(qz)$. Letting
+$z\to0$ and removing the common $z^{-2}$ term gives the sum of squared
+cosecants, and subtracting $q-1$ gives the displayed cotangent sum. Thus
+\begin{equation}\label{mxc:hz:eq:second-moment-exact}
+ \mathsf M_2(k)=\frac1{6\mathsf D_k}
+   \Bigl\{\sum_{i<j}\frac{(j-i)^2}{g_{ij}}-3c+2G_k\Bigr\}.
+\end{equation}
+This identity supplies an exact rational check
+of~\eqref{mxc:hz:eq:second-moment-asymptotic}, independent of numerical
+root summation.
+
+The positive absolute imaginary moments of the full zero measure have the
+exact relation
+\begin{equation}\label{mxc:hz:eq:full-moment}
+ \int|\operatorname{Im}u|^p\dd\hzmu_{k,s}(u)
+       =\frac{\mathsf D_k}{\deg H_{k,s}}\mathsf M_p(k).
+\end{equation}
+For $p>1$ and $s\gg k^2$, this gives
+\[
+ \int|\operatorname{Im}u|^p\dd\hzmu_{k,s}(u)
+       \sim\frac{\mathcal M_p}{3}\frac{k^{p+1}}s.
+\]
+Hence $\hzmu_{k,s}\Longrightarrow\boldsymbol\delta_{-1}$ can coexist with
+divergent $p$-th moments when $k^2\ll s\ll k^{p+1}$. If
+$s/k^{p+1}\to\varkappa_p\in(0,\infty)$, the moment tends to
+$\mathcal M_p/(3\varkappa_p)$. This is a concrete illustration of why weak
+convergence and moment convergence must be kept distinct.
+
+\section{Manuscript 08's checks and numerical illustrations}\label{mxc:hz:sec:computation}
+
+Manuscript~08's program \path{code/07-zero-laws-reproduce.py} (delivered as
+\texttt{code/reproduce.py}) regenerates the data and all four figures
+without accessing the network. The proofs above do not rely on these
+computations. The purpose of the checks is to test the enumerative
+normalization, detect multiplicity or factor-of-two errors, and display
+the rate at which the asymptotic regimes become visible.
+
+\subsection{What is checked exactly}
+
+The program constructs the counts allowing zero rows, $A(n,j;u)$ of
+Section~\ref{mxc:sec:exact}, directly from the column recurrence
+\[
+ A(n,j;u)=u\sum_{h=1}^n\binom{h+j-1}{j-1}A(n-h,j;u)
+ \quad(n\ge1,\ j\ge1),
+\]
+which is~\eqref{mxc:eq:positive-rec}, uses inclusion--exclusion to obtain
+$T_u(n,k)$, and takes the determinant before comparing it
+with~\eqref{mxc:hz:eq:prior-product}. Thus the determinant entries are not
+generated from the product being checked.
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{.74\textwidth}r@{}}
+\toprule
+Verification & Completed checks\\
+\midrule
+Complete polynomial determinant identities in $\mathbb Q[u]$,
+ $1\le k\le4,\ 1\le s\le3$&12\\
+Rational specializations, including exceptional and central roots&96\\
+Exact nonreal algebraic-root specializations&3\\
+Degree and primitive-multiplicity identities&91\\
+Independent root merging and exact CDF comparisons&18\\
+Independent direct and aggregated tail counts&20\\
+Finite cotangent identities at 70-digit precision&78\\
+CDF maxima over complete supports, through $k=2048$&18\\
+Independent high-precision absolute first-moment checks&2\\
+\bottomrule
+\end{tabular}
+\caption{Manuscript~08's checks. All listed checks passed. High-precision
+and tail checks are distinguished from exact polynomial and rational
+computations.}
+\label{mxc:hz:tab:checks}
+\end{table}
+
+The empirical CDF maximum is found by checking every support angle and both
+its one-sided values. These values are exact rational numbers, rather than
+maxima sampled from a plotting grid. The second and fourth moments are also
+computed by exact finite cotangent identities. In edge plots, the root
+masses are integer counts, but comparison with transcendental thresholds
+uses floating-point arithmetic. Independent high-precision tail checks use
+thresholds away from atoms.
+
+[Note of the batch-98 write: the program's record
+\path{data/07-zero-laws-verification_summary.txt} also lists four checks of
+PDF structure (trailer, cross-reference offsets and page count of each
+figure), which the table does not count. The shipped
+\path{data/07-zero-laws-pdf_validation.json} is a different record: it
+reports that the four figure PDFs were opened and rendered by PyMuPDF, a
+tool that is not a dependency of the program and is not shipped, so that
+record cannot be regenerated from the package.]
+
+\subsection{Bulk convergence and arithmetic concentrations}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{figures/07-zero-laws-central_cdf.pdf}
+\caption{The reduced zero distribution for $k=12,40,150$ (manuscript~08).
+Left: CDFs of the imaginary coordinates and the Cauchy limit. Right:
+discrepancy in the uniform angular coordinate $t=F_\Cau(y)$. The
+arithmetic jumps are visible even when the CDFs are close on the original
+scale. [The figure's $F_k(y)$ is the distribution function of $\hznu_k$,
+that is $\mathcal F_k(F_\Cau(y))$, and its $F_{\mathrm C}$ is $F_\Cau$.]}
+\label{mxc:hz:fig:cdf}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=.86\textwidth]{figures/07-zero-laws-fixed_order_multiplicities.pdf}
+\caption{Exact primitive-order multiplicities divided by the leading terms
+$k^2\log k/(\zeta(2)\psi(m))$, for $m=2,3,5,6$ (manuscript~08). The
+convergence is slow because the proved error has relative order $1/\log k$
+at each fixed order. [The figure's $E_m(k)$ is $\mathsf E_m(k)$.]}
+\label{mxc:hz:fig:multiplicities}
+\end{figure}
+
+The computed Kolmogorov distances illustrate a useful distinction: the
+theorem determines the exact limiting constant, but moderate sizes do not
+approximate that constant especially closely. Write
+$\Delta^{\mathrm K}_k=\dK(\hznu_k,\Cau)$.
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabular}{@{}rrrr@{}}
+\toprule
+$k$&$\Delta^{\mathrm K}_k$&$k\Delta^{\mathrm K}_k/\log k$&One maximizing left limit\\
+\midrule
+64&0.0350281076162&0.539038690&$1/7$\\
+128&0.0208961596153&0.551255513&$1/7$\\
+256&0.0122991367143&0.567804913&$1/7$\\
+512&0.00708644151164&0.581607767&$1/11$\\
+1024&0.00406672748617&0.600785672&$1/11$\\
+2048&0.00230151896685&0.618196247&$1/11$\\
+\midrule
+Limit&&$9/\pi^2=0.911890653\ldots$&\\
+\bottomrule
+\end{tabular}
+\caption{Complete-support exact discrepancies, displayed in decimals
+(manuscript~08). These data neither determine the limiting constant by
+themselves nor suggest that the maximum always occurs at the order-two
+atom.}
+\label{mxc:hz:tab:discrepancy}
+\end{table}
+
+The movement from an order-seven to an order-eleven endpoint is compatible
+with the moving-angle proof of the sharp constant. It is finite evidence,
+not a theorem predicting the denominator of every maximizing endpoint
+(Research question~\ref{mxc:hz:q:discrepancy}).
+
+\subsection{The extreme tail and the moment transition}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{figures/07-zero-laws-edge_tail.pdf}
+\caption{The two-sided extreme tail $k\hznu_k(\{|Y|>kx\})$ for
+$k=32,128,512,2048$, compared with $2\Xi(x)$ (manuscript~08). The enlarged
+outer region displays the finite endpoint $1/(2\pi)$. The limiting curve
+comes from the divisor-sum formula, not from a fitted numerical density.
+[The figure's $\nu_k$ is $\hznu_k$, and its ``Limit $E(x)$'' is the
+two-sided limit $2\Xi(x)$.]}
+\label{mxc:hz:fig:edge}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{figures/07-zero-laws-discrepancy_moments.pdf}
+\caption{Left: discrepancy on the $(\log k)/k$ scale, its order-two
+half-jump lower bound, and the proved limit $9/\pi^2$. Right: normalized
+second and fourth moments. Moment convergence in these plots is
+substantially faster than convergence of the scaled global discrepancy
+(manuscript~08; an observation, not a theorem). [The figure's
+$k^{1-p}\mathbb E|Y|^p/C_p$ is $k^{1-p}\mathsf M_p(k)/\mathcal M_p$; its
+lower-bound limit $3/\pi^2=1/(2\zeta(2))$ is that of half the central
+atom~\eqref{mxc:hz:eq:central-atom}.]}
+\label{mxc:hz:fig:moments}
+\end{figure}
+
+For example, at $k=4096$ the computed values are
+\[
+ k^{-1}\mathsf M_2(k)=0.0305025370246502,\qquad
+ \frac{k^{-1}\mathsf M_2(k)}{\zeta(3)/(4\pi^2)}=1.00177611516,
+\]
+and
+\[
+ k^{-3}\mathsf M_4(k)=0.000175765262189301,\qquad
+ \frac{k^{-3}\mathsf M_4(k)}{\zeta(5)/(600\pi^2)}=1.00377307676.
+\]
+The constants here are consequences of~\eqref{mxc:hz:eq:moment-constant};
+the exact finite moments provide independent numerical checks.
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabular}{@{}rr@{}}
+\toprule
+$k$&$\mathsf M_1(k)-(\log k)/\pi$\\
+\midrule
+64&$-0.505972605$\\
+256&$-0.573868502$\\
+1024&$-0.605429214$\\
+2048&$-0.613841428$\\
+4096&$-0.619330934$\\
+\midrule
+Limit&$-0.6273278444052116\ldots$\\
+\bottomrule
+\end{tabular}
+\caption{The critical first-moment constant (manuscript~08). These entries
+use extended-precision cotangent summation; two cases are independently
+checked at 70-digit precision. [See Remark~\ref{mxc:hz:rem:longdouble}:
+``extended precision'' is the platform's \texttt{long double}.]}
+\label{mxc:hz:tab:first-moment}
+\end{table}
+
+At $k=4096$, the residual after subtracting the theorem's logarithm and
+constant, multiplied by $k/\log^2k$, is about $0.473444$. This is
+consistent with the error scale in~\eqref{mxc:hz:eq:critical-main}; it is
+not an empirical determination of an optimal remainder constant.
+
+\begin{remark}[write; ``extended precision'']\label{mxc:hz:rem:longdouble}
+[Note of the batch-98 write.] The program sums the cotangents for
+Table~\ref{mxc:hz:tab:first-moment} and the edge-tail grid in NumPy's
+\texttt{longdouble}. That type is an extended format on typical x86 Linux
+builds, but on Windows it is the ordinary 64-bit double; the package does
+not record the platform it was produced on. At the intake's reruns on
+Windows, 16 of the 20
+data rows of \path{data/07-zero-laws-first_absolute_moment.csv} and 20 of
+the 4,804 data rows of \path{data/07-zero-laws-edge_tail_grid.csv} differ
+from the shipped files in the last one or two of their seventeen printed
+digits; every other CSV file was byte-identical. The nine-digit values of
+Table~\ref{mxc:hz:tab:first-moment} and the plotted curves are unaffected
+(the four PNG figures were pixel-identical), and the two 70-digit
+cross-checks do not depend on the type. The caption's ``extended
+precision'' therefore depends on the platform, and the summary's sentence
+``exact CSV values are reproducible'' holds for the exact files, not for
+these two floating-point ones.
+\end{remark}
+
+\subsection{Reproduction and data}
+
+Manuscript~08's package contains its \LaTeX{} source and compiled PDF, the
+four vector figures and their PNG versions, the verification program, and
+the exact and numerical data used in its tables and plots. Its stated
+commands are \texttt{python3 code/reproduce.py} and a \texttt{latexmk}
+build of its own \texttt{.tex} file; its environment was SymPy~1.14.0,
+mpmath~1.3.0, NumPy and Matplotlib~3.10.8, and its finite checks and their
+scope are recorded in \path{data/07-zero-laws-verification_summary.json}
+and its text companion.
+
+[Note of the batch-98 write: in this report the program, its data and its
+figures carry the prefix \texttt{07-zero-laws-}, the requirements file is
+\path{data/07-zero-laws-requirements.txt}, and its build script
+\path{code/07-zero-laws-build.sh} builds the delivered \texttt{.tex}, which is
+not shipped; the article here is a build of the merged text. The program
+writes unprefixed files into \texttt{data/} and \texttt{figures/} under the
+directory above its own, so it must be rerun on a copy with the delivered
+layout, as the report README describes, never in the report directory. At
+the intake's rerun on such a copy (Python~3.13.5, the pinned SymPy,
+mpmath, NumPy~2.3.5 and Matplotlib), it exited with status~0 after about
+45\,s; nine CSV files were byte-identical, the text summary equal apart from
+line endings, the JSON summary equal apart from the recorded Python version,
+the four PNG figures pixel-identical and the four PDF figures identical
+apart from their creation dates; for the two remaining CSV files see
+Remark~\ref{mxc:hz:rem:longdouble}.]
+
+\section{Further questions and research}\label{mxc:hz:sec:questions}
+
+[Added 5 October 2026, batch 98.] This section collects every unproved
+claim of manuscript~08: its nine research questions, with its sketches;
+its explicit candidate for the correction of the fractional moments; its
+speculation about the last zeros; and its three numerical observations.
+Manuscript~08 states no claim that this write found wrong. Its question~8
+is Part~I's Research question~5 and is printed there (see the paragraph
+on it below); its question~9 overlaps
+Section~\ref{mxc:sec:questions}'s ``practical order of attack'' and is
+printed here with a note. Manuscript~08's questions~1--7 and~9 are
+Research questions~\ref{mxc:hz:q:discrepancy}--\ref{mxc:hz:q:certificates}.
+
+The original zero-distribution question is now answered for both
+normalizations, with fixed-order multiplicities, extreme tails, and a
+complete leading moment classification. The following questions ask for
+finer information beyond those theorems. They are proposed research
+directions for this family, not claims that every formulation has been
+checked against all literature.
+
+\begin{question}[The next term in the global discrepancy; manuscript~08]\label{mxc:hz:q:discrepancy}
+Determine a second asymptotic term for $\Delta^{\mathrm K}_k$ beyond
+$(9/\pi^2)(\log k)/k$, and describe the denominators of maximizing support
+angles.
+\end{question}
+
+The sharp-constant proof uses compactness and harmonic averaging, and does
+not give a quantitative error in that constant.
+Table~\ref{mxc:hz:tab:discrepancy} suggests why such an error would matter
+in practice. A first target is a two-sided effective bound with a smaller
+error than $o((\log k)/k)$. A more ambitious target is an arithmetic
+description of the maximizing order and its transitions as $k$ grows. The
+fixed rational endpoint formulas alone cannot settle a maximization over
+growing denominators.
+
+[Note of the batch-98 write.] \emph{Evidence, not proof:} in
+Table~\ref{mxc:hz:tab:discrepancy} the maximizing left limit moves from
+$1/7$ (at $k=64,128,256$) to $1/11$ (at $k=512,1024,2048$), and
+$k\Delta^{\mathrm K}_k/\log k$ is still $0.618$ at $k=2048$ against the
+limit $0.912$. Manuscript~08 calls the movement ``finite evidence, not a
+theorem''. The moving-endpoint example of
+Section~\ref{mxc:hz:sec:sharp}, which realizes the sharp constant along
+$t_k=1/\log k$, suggests that the maximizing angles drift to the endpoints
+with growing denominators; that is a heuristic, not a statement proved
+here.
+
+\begin{question}[Cyclotomic orders that grow with $k$; manuscript~08]\label{mxc:hz:q:growing-order}
+For which growing ranges of $m=m_k$ can~\eqref{mxc:hz:eq:multiplicity-main}
+be strengthened to a useful uniform relative asymptotic?
+\end{question}
+
+The present absolute error guarantees a relative equivalent for
+$\psi(m)=o(\log k)$, but says little when $\psi(m)$ is comparable to or
+larger than $\log k$. The exact expression~\eqref{mxc:hz:eq:W-exact}
+retains more information: when $m$ is a fixed fraction of $k$, only a
+bounded number of unreduced denominators are multiples of $m$. An analysis
+of that transition should keep the short coprimality intervals rather
+than replace them by a global density.
+
+\begin{question}[Local spacing with multiplicity weights; manuscript~08]\label{mxc:hz:q:spacing}
+What are the local spacing and pair-correlation laws of the distinct
+zeros, and how do their multiplicity weights change those laws?
+\end{question}
+
+The distinct angles are the reduced fractions of denominator at most
+$k-1$, so their unweighted spacing belongs to the classical Farey setting.
+The present weights $\mathsf E_m(k)$ impose a different arithmetic
+sampling. A natural first comparison is between a uniformly selected
+distinct zero and a zero selected with its algebraic multiplicity. A
+satisfactory result should state the coordinate used for spacing, since
+the cotangent map strongly stretches the ends.
+
+\begin{question}[The last finitely many zeros; manuscript~08]\label{mxc:hz:q:last-zeros}
+Describe the successive extreme ordinates and their multiplicities at a
+resolution finer than $Y/k$.
+\end{question}
+
+Proposition~\ref{mxc:hz:prop:extreme} gives the largest ordinate exactly.
+The edge theorem controls order $k^2$ roots, counted with multiplicity, and
+does not resolve a fixed extreme rank. The next denominators near $k-1$,
+together with their short coprimality counts, are an explicit finite
+starting point. This problem may exhibit dependence on arithmetic features
+of $k$ that are averaged out by $\Xi$. [Note of the batch-98 write: that
+last sentence is manuscript~08's speculation; it is not proved or
+refuted here.]
+
+\begin{question}[Subleading fractional moments; manuscript~08]\label{mxc:hz:q:fractional}
+For $0<p<1$, determine the first correction to
+$\mathsf M_p(k)\to2^{-p}/\cos(\pi p/2)$, uniformly on useful ranges of $p$.
+\end{question}
+
+The edge expansion suggests a term of order $k^{p-1}$. One concrete
+candidate is the analytic continuation in $p$ of the coefficient
+$\mathcal M_p$ in~\eqref{mxc:hz:eq:moment-constant}, using the continued
+zeta function. This candidate is not proved here. A proof must subtract the
+Cauchy tail before integrating the edge profile and control the
+small-$x$ region uniformly. Merely continuing the formula established for
+$p>1$ does not justify the asymptotic statement for $p<1$.
+
+[Note of the batch-98 write.] The candidate, stated as a claim, is: for
+fixed $0<p<1$,
+$\mathsf M_p(k)=2^{-p}/\cos(\pi p/2)+\mathcal M_pk^{p-1}+o(k^{p-1})$ with
+$\mathcal M_p$ continued analytically; it is open. What is missing is the
+subtraction described above and a bound on the bulk error, which by
+Theorem~\ref{mxc:hz:thm:smooth} is of order $(\log k)/k$ for smooth
+compactly supported statistics, smaller than $k^{p-1}$ for every
+$0<p<1$; but $|Y|^p$ is neither compactly supported nor smooth at the
+origin, so that theorem does not apply to it directly.
+
+\begin{question}[An expansion through the critical moment order; manuscript~08]\label{mxc:hz:q:critical}
+Can the three moment regimes be replaced by one uniform formula when
+$p=1+\lambda/\log k$ and $\lambda$ remains bounded?
+\end{question}
+
+Such a formula should recover the logarithm and the constant
+in~\eqref{mxc:hz:eq:critical-main} when $\lambda\to0$, while matching the
+two noncritical regimes in an overlap region. The pole of $\zeta(p)$ in
+$\mathcal M_p$ identifies the cancellation that a uniform derivation must
+handle. This is a more precise objective than substituting a varying $p$
+into a fixed-$p$ theorem. [Here $\lambda$ is a local parameter, not the
+ratio $n/k$ of Part~I.]
+
+\begin{question}[Smaller Hankel minors and other row models; manuscript~08]\label{mxc:hz:q:minors}
+Which submaximal Hankel determinants, or variants of the column
+enumeration, retain a vertical-line zero law?
+\end{question}
+
+The exact resultant product is decisive for the maximal determinant.
+Smaller minors contain sums of products, and their zeros need not inherit
+its geometry. A first project is an exact classification for small
+deficits in the matrix size, supported by symbolic examples and then by a
+structural identity. Bounded entries and alternative column weights are
+separate variants whose spectra must first be established. [Note of the
+batch-98 write: this continues the last sentence of Part~I's Research
+question~5, which asks which minors other than the maximal ones have a
+definite sign, and the variants of Part~I's Research question~8 and of
+Part~II's paragraph on weighted rows and restricted alphabets
+(Section~\ref{mxc:tp:sec:future}).]
+
+\paragraph{Manuscript 08's question 8: a combinatorial model for the positive product.}
+Manuscript~08's eighth question asks whether the coefficients
+of~\eqref{mxc:hz:eq:prior-product} can be explained directly by counted
+objects or a sign-reversing involution. It says itself that the question
+``was already present in the repository report'': it is Part~I's Research
+question~5, ``A combinatorial explanation of determinant positivity''
+(Section~\ref{mxc:sec:questions}), and is not repeated here. Manuscript~08's
+addition to it, which arithmetic factors a model would have to explain, is
+printed there in a dated note. The zero analysis does not answer it.
+
+\begin{question}[Effective bounds and formal certificates; manuscript~08]\label{mxc:hz:q:certificates}
+Develop explicit constants and a proof-producing implementation for the
+algebraic and arithmetic parts of the theory.
+\end{question}
+
+The determinant, cyclotomic multiplicities, exact degree identities, and
+full-support CDF comparisons are finite objects. They offer a practical
+first formalization stage. The next stage is the primitive-lattice error
+with an explicit constant, followed by the CDF
+bound~\eqref{mxc:hz:eq:elementary-discrepancy}. The sharp constant requires
+the harmonic approximation argument; the numerical verification suite does
+not currently formalize that analytic step. Effective constants would also
+permit a principled switch between exact data and asymptotic evaluation.
+[Note of the batch-98 write: the first stage extends the first target named
+by both earlier manuscripts, the reduced denominator, the resultants and
+the maximal Hankel product (Section~\ref{mxc:sec:questions}, ``A practical
+order of attack'', and Section~\ref{mxc:tp:sec:future}). Nothing of
+Part~III is formalized, and this paragraph is a proposal, not a plan of the
+repository.]
+
+\paragraph{Observations that are not theorems.} Manuscript~08 records three
+numerical observations, kept here as such:
+(i)~the drift of the maximizing endpoint from $1/7$ to $1/11$
+(Table~\ref{mxc:hz:tab:discrepancy}; Research
+question~\ref{mxc:hz:q:discrepancy});
+(ii)~the residual $0.473444$ of the first moment at $k=4096$ after scaling
+by $k/\log^2k$, ``not an empirical determination of an optimal remainder
+constant'' (Section~\ref{mxc:hz:sec:computation}); whether
+$O(\log^2k/k)$ in~\eqref{mxc:hz:eq:critical-main} is the true order is
+open; and
+(iii)~``moment convergence in these plots is substantially faster than
+convergence of the scaled global discrepancy''
+(Figure~\ref{mxc:hz:fig:moments}), a finite comparison with no rate proved
+for either side beyond the theorems above.
+
 \addcontentsline{toc}{part}{Appendix}
 \appendix
 \section{Provenance and editorial notes}\label{mxc:app:provenance}
@@ -3589,6 +5614,112 @@ expansion~\eqref{mxc:eq:d-incr}, the cumulant recursion at $j=3$, and
 $P_3$ numerically. These checks do not replace an independent review of
 the proofs.
 
+\paragraph{Part~III (batch 98).}
+[Added 5 October 2026, batch 98.] Part~III is built from manuscript~08 of
+batch~98, the archive \nolinkurl{a261781_hankel_zero_laws.zip} (30~files,
+a 29-page PDF, main file of 2,041 lines with 110 labels), which arrived in
+commit \texttt{2172df76a} and was placed in commit \texttt{0fba5167f}. Its
+pin is \texttt{d18416ec7}~\cite{hzProveIt}; this report's text did not
+change between the pin and the write. Its article, PDF and delivery README are not
+shipped; it has no checksum ledger. Its other 27 files are shipped
+byte-identical with the prefix \texttt{07-zero-laws-}, and they use the
+delivery names; its \texttt{requirements.txt} (shipped as
+\path{data/07-zero-laws-requirements.txt}) is byte for byte a generic file
+of an unrelated report in the Fabius tree. Manuscript~08 is a continuation
+written against this report, not an edition of either earlier manuscript:
+1.25\,\% of its word 8-grams occur in this report, and 0.50\,\% of this
+report's in it.
+
+\paragraph{Where the batch-98 write had to choose.}
+\begin{itemize}
+\item Manuscript~08's Section~2 re-derives Theorem~\ref{mxc:thm:hankel} by
+ the same argument; it is printed as a pointer
+ (Remark~\ref{mxc:hz:rem:reproof}), which keeps its two new small cases
+ $H_{1,s}$, $H_{2,s}$ and its remarks on the convention $s\ge1$.
+\item Its question~8 is Part~I's Research question~5; it is printed once,
+ there, with manuscript~08's addition in a dated note, and a paragraph of
+ Section~\ref{mxc:hz:sec:questions} points to it. Its question~9 is printed
+ with a note naming the formalization targets of Parts~I and~II. Its
+ questions~1--7 and~9 are Research
+ questions~\ref{mxc:hz:q:discrepancy}--\ref{mxc:hz:q:certificates}; the
+ question counter of Part~I continues, so no existing number changes.
+\item Manuscript~08's letters collide with Parts~I and~II in about thirty
+ places (among them $\nu_k$, $M$, $M_p$, $D_k$, $d_k$, $c_k$, $\Delta_k$,
+ $\gamma$, $\Lambda$, $L$, $\rho_k$, $\tau$ and $\sigma$). Part~III renames
+ them, with sans-serif type for its colliding Latin objects and a
+ superscript $\mathrm z$ on its zero measures, adopts Section~\ref{mxc:sec:hankel}'s
+ unindexed $c=\binom{k+1}3$ and writes $\binom{k+1}2$ out; every rename is
+ in Table~\ref{mxc:hz:tab:dictionary}. Two internal overloads of the
+ manuscript are resolved by the same table: $H_N$ (harmonic numbers) beside
+ $H_{k,s}$, and $\sigma$ (a sign) beside the divisor functions
+ $\sigma_{\pm1}$; its lower summation limit $M$ and running integer $N$ are
+ marked in notes. Its labels are printed as \texttt{mxc:hz:} followed by
+ the delivered name, including the \texttt{ar:} labels of its Section~6.
+\item Its figures are delivered files and keep its letters; the captions
+ translate them. Its tables are retyped from its source with the renamed
+ letters and unchanged numbers.
+\item Its Section~12 (source audit, attribution and package contents) is
+ folded into Section~\ref{mxc:hz:sec:front}, Section~\ref{mxc:hz:sec:computation}
+ and this appendix; its bibliography entries for A261781, A261784 and
+ Munarini--Poneti--Rinaldi are this report's \cite{oeis781,oeis784,mpr2009},
+ and three entries were added \cite{hzpsi,hztoth,hzProveIt}.
+\item Following the intake's standing rule on unproved and wrong claims,
+ every unproved claim of manuscript~08 stands in
+ Section~\ref{mxc:hz:sec:questions}: its nine questions, its candidate for
+ the correction of the fractional moments (Research
+ question~\ref{mxc:hz:q:fractional}, stated there as a claim), its
+ speculation that the last zeros depend on arithmetic features of $k$
+ (Research question~\ref{mxc:hz:q:last-zeros}), and its three numerical
+ observations. No claim of manuscript~08 was found wrong. Two imprecisions
+ are recorded in remarks of the write: ``extended precision'' and
+ ``exact CSV values are reproducible'' depend on the platform
+ (Remark~\ref{mxc:hz:rem:longdouble}), and the uniformity in $m$ of
+ Proposition~\ref{mxc:hz:prop:multiplicity} is empty for $m\ge k$
+ (Remark~\ref{mxc:hz:rem:large-m}).
+\end{itemize}
+
+\paragraph{What the batch-98 write changed.} It added to the preamble eight
+macros for Part~III's notation, a third title, author and date line and the
+PDF metadata; the batch-98 editorial note; bracketed notes marked
+``[Added 5 October 2026, batch 98]'' in Sections~\ref{mxc:sec:scope}
+and~\ref{mxc:sec:dictionary}, at the end of Section~\ref{mxc:sec:hankel}, in
+Research questions~5 and~7 and in ``A practical order of attack'' of
+Section~\ref{mxc:sec:questions}; Part~III
+(Sections~\ref{mxc:hz:sec:front}--\ref{mxc:hz:sec:questions}); these four
+paragraphs; and three bibliography entries. All its labels carry the prefix
+\texttt{mxc:hz:}. No existing label was renamed or removed, no existing
+number changed, and no delivered sentence of manuscripts~06 or~01 was
+changed or removed. Manuscript~08 is printed in full apart from its
+Section~2 and its Section~12, with renamed letters, notes of the write and
+light rewording where a sentence named its own package layout; none of its
+statements was strengthened, and every one of its non-claims is kept
+(Section~\ref{mxc:hz:sec:front}).
+
+\paragraph{Checks by the intake for Part~III.} The placement and the write
+each reran manuscript~08's program on a copy with the delivered layout
+(Section~\ref{mxc:hz:sec:computation}): exit status~0, all counted checks
+passed, outputs as described there. The placement read every proof of
+Sections~\ref{mxc:hz:sec:arithmetic}--\ref{mxc:hz:sec:moments} and found no
+error; it re-derived by hand, among others, the Euler product
+for~$\psi$, the grid and weight bounds of Theorem~\ref{mxc:hz:thm:smooth},
+the exact low-range identity of Lemma~\ref{mxc:hz:ar:lem:saw}, the case
+analysis of Corollary~\ref{mxc:hz:ar:cor:sharp}, the jump
+formula~\eqref{mxc:hz:eq:edge-jump}, the Bernoulli identity of
+Theorem~\ref{mxc:hz:thm:edge-small}, the weights of
+Theorem~\ref{mxc:hz:thm:main-full}, $\mathcal M_2=\zeta(3)/(4\pi^2)$,
+$\mathcal M_4=\zeta(5)/(600\pi^2)$ and the identity~\eqref{mxc:hz:eq:second-moment-exact}.
+An independent mpmath computation of its own (not shipped) found
+$\mathcal I_3$ equal to $\frac32\log(2\pi)-\frac{11}4$ to $10^{-15}$; at
+$k=500$ and $1500$ it found $\mathsf D_k=2(c-G_k)$ exactly,
+$\mathsf M_1(k)-(\log k)/\pi=-0.5923$ and $-0.6107$ against the limit
+$-0.62733$, $(k/\log k)(\mathcal F_k(t)-t)$ at $t=\sqrt2-1$ equal to
+$-0.127$ and $-0.130$ against $-0.156$, and $k\hznu_k((kx,\infty))$ at
+$x=0.1$ equal to $0.2570$ and $0.2545$ against $\Xi(0.1)=0.2520$: slow
+approaches consistent with the error terms proved. The write checked
+$H_{1,s}$, $H_{2,s}$, the bound of Remark~\ref{mxc:hz:rem:large-m} and the
+translation of every renamed formula against the delivered source. These
+checks do not replace an independent review of the proofs.
+
 \begin{thebibliography}{99}
 \raggedright
 \bibitem{oeis780} The OEIS Foundation Inc., \emph{The On-Line Encyclopedia of
@@ -3642,5 +5773,17 @@ Fubini numbers), \texttt{p0:thm:perturbed-inversion} and
 \path{Analysis/FabiusFunction/Lean/FabiusFunction/OrderedBell.lean}:
 \texttt{Fabius.fubini}, \texttt{Fabius.egfA\_fubini},
 \texttt{Fabius.two\_sub\_exp\_mul\_egfA\_fubini}.
+\bibitem{hzpsi} The OEIS Foundation Inc., entry A001615, Dedekind psi
+function. \url{https://oeis.org/A001615}. Cited by manuscript~08 (inspected
+October 4--5, 2026).
+\bibitem{hztoth} L. T\'oth, \emph{A survey of gcd-sum functions}, Journal of
+Integer Sequences \textbf{13} (2010), Article 10.8.1, 23 pp.
+\url{https://cs.uwaterloo.ca/journals/JIS/VOL13/Toth/toth10.pdf}. Cited by
+manuscript~08 for context.
+\bibitem{hzProveIt} V. Reshetnikov, \emph{ProveIt}, this report's
+\path{article.tex} at commit
+\texttt{d18416ec7e187a0948248cb3077e37d7b089a8f9}, read by manuscript~08
+(Parts~I and~II as they stand).
+\url{https://github.com/VladimirReshetnikov/ProveIt}.
 \end{thebibliography}
 \end{document}

@@ -9,6 +9,7 @@
 \pdfmapfile{+cm.map}
 \pdfmapfile{+symbols.map}
 \usepackage{lmodern,microtype}
+\usepackage{float}% [write] Part II (batch 98): float before hyperref
 \usepackage[hidelinks]{hyperref}
 \usepackage{xurl,enumitem}
 \setlist{itemsep=3pt,topsep=5pt}
@@ -21,7 +22,49 @@
  \noindent\textbf{[write]}\if\relax\detokenize{#1}\relax\else~\textbf{#1.}\fi\ }%
  {\par\endgroup\smallskip}
 \allowdisplaybreaks[2]
-\hypersetup{pdftitle={Asymptotic enumeration and inversion for A122399},pdfsubject={Exact contours, all orders asymptotics, inversion, block fluctuations, and congruences}}
+% [write] Part II (batch 98): packages, environments and macros of manuscript 11
+\usepackage{mathtools,longtable}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\numberwithin{equation}{subsection}
+\newtheorem{theorem}{Theorem}[subsection]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{question}[theorem]{Question}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\theoremstyle{plain}
+\makeatletter% PDF bookmark levels: the report's top-level headings are subsections
+\def\toclevel@part{0}\def\toclevel@subsection{1}\def\toclevel@subsubsection{2}
+\makeatother
+\crefname{question}{question}{questions}
+\Crefname{question}{Question}{Questions}
+% the environments share the theorem counter; give their labels their own
+% cleveref type (the delivered build printed "theorem 7.2" for Lemma 7.2)
+\AddToHook{env/proposition/begin}{\crefalias{theorem}{proposition}}
+\AddToHook{env/lemma/begin}{\crefalias{theorem}{lemma}}
+\AddToHook{env/corollary/begin}{\crefalias{theorem}{corollary}}
+\AddToHook{env/definition/begin}{\crefalias{theorem}{definition}}
+\AddToHook{env/question/begin}{\crefalias{theorem}{question}}
+\AddToHook{env/remark/begin}{\crefalias{theorem}{remark}}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Prob}{\mathbb P}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\Poi}{\operatorname{Poisson}}
+\newcommand{\Ber}{\operatorname{Bernoulli}}
+\newcommand{\TV}{d_{\mathrm{TV}}}
+\newcommand{\fall}[2]{(#1)_{\underline{#2}}}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\N}{\mathbb N}
+\newcommand{\coeff}[2]{[#1^{#2}]}
+\newcommand{\cP}{\mathcal P}
+\newcommand{\cQ}{\mathcal Q}
+\newcommand{\cT}{\mathcal T}
+\newcommand{\dd}{\,\mathrm d}
+\hypersetup{pdftitle={Asymptotic enumeration and inversion for A122399},pdfsubject={Exact contours, all orders asymptotics, inversion, block fluctuations, and congruences; Part II: Poisson defects, local limit laws and inverse thresholds}}
 \title{Asymptotic enumeration and inversion for A122399}
 \author{A proof and reproducible research report}
 \date{1 October 2026}
@@ -30,6 +73,29 @@
 \begin{abstract}
 For $a_n=\sum_k k^n k!S(n,k)$, we prove the leading equivalent already recorded in OEIS and obtain a complete fixed-order expansion with explicit coefficients. An exact vertical contour gives a branch-safe representation and a simple, nonasymptotic exponential truncation bound. The same method yields compact-direction two-size asymptotics, Gaussian block-count fluctuations, and a controlled inverse with integer-threshold envelopes. An elementary appendix proves the posted mod-prime periodicity conjecture, in the sense that $p-1$ is a period, and extends it to prime powers. The standard saddle methodology and existing leading result are explicitly credited.
 \end{abstract}
+
+\begin{writenote}[Added 5 October 2026, batch~98: two Parts]
+Since batch~98 this report has two Parts. Part~I, from \emph{Results and
+attribution} to \emph{Sources and reproducibility}, is the batch-77
+manuscript described in its provenance note; its text, labels and
+numbers are unchanged apart from dated notes. Part~II
+(\hyperref[a122:pd:part]{Part~II}, Sections~9--21 and Appendices~A--B)
+adds manuscript~11 of batch~98, \emph{From Gaussian Blocks to Poisson
+Defects}: an exact independent-Bernoulli representation of the number of
+missing blocks, finite Poisson and count bounds for all $m,n$, a
+degenerate, Poisson and Gaussian split at $n=m(\log m+c)$, uniform local
+Edgeworth expansions, a complete expansion in that window, an inverse for
+the singleton probability, and a local limit theorem on the diagonal. It
+answers Part~I's Questions~2 and~4 in part. Its labels carry the prefix
+\texttt{a122:pd:}, and it reuses several letters of Part~I with other
+meanings (its reading table): in particular its $\lambda$ is
+$(m/2)e^{-n/m}$, not $m/n$, and its $D$ is the number of missing blocks,
+not the growth constant.
+\end{writenote}
+
+\part{Asymptotic enumeration and inversion for A122399}
+% [write] keep Part I's labels exactly as before the Parts (empty values)
+\makeatletter\let\@currentlabel\@empty\makeatother
 \subsection{Results and attribution}\label{a122:results-and-attribution}
 
 The leading equivalent for A122399 was posted by Vaclav Kotesovec on OEIS on August 9, 2018; its growth constant was already identified in 2013. \textbf{Neither that equivalent nor its numerical constant is claimed as a new conjecture.} This manuscript proves it and develops explicit, reproducible higher coefficients, a globally valid contour with an explicit exponentially small truncation bound, a compact-direction extension, a block-count central limit theorem, and controlled inversion. These are applications and refinements of standard analytic saddle methods, not a new general method. In particular Khera--Lundberg--Melczer (2021, preprint 2019), Section 3 and the paragraph following its equation (15), give directional asymptotics and explain higher-order expansion for the nearby but different lonesum-matrix denominator. No global novelty claim is made.
@@ -229,6 +295,19 @@ The empty product gives \(d_0=1\). For every fixed integer \(J\ge0\),
 
 The remainder is uniform when \(m/n\) ranges over any fixed compact subset of \((0,\infty)\). No growing-direction or boundary-uniform assertion is made.
 
+\begin{writenote}[Added 5 October 2026, batch~98]
+This remains true of (3.5). Part~II treats the boundary \(m/n\to0\) by a
+different route: finite bounds for every \(m,n\)
+(Theorem~\ref{a122:pd:thm:finite}), the degenerate, Poisson and Gaussian
+regimes for every \(n(m)\) (Theorem~\ref{a122:pd:thm:trichotomy}), and a
+complete expansion of \(A_{m,n}\) in the window \(n=m(\log m+O(1))\)
+(Theorem~\ref{a122:pd:thm:allorders}). On the side \(m/n\to\infty\) it
+proves only distributional statements. No approximation joining that
+window to (3.5) is known (Question~\ref{a122:pd:q:bridge}). Note that
+Part~II's \(\lambda\) is \((m/2)e^{-n/m}\), not the \(\lambda=m/n\) used
+here.
+\end{writenote}
+
 \subsubsection{All-orders proof and remainder justification}\label{a122:all-orders-proof-and-remainder-justification}
 
 Choose a small fixed \(\delta>0\) uniformly over the compact direction set. Outside \(|\theta|<\delta\), the modulus bound above makes the integral exponentially small; integrate the power tail exactly or use (2.3). Inside, analyticity, \(B>1\), and compactness give uniform Taylor remainder bounds and a uniform quadratic bound \(\Re f(i\theta)\le-b\theta^2\), for some \(b>0\). Set \(\theta=t/\sqrt n\). Expand the analytic amplitude \((1+s)^{-2}\) and \(\exp\{n(f(s)-Bs^2/2)\}\) through order \(n^{-J-1/2}\), keeping enough further Taylor terms to bound the remainder. On \(|t|\le n^\epsilon\), with \(\epsilon>0\) chosen sufficiently small for this fixed \(J\), Taylor's theorem bounds the remainder by \(n^{-J-1}\) times a fixed polynomial in \(|t|\) times a Gaussian with uniformly negative exponent. On \(n^\epsilon<|t|<\delta\sqrt n\), the uniform quadratic bound is superpolynomially small. Extend the polynomial--Gaussian integrals to the real line with the same accuracy. Odd terms integrate to zero. The even Gaussian moments are \((M-1)!!B^{-M/2}\), with \(i^M=(-1)^{M/2}\), giving (3.4). The prefactor \(1+1/n\) gives \(c_j=d_j+d_{j-1}\). This proves (3.5) with its uniform remainder.
@@ -423,6 +502,18 @@ Numerically,
 
 This gives a probabilistic interpretation of the OEIS growth parametrization's constant \(r=0.873702\ldots\): it is the asymptotic fraction of occupied ordered blocks. No local limit theorem or growing-marking-range result is claimed.
 
+\begin{writenote}[Added 5 October 2026, batch~98]
+Part~II proves the local limit theorem on the diagonal,
+\(\Pr(K_n=k)=(\sigma\sqrt n)^{-1}\varphi((k-\mu n-\mu_0)/(\sigma\sqrt
+n))+O(n^{-1})\) uniformly in \(k\), with \(\varphi\) the standard normal
+density (Corollary~\ref{a122:pd:cor:diaglclt}),
+from an exact independent-Bernoulli representation of \(n-K_n\) and a
+uniform lattice Edgeworth expansion at exact cumulants
+(Theorem~\ref{a122:pd:thm:edgeworth}); the constants \(\mu\), \(\sigma^2\),
+\(\mu_0\) are those of (6.2). No growing-marking-range result and no
+large-deviation estimate is proved there either.
+\end{writenote}
+
 \subsection{7. Elementary congruence appendix}\label{a122:elementary-congruence-appendix}
 
 The current OEIS entry conjectures that, for a prime \(p\), the reduction of \(a_n\) for \(n\ge1\) is purely periodic with period \(p-1\). The following proves that \(p-1\) is a period; it does not assert that it is always the least period.
@@ -472,10 +563,35 @@ The results separate three different levels of control: an exact contour with an
   \textbf{Exponentially improved expansions.} Locate and classify the complex saddles of \(z\Log(1+e^{-z})\), determine which are reached by valid contour deformations, and obtain an optimally truncated expansion with a controlled secondary-saddle remainder. The exact strip decomposition alone does not answer this question.
 \item
   \textbf{Directions approaching the boundary.} Determine uniform laws when \(m/n\to0\) or \(m/n\to\infty\), including the transition scales where the compact-direction expansion ceases to be uniform. These regimes may require different saddle coordinates and block-count normalizations.
+
+  \begin{writenote}[Added 5 October 2026, batch~98: answered in part]
+  For \(m/n\to0\), Part~II locates the transition at \(n=m(\log m+c)\),
+  where the number of missing blocks tends to a Poisson law of parameter
+  \(e^{-c}/2\) and \(A_{m,n}/(m!\,m^n)\to\exp(e^{-c}/2)\); it proves a
+  complete expansion there (Theorem~\ref{a122:pd:thm:allorders}),
+  explicit bounds for all \(m,n\) (Theorem~\ref{a122:pd:thm:finite}), and
+  the regime of every path \(n(m)\) (Theorem~\ref{a122:pd:thm:trichotomy}).
+  For \(m/n\to\infty\) it gives Gaussian local laws at exact moments
+  (Theorem~\ref{a122:pd:thm:edgeworth}) but no count asymptotics. Open:
+  count asymptotics for \(m/n\to\infty\), and a uniform count
+  approximation joining the window, the growing Poisson region and (3.5)
+  (Question~\ref{a122:pd:q:bridge}).
+  \end{writenote}
 \item
   \textbf{Effective finite-input inverse bounds.} Turn the implicit all-orders constants into computable numerical bounds and starting thresholds, combining analytic Taylor estimates with the explicit contour tail. This would make the ceiling envelope a certified finite-input bracket and could reduce the need for exact comparisons away from sequence-value boundaries.
 \item
   \textbf{Sharper block-count laws.} Prove a local limit theorem, explicit Edgeworth terms, or a uniform large-deviation estimate for the block count. The analytic marking germ provides the central cumulants, but the required global Fourier or tilted-contour estimates are not supplied here.
+
+  \begin{writenote}[Added 5 October 2026, batch~98: answered in part]
+  The local limit theorem is proved in Part~II
+  (Corollary~\ref{a122:pd:cor:diaglclt}), with error \(O(n^{-1})\), and
+  Edgeworth terms to every fixed order are proved at the exact cumulants
+  for every path with diverging variance
+  (Theorem~\ref{a122:pd:thm:edgeworth}); the global Fourier estimate comes
+  from the real-rootedness of the block polynomial, not from a contour.
+  Open: the Edgeworth terms in fixed diagonal constants
+  (Question~\ref{a122:pd:q:diagedge}) and any large-deviation estimate.
+  \end{writenote}
 \end{enumerate}
 
 These are limitations and possible continuations of this analysis, not claims that the corresponding general techniques or all related results are absent from the literature.
@@ -528,6 +644,1895 @@ it here. The collection's \nolinkurl{a277364-bell-asymptotics} treats a
 different Stirling sum by classical saddle methods; no theorem is shared.
 \end{writenote}
 
+\begin{writenote}[Added 5 October 2026, batch~98]
+Part~II covers the Fubini row \(n=0\) qualitatively: its block polynomial
+\(\sum_kk!\,S(m,k)u^k\) has only real zeros, in \((-1,0]\), the case
+\(n=0\) of Theorem~\ref{a122:pd:thm:roots}, which is Frobenius's theorem
+on the Eulerian polynomials after a change of variable (note in
+Section~\ref{a122:pd:sec:target}); and the number of missing blocks is
+asymptotically Gaussian with the local laws of
+Theorem~\ref{a122:pd:thm:edgeworth}, since \(\theta=(m-1)/2\to\infty\).
+No count asymptotics for that row are proved in either Part.
+\end{writenote}
+
 The computer checks are reproducible evidence; the all-orders and error statements rely on the analytic proofs above. An independent audit and clean replay accompany this report. Conventional peer review remains appropriate before publication.
+
+
+\clearpage
+\part{From Gaussian blocks to Poisson defects}\label{a122:pd:part}
+
+\subsection{Part II: provenance, status and reading conventions}\label{a122:pd:front}
+
+\begin{writenote}[Added 5 October 2026, batch~98]
+\emph{Provenance.} Part~II was added in the write of batch~98. It is
+built from one manuscript: batch~98, manuscript~11, the archive
+\nolinkurl{A122399_Boundary_Transitions_and_Inversion.zip} (351{,}864
+bytes), which arrived in commit \texttt{2172df76a} and was placed in this
+report by commit \texttt{9353a7171}. Its main file
+\nolinkurl{article.tex} (1{,}480 lines) is titled \emph{From Gaussian
+Blocks to Poisson Defects. Boundary transseries, local limit laws, and
+inverse thresholds for the rectangular family of OEIS A122399} and dated
+4 October 2026; its author line reads ``ChatGPT'' and ``Research
+continuation prepared for Vladimir Reshetnikov''. Its 22-page PDF, its
+delivery README and its checksum manifest are not shipped (the manifest
+was verified, 21 of 21 files, at placement).
+\emph{Pin.} The manuscript records the tree \texttt{0f93381e8}
+(4 October 2026) and the blob \texttt{6f03a8be2} of this report's
+\nolinkurl{proof.md}, which is still the shipped blob; the report had no
+commit between the pin and the placement, so the manuscript read the
+current Part~I.
+\emph{What is printed.} Sections~9--21 and Appendices~A--B below are the
+manuscript's Sections~1--13 and Appendices~A--B. Section~$k$ of the
+manuscript is Section~$k+8$ here, and every number inside it moves with
+it: the manuscript's equation (4.10) is (12.10) here, its Theorem~9.1 is
+Theorem~17.1 and its Question~12.3 is Question~20.3; appendix numbers are
+unchanged. The text is the delivered text except for the label prefix
+\texttt{a122:pd:}, the symbol renames listed below, the shipped names of
+the two tables read by \verb|\input|, the title of Section~20 (``Further
+research questions'' in the manuscript), the corrected bibliography
+item~\cite{a122:pd:repo}, three bibliography items added by the write,
+and the notes marked \textbf{[write]}. The manuscript's own abstract and
+status paragraph follow.
+\end{writenote}
+
+\begin{quote}\small
+\textbf{Abstract (manuscript~11).} The diagonal sequence A122399 is
+$a_n=\sum_k k^n k!S(n,k)$. Its natural rectangular extension is
+$A_{m,n}=\sum_k k^n k!S(m,k)$, counting an ordered partition of an
+$m$-element set together with a map from an $n$-element set to its blocks.
+The existing ProveIt report develops asymptotics in fixed positive
+$ m/n$ directions and a diagonal central limit theorem, while explicitly
+excluding boundary-uniform asymptotics and local limit theorems.
+We address these exclusions by a different, finite-polynomial route.
+The block polynomial has a simple zero at zero and all its other zeros
+in $(-1,0)$. Consequently the number of missing blocks is exactly a sum
+of independent Bernoulli variables. Two explicit coefficients then give
+nonasymptotic Poisson and enumeration bounds, and a Gaussian--Poisson--
+degenerate trichotomy with critical scale $n=m(\log m+c)$.
+In this critical window we prove a complete expansion in
+$m^{-1}$ with polynomial logarithmic coefficients, uniformly for bounded
+complex marking variables, and give a finite rational algorithm for every
+coefficient. We also derive all-order local Edgeworth expansions whenever
+the variance diverges, and invert the critical expansion to locate a
+prescribed probability of the all-singleton partition. Exact symbolic
+checks and high-precision numerical diagnostics accompany the proofs.
+These are specific extensions of the repository's report, not a claim of
+a new general asymptotic method or independently established worldwide
+priority.
+
+\textbf{Status (manuscript~11).} Self-contained research manuscript, not
+independently refereed and not Lean- or Rocq-formalized. The main
+arguments are proofs; finite computer checks are supplementary evidence
+rather than substitutes for those proofs. No repository or OEIS entry
+has been modified.
+\end{quote}
+
+\begin{writenote}[Added 5 October 2026, batch~98: status, scope and relation to Part~I]
+\emph{Status.} Unrefereed and not formalized; placement in the
+collection confers no formal status (the one formalized ingredient is
+named after Corollary~\ref{a122:pd:cor:bernoulli}). The write re-read the
+proofs, proved the one step the manuscript only sketches
+(the degree bound in the proof of Theorem~\ref{a122:pd:thm:inverse}),
+proved that the count half of the growing Poisson window is sharp (note
+in Section~\ref{a122:pd:sec:finite}), and reran the delivered programs
+(note in Section~\ref{a122:pd:sec:checks}). It found no false statement.
+Two statements are sketched or left unasserted, and are now
+Questions~\ref{a122:pd:q:twindow} and~\ref{a122:pd:q:diagedge}.
+\emph{Non-claims kept from the delivery.} Finite checks do not verify
+the infinite quantifiers; the 80- and 120-digit computations are not
+interval certificates, and only the threshold certificate of
+Section~\ref{a122:pd:sec:checks} is exact; ``all orders'' means every
+fixed order with a proved remainder, not convergence, Borel
+summability, uniformity in $J$, exponential completeness or a Stokes
+analysis (Remark~\ref{a122:pd:rem:allorders}); real-rootedness is
+proved for integer $n$ only and is not used for the real-exponent
+inverse; the Bernoulli variables are distributional, not visible
+choices; Theorem~\ref{a122:pd:thm:edgeworth} gives absolute, not
+large-deviation, errors; the explicit diagonal constants are inherited
+from Part~I; interlacing and Poisson approximation are classical; no
+worldwide priority and no new general method are claimed; the delivered
+coefficient generator refuses orders above~8 as a practical guard, not a
+mathematical limit, and its order-4 output is an example, not a
+complexity claim; no OEIS entry or other external record was written.
+\emph{What Part~II answers in Part~I.} Part~I's sentence after (3.5)
+(``No growing-direction or boundary-uniform assertion is made'') and the
+last sentence of its Section~6 (``No local limit theorem \dots\ is
+claimed'') remain true of Part~I; Part~II proves boundary results on the
+$m/n\to0$ side (finite bounds for all $m,n$, the degenerate, Poisson and
+Gaussian regimes for every $n(m)$, a complete expansion of $A_{m,n}$ in
+the window $n=m(\log m+O(1))$), distributional results everywhere the
+variance diverges (including $m/n\to\infty$), and a local limit theorem
+on the diagonal. It answers Part~I's Questions~2 and~4 in part: a
+uniform count approximation across the transition
+(Question~\ref{a122:pd:q:bridge}), count asymptotics on the
+$m/n\to\infty$ side, growing marking ranges and large deviations remain
+open. Questions~1 and~3 of Part~I are untouched;
+Questions~\ref{a122:pd:q:beyond} and~\ref{a122:pd:q:formal} pose their
+analogues for the new expansions.
+\end{writenote}
+
+\begin{writenote}[Reading conventions of Part~II]
+Part~II reuses several letters of Part~I with other meanings, and the
+manuscript reused some letters internally. The write renamed the
+internal clashes (second table) and fixed the readings of the rest (first
+table). No normalization was changed.
+
+\renewcommand{\theHtable}{readingtable.\arabic{table}}% unique anchor, local to this note
+\setlength{\LTleft}{0pt}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.17\linewidth}
+ >{\raggedright\arraybackslash}p{0.39\linewidth}
+ >{\raggedright\arraybackslash}p{0.36\linewidth}@{}}
+\toprule
+symbol & in Part~II & \emph{not} to be read as \\
+\midrule
+\endhead
+$\lambda$ & $(m/2)e^{-n/m}$, the asymptotic Poisson parameter & Part~I's direction $\lambda=m/n$ of (3.1) \\
+$D$ & the defect $m-K$ & Part~I's growth constant $D=3.16108\ldots$ of (4.1), or $D(s)$ of its Section~6 \\
+$r$ & $n/m$ & any of Part~I's four $r$ \\
+$\theta$; $\Delta$ & $w_1$, the exact first coefficient; $w_1^2-2w_2$ & Part~I's integration variable $\theta$ in (3.3) \\
+$R_{m,n}$, $R_m(t)$ & $A_{m,n}/(m!\,m^n)=1/\Prob(D=0)$ and its real-exponent continuation & Part~I's tail $R_T$ or its function $R(y)$ \\
+$d_j(m)$ & defect coefficients \eqref{a122:pd:eq:dj} & Part~I's $d_j$ of (3.4) \\
+$c_h(\lambda,r)$; $c$, $c_m$ & critical-window coefficient polynomials; the window parameter in $n=m(\log m+c)$, $c_m=n/m-\log m$ & Part~I's $c_j$ of (3.4), or its contour abscissa $c$ of (2.1) \\
+$L_h(\lambda,r)$ & logarithmic count coefficients \eqref{a122:pd:eq:Lrec} & Part~I's $L=\log A$ of (5.2) \\
+$p_i$; $p_h(j,r)$ & Bernoulli probabilities (Sections 11, 12, 14); defect polynomials, always with arguments (Sections 15, 16) & Part~I's $p(z)$, $p=x/y$, or a prime \\
+$x$ & $(k-M)/\sqrt V$ in Section~14 & Section~18 uses Part~I's saddle values $x,y,B$, with Part~I's meaning \\
+$q$; $\beta$, $\ell$ & target probability; $\beta=-\log q$, $\ell=\log(m/(2\beta))$ & Part~I's contour variable $q=e^x-1$ \\
+$M$, $V$ & $\E D$ and $\Var D$ & Part~I's index sum $M$ of (3.4), or $M(A)$ of (5.4) \\
+$H_a$; $N_q(m)$ & Hermite polynomials; the integer threshold \eqref{a122:pd:eq:intthreshold} & Part~I's $H_J(v)$; its Newton iterates $N_r$ \\
+$C_J$, $C_a$; $c$, $C$ & constants of Theorem~\ref{a122:pd:thm:edgeworth} and \eqref{a122:pd:eq:cumbound}; absolute constants local to the proofs in Sections~14 and~15 & Part~I's $C$, $C_J$, $E_J$ \\
+$\varepsilon$ & a small exponent in the proof of Theorem~\ref{a122:pd:thm:edgeworth}; $1/m$ in Sections~15 and~17 & \\
+$w_j$ & the weights \eqref{a122:pd:eq:Qdef} & Part~I's Lambert value $w$ of (5.2) \\
+$B_{2a}$ & Bernoulli numbers (Section~15) & Part~I's $B$; Section~18's $B$ is Part~I's \\
+$K$, $A_{m,n}$, $T_{m,k}$, $\mu$, $\sigma^2$, $\mu_0$ & as in Part~I & \\
+\bottomrule
+\end{longtable}
+\addtocounter{table}{-1}% the reading table is not a numbered table
+
+\noindent\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.2\linewidth}
+ >{\raggedright\arraybackslash}p{0.2\linewidth}
+ >{\raggedright\arraybackslash}p{0.52\linewidth}@{}}
+\toprule
+Part~II & manuscript & why renamed \\
+\midrule
+$\psi(t)=(e^t-1)/t$ & $h(t)$ & $h$ is the expansion index throughout \\
+$\Lambda(t)=\log\psi(t)$, $\gamma_a$ & $L(t)$, $\ell_a$ & $L_h$ are the count coefficients; $\ell=\log(m/(2\beta))$ \\
+$\mathcal E_h$, $\mathcal B_h$ & $E_h$, $B_h$ & $E_\pm$ bound $e$; $B$ and $B_{2a}$ are taken \\
+$\xi_i$ & $B_i$ & Bernoulli variables, not Bernoulli numbers \\
+$|b|=\sum b_a$; product index $g$ & $B$; $\ell$ & $B$ is taken; $\ell=\log(m/(2\beta))$ \\
+$\mathsf T_a$ & $T_a$ & Touchard polynomials, not $T_{m,k}=k!S(m,k)$ \\
+$[\lambda_-,\lambda_+]$, $O_{\lambda_\pm,\dots}$ & $[a,b]$, $O_{a,b,\dots}$ & $a$, $b$ index sums and $b_a$ is a profile \\
+$\mathcal M_h$ & $M_h$ & $M=\E D$ \\
+$\tau_h(\beta,\ell)$ & $d_h(\beta,\ell)$ & the manuscript's $d_0,d_1$ meant both $d_j(m)$ and the inverse corrections \\
+$\eta$ & $E$ & the envelope error, not $E_\pm$ or $\mathcal E_h$ \\
+\bottomrule
+\end{tabular}
+
+\smallskip
+\noindent Label keys keep the manuscript's names (for example
+\texttt{a122:pd:eq:d0} for $\tau_0$). The data files and programs keep
+the delivered names ($E_\pm$ appear as \texttt{e\_lower}, \texttt{e\_upper};
+the inverse corrections as \texttt{d0}, \texttt{d1}).
+\end{writenote}
+
+% [write] Part II is numbered: Sections 9-21 (manuscript Sections 1-13)
+\setcounter{secnumdepth}{3}
+\renewcommand{\thesubsection}{\arabic{subsection}}
+\renewcommand{\theHsubsection}{pd.\arabic{subsection}}
+\renewcommand{\thesubsubsection}{\thesubsection.\arabic{subsubsection}}
+\setcounter{subsection}{8}
+
+\subsection{Research target and the boundary left by the earlier report}
+\label{a122:pd:sec:target}
+OEIS A122399 begins
+\[
+1,\ 1,\ 9,\ 211,\ 9285,\ 658171,\ 68504709,\ 9837380491,\ldots
+\]
+and is defined by
+\begin{equation}\label{a122:pd:eq:diagonal}
+a_n=\sum_{k=0}^n k^n k!S(n,k),
+\end{equation}
+with $0^0=1$ at the origin \cite{a122:pd:oeis122399}.
+Here $S(m,k)$ denotes a Stirling number of the second kind.
+The ProveIt manuscript \cite{a122:pd:repo}, located in the report directory
+\begin{center}\small\ttfamily
+\begin{tabular}{c}
+SetTheory/Cardinals/docs/reports/\\
+generating-functions-and-asymptotics/\\
+oeis-sequence-asymptotics/a122399-surjection-diagonal
+\end{tabular}
+\end{center}
+proves a complete fixed-direction saddle expansion for
+\begin{equation}\label{a122:pd:eq:A}
+ A_{m,n}=\sum_{k=1}^{m} k^n k!S(m,k),\qquad m\ge1,\quad n\ge0.
+\end{equation}
+The diagonal $A_{n,n}$ is \eqref{a122:pd:eq:diagonal} for $n\ge1$.
+In particular, the earlier report's asymptotic remainder is uniform when
+$m/n$ stays in a fixed compact subset of $(0,\infty)$.
+Its block-count section gives a diagonal central limit theorem but
+explicitly does not claim a local limit theorem or a growing-marking-range
+result. These are precise scope boundaries, not automatically conjectures
+of the wider literature.
+
+\begin{writenote}[Added 5 October 2026, batch~98]
+``The ProveIt manuscript'' and ``the earlier report'' of this Part are
+Part~I above; \cite{a122:pd:repo} names its pre-layout source
+\nolinkurl{proof.md}, which carries the same mathematics (see Part~I's
+provenance note). The two scope boundaries quoted are Part~I's sentence
+after (3.5) and the last sentence of its Section~6; both now carry dated
+notes pointing here.
+\end{writenote}
+
+This article fills two parts of that boundary. First, the region
+$n/m\sim\log m$ lies outside every such compact-direction set; it turns
+out to have a finite-defect expansion rather than an ordinary
+fixed-direction Gaussian saddle description. Second, the entire family
+has an exact independent-Bernoulli representation. That representation
+supplies local limit and Edgeworth expansions with no restriction on the
+ratio $m/n$, provided only that the variance tends to infinity.
+
+\subsubsection{What is inherited and what is established here}
+The counting interpretation, the bivariate generating function, the
+fixed-direction leading equivalent, and the diagonal constants in
+\cref{a122:pd:sec:diagonal} are inherited from \cite{a122:pd:repo}. The OEIS leading
+equivalent is already attributed there to V\'aclav Kot\v{e}\v{s}ovec;
+it is not presented here as a new conjecture. The associated growth
+constant has its own OEIS entry A317855 \cite{a122:pd:oeis317855}.
+
+The main additional results proved here are the finite bounds in
+\cref{a122:pd:thm:finite}, the all-direction trichotomy in \cref{a122:pd:thm:trichotomy},
+the complete critical-window expansion in \cref{a122:pd:thm:allorders}, and the
+inverse-threshold expansion in \cref{a122:pd:thm:inverse}. The real-rootedness
+argument and the probabilistic tools are classical in character.
+Interlacing methods of this kind belong to the established framework
+surveyed and developed by Liu and Wang \cite{a122:pd:liuwang}; Poisson
+approximation for independent Bernoulli sums is classical
+\cite{a122:pd:lecam}. We give the needed arguments directly.
+The nearby asymptotic theory of lonesum matrices \cite{a122:pd:klm} is relevant
+context, but its generating function and counting family differ from
+\eqref{a122:pd:eq:A}.
+
+\begin{writenote}[Added 5 October 2026, batch~98: two missing credits]
+The manuscript credits its real-rootedness argument only generically.
+Two classical sources should be named. (i) The case $n=0$ of
+\cref{a122:pd:thm:roots} is equivalent to Frobenius's theorem that the
+Eulerian polynomials have only real, simple, negative zeros
+\cite{a122:pd:frobenius}: with
+$A_m(x)=\sum_k k!\,S(m,k)(x-1)^{m-k}$ the Eulerian polynomial, the
+polynomial of the theorem at $n=0$ is
+$\cP_{m,0}(u)=u^mA_m(1+1/u)$, and $x\mapsto u=1/(x-1)$ maps $(-\infty,0)$
+onto $(-1,0)$. (ii) Passing from a real-rooted generating polynomial to
+an exact sum of independent Bernoulli variables, and from there to
+central and local limit theorems, is Harper's method
+\cite{a122:pd:harper}, introduced for the Stirling numbers $S(m,k)$
+themselves. \cref{a122:pd:cor:bernoulli,a122:pd:thm:edgeworth} apply it to
+this array; no novelty is claimed for the method. Both items were added
+by the write; the write did not consult the two originals.
+\end{writenote}
+
+A targeted repository and literature inspection did not identify these
+specific boundary formulas in the sources examined. Such an inspection
+cannot establish an exhaustive priority claim. The appropriate conclusion
+is that the article supplies explicit, proved extensions of the inspected
+ProveIt manuscript, with broader novelty left for independent assessment.
+
+\subsubsection{A guide to the principal formulas}
+Let $K=K_{m,n}$ be the number of blocks in a uniformly chosen structure,
+and let $D=m-K$ be its defect. Define
+\begin{equation}\label{a122:pd:eq:parameters}
+ r=\frac nm,\qquad \lambda=\frac m2e^{-r},\qquad
+ R_{m,n}=\frac{A_{m,n}}{m!m^n},\qquad
+ \theta=\frac{m-1}{2}\left(1-\frac1m\right)^n.
+\end{equation}
+The parameter $\theta$ is an exact coefficient; $\lambda$ is the more
+convenient asymptotic coordinate. They must not be confused.
+For $n=m(\log m+c)+o(m)$,
+\begin{equation}\label{a122:pd:eq:mainlimit}
+ D\Longrightarrow\Poi(e^{-c}/2),\qquad
+ R_{m,n}\longrightarrow\exp(e^{-c}/2).
+\end{equation}
+The first correction, with the actual $r=n/m$ and $\lambda$ of
+\eqref{a122:pd:eq:parameters}, is
+\begin{equation}\label{a122:pd:eq:mainfirst}
+ \log R_{m,n}=\lambda-
+ \frac{(r/2+1)\lambda+(r/2+5/6)\lambda^2}{m}
+ +O\!\left(\frac{(1+r)^2}{m^2}\right).
+\end{equation}
+The use of the actual $n$ retains the effect of integer rounding.
+The all-orders theorem below makes \eqref{a122:pd:eq:mainfirst} part of a
+systematic power--logarithmic expansion.
+
+\subsection{Exact combinatorics and a finite-defect coefficient identity}
+\label{a122:pd:sec:exact}
+A structure counted by $A_{m,n}$ consists of an ordered partition of a
+red $m$-element set into $k$ nonempty blocks, together with an arbitrary
+map from a blue $n$-element set to those blocks. There are $k!S(m,k)$
+ordered partitions and $k^n$ maps. Thus
+\begin{equation}\label{a122:pd:eq:law}
+ \Prob(K=k)=\frac{k^n k!S(m,k)}{A_{m,n}}.
+\end{equation}
+With $u$ marking blocks, the bivariate exponential generating function is
+\begin{equation}\label{a122:pd:eq:egf}
+ \sum_{m,n\ge0} A_{m,n}(u)\frac{x^m}{m!}\frac{y^n}{n!}
+ =\frac1{1-u e^y(e^x-1)}.
+\end{equation}
+Here the extension at $m=0$ is $A_{0,0}=1$, $A_{0,n}=0$ for $n>0$.
+Indeed, one block contains a nonempty red set and an arbitrary blue set,
+so it contributes $u(e^x-1)e^y$; an ordered sequence of blocks gives the
+geometric series in \eqref{a122:pd:eq:egf}.
+
+Write
+\begin{equation}\label{a122:pd:eq:Qdef}
+ w_j=\frac{(m-j)!S(m,m-j)}{m!}\left(1-\frac jm\right)^n,
+ \qquad
+ \cQ_{m,n}(z)=\sum_{j=0}^{m-1}w_jz^j.
+\end{equation}
+Then
+\begin{equation}\label{a122:pd:eq:Qlaw}
+ w_0=1,\qquad \cQ_{m,n}(1)=R_{m,n},\qquad
+ \E z^D=\frac{\cQ_{m,n}(z)}{\cQ_{m,n}(1)}.
+\end{equation}
+The denominator $m!m^n$ counts the structures whose red partition is all
+singletons. Thus $\Prob(D=0)=R_{m,n}^{-1}$.
+
+\begin{lemma}[Exact defect identity]\label{a122:pd:lem:defect}
+Set
+\begin{equation}\label{a122:pd:eq:h}
+ \psi(t)=\frac{e^t-1}{t}=\sum_{a\ge0}\frac{t^a}{(a+1)!}.
+\end{equation}
+For $0\le j\le m-1$,
+\begin{equation}\label{a122:pd:eq:dj}
+ d_j(m):=\frac{(m-j)!S(m,m-j)}{m!}
+ =\coeff{t}{j}\psi(t)^{m-j}.
+\end{equation}
+For fixed $j$, $d_j(m)$ is a polynomial in $m$ of degree $j$, with leading
+coefficient $1/(2^j j!)$. In addition,
+\begin{equation}\label{a122:pd:eq:domination}
+ 0\le w_j\le \frac{\lambda^j}{j!},\qquad
+ 1\le R_{m,n}\le e^\lambda.
+\end{equation}
+These identities and inequalities also hold when the exponent $n$ is
+replaced by any real $t\ge0$.
+\end{lemma}
+\begin{proof}
+The exponential generating function for $S(m,k)$ gives
+$k!S(m,k)/m!=\coeff{t}{m}(e^t-1)^k$.
+Put $k=m-j$ and factor out $t^{m-j}$. This proves \eqref{a122:pd:eq:dj}.
+Expanding the power of $\psi$ gives the finite profile formula
+\begin{equation}\label{a122:pd:eq:profile}
+ d_j(m)=
+ \sum_{\substack{b_1,b_2,\ldots\ge0\\\sum a b_a=j}}
+ \fall{m-j}{|b|}\prod_{a\ge1}
+ \frac1{b_a!\,((a+1)!)^{b_a}},\qquad |b|=\sum_{a\ge1}b_a.
+\end{equation}
+Only finitely many $b_a$ are nonzero. The term $b_1=j$ has degree $j$;
+all other terms have lower degree. This proves the polynomial assertion.
+
+Since $(a+1)!\ge2^a$, coefficientwise comparison of power series with
+nonnegative coefficients gives
+\[
+ \psi(t)\preceq(1-t/2)^{-1},\qquad
+ d_j(m)\le 2^{-j}\binom{m-1}{j}\le\frac{m^j}{2^j j!}.
+\]
+Also $(1-j/m)^n\le e^{-nj/m}$ for real $n\ge0$.
+Combining the two estimates proves the first part of
+\eqref{a122:pd:eq:domination}; summing proves the second.
+\end{proof}
+
+\begin{remark}
+The coefficientwise domination in \eqref{a122:pd:eq:domination} is useful for
+summation of asymptotic series: it controls every defect, including those
+for which a fixed-$j$ expansion is inappropriate. It does not by itself
+imply a Poisson approximation, because the normalization is $R_{m,n}$,
+not $e^\lambda$.
+\end{remark}
+
+\subsection{Real zeros and an exact independent-Bernoulli representation}
+\label{a122:pd:sec:roots}
+Define the block polynomial
+\begin{equation}\label{a122:pd:eq:blockpoly}
+ \cP_{m,n}(u)=\sum_{k=1}^m k^n k!S(m,k)u^k.
+\end{equation}
+This section assumes that $n$ is a nonnegative integer.
+The real-exponent continuation used later for inversion will not be
+assumed to preserve real-rootedness.
+
+\begin{theorem}[Root location and interlacing]\label{a122:pd:thm:roots}
+For $m\ge1$ and integer $n\ge0$, $\cP_{m,n}$ has a simple zero at zero.
+Its other $m-1$ zeros are simple and lie in $(-1,0)$.
+Consequently there exist distinct numbers
+$\alpha_1,\ldots,\alpha_{m-1}\in(0,1)$ such that
+\begin{equation}\label{a122:pd:eq:factor}
+ \cP_{m,n}(u)=m!m^n\,u\prod_{i=1}^{m-1}(u+\alpha_i),\qquad
+ \cQ_{m,n}(z)=\prod_{i=1}^{m-1}(1+\alpha_i z).
+\end{equation}
+As $n$ increases by one, the nonzero zeros strictly interlace and move
+towards zero in their ordered positions.
+\end{theorem}
+\begin{proof}
+Let $F_m(u)=\cP_{m,0}(u)$. The Stirling recurrence gives
+\begin{equation}\label{a122:pd:eq:Frec}
+ F_{m+1}(u)=u\big((1+u)F_m(u)\big)'.
+\end{equation}
+The induction starts with $F_1(u)=u$. If $F_m$ has its simple zeros in
+$(-1,0]$, with zero as its rightmost zero, then $(1+u)F_m$ has $m+1$
+simple zeros in $[-1,0]$. Rolle's theorem places one zero of its
+derivative in each of the $m$ intervening open intervals. The derivative
+has degree $m$, so these are all its zeros and all are simple.
+Multiplication by $u$ adds one simple zero at zero. This proves the
+claim for $n=0$.
+
+For general integer $n$,
+\begin{equation}\label{a122:pd:eq:Euler}
+ \cP_{m,n+1}(u)=u\cP_{m,n}'(u).
+\end{equation}
+Apply the same Rolle argument to the $m$ simple zeros of
+$\cP_{m,n}$ in $(-1,0]$. The derivative has exactly one zero between
+successive zeros. Multiplication by $u$ restores the zero at zero.
+This also proves the asserted direction of interlacing.
+The leading coefficient of $\cP_{m,n}$ is $m!m^n$, which yields the
+first factorization in \eqref{a122:pd:eq:factor}. Reversing coefficients yields
+the second.
+\end{proof}
+
+\begin{corollary}[Bernoulli factorization]\label{a122:pd:cor:bernoulli}
+There are independent variables $\xi_1,\ldots,\xi_{m-1}$ with
+\begin{equation}\label{a122:pd:eq:pi}
+ \xi_i\sim\Ber(p_i),\qquad p_i=\frac{\alpha_i}{1+\alpha_i}\in(0,1/2),
+\end{equation}
+such that
+\begin{equation}\label{a122:pd:eq:Bernlaw}
+ D\ \stackrel{\mathrm{law}}=\ \sum_{i=1}^{m-1} \xi_i.
+\end{equation}
+Equivalently, $K$ is one plus a sum of $m-1$ independent Bernoulli
+variables with success probabilities in $(1/2,1)$.
+\end{corollary}
+\begin{proof}
+Divide the second product in \eqref{a122:pd:eq:factor} by its value at $z=1$:
+\[
+ \E z^D=\prod_i\frac{1+\alpha_i z}{1+\alpha_i}
+       =\prod_i(1-p_i+p_i z).
+\]
+This is the probability generating function of the stated independent
+sum.
+\end{proof}
+
+The independent variables in \eqref{a122:pd:eq:Bernlaw} are a distributional
+representation; they are not claimed to be directly visible independent
+choices in the original ordered partition. Nevertheless, the
+representation is exact and immediately gives concentration,
+log-concavity, and limit theorems. For example, the coefficient sequence
+of $\cQ$ is ultra-log-concave: dividing $w_j$ by
+$\binom{m-1}{j}$ gives a log-concave sequence. This follows from Newton's
+inequalities for the elementary symmetric functions of the positive
+$\alpha_i$. The main use below is quantitative rather than qualitative.
+
+\begin{writenote}[Added 5 October 2026, batch~98: formal status]
+The identity $\sum_{k\le m}k!\,S(m,k)(X-1)^{m-k}=A_m(X)$ used in the note
+of \cref{a122:pd:sec:target} is formalized in Lean as
+\texttt{Fabius.permutohedron\_h\_polynomial}
+(\nolinkurl{Analysis/FabiusFunction/Lean/FabiusFunction/EulerianPermutohedron.lean}).
+No real-rootedness, interlacing or Bernoulli factorization is formalized
+anywhere in the repository; \cref{a122:pd:thm:roots,a122:pd:cor:bernoulli}
+and everything after them are unformalized
+(\cref{a122:pd:q:formal} asks for that layer).
+\end{writenote}
+
+\subsection{Two coefficients give global finite-input bounds}
+\label{a122:pd:sec:finite}
+Let
+\begin{equation}\label{a122:pd:eq:thetaDelta}
+ \theta=w_1,\qquad \Delta=w_1^2-2w_2,
+\end{equation}
+where $w_2=0$ if $m=2$. The case $m=1$ is deterministic and will be
+omitted in statements involving these parameters. Directly from the
+partitions with one or two defects,
+\begin{align}
+ \theta&=\frac{m-1}{2}\left(1-\frac1m\right)^n,\label{a122:pd:eq:w1}\\
+ w_2&=\frac{(m-2)(3m-5)}{24}\left(1-\frac2m\right)^n.
+ \label{a122:pd:eq:w2}
+\end{align}
+For \eqref{a122:pd:eq:w2} at $m=2,n=0$, use $0^0=1$; the zero prefactor still
+makes $w_2=0$.
+
+\begin{theorem}[Finite enumeration and approximation bounds]\label{a122:pd:thm:finite}
+For integers $m\ge2$, $n\ge0$, put $M=\E D$ and $V=\Var(D)$. Then
+\begin{align}
+ &0\le\Delta\le
+ \theta^2\min\left\{1,
+ \frac{n+(5m-7)/3}{(m-1)^2}\right\},\label{a122:pd:eq:Deltabound}\\
+ &\theta-\frac\Delta2\le\log R_{m,n}\le\theta,\label{a122:pd:eq:logRbound}\\
+ &\max\{\theta/2,\theta-\Delta\}\le M\le\theta,\label{a122:pd:eq:meanbound}\\
+ &\max\{\theta/4,\theta-2\Delta\}\le V\le\theta,\label{a122:pd:eq:varbound}\\
+ &\TV\bigl(\mathcal L(D),\Poi(\theta)\bigr)
+ \le\min\{1,2\Delta\}.\label{a122:pd:eq:TVbound}
+\end{align}
+Here $\TV(\mu,\nu)=\tfrac12\sum_j|\mu\{j\}-\nu\{j\}|$.
+All constants in these inequalities are explicit; no asymptotic
+threshold is involved.
+\end{theorem}
+\begin{proof}
+The factorization gives
+\begin{equation}\label{a122:pd:eq:powersums}
+ \theta=\sum_i\alpha_i,\qquad
+ \Delta=\sum_i\alpha_i^2.
+\end{equation}
+Thus $\Delta\ge0$, and
+\eqref{a122:pd:eq:w1}--\eqref{a122:pd:eq:w2} give the exact identity
+\begin{equation}\label{a122:pd:eq:Deltaratio}
+ \frac{\Delta}{\theta^2}
+ =1-\left(1-\frac{5m-7}{3(m-1)^2}\right)
+       \left(1-\frac1{(m-1)^2}\right)^n.
+\end{equation}
+The two quantities subtracted from one lie in $[0,1]$.
+The elementary inequality $1-(1-a)(1-b)^n\le a+nb$ proves
+\eqref{a122:pd:eq:Deltabound}; the upper bound by one is immediate.
+
+For $x\ge0$, $x-x^2/2\le\log(1+x)\le x$.
+Summing this inequality over $x=\alpha_i$ proves
+\eqref{a122:pd:eq:logRbound}. Also
+\[
+ M=\sum_i\frac{\alpha_i}{1+\alpha_i},\qquad
+ V=\sum_i\frac{\alpha_i}{(1+\alpha_i)^2}.
+\]
+The restrictions $0<\alpha_i<1$ imply $\theta/2\le M\le\theta$
+and $\theta/4\le V\le\theta$.
+Moreover,
+\[
+ \theta-M=\sum_i\frac{\alpha_i^2}{1+\alpha_i}\le\Delta,
+\]
+and
+\[
+ \theta-V=\sum_i
+ \frac{\alpha_i^2(2+\alpha_i)}{(1+\alpha_i)^2}\le2\Delta.
+\]
+This proves the moment bounds.
+
+For completeness, the required elementary Poisson approximation is
+\begin{equation}\label{a122:pd:eq:elementaryLC}
+ \TV\left(\mathcal L\Bigl(\sum_i\Ber(p_i)\Bigr),
+                  \Poi\Bigl(\sum_i p_i\Bigr)\right)
+ \le\sum_i p_i^2.
+\end{equation}
+For one variable the distance is
+$p(1-e^{-p})\le p^2$. Replace factors one at a time in the convolution
+of their laws; convolution with a probability law cannot increase total
+variation. This proves \eqref{a122:pd:eq:elementaryLC}, the usual elementary
+Le Cam bound \cite{a122:pd:lecam}. Since $\sum_i p_i^2\le\Delta$ and
+$0\le\theta-M\le\Delta$, couple a $\Poi(M)$ variable with an
+independent $\Poi(\theta-M)$ increment. The resulting Poisson laws have
+distance at most $\theta-M$. The triangle inequality gives
+\eqref{a122:pd:eq:TVbound}.
+\end{proof}
+
+\subsubsection{Replacing the exact parameter by the asymptotic one}
+For all $m\ge2$ and $n\ge0$,
+\begin{equation}\label{a122:pd:eq:thetalam}
+ 0\le\lambda-\theta\le
+ \lambda\left(\frac1m+\frac{n}{2m(m-1)}\right).
+\end{equation}
+Indeed,
+\[
+ \frac\theta\lambda=(1-1/m)
+ \exp\!\left[-n\sum_{a\ge2}\frac1{a m^a}\right],\qquad
+ \sum_{a\ge2}\frac1{a m^a}\le\frac1{2m(m-1)}.
+\]
+Use $1-e^{-x}\le x$. It follows that
+\begin{equation}\label{a122:pd:eq:TVlambda}
+ \TV\bigl(\mathcal L(D),\Poi(\lambda)\bigr)
+ \le2\Delta+\lambda-\theta.
+\end{equation}
+In particular, if $n=O(m\log m)$,
+\begin{equation}\label{a122:pd:eq:growingwindow}
+ \TV\bigl(\mathcal L(D),\Poi(\lambda)\bigr)
+ =O\!\left(\frac{(\lambda+\lambda^2)(1+r)}m\right).
+\end{equation}
+This is useful even when $\lambda$ grows. If
+$\lambda^2(1+r)/m\to0$, with $n=O(m\log m)$ and $\lambda$ bounded
+below by a positive constant, then
+\begin{equation}\label{a122:pd:eq:growingcount}
+ R_{m,n}=e^\lambda(1+o(1)),\qquad
+ \TV\bigl(\mathcal L(D),\Poi(\lambda)\bigr)=o(1).
+\end{equation}
+The count statement follows from
+$|\log R_{m,n}-\lambda|\le\lambda-\theta+\Delta/2$.
+Thus there is an explicit overlap region
+$1\ll\lambda\ll\sqrt{m/\log m}$ in which a growing Poisson
+approximation and a Gaussian approximation are simultaneously valid.
+No assertion that this sufficient window is sharp is made.
+
+\begin{writenote}[Added 5 October 2026, batch~98: the count half of the window is sharp]
+The write proves that the condition $\lambda^2(1+r)/m\to0$ is also
+\emph{necessary} for the count statement in
+\eqref{a122:pd:eq:growingcount}; the total-variation half is not
+settled and stays open (\cref{a122:pd:q:twindow}).
+
+\emph{Claim.} Let $m\to\infty$ and let $n=n(m)\ge0$ be integers with
+$\lambda\ge\lambda_0$ for a fixed $\lambda_0>0$. Then
+$R_{m,n}e^{-\lambda}\to1$ if and only if $\lambda^2(1+r)/m\to0$.
+
+\emph{Proof.} The condition $\lambda\ge\lambda_0$ gives
+$r\le\log(m/(2\lambda_0))$, so $n=O(m\log m)$ and sufficiency is
+\eqref{a122:pd:eq:growingcount}. For necessity, $f(x)=x-x^2/2+x^3/3-\log(1+x)$
+has $f(0)=0$ and $f'(x)=x^3/(1+x)\ge0$, so
+$\log(1+x)\le x-x^2/2+x^3/3$ for $x\ge0$. Sum over the $\alpha_i\in(0,1)$ of
+\eqref{a122:pd:eq:factor}, using \eqref{a122:pd:eq:powersums} and
+$\sum_i\alpha_i^3\le\sum_i\alpha_i^2=\Delta$:
+$\log R_{m,n}\le\theta-\Delta/2+\Delta/3=\theta-\Delta/6$. With
+$\theta\le\lambda$ from \eqref{a122:pd:eq:thetalam},
+\[
+ \log R_{m,n}-\lambda\le-\Delta/6.
+\]
+Next bound $\Delta$ below by \eqref{a122:pd:eq:Deltaratio}. Put
+$a_m=(5m-7)/(3(m-1)^2)$ and $b_m=1/(m-1)^2$, both in $[0,1]$ for $m\ge2$.
+Then $(1-a_m)(1-b_m)^n\le e^{-(a_m+nb_m)}$, and concavity of $1-e^{-z}$
+gives $1-e^{-z}\ge(1-e^{-1})\min\{1,z\}$ for $z\ge0$. Moreover
+$a_m\ge1/m$, because $(5m-7)m-3(m-1)^2=(2m-3)(m+1)\ge0$, and
+$nb_m\ge n/m^2=r/m$. Hence, for all $m\ge2$ and $n\ge0$,
+\[
+ \Delta\ge(1-e^{-1})\,\theta^2\min\Bigl\{1,\frac{1+r}{m}\Bigr\}.
+\]
+Finally \eqref{a122:pd:eq:thetalam} gives
+$\theta/\lambda\ge1-1/m-r/(2(m-1))\to1$, since $r=O(\log m)$; so
+$\theta\ge\lambda/2$ for all large $m$. If $R_{m,n}e^{-\lambda}\to1$, then
+$\Delta\to0$, hence $\lambda^2\min\{1,(1+r)/m\}\to0$; as
+$\lambda\ge\lambda_0$, the minimum tends to zero, so it eventually equals
+$(1+r)/m$ and $\lambda^2(1+r)/m\to0$. \qed
+
+In particular, for every path with $\lambda\ge\lambda_0$ (where
+$r=\log(m/(2\lambda))\le\log m+O(1)$), the count statement holds exactly
+when $\lambda=o(\sqrt{m/\log m})$, the upper end of the overlap region
+above. (Dated note, 5~October 2026: the first version of this sentence
+read ``along $r=\log m+O(1)$ with $\lambda\to\infty$'', a regime that
+cannot occur, since $r=\log m+O(1)$ forces $\lambda=\Theta(1)$. An
+independent adversarial check made by the intake after the write proved
+the corrected statement in both directions, found the necessity proof,
+the degree bound $\deg_\ell\tau_h\le h+1$ (attained for $h\le5$) and
+$\tau_2$ valid, and tested them against exact counts; a careful reading,
+not a formal verification.)
+\end{writenote}
+
+\subsection{An all-direction Gaussian--Poisson--degenerate trichotomy}
+\label{a122:pd:sec:phase}
+We now let $m\to\infty$ through integers and allow any nonnegative
+integer function $n=n(m)$. The only parameter that matters for the
+qualitative regime is the exact first coefficient $\theta$.
+
+\begin{theorem}[Global trichotomy]\label{a122:pd:thm:trichotomy}
+With $D=D_{m,n(m)}$, the following statements hold.
+\begin{enumerate}[label=\textup{(\roman*)},itemsep=3pt]
+\item If $\theta\to0$, then $D\to0$ in total variation, with
+$\Prob(D\ne0)\le\theta$, and $R_{m,n}\to1$.
+\item If $\theta\to\theta_0\in(0,\infty)$, then
+$D\to\Poi(\theta_0)$ in total variation and
+$R_{m,n}\to e^{\theta_0}$.
+\item If $\theta\to\infty$, then $V\to\infty$ and
+$(D-M)/\sqrt V\Longrightarrow N(0,1)$. In fact, the uniform local
+and all-order Edgeworth assertions of \cref{a122:pd:thm:edgeworth} hold.
+\end{enumerate}
+Equivalently, put $c_m=n/m-\log m$. If $c_m\to+\infty$ the first
+case applies; if $c_m\to c\in\R$ the second case has
+$\theta_0=e^{-c}/2$; if $c_m\to-\infty$ the third case applies.
+\end{theorem}
+\begin{proof}
+For (i), Markov's inequality gives
+$\Prob(D\ne0)\le M\le\theta$, while
+$0\le\log R_{m,n}\le\theta$.
+If $\theta$ tends to a finite nonzero limit, the exact expression
+\eqref{a122:pd:eq:w1} forces
+$n=m\log m+O(m)$: solve its logarithm for $n$, using
+$-\log(1-1/m)=m^{-1}+O(m^{-2})$.
+Consequently \eqref{a122:pd:eq:Deltabound} gives
+$\Delta=O(\log m/m)\to0$. Equations
+\eqref{a122:pd:eq:TVbound} and \eqref{a122:pd:eq:logRbound} prove (ii).
+For (iii), $V\ge\theta/4\to\infty$; the independent-Bernoulli
+local theorem proved in the next section gives the conclusion.
+
+For the equivalent description, $\lambda=e^{-c_m}/2$.
+If $c_m\to+\infty$, then $\theta\le\lambda\to0$.
+In the finite-$c_m$ case, \eqref{a122:pd:eq:thetalam} gives
+$\theta/\lambda\to1$.
+If $c_m\to-\infty$, then eventually $n\le m\log m$;
+again \eqref{a122:pd:eq:thetalam} gives $\theta/\lambda\to1$, and
+$\lambda\to\infty$.
+\end{proof}
+
+\begin{remark}[Centering in the dense Gaussian region]
+The Gaussian statement is centered at the exact mean $M$ and scaled by
+the exact variance $V$. Replacing both by $\theta$ without a further
+error estimate would be incorrect in general. For example, the ordinary
+diagonal $n=m$ lies well inside the Gaussian region but not inside the
+small-$\Delta$ window. The bounds in \cref{a122:pd:thm:finite} deliberately
+separate these situations.
+\end{remark}
+
+\subsection{Local limit laws and all-order Edgeworth expansions}
+\label{a122:pd:sec:local}
+This section proves the local theorem needed above without assuming a
+fixed direction or a separate saddle-point representation. Let
+$\kappa_a$ denote the cumulants of $D$, so that
+\[
+ \kappa_1=M,\qquad \kappa_2=V,\qquad
+ \kappa_3=\sum_i p_i(1-p_i)(1-2p_i).
+\]
+Write
+\[
+ \varphi(x)=\frac{e^{-x^2/2}}{\sqrt{2\pi}},\qquad
+ H_a(x)=(-1)^a e^{x^2/2}\frac{\mathrm d^a}{\mathrm dx^a}e^{-x^2/2}
+\]
+for the Gaussian density and the probabilists' Hermite polynomials.
+
+\begin{theorem}[Uniform lattice Edgeworth expansion]\label{a122:pd:thm:edgeworth}
+For every fixed integer $J\ge0$, there is a constant $C_J$ independent
+of $m,n$ such that, as $V\to\infty$,
+\begin{equation}\label{a122:pd:eq:edgeworth}
+ \Prob(D=k)=\frac{\varphi(x)}{\sqrt V}
+ \sum_{\substack{b_3,\ldots,b_{J+2}\ge0\\
+              \sum_{a=3}^{J+2}(a-2)b_a\le J}}
+ H_{\sum a b_a}(x)
+ \prod_{a=3}^{J+2}\frac1{b_a!}
+ \left(\frac{\kappa_a}{a! V^{a/2}}\right)^{b_a}
+ +O_J\!\left(V^{-(J+2)/2}\right),
+\end{equation}
+uniformly for all integers $k$, where $x=(k-M)/\sqrt V$.
+The empty multi-index contributes $1$. In particular,
+\begin{align}
+ \sup_{k\in\mathbb Z}\left|
+ \sqrt V\,\Prob(D=k)-\varphi\!\left(\frac{k-M}{\sqrt V}\right)
+ \right|&=O(V^{-1/2}),\label{a122:pd:eq:lclt}\\
+ \Prob(D=k)&=\frac{\varphi(x)}{\sqrt V}
+ \left[1+\frac{\kappa_3}{6V^{3/2}}(x^3-3x)\right]
+ +O(V^{-3/2}).\label{a122:pd:eq:firstedge}
+\end{align}
+The same result applies to $K=m-D$ by reflection.
+\end{theorem}
+\begin{proof}
+We record the two ingredients that make the constants uniform across
+this entire triangular family.
+First, for real $t$,
+\[
+ |1-p+pe^{it}|^2=1-4p(1-p)\sin^2(t/2).
+\]
+Using $1-x\le e^{-x}$ and multiplying the independent factors gives
+\begin{equation}\label{a122:pd:eq:chardamp}
+ \left|\E e^{it(D-M)}\right|
+ \le\exp\{-2V\sin^2(t/2)\},\qquad |t|\le\pi.
+\end{equation}
+There is no competing lattice peak in $(-\pi,\pi)$.
+
+Second, on a fixed small complex disk about zero,
+\[
+ \log(1+p(e^z-1))-pz
+\]
+is analytic uniformly for $0\le p\le1/2$.
+After division by $p(1-p)$ it has a removable limit at $p=0$ and is
+uniformly bounded on a still smaller disk. Cauchy's estimate therefore
+implies, for every fixed $a\ge2$,
+\begin{equation}\label{a122:pd:eq:cumbound}
+ |\kappa_a|\le C_a V.
+\end{equation}
+It also bounds the Taylor remainder of the cumulant series by
+$C_A V|z|^{A+1}$ through any fixed order $A$.
+
+Use lattice Fourier inversion and put $t=s/\sqrt V$:
+\begin{equation}\label{a122:pd:eq:fourier}
+ \sqrt V\,\Prob(D=k)=\frac1{2\pi}
+ \int_{-\pi\sqrt V}^{\pi\sqrt V}e^{-isx}
+ \E e^{is(D-M)/\sqrt V}\dd s.
+\end{equation}
+For $|s|\le V^\varepsilon$, with $\varepsilon>0$ sufficiently small
+for the fixed order $J$, expand
+\[
+ \E e^{is(D-M)/\sqrt V}
+ =e^{-s^2/2}
+ \exp\!\left\{\sum_{a\ge3}\frac{\kappa_a(is)^a}{a!V^{a/2}}\right\}.
+\]
+By \eqref{a122:pd:eq:cumbound}, the term indexed by a multi-index
+$(b_a)$ has order at most $V^{-\frac12\sum(a-2)b_a}$ times a
+fixed polynomial in $|s|$.
+Retain exactly the indices of total grade at most $J$.
+Taylor's theorem, the uniform analytic remainder bound, and a slight
+weakening of the Gaussian exponent bound the integrated discarded part
+by $O_J(V^{-(J+1)/2})$.
+More explicitly, the local remainder is bounded by that power of $V$
+times a fixed polynomial in $|s|$ times $e^{-c s^2}$ for an absolute
+$c>0$, after shrinking $\varepsilon$ if necessary.
+
+For $V^\varepsilon<|s|\le\delta\sqrt V$, a fixed sufficiently
+small $\delta$ and \eqref{a122:pd:eq:chardamp} give a bound
+$e^{-c s^2}$; its integral is smaller than every inverse power of $V$.
+For $\delta\sqrt V\le|s|\le\pi\sqrt V$,
+\eqref{a122:pd:eq:chardamp} gives an exponentially small integral.
+Thus the retained polynomial--Gaussian integrals may be extended to the
+whole real line with the same error.
+
+Finally,
+\[
+ \frac1{2\pi}\int_{\R}e^{-isx}e^{-s^2/2}(is)^a\dd s
+ =H_a(x)\varphi(x).
+\]
+Termwise integration gives \eqref{a122:pd:eq:edgeworth}; division by $\sqrt V$
+produces its stated error. All estimates before integration use
+$|e^{-isx}|=1$, so the error is uniform in $k$.
+\end{proof}
+
+\begin{remark}
+The error in \eqref{a122:pd:eq:edgeworth} is an absolute error. It is not a
+relative large-deviation estimate arbitrarily far into the tails.
+Also, using exact cumulants is important: the theorem gives a uniform
+expansion for any diverging-variance path $n(m)$ without first requiring
+asymptotic formulas for those cumulants.
+\end{remark}
+
+\subsection{The critical-window expansion to every fixed order}
+\label{a122:pd:sec:allorders}
+The limit theorem \eqref{a122:pd:eq:mainlimit} does not quantify the logarithmic
+finite-size corrections. We now construct them, including a uniform
+remainder that justifies summing over all defects.
+Throughout this section $r=n/m\ge0$ and
+$\lambda=(m/2)e^{-r}$, but $n$ may be a nonnegative real number.
+
+\subsubsection{A finite rational coefficient algorithm}
+Use the convergent germ
+\begin{equation}\label{a122:pd:eq:logh}
+ \Lambda(t)=\log\psi(t)=\sum_{a\ge1}\gamma_a t^a
+ =\frac t2+\frac{t^2}{24}-\frac{t^4}{2880}
+  +\frac{t^6}{181440}-\cdots.
+\end{equation}
+Thus $\gamma_1=1/2$, $\gamma_{2a}=B_{2a}/((2a)(2a)!)$, and
+$\gamma_{2a+1}=0$ for $a\ge1$. These identities may also be obtained
+by formal division and logarithm of \eqref{a122:pd:eq:h}; no knowledge of a
+Bernoulli-number convention is needed by the construction.
+
+For indeterminates $v,j,r$, set
+\begin{equation}\label{a122:pd:eq:E_h}
+ \mathcal E_h(v,j,r)=2^{h+1}\gamma_{h+1}v^{h+1}
+        -j2^h\gamma_h v^h-\frac{rj^{h+1}}{h+1},\qquad h\ge1.
+\end{equation}
+Define polynomials $\mathcal B_h(v,j,r)$ by
+\begin{equation}\label{a122:pd:eq:Brec}
+ \mathcal B_0=1,\qquad
+ \mathcal B_h=\frac1h\sum_{a=1}^h a\,\mathcal E_a\mathcal B_{h-a}.
+\end{equation}
+Equivalently, $\mathcal B_h$ is the coefficient of $\varepsilon^h$ in
+$\exp(\sum_{a\ge1}\mathcal E_a\varepsilon^a)$.
+Let $\cT_j$ be the linear map acting on powers of $v$ by
+\begin{equation}\label{a122:pd:eq:Tmap}
+ \cT_j(v^a)=\fall{j}{a},
+\end{equation}
+leaving coefficients in $j,r$ untouched, and define
+\begin{equation}\label{a122:pd:eq:p_h}
+ p_h(j,r)=\cT_j \mathcal B_h(v,j,r).
+\end{equation}
+Finally, define the Poisson transform
+\begin{equation}\label{a122:pd:eq:c_h}
+ c_h(\lambda,r)=e^{-\lambda}
+ \sum_{j\ge0}\frac{\lambda^j}{j!}p_h(j,r).
+\end{equation}
+This is a polynomial, not an infinite object that must be evaluated by
+summation: replace each monomial $j^a$ in $p_h$ by the Touchard polynomial
+\begin{equation}\label{a122:pd:eq:touchard}
+ \mathsf T_a(\lambda)=\sum_{b=0}^a S(a,b)\lambda^b.
+\end{equation}
+One has
+\begin{equation}\label{a122:pd:eq:degrees}
+ \deg_j p_h\le2h,\quad \deg_r p_h\le h,\qquad
+ \deg_\lambda c_h\le2h,\quad \deg_r c_h\le h.
+\end{equation}
+All coefficients are rational, and $p_0=c_0=1$.
+
+\begin{theorem}[Complete boundary expansion]\label{a122:pd:thm:allorders}
+Fix $0<\lambda_-<\lambda_+<\infty$, $Z>0$, and an integer $J\ge0$.
+Uniformly for real $n\ge0$ with $\lambda\in[\lambda_-,\lambda_+]$ and for complex
+$z$ with $|z|\le Z$,
+\begin{equation}\label{a122:pd:eq:Qexpansion}
+ \cQ_{m,n}(z)=e^{\lambda z}
+ \left\{\sum_{h=0}^J\frac{c_h(\lambda z,r)}{m^h}
+ +O_{\lambda_\pm,Z,J}\!\left(\frac{(1+r)^{J+1}}{m^{J+1}}\right)\right\}.
+\end{equation}
+In particular,
+\begin{equation}\label{a122:pd:eq:Rexpansion}
+ A_{m,n}=m!m^n e^\lambda
+ \left\{\sum_{h=0}^J\frac{c_h(\lambda,r)}{m^h}
+ +O_{\lambda_\pm,J}\!\left(\frac{(1+r)^{J+1}}{m^{J+1}}\right)\right\}.
+\end{equation}
+Here $r=\log(m/(2\lambda))=\log m+O(1)$.
+The expansion can be differentiated any fixed number of times with
+respect to $z$, with uniform remainders on smaller fixed disks.
+\end{theorem}
+
+\subsubsection{Formal derivation of the coefficient algorithm}
+Put $\varepsilon=1/m$ and replace $t$ by $2\varepsilon v$ in
+\eqref{a122:pd:eq:dj}. Then
+\begin{equation}\label{a122:pd:eq:G_j}
+ G_j(\varepsilon):=j!(2\varepsilon)^j d_j(1/\varepsilon)
+ =j!\coeff{v}{j}
+ \exp\{(\varepsilon^{-1}-j)\Lambda(2\varepsilon v)\}.
+\end{equation}
+The apparent singularity at $\varepsilon=0$ is removable. Expanding the
+exponent gives
+\[
+ (\varepsilon^{-1}-j)\Lambda(2\varepsilon v)
+ =v+\sum_{h\ge1}
+ (2^{h+1}\gamma_{h+1}v^{h+1}-j2^h\gamma_h v^h)\varepsilon^h.
+\]
+The exponential tilt contributes
+\begin{equation}\label{a122:pd:eq:tilt}
+ (1-j\varepsilon)^{r/\varepsilon}e^{rj}
+ =\exp\!\left\{-r\sum_{h\ge1}
+           \frac{j^{h+1}\varepsilon^h}{h+1}\right\}.
+\end{equation}
+For any nonnegative integer $j$,
+$j!\coeff{v}{j}e^v v^a=\fall{j}{a}$.
+Combining \eqref{a122:pd:eq:G_j} and \eqref{a122:pd:eq:tilt} yields
+\begin{equation}\label{a122:pd:eq:fixeddefectformal}
+ w_j\sim\frac{\lambda^j}{j!}
+ \sum_{h\ge0}\frac{p_h(j,r)}{m^h}.
+\end{equation}
+The degree bounds follow directly from \eqref{a122:pd:eq:E_h}:
+a term of grade $h$ has degree at most $2h$ after applying $\cT_j$,
+and at most $h$ factors of $r$.
+Summing \eqref{a122:pd:eq:fixeddefectformal} formally gives \eqref{a122:pd:eq:c_h}.
+The next subsection supplies the missing uniform justification.
+
+\subsubsection{Uniform control of the defect expansion}
+\begin{lemma}[A polynomial Cauchy bound]\label{a122:pd:lem:Cauchy}
+There are absolute positive constants $c,C$ such that, for every integer
+$j\ge0$ and real $r\ge0$, the function
+\begin{equation}\label{a122:pd:eq:Fjr}
+ F_{j,r}(\varepsilon)=G_j(\varepsilon)
+ \exp\!\left\{-r\sum_{h\ge1}
+       \frac{j^{h+1}\varepsilon^h}{h+1}\right\}
+\end{equation}
+is analytic and bounded in modulus by $C$ on
+\begin{equation}\label{a122:pd:eq:radius}
+ |\varepsilon|\le\rho_{j,r}:=
+ \frac{c}{(1+r)(1+j)^2}.
+\end{equation}
+Its Taylor coefficient of order $h$ is $p_h(j,r)$.
+For $0\le\varepsilon\le\rho_{j,r}/2$,
+\begin{equation}\label{a122:pd:eq:localrem}
+ \left|F_{j,r}(\varepsilon)-\sum_{h=0}^J
+ p_h(j,r)\varepsilon^h\right|
+ \le C_J\big((1+r)(1+j)^2\varepsilon\big)^{J+1}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+The coefficient statement follows from the formal derivation, so it
+suffices to obtain the analytic bound. For $j=0$ the function is one.
+For $j\ge1$, multiply \eqref{a122:pd:eq:profile} by
+$j!(2\varepsilon)^j$ and put $m=\varepsilon^{-1}$.
+A profile with $|b|=\sum b_a$ contributes
+\[
+ \frac{j!}{\prod b_a!}
+ \prod_{a\ge1}\left(\frac{2^a}{(a+1)!}\right)^{b_a}
+ \varepsilon^{j-|b|}
+ \prod_{g=0}^{|b|-1}(1-(j+g)\varepsilon).
+\]
+The last product has modulus at most $\exp(2j^2|\varepsilon|)$.
+After fixing $b_a$ for $a\ge2$, the value
+$b_1=j-\sum_{a\ge2}a b_a$ is forced. Use
+$j!/b_1!\le j^{\sum_{a\ge2}a b_a}$ and then enlarge the sum by
+allowing all choices of $b_a$ for $a\ge2$. This gives
+\begin{equation}\label{a122:pd:eq:Gbound}
+ |G_j(\varepsilon)|\le
+ \exp\!\left\{2j^2|\varepsilon|+
+ \sum_{a\ge2}\frac{2^a}{(a+1)!}
+           j^a|\varepsilon|^{a-1}\right\}.
+\end{equation}
+When $j|\varepsilon|\le1/4$, the sum in this exponent is bounded
+by a constant times $j^2|\varepsilon|$.
+The series in the second exponential of \eqref{a122:pd:eq:Fjr} is analytic
+for $|j\varepsilon|<1$, and its modulus is bounded by
+$C r j^2|\varepsilon|$ on the same disk.
+Choosing $c$ sufficiently small in \eqref{a122:pd:eq:radius} bounds both
+exponents by absolute constants. This proves the uniform analytic bound.
+Cauchy's coefficient estimate and summation of a geometric tail at
+$|\varepsilon|/\rho_{j,r}\le1/2$ give \eqref{a122:pd:eq:localrem}.
+\end{proof}
+
+\begin{proof}[Proof of \cref{a122:pd:thm:allorders}]
+Because $\lambda\in[\lambda_-,\lambda_+]$, one has $r=\log m+O_{\lambda_\pm}(1)$.
+Split the defect sum at $j_*=\lfloor m^{1/4}\rfloor$.
+For $j\le j_*$, the condition in \cref{a122:pd:lem:Cauchy} holds for all
+sufficiently large $m$, uniformly in the parameter range. Multiply
+\eqref{a122:pd:eq:localrem} by $|\lambda z|^j/j!$ and sum. Since
+\[
+ \sum_{j\ge0}\frac{(\lambda_+Z)^j}{j!}(1+j)^{2J+2}<\infty,
+\]
+the total remainder is
+$O_{\lambda_\pm,Z,J}((1+r)^{J+1}m^{-J-1})$.
+
+For $j>j_*$, \eqref{a122:pd:eq:domination} bounds the original terms by
+$(\lambda_+Z)^j/j!$. This tail is smaller than every fixed inverse power of $m$.
+The tails of the approximating terms have the same property: by
+\eqref{a122:pd:eq:degrees} they are bounded by a fixed power of $j$ and of
+$1+r$ times $(\lambda_+Z)^j/j!$. Thus each truncated sum may be extended to
+all $j\ge0$. Formula \eqref{a122:pd:eq:c_h} then proves
+\eqref{a122:pd:eq:Qexpansion}. Factoring out $e^{\lambda z}$ does not change
+the order of the uniform error, since its reciprocal is bounded on the
+fixed disk. Setting $z=1$ proves \eqref{a122:pd:eq:Rexpansion}.
+Finally, apply Cauchy's derivative estimate to a slightly larger disk
+to obtain the differentiated statements.
+\end{proof}
+
+\begin{remark}[Meaning of ``all orders'']\label{a122:pd:rem:allorders}
+For every fixed $J$ there is a proved remainder of the indicated order.
+The article does not assert convergence of the infinite series in $h$,
+a uniform bound as $J\to\infty$, Borel summability, or an exponentially
+improved remainder. After substituting
+$r=\log m-\log(2\lambda)$, the result is a complete
+power--logarithmic, or perturbative transseries, expansion. Exponentially
+small sectors have not been identified here.
+\end{remark}
+
+\begin{writenote}[Added 5 October 2026, batch~98: what ``transseries'' means here]
+The manuscript's subtitle (``Boundary transseries, local limit laws, and
+inverse thresholds'') and the name of \cref{a122:pd:thm:inverse}
+(``Inverse critical transseries'') use the word for what this remark
+describes exactly: a power--logarithmic expansion in $m^{-h}$ whose
+coefficients are polynomials in $r=\log m-\log(2\lambda)$ (in
+\cref{a122:pd:thm:inverse}, in $\ell$), proved to every fixed order. It
+has logarithmic depth one and no exponentially small terms, and nothing
+transseries-specific (transmonomials beyond $m^{-h}(\log m)^k$, Borel
+resummation, resurgence, Stokes data) is claimed or used. The word
+overstates what is proved; read it as ``power--logarithmic expansion''
+throughout this Part. The delivered wording is kept on record; for the
+same reason the report is placed in this collection and not under
+\nolinkurl{Analysis/Transseries}.
+\end{writenote}
+
+\subsection{Explicit corrections and the geometry of rare defects}
+\label{a122:pd:sec:corrections}
+The first two defect polynomials are
+\begin{align}
+ p_1(j,r)&=-\frac{(3r+5)j^2+j}{6},\label{a122:pd:eq:p1}\\
+ p_2(j,r)&=\frac{j}{72}\left[
+ (9r^2+30r+25)j^3-(18r+18)j^2-j-6\right].\label{a122:pd:eq:p2}
+\end{align}
+It is shorter to print the logarithmic count coefficients. Define
+$L_h(\lambda,r)$ by
+\begin{equation}\label{a122:pd:eq:Lrec}
+ L_1=c_1,\qquad
+ L_h=c_h-\frac1h\sum_{a=1}^{h-1}aL_a c_{h-a}\quad(h\ge2).
+\end{equation}
+Then
+\begin{equation}\label{a122:pd:eq:logexp}
+ \log R_{m,n}=\lambda+\sum_{h=1}^J\frac{L_h(\lambda,r)}{m^h}
+ +O\!\left(\frac{(1+r)^{J+1}}{m^{J+1}}\right).
+\end{equation}
+The first two are
+\begin{align}
+ L_1={}&-\left(\frac r2+1\right)\lambda
+       -\left(\frac r2+\frac56\right)\lambda^2,\label{a122:pd:eq:L1}\\
+ L_2={}&\left(\frac{r^2}{8}+\frac r6\right)\lambda
+       +\left(\frac{3r^2}{4}+\frac{5r}{3}+\frac76\right)\lambda^2
+       +\left(\frac{r^2}{2}+\frac{4r}{3}+1\right)\lambda^3.
+       \label{a122:pd:eq:L2}
+\end{align}
+Thus $c_1=L_1$, $c_2=L_2+L_1^2/2$.
+The third logarithmic coefficient is printed in \cref{a122:pd:app:third}; the
+package supplies exact coefficients through the fourth order and an
+algorithm for any prescribed finite order.
+
+\subsubsection{The full defect law, not just the total count}
+The complex-marked expansion yields, on any fixed disk and for large
+$m$, a branch of the logarithm with
+\begin{equation}\label{a122:pd:eq:pgflog}
+ \log\E z^D=\lambda(z-1)+\sum_{h=1}^J
+ \frac{L_h(\lambda z,r)-L_h(\lambda,r)}{m^h}
+ +O\!\left(\frac{(1+r)^{J+1}}{m^{J+1}}\right).
+\end{equation}
+To see that the logarithm is legitimate, \eqref{a122:pd:eq:Qexpansion} shows
+uniformly that $\cQ_{m,n}(z)e^{-\lambda z}=1+o(1)$ on that disk.
+In particular the polynomial is zero-free there for sufficiently large
+$m$. The logarithm near one is then unambiguously continued across the
+disk after factoring out $e^{\lambda z}$.
+
+For every fixed defect $j$,
+\begin{equation}\label{a122:pd:eq:pmfcorrection}
+ \Prob(D=j)=e^{-\lambda}\frac{\lambda^j}{j!}
+ \left[1+\frac{p_1(j,r)-c_1(\lambda,r)}m
+ +O_j\!\left(\frac{(1+r)^2}{m^2}\right)\right].
+\end{equation}
+This is a coefficient statement, whereas \eqref{a122:pd:eq:pgflog} simultaneously
+encodes factorial moments and cumulants.
+Putting $z=e^s$ and differentiating at $s=0$ gives
+\begin{align}
+ M={}&\lambda-
+ \frac{(r/2+1)\lambda+(r+5/3)\lambda^2}{m}
+ +O\!\left(\frac{(1+r)^2}{m^2}\right),\label{a122:pd:eq:Mcorrection}\\
+ V={}&\lambda-
+ \frac{(r/2+1)\lambda+(2r+10/3)\lambda^2}{m}
+ +O\!\left(\frac{(1+r)^2}{m^2}\right).\label{a122:pd:eq:Vcorrection}
+\end{align}
+In particular,
+\[
+ M-V=\frac{(r+5/3)\lambda^2}{m}
+ +O\!\left(\frac{(1+r)^2}{m^2}\right)>0
+\]
+for large $m$ in a compact critical window. The exact inequality
+$M>V$ already follows from the Bernoulli representation; the expansion
+quantifies the first departure from Poisson variance.
+
+\subsubsection{Why the limiting defects are pairs}
+A red partition of defect $j$ whose blocks have size at most two has
+exactly $j$ doubletons and $m-2j$ singletons. Its contribution to $d_j(m)$
+is
+\begin{equation}\label{a122:pd:eq:pairterm}
+ d_j^{\mathrm{pair}}(m)=\frac{\fall{m-j}{j}}{2^j j!},
+\end{equation}
+with the value zero when there are too few elements. For fixed $j$,
+\[
+ j!\left(\frac2m\right)^j d_j^{\mathrm{pair}}(m)
+ =1-\frac{j(3j-1)}{2m}+O_j(m^{-2}).
+\]
+The corresponding full coefficient at $r=0$ is
+$1-(5j^2+j)/(6m)+O_j(m^{-2})$ by \eqref{a122:pd:eq:p1}.
+The difference is $2j(j-1)/(3m)$.
+
+\begin{proposition}[First non-pair defect]\label{a122:pd:prop:triples}
+Uniformly for $\lambda$ in a compact subset of $(0,\infty)$, the
+probability that the red partition contains a block of size at least
+three is
+\begin{equation}\label{a122:pd:eq:tripleprob}
+ \Prob(\text{some red block has size at least }3)
+ =\frac{2\lambda^2}{3m}
+ +O\!\left(\frac{(1+r)^2}{m^2}\right).
+\end{equation}
+Consequently, with probability tending to one, every non-singleton red
+block is a doubleton; their number converges to $\Poi(\lambda_0)$
+when $\lambda\to\lambda_0\in(0,\infty)$.
+\end{proposition}
+\begin{proof}
+Subtract the pair-only coefficients from the full coefficients, multiply
+by the common tilt, and use the first-order difference just computed.
+The same profile-product estimate used in \cref{a122:pd:lem:Cauchy} applies to
+the pair-only term (it is simply a finite product). Thus the difference
+can be summed uniformly over $j$, with a remainder of the order displayed
+in \eqref{a122:pd:eq:tripleprob}. Its unnormalized leading sum is
+\[
+ \frac2{3m}\sum_{j\ge0}\frac{\lambda^j}{j!}j(j-1)
+ =e^\lambda\frac{2\lambda^2}{3m}.
+\]
+Divide by $R_{m,n}=e^\lambda(1+O((1+r)/m))$.
+The second statement follows because on the pair-only event the number
+of doubletons equals $D$.
+\end{proof}
+
+This identifies the combinatorial origin of the factor $1/2$ in the
+critical Poisson parameter: a single red collision is a pair, with
+exponential generating-function weight $1/2!$. Triples first contribute
+one order later.
+
+\subsection{Inverting the transition: a prescribed singleton probability}
+\label{a122:pd:sec:inverse}
+A useful inverse problem is not to invert the already studied diagonal
+count, but to ask how many blue labels are needed to make the all-singleton
+red partition have a prescribed probability. This turns the boundary
+expansion into an operational threshold formula.
+
+For integer $m\ge2$ and real $t\ge0$, use the exact continuation
+\begin{equation}\label{a122:pd:eq:Rreal}
+ R_m(t)=\sum_{j=0}^{m-1}d_j(m)(1-j/m)^t,
+ \qquad q_m(t)=R_m(t)^{-1}.
+\end{equation}
+The term $j=0$ equals one and all the others are strictly decreasing,
+so $q_m$ is continuous and strictly increasing, with limit one as
+$t\to\infty$. For every fixed $q\in(0,1)$, a unique solution
+$q_m(t_q)=q$ exists for all sufficiently large $m$.
+Indeed, $R_m(0)\ge1+(m-1)/2\to\infty$.
+
+\begin{theorem}[Inverse critical transseries]\label{a122:pd:thm:inverse}
+Fix $q$ in a compact subinterval of $(0,1)$ and put
+\begin{equation}\label{a122:pd:eq:betaell}
+ \beta=-\log q,\qquad \ell=\log\frac{m}{2\beta}.
+\end{equation}
+Then
+\begin{equation}\label{a122:pd:eq:inverse2}
+ t_q=m\ell+\tau_0(\beta,\ell)+\frac{\tau_1(\beta,\ell)}m
+ +O\!\left(\frac{(1+\ell)^3}{m^2}\right),
+\end{equation}
+where
+\begin{align}
+ \tau_0(\beta,\ell)={}&-\frac{1+\beta}{2}\ell-1-\frac{5\beta}{6},
+ \label{a122:pd:eq:d0}\\
+ \tau_1(\beta,\ell)={}&
+ \beta^2\left(\frac{\ell^2}{8}+\frac\ell3+\frac38\right)
+ +\beta\left(\frac{\ell^2}{4}+\frac\ell3+\frac5{12}\right)
+ -\frac\ell{12}.\label{a122:pd:eq:d1}
+\end{align}
+More generally, for every fixed $J\ge1$ there are effectively
+computable polynomials $\tau_0,\ldots,\tau_{J-1}\in\mathbb Q[\beta,\ell]$
+such that
+\begin{equation}\label{a122:pd:eq:inverseall}
+ t_q=m\ell+\sum_{h=0}^{J-1}\frac{\tau_h(\beta,\ell)}{m^h}
+ +O_J\!\left(\frac{(1+\ell)^{J+1}}{m^J}\right).
+\end{equation}
+The error is uniform over the stated compact set of target probabilities.
+\end{theorem}
+\begin{proof}
+The critical-window expansion holds for the real exponent $t$, by
+\cref{a122:pd:thm:allorders}. It first locates the root at
+$t=m\ell+O(\log m)$: moving $t/m$ by a fixed small constant on either
+side of $\ell$ moves the limiting value of $\log R_m(t)$ to either
+side of $\beta$, and the first correction then refines the displacement
+to $O(\log m)$.
+
+Put $\varepsilon=1/m$ and write
+$r=t/m=\ell+\tau_0\varepsilon+\tau_1\varepsilon^2+\cdots$.
+Then
+$\lambda=\beta\exp[-(r-\ell)]$.
+Insert these expressions into
+\[
+ \log R_m(t)=\lambda+\varepsilon L_1(\lambda,r)
+                  +\varepsilon^2L_2(\lambda,r)+\cdots
+\]
+and set the result equal to $\beta$.
+The coefficient of $\varepsilon$ gives
+\[
+ \tau_0=\frac{L_1(\beta,\ell)}\beta,
+\]
+which is \eqref{a122:pd:eq:d0}. The next coefficient gives
+\begin{equation}\label{a122:pd:eq:d1algorithm}
+ \tau_1=\frac{\tau_0^2}{2}
+ +\frac{\tau_0}{\beta}
+  (\partial_rL_1-\beta\partial_\lambda L_1)(\beta,\ell)
+ +\frac{L_2(\beta,\ell)}\beta.
+\end{equation}
+Simplification using \eqref{a122:pd:eq:L1}--\eqref{a122:pd:eq:L2} gives
+\eqref{a122:pd:eq:d1}.
+
+For the general construction, each $c_h(0,r)$ and $L_h(0,r)$ vanishes
+for $h\ge1$, because $p_h(0,r)=0$.
+Define polynomial coefficients $\mathcal M_h(\lambda,r)$ by
+\begin{equation}\label{a122:pd:eq:Mh}
+ \log\left(1+\sum_{h\ge1}\frac{L_h(\lambda,r)}\lambda
+                     \varepsilon^h\right)
+ =\sum_{h\ge1}\mathcal M_h(\lambda,r)\varepsilon^h.
+\end{equation}
+After taking the logarithm of $\log R_m(t)=\beta$, the formal inverse
+equation becomes
+\begin{equation}\label{a122:pd:eq:inversefixed}
+ r=\ell+\sum_{h\ge1}
+ \mathcal M_h\bigl(\beta e^{-(r-\ell)},r\bigr)\varepsilon^h.
+\end{equation}
+This is triangular in powers of $\varepsilon$: its coefficient of
+order $h$ determines the next coefficient of $r$ using only earlier
+ones. It uses only polynomial operations and finite exponential series,
+so the resulting $\tau_h$ lie in $\mathbb Q[\beta,\ell]$.
+The degree bounds inherited from \eqref{a122:pd:eq:degrees} show inductively
+that $\tau_h$ has degree at most $h+1$ in $\ell$.
+
+\begin{writenote}[Added 5 October 2026, batch~98: proof of the degree bound]
+The manuscript only sketches this induction, and the error term
+$(1+\ell)^{J+1}$ of \eqref{a122:pd:eq:inverseall} relies on it. A proof:
+by \eqref{a122:pd:eq:degrees}, $\deg_rc_h\le h$; by induction on
+\eqref{a122:pd:eq:Lrec}, $L_h$ is a sum of products
+$c_{h_1}\cdots c_{h_k}$ with $h_1+\dots+h_k=h$, so $\deg_rL_h\le h$; each
+$L_h/\lambda$ is a polynomial (as $L_h(0,r)=0$), and by
+\eqref{a122:pd:eq:Mh} $\mathcal M_h$ is a sum of products of
+$L_{h_1}/\lambda,\ldots,L_{h_k}/\lambda$ with $h_1+\dots+h_k=h$, so
+$\deg_r\mathcal M_h\le h$. Let $\mathcal A$ be the set of formal series
+$\sum_{k\ge1}P_k\varepsilon^k$ with $P_k\in\mathbb Q[\beta,\ell]$ and
+$\deg_\ell P_k\le k$. It is closed under sums and products, it contains
+$\varepsilon$ and $\varepsilon\ell$, and $e^{-i\omega}-1\in\mathcal A$
+whenever $\omega\in\mathcal A$ and $i\ge0$. For $\omega\in\mathcal A$ let
+$\Phi(\omega)=\sum_{h\ge1}\mathcal M_h(\beta e^{-\omega},\ell+\omega)\varepsilon^h$.
+A monomial $\lambda^ir^k$ of $\mathcal M_h$, $k\le h$, contributes
+$\beta^ie^{-i\omega}\,\varepsilon^{h-k}(\varepsilon\ell+\varepsilon\omega)^k$,
+which lies in $\mathcal A$ (for $k=0$ use $h\ge1$); so
+$\Phi(\mathcal A)\subseteq\mathcal A$. Every term of $\Phi(\omega)$ carries
+a factor $\varepsilon$ beyond the orders of $\omega$ it involves, so the
+coefficient of $\varepsilon^k$ in $\Phi(\omega)$ depends only on the
+coefficients of $\omega$ of order below $k$. Hence the solution
+$\omega=r-\ell$ of \eqref{a122:pd:eq:inversefixed} is the
+$\varepsilon$-adic limit of $\omega_0=0$, $\omega_{k+1}=\Phi(\omega_k)$,
+whose terms agree with $\omega$ through order $k$ and lie in
+$\mathcal A$; so $\omega\in\mathcal A$. Since
+$\omega=\sum_{h\ge0}\tau_h\varepsilon^{h+1}$, $\deg_\ell\tau_h\le h+1$.
+\qed
+
+A symbolic check of the write (formal inversion of the shipped $L_1,\dots,L_4$
+of \nolinkurl{data/02-poisson-defects-coefficients.json}, SymPy~1.14.0)
+reproduces \eqref{a122:pd:eq:d0}--\eqref{a122:pd:eq:d1} and finds
+$\deg_\ell\tau_h=\deg_\beta\tau_h=h+1$ for $h=0,1,2,3$, with
+\[
+\begin{aligned}
+ \tau_2=-\tfrac{1}{6480}\bigl[&(540\ell^3+1755\ell^2+2700\ell+1601)\beta^3
+ +(1890\ell^3+3375\ell^2+4050\ell+1665)\beta^2\\
+ &+(540\ell^3-1350\ell^2-270\ell-450)\beta+270\ell\bigr].
+\end{aligned}
+\]
+At $q=e^{-1}$ it lowers the last column of \cref{a122:pd:tab:inverse} from
+$1.38\times10^{-4}$ to $-1.5\times10^{-6}$ at $m=1000$ (and from
+$1.50\times10^{-3}$ to $-6.1\times10^{-5}$ at $m=200$). These are
+evidence for the computation, not part of the proof.
+\end{writenote}
+
+It remains to turn the formal calculation into a root estimate. A
+truncation through $\tau_{J-1}$ has a residual in $\log R_m(t)-\beta$
+of size $O_J((1+\ell)^{J+1}m^{-J-1})$, by the direct expansion and
+Taylor's theorem on a fixed compact critical window. On this window,
+\[
+ -\frac{\mathrm d}{\mathrm dt}\log R_m(t)
+ =\frac{\sum_j d_j(m)(1-j/m)^t[-\log(1-j/m)]}{R_m(t)}
+ \ge\frac{w_1}{mR_m(t)}\ge\frac{c_q}{m}
+\]
+for a positive constant uniform over the target compact set.
+Here $w_1$ is bounded away from zero and $R_m(t)$ stays bounded
+on the critical window; at the root, $w_1\to\beta$.
+The mean value theorem therefore multiplies the residual by at most
+$O(m)$, proving \eqref{a122:pd:eq:inverseall} and \eqref{a122:pd:eq:inverse2}.
+\end{proof}
+
+\subsubsection{Integer thresholds and the rounding obstruction}
+For the original counting problem, the relevant threshold is
+\begin{equation}\label{a122:pd:eq:intthreshold}
+ N_q(m)=\min\{n\in\mathbb Z_{\ge0}:\Prob(D_{m,n}=0)\ge q\}
+       =\lceil t_q\rceil.
+\end{equation}
+The equality is exact by strict monotonicity of $q_m(t)$.
+An asymptotic approximation to $t_q$ with error tending to zero does
+not by itself justify taking its ceiling: the exact root may lie closer
+to an integer than the error.
+If a rigorously bounded error is $\eta$, the valid envelope is
+\[
+ \lceil \widetilde t_q-\eta\rceil\le N_q(m)
+ \le\lceil\widetilde t_q+\eta\rceil.
+\]
+For sufficiently large $m$ the two sides differ by at most one if $\eta<1/2$.
+\begin{writenote}[Added 5 October 2026, batch~98]
+The qualifier ``for sufficiently large $m$'' is superfluous: the two
+arguments differ by $2\eta<1$, and the ceilings of two reals less than
+one apart differ by at most one, for every $m$. What needs large $m$, or
+explicit constants (\cref{a122:pd:q:formal}), is a rigorous $\eta<1/2$.
+\end{writenote}
+The asymptotic constants in \cref{a122:pd:thm:inverse} have not been optimized
+into a certified finite-input cutoff. For rational $q$, an exact
+comparison of integers in \eqref{a122:pd:eq:law} decides any candidate boundary;
+for a nonrational specified target, a certified representation or
+interval evaluation of that target is additionally required.
+
+\subsection{A new local conclusion on the original OEIS diagonal}
+\label{a122:pd:sec:diagonal}
+The boundary analysis concerns a two-parameter extension rather than a
+new OEIS identification. The local-limit result also gives an immediate
+conclusion for the original sequence itself.
+The prior report \cite{a122:pd:repo} defines positive constants $x,y$ by
+\begin{equation}\label{a122:pd:eq:diagsaddle}
+ x=\log(1+e^{-y}),\qquad x=\frac{y}{1+e^y},\qquad B=2-y+x,
+\end{equation}
+and proves
+\begin{equation}\label{a122:pd:eq:diagmoments}
+ \E K_{n,n}=\mu n+\mu_0+O(n^{-1}),\qquad
+ \Var(K_{n,n})=\sigma^2n+O(1),
+\end{equation}
+where
+\[
+ \mu=\frac1y=0.8737024332396683\ldots,\qquad
+ \sigma^2=\frac{B-1}{By^2}=0.0889169868271170\ldots,
+\]
+and $\mu_0=0.1445656885777610\ldots$.
+These numerical constants are quoted from the earlier manuscript and
+are not new numerical discoveries here.
+
+\begin{corollary}[Diagonal local limit theorem]\label{a122:pd:cor:diaglclt}
+Let $K_n$ have law
+\[
+ \Prob(K_n=k)=\frac{k^n k!S(n,k)}{a_n}.
+\]
+Then, uniformly for all integers $k$,
+\begin{equation}\label{a122:pd:eq:diaglclt}
+ \Prob(K_n=k)=\frac1{\sigma\sqrt n}
+ \varphi\!\left(\frac{k-\mu n-\mu_0}{\sigma\sqrt n}\right)
+ +O(n^{-1}).
+\end{equation}
+All higher local corrections can be generated from exact cumulants by
+\cref{a122:pd:thm:edgeworth}; combining that theorem with the analytic marked
+expansion of \cite{a122:pd:repo} converts them to fixed diagonal constants.
+\end{corollary}
+\begin{proof}
+On the diagonal,
+$\theta=(n-1)(1-1/n)^n/2\sim n/(2e)$, hence the variance diverges.
+Apply \eqref{a122:pd:eq:lclt} to $K_n=n-D$ using its exact mean and variance.
+Substitute \eqref{a122:pd:eq:diagmoments}; the change in the Gaussian density,
+uniformly in its argument, is $O(n^{-3/2})$ from the variance replacement
+and smaller from the stated mean replacement. This is absorbed by the
+$O(n^{-1})$ local error.
+\end{proof}
+
+For clarity, the local theorem with exact moments does not depend on the
+earlier saddle proof. Only the explicit replacement of the moments by
+$\mu n+\mu_0$ and $\sigma^2n$ invokes \cite{a122:pd:repo}.
+This separates the new finite-polynomial argument from inherited
+asymptotic input.
+
+\begin{writenote}[Added 5 October 2026, batch~98]
+The proof establishes \eqref{a122:pd:eq:diaglclt} only. The corollary's
+last sentence, that the higher local corrections can be converted to
+fixed diagonal constants via Part~I's marked expansion (6.1), is a
+one-line sketch: Part~I states (6.1) and (6.2) to first order only, and
+the bookkeeping that turns exact cumulants into constants is not carried
+out. It is recorded as open in \cref{a122:pd:q:diagedge}. This
+corollary answers Part~I's Question~4 in part (local limit theorem and,
+at exact cumulants, Edgeworth terms; no large deviations).
+\end{writenote}
+
+\subsection{Reproducible checks and numerical stress tests}
+\label{a122:pd:sec:checks}
+The package contains four short Python programs. The symbolic code uses
+rational arithmetic throughout; it does not estimate coefficients by
+fitting sequence values. The numerical code starts with exact integer
+ordered-Stirling rows and then uses high-precision arithmetic for
+normalization and noninteger exponent inversion.
+
+\subsubsection{Exact checks}
+The recurrence
+\begin{equation}\label{a122:pd:eq:Texact}
+ T_{m,k}=k(T_{m-1,k}+T_{m-1,k-1}),\qquad T_{0,0}=1,
+\end{equation}
+computes $T_{m,k}=k!S(m,k)$ using integers.
+The executed verification script checks the following.
+\begin{enumerate}[itemsep=2pt]
+\item Eighty-five coefficient identities: for each $j=0,\ldots,16$,
+interpolate the degree-$j$ polynomial $d_j(m)$ from independent exact
+Stirling values, multiply its normalized polynomial by the tilt series,
+and compare orders $0,\ldots,4$ with the general coefficient algorithm.
+\item Fifty exact Sturm root counts for $m=1,\ldots,10$ and
+$n\in\{0,1,2,5,20\}$, after dividing the block polynomial by $u$;
+greatest-common-divisor checks also verify simplicity in these cases.
+\item Two hundred seventy-two exact rational instances of the moment
+and $\Delta$ bounds, for $m=2,\ldots,18$ and $n=0,\ldots,15$.
+The first fifteen values of A122399 are also checked against the OEIS
+prefix displayed by the inspected entry.
+\item The two printed inverse correction polynomials are substituted
+back into the direct logarithmic expansion, and the residual is verified
+to vanish through order $m^{-2}$ by exact symbolic algebra.
+\end{enumerate}
+All these checks passed. They test the implementation and the printed
+coefficients, not the infinite quantifiers in the analytic theorems.
+A separate standard-library program certifies one integer inverse
+threshold by exact counts and rational bounds, as explained below.
+
+\subsubsection{Boundary count accuracy}
+The following table uses $n$ equal to the nearest integer to $m\log m$.
+An ``error, $J$'' is
+\[
+ \left|R_{m,n}e^{-\lambda}-\sum_{h=0}^J
+                 c_h(\lambda,r)m^{-h}\right|.
+\]
+Thus the errors refer to the normalized correction factor, not to the
+astronomically large integer count $A_{m,n}$.
+\begin{table}[H]
+\centering\small
+\input{data/02-poisson-defects-critical_table.tex}
+\caption{Boundary expansion errors computed with 80-decimal-digit arithmetic.}
+\label{a122:pd:tab:critical}
+\end{table}
+At $(m,n)=(1000,6908)$, the distance from the defect law to
+$\Poi(\theta)$ is approximately $9.61187\times10^{-4}$, while the
+explicit upper bound $2\Delta$ is approximately
+$4.23702\times10^{-3}$. The latter is a theorem with an exact parameter;
+the displayed decimal evaluations are numerical diagnostics.
+
+The delivered CSV also records scaled remainders
+$\text{error}\,(m/(1+r))^{J+1}$ for $J=0,\ldots,4$.
+They remain of moderate size across the tested rows, consistent with the
+proved logarithmic remainder scale. This numerical observation is not
+used to infer the theorem's constants.
+
+\subsubsection{Inverse accuracy}
+In \cref{a122:pd:tab:inverse}, the target probability is $q=e^{-1}$, so
+$\beta=1$. The three errors are respectively
+$m\ell-t_q$, $m\ell+\tau_0-t_q$, and
+$m\ell+\tau_0+\tau_1/m-t_q$.
+\begin{table}[H]
+\centering\small
+\setlength{\tabcolsep}{4pt}
+\input{data/02-poisson-defects-inverse_table.tex}
+\caption{Inverting the exact real-exponent finite sum at target $q=e^{-1}$.}
+\label{a122:pd:tab:inverse}
+\end{table}
+For $m=1000$, the root of the exact real-exponent finite sum is numerically
+$6206.578918934\ldots$. A separate exact-arithmetic certificate proves
+that the corresponding integer threshold is $6207$. The leading approximation misses by about $8.03$; adding the
+first correction reduces the error to about $-0.0188$, and the second
+to $1.38\times10^{-4}$.
+The root finder uses the exact finite sum as its defining function,
+not the asymptotic approximation. Its high precision is not a rigorous
+interval certificate. The integer threshold does not rely on that root
+finder: put
+\[
+ E_- =\sum_{k=0}^{30}\frac1{k!},\qquad
+ E_+=E_-+\frac{32}{31\cdot31!}.
+\]
+The exponential series and a geometric tail bound give $E_-<e<E_+$.
+The program \nolinkurl{code/certify_threshold.py} computes the integer
+numerators and denominators of $R_{1000,6206}$ and $R_{1000,6207}$,
+and checks by cross multiplication that
+\[
+ R_{1000,6206}>E_+>e>E_->R_{1000,6207}.
+\]
+Strict monotonicity then proves $N_{1/e}(1000)=6207$ with no floating-point
+assumption. The rational bounds and comparison signs are saved in
+\texttt{data/threshold\_certificate.json}.
+
+\subsubsection{Diagonal local checks}
+At $m=n=1000$, the numerically evaluated defect mean and variance are
+\[
+ M=126.15300932902\ldots,\qquad V=88.84323982565\ldots.
+\]
+The maximum absolute mass error over the entire finite support is about
+$4.66368\times10^{-4}$ for the Gaussian approximation with exact
+moments, and $2.66632\times10^{-5}$ after the first Edgeworth correction.
+The CSV records the corresponding errors for
+$m=n\in\{20,50,100,200,500,1000\}$, as well as the scaled quantities
+$V\,\text{error}_0$ and $V^{3/2}\,\text{error}_1$.
+This directly tests the uniform absolute-error interpretation in
+\cref{a122:pd:thm:edgeworth}, rather than a central-window-only fit.
+
+\subsubsection{Files and commands}
+From the package directory, run
+\begin{verbatim}
+python code/coefficients.py --order 4
+python code/verify.py
+python code/numerics.py --dps 80
+python code/certify_threshold.py
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+\end{verbatim}
+The delivered run used Python 3, SymPy 1.14.0, and mpmath 1.3.0; the full
+runtime version is in \texttt{data/numerical\_environment.json}.
+The numerical cases were independently rerun at 120 decimal digits;
+all stored 14-significant-digit diagnostics agreed, excluding the
+precision-dependent root residuals. The comparison is recorded in
+\texttt{data/precision\_audit.json}. This is a precision audit, not
+an interval-arithmetic proof.
+The checked-in coefficient tables, numerical CSVs, and JSON summaries
+allow comparison with a rerun. The algorithm is intentionally transparent
+rather than optimized for very high expansion orders. In particular,
+the displayed fourth-order output is a reproducible example, not a
+claim that an exponential-size symbolic expression can be produced in
+polynomial time in its order.
+
+\begin{writenote}[Added 5 October 2026, batch~98: shipped names and the replay]
+The package is shipped in this report's \nolinkurl{code/} and
+\nolinkurl{data/} with the prefix \nolinkurl{02-poisson-defects-}
+(for example \nolinkurl{code/02-poisson-defects-verify.py},
+\nolinkurl{data/02-poisson-defects-threshold_certificate.json}); its
+\nolinkurl{Makefile} and \nolinkurl{requirements.txt} are
+\nolinkurl{code/02-poisson-defects-Makefile} and
+\nolinkurl{data/02-poisson-defects-requirements.txt}, and its
+\nolinkurl{SOURCE_AUDIT.md} is \nolinkurl{02-poisson-defects-SOURCE_AUDIT.md}.
+The programs import one another and write \nolinkurl{data/} by their
+delivered names, so the commands above work only in a copy with the
+delivered layout; the README of this report gives that route. In such a
+copy the write reran all four programs on 5 October 2026 (Windows,
+CPython~3.13.5, SymPy~1.14.0, mpmath~1.3.0): all passed, in 5, 170, 19
+and 2~s for \nolinkurl{coefficients.py}, \nolinkurl{verify.py},
+\nolinkurl{numerics.py} and \nolinkurl{certify_threshold.py}; the three
+CSV files came out byte-identical, the other outputs identical up to line
+endings, except the Python version string of
+\nolinkurl{numerical_environment.json}.
+\emph{The precision audit.} No shipped program writes
+\nolinkurl{data/02-poisson-defects-precision_audit.json}; the comparison
+program behind it was not delivered, so the file is a record, not a
+reproducible output. The write repeated the comparison with its own
+script: \nolinkurl{numerics.py --dps 120} in a separate copy, compared
+field by field with the shipped 80-digit CSV files, gives 306, 84 and 42
+equal fields (432 in all) besides the 12 root residuals, which differ in
+11 rows, as the record says.
+\end{writenote}
+
+\subsection{Further questions and research}
+\label{a122:pd:sec:questions}
+The questions below are left open by this article. Some may admit
+answers from broader existing literature; the wording does not claim
+that each is a newly posed or universally unresolved problem.
+
+\begin{writenote}[Added 5 October 2026, batch~98]
+The manuscript titles this section ``Further research questions''; its
+six questions are Questions~20.1--20.6 below, unchanged. Under the
+repository's standing rule (4~October 2026) the write adds
+Questions~20.7 and~20.8, for two statements of the manuscript that are
+sketched or not asserted rather than proved, and a dated note at
+Question~20.4. The manuscript's sketched degree bound
+$\deg_\ell\tau_h\le h+1$ is not listed: the write proves it in
+\cref{a122:pd:sec:inverse}. No statement of the manuscript was found to
+be false.
+\end{writenote}
+
+\begin{question}[The sharp Poisson window]\label{a122:pd:q:poisson}
+Determine the widest regime in which the defect law is close in total
+variation to a Poisson law with its exact mean. The bound
+$2\Delta$ is simple and explicit but loses a possible large-mean
+improvement. Can one give necessary and sufficient conditions in terms
+of $m,n$, and obtain a sharp leading constant for the distance?
+\end{question}
+A plausible route is to combine sharper Bernoulli--Poisson estimates with
+asymptotics of the root power sums $\sum_i\alpha_i^a$. This must be
+kept separate from the stronger requirement
+$R_{m,n}/e^\lambda\to1$, which concerns the count normalization.
+
+\begin{question}[The connected-degree pattern]\label{a122:pd:q:degree}
+The generated logarithmic coefficients satisfy
+$\deg_\lambda L_h=h+1$ for $1\le h\le4$, although the general theorem
+only proves the upper bound $2h$. Prove or refute
+\[
+ \deg_\lambda L_h\le h+1\qquad(h\ge1)
+\]
+and identify a connected combinatorial interpretation of their highest
+powers of $\lambda$.
+\end{question}
+Such a result could greatly enlarge the useful growing-$\lambda$
+window of the logarithmic expansion. Finite verification through order
+four is not a proof of the pattern.
+
+\begin{question}[A uniform bridge to the interior saddle]\label{a122:pd:q:bridge}
+Construct a single count approximation with controlled relative error
+that connects the present finite-defect regime, the growing-defect
+Poisson region, and the fixed-positive-direction saddle expansion of
+\cite{a122:pd:repo}. Determine the correct rescaled special function, if any,
+when the Gaussian saddle approaches the endpoint.
+\end{question}
+The all-direction local theorem already controls the distribution at its
+exact moments; what remains here is explicit asymptotic evaluation of
+the count and of those moments across the whole transition.
+
+\begin{question}[The zero distribution and real exponent continuation]\label{a122:pd:q:zeros}
+For $n/m\to r_0\ge0$, find a limiting empirical measure of the
+$\alpha_i$ and derive root-density formulas for the cumulants.
+Separately, classify real $t\ge0$ for which
+$\sum_k k^t k!S(m,k)u^k$ remains real-rooted.
+\end{question}
+The proof by repeated Euler differentiation applies only to integer
+$t$. The inverse theorem does not assume an affirmative answer for real
+$t$, so this issue is an extension rather than a hidden dependency.
+
+\begin{writenote}[Added 5 October 2026, batch~98: evidence only]
+For $t\in\{0.5,1.5,2.25,3.3,7.7\}$ and $m=2,\dots,20$ (95 polynomials),
+the write computed all zeros of $\sum_kk^tk!\,S(m,k)u^{k-1}$ with mpmath
+at 60 digits: every zero is real and lies in $(-1,0)$. This is numerical
+evidence for an affirmative answer, not a proof; the script is not
+shipped.
+\end{writenote}
+
+\begin{question}[Beyond every algebraic order]\label{a122:pd:q:beyond}
+Determine the large-order growth of $c_h$ and $L_h$, the possible optimal
+truncation scale, and the exponentially small sectors associated with
+noncentral complex singularities. Can the inverse expansion be made
+exponentially accurate with a corresponding Stokes analysis?
+\end{question}
+Nothing in the present fixed-order Cauchy argument supplies those
+conclusions. A solution should distinguish genuine complex-saddle
+contributions from artificial contour endpoints.
+
+\begin{question}[A formal and effective proof layer]\label{a122:pd:q:formal}
+Formalize the exact Stirling recurrences, root interlacing, Bernoulli
+factorization, and finite-input inequalities in Lean. Then replace the
+existence constants in the boundary and inverse remainder theorems by
+explicit computable bounds, sufficiently sharp to certify integer
+thresholds directly.
+\end{question}
+The finite part requires only polynomial algebra, Rolle's theorem,
+finite probability, and elementary inequalities. It is a natural first
+formalization target before the all-order analytic estimates.
+
+\begin{question}[{[write]} The total-variation half of the growing window]\label{a122:pd:q:twindow}
+Source: the last sentence of \cref{a122:pd:sec:finite}, ``No assertion
+that this sufficient window is sharp is made''. Let $\lambda\ge\lambda_0>0$
+grow with $m$. Find necessary and sufficient conditions for
+$\TV(\mathcal L(D),\Poi(\lambda))\to0$.
+\end{question}
+What is known: \eqref{a122:pd:eq:growingwindow} gives sufficiency of
+$\lambda^2(1+r)/m\to0$, and the write's note in
+\cref{a122:pd:sec:finite} shows that this condition is \emph{necessary}
+for the count statement $R_{m,n}e^{-\lambda}\to1$. For the distance it is
+probably not: a heuristic sketch, not proved here, combines the
+Barbour--Hall bound \cite{a122:pd:barbourhall}
+$\TV(\mathcal L(D),\Poi(M))\le\Delta/M$ (up to the
+factor $1-e^{-M}$), which is of order $\lambda(1+r)/m$, with the distance
+between $\Poi(M)$ and $\Poi(\lambda)$, of order
+$|\lambda-M|/\sqrt\lambda\lesssim\lambda^{3/2}(1+r)/m$ by
+\eqref{a122:pd:eq:thetalam} and $\theta-M\le\Delta$. That suggests that
+$\lambda^{3/2}(1+r)/m\to0$ suffices, and perhaps is necessary, since the
+mean mismatch is then larger than a standard deviation. Missing: a
+checked statement of the Barbour--Hall bound and of the Poisson--Poisson
+distance with constants, and a matching lower bound. This sharpens the
+question of the window in Question~\ref{a122:pd:q:poisson}, which asks
+about the exact-mean Poisson law.
+
+\begin{question}[{[write]} Fixed-constant Edgeworth terms on the diagonal]\label{a122:pd:q:diagedge}
+Source: the last sentence of \cref{a122:pd:cor:diaglclt}, which asserts
+without proof that the higher local corrections of
+\cref{a122:pd:thm:edgeworth} can be converted to fixed diagonal constants
+by Part~I's marked expansion. Prove this, and compute the first
+correction explicitly.
+\end{question}
+The source's sketch: Part~I extends its saddle expansion uniformly to a
+small complex disk of the marking variable $s$ and allows its remainder
+to be differentiated by Cauchy estimates (its Section~6). Carried to every
+fixed order, this would give
+$\kappa_a(K_n)=n(\log D)^{(a)}(0)+(\log C)^{(a)}(0)+O(n^{-1})$ and finer
+expansions, with Part~I's $D(s)$ and $C(s)$; inserting them in
+\eqref{a122:pd:eq:edgeworth} and re-expanding the Gaussian factor about
+$(k-\mu n-\mu_0)/(\sigma\sqrt n)$ would express each correction through
+fixed constants. Missing: Part~I states (6.1) and (6.2) only to first
+order and computes no derivative of $\log D(s)$ beyond the second; the
+all-order version in $s$ and the bookkeeping are not written. Without
+them \eqref{a122:pd:eq:diaglclt} is what is proved.
+
+\subsection{Conclusion}
+The same array that has a fixed-direction saddle expansion also has a
+simple endpoint geometry. The exact block polynomial exposes that
+geometry: all of its nonzero zeros lie in $(-1,0)$, so missing blocks form
+an independent-Bernoulli sum. Two coefficients control its Poisson
+distance and count normalization, while the variance alone controls its
+local Gaussian expansion. At $n=m(\log m+c)$, finitely many pair defects
+survive; their Poisson parameter is $e^{-c}/2$.
+
+The finite-defect identity then produces a complete, uniformly summable
+power--logarithmic expansion. Its inversion gives the number of blue
+labels needed for a prescribed all-singleton probability, including the
+logarithmic correction and every further algebraic order. This extends
+the inspected ProveIt report in directions it explicitly left outside
+its scope, while retaining a clear boundary between proved fixed-order
+results, numerical diagnostics, inherited diagonal constants, and
+questions about sharp uniformity or beyond-all-orders behavior.
+
+% [write] Appendices of Part II: lettered A, B as in the manuscript
+\setcounter{subsection}{0}
+\renewcommand{\thesubsection}{\Alph{subsection}}
+\renewcommand{\theHsubsection}{pdapp.\arabic{subsection}}
+\subsection{The third logarithmic correction}\label[appendix]{a122:pd:app:third}
+For reference, the next coefficient in \eqref{a122:pd:eq:logexp} is
+\begin{align}
+ L_3(\lambda,r)={}&
+ \lambda\left(-\frac{r^3}{48}+\frac{r^2}{24}+\frac r{12}\right)
+ \nonumber\\
+ &+\lambda^2\left(-\frac{7r^3}{12}-\frac{5r^2}{6}-\frac{13r}{36}\right)
+ \nonumber\\
+ &+\lambda^3\left(-\frac{17r^3}{12}-\frac{23r^2}{6}-4r-\frac53\right)
+ \nonumber\\
+ &+\lambda^4\left(-\frac{2r^3}{3}-\frac{7r^2}{3}
+                         -\frac{107r}{36}-\frac{251}{180}\right).
+ \label{a122:pd:eq:L3}
+\end{align}
+The direct third coefficient is
+\[
+ c_3=L_3+L_1L_2+\frac{L_1^3}{6}.
+\]
+The accompanying \nolinkurl{data/coefficients.txt} and
+\nolinkurl{data/coefficients.json} include $p_h,c_h,L_h$ through $h=4$.
+They are generated by the recurrence in \cref{a122:pd:sec:allorders}, rather
+than manually entered expressions.
+
+\subsection{Source and dependency audit}\label[appendix]{a122:pd:app:audit}
+The repository tree inspected during preparation had commit
+\begin{center}\small\ttfamily
+0f93381e8932d3aee3d5c2abfb5c98d128d49b9c.
+\end{center}
+The inspected \texttt{proof.md} file has Git blob SHA
+\begin{center}\small\ttfamily
+6f03a8be2d313d67cebce8a5f5f641bbb78e08d1.
+\end{center}
+Its fixed-direction theorem and its stated absence of local and
+boundary-uniform claims motivated the choice of topic.
+The finite identities, root theorem, global bounds, boundary expansion,
+local theorem with exact cumulants, and inverse-threshold theorem in the
+present article are proved independently of the earlier analytic saddle
+argument. The explicit diagonal constants in \cref{a122:pd:sec:diagonal} are the
+only inherited analytic inputs to a numbered consequence here.
+
+OEIS A122399 and A317855 were inspected on 4 October 2026. The classical
+papers cited below provide provenance for methods and neighboring
+problems; none is invoked as a substitute for a missing proof of the
+specific boundary formulas. Targeted searches are recorded in
+\texttt{SOURCE\_AUDIT.md}. The manuscript is neither a submission to
+OEIS nor a report of independent mathematical refereeing.
+
+\begin{writenote}[Added 5 October 2026, batch~98]
+The commit \texttt{0f93381e8} is an ancestor of the placement commit, and
+\texttt{6f03a8be2} is still the blob of this report's
+\nolinkurl{proof.md}; the report had no commit between them, so the
+manuscript read the current Part~I. \nolinkurl{SOURCE_AUDIT.md} is
+shipped as \nolinkurl{02-poisson-defects-SOURCE_AUDIT.md}. Its scoped
+search (``A122399 Poisson'') was right that this report contained no
+defect--Poisson transition; the collection's
+\nolinkurl{a261781-matrix-compositions} has one for a different array (a
+Poisson limit for Stirling defects, its Theorem \texttt{mxc:tp:thm:defect},
+and a Touchard-summed coverage-window expansion to every order, its
+Theorem \texttt{mxc:tp:thm:couponall}), with the same mechanism of pairs
+weighted by $1/2!$ but no shared theorem. The three items the write
+added to the bibliography,
+\cite{a122:pd:frobenius,a122:pd:harper,a122:pd:barbourhall}, are cited
+for priority and context; the write did not consult them.
+\end{writenote}
+
+\renewcommand{\refname}{References for Part~II}
+\begin{thebibliography}{9}
+\bibitem{a122:pd:oeis122399}
+OEIS Foundation Inc., \emph{The On-Line Encyclopedia of Integer Sequences},
+A122399, ``$a(n)=\sum_{k=0}^n k^n k!\,\mathrm{Stirling2}(n,k)$,''
+\url{https://oeis.org/A122399}. Inspected 4 October 2026.
+
+\bibitem{a122:pd:oeis317855}
+OEIS Foundation Inc., \emph{The On-Line Encyclopedia of Integer Sequences},
+A317855, the growth constant associated with A122399,
+\url{https://oeis.org/A317855}. Inspected 4 October 2026.
+
+\bibitem{a122:pd:repo}
+Part~I of this report, as delivered: \emph{A122399: a complete saddle
+expansion, an exact vertical contour, and quantitative inversion},
+research manuscript dated 1 October 2026, \texttt{proof.md} in the
+A122399 report directory identified in \cref{a122:pd:sec:target}, of
+the ProveIt repository,
+\url{https://github.com/VladimirReshetnikov/ProveIt}.
+Inspected commit and blob are recorded in \cref{a122:pd:app:audit}.
+\textbf{[write]} Corrected 5 October 2026, batch~98: the delivered item
+began ``Vladimir Reshetnikov, ProveIt repository,'' and added ``This
+citation names the repository owner, not an inferred personal authorship
+of every statement in its report collection.'' The manuscript it cites
+names no author (Part~I's provenance note), so no author is named here.
+
+\bibitem{a122:pd:liuwang}
+Lily L. Liu and Yi Wang,
+\emph{A unified approach to polynomial sequences with only real zeros},
+Advances in Applied Mathematics \textbf{38} (2007), 542--560;
+arXiv:math/0509207,
+\url{https://arxiv.org/abs/math/0509207}.
+
+\bibitem{a122:pd:lecam}
+Lucien Le Cam,
+\emph{An approximation theorem for the Poisson binomial distribution},
+Pacific Journal of Mathematics \textbf{10} (1960), no.~4, 1181--1197.
+\href{https://doi.org/10.2140/pjm.1960.10.1181}{doi:10.2140/pjm.1960.10.1181}.
+The elementary convolution estimate is in Theorem~1 and its proof,
+pp.~1183--1184.
+
+\bibitem{a122:pd:klm}
+Jessica Khera, Erik Lundberg, and Stephen Melczer,
+\emph{Asymptotic enumeration of lonesum matrices},
+arXiv:1912.08850, version~2 (2020),
+\url{https://arxiv.org/abs/1912.08850}.
+Published in Advances in Applied Mathematics \textbf{123} (2021), 102118.
+
+\bibitem{a122:pd:frobenius}
+\textbf{[write]} Georg Frobenius,
+\emph{\"Uber die Bernoullischen Zahlen und die Eulerschen Polynome},
+Sitzungsberichte der K\"oniglich Preu\ss ischen Akademie der
+Wissenschaften (1910), 809--847.
+
+\bibitem{a122:pd:harper}
+\textbf{[write]} L. H. Harper,
+\emph{Stirling behavior is asymptotically normal},
+Annals of Mathematical Statistics \textbf{38} (1967), 410--414.
+
+\bibitem{a122:pd:barbourhall}
+\textbf{[write]} A. D. Barbour and Peter Hall,
+\emph{On the rate of Poisson convergence},
+Mathematical Proceedings of the Cambridge Philosophical Society
+\textbf{95} (1984), 473--480.
+\end{thebibliography}
 
 \end{document}

@@ -1,0 +1,53 @@
+\subsection{Recorded exact results}
+\begin{center}
+\begin{tabular}{@{}rrl@{}}
+\toprule
+\(n\) & \(u_n\) & Positive source row \(u(n,1),u(n,2),\ldots\) \\
+\midrule
+1 & 1 & 1 \\
+2 & 1 & 1 \\
+3 & 2 & 2 \\
+4 & 9 & 8, 1 \\
+5 & 88 & 68, 20 \\
+6 & 1,802 & 1,248, 534, 20 \\
+7 & 75,598 & 48,640, 25,008, 1,940, 10 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The two recurrences agree on all 2,080 triangle cells through \(n=64\). The run also checks 242 positive finite-deficit entries against the triangle and 112 exact binomial spot checks of the adjacent-coefficient implementation.
+
+\subsection{A uniform profile diagnostic}
+At \(q=11\), \(N=1024\), the table gives the coefficient-\(\ell^1\)
+bound
+\[
+ \sum_{j=0}^{N-1}
+ \left|\frac{b_{N+1+j}^{(d)}}{A_q}R_d^j-\rho_d^j\right|
+ +\frac{\rho_d^N}{1-\rho_d},
+\]
+which bounds the closed-disk profile error. The displayed decimal
+values are high-precision evaluations of that bound, without an
+interval enclosure for floating-point roundoff.
+\begin{center}
+\begin{tabular}{@{}rrr@{}}
+\toprule
+\(d\) & Coefficient bound & Bound multiplied by \(N/m\) \\
+\midrule
+0 & 0.003215632303 & 0.299346134 \\
+1 & 0.006060580187 & 0.517169509 \\
+2 & 0.008109188522 & 0.638754542 \\
+3 & 0.009672798955 & 0.707496152 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{A complex radial diagnostic}
+At \(d=0\) and \(\varepsilon=2^{-32}\), the absolute errors in
+\eqref{eq:radial-ratio} are approximately
+\[
+ \begin{array}{c|ccc}
+ \zeta & -1 & i & e^{i\pi/4}\\ \hline
+ \text{absolute error} & 6.3523\times10^{-12} & 6.0306\times10^{-12} & 4.0592\times10^{-12}\\
+ \end{array}
+\]
+The recorded run contains 300 radial comparisons and 140 complex profile evaluations in total.

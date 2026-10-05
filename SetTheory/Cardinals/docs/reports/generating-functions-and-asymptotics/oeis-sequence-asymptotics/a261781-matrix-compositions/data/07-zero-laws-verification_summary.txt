@@ -1,0 +1,36 @@
+VERIFICATION SUMMARY
+
+Every listed check passed.
+symbolic_determinant_checks: 12
+rational_determinant_checks: 96
+algebraic_determinant_checks: 3
+high_precision_cotangent_identity_checks: 78
+degree_and_primitive_multiplicity_checks: 91
+independent_root_merging_and_CDF_checks: 18
+independent_tail_count_checks: 20
+exact_full_support_CDF_computations: 18
+independent_high_precision_first_moment_checks: 2
+one_page_PDF_structure_checks: 4
+
+Moment constants:
+C_2 = zeta(3)/(4*pi^2) = 0.03044845705839327
+C_4 = zeta(5)/(600*pi^2) = 0.0001751045791711974
+
+First-moment constant = -0.6273278444052115
+Exact discrepancy scaled limit = 9/pi^2 = 0.91189065278104
+
+Selected exact CDF discrepancies:
+k=64: D=0.0350281076162; D*k/log(k)=0.53903869; maximizer=1/7 (left limit)
+k=128: D=0.0208961596153; D*k/log(k)=0.551255513; maximizer=1/7 (left limit)
+k=256: D=0.0122991367143; D*k/log(k)=0.567804913; maximizer=1/7 (left limit)
+k=512: D=0.00708644151164; D*k/log(k)=0.581607767; maximizer=1/11 (left limit)
+k=1024: D=0.00406672748617; D*k/log(k)=0.600785672; maximizer=1/11 (left limit)
+k=2048: D=0.00230151896685; D*k/log(k)=0.618196247; maximizer=1/11 (left limit)
+
+Limitations:
+- Finite computations do not prove a determinant identity for arbitrary k or any limiting law.
+- CDF discrepancies are exact on the complete finite support, not sampled on a plotting grid.
+- The identity degree=N and primitive multiplicities checks share the direct pair aggregation; independent root merging is additionally checked for k=3..20.
+- The constant 9/pi^2 in the discrepancy figure is established by the article's proof; the finite values are well below it, and do not by themselves establish it. Maximizers need not be the order-2 atom.
+- Edge-tail masses are integer counts, but deciding a transcendental threshold uses floating point; the independent 70-digit checks use generic thresholds away from atoms.
+- PNG rendering and PDF metadata can vary across library versions; exact CSV values are reproducible.
