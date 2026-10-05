@@ -1130,6 +1130,13 @@ parameter pairs attaining the first-moment bound at minimum inspection
 depth are classified (their failure sets are affine codes). These are
 budgets for trees that read coordinates, not open-set queries about a
 hidden point; still no theorem is shared.
+[Batch 96, 4 October 2026.] Its Part V lets the players use free random
+bits: with private coins, or a finite-valued public seed, the uniform
+expected numbers of inspected hats permitting an almost surely divergent
+excess are exactly those above 1, so the infimum 1 is not attained, while a
+shared random integer (a public seed of countably infinite support) attains
+it (its Theorem 70.1). Its costs count observed hats, not open-set queries
+about a hidden point; still no theorem is shared.
 
 ## Sources and attribution
 

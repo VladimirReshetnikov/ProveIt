@@ -1,0 +1,12 @@
+Exact symbolic identities: PASS
+Notation: a=S1(P)/n, c=S2(P)/n, e=S3(P)/n;
+          b=S1(V)/n, d=S2(V)/n, f=S3(V)/n.
+lambda = theta*a*b
+C = 2*a**2*b**2*theta**2 - a**2*b*theta**2/2 - a**2*d*theta**2 - a*b**2*theta**2/2 - b**2*c*theta**2 + c*d*theta
+B1 = lambda*u+C*u**2
+B2 = lambda*u+(D+lambda**2/2)*u**2+(E+lambda*C)*u**3+C**2/2*u**4
+D = theta*(22*a**2*b**2*theta - 6*a**2*b*theta - 12*a**2*d*theta - 6*a*b**2*theta + a*b*theta + 2*a*d*theta - 12*b**2*c*theta + 2*b*c*theta + 4*c*d*theta + 6*c*d)/2
+E = theta*(28*a**3*b**3*theta**2 - 12*a**3*b**2*theta**2 - 24*a**3*b*d*theta**2 + a**3*b*theta**2 + 6*a**3*d*theta**2 + 3*a**3*f*theta**2 - 12*a**2*b**3*theta**2 + 3*a**2*b**2*theta**2 + 6*a**2*b*d*theta**2 - 24*a*b**3*c*theta**2 + a*b**3*theta**2 + 6*a*b**2*c*theta**2 + 12*a*b*c*d*theta**2 + 18*a*b*c*d*theta - 6*a*c*d*theta - 6*a*c*f*theta + 6*b**3*c*theta**2 + 3*b**3*e*theta**2 - 6*b*c*d*theta - 6*b*d*e*theta + 3*e*f)/3
+d(B2)/de = u**3*(theta*f-2*theta**2*b*d+theta**3*b**3)
+B2 quartic coefficient = C**2/2: PASS
+Compact invariant formulas for D and E, and every B2 coefficient: PASS

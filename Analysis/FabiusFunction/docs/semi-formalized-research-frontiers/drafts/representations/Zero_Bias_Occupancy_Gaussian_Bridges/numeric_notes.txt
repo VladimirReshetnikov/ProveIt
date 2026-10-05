@@ -1,0 +1,57 @@
+DETERMINISTIC NUMERICAL COMPANION: GEOMETRIC OCCUPANCY
+
+Parameters: q=1/2; exact checks m=0..12; float m=1..1024.
+Reproduce: python verify_occupancy.py
+No Monte Carlo is used. These computations are evidence, not proofs.
+
+All exact Fraction assertions passed: moment-derived marginal sums;
+positivity; P(K0=0)=q^(2m); a direct two-head coefficient formula;
+conditional self-similarity; covariance; and monotone finite maximum CDFs.
+
+Numerical error diagnostics:
+  Maximum exact-vs-float moment relative error: 5.7732e-15
+  Maximum raw marginal normalization defect: 3.9968e-15
+  Maximum absolute exact-saddle residual: 4.4054e-13
+  Maximum saddle omitted-tail bound: 1.9984e-15
+  Maximum frontier CDF omitted-log-tail bound: 1.9737e-16
+  Maximum Z-law normalization defect: 1.4655e-14
+  These tail bounds do not include floating-point roundoff or quadrature error.
+
+m, E(K0)/m, E(K1)/m, Var(K0)/m, Var(K1)/m, Cov(K0,K1)/m, t_m, theta_m
+   1, 0.750000000000, 0.187500000000, 0.187500000000, 0.152343750000, -0.140625000000, 4.748067695881, 0.247340504444
+   4, 0.635656751425, 0.255572516337, 0.164788912769, 0.135658325156, -0.107026902613, 12.096523947885, 0.596520629692
+  16, 0.558727113207, 0.263738556607, 0.141636870119, 0.109156356648, -0.076675843208, 37.737957059004, 0.237944419770
+  64, 0.521829903498, 0.257008701749, 0.130986393640, 0.098951898847, -0.066917404055, 135.583027872704, 0.083032784648
+ 256, 0.507351538610, 0.252699206805, 0.126972931124, 0.095406315732, -0.063839700341, 521.526585914001, 0.026596988807
+1024, 0.502321392023, 0.250916555386, 0.125614293349, 0.094254782496, -0.062895271643, 2059.508071235173, 0.008084064817
+
+Maximum finite-vs-phase-limit last-site CDF difference on s=-3..5:
+  m=16: 0.0129934105558
+  m=64: 0.00404166465629
+  m=256: 0.00111076969529
+  m=1024: 0.000285608694452
+
+Occupied-count phase mean integral: -1.000000000000000; prediction -1.000000000000000.
+Occupied-count phase variance integral: 0.557304959111037; prediction 0.557304959111037.
+Gaussian l1 mean constant: 1.187645633962268; omitted-tail bound <= 8.5543e-16.
+Finite sqrt(m)*E||K/m-c||_1 values (omitted tail below 1e-11):
+  m=16: 1.201445693314
+  m=64: 1.208472102272
+  m=256: 1.200628200218
+  m=1024: 1.193630517070
+Finite occupied-count means and variances:
+  m=16: mean=3.758535245226, variance=0.500503505320; phase predictions=3.737957059004, 0.557173148814
+  m=64: mean=5.588455295431, variance=0.541611791649; phase predictions=5.583027872704, 0.557136086368
+  m=256: mean=7.527975536409, variance=0.553150346129; phase predictions=7.526585914001, 0.557162052041
+  m=1024: mean=9.508421724209, variance=0.556160513709; phase predictions=9.508071235173, 0.557174668735
+
+Files:
+  figures/occupancy_convergence.pdf: exact-recursion mean, variance, covariance.
+  figures/frontier_limits.pdf: phase-dependent maximum CDF and frontier PMF.
+  Matching PNG previews and all CSV inputs are also included.
+  data/verification_summary.json records checks and runtime library versions.
+
+The saddle is the numerical root of the exact infinite-sum equation;
+it is not replaced by 2m. The finite maximum calculation uses finite
+head-product coefficients divided by infinite-product coefficients.
+Frontier-limit illustrations are labelled as limiting distributions.

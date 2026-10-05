@@ -1,0 +1,1613 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,enumitem}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\setlength{\headheight}{14pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Finite uniform factors of Fabius laws}
+\fancyhead[R]{\small Research manuscript}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{3pt}
+\setlength{\parindent}{1.1em}
+\emergencystretch=2em
+\setlist{itemsep=3pt,topsep=5pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Un}{\mathcal U}
+\newcommand{\Law}{\mathcal L}
+\newcommand{\Pone}{\mathcal P_1(\R)}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\Lip}{\operatorname{Lip}}
+\newcommand{\TV}{\operatorname{TV}}
+\newcommand{\sinc}{\operatorname{sinc}}
+\newcommand{\dist}{\operatorname{dist}}
+\newcommand{\ee}{\operatorname{e}}
+\newcommand{\id}{\operatorname{id}}
+\newcommand{\push}{_{\#}}
+\hypersetup{pdftitle={Sharp Wasserstein Contact Orders for Finite Uniform Factors},pdfauthor={Research manuscript prepared with OpenAI},pdfsubject={Fabius laws, convolution factors, Fourier zero multiplicities, Hall matching, Wasserstein approximation}}
+\title{\bfseries Sharp Wasserstein Contact Orders\\for Finite Uniform Factors\\[5pt]\large An exact clipping identity, Fourier derivatives of all orders,\\and a Hall counting formula for Fabius laws}
+\author{Research manuscript prepared with OpenAI\\Based on the ProveIt research program}
+\date{October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+Let $\mu_q$ be the distribution of a sum of independent centered uniforms with widths $1,q,q^2,\ldots$. Fix an integer $B\ge2$ and a finite multiset of nonnegative depths $D=(d_1\le\cdots\le d_s)$, and prescribe the convolution factor $\sigma_D=\mathop{*}_{i=1}^s\Un_{B^{-d_i}}$. We determine the exact order of the smallest $W_1$ error near $q=B^{-1}$. Factorability at the resonance is equivalent to $d_i\ge i-1$. For $s\ge2$ and a feasible profile, the distance is $\Theta(|q-B^{-1}|^{e(D)})$, where $e(D)=\min_{2\le i\le s}(d_i+2-i)$. Repeated widths and a prescribed width-one factor are allowed. This extends the repository's two-factor hierarchy to every finite depth multiset.
+
+The lower bound uses an exact compactification identity: clipping an arbitrary remainder to a fixed interval subtracts exactly its mean clipping displacement from the approximation error. Consequently the infimum is attained by a compactly supported remainder, and every Fourier derivative below a prescribed zero multiplicity gives a valid $W_1$ obstruction without higher moment assumptions on the original remainder. The upper bound identifies $e(D)$ as the first deletion count that can destroy a nested matching, constructs all lower-order signed variations by uniform subdivision, and repairs their positivity at the required order. A separate construction gives explicit upper bounds for approximate factors of arbitrary summable uniform series, including divisibility ladders. Full proofs, exact finite verification programs, a worked higher-multiplicity example, and further research questions are included. No normalized leading constant, growing-depth uniformity, or worldwide priority claim is asserted.
+\end{abstract}
+\begin{center}
+\small\textit{Status: a self-contained mathematical research manuscript; not peer reviewed or proof-assistant verified. Finite computations corroborate the proofs and are not substitutes for them.}
+\end{center}
+\newpage
+\tableofcontents
+\newpage
+
+\section{The problem and the main theorem}\label{sec:intro}
+
+\subsection{A smooth distribution with a rigid convolution structure}
+For $a>0$, let $\Un_a$ denote the uniform probability law on $[-a/2,a/2]$; the parameter is the \emph{width}, not the radius. Let $Z_0,Z_1,\ldots$ be independent with law $\Un_1$. For $0<q<1$, define
+\begin{equation}\label{eq:mu-def}
+ X_q=\sum_{k=0}^{\infty}q^kZ_k,
+ \qquad \mu_q=\Law(X_q),
+ \qquad R_q=\frac{1}{2(1-q)}.
+\end{equation}
+The series converges absolutely for every outcome, and $\mu_q$ is supported on $[-R_q,R_q]$. Its density is smooth: any fixed number of spatial derivatives can be placed on distinct uniform factors, after which one more uniform supplies a density. The dyadic case is a centered version of the classical Fabius--Rvachev distribution; the probability interpretation and its Fourier product belong to the established theory \cite{Arias}.
+
+Our Fourier convention is
+\begin{equation}\label{eq:fourier-convention}
+ \Phi_\mu(t)=\int_{\R}e^{2\pi itx}\,d\mu(x),\qquad
+ \sinc z=\frac{\sin z}{z},\quad \sinc0=1.
+\end{equation}
+Independence and bounded convergence give
+\begin{equation}\label{eq:fourier-product}
+ \Phi_q(t)=\prod_{k=0}^{\infty}\sinc(\pi q^kt).
+\end{equation}
+This product converges locally uniformly, including in a complex neighborhood of each fixed real pair $(q,t)$ with $0<q<1$. For the latter assertion, choose a complex neighborhood with $|q|<\beta<1$; the tail factors differ from $1$ by $O(\beta^{2k})$ uniformly on compact sets.
+
+For probability laws with finite first absolute moment, write
+\[
+ W_1(\mu,\eta)=\inf\{\E|X-Y|:\Law(X)=\mu,\ \Law(Y)=\eta\}.
+\]
+For a fixed compactly supported probability factor $\sigma$, the quantity of interest is
+\begin{equation}\label{eq:Delta-general}
+ \Delta_\sigma(\mu)=\inf_{\nu\in\Pone}W_1(\mu,\sigma*\nu).
+\end{equation}
+The remainder $\nu$ may depend on the source. It is required to be a probability measure, and its independence from the prescribed factor is expressed by convolution. Allowing an adaptive remainder makes the approximation problem much subtler than merely replacing selected widths by their values at a resonance.
+
+\subsection{The finite depth profile}
+Fix $B\ge2$ an integer, put $q_0=B^{-1}$, and let
+\[
+ D=(d_1\le d_2\le\cdots\le d_s),\qquad d_i\in\{0,1,2,\ldots\},\quad s\ge1.
+\]
+Define
+\begin{equation}\label{eq:profile}
+ \sigma_D=\mathop{*}_{i=1}^s\Un_{B^{-d_i}},\qquad
+ S_D=\frac12\sum_{i=1}^s B^{-d_i},\qquad
+ \Delta_D(q)=\Delta_{\sigma_D}(\mu_q).
+\end{equation}
+A depth may be repeated; each occurrence prescribes a separate independent uniform factor. We call $D$ \emph{feasible} if
+\begin{equation}\label{eq:feasible}
+ d_i\ge i-1\qquad(1\le i\le s).
+\end{equation}
+For a feasible profile with $s\ge2$, set
+\begin{equation}\label{eq:contact-exponent}
+ e(D)=\min_{2\le i\le s}(d_i+2-i).
+\end{equation}
+This is a positive integer.
+
+\begin{theorem}[Complete finite-profile contact classification]\label{thm:main}
+With the preceding definitions:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item If $s=1$, then $\Delta_D(q)=0$ for every $0<q<1$.
+\item If $D$ is not feasible, then $\Delta_D(q_0)>0$. In particular $\Delta_D$ stays bounded away from zero on some neighborhood of $q_0$.
+\item If $D$ is feasible and $s\ge2$, then $\sigma_D$ is an exact probability convolution factor of $\mu_{q_0}$, and
+\begin{equation}\label{eq:main-theta}
+ \Delta_D(q)=\Theta_{B,D}\bigl(|q-q_0|^{e(D)}\bigr)
+ \qquad(q\longrightarrow q_0).
+\end{equation}
+Explicitly, there exist $c,C,\varepsilon>0$, depending only on the fixed $B,D$, such that
+\[
+ c|q-q_0|^{e(D)}\le\Delta_D(q)\le C|q-q_0|^{e(D)}
+ \quad\text{if }0<|q-q_0|<\varepsilon.
+\]
+The lower constant can be chosen from the explicit Fourier coefficient and derivative bound proved below. The upper proof constructs genuine compactly supported probability remainders.
+\end{enumerate}
+For every fixed $q$, the infimum defining $\Delta_D(q)$ is attained. Each minimizing remainder is supported on $[-R_q-S_D,R_q+S_D]$.
+\end{theorem}
+
+The constants and the neighborhood in this theorem are not uniform when $B$, $s$, or the depths grow. The notation $\Theta$ asserts matching upper and lower powers; it does not assert the existence of a limit after division by that power.
+
+\subsection{How this advances the inspected repository}
+The input repository was inspected at commit
+\begin{center}
+\small\texttt{a21208b3ff14a07a4c8318dbf916d543acbef043}.
+\end{center}
+The immediate predecessor \emph{Wasserstein Contact Orders at Uniform Factor Resonances} proves the two-factor case $D=(1,j)$ for every fixed integer $B\ge2$ and $j\ge1$, using a first Fourier derivative and a signed-density positivity repair \cite{repo-contact}. The earlier \emph{Arithmetic Convolution Factors of Fabius-Type Laws} proves divisibility classifications and a Fourier-value lower bound. Its editorial discussion explicitly observes that the derivative argument does not cover orders $r\ge2$, and that constructive upper bounds for general divisibility-ladder targets remain outside that continuation \cite{repo-arithmetic}.
+
+The present contribution has three precise parts. First, the exact clipping identity makes every Fourier derivative available for compact factor problems. Second, the two-factor exponent becomes the explicit multiset formula \eqref{eq:contact-exponent}, with a proof covering arbitrarily high zero multiplicities. Third, a countable subdivision construction gives a usable, although not generally sharp, upper bound for arbitrary summable uniform series. The positivity-repair architecture is an extension of the cited repository construction and is credited accordingly.
+
+The ordinary Fourier product, finite uniform subdivision, uniform-sum spline formula, and real-line transport formula are established tools \cite{Arias,BradleyGupta,Vallender}. The matching criterion is the nested-neighborhood case of the classical distinct-representatives principle \cite{Hall}, for which a direct proof is given here. Targeted inspection establishes an advance over the specific cited manuscripts; it is not an exhaustive search of all unpublished or published work. None of the new conclusions inherits formal status from its location beside Lean developments.
+
+\subsection{The organizing idea}
+At frequency $B^n$, exactly the source factors at levels $0,1,\ldots,n$ vanish. The level-zero factor has width $1$ for every $q$ and therefore contributes a stationary zero. The other zeros move when $q$ moves. The prescribed factors demand
+\[
+ m_D(n)=\#\{i:d_i\le n\}
+\]
+zeros at that frequency. A Fourier derivative of order $m_D(n)-1$ exposes a parameter defect of order $n+2-m_D(n)$. The smallest such order, over frequencies demanding at least two zeros, is precisely $e(D)$.
+
+The same integer controls construction. A width $B^{-k}$ can supply a requested width $B^{-d}$ by subdivision exactly when $k\le d$. Differentiating a moving source factor removes it from the list of factors that can be extracted unchanged. Every collection of fewer than $e(D)$ removals still permits all prescribed factors to be assigned. At $e(D)$ removals a first obstruction appears. Fourier zeros provide the lower bound, and this assignment property supplies every signed variation needed below that order.
+
+\subsection{Elementary continuity used throughout}
+Using the same independent $Z_k$ for two parameters gives
+\begin{equation}\label{eq:param-lipschitz}
+ W_1(\mu_q,\mu_p)
+ \le\frac14\sum_{k\ge0}|q^k-p^k|
+ =\frac{|q-p|}{4(1-q)(1-p)}.
+\end{equation}
+Here $\E|Z_k|=1/4$ and the powers have a common ordering. Distance to a fixed subset of a metric space is $1$-Lipschitz, so
+\[
+ |\Delta_D(q)-\Delta_D(p)|\le W_1(\mu_q,\mu_p).
+\]
+This proves the neighborhood assertion in Theorem~\ref{thm:main}(ii) once positivity at $q_0$ is established.
+
+
+\section{Exact factorability and the deletion threshold}
+\label{hall:section}
+
+The relevant matching problem has nested neighbourhoods, so both its
+feasibility and its robustness admit exact formulas.  Throughout this
+section, $B\ge2$ is an integer and
+\[
+  0\le d_1\le\cdots\le d_s=N
+\]
+is a finite multiset of target levels.  A source at level $k$ has width
+$B^{-k}$ and can supply a target at level $d$ precisely when $k\le d$.
+The source levels available for the finite extraction are $0,1,\ldots,N$.
+Source $0$ is distinguished: it is fixed when the parameter varies,
+and is never among the deleted moving sources.
+
+\begin{lemma}[Subdivision of one uniform law]
+\label{hall:subdivision}
+For integers $0\le k\le d$, put $M=B^{d-k}$ and
+\[
+ D_{k,d}=\frac1M\sum_{j=0}^{M-1}
+   \delta_{(j-(M-1)/2)B^{-d}}.
+\]
+Then
+\[
+ \Un_{B^{-k}}=\Un_{B^{-d}}*D_{k,d},
+ \qquad
+ \operatorname{diam}(\operatorname{supp}D_{k,d})
+      =B^{-k}-B^{-d}.
+\]
+In particular, $D_{k,k}=\delta_0$.
+\end{lemma}
+
+\begin{proof}
+The $M$ translates of the interval of length $B^{-d}$ are consecutive
+subintervals of the centred interval of length $B^{-k}$. Their interiors
+are disjoint, and each carries weight $1/M$. The resulting density is
+constant on the larger interval. The first and last translation parameters
+differ by $(M-1)B^{-d}$, which gives the diameter.
+\end{proof}
+
+\begin{lemma}[The nested matching criterion]
+\label{hall:matching}
+Let $A$ be any subset of $\{0,\ldots,N\}$. The targets admit distinct
+assigned source levels $k_i\in A$ with $k_i\le d_i$ if and only if
+\begin{equation}
+  |A\cap\{0,\ldots,d_i\}|\ge i
+  \qquad(1\le i\le s).
+  \label{hall:prefix}
+\end{equation}
+When these inequalities hold, the deterministic assignment taking $k_i$
+to be the $i$th smallest element of $A$ succeeds.
+\end{lemma}
+
+\begin{proof}
+The first $i$ targets all have levels at most $d_i$. Their assigned sources
+are distinct members of $A\cap\{0,\ldots,d_i\}$, proving necessity.
+Conversely, the last inequality ensures that $A$ has at least $s$ elements.
+If $k_i$ is its $i$th smallest element, the $i$th inequality says exactly
+that $k_i\le d_i$. These choices therefore form the required injection.
+No distinctness assumption on the target levels was used.
+\end{proof}
+
+\begin{theorem}[Exact factorability and deletion robustness]
+\label{thm:hall}
+The following conditions are equivalent:
+\begin{enumerate}
+\item $d_i\ge i-1$ for every $1\le i\le s$;
+\item all target uniforms can be extracted from distinct sources among
+      $\Un_1,\Un_{B^{-1}},\ldots,\Un_{B^{-N}}$;
+\item the infinite convolution $\mu_{1/B}$ has a probability convolution
+      factor after extracting $\sigma_D=\mathop{*}_{i=1}^{s}\Un_{B^{-d_i}}$;
+\item there is a finite signed measure $\nu$ with
+      $\mu_{1/B}=\sigma_D*\nu$.
+\end{enumerate}
+Here a probability convolution factor in the third condition means a
+probability measure $\nu$ satisfying that identity.
+
+Assume these conditions and $s\ge2$, and define
+\begin{equation}
+ e=\min_{2\le i\le s}(d_i+2-i).
+ \label{hall:e}
+\end{equation}
+Then $e\ge1$. Every deletion of at most $e-1$ moving source levels preserves
+a full target assignment, and a deletion of exactly $e$ moving levels
+destroys every full assignment. The deletion set $\{1,\ldots,e\}$ is
+always such a witness. Furthermore, with $n=N+1-s$,
+\begin{equation}
+ n\ge e-1.
+ \label{hall:residual-count}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Apply Lemma~\ref{hall:matching} to the full source set. Its inequalities
+are $d_i+1\ge i$, proving the equivalence of the first two conditions.
+For a feasible assignment, Lemma~\ref{hall:subdivision} replaces each
+assigned source by its target and a finite positive digit law. The
+unassigned sources, the digit laws, and the infinite tail beyond level $N$
+form a probability measure $\nu$. This proves the third condition, which
+immediately implies the fourth.
+
+For the remaining implication, suppose the first condition fails and take
+an index $i$ with $r=d_i<i-1$. At the frequency $t_r=B^r$, the
+characteristic function of $\mu_{1/B}$ has a zero of order exactly $r+1$:
+the source factors with levels $0,\ldots,r$ have simple zeros, while every
+later factor is nonzero there. The infinite tail product is nonzero at
+$t_r$ because its sinc arguments tend geometrically to zero and the sum
+of their squared arguments is finite. Its continuity then preserves a
+nonzero tail factor in a neighbourhood of $t_r$.
+
+The target characteristic function has a zero there of order
+$m(r)=|\{j:d_j\le r\}|\ge i>r+1$. On a punctured neighbourhood of
+$t_r$, the quotient of the source characteristic function by the target
+characteristic function is consequently unbounded. If a finite signed
+$\nu$ satisfied the convolution identity, this quotient would equal
+$\Phi_\nu(t)$ wherever the target characteristic function is nonzero.
+That is impossible because
+$|\Phi_\nu(t)|\le\|\nu\|_{\mathrm{TV}}$ for all real $t$.
+This argument requires no compact-support or differentiability assumption
+on $\nu$.
+
+Now let $S\subseteq\{1,\ldots,N\}$ be a deletion set. The exact remaining
+capacity at the $i$th target is
+\begin{equation}
+ d_i+1-|S\cap\{1,\ldots,d_i\}|.
+ \label{hall:deleted-capacity}
+\end{equation}
+For $i=1$ this capacity is always at least one, because source $0$
+survives. For $i\ge2$, if $|S|\le e-1$, it is at least
+\[
+ d_i+1-(e-1)=d_i+2-e\ge i.
+\]
+Thus all the inequalities of Lemma~\ref{hall:matching} remain valid.
+
+Choose $j\ge2$ attaining the minimum in~\eqref{hall:e}. Then
+$e=d_j+2-j\le d_j$, so the deletion set $S=\{1,\ldots,e\}$ is contained
+in $\{1,\ldots,d_j\}$. The capacity in~\eqref{hall:deleted-capacity}
+at $j$ becomes $d_j+1-e=j-1$. This violates the necessary matching
+inequality and proves sharpness. Finally,
+$e\le d_s+2-s=N+2-s=n+1$, which is~\eqref{hall:residual-count}.
+\end{proof}
+
+\begin{remark}[Ties and the one-target prefix]
+\label{hall:ties}
+Let $m(r)=|\{i:d_i\le r\}|$ for $0\le r\le N$. Equivalently,
+\[
+ e=\min_{\substack{0\le r\le N\\m(r)\ge2}}
+       (r+2-m(r)).
+\]
+Between consecutive target levels the displayed expression increases,
+so its minimum occurs at a target level. At a tied target level, the last
+index in the tie is the strongest prefix inequality, exactly as in
+\eqref{hall:e}. Prefixes with $m(r)=1$ must be excluded from this minimum:
+destroying their sole remaining capacity would require deleting source
+$0$. In particular, a singleton target has no finite moving-source
+deletion obstruction, since source $0$ can always supply it.
+\end{remark}
+
+
+
+\section{Compact remainders and Fourier derivative obstructions}
+\label{transport:section}
+
+An approximation problem over all probability remainders need not visibly
+have compact parameter space.  In one dimension, bounded support of the
+target and of the prescribed factor gives an exact reduction to such a
+space.  Besides proving existence of an optimal remainder, this reduction
+allows higher Fourier derivatives to be used without imposing higher
+moments on the competing remainders.
+
+\begin{theorem}[Exact localization of remainders]
+\label{transport:clipping}
+Let $\mu$ and $\sigma$ be probability measures with
+$\supp\mu\subseteq[a,b]$ and $\supp\sigma\subseteq[c,d]$, where
+$a\le b$ and $c\le d$.  Set
+\[
+ K=[a-d,b-c],\qquad
+ P_K(z)=\max\{a-d,\min\{z,b-c\}\}.
+\]
+For $\nu\in\Pone$, write $\nu_K=(P_K)_\#\nu$.  Then
+\begin{equation}\label{transport:exact-clipping}
+ W_1(\mu,\sigma*\nu)
+ =W_1(\mu,\sigma*\nu_K)
+   +\int_{\R}\operatorname{dist}(z,K)\,d\nu(z).
+\end{equation}
+Consequently
+\begin{equation}\label{transport:attainment}
+ \inf_{\nu\in\Pone}W_1(\mu,\sigma*\nu)
+ =\min_{\nu\in\mathcal P(K)}W_1(\mu,\sigma*\nu),
+\end{equation}
+where $\mathcal P(K)$ denotes the probabilities supported on $K$.
+Every minimizing remainder in $\Pone$ is supported on $K$.
+\end{theorem}
+
+\begin{proof}
+Put $\eta=\sigma*\nu$, and take an optimal coupling $(X,W)$ of
+$\mu$ and $\eta$.  It can be extended to random variables $(X,Y,Z)$
+such that $(Y,Z)$ has law $\sigma\otimes\nu$ and $W=Y+Z$.
+For example, disintegrate the product law of $(Y,Z)$ with respect to its
+sum and use that conditional law after sampling $(X,W)$.  This is the
+usual gluing construction; it preserves the independence of $Y$ and $Z$
+in their marginal joint distribution.  Define
+$W_K=Y+P_K(Z)$, which therefore has law $\sigma*\nu_K$.
+
+For every $x\in[a,b]$, $y\in[c,d]$, and $z\in\R$, one has
+\begin{equation}\label{transport:pointwise}
+ |x-y-z|
+ =|x-y-P_K(z)|+|z-P_K(z)|.
+\end{equation}
+Indeed, there is nothing to prove for $z\in K$.  If $z>b-c$, then
+$y+z\ge y+b-c\ge b\ge x$, so both differences have the same sign.
+If $z<a-d$, then $y+z\le y+a-d\le a\le x$, giving the other case.
+Taking expectations in \eqref{transport:pointwise} gives
+\[
+ W_1(\mu,\sigma*\nu)
+ \ge W_1(\mu,\sigma*\nu_K)
+       +\E|Z-P_K(Z)|.
+\]
+Conversely, the natural coupling $(Y+Z,Y+P_K(Z))$ and the triangle
+inequality give
+\[
+ W_1(\mu,\sigma*\nu)
+ \le W_1(\mu,\sigma*\nu_K)+\E|Z-P_K(Z)|.
+\]
+These two bounds prove the identity.  All expectations are finite because
+$\nu\in\Pone$ and $Y$ is bounded.
+
+The space $\mathcal P(K)$ is compact for weak convergence.  Since $K$
+is compact, weak convergence on this space is equivalent to $W_1$
+convergence.  Convolution by $\sigma$ contracts $W_1$: couple two
+remainders optimally and add the same independent variable with law
+$\sigma$.  The objective in \eqref{transport:attainment} is therefore
+continuous on $\mathcal P(K)$ and attains its minimum.  The exact
+identity shows that this minimum equals the unrestricted infimum.
+Finally, if an unrestricted minimizer gave positive mass to $\R\setminus
+K$, the integral in \eqref{transport:exact-clipping} would be strictly
+positive, and clipping would strictly improve it.
+\end{proof}
+
+The identity can also be seen from the real-line formula
+$W_1(\lambda_1,\lambda_2)=\int_{\R}|F_{\lambda_1}-F_{\lambda_2}|$:
+clipping changes the convolution only by moving mass toward the interval
+$[a,b]$, with all such motion remaining outside that interval
+\cite{Vallender}.  The preceding proof does not require densities.
+
+In symmetric notation, if $\supp\mu\subseteq[-R,R]$ and
+$\supp\sigma\subseteq[-S,S]$, the localized remainder is supported on
+$[-R-S,R+S]$, and its convolution with $\sigma$ is supported on
+\begin{equation}\label{transport:radius}
+ [-M,M],\qquad M=R+2S.
+\end{equation}
+These are localization bounds for an approximation problem.  They do not
+assert that an optimal approximate remainder has the smaller support
+that an exact factorization might force.
+
+\begin{proposition}[Fourier derivatives controlled by transport]
+\label{transport:jets}
+Use the convention
+\[
+ \Phi_\lambda(t)=\int e^{2\pi itx}\,d\lambda(x).
+\]
+Suppose that $\mu$ and $\sigma$ have the symmetric support bounds above,
+and that
+\begin{equation}\label{transport:vanishing-jet}
+ \Phi_\sigma^{(j)}(t_0)=0\qquad(0\le j<m).
+\end{equation}
+For an integer $1\le r<m$, define
+\begin{equation}\label{transport:jet-constant}
+ L_r(M,t_0)
+ =(2\pi)^r M^{r-1}
+     \sqrt{r^2+(2\pi t_0M)^2}.
+\end{equation}
+Then
+\begin{equation}\label{transport:jet-obstruction}
+ \inf_{\nu\in\Pone}W_1(\mu,\sigma*\nu)
+ \ge \frac{|\Phi_\mu^{(r)}(t_0)|}{L_r(M,t_0)}.
+\end{equation}
+The value obstruction, corresponding to $r=0$, is
+\begin{equation}\label{transport:value-obstruction}
+ \inf_{\nu\in\Pone}W_1(\mu,\sigma*\nu)
+ \ge\frac{|\Phi_\mu(t_0)|}{2\pi|t_0|}.
+\end{equation}
+Here $t_0\ne0$, as follows already from
+$\Phi_\sigma(t_0)=0$ and $\Phi_\sigma(0)=1$.
+\end{proposition}
+
+\begin{proof}
+By Theorem~\ref{transport:clipping}, it is enough to consider remainders
+supported on $[-R-S,R+S]$.  Such a remainder and its convolution have
+moments of every order.  The Fourier product identity and the ordinary
+Leibniz rule show that
+\[
+ \Phi_{\sigma*\nu}^{(r)}(t_0)=0\qquad(0\le r<m).
+\]
+For $r\ge1$, differentiation under the integral expresses the $r$th
+Fourier derivative as the expectation of
+\[
+ g_r(x)=(2\pi i)^r x^r e^{2\pi it_0x}.
+\]
+Its derivative on the real axis satisfies
+\[
+ |g_r'(x)|
+ =(2\pi)^r|x|^{r-1}
+      \sqrt{r^2+(2\pi t_0x)^2}
+ \le L_r(M,t_0)\qquad(|x|\le M).
+\]
+Consequently $|g_r(x)-g_r(y)|\le L_r(M,t_0)|x-y|$ for
+$x,y\in[-M,M]$.  Apply this inequality to a coupling of $\mu$ and
+$\sigma*\nu$ and infimize over couplings.  This gives
+\[
+ |\Phi_\mu^{(r)}(t_0)|
+ =|\Phi_\mu^{(r)}(t_0)-\Phi_{\sigma*\nu}^{(r)}(t_0)|
+ \le L_r(M,t_0)W_1(\mu,\sigma*\nu).
+\]
+The same argument with $g_0(x)=e^{2\pi it_0x}$, whose global
+Lipschitz constant is $2\pi|t_0|$, proves the value bound.
+\end{proof}
+
+There is no factor of two in \eqref{transport:jet-obstruction}:
+localization decreases the objective by the exact amount in
+\eqref{transport:exact-clipping}.  For $r=1$ one may also use the
+source-bounded estimate
+\begin{equation}\label{transport:first-derivative}
+ |\Phi_\mu'(t)-\Phi_\eta'(t)|
+ \le 2\pi(1+2\pi|t|R)W_1(\mu,\eta),
+ \qquad \eta\in\Pone,
+\end{equation}
+proved in the preceding contact-order manuscript \cite{repo-contact}.
+It follows directly by writing
+$xe^{2\pi itx}-ye^{2\pi ity}
+=x(e^{2\pi itx}-e^{2\pi ity})+(x-y)e^{2\pi ity}$
+with $|x|\le R$.  Either constant can be used when $r=1$.
+
+\begin{remark}[Why higher moments cannot simply be ignored]
+\label{transport:moment-counterexample}
+The localization step is essential for higher derivatives.  For
+$n\ge2$, let
+\[
+ \mu=\delta_0,\qquad
+ \eta_n=(1-n^{-3})\delta_0+n^{-3}\delta_{n^2}.
+\]
+Then $W_1(\mu,\eta_n)=n^{-1}$, whereas, for every integer $r\ge2$,
+\[
+ |\Phi_{\eta_n}^{(r)}(0)-\Phi_\mu^{(r)}(0)|
+ =(2\pi)^r n^{2r-3}.
+\]
+Thus no constant depending only on the bounded source and on the
+frequency can bound an arbitrary $r$th Fourier derivative difference
+by $W_1$ when $r\ge2$.  Every measure in this example individually has
+all moments; a general member of $\Pone$ need not even have the higher
+moments required to define the derivative.  Proposition~\ref{transport:jets}
+makes no such assumption on the original remainder: its derivatives are
+taken only after the exact compact reduction.
+\end{remark}
+
+\section{The exact order of the Fourier defect}
+\label{lower:section}
+
+We now apply the preceding obstruction to the geometric-uniform law
+\[
+ \mu_q=\Law\left(\sum_{k\ge0}q^kU_k\right),
+ \qquad U_k\ \hbox{independent with law }\Un_1,
+ \qquad 0<q<1.
+\]
+Here $\Un_a$ is the centered uniform law of width $a$.  With
+$\sinc u=\sin(u)/u$, continuously extended at zero,
+\begin{equation}\label{lower:source-transform}
+ \Phi_q(t)=\prod_{k\ge0}\sinc(\pi tq^k),\qquad
+ \supp\mu_q\subseteq[-R_q,R_q],\qquad
+ R_q=\frac1{2(1-q)}.
+\end{equation}
+Fix $B\ge2$, put $q_0=B^{-1}$, and let
+\[
+ D=(d_1,\ldots,d_s),\qquad
+ 0\le d_1\le\cdots\le d_s,\qquad d_i\in\mathbb Z,
+ \qquad
+ \sigma_D=\mathop{*}_{i=1}^s\Un_{B^{-d_i}}.
+\]
+Write
+\begin{equation}\label{lower:factor-radius}
+ S_D=\frac12\sum_{i=1}^sB^{-d_i},\qquad
+ M_q=R_q+2S_D,
+ \qquad
+ \Delta_D(q)=\inf_{\nu\in\Pone}W_1(\mu_q,\sigma_D*\nu).
+\end{equation}
+
+For an integer $n\ge0$, put
+\begin{equation}\label{lower:multiplicity}
+ m(n)=\#\{i:d_i\le n\}.
+\end{equation}
+At the frequency $T=B^n$, the prescribed transform has a zero of
+exact order $m(n)$: precisely its factors with $d_i\le n$ vanish,
+and all those zeros are simple.  At $q=q_0$, the source transform has
+order $n+1$ there.  Away from $q_0$, the factor indexed by $k=0$
+continues to vanish at every integer $T$.  Therefore the Fourier value
+alone detects none of the contact orders below.  Derivatives record how
+the other zeros separate as $q$ changes.
+
+\begin{lemma}[The leading Fourier derivative coefficient]
+\label{lower:coefficient}
+Let $n\ge1$, $1\le r\le n$, $T=B^n$, and $e=n+1-r$.  Define
+\begin{align}
+ P_B&=\prod_{\ell\ge1}\sinc(\pi B^{-\ell})>0,
+ \label{lower:tail-product}\\
+ \varepsilon_{B,n}&=(-1)^{\sum_{j=0}^nB^j},\notag\\
+ C_{B,n,r}&=r!\,P_B\,B^eT^{-r}\,e_e(1,2,\ldots,n)>0.
+ \label{lower:coefficient-constant}
+\end{align}
+Here $e_j(x_1,\ldots,x_n)$ is the elementary symmetric polynomial of
+degree $j$, with $e_0=1$.  As $\delta\to0$ through real values,
+\begin{equation}\label{lower:derivative-expansion}
+ \Phi_{q_0+\delta}^{(r)}(T)
+ =\varepsilon_{B,n}C_{B,n,r}\delta^e
+       +O_{B,n,r}(|\delta|^{e+1}).
+\end{equation}
+In particular, the leading coefficient cannot cancel.
+\end{lemma}
+
+\begin{proof}
+The infinite product in \eqref{lower:source-transform} is jointly
+holomorphic in $(q,t)$ near $(q_0,T)$.  To see this, choose a complex
+neighborhood on which $|q|\le\rho<1$ and $|t|$ is bounded.  The tail
+factors differ from one by $O(\rho^{2k})$, uniformly on compact
+subsets, so their product converges locally uniformly.  Separate the
+factors indexed by $0,\ldots,n$ from this analytic tail.  At $(q_0,T)$
+the tail equals $P_B$.  Every factor defining $P_B$ is positive, and
+$1-\sinc(\pi B^{-\ell})=O(B^{-2\ell})$; hence $P_B>0$.
+
+Put $h=t-T$ and $N_k=B^{n-k}$ for $0\le k\le n$.  Since the derivative
+of $z\mapsto\sin(\pi z)/(\pi z)$ at the positive integer $N$ is
+$(-1)^N/N$, the linear term of the $k$th vanishing factor is
+\[
+ \sinc\bigl(\pi(T+h)(q_0+\delta)^k\bigr)
+ =(-1)^{N_k}\left(kB\delta+\frac hT\right)
+       +O\bigl((|\delta|+|h|)^2\bigr).
+\]
+The $k=0$ factor contributes $(-1)^{B^n}h/T$, with no parameter term.
+Consequently the homogeneous part of least total degree in the joint
+Taylor expansion is
+\begin{equation}\label{lower:joint-polynomial}
+ \Phi_{q_0+\delta}(T+h)
+ =\varepsilon_{B,n}P_B\frac hT
+       \prod_{k=1}^n\left(kB\delta+\frac hT\right)
+       +O\bigl((|\delta|+|h|)^{n+2}\bigr).
+\end{equation}
+The remainder here is analytic and its Taylor monomials all have total
+degree at least $n+2$.
+
+To obtain the coefficient of $h^r$, choose $r-1$ occurrences of $h/T$
+from the product and $e=n+1-r$ occurrences of $kB\delta$.  Summing over
+the latter choices gives
+\[
+ [h^r\delta^e]\left\{\frac hT
+       \prod_{k=1}^n\left(kB\delta+\frac hT\right)\right\}
+ =B^eT^{-r}e_e(1,2,\ldots,n).
+\]
+Every summand is positive.  Differentiating $r$ times with respect to
+$h$ multiplies this coefficient by $r!$.  The analytic remainder can
+contribute only powers $\delta^a$ with $a+r\ge n+2$, proving
+\eqref{lower:derivative-expansion}.
+\end{proof}
+
+For comparison, the coefficient can also be written
+\[
+ C_{B,n,r}
+ =r!\,n!\,P_B\,(BT)^{1-r}
+    e_{r-1}(1,1/2,\ldots,1/n).
+\]
+Either formula displays positivity.  When $r=1$, it reduces to
+$C_{B,n,1}=n!P_B$, recovering the derivative coefficient in the
+two-factor hierarchy \cite{repo-contact}.  Higher $r$ are needed when
+several prescribed uniforms vanish at the same frequency.
+
+\begin{proposition}[Sharp candidate exponent and positive lower constant]
+\label{lower:main-bound}
+Suppose $s\ge2$ and
+\begin{equation}\label{lower:admissibility}
+ d_i\ge i-1\qquad(1\le i\le s).
+\end{equation}
+Define
+\begin{equation}\label{lower:exponent}
+ e=\min_{2\le i\le s}(d_i+2-i)\ge1.
+\end{equation}
+Choose an index $i$ attaining this minimum, and set
+\[
+ n=d_i,\qquad r=i-1,\qquad T=B^n,
+ \qquad
+ M_0=\frac{B}{2(B-1)}+\sum_{j=1}^sB^{-d_j}.
+\]
+Then $m(n)=i$, $1\le r\le n$, and $e=n+1-r$.  Moreover,
+\begin{equation}\label{lower:liminf}
+ \liminf_{\substack{q\to q_0\\q\ne q_0}}
+ \frac{\Delta_D(q)}{|q-q_0|^e}
+ \ge
+ \frac{r!P_BB^eT^{-r}e_e(1,2,\ldots,n)}
+ {(2\pi)^rM_0^{r-1}\sqrt{r^2+(2\pi TM_0)^2}}
+ >0.
+\end{equation}
+In particular, there are constants $c>0$ and $\epsilon>0$, depending
+only on $B,D$, such that
+$\Delta_D(q)\ge c|q-q_0|^e$ whenever $0<|q-q_0|<\epsilon$.
+\end{proposition}
+
+\begin{proof}
+If $m(n)=j>i$, then $d_j=n=d_i$, and
+$d_j+2-j<d_i+2-i=e$, contradicting the choice of $i$.  Thus $m(n)=i$.
+Admissibility gives $n=d_i\ge i-1=r$, while $i\ge2$ gives $r\ge1$.
+The prescribed transform has a zero of order $i=r+1$ at $T$.
+Proposition~\ref{transport:jets}, applied with the radius $M_q$ from
+\eqref{lower:factor-radius}, therefore gives
+\[
+ \Delta_D(q)
+ \ge\frac{|\Phi_q^{(r)}(T)|}
+ {(2\pi)^rM_q^{r-1}\sqrt{r^2+(2\pi TM_q)^2}}.
+\]
+Use Lemma~\ref{lower:coefficient} and the convergence $M_q\to M_0$.
+The nonzero coefficient has the same absolute leading magnitude on
+both sides of the resonance, giving \eqref{lower:liminf}.
+\end{proof}
+
+The exponent has the equivalent multiplicity description
+\begin{equation}\label{lower:multiplicity-exponent}
+ e=\min_{\{n\ge0:m(n)\ge2\}}\bigl(n+2-m(n)\bigr).
+\end{equation}
+Indeed, if $j=m(n)\ge2$, then $d_j\le n$ and
+$e\le d_j+2-j\le n+2-m(n)$.  Equality is attained at the index selected
+in Proposition~\ref{lower:main-bound}.  Thus the exponent measures the
+source zero order after taking the highest derivative forced to vanish
+by a prescribed multiple zero.
+
+Condition~\eqref{lower:admissibility} is equivalent to exact
+factorability at the resonance by Theorem~\ref{thm:hall}.  The argument
+above proves the lower half of Theorem~\ref{thm:main}.  The matching
+upper estimate requires a positive probability remainder; Fourier
+vanishing by itself does not construct one.
+
+
+\section{Positive remainders at the Hall threshold}\label{upper:section}
+
+We prove the upper estimate for an arbitrary fixed finite multiset of
+prescribed depths.  The argument extends the finite-prefix construction and
+positivity repair used for two prescribed factors in
+\cite{repo-contact}.  The additional points are a matching argument that
+survives differentiation and a choice of the zero-order matching that keeps
+the remainder positive throughout its support.  The finite uniform-sum
+formula used below is classical; see \cite{BradleyGupta}.
+
+Throughout this section, fix an integer $B\ge2$, put $q_0=B^{-1}$, and let
+\[
+ D=(d_1,\ldots,d_s),\qquad
+ 0\le d_1\le\cdots\le d_s,\qquad s\ge2,
+ \qquad d_i\ge i-1.
+\]
+Set
+\begin{equation}\label{upper:parameters}
+ \sigma_D=\mathop{*}_{i=1}^s\Un_{B^{-d_i}},\qquad
+ e=\min_{2\le i\le s}(d_i+2-i),\qquad
+ N=d_s,\qquad n=N+1-s.
+\end{equation}
+Thus $1\le e\le n+1$.  The finite prefix and its adaptive tail are
+\begin{equation}\label{upper:prefix-tail}
+ K(\theta)=\mathop{*}_{j=0}^{N}\Un_{\theta^j},\qquad
+ \tau_q=\Law\!\left(\sum_{j\ge N+1}q^jZ_j\right),\qquad
+ \mu_q=K(q)*\tau_q,
+\end{equation}
+where all $Z_j$ are independent with law $\Un_1$.  The word adaptive means
+that the tail is kept at the current value $q$ while the finite prefix is
+expanded at $q_0$.
+
+\begin{theorem}[Upper bound for every admissible depth multiset]
+\label{upper:theorem}
+For every compact interval $I\subset(0,1)$ containing $q_0$ in its interior,
+there is a finite constant $C=C(B,D,I)$ such that
+\[
+ \inf_{\nu\in\mathcal P_1(\R)}W_1(\mu_q,\sigma_D*\nu)
+ \le C|q-q_0|^e\qquad(q\in I).
+\]
+The remainders used in the proof are probability measures with a common
+compact support bound.
+\end{theorem}
+
+\subsection{The linear case}
+
+If $e=1$, Theorem~\ref{thm:hall} supplies distinct source indices
+$a_i\le d_i$ in $\{0,\ldots,N\}$ that can be assigned to the targets.
+For integers $0\le a\le d$, there is a centered finite digit law $D_{a,d}$
+such that
+\begin{equation}\label{upper:subdivision}
+ \Un_{B^{-a}}=\Un_{B^{-d}}*D_{a,d},\qquad
+ \supp D_{a,d}\subseteq
+ \left[-\frac{B^{-a}-B^{-d}}2,\frac{B^{-a}-B^{-d}}2\right].
+\end{equation}
+Indeed, $D_{a,d}$ is uniform on the centers of the $B^{d-a}$ consecutive
+subintervals of width $B^{-d}$ partitioning the interval of width $B^{-a}$.
+In particular, $D_{a,a}$ is a point mass at zero.  Extracting the prescribed
+uniforms from their assigned source factors gives a compactly supported
+probability law $\kappa_0$ with $K(q_0)=\sigma_D*\kappa_0$.
+Use $\kappa_0*\tau_q$ as the remainder.  Coupling the two prefixes with
+the same $Z_0,\ldots,Z_N$ and keeping the tail fixed gives
+\[
+ W_1\bigl(K(q)*\tau_q,K(q_0)*\tau_q\bigr)
+ \le\frac14\sum_{j=1}^N|q^j-q_0^j|
+ \le C_I|q-q_0|.
+\]
+This proves the theorem when $e=1$, including the case $n=0$.
+We assume $e\ge2$ for the rest of the section; then $n\ge1$.
+
+\subsection{Matching after differentiation}
+
+\begin{lemma}[Robust extraction of the prescribed factors]
+\label{upper:robust-matching}
+Delete at most $k$ indices from $\{1,\ldots,N\}$, where
+$0\le k\le e-1$.  The remaining source indices, including the undeleted
+index zero, still admit a matching to all $s$ targets, with each matched
+source index no larger than its target depth.
+\end{lemma}
+\begin{proof}
+For the first $i$ targets, the possible source indices form the nested set
+$\{0,\ldots,d_i\}$.  If $i=1$, index zero remains available.  If $i\ge2$,
+the number of surviving indices in this set is at least
+\[
+ d_i+1-k\ge d_i+1-(e-1)\ge i.
+\]
+These are precisely the nested matching inequalities, so
+Theorem~\ref{thm:hall} gives the required assignment.  Equivalently, one can
+match the targets in increasing order of depth, assigning any unused
+available source at each step.
+\end{proof}
+
+Let
+\begin{equation}\label{upper:L}
+ L=\frac12\left(\sum_{j=0}^N B^{-j}
+                    -\sum_{i=1}^s B^{-d_i}\right).
+\end{equation}
+This is the support radius of every zero-order remainder obtained by
+subdivision.  In the case $e\ge2$, the construction below retains a uniform
+of positive width, so $L>0$.
+
+\begin{lemma}[Finite signed prefix kernels]
+\label{upper:kernels}
+There are compactly supported finite signed measures
+$\kappa_0,\ldots,\kappa_{e-1}$ such that
+\begin{equation}\label{upper:kernel-identity}
+ \sigma_D*\kappa_k
+   =\left.\frac{d^k}{d\theta^k}K(\theta)\right|_{\theta=q_0},
+ \qquad \supp\kappa_k\subseteq[-L,L].
+\end{equation}
+Here the derivative is initially interpreted against smooth test functions.
+The measure $\kappa_0$ is a probability measure; each $\kappa_k$, $k\ge1$,
+has total mass zero.  It is possible to choose $\kappa_0$ with a density
+positive throughout $(-L,L)$, using its natural piecewise polynomial
+representative away from knots.
+
+There is a common endpoint collar of positive width in which these measures
+have finite polynomial descriptions.  At the right endpoint, if
+$Q_{0,L}=\delta_L$ and
+\[
+ dQ_{\ell,L}(x)
+   =\frac{(L-x)^{\ell-1}}{(\ell-1)!}\,dx\quad(x<L),\qquad\ell\ge1,
+\]
+then, upon restricting all measures to that collar,
+\begin{equation}\label{upper:endpoint-kernels}
+ \kappa_0=c_0Q_{n,L},\qquad
+ \kappa_k=\sum_{\ell=n-k}^{n}c_{k,\ell}Q_{\ell,L},
+ \qquad c_0>0.
+\end{equation}
+The reflected descriptions hold at the left endpoint, with possibly
+different coefficients.
+\end{lemma}
+
+\begin{proof}
+For a $k$th parameter derivative, the finite product and chain rules give
+a finite sum of scalar multiples of
+\begin{equation}\label{upper:derivative-summand}
+ \mathop{*}_{j=0}^{N}
+ \left.
+ \frac{\partial^{h_j}}{\partial a^{h_j}}\Un_a
+ \right|_{a=B^{-j}},
+ \qquad h_0=0,
+ \qquad \sum_{j=1}^{N}h_j\le k.
+\end{equation}
+Coefficients from differentiating the functions $\theta^j$ are ordinary
+finite real scalars.  At most $k$ moving factors in each summand have been
+differentiated.  Apply Lemma~\ref{upper:robust-matching} to the other
+factors and use \eqref{upper:subdivision} to extract $\sigma_D$.
+What remains is a convolution of finite digit laws with $n$ uniform
+factors carrying a total of at most $k$ width derivatives.
+
+We verify that the latter object is a finite signed measure, including the
+borderline case $k=n$.  For positive widths $a_1,\ldots,a_n$, the density
+of their centered uniform sum has the finite formula
+\begin{equation}\label{upper:spline}
+ \frac1{(n-1)!\prod_{j=1}^n a_j}
+ \sum_{A\subseteq\{1,\ldots,n\}}(-1)^{|A|}
+ \left(x+\frac12\sum_{j=1}^n a_j-\sum_{j\in A}a_j\right)_+^{n-1}.
+\end{equation}
+When $n=1$, the truncated zeroth power is the Heaviside distribution; its
+value at the single jump is irrelevant.  Differentiating
+\eqref{upper:spline} a total of at most $n$ times with respect to the
+widths produces piecewise polynomial densities and, at order $n$, possibly
+Dirac masses at knots.  No derivative of a Dirac mass occurs at these
+orders.  The cancellations outside the support persist under
+differentiation in the distributional sense.  Thus each extracted kernel
+is a finite signed measure.  The same conclusion follows by testing on
+functions supported outside the original support interval, which remains
+disjoint from that support for all sufficiently small width changes.
+
+All digit laws and all width-derivative distributions have the same support
+endpoints as the factors from which they arise.  Removing the fixed target
+widths therefore leaves the common support bound $[-L,L]$ in
+\eqref{upper:L}, independently of which matching was used.  Summing the
+extracted terms gives \eqref{upper:kernel-identity}.  Integrating that
+identity shows that the mass is zero for $k\ge1$, because $K(\theta)$ has
+mass one for all $\theta$.
+
+It remains to choose and examine $\kappa_0$.  Since $e\ge2$, we have
+$d_i\ge i$ for every $i\ge2$.  If $d_1\ge1$, assign target $i$ to source
+index $i$, for $1\le i\le s$.  This is valid also for $i=1$ and leaves
+the uniform of width one unused.  The unassigned source indices are
+$0,s+1,\ldots,N$.  The total diameter of the digit support is
+\[
+ D_* =\sum_{i=1}^s(B^{-i}-B^{-d_i})
+       <\sum_{i\ge1}B^{-i}=\frac1{B-1}\le1.
+\]
+If $d_1=0$, assign target one to source zero and target $i$ to source $i$
+for $i\ge2$.  The unassigned indices are $1,s+1,\ldots,N$, retaining
+the uniform of width $B^{-1}$.  This time
+\[
+ D_* =\sum_{i=2}^s(B^{-i}-B^{-d_i})
+       <\sum_{i\ge2}B^{-i}=\frac1{B(B-1)}\le B^{-1}.
+\]
+These strict inequalities also hold if all the digit laws are point masses.
+The $n$ unassigned uniforms have a convolution density positive in the
+interior of an interval whose width is at least one in the first case and
+at least $B^{-1}$ in the second.  The law $\kappa_0$ is a positive finite
+mixture of translates of this density.  Every gap between digit centers
+is smaller than that interval width, so the translated open intervals
+overlap and their union is the full interval $(-L,L)$.  This proves the
+required interior positivity, including arbitrary repeated target depths.
+
+Every kernel has only finitely many knots.  At the outer endpoint of the
+zero-order density, the extreme digit center has positive mass, and the
+outer piece of the $n$-uniform density is a positive multiple of the
+degree-$(n-1)$ power.  Hence $c_0>0$ in
+\eqref{upper:endpoint-kernels}.  For a derivative kernel of order $k$,
+the width derivatives can reduce this power by at most $k$; derivatives of
+the scalar prefactor can leave higher powers.  The possible endpoint
+orders are therefore exactly among $n-k,\ldots,n$, where order zero
+denotes an atom.  Finite digit translations preserve this conclusion.
+Choose the collar smaller than the distance from an outer endpoint to any
+other knot in any of the finitely many kernels.  This proves the common
+endpoint descriptions.  Reflection gives the assertion at $-L$.
+\end{proof}
+
+\subsection{Uniform regularity of the adaptive tail}
+
+Write $I=[\alpha,\beta]$ with $0<\alpha<\beta<1$ and put
+\[
+ s(q)=\frac{q^{N+1}}{2(1-q)}.
+\]
+The tail $\tau_q$ has a nonnegative $C^\infty$ density $f_q$, supported on
+$[-s(q),s(q)]$ and positive in its interior.  Here are the uniform bounds
+and continuity facts needed in the proof.
+
+For every integer $d\ge0$,
+\begin{equation}\label{upper:tail-derivatives}
+ \sup_{q\in I}\|f_q^{(d)}\|_{L^1}
+ \le 2^d\alpha^{-\sum_{j=N+1}^{N+d}j},
+\end{equation}
+with the empty product interpreted as one.  To obtain this estimate,
+differentiate spatially one time in each of the first $d$ uniform factors.
+The distributional derivative of a width-$a$ uniform has total variation
+$2/a$, and the unused tail remains a probability law with a density.
+Convolution yields \eqref{upper:tail-derivatives}.  Keeping two additional
+uniform factors unused makes that density continuous and establishes
+ordinary smoothness at each fixed derivative order.
+
+The first two tail widths are $q^{N+1}$ and $q^{N+2}$.  Their convolution
+is a continuous trapezoidal density; convolution with the rest of the tail
+gives, for example,
+\begin{equation}\label{upper:tail-lipschitz}
+ \|f_q\|_\infty\le\alpha^{-(N+1)},\qquad
+ \Lip(f_q)\le\alpha^{-(2N+3)}.
+\end{equation}
+The map $(q,x)\mapsto f_q(x)$ is jointly continuous.  Indeed, the two
+leading tail widths vary continuously within a compact subset of the
+positive widths, their trapezoidal density varies jointly continuously,
+and the remaining random series varies uniformly with $q\in I$.
+Dominated convergence proves the assertion after convolution.
+
+For completeness, positivity on the entire open support does not require
+any lower density estimate near an endpoint.  At a fixed $q$ and a point
+$x$ strictly inside the tail support, take a finite initial tail segment
+whose remaining support radius is less than half the distance from $x$ to
+the boundary.  The finite uniform-sum density is positive throughout its
+interior, and every allowed remaining-tail shift keeps $x$ in that
+interior.  Integrating this positive density against the remaining tail
+proves $f_q(x)>0$.
+
+Define
+\begin{equation}\label{upper:rho-w}
+ \rho_q=\kappa_0*f_q,\qquad
+ w_{k,q}=\kappa_k*f_q\quad(1\le k\le e-1).
+\end{equation}
+These are ordinary continuous densities, signed in the second case, with
+support contained in $[-L-s(q),L+s(q)]$.  The density $\rho_q$ is positive
+throughout the interior of that interval.  They are jointly continuous in
+$(q,x)$ and uniformly bounded on $I\times\R$.  These claims follow from
+Lemma~\ref{upper:kernels}, the preceding tail facts, and convolution with
+finite measures of fixed compact support.
+
+\subsection{Endpoint interpolation and weighted integrability}
+
+We include the elementary interpolation estimate to make explicit which
+regularity at a flat endpoint is actually used.
+
+\begin{lemma}[Interpolation for nonnegative tail primitives]
+\label{upper:interpolation}
+Let $f\ge0$ be an $M$-Lipschitz function of compact support, with $M>0$,
+and suppose $f$ vanishes to the right of $s$.  For $y\le s$ define
+\[
+ H_0(y)=f(y),\qquad
+ H_\ell(y)=\frac1{(\ell-1)!}\int_0^\infty t^{\ell-1}f(y+t)\,dt
+ \quad(\ell\ge1).
+\]
+For $0\le\ell<n$, there is a finite constant $A_{n,\ell}$, depending
+only on $n,\ell$, such that
+\begin{equation}\label{upper:primitive-bound}
+ H_\ell(y)\le
+ A_{n,\ell}M^{(n-\ell)/(n+1)}H_n(y)^{(\ell+1)/(n+1)}.
+\end{equation}
+In particular, $A_{n,0}=((n+1)!)^{1/(n+1)}$ is valid.
+\end{lemma}
+\begin{proof}
+Put $a=f(y)$.  Lipschitz continuity and nonnegativity give
+$f(y+t)\ge(a-Mt)_+$.  Since $f(s)=0$, this lower cone fits inside
+$[y,s]$.  Thus
+\[
+ H_n(y)\ge\frac{a^{n+1}}{(n+1)!M^n},
+\]
+which is the case $\ell=0$.  If $H_n(y)=0$, continuity and positivity show
+that all the other primitives vanish, so assume $H_n(y)>0$ and choose
+$h=(H_n(y)/M)^{1/(n+1)}$.  For $1\le\ell<n$, split the integral at $h$.
+Use $f(y+t)\le a+Mt$ on $[0,h]$ and
+$t^{\ell-1}\le h^{\ell-n}t^{n-1}$ on $[h,\infty)$.  This gives
+\[
+ H_\ell(y)\le
+ \frac{a h^\ell}{\ell!}
+ +\frac{M h^{\ell+1}}{(\ell+1)(\ell-1)!}
+ +\frac{(n-1)!}{(\ell-1)!}h^{\ell-n}H_n(y).
+\]
+Insert the bound for $a$ and the choice of $h$.  All three terms have the
+powers stated in \eqref{upper:primitive-bound}, so their finite scalar
+coefficients can be added to give $A_{n,\ell}$.
+\end{proof}
+
+\begin{lemma}[The weighted estimates required for order $e$]
+\label{upper:weighted}
+For $1\le k\le e-1$, set $p_k=e/k>1$.  Then
+\begin{equation}\label{upper:weighted-integrals}
+ \sup_{q\in I}
+ \int_{\{\rho_q>0\}}
+ \frac{|w_{k,q}(x)|^{p_k}}{\rho_q(x)^{p_k-1}}\,dx<\infty.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Take an endpoint collar width $a>0$ smaller than the common knot gap from
+Lemma~\ref{upper:kernels}.  Near the right support endpoint, write
+$x=L+y$ with $s(q)-a<y<s(q)$.  The part of each kernel sampled by
+convolution lies entirely in its endpoint collar.  Therefore
+\eqref{upper:endpoint-kernels} gives the exact expressions
+\[
+ \rho_q(L+y)=c_0H_n(y),\qquad
+ w_{k,q}(L+y)=\sum_{\ell=n-k}^{n}c_{k,\ell}H_\ell(y),
+\]
+where the primitives are those of $f_q$.  The constants are fixed, and
+\eqref{upper:tail-lipschitz} supplies a common value of $M$ in
+Lemma~\ref{upper:interpolation}.
+
+For $\ell<n$, the bound in that lemma shows that
+\[
+ \frac{H_\ell(y)^{p_k}}{H_n(y)^{p_k-1}}
+ \le C\,H_n(y)^{\,1-p_k(n-\ell)/(n+1)}.
+\]
+Every exponent on the right is nonnegative, because
+\begin{equation}\label{upper:exponent-inequality}
+ n-\ell\le k,\qquad
+ 1-\frac{p_k(n-\ell)}{n+1}
+ \ge1-\frac e{n+1}\ge0.
+\end{equation}
+For $\ell=n$, the ratio is just $H_n(y)$.  These primitives are uniformly
+bounded on the collars: the densities have a uniform supremum bound and
+their support radii are uniformly bounded.  Applying the finite-sum
+inequality for the power $p_k$ therefore bounds the integrand uniformly
+on the right collar.  Where $H_n=0$, all the numerator terms vanish as
+well.  The reflected argument handles the left collar.
+
+On the remaining compact interior, joint continuity and strict positivity
+of $\rho_q$ give a uniform positive lower bound, while $w_{k,q}$ is
+uniformly bounded.  More explicitly, after reducing $a$ if needed, the
+set
+\[
+ \{(q,x):q\in I,\ |x|\le L+s(q)-a\}
+\]
+is compact and lies strictly inside every corresponding support.  Its
+minimum value of $\rho_q(x)$ is positive.  All intervals of integration
+have a common length bound.  Combining the interior and the two collars
+proves \eqref{upper:weighted-integrals}.
+\end{proof}
+
+The nonnegative exponent in \eqref{upper:exponent-inequality} explains why
+the argument works even when the Hall threshold $e$ is smaller than
+the full smoothing order $n+1$.  It does not assume a bounded quotient of
+an arbitrary density derivative by the density at a flat endpoint.
+
+\subsection{Taylor approximation and repair of positivity}
+
+Put $\delta=q-q_0$ and define the signed density
+\begin{equation}\label{upper:signed-density}
+ \ell_q=\rho_q+
+       \sum_{k=1}^{e-1}\frac{\delta^k}{k!}w_{k,q}.
+\end{equation}
+It has total mass one and a common compact support bound.  We first show
+that it gives the right approximation order before imposing positivity.
+
+Fix the current $q$ and regard $f_q$ as fixed while expanding the map
+$\theta\mapsto K(\theta)*f_q$.  On an independent product space, write
+$Y_\theta=\sum_{j=0}^{N}\theta^jZ_j$.  Its density after convolution with
+the fixed tail is $\E f_q(\,\cdot-Y_\theta)$.  Every derivative of
+$Y_\theta$ through order $e$ is uniformly bounded for $\theta\in I$.
+The chain rule expresses the $e$th parameter derivative of this density
+as a finite sum of translates of $f_q^{(d)}$, $d\le e$, multiplied by
+bounded products of derivatives of $Y_\theta$.  The bounds
+\eqref{upper:tail-derivatives} justify the differentiations in $L^1$ and
+give a common finite bound for that $e$th derivative.
+
+Taylor's theorem in $L^1$, together with
+\eqref{upper:kernel-identity}, now yields
+\begin{equation}\label{upper:taylor}
+ \bigl\|\mathrm{density}(\mu_q)
+       -\mathrm{density}\bigl(\sigma_D*(\ell_q\,dx)\bigr)
+ \bigr\|_{L^1}\le C_1|\delta|^e.
+\end{equation}
+There is no expansion of the tail in this step: the same current $f_q$
+appears on both sides, so its dependence on $q$ introduces no missing
+Taylor term.
+
+Let $m_q=\int(\ell_q)_-\,dx$.  On the region where $\ell_q<0$, put
+\[
+ A_k(x)=\frac{|\delta|^k}{k!}|w_{k,q}(x)|,
+ \qquad 1\le k\le e-1.
+\]
+Then $\sum_kA_k>\rho_q$.  Choose an index $k$ of a largest term, so that
+$A_k>\rho_q/(e-1)$ and $\sum_jA_j\le(e-1)A_k$.  Since $p_k=e/k$,
+\[
+ (\ell_q)_-
+ \le(e-1)A_k
+ \le\frac{(e-1)^{p_k}A_k^{p_k}}{\rho_q^{p_k-1}}.
+\]
+All $w_{k,q}$ vanish outside the support of $\rho_q$, whose density is
+positive in the interior.  Summing over the possible maximizing indices,
+integrating, and applying Lemma~\ref{upper:weighted} gives
+\begin{equation}\label{upper:negative-mass}
+ m_q\le
+ \sum_{k=1}^{e-1}
+ \frac{(e-1)^{p_k}|\delta|^e}{(k!)^{p_k}}
+ \int_{\{\rho_q>0\}}
+ \frac{|w_{k,q}|^{p_k}}{\rho_q^{p_k-1}}
+ \le C_2|\delta|^e.
+\end{equation}
+The positive part has mass $1+m_q$.  Define the probability remainder
+\begin{equation}\label{upper:probability-remainder}
+ d\widehat\nu_q(x)=\frac{(\ell_q(x))_+}{1+m_q}\,dx.
+\end{equation}
+It satisfies
+\begin{equation}\label{upper:repair-TV}
+ \int\left|\ell_q(x)-\frac{(\ell_q(x))_+}{1+m_q}\right|dx
+ =2m_q\le2C_2|\delta|^e.
+\end{equation}
+
+We finish by passing from these density estimates to transport.  If a
+finite signed measure $\zeta$ has mass zero and support in $[-T,T]$, its
+cumulative function $F_\zeta(x)=\zeta(( -\infty,x])$ satisfies
+\begin{equation}\label{upper:cumulative-bound}
+ \|F_\zeta\|_{L^1}\le
+ \int |y|\,d|\zeta|(y)\le T|\zeta|(\R).
+\end{equation}
+To see the first inequality, subtract
+$\mathbf1_{\{0\le x\}}\zeta(\R)=0$ from the cumulative function,
+apply the triangle inequality, and integrate; the integral of
+$|\mathbf1_{\{y\le x\}}-\mathbf1_{\{0\le x\}}|$ over $x$ is $|y|$.
+
+All source laws, signed approximants, and repaired laws above have a
+common compact support bound after convolution with $\sigma_D$.
+Use \eqref{upper:cumulative-bound} on the mass-zero differences in
+\eqref{upper:taylor} and \eqref{upper:repair-TV}; convolution with a
+probability measure does not increase the total variation of a signed
+measure.  The real-line formula $W_1(\mu,\eta)=\|F_\mu-F_\eta\|_1$
+then gives
+\[
+ W_1(\mu_q,\sigma_D*\widehat\nu_q)
+ \le C_3|\delta|^e.
+\]
+This proves Theorem~\ref{upper:theorem}.  Signed measures occur only in
+intermediate estimates; the final remainder
+\eqref{upper:probability-remainder} is a genuine probability law.
+
+
+
+\subsection{Completion of the main theorem}
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+A singleton target is extracted from the fixed factor $\Un_1$ by subdivision, leaving the other source factors and the finite digit law as a probability remainder. This works for every $q$.
+
+If a profile is infeasible, Theorem~\ref{thm:hall} rules out an exact probability remainder at $q_0$. The minimum is attained by Theorem~\ref{transport:clipping}; a zero minimum would therefore be an exact factorization, a contradiction. The continuity bound \eqref{eq:param-lipschitz} then gives a positive gap on a neighborhood.
+
+For a feasible profile with at least two entries, Theorem~\ref{thm:hall} supplies the exact factorization at $q_0$. Proposition~\ref{lower:main-bound} gives the positive lower constant of order $e(D)$, and Theorem~\ref{upper:theorem} gives the matching upper order. The attainment and support assertions for every fixed $q$ follow directly from Theorem~\ref{transport:clipping} with $R=R_q$ and $S=S_D$.
+\end{proof}
+
+\subsection{The same exponent in total variation}\label{sec:total-variation}
+For probabilities, use the convention
+\[
+ d_{\mathrm{TV}}(\mu,\eta)=\sup_A|\mu(A)-\eta(A)|
+ =\frac12|\mu-\eta|(\R).
+\]
+The density construction actually gives more than a transport estimate.
+
+\begin{corollary}[Total-variation contact]\label{cor:tv}
+For every feasible $D$ with $s\ge2$,
+\[
+ \inf_{\nu\in\mathcal P(\R)}
+ d_{\mathrm{TV}}(\mu_q,\sigma_D*\nu)
+ =\Theta_{B,D}\bigl(|q-B^{-1}|^{e(D)}\bigr).
+\]
+Here the infimum allows all probability remainders, without a moment condition.
+\end{corollary}
+\begin{proof}
+For the upper bound, \eqref{upper:taylor} and \eqref{upper:repair-TV} give an $L^1$ density error of order $|q-q_0|^e$ when $e\ge2$. In the case $e=1$, use the same frozen prefix and current smooth tail as in the linear upper construction. Differentiating the translated smooth tail once bounds the $L^1$ change in $q$ by a constant times $|q-q_0|$, using \eqref{upper:tail-derivatives} with $d=1$. Thus the total-variation upper estimate holds in both cases.
+
+For the lower bound, consider any probability remainder $\nu$. In the symmetric notation of Theorem~\ref{transport:clipping}, let $K=[-R-S,R+S]$, $\eta=\sigma*\nu$, and $\eta_K=\sigma*\nu_K$. Split $\eta=\alpha+\beta$ according to whether the remainder lies in $K$ or $K^c$. Then $\beta$ is supported outside $[-R,R]$, and $\eta_K=\alpha+\beta_K$ for a nonnegative measure $\beta_K$ of the same mass as $\beta$. The positive part of $\mu-\alpha$ is supported on $[-R,R]$. Therefore
+\[
+ d_{\mathrm{TV}}(\mu,\eta_K)
+ = (\mu-\alpha-\beta_K)^+(\R)
+ \le (\mu-\alpha)^+(\R)
+ = d_{\mathrm{TV}}(\mu,\eta).
+\]
+No first moment is used. Both $\mu$ and $\eta_K$ are supported on $[-M,M]$, $M=R+2S$. If the factor has a zero of order greater than $r$ at $t_0$, its localized convolution has $r$th derivative zero there. The bounded test function $(2\pi i x)^re^{2\pi it_0x}$ therefore gives
+\[
+ |\Phi_\mu^{(r)}(t_0)|
+ \le2(2\pi M)^r d_{\mathrm{TV}}(\mu,\eta_K)
+ \le2(2\pi M)^r d_{\mathrm{TV}}(\mu,\eta).
+\]
+Choose the frequency and derivative order of Proposition~\ref{lower:main-bound}. Its nonzero leading coefficient yields the claimed lower power, uniformly over all $\nu$.
+\end{proof}
+This corollary determines the exponent in two different metrics. It does not identify their leading constants or assert that they have the same minimizing remainders.
+
+
+\section{Consequences and a worked example with three factors}\label{sec:examples}
+
+\subsection{A table of exact orders}
+Theorem~\ref{thm:main} gives the following classifications for every fixed integer base $B\ge2$. A displayed integer is the exact exponent of $|q-B^{-1}|$. The estimates concern the optimum over all independent probability remainders.
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+Depth multiset $D$ & Exponent or alternative & Feature\\
+\midrule
+$(j)$ & identically zero & one factor is supplied by $\Un_1$\\
+$(1,1)$ & $1$ & repeated first depth\\
+$(1,2)$ & $2$ & predecessor's quadratic case\\
+$(1,3)$ & $3$ & predecessor's cubic case\\
+$(1,3,3)$ & $2$ & the repeated deep factor matters\\
+$(1,3,5)$ & $3$ & an earlier cut controls the answer\\
+$(2,2,2)$ & $1$ & three demands exhaust the prefix\\
+$(3,3,3)$ & $2$ & a second Fourier derivative is sharp\\
+$(4,4,4)$ & $3$ & three equal factors, cubic contact\\
+$(0,3,3)$ & $2$ & includes a fixed width-one factor\\
+$(0,2,4,6)$ & $2$ & four distinct prescribed widths\\
+$(0,0)$ & positive gap at $B^{-1}$ & infeasible\\
+\bottomrule
+\end{tabular}
+\end{center}
+No numerical optimization is needed to obtain this table. Feasibility and the exponent require only sorting the finite depth list and evaluating the minimum in \eqref{eq:contact-exponent}.
+
+\begin{corollary}[Equal depths]\label{cor:equal-depth}
+Prescribe $m\ge2$ independent copies of $\Un_{B^{-J}}$. If $m\le J+1$, then
+\[
+ \inf_{\nu\in\Pone}W_1(\mu_q,\Un_{B^{-J}}^{*m}*\nu)
+ =\Theta_{B,J,m}\bigl(|q-B^{-1}|^{J+2-m}\bigr).
+\]
+If $m>J+1$, the distance is strictly positive at $q=B^{-1}$.
+\end{corollary}
+\begin{proof}
+The feasibility inequalities reduce to $J\ge m-1$. In the feasible case the smallest quantity $J+2-i$, for $2\le i\le m$, occurs at $i=m$.
+\end{proof}
+
+\begin{corollary}[Consecutive depths and translation]\label{cor:translate}
+For $s\ge2$ and $h\ge0$, the profile
+\[
+ (h,h+1,\ldots,h+s-1)
+\]
+has exact exponent $h+1$. More generally, if $D$ is feasible and has at least two entries, adding $h$ to every depth increases its exponent by exactly $h$.
+\end{corollary}
+\begin{proof}
+For consecutive depths, $d_i+2-i=h+1$ for every $i\ge2$. For translation, each entry in the defining minimum increases by $h$.
+\end{proof}
+Thus arbitrarily many prescribed factors at depths $1,2,\ldots,s$ have quadratic contact, with constants that may depend on $s$. Moving the entire profile deeper increases the contact order. Adding another prescribed factor can instead lower it: $(1,4)$ has exponent $4$, whereas $(1,4,4)$ has exponent $3$, and $(1,1,4)$ has exponent $1$. These comparisons reflect the number of demands at each cut, not only the largest depth.
+
+\subsection{Three identical width-\texorpdfstring{$1/8$}{1/8} factors}
+Take $B=2$ and $D=(3,3,3)$. Then
+\[
+ \sigma_D=\Un_{1/8}^{*3},\qquad N=3,\qquad s=3,\qquad e(D)=2.
+\]
+At $T=8$, the prescribed factor has a zero of order three. Put
+\[
+ P_2=\prod_{\ell\ge1}\sinc(\pi2^{-\ell})>0,
+ \qquad \delta=q-\tfrac12.
+\]
+The coefficient calculation in the lower-bound proof gives
+\begin{equation}\label{eq:triple-example}
+ \Phi_q''(8)=-\frac{11}{8}P_2\delta^2+O(\delta^3),
+ \qquad
+ \Phi_q'(8)=-6P_2\delta^3+O(\delta^4).
+\end{equation}
+Indeed, the relevant elementary symmetric sum is
+\[
+ \ee_2(1,2,3)=1\cdot2+1\cdot3+2\cdot3=11,
+\]
+and the Fourier sign is $(-1)^{1+2+4+8}=-1$. The Fourier value at $8$ is zero for \emph{every} $q$, because the fixed width-one factor already vanishes there. The first derivative sees only a cubic defect. The second derivative detects the true quadratic obstruction.
+
+Here $S_D=3/16$, $R_{1/2}=1$, and the compactification radius used in the jet estimate tends to $11/8$. Consequently the general lower bound specializes to
+\begin{equation}\label{eq:triple-lower}
+ \liminf_{q\to1/2,\ q\ne1/2}
+ \frac{\Delta_D(q)}{(q-1/2)^2}
+ \ge \frac{P_2}{8\pi^2\sqrt{1+121\pi^2}}>0.
+\end{equation}
+This is a rigorous lower coefficient, not a proposed value of the optimum.
+
+The corresponding upper construction can be seen without a long list of kernels. At the resonance, use source levels $1,2,3$ to supply the three prescribed factors, leaving the width-one source factor untouched. The first subdivision produces four equally weighted digits at
+\[
+ -\frac{3}{16},\ -\frac1{16},\ \frac1{16},\ \frac3{16};
+\]
+the second produces two digits at $\pm1/16$, and the third produces no nontrivial digit. Their convolution has support from $-1/4$ to $1/4$. Convolving it with $\Un_1$ gives the zero-order prefix remainder $\kappa_0$, whose density is positive throughout $(-3/4,3/4)$.
+
+The endpoint coefficients can also be made explicit. With $L=3/4$, the zero-order kernel has constant density $1/8$ in a sufficiently small right endpoint collar. The first-variation kernel there is
+\[
+ \kappa_0=\tfrac18 Q_{1,L},\qquad
+ \kappa_1=\tfrac{11}{64}\delta_L-\tfrac32 Q_{1,L},
+\]
+where $Q_{1,L}$ is Lebesgue measure to the left of $L$, restricted to the collar. To check these constants, the outer density of the four-factor source prefix is
+$(R_{\mathrm{prefix}}(q)-x)^3/(6q^6)$, with
+$R_{\mathrm{prefix}}'(1/2)=11/8$. Its parameter derivative has endpoint terms $44z^2-128z^3$, where $z=R_{\mathrm{prefix}}(1/2)-x$. The target triple has endpoint density $256z^2$; convolution with an endpoint atom and a constant density gives exactly the displayed coefficients.
+
+Any one moving factor may be differentiated while the other three prefix factors still supply all three targets. This produces a finite signed first-variation remainder $\kappa_1$. The adaptive tail starts at level four; write its density as $f_q$. Then
+\[
+ \ell_q=\kappa_0*f_q+\delta\,\kappa_1*f_q
+\]
+is a mass-one signed density with a quadratic convolution error. Near its right support endpoint, the base density is a positive multiple of $H_1$, and the variation is a linear combination of $H_1$ and $H_0=f_q$. The elementary inequality $H_0^2\le2M H_1$, for an $M$-Lipschitz tail density, bounds the negative mass by $O(\delta^2)$. Taking the positive part and renormalizing therefore preserves the quadratic order. This is the simplest case in which both the higher derivative and the general multiset construction are essential.
+
+\subsection{A finite procedure for reading the theorem}
+Given $B$ and the multiset $D$, the following steps identify the proved conclusion.
+\begin{enumerate}
+\item Sort the depths. If $s=1$, the distance is identically zero.
+\item Check $d_i\ge i-1$. Any failure gives a strictly positive gap at the resonance.
+\item Compute $e=\min_{i\ge2}(d_i+2-i)$. This is the exact contact exponent.
+\item Choose an index attaining that minimum, taking the last index in its repeated-depth block. Put $n=d_i$, $T=B^n$, and $r=i-1$. The explicit coefficient formula in the lower-bound proof supplies a nonzero Fourier obstruction.
+\item For a constructive upper approximation, use prefix length $N=d_s$, build the signed kernels through order $e-1$, convolve with the current tail, and normalize the positive part.
+\end{enumerate}
+The last step is a finite analytic recipe, but the theorem does not claim that it is an efficient algorithm for optimal numerical transport. Small exact arithmetic determines the exponent; quantitative implementation of the smooth-tail estimates is a separate task.
+
+\section{Constructive bounds for arbitrary uniform series}\label{sec:ladders}
+
+The local theorem exploits cancellation between signed variations. A simpler global construction is useful when the target is an infinite uniform series, such as a divisibility-ladder law. It provides an explicit admissible remainder without assuming any exact divisibility.
+
+\begin{theorem}[Approximation by nearby integer subdivisions]\label{thm:subdivision-upper}
+Let $(a_k)_{k\ge0}$ and $(b_k)_{k\ge0}$ be positive summable sequences, and put
+\[
+ \mu_a=\Law\left(\sum_{k\ge0}a_kZ_k\right),\qquad
+ \sigma_b=\Law\left(\sum_{k\ge0}b_kZ_k\right).
+\]
+For any integers $n_k\ge1$ such that $\sum_k n_kb_k<\infty$, there is a compactly supported probability remainder $\nu$ satisfying
+\begin{equation}\label{eq:series-upper}
+ W_1(\mu_a,\sigma_b*\nu)
+ \le\frac14\sum_{k\ge0}|a_k-n_kb_k|.
+\end{equation}
+In particular, selecting a nearest positive integer separately at each index gives
+\begin{equation}\label{eq:nearest-upper}
+ \Delta_{\sigma_b}(\mu_a)
+ \le\frac14\sum_{k\ge0}b_k\dist\left(\frac{a_k}{b_k},\{1,2,3,\ldots\}\right).
+\end{equation}
+The series on the right converges.
+\end{theorem}
+\begin{proof}
+Let $D_{n,b}$ be the probability law giving equal mass to the $n$ points
+\[
+ b\left(j-\frac{n-1}{2}\right),\qquad 0\le j<n.
+\]
+Uniform subdivision gives the exact identity
+\[
+ \Un_{nb}=\Un_b*D_{n,b}.
+\]
+Choose independent variables with laws $D_{n_k,b_k}$. Their absolute values are bounded by $(n_k-1)b_k/2$, whose sum is finite. Thus their sum exists for every outcome and has a compactly supported probability law $\nu$. Passing from finite convolutions to the almost surely convergent sums shows that $\sigma_b*\nu$ is the law of $\sum_k n_kb_kZ_k$.
+
+Couple the latter sum with $\sum_k a_kZ_k$ by using the same $Z_k$. The expected absolute difference is at most
+\[
+ \sum_k|a_k-n_kb_k|\E|Z_k|
+ =\frac14\sum_k|a_k-n_kb_k|,
+\]
+proving \eqref{eq:series-upper}. For a nearest positive integer, $n_kb_k\le a_k+b_k$. Both the convergence hypothesis and finiteness of the error series follow from summability of $a$ and $b$.
+\end{proof}
+
+\subsection{Divisibility ladders}
+A divisibility ladder is a sequence $A=(A_k)_{k\ge0}$ of positive integers with $A_0=1$ and $A_k\mid A_{k+1}$, with ratios at least two. Write
+\[
+ \mu_A=\Law\left(\sum_{k\ge0}A_k^{-1}Z_k\right),
+ \qquad R_A=\frac12\sum_{k\ge0}A_k^{-1}.
+\]
+For a second ladder $C$ and a positive integer $m$, prescribe the scaled factor having widths $b_k=(mC_k)^{-1}$. The theorem gives
+\begin{equation}\label{eq:ladder-upper}
+ \Delta_{m^{-1}\mu_C}(\mu_A)
+ \le\frac14\sum_{k\ge0}\frac1{mC_k}
+ \dist\left(\frac{mC_k}{A_k},\{1,2,3,\ldots\}\right),
+\end{equation}
+where $m^{-1}\mu_C$ denotes dilation by $1/m$. Exact coordinate divisibility makes the corresponding summand vanish. The formula is an upper bound for every pair of ladders, and does not assert optimality when the discrepancies can cancel.
+
+The higher-derivative obstruction supplies a complementary explicit lower bound. At a positive integer witness frequency $t_0$, let
+\[
+ r=\#\{k:A_k\mid t_0\},\qquad
+ z=\#\{k:mC_k\mid t_0\}.
+\]
+These counts are finite, and the ladder property makes each vanishing set an initial segment. If $r<z$, the source zero has smaller multiplicity than the factor zero. Set
+\[
+ M=R_A+\frac{2R_C}{m},\qquad
+ Q_A(t_0)=\prod_{k\ge r}\left|\sinc\left(\frac{\pi t_0}{A_k}\right)\right|>0.
+\]
+Then the general jet bound yields
+\begin{equation}\label{eq:ladder-lower}
+ \Delta_{m^{-1}\mu_C}(\mu_A)
+ \ge\frac{r!\,t_0^{-r}Q_A(t_0)}
+ {(2\pi)^rM^{r-1}\sqrt{r^2+(2\pi t_0M)^2}}.
+\end{equation}
+Here $r\ge1$, since $A_0=1$ and $t_0$ is integral. To verify the numerator directly, differentiate each of the $r$ vanishing sinc factors once. Each derivative has absolute value $1/t_0$, the remaining factors do not vanish, and the product rule contributes $r!$.
+
+The earlier report uses a Taylor shift away from $t_0$ and a Fourier-value inequality to obtain separation \cite{repo-arithmetic}. Its subsequent note provides a derivative improvement only when $r=1$. Formula \eqref{eq:ladder-lower} applies to every finite $r$ and is linear in the first nonzero derivative of the source. Together, \eqref{eq:ladder-upper} and \eqref{eq:ladder-lower} give a constructive pair of bounds. They do not solve the general problem of the optimal distance between two ladder laws.
+
+\subsection{What the global construction cannot replace}
+Freezing moving widths or replacing them separately by nearby integer subdivisions normally gives only a first-order upper bound. Theorem~\ref{thm:main} often gives a higher order because the remainder absorbs all lower variations. There is no contradiction: \eqref{eq:nearest-upper} is a convenient admissible candidate, and an optimized candidate may be substantially better. The finite-profile theorem proves exactly when this happens within the integer-base family.
+
+
+\section{Verification, reproducibility, and proof boundaries}\label{sec:verification}
+
+\subsection{Exact finite verification}
+Three programs accompany this article. Two use only the Python standard library and perform exact integer or rational computations; the third uses high-precision arithmetic for analytic diagnostics.
+
+The program \texttt{verify\_hall.py} enumerates target multisets with maximum depth $N\le7$, including infeasible profiles and one target more than the number of source levels. For every feasible profile with at least two targets it enumerates \emph{every} deletion set of moving sources. At smaller levels, an independent search through possible injections checks the result without using the greedy matching criterion. A separate exact-rational calculation checks the reserved-uniform diameter inequalities in four bases.
+
+The recorded finite counts are:
+\begin{center}
+\begin{tabular}{lr}
+\toprule
+Check & Number of cases\\
+\midrule
+Target profiles, including infeasible cases & 17,576\\
+Feasible profiles with at least two targets & 4,853\\
+Moving-source deletion sets & 514,316\\
+Independent injection searches & 2,026\\
+Exact digit-diameter comparisons & 7,400\\
+\bottomrule
+\end{tabular}
+\end{center}
+All checks passed. The program retains explicit exception checks when Python is run with optimization, so its verification is not disabled by \texttt{python -O}.
+
+The program \texttt{verify\_transport.py} computes $W_1$ for finite atomic distributions by exactly integrating their step-function CDF difference. It verifies the exact Wasserstein clipping identity and total-variation clipping inequality in 1,200 deterministically generated rational examples, including degenerate supporting intervals. It also multiplies the finite bivariate leading polynomials and checks 180 Fourier coefficients in bases $2,3,4,5$, with $1\le n\le9$. The coefficient $11/8$ in the worked example is checked exactly. All checks passed.
+
+These verifications test arithmetic constants and finite boundary cases. They do not prove weak compactness, existence of conditional distributions, differentiability of infinite products, uniform tail estimates, endpoint interpolation, or the asymptotic theorem. Those assertions are established by the written proofs.
+
+\subsection{High-precision Fourier diagnostics}
+The program \texttt{fourier\_diagnostics.py} uses 90 decimal working digits, source factors at levels $0$ through $120$, and 150 factors in the displayed tail constants. It evaluates Fourier derivatives by truncated Taylor multiplication and compares them with the signed leading coefficient in Lemma~\ref{lower:coefficient}. Both sides of the resonance are sampled, at five parameter distances from $10^{-3}$ to $10^{-5}$, for six profiles.
+
+The following values are the normalized derivative
+\[
+ \frac{\Phi_{B^{-1}+\delta}^{(r)}(B^n)}
+ {\varepsilon_{B,n}C_{B,n,r}\delta^{e(D)}}
+\]
+computed with that finite product at $|\delta|=10^{-5}$:
+\begin{center}
+\begin{tabular}{ccccc}
+\toprule
+$B$ & $D$ & $(r,e)$ & $\delta=-10^{-5}$ & $\delta=10^{-5}$\\
+\midrule
+2 & $(1,1)$ & $(1,1)$ & 1.000078863 & 0.999921137\\
+2 & $(1,3)$ & $(1,3)$ & 1.000200195 & 0.999799773\\
+2 & $(3,3,3)$ & $(2,2)$ & 1.000231456 & 0.999768480\\
+2 & $(4,4,4)$ & $(2,3)$ & 1.000306850 & 0.999692832\\
+2 & $(0,3,3)$ & $(2,2)$ & 1.000231456 & 0.999768480\\
+3 & $(2,4,4)$ & $(2,3)$ & 1.000309350 & 0.999684705\\
+\bottomrule
+\end{tabular}
+\end{center}
+For orientation, the same computation gives
+\[
+ P_2\approx0.55377127588881009534,
+ \qquad
+ \frac{P_2}{8\pi^2\sqrt{1+121\pi^2}}
+ \approx0.00020286932279138151436.
+\]
+The product evaluations are not interval certificates. In particular, this program does not compute the optimal Wasserstein distance, its leading coefficient, or an upper-bound constant from the positivity repair. The analytic proof establishes the limit of the normalized derivative; the numbers merely corroborate it.
+
+\subsection{Rebuilding the package}
+The deliverable contains one self-contained LaTeX source, its compiled PDF, this article's verification programs, their recorded JSON/CSV output, and a short provenance guide. From the extracted package directory, run
+\begin{verbatim}
+python3 code/verify_hall.py
+python3 code/verify_transport.py
+python3 code/fourier_diagnostics.py
+latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
+\end{verbatim}
+The first two commands require no additional Python package. The numerical diagnostic requires \texttt{mpmath}; the version used is recorded in \texttt{requirements.txt}. The source uses standard AMS packages, Latin Modern, geometry, microtype, booktabs, enumitem, fancyhdr, and hyperref. No network access is needed to compile or rerun the exact checks once the package has been extracted.
+
+\subsection{A realistic formalization route}
+The mathematical proof separates into components with different formalization costs. The finite matching theorem and deletion threshold can be formalized first using finite sets or lists, without measure theory. A second component formalizes uniform subdivision and the signed spline identities. The analytic core then requires compactly supported probability measures, convolution, the real-line Wasserstein formula, distributional derivatives of truncated powers, and differentiation of a parameter-dependent density in $L^1$.
+
+A useful order is to certify the finite combinatorial theorem and exact kernel construction, then the clipping identity, and only then the endpoint and Taylor estimates. Proving every finite numerical instance would not replace these analytic steps. This package contains no Lean or Rocq development, and no claim that its main theorem is currently machine checked.
+
+\section{Further research questions}\label{sec:questions}
+
+The exponent problem for fixed finite integer-base depth profiles is settled by Theorem~\ref{thm:main}. The following questions remain separate and substantive.
+
+\begin{enumerate}[label=\textbf{Q\arabic*.},leftmargin=3.5em]
+\item \textbf{Existence of normalized one-sided limits.}
+For a feasible profile, do the limits
+\[
+ c_\pm(B,D)=\lim_{t\downarrow0}
+       \frac{\Delta_D(B^{-1}\pm t)}{t^{e(D)}}
+\]
+always exist? The theorem bounds their possible accumulation values above and below by positive constants. For $e\ge2$, a higher-order description of the feasible set of convolved CDFs may be needed to prove convergence. The existing first-order tangent-cone result for a different two-factor example does not automatically answer this question \cite{repo-contact}.
+
+\item \textbf{Compute an actual optimum coefficient.}
+Determine $c_+$ and $c_-$, if they exist, for $D=(3,3,3)$ and $B=2$. The explicit value in \eqref{eq:triple-lower} is only a certified lower coefficient. A useful first step is a compact optimization over the second-order residual after the first variation has been absorbed, with primal and dual error certificates.
+
+\item \textbf{When are the two sides equal?}
+Even though the Fourier obstruction has the same leading absolute magnitude on both sides, the positivity constraint on the remainder may distinguish positive and negative parameter directions. Find a criterion for $c_+=c_-$, or a finite profile for which the two coefficients differ.
+
+\item \textbf{Quantitatively efficient positive remainders.}
+The proof makes finitely many kernels and establishes finite weighted integrals, but it does not provide a small upper constant or a complexity bound. Can the digit laws and spline kernels be represented without expanding all subdivision atoms? One target is a certified upper constant whose logarithm grows polynomially in the largest depth for each fixed number of factors.
+
+\item \textbf{Growing depth or growing multiplicity.}
+Obtain uniform versions of the theorem when $D=D_N$ varies and the contact order increases. The frequency $B^N$, the derivative order, the knot gaps, and the tail derivative bounds all change. Identify useful scales of $\delta_N=q_N-B^{-1}$ and prove matching estimates with explicit dependence on $N$ rather than reusing fixed-profile constants.
+
+\item \textbf{Widths outside one integer-base chain.}
+Classify finite rational width families for which a derivative-compatible extraction theorem gives sharp contact. Their source-target compatibility graph need not have nested neighborhoods. Hall's general theorem still tests a single assignment, but the relevant deletion obstruction and the Fourier witness may no longer be described by one prefix count.
+
+\item \textbf{Several parameters and velocities of zeros.}
+Replace $q^k$ by analytic positive widths $a_k(\theta)$, or let the target widths vary as well. In the joint leading polynomial, the positive slopes $kB$ are replaced by possibly signed or vanishing velocities. Determine when cancellation changes the order, and whether an assignment criterion plus a finite polynomial nonvanishing test gives a complete answer.
+
+\item \textbf{Infinite prescribed factors.}
+For an infinite target depth profile, can a finite worst multiplicity defect still determine the optimal contact exponent? The finite matching argument extends at the level of capacity inequalities, but the number of kernels, the support collars, and the weighted repair constants need not remain controlled. The constructive estimate \eqref{eq:ladder-upper} gives one baseline, not a sharp solution.
+
+\item \textbf{Sharper global ladder distances.}
+When does the nearest-subdivision upper bound \eqref{eq:ladder-upper} have the correct order as a ladder pair varies? When do several small arithmetic discrepancies cancel through an adaptive remainder? A particularly concrete family changes one ladder ratio at a large depth and leaves every later ratio fixed.
+
+\item \textbf{Other transport costs.}
+Determine the sharp exponent in $W_p$ for $p>1$. Since $W_p\ge W_1$, the present lower bound remains valid for finite-cost competitors. The compact-support $L^1$ construction gives only $W_p=O(|\delta|^{e/p})$ in general. Closing the gap requires more local information on how the corrected mass is transported. Total variation has the exact exponent $e$ by Corollary~\ref{cor:tv}, but this does not settle the $W_p$ question.
+
+\item \textbf{Optimal dual witnesses.}
+Fourier derivatives produce explicit lower bounds, but a single frequency and derivative may not be optimal. Can a finite linear combination of the compactly supported Fourier test functions attain the leading coefficient, or approximate it with a provable rate? This would link the exact exponent to an effective dual certificate.
+
+\item \textbf{Formal verification of the analytic repair.}
+Formalize the weighted endpoint estimate and the positive-part normalization in an $L^1$ measure-theoretic library. These are reusable statements beyond Fabius laws. A formal proof should preserve the crucial inequality $e\le n+1$ and the common support collar, rather than replace them with an unjustified global lower bound on the density.
+\end{enumerate}
+
+\clearpage
+\appendix
+\section{Result ledger and provenance}\label{sec:ledger}
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.30\textwidth}>{\raggedright\arraybackslash}p{0.62\textwidth}}
+\toprule
+Statement or ingredient & Status and relationship to the sources\\
+\midrule
+\endfirsthead
+\toprule
+Statement or ingredient & Status and relationship to the sources\\
+\midrule
+\endhead
+Geometric uniform representation and sinc product & Classical Fabius-type background; see Arias de Reyna \cite{Arias}.\\
+Uniform subdivision and finite spline formula & Classical; the spline formula is treated by Bradley--Gupta \cite{BradleyGupta}. Both required identities are proved here.\\
+Real-line $W_1$ formula & Classical, credited to Vallender \cite{Vallender}.\\
+Two prescribed factors $D=(1,j)$ & Already proved in the inspected contact-order report \cite{repo-contact}; recovered as a special case.\\
+Exact clipping identity and attained compact minimum & Proved in Theorem~\ref{transport:clipping}. No prior theorem is assumed for this identity. Global priority is not established.\\
+Fourier derivatives of arbitrary order & Proved in Proposition~\ref{transport:jets}; resolves the specific higher-order limitation documented in \cite{repo-arithmetic}.\\
+All feasible finite multisets & Complete exponent formula in Theorem~\ref{thm:main}, extending the inspected pair theorem.\\
+Matching and deletion formula & Direct nested-set proof in Theorem~\ref{thm:hall}; classical matching theory is acknowledged.\\
+Positive signed-variation repair & Generalized from the architecture of \cite{repo-contact}; all multiset-specific support and integrability steps are proved here.\\
+Total variation & Same exponent proved in Corollary~\ref{cor:tv}; arbitrary probability remainders are allowed.\\
+General summable-series upper bound & Explicit constructive estimate in Theorem~\ref{thm:subdivision-upper}; not claimed to be optimal.\\
+General optimal ladder distance & Remains open; this article supplies upper and higher-derivative lower bounds only.\\
+Normalized leading constants and growing-depth estimates & Not proved; listed as research questions.\\
+Computational and formal status & Exact finite checks and numerical diagnostics accompany the English proofs. No theorem in this article is proof-assistant verified.\\
+\bottomrule
+\end{longtable}
+
+The source snapshot is a read-only shallow checkout of ProveIt at the commit stated in Section~\ref{sec:intro}. The principal source files were read in full; the topic directory's filenames and neighboring report descriptions were checked to distinguish this continuation from the already present pair theorem. No repository file was modified, no external report was submitted, and no mathematical claim outside the scope of this article was audited. Full source links are in the bibliography and the package's provenance guide.
+
+\clearpage
+\begin{thebibliography}{9}
+\raggedright
+
+\bibitem{repo-contact}
+Vladimir Reshetnikov, ProveIt repository.
+\emph{Wasserstein Contact Orders at Uniform Factor Resonances}, research manuscript dated 1 October 2026, prepared with OpenAI for Vladimir Reshetnikov.
+Snapshot commit \texttt{a21208b3ff14a07a4c8318dbf916d543acbef043}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/a21208b3ff14a07a4c8318dbf916d543acbef043/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/spectra-and-arithmetic/Wasserstein_Contact_Orders_Uniform_Factor_Resonances/wasserstein-resonance.tex}{Pinned LaTeX source}.
+Theorem 1.2 is the pair hierarchy; Sections 4--5 give the positive-remainder construction. Unrefereed research report.
+
+\bibitem{repo-arithmetic}
+Vladimir Reshetnikov, ProveIt repository.
+\emph{Arithmetic Convolution Factors of Fabius-Type Laws: Exact divisibility, fractal remainders, and classification barriers}, research manuscript dated 28 September 2026, with later editorial notes.
+Same snapshot commit as \cite{repo-contact}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/a21208b3ff14a07a4c8318dbf916d543acbef043/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/spectra-and-arithmetic/Arithmetic_Convolution_Factors_Fabius_Type_Laws/article.tex}{Pinned LaTeX source}.
+The Fourier lower-bound proposition, its October 1 editorial note, and the question ``Optimal approximate factorization'' specify the relevant previous scope. Unrefereed research report.
+
+\bibitem{Arias}
+Juan Arias de Reyna.
+\emph{An infinitely differentiable function with compact support: Definition and properties}.
+\href{https://arxiv.org/abs/1702.05442}{arXiv:1702.05442} (2017), English translation of the 1982 article in \emph{Revista de la Real Academia de Ciencias de Madrid} \textbf{76}, 21--38.
+
+\bibitem{BradleyGupta}
+David M. Bradley and Ramesh C. Gupta.
+On the distribution of the sum of $n$ non-identically distributed uniform random variables.
+\emph{Annals of the Institute of Statistical Mathematics} \textbf{54}(3) (2002), 689--700.
+\href{https://doi.org/10.1023/A:1022483715767}{doi:10.1023/A:1022483715767}.
+\href{https://arxiv.org/abs/math/0411298}{Author preprint, arXiv:math/0411298}.
+
+\bibitem{Vallender}
+S. S. Vallender.
+Calculation of the Wasserstein distance between probability distributions on the line.
+\emph{Theory of Probability and Its Applications} \textbf{18}(4) (1974), 784--786.
+\href{https://doi.org/10.1137/1118101}{doi:10.1137/1118101}.
+
+\bibitem{Hall}
+P. Hall.
+On representatives of subsets.
+\emph{Journal of the London Mathematical Society} \textbf{10}(1) (1935), 26--30.
+\href{https://doi.org/10.1112/jlms/s1-10.37.26}{doi:10.1112/jlms/s1-10.37.26}.
+
+\end{thebibliography}
+\end{document}

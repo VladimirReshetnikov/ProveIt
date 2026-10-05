@@ -36,7 +36,7 @@ wording was kept.
 
 ## Files
 
-- `article.pdf` — the full 28-page article, including proofs and background.
+- `article.pdf` — the full 29-page article, including proofs and background.
 - `article.tex` — self-contained LaTeX source with an inline bibliography.
 - `short-proof.pdf`, `short-proof.tex` — a one-page version of the decisive proof.
 - `references.bib` — reusable metadata for the six references.
@@ -114,6 +114,18 @@ the surreal roots of the evaluated minimal polynomial; the image of its
 generator determines the extension. These are separate existence criteria,
 not a classification of all abstract Hahn-field embeddings.
 
+A note added on 4 October 2026 (batch 96) after the proof of Theorem 4.6
+(`thm:exact`) records a topological complement from Part XIX of the surreal
+report
+[`polish-models-of-omnific-arithmetic`](../../foundations-and-computation/polish-models-of-omnific-arithmetic/)
+(its Proposition 267.1, `pma:spc:prop:powerseries`; AI-assisted, unrefereed,
+not formalized): read as real arrays in the product topology, the
+source-summable families of that proof form a Π⁰₃-complete set, the
+coefficientwise source sum is Baire class 1 and nowhere continuous on it, and
+closed certificate spaces restore continuity. It does not affect the algebraic
+statements. The note moves the article from 28 to 29 pages; no label number
+changed.
+
 ## Run the exact checks
 
 Python 3.9 or later; no package installation or internet access is required.
@@ -158,6 +170,17 @@ The complete coefficient-recursion proof and the summability proofs are
 in the article. No Lean, other proof assistant, or surreal arithmetic kernel
 was used.
 
+[Added 5 October 2026.] That describes the delivery. Since then the
+repository's Lean development has proved the article's main theorem
+`thm:exact` in full: all four existence alternatives, strong additivity, the
+literal evaluation formula and nonzero-input injectivity, with uniqueness among
+coefficient-fixing strongly additive maps, on the universe-indexed carrier
+with an explicit lower-universe index bound. The declarations are listed in
+the `hahn-evaluation-at-omega` section of
+[`docs/FORMALIZATION.md`](../../FORMALIZATION.md). The corrected
+`rem:incomparable`, the simple algebraic extension/root correspondence and
+Laurent-field geometric convergence remain unformalized.
+
 ## Build the PDFs
 
 A reasonably complete TeX Live or MiKTeX installation is sufficient. The
@@ -186,6 +209,8 @@ public-source search on 20 September 2026 did not locate a prior resolution.
 This is not a guarantee of priority and does not exclude unpublished or
 unindexed observations. The proofs were developed and reviewed during this
 session, but have not been independently refereed or proof-assistant checked.
+[Added 5 October 2026: the main theorem `thm:exact` has since been proved in
+Lean; see the note under the verification instructions above.]
 
 The result answers the explicit monomial-normalized ring-homomorphism
 question. It does not settle Lipparini's broader Problem 7.5 about infinitary

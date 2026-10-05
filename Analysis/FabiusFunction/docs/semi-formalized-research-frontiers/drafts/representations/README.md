@@ -521,6 +521,31 @@ of an existing draft; semantic consolidation is deferred to the post-
   notation edit. The former mixed current-source/retained-artifact 23-entry
   ledger passed in full at that checkpoint without asserting render parity;
   it is now retired and recoverable from Git history.
+- [`Zero_Bias_Occupancy_Gaussian_Bridges/`](Zero_Bias_Occupancy_Gaussian_Bridges/),
+  *Gaussian Bridges and Discrete Frontiers in Zero-Bias Occupancy*
+  (26-page A4 PDF, 1,920-line source, an exact-and-numerical companion
+  program with its tables and figures; author line "Research article
+  prepared with ChatGPT"), filed on 2026-10-04 by a quick archival
+  intake from the repository-level `docs/incoming/` drop zone.  It proves
+  the conjecture `conj:occupancy-shape` of the report above, strengthened
+  to `ℓ^1`: for geometric weights the occupancy vector `K` satisfies
+  `K/m → c` in `ℓ^1`, and `(K − mc)/√m` converges in `ℓ^1` to a Gaussian
+  bridge with covariance `(diag c − cc^T)/2`, with an exact leading
+  constant for the mean `ℓ^1` error.  The key is an exact identity: the
+  occupancy vector is a vector of independent odd-Poisson variables
+  conditioned on their sum.  It adds a universal `ℓ^2` bridge, `ℓ^1`
+  tightness iff `Σ √c_j < ∞`, a centring transition for power weights,
+  phase-dependent total-variation limits for the occupancy frontier and
+  the occupied count, and an `ℓ^1` large-deviation principle with rate
+  `2 KL`.  It re-proves the report's partition function and, in sketch,
+  its general occupancy theorem, and extends its `q = 1/2` moment
+  recurrence to every `q`.  Its Questions 10.1–10.10 are open, among
+  them a `1/m` total-variation rate supported only numerically and the
+  covariance `1/d` suggested for factorial residue classes; the report's
+  four other conjectures stay open.  The sentence above that the five
+  conjectures remain conjectural, and its counterparts in the report,
+  get dated notes in the deferred editorial pass.  Unreviewed; its
+  numerics are not certificates; no Lean statement.
 - [`Fabius_Rvachev_Noncommutative_Frontiers/`](Fabius_Rvachev_Noncommutative_Frontiers/),
   *Noncommutative Cumulant Frontiers for the Fabius--Rvachev Law* (26 A4 pp,
   1336 source lines; with a 681-line experiment), arrived on 2026-08-30 with

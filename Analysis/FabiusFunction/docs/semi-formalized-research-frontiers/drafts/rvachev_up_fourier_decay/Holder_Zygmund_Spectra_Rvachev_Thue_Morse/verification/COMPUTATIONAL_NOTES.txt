@@ -1,0 +1,143 @@
+EXACT FINITE VERIFICATION
+=========================
+
+Run from this directory:
+
+    python3 verify.py --output results.json
+
+Requirements: Python 3.9 or later, standard library only.
+Arithmetic: integers and fractions.Fraction throughout. No floating-point
+eigensolver, symbolic-algebra package, or network access is needed.
+Checks raise explicit exceptions and remain enabled under python -O.
+The JSON output is deterministic and records coefficients as rational strings.
+
+CONVENTIONS
+
+The Fourier characters are e_k(x) = exp(2*pi*i*k*x). For
+
+    T_a f(x) = (1/b) sum_{j=0}^{b-1} a((x+j)/b) f((x+j)/b),
+
+the exact character formula is
+
+    T_a e_l = sum_k a_hat(b*k-l) e_k.
+
+The finite core uses K = floor(d/(b-1)), with row and column indices -K,...,K.
+Its matrix is A[k,l] = a_hat(b*k-l). Every matrix column is checked against a
+separate direct Fourier-polynomial implementation of the transfer.
+JSON polynomial coefficient arrays use ascending degree order.
+
+CORE EXAMPLES
+
+1. b=2, a(x)=1-cos(2*pi*x), d=1, K=1.
+
+   Matrix, as a list of rows:
+       [[-1/2, 0, 0], [-1/2, 1, -1/2], [0, 0, -1/2]].
+
+   Characteristic polynomial: (z-1)(z+1/2)^2.
+   Minimal polynomial:       (z-1)(z+1/2).
+   rank(A-I)=2, so the eigenvalue 1 eigenspace has dimension 1.
+   rank(A+I/2)=1, so the eigenvalue -1/2 eigenspace has dimension 2.
+
+   Explicit modes, in Fourier coefficient order -1,0,1:
+
+       1:                  (0, 1, 0),           eigenvalue 1;
+       sin(2*pi*x):        (i/2, 0, -i/2),       eigenvalue -1/2;
+       cos(2*pi*x)+1/3:    (1/2, 1/3, 1/2),     eigenvalue -1/2.
+
+   Real and imaginary coefficient vectors are checked separately over Q.
+   Their linear independence is checked after multiplying the sine mode by
+   the nonzero scalar 2i.
+
+2. b=2, a(x)=1-cos(6*pi*x), d=3, K=3.
+
+   Characteristic polynomial:
+
+       (z-1)(2z+1)^2(2z^2-z+1)(2z^2+z+1)/16.
+
+   Minimal polynomial:
+
+       (z-1)(z+1/2)(z^2-z/2+1/2)(z^2+z/2+1/2).
+
+   rank(A-I)=6, so the eigenvalue 1 eigenspace has dimension 1.
+   rank(A+I/2)=5, so the eigenvalue -1/2 eigenspace has dimension 2.
+   The four other eigenvalues are (1 +/- i*sqrt(7))/4 and
+   (-1 +/- i*sqrt(7))/4; each has modulus 1/sqrt(2).
+
+For both examples the script computes the characteristic polynomial by the
+Faddeev--LeVerrier algorithm, checks the displayed factorization, and verifies
+the Cayley--Hamilton identity. It computes gcd(p,p') exactly. It checks that
+the proposed minimal polynomial annihilates A, that each irreducible factor
+is necessary, and that this minimal polynomial is squarefree. Consequently
+both finite matrices are diagonalizable over C. The repeated eigenvalue
+-1/2 is semisimple.
+
+The normalization T_a(1)=1 is checked in each example. The identity
+
+    a(x) = (1-e_d(x))(1-e_-d(x))/2
+
+is also checked at the coefficient level. On the unit circle this equals
+|1-e_d(x)|^2/2, which proves nonnegativity.
+
+DEGREE THRESHOLDS
+
+For the formal degree recurrence D(L)=floor((L+d)/b), the script checks
+
+    N_n(M) = b^n(M+1) - d sum_{j=0}^{n-1} b^j - 1,
+
+its recursive construction, and the affine identity
+
+    N_n(M)+1-d/(b-1) = b^n(M+1-d/(b-1)).
+
+It checks D^n(N_n(M))=M and D^n(N_n(M)+1)=M+1. Thus N_n(M) is the exact
+threshold for this formal recurrence. This does not assert sharpness of the
+actual Fourier degree for every particular weight, since coefficients can
+vanish or cancel.
+
+Parameter grid: b=2,...,7; d=0,...,15; M=K,...,K+8;
+n=0,...,8; K=floor(d/(b-1)). This gives 7,776 parameter tuples.
+An additional 96 checks verify D(K)=K for each (b,d).
+
+When positive d is divisible by b it cannot be the actual degree of a weight
+normalized by T_a(1)=1, because its extreme Fourier coefficient would violate
+that normalization. Such d values are included only to check the algebraic
+formula. No admissible weight with those degrees is asserted to exist.
+
+KERNEL DEFECTS AND TRUNCATED SERIES
+
+Here P denotes the b=2, d=1 transfer, U f(x)=f(2x), lambda=-1/2, and
+h=e_1+1/3. The script verifies P h=lambda h and P U e_k=e_k for
+k=-64,...,64. It checks the kernel elements
+
+    e_(2j+1) + (e_(2j)+e_(2j+2))/2,
+
+for j=1,...,32.
+
+For F_N=sum_{k=0}^N lambda^k U^k h, it checks the exact remainder identity
+
+    (P-lambda)F_N = lambda h - lambda^(N+1) U^N h
+
+for N=0,...,16, and checks
+
+    P^n F_N = lambda^n (n h + F_(N-n))
+
+for every 0<=n<=N<=16: 153 iterated identities. The largest character
+frequency used is 65,536, represented sparsely rather than in a dense array.
+
+REPRODUCED RESULT
+
+    core_b2_d1:                       21 checks
+    core_b2_d3:                       22 checks
+    degree_identities:            46,752 checks
+    defects_and_truncated_series:    332 checks
+    total:                       47,127 checks
+
+All checks passed when the accompanying results.json was generated.
+
+SCOPE
+
+The matrix conclusions and the checked polynomial identities are exact.
+The finite parameter grids corroborate the general algebraic formulas but
+do not replace their proofs. No infinite-series convergence, function-space
+norm estimate, infinite-dimensional spectrum, or claim of research priority
+is established by these calculations. Those require the arguments and source
+discussion in the article.

@@ -1,0 +1,83 @@
+VALIDATION RECORD
+=================
+
+Article: Holder and Zygmund Spectra of the Rvachev--Thue--Morse Operator
+Package source: holder_zygmund_spectra.tex
+
+EXACT FINITE VERIFICATION
+
+The accompanying verify.py was executed successfully with Python using
+only the standard library. No floating-point arithmetic, numerical
+eigensolver, or symbolic-algebra package is used. Its checks raise explicit
+exceptions and are not disabled by optimized Python.
+
+Recorded outcome: PASS, 47,127 exact checks.
+
+    Sine core, b=2 and d=1:                          21
+    Higher-frequency core, b=2 and d=3:              22
+    Degree and affine-index identities:         46,752
+    Defects, right inverse, truncated series:       332
+    Total:                                      47,127
+
+The core checks establish the displayed characteristic and minimal
+polynomials, squarefreeness of the minimal polynomials, exact eigenspace
+ranks, and specified Fourier eigenmodes. The degree tests cover 7,776
+parameter tuples plus 96 core-degree cases. Kernel defects are checked
+through index 32, and the finite critical iterate identity is checked for
+all 153 pairs 0<=n<=N<=16.
+
+See results.json for machine-readable output and COMPUTATIONAL_NOTES.txt
+for complete conventions, formulas, ranges, and limitations. The existing
+successful results were retained; the program was not rerun merely to
+create the surrounding package documentation.
+
+INDEPENDENT MATHEMATICAL REVIEW
+
+A separate nonmechanized mathematical audit reviewed the finite-core
+approximation rigidity argument, the exact quotient contraction, the
+lacunary eigenvector construction, exterior spectral exhaustion, the
+big/little boundary root-space distinction, and the critical Jordan
+extension. It also checked the endpoint reduction needed for the
+noninteger interval statement and kept the integer interval-Zygmund
+gluing issue outside the proved scope.
+
+This is mathematical proof review within the preparation workflow. It is
+not external peer review or a formal proof-assistant certificate. No fresh
+Lean or Rocq build was run. The finite checks do not establish the
+infinite-dimensional analytic theorems; those depend on the proofs in
+the manuscript.
+
+PDF COMPILATION AND BUILD LOG
+
+The Makefile specifies three pdflatex passes, with halt-on-error and
+file-line-error enabled, to settle the table of contents and references.
+The article has no external graphic or bibliography-file dependencies.
+
+The final manuscript was compiled with three pdflatex passes. The final
+log was inspected and contains zero actual compiler or package warnings,
+zero overfull-box diagnostics, and zero underfull-box diagnostics. Earlier
+duplicate PDF destination warnings were resolved by correcting title-page
+layout and page anchors. The package metadata phrase "Providing
+info/warning/error messages" is descriptive text, not a warning.
+
+The final log reports a 22-page PDF: one unnumbered title page, one
+roman-numbered contents page, and 20 Arabic-numbered content pages.
+No undefined-reference or unresolved-citation warnings remain.
+
+The Makefile's build, verify, and clean recipes were inspected using a
+dry run. Cleanup names only LaTeX auxiliary files and retains the final
+PDF. The accompanying provenance.json was parsed successfully as JSON.
+
+VISUAL REVIEW
+
+Rendering and visual inspection are separate from finite algebra, proof
+review, and compiler-log checks. The completed final presentation review
+is recorded in PDF_QA.txt, including inspection of all 22 rendered pages.
+
+PROVENANCE AND PRIORITY
+
+The exact repository commit, source path, and Git blob are recorded in
+../provenance.json. The article distinguishes inherited results and
+classical antecedents from arguments supplied relative to that baseline.
+No global novelty or publication-priority claim is certified by this
+validation record.
