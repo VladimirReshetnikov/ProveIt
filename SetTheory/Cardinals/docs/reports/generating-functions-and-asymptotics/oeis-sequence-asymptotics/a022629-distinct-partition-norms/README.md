@@ -1,6 +1,6 @@
 # Five OEIS Asymptotic Conjectures for Distinct-Partition Norms
 
-**Proofs, all-orders logarithmic expansions, exact-saddle corrections, inverse and extreme-value laws, eventual log-concavity and Jensen hyperbolicity, convolution powers for ∏(1 + k^α q^k)^μ, and slot multiplicities ∏(1 + k^α q^k)^(k^β): A022629, A092484, A265840, A265841, A265842, A022630, A022631, A266891**
+**Proofs, all-orders logarithmic expansions, exact-saddle corrections, inverse and extreme-value laws, eventual log-concavity and Jensen hyperbolicity, convolution powers for ∏(1 + k^α q^k)^μ, slot multiplicities ∏(1 + k^α q^k)^(k^β), the smooth lattice-minus-integral sector with exact-range inversion, and a critical theta window for growing powers: A022629, A092484, A265840, A265841, A265842, A022630, A022631, A266891**
 
 This research report is dated 1 October 2026. It was built from five
 manuscripts of ProveIt's incoming-reports intake, all written independently
@@ -16,6 +16,18 @@ than reprinted, and only genuinely different proofs and forms are kept as
 marked second routes. No manuscript is superseded: each has results the
 others lack.
 
+**Batch 100 (5 October 2026).** Three more manuscripts, Research Reports 82,
+89 and 93 of the session bundle of Reports 1–243 (arrival `60f54ea06`,
+placement `36571ae0e`), were added as Sections 21 and 22. They are one author
+series written on 1–2 October 2026, each building on the one before, and are
+called by their bundle report numbers (sources 100-82, 100-89, 100-93),
+because the cluster-local numbers 01–03 of batch 100 are used by other
+clusters. Sources 100-82 (A022629) and 100-89 (every real α > 0) are this
+report's sixth and seventh proofs of the core theorems, recorded once in
+Table 8; their new material is Section 21, merged with source 100-89 as the
+base. Source 100-93 treats powers growing with n and is Section 22. None of
+the three saw this report, and none is superseded.
+
 | Source | Manuscript | Archive (arrival commit) | Pin | Placed | Printed as |
 |---|---|---|---|---|---|
 | base | batch 73O1, no. 40 | `OEIS_Distinct_Partition_Norms.zip` (`f8c3a392a`); `article.tex`, *Five OEIS Asymptotic Conjectures for Distinct-Partition Norms*, 22-page PDF | `1f1981f68` | `9df4ba51a` | the whole text, in its order (Sections 1–14, Appendix A) |
@@ -23,6 +35,9 @@ others lack.
 | addition | batch 75, no. 01 (source 75-01) | `A022629_research_package.zip` (`4b874cea0`); `article.tex`, *Norm-weighted distinct partitions: A proof of the A022629 growth conjecture, all-order asymptotics, Lambert inversion, and eventual Jensen hyperbolicity*, 20-page PDF | `29aca108e` | `6ea60e367` | Table 2 and Section 15.2; Sections 16–17; Section 19 (75-01.1–10); files prefixed `75-01-jensen-` |
 | addition | batch 75, no. 06 (source 75-06) | `OEIS_Norm_Weighted_Partitions.zip` (`4b874cea0`); `article.tex`, *Norm-weighted distinct partitions: A022629, all-order expansions, and inversion*, 26-page PDF | `29aca108e` | `6ea60e367` | Table 2 and Section 15.2; the second proof of Lemma 16.1; Section 18; Section 19 (75-06.1–12); files prefixed `75-06-powers-` |
 | addition | batch 77, no. 51 (source 77-51) | `oeis-fixed-power-asymptotics-result.zip` (`096ee7b87`; no wrapper directory); `article/fixed-power-partition-asymptotics.tex`, *Asymptotic expansions and inversion for fixed power weighted partitions*, 11-page PDF | none | `aa7345800` | Section 20: Table 6, Proposition 20.1 and the routes of Section 20.2, Theorem 20.2, Corollary 20.3 (A266891), Table 7, questions 77-51.1–4; files prefixed `77-51-fp-` |
+| addition (base of Section 21) | batch 100, Report 89 (source 100-89) | `ProveIt_Power_Weighted_Distinct_Partitions_Relative_Expansions.zip` (`60f54ea06`); `power_weight_relative/article.tex`, *Relative Expansions and Exact Range Inversion for Power Weighted Distinct Partitions*, 9-page PDF | none | `36571ae0e` | Table 8; Theorem 21.2 with Lemma 21.3 (holomorphy, completed at the write), the closed forms (21.12)–(21.16), Theorem 21.4, Corollary 21.6, Proposition 21.7 (completed at the write), Theorem 21.8, routes of Section 21.5, Table 9 (right), questions 100.1–100.7; files prefixed `100-89-boundary-` |
+| addition | batch 100, Report 82 (source 100-82) | `ProveIt_OEIS_A022629_Asymptotics_and_Inversion.zip` (`60f54ea06`); `a022629_asymptotics/article.tex`, *Asymptotics and Inverse Growth for Weighted Distinct Partitions*, 7-page PDF | none | `36571ae0e` | Table 8; Proposition 21.1 (P_9, P_10, Δ_9, Δ_10, from its JSON record); (21.20), the case α = 1 of Corollary 21.6, with its proofs in Section 21.5; Remark 21.9; Table 9 (left); files prefixed `100-82-integral-` |
+| addition | batch 100, Report 93 (source 100-93) | `ProveIt_Critical_Theta_Power_Weighted_Distinct_Partitions.zip` (`60f54ea06`); `critical_power_theta/article.tex` with `diagnostics.tex`, `context.tex` and `references_extra.tex`, *Critical Theta Asymptotics and Inversion for Power Weighted Distinct Partitions*, 13-page PDF | `6591a56b3` | `36571ae0e` | Section 22: Theorem 22.1, Corollary 22.2, Lemmas 22.3–22.6, Corollary 22.7, Proposition 22.8, Theorem 22.9, Proposition 22.11, Table 10, questions 100-93.1–6; files prefixed `100-93-theta-` |
 
 Author lines as delivered: source 40, "Research report prepared for Vladimir
 Reshetnikov" (no AI wording); source 48, the same, with "Developed with AI
@@ -49,8 +64,20 @@ Source 77-51 shares 0.69 % / 0.11 % of its word 8-grams with this report.
 Each placement commit deleted its archives, which survive in the arrival
 commits.
 
-**Status: AI-assisted (source 48 says so; sources 40, 75-01, 75-06 and 77-51 do not
-say), unrefereed, not formalized.** For batch 73O1 the intake recomputed the
+Sources 100-82, 100-89 and 100-93 carry the author line "Research note
+prepared for Vladimir Reshetnikov with OpenAI" (also their PDF author).
+Sources 100-82 and 100-89 name no ProveIt commit and record no repository
+search; source 100-93 pins `6591a56b3551e08700aef333cb98849c8cdfe69e`
+(1 October 2026, 18:55 PDT), eighteen minutes before this report's first
+placement (`9df4ba51a`), and pins source 100-89 by the SHA-256 of its archive
+(`225b2070…`, which matches). They share 1.12 %, 0.63 % and 0.15 % of their
+word 8-grams with this report as it stood before batch 100, and 0.6–2.8 % with
+each other (status lines, preambles, standard displays). No "prepared for
+private review" line, personal path or third-party data file occurs in them.
+
+**Status: AI-assisted (source 48 says so, and sources 100-82, 100-89 and
+100-93 say "with OpenAI"; sources 40, 75-01, 75-06 and 77-51 do not say),
+unrefereed, not formalized.** For batch 73O1 the intake recomputed the
 A022629 table to n = 6400, re-derived P_1–P_8 and the inverse coefficients by
 a third route (a Sommerfeld expansion), recomputed source 48's operator
 series and coordinate change in exact arithmetic, and compared the two Gumbel
@@ -70,13 +97,24 @@ converted source 77-51's relative errors to the convention of Table 3 and
 found them equal to source 75-01's and 75-06's at n = 200, 1000, 2000
 to within one unit in the last printed digit; and reran its producer check and three independent checkers on
 copies (below). It did not referee every proof.
+For batch 100 the intake checked in exact rational arithmetic that source
+100-82's recorded s_1–s_8 and v_2–v_8 are P_1–P_8 and Δ_2–Δ_8 at P = π² = 6c;
+reran source 75-06's `formal.py` at order 10, whose orders 9 and 10 agree
+exactly with source 100-82's s_9, s_10, v_9, v_10 (Proposition 21.1);
+confirmed source 100-89's six printed boundary constants by fitting the
+directly computed lattice-minus-integral difference (and its ξ_0, ξ_1 at
+α = 1.5, 2.5, 3); checked source 100-93's main proof chain at placement;
+evaluated source 100-93's theta formula at the fixed-α saddles of Section 12
+and decomposed those finite-size residuals into Fourier cells (Section 16.3;
+numerical evidence only); and reran the batch-100 programs on copies (below).
+It did not referee every proof.
 
 ## Files
 
 ```
 README.md                                          this guide
 article.tex                                        the merged report (pdfLaTeX, internal bibliography)
-article.pdf                                        the compiled report, 68 pages (title page, then pages 1-67)
+article.pdf                                        the compiled report, 100 pages (title page, then pages 1-99)
 48-a022629-PROVENANCE.md                           source 48's sources and verification record, as delivered
 75-01-jensen-BUILD_AND_VALIDATION.txt              source 75-01's build and computation record, as delivered
 75-01-jensen-OEIS_PROPOSED_NOTES.md                source 75-01's draft OEIS notes (not submitted), as delivered
@@ -92,6 +130,7 @@ article.pdf                                        the compiled report, 68 pages
 77-51-fp-proofs-FIXED_POWER_FAMILY.md              slot family
 77-51-fp-proofs-LEADING_AND_INVERSE.md             leading term and inverse
 77-51-fp-proofs-THERMAL_CORRECTION.md              thermal correction
+100-93-theta-diagnostics-README.md                 source 100-93's computational README for its diagnostics (checks/diagnostics/README.md)
 code/40-norm-moments-verify.py                     exact sequences (alpha = 1..5, n <= 5000), recurrence check, saddle/Edgeworth diagnostics
 code/40-norm-moments-derive_series.py              symbolic boundary derivatives and P_j (SymPy)
 code/40-norm-moments-derive_inverse.py             symbolic reversion through six inverse orders (SymPy)
@@ -113,6 +152,26 @@ code/77-51-fp-ind-check_family.py                  its independent family checke
 code/77-51-fp-ind-check_log_hierarchy.py           its independent hierarchy checker (standard library)
 code/77-51-fp-verify.py                            source 77-51's root driver (delivery layout only; see below)
 code/77-51-fp-build.sh                             source 77-51's PDF build (builds the unshipped manuscript)
+code/100-82-integral-check_formal_series.py        source 100-82's exact formal series: s_1..s_10, v_2..v_10 in P = pi^2, residuals to order 12 (SymPy)
+code/100-82-integral-check_coefficients_independent.py  its independent check of the printed coefficients (SymPy)
+code/100-82-integral-check_finite_coefficients.py  exact A022629 to n = 10000 and integral-saddle comparisons at n = 100, 1000, 10000 (mpmath)
+code/100-82-integral-check_integral_constant.py    numerical illustration of the constant (1/2) log(2 pi) - 1 (mpmath)
+code/100-82-integral-run_checks.sh                 source 100-82's exact-check driver (delivery layout)
+code/100-89-boundary-check_corrections.py          source 100-89's exact boundary coefficients at power 1 and Gaussian blocks (SymPy)
+code/100-89-boundary-check_reconstruction.py       independent cumulant and weighted-profile reconstruction (SymPy)
+code/100-89-boundary-check_integer_roots.py        rational reconstructions at the square-weight roots and the Gamma constant (SymPy)
+code/100-89-boundary-check_boundary.py             numerical boundary illustration (mpmath)
+code/100-89-boundary-check_relative_numeric.py     exact DP to n = 3000 and integral comparisons, alpha = 1, 2, 3 (mpmath)
+code/100-89-boundary-verify_numeric_examples.py    independent recurrence and 65-digit log-coordinate quadrature for its table (mpmath)
+code/100-89-boundary-run_checks.sh                 source 100-89's exact-check driver (delivery layout)
+code/100-93-theta-check_identities.py              source 100-93's eight exact identities (SymPy)
+code/100-93-theta-run_checks.sh                    source 100-93's check driver (delivery layout)
+code/100-93-theta-diag-diagnostics.py              its Fourier diagnostics (NumPy, SciPy, mpmath)
+code/100-93-theta-diag-error_diagnostics.py        its omitted-arc envelope checks (rewrites its input file)
+code/100-93-theta-diag-assemble_summary.py         merges the result files into the summary JSON and TSV
+code/100-93-theta-diag-prepare_quad113.py          writes the binary128 inputs and quadrature nodes
+code/100-93-theta-diag-quad113.cpp                 independent binary128 full-product audit (g++, libquadmath)
+code/100-93-theta-diag-verify_summary.py           consistency checks of the 18 saved rows (standard library)
 data/40-norm-moments-A022629_computed.txt          a(n), n = 0..5000, alpha = 1 (and A092484, A265840, A265841, A265842 below)
 data/40-norm-moments-A092484_computed.txt
 data/40-norm-moments-A265840_computed.txt
@@ -173,13 +232,46 @@ data/77-51-fp-ind-log-hierarchy-negative-control.txt  the same, hierarchy checke
 data/77-51-fp-integrated-approval.json             integrated approval (pins the delivered tex and PDF)
 data/77-51-fp-root-integrated-approval.json        root integrated approval
 data/77-51-fp-requirements.txt                     mpmath>=1.3, sympy>=1.13
+data/100-82-integral-check_formal_series.json      source 100-82's exact forward and inverse coefficients (P_9, P_10, Delta_9, Delta_10 at P = 6c)
+data/100-82-integral-check_coefficients_independent.json  its independent check record
+data/100-82-integral-check_finite_coefficients.json  its exact values and integral-saddle comparisons
+data/100-82-integral-PROVENANCE.json               source 100-82's provenance record (hashes its delivered files)
+data/100-89-boundary-check_corrections.json        source 100-89's boundary coefficients and Gaussian blocks
+data/100-89-boundary-reconstruction.json           its reconstruction record
+data/100-89-boundary-check_integer_roots.json      its integer-root record
+data/100-89-boundary-check_relative_numeric.json   its table values (35 digits)
+data/100-89-boundary-verify_numeric_examples.json  its independent 65-digit check of the table
+data/100-89-boundary-PROVENANCE.json               source 100-89's provenance record (hashes its delivered files)
+data/100-93-theta-check_identities.json            source 100-93's identity record
+data/100-93-theta-PROVENANCE.json                  source 100-93's provenance record (hashes its delivered files)
+data/100-93-theta-diag-results.json                main diagnostics run (powers 12-48, lambda = 4, 5)
+data/100-93-theta-diag-initial.json                the a = 8 run
+data/100-93-theta-diag-lambda4_checked.json        checked snapshots of the concurrent runs (lambda4_checked, lambda5_checked,
+data/100-93-theta-diag-lambda5_checked.json          lambda5_early, lambda5_a48, lambda5_a48_checked)
+data/100-93-theta-diag-lambda5_early.json
+data/100-93-theta-diag-lambda5_a48.json
+data/100-93-theta-diag-lambda5_a48_checked.json
+data/100-93-theta-diag-diagnostics_complete.json   all 18 rows with satellites, errors and omitted-arc estimates
+data/100-93-theta-diag-diagnostics_table.tsv       the summary table (CRLF as delivered)
+data/100-93-theta-diag-sensitivity_a8.json         sensitivity checks (a = 8; a = 12; extra satellites)
+data/100-93-theta-diag-sensitivity_a12.json
+data/100-93-theta-diag-satellite_sensitivity.json
+data/100-93-theta-diag-a8_l4_phase0.txt            binary128 inputs (two cases)
+data/100-93-theta-diag-a12_l5_phasehalf.txt
+data/100-93-theta-diag-nodes96.txt                 60-digit Gauss-Legendre nodes (96, 128)
+data/100-93-theta-diag-nodes128.txt
+data/100-93-theta-diag-quad113_a8_96.txt           binary128 outputs (two cases, two node counts)
+data/100-93-theta-diag-quad113_a8_128.txt
+data/100-93-theta-diag-quad113_a12_l5_half_96.txt
+data/100-93-theta-diag-quad113_a12_l5_half_128.txt
 ```
 
 Every file except `README.md`, `article.tex` and `article.pdf` is
 byte-identical to the delivery. The eight `40-norm-moments-*.csv` files,
 `data/48-a022629-exact_coefficients.csv` and the four
 `data/75-01-jensen-saddle_*.csv` files are CRLF as delivered and are kept
-byte for byte by `-text` lines in `SetTheory/Cardinals/.gitattributes`.
+byte for byte by `-text` lines in `SetTheory/Cardinals/.gitattributes`. So is
+`data/100-93-theta-diag-diagnostics_table.tsv` (19 CRLF lines).
 Delivered name → shipped path: source 40's `oeis_norm_partitions/X.py` →
 `code/40-norm-moments-X.py`, `data/Y` → `data/40-norm-moments-Y`,
 `requirements.txt` → `data/40-norm-moments-requirements.txt`, `article.tex` →
@@ -212,6 +304,28 @@ or `data/77-51-fp-<name>`; `audits/X` → `77-51-fp-X` (`.md`) or
 its manuscript (printed in Section 20), PDF, README and `SHA256SUMS` (36/36
 verified, retired). All survive in the arrival commits.
 
+Batch 100: source 100-82's `a022629_asymptotics/checks/X` →
+`code/100-82-integral-X` (`.py`) or `data/100-82-integral-X` (`.json`), its
+`run_checks.sh` → `code/100-82-integral-run_checks.sh`, `PROVENANCE.json` →
+`data/100-82-integral-PROVENANCE.json`; source 100-89's
+`power_weight_relative/…` likewise with the prefix `100-89-boundary-` (its
+`checks/reconstruction.json` → `data/100-89-boundary-reconstruction.json`);
+source 100-93's `critical_power_theta/checks/check_identities.*`,
+`run_checks.sh` and `PROVENANCE.json` likewise with `100-93-theta-`, its
+`checks/diagnostics/X` → `code/100-93-theta-diag-X` (`.py`, `.cpp`) or
+`data/100-93-theta-diag-X`, and `checks/diagnostics/README.md` →
+`100-93-theta-diagnostics-README.md`. Not shipped: the three manuscripts
+(printed in Sections 21–22) and source 100-93's `diagnostics.tex`,
+`context.tex` and `references_extra.tex` (printed in Section 22), the PDFs and
+READMEs, `verify_package.py` (identical in sources 100-82 and 100-89) and
+`build_local.sh` (identical in sources 100-82 and 100-89, and equal to a
+generic TeX helper already in the repository), source 100-89's
+`checks/check_logarithmic_reversion.py` and `.json` (byte copies of source
+100-82's `check_formal_series.py` and `.json`), and source 100-93's
+`checks/diagnostics/SHA256SUMS.txt` (5/5 verified, retired); the three
+provenance manifests verified 13/13, 19/19 and 39/39 at placement. All
+survive in `60f54ea06`.
+
 ## Labels, structure and notation
 
 Every label carries the prefix `dpn:`. The staged base had **84** labels; the
@@ -228,8 +342,15 @@ merge again renamed or deleted none and left every existing section,
 theorem, equation and table number unchanged (checked against a build of the
 previous text), and added **21**, all under `dpn:fp:` (source 77-51's
 Section 20: 7 sections, 2 tables, 1 proposition, 1 theorem, 1 corollary,
-9 equations): **195** in all. The batch-75 and batch-77 sources' own labels
-were not carried over: their shared results are pointers, and their new
+9 equations): **195** in all. The batch-100 merge again renamed or
+deleted none and left every existing section, theorem, equation and table
+number unchanged (checked against a build of the previous text), and added
+**116**: 46 under `dpn:rb:` (Section 21: 9 section and subsection labels,
+2 tables, 3 theorems, 2 propositions, 1 lemma, 1 corollary, 2 remarks,
+26 equations) and 70 under `dpn:ct:` (Section 22: 12 section labels, 1 table,
+2 theorems, 2 propositions, 4 lemmas, 2 corollaries, 1 remark,
+46 equations): **311** in all. The batch-75, batch-77 and batch-100 sources'
+own labels were not carried over: their shared results are pointers, and their new
 results were rewritten in this report's notation.
 
 Section 1.4 says what came from where; Section 1.5 has the notation tables.
@@ -260,6 +381,22 @@ or "[Batch 77, 2 October 2026.]"; material from a single source is marked
 batch-75 material follows the conclusion as Sections 15–19 and the batch-77
 material as Section 20, so that the earlier numbering is unchanged; merge
 notes in the earlier sections point forward to it.
+
+The batch-100 sources are translated by a fourth table in Section 1.5. The
+collisions that matter: in all three, `K` is the transition site M (not
+√(2n)), `b` is s, and `B` is log √(2n) (sources 100-82, 100-89) or a block of
+sizes (source 100-93), never the variance; source 100-89's `c_r(a)` (here
+ξ_r(α)) and source 100-82's `c_j` (= 2η(2j)) are not c = π²/(6α²); source
+100-82's `t_n`, `N(t)`, `V(t)` belong to the saddle of the integral (here
+t^int, B^int); source 100-89's `E_a(t)` is written Ξ_α(t), its `J_D` F_D,
+and its Edgeworth order `M` is J − 1 here; source 100-93's `λ`, `μ`, `Q`,
+`R`, `U`, `C`, `V`, `T_r`, `W`, `z` are Λ, μ_R, Q_⊥, R_{≥2}, B_RR, B_RS, B,
+𝖳_r, H and K; its Θ(μ, Q) = (2πQ)^{−1/2} ϑ(1/Q, μ) in terms of the
+lattice-peak report's ϑ. Text added in that merge is marked "[Merge note,
+batch 100.]", dated notes "[Batch 100, 5 October 2026.]", and statements and
+proofs supplied by the write rather than by a source "[write]". The
+batch-100 material is Sections 21 and 22, after Section 20 and before the
+appendices.
 
 ## What is claimed
 
@@ -318,17 +455,56 @@ s the exact-saddle transition site and its logarithm:
   N_α(Y) = (K_0²/2)(1 − 2c/(R_0(R_0 − 1)) + O(R_0^{−4})) (Proposition 20.1:
   the same accuracy as the two-term truncations, not sharper), and a further
   citation (Naranjo–Ramírez 2026).
+- Sources 100-82 and 100-89 (batch 100): the sixth and seventh proofs of the
+  core theorems (Table 8), and new: **P_9, P_10, Δ_9, Δ_10** (Proposition
+  21.1; source 100-82's exact record, confirmed by source 75-06's program at
+  order 10); the lattice-minus-integral difference Ξ_α(t) extends smoothly
+  to t = 0, uniformly on compact α-sets, with coefficients ξ_r(α) real
+  analytic and holomorphic on Re α > 0 (Theorem 21.2; the holomorphy proof is
+  completed in Lemma 21.3), closed forms such as ξ_0(1) = ½ log 2π − 1,
+  ξ_0(2) = log(1 − e^{−2π}), ξ_1(1) = 7/12 − γ, ξ_1(2) = 1/12 − Re ψ(1 + i),
+  and a finite digamma–Hurwitz rule for integer α; an all-orders relative
+  expansion keeping the exact integral and finitely many ξ_r (Theorem 21.4,
+  remainder at the conservative scale t^J; Remark 21.5 transfers the sharp
+  scale of Section 16) and its first-order form at the saddle of the integral
+  (Corollary 21.6; at α = 1 source 100-82's
+  a(n) ~ exp(I(t) + nt − 1)/√(I''(t))); an all-orders exact-range inverse
+  (Theorem 21.8: index recovery by rounding at sequence values, and the
+  threshold off an O(t^{J−1})-neighbourhood of the integers; its slope bound
+  is completed in Proposition 21.7).
+- Source 100-93 (batch 100): for α growing so that Λ = α(s − 1)/M^{1/3}
+  stays in a compact subset of (0, ∞) (equivalently
+  α log √(2n)/(2n)^{1/6} → Λ_∞ ∈ (0, ∞)), the uniform relative equivalent
+  a_α(n) = e^{F(t)+nt}(2πB)^{−1/2}{Θ(μ_R, Q_⊥) + o(1)}, with
+  Θ(μ, Q) = Σ_j exp(−2π²Qj² − 2πijμ), μ_R the mean number of parts at least
+  two and Q_⊥ → π²/(3Λ³) their variance after regression on the size
+  (Theorem 22.1); so the single-Gaussian ratio has the two limits
+  Θ(0, ·) > 1 and Θ(½, ·) < 1 along integer powers (Corollary 22.7); a
+  theta-adjusted inverse with error o(M^{2/3}) and threshold brackets
+  (Theorem 22.9); the leading logarithm αK(r − 1) and the Lambert inverse in
+  the joint limit (Proposition 22.11). The satellites' damping is the action
+  of Theorem 11.1, so in this window Section 22 supplies the secondary
+  saddles, phases and cell contributions that Section 11 leaves open. The
+  write adds the phase average ∫_0^1 Θ dμ = 1 and the theta shift
+  −log Θ/t of the threshold (Remark 22.10).
 
 ## What is not claimed
 
 - No complete multi-saddle coefficient transseries; the resonance theorem
   gives the modulus at a point, not the secondary saddles' contributions
-  (source 40). No resolution of the smaller blocks or exponentially small
+  (source 40). *[5 October 2026, batch 100: in the critical window of growing
+  powers source 100-93 computes them, with relative error o(1) and no
+  effective constant (Section 22); for fixed α they remain open.]* No resolution of the smaller blocks or exponentially small
   contributions; no convergence of the inverse-logarithmic series
   (sources 48, 75-01, 75-06).
 - No uniformity as α ↓ 0 (all); α = 0 is a different regime. No theorem for
   growing α, growing μ, or growing Jensen degree (75-01, 75-06); the
-  diagonal A292190 is not covered.
+  diagonal A292190 is not covered. *[Corrected 5 October 2026, batch 100:
+  growing α is now covered in the critical window α ≍ (2n)^{1/6}/log n,
+  that is Λ = α(s − 1)/M^{1/3} in a compact subset of (0, ∞), by source
+  100-93 (Section 22). No theorem is uniform as Λ → 0 or Λ → ∞; the diagonal
+  A292190 (Λ → ∞) is still not covered; growing μ and growing Jensen degree
+  remain uncovered.]*
 - The sharp remainder O((αMs)^{−J−1}) is proved for one layer only; source
   75-06's μ-layer remainder uses the safe parameter s/M. The complete
   expansion of 𝓔_1 in 1/s, asked for by source 48's project 48.6, is not
@@ -344,7 +520,13 @@ s the exact-saddle transition site and its logarithm:
   logarithm at n = 6400 (source 48). At α = 3, n = 2500 the relative error
   stays near 5 % for J = 1, 2, 3 (source 75-01); the article identifies this
   as the noncentral contribution of the resonance section, not slow
-  Edgeworth convergence, but neither source computes it. Source 75-06's
+  Edgeworth convergence, but neither source computes it. *[5 October 2026,
+  batch 100: an uncertified cell-by-cell integration at n = 5000 puts those
+  residuals in the Fourier cells around ±2π/M (and, for α = 4, 5, ±4π/M and
+  beyond), Section 16.3; this is numerical evidence only. Source 100-93's
+  theta formula does not explain them: it assumes a frozen lower bulk, which
+  fails at fixed α, and evaluated with the exact moments it gives 1.0000,
+  0.981 and 1.194 at α = 3, 4, 5 against 0.962, 1.231 and 1.581.]* Source 75-06's
   values at n = 10^6, 10^8, 10^10 are saddle estimates, not exact
   comparisons.
 - Gikunda's 2026 dissertation treats a shrinking tilt and is not claimed to
@@ -361,6 +543,29 @@ s the exact-saddle transition site and its logarithm:
   literature-wide priority claim is asserted". Its four questions (77-51.1–4)
   remain open. Its proofs of the A022629 and A092484 conjectures are, here,
   the fifth.
+- Sources 100-82 and 100-89: unrefereed, not Lean; no convergence of the
+  boundary Taylor series or of the logarithmic series, no optimal truncation,
+  no exponentially small lattice correction, no effective onset, no remainder
+  uniform in the truncation order; uniform only on compact α-sets, not for
+  growing α (that is Section 22); no unconditional rounding rule for
+  arbitrary thresholds and no claim on how often thresholds fall near an
+  integer; quadratures are orientation, not certificates ("Verified" in
+  source 100-89's table caption means reproduced, not interval-certified);
+  bounded literature comparisons, no priority claim. Source 100-89's
+  remainder O(t^J) is the conservative scale, not the sharp one of
+  Section 16; the sharp form in Remark 21.5 is the write's bookkeeping.
+  Their "proves and strengthens the conjecture currently listed" (100-82)
+  and "settles the current conjectures" (100-89) are, here, further proofs.
+  Their open items are questions 100.1–100.7.
+- Source 100-93: no effective onset; no nearest-integer recovery in its
+  window (the inverse error o(M^{2/3}) may diverge); nothing uniform as
+  Λ → 0 or Λ → ∞; no full series and no exponentially small remainders; its
+  diagnostics are Fourier computations, not exact coefficients or interval
+  enclosures, and its omitted-arc integrations are not certified. Its
+  theorem is not a corollary of the lattice-peak transfer theorem of
+  `a357825-theta-ballot-power-sums` Part II (the hypotheses (H1), (H2e) are
+  unproved for its row; question 100-93.7). Its questions 100-93.1–6 remain
+  open.
 - No priority, no Lean or Rocq verification, and no OEIS submission (the
   three shipped OEIS-note files are drafts).
 
@@ -384,6 +589,20 @@ s the exact-saddle transition site and its logarithm:
   treats distinct partitions with one global fugacity n^α, a different
   weighting with no result in common. Both pointers are dated notes in
   Section 20.
+- **Lattice-peak transfer (batch 100).** Section 22 (source 100-93) is the
+  Fourier-dual form of the lattice-peak transfer theorem of
+  [`a357825-theta-ballot-power-sums`](../a357825-theta-ballot-power-sums/)
+  Part II (written in `2b257ba94`): read with the row
+  l ↦ P(S = n, R_{≥2} = l), r_n = 1, q_n = 1/Q_⊥, phase μ_R, its conclusion
+  is Theorem 22.1, but it is not a corollary — (H1) is a fibre local limit
+  theorem for (S, R_{≥2}) and (H2e) would need log-concavity in l, both
+  unproved (question 100-93.7); Section 22.8 gives the dictionary. A
+  reciprocal note in that report is proposed with this batch.
+- **Neighbour of batch 100.**
+  [`a271619-strict-twice-partitions`](../a271619-strict-twice-partitions/)
+  records that its Part I Section 6 (near-modulus-one Fourier peaks) is the
+  same phenomenon class as Section 22 here, for a different product, and that
+  its two competing charges do not answer project 7; no theorem is shared.
 - **Transseries.** The partition-number chapter of
   `Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion`
   (`transseries_and_inversion.tex`, label `p3:sec:top`, A000041) is a
@@ -393,8 +612,8 @@ s the exact-saddle transition site and its logarithm:
   `p0:thm:lambert-core`, `p0:thm:perturbed-inversion`,
   `p0:thm:backward-error` and `p0:thm:staircase`, which the batch-75 sections
   cite.
-- **Lean.** No manuscript ships or cites Lean or Rocq proofs, and no
-  statement of this report is formalized; placement in the collection
+- **Lean.** No manuscript ships or cites Lean or Rocq proofs (batch 100's
+  included), and no statement of this report is formalized; placement in the collection
   confers no formal status. The only formal statement the article cites is
   the separation step of the staircase theorem,
   `Fabius.staircase_separation` (with `Fabius.staircase_ceil`) in
@@ -410,8 +629,8 @@ From a scratch copy of this directory, run
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-pdfLaTeX (MiKTeX 26.2) produced the shipped `article.pdf`: 68 pages (an
-unnumbered title page, then pages 1–67), with no errors, no warnings, no
+pdfLaTeX (MiKTeX 26.2) produced the shipped `article.pdf`: 100 pages (an
+unnumbered title page, then pages 1–99), with no errors, no warnings, no
 undefined references or citations, no multiply defined labels, no duplicate
 destinations and no overfull or underfull boxes. The title page is wrapped in
 `\hypersetup{pageanchor=false}` … `pageanchor=true`. Copy back only
@@ -507,6 +726,57 @@ extraction of the arrival archive (which has no wrapper directory):
 "$W/51.zip" && unzip -q "$W/51.zip" -d "$W/51" && (cd "$W/51" && py verify.py)`.
 It did not finish within three minutes at placement on a loaded machine.
 
+**Batch 100 (sources 100-82, 100-89, 100-93).** The checkers write their
+JSON outputs **beside themselves** (`Path(__file__).with_suffix('.json')`, or
+`reconstruction.json`), so run from `code/` they would add unprefixed files
+there; `verify_numeric_examples.py` reads `check_relative_numeric.json` by its
+delivered name; the three `run_checks.sh` call `checks/<delivered name>.py`
+with `python` or `python3`, and source 100-89's calls
+`checks/check_logarithmic_reversion.py`, which is not shipped (it is a byte
+copy of source 100-82's `check_formal_series.py`); source 100-93's diagnostics
+scripts import `diagnostics` by its delivered name, `diagnostics.py` defaults
+to writing `results.json` beside itself, and `error_diagnostics.py` rewrites
+the result file it is given. So rerun on a copy laid out as delivered (`R` as
+in the recipe above):
+
+```sh
+W=$(mktemp -d); mkdir -p "$W/82/checks" "$W/89/checks" "$W/93/checks/diagnostics"
+for f in "$R"/code/100-82-integral-*.py;  do cp "$f" "$W/82/checks/${f##*/100-82-integral-}"; done
+for f in "$R"/code/100-89-boundary-*.py;  do cp "$f" "$W/89/checks/${f##*/100-89-boundary-}"; done
+cp "$R/code/100-82-integral-check_formal_series.py" "$W/89/checks/check_logarithmic_reversion.py"
+cp "$R/code/100-93-theta-check_identities.py" "$W/93/checks/check_identities.py"
+for f in "$R"/code/100-93-theta-diag-*;   do cp "$f" "$W/93/checks/diagnostics/${f##*/100-93-theta-diag-}"; done
+for f in "$R"/data/100-93-theta-diag-*;   do cp "$f" "$W/93/checks/diagnostics/${f##*/100-93-theta-diag-}"; done
+cp "$R/data/100-89-boundary-check_relative_numeric.json" "$W/89/checks/check_relative_numeric.json"
+U="uv run --no-project --with mpmath==1.3.0 --with sympy==1.14.0 python"
+(cd "$W/82" && $U -O checks/check_formal_series.py && $U -O checks/check_coefficients_independent.py \
+            && $U checks/check_finite_coefficients.py && $U checks/check_integral_constant.py)   # about 100, 22, 57, 9 s
+(cd "$W/89" && $U -O checks/check_corrections.py && $U -O checks/check_integer_roots.py \
+            && $U -O checks/check_reconstruction.py && $U checks/check_relative_numeric.py \
+            && $U checks/verify_numeric_examples.py && $U checks/check_boundary.py)            # about 14, 9, 10, 46, 24, 16 s
+(cd "$W/93" && $U checks/check_identities.py && $U checks/diagnostics/verify_summary.py)       # a few seconds
+```
+
+Compare `$W/82/checks/<name>.json` with `data/100-82-integral-<name>.json`,
+`$W/89/checks/<name>.json` (and `reconstruction.json`) with
+`data/100-89-boundary-<name>.json`, and `$W/93/checks/check_identities.json`
+with `data/100-93-theta-check_identities.json`. The intake's run on
+5 October 2026 reproduced every one of these files up to line endings
+(Python on Windows writes CRLF; the shipped files are LF), and
+`verify_summary.py` passed on the 18 saved rows. Source 100-89's
+`check_logarithmic_reversion.py` reproduces source 100-82's record exactly
+and was not run twice. Source 100-93's main diagnostics
+(`diagnostics.py --powers 12 20 32 48 --lambdas 4 5`, `--powers 8 --lambdas 4`,
+then `error_diagnostics.py` on each result file) need NumPy, SciPy and mpmath
+and are much more expensive; they were not rerun. Its binary128 audit
+(`python prepare_quad113.py`, `g++ -std=c++17 -O3 quad113.cpp -lquadmath -o
+quad113`, `./quad113 a8_l4_phase0.txt nodes96.txt` and the three other
+combinations) was compiled and run at placement, reproducing all four shipped
+outputs. The commands are in `100-93-theta-diagnostics-README.md`, under the
+delivered names. The delivered `verify_package.py` (not shipped) checks the
+delivered file hashes and runs only on an extraction of the arrival archive,
+e.g. `git show 60f54ea06:docs/incoming/ProveIt_Critical_Theta_Power_Weighted_Distinct_Partitions.zip > "$W/93.zip"`.
+
 ## Disclosures and discrepancies
 
 - `code/40-norm-moments-verify.py` says in its docstring "Run: python
@@ -563,6 +833,33 @@ It did not finish within three minutes at placement on a loaded machine.
   bibliography item. `77-51-fp-ind-SOURCE_CHECK.md` cites a screening note
   under the producer's `/workspace/shared/` directory, which was not
   delivered.
+- **Batch 100 delivered text.** The three `PROVENANCE.json` files hash
+  their delivered files, including the unshipped manuscripts, PDFs, READMEs,
+  `verify_package.py` and `build_local.sh`, under delivered paths.
+  `100-93-theta-diagnostics-README.md` describes the delivered
+  `checks/diagnostics/` layout, its commands use the delivered names, and it
+  says that "the existing delivered fixed-a package" had an exact DP only
+  through n = 3000 (source 100-89's `check_relative_numeric.py`). The
+  `run_checks.sh` drivers name `checks/…` paths and `python`/`python3`; source
+  100-89's names a file that is shipped only as source 100-82's (above).
+  Source 100-89 cites Gikunda's thesis at the ResearchGate address
+  402798310, as source 77-51's source check did; the article keeps the DOI.
+  Source 100-93's bibliography item for source 100-89 is "previously
+  delivered companion report and source package"; here that is Section 21.
+- **Batch 100 stale statements.** Source 100-82's "proves and strengthens
+  the conjecture currently listed in OEIS A022629", source 100-89's "settles
+  the current conjectures in OEIS A092484 and A265840–A265842" and its "The
+  closest located source is Gikunda's 2026 thesis" were written blind to this
+  report; here they are the sixth and seventh proofs (Section 21, "Stale
+  statements"). Source 100-89's table caption "Verified numerical
+  diagnostics" means reproduced by independent recurrences and quadratures,
+  not interval-certified (Section 21.6).
+- **OEIS data (CC BY-SA 4.0).** `code/100-82-integral-check_finite_coefficients.py`
+  embeds the first 21 terms of A022629 as an acceptance test. OEIS sequence
+  data are licensed CC BY-SA 4.0 (attribution: The OEIS Foundation,
+  https://oeis.org/A022629); no other batch-100 file embeds OEIS terms. The
+  intake did not re-fetch A022629, A092484, A265840–A265842 or A292189 for
+  batch 100.
 - **External claims.** The A022629 entry's conjecture text (Kotesovec,
   8 May 2018) was confirmed live on 1 October 2026; on 2 October 2026 the
   intake confirmed the names and first fifteen terms of A022630 and A022631
