@@ -173,6 +173,47 @@
 > improvement. The universal84/187 and85/155 points remain unchanged.
 >
 >
+> The [multiway Hadamard packing certificate](hadamard_next_arithmetic.md)
+> isolates a k-fold coefficientwise product in one central digit band using
+> k-1 products after loading. A fully paid fixed-width, fixed-horizon cyclic
+> Boolean trajectory graph has `n(T+1)+5T` positive witnesses, exact degree6,
+> and `(13n+18)T+11n-1` operations with fixed numerals; numeral construction
+> is separately charged. The [independent review](review_hadamard_next_arithmetic.md)
+> checks the general proof and all twelve saved arrays with fresh polynomial
+> calculations. A direct guarded certificate is cheaper by `18T+2n-2`.
+> Thus the identity gives no gate improvement; synchronized variable-width
+> loaders and an unbounded-history interface remain unresolved. The current
+> universal operation point remains84/187/18.
+>
+>
+> The [native gamma83 restrictions](gamma83_native_next.md) prove that the exact
+> fixed-index modulus polynomial `H_r(T^k)` is irreducible over Q for every
+> `r>=0,k>=1`, by reciprocal Eisenstein at2. This does not imply primality of
+> its numerical values or exclude a constant cofactor. On genuine histories
+> from the existing finite-prime filter, a factorization `H=3u^f` forces
+> `gcd(f,30)=1`, `ord_31(u)=30` and `u=1+4q^3 mod8q^3`.
+> The [independent proof review](review_gamma83_native_next.md) checks the
+> native hypotheses and exact two-adic valuation. The corrected residues
+> are `H=4` and `H/3=22 mod31`; the preliminary erroneous residues are retained
+> with their correction. No prime complement, numerical order certificate or
+> rejected-input alias is produced. **Independent-gamma83 remains unresolved**,
+> and the proved universal operation point remains84/187/18.
+>
+>
+> The [affine norm-pair rigidity theorem](complete84_affine_norm_pair_rigidity.md)
+> and [root proof challenge](review_complete84_affine_norm_pair_rigidity.md)
+> classify every invertible affine change preserving the product of the main
+> and input Pell norms over the actual generic source field. Only separate
+> reciprocal norm similitudes, with a possible pair swap, survive; fixing both
+> ordinates leaves independent center signs. A fifteen-parameter exterior
+> field and an explicit rational inverse bind the theorem to the84 source.
+> On canonical positive zeros, the positive half-difference pair has norm at
+> most1−(a+2)², so dividing the ordinary difference by2 does not restore a unit.
+> This is a field/identity obstruction, not an arithmetic gate lower bound:
+> cheaper evaluation of unchanged roots, nonlinear composition and more general
+> positive-zero charts remain open. No source or universal bound changes.
+>
+>
 > The [cross-block multiplication bound](complete84_cross_block_next.md)
 > and [independent review](review_complete84_cross_block_next.md) show that
 > six retained scale/first-norm/index monomials require at least eight
