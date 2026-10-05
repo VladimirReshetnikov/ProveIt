@@ -180,6 +180,18 @@ or46 witnesses/SOS224/degree52. Native AND remains in the loader, so a
 cheaper loading/accepting-history compiler is still needed for a universal
 improvement. The universal84/187 and85/155 points remain unchanged.
 
+The [four Beyond Ord archive reviews](Papers/research-wip/native-stream-queue/review_beyond_ord_e3839ad2c.md)
+authenticate all27 members delivered at e3839ad2c, all16 delivered checksum
+entries, and38 read spans covering2,468 lines plus446 context lines.
+Their selected interfaces distinguish finite ordinal-labelled set codes,
+relative comparison and supplied truth/class-recursion resources from
+ordinary effective integer computations. The standalone choice-free power
+argument passes its targeted challenge; the broader GB canonical-history
+refinement retains unaudited dependencies. Root separately authenticates
+all44 archive/context spans and source routes. No supplied programs,
+builds or PDFs were executed or rendered. The reviewed passages provide
+no paid fixed-arity universal compiler; the arithmetic bound stays84.
+
 The [two-derivations intake review](Papers/research-wip/native-stream-queue/review_two_derivations_78528873b.md)
 at **78528873b** reads the complete1347-line manuscript and independently
 challenges the scalar coordinate, simultaneous normal form, finite-dimensional
