@@ -1,0 +1,50 @@
+\section{The sharp lower constant at every length}\label{sec:lower}
+First use the finite comparison with
+\[
+ r=\lfloor2n/\log n\rfloor,\qquad q=n-r,\qquad M=r(r+1)/2.
+\]
+Writing $L=\log n$, these parameters satisfy
+\begin{equation}\label{eq:optimparameters}
+ r=\frac{2n}{L}+O(1),\qquad M\sim\frac{2n^2}{L^2},\qquad
+ Q\sim\frac{4n}{L^2}.
+\end{equation}
+The three fiber costs are subexponential. More explicitly,
+\begin{align}
+ \log\left(2^{r+1}(Q+1)\binom{n+Q}{r}\right)
+ &\le(r+1)\log2+\log(Q+1)
+      +r\log\frac{e(n+Q)}r\notag\\
+ &=O(n\log L/L).\label{eq:lowercost}
+\end{align}
+By Lemma~\ref{lem:triangular},
+\begin{equation}\label{eq:singlelower}
+ \log T(n,r)=n(L-2\log L+C_+)+O(n\log L/L).
+\end{equation}
+Equations \eqref{eq:finitelower}--\eqref{eq:singlelower} give the desired lower constant at lengths $n+Q$, but those lengths alone are not enough for an all-length theorem.
+
+Fix a sufficiently large target $N$, and choose instead
+\begin{equation}\label{eq:alllength}
+ n=N-\left\lceil\frac{8N}{(\log N)^2}\right\rceil,
+ \qquad r=\lfloor2n/\log n\rfloor,
+\end{equation}
+with $Q$ as in \eqref{eq:Q}. Then $n/N\to1$, $Q\sim4N/(\log N)^2$, and consequently $n+Q\le N$ eventually. Apply Proposition~\ref{prop:repair}, then append additional fresh records to reach exactly $N$. This extra padding is injective because its starting length is fixed.
+
+For $f(x)=x(\log x-2\log\log x+C_+)$, the explicit derivative is
+\[
+ f'(x)=\log x-2\log\log x+C_++1-\frac2{\log x}=O(\log x).
+\]
+The shift in \eqref{eq:alllength} is $O(N/(\log N)^2)$, so
+\[
+ f(n)=f(N)+O(N/\log N).
+\]
+All the losses in \eqref{eq:lowercost} are $O(N\log\log N/\log N)$. It follows that
+\begin{equation}\label{eq:lowerfinal}
+ \log e_N\ge N(\log N-2\log\log N+C_+)
+                  -O(N\log\log N/\log N).
+\end{equation}
+Since $e_N\le a_N$ and both satisfy the upper bound \eqref{eq:upperfinal}, this proves \eqref{eq:main} for $a,e$. In particular, the stronger lower construction lands entirely in the multiplicity-at-most-two subclass $\Av(000,100)$.
+
+Combining \eqref{eq:main} with \eqref{eq:blog} also yields
+\[
+ \log a_n-\log b_n=o(n),\qquad \log e_n-\log b_n=o(n).
+\]
+This means $a_n/b_n=\exp(o(n))$ and $e_n/b_n=\exp(o(n))$, often called subexponential equivalence. It is strictly weaker than either ratio tending to one, and gives no relative equivalent for $a_n$ or $e_n$.

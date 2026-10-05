@@ -1,0 +1,45 @@
+Negative tests: Python 3.12.14, SymPy 1.14.0, optimize=1
+PASS source-package manifest: 11 files
+PASS immutable JSON input hashes: 5 files
+PASS relaxed dependency integrity: both pinned PDF and source ZIP match SHA-256
+PASS Proposition 5: 36 rows; diagonal [1, 1, 6, 60, 900, 18480, 487560, 15824880, 612504240, 27619664640]
+PASS uniform B, startup, support, domination, factorial edge; 357 rotated sites through N=36
+PASS five symbolic elimination identities, signs, exceptional row zero; support/nonnegativity through n=36; 180 exact sites through n=18
+PASS gauge conjugation and cancellation identities; 1848 exact nonnegative squared-entry comparisons through n=36
+PASS finished Airy-pair recurrence: both components through t^7; all ghost/gauge conditions; operator basis degrees 0..12
+PASS carrier discrete integration; endpoint log/multiplicative through n^(-4/3); independent ratio through n^(-7/3)
+PASS inverse transcription: 11/8 logarithmic power, d1, second Taylor correction, Lambert identity; Newton/Stirling inequalities J=0..128
+REJECT boolean schema version: exact: schema or range
+REJECT diagonal count: Proposition 5 diagonal mismatch
+REJECT negative startup seed: Proposition 5/negative_seed: nonzero exact residual -1
+REJECT uniform normalization: uniform B/lag: nonzero exact residual -m/2
+REJECT singular-site startup: startup e(2,0)
+REJECT rotated lag factor: rotated lag derivation: nonzero exact residual -(-N + h)/(2*(N + h)*(N + h - 2))
+REJECT exceptional B row zero: elimination/B_row0: nonzero exact residual 1/(2*n)
+REJECT third-lag sign: elimination/F_sign: nonzero exact residual -2
+REJECT memory input support: elimination/B_input_end: nonzero exact residual 1
+REJECT gauge-memory cancellation: P/j squared cancellation: nonzero exact residual -(4*k**6 + 8*k**5*n - 28*k**5 - 4*k**4*n**2 - 44*k**4*n + 72*k**4 - 16*k**3*n**3 + 24*k**3*n**2 + 112*k**3*n - 96*k**3 - 4*k**2*n**4 + 56*k**2*n**3 - 64*k**2*n**2 - 120*k**2*n + 63*k**2 + 8*k*n**5 + 4*k*n**4 - 48*k*n**3 + 32*k*n**2 + 66*k*n - 16*k + 4*n**6 - 12*n**5 - 8*n**4 + 24*n**3 - n**2 - 16*n)/(4*(k + n)*(k - n - 1)**2*(k + n - 2)**2*(k + n - 1))
+REJECT sigma3 coefficient: finished formal residual component 0, t^3: nonzero exact residual -1/4
+REJECT profile ghost boundary: finished formal residual component 0, t^3: nonzero exact residual 2
+REJECT endpoint log coefficient: endpoint log_correction/0: nonzero exact residual -53*a**2/8010
+REJECT endpoint multiplicative coefficient: endpoint multiplicative/0: nonzero exact residual -1
+REJECT endpoint ratio coefficient: endpoint ratio/3: nonzero exact residual 1/8
+REJECT inverse logarithmic power: inverse combined power: nonzero exact residual -1/2
+REJECT inverse Taylor correction: inverse second-correction Taylor residual: nonzero exact residual 9*a**2/L**2
+REJECT inverse Newton exponent: Newton X exponent transcription
+REJECT truncated coefficient list: formal sigma: expected 8 entries
+REJECT floating-point coefficient: sigma3: unsupported expression syntax
+REJECT executable expression: sigma3: unsupported expression syntax
+REJECT unknown schema field: endpoint/D: incorrect object keys
+REJECT duplicate JSON key: duplicate JSON key: D
+REJECT nonfinite JSON constant: nonfinite fixture: forbidden nonfinite value
+REJECT input bytes exact.json: exact.json: SHA-256 mismatch
+REJECT input bytes formal_7.json: formal_7.json: SHA-256 mismatch
+REJECT input bytes endpoint_7.json: endpoint_7.json: SHA-256 mismatch
+REJECT input bytes inverse.json: inverse.json: SHA-256 mismatch
+REJECT input bytes dependencies.json: dependencies.json: SHA-256 mismatch
+REJECT declared relaxed pin: dependencies/relaxed_tree_amplitude.pdf: changed declared pin
+REJECT relaxed dependency bytes dependencies/relaxed_tree_amplitude.pdf: dependencies/relaxed_tree_amplitude.pdf: SHA-256 mismatch
+REJECT relaxed dependency bytes dependencies/relaxed_tree_amplitude_sources.zip: dependencies/relaxed_tree_amplitude_sources.zip: SHA-256 mismatch
+REJECT checker source bytes: source verify.py: SHA-256 mismatch
+PASS all 33 deliberate corruptions rejected; positive baseline passed; no Python assert statements

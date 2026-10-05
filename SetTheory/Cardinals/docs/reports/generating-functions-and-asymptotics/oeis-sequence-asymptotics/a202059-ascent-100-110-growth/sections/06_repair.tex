@@ -1,0 +1,49 @@
+\section{Repairing empty rows and bounding all fibers}\label{sec:repair}
+The triangular sum counts rows of total zero as well. Enforcing positivity by discarding all such arrays would need a separate probability estimate. Instead, a small deterministic repair suffices for at least half the arrays.
+
+\begin{proposition}\label{prop:repair}
+Let $n>r\ge1$, $q=n-r$, $M=r(r+1)/2$, and
+\begin{equation}\label{eq:Q}
+ Q=\left\lceil\frac{2(M+q)}q\right\rceil.
+\end{equation}
+Then
+\begin{equation}\label{eq:finitelower}
+ e_{n+Q}\ge
+ \frac{T(n,r)}{2^{r+1}(Q+1)\binom{n+Q}{r}}.
+\end{equation}
+In particular the same lower bound holds for $a_{n+Q}$.
+\end{proposition}
+\begin{proof}
+Choose uniformly among the $T(n,r)$ weak compositions of $q$ into $M$ cells and group the cells into rows of widths $r,r-1,\ldots,1$. A row of width $k$ has emptiness probability
+\begin{align}
+ \Prob(\text{row }k\text{ empty})
+ &=\frac{\binom{M-k+q-1}{q}}{\binom{M+q-1}{q}}\notag\\
+ &=\prod_{i=0}^{q-1}\frac{M-k+i}{M+i}
+ \le\exp\left(-\frac{kq}{M+q-1}\right),\label{eq:empty}
+\end{align}
+when $M-k\ge1$. If $M-k=0$, emptiness has probability zero because $q>0$, so the displayed upper bound remains valid. The product bound follows from $1-t\le e^{-t}$ and $M+i\le M+q-1$.
+
+Let $Z$ count the empty rows. With $\theta=q/(M+q-1)>0$, linearity of expectation and a geometric sum give
+\begin{equation}\label{eq:expect}
+ \E Z\le\sum_{k=1}^r e^{-k\theta}
+ \le\frac1{e^\theta-1}\le\frac{M+q-1}{q}<\frac Q2.
+\end{equation}
+No independence between rows is used. Markov's inequality shows that at least half the arrays have $Z\le Q$.
+
+For each such array add one unit to the first cell of every empty row. The repaired array has all row totals positive, and total $q+t$ where $t=Z\in\{0,\ldots,Q\}$. The remainder of the proof records three separate possible losses.
+
+\emph{First fiber, repair.} In a repaired row, the only ambiguity is whether a first-cell singleton $(1,0,\ldots,0)$ was originally that singleton or was originally empty. Every other row has a unique preimage. Thus an entire repaired array has at most $2^r$ preimages. The fixed original total $q$ can only reduce this bound. At least $T(n,r)/2^{r+1}$ distinct repaired arrays remain.
+
+\emph{Second fiber, block boundaries.} Apply Section~\ref{sec:positive} to a repaired array. Its suffix has length $p=q+t$, its full word has length $n+t$, and it avoids $000$ and $100$. Lemma~\ref{lem:blockfiber} bounds its fiber by
+\[
+ \binom{n+t-r-1}{r-1}\le\binom{n+Q}{r}.
+\]
+For example, the inequality follows by adding one distinguished cut to a set of $r-1$ cuts and then enlarging the ambient set. Across different $t$, the output lengths are distinct. Thus at least
+\[
+ \frac{T(n,r)}{2^{r+1}\binom{n+Q}{r}}
+\]
+words of lengths between $n$ and $n+Q$ have been produced.
+
+\emph{Third fiber, padding.} A word of maximum $H$ and ascent count $A$ satisfies $H\le A$ by Lemma~\ref{lem:prefix}. Appending the fresh record $H+1$ is legal, since $H+1\le A+1$. Successive fresh records preserve each of $000$, $100$, and $110$ avoidance. Pad every word to length $n+Q$ in this way. At each fixed original length, truncation recovers the original word, so this padding is injective. With up to $Q+1$ possible original lengths, its total fiber is at most $Q+1$. Combining the three bounds proves \eqref{eq:finitelower}.
+\end{proof}
+The right side is a real lower bound and need not be an integer. The proposition is a finite counting inequality, with no assumed bijection between its original triangular arrays and its final words. It remains valid when $Q\ge r$, although the asymptotic use below has $Q=o(r)$.

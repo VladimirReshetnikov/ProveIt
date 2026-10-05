@@ -1,0 +1,89 @@
+\section{The triangular sum and its logarithmic estimate}\label{sec:triangular}
+For integers $1\le r\le n$, put
+\begin{equation}\label{eq:T}
+ M_r=\frac{r(r+1)}2,\qquad q=n-r,\qquad
+ T(n,r)=\binom{M_r+q-1}{q},\qquad b_n=\sum_{r=1}^n T(n,r),
+\end{equation}
+and $b_0=1$. A nonnegative triangular array of dimension $r$ has $M_r$ cells. Requiring its diagonal to be positive uses $r$ units; after subtracting those units, its weight-$n$ count is exactly $T(n,r)$ by stars and bars. Thus
+\[
+ \sum_{n\ge0}b_nz^n=1+\sum_{r\ge1}\frac{z^r}{(1-z)^{r(r+1)/2}}.
+\]
+This exact triangular enumeration has older interval-poset antecedents \cite{bayoumi,khamis}. The identification with self-modified ascent sequences and the positive-diagonal matrix correspondence are established in \cite{bcdk,dukes}. The size convention is
+\begin{equation}\label{eq:shift}
+ b_n=\mathrm{A098569}(n-1)\qquad(n\ge1),
+\end{equation}
+using the current offset \cite{oeistriangular}. Neither the matrix formula nor that correspondence is a new result of this report. Our comparisons will use the explicit sum \eqref{eq:T}, so no unproved transfer between word classes is required.
+
+\begin{lemma}\label{lem:triangular}
+As $n\to\infty$,
+\begin{equation}\label{eq:blog}
+ \log b_n=n(\log n-2\log\log n+C_+)
+       +O\!\left(\frac{n\log\log n}{\log n}\right).
+\end{equation}
+The single term with $r=\lfloor2n/\log n\rfloor$ has the same estimate.
+\end{lemma}
+\begin{proof}
+Write $L=\log n$ and use the continuous comparison phase
+\[
+ H_n(x)=(n-x)\left(\log\frac{x^2}{2(n-x)}+1\right),
+ \qquad H_n(n)=0.
+\]
+For integer $r$ and $q=n-r$, the exact product identity gives
+\begin{equation}\label{eq:product}
+ \log T(n,r)=q\log M_r-\log(q!)+\mathcal R,
+ \qquad 0\le\mathcal R\le\frac{q(q-1)}{2M_r}.
+\end{equation}
+Here $\mathcal R=\sum_{i=0}^{q-1}\log(1+i/M_r)$, so the bound uses only $0\le\log(1+t)\le t$. The convention $0!=1$ covers $q=0$. Comparing the increasing function $\log x$ with its integral gives
+\[
+ \log(q!)=q\log q-q+O(\log(q+2)),
+\]
+with $0\log0=0$. Since $\log M_r=2\log r-\log2+O(1/r)$, it follows uniformly for $n/(2L)\le r\le n$ that
+\begin{equation}\label{eq:phasecomp}
+ \log T(n,r)=H_n(r)+O(L^2).
+\end{equation}
+This is a value estimate; we will differentiate the explicit $H_n$, never its error.
+
+For $\alpha$ in the fixed interval $[1/2,4]$, expansion of $\log(1-\alpha/L)$ gives, uniformly,
+\begin{equation}\label{eq:alpha}
+ H_n(\alpha n/L)
+ =n\left[L-2\log L+2\log\alpha-\log2+1-\alpha\right]
+     +O(n\log L/L).
+\end{equation}
+The elementary function $2\log\alpha-\alpha$ has its unique maximum at $\alpha=2$. Consequently the phase on this interval is at most
+\[
+ n[L-2\log L+\log2-1]+O(n\log L/L),
+\]
+and equality with that error holds at $x=2n/L$.
+
+It remains to exclude the two outer ranges; a local calculation alone would not bound the sum. For $0<x<n$,
+\[
+ H_n'(x)=\frac{2n}{x}-2-2\log x+\log(2(n-x)),\qquad
+ H_n''(x)=-\frac{2n}{x^2}-\frac2x-\frac1{n-x}<0.
+\]
+At $x=4n/L$, the first derivative is $-L/2+2\log L+O(1)<0$. Therefore $H_n$ decreases thereafter. Formula \eqref{eq:alpha} shows that its value there is below the value at $2n/L$ by
+\[
+ (2-2\log2)n+O(n\log L/L),
+\]
+a positive linear gap. Together with \eqref{eq:phasecomp}, this controls all $r\ge4n/L$, including $r=n$.
+
+For $r<n/(2L)$, let $m=\lceil n/(2L)\rceil$ and $M=M_m$. The integer function $\binom{M+q-1}{q}$ is nondecreasing in both $M\ge1$ and $q\ge0$. Hence
+\[
+ T(n,r)\le\binom{M+n-1}{n}.
+\]
+Apply \eqref{eq:product} with this $M$ and $q=n$. Since
+$M=n^2/(8L^2)(1+O(L/n))$, its logarithm is
+\[
+ n[L-2\log L-\log8+1]+O(L^2+L),
+\]
+which is below $n[L-2\log L+\log2-1]$ by
+$(\log16-2)n+o(n)$. Thus both outer ranges are exponentially smaller on the logarithmic scale needed here.
+
+Rounding $2n/L$ to $r_0=\lfloor2n/L\rfloor$ changes $H_n$ by $O(L)$, for instance by its displayed derivative on a unit neighborhood. Equations \eqref{eq:phasecomp} and \eqref{eq:alpha} therefore prove the claimed estimate for $T(n,r_0)$. Finally,
+\[
+ \max_r T(n,r)\le b_n\le n\max_r T(n,r),
+\]
+and $L+L^2=O(n\log L/L)$ eventually. This proves the lemma.
+\end{proof}
+\begin{remark}
+The error in \eqref{eq:product} near $r=2n/L$ is only $O(L^2)$, but it is not bounded: its leading order is $L^2/4$. Discarding it is harmless for \eqref{eq:blog}, not for a relative equivalent. Likewise, equality of logarithms up to $o(n)$ does not imply a ratio tending to one.
+\end{remark}

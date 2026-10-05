@@ -1,0 +1,1040 @@
+\pdfinfoomitdate=1
+\pdftrailerid{}
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=27mm,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,booktabs,array}
+\usepackage{enumitem,fancyhdr,xcolor}
+\usepackage[hidelinks]{hyperref}
+\hypersetup{pdftitle={Report 105 - Weak ascent sequences and fixed difference ascent growth},pdfauthor={Research report prepared for Vladimir}}
+\pagestyle{fancy}\fancyhf{}\lhead{\small Weak ascent sequences}\rhead{\small Report 105}\cfoot{\thepage}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\R}{\mathbb R}\newcommand{\Q}{\mathbb Q}\newcommand{\E}{\mathbb E}\newcommand{\Prob}{\mathbb P}
+\newcommand{\ind}{\mathbf 1}\newcommand{\wasc}{\operatorname{wasc}}\newcommand{\dasc}{\operatorname{dasc}}
+\newcommand{\dd}{\,\mathrm d}\newcommand{\ee}{\mathrm e}
+\DeclareMathOperator{\Li}{Li}
+\setlength{\emergencystretch}{2em}
+\numberwithin{equation}{section}
+\title{\textbf{Weak Ascent Sequences\\and Fixed Difference Ascent Growth}\\[7pt]\large Factorial growth, concentration, and a sharp logarithmic square correction}
+\author{Research report 105\\Prepared for Vladimir}
+\date{2 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+Let $a_n$ count the weak ascent sequences of B\'enyi, Claesson and Dukes, recorded as OEIS A336070. We prove that both the factorial-normalized root and the scaled consecutive ratio tend to $\mu=6/\pi^2$. The weak-ascent count divided by the length is exponentially concentrated at $\mu$. The same conclusions hold for every fixed nonnegative integer difference-ascent parameter $d$, under the convention that a $d$-ascent satisfies $x_{i+1}>x_i-d$.
+
+For A336070, a quadratic positive corrector and an exact path change of measure give
+\[
+\log\frac{a_n}{n!\mu^n}=\frac12(\log n)^2+
+O\!\left(\frac{(\log n)^2}{\log\log n}\right).
+\]
+This also yields a signed correction to the Lambert threshold inverse with a smaller-order error. These are substantial partial asymptotic results: a relative-error coefficient equivalent, smaller correction coefficients, and an amplitude remain unproved. The only external asymptotic input is the established ordinary Fishburn-number asymptotic; all new comparison, calibration, and inverse steps are given in detail.
+\end{abstract}
+\tableofcontents
+\newpage
+
+\section{Scope and principal conclusions}
+A weak ascent of a finite sequence $x=(x_1,\ldots,x_n)$ of nonnegative integers is an index $i<n$ with $x_i\le x_{i+1}$. A weak ascent sequence has $x_1=0$ and
+\begin{equation}\label{eq:definition}
+0\le x_{i+1}\le1+\wasc(x_1,\ldots,x_i)\qquad(1\le i<n).
+\end{equation}
+We count the empty sequence once, so $a_0=1$. These are the sequences in A336070 \cite{oeis,benyi}, beginning
+\[
+1,1,2,6,23,106,567,3440,23286,173704,1414102,\ldots.
+\]
+The definition matters: other papers have used the informal name ``weak ascent sequence'' for different globally constrained objects. All assertions below concern \eqref{eq:definition}.
+
+Put
+\begin{equation}\label{eq:chi}
+g(v)=\frac{\log v}{v-1},\quad g(1)=1,\qquad
+\chi(v)=\int_v^\infty\frac{\log t}{t(t-1)}\dd t,
+\qquad \mu=\frac6{\pi^2}.
+\end{equation}
+The integrand has its removable value at $t=1$. For a uniformly chosen length-$n$ weak ascent sequence, let $K_n$ be its weak-ascent count. Write
+\[
+H_n(v)=\sum_{|x|=n}v^{\wasc(x)}\quad(n\ge1).
+\]
+
+\begin{theorem}\label{thm:main}
+For every fixed $v>0$,
+\begin{equation}\label{eq:tilt}
+\limsup_{n\to\infty}\frac1n\log\frac{H_n(v)}{n!}\le-\log\chi(v).
+\end{equation}
+Moreover,
+\begin{equation}\label{eq:rootratio}
+\lim_{n\to\infty}\left(\frac{a_n}{n!}\right)^{1/n}=\mu,
+\qquad
+\lim_{n\to\infty}\frac{a_{n+1}}{(n+1)a_n}=\mu.
+\end{equation}
+For every $\eta>0$ there are $c_\eta>0$ and $n_\eta$ such that
+\begin{equation}\label{eq:concentration}
+\Prob\!\left(\left|\frac{K_n}{n}-\mu\right|\ge\eta\right)
+\le \ee^{-c_\eta n}\qquad(n\ge n_\eta).
+\end{equation}
+The same statements hold for every fixed nonnegative integer $d$ when weak ascents and their sequence constraint are replaced by $d$-ascents and the corresponding constraint of Section~\ref{sec:fixedd}.
+\end{theorem}
+
+\begin{theorem}\label{thm:logsquare}
+For weak ascent sequences, namely $d=1$,
+\begin{equation}\label{eq:logsquare}
+\log\frac{a_n}{n!\mu^n}=\frac12(\log n)^2+
+O\!\left(\frac{(\log n)^2}{\log\log n}\right).
+\end{equation}
+In particular the quotient of this logarithm by $(\log n)^2$ tends to $1/2$.
+For $N(X)=\min\{n\ge0:a_n\ge X\}$, $L=\log X$, and
+$x=L/W(\mu L/\ee)$,
+\begin{equation}\label{eq:inverseintro}
+N(X)=x-\frac{(\log x)^2}{2\log(\mu x)}
++O\!\left(\frac{\log x}{\log\log x}\right)\qquad(X\to\infty).
+\end{equation}
+Here $W$ is the principal Lambert function. The logarithmic correction theorem is specific to $d=1$.
+\end{theorem}
+
+\paragraph{What remains open.}
+Equation \eqref{eq:logsquare} is a logarithmic asymptotic, not a multiplicative equivalent. The error inside the exponential need not tend to zero. No amplitude, coefficient of a smaller correction, full tilted pressure, central limit theorem, or transseries is established. The upper bound \eqref{eq:tilt} need not be an equality away from $v=1$. The inverse error in \eqref{eq:inverseintro} diverges and has an unspecified asymptotic constant; it is not a bounded-error inverse or a certified finite numerical error bar.
+
+\paragraph{Relation to the literature.}
+The definition, bijections, and enumerative refinements are due to B\'enyi--Claesson--Dukes \cite{benyi}; the catalytic equation used below comes from Auli--Elizalde \cite{auli}. Mansour's 2026 paper \cite{mansour} provides further statistical generating functions. The fixed-$d$ convention follows Dukes--Sagan \cite{dukes}. A bounded literature check through 2 October 2026 did not locate the asymptotic conclusions proved here or a full unrestricted coefficient equivalent. This is not a claim of an exhaustive novelty search. Ordinary Fishburn asymptotics are prior work \cite{hwang}; their use as a lower comparison is explicit throughout.
+
+\section{Exact state recurrence and formal generating functions}\label{sec:exact}
+\subsection{Positive recurrence and extension identity}
+At length $n\ge1$, write $(K,L)$ for the number of weak ascents and the final letter. Starting from $(0,0)$, appending $j$ gives
+\begin{equation}\label{eq:transition}
+(K,L)\longmapsto(K+\ind_{\{j\ge L\}},j),\qquad 0\le j\le K+1.
+\end{equation}
+Induction gives $0\le L\le K\le n-1$: without an ascent the new letter is below $L$, and with an ascent it is at most $K+1$, the new count. Consequently every such sequence is an inversion sequence and $a_n\le n!$.
+
+Let $F(n,k,l)$ count sequences in state $(k,l)$, with $F(1,0,0)=1$ and every out-of-range entry zero. For $0\le j\le k\le n$,
+\begin{equation}\label{eq:recurrence}
+F(n+1,k,j)=\sum_{l=j+1}^{k}F(n,k,l)
++\sum_{l=0}^{\min(j,k-1)}F(n,k-1,l).
+\end{equation}
+The first sum appends a strict descent and preserves the count; the second appends a weak ascent and increases it. Empty sums are zero. Thus
+\begin{equation}\label{eq:sums}
+a_n=\sum_{k=0}^{n-1}\sum_{l=0}^kF(n,k,l),\qquad
+H_n(v)=\sum_{k,l}F(n,k,l)v^k.
+\end{equation}
+Prefix and suffix sums compute a new layer in $O(n^2)$ integer operations and all layers through $N$ in $O(N^3)$ integer operations; this is an arithmetic-operation count, not a bit-complexity bound.
+
+There are exactly $K+2$ children of each state. Counting them in two ways gives the crucial identity
+\begin{equation}\label{eq:children}
+\frac{a_{n+1}}{a_n}=\E_n(K_n+2)\qquad(n\ge1).
+\end{equation}
+The ratio limit will follow from this identity and concentration, not from a root-limit inference.
+
+\subsection{Catalytic equation and its polynomial meaning}
+Define $g_0(u)=u$ and, for $n\ge1$,
+\[
+g_n(u)=u^2H_n(u)=\sum_{k,l}F(n,k,l)u^{k+2},\qquad
+G(u,z)=\sum_{n\ge0}g_n(u)z^n.
+\]
+The exact equation of Auli--Elizalde, translated to this refinement, is
+\begin{equation}\label{eq:kernel}
+G(u,z)=u(1-u)+uG(u+zu(1-u),z),\qquad a_n=g_n(1).
+\end{equation}
+This is an identity in $\Q[u][[z]]$, the ring of formal power series in $z$ whose coefficients are polynomials in $u$. It is not an analytic assertion about convergence at positive $z$. At $z^0$ it yields $g_0=u$ after cancellation of $1-u$ in $\Q[u]$. For $n\ge1$, formal Taylor expansion gives
+\[
+(1-u)g_n(u)=\sum_{j=1}^{n}
+\frac{u^{j+1}(1-u)^j}{j!}\,g_{n-j}^{(j)}(u).
+\]
+Every term is divisible by $1-u$, so division in the polynomial ring is legitimate and yields the unique recursion
+\begin{equation}\label{eq:derivative}
+g_n(u)=\sum_{j=1}^{n}
+\frac{u^{j+1}(1-u)^{j-1}}{j!}\,g_{n-j}^{(j)}(u).
+\end{equation}
+For example,
+\[
+g_1=u^2,\quad g_2=2u^3,\quad g_3=u^3+5u^4,
+\quad g_4=9u^4+14u^5.
+\]
+Only after polynomial cancellation do we set $u=1$. This gives
+\begin{equation}\label{eq:derivativeatone}
+a_n=g'_{n-1}(1),\qquad n\ge1,
+\end{equation}
+consistent with \eqref{eq:children} for $n\ge2$. Setting $u=1$ directly in \eqref{eq:kernel} would merely give a tautology and lose the useful information.
+
+The factorial growth proved below implies that the ordinary series $G(1,z)$ has radius zero. Its Borel transform
+\[
+B(u,t)=\sum_{n\ge0}g_n(u)\frac{t^n}{n!}
+\]
+obeys the formal identity
+\begin{equation}\label{eq:borel}
+B(u,t)=u+\sum_{j\ge1}\frac{u^{j+1}(1-u)^{j-1}}{j!}
+\mathcal I^j\bigl[\partial_u^jB(u,t)\bigr],
+\end{equation}
+where $\mathcal I$ integrates formally from $0$ to $t$. Each coefficient receives only finitely many contributions. Equation \eqref{eq:derivativeatone} gives $\partial_tB(1,t)=\partial_uB(1,t)$ formally. The root theorem establishes the radius $\pi^2/6$ of $B(1,t)$, but does not identify its singular type or justify analytic continuation of \eqref{eq:borel}.
+
+\section{The frozen positive matrix}\label{sec:matrix}
+Fix $M\ge1$ and $v>0$. On the alphabet $\{0,\ldots,M-1\}$ define
+\begin{equation}\label{eq:matrix}
+T_v(l,j)=v^{\ind_{\{j\ge l\}}},\qquad 0\le l,j<M.
+\end{equation}
+For $v\ne1$ set $r=v^{-1/M}$ and
+\begin{equation}\label{eq:eigen}
+f_l=r^l,\qquad \lambda_M(v)=\frac{v-1}{1-r}.
+\end{equation}
+At $v=1$, take $f_l=1$ and $\lambda_M(1)=M$.
+
+\begin{lemma}\label{lem:frozen}
+The positive vector $f$ satisfies $T_vf=\lambda_M(v)f$. For every integer $b\ge0$,
+\begin{equation}\label{eq:matrixbound}
+T_v^b\mathbf1\le\max(v,v^{-1})\lambda_M(v)^b\mathbf1
+\end{equation}
+entrywise. Uniformly for $v$ in any fixed compact subset of $(0,\infty)$,
+\begin{equation}\label{eq:eigenestimate}
+\lambda_M(v)\le\frac{M}{g(v)}+C
+\end{equation}
+with a constant independent of $M$.
+\end{lemma}
+\begin{proof}
+The first row has value
+\[
+(T_vf)_0=v\sum_{j=0}^{M-1}r^j=\frac{v-1}{1-r}=\lambda_M(v),
+\]
+and consecutive rows differ by $(1-v)r^l=\lambda_M(v)(r-1)r^l$. This proves the identity. It remains valid for $v<1$, when both numerator and denominator of $\lambda_M(v)$ are negative. At $v=1$, $T_v$ is the all-ones matrix.
+
+If $m_f=\min_l f_l$ and $M_f=\max_l f_l$, positivity implies
+\[
+T_v^b\mathbf1\le \lambda_M(v)^b f/m_f
+\le(M_f/m_f)\lambda_M(v)^b\mathbf1.
+\]
+Here $M_f/m_f=\max(v,v^{-1})^{(M-1)/M}\le\max(v,v^{-1})$.
+Finally let $q=\log v$ and define the continuous removable function
+\[
+h(s)=\frac1{1-\ee^{-s}}-\frac1s,\qquad h(0)=\frac12.
+\]
+Then $\lambda_M(v)-M/g(v)=(v-1)h(q/M)$. For marks in a fixed compact set, $q/M$ stays in a fixed compact interval and this difference is bounded.
+\end{proof}
+
+\begin{lemma}\label{lem:block}
+In a block of $b$ extensions starting from $(K,L)$, let $K'$ be the final weak-ascent count. Then
+\begin{equation}\label{eq:block}
+\sum_{\text{actual block paths}}v^{K'-K}
+\le\max(v,v^{-1})\lambda_{K+b+2}(v)^b.
+\end{equation}
+On a fixed compact mark range the eigenvalue on the right is bounded by
+\begin{equation}\label{eq:blockeig}
+\lambda_{K+b+2}(v)\le K/g(v)+C(b+1).
+\end{equation}
+\end{lemma}
+\begin{proof}
+The ascent count increases by at most $b$. Every actual letter lies in the alphabet $\{0,\ldots,K+b+1\}$. Embedding the actual paths into all paths of that frozen alphabet preserves each weight $v^{K'-K}$ exactly and adds only nonnegative weights. Apply Lemma~\ref{lem:frozen} with $M=K+b+2$. This reasoning also works when $v<1$: it adds positive terms, rather than relying on monotonicity of $v^K$ in $K$. The compact bound follows from \eqref{eq:eigenestimate} and boundedness of $1/g$.
+\end{proof}
+
+\section{Calibrated block proof of the tilted upper bound}\label{sec:calibration}
+\subsection{A statewise calibration}
+Fix the terminal mark $v_0>0$ and put $\nu=1/\chi(v_0)$. The function $\chi$ is positive, strictly decreasing, and smooth on $(0,\infty)$, with
+\[
+\chi'(v)=-g(v)/v,\qquad \chi(v)\longrightarrow0\quad(v\to\infty).
+\]
+For $0<\tau\le1$, define $v(\tau)\ge v_0$ uniquely by
+\begin{equation}\label{eq:curve}
+\tau=\nu\chi(v(\tau)),\qquad \theta(\tau)=\log v(\tau).
+\end{equation}
+Differentiation gives
+\begin{equation}\label{eq:calibration}
+\theta'(\tau)=-\frac1{\nu g(v(\tau))},\qquad
+\frac{y}{\nu g(v(\tau))}=-\theta'(\tau)y\quad(y\ge0).
+\end{equation}
+This is a global identity for every possible scaled state $y$, not an equation presumed to hold along a typical trajectory. For fixed $\varepsilon>0$, $\theta$ and its first two derivatives are bounded on $[\varepsilon,1]$. The terminal value $\theta(1)=\log v_0$ can be negative.
+
+For $v\ge2$,
+\[
+\chi(v)\le2\int_v^\infty\frac{\log t}{t^2}\dd t
+=\frac{2(\log v+1)}v=O(v^{-1/2}).
+\]
+As $\varepsilon\downarrow0$, \eqref{eq:curve} therefore implies
+\begin{equation}\label{eq:thetaendpoint}
+|\theta(\varepsilon)|=O(\log(1/\varepsilon)),\qquad
+\varepsilon|\theta(\varepsilon)|\longrightarrow0.
+\end{equation}
+
+\subsection{One block and cancellation}
+Fix $\varepsilon\in(0,1)$, take $k=\lceil\varepsilon n\rceil$, and divide the extensions from length $k$ to length $n$ into $J=O(1/\delta)$ blocks of lengths $b_j\le\delta n$, allowing harmless integer endpoint adjustments. On a block starting at scaled time $\tau$, put $b=b_j$, $\theta=\theta(\tau)$, and
+\[
+\Delta\theta=\theta(\tau+b/n)-\theta(\tau),\qquad v=\ee^\theta.
+\]
+Since $0\le K'-K\le b$,
+\begin{align}\label{eq:blockpotential}
+\sum_{\text{paths}}\ee^{\theta(\tau+b/n)K'}
+&\le \ee^{\theta K+\Delta\theta K+b|\Delta\theta|}
+\max(v,v^{-1})\lambda_{K+b+2}(v)^b.
+\end{align}
+The constants below may depend on $\varepsilon,v_0$, but are independent of $n$, the state, and the subsequently chosen small $\delta$.
+
+Apply $\log x\le x-1$ to $x=\lambda/(n\nu)$ and use \eqref{eq:blockeig} and \eqref{eq:calibration}:
+\begin{equation}\label{eq:lambdaexponent}
+\lambda^b\le(n\nu/\ee)^b
+\exp\!\left(-\frac bn\theta'(\tau)K+C\frac{b(b+1)}n\right).
+\end{equation}
+Taylor's theorem gives
+\[
+\Delta\theta=\frac bn\theta'(\tau)+O(b^2/n^2),\qquad
+|\Delta\theta|=O(b/n).
+\]
+Every reachable state has $K\le n$. Thus the terms linear in $K$ cancel between \eqref{eq:blockpotential} and \eqref{eq:lambdaexponent}, and the remaining state term is $O(b^2/n)$. The eigenvector condition number contributes $O(1)$ to the logarithm per block. We obtain
+\begin{equation}\label{eq:oneblockfinal}
+\sum_{\text{paths}}\ee^{\theta(\tau+b/n)K'}
+\le \ee^{\theta(\tau)K}(n\nu/\ee)^b
+\exp\!\bigl(C(b^2/n+1)\bigr).
+\end{equation}
+
+\subsection{Positive telescope and ordered limits}
+Let $Q_j$ denote the positive operator that sums over actual paths in block $j$, and let $V_j(K,L)=\exp(\theta(\tau_j)K)$. Equation \eqref{eq:oneblockfinal} says $Q_jV_{j+1}\le c_jV_j$ for a scalar $c_j$ independent of the state. Positivity allows backward composition of these inequalities. This does not require a shared alphabet or a shared eigenvector between successive blocks.
+
+Using $\sum b_j=n-k$ and $\sum b_j^2/n\le\delta n$, and then summing over length-$k$ prefixes, yields
+\begin{equation}\label{eq:telescope}
+H_n(v_0)\le k!\exp(k|\theta(k/n)|)
+(n\nu/\ee)^{n-k}\exp\!\bigl(C(n\delta+J)\bigr).
+\end{equation}
+Here $a_k\le k!$ and $K\le k-1$ give the prefix bound for either sign of $\theta(k/n)$. Stirling's formula reduces \eqref{eq:telescope} to
+\begin{align}\label{eq:orderedlimit}
+\limsup_{n\to\infty}\frac1n\log\frac{H_n(v_0)}{n!}
+\le \varepsilon\log\varepsilon+(1-\varepsilon)\log\nu
++\varepsilon|\theta(\varepsilon)|+C\delta.
+\end{align}
+First fix $v_0,\varepsilon,\delta$ and take the indicated limit in $n$. Next send $\delta\downarrow0$ with $\varepsilon$ fixed. Finally send $\varepsilon\downarrow0$ and apply \eqref{eq:thetaendpoint}. The result is \eqref{eq:tilt}. No uniformity in $\varepsilon$ of the block error constant is needed because that error has already been removed before the last limit.
+
+\section{The exact constant and the ratio limit}\label{sec:ratio}
+\subsection{Ordinary ascent sequences supply the lower bound}
+Let $F_n^{\mathrm{Fish}}$ be the ordinary Fishburn number, counting ordinary ascent sequences with strict ascents. Every ordinary ascent sequence satisfies \eqref{eq:definition}, because each prefix has at least as many weak ascents as strict ascents. Hence
+\begin{equation}\label{eq:fishburninclusion}
+F_n^{\mathrm{Fish}}\le a_n\le n!.
+\end{equation}
+We use the established result recorded by Hwang--Jin \cite[Eq.~(1.1)]{hwang}:
+\begin{equation}\label{eq:fishburn}
+F_n^{\mathrm{Fish}}=C_F n!\mu^n\sqrt n\,(1+O(n^{-1})),
+\qquad C_F>0.
+\end{equation}
+Their displayed form uses a positive constant times $(6/(\ee\pi^2))^n n^{n+1}$; Stirling gives \eqref{eq:fishburn}. The actual value of $C_F$ is not needed here. This is an external theorem about ordinary Fishburn numbers, not about the weak-ascent sequence.
+
+At $v=1$, substitute $x=1/t$ and expand a nonnegative geometric series:
+\begin{equation}\label{eq:constant}
+\chi(1)=\int_0^1\frac{-\log x}{1-x}\dd x
+=\sum_{m\ge1}\int_0^1x^{m-1}(-\log x)\dd x
+=\sum_{m\ge1}\frac1{m^2}=\frac{\pi^2}{6}.
+\end{equation}
+Monotone convergence justifies the exchange. The upper bound \eqref{eq:tilt} at $v=1$ and the lower inclusion \eqref{eq:fishburn} coincide at $\mu$, proving the first limit in \eqref{eq:rootratio}.
+
+\subsection{Two-sided exponential concentration}
+Set
+\[
+P(q)=-\log\chi(\ee^q).
+\]
+This is smooth near zero and satisfies
+\begin{equation}\label{eq:pressurederivative}
+P(0)=\log\mu,\qquad
+P'(q)=\frac{g(\ee^q)}{\chi(\ee^q)},\qquad P'(0)=\mu.
+\end{equation}
+Combining \eqref{eq:tilt} with the unweighted root limit gives, for every fixed real $q$,
+\begin{equation}\label{eq:mgfupper}
+\limsup_{n\to\infty}\frac1n\log\E_n\ee^{qK_n}
+\le P(q)-P(0).
+\end{equation}
+A lower tilted bound at $q\ne0$ has not been used or proved.
+
+Given $\eta>0$, differentiability permits a sufficiently small $q>0$ with
+\[
+P(q)-P(0)-q(\mu+\eta)<0.
+\]
+Exponential Markov inequality then makes $\Prob(K_n/n\ge\mu+\eta)$ exponentially small. A sufficiently small $q<0$ satisfies
+\[
+P(q)-P(0)-q(\mu-\eta)<0
+\]
+and gives the lower tail, since $\ee^{qK_n}\ge\ee^{qn(\mu-\eta)}$ on that event. Combining the two bounds and slightly reducing the exponent proves \eqref{eq:concentration}. Empty tail events cause no difficulty.
+
+Since $0\le K_n/n\le1$, convergence in probability implies convergence of the first moment: for instance split $\E|K_n/n-\mu|$ at any fixed $\eta>0$ and use the tail bound. Thus $\E K_n/n\to\mu$. Equation \eqref{eq:children} now gives
+\[
+\frac{a_{n+1}}{(n+1)a_n}=
+\frac{n}{n+1}\frac{\E K_n}{n}+\frac2{n+1}\longrightarrow\mu.
+\]
+This completes the weak-ascent part of Theorem~\ref{thm:main}.
+
+\section{A preliminary logarithmic square upper bound}\label{sec:logsquare}
+This section gives the simpler $3/4$ upper bound that supplies the calibration and small-state estimates for the sharp proof in Sections~\ref{sec:sharpupper} and~\ref{sec:matchinglower}. It uses special reachability geometry for weak ascents. All calibrations now depend on the target length $n$; the uniform estimates are derived afresh.
+
+\subsection{Reachability and the moving calibration}
+\begin{lemma}\label{lem:geometry}
+At length $i$ with $K$ weak ascents, put $M=K+2$. Then
+\begin{equation}\label{eq:geometry}
+i\le\frac{(K+1)(K+2)}2,\qquad M\ge\sqrt{2i}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Split the sequence at every weak ascent into $K+1$ strictly decreasing runs. Number the runs $r=0,\ldots,K$. The first letter of run $r$ is at most $r$ by the state support, so that run has at most $r+1$ nonnegative letters. Sum these bounds. Since $M(M-1)\ge2i$, the displayed weaker lower bound on $M$ follows.
+\end{proof}
+
+For $0<s\le n$, define $v(s)\ge1$, $q(s)$, and $S(s)$ by
+\begin{equation}\label{eq:movingcalibration}
+s=n\mu\chi(v(s)),\qquad q(s)=\log v(s),\qquad
+S(s)=n\mu g(v(s)).
+\end{equation}
+Differentiation gives
+\begin{equation}\label{eq:Sderivative}
+q'(s)=-1/S(s),\qquad
+S'(s)=\frac{v}{v-1}-\frac1{\log v}\in[1/2,1].
+\end{equation}
+To see the interval assertion, put $q=\log v\ge0$. The expression is the mean of $x\in[0,1]$ under density proportional to $\ee^{qx}$. It equals $1/2$ at $q=0$, increases with $q$ because its derivative is a variance, and is at most one. Furthermore $S(0+)=0$, $S(n)=n\mu$, and $q(n)=0$. Hence
+\begin{equation}\label{eq:Sqbounds}
+\frac s2\le S(s)\le s,\qquad 0\le q(s)\le2\log(n/s).
+\end{equation}
+Expanding the integrand for large $v$ and integrating also gives
+\begin{equation}\label{eq:chiasymptotic}
+\chi(v)=\frac{\log v+1}{v}+O\!\left(\frac{\log v}{v^2}\right),
+\qquad v\chi(v)=\log v+1+o(1).
+\end{equation}
+
+\subsection{An exact moving positive potential}
+For every reachable state at time $i$ set
+\begin{equation}\label{eq:potential}
+V_i(K,L)=\exp\!\left(q(i)K-\frac{q(i)L}{K+2}\right).
+\end{equation}
+Then $V_n=1$. In a single extension let $M=K+2$, $a=\ind_{\{j\ge L\}}$, $q=q(i+1)$, $S=S(i+1)$, and $\Delta q=q(i+1)-q(i)\le0$. Since $0\le j<M$ and $q\ge0$,
+\begin{equation}\label{eq:denominatorloss}
+\exp\!\left(-\frac{qj}{M+a}\right)
+\le\exp(q/M)\exp(-qj/M).
+\end{equation}
+Indeed the exponent difference is $qja/[M(M+a)]\le q/M$. Summing the exact frozen eigenvector identity of Lemma~\ref{lem:frozen}, then dividing by $V_i$, yields
+\begin{equation}\label{eq:movingonestep}
+\frac{\sum_{j=0}^{M-1}V_{i+1}(K+a,j)}{V_i(K,L)}
+\le\lambda_M(\ee^q)\exp(\Delta qK+q/M+|\Delta q|).
+\end{equation}
+The old-versus-new comparison contributes $-\Delta q L/M\le|\Delta q|$; this is why the moving denominator cannot simply be ignored.
+
+Because $S$ is increasing,
+\begin{equation}\label{eq:qdecrement}
+\Delta q=-\int_i^{i+1}\frac{\dd s}{S(s)}\le-1/S(i+1),
+\qquad |\Delta q|\le1/S(i)\le2/i.
+\end{equation}
+The elementary inequality $2\sinh(x/2)\ge x$ for $x\ge0$ gives
+\[
+\frac{x}{1-\ee^{-x}}\le\ee^{x/2},
+\qquad
+\lambda_M(\ee^q)\le\frac{M}{g(\ee^q)}\exp(q/(2M)),
+\]
+with removable interpretations at zero. Let
+\begin{equation}\label{eq:ralpha}
+r=M/S,\qquad \alpha=3q/(2S),\qquad \Psi(r)=\log r-r+1.
+\end{equation}
+Taking logarithms of \eqref{eq:movingonestep}, dividing its bound by $n\mu/\ee$, and using $K=M-2$ gives
+\begin{align}\label{eq:globalstep}
+\log\left(\frac{\sum_jV_{i+1}(K+a,j)}{(n\mu/\ee)V_i(K,L)}\right)
+&\le \log r+1-\frac{M-2}{S}+\frac{3q}{2M}+\frac2i\notag\\
+&\le\Psi(r)+\frac\alpha r+\frac6i.
+\end{align}
+This estimate holds for every reachable state, including states with very small $K$ relative to $i$.
+
+\subsection{Uniform treatment of small reachable states}
+Put $T=\log n$, $U=\log T$, and choose
+\begin{equation}\label{eq:cutoff}
+k=\left\lceil\frac{100T^2}{U^2}\right\rceil.
+\end{equation}
+Only sufficiently large $n$ is considered, so $U>0$ and $1\le k<n$. For $i\ge k$, \eqref{eq:Sqbounds} gives $\alpha\le6T/i=o(1)$ uniformly, hence eventually $\alpha\le1/8$.
+
+For $0\le\alpha\le1/8$ define $h_\alpha(r)=\Psi(r)+\alpha/r$. Its derivative is
+\[
+h_\alpha'(r)=\frac{r-r^2-\alpha}{r^2}.
+\]
+Its maximum over $[m,\infty)$ occurs at the endpoint or is no larger than its value at
+\[
+r_+(\alpha)=\frac{1+\sqrt{1-4\alpha}}2.
+\]
+The latter point has
+\begin{equation}\label{eq:nearone}
+h_\alpha(r_+(\alpha))\le\alpha+2\alpha^2.
+\end{equation}
+For a proof, the derivative of this value in $\alpha$ is $1/r_+(\alpha)$. Since $r_+\ge1-2\alpha$, this derivative is at most $1+4\alpha$ on the stated interval, and the value at zero is zero.
+
+The geometry gives $r\ge m=\sqrt{2i}/S(i+1)$. Using $S(i+1)\ge(i+1)/2$, $q(i+1)\le2T$, and dropping the nonpositive term $-m$, we obtain
+\begin{equation}\label{eq:boundary}
+h_\alpha(m)\le-\tfrac12\log i+1+\tfrac32\log2+\frac{3T}{\sqrt{2i}}.
+\end{equation}
+The right side decreases with $i$. At $i=k$ it is bounded by
+\[
+-\left(1-\frac3{\sqrt{200}}\right)U+\log U+O(1),
+\]
+which tends to $-\infty$. Thus the endpoint value is nonpositive for every $i\ge k$, once $n$ is sufficiently large. Equations \eqref{eq:nearone} and \eqref{eq:boundary} prove the uniform statewise bound
+\begin{equation}\label{eq:absorption}
+\Psi(r)+\alpha/r\le\alpha+2\alpha^2.
+\end{equation}
+The cutoff is used to control all reachable states; no typical-state assumption has entered.
+
+\subsection{Accumulation and the prefix cost}
+Combine \eqref{eq:globalstep} and \eqref{eq:absorption}, and compose the positive one-step inequalities backward from $V_n=1$. Summing the initial states at length $k$ yields
+\begin{equation}\label{eq:finetelescope}
+a_n\le k!\ee^{kq(k)}(n\mu/\ee)^{n-k}
+\exp\!\left(\sum_{i=k}^{n-1}(\alpha_i+2\alpha_i^2+6/i)\right),
+\quad \alpha_i=\frac{3q(i+1)}{2S(i+1)}.
+\end{equation}
+The prefix estimate follows from $a_k\le k!$ and $V_k(K,L)\le\ee^{kq(k)}$.
+
+Since $(q/S)'=-(1+qS')/S^2<0$, a right-endpoint integral estimate gives
+\begin{equation}\label{eq:mainaccumulation}
+\sum_{i=k}^{n-1}\alpha_i
+\le\frac32\int_k^n\frac{q(s)}{S(s)}\dd s
+=\frac34q(k)^2.
+\end{equation}
+Also,
+\begin{equation}\label{eq:smallerrors}
+\sum_{i=k}^{n-1}\alpha_i^2=O(T^2/k)=O(U^2)=o(T^2),
+\qquad \sum_{i=k}^{n-1}1/i=O(T)=o(T^2).
+\end{equation}
+As $k/n\to0$, the calibration implies $v(k)\to\infty$. Using \eqref{eq:chiasymptotic} and $q(k)\le2T$,
+\[
+q(k)=T-\log k+\log\mu+\log(q(k)+1)+o(1)=T+O(\log T).
+\]
+For the lower estimate in the last equality use $\log(q(k)+1)\ge0$; the upper estimate uses $q(k)\le2T$. Hence $q(k)/T\to1$.
+
+Stirling's formula and $k/(n\mu)=\chi(v(k))$ give the precise prefix cancellation
+\begin{align}\label{eq:prefixcancel}
+\log\frac{k!\ee^{kq(k)}(n\mu/\ee)^{n-k}}{n!\mu^n}
+&=k\log\frac{k\ee^{q(k)}}{n\mu}+\tfrac12\log(k/n)+O(1/k)\notag\\
+&=k\log(v(k)\chi(v(k)))+\tfrac12\log(k/n)+O(1/k)\notag\\
+&=O(k\log T)+O(T)=O(T^2/U)+O(T)=o(T^2).
+\end{align}
+In particular an apparent $k\log n$ cost has canceled; it cannot be discarded before this calculation. Equations \eqref{eq:finetelescope}--\eqref{eq:prefixcancel} prove the preliminary upper limit $3/4$.
+
+Finally \eqref{eq:fishburn} and inclusion give
+\[
+\log\frac{a_n}{n!\mu^n}\ge\tfrac12\log n+\log C_F+O(n^{-1}),
+\]
+so the normalized lower limit is at least zero. The next two sections sharpen both sides to one half.
+
+\section{The sharp upper logarithmic correction}\label{sec:sharpupper}
+The preceding $3/4$ bound can be improved to $1/2$ by a quadratic corrector. We give the finite identity and all uniform estimates, because replacing a worst-case state by a stationary average without these estimates would not be valid.
+
+\subsection{A circulant chain and an exact Poisson identity}
+For $q>0$ and $M\ge1$ set
+\[
+r=\ee^{-q/M},\qquad B=\frac r{1-r},\qquad D=1-r^M.
+\]
+The Doob transform of the frozen matrix, defined by
+$P(l,j)=T_{\ee^q}(l,j)f_j/(\lambda_M(\ee^q)f_l)$, is
+\begin{equation}\label{eq:doob}
+P(l,j)=\frac{1-r}{1-r^M}r^{(j-l)\bmod M}.
+\end{equation}
+It is a stochastic circulant matrix, so the uniform law on the alphabet is stationary. The forward circular increment $W=((j-l)\bmod M)/M$ has a truncated geometric distribution independent of $l$. Write $a(l,j)=\ind_{\{j\ge l\}}$ and
+\begin{equation}\label{eq:bcdef}
+b_l=\E_l[q\,a(l,J)J/M],\qquad c=\frac1M\sum_{l=0}^{M-1}b_l.
+\end{equation}
+Stationarity gives
+\begin{equation}\label{eq:cupper}
+0\le c\le q(M-1)/(2M)\le q/2.
+\end{equation}
+Direct geometric summation gives
+\begin{align}\label{eq:bcformula}
+b_l&=\frac q{MD}\left(l+B-(M+B)r^{M-l}\right),\notag\\
+c&=\frac q{M^2D}\left(\frac{M(M-1)}2+MB-(M+B)BD\right).
+\end{align}
+Define, also at the auxiliary endpoint $l=M$,
+\begin{equation}\label{eq:hquadratic}
+h(q,M,l)=\left(\frac cB+\frac q{2MDB}\right)l-\frac{ql^2}{2MDB}.
+\end{equation}
+Then the exact finite Poisson equation is
+\begin{equation}\label{eq:poisson}
+(Ph)_l-h_l=c-b_l\qquad(0\le l<M).
+\end{equation}
+Here $h_l$ denotes \eqref{eq:hquadratic}; its value at $M$ need not equal the value at zero.
+
+To verify \eqref{eq:poisson} algebraically, set $y_l=h_l+c-b_l$. For $0\le l<M-1$, subtraction in \eqref{eq:bcformula}--\eqref{eq:hquadratic} gives
+\[
+y_{l+1}-y_l=(c-b_l)/B=(y_l-h_l)/B.
+\]
+The same relation holds at the cyclic boundary, because the sum of the right side is zero and the sum of cyclic differences is zero. Thus $y_l-r y_{l+1}=(1-r)h_l$ with cyclic indices. If $C$ is the forward cyclic shift, $I-rC$ is invertible and
+\[
+y=\frac{1-r}{1-r^M}\sum_{s=0}^{M-1}r^s C^s h=Ph,
+\]
+which proves the identity. For $M=1$ it is immediate. All formulas have continuous limits at $q=0$, with $b=c=h=0$ and $P$ the uniform matrix.
+
+\subsection{Uniform corrector and moment estimates}
+Put $Q=1+q$, and view $M$ as real when differentiating the displayed formulas. For $H(q,M,x)=h(q,M,Mx)$, elementary simplification gives the stable form
+\begin{align}\label{eq:stableh}
+H(q,M,x)&=A x(1-x)+J_0x,\notag\\
+A&=\frac{q^2}{2(1-\ee^{-q})}\,\beta(q/M),\quad
+\beta(z)=\frac{\ee^z-1}{z},\notag\\
+J_0&=Q_0(q)-Q_0(q/M),\quad Q_0(z)=\frac z{\ee^z-1}.
+\end{align}
+Removable values are used at zero. Choose a sufficiently large absolute constant $C_0$. Uniformly for $M\ge C_0Q$ and $0\le x\le1$,
+\begin{equation}\label{eq:hestimates}
+|H|+|H_x|\le C Q^2,\quad |H_q|\le C Q,\quad
+|H_M|\le C Q^3/M^2.
+\end{equation}
+Indeed, $\beta$ and its first two derivatives are bounded on $[0,1]$. The function $q^2/[2(1-\ee^{-q})]$ is $O(Q^2)$ with derivative $O(Q)$, while $Q_0$ and $Q_0'$ are bounded on $[0,\infty)$. Differentiating \eqref{eq:stableh} proves the estimates. One may first choose these bounds on $q/M\le1$ and increase $C_0$ afterward, so the constants do not depend circularly on the final choice of $C_0$.
+
+The seam jump is particularly small:
+\begin{equation}\label{eq:seam}
+H(q,M,1)-H(q,M,0)=J_0\in[-1,0].
+\end{equation}
+Integrating $H_x$ along a forward circular arc and crossing this seam at most once gives
+\begin{equation}\label{eq:circularh}
+|h(q,M,J)-h(q,M,l)|\le C Q^2W+1.
+\end{equation}
+For each fixed integer $j\ge0$ and fixed $A_0>0$, the geometric law \eqref{eq:doob} gives
+\begin{equation}\label{eq:geometricmoments}
+\E[W^j\exp(A_0Q^2W/M)]\le C_j Q^{-j},
+\end{equation}
+provided $C_0$ is large enough for that $A_0$. For $q\ge1$, the added exponent is at most $qW/2$, so the sum is bounded using $\ee^{-qW/2}$. Its normalization is $O(q/M)$ and its $j$th moment sum is $O(M/q^{j+1})$, uniformly for $M/q$ bounded below. These estimates follow, for example, by comparing the geometric sums with the integrals of $x^j\ee^{-qx/2}$ plus the endpoint term. For $q\le1$, use $W\le1$ and boundedness of $Q$. The law is independent of $l$, so all bounds are uniform in the current letter.
+
+For $0\le\zeta\le1$, set
+\[
+Z=q\,a(l,J)J/M+\zeta[h(q,M,J)-h(q,M,l)].
+\]
+Equation \eqref{eq:poisson} says $\E_l Z=(1-\zeta)b_l+\zeta c$. By \eqref{eq:circularh} and \eqref{eq:geometricmoments},
+\[
+\E_l[Z^2\ee^{|Z|/M}]\le C Q^2.
+\]
+Apply $|\ee^x-1-x|\le x^2\ee^{|x|}/2$ and then $\log(1+x)\le x$ to obtain
+\begin{equation}\label{eq:correctorexp}
+\log\E_l\ee^{Z/M}\le\frac{(1-\zeta)b_l+\zeta c}{M}
++\frac{C Q^2}{M^2}.
+\end{equation}
+This controls the random fluctuation around the stationary mean, instead of merely substituting that mean in a pointwise expression.
+
+\subsection{The corrected moving potential and its three state ranges}
+Use the calibration $q(s),S(s)$ and cutoff $k$ of Section~\ref{sec:logsquare}. Let $\zeta(r)$ be zero for $r\le1/2$, equal to $4r-2$ on $[1/2,3/4]$, and one for $r\ge3/4$. It is bounded by one and has Lipschitz constant four. Define
+\begin{equation}\label{eq:correctedpotential}
+\widetilde V_i(K,L)=\exp\!\left(q(i)K-\frac{q(i)L}{M}
++\zeta\!\left(\frac{M}{S(i)}\right)\frac{h(q(i),M,L)}M\right),
+\quad M=K+2.
+\end{equation}
+The terminal potential is exactly one. For a step at time $i$, freeze $q=q(i+1)$, $S=S(i+1)$, and $r_0=M/S$. When $M\ge0.49S$, we have $M\ge c i$ and $i/Q\to\infty$ uniformly for $i\ge k$. Thus \eqref{eq:hestimates} applies.
+
+Replacing the actual next corrector
+\[
+\zeta((M+a)/S)h(q,M+a,j)/(M+a)
+\]
+by its frozen version $\zeta(M/S)h(q,M,j)/M$ costs $O(Q^2/i^2)$ in the exponent. At fixed $j$, changing $M$ changes $x=j/M$ by $O(1/M)$, so \eqref{eq:hestimates}, the derivative of $1/M$, and the Lipschitz estimate for $\zeta$ give this bound. Replacing the current corrector by its frozen $q,S$ values has the same cost: $|\Delta q|\le2/i$, $|\Delta S|\le1$, and
+\[
+|\Delta\zeta|\le4M|\Delta S|/(S(i)S(i+1)).
+\]
+These estimates also handle the corners of the piecewise linear cutoff.
+
+The eigenvector denominator discrepancy is bounded above by $qaj/M^2$. Factoring out the exact frozen eigenvector and applying \eqref{eq:correctorexp}, together with the eigenvalue correction $q/(2M)$, gives, if $r_0\ge3/4$,
+\begin{equation}\label{eq:correctedstep}
+\log\frac{\sum_j\widetilde V_{i+1}(K+a,j)}{(n\mu/\ee)\widetilde V_i(K,L)}
+\le\Psi(r_0)+\frac{q}{Sr_0}
++C\left(\frac{Q^2}{i^2}+\frac1i\right).
+\end{equation}
+Here $\zeta=1$ and $c\le q/2$; the calibration terms are those in \eqref{eq:globalstep}. In the intermediate range $0.49\le r_0<3/4$, the same argument with $b_l\le q$, $c\le q/2$ gives $3q/(2Sr_0)$ in place of $q/(Sr_0)$. Since $\Psi(r_0)\le\Psi(3/4)<0$ there and all other terms are uniformly $o(1)$, this entire range has a negative normalized logarithmic bound for large $n$.
+
+If $r_0<0.49$, both cutoff terms vanish for large $i$:
+\[
+M/S(i)\le0.49(1+2/i)<1/2,\qquad
+(M+a)/S(i+1)\le0.49+2/(i+1)<1/2.
+\]
+Use the uncorrected estimate \eqref{eq:globalstep}. Put $\alpha=3q/(2S)=o(1)$ and $m=\sqrt{2i}/S$. If $m>0.49$ the range is empty. Otherwise $h_\alpha(r)=\Psi(r)+\alpha/r$ has no local maximum on $[m,0.49]$: its smaller critical point is a minimum and its larger one tends to one. Its supremum is therefore at an endpoint. Equation \eqref{eq:boundary} bounds $h_\alpha(m)$ by a quantity tending uniformly to $-\infty$; the other endpoint satisfies $h_\alpha(0.49)\to\Psi(0.49)<0$ uniformly. Both are eventually bounded above by a fixed negative constant, absorbing the additional $6/i$. This proves negativity in the full small-state range without applying a corrector estimate where $M$ might be too small.
+
+Finally for $\beta=q/S=o(1)$, the same critical-point calculation as \eqref{eq:nearone} gives
+\[
+\sup_{r\ge3/4}[\Psi(r)+\beta/r]\le\beta+2\beta^2.
+\]
+Since $\beta^2=O(Q^2/i^2)$, the three ranges combine into the uniform one-step bound
+\begin{equation}\label{eq:finalsharpstep}
+\frac{\sum_j\widetilde V_{i+1}(K+a,j)}{\widetilde V_i(K,L)}
+\le(n\mu/\ee)\exp\!\left(\frac{q(i+1)}{S(i+1)}
++C\left[\frac{(1+q(i+1))^2}{i^2}+\frac1i\right]\right).
+\end{equation}
+
+\subsection{Sharp upper accumulation}
+At time $k$, a nonzero cutoff implies $M>S(k)/2\ge k/4$. Hence the added corrector exponent is $O((1+q(k))^2/k)$, and
+\[
+\sum_{|x|=k}\widetilde V_k\le k!\exp\!\left(kq(k)+O((1+q(k))^2/k)\right).
+\]
+The exact prefix cancellation \eqref{eq:prefixcancel} remains unchanged at order $o(T^2)$. Backward iteration of \eqref{eq:finalsharpstep}, using the decreasing function $q/S$, gives
+\[
+\sum_{i=k}^{n-1}\frac{q(i+1)}{S(i+1)}\le\int_k^n\frac qS\dd s=\frac12q(k)^2.
+\]
+The other errors sum to $O(T^2/k+T)=o(T^2)$, and the new prefix error is $O(U^2)$. Since $q(k)/T\to1$, we have proved
+\begin{equation}\label{eq:halfupper}
+\limsup_{n\to\infty}\frac{\log(a_n/(n!\mu^n))}{(\log n)^2}\le\frac12.
+\end{equation}
+
+\section{The matching lower logarithmic correction}\label{sec:matchinglower}
+The lower bound uses an exact change of measure on legal extension paths. The quadratic corrector controls their expected gain, while a martingale estimate keeps the alphabet size close enough to the calibration. No counting principle for presumed typical paths is needed.
+
+\subsection{A legal path measure and Jensen bound}
+Retain $T=\log n$, $U=\log T$, and $k=\lceil100T^2/U^2\rceil$. Choose the single legal prefix of $k$ zeros; its state is $K_k=k-1$, $L_k=0$. For each $i=k,\ldots,n-1$, sample the next letter from the geometric Doob matrix \eqref{eq:doob} with $q=q(i+1)$ and $M=K_i+2$. All letters $0,\ldots,M-1$ are legal, and every legal completion has positive probability. Let $\E_*$ and $\Prob_*$ refer to this path measure, which is distinct from the uniform law on all weak ascent sequences.
+
+Since $K$ never decreases, $M\ge k+1$ along every sampled path. Thus $M/(1+q)\ge k/(1+2T)\to\infty$ uniformly. We may use all corrector estimates without a state cutoff. Define
+\begin{equation}\label{eq:uncutpotential}
+U_i(K,L)=\exp\!\left(q(i)K-\frac{q(i)L}{M}+\frac{h(q(i),M,L)}M\right).
+\end{equation}
+Its terminal value is one. For a step to $(K+a,j)$, put
+\begin{equation}\label{eq:likelihood}
+R_i=\frac{U_{i+1}(K+a,j)}{U_i(K,L)P_i(L,j)}.
+\end{equation}
+Multiplication along a path telescopes the potential ratios. Since its probability is the product of its transition probabilities, the exact number of completions of the selected prefix is
+\[
+U_k(k-1,0)\,\E_*\exp\!\left(\sum_{i=k}^{n-1}\log R_i\right).
+\]
+Here $h(q,M,0)=0$, so Jensen's inequality and inclusion of these completions among all objects give
+\begin{equation}\label{eq:jensen}
+\log a_n\ge(k-1)q(k)+\sum_{i=k}^{n-1}\E_*\log R_i.
+\end{equation}
+
+\subsection{Tracking the random alphabet size}
+Set $M_i=K_i+2$, $X_i=L_i/M_i$, and $Y_i=K_i-X_i$. If $W_i=((j-L_i)\bmod M_i)/M_i$ and $a=\ind_{\{j\ge L_i\}}$, then exactly
+\begin{equation}\label{eq:Yincrement}
+Y_{i+1}-Y_i=1-W_i+aX_{i+1}/M_i.
+\end{equation}
+Indeed $j/M_i-X_i=W_i-(1-a)$ and $j/M_i=X_{i+1}(1+a/M_i)$. The increment in \eqref{eq:Yincrement} belongs to $[0,2]$. Its conditional mean is at least $1/2$, since the decreasing geometric weights on $0,\ldots,M_i-1$ imply $\E_*(W_i\mid\mathcal F_i)\le1/2$.
+
+The centered increments therefore form a martingale with differences bounded in absolute value by two. For completeness, the elementary bounded-difference estimate follows by applying the conditional exponential bound $\E_*(\ee^{tD_i}\mid\mathcal F_i)\le\ee^{2t^2}$ to each centered difference $D_i$, iterating, and optimizing exponential Markov inequality. It gives a tail at most $\exp(-z^2/(8m))$ for a downward displacement $z$ over $m$ increments. Since $Y_k=k-1$, the event $M_i<i/4$ requires a downward displacement at least $i/4+k/2-1$ from the accumulated lower drift. It is empty at $i=k$. Thus for absolute $c,C>0$,
+\begin{equation}\label{eq:badstate}
+\Prob_*(M_i<i/4)\le C\ee^{-ci}\qquad(k\le i\le n)
+\end{equation}
+for all sufficiently large $n$.
+
+The exact conditional geometric mean is
+\begin{equation}\label{eq:Wmean}
+\E_*(W_i\mid\mathcal F_i)=
+\frac1{M_i(\ee^{q/M_i}-1)}-\frac1{\ee^q-1},\qquad q=q(i+1).
+\end{equation}
+Let $m(q)=1-1/q+1/(\ee^q-1)$, with its removable value $1/2$ at zero, so $S'(s)=m(q(s))$. Expanding $z/(\ee^z-1)$ at zero, uniformly because $M_i\ge k\gg1+q$, gives
+\[
+1-\E_*(W_i\mid\mathcal F_i)=m(q)+O(1/M_i).
+\]
+The last term in \eqref{eq:Yincrement} lies in $[0,1/M_i]$. Moreover $m'(q)$ is the variance of a tilted variable in $[0,1]$ and is bounded. Using $|q(i+1)-q(i)|\le2/i$ therefore gives
+\begin{equation}\label{eq:drifttracking}
+\left|\E_*(Y_{i+1}-Y_i\mid\mathcal F_i)-[S(i+1)-S(i)]\right|
+\le C(1/M_i+1/i).
+\end{equation}
+On the good event $M_i\ge i/4$, $1/M_i\le4/i$. On its complement, $M_i\ge k$ and \eqref{eq:badstate} applies. Minkowski's inequality in $L^2$ now gives
+\begin{equation}\label{eq:reciprocaltracking}
+\left\|\sum_{i=k}^{m-1}1/M_i\right\|_2\le C\log n\qquad(k\le m\le n).
+\end{equation}
+Explicitly, the good part is bounded deterministically by $4\sum1/i$, and the norm of the bad part is at most $k^{-1}\sum_{i\ge k}C\ee^{-ci/2}$.
+
+The centered martingale has second moment $O(m)$ by orthogonality of its increments. Sum \eqref{eq:drifttracking}, use \eqref{eq:reciprocaltracking} and $|Y_k-S(k)|\le k$, and note that replacing $Y_i$ by $M_i$ or $S(i)$ by $S(i+1)$ changes the difference by a bounded amount. We obtain
+\begin{equation}\label{eq:quadratictracking}
+\E_*[(M_i-S(i+1))^2]\le C(i+T^2+k^2),\qquad k\le i<n.
+\end{equation}
+This deliberately coarse estimate is sufficient at logarithmic-square scale.
+
+\subsection{Expected gain for one step}
+Freeze $q=q(i+1)$, $S=S(i+1)$, $M=M_i$, $l=L_i$, and $\Delta q=q(i+1)-q(i)$. Substituting the exact Doob formula into \eqref{eq:likelihood} gives
+\begin{align}\label{eq:logRexact}
+\log R_i={}&\log\lambda_M(\ee^q)+\Delta qK_i-\Delta ql/M
++\frac{qaj}{M(M+a)}\notag\\
+&+\frac{h(q,M+a,j)}{M+a}-\frac{h(q(i),M,l)}M.
+\end{align}
+The estimates \eqref{eq:hestimates}, including the change of $x=j/M$ at fixed $j$, show that replacing the last two corrector terms by $[h(q,M,j)-h(q,M,l)]/M$ costs at most
+\[
+C\left(\frac{Q^2}{M^2}+\frac{Q}{Mi}\right),\qquad Q=1+q.
+\]
+Also $qaj/[M(M+a)]\ge qaj/M^2-q/M^2$. The Poisson identity then implies that the conditional expectation of the last term on the first line and all of the second line in \eqref{eq:logRexact} is at least
+\begin{equation}\label{eq:gaincorrector}
+\frac cM-C\left(\frac{Q^2}{M^2}+\frac{Q}{Mi}\right).
+\end{equation}
+
+We need a lower estimate as well as \eqref{eq:cupper}:
+\begin{equation}\label{eq:clower}
+q/2-C(1+q/M)\le c\le q/2.
+\end{equation}
+To verify it, sample a stationary uniform starting letter. The output letter $J$ is then uniform, and
+\[
+q(M-1)/(2M)-c=q\,\E_{\mathrm{stat}}[(1-a)J/M].
+\]
+Conditional on a forward increment $d$, exactly $d$ starting letters wrap, and their outputs are $0,\ldots,d-1$. Hence
+\[
+\E_{\mathrm{stat}}[(1-a)J/M\mid d]=d(d-1)/(2M^2)\le W^2/2.
+\]
+The un-tilted case of \eqref{eq:geometricmoments} gives $\E_{\mathrm{stat}}W^2\le C/(1+q)^2$, proving \eqref{eq:clower}.
+
+For $q/M=o(1)$ uniformly, the exact eigenvalue has the lower expansion
+\begin{equation}\label{eq:eigenlower}
+\log\lambda_M(\ee^q)\ge\log(n\mu)+\log(M/S)
++q/(2M)-Cq^2/M^2.
+\end{equation}
+This follows from $x/(1-\ee^{-x})=\ee^{x/2}(x/2)/\sinh(x/2)$ and the bounded Taylor remainder of $\log(\sinh(x/2)/(x/2))$ near zero. The calibration gives
+\[
+\Delta q K_i\ge-K_i/S-C/i,\qquad -\Delta ql/M\ge0.
+\]
+For the first estimate, compare $1/S(s)$ on $[i,i+1]$ with $1/S(i+1)$ using $|S'|\le1$, $S(s)\ge i/2$, and $K_i\le i$. Combining these bounds with \eqref{eq:gaincorrector}--\eqref{eq:eigenlower}, using $K_i=M-2$ and dropping the favorable $2/S$, yields
+\begin{align}\label{eq:expectedstep}
+\E_*(\log R_i\mid\mathcal F_i)-\log(n\mu/\ee)
+\ge\Psi(M/S)+\frac qM
+-C\left(\frac1i+\frac1M+\frac{Q^2}{M^2}+\frac{Q}{Mi}\right).
+\end{align}
+
+\subsection{Summing the tracking errors and normalizing}
+On the good event $M_i\ge i/4$, the ratio $M_i/S(i+1)$ belongs to a fixed compact interval, for example $[1/5,3]$ for large $i$. Since $\Psi(1)=\Psi'(1)=0$,
+\[
+\Psi(M_i/S)\ge-C(M_i-S)^2/i^2.
+\]
+On the bad event $M_i\ge k$, while the deterministic support gives $M_i\le i+1$, so $|\Psi(M_i/S)|\le C+T$. Equations \eqref{eq:badstate} and \eqref{eq:quadratictracking} imply
+\begin{align}\label{eq:psitotal}
+\sum_{i=k}^{n-1}\E_*\Psi(M_i/S(i+1))
+&\ge-C\left(T+\frac{T^2+k^2}{k}\right)-o(1)\notag\\
+&=-O(T+U^2+k)=-o(T^2).
+\end{align}
+For the positive main term, on good states
+\[
+1/M_i\ge1/S-C|M_i-S|/i^2.
+\]
+Drop its nonnegative contribution on bad states, bound the missing $q/S$ there by \eqref{eq:badstate}, and use Cauchy--Schwarz and \eqref{eq:quadratictracking}. This gives
+\begin{align}\label{eq:qMtotal}
+\sum_{i=k}^{n-1}\E_*\frac{q(i+1)}{M_i}
+&\ge\sum_{i=k}^{n-1}\frac{q(i+1)}{S(i+1)}
+-CT\sum_{i=k}^{n-1}\frac{\sqrt i+T+k}{i^2}-o(1)\notag\\
+&\ge\sum_{i=k}^{n-1}\frac{q(i+1)}{S(i+1)}
+-O(T/\sqrt k+T^2/k+T)\notag\\
+&=\sum_{i=k}^{n-1}\frac{q(i+1)}{S(i+1)}-o(T^2).
+\end{align}
+The error terms on the right side of \eqref{eq:expectedstep} sum in expectation to $O(T+T^2/k)=o(T^2)$ by the same good/bad split. Since $q/S$ decreases, its right Riemann sum differs from its integral by at most $q(k)/S(k)$. Therefore
+\begin{equation}\label{eq:lowerriemann}
+\sum_{i=k}^{n-1}\frac{q(i+1)}{S(i+1)}
+=\frac12q(k)^2+o(T^2).
+\end{equation}
+
+The selected prefix has no multiplicity $k!$, but the missing logarithm is small at this scale. Specifically, subtract \eqref{eq:prefixcancel} from the desired normalization, or apply Stirling directly, to obtain
+\begin{align}\label{eq:lowerprefix}
+&(k-1)q(k)+(n-k)\log(n\mu/\ee)-\log(n!\mu^n)\notag\\
+&\hspace{16mm}=O(k\log k+k\log(1+q(k))+T)
+=O(T^2/U)=o(T^2).
+\end{align}
+Insert \eqref{eq:expectedstep}--\eqref{eq:lowerprefix} into Jensen's inequality \eqref{eq:jensen}. As $q(k)/T\to1$,
+\begin{equation}\label{eq:halflower}
+\liminf_{n\to\infty}\frac{\log(a_n/(n!\mu^n))}{(\log n)^2}\ge\frac12.
+\end{equation}
+Together with \eqref{eq:halfupper}, this proves the matching leading logarithmic correction
+\begin{equation}\label{eq:matching}
+\log\frac{a_n}{n!\mu^n}=\left(\frac12+o(1)\right)(\log n)^2,
+\quad\text{equivalently}\quad
+a_n=n!\mu^n\exp\!\left(\left(\frac12+o(1)\right)(\log n)^2\right).
+\end{equation}
+The error inside the exponential can still diverge. Thus \eqref{eq:matching} is a logarithmic asymptotic, not a relative-error coefficient equivalent and not an amplitude formula.
+
+
+\subsection{Retaining a quantitative remainder}\label{sec:quantitative}
+The paired bounds prove more than the little-$o$ statement in \eqref{eq:matching}. All constants in the preceding estimates are independent of $n$ after fixing a sufficiently large corrector constant $C_0$. Their error budget is:
+\begin{itemize}[leftmargin=*,itemsep=3pt]
+\item both prefix discrepancies are $O(T^2/U)$;
+\item $q(k)=T+O(U)$ gives $q(k)^2-T^2=O(TU+U^2)$;
+\item the upper corrector and harmonic sums are $O(U^2+T)$;
+\item the lower expected slack is $O(k+T+U^2)$;
+\item the lower main-term replacement and remaining errors are $O(T+U^2+U)$;
+\item the right Riemann-sum discrepancy is $O(T/k)$, and the bad-state tails are exponentially small in $k$, times at most polynomial functions of $T$.
+\end{itemize}
+With $k=O(T^2/U^2)$, each item is $O(T^2/U)$; for example $TU/(T^2/U)=U^2/T\to0$. Eventual negativity of the small-state ranges introduces no $n$-dependent error constant. Thus the upper and lower arguments establish exactly \eqref{eq:logsquare}, proving the counting assertion of Theorem~\ref{thm:logsquare}.
+
+\section{Every fixed difference ascent parameter}\label{sec:fixedd}
+Fix an integer $d\ge0$. A $d$-ascent is an index with $x_{i+1}>x_i-d$. A $d$-ascent sequence starts at zero and obeys
+\begin{equation}\label{eq:ddef}
+0\le x_{i+1}\le1+\dasc(x_1,\ldots,x_i).
+\end{equation}
+This is the convention of Dukes--Sagan \cite{dukes}; $d=0$ is ordinary ascent and $d=1$ is weak ascent. Write $a_n^{(d)}$, $H_n^{(d)}(v)$, and $K_n^{(d)}$ for its count, tilted count, and random statistic.
+
+\subsection{The exact state and a finite band comparison}
+The transition is
+\begin{equation}\label{eq:dtransition}
+(K,L)\longmapsto(K+\ind_{\{j>L-d\}},j),\qquad0\le j\le K+1.
+\end{equation}
+If the indicator is zero, then $j\le L-d\le L\le K$; if it is one, then $j\le K+1$, the new count. This proves $0\le L\le K\le n-1$ for every $d\ge0$, and hence $a_n^{(d)}\le n!$. Every ordinary ascent is a $d$-ascent, so at every prefix an ordinary ascent sequence satisfies \eqref{eq:ddef}. Therefore
+\begin{equation}\label{eq:dinclusion}
+F_n^{\mathrm{Fish}}\le a_n^{(d)}\le n!.
+\end{equation}
+The inclusion is not statistic-preserving and is used only at unweighted mark one.
+
+On an $M$-letter alphabet put
+\[
+T_{d,v}(l,j)=v^{\ind_{\{j>l-d\}}},\qquad
+C_d(v)=|d-1|\,|v-1|\max(v,v^{-1}).
+\]
+For the weak-ascent eigenvector $f_l=v^{-l/M}$, at most $|d-1|$ entries per row differ between $T_{d,v}$ and $T_{1,v}$. Since $f_j/f_l\le\max(v,v^{-1})$, absolute rowwise comparison gives
+\begin{equation}\label{eq:dsupersolution}
+T_{d,v}f\le\bigl(\lambda_M(v)+C_d(v)\bigr)f.
+\end{equation}
+At $d=0$ only the diagonal changes; at $d\ge2$ a band below the weak-ascent threshold changes. Alphabet truncation only reduces its size, so the estimate also holds when $d>M$. Taking absolute differences makes it valid for $v<1$.
+
+By positivity and comparison with $\mathbf1$,
+\begin{equation}\label{eq:dblockmatrix}
+T_{d,v}^b\mathbf1\le\max(v,v^{-1})
+\bigl(\lambda_M(v)+C_d(v)\bigr)^b\mathbf1.
+\end{equation}
+For a fixed $d$ and a compact positive mark range,
+\[
+\lambda_M(v)+C_d(v)\le M/g(v)+O_d(1).
+\]
+This is a direct positive supersolution estimate; no perturbation theorem for eigenvalues or eigenvectors is assumed.
+
+\subsection{Applying the calibration and deriving the conclusions}
+A block of $b$ actual transitions from $(K,L)$ embeds in the alphabet of size $K+b+2$, with the same weights $v^{K'-K}$. Equation \eqref{eq:dblockmatrix} bounds its total by
+\[
+\max(v,v^{-1})\bigl(\lambda_{K+b+2}(v)+C_d(v)\bigr)^b,
+\]
+whose eigenvalue majorant is $K/g(v)+O_d(b+1)$. The hypotheses used in Section~\ref{sec:calibration} have now all been verified: bounded count increments, support $K\le n$, a prefix bound $k!$, uniformly conditioned positive comparison on compact marks, and this last block majorant. The same curve \eqref{eq:curve} gives the cancellation \eqref{eq:calibration}. Repeating \eqref{eq:blockpotential}--\eqref{eq:orderedlimit}, with constants depending additionally on the fixed $d$, proves
+\begin{equation}\label{eq:dtilt}
+\limsup_{n\to\infty}\frac1n\log\frac{H_n^{(d)}(v)}{n!}
+\le-\log\chi(v)\qquad(v>0).
+\end{equation}
+At $v=1$, \eqref{eq:dinclusion} supplies the matching Fishburn lower bound, hence
+\[
+\lim_{n\to\infty}(a_n^{(d)}/n!)^{1/n}=\mu.
+\]
+Subtracting this unweighted limit from \eqref{eq:dtilt} gives exactly the moment-generating upper bound \eqref{eq:mgfupper} for $K_n^{(d)}$. The two Chernoff signs prove exponential concentration at $\mu$. Every state still has precisely $K+2$ children, so
+\[
+\frac{a_{n+1}^{(d)}}{a_n^{(d)}}=\E(K_n^{(d)}+2),\qquad
+\frac{a_{n+1}^{(d)}}{(n+1)a_n^{(d)}}\longrightarrow\mu.
+\]
+This proves all fixed-$d$ assertions of Theorem~\ref{thm:main}.
+
+\paragraph{Why fixed means fixed.}
+The constants in the finite-band estimate depend on $d$. Nothing above is uniform for $d=d(n)\to\infty$. For example, when $d\ge n$, every transition of every length-$n$ inversion sequence is a $d$-ascent. The constraint then permits all inversion sequences and the count is $n!$, whose factorial-normalized root is one. Subexponential factors for different fixed $d$ also need not agree. Sections~\ref{sec:logsquare}--\ref{sec:matchinglower} establish the sharper logarithmic correction only for $d=1$.
+
+\section{Threshold inversion with integer bracketing}\label{sec:inverse}
+All logarithms are natural. For $X>1$, let $L=\log X$ and $N=N(X)$. Since every nonempty object has at least two children, the counts strictly increase for $n\ge1$; the duplicate $a_0=a_1=1$ is irrelevant here. Consequently
+\begin{equation}\label{eq:threshold}
+\log a_{N-1}<L\le\log a_N.
+\end{equation}
+Set
+\begin{equation}\label{eq:f}
+f(x)=x\log(\mu x/\ee),\qquad f'(x)=\log(\mu x).
+\end{equation}
+The large positive solution of $f(x)=L$ is
+\begin{equation}\label{eq:W}
+x=x(L)=\frac{L}{W(\mu L/\ee)},\qquad x\sim L/\log L.
+\end{equation}
+Indeed, putting $w=W(\mu L/\ee)$ gives $we^w=\mu L/\ee$, so $\mu x/\ee=e^w$ and $f(x)=xw=L$.
+
+\subsection{Consequence of the root theorem for every fixed d}
+Stirling and the root theorem give
+\[
+\log a_n^{(d)}=f(n)+o(n).
+\]
+For the threshold $N_d(X)$, the analogue of \eqref{eq:threshold} first implies $N_d\sim L/\log L$. Since $f(N_d)-f(N_d-1)=O(\log N_d)$, those same inequalities give $f(N_d)-L=o(N_d)$. The mean value theorem between $N_d$ and $x(L)$ now has derivative asymptotic to $\log L$, whence
+\begin{equation}\label{eq:dinverse}
+N_d(X)=\frac{L}{W(\mu L/\ee)}+o\!\left(\frac{L}{(\log L)^2}\right)
+\end{equation}
+for each fixed $d$. This is the inverse accuracy justified by the common root theorem alone.
+
+\subsection{The signed weak-ascent inverse}
+Set $g(x)=f(x)+\tfrac12(\log x)^2$. Theorem~\ref{thm:logsquare} and Stirling give
+\begin{equation}\label{eq:logerror}
+\log a_n=g(n)+O\!\left(\frac{(\log n)^2}{\log\log n}\right).
+\end{equation}
+The Stirling contribution $\tfrac12\log(2\pi n)+O(1/n)$ is smaller than this error. Since $g(N)-g(N-1)=O(\log N)$, both threshold inequalities \eqref{eq:threshold} imply
+\[
+g(N)-L=O\!\left(\frac{(\log N)^2}{\log\log N}\right).
+\]
+The root theorem first gives $N\sim x\sim L/\log L$. Put
+\begin{equation}\label{eq:newtonstart}
+y=x-\frac{(\log x)^2}{2\log(\mu x)}.
+\end{equation}
+This displacement is $O(\log x)$. Taylor expansion of the explicitly smooth function $f$, with $f'(x)=\log(\mu x)$ and $f''(x)=1/x$, gives
+\[
+f(y)=L-\tfrac12(\log x)^2+O((\log x)^2/x).
+\]
+Also $(\log y)^2-(\log x)^2=O((\log x)^2/x)$, so $g(y)-L=O((\log x)^2/x)$. Between $N$ and $y$, the derivative $g'$ is asymptotic to $\log x$. The mean value theorem therefore gives
+\[
+N-y=O(\log x/\log\log x),
+\]
+proving \eqref{eq:inverseintro}. Only the smooth main term was differentiated; no regularity of the unknown counting remainder was assumed.
+
+For an explicit asymptotic bracketing formulation, the error statement supplies some constants $C,n_0$ valid for all $n\ge n_0$. Choose any sufficiently large constant $A$ compared with $C$. For all sufficiently large $L$, the integers
+\[
+n_- =\left\lfloor y-A\frac{\log x}{\log\log x}\right\rfloor,
+\qquad
+n_+ =\left\lceil y+A\frac{\log x}{\log\log x}\right\rceil
+\]
+satisfy $\log a_{n_-}<L\le\log a_{n_+}$, hence $n_-<N(X)\le n_+$. This follows from $g'\sim\log x$ and the two-sided error in \eqref{eq:logerror}; integer rounding changes the smooth value by only $O(\log x)$.
+
+These existence constants are not numerically certified here. To validate a threshold for a particular finite $X$, use the exact recurrence and integer comparisons. The leading displacement is also $-\tfrac12\log L+o(\log L)$, since $\log x\sim\log L$, but \eqref{eq:inverseintro} retains the more informative smooth correction and a smaller error.
+
+\section{Exact verification and exploratory numerical evidence}\label{sec:verification}
+The source archive separates reproducible finite exact checks from floating-point diagnostics and from the analytic proofs. None of these finite checks proves a limiting assertion.
+
+\subsection{Fail-closed exact checks}
+The supplied Python checker uses integer and rational arithmetic only. It raises explicit exceptions on every failed condition and uses no Python \texttt{assert} statements, so its checks survive optimization with \texttt{python3 -O}. It verifies:
+\begin{enumerate}[leftmargin=*,itemsep=3pt]
+\item all 501 stored integer terms $a_0,\ldots,a_{500}$ against a fresh positive-recurrence computation, including the 25 initial displayed OEIS values recorded in the source audit;
+\item the polynomial derivative recurrence \eqref{eq:derivative} against the full weak-ascent distribution through length 16;
+\item direct enumeration against the state recurrence for selected fixed $d$, and the exact $K+2$ extension identity;
+\item exact rational finite-matrix identities and fixed-band supersolution inequalities, taking rational $r$ and $v=r^{-M}$ so the eigenvector and eigenvalue are rational, with samples on both sides of $v=1$ and shifts larger than the alphabet. The corrector identity is tested after dividing $b,c,h$ by $q$, leaving exact rational expressions when $r$ is rational.
+\end{enumerate}
+The certificate records its complete expected grid and exact rational values. Missing cases, altered fractions, malformed indices, or changed small terms are rejected. A separate corruption runner deliberately changes these inputs and requires a nonzero verifier exit in both ordinary and optimized Python. Passing a corrupted input would fail the corruption test. The source archive is also extracted into a fresh directory for a clean replay of its checks and PDF build.
+
+The rational certificates concern only the stated finite samples. They do not certify inequalities involving transcendental calibrations, the limiting constant $\mu$, or the all-$n$ proofs. Those conclusions rest on Sections~\ref{sec:matrix}--\ref{sec:inverse} and the cited Fishburn theorem.
+
+\subsection{Floating diagnostics and their interpretation}
+A distinct optional high-precision script samples the frozen eigenvector, the fixed-band majorant, and the moving potential inequality. These are numerical sanity checks with explicit tolerances, not exact rational certificates. It also computes the following diagnostics from the exact integer terms. Let
+\[
+r_n=\frac{a_n}{n a_{n-1}},\qquad
+B_n=n(r_n/\mu-1).
+\]
+\begin{center}
+\begin{tabular}{rcc}
+\toprule
+$n$ & $r_n$ & $B_n$\\
+\midrule
+20 & 0.734801728900261 & 4.17400792494\\
+50 & 0.671027431273686 & 5.18979407459\\
+100 & 0.644076903552652 & 5.94640403239\\
+200 & 0.628272669627415 & 6.69342350796\\
+300 & 0.622367973464320 & 7.12628450003\\
+400 & 0.619221951142305 & 7.43171294968\\
+500 & 0.617249929461980 & 7.66771836584\\
+\bottomrule
+\end{tabular}
+\end{center}
+The theorem now establishes the limiting value $\mu=0.607927101854\ldots$ independently of these data. Over the displayed range $B_n$ grows slowly, suggesting a logarithmic correction to the scaled ratio. A factor $\exp(\tfrac12(\log n)^2)$ would contribute a leading $\log n$ term to $B_n$ under suitably controlled smooth asymptotics. The leading logarithmic-square coefficient is now proved by Sections~\ref{sec:sharpupper}--\ref{sec:matchinglower}; the table does not prove it. A rate such as $B_n\sim\log n$ would require additional control of consecutive errors and is not implied by our logarithmic remainder. Smaller logarithmic corrections and an amplitude likewise cannot be settled by this finite table.
+
+\section{Further questions and a refined formal starting point}\label{sec:questions}
+\subsection{The prefactor remains the main asymptotic problem}
+The quadratic corrector improves the preliminary coefficient $3/4$ to $1/2$, and the exact path measure supplies a matching lower bound. Their quantitative remainder is still much larger than the potential next scales $\log n\log\log n$ or $\log n$. Determining those scales and their coefficients requires further analysis. In particular, the fixed prefix cutoff deliberately sacrifices lower-order precision in return for global control of every reachable state.
+
+A full coefficient equivalent would require an additive $o(1)$ error after specifying all divergent terms in the logarithm, together with the constant term that determines the amplitude. The present $O((\log n)^2/\log\log n)$ remainder is far from that accuracy. More refined calibration of the initial boundary and higher correctors are possible directions; their effectiveness remains to be proved.
+
+Other precise questions include a full limit for $n^{-1}\log(H_n(v)/n!)$ away from $v=1$, a large-deviation principle, variance asymptotics and a central limit theorem, dependence of the subexponential factor on fixed $d$, and crossover regimes when $d$ grows. The upper-pressure argument alone does not settle any of them.
+
+\subsection{Level marking and the solvable zero-level anchor}
+For an additional exact starting point, let $\ell$ mark adjacent equalities, and let $\mathcal F(t,u,v,\ell)$ count nonempty weak ascent sequences, where $t$ marks length, $u$ weak ascents, and $v$ the last entry. Put $\mathcal W_\ell(t,u)=\mathcal F(t,u,1,\ell)$. Appending a new letter to $(k,l)$ assigns weight $1$ below $l$, $\ell u$ at $l$, and $u$ above $l$. Finite geometric sums therefore give
+\begin{align}\label{eq:levelkernel}
+\mathcal F=t+\frac{t}{1-v}\bigl[
+\mathcal W_\ell+(\ell u-1+(1-\ell)uv)\mathcal F
+-uv^2\mathcal W_\ell(t,uv)\bigr].
+\end{align}
+The numerator is divisible by $1-v$ coefficientwise. This is a direct formal derivation consistent with the level-marked framework of Mansour \cite{mansour}.
+
+The formal kernel root and substitution are
+\[
+v_\ell(t,u)=\frac{1+t-\ell ut}{1+(1-\ell)ut},\qquad
+\phi_\ell(t,u)=u v_\ell(t,u),
+\]
+so kernel cancellation gives
+\begin{equation}\label{eq:levelW}
+\mathcal W_\ell(t,u)=\frac{t(1-u)}{1+(1-\ell)ut}
++u v_\ell(t,u)^2\mathcal W_\ell(t,\phi_\ell(t,u)).
+\end{equation}
+At $\ell=1$, this is equivalent to \eqref{eq:kernel} through $G(u,t)=u+u^2\mathcal W_1(t,u)$. Thus it does not remove the nonlinear endpoint problem.
+
+At $\ell=0$, $\phi_0=u(1+t)/(1+ut)$ is a M\"obius map. If $y=1/u$, its iterates satisfy
+\[
+y_{j+1}=\frac{y_j+t}{1+t},\qquad
+y_j=1+\frac{y_0-1}{(1+t)^j}.
+\]
+The zero-level objects are precisely ordinary ascent sequences without adjacent equal letters. If $A_F(z)$ is the ordinary Fishburn series and $P(t)=1+\mathcal W_0(t,1)$, deleting repeated adjacent letters preserves strict ascent counts, and reinserting positive runs gives
+\begin{equation}\label{eq:zeroanchor}
+A_F(z)=P\!\left(\frac z{1-z}\right),\qquad
+P(t)=A_F\!\left(\frac t{1+t}\right).
+\end{equation}
+These are formal identities. Differentiating the level-marked equation around $\ell=0$ offers a perturbative route, but passage to $\ell=1$ would require new uniform remainder estimates. For positive level weight, a repeated level itself enlarges the future alphabet, so \eqref{eq:zeroanchor} cannot simply be extended unchanged.
+
+\paragraph{Final scope.}
+The factorial exponential constant, scaled ratio, and concentration are resolved here for each fixed $d$. Weak ascent sequences additionally have a sharp leading logarithmic-square correction, its quantitative remainder, and a signed Lambert inverse refinement. The full coefficient asymptotic remains an open part of this project.
+
+\begin{thebibliography}{9}
+\bibitem{oeis} OEIS Foundation Inc., \emph{A336070}, weak ascent sequences. \url{https://oeis.org/A336070}. Source check: 2 October 2026.
+\bibitem{auli} J. S. Auli and S. Elizalde, \emph{Wilf equivalences between vincular patterns in inversion sequences}, Applied Mathematics and Computation \textbf{388} (2021), 125514. Proposition 3.12 in the author version. \url{https://arxiv.org/abs/2003.11533}.
+\bibitem{benyi} B. B\'enyi, A. Claesson and M. Dukes, \emph{Weak ascent sequences and related combinatorial structures}, European Journal of Combinatorics \textbf{108} (2023), 103633. \href{https://doi.org/10.1016/j.ejc.2022.103633}{doi:10.1016/j.ejc.2022.103633}. Author version: \url{https://akc.is/papers/037-Weak-ascent-sequences.pdf}. Definition 1 and Propositions 28--29 in the checked author version.
+\bibitem{hwang} H.-K. Hwang and E. Y. Jin, \emph{Asymptotics and statistics on Fishburn matrices and their generalizations}, Journal of Combinatorial Theory, Series A \textbf{180} (2021), 105413. \href{https://doi.org/10.1016/j.jcta.2021.105413}{doi:10.1016/j.jcta.2021.105413}. Author preprint, Eq.~(1.1): \url{https://arxiv.org/abs/1911.06690}.
+\bibitem{dukes} M. Dukes and B. E. Sagan, \emph{Difference ascent sequences}, Advances in Applied Mathematics \textbf{159} (2024), 102736. \href{https://doi.org/10.1016/j.aam.2024.102736}{doi:10.1016/j.aam.2024.102736}. Definitions (d1)--(d2): \url{https://arxiv.org/abs/2311.15370}.
+\bibitem{mansour} T. Mansour, \emph{Statistics in Weak Ascent Sequences}, Mathematics \textbf{14}(8) (2026), 1378. \href{https://doi.org/10.3390/math14081378}{doi:10.3390/math14081378}.
+\end{thebibliography}
+\end{document}

@@ -1,0 +1,469 @@
+{
+  "schema": 1,
+  "status": "PASS",
+  "started_utc": "2026-10-02T05:15:24.070298+00:00",
+  "python": "3.12.14",
+  "baseline": [
+    {
+      "mode": "normal",
+      "status": "PASS",
+      "returncode": 0,
+      "seconds": 23.372504,
+      "result": "normal.json"
+    },
+    {
+      "mode": "optimized",
+      "status": "PASS",
+      "returncode": 0,
+      "seconds": 24.960946,
+      "result": "optimized.json"
+    }
+  ],
+  "corruption_tests": [
+    {
+      "name": "input_hash",
+      "mode": "normal",
+      "section": "finite",
+      "status": "REJECTED",
+      "returncode": 1,
+      "seconds": 0.247749,
+      "expected_error": "input SHA-256 mismatch",
+      "observed_error": "input SHA-256 mismatch: formal_9.json"
+    },
+    {
+      "name": "input_hash",
+      "mode": "optimized",
+      "section": "finite",
+      "status": "REJECTED",
+      "returncode": 1,
+      "seconds": 1.440279,
+      "expected_error": "input SHA-256 mismatch",
+      "observed_error": "input SHA-256 mismatch: formal_9.json"
+    },
+    {
+      "name": "boolean_schema",
+      "mode": "normal",
+      "section": "finite",
+      "status": "REJECTED",
+      "returncode": 1,
+      "seconds": 0.236093,
+      "expected_error": "manifest version",
+      "observed_error": "manifest version"
+    },
+    {
+      "name": "boolean_schema",
+      "mode": "optimized",
+      "section": "finite",
+      "status": "REJECTED",
+      "returncode": 1,
+      "seconds": 1.475825,
+      "expected_error": "manifest version",
+      "observed_error": "manifest version"
+    },
+    {
+      "name": "nan_json",
+      "mode": "normal",
+      "section": "finite",
+      "status": "REJECTED",
+      "returncode": 1,
+      "seconds": 0.240725,
+      "expected_error": "nonfinite JSON constant",
+      "observed_error": "nonfinite JSON constant: NaN"
+    },
+    {
+      "name": "nan_json",
+      "mode": "optimized",
+      "section": "finite",
+      "status": "REJECTED",
+      "returncode": 1,
+      "seconds": 1.466955,
+      "expected_error": "nonfinite JSON constant",
+      "observed_error": "nonfinite JSON constant: NaN"
+    },
+    {
+      "name": "infinity_json",
+      "mode": "normal",
+      "section": "finite",
+      "status": "REJECTED",
+      "returncode": 1,
+      "seconds": 0.228229,
+      "expected_error": "nonfinite JSON constant",
+      "observed_error": "nonfinite JSON constant: Infinity"
+    },
+    {
+      "name": "infinity_json",
+      "mode": "optimized",
+      "section": "finite",
+      "status": "REJECTED",
+      "returncode": 1,
+      "seconds": 1.630628,
+      "expected_error": "nonfinite JSON constant",
+      "observed_error": "nonfinite JSON constant: Infinity"
+    },
+    {
+      "name": "empty_profiles",
+      "mode": "normal",
+      "section": "finite",
+      "status": "REJECTED",
+      "returncode": 1,
+      "seconds": 0.265519,
+      "expected_error": "profile count",
+      "observed_error": "profile count"
+    },
+    {
+      "name": "empty_profiles",
+      "mode": "optimized",
+      "section": "finite",
+      "status": "REJECTED",
+      "returncode": 1,
+      "seconds": 1.53425,
+      "expected_error": "profile count",
+      "observed_error": "profile count"
+    },
+    {
+      "name": "shortened_startup",
+      "mode": "normal",
+      "section": "finite",
+      "status": "REJECTED",
+      "returncode": 1,
+      "seconds": 0.351401,
+      "expected_error": "startup coverage configuration",
+      "observed_error": "startup coverage configuration"
+    },
+    {
+      "name": "shortened_startup",
+      "mode": "optimized",
+      "section": "finite",
+      "status": "REJECTED",
+      "returncode": 1,
+      "seconds": 1.793408,
+      "expected_error": "startup coverage configuration",
+      "observed_error": "startup coverage configuration"
+    },
+    {
+      "name": "duplicate_json_key",
+      "mode": "normal",
+      "section": "finite",
+      "status": "REJECTED",
+      "returncode": 1,
+      "seconds": 0.258087,
+      "expected_error": "duplicate JSON key",
+      "observed_error": "duplicate JSON key: f"
+    },
+    {
+      "name": "duplicate_json_key",
+      "mode": "optimized",
+      "section": "finite",
+      "status": "REJECTED",
+      "returncode": 1,
+      "seconds": 1.47193,
+      "expected_error": "duplicate JSON key",
+      "observed_error": "duplicate JSON key: f"
+    },
+    {
+      "name": "unsafe_expression",
+      "mode": "normal",
+      "section": "finite",
+      "status": "REJECTED",
+      "returncode": 1,
+      "seconds": 0.246625,
+      "expected_error": "unsupported expression syntax",
+      "observed_error": "unsupported expression syntax"
+    },
+    {
+      "name": "unsafe_expression",
+      "mode": "optimized",
+      "section": "finite",
+      "status": "REJECTED",
+      "returncode": 1,
+      "seconds": 1.516081,
+      "expected_error": "unsupported expression syntax",
+      "observed_error": "unsupported expression syntax"
+    },
+    {
+      "name": "truncated_coefficients",
+      "mode": "normal",
+      "section": "finite",
+      "status": "REJECTED",
+      "returncode": 1,
+      "seconds": 0.308343,
+      "expected_error": "endpoint count: ratio",
+      "observed_error": "endpoint count: ratio"
+    },
+    {
+      "name": "truncated_coefficients",
+      "mode": "optimized",
+      "section": "finite",
+      "status": "REJECTED",
+      "returncode": 1,
+      "seconds": 1.568917,
+      "expected_error": "endpoint count: ratio",
+      "observed_error": "endpoint count: ratio"
+    },
+    {
+      "name": "profile_boundary",
+      "mode": "normal",
+      "section": "formal",
+      "status": "REJECTED",
+      "returncode": 1,
+      "seconds": 0.309875,
+      "expected_error": "boundary profile 1",
+      "observed_error": "boundary profile 1"
+    },
+    {
+      "name": "profile_boundary",
+      "mode": "optimized",
+      "section": "formal",
+      "status": "REJECTED",
+      "returncode": 1,
+      "seconds": 1.567403,
+      "expected_error": "boundary profile 1",
+      "observed_error": "boundary profile 1"
+    },
+    {
+      "name": "profile_gauge",
+      "mode": "normal",
+      "section": "formal",
+      "status": "REJECTED",
+      "returncode": 1,
+      "seconds": 0.290942,
+      "expected_error": "derivative gauge profile 1",
+      "observed_error": "derivative gauge profile 1"
+    },
+    {
+      "name": "profile_gauge",
+      "mode": "optimized",
+      "section": "formal",
+      "status": "REJECTED",
+      "returncode": 1,
+      "seconds": 1.545633,
+      "expected_error": "derivative gauge profile 1",
+      "observed_error": "derivative gauge profile 1"
+    },
+    {
+      "name": "profile_grading",
+      "mode": "normal",
+      "section": "formal",
+      "status": "REJECTED",
+      "returncode": 1,
+      "seconds": 0.319243,
+      "expected_error": "P grading profile 1",
+      "observed_error": "P grading profile 1"
+    },
+    {
+      "name": "profile_grading",
+      "mode": "optimized",
+      "section": "formal",
+      "status": "REJECTED",
+      "returncode": 1,
+      "seconds": 1.631786,
+      "expected_error": "P grading profile 1",
+      "observed_error": "P grading profile 1"
+    },
+    {
+      "name": "interior_profile",
+      "mode": "normal",
+      "section": "formal",
+      "status": "REJECTED",
+      "returncode": 1,
+      "seconds": 10.696809,
+      "expected_error": "formal pair recurrence",
+      "observed_error": "formal pair recurrence component=0,power=3"
+    },
+    {
+      "name": "interior_profile",
+      "mode": "optimized",
+      "section": "formal",
+      "status": "REJECTED",
+      "returncode": 1,
+      "seconds": 12.031915,
+      "expected_error": "formal pair recurrence",
+      "observed_error": "formal pair recurrence component=0,power=3"
+    },
+    {
+      "name": "highest_scalar",
+      "mode": "normal",
+      "section": "formal",
+      "status": "REJECTED",
+      "returncode": 1,
+      "seconds": 10.874938,
+      "expected_error": "formal pair recurrence",
+      "observed_error": "formal pair recurrence component=0,power=9"
+    },
+    {
+      "name": "highest_scalar",
+      "mode": "optimized",
+      "section": "formal",
+      "status": "REJECTED",
+      "returncode": 1,
+      "seconds": 12.439647,
+      "expected_error": "formal pair recurrence",
+      "observed_error": "formal pair recurrence component=0,power=9"
+    },
+    {
+      "name": "endpoint_taylor",
+      "mode": "normal",
+      "section": "endpoint",
+      "status": "REJECTED",
+      "returncode": 1,
+      "seconds": 0.583097,
+      "expected_error": "canonical endpoint Taylor series",
+      "observed_error": "canonical endpoint Taylor series"
+    },
+    {
+      "name": "endpoint_taylor",
+      "mode": "optimized",
+      "section": "endpoint",
+      "status": "REJECTED",
+      "returncode": 1,
+      "seconds": 2.001934,
+      "expected_error": "canonical endpoint Taylor series",
+      "observed_error": "canonical endpoint Taylor series"
+    },
+    {
+      "name": "carrier_ell",
+      "mode": "normal",
+      "section": "endpoint",
+      "status": "REJECTED",
+      "returncode": 1,
+      "seconds": 0.624256,
+      "expected_error": "scalar carrier difference",
+      "observed_error": "scalar carrier difference power=9"
+    },
+    {
+      "name": "carrier_ell",
+      "mode": "optimized",
+      "section": "endpoint",
+      "status": "REJECTED",
+      "returncode": 1,
+      "seconds": 1.983599,
+      "expected_error": "scalar carrier difference",
+      "observed_error": "scalar carrier difference power=9"
+    },
+    {
+      "name": "log_correction",
+      "mode": "normal",
+      "section": "endpoint",
+      "status": "REJECTED",
+      "returncode": 1,
+      "seconds": 0.659012,
+      "expected_error": "endpoint logarithmic correction",
+      "observed_error": "endpoint logarithmic correction 5"
+    },
+    {
+      "name": "log_correction",
+      "mode": "optimized",
+      "section": "endpoint",
+      "status": "REJECTED",
+      "returncode": 1,
+      "seconds": 2.011849,
+      "expected_error": "endpoint logarithmic correction",
+      "observed_error": "endpoint logarithmic correction 5"
+    },
+    {
+      "name": "multiplicative",
+      "mode": "normal",
+      "section": "endpoint",
+      "status": "REJECTED",
+      "returncode": 1,
+      "seconds": 0.647257,
+      "expected_error": "multiplicative correction",
+      "observed_error": "multiplicative correction 6"
+    },
+    {
+      "name": "multiplicative",
+      "mode": "optimized",
+      "section": "endpoint",
+      "status": "REJECTED",
+      "returncode": 1,
+      "seconds": 2.148301,
+      "expected_error": "multiplicative correction",
+      "observed_error": "multiplicative correction 6"
+    },
+    {
+      "name": "ratio",
+      "mode": "normal",
+      "section": "endpoint",
+      "status": "REJECTED",
+      "returncode": 1,
+      "seconds": 0.788981,
+      "expected_error": "direct endpoint ratio coefficient",
+      "observed_error": "direct endpoint ratio coefficient 9"
+    },
+    {
+      "name": "ratio",
+      "mode": "optimized",
+      "section": "endpoint",
+      "status": "REJECTED",
+      "returncode": 1,
+      "seconds": 2.237756,
+      "expected_error": "direct endpoint ratio coefficient",
+      "observed_error": "direct endpoint ratio coefficient 9"
+    },
+    {
+      "name": "lower_matrix_formula",
+      "mode": "normal",
+      "section": "finite",
+      "status": "REJECTED",
+      "returncode": 1,
+      "seconds": 0.295293,
+      "expected_error": "two-step",
+      "observed_error": "two-step trajectory n=1,j=1"
+    },
+    {
+      "name": "lower_matrix_formula",
+      "mode": "optimized",
+      "section": "finite",
+      "status": "REJECTED",
+      "returncode": 1,
+      "seconds": 1.639933,
+      "expected_error": "two-step",
+      "observed_error": "two-step trajectory n=1,j=1"
+    },
+    {
+      "name": "square_factor_formula",
+      "mode": "normal",
+      "section": "finite",
+      "status": "REJECTED",
+      "returncode": 1,
+      "seconds": 0.28485,
+      "expected_error": "C factor diagonal",
+      "observed_error": "C factor diagonal n=1,j=0"
+    },
+    {
+      "name": "square_factor_formula",
+      "mode": "optimized",
+      "section": "finite",
+      "status": "REJECTED",
+      "returncode": 1,
+      "seconds": 1.591414,
+      "expected_error": "C factor diagonal",
+      "observed_error": "C factor diagonal n=1,j=0"
+    },
+    {
+      "name": "symmetrizer_formula",
+      "mode": "normal",
+      "section": "finite",
+      "status": "REJECTED",
+      "returncode": 1,
+      "seconds": 0.294623,
+      "expected_error": "symmetrizer edge",
+      "observed_error": "symmetrizer edge n=1,j=1"
+    },
+    {
+      "name": "symmetrizer_formula",
+      "mode": "optimized",
+      "section": "finite",
+      "status": "REJECTED",
+      "returncode": 1,
+      "seconds": 1.675694,
+      "expected_error": "symmetrizer edge",
+      "observed_error": "symmetrizer edge n=1,j=1"
+    }
+  ],
+  "checker_sha256": "1e43eb5720222224a797b219980fc271b5879e03f08fe3d2835f93968a0da2fc",
+  "runner_sha256": "04b023f483e9d4524c8dff59d2128103c5ef6ae34d6897799a4aa374f4967ba5",
+  "input_manifest_sha256": "9141b2f15155ee981984fd34c11c5082b568391ae09c29e94be07b2518868c99",
+  "no_assert_statements": true,
+  "elapsed_seconds": 135.858561
+}

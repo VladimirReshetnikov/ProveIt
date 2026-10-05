@@ -1,0 +1,71 @@
+\section{Dimension and the distribution of the rows of A098568}
+\label{sec:dimension}
+Choose a size-$N$ table with probability proportional to $e^{tm}$, and let $D_N$ denote its dimension. Thus
+\[
+ \Prob_t(D_N=m)=\frac{T(N,m)e^{tm}}{B_N(t)}.
+\]
+In this section $r,A,\sigma,\lambda_j,C_j$ are evaluated at the same $t$, and all assertions are uniform on each fixed interval $|t|\le T$.
+
+\begin{theorem}[Local expansion and Gaussian limit]\label{thm:dimension}
+Let $\varphi(z)=(2\pi)^{-1/2}e^{-z^2/2}$ and $z=\sqrt A(m-r)$. For every fixed $R<\infty$, uniformly over support points with $|z|\le R$,
+\begin{equation}\label{eq:localexpansion}
+ \begin{split}
+ \Prob_t(D_N=m)=\sqrt A\,\varphi(z)\bigg[
+ 1+\frac{\lambda_3z^3}6+\frac{\lambda_4z^4}{24}
+ +\frac{\lambda_3^2z^6}{72}-C_1+O_R(N^{-3/2})\bigg].
+ \end{split}
+\end{equation}
+Moreover, with probabilities set to zero off the support,
+\begin{equation}\label{eq:LLT}
+ \sup_{m\in\Z}\left|\sigma\Prob_t(D_N=m)
+                    -\varphi\!\left(\frac{m-r}{\sigma}\right)\right|\longrightarrow0,
+\end{equation}
+and
+\begin{equation}\label{eq:CLT}
+ \frac{D_N-r}{\sigma}\ \xrightarrow{\ d\ }\ \mathcal N(0,1).
+\end{equation}
+The support $\{1,\ldots,N\}$ has span one.
+\end{theorem}
+\begin{proof}
+Taylor expansion of the exact numerator at fixed $z$, followed by division by \eqref{eq:main} through the first correction, gives \eqref{eq:localexpansion}. The term $-C_1$ is its normalizing correction. The expansion is centered at the saddle, rather than the exact mean, which explains the cubic $z^3$ term.
+
+For $m\in I_N$, \eqref{eq:gausstail} and the denominator lower bound imply
+$\sigma\Prob_t(D_N=m)\le C e^{-cz^2}$. Outside $I_N$, the corresponding bound is $Ce^{-cN}$. The Gaussian itself tends uniformly to zero at those remote support points and outside $\{1,\ldots,N\}$. First apply the compact-$z$ formula and then let $R\to\infty$ to prove \eqref{eq:LLT}. For the distributional limit, the same tail bound gives tightness, and the compact sums become Gaussian Riemann sums with mesh $1/\sigma\to0$. This proves \eqref{eq:CLT}; an unweighted supremum local error alone would not suffice. Finally, every $T(N,m)$ is positive, so there is no sublattice obstruction.
+\end{proof}
+
+\begin{proposition}[Mean and variance corrections]\label{prop:moments}
+At the same saddle,
+\begin{align}
+ \E_tD_N&=r+\frac{f_3}{2A^2}+O(\sigma N^{-3/2}),\label{eq:mean}\\
+ \Var_tD_N&=A^{-1}+\frac{f_4}{2A^3}+\frac{f_3^2}{A^4}
+                 +O(A^{-1}N^{-2}).\label{eq:variance}
+\end{align}
+In particular, at $t=0$,
+\[
+ \E D_N\sim\frac{2N}{\log N},\qquad
+ \Var D_N\sim\frac{2N}{(\log N)^2}.
+\]
+The error in \eqref{eq:mean} is $O(1/(N\log N))$.
+\end{proposition}
+\begin{proof}
+Repeat the proof of Section~\ref{sec:transfer} with factors $z$ and $z^2$. The polynomial tail bounds give uniform integrability, so these weighted expansions are legitimate. Parity cancels the next inappropriate weights and yields
+\[
+ \E_tz=\lambda_3/2+O(N^{-3/2}),\qquad
+ \E_tz^2=1+\lambda_4/2+5\lambda_3^2/4+O(N^{-2}).
+\]
+For example the unnormalized $z^2$ correction is
+$15\lambda_4/24+105\lambda_3^2/72$; subtracting $C_1$ gives the displayed raw moment. Subtracting $(\E_tz)^2$ gives
+$\Var_tz=1+\lambda_4/2+\lambda_3^2+O(N^{-2})$.
+Rescaling proves both formulas. This proof does not differentiate a real-mark remainder.
+\end{proof}
+Centering and scaling by the exact mean and standard deviation gives the same normal limit, since their standardized corrections tend to zero. All higher fixed moments and local corrections are obtainable from the weighted-contraction rule and finite series division.
+
+At moderate distances the relative Gaussian approximation holds uniformly whenever $|z|=o(N^{1/6})$. Indeed, these displacements are $o(r)$ and the first nonquadratic exponent is $O(N^{-1/2}|z|^3)=o(1)$ on the intervening proportional interval. Beyond this range it is safer to retain the exact shape: for any support point,
+\begin{equation}\label{eq:exactshape}
+ \Prob_t(D_N=m)=\sqrt{\frac A{2\pi}}
+ e^{f_N(m)+tm-f_N(r)-tr}
+ \left(\sum_{\ell=0}^{K-1}C_\ell+O_{K,T}(N^{-K})\right)^{-1}.
+\end{equation}
+This is the exact numerator divided by the proved denominator; it does not extend a Gaussian relative approximation into a large-deviation region.
+
+To apply the theorem to A098568, normalize its row $n$ by its row sum. If the random column index is $K_n$, then $N=n+1$ and $D_N=K_n+1$. Thus its saddle center is $r_{n+1}(0)-1$, its leading variance is $2(n+1)/(\log(n+1))^2$, and \eqref{eq:LLT} is a full-span local Gaussian answer to the row-distribution question. The column shift affects the center by one and is not to be dropped in a precise local statement.

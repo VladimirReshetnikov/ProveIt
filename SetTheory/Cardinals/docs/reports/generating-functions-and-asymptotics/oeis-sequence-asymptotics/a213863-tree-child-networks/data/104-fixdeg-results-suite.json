@@ -1,0 +1,479 @@
+{
+  "schema": 1,
+  "status": "PASS",
+  "python": "3.12.14",
+  "started_utc": "2026-10-02T05:59:36.839852+00:00",
+  "baseline": [
+    {
+      "mode": "normal",
+      "status": "PASS",
+      "result": "normal.json",
+      "seconds": 7.947108,
+      "gates": 5655
+    },
+    {
+      "mode": "optimized",
+      "status": "PASS",
+      "result": "optimized.json",
+      "seconds": 9.257919,
+      "gates": 5655
+    }
+  ],
+  "corruption_tests": [
+    {
+      "name": "hash_mismatch",
+      "mode": "normal",
+      "section": "finite",
+      "status": "REJECTED",
+      "expected_error": "input SHA-256 mismatch",
+      "observed_error": "input SHA-256 mismatch: formal_coefficients.json",
+      "seconds": 0.227664
+    },
+    {
+      "name": "hash_mismatch",
+      "mode": "optimized",
+      "section": "finite",
+      "status": "REJECTED",
+      "expected_error": "input SHA-256 mismatch",
+      "observed_error": "input SHA-256 mismatch: formal_coefficients.json",
+      "seconds": 1.470341
+    },
+    {
+      "name": "boolean_schema",
+      "mode": "normal",
+      "section": "finite",
+      "status": "REJECTED",
+      "expected_error": "manifest version",
+      "observed_error": "manifest version",
+      "seconds": 0.23352
+    },
+    {
+      "name": "boolean_schema",
+      "mode": "optimized",
+      "section": "finite",
+      "status": "REJECTED",
+      "expected_error": "manifest version",
+      "observed_error": "manifest version",
+      "seconds": 1.448836
+    },
+    {
+      "name": "unknown_formal_field",
+      "mode": "normal",
+      "section": "finite",
+      "status": "REJECTED",
+      "expected_error": "formal object schema",
+      "observed_error": "formal object schema",
+      "seconds": 0.225508
+    },
+    {
+      "name": "unknown_formal_field",
+      "mode": "optimized",
+      "section": "finite",
+      "status": "REJECTED",
+      "expected_error": "formal object schema",
+      "observed_error": "formal object schema",
+      "seconds": 1.49668
+    },
+    {
+      "name": "duplicate_key",
+      "mode": "normal",
+      "section": "finite",
+      "status": "REJECTED",
+      "expected_error": "duplicate JSON key",
+      "observed_error": "duplicate JSON key: sigma",
+      "seconds": 0.235812
+    },
+    {
+      "name": "duplicate_key",
+      "mode": "optimized",
+      "section": "finite",
+      "status": "REJECTED",
+      "expected_error": "duplicate JSON key",
+      "observed_error": "duplicate JSON key: sigma",
+      "seconds": 1.531367
+    },
+    {
+      "name": "nan_constant",
+      "mode": "normal",
+      "section": "finite",
+      "status": "REJECTED",
+      "expected_error": "nonfinite JSON constant",
+      "observed_error": "nonfinite JSON constant: NaN",
+      "seconds": 0.268562
+    },
+    {
+      "name": "nan_constant",
+      "mode": "optimized",
+      "section": "finite",
+      "status": "REJECTED",
+      "expected_error": "nonfinite JSON constant",
+      "observed_error": "nonfinite JSON constant: NaN",
+      "seconds": 1.527424
+    },
+    {
+      "name": "infinity_constant",
+      "mode": "normal",
+      "section": "finite",
+      "status": "REJECTED",
+      "expected_error": "nonfinite JSON constant",
+      "observed_error": "nonfinite JSON constant: Infinity",
+      "seconds": 0.233306
+    },
+    {
+      "name": "infinity_constant",
+      "mode": "optimized",
+      "section": "finite",
+      "status": "REJECTED",
+      "expected_error": "nonfinite JSON constant",
+      "observed_error": "nonfinite JSON constant: Infinity",
+      "seconds": 1.46689
+    },
+    {
+      "name": "unsafe_expression",
+      "mode": "normal",
+      "section": "finite",
+      "status": "REJECTED",
+      "expected_error": "unsupported expression syntax",
+      "observed_error": "unsupported expression syntax",
+      "seconds": 0.225549
+    },
+    {
+      "name": "unsafe_expression",
+      "mode": "optimized",
+      "section": "finite",
+      "status": "REJECTED",
+      "expected_error": "unsupported expression syntax",
+      "observed_error": "unsupported expression syntax",
+      "seconds": 1.484243
+    },
+    {
+      "name": "truncated_profiles",
+      "mode": "normal",
+      "section": "finite",
+      "status": "REJECTED",
+      "expected_error": "profile count",
+      "observed_error": "profile count",
+      "seconds": 0.233001
+    },
+    {
+      "name": "truncated_profiles",
+      "mode": "optimized",
+      "section": "finite",
+      "status": "REJECTED",
+      "expected_error": "profile count",
+      "observed_error": "profile count",
+      "seconds": 1.545052
+    },
+    {
+      "name": "truncated_scalar",
+      "mode": "normal",
+      "section": "finite",
+      "status": "REJECTED",
+      "expected_error": "sigma count",
+      "observed_error": "sigma count",
+      "seconds": 0.245897
+    },
+    {
+      "name": "truncated_scalar",
+      "mode": "optimized",
+      "section": "finite",
+      "status": "REJECTED",
+      "expected_error": "sigma count",
+      "observed_error": "sigma count",
+      "seconds": 1.630265
+    },
+    {
+      "name": "shortened_startup",
+      "mode": "normal",
+      "section": "finite",
+      "status": "REJECTED",
+      "expected_error": "startup coverage configuration",
+      "observed_error": "startup coverage configuration",
+      "seconds": 0.317372
+    },
+    {
+      "name": "shortened_startup",
+      "mode": "optimized",
+      "section": "finite",
+      "status": "REJECTED",
+      "expected_error": "startup coverage configuration",
+      "observed_error": "startup coverage configuration",
+      "seconds": 1.628768
+    },
+    {
+      "name": "wrong_reference_count",
+      "mode": "normal",
+      "section": "finite",
+      "status": "REJECTED",
+      "expected_error": "reference sequence",
+      "observed_error": "reference sequence d=6",
+      "seconds": 0.336063
+    },
+    {
+      "name": "wrong_reference_count",
+      "mode": "optimized",
+      "section": "finite",
+      "status": "REJECTED",
+      "expected_error": "reference sequence",
+      "observed_error": "reference sequence d=6",
+      "seconds": 1.595976
+    },
+    {
+      "name": "broken_gram_identity",
+      "mode": "normal",
+      "section": "finite",
+      "status": "REJECTED",
+      "expected_error": "positive Gram edge",
+      "observed_error": "positive Gram edge",
+      "seconds": 0.315729
+    },
+    {
+      "name": "broken_gram_identity",
+      "mode": "optimized",
+      "section": "finite",
+      "status": "REJECTED",
+      "expected_error": "positive Gram edge",
+      "observed_error": "positive Gram edge",
+      "seconds": 1.644986
+    },
+    {
+      "name": "broken_symmetrizer",
+      "mode": "normal",
+      "section": "finite",
+      "status": "REJECTED",
+      "expected_error": "symmetrizer factor identity",
+      "observed_error": "symmetrizer factor identity",
+      "seconds": 0.317357
+    },
+    {
+      "name": "broken_symmetrizer",
+      "mode": "optimized",
+      "section": "finite",
+      "status": "REJECTED",
+      "expected_error": "symmetrizer factor identity",
+      "observed_error": "symmetrizer factor identity",
+      "seconds": 1.667506
+    },
+    {
+      "name": "false_obstruction",
+      "mode": "normal",
+      "section": "finite",
+      "status": "REJECTED",
+      "expected_error": "naive gauge obstruction",
+      "observed_error": "naive gauge obstruction d=6",
+      "seconds": 0.357402
+    },
+    {
+      "name": "false_obstruction",
+      "mode": "optimized",
+      "section": "finite",
+      "status": "REJECTED",
+      "expected_error": "naive gauge obstruction",
+      "observed_error": "naive gauge obstruction d=6",
+      "seconds": 1.664291
+    },
+    {
+      "name": "profile_boundary",
+      "mode": "normal",
+      "section": "formal",
+      "status": "REJECTED",
+      "expected_error": "boundary profile",
+      "observed_error": "boundary profile 1",
+      "seconds": 0.331357
+    },
+    {
+      "name": "profile_boundary",
+      "mode": "optimized",
+      "section": "formal",
+      "status": "REJECTED",
+      "expected_error": "boundary profile",
+      "observed_error": "boundary profile 1",
+      "seconds": 1.704193
+    },
+    {
+      "name": "profile_derivative_gauge",
+      "mode": "normal",
+      "section": "formal",
+      "status": "REJECTED",
+      "expected_error": "derivative gauge profile",
+      "observed_error": "derivative gauge profile 1",
+      "seconds": 0.316094
+    },
+    {
+      "name": "profile_derivative_gauge",
+      "mode": "optimized",
+      "section": "formal",
+      "status": "REJECTED",
+      "expected_error": "derivative gauge profile",
+      "observed_error": "derivative gauge profile 1",
+      "seconds": 1.598943
+    },
+    {
+      "name": "profile_interior",
+      "mode": "normal",
+      "section": "formal",
+      "status": "REJECTED",
+      "expected_error": "formal pair recurrence",
+      "observed_error": "formal pair recurrence degree 3 component 0",
+      "seconds": 0.716552
+    },
+    {
+      "name": "profile_interior",
+      "mode": "optimized",
+      "section": "formal",
+      "status": "REJECTED",
+      "expected_error": "formal pair recurrence",
+      "observed_error": "formal pair recurrence degree 3 component 0",
+      "seconds": 2.135476
+    },
+    {
+      "name": "highest_scalar",
+      "mode": "normal",
+      "section": "formal",
+      "status": "REJECTED",
+      "expected_error": "formal pair recurrence",
+      "observed_error": "formal pair recurrence degree 5 component 0",
+      "seconds": 0.66026
+    },
+    {
+      "name": "highest_scalar",
+      "mode": "optimized",
+      "section": "formal",
+      "status": "REJECTED",
+      "expected_error": "formal pair recurrence",
+      "observed_error": "formal pair recurrence degree 5 component 0",
+      "seconds": 2.112714
+    },
+    {
+      "name": "wrong_carrier",
+      "mode": "normal",
+      "section": "endpoint",
+      "status": "REJECTED",
+      "expected_error": "scalar carrier difference",
+      "observed_error": "scalar carrier difference degree 5",
+      "seconds": 0.529582
+    },
+    {
+      "name": "wrong_carrier",
+      "mode": "optimized",
+      "section": "endpoint",
+      "status": "REJECTED",
+      "expected_error": "scalar carrier difference",
+      "observed_error": "scalar carrier difference degree 5",
+      "seconds": 1.939447
+    },
+    {
+      "name": "wrong_first_correction",
+      "mode": "normal",
+      "section": "endpoint",
+      "status": "REJECTED",
+      "expected_error": "first endpoint coefficient",
+      "observed_error": "first endpoint coefficient",
+      "seconds": 0.667976
+    },
+    {
+      "name": "wrong_first_correction",
+      "mode": "optimized",
+      "section": "endpoint",
+      "status": "REJECTED",
+      "expected_error": "first endpoint coefficient",
+      "observed_error": "first endpoint coefficient",
+      "seconds": 1.952588
+    },
+    {
+      "name": "wrong_second_correction",
+      "mode": "normal",
+      "section": "endpoint",
+      "status": "REJECTED",
+      "expected_error": "second endpoint coefficient",
+      "observed_error": "second endpoint coefficient",
+      "seconds": 0.615523
+    },
+    {
+      "name": "wrong_second_correction",
+      "mode": "optimized",
+      "section": "endpoint",
+      "status": "REJECTED",
+      "expected_error": "second endpoint coefficient",
+      "observed_error": "second endpoint coefficient",
+      "seconds": 1.925377
+    },
+    {
+      "name": "ternary_highest_scalar",
+      "mode": "normal",
+      "section": "ternary",
+      "status": "REJECTED",
+      "expected_error": "ternary formal pair recurrence",
+      "observed_error": "ternary formal pair recurrence degree 6",
+      "seconds": 1.355565
+    },
+    {
+      "name": "ternary_highest_scalar",
+      "mode": "optimized",
+      "section": "ternary",
+      "status": "REJECTED",
+      "expected_error": "ternary formal pair recurrence",
+      "observed_error": "ternary formal pair recurrence degree 6",
+      "seconds": 2.61063
+    },
+    {
+      "name": "ternary_carrier",
+      "mode": "normal",
+      "section": "ternary",
+      "status": "REJECTED",
+      "expected_error": "ternary carrier difference",
+      "observed_error": "ternary carrier difference degree 6",
+      "seconds": 1.497605
+    },
+    {
+      "name": "ternary_carrier",
+      "mode": "optimized",
+      "section": "ternary",
+      "status": "REJECTED",
+      "expected_error": "ternary carrier difference",
+      "observed_error": "ternary carrier difference degree 6",
+      "seconds": 2.790582
+    },
+    {
+      "name": "ternary_gamma_normalizer",
+      "mode": "normal",
+      "section": "ternary",
+      "status": "REJECTED",
+      "expected_error": "ternary exact gamma normalizer",
+      "observed_error": "ternary exact gamma normalizer",
+      "seconds": 1.883611
+    },
+    {
+      "name": "ternary_gamma_normalizer",
+      "mode": "optimized",
+      "section": "ternary",
+      "status": "REJECTED",
+      "expected_error": "ternary exact gamma normalizer",
+      "observed_error": "ternary exact gamma normalizer",
+      "seconds": 3.12624
+    },
+    {
+      "name": "ternary_cubic_log",
+      "mode": "normal",
+      "section": "ternary",
+      "status": "REJECTED",
+      "expected_error": "ternary logarithmic endpoint coefficient",
+      "observed_error": "ternary logarithmic endpoint coefficient 3",
+      "seconds": 1.961193
+    },
+    {
+      "name": "ternary_cubic_log",
+      "mode": "optimized",
+      "section": "ternary",
+      "status": "REJECTED",
+      "expected_error": "ternary logarithmic endpoint coefficient",
+      "observed_error": "ternary logarithmic endpoint coefficient 3",
+      "seconds": 3.196074
+    }
+  ],
+  "checker_sha256": "939c33130cf31e37d5f4d984373bd710879ed8cfc304e15cda2b7aee1e6adbcd",
+  "runner_sha256": "63ca4df7d0cf89f50644b244a6f7810a71402872767dc61c7e808860596f59cf",
+  "manifest_sha256": "1ea8b071368eb75c5cec1b882b4e22613db30f76e2076012a466cca01dcc2782",
+  "no_assert_statements": true,
+  "elapsed_seconds": 78.479935
+}

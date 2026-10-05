@@ -6,7 +6,7 @@
 \usepackage{hyperref}
 \hypersetup{colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue,
 pdftitle={Permutations avoiding the vincular pattern 12-34 (OEIS A113226)},
-pdfsubject={Exact enumeration, complete asymptotics, refined enumeration and local large deviations}}
+pdfsubject={Exact enumeration, complete asymptotics, refined enumeration and local large deviations, a diagonal-state route and non-D-finiteness, exact Hankel sectors}}
 \makeatletter\g@addto@macro{\UrlBreaks}{\do\-\do\_}\makeatother
 \setlength{\parskip}{.35em}
 \setlength{\parindent}{1.1em}
@@ -16,6 +16,7 @@ pdfsubject={Exact enumeration, complete asymptotics, refined enumeration and loc
 \newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{proposition}[theorem]{Proposition}
 \theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newtheorem{corollary}[theorem]{Corollary}% Parts III-IV (batch 101)
 % Part I macros (source 04)
 \newcommand{\E}{\mathbb E}
 \newcommand{\ii}{\mathrm i}
@@ -31,14 +32,31 @@ pdfsubject={Exact enumeration, complete asymptotics, refined enumeration and loc
 % write-phase macros
 \newcommand{\stirling}[2]{\genfrac\{\}{0pt}{}{#1}{#2}}
 \newenvironment{writenote}{\begin{quote}\small\raggedright\textbf{[Write note, 2~October 2026, batch 77P5.]}\ }{\end{quote}}
+\newenvironment{writenoteb}{\begin{quote}\small\raggedright\textbf{[Write note, 5~October 2026, batch 101.]}\ }{\end{quote}}
+% Part III macros (Report 87); its \ii and \E are Part I's
+\newcommand{\ee}{\mathrm e}
+% Part IV macros (Report 94); its \ii and \dd are Part I's
+\newcommand{\Rea}{\operatorname{Re}}
+\newcommand{\Ima}{\operatorname{Im}}
+\newcommand{\atanh}{\operatorname{artanh}}
+\newcommand{\asinh}{\operatorname{arsinh}}
+\newcommand{\acosh}{\operatorname{arcosh}}
+\newcommand{\cO}{\mathcal O}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\R}{\mathbb R}
 \renewcommand{\labelitemi}{$\bullet$}
 \title{Permutations avoiding the vincular pattern $12$--$34$\\[4pt]
 \large Part I: exact enumeration and complete asymptotics\\
-Part II: a record and cycle bijection, uniform asymptotics,\\ and local large deviations\\[4pt]
+Part II: a record and cycle bijection, uniform asymptotics,\\ and local large deviations\\
+Part III: a diagonal-state route, block integrals\\ and non-D-finiteness\\
+Part IV: exact Hankel sectors at $\log4+2\pi\mathrm i k$\\[4pt]
 \normalsize (OEIS A113226)}
-\author{AI-assisted research manuscripts 04 and 05 of batch 77,\\
+\author{AI-assisted research manuscripts 04 and 05 of batch 77\\
+and Reports 87 and 94 of batch 101,\\
 merged for the ProveIt research-report collection}
-\date{Sources dated 1 October 2026; merged 2 October 2026}
+\date{Sources dated 1--2 October 2026; Parts I--II merged 2 October 2026;\\
+Parts III--IV added 5 October 2026}
 \begin{document}
 \maketitle
 \begin{abstract}
@@ -59,6 +77,19 @@ an explicit correction and a total-variation error of order $n^{-2/3}$.
 All expansions are Poincar\'e expansions to each fixed order.
 The report is AI-assisted and unrefereed; no statement of it is
 formalized.
+
+\emph{Added 5 October 2026 (batch 101).} Parts~III and~IV print two
+further manuscripts. Part~III is an independent, same-day second proof of
+Part~I's main theorem, by a diagonal-state argument directly on
+permutations; it adds integral forms of Elizalde's block functions and
+proves that the generating function is differentially algebraic but not
+D-finite, so that A113226 is not P-recursive. Part~IV writes $A_n/n!$
+exactly as an absolutely convergent sum of Hankel sectors at the
+singularities $\log4+2\pi\mathrm ik$, isolates the first exponentially
+small conjugate pair with a geometric error, and gives every fixed sector a
+complete expansion; this answers Part~I's question on exponentially
+improved expansions for each fixed sector. Its sector expansions are again
+Poincar\'e expansions; the decomposition itself is exact.
 \end{abstract}
 
 \tableofcontents
@@ -121,6 +152,46 @@ shipped file names and the status of Part~I's questions; no statement of
 either source was changed. (vii) The two large exact tables of the
 delivery are not shipped; the report README explains how to regenerate
 them or retrieve the delivered copies.
+\begin{writenoteb}
+\textbf{Parts III and IV.} Two further manuscripts, from the session
+bundle of batch~101 (arrival commit \texttt{60f54ea06}, placement commit
+\texttt{f7c612c72}), are printed in full as Parts~III and~IV.
+\emph{Report~87} (\emph{Exact Enumeration and Complete Asymptotics for
+Vincular Pattern Avoidance}, 1~October 2026, pin \texttt{1512ef835}) is
+\textbf{Part~III}, Sections~\ref{vav:dg:sec:intro}--\ref{vav:dg:sec:checks}:
+an independent answer to the same assignment as source~04, written the same
+day against an earlier repository state; it contributes a second proof of
+Part~I's theorem by a permutation-level diagonal state, integral forms of
+Elizalde's block functions, and Proposition~\ref{vav:dg:prop:structure}
+(differentially algebraic, not D-finite, not P-recursive). \emph{Report~94}
+(\emph{Canonical Exponentially Small Sectors for Vincular Avoidance},
+2~October 2026, no pin; it depends on Report~87 by a SHA-256 of its
+archive) is \textbf{Part~IV}, Sections~\ref{vav:hk:sec:scope}--\ref{vav:hk:sec:questions}
+and Appendix~\ref{vav:hk:app:dependency}: the exact full-cut Hankel sector
+decomposition at $\rho+2\pi\ii k$ and the complete expansion of every
+fixed sector, which answers Part~I's Question~4 for fixed $k$.
+
+\textbf{Where the addition had to choose.} (viii) The two manuscripts are
+printed as Parts after Part~II, not merged into Part~I, because Part~I is
+already written and Report~87's proofs differ from it; each re-proof is
+marked as a second route with the Part~I label it re-proves (see the note
+at the head of Part~III). (ix) Part~III's Section~$n$ is Section~$n+16$
+and its equation $(k)$ is $(k+67)$; Part~IV's Section~$n$ is
+Section~$n+24$ and its equation $(k)$ is $(k+91)$; Part~IV's Appendix~A is
+Appendix~\ref{vav:hk:app:dependency}. Part~I's Appendix~\ref{vav:app:coeff}
+keeps its letter and labels; its two unlabelled displays, which followed
+Part~II's equations as (68)--(69), now follow Part~IV's as (132)--(133).
+(x) One symbol of Part~IV is renamed (the endpoint circle
+$\mathcal C_k(r)$, see Table~\ref{vav:hk:tab:notation}). (xi) The
+bibliographies are merged as for Part~II; new entries are \cite{clark},
+\cite{excedance}, \cite{fs}, \cite{proveitdg} and \cite{hkprior}.
+(xii) Write results proved at this write are marked [write]
+(Remarks~\ref{vav:dg:rem:elizalde}, \ref{vav:dg:rem:farchord},
+\ref{vav:hk:rem:bankbound} and Proposition~\ref{vav:dg:prop:reversion});
+unproved items of the two manuscripts are collected in
+Sections~\ref{vav:dg:sec:questions} and~\ref{vav:hk:sec:questions}.
+No statement of either manuscript is changed.
+\end{writenoteb}
 
 \subsection*{Notation across the two Parts}
 Each Part keeps its own letters. Part~II's quantities depend on a marking
@@ -153,6 +224,13 @@ $s_2$, $r_1$, $q$, $a_1$, $a_2$, $\alpha(1)=1/(2\rho_0)$ and $V(1)$) were
 checked at the write, exactly or to 40 digits. Part~II's \verb|\,\dd x| is
 printed with Part~I's macro, which includes the thin space; this is
 typographic only.
+\begin{writenoteb}
+Table~\ref{vav:tab:notation} covers Parts~I and~II. Parts~III and~IV keep
+their manuscripts' letters, which clash with both (for instance Part~III's
+$C$ is Part~I's $D$, and Part~IV's $H_k(n)$ is a number, not Part~I's
+$H(z)$); their reading conventions are Tables~\ref{vav:dg:tab:notation}
+and~\ref{vav:hk:tab:notation}, at the head of each Part.
+\end{writenoteb}
 
 \subsection*{Relation to neighbouring work and status}
 {\raggedright\textbf{Sibling report.} The powered Catalan numbers, OEIS A113227, count
@@ -180,6 +258,14 @@ separate proof reviews and independent coefficient audits, and say
 themselves that they are not formal verification or conventional peer
 review. \textbf{No statement of this report is formalized}; its place in
 the research-report collection confers no formal status.
+\begin{writenoteb}
+The same holds for Parts~III and~IV: their delivered reviews and audits
+(shipped with prefixes \texttt{06-diagonal-} and \texttt{07-sectors-}) are
+AI-internal, the manuscripts are unrefereed, and nothing in them is
+formalized. Part~III's inversion is, like Part~I's, an instance of the
+transseries volume's inversion apparatus; Part~IV uses classical contour
+and saddle methods.
+\end{writenoteb}
 
 \part{Exact enumeration and complete asymptotics (source 04)}
 \label{vav:part:one}
@@ -290,6 +376,19 @@ uniformly for the marking parameter in complex neighbourhoods of compact
 positive intervals (Theorem~\ref{vav:rf:thm:first}); at $u=1$ it is the
 expansion \eqref{vav:eq:main}.
 \end{writenote}
+\begin{writenoteb}
+Part~III (Report~87, same day, independent) proves
+Theorem~\ref{vav:thm:main} a second time, by a diagonal-state argument on
+permutations instead of the binary-word model
+(Theorems~\ref{vav:dg:thm:egf} and~\ref{vav:dg:thm:asym}). The
+``exponentially small contributions'' that the paragraph above leaves
+unidentified are identified in Part~IV: $A_n/n!=\sum_kH_k(n)$ exactly, with
+contour-defined sectors at $\rho+2\pi\ii k$
+(Theorem~\ref{vav:hk:thm:sum}); the sector $H_0$ has exactly the expansion
+\eqref{vav:eq:main} (divided by $n!$), and each other fixed sector has its
+own complete expansion (Theorem~\ref{vav:hk:thm:allorders}).
+Convergence of the coefficient series is still not asserted.
+\end{writenoteb}
 
 \section{From labelled words to an integral equation}\label{vav:sec:transfer}
 
@@ -418,6 +517,11 @@ claim a direct bijection to a previously named excedance-permutation or
 tree model of A136127, so that narrower question stays open (see the note
 after the questions in Section~\ref{vav:sec:prior}).
 \end{writenote}
+\begin{writenoteb}
+Part~III identifies $L'$ with the EGF of A136127 by a second literature
+route, the Clark--Ehrenborg bivariate excedance formula
+(\eqref{vav:dg:eq:excedance}), and asks the same bijective question.
+\end{writenoteb}
 
 \section{Analytic continuation and the singular expansion}\label{vav:sec:continuation}
 
@@ -438,6 +542,16 @@ In a disk of radius $R$ with $\rho<R<|\rho+2\pi\ii|$, cut along
 $[\rho,R)$, this continuation is single-valued and has no other
 singularities. This follows from analytic ODE existence and uniqueness
 on a simply connected domain.
+\begin{writenoteb}
+The points $\rho+2\pi\ii k$ are genuine singularities of every
+continuation: by Part~III's Proposition~\ref{vav:dg:prop:structure} each is
+an essential singularity on every branch, which also shows that the
+generating function is not D-finite. Part~IV gives a global single-valued
+branch on $\mathbb C$ minus the horizontal cuts $\rho+2\pi\ii k+[0,\infty)$
+(period $4\pi\ii$, not $2\pi\ii$) and its exact local form at every
+$\rho+2\pi\ii k$, with strength $\pi$ for even and $2\pi$ for odd $k$
+(\eqref{vav:hk:eq:F} and Lemma~\ref{vav:hk:lem:local}).
+\end{writenoteb}
 
 Write $w=\rho-z$, with the square root positive for real $w>0$.
 Equation \eqref{vav:eq:egf} gives a convergent local decomposition
@@ -729,6 +843,15 @@ and \texttt{Fabius.staircase\_separation\_fails} in
 these are generic real-number statements, and nothing specific to
 A113226 is formalized.
 \end{writenote}
+\begin{writenoteb}
+Part~III's Section~\ref{vav:dg:sec:inverse} gives a variant: rigorous
+ceiling brackets for the finite models $f_K$
+(Theorem~\ref{vav:dg:thm:inverse}), without a smooth realization, and a
+reversion in the gamma core $\log\Gamma(X+1)-X\log\rho$ instead of the
+Lambert-$W$ core; its displayed two-term reversion is proved in
+Proposition~\ref{vav:dg:prop:reversion} [write]. Both are again instances
+of the transseries volume's apparatus.
+\end{writenoteb}
 
 \section{Exact checks and reproducibility}\label{vav:sec:checks}
 
@@ -865,6 +988,22 @@ poset parameters remain open. \emph{Questions~3 and~4} remain open; Part~II
 does not address certified constants, and it also excludes the other
 complex singularity sectors.
 \end{writenote}
+\begin{writenoteb}
+Update for Parts~III--IV. \emph{Question~4 is answered for every fixed
+sector by Part~IV}: the exact decomposition $A_n/n!=\sum_kH_k(n)$
+(Theorem~\ref{vav:hk:thm:sum}), the first exponentially small pair with an
+absolute error \eqref{vav:hk:eq:finalpair}, and complete expansions of each
+fixed sector (Theorem~\ref{vav:hk:thm:allorders}). Still open, and listed in
+Section~\ref{vav:hk:sec:questions}: expansions uniform in a growing sector
+index, the growth of $a_j$ and optimal truncation against the exact $H_0$
+(no Borel summability or resurgence is claimed), and lower bounds for the
+oscillating pair. \emph{Question~3} remains open; Part~IV's
+``certified numerical extraction'' is a case of it. \emph{Question~1} is
+asked again by Part~III, with the same status (open in its narrow form).
+On \emph{Question~2}, Part~III asks for limit laws of the number of
+components of the exponential formula, which Part~II does not mark
+(Section~\ref{vav:dg:sec:questions}).
+\end{writenoteb}
 
 
 \part{Refined enumeration (source 05)}
@@ -1212,6 +1351,11 @@ In this report the original release is Part~I, printed with the
 editorial changes listed in ``About this report'' and no change to any
 statement.
 \end{writenote}
+\begin{writenoteb}
+At $u=1$ the other complex $z$-singularity sectors are now treated in
+Part~IV; for $u\ne1$ no source treats them
+(Section~\ref{vav:hk:sec:questions}).
+\end{writenoteb}
 
 \paragraph{Source and overlap screen.}
 BCK's Proposition~11 marks different catalytic permutation statistics, not the statistic used here. Its earlier bivariate formulas concern the broader class of $3$-free naturally labelled posets. OEIS A113226 and the earlier Elizalde bounds were rechecked~\cite{oeis,elizalde}. The known cumulant identification is recorded through A136127 and the poly-Bernoulli-relative antidiagonals~\cite{oeis136,testart}.
@@ -1222,6 +1366,1564 @@ As for Part~I, the search ran against the pin \texttt{63b9d6840}, kept
 here as provenance; the repository now contains this report and the
 sibling report \path{oeis-sequence-asymptotics/a113227-powered-catalan/}.
 \end{writenote}
+
+
+\part{A diagonal-state route, block integrals and non-D-finiteness (Report 87)}
+\label{vav:dg:part}
+\begin{writenoteb}
+\textbf{Provenance.} This Part prints, in full, Report~87 of the session
+bundle of batch~101, \emph{Exact Enumeration and Complete Asymptotics for
+Vincular Pattern Avoidance}, dated 1~October 2026 (archive
+\path{Exact_Vincular_Avoidance_Asymptotics_Source.zip}, 558{,}023 bytes,
+arrival commit \texttt{60f54ea06}, placed in \texttt{f7c612c72}; its
+delivered PDF has 8 pages). Its author line reads ``Research note prepared
+for Vladimir Reshetnikov with OpenAI''; it carries no ``prepared for private
+review'' line. Its repository pin is ProveIt \texttt{1512ef835}
+(1~October 2026, 08:38 PDT, recorded in its source-status note and in the
+bibliography entry \cite{proveitdg}); that commit is an ancestor of Part~I's
+pin \texttt{63b9d6840} (15:32 PDT the same day). The archive was
+delivered on 5~October 2026, after Parts~I--II had been written.
+
+\textbf{Relation to Parts I and II.} Report~87 and source~04 (Part~I) are
+independent, same-day answers to the same assignment: neither cites the
+other, and at Report~87's pin the repository contained no A113226 material
+(its claim that the ProveIt inventory has ``no named A113226/A136127
+target'' is true at that pin and stale now, since this report was placed in
+\texttt{4f11bc9c0}). Most of its results are therefore \emph{second routes}
+to Part~I, printed here because their proofs differ; no novelty over Part~I
+is claimed for them. By pin, Report~87 is the earlier of the two; by
+printing order it comes second. In detail:
+\begin{itemize}
+\item Theorem~\ref{vav:dg:thm:egf} is Theorem~\ref{vav:thm:main},
+\eqref{vav:eq:egf}, by a \emph{new route}: continuous labels with the
+state (lowest ascent top, last label) and its separately retained diagonal
+(Section~\ref{vav:dg:sec:diagonal}), directly from the permutation
+definition, where Part~I uses the labelled binary-word model of
+\cite[Proposition~7]{bck}. Under $t=e^{z/2}=2q$ the closed form
+\eqref{vav:dg:eq:atan} is \eqref{vav:eq:egf}.
+\item \eqref{vav:dg:eq:ode}, \eqref{vav:dg:eq:rec-t} and
+\eqref{vav:dg:eq:rec-a} are \eqref{vav:eq:ode}, \eqref{vav:eq:cumulant} and
+\eqref{vav:eq:exact} up to an index shift ($t_n=\ell_n$).
+\item \eqref{vav:dg:eq:excedance} is \eqref{vav:eq:known} by a second
+literature route (the Clark--Ehrenborg bivariate formula, where Part~I
+uses Testart's antidiagonal identity).
+\item Theorem~\ref{vav:dg:thm:asym} and \eqref{vav:dg:eq:c1} are
+\eqref{vav:eq:main} and \eqref{vav:eq:a1}, with a different contour (left
+arc plus vertical chord). The delivered \path{data/06-diagonal-saddle_checks.json}
+gives $c_2$ and $c_3$ exactly; they are symbolically identical to Part~I's
+\eqref{vav:eq:a2} and $a_3$ of Appendix~\ref{vav:app:coeff}.
+\item Section~\ref{vav:dg:sec:contour}'s continuation through the circle
+$|z|=\rho$ re-proves Section~\ref{vav:sec:continuation}.
+\item Theorem~\ref{vav:dg:thm:inverse} and \eqref{vav:dg:eq:invformal} are
+variants of Section~\ref{vav:sec:inverse} (a gamma-core reversion instead of
+the Lambert-$W$ core), and like it instances of \texttt{p0:thm:staircase}
+and \texttt{p0:thm:perturbed-inversion} of the transseries volume (see the
+write note at the end of Section~\ref{vav:sec:inverse}).
+\end{itemize}
+\textbf{New in this Part:} the permutation-level diagonal-state derivation
+(Section~\ref{vav:dg:sec:diagonal}); the integral forms of Elizalde's block
+functions and the exact identity \eqref{vav:dg:eq:T-block}
+(Section~\ref{vav:dg:sec:recurrences}); and
+Proposition~\ref{vav:dg:prop:structure}: the EGF is differentially
+algebraic but not D-finite, so A113226 is not P-recursive. Parts~I--II
+state nothing of the kind; Part~I only notes that the ODE continues $L$
+along paths avoiding $\rho+2\pi\ii k$.
+
+\textbf{Numbering and editorial changes.} Report~87's Section~$n$ is
+Section~$n+16$, its equation $(k)$ is equation $(k+67)$, and its
+Theorems~1.1, 1.2, Proposition~6.1 and Theorem~7.1 are
+Theorems~\ref{vav:dg:thm:egf}, \ref{vav:dg:thm:asym},
+Proposition~\ref{vav:dg:prop:structure} and
+Theorem~\ref{vav:dg:thm:inverse}. Its 28 labels carry the prefix
+\texttt{vav:dg:}; its citations of OEIS A113226, Bevan--Cheon--Kitaev,
+Elizalde and A136127 point to Part~I's entries for the same works, and its
+entries for Clark--Ehrenborg, Ferraz de Andrade--Lundberg--Nagle,
+Flajolet--Sedgewick and its ProveIt pin are added as \cite{clark},
+\cite{excedance}, \cite{fs} and \cite{proveitdg} (the source lists the
+first, third and fourth without citing them). Its macros \verb|\ee|,
+\verb|\ii|, \verb|\E| are kept (\verb|\ii| and \verb|\E| are Part~I's). No
+statement is changed. Write notes (dated) and three numbered write results
+(Remarks~\ref{vav:dg:rem:elizalde} and~\ref{vav:dg:rem:farchord},
+Proposition~\ref{vav:dg:prop:reversion}, each marked [write], placed after
+the source's numbered items so that no source number moves) are added.
+Unproved items go to Section~\ref{vav:dg:sec:questions}.
+
+\textbf{Shipped records.} The working derivations are
+\path{06-diagonal-exact_egf_proof.md} and
+\path{06-diagonal-all_orders_proof.md} (they write $a$ for $\kappa$), the
+structural corollaries \path{06-diagonal-structural_corollaries.md}, the
+source screen \path{06-diagonal-source_status.md}, and two internal reviews
+\path{06-diagonal-audit-structural_exact_review.md} and
+\path{06-diagonal-audit-structural_all_orders_review.md}; the programs are
+\path{code/06-diagonal-check_*.py} and their outputs
+\path{data/06-diagonal-*.json}. The reviews are AI-internal; the Part is
+unrefereed and not formalized.
+\end{writenoteb}
+
+\begin{writenoteb}
+\textbf{Reading conventions of Part~III.} Report~87 keeps its own letters.
+Table~\ref{vav:dg:tab:notation} maps them to Parts~I--II and prints the
+tempting false readings. Three clashes deserve emphasis: Report~87's $C$
+is Part~I's amplitude $D$, while Part~I's $C$ is $3c$; Report~87's $a_n$
+are the counts (Part~I's $A_n$), while Part~I's $a_j$ are the correction
+coefficients (Report~87's $c_j$); and inside Report~87, $b_k(z)$, $c_k(z)$
+are Elizalde's block functions while $b_n$ counts A136127 and $c_j$ are the
+correction coefficients.
+\end{writenoteb}
+\begin{table}[H]
+\centering\small
+\caption{Reading conventions of Part~III (Report 87) against Parts~I--II.}
+\label{vav:dg:tab:notation}
+\begin{tabular}{@{}>{\raggedright}p{0.14\linewidth}>{\raggedright}p{0.38\linewidth}>{\raggedright\arraybackslash}p{0.41\linewidth}@{}}
+\toprule
+Part III & meaning in Part III & in Parts I--II (false reading)\\\midrule
+$a_n$, $A(z)$ & counts of avoiders, their EGF & $A_n$, $H(z)$; Part~I's $a_j$ are coefficients, Part~II's $a=u^{-1/2}$; Part~I's $A=\pi/\sqrt\rho$\\
+$T(z)$, $t_n$, $T_0$ & $\log A$, its coefficients $T^{(n)}(0)$, $\rho/2-3$ & $L(z)$, $\ell_n$, $K$; Part~I's $T(x,y)$ is the bivariate array EGF\\
+$\kappa$, $c_j$ & $(\pi^2/(4\rho))^{1/3}$, correction coefficients & $c$, $a_j$; Part~III's $c$ in \eqref{vav:dg:eq:decay} is a generic constant\\
+$C$, $C_0$, $D_K$ & amplitude $e^{\rho/2-3}\sqrt{\kappa/(3\pi)}$; generic constants & $C$ is Part~I's $D$ (not Part~I's $C=3c$); $C$ is also a generic constant in Section~\ref{vav:dg:sec:algorithm}\\
+$D(m)$ & $e^{z(m-1)}+e^{-zm}-1$ & $e^{-z}D_z(m)$ of Section~\ref{vav:sec:transfer}; not the amplitude $D$\\
+$F(m,y)$, $G(m)$, $H(m)$ & continuation series and diagonal & not Part~I's smooth realization $F$ or EGF $H(z)$\\
+$w$, $\delta$ & $\sqrt{4e^{-z}-1}$; $\rho-z$ (Section~\ref{vav:dg:sec:contour}) & Part~I's $w=\rho-z$ and $\delta=n^{-1/3}$\\
+$h$ & $n^{-1/6}$ & the same as Part~I's $h=\sqrt\delta$ in Section~\ref{vav:sec:generator}\\
+$u$ & $A'/A$ (Proposition~\ref{vav:dg:prop:structure}); $u(h,v)$ (Section~\ref{vav:dg:sec:algorithm}); integration variable & not Part~II's marking parameter $u$\\
+$b_k,c_k$ / $b_n$, $B$ & Elizalde's block functions / A136127 counts and their EGF & $b_n=\ell_{n+1}$; Part~I's $b(x)$; Part~IV's $b_n=a_n/n!$\\
+$E$, $P_E$, $\E$ & $e^z$, $x^2-Ex+E$; expectation & $\E$ is Part~I's expectation\\
+$Q$, $M$, $R(h,v)$ & excedance EGF, its primitive; the formal exponent & Part~I's $Q(\delta,U)$, blocks $M_i$, $R(w)$\\
+$N(y)$, $X$, $q(X)$, $\Psi$ & threshold $\min\{n:a_n\ge y\}$; gamma-core inverse; its perturbation; $\psi(X+1)-\log\rho$ & Part~I's $\tau(Y)$; Part~I's $N$ (Lambert core), $X$ (an approximation), $q=e^{z/2}/2$\\
+$Z$, $\gamma$ & standard normal; $\sqrt{2\kappa/3}$ & Part~II's $Z\sim N(0,1)$ in \eqref{vav:rf:eq:joint}\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{quote}\small
+\textbf{Abstract of Report 87.}
+Let $a_n$ count permutations avoiding the vincular pattern $12$--$34$,
+the sequence OEIS A113226. A continuation argument with independent uniform
+labels gives an exact exponential generating function
+\[
+ \sum_{n\ge0}a_n\frac{z^n}{n!}
+ =\exp\left(\int_1^{\ee^z}\frac{x\,dx}{x^2-\ee^zx+\ee^z}\right).
+\]
+The diagonal state in which the last entry is the lowest ascent top is
+essential to the argument. The formula resolves the growth and
+stretched-exponential conjectures stated by Bevan, Cheon and Kitaev in 2025,
+with explicit constants and a complete expansion in powers of $n^{-1/3}$.
+We give a finite Gaussian-moment algorithm, an exact recurrence, a connection
+with the initial-excedance-set numbers, and inverse expansions with rigorous
+integer-threshold bounds. The generating function is differentially algebraic
+but not D-finite, so the counting sequence is not P-recursive.
+The singularity and contour estimates are proved
+directly; no conjectured recurrence is assumed.
+\end{quote}
+
+\section{Statements and source context}\label{vav:dg:sec:intro}
+A permutation $\pi\in S_n$ contains $12$--$34$ if there are indices
+$i+1<j$ such that
+$\pi_i<\pi_{i+1}<\pi_j<\pi_{j+1}$.
+Write $a_n$ for the number avoiding this pattern and
+$A(z)=\sum_{n\ge0}a_nz^n/n!$. The initial values are
+\[
+1,1,2,6,23,107,585,3669,25932,203768,1761109.
+\]
+This is A113226~\cite{oeis}; it also counts
+$\{3,2+2\}$-free naturally labelled posets~\cite{bck}.
+Throughout, logarithms are natural.
+
+\begin{theorem}[Exact generating function]\label{vav:dg:thm:egf}
+As an analytic germ at zero,
+\begin{equation}\label{vav:dg:eq:exact}
+ A(z)=\ee^{T(z)},\qquad
+ T(z)=\int_1^{\ee^z}\frac{x\,dx}{x^2-\ee^zx+\ee^z}.
+\end{equation}
+Equivalently, with the branches specified by $w>0$ for
+$0<z<\rho=\log4$,
+\begin{equation}\label{vav:dg:eq:atan}
+ T(z)=\frac z2+\frac{\pi-3\arctan w}{w},
+ \qquad w=\sqrt{4\ee^{-z}-1}.
+\end{equation}
+\end{theorem}
+
+Set
+\begin{equation}\label{vav:dg:eq:constants}
+ \rho=\log4,\quad
+ \kappa=\left(\frac{\pi^2}{4\rho}\right)^{1/3},\quad
+ C=\ee^{\rho/2-3}\sqrt{\frac{\kappa}{3\pi}}.
+\end{equation}
+
+\begin{theorem}[Complete expansion]\label{vav:dg:thm:asym}
+There are explicitly computable real constants $c_j$, with $c_0=1$, such
+that for every fixed nonnegative integer $K$,
+\begin{equation}\label{vav:dg:eq:main}
+ \frac{a_n}{n!}
+ =C\rho^{-n}\ee^{3\kappa n^{1/3}}n^{-5/6}
+ \left(\sum_{j=0}^{K}c_jn^{-j/3}
+              +O_K(n^{-(K+1)/3})\right).
+\end{equation}
+The first correction is
+\begin{equation}\label{vav:dg:eq:c1}
+ c_1=\frac{\kappa^2(1-\rho)}2-\frac5{36\kappa}
+       =-0.398274243294777\ldots .
+\end{equation}
+Section~\ref{vav:dg:sec:algorithm} gives a finite exact algorithm for every $c_j$.
+\end{theorem}
+
+In the form $a_n\sim C\rho^{-n}\mu^{n^{1/3}}n^\beta n!$, the constants are
+\[
+ \mu=\ee^{3\kappa}=37.926693850215157\ldots,\qquad
+ \beta=-\frac56,\qquad C=0.0357060412580448\ldots .
+\]
+Bevan--Cheon--Kitaev~\cite[Conjectures 13--14]{bck} conjecture the growth
+constant $\rho^{-1}$ and this form, with numerical estimates
+$\mu\approx37.9$, $\beta\approx-0.82$ and amplitude near $0.032$.
+Equation~\eqref{vav:dg:eq:main} supplies exact constants; the finite-data fitted
+amplitude is not identified with the limiting one.
+
+Elizalde~\cite[Proposition 5.1]{elizalde} supplies the earlier block
+decomposition and coefficientwise envelopes. The insertion state used below
+is the same lowest-ascent-top/last-entry state appearing in
+\cite[Proposition 11]{bck}; the present argument replaces its discrete
+catalytic variables by continuous labels and solves the resulting integral
+equations. The saddle method and the reversion mechanism are classical.
+The proposed contribution is the exact generating function for this class,
+its complete explicit expansion and the controlled inverse application.
+Bounded searches of the live OEIS entry, its primary references and later
+citations on 1 October 2026 did not locate this formula or a later proof of
+the stated conjectures. This is a source-status report, not a claim of
+exhaustive priority.
+\begin{writenoteb}
+In this report the exact generating function, the complete expansion and
+the controlled inverse are Part~I's Theorem~\ref{vav:thm:main} and
+Section~\ref{vav:sec:inverse}, from a manuscript of the same day; the
+proposed contribution of this paragraph is therefore a second, independent
+proof of those results (see the note at the head of this Part). The
+constants agree: $\kappa=c$, $C=D$, $c_1=a_1$, and
+$\mu=37.926693850215157\ldots$ as in Section~\ref{vav:sec:intro}.
+\end{writenoteb}
+
+\section{Continuous labels and the diagonal state}\label{vav:dg:sec:diagonal}
+Independent uniform labels in $(0,1)$ have each order type of length $n$
+with probability $1/n!$. Thus the probability of avoidance is $a_n/n!$.
+After an allowed nonempty prefix, let $y$ be its last label and $m$ the
+minimum of the ascent tops already seen. Put $m=1$ if no ascent has occurred.
+A proposed new ascent starting at $y$ is allowed exactly when $y\le m$.
+Equality is allowed: the ascent ending at $y=m$ and the next ascent overlap,
+so cannot alone form a four-entry occurrence.
+
+Let $F(m,y;z)$ count allowed continuations, including the empty continuation,
+and retain the diagonal value
+$G(m;z)=F(m,m;z)$ separately. The diagonal is attained by a positive
+proportion of prefixes, even though it has two-dimensional measure zero.
+For $|z|<1$ all continuation series are uniformly absolutely convergent,
+bounded by $(1-|z|)^{-1}$. We suppress $z$ in the notation.
+Appending a uniform label gives, for $0<y<m$,
+\begin{equation}\label{vav:dg:eq:below}
+ F(m,y)=1+z\int_0^yF(m,u)\,du
+             +z\int_y^mG(u)\,du+z\int_m^1F(m,u)\,du.
+\end{equation}
+A descent keeps $m$; an ascent to $u<m$ creates the diagonal state $(u,u)$;
+an ascent to $u>m$ keeps $m$. For $m<y<1$ only a descent is permitted:
+\begin{equation}\label{vav:dg:eq:above}
+ F(m,y)=1+z\int_0^yF(m,u)\,du.
+\end{equation}
+On the diagonal every append is permitted, and apart from null equalities
+the threshold stays $m$:
+\begin{equation}\label{vav:dg:eq:diag}
+ G(m)=1+z\int_0^1F(m,u)\,du.
+\end{equation}
+These equations uniquely specify the continuation series coefficient by
+coefficient, so no extraneous solution can enter.
+
+Put $H(m)=1+z\int_0^mF(m,u)\,du$. Equation~\eqref{vav:dg:eq:above} and then
+\eqref{vav:dg:eq:diag} give
+\begin{equation}\label{vav:dg:eq:upper-sol}
+ F(m,y)=H(m)\ee^{z(y-m)}\quad(y>m),\qquad
+ G(m)=H(m)\ee^{z(1-m)}.
+\end{equation}
+The left limit of \eqref{vav:dg:eq:below} at $y=m$ is $G(m)$, and differentiation
+in $y$ gives $\partial_yF=z(F-G(y))$. Hence
+\begin{equation}\label{vav:dg:eq:lower-sol}
+ F(m,y)=\ee^{z(y-m)}G(m)
+           +z\ee^{zy}\int_y^m\ee^{-zu}G(u)\,du\quad(y<m).
+\end{equation}
+Integrating this identity yields
+\[
+ H(m)=1+(1-\ee^{-zm})G(m)
+                     +z\int_0^m(1-\ee^{-zu})G(u)\,du.
+\]
+Together with \eqref{vav:dg:eq:upper-sol}, this becomes the scalar Volterra equation
+\begin{equation}\label{vav:dg:eq:volterra}
+ D(m)G(m)=1+z\int_0^m(1-\ee^{-zu})G(u)\,du,\qquad
+ D(m)=\ee^{z(m-1)}+\ee^{-zm}-1.
+\end{equation}
+Near $z=0$, $D$ is uniformly nonzero. Thus $G(0)=\ee^z$ and
+\[
+ \frac{G'(m)}{G(m)}
+  =\frac{z(1-\ee^{z(m-1)})}{D(m)}.
+\]
+Set $E=\ee^z$, $x=\ee^{zm}$ and $P_E(x)=x^2-Ex+E$.
+Then $d\log G=(E-x)dx/P_E(x)$, so
+\[
+ \log G(1)=z+\int_1^E\frac{E-x}{P_E(x)}\,dx.
+\]
+Since $P_E(E)=E$, $P_E(1)=1$ and
+$\int_1^E(2x-E)dx/P_E(x)=z$, the last expression equals $T(z)$ in
+\eqref{vav:dg:eq:exact}. Finally, starting with the first uniform label,
+\[
+ A(z)=1+z\int_0^1F(1,y)\,dy=H(1)=G(1).
+\]
+This proves \eqref{vav:dg:eq:exact} as a germ at zero. Later continuation is
+deduced from that identity, rather than from the original continuation
+series outside $|z|<1$.
+\begin{writenoteb}
+This derivation does not use Bevan--Cheon--Kitaev's word bijection of
+\cite[Proposition~7]{bck}, on which Part~I's Section~\ref{vav:sec:transfer}
+rests; its state is the one of their insertion tree
+\cite[Proposition~11]{bck}, as the source says. Its Volterra denominator is
+Part~I's: $D(m)=e^{-z}D_z(m)$ with $D_z$ as in
+Section~\ref{vav:sec:transfer}, and the substitution $x=e^{u}$ turns
+\eqref{vav:dg:eq:exact} into $T(z)=\int_0^z e^u\,du/(e^u+e^{z-u}-e^z)$,
+which is \eqref{vav:eq:integral1} after symmetrizing $u\leftrightarrow z-u$
+(both equal $z\int_0^1 e^{zx}\dd x/D_z(x)$; compare
+\eqref{vav:dg:eq:analytic-int}). The sufficiency of the state
+$(m,y)$, including the admissibility of $y=m$, is checked in the shipped
+review \path{06-diagonal-audit-structural_exact_review.md}; it was rechecked
+at intake.
+\end{writenoteb}
+
+\section{Exact recurrences and the published block counts}\label{vav:dg:sec:recurrences}
+Elementary differentiation of \eqref{vav:dg:eq:atan}, or of \eqref{vav:dg:eq:exact}, gives
+\begin{equation}\label{vav:dg:eq:ode}
+ (4-\ee^z)T'(z)-2T(z)=2+\ee^z-z,\qquad T(0)=0.
+\end{equation}
+Writing $T(z)=\sum t_nz^n/n!$, we have $t_0=0$, $t_1=1$, and
+\begin{equation}\label{vav:dg:eq:rec-t}
+ 3t_{n+1}=\sum_{j=0}^{n-1}\binom nj t_{j+1}+2t_n+1-\mathbf1_{\{n=1\}}
+ \qquad(n\ge1).
+\end{equation}
+The desired counts follow from
+\begin{equation}\label{vav:dg:eq:rec-a}
+ a_0=1,\qquad
+ a_n=\sum_{j=1}^n\binom{n-1}{j-1}t_ja_{n-j}.
+\end{equation}
+Both recurrences are exact. In particular, they do not constitute a
+recurrence guessed from numerical data.
+
+For comparison, Elizalde's functions $b_k,c_k$ satisfy
+$b_0=z$, $c_0=\ee^z-1-z$ and, for $k\ge1$,
+\[
+ b_k''=k^2\ee^zb_{k-1},\qquad
+ c_k''=k(k+1)\ee^zc_{k-1},
+\]
+with zero values and first derivatives at zero. They admit the integrals
+\[
+ b_k=\int_0^z(\ee^u-1)^k(\ee^{z-u}-1)^k\,du,\qquad
+ c_k=\int_0^z(\ee^u-1)^{k+1}(\ee^{z-u}-1)^k\,du.
+\]
+Checking the recurrences and initial conditions proves these identities.
+Geometric summation near zero then gives
+\begin{equation}\label{vav:dg:eq:T-block}
+ \sum_{k\ge0}(b_k+c_k)
+ =\int_0^z\frac{\ee^u\,du}
+          {1-(\ee^u-1)(\ee^{z-u}-1)}=T(z).
+\end{equation}
+Thus, if $S=\sum_{k\ge1}(b_k+c_k)$, the exact formula is
+$A=\exp(S+\ee^z-1)$. It lies between Elizalde's envelopes
+$\exp S$ and $\exp(S+\ee^z+z-1)$, but is not inferred from them.
+
+\subsection{Initial excedance sets}\label{vav:dg:sec:excedance}
+Let $b_n$ count permutations of $[n]$ whose excedance set is an initial
+interval, with $b_0=1$; this is A136127~\cite{oeis136}.
+The classical extremal-excedance generating function, due to
+Clark--Ehrenborg and reproduced in \cite[Eq.~(3.1)]{excedance}, is
+\[
+ Q(x,y)=\sum_{r,s\ge0}[b^ra^s]\frac{x^ry^s}{r!s!}
+       =\frac{\ee^{-x-y}}{(\ee^{-x}+\ee^{-y}-1)^2}.
+\]
+Here $[b^ra^s]$ counts permutations of $r+s+1$ with precisely the first
+$r$ positions excedances. A beta integral shows
+\[
+ B(z):=\sum_{n\ge0}b_n\frac{z^n}{n!}
+       =1+\int_0^zQ(u,z-u)\,du.
+\]
+Put $M(x,y)=\ee^{-y}/(\ee^{-x}+\ee^{-y}-1)$.
+Equation~\eqref{vav:dg:eq:T-block} reads
+$T(z)=\int_0^zM(z-v,v)\,dv$; since $M(0,z)=1$ and
+$\partial_xM=Q$, we get
+\begin{equation}\label{vav:dg:eq:excedance}
+ T'(z)=B(z),\qquad t_n=b_{n-1}\ (n\ge1),\qquad A'=BA.
+\end{equation}
+The bivariate excedance formula is established prior work. The connection
+\eqref{vav:dg:eq:excedance} with this single-pattern avoidance class follows from
+the exact continuation solution above.
+
+\begin{remark}[{[write]} The block integrals and the block grading]\label{vav:dg:rem:elizalde}
+\emph{(a) Proof of the integral forms.} The source states that checking
+the recurrences proves them; here is the check. For integers $m,n\ge0$
+put $a=e^u-1$, $b=e^{z-u}-1$ and $I_{m,n}(z)=\int_0^z a^mb^n\,du$, so that
+the displayed integrals are $b_k=I_{k,k}$ and $c_k=I_{k+1,k}$, and
+$I_{0,0}=z=b_0$, $I_{1,0}=e^z-1-z=c_0$. We claim that for $m,n\ge1$
+\[
+ I_{m,n}''=mn\,e^zI_{m-1,n-1},\qquad I_{m,n}(0)=I_{m,n}'(0)=0 .
+\]
+The initial values are clear. Since $\partial_za=0$ and
+$\partial_zb=1+b$, and $b=0$ at $u=z$,
+\begin{align*}
+ I_{m,n}'&=\int_0^z n a^mb^{n-1}(1+b)\,du,\\
+ I_{m,n}''&=\mathbf 1_{\{n=1\}}(e^z-1)^m
+ +\int_0^z\bigl[n(n-1)a^mb^{n-2}(1+b)^2+na^mb^{n-1}(1+b)\bigr]du,
+\end{align*}
+where the boundary term comes from $u=z$ and survives only for $n=1$. On
+the other hand $\partial_ua=1+a$ and $\partial_ub=-(1+b)$ give
+\[
+ n\,\partial_u\bigl[a^mb^{n-1}(1+b)\bigr]
+ =mn(1+a)(1+b)a^{m-1}b^{n-1}
+ -n(n-1)a^mb^{n-2}(1+b)^2-na^mb^{n-1}(1+b).
+\]
+Integrate over $[0,z]$. The bracket vanishes at $u=0$ (where $a=0$) and at
+$u=z$ (where $b=0$) unless $n=1$, when it equals $(e^z-1)^m$ there. Since
+$(1+a)(1+b)=e^z$, the integral of the first term on the right is
+$mn\,e^zI_{m-1,n-1}$, and the boundary contribution cancels the term
+$\mathbf 1_{\{n=1\}}(e^z-1)^m$ above. This proves the claim. With
+$(m,n)=(k,k)$ and $(k+1,k)$ it is Elizalde's pair of recurrences, and the
+solution of $y''=f$ with $y(0)=y'(0)=0$ is unique, so induction on $k$
+proves the integral forms. (The shipped proof note
+\path{06-diagonal-exact_egf_proof.md} also mentions a combinatorial reading
+by a distinguished threshold label, without detail.) Summing,
+$\sum_k(b_k+c_k)=\int_0^z(1+a)\sum_k(ab)^k\,du=\int_0^ze^u\,du/(1-ab)$ for
+small $|z|$, and the substitution $x=e^u$ in \eqref{vav:dg:eq:exact} gives
+the same integral, since $1-ab=e^u+e^{z-u}-e^z$ and
+$x^2-e^zx+e^z=e^u(e^u+e^{z-u}-e^z)$. This is \eqref{vav:dg:eq:T-block}.
+
+\emph{(b) The index $k$ is not Part~II's block-pair grading.} One might
+read $\sum_ku^k(b_k+c_k)$ as $\log H(z,u)$ of \eqref{vav:rf:eq:exact}.
+It is not, except at $u=1$: since $b_k,c_k=O(z^3)$ for $k\ge1$,
+$\sum_ku^k(b_k+c_k)=e^z-1+O(z^3)$ has $z^2$-coefficient $1/2$, whereas
+$\log H(z,u)=z+L_2(u)z^2/2+O(z^3)$ with $L_2(u)=u$ by
+\eqref{vav:rf:eq:cumulants}. (At intake the two were also compared
+numerically at $u=0.7$; they differ there, and agree at $u=1$.)
+\end{remark}
+\begin{writenoteb}
+Part~I identifies $T'$ (its $L'$) with the EGF of A136127 by Testart's
+antidiagonal identity \cite[Section~6]{testart}; the Clark--Ehrenborg route
+above is a second, independent literature route to \eqref{vav:eq:known}.
+The question of a direct bijection explaining $A'=BA$, raised again in
+Section~\ref{vav:dg:sec:checks}, has the status recorded after Part~I's
+questions in Section~\ref{vav:sec:prior}.
+\end{writenoteb}
+
+\section{Singularity and a complete contour argument}\label{vav:dg:sec:contour}
+For $0<z<\rho$, direct integration of \eqref{vav:dg:eq:exact} gives
+\[
+ T(z)=\frac z2+
+ \frac E{\sqrt{E(4-E)}}\left[
+  \arctan\frac E{\sqrt{E(4-E)}}
+  -\arctan\frac{2-E}{\sqrt{E(4-E)}}\right].
+\]
+The bracket is $\pi-3\arctan w$, proving \eqref{vav:dg:eq:atan}.
+Writing $\delta=\rho-z$, its convergent local expansion is
+\begin{equation}\label{vav:dg:eq:local}
+\begin{split}
+ T(\rho-\delta)
+  ={}&\frac{\rho-\delta}{2}
+     +\frac{\pi}{\sqrt{\ee^\delta-1}}
+     -3\sum_{j\ge0}\frac{(-1)^j(\ee^\delta-1)^j}{2j+1}\\
+  ={}&\frac{\pi}{\sqrt\delta}+\frac\rho2-3
+       -\frac\pi4\sqrt\delta+\frac\delta2+O(\delta^{3/2}).
+\end{split}
+\end{equation}
+The square root is positive for positive real $\delta$.
+
+To control other points of the convergence circle, use
+\begin{equation}\label{vav:dg:eq:analytic-int}
+ T(z)=z\int_0^1
+ \frac{\ee^{zv}}{1-(\ee^{zv}-1)(\ee^{z(1-v)}-1)}\,dv.
+\end{equation}
+For $|z|=r<\rho$,
+\[
+ |(\ee^{zv}-1)(\ee^{z(1-v)}-1)|
+ \le(\ee^{rv}-1)(\ee^{r(1-v)}-1)
+ \le(\ee^{r/2}-1)^2<1.
+\]
+On $|z|=\rho$, equality in the second inequality requires $v=1/2$.
+There, equality in the first requires the degree-one and degree-two
+terms of $\ee^{z/2}-1$ to have the same argument, forcing $z=\rho$.
+Thus \eqref{vav:dg:eq:analytic-int} continues through every other point of the
+circle. Combining compactness with \eqref{vav:dg:eq:local}, there is a fixed
+$\epsilon>0$ for which $A$ continues to
+$|z|<\rho+\epsilon$ slit along $[\rho,\rho+\epsilon)$.
+
+Use a Cauchy contour consisting of the left part of the circle
+$|z|=\rho+\epsilon$ and its vertical chord
+\[
+ \Re z=r=\rho(1-\kappa n^{-2/3}).
+\]
+The slit is excluded. The outer arc stays away from the singularity and
+contributes an exponentially small error compared with the claimed main
+term. On the chord $z=r+\ii y$, the local expansion gives
+\begin{equation}\label{vav:dg:eq:decay}
+ \Re T(r+\ii y)
+ \le\frac{\pi}{\sqrt{\rho-r}}
+ -\frac{c}{\sqrt{\rho-r}}
+       \min\left\{\frac{y^2}{(\rho-r)^2},1\right\}+C_0
+\end{equation}
+for small $|y|$, with fixed $c,C_0>0$.
+This follows from the strict inequality
+$\Re(1-\ii t)^{-1/2}<1$ for $t\ne0$ and its quadratic expansion at zero.
+The remaining local terms are bounded. Also $|r+\ii y|\ge r$.
+Consequently the part $|y|\ge n^{-5/6+\eta}$, for any sufficiently small
+fixed $\eta>0$, loses a factor $\exp(-c n^{2\eta})$ relative to the saddle;
+farther fixed parts lose $\exp(-c n^{1/3})$.
+This is the coefficient-contour estimate needed in addition to the
+real-axis expansion.
+
+\begin{remark}[{[write]} The farther parts of the chord]\label{vav:dg:rem:farchord}
+The last claim, which the source states without detail, holds with a much
+larger loss. Take the arc on a circle $|z|=\rho+\epsilon_1$ with
+$0<\epsilon_1<\epsilon$, so that the closed contour lies in the slit disc
+of analyticity (on the source's circle $|z|=\rho+\epsilon$ itself analyticity
+has not been shown; the shrinking is harmless, as the circle radius plays no
+other role). Fix $y_0>0$ so small that \eqref{vav:dg:eq:decay} holds for
+$|y|\le y_0$, and fix $0<\eta_0<\rho$. The set
+$K_1=\{x+\ii y:\rho-\eta_0\le x\le\rho,\ y_0\le|y|,\ |x+\ii y|\le\rho+\epsilon_1\}$
+is a compact subset of the slit disc (it avoids the real slit since
+$|y|\ge y_0$), so $|A|\le M$ on $K_1$. For large $n$ the chord points with
+$|y|\ge y_0$ lie in $K_1$, and $|r+\ii y|^2\ge r^2+y_0^2$ there. Since the
+chord has length at most $2(\rho+\epsilon_1)$ and
+$r^{-n}=\rho^{-n}\exp(\kappa n^{1/3}+O(n^{-1/3}))$, its part with
+$|y|\ge y_0$ contributes to $a_n/n!$ at most
+\[
+ \frac{M(\rho+\epsilon_1)}{\pi r}\,
+ \rho^{-n}e^{\kappa n^{1/3}+O(n^{-1/3})}
+ \Bigl(1+\frac{y_0^2}{(\rho+\epsilon_1)^2}\Bigr)^{-(n+1)/2},
+\]
+which is smaller than the main term $C\rho^{-n}e^{3\kappa n^{1/3}}n^{-5/6}$
+by a factor $O(e^{-c_1n})$ with
+$c_1=\tfrac12\log(1+y_0^2/(\rho+\epsilon_1)^2)>0$; a fortiori it loses
+$\exp(-cn^{1/3})$. The parts with $n^{-5/6+\eta}\le|y|\le y_0$ are those
+treated by \eqref{vav:dg:eq:decay}.
+\end{remark}
+\begin{writenoteb}
+This section re-proves Part~I's Section~\ref{vav:sec:continuation} with
+a different contour: Part~I uses a full Cauchy circle of radius
+$\rho(1-c\delta^2)$ deformed near $\rho$ to a vertical segment, Report~87
+the left arc of $|z|=\rho+\epsilon$ and the vertical chord through
+$\rho(1-\kappa n^{-2/3})$. The local expansion \eqref{vav:dg:eq:local} is
+\eqref{vav:eq:local}--\eqref{vav:eq:Rexp} in other variables. The points
+$\rho+2\pi\ii k$, $k\ne0$, are genuine singularities of every continuation:
+see Proposition~\ref{vav:dg:prop:structure} and, for the explicit branch,
+Lemma~\ref{vav:hk:lem:local} of Part~IV.
+\end{writenoteb}
+
+\section{The finite coefficient algorithm}\label{vav:dg:sec:algorithm}
+Let $h=n^{-1/6}$, $\gamma=\sqrt{2\kappa/3}$, and define
+\[
+ u(h,v)=\kappa h^4+\ii\gamma h^5v,\qquad T_0=\rho/2-3.
+\]
+The orientation of the chord can be chosen so that $z=\rho(1-u)$.
+Form the formal series
+\begin{equation}\label{vav:dg:eq:R}
+\begin{split}
+ R(h,v)={}&T(\rho(1-u(h,v)))
+       -(h^{-6}+1)\log(1-u(h,v))\\
+       &-3\kappa h^{-2}-T_0+\frac{v^2}{2}.
+\end{split}
+\end{equation}
+The negative powers cancel. The coefficient of $h^j$ in
+$R\in h\mathbb C[v][[h]]$ has the parity of $j$ as a polynomial in $v$.
+Let $Z$ be standard normal. Then
+\begin{equation}\label{vav:dg:eq:algorithm}
+ c_j=\E\bigl([h^{2j}]\exp R(h,Z)\bigr).
+\end{equation}
+This uses only finitely many terms of \eqref{vav:dg:eq:local}; Gaussian moments
+are $0$ in odd degree and $(2k-1)!!$ in degree $2k$.
+It proves \eqref{vav:dg:eq:c1} by finite algebra.
+
+For completeness, the remainder is controlled as follows.
+In the central window $|v|\le h^{-\eta}$, choose $\eta>0$ sufficiently
+small for a fixed desired truncation order. Taylor expansion of the
+convergent local expression and then its exponential gives, through degree
+$J$, a remainder bounded by $h^{J+1}$ times a fixed polynomial in $|v|$
+times $\exp(C h|v|^3)$. The full exponent retains Gaussian decay
+$\exp(-v^2/4)$, either by its local quadratic estimate or by
+\eqref{vav:dg:eq:decay}. The remainder thus has integral $O(h^{J+1})$.
+Expand through $J=2K+1$. Odd terms integrate to zero on the symmetric
+window; extending each polynomial-Gaussian integral to the real line
+costs less than every power of $h$.
+The discarded contour is handled by \eqref{vav:dg:eq:decay}.
+Finally $dz$ supplies $\rho\gamma h^5$, and $1/z$ is already included
+in \eqref{vav:dg:eq:R}. The leading multiplier is
+$\gamma/\sqrt{2\pi}=\sqrt{\kappa/(3\pi)}$.
+This proves Theorem~\ref{vav:dg:thm:asym}, including its remainder at every order.
+
+The result is a dominant-saddle asymptotic expansion. It does not assert
+convergence of that expansion or describe all exponentially smaller complex
+saddle contributions.
+\begin{writenoteb}
+The Gaussian variable here is standard ($Z$, variance $1$); Part~I's $U$
+has variance $2/(3c)$, and $\ii\gamma h^5Z$ corresponds to Part~I's
+$c\delta^{5/2}\ii U$ after $U=\gamma Z/\kappa$. The shipped
+\path{code/06-diagonal-check_saddle.py} runs this algorithm to order $3$
+(writing $a$ for $\kappa$); its output \path{data/06-diagonal-saddle_checks.json}
+lists $c_0,\ldots,c_3$, and at the write its $c_2$ and $c_3$ were found
+symbolically equal to Part~I's $a_2$ \eqref{vav:eq:a2} and $a_3$
+(Appendix~\ref{vav:app:coeff}). The ``exponentially smaller complex saddle
+contributions'' excluded in the last paragraph are the subject of Part~IV.
+\end{writenoteb}
+
+\section{Differential structure and infinitely many singularities}\label{vav:dg:sec:structure}
+\begin{proposition}\label{vav:dg:prop:structure}
+The germ $A$ is differentially algebraic and is not D-finite.
+Consequently $(a_n)$ is not P-recursive.
+Its logarithmic derivative $u=A'/A$ satisfies
+\begin{equation}\label{vav:dg:eq:DA}
+ 3(2u+1)u''-10(u')^2-(2u+8)u'+2u^2+u-1=0,
+ \qquad u(0)=u'(0)=1.
+\end{equation}
+\end{proposition}
+\begin{proof}
+Differentiating \eqref{vav:dg:eq:ode} gives
+$(4-\ee^z)u'-(\ee^z+2)u=\ee^z-1$. Hence near zero,
+\[
+ \ee^z=\frac{4u'-2u+1}{u'+u+1},
+\]
+whose denominator at zero is $3$. Differentiate and use
+$(\ee^z)'=\ee^z$ to obtain \eqref{vav:dg:eq:DA}.
+Substitution $u=A'/A$ and multiplication by $A^4$ gives a third-order
+polynomial differential equation for $A$.
+
+For the other assertion put $z_k=\rho+2\pi\ii k$, $k\in\mathbb Z$.
+The square root $w=\sqrt{4\ee^{-z}-1}$ can be continued from zero
+along every finite path avoiding these points.
+It never reaches $\ii$ or $-\ii$, because either value would require
+$\ee^{-z}=0$. The arctangent can therefore be continued along the
+lifted path as well. Each $z_k$ is accessible by such a path.
+Near $z_k$, use $w$ as a local ramified coordinate, so
+$z=z_k-\log(1+w^2)$.
+The continued arctangent is regular at $w=0$ and has value $j\pi$
+for some integer $j$, by the identity $\tan(\arctan w)=w$.
+Thus every such branch satisfies
+\[
+ T(z)=\frac z2+\frac{\pi(1-3j)}{w}-3+O(w^2).
+\]
+Since $1-3j\ne0$, $\exp T$ has an essential singularity in the
+coordinate $w$ and cannot extend holomorphically through $z_k$.
+A D-finite germ can have finite singularities only at the finitely
+many zeros of the leading polynomial of its linear differential
+equation. This excludes D-finiteness.
+Finally, P-recursiveness is preserved by multiplication or division
+by $n!$, by clearing shifted factorial ratios in the recurrence.
+P-recursiveness of $a_n$ would therefore make $A$ D-finite.
+\end{proof}
+\begin{writenoteb}
+This proposition is new relative to Parts~I--II, which state nothing on
+D-finiteness. The shipped \path{code/06-diagonal-check_structure.py}
+verifies the elimination exactly and prints the cleared third-order
+polynomial equation for $A$ (\path{data/06-diagonal-structure_checks.json});
+at intake the residual of \eqref{vav:dg:eq:DA} on the exact series was below
+$10^{-38}$ through $z^{37}$. The non-D-finiteness that
+\cite{bck} discuss concerns a different class (the shipped source screen
+and internal review say so: interval orders, the unlabelled Fishburn
+series), so it is not a prior proof of this proposition. The local strengths
+$\pi(1-3j)$ are consistent with Part~IV: on the branch of
+Lemma~\ref{vav:hk:lem:local} the strength is $\pi$ at $\rho+2\pi\ii k$ for
+even $k$ ($j=0$) and $2\pi$ for odd $k$ ($j=1$, with the opposite sign of
+$w$).
+\end{writenoteb}
+
+\section{Inversion and integer thresholds}\label{vav:dg:sec:inverse}
+For $y\to\infty$, put $N(y)=\min\{n:a_n\ge y\}$.
+The expansion implies $a_{n+1}/a_n\sim n/\rho$, so the sequence is
+eventually strictly increasing. For fixed $K$, let
+\[
+ f_K(x)=\Gamma(x+1)C\rho^{-x}
+       \ee^{3\kappa x^{1/3}}x^{-5/6}
+       \sum_{j=0}^{K}c_jx^{-j/3}.
+\]
+It is positive and strictly increasing on a tail, with logarithmic
+derivative $\log(x/\rho)+O(x^{-2/3})$.
+Let $x_K(y)$ denote its large inverse.
+
+\begin{theorem}[Threshold inversion]\label{vav:dg:thm:inverse}
+For each fixed $K$, there is a constant $D_K>0$ such that, for all large $y$,
+\[
+ \left\lceil x_K-\varepsilon_K\right\rceil
+ \le N(y)\le
+ \left\lceil x_K+\varepsilon_K\right\rceil,\qquad
+ \varepsilon_K=
+ \frac{D_Kx_K^{-(K+1)/3}}{\log x_K}.
+\]
+In particular, the ceiling of $x_K$ is exact whenever its distance from
+the integers exceeds $\varepsilon_K$.
+\end{theorem}
+\begin{proof}
+The logarithmic error at integer arguments in \eqref{vav:dg:eq:main} is
+$O(x^{-(K+1)/3})$. The mean value theorem divides this error by
+the logarithmic derivative of $f_K$, which is asymptotic to $\log x$.
+Taking $D_K$ sufficiently large gives the two comparisons on each side
+of the threshold. Values in an initial finite segment do not matter
+as $y\to\infty$.
+\end{proof}
+
+For an explicit compatible inverse expansion, let $X$ solve
+\[
+ \log\Gamma(X+1)-X\log\rho=\log y,\qquad
+ \Psi(X)=\psi(X+1)-\log\rho,
+\]
+and set
+\[
+ q(X)=3\kappa X^{1/3}-\frac56\log X+\log C
+                 +\log\left(\sum_{j\ge0}c_jX^{-j/3}\right).
+\]
+Lagrange reversion in the gamma-core variable gives
+\begin{equation}\label{vav:dg:eq:invformal}
+ x\sim X+\sum_{k\ge1}\frac{(-1)^k}{k!}
+ \left(\frac1{\Psi(X)}\frac d{dX}\right)^{k-1}
+             \frac{q(X)^k}{\Psi(X)}.
+\end{equation}
+Every finite truncation is justified by Taylor expansion of the finite
+models and the derivative estimate above. The first displacement is
+$O(X^{1/3}/\log X)=o(X)$, and successive reversion terms decrease.
+For example,
+\begin{align}
+ x={}&X-\frac{3\kappa X^{1/3}-(5/6)\log X+\log C+c_1X^{-1/3}}
+                  {\Psi(X)}
+       +\frac{3\kappa^2X^{-1/3}}{\Psi(X)^2}\nonumber\\
+    &-\frac{9\kappa^2X^{2/3}\Psi'(X)}{2\Psi(X)^3}
+       +O\left(\frac{X^{-2/3}}{\log X}\right).
+\end{align}
+No choice of an interpolation of the discrete sequence is being asserted;
+the finite models and Theorem~\ref{vav:dg:thm:inverse} specify the inverse meaning.
+
+\begin{proposition}[{[write]} The displayed reversion]\label{vav:dg:prop:reversion}
+Fix $K\ge1$, let $q_K$ be $q$ with the sum truncated at $j=K$ (so
+$\log f_K=G+q_K$ with $G(x)=\log\Gamma(x+1)-x\log\rho$), and let $x=x_K(y)$
+and $X=X(y)$ be as above. Then, as $y\to\infty$,
+\begin{enumerate}
+\item[(i)] $x=X-\dfrac{q_K}{\Psi}+\dfrac{q_Kq_K'}{\Psi^2}
+-\dfrac{\Psi'q_K^2}{2\Psi^3}+O\bigl(X^{-1}(\log X)^{-3}\bigr)$, all
+functions evaluated at $X$; the two correction groups are the $k=1$ and
+$k=2$ terms of \eqref{vav:dg:eq:invformal} with $q=q_K$;
+\item[(ii)] the displayed expansion before this proposition holds for $x=x_K$,
+with its remainder $O(X^{-2/3}/\log X)$;
+\item[(iii)] for every $k\ge1$ the $k$-th term of
+\eqref{vav:dg:eq:invformal}, with $q=q_K$, is
+$O\bigl(X^{1-2k/3}(\log X)^{-k}\bigr)$; so successive terms decrease by
+factors $O(X^{-2/3}/\log X)$, and the third term is of the order of the
+remainder in (i).
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+We use $\Psi=G'$, $\Psi(x)=\log(x/\rho)+O(1/x)$, $\Psi'(x)=\psi'(x+1)>0$
+and $\Psi^{(m)}(x)=O(x^{-m})$ for $m\ge1$ (standard polygamma asymptotics),
+and $q_K^{(m)}(x)=O(x^{1/3-m})$ for $m\ge0$; more precisely
+$q_K=3\kappa x^{1/3}+O(\log x)$ and $q_K'=\kappa x^{-2/3}+O(x^{-1})$.
+Write $q,q',\Psi,\Psi'$ for values at $X$ and $d=x-X$.
+
+\emph{Size of $d$.} By definition $G(x)+q_K(x)=G(X)$, and $x,X\to\infty$.
+If $x\ge2X$, then $G(x)-G(X)\ge(x-X)\Psi(X)\ge\tfrac x2\Psi(X)$, which is
+incompatible with $G(x)-G(X)=-q_K(x)=O(x^{1/3})$ for large $X$; if
+$x\le X/2$, then $G(X)-G(x)\ge\tfrac X2\Psi(X/2)$, incompatible with
+$O(x^{1/3})=O(X^{1/3})$. So $X/2<x<2X$, and the mean value theorem with
+$\Psi\ge\Psi(X/2)\ge\tfrac12\log X$ on $[X/2,2X]$ gives
+$d=O(X^{1/3}/\log X)$.
+
+\emph{Expansion.} Taylor's theorem on $[X/2,2X]$ gives
+$G(x)-G(X)=\Psi d+\tfrac12\Psi'd^2+O(X^{-2}|d|^3)$ and
+$q_K(x)=q+q'd+O(X^{-5/3}d^2)$, so
+\[
+ \Psi d+q+q'd+\tfrac12\Psi'd^2=O\bigl(X^{-1}(\log X)^{-2}\bigr).
+\]
+Since $q'd=O(X^{-1/3}/\log X)$ and $\Psi'd^2=O(X^{-1/3}(\log X)^{-2})$,
+division by $\Psi$ gives $d=-q/\Psi+d_1$ with
+$d_1=O(X^{-1/3}(\log X)^{-2})$. Substituting back,
+$q'd=-qq'/\Psi+O(X^{-1}(\log X)^{-2})$ and
+$\Psi'd^2=\Psi'q^2/\Psi^2+O(X^{-1}(\log X)^{-3})$, and a second division
+by $\Psi$ gives (i). The $k=1$ term of \eqref{vav:dg:eq:invformal} is
+$-q/\Psi$ and the $k=2$ term is
+$\tfrac12\Psi^{-1}(q^2/\Psi)'=qq'/\Psi^2-\Psi'q^2/(2\Psi^3)$.
+
+\emph{(ii).} Since $K\ge1$,
+$q_K=3\kappa X^{1/3}-\tfrac56\log X+\log C+c_1X^{-1/3}+O(X^{-2/3})$, so
+$-q_K/\Psi$ is the first displayed fraction up to $O(X^{-2/3}/\log X)$.
+Next $q_Kq_K'=3\kappa^2X^{-1/3}+O(X^{-2/3}\log X)$ and
+$q_K^2=9\kappa^2X^{2/3}+O(X^{1/3}\log X)$, with $\Psi'=O(1/X)$; hence the
+other two groups of (i) equal $3\kappa^2X^{-1/3}/\Psi^2$ and
+$-9\kappa^2X^{2/3}\Psi'/(2\Psi^3)$ up to $O(X^{-2/3}/\log X)$.
+
+\emph{(iii).} Say that $g\in\mathcal S(\mu)$, for a positive weight $\mu$,
+if $g^{(m)}(X)=O(\mu(X)X^{-m})$ for every $m\ge0$. By Leibniz's rule
+$\mathcal S(\mu_1)\mathcal S(\mu_2)\subset\mathcal S(\mu_1\mu_2)$, and
+$g\in\mathcal S(\mu)$ implies $g'\in\mathcal S(\mu/X)$ directly from the
+definition. We have $q_K\in\mathcal S(X^{1/3})$,
+and $1/\Psi\in\mathcal S(1/\log X)$: each derivative of $1/\Psi$ of order
+$m\ge1$ is a sum of products $\Psi^{(j_1)}\cdots\Psi^{(j_r)}/\Psi^{r+1}$
+with $j_1+\dots+j_r=m$, $j_i\ge1$, hence $O(X^{-m}(\log X)^{-2})$. So
+$q_K^k/\Psi\in\mathcal S(X^{k/3}/\log X)$, and $g\mapsto\Psi^{-1}g'$ maps
+$\mathcal S(\mu)$ into $\mathcal S(\mu/(X\log X))$. The $k$-th term is
+therefore in $\mathcal S(X^{k/3}(X\log X)^{-(k-1)}(\log X)^{-1})
+=\mathcal S(X^{1-2k/3}(\log X)^{-k})$.
+\end{proof}
+\begin{writenoteb}
+Theorem~\ref{vav:dg:thm:inverse} is the separation clause of the staircase
+theorem of the transseries volume (\texttt{p0:thm:staircase}) applied to
+the finite models $f_K$, as Part~I's envelope \eqref{vav:eq:ceiling} applies
+it to the smooth realization $F$; Report~87 avoids constructing such a
+realization by working with $f_K$ directly. The reversion
+\eqref{vav:dg:eq:invformal} is Lagrange--B\"urmann inversion in the
+gamma core $\log\Gamma(X+1)-X\log\rho$, where Part~I inverts the cruder
+core $N\log(N/(e\rho))$ by Lambert's $W$ \eqref{vav:eq:N}; both are instances
+of \texttt{p0:thm:perturbed-inversion}. The source's claim that
+\emph{every} finite truncation of \eqref{vav:dg:eq:invformal} is justified
+is proved above only for the displayed truncation; the general case is
+recorded in Section~\ref{vav:dg:sec:questions}. At intake the displayed
+formula was compared with $x_3$ at $y=\sqrt{a_{n-1}a_n}$,
+$n=100,\ldots,600$: $\lceil x_3\rceil=n$ throughout, and the difference
+divided by $X^{-2/3}/\log X$ was $2.33$--$2.35$.
+\end{writenoteb}
+
+\section{Verification and further questions}\label{vav:dg:sec:checks}
+The accompanying standard-library checker compares 71 terms of the new
+linear logarithm recurrence with the independent discrete insertion tree
+from \cite{bck} and with the published block recurrences from
+\cite{elizalde}. It also checks direct avoidance and initial-excedance
+enumeration through size eight, and 21 terms displayed in OEIS.
+A separate symbolic checker reconstructs $c_0,\ldots,c_3$; it gives
+$c_2=0.981588612542\ldots$ and $c_3=-0.530220338435\ldots$.
+Their exact expressions are included in \texttt{saddle\_checks.json}.
+These finite checks support transcription and implementation; the
+enumeration and remainder theorems are proved above.
+
+For example, after dividing the exact value of $a_n/n!$ by the leading
+factor in \eqref{vav:dg:eq:main}, the ratios at $n=100,200,400,600$ are respectively
+$0.95356734$, $0.95755841$, $0.96253451$, $0.96559308$.
+The approximations using $c_0,\ldots,c_3$ are respectively
+$0.95445352$, $0.95794679$, $0.96270133$, $0.96569406$.
+This slow convergence helps explain why a fitted amplitude and power
+can differ from their limiting constants.
+
+Three directions remain. First, a direct bijection explaining
+$A'=B A$ could expose a natural component decomposition and yield refined
+statistics. Second, the infinitely many singularities proved in
+Proposition~\ref{vav:dg:prop:structure} invite a systematic analysis of the
+corresponding exponentially smaller sectors, which is not supplied here.
+Third, marking the number of
+components in the exponential formula should give concentration and limit
+laws, but a combinatorial interpretation of those components should be
+settled before attributing such statistics to the original permutations.
+
+This is an ordinary mathematical research note. Its proofs and executable
+checks were reviewed by direct derivation; it has not been externally
+refereed or formally verified.
+\begin{writenoteb}
+In this collection the checkers are shipped as
+\path{code/06-diagonal-check_exact.py}, \path{code/06-diagonal-check_saddle.py},
+\path{code/06-diagonal-check_structure.py} and
+\path{code/06-diagonal-check_numerics.py}, with outputs
+\path{data/06-diagonal-exact_checks.json}, \path{data/06-diagonal-counts_600.json}
+(the counts through $n=600$), \path{data/06-diagonal-saddle_checks.json},
+\path{data/06-diagonal-structure_checks.json} and
+\path{data/06-diagonal-numeric_regression.json}; the
+``\texttt{saddle\_checks.json}'' of the text is the third of these. The
+scripts write beside themselves under the delivered names, so they are
+rerun only on a copy (see the README). At intake all four ran on a copy and
+reproduced the delivered outputs up to line endings. The ratios above agree
+with Part~I's table in Section~\ref{vav:sec:checks} at $n=100,200,400$.
+\end{writenoteb}
+
+\subsection{Further questions and research}\label{vav:dg:sec:questions}
+\begin{writenoteb}
+Per the standing rule of this collection, the unproved items of Report~87
+are collected here, each with its source and status.
+\begin{enumerate}
+\item \emph{A direct bijection for $A'=BA$} (Report~87, first direction;
+Part~I, Question~1). Part~II's separated cycles
+(Section~\ref{vav:rf:sec:bijection}) explain the exponential transform on
+the poset side; a direct map from the components to the initial-excedance
+permutations counted by $B$ is not known. Open.
+\item \emph{The exponentially smaller sectors} (Report~87, second direction;
+Part~I, Question~4). Answered for every fixed sector by Part~IV
+(Theorems~\ref{vav:hk:thm:sum} and~\ref{vav:hk:thm:allorders}); the
+questions that remain (growing sector index, resurgence, certified values)
+are listed in Section~\ref{vav:hk:sec:questions}.
+\item \emph{Limit laws for the number of components} (Report~87, third
+direction). The components of the exponential formula $A=e^T$ are, by
+Part~II, separated cycles and singletons, so the interpretation the source
+asks for exists on the poset/word side; Part~II marks the number of block
+pairs and of isolated elements, not the number of separated cycles, and
+identifies none of its statistics with a permutation statistic. Concentration
+and limit laws for the number of cycles are open.
+\item \emph{Every finite truncation of the reversion}
+\eqref{vav:dg:eq:invformal} (Section~\ref{vav:dg:sec:inverse}; sketched
+there by ``Taylor expansion of the finite models and the derivative
+estimate''). Proposition~\ref{vav:dg:prop:reversion} proves the displayed
+two-term truncation and the decrease of all terms; a proof that the
+truncation after $m$ terms has error of the order of the $(m+1)$-st term,
+for every $m$, is missing (it should follow from Lagrange inversion with
+remainder in a $\lambda$-deformation $G(x)=G(X)-\lambda q_K(x)$ and the
+symbol estimates of that proof, but this is not written).
+\item \emph{The farther chord parts} (Section~\ref{vav:dg:sec:contour}).
+Stated without proof by the source; proved in
+Remark~\ref{vav:dg:rem:farchord} (with an exponential loss in $n$). Not open.
+\end{enumerate}
+No claim of Report~87 was found wrong. Its bibliography lists three works it
+does not cite (\cite{clark}, \cite{fs}, \cite{proveitdg}); they are printed
+with the merged bibliography.
+\end{writenoteb}
+
+
+\part{Exact Hankel sectors at the singularities \texorpdfstring{$\log4+2\pi\ii k$}{log 4 + 2 pi i k} (Report 94)}
+\label{vav:hk:part}
+\begin{writenoteb}
+\textbf{Provenance.} This Part prints, in full, Report~94 of the session
+bundle of batch~101, \emph{Canonical Exponentially Small Sectors for
+Vincular Avoidance}, dated 2~October 2026 (archive
+\path{Canonical_Vincular_Exponential_Sectors_Source.zip}, 384{,}547 bytes,
+arrival commit \texttt{60f54ea06}, placed in \texttt{f7c612c72}; its
+delivered PDF has 11 pages). Its author line reads ``Research continuation
+of Exact Vincular Avoidance Asymptotics''; it carries no ``prepared for
+private review'' line. It records no repository pin: its only dependency
+is Report~87 (Part~III here), identified by the SHA-256 of Report~87's
+archive in \path{data/07-sectors-dependency.json}; at intake that digest
+was checked to be the digest of the delivered archive of Report~87. Report~94
+saw neither Parts~I--II nor the repository.
+
+\textbf{What it answers.} It answers Part~I's Question~4 (``exponentially
+improved expansions accounting for continuation near the other singularities
+$\rho+2\pi\ii k$'', Section~\ref{vav:sec:prior}) for every fixed sector:
+the coefficients $b_n=A_n/n!$ are the absolutely convergent sum of exact
+contour-defined sectors $H_k(n)$ (Theorem~\ref{vav:hk:thm:sum}), and every
+fixed sector has a complete expansion (Theorem~\ref{vav:hk:thm:allorders}).
+Everything in this Part is new relative to Parts~I--III except the $k=0$
+case of Theorem~\ref{vav:hk:thm:allorders}, which is Part~I's
+Theorem~\ref{vav:thm:main} for the exact dominant sector $H_0$: $C_0=D$,
+$\kappa_0=c$, and the formulas \eqref{vav:hk:eq:c1}--\eqref{vav:hk:eq:c2}
+at $k=0$ are \eqref{vav:eq:a1}--\eqref{vav:eq:a2} (checked symbolically at
+the write), as Report~94 itself says in Section~\ref{vav:hk:sec:pair}. Its
+local branch at $\zeta_0$ (Lemma~\ref{vav:hk:lem:local}) is
+\eqref{vav:eq:local}--\eqref{vav:eq:Rexp}, and its global branch
+\eqref{vav:hk:eq:F} is Part~I's \eqref{vav:eq:egf} written in $t=e^{z/2}=2q$.
+
+\textbf{Numbering and editorial changes.} Report~94's Section~$n$ is
+Section~$n+24$, its equation $(k)$ is equation $(k+91)$, and its
+Lemmas~2.1, 3.1, Theorem~4.1, Corollary~4.2 and Theorem~6.1 are
+Lemmas~\ref{vav:hk:lem:local}, \ref{vav:hk:lem:banks},
+Theorem~\ref{vav:hk:thm:sum}, Corollary~\ref{vav:hk:cor:pair} and
+Theorem~\ref{vav:hk:thm:allorders}. Its Appendix~A is
+Appendix~\ref{vav:hk:app:dependency} (Part~I keeps Appendix~A), and its
+bibliography entry for Report~87 says so. Its 49 labels carry the prefix
+\texttt{vav:hk:}; its citations of OEIS A113226, Bevan--Cheon--Kitaev and
+Elizalde point to Part~I's entries, and its entry for Report~87 is
+\cite{hkprior}. \textbf{One symbol is renamed:} the endpoint circle
+$C_k(r)$ of the source is printed $\mathcal C_k(r)$, because the source
+also writes $C_k$ for the amplitude \eqref{vav:hk:eq:introconstants} and
+$C_r$ for a constant in Theorem~\ref{vav:hk:thm:sum}. Its macros
+(\verb|\Rea|, \verb|\Ima|, \verb|\atanh|, \verb|\asinh|, \verb|\acosh|,
+\verb|\cO|, \verb|\C|, \verb|\Z|, \verb|\R|) are kept; its \verb|\dd| is
+Part~I's. No statement is changed. Write notes (dated) and one numbered
+write result (Remark~\ref{vav:hk:rem:bankbound}, [write], after the
+source's remark) are added.
+
+\textbf{Shipped records.} The expanded proof note is
+\path{07-sectors-proof_notes.md}; the source comparison
+\path{07-sectors-source_status.md}; two internal audits
+\path{07-sectors-audit-global_hankel_review.md} and
+\path{07-sectors-audit-sector_remainders_review.md}; a rendering and
+replay record \path{07-sectors-qa-visual_review.md}; the programs
+\path{code/07-sectors-check_sector_coefficients.py} and
+\path{code/07-sectors-check_sector_numerics.py}, with outputs
+\path{data/07-sectors-checks-symbolic_checks.json} and
+\path{data/07-sectors-checks-numerical_checks.json}. The audits are
+AI-internal; the Part is unrefereed and not formalized.
+\end{writenoteb}
+
+\begin{writenoteb}
+\textbf{Reading conventions of Part~IV.} Report~94 keeps its own letters.
+Table~\ref{vav:hk:tab:notation} maps them to Parts~I--III. The most
+tempting misreadings: $H_k(n)$ is a \emph{number} (a sector of the
+coefficient), not Part~I's generating function $H(z)$; $b_n=a_n/n!$, not
+Part~III's A136127 counts; $g_k\in\{1,2\}$ is a singular strength, not
+Part~I's Puiseux coefficient $g_j$; and $\delta$ is a local variable at the
+singularity, not Part~I's $n^{-1/3}$.
+\end{writenoteb}
+\begin{table}[H]
+\centering\small
+\caption{Reading conventions of Part~IV (Report 94) against Parts~I--III.}
+\label{vav:hk:tab:notation}
+\begin{tabular}{@{}>{\raggedright}p{0.15\linewidth}>{\raggedright}p{0.38\linewidth}>{\raggedright\arraybackslash}p{0.40\linewidth}@{}}
+\toprule
+Part IV & meaning in Part IV & in Parts I--III (false reading)\\\midrule
+$a_n$, $b_n$ & counts; $b_n=a_n/n!=[z^n]A$ & $A_n$, $A_n/n!$; Part~III's $b_n$ = A136127\\
+$A(z)$, $A_k^\pm$ & the EGF (global branch); bank values & Part~I's $H(z)$\\
+$T$, $T_k$, $T_{0,k}$ & $\log A$; local branch at $\zeta_k$; $\zeta_k/2-3$ & Part~I's $L$; $T_{0,0}=K$; Part~I's $T(x,y)$\\
+$\mathcal T(u)$ & local exponent of Section~\ref{vav:hk:sec:allorders} & not Part~II's $\mathcal T=\coth((\rho-w)/4)$\\
+$\zeta_k$, $\epsilon_k$, $g_k$ & $\rho+2\pi\ii k$; $(-1)^k$; strength $1$ or $2$ & Part~II's $\zeta$ is $z/\rho(u)$; Part~I's $g_j$ are Puiseux coefficients\\
+$\kappa_k$, $C_k$, $c_{k,j}$ & sector constants & at $k=0$: $c$, $D$, $a_j$ (Part~III: $\kappa$, $C$, $c_j$)\\
+$H_k(n)$ & the $k$-th sector (a number) & not Part~I's $H(z)$\\
+$F(t)$, $\Omega$, $D$ & branch in $t=e^{z/2}$; $t$-plane domain; cut $z$-domain & $t=2q$ with Part~I's $q$; not Part~I's $F$, $D$, or Part~II's $\Omega$\\
+$q(x)$, $L(x)$, $B(x)$, $B_*$ & $\sqrt{1-e^{-x}}$, $\operatorname{artanh}q$, bank and strip moduli & not Part~I's $q$, $L$; not Part~III's $B(z)$\\
+$\delta$, $\delta_s$ & $\zeta_k-z$; the saddle point & Part~I's $\delta=n^{-1/3}$; Part~III's $\delta=\rho-z$ (the case $k=0$)\\
+$r$, $r_n$, $R$ & radii & Part~I's $r_m$, $R(w)$\\
+$\mathcal C_k(r)$, $C_r$ & endpoint circle (renamed from $C_k(r)$); a constant & \\
+$M_r$, $M_*$, $Y_K$, $E_K$ & maxima; heights; rectangle error & Part~I's blocks $M_i$, threshold $Y$\\
+$h$, $y$, $S(h,y)$ & $n^{-1/6}$; Gaussian variable; formal exponent & $h$ as in Parts~I and III; Part~II's $S(w,u)$\\
+$\phi$, $f_\phi$, $\alpha$, $c_k$ & $\arg\zeta$; real phase; angle; a positive constant (Section~\ref{vav:hk:sec:saddle}) & Part~I's $\alpha=-1/3$; $c_k\ne c_{k,j}$\\
+$a(\delta)$, $b(\delta)$ & analytic functions in the proof of Theorem~\ref{vav:hk:thm:allorders} & not the counts $a_n$, $b_n$\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{quote}\small
+\textbf{Abstract of Report 94.}
+For the exponential generating function of permutations avoiding the vincular pattern $12$--$34$, we construct an exact, absolutely convergent decomposition into full-cut Hankel sectors indexed by the singularities $\log 4+2\pi\ii k$. The clockwise endpoint loop is retained. This fixes an exact dominant sector and makes the first exponentially small conjugate pair unambiguous. Every fixed sector has a complete complex saddle expansion, with parity-dependent singular strength, explicit amplitude, and two correction coefficients. The proof uses the original horizontal cuts throughout; its complex Gaussian has positive real quadratic part. Exact symbolic checks, numerical regressions, scope of the source comparison, and reproducibility instructions are included.
+\end{quote}
+
+\section{Scope and main conclusions}\label{vav:hk:sec:scope}
+Let $a_n$ denote the number of permutations of $[n]$ avoiding the vincular pattern $12$--$34$, and put
+\[
+ A(z)=\sum_{n\geq0}\frac{a_n}{n!}z^n,\qquad b_n=[z^n]A(z).
+\]
+The identification is OEIS A113226~\cite{oeis}. Our one mathematical dependency on the earlier delivered report~87, \emph{Exact Vincular Avoidance Asymptotics}~\cite{hkprior}, is its exact generating function
+\begin{equation}\label{vav:hk:eq:input}
+ A(z)=\exp T(z),\qquad
+ T(z)=\frac z2+\frac{\pi-3\arctan w}{w},\qquad
+ w=\sqrt{4e^{-z}-1},
+\end{equation}
+with the real positive square root for real $z<\rho:=\log4$. The earlier report proves its combinatorial origin and the complete dominant expansion. We do not repeat or claim those results as new here. Starting from~\eqref{vav:hk:eq:input}, the analytic arguments below are self-contained.
+
+Define
+\begin{equation}\label{vav:hk:eq:parameters}
+ \zeta_k=\rho+2\pi\ii k,\qquad
+ \epsilon_k=(-1)^k,\qquad
+ g_k=\frac{3-\epsilon_k}{2}\in\{1,2\}.
+\end{equation}
+The main results are an exact normalization and its complete sector expansions:
+\begin{align}
+ b_n&=\sum_{k\in\Z}H_k(n),\qquad n\geq1,\label{vav:hk:eq:intromain}\\
+ b_n&=H_0(n)+2\Rea H_1(n)+O_R(R^{-n}),
+ \quad |\zeta_1|<R<|\zeta_2|,\label{vav:hk:eq:intropair}\\
+ H_k(n)&\sim C_k\zeta_k^{-n}e^{3\kappa_kn^{1/3}}n^{-5/6},\label{vav:hk:eq:introasymp}\\
+ \kappa_k&=\left(\frac{g_k^2\pi^2}{4\zeta_k}\right)^{1/3},\qquad
+ C_k=e^{\zeta_k/2-3}\sqrt{\frac{\kappa_k}{3\pi}}.\label{vav:hk:eq:introconstants}
+\end{align}
+All roots in~\eqref{vav:hk:eq:introconstants} are principal. The series in~\eqref{vav:hk:eq:intromain} is absolutely convergent, and $H_k$ is defined by the complete contour in Section~\ref{vav:hk:sec:hankel}. Formula~\eqref{vav:hk:eq:introasymp} extends to every algebraic order for each fixed $k$.
+
+An all-orders formal expansion does not, by itself, determine an exponentially small correction. In~\eqref{vav:hk:eq:intropair}, $H_0$ is an exact contour-defined quantity. Replacing it by a fixed finite dominant expansion would leave an algebraic error much larger than $H_1$. Also, the real pair can exhibit oscillatory cancellation; our error estimates use absolute envelopes and do not assert a relative equivalent at its near-zeros.
+\begin{writenoteb}
+``The earlier delivered report~87'' is Part~III of this report, and the
+generating function \eqref{vav:hk:eq:input} is also Part~I's
+Theorem~\ref{vav:thm:main}, proved independently there; so the one input of
+this Part is proved twice in this report. In Part~I's letters,
+\eqref{vav:hk:eq:introasymp} at $k=0$ reads $H_0(n)\sim D\rho^{-n}e^{3cn^{1/3}}n^{-5/6}$,
+the right side of \eqref{vav:eq:main} divided by $n!$; for $k\ne0$ the ratio
+$|H_k(n)/H_0(n)|$ decays like $(\rho/|\zeta_k|)^n$ up to stretched factors,
+which is why these sectors are invisible in Part~I's Poincar\'e expansion.
+\end{writenoteb}
+
+\section{A global branch and the parity of local strengths}\label{vav:hk:sec:branch}
+Let
+\[
+ \Omega=\C\setminus\bigl(({-\infty},-2]\cup[2,\infty)\bigr).
+\]
+On $\Omega$, use the branches of $\sqrt{4-t^2}$ and $\arcsin(t/2)$ with values $2$ and $0$ at $t=0$. Set
+\begin{equation}\label{vav:hk:eq:F}
+ F(t)=t\exp\left\{
+ \frac{\bigl(3\arcsin(t/2)-\pi/2\bigr)t}{\sqrt{4-t^2}}
+ \right\},\qquad A(z)=F(e^{z/2}).
+\end{equation}
+The preimage of the two $t$-cuts is exactly the family
+\[
+ \zeta_k+[0,\infty),\qquad k\in\Z.
+\]
+Thus~\eqref{vav:hk:eq:F} gives a single-valued holomorphic branch on their complement $D$. On the real interval $z<\rho$, the identity
+\[
+ \arcsin(e^{z/2}/2)=\frac\pi2-\arctan\sqrt{4e^{-z}-1}
+\]
+proves agreement with~\eqref{vav:hk:eq:input}; the identity theorem then identifies the continuation.
+
+Oddness of $\arcsin$ and evenness of the normalized square root give
+\begin{equation}\label{vav:hk:eq:shift}
+ F(-t)=-F(t)\exp\left(\frac{\pi t}{\sqrt{4-t^2}}\right).
+\end{equation}
+In particular $A(z+4\pi\ii)=A(z)$, whereas a $2\pi\ii$ shift is not a period. The branch is real under conjugation: $A(\overline z)=\overline{A(z)}$.
+
+\begin{lemma}[Exact local branch]\label{vav:hk:lem:local}
+For sufficiently small $\delta\in\C\setminus(-\infty,0]$, with principal $\sqrt\delta$, one has $A(\zeta_k-\delta)=\exp T_k(\zeta_k-\delta)$, where
+\begin{equation}\label{vav:hk:eq:local}
+ T_k(\zeta_k-\delta)=\frac{\zeta_k-\delta}{2}
+ +\frac{g_k\pi}{\sqrt{e^\delta-1}}
+ -3\frac{\arctan\sqrt{e^\delta-1}}{\sqrt{e^\delta-1}}.
+\end{equation}
+Consequently, with $T_{0,k}=\zeta_k/2-3$,
+\begin{equation}\label{vav:hk:eq:localexp}
+ T_k(\zeta_k-\delta)
+ =g_k\pi\delta^{-1/2}+T_{0,k}
+ -\frac{g_k\pi}{4}\delta^{1/2}+\frac\delta2
+ +O(\delta^{3/2}).
+\end{equation}
+\end{lemma}
+\begin{proof}
+Put $w=\sqrt{e^\delta-1}$. For even $k$, $t=e^{(\zeta_k-\delta)/2}=2e^{-\delta/2}$ and $\arcsin(t/2)=\pi/2-\arctan w$. For odd $k$, $t=-2e^{-\delta/2}$ and $\arcsin(t/2)=-\pi/2+\arctan w$, while $t/\sqrt{4-t^2}=-1/w$. Substitution gives~\eqref{vav:hk:eq:local}. The quotient $\arctan w/w$ is analytic in $w^2$ near zero. Expanding it and $(e^\delta-1)^{-1/2}$ proves~\eqref{vav:hk:eq:localexp}. The logarithm is fixed modulo $2\pi\ii$; its exponential retains the important factor $e^{\zeta_k/2}=2(-1)^k$.
+\end{proof}
+\begin{writenoteb}
+Part~I's Section~\ref{vav:sec:continuation} continues the EGF only in a
+disc of radius less than $|\zeta_1|$, cut along $[\rho,R)$, and notes that
+the ODE continues it along paths avoiding $\rho+2\pi\ii k$. The global
+branch \eqref{vav:hk:eq:F} on the domain $D$ with horizontal cuts is new
+here; it is ``canonical'' only in the sense the source states in
+Section~\ref{vav:hk:sec:hankel} (this branch, these cuts). By
+Lemma~\ref{vav:hk:lem:local} every $\zeta_k$ is a genuine essential
+singularity of this branch, in agreement with
+Proposition~\ref{vav:dg:prop:structure} of Part~III (see the note after
+it); the $k=0$ case of \eqref{vav:hk:eq:local} is Part~I's
+\eqref{vav:eq:local} with $w=\delta$ there.
+\end{writenoteb}
+
+\section{Bank values and the full-cut sectors}\label{vav:hk:sec:hankel}
+For $x>0$, write
+\begin{equation}\label{vav:hk:eq:bankmod}
+ q(x)=\sqrt{1-e^{-x}},\qquad L(x)=\atanh q(x)=\acosh(e^{x/2}),\qquad
+ B(x)=2e^{x/2}e^{-3L(x)/q(x)}.
+\end{equation}
+Denote the upper and lower limits on the $k$th cut by $A_k^+(x)$ and $A_k^-(x)$.
+\begin{lemma}[Banks and their bounds]\label{vav:hk:lem:banks}
+For every $k\in\Z$ and $x>0$,
+\begin{equation}\label{vav:hk:eq:banks}
+ A_k^\pm(x)=\epsilon_kB(x)\exp\left(\pm\frac{\ii g_k\pi}{q(x)}\right).
+\end{equation}
+Moreover,
+\begin{equation}\label{vav:hk:eq:banklimits}
+ B(x)\longrightarrow2e^{-3}\quad(x\downarrow0),\qquad
+ B(x)=\frac14e^{-x}\{1+O(xe^{-x})\}\quad(x\to\infty).
+\end{equation}
+Thus $B$ is bounded and integrable on $(0,\infty)$.
+\end{lemma}
+\begin{proof}
+On the upper bank, $\delta=-x-\ii0$, so the local square root continues as $-\ii q$. Also $\arctan(-\ii q)=-\ii\atanh q$. The lower bank has the conjugate choices. This gives~\eqref{vav:hk:eq:banks}, first near the endpoint and then along the complete bank by continuation. As $x\downarrow0$, $L/q\to1$. At infinity, $q=1+O(e^{-x})$ and $L=x/2+\log2+O(e^{-x})$, giving~\eqref{vav:hk:eq:banklimits}. In fact both individual banks have leading value $-e^{-x}/4$ at infinity.
+\end{proof}
+
+Fix
+\begin{equation}\label{vav:hk:eq:radius}
+ 0<r<\min(\rho/2,\pi).
+\end{equation}
+Let $\mathcal C_k(r)$ be the endpoint circle traversed clockwise from the lower bank of $\zeta_k+r$ to its upper bank. Equivalently,
+\[
+ z=\zeta_k-re^{\ii\alpha},\qquad \alpha:\pi\longrightarrow-\pi.
+\]
+For integer $n\geq1$, define the \emph{canonical full-cut sector}
+\begin{equation}\label{vav:hk:eq:H}
+ H_k(n)=\frac1{2\pi\ii}\left\{
+ \int_{\mathcal C_k(r)}\frac{A(z)}{z^{n+1}}\dd z
+ +\int_r^\infty\frac{A_k^+(x)-A_k^-(x)}{(\zeta_k+x)^{n+1}}\dd x
+ \right\}.
+\end{equation}
+The path runs inward along the lower bank, clockwise around the endpoint, and outward along the upper bank. A pole test fixes the sign: with $A(z)=1/(\rho-z)$, a clockwise circle contributes $-\operatorname{Res}_{z=\rho}(A(z)z^{-n-1})=\rho^{-n-1}$.
+
+Cauchy's theorem in the cut annulus between two radii satisfying~\eqref{vav:hk:eq:radius} proves that~\eqref{vav:hk:eq:H} is independent of $r$. Accordingly, the radius may later depend on $n$. The word ``canonical'' here refers to the specified global branch and its horizontal cuts.
+
+\begin{remark}[Why the endpoint loop matters]
+The jump integral in~\eqref{vav:hk:eq:H} converges absolutely even if its lower limit is replaced by zero, because $B$ is bounded. The problem with a jump-only formula is therefore not divergence. It is the omission of the endpoint loop, whose integrand grows like $\exp(g_k\pi/\sqrt\delta)$ on the left of the endpoint. There is no vanishing small-circle estimate. Radius independence and integrable bank values imply that the shrinking loop has a finite integral limit, but do not make that limit zero. Retaining a fixed positive radius is sufficient for all our arguments.
+\end{remark}
+
+\begin{remark}[{[write]} An explicit majorant for the banks]\label{vav:hk:rem:bankbound}
+For every $x>0$, $B(x)<2e^{-x}(1+q(x))^{-3}\le2e^{-x}$; in particular
+$\int_0^\infty B(x)\dd x<2$. Indeed $q\in(0,1)$ and
+$(1+q)/(1-q)=(1+q)^2/(1-q^2)=(1+q)^2e^{x}$, so
+$L=\atanh q=\tfrac12\log\frac{1+q}{1-q}=\tfrac x2+\log(1+q)>0$. Hence
+$L/q>L$ and $3L/q>\tfrac{3x}2+3\log(1+q)$, which gives the bound. The same
+identity gives $L=\acosh(e^{x/2})$ and the limit $L=x/2+\log2+O(e^{-x})$ used
+in Lemma~\ref{vav:hk:lem:banks}. The bound $B\le2e^{-x}$ is the one the
+delivered \path{code/07-sectors-check_sector_numerics.py} uses, in a comment
+without proof, for its omitted-bank tail bounds.
+\end{remark}
+
+\section{Exact decomposition and uniform sector tails}\label{vav:hk:sec:decomposition}
+\begin{theorem}[Absolutely convergent sector decomposition]\label{vav:hk:thm:sum}
+For every integer $n\geq1$,
+\begin{equation}\label{vav:hk:eq:sum}
+ b_n=\sum_{k\in\Z}H_k(n),\qquad
+ H_{-k}(n)=\overline{H_k(n)}.
+\end{equation}
+For every fixed admissible $r$, there is $C_r<\infty$, independent of $k,n$, such that
+\begin{equation}\label{vav:hk:eq:uniformbound}
+ |H_k(n)|\leq C_r(|\zeta_k|-r)^{-n-1}.
+\end{equation}
+The series in~\eqref{vav:hk:eq:sum} is therefore absolutely convergent.
+\end{theorem}
+\begin{proof}
+Periodicity leaves only two translated endpoint-circle branches. Let $M_r$ be the maximum of $|A|$ on these two compact circle banks. Since $\Rea\zeta_k=\rho>0$,
+\[
+ |\zeta_k+x|\geq|\zeta_k|\quad(x\geq0),\qquad
+ |z|\geq|\zeta_k|-r\quad(z\in \mathcal C_k(r)).
+\]
+Thus~\eqref{vav:hk:eq:uniformbound} follows with
+\[
+ C_r=rM_r+\frac1\pi\int_r^\infty B(x)\dd x.
+\]
+Since $|\zeta_k|\sim2\pi|k|$, the bound implies absolute convergence for $n\geq1$.
+
+It remains to prove the exact identity. On the lines $\Ima z=(2j+1)\pi$, write $s=e^{x/2}$. Formula~\eqref{vav:hk:eq:F} gives the common modulus
+\begin{equation}\label{vav:hk:eq:strip}
+ B_*(x)=s\exp\left(-\frac{3s\asinh(s/2)}{\sqrt{4+s^2}}\right).
+\end{equation}
+It is $O(e^{x/2})$ as $x\to-\infty$ and $O(e^{-x})$ as $x\to\infty$, so $M_*:=\int_\R B_*(x)\dd x<\infty$.
+
+The vertical sides also vanish. At zero, $F(t)=t(1+O(t))$. At infinity, uniformly in the closed upper or lower half-plane with the respective bank limits,
+\begin{equation}\label{vav:hk:eq:infinity}
+ F(t)=-t^{-2}\left\{1+O\left(\frac{\log|t|}{|t|^2}\right)\right\}.
+\end{equation}
+For example, in the upper half-plane,
+$\arcsin(t/2)=\pi/2+\ii\log t+O(t^{-2})$ and
+$t/\sqrt{4-t^2}=\ii+O(t^{-2})$; the lower half-plane is analogous. These expansions also hold in the boundary limits. Hence $A(z)=O(e^{\Rea z/2})$ on left vertical sides and $O(e^{-\Rea z})$ on right vertical sides.
+
+Fix $K\geq0$, set $Y_K=(2K+1)\pi$, and apply the residue theorem to $A(z)z^{-n-1}$ in the rectangle with horizontal sides at $\pm Y_K$, slit along the cuts $|k|\leq K$ and with radius-$r$ endpoint disks removed. The external rectangle is counterclockwise; the slit boundaries are clockwise with the analytic domain to the left. Each is lower bank inward, clockwise endpoint loop, upper bank outward, exactly the orientation of~\eqref{vav:hk:eq:H}. Send the two vertical sides to infinity. Their integrals vanish, and the bank integrals converge absolutely. The only enclosed pole is at zero, with residue $b_n$. Thus
+\begin{equation}\label{vav:hk:eq:recterror}
+ b_n=\sum_{|k|\leq K}H_k(n)+E_K(n),\qquad
+ |E_K(n)|\leq\frac{M_*}{\pi Y_K^{n+1}}.
+\end{equation}
+Letting $K\to\infty$ proves~\eqref{vav:hk:eq:sum}. Reflection of the entire oriented contour, including $1/(2\pi\ii)$, proves conjugacy.
+\end{proof}
+
+\begin{corollary}[Exact dominant normalization]\label{vav:hk:cor:pair}
+For $|\zeta_1|<R<|\zeta_2|$,
+\begin{equation}\label{vav:hk:eq:pair}
+ b_n=H_0(n)+2\Rea H_1(n)+O_R(R^{-n}).
+\end{equation}
+More generally, a fixed number of sectors may be retained, with a geometric remainder separated from the next singularity modulus.
+\end{corollary}
+\begin{proof}
+Choose $r$ still smaller so that $R<|\zeta_2|-r$. For $n\geq1$, factor $R^{-n}$ in~\eqref{vav:hk:eq:uniformbound} and use
+\[
+ \left(\frac{R}{|\zeta_k|-r}\right)^n
+ \leq\frac{R}{|\zeta_k|-r},\qquad |k|\geq2.
+\]
+The remaining inverse-square sum converges. Conjugacy gives~\eqref{vav:hk:eq:pair}. The same argument applies after any fixed finite collection of nearest cuts.
+\end{proof}
+\begin{writenoteb}
+This theorem and its corollary are the exponentially improved form asked
+for in Part~I's Question~4, and are new. The delivered numerical checks
+test each $H_k$ against its own asymptotics (Section~\ref{vav:hk:sec:checks}),
+not the sum \eqref{vav:hk:eq:sum}. The sum itself was checked independently
+at intake, by contour quadrature of $H_k(n)$ for $0\le k\le6$ (radius
+$0.5$, 40 digits): with $b_n$ from the exact recurrence, the truncated sum
+$H_0+2\sum_{k=1}^6\Rea H_k$ agreed with $b_n$ to a relative error
+$3.5\times10^{-12}$ at $n=6$ (where the two last sectors still have size
+$|H_5|+|H_6|=3.4\times10^{-11}$), $3.5\times10^{-26}$ at $n=15$ and
+$1.5\times10^{-39}$ at $n=30$; $H_0(n)$ was real, and at $n=30$,
+$H_0/b_n-1=-7.5175154\times10^{-22}=-2\Rea H_1/b_n$. These are numerical
+regressions, not certificates.
+\end{writenoteb}
+
+\section{The complex saddle on the horizontal endpoint circle}\label{vav:hk:sec:saddle}
+Fix $k$ for this section, and abbreviate $\zeta=\zeta_k$, $g=g_k$,
+$\phi=\arg\zeta$, $\kappa=\kappa_k$. Then
+\[
+ |\phi|<\frac\pi2,\qquad \arg\kappa=-\frac\phi3,\qquad \Rea\kappa>0.
+\]
+Use radius
+\begin{equation}\label{vav:hk:eq:rn}
+ r_n=\left|\left(\frac{g\pi\zeta}{2n}\right)^{2/3}\right|,
+ \qquad \delta_s=\zeta\kappa n^{-2/3}=r_ne^{2\ii\phi/3}.
+\end{equation}
+For large $n$ this is admissible in~\eqref{vav:hk:eq:H}. On $\delta=r_ne^{\ii\alpha}$, $-\pi\leq\alpha\leq\pi$, the exponent, after removing the constant and $\zeta^{-n-1}$, is
+\begin{equation}\label{vav:hk:eq:leadphase}
+ \frac{n\delta}{\zeta}+\frac{g\pi}{\sqrt\delta}+O(n^{-1/3}),
+\end{equation}
+uniformly on the whole circle. Indeed, the local analytic correction is $O(\sqrt{r_n})$ and the quadratic kernel correction is $O(nr_n^2)$.
+
+The leading real part of~\eqref{vav:hk:eq:leadphase} is
+\begin{equation}\label{vav:hk:eq:fphi}
+ |\kappa|n^{1/3}f_\phi(\alpha),\qquad
+ f_\phi(\alpha)=\cos(\alpha-\phi)+2\cos(\alpha/2).
+\end{equation}
+Its derivative factors as
+\begin{equation}\label{vav:hk:eq:derivative}
+ f_\phi'(\alpha)=-2\sin(3\alpha/4-\phi/2)
+                         \cos(\alpha/4-\phi/2).
+\end{equation}
+Throughout the angular interval the cosine is positive, and the sine argument lies strictly between $-\pi$ and $\pi$. Hence the unique global maximum is
+\[
+ \alpha_s=2\phi/3,\qquad f_\phi(\alpha_s)=3\cos(\phi/3).
+\]
+This proves the principal saddle selection without rotating any cut.
+
+Writing $\alpha=\alpha_s+\theta$, the leading complex phase becomes
+\begin{equation}\label{vav:hk:eq:phasecentral}
+ \kappa n^{1/3}\left(e^{\ii\theta}+2e^{-\ii\theta/2}\right),
+\end{equation}
+with second derivative $-3\kappa n^{1/3}/2$ at zero. Since $\Rea\kappa>0$, the real $\theta$ contour already has a decaying complex Gaussian. For some $c_k>0$, the real-part deficit is bounded below by
+\[
+ c_kn^{1/3}\min(\theta^2,1)
+\]
+on the fixed angular interval. In particular, angles outside
+$|\theta|\leq n^{-1/6+\eta}$ have relative loss $e^{-c_kn^{2\eta}}$, for any fixed sufficiently small $\eta>0$.
+
+The bank integrals are exponentially smaller. Lemma~\ref{vav:hk:lem:banks} and monotonicity of $|\zeta+x|$ for $x\geq0$ give
+\begin{align}\label{vav:hk:eq:bankminor}
+ \int_{r_n}^\infty B(x)|\zeta+x|^{-n-1}\dd x
+ &\leq \|B\|_1|\zeta+r_n|^{-n-1}\notag\\
+ &=O_k\left(|\zeta|^{-n-1}
+ e^{-|\kappa|\cos\phi\,n^{1/3}+O(n^{-1/3})}\right).
+\end{align}
+This has strictly smaller exponential rate than the saddle envelope
+$|\zeta|^{-n}e^{3\Rea\kappa n^{1/3}}$.
+
+Finally the clockwise loop, with the orientation reversed after parametrization, is exactly
+\begin{equation}\label{vav:hk:eq:circleintegral}
+ \frac1{2\pi}\int_{-\pi}^{\pi}
+ r_ne^{\ii\alpha} A(\zeta-r_ne^{\ii\alpha})
+ (\zeta-r_ne^{\ii\alpha})^{-n-1}\dd\alpha.
+\end{equation}
+At $\alpha_s$ the numerator is $\delta_s$, and $\delta_s/\zeta=\kappa n^{-2/3}$. Gaussian evaluation yields
+\[
+ e^{\zeta/2-3}\zeta^{-n}e^{3\kappa n^{1/3}}
+ \frac{\kappa n^{-2/3}}{2\pi}
+ \sqrt{\frac{4\pi}{3\kappa n^{1/3}}}
+ =C_k\zeta_k^{-n}e^{3\kappa_kn^{1/3}}n^{-5/6}.
+\]
+The negative sign of $e^{\zeta_k/2}$ for odd $k$ is therefore part of the amplitude, rather than an arbitrary phase convention.
+\begin{writenoteb}
+The positive constant $c_k$ of this section is not a coefficient $c_{k,j}$
+of Section~\ref{vav:hk:sec:allorders}. At $k=0$ the saddle circle is
+centred at $\rho$ with radius $r_n=\rho c\,n^{-2/3}$ and $\delta_s=r_n$, so
+the saddle point $\rho-\delta_s=\rho(1-cn^{-2/3})$ is Part~I's
+$\rho(1-t_0)$ and Part~III's chord abscissa; Part~I and Part~III deform to
+a vertical segment there, while this Part stays on the circle. The internal
+audit \path{07-sectors-audit-sector_remainders_review.md} notes that its
+window exponent $\eta$ here equals $\eta/6$ in
+Section~\ref{vav:hk:sec:allorders}'s $h$-based window, a reuse of notation.
+\end{writenoteb}
+
+\section{All orders and explicit correction coefficients}\label{vav:hk:sec:allorders}
+The circle formulation also provides a finite coefficient algorithm directly on the original contour. Put
+\[
+ h=n^{-1/6},\quad \alpha=\alpha_s+hy,\quad
+ u(h,y)=\kappa h^4e^{\ii hy},\quad T_0=\zeta/2-3,
+\]
+and define
+\begin{align}
+ \mathcal T(u)&=\frac{\zeta(1-u)}2
+ +\frac{g\pi}{\sqrt{e^{\zeta u}-1}}
+ -3\frac{\arctan\sqrt{e^{\zeta u}-1}}{\sqrt{e^{\zeta u}-1}},\label{vav:hk:eq:Tcal}\\
+ S(h,y)&=\mathcal T(u(h,y))-(h^{-6}+1)\log(1-u(h,y))\notag\\
+ &\hspace{7mm}-3\kappa h^{-2}-T_0+\frac{3\kappa}{4}y^2+\ii hy.\label{vav:hk:eq:S}
+\end{align}
+The last term is the logarithm of the circle Jacobian factor $e^{\ii hy}$. The relation $g\pi/\sqrt{\zeta\kappa}=2\kappa$ on the chosen branches cancels all negative powers in~\eqref{vav:hk:eq:S}; the constant term also cancels. Thus
+\[
+ S(h,y)\in h\C[y][[h]],
+\]
+and the exact formal identity $S(-h,-y)=S(h,y)$ shows that its coefficient of $h^j$ has parity $j$ as a polynomial in $y$.
+
+\begin{theorem}[Complete expansion of each fixed sector]\label{vav:hk:thm:allorders}
+For every fixed $k\in\Z$ and $K\geq0$,
+\begin{equation}\label{vav:hk:eq:allorders}
+ H_k(n)=C_k\zeta_k^{-n}e^{3\kappa_kn^{1/3}}n^{-5/6}
+ \left\{\sum_{j=0}^Kc_{k,j}n^{-j/3}
+       +O_{k,K}(n^{-(K+1)/3})\right\}.
+\end{equation}
+The coefficients are determined by
+\begin{equation}\label{vav:hk:eq:cj}
+ c_{k,j}=\sqrt{\frac{3\kappa}{4\pi}}
+ \int_\R e^{-3\kappa y^2/4}[h^{2j}]e^{S(h,y)}\dd y.
+\end{equation}
+In particular,
+\begin{align}
+ c_{k,0}&=1,\label{vav:hk:eq:c0}\\
+ c_{k,1}&=\frac{\kappa^2(1-\zeta)}2-\frac5{36\kappa},\label{vav:hk:eq:c1}\\
+ c_{k,2}&=\frac{\kappa^4(1-\zeta)^2}{8}
+          +\frac{\kappa(53\zeta-17)}{72}
+          -\frac{35}{2592\kappa^2}.\label{vav:hk:eq:c2}
+\end{align}
+\end{theorem}
+\begin{proof}
+On the central window $|y|\leq h^{-\eta}$, with a fixed $0<\eta<1$, the circle contribution equals
+\begin{equation}\label{vav:hk:eq:centralintegral}
+ e^{T_0}\zeta^{-n}e^{3\kappa h^{-2}}
+ \frac{\kappa h^5}{2\pi}
+ \int_{-h^{-\eta}}^{h^{-\eta}}
+ e^{-3\kappa y^2/4}e^{S(h,y)}\dd y.
+\end{equation}
+For every finite order $J$, Taylor expansion of the convergent expression~\eqref{vav:hk:eq:Tcal}, the logarithm, and the exponential has a remainder bounded by
+\[
+ C_Jh^{J+1}(1+|y|^{m_J})
+ \exp\{C_Jh(1+|y|^3)\}
+\]
+for some finite $m_J$. For detail, write $a(\delta)=\sqrt{\delta/(e^\delta-1)}$ with $a(0)=1$, and $b(\delta)=-\delta/2-3(\arctan\sqrt{e^\delta-1}/\sqrt{e^\delta-1}-1)$. Both are analytic at zero. The nonconstant part of $\mathcal T$ is $2\kappa h^{-2}e^{-\ii hy/2}a(\zeta\kappa h^4e^{\ii hy})+b(\zeta\kappa h^4e^{\ii hy})$. After cancellation of the negative powers, the leading residual phase is cubic in $y$ times $h$. On $0\leq t\leq h$, every fixed $t$-derivative of $S(t,y)$ is polynomially bounded in $|y|$, and $|S(t,y)|\leq Ct(1+|y|^3)$ because $|ty|\leq h^{1-\eta}$. Taylor's theorem and the finite derivative formulas for $e^S$ give the displayed bound. For $h|y|\to0$, its last exponential is absorbed by a smaller fixed Gaussian because $\Rea\kappa>0$. The integrated remainder is consequently $O(h^{J+1})$.
+
+Expand through $J=2K+1$. Odd polynomial coefficients integrate to zero on the symmetric window. Extending each polynomial--Gaussian integral to $\R$ costs less than every power of $h$. The angular minor-arc estimate in Section~\ref{vav:hk:sec:saddle} controls the omitted circle, and~\eqref{vav:hk:eq:bankminor} controls the two banks. This proves an integrated error $O(h^{2K+2})$ relative to the leading Gaussian factor. Since
+\[
+ \int_\R e^{-3\kappa y^2/4}\dd y=\sqrt{\frac{4\pi}{3\kappa}},
+\]
+with principal root, the prefactor in~\eqref{vav:hk:eq:centralintegral} is exactly $C_kn^{-5/6}$. This proves~\eqref{vav:hk:eq:allorders} and~\eqref{vav:hk:eq:cj}.
+
+The normalized moments are
+\begin{equation}\label{vav:hk:eq:moments}
+ \mathbb E(y^{2m})=(2m-1)!!\left(\frac2{3\kappa}\right)^m,
+ \qquad \mathbb E(y^{2m+1})=0.
+\end{equation}
+Only finitely many Taylor terms are used at each order, so~\eqref{vav:hk:eq:cj} is an algebraic algorithm. The first two terms of the exponent are
+\begin{equation}\label{vav:hk:eq:S12}
+ S=\ii\left(y-\frac{\kappa y^3}{8}\right)h
+ +\left(\frac{\kappa^2(1-\zeta)}2+\frac{3\kappa y^4}{64}\right)h^2
+ +O(h^3).
+\end{equation}
+Taking the moments of $[h^2]e^S$ gives~\eqref{vav:hk:eq:c1}. For~\eqref{vav:hk:eq:c2}, all required terms are generated by
+\begin{align}\label{vav:hk:eq:S4}
+ S={}&\frac{\kappa}{h^2}
+       (e^{\ii hy}+2e^{-\ii hy/2}-3)
+       +\frac{3\kappa y^2}4+\ii hy\notag\\
+    &+\frac{\kappa^2h^2}{2}(e^{2\ii hy}-\zeta e^{\ii hy/2})
+       +\kappa(1+\zeta/2)h^4e^{\ii hy}+O(h^6),
+\end{align}
+where the displayed exponentials are expanded through degree four. Applying~\eqref{vav:hk:eq:moments} to $[h^4]e^S$ yields~\eqref{vav:hk:eq:c2}. The supplied symbolic script verifies both formulas exactly.
+\end{proof}
+
+\begin{remark}[Dependence on the sector index]
+All constants in the local asymptotic proof may depend on fixed $k$. No interchange of the $k\to\infty$ and $n\to\infty$ limits is claimed. Uniform control of the infinite remainder instead comes from the exact fixed-radius bound~\eqref{vav:hk:eq:uniformbound}. This separates the two roles cleanly.
+\end{remark}
+\begin{writenoteb}
+At $k=0$ ($\zeta=\rho$, $\kappa=c$) the formulas \eqref{vav:hk:eq:c1} and
+\eqref{vav:hk:eq:c2} are Part~I's \eqref{vav:eq:a1} and \eqref{vav:eq:a2};
+the identity of \eqref{vav:hk:eq:c2} with \eqref{vav:eq:a2} was checked
+symbolically at the write. The internal audit
+\path{07-sectors-audit-sector_remainders_review.md} also lists the next two
+exponent coefficients,
+$S_3=\ii\kappa^2y(1-\zeta/4)+\ii\kappa y^5/128$ and
+$S_4=\kappa(1+\zeta/2)+\kappa^2y^2(\zeta/16-1)-11\kappa y^6/7680$, and
+recovers $c_{k,1}$, $c_{k,2}$ from them independently. Values not printed
+by the source, computed at the write from \eqref{vav:hk:eq:c1}--\eqref{vav:hk:eq:c2}:
+$c_{1,2}=6.194849135854\ldots+12.60843584359\ldots\ii$,
+$c_{2,1}=-1.996687241967\ldots-1.24647320807\ldots\ii$,
+$\kappa_2=0.512623514249\ldots-0.271438168874\ldots\ii$ and
+$C_2=0.023974071910\ldots-0.005955539234\ldots\ii$.
+\end{writenoteb}
+
+\section{The first conjugate pair with an absolute error}\label{vav:hk:sec:pair}
+Let
+\[
+ \mathcal E_1(n)=|\zeta_1|^{-n}
+ e^{3\Rea\kappa_1 n^{1/3}}n^{-5/6}.
+\]
+Combining Corollary~\ref{vav:hk:cor:pair} and Theorem~\ref{vav:hk:thm:allorders} gives, for every fixed $K\geq0$ and $|\zeta_1|<R<|\zeta_2|$,
+\begin{align}\label{vav:hk:eq:finalpair}
+ b_n-H_0(n)
+ ={}&2\Rea\left\{C_1\zeta_1^{-n}e^{3\kappa_1n^{1/3}}n^{-5/6}
+       \sum_{j=0}^Kc_{1,j}n^{-j/3}\right\}\notag\\
+ &+O_K\bigl(\mathcal E_1(n)n^{-(K+1)/3}\bigr)+O_R(R^{-n}).
+\end{align}
+The leading oscillatory factor can equivalently be written
+\[
+ 2|C_1|\mathcal E_1(n)
+ \cos\bigl(-n\arg\zeta_1+3\Ima\kappa_1n^{1/3}+\arg C_1\bigr).
+\]
+Formula~\eqref{vav:hk:eq:finalpair}, rather than an equivalent for this cosine, remains valid near cancellation indices.
+
+For numerical orientation,
+\begin{align*}
+ |\zeta_1|&=6.434301023424\ldots,\\
+ |\zeta_2|&=12.642605841879\ldots,\\
+ \kappa_1&=1.037853533783\ldots
+            -0.502894353735\ldots\ii,\\
+ C_1&=-0.033949227189\ldots
+            +0.007791818790\ldots\ii,\\
+ c_{1,1}&=-3.546963506118\ldots
+            -2.440313169662\ldots\ii.
+\end{align*}
+At $k=0$, the leading constant is $0.035706041258\ldots$ and $c_{0,1}=-0.398274243295\ldots$, agreeing with report~87. The exact difference $b_n-H_0(n)$ is exponentially smaller than the dominant scale, so uniqueness of Poincare coefficients also identifies the complete $k=0$ expansion with that earlier one.
+\begin{writenoteb}
+These constants were recomputed at the write and at intake; all printed
+digits agree. The $k=0$ values are Part~I's $D$ and $a_1$
+(Section~\ref{vav:sec:intro} and the table of Section~\ref{vav:sec:generator}),
+and the uniqueness argument of the last sentence identifies $c_{0,j}$ with
+Part~I's $a_j$ (and Part~III's $c_j$) for every $j$. Relative to the dominant
+sector, the first pair is smaller by about
+$(\rho/|\zeta_1|)^n e^{-3(c-\Rea\kappa_1)n^{1/3}}$, with
+$\rho/|\zeta_1|=0.2155\ldots$ and $c-\Rea\kappa_1=0.1740\ldots$.
+\end{writenoteb}
+
+\section{Exact checks and clean replay}\label{vav:hk:sec:checks}
+The source bundle includes the following independently runnable checks.
+\begin{enumerate}
+ \item \texttt{check\_sector\_coefficients.py} computes the circle exponent through fourth order, performs exact Gaussian polynomial moments, and verifies $c_0,c_1,c_2$ using symbolic arithmetic. An independent straight-chord Gaussian coordinate reproduces the same coefficients. It also checks the parity cancellations and the odd-shift exponent identity. Acceptance tests use explicit exceptions, so Python optimization does not disable them.
+ \item \texttt{check\_sector\_numerics.py} evaluates the endpoint circle and both banks at high precision for $k=0,1,2$ and $n=512,4096$. It reports the normalized sector and the $n$-scaled remainder after $c_2$. These are numerical regressions, not interval certificates or substitutes for the proofs.
+ \item \texttt{replay.sh} runs both checks in a fresh output directory, under \texttt{python -O}, then compiles the article twice. \texttt{build.sh} provides the shorter PDF-only build. The exact input ZIP is identified by SHA-256 in \texttt{dependency.json}; it is not overwritten or repackaged as a new result.
+\end{enumerate}
+For example, if $Q_k(n)$ is the ratio of $H_k(n)$ to its leading complex term, direct numerical integration gives the values below. The last column is
+$n\{Q_k(n)-1-c_{k,1}n^{-1/3}-c_{k,2}n^{-2/3}\}$.
+\begin{center}\small
+\begin{tabular}{rrll}
+\toprule
+$k$ & $n$ & $Q_k(n)$ & Scaled remainder\\
+\midrule
+0&512&$0.964394490078$&$-0.593178410$\\
+0&4096&$0.978803891189$&$-0.566473208$\\
+1&512&$0.651554305673-0.165541159156\ii$&$-0.957324191-29.44451738\ii$\\
+1&4096&$0.802730333675-0.111269474246\ii$&$0.888518127-32.77456858\ii$\\
+2&512&$0.806825329379-0.083265991203\ii$&$-1.838945967-15.02458344\ii$\\
+2&4096&$0.889923426656-0.056494645833\ii$&$-1.164706665-16.63829059\ii$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The finite data are consistent with the proven $O(n^{-1})$ normalized error after $c_2$. The limiting third coefficient is not estimated or asserted from this table.
+\begin{writenoteb}
+In this collection the two checks are shipped as
+\path{code/07-sectors-check_sector_coefficients.py} and
+\path{code/07-sectors-check_sector_numerics.py}, the replay and build
+scripts as \path{code/07-sectors-replay.sh} and \path{code/07-sectors-build.sh},
+and the outputs and dependency record as
+\path{data/07-sectors-checks-symbolic_checks.json},
+\path{data/07-sectors-checks-numerical_checks.json} and
+\path{data/07-sectors-dependency.json}. The two checks write
+\path{checks/*.json} relative to the working directory; the replay and
+build scripts need the delivered \path{article.tex}, which is not shipped
+(this article replaces it). At intake both checks ran on a copy and
+reproduced the delivered JSON outputs up to line endings. The table above
+agrees with \path{data/07-sectors-checks-numerical_checks.json} to the digits printed.
+\end{writenoteb}
+
+\section{Source comparison and the bounded novelty claim}\label{vav:hk:sec:sources}
+The source comparison was refreshed on 2 October 2026. The inspected OEIS entry~\cite{oeis}, revision~49 dated 5 November 2025, supplies the sequence definition and recursive enumeration. Bevan, Cheon, and Kitaev~\cite{bck} provide the insertion-tree framework and state the dominant growth and stretched-exponential form as Conjectures~13 and~14. Elizalde~\cite{elizalde}, Proposition~5.1, supplies earlier coefficientwise generating-function bounds. These are foundational sources; this continuation does not relabel their work.
+
+The frozen report~87~\cite{hkprior} already establishes the exact EGF, dominant all-orders expansion, inversion bounds, differential algebraicity, and non-D-finiteness. The new result relative to that supplied baseline is the exact full-cut sector decomposition, the parity-sensitive complex sectors with remainder control, and the resulting canonically normalized exponentially small pair. None of those assertions is needed to re-prove the earlier combinatorial identity.
+
+Targeted searches combining A113226 or $12$--$34$ avoidance with ``Hankel'', ``arctan'', ``transseries'', and exponentially small asymptotics did not locate the sector result proved here. This is a bounded search statement, not a worldwide priority determination. In particular, a failure of a search engine to return a match is not evidence of absence from all literature. The contour and saddle methods themselves are classical. The report is a mathematical research argument with reproducible checks, not a claim of external peer review or formal proof verification.
+\begin{writenoteb}
+Report~94 inspected OEIS A113226 on 2~October 2026 at revision~49
+(\url{https://oeis.org/A113226/internal}); the merged entry \cite{oeis} records
+Part~I's inspection of 1~October. Its copy of \cite{bck} cites the
+author-institution record \url{https://strathprints.strath.ac.uk/91802/} and
+its copy of \cite{elizalde} the DOI \texttt{10.1016/j.aam.2005.05.006}.
+Relative to this report, the baseline is Parts~I and~III, which both
+establish the dominant results; the incremental claim stands unchanged
+against Parts~I--III, none of which treats the sectors $k\ne0$.
+\end{writenoteb}
+
+\section{Further questions with specific next steps}\label{vav:hk:sec:questions}
+\begin{writenoteb}
+This section serves as Part~IV's ``Further questions and research''
+section in the sense of the collection's standing rule; Report~94 states no
+unproved claim outside it, and none of its claims was found wrong. The
+first question below refines Part~I's Question~4, which Part~IV answers
+for each fixed $k$; the third is a case of Part~I's Question~3 (certified
+constants), still open. Report~87's open items are in
+Section~\ref{vav:dg:sec:questions}. A further question, not asked by any
+source: Part~II's marked generating function $H(z,u)$ has, for $u\ne1$,
+its own complex singularities, and its sectors are not treated
+(Part~II excludes them, Section~\ref{vav:rf:sec:checks}).
+\end{writenoteb}
+\paragraph{Uniformly growing sector index.}
+The present local expansion fixes $k$, while the exact tail estimate is uniform. A useful next problem is a simultaneous expansion when $|k|$ grows with $n$. Since $|\delta_s|\asymp(|k|/n)^{2/3}$, the small-neighborhood requirement naturally suggests first treating $|k|=o(n)$ and tracking the angular-gap constants. This scaling observation is motivation, not a uniform theorem.
+
+\paragraph{Late coefficients and optimal truncation.}
+Determine large-$j$ growth of $c_{0,j}$ and whether an optimally truncated dominant expansion can be connected quantitatively to the exact $H_0$. Such a result would relate the contour normalization to a resummation procedure. No Borel summability or resurgence claim follows merely from the finite-order results proved here.
+
+\paragraph{Certified numerical extraction.}
+Interval quadrature of~\eqref{vav:hk:eq:H}, using explicit cut-bank tails and a saddle-centered circle, could produce certified values for exponentially small sectors without subtracting two enormous nearly equal dominant quantities. A useful implementation target is a verified absolute error below the $|k|\geq2$ tail in~\eqref{vav:hk:eq:pair}.
+
+\paragraph{Oscillatory cancellation.}
+The phase in~\eqref{vav:hk:eq:finalpair} describes the first pair's sign changes and near-zeros. Establishing quantitative lower bounds away from zero on selected integer subsequences would require control of the arithmetic sampling of this phase. The current absolute-error formulation deliberately avoids such an unproved lower bound.
+
+\paragraph{Other combinatorial transforms.}
+The key global feature is a periodic exponential pullback with two different singular strengths. It is natural to seek other exact combinatorial EGFs with this structure and to test whether the same full-cut normalization supplies their beyond-all-orders terms. An application must verify its global branch and boundary decay separately; local singular expansions alone are insufficient.
 
 
 \appendix
@@ -1251,6 +2953,41 @@ Then
 \end{equation}
 These expressions are the symbolic output of
 \eqref{vav:eq:Q}--\eqref{vav:eq:exprec}, rather than fitted constants.
+\begin{writenoteb}
+This appendix belongs to Part~I. Its $a_3$ is also the $c_3$ of Part~III,
+computed independently by \path{code/06-diagonal-check_saddle.py}
+(\path{data/06-diagonal-saddle_checks.json}, written with $a$ for $c$).
+\end{writenoteb}
+
+\section{Dependency and reproducibility details (Report 94)}\label{vav:hk:app:dependency}
+\begin{writenoteb}
+This is Report~94's Appendix~A, printed as Appendix~B of this report.
+\end{writenoteb}
+The frozen input is \texttt{Exact\_Vincular\_Avoidance\_Asymptotics\_Source.zip}, delivered as report~87. Its SHA-256 is
+\begin{quote}\ttfamily\small
+1e10659694dd56c8e2e8bf97bb443cb40c1c86e694a363e44295892d1f81c842.
+\end{quote}
+The long digest is also provided in machine-readable form in the source bundle. The analytic dependency is exactly~\eqref{vav:hk:eq:input}; the earlier dominant expansion is used only for comparison, not as an unproved input to the new sector theorem.
+
+The tested Python versions are SymPy~1.14.0 and mpmath~1.3.0. A standard pdf\LaTeX{} distribution with \texttt{amsmath}, \texttt{amsthm}, \texttt{mathtools}, \texttt{geometry}, \texttt{lmodern}, \texttt{microtype}, \texttt{booktabs}, \texttt{hyperref}, and \texttt{xurl} suffices. Run
+\begin{quote}\ttfamily
+python -m pip install -r requirements.txt\\
+bash replay.sh
+\end{quote}
+The replay uses ordinary symbolic and numerical libraries and performs no external network request. Its mathematical acceptance checks remain active under Python's optimization flag.
+\begin{writenoteb}
+The archive of Report~87 with this digest arrived in \texttt{60f54ea06}
+and is printed as Part~III; its machine-readable record is
+\path{data/07-sectors-dependency.json}. Report~94's
+\path{requirements.txt} (the two pins above) is byte-identical to the
+shipped \path{data/05-refined-requirements.txt} and is not shipped again.
+The replay above builds the delivered \path{article.tex}, which is not
+shipped, so it runs only in a fresh extraction of the delivered archive;
+the README gives that route and the commands that run the two checks on a
+copy of the shipped files. The build script's TeX paths
+(\path{/usr/share/texlive/texmf-dist}, \path{/usr/share/texmf}) are generic
+Linux locations, used only when present.
+\end{writenoteb}
 
 \begin{thebibliography}{9}
 \bibitem{oeis}
@@ -1286,5 +3023,23 @@ permutations}, Section 9.
 \href{https://pages.stat.wisc.edu/~callan/papers/1_23_4_avoid/1_23_4_avoid.pdf}{Author's full text}.
 \bibitem{proveit} V. Reshetnikov. \emph{ProveIt},
 \href{https://github.com/VladimirReshetnikov/ProveIt/commit/63b9d68407f21832316eb296fd0885e40e033c90}{checked default-branch commit}, 1 October 2026.
+\bibitem{clark} E. Clark and R. Ehrenborg,
+\emph{Explicit expressions for the extremal excedance set statistics},
+European J. Combin. \textbf{31} (2010), 270--279. (Part~III; listed but not
+cited by Report~87.)
+\bibitem{excedance} R. Ferraz de Andrade, E. Lundberg and B. Nagle,
+\emph{Asymptotics of the extremal excedance set statistic},
+arXiv:1403.0691v2 (2016), Eq.~(3.1).
+\url{https://arxiv.org/abs/1403.0691}. (Part~III.)
+\bibitem{fs} P. Flajolet and R. Sedgewick,
+\emph{Analytic Combinatorics}, Cambridge University Press, 2009,
+Chapter VIII. (Part~III; listed but not cited by Report~87.)
+\bibitem{proveitdg} V. Reshetnikov, \emph{ProveIt},
+commit \texttt{1512ef8356d10fef99e7caaa2753620f0c900c83},
+\emph{Combinatorial Transseries Inverses}.
+\url{https://github.com/VladimirReshetnikov/ProveIt}. (Report~87's pin;
+listed but not cited by Report~87.)
+\bibitem{hkprior}
+\emph{Exact Vincular Avoidance Asymptotics}, delivered research report~87, 1 October 2026. Frozen source archive and checksum identified in Appendix~\ref{vav:hk:app:dependency}. Exact EGF, all-orders dominant expansion, and structural corollaries. (Part~IV's entry; the report is printed as Part~\ref{vav:dg:part} here.)
 \end{thebibliography}
 \end{document}

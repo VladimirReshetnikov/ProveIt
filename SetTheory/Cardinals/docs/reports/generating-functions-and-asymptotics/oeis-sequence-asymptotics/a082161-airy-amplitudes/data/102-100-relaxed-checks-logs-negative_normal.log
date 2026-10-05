@@ -1,0 +1,58 @@
+Negative regression process: optimization=0
+PASS integrity: exact inventory of 12 source/data/documentation files; SHA-256 and sizes; manifest SHA-256=42fbd1f817d36ad4c139c25672ea013237a3bd0a5a4a3c386f84aa555467cb61
+PASS schema: R,C; f indices 0..7, pairs of length 2; sigma 0..9; endpoint log 1..6, multiplicative 0..6, ratio 0..9; exact rational polynomials only
+PASS rejection: active explicit gate: deliberate gate
+PASS rejection: zero algebra coverage: algebra coverage must be exactly n=1..30
+PASS rejection: boolean algebra coverage: algebra coverage must be exactly n=1..30
+PASS rejection: reduced formal coverage: formal coverage must be exactly order 9
+PASS rejection: boolean formal coverage: formal coverage must be exactly order 9
+PASS code audit: no Python assert statements in any executable checker
+PASS rejection: empty formal table: empty formal table.json: expected exactly keys ['C', 'R']
+PASS rejection: missing compacted kind: missing compacted kind.json: expected exactly keys ['C', 'R']
+PASS rejection: unexpected sequence kind: unexpected sequence kind.json: expected exactly keys ['C', 'R']
+PASS rejection: empty profile array: empty profile array.json/R/f: expected exactly 8 indexed entries
+PASS rejection: missing profile index: missing profile index.json/R/f: expected exactly 8 indexed entries
+PASS rejection: extra profile index: extra profile index.json/R/f: expected exactly 8 indexed entries
+PASS rejection: malformed profile pair: malformed profile pair.json/R/f/1: expected exactly 2 indexed entries
+PASS rejection: empty sigma array: empty sigma array.json/R/sigma: expected exactly 10 indexed entries
+PASS rejection: missing sigma index: missing sigma index.json/R/sigma: expected exactly 10 indexed entries
+PASS rejection: numeric floating polynomial: numeric floating polynomial.json/R/sigma/3: nonempty polynomial string required
+PASS rejection: floating literal polynomial: floating literal polynomial.json/R/sigma/3: unsupported expression syntax
+PASS rejection: unknown polynomial symbol: unknown polynomial symbol.json/R/sigma/3: unsupported expression syntax
+PASS rejection: function expression rejected: function expression rejected.json/R/sigma/3: unsupported expression syntax
+PASS rejection: negative degree rejected: negative degree rejected.json/R/sigma/3: exponent must be an integer in 0..64
+PASS rejection: zero denominator rejected: zero denominator rejected.json/R/sigma/3: denominator must be a nonzero rational constant
+PASS rejection: wrong leading profile: wrong leading profile.json/R: f0 normalization
+PASS rejection: empty endpoint table: empty endpoint table.json: expected exactly keys ['C', 'R']
+PASS rejection: missing log_correction index: missing log_correction index.json/R/log_correction: expected exactly 6 indexed entries
+PASS rejection: missing multiplicative index: missing multiplicative index.json/R/multiplicative: expected exactly 7 indexed entries
+PASS rejection: missing ratio index: missing ratio index.json/R/ratio: expected exactly 10 indexed entries
+PASS rejection: duplicate JSON key: duplicate JSON key: R
+PASS rejection: nonfinite JSON: nonfinite JSON value: NaN
+PASS rejection: unrecorded data edit: manifest/data/formal_9.json: byte count mismatch
+PASS rejection: same-length data edit: manifest/data/formal_9.json: SHA-256 mismatch
+PASS rejection: missing manifest entry: manifest file inventory: expected exactly keys ['README.md', 'data/endpoint_9.json', 'data/formal_9.json', 'data/formal_9_linear_solver.json', 'diagnostics/README.md', 'diagnostics/exact_dp_3000.json', 'diagnostics/numerical_analysis.json', 'formal_engine.py', 'negative_tests.py', 'provenance/source_hashes.json', 'requirements.txt', 'verify.py']
+PASS rejection: extra manifest entry: manifest file inventory: expected exactly keys ['README.md', 'data/endpoint_9.json', 'data/formal_9.json', 'data/formal_9_linear_solver.json', 'diagnostics/README.md', 'diagnostics/exact_dp_3000.json', 'diagnostics/numerical_analysis.json', 'formal_engine.py', 'negative_tests.py', 'provenance/source_hashes.json', 'requirements.txt', 'verify.py']
+PASS rejection: invalid manifest hash: manifest/formal_engine.py: SHA-256 syntax
+PASS rejection: boolean manifest byte count: manifest/formal_engine.py: byte count
+PASS rejection: extra data file: data directory inventory mismatch
+PASS rejection: extra executable source: executable source inventory mismatch
+PASS rejection: corrupted two-step coefficient: FAIL: two-step actual vector at n=1
+PASS rejection: CLI --max-n=0 (exit 2, no PASS output)
+PASS rejection: CLI --max-n=-1 (exit 2, no PASS output)
+PASS rejection: CLI --max-n=29 (exit 2, no PASS output)
+PASS rejection: CLI --max-n=31 (exit 2, no PASS output)
+PASS rejection: CLI --max-n=30.0 (exit 2, no PASS output)
+PASS rejection: CLI --max-n=true (exit 2, no PASS output)
+PASS rejection: CLI --formal-order=0 (exit 2, no PASS output)
+PASS rejection: CLI --formal-order=8 (exit 2, no PASS output)
+PASS rejection: CLI --formal-order=10 (exit 2, no PASS output)
+PASS rejection: CLI --formal-order=9.0 (exit 2, no PASS output)
+PASS rejection: CLI --formal-order=false (exit 2, no PASS output)
+PASS rejection: CLI --mode=unknown (exit 2, no PASS output)
+PASS rejection: CLI --not-a-real-option=value (exit 2, no PASS output)
+PASS rejection: boundary-preserving formal coefficient edit: R: recurrence residual component=0, power=4
+PASS rejection: corrupted endpoint log_correction: R: endpoint log_correction index 0
+PASS rejection: corrupted endpoint multiplicative: R: endpoint multiplicative index 6
+PASS rejection: corrupted endpoint ratio: R: endpoint ratio index 9
+COMPLETE negative regressions: 53 expected rejections, optimization=0; no archived diagnostics were recomputed

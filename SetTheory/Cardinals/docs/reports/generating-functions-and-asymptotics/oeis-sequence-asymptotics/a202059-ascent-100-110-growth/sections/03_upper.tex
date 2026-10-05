@@ -1,0 +1,67 @@
+\section{The refined increasing run encoding}\label{sec:upper}
+The key improvement over the earlier occurrence encoding is to keep the index of each increasing run. This retains a triangular rather than rectangular candidate budget.
+
+\begin{lemma}\label{lem:prefix}
+A nonempty ordinary ascent prefix with $A$ ascents has maximum at most $A$. A length-$n$ word with $K$ distinct labels and $r=n-K$ repeated occurrences has at most $r$ nonascent boundaries, and hence at most $r+1$ maximal strictly increasing runs.
+\end{lemma}
+\begin{proof}
+The maximum bound is inductive. A new maximum must enter by a strict rise, and \eqref{eq:ascent} bounds it by the ascent count after that rise. An entry that is not a new maximum preserves the bound. Since $K$ distinct nonnegative labels have maximum at least $K-1$, the complete word has at least $K-1$ ascents. Its number of nonascent boundaries is therefore at most $n-1-(K-1)=r$.
+\end{proof}
+
+Mark every non-first occurrence in a $110$-avoiding word, or every non-last occurrence in a $100$-avoiding word. There are exactly $r$ marks in either case. Their labels, read from left to right, are weakly increasing. Indeed, a decrease $v>w$ between two marked labels yields $v,v,w$ by using an earlier equal $v$ in the first case, or yields $v,w,w$ by using a later equal $w$ in the second. This supplies a forbidden subsequence in each case.
+
+Fix the marked positions, their labels, and all nonascent boundaries. We call these data the \emph{skeleton}. They determine the run lengths $\ell_1,\ldots,\ell_s$, with $s\le r+1$, and the numbers $k_j$ of unmarked positions in each run. The unmarked labels in a run are distinct, as the run is strictly increasing. A set of those labels, together with its specified marked labels, determines that run uniquely when the data are consistent.
+
+\begin{lemma}\label{lem:pool}
+Conditional on any consistently decoded prefix, the unmarked labels in run $j$ can be selected from a pool of at most
+\begin{equation}\label{eq:pool}
+ \ell_j+r-j+1
+\end{equation}
+labels. Thus there are at most $\binom{\ell_j+r-j+1}{k_j}$ choices for them.
+\end{lemma}
+\begin{proof}
+Write $\ell=\ell_j$. The preceding $j-1$ complete runs have total length $p$ and exactly $A=p-j+1$ ascents. For $j=1$, the prefix is empty and we set $A=0$, consistent with the same expression. The first run is necessarily $0,1,\ldots,\ell-1$: induction uses strict increase and the ordinary ascent bound.
+
+For $j\ge2$, the first entry is a nonascent from the preceding prefix, so it is at most that prefix's maximum and therefore at most $A$. At position $t\ge2$ within the run, the entering nonascent has contributed no ascent and the preceding internal edges contribute exactly $t-2$. Its legality bound is $A+t-1$. In both cases every run label is at most
+\begin{equation}\label{eq:ceiling}
+ A+\ell-1.
+\end{equation}
+This count excludes the current entering edge, as required by \eqref{eq:ascent}.
+
+Let $d$ be the number of distinct labels in the prefix and $q=p-d$ its repeated occurrences. All previously seen labels lie in the interval $\{0,\ldots,A+\ell-1\}$. The number of unseen labels in that interval is exactly
+\[
+ A+\ell-d=\ell+q-j+1.
+\]
+For $110$ avoidance, every unmarked occurrence is a first occurrence, so the unseen labels suffice and $q\le r$ gives \eqref{eq:pool}.
+
+For $100$ avoidance, an unmarked occurrence is a last occurrence. Besides unseen labels, it may use an \emph{unfinished} label already seen in the prefix whose final occurrence has not yet appeared. The decoded prefix and its marks determine which seen labels are unfinished: their last occurrence in that prefix was marked. Each unfinished label needs a future repeated occurrence, so there are at most $r-q$ such labels. The union of unseen and unfinished candidates has size at most
+\[
+ (\ell+q-j+1)+(r-q)=\ell+r-j+1.
+\]
+Some choices may violate a marked label or a boundary condition. Counting them only enlarges the upper bound. The pool may depend on the decoded prefix, but its uniform size bounds conditional branching at each step.
+\end{proof}
+
+Every label is at most $n-1$. For fixed $r$, the number of skeletons is at most
+\begin{equation}\label{eq:skeleton}
+ S(n,r)=\binom nr\binom{n+r-1}{r}
+          \sum_{h=0}^r\binom{n-1}{h},\qquad S(n,0)=1.
+\end{equation}
+The three factors choose marked positions, weakly increasing marked labels, and at most $r$ nonascent boundaries. Inconsistent skeletons again cause only overcounting. Because $\sum k_j=n-r$ and $\sum\ell_j=n$, Vandermonde's identity gives
+\begin{align}
+ \prod_{j=1}^s\binom{\ell_j+r-j+1}{k_j}
+ &\le\binom{n+sr-s(s-1)/2}{n-r}\notag\\
+ &\le\binom{n+r(r+1)/2}{n-r}
+   =T(n+1,r+1).\label{eq:vandermonde}
+\end{align}
+For completeness, the first inequality selects one nonnegative summand from the coefficient of $z^{n-r}$ in the product of $(1+z)^{\ell_j+r-j+1}$. The second follows because $sr-s(s-1)/2$ is nondecreasing for integer $1\le s\le r+1$ and has maximum $r(r+1)/2$.
+
+\begin{proposition}\label{prop:finiteupper}
+For $n\ge1$ and for $u_n=a_n$ or $u_n=d_n$,
+\begin{equation}\label{eq:finiteupper}
+ u_n\le\sum_{r=0}^{n-1}S(n,r)T(n+1,r+1).
+\end{equation}
+\end{proposition}
+\begin{proof}
+Encode a word by its skeleton and the successive run subsets. The preceding arguments reconstruct the word whenever those data are valid, and bound each conditional set of possibilities. Summing over $r$ proves the inequality.
+\end{proof}
+The exact appearance of the triangular term in \eqref{eq:vandermonde} is useful, but it does not give $u_n\le b_n$. Skeletons carry additional information. Nor have we injected these words into self-modified ascent words.

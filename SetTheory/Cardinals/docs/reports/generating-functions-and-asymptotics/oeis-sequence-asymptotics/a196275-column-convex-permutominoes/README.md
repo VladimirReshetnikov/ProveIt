@@ -101,10 +101,36 @@ Added by the write (5 October 2026), with proofs, marked `[write]`:
 - **The smoothed profile (Question 2 of Section 12.1):** the eigenvector of
   `T` at `h` is `g_h(x) = (2h−1)/(h−1+x) − log((h−1+x)/(h−x))`, and the
   Bernstein-smoothed row `(2/n!) Σ_p P_{n,p} B_{p−1,n}` differs from its
-  projection `hⁿ P1` by at most `1` in `L²[0,1]` for every `n ≥ 1`. This makes
-  explicit the source's "smoothed profile limit"; it says nothing about the
-  coefficients `P_{n,p}` themselves.
+  projection `hⁿ P1` in `L²[0,1]` by exactly `√(2 r_{2n})`, where
+  `2 r_{2n} = ∫_0^1 t^{2n} w(t) dt ~ 1/(2n log² n)`; so the distance tends to
+  `0` like `(2n log² n)^{-1/2}`, and is at most `√(1 − 2k) < 0.57` for every
+  `n ≥ 1`. (The write first stated only the bound `≤ 1`; the sharper form is
+  the independent check's, adopted with a dated note keeping the first
+  wording.) This makes explicit the source's "smoothed profile limit"; it
+  says nothing about the coefficients `P_{n,p}` themselves.
 - Credits to repository results and the dated notes listed under "Labels".
+- *[Independent check, 5 October 2026.]* An adversarial check made by the
+  intake after the write found both write-added proofs valid
+  (Proposition 8.2 and the profile statement of Question 2), with no
+  counterexample and no gap in either proof chain. The profile bound `≤ 1`
+  was true but far from sharp and is replaced where it stands by the exact
+  distance above. The tests (mpmath, 30–50 digits, on a copy of
+  `code/verify_a196275.py`): every constant of Proposition 8.2 (`M_H ≈ 1.480`,
+  `A_0(1/4) = 0.5126`, the bound `H ≥ 1/(4 log²(1/u))` on `u ≤ e^{-7}` with
+  minimum ratio 4.07, `I(X − 1/4)/I(X) ≤ 2` already from `X = 1.5`); on the
+  circle `|u| = 1/(4p)` at `X_* = 3, 4, 8, 20, 40` the claimed bounds
+  `2h^{1/4} ≈ 2.170`, `0.45` and `K ≈ 5.425` hold with observed values
+  `≤ 1.171`, `≥ 0.885` and `≤ 1.105` (crude by factors of about 2 and 5,
+  but correct); the hypothesis `R ≥ 2` of part (4) fails at `X_* = 3`
+  (`8KS_* ≈ 0.66`) and holds from `X_* = 4` (`8KS_* ≈ 0.31`), so in practice
+  part (4) applies from about `X_* = 4`; the Lagrange series, with
+  coefficients by DFT on `|u| = 1/(8p)`, converges at `X_* = 4, 8` to the
+  `findroot` inverse well inside the stated remainder (remainder `1.2·10⁻²⁴`
+  after `M = 6` at `X_* = 8`); and for Question 2, `T g_h = h g_h` to
+  `10⁻⁵¹`, `‖P1‖² = 2k` to all digits, and the `L²` distance equal to
+  `√(2 r_{2n})` to ten digits at `n = 1, 2, 5, 10, 20, 45`. A careful reading
+  with numerical tests, not a formal verification; recorded in a dated
+  paragraph at the end of Section 12.1.
 
 ## What is not claimed
 
@@ -143,8 +169,8 @@ question, with its sketch and what is missing (Vladimir's standing rule of
    (`ccp:q:combinatorial`); the write notes the renewal form of
    `ccp:eq:scalarcheck` that a model would have to explain.
 2. **Local asymptotics of `P_{n,p}`**, especially near the boundaries
-   (`ccp:q:profile`); the smoothed `L²` statement above is proved, the
-   coefficient analysis is not.
+   (`ccp:q:profile`); the smoothed `L²` statement above (distance exactly
+   `√(2 r_{2n})`) is proved, the coefficient analysis is not.
 3. **Optimal truncation, late-term growth and exponentially improved
    estimates** in the logarithmic sector (`ccp:q:uniform`). Evidence: at
    `n = 1000` the normalized residual is `0.97490…`, the sum through `L^{-3}`
@@ -266,7 +292,10 @@ repository relations, the notation table and the collected non-claims (end
 of Section 1); condensed-proof notes after Theorems 5.1 and 6.1; credits in
 Sections 7, 8 and 9; Proposition 8.2; the shipped layout and intake reruns
 (end of Section 11); and Section 12.1. No statement, proof or number of the
-manuscript was changed.
+manuscript was changed. After the write, the intake's independent check
+added an unlabelled dated paragraph at the end of Section 12.1 and sharpened
+the write's own profile statement in Question 2 (dated note there); no label
+was added or renumbered.
 
 ## Files
 
@@ -430,7 +459,9 @@ B=$(mktemp -d); cp article.tex "$B/"; cd "$B"
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The committed PDF was built this way with MiKTeX: 21 pages; no errors or
+The committed PDF was built this way with MiKTeX (rebuilt on
+5 October 2026 after the independent check with three pdfLaTeX passes;
+every label keeps its number and page): 21 pages; no errors or
 warnings, no undefined references or citations, no multiply defined labels,
 no duplicate PDF destinations, no overfull or underfull boxes. The delivered
 source built the same way gives 14 pages, equally clean. The article keeps

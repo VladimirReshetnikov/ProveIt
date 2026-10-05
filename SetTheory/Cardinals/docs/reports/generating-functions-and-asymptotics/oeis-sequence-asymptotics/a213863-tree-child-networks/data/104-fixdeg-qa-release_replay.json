@@ -1,0 +1,88 @@
+{
+  "schema": 1,
+  "report": 104,
+  "date_utc": "2026-10-02",
+  "status": "PASS",
+  "method": "Fresh source-ZIP extraction, inventory verification normally and under -O, standalone three-pass TeX rebuild, full exact suite replay",
+  "pdf_pages": 22,
+  "rebuilt_pdf_byte_identical": true,
+  "baseline_modes": [
+    "normal",
+    "optimized"
+  ],
+  "gates_per_baseline": 5655,
+  "exact_corruptions_rejected": 50,
+  "exact_corruptions_total": 50,
+  "release_manifest_corruption_rejections": [
+    {
+      "case": "boolean_schema",
+      "mode": "normal",
+      "status": "REJECTED"
+    },
+    {
+      "case": "boolean_schema",
+      "mode": "optimized",
+      "status": "REJECTED"
+    },
+    {
+      "case": "wrong_report",
+      "mode": "normal",
+      "status": "REJECTED"
+    },
+    {
+      "case": "wrong_report",
+      "mode": "optimized",
+      "status": "REJECTED"
+    },
+    {
+      "case": "missing_pdf",
+      "mode": "normal",
+      "status": "REJECTED"
+    },
+    {
+      "case": "missing_pdf",
+      "mode": "optimized",
+      "status": "REJECTED"
+    },
+    {
+      "case": "digest_mismatch",
+      "mode": "normal",
+      "status": "REJECTED"
+    },
+    {
+      "case": "digest_mismatch",
+      "mode": "optimized",
+      "status": "REJECTED"
+    },
+    {
+      "case": "unsafe_path",
+      "mode": "normal",
+      "status": "REJECTED"
+    },
+    {
+      "case": "unsafe_path",
+      "mode": "optimized",
+      "status": "REJECTED"
+    },
+    {
+      "case": "duplicate_key",
+      "mode": "normal",
+      "status": "REJECTED"
+    },
+    {
+      "case": "duplicate_key",
+      "mode": "optimized",
+      "status": "REJECTED"
+    }
+  ],
+  "payload_sha256": {
+    "general_tree_child_amplitudes.tex": "54de93fe9dea5997716ec2c93b825964b55d8f52039c63761afba6f4f4097006",
+    "general_tree_child_amplitudes.pdf": "6b95f6a395d73d432aeae280b47d20b3ad388d777f4f2aeee2db63be93936a5b",
+    "build.sh": "36f70429b4aa070e94f82962c4ba3abf64639d3776a76595189c7a4872062d2c",
+    "verify_release.py": "67838b3138623c8602fc62ece3fdaa71a7f35c5ab6725f13e2b203fedbcd0ca7",
+    "checks/verify_exact.py": "939c33130cf31e37d5f4d984373bd710879ed8cfc304e15cda2b7aee1e6adbcd",
+    "checks/run_checks.py": "63ca4df7d0cf89f50644b244a6f7810a71402872767dc61c7e808860596f59cf",
+    "checks/input_manifest.json": "1ea8b071368eb75c5cec1b882b4e22613db30f76e2076012a466cca01dcc2782"
+  },
+  "note": "Replay creates fresh runtime logs. Archived exact-suite results and the replay agree in mathematical checks, modes and rejection coverage; elapsed times differ. These are finite algebra and reproducibility checks, not numerical amplitude certification."
+}
