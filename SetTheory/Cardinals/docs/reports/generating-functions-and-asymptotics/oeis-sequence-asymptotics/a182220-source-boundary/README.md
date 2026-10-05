@@ -114,10 +114,17 @@ With `c = 2^(d+1)`, `a = c − 1`, `R = R_d = a^a/c^c`, `L = log(1/t)`:
   radius zero (03).
 - Section 21: **every residue class of power-of-two step** `2^s` has a natural
   boundary, with explicit radial ratios (02, Theorem 21.1); and, by the
-  writing step (marked [write], proofs included, not independently
-  reviewed), a single-dominant-block Lemma 21.4 and **Theorem 21.5: every
-  arithmetic section, of any step `r ≥ 1`, has a natural boundary**, so every
-  arithmetic subsequence of `b^(d)` is non-P-recursive.
+  writing step (marked [write], proofs included; found valid by the intake's
+  adversarial check after the write, not externally reviewed), a
+  single-dominant-block Lemma 21.4 and **Theorem 21.5: every arithmetic
+  section, of any step `r ≥ 1`, has a natural boundary**, so every arithmetic
+  subsequence of `b^(d)` is non-P-recursive. Corollary 21.7 (the intake's,
+  derived from Theorem 21.5): at a dyadic root `ζ` the radial ratio of a
+  section has a limit exactly when `ζ^(j_q)` is eventually constant, and
+  otherwise the distinct subsequential limits
+  `ζ^(1+j) (1 − (aR)^r) / (1 − (aRζ)^r)` (for `d = 0`, `r = 3`, `r₀ = 0`,
+  `ζ = −1` the ratio jumps between `−63/65` and `63/65`; for `r = 6`,
+  `r₀ = 0` the limit exists at `−1` but not at `i`).
 - Section 22: the two packages' computations and diagnostics (Tables 4–5 and
   the tables of Section 22.4–22.6, Figures 1–4); Section 23: first block and
   amplitude corrections (03, Table 6); Section 24: thirteen merged further
@@ -163,8 +170,10 @@ With `c = 2^(d+1)`, `a = c − 1`, `R = R_d = a^a/c^c`, `L = log(1/t)`:
   complete-layer edge `p → 1`; the sampler is conditional on sampling the
   core.
 - Part II's [write] results (Lemma 21.4, Theorem 21.5, Proposition 24.1) are
-  the writing step's own, with proofs, and have not been independently
-  reviewed; Proposition 24.1(ii) is conditional.
+  the writing step's own, with proofs. The intake's adversarial check after
+  the write found them valid (below); that is a careful reading with
+  computations, not a formal verification or an external review.
+  Proposition 24.1(ii) is conditional.
 - Manuscript 03 says "independent internal reviews" checked its proofs. The
   intake could not verify that statement about its preparation; it is not
   evidence of review (Part II, Section 24, item 13).
@@ -200,6 +209,23 @@ on all 1,759 positive cells with `n ≤ 64`. No claim of either manuscript was
 found false, and no repository claim was refuted. The write reran both
 suites on scratch copies (below) and checked its own Lemma 21.4, Theorem 21.5
 and Proposition 24.1 numerically (Part II, Section 22, last note).
+
+After the write (5 October 2026). An independent adversarial check by the
+intake reread the three proofs and found Lemma 21.4, Theorem 21.5 and
+Proposition 24.1 valid. Its computations: the bounds behind Lemma 21.4 exactly
+for `m ≤ 63`; Theorem 21.5's asymptotic against exact coefficients (`n` up to
+`2^52`) for `d = 0, 1`, steps `r = 2, 3, 5, 6`, every residue and five dyadic
+roots, with the largest absolute error inside the bracket falling to
+`2.4·10⁻⁴` at `q_t = 46`; an adversarial probe at the crossover radii
+(`d = 0`, `r = 3`, `ζ = −1`) where the section changes sign near
+`y₀ ≈ 0.06`, showing the theorem's restriction on `y₀` is necessary; and
+Proposition 24.1 and Remark 24.2 against the exact `u_m` (`m ≤ 64`). It is
+recorded in a dated note in Part II's item 13 of Section 24. It found no
+error in a proof; it led to Corollary 21.7 (Remark 21.6 and item 5 of
+Section 24 had listed the radial-ratio limit as unproved, though Theorem
+21.5 decides it; both keep their original wording in dated notes), and to
+two corrected labels in the Section 22 note (`L ≈ 16.3` and `L ≈ 11.7` give
+`q_t = 29` and `22`, not `27` and `20`).
 
 ## Relation to the repository
 
@@ -274,15 +300,18 @@ Part I's `λ_d`); 03's `U_m` is `u_m`. No symbol of Part I was renamed.
 Every label carries the prefix `sbd:`. Part I's 68 labels (63 delivered
 labels prefixed at the batch-85 write, plus five section labels) are
 unchanged: none lost or renumbered (checked against a build of the committed
-text). Part II adds 127 labels in `article.tex` — `sbd:xtm:` (76, manuscript
+text). Part II adds 128 labels in `article.tex` — `sbd:xtm:` (76, manuscript
 03's and the merged statements), `sbd:edge:` (33, manuscript 02's), `sbd:wr:`
-(16, the writing step's results and Section 21.2), and `sbd:part:one`,
-`sbd:part:two` — for 195 labels in the source. Three more,
+(17: the writing step's results and Section 21.2, and the intake's
+Corollary 21.7, `sbd:wr:cor:ratio`), and `sbd:part:one`, `sbd:part:two` — for
+196 labels in the source. Three more,
 `sbd:xtm:tab:computed-block-profiles`, `sbd:xtm:tab:computed-radial-errors`
 and `sbd:xtm:tab:computed-first-corrections`, come from the shipped table
 files, which `\sbdinput` reads with the prefix added to every label and
 `\eqref` name in them (the files themselves are unchanged); the build defines
-198 labels.
+199 labels. Corollary 21.7 was added at the end of Section 21 with unnumbered
+displays, so no earlier label changed number (checked against a build of the
+previous text).
 
 The batch-98 write also:
 
@@ -306,7 +335,7 @@ manuscript 02's symbols are translated as listed above.
 ```text
 README.md                                    this guide (replaces the delivery READMEs)
 article.tex                                  the report (Part I as delivered with labels prefixed and dated notes; Part II merged by the writes)
-article.pdf                                  compiled report, 60 pages
+article.pdf                                  compiled report, 63 pages
 SOURCES.md                                   Part I package: source and provenance notes (as delivered)
 STATUS.md                                    Part I package: proof and verification status (as delivered)
 manifest-entry.tex                           Part I package: suggested catalogue paragraph (as delivered)
@@ -514,10 +543,13 @@ cp article.tex "$B/"; cp data/*_tables.tex "$B/data/"; cp figures/*.pdf "$B/figu
 cd "$B"; latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The committed PDF was built this way with MiKTeX: 60 pages (Part I's 23
+The committed PDF was built this way with MiKTeX: 63 pages (Part I's 23
 pages before batch 98); no errors or warnings, no undefined references or
 citations, no multiply defined labels, no duplicate PDF destinations, no
-overfull or underfull boxes. Every table (1–6) and figure (1–4) appears;
+overfull or underfull boxes. (Until 5 October 2026 the uncaptioned notation
+longtable of Part II and Table 3 shared the PDF destination `table.3`, which
+pdfTeX reported as a duplicate; the longtable's counter step now has its own
+hyperref name.) Every table (1–6) and figure (1–4) appears;
 a missing input stops the build (manuscript 03's `\IfFileExists` guards,
 which would drop them silently, are not used).
 
