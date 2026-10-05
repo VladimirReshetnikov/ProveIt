@@ -1,8 +1,8 @@
 # Polish Models of Omnific Arithmetic
 
-**Polish Presburger models for Glazer's Question 2, Borel presentations and support barriers, continuous Presburger arithmetic, local compactness, Polish series fields, Baire-category rigidity, nonsplit models, a claimed ATR₀ bound for Question 1, locally compact cones, elementary embeddings and Polish submodels of lexicographic models, local geometric codes and a countable arithmetic core, Polish group completions and the size of class manifolds, Borel Presburger orders in one real dimension, the exponent-group threshold, rational rank and self-embeddings of Levi-Civita fields, Borel orders on separable Hilbert spaces, and Borel summability and derivations of left-finite series fields**
+**Polish Presburger models for Glazer's Question 2, Borel presentations and support barriers, continuous Presburger arithmetic, local compactness, Polish series fields, Baire-category rigidity, nonsplit models, a claimed ATR₀ bound for Question 1, locally compact cones, elementary embeddings and Polish submodels of lexicographic models, local geometric codes and a countable arithmetic core, Polish group completions and the size of class manifolds, Borel Presburger orders in one real dimension, the exponent-group threshold, rational rank and self-embeddings of Levi-Civita fields, Borel orders on separable Hilbert spaces, Borel summability and derivations of left-finite series fields, a divisibility threshold for Borel conjugacy of derivations, exact support complexity and strong summation, Borel flows on left-finite series fields, and two derivations and their Lie algebras**
 
-Merged research report, built from twenty manuscripts dated 3 and 4 October
+Merged research report, built from twenty-four manuscripts dated 3 and 4 October
 2026 on one subject: Elliot Glazer's *A Topological Tennenbaum Theorem*
 (arXiv:2311.13699) meets the repository's omnific arithmetic. Seven are
 manuscripts 03 to 09 of batch 86: 03, 04 and 05 arrived in `31fdc6571` and
@@ -19,7 +19,10 @@ Three are manuscripts 01, 02 and 05 of batch 92, which arrived in `9dc8db274`
 and were placed in `e24ce2ce0` (Parts XIII to XV); they are sources 19, 20
 and 21, by their file prefixes. Two are manuscripts 03 and 04 of batch 93,
 which arrived in `2faa3b37a` and were placed in `5e4d8eed8` (Parts XVI and
-XVII); they are sources 22 and 23, by their file prefixes.
+XVII); they are sources 22 and 23, by their file prefixes. Four are
+manuscripts 01, 02, 03 and 07 of batch 96, which arrived in `62846e17a`,
+`7be14aa84`, `fb9f5884b` and `78528873b` and were placed in `54ece48ab`
+(Parts XVIII to XXI); they are sources 24 to 27, by their file prefixes.
 
 | Source | Manuscript | Archive | Pin | Placed | Printed as |
 |---|---|---|---|---|---|
@@ -43,6 +46,10 @@ XVII); they are sources 22 and 23, by their file prefixes.
 | 21 | batch 92, manuscript 05: *Rational Rank and Self-Embeddings of Levi-Civita Fields: A sharp co-Hopfian dichotomy, proper immediate self-copies, and integer-part obstructions* (20 pages, A4) | `Levi_Civita_Rank_and_Self_Embeddings` | `9fe62865d` | `e24ce2ce0` | Part XV (Sections 195–209), Appendix AG |
 | 22 | batch 93, manuscript 03: *Ordinal Rigidity of Borel Hilbert Orders: Canonical flags, exact oscillation ranks, Polish Presburger models, and omnific realizations* (22 pages, letter) | `Ordinal_Rigidity_Borel_Hilbert_Orders` | `3c25fbb55` | `5e4d8eed8` | Part XVI (Sections 210–223; Section 224 written for the report), Appendices AH, AI |
 | 23 | batch 93, manuscript 04: *Borel Regularity Forces Summability: Automatic continuity and measurable derivations on left-finite series fields* (24 pages, letter) | `Borel_Summability_and_Derivations` | `3c25fbb55` | `5e4d8eed8` | Part XVII (Sections 225–238; Section 239 written for the report), Appendices AJ, AK |
+| 24 | batch 96, manuscript 01: *A Divisibility Threshold for Borel Conjugacy: Explicit normal forms, measurable classification, and analytic flows on left-finite series fields* (25 pages, A4) | `Borel_Conjugacy_Divisibility_Threshold` | `715a716a3` | `54ece48ab` | Part XVIII (Sections 240–254; Section 255 written for the report), Appendices AL, AM |
+| 25 | batch 96, manuscript 02: *Exact Support Complexity and Strong Summation in Hahn Fields: An order-obstruction classification and certificates that restore continuity* (25 pages, letter) | `glazer_proveit_support_complexity` | `c39974f12` | `54ece48ab` | Part XIX (Sections 256–269; Section 270 written for the report), Appendix AN |
+| 26 | batch 96, manuscript 03: *Borel Flows on Left-Finite Series Fields: A local-finiteness criterion, a rational-rank dichotomy, and failure of Lie closure* (24 pages, A4) | `Borel_Flows_Glazer_ProveIt` | `c39974f12` | `54ece48ab` | Part XX (Sections 271–284; Section 285 written for the report), Appendices AO, AP |
+| 27 | batch 96, manuscript 07: *Two Derivations Remove the Borel Conjugacy Obstruction: Scalar normalizing coordinates, simultaneous normal forms, and finite-dimensional Lie algebras on left-finite series fields* (19 pages, A4) | `Two_Derivations_Borel_Conjugacy` | none (blobs `a7ebc59ad`, `e24d8fc8d`; `ad52ef11e` or later) | `54ece48ab` | Part XXI (Sections 286–299; Section 300 written for the report), Appendix AQ |
 
 The pins of 03–05 are 28 to 35 commits before `3d2177df4`, those of 06–09 33
 to 43 commits before `0bd0e5527`, those of 10 and 12–15 44 to 51 commits
@@ -103,6 +110,28 @@ manuscript; 23 shares 0.14% with this report and 0.24% with source 21's
 manuscript; the two share at most 0.05%. Batch 93's other four manuscripts (01,
 02 and 05 of `2faa3b37a`, 06 of `de37a66d1`) form batch 93A and go to other
 reports.
+Sources 24–27 (batch 96) arrived in four commits and were placed together
+in `54ece48ab`. 24 is pinned to `715a716a3`, the parent of its arrival commit,
+39 commits before the placement; 25 and 26 to `c39974f12`, 38 commits before
+it ("Review the BCH finite interface…", tree `dbbe29a67`). At both pins this
+report had Parts I–XVII (603 pages), and its article is unchanged from there to
+the placement. 27 records no commit: it names the blobs `a7ebc59ad`
+(`Algebra/SurrealNumbers/README.md`) and `e24d8fc8d`
+(`Algebra/BakerCampbellHausdorff/README.md`), both current from `ad52ef11e` to
+the placement (the BCH README changed later, in `0aa065f26`). None of the four
+read this report's article: 24 read the root and surreal READMEs, 25 source
+03's PDF and `Surreal/HahnSeries/StrongEvaluation.lean`, 26 this README, the
+root documentation, source 23's PDF and `BCH/Formal/Trunc.lean`, 27 the two
+READMEs; 24, 26 and 27 cite source 23 (and 27 also 24) as earlier manuscripts,
+and 25 cites source 03. 24 and 27 share 1.8% and 2.5% of their word 8-grams
+(boilerplate and bibliography; the placement message's "at most 0.6%" counted
+without it), 26 shares 0.5% with 24 and 0.6% with 27, 25 at most 0.41% with
+any of the three and 0.67% with this report, 24 about 1% with source 23's
+manuscript and 26 0.1% with Part XVII. Batch 96's other manuscripts went
+to other reports: 04 to Part V of the research-report collection's
+`measurable-box-games` (batch 96B), 05 and 06 to Part III of
+`naming-elementary-embeddings` (96C), 08–11 to Part XVI of
+`surreal-well-orders` (96D, placed in `111c38012`).
 
 **Status.** Unrefereed research drafts: 03, 08, 10, 12, 13 and 14 "prepared
 with ChatGPT", 09 and 15 "prepared with AI assistance", 05 "AI-assisted"; 04,
@@ -112,9 +141,13 @@ AI-assisted proof reviews); 17 is "prepared with ChatGPT" and 18 "prepared
 with AI assistance"; 19 and 21 are research manuscripts "prepared with
 ChatGPT", and 20 is "developed with ChatGPT"; 22 is "prepared for Vladimir
 Reshetnikov, research developed and written with ChatGPT" and 23 a "research
-manuscript prepared with ChatGPT". **Nothing in this report is
+manuscript prepared with ChatGPT"; 24, 26 and 27 are research manuscripts
+"prepared with ChatGPT" and 25 a "research report prepared with ChatGPT for
+Vladimir Reshetnikov". **Nothing in this report is
 formalized** (one special case of Part XVII's Corollary 231.3 coincides with
-Lean theorems proved for another report; see Part XVII), and
+Lean theorems proved for another report, see Part XVII; 27's affine BCH
+identity is, in matrix form, a Lean theorem of the BCH project, see Part XXI),
+and
 priority of its results is **not established**. Part VIII prints a **claimed**
 answer to Glazer's Question 1 that **has not been independently reviewed**,
 and Part XI a **claimed**, unreviewed ATR₀ upper bound for its local theorem.
@@ -124,13 +157,20 @@ checked by this report); no repository text relies on that lemma.
 Part XVI identifies 22's flag theorem with Part III's Theorem 33.1, which 22
 did not know, and proves two statements 22 asserted without proof; Part XVII
 proves two that 23 left as sketches (Sections 224 and 239, written for the
-report).
+report). Part XX shows that 26's Remark 280.3 is **false as stated** in
+finite rational rank, where every strict derivation integrates (note after the
+remark), and proves it in infinite rank (Proposition 285.4). Part XXI's
+Theorem 300.3, written for the report (`[merge]`), classifies the actions of
+connected Lie groups whose one-parameter subgroups have Borel time dependence,
+the group level that 24's Question 253.3 and 27's Question 298.4 left open; an
+independent check made for this write found it correct and asked for four
+editorial fixes, which are applied; it is unrefereed.
 
 ## Files
 
 ```
 article.tex                                   the report, standalone LaTeX with an internal bibliography (pdfLaTeX)
-article.pdf                                   the compiled report, 603 pages (title page, abstract page, then pages 1-601)
+article.pdf                                   the compiled report, 743 pages (title page, abstract page, then pages 1-741)
 README.md                                     this guide
 05-omnific-presburger-CLAIM_LEDGER.md         05's claim ledger, as delivered (05's own theorem numbers)
 05-omnific-presburger-SOURCES.md              05's sources and priority record, as delivered
@@ -154,6 +194,10 @@ README.md                                     this guide
 22-hilbert-orders-PROOF_REVIEW.md             22's internal AI-assisted proof review, as delivered (22's own numbering)
 22-hilbert-orders-SOURCES.md                  22's source provenance and novelty limits, as delivered
 23-borel-summability-SOURCE_AND_PROOF_AUDIT.md  23's sources, proof dependencies and novelty boundary, as delivered
+25-support-complexity-sources.md              25's source and provenance ledger, as delivered (calls Part II an unbundled "Library artifact")
+26-borel-flows-CLAIM_LEDGER.md                26's claim and status ledger, as delivered (26's own theorem numbers)
+26-borel-flows-SOURCES.md                     26's source and repository-read record, as delivered
+27-two-derivations-SOURCE_AUDIT.md            27's sources, repository context (two README blobs), proof and novelty boundary, as delivered
 code/
   03-borel-presentations-verify.py            03: exact-rational checks (84,388 assertions), stdlib only
   04-polish-presburger-Makefile               04: delivered Makefile (names delivery paths)
@@ -187,6 +231,13 @@ code/
   22-hilbert-orders-build.sh                  22: delivered build (verify.py, three pdflatex passes on article.tex beside itself)
   22-hilbert-orders-verify.py                 22: exact finite checks (136,562 assertions, seed 231113699), stdlib only; writes verification_results.json beside itself without --output
   23-borel-summability-verification.py        23: exact finite checks (1,640, seed 20261004), stdlib only; prints its record
+  24-borel-conjugacy-verify_jets.py           24: exact rational finite-jet checks (143, seed 20261004, degree 24), stdlib only; writes verification_report.json in the working directory without --output
+  25-support-complexity-Makefile              25: delivered Makefile (latexmk article.tex; check target runs python3 checks.py)
+  25-support-complexity-checks.py             25: exact finite regression checks (seed 20261004), stdlib only; prints its record; 17 bare asserts, vacuous under python -O
+  26-borel-flows-build.sh                     26: delivered build (verify.py --json verification_results.json, three pdflatex passes on the unshipped borel_flows.tex, beside itself)
+  26-borel-flows-verify.py                    26: exact finite checks (5,372, seed 20261004), stdlib only; writes its record only to the path given with --json
+  27-two-derivations-build.sh                 27: delivered build (three pdflatex passes on the unshipped two_derivations.tex, beside itself)
+  27-two-derivations-verify.py                27: exact SymPy regression checks (669); writes verification_report.json and .txt beside itself without --output-dir
 data/
   03-borel-presentations-provenance.json      03's pin, inspected paths, theorem locations, PDF and test record
   03-borel-presentations-verification.json    recorded run of 03's checks
@@ -212,13 +263,20 @@ data/
   22-hilbert-orders-BUILD_REPORT.json         22's build record for its own 22-page PDF, with SHA-256 of 8 delivered files
   22-hilbert-orders-verification_results.json recorded run of 22's checks (Python 3.13.5)
   23-borel-summability-verification_results.json  recorded run of 23's checks
+  24-borel-conjugacy-verification_report.json recorded run of 24's checks (143 PASS, with exact normalizer coefficients)
+  25-support-complexity-checks.txt            recorded run of 25's checks
+  26-borel-flows-verification_results.json    recorded run of 26's checks
+  27-two-derivations-requirements.txt         27's pinned dependency (sympy==1.14.0)
+  27-two-derivations-verification_report.json recorded run of 27's checks (Python 3.13.5, SymPy 1.14.0)
+  27-two-derivations-verification_report.txt  the same, summary
 ```
 
 Every delivered file is byte-identical to the delivery. Not shipped (they
 survive in the archives of `31fdc6571`, `fb8414869`, `fa0a0576e`,
-`7c0f2d9f9`, `a162e4386`, `9dc8db274` and `2faa3b37a`): the twenty delivered
-PDFs; the checksum manifests of 03, 04, 05, 08, 10, 12, 14, 18, 19, 20, 21, 22
-and 23 (all
+`7c0f2d9f9`, `a162e4386`, `9dc8db274`, `2faa3b37a`, `62846e17a`,
+`7be14aa84`, `fb9f5884b` and `78528873b`): the twenty-four delivered
+PDFs; the checksum manifests of 03, 04, 05, 08, 10, 12, 14, 18, 19, 20, 21, 22,
+23, 24, 25, 26 and 27 (all
 verified at placement;
 06, 07, 09, 13, 15, 16 and 17 shipped none, 13's `provenance.json`, 15's `source_manifest.json` and 16's
 `BUILD_REPORT.json` carrying hashes that were verified too); the manuscripts
@@ -228,7 +286,9 @@ of batch 87, 14's `SOURCE_AUDIT.txt` and 15's `source_manifest.json`, and
 one of batch 90, 18's `SOURCE_RECORD.txt`, because each contains a third
 party's personal profile address, which no tracked file carries. Appendix E
 summarizes their verified content without that address.
-Sources 06, 07 and 15 shipped no code or data.
+Sources 06, 07 and 15 shipped no code or data. Sources 24–27 shipped no
+manuscript-independent build record; 25's, 26's and 27's delivered build files
+need their unshipped manuscripts.
 
 ## Labels
 
@@ -238,13 +298,16 @@ Part V (09) `pma:ser:`, Part VI (12 and 10) `pma:br:`, Part VII (13)
 `pma:nsp:`, Part VIII (14) `pma:atr:`, Part IX (15) `pma:lcc:`, Part X (16)
 `pma:emb:`, Part XI (17) `pma:lgc:`, Part XII (18) `pma:gcm:`, Part XIII (19)
 `pma:ord:`, Part XIV (20) `pma:egt:`, Part XV (21) `pma:rk:`, Part XVI (22)
-`pma:hbo:`, Part XVII (23) `pma:bsd:`, and text written
+`pma:hbo:`, Part XVII (23) `pma:bsd:`, Part XVIII (24) `pma:bct:`, Part XIX (25)
+`pma:spc:`, Part XX (26) `pma:bfl:`, Part XXI (27) `pma:tdv:`, and text written
 for the merge bare `pma:` or a part prefix (for
 example `pma:sec:boundary`, `pma:cp:sec:meet`, `pma:br:sec:meet`,
 `pma:br:prop:meet`, `pma:ord:sec:meet`, `pma:hbo:sec:meet`,
-`pma:bsd:sec:meet`). The report has 1344 labels: the 422 of the batch-86
+`pma:bsd:sec:meet`, `pma:bct:sec:meet`, `pma:spc:w-sec:meet`,
+`pma:bfl:w-meet`, `pma:tdv:w-meet`). The report has 1740 labels: the 422 of the batch-86
 writes (all kept), 286 of the batch-87 write, 76 of the batch-89 write, 139 of
-the batch-90 write, 233 of the batch-92 write and 188 of the batch-93 write. The
+the batch-90 write, 233 of the batch-92 write, 188 of the batch-93 write and
+396 of the batch-96 write. The
 batch-87 ones are 123 of sources 12 and 10 and 4 added in Part VI, 41 of 13
 and 9 added, 37 of 14 and 1 added, all 52 of 15, the four part labels, and 15
 labels added to unlabelled questions of Parts I, III and IV so that notes can
@@ -298,8 +361,31 @@ conclusion and two appendices, and, written for the report,
 `pma:bsd:rem:lean`); the part labels `pma:part:hbo`, `pma:part:bsd`; and
 three added to unlabelled questions of other parts (`pma:cp:q:closurerank`,
 `pma:cp:q:simplicity`, `pma:ser:q:descriptiveranks`: Questions 43.7, 43.11
-and 73.6). No label was renamed
-or removed, and every earlier label keeps its number.
+and 73.6). The batch-96 ones are, for Parts XVIII–XXI, the delivered labels
+with the prefixes `pma:bct:` (67 of 24), `pma:spc:` (74 of 25), `pma:bfl:` (66
+of 26) and `pma:tdv:` (61 of 27); labels `n<number>` on their unlabelled
+numbered statements, by the source's number (18 of 24, 36 of 25 with `nq<k>`
+for its questions and `nsec<k>` for its subsections, 18 of 26, 17 of 27);
+labels on conclusions and appendices (24's `pma:bct:sec:conclusion`,
+`pma:bct:app:notation`, `pma:bct:app:sources`, `pma:bct:sec:meet`; 26's `n14`,
+`nA`, `nB`); the labels of the statements written for the report
+(`pma:bct:prop:timeone`, `pma:bct:rem:partxx`, `pma:bct:rem:partxv`,
+`pma:bct:rem:effective`, `pma:bct:rem:mrrz`; `pma:spc:w-sec:meet`,
+`pma:spc:w-prop:archimedean`, `pma:spc:w-rem:effective`,
+`pma:spc:w-q:attribution`; `pma:bfl:w-meet`, `pma:bfl:w-timebasis`,
+`pma:bfl:w-gammaQ`, `pma:bfl:w-bch`, `pma:bfl:w-sampling`,
+`pma:bfl:w-q-difftime`; `pma:tdv:w-rem-orientation`, `pma:tdv:w-rem-bch`,
+`pma:tdv:w-conclusion`, `pma:tdv:w-meet`, `pma:tdv:w-def-lieaction`,
+`pma:tdv:w-lem-products`, `pma:tdv:w-thm-actions`, `pma:tdv:w-rem-review`,
+`pma:tdv:w-app`); the part labels `pma:part:bct`, `pma:part:spc`,
+`pma:part:bfl`, `pma:part:tdv` (95, 115, 94 and 88 labels per part); and four
+added to unlabelled questions of Part II (`pma:bor:q:exactcomplexity`,
+`pma:bor:q:subfields`, `pma:bor:q:observability`, `pma:bor:q:certified`:
+Questions 28.3–28.6). 27's Proposition 9.3 keeps its label
+`pma:tdv:prop:negativeflow` on the numbered note that prints it (Remark
+294.3). No label was renamed
+or removed, and every earlier label keeps its number (checked against the
+`.aux` of a build of the committed text).
 
 In Part I, ten labels of 04 that coincide with labels of 05 take the
 sub-prefix `pma:pr:s04:` (`pma:pr:s04:thm:qe`, `pma:pr:s04:thm:baire`, and six
@@ -409,6 +495,22 @@ Appendix AH here, and `data/22-hilbert-orders-BUILD_REPORT.json` counts 22's
 nine research questions; `23-borel-summability-SOURCE_AND_PROOF_AUDIT.md`
 names results by description only.
 
+In Parts XVIII–XXI, 24's Section k is Section 239+k, 25's is 255+k, 26's is
+270+k and 27's is 285+k, with statement numbers otherwise unchanged (25's and
+26's unlabelled statements keep their numbers; 25's equations, numbered
+consecutively in its source, are numbered by section here). Sections 255, 270,
+285 and 300 were written for the report. 24's Questions 14.1–14.10 are
+253.1–253.10; 25's eleven "Research questions" share the counter as
+268.1–268.11 (268.12 was written for the report); 26's 13.1–13.9 are
+283.1–283.9 (283.10 written for the report); 27's opening Questions 1.1, 1.2
+are 286.1, 286.2 and its 13.1–13.8 are 298.1–298.8. Their appendices are
+Appendices AL, AM (24), AN (25), AO, AP (26) and AQ (27). The delivered records
+cite the sources' own numbers: `26-borel-flows-CLAIM_LEDGER.md` uses 26's
+(its Theorems 5.2, 7.2, 8.2 and 9.5 are 275.2, 277.2, 278.2 and 279.5 here);
+`27-two-derivations-SOURCE_AUDIT.md` uses 27's section numbers ("Sections 5–6"
+are Sections 290–291); 24's record and 25's ledger cite no theorem numbers
+beyond 25's "Question 12.3" of source 03, which is Question 28.3.
+
 ## Glazer's questions, his speculation, and priority
 
 Glazer's Question 2 (p. 8) asks whether some uncountable Polish space
@@ -473,6 +575,14 @@ the answer to Question 2 as the repository's and extends its models to Hilbert
 cones; its no-ring theorem (Theorem 220.2) is narrower than Glazer's theorems.
 23 states that its non-Polishability proposition (229.1) solves neither
 question; its question on logical strength (237.7) is distinct from Question 1.
+
+**Batch 96.** Sources 24–27 answer neither question and say so. 24's
+"divisibility threshold" (Theorem 246.4) concerns the smoothness of conjugacy
+of derivations, not Glazer's theorems or Part XIV's exponent-group threshold;
+25 treats Glazer's theorem as motivation, not as a lemma (its certificate
+spaces are spaces of names and neither evade nor contradict his theorem); 26's
+question on foundational strength (283.9) is distinct from Question 1; 27
+claims no named question of Glazer's solved.
 
 **Priority is not established** for any source; on 3 October 2026 the arXiv
 record of Glazer's paper still had one version (v1) and no journal
@@ -885,11 +995,120 @@ exponentials of Borel derivations (Remark 239.4, bearing on Part XV's
 Questions 208.1 and 208.5); the image clause of Corollary 231.3 for Γ = Z is
 formalized in Lean (Remark 239.5).
 
+**Part XVIII** (24). For Z ≤ Γ ≤ Q and the real left-finite field `ℒ^Γ_R`,
+every Borel derivation is `D_a = aE` (Theorem 242.2), and the Borel
+ordered-field automorphisms are the substitutions `t ↦ At^r(1+u)`, `rΓ = Γ`,
+which are all the Borel automorphisms when Γ is 2-divisible (Theorem 242.4). A
+Borel tangent coordinate normalizes every nonzero `D_a` to `ct^αE`, `cE` or
+`ct^α(1+cρt^α)^{-1}E`, ρ = ct(1/a) (Theorem 244.1); complete invariants per
+gain stratum (Theorem 245.1) and Borel witnesses on the relation (Theorem
+245.2); conjugacy is smooth iff at most one prime is infinitely divisible in
+Γ, all nonsmoothness lying in gain zero (Theorem 246.4); centralizers (Theorem
+247.2); `D_a` generates a coefficientwise real-analytic flow iff a = 0 or
+v(a) ≥ 0, uniquely (Theorem 248.3), and Borel time dependence of `Φ_s(t)` alone
+forces such a flow (Theorem 248.8); Borel `R^n`-actions factor through one
+parameter (Corollary 248.9). It re-proves in rank one Part XVII's Propositions
+226.2, 226.4, Lemma 227.1, Theorems 230.2, 231.1, Corollary 231.3 and both
+halves of Theorem 234.2; each is flagged.
+
+**Section 255** (merge, written for the report). The time-one maps are exactly
+the valuation-preserving automorphisms, with a unique flow (Proposition 255.1);
+comparison with Part XX at Γ = Q and with Part XV's coefficient-fixing case
+(Remarks 255.2, 255.3); the Hilbert's-tenth reviewer's lemma that decidable Γ
+can have co-c.e.-complete Euler conjugacy (Remark 255.4); Example 6.3 of
+Mardešić–Resman–Rolin–Županović, which 24 cites, checked (Remark 255.5).
+
+**Part XIX** (25). For every countable linear order L, the set `WO(L)` of
+well-ordered supports and the real space `V(L)` are the whole space if L is
+well ordered, Σ⁰₂-complete if L is not well ordered and `ω*·ω` does not embed,
+Π⁰₃-complete if L is scattered and `ω*·ω` embeds, and Π¹₁-complete if Q embeds;
+the only nontrivial Borel Wadge degrees are those of `Fin` and `Fin^N`
+(Theorem 259.6). This answers the level and Wadge-degree parts of Part II's
+Question 28.3. For ordered abelian groups the Σ⁰₂ case is exactly Γ ≅ Z
+(Theorem 260.1, Corollary 260.3); strongly summable families are
+Π⁰₃-complete already over Z (Theorem 261.2); the strong sum is Baire class 1
+and nowhere continuous (Theorem 262.1); closed integer and real certificate
+spaces make summation continuous, with a Σ⁰₂-measurable integer section but no
+Baire-1 one, and a Baire-1 real section as the limit of continuous
+regularizations (Theorems 263.2, 263.3, 264.2, 264.3); the naming barrier
+(Theorem 265.2); scatteredness is Π¹₁-complete among the orders of one fixed
+free abelian group (Theorem 266.3); Proposition 267.1 transfers the family
+results to the Lean predicate `PowerSeriesSummable` as a statement, not a Lean
+theorem. It re-proves Part II's Lemma 18.2, the scattered half of Theorem
+18.4, Theorem 20.2 and Corollary 20.4 in its own form (each flagged).
+
+**Section 270** (merge, written for the report). For countable Γ ≤ R the code
+set of all well-ordered supports is Σ⁰₂-complete for cyclic Γ ≠ 0 and
+Π¹₁-complete otherwise, and is standard Borel iff L is scattered (Proposition
+270.1); the effectivity sentence of 25's Section 264.2 holds, with the
+reviewer's observation that the limit need not be computable (Remark 270.2);
+Question 268.12 keeps 25's unchecked attributions to Guevara–Uzcátegui and
+Hall–Knight–Lange.
+
+**Part XX** (26). For a countable divisible Γ ≤ R and `ℒ^Γ_R`, every jointly
+Borel flow by field automorphisms fixes R and the valuation (Theorem 274.4);
+the flows correspond exactly to the real-linear valuation-nondecreasing
+derivations that are locally finite on every bounded exponent window, every
+orbit coefficient being entire in time (Theorem 275.2, Corollary 275.3);
+negative gain never integrates (Corollary 275.4); for strict derivations this
+is window nilpotence or escape of iterated valuations (Theorem 276.2); every
+strict derivation integrates iff dim_Q Γ < ∞ (Theorem 277.2), and in finite
+rank every valuation-nondecreasing Borel derivation integrates (Corollary
+277.3); in infinite rank two integrable strict derivations have nonintegrable
+sum and bracket (Theorem 278.2) and the product of their time-one maps is the
+time-one map of no Borel flow (Theorem 279.1); Borel time-one maps are
+characterized, with unique embedding (Theorem 279.5); the integrable strict
+derivations form a Borel parameter set (Theorem 280.2). Its field layer and
+uniform-gain case re-prove Part XVII (flagged).
+
+**Section 285** (merge, written for the report). Borel time dependence of the
+images of one rational basis already gives a jointly Borel flow (Proposition
+285.1); at Γ = Q, 26's answer is Part XVIII's Theorems 248.3 and 248.8
+(Corollary 285.2); under a common positive gain BCH identities transfer and
+time-one maps compose (Proposition 285.3, 26's sketch); finite monomial
+sampling certifies nothing in infinite rank (Proposition 285.4, 26's Remark
+280.3, which is false as stated in finite rank); Question 283.10 asks for
+differentiable time in higher rank.
+
+**Part XXI** (27). For Z ⊆ Γ ⊆ Q every coefficient-Borel derivation of
+`ℒ^Γ_R` is `aE` (Theorem 288.3) and the ordered Borel automorphisms are the
+substitutions `t ↦ ct^r(1+u)`, `r ∈ U_Γ` (Theorem 289.1, which is Part XVIII's
+242.4, proved independently). A nonconstant scalar h has a canonical scalar
+`𝖧_h` and a unique automorphism `Θ_h` with `Θ_h(𝖧_h) = h`; stabilizers are
+trivial and `ℒ∖R ≅ Can_Γ × G_Γ` Borel (Theorem 290.2, Corollary 290.3).
+Noncommuting ordered pairs `(D_a, D_b)` have the Borel cross-section
+`(D_A, D_{𝖧A})`, trivial stabilizers and unique Borel conjugators, and so do
+countable tuples (Theorem 291.2, Corollary 291.3); single derivations and
+commuting pairs are nonsmooth, even for Baire-measurable invariants, when
+`log U_Γ` is dense (Theorem 292.2). Finite-dimensional Lie algebras of Borel
+derivations have dimension at most three, abelian ones at most one (Theorem
+293.2), with normal forms `𝔞_{κ(p)}`, `𝔰_{κ(p)}` and an exponent-orbit
+invariant (Theorem 293.3), Borel and smooth (Proposition 293.4); the
+valuation-nondecreasing ones have dimension at most two (Corollary 294.1);
+explicit global `Aff⁺(R)` action (Theorem 294.4). 27's Proposition 9.3 is
+printed as the numbered note Remark 294.3 (Parts XVIII and XX prove it).
+Remarks 289.2 (the opposite conjugation conventions of Parts XVIII and XXI)
+and 294.5 (the affine BCH identity is a Lean theorem in matrix form) were
+written for the report.
+
+**Section 300** (merge, written for the report). Lie-group actions with Borel
+generators are defined (Definition 300.1), products of analytic flows are
+jointly analytic (Lemma 300.2), and for a connected Lie group acting by
+ordered automorphisms whose one-parameter subgroups move t Borelly in time,
+equivalently by a coefficient-differentiable action with Borel generators, the
+generator map is a Lie algebra homomorphism, its image has dimension at most
+two, the action is determined by its generators and factors, on the universal
+cover, through 27's affine action or one analytic flow, and semisimple groups
+act trivially (Theorem 300.3, with Part XVIII's Theorem 248.8; independently
+checked for this write, unrefereed); the reviewer's effective boundary for
+pairs over Z (Remark 300.4).
+
 ## What the report does not claim
 
 Appendix F keeps every limitation, source by source (05: 9 items, 04: 8,
 03: 9, 07: 10, 06: 10, 08: 9, 09: 8, 12: 10, 10: 11, 13: 10, 14: 9, 15: 8,
-16: 9, 17: 10, 18: 11, 19: 10, 20: 9, 21: 9, 22: 9, 23: 10, merge: 27). In short: no priority for any source; Glazer's Question 1 is
+16: 9, 17: 10, 18: 11, 19: 10, 20: 9, 21: 9, 22: 9, 23: 10, 24: 10, 25: 9,
+26: 9, 27: 10, merge: 31). In short: no priority for any source; Glazer's Question 1 is
 answered only by source 14's **claim**, unrefereed and not independently
 reviewed, an ATR₀ upper bound under a coding convention with declared
 inputs; no conclusion about variants of Question 2 with further hypotheses;
@@ -930,7 +1149,15 @@ additive with a transported topology, its no-ring theorem does not replace
 Glazer's, and its priority against Küçük–Soyertem–Küçük (2012) is unchecked
 (Question 222.10); 23's "Borel" is the coefficient coding, its fields are
 set-sized, its wild derivations use choice, positive gain is sufficient and not
-necessary for flows, and its cutoff is not computed from a Borel code; the finite checks are finite.
+necessary for flows, and its cutoff is not computed from a Borel code; 24's
+and 27's theorems are for rational rank one, ordered automorphisms when Γ is
+not 2-divisible and formal series (not convergence in t), Borelness is not
+computability, and the Borel witness selection is not a transversal; 25 answers
+only the level and Wadge parts of Question 28.3, its Π⁰₃ ceiling is prior art
+and its certificate spaces do not make validity decidable; 26 needs a
+divisible Γ, its locus is not a decision procedure and its Borel flows are not
+claimed to be formal exponentials; 27's uniqueness is for named ordered pairs;
+the finite checks are finite.
 
 Part I has 17 questions (four asked by both 04 and 05, merged in Section
 14.1), Part II 8, Part III 11 of 07 with 06's twelve numbered projects
@@ -938,7 +1165,10 @@ attached to the questions of the same subject, Part IV 8, Part V 12,
 Part VI 23 (12's eleven, each followed by 10's question on the same subject
 where there is one, and 10's four others), Part VII 9, Part VIII 8, Part IX
 11, Part X 12, Part XI 11, Part XII 12, Part XIII 9, Part XIV 12, Part XV 12,
-Part XVI 10 (22's nine and one written for the report), Part XVII 9. One sentence of Question 14.4 is answered by 06's Theorem 38.1 (note after
+Part XVI 10 (22's nine and one written for the report), Part XVII 9, Part
+XVIII 10, Part XIX 12 (25's eleven and one written for the report), Part XX 10
+(26's nine and one written for the report), Part XXI 10 (27's two opening
+questions, which it answers, and its eight). One sentence of Question 14.4 is answered by 06's Theorem 38.1 (note after
 the question); 07's question on uniform definability bounds is answered for
 locally compact signed presentations by 08's Theorem 52.1; 08's Question 57.1
 is answered under 09's Borel-scalar hypothesis by Theorem 62.1 and, without
@@ -1005,6 +1235,23 @@ coefficients). Notes after Questions 57.4, 73.6, 208.1 and 208.5 and after
 Theorem 33.1 record what bears on them without answering them. 22's
 Questions 222.4 and 222.8 repeat or are partly answered by Parts I, III and X
 (notes there).
+Until batch 96 the README went on: "Everything else is open." Batch 96
+(Parts XVIII–XXI) answers more, each with a dated note after the question:
+Part XVII's Question 237.4 (conjugacy) in rational rank one for ordered
+coordinate changes, by 24, with its simultaneous form for noncommuting ordered
+pairs by 27; Question 237.5 (flows) in rational rank one by 24 and for
+countable divisible Γ by 26 (the batch-93 note's "otherwise open" is re-scoped;
+nondivisible Γ of rational rank ≥ 2 stays open); Part II's Question 28.3 in its
+level and Wadge-degree parts by 25 (computing the level from a Hausdorff
+decomposition stays open); and the automorphism, Γ = Q, k = R case of Part
+XV's Question 208.5 (coefficient-fixing classification written out, Remark
+255.3). 24's Question 253.3 is answered at the Lie-algebra level by 27 and at
+the group level, for ordered automorphisms with Borel time dependence, by
+Theorem 300.3, which also answers 27's Question 298.4 in rank one. Part II's
+Questions 28.4 and 28.5 are asked again by 25 (Questions 268.5, 268.8,
+printed there as pointers); notes after Questions 28.6, 237.1, 237.3 and
+237.6, after Theorems 18.4, 19.1, 20.2, 67.3 and Corollaries 20.4 and 234.3 and
+after Proposition 239.3 record what bears on them without answering them.
 Everything else is open.
 
 ## Printed by citation, not reprinted as new
@@ -1128,6 +1375,43 @@ All labels exist at HEAD.
   `saut:thm:shiftflow` (surcomplex-field-automorphisms): its flow
   `t ↦ t/(1−st)` is 23's flow for D = tE; the Euler operator `𝔇` of
   real-vector-space-structure restricts to 23's E. Notes in Part XVII.
+
+- Within the report, Part XVIII re-proves, in rational rank one, Part XVII's
+  Propositions 226.2, 226.4, Lemma 227.1, Theorems 230.2, 231.1, Corollary
+  231.3 and both halves of Theorem 234.2; its zero-gain flows extend
+  Proposition 239.3. Part XIX re-proves Part II's Lemma 18.2 and Theorems 18.4
+  (scattered half, sharpened to the level Π⁰₃), 20.2 and Corollary 20.4 in
+  its own form; Part II's Theorem 19.1 (i), (ii) and Part V's Theorem 67.3
+  (k = R) are special cases of its Theorems 259.6 and 260.1. Part XX re-proves
+  Part XVII's field layer (Propositions 226.2, 226.4), the Borel-derivation
+  clause of Theorem 230.2, the strict case of its construction, the
+  exponential half of Theorem 234.2 with Corollary 234.3 and the surreal map;
+  its Example 275.5 contains Proposition 239.3 and its Corollary 279.6 the
+  logarithm half of 234.2. Part XXI re-proves Part XVII's field lemmas and
+  Corollary 231.3 in rank one, and Part XVIII's Theorem 242.4 (as Theorem
+  289.1), the zero-gain classification and the nonsmoothness half of Theorem
+  246.4 (Theorem 292.2, strengthened). Results shared among the four batch-96
+  sources are printed in the earlier part and quoted in the later one (27's
+  Proposition 9.3 is Remark 294.3; at Γ = Q 26's flow theorems are 24's, Remark
+  255.2 and Corollary 285.2). Each is noted where it occurs.
+- `Surreal.EulerDerivation.coeff_zero_euler` and `euler_eq_zero_iff`
+  (`Algebra/SurrealNumbers/Surreal/HahnSeries/EulerDerivation.lean`, mapped in
+  `docs/FORMALIZATION.md` to the surcomplex differential-equations report):
+  ct(Ef) = 0 and ker E = R for full Hahn series, two clauses used by 24 and 27;
+  `Surreal.LaurentResidue.exists_derivative_eq_iff` (characteristic zero): the
+  Γ = Z integration criterion of 24's Theorem 242.2. **Proved in Lean** for
+  another report; nothing of Parts XVIII–XXI is mapped.
+- `BCH.exp_mul_exp_of_lie_eq_smul`
+  (`Algebra/BakerCampbellHausdorff/Lean/BCH/Eigen.lean`, **proved in Lean**,
+  RCLike scalars, complete normed unital algebras, hypotheses `⁅X,Y⁆ = s•Y` and
+  `s = 0 ∨ exp(−s) ≠ 1`) is 27's affine BCH identity in the 2×2 matrix algebra
+  (Remark 294.5); `BCH.bch_formula_formal` supplies only the Lie-polynomial
+  input of Part XX's Proposition 285.3.
+- `Surreal.HahnSeries.PowerSeriesSummable`
+  (`Surreal/HahnSeries/StrongEvaluation.lean`, mapped as proved to `thm:exact`
+  of `hahn-evaluation-at-omega`) is the predicate about which 25's Proposition
+  267.1 makes its descriptive statement; that statement has no Lean
+  counterpart.
 
 ## Corrections and stale statements
 
@@ -1299,6 +1583,38 @@ change the article or certify its other proofs.
   Questions 14.6, 14.14, 43.7, 57.4, 73.6, 138.7, 208.1 and 208.5, after
   Theorem 33.1 and after Part V's remark on real coefficients say what Parts
   XVI and XVII prove; nothing earlier was deleted.
+
+- **Batch 96.** 24 describes Part XVII as a draft in the user's library with
+  no copy bundled; 25 calls Part II a prior artifact "not bundled in this
+  package"; 26 calls source 23 an earlier draft and a prior report; 27 cites
+  sources 23 and 24 as manuscripts of the user's collection. Notes give the
+  current places. 26's manuscript lost a backslash in a reference (its PDF
+  prints "Theorem efthm:timeoneexact"); the reference is restored (Part XX's
+  introduction). 25's `checks.py` uses bare `assert`, so under `python -O` it
+  prints its record without checking anything (rerun without `-O`). Under the
+  rule on unproved claims: 26's Remark 280.3 is **false as stated** in finite
+  rational rank (every strict derivation integrates there, Theorem 277.2) and
+  is proved in infinite rank (Proposition 285.4); 26's sketched BCH transfer
+  (its Section 11.1) is proved (Proposition 285.3), its embedding into No (11.2)
+  is completed by citation, its practical test (Corollary 279.2, stated without
+  proof) is proved in a note; 25's effectivity sentence is proved (Remark
+  270.2) and its "may be standard Borel" made exact (Proposition 270.1); 25's
+  attributions to Guevara–Uzcátegui and Hall–Knight–Lange, unchecked, are kept
+  as Question 268.12; 27's Proposition 9.3 uses an undefined "Lie-group
+  action", made precise (Definition 300.1), and its implicit claim that the
+  infinitesimal image is a Lie algebra is proved (Theorem 300.3); 24's citation
+  of Example 6.3 of Mardešić et al. was checked (Remark 255.5). The sources'
+  own questions (24: 10, 25: 11, 26: 9, 27: 10) stay open except where notes
+  say otherwise. Counts ("twenty") in the title page, abstract and Section 1
+  now say twenty-four; to keep the abstract on one page Part III's opening
+  sentence ("Part III merges two further manuscripts") was folded into the
+  next, the Baire-model clause of Part I lost "(discrete coordinates)", the
+  sentence on Glazer's speculation and the integer-part clause of Part V were
+  shortened, the closing sentence was merged, and Parts XVIII–XXI joined the
+  list of later parts in one clause. Dated notes at Questions 28.3–28.6, 208.5,
+  237.1, 237.3, 237.4, 237.5 and 237.6, after Theorems 18.4, 19.1, 20.2 and
+  67.3, Corollaries 20.4 and 234.3 and Proposition 239.3 say what Parts
+  XVIII–XXI prove; nothing earlier was deleted.
 
 ## Relations to the formal project and to neighbouring reports
 
@@ -1500,9 +1816,38 @@ change the article or certify its other proofs.
   formalized in `LaurentResidueChange.lean`, is the Γ = Z case of 23's
   rank-one image clause.
 
+- **Hilbert's-tenth reviews (batch 96).** All four archives were read in
+  full in `Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/`:
+  24 in `8dffc7af0` (`review_new_borel_62846e17a.md`, `.json`, `.py`), 25 in
+  `3abf23ba1` (`review_new_support_complexity_fb9f5884b.md`, `.json`, `.py`),
+  26 in `3d87c3d6b` (`review_new_borel_flows_fb9f5884b.md`, `.json`, `.py`) and
+  27 in `556836e9b` (`review_two_derivations_78528873b.md`, `.json`, `.py`). The
+  file names of the reviews of 25 and 26 carry `fb9f5884b`, the snapshot they
+  read. They authenticated the members, ran no delivered program and found no
+  correction; their deductions (24's co-c.e.-complete Euler conjugacy for
+  decidable Γ, Remark 255.4; two effective interface barriers for 25, Section
+  270; co-c.e.-complete invariant equality for pairs over Z, Remark 300.4) are
+  printed with credit and re-checked by the write. That directory is cited, not
+  edited.
+- **Parts XVIII–XXI and the formal projects.** The Lean items under "Printed by
+  citation" are the only formal statements involved; nothing of Parts
+  XVIII–XXI is formalized, `docs/FORMALIZATION.md` maps none of their labels,
+  and placement beside these projects confers no formal status.
+- [`surcomplex-field-automorphisms`](../../surcomplex/surcomplex-field-automorphisms/)
+  and [`omnific-preserving-automorphisms`](../../surreal/omnific-preserving-automorphisms/):
+  saut's flow `T_s` (`saut:thm:shiftflow`) is the flow of tE in 24's Theorem
+  248.3 and the p = 1 flow of 27's Theorem 294.4; Part XX extends opa's
+  uniform-gain correspondence to window-local nilpotence. Reciprocal notes are
+  proposed for both reports, not applied.
+- [`hahn-evaluation-at-omega`](../../surreal/hahn-evaluation-at-omega/): its
+  `thm:exact` concerns the predicate of 25's Proposition 267.1.
+- `Algebra/BakerCampbellHausdorff`: 26 read `Lean/BCH/Formal/Trunc.lean` (143
+  lines, unchanged at the placement) as an interface; 27 read the project's
+  README. See "Printed by citation".
+
 ## Notation
 
-Section 1.3 has the full table, in seven blocks. Parts I–II: 04's `G(D)`,
+Section 1.3 has the full table, in eight blocks. Parts I–II: 04's `G(D)`,
 `M(D)`, `D_ω`, `M_ω`, `⊕_lex` are 05's `G_D`, `M_D`, `D_B`, `M_B`, `×→` (the
 same objects); 04's Baire homeomorphism `H` (charts `H_≥`, `H_>`) and integer
 code `h` are `Ψ`, `Ψ_≥`, `Ψ_>`, `ζ`; 03's ring `𝒜`, cone `𝒜_{≥0}`, rational
@@ -1576,6 +1921,26 @@ reading**: supports finite *above* each bound) and Part XV's `ℒ^Γ` has
 coefficients in `R_alg`; `ℒ^Q_R` is Part V's `ℒ_R`. 23's slices `F_S` are
 `Sl_S` (Part XV's `F_S` are subfields), its subgroups `H_N` are `W_N`, its
 `\restr` is `\rstr`. No normalization changed.
+Parts XVIII–XXI (eighth block): 24's `L_Γ` and 26's `𝓛_Γ` and 27's `K_Γ`
+are printed `ℒ^Γ_R`, as in Part XVII (**tempting false readings**: Part II's
+`K_Γ` is the full Hahn field, Part XVII's `K_Γ` the surreal image, Part XV's
+`𝓛^Γ` a surreal image); 24's set `P_∞(Γ)` of infinitely divisible primes is
+`ϖ_∞(Γ)`, because Part XIV's `P_∞ = P_{Z[1/p]}` is a semiring; its bookkeeping
+`ℓ` (Eℓ = 1) is `𝔩`, because Part XVII's `ℓ_i` are coordinate maps; its `F_S`
+is `Sl_S`. 25's `𝓗_L` is `V(L)` (Part II's `V_Γ` for groups; not the coded
+group `V_L` of Parts IX and XIII), its code sets `𝒞^N_Γ`, `𝒞^R_Γ` are
+`Cert^N_Γ`, `Cert^R_Γ`, its unit arrays `E_k` are `𝐞_k`, its windows `E_k` are
+`Ω_k`, and its `E`, `E_i`, `A`, `B`, `𝒫_n`, `𝓘` are `K`, `K_i`, `S`, `C`, `C'`,
+`𝒬_n`, `𝒥`. 26's filtration and windows `𝓛_{Γ,≥a}`, `V_{a,b}` are
+`ℒ^Γ_{R,≥a}`, `Win_{a,b}`, its `d(γ)`, gain constant δ and gaps `ε_n` are
+`δ(γ)`, ε, `κ_n`, its alternating `E`, `F`, `H = [E,F]`, `P_s`, `Q_s` are
+`D_e`, `D_o`, `D_eo`, `Φ^e_s`, `Φ^o_s`, its parameters `𝒫`, `𝓘` and θ are
+`𝔓_B`, `𝔍_B`, ϑ. 27's three `H` are `𝖧_h` (canonical scalar), the sl₂ element
+`X_0` and `log U_Γ`; its `𝓗_Γ`, `𝒫_Γ`, `e`, `f` are `Can_Γ`, `NC_Γ`, `X_+`,
+`X_−`. **24 and 27 conjugate in opposite directions**: 24's `S_h` carries
+`D_a` to `D_b` when `S_h^{−1}D_aS_h = D_b` (`S_hS_k = S_{k∘h}`), 27's
+automorphisms act by `g·D = gDg^{−1}` (Remark 289.2 translates). No
+normalization changed.
 
 ## Delivered files that use delivery names
 
@@ -1692,6 +2057,32 @@ coefficients in `R_alg`; `ℒ^Q_R` is Part V's `ℒ_R`. 23's slices `F_S` are
   and delivery README redirect it to `verification_results.json`.
   `23-borel-summability-SOURCE_AND_PROOF_AUDIT.md` names the delivered files,
   calls the pin a tree identifier and cites unversioned `tree/main` URLs.
+- `code/24-borel-conjugacy-verify_jets.py`'s docstring names
+  `borel_conjugacy.tex`; without `--output` it writes
+  `verification_report.json` in the working directory.
+- `code/25-support-complexity-Makefile` names `article.tex`, `checks.py` and
+  `python3` (it would build 25's manuscript, which is not shipped, in place);
+  25's Appendix A.4 (Appendix AN here) names `article.tex`, `checks.py` and
+  `make`; `25-support-complexity-sources.md` calls Part II the "Prior Library
+  artifact `glazer_proveit_article.pdf`" and says it "is not bundled in this
+  package" (it is Part II). `code/25-support-complexity-checks.py` checks with
+  bare `assert` statements: under `python -O` it prints the same record
+  without checking anything.
+- `code/26-borel-flows-build.sh` changes to its own directory, runs
+  `python3 verify.py --json verification_results.json` there (overwriting the
+  record beside itself) and three `pdflatex` passes on `borel_flows.tex`,
+  which is not shipped, then copies `build/borel_flows.pdf`; it cannot run
+  here. `26-borel-flows-SOURCES.md` names `borel_summability.pdf` (source 23's
+  delivery PDF) and the delivery names; `26-borel-flows-CLAIM_LEDGER.md` cites
+  26's own theorem numbers.
+- `code/27-two-derivations-verify.py` writes `verification_report.json` and
+  `verification_report.txt` beside itself unless `--output-dir` is given (its
+  docstring: `python verify.py [--output-dir DIRECTORY]`);
+  `code/27-two-derivations-build.sh` builds `two_derivations.tex`, which is not
+  shipped, into `.build/` and copies `two_derivations.pdf`; it cannot run
+  here. `27-two-derivations-SOURCE_AUDIT.md` uses 27's section numbers and
+  names `borel_summability.pdf` and `borel_conjugacy.tex`/`.pdf` (sources 23
+  and 24); the records name no file.
 - The source texts merged into `article.tex` give their delivery names in
   their reproduction sections; notes after each give the shipped names.
 
@@ -1706,22 +2097,24 @@ latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 pdfLaTeX with `newpxtext`/`newpxmath`, `tcolorbox`, `cleveref`, `aliascnt`,
 `tikz` (07's figure). The build has no errors, no LaTeX, package or hyperref
 warnings, no overfull or underfull boxes, no undefined or multiply defined
-references and no duplicate destinations; 603 pages. Commit only
+references and no duplicate destinations; 743 pages. Commit only
 `article.pdf`, not the auxiliary files.
 
 ## Rerunning the finite checks
 
-All sixteen programs of Parts I–XVII need only Python 3.10+ and the standard
-library. Run them **on a copy** with the delivery names restored, never in this
-directory (05's, 12's, 13's, 16's, 17's, 19's, 20's and 22's runners write beside
-themselves, 04's, 08's, 09's and 10's into the working directory, and the
-build scripts and Makefiles of 05, 08, 09, 10, 12, 13, 14, 15, 16, 18, 19, 20,
-21 and 22 would build a delivery-named source, some of them also rerunning
-checks, in place):
+The twenty programs of Parts I–XXI need Python 3.10+ and, except 27's (SymPy
+1.14.0, its pinned dependency), only the standard library. Run them **on a
+copy** with the delivery names restored, never in this directory (05's, 12's,
+13's, 16's, 17's, 19's, 20's, 22's and 27's runners write beside themselves,
+04's, 08's, 09's, 10's and 24's into the working directory, and the build
+scripts and Makefiles of 05, 08, 09, 10, 12, 13, 14, 15, 16, 18, 19, 20, 21,
+22, 25, 26 and 27 would build a delivery-named source, some of them also
+rerunning checks, in place; 25's, 26's and 27's need their unshipped
+manuscripts):
 
 ```
 D=/path/to/this/report; S=/path/to/scratch     # a fresh directory
-mkdir -p $S/03 $S/04 $S/05 $S/08 $S/09 $S/10 $S/12 $S/13 $S/14 $S/16 $S/17 $S/19/checks $S/20 $S/21/code $S/22 $S/23
+mkdir -p $S/03 $S/04 $S/05 $S/08 $S/09 $S/10 $S/12 $S/13 $S/14 $S/16 $S/17 $S/19/checks $S/20 $S/21/code $S/22 $S/23 $S/24 $S/25 $S/26 $S/27
 cp $D/code/05-omnific-presburger-polish_presburger.py $S/05/polish_presburger.py
 cp $D/code/05-omnific-presburger-verify.py            $S/05/verify.py
 cp $D/code/04-polish-presburger-verification.py       $S/04/verification.py
@@ -1739,6 +2132,11 @@ cp $D/code/20-exponent-threshold-verify.py            $S/20/verify.py
 cp $D/code/21-levi-civita-rank-code-check_identities.py $S/21/code/check_identities.py
 cp $D/code/22-hilbert-orders-verify.py               $S/22/verify.py
 cp $D/code/23-borel-summability-verification.py      $S/23/verification.py
+cp $D/code/24-borel-conjugacy-verify_jets.py         $S/24/verify_jets.py
+cp $D/code/25-support-complexity-checks.py           $S/25/checks.py
+cp $D/code/26-borel-flows-verify.py                  $S/26/verify.py
+cp $D/code/27-two-derivations-verify.py              $S/27/verify.py
+cp $D/data/27-two-derivations-requirements.txt       $S/27/requirements.txt
 cd $S
 python 05/verify.py                                   # writes 05/verification_results.json
 python 04/verification.py --output 04/verification_results.json
@@ -1756,6 +2154,10 @@ python 20/verify.py                                   # writes 20/verification_r
 python 21/code/check_identities.py > 21/checks.json
 python 22/verify.py --output 22/verification_results.json
 python 23/verification.py > 23/verification_results.json
+python 24/verify_jets.py --degree 24 --seed 20261004 --random-cases 48 --output 24/verification_report.json
+python 25/checks.py > 25/checks.txt                    # never with -O: its checks are bare asserts
+python 26/verify.py --json 26/verification_results.json
+uv run --no-project --python 3.13 --with sympy==1.14.0 python 27/verify.py --output-dir 27/out
 ```
 
 Tested with Python 3.14.4 on Windows: 05 reports `"status": "PASS"` and
@@ -1776,8 +2178,14 @@ and 2,931 checks in 13 families (7–25 s, 3–4 s and 56–77 s in the intake's
 and the write's runs). For batch 93: 22 `"status": "PASS"` and 136,562
 assertions in 7 families (seed 231113699), also under `python -O`, in about
 five seconds; 23 `"status": "PASS"` and 1,640 checks in 13 groups (seed
-20261004), in about two seconds. The records of 10, 12, 13, 14, 16, 17, 19, 21
-and 23 equal the shipped ones
+20261004), in about two seconds. For batch 96: 24 `"status": "PASS"` and 143
+checks in 6 families, in about six seconds; 25 its record in under a second
+(also under `python -O`, but there with every check removed); 26 5,372 checks
+(1,656, 1,200, 1,760, 756) pass in about a second; 27 (Python 3.13.5 with SymPy
+1.14.0 via `uv`) PASS, 669 assertions (104 scalar and pair, 37 Lie, 15 affine
+and BCH, 513 spectrum), in about ten seconds; 26's and 27's checks raise
+explicitly. The records of 10, 12, 13, 14, 16, 17, 19, 21, 23, 24, 25, 26 and
+27 (both files) equal the shipped ones
 byte for byte after
 removing the carriage returns that Windows text mode adds, and 20's and 22's
 also except for the interpreter version (`3.14.4` for the recorded `3.13.5`); the batch-86
@@ -1802,7 +2210,15 @@ closedness. 22's checks test finite lexicographic cones, pivot matrices,
 triangular automorphisms, division with remainder, fixed-support Hahn addition
 and flag-boundary perturbations; 23's finite Leibniz, commutator, truncation,
 primitive and flow identities. Neither tests a Baire-category argument,
-transfinite termination, infinite sums or the matrix theorem. 22's and 23's
+transfinite termination, infinite sums or the matrix theorem. 24's checks
+test finite jets of normalizers, residues and flows; 25's finite cut, height
+and certificate computations; 26's finite orbit spans, window nilpotence,
+shears and brackets; 27's scalar, pair, Lie-bracket, affine and spectrum
+identities. None tests Borelness, nonsmoothness, unbounded supports or an
+integrability locus. 24's–27's own PDFs can be rebuilt from their arrival
+commits (`git show 62846e17a:docs/incoming/Borel_Conjugacy_Divisibility_Threshold.zip`,
+and likewise `7be14aa84`, `fb9f5884b`, `78528873b` with the archive names of
+the source table), re-extracted on a scratch directory. 22's and 23's
 own PDFs can be rebuilt from
 `git show 2faa3b37a:docs/incoming/Ordinal_Rigidity_Borel_Hilbert_Orders.zip`
 and `…/Borel_Summability_and_Derivations.zip`, re-extracted on a scratch
@@ -1868,6 +2284,25 @@ and `s23:`; the abstract of Küçük–Soyertem–Küçük (2012) was read on
 4 October 2026 for Question 222.10 (the publisher's page refused the request,
 and no full text was found); the other references of 22 and 23 were not
 re-checked.
+Parts XVIII–XXI are 24, 25, 26 and 27 whole, in manuscript order, with
+notes: their re-proofs of Parts II, V, XV and XVII keep the sources' proofs and
+are flagged in notes; results shared among them are printed in the earlier
+part and quoted in the later (27's Proposition 9.3 as the numbered note Remark
+294.3); their title pages, abstracts, tables of contents and reading guides
+are not printed (25's result box is a box, 27's "Main distinction" box the
+opening paragraph of its Section 286); the boxed display of 24's Section 240
+and three of its tables, two hashes of 26's Appendix B and one table of 27's
+Appendix AQ were reset for the report's margins (layout only); 26's broken
+reference was restored; Sections 255, 270, 285 and 300 and Questions 268.12
+and 283.10 were written for the report; four questions of Part II were
+labelled. Their bibliographies share the entries for Glazer, Kechris,
+Shamseddine–Berz, Kuhlmann–Serra, Rosendal–Suarez, Gonshor and the surreal
+README; Mardešić–Resman–Rolin–Županović, cited by 24 (journal title) and 27
+(arXiv title), is one entry; the rest carry `s24:`–`s27:`. Example 6.3 of
+Mardešić et al. was read in arXiv:1505.05929v2 on 4 October 2026 and its DOI
+metadata checked; the other references of 24–27 were not re-checked.
+Subsections of Parts XVIII–XXI get a wider number box in the table of contents
+(numbers such as 253.10 and AN.1).
 Citation details checked on 3 October 2026: Glazer's arXiv record;
 Tserunyan's notes (dated November 26, 2025); Paran–Vo, Israel J. Math. 273
 (2026), no. 2, 979–1000 (online 11 December 2025); Enayat–Hamkins–Wcisło,
