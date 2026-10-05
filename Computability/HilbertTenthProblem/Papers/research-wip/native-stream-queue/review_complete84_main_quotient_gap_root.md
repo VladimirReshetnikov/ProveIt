@@ -1,0 +1,15 @@
+# Root review of the main-quotient gap theorem
+
+**PASS within the stated native and donor scope.** I read the full new proof and the full inherited input-quotient dichotomy. The new strict interval and its chart consequences follow by exact Pell recurrences. No source-array or helper execution is involved.
+
+The frozen author note `complete84_main_quotient_gap_aristotle.md` has SHA256 `73e1dbef9b5767405d11d8f992f3927b7bf8c5f992206c9590bc22c6516201db`; its metadata JSON has SHA256 `5fc958e38b143dabdf39ebc2f7845c9c2b1c6e1bce307160dcca6e36605d0b68`. The full inherited `complete83_input_quotient_dichotomy.md` is SHA256 `46d6457d10d1847cd4241aa1ed6705bf520216fc32cf97891c1f439f6c2c2505`. The actual84 source and prior signed-w theorem are the unchanged pinned artifacts in the author receipt. Root read those definitions and the signed-w proof in the preceding research turn.
+
+For b1=psi_A(R−1) and b2=psi_A(R−2), the exact expression E_R=(4A−1)b1−2b2 gives E_R−Hb1=4b1−2b2. In the canonical branch the odd indices satisfy u<=R−2, hence E_u<2b2. Consequently H[(gamma−rho)−b1]>4(b1−b2)−X+W. The strict recurrence bound b1>(2A−1)b2, together with b1>=2A and A>X, makes this positive. The upper comparison is independently 2Hb1−(E_R−X)=(4A−9)b1+2b2+X>0. Thus b1<gamma−rho<gamma<2b1, with no asymptotic estimate.
+
+The addition identity psi_A(u+1)=A psi_A(u)+chi_A(u) gives mu<psi_A(R−1); the norm gives mu>kappa, and the positive modulus quotient gives kappa>delta. The interval also gives gamma−rho>rho, while mu>=A>X>w. Every stated donor is therefore strictly below the positive gap in the canonical branch. In the noncanonical branch the inherited theorem makes the gap negative and all five donors positive. These two cases exhaust full positive independent-gamma83 zeros, without deciding which inputs occur in the noncanonical case.
+
+For the coupled chart w=gamma−rho, the positive independent gamma suffices for the earlier signed-w argument: the same main norm and discriminant exclude nonpositive restored w before native decoding. The chart cannot evade the gap comparison via a negative restored coordinate. This conclusion is specific to the displayed substitution and does not exclude general functions or several changed witnesses.
+
+The weighted split sigma_new=sigma_old−rho is positive at every parent zero by the strict interval. The reverse map sigma_old=rho+sigma_new is positive before using any equation. The literal substitution is therefore a full positive-zero bijection. Replacing one addition by two costs exactly one extra addition, giving85=47M+38A; the invertible affine coordinate change preserves the inherited degree187. No emitted85 array or lower bound is claimed.
+
+Numbered Review remark1 retains the failed padding-only and donor-gap shortcuts. The padding obstruction is correctly credited to the existing same-input family and is not presented as new. No predecessor theorem is removed or superseded by an unsupported soundness claim. The universal84 frontier and the open independent-gamma83 language are unchanged.
