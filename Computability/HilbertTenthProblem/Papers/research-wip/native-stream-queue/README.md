@@ -158,6 +158,18 @@ or46 witnesses/SOS224/degree52. Native AND remains in the loader, so a
 cheaper loading/accepting-history compiler is still needed for a universal
 improvement. The universal84/187 and85/155 points remain unchanged.
 
+The [multiway Hadamard packing certificate](hadamard_next_arithmetic.md)
+isolates a k-fold coefficientwise product in one central digit band using
+k-1 products after loading. A fully paid fixed-width, fixed-horizon cyclic
+Boolean trajectory graph has `n(T+1)+5T` positive witnesses, exact degree6,
+and `(13n+18)T+11n-1` operations with fixed numerals; numeral construction
+is separately charged. The [independent review](review_hadamard_next_arithmetic.md)
+checks the general proof and all twelve saved arrays with fresh polynomial
+calculations. A direct guarded certificate is cheaper by `18T+2n-2`.
+Thus the identity gives no gate improvement; synchronized variable-width
+loaders and an unbounded-history interface remain unresolved. The current
+universal operation point remains84/187/18.
+
 The [native gamma83 restrictions](gamma83_native_next.md) prove that the exact
 fixed-index modulus polynomial `H_r(T^k)` is irreducible over Q for every
 `r>=0,k>=1`, by reciprocal Eisenstein at2. This does not imply primality of
@@ -5764,6 +5776,7 @@ New research and the completed75-operation construction:
 
 | Artifact | Established result | Remaining boundary |
 |---|---|---|
+| [Multiway Hadamard packing](hadamard_next_arithmetic.md), [review](review_hadamard_next_arithmetic.md), [root binding](hadamard_next_arithmetic.json), [saved arrays](hadamard_next_arithmetic_checks.json) | All-k carry-free central band; fully paid finite cyclic trajectory, exact degree6 and `(13n+18)T+11n-1` operations with given numerals. | Direct guarded evaluation is cheaper by `18T+2n-2`; variable-width loaders and unbounded-history compiler remain unpaid. |
 | [Native gamma83 restrictions](gamma83_native_next.md), [review](review_gamma83_native_next.md), [binding](gamma83_native_next.json) | Reciprocal-Eisenstein irreducibility of `H_r(T^k)`; genuine filtered `H=3u^f` forces `gcd(f,30)=1`, order30 modulo31 and `u=1+4q^3 mod8q^3`. | Formal irreducibility does not control specialized factorization; prime-power occurrence and the independent-gamma83 alias problem remain open. |
 | [Affine norm-pair rigidity](complete84_affine_norm_pair_rigidity.md), [review](review_complete84_affine_norm_pair_rigidity.md) | Exact affine product symmetries separate the two norm pairs; positive half-difference also fails the unit condition | Generic-field identity class only, not a gate lower bound or exclusion of nonlinear/positive-zero charts |
 | [Cross-block monomial bound and mask tie](complete84_cross_block_next.md), [review](review_complete84_cross_block_next.md) | Six targets need8M in the stated multiplication-only model; full outer refactor remains84=47M+37A with identical polynomial | No additions/cancellation/outside donors or changed charts; no unrestricted circuit optimum or saving |

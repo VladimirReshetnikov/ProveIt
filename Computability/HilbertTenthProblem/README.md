@@ -180,6 +180,18 @@ or46 witnesses/SOS224/degree52. Native AND remains in the loader, so a
 cheaper loading/accepting-history compiler is still needed for a universal
 improvement. The universal84/187 and85/155 points remain unchanged.
 
+The [multiway Hadamard packing certificate](Papers/research-wip/native-stream-queue/hadamard_next_arithmetic.md)
+isolates a k-fold coefficientwise product in one central digit band using
+k-1 products after loading. A fully paid fixed-width, fixed-horizon cyclic
+Boolean trajectory graph has `n(T+1)+5T` positive witnesses, exact degree6,
+and `(13n+18)T+11n-1` operations with fixed numerals; numeral construction
+is separately charged. The [independent review](Papers/research-wip/native-stream-queue/review_hadamard_next_arithmetic.md)
+checks the general proof and all twelve saved arrays with fresh polynomial
+calculations. A direct guarded certificate is cheaper by `18T+2n-2`.
+Thus the identity gives no gate improvement; synchronized variable-width
+loaders and an unbounded-history interface remain unresolved. The current
+universal operation point remains84/187/18.
+
 The [native gamma83 restrictions](Papers/research-wip/native-stream-queue/gamma83_native_next.md) prove that the exact
 fixed-index modulus polynomial `H_r(T^k)` is irreducible over Q for every
 `r>=0,k>=1`, by reciprocal Eisenstein at2. This does not imply primality of
