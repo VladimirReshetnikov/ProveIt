@@ -158,6 +158,19 @@ or46 witnesses/SOS224/degree52. Native AND remains in the loader, so a
 cheaper loading/accepting-history compiler is still needed for a universal
 improvement. The universal84/187 and85/155 points remain unchanged.
 
+The [native gamma83 restrictions](gamma83_native_next.md) prove that the exact
+fixed-index modulus polynomial `H_r(T^k)` is irreducible over Q for every
+`r>=0,k>=1`, by reciprocal Eisenstein at2. This does not imply primality of
+its numerical values or exclude a constant cofactor. On genuine histories
+from the existing finite-prime filter, a factorization `H=3u^f` forces
+`gcd(f,30)=1`, `ord_31(u)=30` and `u=1+4q^3 mod8q^3`.
+The [independent proof review](review_gamma83_native_next.md) checks the
+native hypotheses and exact two-adic valuation. The corrected residues
+are `H=4` and `H/3=22 mod31`; the preliminary erroneous residues are retained
+with their correction. No prime complement, numerical order certificate or
+rejected-input alias is produced. **Independent-gamma83 remains unresolved**,
+and the proved universal operation point remains84/187/18.
+
 The [affine norm-pair rigidity theorem](complete84_affine_norm_pair_rigidity.md)
 and [root proof challenge](review_complete84_affine_norm_pair_rigidity.md)
 classify every invertible affine change preserving the product of the main
@@ -5751,6 +5764,7 @@ New research and the completed75-operation construction:
 
 | Artifact | Established result | Remaining boundary |
 |---|---|---|
+| [Native gamma83 restrictions](gamma83_native_next.md), [review](review_gamma83_native_next.md), [binding](gamma83_native_next.json) | Reciprocal-Eisenstein irreducibility of `H_r(T^k)`; genuine filtered `H=3u^f` forces `gcd(f,30)=1`, order30 modulo31 and `u=1+4q^3 mod8q^3`. | Formal irreducibility does not control specialized factorization; prime-power occurrence and the independent-gamma83 alias problem remain open. |
 | [Affine norm-pair rigidity](complete84_affine_norm_pair_rigidity.md), [review](review_complete84_affine_norm_pair_rigidity.md) | Exact affine product symmetries separate the two norm pairs; positive half-difference also fails the unit condition | Generic-field identity class only, not a gate lower bound or exclusion of nonlinear/positive-zero charts |
 | [Cross-block monomial bound and mask tie](complete84_cross_block_next.md), [review](review_complete84_cross_block_next.md) | Six targets need8M in the stated multiplication-only model; full outer refactor remains84=47M+37A with identical polynomial | No additions/cancellation/outside donors or changed charts; no unrestricted circuit optimum or saving |
 | [Atom-action Part III publication](review_atom_write_03683e579.md) | Selected kernel/effectivity/Replacement/forcing challenge;96 source-label routes; provenance claim corrected at6d06f8952 | Not a full merged-body/PDF audit; pure parameters and finite presentation effectivity do not lower universal arithmetic cost |

@@ -173,6 +173,20 @@
 > improvement. The universal84/187 and85/155 points remain unchanged.
 >
 >
+> The [native gamma83 restrictions](gamma83_native_next.md) prove that the exact
+> fixed-index modulus polynomial `H_r(T^k)` is irreducible over Q for every
+> `r>=0,k>=1`, by reciprocal Eisenstein at2. This does not imply primality of
+> its numerical values or exclude a constant cofactor. On genuine histories
+> from the existing finite-prime filter, a factorization `H=3u^f` forces
+> `gcd(f,30)=1`, `ord_31(u)=30` and `u=1+4q^3 mod8q^3`.
+> The [independent proof review](review_gamma83_native_next.md) checks the
+> native hypotheses and exact two-adic valuation. The corrected residues
+> are `H=4` and `H/3=22 mod31`; the preliminary erroneous residues are retained
+> with their correction. No prime complement, numerical order certificate or
+> rejected-input alias is produced. **Independent-gamma83 remains unresolved**,
+> and the proved universal operation point remains84/187/18.
+>
+>
 > The [affine norm-pair rigidity theorem](complete84_affine_norm_pair_rigidity.md)
 > and [root proof challenge](review_complete84_affine_norm_pair_rigidity.md)
 > classify every invertible affine change preserving the product of the main
