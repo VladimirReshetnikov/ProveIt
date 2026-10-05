@@ -1,7 +1,7 @@
 \section{An elementary relative carrier with the log square factor}
-\label{sec:elementary}
+\label{pdt:sec:elementary}
 At integer $q=N-m$ and $M=M(m)$,
-\begin{equation}\label{eq:log-square}
+\begin{equation}\label{pdt:eq:log-square}
  \log\frac{T(N,m)}{M^q/q!}
  =\sum_{j=0}^{q-1}\log(1+j/M)
  =\frac{q(q-1)}{2M}+O(q^3/M^2).
@@ -9,18 +9,18 @@ At integer $q=N-m$ and $M=M(m)$,
 When $m\sim2N/\log N$, the main correction is asymptotic to $(\log N)^2/4$, whereas $q^3/M^2=O((\log N)^4/N)=o(1)$. The naive Poissonized cell count therefore misses a factor that grows without bound. An $O(\log^2N)$ error in an exponent cannot prove a relative equivalent.
 
 There is nevertheless a simple implicit parametrization that retains the necessary factor. For $N>0$, let $u=u_N$ be the unique positive solution of
-\begin{equation}\label{eq:ueq}
+\begin{equation}\label{pdt:eq:ueq}
  u(u+2)e^u=2N,
 \end{equation}
 and put
-\begin{equation}\label{eq:P}
+\begin{equation}\label{pdt:eq:P}
  P(u)=u^2+4u+2.
 \end{equation}
-The left side of \eqref{eq:ueq} is strictly increasing from zero to infinity; also $u\sim\log N$.
+The left side of \eqref{pdt:eq:ueq} is strictly increasing from zero to infinity; also $u\sim\log N$.
 
-\begin{theorem}[Elementary count carrier]\label{thm:elementary}
+\begin{theorem}[Elementary count carrier]\label{pdt:thm:elementary}
 As $N\to\infty$,
-\begin{equation}\label{eq:bcarrier}
+\begin{equation}\label{pdt:eq:bcarrier}
  b_N=\sqrt{\frac2{P(u)}}
  \exp\!\left(\frac{Nu(u+1)}{u+2}+\frac u2+\frac{u^2}4\right)
  \left(1+O\!\left(\frac{(\log N)^4}{N}\right)\right).
@@ -28,18 +28,18 @@ As $N\to\infty$,
 The implicit $u$ is retained exactly in this formula.
 \end{theorem}
 \begin{proof}
-Set $x_0=2N/(u+2)=ue^u$ and $q_0=N-x_0=ux_0/2$. Equation \eqref{eq:ueq} gives
+Set $x_0=2N/(u+2)=ue^u$ and $q_0=N-x_0=ux_0/2$. Equation \eqref{pdt:eq:ueq} gives
 $\log(x_0^2/(2q_0))=u$, so $H_N'(x_0)=0$. Direct differentiation shows
-\begin{equation}\label{eq:element-curvature}
+\begin{equation}\label{pdt:eq:element-curvature}
  A_0=-H_N''(x_0)=\frac{u+4+2/u}{x_0},\qquad A_0q_0=P(u)/2.
 \end{equation}
-The differentiated estimates in Section~\ref{sec:localization} give
+The differentiated estimates in Section~\ref{pdt:sec:localization} give
 \[
  f_N'(x_0)=O(u^3/N),\qquad
  f_N''(x_0)=-A_0(1+O(u^2/N)).
 \]
 The saddle displacement is therefore $r-x_0=O(u)$, and Taylor's theorem with the uniform curvature bounds gives
-\begin{equation}\label{eq:transport-small}
+\begin{equation}\label{pdt:eq:transport-small}
  f_N(r)-f_N(x_0)=O(u^4/N),\qquad A/A_0=1+O(u^2/N).
 \end{equation}
 For the value, use the uniform gamma quotient and Stirling expansions
@@ -55,10 +55,10 @@ $q_0(q_0-1)/(2M)=u^2/4+O(u^3/N)$, so
  f_N(x_0)=q_0(u+1)+u/2+u^2/4
                 -\tfrac12\log(2\pi q_0)+O(u^4/N).
 \]
-Apply Theorem~\ref{thm:main} with $K=1$, use \eqref{eq:transport-small}, and combine the Gaussian prefactor using \eqref{eq:element-curvature}. Since $q_0(u+1)=Nu(u+1)/(u+2)$, this proves \eqref{eq:bcarrier}.
+Apply Theorem~\ref{pdt:thm:main} with $K=1$, use \eqref{pdt:eq:transport-small}, and combine the Gaussian prefactor using \eqref{pdt:eq:element-curvature}. Since $q_0(u+1)=Nu(u+1)/(u+2)$, this proves \eqref{pdt:eq:bcarrier}.
 \end{proof}
 In particular, the proof gives the coarse consequence
-\begin{equation}\label{eq:loggrowth}
+\begin{equation}\label{pdt:eq:loggrowth}
  \log b_N=N[\log N-2\log\log N+\log2-1+o(1)].
 \end{equation}
-As explained in Section~\ref{sec:models}, the leading scale is prior and finer logarithmic expressions are already recorded in OEIS. The relative statement \eqref{eq:bcarrier} is stronger than merely exponentiating a logarithmic-scale equivalence. Replacing $u$ by a fixed finite logarithmic expansion generally destroys its relative accuracy because the remaining error is multiplied by the large size in the exponent.
+As explained in Section~\ref{pdt:sec:models}, the leading scale is prior and finer logarithmic expressions are already recorded in OEIS. The relative statement \eqref{pdt:eq:bcarrier} is stronger than merely exponentiating a logarithmic-scale equivalence. Replacing $u$ by a fixed finite logarithmic expansion generally destroys its relative accuracy because the remaining error is multiplied by the large size in the exponent.

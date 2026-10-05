@@ -1,12 +1,114 @@
 \section{Limits and further questions}
-The exact formulas \eqref{eq:T}--\eqref{eq:transform}, the ascent-sequence/table bridge and the historical rigid subclass belong to the cited enumerative literature. The contribution developed here is the relative saddle analysis with its explicit error organization and consequences for this specific model. The result is self-contained modulo standard gamma asymptotics and Gaussian Poisson summation, whose needed uniform estimates have been explained.
+The exact formulas \eqref{pdt:eq:T}--\eqref{pdt:eq:transform}, the ascent-sequence/table bridge and the historical rigid subclass belong to the cited enumerative literature. The contribution developed here is the relative saddle analysis with its explicit error organization and consequences for this specific model. The result is self-contained modulo standard gamma asymptotics and Gaussian Poisson summation, whose needed uniform estimates have been explained.
 
 Several useful questions remain separate from the results proved here.
 \begin{enumerate}
 \item \textbf{Effective error constants.} Explicit uniform gamma bounds and validated saddle evaluation could turn the eventual inverse brackets into finite-size certificates. Our finite diagnostics do not accomplish this.
 \item \textbf{Growing expansion order.} The coefficient algorithms determine every fixed order. Their growth as the order increases, optimal truncation and any exponentially improved remainder require additional analysis.
 \item \textbf{Complex dimension marks.} Bounded real marks suffice for the dimension laws and moments established here. Uniform complex marks or a global analytic generating-function theorem are not asserted.
-\item \textbf{Further statistics.} The expectations in \eqref{eq:bad-diag}--\eqref{eq:bad-coll} suggest studying the joint collision structure. A full distribution theorem, particularly one strong enough for relative rare probabilities, is not a consequence of those expectations.
+\item \textbf{Further statistics.} The expectations in \eqref{pdt:eq:bad-diag}--\eqref{pdt:eq:bad-coll} suggest studying the joint collision structure. A full distribution theorem, particularly one strong enough for relative rare probabilities, is not a consequence of those expectations.
 \item \textbf{Other difference parameters.} The $d=0$ and $d=1$ exact models admit the present analysis. General fixed positive $d$, and the stabilized $d\to\infty$ family, must be treated from their own enumeration and cannot be inferred by changing the signs in our formulas.
 \end{enumerate}
 The asymptotic conclusions do not establish worldwide priority, absence of equivalent results in uninspected sources, external peer review or machine-checked proofs. The accompanying source and computation notes delimit what was actually checked. In particular, source text access is not represented as inspection of unavailable page images, and finite numerical agreement is not represented as a theorem about an infinite range.
+
+\subsection{Further questions and research}\label{pdt:sec:further}
+\begin{writenote}[Added 5 October 2026, batch~102]
+Following Vladimir Reshetnikov's standing rule of 4~October 2026, every
+claim of the source that is not proved in full is stated here as an open
+question, with its source, the argument offered and what is missing.
+Questions~\ref{pdt:q:effective}--\ref{pdt:q:difference} are the five items
+above; Questions~\ref{pdt:q:moments}--\ref{pdt:q:moderate} are steps that
+the text asserts or condenses; Question~\ref{pdt:q:literature} concerns the
+external inputs. The intake found no false claim in the source; the one
+point of wording, in \eqref{pdt:eq:inverse-separation}, is explained in the
+note after Theorem~\ref{pdt:thm:seeds}.
+\end{writenote}
+\begin{enumerate}
+\item\label{pdt:q:effective} \textbf{Effective constants and certified
+ thresholds} (source, item~1 above). Every $O$-constant and threshold in
+ Theorems~\ref{pdt:thm:main}--\ref{pdt:thm:seeds} is an existence constant
+ (Remark~4.2). Explicit uniform gamma and polygamma bounds in
+ Lemma~\ref{pdt:lem:global}, \eqref{pdt:eq:derivativecompare} and
+ Lemma~\ref{pdt:lem:poisson}, with validated evaluation of the saddle,
+ would turn the brackets \eqref{pdt:eq:inversebracket},
+ \eqref{pdt:eq:bseedbracket} and \eqref{pdt:eq:cseedbracket} into finite
+ certificates. The finite evidence shows why this matters: $C_1$ changes
+ sign only near $N\approx1.59\times10^4$ (Remark~\ref{pdt:rem:C1sign}), the
+ displayed limits are approached slowly (Remark~\ref{pdt:rem:slowbinary}),
+ and the elementary seed rounds the wrong way at $X=b_{1000}$
+ (Section~\ref{pdt:sec:inverse}). An interval computation of
+ \eqref{pdt:eq:C1} would also make the sign change of
+ Remark~\ref{pdt:rem:C1sign} a theorem.
+\item\label{pdt:q:order} \textbf{Growing expansion order} (source,
+ item~2). How do $C_\ell$ and $Q_k$ grow with the order; is there an
+ optimal truncation, and an exponentially improved remainder? Missing:
+ any estimate uniform in the order. The source's data at $N=1000$
+ (Section~\ref{pdt:sec:checks}): the residuals after $K=1,2,3$ terms are
+ about $-1.13\times10^{-5}$, $6.07\times10^{-10}$ and
+ $-5.56\times10^{-13}$, gains of factors about $1.9\times10^4$ and
+ $1.1\times10^3$.
+\item\label{pdt:q:complex} \textbf{Complex dimension marks} (source,
+ item~3). Theorem~\ref{pdt:thm:main} is uniform for bounded real $t$
+ only. Uniform complex marks, or a global analytic statement about
+ $B(z,h)$, would give, for example, large-deviation rates and analytic
+ continuation in the mark; nothing of this is asserted.
+\item\label{pdt:q:collision} \textbf{The joint collision structure}
+ (source, item~4, and Section~8.2). The expectations
+ \eqref{pdt:eq:bad-diag}--\eqref{pdt:eq:bad-coll}, asymptotically $u$ and
+ $u^2/2$, ``explain'' the exponent of $p_N\sim e^{-u^2/2-u}$, as if
+ $(D_{\rm bad},C_{\rm bad})$ were nearly independent Poisson variables.
+ The source states this as an interpretation only. Missing: a joint
+ distribution theorem for the two bad counts that is strong enough to give
+ the relative probability of the rare event $\{D_{\rm bad}=C_{\rm bad}=0\}$
+ (a total-variation statement is not).
+\item\label{pdt:q:difference} \textbf{Other difference parameters}
+ (source, item~5). Only $d=0$ and $d=1$ of~\cite{ccs} are treated. Fixed
+ $d\ge2$ and the stabilized $d\to\infty$ family need their own exact
+ enumeration and analysis; changing signs in the present formulas proves
+ nothing.
+\item\label{pdt:q:moments} \textbf{Higher moments and local corrections}
+ (source, the paragraph after Proposition~\ref{pdt:prop:moments}). The
+ source asserts that ``all higher fixed moments and local corrections are
+ obtainable from the weighted-contraction rule and finite series
+ division''. Sketch: repeat Section~\ref{pdt:sec:transfer} with a factor
+ $z^k$, which the polynomial tail bound after \eqref{pdt:eq:relative-tail}
+ makes uniformly integrable. Missing: the general statement with its
+ remainder (only $k=1,2$ are proved, in
+ Proposition~\ref{pdt:prop:moments}) and the local expansion
+ \eqref{pdt:eq:localexpansion} beyond its first correction.
+\item\label{pdt:q:smooth} \textbf{The smooth elementary carrier}
+ (source, proof of Theorem~\ref{pdt:thm:seeds}). The real-size estimate
+ \eqref{pdt:eq:smooth-elementary},
+ $F_K(y)=F_0(y)+g_+(u(y))+O_K(u^4/y)$, is asserted as ``the smooth
+ derivation'' of Theorem~\ref{pdt:thm:elementary}, and the bound
+ $C_\ell'(y)=O_\ell(y^{-\ell-1})$ in \eqref{pdt:eq:coeffderivatives} is
+ argued in one sentence. Sketch: the proof of
+ Theorem~\ref{pdt:thm:elementary} uses only the exact phase at real
+ arguments, and each contraction is a polynomial in the $\lambda_j$, whose
+ $y$-derivatives \eqref{pdt:eq:coeffderivatives} follow from
+ \eqref{pdt:eq:mixedbounds} and \eqref{pdt:eq:rderivative}. Missing: the
+ written argument that every remainder in the proof of
+ Theorem~\ref{pdt:thm:elementary} is uniform for real $y$, and the
+ chain-rule bookkeeping for the contractions.
+\item\label{pdt:q:binaryremainder} \textbf{The remainder in
+ Theorem~\ref{pdt:thm:binary-all}} (source, its proof). The statement
+ that ``higher remainders are bounded by the same order after integration
+ against a slightly weakened Gaussian'' is a sketch. Missing: the explicit
+ domination of the Taylor remainders of $f_N$ and $h_N$ on the window
+ $|z|\le N^\varepsilon$ that yields $L^{4K+4}N^{-K-1}$ without additional
+ logarithmic factors. The intake checked the window and tail argument and
+ believes the bound.
+\item\label{pdt:q:moderate} \textbf{Moderate deviations} (source, after
+ Proposition~\ref{pdt:prop:moments}): the relative Gaussian approximation
+ for $|z|=o(N^{1/6})$, argued in two sentences. \emph{Resolved at the
+ write:} Proposition~\ref{pdt:prop:moderate} proves it, with the error
+ $\exp(O(|z|^3N^{-1/2}+N^{-1}))$. Listed for the record.
+\item\label{pdt:q:literature} \textbf{External inputs and priority}
+ (source, Section~\ref{pdt:sec:models} and \nolinkurl{SOURCES.md}). The
+ source's search was bounded, and its page-level readings of
+ \cite{bek,khamis,bcdk,dm,ccs,kr,bcuf,cfz,hj} were not checked by ProveIt.
+ Open: whether the relative results here, in particular the answer to
+ A098568's question, appear in sources the search did not reach, and
+ whether Kote\v{s}ovec's finer logarithmic expressions~\cite{oeis} have a
+ published proof (the inspected records cite none).
+\end{enumerate}

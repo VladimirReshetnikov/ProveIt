@@ -1,7 +1,7 @@
 \section{The discrete expansion and its error}
-\label{sec:transfer}
+\label{pdt:sec:transfer}
 Write $z=\sqrt A(x-r)$ and $\varepsilon=N^{-1/2}$. On the window $|x-r|\le\sqrt N$, whose standardized width is $\asymp L$, Taylor's theorem through order $2K+1$ yields
-\begin{equation}\label{eq:taylor}
+\begin{equation}\label{pdt:eq:taylor}
  \Phi(x)-\Phi(r)=-\frac{z^2}2+
  \sum_{j=3}^{2K+1}\frac{\lambda_jz^j}{j!}+R_K(z),
  \qquad |R_K(z)|\le C_KN^{-K}|z|^{2K+2}.
@@ -12,31 +12,31 @@ Let $a_j=N^{(j-2)/2}\lambda_j$. The $a_j$ are uniformly bounded. Expand
 \[
  \exp\left(\sum_{j=3}^{2K+1}\varepsilon^{j-2}a_jz^j/j!\right)
 \]
-as a polynomial in $\varepsilon$ through degree $2K-1$. The coefficient of $\varepsilon^w$ is a finite sum of monomials with $\sum(j-2)k_j=w$; its parity in $z$ is the parity of $w$. Finite Taylor's theorem in $\varepsilon$, together with \eqref{eq:taylor}, bounds the omitted part after multiplication by $e^{-z^2/2}$ by
-\begin{equation}\label{eq:integrableremainder}
+as a polynomial in $\varepsilon$ through degree $2K-1$. The coefficient of $\varepsilon^w$ is a finite sum of monomials with $\sum(j-2)k_j=w$; its parity in $z$ is the parity of $w$. Finite Taylor's theorem in $\varepsilon$, together with \eqref{pdt:eq:taylor}, bounds the omitted part after multiplication by $e^{-z^2/2}$ by
+\begin{equation}\label{pdt:eq:integrableremainder}
  C_KN^{-K}(1+|z|)^{D_K}e^{-z^2/2}
 \end{equation}
-for some fixed $D_K$. The uniform $o(1)$ exponent correction permits a fixed multiplicative bound. The Gaussian-polynomial lattice sum of \eqref{eq:integrableremainder} is $O_K(N^{-K}/\sqrt A)$, uniformly in the fractional part of $r$.
+for some fixed $D_K$. The uniform $o(1)$ exponent correction permits a fixed multiplicative bound. The Gaussian-polynomial lattice sum of \eqref{pdt:eq:integrableremainder} is $O_K(N^{-K}/\sqrt A)$, uniformly in the fractional part of $r$.
 
-\begin{lemma}[Gaussian lattice transfer]\label{lem:poisson}
+\begin{lemma}[Gaussian lattice transfer]\label{pdt:lem:poisson}
 For each fixed polynomial $p$ and $h\to0^+$, uniformly in real $r$,
-\begin{equation}\label{eq:poisson}
+\begin{equation}\label{pdt:eq:poisson}
  h\sum_{m\in\Z}p(h(m-r))e^{-h^2(m-r)^2/2}
  =\int_{\R}p(z)e^{-z^2/2}\dd z+O_p(e^{-c/h^2}).
 \end{equation}
 \end{lemma}
 \begin{proof}
-The Fourier transform of a polynomial times $e^{-z^2/2}$ is another polynomial times a Gaussian. Poisson summation evaluates the left side as the zero-frequency integral plus terms at frequencies $2\pi k/h$, multiplied by unit-modulus factors depending on $r$. Their absolute sum is bounded by a polynomial in $h^{-1}$ times $e^{-2\pi^2/h^2}$. Absorbing that polynomial into a smaller exponential constant proves \eqref{eq:poisson}. This argument also proves uniformity in the lattice shift.
+The Fourier transform of a polynomial times $e^{-z^2/2}$ is another polynomial times a Gaussian. Poisson summation evaluates the left side as the zero-frequency integral plus terms at frequencies $2\pi k/h$, multiplied by unit-modulus factors depending on $r$. Their absolute sum is bounded by a polynomial in $h^{-1}$ times $e^{-2\pi^2/h^2}$. Absorbing that polynomial into a smaller exponential constant proves \eqref{pdt:eq:poisson}. This argument also proves uniformity in the lattice shift.
 \end{proof}
-Although the expansion coefficients depend on $N,t$, each fixed order contains only finitely many monomials with bounded coefficients, so the lemma applies uniformly term by term. In the present problem $h=\sqrt A$ and $h^{-2}\asymp N/L^2$. Thus the error in \eqref{eq:poisson} is smaller than every fixed power of $N^{-1}$. Extending the local polynomial sums to all integers costs $O(e^{-cL^2})$ relative to the main scale, by \eqref{eq:relative-tail} and Gaussian tails. The same is true of the discarded actual summands. These errors, too, are smaller than every fixed power of $N^{-1}$.
+Although the expansion coefficients depend on $N,t$, each fixed order contains only finitely many monomials with bounded coefficients, so the lemma applies uniformly term by term. In the present problem $h=\sqrt A$ and $h^{-2}\asymp N/L^2$. Thus the error in \eqref{pdt:eq:poisson} is smaller than every fixed power of $N^{-1}$. Extending the local polynomial sums to all integers costs $O(e^{-cL^2})$ relative to the main scale, by \eqref{pdt:eq:relative-tail} and Gaussian tails. The same is true of the discarded actual summands. These errors, too, are smaller than every fixed power of $N^{-1}$.
 
-Odd-weight terms now have zero integral and only an exponentially small lattice discrepancy. At weight $2\ell$, the normalized Gaussian integral of $z^{\sum jk_j}$ is $(\sum jk_j-1)!!$. This is exactly \eqref{eq:contraction}, and proves \eqref{eq:main} with its stated remainder.
+Odd-weight terms now have zero integral and only an exponentially small lattice discrepancy. At weight $2\ell$, the normalized Gaussian integral of $z^{\sum jk_j}$ is $(\sum jk_j-1)!!$. This is exactly \eqref{pdt:eq:contraction}, and proves \eqref{pdt:eq:main} with its stated remainder.
 
 The leading derivative limits are
-\begin{equation}\label{eq:lambda-leading}
+\begin{equation}\label{pdt:eq:lambda-leading}
  \lambda_j\sim 2^{1-j/2}(-1)^{j-1}(j-1)!N^{1-j/2}.
 \end{equation}
-Using $j=3,4$ in \eqref{eq:C1} gives $N C_1\to-3/8+5/12=1/24$; the corresponding substitution in \eqref{eq:C2} gives $N^2C_2\to1/1152$. This proves \eqref{eq:C-limits}. More generally, the same Gaussian-contraction rule provides every coefficient without fitting numerical data. One may recognize their leading constants as the Stirling-series coefficients for a gamma integral of shape $2N$, but this recognition is not needed in the proof or in the algorithm.
+Using $j=3,4$ in \eqref{pdt:eq:C1} gives $N C_1\to-3/8+5/12=1/24$; the corresponding substitution in \eqref{pdt:eq:C2} gives $N^2C_2\to1/1152$. This proves \eqref{pdt:eq:C-limits}. More generally, the same Gaussian-contraction rule provides every coefficient without fitting numerical data. One may recognize their leading constants as the Stirling-series coefficients for a gamma integral of shape $2N$, but this recognition is not needed in the proof or in the algorithm.
 
 \begin{remark}[What the error statement means]
 The constants in all $O_{K,T}$ terms are existence constants for fixed $K,T$. The proof does not provide usable numerical thresholds at which a prescribed finite error is guaranteed. It also does not justify differentiation of the asymptotic remainder in $t$ or $N$. Whenever derivatives are needed below, we estimate the exact phase and finite coefficient formulas directly.

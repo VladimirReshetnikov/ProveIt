@@ -1,23 +1,23 @@
 \section{The models and their exact enumeration}
-\label{sec:models}
+\label{pdt:sec:models}
 All logarithms are natural. A table of dimension $m$ is an $m$-by-$m$ upper-triangular matrix of nonnegative integers. Its size is the sum of its entries, rather than its dimension. We require every diagonal entry to be positive. The empty table has size and dimension zero and is counted once. Let $T(N,m)$ count tables of size $N$ and dimension $m$, and put
-\begin{equation}\label{eq:counts}
+\begin{equation}\label{pdt:eq:counts}
  b_0=1,\qquad b_N=\sum_{m=1}^N T(N,m)\quad(N\ge1).
 \end{equation}
 Write
-\begin{equation}\label{eq:Mq}
+\begin{equation}\label{pdt:eq:Mq}
  M(x)=\frac{x(x+1)}2,\qquad q=N-x.
 \end{equation}
 Subtracting one from every diagonal entry leaves a weak composition of $N-m$ into $M(m)$ cells. Hence the established enumeration is
-\begin{equation}\label{eq:T}
+\begin{equation}\label{pdt:eq:T}
  T(N,m)=\binom{M(m)+N-m-1}{N-m},\qquad 1\le m\le N.
 \end{equation}
 The binary subclass has all diagonal entries equal to one. Its remaining $N-m$ ones occupy distinct off-diagonal cells, so
-\begin{equation}\label{eq:binary-count}
+\begin{equation}\label{pdt:eq:binary-count}
  U(N,m)=\binom{m(m-1)/2}{N-m},\qquad
  c_0=1,\quad c_N=\sum_{m=1}^N U(N,m).
 \end{equation}
-An infeasible binomial coefficient in \eqref{eq:binary-count} is zero. In particular $b_1=c_1=1$.
+An infeasible binomial coefficient in \eqref{pdt:eq:binary-count} is zero. In particular $b_1=c_1=1$.
 
 \subsection{Self modified ascent sequences}
 An ordinary ascent sequence is a word $a_1\cdots a_N$ of nonnegative integers satisfying $a_1=0$ and
@@ -27,10 +27,10 @@ An ordinary ascent sequence is a word $a_1\cdots a_N$ of nonnegative integers sa
 where an ascent is a strict increase between consecutive entries. In the modification operation of Bousquet-M\'elou, Claesson, Dukes and Kitaev \cite{bcdk}, an ascent to a value $v$ increases by one every earlier entry at least $v$. A sequence is self modified if this operation leaves it unchanged. Equivalently, each ascent top is a new strict maximum. Indeed, unchangedness forces precisely that condition at every processed ascent; conversely, under the condition there is no earlier entry to increase.
 
 The resulting factorization is
-\begin{equation}\label{eq:word}
+\begin{equation}\label{pdt:eq:word}
  0A_0\,1A_1\,\cdots\,(m-1)A_{m-1},
 \end{equation}
-where $A_i$ is a weakly decreasing word with letters in $\{0,\ldots,i\}$. The first appearances of the maxima cannot skip a value, by the ascent-sequence inequality, and each intervening segment must be weakly decreasing. Conversely every word \eqref{eq:word} is such an ascent sequence and is self modified. There are $m-1$ ascents and maximum $m-1$.
+where $A_i$ is a weakly decreasing word with letters in $\{0,\ldots,i\}$. The first appearances of the maxima cannot skip a value, by the ascent-sequence inequality, and each intervening segment must be weakly decreasing. Conversely every word \eqref{pdt:eq:word} is such an ascent sequence and is self modified. There are $m-1$ ascents and maximum $m-1$.
 
 For completeness, the explicit table bijection sends block $iA_i$ to column $i+1$: its entry in row $j+1$ is the number of occurrences of $j$ in that block. This is upper triangular and has positive diagonal. To invert, read the multiset of each column in weakly decreasing order, then concatenate the columns. Thus size is word length and dimension is one plus the maximum, or one plus the number of ascents. This bridge and its refinements are prior results \cite{bcdk,dm}.
 
@@ -39,18 +39,18 @@ The binary subclass makes every block strictly decreasing, starting with its max
 \subsection{Formal series and current OEIS indexing}
 Marking dimension by $h$ gives the formal identities
 \begin{align}
- B(z,h)&=1+\sum_{m\ge1}\frac{h^m z^m}{(1-z)^{m(m+1)/2}},\label{eq:B}\\
- C(z,h)&=1+\sum_{m\ge1}h^m z^m(1+z)^{m(m-1)/2},\label{eq:C}\\
- B(z,h)&=C\!\left(\frac z{1-z},h\right).\label{eq:transform}
+ B(z,h)&=1+\sum_{m\ge1}\frac{h^m z^m}{(1-z)^{m(m+1)/2}},\label{pdt:eq:B}\\
+ C(z,h)&=1+\sum_{m\ge1}h^m z^m(1+z)^{m(m-1)/2},\label{pdt:eq:C}\\
+ B(z,h)&=C\!\left(\frac z{1-z},h\right).\label{pdt:eq:transform}
 \end{align}
-These are coefficientwise formal series: each fixed power of $z$ receives finitely many summands. Equation \eqref{eq:transform} also follows by expanding each chosen binary cell into a positive multiplicity. It implies, for $N\ge1$,
-\begin{equation}\label{eq:bin-transform}
+These are coefficientwise formal series: each fixed power of $z$ receives finitely many summands. Equation \eqref{pdt:eq:transform} also follows by expanding each chosen binary cell into a positive multiplicity. It implies, for $N\ge1$,
+\begin{equation}\label{pdt:eq:bin-transform}
  b_N=\sum_{j=1}^N\binom{N-1}{j-1}c_j.
 \end{equation}
 Both the exact formulas and this substitution have historical antecedents \cite{bek,khamis}.
 
 The current sequence conventions \cite{oeis} are
-\begin{equation}\label{eq:index}
+\begin{equation}\label{pdt:eq:index}
  \begin{split}
  b_N&=\mathrm{A098569}(N-1),\\
  c_N&=\mathrm{A121690}(N-1)\qquad(N\ge1),\\
@@ -61,13 +61,217 @@ For example, at sizes $N=1,\ldots,9$, the values of $b_N$ are
 \[
  1,\ 2,\ 5,\ 14,\ 43,\ 143,\ 510,\ 1936,\ 7775.
 \]
-The row at $N=4$ is $(1,6,6,1)$, which is row $n=3$ of A098568. Keeping the shift in \eqref{eq:index} is necessary when applying every asymptotic or inverse statement below.
+The row at $N=4$ is $(1,6,6,1)$, which is row $n=3$ of A098568. Keeping the shift in \eqref{pdt:eq:index} is necessary when applying every asymptotic or inverse statement below.
 
 \subsection{Historical boundaries and the problem addressed}
-Bayoumi, El-Zahar and Khamis \cite{bek} already identify the exact binary interval subclass and the multiplicity substitution. Khamis \cite{khamis} refines by height: Lemma 4.1 gives \eqref{eq:binary-count}, and Theorem 4.2 gives \eqref{eq:transform}. Their strictly upper-triangular block matrix has one more row than the present table; deleting its forced zero first column and last row turns its positive superdiagonal into our positive diagonal. Their height is our dimension $m$.
+Bayoumi, El-Zahar and Khamis \cite{bek} already identify the exact binary interval subclass and the multiplicity substitution. Khamis \cite{khamis} refines by height: Lemma 4.1 gives \eqref{pdt:eq:binary-count}, and Theorem 4.2 gives \eqref{pdt:eq:transform}. Their strictly upper-triangular block matrix has one more row than the present table; deleting its forced zero first column and last row turns its positive superdiagonal into our positive diagonal. Their height is our dimension $m$.
 
 There is an important terminology distinction. These historical papers use $N$-freeness in the \emph{directed covering graph}. This must not be silently replaced by induced-subposet $N$-avoidance or by the series-parallel/Catalan class. The positive-diagonal class in Dukes--McNamara \cite{dm} is their larger class with a chain meeting every strict-downset level. We consequently state our results in table and word language.
 
 The 1989 asymptotic theorems concern the larger class of all covering-graph $N$-free posets, using the interval subclass for a lower bound; they do not give the relative formulas proved here. The leading $N\log N$ scale is prior, and finer logarithmic expressions already appear in V\'aclav Kote\v{s}ovec's OEIS postings \cite{oeis}. An asymptotic equivalence for a displayed logarithmic expression, by itself, does not establish all of its lower-order terms with additive error $o(N)$, much less a relative count equivalent. Exact enumerative antecedents also include \cite{kr,bcuf,cfz}.
 
-Our purpose is the relative analysis of \eqref{eq:T}: the exact saddle carrier, arbitrary fixed correction orders, a full-lattice dimension law, a binary rare-event ratio and controlled integer inversion. The row-distribution question explicitly posed in A098568 is answered by Section~\ref{sec:dimension}. General Fishburn-matrix results, such as \cite{hj}, concern different generating functions and do not automatically transfer to this positive-diagonal model. The source search described in the accompanying source note is bounded; no worldwide novelty, external peer review or formal proof verification is claimed.
+Our purpose is the relative analysis of \eqref{pdt:eq:T}: the exact saddle carrier, arbitrary fixed correction orders, a full-lattice dimension law, a binary rare-event ratio and controlled integer inversion. The row-distribution question explicitly posed in A098568 is answered by Section~\ref{pdt:sec:dimension}. General Fishburn-matrix results, such as \cite{hj}, concern different generating functions and do not automatically transfer to this positive-diagonal model. The source search described in the accompanying source note is bounded; no worldwide novelty, external peer review or formal proof verification is claimed.
+
+\subsection{Provenance, credits and reading conventions}\label{pdt:sec:provenance}
+\begin{writenote}[Added 5 October 2026, batch~102]
+\emph{Provenance.} This report is Report~242 of the session bundle that
+ProveIt's \nolinkurl{docs/incoming} intake processed as batch~102: the
+archive \nolinkurl{Report242.zip} (wrapper directory \nolinkurl{Report242/},
+31 files, 638{,}320 bytes), arrival commit \nolinkurl{60f54ea06}, placed in
+\nolinkurl{6ab1f1979}. The text is the delivered \nolinkurl{article.tex}
+with its twelve input files \nolinkurl{sections/01_models.tex} to
+\nolinkurl{sections/12_references.tex}, kept as delivered in that layout;
+the delivered 24-page PDF \nolinkurl{Report242.pdf} and the checksum
+manifest \nolinkurl{MANIFEST.sha256} are not shipped (both are retrievable
+from the arrival commit). The package names no ProveIt commit, path or
+report, so the report has no pin; its title page and PDF metadata name no
+person (author ``Report 242''), and it carries no ``prepared for private
+review'' line. It is a single-source report, so no merge choice was made.
+The write prefixed the 126 delivered labels with \nolinkurl{pdt:}
+(``positive-diagonal tables''; the prefix \nolinkurl{sma:} is already used by
+\nolinkurl{a124380-signed-moment-asymptotics}), added the notes marked
+[write], this subsection, Remarks~\ref{pdt:rem:C1sign}
+and~\ref{pdt:rem:slowbinary}, Proposition~\ref{pdt:prop:moderate} and the
+bound of the note after Theorem~\ref{pdt:thm:seeds}, both with proofs, and
+Section~\ref{pdt:sec:further}. No statement, proof or number of the source
+was changed. Theorem numbers follow the section counter
+(Theorem~\ref{pdt:thm:main} is Theorem~2.1, and so on).
+
+\emph{Question answered.} OEIS A098568 asks, in a comment, ``How do the
+terms of row k tend to be distributed as k grows?'' (read on 5~October
+2026). With the shifts $N=n+1$ and $D_N=K_n+1$ of \eqref{pdt:eq:index},
+Theorem~\ref{pdt:thm:dimension}, Proposition~\ref{pdt:prop:moments} and the
+write's Proposition~\ref{pdt:prop:moderate} answer it: a full-span local
+Gaussian law with explicit corrections, centre $r_{n+1}(0)-1\sim2n/\log n$
+and variance $\sim2n/(\log n)^2$, a relative Gaussian law up to
+$|z|=o(n^{1/6})$, and the exact shape \eqref{pdt:eq:exactshape} beyond.
+
+\emph{Inherited material, as the manuscript credits it} (page-level
+readings from the delivered \nolinkurl{SOURCES.md}; ProveIt's intake did
+not consult these papers):
+\begin{itemize}
+\item the counts \eqref{pdt:eq:T} and \eqref{pdt:eq:binary-count}:
+ Bayoumi, El-Zahar and Khamis~\cite{bek} (Lemma~4, the binary finite sum,
+ for a block matrix with one more row), Khamis~\cite{khamis} (Lemma~4.1,
+ height-refined), Bousquet-M\'elou, Claesson, Dukes and
+ Kitaev~\cite{bcdk} (Section~4.4, Propositions~10--11: the self-modified
+ factorization, exact generating function and dimension-refined sum), and
+ the further enumerations of Kube and Ruskey~\cite{kr} (Theorem~1.3), Bean,
+ Claesson and Ulfarsson~\cite{bcuf} (Propositions~13--14, permutation
+ models) and Chen, Fan and Zhao~\cite{cfz} (Theorems~1.3--1.4);
+\item the word/table bijection \eqref{pdt:eq:word}: \cite{bcdk} and Dukes
+ and McNamara~\cite{dm} (Lemma~3.4, with Definition~3.3,
+ Propositions~3.6--3.7 and Corollary~3.8); the manuscript re-explains it for
+ self-containment;
+\item the binary (rigid) subclass: \cite{bek} (Lemmas~2--3, the interval
+ characterization) and~\cite{khamis}; as the $d=1$ case of self-modified
+ difference ascent sequences, Cerbai, Claesson and Sagan~\cite{ccs}
+ (Lemma~4.3, Theorem~4.4);
+\item the multiplicity substitution \eqref{pdt:eq:transform} and hence the
+ binomial transform \eqref{pdt:eq:bin-transform}: \cite{bek} ($I(x)=J(x/(1-x))$)
+ and \cite{khamis} (Theorem~4.2);
+\item the $N\log N$ scale: \cite{bek} (Theorems~5--6, logarithmic-scale
+ estimates for the larger class of covering-graph $N$-free posets), and the
+ finer logarithmic expressions posted by V\'aclav Kote\v{s}ovec in the OEIS
+ entries A098569 and A121690~\cite{oeis} (the latter dated 1~July 2025),
+ which the inspected records state without a cited proof or a relative
+ error. The coarse consequence \eqref{pdt:eq:loggrowth} is in that line;
+ Theorem~\ref{pdt:thm:elementary} is the source's relative strengthening.
+\end{itemize}
+
+\emph{Repository.} Before batch~102 no file of the repository mentioned
+A098569, A121690, A098568, self-modified ascent sequences or positive-diagonal
+tables, so the source's statement that its bounded repository comparison
+found no duplicate was true at placement. One batch-102 sibling meets this
+report: Report~243, filed as
+\nolinkurl{generating-functions-and-asymptotics/oeis-sequence-asymptotics/a202059-ascent-100-110-growth}
+(written concurrently), bounds ascent sequences avoiding 100 by the same
+triangular sum, which it calls $b_n$ with $b_n=\mathrm{A098569}(n-1)$, and
+proves in its Section~2 (as delivered, Lemma~2.1) that
+$\log b_n=n(\log n-2\log\log n+\log2-1)+O(n\log\log n/\log n)$. Its proof uses
+the comparison phase $H_N$ of \eqref{pdt:eq:Hphase} and the same two global
+gaps, $4\log2-2$ and $2-2\log2$, as Lemma~\ref{pdt:lem:global}; its
+estimate follows from Theorem~\ref{pdt:thm:elementary} on expanding
+$u=\log N-2\log\log N+\log2+O(\log\log N/\log N)$. Neither report cites the
+other; the two were produced by the same pipeline on the same day. The
+following ascent-sequence reports of the same collection treat other models
+and share no theorem with this report:
+\begin{itemize}
+\item \nolinkurl{a202058-ascent-000-growth}: ascent sequences avoiding 000;
+\item \nolinkurl{a294220-ascent-multiplicity-caps}: ascent sequences with
+ capped multiplicities;
+\item \nolinkurl{a202061-ascent-120-deficit} and
+ \nolinkurl{a202062-ascent-201-enumeration}: other avoidance classes;
+\item the batch-102 sibling \nolinkurl{a336070-weak-ascents} (weak and
+ difference ascent sequences, not their self-modified tables).
+\end{itemize}
+No statement of this report is formalized in Lean or Rocq, and its place
+in the collection confers no formal status.
+
+\emph{Notation.} The manuscript reuses many letters. The table fixes each
+meaning; no symbol was renamed.
+
+\smallskip
+\begingroup\renewcommand{\arraystretch}{1.1}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.55in}>{\raggedright\arraybackslash}p{3.7in}>{\raggedright\arraybackslash}p{1.9in}@{}}
+\toprule
+Symbol & Meanings (where) & Not to be read as\\
+\midrule
+\endhead
+$N$, $n$ & table size (entry sum) $N$; $n$ the OEIS row index of A098568,
+ $N=n+1$ \eqref{pdt:eq:index}, and integer sizes in
+ Section~\ref{pdt:sec:inverse}; $n_0$ the seed size \eqref{pdt:eq:seeds};
+ the letter $N$ of ``$N$-free'' is the poset shape & the OEIS index of
+ A098569 ($b_N=\mathrm{A098569}(N-1)$)\\
+$T$, $t$ & $T(N,m)$ the count \eqref{pdt:eq:T}; $T$ also the bound
+ $|t|\le T$ on the real dimension mark $t$ (Theorems~\ref{pdt:thm:main},
+ \ref{pdt:thm:dimension}) & the mark bound as a count\\
+$H$ & $H_N(x)$ the comparison phase \eqref{pdt:eq:Hphase} (Sections~3, 6,
+ 8); $H(x)$ the leading binary penalty \eqref{pdt:eq:penalties};
+ $H_0(x)=-2N(N-x)/x^2$ (Section~\ref{pdt:sec:rational}) & $H$ or $H_0$ as
+ $H_N$ (all three occur in Section~\ref{pdt:sec:rational})\\
+$B$ & $B(z,h)$ the series \eqref{pdt:eq:B}; $B_N(t)$ the marked count
+ \eqref{pdt:eq:marked}; $B=N-1$ in \eqref{pdt:eq:trigamma};
+ $B_0=-F/2+1/u$ \eqref{pdt:eq:algebra-abbr}; $\mathcal B(s,q)$ a gamma
+ ratio (proof of Lemma~\ref{pdt:lem:global}) & $B_0$ as $B$ or as
+ $B_N$ at $N=0$ (the source flags this one)\\
+$C$, $c$ & $C(z,h)$ \eqref{pdt:eq:C}; $c_N$ binary counts; $C_\ell$ the
+ contractions \eqref{pdt:eq:contraction}, $C_\ell(y)$ at real size;
+ $C_K$, $C$, $c$, $c'$, $c_1,c_2,c_3$ unspecified constants;
+ $C_{\rm bad}$ a cell count \eqref{pdt:eq:bad-coll} & $C_K$
+ (Theorem~\ref{pdt:thm:inverse}) as a contraction\\
+$D$, $d$ & $D_N$ the random dimension (Section~\ref{pdt:sec:dimension});
+ $D=u+4+2/u$ \eqref{pdt:eq:algebra-abbr}; $D_{\rm bad}$
+ \eqref{pdt:eq:bad-diag}; $D_K$ an exponent \eqref{pdt:eq:integrableremainder}
+ and an error constant (proof of Theorem~\ref{pdt:thm:inverse}); $d$ the
+ difference parameter of~\cite{ccs}, the degree in \eqref{pdt:eq:Gk}, and
+ $d=-B+Bs+qv$ (Section~\ref{pdt:sec:binary}) & \\
+$E$ & $\E$ expectation; $E=2u+6-4/u^2$ \eqref{pdt:eq:algebra-abbr} & \\
+$F$ & $F_K(y)=\log S_K(y)$ \eqref{pdt:eq:smoothcarrier}; $F_0$, $F_-$
+ (proof of Theorem~\ref{pdt:thm:seeds}); $F=(u+1)(u+2)$
+ \eqref{pdt:eq:algebra-abbr} & \\
+$G$ & $G_k$ the binary numerator coefficients \eqref{pdt:eq:Gk};
+ $G=(u+2)(3u+4)$ \eqref{pdt:eq:algebra-abbr} & \\
+$K$, $k$ & $K$ the fixed expansion order; $K_n$ the random column index of
+ A098568 (end of Section~\ref{pdt:sec:dimension}); $k$, $k_j$ indices &
+ one convention: \eqref{pdt:eq:main} sums $\ell<K$ with error $N^{-K}$,
+ \eqref{pdt:eq:binary-all} sums $k\le K$ with error $L^{4K+4}N^{-K-1}$\\
+$P$ & $P(u)=u^2+4u+2$ \eqref{pdt:eq:P}; $P_y(x)=M(x)+y-x$
+ (Section~\ref{pdt:sec:inverse}); polynomials $P_j(s)$
+ \eqref{pdt:eq:vrecursion}; $\Prob$ probability & \\
+$R$ & $R(s,q)$ \eqref{pdt:eq:remainder}; $R_K(z)$ \eqref{pdt:eq:taylor};
+ $\mathcal R(u)$ \eqref{pdt:eq:Ru}; the window $|z|\le R$
+ (Theorem~\ref{pdt:thm:dimension}); $\R$ the reals & \\
+$h$, $g$ & $h$ the dimension mark of $B(z,h)$, $C(z,h)$; $h_N$ the binary
+ penalty \eqref{pdt:eq:hphase}; the mesh $h=\sqrt A$
+ (Lemma~\ref{pdt:lem:poisson}); $g_N$ \eqref{pdt:eq:gphase}, $g_\pm$
+ (proof of Theorem~\ref{pdt:thm:seeds}) & \\
+$u$, $v$, $w$ & $u=u_N$ of \eqref{pdt:eq:ueq}, $u(y)$ at real size; $v=2w$
+ with $w=W_0(\sqrt{N/2})$ (Section~8.1); $v$ of \eqref{pdt:eq:veq} and
+ $w=\log\Lambda$ (Section~9.3); $w\ge1$ in \eqref{pdt:eq:relative-tail};
+ the weight $w$ (Section~\ref{pdt:sec:transfer}); integration variables $v$
+ & the $w$, $v$ of Section~8.1 as those of Section~9\\
+$z$ & the formal variable of $B(z,h)$; the standardized
+ $z=\sqrt A(x-r)$ (Sections~4, 5, 7); the seeds $z_b$, $z_c$
+ \eqref{pdt:eq:seeds} & \\
+$s$, $q$ & $s=M(x)$ (Section~\ref{pdt:sec:localization}); the binary
+ saddle $s$ \eqref{pdt:eq:binaryshift}; an integration variable
+ \eqref{pdt:eq:trigamma}; $q=N-x$ the residual; $Q_k$ \eqref{pdt:eq:Qrec}
+ & \\
+$X$, $\Lambda$ & the threshold $X$ \eqref{pdt:eq:thresholds},
+ $\Lambda=\log X$; a residual cell $X$ \eqref{pdt:eq:celltail} & \\
+$\varepsilon$ & $\varepsilon=N^{-1/2}$ (Section~\ref{pdt:sec:transfer});
+ the window exponent $\varepsilon<1/6$ (proof of
+ Theorem~\ref{pdt:thm:binary-all}) & \\
+\bottomrule
+\end{longtable}
+\endgroup
+
+\emph{What is not claimed} (collected from the source): the exact
+enumeration, the word/table bridge, the rigid binary subclass and the
+multiplicity substitution are prior; the $N\log N$ scale is prior, the finer
+logarithmic expressions are Kote\v{s}ovec's OEIS postings, and a
+logarithmic-scale equivalence does not give lower-order terms with additive
+error $o(N)$; historical $N$-freeness is in the directed covering graph and
+must not be conflated with induced-subposet $N$-avoidance or the
+series-parallel class, so results are stated in table and word language;
+the 1989 asymptotic theorems concern the larger class of covering-graph
+$N$-free posets; results on Fishburn matrices~\cite{hj} do not transfer
+automatically; only $d=0$ and $d=1$ are treated; the expansion order is
+fixed and marks are bounded and real, with no convergence as $K\to\infty$,
+no uniformity in a growing order and no claim about stationary points
+outside $I_N$; $O$-constants and thresholds are non-effective, and
+remainders are not differentiable in $t$ or $N$; there is no unconditional
+rule $\nu_b(X)=\ceil{y_K(X)}$, and floating point certifies no integer
+threshold; the limits \eqref{pdt:eq:C-limits} cannot replace the exact
+$C_1$, $C_2$; the collision expectations of Section~\ref{pdt:sec:rational}
+are an interpretation, not a proof; the numerical diagnostics are finite
+consistency checks, reproducible only for the recorded toolchain, the
+manifest proves integrity, not authorship or correctness, and the guard
+tests are not a security proof; the source search was bounded, with no
+worldwide novelty or priority, no external review and no formal
+verification, and its sources were read as web-extracted text, not page
+images. The delivered \nolinkurl{SOURCES.md} also records that a 2004
+bibliography gives the 1989 paper's pages as 219--232; the correct range is
+219--225. Open questions are collected in Section~\ref{pdt:sec:further}.
+\end{writenote}

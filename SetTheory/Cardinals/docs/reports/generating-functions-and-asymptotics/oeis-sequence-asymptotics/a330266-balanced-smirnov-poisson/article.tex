@@ -2314,7 +2314,7 @@ the write states and proves it.
 
 \begin{proposition}[Unequal rank sizes: the exact identity; Report~98,
 proof written out at the write]\label{bsw:ut:prop:unequal-exact}
-Let $\mathbf k=(k_1,\ldots,k_n)$ with integers $k_i\ge1$, put
+Let $\mathbf k=(k_1,\ldots,k_n)$ with $n\ge1$ and integers $k_i\ge1$, put
 $N=k_1+\cdots+k_n$, and let $X_{\mathbf k}$ count the equal-rank
 adjacencies in a uniform permutation of $N$ distinct cards, $k_i$ of them
 of rank $i$.  Define $a_{k,j}$ and $R_k$ by
@@ -2324,8 +2324,9 @@ $0\le M\le N-n$,
 \begin{equation}\label{bsw:ut:eq:unequal-exact}
  \EE\binom{X_{\mathbf k}}M=\frac{r_{\mathbf k,M}}{\fall NM},
 \end{equation}
-and both sides vanish for $M>N-n$.  In particular
-$\EE X_{\mathbf k}=\sum_ik_i(k_i-1)/N$.
+and for $M>N-n$ the left side vanishes and $r_{\mathbf k,M}=0$ (the quotient is
+not used there).  In particular $\EE X_{\mathbf k}=\sum_ik_i(k_i-1)/N$; when every
+$k_i=1$ both sides are zero.
 \end{proposition}
 
 \begin{proof}
@@ -2338,9 +2339,23 @@ blocks gives $\sum_\pi\binom{X_{\mathbf k}(\pi)}M
 =(N-M)!\,r_{\mathbf k,M}$, the bijection being the same.  Divide by $N!$;
 the quotient is defined because $M\le N-n<N$.  For $M>N-n=\sum_i(k_i-1)$
 no choice of forests exists, and no permutation has more than $N-n$
-equal-rank adjacencies.  For $M=1$, $r_{\mathbf k,1}=\sum_ia_{k_i,1}
-=\sum_ik_i(k_i-1)$.
+equal-rank adjacencies.  If some $k_i\ge2$, then $N-n\ge1$, and the case
+$M=1$ gives $\EE X_{\mathbf k}=r_{\mathbf k,1}/N$ with
+$r_{\mathbf k,1}=\sum_ia_{k_i,1}=\sum_ik_i(k_i-1)$.  If every $k_i=1$, then
+$N-n=0$, so $X_{\mathbf k}=0$, and $\sum_ik_i(k_i-1)=0$ as well.
 \end{proof}
+
+[Dated note, 5 October 2026: the statement first read ``Let
+$\mathbf k=(k_1,\ldots,k_n)$ with integers $k_i\ge1$'' and ended ``and both
+sides vanish for $M>N-n$.  In particular
+$\EE X_{\mathbf k}=\sum_ik_i(k_i-1)/N$'', and the proof ended ``For $M=1$,
+$r_{\mathbf k,1}=\sum_ia_{k_i,1}=\sum_ik_i(k_i-1)$''.  An independent check
+made by the intake after the write found the proposition valid and its
+wording imprecise in three places: for $M>N$ the right side is $0/0$, not
+zero; the mean was read off the case $M=1$, which lies in the range only
+when $N-n\ge1$, so compositions with every $k_i=1$ (mean zero) were not
+covered by the cited case; and $n\ge1$ was implicit.  The present wording
+is the check's; see the end of Section~\ref{bsw:ut:sec:provenance}.]
 
 \section{The factorial-moment majorant}\label{bsw:ut:sec:majorant}
 
@@ -2428,8 +2443,9 @@ every $j_i\le1$ sum to the elementary symmetric polynomial
 $e_M(x_1,\ldots,x_n)$.  In every other term some $j_i\ge2$, so at most
 $M-1$ indices have $j_i\ge1$.  There are at most $Mn^{M-1}$ such index sets
 and at most $2^{M-1}$ ways to distribute $M$ among a given set, and each
-product is at most $(2^KK^M)^M$, because
-$a_{k,j}\le\binom kj(k-1)^j\le2^KK^j$ for $k\le K$.  Hence these terms sum
+product is at most $2^{KM}K^M$, because
+$a_{k,j}\le\binom kj(k-1)^j\le2^KK^j$ for $k\le K$, at most $M$ factors
+differ from $a_{k_i,0}=1$, and the $j_i$ sum to $M$.  Hence these terms sum
 to $O_{K,M}(n^{M-1})$.  Next, $(\sum_ix_i)^M$ is the sum of
 $x_{i_1}\cdots x_{i_M}$ over all $M$-tuples of indices; the tuples with
 distinct entries contribute $M!\,e_M(x)$, and the at most
@@ -2967,6 +2983,108 @@ $(1,3,2,3)$ repeated $n/4$ times, at $n=20,80,320$, approach $\mu_n^M$ for
 $M\le4$ at the rate $O(n^{-1})$; and the manuscript's ratio coefficients
 equal those of \eqref{bsw:eq:ratio} for $k=2,\ldots,7$.  These checks do
 not replace an independent review of the proofs.
+
+\textbf{Independent check of the write (dated note, 5~October 2026).}
+An independent adversarial check of Part~III, made by the intake after the
+write (\texttt{a75a4e41b}), reread every item printed in full and every
+addition of the write: Theorem~\ref{bsw:ut:thm:fourth} and the note after
+it, Corollary~\ref{bsw:ut:cor:rows} with the logarithmic line for $k=4$,
+the Lah-number note of Section~\ref{bsw:ut:sec:forest} (with its pointer to
+Section~11 of Part~I), Propositions~\ref{bsw:ut:prop:unequal-exact},
+\ref{bsw:ut:prop:unequal} and~\ref{bsw:ut:prop:unequal-poisson},
+Corollary~\ref{bsw:ut:cor:tail}, Remarks~\ref{bsw:ut:rem:constant},
+\ref{bsw:ut:rem:operator-unequal}, \ref{bsw:ut:rem:degP},
+\ref{bsw:ut:rem:lowcoef}, \ref{bsw:ut:rem:A4}, \ref{bsw:ut:rem:deck},
+\ref{bsw:ut:rem:local} and~\ref{bsw:ut:rem:carrier}, and the batch-101
+notes in Section~9 of Part~I.  It found every item valid, no
+counterexample, and no gap in any proof chain.
+Proposition~\ref{bsw:ut:prop:unequal-exact} was valid with three defects
+of wording (the case $M>N$, the derivation of the mean when every
+$k_i=1$, and the implicit $n\ge1$); they are corrected where they stand,
+with a dated note keeping the first wording.  In the proof of
+Proposition~\ref{bsw:ut:prop:unequal-poisson} the bound ``each product is
+at most $(2^KK^M)^M$'' was true but loose; it now reads $2^{KM}K^M$, the
+sharp form of the same argument, and that argument is complete: a factor
+with $j_i=0$ equals $a_{k_i,0}=1$, each of the at most $M$ other factors is
+at most $2^KK^{j_i}$, and the $j_i$ sum to $M$.  The statement of that
+proposition is unchanged.
+
+The check used neither the delivered programs nor the write's.  Its own
+symbolic derivation (SymPy~1.14, symbolic $k$) built $H_r(M)$ from
+$\exp\sum_jx^j\sigma_j(M)/j$ by Faulhaber's formula, $b_1,\ldots,b_5$ from
+$\log R_k$, the $f_s$ from $F(w,v)$, the $\mathcal P_s$ by its own
+implementation of $\ee^{-\lambda v}H_r(D)\ee^{\lambda v}=H_r(D+\lambda v)$,
+and the $q_s$ as the coefficients of $\log\sum_s\mathcal P_sw^s$.  It
+reproduces exactly \eqref{bsw:ut:eq:H4} (also by brute force for
+$M\le11$), $q_1,q_2,q_3$ of \eqref{bsw:rp:eq:q123},
+\eqref{bsw:ut:eq:q4}, \eqref{bsw:ut:eq:P4}, the displayed
+$\mathcal P_4(-1)$, \eqref{bsw:ut:eq:q4minus},
+$\mathcal P_1(-1),\mathcal P_2(-1),\mathcal P_3(-1)$ of
+\eqref{bsw:eq:pfull}, $b_1,\ldots,b_4$ of Part~II together with
+$b_5=2k\lambda^2(7k-10)(3k^2-8k+6)/5$, every entry of the table in Corollary~\ref{bsw:ut:cor:rows}, and
+$A_1,\ldots,A_4$.  The leading coefficient of $\mathcal P_s$ is
+$(-1)^s\lambda^{2s}/(2^ss!)$ for $s\le4$, so $\deg\mathcal P_s=2s$ there;
+$\deg q_4=5$ for $3\le k\le11$ and $\deg q_4=4$ for $k=2$; and
+$q_1,\ldots,q_4$ have zero constant and linear coefficients.
+
+The numerical tests use no theory.  The check computed
+$r_{n,M}=\coef{z^M}{R_k(z)^n}$ exactly in big integers, and $B_{n,k}$
+exactly by grouped inclusion--exclusion, checked against enumeration of
+all rank words ($k=2$, $n\le4$; $k=3$, $n\le3$) and against $B_{13,4}$ of
+A330266.  Least-degree (Richardson) fits in $1/N$ over the 32 consecutive
+values $n=160,\ldots,191$, with mpmath at 260 digits, of
+$\ee^{-\lambda v}\Phi_{n,k}(v)$ and of its logarithm at the nine points
+$v\in\{-1,-\frac34,-\frac12,\frac14,\frac12,1,\frac32,2,3\}$ for
+$k=2,\ldots,6$ recover $\mathcal P_s(v)$ and $q_s(v)$, $s=1,\ldots,4$, to
+$1.5\cdot10^{-37}$ or better (typically $10^{-45}$ to $10^{-70}$), and at
+$v=-1$ for $k=7,\ldots,10$ to $4\cdot10^{-32}$.  Nine points fix a
+polynomial of degree~$8$, so the tests reach every coefficient of
+$\mathcal P_4$ and $q_4$ as polynomials in $v$ for each $k\le6$, and, with
+$k=2,\ldots,10$, every coefficient of $\mathcal P_4(-1)$ (degree~$8$ in
+$k$) and of $q_4(-1)$ (degree~$5$).  Because these fits start from exact
+counts, they test the operator method as well as the algebra.
+
+For unequal ranks, enumeration of all rank words of the compositions
+$(1)$, $(1,1,1)$, $(2,1)$, $(1,2,3)$, $(2,2,1,1)$, $(3,1)$, $(4,2)$,
+$(3,3,2)$, $(2,2,2,2)$, $(3,3,3)$, $(1,1,4)$ and $(5,1,1)$ confirms
+\eqref{bsw:ut:eq:unequal-exact} for $M\le N-n$,
+$\EE\binom{X_{\mathbf k}}M=r_{\mathbf k,M}=0$ for $N-n<M\le N+1$, the
+maximum $N-n$ (attained),
+the mean, and \eqref{bsw:ut:eq:unequal}.  For
+Proposition~\ref{bsw:ut:prop:unequal-poisson}: for the ranks
+$(1,\ldots,1,3)$, $\EE\fall X3=0$ while $\mu_n^3=216/N^3$, as the case
+$M>N-n$ of the proof requires; and for three random compositions per $n$
+with $k_i\le K$, $n=25,\ldots,400$ and $M\le5$, the quantity
+$n\bigl|\EE\fall{X_{\mathbf k}}M-\mu_n^M\bigr|$ stays between $1.8$ and
+$2.2$ for $K=2$, $33$ and $43$ for $K=3$, and $118$ and $258$ for $K=4$.
+For Remark~\ref{bsw:ut:rem:operator-unequal}, over 40 random compositions
+with $k_i\le5$ and $n\le12$, $J=0,\ldots,3$, $V\in\{\frac12,1,2,4\}$ and
+64 points on $|v|=V$, the left side is at most $0.43$ times the right.
+For Remark~\ref{bsw:ut:rem:A4}, through the carrier of
+Remark~\ref{bsw:ut:rem:carrier}, $(N_*(B_{n,k})-N)N^4\log N$ at $n=80$ is
+$0.773$ for $k=2$ and $1.93$ for $k=4$ (still decreasing, slowed by a large
+$A_5$), against $A_4=\frac34$ in both cases.  For
+Remark~\ref{bsw:ut:rem:deck}, the exact $p_{13,4}$, the two approximations
+and the four errors reproduce as printed; in the table of Section~9.2 of Part~I,
+the third-order residuals at $n=50$ are $1.036$, $1.031$, $1.024$,
+$1.018$, $1.012$ times $\mathcal P_4(-1)/(kn)^4$ for $k=2,\ldots,6$, and
+the table's values at $n=10,50$ reproduce to every printed digit.  For
+Remark~\ref{bsw:ut:rem:local} with $J=4$, against the exact $\PP(X=j)$,
+$N^5$ times the error is stable at $n=50,100,200$ for $j=0,\ldots,3$ and
+$k=2,4$ (for example $1.257$, $1.241$, $1.234$ for $k=2$, $j=0$), and the
+case $J=1$ reproduces \eqref{bsw:eq:local} by hand.  For
+Remark~\ref{bsw:ut:rem:carrier}, at $Y=B_{n,k}$ with $n=5,\ldots,80$, the
+error of the displayed approximation to $N_*$, times $N_0\log N_0$, stays
+between $0.10$ and $0.11$ for $k=2$ and falls from $0.31$ to $0.12$ for
+$k=4$.
+
+Report~98's manuscript \texttt{repair\_note.tex} is not shipped
+(Section~\ref{bsw:ut:sec:sources}), and the check did not see it.  Where
+Part~III attributes a statement or a claim to the manuscript, for instance
+the claim on further local corrections that
+Remark~\ref{bsw:ut:rem:local} proves, the check took the attribution from
+Part~III's own description.  This was a careful reading with numerical
+tests, not a formal verification or an external review.
 
 
 \begin{thebibliography}{99}

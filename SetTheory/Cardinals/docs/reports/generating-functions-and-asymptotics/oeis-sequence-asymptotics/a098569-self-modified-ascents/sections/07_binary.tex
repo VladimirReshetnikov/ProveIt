@@ -1,5 +1,5 @@
 \section{Binary tables as a rare event}
-\label{sec:binary}
+\label{pdt:sec:binary}
 For the uniform size-$N$ model, define
 \[
  p_N=\Prob(\text{the table is binary})=c_N/b_N.
@@ -10,46 +10,46 @@ We work at the unmarked denominator saddle $r=r_N(0)$ throughout this section. N
 On the dominant interval, set
 \begin{align}
  g_N(x)&=\log\Gamma(M(x)-x+1)-\log\Gamma(N-x+1)
-          -\log\Gamma(M(x)-N+1),\label{eq:gphase}\\
- h_N(x)&=g_N(x)-f_N(x).\label{eq:hphase}
+          -\log\Gamma(M(x)-N+1),\label{pdt:eq:gphase}\\
+ h_N(x)&=g_N(x)-f_N(x).\label{pdt:eq:hphase}
 \end{align}
 All gamma arguments here are positive for sufficiently large $N$, because $M(x)\asymp N^2/L^2\gg N$ on $I_N$. At feasible integer dimensions,
-\begin{equation}\label{eq:binary-product}
+\begin{equation}\label{pdt:eq:binary-product}
  e^{h_N(m)}=\frac{U(N,m)}{T(N,m)}
           =\prod_{j=0}^{q-1}\frac{M-m-j}{M+j}.
 \end{equation}
 Infeasible dimensions have zero binary weight and require no smooth continuation.
 
 There is a useful identity valid for real $x$ near the saddle. With $B=N-1$ and $q=N-x$,
-\begin{equation}\label{eq:trigamma}
+\begin{equation}\label{pdt:eq:trigamma}
  h_N(x)=-Bq\int_0^1\int_0^1
        \psi_1(M-B+Bs+qv)\dd s\dd v.
 \end{equation}
 This is the second finite difference of $\log\Gamma$ over a rectangle; its corner $M-B+q=M-x+1$ verifies the four gamma terms.
 
 Define
-\begin{equation}\label{eq:penalties}
+\begin{equation}\label{pdt:eq:penalties}
  H(x)=-\frac{(N-x)(N-1)}{M(x)},\qquad
  J(x)=-\frac{x(N-x)(N-1)}{2M(x)^2}.
 \end{equation}
 Uniformly on fixed proportional neighborhoods of $r$,
-\begin{equation}\label{eq:h-expansion}
+\begin{equation}\label{pdt:eq:h-expansion}
  h_N^{(j)}(x)=H^{(j)}(x)+J^{(j)}(x)
       +O_j\!\left(\frac{L^6}{N^2x^j}\right),\qquad j\ge0.
 \end{equation}
-Here and below each derivative order is fixed. We supply the uniform analytic justification. In a small disk $|z-x|\le cx$ about such a real $x$, $M(z)$ stays in a fixed right-half-plane sector and $|M(z)|\asymp x^2$; each argument in \eqref{eq:trigamma} differs from it by $O(N)=o(x^2)$. If $d=-B+Bs+qv$, the sectorial trigamma expansion gives
+Here and below each derivative order is fixed. We supply the uniform analytic justification. In a small disk $|z-x|\le cx$ about such a real $x$, $M(z)$ stays in a fixed right-half-plane sector and $|M(z)|\asymp x^2$; each argument in \eqref{pdt:eq:trigamma} differs from it by $O(N)=o(x^2)$. If $d=-B+Bs+qv$, the sectorial trigamma expansion gives
 \[
  \psi_1(M+d)=\frac1M+\frac{1/2-d}{M^2}+O(N^2/|M|^3)
 \]
-uniformly in that disk and in $s,v\in[0,1]$. The average of $d$ is $(q-B)/2=(1-x)/2$, so the average of $1/2-d$ is $x/2$. Multiplication by $-Bq$ gives exactly $H+J$ and an analytic remainder $O(N^4/x^6)=O(L^6/N^2)$. Cauchy's estimate on a slightly smaller disk gives the additional $O_j(x^{-j})$ for derivatives. Thus \eqref{eq:h-expansion} is not a formal differentiation of a real-axis error bound.
+uniformly in that disk and in $s,v\in[0,1]$. The average of $d$ is $(q-B)/2=(1-x)/2$, so the average of $1/2-d$ is $x/2$. Multiplication by $-Bq$ gives exactly $H+J$ and an analytic remainder $O(N^4/x^6)=O(L^6/N^2)$. Cauchy's estimate on a slightly smaller disk gives the additional $O_j(x^{-j})$ for derivatives. Thus \eqref{pdt:eq:h-expansion} is not a formal differentiation of a real-axis error bound.
 
 It follows in particular that
 \begin{align}
- h_N^{(j)}(x)&=O_j(L^{j+2}N^{-j}),\label{eq:hderivatives}\\
- J^{(j)}(x)&=O_j(L^{j+3}N^{-j-1}).\label{eq:Jderivatives}
+ h_N^{(j)}(x)&=O_j(L^{j+2}N^{-j}),\label{pdt:eq:hderivatives}\\
+ J^{(j)}(x)&=O_j(L^{j+3}N^{-j-1}).\label{pdt:eq:Jderivatives}
 \end{align}
 Let
-\begin{equation}\label{eq:etas}
+\begin{equation}\label{pdt:eq:etas}
  \eta_j=h_N^{(j)}(r)A^{-j/2}\quad(j\ge1).
 \end{equation}
 Then $\eta_j=O_j(L^2N^{-j/2})$ and $\eta_1=o(1)$. Although $h_N(r)=-O(L^2)$, the penalty varies by $o(1)$ across a fixed standardized dimension window.
@@ -60,30 +60,30 @@ Assign weight $j-2$ to $\lambda_j$ for $j\ge3$ and weight $j$ to $\eta_j$ for $j
  \sum_{j\ge3}(j-2)a_j+\sum_{j\ge1}jb_j=2k.
 \]
 If $d=\sum_{j\ge3}ja_j+\sum_{j\ge1}jb_j$, their contribution is
-\begin{equation}\label{eq:Gk}
+\begin{equation}\label{pdt:eq:Gk}
  (d-1)!!\prod_{j\ge3}\frac{(\lambda_j/j!)^{a_j}}{a_j!}
           \prod_{j\ge1}\frac{(\eta_j/j!)^{b_j}}{b_j!}.
 \end{equation}
 The weight condition makes $d$ even. The terms with every $b_j=0$ give precisely $C_k$. Define
-\begin{equation}\label{eq:Qrec}
+\begin{equation}\label{pdt:eq:Qrec}
  Q_0=1,\qquad Q_k=G_k-\sum_{i=1}^k C_iQ_{k-i}\quad(k\ge1).
 \end{equation}
 
-\begin{theorem}[All fixed orders of the binary probability]\label{thm:binary-all}
+\begin{theorem}[All fixed orders of the binary probability]\label{pdt:thm:binary-all}
 For each fixed integer $K\ge0$,
-\begin{equation}\label{eq:binary-all}
+\begin{equation}\label{pdt:eq:binary-all}
  p_N=e^{h_N(r)}\left(\sum_{k=0}^K Q_k
                    +O_K\!\left(\frac{L^{4K+4}}{N^{K+1}}\right)\right),
 \end{equation}
 where $Q_k=O_k(L^{4k}N^{-k})$. In particular,
-\begin{equation}\label{eq:binary-first}
+\begin{equation}\label{pdt:eq:binary-first}
  p_N=e^{h_N(r)}\left[1+\frac{h_N''(r)+h_N'(r)^2}{2A}
               +\frac{f_N'''(r)h_N'(r)}{2A^2}
               +O\!\left(\frac{L^8}{N^2}\right)\right].
 \end{equation}
 \end{theorem}
 \begin{proof}
-Choose $0<\varepsilon<1/6$, for example $\varepsilon=1/12$, and use the standardized window $|z|\le N^\varepsilon$ about $r$. Its dimensional width is $N^\varepsilon\sigma=o(r)$. The denominator tails outside this window are $O(e^{-cN^{2\varepsilon}}+e^{-cN})$ relative to the denominator saddle scale, by Section~\ref{sec:localization}. At every feasible integer $m$, $U(N,m)\le T(N,m)$, so the same absolute tail bound holds for the numerator. Dividing by $e^{h_N(r)}=e^{-O(L^2)}$ still gives a quantity smaller than every inverse power of $N$.
+Choose $0<\varepsilon<1/6$, for example $\varepsilon=1/12$, and use the standardized window $|z|\le N^\varepsilon$ about $r$. Its dimensional width is $N^\varepsilon\sigma=o(r)$. The denominator tails outside this window are $O(e^{-cN^{2\varepsilon}}+e^{-cN})$ relative to the denominator saddle scale, by Section~\ref{pdt:sec:localization}. At every feasible integer $m$, $U(N,m)\le T(N,m)$, so the same absolute tail bound holds for the numerator. Dividing by $e^{h_N(r)}=e^{-O(L^2)}$ still gives a quantity smaller than every inverse power of $N$.
 
 This stronger window is essential. A generic estimate $e^{-cL^2}$ from a narrower window does not suffice for the rare-event numerator without comparing its constant to the unknown constant in the penalty.
 
@@ -95,16 +95,27 @@ For the central expansion through weight $2K+1$, Taylor-expand $f_N$ through der
 The full correction to $-z^2/2$ is $o(1)$ on the chosen window: the first contributions have orders $N^{-1/2}|z|^3$ and $L^2N^{-1/2}|z|$. Finite exponential Taylor expansion in $N^{-1/2}$ therefore bounds the integrated remainder by a fixed Gaussian-polynomial integral times
 $L^{4K+4}N^{-K-1}$. More explicitly, at weight $2K+2$ there are at most $2K+2$ penalty factors, since each has weight at least one, and each contributes at most $L^2$. Higher remainders are bounded by the same order after integration against a slightly weakened Gaussian. This avoids extra logarithmic powers from a supremum bound on $z$.
 
-Parity is still weight parity: each phase factor adds degree two beyond its weight, while each penalty factor has equal degree and weight. Thus odd weights have zero Gaussian integral. Lemma~\ref{lem:poisson} applies term by term to the finitely many monomials; their bounded powers of $L$ are absorbed by the exponential Poisson error. Extending the polynomial sums outside the window also costs a superalgebraically small amount. The normalized numerator thus has even coefficients $G_k$ and the asserted remainder. Divide by the denominator expansion and use finite series division to obtain \eqref{eq:Qrec} and \eqref{eq:binary-all}.
+Parity is still weight parity: each phase factor adds degree two beyond its weight, while each penalty factor has equal degree and weight. Thus odd weights have zero Gaussian integral. Lemma~\ref{pdt:lem:poisson} applies term by term to the finitely many monomials; their bounded powers of $L$ are absorbed by the exponential Poisson error. Extending the polynomial sums outside the window also costs a superalgebraically small amount. The normalized numerator thus has even coefficients $G_k$ and the asserted remainder. Divide by the denominator expansion and use finite series division to obtain \eqref{pdt:eq:Qrec} and \eqref{pdt:eq:binary-all}.
 
 At weight two, the pure phase terms $C_1$ cancel. The remaining coefficient is
 \[
  Q_1=(\eta_2+\eta_1^2+\eta_1\lambda_3)/2,
 \]
-which is \eqref{eq:binary-first}.
+which is \eqref{pdt:eq:binary-first}.
 \end{proof}
+\begin{writenote}[Added 5 October 2026, batch~102]
+Two steps of this proof are condensed: the bound on ``higher remainders''
+after integration ``against a slightly weakened Gaussian'', and the claim
+that the window $|z|\le N^\varepsilon$ yields the remainder
+$L^{4K+4}N^{-K-1}$ without extra logarithms. The intake checked the
+$N^\varepsilon$ tail argument and found it sound; a written-out version of
+the remainder bound is Question~\ref{pdt:q:binaryremainder}. The intake
+rederived $Q_1$ by hand; $Q_1$ and \eqref{pdt:eq:Q2} are also checked by
+the source's symbolic verifier (Section~\ref{pdt:sec:checks}), whose
+receipt the intake reproduced.
+\end{writenote}
 For reference, the next exact coefficient produced by the same algorithm is
-\begin{equation}\label{eq:Q2}
+\begin{equation}\label{pdt:eq:Q2}
 \begin{split}
  Q_2={}&\frac{\eta_1^4}{8}+\frac{5\eta_1^3\lambda_3}{12}
  +\frac{3\eta_1^2\eta_2}{4}+\frac{5\eta_1^2\lambda_3^2}{8}
@@ -118,20 +129,20 @@ For reference, the next exact coefficient produced by the same algorithm is
 This illustrates that the coefficients use exact gamma derivatives and not merely their limiting powers of $N$.
 
 \subsection{The leading penalty and the binary saddle shift}
-Equations \eqref{eq:h-expansion}--\eqref{eq:Jderivatives} turn \eqref{eq:binary-first} into
-\begin{equation}\label{eq:Hratio}
+Equations \eqref{pdt:eq:h-expansion}--\eqref{pdt:eq:Jderivatives} turn \eqref{pdt:eq:binary-first} into
+\begin{equation}\label{pdt:eq:Hratio}
  p_N=e^{H(r)}\left[1+J(r)+\frac{H''(r)+H'(r)^2}{2A}
                 +\frac{f_N'''(r)H'(r)}{2A^2}
                 +O(L^8/N^2)\right].
 \end{equation}
 In particular $p_N\sim e^{H(r)}$ and
-\begin{equation}\label{eq:Hexcess}
+\begin{equation}\label{pdt:eq:Hexcess}
  \frac N{L^4}\bigl(p_Ne^{-H(r)}-1\bigr)\longrightarrow\frac14.
 \end{equation}
 The term $H'(r)^2/(2A)$ is asymptotic to $L^4/(4N)$; the others have smaller logarithmic order. Replacing $h_N$ by $H+J$ in the derivative corrections changes the result by $O(L^8/N^2)$, and expansion of $e^J$ is valid at that same accuracy.
 
 The binary saddle $s$ satisfies $g_N'(s)=0$. Since $h_N''/A=O(L^2/N)=o(1)$ on $I_N$, $g_N$ remains strictly concave there, and its derivative keeps the endpoint signs. Thus it has a unique dominant central saddle. Taylor expansion of its equation gives
-\begin{equation}\label{eq:binaryshift}
+\begin{equation}\label{pdt:eq:binaryshift}
  s-r=\frac{h_N'(r)}A+O(L^3/N),\qquad \frac{s-r}{\log N}\longrightarrow1.
 \end{equation}
 This shift is negligible relative to $\sigma\asymp\sqrt N/L$, but is significant for correction terms. The one-saddle quotient automatically accounts for it and avoids requiring a separate numerator saddle calculation.

@@ -1,26 +1,26 @@
 \section{The explicit binary correction and the collision interpretation}
-\label{sec:rational}
-We now convert the exact-saddle probability into a more accessible carrier using the same $u$ as in \eqref{eq:ueq}.
+\label{pdt:sec:rational}
+We now convert the exact-saddle probability into a more accessible carrier using the same $u$ as in \eqref{pdt:eq:ueq}.
 
-\begin{theorem}[Rational correction]\label{thm:rational}
+\begin{theorem}[Rational correction]\label{pdt:thm:rational}
 Let
-\begin{equation}\label{eq:Ru}
+\begin{equation}\label{pdt:eq:Ru}
  \mathcal R(u)=\frac{u(u+2)(u^4+8u^3+22u^2+20u+8)}
                      {4(u^2+4u+2)^2}.
 \end{equation}
 Then
-\begin{equation}\label{eq:explicitratio}
+\begin{equation}\label{pdt:eq:explicitratio}
  p_N=e^{-u^2/2-u}\left[1+\frac{\mathcal R(u)}N
                          +O\!\left(\frac{(\log N)^8}{N^2}\right)\right].
 \end{equation}
 Consequently,
-\begin{equation}\label{eq:ratiolimits}
+\begin{equation}\label{pdt:eq:ratiolimits}
  p_Ne^{u^2/2+u}\to1,\qquad
  \frac N{(\log N)^2}\bigl(p_Ne^{u^2/2+u}-1\bigr)\to\frac14,
  \qquad \frac{\log p_N}{(\log N)^2}\to-\frac12.
 \end{equation}
 The binary count has the relative carrier
-\begin{equation}\label{eq:ccarrier}
+\begin{equation}\label{pdt:eq:ccarrier}
  c_N=\sqrt{\frac2{P(u)}}
  \exp\!\left(\frac{Nu(u+1)}{u+2}-\frac u2-\frac{u^2}4\right)
  \left(1+O\!\left(\frac{(\log N)^4}{N}\right)\right).
@@ -28,7 +28,7 @@ The binary count has the relative carrier
 \end{theorem}
 \begin{proof}
 Use $x_0=2N/(u+2)$ and the following rational functions:
-\begin{equation}\label{eq:algebra-abbr}
+\begin{equation}\label{pdt:eq:algebra-abbr}
  \begin{aligned}
  D&=u+4+2/u,& E&=2u+6-4/u^2,\\
  F&=(u+1)(u+2),& G&=(u+2)(3u+4),\\
@@ -38,32 +38,32 @@ Use $x_0=2N/(u+2)$ and the following rational functions:
 Here $B_0$ is unrelated to the integral abbreviation $B=N-1$. We have $-H_N''(x_0)=D/x_0$ and $H_N'''(x_0)=E/x_0^2$.
 
 The differentiated gamma quotient expansion near $x_0$ gives
-\begin{equation}\label{eq:fprimefine}
+\begin{equation}\label{pdt:eq:fprimefine}
  f_N'(x)=H_N'(x)-\frac1x-\frac{3q}{x^2}-\frac{2q^2}{x^3}
                           +\frac1{2q}+O(L^5/N^2).
 \end{equation}
 One can obtain this directly by differentiating
-$q\log M-\log\Gamma(q+1)+q(q-1)/(2M)$ with its differentiated remainder, and using $\psi(q+1)=\log q+1/(2q)+O(q^{-2})$. The same analytic-disk method as in Section~\ref{sec:binary}, or fixed-order polygamma estimates, bounds the differentiated remainder and avoids differentiating an unspecified error term.
-At $q_0=ux_0/2$, \eqref{eq:fprimefine} yields
-\begin{equation}\label{eq:rfine}
+$q\log M-\log\Gamma(q+1)+q(q-1)/(2M)$ with its differentiated remainder, and using $\psi(q+1)=\log q+1/(2q)+O(q^{-2})$. The same analytic-disk method as in Section~\ref{pdt:sec:binary}, or fixed-order polygamma estimates, bounds the differentiated remainder and avoids differentiating an unspecified error term.
+At $q_0=ux_0/2$, \eqref{pdt:eq:fprimefine} yields
+\begin{equation}\label{pdt:eq:rfine}
  f_N'(x_0)=B_0/x_0+O(L^5/N^2),\qquad
  r=x_0+B_0/D+O(L^3/N).
 \end{equation}
 The last bound follows from one Newton correction and local concavity: the second-order phase term and the variation of the first correction each contribute $O(L^5/N^2)$ to the derivative equation, then division by $A\asymp L^2/N$ gives $O(L^3/N)$.
 
 Put $H_0(x)=-2N(N-x)/x^2$. At $x=x_0$,
-\begin{equation}\label{eq:H0values}
+\begin{equation}\label{pdt:eq:H0values}
  H_0=-u(u+2)/2,\qquad H_0'=F/x_0,\qquad H_0''=-G/x_0^2.
 \end{equation}
 Expansion of the exact penalty $h_N=H+J+O(L^6/N^2)$ at $x_0$ gives the cancellation
-\begin{equation}\label{eq:h0cancel}
+\begin{equation}\label{pdt:eq:h0cancel}
  h_N(x_0)=-u(u+2)/2+u/x_0+O(L^6/N^2).
 \end{equation}
 For clarity, expand $H=H_0(1-1/N)(1+1/x_0)^{-1}$ and
-$J=-x_0(N-x_0)(N-1)/(2M(x_0)^2)$. Their terms of order $x_0^{-1}$ sum to $u/x_0$; the omitted terms are bounded by $O(L^6/N^2)$. Transport to $r$ using \eqref{eq:rfine} adds $FB_0/(Dx_0)$ at the same accuracy.
+$J=-x_0(N-x_0)(N-1)/(2M(x_0)^2)$. Their terms of order $x_0^{-1}$ sum to $u/x_0$; the omitted terms are bounded by $O(L^6/N^2)$. Transport to $r$ using \eqref{pdt:eq:rfine} adds $FB_0/(Dx_0)$ at the same accuracy.
 
-In the Gaussian correction \eqref{eq:binary-first}, replace $A$ by $D/x_0$, $f_N'''$ by $E/x_0^2$, and the penalty derivatives by \eqref{eq:H0values}. All replacement errors are $O(L^8/N^2)$. Thus
-\begin{equation}\label{eq:rational-pre}
+In the Gaussian correction \eqref{pdt:eq:binary-first}, replace $A$ by $D/x_0$, $f_N'''$ by $E/x_0^2$, and the penalty derivatives by \eqref{pdt:eq:H0values}. All replacement errors are $O(L^8/N^2)$. Thus
+\begin{equation}\label{pdt:eq:rational-pre}
  p_Ne^{u(u+2)/2}
  =1+\frac1{x_0}\left[u+\frac{FB_0}D+\frac{F^2-G}{2D}
                               +\frac{EF}{2D^2}\right]+O(L^8/N^2).
@@ -73,7 +73,7 @@ Since $B_0=-F/2+1/u$, the two $F^2$ terms cancel. Rational simplification gives
  u+\frac{FB_0}D+\frac{F^2-G}{2D}+\frac{EF}{2D^2}
  =\frac{u(u^4+8u^3+22u^2+20u+8)}{2P(u)^2}.
 \]
-Finally $1/x_0=(u+2)/(2N)$, proving \eqref{eq:explicitratio}. Before cancellation individual corrections can have order $L^4/N$; their squares explain the safe $O(L^8/N^2)$ remainder. Cancellation of the coefficient does not justify shrinking that remainder. Since $\mathcal R(u)\sim u^2/4$ and $u\sim L$, \eqref{eq:ratiolimits} follows. Multiply \eqref{eq:explicitratio} by \eqref{eq:bcarrier} to obtain \eqref{eq:ccarrier}.
+Finally $1/x_0=(u+2)/(2N)$, proving \eqref{pdt:eq:explicitratio}. Before cancellation individual corrections can have order $L^4/N$; their squares explain the safe $O(L^8/N^2)$ remainder. Cancellation of the coefficient does not justify shrinking that remainder. Since $\mathcal R(u)\sim u^2/4$ and $u\sim L$, \eqref{pdt:eq:ratiolimits} follows. Multiply \eqref{pdt:eq:explicitratio} by \eqref{pdt:eq:bcarrier} to obtain \eqref{pdt:eq:ccarrier}.
 \end{proof}
 
 \subsection{A Lambert W equivalent}
@@ -84,19 +84,42 @@ If $w=W_0(\sqrt{N/2})$ and $v=2w$, then $v^2e^v=2N$. Comparing the increasing de
 \]
 For example, subtract their logarithms to get
 $u+2\log u+\log(1+2/u)=v+2\log v$, then use the mean-value theorem and one substitution. Therefore
-\begin{equation}\label{eq:Wratio}
+\begin{equation}\label{pdt:eq:Wratio}
  p_N\sim\exp(2-2w^2-2w).
 \end{equation}
-Its relative error is only $O(1/\log N)$, much weaker than \eqref{eq:explicitratio}. The factor $e^2$ cannot be discarded by replacing $u(u+2)$ by $u^2$ in the implicit equation.
+Its relative error is only $O(1/\log N)$, much weaker than \eqref{pdt:eq:explicitratio}. The factor $e^2$ cannot be discarded by replacing $u(u+2)$ by $u^2$ in the implicit equation.
 
 \subsection{Why the probability has this exponent}
 After subtracting the mandatory diagonal ones, a fixed-dimension table is a uniform weak composition of $q$ into $M$ cells. For any particular residual cell $X$,
-\begin{equation}\label{eq:celltail}
+\begin{equation}\label{pdt:eq:celltail}
  \Prob(X\ge k\mid m)=\frac{\fall qk}{\fall{M+q-1}k},\qquad 0\le k\le q.
 \end{equation}
 Here $\fall ak=a(a-1)\cdots(a-k+1)$, with $\fall a0=1$. The formula follows by subtracting $k$ from that cell and taking the ratio of the two composition counts. Let $D_{\rm bad}$ count diagonal cells with positive residual and $C_{\rm bad}$ count off-diagonal cells with residual at least two. Then
 \begin{align}
- \E(D_{\rm bad}\mid m)&=\frac{mq}{M+q-1},\label{eq:bad-diag}\\
- \E(C_{\rm bad}\mid m)&=\frac{(M-m)q(q-1)}{(M+q-1)(M+q-2)}.\label{eq:bad-coll}
+ \E(D_{\rm bad}\mid m)&=\frac{mq}{M+q-1},\label{pdt:eq:bad-diag}\\
+ \E(C_{\rm bad}\mid m)&=\frac{(M-m)q(q-1)}{(M+q-1)(M+q-2)}.\label{pdt:eq:bad-coll}
 \end{align}
 The first expectation is zero when $q=0$, and the second is zero when $q<2$; these conventions replace any degenerate rational expression. At an integer $m=x_0+O(\log N)$, these means are $u+o(1)$ and $u^2/2+o(1)$, respectively. Binary means both bad counts vanish, so these expectations explain the two parts of the exponent. They are an interpretation, not a proof of a relative zero-event probability. A total-variation or Gaussian approximation with a merely small absolute error could overwhelm this event. The exact product, strengthened tails and quotient expansion above prove the probability directly; no full collision-distribution theorem is claimed.
+
+\begin{remark}[{[write]} How slowly the displayed limits are approached]\label{pdt:rem:slowbinary}
+Added 5 October 2026, batch~102. At the sizes
+$N=100,500,1000,2000,4000,8000$ the intake compared the exact counts $b_N$
+and $c_N$ with their carriers, in 60-digit floating point (not interval
+arithmetic). The rational correction is
+accurate: $(p_Ne^{u^2/2+u}-1)/(\mathcal R(u)/N)$ equals $0.9984$, $0.9889$,
+$0.9895$, $0.9911$, $0.9929$, $0.9946$. So are the count carriers:
+$b_N$ divided by the carrier of \eqref{pdt:eq:bcarrier}, minus one, is
+$5.6$, $8.9$, $7.8$, $6.3$, $4.8$, $3.6$ in units of $10^{-3}$, and the same
+quantity for \eqref{pdt:eq:ccarrier} is $0.040$ at $N=100$ and $0.0050$ at
+$N=8000$.
+The scaled limits in \eqref{pdt:eq:ratiolimits}, however, use $u\sim\log N$,
+and $u/\log N\to1$ only slowly ($u=\log N-2\log\log N+\log2+o(1)$): at
+$N=8000$ the second quantity in \eqref{pdt:eq:ratiolimits} is $0.145$
+(limit $1/4$) and the third is $-0.284$ (limit $-1/2$). The Lambert form
+\eqref{pdt:eq:Wratio} has relative error $O(1/\log N)$, as stated: the
+exponent difference $(u^2/2+u)-(v^2/2+v-2)$ behaves like $4/v$ (checked to
+$N=10^{1000}$), and $p_N/\exp(2-2w^2-2w)$ is only between $0.50$ and $0.63$
+for the six sizes above. For numerical work, \eqref{pdt:eq:explicitratio}
+with the exact implicit $u$ should be used, not its limits. These are
+finite uncertified evaluations (compare Remark~\ref{pdt:rem:C1sign}).
+\end{remark}

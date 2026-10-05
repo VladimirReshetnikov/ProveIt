@@ -20,6 +20,12 @@
 \newcommand{\E}{\mathbb E}\newcommand{\Prob}{\mathbb P}\newcommand{\Var}{\operatorname{Var}}\newcommand{\asc}{\operatorname{asc}}
 \newcommand{\R}{\mathbb R}\newcommand{\Z}{\mathbb Z}\newcommand{\N}{\mathbb N}\newcommand{\dd}{\,\mathrm d}
 \newcommand{\ceil}[1]{\left\lceil #1\right\rceil}\newcommand{\fall}[2]{(#1)_{\underline{#2}}}
+% Added by the ProveIt write phase (batch 102, 5 October 2026): dated notes
+% marked [write], and a table package for the notation table.
+\usepackage{longtable}
+\newenvironment{writenote}[1][]{\par\smallskip\begingroup\small
+ \noindent\textbf{[write]}\if\relax\detokenize{#1}\relax\else~\textbf{#1.}\fi\ }%
+ {\par\endgroup\smallskip}
 \begin{document}
 \begin{center}
 {\large Report \ReportNumber}\par\vspace{8pt}
@@ -34,6 +40,23 @@ Let $b_N$ count nonnegative upper-triangular integer tables of total sum $N$ wit
 \]
 with prefactor $\sqrt{2/(u^2+4u+2)}$. The binary probability is asymptotic to $e^{-u^2/2-u}$; we give its explicit rational first correction and an all-fixed-order quotient algorithm. Smooth exact-saddle inverses yield two-ceiling integer brackets, and elementary inverse seeds have vanishing absolute error. The log-square factor, the rare-event tail scale and the rounding qualifications are essential. Exact enumeration and model identifications are credited to the historical literature. Finite reproducible computations are consistency checks, not interval certificates or substitutes for the proofs.
 \end{abstract}
+
+\begin{writenote}[Status and trust boundary, added 5 October 2026, batch~102]
+This is bundle Report~242, filed in ProveIt as a single-source research
+report (provenance, credits, notation and the collected non-claims in
+Section~\ref{pdt:sec:provenance}). It is AI-assisted, unrefereed and not
+formalized; its title page and PDF metadata name no person (author
+``Report 242''). The exact enumeration, the word/table bridge, the binary
+subclass, the multiplicity substitution and the $N\log N$ scale are prior
+results of the literature and of V\'aclav Kote\v{s}ovec's OEIS postings,
+credited in Section~\ref{pdt:sec:provenance}; the page-level readings of
+those sources are the source's (\nolinkurl{SOURCES.md}), not checked by
+ProveIt's intake. All $O$-constants and thresholds are non-effective, and
+the numerical checks of Section~\ref{pdt:sec:checks} are not interval
+certificates. The report answers the question of OEIS A098568 on the
+distribution of the row terms (Section~\ref{pdt:sec:dimension} and the note
+at its end).
+\end{writenote}
 \input{sections/01_models}
 \input{sections/02_saddle}
 \input{sections/03_localization}
