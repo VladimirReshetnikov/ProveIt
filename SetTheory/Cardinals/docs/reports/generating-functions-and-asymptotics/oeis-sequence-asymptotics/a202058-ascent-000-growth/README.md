@@ -1,10 +1,13 @@
 # Ascent Sequences Avoiding 000 (OEIS A202058)
 
-**Factorial growth constant, finer bounds, logarithmic-square growth and the ratio limit**
+**Factorial growth constant, finer bounds, logarithmic-square growth, the ratio limit and the endpoint laws**
 
 This research report was merged on 2 October 2026 from four manuscripts of
 batch 77. All four arrived in commit `096ee7b87` and were placed in
 `f76fcb566`. They form one chain, and each cites or bundles the one before it.
+On 5 October 2026 a fifth source, bundle Report 97 of batch 102, was written
+in as Part V (arrival `60f54ea06`, placement `6ab1f1979`). It cites none of
+the four.
 
 | Part | Source | Batch-77 manuscript | Archive (delivered main file, PDF pages) | Pin | Placed | Printed as |
 |---|---|---|---|---|---|---|
@@ -12,6 +15,7 @@ batch 77. All four arrived in commit `096ee7b87` and were placed in
 | II | fine addendum | 36 | `oeis-a202058-fine-report.zip` (`a202058-fine-addendum.tex`, 18 pp.) | `13ef7d939` | `f76fcb566` | Sections 9–20, equations (24)–(69) |
 | III | log-square report | 07 | `a202058-lognormal-report.zip` (`a202058-lognormal.tex`, 23 pp.) | `4b874cea0` | `f76fcb566` | Sections 21–32, equations (70)–(150) |
 | IV | ratio sequel | 08 | `a202058-ratio-report.zip` (`a202058-ratio.tex`, 14 pp.) | none | `f76fcb566` | Sections 33–41, equations (151)–(209) |
+| V | growth-constant report | bundle Report 97 (batch 102) | `A202058_Ascent_Sequence_Growth_Source.zip` (`article.tex` + 9 section files; no PDF delivered, 23 pp. when rebuilt) | none | `6ab1f1979` | Sections 42–49, equations (210)–(285); Section 50 added |
 
 The pins are the ProveIt commits named by each delivery's repository
 search. Part I's pin `0870c19bb` is in its literature note
@@ -19,13 +23,15 @@ search. Part I's pin `0870c19bb` is in its literature note
 manuscript 36. Part II's pin is in `36-fine-literature.md`, line 44. Part
 III's pin is printed in its Section 31 and recorded in
 `data/07-lognormal-source-audit-public-sources.json`. Manuscript 08 names
-no pin and reports no repository search.
+no pin and reports no repository search. Report 97 names no pin, does not
+mention this repository and did not know Parts I–IV.
 
 Delivered author lines: "A proof and reproducible research report" (37),
 "A mathematical addendum with reproducible computations" (36), "A self
 contained mathematical and reproducibility report" (07), "A sequel with
 complete proofs and reproducibility materials" (08). None names a person
-or a tool.
+or a tool. Report 97's author line (TeX and PDF metadata) is "Research
+report prepared with OpenAI".
 
 **Status.** The report is AI-assisted and unrefereed, and nothing in it is
 formalized. Its proofs have been checked only by the reviews and audits
@@ -67,6 +73,25 @@ Write `T = 3π²/8`, `μ = 1/T = 8/(3π²) = 0.27018982304623405718…`, and
   exact counterexample to a "childwise" strengthening of log-concavity
   (Section 40.1), and two scans of 48,510,450 inequalities each in which no
   log-concavity violation was found.
+- **Part V** (bundle Report 97; its `c_n` is the raw count `a_n`):
+  Theorem 42.1 is a third proof of the root limit (error `o(n)` only),
+  by a finite Perron bound with a calibrated weight and buffered
+  Eulerian blocks; Theorem 46.1 is a second proof of the ratio limit,
+  without a rate. New in the repository: the two-catalytic functional
+  equation `H(x; s+x(t−1), t) = t H(x; s, t−xs(t−1)) − xst(t−1)` and its
+  coefficient recurrence (Proposition 43.1); the weighted upper bound
+  `limsup n^{-1} log(H_n(s,t)/n!) ≤ −log χ(s,t)` (Proposition 46.3); the
+  endpoint laws (Corollary 46.4, equation (276)): the proportions of values
+  used once, unused available values, distinct values and ascents tend to
+  `1 − 8/(3π)`, `8(π+1)/(3π²) − 1`, `1 − 4/(3π)` and `4/(3π) + 8/(3π²)`,
+  with exponentially small deviations; strict monotonicity
+  `a_{n+1} > a_n` (Lemma 47.1); exact counts `a_0, …, a_395`, equal to
+  Part II's independent table. Its inverse (Corollary 47.2) is weaker
+  than those of Parts II and IV. Section 48 is a second formal route to
+  the constant 2/3. Part V is the cap-two case of Part III of
+  `../a294220-ascent-multiplicity-caps/` (bundle Report 99, same method),
+  which proves the root and ratio limits, the endpoint laws (as
+  integrals) and a full large-deviation principle for every cap.
 
 **What no Part claims.** No Part proves the pointwise law
 `log c_n ~ (2/3)(log n)^2`, which is open in Part II (Conjecture 16.1),
@@ -83,7 +108,19 @@ novelty or priority certificates; no Part claims publication. Part IV's
 counterexample refutes an inequality that Part IV itself proposes, which
 no other Part and no report of this collection states. It refutes no
 delivered or repository claim and does not refute statewise
-log-concavity.
+log-concavity. Part V keeps Report 97's non-claims: no convergence rate of
+the ratios, no amplitude or equivalent, the factor
+`exp((2/3)(log n)^2)` and an all-orders expansion "not proved"; its
+floating data are not interval certified; no exact rounding rule for its
+inverse; a bounded literature search, no priority claim, no publication
+or OEIS submission. Its unproved claims are listed in its Section 50
+(standing rule of 4 October 2026): the pointwise law; the formal
+eikonal, transport and Borel-singularity reading of Section 48; the
+numerical `d_n → 4/3`; the `O(n^4)`-operation, `O(n^3)`-storage count
+(settled at the write by Corollary 18.3 of the A294220 report at cap two);
+and the warning that a cutoff `10^-30` corrupts later ratios (supported at
+the write by a rerun to n = 400, see Rerunning). No claim of Report 97 was
+found to be wrong.
 
 **Statements that a later Part supersedes** are printed as delivered, each
 followed by a dated `[write]` note:
@@ -93,6 +130,10 @@ followed by a dated `[write]` note:
 - "the coefficient 2/3 is unproved" (Part II). Part III proves it in
   limsup and cumulative form.
 - Part II's Theorem 9.1 and Corollary 9.2. Part IV improves both.
+- Report 97 (Part V, §§42 and 49) calls the stretched factor
+  `μ₁^{n^σ} n^g` of Conway–Conway–Elvey Price–Guttmann "unresolved";
+  Parts II and III exclude it for either sign. Its literature paragraph
+  (§42) found no proof of the root limit; Part I is one, dated 1 October.
 
 Part III's `limsup` theorem also rules out an equivalent of Part II's form
 with `c < 0`. The merge added this one-line deduction in a `[write]` note
@@ -100,11 +141,11 @@ after Part II's §9; the manuscripts do not state it.
 
 ## Files
 
-The numerals I–IV name the Part that a delivered file belongs to.
+The numerals I–V name the Part that a delivered file belongs to.
 
 ```
 article.tex                                                   the merged report (standalone LaTeX, internal bibliography)
-article.pdf                                                   the compiled report, 72 pages
+article.pdf                                                   the compiled report, 101 pages
 README.md                                                     this guide
 figures/36-fine-correction-diagnostics.pdf                    II: Figure 1, included by article.tex
 figures/36-fine-correction-diagnostics.png                    II: the same figure as PNG (not used by the build)
@@ -225,11 +266,22 @@ data/08-ratio-results-a_seq_m.json                            IV: a_n, n = 0..18
 data/08-ratio-results-concavity_violations.json               IV: violations of the first scan: []
 data/08-ratio-results-m_concavity_violations.json             IV: violations of the second scan: []
 data/08-ratio-results-finite-scope.json                       IV: domain of the two scans
+code/38-growth-run_checks.sh                                  V: delivered check driver (delivery layout, g++ with GMP, python3)
+code/38-growth-build_local.sh                                 V: delivered PDF build (builds article.tex; also Report 99's, byte-identical)
+code/38-growth-compute_exact.cpp                              V: exact GMP transfer (C++17, gmpxx)
+code/38-growth-compute_distribution.cpp                       V: normalized long-double transfer with a mass cutoff
+code/38-growth-verify.py                                      V: exact-data, small-word and numerical-table verifier
+code/38-growth-test_verify.py                                 V: fail-closed regression tests of verify.py
+data/38-growth-exact_coefficients_395.txt                     V: exact a_n, n = 0..395
+data/38-growth-normalized_transfer_cut120.txt                 V: floating run, cutoff 1e-120, n = 1..1200
+data/38-growth-normalized_transfer_cut200.txt                 V: floating run, cutoff 1e-200 (same bytes as cut120)
+data/38-growth-verification.txt                               V: recorded output of run_checks.sh
+data/38-growth-PROVENANCE.json                                V: sources, proved / not-proved lists, checks, SHA-256 of the delivery
 ```
 
-The directory holds 122 files: 23 at the root (`article.tex`,
-`article.pdf`, this README and 20 delivered Markdown notes), 33 in `code/`,
-64 in `data/` and 2 in `figures/`. Every file except `article.tex`,
+The directory holds 133 files: 23 at the root (`article.tex`,
+`article.pdf`, this README and 20 delivered Markdown notes), 39 in `code/`,
+69 in `data/` and 2 in `figures/`. Every file except `article.tex`,
 `article.pdf` and `README.md` is byte-identical to the delivery.
 
 **Delivery names.** Files were renamed when placed: delivered
@@ -269,6 +321,22 @@ files:
 - `data/36-fine-qa-final-reviewed-render-hashes.txt` lists the excluded
   renders by the absolute delivery path
   `/workspace/shared/oeis-a202058-fine-report/qa/page-NN.png`.
+- Part V (placement plan `plan99_102-ASC_01.tsv`): Report 97's
+  `checks/` level was dropped from the names, so delivered
+  `checks/verify.py` is `code/38-growth-verify.py` and
+  `checks/exact_coefficients_395.txt` is
+  `data/38-growth-exact_coefficients_395.txt`; the root files
+  `run_checks.sh`, `build_local.sh` and `PROVENANCE.json` became
+  `code/38-growth-*.sh` and `data/38-growth-PROVENANCE.json`.
+  `run_checks.sh` compiles `checks/compute_exact.cpp` into `checks/build/`
+  and runs `checks/verify.py`; `verify.py` reads its data from its own
+  directory under the delivered names, including `oeis_b202058.txt`, which
+  is not shipped (it is byte-identical to
+  `data/36-fine-numerics-oeis-b202058.txt`). `build_local.sh` builds the
+  unshipped `article.tex` with a TeX Live layout. `PROVENANCE.json` hashes
+  the unshipped manuscript files and README and gives `pdf_sha256` of a
+  PDF that was never delivered (no file of the archive has that hash).
+  `data/38-growth-verification.txt` prints the replay output twice.
 
 **Not shipped** (all survive in `096ee7b87`): the four delivered PDFs and
 the four delivery READMEs. This README replaces them. The `README.md`
@@ -282,6 +350,14 @@ to Part I's, and 08's `prior/` copy of manuscript 07. Nor are the
 superseded render-hash list, 36's PDF text extraction
 `qa/extracted-text.txt`, 36's two empty compile logs, or the 18 page
 renders described next.
+
+Not shipped from Report 97 (all in `60f54ea06`, archive
+`A202058_Ascent_Sequence_Growth_Source.zip`): its manuscript (`article.tex`,
+the nine section files and `article_standalone.tex`, printed as Part V),
+its delivery README, and `checks/oeis_b202058.txt` (byte copy of Part II's
+b-file, above). Its README lists an `article.pdf` that the archive does not
+contain; a rebuild of the delivered source at intake had 23 pages, the
+count `PROVENANCE.json` records. Nothing was excluded as heavy.
 
 **Kept duplicates.** These shipped files are byte-identical in pairs or
 triples, because the delivered scripts read each by its own name:
@@ -304,6 +380,8 @@ triples, because the delivered scripts read each by its own name:
 - `data/36-fine-checks-full-replay-summary.json` and
   `data/36-fine-full-replay-output.txt`.
 - `data/36-fine-qa-structural-check.json` and `-structural-check-output.txt`.
+- `data/38-growth-normalized_transfer_cut120.txt` and `-cut200.txt` (the
+  two cutoffs give the same printed digits; `verify.py` reads both names).
 
 **Figure fonts.** The delivered figure
 `figures/36-fine-correction-diagnostics.pdf` embeds two Type 3 DejaVu Sans
@@ -407,6 +485,25 @@ is the Microsoft Store alias. In Git Bash, define a shim first:
   minute each recorded). It writes to `build/replay/` (or
   `$A202058_REPLAY_OUT`). At intake the core checks passed and equalled
   the frozen results; the full scans were not run.
+- **Part V** (Report 97, arrival `60f54ea06`):
+  `git show 60f54ea06:docs/incoming/A202058_Ascent_Sequence_Growth_Source.zip > r97.zip`,
+  unzip, then in `A202058_Ascent_Sequence_Growth/` run `py checks/verify.py`
+  (exact data, small words, catalytic recurrence and the numerical tables;
+  about 2 s; the GMP rebuild line needs `--rebuilt`), `py
+  checks/test_verify.py` and `py -O checks/test_verify.py` (4 tests each,
+  15–20 s). The full `bash run_checks.sh 176` (or `395`) needs `g++` with
+  the GMP C++ library (`-lgmpxx`), which this machine lacks, and
+  `python3`. At intake (5 October 2026, on copies) `verify.py` reproduced
+  every line of `verification.txt` except the GMP-rebuild line, both test
+  runs passed, a fresh Python transfer matched the archived table for
+  n ≤ 60, and the 396 archived counts equalled Part II's table. At the write
+  `compute_distribution.cpp` (no GMP needed) was compiled with WinLibs
+  `g++ -O3 -std=c++17` and run on a copy: `./cd 400 1e-120` reproduced rows
+  1–400 of `data/38-growth-normalized_transfer_cut120.txt` byte for byte
+  (9 s), and `./cd 400 1e-30` (3 s) gave ratio errors of −4.7e-12, −3.3e-8
+  and −7.3e-6 at n = 200, 300, 395 against the exact table, which supports
+  the delivered warning about that cutoff. The 1200-row long-double runs
+  were not repeated.
 
 ## Labels
 
@@ -420,7 +517,12 @@ in Part I (`a58:fd:sec:recurrence`, `…:radius`, `…:fulllimit`,
 (`a58:ln:sec:allindex`), four Part labels (`a58:part:fd`, `…:fn`,
 `…:ln`, `…:rt`), and four front-matter labels (`a58:sec:guide`,
 `…:status`, `…:notation`, `…:provenance`). That makes 280 labels; the
-placed `article.tex` (manuscript 37 alone) had 28.
+placed `article.tex` (manuscript 37 alone) had 28. The batch-102 write
+added Part V under `a58:eg:` ("exponential growth"): Report 97's 103
+delivered labels keep their names after the sub-prefix (for example
+`a58:eg:thm:main`, `a58:eg:low:theorem`, `a58:eg:rat:joint`), plus
+`a58:part:eg` and `a58:eg:sec:further`; 385 labels in all, none of the
+280 renamed or renumbered (checked against a build of the committed text).
 
 The sub-prefixes were needed: the four manuscripts share 27 label names.
 `thm:main` occurs in all four. `eq:FK` (36, 37) and `eq:fk` (07, 08)
@@ -440,6 +542,7 @@ Sections, statements and equations are numbered continuously.
 | II | Section k + 8 (its Appendix A is Section 20) | (k + 23) |
 | III | Section k + 20 | (k + 69) |
 | IV | Section k + 32 | (k + 150) |
+| V | Section k + 41 (Section 50 added at the write) | (k + 209) |
 
 Statement numbers follow their sections. For example, Part II's
 Theorem 1.1 is Theorem 9.1 here, and Part IV's Theorem 1.1 is
@@ -497,6 +600,36 @@ II's identity (66) and target (67) as (166) and (205) without credit. The
 note after its §21 supplies the attribution, confirmed by its proof-input
 fingerprint: the SHA-256 `0c5fdcd5…` of `36-fine-padded-barrier-proof.md`.
 
+**Changes at the batch-102 write (5 October 2026).** Report 97 is printed
+in full as Part V, after Part IV, from its first section to its
+bibliography (`article_standalone.tex` equals the expansion of its
+`article.tex`). Changes: the labels above; its title block became the Part
+heading and its abstract is printed as delivered; its table of contents and
+`\clearpage` were dropped; its macros were added to the preamble, except
+that its `\dd` (an upright d) is printed by `\egdd`, because this report's
+`\dd` sets an italic d; its citation keys `Conway2022` → `CCEG` and `OEIS`
+→ `OEIS` (both entries gained its details), and `DS2011` and `ConwayData`
+are new entries. Seventeen dated `[write]` notes (5 October 2026): the
+Part-head reading note; three in §42 (stretched factor excluded; third
+route to the root limit; literature status); two in §43 (the state is Part
+I's `(s,u,k)`; the catalytic equation is new, its recurrence checked with
+SymPy through n = 9); §44 (second evaluation of 3π²/8); three in §46
+(second route to the ratio limit; weighted bound superseded; endpoint
+laws); §47 (inverse weaker); §48 (2/3 proved in limsup and cumulative
+form); §49 (shipped files, the cutoff rerun, the operation count); the
+list of Section 50, "Further questions and research", a section added at
+the write; one after Part II's Conjecture 16.1 (neighbouring reports); and
+two in the front matter (Part V added; a294220 now shares theorems).
+
+**OEIS data.** The b-file and the exact OEIS terms compared by the checks
+(`data/36-fine-numerics-oeis-b202058.txt`, the counts quoted in the
+Parts) come from the OEIS and are licensed CC BY-SA 4.0. The title, author line, abstract and front-matter
+tables were extended to five Parts; the earlier wording is recorded in a
+dated note in the guide. Where the write had to choose: Report 97 is not
+merged with its generalization Report 99, which went to
+`a294220-ascent-multiplicity-caps` as Part III; the batch-77P2 split (cap
+two here, every cap there) is kept and the two Parts cite each other.
+
 ## Relation to other reports and to formal work
 
 - `../a202061-ascent-120-deficit/` and
@@ -509,8 +642,30 @@ fingerprint: the SHA-256 `0c5fdcd5…` of `36-fine-padded-barrier-proof.md`.
   the factorial growth constants `T_b` for every fixed `b ≥ 3`, their
   large-cap expansion and exact Taylor sectors of `T_b − π²/6`. For `b = 2`
   it cites this report's Part I (`T_2 = 3π²/8` and the root limit) and uses
-  nothing else from here; no other theorem is shared. Dated `[write]` note
-  in the guide.
+  nothing else from here. Dated `[write]` note in the guide. Since 5 October
+  2026 the two reports share theorems: that report's Part III (bundle
+  Report 99) proves the root and ratio limits, the endpoint laws, a full
+  large-deviation principle and an `O(N^{r+2})` algorithm for every cap
+  `r ≥ 2`, and this report's Part V (Report 97) is its case `r = 2`, by the
+  same method (second dated note in the guide).
+- `../a202059-ascent-100-110-growth/` (batch 102, Reports 243 and 241)
+  treats the 100- and 110-avoiding ascent sequences of the same
+  Conway–Conway–Elvey Price–Guttmann paper (A202059, A202060). Its class
+  avoiding 000 and 100 is a subclass of A202058; there the factorial-
+  normalized root is `Θ((log n)^{-2})` (tending to 0, with
+  `(log n)²(e_n/n!)^{1/n} → 2`), against `8/(3π²)` here. No theorem is
+  shared. Note that report's `aₙ` avoids 100 and its `cₙ` avoids 000, 100,
+  110 simultaneously.
+- `../a336070-weak-ascents/` (batch 102, Reports 105, 107, 108) treats weak
+  and difference ascent sequences, with factorial constant 6/π² and the
+  pointwise correction `(d/2)(log n)²` with `O(log n)` remainder for every
+  fixed difference `d ≥ 1` (`wasc:sh:thm:main`), by a path change of
+  measure. It is the proved analogue of this report's open pointwise law
+  with coefficient 2/3, not a proof of it; no theorem is shared. A dated
+  note after Conjecture 16.1 points to both batch-102 neighbours.
+- `../a098569-self-modified-ascents/`: self-modified ascent sequences
+  (positive-diagonal tables, A098569/A121690), a different model on an
+  `N log N` scale; no shared theorem.
 - `../a126764-lconvex-polyominoes/` cites the Guttmann–Kotěšovec paper on
   201-avoiding ascent sequences; it does not treat A202058.
 - Every inverse in this report uses the Lambert-W approximation
@@ -532,8 +687,10 @@ From a copy of this directory with `figures/` alongside:
 
 This uses pdfLaTeX with amsmath, amssymb, amsthm, mathtools, graphicx,
 booktabs, array, enumitem, hyperref, xurl, lmodern and microtype. The
-build at the write (MiKTeX, 2 October 2026) gave 72 pages, with 0 errors,
-0 undefined references or citations, 0 multiply defined labels, 0
-duplicate PDF destinations and 0 overfull boxes. Three underfull boxes
-remain, in the bibliography's URL lines. Build in a scratch directory and
+build at the batch-102 write (MiKTeX, 5 October 2026) gave 101 pages
+(front matter 1–11, Part I 12–20, Part II 21–39, Part III 40–61, Part IV
+62–75, Part V 76–101, references 101), with 0 errors, 0 undefined
+references or citations, 0 multiply defined labels, 0 duplicate PDF
+destinations and 0 overfull boxes. Three underfull boxes remain, in the
+bibliography's URL lines, as in the build of the committed text. Build in a scratch directory and
 copy back only `article.pdf`.

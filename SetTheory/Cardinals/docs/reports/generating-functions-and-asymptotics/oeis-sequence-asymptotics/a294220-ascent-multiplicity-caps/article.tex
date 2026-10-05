@@ -9,7 +9,7 @@
 \usepackage{enumitem,longtable,array}
 \setlist{itemsep=3pt,topsep=5pt}
 \allowdisplaybreaks[2]
-\hypersetup{pdftitle={Ascent sequences with bounded multiplicity (OEIS A294220)},pdfsubject={Factorial growth constants of every multiplicity cap b>=3, the large-cap expansion and its fixed Taylor sectors, for OEIS A294220 and A317784; merged from two manuscripts of batch 77}}
+\hypersetup{pdftitle={Ascent sequences with bounded multiplicity (OEIS A294220)},pdfsubject={Factorial growth constants, ratio limits and endpoint laws of every multiplicity cap, the large-cap expansion and its fixed Taylor sectors, for OEIS A294220, A202058 and A317784; merged from two manuscripts of batch 77 and one report of batch 102}}
 \newtheorem{theorem}{Theorem}[section]
 \newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{proposition}[theorem]{Proposition}
@@ -25,23 +25,42 @@
 \newcommand{\Err}{\mathcal E}
 % Part II (source 52)
 \newcommand{\RR}{\mathcal R}
+% Part III (bundle Report 99); its \DeclareMathOperator{\asc} is the \asc above
+\newcommand{\ee}{\mathrm e}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\ind}[1]{\mathbf1_{\{#1\}}}
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\cA}{\mathcal A}
+\newcommand{\cL}{\mathcal L}
+\newcommand{\bX}{\boldsymbol X}
+\newcommand{\bu}{\boldsymbol u}
+\newcommand{\bx}{\boldsymbol x}
+\newcommand{\by}{\boldsymbol y}
+\newcommand{\bp}{\boldsymbol p}
+\newcommand{\btheta}{\boldsymbol\theta}
+\DeclareMathOperator{\dist}{dist}
+\DeclareMathOperator{\Pois}{Pois}
+\DeclareMathOperator{\GammaDist}{Gamma}
 % Notes added when the two manuscripts were merged into this report
 \newenvironment{writenote}{\par\smallskip\begin{quote}\small\textbf{[write, 2 October 2026]}\ }{\end{quote}\smallskip}
+% Notes added when bundle Report 99 was written in as Part III (batch 102)
+\newenvironment{writenotedated}[1]{\par\smallskip\begin{quote}\small\textbf{[write, #1]}\ }{\end{quote}\smallskip}
 \newenvironment{partsource}{\par\medskip\noindent\begin{minipage}{\linewidth}\small\raggedright\textit{Source.}\ }{\end{minipage}\par\medskip}
 \newenvironment{partabstract}{\par\begin{quote}\small\textbf{Abstract (as delivered).}\ }{\end{quote}\par}
 \expandafter\def\expandafter\UrlBreaks\expandafter{\UrlBreaks\do\_\do-\do/}
 \Urlmuskip=0mu plus 1mu
 \newcommand{\repopath}[1]{\nolinkurl{#1}}
 \title{Ascent sequences with bounded multiplicity (OEIS A294220)\\[4pt]
-\large Factorial growth constants of every cap $b\ge3$, and fixed Taylor sectors of the large-cap expansion}
-\author{A merged research report built from two manuscripts\\
-(batch 77, manuscripts 47 and 52)}
-\date{Manuscripts dated 1 October 2026; merged 2 October 2026}
+\large Factorial growth constants of every cap, fixed Taylor sectors of the large-cap expansion,\\ and the ratio and endpoint laws}
+\author{A merged research report built from three manuscripts\\
+(batch 77, manuscripts 47 and 52; batch 102, bundle Report 99)}
+\date{Manuscripts dated 1 and 2 October 2026; merged 2 October 2026; Part III added 5 October 2026}
 \begin{document}
 \hypersetup{pageanchor=false}
 \maketitle
 \begin{abstract}
-Let $a_n^{(b)}$ count ascent sequences of length $n$ in which each value occurs at most $b$ times (the array OEIS A294220; cap three is A317784, cap two A202058). This report prints two manuscripts as two Parts. Part~\ref{amc:part:fc} proves, for every fixed $b\ge3$, that $(a_n^{(b)}/n!)^{1/n}\to\mu_b=1/T_b$ with $T_b=\int_0^\infty\log E_b(v)/(E_b(v)-1)\,dv$ and $E_b$ the truncated exponential, with a coarse error $O_b(n/\log n)$ in $\log a_n^{(b)}$, a controlled Lambert-$W$ inverse in the length, the large-cap expansion $T_b=\pi^2/6+(b+1)(\zeta(b+2)-1)+O(b^{5/2}(4/9)^b)$ with explicit constants, and a rounding-safe inverse in the cap with counterexamples to naive rounding; the cap-two input $T_2=3\pi^2/8$ is taken from the sibling report on A202058. Part~\ref{amc:part:sec} writes $T_b-\pi^2/6$ exactly as a convergent sum of positive Taylor sectors $A_{r,b}$, proves that the remainder after any fixed number $K$ of sectors is asymptotic to sector $K+1$, and expands every fixed sector to all algebraic orders in $1/b$; in particular the remainder of Part~\ref{amc:part:fc} is $\sim\frac8{9\sqrt\pi}\sqrt b\,(4/9)^b$. No prefactor, ratio limit or all-orders expansion in $n$ for $b\ge3$, no joint regime $b=b(n)$, and no uniformity in a growing number of sectors is claimed. The report is unrefereed, and none of it is formalized.
+Let $a_n^{(b)}$ count ascent sequences of length $n$ in which each value occurs at most $b$ times (the array OEIS A294220; cap three is A317784, cap two A202058). This report prints three manuscripts as three Parts. Part~\ref{amc:part:fc} proves, for every fixed $b\ge3$, that $(a_n^{(b)}/n!)^{1/n}\to\mu_b=1/T_b$ with $T_b=\int_0^\infty\log E_b(v)/(E_b(v)-1)\,dv$ and $E_b$ the truncated exponential, with a coarse error $O_b(n/\log n)$ in $\log a_n^{(b)}$, a controlled Lambert-$W$ inverse in the length, the large-cap expansion $T_b=\pi^2/6+(b+1)(\zeta(b+2)-1)+O(b^{5/2}(4/9)^b)$ with explicit constants, and a rounding-safe inverse in the cap with counterexamples to naive rounding; the cap-two input $T_2=3\pi^2/8$ is taken from the sibling report on A202058. Part~\ref{amc:part:sec} writes $T_b-\pi^2/6$ exactly as a convergent sum of positive Taylor sectors $A_{r,b}$, proves that the remainder after any fixed number $K$ of sectors is asymptotic to sector $K+1$, and expands every fixed sector to all algebraic orders in $1/b$; in particular the remainder of Part~\ref{amc:part:fc} is $\sim\frac8{9\sqrt\pi}\sqrt b\,(4/9)^b$. Part~\ref{amc:part:bm}, which writes the cap as $r$, proves for every fixed $r\ge2$ both the root limit and the consecutive-ratio limit $a^{(r)}_{n+1}/((n+1)a^{(r)}_n)\to\mu_r$, exponentially concentrated multiplicity, distinct-value and ascent proportions with a full large-deviation principle, and an $O_r(n^{r+2})$ counting algorithm; it re-derives the large-cap analysis in the variable $r+1$ and adds a continuous cap and exact-sector inverse envelopes. No prefactor or all-orders expansion in $n$, no joint regime $b=b(n)$, and no uniformity in a growing number of sectors is claimed. The report is unrefereed, and none of it is formalized.
 \end{abstract}
 \setcounter{tocdepth}{2}
 \tableofcontents
@@ -50,13 +69,17 @@ Let $a_n^{(b)}$ count ascent sequences of length $n$ in which each value occurs 
 \section*{Guide to this report}
 \addcontentsline{toc}{section}{Guide to this report}
 \phantomsection\label{amc:guide}
-This guide was written when the two manuscripts were merged. Everything after it, from Part~\ref{amc:part:fc} on, is the manuscripts' text, except for the passages marked \textbf{[write, 2 October 2026]} and the changes listed under ``Conventions of the merge'' below.
+This guide was written when the two manuscripts were merged. Everything after it, from Part~\ref{amc:part:fc} on, is the manuscripts' text, except for the passages marked \textbf{[write, 2 October 2026]} and the changes listed under ``Conventions of the merge'' below. Part~\ref{amc:part:bm} was added at the batch-102 write of 5 October 2026, with the passages marked \textbf{[write, 5 October 2026]} and the Guide's statements about Part~\ref{amc:part:bm}.
+\begin{writenotedated}{5 October 2026}
+Until this write the subtitle read ``Factorial growth constants of every cap $b\ge3$, and fixed Taylor sectors of the large-cap expansion'', the abstract said that no ratio limit was claimed for $b\ge3$, and the Guide described two Parts. Part~\ref{amc:part:bm} covers every cap $r\ge2$ ($r$ is the $b$ of Parts~\ref{amc:part:fc} and~\ref{amc:part:sec}) and proves the ratio limit. The title block, the abstract and this Guide were updated; the earlier statements remain true of Parts~\ref{amc:part:fc} and~\ref{amc:part:sec}.
+\end{writenotedated}
 
 \subsection*{What the report proves}
 \phantomsection\label{amc:guide:results}
 \begin{itemize}
 \item \textbf{Part~\ref{amc:part:fc}} (source 47). Lemma~\ref{amc:lem:swap} and Section~\ref{amc:sec:compaction}: an exact compaction by a suffix involution, for every cap. Theorem~\ref{amc:thm:fixed}: for every fixed $b\ge3$ the exponential generating function has radius $T_b$, and $\log a_n^{(b)}=\log n!-n\log T_b+O_b(n/\log n)$, by uniform positive-operator barriers (Sections~\ref{amc:sec:barrier}--\ref{amc:sec:comparison}) and a coefficient extraction at every length (Section~\ref{amc:sec:coefficients}). Section~\ref{amc:sec:lengthinverse}: the length inverse $N_b(X)=n_0+O_b(L/(\log L)^3)$, $n_0=L/W_0(L/(eT_b))$. Theorem~\ref{amc:thm:cap} and Section~\ref{amc:sec:largecap}: monotone convergence $T_b\downarrow\pi^2/6$, the exact first variation $(b+1)(\zeta(b+2)-1)$ and the explicit bound $0\le T_b-\pi^2/6-(b+1)(\zeta(b+2)-1)\le160b^{5/2}(4/9)^b$ for every $b\ge3$. Section~\ref{amc:sec:capinverse}: the $W_{-1}$ cap inverse with integer brackets \eqref{amc:eq:rounding}, \eqref{amc:eq:explicitround}, and counterexamples to rounding by $\lceil b_0\rceil$.
 \item \textbf{Part~\ref{amc:part:sec}} (source 52). Theorem~\ref{amc:sec:thm:exact}: $T_b-\pi^2/6=\sum_{r\ge1}A_{r,b}$ with strictly positive sectors, for every $b\ge2$; for fixed $K$ the remainder $\RR_{K,b}$ is positive and $\RR_{K,b}\sim A_{K+1,b}$. Theorem~\ref{amc:sec:thm:algebraic}: $A_{r,b}=C_rb^{(3-r)/2}\beta_r^b(\sum_jc_{r,j}b^{-j}+\cdots)$ to every fixed order, with $\beta_r=(r/(r+1))^r$, rational $c_{r,j}$, explicit $c_{r,1}$, three corrections for $r=2,3$, and $A_{1,b}=(b+1)(\zeta(b+2)-1)$ exactly. Corollary~\ref{amc:sec:cor:reciprocal}: the same for $6/\pi^2-\mu_b$.
+\item \textbf{Part~\ref{amc:part:bm}} (bundle Report~99; cap written $r$). Theorem~\ref{amc:bm:thm:growth}: for every fixed $r\ge2$, $(a^{(r)}_n/n!)^{1/n}\to\mu_r$ and $a^{(r)}_{n+1}/((n+1)a^{(r)}_n)\to\mu_r$; the ratio limit is new for $r\ge3$. Theorem~\ref{amc:bm:thm:endpoints}: the proportions of values used $k$ times, of distinct values and of ascents converge, with exponentially small deviations; Theorems~\ref{amc:bm:thm:pressure} and~\ref{amc:bm:thm:LDP}: the weighted growth formula $\lim N^{-1}\log(H_N(\bu)/N!)=-\log\chi(\bu)$ and a full large-deviation principle for the endpoint. Proposition~\ref{amc:bm:prop:recurrence} and Corollary~\ref{amc:bm:cor:algorithm}: a histogram-preserving sorted recurrence and $O_r(N^{r+2})$ enumeration. Corollary~\ref{amc:bm:cor:inverse}: a length inverse (weaker than Section~\ref{amc:sec:lengthinverse}). Section~\ref{amc:bm:sec:largecap}: the large-cap analysis again, in $R=r+1$, with a continuous cap, exact-sector envelopes $R_K$, their displacements and a two-candidate cap selection (Corollary~\ref{amc:bm:cap:two-candidates}).
 \end{itemize}
 
 \subsection*{Sources and provenance}
@@ -75,13 +98,26 @@ II & 52 & \texttt{oeis-fixed-sector-addendum.zip},\newline \texttt{fixed-sector-
 \end{tabular}
 \end{center}
 
+\noindent\textbf{Part III.} Bundle Report~99, archive \repopath{Ascent_Sequences_with_Bounded_Multiplicities_Source.zip}, arrived in commit \texttt{60f54ea06} and was placed by \texttt{6ab1f1979} (batch 102); it is dated 2 October 2026, its author line is ``Research report prepared with OpenAI'', and it pins no commit and names neither this repository nor Parts~\ref{amc:part:fc} and~\ref{amc:part:sec}. Its \texttt{MANIFEST.sha256} (31 entries) and the payload hashes of its \texttt{PROVENANCE.json} (30) matched the delivery at placement. Its companion for the cap two, bundle Report~97, is Part~V of the sibling report \repopath{a202058-ascent-000-growth}.
+
+\begin{center}
+\footnotesize\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}llp{0.55\linewidth}lll@{}}
+\toprule
+Part & Source & Archive and main file & Pages & Labels & Prefix\\
+\midrule
+III & Report 99 & \repopath{Ascent_Sequences_with_}\newline\repopath{Bounded_Multiplicities_Source.zip}, \texttt{article.tex}\newline (63 lines) with 11 section files & 28 & 119 & \texttt{amc:bm:}\\
+\bottomrule
+\end{tabular}
+\end{center}
+
 \noindent\textbf{Nesting.} Source 52 is an addendum of source 47: it refines the large-cap analysis of $T_b$ and takes the identification $\mu_b=1/T_b$ and both inverses from source 47 (bibliography key \texttt{main}), without repeating their proofs. It does not bundle source 47; its archive carries four replay outputs byte-identical to its own saved results, which were not staged.
 
-\noindent\textbf{Where the merge had to choose.} (i) The Parts follow the dependency order 47, 52. (ii) Both sources are printed in full; nothing of either is omitted except the title blocks and the bibliographies, which are merged below. (iii) Source 52 re-derives source 47's first variation $(b+1)(\zeta(b+2)-1)$ by a different computation; it is kept as a marked second proof. (iv) Source 47's remainder bound $O(b^{5/2}(4/9)^b)$ is not sharp in its power of $b$; source 52's sharp asymptotic is printed beside it in dated notes, and both are kept, because source 47's bound has explicit constants and its integer brackets use them. (v) No symbol was renamed; the notation table below separates the letters the two sources use differently.
+\noindent\textbf{Where the merge had to choose.} (i) The Parts follow the dependency order 47, 52. (ii) Both sources are printed in full; nothing of either is omitted except the title blocks and the bibliographies, which are merged below. (iii) Source 52 re-derives source 47's first variation $(b+1)(\zeta(b+2)-1)$ by a different computation; it is kept as a marked second proof. (iv) Source 47's remainder bound $O(b^{5/2}(4/9)^b)$ is not sharp in its power of $b$; source 52's sharp asymptotic is printed beside it in dated notes, and both are kept, because source 47's bound has explicit constants and its integer brackets use them. (v) No symbol was renamed; the notation table below separates the letters the two sources use differently. At the batch-102 write: (vi) Report~99 is printed in full as Part~\ref{amc:part:bm}, after Part~\ref{amc:part:sec}, although it re-proves much of Parts~\ref{amc:part:fc} and~\ref{amc:part:sec}; its re-proofs are marked as second routes in dated notes, with the equations they reproduce. (vii) Report~99 and its special case Report~97 (cap two) stay in their two hosts, as the batch-77P2 split of the two reports requires; each Part names the other. (viii) Report~99's large-cap coefficients are printed in its variable $R=b+1$, and a note converts them to Part~\ref{amc:part:sec}'s variable $b$. (ix) No symbol of Report~99 was renamed, although its cap is $r$ and Part~\ref{amc:part:sec}'s sector index is $r$; the notation table has a block for Part~\ref{amc:part:bm}.
 
 \subsection*{How the Parts depend on one another}
 \phantomsection\label{amc:guide:dependencies}
-Part~\ref{amc:part:sec} is an analysis of the integral $T_b$ alone; its only combinatorial input is Part~\ref{amc:part:fc}'s identification $\mu_b=1/T_b$ (Theorem~\ref{amc:thm:fixed}), used in Corollary~\ref{amc:sec:cor:reciprocal}. Part~\ref{amc:part:fc}'s Theorem~\ref{amc:thm:cap} is the case $K=1$ of Theorem~\ref{amc:sec:thm:exact} with the first sector \eqref{amc:sec:eq:r1}, except that Part~\ref{amc:part:fc} also proves explicit constants, valid for every $b\ge3$, and Part~\ref{amc:part:sec} does not. Neither Part strengthens the other's results in the length $n$, and Part~\ref{amc:part:sec} proves no new inverse.
+Part~\ref{amc:part:sec} is an analysis of the integral $T_b$ alone; its only combinatorial input is Part~\ref{amc:part:fc}'s identification $\mu_b=1/T_b$ (Theorem~\ref{amc:thm:fixed}), used in Corollary~\ref{amc:sec:cor:reciprocal}. Part~\ref{amc:part:fc}'s Theorem~\ref{amc:thm:cap} is the case $K=1$ of Theorem~\ref{amc:sec:thm:exact} with the first sector \eqref{amc:sec:eq:r1}, except that Part~\ref{amc:part:fc} also proves explicit constants, valid for every $b\ge3$, and Part~\ref{amc:part:sec} does not. Neither Part strengthens the other's results in the length $n$, and Part~\ref{amc:part:sec} proves no new inverse. Part~\ref{amc:part:bm} is self-contained and uses neither earlier Part. It re-proves the root limit of Theorem~\ref{amc:thm:fixed} (weaker error), the compaction of Lemma~\ref{amc:lem:swap}, the monotonicity in Theorem~\ref{amc:thm:cap}, a weaker length inverse, and, in the variable $R=b+1$, Section~\ref{amc:sec:largecap} and Theorems~\ref{amc:sec:thm:exact} and~\ref{amc:sec:thm:algebraic}; it strengthens Part~\ref{amc:part:fc} in the length $n$ by the ratio limit and the endpoint laws.
 
 \subsection*{Relation to other reports}
 \phantomsection\label{amc:guide:relations}
@@ -89,6 +125,9 @@ Part~\ref{amc:part:sec} is an analysis of the integral $T_b$ alone; its only com
 \emph{Sibling report on cap two.} The cap-two case $b=2$ (OEIS A202058, ascent sequences avoiding 000) is the subject of the report \repopath{SetTheory/Cardinals/docs/reports/generating-functions-and-asymptotics/oeis-sequence-asymptotics/a202058-ascent-000-growth}, opened by batch 77 from four manuscripts. Its Part~I is the ``separately audited cap-two report'' that source 47 cites: its main theorem (label \texttt{a58:fd:thm:main} there) gives $T_2=3\pi^2/8$, the root limit and the error $O(n^{9/13}(\log n)^3)$, and its later Parts sharpen the cap-two asymptotics and prove the cap-two ratio limit. This report uses from it only $T_2$ and the case $b=2$ of \eqref{amc:eq:main}; source 47 proves nothing for $b=2$ and its barrier proof excludes $b=2$ (after \eqref{amc:eq:smaller}). By the coordinator's decision at the merge the two are separate reports, not Parts of one: the sibling is about the fine asymptotics of a single cap, this report about the growth constants of all caps $b\ge3$ and their dependence on $b$.
 \end{writenote}
 No other repository report concerns ascent sequences with a multiplicity cap. The 201-avoiding ascent sequences (OEIS A202062) and the 120-avoiding ones (A202061) have their own batch-77 reports in the same directory, \repopath{a202062-ascent-201-enumeration} and \repopath{a202061-ascent-120-deficit}; both cite the paper of Conway, Conway, Elvey Price and Guttmann \cite{CCEG}, but they share no theorem with this report.
+\begin{writenotedated}{5 October 2026}
+The sibling report now has a Part~V, bundle Report~97, which is the case $r=2$ of Part~\ref{amc:part:bm} by the same method: its Theorems 42.1 (root limit) and 46.1 (ratio limit), Lemma~44.2 ($J(1)=3\pi^2/8$), Corollary~46.4 (endpoint laws, in closed form there), Lemma~47.1 and Corollary~47.2 are the cases $r=2$ of Theorems~\ref{amc:bm:thm:growth} and~\ref{amc:bm:thm:endpoints}, Proposition~\ref{amc:bm:prop:capmonotone}, Lemma~\ref{amc:bm:lem:monotonicity} and Corollary~\ref{amc:bm:cor:inverse}, and its Proposition~46.3 (an upper bound) is superseded by Theorem~\ref{amc:bm:thm:pressure}. So the two reports now share these theorems. The split stays: the cap-two material of Report~97 (a two-catalytic functional equation, closed forms, exact coefficients through $395$) belongs with that report, and the material on all caps with this one. Two further batch-102 reports are neighbours; they are named at Question~4 in Section~\ref{amc:sec:scope}.
+\end{writenotedated}
 
 \subsection*{Notation}
 \phantomsection\label{amc:guide:notation}
@@ -121,6 +160,42 @@ $\phi$, $h$, $\lambda$ & Part~\ref{amc:part:fc}: $\phi(y)$ and $\phi(x)=x^{3/2}(
 \end{longtable}
 }
 
+\noindent\textbf{Part~\ref{amc:part:bm} against Parts~\ref{amc:part:fc} and~\ref{amc:part:sec}} (added 5 October 2026). Part~\ref{amc:part:bm} keeps Report~99's letters. The most dangerous swaps are the cap ($r$ there, $b$ here), the sector index ($m$ there, $r$ in Part~\ref{amc:part:sec}), $T$ (a sector there, the growth integral in Part~\ref{amc:part:fc}), $\tau$ and $b_j$.
+
+{\small
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.13\linewidth}>{\raggedright\arraybackslash}p{0.48\linewidth}>{\raggedright\arraybackslash}p{0.33\linewidth}@{}}
+\toprule
+Symbol in Part~III & Meaning there, and its name in Parts~I--II & Do not read it as\\
+\midrule
+\endfirsthead
+\toprule
+Symbol in Part~III & Meaning there, and its name in Parts~I--II & Do not read it as\\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+$r$ & The cap; Parts~\ref{amc:part:fc}--\ref{amc:part:sec}: $b$. $c_{N,r}$ is $a_N^{(b)}$. & Part~\ref{amc:part:sec}'s sector index $r$; Part~\ref{amc:part:fc}'s rank function $r(y)$.\\
+$R$ & $R=r+1$, the large-cap variable of Section~\ref{amc:bm:sec:largecap}, extended to real $R>2$; Part~\ref{amc:part:sec}: $m=b+1$. & Part~\ref{amc:part:fc}'s tail $R_b(v)=e^v-E_b(v)$, which is $\delta_R(x)$ here.\\
+$m$ & Section~\ref{amc:bm:sec:largecap}: the sector index, Part~\ref{amc:part:sec}'s $r$; Lemma~\ref{amc:bm:lem:eulerian}: a permutation length. & Part~\ref{amc:part:fc}'s number of active labels; Part~\ref{amc:part:sec}'s $m=b+1$.\\
+$N$, $N_k$, $X_j$ & $N$ is the word length ($n$ in Parts~I--II). $N_k$: values used exactly $k$ times, as Part~\ref{amc:part:fc}'s $N_k$ for $1\le k<r$. $X_j$: labels of residual capacity $j$; $X_j=N_{r-j}$ for $j<r$, and $X_r$ is Part~\ref{amc:part:fc}'s $N_0=u$. & $X_j$ is not Part~\ref{amc:part:fc}'s $N_j$.\\
+$J_r$, $\mathcal J(R)$, $\mu_r$ & $J_r=\int_0^\infty g(E_r(w))\,dw$ is Part~\ref{amc:part:fc}'s $T_b$, and $\mu_r=\mu_b$; $\mathcal J$ interpolates $J_r$ at $R=r+1$. & \\
+$T_m(R)$ & Sector $m$; at $R=b+1$ it is Part~\ref{amc:part:sec}'s $A_{m,b}$. & Part~\ref{amc:part:fc}'s $T_b$, the whole integral.\\
+$g$ & $g(v)=\log v/(v-1)$, Parts~I--II's $f$. & Part~\ref{amc:part:fc}'s frozen integrand $g(y)$ and barriers $g_\pm$.\\
+$A$ & $A=\zeta(2)=\pi^2/6$, Parts~I--II's $\tau$; also the ascent count (Theorem~\ref{amc:bm:thm:endpoints}) and the Eulerian numbers $A(m,k)$. & Part~\ref{amc:part:sec}'s sectors $A_{r,b}$; Part~\ref{amc:part:fc}'s generating function $A_b(t)$.\\
+$\tau$ & A time variable $\tau(w)\in[0,1]$ (Sections~\ref{amc:bm:sec:calibration}--\ref{amc:bm:sec:ratio}); the threshold $\tau(\epsilon)$ of \eqref{amc:bm:cap:tau}. & Parts~I--II's $\tau=\pi^2/6$.\\
+$b$, $b_j$ & $b$: a block length (Sections~\ref{amc:bm:sec:blocks}--\ref{amc:bm:sec:growth}). $b_j$: the endpoint limits \eqref{amc:bm:eq:bj}. & The cap $b$ of Parts~I--II.\\
+$a_m$, $C_m$, $c_{m,j}$ & Part~\ref{amc:part:sec}'s $\beta_r$, $D_r$ and $d_{r,j}$ (normalized in $R$). & Part~\ref{amc:part:sec}'s $C_r=a_mC_m$ and its $c_{r,j}$ (in $b$); the counts $a_n^{(b)}$.\\
+$L$, $L(R)$, $L_0$ & $L$: the threshold of the compact state (Section~\ref{amc:bm:sec:compaction}). $L(R)=R(\zeta(R+1)-1)$, Part~\ref{amc:part:fc}'s $L_b$ and Part~\ref{amc:part:sec}'s $A_{1,b}$ at $R=b+1$; $L_0(R)=R2^{-R-1}$. & Part~\ref{amc:part:fc}'s $L=\log X$; $\cL$ is an entropy.\\
+$D$, $C_0$ & $D=\sum_ju_{j-1}\partial_{u_j}$ (Section~\ref{amc:bm:sec:calibration}); $D$ also the number of distinct values. $C_0=18/\pi^4$. & Part~\ref{amc:part:fc}'s weight sum $D$ and its $D=9/\pi^4=C_0/2$; Part~\ref{amc:part:sec}'s $D=1-t+tx$.\\
+$\lambda$ & $\lambda=\log2$ (Section~\ref{amc:bm:sec:largecap}); an eigenvalue in Lemma~\ref{amc:bm:lem:matrix}. & Part~\ref{amc:part:fc}'s $\lambda=\dot qD$; Part~\ref{amc:part:sec}'s $\lambda_r$.\\
+$H_N$, $H_m$ & $H_N(\bu)$: the histogram polynomial; $H_m$: the harmonic number, as Part~\ref{amc:part:sec}'s $H_r$; $H_2(u)$: a bracket width after Corollary~\ref{amc:bm:cap:two-candidates}. & Part~\ref{amc:part:fc}'s remainder $H_b$.\\
+$\beta_j$, $\alpha_j$, $\theta$, $\rho$ & Prefix and initial slopes, log-marks $\theta_j=\log u_j$, and the block symbol \eqref{amc:bm:eq:symbol}. & Part~\ref{amc:part:fc}'s budgets $\beta_i$, $\theta=(b-1)/b$ and weights $\rho_j$; Part~\ref{amc:part:sec}'s bases $\beta_r$.\\
+$F$, $f_\ell$ & $F(\boldsymbol q)$: the pressure; $F_R(x)$: the tail factor; $F(v)=(v-1)/\log v$ (Lemma~\ref{amc:bm:lem:matrix}); $F(x)=x\log(\mu_rx/\ee)$ (Section~\ref{amc:bm:sec:inverse}); $f_\ell$: tail-factor coefficients. & Part~\ref{amc:part:fc}'s series $F(t,x)$ and Parts~I--II's $f=g$.\\
+$q$, $p_j$, $M$ & Controls of the block construction and real marks; $M=\sum_jX_j$, the number of next labels, and $M(t)$, a moment generating function. & Part~\ref{amc:part:fc}'s $q$, $p_j$, $M(q)$; Part~\ref{amc:part:sec}'s $q=1/b$.\\
+$x_\epsilon$, $r_{\min}(\epsilon)$ & $x_\epsilon=b_0+1$ for Part~\ref{amc:part:fc}'s $b_0$ \eqref{amc:eq:capinverse}; $r_{\min}(\epsilon)=b_\varepsilon$. & \\
+\end{longtable}
+}
+
 \subsection*{Status, scope and non-claims}
 \phantomsection\label{amc:guide:status}
 Neither manuscript states how it was produced; both reached the repository through its incoming channel for AI-assisted research deliveries and are treated as AI-assisted. Both are unrefereed: source 47 calls its audits ``mathematical checks of this argument, not journal peer review'', and source 52's verification records are research reviews, not formal verification. Their quadratures are high-precision numerical checks, not interval-certified enclosures. Nothing in this report is formalized in Lean or Rocq, and placing it in this repository confers no formal status.
@@ -133,6 +208,9 @@ The union of the sources' non-claims, all kept in the Parts, is as follows.
 \item The sector results hold for a fixed number of sectors and a fixed algebraic order. No optimal truncation, summability, uniformity in $r=r(b)$, justified sum of all sector expansions, or theorem at the accumulation scale $e^{-b}$; finite truncations of an earlier sector do not resolve later sectors; the reciprocal remainder is positive only eventually for each fixed $K$; no new inverse. The word ``transseries'' in Part~\ref{amc:part:sec} means only the exact positive-sector decomposition.
 \item Priority is not established; the literature checks are scoped. The cap-two compacted recurrence and the constant $8/(3\pi^2)$ (conjectured) are due to Conway, Conway, Elvey Price and Guttmann; source 47's involution generalizes their compaction mechanism. The standalone OEIS page of A317784 could not be retrieved by source 47; its identification rests on A294220's cross-reference.
 \end{itemize}
+\begin{writenotedated}{5 October 2026}
+\emph{Part~\ref{amc:part:bm}.} Report~99's author line is ``Research report prepared with OpenAI''; it is AI-assisted, unrefereed and not formalized, and its exact checks are finite. The first item above is narrowed: Parts~\ref{amc:part:fc} and~\ref{amc:part:sec} prove no ratio limit, but Part~\ref{amc:part:bm} proves it for every fixed cap (without a rate); a prefactor and an all-orders expansion in $n$ remain unclaimed. Part~\ref{amc:part:bm}'s own non-claims, all printed there, are: no coefficient prefactor $B_r(N)$, amplitude, complete word-length equivalent or word-length transseries; no central limit theorem, covariance limit or local limit theorem; no uniform theorem for $r=r(N)$ and no exchange of the limits $N\to\infty$ and $r\to\infty$; no uniform expansion with a growing number of sectors and nothing at the accumulation scale; no combinatorial meaning of a non-integer cap; no unconditional integer rounding of the Lambert approximations, for the length or for the cap; quadratures not interval certified; exact checks finite, corroborating and not proving; a bounded literature search and no priority claim. Its unproved claims are collected in Section~\ref{amc:bm:sec:further}.
+\end{writenotedated}
 
 \subsection*{Instances of results elsewhere in the repository}
 \phantomsection\label{amc:guide:lambert}
@@ -141,6 +219,7 @@ Several steps are instances of results proved in the transseries volume \repopat
 \item The length inverse $n_0=L/W_0(L/(eT_b))$ solves $x\log(x/(eT_b))=L$; with $Y=\log(x/(eT_b))$ this is $Y+\log Y=\log(L/(eT_b))$, the linear--logarithmic equation $aX+b\log X=L'$ with $a=b=1$, solved on the principal branch by the volume's Lambert core, theorem \texttt{p0:thm:lambert-core}.
 \item The cap model $D(b+1)2^{-b}=\varepsilon$ is, in $X=b+1$, the equation $(\log2)X-\log X=\log(2D/\varepsilon)$, the case $a>0>b$ of the same theorem, whose branch rule selects $W_{-1}$ for the large root, as \eqref{amc:eq:capinverse} does.
 \item The integer brackets \eqref{amc:eq:rounding} and \eqref{amc:eq:explicitround} are instances of the separation step of the volume's theorem \texttt{p0:thm:staircase}. That step's separation inequality is formalized in Lean as \texttt{staircase\_separation}, in the file \repopath{StaircaseInversion.lean} of the directory \repopath{Analysis/FabiusFunction/Lean/FabiusFunction/}. Nothing specific to ascent sequences or to $T_b$ is formalized.
+\item \textbf{[5 October 2026]} Part~\ref{amc:part:bm}'s length inverse \eqref{amc:bm:eq:inverseW} is the same linear--logarithmic equation, and its cap root $x_\epsilon$ \eqref{amc:bm:cap:W-root} is $b_0+1$ for the $W_{-1}$ root \eqref{amc:eq:capinverse}; its two-candidate bracket (Corollary~\ref{amc:bm:cap:two-candidates}) is again a separation step.
 \end{itemize}
 
 \subsection*{Conventions of the merge}
@@ -150,6 +229,7 @@ Several steps are instances of results proved in the transseries volume \repopat
 \item Sections are numbered through the report: source 47's Section $k$ is Section $k$ here (Sections 1--10), source 52's is Section $k+10$ (Sections 11--16). Theorems are numbered within sections, as in both sources, so source 52's Theorem 2.1 is Theorem 12.1. Equations are numbered through the report.
 \item Source 52's citation \texttt{\textbackslash cite\{main\}} and its phrase ``the separately supplied report'' are now references to Part~\ref{amc:part:fc}; elsewhere ``the main report'' means Part~\ref{amc:part:fc}, with references added where it names a result. Its bibliography entry \texttt{main} is dropped. Source 52's abstract is printed as delivered except for a bracketed pointer to Part~\ref{amc:part:fc}.
 \item Sentences about ``the accompanying source archive'', ``the package'', ``the ZIP'', \texttt{verify.sh}, \texttt{build.sh}, \texttt{checks/}, \texttt{sources/} or \texttt{provenance.json} describe the delivered archives, which survive in commit \texttt{096ee7b87}. Which of their files this report ships, and under which names, is listed in the README; bracketed notes in the bibliography give the shipped names of the files it cites.
+\item \textbf{[5 October 2026] Part~\ref{amc:part:bm}.} Labels carry the prefix \texttt{amc:bm:} (``bounded'') before the delivered name, for example \texttt{amc:bm:thm:growth} and \texttt{amc:bm:cap:sharp}. Report~99's Section $k$ is Section $k+16$ and its equation $(k)$ is $(k+61)$; statements are numbered within sections, so its Theorem~1.1 is Theorem~17.1. Its title block became the Part heading and its abstract is printed as delivered; its table of contents, its \texttt{\textbackslash clearpage} commands and its preamble were dropped, and its macros were added to this preamble unchanged (its \texttt{\textbackslash asc} is this report's). Its citation key \texttt{OEISarray} is now \texttt{array}; its entries \texttt{CCEG}, \texttt{DS} and \texttt{OEISarray} were merged into the existing ones, keeping their details, and \texttt{BMCDK} and \texttt{OEIS000} were added. Sentences about ``the accompanying package'', \texttt{run\_checks.sh} or \texttt{checks/} describe the delivered archive, which survives in commit \texttt{60f54ea06}; a dated note in Section~\ref{amc:bm:sec:checks} gives the shipped names.
 \end{itemize}
 
 \cleardoublepage
@@ -194,6 +274,9 @@ Consequently $(a_n^{(b)}/n!)^{1/n}\to\mu_b$ and
 \]
 \end{theorem}
 The subscript $b$ permits constants and starting indices to depend on the fixed cap. The logarithmic error is deliberately coarse; it is not an estimate of the true subexponential scale. In particular, the theorem does not imply $a_n^{(b)}\sim C_bn!\mu_b^n$ or $a_{n+1}^{(b)}/((n+1)a_n^{(b)})\to\mu_b$.
+\begin{writenotedated}{5 October 2026}
+The ratio limit $a_{n+1}^{(b)}/((n+1)a_n^{(b)})\to\mu_b$ is proved for every fixed $b\ge2$ in Part~\ref{amc:part:bm}, Theorem~\ref{amc:bm:thm:growth}, without a rate; $a_n^{(b)}\sim C_bn!\mu_b^n$ remains open.
+\end{writenotedated}
 
 The separately audited cap-two report \cite{cap2report} proves $T_2=3\pi^2/8$ and a stronger logarithmic error $O(n^{9/13}(\log n)^3)$, so \eqref{amc:eq:main} also holds for $b=2$. Its analytic proof is not repeated here. For $b=1$, the unique word at each length is strictly increasing, $T_1=\infty$, and the normalized root is zero.
 \begin{writenote}
@@ -740,6 +823,11 @@ Several concrete questions remain:
 \begin{writenote}
 Question~5 is answered for every \emph{fixed} number of sectors in Part~\ref{amc:part:sec}: the exact positive sectors $A_{r,b}$, the positive remainder after $K$ sectors with its sharp size (Theorem~\ref{amc:sec:thm:exact}), and an expansion of each fixed sector to every algebraic order in $1/b$ with rational coefficients (Theorem~\ref{amc:sec:thm:algebraic}). Still open, as Part~\ref{amc:part:sec} says itself: estimates uniform in a growing sector index $r=r(b)$, the accumulation scale $e^{-b}$, optimal truncation and summability. For cap two, question~2 (the ratio limit) is answered in the sibling report \repopath{a202058-ascent-000-growth}; for every fixed $b\ge3$ questions~1--4 and~6 remain open.
 \end{writenote}
+\begin{writenotedated}{5 October 2026}
+Question~2 is now answered for every fixed $b\ge3$: Part~\ref{amc:part:bm}, Theorem~\ref{amc:bm:thm:growth}, proves $a_{n+1}^{(b)}/((n+1)a_n^{(b)})\to\mu_b$ (no rate), and proves it again for $b=2$. Questions~1, 3, 4 and~6 remain open for every fixed $b\ge3$; Section~\ref{amc:bm:sec:questions} of Part~\ref{amc:part:bm} restates~1 and~4 and adds questions on fluctuations and on the endpoint region (list in Section~\ref{amc:bm:sec:further}).
+
+\emph{Neighbouring reports on Question~4.} Two reports of batch~102 in this collection directory treat related families. \repopath{a336070-weak-ascents} (bundle Reports~105, 107 and~108) treats unrestricted weak ascent sequences and, for every fixed $d$, the difference-$d$ ascent sequences ($d=0$ is the ordinary unrestricted ascent sequences, $d=1$ the weak ones). It proves the factorial constant $6/\pi^2$, the limit of $\mu_b$ as $b\to\infty$, for every fixed $d$ (label \texttt{wasc:gr:thm:main} there), with $\log(a^{(d)}_n/(n!(6/\pi^2)^n))=\frac d2(\log n)^2+O_d(\log n)$ for $d\ge1$ (\texttt{wasc:sh:thm:main}) and no such correction at $d=0$ (\texttt{wasc:sh:rem:dzero}). \repopath{a202059-ascent-100-110-growth} (bundle Reports~241 and~243) shows that the ascent sequences avoiding $100$, or $110$, have $(u_n/n!)^{1/n}=\Theta((\log n)^{-2})\to0$; its classes avoiding $000$ and $100$, and $000$, $100$ and $110$, lie inside the cap-two class, and Report~241 there notes that the cap-two lower bounds do not transfer to them. Report~241 cites this report, but not as an input. Neither report studies a multiplicity cap, and neither answers Question~4.
+\end{writenotedated}
 
 
 \part{Fixed Taylor sectors for multiplicity cap growth constants}\label{amc:part:sec}
@@ -1039,6 +1127,1453 @@ This paragraph describes the delivered archive, which survives in commit \texttt
 \item Can the refined exact-sector bounds yield a sharper, rounding-safe inverse for the cap at a prescribed deficit in $\mu_b$? Such an inverse needs explicit, appropriately scaled errors; finite coefficient substitution alone does not establish it.
 \item For the original counting problem, can one determine fixed-cap prefactors or normalized ratio limits, and then obtain estimates uniform in a growing cap? None of the constant-level expansions here resolves those length-asymptotic questions.
 \end{enumerate}
+\begin{writenotedated}{5 October 2026}
+The normalized ratio limits of Question~4 are proved for every fixed cap in Part~\ref{amc:part:bm}, Theorem~\ref{amc:bm:thm:growth}. Fixed-cap prefactors and estimates uniform in a growing cap remain open. Questions~1--3 are restated in Part~\ref{amc:part:bm}, Section~\ref{amc:bm:sec:questions}, whose envelopes $R_K$ (Proposition~\ref{amc:bm:cap:inverse-envelope}) are a partial answer to Question~3: a sharper cap inverse, eventual rather than certified.
+\end{writenotedated}
+
+
+\part{Ascent sequences with bounded multiplicities}\label{amc:part:bm}
+
+\begin{partsource}
+Bundle Report~99 (batch 102), archive \repopath{Ascent_Sequences_with_Bounded_Multiplicities_Source.zip} (arrival commit \texttt{60f54ea06}, placed by \texttt{6ab1f1979}), delivered as \texttt{article.tex} (63 lines) with eleven section files, whose expansion \texttt{article\_standalone.tex} (1,407 lines) is the text printed here; the delivered PDF has 28 pages. Dated 2 October 2026; author line ``Research report prepared with OpenAI''. No commit pin, and no mention of this repository or of Parts~\ref{amc:part:fc} and~\ref{amc:part:sec}. Delivered Section $k$ is Section $k+16$ here, delivered equation $(k)$ is $(k+61)$, and statement numbers follow their sections. Printed in full, with labels prefixed \texttt{amc:bm:} and dated \textbf{[write, 5 October 2026]} notes. No symbol was renamed: here the cap is $r$, the $b$ of Parts~\ref{amc:part:fc} and~\ref{amc:part:sec}.
+\end{partsource}
+
+\begin{partabstract}
+Let $c_{N,r}$ count ascent sequences of length $N$ in which every value occurs at most a fixed integer $r\ge2$ times. We prove both the factorial-normalized root limit and the consecutive-ratio limit, with common value
+\[
+ \mu_r=\left[\int_0^\infty
+ \frac{\log E_r(w)}{E_r(w)-1}\dd w\right]^{-1},
+ \qquad E_r(w)=\sum_{j=0}^r\frac{w^j}{j!}.
+\]
+The proof uses an exact sorted residual-capacity recurrence, finite positive matrices, and a constructive lower bound from buffered distinct labels and Eulerian permutations. It gives polynomial-time enumeration for fixed $r$, exponential concentration of multiplicities and ascents, a full endpoint large-deviation principle, and a Lambert $W$ inverse for large counting thresholds. A separate analysis of the constants as $r\to\infty$ gives a positive Taylor-sector hierarchy and a sharp approach to $6/\pi^2$. Complete ordinary proofs and reproducible exact checks are supplied. The word-length limit holds for each fixed cap; the sector expansions concern the cap parameter alone. No coefficient prefactor, complete word-length asymptotic equivalent, or uniform growing-cap theorem is claimed.
+\end{partabstract}
+
+\begin{writenotedated}{5 October 2026}
+\emph{Reading this Part.} Report~99 was written without knowledge of Parts~\ref{amc:part:fc} and~\ref{amc:part:sec} and proves what it needs for every fixed cap $r\ge2$. Its letters differ from theirs (Guide, ``Notation''): the cap is $r$ (there $b$); $R=r+1$ is Part~\ref{amc:part:sec}'s $m=b+1$; the sector index is $m$ (there $r$); the sector $T_m(R)$ is Part~\ref{amc:part:sec}'s $A_{m,b}$ at $R=b+1$, while Part~\ref{amc:part:fc}'s $T_b$ is this Part's $J_r$; $A=\zeta(2)$ is their $\tau$, while $\tau$ here is a time variable or a threshold; and $b_j$ are endpoint limits and $b$ a block length, never a cap.
+\begin{itemize}
+\item \emph{Second routes.} Lemma~\ref{amc:bm:lem:exchange} and Proposition~\ref{amc:bm:prop:recurrence} re-prove Lemma~\ref{amc:lem:swap} and its sorted reduction. The root half of Theorem~\ref{amc:bm:thm:growth} re-proves Theorem~\ref{amc:thm:fixed} with the weaker error $o_r(N)$, and covers $r=2$. Proposition~\ref{amc:bm:prop:capmonotone} re-proves part of Theorem~\ref{amc:thm:cap} and $T_2=3\pi^2/8$. Corollary~\ref{amc:bm:cor:inverse} is weaker than \eqref{amc:eq:lengthinverse}. Section~\ref{amc:bm:sec:largecap} re-proves the large-cap results of Section~\ref{amc:sec:largecap} and Part~\ref{amc:part:sec} in the variable $R=b+1$.
+\item \emph{New.} The ratio limit for every fixed $r\ge3$, which answers Question~2 of Section~\ref{amc:sec:scope}; the endpoint laws (Theorem~\ref{amc:bm:thm:endpoints}); the weighted growth formula and the large-deviation principle (Theorems~\ref{amc:bm:thm:pressure} and~\ref{amc:bm:thm:LDP}); the histogram refinement and the $O_r(N^{r+2})$ algorithm (Corollary~\ref{amc:bm:cor:algorithm}); the continuous cap, the exact-sector envelopes and their displacements, and the selection criterion of Corollary~\ref{amc:bm:cap:two-candidates}.
+\item \emph{The cap two.} The case $r=2$ of this Part is bundle Report~97, delivered in the same bundle with the same date, author line and method, and printed as Part~V of the sibling report \repopath{a202058-ascent-000-growth}. Report~97 adds what is special to that cap: a two-catalytic functional equation, closed forms of the endpoint constants, and exact coefficients through $n=395$.
+\end{itemize}
+\end{writenotedated}
+
+\section{Definitions and principal results}\label{amc:bm:sec:results}
+An \emph{ascent sequence} of length $N\ge1$ is a word $a_1\cdots a_N$ of nonnegative integers such that $a_1=0$ and
+\[
+ a_i\le1+\asc(a_1\cdots a_{i-1})\quad(2\le i\le N),
+ \qquad \asc(a_1\cdots a_k)=\#\{i<k:a_i<a_{i+1}\}.
+\]
+Let $c_{N,r}$ count these words with each value occurring at most $r$ times, and set $c_{0,r}=1$. Throughout the combinatorial proof, $r\ge2$ is fixed. The word length is denoted by $N$; a separate cap index $R=r+1$ will be introduced explicitly in Section~\ref{amc:bm:sec:largecap}.
+
+Put
+\begin{equation}\label{amc:bm:eq:defconstant}
+ E_j(w)=\sum_{k=0}^j\frac{w^k}{k!},\qquad
+ g(v)=\frac{\log v}{v-1},\quad g(1)=1,\qquad
+ J_r=\int_0^\infty g(E_r(w))\dd w,\quad \mu_r=J_r^{-1}.
+\end{equation}
+The integral is positive and finite: its integrand is continuous at zero and is $O_r(\log w/w^r)$ at infinity.
+
+\begin{theorem}\label{amc:bm:thm:growth}
+For every fixed integer $r\ge2$,
+\begin{equation}\label{amc:bm:eq:mainlimits}
+ \lim_{N\to\infty}\left(\frac{c_{N,r}}{N!}\right)^{1/N}
+ =\lim_{N\to\infty}\frac{c_{N+1,r}}{(N+1)c_{N,r}}
+ =\mu_r.
+\end{equation}
+In particular $\log c_{N,r}=N\log N+N(\log\mu_r-1)+o_r(N)$.
+\end{theorem}
+
+\begin{writenotedated}{5 October 2026}
+The root half re-proves Part~\ref{amc:part:fc}'s Theorem~\ref{amc:thm:fixed} for every $r=b\ge3$, where Part~\ref{amc:part:fc} has the stronger error $O_b(n/\log n)$, and, at $r=2$, the root limit of Part~I of the sibling report \repopath{a202058-ascent-000-growth} (label \texttt{a58:fd:thm:main} there, error $O(n^{9/13}(\log n)^3)$). The proof here covers $r=2$ with the other caps; Part~\ref{amc:part:fc}'s barrier proof excludes it. The ratio half is new for every fixed $r\ge3$. It answers Question~2 of Section~\ref{amc:sec:scope} and supersedes the statements of Part~\ref{amc:part:fc} and of the Guide that no ratio limit is known for $b\ge3$. At $r=2$ it is a second proof, without a rate, of the sibling's Part~IV (label \texttt{a58:rt:thm:main}, rate $O(n^{-1/4}(\log n)^{3/4})$). Report~97, printed as the sibling's Part~V, proves the case $r=2$ by the same terminal-mark argument (Theorem~46.1 there).
+\end{writenotedated}
+
+\begin{theorem}\label{amc:bm:thm:endpoints}
+For a uniform word counted by $c_{N,r}$, let $N_k$ be the number of values occurring exactly $k$ times, let $D$ be its number of distinct values, and let $A$ be its ascent count. Define
+\begin{equation}\label{amc:bm:eq:bj}
+ b_j=\frac{\mu_r}{(r-j)!}\int_0^\infty[-g'(E_r(w))]w^{r-j}\dd w
+ \quad(1\le j\le r).
+\end{equation}
+Then $b_j>0$, $\sum_jb_j=\mu_r$, and
+\begin{align}
+ \frac{N_k}{N}&\longrightarrow b_{r-k} &&(1\le k<r),\label{amc:bm:eq:multlimits}\\
+ \frac{N_r}{N}&\longrightarrow\frac{1-\sum_{j<r}(r-j)b_j}{r},\notag\\
+ \frac DN&\longrightarrow\frac{1+\sum_{j<r}jb_j}{r},\qquad
+ \frac AN\longrightarrow b_r+\frac{1+\sum_{j<r}jb_j}{r}.\notag
+\end{align}
+Every displayed convergence holds in mean and in probability, with exponentially small probabilities for any fixed positive deviation.
+\end{theorem}
+Here ``exponentially small'' means that for each fixed deviation $\eta>0$ there are $c>0$ and $N_0$, depending on $r$ and $\eta$, such that the relevant probability is at most $\ee^{-cN}$ for $N\ge N_0$.
+
+\begin{writenotedated}{5 October 2026}
+\emph{The case $r=2$ in closed form.} For $r=2$,
+\[
+ b_1=1-\frac8{3\pi},\qquad b_2=\frac{8(\pi+1)}{3\pi^2}-1,\qquad
+ \frac DN\to1-\frac4{3\pi},\qquad \frac AN\to\frac4{3\pi}+\frac8{3\pi^2}.
+\]
+These are the closed forms of Report~97, Corollary~46.4 and equation~(276) of the sibling report \repopath{a202058-ascent-000-growth}. \emph{Proof.} At $r=2$ the polynomial of \eqref{amc:bm:eq:chi} is $P_{\bu}(s)=s^2/2+u_1s+u_2$, so $\chi(u_1,u_2)=\int_0^\infty g(u_2+u_1s+s^2/2)\,ds$ is Report~97's $\chi(s,t)$ with $(s,t)=(u_1,u_2)$ (the second form of its equation~(281)). Section~\ref{amc:bm:sec:ratio} gives $b_j=-\mu_2\chi_{u_j}(1,1)$, and Report~97 evaluates this gradient as $(\mu_2(1+K),-\mu_2K)$ with $K=3\pi^2/8-\pi-1$ and $\mu_2=8/(3\pi^2)$. The last two limits follow from the formulas of Theorem~\ref{amc:bm:thm:endpoints}. A 30-digit quadrature of \eqref{amc:bm:eq:bj} agrees (checked at the write). Here $b_1$ is the limiting proportion of values used once ($X_1=N_1$) and $b_2$ that of available unused values ($X_2$). The endpoint laws are new in this report: Parts~\ref{amc:part:fc} and~\ref{amc:part:sec} have no statement about the shape of a typical word.
+\end{writenotedated}
+
+\begin{proposition}\label{amc:bm:prop:capmonotone}
+The constants $\mu_r$ increase strictly to $6/\pi^2$. For $r=2$,
+\[
+ \mu_2=\frac8{3\pi^2}.
+\]
+For $r=1$ the only word of each length is $01\cdots(N-1)$, so the factorial-normalized root limit is zero.
+\end{proposition}
+\begin{proof}
+The identity
+\begin{equation}\label{amc:bm:eq:gpositive}
+ g(v)=\int_0^1\frac{\dd t}{1+t(v-1)}
+\end{equation}
+shows that $g$ is strictly decreasing. Hence $E_{r+1}(w)>E_r(w)$ for $w>0$ implies $J_{r+1}<J_r$. The integrable function $g(E_2(w))$ dominates all subsequent integrands. Dominated convergence and then Tonelli give
+\[
+ J_r\longrightarrow\int_0^\infty\frac{w}{\ee^w-1}\dd w
+ =\sum_{k\ge1}\int_0^\infty w\ee^{-kw}\dd w
+ =\sum_{k\ge1}\frac1{k^2}=\frac{\pi^2}{6}.
+\]
+For the evaluation at $r=2$, substitute $s=w+1$ and define
+\[
+ I(a)=\int_1^\infty\frac{2\log((s^2+a)/(1+a))}{s^2-1}\dd s.
+\]
+The substitution $z=1/s$ and a geometric-series integral yield $I(0)=\pi^2/2$. Differentiation under the integral gives
+\[
+ \frac{\dd}{\dd v}I(v^2)=-\frac{4\arctan v}{1+v^2}.
+\]
+Thus $I(a)=\pi^2/2-2(\arctan\sqrt a)^2$, and $J_2=I(1)=3\pi^2/8$. Finally, distinctness forces each next entry in an ascent sequence to be its next new maximum; induction proves the $r=1$ statement.
+\end{proof}
+
+\begin{writenotedated}{5 October 2026}
+Second routes. The strict monotone convergence $\mu_r\uparrow6/\pi^2$ is part of Theorem~\ref{amc:thm:cap}, proved in Section~\ref{amc:sec:largecap} by the same dominated convergence. Part~\ref{amc:part:fc} takes $T_2=3\pi^2/8$ from the sibling report; the evaluation of $J_2$ given here is Report~97's Lemma~44.2 there, by the same substitution. In the table, $\mu_2,\ldots,\mu_6$ and $\mu_8$ agree with Section~\ref{amc:sec:checks} to all printed digits, and $\mu_7$ is new; at intake $\mu_2,\ldots,\mu_8$ were recomputed to 18 digits.
+\end{writenotedated}
+
+\begin{center}
+\begin{tabular}{@{}cr@{}}
+\toprule
+Cap $r$ & $\mu_r$ \quad numerical quadrature\\
+\midrule
+2&0.270189823046234057\\
+3&0.452065717728321870\\
+4&0.534247641664251966\\
+5&0.571991298656956259\\
+6&0.589970111415399178\\
+7&0.598798801567128511\\
+8&0.603232139970701640\\
+\bottomrule
+\end{tabular}
+\end{center}
+These decimal values illustrate the exact integral formula and are not used as proof.
+
+\subsection{Relation to existing work}
+Ascent sequences were introduced in the study of Fishburn objects; see Bousquet-M\'elou, Claesson, Dukes and Kitaev~\cite{BMCDK}. Bounded multiplicity is equivalent to avoiding a constant subsequence of length $r+1$. The whole array is OEIS A294220~\cite{array}; $r=2$ and $r=3$ are A202058 and A317784, respectively. Duncan and Steingr\'imsson~\cite{DS} studied pattern avoidance in ascent sequences. Conway, Conway, Elvey Price and Guttmann~\cite{CCEG} gave a polynomial algorithm for $r=2$ and conjectured the constant $8/(3\pi^2)$ numerically.
+
+The adjacent-label idea in their Section~2.6 is the starting point here. We prove that it works for arbitrary residual capacities, and supply finite positive estimates that identify the growth constants. The arguments below are self-contained; no separate report for $r=2$ is needed. A literature search through 2 October 2026 located the array and those antecedents, but no general theorem of the form~\eqref{amc:bm:eq:mainlimits}. This limited search does not certify a priority claim.
+
+\begin{writenotedated}{5 October 2026}
+\emph{Stale at its date.} The root half of \eqref{amc:bm:eq:mainlimits} was already proved for every fixed $b\ge3$ by Part~\ref{amc:part:fc} of this report (source~47, dated 1~October 2026, in this repository since \texttt{aa7345800} of 2~October 2026), and for $b=2$ by Part~I of \repopath{a202058-ascent-000-growth} (also dated 1~October 2026). Report~99 cites neither. Its ratio half was new for every $r\ge3$; for $r=2$ the sibling's Part~IV, dated 2~October 2026, proves the ratio limit with a rate. The sentence is kept as the record of Report~99's search. ``No separate report for $r=2$ is needed'' remains true: the proof of this Part covers $r=2$.
+\end{writenotedated}
+
+\subsection{Logical structure and scope}
+Section~\ref{amc:bm:sec:compaction} proves exact compaction. Sections~\ref{amc:bm:sec:blocks}--\ref{amc:bm:sec:growth} establish the root limit using a finite upper matrix and an explicit lower construction. Section~\ref{amc:bm:sec:ratio} obtains the ratio and endpoint laws from two-sided terminal marks. Section~\ref{amc:bm:sec:inverse} inverts the word-length growth. Section~\ref{amc:bm:sec:largecap} analyzes the different limit $r\to\infty$ of the constants themselves. The verification package checks finite identities, independently of the asymptotic arguments. No interchange of $N\to\infty$ and $r\to\infty$ is made.
+
+\section{Exact sorting of residual capacities}\label{amc:bm:sec:compaction}
+After a nonempty prefix, the allowed original labels are $0,\ldots,A+1$, where $A$ is its ascent count. Delete labels already used $r$ times, and renumber the remaining labels in increasing order. Give each remaining label its residual capacity in $\{1,\ldots,r\}$. Capacity $r$ means unused. Let $L$ be the number of surviving labels less than or equal to the previous last label. A next compact label $i$ creates an ascent exactly when $i\ge L$.
+
+Selecting capacity $j$ decreases that capacity by one. For $j=1$ the label is deleted and the new threshold is $i$; for $j\ge2$ it survives and the new threshold is $i+1$. Every ascent adds a new capacity-$r$ label at the right. These rules describe the original process exactly before any sorting.
+
+\begin{lemma}[Adjacent exchange]\label{amc:bm:lem:exchange}
+Suppose two adjacent available labels have compact indices $i,i+1$ with $i+1<L$. Exchanging their residual capacities preserves the number of legal suffixes of every length, refined by the final residual-capacity histogram and the total number of new ascents.
+\end{lemma}
+\begin{proof}
+Temporarily keep exhausted labels as permanently forbidden positions rather than deleting them. The two selected labels are adjacent among usable labels; any intervening forbidden original labels cannot occur in a future suffix. Both selected labels are already available and are at most the previous last label.
+
+In any legal suffix, find each maximal contiguous run containing only these two labels. Reverse the run and interchange the two labels. Reversal followed by complementation preserves its number of internal ascents. Comparisons at its ends with a label outside the pair are unchanged, because every other usable label lies below both or above both. At the initial boundary neither selected label can make an ascent. Therefore the total new ascent count is preserved.
+
+Inside a transformed run, the intermediate ascent counts can differ. This causes no illegality: both run labels were already available initially and availability only increases. On exiting the run, accumulated ascent counts agree, so every subsequent external label has the same bound as before. The usages of the two selected labels are exchanged. Exchanging their initial residual capacities therefore preserves the final capacity constraints; partial usages cannot exceed their total usages. The final residual capacities are exchanged as well, preserving their histogram. The transformation is an involution, so it is a bijection. Deleting forbidden labels afterward merely restores the compact indexing.
+\end{proof}
+
+\begin{proposition}[Sorted recurrence]\label{amc:bm:prop:recurrence}
+Let $X_j$ count labels of residual capacity $j$, and put $C_j=\sum_{k\le j}X_k$, $C_0=0$. Starting from
+\[
+ \bX=\boldsymbol e_{r-1}+\boldsymbol e_r,\qquad L=1
+\]
+after the initial zero, the exact transfer consists, for every $j$ and every integer $C_{j-1}\le i<C_j$, of
+\begin{equation}\label{amc:bm:eq:transfer}
+ \bX'=\bX-\boldsymbol e_j+\ind{j\ge2}\boldsymbol e_{j-1}
+       +\ind{i\ge L}\boldsymbol e_r,
+ \qquad L'=i+\ind{j\ge2}.
+\end{equation}
+It counts $c_{N,r}$ and preserves its full terminal capacity histogram.
+\end{proposition}
+\begin{proof}
+Assume capacities are sorted increasingly. If capacity $j\ge2$ is selected at index $i$, its new capacity is $j-1$. Bubble it left through earlier members of its old category $j$ until it reaches the category boundary. Each exchanged pair has upper index at most $i$, while the new threshold is $i+1$. Lemma~\ref{amc:bm:lem:exchange} applies to every exchange, leaving the threshold fixed. Thus the suffix count is unchanged and the capacities are sorted again. For $j=1$ deletion already preserves sorting; any fresh capacity-$r$ label belongs at the right. The initial state is sorted. Backward induction on suffix length proves the transfer, and the same induction with histogram refinements proves its marginal interpretation.
+\end{proof}
+
+The threshold remains a comparison marker; it does not follow the capacity being moved during the suffix-count equivalence. This distinction prevents an incorrect literal-history interpretation of the sorting step.
+
+At level $N$, write $N_k$ for the original multiplicity counts and $D=\sum_kN_k$. The histogram refinement gives
+\begin{equation}\label{amc:bm:eq:histrelations}
+ X_j=N_{r-j}\ (j<r),\qquad X_r=A+2-D,
+ \qquad N=rN_r+\sum_{j<r}(r-j)X_j.
+\end{equation}
+Also $M=\sum_jX_j\le N+1$, every coordinate changes by at most one in a step, and each cumulative boundary $C_j$ changes by at most one. For $j<r$ the latter change is $\ind{\text{category }j+1}-\ind{\text{category }1}$; for $j=r$ it is $\ind{\text{ascent}}-\ind{\text{category }1}$.
+
+\begin{corollary}[Polynomial enumeration]\label{amc:bm:cor:algorithm}
+For fixed $r$, the coefficients through length $N$ can be computed using $O_r(N^{r+2})$ arithmetic operations and $O_r(N^{r+1})$ memory.
+\end{corollary}
+\begin{proof}
+At level $k$, there are $O_r(k^r)$ possible vectors $\bX$ with coordinate sum at most $k+1$, each with $O(k)$ last thresholds. For each vector form prefix sums of its counts over $L$. A choice $i$ sends the prefix sum over $L\le i$ to its ascent endpoint in~\eqref{amc:bm:eq:transfer}, and the complementary sum to its nonascent endpoint. There are $O(k)$ choices over all categories together. Thus one vector costs $O_r(k)$, one level costs $O_r(k^{r+1})$, and all levels cost $O_r(N^{r+2})$. Only two consecutive levels are stored. This counts arithmetic operations rather than bit operations on integers of increasing size.
+\end{proof}
+
+\begin{writenotedated}{5 October 2026}
+New: Parts~\ref{amc:part:fc} and~\ref{amc:part:sec} state no complexity bound, and Part~\ref{amc:part:fc}'s sorted reduction counts words without the histogram refinement \eqref{amc:bm:eq:histrelations}. At $r=2$ the state $(X_1,X_2,L)$ and the transfer \eqref{amc:bm:eq:transfer} are exactly Report~97's state $(m,h,L)$ and its repeat and new transitions (sibling report, Section~43): a capacity-one label is a once-seen value, a capacity-two label an unused one. The corollary therefore proves the count of $O(N^4)$ operations and $O(N^3)$ stored entries that Report~97 states in its Section~49 without proof.
+\end{writenotedated}
+
+\section{Finite upper and lower block estimates}\label{amc:bm:sec:blocks}
+The two bounds in this section count finite collections of paths. Their asymptotic use later requires no limiting eigenvalue theorem or path large-deviation principle.
+
+\subsection{An explicit positive matrix}
+\begin{lemma}\label{amc:bm:lem:matrix}
+Let $v>0$, $w_0,\ldots,w_D\ge0$, $W=\sum_z w_z>0$, $w_* =\max_z w_z$, and $F(v)=(v-1)/\log v$, with $F(1)=1$. Define
+\[
+ K_{\ge}(L,z)=w_zv^{\ind{z\ge L}},\qquad
+ K_{>}(L,z)=w_zv^{\ind{z>L}}.
+\]
+Use $K=K_{\ge}$ if $v\ge1$ and $K=K_>$ if $v<1$. Then, for every integer $b\ge0$,
+\begin{equation}\label{amc:bm:eq:matrixbound}
+ K^b\boldsymbol1\le\max(v,v^{-1})\Lambda^b\boldsymbol1,
+ \qquad \Lambda\le F(v)W+|v-1|w_*.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Suppose first that $v>1$, and put $c=v-1$. The equation
+\[
+ \prod_{z=0}^D(1-cw_z/\lambda)=1/v,\qquad \lambda>cw_*
+\]
+has one solution, since the product increases continuously from zero to one. Set $f_0=1$ and $f_{z+1}=(1-cw_z/\lambda)f_z$. Then $f_{D+1}=1/v$ and $1/v\le f_z\le1$. Telescoping gives $\sum_z w_zf_z=\lambda/v$; the zeroth row and successive row differences now give $K_{\ge}f=\lambda f$. Positivity yields $K_{\ge}^b\boldsymbol1\le v\lambda^b\boldsymbol1$.
+
+At $B=cW/\log v+cw_*$, the inequality $-\log(1-t)\le t/(1-t)$ gives
+\[
+ \sum_z-\log(1-cw_z/B)\le\frac{cW}{B-cw_*}=\log v.
+\]
+Monotonicity puts $B$ at or above the root, proving the stated bound for $\lambda$.
+
+If $0<v<1$, put $d=1-v$. The product $\prod_z(1+dw_z/\lambda)$ decreases continuously from infinity to one, so its equation with $1/v$ again has one root. The same recurrence, now $f_{z+1}=(1+dw_z/\lambda)f_z$, gives $1\le f_z\le1/v$ and $K_{\ge}f=\lambda f$. For $B=dW/\log(1/v)=F(v)W$,
+\[
+ \sum_z\log(1+dw_z/B)\le dW/B=\log(1/v),
+\]
+so $\lambda\le B$. Since $K_>=K_{\ge}+d\operatorname{diag}(w_z)$,
+\[
+ K_>f\le(\lambda+dw_*)f.
+\]
+The bounds on $f$ give~\eqref{amc:bm:eq:matrixbound}. At $v=1$ the matrix has identical rows and the result follows with $\Lambda=W$.
+\end{proof}
+
+\begin{writenotedated}{5 October 2026}
+This lemma, for $v\ge1$ and for $v<1$, is the finite Perron estimate of Report~97 (Lemmas~44.1 and~46.2 of the sibling report), there written for the cap two. Part~\ref{amc:part:fc} reaches the root limit by another method: positive-operator barriers and a stopped Feynman--Kac comparison (Sections~\ref{amc:sec:barrier}--\ref{amc:sec:coefficients}).
+\end{writenotedated}
+
+\subsection{Uniform domination of every tilted block}
+Use arbitrary positive marks $u_1,\ldots,u_r$, and set $u_0=1$, $v=u_r$, $c_j=u_{j-1}/u_j$. A category-$j$ transition has weight $c_jv^{\ind{i\ge L}}$; the product over a path is $\bu^{\bX'-\bX}$.
+
+Consider $b$ steps starting at $\bX$, and use its initial cumulative boundaries $C_j$. Every output threshold $z$ of category $j$ lies in the fixed interval
+\[
+ I_j=[C_{j-1}-b+\ind{j\ge2},\ C_j+b-1+\ind{j\ge2}]\cap\N_0.
+\]
+Its size is at most $X_j+2b+1$. This follows from the one-step cumulative-boundary bound after~\eqref{amc:bm:eq:histrelations}. Use a finite matrix index range containing every initial and output threshold, and set $w_z=\sum_j c_j\ind{z\in I_j}$.
+
+For category 1 the exact ascent indicator is $[z\ge L]$; for every other category it is $[z>L]$. Thus the weak-threshold matrix dominates when $v\ge1$, and the strict-threshold matrix dominates when $v<1$. If two category intervals overlap, their weights add; this simply allows extra positive paths. Backward induction on the number of remaining steps proves domination uniformly over every hidden category vector with a given threshold. Lemma~\ref{amc:bm:lem:matrix} therefore gives
+\begin{equation}\label{amc:bm:eq:blockupper}
+ \sum_{\text{block paths}}\bu^{\bX'-\bX}
+ \le\max(v,v^{-1})\Lambda^b,
+ \qquad \Lambda\le N\rho(\bX/N;\bu)+C(b+1),
+\end{equation}
+where
+\begin{equation}\label{amc:bm:eq:symbol}
+ \rho(\bx;\bu)=\frac1{g(u_r)}\sum_{j=1}^r\frac{u_{j-1}}{u_j}x_j.
+\end{equation}
+Here $C$ is uniform on a fixed compact set of positive marks, since $\sum_z w_z\le\sum_jc_j(X_j+2b+1)$ and $w_*\le\sum_jc_j$. Boundary states with zero coordinates cause no difficulty.
+
+\subsection{Buffered distinct labels}
+Write $A(m,k)$ for the number of permutations of $m$ objects with $k$ ascents.
+\begin{lemma}\label{amc:bm:lem:lowerblock}
+Start at a sorted state with $L\le X_1$. Fix $b\ge2$ and integers $q_j\ge0$ with $\sum_jq_j=b$, $q_1,q_r\ge1$. Provided the binomial arguments are large enough, for every $0\le k\le b-3$ there are at least
+\begin{equation}\label{amc:bm:eq:exactlower}
+ A(b-2,k)\prod_{j=1}^r\binom{X_j-2b}{q_j}
+\end{equation}
+paths with endpoint increments
+\begin{equation}\label{amc:bm:eq:increments}
+ \Delta X_j=q_{j+1}-q_j\ (j<r),\qquad
+ \Delta X_r=k+1-q_r,
+\end{equation}
+and with final threshold $L'\le X'_1$. The same statement uses $A(0,0)=1$ when $b=2$.
+\end{lemma}
+\begin{proof}
+Choose $q_j$ distinct integer labels from $C_{j-1}+b,\ldots,C_j-b-1$. Each remains in category $j$ whenever it is selected, because every boundary has moved by at most $b$. This argument concerns integer positions in the sorted transfer, so it remains true after capacities are rearranged. All selected labels are distinct.
+
+Place the largest selected label first and the smallest last. The first belongs to category $r$ and makes an ascent since $L\le X_1$. Every later comparison of distinct labels is an ascent precisely when the next integer is larger than the preceding integer: the previous threshold equals that integer or that integer plus one. The first-to-middle and middle-to-last comparisons are descents. Hence a middle permutation with $k$ ascents gives exactly $k+1$ block ascents. All such paths have the increments~\eqref{amc:bm:eq:increments}. The last label belongs to category 1 and is less than the initial $X_1-b$, whereas $X'_1\ge X_1-b$, so $L'\le X'_1$. Multiplying the independent label choices by the Eulerian count proves~\eqref{amc:bm:eq:exactlower}.
+\end{proof}
+There is no sign restriction on the increments in this lemma. Positive drifts will only be needed for repeating a fixed initial block.
+
+\subsection{Eulerian entropy without a local limit theorem}
+Let $U$ be uniform on $[0,1]$, and define
+\[
+ M(t)=\mathbb E\ee^{tU}=\frac{\ee^t-1}{t},\quad M(0)=1,
+ \qquad I(a)=\sup_{t\in\R}\{ta-\log M(t)\},\quad 0<a<1.
+\]
+The tilted mean $M'(t)/M(t)$ increases strictly from zero to one, since its derivative is the positive tilted variance. Thus there is a unique tilt with mean $a$.
+
+\begin{lemma}\label{amc:bm:lem:eulerian}
+For every fixed $a\in(0,1)$ there are integers $k_m=ma+O(m^{2/3})$ such that
+\begin{equation}\label{amc:bm:eq:eulerianentropy}
+ \log A(m,k_m)\ge\log(m!)-mI(a)+o(m).
+\end{equation}
+\end{lemma}
+\begin{proof}
+For independent uniforms $U_1,\ldots,U_m$ with sum $S_m$, the cube-slice identity is
+\[
+ \mathbb P(k\le S_m\le k+1)=A(m,k)/m!.
+\]
+Here is an algebraic verification. Inclusion--exclusion for the unit cube inside a simplex gives
+\[
+ \operatorname{vol}\{S_m\le t\}
+ =\frac1{m!}\sum_{j=0}^m(-1)^j\binom mj(t-j)_+^m.
+\]
+Subtracting the values at $k+1$ and $k$ gives $m!^{-1}\sum_{j=0}^{k+1}(-1)^j\binom{m+1}j(k+1-j)^m$. This is the Eulerian formula: it has the initial value $A(1,0)=1$ and, by substitution, satisfies
+$A(m,k)=(k+1)A(m-1,k)+(m-k)A(m-1,k-1)$, obtained by inserting the largest element in a permutation. This proves the identity.
+
+Tilt each uniform by density $\ee^{tu}/M(t)$, with mean $a$. Its variance is finite, so Chebyshev's inequality gives probability tending to one to $|S_m-ma|\le m^{2/3}$. This window meets $O(m^{2/3})$ unit bins. At least one has tilted probability at least a positive constant times $m^{-2/3}$. Returning to the original measure on that bin costs at most
+\[
+ \exp\{-tma+m\log M(t)-|t|O(m^{2/3})\}.
+\]
+The logarithm is $-mI(a)+o(m)$. Multiplying by $m!$ proves the claim. The bin is selected, not prescribed in advance.
+\end{proof}
+
+For positive $\bx$, choice proportions $p_j>0$ summing to one, and $a\in(0,1)$, put
+\begin{equation}\label{amc:bm:eq:entropy}
+ \cL(\bx;\bp,a)=\sum_jp_j\log x_j-\sum_jp_j\log p_j-I(a).
+\end{equation}
+Let $b=\delta N+O(1)$, $X_j=Nx_j+o(N)$, and $q_j=bp_j+O(1)$ with their sum adjusted to $b$. Lemma~\ref{amc:bm:lem:eulerian} supplies a middle-permutation bin with $k+1=ba+O(b^{2/3})$. Stirling's formula and~\eqref{amc:bm:eq:exactlower} give
+\begin{equation}\label{amc:bm:eq:blockentropy}
+ \log Q\ge b\log N+b\cL(\bx;\bp,a)
+   -O_r\left(N\delta^2\sum_jx_j^{-1}\right)+o(N).
+\end{equation}
+Indeed, expanding the falling factorial in $\binom{Nx_j-2b+o(N)}{q_j}$ costs $O(b^2/(Nx_j))+o(N)$ when $\delta$ is small compared with $x_j$. The difference between $(b-2)!$ and $b!$ costs only $O(\log N)$. The estimate is uniform on positive compact subsets for a fixed finite partition of time.
+
+\section{The characteristic and its initial boundary}\label{amc:bm:sec:calibration}
+For positive $\bu=(u_1,\ldots,u_r)$, set $u_0=1$ and define
+\begin{equation}\label{amc:bm:eq:chi}
+ P_{\bu}(s)=\sum_{j=0}^r\frac{u_js^{r-j}}{(r-j)!},\qquad
+ \chi(\bu)=\int_0^\infty g(P_{\bu}(s))\dd s,
+ \qquad D=\sum_{j=1}^r u_{j-1}\partial_{u_j}.
+\end{equation}
+This integral and the derivatives used below are locally uniformly convergent on the positive orthant. Indeed $P_{\bu}(s)$ has positive leading coefficient $1/r!$, while its derivatives are polynomials of degree at most $r-1$. Formula~\eqref{amc:bm:eq:gpositive} bounds derivatives of $g$, or direct differentiation gives the required integrable tails. Since $DP_{\bu}=\partial_sP_{\bu}$,
+\begin{equation}\label{amc:bm:eq:Dchi}
+ D\chi=-g(u_r).
+\end{equation}
+
+Along $u_j(w)=E_j(w)$, the binomial identity gives $P_{E(w)}(s)=E_r(w+s)$. Define
+\begin{equation}\label{amc:bm:eq:path}
+ \tau(w)=\mu_r\int_w^\infty g(E_r(z))\dd z,
+ \qquad x_j(w)=-\mu_rE_j(w)\chi_{u_j}(E(w)).
+\end{equation}
+Then $\tau$ decreases from one to zero as $w$ increases from zero to infinity. In particular
+\begin{equation}\label{amc:bm:eq:positivepath}
+ x_j(w)=\frac{\mu_rE_j(w)}{(r-j)!}
+ \int_0^\infty[-g'(E_r(w+s))]s^{r-j}\dd s>0.
+\end{equation}
+The derivative is negative by~\eqref{amc:bm:eq:gpositive}, with $g'(1)=-1/2$.
+
+\begin{lemma}\label{amc:bm:lem:path}
+Writing derivatives with respect to $\tau$ by dots, define
+\begin{equation}\label{amc:bm:eq:pa}
+ p_j=\frac{(u_{j-1}/u_j)x_j}{\mu_rg(u_r)},\qquad
+ a=-\frac{u_rg'(u_r)}{g(u_r)}
+ =\frac{u_r}{u_r-1}-\frac1{\log u_r},
+\end{equation}
+with $a=1/2$ at $u_r=1$. Then every $p_j>0$, $\sum_jp_j=1$, $0<a<1$, and
+\begin{equation}\label{amc:bm:eq:drifts}
+ \dot x_j=p_{j+1}-p_j\ (j<r),\qquad \dot x_r=a-p_r.
+\end{equation}
+If $\theta_j=\log u_j$, then $\theta(1)=0$ and, for every $\by\ge0$,
+\begin{equation}\label{amc:bm:eq:globalcal}
+ \rho(\by;\bu(\tau))/\mu_r=-\dot\btheta(\tau)\cdot\by.
+\end{equation}
+On the path, $\rho(\bx;\bu)=\mu_r$ and $\dot\btheta\cdot\bx=-1$.
+\end{lemma}
+\begin{proof}
+Equation~\eqref{amc:bm:eq:Dchi} gives the sum of the $p_j$. The value of $a$ is the mean of a uniform variable tilted by $t=\log u_r$, so it lies strictly between zero and one. Differentiating~\eqref{amc:bm:eq:Dchi} gives
+\[
+ D\chi_{u_j}+\chi_{u_{j+1}}=-\ind{j=r}g'(u_r),
+ \qquad \chi_{u_{r+1}}=0.
+\]
+Use $u'_j(w)=u_{j-1}$ and $\tau'(w)=-\mu_rg(u_r)$ to differentiate~\eqref{amc:bm:eq:path}; the result is~\eqref{amc:bm:eq:drifts}. Also
+\[
+ \dot\theta_j=-\frac{u_{j-1}/u_j}{\mu_rg(u_r)},
+\]
+which proves~\eqref{amc:bm:eq:globalcal}. Substituting the sum of the $p_j$ proves the last claims.
+\end{proof}
+
+\subsection{The singular origin}
+\begin{lemma}\label{amc:bm:lem:origin}
+As $w\to\infty$,
+\begin{align}
+ \tau(w)&\sim\frac{\mu_r r!r}{r-1}w^{1-r}\log w,\label{amc:bm:eq:tauorigin}\\
+ \frac{x_j(w)}{\tau(w)}&\longrightarrow
+ \alpha_j=\frac{(r-1)r!(r+j-2)!}{j!(2r-1)!}>0,\label{amc:bm:eq:alpha}\\
+ p_j(w)&\longrightarrow\frac{j\alpha_j}{r-1},\qquad
+ \sum_jj\alpha_j=r-1.\notag
+\end{align}
+Furthermore $\bx(0)=0$, $\btheta(\tau)=O_r(\log(1/\tau))$, and $\btheta\cdot\bx\to0$ as $\tau\downarrow0$.
+\end{lemma}
+\begin{proof}
+The elementary estimates
+\[
+ g(E_r(z))\sim\frac{r!r\log z}{z^r},\quad
+ -g'(E_r(z))\sim\frac{(r!)^2r\log z}{z^{2r}},\quad
+ E_j(w)\sim w^j/j!
+\]
+prove~\eqref{amc:bm:eq:tauorigin} by integration. In~\eqref{amc:bm:eq:positivepath}, substitute $s=wt$. After division by its leading power and logarithm, dominated convergence applies with a constant multiple of
+$t^{r-j}(1+t)^{-2r}(1+\log(1+t))$, which is integrable. The beta integral gives
+\[
+ \frac1{(r-j)!}\int_0^\infty t^{r-j}(1+t)^{-2r}\dd t
+ =\frac{(r+j-2)!}{(2r-1)!}.
+\]
+This proves~\eqref{amc:bm:eq:alpha}. Since $u_{j-1}/u_j\sim j/w$, the formula for $p_j$ follows; taking limits in $\sum p_j=1$ gives the displayed sum. The remaining conclusions follow from $x_j=O(w^{1-r}\log w)$, $\theta_j=O(\log w)$, and~\eqref{amc:bm:eq:tauorigin}. A crude power bound on the latter also directly gives $\log w=O(\log(1/\tau))$.
+\end{proof}
+
+For a small fixed $\varepsilon>0$, set $\boldsymbol\beta=\bx(\varepsilon)/\varepsilon$. Define the straight-line controls $\boldsymbol q,a_0$ by
+\begin{equation}\label{amc:bm:eq:linecontrols}
+ \beta_j=q_{j+1}-q_j\ (j<r),\quad
+ \beta_r=a_0-q_r,\quad \sum_jq_j=1.
+\end{equation}
+They are unique: $q_j=q_1+\sum_{k<j}\beta_k$, and the sum fixes $q_1$.
+
+\begin{lemma}\label{amc:bm:lem:prefixfeasible}
+For all sufficiently small $\varepsilon$, every $\beta_j>0$, every $q_j>0$, and $0<a_0<1$. Moreover
+\[
+ 1-a_0\sim\frac1{r\log w(\varepsilon)},\qquad
+ \varepsilon\cL(\boldsymbol\beta;\boldsymbol q,a_0)\longrightarrow0.
+\]
+\end{lemma}
+\begin{proof}
+Integrate~\eqref{amc:bm:eq:drifts} from zero to $\varepsilon$ and use $\bx(0)=0$. The unique controls in~\eqref{amc:bm:eq:linecontrols} are the time averages of $\bp$ and $a$. Their positivity and strict feasibility follow from Lemma~\ref{amc:bm:lem:path}; positivity of $\beta_j$ follows from~\eqref{amc:bm:eq:alpha}. This avoids relying only on the limiting relation $a_0\to1$.
+
+The exact identity
+\[
+ (1-a(v))g(v)=\frac1{v-1}-\frac{\log v}{(v-1)^2}
+\]
+shows that its composition with $v=E_r(z)$ has tail integral asymptotic to $r!w^{1-r}/(r-1)$. Divide by $\tau(w)/\mu_r$ in~\eqref{amc:bm:eq:tauorigin} to obtain the asserted average. For $a\ge1/2$, the maximizing tilt in $I(a)$ is nonnegative. Since $M(t)\ge\int_a^1\ee^{tu}\dd u\ge(1-a)\ee^{ta}$,
+\[
+ 0\le I(a)\le\log\frac1{1-a}.
+\]
+Thus $I(a_0)=O(\log\log w)$. The other terms in~\eqref{amc:bm:eq:entropy} stay bounded because $\boldsymbol\beta$ and $\boldsymbol q$ tend to strictly positive vectors. Finally $\varepsilon\log\log w(\varepsilon)\to0$ by~\eqref{amc:bm:eq:tauorigin}.
+\end{proof}
+
+\section{Matching growth bounds}\label{amc:bm:sec:growth}
+\subsection{Finite seeds with every category large}
+For every fixed $B$ we need a reachable state with all coordinates much larger than $B$ and with $L\le X_1$. This requirement can be met by explicit words.
+
+If $r\ge3$, take $M$ large and begin with $0,1,\ldots,(r-1)M-1$. Partition these labels into $r-1$ groups of $M$ labels. For each target residual capacity $j=1,\ldots,r-1$, append that group in increasing order exactly $r-1-j$ times. All appended labels were already available, and each appears at most $r-1$ times overall. The final counts are $X_j=M$ for every $j<r$. The group destined for capacity 1 produces at least $M-1$ additional ascents, so $X_r\ge M$. Histogram-preserving compaction gives a canonical path to such counts. Selecting compact label zero once then gives $L=0$ and leaves every category count at least $M-1$.
+
+For $r=2$, use the three increasing runs
+\[
+ 0,\ldots,M;\qquad 0,\ldots,M;\qquad M+1,\ldots,2M+1,
+\]
+then append $M+1$. The result is an ascent sequence with each multiplicity at most two. Its terminal state is $X_1=M$, $X_2=M+1$, $L=0$. These seeds have length independent of the later word length $N$.
+
+\subsection{A repeated straight-line prefix}
+Fix a sufficiently small $\varepsilon$ and the feasible controls of Lemma~\ref{amc:bm:lem:prefixfeasible}. Choose a large but fixed block length $B$. Pick integers $q_j^{(B)}=Bq_j+O(1)$ summing to $B$, and choose the favorable Eulerian bin from Lemma~\ref{amc:bm:lem:eulerian} at mean $a_0$. The resulting increments
+\[
+ d_j=q_{j+1}^{(B)}-q_j^{(B)}\ (j<r),\qquad
+ d_r=k_B+1-q_r^{(B)}
+\]
+satisfy $d_j/B\to\beta_j$. They are all strictly positive for sufficiently large $B$. Start with a sufficiently large fixed seed and repeat this block. Every block ends with $L\le X_1$, so Lemma~\ref{amc:bm:lem:lowerblock} applies uniformly to all paths produced.
+
+At block number $\ell$, $X_j=\ell d_j+O_B(1)$. Its exact lower count is therefore
+\[
+ \ell^B C_B(1+O_B(1/\ell)),\qquad
+ C_B=A(B-2,k_B)\prod_j\frac{d_j^{q_j^{(B)}}}{q_j^{(B)}!}.
+\]
+Taking products over $m$ blocks gives logarithm
+$B\log(m!)+m\log C_B+O_B(\log m)$. Stirling's formula yields the factorial-normalized rate per letter
+\[
+ \frac{\log C_B}{B}-\log B
+ \longrightarrow\cL(\boldsymbol\beta;\boldsymbol q,a_0)
+ \quad(B\to\infty).
+\]
+A prefix of length $\varepsilon N+O_B(1)$ consequently contributes, after subtracting its $\varepsilon N\log N$ term, the action
+\begin{equation}\label{amc:bm:eq:prefixaction}
+ \varepsilon\log\varepsilon-\varepsilon
+ +\varepsilon\cL(\boldsymbol\beta;\boldsymbol q,a_0),
+\end{equation}
+in the successive limits $N\to\infty$ and $B\to\infty$. This tends to zero as $\varepsilon\downarrow0$.
+
+At fixed $B$ the actual prefix slopes are $\boldsymbol\beta_B=\boldsymbol d/B$, not exactly $\boldsymbol\beta$. Translate the nominal later path by $\varepsilon(\boldsymbol\beta_B-\boldsymbol\beta)$. For large enough fixed $B$ it remains in a positive compact region. Its velocities do not change, and its action converges uniformly to that of the desired path. This explicitly handles rounded or irrational endpoints.
+
+\subsection{The lower bound}
+On the characteristic, substitute~\eqref{amc:bm:eq:pa} into~\eqref{amc:bm:eq:entropy}. The equality $I(a)=a\log v+\log g(v)$ gives
+\begin{equation}\label{amc:bm:eq:actionidentity}
+ \cL(\bx;\bp,a)=\log\mu_r-\btheta\cdot\dot\bx.
+\end{equation}
+For example, the categorical part equals
+$\log\mu_r+\log g(v)-\sum_jp_j\log(u_{j-1}/u_j)$;
+its remaining mark contribution is exactly $\btheta\cdot\dot\bx$ by~\eqref{amc:bm:eq:drifts}. Integration by parts and Lemma~\ref{amc:bm:lem:path} give
+\begin{equation}\label{amc:bm:eq:suffixaction}
+ \int_\varepsilon^1\cL(\bx;\bp,a)\dd\tau
+ =(1-\varepsilon)(\log\mu_r-1)
+   +\btheta(\varepsilon)\cdot\bx(\varepsilon).
+\end{equation}
+The right side tends to $\log\mu_r-1$.
+
+To realize this action with finite paths, partition $[\varepsilon,1]$ into a fixed finite mesh. On each interval take the averages of $p_j$ and $a$. The drift equations are linear, so these averages give exactly the nominal endpoint increment. Round the category counts to integers and choose the favorable Eulerian bin. Every block then has a fixed category-vector endpoint, apart from the accumulated $o(N)$ errors from bin selection and rounding; its final threshold always satisfies $L\le X_1$. The errors are $o(N)$ because the partition is fixed before $N$ grows. The path remains in a positive compact set, where entropy is uniformly continuous. Applying~\eqref{amc:bm:eq:blockentropy} and multiplying gives the sum of the interval actions, with error $O_{r,\varepsilon}(N\delta)+o(N)$ as the mesh $\delta$ decreases.
+
+A precise order of limits is: fix $\varepsilon$, fix an accurate prefix block $B$, fix a sufficiently fine finite later mesh, let $N\to\infty$, refine the mesh, improve $B$, and finally let $\varepsilon\downarrow0$. The last two finite refinements can be interchanged on the positive compact region. Any bounded number of leftover positions is filled only at the very end by new maxima; the extension is injective and changes the normalized logarithm by $o(N)$. We do not need a uniform estimate as $B$ grows with $N$.
+
+Combining~\eqref{amc:bm:eq:prefixaction} and~\eqref{amc:bm:eq:suffixaction} proves
+\[
+ \liminf_{N\to\infty}\frac1N\log\frac{c_{N,r}}{N!}\ge\log\mu_r,
+\]
+since $\log N!=N\log N-N+o(N)$.
+
+\subsection{The upper block telescope}
+Fix $\varepsilon>0$. On $[\varepsilon,1]$ the mark curve and its first two derivatives are bounded. Partition the steps from $k=\lceil\varepsilon N\rceil$ to $N$ into finitely many blocks of lengths $b\le\delta N$. At the start of one block write $\btheta=\btheta(\tau)$ and $\Delta\btheta=\btheta(\tau+b/N)-\btheta(\tau)$. Since $|X'_j-X_j|\le b$,~\eqref{amc:bm:eq:blockupper} implies
+\begin{align*}
+ \sum_{\text{paths}}\ee^{\btheta(\tau+b/N)\cdot\bX'}
+ &\le\ee^{\btheta\cdot\bX+\Delta\btheta\cdot\bX+b\|\Delta\btheta\|_1}
+       \max(v,v^{-1})\Lambda^b.
+\end{align*}
+Use $\log z\le z-1$ on $z=\Lambda/(N\mu_r)$, together with~\eqref{amc:bm:eq:globalcal}, to get
+\begin{equation}\label{amc:bm:eq:essentiale}
+ \Lambda^b\le(N\mu_r/\ee)^b
+ \exp\left\{-\frac bN\dot\btheta(\tau)\cdot\bX
+       +C_{r,\varepsilon}\frac{b(b+1)}N\right\}.
+\end{equation}
+The factor $\ee^{-b}$ is essential: it is the constant $-1$ in $\log z\le z-1$.
+
+Taylor's theorem gives $\Delta\btheta=(b/N)\dot\btheta+O_{r,\varepsilon}(b^2/N^2)$ and $\|\Delta\btheta\|_1=O_{r,\varepsilon}(b/N)$. Since $\|\bX\|_1\le N+1$, the linear state terms cancel. Thus
+\begin{equation}\label{amc:bm:eq:telescopeblock}
+ \sum_{\text{paths}}\ee^{\btheta(\tau+b/N)\cdot\bX'}
+ \le\ee^{\btheta(\tau)\cdot\bX}(N\mu_r/\ee)^b
+       \exp\{C_{r,\varepsilon}(b^2/N+1)\}.
+\end{equation}
+This is uniform even at zero coordinates.
+
+Iterate, using $\btheta(1)=0$. There are at most $k!$ initial prefixes: at position $i$ the ascent bound allows at most $i$ choices, so every ascent sequence is bounded by this elementary factorial count. The initial mark is at most $\exp((k+1)\|\btheta(k/N)\|_1)$. For a fixed partition with $J$ blocks,
+\[
+ c_{N,r}\le k!\exp((k+1)\|\btheta(k/N)\|_1)
+       (N\mu_r/\ee)^{N-k}\exp\{C_{r,\varepsilon}(N\delta+J)\}.
+\]
+After division by $N!$ and Stirling's formula,
+\[
+ \limsup_{N\to\infty}\frac1N\log\frac{c_{N,r}}{N!}
+ \le\varepsilon\log\varepsilon+(1-\varepsilon)\log\mu_r
+   +\varepsilon\|\btheta(\varepsilon)\|_1+C_{r,\varepsilon}\delta.
+\]
+First let $\delta\downarrow0$ at fixed $\varepsilon$, then $\varepsilon\downarrow0$. Lemma~\ref{amc:bm:lem:origin} makes the prefix term vanish. This proves the matching upper bound and the root assertion of Theorem~\ref{amc:bm:thm:growth}.
+
+\section{Weighted growth and endpoint laws}\label{amc:bm:sec:ratio}
+Define the histogram polynomial
+\[
+ H_N(\bu)=\sum_{\text{length-}N\text{ compact paths}}\prod_{j=1}^r u_j^{X_j}.
+\]
+By Proposition~\ref{amc:bm:prop:recurrence}, this is also the corresponding original-word histogram polynomial. All marks in this section are fixed positive real numbers, independent of $N$.
+
+\begin{theorem}[Full weighted growth]\label{amc:bm:thm:pressure}
+For every $\bu\in(0,\infty)^r$,
+\begin{equation}\label{amc:bm:eq:pressure}
+ \lim_{N\to\infty}\frac1N\log\frac{H_N(\bu)}{N!}
+ =-\log\chi(\bu).
+\end{equation}
+The function $F(\boldsymbol q)=-\log\chi(\ee^{q_1},\ldots,\ee^{q_r})$ is finite and smooth on all of $\R^r$.
+\end{theorem}
+\begin{proof}
+Fix terminal marks $\bu^0>0$, and put $\nu=1/\chi(\bu^0)$. Replace the earlier mark flow by
+\begin{equation}\label{amc:bm:eq:generalflow}
+ u_j(w)=\sum_{\ell=0}^j\frac{u^0_{j-\ell}w^\ell}{\ell!},\quad u^0_0=1,
+ \qquad Q(w)=u_r(w)=P_{\bu^0}(w),\quad
+ \tau(w)=\nu\int_w^\infty g(Q(z))\dd z.
+\end{equation}
+All marks stay positive, $u_j'=u_{j-1}$, and $P_{\bu(w)}(s)=Q(w+s)$. Set
+\begin{equation}\label{amc:bm:eq:generalpath}
+ x_j(w)=-\nu u_j(w)\chi_{u_j}(\bu(w))
+ =\frac{\nu u_j(w)}{(r-j)!}\int_w^\infty
+ (z-w)^{r-j}[-g'(Q(z))]\dd z>0.
+\end{equation}
+Equations~\eqref{amc:bm:eq:pa}--\eqref{amc:bm:eq:globalcal} hold with $\nu$ in place of $\mu_r$, while $\btheta(1)=\log\bu^0$. In particular the legal drift controls satisfy $p_j>0$, $\sum p_j=1$, and $0<a<1$ even when $v=u_r<1$. On every fixed cutoff interval they are bounded away from their respective boundaries.
+
+The leading terms $u_j(w)\sim w^j/j!$ and $Q(w)\sim w^r/r!$ are unchanged. The dominated beta-integral calculation in Lemma~\ref{amc:bm:lem:origin} therefore gives the same initial slopes $\alpha_j$, with $\nu$ replacing $\mu_r$ in the time scale. Averaging the positive controls still gives a strictly feasible positive-drift prefix. The identity used in Lemma~\ref{amc:bm:lem:prefixfeasible} still proves its vanishing action. Although the terminal ascent fraction can be below $1/2$, the initial one tends to one; the Eulerian bin argument permits all interior fractions anyway.
+
+For the upper bound,~\eqref{amc:bm:eq:blockupper} already holds on both sides of $v=1$. The calibration gives
+$\rho(\by;\bu)/\nu=-\dot\btheta\cdot\by$. The exact calculation~\eqref{amc:bm:eq:essentiale}--\eqref{amc:bm:eq:telescopeblock} therefore yields
+\[
+ \sum_{\text{paths}}\ee^{\btheta_{\rm next}\cdot\bX'}
+ \le\ee^{\btheta\cdot\bX}(N\nu/\ee)^b
+       \exp\{C_{\varepsilon,\bu^0}(b^2/N+1)\}.
+\]
+No sign condition on $\btheta$ is used: its increments and the initial mark are bounded by absolute values. The terminal weight is now $(\bu^0)^{\bX}$. Summation over the factorially bounded prefix and the same nested limits give the upper bound $-\log\chi(\bu^0)$.
+
+For the lower bound use the explicit seeds, repeated prefix blocks, and buffered later blocks of Section~\ref{amc:bm:sec:growth} on the path~\eqref{amc:bm:eq:generalpath}. At fixed cutoff and fixed prefix size $B$, translate the later path by $\Delta_B=\varepsilon(\boldsymbol\beta_B-\boldsymbol\beta)$. The terminal normalized vector is uniformly $\bx(1)+\Delta_B+o(1)$ over every path selected by this construction. Hence its terminal logarithmic weight divided by $N$ is
+\[
+ \log\bu^0\cdot(\bx(1)+\Delta_B)+o(1).
+\]
+This is a two-sided estimate and remains valid for marks below one: the absolute error is bounded by $\|\log\bu^0\|_1$ times the maximum coordinate error. Final deterministic padding changes it by only $O(1/N)$.
+
+The action identity is now $\cL=\log\nu-\btheta\cdot\dot\bx$, so
+\[
+ \int_\varepsilon^1\cL\dd\tau
+ =(1-\varepsilon)(\log\nu-1)
+ -\log\bu^0\cdot\bx(1)
+ +\btheta(\varepsilon)\cdot\bx(\varepsilon).
+\]
+The negative terminal term cancels the positive terminal weight. First let $N$ grow with all finite choices fixed, then refine the later partition and improve $B$, then let $\varepsilon\downarrow0$. The origin and prefix terms vanish exactly as before. After factorial normalization, this gives the lower bound $\log\nu$, proving~\eqref{amc:bm:eq:pressure}.
+
+Finally, a mixed derivative of order $k$ of $\chi$ has integrand
+\[
+ g^{(k)}(P_{\bu}(s))
+ \prod_{\ell=1}^k\frac{s^{r-j_\ell}}{(r-j_\ell)!}.
+\]
+Uniformly on a compact positive mark neighborhood, its tail is
+$O(\log s/s^{r+\sum_\ell j_\ell})$, and its bounded-interval part is smooth and dominated. Differentiation of every finite order under the integral is valid. Thus $\chi$ is positive and smooth, proving the last assertion.
+\end{proof}
+
+\subsection{Concentration and the consecutive ratio}
+Let $\mathbb P_N$ be the uniform endpoint law and put $Y_N=\bX/N$. Theorem~\ref{amc:bm:thm:pressure} implies
+\begin{equation}\label{amc:bm:eq:logmgf}
+ \Lambda(\boldsymbol q):=\lim_{N\to\infty}\frac1N
+ \log\mathbb E_N\ee^{N\boldsymbol q\cdot Y_N}
+ =F(\boldsymbol q)-F(0).
+\end{equation}
+In particular it is a finite differentiable convex function: convexity also follows as the pointwise limit of the finite logarithmic moment-generating functions. At zero,
+\[
+ \partial_jF(0)=-\mu_r\chi_{u_j}(1)=b_j.
+\]
+Equation~\eqref{amc:bm:eq:Dchi} at the all-one point gives $\sum_jb_j=\mu_r$.
+
+For any $\eta>0$, differentiability makes
+$F(te_j)-F(0)-t(b_j+\eta)<0$ for sufficiently small $t>0$. Markov's inequality gives an exponentially small upper tail for $X_j/N\ge b_j+\eta$. The same argument with $t<0$ gives the lower tail. A finite union bound proves exponential concentration of $Y_N$ at $\boldsymbol b$. Uniform boundedness of $Y_N$ also gives convergence in mean.
+
+From a state there are exactly $M=\sum_jX_j$ possible next labels. Therefore
+\begin{equation}\label{amc:bm:eq:extension}
+ \frac{c_{N+1,r}}{c_{N,r}}=\mathbb E_N M.
+\end{equation}
+Since $M/N\to\sum_jb_j=\mu_r$ in mean, this proves the ratio limit in Theorem~\ref{amc:bm:thm:growth}. The original-word identities~\eqref{amc:bm:eq:histrelations} yield~\eqref{amc:bm:eq:multlimits}; their fixed affine transformations preserve the exponential concentration. This proves Theorem~\ref{amc:bm:thm:endpoints}.
+
+\subsection{A full large-deviation principle}
+The weighted result gives more than concentration. We include an ordinary finite-dimensional proof, so no unstated boundary version of a large-deviation theorem is needed.
+
+\begin{theorem}\label{amc:bm:thm:LDP}
+The laws of $Y_N$ satisfy a full large-deviation principle of speed $N$ with good convex rate
+\begin{equation}\label{amc:bm:eq:rate}
+ \mathcal I_r(\bx)=\sup_{\boldsymbol q\in\R^r}
+ \{\boldsymbol q\cdot\bx-F(\boldsymbol q)+F(0)\}.
+\end{equation}
+For every open $G$ and closed $C$ in $\R^r$,
+\begin{align*}
+ \liminf_N N^{-1}\log\mathbb P_N(Y_N\in G)&\ge-\inf_G\mathcal I_r,\\
+ \limsup_N N^{-1}\log\mathbb P_N(Y_N\in C)&\le-\inf_C\mathcal I_r.
+\end{align*}
+Its unique zero is $\boldsymbol b=\nabla F(0)$. Its effective domain lies in
+$S=\{\bx\ge0:\sum_jx_j\le1\}$; no claim that all of $S$ has finite rate is made.
+\end{theorem}
+\begin{proof}
+Write $\Lambda=F-F(0)$. The conjugate~\eqref{amc:bm:eq:rate} is lower semicontinuous and convex. The finite supports satisfy $Y_N\ge0$ and $\sum_jY_{N,j}\le1+1/N$. Thus
+$\Lambda(\boldsymbol q)\le\sup_{\bx\in S}\boldsymbol q\cdot\bx$.
+Separation followed by positive scaling shows $\mathcal I_r=+\infty$ outside $S$. Its closed sublevel sets are therefore compact.
+
+For the upper bound, fix $K<\infty$ and $\eta>0$. At each $\bx$ in the compact set $C\cap[0,2]^r$, choose $\boldsymbol q$ with
+\[
+ \boldsymbol q\cdot\bx-\Lambda(\boldsymbol q)
+ \ge\min(\mathcal I_r(\bx),K)-\eta.
+\]
+A neighborhood $U_{\bx}$ satisfies the same inequality with $2\eta$ for every point in it. Markov's inequality and~\eqref{amc:bm:eq:logmgf} bound the probability of $Y_N\in U_{\bx}$ by the corresponding exponential rate. A finite subcover exists; taking the largest exponential term yields
+\[
+ \limsup_N N^{-1}\log\mathbb P_N(Y_N\in C)
+ \le-\min(\inf_C\mathcal I_r,K)+2\eta.
+\]
+All supports lie in $[0,2]^r$, so no probability was omitted. Send $\eta\downarrow0$ and $K\to\infty$.
+
+For the lower bound, first take $\bx=\nabla\Lambda(\boldsymbol q)$. Tilt the law by density
+$\ee^{N\boldsymbol q\cdot Y_N}/\mathbb E_N\ee^{N\boldsymbol q\cdot Y_N}$.
+Its limiting logarithmic moment-generating function is
+$\Lambda(\boldsymbol q+\boldsymbol h)-\Lambda(\boldsymbol q)$, differentiable at zero. The coordinate Chernoff argument just given proves concentration under the tilt at $\bx$. Changing back to the original law on a radius-$\delta$ ball around $\bx$ gives
+\[
+ \liminf_N N^{-1}\log\mathbb P_N(Y_N\in B_\delta(\bx))
+ \ge\Lambda(\boldsymbol q)-\boldsymbol q\cdot\bx
+       -\|\boldsymbol q\|\delta.
+\]
+Convexity makes $\mathcal I_r(\bx)=\boldsymbol q\cdot\bx-\Lambda(\boldsymbol q)$. If an open set contains $\bx$, send $\delta\downarrow0$ inside that set.
+
+It remains to cover finite-rate points that might not themselves be gradients. Fix $\bx$ with $\mathcal I_r(\bx)<\infty$. For $\epsilon>0$ maximize
+\[
+ \boldsymbol q\cdot\bx-\Lambda(\boldsymbol q)
+        -\tfrac\epsilon2\|\boldsymbol q\|^2.
+\]
+A maximizer $\boldsymbol q_\epsilon$ exists: the affine tangent lower bound on $\Lambda$ makes the negative quadratic dominate at infinity. Let its maximum be $J_\epsilon$. Then $J_\epsilon\uparrow\mathcal I_r(\bx)$ as $\epsilon\downarrow0$, and
+\[
+ \tfrac\epsilon2\|\boldsymbol q_\epsilon\|^2
+ \le\mathcal I_r(\bx)-J_\epsilon\longrightarrow0.
+\]
+The first-order equation gives
+$\bx_\epsilon=\nabla\Lambda(\boldsymbol q_\epsilon)
+=\bx-\epsilon\boldsymbol q_\epsilon\to\bx$. At these gradient points,
+\[
+ \mathcal I_r(\bx_\epsilon)
+ =J_\epsilon-\tfrac\epsilon2\|\boldsymbol q_\epsilon\|^2
+ \longrightarrow\mathcal I_r(\bx).
+\]
+Every open neighborhood of $\bx$ eventually contains $\bx_\epsilon$, so its lower bound follows from the gradient case. Taking the infimum over an arbitrary open set proves the full lower bound, including finite-rate boundary points.
+
+The tangent inequality for $\Lambda$ gives $\mathcal I_r(\boldsymbol b)=0$. If $\bx\ne\boldsymbol b$, a sufficiently small dual vector in the direction $\bx-\boldsymbol b$ makes $\boldsymbol q\cdot\bx-\Lambda(\boldsymbol q)>0$, by differentiability at zero. This proves uniqueness.
+\end{proof}
+
+For a fixed terminal tilt $\bu^0=\ee^{\boldsymbol q^0}$, the same proof gives the rate
+\[
+ \mathcal I_{r,\boldsymbol q^0}(\bx)
+ =\mathcal I_r(\bx)-\boldsymbol q^0\cdot\bx+F(\boldsymbol q^0)-F(0),
+\]
+with unique typical endpoint
+\[
+ b_j(\bu^0)=\partial_jF(\boldsymbol q^0)
+ =-\frac{u_j^0\chi_{u_j}(\bu^0)}{\chi(\bu^0)}=x_j(1).
+\]
+Continuous affine images give rate functions obtained by minimizing $\mathcal I_r$ over their fibers, for the original multiplicities, distinct values, and ascents. This follows directly by applying the open- and closed-set bounds to inverse images; compact support handles closed images. The $2/N$ correction for ascents vanishes deterministically and does not change the bounds.
+
+Smooth limiting pressure alone does not establish convergence of its finite-size second derivatives, a central limit theorem, a local limit theorem, or a coefficient prefactor. Those are separate problems.
+
+\begin{writenotedated}{5 October 2026}
+New in the repository: Theorems~\ref{amc:bm:thm:pressure} and~\ref{amc:bm:thm:LDP}, and the endpoint laws derived from them. At $r=2$ the upper half of Theorem~\ref{amc:bm:thm:pressure} is Report~97's Proposition~46.3 (sibling report), which proves only $\limsup\le-\log\chi$; the theorem here gives the limit for every positive mark vector and the smoothness of $F$.
+\end{writenotedated}
+
+\section{Monotonicity and inversion}\label{amc:bm:sec:inverse}
+\begin{lemma}\label{amc:bm:lem:monotonicity}
+One has $c_{n+1,r}>c_{n,r}$ for every $n\ge1$.
+\end{lemma}
+\begin{proof}
+The maximum of an ascent sequence is at most its total number of ascents. This follows inductively: a new maximum is necessarily reached by an ascent, and its value is at most one plus the previous ascent count. If a word has maximum $M$, append the fresh value $M+1$. The ascent bound permits it, and it cannot create an occurrence beyond the cap of any value. Removing the last entry recovers the original word, so this is an injection $\cA_{n,r}\to\cA_{n+1,r}$. Its image ends in a positive new maximum. The valid word
+\[
+ 0,1,\ldots,n-1,0
+\]
+of length $n+1$ ends in zero, and is outside the image. For $n=1$ this word is $00$. Thus the inequality is strict. The equality $c_{0,r}=c_{1,r}=1$ is the only initial tie relevant here.
+\end{proof}
+
+Fix $r\ge2$. For real $y>1$ define the threshold
+\[
+ N_r(y)=\min\{n\ge0:c_{n,r}\ge y\},\qquad Y=\log y.
+\]
+Let $W_0$ denote the positive real branch of Lambert's function, characterized by $W_0(z)\ee^{W_0(z)}=z$ for $z>0$.
+\begin{corollary}\label{amc:bm:cor:inverse}
+As $y\to\infty$,
+\begin{equation}\label{amc:bm:eq:inverseW}
+ N_r(y)=\frac{Y}{W_0(\mu_r Y/\ee)}
+      +o\left(\frac{Y}{(\log Y)^2}\right).
+\end{equation}
+Equivalently,
+\begin{equation}\label{amc:bm:eq:inversetwo}
+ N_r(y)=\frac{Y}{\log Y}
+ +\frac{Y(\log\log Y+1-\log\mu_r)}{(\log Y)^2}
+ +o\left(\frac{Y}{(\log Y)^2}\right).
+\end{equation}
+\end{corollary}
+\begin{proof}
+Set
+\[
+ F(x)=x\log(\mu_r x/\ee).
+\]
+Theorem~\ref{amc:bm:thm:growth} and Stirling's formula give $\log c_{n,r}=F(n)+o(n)$. If $N=N_r(y)$, the threshold inequalities
+\[
+ \log c_{N-1,r}<Y\le\log c_{N,r}
+\]
+and $F(N)-F(N-1)=O(\log N)$ imply
+\begin{equation}\label{amc:bm:eq:thresholdresidual}
+ Y=F(N)+o(N).
+\end{equation}
+This does not require a coefficient-ratio estimate. It follows first that $N\sim Y/\log Y$.
+
+The positive solution $\nu$ of $F(\nu)=Y$ is exactly
+\[
+ \nu=Y/W_0(\mu_r Y/\ee).
+\]
+Indeed, writing $w=W_0(\mu_r Y/\ee)$ gives $\mu_r\nu/\ee=\ee^w$ and $\nu w=Y$. Also $\nu\sim Y/\log Y$, so $N/\nu\to1$. On the interval between them,
+\[
+ F'(x)=\log(\mu_r x)\sim\log Y.
+\]
+The mean value theorem applied to~\eqref{amc:bm:eq:thresholdresidual} now gives
+\[
+ N-\nu=o(N/\log Y)=o(Y/(\log Y)^2),
+\]
+proving~\eqref{amc:bm:eq:inverseW}. Finally, its defining relation $w+\log w=\log Y+\log\mu_r-1$ first gives $w\sim\log Y$. Substituting this estimate once more gives
+\[
+ W_0(\mu_r Y/\ee)
+ =\log Y-\log\log Y+\log\mu_r-1
+   +O\left(\frac{\log\log Y}{\log Y}\right).
+\]
+Expanding the reciprocal yields~\eqref{amc:bm:eq:inversetwo}; its next explicit error is
+$O(Y(\log\log Y)^2/(\log Y)^3)$, which is smaller than the error already allowed in~\eqref{amc:bm:eq:inverseW}.
+\end{proof}
+
+\begin{remark}
+The factor in the Lambert argument is $\mu_r Y/\ee$. It follows directly from $F(x)=x\log(\mu_r x/\ee)$; replacing it by $Y/(\ee\mu_r)$ would change the second term incorrectly. The error in~\eqref{amc:bm:eq:inverseW} is generally much larger than one, so neither a floor nor a ceiling of the displayed approximation is justified as an exact threshold rule.
+\end{remark}
+
+\begin{writenotedated}{5 October 2026}
+Second route, weaker. With $Y=\log y$, which is Part~\ref{amc:part:fc}'s $L=\log X$, the leading term $Y/W_0(\mu_rY/\ee)$ is Part~\ref{amc:part:fc}'s $n_0=L/W_0(L/(eT_b))$, because $\mu_r=1/T_b$. Part~\ref{amc:part:fc}'s error $O_b(L/(\log L)^3)$ in \eqref{amc:eq:lengthinverse} is smaller than the $o(Y/(\log Y)^2)$ of \eqref{amc:bm:eq:inverseW}, for every $b\ge3$; for $r=2$ the sibling report's Parts~II and~IV give $x-O(\log x)\le N\le x+O(\sqrt{x\log x})$. Lemma~\ref{amc:bm:lem:monotonicity} sharpens the monotonicity used in Section~\ref{amc:sec:lengthinverse} (``the counts are nondecreasing'') to strict increase; the injection is the same.
+\end{writenotedated}
+
+\section{Asymptotics as the cap grows}\label{amc:bm:sec:largecap}
+
+This section studies the constants $J_r=\mu_r^{-1}$ as the cap $r$ tends to infinity. Throughout this section
+\[
+ R=r+1,\qquad A=\zeta(2)=\frac{\pi^2}{6}.
+\]
+The parameter $R$ is unrelated to the word length $N$. Every sector index and every inverse-$R$ truncation order below is fixed. In particular, these results do not assert a uniform word-length theorem with a growing cap.
+
+\begin{writenotedated}{5 October 2026}
+\emph{Second routes in this section.} Section~\ref{amc:bm:sec:largecap} re-proves, in the variable $R=b+1$, the large-cap results of Section~\ref{amc:sec:largecap} and Part~\ref{amc:part:sec}. Its $J_r$ is $T_b$, its $A$ is $\tau$, and its sector $T_m(R)$ at $R=b+1$ is Part~\ref{amc:part:sec}'s $A_{m,b}$ (sector index $m$ here, $r$ there). Thus \eqref{amc:bm:cap:linear} is the first identity of \eqref{amc:eq:variation} and \eqref{amc:sec:eq:r1} ($L(b+1)=L_b=A_{1,b}$); \eqref{amc:bm:cap:positive-series} at integer $R$ is \eqref{amc:sec:eq:infinite}; Proposition~\ref{amc:bm:cap:remainder-prop} is \eqref{amc:sec:eq:order}; \eqref{amc:bm:cap:sector-leading} and \eqref{amc:bm:cap:remainder-equivalent} are \eqref{amc:sec:eq:equivalence} with the leading term of Theorem~\ref{amc:sec:thm:algebraic}; Theorem~\ref{amc:bm:cap:allorders-theorem} is Theorem~\ref{amc:sec:thm:algebraic}, whose $D_r$ and $d_{r,j}$ are this section's $C_m$ and $c_{m,j}$; \eqref{amc:bm:cap:kappa} is Part~\ref{amc:part:sec}'s $d_{r,1}$; \eqref{amc:bm:cap:mu} is \eqref{amc:eq:caplead}; and \eqref{amc:bm:cap:second} is the sharp remainder of Part~\ref{amc:part:sec} (equations \eqref{amc:sec:eq:equivalence}, \eqref{amc:sec:eq:r2}). The coefficient algorithm \eqref{amc:bm:cap:expectation-algorithm}--\eqref{amc:bm:cap:coefficient-algorithm} uses centred gamma moments and is a different finite algorithm from the Gaussian-moment algorithm after Theorem~\ref{amc:sec:thm:algebraic}. New here: the continuous cap \eqref{amc:bm:cap:continuous}--\eqref{amc:bm:cap:gamma-lower} with the strict monotonicity of $\mathcal J$ (Section~\ref{amc:sec:capinverse} assumes ``no interpolation of the exact sequence $T_b$ to real $b$''; here the interpolation is an analytic device), the derivative control \eqref{amc:bm:cap:T-derivative}--\eqref{amc:bm:cap:partial-derivative}, the exact-sector envelopes with Proposition~\ref{amc:bm:cap:inverse-envelope}, the displacement \eqref{amc:bm:cap:W-correction} and the selection criterion of Corollary~\ref{amc:bm:cap:two-candidates}.
+\end{writenotedated}
+
+\begin{theorem}[Sharp large-cap expansion]\label{amc:bm:cap:main}
+As $R=r+1\to\infty$,
+\begin{equation}\label{amc:bm:cap:sharp}
+ J_r-A=R\bigl(\zeta(R+1)-1\bigr)
+ +\frac2{\sqrt\pi}\sqrt R\left(\frac49\right)^R
+ \left(1-\frac{31}{8R}+O(R^{-2})\right).
+\end{equation}
+Consequently,
+\begin{align}
+ J_r-A&=(r+1)\bigl(\zeta(r+2)-1\bigr)
+       +O\!\left(\sqrt r(4/9)^r\right),\label{amc:bm:cap:first}\\
+ J_r-A-(r+1)\bigl(\zeta(r+2)-1\bigr)
+ &\sim\frac8{9\sqrt\pi}\sqrt r(4/9)^r,\label{amc:bm:cap:second}\\
+ \frac6{\pi^2}-\mu_r&\sim\frac{9(r+1)}{\pi^4\,2^r}.\label{amc:bm:cap:mu}
+\end{align}
+\end{theorem}
+
+\begin{writenotedated}{5 October 2026}
+The coefficient $-31/8$ in \eqref{amc:bm:cap:sharp} belongs to the variable $R=b+1$; in Part~\ref{amc:part:sec}'s variable $b$ the same expansion has $-27/8$, as in \eqref{amc:sec:eq:r2}. There is no contradiction: see the conversion after \eqref{amc:bm:cap:coefficients}. The power $\sqrt r$ in \eqref{amc:bm:cap:first} is sharper than the $b^{5/2}$ of \eqref{amc:eq:capstrong}, whose constants are explicit; the sharp power is Part~\ref{amc:part:sec}'s.
+\end{writenotedated}
+
+The proof gives an exact positive sector decomposition, all inverse-$R$ orders within each fixed sector, and a rigorous inversion for the minimum integer cap needed to achieve a specified gap from $6/\pi^2$.
+
+\subsection{Derivative bounds and a continuous cap parameter}
+Recall $g(v)=\log v/(v-1)$, with its removable value $g(1)=1$. Its integral representation gives, for $v>0$ and integers $m\ge0$,
+\begin{equation}\label{amc:bm:cap:deriv-integral}
+ \frac{(-1)^m}{m!}g^{(m)}(v)
+ =\int_0^1\frac{t^m}{[1+t(v-1)]^{m+1}}\dd t>0.
+\end{equation}
+For $v\ge1$, $tv\le1+t(v-1)$, and therefore
+\begin{equation}\label{amc:bm:cap:deriv-bound}
+ \frac{|g^{(m)}(v)|}{m!}\le\frac{g(v)}{v^m}
+ \le\frac{1+\log v}{v^{m+1}}.
+\end{equation}
+The second inequality follows from
+$vg(v)=\log v+\log v/(v-1)\le1+\log v$.
+These estimates include $v=1$ and require no exception near $x=0$.
+
+It is useful to extend the parameter to real $R>2$. Define
+\begin{equation}\label{amc:bm:cap:continuous}
+ \mathcal E(R,x)=\ee^x\frac{\Gamma(R,x)}{\Gamma(R)},\qquad
+ \delta_R(x)=\ee^x\frac{\gamma(R,x)}{\Gamma(R)},\qquad
+ \mathcal J(R)=\int_0^\infty g(\mathcal E(R,x))\dd x.
+\end{equation}
+Here $\Gamma(R,x)$ and $\gamma(R,x)$ are the upper and lower incomplete gamma functions. At integer $R=r+1$, $\mathcal E(R,x)=E_r(x)$ and $\mathcal J(R)=J_r$.
+For $R\ge1$,
+\begin{equation}\label{amc:bm:cap:E-lower}
+ \mathcal E(R,x)=\frac1{\Gamma(R)}\int_0^\infty(x+u)^{R-1}\ee^{-u}\dd u
+ \ge\max\left(1,\frac{x^{R-1}}{\Gamma(R)}\right).
+\end{equation}
+For each fixed $R$, $\mathcal E(R,x)\sim x^{R-1}/\Gamma(R)$ as $x\to\infty$, by dominated convergence in this integral. Thus $g(\mathcal E(R,x))=O(\log x/x^{R-1})$, and $\mathcal J(R)$ is finite for $R>2$.
+
+The gamma convolution identity couples a gamma random variable of shape $R+h$ as the sum of independent gamma variables of shapes $R$ and $h$. Consequently $\Gamma(R,x)/\Gamma(R)$, a gamma upper-tail probability, is strictly increasing in $R$ for every $x>0$. Hence $\mathcal J(R)$ is strictly decreasing. Continuity follows by dominated convergence on compact $R$-intervals, dominated by the integrable value at the smallest parameter. Also $\mathcal E(R,x)<\ee^x$, so $\mathcal J(R)>A$. As $R\to\infty$, the gamma lower tail at fixed $x$ tends to zero, whence
+\[
+ \mathcal J(R)\downarrow\int_0^\infty\frac{x}{\ee^x-1}\dd x
+ =\sum_{k\ge1}k^{-2}=A.
+\]
+The interchange in the last equality is Tonelli's theorem. The continuous extension is an analytic device; no combinatorial interpretation of a noninteger cap is asserted.
+
+Expanding $\ee^{x(1-t)}$ in a beta integral gives the identity
+\begin{equation}\label{amc:bm:cap:F-factor}
+ \delta_R(x)=\frac{x^R}{\Gamma(R+1)}F_R(x),\qquad
+ F_R(x)=\sum_{k\ge0}\frac{x^k}{(R+1)_k}.
+\end{equation}
+Indeed,
+\[
+ \delta_R(x)=\frac{x^R}{\Gamma(R)}\int_0^1t^{R-1}\ee^{x(1-t)}\dd t,
+\]
+and the termwise integrals are beta integrals. For any fixed $0<\alpha<1$,
+\begin{equation}\label{amc:bm:cap:F-bound}
+ F_R(x)\le(1-\alpha)^{-1}\qquad(0\le x\le\alpha R).
+\end{equation}
+Moreover, if $G\sim\GammaDist(R,\text{ rate }1)$, then
+\begin{equation}\label{amc:bm:cap:gamma-lower}
+ \ee^{-x}\delta_R(x)=\Pr(G\le x)
+ \le\exp[-R(\alpha-1-\log\alpha)]\quad(x\le\alpha R).
+\end{equation}
+To prove this, apply Markov's inequality to $\ee^{-sG}$ and use
+$\mathbb E\ee^{-sG}=(1+s)^{-R}$ with $s=1/\alpha-1$. Thus $\mathcal E(R,x)\ge\ee^x/2$ uniformly below $\alpha R$ for all sufficiently large $R$.
+
+\subsection{Exact positive sectors and their finite remainders}
+Define
+\begin{equation}\label{amc:bm:cap:T-def}
+ T_m(R)=\frac{(-1)^m}{m!}\int_0^\infty
+ g^{(m)}(\ee^x)\delta_R(x)^m\dd x\qquad(m\ge1).
+\end{equation}
+Each sector is positive and finite: its integrand is at most $(1+x)\ee^{-x}$ by \eqref{amc:bm:cap:deriv-bound} and $\delta_R\le\ee^x$.
+For $v=\ee^x$, $D=1+t(v-1)$, and $\delta=\delta_R(x)$,
+\[
+ \frac1{D-t\delta}=\frac1D\sum_{m\ge0}\left(\frac{t\delta}{D}\right)^m,
+ \qquad 0\le\frac{t\delta}{D}\le\frac\delta v<1.
+\]
+All terms are nonnegative. Integrating first in $t$ and then in $x$, Tonelli's theorem proves the exact identity
+\begin{equation}\label{amc:bm:cap:positive-series}
+ \mathcal J(R)-A=\sum_{m\ge1}T_m(R).
+\end{equation}
+In particular every finite remainder is nonnegative and is bounded pointwise by $g(\mathcal E(R,x))$ before integration.
+
+The first sector is explicit for every real $R>0$. Put
+$P(R,x)=\gamma(R,x)/\Gamma(R)$. Integration by parts gives
+\begin{align}
+ T_1(R)
+ &=-\int_0^\infty\frac\dd{\dd x}g(\ee^x)P(R,x)\dd x\notag\\
+ &=\frac1{\Gamma(R)}\int_0^\infty
+       \frac{x^R\ee^{-x}}{\ee^x-1}\dd x
+ =R\bigl(\zeta(R+1)-1\bigr)=:L(R).\label{amc:bm:cap:linear}
+\end{align}
+The boundary terms vanish because $P(R,0)=0$ and $g(\ee^x)\to0$ at infinity; expanding $(\ee^x-1)^{-1}$ then gives the zeta identity by Tonelli. In particular,
+\begin{equation}\label{amc:bm:cap:L0}
+ L(R)=L_0(R)+O(R3^{-R}),\qquad L_0(R)=R2^{-R-1}.
+\end{equation}
+
+Set
+\begin{equation}\label{amc:bm:cap:a-C}
+ a_m=\left(\frac m{m+1}\right)^m,\qquad
+ C_m=(2\pi)^{(1-m)/2}m^{3/2}(m+1)^{m-2}.
+\end{equation}
+The bases $a_m$ decrease to $\ee^{-1}$ and are all strictly larger than $\ee^{-1}$.
+
+\begin{proposition}[Finite-sector remainder]\label{amc:bm:cap:remainder-prop}
+For every fixed $M\ge1$,
+\begin{equation}\label{amc:bm:cap:remainder}
+ \mathcal J(R)-A=\sum_{m=1}^M T_m(R)
+ +O_M\!\left(R^{(2-M)/2}a_{M+1}^{R}\right).
+\end{equation}
+\end{proposition}
+\begin{proof}
+Choose $\alpha<1$ so close to $1$ that $1/(\alpha\ee)<a_{M+1}$. Below $\alpha R$, Taylor's theorem and \eqref{amc:bm:cap:deriv-bound}, with $\mathcal E(R,x)\ge\ee^x/2$, bound the remainder after $M$ terms by
+\[
+ 2^{M+2}(1+x)\ee^{-(M+2)x}\delta_R(x)^{M+1}.
+\]
+Use \eqref{amc:bm:cap:F-factor}--\eqref{amc:bm:cap:F-bound} and extend the resulting integral to infinity. Up to a fixed multiplicative constant its integral is
+\[
+ \frac1{\Gamma(R+1)^{M+1}}
+ \int_0^\infty(1+x)x^{(M+1)R}\ee^{-(M+2)x}\dd x
+ =O_M\!\left(R^{(2-M)/2}a_{M+1}^{R}\right),
+\]
+by the gamma integral and Stirling's formula.
+For the upper tail, \eqref{amc:bm:cap:deriv-bound} and \eqref{amc:bm:cap:E-lower} imply, when $R>3$ and $\alpha R\ge1$,
+\begin{equation}\label{amc:bm:cap:upper-tail}
+ \int_{\alpha R}^\infty g(\mathcal E(R,x))\dd x
+ \le\frac{2\Gamma(R)(\alpha R)^{3-R}}{R-3}
+ =O_\alpha\!\left(R^{3/2}(\alpha\ee)^{-R}\right).
+\end{equation}
+Here $\log\mathcal E(R,x)\le x$ was used. The strict exponential inequality in the choice of $\alpha$ absorbs this tail into the required bound. Positivity of the exact sector series bounds the tail of the remainder by this same integral.
+\end{proof}
+
+\subsection{Uniform tail-factor expansions to every order}
+Let $h_\ell(1,\ldots,k)$ denote the complete homogeneous symmetric polynomial of degree $\ell$ in $1,\ldots,k$, with $h_0=1$. Define
+\begin{equation}\label{amc:bm:cap:f-coeff}
+ f_\ell(y)=(-1)^\ell\sum_{k\ge0}h_\ell(1,\ldots,k)y^k.
+\end{equation}
+For the empty alphabet, $h_\ell=0$ when $\ell>0$.
+
+\begin{lemma}[Uniform expansion of the tail factor]\label{amc:bm:cap:F-expand}
+For fixed $0<\alpha<1$ and nonnegative integers $q,d$, as real $R\to\infty$,
+\begin{equation}\label{amc:bm:cap:F-allorders}
+ F_R(Ry)=\sum_{\ell=0}^qf_\ell(y)R^{-\ell}
+ +O_{\alpha,q,d}(R^{-q-1})
+\end{equation}
+uniformly in the $C^d$ norm on $0\le y\le\alpha$.
+\end{lemma}
+\begin{proof}
+For $p_k(z)=\prod_{j=1}^k(1+jz)^{-1}$ and $z\ge0$, the product rule gives
+\[
+ \frac{(-1)^u p_k^{(u)}(z)}{u!}
+ =\sum_{b_1+\cdots+b_k=u}\prod_{j=1}^k
+   \frac{j^{b_j}}{(1+jz)^{b_j+1}}
+ \le h_u(1,\ldots,k).
+\]
+Taylor's theorem at $z=0$ therefore bounds the error through degree $q$, at $z=1/R$, by
+\begin{equation}\label{amc:bm:cap:F-error}
+ R^{-q-1}h_{q+1}(1,\ldots,k)
+ \le R^{-q-1}\left(\frac{k(k+1)}2\right)^{q+1}.
+\end{equation}
+Multiply by $y^k$ and sum. Differentiating $d$ times in $y$ adds only a fixed polynomial in $k$ to the geometrically summable majorant. This proves the stated uniform remainder.
+\end{proof}
+The coefficient $h_\ell(1,\ldots,k)$ is a polynomial in $k$ of degree at most $2\ell$, computable from
+\begin{equation}\label{amc:bm:cap:h-recursion}
+ \ell h_\ell=\sum_{u=1}^\ell S_u(k)h_{\ell-u},\qquad
+ S_u(k)=\sum_{j=1}^k j^u.
+\end{equation}
+Thus $f_\ell$ is rational, with denominator dividing $(1-y)^{2\ell+1}$. An effective construction replaces each power of $k$ by the same power of the Euler operator $y\,\dd/\dd y$ acting on $(1-y)^{-1}$, and multiplies by $(-1)^\ell$. For example,
+\begin{equation}\label{amc:bm:cap:first-f}
+ f_0=\frac1{1-y},\qquad f_1=-\frac y{(1-y)^3},\qquad
+ f_2=\frac{y(1+2y)}{(1-y)^5}.
+\end{equation}
+
+\subsection{Gamma concentration and the sector saddle}
+For $v>1$, differentiate the normally convergent series $g(v)=\sum_{k\ge1}(\log v)v^{-k}$. The differentiated summand is
+\[
+ \frac{(-1)^m}{m!}\frac{\dd^m}{\dd v^m}[(\log v)v^{-k}]
+ =\binom{k+m-1}{m}v^{-k-m}
+ \left(\log v-\sum_{j=0}^{m-1}\frac1{k+j}\right).
+\]
+The $k=1$ term contains $H_m=\sum_{j=1}^m1/j$. The remaining coefficients grow only polynomially in $k$, so for $x\ge\log2$,
+\begin{equation}\label{amc:bm:cap:deriv-asym}
+ \frac{(-1)^m}{m!}g^{(m)}(\ee^x)
+ =\ee^{-(m+1)x}(x-H_m)
+ +O_m((1+x)\ee^{-(m+2)x}).
+\end{equation}
+
+Put
+\begin{equation}\label{amc:bm:cap:gamma-scale}
+ \begin{gathered}
+ I_{R,m}=\frac{\Gamma(mR+2)}{(m+1)^{mR+2}\Gamma(R+1)^m},\qquad
+ y_m=\frac m{m+1},\\
+ X\sim\GammaDist(mR+2,\text{ rate }m+1),\qquad Y=X/R.
+ \end{gathered}
+\end{equation}
+The gamma moment-generating function yields exponential concentration of $Y$ at $y_m$. More explicitly, for $c\ne y_m$, the appropriate one-sided probability is at most
+\begin{equation}\label{amc:bm:cap:gamma-concentration}
+ K_{m,c}\ee^{-R\mathcal I_m(c)},\qquad
+ \mathcal I_m(c)=(m+1)c-m-m\log\frac{(m+1)c}{m}>0.
+\end{equation}
+Use the exponential parameter $t=(m+1)-m/c$, positive for the upper tail and negative for the lower tail, in $(1-t/(m+1))^{-mR-2}$. The extra shape parameter $2$ contributes a fixed factor. Fixed polynomial moments on a discarded tail are likewise exponentially small, by this exponential-moment bound or by Cauchy--Schwarz with a slightly weakened exponent.
+
+Choose $0<\beta<y_m<\alpha<1$, with $\alpha>-\log a_m$. Such a choice exists since $a_m>\ee^{-1}$. On $\beta R\le x\le\alpha R$, the expansions \eqref{amc:bm:cap:F-allorders} and \eqref{amc:bm:cap:deriv-asym} are uniform. Below $\beta R$, the derivative bound and the bound on $F_R$ reduce the integral to lower gamma tails of shapes $mR+1$ and $mR+2$. Above $\alpha R$, the sector integrand is at most $(1+x)\ee^{-x}$, whose integral is $O(R\ee^{-\alpha R})$. These errors, as well as the last term in \eqref{amc:bm:cap:deriv-asym}, are smaller than every inverse power of $R$ relative to $I_{R,m}$. It follows first that
+\[
+ T_m(R)\sim(m+1)^m I_{R,m},
+\]
+and hence, by Stirling's formula,
+\begin{equation}\label{amc:bm:cap:sector-leading}
+ T_m(R)\sim C_m R^{(3-m)/2}a_m^R.
+\end{equation}
+Combining this with Proposition~\ref{amc:bm:cap:remainder-prop} at $M$ and at $M+1$ proves
+\begin{equation}\label{amc:bm:cap:remainder-equivalent}
+ \mathcal J(R)-A-\sum_{m=1}^MT_m(R)
+ \sim T_{M+1}(R)
+ \sim C_{M+1}R^{(2-M)/2}a_{M+1}^R.
+\end{equation}
+This holds for every fixed $M$; it does not resolve the accumulation of bases at $\ee^{-1}$ when the number of sectors grows.
+
+\subsection{All inverse-cap orders and an effective coefficient algorithm}
+\begin{theorem}[Every fixed sector to all algebraic orders]\label{amc:bm:cap:allorders-theorem}
+For each fixed $m\ge1$ and $q\ge0$, there are rational coefficients $c_{m,j}$ such that
+\begin{equation}\label{amc:bm:cap:allorders}
+ T_m(R)=C_mR^{(3-m)/2}a_m^R
+ \left(\sum_{j=0}^q c_{m,j}R^{-j}+O_{m,q}(R^{-q-1})\right).
+\end{equation}
+They are effectively computable by finite polynomial and rational operations.
+\end{theorem}
+All expectations of rational functions in the following proof are restricted to a fixed compact saddle interval inside $(0,1)$. Their unrestricted gamma expectations need not exist because of the pole at $Y=1$. Full gamma moments enter only after expansion into polynomials.
+
+\begin{proof}
+Let $z$ be a formal variable and define
+\begin{align}
+ A_{m,\ell}(y)&=[z^\ell]\left(\sum_{u\ge0}f_u(y)z^u\right)^m,\notag\\
+ B_{m,\ell}(y)&=A_{m,\ell}(y)-\frac{H_m}{y}A_{m,\ell-1}(y),
+ \qquad A_{m,-1}=0.\label{amc:bm:cap:AB}
+\end{align}
+Only finitely many coefficients are used at a specified order. The exact centered gamma moment polynomial is
+\begin{equation}\label{amc:bm:cap:moment-poly}
+ M_{m,d}(z)=\sum_{j=0}^d\binom dj(-y_m)^{d-j}
+ \frac{\prod_{i=0}^{j-1}[m+(i+2)z]}{(m+1)^j}.
+\end{equation}
+At $z=1/R$ this equals $\mathbb E[(Y-y_m)^d]$. For $d\ge1$ its first possible power is $z^{\lceil d/2\rceil}$, as seen from
+\begin{equation}\label{amc:bm:cap:moment-mgf}
+ \mathbb E\ee^{t(Y-y_m)}
+ =\exp\left[\sum_{u\ge1}z^u
+ \left(\frac{2t^u}{u(m+1)^u}
+ +\frac{mt^{u+1}}{(u+1)(m+1)^{u+1}}\right)\right].
+\end{equation}
+For the requested order $q$, form the coefficients through degree $q$ of
+\begin{equation}\label{amc:bm:cap:expectation-algorithm}
+ \mathcal P_{m,q}(z)=\sum_{\ell=0}^q z^\ell
+ \sum_{d=0}^{2(q-\ell)}
+ \frac{B_{m,\ell}^{(d)}(y_m)}{d!}M_{m,d}(z).
+\end{equation}
+Let $\mathrm B_{2k}$ denote Bernoulli numbers and form the formal Stirling correction
+\begin{equation}\label{amc:bm:cap:stirling-series}
+ \mathcal S_m(z)=\left(1+\frac zm\right)
+ \exp\left[\sum_{k\ge1}\frac{\mathrm B_{2k}}{2k(2k-1)}
+ (m^{1-2k}-m)z^{2k-1}\right].
+\end{equation}
+The coefficient algorithm is
+\begin{equation}\label{amc:bm:cap:coefficient-algorithm}
+ c_{m,j}=[z^j]\frac{\mathcal S_m(z)\mathcal P_{m,q}(z)}{(m+1)^m},
+ \qquad 0\le j\le q.
+\end{equation}
+Its inputs are rational, so its outputs are rational.
+
+To prove the remainder, raise the uniform expansion in Lemma~\ref{amc:bm:cap:F-expand} to the fixed power $m$ on the compact saddle interval. Equation~\eqref{amc:bm:cap:deriv-asym} then reduces $T_m/I_{R,m}$, up to exponentially small errors, to the localized expectation of
+$\sum_{\ell=0}^qR^{-\ell}B_{m,\ell}(Y)$ with uniform error $O(R^{-q-1})$.
+For each $\ell$, Taylor-expand $B_{m,\ell}$ about $y_m$ through degree $2(q-\ell)+1$. The remainder has expectation bounded by a constant times
+$\mathbb E|Y-y_m|^{2(q-\ell)+2}=O(R^{-q+\ell-1})$.
+The signed moment of degree $2(q-\ell)+1$ is itself of that order, by \eqref{amc:bm:cap:moment-mgf}, and may be omitted. The difference between localized and full polynomial moments is exponentially small by \eqref{amc:bm:cap:gamma-concentration}. This proves \eqref{amc:bm:cap:expectation-algorithm} with the required uniform error.
+
+Finally, Stirling's formula with its finite-order remainder gives
+\[
+ I_{R,m}=\frac{C_m}{(m+1)^m}R^{(3-m)/2}a_m^R
+ \left(\mathcal S_m(1/R)\text{ through degree }q+O_{m,q}(R^{-q-1})\right).
+\]
+The factor $1+z/m$ comes from $\Gamma(mR+2)=(mR+1)\Gamma(mR+1)$; subtracting $m$ copies of $\log\Gamma(R+1)$ gives the Bernoulli coefficients in \eqref{amc:bm:cap:stirling-series}. This proves the theorem. Uniform majorants are supplied by \eqref{amc:bm:cap:F-error}, \eqref{amc:bm:cap:gamma-concentration}, Taylor's theorem on the fixed compact interval, and Stirling's remainder. No convergence of the infinite inverse-$R$ series is asserted.
+\end{proof}
+
+The first correction has the closed form
+\begin{equation}\label{amc:bm:cap:kappa}
+ c_{m,1}=\frac{23m}{12}+\frac{13}{12m}
+ -\frac{m^2(m+1)}2-\frac{(m+1)H_m}{m}.
+\end{equation}
+For example, the coefficient lists through degree three are
+\begin{align}
+ (c_{1,0},c_{1,1},c_{1,2},c_{1,3})&=(1,0,0,0),\notag\\
+ (c_{2,0},c_{2,1},c_{2,2},c_{2,3})
+ &=\left(1,-\frac{31}{8},\frac{5437}{128},-\frac{896281}{1024}\right),\label{amc:bm:cap:coefficients}\\
+ (c_{3,0},c_{3,1},c_{3,2},c_{3,3})
+ &=\left(1,-\frac{43}{3},\frac{32791}{81},-\frac{40869055}{2187}\right).\notag
+\end{align}
+All $c_{1,j}$ for $j\ge1$ vanish, consistently with \eqref{amc:bm:cap:linear}.
+
+\begin{writenotedated}{5 October 2026}
+\emph{Conversion to Part~\ref{amc:part:sec}'s variable.} Write \eqref{amc:bm:cap:allorders} as $T_m(R)\sim C_mR^{(3-m)/2}a_m^R\sum_jc_{m,j}R^{-j}$. At $R=b+1$, with $q=1/b$,
+\[
+ T_m(b+1)=C_ma_m\,b^{(3-m)/2}a_m^{\,b}\,(1+q)^{(3-m)/2}\sum_jc_{m,j}\Bigl(\frac q{1+q}\Bigr)^j,
+\]
+so Part~\ref{amc:part:sec}'s constant is $C_ma_m$ and its coefficients in $b^{-j}$ are the coefficients of $q^j$ on the right. For $m=2$ the list $(1,-\frac{31}8,\frac{5437}{128},-\frac{896281}{1024})$ in $R$ becomes $(1,-\frac{27}8,\frac{5669}{128},-\frac{962949}{1024})$ in $b$, and $C_2a_2=8/(9\sqrt\pi)$: this is \eqref{amc:sec:eq:r2}. For $m=3$ the list $(1,-\frac{43}3,\frac{32791}{81},-\frac{40869055}{2187})$ becomes $(1,-\frac{43}3,\frac{33952}{81},-\frac{42671116}{2187})$, and $C_3a_3=81\sqrt3/(32\pi)$: this is \eqref{amc:sec:eq:r3}. The conversion was checked exactly with SymPy at the write. In general $c_{m,j}$ here equals Part~\ref{amc:part:sec}'s $d_{m,j}$, the coefficients ``in powers of $m^{-1}$'' there, whose $m$ is this section's $R$; Part~\ref{amc:part:sec}'s $c_{r,j}$ are the converted ones.
+\end{writenotedated}
+
+For an explicit check of the quadratic coefficient, $Y$ in \eqref{amc:bm:cap:gamma-scale} has
+$\mathbb E(Y-2/3)=2/(3R)$ and
+$\mathbb E(Y-2/3)^2=2/(9R)+O(R^{-2})$.
+Using $f_0,f_1$ in \eqref{amc:bm:cap:first-f} gives
+\[
+ \frac{T_2(R)}{I_{R,2}}=9-\frac{153}{4R}+O(R^{-2})
+ =9\left(1-\frac{17}{4R}+O(R^{-2})\right),
+\]
+while
+\[
+ I_{R,2}=\frac2{9\sqrt\pi}\sqrt R(4/9)^R
+ \left(1+\frac3{8R}+O(R^{-2})\right).
+\]
+Thus $c_{2,1}=-31/8$. Proposition~\ref{amc:bm:cap:remainder-prop} at $M=2$ has error $O((27/64)^R)$, exponentially smaller than the displayed algebraic error in the quadratic sector. This proves \eqref{amc:bm:cap:sharp}.
+If $\Delta(R)=\mathcal J(R)-A$, then
+\[
+ A^{-1}-\mathcal J(R)^{-1}
+ =A^{-2}\Delta(R)+O(\Delta(R)^2).
+\]
+Since $\Delta(R)\sim R2^{-R-1}$, this proves \eqref{amc:bm:cap:mu}. Moreover $\Delta(R)^2=O(R^2 4^{-R})$ is exponentially smaller than every fixed sector, since $a_m>\ee^{-1}>1/4$. Therefore every finite-sector expansion for the integral gap transfers to the reciprocal gap by multiplying its sectors by $36/\pi^4$.
+
+\subsection{Derivative control for threshold inversion}
+For every fixed $m$,
+\begin{equation}\label{amc:bm:cap:T-derivative}
+ T_m'(R)\sim(\log a_m)T_m(R),\qquad |T_m'(R)|=O_m(T_m(R)).
+\end{equation}
+Here is a justification which does not differentiate an unqualified asymptotic error. At fixed $x\le\alpha R$, differentiate the absolutely convergent series \eqref{amc:bm:cap:F-factor}:
+\[
+ \partial_RF_R(x)=-\sum_{k\ge0}\frac{x^k}{(R+1)_k}
+      \sum_{j=1}^k\frac1{R+j},\qquad
+ |\partial_RF_R(x)|\le R^{-1}\sum_{k\ge0}k\alpha^k=O_\alpha(R^{-1}).
+\]
+Since $F_R\ge1$ and $\psi(R+1)=\log R+O(R^{-1})$,
+\begin{equation}\label{amc:bm:cap:delta-derivative}
+ \partial_R\log\delta_R(x)=\log(x/R)+O_\alpha(R^{-1}).
+\end{equation}
+On the compact saddle interval, differentiation of the sector integrand introduces the factor $m\log(x/R)+O(R^{-1})$, tending at the saddle to $m\log y_m=\log a_m$.
+
+For the upper tail, differentiation of the gamma density gives
+\[
+ \partial_RP(R,x)=\mathbb E[(\log G-\psi(R))\ind{G\le x}],
+ \qquad G\sim\GammaDist(R,\text{ rate }1).
+\]
+The variance of $\log G$ is $\psi_1(R)=O(R^{-1})$, so Cauchy--Schwarz bounds this derivative uniformly in $x$ by $O(R^{-1/2})$. By \eqref{amc:bm:cap:deriv-bound}, the absolute derivative of the sector integrand is at most
+$O_m(R^{-1/2})(1+x)\ee^{-x}$. Its tail beyond $\alpha R$ is negligible when $\alpha>-\log a_m$. On the lower tail, \eqref{amc:bm:cap:delta-derivative} adds only $1+|\log(x/R)|$ to the previous gamma bound; use $|\log y|\le C(y^{-1/2}+y^{1/2})$ and gamma tails with shapes shifted by $1/2$. These integrable estimates justify differentiation and prove \eqref{amc:bm:cap:T-derivative}.
+The derivative $\partial_RP(R,x)$ is strictly negative: it is the covariance of the strictly increasing function $\log G$ and the decreasing nonconstant indicator $\ind{G\le x}$ under a nondegenerate gamma density.
+
+For fixed $K\ge1$, write
+\[
+ \Delta_K(R)=\sum_{m=1}^KT_m(R),\qquad \lambda=\log2.
+\]
+Direct differentiation of the exact linear term, together with \eqref{amc:bm:cap:T-derivative}, gives
+\begin{equation}\label{amc:bm:cap:partial-derivative}
+ \Delta_K'(R)=-(\lambda-1/R)L_0(R)
+ \left[1+O_K\!\left(R^{-1/2}(8/9)^R\right)\right].
+\end{equation}
+Indeed, differentiating the nonleading zeta modes gives an error $O(R3^{-R})$, and all remaining fixed sectors and their derivatives are dominated by the quadratic sector. For $K=1$ the stated common bound can be improved.
+
+\begin{writenotedated}{5 October 2026}
+\emph{The remark proved.} The sentence above is stated without proof. For $K=1$ the bracket in \eqref{amc:bm:cap:partial-derivative} is in fact $1+O((2/3)^R)$, smaller than $O(R^{-1/2}(8/9)^R)$:
+
+\smallskip\noindent\textbf{Proposition (write).} \emph{For every real $R\ge2$,
+\[
+ \Delta_1'(R)=-(\lambda-1/R)L_0(R)\bigl[1+\varepsilon_1(R)\bigr],\qquad
+ |\varepsilon_1(R)|\le\frac{18S}{\lambda-1/2}\Bigl(\frac23\Bigr)^R<10.4\Bigl(\frac23\Bigr)^R,
+\]
+where $S=\sum_{k\ge3}k^{-3}\log k<0.1115$.}
+
+\smallskip\noindent\emph{Proof.} By \eqref{amc:bm:cap:linear}, $\Delta_1(R)=T_1(R)=L(R)=\sum_{k\ge2}Rk^{-R-1}$ for real $R>0$. On a compact interval $[R_0,R_1]\subset(0,\infty)$ the derivatives $\frac{d}{dR}(Rk^{-R-1})=k^{-R-1}(1-R\log k)$ are bounded by $(1+R_1\log k)k^{-R_0-1}$, which is summable over $k\ge2$, so termwise differentiation is valid:
+\[
+ L'(R)=\sum_{k\ge2}k^{-R-1}(1-R\log k).
+\]
+The term $k=2$ is $2^{-R-1}(1-R\lambda)=-(\lambda-1/R)L_0(R)$, with $L_0(R)=R2^{-R-1}$ as in \eqref{amc:bm:cap:L0}. For $R\ge2$ and $k\ge3$ one has $R\log k\ge2\log3>1$, hence $|1-R\log k|\le R\log k$, and $(3/k)^{R+1}\le(3/k)^3$. So the remaining terms satisfy
+\[
+ \Bigl|\sum_{k\ge3}k^{-R-1}(1-R\log k)\Bigr|
+ \le R\,3^{-R-1}\sum_{k\ge3}\log k\Bigl(\frac3k\Bigr)^{R+1}
+ \le27S\,R\,3^{-R-1}.
+\]
+Since $\lambda-1/R\ge\lambda-1/2>0$, dividing by $(\lambda-1/R)L_0(R)$ gives $|\varepsilon_1(R)|\le\frac{27S}{\lambda-1/2}(2/3)^{R+1}=\frac{18S}{\lambda-1/2}(2/3)^R$. Numerically $S=0.11148\ldots$ and $\lambda-1/2=0.19314\ldots$, so the constant is below $10.4$. \qed
+
+\smallskip\noindent Thus the common bound of \eqref{amc:bm:cap:partial-derivative} improves at $K=1$ from relative order $R^{-1/2}(8/9)^R$ to $(2/3)^R$, the order of the first nonleading zeta mode. For $K\ge2$ the error term is set by the quadratic sector and is not improved by this argument.
+\end{writenotedated}
+
+\subsection{Canonical envelopes for the minimum cap}
+Given $0<\epsilon<1/A$, set
+\begin{equation}\label{amc:bm:cap:tau}
+ \tau(\epsilon)=\frac{A^2\epsilon}{1-A\epsilon}.
+\end{equation}
+The desired inequality is equivalent to
+\[
+ A^{-1}-\mathcal J(R)^{-1}\le\epsilon
+ \quad\Longleftrightarrow\quad \Delta(R)\le\tau(\epsilon).
+\]
+For all sufficiently small $\epsilon$ there is a unique real $R_*(\epsilon)>2$ with $\Delta(R_*)=\tau(\epsilon)$, and strict monotonicity yields the exact integer answer
+\begin{equation}\label{amc:bm:cap:integer-exact}
+ r_{\min}(\epsilon)=\lceil R_*(\epsilon)\rceil-1.
+\end{equation}
+For each fixed $K\ge1$, let $R_K(\epsilon)$ be the unique sufficiently large root
+\begin{equation}\label{amc:bm:cap:envelope-roots}
+ \Delta_K(R_K)=\tau(\epsilon).
+\end{equation}
+These envelopes use exact sectors. In particular $R_1$ solves
+$R(\zeta(R+1)-1)=\tau$, incorporating the full linear zeta term and the exact reciprocal transformation; $R_2$ adds the exact quadratic integral. Positivity gives
+$R_1<R_2<\cdots<R_K<R_*$.
+
+\begin{proposition}[Displacement from an exact-sector envelope]\label{amc:bm:cap:inverse-envelope}
+For every fixed $K\ge1$ and $q\ge0$, with $m=K+1$,
+\begin{equation}\label{amc:bm:cap:inverse-allorders}
+ R_*-R_K=
+ \frac{2C_m}{\lambda-1/R_K}\,
+ R_K^{(1-m)/2}(2a_m)^{R_K}
+ \left(\sum_{j=0}^qc_{m,j}R_K^{-j}+O_{K,q}(R_K^{-q-1})\right).
+\end{equation}
+In particular,
+\begin{equation}\label{amc:bm:cap:inverse-cubic}
+ R_*-R_2\sim\frac{12\sqrt3}{\pi\lambda R_2}
+ \left(\frac{27}{32}\right)^{R_2}.
+\end{equation}
+\end{proposition}
+\begin{proof}
+The omitted tail at $R_K$ is asymptotic to $T_{K+1}(R_K)$ by \eqref{amc:bm:cap:remainder-equivalent}. On a bounded neighborhood of $R_K$, \eqref{amc:bm:cap:partial-derivative} is uniformly asymptotic to $-\lambda L_0$, while the omitted tail is uniformly $o(L_0)$. Evaluating at $R_K$ and at $R_K$ plus a sufficiently large constant times $T_{K+1}(R_K)/L_0(R_K)$ first brackets $R_*$, proving that its displacement tends to zero. The mean value theorem then applies on this shrinking interval. Equation~\eqref{amc:bm:cap:T-derivative} shows that evaluating the leading omitted sector at $R_*$ rather than $R_K$ makes only a relative exponentially small change. Subsequent sectors, the error in \eqref{amc:bm:cap:partial-derivative}, and the displacement effect are all exponentially smaller than every fixed inverse power of $R_K$. Insert Theorem~\ref{amc:bm:cap:allorders-theorem} and divide by $(\lambda-1/R_K)L_0(R_K)$ to obtain \eqref{amc:bm:cap:inverse-allorders}.
+\end{proof}
+The first inverse-$R_2$ correction in \eqref{amc:bm:cap:inverse-cubic} is
+\[
+ \frac{12\sqrt3}{\pi(\lambda-1/R_2)R_2}
+ \left(\frac{27}{32}\right)^{R_2}
+ \left(1-\frac{43}{3R_2}+O(R_2^{-2})\right).
+\]
+Because $R_2$ uses the exact quadratic sector, this genuinely isolates the cubic exponential scale. A finite inverse-$R$ approximation to $T_2$ alone cannot do so.
+
+\subsection{Lambert W inversion and the integer boundary}
+The leading reciprocal gap is $C_0R2^{-R}$, where $C_0=18/\pi^4$. Its inverse on the decreasing branch is
+\begin{equation}\label{amc:bm:cap:W-root}
+ x_\epsilon=-\frac1\lambda
+ W_{-1}\!\left(-\frac{\lambda\epsilon}{C_0}\right).
+\end{equation}
+If $U=\log(C_0/(\lambda\epsilon))$, then
+\[
+ \lambda x_\epsilon=U+\log U+\frac{\log U}{U}
+ +O((\log U)^2/U^2).
+\]
+The Lambert expression itself is exact for the leading envelope.
+
+Uniformly for large real $R$,
+\[
+ \frac{A^{-1}-\mathcal J(R)^{-1}}{C_0R2^{-R}}
+ =1+\frac4{\sqrt\pi}R^{-1/2}(8/9)^R
+ \left(1-\frac{31}{8R}+O(R^{-2})\right).
+\]
+The exact-zeta correction has relative order $O((2/3)^R)$ and the reciprocal nonlinearity has relative order $O(R2^{-R})$, both exponentially smaller than the positive quadratic correction. Thus the true gap eventually exceeds the leading envelope. The shrinking-interval argument used above gives
+\begin{equation}\label{amc:bm:cap:W-correction}
+ R_*-x_\epsilon=
+ \frac4{\sqrt\pi(\lambda-1/x_\epsilon)}x_\epsilon^{-1/2}
+ (8/9)^{x_\epsilon}
+ \left(1-\frac{31}{8x_\epsilon}+O(x_\epsilon^{-2})\right).
+\end{equation}
+In particular the displacement is positive and tends to zero. With denominator $\lambda$ factored out, its first relative inverse-$x_\epsilon$ coefficient is $1/\lambda-31/8$. At any fixed order the last factor may be replaced by the corresponding finite series of coefficients $c_{2,j}$ with its proved remainder.
+
+\begin{corollary}[At most two eventual integer candidates]\label{amc:bm:cap:two-candidates}
+For all sufficiently small positive $\epsilon$,
+\begin{equation}\label{amc:bm:cap:two-integers}
+ r_{\min}(\epsilon)\in
+ \{\lceil x_\epsilon\rceil-1,\ \lceil x_\epsilon\rceil\}.
+\end{equation}
+If $x_\epsilon$ is an integer, the larger candidate is the answer. Otherwise put $d_\epsilon=\lceil x_\epsilon\rceil-x_\epsilon$; the smaller candidate is correct exactly when $R_*-x_\epsilon\le d_\epsilon$.
+\end{corollary}
+\begin{proof}
+For sufficiently small $\epsilon$, \eqref{amc:bm:cap:W-correction} gives
+$0<R_*-x_\epsilon<1$. Apply \eqref{amc:bm:cap:integer-exact}. Equality at an integer $R_*$ is included because the original gap inequality is non-strict.
+\end{proof}
+
+\begin{writenotedated}{5 October 2026}
+\emph{Relation to Section~\ref{amc:sec:capinverse}.} With $\lambda=\log2$ and $C_0=18/\pi^4=2D$, where $D=9/\pi^4$ is the constant of \eqref{amc:eq:gap}, the Lambert root \eqref{amc:bm:cap:W-root} is $x_\epsilon=b_0+1$ for the $b_0$ of \eqref{amc:eq:capinverse}, and $r_{\min}(\epsilon)$ is Part~\ref{amc:part:fc}'s $b_\varepsilon$. So the corollary says $b_\varepsilon\in\{\lceil b_0\rceil,\lceil b_0\rceil+1\}$ for all sufficiently small $\varepsilon$. Part~\ref{amc:part:fc}'s bracket \eqref{amc:eq:explicitround} is effective for $b_0\ge13$; this corollary is eventual only. When $b_0$ is not an integer, Part~\ref{amc:part:fc}'s lower bracket $\lfloor b_0\rfloor+1$ is the smaller candidate here. Part~\ref{amc:part:fc}'s counterexamples at $\varepsilon=h(n)$ are the case of an integer $x_\epsilon$, where the corollary selects the larger candidate. That the true gap exceeds the leading envelope, eventually here, is proved in Section~\ref{amc:sec:capinverse} for every $b\ge3$ ($d_b>h(b)$). New here: the exact selection criterion $R_*-x_\epsilon\le d_\epsilon$ and the displacement asymptotics \eqref{amc:bm:cap:W-correction}.
+\end{writenotedated}
+An analogous, narrower two-candidate bracket uses $R_2$ in place of $x_\epsilon$. For any fixed $0<\eta<1$, \eqref{amc:bm:cap:inverse-cubic} gives the eventual interval
+\[
+ R_2+(1-\eta)H_2(R_2)<R_*<R_2+(1+\eta)H_2(R_2),\qquad
+ H_2(u)=\frac{12\sqrt3}{\pi\lambda u}(27/32)^u.
+\]
+Once a rigorous validity bound for this interval has been established at a particular $\epsilon$, equal ceilings of its endpoints certify the integer cap. The eventual asymptotic statement alone does not provide a numerical certificate at a specified finite $\epsilon$. If validity is not certified, or an integer lies between certified endpoints, a certified direct bound on the gap at the candidate is needed. At an exact threshold the corresponding integer cap qualifies; arbitrarily close approaches to such thresholds cannot be decided from a fixed asymptotic truncation alone.
+
+\begin{remark}[Limits of exponential inversion]
+Formula~\eqref{amc:bm:cap:inverse-allorders} is centered at the exact envelope root $R_K$. It does not permit linear superposition of arbitrarily many exponential shifts about $x_\epsilon$. Nonlinear inversion products interleave the sector scales: for example $(8/9)^2$ lies strictly between $2(6/7)^6$ and $2(7/8)^7$. Neither these fixed-sector formulas nor the all-orders algebraic expansions resolve a growing number of sectors or the accumulation layer at exponential base $\ee^{-1}$.
+\end{remark}
+
+\section{Reproducible finite verification}
+\label{amc:bm:sec:checks}
+The accompanying package contains an offline, standard-library-only exact
+verification suite.  Python~3.9 or later and a POSIX shell suffice.  From any
+working directory, run
+\begin{center}
+\texttt{sh /path/to/bounded\_ascent\_report/run\_checks.sh}.
+\end{center}
+The script exits unsuccessfully on any failed check.  It runs the full suite
+both normally and under \texttt{python -O}, then runs the negative-regression
+harness itself under optimization.  No correctness condition relies on a
+removable Python assertion statement.  Setup, data provenance, and detailed
+coverage are documented in \texttt{checks/README.md}.
+
+\paragraph{Three finite models and complete marginals.}
+For each $r=2,3,4,5,6$, the suite independently computes $c_{n,r}$ by literal
+original-word enumeration, an ordered residual-capacity dynamic program that
+never sorts, and the compact category-count recurrence.  All three agree for
+$0\le n\le10$, and every nonempty endpoint histogram of
+$X=(X_1,\ldots,X_r)$ agrees for $1\le n\le10$.  The 55 count values and all
+50 endpoint histograms are also compared with frozen integer fixtures; the
+latter contain 985 nonzero bins in total.  This is the complete category-count
+marginal, not an assertion that sorted and unsorted last-threshold marginals
+coincide.  For $r=2$ the three-model and full-histogram comparison additionally
+extends through $n=11$, although the frozen endpoint fixtures stop at $n=10$.
+The literal enumerations visit 919,973 nonempty prefixes altogether.
+
+The literal enumerator also records the full joint distribution of
+$(N_1,\ldots,N_r,D,A)$, where $D$ counts distinct values and $A$ counts ascents.
+The endpoint identities in the report recover this distribution exactly from
+the compact histograms.  In addition, the finite identity
+\[
+ c_{n+1,r}=\sum_X\left(\sum_{j=1}^r X_j\right)h_{n,r}(X)
+\]
+is checked for $n=1,\ldots,9$ when $r=3,\ldots,6$, and for
+$n=1,\ldots,10$ when $r=2$.
+
+\paragraph{Published overlap.}
+The package transcribes $c_{n,2}$ for $0\le n\le11$ from
+\href{https://oeis.org/A202058}{OEIS A202058}, including $c_{11,2}=77451$,
+and the displayed square-array entries for $r=2,\ldots,6$, $0\le n\le8$ from
+\href{https://oeis.org/A294220}{OEIS A294220}.  This gives 57 source entries,
+with overlap retained deliberately.  The pages were checked on
+2~October~2026.  A294220 is the whole array; its $r=3$ column is A317784.
+The package does not label its locally computed $r=3$, $n=9,10$ values as
+independently verified published terms.  The nonpublished frozen histograms
+are regression data generated by a separate literal-word audit implementation,
+not independent proof certificates.
+
+\paragraph{Local structural checks.}
+The adjacent-swap tests exhaust 12,220 cases: $r=2,3,4$; initial capacity-list
+length $d=2,3,4$; all lists in $\{1,\ldots,r\}^d$; all thresholds
+$L=2,\ldots,d$; all adjacent pairs with upper index below $L$; and suffix
+lengths $0,\ldots,4$.  Each test compares the full joint distribution of final
+$X$ and new ascent count, not merely a total.  Equal-capacity swaps and empty
+suffixes are included in this count.
+
+The positive-block tests check 78,570 deterministic buffered paths, covering
+$r=2,\ldots,6$, block lengths $3,\ldots,8$, six specified category-usage
+patterns, every middle permutation, and three initial thresholds.  They verify
+category retention, exact coordinate drift, the permutation-ascent formula,
+and final-threshold closure; the complete middle-permutation ascent bins are
+also compared with independently computed Eulerian numbers.  Five further
+blocks, one for each tested $r$, have strictly positive drift in every
+coordinate.  These tests use no random sampling.
+
+\paragraph{Fail-closed data handling.}
+The validators require exact fields, fixed coverage, integer types excluding
+booleans, valid dimensions and indices, positive bin counts, feasible endpoint
+statistics, and the correct histogram totals.  Duplicate JSON keys, duplicate
+rows or bins, missing data, extra or shortened value lists, altered declared
+coverage, and nonfinite constants are rejected.  Required coverage is fixed
+in the validator rather than inferred from whatever data happen to be present.
+The 64 negative-regression cases run in 128 separate processes, half under
+\texttt{-O}.  They include syntactically valid but false count values with
+matching corrupted histogram totals, false histogram bins preserving the
+correct total, and a false published value.  Thus merely retaining correct
+schemas or aggregate totals cannot make those corruptions pass.
+
+\paragraph{Scope of the evidence.}
+All checks above use exact integer arithmetic, but their coverage is finite.
+They corroborate the recurrence and its implementations; they do not prove
+the exchange lemma in general, the asymptotic root or ratio limit,
+concentration, a coefficient equivalent, or a convergence rate.  The proofs
+in the report supply the mathematical arguments.
+An optional, separately invoked \texttt{mpmath} program evaluates the
+characteristic integrals and finite-difference residuals.  It is not part of
+\texttt{run\_checks.sh}, has no interval-certified error bounds, and is
+explicitly labeled numerical diagnostics rather than proof.
+
+\paragraph{Optional exact large-cap algebra.}
+The separate \texttt{checks/analytics/} directory requires SymPy and is excluded
+from the standard-library runner.  Its own runner checks, both normally and
+under \texttt{-O}, all printed rational $c_{m,j}$ for $m=1,2,3$ and
+$j=0,1,2,3$, consistency under changing the finite truncation order, and
+$c_{m,1}=\kappa_m$ for $m=1,2,3,4,5,8,12$.  It also checks the first three
+rational tail-factor functions and rejects 26 invalid index/order inputs.
+These are exact finite algebraic comparisons; the large-cap remainder estimates
+and inversion results rely on the analytic arguments, not on the replay.
+An additional optional \texttt{mpmath} sector-quadrature diagnostic is likewise
+excluded from both exact runners and supplies no certified error bounds.
+
+\begin{writenotedated}{5 October 2026}
+In this repository the suite is shipped as \repopath{code/53-bounded-*.py} and \repopath{code/53-bounded-*.sh}, its data as \repopath{data/53-bounded-data-*.json}, its two READMEs as \repopath{53-bounded-README.md} and \repopath{53-bounded-analytics-README.md}, and the provenance record as \repopath{data/53-bounded-PROVENANCE.json}. The delivered build script is byte-identical to the one of Report~97 and is shipped once, in the sibling report, as \repopath{code/38-growth-build_local.sh}. The delivered PDF, README, manuscript (printed as this Part) and \texttt{MANIFEST.sha256} (31 entries, all verified at placement) are not shipped. The scripts use the delivered layout (\texttt{checks/}, \texttt{checks/data/}) and must not be run here; the README gives a rerun route from the arrival commit. At intake (5 October 2026, on copies) \texttt{run\_checks.sh} passed in about 5 minutes and reproduced every count stated above, the analytic runner passed in about 2 minutes, and the three \texttt{mpmath} diagnostics ran; none of them writes an output file to compare. The frozen counts agree with those printed in Section~\ref{amc:sec:checks} for $b=3,4$.
+\end{writenotedated}
+
+\section{Further questions and limits of the results}\label{amc:bm:sec:questions}
+\subsection{Subexponential word length asymptotics}
+Theorem~\ref{amc:bm:thm:growth} identifies $N!\mu_r^N$ only at exponential accuracy. Determining a factor $B_r(N)$ in an equivalent $c_{N,r}\sim N!\mu_r^N B_r(N)$ is a separate problem. Even for $r=2$, a precise amplitude and a complete correction hierarchy require estimates beyond the block action. A useful next step is a controlled discrete transport analysis around the characteristic, with particular care near its singular origin. Numerical evidence or a formal transport equation alone would not prove such a factor.
+
+\subsection{Fluctuations and local enumeration}
+The smooth limiting pressure gives exponential concentration and the full large-deviation principle, but does not justify differentiating finite-size limits twice. A central limit theorem would require additional uniform control of the weighted coefficients near a fixed mark. One could seek a nondegenerate covariance matrix from the Hessian of $F$, then prove that it is the actual covariance limit and establish a local limit theorem. The latter would refine the enumeration of words with prescribed multiplicity histograms.
+
+\subsection{The feasible endpoint region}
+The rate function is specified by a finite-dimensional convex dual, but its finite-rate boundary is not classified here. Besides nonnegativity and $\sum_jx_j\le1$, the exact multiplicity identity imposes $\sum_{j<r}(r-j)x_j\le1$. Identifying all attainable limiting endpoints, and determining which have finite rate, would give a more geometric interpretation of the pressure and of atypical ascent counts. Such a classification is unnecessary for the full large-deviation proof above.
+
+\subsection{A cap growing with the word length}
+The fixed-$r$ theorem and the large-$r$ expansion are two successive results, not a uniform joint limit. They do not allow substitution of $r=r(N)$ into a coefficient asymptotic. The exponentially small gap $6/\pi^2-\mu_r$ suggests investigating logarithmic cap scales, but even the correct transition window requires estimates uniform in $r$ and control of the unrestricted maximum multiplicity. The constants in the present seeds, block dimensions, and error estimates depend on $r$.
+
+\subsection{Sector accumulation and effective inversion}
+For every fixed sector and every fixed inverse-cap order, the analytic expansion is rigorous. The sector bases accumulate at $\ee^{-1}$, so letting the number of sectors grow with the cap requires new estimates. A finite inverse-power truncation of one sector also cannot isolate an exponentially smaller sector. The exact-sector threshold envelopes avoid that loss, while concrete decisions arbitrarily close to an integer threshold still need certified evaluation rather than asymptotic rounding.
+
+Certified integral bounds and faster compact enumeration are practical next steps that do not require a full word-length expansion.
+
+\subsection{Further questions and research (added at the write)}\label{amc:bm:sec:further}
+\begin{writenotedated}{5 October 2026}
+Under the repository's standing rule every claim of Report~99 that is not proved in it is listed here, with its source, its sketch and what is missing. No claim of Report~99 was found to be wrong.
+\begin{enumerate}
+\item \emph{A word-length prefactor} $B_r(N)$ in $c_{N,r}\sim N!\mu_r^NB_r(N)$ (Section~\ref{amc:bm:sec:questions}, first subsection; also Part~\ref{amc:part:fc}'s Question~1). Sketch offered: a discrete transport analysis around the characteristic, careful at its singular origin. Missing: any estimate below the exponential scale for $r\ge3$. For $r=2$ the sibling report \repopath{a202058-ascent-000-growth} proves $-O(\sqrt n(\log n)^{3/2})\le\log(c_{n,2}/(n!\mu_2^n))\le O((\log n)^2)$ and the $\limsup$ and cumulative laws with constant $2/3$; the pointwise law is open there too.
+\item \emph{Fluctuations}: a central limit theorem and a local limit theorem for $Y_N$, with covariance the Hessian of $F$ at the origin (second subsection). Missing: uniform control of the weighted coefficients near a fixed mark; the pressure limit alone does not allow differentiating twice.
+\item \emph{The finite-rate endpoint region} of Theorem~\ref{amc:bm:thm:LDP} (third subsection). Known constraints: $\bx\ge0$, $\sum_jx_j\le1$ and $\sum_{j<r}(r-j)x_j\le1$. Missing: a classification of the attainable limits and of the points of finite rate.
+\item \emph{A cap growing with the length}, $r=r(N)$ (fourth subsection; Part~\ref{amc:part:fc}'s Question~4 and Part~\ref{amc:part:sec}'s Question~4). Missing: estimates uniform in $r$, including the seeds, block dimensions and error terms, and control of the unrestricted maximum multiplicity.
+\item \emph{A growing number of sectors} and the accumulation of the bases $a_m$ at $\ee^{-1}$ (fifth subsection; Part~\ref{amc:part:sec}'s Questions~1 and~2). Missing: estimates uniform in the sector index.
+\item \emph{Certified integer cap decisions} near integer transitions (fifth subsection and the discussion after Corollary~\ref{amc:bm:cap:two-candidates}; Part~\ref{amc:part:sec}'s Question~3). Part~\ref{amc:part:fc}'s bracket \eqref{amc:eq:explicitround} is effective but does not choose between the two candidates. Missing: certified evaluation of the gap at the candidate.
+\item The remark after \eqref{amc:bm:cap:partial-derivative}, ``for $K=1$ the stated common bound can be improved'', is stated without proof. \emph{Resolved at the write}: the proposition in the note after it gives the relative error $O((2/3)^R)$.
+\item \emph{Practical next steps} named in Report~99: certified integral bounds (all quadratures in this Part, including the table of $\mu_r$, are uncertified) and faster compact enumeration.
+\end{enumerate}
+\end{writenotedated}
+
 
 
 \begingroup\small
@@ -1050,12 +2585,26 @@ Electronic Journal of Combinatorics \textbf{29}(4) (2022), P4.25.
 \href{https://doi.org/10.37236/11266}{doi:10.37236/11266}.
 \href{https://www.combinatorics.org/ojs/index.php/eljc/article/download/v29i4p25/pdf/}{Published paper};
 \href{https://arxiv.org/abs/2111.01279}{arXiv:2111.01279}.
+Part~III consulted the final publication, especially Sections 2.2, 2.6 and~5.
+\bibitem{BMCDK}
+M. Bousquet-M\'elou, A. Claesson, M. Dukes and S. Kitaev,
+\emph{$(2+2)$-free posets, ascent sequences and pattern avoiding permutations},
+Journal of Combinatorial Theory, Series A \textbf{117}(7) (2010), 884--909.
+\href{https://doi.org/10.1016/j.jcta.2009.12.007}{doi:10.1016/j.jcta.2009.12.007}.
+Author preprint: \url{https://arxiv.org/abs/0806.0666}. [Cited by Part~III.]
 \bibitem{DS} P. Duncan and E. Steingr\'imsson,
 \emph{Pattern avoidance in ascent sequences}, preprint (2011),
 \href{https://arxiv.org/abs/1109.3641}{arXiv:1109.3641}.
+Part~III cites the published version: Electronic Journal of Combinatorics \textbf{18}(1) (2011), Paper P226, \href{https://doi.org/10.37236/713}{doi:10.37236/713}.
 \bibitem{array} OEIS Foundation Inc.,
 \href{https://oeis.org/A294220}{A294220}, maximum-letter-multiplicity array.
-Retrieved 1 October 2026.
+Retrieved 1 October 2026. Part~III: \emph{A294220: Number of ascent sequences of length $n$ where no letter multiplicity is larger than $k$}; the entry identifies columns $k=2,3$ with A202058 and A317784 and supplies the small comparison table used in Part~III's verification package. Consulted 2 October 2026.
+\bibitem{OEIS000} OEIS Foundation Inc.,
+\emph{A202058: Number of ascent sequences avoiding the pattern 000}.
+\url{https://oeis.org/A202058}.
+Linked exact data by A. Conway and M. Conway:
+\url{https://oeis.org/A202058/b202058.txt}.
+Part~III's package uses the explicitly stated finite overlap, not an assertion that its general-cap computation reproduces the entire long $r=2$ table.
 \bibitem{cap3} OEIS Foundation Inc.,
 \href{https://oeis.org/A317784}{A317784}, cap-three column.
 Identification verified from A294220 on 1 October 2026.

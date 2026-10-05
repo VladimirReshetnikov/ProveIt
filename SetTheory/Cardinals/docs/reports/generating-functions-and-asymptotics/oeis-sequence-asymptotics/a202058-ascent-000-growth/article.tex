@@ -11,7 +11,7 @@
 \usepackage{xurl}
 \newcommand{\file}[1]{\nolinkurl{#1}}
 \setlength{\emergencystretch}{2em}
-\hypersetup{pdftitle={Ascent sequences avoiding 000 (OEIS A202058)},pdfsubject={Factorial growth constant, finer bounds, logarithmic-square growth and the ratio limit for OEIS A202058: four research reports merged}}
+\hypersetup{pdftitle={Ascent sequences avoiding 000 (OEIS A202058)},pdfsubject={Factorial growth constant, finer bounds, logarithmic-square growth, the ratio limit and the endpoint laws for OEIS A202058: five research reports merged}}
 \setlist{itemsep=3pt,topsep=5pt}
 \allowdisplaybreaks[2]
 \newtheorem{theorem}{Theorem}[section]
@@ -34,6 +34,17 @@
 \newcommand{\Sstate}{\mathcal S}
 \newcommand{\TV}{\operatorname{TV}}
 \newcommand{\dd}{\,d}
+% Macros of Part V (bundle Report 97, batch 102). Its \dd (an upright d) is renamed \egdd,
+% because \dd above sets an italic d; its \DeclareMathOperator{\asc} is the \asc above.
+\newcommand{\egdd}{\,\mathrm d}
+\newcommand{\ee}{\mathrm e}
+\newcommand{\ind}[1]{\mathbf1_{\{#1\}}}
+\newcommand{\muval}{\mu}
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\cA}{\mathcal A}
+\newcommand{\cL}{\mathcal L}
+\DeclareMathOperator{\dist}{dist}
 % Notes added when the four manuscripts were merged (batch 77).
 \newenvironment{writenote}[1][]{\par\smallskip\begingroup\small
  \noindent\textbf{[write]}\if\relax\detokenize{#1}\relax\else~\textbf{#1.}\fi\ }%
@@ -41,14 +52,14 @@
 \newenvironment{partabstract}{\begin{quote}\small\noindent\textbf{Abstract of this Part (as delivered).}\ }{\end{quote}}
 \newcommand{\partsource}[1]{\par\noindent\begin{minipage}{\textwidth}\small #1\end{minipage}\par\medskip}
 \title{Ascent sequences avoiding 000 (OEIS A202058)\\[4pt]
-\large Factorial growth constant, finer bounds, logarithmic-square growth\\ and the ratio limit}
-\author{Four AI-assisted research reports, merged into one ProveIt report}
-\date{Part I: 1 October 2026\quad Parts II--IV: 2 October 2026\quad merged: 2 October 2026}
+\large Factorial growth constant, finer bounds, logarithmic-square growth,\\ the ratio limit and the endpoint laws}
+\author{Five AI-assisted research reports, merged into one ProveIt report}
+\date{Part I: 1 October 2026\quad Parts II--V: 2 October 2026\quad merged: 2 October 2026\quad Part V added: 5 October 2026}
 \begin{document}
 \hypersetup{pageanchor=false}
 \maketitle
 \begin{abstract}
-Let $a_n$ count ascent sequences in which every value occurs at most twice (OEIS A202058), put $T=3\pi^2/8$, $\mu=1/T=8/(3\pi^2)$, and $c_n=a_nT^n/n!$. This report prints four research manuscripts as Parts~I--IV. Part~I proves that the exponential generating function has radius $T$ and that $(a_n/n!)^{1/n}\to\mu$, the constant conjectured by Conway, Conway, Elvey Price and Guttmann, with a coarse error $O(n^{9/13}(\log n)^3)$ in $\log c_n$. Part~II proves $-O(n^{2/3}(\log n)^{5/3})\le\log c_n\le O((\log n)^2)$, a controlled Lambert~$W$ inverse, exact counts through $400$, and the conjecture $\log c_n\sim\frac23(\log n)^2$. Part~III proves $\log A(t)\sim\frac23\log^2\frac1{T-t}$, the cumulative law $\log\sum_{j\le N}c_j\sim\frac23(\log N)^2$ and $\limsup\log c_n/(\log n)^2=\frac23$, so Part~II's conjecture holds in limsup and cumulative form. Part~IV proves $a_{n+1}/((n+1)a_n)=\mu+O(n^{-1/4}(\log n)^{3/4})$ and improves the lower bound to $-O(\sqrt n(\log n)^{3/2})$. The pointwise law $\log c_n\sim\frac23(\log n)^2$, normalized log-concavity, a full asymptotic equivalent, an amplitude and an all-orders expansion remain open. The report is AI-assisted and unrefereed, and nothing in it is formalized.
+Let $a_n$ count ascent sequences in which every value occurs at most twice (OEIS A202058), put $T=3\pi^2/8$, $\mu=1/T=8/(3\pi^2)$, and $c_n=a_nT^n/n!$. This report prints five research manuscripts as Parts~I--V. Part~I proves that the exponential generating function has radius $T$ and that $(a_n/n!)^{1/n}\to\mu$, the constant conjectured by Conway, Conway, Elvey Price and Guttmann, with a coarse error $O(n^{9/13}(\log n)^3)$ in $\log c_n$. Part~II proves $-O(n^{2/3}(\log n)^{5/3})\le\log c_n\le O((\log n)^2)$, a controlled Lambert~$W$ inverse, exact counts through $400$, and the conjecture $\log c_n\sim\frac23(\log n)^2$. Part~III proves $\log A(t)\sim\frac23\log^2\frac1{T-t}$, the cumulative law $\log\sum_{j\le N}c_j\sim\frac23(\log N)^2$ and $\limsup\log c_n/(\log n)^2=\frac23$, so Part~II's conjecture holds in limsup and cumulative form. Part~IV proves $a_{n+1}/((n+1)a_n)=\mu+O(n^{-1/4}(\log n)^{3/4})$ and improves the lower bound to $-O(\sqrt n(\log n)^{3/2})$. Part~V, written without knowledge of Parts~I--IV, proves the root and ratio limits again, by finite positive-matrix bounds and an Eulerian-block construction, and adds a two-catalytic functional equation for the generating function refined by once-used and unused values, the endpoint laws (the proportions of values used once, of distinct values and of ascents tend to $1-8/(3\pi)$, $1-4/(3\pi)$ and $4/(3\pi)+8/(3\pi^2)$, with exponentially small deviations) and exact counts through $n=395$; it is the cap-two case of Part~III of the report on A294220. The pointwise law $\log c_n\sim\frac23(\log n)^2$, normalized log-concavity, a full asymptotic equivalent, an amplitude and an all-orders expansion remain open. The report is AI-assisted and unrefereed, and nothing in it is formalized.
 \end{abstract}
 \hypersetup{pageanchor=true}
 \setcounter{tocdepth}{1}
@@ -57,25 +68,33 @@ Let $a_n$ count ascent sequences in which every value occurs at most twice (OEIS
 
 \section*{Guide to this report}\label{a58:sec:guide}
 \addcontentsline{toc}{section}{Guide to this report}
-The four Parts are four manuscripts of batch~77 (arrival commit \texttt{096ee7b87}, 2~October 2026), placed in this directory by commit \texttt{f76fcb566}. They form one chain, printed in the order in which they were written and in which each cites the previous ones:
+Parts~I--IV are four manuscripts of batch~77 (arrival commit \texttt{096ee7b87}, 2~October 2026), placed in this directory by commit \texttt{f76fcb566}. They form one chain, printed in the order in which they were written and in which each cites the previous ones. Part~V, bundle Report~97 of batch~102 (arrival commit \texttt{60f54ea06}, placed by \texttt{6ab1f1979}), was added on 5~October 2026; it cites none of them.
 \begin{center}
 \begin{tabular}{@{}l l >{\raggedright\arraybackslash}p{0.42\textwidth} l@{}}
 \toprule
-Part & Batch-77 manuscript & Delivered title & Date\\
+Part & Source & Delivered title & Date\\
 \midrule
 I & 37 (\file{oeis-a202058-report}) & Factorial growth of ascent sequences avoiding 000 & 1 Oct.\\
 II & 36 (\file{oeis-a202058-fine-report}) & Finer bounds for ascent sequences avoiding 000 & 2 Oct.\\
 III & 07 (\file{a202058-lognormal-report}) & Logarithmic square growth for ascent sequences avoiding 000 & 2 Oct.\\
 IV & 08 (\file{a202058-ratio-report}) & Ratio asymptotics for ascent sequences avoiding 000 & 2 Oct.\\
+V & bundle Report 97 (batch 102) & The Exponential Growth Constant for 000 Avoiding Ascent Sequences & 2 Oct.\\
 \bottomrule
 \end{tabular}
 \end{center}
-Each Part prints its manuscript's text, with every result, proof, remark, open question and limitation. Its statements keep their delivered wording. Sections, theorems and equations are numbered continuously through the report. Part~I keeps exactly the section, statement and equation numbers of its manuscript. In the other Parts a section number is the delivered one plus a fixed offset, statement numbers follow their sections, and equation numbers continue from the preceding Part. The report's README tabulates the offsets. Each Part has its own symbols, fixed in its own text; Section~\hyperref[a58:sec:notation]{``Notation across the four Parts''} lists the symbols whose meaning changes between Parts. Notes added when the manuscripts were merged are set in small type and tagged \textbf{[write]}. They give cross-references between the Parts, mark results proved twice, and mark statements that a later Part supersedes. No delivered statement was changed, and no symbol was renamed.
+Each Part prints its manuscript's text, with every result, proof, remark, open question and limitation. Its statements keep their delivered wording. Sections, theorems and equations are numbered continuously through the report. Part~I keeps exactly the section, statement and equation numbers of its manuscript. In the other Parts a section number is the delivered one plus a fixed offset, statement numbers follow their sections, and equation numbers continue from the preceding Part. The report's README tabulates the offsets. Each Part has its own symbols, fixed in its own text; Section~\hyperref[a58:sec:notation]{``Notation across the five Parts''} lists the symbols whose meaning changes between Parts. Notes added when the manuscripts were merged are set in small type and tagged \textbf{[write]}. They give cross-references between the Parts, mark results proved twice, and mark statements that a later Part supersedes. No delivered statement was changed, and no symbol was renamed.
+\begin{writenote}[5 October 2026, batch 102]
+Part~V was added at this write: bundle Report~97, printed in full after Part~IV, with sections from~42 and equations from~(210). Until this write the title ended ``and the ratio limit'', the author line read ``Four AI-assisted research reports'', and the abstract and this front matter described four Parts; they were extended to five. Part~V's labels carry the sub-prefix \texttt{a58:eg:}. Its notes are dated 5~October 2026; the older notes keep their date.
+\end{writenote}
 
 The neighbouring reports \file{a202061-ascent-120-deficit} and \file{a202062-ascent-201-enumeration} in the same collection treat the $120$- and $201$-avoiding ascent sequences, which Conway, Conway, Elvey Price and Guttmann \cite{CCEG} studied together with this one. Their regimes and methods are different: those two sequences grow exponentially, with common growth constant the largest root $\mu\approx7.2959$ of $\mu^3-8\mu^2+5\mu+1=0$, while A202058 grows factorially. The letter $\mu$ there is not the $\mu=8/(3\pi^2)$ of this report.
 
 \begin{writenote}[2 October 2026, batch 77P2, reciprocal note]
 The cap-two case is one member of a family. The report \file{a294220-ascent-multiplicity-caps} in the same collection directory (batch~77, manuscripts 47 and~52) treats ascent sequences in which every value occurs at most $b$ times (the array OEIS A294220; this report's A202058 is its cap $b=2$, and A317784 is $b=3$). For every fixed $b\ge3$ it proves $(a^{(b)}_n/n!)^{1/n}\to1/T_b$ with $T_b=\int_0^\infty\log E_b(v)/(E_b(v)-1)\,dv$, $E_b$ the exponential series truncated after degree $b$, with a coarse error $O_b(n/\log n)$ in $\log a^{(b)}_n$; it also gives the large-cap expansion $T_b=\pi^2/6+(b+1)(\zeta(b+2)-1)+\cdots$ and, in its second Part, exact positive Taylor sectors for $T_b-\pi^2/6$. Its barrier proof excludes $b=2$: for the cap-two input $T_2=3\pi^2/8$ and the case $b=2$ of its root limit it cites Part~\ref{a58:part:fd} of this report (Theorem~\ref{a58:fd:thm:main}), and it uses nothing else from here. The two reports share no other theorem and are kept separate: this one studies the fine asymptotics of the single cap $b=2$, that one the growth constants of all caps $b\ge3$ and their dependence on $b$.
+\end{writenote}
+
+\begin{writenote}[5 October 2026, batch 102]
+The last two sentences above are no longer accurate. The report on A294220 now has a Part~III, bundle Report~99, which treats every fixed cap $r\ge2$, the cap two included, by the method of this report's Part~V (bundle Report~97); Part~V is its case $r=2$. The two reports therefore now share theorems: Part~V's Theorem~\ref{a58:eg:thm:main} (root limit), Lemma~\ref{a58:eg:lem:action}, Theorem~\ref{a58:eg:rat:ratio} (ratio limit), Corollary~\ref{a58:eg:rat:joint} (endpoint laws), Lemma~\ref{a58:eg:lem:monotonicity} and Corollary~\ref{a58:eg:cor:inverse} are the cases $r=2$ of its Theorem~17.1, Proposition~17.3, Theorem~17.2, Lemma~23.1 and Corollary~23.2, and Part~V's Proposition~\ref{a58:eg:rat:weightedupper} is superseded by its Theorem~22.1. The split is kept: the material special to the cap two (Part~V's catalytic equation, closed forms and exact counts, and Parts~I--IV) stays here, the material on all caps there.
 \end{writenote}
 
 \section*{What is proved, and where}\label{a58:sec:status}
@@ -87,33 +106,37 @@ Here $c_n=a_nT^n/n!=a_n/(n!\mu^n)$; Part~II writes $h_n=\log c_n$.
 \toprule
 Statement & Where\\
 \midrule
-EGF radius $T$; $(a_n/n!)^{1/n}\to\mu$ & Part~I, Theorem~\ref{a58:fd:thm:main}. Radius again in Part~III, Theorem~\ref{a58:ln:thm:main}; root limit again in Part~III, Section~\ref{a58:ln:sec:allindex} (second route)\\
+EGF radius $T$; $(a_n/n!)^{1/n}\to\mu$ & Part~I, Theorem~\ref{a58:fd:thm:main}. Radius again in Part~III, Theorem~\ref{a58:ln:thm:main}; root limit again in Part~III, Section~\ref{a58:ln:sec:allindex} (second route), and in Part~V, Theorem~\ref{a58:eg:thm:main} (third route, error $o(n)$)\\
 $|\log c_n|=O(n^{9/13}(\log n)^3)$ & Part~I, \eqref{a58:fd:eq:coarse}\\
 $-O(n^{2/3}(\log n)^{5/3})\le\log c_n\le O((\log n)^2)$; no equivalent $C_0n!\mu^n e^{cn^\sigma}n^g(\log n)^h$ with $c,\sigma>0$ & Part~II, Theorem~\ref{a58:fn:thm:main}; again in Part~III, \eqref{a58:ln:eq:coarseenclosure}\\
 $\log c_n\ge-O(\sqrt n(\log n)^{3/2})$ & Part~IV, Theorem~\ref{a58:rt:thm:main}\\
 $\log A'(t(q))=q^2/6+O(q^{3/2}\sqrt{\log q})$; $\log A(t)\sim\frac23\log^2\frac1{T-t}$ & Part~III, Theorems~\ref{a58:ln:thm:main} and~\ref{a58:ln:thm:quantitative}\\
 $\log\sum_{j\le N}c_j=\frac23(\log N)^2+O((\log N)^{3/2}\sqrt{\log\log N})$; $\limsup\log c_n/(\log n)^2=\frac23$ & Part~III, Theorem~\ref{a58:ln:thm:main} and \eqref{a58:ln:eq:quantcum}\\
-$a_{n+1}/((n+1)a_n)\to\mu$ & Part~IV, \eqref{a58:rt:eq:oldrateratio} (rate $n^{-1/6}(\log n)^{5/6}$, from Part~II's bounds) and \eqref{a58:rt:eq:mainratio} (rate $n^{-1/4}(\log n)^{3/4}$)\\
+$a_{n+1}/((n+1)a_n)\to\mu$ & Part~IV, \eqref{a58:rt:eq:oldrateratio} (rate $n^{-1/6}(\log n)^{5/6}$, from Part~II's bounds) and \eqref{a58:rt:eq:mainratio} (rate $n^{-1/4}(\log n)^{3/4}$); Part~V, Theorem~\ref{a58:eg:rat:ratio} (no rate, another method)\\
 Exact identity $R_{n+1}=R_n+(\Var_n(m)+\E_n(u-k))/R_n$, $R_n=a_{n+1}/a_n$ & Part~II, \eqref{a58:fn:eq:variance} (written $M_n$); Part~IV, \eqref{a58:rt:eq:rawidentity}, with the new consequence $R_{n+1}\ge R_n-1$\\
-Threshold inverses around $x=y/W(y/(eT))$ & Part~I, Corollary~\ref{a58:fd:cor:inverse}; Part~II, Corollary~\ref{a58:fn:cor:maininverse}; Part~III, Section~\ref{a58:ln:sec:inverse}; Part~IV, \eqref{a58:rt:eq:maininverse}\\
+Threshold inverses around $x=y/W(y/(eT))$ & Part~I, Corollary~\ref{a58:fd:cor:inverse}; Part~II, Corollary~\ref{a58:fn:cor:maininverse}; Part~III, Section~\ref{a58:ln:sec:inverse}; Part~IV, \eqref{a58:rt:eq:maininverse}; Part~V, Corollary~\ref{a58:eg:cor:inverse} (weaker)\\
+Two-catalytic functional equation \eqref{a58:eg:eq:kernel} and coefficient recurrence \eqref{a58:eg:eq:polyrec} & Part~V, Proposition~\ref{a58:eg:prop:kernel}\\
+Endpoint laws: values used once $\to1-8/(3\pi)$, unused available values $\to8(\pi+1)/(3\pi^2)-1$, distinct values $\to1-4/(3\pi)$, ascents $\to4/(3\pi)+8/(3\pi^2)$ (proportions of $n$), with exponential tails & Part~V, Corollary~\ref{a58:eg:rat:joint} and \eqref{a58:eg:rat:originalstats}; for every cap, as integrals, Part~III of \file{a294220-ascent-multiplicity-caps}\\
+$\limsup n^{-1}\log(H_n(s,t)/n!)\le-\log\chi(s,t)$ for marks $s,t>0$ & Part~V, Proposition~\ref{a58:eg:rat:weightedupper}; equality, for every cap, in Part~III of the A294220 report\\
+$a_{n+1}>a_n$ for $n\ge1$ & Part~V, Lemma~\ref{a58:eg:lem:monotonicity}\\
 \midrule
-\multicolumn{2}{@{}l}{\emph{Open in all four Parts}}\\
+\multicolumn{2}{@{}l}{\emph{Open in all five Parts}}\\
 \multicolumn{2}{@{}p{0.96\textwidth}@{}}{The pointwise law $\log c_n\sim\frac23(\log n)^2$ (Part~II, Conjecture~\ref{a58:fn:conj:twothirds}; Part~III, \eqref{a58:ln:eq:openlimit}; Part~IV, \eqref{a58:rt:eq:open}); eventual normalized monotonicity or log-concavity; a multiplicative equivalent $a_n\sim Cn!\mu^n\cdots$, a power prefactor, a limiting amplitude, an all-orders expansion; optimal remainders and effective constants.}\\
 \bottomrule
 \end{tabular}
 \end{center}
-Finite computations in all four Parts (exact counts, residual grids, log-concavity scans) are diagnostics and evidence; no asymptotic or uniform statement rests on them. The literature and repository searches recorded in the Parts are scoped negative evidence, not novelty or priority certificates. The Lambert~$W$ approximation $x=y/W(y/(eT))$ used by every inverse solves $x\log(x/(eT))=y$; after taking logarithms this is the case $a=b=1$, $L=\log(y/(eT))$ of the exact Lambert-core theorem of the repository's transseries volume (\file{Analysis/Transseries/docs/series-and-transseries/}\allowbreak\file{Transseries_And_Inversion/}, Theorem \texttt{p0:thm:lambert-core}). No novelty is claimed for the inversion method; what each Part adds is the error envelope that the inverse inherits from its coefficient bounds.
+Finite computations in all five Parts (exact counts, residual grids, log-concavity scans) are diagnostics and evidence; no asymptotic or uniform statement rests on them. The literature and repository searches recorded in the Parts are scoped negative evidence, not novelty or priority certificates. The Lambert~$W$ approximation $x=y/W(y/(eT))$ used by every inverse solves $x\log(x/(eT))=y$; after taking logarithms this is the case $a=b=1$, $L=\log(y/(eT))$ of the exact Lambert-core theorem of the repository's transseries volume (\file{Analysis/Transseries/docs/series-and-transseries/}\allowbreak\file{Transseries_And_Inversion/}, Theorem \texttt{p0:thm:lambert-core}). No novelty is claimed for the inversion method; what each Part adds is the error envelope that the inverse inherits from its coefficient bounds.
 
-\section*{Notation across the four Parts}\label{a58:sec:notation}
-\addcontentsline{toc}{section}{Notation across the four Parts}
-Common to all Parts: $a_n$, $A(t)=\sum a_nt^n/n!$, $T=3\pi^2/8$, $\mu=1/T$, the compacted states $x=(s,u,k)$ with $m=s+u$, the four children of \eqref{a58:fd:eq:children}, the operator $\TT$, the continuation series ($\mathcal F$ in Parts~I and~II, $F$ in Parts~III and~IV; the same function), and the characteristic quantities $p(q)$, $b(q)$, $t(q)$, $\psi$, $D=s+Ru$ with $R=R(q)=2-e^{-q}$ (written $\mathcal R$ in Part~IV). The symbols below change meaning between Parts; each Part's own text fixes its meaning there.
+\section*{Notation across the five Parts}\label{a58:sec:notation}
+\addcontentsline{toc}{section}{Notation across the five Parts}
+Common to all Parts: $a_n$, $A(t)=\sum a_nt^n/n!$, $T=3\pi^2/8$, $\mu=1/T$, the compacted states $x=(s,u,k)$ with $m=s+u$, the four children of \eqref{a58:fd:eq:children}, the operator $\TT$, the continuation series ($\mathcal F$ in Parts~I and~II, $F$ in Parts~III and~IV; the same function), and the characteristic quantities $p(q)$, $b(q)$, $t(q)$, $\psi$, $D=s+Ru$ with $R=R(q)=2-e^{-q}$ (written $\mathcal R$ in Part~IV). The symbols below change meaning between Parts; each Part's own text fixes its meaning there. Part~V (Report~97, added 5 October 2026) keeps its own letters; the rows marked ``Part~V'' list its clashes.
 \begin{center}
 \small
 \begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.09\textwidth} >{\raggedright\arraybackslash}p{0.86\textwidth}@{}}
 \toprule
 Symbol & Meanings\\
 \midrule
-$c_n$, $c_j$ & Parts~III and IV: $c_n=a_nT^n/n!$. Part~II, Section~\ref{a58:fn:sec:numerics}: $c_n=n(g_n-g_{n-1})$ with $g_n=n(h_n-h_{n-1})$, a discrete second difference. Part~I, Lemma~\ref{a58:fd:lem:concentration}, and Part~II, Section~\ref{a58:fn:sec:lower}: $c_j=(\TT^j\one)(x_N)$. \emph{Tempting false reading:} the column $c_n\approx1.37$--$1.48$ of Table~\ref{a58:fn:tab:data} is not $a_nT^n/n!$; it estimates $2\alpha$.\\
+$c_n$, $c_j$ & Parts~III and IV: $c_n=a_nT^n/n!$. Part~II, Section~\ref{a58:fn:sec:numerics}: $c_n=n(g_n-g_{n-1})$ with $g_n=n(h_n-h_{n-1})$, a discrete second difference. Part~I, Lemma~\ref{a58:fd:lem:concentration}, and Part~II, Section~\ref{a58:fn:sec:lower}: $c_j=(\TT^j\one)(x_N)$. \emph{Tempting false reading:} the column $c_n\approx1.37$--$1.48$ of Table~\ref{a58:fn:tab:data} is not $a_nT^n/n!$; it estimates $2\alpha$. Part~V: $c_n$ is the raw count, the $a_n$ of the other Parts.\\
 $h_n$, $h$ & Part~II: $h_n=\log(a_n/(n!\mu^n))$, which is $\log c_n$ of Parts~III and~IV. $h(y)$ is the rank function in Parts~I and~II ($h_0(y)$ in Parts~III and~IV). In Part~IV, Section~\ref{a58:rt:sec:extension}, $h$ is an extension length.\\
 $N$, $y$ & Everywhere $x_N=(N,1,N)$ is the growing seed state. Part~I: $N(L)=L/W(L/(eT))$ with $L=\log y$, where $y$ is a \emph{count} and $\nu(y)=\min\{n:a_n\ge y\}$. Parts~II--IV: $y$ is the \emph{logarithm} of a count, $N(y)$ (Part~II) $=N_a(y)$ (Parts~III, IV) $=\min\{n\ge1:\log a_n\ge y\}$. Thus Part~I's $\nu(Y)$ is Part~II's $N(\log Y)$, and $N(L)$ of Part~I is the $x$ of Parts~II--IV.\\
 $x_0$, $x_*$ & Parts~I--III: $x_0=(1,1,1)$, $(\TT^n\one)(x_0)=a_{n+1}$, continuation series $A'(t)$. Part~IV: $x_*=(0,1,0)$, $(\TT^n\one)(x_*)=a_n$, continuation series $A(t)$.\\
@@ -125,6 +148,11 @@ $A_0$, $B_0$ & Part~I: $A_0=e^{-p}(e^q-1)$, $B_0=RA_0$. Part~IV: large fixed con
 $L$, $K$ & $L$: Part~I $\log y$; Parts~II, III padding integer $\lceil Q\rceil$; Part~III, \eqref{a58:ln:eq:weakraw} a constant; Part~IV $1+\mu$ in Lemma~\ref{a58:rt:lem:slow}. $K$: Part~I $NM(q)$; Parts~II, III a fixed large constant; Part~IV $K_j$ counts paths.\\
 $b_j$, $C(\cdot)$, $S$ & $b(q)$ is the characteristic speed; $b_j=(\TT^j\one)(x_N)$ in Parts~III and IV. $C(q)=8(1+q)e^{5q/8}$ in Part~I; $C(z)=A(Tz)$ in Part~III. $S=\sum_ig(i)$ in Parts~II--IV; $S_N=\sum_{n\le N}c_n$ in Parts~III and IV.\\
 Lemma ``slow'' & Part~III, Lemma~\ref{a58:ln:lem:slow} (slow profile) and Part~IV, Lemma~\ref{a58:rt:lem:slow} (slow decrease of ratios) are different lemmas.\\
+\midrule
+Part~V: $m$, $h$, $L$, $M$ & The compact state $(m,h,L)$ is Parts~I--IV's $(s,u,k)$: $m$ once-used labels, $h$ unused available labels, $L$ the threshold; $M=m+h$ is their $m$. \emph{Tempting false reading:} Part~V's $m/n\to1-8/(3\pi)$ is not Part~II's $M_n=\E_n[m]$, which is $a_{n+1}/a_n$. At the cap $r=2$ the state is $(X_1,X_2,L)$ of the A294220 report's Part~III.\\
+Part~V: $s$, $t$, $x$, $y$, $\tau$ & $s,t$ are marks (catalytic variables), not a label count and a time; $x$ is the variable of $H(x;s,t)$, and $(x,y)$ are scaled coordinates $(m/n,h/n)$ in Sections~\ref{a58:eg:sec:upper}--\ref{a58:eg:sec:ratio}; in Section~\ref{a58:eg:sec:inverse} $y$ is a count and $Y=\log y$, as in Part~I; $\tau\in[0,1]$ is scaled time.\\
+Part~V: $g$, $r_n$, $g_n$, $d_n$ & $g(t)=\log t/(t-1)$. In Section~\ref{a58:eg:sec:checks}, $r_n=c_n/(nc_{n-1})$, $g_n=n(r_n/\mu-1)$ and $d_n=n(g_n-g_{n-1})$; Part~II's $g_n=n(h_n-h_{n-1})$ uses logarithms, and Part~V's $d_n$ and Part~II's column $c_n$ are related diagnostics of the same limit $4/3$, not equal numbers.\\
+Part~V: $H$, $J$, $K$, $A$, $E$, $F$, $D$, $W$ & $H(x;s,t)$ is a generating function with coefficients $H_n(s,t)$; $J(s)$ and $K(s)$ are integrals and $K$ a constant or a matrix; $A(N,k)$ are Eulerian numbers, not the series $A(t)$; $E_b(q,k)$ counts permutations; $F(v)=(v-1)/\log v$ and $F(x)=x\log(\mu x/e)$; $D$ bounds a matrix index; $W$ is a weight sum, $W_0$ Lambert's function.\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -138,6 +166,7 @@ Four manuscripts, all of batch~77 (arrival commit \texttt{096ee7b87}; placement 
 \item \textbf{Part~II}, manuscript~36, archive \file{oeis-a202058-fine-report.zip}, 2~October 2026, author line ``A mathematical addendum with reproducible computations''. Pin \texttt{13ef7d939}. Contributes the asymmetric bounds, the asymmetric inverse, exact counts to $400$ and floating values to $1000$, the conjecture, the regularity obstructions and the formal route. The archive also contains an unpacked and a zipped copy of manuscript~37.
 \item \textbf{Part~III}, manuscript~07, archive \file{a202058-lognormal-report.zip}, 2~October 2026, author line ``A self contained mathematical and reproducibility report''. Pin \texttt{4b874cea0}. Contributes the real-axis, cumulative and limsup logarithmic-square theorems and their quantitative refinement.
 \item \textbf{Part~IV}, manuscript~08, archive \file{a202058-ratio-report.zip}, 2~October 2026, author line ``A sequel with complete proofs and reproducibility materials''. No pin; it records no repository search. Contributes the ratio theorem, the improved lower bound and inverse, and the childwise counterexample. The archive also contains a byte-identical copy of manuscript~07.
+\item \textbf{Part~V} (added 5~October 2026), bundle Report~97 of batch~102, archive \file{A202058_Ascent_Sequence_Growth_Source.zip}, 2~October 2026, author line ``Research report prepared with OpenAI''. Arrival commit \texttt{60f54ea06}, placed by \texttt{6ab1f1979}. No pin and no repository search. Contributes a third proof of the root limit, a second proof of the ratio limit, the catalytic equation, the endpoint laws, strict monotonicity and exact counts through $395$. No PDF was delivered.
 \end{itemize}
 Where the merge had to choose:
 \begin{enumerate}
@@ -148,6 +177,8 @@ Where the merge had to choose:
 \item \emph{Bibliography.} The four bibliographies are merged into one, keeping every detail of every entry.
 \item \emph{Figure.} Part~II's figure is included from \file{figures/36-fine-correction-diagnostics.pdf}, the delivered file under its shipped name.
 \item \emph{Superseded statements.} Statements that a later Part supersedes (the ratio limit ``unresolved'' or ``unproved'' in Parts~I--III; the coefficient $2/3$ unproved in Part~II) are printed as delivered, with a dated note.
+\item \emph{Part~V} (batch~102). Report~97 is printed in full after Part~IV, although its main theorems re-prove Parts~I and~IV; dated notes mark the second routes. Its stale sentences (the stretched factor ``unresolved'', the literature status) are printed as delivered with dated notes. It is the cap-two case of bundle Report~99, which is Part~III of \file{a294220-ascent-multiplicity-caps}; following the batch-77P2 split (cap two here, all caps there) the two stay in their hosts and cite each other.
+\item \emph{Part~V's bibliography and macros.} Its keys \texttt{Conway2022} and \texttt{OEIS} are now \texttt{CCEG} and \texttt{OEIS}, whose entries gained Part~V's details; \texttt{DS2011} and \texttt{ConwayData} are new entries. Its macros were added to the preamble, except that its \texttt{\textbackslash dd} (an upright d) is printed by \texttt{\textbackslash egdd}, because this report's \texttt{\textbackslash dd} sets an italic d.
 \end{enumerate}
 
 \clearpage
@@ -1180,6 +1211,9 @@ This conjecture is strictly stronger than the proved bounds. It does not by itse
 This conditional formula is not part of Corollary \ref{a58:fn:cor:maininverse}.
 \begin{writenote}[2 October 2026]
 Status of Conjecture~\ref{a58:fn:conj:twothirds}: proved in two weaker forms, open as stated. Part~\ref{a58:part:ln}, Theorem~\ref{a58:ln:thm:main}, proves $\limsup_{n}\log c_n/(\log n)^2=2/3$ and $\log\sum_{j\le N}c_j\sim\frac23(\log N)^2$, where $c_n=a_n/(n!\mu^n)=e^{h_n}$. The pointwise asymptotic stated here remains open: Part~\ref{a58:part:ln}, \eqref{a58:ln:eq:openlimit}, and Part~\ref{a58:part:rt}, \eqref{a58:rt:eq:open}. The conditional inverse refinement above therefore remains conditional. Part~\ref{a58:part:ln}, \eqref{a58:ln:eq:weakraw}, and Part~\ref{a58:part:rt}, \eqref{a58:rt:eq:desiredratio}, each give a one-sided ratio bound that would suffice.
+\end{writenote}
+\begin{writenote}[5 October 2026, batch 102]
+Part~\ref{a58:part:eg} (Report~97) reaches the constant $2/3$ by a second formal route (Section~\ref{a58:eg:sec:formal}) and adds the diagnostic $d_n$; it proves nothing new about this conjecture (Section~\ref{a58:eg:sec:further}). \emph{Neighbouring reports} of batch~102 in this collection directory: \file{a336070-weak-ascents} (bundle Reports~105, 107 and~108) proves for the weak ascent sequences (A336070, $d=1$), and for every fixed difference $d\ge1$, the pointwise analogue $\log(a^{(d)}_n/(n!(6/\pi^2)^n))=\frac d2(\log n)^2+O_d(\log n)$ (its Theorem~24.1, label \texttt{wasc:sh:thm:main}; first with remainder $O((\log n)^2/\log\log n)$, \texttt{wasc:gr:thm:logsquare}), by a path change of measure; it makes no claim about the coefficient $2/3$ here. \file{a202059-ascent-100-110-growth} (bundle Reports~241 and~243) treats ascent sequences avoiding $100$ or $110$, whose factorial root $(u_n/n!)^{1/n}=\Theta((\log n)^{-2})$ tends to zero; its class avoiding $000$ and $100$ is a subclass of A202058 with $(\log n)^2(e_n/n!)^{1/n}\to2$, against the root $8/(3\pi^2)$ here, and Report~241 cites this report, not as an input. Neither report bears on the coefficient $2/3$.
 \end{writenote}
 
 \section{The coefficient regularity obstruction}\label{a58:fn:sec:regularity}
@@ -3692,6 +3726,1402 @@ and no external repository, publication or sequence entry has been
 modified. The open problem is precisely the all-index lower bound at
 the logarithmic-square scale; the proved ratio limit does not close it.
 
+
+\clearpage
+\part{The exponential growth constant for 000 avoiding ascent sequences}\label{a58:part:eg}
+\partsource{Bundle Report~97 (batch 102), archive \file{A202058_Ascent_Sequence_Growth_Source.zip} (arrival commit \texttt{60f54ea06}, placed by \texttt{6ab1f1979}), delivered as \file{article.tex} (53 lines) with nine section files, whose expansion \file{article_standalone.tex} (1,386 lines) is the text printed here. Dated 2 October 2026. Delivered author line: ``Research report prepared with OpenAI''. No commit pin and no mention of this repository or of Parts~I--IV. No PDF was delivered, although the delivered README and \file{PROVENANCE.json} describe one; a rebuild at intake has 23 pages, the count recorded in \file{PROVENANCE.json}. Delivered Section $k$ is Section $k+41$ here and delivered equation $(k)$ is $(k+209)$; statement numbers follow their sections. Printed in full, with \textbf{[write]} notes; Section~\ref{a58:eg:sec:further} was added at the write.}
+\begin{partabstract}
+Let $c_n$ count ascent sequences of length $n$ in which no value occurs three times, with $c_0=1$. We prove
+\[
+ \lim_{n\to\infty}\left(\frac{c_n}{n!}\right)^{1/n}
+ =\frac{8}{3\pi^2}.
+\]
+The proof starts from the exact compact-state recurrence of Conway, Conway, Elvey Price and Guttmann. A finite positive-matrix estimate and a time-dependent exponential weight give the upper bound. Buffered choices of distinct labels, Eulerian numbers, and an explicit variational path give the matching constructive lower bound. No unproved path large-deviation principle or Borel-singularity assertion is used. We also prove the consecutive-ratio limit and exponential concentration of two natural endpoint statistics, derive an exact two-catalytic functional equation and a two-term inverse-threshold consequence, and provide exact coefficient checks through degree 395, including every published OEIS coefficient through 176. A formal transport calculation and stable numerical diagnostics suggest a logarithmic-square correction; that correction, an amplitude, and a complete asymptotic equivalent remain open.
+\end{partabstract}
+
+\begin{writenote}[5 October 2026, batch 102]
+\emph{Reading this Part.} Report~97 was written without knowledge of Parts~\ref{a58:part:fd}--\ref{a58:part:rt}. Its $c_n$ is their $a_n$ (not Parts~III--IV's $a_nT^n/n!$), its $\mu$ is theirs, and its compact state $(m,h,L)$ is Part~\ref{a58:part:fd}'s $(s,u,k)$, so its $m$ is \emph{not} their $m$; its $s,t$ are marks, $x$ is the variable of the generating function or a scaled coordinate, $y$ is a count with $Y=\log y$ (as in Part~\ref{a58:part:fd}), and $A(N,k)$ are Eulerian numbers. The front matter's notation table lists the clashes.
+\begin{itemize}
+\item \emph{Second routes.} Theorem~\ref{a58:eg:thm:main} is a third proof of Part~\ref{a58:part:fd}'s root limit, with error $o(n)$ only; Lemma~\ref{a58:eg:lem:action} evaluates $3\pi^2/8$ by another substitution; Theorem~\ref{a58:eg:rat:ratio} is a second proof of Part~\ref{a58:part:rt}'s ratio limit, without its rate; Corollary~\ref{a58:eg:cor:inverse} is weaker than the inverses of Parts~\ref{a58:part:fn} and~\ref{a58:part:rt}; Section~\ref{a58:eg:sec:formal} is a second formal route to the constant $2/3$, beside Part~\ref{a58:part:fn}'s Section~\ref{a58:fn:sec:formal}.
+\item \emph{New.} The two-catalytic functional equation and its coefficient recurrence (Proposition~\ref{a58:eg:prop:kernel}); the weighted upper bound (Proposition~\ref{a58:eg:rat:weightedupper}); the endpoint laws with closed forms (Corollary~\ref{a58:eg:rat:joint} and \eqref{a58:eg:rat:originalstats}); strict monotonicity (Lemma~\ref{a58:eg:lem:monotonicity}); exact coefficients through $n=395$, which agree with Part~\ref{a58:part:fn}'s independent table through~$400$.
+\item \emph{Every cap.} Bundle Report~99, delivered in the same bundle with the same date, author line and method, proves Theorems~\ref{a58:eg:thm:main} and~\ref{a58:eg:rat:ratio}, the endpoint laws (as integrals) and a full large-deviation principle for every fixed multiplicity cap $r\ge2$; it is printed as Part~III of the sibling report \file{a294220-ascent-multiplicity-caps}, and this Part is its case $r=2$. By the batch-77P2 split (cap two here, all caps there) the two reports stay separate and cite each other.
+\end{itemize}
+\end{writenote}
+
+\section{The counting problem and the result}\label{a58:eg:sec:context}
+An ascent sequence is a word $a_1\cdots a_n$ of nonnegative integers satisfying $a_1=0$ and
+\[
+ 0\le a_i\le1+\asc(a_1\cdots a_{i-1})\qquad(2\le i\le n),
+\]
+where $\asc$ counts adjacent strict rises. Avoidance of the word pattern 000 means precisely that every value occurs at most twice. Let $\cA_n$ be this class and put $c_n=|\cA_n|$, including the empty word. This is OEIS A202058~\cite{OEIS}, with offset 0:
+\[
+(c_n)_{n\ge0}=1,1,2,4,10,27,83,277,1015,4007,17047,77451,\ldots.
+\]
+Ascent sequences are natural objects in the combinatorics of Fishburn structures and interval orders. Pattern avoidance in these sequences was systematically investigated by Duncan and Steingr\'imsson~\cite{DS2011}.
+
+Conway, Conway, Elvey Price and Guttmann~\cite{CCEG} gave an exact polynomial-state enumeration for this class and conjectured the factorial-normalized exponential constant
+\begin{equation}\label{a58:eg:eq:mu}
+ \muval=\frac8{3\pi^2}=0.270189823046234\ldots.
+\end{equation}
+Their numerical analysis also proposed an unresolved factor of the form $\mu_1^{n^\sigma}n^g$, with $0.06\le\sigma\le0.1$; the base and power were not determined. Their introductory display $C n!\muval^n$ suppresses these unresolved factors and is not a proved equivalent.
+
+\begin{writenote}[5 October 2026, batch 102]
+\emph{The stretched factor is excluded in this report.} Part~\ref{a58:part:fn}'s Theorem~\ref{a58:fn:thm:main} rules out an equivalent $C_0n!\mu^ne^{cn^\sigma}n^g(\log n)^h$ with $c,\sigma>0$, and Part~\ref{a58:part:ln}'s $\limsup\log c_n/(\log n)^2=2/3$ (Theorem~\ref{a58:ln:thm:main}, with $c_n=a_nT^n/n!$ there) rules it out with $c<0$, as the \textbf{[write]} note in Section~9 of Part~\ref{a58:part:fn} observes. So no factor $\mu_1^{n^\sigma}n^g$ with $\mu_1\ne1$ and $\sigma>0$ occurs. Report~97 did not know Parts~\ref{a58:part:fd}--\ref{a58:part:rt}; its ``unresolved'' here, and again in Section~\ref{a58:eg:sec:checks}, is stale. Its ``logarithmic-square correction \ldots{} open'' is true only pointwise: Part~\ref{a58:part:ln} proves the coefficient $2/3$ in $\limsup$ and cumulative form.
+\end{writenote}
+
+\begin{theorem}\label{a58:eg:thm:main}
+The factorial-normalized root limit exists and equals \eqref{a58:eg:eq:mu}:
+\begin{equation}\label{a58:eg:eq:rootlimit}
+ \lim_{n\to\infty}(c_n/n!)^{1/n}=\muval.
+\end{equation}
+Equivalently,
+\begin{equation}\label{a58:eg:eq:loggrowth}
+ \log c_n=n\log n-(1-\log\muval)n+o(n).
+\end{equation}
+\end{theorem}
+
+\begin{writenote}[5 October 2026, batch 102]
+A third proof of the root limit of Part~\ref{a58:part:fd}'s Theorem~\ref{a58:fd:thm:main} (the second is Part~\ref{a58:part:ln}, Section~\ref{a58:ln:sec:allindex}), by another method: a finite Perron bound with a calibrated time-dependent weight for the upper half, and buffered blocks of distinct labels with Eulerian numbers for the lower half. Its error is only $o(n)$; Part~\ref{a58:part:fd} has $O(n^{9/13}(\log n)^3)$ and Parts~\ref{a58:part:fn} and~\ref{a58:part:rt} have $-O(\sqrt n(\log n)^{3/2})\le\log(c_n/(n!\mu^n))\le O((\log n)^2)$, where this Part's $c_n$ is the $a_n$ of Parts~\ref{a58:part:fd}--\ref{a58:part:rt}. The theorem is the case $r=2$ of Theorem~17.1 of \file{a294220-ascent-multiplicity-caps} (Part~III there, bundle Report~99), proved there by the same method for every cap.
+\end{writenote}
+The upper bound is proved in Section~\ref{a58:eg:sec:upper}, and the matching lower bound in Section~\ref{a58:eg:sec:lower}. Each is a positive finite counting argument. The exact functional equation in Section~\ref{a58:eg:sec:kernel} explains how the successful weights were found, but no formal asymptotic ansatz is used as a theorem in either counting bound.
+
+\paragraph{Scope of the result.}
+Equation~\eqref{a58:eg:eq:rootlimit} proves $c_n=n!\muval^n\exp(o(n))$. Section~\ref{a58:eg:sec:ratio} separately strengthens this to $c_n/(nc_{n-1})\to\muval$ and proves exponential concentration of endpoint statistics. A subexponential factor and an amplitude are not determined. Section~\ref{a58:eg:sec:formal} separates a formal logarithmic-square hypothesis from the theorem. Section~\ref{a58:eg:sec:inverse} gives the inverse-threshold precision that actually follows from~\eqref{a58:eg:eq:loggrowth}; no exact rounding rule is asserted.
+
+\paragraph{Literature status.}
+The final 2022 publication and the current accessible OEIS entry were checked on 2 October 2026. The entry still listed the enumeration problem without a formula or generating function, and a bounded search did not locate a later proof of~\eqref{a58:eg:eq:rootlimit}. This documents the comparison with the cited sources; it is not a claim of an exhaustive bibliographic or priority determination. The proof below is presented in full so it can be assessed independently.
+
+\begin{writenote}[5 October 2026, batch 102]
+In this repository the root limit was proved before Report~97 was written: Part~\ref{a58:part:fd} (manuscript~37) is dated 1~October 2026 and has been here since \texttt{f76fcb566} of 2~October 2026, with Parts~\ref{a58:part:fn}--\ref{a58:part:rt}. Report~97 cites none of them. Its paragraph is kept as the record of its own search; it is not a statement about this repository.
+\end{writenote}
+
+\section{Exact compact states and a catalytic equation}\label{a58:eg:sec:kernel}
+\subsection{The finite state transfer}
+The compaction of~\cite[Sections 2.2 and 2.6]{CCEG} removes values already used twice and identifies equivalent suffix-count states. Its parameters can be written without negative indices as $(m,h,L)$, where $m$ is the number of once-seen values, $h$ is the number of available unused values, and $L$ is one plus the compacted last-label threshold. After the initial 0 the state is $(1,1,1)$. Reachable states satisfy
+\[
+ m\ge0,\qquad h\ge1,\qquad0\le L\le m+h-1.
+\]
+The next compact label $i$ makes one of the transitions
+\begin{align}
+ R:\quad 0\le i<m,
+ &(m,h,L)\longmapsto(m-1,h+\ind{i\ge L},i),\label{a58:eg:eq:repeat}\\
+ N:\quad m\le i<m+h,
+ &(m,h,L)\longmapsto(m+1,h-1+\ind{i\ge L},i+1).\label{a58:eg:eq:new}
+\end{align}
+Here $R$ and $N$ mean repeat and new, respectively. The transfer counts paths exactly; it is not a claim that compaction preserves the literal last entry of each original prefix.
+
+For clarity, the compaction principle can be described directly. Once a value has appeared twice, it is forbidden forever, so delete it from the ordered alphabet and renumber the remaining choices. For the once-seen set, the source's adjacent-value involution exchanges the status of two neighboring values below the current last-label threshold: reverse every maximal suffix run made of those two values and interchange the values. This preserves legal extensions and the total number of ascents. Repeated exchanges bubble the once-seen values into an initial interval. Its cardinality is $m$, and \eqref{a58:eg:eq:repeat}--\eqref{a58:eg:eq:new} follow by deleting a used repeat or adding a new singleton.
+
+The two marginal statistics also have a natural interpretation on completed original words. If $d$ is the number of distinct values, then
+\begin{equation}\label{a58:eg:eq:stats}
+ m=\#\{\text{values occurring once}\},\qquad
+ d=(n+m)/2,\qquad h=\asc+2-d.
+\end{equation}
+This refinement is preserved structurally, not merely in the finite checks. In an adjacent-status exchange, reverse and interchange each maximal run containing the two neighboring labels. Internal ascents are preserved by reversal followed by interchange; comparisons with any outside label are unchanged because that label is either smaller than both or larger than both. The initial comparison is unchanged because both exchanged labels lie below the last-label threshold. If the old statuses are once-seen and unused, the two final multiplicities are interchanged by this operation, so their multiset is preserved. Deleting a twice-used label is an order-preserving relabeling of all future choices; its completed multiplicity is retained implicitly by the length and singleton count. Composing these operations therefore preserves the total ascent count and the completed multiplicity multiset. In particular, the refinement below counts the original words with the statistics in~\eqref{a58:eg:eq:stats}. The bound $h\ge1$ follows as well from $d\le\max(a_i)+1\le\asc+1$.
+
+\begin{writenote}[5 October 2026, batch 102]
+\emph{The same state as in Parts~\ref{a58:part:fd}--\ref{a58:part:rt}.} The compact state $(m,h,L)$ is Part~\ref{a58:part:fd}'s $(s,u,k)$ of \eqref{a58:fd:eq:children}: $m=s$ counts the once-used labels, $h=u$ the unused available ones, $L=k$ is the threshold, and the transitions \eqref{a58:eg:eq:repeat} and \eqref{a58:eg:eq:new} are Part~\ref{a58:part:fd}'s $D$ and $N$ children (both start from $(1,1,1)$, and the four cases of \eqref{a58:fd:eq:children} are the two transitions with $i<L$ or $i\ge L$). Hence this Part's $m+h$, the number of children, is the $m$ of Parts~\ref{a58:part:fd}--\ref{a58:part:rt}; do not read this Part's $m$ as theirs. The state is also $(X_1,X_2,L)$ of the sorted transfer of \file{a294220-ascent-multiplicity-caps} at the cap $r=2$ (its equation~(67)): a capacity-one label is a once-used value and a capacity-two label an unused one.
+\end{writenote}
+
+\subsection{Eliminating the last-label variable}
+Let $R(x;s,t,z)$ and $N(x;s,t,z)$ count compact paths whose most recent transition was respectively a repeat or a new choice, weighting a state at level $n$ by $x^ns^mt^hz^L$. The initial 0 belongs to $N$ and contributes $xstz$. Let
+\[
+ H(x;s,t)=R(x;s,t,1)+N(x;s,t,1)=\sum_{n\ge1}H_n(s,t)x^n.
+\]
+Thus $H_n(1,1)=c_n$. A repeat endpoint has $L\le m$, while a new endpoint has $L\ge m$; equality is harmless because the last transition type is retained.
+
+Suppressing $x$ in the arguments, geometric sums over the next label give
+\begin{align}
+ s(1-z)R(s,t,z)
+ &=x\{H(s,t)+(t-1)R(s,t,z)\notag\\[-2pt]
+ &\hspace{30mm}-tR(sz,t,1)-N(sz,t,1)\},\label{a58:eg:eq:Rkernel}\\
+ t(1-z)N(s,t,z)
+ &=xst^2z(1-z)\notag\\
+ &\quad+xsz\{tR(sz,t,1)+N(sz,t,1)\notag\\[-2pt]
+ &\hspace{25mm}+(t-1)N(s,t,z)-tH(sz,tz)\}.\label{a58:eg:eq:Nkernel}
+\end{align}
+The first kernel vanishes at $z=1-x(t-1)/s$, yielding
+\[
+ H(s,t)=tR(s-x(t-1),t,1)+N(s-x(t-1),t,1).
+\]
+The second vanishes at $z=t/[t+xs(t-1)]$. Writing $v=sz$, so that $tz=t-xv(t-1)$, it yields
+\[
+ tR(v,t,1)+N(v,t,1)=tH(v,t-xv(t-1))-xvt(t-1).
+\]
+Elimination proves the following exact identity.
+\begin{proposition}\label{a58:eg:prop:kernel}
+The refined ordinary generating function satisfies
+\begin{equation}\label{a58:eg:eq:kernel}
+ H(x;s+x(t-1),t)
+ =tH(x;s,t-xs(t-1))-xst(t-1).
+\end{equation}
+Together with $H_0=0$, it determines all coefficient polynomials uniquely:
+\begin{equation}\label{a58:eg:eq:polyrec}
+ H_n=\ind{n=1}st+
+ \sum_{j=1}^{n-1}\frac{(t-1)^{j-1}}{j!}
+ \left(\partial_s^jH_{n-j}-t(-s)^j\partial_t^jH_{n-j}\right).
+\end{equation}
+\end{proposition}
+The kernel substitutions are formal substitutions in $x$ over rational functions of the catalytic variables. Polynomiality removes the apparent divisions. To derive~\eqref{a58:eg:eq:polyrec}, Taylor-expand both sides of~\eqref{a58:eg:eq:kernel}, compare the coefficient of $x^n$, and divide the common factor $t-1$. The first polynomials are
+\begin{align*}
+ H_1&=st, & H_2&=s^2t+t, & H_3&=s^3t+3st,\\
+ H_4&=s^4t+6s^2t+t^2+2t,\qquad
+ H_5&=s^5t+10s^3t+5st^2+11st.
+\end{align*}
+The positivity used later comes from the transfer model, not from the derivative recurrence: its even-order terms have minus signs, so a pointwise inequality cannot simply be differentiated through~\eqref{a58:eg:eq:polyrec}.
+
+\begin{writenote}[5 October 2026, batch 102]
+New in the repository: Parts~\ref{a58:part:fd}--\ref{a58:part:rt} have no catalytic or functional equation, and Report~99 (Part~III of \file{a294220-ascent-multiplicity-caps}) has none for any cap. The recurrence \eqref{a58:eg:eq:polyrec} was expanded with SymPy at the write: it reproduces the displayed $H_1,\ldots,H_5$, and $H_n(1,1)=1,2,4,10,27,83,277,1015,4007$ for $n=1,\ldots,9$, the values of A202058.
+\end{writenote}
+
+\section{A positive transfer upper bound}\label{a58:eg:sec:upper}
+We prove
+\begin{equation}\label{a58:eg:eq:upperclaim}
+ \limsup_{n\to\infty}(c_n/n!)^{1/n}\le\muval.
+\end{equation}
+The proof uses only finite matrices and inequalities. In particular, all states near $m=0$ or $h=1$ are included in the transfer estimate.
+
+\subsection{A finite Perron estimate}
+\begin{lemma}\label{a58:eg:lem:perron}
+Fix $v>1$ and nonnegative weights $w_0,\ldots,w_D$, not all zero, and set
+\[
+ K(L,z)=w_zv^{\ind{z\ge L}}\qquad(0\le L,z\le D).
+\]
+Write $W=\sum_z w_z$, $w_*=\max_z w_z$, and $c=v-1$. There is a positive eigenvalue $\lambda>cw_*$ satisfying
+\begin{equation}\label{a58:eg:eq:product}
+ \prod_{z=0}^D(1-cw_z/\lambda)=1/v.
+\end{equation}
+For every integer $b\ge0$,
+\begin{equation}\label{a58:eg:eq:matrixbound}
+ K^b\boldsymbol1\le v\lambda^b\boldsymbol1,
+ \qquad
+ \lambda\le\frac{v-1}{\log v}W+(v-1)w_*.
+\end{equation}
+For $v=1$ the same statements hold with $\lambda=W$ and $(v-1)/\log v=1$.
+\end{lemma}
+\begin{proof}
+The left side of~\eqref{a58:eg:eq:product} increases continuously from 0 to 1 for $\lambda\in(cw_*,\infty)$, so there is a unique such root. Define $f_0=1$ and
+\[
+ f_{j+1}=(1-cw_j/\lambda)f_j\qquad(0\le j\le D).
+\]
+Then $1/v=f_{D+1}\le f_j\le1$. Telescoping gives $\sum_z w_zf_z=\lambda/v$, and
+\[
+ (Kf)_L=v\sum_z w_zf_z-c\sum_{z<L}w_zf_z=\lambda f_L.
+\]
+Since $\boldsymbol1\le vf$, positivity implies
+$K^b\boldsymbol1\le v\lambda^bf\le v\lambda^b\boldsymbol1$.
+To bound the eigenvalue, set $B=cW/\log v+cw_*$. The inequality
+$-\log(1-z)\le z/(1-z)$ gives
+\[
+ \sum_z-\log(1-cw_z/B)
+ \le\frac{cW}{B-cw_*}=\log v.
+\]
+Monotonicity in $B$ proves the stated upper bound. At $v=1$, the matrix has identical rows and the result follows directly.
+\end{proof}
+
+\subsection{Domination of an arbitrary block}
+Start a block of $b\ge1$ steps at $(m,h,L)$ and fix $u,v\ge1$. A repeat transition has weight $u^{-1}v^{\ind{i\ge L}}$; a new transition has weight $(u/v)v^{\ind{i\ge L}}$. Products telescope to
+$u^{m_{\rm end}-m}v^{h_{\rm end}-h}$.
+During the block, $m$ and $h$ each change by at most $b$.
+In the output last-label coordinate $z$, every repeat choice lies in
+\[
+ I_R=\{0,\ldots,m+b-1\},
+\]
+and every new choice lies in
+\[
+ I_N=\{\max(1,m-b+1),\ldots,m+h+2b\}.
+\]
+For a new choice $z=i+1$, and $v^{\ind{i\ge L}}\le v^{\ind{z\ge L}}$ because $v\ge1$. With $D=m+h+2b$, define
+\[
+ w_z=u^{-1}\ind{z\in I_R}+(u/v)\ind{z\in I_N}.
+\]
+For any nonnegative function of the next last-label coordinate, the tilted actual transition sum is dominated by the matrix of Lemma~\ref{a58:eg:lem:perron}. This holds uniformly over all hidden states $(m',h')$ reached during the block. Backward induction over the remaining steps therefore gives
+\begin{equation}\label{a58:eg:eq:blocktilt}
+ \sum_{\text{block paths}}u^{m_{\rm end}-m}v^{h_{\rm end}-h}
+ \le v\lambda^b.
+\end{equation}
+The matrix can admit both transition types for the same output, and can allow choices inconsistent with the hidden coordinates. Such extra positive terms only increase the upper bound.
+
+The interval lengths give
+\[
+ W\le(m+b)/u+(u/v)(h+3b),\qquad w_*\le1/u+u/v.
+\]
+Define the continuous expression
+\begin{equation}\label{a58:eg:eq:rho}
+ \rho(x,y;u,v)=\frac{v-1}{\log v}\left(\frac xu+\frac{uy}v\right).
+\end{equation}
+For $u,v$ in any fixed compact subset of $[1,\infty)$,
+\begin{equation}\label{a58:eg:eq:lambdauniform}
+ \lambda\le n\rho(m/n,h/n;u,v)+C(b+1),
+\end{equation}
+with $C$ uniform in $n,b,m,h,L$. This is an exact matrix comparison, not an assertion about convergence of a discrete Perron eigenvalue. It also covers $m=0$ and $m<b$.
+
+\subsection{An explicit global calibration}
+Set
+\begin{equation}\label{a58:eg:eq:gJ}
+ g(t)=\frac{\log t}{t-1},\quad g(1)=1,
+ \qquad J(s)=\int_s^\infty g((r^2+1)/2)\egdd r\quad(s\ge1).
+\end{equation}
+The function $J$ is smooth and decreases strictly from $J(1)$ to 0.
+\begin{lemma}\label{a58:eg:lem:action}
+One has $J(1)=3\pi^2/8$.
+\end{lemma}
+\begin{proof}
+For $a\ge0$ put
+\[
+ I_0(a)=\int_1^\infty
+ \frac{2\log((r^2+a)/(1+a))}{r^2-1}\egdd r.
+\]
+The substitution $r=1/z$ and the sum over odd reciprocal squares give
+\[
+ I_0(0)=4\int_0^1\frac{-\log z}{1-z^2}\egdd z
+ =4\sum_{j\ge0}(2j+1)^{-2}=\frac{\pi^2}{2}.
+\]
+Differentiation under the integral is justified by an integrable bound on each compact $a$-interval, and yields
+\[
+ \frac{\egdd}{\egdd v}I_0(v^2)
+ =-\frac{4\arctan v}{1+v^2}.
+\]
+Hence $I_0(a)=\pi^2/2-2(\arctan\sqrt a)^2$. At $a=1$ this is $J(1)=3\pi^2/8$.
+\end{proof}
+
+\begin{writenote}[5 October 2026, batch 102]
+The value $3\pi^2/8$ is evaluated in Part~\ref{a58:part:fd}, Section~\ref{a58:fd:sec:radius}, as the endpoint $t(\infty)$ of a characteristic curve, and again in Parts~\ref{a58:part:fn}--\ref{a58:part:rt}; this lemma is a different evaluation, through $I_0(a)=\pi^2/2-2(\arctan\sqrt a)^2$. The same evaluation is Proposition~17.3 of \file{a294220-ascent-multiplicity-caps}. Lemma~\ref{a58:eg:lem:perron} and the block domination below are the cap-two case of that report's Lemma~19.1 and its block bound~(70).
+\end{writenote}
+
+Define $s(\tau)\ge1$ for $0<\tau\le1$ by
+\begin{equation}\label{a58:eg:eq:calibration}
+ \tau=\muval J(s(\tau)),\qquad
+ t(\tau)=\frac{1+s(\tau)^2}{2},\qquad
+ \theta(\tau)=(p(\tau),q(\tau))=(\log s(\tau),\log t(\tau)).
+\end{equation}
+Then $\theta(1)=(0,0)$. On each fixed $[\varepsilon,1]$ its first two derivatives are bounded, and
+\begin{equation}\label{a58:eg:eq:thetaderiv}
+ s'=-\frac1{\muval g(t)},\qquad
+ p'=-\frac1{\muval s g(t)},\qquad
+ q'=-\frac{s}{\muval t g(t)}.
+\end{equation}
+Thus for \emph{every} $x,y\ge0$,
+\begin{equation}\label{a58:eg:eq:globalcal}
+ \frac{\rho(x,y;s(\tau),t(\tau))}{\muval}
+ =-\theta'(\tau)\cdot(x,y).
+\end{equation}
+This linear identity is the global calibration that bounds all paths, not just the path used for the lower bound.
+
+We also need $\theta(\varepsilon)=O(\log(1/\varepsilon))$ as $\varepsilon\downarrow0$. Indeed,
+$J(s)\le C(\log s+1)/s\le C'/\sqrt s$ for large $s$, so $\varepsilon=\muval J(s)$ implies $s\le C''\varepsilon^{-2}$. The bound follows for both $\log s$ and $\log t$.
+
+\subsection{Telescoping the exponential weights}
+Fix $\varepsilon\in(0,1)$ and let $k=\lceil\varepsilon n\rceil$. Partition the levels from $k$ to $n$ into a fixed finite number $M=O(1/\delta)$ of blocks, each with length $b_j$ satisfying $b_j/n\le\delta$. Let $\tau_j$ be the initial level of block $j$ divided by $n$. Write $X=(m,h)$ for its initial state and $X'$ for its endpoint, and abbreviate
+\[
+ \theta=\theta(\tau_j),\qquad
+ \Delta\theta=\theta(\tau_j+b_j/n)-\theta(\tau_j).
+\]
+Since each coordinate changes by at most $b_j$,
+\begin{align}
+ \sum_{\text{paths}}\ee^{\theta(\tau_j+b_j/n)\cdot X'}
+ &\le\ee^{\theta\cdot X+\Delta\theta\cdot X+b_j\|\Delta\theta\|_1}
+      v_j\lambda_j^{b_j}.\label{a58:eg:eq:weightchange}
+\end{align}
+Using $\log z\le z-1$ at $z=\lambda_j/(n\muval)$, followed by~\eqref{a58:eg:eq:lambdauniform} and~\eqref{a58:eg:eq:globalcal}, gives
+\begin{equation}\label{a58:eg:eq:lambdatelescope}
+ \lambda_j^{b_j}
+ \le(n\muval/\ee)^{b_j}
+ \exp\left(-\frac{b_j}{n}\theta'(\tau_j)\cdot X
+       +C_\varepsilon\frac{b_j(b_j+1)}n\right).
+\end{equation}
+The two linear state terms cancel to second order: Taylor's theorem gives
+\[
+ \left\|\Delta\theta-\frac{b_j}{n}\theta'(\tau_j)\right\|_1
+ \le C_\varepsilon(b_j/n)^2,
+ \qquad \|\Delta\theta\|_1\le C_\varepsilon b_j/n.
+\]
+At levels at most $n$, $\|X\|_1\le2n+1$, and $v_j$ is bounded on $[\varepsilon,1]$. Combining these estimates proves the uniform one-block inequality
+\begin{equation}\label{a58:eg:eq:oneblock}
+ \sum_{\text{paths}}\ee^{\theta(\tau_{j+1})\cdot X'}
+ \le\ee^{\theta(\tau_j)\cdot X}(n\muval/\ee)^{b_j}
+      \exp\left(C_\varepsilon[b_j^2/n+1]\right).
+\end{equation}
+Iterate, use $\theta(1)=0$, and note $\sum_jb_j^2/n\le n\delta$. From any state $X$ at level $k$,
+\[
+ \#\{\text{completions to level }n\}
+ \le\ee^{\theta(k/n)\cdot X}(n\muval/\ee)^{n-k}
+     \exp(C_\varepsilon[n\delta+M]).
+\]
+Every ascent sequence is an inversion sequence, so $c_k\le k!$. Also $m\le k$ and $h\le k+1$. Summing over all prefixes yields
+\begin{equation}\label{a58:eg:eq:upperfinite}
+ c_n\le k!\exp(k\|\theta(k/n)\|_1+O_\varepsilon(1))
+    (n\muval/\ee)^{n-k}\exp(C_\varepsilon[n\delta+M]).
+\end{equation}
+Stirling's formula therefore gives
+\begin{align*}
+ \limsup_{n\to\infty}\frac1n\log(c_n/n!)
+ \le{}&\varepsilon\log\varepsilon+(1-\varepsilon)\log\muval
+       +\varepsilon\|\theta(\varepsilon)\|_1+C_\varepsilon\delta.
+\end{align*}
+First send $\delta\downarrow0$ with $\varepsilon$ fixed, then $\varepsilon\downarrow0$.
+The initial cost vanishes because $\varepsilon\|\theta(\varepsilon)\|_1\to 0$.
+This proves~\eqref{a58:eg:eq:upperclaim}. No uniform bound on $C_\varepsilon$ as $\varepsilon\downarrow0$ is needed, because the limits are nested in the stated order.
+
+\section{A constructive matching lower bound}\label{a58:eg:sec:lower}
+
+We prove the matching lower bound by counting explicit compact-state paths.
+The construction uses finite blocks of distinct, buffered labels and an
+elementary exponential estimate for Eulerian numbers. In particular, it does
+not assume a large-deviation principle for the evolving compact process.
+
+\begin{theorem}\label{a58:eg:low:theorem}
+For the numbers \(c_n\) of \(000\)-avoiding ascent sequences,
+\[
+ \liminf_{n\to\infty}\left(\frac{c_n}{n!}\right)^{1/n}
+ \ge \muval=\frac{8}{3\pi^2}.
+\]
+\end{theorem}
+
+\subsection{Buffered label blocks}
+
+Recall that a repeat at label \(i<m\) sends
+\[
+ (m,h,L)\longmapsto
+ \bigl(m-1,h+\ind{i\ge L},i\bigr),
+\]
+whereas a new choice \(m\le i<m+h\) sends
+\[
+ (m,h,L)\longmapsto
+ \bigl(m+1,h-1+\ind{i\ge L},i+1\bigr).
+\]
+Thus, in a block with \(p\) new choices, \(q\) repeats and \(A\) ascents,
+\begin{equation}\label{a58:eg:low:drifts}
+ \Delta m=p-q,\qquad \Delta h=A-p.
+\end{equation}
+Here an ascent means the event \(i\ge L\) in the current compact state.
+
+For \(p+q=b\), with \(p,q\ge1\), let \(E_b(q,k)\) count permutations
+\(\pi\in S_b\) satisfying
+\[
+ \pi_1>q,\qquad \pi_b\le q,\qquad
+ \#\{j<b:\pi_j<\pi_{j+1}\}=k.
+\]
+
+\begin{lemma}[Buffered blocks]\label{a58:eg:low:buffer}
+Suppose a block starts at \((m,h,L)\) with \(L\le m\). If
+\(m-b\ge q\) and \(h-2b\ge p\), then there are at least
+\begin{equation}\label{a58:eg:low:buffer-count}
+ E_b(q,k)\binom{m-b}{q}\binom{h-2b}{p}
+\end{equation}
+length-\(b\) extensions with endpoint
+\[
+ m'=m+p-q,\qquad h'=h+k+1-p,\qquad L'\le m'.
+\]
+The bound is uniform in the initial \(L\le m\).
+Neither endpoint drift is required to be positive.
+\end{lemma}
+
+\begin{proof}
+Choose \(q\) distinct low labels from
+\[
+ \{0,\ldots,m-b-1\}
+\]
+and \(p\) distinct high labels from
+\[
+ \{m+b,\ldots,m+h-b-1\}.
+\]
+Order their union according to a permutation counted by \(E_b(q,k)\).
+Use these fixed integers as successive compact labels.
+
+During the block, the singleton threshold differs from its starting value
+by at most \(b\). Hence every selected low label remains a repeat and every
+selected high label remains a new choice. The upper available threshold
+\(m+h\) changes by at most one at each step, so every high label also
+remains below that upper threshold. All choices are therefore legal.
+This argument concerns compact labels; it does not identify them with
+unchanged labels in the original uncompressed word.
+
+The first choice is high and is ascending since initially \(L\le m\).
+After a choice \(i\), the new comparison threshold is either \(i\) or
+\(i+1\). Because the selected labels are distinct integers, the next
+choice is ascending exactly when its rank exceeds the preceding rank.
+The block consequently has \(k+1\) ascents, and
+\eqref{a58:eg:low:drifts} gives the asserted changes in \(m,h\).
+The last choice is a repeat; a repeat at a label \(i<m_{\rm old}\)
+ends with \(L'=i\le m_{\rm old}-1=m'\).
+Different label sets or rank permutations give different paths.
+\end{proof}
+
+Let \(A(N,k)\) be the ordinary Eulerian number counting permutations of
+\(N\) letters with \(k\) ascents. Fixing the first letter to be the largest
+and the last to be the smallest gives the useful bound
+\begin{equation}\label{a58:eg:low:ordinary-eulerian}
+ E_b(q,k)\ge A(b-2,k),\qquad 1\le q<b.
+\end{equation}
+Indeed, both outside edges are descents, so the middle permutation
+contributes exactly all the ascents. This bound is independent of \(q\).
+
+\subsection{An elementary Eulerian exponential estimate}
+
+Define the moment generating function and rate function
+\begin{equation}\label{a58:eg:low:rate-def}
+ M(\lambda)=\int_0^1 e^{\lambda u}\,\egdd u
+ =\frac{e^\lambda-1}{\lambda},\qquad
+ I(a)=\sup_{\lambda\in\mathbb R}
+ \{\lambda a-\log M(\lambda)\},
+\end{equation}
+with \(M(0)=1\). The derivative of \(\log M\) is the mean under the
+density \(e^{\lambda u}/M(\lambda)\). Its derivative is the strictly
+positive variance, and its limiting means are \(0\) and \(1\).
+Thus, for each \(a\in(0,1)\), a unique finite tilt attains the supremum.
+
+\begin{lemma}[Selectable Eulerian bins]\label{a58:eg:low:eulerian-bins}
+For every fixed \(a\in(0,1)\), there are integers
+\[
+ k_N=Na+O(N^{2/3})
+\]
+such that
+\begin{equation}\label{a58:eg:low:eulerian-rate}
+ \log A(N,k_N)\ge \log(N!)-N I(a)+o(N).
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+For independent uniform random variables \(U_1,\ldots,U_N\) on
+\([0,1]\), the cube-slice identity is
+\begin{equation}\label{a58:eg:low:cube}
+ A(N,k)=N!\,\Pr\{k\le U_1+\cdots+U_N<k+1\}.
+\end{equation}
+To verify it directly, inclusion-exclusion gives the volume below height
+\(z\) as
+\[
+ \frac1{N!}\sum_{j=0}^N(-1)^j\binom Nj(z-j)_+^N.
+\]
+Subtracting the values at \(k+1\) and \(k\) yields
+\[
+ \frac1{N!}\sum_j(-1)^j\binom{N+1}{j}(k+1-j)^N,
+\]
+the usual Eulerian formula. That formula also follows by extracting
+coefficients from
+\(\sum_{j\ge0}j^N z^j=z\sum_k A(N,k)z^k/(1-z)^{N+1}\);
+the latter identity follows inductively by applying \(z\,\egdd/\egdd z\).
+
+Choose the tilt \(\lambda\) whose mean is \(a\).
+Under the tilted law, \(S_N=U_1+\cdots+U_N\) has mean \(Na\) and
+variance \(O(N)\). Chebyshev's inequality gives probability
+\(1-O(N^{-1/3})\) to
+\([Na-N^{2/3},Na+N^{2/3}]\). This interval intersects
+\(O(N^{2/3})\) unit bins, so at least one such bin has tilted
+probability at least \(cN^{-2/3}\), for a constant \(c>0\).
+Let its left endpoint be \(k_N\).
+Undoing the tilt on that bin gives
+\[
+ \Pr\{k_N\le S_N<k_N+1\}
+ \ge M(\lambda)^N
+       e^{-\lambda k_N-|\lambda|}\,cN^{-2/3}.
+\]
+Taking logarithms and using \(k_N=Na+O(N^{2/3})\) proves
+\eqref{a58:eg:low:eulerian-rate}.
+\end{proof}
+
+The freedom to select a nearby bin is intentional. The proof needs
+neither a prescribed-bin estimate nor a local central limit theorem.
+
+\subsection{The local counting rate}
+
+For \(0<r,a<1\), put
+\[
+ {\cal H}(r)=-r\log r-(1-r)\log(1-r)
+\]
+and define
+\begin{equation}\label{a58:eg:low:L}
+ {\cal L}(x,y;r,a)
+ =(1-r)\log x+r\log y+{\cal H}(r)-I(a),
+ \qquad x,y>0.
+\end{equation}
+The associated velocity is
+\begin{equation}\label{a58:eg:low:velocity}
+ \dot x=2r-1,\qquad \dot y=a-r.
+\end{equation}
+
+\begin{lemma}[A macroscopic block estimate]\label{a58:eg:low:local}
+Let \(m=nx+o(n)\), \(h=ny+o(n)\), and \(L\le m\), where \(x,y>0\).
+Fix \(r,a\in(0,1)\). For \(b=\delta n+O(1)\), with \(\delta>0\)
+sufficiently small relative to \(x,y\), there is a family of
+length-\(b\) paths whose endpoint increments satisfy
+\[
+ \Delta m=b(2r-1)+O(1),\qquad
+ \Delta h=b(a-r)+O(b^{2/3}),
+\]
+all ending with \(L'\le m'\), and whose cardinality \(Q_n\) obeys
+\begin{equation}\label{a58:eg:low:local-count}
+ \frac1n\log Q_n-\delta\log n
+ \ge \delta{\cal L}(x,y;r,a)
+ -C\delta^2\left(\frac1x+\frac1y\right)+o(1).
+\end{equation}
+The constant can be chosen uniformly when the displayed parameters
+range over fixed positive-coordinate and interior-control compact sets.
+\end{lemma}
+
+\begin{proof}
+Take \(p=rb+O(1)\), \(q=b-p\), and select \(k\) from
+Lemma~\ref{a58:eg:low:eulerian-bins} with \(N=b-2\) and mean \(a\).
+Then \(k=ab+O(b^{2/3})\).
+Lemmas~\ref{a58:eg:low:buffer} and \eqref{a58:eg:low:ordinary-eulerian} give
+\[
+ Q_n\ge A(b-2,k)\binom{m-b}{q}\binom{h-2b}{p}.
+\]
+When the block is small relative to the coordinates, the elementary
+estimate
+\[
+ \log\binom Mj=j\log M-\log(j!)+O(j^2/M)
+\]
+is uniform for the binomials in this expression.
+The buffers contribute additional errors of the same orders
+\(O(b^2/(nx))\) and \(O(b^2/(ny))\).
+Also
+\[
+ \log A(b-2,k)\ge \log(b!)-bI(a)+o(b),
+\]
+since replacing \((b-2)!\) by \(b!\) costs only \(O(\log b)\).
+Finally,
+\(\log(b!)-\log(p!)-\log(q!)=b{\cal H}(r)+o(b)\).
+Combining these estimates proves \eqref{a58:eg:low:local-count}.
+The endpoint formula follows from \eqref{a58:eg:low:drifts}.
+\end{proof}
+
+In this lemma \(p-q\) or \(k+1-p\) may be negative. This is necessary:
+the optimizing path will have negative singleton drift near its endpoint.
+Positive drifts are needed only for the repeated prefix construction
+that follows.
+
+\subsection{A prefix construction at the origin}
+
+\begin{lemma}[Fixed regenerative blocks]\label{a58:eg:low:fixed}
+Fix \(p+q=B\), \(p,q\ge1\), and \(k\) for which
+\[
+ d=p-q>0,\qquad e=k+1-p>0,\qquad E_B(q,k)>0.
+\]
+There is a finite seed length \(N_0\), and families of compact paths
+of lengths \(N_0+Bj\), all with the same \(m,h\) endpoint coordinates,
+such that
+\[
+ m=m_0+jd,\qquad h=h_0+je,\qquad L\le m,
+\]
+and
+\begin{equation}\label{a58:eg:low:fixed-rate}
+ \log P_j\ge \log((N_0+Bj)!)
+ +(N_0+Bj)\log\kappa_B+o(j),
+\end{equation}
+where
+\begin{equation}\label{a58:eg:low:kappa}
+ \kappa_B=\frac1B
+ \left(\frac{d^q e^p E_B(q,k)}{p!\,q!}\right)^{1/B}.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+A finite seed with both \(m,h\) arbitrarily large and \(L\le m\)
+is available from the initial state. Starting with \(L\le m\), make
+three new choices, each at the current singleton threshold, and then
+two repeat choices at \(0\). The three new choices ascend; the first
+repeat does not and the second does. This five-step path changes
+\((m,h)\) to \((m+1,h+1)\) and ends with \(L=0\).
+Repeat it finitely often.
+
+Choose the seed large enough for Lemma~\ref{a58:eg:low:buffer} and repeat the
+length-\(B\) block. At block \(j\), its number of choices is at least
+\[
+ E_B(q,k)\binom{m_0+jd-B}{q}
+             \binom{h_0+je-2B}{p}
+ =Cj^B(1+O(j^{-1})),
+\]
+where \(C=d^qe^pE_B(q,k)/(p!\,q!)\).
+Multiplication yields
+\[
+ \log P_j\ge B\log(j!)+j\log C+O(\log j).
+\]
+Stirling's formula converts this to \eqref{a58:eg:low:fixed-rate}.
+The endpoint coordinates are fixed by the prescribed drift in each
+block; only \(L\) may vary.
+\end{proof}
+
+\begin{lemma}[Approximating a positive linear prefix]\label{a58:eg:low:prefix}
+Let \(\alpha,\beta>0\) and \(\alpha+2\beta<1\).
+Set \(r=(1+\alpha)/2\) and \(a=r+\beta\).
+There is a sequence of fixed regenerative blocks such that
+\[
+ \frac dB\longrightarrow\alpha,\qquad
+ \frac eB\longrightarrow\beta,\qquad
+ \liminf_{B\to\infty}\log\kappa_B
+ \ge {\cal L}(\alpha,\beta;r,a).
+\]
+\end{lemma}
+
+\begin{proof}
+Take \(p=rB+O(1)\), \(q=B-p\), and use the selectable Eulerian bin
+of mean \(a\) at size \(B-2\). Then
+\[
+ d/B\to 2r-1=\alpha,\qquad e/B\to a-r=\beta,
+\]
+so \(d,e>0\) for large \(B\).
+Use \(E_B(q,k)\ge A(B-2,k)\) in \eqref{a58:eg:low:kappa}.
+Lemma~\ref{a58:eg:low:eulerian-bins} and Stirling's formula give
+\[
+ \liminf\log\kappa_B
+ \ge (1-r)\log\alpha+r\log\beta+{\cal H}(r)-I(a),
+\]
+as required. No rationality condition on \(\alpha,\beta\) is needed.
+\end{proof}
+
+\subsection{Concatenating finitely many blocks}
+
+\begin{proposition}[Constructive action lower bound]\label{a58:eg:low:action-bound}
+Let \(Z(\tau)=(x(\tau),y(\tau))\), \(0\le\tau\le1\), be a
+continuous, piecewise continuously differentiable path.
+Suppose that for some \(\varepsilon>0\),
+\[
+ Z(\tau)=(\alpha\tau,\beta\tau),\quad 0\le\tau\le\varepsilon,
+ \qquad
+ \alpha,\beta>0,\quad \alpha+2\beta<1.
+\]
+On \([\varepsilon,1]\), suppose \(x,y\) are positive and the
+controls
+\[
+ r=(1+\dot x)/2,\qquad a=\dot y+r
+\]
+remain in a compact subinterval of \((0,1)\).
+Then
+\begin{equation}\label{a58:eg:low:action-ineq}
+ \liminf_{n\to\infty}\frac1n\log\frac{c_n}{n!}
+ \ge 1+\int_0^1{\cal L}(x,y;r,a)\,\egdd\tau.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+We give the order of the finite approximations explicitly.
+First choose a fixed prefix block from Lemma~\ref{a58:eg:low:prefix}.
+Write its actual slopes as \(\alpha_B=d/B,\beta_B=e/B\).
+Repeat it, after its finite seed, to a length \(N\le\varepsilon n\)
+within \(B+O(1)\) of \(\varepsilon n\).
+By \eqref{a58:eg:low:fixed-rate}, its logarithmic contribution after removing
+\(N\log n\), and dividing by \(n\), is at least
+\begin{equation}\label{a58:eg:low:prefix-action}
+ \varepsilon\log\varepsilon-\varepsilon
+ +\varepsilon\log\kappa_B+o(1).
+\end{equation}
+Its scaled endpoint tends to
+\((\alpha_B\varepsilon,\beta_B\varepsilon)\).
+
+Translate the later desired path by the constant vector
+\[
+ \varepsilon(\alpha_B-\alpha,\beta_B-\beta),
+\]
+retaining its later velocities. For sufficiently large fixed \(B\),
+the translated path has positive coordinates on \([\varepsilon,1]\).
+Its later action approaches the desired one by continuity on this
+positive-coordinate compact region. Exact matching of irrational
+endpoint slopes is therefore unnecessary.
+
+Next fix a finite partition of \([\varepsilon,1]\) with sufficiently
+small mesh. For each interval, take its averaged controls \(r,a\).
+Their nominal increments agree with the endpoint increments of the
+translated path. Use a block whose length is the integer part of the
+interval length times \(n\), and apply Lemma~\ref{a58:eg:low:local}.
+The fixed choices of \(p,q,k\) give exactly the same \(m,h\) at the
+end of that block for every path counted; only \(L\) varies.
+All these endpoints satisfy \(L\le m\), and the next block count
+is uniform over those \(L\).
+
+For the fixed partition, the rounding errors in \(m\) are \(O(1)\)
+per block, and the selected-bin errors in \(h\) are \(O(n^{2/3})\)
+per block. Thus the actual scaled block endpoints approach the
+prescribed partition endpoints as \(n\to\infty\).
+The uniform count bounds can consequently be multiplied.
+The sum of the buffer errors in \eqref{a58:eg:low:local-count} is bounded
+by a constant times the mesh, since both coordinates are bounded
+away from zero on this interval.
+After letting \(n\to\infty\), refine the finite partition.
+The sums with averaged controls converge to the later action integral.
+
+Now let the fixed prefix block approximate \((\alpha,\beta)\) and its
+rate as closely as desired. The limit of \eqref{a58:eg:low:prefix-action}
+is bounded below by
+\[
+ \varepsilon\log\varepsilon-\varepsilon
+ +\varepsilon{\cal L}(\alpha,\beta;r,a)
+ =\int_0^\varepsilon
+    {\cal L}(\alpha\tau,\beta\tau;r,a)\,\egdd\tau.
+\]
+These are nested limits: each prefix block and each later partition
+is fixed while \(n\) tends to infinity.
+
+All block lengths were rounded downward. Fill the bounded remaining
+length only at the final endpoint, by deterministic new-maximum
+extensions. Such extensions preserve \(000\)-avoidance and give an
+injective extension of the counted paths. No filler is inserted
+between blocks, where it could violate the required \(L\le m\)
+condition. For fixed prefix block and partition, the final residual
+is bounded independently of \(n\), so its cost is \(o(n)\) on the
+logarithmic scale.
+
+The construction gives
+\[
+ \log c_n\ge n\log n+
+ n\int_0^1{\cal L}(x,y;r,a)\,\egdd\tau-o(n),
+\]
+with an arbitrarily small additional rate error from the finite
+approximations. Subtracting
+\(\log(n!)=n\log n-n+o(n)\) proves \eqref{a58:eg:low:action-ineq}.
+\end{proof}
+
+\subsection{An explicit path attaining the calibrated action}
+
+Retain the calibration functions
+\[
+ g(t)=\frac{\log t}{t-1},\qquad
+ J(s)=\int_s^\infty g\!\left(\frac{u^2+1}{2}\right)\,\egdd u,
+ \qquad g(1)=1,
+\]
+and define one further integral
+\begin{equation}\label{a58:eg:low:K}
+ K(s)=\int_s^\infty
+          g'\!\left(\frac{u^2+1}{2}\right)\,\egdd u.
+\end{equation}
+On the curve \(t=(s^2+1)/2\), \(s\ge1\), set
+\begin{equation}\label{a58:eg:low:path}
+ \tau=\muval J(s),\qquad
+ x=\muval s\{g(t)+sK(s)\},\qquad
+ y=-\muval tK(s).
+\end{equation}
+Since \(J(1)=3\pi^2/8=\muval^{-1}\), time runs from \(0\) to \(1\)
+as \(s\) decreases from infinity to \(1\). Differentiation gives
+\begin{equation}\label{a58:eg:low:time-derivatives}
+ \frac{\egdd\tau}{\egdd s}=-\muval g(t),\qquad
+ \dot s=-\frac1{\muval g(t)},\qquad \dot t=s\dot s.
+\end{equation}
+
+The derivative \(g'\) is negative on \((0,\infty)\).
+Thus \(K<0\), and integration by parts gives
+\begin{align}
+ g(t)&=\int_s^\infty
+      u\left[-g'\!\left(\frac{u^2+1}{2}\right)\right]\,\egdd u,
+      \label{a58:eg:low:g-integral}\\
+ g(t)+sK(s)&=\int_s^\infty
+      (u-s)\left[-g'\!\left(\frac{u^2+1}{2}\right)\right]\,\egdd u>0.
+      \label{a58:eg:low:positive-x}
+\end{align}
+Both coordinates in \eqref{a58:eg:low:path} are therefore positive.
+
+Define controls along this path by
+\begin{equation}\label{a58:eg:low:path-controls}
+ r=-\frac{sK(s)}{g(t)},\qquad
+ a=\frac{t}{t-1}-\frac1{\log t},
+\end{equation}
+with \(a=1/2\) at \(t=1\).
+Equation~\eqref{a58:eg:low:g-integral} shows \(0<r<1\).
+The second control is the mean of a uniform variable tilted by
+\(\log t\), so \(1/2\le a<1\).
+Since \(K'(s)=-g'(t)\), direct differentiation of
+\eqref{a58:eg:low:path} yields
+\begin{equation}\label{a58:eg:low:path-drifts}
+ \dot x=-1-\frac{2sK}{g}=2r-1,\qquad
+ \dot y=\frac{sK-tg'}{g}=a-r.
+\end{equation}
+Thus these are exactly admissible local drifts. Also
+\begin{equation}\label{a58:eg:low:slack}
+ \frac{\egdd}{\egdd\tau}(x+2y)=2a-1\in[0,1).
+\end{equation}
+
+For completeness, the relation between the local rate and the
+positive transfer symbol is an elementary minimization identity:
+\begin{equation}\label{a58:eg:low:legendre}
+ {\cal L}(x,y;r,a)=
+ \inf_{u,v>0}
+ \left\{\log\rho(x,y;u,v)
+ -(2r-1)\log u-(a-r)\log v\right\},
+\end{equation}
+where
+\[
+ \rho(x,y;u,v)=\frac{v-1}{\log v}
+                  \left(\frac xu+\frac{uy}{v}\right).
+\]
+Indeed, first minimize in \(u\). The minimizing fraction of the
+second summand is \(r\), equivalently
+\(u^2=rxv/((1-r)y)\). The remaining expression is
+\[
+ (1-r)\log x+r\log y+{\cal H}(r)
+ +\log M(\log v)-a\log v.
+\]
+Minimizing in \(v\) gives \(-I(a)\), proving
+\eqref{a58:eg:low:legendre}.
+
+For the path \eqref{a58:eg:low:path}, the minimizing marks are exactly
+\((u,v)=(s,t)\). In fact
+\begin{equation}\label{a58:eg:low:constant-symbol}
+ \frac xs+\frac{sy}{t}=\muval g(t),\qquad
+ \rho(x,y;s,t)=\muval,\qquad
+ \frac{sy/t}{x/s+sy/t}=-\frac{sK}{g}=r,
+\end{equation}
+and the tilted uniform mean is \(a\).
+Let \(\theta=(\log s,\log t)\). Equations
+\eqref{a58:eg:low:time-derivatives} and \eqref{a58:eg:low:constant-symbol} imply
+\begin{equation}\label{a58:eg:low:boundary-identity}
+ x\dot\theta_1+y\dot\theta_2=-1.
+\end{equation}
+Consequently
+\[
+ {\cal L}(x,y;r,a)
+ =\log\muval-\theta\cdot(\dot x,\dot y).
+\]
+Integrating by parts on \([\varepsilon,1]\), and using
+\(\theta(1)=(0,0)\), gives the exact identity
+\begin{equation}\label{a58:eg:low:action-value}
+ \int_\varepsilon^1{\cal L}(x,y;r,a)\,\egdd\tau
+ =(1-\varepsilon)(\log\muval-1)
+  +\theta(\varepsilon)\cdot Z(\varepsilon).
+\end{equation}
+
+\subsection{The initial endpoint and completion of the proof}
+
+The elementary large-\(s\) expansions needed at the initial endpoint are
+\begin{align}
+ J(s)&=\frac{4\log s+4-2\log2}{s}
+       +O\!\left(\frac{\log s}{s^3}\right), \label{a58:eg:low:J-asympt}\\
+ K(s)&=\frac{-\frac83\log s+\frac49+\frac43\log2}{s^3}
+       +O\!\left(\frac{\log s}{s^5}\right). \label{a58:eg:low:K-asympt}
+\end{align}
+They follow by expanding \(g((s^2+1)/2)\) and
+\(g'((s^2+1)/2)\), and integrating the resulting powers and logarithms.
+In particular, \eqref{a58:eg:low:path} gives
+\begin{equation}\label{a58:eg:low:initial-ratios}
+ \frac{x(\tau)}{\tau}\longrightarrow\frac13,\qquad
+ \frac{y(\tau)}{\tau}\longrightarrow\frac13,\qquad
+ \theta(\tau)\cdot Z(\tau)\longrightarrow0
+ \quad(\tau\downarrow0).
+\end{equation}
+The last assertion also follows from
+\(Z(\tau)=O(\tau)\) and \(\theta(\tau)=O(\log(1/\tau))\).
+
+For fixed small \(\varepsilon>0\), replace the initial part of the
+characteristic by the straight line from the origin to
+\(Z(\varepsilon)\). Its slopes are
+\[
+ \alpha_\varepsilon=\frac{x(\varepsilon)}{\varepsilon},
+ \qquad
+ \beta_\varepsilon=\frac{y(\varepsilon)}{\varepsilon}.
+\]
+They are positive, and \eqref{a58:eg:low:slack} implies
+\(\alpha_\varepsilon+2\beta_\varepsilon<1\).
+Thus this line is covered by the prefix construction.
+Its controls are
+\[
+ r_\varepsilon=\frac{1+\alpha_\varepsilon}{2},
+ \qquad a_\varepsilon=r_\varepsilon+\beta_\varepsilon.
+\]
+The only possibly unbounded part of its constant local rate is
+\(I(a_\varepsilon)\), because
+\(\alpha_\varepsilon,\beta_\varepsilon\to1/3\),
+\(r_\varepsilon\to2/3\), and \(a_\varepsilon\to1\).
+
+To control this term, note the exact identity
+\[
+ x+2y=\muval\{s g(t)-K(s)\}.
+\]
+Together with \eqref{a58:eg:low:J-asympt}--\eqref{a58:eg:low:K-asympt}, it gives
+\begin{equation}\label{a58:eg:low:line-gap}
+ 1-a_\varepsilon
+ =\frac12\left(1-\frac{x(\varepsilon)+2y(\varepsilon)}
+                         {\varepsilon}\right)
+ \sim\frac1{2\log s},
+ \qquad \varepsilon=\muval J(s)\downarrow0.
+\end{equation}
+There is a simple bound for the rate function:
+\begin{equation}\label{a58:eg:low:I-bound}
+ I(a)\le \log\frac1{1-a},\qquad \frac12\le a<1.
+\end{equation}
+For \(\lambda\ge0\), the inequality \(e^\lambda\ge1+\lambda\)
+implies \(M(\lambda)\ge e^\lambda/(1+\lambda)\), whence
+\[
+ \lambda a-\log M(\lambda)
+ \le-\lambda(1-a)+\log(1+\lambda)
+ \le\log\frac1{1-a}.
+\]
+For \(\lambda\le0\), Jensen's inequality gives
+\(\log M(\lambda)\ge\lambda/2\), so the expression is at most
+\(\lambda(a-1/2)\le0\). This proves \eqref{a58:eg:low:I-bound}.
+Therefore \(I(a_\varepsilon)=O(\log\log s)\).
+
+The action of the initial straight line is
+\begin{align*}
+ &\int_0^\varepsilon
+ {\cal L}(\alpha_\varepsilon\tau,\beta_\varepsilon\tau;
+                    r_\varepsilon,a_\varepsilon)\,\egdd\tau\\
+ &\hspace{1cm}=
+ \varepsilon\log\varepsilon-\varepsilon+
+ \varepsilon{\cal L}(\alpha_\varepsilon,\beta_\varepsilon;
+                    r_\varepsilon,a_\varepsilon)
+ \longrightarrow0.
+\end{align*}
+Indeed, \(\varepsilon\log\varepsilon\to0\), the bounded terms are
+multiplied by \(\varepsilon\), and
+\(\varepsilon I(a_\varepsilon)\to0\) by
+\eqref{a58:eg:low:J-asympt}, \eqref{a58:eg:low:line-gap}, and \eqref{a58:eg:low:I-bound}.
+
+Apply Proposition~\ref{a58:eg:low:action-bound} to this line followed by the
+characteristic on \([\varepsilon,1]\).
+All coordinates are positive and all controls remain strictly interior
+on the latter fixed interval. Equations
+\eqref{a58:eg:low:action-value} and \eqref{a58:eg:low:initial-ratios}, followed by
+\(\varepsilon\downarrow0\), give
+\[
+ \liminf_{n\to\infty}\frac1n\log\frac{c_n}{n!}
+ \ge 1+(\log\muval-1)=\log\muval.
+\]
+This proves Theorem~\ref{a58:eg:low:theorem}.
+
+\begin{remark}\label{a58:eg:low:scope}
+The lower construction and the independent upper bound determine the
+factorial-normalized exponential rate. Section~\ref{a58:eg:sec:ratio} supplies a separate argument for the consecutive-ratio limit. An amplitude, a power-law factor, and a logarithmic-square correction still require smaller-scale estimates.
+\end{remark}
+
+\section{Endpoint concentration and the ratio limit}\label{a58:eg:sec:ratio}
+The root limit can be strengthened by a weighted version of the upper bound. In particular, no log-concavity assumption is needed.
+\begin{theorem}\label{a58:eg:rat:ratio}
+The consecutive ratios satisfy
+\[
+ \lim_{n\to\infty}\frac{c_{n+1}}{(n+1)c_n}
+ =\muval=\frac{8}{3\pi^2}.
+\]
+\end{theorem}
+
+\begin{writenote}[5 October 2026, batch 102]
+A second proof of the ratio limit of Part~\ref{a58:part:rt}, Theorem~\ref{a58:rt:thm:main}, which has the rate $O(n^{-1/4}(\log n)^{3/4})$; this Part gives no rate. As the \textbf{[write]} note in Part~\ref{a58:part:fd}'s Section~\ref{a58:fd:sec:verification} explains, the qualitative limit also follows from the root limit and Part~\ref{a58:part:rt}'s exact inequality $R_{n+1}\ge R_n-1$. The method here, a weighted upper bound and the exact identity \eqref{a58:eg:rat:exactextension}, is different. It is the case $r=2$ of Theorem~17.1 of \file{a294220-ascent-multiplicity-caps}, where the same argument gives the ratio limit for every fixed cap.
+\end{writenote}
+We prove a little more: the terminal compact coordinates, divided by the length, concentrate exponentially at explicit constants. The weighted upper bound below, together with the unweighted root limit, is enough for this conclusion; a weighted lower bound is unnecessary.
+
+\subsection{A finite bound for marks below one}
+Let
+\[
+ H_n(s,t)=\sum_{\text{length-}n\text{ compact paths}}s^m t^h,
+ \qquad s,t>0.
+\]
+Thus $H_n(1,1)=c_n$. To obtain both tails of an endpoint statistic we need marks smaller than one, so the domination in Section~\ref{a58:eg:sec:upper} must be extended.
+
+Put $F(v)=(v-1)/\log v$, continuously extended by $F(1)=1$. Given nonnegative weights $w_0,\ldots,w_D$, not all zero, write $W=\sum_z w_z$ and $w_*=\max_z w_z$, and define
+\[
+ K_\ge(L,z)=w_zv^{\ind{z\ge L}},\qquad
+ K_>(L,z)=w_zv^{\ind{z>L}}.
+\]
+\begin{lemma}\label{a58:eg:rat:finite}
+Use $K=K_\ge$ when $v\ge1$ and $K=K_>$ when $0<v<1$. There is a positive number $\Lambda$ such that, for every integer $b\ge1$,
+\begin{equation}\label{a58:eg:rat:finitebound}
+ K^b\mathbf1\le \max(v,v^{-1})\Lambda^b\mathbf1,
+ \qquad
+ \Lambda\le F(v)W+|v-1|w_*.
+\end{equation}
+\end{lemma}
+\begin{proof}
+For $v>1$ this is the finite bound from Section~\ref{a58:eg:sec:upper}, and for $v=1$ it follows from the common row sum $W$. Suppose $0<v<1$ and put $d=1-v$. There is a unique positive solution $\lambda$ of
+\begin{equation}\label{a58:eg:rat:productminus}
+ \prod_{z=0}^D\left(1+\frac{dw_z}{\lambda}\right)=\frac1v,
+\end{equation}
+since the product decreases continuously from infinity to one as $\lambda$ increases from zero to infinity. Define
+\[
+ f_0=1,\qquad f_{j+1}=(1+dw_j/\lambda)f_j.
+\]
+Then $f_{D+1}=1/v$ and $1\le f_j\le1/v$. Telescoping yields
+\[
+ \sum_{z=0}^D w_zf_z=\frac\lambda v.
+\]
+The row with index zero and the successive row differences consequently give $K_\ge f=\lambda f$.
+
+For $B=dW/\log(1/v)=F(v)W$, the inequality $\log(1+x)\le x$ gives
+\[
+ \sum_z\log(1+dw_z/B)\le dW/B=\log(1/v).
+\]
+The monotonicity of the product in~\eqref{a58:eg:rat:productminus} therefore gives $\lambda\le B$. Finally,
+\[
+ K_>=K_\ge+d\,\operatorname{diag}(w_0,\ldots,w_D),
+ \qquad K_>f\le(\lambda+dw_*)f.
+\]
+Set $\Lambda=\lambda+dw_*$. Positivity, $\mathbf1\le f$, and $f\le v^{-1}\mathbf1$ give
+$K_>^b\mathbf1\le\Lambda^bf\le v^{-1}\Lambda^b\mathbf1$, proving the assertion.
+\end{proof}
+
+For a block of $b$ steps starting at $(m,h,L)$, retain the padded intervals from Section~\ref{a58:eg:sec:upper}:
+\[
+ I_R=\{0,\ldots,m+b-1\},\qquad
+ I_N=\{\max(1,m-b+1),\ldots,m+h+2b\},
+\]
+and put $w_z=u^{-1}\ind{z\in I_R}+(u/v)\ind{z\in I_N}$ for arbitrary $u,v>0$. The weight of an exact block path is
+$u^{m_{\rm end}-m}v^{h_{\rm end}-h}$.
+For a repeat transition the ascent indicator is $\ind{z\ge L}$; for a new transition it is $\ind{z>L}$ because the output last-coordinate is $z=i+1$.
+When $v\ge1$, replacing the latter indicator by the former increases the weight. When $v<1$, replacing the former indicator by the latter increases the weight. Thus the appropriate matrix in Lemma~\ref{a58:eg:rat:finite} dominates every actual transition. The same backward induction over hidden coordinates as before proves
+\begin{equation}\label{a58:eg:rat:block}
+ \sum_{\text{block paths}}u^{m_{\rm end}-m}v^{h_{\rm end}-h}
+ \le\max(v,v^{-1})\Lambda^b.
+\end{equation}
+Since $|I_R|\le m+b$, $|I_N|\le h+3b$, and $w_*\le u^{-1}+u/v$, we obtain
+\begin{equation}\label{a58:eg:rat:lambdabound}
+ \Lambda\le n\rho(m/n,h/n;u,v)+C(b+1),\qquad
+ \rho(x,y;u,v)=F(v)(x/u+uy/v).
+\end{equation}
+The constant is uniform when $(u,v)$ ranges over a compact subset of $(0,\infty)^2$. In particular, the symbol~\eqref{a58:eg:eq:rho} remains valid below one; only the harmless finite error and the block prefactor change.
+
+\subsection{The upper bound with arbitrary terminal marks}
+Recall
+\begin{equation}\label{a58:eg:rat:chi}
+ g(t)=\frac{\log t}{t-1},\quad g(1)=1,\qquad
+ \chi(s,t)=\int_s^\infty g\left(\frac{r^2}{2}+t-\frac{s^2}{2}\right)\egdd r.
+\end{equation}
+For $s,t>0$, the integrand has positive argument at least $t$ and is $O(\log r/r^2)$ at infinity. Thus $\chi$ is positive, finite and continuously differentiable, with
+\begin{equation}\label{a58:eg:rat:chiderivative}
+ \chi_s+s\chi_t=-g(t),\qquad
+ \chi(1,1)=\frac1{\muval}=\frac{3\pi^2}{8}.
+\end{equation}
+Differentiation is justified locally uniformly by the integrable decay of $g'$ and its higher derivatives.
+\begin{proposition}\label{a58:eg:rat:weightedupper}
+For every fixed $s_0,t_0>0$,
+\begin{equation}\label{a58:eg:rat:weightedrate}
+ \limsup_{n\to\infty}\frac1n\log\frac{H_n(s_0,t_0)}{n!}
+ \le-\log\chi(s_0,t_0).
+\end{equation}
+\end{proposition}
+\begin{proof}
+Set $C_0=t_0-s_0^2/2$, $\nu=1/\chi(s_0,t_0)$, and define
+\[
+ J_{C_0}(s)=\int_s^\infty g(r^2/2+C_0)\egdd r,
+ \qquad \tau=\nu J_{C_0}(s(\tau)),\quad 0<\tau\le1.
+\]
+Take $t(\tau)=s(\tau)^2/2+C_0$ and
+$\theta(\tau)=(\log s(\tau),\log t(\tau))$.
+The marks satisfy $s(\tau)\ge s_0$ and $t(\tau)\ge t_0$, with terminal value
+$\theta(1)=(\log s_0,\log t_0)$. Direct differentiation gives
+\[
+ s'=-\frac1{\nu g(t)},\qquad
+ \theta'=\left(-\frac1{\nu s g(t)},-\frac{s}{\nu t g(t)}\right).
+\]
+Consequently, for every $x,y\ge0$,
+\begin{equation}\label{a58:eg:rat:calibration}
+ \rho(x,y;s(\tau),t(\tau))/\nu=-\theta'(\tau)\mathbin{\cdot}(x,y).
+\end{equation}
+On each $[\varepsilon,1]$ the marks lie in a fixed positive compact set and $\theta,\theta',\theta''$ are bounded. Moreover $J_{C_0}(s)=O(\log s/s)$, which gives $\theta(\varepsilon)=O(\log(1/\varepsilon))$ as $\varepsilon\downarrow0$.
+
+For completeness, take a block of $b$ steps starting at level $n\tau$, with initial coordinates $X=(m,h)$ and terminal coordinates $X'$. Write
+$\Delta\theta=\theta(\tau+b/n)-\theta(\tau)$. Each coordinate changes by at most $b$, so~\eqref{a58:eg:rat:block} yields
+\[
+ \sum_{\text{block paths}}\ee^{\theta(\tau+b/n)\cdot X'}
+ \le \ee^{\theta(\tau)\cdot X+\Delta\theta\cdot X+b\|\Delta\theta\|_1}
+       \max(t,t^{-1})\Lambda^b.
+\]
+Using $\log z\le z-1$ at $z=\Lambda/(n\nu)$, then~\eqref{a58:eg:rat:lambdabound} and~\eqref{a58:eg:rat:calibration}, gives
+\[
+ \Lambda^b\le(n\nu/\ee)^b
+ \exp\left(-\frac bn\theta'(\tau)\cdot X
+             +C_\varepsilon\frac{b(b+1)}n\right).
+\]
+The Taylor estimate
+$\Delta\theta=(b/n)\theta'(\tau)+O_\varepsilon((b/n)^2)$ cancels the linear state term. Since $\|X\|_1\le2n+1$, we obtain
+\begin{equation}\label{a58:eg:rat:oneblock}
+ \sum_{\text{block paths}}\ee^{\theta(\tau+b/n)\cdot X'}
+ \le\ee^{\theta(\tau)\cdot X}(n\nu/\ee)^b
+       \exp\bigl(C_\varepsilon[b^2/n+1]\bigr).
+\end{equation}
+No sign assumption on $\theta$ is used here.
+
+Starting at $k=\lceil\varepsilon n\rceil$, partition the remaining steps into a fixed finite number $J$ of blocks with $b_j/n\le\delta$. The terminal weight after iteration is exactly $s_0^m t_0^h$. Summing over prefixes, bounding their number by $k!$ and their weight by $\exp((k+1)\|\theta(k/n)\|_1)$, gives
+\[
+ H_n(s_0,t_0)\le
+ k!\exp((k+1)\|\theta(k/n)\|_1)
+ (n\nu/\ee)^{n-k}\exp(C_\varepsilon[n\delta+J]).
+\]
+Stirling's formula implies
+\[
+ \limsup_n\frac1n\log\frac{H_n(s_0,t_0)}{n!}
+ \le\varepsilon\log\varepsilon+(1-\varepsilon)\log\nu
+      +\varepsilon\|\theta(\varepsilon)\|_1+C_\varepsilon\delta.
+\]
+Let $\delta\downarrow0$ for fixed $\varepsilon$, then let $\varepsilon\downarrow0$. This proves~\eqref{a58:eg:rat:weightedrate}.
+\end{proof}
+
+\begin{writenote}[5 October 2026, batch 102]
+New here, and superseded for every cap: Theorem~22.1 of \file{a294220-ascent-multiplicity-caps} proves, at $r=2$ with the marks $(u_1,u_2)=(s,t)$, that $\lim_n n^{-1}\log(H_n(s,t)/n!)=-\log\chi(s,t)$ for all $s,t>0$, and that the limit is smooth; Theorem~22.2 there gives a full large-deviation principle for $(m/n,h/n)$.
+\end{writenote}
+
+\subsection{Concentration and the exact ratio identity}
+Let $\mathbb P_n$ be uniform on the $c_n$ compact paths, let $\mathbb E_n$ denote its expectation, and set $M=m+h$. Define
+\[
+ f(q)=-\log\chi(\ee^q,\ee^q).
+\]
+By~\eqref{a58:eg:rat:chiderivative},
+\begin{equation}\label{a58:eg:rat:fprime}
+ f(0)=\log\muval,\qquad
+ f'(0)=-\frac{\chi_s(1,1)+\chi_t(1,1)}{\chi(1,1)}=\muval.
+\end{equation}
+Proposition~\ref{a58:eg:rat:weightedupper} and Theorem~\ref{a58:eg:thm:main} give
+\begin{equation}\label{a58:eg:rat:mgf}
+ \limsup_n\frac1n\log\mathbb E_n\ee^{qM}
+ =\limsup_n\frac1n\log\frac{H_n(\ee^q,\ee^q)}{c_n}
+ \le f(q)-f(0).
+\end{equation}
+For any $\eta>0$, choose $q>0$ small enough that
+$f(q)-f(0)-q(\muval+\eta)<0$. Markov's inequality then implies
+\[
+ \limsup_n\frac1n\log\mathbb P_n(M/n\ge\muval+\eta)<0.
+\]
+Similarly, choose $q<0$ close enough to zero that
+$f(q)-f(0)-q(\muval-\eta)<0$. On the lower-tail event,
+$\ee^{qM}\ge\ee^{qn(\muval-\eta)}$, and Markov's inequality yields
+\[
+ \limsup_n\frac1n\log\mathbb P_n(M/n\le\muval-\eta)<0.
+\]
+Thus $M/n\to\muval$ in probability, with exponentially small fixed-size deviations. Since $M/n\le2+1/n$, it follows that
+$\mathbb E_n(M/n)\to\muval$.
+
+Finally, the exact transitions~\eqref{a58:eg:eq:repeat}--\eqref{a58:eg:eq:new} give $m+h$ possible one-step extensions from every terminal state. Hence
+\begin{equation}\label{a58:eg:rat:exactextension}
+ c_{n+1}=\sum_{\text{length-}n\text{ paths}}(m+h),\qquad
+ \frac{c_{n+1}}{(n+1)c_n}
+ =\frac n{n+1}\mathbb E_n\left(\frac{m+h}n\right)\longrightarrow\muval.
+\end{equation}
+This proves Theorem~\ref{a58:eg:rat:ratio} without drawing a ratio conclusion from the root limit alone.
+
+\subsection{Explicit terminal proportions}
+Using the two terminal marks separately gives a further consequence.
+\begin{corollary}\label{a58:eg:rat:joint}
+Under the uniform length-$n$ compact-path distribution,
+\[
+ \frac mn\longrightarrow 1-\frac8{3\pi},\qquad
+ \frac hn\longrightarrow\frac{8(\pi+1)}{3\pi^2}-1
+\]
+in probability and in mean. For every fixed positive deviation from either displayed constant, the corresponding tail probability decreases exponentially in $n$.
+\end{corollary}
+\begin{proof}
+Apply the preceding two-sided Chernoff argument to each coordinate, using
+$F(p,q)=-\log\chi(\ee^p,\ee^q)$. Its gradient at zero is
+\[
+ (-\muval\chi_s(1,1),-\muval\chi_t(1,1))
+ =(\muval(1+K),-\muval K),\quad
+ K=\int_1^\infty g'((r^2+1)/2)\egdd r.
+\]
+To evaluate $K$, put $\ell(r)=\log((r^2+1)/2)$ and
+$B(r)=2r\ell(r)/(r^2-1)$. Direct differentiation gives
+\[
+ g'((r^2+1)/2)=B'(r)+g((r^2+1)/2)-\frac4{r^2+1}.
+\]
+Since $B(1+)=1$ and $B(\infty)=0$,
+\[
+ K=-1+\chi(1,1)-\pi=\frac{3\pi^2}8-\pi-1.
+\]
+Substitution yields the stated constants.
+\end{proof}
+
+The structural refinement proved in Section~\ref{a58:eg:sec:kernel} transfers these statements to uniformly chosen original words. If $D_n$ is their number of distinct values and $A_n$ their ascent count, then~\eqref{a58:eg:eq:stats} gives
+\begin{equation}\label{a58:eg:rat:originalstats}
+ \frac{D_n}{n}\longrightarrow1-\frac4{3\pi},\qquad
+ \frac{A_n}{n}\longrightarrow\frac4{3\pi}+\frac8{3\pi^2},
+\end{equation}
+in probability and mean, again with exponentially small fixed-deviation tails. The singleton proportion is the first limit in Corollary~\ref{a58:eg:rat:joint}. These follow by linear combinations and a union bound; no further probabilistic limit theorem is needed.
+
+\begin{writenote}[5 October 2026, batch 102]
+New in the repository: Parts~\ref{a58:part:fd}--\ref{a58:part:rt} have no statement on the shape of a typical word. Theorem~17.2 of \file{a294220-ascent-multiplicity-caps} proves the same laws for every cap $r$, with constants $b_j$ given by integrals; at $r=2$ its $b_1$ and $b_2$ are the two limits of Corollary~\ref{a58:eg:rat:joint}, which therefore evaluate those integrals in closed form (the note after that theorem there). Numerically, $1-8/(3\pi)=0.151174$, $8(\pi+1)/(3\pi^2)-1=0.119016$, $1-4/(3\pi)=0.575587$ and $4/(3\pi)+8/(3\pi^2)=0.694603$; 30-digit quadratures of the integrals agree (checked at the write). \emph{Tempting false reading:} $m/n$ here is the proportion of values used once; Part~\ref{a58:part:fn}'s $M_n=\E_n[m]$ (its $m$ is this Part's $m+h$) equals $a_{n+1}/a_n$, which is \eqref{a58:eg:rat:exactextension}.
+\end{writenote}
+
+\begin{remark}\label{a58:eg:rat:scope}
+The argument does not establish a convergence rate for the consecutive ratios, a variance scale, an amplitude, or the logarithmic-square correction considered below. Those questions require smaller-scale estimates than the fixed-deviation concentration proved here.
+\end{remark}
+
+\section{Monotonicity and inversion}\label{a58:eg:sec:inverse}
+\begin{lemma}\label{a58:eg:lem:monotonicity}
+One has $c_{n+1}>c_n$ for every $n\ge1$.
+\end{lemma}
+\begin{proof}
+The maximum of an ascent sequence is at most its total number of ascents. This follows inductively: a new maximum is necessarily reached by an ascent, and its value is at most one plus the previous ascent count. If a word has maximum $M$, append the fresh value $M+1$. The ascent bound permits it, and it cannot create a third occurrence of any value. Removing the last entry recovers the original word, so this is an injection $\cA_n\to\cA_{n+1}$. Its image ends in a positive new maximum. The valid word
+\[
+ 0,1,\ldots,n-1,0
+\]
+of length $n+1$ ends in zero, and is outside the image. For $n=1$ this word is $00$. Thus the inequality is strict. The equality $c_0=c_1=1$ is the only initial tie relevant here.
+\end{proof}
+
+For real $y>1$ define the threshold
+\[
+ N(y)=\min\{n\ge0:c_n\ge y\},\qquad Y=\log y.
+\]
+Let $W_0$ denote the positive real branch of Lambert's function, characterized by $W_0(z)\ee^{W_0(z)}=z$ for $z>0$.
+\begin{corollary}\label{a58:eg:cor:inverse}
+As $y\to\infty$,
+\begin{equation}\label{a58:eg:eq:inverseW}
+ N(y)=\frac{Y}{W_0(\muval Y/\ee)}
+      +o\left(\frac{Y}{(\log Y)^2}\right).
+\end{equation}
+Equivalently,
+\begin{equation}\label{a58:eg:eq:inversetwo}
+ N(y)=\frac{Y}{\log Y}
+ +\frac{Y(\log\log Y+1-\log\muval)}{(\log Y)^2}
+ +o\left(\frac{Y}{(\log Y)^2}\right).
+\end{equation}
+\end{corollary}
+\begin{proof}
+Set
+\[
+ F(x)=x\log(\muval x/\ee).
+\]
+Theorem~\ref{a58:eg:thm:main} and Stirling's formula give $\log c_n=F(n)+o(n)$. If $N=N(y)$, the threshold inequalities
+\[
+ \log c_{N-1}<Y\le\log c_N
+\]
+and $F(N)-F(N-1)=O(\log N)$ imply
+\begin{equation}\label{a58:eg:eq:thresholdresidual}
+ Y=F(N)+o(N).
+\end{equation}
+This does not require a coefficient-ratio estimate. It follows first that $N\sim Y/\log Y$.
+
+The positive solution $\nu$ of $F(\nu)=Y$ is exactly
+\[
+ \nu=Y/W_0(\muval Y/\ee).
+\]
+Indeed, writing $w=W_0(\muval Y/\ee)$ gives $\muval\nu/\ee=\ee^w$ and $\nu w=Y$. Also $\nu\sim Y/\log Y$, so $N/\nu\to1$. On the interval between them,
+\[
+ F'(x)=\log(\muval x)\sim\log Y.
+\]
+The mean value theorem applied to~\eqref{a58:eg:eq:thresholdresidual} now gives
+\[
+ N-\nu=o(N/\log Y)=o(Y/(\log Y)^2),
+\]
+proving~\eqref{a58:eg:eq:inverseW}. Finally,
+\[
+ W_0(\muval Y/\ee)
+ =\log Y-\log\log Y+\log\muval-1
+   +O\left(\frac{\log\log Y}{\log Y}\right).
+\]
+Expanding the reciprocal yields~\eqref{a58:eg:eq:inversetwo}; its next explicit error is
+$O(Y(\log\log Y)^2/(\log Y)^3)$, which is smaller than the error already allowed in~\eqref{a58:eg:eq:inverseW}.
+\end{proof}
+
+\begin{remark}
+The factor in the Lambert argument is $\muval Y/\ee$. It follows directly from $F(x)=x\log(\muval x/\ee)$; replacing it by $Y/(\ee\muval)$ would change the second term incorrectly. The error in~\eqref{a58:eg:eq:inverseW} is generally much larger than one, so neither a floor nor a ceiling of the displayed approximation is justified as an exact threshold rule.
+\end{remark}
+
+\begin{writenote}[5 October 2026, batch 102]
+Lemma~\ref{a58:eg:lem:monotonicity} uses the injective extension by a new maximum of Part~\ref{a58:part:fd}, Section~\ref{a58:fd:sec:fulllimit}, and adds strictness. Corollary~\ref{a58:eg:cor:inverse} is weaker than the inverses of Parts~\ref{a58:part:fn} and~\ref{a58:part:rt}: with $Y$ here equal to their $y$, the logarithm of a count, its leading term $Y/W_0(\mu Y/\ee)$ is their $x=y/W(y/(eT))$, and they prove $x-O(\log x)\le N_a(y)\le x+O(\sqrt{x\log x})$ (Part~\ref{a58:part:rt}, \eqref{a58:rt:eq:maininverse}). The two-term form \eqref{a58:eg:eq:inversetwo} follows from either. Lemma~\ref{a58:eg:lem:monotonicity} and Corollary~\ref{a58:eg:cor:inverse} are the cases $r=2$ of Lemma~23.1 and Corollary~23.2 of \file{a294220-ascent-multiplicity-caps}.
+\end{writenote}
+
+\section{Formal subexponential analysis}\label{a58:eg:sec:formal}
+This section is exploratory. None of its formal matching steps is used in Theorem~\ref{a58:eg:thm:main} or Corollary~\ref{a58:eg:cor:inverse}.
+
+\subsection{The action suggested by the exact kernel}
+A factorial-over-power late-coefficient ansatz
+\[
+ H_n(s,t)\sim\Gamma(n+\beta)A(s,t)\chi(s,t)^{-n-\beta}
+\]
+in~\eqref{a58:eg:eq:kernel}, or an exponentially small homogeneous ansatz $A\exp(-\chi/x)$, leads formally to
+\[
+ \exp(-(t-1)\chi_s)=t\exp(s(t-1)\chi_t).
+\]
+Thus the leading action satisfies
+\begin{equation}\label{a58:eg:eq:eikonal}
+ \chi_s+s\chi_t=-g(t),\qquad g(t)=\log t/(t-1).
+\end{equation}
+The characteristics have $t-s^2/2$ constant. Selecting an endpoint at positive infinity gives the positive candidate
+\begin{equation}\label{a58:eg:eq:chi}
+ \chi(s,t)=\int_s^\infty g(u^2/2+t-s^2/2)\egdd u
+          =\int_0^\infty g(t+sv+v^2/2)\egdd v.
+\end{equation}
+At $(s,t)=(1,1)$ this is $J(1)=3\pi^2/8$. This calculation originally explains the constant analytically. Its validity as a dominant Borel singularity would require endpoint selection and dominance arguments; those are not consequences of the first-order equation alone. The finite positive proofs in Sections~\ref{a58:eg:sec:upper}--\ref{a58:eg:sec:lower} establish the root constant without making that analytic claim.
+
+\subsection{The first transport equation}
+Taylor expansion of the homogeneous kernel through the next order gives
+\begin{equation}\label{a58:eg:eq:transport}
+ D\log A=\frac{t-1}{2}(\chi_{ss}-s^2\chi_{tt}),
+ \qquad D=\partial_s+s\partial_t.
+\end{equation}
+Differentiating~\eqref{a58:eg:eq:eikonal} shows
+\[
+ \chi_{ss}-s^2\chi_{tt}=s g'(t)-\chi_t.
+\]
+With the candidate~\eqref{a58:eg:eq:chi}, and with $C=t-s^2/2$ fixed,
+\[
+ \chi_t=\int_s^\infty g'(u^2/2+C)\egdd u.
+\]
+As $s\to\infty$,
+\begin{equation}\label{a58:eg:eq:transportasymp}
+ D\log A=
+ \frac{-\frac43\log s+\frac89+\frac23\log2}{s}
+ +O\left(\frac{\log s}{s^3}\right),
+\end{equation}
+and therefore
+\begin{equation}\label{a58:eg:eq:amplitudedivergence}
+ \log A=-\frac23(\log s)^2
+ +\left(\frac89+\frac23\log2\right)\log s+O(1).
+\end{equation}
+The shifts in the kernel cease to be small relative to $s$ when $xs$ is of order one. A suitable match to that large-$s$ regime could turn~\eqref{a58:eg:eq:amplitudedivergence} into a factor
+\begin{equation}\label{a58:eg:eq:formalguess}
+ \exp\left(\frac23(\log n)^2+\text{lower-order terms}\right)
+\end{equation}
+in $c_n/(n!\muval^n)$. Equations~\eqref{a58:eg:eq:transportasymp}--\eqref{a58:eg:eq:amplitudedivergence} are an algebraically reproducible formal calculation; the matching interpretation~\eqref{a58:eg:eq:formalguess} is a hypothesis. It does not exclude additional logarithmic scales such as $\log n\log\log n$ without further analysis.
+
+\subsection{What is still needed}
+A complete asymptotic equivalent would require control of the singular large-state matching problem, including the relevant solution and a nonzero amplitude, as well as uniform errors sufficient to transfer from the exact recurrence to individual coefficients. The ratio limit in Section~\ref{a58:eg:sec:ratio} uses a separate concentration argument; it does not give a convergence rate or a coefficient equivalent. Higher formal transport equations can be generated by expanding~\eqref{a58:eg:eq:kernel}, but formal recurrence solvability is not an all-orders asymptotic theorem.
+
+The elementary exact Perron equation~\eqref{a58:eg:eq:product} offers another possible route to smaller-scale estimates. The block proof uses only its coarse upper bound and deliberately loses subexponential information. Retaining lattice corrections while transporting the eigenfunction between consecutive levels may help quantify the logarithmic-square scale. No such error analysis is claimed in this report.
+
+\begin{writenote}[5 October 2026, batch 102]
+Part~\ref{a58:part:ln} proves the coefficient $2/3$ of \eqref{a58:eg:eq:formalguess} in two weaker forms: $\limsup\log(c_n/(n!\mu^n))/(\log n)^2=2/3$ and $\log\sum_{j\le N}c_j/(j!\mu^j)\sim\frac23(\log N)^2$ (Theorem~\ref{a58:ln:thm:main}). The pointwise form is Part~\ref{a58:part:fn}'s Conjecture~\ref{a58:fn:conj:twothirds}, open in every Part. Part~\ref{a58:part:fn}'s Section~\ref{a58:fn:sec:formal} reaches $2/3$ by another formal route (a frozen kernel); this section, an eikonal and transport calculation on the catalytic equation \eqref{a58:eg:eq:kernel}, is a second one. Its unproved steps are listed in Section~\ref{a58:eg:sec:further}.
+\end{writenote}
+
+\section{Exact checks and numerical diagnostics}\label{a58:eg:sec:checks}
+\subsection{Independent coefficient verification}
+A direct implementation of \eqref{a58:eg:eq:repeat}--\eqref{a58:eg:eq:new} with GMP integers computed every coefficient $c_0,\ldots,c_{395}$ exactly. All 177 values in the Conway OEIS table, through $n=176$, agree exactly~\cite{ConwayData}. A separate enumeration of ordinary, uncompressed words verifies not just the counts but the complete joint distribution of $(m,h)$ through $n=9$. Symbolic expansion of the catalytic recurrence~\eqref{a58:eg:eq:polyrec} independently agrees through that range.
+
+The exact transfer can be implemented with two layers. For each fixed $(m,h)$, prefix sums over the old last-label coordinate separate $i\ge L$ from $i<L$, avoiding an extra loop over choices and old labels. The arithmetic-operation count is polynomial, with $O(n^4)$ operations and $O(n^3)$ stored state entries when generating all levels through $n$; these bounds do not suppress the increasing bit length of exact integers.
+
+The accompanying source package contains a readable GMP implementation, the exact coefficient file through 395, the downloaded OEIS comparison file, and a verification script. Running \texttt{run\_checks.sh 176} rebuilds and compares the full OEIS range. Running \texttt{run\_checks.sh 395} rebuilds the longer exact table. The default script also checks the direct-word marginals and the numerical comparisons described below. Numerical checks corroborate the exact identities; they are not used to prove the root-limit theorem.
+
+\subsection{A diagnostic for the smaller scale}
+Let
+\[
+ r_n=\frac{c_n}{nc_{n-1}},\qquad
+ g_n=n(r_n/\muval-1),\qquad
+ d_n=n(g_n-g_{n-1}).
+\]
+A sufficiently regular correction $\log(c_n/(n!\muval^n))=\frac23(\log n)^2+O(\log n)$ would suggest $d_n\to4/3$. The displayed values support that possibility, but neither the assumed regularity nor the limit follows from the root-limit theorem.
+\begin{center}
+\begin{tabular}{rrrr}
+\toprule
+$n$ & $r_n$ & $g_n$ & $d_n$\\
+\midrule
+100 & 0.292769838391 & 8.35709321 & 1.26428559 \\
+176 & 0.284123685039 & 9.07643257 & 1.28842891 \\
+200 & 0.282673922339 & 9.24098410 & 1.29266940 \\
+395 & 0.277115857257 & 10.12541288 & 1.30961808 \\
+600 & 0.274996425597 & 10.67383478 & 1.31644946 \\
+800 & 0.273922770329 & 11.05281388 & 1.32001434 \\
+1000 & 0.273255791809 & 11.34746205 & 1.32227147 \\
+1200 & 0.272799086131 & 11.58857749 & 1.32383858 \\
+\bottomrule
+\end{tabular}
+\end{center}
+Rows through 395 use exact integer coefficients before numerical evaluation. Larger rows come from a normalized positive-state transfer in long-double arithmetic. Two runs discarding state groups below $10^{-120}$ and $10^{-200}$ at each normalized layer produced identical displayed 20-digit ratios through $n=1200$. These are convergence checks, not interval-certified error bounds. Against the exact coefficients through 395, the floating ratios have maximum absolute discrepancy below $2\times10^{-17}$.
+
+Small state masses cannot be discarded casually: a threshold of $10^{-30}$ gives visibly incorrect later ratios because rare states can contribute much more strongly to future levels. The source package retains both stricter runs and their thresholds so this sensitivity is explicit. The positive implementation uses separate prefix and suffix sums, avoiding subtraction of nearly equal totals in the small-tail calculations.
+
+\begin{writenote}[5 October 2026, batch 102]
+In this repository the programs are shipped as \file{code/38-growth-*} and the data as \file{data/38-growth-*}; \file{data/38-growth-PROVENANCE.json} is the delivered provenance record. Not shipped: the manuscript (this Part), the delivered README, and \file{checks/oeis_b202058.txt}, which is byte-identical to Part~\ref{a58:part:fn}'s \file{data/36-fine-numerics-oeis-b202058.txt}. No PDF was delivered. The exact coefficients $c_0,\ldots,c_{395}$ agree row for row with Part~\ref{a58:part:fn}'s independent table \file{data/36-fine-numerics-exact-counts-400.txt} (checked at intake). The two normalized-transfer files are byte-identical, as their identical printed ratios imply; both are shipped because the verifier reads both names. At the write the delivered \file{compute_distribution.cpp} was compiled with \texttt{g++} and run on a copy to $n=400$: with cutoff $10^{-120}$ it reproduced rows $1$--$400$ of \file{data/38-growth-normalized_transfer_cut120.txt} byte for byte, and with cutoff $10^{-30}$ its ratio $c_n/(nc_{n-1})$ deviated from the exact value by $-4.7\times10^{-12}$ at $n=200$, $-3.3\times10^{-8}$ at $n=300$ and $-7.3\times10^{-6}$ at $n=395$, against less than $2\times10^{-17}$ for $10^{-120}$. This supports the warning above about the cutoff $10^{-30}$. The count of $O(n^4)$ operations and $O(n^3)$ stored entries, stated here without proof, is proved as Corollary~18.3 of \file{a294220-ascent-multiplicity-caps} at $r=2$. The diagnostic $d_n$ is related to, but not the same as, the column $c_n$ of Part~\ref{a58:part:fn}'s Table~\ref{a58:fn:tab:data}: Part~\ref{a58:part:fn}'s $g_n$ is $n$ times a difference of logarithms, this Part's $g_n$ is $n$ times a ratio minus one, and both columns are read as tending to $4/3$.
+\end{writenote}
+
+\paragraph{Interpretation.}
+The exact constant, the formal amplitude divergence, and the numerical diagnostics together make a logarithmic-square correction a concrete next problem. They do not establish~\eqref{a58:eg:eq:formalguess}. The stretched-exponential proposal in the 2022 paper and the hypothesis discussed here should both be distinguished from the proved exponential-rate statement.
+
+\section{Further questions and research (added at the write)}\label{a58:eg:sec:further}
+\begin{writenote}[5 October 2026, batch 102]
+Under the repository's standing rule every claim of Report~97 that it does not prove is listed here, with its source, its sketch and what is missing. No claim of Report~97 was found to be wrong.
+\begin{enumerate}
+\item \emph{The pointwise law} $\log(c_n/(n!\mu^n))\sim\frac23(\log n)^2$, the factor \eqref{a58:eg:eq:formalguess} (Sections~\ref{a58:eg:sec:context}, \ref{a58:eg:sec:formal} and~\ref{a58:eg:sec:checks}; ``not proved'' in \file{data/38-growth-PROVENANCE.json}). Sketch: the formal transport of Section~\ref{a58:eg:sec:formal} and the diagnostic $d_n$. Status: Part~\ref{a58:part:fn}'s Conjecture~\ref{a58:fn:conj:twothirds}, proved in Part~\ref{a58:part:ln} in $\limsup$ and cumulative form only. Missing: an individual lower bound at the logarithmic-square scale, for example Part~\ref{a58:part:rt}'s one-sided ratio bound \eqref{a58:rt:eq:desiredratio}.
+\item \emph{The formal analysis of Section~\ref{a58:eg:sec:formal}}: the factorial-over-power ansatz in \eqref{a58:eg:eq:kernel}, the choice of the solution \eqref{a58:eg:eq:chi} of the eikonal equation as a dominant Borel singularity, the transport equation \eqref{a58:eg:eq:transport}, the matching where $xs$ is of order one that would turn \eqref{a58:eg:eq:amplitudedivergence} into \eqref{a58:eg:eq:formalguess}, and the absence of further scales such as $\log n\log\log n$. Missing, as the section says: endpoint selection and dominance, the singular matching with a nonzero amplitude, and uniform transfer to coefficients.
+\item \emph{$d_n\to4/3$} (Section~\ref{a58:eg:sec:checks}; supported by the table through $n=1200$). It would follow from $\log(c_n/(n!\mu^n))=\frac23(\log n)^2+O(\log n)$ with a sufficiently regular remainder, which is not proved; the floating rows are not interval certified.
+\item \emph{The operation and storage count} $O(n^4)$ and $O(n^3)$ (Section~\ref{a58:eg:sec:checks}), sketched without proof. \emph{Settled}: Corollary~18.3 of \file{a294220-ascent-multiplicity-caps} proves $O_r(N^{r+2})$ operations and $O_r(N^{r+1})$ memory for its sorted transfer, which at $r=2$ is this Part's transfer (note in Section~\ref{a58:eg:sec:kernel}).
+\item \emph{The cutoff $10^{-30}$ ``gives visibly incorrect later ratios''} (Section~\ref{a58:eg:sec:checks} and the delivered README; no such run was delivered). \emph{Supported at the write} by a run to $n=400$ (note in Section~\ref{a58:eg:sec:checks}); the deviation grows from $10^{-12}$ at $n=200$ to $7\times10^{-6}$ at $n=395$. Missing: nothing for the statement; the stricter cutoffs remain uncertified beyond $n=395$.
+\item \emph{A rate for the ratios, an amplitude, a coefficient equivalent and an all-orders expansion} (Remarks~\ref{a58:eg:low:scope} and~\ref{a58:eg:rat:scope}; ``not proved'' in the provenance record). Part~\ref{a58:part:rt} proves the rate $O(n^{-1/4}(\log n)^{3/4})$; the others are open in every Part.
+\end{enumerate}
+\end{writenote}
+
 \begin{thebibliography}{99}
 \bibitem{CCEG}
 A.~R.~Conway, M.~Conway, A.~Elvey Price, and A.~J.~Guttmann,
@@ -3700,9 +5130,21 @@ Electronic Journal of Combinatorics \textbf{29}(4) (2022), P4.25.
 \href{https://doi.org/10.37236/11266}{doi:10.37236/11266};
 \href{https://www.combinatorics.org/ojs/index.php/eljc/article/view/v29i4p25}{publisher record};
 \href{https://arxiv.org/abs/2111.01279}{arXiv:2111.01279}.
+Part~V consulted the final publication, especially Sections 2.2, 2.6 and~5.
+\bibitem{DS2011}
+P.~Duncan and E.~Steingr\'imsson,
+\emph{Pattern avoidance in ascent sequences},
+arXiv:1109.3641 (2011), version 2.
+\url{https://arxiv.org/abs/1109.3641}. [Cited by Part~V.]
 \bibitem{OEIS}
 OEIS Foundation Inc., \emph{A202058: Number of ascent sequences avoiding the pattern 000},
-\url{https://oeis.org/A202058}; published coefficient file, \url{https://oeis.org/A202058/b202058.txt}. Source check (Part~III): 2 October 2026.
+\url{https://oeis.org/A202058}; published coefficient file, \url{https://oeis.org/A202058/b202058.txt}. Source check (Part~III): 2 October 2026. Part~V: entry and linked exact data checked on 2 October 2026.
+\bibitem{ConwayData}
+A.~Conway and M.~Conway,
+\emph{Table of $n,c_n$ for $n=0,\ldots,176$},
+linked from OEIS A202058.
+\url{https://oeis.org/A202058/b202058.txt}.
+Downloaded and compared with the exact recurrence on 2 October 2026. [Cited by Part~V, whose $c_n$ is $a_n$.]
 \bibitem{OEIStriangle}
 OEIS Foundation Inc., \emph{A294220}, \url{https://oeis.org/A294220}. Source check (Part~III): 2 October 2026.
 \bibitem{CallanMansour}
