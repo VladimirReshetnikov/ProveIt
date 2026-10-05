@@ -212,6 +212,8 @@ Thus the identity gives no gate improvement; synchronized variable-width
 loaders and an unbounded-history interface remain unresolved. The current
 universal operation point remains84/187/18.
 
+The [composite-complement period criterion](gamma83_composite_complement_certificate.md), with [independent proof review](review_gamma83_composite_complement.md), proves m|3 if the actual native H=3u^f has3∤u and oddpart(ord_rad(u)(2)) divides u²−1. This includes certain certified two-prime complements p[k(p−1)+1], extending the earlier prime-power target. On the existing filtered histories, however, the k=2 squarefree case is impossible: the exact mod31 table permits only f=13,17,23,29 modulo30. Native two-adic restrictions remain necessary; no such factorization or rejected-input history is constructed. Fresh root and reviewer field checks agree, and numbered remarks retain two nonnative boundary examples. Independent-gamma83 remains unresolved; no operation bound changes.
+
 The [native gamma83 restrictions](gamma83_native_next.md) prove that the exact
 fixed-index modulus polynomial `H_r(T^k)` is irreducible over Q for every
 `r>=0,k>=1`, by reciprocal Eisenstein at2. This does not imply primality of
@@ -5822,6 +5824,7 @@ New research and the completed75-operation construction:
 
 | Artifact | Established result | Remaining boundary |
 |---|---|---|
+| [Composite-complement period criterion](gamma83_composite_complement_certificate.md) and [proof review](review_gamma83_composite_complement.md) | Conditional actual-native m|3 certificate for composite u; filtered k2 prime-pair shape requires f≥13 in four mod30 classes. | Occurrence at a genuine history remains unproved; no83 counterexample, universal83 theorem or arithmetic saving. |
 | [Scaled finalizer boundary](complete84_scaled_finalizer_boundary.md) and [independent review](review_complete84_scaled_finalizer_boundary.md) | Every nonzero polynomial multiplier needs≥3M+4A at the six-port whole residual; actual75+2+7 source attains84. | Protected interface only; extra donors, exterior-product interleaving and different positive-zero equivalences remain open. |
 | [Projective Markov counter graph](markov_projective_counter_step.md) and [root review](review_markov_projective_counter_step.md) | Exact guarded positive-integer local graphs and fixed-T histories; integrality propagates from paid input; q5 lowers denominator growth. | Homogeneous histories cost6T+1 more operations andT+1 witnesses here; fixed-T language is x≤T, not universal. |
 | [Sharp sine Markov lift](markov_sine_lift.md) and [proof review](review_markov_sine_lift.md) | Arbitrary matrices at sharp standard-basis dilation r+1, degree≤r²+r−1; finite-even uniqueness and exact b3/q5 counter pair. | A representation improvement; other encodings lie outside sharpness, and paid integer histories/guards are still required. |
