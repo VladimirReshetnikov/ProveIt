@@ -345,6 +345,32 @@ identity and first-coordinate split, placed reciprocal notes in both
 articles, and made its checkers also write their receipts to `rerun/`.
 Unreviewed; no Lean statement.
 
+Archival arrival of 2026-10-04:
+[`Sharp_Wasserstein_Contact_Orders_Finite_Uniform_Factors/`](Sharp_Wasserstein_Contact_Orders_Finite_Uniform_Factors/),
+*Sharp Wasserstein Contact Orders for Finite Uniform Factors* (29-page
+US Letter PDF, 1,613-line source, two exact checkers and an mpmath
+diagnostic with receipts), filed by a quick archival intake from the
+repository-level `docs/incoming/` drop zone.  It extends the note above
+from two prescribed uniforms to any finite multiset of widths
+`B^{−d_1}, …, B^{−d_s}`: such a factor divides `μ_{1/B}` exactly iff
+`d_i ≥ i − 1`, and near `q = 1/B` the Wasserstein distance from `μ_q` to
+the laws with that factor has exact order `|q − 1/B|^e`,
+`e = min_{i≥2}(d_i + 2 − i)`, also in total variation.  An exact
+clipping identity makes the optimal remainder compactly supported and
+lets Fourier derivatives of every order serve as lower bounds; it also
+gives explicit upper and lower bounds for divisibility-ladder targets,
+which the 2026-10-01 note in the arithmetic-factor article records as
+missing (the optimal ladder distance stays open).  It credits the note
+above and the arithmetic-factor article; its exact-factorability
+criterion re-proves the Hall criterion of the simultaneous-divisor
+article, which it does not cite.  One sentence of its Theorem 2.3
+(`article.tex:253-254`) is wrong as stated: a deletion of exactly `e`
+levels need not destroy every full assignment (for `D = (1,3,5)`,
+deleting levels `3, 4, 5` leaves one); some deletion, the named witness
+`{1,…,e}`, is meant.  Its twelve further questions are open.  Claim
+review and the dated notes in the articles above are deferred to the
+editorial pass.  Unreviewed; no Lean statement.
+
 [`Fabius_Total_Positivity_Frontier_Report/`](Fabius_Total_Positivity_Frontier_Report/),
 *Total Positivity and Cartwright Geometry in the Fabius--Rvachev Dyadic Sinc
 Product* (retained 24-page PDF checkpoint; current live TeX: 1,060 lines,

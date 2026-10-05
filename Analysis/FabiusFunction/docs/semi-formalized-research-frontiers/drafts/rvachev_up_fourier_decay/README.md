@@ -1,9 +1,9 @@
 # Rvachev up-function Fourier decay
 
 This group has one canonical synthesis, a separately supplied rewrite awaiting
-reconciliation, and three arrivals: one addressing a gap the synthesis states,
-and two answering that arrival's finite-smoothness question (on Sobolev and on
-`C^r` spaces). The canonical document is:
+reconciliation, and four arrivals: one addressing a gap the synthesis states,
+and three answering that arrival's finite-smoothness question (on Sobolev,
+`C^r` and Hölder–Zygmund spaces). The canonical document is:
 
 - [`Rvachev_Up_Fourier_Decay.tex`](Rvachev_Up_Fourier_Decay/Rvachev_Up_Fourier_Decay.tex) — editable source;
 - [`Rvachev_Up_Fourier_Decay.pdf`](Rvachev_Up_Fourier_Decay/Rvachev_Up_Fourier_Decay.pdf) — retained rendered checkpoint.
@@ -84,6 +84,30 @@ expansion's rate cannot be improved by any compact correction.
 Noninteger Hölder spaces stay open.  Unreviewed; no Lean statement of
 its spectral results (its three-mode eigen-identities are the lemmas of
 `RMSTransferEigenfunctions.lean`, named in an editorial note).
+
+[`Holder_Zygmund_Spectra_Rvachev_Thue_Morse/`](Holder_Zygmund_Spectra_Rvachev_Thue_Morse/)
+holds *Hölder and Zygmund Spectra of the Rvachev–Thue–Morse Operator*
+(22-page A4 PDF, 1,699-line source, a standard-library exact check
+program), filed on 2026-10-04 by a quick archival intake.  It answers
+three questions of the `C^r` arrival above: "Noninteger Hölder and
+Zygmund scales", "Boundary point spectrum at `C^1`" and, for periodic
+masks, the finite-matrix part of "General trigonometric Markov masks".
+On the periodic Hölder–Zygmund spaces `Λ^s` and their little subspaces,
+for every `s > 0`, the essential spectrum is the closed disk of radius
+`2^{−s−1}` and the spectrum adds only `1/2` and `−1/4`; the same holds
+for noninteger `s` on `[0,1]`.  On `C^1` the value `−1/4` has a
+two-dimensional generalized eigenspace, `span{sin 2πx, cos 2πx + 1/3}`,
+with no Jordan chains, whereas the big Zygmund space `Λ^1` carries two
+chains of length two; residual powers decay exactly like `2^{−(s+1)n}`,
+with an extra factor `n` at `s = 1`.  A finite Fourier core does the
+same for every nonnegative trigonometric Markov mask and integer
+dilation.  That finite Fourier reduction is the one of the Sobolev
+arrival above, which it re-proves without citing it.  The integer
+interval-Zygmund case and the `C^1` resolvent growth stay open, as do
+its ten further questions.  The sentence "Noninteger Hölder spaces stay
+open" above and the matching sentences in the three earlier arrivals
+get dated notes in the deferred editorial pass.  Unreviewed; no Lean
+statement.
 
 ## Canonical synthesis
 
