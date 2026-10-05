@@ -1,0 +1,19 @@
+# Root review of the direct-X83 boundary
+
+**PASS for the conditional equivalence and unconditional bootstrap; universal soundness remains open.** I read the complete final proof, its literal source change and scalar evidence, the half-binomial proof through Section6, and the full half-parameter signed-index proof. The old accepted native theorem is not invoked before its lost divisibility premise is recovered.
+
+The frozen author note has SHA256 `c0debb531d18f9a480d419f82e3503dd5be0c8ffdc4183ab0e56fba8bc74b467`, and its JSON has SHA256 `1d779079afa3a6ac79f281b6b09c166f8397191966074eb043ea3b2b6c232241`. Root's separate odd-q kernel note and Pascal's independent scalar review are bound in that JSON. The scalar review reproduces the counterexample without executing root's helper.
+
+The reverse shear z=t+wC gives exactly (K+wq)C+U−z(q−1)=(K+w)C+U−t(q−1). Supplying X deletes its old multiplication and leaves an integer polynomial with 46M+37A. At a parent zero C>=0 makes z positive. At a child zero in the sector q|X, the restored quotient t is integral and (q−1)t=(K+w)C+U−epsilon>0. Thus the inverse is genuinely positive on that sector. A rational off-zero substitution alone would not have established this integer-domain conclusion.
+
+The full factorization first supplies integer units, and the unchanged norm-sign arguments give five positive norm units. The common sign of the remaining two factors then gives C>=0 and the original outer R bounds. In particular k=R+hXY+epsilon>R, and c>RY>2R, even when XY<=R. These bounds are obtained before native power or index recovery.
+
+The normalized divisibility lemma is decisive: if c=psi_A(p) and c^2 divides psi_A(m), strong divisibility first forces p|m. Writing m=pj and composing Pell units then gives c|j, since psi_chi_A(p)(j)=j chi_A(p)^(j−1) modulo c and chi_A(p) is a unit there. Thus pc|m without the older large-c assumption used for a relaxed auxiliary norm. The distinction between exact normalized and relaxed strong equations is preserved.
+
+The final proof explicitly derives S^2−Rf^2>=1+Delta(c^4−1)>c from the strong norm and Delta−R>=1. Together with the auxiliary Pell root gap and f>2c, this forces V>0 and restores both positive linear quotients. The odd-index polynomial congruences and the signed-chi step-down lemma then give R=±p modulo c; 0<R,p<c/2 forces p=R. The comparison-index premise 2p<m is supplied by pc|m, so this use of the elementary step-down lemma is legitimate.
+
+For the first index, P>A gives n<R, while duplication through 2A^2−1>P and the strict ratio interval gives R<2n. Hence 2n=R+epsilon+vXY with 0<=vXY<R. A nonzero wrap forces Xs<q, exactly the stated small-X sector. When v=0, epsilon=1 and 2n=R+1. The displayed direct lower Pell recurrence bound works already for X>=1, gives H>2^R, and turns the main congruence into equality X=2^R. It does not make q dyadic.
+
+Numbered Remark1 correctly retains and refutes the kernel-only dyadic inference with q=27,R=1223. That example does not satisfy the stronger actual outer lower bound or authentic repunit data. The full83 proposal is therefore recorded as open, not refuted by that example and not proved by the conditional inverse. Both missing obligations remain explicit: exclude nonzero first-index wraps, and recover q|X on the no-wrap branch using the complete outer constraints.
+
+Root independently compared all83 rows with the current84 definitions, checked the deleted product, four edited rows,79 literal rows, all supplied ports and output liveness, and the exact ledger as inert data. No saved array was numerically or symbolically evaluated. No supplied, predecessor or frozen helper was executed or imported. This is a written proof review and static source check, not a formal proof-assistant certificate or a new universal operation record.

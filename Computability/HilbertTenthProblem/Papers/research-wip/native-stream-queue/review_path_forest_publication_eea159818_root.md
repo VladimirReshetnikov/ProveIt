@@ -1,0 +1,11 @@
+# Root binding and notation correction for the path-forest publication
+
+The bounded review of immutable `eea159818` is accepted at its declared scope: the full guide diff and1,458 selected article lines, not the full analytic report. Root read the complete frozen review, inspected the quadrature definition and equation, and authenticated41 Git blob records,18 read spans,37 archive members,35 delivered checksums and29 placement/reuse records with fresh metadata code. The frozen reviewer helper was not executed.
+
+The only host change is the missed renaming in equation(58.4): `4 J(n)/n` now uses the already defined calligraphic quadrature function, `4\mathcal J(n)/n`. The exact original TeX term remains in the independent review's numbered Remark1. This is a notation correction, not a refuted mathematical theorem. No source claim was removed or moved to questions, and all existing retention remarks remain unchanged.
+
+Root built both the immutable before-source and corrected after-source directly with pdfLaTeX, shell escape disabled, three passes each, in separate scratch directories. Each PDF has114 pages; the complete auxiliary files are byte-identical and contain958 ordinary/cleveref label entries. Both final logs have zero warnings, errors, unresolved references, duplicate destinations, underfull boxes and overfull boxes. Root visually inspected corrected PDF page94, including the quadrature and its adjacent definition. The corrected PDF was copied back exactly. The guide records the correction and actual build scope.
+
+The companion root receipt binds the corrected host files separately from the reviewer's immutable publication pins. The review's original no-build/no-render statement remains true of its evidence; this root record adds only the stated build and page inspection. No supplied scientific helper, archived script, copied predecessor or saved arithmetic array ran. Compiling the report directly did not run its supplied build scripts or mathematical suites.
+
+No whole-manuscript certification, external-source review, numerical quadrature certification or new ordinary-integer Diophantine compiler follows. The finite coefficient algorithms and analytic completion retain the narrower interfaces stated in the review; the established universal84 operation bound is unchanged.
