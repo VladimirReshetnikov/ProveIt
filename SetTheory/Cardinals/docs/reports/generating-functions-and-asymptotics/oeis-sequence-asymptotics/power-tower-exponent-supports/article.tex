@@ -13,15 +13,21 @@
 \newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{proposition}[theorem]{Proposition}
 \newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{remark}[theorem]{Remark}
+\theoremstyle{plain}
 \newcommand{\ee}{\mathrm e}
 \newcommand{\fp}{\mathfrak p}
 \newcommand{\fq}{\mathfrak q}
 % Text written when the seven sources were merged is marked [merge].
 \newcommand{\mergenote}[1]{\par\smallskip{\small\noindent\textbf{[merge]}\enspace#1\par}\smallskip}
+% Text written when source 35 was added as Part IV (batch 100, 5 October 2026) is marked [write].
+\newcommand{\writenote}[1]{\par\smallskip{\small\noindent\textbf{[write]}\enspace#1\par}\smallskip}
+\newcommand{\He}{\operatorname{He}}
 \newcommand{\src}[1]{\texorpdfstring{\textup{(source~#1)}}{(source #1)}}
-\title{Derivative Supports of $x^{x^a}$\\[4pt]\large Leading asymptotics for every integer exponent and for the half exponent;\\ fixed-defect cancellations for rational, algebraic and irrational exponents}
-\author{Built from seven research notes prepared for Vladimir Reshetnikov with OpenAI\\(batch 72A manuscripts 28, 31, 34, 26, 20, 20r and 16)}
-\date{1 October 2026}
+\title{Derivative Supports of $x^{x^a}$\\[4pt]\large Leading asymptotics for every integer exponent and for the half exponent;\\ fixed-defect cancellations for rational, algebraic and irrational exponents;\\ Hermite limits on fixed defects at the half exponent}
+\author{Built from eight research notes prepared for Vladimir Reshetnikov with OpenAI\\(batch 72A manuscripts 28, 31, 34, 26, 20, 20r and 16;\\ Part~IV: Report 59 of the session bundle, source 35)}
+\date{1 October 2026; Part~IV added 5 October 2026}
 \begin{document}
 \hypersetup{pageanchor=false}
 \begin{titlepage}
@@ -36,10 +42,12 @@ For a positive exponent $a$, write the $N$th derivative of $x^{x^a}$ as $x^{x^a}
 
 \emph{Fixed defects (Part~\ref{pte:part:defects}).} On a fixed factor defect $r=N-\ell$: for rational $a\ne1$ and $r\ge4$ only finitely many coefficients vanish off an explicit reflection line (Schur, Siegel, and two certified quartics); for algebraic $a$ of degree $D$ the same holds on $r\ge4D+2$; for irrational $a$ there are at most $(2\lfloor r/2\rfloor)^2-1$ cancellation cells, effectively, at most one on each of defects two and three, and none for transcendental $a$; for rational $1/2<a<1$ the nonreflection cancellations on defects two and three are counted exactly to $O(1)$ by explicit square-root laws.
 
+\emph{Hermite limits at the half exponent (Part~\ref{pte:part:hermite}, added 5 October 2026).} For $x^{\sqrt x}$, the residual on a fixed defect, suitably scaled, tends to a Hermite polynomial with an explicit first correction; its roots are eventually real and simple with explicit shifts, so each fixed defect has $O_r(\sqrt X)$ cancellations through order $X$. Finiteness from defect four is proved again at $a=1/2$ with explicit integer quartics, and the defect-four quartic is given a Weierstrass model.
+
 All asymptotic statements are ineffective: no power-saving remainder or numerical order threshold is asserted, exact noncancellation at arbitrary depth is not proved, and no exponent grows with $N$. The proofs are conventional mathematics, not proof-assistant formalizations or refereed publications.
 \end{abstract}
 
-\mergenote{This report merges seven AI-assisted research notes dated 1 October 2026, all pinned to commit \texttt{ca81647a9} of the neighbouring report \emph{Term counts in the derivatives of power towers} (\texttt{power-\allowbreak{}tower-\allowbreak{}derivative-\allowbreak{}term-\allowbreak{}counts}), except source 20, which names no pin. It answers that report's Question~6 and the closing remark of its Part~2. Section~\ref{pte:sec:guide} says what each note contributed and where the merge had to choose; Section~\ref{pte:sec:conventions} fixes the notation.}
+\mergenote{This report merges seven AI-assisted research notes dated 1 October 2026, all pinned to commit \texttt{ca81647a9} of the neighbouring report \emph{Term counts in the derivatives of power towers} (\texttt{power-\allowbreak{}tower-\allowbreak{}derivative-\allowbreak{}term-\allowbreak{}counts}), except source 20, which names no pin. It answers that report's Question~6 and the closing remark of its Part~2. Section~\ref{pte:sec:guide} says what each note contributed and where the merge had to choose; Section~\ref{pte:sec:conventions} fixes the notation. [Added 5 October 2026, batch~100: Part~\ref{pte:part:hermite} adds an eighth note of the same day and pin (Section~\ref{pte:sec:hm-provenance}).]}
 \end{titlepage}
 \hypersetup{pageanchor=true}
 \setcounter{page}{1}
@@ -67,6 +75,8 @@ Source & Archive and delivered title & Pin & Printed here\\
 \bottomrule
 \end{tabular}
 \end{table}
+
+\writenote{Added 5 October 2026, batch~100. An eighth manuscript, Report~59 of the session bundle that arrived in commit \texttt{60f54ea06}, was placed in this report by commit \texttt{36571ae0e}. It is called source~35 and printed as Part~\ref{pte:part:hermite}; it is not in Table~\ref{pte:tab:sources}, and Section~\ref{pte:sec:hm-guide} gives its provenance, its relation to the seven sources and its notation. The next sentence holds for it too.}
 
 Every result, proof, example, remark, question and limitation of the seven sources is printed. Section headings carry the source number; within a section the text is the source's, apart from the renamings of Section~\ref{pte:sec:conventions} and the passages marked \textbf{[merge]}, which were written when the sources were merged. Each source's closing section on verification, source position and scope is printed in Sections~\ref{pte:sec:questions} and~\ref{pte:sec:verification}.
 
@@ -140,6 +150,7 @@ Where one letter carried two meanings that would meet in this report, one of the
 
 \subsection{Letters local to one section}
 The following letters keep their sources' meanings but only inside the section or proof where they are defined: $A(t)$, $B(t)$, $b(t)$, $E(T;\kappa)$, $M_a(\kappa)$ and $W_a$ (Part~\ref{pte:part:integer}), where also $\alpha$ is the circle parameter $(1-R^2)/(1+R^2)$ in Sections~\ref{pte:sec:ga-selection} and~\ref{pte:sec:as}, but a real exponent, with $E$ an exceptional set, in Section~\ref{pte:sec:ga-generic}; $s$, $y$, $C=\cosh s$, $S=\sinh s$, $c=\cos y$ and $D=s^2+y^2$ in the contour estimates (where $S$ is also, in the cosine-law subsections, the stationary action); the constants $m$, $M$, $A$, $c$ and the block length $H$ of Lemma~\ref{pte:ga:lattice}; $G(t)$, $F(t)$, $J(s)$ and $h$ in Section~\ref{pte:sec:lc}; $\nu$, $E(\sigma;\kappa)$, $M(\kappa)$, $F(z,\varepsilon)$, $h=\sqrt\varepsilon$, $D=\partial_\kappa-\partial_\nu$ and $L=\log x$ (in Section~\ref{pte:he:diagonals}) in Part~\ref{pte:part:half}; and $U$, $V$, $b$, $e$, $f_r$, $Y_r$, $C$, $C_r$, $E_r$, $m=\lfloor r/2\rfloor$ in Part~\ref{pte:part:defects}. The letter $h$ always denotes a decay height $\min(a,\eta)$ in Part~\ref{pte:part:integer} contour estimates, with the values $\min(1,\rho-1)$ at $a=1$ and $\min(2,\eta)$ at $a=2$.
+\writenote{Added 5 October 2026, batch~100. Part~\ref{pte:part:hermite} renames the symbols of source~35 that would meet other meanings in this report; Table~\ref{pte:tab:hmnotation} lists them with their tempting false readings, and its letters are local to Part~\ref{pte:part:hermite}.}
 
 \subsection{Part numbers in the sources}
 Sources 31 and 28 call the host's parts ``Part~I'' (for $x^x$) and ``Part~II'' (for $x^{x^2}$), numbering only its three investigations. The host numbers them Part~2 (Section~2) and Part~3 (Section~3). Where those words are printed, a \textbf{[merge]} note gives the host's numbering.
@@ -1592,6 +1603,7 @@ The first members of~\eqref{pte:he:familytwo} are $(N,k)=(6,1),(27,4),(37,5),(76
  R_{1/2,3,N}=-\frac{(k+4)(k^2+9k+12-4N)}{384},
 \]
 which by the bridge~\eqref{pte:rf:bridge} are~\eqref{pte:he:defecttwo} and~\eqref{pte:he:defectthree}. Source 20r's reflection line~\eqref{pte:rf:line} at $a=1/2$ is $k=-2(r-1)$, physical only on defect one, where it is the reciprocal-reflection family $k=0$ above; 26's condition $r+k/2=1$ is $K=0$. Source 20r's Corollary~\ref{pte:rf:infinite} on infinite nonreflection families concerns the open interval $1/2<a<1$; at the endpoint $a=1/2$ only the positive branch of each parabola is physical, and source 20's endpoint remark after Theorem~\ref{pte:ac:counts} counts these two families through order $X$ as $\sqrt{X/3}+O(1)$ and $\sqrt X+O(1)$. None of the three sources cites the others. The verification of Section~\ref{pte:sec:verification} finds, for $N\le150$, sixteen nonreflection zeros, all in these two families (six and ten).}
+\writenote{Added 5 October 2026, batch~100. Source~35 (Part~\ref{pte:part:hermite}) derives both residuals again, as~\eqref{pte:hm:Rtwo}--\eqref{pte:hm:Rthree}, and places the two families on the positive Hermite-root branches $k=2\sqrt{N/3}-13/6+O(N^{-1/2})$ and $k=2\sqrt N-9/2+O(N^{-1/2})$ of Theorem~\ref{pte:hm:roots}. On every fixed defect $r\ge2$ of $x^{\sqrt x}$ at most $\lfloor r/2\rfloor$ cells vanish at each large order, and at most $O_r(\sqrt X)$ through order $X$ (Corollary~\ref{pte:hm:frequency}). A recurrence scan by the write finds, for $N\le4000$, no zero on defects four to eight and exactly these two families on defects two and three (end of Section~\ref{pte:sec:hm-table}).}
 
 \part{Fixed defects for non-integer exponents}\label{pte:part:defects}
 \mergenote{Part~\ref{pte:part:defects} is sources 20r, 20 and 16, written in that order within about forty minutes. All three slice the coefficients by a fixed factor defect $r=N-\ell$ as $N$ grows, the other natural slicing besides fixed depth. At $a=1$ a fixed defect is a fixed Lehmer--Comtet offset, the subject of the host's Conjecture~2.9, which all three exclude; at an integer $a\ge2$ every cell with $N\ge2r$ lies in the positive bulk of Proposition~\ref{pte:ga:bulk} (at $a=2$, the host's Theorem~3.7), so a fixed defect is eventually nonzero there for an elementary reason. The fixed-defect theorems therefore have content for non-integer $a$. A rational exponent is written $a=\fp/\fq$ in lowest positive terms (Section~\ref{pte:sec:renames}).}
@@ -1679,6 +1691,7 @@ Fix $a\in\mathbb Q_{>0}\setminus\{1\}$ and an integer $r\ge4$. With $K$ as in~\e
 Here ``eventually'' allows a threshold depending on both $a$ and $r$. The proof provides no numerical threshold or complete list of the finite exceptions. It does not establish a support-density theorem when the defect grows with $N$.
 
 \mergenote{Source 20r states the theorem in its Section~1 with the definition~\eqref{pte:rf:center} of $K$ inside it. Source 20's Theorem~\ref{pte:ac:algebraic} (defects $r\ge4D+2$, so $r\ge6$ at $D=1$) is weaker for rational $a$, and source 20 says so; source 16's Theorem~\ref{pte:ir:main} covers irrational $a$.}
+\writenote{Added 5 October 2026, batch~100. At $a=1/2$ the theorem is proved a second time, by the same route but with explicit integer quartics and discriminants, in Part~\ref{pte:part:hermite} (Theorems~\ref{pte:hm:finite} and~\ref{pte:hm:allfinite}, source~35), which also gives the defect-four quartic a Weierstrass model. Source~35 was written a few minutes before source~20r; neither cites the other (Section~\ref{pte:sec:hm-provenance}).}
 
 \subsection{The weighted edge and defects at least six}
 Put
@@ -1950,6 +1963,7 @@ On each odd defect, the exact reflection family is
 which contributes $X/\fp+O_{a,r}(1)$ physical cells. There are $\lceil R/2\rceil$ odd defects in the window. Defect zero has none, and defect one has only reflection. Theorem~\ref{pte:ac:counts} supplies the two nonreflection square-root terms. The rational fixed-defect theorem (Theorem~\ref{pte:rf:main}) says every remaining fixed defect contributes only finitely many nonreflection exceptions; their finite sum is $O_{a,R}(1)$. All cells on different defects are disjoint.
 \end{proof}
 \mergenote{Source 20 cites the companion (source 20r) here as ``the accompanying files \texttt{rational\_\allowbreak{}companion.\allowbreak{}pdf} and \texttt{rational\_\allowbreak{}companion\_\allowbreak{}source.\allowbreak{}zip}''. Neither file is shipped; the companion's text is Section~\ref{pte:sec:rf}, and its code and data are shipped under the prefix \texttt{20r-\allowbreak{}}. The corollary needs Theorem~\ref{pte:rf:main} and is new in source 20.}
+\writenote{Added 5 October 2026, batch~100. Source~35 states the endpoint analogue: at $a=1/2$ the window $0\le r\le R$, $R\ge3$, has $X+(1+1/\sqrt3)\sqrt X+O_R(1)$ cancellation cells through order $X$, equation~\eqref{pte:hm:window} of Part~\ref{pte:part:hermite}.}
 
 
 \section{Irrational exponents: effective bounds \src{16}}\label{pte:sec:ir}
@@ -2169,6 +2183,7 @@ The result continues the derivative-support program in the inspected ProveIt sou
 \item \emph{The exponent $a=1$ on fixed defects.} The integer-root problem of the centered residual at $a=1$, where roots give persistent zero lines (sources~20r,~20).
 \item \emph{Computation.} Practical complexity bounds for the elimination of Section~\ref{pte:sec:ir-order}, and recognition of transcendence from numerical data (source~16).
 \end{enumerate}
+\writenote{Added 5 October 2026, batch~100. Source~35 (Part~\ref{pte:part:hermite}) also states items 2 and 3 open at $a=1/2$. Section~\ref{pte:sec:hm-questions} repeats them with finite evidence for defects four to eight and an elliptic model for defect four, which do not settle them, and adds two questions of its own.}
 
 \mergenote{\emph{A finite data point for the host's Question~8 and Research question~3.68.} The batch-72A intake scanned the exact recurrence~\eqref{pte:ga:parameterrecurrence} for $a=1,\ldots,5$ and $N\le70$. For $a=2,3,4,5$ every zero is structural ($d=0$) or a reflection zero on $q=ad$ with $(a-1)k+d$ even ($144$, $60$, $36$ and $18$ of them); there is no other zero. For $a=1$ there are $578$ reflection zeros and $63$ others, which are the host's sporadic zero $b(8,5)=0$ repeated along the line $(N,\ell,k)=(k+8,k+5,k)$, $0\le k\le62$. This is a finite observation, not a theorem; the scan is not shipped.}
 
@@ -2198,6 +2213,7 @@ Each source's verification paragraph is printed here, followed by the names unde
 \mergenote{Shipped as \texttt{code/\allowbreak{}16-\allowbreak{}irrational-\allowbreak{}verify.\allowbreak{}py} with \texttt{data/\allowbreak{}16-\allowbreak{}irrational-\allowbreak{}checks.\allowbreak{}json}, and \texttt{code/\allowbreak{}16-\allowbreak{}irrational-\allowbreak{}check\_\allowbreak{}low\_\allowbreak{}defect\_\allowbreak{}injectivity.\allowbreak{}py}, which prints its result and writes no file. Both need SymPy.}
 
 \mergenote{At placement every shipped program was rerun on a copy; each output equalled the delivered one apart from line endings and the timing field of \texttt{34-\allowbreak{}a290268-\allowbreak{}derivative\_\allowbreak{}counts.\allowbreak{}json}.}
+\writenote{Added 5 October 2026, batch~100. Source~35's verification paragraph, the names under which its four programs and records are shipped (prefix \texttt{35-\allowbreak{}hermite-}) and their rerun are in Section~\ref{pte:sec:hm-verification}.}
 
 \subsection{Provenance}\label{pte:sec:provenance}
 This report was built from seven manuscripts of batch 72A (Table~\ref{pte:tab:sources}): base 28, members 31, 34, 26, 20, 20r and 16. All arrived in commit \texttt{1512ef835}, inside six archives; 20r is the folder \texttt{Rational\_\allowbreak{}Exponent\_\allowbreak{}Fixed\_\allowbreak{}Defects} of the zip \texttt{rational\_\allowbreak{}companion\_\allowbreak{}source.\allowbreak{}zip} in archive 20 (\texttt{Algebraic\_\allowbreak{}Exponents\_\allowbreak{}and\_\allowbreak{}Cancellation\_\allowbreak{}Frequencies/\allowbreak{}}). The placement commit \texttt{d292c6765} staged source 28's \texttt{article.\allowbreak{}tex} and \texttt{README.\allowbreak{}md} unprefixed and the code and data of all seven with the prefixes \texttt{28-\allowbreak{}all-\allowbreak{}integer-\allowbreak{}}, \texttt{31-\allowbreak{}a293239-\allowbreak{}}, \texttt{34-\allowbreak{}a290268-\allowbreak{}}, \texttt{26-\allowbreak{}half-\allowbreak{}exponent-\allowbreak{}}, \texttt{20-\allowbreak{}algebraic-\allowbreak{}}, \texttt{20r-\allowbreak{}rational-\allowbreak{}} and \texttt{16-\allowbreak{}irrational-\allowbreak{}}; this text replaces both staged files. Sources 28, 31, 34, 26, 20r and 16 pin the host at \texttt{ca81647a9}; source 20 names no commit.
@@ -2207,6 +2223,424 @@ What each contributed: source 28 the general theorem for integer exponents, its 
 Not shipped: the manuscripts, READMEs and PDFs of sources 31, 34, 26, 20 and 16 (with 34's \texttt{tanh\_\allowbreak{}sections.\allowbreak{}tex}, printed in Section~\ref{pte:sec:as}); source 28's delivered PDF; source 20r's \texttt{article.\allowbreak{}tex}, \texttt{article.\allowbreak{}pdf} and \texttt{README.\allowbreak{}md}; archive 20's \texttt{rational\_\allowbreak{}companion.\allowbreak{}pdf} and the zip itself; and the seven copies of a Linux build script, \texttt{build\_\allowbreak{}local.\allowbreak{}sh}, one in each of the seven packages. They survive in commit \texttt{1512ef835}.
 
 Every source carries the author line ``Research note prepared for Vladimir Reshetnikov with OpenAI''. Their READMEs state that each proof received independent mathematical review and that every rendered page was inspected; those statements are the sources' own. This report is AI-assisted and unrefereed, and none of its results is formalized.
+
+\writenote{Added 5 October 2026, batch~100. Part~\ref{pte:part:hermite} is an eighth manuscript, source~35: Report~59 of the session bundle, arrived in \texttt{60f54ea06}, placed by \texttt{36571ae0e}, pinned \texttt{ca81647a9}. Section~\ref{pte:sec:hm-provenance} gives its provenance and Table~\ref{pte:tab:hmroutes} what it contributed. Not shipped from it: its \texttt{article.\allowbreak{}tex}, \texttt{article.\allowbreak{}pdf}, \texttt{README.\allowbreak{}md} and \texttt{build\_\allowbreak{}local.\allowbreak{}sh}; they survive in \texttt{60f54ea06}.}
+
+\part{Hermite limits and finiteness on fixed defects at the half exponent}\label{pte:part:hermite}
+\writenote{Part~\ref{pte:part:hermite} was added on 5 October 2026, in the write of batch~100 of ProveIt's incoming-reports intake. It is source~35, one manuscript on the derivatives of $x^{\sqrt x}$ (the exponent of Part~\ref{pte:part:half}) sliced by a fixed factor defect (the slicing of Part~\ref{pte:part:defects}). Its own text is printed in full, in its own order, in Sections~\ref{pte:sec:hm-limits}--\ref{pte:sec:hm-scope}; Section~\ref{pte:sec:hm-guide} says where it came from, which of its results were already in this report, and how its symbols were renamed. Text written for Part~\ref{pte:part:hermite} is marked \textbf{[write]}. Part~\ref{pte:part:hermite} follows the closing unnumbered part instead of preceding it so that no existing section, theorem or equation number changes (Section~\ref{pte:sec:hm-placement}).}
+
+\section{How Part~IV is built \src{35}}\label{pte:sec:hm-guide}
+\subsection{The source and its provenance}\label{pte:sec:hm-provenance}
+\writenote{Source~35 is Report~59 of the session bundle of Reports 1--243 whose archives arrived in commit \texttt{60f54ea06} (5 October 2026): the archive \texttt{ProveIt\_\allowbreak{}Half\_\allowbreak{}Exponent\_\allowbreak{}Hermite\_\allowbreak{}and\_\allowbreak{}Finiteness.\allowbreak{}zip} (337{,}096 bytes, created 1 October 2026 at 10:39 UTC by the bundle's index), with the single folder \texttt{Half\_\allowbreak{}Exponent\_\allowbreak{}Hermite\_\allowbreak{}and\_\allowbreak{}Finiteness/}. It was placed in this report by commit \texttt{36571ae0e}. Its title is \emph{Hermite Limits and Finite Cancellation: Fixed defects in derivatives of $x^{\sqrt x}$} (the PDF metadata title is ``Hermite Limits and Finite Cancellation on Fixed Defects''), dated 1 October 2026, with an eight-page PDF and, like the seven sources of Parts~\ref{pte:part:integer}--\ref{pte:part:defects}, the author line ``Research note prepared for Vladimir Reshetnikov with OpenAI''; it is not marked as prepared for private review. Its bibliography pins the host report at \texttt{ca81647a9}, the pin of sources 28, 31, 34, 26, 20r and 16, and cites the host's depth-coordinate Question~8. The number 35 continues this report's file-prefix sequence after 34; no batch-72A manuscript was numbered 35.
+
+\emph{Chronology.} The zip entry times date source~35's files between 02:51 and 03:23 PDT on 1 October 2026 (its PDF was created at 03:23 PDT). The batch-72A archives date source~26 between 02:31 and 02:42, source~20r between 03:30 and 03:41 and source~20 between 03:43 and 03:49. Source~35 was therefore written after source~26 and a few minutes before source~20r, in parallel with the work printed in Parts~\ref{pte:part:half} and~\ref{pte:part:defects}. It cites none of them and none of them cites it. The repository received it later: Parts~\ref{pte:part:integer}--\ref{pte:part:defects} arrived in \texttt{1512ef835} and were written on 1 October 2026 (\texttt{a67a561b9}); source~35 arrived only with the bundle.
+
+\emph{Files.} The four programs and four recorded outputs are shipped with the prefix \texttt{35-\allowbreak{}hermite-} (Section~\ref{pte:sec:hm-verification}). Not shipped: the delivered \texttt{article.\allowbreak{}tex}, \texttt{article.\allowbreak{}pdf} and \texttt{README.\allowbreak{}md}, whose content is this Part, and \texttt{build\_\allowbreak{}local.\allowbreak{}sh}, a byte copy of a generic Linux build wrapper already tracked elsewhere in the repository (the batch-72A placement likewise left its seven copies unshipped). All four survive in \texttt{60f54ea06}.}
+
+\emph{Source~35's abstract.} For a fixed defect $r$ below the maximal number of exponent factors in a derivative of $x^{\sqrt{x}}$, we reduce every coefficient to a degree-$r$ polynomial in its logarithm degree. After the scaling $\xi=\sqrt3 k/(2\sqrt N)$, this residual polynomial converges to the probabilists' Hermite polynomial. We give the first correction, prove eventual simple real-rootedness, and locate every root with error $O_r(N^{-1/2})$ in the unscaled integer variable. Analytic dependence justifies eventual monotonicity of the positive roots and yields only $O_r(\sqrt X)$ exact cancellations on a fixed defect among orders up to $X$. This order is sharp for defects two and three. An exact reciprocal identity fixes the central root at $k=-2(r-1)$ for every odd defect. Schur's irreducibility theorem, the infinity branches of the residual curve, and Siegel's theorem strengthen this to finitely many cancellations for every fixed defect $r\ge4$. The two small genus-one cases are verified explicitly. Thus infinite cancellation occurs only on defects one, two and three. No effective threshold or complete higher-defect finite zero list is supplied.
+
+\subsection{What is new, and what is a second route}\label{pte:sec:hm-routes}
+\writenote{About half of source~35 re-derives, by the same route, results that this report already proves at $a=1/2$: Part~\ref{pte:part:half} (source~26) and, for every rational $a\ne1$, Part~\ref{pte:part:defects} (sources 20r, 20 and 16). Those results are printed in full where source~35 has them, as second routes, with the earlier statement named at each; they are never printed as new. Table~\ref{pte:tab:hmroutes} sorts every result of source~35. Its closing contribution sentence names three of the re-derived results as its contribution; Remark~\ref{pte:hm:rem:contribution} corrects it.}
+
+\begin{table}[ht]
+\centering\small
+\caption{The results of source~35 against Parts~\ref{pte:part:half} and~\ref{pte:part:defects}.}\label{pte:tab:hmroutes}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.33\textwidth}>{\raggedright\arraybackslash}p{0.37\textwidth}>{\raggedright\arraybackslash}p{0.22\textwidth}@{}}
+\toprule
+Source 35 & Earlier in this report & Printed as\\
+\midrule
+Exact residual~\eqref{pte:hm:bridge}--\eqref{pte:hm:R}; weighted degree and leading $k$ coefficient & \eqref{pte:rf:bridge}--\eqref{pte:rf:residual} at $a=1/2$; Lemma~\ref{pte:ir:degrees} and the weighting of Section~\ref{pte:sec:rf} & second route (specialization)\\
+Leading term of Theorem~\ref{pte:hm:limit} & the weighted edge~\eqref{pte:rf:edgeeven}--\eqref{pte:rf:edgeodd} at $a=1/2$ & the same object, restated as a scaling limit\\
+First correction $G_r$ & --- & new\\
+Real simple roots and their shifts, Theorem~\ref{pte:hm:roots} & --- & new\\
+Exact odd central factor & \eqref{pte:rf:even} and the paragraph after it, at $a=1/2$ & second route (same route)\\
+At most $\lfloor r/2\rfloor$ admissible zeros per large order & --- & new\\
+$O_r(\sqrt X)$, Corollary~\ref{pte:hm:frequency} & --- & new argument; superseded for $r\ge4$\\
+$R_{1/2,2,N}$, $R_{1/2,3,N}$, their families and counts & Theorem~\ref{pte:he:families}; \eqref{pte:rf:low} at $a=1/2$; source~20's endpoint remark after Theorem~\ref{pte:ac:counts} & second route\\
+Finiteness on defects four and five, Theorem~\ref{pte:hm:finite} & Theorem~\ref{pte:rf:main} at $a=1/2$, via \eqref{pte:rf:q4}--\eqref{pte:rf:q5} and Lemma~\ref{pte:rf:smooth} & second route; the integer quartics and discriminants are new data\\
+Weierstrass model of the defect-four quartic & --- & new\\
+Finiteness on every defect $r\ge4$, Theorem~\ref{pte:hm:allfinite} & Theorem~\ref{pte:rf:main} at $a=1/2$ (same route); for $r\ge6$ also Theorem~\ref{pte:ac:algebraic} with $D=1$ & second route\\
+Table of fixed-defect counts & the defect-one remark of Section~\ref{pte:he:diagonals}, Theorem~\ref{pte:he:families}, Theorem~\ref{pte:rf:main} & assembled from earlier results\\
+Window count~\eqref{pte:hm:window} & Corollary~\ref{pte:ac:window} is stated for $1/2<a<1$ only and does not specialize & new as an endpoint statement\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\writenote{The identifications in Table~\ref{pte:tab:hmroutes} were checked exactly by the write, with its own program (not shipped), which builds the residuals $R_{1/2,r,N}$ for $r\le8$ from~\eqref{pte:rf:even}, independently of source~35's programs. It confirms source~35's residuals through $r=5$, both quartic identities and both discriminants of Section~\ref{pte:sec:hm-finite}, the scalings between source~35's quartics and~\eqref{pte:rf:q4}--\eqref{pte:rf:q5}, the odd central factor for $r=1,3,5,7$, both weighted edges for $2\le r\le8$ (equal to~\eqref{pte:rf:edgeeven}--\eqref{pte:rf:edgeodd} at $a=1/2$, halved in the odd case), and that the top weighted part of $R_{1/2,r,N}$ is the Hermite term of Theorem~\ref{pte:hm:limit} for $1\le r\le8$.}
+
+\subsection{Notation of Part~IV}\label{pte:sec:hm-notation}
+\writenote{Source~35 writes in the host's coordinates $p_{N,\ell,k}$, $r=N-\ell$, $d=\ell-k$ and $u=(\log x)/2$, which are this report's (Section~\ref{pte:sec:conventions}). Its symbols that would meet other meanings in this report are renamed (Table~\ref{pte:tab:hmnotation}); no normalization was changed, so every displayed identity holds exactly as source~35 states it. The probabilists' Hermite polynomials are written $\He_r$. The letters $m=\lfloor r/2\rfloor$, $\alpha_i$, $t$, $v$, $C$ and $h$ are local to the proofs where they appear, as in Section~\ref{pte:sec:rf}; $h=N^{-1/2}$ here.}
+
+\begin{table}[ht]
+\centering\small
+\caption{Renamed symbols of source~35.}\label{pte:tab:hmnotation}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.13\textwidth}>{\raggedright\arraybackslash}p{0.1\textwidth}>{\raggedright\arraybackslash}p{0.35\textwidth}>{\raggedright\arraybackslash}p{0.33\textwidth}@{}}
+\toprule
+Here & Source 35 & Meaning & Tempting false reading\\
+\midrule
+$R_{1/2,r,N}(k)$ & $R_{r,N}(k)$ & residual~\eqref{pte:rf:residual} at $a=1/2$ & ---\\
+$A_{1/2}$, $B_{1/2}$ & $A$, $B$ & the series $A_a$, $B_a$ of Section~\ref{pte:sec:shared} at $a=1/2$ & \textbf{false:} the local $A(t)$, $B(t)$ of Part~\ref{pte:part:integer}\\
+$\xi$; $\xi_j$ & $x$; $x_j$ & scaled variable $k=2\sqrt N\xi/\sqrt3$; zeros of $\He_r$ & \textbf{false:} the base variable $x$ (source~35 uses $x$ for both), or $\xi=\log|z|$ of Section~\ref{pte:sec:ga-coverage}\\
+$\mathcal Q_{r,N}(\xi)$ & $Q_{r,N}(x)$ & normalized monic residual~\eqref{pte:hm:normalization} & \textbf{false:} the quartic $Q_r(a,K)$ of Lemma~\ref{pte:rf:smooth}\\
+$\widetilde K$ & $K$ & $k+2(r-1)$, equal to $\fq K=2K$ at $a=1/2$, as in Section~\ref{pte:sec:ac} & \textbf{false:} the reflection form $K$ itself, which is half of it\\
+$Z_4$, $Z_5$ & $Z$, $Y$ & square coordinates; $Z_4=-4Y_4$, $Z_5=-4Y_5$ & \textbf{false:} $Y_4$, $Y_5$ of~\eqref{pte:rf:q4}--\eqref{pte:rf:q5}, or the zero count $Z(N)$ of Section~\ref{pte:sec:lc}\\
+$\varphi_4$, $\varphi_5$ & $f_4$, $f_5$ & integer quartics in $\widetilde K$ & \textbf{false:} the parameter functions $f_r$ of~\eqref{pte:rf:parameters}\\
+$\mathsf U$, $\mathsf V$, $\mathsf X$ & $U$, $V$, $X$ & Weierstrass coordinates, $\mathsf X=\mathsf U+40$ & \textbf{false:} $U$, $V$ of~\eqref{pte:rf:r4}, or the order bound $X$\\
+$\widehat F_r$, $\widehat E_r$ & $F_r$, $E_r$ & residual curve in $(N,k)$, divided by $k+2(r-1)$ for odd $r$, and its top weighted part & \textbf{false:} $F_r$, $E_r$ of Section~\ref{pte:sec:rf}, in $(N,K)$; $\widehat F_r=F_r$ for even $r$ and $F_r/2$ for odd $r$\\
+$G_r$; $k_j(N)$ & same & first correction; root branches & \textbf{false:} the local $G(t)$ of Section~\ref{pte:sec:lc}\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Why Part~IV follows the closing part}\label{pte:sec:hm-placement}
+\writenote{Part~\ref{pte:part:hermite} could have been inserted before the unnumbered part ``Scope, verification and provenance'', which would have kept that part at the end of the report but renumbered its Sections 19 and 20. Section numbers of this report are cited outside it: the neighbouring report \texttt{power-\allowbreak{}tower-\allowbreak{}derivative-\allowbreak{}term-\allowbreak{}counts} cites ``its Section~19.8'' in its note after Research question~3.68, and this report's README cites Sections 19.6, 19.8 and 20.2. The intake's practice for an existing report is that a new Part follows its closing Part and that no existing Part or section is renumbered. Part~\ref{pte:part:hermite} is therefore appended, and it carries its own scope, verification and further questions (Section~\ref{pte:sec:hm-scope}); Sections~\ref{pte:sec:questions} and~\ref{pte:sec:verification} have dated pointers to it. Every section, theorem and equation number of Parts~\ref{pte:part:integer}--\ref{pte:part:defects} and of the closing part is unchanged.}
+
+\section{Hermite limits on a fixed defect \src{35}}\label{pte:sec:hm-limits}
+\subsection{An exact residual polynomial}
+Use the coefficient convention~\eqref{pte:he:expansion}. Fix $r=N-\ell\ge0$ and let $0\le k\le N-r$. The defect $r$ is not the depth $d=\ell-k$. Define the analytic functions
+\begin{equation}\label{pte:hm:AB}
+ A_{1/2}(z)=\frac{\sqrt{1+z}\log(1+z)}z,\qquad
+ B_{1/2}(z)=\frac{2(\sqrt{1+z}-1)}z
+     =\frac2{\sqrt{1+z}+1}.
+\end{equation}
+Both have constant term one. With $u=(\log x)/2$, the stripped Taylor increment of $\sqrt{x}\log x$ is $z(A_{1/2}(z)+uB_{1/2}(z))$. The partial exponential Bell formula therefore gives exactly
+\begin{align}
+ p_{N,N-r,k}
+ &=2^{-k}\frac{N!}{(N-r)!}\binom{N-r}k R_{1/2,r,N}(k),\label{pte:hm:bridge}\\
+ R_{1/2,r,N}(k)
+ &=[z^r]A_{1/2}(z)^{N-r-k}B_{1/2}(z)^k\notag\\
+ &=[z^r]\exp\bigl((N-r)\log A_{1/2}(z)+k\log(B_{1/2}(z)/A_{1/2}(z))\bigr).\label{pte:hm:R}
+\end{align}
+For fixed $r$, this is a polynomial in $N,k$. Since $\log A_{1/2}$ starts in degree two, every monomial $N^ik^j$ has $2i+j\le r$. Its degree in $k$ is exactly $r$, with leading coefficient $(-1/4)^r/r!$.
+
+\writenote{\eqref{pte:hm:bridge}--\eqref{pte:hm:R} are~\eqref{pte:rf:bridge}--\eqref{pte:rf:residual} at $a=1/2$, where $A_a$, $B_a$ are the two series~\eqref{pte:hm:AB} and $a^k=2^{-k}$. The leading $k$ coefficient is the leading form $\Lambda_{1/2}(N,k)^r/r!=(-k/4)^r/r!$ of Lemma~\ref{pte:ir:degrees}, and the bound $2i+j\le r$ is the weighting by which Section~\ref{pte:sec:rf} proves Theorem~\ref{pte:rf:main}, there in the coordinates $(N,K)$.}
+
+We use the probabilists' normalization~\cite{pte-dlmf-hermite}
+\begin{equation}\label{pte:hm:Hermite}
+ \exp(\xi v-v^2/2)=\sum_{r\ge0}\He_r(\xi)\frac{v^r}{r!}.
+\end{equation}
+In particular $\He_1=\xi$, $\He_2=\xi^2-1$ and $\He_3=\xi^3-3\xi$.
+
+\subsection{The limit with its first correction}
+\begin{theorem}\label{pte:hm:limit}
+For each fixed $r$, define the monic degree-$r$ polynomial
+\begin{equation}\label{pte:hm:normalization}
+ \mathcal Q_{r,N}(\xi)=(-1)^r r!\left(\frac{12}{N}\right)^{r/2}
+ R_{1/2,r,N}\left(\frac{2\sqrt N}{\sqrt3}\xi\right).
+\end{equation}
+Then, uniformly on every fixed compact real or complex $\xi$ set,
+\begin{equation}\label{pte:hm:expansion}
+ \mathcal Q_{r,N}(\xi)=\He_r(\xi)+N^{-1/2}G_r(\xi)+O_r(N^{-1}),
+\end{equation}
+where
+\begin{equation}\label{pte:hm:G}
+ G_r(\xi)=\frac{13\xi}{4\sqrt3}r(r-1)\He_{r-2}(\xi)
+       -\sqrt3\,r(r-1)(r-2)\He_{r-3}(\xi).
+\end{equation}
+A term with a zero falling-factorial multiplier is omitted. Equivalently,
+$r!(12/N)^{r/2}R_{1/2,r,N}(k)$ tends to $(-1)^r\He_r(\sqrt3 k/(2\sqrt N))$, uniformly for $0\le k\le C\sqrt N$ at each fixed $C$.
+\end{theorem}
+\begin{proof}
+Direct expansion of~\eqref{pte:hm:AB} gives
+\[
+ \log A_{1/2}(z)=-\frac{z^2}{24}+\frac{z^3}{24}+O(z^4),\qquad
+ \log B_{1/2}(z)=-\frac z4+\frac{3z^2}{32}+O(z^3).
+\]
+Set $z=w/\sqrt N$ and $k=2\sqrt N\xi/\sqrt3$. The exponent in~\eqref{pte:hm:R} becomes
+\begin{align*}
+ -\frac{w^2}{24}-\frac{\xi w}{2\sqrt3}
+ +N^{-1/2}\left(\frac{w^3}{24}+\frac{13\xi w^2}{48\sqrt3}\right)
+ +O_r(N^{-1}),
+\end{align*}
+uniformly on each fixed $w$ circle and compact $\xi$ set. Under $w=\sqrt{12}v$, the leading exponential is the generating function~\eqref{pte:hm:Hermite} at $-\xi$, and the first multiplier is
+\[
+ \sqrt3\,v^3+\frac{13\xi}{4\sqrt3}v^2.
+\]
+Coefficient extraction and $\He_j(-\xi)=(-1)^j\He_j(\xi)$ give~\eqref{pte:hm:expansion}--\eqref{pte:hm:G}. Only coefficients through degree $r$ are used, so this argument can also be read as finite polynomial algebra. The weighted-degree bound $2i+j\le r$ shows that the coefficients of $\mathcal Q_{r,N}$ are polynomials in $h=N^{-1/2}$, with no negative powers. Its leading $\xi$ coefficient is exactly one.
+\end{proof}
+
+\writenote{The leading term of~\eqref{pte:hm:expansion} is the weighted edge of Section~\ref{pte:sec:rf} at $a=1/2$, read as a scaling limit. There $c=-1$, and the top weighted part of $R_{1/2,r,N}$ (weights two and one for $N$ and $k$) is $[t^r]\exp(-kt/4-Nt^2/24)$; the substitutions $k=2\sqrt N\xi/\sqrt3$, $t=\sqrt{12/N}\,v$ turn it into $(N/12)^{r/2}\He_r(-\xi)/r!$, and the Hermite--Laguerre relations turn it into~\eqref{pte:rf:edgeeven}--\eqref{pte:rf:edgeodd} (times the top part $k/2$ of the factor $K$ when $r$ is odd). The first correction $G_r$ has no counterpart in Parts~\ref{pte:part:integer}--\ref{pte:part:defects}.}
+
+\subsection{All roots and an exact central factor}
+Let $\xi_1<\cdots<\xi_r$ be the real simple zeros of $\He_r$; their reality and simplicity follow from Gaussian orthogonality~\cite{pte-dlmf-zeros}.
+
+\begin{theorem}\label{pte:hm:roots}
+For each fixed $r\ge1$ and all sufficiently large real $N$, the polynomial $R_{1/2,r,N}$ has $r$ distinct real roots. They admit convergent expansions in powers of $N^{-1/2}$ after their leading $\sqrt N$ terms, and
+\begin{equation}\label{pte:hm:rootlocation}
+ k_j(N)=\frac{2\xi_j}{\sqrt3}\sqrt N
+                 -\frac{\xi_j^2}{6}-2(r-1)+O_r(N^{-1/2}).
+\end{equation}
+For every odd $r$, the central branch is exactly $k=-2(r-1)$ for all $N$.
+\end{theorem}
+\begin{proof}
+The polynomial $\mathcal Q_{r,N}$ is analytic in $h=N^{-1/2}$ and equals $\He_r$ at $h=0$. The analytic implicit-function theorem gives one real-analytic root branch near each $\xi_j$ for small real $h$. These branches remain real by conjugation and uniqueness, and they account for all roots because the degree is $r$.
+
+The first correction to a root is $-G_r(\xi_j)/\He_r'(\xi_j)$. For $r\ge3$, the Hermite recurrence and derivative identities give, at a root,
+\begin{align*}
+ \He_r'&=r\He_{r-1},\qquad
+ \He_{r-2}=\frac{\xi_j}{r-1}\He_{r-1},\\
+ \He_{r-3}&=\frac{\xi_j^2-r+1}{(r-1)(r-2)}\He_{r-1}.
+\end{align*}
+Thus
+\[
+ \frac{G_r(\xi_j)}{\He_r'(\xi_j)}
+   =\frac{\xi_j^2}{4\sqrt3}+\sqrt3(r-1).
+\]
+Rescaling to $k$ proves~\eqref{pte:hm:rootlocation}. The case $r=2$ follows directly from $\He_2=\xi^2-1$, and $r=1$ is exact because $R_{1/2,1,N}=-k/4$.
+
+For the exact odd factor, substitute $t=\log(1+z)$ in the coefficient integral~\eqref{pte:hm:R}. One obtains
+\begin{equation}\label{pte:hm:evenidentity}
+ R_{1/2,r,N}(k)=[t^r]\exp\!\left(-\frac{k+2(r-1)}4t\right)
+ \left(\frac{\sinh(t/4)}{t/4}\right)^k
+ \left(\frac{t/2}{\sinh(t/2)}\right)^{N+1}.
+\end{equation}
+The last two factors are even. When $r$ is odd, setting $k=-2(r-1)$ makes the coefficient zero identically in $N$, proving the asserted factor. Equivalently, under $z\mapsto-z/(1+z)$, $A_{1/2}$ is invariant, $B_{1/2}$ is multiplied by $\sqrt{1+z}$, and the Cauchy differential contributes $(-1)^r(1+z)^{r-1}$.
+\end{proof}
+
+\writenote{The last assertion and both of its proofs are the exact reflection factor of Section~\ref{pte:sec:shared} at $a=1/2$, where $K=k/2+r-1$: \eqref{pte:hm:evenidentity} is~\eqref{pte:rf:even}, and the reciprocal substitution is the one in the paragraph after it, with $(1+z)^{1-2a}=1$ and $(1+z)^{1-a}=\sqrt{1+z}$. The line $k=-2(r-1)$ is also recorded in the note after Theorem~\ref{pte:he:families}. The first two assertions are new.}
+
+For $r\ge2$, only the positive Hermite roots can yield admissible integer $k$ when $N$ is large. Negative roots give negative $k$, and the exact odd central root is also negative. Consequently there are at most $\lfloor r/2\rfloor$ admissible zero cells on each fixed-defect diagonal at every sufficiently large order. The root locations give shrinking, $O_r(N^{-1/2})$ neighborhoods of explicit shifted square-root curves; they do not assert integer nonvanishing.
+
+\subsection{How often exact cancellations can occur}
+\begin{corollary}\label{pte:hm:frequency}
+For every fixed $r\ge2$,
+\begin{equation}\label{pte:hm:count}
+ \#\{(N,k):r+1\le N\le X,\ 0\le k\le N-r,\ p_{N,N-r,k}=0\}
+ =O_r(\sqrt X).
+\end{equation}
+This order is sharp: the exact counts for defects two and three are respectively $\sqrt{X/3}+O(1)$ and $\sqrt X+O(1)$.
+\end{corollary}
+\begin{proof}
+The convergent analytic expansions in Theorem~\ref{pte:hm:roots}, rather than differentiation of an arbitrary error term, imply for every positive branch
+\[
+ k_j'(N)=\frac{\xi_j}{\sqrt3\sqrt N}+O_r(N^{-3/2})>0.
+\]
+Each branch is eventually strictly increasing and takes any integer $k$ at most once. Its range through $N\le X$ has length $O_r(\sqrt X)$, so it can produce only that many integer cancellations. The finitely many initial orders are absorbed in the constant.
+
+The first residuals are
+\begin{align}
+ R_{1/2,2,N}(k)&=\frac{3k^2+13k-4N+8}{96},\label{pte:hm:Rtwo}\\
+ R_{1/2,3,N}(k)&=-\frac{(k+4)(k^2+9k-4N+12)}{384}.\label{pte:hm:Rthree}
+\end{align}
+Their admissible exact roots are
+\begin{align*}
+ N&=(3k^2+13k+8)/4,\quad k\ge1,\ k\equiv0,1\pmod4,\\
+ N&=(k^2+9k+12)/4,\quad k\ge3,\ k\equiv0,3\pmod4.
+\end{align*}
+There are two admissible residue classes out of four. Since the largest $k$ is respectively $2\sqrt{X/3}+O(1)$ and $2\sqrt X+O(1)$, the asserted sharp constants follow.
+\end{proof}
+
+\writenote{The second assertion is a second route. By~\eqref{pte:hm:bridge}, the residuals~\eqref{pte:hm:Rtwo}--\eqref{pte:hm:Rthree} are source~26's~\eqref{pte:he:defecttwo}--\eqref{pte:he:defectthree}, the displayed roots are its families~\eqref{pte:he:familytwo}--\eqref{pte:he:familythree} (Theorem~\ref{pte:he:families}, which the note after it also derives from~\eqref{pte:rf:low}), and source~20's endpoint remark after Theorem~\ref{pte:ac:counts} gives the counts $\sqrt{X/3}+O(1)$ and $\sqrt X+O(1)$. The first assertion, by monotone root branches, is new; for $r\ge4$ it is superseded by Theorem~\ref{pte:rf:main} at $a=1/2$ and by Theorems~\ref{pte:hm:finite} and~\ref{pte:hm:allfinite} below, which give $O_r(1)$.}
+
+The fixed-defect restriction matters. At $r=1$, the exact reflection root $k=0$ occurs at every $N\ge2$, giving order $X$ cancellations instead. The theorem also does not assert that any particular higher defect has infinitely many integer cancellations.
+
+The positive root of $\He_2$ is one, so~\eqref{pte:hm:rootlocation} gives $k=2\sqrt{N/3}-13/6+O(N^{-1/2})$, matching~\eqref{pte:hm:Rtwo}. For $\He_3$, the positive root is $\sqrt3$, giving $k=2\sqrt N-9/2+O(N^{-1/2})$, matching~\eqref{pte:hm:Rthree}. Its central branch is the exact inadmissible root $k=-4$.
+
+\section{Finitely many cancellations on every defect \texorpdfstring{$r\ge4$}{r>=4} \src{35}}\label{pte:sec:hm-finite}
+\writenote{Both theorems of this section are Theorem~\ref{pte:rf:main} at $a=1/2$, proved by the same route: Siegel's theorem on genus-one quartics for defects four and five; Schur's irreducibility theorem, the branches at infinity and the three-pole form of Siegel's theorem from defect six on. They are printed as second routes. They differ from Section~\ref{pte:sec:rf} in carrying explicit integer data: source~35 works with $k$ itself (at $a=1/2$ the integrality of $\fq K=\widetilde K$ is that of $k$), its quartics have integer coefficients, and their discriminants are explicit integers instead of the parametric certificate of Lemma~\ref{pte:rf:smooth}. At $a=1/2$ the reflection line $k=-2(r-1)$ is nonphysical on every defect $r\ge2$ (Section~\ref{pte:sec:rf}, after~\eqref{pte:rf:line}), so the exclusion in Theorem~\ref{pte:rf:main} is empty and the two statements coincide.}
+
+\subsection{Defects four and five}
+The square-root bound need not be sharp at higher defects. Here the first two further defects admit a stronger arithmetic conclusion.
+
+\begin{theorem}[Second route to Theorem~\ref{pte:rf:main} at $a=1/2$, $r=4,5$]\label{pte:hm:finite}
+For each $r\in\{4,5\}$, there are only finitely many pairs of integers
+\[
+ N\ge r+1,\qquad 0\le k\le N-r
+\]
+for which $p_{N,N-r,k}=0$. In particular, all coefficients on either diagonal are nonzero for every sufficiently large $N$, and the count in~\eqref{pte:hm:count} is $O(1)$ for these two defects. This proof does not provide a numerical threshold or a complete list of the finitely many possible cancellations.
+\end{theorem}
+\begin{proof}
+Expanding the exact residual~\eqref{pte:hm:R} through degree five gives
+\begin{align*}
+ 92160R_{1/2,4,N}(k)
+ &=80N^2-(120k^2+1480k+4128)N\\
+ &\quad+15k^4+390k^3+3485k^2+12558k+15232,\\
+ -\frac{368640R_{1/2,5,N}(k)}{k+8}
+ &=80N^2-(40k^2+680k+2368)N\\
+ &\quad+3k^4+106k^3+1277k^2+6102k+9840.
+\end{align*}
+The second identity is polynomial division by the exact odd central factor; $k+8$ is nonzero in the physical domain.
+
+For defect four, put $\widetilde K=k+6$ and $Z_4=20N-15\widetilde K^2-5\widetilde K+54$. Then exactly
+\begin{equation}\label{pte:hm:quarticfour}
+ R_{1/2,4,N}(k)=\frac{Z_4^2-\varphi_4(\widetilde K)}{460800},\qquad
+ \varphi_4(\widetilde K)=150\widetilde K^4-120\widetilde K^2-30\widetilde K+196.
+\end{equation}
+Thus cancellation cells inject into integer points on $Z_4^2=\varphi_4(\widetilde K)$, and the inverse admissibility conditions are
+\begin{equation}\label{pte:hm:admissfour}
+ \widetilde K\ge6,\qquad N=\frac{15\widetilde K^2+5\widetilde K-54+Z_4}{20}\in\mathbb Z,
+ \qquad N\ge\max(5,\widetilde K-2).
+\end{equation}
+The signed coordinate $Z_4$ includes both quadratic-formula branches.
+
+For defect five, put $\widetilde K=k+8$ and $Z_5=20N-5\widetilde K^2-5\widetilde K+64$. One obtains
+\begin{equation}\label{pte:hm:quarticfive}
+ R_{1/2,5,N}(k)=-\frac{\widetilde K\bigl(Z_5^2-\varphi_5(\widetilde K)\bigr)}{1843200},\qquad
+ \varphi_5(\widetilde K)=10\widetilde K^4-40\widetilde K^2-30\widetilde K+256.
+\end{equation}
+Here $\widetilde K\ge8$, and the inverse conditions are
+\begin{equation}\label{pte:hm:admissfive}
+ N=\frac{5\widetilde K^2+5\widetilde K-64+Z_5}{20}\in\mathbb Z,
+ \qquad N\ge\max(6,\widetilde K-3).
+\end{equation}
+Both correspondences are injective because $k$ and $N$ are recovered from the displayed coordinates.
+
+The exact quartic discriminants are
+\[
+ \operatorname{disc}(\varphi_4)=4941729621000000,\qquad
+ \operatorname{disc}(\varphi_5)=2925054216000.
+\]
+They are nonzero. Hence both quartics are squarefree, and each affine curve is nonsingular and geometrically integral. Its smooth projective completion has genus one: the degree-two map to the $\widetilde K$-line has four simple branch points, so Riemann--Hurwitz gives $2g-2=-4+4=0$.
+
+Siegel's integral-point theorem, for example in Lang's formulation~\cite[Theorem 4]{pte-lang}, implies that a genus-one curve over $\mathbb Q$ has only finitely many rational points at which its nonconstant coordinate $\widetilde K$ is integral. In particular there are only finitely many integral pairs on each displayed quartic. The injective correspondences prove the theorem. No complete integral-point enumeration is needed for this finiteness argument.
+\end{proof}
+
+\writenote{At $a=1/2$ the parameters~\eqref{pte:rf:parameters} are $c=-1$, $b=-1$, $e=3/8$, $f_4=-9/8$ and $f_5=-3/2$. With $\widetilde K=2K$, the two expansions above are~\eqref{pte:rf:r4} multiplied by $16$ and~\eqref{pte:rf:r5} multiplied by $-32/(k+8)=-16/K$; the square coordinates are $Z_4=-4Y_4$ and $Z_5=-4Y_5$; and $\varphi_4$, $\varphi_5$ are $16$ times the right-hand sides of~\eqref{pte:rf:q4} and~\eqref{pte:rf:q5}. Lemma~\ref{pte:rf:smooth} proves squarefreeness for every positive rational $a$; the two discriminants above make it explicit at $a=1/2$. The write checked these relations exactly.}
+
+The structural points $(\widetilde K,Z_4)=(6,-436)$ and $(\widetilde K,Z_5)=(8,-196)$ give respectively $N=4$ and $N=5$; they are outside the stated physical domains. The theorem does not assert that the admissible finite sets are empty.
+
+\subsection{An explicit elliptic model for defect four}\label{pte:sec:hm-elliptic}
+For further arithmetic work, the quartic in~\eqref{pte:hm:quarticfour} is birational to
+\begin{equation}\label{pte:hm:elliptic}
+ \mathsf V^2=\mathsf U^3-122400\mathsf U+9415000.
+\end{equation}
+For $\widetilde K\ne0$, set
+\[
+ \mathsf X=\frac{28(Z_4+14)-30\widetilde K}{\widetilde K^2},\quad \mathsf U=\mathsf X-40,\quad
+ \mathsf V=\frac{(\mathsf X^2-117600)\widetilde K+30\mathsf X}{28}.
+\]
+Conversely, with $\mathsf X=\mathsf U+40$,
+\[
+ \widetilde K=\frac{28\mathsf V-30\mathsf X}{\mathsf X^2-117600},\qquad
+ Z_4=\frac{\mathsf X\widetilde K^2+30\widetilde K-392}{28}.
+\]
+The inverse denominator never vanishes at a rational $\mathsf X$, because $117600=(140\sqrt6)^2$ is not a rational square. The elliptic point at infinity corresponds to $(\widetilde K,Z_4)=(0,14)$; the other quartic point $(0,-14)$ corresponds to $(\mathsf U,\mathsf V)=(15905/196,356175/2744)$. The elliptic discriminant is $79067673936000000$.
+
+A complete zero classification would require the integral quartic coordinates and the conditions~\eqref{pte:hm:admissfour}, not merely integral points on~\eqref{pte:hm:elliptic}. Indeed, the integral quartic point $(6,-436)$ maps to the nonintegral elliptic point $(-3359/9,-47611/27)$. The accompanying checker verifies both birational directions and the exceptional points exactly; it makes no claim of integral-point completeness.
+
+\writenote{Section~\ref{pte:sec:rf} has no Weierstrass model; this one is new. ``The accompanying checker'' is \texttt{code/\allowbreak{}35-\allowbreak{}hermite-\allowbreak{}birational\_\allowbreak{}model.\allowbreak{}py}, whose record also lists the images of the quartic points with $\widetilde K\in\{-1,0,1,6\}$; the other integral point $(6,436)$, which gives no integer $N$, maps to the integral point $(305,675)$.}
+
+\begin{remark}[\textbf{[write]} The delivered README on the elliptic model]\label{pte:hm:rem:readme}
+Added 5 October 2026, batch~100. Source~35's README (not shipped) says that ``a verified birational elliptic model is included for defect 4, with its integrality and admissibility conditions preserved''. Read as the statement that the birational map carries integral points of the quartic to integral points of~\eqref{pte:hm:elliptic}, it is false: the integral quartic point $(\widetilde K,Z_4)=(6,-436)$ maps to $(\mathsf U,\mathsf V)=(-3359/9,-47611/27)$. Indeed $\mathsf X=(28\cdot(-422)-180)/36=-2999/9$, so $\mathsf U=-3359/9$. What the article proves, and what the README's sentence can only mean, is that the integrality of $(\widetilde K,Z_4)$ and the conditions~\eqref{pte:hm:admissfour} travel with the model as side conditions that must be imposed on the quartic side, as the paragraph above says.
+\end{remark}
+
+\subsection{Every higher defect}
+The genus-one reductions settle the two smallest cases. For all remaining defects, the number of branches at infinity is sufficient; the genus need not be calculated.
+
+\begin{theorem}[Second route to Theorem~\ref{pte:rf:main} at $a=1/2$]\label{pte:hm:allfinite}
+For every fixed integer $r\ge4$, the set
+\[
+ \{(N,k)\in\mathbb Z^2:N\ge r+1,\ 0\le k\le N-r,
+                       \ p_{N,N-r,k}=0\}
+\]
+is finite. Hence every fixed defect $r\ge4$ is free of cancellations at all sufficiently large derivative orders. The conclusion does not provide a numerical threshold or a complete finite list.
+\end{theorem}
+
+\begin{proof}
+The cases $r=4,5$ are Theorem~\ref{pte:hm:finite}. Fix $r\ge6$ and put $m=\lfloor r/2\rfloor\ge3$. Define a polynomial over $\mathbb Q$ by
+\[
+ \widehat F_r(N,k)=
+ \begin{cases}
+ R_{1/2,r,N}(k),&r\text{ even},\\
+ R_{1/2,r,N}(k)/(k+2(r-1)),&r\text{ odd}.
+ \end{cases}
+\]
+The odd quotient is polynomial by~\eqref{pte:hm:evenidentity}, and its discarded factor cannot vanish at a physical $k\ge0$.
+
+\emph{Irreducibility over $\mathbb Q$.}
+Assign weight two to $N$ and weight one to $k$. The highest-weight part of $R_{1/2,r,N}(k)$ is
+\[
+ [t^r]\exp(-kt/4-Nt^2/24).
+\]
+Consequently the highest-weight part $\widehat E_r(N,k)$ of $\widehat F_r$ has weight $2m$. The Hermite--Laguerre relations~\cite{pte-dlmf18} give exactly
+\begin{align}
+ \widehat E_{2m}(N,k)
+ &=\frac{(-1)^m m!}{(2m)!}
+       \left(\frac N6\right)^m
+       L_m^{(-1/2)}\left(\frac{3k^2}{8N}\right),\label{pte:hm:evenedge}\\
+ \widehat E_{2m+1}(N,k)
+ &=\frac{(-1)^{m+1}m!}{4(2m+1)!}
+       \left(\frac N6\right)^m
+       L_m^{(1/2)}\left(\frac{3k^2}{8N}\right).\label{pte:hm:oddedge}
+\end{align}
+These rational expressions are polynomials after expansion. Schur proved that $L_m^{(-1/2)}$ and $L_m^{(1/2)}$ are irreducible over $\mathbb Q$ for every $m\ge1$; see the explicit account in~\cite[pp.~1--2]{pte-schur}. Thus the reciprocal polynomials
+\[
+ v^mL_m^{(\pm1/2)}(3/(8v))
+\]
+are irreducible over $\mathbb Q[v]$. Irreducibility persists over the purely transcendental field $\mathbb Q(k)$, and the substitution $v=N/k^2$ shows that $\widehat E_r$ is irreducible in $\mathbb Q(k)[N]$. Its leading $N$ coefficient is a nonzero rational constant, so Gauss's lemma gives irreducibility in $\mathbb Q[N,k]$.
+
+In any factorization of $\widehat F_r$ over $\mathbb Q[N,k]$, the highest weighted parts multiply to $\widehat E_r$. A nonconstant polynomial has positive weighted degree. Therefore one factor must have weight zero and be constant, proving $\widehat F_r$ irreducible over $\mathbb Q$.
+
+\emph{Distinct poles at infinity.}
+The Laguerre zeros for parameters $\pm1/2$ are positive and simple by orthogonality. Hence $\widehat E_r(v,1)$ has $m$ distinct nonzero roots $\alpha_1,\ldots,\alpha_m$. Set $t=1/k$, $N=v/t^2$. The polynomial
+\[
+ t^{2m}\widehat F_r(v/t^2,1/t)
+\]
+is analytic at $t=0$ and equals $\widehat E_r(v,1)$ there. The implicit-function theorem yields $m$ distinct convergent branches
+\begin{equation}\label{pte:hm:infinity}
+ v=v_i(t),\quad v_i(0)=\alpha_i,\qquad
+ k=t^{-1},\quad N=t^{-2}v_i(t).
+\end{equation}
+Each branch defines a distinct point of the smooth projective normalization and has local parameter $t$. In particular $k$ has a simple pole at each of these $m$ points. The degree in $N$ is $m$, with nonzero constant leading coefficient, so these exhaust the branches above $k=\infty$.
+
+\emph{Integral points.}
+First suppose $\widehat F_r$ is not absolutely irreducible. Its absolute components are permuted transitively by Galois because $\widehat F_r$ is irreducible over $\mathbb Q$. A rational point on one component also belongs to all its Galois conjugates. Distinct components have only finitely many intersection points, so in this case there are already only finitely many rational affine points.
+
+Otherwise let $C$ be the smooth projective normalization of the absolutely irreducible curve. The affine singular points are finite, and every nonsingular rational affine point lifts uniquely to $C(\mathbb Q)$. The rational function $k$ on $C$ has at least three distinct geometric poles by~\eqref{pte:hm:infinity}. The three-pole form of Siegel's theorem~\cite[Theorem 1.1]{pte-levin} therefore makes the set
+\[
+ \{P\in C(\mathbb Q):k(P)\in\mathbb Z\}
+\]
+finite, regardless of the genus. This includes all integral affine points except the already finite singular set. Finally,~\eqref{pte:hm:bridge} has a strictly positive nonzero prefactor throughout the physical domain. Thus its cancellation cells form a finite set, as claimed.
+\end{proof}
+
+\writenote{This is the proof of Theorem~\ref{pte:rf:main} for $r\ge6$ (Section~\ref{pte:sec:rf}) at $a=1/2$, step for step, with $k$ integral in place of $\fq K$ integral. Because source~35 divides by $k+2(r-1)=2K$ where source~20r divides by $K$, one has $\widehat E_r(N,k)=E_r(N,k/2)$ for even $r$ and $E_r(N,k/2)/2$ for odd $r$, with $c=-1$ in~\eqref{pte:rf:edgeeven}--\eqref{pte:rf:edgeodd}; the write checked this exactly for $2\le r\le8$. For $r\ge6$ the statement is also Theorem~\ref{pte:ac:algebraic} with $D=1$.}
+
+\subsection{The finite-versus-infinite table and a window count}\label{pte:sec:hm-table}
+For clarity, the complete finite-versus-infinite distinction on fixed defects is
+\[
+\begin{array}{c|c}
+\text{fixed defect}&\text{cancellations through order }X\\ \hline
+ r=0&0\\
+ r=1&X+O(1)\quad(k=0)\\
+ r=2&\sqrt{X/3}+O(1)\\
+ r=3&\sqrt X+O(1)\\
+ r\ge4&O_r(1).
+\end{array}
+\]
+The constants in the last row may depend on $r$. This does not give a bound uniform when the defect grows with the derivative order.
+In particular, in any fixed edge window $0\le r\le R$ with $R\ge3$, the total number of cancellation cells through order $X$ is
+\begin{equation}\label{pte:hm:window}
+ X+\left(1+\frac1{\sqrt3}\right)\sqrt X+O_R(1).
+\end{equation}
+At all sufficiently large orders, cancellations in that fixed window are confined to defects one, two and three.
+
+\writenote{The rows $r=0,1$ are $R_{1/2,0,N}=1$ and the defect-one remark before Theorem~\ref{pte:he:families}; the rows $r=2,3$ are Theorem~\ref{pte:he:families} with source~20's endpoint count; the row $r\ge4$ is Theorem~\ref{pte:rf:main} at $a=1/2$. The window count~\eqref{pte:hm:window} follows from these. It is the endpoint $a=1/2$ of Corollary~\ref{pte:ac:window}, which is stated for $1/2<a<1$ and does not specialize: its linear term $\lceil R/2\rceil X/\fp$ counts an infinite reflection family on every odd defect, whereas at $a=1/2$ only defect one has one (Section~\ref{pte:sec:rf}, after~\eqref{pte:rf:line}); and its square-root term, $2/\sqrt3+2$ at $\fp=1$, $C=4$, $S_2=S_3=2$, must be halved at the endpoint, as source~20 says, to $1+1/\sqrt3$.}
+
+\writenote{\emph{Finite evidence, not a theorem} (5 October 2026). (a)~The write searched the two quartics for integral points on the physical side, $6\le\widetilde K\le2\cdot10^6$ for $\varphi_4$ and $8\le\widetilde K\le2\cdot10^6$ for $\varphi_5$, by exact integer square roots. $\varphi_4(\widetilde K)$ is a square only at $\widetilde K=6$ and $\varphi_5(\widetilde K)$ only at $\widetilde K=8$; both signs of the square root give $N=4$, $N=5$ or a non-integer $N$. On the physical side $\sqrt{\varphi_4}<\sqrt{150}\,\widetilde K^2$ and $\sqrt{\varphi_5}<\sqrt{10}\,\widetilde K^2$, so by~\eqref{pte:hm:admissfour}--\eqref{pte:hm:admissfive} a physical cell has $N>((15-\sqrt{150})\widetilde K^2+5\widetilde K-54)/20$, respectively $N>((5-\sqrt{10})\widetilde K^2+5\widetilde K-64)/20$, and $\widetilde K>2\cdot10^6$ forces $N>5.5\cdot10^{11}$, respectively $N>3.6\cdot10^{11}$. Hence defect four has no cancellation with $N\le5.5\cdot10^{11}$, and defect five none with $N\le3.6\cdot10^{11}$. The placement intake's search of all $|\widetilde K|\le2\cdot10^6$ found $8$ and $12$ integral points, none physical; one of them, $(\widetilde K,Z_5)=(-14,614)$, gives $N=73$ and $k=-22$. (b)~The write ran the derivative recurrence of $x^{\sqrt x}$ modulo the primes $10^9+7$ and $998244353$ on defects $0$ to $8$ for $N\le4000$. No coefficient on defects four to eight vanishes modulo either prime, so none vanishes. On defects one to three the zeros modulo each prime are exactly the line $k=0$ and the two families of Theorem~\ref{pte:he:families} (35 and 60 cells), each confirmed by the exact residuals. The placement intake's exact scan of defects six to eight for $N\le2000$ also found no zero, and source~26's scan found none off defects one to three for $N\le150$ (Section~\ref{pte:sec:verification}). The programs of (a) and (b) are not shipped. This is evidence for Question~\ref{pte:hm:q:threshold} of Section~\ref{pte:sec:hm-questions}; it proves no statement about all $N$.}
+
+\section{Scope, verification and questions \src{35}}\label{pte:sec:hm-scope}
+\subsection{Source position and scope}\label{pte:sec:hm-position}
+This note is a continuation of the derivative-support program in the inspected ProveIt source~\cite{pte-host}. The Hermite normalization and its general orthogonal-polynomial facts are classical. The contribution here is the exact residual for this derivative family, its explicit correction and root shifts, the exact odd factor, the resulting fixed-defect arithmetic sparsity bound, and finite cancellation at every fixed defect $r\ge4$. The arithmetic argument applies the classical Schur and Siegel theorems to the residual curves. No exhaustive priority claim is made. The complete finite exceptional lists at higher defects, estimates with $r$ growing with $N$, and numerical effective thresholds remain open. The proof is not a proof-assistant formalization or an externally refereed publication.
+
+\begin{remark}[\textbf{[write]} The contribution sentence, corrected]\label{pte:hm:rem:contribution}
+Added 5 October 2026, batch~100. Against this report, the contribution sentence above overstates novelty. Of the five items it names, three were proved here before source~35 reached the repository. The exact residual is~\eqref{pte:rf:bridge}--\eqref{pte:rf:residual} at $a=1/2$ (source~20r, with source~16's Lemma~\ref{pte:ir:degrees}). The exact odd factor is the reflection factor of~\eqref{pte:rf:even} (source~20r). Finite cancellation at every fixed defect $r\ge4$ is Theorem~\ref{pte:rf:main} at $a=1/2$ (source~20r), whose exclusion of $K=0$ is empty there. The defect-two and defect-three formulas and counts in Corollary~\ref{pte:hm:frequency} are Theorem~\ref{pte:he:families} (source~26) with source~20's endpoint remark. The other two items are new: the explicit correction $G_r$ with the root shifts (and the eventual simple real-rootedness behind them), and the sparsity bound~\eqref{pte:hm:count}, by monotone root branches, which for $r\ge4$ is superseded by finiteness. Also new, though the sentence does not name them, are the bound of $\lfloor r/2\rfloor$ zeros per large order, the Weierstrass model~\eqref{pte:hm:elliptic}, the explicit integer quartics with their discriminants, and the endpoint window count~\eqref{pte:hm:window}. The sentence was accurate relative to its pin \texttt{ca81647a9}, at which this report did not exist (it was opened in \texttt{d292c6765} later that day), and source~35 was written a few minutes before source~20r (Section~\ref{pte:sec:hm-provenance}). The correction concerns novelty within the repository, not priority between the two notes, which neither establishes.
+\end{remark}
+
+\subsection{Verification}\label{pte:sec:hm-verification}
+The accompanying symbolic checker derives the residuals from~\eqref{pte:hm:R} and verifies, for $r=0,\ldots,10$, the weighted-degree bound, exact monicity, Hermite leading term, and first correction~\eqref{pte:hm:G}. It also checks the exact odd factor, root-shift identity, and both weighted Laguerre-edge identities. A separate standard-library checker verifies 11,935 Bell-normalization identities through $N=50$, $r\le10$, using the integer derivative recurrence and direct rational $A/B$ products. The quartic checker separately verifies both completion-of-square identities and discriminants, and the birational checker verifies the displayed elliptic maps. All recorded outputs are supplied with the source. These finite checks support the formulas; the all-fixed-$r$ proof rests on the exact generating identity and analytic dependence.
+
+\writenote{Source~35's README adds that the finite checks ``do not establish infinite nonvanishing, supply a complete integral-point enumeration, or constitute proof-assistant formalization'', that the Hermite, Schur and Siegel inputs are classical, and that its source comparison is ``relative to the pinned ProveIt manuscript, without an exhaustive priority claim''. Its statements that every rendered page was inspected and that ``the proofs and final transcription were independently reviewed before sealing'' are the source's own; the repository has not repeated such a review.
+
+The four programs, each shipped in \texttt{code/} with its record in \texttt{data/} under the prefix \texttt{35-\allowbreak{}hermite-}, are \texttt{verify\_\allowbreak{}hermite.\allowbreak{}py} with \texttt{hermite\_\allowbreak{}checks.\allowbreak{}json} (SymPy); \texttt{check\_\allowbreak{}bell\_\allowbreak{}normalization.\allowbreak{}py} with \texttt{check\_\allowbreak{}bell\_\allowbreak{}normalization.\allowbreak{}json} (standard library); \texttt{check\_\allowbreak{}quartics.\allowbreak{}py} with \texttt{check\_\allowbreak{}quartics.\allowbreak{}json} (SymPy; it reads \texttt{hermite\_\allowbreak{}checks.\allowbreak{}json} from its own directory, so the first program must run before it); and \texttt{birational\_\allowbreak{}model.\allowbreak{}py} with \texttt{birational\_\allowbreak{}model.\allowbreak{}json} (SymPy). Each writes its record beside itself under its delivered name. On 5 October 2026 the write reran all four on a copy under their delivered names (SymPy 1.14.0, Python 3.13.5, about 35 seconds in all); every output equals the shipped record after removing the carriage returns that Windows adds. Text in this Part marked as checked by the write, and the evidence at the end of Section~\ref{pte:sec:hm-table}, rests on the write's own programs, which are not shipped.}
+
+\subsection{Further questions and research}\label{pte:sec:hm-questions}
+\writenote{Under Vladimir's standing rule of 4 October 2026, every claim that source~35 leaves unproved is stated here as an open question, with its source, its sketch and what is missing. Source~35 has no demonstrably wrong mathematical claim. Its overstated contribution sentence is corrected in Remark~\ref{pte:hm:rem:contribution}, and its README's wording on the elliptic model in Remark~\ref{pte:hm:rem:readme}. Questions~\ref{pte:hm:q:threshold} and~\ref{pte:hm:q:growing} are items 2 and 3 of Section~\ref{pte:sec:openlist} at $a=1/2$, where sources 20r, 20 and 16 also leave them open.}
+\begin{enumerate}
+\item\label{pte:hm:q:threshold} \emph{Effective thresholds and the finite exceptional lists} (source~35, Theorems~\ref{pte:hm:finite} and~\ref{pte:hm:allfinite} and its closing paragraph). For each $r\ge4$, give an explicit $N_0(r)$ beyond which defect $r$ of $x^{\sqrt x}$ is free of cancellations, and the complete list below it. Siegel's theorem in Lang's and Levin's forms is ineffective, so the proofs give neither. For $r=4,5$ an effective method exists in principle (Baker's bounds for integral points on genus-one curves); for $r\ge6$ the genus of $\widehat F_r=0$ is not computed and Levin's three-pole argument is ineffective. The finite evidence at the end of Section~\ref{pte:sec:hm-table} (no cancellation on defect four for $N\le5.5\cdot10^{11}$, on defect five for $N\le3.6\cdot10^{11}$, on defects four to eight for $N\le4000$) suggests the question: are all these exceptional sets empty?
+\item\label{pte:hm:q:integral} \emph{All integral points of the two quartics} (the write's formulation of what would settle Question~\ref{pte:hm:q:threshold} for $r=4,5$). Determine every integral point of $Z_4^2=150\widetilde K^4-120\widetilde K^2-30\widetilde K+196$ and of $Z_5^2=10\widetilde K^4-40\widetilde K^2-30\widetilde K+256$, then apply~\eqref{pte:hm:admissfour}--\eqref{pte:hm:admissfive}. Source~35 supplies the Weierstrass model~\eqref{pte:hm:elliptic} for the first and none for the second, and warns that integral points of the model are not the integral points of the quartic. Missing: a complete integral-point computation on the quartics (for instance by elliptic logarithms with the Mordell--Weil group of~\eqref{pte:hm:elliptic}, or by a direct quartic method), and a model for defect five.
+\item\label{pte:hm:q:growing} \emph{Defects growing with $N$} (source~35: ``estimates with $r$ growing with $N$ \ldots\ remain open''; the constants $O_r(\cdot)$ of Theorems~\ref{pte:hm:limit}--\ref{pte:hm:roots}, Corollary~\ref{pte:hm:frequency} and the table depend on $r$). Find estimates uniform in $r$, for instance in a range $r\le\varepsilon\sqrt N$, which would bear on the zero classification of Part~\ref{pte:part:half}.
+\item\label{pte:hm:q:other} \emph{Hermite limits at other exponents} (the write's outlook, not a claim of source~35). For $0<a<1$ one has $c=(a-1)(2a+1)<0$, and the top weighted part $[t^r]\exp(-Kt/2+cNt^2/24)$ of $R_{a,r,N}$ (Section~\ref{pte:sec:rf}) becomes $(|c|N/12)^{r/2}\He_r(-\xi)/r!$ under $K=\xi\sqrt{|c|N/3}$ and $t=\sqrt{12/(|c|N)}\,v$. Since every other monomial of $R_{a,r,N}$ has lower weight, the leading term of Theorem~\ref{pte:hm:limit} therefore holds for every $0<a<1$ in the variable $\xi=K\sqrt{3/(|c|N)}$, by the argument of Theorem~\ref{pte:hm:limit}; at $a=1/2$ it is source~35's. Open: the first correction and the root shifts for $a\ne1/2$, in particular for rational $1/2<a<1$, where an odd defect carries the reflection family $K=0$ as the central Hermite root and defects two and three carry the infinite families of Corollary~\ref{pte:rf:infinite}.
+\end{enumerate}
 
 \begin{thebibliography}{99}
 \bibitem{pte-host}
@@ -2232,6 +2666,11 @@ A. Levin, \emph{Siegel's theorem and the Shafarevich conjecture}, Journal de Th\
 S. Lang, \emph{Integral points on curves}, Publications Math\'ematiques de l'IH\'ES \textbf{6} (1960), 27--43, Theorem 4. \url{https://www.numdam.org/article/PMIHES_1960__6__27_0.pdf}.
 \bibitem{pte-milne}
 J. S. Milne, \emph{Elliptic Curves}, BookSurge, 2006, Chapter I, Theorem 1.18 (B\'ezout), p.~13. \url{https://www.jmilne.org/math/Books/ectext6.pdf}.
+\bibitem{pte-dlmf-hermite}
+F. W. J. Olver et al., eds., \emph{NIST Digital Library of Mathematical Functions}, equation 18.12.16, probabilists' Hermite generating function. \url{https://dlmf.nist.gov/18.12.E16}.
+\bibitem{pte-dlmf-zeros}
+F. W. J. Olver et al., eds., \emph{NIST Digital Library of Mathematical Functions}, Section 18.2(vi), zeros of orthogonal polynomials. \url{https://dlmf.nist.gov/18.2\#vi}.
 \end{thebibliography}
 \mergenote{The bibliography merges the sources' own. Each source's entry for the host became~\cite{pte-host}; source 34's two DLMF entries and sources 28, 31 and 26's single one became~\cite{pte-dlmf4}; source 20's entry for its companion became references to Section~\ref{pte:sec:rf}.}
+\writenote{Added 5 October 2026, batch~100. Source~35's entries for Lang, the DLMF Laguerre relations, Schur, Levin and the host are~\cite{pte-lang}, \cite{pte-dlmf18}, \cite{pte-schur}, \cite{pte-levin} and~\cite{pte-host} (its host entry abbreviates the pin to \texttt{ca81647a9f67}); its other two DLMF entries are~\cite{pte-dlmf-hermite} and~\cite{pte-dlmf-zeros}.}
 \end{document}
