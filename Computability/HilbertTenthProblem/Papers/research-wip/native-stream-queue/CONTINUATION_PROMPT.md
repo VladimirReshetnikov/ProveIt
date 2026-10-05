@@ -173,6 +173,19 @@
 > improvement. The universal84/187 and85/155 points remain unchanged.
 >
 >
+> The [cross-block multiplication bound](complete84_cross_block_next.md)
+> and [independent review](review_complete84_cross_block_next.md) show that
+> six retained scale/first-norm/index monomials require at least eight
+> multiplications from their stated paid coordinates, even if q² is dropped
+> as an extra output. The current eight rows attain the bound. A fixed-mask
+> refactor reconstructs an identical full polynomial at84=47M+37A, with all
+> 84 rows and25 supplied ports live; it is an exact tie. Fresh author normal/
+> optimized checks and independent proof challenges pass; root reads frozen
+> evidence inertly. Additions, cancellation, outside donors and changed output
+> coordinates lie outside the lower bound, so no full-circuit optimality or
+> new arithmetic saving is claimed.
+>
+>
 > The [atom-action Part III publication review](review_atom_write_03683e579.md)
 > at **03683e579** checks the complete guide diff and1588 selected article
 > lines covering rooted codes, definable kernels, presentation effectivity,
