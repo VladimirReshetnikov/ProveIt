@@ -173,6 +173,9 @@
 > improvement. The universal84/187 and85/155 points remain unchanged.
 >
 >
+> The [Beyond-Ord horizons placement review](review_beyond_ord_horizons_placement_6571ee1af.md) authenticates all nine original members and five exact ancillary placements at6571ee1af, including four internal hashes and17 inherited read spans. Part XVII is a planned assignment at that checkpoint: the host guide, article and PDF are unchanged, despite the commit wording “printed whole.” The finite-tree arithmetic is relative to supplied ordinal coefficient operations; the natural-coefficient demo provides no paid fixed-arity history. Full source proofs, supplied tests and PDFs remain unreviewed. Root independently checks39 byte records and34 spans and rereads the216-line selected arithmetic interface.
+>
+>
 > The [Beyond-Ord Part XVI publication review](review_beyond_ord_write_62b16914e.md), with [independent GB proof challenge](review_beyond_ord_gb_62b16914e.md) and [root correction/build record](review_beyond_ord_write_62b16914e_root.md), checks the selected choice-free history and completion chain at62b16914e, including internal finite-code induction. Three metadata errors are corrected and retained as numbered remarks:1,665 manuscript lines within2,468 archive lines, the actual Mathlibv4.32 pin, and the script output beside itself. Four archives/27members,13placements and227source-label routes authenticate; all2,188labels survive the correction and the994-page PDF rebuild. Full Part XVI, truth/separation/spectrum proofs and supplied programs remain outside the review. Class-order syntax supplies no paid fixed-arity ordinary-integer compiler or operation improvement.
 >
 >
