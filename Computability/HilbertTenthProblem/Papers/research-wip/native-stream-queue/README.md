@@ -158,6 +158,19 @@ or46 witnesses/SOS224/degree52. Native AND remains in the loader, so a
 cheaper loading/accepting-history compiler is still needed for a universal
 improvement. The universal84/187 and85/155 points remain unchanged.
 
+The [gamma83 radical-order theorem](gamma83_next_arithmetic.md) and its
+[independent proof challenge](review_gamma83_radical_order.md) prove that
+removing repeated prime factors from the actual modulus H changes the
+ordinary-input alias period by only1,3 or9. On the genuine constructed
+histories with v3(H)=1, the period is exactly unchanged. A fixed-cofactor
+bound broadens the conditional H=3p target to **H=3p^e**, which still forces
+m to divide3; C=15 also gives m|3 and C=9 gives m|9. Actual occurrence of
+these factorizations in the native half-binomial history is unproved.
+The H=75 separation from older power tests is explicitly nonnative.
+Root authenticates seven dependencies and challenges both proofs without
+replaying saved helpers. Independent-gamma83 remains unresolved and the
+proved universal minimum-operation point remains84/187/18.
+
 The [new Beyond Ord package review](review_beyond_ord_package_d7cf7d554.md)
 at **d7cf7d554** authenticates nine members and four delivered checksum
 bindings. Selected GB localization, finite-support powers, hereditary-tree
@@ -5688,6 +5701,7 @@ New research and the completed75-operation construction:
 
 | Artifact | Established result | Remaining boundary |
 |---|---|---|
+| [Gamma83 radical order](gamma83_next_arithmetic.md), [review](review_gamma83_radical_order.md) | Exact radical quotient1/3/9; fixed-cofactor prime-power bounds, including H=3p^e ⇒ m divides3 | Conditional on native history factorization; no occurrence, false-input zero or operation saving proved |
 | [Beyond Ord package intake](review_beyond_ord_package_d7cf7d554.md) | Selected GB constructor/interface challenge; nine members, four hash bindings and exact read scopes | Relative ordinal primitives are unpaid; omitted proofs and supplied programs unreviewed; no universal bound change |
 | [Hat-seed definition correction](review_hat_seed_definition_correction.md) and [root challenge](review_hat_seed_definition_correction_root.md) | Atom-count reading fails for uniform and one-atom mixed laws; explicit cap1 counterexample; probability-one finite support repairs exclusion | Earlier no-correction assessments qualified and retained; abstract quantifier clarified; host manuscript write still pending |
 | [Four Borel-report placement reviews](review_borel_placement_54ece48ab.md) |21 changed paths,17 exact ancillary copies,33 members and29 checksums; unchanged guide/article/PDF with17Parts | XVIII–XXI remain intended writes; inherited proof scopes, broken flow reference and pending qualifications retained |

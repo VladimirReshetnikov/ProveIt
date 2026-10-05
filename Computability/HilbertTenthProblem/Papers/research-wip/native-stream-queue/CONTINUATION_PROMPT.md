@@ -173,6 +173,20 @@
 > improvement. The universal84/187 and85/155 points remain unchanged.
 >
 >
+> The [gamma83 radical-order theorem](gamma83_next_arithmetic.md) and its
+> [independent proof challenge](review_gamma83_radical_order.md) prove that
+> removing repeated prime factors from the actual modulus H changes the
+> ordinary-input alias period by only1,3 or9. On the genuine constructed
+> histories with v3(H)=1, the period is exactly unchanged. A fixed-cofactor
+> bound broadens the conditional H=3p target to **H=3p^e**, which still forces
+> m to divide3; C=15 also gives m|3 and C=9 gives m|9. Actual occurrence of
+> these factorizations in the native half-binomial history is unproved.
+> The H=75 separation from older power tests is explicitly nonnative.
+> Root authenticates seven dependencies and challenges both proofs without
+> replaying saved helpers. Independent-gamma83 remains unresolved and the
+> proved universal minimum-operation point remains84/187/18.
+>
+>
 > The [new Beyond Ord package review](review_beyond_ord_package_d7cf7d554.md)
 > at **d7cf7d554** authenticates nine members and four delivered checksum
 > bindings. Selected GB localization, finite-support powers, hereditary-tree
