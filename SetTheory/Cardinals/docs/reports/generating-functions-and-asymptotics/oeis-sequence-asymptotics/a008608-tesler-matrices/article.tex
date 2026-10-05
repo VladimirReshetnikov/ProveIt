@@ -160,17 +160,39 @@ was changed. Theorem and equation numbers follow the section counter
 and Rhoades~\cite[\S4]{mmr} gave $n!\le a_n\le2^{\binom n2}$ (as O'Neill
 reports them). O'Neill~\cite{oneill} raised the lower bound to
 $(2n-3)!!=\prod_{i=1}^{n-1}(2i-1)$ and tightened the upper bound, which
-stays of the form $\ee^{O(n^2)}$ (Theorem~5.6 of the arXiv version
-1702.00866v2, which the intake read; the journal version was not
+stays of the form $\ee^{O(n^2)}$: Theorem~43 of the journal version
+(Theorem~5.6 of arXiv:1702.00866v2; the two statements agree). He also
+records a question of Pak, whether $a_n=\ee^{\Theta(n^2)}$, as Question~4
+of the journal version (Question~1.4 of the arXiv version); Balashov,
+Bulavenko and Molybog recall it, without a number, in their Section~2. In
+Remark~5 of the journal version (an unnumbered remark after Question~1.4
+in the arXiv version) he adds that OEIS data suggest
+$\log a_n=O(n^{1.6})$, an observation he attributes to J.~Pantone (a
+private communication to A.~H.~Morales, 2016). (Corrected 5~October 2026
+after the independent check recorded at the end of
+Section~\ref{tes:sec:further}, which read both versions; from
+``$\ee^{O(n^2)}$'' to here the text first read ``(Theorem~5.6 of the arXiv
+version 1702.00866v2, which the intake read; the journal version was not
 compared). O'Neill also records a question of Pak, whether
 $a_n=\ee^{\Theta(n^2)}$ (his Question~1.4, which Balashov, Bulavenko and
 Molybog recall in their Section~2), and an observation that OEIS data
-suggest $\log a_n=O(n^{1.6})$. Corollary~37 of~\cite{bbm} answers Pak's
+suggest $\log a_n=O(n^{1.6})$''.) Corollary~37 of~\cite{bbm} answers Pak's
 question in the negative; the elementary upper bound \eqref{tes:eq:Un} of
-this report gives the same answer on its own, since
-$U_n=O(n^{3/2})$. None of these bounds reaches the scale of the second
-term, so the omission of~\cite{oneill} affects no proof here; it bears only
-on the priority question below. The wider Tesler literature listed on the
+this report gives the same answer on its own, since $U_n=O(n^{3/2})$.
+Indeed $F$ is decreasing, so $L(t)\le\int_0^\infty F(xt)\dd x=\pi^2/(6t)$;
+with $\log(1-\ee^{-t})<0$, $c^2=\pi^2/6$ and
+$\sqrt j\le\int_j^{j+1}\sqrt x\dd x$ this gives, for every $n\ge1$ and
+without the eta transformation,
+\[
+\log a_n\le U_n\le2c\sum_{j=1}^n\sqrt j\le C(n+1)^{3/2}.
+\]
+In \S7.3 of~\cite{lm} (arXiv v3), finished before its authors learned of
+the preprint of~\cite{bbm} (their footnote~2), $O(n^2)$ is still named as
+the best known upper bound on $\log a_n$. (The last two
+sentences were added 5~October 2026 after the same check.) None of these
+bounds reaches the scale of the second term, so the omission
+of~\cite{oneill} affects no proof here; it bears only on the priority
+question below. The wider Tesler literature listed on the
 OEIS page (Haglund~\cite{haglund}; Armstrong, Garsia, Haglund, Rhoades and
 Sagan~\cite{aghrs}; \cite{mmr}) concerns diagonal harmonics, the Tesler
 polytope and weighted sums (judging by their titles); the
@@ -183,11 +205,18 @@ term $(2C)^{-1}\sqrt x\log x$ of the integer inverse with the bracket
 \eqref{tes:eq:explicitbracket}. The source's own literature check was
 bounded (``Scope of the refinement'' above). The ``Future questions'' of
 \cite[\S5]{bbm} do not ask for the second term, so the manuscript answers
-no named question. The intake found the coefficient $-3/4$ neither
-in~\cite{bbm}, \cite{blp} or the arXiv version of~\cite{oneill}, nor on the
-OEIS page (which has no asymptotic formula); it did not compare
-\cite[Theorem~1.2]{lm} in detail and made no exhaustive search. Novelty is
-therefore \emph{uncertified} (Question~\ref{tes:q:priority}).
+no named question. The intake did not find the coefficient $-3/4$
+in~\cite{bbm}, \cite{blp}, either version of~\cite{oneill} or the OEIS
+page (which has no asymptotic formula), and~\cite{lm} works at a coarser
+scale: its Tesler bound, Theorem~1.2 of arXiv v3, is the lower bound
+$\log a_n\ge\frac n4\log^2n-O(n\log n)$, and its \S7.3 is quoted above. No
+exhaustive search was made. (Updated 5~October 2026 after the independent
+check; these two sentences first read ``The intake found the coefficient
+$-3/4$ neither in~\cite{bbm}, \cite{blp} or the arXiv version
+of~\cite{oneill}, nor on the OEIS page (which has no asymptotic formula);
+it did not compare \cite[Theorem~1.2]{lm} in detail and made no exhaustive
+search.'') Novelty is therefore \emph{uncertified}
+(Question~\ref{tes:q:priority}).
 
 \emph{Repository.} Before batch~103 no file of ProveIt mentioned Tesler
 matrices, A008608, Lusztig data, the Kostant partition function or flow
@@ -766,9 +795,14 @@ and every $\rho\in\mathcal R_n$,
 with an absolute implied constant. Hence, with \eqref{tes:eq:BLPexact} or
 \eqref{tes:eq:BLPweak} applied to these margins, the loss can be recovered
 only by a larger capacity term (an entropy gain of order $n\log\log n$ over
-$\Hg(f^{(\rho)})$), a larger family of margin vectors, or a counting
-inequality with smaller margin factors; see
-Question~\ref{tes:q:remainder}.
+$\Hg(f^{(\rho)})$), a larger or different family of margin vectors, or a
+counting inequality with smaller margin factors; see
+Question~\ref{tes:q:remainder}. (Amended 5~October 2026 after the
+independent check recorded at the end of Section~\ref{tes:sec:further}:
+the last paragraph of the proof, which shows that \eqref{tes:eq:uniformH}
+and \eqref{tes:eq:Nr} are sharp to $O(n)$ and so justifies ``only by'',
+was added, and the second alternative first read ``a larger family of
+margin vectors''.)
 
 \emph{Proof} ([write]). Let $M\le j\le n-B_n-1$ and $a=j+1$, so
 $M<a\le n-B_n$. The outgoing row of vertex $j$ consists of the intervals
@@ -798,6 +832,32 @@ $a\ge\sqrt n$, where $\log\log a\ge\log\log n-\log2$ (the other terms are
 positive once $a\ge3$): there are at least $n-B_n-\sqrt n$ such $a$ for
 large $n$, and $(B_n+\sqrt n)\log\log n=O(n)$, so
 $2\sum\log\log a\ge2n\log\log n-O(n)$. Finally $\kappa n=O(n)$.
+
+The estimates \eqref{tes:eq:uniformH} and \eqref{tes:eq:Nr} are also sharp
+to $O(n)$, so the loss is not hidden in them either. First, $\rho_j$ is
+chosen only for $M\le j\le n-1$, among the integers in
+$[r_j,r_j+w_j/2]$, of which there are at most
+$w_j/2+1\le\sqrt j/(4c)+1$ (by $\ee^x-1\ge x$); so
+$\log|\mathcal R_n|\le\frac12\log(n!)+O(n)$. Second, the triangle moves
+never raise a nonsingleton, so $f^{(\rho)}_{[a,b]}\le q_{[a,b]}\le
+Q(c(b-a+1)/\sqrt a)$ for $a<b$, and \eqref{tes:eq:Erow} gives
+\[
+\sum_{a<b}h(f^{(\rho)}_{[a,b]})\le\sum_{a=1}^n\sum_{\ell\ge2}E(\ell c/\sqrt a)
+=Cn^{3/2}-\frac14\log(n!)-\sum_{a=1}^nE(c/\sqrt a)+O(n),
+\]
+where $E(c/\sqrt a)\ge\log(1+Q(c/\sqrt a))\ge\frac12\log a-\log c$, since
+$1+Q(t)=(1-\ee^{-t})^{-1}\ge1/t$; the nonsingletons therefore contribute at
+most $Cn^{3/2}-\frac34\log(n!)+O(n)$. Every singleton satisfies
+$f^{(\rho)}_{[i,i]}\le i$, its cut load; for $M\le i\le n-B_n$, moreover,
+$f^{(\rho)}_{[i,i]}=Q(c/\sqrt i)+(i-T_i)+t_{i-1}+t_i=O(\sqrt i)$ (with
+$t_{M-1}=0$) by $Q(t)\le1/t$, Lemma~\ref{tes:lem:terminal} and
+$t_j\le\sqrt j/(4c)$ (proof of Lemma~\ref{tes:lem:uniform}). With
+\eqref{tes:eq:hfacts} and \eqref{tes:eq:boundarycost}, the singletons
+contribute at most $\frac12\log(n!)+O(n)$, and so
+$\Hg(f^{(\rho)})=Cn^{3/2}-\frac14\log(n!)+O(n)$. Thus the number of margin
+vectors, the entropy estimate of the capacity and the margin factors used in
+the proof of Theorem~\ref{tes:thm:main} are each correct to within a factor
+$\ee^{O(n)}$, which is what the assertion after the display needs.
 \qed
 \end{remark}
 
@@ -951,10 +1011,14 @@ priority. The intake found no false claim in the source.
  Remark~\ref{tes:rem:penaltysharp} that loss is exact for the family
  $\mathcal R_n$: no sharper estimate of the margin factors removes it.
  Missing: a capacity bound exceeding $\Hg(f^{(\rho)})$ by order
- $n\log\log n$, a larger family of margin vectors (the triangle moves give
- about $\sqrt j$ choices at vertex $j$, whereas the outgoing totals
- themselves are of order $\sqrt j\log j$; this is a heuristic, not a
- count), or a counting inequality with smaller margin factors.
+ $n\log\log n$, a larger or different family of margin vectors (the
+ triangle moves give about $\sqrt j$ choices at vertex $j$, whereas the
+ outgoing totals themselves are of order $\sqrt j\log j$; this is a
+ heuristic, not a count), or a counting inequality with smaller margin
+ factors. (Amended 5~October 2026 with Remark~\ref{tes:rem:penaltysharp},
+ after the independent check below: ``or different'' was inserted, and the
+ last paragraph of the remark's proof now shows that the capacity estimate
+ and the count of margin vectors used are themselves sharp to $O(n)$.)
 \item\label{tes:q:linear} \textbf{A linear term} (source, item~2). Does
  $(\log a_n-Cn^{3/2}+\frac34n\log n)/n$ converge, and to what? $B_U$ comes
  from the product bound \eqref{tes:eq:boltzupper} and is not that limit.
@@ -985,13 +1049,83 @@ priority. The intake found no false claim in the source.
  certification. The intake did not find the term in~\cite{bbm}
  (whose ``Future questions'' do not ask for it), \cite{blp}, the arXiv
  version of~\cite{oneill} (bounds only, of orders $\ee^{n\log n+O(n)}$
- below and $\ee^{O(n^2)}$ above) or the OEIS entry. Missing: a comparison
- with Theorem~1.2 of~\cite{lm} and with the journal version
- of~\cite{oneill}, which the manuscript does not cite, and a search of the
- Tesler-matrix and Kostant-partition-function literature
- (\cite{haglund,aghrs,mmr} and the further references of the OEIS entry)
- for second-order asymptotics.
+ below and $\ee^{O(n^2)}$ above) or the OEIS entry. The journal version
+ of~\cite{oneill} has the same bounds and question as the arXiv version
+ (Theorem~43, Question~4, Remark~5), and Theorem~1.2 of~\cite{lm} (arXiv
+ v3) is a lower bound of order $n\log^2n$ only, so neither contains the
+ coefficient. Missing: a search of the Tesler-matrix and
+ Kostant-partition-function literature (\cite{haglund,aghrs,mmr} and the
+ further references of the OEIS entry) for second-order asymptotics.
+ (Updated 5~October 2026 after the independent check below, which made
+ both comparisons; ``Missing:'' first began ``a comparison with
+ Theorem~1.2 of~\cite{lm} and with the journal version of~\cite{oneill},
+ which the manuscript does not cite, and a search''.)
 \end{enumerate}
+
+\paragraph{Independent check of the write (dated note, 5~October 2026).}
+An independent adversarial check of what this write supplied, made by the
+intake after the write (\nolinkurl{17d995b94}), read the article in full.
+It found valid the statement and proof of
+Remark~\ref{tes:rem:penaltysharp}, the statements of
+Section~\ref{tes:sec:provenance} that Corollary~37 of~\cite{bbm} answers
+Pak's question and that \eqref{tes:eq:Un} alone answers it, and every
+figure of Remark~\ref{tes:rem:linear}; it found no counterexample and no
+gap in the proof of the remark. Four changes followed, each marked where it
+stands by a dated note that keeps the first wording. (1)~The conclusion of
+Remark~\ref{tes:rem:penaltysharp}, that the loss can be recovered ``only
+by'' three routes, presupposed two upper bounds that are true but were not
+proved in the report, $\log|\mathcal R_n|\le\frac12\log(n!)+O(n)$ and
+$\Hg(f^{(\rho)})\le Cn^{3/2}-\frac14\log(n!)+O(n)$; and a different family
+of margin vectors, with smaller throughputs, need not be a larger one. The
+check supplied a short proof of both bounds, now the last paragraph of the
+proof of the remark (checked again step by step when it was inserted), and
+the remark and Question~\ref{tes:q:remainder} now say ``a larger or
+different family''. (2)~The write cited O'Neill's results by their arXiv
+numbers (Theorem~5.6, Question~1.4) against a bibliography entry for the
+journal version, which numbers them Theorem~43, Question~4 and Remark~5;
+Section~\ref{tes:sec:provenance} and the bibliography now give both
+numberings, and attribute the $n^{1.6}$ observation, as O'Neill does, to a
+private communication of J.~Pantone. (3)~Section~\ref{tes:sec:provenance}
+now records that \eqref{tes:eq:Un} gives $\log a_n\le C(n+1)^{3/2}$ for
+every $n\ge1$, without the eta transformation, and that \S7.3 of~\cite{lm}
+still names $O(n^2)$ as the best known upper bound. (4)~The two comparisons
+that Question~\ref{tes:q:priority} listed as missing were made: the journal
+version of~\cite{oneill} has only the bounds and question of the arXiv
+version, and Theorem~1.2 of~\cite{lm} is the lower bound
+$\log a_n\ge\frac n4\log^2n-O(n\log n)$ (with $a_n\ge(n+1)^{n-1}$ for
+$n\ge3000$). Neither contains the coefficient $-3/4$, so the question and
+Section~\ref{tes:sec:provenance} now ask only for the literature search.
+
+The check reread every step of the proof of
+Remark~\ref{tes:rem:penaltysharp} (the row structure, the range
+$n-a+1>B_n\ge\sqrt a/c\ge k$, $\tau\le c/32<1$, the chain of inequalities,
+$(\log c+\frac12)/\log1024=0.10804<0.11$, $\kappa=2.3809$, and the
+summation) and tested it with \textsf{mpmath} at 30 digits: the identity
+$Q(x)=\frac12\coth\frac x2-\frac12$ holds to $2\cdot10^{-29}$, and
+$2\log(0.39(\sqrt a/c)\log a)=\log a+2\log\log a-\kappa$ to
+$4\cdot10^{-30}$; the four members of the chain decrease as claimed at
+$a=1025$, $2000$, $10^4$, $10^5$, $10^6$ and $10^7$ (at $a=10^6$:
+$5284.5\ge4802.7\ge4802.1\ge4201.0$); and $(B_n+\sqrt n)\log\log n/n$ is
+$0.116$ at $n=10^6$ and $0.0023$ at $n=10^{10}$. The full truncated row is
+about $0.52$ to $0.55$ times $\sqrt a\log a/c$, so the constant $0.39$ is
+conservative. For Remark~\ref{tes:rem:linear} its own programs (50 digits;
+$L$ by the $q$-Pochhammer product, agreeing with \eqref{tes:eq:modular} to
+$3\cdot10^{-50}$; $a_1,\ldots,a_7$ also from its own implementation of
+\eqref{tes:eq:hookrec}) reproduced $\log a_n\le U_n$ for all $1\le n\le26$
+of the OEIS b-file, the gaps $1.39235$, $14.9646$, $31.1373$ and $41.0584$,
+the quotient range from $-1.44258$ ($n=26$) to $-1.42127$ ($n=10$) with
+$-1.43357$ at $n=20$, a distance from $B_U$ between $1.625$ and $1.647$,
+$2\log\log26=2.362$, and the decimal of $B_U$. For~(3) it checked
+$c+\pi^2/(6c)=2c$ to $10^{-30}$ and, at $n=26$,
+$\log a_n=125.67\le U_n=166.73\le232.74\le239.92$. On the literature it
+fetched both versions of~\cite{oneill}, the journal version of~\cite{bbm}
+(its SHA-256 equals the fingerprint in \nolinkurl{data/sources.json};
+Corollary~37 is on p.~17, and its authors call it a drastic improvement of
+\cite[Theorem~1.2]{lm}) and arXiv v3 of~\cite{lm}, whose footnote~2
+credits the preprint of~\cite{bbm} (communicated 13~June 2024) with
+$\log a_n\sim C_2n^{3/2}$, and which presents its Theorem~1.2 only as a
+first step towards Pak's question. This was a careful reading with
+numerical tests, not a formal verification or an external review.
 \begin{thebibliography}{9}
 \bibitem{oeis}
 OEIS Foundation, \emph{A008608: Regular Tesler matrices},
@@ -1016,7 +1150,7 @@ J. Leake and A. H. Morales,
 \emph{Capacity bounds on integral flows and the Kostant partition function},
 Advances in Applied Mathematics \textbf{175} (2026), 103002.
 \href{https://doi.org/10.1016/j.aam.2025.103002}{doi:10.1016/j.aam.2025.103002}.
-Primary version checked: \href{https://arxiv.org/abs/2406.07838v3}{arXiv:2406.07838v3}, 22 November 2024.
+Primary version checked: \href{https://arxiv.org/abs/2406.07838v3}{arXiv:2406.07838v3}, 22 November 2024. [The write cites its Theorem~1.2 and footnote~2 (p.~2) and its \S7.3 from this version; added 5~October 2026.]
 
 \bibitem{dlmf}
 NIST Digital Library of Mathematical Functions,
@@ -1030,7 +1164,7 @@ J. O'Neill,
 \emph{On the poset and asymptotics of Tesler matrices},
 Electronic Journal of Combinatorics \textbf{25}(2) (2018), P2.4.
 \href{https://doi.org/10.37236/6877}{doi:10.37236/6877}.
-Version read by the intake: \href{https://arxiv.org/abs/1702.00866v2}{arXiv:1702.00866v2}, Theorem~5.6 and Question~1.4. [Added by the write.]
+Versions read: the journal version (Theorem~43 on p.~21; Question~4 and Remark~5 on p.~3) and \href{https://arxiv.org/abs/1702.00866v2}{arXiv:1702.00866v2}, 21 March 2017 (the same results as Theorem~5.6, Question~1.4 and an unnumbered remark). The remark attributes the $n^{1.6}$ observation to a private communication of J.~Pantone to A.~H.~Morales (2016). [Added by the write; corrected 5~October 2026 after the independent check, which read the journal version. This note first read ``Version read by the intake: arXiv:1702.00866v2, Theorem~5.6 and Question~1.4''.]
 
 \bibitem{mmr}
 K. M\'esz\'aros, A. H. Morales and B. Rhoades,
