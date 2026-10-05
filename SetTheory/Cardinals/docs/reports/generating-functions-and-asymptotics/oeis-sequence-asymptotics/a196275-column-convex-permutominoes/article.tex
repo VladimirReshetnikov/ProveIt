@@ -30,6 +30,12 @@
 \newcommand{\R}{\mathbb R}
 \newcommand{\C}{\mathbb C}
 \newcommand{\norm}[1]{\lVert #1\rVert}
+% Added by the ProveIt write phase (batch 101, 5 October 2026): dated notes
+% marked [write], and a table package for the notation table.
+\usepackage{longtable}
+\newenvironment{writenote}[1][]{\par\smallskip\begingroup\small
+ \noindent\textbf{[write]}\if\relax\detokenize{#1}\relax\else~\textbf{#1.}\fi\ }%
+ {\par\endgroup\smallskip}
 \title{Exact asymptotics and inversion for column convex permutominoes}
 \author{Research report for OEIS A196275}
 \date{2 October 2026}
@@ -38,6 +44,21 @@
 \begin{abstract}
 An exact Bernstein-basis representation converts the known triangular counting recurrence for column-convex permutominoes into moments of a fixed positive self-adjoint operator. Its scalar resolvent is elementary. This gives a closed form for the factorial-normalized generating function, proves the previously conjectured factorial-exponential equivalent, and identifies both numerical constants exactly. The secondary term is an inverse-logarithmic spectral-edge contribution, beginning $1/(2n\log^2n)$ after factorial normalization. Explicit coefficient functions give an all-orders mixed inverse-power and inverse-logarithmic expansion with sector-level error bounds. A natural spectral interpolation admits a convergent hierarchy of exponentially small inverse corrections about the exact Gamma-envelope inverse. Separately, an elementary global bound shows that rounding the exact envelope inverse recovers every positive integer index from its sequence value. Proofs are analytical; computation is used only for independent validation. A bounded literature search found no prior occurrence of this solution, but does not establish global priority.
 \end{abstract}
+
+\begin{writenote}[Status and trust boundary, added 5 October 2026, batch~101]
+This is bundle Report~96, filed in ProveIt as a single-source research
+report (provenance in the note at the end of Section~1). It is AI-assisted
+(its PDF metadata name the author ``Research report prepared with OpenAI''),
+unrefereed, and not formalized. Its one external input is Tom\'as's
+triangular recurrence \eqref{ccp:eq:init}--\eqref{ccp:eq:sum}, which the
+report takes from~\cite{tomas} and does not re-derive; ProveIt's intake
+checked only that it reproduces all 200 terms of the OEIS b-file. The
+statements about the literature (that the factorial-exponential equivalent
+was an open conjecture, and that no prior solution exists) are the source's
+bounded search of 2 October 2026; the intake did not check them. The
+numerical checks of Section~\ref{ccp:sec:validation} are not interval
+certificates.
+\end{writenote}
 \setcounter{tocdepth}{1}
 \begingroup\small\setlength{\parskip}{0pt}
 \tableofcontents
@@ -53,40 +74,40 @@ Let $a_n$, $n\ge1$, denote this count, OEIS A196275~\cite{oeis}. It begins
 \]
 The input to this report is the recurrence of Tom\'as~\cite[Section 5.2]{tomas}, after changing the index from the number of reflex vertices to size:
 \begin{align}
-P_{1,1}&=1,\qquad P_{n,p}=0\quad\hbox{outside }1\le p\le n,\label{eq:init}\\
+P_{1,1}&=1,\qquad P_{n,p}=0\quad\hbox{outside }1\le p\le n,\label{ccp:eq:init}\\
 P_{n,p}&=(n+1-p)P_{n-1,p}+\sum_{j=1}^{n+1-p}P_{n-1,j},
- \quad n\ge2,\quad1\le p\le n,\label{eq:triangle}\\
-a_n&=\sum_{p=1}^nP_{n,p}.\label{eq:sum}
+ \quad n\ge2,\quad1\le p\le n,\label{ccp:eq:triangle}\\
+a_n&=\sum_{p=1}^nP_{n,p}.\label{ccp:eq:sum}
 \end{align}
 Set
 \begin{equation}
 b_0=\frac12,\qquad b_n=\frac{a_n}{(n+1)!}\quad(n\ge1),
-\qquad B(z)=\sum_{n\ge0}b_nz^n.\label{eq:bn}
+\qquad B(z)=\sum_{n\ge0}b_nz^n.\label{ccp:eq:bn}
 \end{equation}
 The artificial value $b_0=1/2$ is a normalization, not a count of size-zero objects. Thus $B$ is a factorial-normalized (shifted exponential) generating function. The conventional positive-index exponential generating function is $(zB(z))' -1/2=\sum_{n\ge1}a_nz^n/n!$.
 
-\begin{theorem}[Exact generating function and spectral decomposition]\label{thm:main}
-For the recurrence \eqref{eq:init}--\eqref{eq:sum},
+\begin{theorem}[Exact generating function and spectral decomposition]\label{ccp:thm:main}
+For the recurrence \eqref{ccp:eq:init}--\eqref{ccp:eq:sum},
 \begin{equation}
-B(z)=\frac{-(2-z)\log(1-z)}{2z\{2-z+\log(1-z)\}}.\label{eq:gf}
+B(z)=\frac{-(2-z)\log(1-z)}{2z\{2-z+\log(1-z)\}}.\label{ccp:eq:gf}
 \end{equation}
 Let $W_0$ be the principal real Lambert function, and put
 \begin{equation}
 \rho=1-W_0(\ee^{-1}),\qquad h=\rho^{-1},\qquad
-k=\frac{(2h-1)(h-1)}2.\label{eq:hk}
+k=\frac{(2h-1)(h-1)}2.\label{ccp:eq:hk}
 \end{equation}
 For every integer $n\ge0$,
 \begin{equation}
-b_n=kh^n+r_n,\qquad r_n=\frac12\int_0^1t^nw(t)\dd t,\label{eq:spectral}\end{equation}
+b_n=kh^n+r_n,\qquad r_n=\frac12\int_0^1t^nw(t)\dd t,\label{ccp:eq:spectral}\end{equation}
 where
 \begin{equation}
 w(t)=\frac{(2t-1)^2}
- {\{2t-1-t\log(t/(1-t))\}^2+\pi^2t^2},\quad0<t<1.\label{eq:density}
+ {\{2t-1-t\log(t/(1-t))\}^2+\pi^2t^2},\quad0<t<1.\label{ccp:eq:density}
 \end{equation}
 In particular,
 \begin{equation}
 a_n\sim k(n+1)!h^n,
-\qquad r_n\sim\frac1{2n(\log n)^2}.\label{eq:equivalents}
+\qquad r_n\sim\frac1{2n(\log n)^2}.\label{ccp:eq:equivalents}
 \end{equation}
 \end{theorem}
 The constants are
@@ -94,27 +115,180 @@ The constants are
 h&=1.38593327599819425386062181488251586064513279657058\ldots,\\
 k&=0.34191113152179550788392501698972761198399013707239\ldots.
 \end{align*}
-The first equivalent in \eqref{eq:equivalents} proves the numerical conjecture of Beaton, Disanto, Guttmann and Rinaldi~\cite[Section 3.3]{bdgr}. Their exploratory fit $r_n\approx e n^g$, with $g\approx-1.272$, is replaced by the second equivalent and its logarithmic corrections. Their paper explicitly expressed uncertainty about the secondary exponent; it was not an established fractional-power law.
+The first equivalent in \eqref{ccp:eq:equivalents} proves the numerical conjecture of Beaton, Disanto, Guttmann and Rinaldi~\cite[Section 3.3]{bdgr}. Their exploratory fit $r_n\approx e n^g$, with $g\approx-1.272$, is replaced by the second equivalent and its logarithmic corrections. Their paper explicitly expressed uncertainty about the secondary exponent; it was not an established fractional-power law.
+
+\begin{writenote}[Added 5 October 2026, batch~101]
+The status of the 2011 conjecture is the source's reading of~\cite{bdgr},
+\cite{rs2014} and~\cite{drs2018} (Section~12); ProveIt's intake did not
+consult these papers or search the literature, so neither the conjectural
+status nor the absence of a prior proof is checked here
+(Question~\ref{ccp:q:literature}). The OEIS entry, read by the intake on
+5 October 2026, states no formula and no asymptotic for A196275.
+\end{writenote}
 
 The subsequent sections prove the theorem, resolve the secondary sector to all orders, and give two distinct inversion results. The exact interpolation is made explicit wherever continuous inverse terms are discussed.
+
+\begin{writenote}[Added 5 October 2026, batch~101]
+\emph{Provenance.} This report is Report~96 of the session bundle that
+ProveIt's \nolinkurl{docs/incoming} intake processed as batch~101: the
+archive \nolinkurl{A196275_Exact_Asymptotics_and_Inversion_Source.zip}
+(wrapper directory \nolinkurl{a196275/}, 18 files, 1{,}611{,}688 bytes),
+arrival commit \nolinkurl{60f54ea06}, placed in \nolinkurl{f7c612c72}. The
+text is the delivered \nolinkurl{source/permutomino_asymptotics_standalone.tex},
+which is the delivered modular source \nolinkurl{permutomino_asymptotics.tex}
+with its generated fragment \nolinkurl{validation_summary.tex} inlined (the
+lines of Section~\ref{ccp:sec:validation} from the comment ``Generated by
+render\_validation\_tables.py'' on); the modular edition and the delivered
+14-page PDF are not shipped. The package names no ProveIt commit, path or
+report, so the report has no pin; its title page names no person, and its
+PDF metadata give the author as ``Research report prepared with OpenAI''.
+It is a single-source report, so no merge choice was made. The write
+prefixed the 59 delivered labels with \nolinkurl{ccp:}, added labels for
+three sections, the further-questions subsection, its seven questions and
+one proposition, and added the notes marked [write], the subsection
+``Further questions and research'' (Section~\ref{ccp:sec:further}),
+Proposition~\ref{ccp:prop:disk} and the profile bound in
+Question~\ref{ccp:q:profile}, both with proofs; no statement, proof or
+number of the source was changed. Theorem numbers follow the section counter
+(Theorem~\ref{ccp:thm:main} is Theorem~1.1, and so on).
+
+\emph{Repository.} At the time of writing no other file of the repository
+mentions A196275, permutominoes or Tom\'as's recurrence, and nothing in this
+report re-proves a result of another report. Where methods meet:
+\begin{itemize}
+\item \nolinkurl{generating-functions-and-asymptotics/oeis-sequence-asymptotics/a126764-lconvex-polyominoes}
+ (prefix \nolinkurl{lcp:}) counts a different class, L-convex polyominoes
+ by area, and shares no question with this report. Both reports invert a
+ \emph{specified} interpolation and recover the integer threshold by a
+ ceiling (its Section~9.2 and \nolinkurl{lcp:ao:cor:brackets}); there the
+ rounding brackets carry asymptotic existence constants without a finite
+ starting index, and batch~101's Report~95 (its Part~III, written
+ separately) finds that eventual rounding of a Lambert model of A126764 is
+ wrong for $2\le n\le555$. Here Theorem~\ref{ccp:thm:rounding} gives an
+ explicit rounding rule valid for every $n\ge1$. Its Lambert branch is
+ $W_{-1}$, here $W_0$.
+\item \nolinkurl{generating-functions-and-asymptotics/oeis-sequence-asymptotics/a113227-powered-catalan}
+ (prefix \nolinkurl{pcn:}) also writes counts as moments of a positive
+ measure (\nolinkurl{pcn:eq:moments}) and reads the measure off a
+ Stieltjes-type transform (\nolinkurl{pcn:eq:Fmeasure}); there the measure
+ is discrete, here it is one atom plus the density $w$ of
+ \eqref{ccp:eq:measure}.
+\item The transseries-and-inversion volume
+ (\nolinkurl{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/})
+ states the inversion facts used in Sections~\ref{ccp:sec:interp}
+ and~\ref{ccp:sec:rounding} in general form; credits are in the notes
+ there.
+\end{itemize}
+No statement of this report is formalized in Lean or Rocq, and its place in
+the collection confers no formal status.
+
+\emph{Notation.} Many letters carry more than one local meaning. The table
+fixes them; no symbol was renamed.
+
+\smallskip
+\begingroup\renewcommand{\arraystretch}{1.1}
+\begin{longtable}{@{}p{0.5in}p{3.85in}p{1.95in}@{}}
+\toprule
+Symbol & Meanings (where) & Not to be read as\\
+\midrule
+\endhead
+$n$, $r$ & size $n$ = number of rows = number of columns; Tom\'as's index
+ $r=n-1$ counts reflex vertices~\cite{tomas} & area; Tom\'as's ``$r$
+ vertices'' (a harmless typo in his prose for $r$ reflex vertices)\\
+$a_n$, $b_n$ & $a_n$ = A196275 (offset~1); $b_n=a_n/(n+1)!$ with the
+ artificial $b_0=1/2$ \eqref{ccp:eq:bn} & $b_0$ a count; $a_n/n!$\\
+$h$, $k$ & $h=1/(1-W_0(\ee^{-1}))$, $k=(2h-1)(h-1)/2$ \eqref{ccp:eq:hk};
+ $k$ is also a summation index in \eqref{ccp:eq:Fexp}, \eqref{ccp:eq:Cjk}
+ and the coefficient label of $C_{j,k}$ & $H$, $K$\\
+$H$ & the Laplace weight $H(u)=w(\ee^{-u})$ \eqref{ccp:eq:H} & the constant
+ $h$\\
+$w$ & the density $w(t)$ \eqref{ccp:eq:density}; in the proof of
+ Theorem~\ref{ccp:thm:nondfinite}, the covering coordinate $w=\log(1-z)$ &
+ the same object\\
+$B$ & the series $B(z)$ \eqref{ccp:eq:bn}; Bernstein polynomials $B_{j,m}$
+ (Lemma~\ref{ccp:lem:bernstein}); Bernoulli numbers $B_{2j}$
+ \eqref{ccp:eq:stirling} & \\
+$W$ & Lambert $W$, branches $W_0$ and $W_j$; in Section~7.1 also the number
+ $W=W_0(hY/\ee)$ & \\
+$\ell$ & $\ell(\lambda)=\int_0^1\dd t/(\lambda-t)$ \eqref{ccp:eq:ell}; a
+ summation index in the proof of Theorem~\ref{ccp:thm:mixed} & \\
+$m$ & the scalar resolvent $m(\lambda)$ \eqref{ccp:eq:resolvent}; an index
+ in $a_{j,m}$ \eqref{ccp:eq:ajm} and the sector index of
+ Theorem~\ref{ccp:thm:inverse} & \\
+$c$ & $c=2\lambda-1$ (Section~3); the coefficients $c_j$ \eqref{ccp:eq:cj};
+ small constants $c$, $c'$ in the proof of Theorem~\ref{ccp:thm:inverse} & \\
+$D$, $d$ & $D(\lambda)$ (Section~3) and $D(z)=2-z+\log(1-z)$ with
+ coefficients $d_j$ (Section~11); $d(\rho)$ in the proof of
+ Proposition~\ref{ccp:prop:pole}; $d_0$, $d_1$ in Section~7.1 & $D(z)$ as
+ $D(\lambda)$ at $\lambda=1/z$ (they differ by a factor $\lambda$)\\
+$\rho$ & $\rho=1/h$ \eqref{ccp:eq:hk}; in the proof of
+ Proposition~\ref{ccp:prop:pole} the variable $1/\lambda$ & \\
+$q$ & the analytic function $q(u)$ \eqref{ccp:eq:q}; $q=1-\rho$ in the
+ proof of Proposition~\ref{ccp:prop:pole}; $q=F''(X_*)$ in
+ Theorem~\ref{ccp:thm:inverse}; $q_0=\frac12\log(2\pi X_0)$ (Section~7.1)
+ & \\
+$p$ & the column index in $P_{n,p}$; $p=F'(X_*)$ in
+ Theorem~\ref{ccp:thm:inverse}; $p_0=\log(hX_0)$ (Section~7.1) & \\
+$N$ & $N=n+1$ \eqref{ccp:eq:NL}; the threshold $N(y)$
+ (Corollary~\ref{ccp:cor:threshold}) & \\
+$A$, $a$ & $A=1-\gamma$ \eqref{ccp:eq:NL}; $A_0(u)=(2-\ee^u)^2$
+ \eqref{ccp:eq:H}; the interpolation $\mathcal A(x)$ \eqref{ccp:eq:interp};
+ Taylor coefficients $a_{j,m}$ \eqref{ccp:eq:ajm} & $a_{j,m}$ related to
+ the counts $a_n$\\
+$S$ & the spectral ratio $S(X)$ \eqref{ccp:eq:S}; in the proof of
+ Theorem~\ref{ccp:thm:mixed}, $S=L-1-\log v-\ii\pi$ & \\
+$F$, $\mathcal F$, $\mathcal E$ & $F(X)$ the log-envelope
+ \eqref{ccp:eq:envelopeF}; $\mathcal F_j(L)$ the coefficient functions
+ \eqref{ccp:eq:Fj}; $\mathcal E(x)=k\Gamma(x+2)h^x$ the Gamma envelope
+ \eqref{ccp:eq:E} & the shipped renderer and verifier README's $F$, which
+ is $\mathcal E$, not $\log\mathcal E$\\
+$u$, $v$ & $u=\lambda-1+x$, $v=\lambda-x$ (Lemma~\ref{ccp:lem:resolvent});
+ the Laplace variable $u$ and $v=Nu$ (Sections~5--6); the inverse shift $u$
+ (Section~8) & \\
+$x$, $X$ & $x\in[0,1]$ in Sections~2--3; the real size variable $x$ and
+ $X=x+1$ (Sections~7--8); $X_*$ the envelope inverse
+ \eqref{ccp:eq:exactenvinverse}, $X(y)$ the interpolation inverse, $X_0$
+ the Lambert approximation & $X_*$ and $X(y)$ the same\\
+$e$ & in ``$r_n\approx en^g$'' (Section~1) a fitted constant of~\cite{bdgr}
+ & Euler's number $\ee$\\
+\bottomrule
+\end{longtable}
+\endgroup
+
+\emph{What is not claimed} (collected from the source): the numerical tests
+are supporting checks, not the proof, and nothing is interval-certified or
+formalized; the literature search was bounded and ``does not establish
+global priority''; Theorem~\ref{ccp:thm:inverse} concerns the specified
+interpolation only, and other functions agreeing with $a_n$ at the integers
+can have different exponentially small inverse terms; the rounding of
+Theorem~\ref{ccp:thm:rounding} applies to exact sequence values, not to
+arbitrary $y$, and forward rounding of $\mathcal E(n)$ already fails at
+$n=4$; Theorem~\ref{ccp:thm:mixed} claims no convergence of the
+inverse-logarithmic series, and fixed-order sums need not improve
+monotonically at modest $n$; $b_0=1/2$ is artificial; the coefficients
+$C_{0,5}$ and $C_{0,6}$ printed in the verifier's README are derived from
+\eqref{ccp:eq:Cjk} by the source and not attributed to an external
+publication; third-party PDFs are not redistributed and no OEIS entry was
+edited. Open questions are collected in Section~\ref{ccp:sec:further}.
+\end{writenote}
 
 \section{An exact Bernstein transfer operator}
 Define the bounded operator on $L^2[0,1]$
 \begin{equation}
-(Tf)(x)=(1-x)f(x)+\int_0^{1-x}f(y)\dd y.\label{eq:T}
+(Tf)(x)=(1-x)f(x)+\int_0^{1-x}f(y)\dd y.\label{ccp:eq:T}
 \end{equation}
 It is important that this is an exact encoding of the discrete recurrence, rather than a continuum approximation.
 
-\begin{lemma}[Bernstein embedding]\label{lem:bernstein}
+\begin{lemma}[Bernstein embedding]\label{ccp:lem:bernstein}
 For $B_{j,m}(x)=\binom mjx^j(1-x)^{m-j}$, one has
 \begin{equation}
 TB_{j,n-1}=\frac{n-j}{n}B_{j,n}
-       +\frac1n\sum_{i=0}^{n-j-1}B_{i,n}.\label{eq:Bernstein}
+       +\frac1n\sum_{i=0}^{n-j-1}B_{i,n}.\label{ccp:eq:Bernstein}
 \end{equation}
 Consequently,
 \begin{equation}
 T^n1=\frac2{n!}\sum_{p=1}^nP_{n,p}B_{p-1,n},\quad n\ge1,
-\qquad b_n=\tfrac12\langle1,T^n1\rangle,\quad n\ge0.\label{eq:moments}
+\qquad b_n=\tfrac12\langle1,T^n1\rangle,\quad n\ge0.\label{ccp:eq:moments}
 \end{equation}
 \end{lemma}
 \begin{proof}
@@ -122,16 +296,16 @@ Multiplication gives $(1-x)B_{j,n-1}=(n-j)B_{j,n}/n$. The integrated Bernstein i
 \[
 \int_0^sB_{j,n-1}(y)\dd y=\frac1n\sum_{i=j+1}^nB_{i,n}(s).
 \]
-Taking $s=1-x$ and using $B_{i,n}(1-x)=B_{n-i,n}(x)$ proves \eqref{eq:Bernstein}. Since $T1=2B_{0,1}$, induction shows that the coefficient of $B_{p-1,n}$ in $T^n1$ is $2P_{n,p}/n!$: the first term gives $(n+1-p)P_{n-1,p}$ and the sum gives exactly the second term of \eqref{eq:triangle}. Finally, $\int_0^1B_{j,n}(x)\dd x=1/(n+1)$ proves \eqref{eq:moments}, including the separately defined $n=0$ case.
+Taking $s=1-x$ and using $B_{i,n}(1-x)=B_{n-i,n}(x)$ proves \eqref{ccp:eq:Bernstein}. Since $T1=2B_{0,1}$, induction shows that the coefficient of $B_{p-1,n}$ in $T^n1$ is $2P_{n,p}/n!$: the first term gives $(n+1-p)P_{n-1,p}$ and the sum gives exactly the second term of \eqref{ccp:eq:triangle}. Finally, $\int_0^1B_{j,n}(x)\dd x=1/(n+1)$ proves \eqref{ccp:eq:moments}, including the separately defined $n=0$ case.
 \end{proof}
 
-\begin{proposition}[Positivity and cyclicity]\label{prop:positive}
+\begin{proposition}[Positivity and cyclicity]\label{ccp:prop:positive}
 The operator $T$ is positive and self-adjoint, with essential spectrum $[0,1]$. The vector $1$ is cyclic.
 \end{proposition}
 \begin{proof}
 The integral kernel $\mathbf1_{x+y\le1}$ is real and symmetric and lies in $L^2([0,1]^2)$, so the integral part is self-adjoint and compact. Moreover,
 \begin{equation}
-\langle f,Tf\rangle=\frac12\iint_{x+y\le1}|f(x)+f(y)|^2\dd x\dd y\ge0.\label{eq:positive}
+\langle f,Tf\rangle=\frac12\iint_{x+y\le1}|f(x)+f(y)|^2\dd x\dd y\ge0.\label{ccp:eq:positive}
 \end{equation}
 The multiplication part has essential spectrum $[0,1]$, unchanged by the compact perturbation. For cyclicity, $T$ raises the degree of a nonzero degree-$d$ polynomial by one: the leading multiplier on $x^d$ is
 \[
@@ -148,18 +322,18 @@ c=2\lambda-1,\quad D(\lambda)=c-\lambda\ell(\lambda).
 \]
 The logarithm is continued to $\C\setminus[0,1]$ by
 \begin{equation}
-\ell(\lambda)=\int_0^1\frac{\dd t}{\lambda-t}.\label{eq:ell}
+\ell(\lambda)=\int_0^1\frac{\dd t}{\lambda-t}.\label{ccp:eq:ell}
 \end{equation}
 
-\begin{lemma}[Explicit resolvent vector]\label{lem:resolvent}
+\begin{lemma}[Explicit resolvent vector]\label{ccp:lem:resolvent}
 Writing $u=\lambda-1+x$ and $v=\lambda-x$,
 \begin{equation}
-f_\lambda(x)=\frac{c/u-\log(u/v)}{D(\lambda)}\label{eq:f}
+f_\lambda(x)=\frac{c/u-\log(u/v)}{D(\lambda)}\label{ccp:eq:f}
 \end{equation}
 satisfies $(\lambda-T)f_\lambda=1$. Hence
 \begin{equation}
 m(\lambda):=\langle1,(\lambda-T)^{-1}1\rangle
- =\frac{(2\lambda-1)\ell(\lambda)}{2\lambda-1-\lambda\ell(\lambda)}.\label{eq:resolvent}
+ =\frac{(2\lambda-1)\ell(\lambda)}{2\lambda-1-\lambda\ell(\lambda)}.\label{ccp:eq:resolvent}
 \end{equation}
 \end{lemma}
 \begin{proof}
@@ -171,13 +345,13 @@ The derivative of $(\lambda-T)f_\lambda$ therefore vanishes. At $x=1$, the integ
 \[
 \lambda f_\lambda(1)=\frac{c-\lambda\ell(\lambda)}{D(\lambda)}=1.
 \]
-This proves the vector identity. The logarithm in \eqref{eq:f} is antisymmetric under $x\mapsto1-x$, so its integral is zero, whereas $\int_0^1c/u\dd x=c\ell(\lambda)$. This proves \eqref{eq:resolvent}.
+This proves the vector identity. The logarithm in \eqref{ccp:eq:f} is antisymmetric under $x\mapsto1-x$, so its integral is zero, whereas $\int_0^1c/u\dd x=c\ell(\lambda)$. This proves \eqref{ccp:eq:resolvent}.
 \end{proof}
 
-By \eqref{eq:moments}, $B(z)=m(1/z)/(2z)$ near zero, giving \eqref{eq:gf}. The apparent singularity at $z=0$ is removable.
+By \eqref{ccp:eq:moments}, $B(z)=m(1/z)/(2z)$ near zero, giving \eqref{ccp:eq:gf}. The apparent singularity at $z=0$ is removable.
 
-\begin{proposition}[The unique outlying eigenvalue]\label{prop:pole}
-The only zero of $D$ off $[0,1]$ is a simple real zero $h>1$, defined in \eqref{eq:hk}. It is the unique simple dominant eigenvalue of $T$. The residue of $m$ there is $2k$.
+\begin{proposition}[The unique outlying eigenvalue]\label{ccp:prop:pole}
+The only zero of $D$ off $[0,1]$ is a simple real zero $h>1$, defined in \eqref{ccp:eq:hk}. It is the unique simple dominant eigenvalue of $T$. The residue of $m$ there is $2k$.
 \end{proposition}
 \begin{proof}
 There are no nonreal zeros. Indeed,
@@ -192,7 +366,7 @@ which has the strict sign of $b$. There are no negative zeros, since each subtra
 \[
 d(\rho):=2-\rho+\log(1-\rho)=0.
 \]
-The function $d$ decreases strictly from $2$ to $-\infty$ on $(0,1)$, so it has exactly one zero. Setting $q=1-\rho$ gives $q\ee^q=\ee^{-1}$ and hence \eqref{eq:hk}. At the root,
+The function $d$ decreases strictly from $2$ to $-\infty$ on $(0,1)$, so it has exactly one zero. Setting $q=1-\rho$ gives $q\ee^q=\ee^{-1}$ and hence \eqref{ccp:eq:hk}. At the root,
 \[
 \ell(h)=2-\frac1h,\qquad D'(h)=\frac{2h-1}{h(h-1)}.
 \]
@@ -200,7 +374,7 @@ Therefore
 \[
 \Res_{\lambda=h}m(\lambda)=(2h-1)(h-1)=2k.
 \]
-The pole is an atom of the scalar spectral measure. Cyclicity in Proposition~\ref{prop:positive} identifies the full operator spectrum with the support of this measure. In particular the eigenspace at the pole has dimension one. The remaining spectral support is $[0,1]$, as verified explicitly next.
+The pole is an atom of the scalar spectral measure. Cyclicity in Proposition~\ref{ccp:prop:positive} identifies the full operator spectrum with the support of this measure. In particular the eigenspace at the pole has dimension one. The remaining spectral support is $[0,1]$, as verified explicitly next.
 \end{proof}
 
 \section{The complete spectral measure}
@@ -208,30 +382,30 @@ For $0<t<1$, the upper-half-plane boundary value is
 \[
 \ell(t+\ii0)=\log\frac t{1-t}-\ii\pi.
 \]
-Substitution in \eqref{eq:resolvent} gives
+Substitution in \eqref{ccp:eq:resolvent} gives
 \begin{equation}
--\frac1\pi\im m(t+\ii0)=w(t),\label{eq:stieltjes}
+-\frac1\pi\im m(t+\ii0)=w(t),\label{ccp:eq:stieltjes}
 \end{equation}
-with $w$ as in \eqref{eq:density}. The density is nonnegative and continuous in the open interval; its zero at $t=1/2$ is harmless. At the endpoints,
+with $w$ as in \eqref{ccp:eq:density}. The density is nonnegative and continuous in the open interval; its zero at $t=1/2$ is harmless. At the endpoints,
 \[
 w(t)\longrightarrow1\quad(t\downarrow0),\qquad
 w(t)\sim\frac1{\{\log(1/(1-t))-1\}^2+\pi^2}\quad(t\uparrow1).
 \]
 
-\begin{proof}[Proof of the spectral identity in Theorem~\ref{thm:main}]
-Stieltjes inversion applied to the scalar spectral measure of $1$ gives the density \eqref{eq:stieltjes} on $(0,1)$. On every compact subinterval the boundary values are smooth, so there is no additional singular measure there. The endpoint atoms vanish because
+\begin{proof}[Proof of the spectral identity in Theorem~\ref{ccp:thm:main}]
+Stieltjes inversion applied to the scalar spectral measure of $1$ gives the density \eqref{ccp:eq:stieltjes} on $(0,1)$. On every compact subinterval the boundary values are smooth, so there is no additional singular measure there. The endpoint atoms vanish because
 \[
 \lim_{\lambda\to0}\lambda m(\lambda)=0,\qquad
 \lim_{\lambda\to1}(\lambda-1)m(\lambda)=0,
 \]
-with the limits taken off the interval. Proposition~\ref{prop:pole} supplies the only atom outside the interval, of mass $2k$ at $h$. Thus
+with the limits taken off the interval. Proposition~\ref{ccp:prop:pole} supplies the only atom outside the interval, of mass $2k$ at $h$. Thus
 \begin{equation}
-\dd\mu(t)=2k\,\delta_h(\dd t)+w(t)\mathbf1_{(0,1)}(t)\dd t.\label{eq:measure}
+\dd\mu(t)=2k\,\delta_h(\dd t)+w(t)\mathbf1_{(0,1)}(t)\dd t.\label{ccp:eq:measure}
 \end{equation}
-Its total mass is $\norm1^2=1$. Taking moments and using \eqref{eq:moments} proves \eqref{eq:spectral}, and in particular
+Its total mass is $\norm1^2=1$. Taking moments and using \eqref{ccp:eq:moments} proves \eqref{ccp:eq:spectral}, and in particular
 \begin{equation}
 \int_0^1w(t)\dd t=1-2k,\qquad
-0<r_n\le\frac12-k.\label{eq:mass}
+0<r_n\le\frac12-k.\label{ccp:eq:mass}
 \end{equation}
 Since $h>1$, this already proves $a_n\sim k(n+1)!h^n$.
 \end{proof}
@@ -241,31 +415,31 @@ The same formula also shows that $(r_n)_{n\ge0}$ is a Hausdorff moment sequence,
 \section{The logarithmic second sector}
 Write
 \begin{equation}
-N=n+1,\qquad L=\log N,\qquad A=1-\gamma.\label{eq:NL}
+N=n+1,\qquad L=\log N,\qquad A=1-\gamma.\label{ccp:eq:NL}
 \end{equation}
-The substitution $t=\ee^{-u}$ in \eqref{eq:spectral} gives the exact Laplace integral
+The substitution $t=\ee^{-u}$ in \eqref{ccp:eq:spectral} gives the exact Laplace integral
 \begin{equation}
-r_n=\frac12\int_0^\infty\ee^{-Nu}H(u)\dd u,\label{eq:laplace}
+r_n=\frac12\int_0^\infty\ee^{-Nu}H(u)\dd u,\label{ccp:eq:laplace}
 \end{equation}
 where
 \begin{align}
-H(u)&=\frac{A_0(u)}{\{\log u+1+q(u)\}^2+\pi^2},\label{eq:H}\\
+H(u)&=\frac{A_0(u)}{\{\log u+1+q(u)\}^2+\pi^2},\label{ccp:eq:H}\\
 A_0(u)&=(2-\ee^u)^2,\qquad
 q(u)=1-\ee^u+\log\frac{\ee^u-1}{u}\notag\\
-&=-\frac u2-\frac{11u^2}{24}-\frac{u^3}6-\frac{121u^4}{2880}+O(u^5).\label{eq:q}
+&=-\frac u2-\frac{11u^2}{24}-\frac{u^3}6-\frac{121u^4}{2880}+O(u^5).\label{ccp:eq:q}
 \end{align}
 Both $A_0$ and $q$ are analytic at zero. The function $H(u)=w(\ee^{-u})$ is bounded on $(0,\infty)$.
 
-\begin{theorem}[Inverse logarithmic expansion]\label{thm:logs}
+\begin{theorem}[Inverse logarithmic expansion]\label{ccp:thm:logs}
 For each fixed $K\ge0$,
 \begin{equation}
 r_n=\frac1{2NL^2}\left(\sum_{j=0}^K\frac{c_j}{L^j}
-              +O_K(L^{-K-1})\right),\label{eq:logexp}
+              +O_K(L^{-K-1})\right),\label{ccp:eq:logexp}
 \end{equation}
 where
 \begin{equation}
 c_j=\frac1\pi\im\left[(\partial_\alpha+1+\ii\pi)^{j+1}
-                 \Gamma(\alpha+1)\right]_{\alpha=0}.\label{eq:cj}
+                 \Gamma(\alpha+1)\right]_{\alpha=0}.\label{ccp:eq:cj}
 \end{equation}
 The first coefficients are
 \begin{align*}
@@ -276,17 +450,30 @@ c_4&=5A^4-5\pi^2A^2-40A\zeta(3)+\pi^4/12.
 \end{align*}
 \end{theorem}
 \begin{proof}
-Scale $u=v/N$. At leading order in $1/N$, \eqref{eq:laplace} becomes
+Scale $u=v/N$. At leading order in $1/N$, \eqref{ccp:eq:laplace} becomes
 \begin{equation}
 \frac1{2\pi N}\im\int_0^\infty
- \frac{\ee^{-v}}{L-1-\log v-\ii\pi}\dd v.\label{eq:firstsector}
+ \frac{\ee^{-v}}{L-1-\log v-\ii\pi}\dd v.\label{ccp:eq:firstsector}
 \end{equation}
-The replacement has error $O(N^{-2}L^{-2})$, a special case of the stronger theorem below. Expanding the reciprocal in $1/L$ gives \eqref{eq:cj}, since
+The replacement has error $O(N^{-2}L^{-2})$, a special case of the stronger theorem below. Expanding the reciprocal in $1/L$ gives \eqref{ccp:eq:cj}, since
 \[
 \int_0^\infty\ee^{-v}(\log v)^j\dd v=\Gamma^{(j)}(1).
 \]
-For rigor, split at $v=\ee^{-\varepsilon L}$ and $v=\ee^{\varepsilon L}$, with any fixed $0<\varepsilon<1/2$. On the middle interval a finite geometric expansion has a uniformly controlled remainder, which is bounded after integration by the next logarithmic moment. The small-$v$ tail is exponentially small in $L$ and the large-$v$ tail is superexponentially small. This proves every fixed-order assertion in \eqref{eq:logexp}. The displayed coefficients follow from the standard derivatives of $\Gamma$ at 1.
+For rigor, split at $v=\ee^{-\varepsilon L}$ and $v=\ee^{\varepsilon L}$, with any fixed $0<\varepsilon<1/2$. On the middle interval a finite geometric expansion has a uniformly controlled remainder, which is bounded after integration by the next logarithmic moment. The small-$v$ tail is exponentially small in $L$ and the large-$v$ tail is superexponentially small. This proves every fixed-order assertion in \eqref{ccp:eq:logexp}. The displayed coefficients follow from the standard derivatives of $\Gamma$ at 1.
 \end{proof}
+
+\begin{writenote}[Added 5 October 2026, batch~101]
+The rigour paragraph above is condensed: it names the split points and the
+size of each tail but writes out neither the remainder bound of the finite
+geometric expansion on the middle interval nor the comparison of the
+truncated Gamma moments with the full ones. The intake checked the steps
+and found them correct as sketched; a written-out version is part of
+Question~\ref{ccp:q:sketches}. The verifier's README
+(\nolinkurl{verification-README.md}) prints two further coefficients,
+$C_{0,5}=c_5$ and $C_{0,6}=c_6$, obtained from \eqref{ccp:eq:Cjk} by the
+source's symbolic code; the intake confirmed numerically that they equal
+\eqref{ccp:eq:cj} at $j=5,6$.
+\end{writenote}
 
 Thus the effective exponent of the residual tends to $-1$ with a leading drift $-2/\log n$. A finite-range fit can consequently resemble a more negative fractional exponent. There is no algebraic $1/n$ correction multiplying the dominant term $kh^n$ in $b_n$: that contribution is the exact isolated pole, while all remaining moments come from $[0,1]$.
 
@@ -295,30 +482,30 @@ A finite truncation in inverse logarithms cannot resolve the next power of $1/N$
 
 Put
 \begin{equation}
-a_{j,m}=[u^j]\,A_0(u)q(u)^m,\quad0\le m\le j,\label{eq:ajm}
+a_{j,m}=[u^j]\,A_0(u)q(u)^m,\quad0\le m\le j,\label{ccp:eq:ajm}
 \end{equation}
 and
 \begin{equation}
 \mathcal F_j(L)=\frac1\pi\im\sum_{m=0}^j a_{j,m}
-\int_0^\infty\frac{\ee^{-v}v^j}{(L-1-\log v-\ii\pi)^{m+1}}\dd v.\label{eq:Fj}
+\int_0^\infty\frac{\ee^{-v}v^j}{(L-1-\log v-\ii\pi)^{m+1}}\dd v.\label{ccp:eq:Fj}
 \end{equation}
 The integrals converge for every real $L$.
 
-\begin{theorem}[Mixed sector calculus]\label{thm:mixed}
+\begin{theorem}[Mixed sector calculus]\label{ccp:thm:mixed}
 For each fixed $J\ge0$,
 \begin{equation}
 r_n=\frac12\sum_{j=0}^JN^{-j-1}\mathcal F_j(\log N)
-       +O_J\bigl(N^{-J-2}(\log N)^{-2}\bigr).\label{eq:mixed}
+       +O_J\bigl(N^{-J-2}(\log N)^{-2}\bigr).\label{ccp:eq:mixed}
 \end{equation}
 Each coefficient function has an all-orders expansion
 \begin{equation}
-\mathcal F_j(L)\sim\sum_{k\ge0}C_{j,k}L^{-k-2},\label{eq:Fexp}
+\mathcal F_j(L)\sim\sum_{k\ge0}C_{j,k}L^{-k-2},\label{ccp:eq:Fexp}
 \end{equation}
 where
 \begin{equation}
 C_{j,k}=\frac1\pi\im\sum_{m=0}^{\min(j,k)}a_{j,m}\binom{k+1}{m}
 \left[(\partial_\alpha+1+\ii\pi)^{k+1-m}\Gamma(\alpha+1)\right]_{\alpha=j}.
-\label{eq:Cjk}
+\label{ccp:eq:Cjk}
 \end{equation}
 In particular $C_{0,k}=c_k$ and
 \[
@@ -326,7 +513,7 @@ In particular $C_{0,k}=c_k$ and
 \]
 \end{theorem}
 \begin{proof}
-Let $S=L-1-\log v-\ii\pi$. After $u=v/N$, the kernel in \eqref{eq:laplace} is
+Let $S=L-1-\log v-\ii\pi$. After $u=v/N$, the kernel in \eqref{ccp:eq:laplace} is
 \[
 \frac1\pi\im\frac{A_0(v/N)}{S-q(v/N)}.
 \]
@@ -334,23 +521,35 @@ The Taylor coefficients in $v/N$ are precisely
 \[
 \sum_{m=0}^ja_{j,m}S^{-m-1}.
 \]
-Fix $0<\eta<1$ and a small $\delta>0$. On $v\le N^\eta$, $|S|\ge(1-\eta)L-1$, and $q(v/N)$ is uniformly small. Taylor's theorem and a finite geometric expansion give an imaginary-part remainder $O_J((v/N)^{J+1}L^{-2})$. The second denominator power comes from taking the imaginary part of a rational function with real Taylor coefficients. Integrating against $\ee^{-v}$ and including the factor $1/(2N)$ proves the stated error there. The range $N^\eta<v<N\delta$ is exponentially small in $N^\eta$; the remaining $u\ge\delta$ tail is $O(\ee^{-N\delta})$, since $H$ is bounded. Extending each coefficient integral to infinity changes only exponentially small tails. This proves \eqref{eq:mixed}.
+Fix $0<\eta<1$ and a small $\delta>0$. On $v\le N^\eta$, $|S|\ge(1-\eta)L-1$, and $q(v/N)$ is uniformly small. Taylor's theorem and a finite geometric expansion give an imaginary-part remainder $O_J((v/N)^{J+1}L^{-2})$. The second denominator power comes from taking the imaginary part of a rational function with real Taylor coefficients. Integrating against $\ee^{-v}$ and including the factor $1/(2N)$ proves the stated error there. The range $N^\eta<v<N\delta$ is exponentially small in $N^\eta$; the remaining $u\ge\delta$ tail is $O(\ee^{-N\delta})$, since $H$ is bounded. Extending each coefficient integral to infinity changes only exponentially small tails. This proves \eqref{ccp:eq:mixed}.
 
 Finally expand
 \[
 S^{-m-1}=\sum_{\ell\ge0}\binom{m+\ell}{m}
 (1+\log v+\ii\pi)^\ell L^{-m-\ell-1}
 \]
-to any finite order. The same tail argument as in Theorem~\ref{thm:logs} justifies termwise integration. Taking the imaginary part eliminates the zero-power term, and collecting the coefficient of $L^{-k-2}$ gives \eqref{eq:Cjk}.
+to any finite order. The same tail argument as in Theorem~\ref{ccp:thm:logs} justifies termwise integration. Taking the imaginary part eliminates the zero-power term, and collecting the coefficient of $L^{-k-2}$ gives \eqref{ccp:eq:Cjk}.
 \end{proof}
 
-Theorem~\ref{thm:mixed} is the precise meaning of the mixed expansion in this report. It provides an explicit algorithm for every coefficient and a remainder at the level of each inverse-power sector. It does not claim convergence of the separate inverse-logarithmic series.
+Theorem~\ref{ccp:thm:mixed} is the precise meaning of the mixed expansion in this report. It provides an explicit algorithm for every coefficient and a remainder at the level of each inverse-power sector. It does not claim convergence of the separate inverse-logarithmic series.
 
-\section{The natural interpolation and ordinary inverse scale}
+\begin{writenote}[Added 5 October 2026, batch~101]
+The proof of Theorem~\ref{ccp:thm:mixed} is also condensed. Two steps are
+asserted rather than written out: that the Taylor remainder of
+$A_0(v/N)/(S-q(v/N))$ has \emph{imaginary part} $O_J((v/N)^{J+1}L^{-2})$
+on $v\le N^\eta$ (one power of $L$ better than its modulus, because
+$\im S=-\pi$ is bounded while $|S|\gtrsim L$), and the termwise integration
+of the expansion of $S^{-m-1}$, which is referred to the tail argument of
+Theorem~\ref{ccp:thm:logs}. The intake rederived $\mathcal
+F_1(L)=-2L^{-2}+(-9+4\gamma)L^{-3}+O(L^{-4})$ by hand. Writing these steps
+out is part of Question~\ref{ccp:q:sketches}.
+\end{writenote}
+
+\section{The natural interpolation and ordinary inverse scale}\label{ccp:sec:interp}
 The spectral measure supplies a specific interpolation:
 \begin{equation}
 \mathcal A(x)=\Gamma(x+2)\left[kh^x+\frac12\int_0^1t^xw(t)\dd t\right],
-\qquad x>-1.\label{eq:interp}
+\qquad x>-1.\label{ccp:eq:interp}
 \end{equation}
 It agrees with $a_n$ at every positive integer and is real analytic. In fact it is strictly increasing on all of $[1,\infty)$. To prove this, write
 \[
@@ -360,19 +559,19 @@ The second derivative of $\log b(x)$ is the variance of $\log t$ under the tilte
 
 Set $X=x+1$ and define
 \begin{align}
-F(X)&=\log\Gamma(X+1)+X\log h+\log(k/h),\label{eq:envelopeF}\\
+F(X)&=\log\Gamma(X+1)+X\log h+\log(k/h),\label{ccp:eq:envelopeF}\\
 I(X)&=\int_0^\infty\ee^{-Xu}H(u)\dd u,\qquad
-S(X)=\frac h{2k}h^{-X}I(X).\label{eq:S}
+S(X)=\frac h{2k}h^{-X}I(X).\label{ccp:eq:S}
 \end{align}
 Then, exactly,
 \begin{equation}
-\mathcal A(X-1)=\ee^{F(X)}(1+S(X)).\label{eq:exactinverse}
+\mathcal A(X-1)=\ee^{F(X)}(1+S(X)).\label{ccp:eq:exactinverse}
 \end{equation}
 The function $I$ is analytic for $\Re X>0$; its differentiated asymptotic expansions follow by inserting powers of $u$ into the Laplace integral.
 
 For a target $y$ tending to infinity, let $X_*=X_*(y)$ be the \emph{exact} Gamma-envelope inverse
 \begin{equation}
-F(X_*)=\log y.\label{eq:exactenvinverse}
+F(X_*)=\log y.\label{ccp:eq:exactenvinverse}
 \end{equation}
 This definition will be retained when exponentially small corrections are resolved.
 
@@ -385,7 +584,7 @@ Y=\log(yh/k),\qquad W=W_0(hY/\ee),\qquad X_0=Y/W,
 The leading equation is $Y=X_0(\log(hX_0)-1)$. Stirling's expansion gives
 \begin{equation}
 Y=X_*(\log(hX_*)-1)+\tfrac12\log(2\pi X_*)
- +\sum_{j\ge1}\frac{B_{2j}}{2j(2j-1)X_*^{2j-1}},\label{eq:stirling}
+ +\sum_{j\ge1}\frac{B_{2j}}{2j(2j-1)X_*^{2j-1}},\label{ccp:eq:stirling}
 \end{equation}
 as an asymptotic expansion, where $B_{2j}$ are Bernoulli numbers.
 
@@ -393,85 +592,221 @@ For clarity, the first two corrections are explicit. Put $q_0=\tfrac12\log(2\pi 
 \begin{equation}
 X_*=X_0-\frac{q_0}{p_0}
  -\frac{d_0^2/2+d_0/2+1/12}{X_0p_0}
- +O\!\left(\frac1{X_0^2p_0}\right).\label{eq:ordinaryinverse}
+ +O\!\left(\frac1{X_0^2p_0}\right).\label{ccp:eq:ordinaryinverse}
 \end{equation}
-Indeed substitute $X_*=X_0+d_0+d_1$ into \eqref{eq:stirling}, expand through $X_0^{-1}$, and set the successive residuals to zero. The unremoved residual is $O(X_0^{-2})$, while the derivative is asymptotic to $p_0$. Repeating this coefficient cancellation with further Stirling terms yields arbitrary ordinary inverse order. For real positive arguments, the usual remainder bounds for Stirling's formula justify each fixed truncation~\cite[Section 5.11]{dlmf}.
+Indeed substitute $X_*=X_0+d_0+d_1$ into \eqref{ccp:eq:stirling}, expand through $X_0^{-1}$, and set the successive residuals to zero. The unremoved residual is $O(X_0^{-2})$, while the derivative is asymptotic to $p_0$. Repeating this coefficient cancellation with further Stirling terms yields arbitrary ordinary inverse order. For real positive arguments, the usual remainder bounds for Stirling's formula justify each fixed truncation~\cite[Section 5.11]{dlmf}.
 
-A finite truncation of \eqref{eq:ordinaryinverse} has an algebraic error much larger than the spectral correction. Therefore the next section is centered on \eqref{eq:exactenvinverse}, not on a finitely truncated Lambert approximation.
+A finite truncation of \eqref{ccp:eq:ordinaryinverse} has an algebraic error much larger than the spectral correction. Therefore the next section is centered on \eqref{ccp:eq:exactenvinverse}, not on a finitely truncated Lambert approximation.
+
+\begin{writenote}[Added 5 October 2026, batch~101: instances of repository results]
+The inversion of this section is an instance of the general apparatus of
+ProveIt's transseries-and-inversion volume
+(\nolinkurl{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex}),
+and no novelty is claimed for the method. The leading equation
+$Y=X_0(\log(hX_0)-1)$ is \nolinkurl{p0:prop:factorial-core} with
+$\kappa=1$ and $d=\log h-1$: its $v=W_0(Y\ee^{d})=W_0(hY/\ee)$ is the $W$
+above, its solution $\exp(v-d)=\ee^{W+1}/h$ equals $Y/W$ because
+$W\ee^W=hY/\ee$, and its slope $\kappa(v+1)=W+1$ is $p_0$. The threshold
+identity $N(y)=\lceil\mathcal A^{-1}(y)\rceil$ stated before
+\eqref{ccp:eq:envelopeF} is part~(1) of \nolinkurl{p0:thm:staircase} for
+the admissible interpolation $\mathcal A$ on $[1,\infty)$; the source
+supplies the monotonicity proof that makes $\mathcal A$ admissible.
+\end{writenote}
 
 \section{Convergent exponentially small inverse sectors}
-Let $X(y)$ denote the eventual inverse in \eqref{eq:exactinverse}. Define, near $u=0$,
+Let $X(y)$ denote the eventual inverse in \eqref{ccp:eq:exactinverse}. Define, near $u=0$,
 \begin{equation}
 G(u)=F(X_*+u)-F(X_*),\qquad
-Q(u)=\frac{uS(X_*+u)}{1-\ee^{-G(u)}},\label{eq:Q}
+Q(u)=\frac{uS(X_*+u)}{1-\ee^{-G(u)}},\label{ccp:eq:Q}
 \end{equation}
 with the removable value $Q(0)=S(X_*)/F'(X_*)$.
 
-\begin{theorem}[All exponential inverse sectors]\label{thm:inverse}
-For $y$ sufficiently large, the following series converges to the inverse of the interpolation \eqref{eq:interp}:
+\begin{theorem}[All exponential inverse sectors]\label{ccp:thm:inverse}
+For $y$ sufficiently large, the following series converges to the inverse of the interpolation \eqref{ccp:eq:interp}:
 \begin{equation}
 X(y)=X_*+\sum_{m\ge1}\frac{(-1)^m}{m!}
- \left[\frac{\dd^{m-1}}{\dd u^{m-1}}Q(u)^m\right]_{u=0}.\label{eq:lagrange}
+ \left[\frac{\dd^{m-1}}{\dd u^{m-1}}Q(u)^m\right]_{u=0}.\label{ccp:eq:lagrange}
 \end{equation}
 For each fixed $M$, its remainder after $m=M$ is
 \begin{equation}
-O_M\left(\frac{S(X_*)^{M+1}}{F'(X_*)}\right).\label{eq:inverseerror}
+O_M\left(\frac{S(X_*)^{M+1}}{F'(X_*)}\right).\label{ccp:eq:inverseerror}
 \end{equation}
 Writing $p=F'(X_*)$, $q=F''(X_*)$, and evaluating $S,S'$ at $X_*$, the first two sectors are
 \begin{equation}
 X-X_*=-\frac Sp+\frac{SS'}{p^2}+\frac{S^2}{2p}
-                    -\frac{qS^2}{2p^3}+O(S^3/p).\label{eq:twosectors}
+                    -\frac{qS^2}{2p^3}+O(S^3/p).\label{ccp:eq:twosectors}
 \end{equation}
 For each fixed $m$, the leading term of the $m$th sector is
 \begin{equation}
 \frac{(-1)^m}{m}\left(\frac h{2k}\right)^m
- \frac{h^{-mX_*}}{X_*^m(\log X_*)^{2m}\log(hX_*)}.\label{eq:msector}
+ \frac{h^{-mX_*}}{X_*^m(\log X_*)^{2m}\log(hX_*)}.\label{ccp:eq:msector}
 \end{equation}
-All its mixed inverse-power and inverse-logarithmic corrections are generated by \eqref{eq:Cjk}, Gamma derivatives, and the finite differentiation in \eqref{eq:lagrange}.
+All its mixed inverse-power and inverse-logarithmic corrections are generated by \eqref{ccp:eq:Cjk}, Gamma derivatives, and the finite differentiation in \eqref{ccp:eq:lagrange}.
 \end{theorem}
 \begin{proof}
-Replace $S$ in \eqref{eq:exactinverse} by $\varepsilon S$. Relative to the envelope solution, the inverse equation is
+Replace $S$ in \eqref{ccp:eq:exactinverse} by $\varepsilon S$. Relative to the envelope solution, the inverse equation is
 \[
 \ee^{G(u)}(1+\varepsilon S(X_*+u))=1,
 \]
-equivalently $u=-\varepsilon Q(u)$. Lagrange inversion gives \eqref{eq:lagrange} as the Taylor series in $\varepsilon$ at zero.
+equivalently $u=-\varepsilon Q(u)$. Lagrange inversion gives \eqref{ccp:eq:lagrange} as the Taylor series in $\varepsilon$ at zero.
 
 To justify convergence at $\varepsilon=1$, choose a sufficiently small fixed $c>0$ and the disk $|u|\le c/F'(X_*)$. The function $G(u)$ is asymptotically $F'(X_*)u$ uniformly on this disk; hence $1-\ee^{-G(u)}$ has only its simple zero at zero there. Moreover the Laplace representation gives
 \[
 |S(X_*+u)|\le C S(X_*),\qquad
 |Q(u)|\le C S(X_*)/F'(X_*).
 \]
-For example, bound the modulus of the Laplace transform by $I(X_*-|\Re u|)$ and use its asymptotic equivalent to compare it with $I(X_*)$. Rouch\'e's theorem on the disk now gives a unique root of $u+\varepsilon Q(u)=0$ for $|\varepsilon|<c'/S(X_*)$. That root is simple and analytic in $\varepsilon$. This disk contains 1 for all sufficiently large $X_*$. Cauchy's coefficient bounds on a fixed fraction of this radius give \eqref{eq:inverseerror}.
+For example, bound the modulus of the Laplace transform by $I(X_*-|\Re u|)$ and use its asymptotic equivalent to compare it with $I(X_*)$. Rouch\'e's theorem on the disk now gives a unique root of $u+\varepsilon Q(u)=0$ for $|\varepsilon|<c'/S(X_*)$. That root is simple and analytic in $\varepsilon$. This disk contains 1 for all sufficiently large $X_*$. Cauchy's coefficient bounds on a fixed fraction of this radius give \eqref{ccp:eq:inverseerror}.
 
-Expanding the equation to order $\varepsilon^2$ proves \eqref{eq:twosectors}. Finally $F'\sim\log(hX_*)$ and
+Expanding the equation to order $\varepsilon^2$ proves \eqref{ccp:eq:twosectors}. Finally $F'\sim\log(hX_*)$ and
 \[
 S(X_*)\sim\frac h{2k}\frac{h^{-X_*}}{X_*(\log X_*)^2}.
 \]
-On the local scale $1/F'$, $S$ is asymptotically constant and $F$ is asymptotically linear. The resulting inverse shift is exactly $-\log(1+\varepsilon S)/F'$, whose $m$th coefficient is $(-1)^mS^m/(mF')$. This proves \eqref{eq:msector}; derivatives of $S$ and higher derivatives of $F$ give the lower orders through the exact formula.
+On the local scale $1/F'$, $S$ is asymptotically constant and $F$ is asymptotically linear. The resulting inverse shift is exactly $-\log(1+\varepsilon S)/F'$, whose $m$th coefficient is $(-1)^mS^m/(mF')$. This proves \eqref{ccp:eq:msector}; derivatives of $S$ and higher derivatives of $F$ give the lower orders through the exact formula.
 \end{proof}
+
+\begin{writenote}[Added 5 October 2026, batch~101: the disk estimate written out]
+The convergence paragraph of the proof above asserts the bound
+$|S(X_*+u)|\le CS(X_*)$ on the disk, with the hint ``bound the modulus of
+the Laplace transform by $I(X_*-|\Re u|)$ and use its asymptotic
+equivalent''. The proposition below proves the bound with an elementary
+log-derivative estimate in place of the asymptotic equivalent, and writes
+out the Rouch\'e and Cauchy steps with explicit radii. It is a proof by the
+write, not by the source; the radii $1/(4p)$ and $1/(8p)$ are one
+admissible choice of the source's $c/F'(X_*)$.
+
+\begin{proposition}[{[write]} Disk estimate for Theorem~\ref{ccp:thm:inverse}]\label{ccp:prop:disk}
+Write $p=F'(X_*)$, $S_*=S(X_*)$ and $\Delta=\{u\in\C:|u|\le1/(4p)\}$.
+There is $X_1$ such that for every $X_*\ge X_1$:
+\begin{enumerate}
+\item $|S(X_*+u)|\le2h^{1/4}S_*$ for $u\in\Delta$;
+\item on $\Delta$, $1-\ee^{-G(u)}$ vanishes only at $u=0$, where its zero
+ is simple, and $|1-\ee^{-G(u)}|\ge0.45\,p|u|$; hence $Q$ is analytic on
+ $\Delta$ and $|Q(u)|\le KS_*/p$ there, with $K=5h^{1/4}$;
+\item for $|\varepsilon|<R:=1/(8KS_*)$ the equation $u+\varepsilon Q(u)=0$
+ has exactly one root $u(\varepsilon)$ in $|u|<1/(8p)$; it is analytic in
+ $\varepsilon$, real for real $\varepsilon$, and its Taylor coefficients
+ at $\varepsilon=0$ are the terms of \eqref{ccp:eq:lagrange};
+\item if moreover $R\ge2$, then $X(y)=X_*+u(1)$ and the remainder of
+ \eqref{ccp:eq:lagrange} after $m=M$ is at most
+ $\frac1{4p}(8KS_*)^{M+1}$, which is \eqref{ccp:eq:inverseerror}.
+\end{enumerate}
+Since $S_*\to0$ as $X_*\to\infty$ (below), $R\ge2$ holds for all large
+$X_*$, that is, for all large $y$.
+\end{proposition}
+\begin{proof}
+\emph{Facts about $H$ and $I$.} The density $w$ is continuous on $(0,1)$
+with finite limits at both ends (Section~4), so $0\le H\le M_H$ for a
+constant $M_H$; and $H>0$ except where $w$ vanishes, at the single point
+$u=\log2$, so $I(X)>0$ for real $X>0$. For $0<u\le1$ one has
+$1<(\ee^u-1)/u\le\ee-1$, hence $1-\ee<q(u)\le\log(\ee-1)$ and
+$|1+q(u)|\le2$; also $A_0(u)\ge\frac12$ for $u\le\frac14$. If
+$0<u\le\ee^{-7}$, then $\Lambda=\log(1/u)\ge7$ and
+$(\Lambda+2)^2+\pi^2\le2\Lambda^2$ (true for $\Lambda\ge2+\sqrt{8+\pi^2}$),
+so \eqref{ccp:eq:H} gives
+\[
+H(u)\ge\frac1{4\log^2(1/u)}\qquad(0<u\le\ee^{-7}).
+\]
+For real $t>0$ the integrals defining $I(t)$ and $-I'(t)=\int_0^\infty
+s\ee^{-ts}H(s)\dd s$ converge, because $H$ is bounded, and $I$ is
+decreasing. For $t\ge\ee^7$ the interval $[1/(2t),1/t]$ lies in
+$(0,\ee^{-7}]$, and $\log(1/s)\le\log(2t)$ on it, so
+\[
+I(t)\ge\int_{1/(2t)}^{1/t}\ee^{-ts}H(s)\dd s\ge\frac1{8\ee\,t\log^2(2t)},
+\qquad
+-I'(t)\le M_H\int_0^\infty s\ee^{-ts}\dd s=\frac{M_H}{t^2}.
+\]
+Hence $\mu(t):=-I'(t)/I(t)\le8\ee M_H\log^2(2t)/t$, which decreases for
+$t\ge\ee^7$. For real $X\ge\ee^7+\frac14$,
+\[
+\log\frac{I(X-\frac14)}{I(X)}=\int_{X-1/4}^X\mu(t)\dd t
+\le\frac{2\ee M_H\log^2(2X)}{X-\frac14}\longrightarrow0,
+\]
+so $I(X-\frac14)\le2I(X)$ for all $X\ge X_2$, say. Also $I(X)\le M_H/X$,
+so $S(X)=\frac h{2k}h^{-X}I(X)\to0$ as $X\to\infty$.
+
+\emph{(1).} Let $X_*\ge3$. Then $p=\psi(X_*+1)+\log h\ge\psi(4)+\log h>1$,
+so $|u|\le\frac14$ on $\Delta$. For complex $Z=X_*+u$,
+$|h^{-Z}|=h^{-X_*-\Re u}\le h^{1/4}h^{-X_*}$, and
+$|I(Z)|\le\int_0^\infty\ee^{-(X_*+\Re u)s}H(s)\dd s=I(X_*+\Re u)\le
+I(X_*-\frac14)$. If also $X_*\ge X_2$, then $|I(Z)|\le2I(X_*)$, and (1)
+follows from \eqref{ccp:eq:S}.
+
+\emph{(2).} $F$ is analytic for $\Re Z>-1$ with $F''(Z)=\psi'(Z+1)=
+\sum_{j\ge0}(Z+1+j)^{-2}$. For $\Re Z\ge X_*-\frac14\ge1$,
+$|F''(Z)|\le\sum_{j\ge0}(\Re Z+1+j)^{-2}\le1/\Re Z\le2/X_*$. Integrating
+twice along the segment from $0$ to $u\in\Delta$,
+$|G(u)-pu|\le|u|^2/X_*\le|u|/(4pX_*)\le p|u|/10$, the last step because
+$4p^2X_*\ge12>10$. Thus $0.9\,p|u|\le|G(u)|\le1.1\,p|u|\le\frac{1.1}4<\frac12$.
+For $|G|\le1$, $|1-\ee^{-G}-G|\le|G|^2\sum_{j\ge2}1/j!\le|G|^2$, so
+$|1-\ee^{-G(u)}|\ge|G|-|G|^2\ge|G|/2\ge0.45\,p|u|$. This vanishes only at
+$u=0$, and the zero is simple because the derivative there is $G'(0)=p\ne0$.
+So $Q$ is analytic on $\Delta$ (its value at $0$ is the removable one), and
+by (1), $|Q(u)|\le|u|\cdot2h^{1/4}S_*/(0.45\,p|u|)\le5h^{1/4}S_*/p$ for
+$u\ne0$, hence also at $u=0$.
+
+\emph{(3).} On the circle $|u|=r:=1/(8p)$, which lies inside $\Delta$,
+$|\varepsilon Q(u)|\le|\varepsilon|KS_*/p<r$ whenever $|\varepsilon|<R$.
+By Rouch\'e's theorem $u+\varepsilon Q(u)$ has as many zeros in $|u|<r$
+as $u$, namely one. The root
+$u(\varepsilon)=\frac1{2\pi\ii}\oint_{|u|=r}u\,
+\frac{1+\varepsilon Q'(u)}{u+\varepsilon Q(u)}\dd u$ is analytic in
+$\varepsilon$ for $|\varepsilon|<R$. The function $Q$ is real on real $u$
+(there $G$ and $S$ are real), so for real $\varepsilon$ the conjugate of
+the root is again a root in the disk, and uniqueness makes it real. With
+$\phi=-Q$, analytic on $\Delta$, the root solves $u=\varepsilon\phi(u)$,
+and the Lagrange inversion theorem gives its Taylor coefficients as
+$\frac1{m!}\bigl[\frac{\dd^{m-1}}{\dd u^{m-1}}\phi(u)^m\bigr]_{u=0}$, which are
+the terms of \eqref{ccp:eq:lagrange}.
+
+\emph{(4).} If $R\ge2$, then $1$ lies in the disk of analyticity and
+$u(1)$ is real with $|u(1)|<1/(8p)$. At $\varepsilon=1$ the equation
+$u+Q(u)=0$ with $u\ne0$ is, after multiplying by $(1-\ee^{-G(u)})/u$,
+the same as $S(X_*+u)=\ee^{-G(u)}-1$, that is
+$\ee^{F(X_*+u)}(1+S(X_*+u))=\ee^{F(X_*)}=y$ by \eqref{ccp:eq:exactenvinverse};
+and $u=0$ is not a root, since $Q(0)=S_*/p\ne0$. By \eqref{ccp:eq:exactinverse}
+the real number $X_*+u(1)$ therefore solves $\mathcal A(X-1)=y$. Since
+$X_*+u(1)-1>3-\frac14-1\ge1$ and $\mathcal A$ is strictly increasing on
+$[1,\infty)$ (Section~\ref{ccp:sec:interp}), $X_*+u(1)=X(y)$. Finally
+$|u(\varepsilon)|<r$ on $|\varepsilon|<R$, so Cauchy's estimate gives
+$|u_m|\le rR^{-m}$ for the $m$th Taylor coefficient, and for $R\ge2$,
+$\sum_{m>M}|u_m|\le2rR^{-M-1}=\frac1{4p}(8KS_*)^{M+1}$. Take $X_1\ge
+\max(3,X_2)$ so large that also $8KS(X_*)\le\frac12$ for $X_*\ge X_1$
+(possible because $S(X)\to0$); the constant $K$ is absolute, so this bound is
+$O_M(S_*^{M+1}/p)$.
+\end{proof}
+\end{writenote}
 
 This is an interpolation-specific inverse theorem. Arbitrary functions agreeing with $a_n$ at integers can have different exponentially small inverse terms. The spectral interpolation is distinguished here by the exact positive moment representation.
 
-\section{Exact integer recovery and threshold inversion}
+\begin{writenote}[Added 5 October 2026, batch~101]
+The interpolation dependence just stated is the general phenomenon of
+\nolinkurl{p0:rem:three-differ} in the transseries-and-inversion volume:
+distinct admissible interpolations agree at the integers and have
+different inverses between them. The convergence step of the proof of
+Theorem~\ref{ccp:thm:inverse} is written out in
+Proposition~\ref{ccp:prop:disk}.
+\end{writenote}
+
+\section{Exact integer recovery and threshold inversion}\label{ccp:sec:rounding}
 The next conclusion is stronger for integer inputs and requires no asymptotic onset. Define the envelope in the original size variable by
 \begin{equation}
-\mathcal E(x)=k\Gamma(x+2)h^x,\qquad x\ge1.\label{eq:E}
+\mathcal E(x)=k\Gamma(x+2)h^x,\qquad x\ge1.\label{ccp:eq:E}
 \end{equation}
 It is strictly increasing.
 
-\begin{theorem}[Global rounding corollary]\label{thm:rounding}
+\begin{theorem}[Global rounding corollary]\label{ccp:thm:rounding}
 For every integer $n\ge1$,
 \begin{equation}
-\mathcal E(n)<a_n<\mathcal E(n+1/2).\label{eq:globalbound}
+\mathcal E(n)<a_n<\mathcal E(n+1/2).\label{ccp:eq:globalbound}
 \end{equation}
 Consequently, if $z=\mathcal E^{-1}(a_n)$ is the exact real inverse, then
 \begin{equation}
 n<z<n+1/2,\qquad \lfloor z\rfloor=n,
-\qquad\operatorname{nearestinteger}(z)=n.\label{eq:rounding}
+\qquad\operatorname{nearestinteger}(z)=n.\label{ccp:eq:rounding}
 \end{equation}
 \end{theorem}
 \begin{proof}
-The defining equation for $h$ gives $4/3<h<3/2$. Thus $k>5/18$ and $1/2-k<2/9$. By \eqref{eq:mass}, for every $n\ge1$,
+The defining equation for $h$ gives $4/3<h<3/2$. Thus $k>5/18$ and $1/2-k<2/9$. By \eqref{ccp:eq:mass}, for every $n\ge1$,
 \[
 0<\frac{a_n}{\mathcal E(n)}-1
  =\frac{r_n}{kh^n}
@@ -483,31 +818,47 @@ The ratio $\Gamma(x+1/2)/\Gamma(x)$ increases with $x>0$, since its logarithmic 
  >\sqrt{\frac43}\frac{\Gamma(7/2)}{\Gamma(3)}
  =\frac{15}{8}\sqrt{\frac\pi3}>\frac{15}{8}>\frac85.
 \]
-Combining the two bounds proves \eqref{eq:globalbound}. Strict monotonicity gives \eqref{eq:rounding}.
+Combining the two bounds proves \eqref{ccp:eq:globalbound}. Strict monotonicity gives \eqref{ccp:eq:rounding}.
 \end{proof}
 
 For completeness, $4/3<h<3/2$ follows by evaluating $d(\rho)=2-\rho+\log(1-\rho)$ at $\rho=3/4$ and $2/3$: $d(3/4)=5/4-\log4<0$ and $d(2/3)=4/3-\log3>0$.
 
-\begin{corollary}[At most one exact threshold comparison]\label{cor:threshold}
+\begin{corollary}[At most one exact threshold comparison]\label{ccp:cor:threshold}
 For $y\ge\mathcal E(1)$ set $z=\mathcal E^{-1}(y)$ and let
 \[
 N(y)=\min\{n\ge1:a_n\ge y\}.
 \]
 Then
 \begin{equation}
-\max\{1,\lfloor z-1/2\rfloor+1\}\le N(y)\le\lceil z\rceil.\label{eq:threshold}
+\max\{1,\lfloor z-1/2\rfloor+1\}\le N(y)\le\lceil z\rceil.\label{ccp:eq:threshold}
 \end{equation}
 The interval contains at most two integers. If it contains two, comparing $y$ with the sequence value at the smaller index determines $N(y)$.
 \end{corollary}
 \begin{proof}
-If $n\le z-1/2$, then $a_n<\mathcal E(n+1/2)\le y$, so such an $n$ cannot attain the threshold. If $n\ge z$, then $a_n>\mathcal E(n)\ge y$, so $\lceil z\rceil$ suffices. The bounds differ by at most one. The original recurrence makes $(a_n)$ strictly increasing, or this follows directly from \eqref{eq:globalbound}, since $\mathcal E(n+1/2)<\mathcal E(n+1)$.
+If $n\le z-1/2$, then $a_n<\mathcal E(n+1/2)\le y$, so such an $n$ cannot attain the threshold. If $n\ge z$, then $a_n>\mathcal E(n)\ge y$, so $\lceil z\rceil$ suffices. The bounds differ by at most one. The original recurrence makes $(a_n)$ strictly increasing, or this follows directly from \eqref{ccp:eq:globalbound}, since $\mathcal E(n+1/2)<\mathcal E(n+1)$.
 \end{proof}
-Values $y<\mathcal E(1)$ have $N(y)=1$. The simple rounding statement in Theorem~\ref{thm:rounding} applies to exact sequence inputs; it must not be used as an arbitrary-$y$ threshold rule. A numerical implementation should certify the envelope inverse interval before rounding near an integer or half-integer boundary.
+Values $y<\mathcal E(1)$ have $N(y)=1$. The simple rounding statement in Theorem~\ref{ccp:thm:rounding} applies to exact sequence inputs; it must not be used as an arbitrary-$y$ threshold rule. A numerical implementation should certify the envelope inverse interval before rounding near an integer or half-integer boundary.
+
+\begin{writenote}[Added 5 October 2026, batch~101: relation to repository results]
+In the language of \nolinkurl{p0:thm:staircase} (transseries-and-inversion
+volume), Theorem~\ref{ccp:thm:rounding} supplies, for every $n\ge1$, an
+approximation $x_*=\mathcal E^{-1}(a_n)$ of the interpolated inverse
+$\mathcal A^{-1}(a_n)=n$ with error $\eta<\frac12$, which is the
+hypothesis of part~(3) of that theorem. For arbitrary $y$,
+Corollary~\ref{ccp:cor:threshold} replaces the separation condition of
+part~(2), which can fail near integers, by a bracket containing at most two
+integers that one exact comparison resolves. What is
+specific here is that the error bound is explicit and global, from $n=1$,
+by the elementary inequality \eqref{ccp:eq:globalbound}. Compare
+\nolinkurl{a126764-lconvex-polyominoes}, whose rounding brackets
+(\nolinkurl{lcp:ao:cor:brackets}) carry asymptotic existence constants
+without a finite starting index (note at the end of Section~1).
+\end{writenote}
 
 \section{Non D finiteness and non P recursiveness}
 The closed form also determines the holonomic status of this counting sequence.
 
-\begin{theorem}\label{thm:nondfinite}
+\begin{theorem}\label{ccp:thm:nondfinite}
 The function $B$ is not D-finite over $\C(z)$. Neither $(b_n)$ nor $(a_n)$ is P-recursive over $\C[n]$.
 \end{theorem}
 \begin{proof}
@@ -528,11 +879,11 @@ To make the continuation argument precise, paths in the $w$-plane can be chosen 
 The standard coefficient equivalence between D-finite series and P-recursive sequences then excludes P-recursiveness of $(b_n)$. If $(a_n)$ satisfied a polynomial-coefficient recurrence, substitute $a_{n+j}=(n+j+1)!b_{n+j}$ and divide by $(n+1)!$. Every factorial ratio is a polynomial in $n$, giving a P-recurrence for $(b_n)$, a contradiction. Finite initial modifications have no effect on this argument.
 \end{proof}
 
-\section{Reproducible validation}
+\section{Reproducible validation}\label{ccp:sec:validation}
 The source bundle includes a standalone Python validation program using exact rational arithmetic and high-precision quadrature. These checks support the algebra and indexing; the proofs above do not depend on data fitting.
 
 \subsection{An independent scalar recurrence from the generating function}
-Write $D(z)=2-z+\log(1-z)=\sum d_jz^j$ and let the numerator of \eqref{eq:gf} be $\sum \nu_jz^j$. Then
+Write $D(z)=2-z+\log(1-z)=\sum d_jz^j$ and let the numerator of \eqref{ccp:eq:gf} be $\sum \nu_jz^j$. Then
 \[
 d_0=2,\quad d_1=-2,\quad d_j=-1/j\ (j\ge2),
 \qquad \nu_n=\frac1{n+1}-\frac1{2n}\ (n\ge1).
@@ -540,9 +891,9 @@ d_0=2,\quad d_1=-2,\quad d_j=-1/j\ (j\ge2),
 Consequently
 \begin{equation}
 2b_n-2b_{n-1}-\sum_{j=2}^n\frac{b_{n-j}}j
- =\frac1{n+1}-\frac1{2n},\qquad n\ge1.\label{eq:scalarcheck}
+ =\frac1{n+1}-\frac1{2n},\qquad n\ge1.\label{ccp:eq:scalarcheck}
 \end{equation}
-Starting from $b_0=1/2$, exact rational arithmetic verifies agreement between \eqref{eq:scalarcheck} and the original integer triangle through the configured validation limit. The program also checks the initial OEIS terms and the total spectral mass.
+Starting from $b_0=1/2$, exact rational arithmetic verifies agreement between \eqref{ccp:eq:scalarcheck} and the original integer triangle through the configured validation limit. The program also checks the initial OEIS terms and the total spectral mass.
 
 \subsection{Residual and inverse checks}
 Residuals should be evaluated from the positive integral, or by exact integer counting with sufficient guard digits. Subtracting $kh^n$ from $b_n$ in ordinary floating point loses the secondary term rapidly. The validation computes both independently and compares them. It also evaluates the inverse of the Gamma envelope at exact sequence values and checks the all-index half-step bound.
@@ -636,6 +987,33 @@ positive residual $2.4464646945801111\times10^{-5}$. No negative residual,
 secondary exponent, or inverse correction should be inferred from such a
 cancellation-dominated computation.
 
+\begin{writenote}[Added 5 October 2026, batch~101: shipped files and intake reruns]
+The validation program and its records are shipped beside this report:
+\nolinkurl{code/verify_a196275.py}, \nolinkurl{code/render_validation_tables.py},
+\nolinkurl{data/verification_results.json} and its \texttt{python -O}
+counterpart, \nolinkurl{data/run_manifest.json},
+\nolinkurl{data/source_manifest.json}, the frozen b-file
+\nolinkurl{data/oeis_b196275.txt} and the renderer's raw output
+\nolinkurl{data/validation_summary.tex} (identical to the text above except
+that it writes $F$ for $\mathcal E$). The two exact-count tables
+(1{,}263{,}683 bytes each, byte-identical) are not shipped; the report's
+README says how to regenerate them or retrieve them from the arrival commit.
+The b-file is OEIS data (table credited by OEIS to V.~Kot\v{e}\v{s}ovec,
+computed by A.~J.~Guttmann) under CC BY-SA~4.0, not under the repository's
+MIT-0 licence. On copies of the delivered layout, the intake verified all
+17 hashes of the delivered \nolinkurl{manifest.json} and all 9 of
+\nolinkurl{run_manifest.json}, reran the full normal-mode verifier
+(Python~3.14.4, SymPy~1.14.0, mpmath~1.3.0: all checks passed, in about
+9~minutes on a loaded machine, not the ``minute or two'' the verifier's
+README states), and reran the renderer; the outputs agree with the shipped
+ones except for line endings, the output file name and the Python version.
+The \texttt{python -O} run was not repeated. Independent intake scripts
+rechecked the triangle against the b-file ($n\le60$), the generating
+function in exact rationals, $\int_0^1w=1-2k$, the moments at
+$n=0,1,2,5,10$, Theorem~\ref{ccp:thm:rounding} for $1\le n\le200$, and the
+closed forms of $c_0,\ldots,c_6$; all passed.
+\end{writenote}
+
 
 
 \section{Literature scope and further research}
@@ -652,6 +1030,112 @@ Several further directions follow naturally.
 \item \textbf{Related counting recurrences.} The decisive feature was that multiplication and reflected cumulative sums close exactly in the Bernstein basis. Other growing triangular recurrences with this structure may admit fixed positive-operator models and similarly explicit moment asymptotics.
 \end{enumerate}
 The established conclusions are the exact generating function and measure, non-P-recursiveness, the proved leading equivalent, the full mixed secondary expansion, the specified interpolation's convergent inverse sectors, and the global integer-recovery theorem. These should be distinguished from the further questions just listed.
+
+\subsection{Further questions and research}\label{ccp:sec:further}
+\begin{writenote}[Added 5 October 2026, batch~101]
+This subsection collects every statement of the source that it does not
+prove, following Vladimir's standing rule of 4 October 2026: each is stated
+as an open question with its source, the argument offered for it, and what
+is missing. Items~1--5 are the five directions listed above (Report~96,
+Section~12); item~6 collects the steps the source argues only in condensed
+form; item~7 the external inputs the intake did not check. The intake found
+no claim of the source false. The convergence step of
+Theorem~\ref{ccp:thm:inverse}, which the source also argues briefly, is now
+written out in Proposition~\ref{ccp:prop:disk}.
+\end{writenote}
+
+\begin{enumerate}
+\item\label{ccp:q:combinatorial} \textbf{A combinatorial reason for the
+denominator.} Is there a bijective or labelled-combinatorial derivation of
+\eqref{ccp:eq:gf}, in particular of the denominator $2-z+\log(1-z)$? The
+source derives it analytically, through the Bernstein embedding
+(Lemma~\ref{ccp:lem:bernstein}) and the resolvent
+(Lemma~\ref{ccp:lem:resolvent}). A remark of the write, not an answer:
+\eqref{ccp:eq:scalarcheck} has the renewal form
+$b_n=b_{n-1}+\sum_{j=2}^nb_{n-j}/(2j)+\frac12\nu_n$, so a combinatorial
+model would have to explain the step weights $1$ and $1/(2j)$, $j\ge2$, and
+the inhomogeneous term $\nu_n=1/(n+1)-1/(2n)$. Missing: any such model.
+
+\item\label{ccp:q:profile} \textbf{Shape statistics.} What are the local
+asymptotics of the triangle $P_{n,p}$ of \eqref{ccp:eq:triangle},
+especially for $p$ near $1$ or near $n$? The source says that the spectral
+projection at $h$ gives a smoothed profile limit. The write makes this
+explicit (proof below): with
+\[
+g_h(x)=\frac{2h-1}{h-1+x}-\log\frac{h-1+x}{h-x},\qquad 0\le x\le1,
+\]
+one has $Tg_h=hg_h$, and for every $n\ge1$, in $L^2[0,1]$,
+\[
+\Bigl\|\frac2{n!}\sum_{p=1}^nP_{n,p}B_{p-1,n}
+-h^n\frac{\langle1,g_h\rangle}{\norm{g_h}^2}\,g_h\Bigr\|\le1.
+\]
+\emph{Proof.} For real $\lambda>h$, Lemma~\ref{ccp:lem:resolvent} gives
+$(\lambda-T)g_\lambda=D(\lambda)\cdot1$ with $g_\lambda=c/u-\log(u/v)$ the
+numerator of \eqref{ccp:eq:f}. For $\lambda\ge h>1$ both $u=\lambda-1+x$ and
+$v=\lambda-x$ are at least $h-1>0$ on $[0,1]$, so $g_\lambda\to g_h$
+uniformly as $\lambda\downarrow h$; $T$ is bounded and $D(h)=0$, so
+$(h-T)g_h=0$. Also $g_h\ne0$, since $\int_0^1g_h=(2h-1)\ell(h)>0$ (proof of
+Lemma~\ref{ccp:lem:resolvent}). By Proposition~\ref{ccp:prop:pole} and the
+measure \eqref{ccp:eq:measure}, the spectrum of $T$ is $\{h\}\cup[0,1]$
+with $h$ a simple isolated eigenvalue. Let $P$ be the orthogonal projection
+onto $\C g_h$. The self-adjoint operator $T$ leaves $g_h^\perp$ invariant;
+the spectrum of its restriction lies in that of $T$ and does not contain
+the isolated point $h$, which would otherwise be an eigenvalue with an
+eigenvector orthogonal to $g_h$. Hence the restriction has norm at most $1$,
+and $T^n1=h^nP1+T^n(1-P)1$ with $\norm{T^n(1-P)1}\le\norm{(1-P)1}\le1$.
+Lemma~\ref{ccp:lem:bernstein} identifies $T^n1$ with the Bernstein sum.
+$\square$ (Consistently, $\norm{P1}^2=2k$ is the atom of
+\eqref{ccp:eq:measure}.) Missing: passing from this $L^2$ statement about
+Bernstein-smoothed rows to the coefficients $P_{n,p}$ themselves, which
+needs a separate coefficient analysis, and the boundary behaviour.
+
+\item\label{ccp:q:uniform} \textbf{Uniform secondary asymptotics.} What
+are the optimal truncation, the late-term growth of $c_j$ and $C_{j,k}$, and
+exponentially improved estimates within the logarithmic sector?
+Theorems~\ref{ccp:thm:logs} and~\ref{ccp:thm:mixed} hold to every fixed
+order and claim no convergence. \emph{Evidence} (the verifier's README):
+at $n=1000$ the normalized residual $2N\log^2N\,r_n$ is
+$0.97490240\ldots$, the sum through $L^{-3}$ is $0.97668481\ldots$ and the
+sum through $L^{-4}$ is $0.96752333\ldots$, so adding a term can worsen the
+approximation at modest $n$. Missing: any bound on the coefficients
+uniform in their order.
+
+\item\label{ccp:q:certified} \textbf{Certified inversion.} Can interval
+arithmetic for the inverse of $\mathcal E$ turn
+Theorem~\ref{ccp:thm:rounding} and Corollary~\ref{ccp:cor:threshold} into an
+implementation with explicit precision targets? The theorem reduces
+threshold recovery to at most one exact comparison; the shipped checks
+(Section~\ref{ccp:sec:validation}) evaluate $\mathcal E^{-1}(a_n)$ in
+arbitrary but uncertified precision, for $n\le200$. Missing: rigorous
+enclosures of $h$, $k$, $\log\Gamma$ and the inverse.
+
+\item\label{ccp:q:recurrences} \textbf{Other triangular recurrences.}
+Which other growing triangular recurrences close exactly in the Bernstein
+basis, as \eqref{ccp:eq:triangle} does under multiplication by $1-x$ and the
+reflected cumulative sum, and do they admit fixed positive-operator models
+with explicit moment asymptotics? The source names the mechanism and no
+second example. Missing: a characterization, or further instances.
+
+\item\label{ccp:q:sketches} \textbf{Written-out tail estimates.} The proofs
+of Theorems~\ref{ccp:thm:logs} and~\ref{ccp:thm:mixed} name their splits
+and the order of each piece but leave the bounds implicit (notes after each
+theorem). The intake checked them and believes them correct. Missing:
+explicit remainder bounds for the finite geometric expansions on the middle
+ranges, the gain of one power of $L$ from taking imaginary parts, and the
+termwise integration of the expansion of $S^{-m-1}$. The corresponding step
+of Theorem~\ref{ccp:thm:inverse} is done (Proposition~\ref{ccp:prop:disk}).
+
+\item\label{ccp:q:literature} \textbf{External inputs.} (a) The source
+states that \cite{bdgr} conjectured the equivalent $a_n\sim k(n+1)!h^n$
+numerically, that \cite{rs2014} and \cite{drs2018} still call it
+conjectural, and that its bounded search of 2 October 2026 found no prior
+solution. The intake read none of these papers and made no search, so
+these statements are the source's. (b) The recurrence
+\eqref{ccp:eq:init}--\eqref{ccp:eq:sum} is proved by Tom\'as~\cite{tomas},
+not here; the intake checked only that it reproduces the 200 terms of the
+OEIS b-file. Missing: a reading of the four cited papers against the
+source's summaries, and an independent literature search.
+\end{enumerate}
 
 \begingroup\small\setlength{\parskip}{0pt}
 \begin{thebibliography}{9}
