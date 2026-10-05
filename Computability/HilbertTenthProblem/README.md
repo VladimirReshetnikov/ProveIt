@@ -180,6 +180,8 @@ or46 witnesses/SOS224/degree52. Native AND remains in the loader, so a
 cheaper loading/accepting-history compiler is still needed for a universal
 improvement. The universal84/187 and85/155 points remain unchanged.
 
+The [integer-matrix Markov lift](Papers/research-wip/native-stream-queue/markov_mask_matrix_lift.md), with [independent proof review](Papers/research-wip/native-stream-queue/review_markov_mask_matrix_lift.md), embeds any finite family of integer r-by-r matrices into strictly positive normalized trigonometric masks. With dilation2r+1 and common denominator q=2S+1, the signed cosine block is exactly M/q; finite products preserve zero and homogeneous tests. All-size frequency separation excludes leakage and retains the fixed constant block. Fresh rational checks cover24 masks,192 basis images and336 two-step images. This is an exact substrate bridge, not a universality proof or gate saving: admissible words, inputs and fixed-arity histories retain their original costs. The84/187/18 frontier is unchanged.
+
 The [six-report analytic triage](Papers/research-wip/native-stream-queue/review_new_analytic_reports_e88ed8bf6.md)
 reviews the new e88ed8bf6 archives through complete guide reads and selected
 exact interfaces, with101 regular members authenticated. Fixed polynomial

@@ -158,6 +158,8 @@ or46 witnesses/SOS224/degree52. Native AND remains in the loader, so a
 cheaper loading/accepting-history compiler is still needed for a universal
 improvement. The universal84/187 and85/155 points remain unchanged.
 
+The [integer-matrix Markov lift](markov_mask_matrix_lift.md), with [independent proof review](review_markov_mask_matrix_lift.md), embeds any finite family of integer r-by-r matrices into strictly positive normalized trigonometric masks. With dilation2r+1 and common denominator q=2S+1, the signed cosine block is exactly M/q; finite products preserve zero and homogeneous tests. All-size frequency separation excludes leakage and retains the fixed constant block. Fresh rational checks cover24 masks,192 basis images and336 two-step images. This is an exact substrate bridge, not a universality proof or gate saving: admissible words, inputs and fixed-arity histories retain their original costs. The84/187/18 frontier is unchanged.
+
 The [six-report analytic triage](review_new_analytic_reports_e88ed8bf6.md)
 reviews the new e88ed8bf6 archives through complete guide reads and selected
 exact interfaces, with101 regular members authenticated. Fixed polynomial
@@ -5808,6 +5810,7 @@ New research and the completed75-operation construction:
 
 | Artifact | Established result | Remaining boundary |
 |---|---|---|
+| [Integer-matrix Markov lift](markov_mask_matrix_lift.md) and [proof review](review_markov_mask_matrix_lift.md) | Any finite integer-matrix family appears as signed cosine blocks of strictly positive Markov masks; exact rational scale and product order. | Matrix universality, word selection and unbounded integer histories must be supplied; no arithmetic saving. |
 | [Six analytic reports](review_new_analytic_reports_e88ed8bf6.md), [discrete](triage_discrete_e88ed8bf6.md), [Hankel/occupancy](triage_exotic_e88ed8bf6.md), [Fabius/spectral](triage_order_free_e88ed8bf6.md) |101 members authenticated; complete guides and selected exact interfaces; computable-real mask boundary equality encodes nonhalting even in a three-dimensional core. | No full-proof audit or paid universal compiler; coefficient representation, varying order and infinite certificates remain charged interfaces. |
 | [Actual Borel publication review](review_borel_write_20262718e.md), [support challenge](review_borel_support_20262718e.md), [flow challenge](review_pma_borel_flow_interfaces_20262718e.md), [root corrections](review_borel_write_20262718e_root.md) | Four actual Parts:33 members,17 placements,268 routes; selected proofs checked; zero-group summaries, citation premise and review scope corrected with retained remarks;744-page PDF built. | Exact scoped reads and inherited proofs distinguished; Borel/certificate interfaces supply no paid integer compiler or universal arithmetic saving. |
 | [Multiway Hadamard packing](hadamard_next_arithmetic.md), [review](review_hadamard_next_arithmetic.md), [root binding](hadamard_next_arithmetic.json), [saved arrays](hadamard_next_arithmetic_checks.json) | All-k carry-free central band; fully paid finite cyclic trajectory, exact degree6 and `(13n+18)T+11n-1` operations with given numerals. | Direct guarded evaluation is cheaper by `18T+2n-2`; variable-width loaders and unbounded-history compiler remain unpaid. |
