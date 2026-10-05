@@ -24,6 +24,12 @@
 \pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small Report 131\quad Leafless multigraphs}\fancyhead[R]{\small 2 October 2026}\fancyfoot[C]{\thepage}
 \setlength{\headheight}{14pt}
 \hypersetup{pdftitle={Report 131: Leafless loopless multigraphs by edges},pdfauthor={}}
+% Added by the ProveIt write phase (batch 100, 5 October 2026): dated notes
+% marked [write]; repository paths in them may break after a hyphen.
+\expandafter\def\expandafter\UrlBreaks\expandafter{\UrlBreaks\do\-}
+\newenvironment{writenote}[1][]{\par\smallskip\begingroup\small
+ \noindent\textbf{[write]}\if\relax\detokenize{#1}\relax\else~\textbf{#1.}\fi\ }%
+ {\par\endgroup\smallskip}
 \begin{document}
 \thispagestyle{empty}
 \begin{center}
@@ -48,6 +54,18 @@ It yields $\log a_m=F(m)+w^2/4+O(\log m)$ for either sequence, all fixed inverse
 
 The only non-elementary enumeration input is Wright's classical simple-graph theorem. Its statement was checked in reproduced primary text and corroborated by an official contemporary abstract; the original 1972 scan and full 1974 proof were not obtained. No historical priority claim is made. Exact finite checks and a reproducible source package supplement the proofs; they do not certify the asymptotic theorem.
 \end{abstract}
+
+\begin{writenote}[Trust boundary, added 5 October 2026, batch~100]
+The upper half of the sandwich, and with it the upper half of
+\eqref{lfm:eq:log}, the ratio \eqref{lfm:eq:ratio} and the threshold
+\eqref{lfm:eq:inverse}, rests on Wright's 1972 theorem \eqref{lfm:eq:wright}.
+Its statement was checked by the source only in an OCR'd online reproduction
+of the paper and an AMS Notices abstract (Section~\ref{lfm:sec:wright}); the
+ProveIt intake did not inspect the original either. The lower bound
+$C_m\ge(1-o(1))H_m$ and Section~\ref{lfm:sec:star} use no Wright input
+(note in Section~\ref{lfm:sec:wright}). This report is AI-assisted,
+unrefereed and not formalized.
+\end{writenote}
 \vfill
 \noindent\textbf{Reading guide.} Sections 1--7 prove the counting results and inversion. Section 8 is a separate labelled-model refinement. Section 9 explains exact checks, remaining problems, and interpretation. All logarithms are natural.
 \newpage
@@ -61,19 +79,19 @@ Two such graphs are the same when a vertex bijection preserves every multiplicit
 
 Write $W$ for the positive real Lambert function, $W(x)e^{W(x)}=x$, and, for real $m>0$, set
 \begin{align}
- w&=W(2m),& v&=e^w=\frac{2m}{w},\label{eq:wv}\\
+ w&=W(2m),& v&=e^w=\frac{2m}{w},\label{lfm:eq:wv}\\
  F(m)&=m\left(w-\log w-1+\frac2w\right),&
- J(m)&=F(m)+\frac{w^2}{4},\label{eq:FJ}\\
- H_m&=\frac{\exp\{J(m)-3w/2-1\}}{\sqrt{2\pi m(w+1)}}.\label{eq:H}
+ J(m)&=F(m)+\frac{w^2}{4},\label{lfm:eq:FJ}\\
+ H_m&=\frac{\exp\{J(m)-3w/2-1\}}{\sqrt{2\pi m(w+1)}}.\label{lfm:eq:H}
 \end{align}
 All asymptotics below are as the integer $m$ tends to infinity, unless another limit is specified. An equality with an $O$ term for $a_m\in\{A_m,C_m\}$ means two separate estimates.
 
-\begin{theorem}[Counting, ratio, and inverse]\label{thm:main}
-Using Wright's simple-graph theorem stated in Section~\ref{sec:wright},
+\begin{theorem}[Counting, ratio, and inverse]\label{lfm:thm:main}
+Using Wright's simple-graph theorem stated in Section~\ref{lfm:sec:wright},
 \begin{align}
- (1-o(1))H_m&\le C_m\le A_m\le(1+o(1))e^wH_m,\label{eq:sandwich}\\
- \log a_m&=J(m)+O(\log m),\qquad a_m\in\{A_m,C_m\},\label{eq:log}\\
- \frac{C_m}{A_m}&=1-O\left(\frac{w^3}{m}\right).\label{eq:ratio}
+ (1-o(1))H_m&\le C_m\le A_m\le(1+o(1))e^wH_m,\label{lfm:eq:sandwich}\\
+ \log a_m&=J(m)+O(\log m),\qquad a_m\in\{A_m,C_m\},\label{lfm:eq:log}\\
+ \frac{C_m}{A_m}&=1-O\left(\frac{w^3}{m}\right).\label{lfm:eq:ratio}
 \end{align}
 For $X$ sufficiently large, define the first threshold
 \[
@@ -81,14 +99,109 @@ For $X$ sufficiently large, define the first threshold
 \]
 If $m_0$ is the unique sufficiently large real solution of $J(m_0)=\log X$, then
 \begin{equation}
- \nu_a(X)=m_0+O(1).\label{eq:inverse}
+ \nu_a(X)=m_0+O(1).\label{lfm:eq:inverse}
 \end{equation}
 No monotonicity assumption on either sequence is used.
 \end{theorem}
 
-The multiplicative gap in \eqref{eq:sandwich} is $e^w=2m/w$. Therefore the theorem is not a relative equivalent for either count. The ratio conclusion is stronger than equality of logarithmic expansions and requires its own proof. Section~\ref{sec:series} gives an effective extraction procedure for every fixed inverse-logarithmic order, with explicit first terms.
+The multiplicative gap in \eqref{lfm:eq:sandwich} is $e^w=2m/w$. Therefore the theorem is not a relative equivalent for either count. The ratio conclusion is stronger than equality of logarithmic expansions and requires its own proof. Section~\ref{lfm:sec:series} gives an effective extraction procedure for every fixed inverse-logarithmic order, with explicit first terms.
 
-\section{Classical input and the simple-graph saddle}\label{sec:wright}
+\begin{writenote}[Added 5 October 2026, batch~100]
+\emph{Provenance.} This report is Report~131 of the session bundle that
+ProveIt's \nolinkurl{docs/incoming} intake processed as batch~100: the archive
+\nolinkurl{A307316_A307317_Refined_Asymptotics_Connectedness_and_Inversion_Source.zip}
+(wrapper directory \nolinkurl{report131/}, 447{,}331 bytes), arrival commit
+\nolinkurl{60f54ea06}, placed in \nolinkurl{36571ae0e}. The package names no
+ProveIt commit, path or report, so the report has no pin; its title page and
+PDF metadata name no author and no tool. It is a single-source report. The
+write prefixed the 73 delivered labels with \nolinkurl{lfm:}, added 13 labels
+(four sections, the six questions of Section~\ref{lfm:sec:further}, and a
+proposition with its two displays), and added the notes marked [write], the
+subsection ``Further questions and research'' and its
+Proposition~\ref{lfm:prop:deficit}; no statement, proof or number of the
+source was changed.
+
+\emph{Repository.} At the time of writing no other file of the repository
+mentions A307316, A307317, A226919 or leafless multigraphs, and no other
+report uses Wright's graphs-by-edges theorem. The nearest neighbour is the
+collection report
+\nolinkurl{generating-functions-and-asymptotics/oeis-sequence-asymptotics/a007716-bipartite-multigraphs}
+(also batch~100, from Reports~88 and~92): bipartite multigraphs with
+distinguished shores, counted by edges. Its main theorem is a
+\emph{relative} equivalent $a_n\sim B_n^2e^{W(n)^2/2}/n!$ ($B_n$ the Bell
+numbers), proved by an exact invariant-partition formula that controls all
+vertex automorphisms, and it shows that the parallel-edge factor
+$e^{W(n)^2/2}$ is not negligible. The analogous factor $e^{w^2/2}$ appears in
+the upper bound \eqref{lfm:eq:supportmain} here. Its second source
+(Report~92) proves, for that model, that a nontrivial vertex automorphism
+has probability $2W(n)^3/n+O((1+W(n))^7/n^2)$ and that disconnection has
+probability asymptotic to $W(n)^2/n$, usually through one isolated-edge
+component; it cites Wright's 1967 paper on connectedness (the component
+method), not the 1972 theorem used here. The two reports share no theorem,
+and their scales differ: there $w=W(n)$ for $n$ edges, here $w=W(2m)$ for
+$m$ edges. No statement of this report is formalized in Lean or
+Rocq, and its place in the collection confers no formal status.
+
+\emph{Notation.} Several letters carry more than one local meaning. The
+table fixes them; no symbol was renamed.
+
+\smallskip
+\noindent\begin{tabular}{@{}p{0.55in}p{3.75in}p{1.95in}@{}}
+\toprule
+Symbol & Meanings (where) & Not to be read as\\
+\midrule
+$B$ & the \emph{good} event $\{\delta\ge2\}$ (Sections~3--5); $B_i$ the
+ \emph{bad} event ``vertex $i$ has degree at most one'' (Section~8); $B_0$ a
+ constant (Section~7.3); $B(z)$ a formal series (Section~7.4); $B_n$ the
+ Bell numbers, only in the note above on the a007716 report &
+ $B=\bigcap_iB_i$ (in fact $B=\bigcap_iB_i^c$)\\
+$A$ & $A_m$ = A307316; $A(z)$ the correction series of $W(2m)$
+ (Section~7.2); events $A_K^0$, $A(s)$, $A$ (Section~8) &
+ $A(z)=\sum_mA_mz^m$ (that series is unnamed, \eqref{lfm:eq:euler})\\
+$J$ & $J(m)=F(m)+w^2/4$ \eqref{lfm:eq:FJ}; a vertex set
+ $J\subseteq[n]\setminus\{i\}$ (Theorem~\ref{lfm:thm:star}) & \\
+$\ell$ & $\log n$ (Sections~3, 4, 8); $\log L=\log\log(2m)$ (Section~7.2) &
+ the same quantity in both\\
+$u$ & $W(m)$ (Sections~5.1 and~6); $\log U=\log\log(2y)$ (Section~7.4) & \\
+$M$ & $N-c$, the coordinates off a cut (Lemma~\ref{lfm:lem:cuts}); $M_m$,
+ multigraphs without isolated vertices, leaves allowed (Section~5.1);
+ $M=F^{-1}(y)$ (Section~7.4) & \\
+$t$ & the Chernoff parameter (Lemma~\ref{lfm:lem:rare-lower},
+ Corollary~\ref{lfm:cor:exactrelative}); $t=e^{-g'(m/2)}$ (Section~6) & \\
+$c$ & the cut size $s(n-s)$ (Lemma~\ref{lfm:lem:cuts}); the star constant
+ $1+\rho q_0/(1-q_0)$ (Theorem~\ref{lfm:thm:star}) & \\
+$K$ & $\binom s2$, internal pairs (Lemma~\ref{lfm:lem:cuts}); a truncation
+ order (Section~7.2); the threshold constant (Section~7.3); $K_\mu(t)$ a
+ cumulant generating function \eqref{lfm:eq:mgf} & \\
+$q$ & Wright's number of edges (Section~2.1); an integer near $w^3$
+ (Section~5.1); the bad-vertex probability, with $q_0$
+ (Lemma~\ref{lfm:lem:rare-lower}, Section~8) & \\
+$a$ & $a_m\in\{A_m,C_m\}$; coefficients $a_j(\ell)$ (Section~7.2);
+ $a(n)=n(1+2m/n)e^{-2m/n}$ (Section~5.2) and $a(x)=n(1+x)e^{-x}$
+ (Corollary~\ref{lfm:cor:exactrelative}); $a=W(m)^2$ (Section~5.1) & \\
+$T$ & the total $\sum_eX_e$ (Sections~3, 8); Wright's $T(n,q)$ (Section~2);
+ the symmetry-weighted count $T_{n,m}$ \eqref{lfm:eq:T} &
+ $T_{n,m}$ an unlabelled count\\
+$W$ & the principal (positive real) Lambert function, evaluated at $2m$ &
+ the scale $W(n)$ of the a007716 report\\
+\bottomrule
+\end{tabular}
+\smallskip
+
+\emph{What is not claimed} (collected from the source): no relative equivalent
+$A_m\sim H_m$ or $C_m\sim H_m$; no historical priority and no novelty
+certificate (an absent formula on an OEIS page is no evidence of novelty);
+no check of Wright's theorem beyond the reproduced text and the abstract;
+Lemma~\ref{lfm:lem:cuts} and Section~\ref{lfm:sec:star} are statements about
+the vertex-labelled composition model, not about unlabelled classes; fixed
+truncations of \eqref{lfm:eq:inverse-series} do not inherit the additive
+$O(1)$; the Greenhill--McKay and Cameron--Prellberg--Stark counts do not
+transfer by division by $m!$; the identification with kinematic-polynomial
+counts is conjectural; the finite checks certify no asymptotic statement.
+Open questions are collected in Section~\ref{lfm:sec:further}.
+\end{writenote}
+
+\section{Classical input and the simple-graph saddle}\label{lfm:sec:wright}
 Let $S_m$ count unlabelled simple graphs with $m$ edges and no isolated vertices. Padding with isolates to exactly $2m$ vertices is an isomorphism-class bijection, so $S_m=T(2m,m)$ in Wright's notation.
 
 \subsection{The precise classical theorem used}
@@ -96,22 +209,46 @@ The stable-saddle specialization of Wright's 1972 Theorem 5 \cite{wright72} is
 \begin{equation}
  S_m=(1+o(1))e^{-1}\sqrt{\frac{2\pi V}{1+\log V}}
        \frac{\binom{V(V-1)/2}{m}}{V!},
- \qquad V=\lfloor v\rfloor.\label{eq:wright}
+ \qquad V=\lfloor v\rfloor.\label{lfm:eq:wright}
 \end{equation}
 Indeed $V$ is the greatest integer satisfying $V\log V\le2m$. Wright's theorem applies when his parameter $\mu=2q/n-\log n$ is below $-B n^{-1/2}\log n$ for a fixed $B>0$. At $n=2m,q=m$, $\mu=1-\log(2m)$ satisfies this eventually. His standing restriction $q\le\binom n2/2$ also holds eventually. The published error is a relative $1+O(m^{-c})$ for some $c>0$; only $1+o(1)$ is needed here.
 
-\textbf{Source-verification boundary.} The statement and definitions were checked in an online reproduction of the primary article \cite{wrighttext}; an official January 1972 AMS Notices abstract independently corroborates the stable saddle \cite{wrightabstract}. The original AMS scan could not be retrieved, and the full 1974 successor proof \cite{wright74} was not inspected. The reproduced text has OCR defects, so the official abstract is corroboration rather than a substitute for the precise statement. The proof below explicitly takes \eqref{eq:wright} as a classical input. A publication-oriented bibliography check should obtain an original scan or the full successor paper. Nothing here certifies novelty.
+\textbf{Source-verification boundary.} The statement and definitions were checked in an online reproduction of the primary article \cite{wrighttext}; an official January 1972 AMS Notices abstract independently corroborates the stable saddle \cite{wrightabstract}. The original AMS scan could not be retrieved, and the full 1974 successor proof \cite{wright74} was not inspected. The reproduced text has OCR defects, so the official abstract is corroboration rather than a substitute for the precise statement. The proof below explicitly takes \eqref{lfm:eq:wright} as a classical input. A publication-oriented bibliography check should obtain an original scan or the full successor paper. Nothing here certifies novelty.
+
+\begin{writenote}[Added 5 October 2026, batch~100]
+\emph{What depends on Wright's theorem.} The ProveIt intake did not inspect
+the 1972 paper, its scan or the 1974 proof either, so the boundary above is
+also this report's. Tracing the uses of \eqref{lfm:eq:wright} through the
+proofs: it enters only through $S_m\sim Q_m$ and the coarse bound
+$\log S_m\le F(m)+O(\log^2m)$ of \eqref{lfm:eq:S}, that is, through the upper
+bound \eqref{lfm:eq:upperH} and everything that uses it, namely the upper
+halves of \eqref{lfm:eq:sandwich} and \eqref{lfm:eq:log}, the ratio
+\eqref{lfm:eq:ratio} (through \eqref{lfm:eq:ratio-middle} and the bound
+$A_k\le(Ck)^k$) and the threshold \eqref{lfm:eq:inverse}. The lower bound
+$C_m\ge(1-o(1))H_m$ of Section~5.2 uses only Lemmas~\ref{lfm:lem:rare-lower}
+and~\ref{lfm:lem:cuts}, Stirling's formula and the symmetry-weighted count
+$T_{n,m}$, so it, and with it $\log a_m\ge J(m)-O(\log m)$, holds without
+any Wright input. Section~\ref{lfm:sec:star} and the Euler-product
+identities of Section~9 are also independent of it. An upper bound for
+unlabelled counts needs control of automorphisms, which is the content of
+Wright's asymmetry estimate; the report has no substitute for it.
+Checking the four items of \eqref{lfm:eq:wright} that are used (the prefactor
+$e^{-1}\sqrt{2\pi V/(1+\log V)}$, the choice $V=\lfloor v\rfloor$, the range
+condition on $\mu$, and the restriction $q\le\binom n2/2$) against an
+original scan is Question~\ref{lfm:q:wright} of
+Section~\ref{lfm:sec:further}.
+\end{writenote}
 
 \subsection{Refining the simple-graph equivalent}
 Define
 \begin{equation}
  Q_m=\frac{\exp\{F(m)-w^2/4-w/2-1\}}
- {\sqrt{2\pi m(w+1)}}.\label{eq:Q}
+ {\sqrt{2\pi m(w+1)}}.\label{lfm:eq:Q}
 \end{equation}
 We claim that $S_m\sim Q_m$. To see all constants, initially use a real vertex parameter $n$ near $v$, and write $N=n(n-1)/2$. The falling-factorial expansion is
 \begin{equation}
  \log\binom Nm=m\log N-\log\Gamma(m+1)
- -\frac{m(m-1)}{2N}+O(m^3/N^2).\label{eq:falling}
+ -\frac{m(m-1)}{2N}+O(m^3/N^2).\label{lfm:eq:falling}
 \end{equation}
 This follows by summing $\log(1-j/N)=-j/N+O(j^2/N^2)$ for $0\le j<m$. Here $m/N\to0$, so the expansion is uniform in a small relative neighborhood of $v$.
 
@@ -124,38 +261,38 @@ The error $m^3/v^4=O(w^3/v)$ tends to zero. Stirling's formula gives
 \begin{equation}
  \log\frac{\binom{v(v-1)/2}{m}}{\Gamma(v+1)}
  =F(m)-\frac{w^2}{4}-\frac w2
- -\frac12\log(2\pi m)-\frac12\log(2\pi v)+o(1).\label{eq:simpleweight}
+ -\frac12\log(2\pi m)-\frac12\log(2\pi v)+o(1).\label{lfm:eq:simpleweight}
 \end{equation}
 For verification of the main exponent, define
 \begin{equation}
- \phi_m(n)=m\log\frac{n^2}{2m}+m-n\log n+n.\label{eq:phi}
+ \phi_m(n)=m\log\frac{n^2}{2m}+m-n\log n+n.\label{lfm:eq:phi}
 \end{equation}
 Then
 \[
  \phi_m(v)=F(m),\quad \phi_m'(v)=0,\quad
  \phi_m''(v)=-\frac{w+1}{v}.
 \]
-Rounding $v$ to $V$ changes the principal term by $O(w/v)$; the finite-density corrections change by $O(w^2/v)$ and the logarithmic factors by $O(1/v)$. These are all $o(1)$. Combining \eqref{eq:simpleweight} with the prefactor in \eqref{eq:wright} proves
+Rounding $v$ to $V$ changes the principal term by $O(w/v)$; the finite-density corrections change by $O(w^2/v)$ and the logarithmic factors by $O(1/v)$. These are all $o(1)$. Combining \eqref{lfm:eq:simpleweight} with the prefactor in \eqref{lfm:eq:wright} proves
 \begin{equation}
- S_m\sim Q_m,\qquad \log S_m=F(m)+O(\log^2m).\label{eq:S}
+ S_m\sim Q_m,\qquad \log S_m=F(m)+O(\log^2m).\label{lfm:eq:S}
 \end{equation}
 The exact derivative identities needed later are
 \begin{equation}
  w'(m)=\frac{w}{m(1+w)},\quad
  F'(m)=w-\log w,\quad
- F''(m)=\frac{w-1}{m(1+w)}.\label{eq:Fderiv}
+ F''(m)=\frac{w-1}{m(1+w)}.\label{lfm:eq:Fderiv}
 \end{equation}
 In particular, $F$ is eventually increasing and convex.
 
-\section{Uniform compositions and a rare-event lower bound}\label{sec:compositions}
+\section{Uniform compositions and a rare-event lower bound}\label{lfm:sec:compositions}
 For an integer $n\ge2$, let $N=\binom n2$. The model $\U(n,m)$ is uniform on all weak compositions of $m$ into the $N$ multiplicity coordinates. It has exactly
 \begin{equation}
- \binom{N+m-1}{m}\label{eq:weakcount}
+ \binom{N+m-1}{m}\label{lfm:eq:weakcount}
 \end{equation}
 vertex-labelled graphs. This exact count is classical, appearing, for example, in Gilbert \cite{gilbert}. Write $B=\{\delta\ge2\}$, $D=\{\text{disconnected}\}$, and $\lambda=2m/n$.
 
 \subsection{Two elementary tools}
-\begin{lemma}[Association for independent coordinates]\label{lem:harris}
+\begin{lemma}[Association for independent coordinates]\label{lfm:lem:harris}
 For increasing events $E,F$ in a product of independent ordered random variables, $\Prob(E\cap F)\ge\Prob(E)\Prob(F)$. The same statement holds for bounded increasing functions, with covariance in place of the event inequality.
 \end{lemma}
 \begin{proof}
@@ -166,7 +303,7 @@ For one coordinate $X$ and an independent copy $X'$, the covariance of increasin
 Induct on the number of coordinates: conditional covariance in the last coordinate is nonnegative, and the two conditional expectations are increasing functions of the remaining independent coordinates. The covariance decomposition completes the induction. Indicators give the event statement. This is the product-measure association inequality usually called Harris's inequality.
 \end{proof}
 
-\begin{lemma}[Monotone composition coupling]\label{lem:couple}
+\begin{lemma}[Monotone composition coupling]\label{lfm:lem:couple}
 If a composition $a$ is uniform at total $k$, add one to coordinate $i$ with probability $(a_i+1)/(N+k)$. The new composition is uniform at total $k+1$. Thus the probability of any increasing property is nondecreasing in the total.
 \end{lemma}
 \begin{proof}
@@ -185,11 +322,11 @@ Assign independent geometric multiplicities
 \]
 Every vector with total $k$ has equal probability $(1-\rho)^N\rho^k$, so conditioning on the total gives exactly $\U(n,k)$.
 
-\begin{lemma}\label{lem:rare-lower}
+\begin{lemma}\label{lfm:lem:rare-lower}
 If $\lambda=\log n+o(1)$, then
 \begin{equation}
  \Prob_{\U(n,m)}(B)\ge(1-o(1))
- \exp\{-n(1+\lambda)e^{-\lambda}\}.\label{eq:lowerB}
+ \exp\{-n(1+\lambda)e^{-\lambda}\}.\label{lfm:eq:lowerB}
 \end{equation}
 The estimate is uniform on every deterministic envelope
 $|\lambda-\log n|\le\eta_n$ with $\eta_n\to0$.
@@ -204,7 +341,7 @@ These parameters are positive and valid eventually. The total $T=\sum_eX_e$ has 
 \[
  q=(1-\rho)^{n-1}\{1+(n-1)\rho\}.
 \]
-Lemma~\ref{lem:harris}, iterated over the increasing good-degree events, gives $\Prob(B)\ge(1-q)^n$ in the product model. Uniformly for $|\lambda-\ell|\le1$,
+Lemma~\ref{lfm:lem:harris}, iterated over the increasing good-degree events, gives $\Prob(B)\ge(1-q)^n$ in the product model. Uniformly for $|\lambda-\ell|\le1$,
 \begin{align*}
  \lambda'-\lambda&=O(\ell/\sqrt n),&
  (n-1)\rho&=\lambda'+O(\ell^2/n),\\
@@ -213,13 +350,13 @@ Lemma~\ref{lem:harris}, iterated over the increasing good-degree events, gives $
 \end{align*}
 The derivative of $n(1+x)e^{-x}$ is $-nxe^{-x}=O(\ell)$ in this range. Also $nq^2=O(\ell^2/n)$. Consequently
 \begin{equation}
- (1-q)^n=\exp\{-n(1+\lambda)e^{-\lambda}+O(\ell^2/\sqrt n)\}.\label{eq:harrisquant}
+ (1-q)^n=\exp\{-n(1+\lambda)e^{-\lambda}+O(\ell^2/\sqrt n)\}.\label{lfm:eq:harrisquant}
 \end{equation}
 
 The centered cumulant generating function of $T$ is
 \begin{equation}
  K_\mu(t)=N\log\frac{1-\rho}{1-\rho e^t}-\mu t
- =\frac{\mu(1+\mu/N)}2t^2+O(\mu|t|^3),\label{eq:mgf}
+ =\frac{\mu(1+\mu/N)}2t^2+O(\mu|t|^3),\label{lfm:eq:mgf}
 \end{equation}
 uniformly for the present parameters and small $|t|$. This follows by differentiating three times: the second derivative at zero is $\mu(1+\mu/N)$, and the third derivative is $O(\mu)$ on a fixed small neighborhood when $\rho=o(1)$.
 
@@ -228,25 +365,25 @@ Let $d=m-\mu=3\sqrt{m\ell}$ and choose $t=d/\mu=O(n^{-1/2})$. The moment-generat
  \log\Prob(T>m)
  &\le-\frac{d^2}{2\mu}
  +O\left(\frac{d^2}{N}+\frac{d^3}{\mu^2}\right)\notag\\
- &=-\frac92\ell+O(\ell/\sqrt n+\ell^2/n).\label{eq:tail}
+ &=-\frac92\ell+O(\ell/\sqrt n+\ell^2/n).\label{lfm:eq:tail}
 \end{align}
 This is an upper bound, not a tail equivalent.
 
-Let $f_k=\Prob_{\U(n,k)}(B)$. Lemma~\ref{lem:couple} implies
+Let $f_k=\Prob_{\U(n,k)}(B)$. Lemma~\ref{lfm:lem:couple} implies
 \[
  \Prob(B)=\E f_T\le f_m+\Prob(T>m).
 \]
-Under the lemma's hypothesis the exponential in \eqref{eq:lowerB} is $n^{-1+o(1)}$, while the upper bound \eqref{eq:tail} is at most $n^{-9/2+o(1)}$. Subtraction is therefore negligible on the required relative scale. All errors just used are uniform in a bounded neighborhood of $\ell$; the rare-event comparison is uniform on any shrinking envelope. This proves the claim.
+Under the lemma's hypothesis the exponential in \eqref{lfm:eq:lowerB} is $n^{-1+o(1)}$, while the upper bound \eqref{lfm:eq:tail} is at most $n^{-9/2+o(1)}$. Subtraction is therefore negligible on the required relative scale. All errors just used are uniform in a bounded neighborhood of $\ell$; the rare-event comparison is uniform on any shrinking envelope. This proves the claim.
 \end{proof}
 
-An additive approximation to a probability tending to zero would not suffice here. The error in \eqref{eq:harrisquant} is additive in its logarithm and tends to zero; that is why this argument preserves a relative lower bound. Section~\ref{sec:star} supplies the matching upper bound by a separate argument.
+An additive approximation to a probability tending to zero would not suffice here. The error in \eqref{lfm:eq:harrisquant} is additive in its logarithm and tends to zero; that is why this argument preserves a relative lower bound. Section~\ref{lfm:sec:star} supplies the matching upper bound by a separate argument.
 
-\section{Small-component bounds in the labelled model}\label{sec:cuts}
-\begin{lemma}[Connectedness after the degree restriction]\label{lem:cuts}
+\section{Small-component bounds in the labelled model}\label{lfm:sec:cuts}
+\begin{lemma}[Connectedness after the degree restriction]\label{lfm:lem:cuts}
 If $\lambda=\log n+o(1)$, then
 \begin{equation}
  \Prob_{\U(n,m)}(D\cap B)=O(\log^2n/n^2),\qquad
- \Prob_{\U(n,m)}(D\mid B)\le n^{-1+o(1)}.\label{eq:cuts}
+ \Prob_{\U(n,m)}(D\mid B)\le n^{-1+o(1)}.\label{lfm:eq:cuts}
 \end{equation}
 If additionally $(\lambda-\log n)\log n=o(1)$, the latter bound improves to $O(\log^2n/n)$.
 \end{lemma}
@@ -259,21 +396,21 @@ The exact probability that its cross-edge coordinates are all zero is
 \begin{equation}
  \frac{\binom{M+m-1}{m}}{\binom{N+m-1}{m}}
  =\prod_{i=0}^{m-1}\left(1-\frac c{N+i}\right)
- \le e^{-rc}.\label{eq:cutexact}
+ \le e^{-rc}.\label{lfm:eq:cutexact}
 \end{equation}
 Conditionally on this empty cut, the remaining $M$ coordinates form a uniform weak composition. Let $X$ be the total in the $K$ internal coordinates. Its binomial factorial moment is
 \begin{equation}
  \E\binom Xs=\binom ms\frac{\rf K s}{\rf M s}
- \le\left(\frac{em(K+s)}{sM}\right)^s.\label{eq:moment}
+ \le\left(\frac{em(K+s)}{sM}\right)^s.\label{lfm:eq:moment}
 \end{equation}
 Here $a^{\overline{s}}=a(a+1)\cdots(a+s-1)$. One derivation uses
 \[
  \sum_{x\ge0}\binom xs\binom{K+x-1}{x}z^x
  =\binom{K+s-1}{s}z^s(1-z)^{-K-s}.
 \]
-Multiply by $(1-z)^{-(M-K)}$, extract the coefficient of $z^m$, and divide by \eqref{eq:weakcount} with $N=M$. The inequality in \eqref{eq:moment} follows from $\binom ms\le(em/s)^s$, $\rf K s\le(K+s)^s$, and $\rf M s\ge M^s$. Since $\binom Xs\ge1$ when $X\ge s$, the same bound controls that probability.
+Multiply by $(1-z)^{-(M-K)}$, extract the coefficient of $z^m$, and divide by \eqref{lfm:eq:weakcount} with $N=M$. The inequality in \eqref{lfm:eq:moment} follows from $\binom ms\le(em/s)^s$, $\rf K s\le(K+s)^s$, and $\rf M s\ge M^s$. Since $\binom Xs\ge1$ when $X\ge s$, the same bound controls that probability.
 
-A disconnected graph in $B$ has a component of size $2\le s\le n/2$. Its cut is empty and, by the handshake identity, its internal edge count satisfies $X\ge s$. Multiplicity, not merely the number of occupied pairs, is counted. In particular this includes a two-vertex component joined by parallel edges. Union-bound \eqref{eq:cutexact} times the conditional bound \eqref{eq:moment} over all $\binom ns$ subsets.
+A disconnected graph in $B$ has a component of size $2\le s\le n/2$. Its cut is empty and, by the handshake identity, its internal edge count satisfies $X\ge s$. Multiplicity, not merely the number of occupied pairs, is counted. In particular this includes a two-vertex component joined by parallel edges. Union-bound \eqref{lfm:eq:cutexact} times the conditional bound \eqref{lfm:eq:moment} over all $\binom ns$ subsets.
 
 For $2\le s\le n/\ell^2$, where $\ell=\log n$, we have $M\ge n^2/3$, $K+s\le s^2$, and $m=O(n\ell)$ eventually. Moreover
 \[
@@ -291,39 +428,58 @@ Summing from $s=2$ gives $O(\ell^2/n^2)$.
 
 For $n/\ell^2<s\le n/2$, omit the internal-edge requirement. Eventually $r(n-s)\ge0.49\ell$ and $\log(en/s)\le1+2\log\ell$, so the summand is at most $\exp(-0.4s\ell)$. Its sum is at most $n\exp(-0.4n/\ell)$, after harmless adjustment of integer endpoints. This is negligible compared with $\ell^2/n^2$.
 
-Dividing the established bound by Lemma~\ref{lem:rare-lower} proves the conditional estimate. Under the stronger hypothesis,
+Dividing the established bound by Lemma~\ref{lfm:lem:rare-lower} proves the conditional estimate. Under the stronger hypothesis,
 \[
  n(1+\lambda)e^{-\lambda}=1+\log n+o(1),
 \]
 so the lower bound for $\Prob(B)$ is $(e^{-1}+o(1))/n$. This proves the stated improvement. The constants in the first bound can be uniform over $|\lambda-\log n|\le1$, replacing $\ell-1$ above by $\ell-2$.
 \end{proof}
 
-This lemma concerns a vertex-labelled uniform-composition measure. It does not by itself prove connectedness under the uniform measure on unlabelled classes. Section~\ref{sec:ratio} gives a separate, automorphism-safe argument for that conclusion.
+This lemma concerns a vertex-labelled uniform-composition measure. It does not by itself prove connectedness under the uniform measure on unlabelled classes. Section~\ref{lfm:sec:ratio} gives a separate, automorphism-safe argument for that conclusion.
+
+\begin{writenote}[Added 5 October 2026, batch~100]
+The last sentence of the proof is stated there without proof; the lemma does
+not use it. Here is one. \emph{Claim:} the bound
+$\Prob_{\U(n,m)}(D\cap B)=O(\ell^2/n^2)$ holds with one constant for all $m$
+with $|\lambda-\ell|\le1$. In this range $m\le n(\ell+1)/2=O(n\ell)$ and
+$rn=\lambda n/(n-1+\lambda)\ge\lambda(1-\lambda/n)\ge\ell-1-O(\ell^2/n)$, with
+constants depending on nothing but $n$. For $2\le s\le n/\ell^2$,
+$r(n-s)\ge rn(1-\ell^{-2})\ge\ell-2$ once $n$ is large, so
+$e^{-rc}\le(e^2/n)^s$; the bounds $M\ge n^2/3$ and $K+s\le s^2$ do not involve
+$\lambda$, so \eqref{lfm:eq:moment} is at most $(C_1s\ell/n)^s$, and the
+summand is at most $(en/s)^s(e^2/n)^s(C_1s\ell/n)^s=(e^3C_1\ell/n)^s$. Summing
+from $s=2$ gives $O(\ell^2/n^2)$. For $n/\ell^2<s\le n/2$,
+$r(n-s)\ge rn/2\ge0.49\ell$ once $n$ is large, and the large-$s$ estimate of
+the proof applies unchanged. Every threshold depends on $n$ only, which
+proves the claim. The conditional bound $\Prob(D\mid B)\le n^{-1+o(1)}$ is
+not extended by this: its proof divides by Lemma~\ref{lfm:lem:rare-lower},
+which needs $\lambda=\ell+o(1)$.
+\end{writenote}
 
 \section{The polynomial sandwich}
-\subsection{An upper bound through simple supports}\label{sec:support}
+\subsection{An upper bound through simple supports}\label{lfm:sec:support}
 Let $M_m$ count loopless unlabelled multigraphs with $m$ edges and no isolated vertices, without excluding leaves. Collapsing each parallel family yields a simple support with $k$ edges. For each support class fix one representative and an arbitrary ordering of its edges. Positive multiplicities summing to $m$ give $\binom{m-1}{k-1}$ possibilities, mapping surjectively onto the multigraph classes with that support. Support automorphisms may identify assignments; they cannot invalidate the upper bound. Therefore
 \begin{equation}
- A_m\le M_m\le\sum_{j=0}^{m-1}S_{m-j}\binom{m-1}{j}.\label{eq:support}
+ A_m\le M_m\le\sum_{j=0}^{m-1}S_{m-j}\binom{m-1}{j}.\label{lfm:eq:support}
 \end{equation}
 No assumption about asymmetry or a factorial division is used.
 
-For $0\le j\le w^3$, \eqref{eq:S} and Taylor expansion give uniformly
+For $0\le j\le w^3$, \eqref{lfm:eq:S} and Taylor expansion give uniformly
 \begin{equation}
  \frac{S_{m-j}}{S_m}=e^{-jF'(m)+o(1)},\qquad
- \binom{m-1}{j}=\frac{m^j}{j!}(1+o(1)).\label{eq:central-support}
+ \binom{m-1}{j}=\frac{m^j}{j!}(1+o(1)).\label{lfm:eq:central-support}
 \end{equation}
 Indeed $F''=O(1/m)$, so the quadratic remainder is $O(w^6/m)=o(1)$. The derivative of $\log Q_m-F(m)$ is $O(w/m)$ and contributes $O(w^4/m)=o(1)$. The binomial relative logarithmic error is $O(j^2/m)=o(1)$. The error $S_k/Q_k-1$ is automatically uniform whenever the least index $k$ tends to infinity. Since
 \[
  m e^{-F'(m)}=mwe^{-w}=\frac{w^2}{2},
 \]
-the central sum in \eqref{eq:support} is
+the central sum in \eqref{lfm:eq:support} is
 \begin{equation}
- (1+o(1))S_m e^{w^2/2}.\label{eq:supportmain}
+ (1+o(1))S_m e^{w^2/2}.\label{lfm:eq:supportmain}
 \end{equation}
 The exponential-series tail beyond $w^3$ is relatively negligible because $w^3/(w^2/2)\to\infty$.
 
-For $w^3<j\le m/2$, convexity and the coarse estimate in \eqref{eq:S} bound the summand by
+For $w^3<j\le m/2$, convexity and the coarse estimate in \eqref{lfm:eq:S} bound the summand by
 \[
  e^{F(m)+O(w^2)}\frac{a^j}{j!},\qquad
  a=m e^{-F'(m/2)}=W(m)^2\asymp w^2.
@@ -333,55 +489,65 @@ For an integer $q$ within one of $w^3$, the factorial bound and consecutive-term
  \sum_{j\ge q}\frac{a^j}{j!}\le2(ea/q)^q
  =\exp\{-\Omega(w^3\log w)\}.
 \]
-This absorbs $e^{O(w^2)}$ and is negligible relative to \eqref{eq:supportmain}. Finally, the range $m-j<m/2$ contributes at most
+This absorbs $e^{O(w^2)}$ and is negligible relative to \eqref{lfm:eq:supportmain}. Finally, the range $m-j<m/2$ contributes at most
 \[
  \exp\{F(m/2)+m\log2+O(w^2)\}.
 \]
 Here finitely many small support sizes are absorbed separately; the sum of the binomial weights is at most $2^{m-1}$. Since $F(m)-F(m/2)=\Theta(m\log m)$, this range is negligible too. We obtain
 \begin{equation}
  A_m\le(1+o(1))Q_m e^{w^2/2}
- =(1+o(1))e^wH_m.\label{eq:upperH}
+ =(1+o(1))e^wH_m.\label{lfm:eq:upperH}
 \end{equation}
 In particular, $\log A_m\le F(m)+O(\log^2m)$, a coarse consequence used in the ratio proof.
+
+\begin{writenote}[Added 5 October 2026, batch~100]
+In the tail estimate above, read ``an integer $q$ within one of $w^3$'' as $q=\lfloor w^3\rfloor+1$, the
+first index of this range; this $q$ is unrelated to Wright's $q$ of
+Section~2.1. Since $q\ge w^3\ge2ea$ eventually, consecutive terms of
+$\sum_{j\ge q}a^j/j!$ have ratio at most $1/2$, so the sum is at most
+$2a^q/q!\le2(ea/q)^q$. The central estimate \eqref{lfm:eq:central-support} is
+used only for $0\le j\le w^3$, and this coarse bound only for $j>w^3$, so the
+two ranges meet without overlap or gap.
+\end{writenote}
 
 \subsection{A central Gaussian lower bound}
 For an integer $n$ define
 \begin{equation}
  T_{n,m}=\frac1{n!}\binom{\binom n2+m-1}{m},\quad
  \sigma^2=\frac v{w+1},\quad
- I_m=\{n\in\mathbb Z:|n-v|\le w\sigma\}.\label{eq:T}
+ I_m=\{n\in\mathbb Z:|n-v|\le w\sigma\}.\label{lfm:eq:T}
 \end{equation}
 A class $G$ with $n$ vertices contributes $1/|\Aut(G)|$ to labelled count divided by $n!$. Consequently $T_{n,m}$ is a symmetry-weighted count, not an unlabelled count; restricted to any property it is a valid lower bound for the number of classes having that property.
 
 Write $n=v+h$ and $x=h/v$. On $I_m$, $x=O(\sqrt{w/v})$, and
 \begin{equation}
  \lambda-\log n=\frac{w}{1+x}-w-\log(1+x)
- =-(w+1)x+O(wx^2)=O(w^{3/2}/\sqrt v).\label{eq:windowlambda}
+ =-(w+1)x+O(wx^2)=O(w^{3/2}/\sqrt v).\label{lfm:eq:windowlambda}
 \end{equation}
 In particular $(\lambda-\log n)\log n=o(1)$ uniformly. More precisely, for $a(n)=n(1+2m/n)e^{-2m/n}$,
 \[
  a(v)=1+w,\qquad
  a'(n)=e^{-\lambda}(1+\lambda+\lambda^2)=O(w^2/v),
 \]
-so $a(n)=1+w+O(w^{5/2}/\sqrt v)=1+w+o(1)$ throughout the window. Lemmas~\ref{lem:rare-lower} and \ref{lem:cuts} imply
+so $a(n)=1+w+O(w^{5/2}/\sqrt v)=1+w+o(1)$ throughout the window. Lemmas~\ref{lfm:lem:rare-lower} and \ref{lfm:lem:cuts} imply
 \begin{equation}
  \Prob_{\U(n,m)}(B\cap D^c)
- \ge(1-o(1))e^{-1-w}\quad(n\in I_m),\label{eq:jointwindow}
+ \ge(1-o(1))e^{-1-w}\quad(n\in I_m),\label{lfm:eq:jointwindow}
 \end{equation}
 uniformly: the subtracted disconnected probability is $O(w^2/v^2)=o(e^{-w})$.
 
-The rising-factorial analogue of \eqref{eq:falling}, followed by Stirling, gives
+The rising-factorial analogue of \eqref{lfm:eq:falling}, followed by Stirling, gives
 \begin{equation}
  \log T_{n,m}=\phi_m(n)+\frac{\lambda^2}{4}-\frac\lambda2
- -\frac12\log(2\pi m)-\frac12\log(2\pi n)+o(1)\label{eq:rise}
+ -\frac12\log(2\pi m)-\frac12\log(2\pi n)+o(1)\label{lfm:eq:rise}
 \end{equation}
 uniformly on $I_m$. The sign of the $\lambda^2/4$ term is positive: repeated pairs are permitted. Its remainder is $O(m^3/n^4)=o(1)$.
 
-The third derivative of \eqref{eq:phi} is $4m/n^3+1/n^2=O(w/v^2)$. Since $|h|\le w\sigma=O(\sqrt{wv})$, the cubic remainder is $O(w^{5/2}/\sqrt v)=o(1)$. Changes in $\lambda^2/4-\lambda/2$ and $\log n$ are also $o(1)$. Thus
+The third derivative of \eqref{lfm:eq:phi} is $4m/n^3+1/n^2=O(w/v^2)$. Since $|h|\le w\sigma=O(\sqrt{wv})$, the cubic remainder is $O(w^{5/2}/\sqrt v)=o(1)$. Changes in $\lambda^2/4-\lambda/2$ and $\log n$ are also $o(1)$. Thus
 \begin{equation}
  T_{n,m}=(1+o(1))
  \frac{e^{F(m)+w^2/4-w/2}}{\sqrt{2\pi m}\sqrt{2\pi v}}
- \exp\left\{-\frac{(n-v)^2}{2\sigma^2}\right\}\label{eq:gauss}
+ \exp\left\{-\frac{(n-v)^2}{2\sigma^2}\right\}\label{lfm:eq:gauss}
 \end{equation}
 uniformly on $I_m$. As $\sigma\to\infty$ and $w\to\infty$, a shifted-lattice Riemann sum gives
 \[
@@ -390,38 +556,38 @@ uniformly on $I_m$. As $\sigma\to\infty$ and $w\to\infty$, a shifted-lattice Rie
 \]
 For completeness, first restrict standardized deviations to a fixed compact interval and use Riemann sums of mesh $1/\sigma$; the complementary sums are bounded by the integrable Gaussian tails. Then let the compact interval increase. The fractional part of $v$ is immaterial.
 
-Graphs with different vertex counts are different isomorphism classes. Multiplying \eqref{eq:gauss} by \eqref{eq:jointwindow}, then summing the symmetry-weighted lower bounds, proves
+Graphs with different vertex counts are different isomorphism classes. Multiplying \eqref{lfm:eq:gauss} by \eqref{lfm:eq:jointwindow}, then summing the symmetry-weighted lower bounds, proves
 \[
  C_m\ge(1-o(1))e^{-1-w}
  \frac{e^{F(m)+w^2/4-w/2}}{\sqrt{2\pi m(w+1)}}
  =(1-o(1))H_m.
 \]
-Together with \eqref{eq:upperH} and $C_m\le A_m$, this proves \eqref{eq:sandwich}. Only a central-window lower bound was needed; no assertion about omitted global vertex-count tails was used.
+Together with \eqref{lfm:eq:upperH} and $C_m\le A_m$, this proves \eqref{lfm:eq:sandwich}. Only a central-window lower bound was needed; no assertion about omitted global vertex-count tails was used.
 
-\section{The connected-to-total ratio for isomorphism classes}\label{sec:ratio}
+\section{The connected-to-total ratio for isomorphism classes}\label{lfm:sec:ratio}
 A nonempty loopless component of minimum degree at least two has at least two edges. Every disconnected graph counted by $A_m$ has a component with $2\le k\le m/2$ edges. Taking that component and its complement gives a surjection from a subset of pairs of leafless classes, so
 \begin{equation}
- 0\le A_m-C_m\le\sum_{k=2}^{\lfloor m/2\rfloor}A_kA_{m-k}.\label{eq:convolution}
+ 0\le A_m-C_m\le\sum_{k=2}^{\lfloor m/2\rfloor}A_kA_{m-k}.\label{lfm:eq:convolution}
 \end{equation}
 Repeated components only cause overcounting, which is harmless.
 
 Let $g(x)=\log H_x$, with $w=W(2x)$. Direct differentiation yields
 \begin{align}
  g'(x)&=F'(x)+\frac{w^3-3w^2-6w-1}{2x(w+1)^2}
-       =F'(x)+O(w/x),\label{eq:gprime}\\
+       =F'(x)+O(w/x),\label{lfm:eq:gprime}\\
  g''(x)&=\frac{w-1}{x(w+1)}+O(w/x^2)>0
- \quad\hbox{eventually}.\label{eq:gsecond}
+ \quad\hbox{eventually}.\label{lfm:eq:gsecond}
 \end{align}
 Set $t=e^{-g'(m/2)}$. With $u=W(m)$, $t\sim u^2/m\sim w^2/m$. The upper sandwich, uniformly for $m/2\le m-k\le m$, and convexity give
 \begin{equation}
  \frac{A_{m-k}}{H_m}
  \le(1+o(1))e^w e^{g(m-k)-g(m)}
- \le(1+o(1))v t^k.\label{eq:ratio-middle}
+ \le(1+o(1))v t^k.\label{lfm:eq:ratio-middle}
 \end{equation}
 
 We now prove
 \begin{equation}
- \sum_{k=2}^{\lfloor m/2\rfloor}A_kt^k=(1+o(1))t^2.\label{eq:small-series}
+ \sum_{k=2}^{\lfloor m/2\rfloor}A_kt^k=(1+o(1))t^2.\label{lfm:eq:small-series}
 \end{equation}
 The coarse bound $\log A_k\le F(k)+O(\log^2k)$ implies $A_k\le(Ck)^k$ for all $k\ge2$, after enlarging a fixed $C$ for small indices. Put $L_0=\lceil10\log m\rceil$. Since $CL_0t\to0$,
 \[
@@ -446,21 +612,21 @@ Hence, uniformly on this range,
  \log(A_kt^k)\le k\{-1+2/u+o(1)\}+O(\log^2k)\le-k/2
 \]
 eventually. The uniformity follows from
-$\sup_{k\ge L_0}\log^2k/k=O(\log^2L_0/L_0)=o(1)$ and \eqref{eq:gprime}. Summation gives $O(e^{-L_0/2})=O(m^{-5})=o(t^2)$. Finally $A_2=1$, proving \eqref{eq:small-series}.
+$\sup_{k\ge L_0}\log^2k/k=O(\log^2L_0/L_0)=o(1)$ and \eqref{lfm:eq:gprime}. Summation gives $O(e^{-L_0/2})=O(m^{-5})=o(t^2)$. Finally $A_2=1$, proving \eqref{lfm:eq:small-series}.
 
-Divide \eqref{eq:convolution} by $A_m\ge(1-o(1))H_m$, and use \eqref{eq:ratio-middle}--\eqref{eq:small-series}. Then
+Divide \eqref{lfm:eq:convolution} by $A_m\ge(1-o(1))H_m$, and use \eqref{lfm:eq:ratio-middle}--\eqref{lfm:eq:small-series}. Then
 \[
  0\le\frac{A_m-C_m}{A_m}\le(1+o(1))vt^2
  =O(w^3/m).
 \]
-This establishes \eqref{eq:ratio} directly for unlabelled classes, without transferring the labelled probability measure or making an automorphism assumption.
+This establishes \eqref{lfm:eq:ratio} directly for unlabelled classes, without transferring the labelled probability measure or making an automorphism assumption.
 
-\section{Logarithmic expansions and inversion}\label{sec:series}
+\section{Logarithmic expansions and inversion}\label{lfm:sec:series}
 \subsection{The extra quadratic logarithmic correction}
-Using $m=we^w/2$, \eqref{eq:H} gives the exact identity
+Using $m=we^w/2$, \eqref{lfm:eq:H} gives the exact identity
 \begin{equation}
  \log H_m=J(m)-2w-\log w-1-\frac12\log\pi
-            -\frac12\log(1+1/w).\label{eq:logH}
+            -\frac12\log(1+1/w).\label{lfm:eq:logH}
 \end{equation}
 The upper sandwich logarithm adds $w+o(1)$. Therefore both counting logarithms equal
 \[
@@ -475,28 +641,28 @@ Let $L=\log(2m)$ and $\ell=\log L$. Since $w+\log w=L$, introduce the formal var
 \]
 The defining equation is
 \begin{equation}
- A+\log(1-\ell z+zA)=0.\label{eq:Aformal}
+ A+\log(1-\ell z+zA)=0.\label{lfm:eq:Aformal}
 \end{equation}
 It determines polynomials recursively:
 \begin{equation}
  a_r(\ell)=-\co zr\log\left(1-\ell z+
- z\sum_{j<r}a_j(\ell)z^j\right),\qquad r\ge1.\label{eq:Arecur}
+ z\sum_{j<r}a_j(\ell)z^j\right),\qquad r\ge1.\label{lfm:eq:Arecur}
 \end{equation}
 Because $F(m)/m=2w-L-1+2/w$, its coefficients are
 \begin{equation}
  \frac{F(m)}m=L-2\ell-1+\sum_{j\ge1}f_j(\ell)L^{-j},\qquad
- f_j=2a_j+2\co z{j-1}(1-\ell z+zA)^{-1}.\label{eq:Frecur}
+ f_j=2a_j+2\co z{j-1}(1-\ell z+zA)^{-1}.\label{lfm:eq:Frecur}
 \end{equation}
 For example, $a_1=\ell$, $a_2=\ell(\ell-2)/2$, and
 $a_3=\ell(2\ell^2-9\ell+6)/6$. The explicit forward terms are
 \begin{align}
  \log a_m=m\bigg[&L-2\ell-1+\frac{2\ell+2}{L}
  +\frac{\ell^2}{L^2}+\frac{\ell^2(2\ell-3)}{3L^3}
- +O\left(\frac{\ell^4}{L^4}\right)\bigg].\label{eq:forward}
+ +O\left(\frac{\ell^4}{L^4}\right)\bigg].\label{lfm:eq:forward}
 \end{align}
 For a version retaining both scales, replace the $O$ term in brackets by the recursively continued finite expansion and its truncation error, and append $W(2m)^2/4+O(\log m)$ outside the brackets.
 
-Here is why coefficient extraction is an asymptotic proof, rather than merely formal manipulation. Truncate \eqref{eq:Aformal} after order $K$. Taylor expansion of $\log(1+x)$, with $x=O(\ell/L)$, bounds its residual by $O_K(\ell^{K+1}/L^{K+1})$. The derivative of $w+\log w$ is $1+1/w$, bounded away from zero, so the real root differs by at most that residual. Substitution into the smooth expression for $F/m$ gives the corresponding remainder for \eqref{eq:Frecur}. The counting error $O(\log^2m)$, including the $w^2/4$ term if it is omitted, is smaller than $m/L^K$ for every fixed $K$. Thus every fixed inverse-logarithmic order is determined. This does not assert convergence of an infinite expansion or a full transseries.
+Here is why coefficient extraction is an asymptotic proof, rather than merely formal manipulation. Truncate \eqref{lfm:eq:Aformal} after order $K$. Taylor expansion of $\log(1+x)$, with $x=O(\ell/L)$, bounds its residual by $O_K(\ell^{K+1}/L^{K+1})$. The derivative of $w+\log w$ is $1+1/w$, bounded away from zero, so the real root differs by at most that residual. Substitution into the smooth expression for $F/m$ gives the corresponding remainder for \eqref{lfm:eq:Frecur}. The counting error $O(\log^2m)$, including the $w^2/4$ term if it is omitted, is smaller than $m/L^K$ for every fixed $K$. Thus every fixed inverse-logarithmic order is determined. This does not assert convergence of an infinite expansion or a full transseries.
 
 In particular, the first three additive scales are
 \[
@@ -505,14 +671,14 @@ In particular, the first three additive scales are
 and $\log A_m\sim\log C_m\sim m\log m$.
 
 \subsection{An implicit inverse with additive error \texorpdfstring{$O(1)$}{O(1)}}
-By \eqref{eq:Fderiv},
+By \eqref{lfm:eq:Fderiv},
 \begin{equation}
- J'(m)=w-\log w+\frac{w^2}{2m(w+1)}\sim\log m.\label{eq:Jprime}
+ J'(m)=w-\log w+\frac{w^2}{2m(w+1)}\sim\log m.\label{lfm:eq:Jprime}
 \end{equation}
 It is eventually positive. Let $y=\log X$ and let $J(m_0)=y$. A scalar form convenient for computation is
 \begin{equation}
  e^{w_0}(w_0^2-w_0\log w_0-w_0+2)+\frac{w_0^2}{2}=2y,
- \qquad m_0=\frac{w_0e^{w_0}}2.\label{eq:scalarJ}
+ \qquad m_0=\frac{w_0e^{w_0}}2.\label{lfm:eq:scalarJ}
 \end{equation}
 
 To prove the threshold assertion without sequence monotonicity, choose $B_0$ so that
@@ -521,7 +687,7 @@ $|\log a_m-J(m)|\le B_0\log m$ eventually. For $m_0/2\le m\le m_0-K$, eventual d
  J(m_0)-J(m)\ge\frac12(m_0-m)\log m_0.
 \]
 A fixed sufficiently large $K$ makes this exceed $B_0\log m$. For all sufficiently large $m<m_0/2$, eventual increase of $J$ and
-$J(m_0)-J(m_0/2)=\Theta(m_0\log m_0)$ exclude the entire range. The remaining finitely many terms cannot exceed arbitrarily large $X$. Conversely, at the integer $r=\lceil m_0+K\rceil$, the same derivative bound yields $\log a_r\ge y$ for $K$ sufficiently large. This brackets the first threshold within $O(1)$ of $m_0$ and proves \eqref{eq:inverse}.
+$J(m_0)-J(m_0/2)=\Theta(m_0\log m_0)$ exclude the entire range. The remaining finitely many terms cannot exceed arbitrarily large $X$. Conversely, at the integer $r=\lceil m_0+K\rceil$, the same derivative bound yields $\log a_r\ge y$ for $K$ sufficiently large. This brackets the first threshold within $O(1)$ of $m_0$ and proves \eqref{lfm:eq:inverse}.
 
 \subsection{Explicit inverse orders and their precise error}
 Let $M=F^{-1}(y)$ be the sufficiently large inverse of $F$. Write $U=\log(2y)$ and $u=\log U$. Its first terms are
@@ -529,7 +695,7 @@ Let $M=F^{-1}(y)$ be the sufficiently large inverse of $F$. Write $U=\log(2y)$ a
  M=\frac yU\bigg[1+\frac{3u+1}{U}
  +\frac{9u^2-u-2}{U^2}
  +\frac{54u^3-47u^2-26u-1}{2U^3}
- +O\left(\frac{u^4}{U^4}\right)\bigg].\label{eq:inverse-series}
+ +O\left(\frac{u^4}{U^4}\right)\bigg].\label{lfm:eq:inverse-series}
 \end{align}
 The same fixed-order expansion applies to $m_0$ and to $\nu_a(X)$, because their difference from $M$ is $O(\log y)$, smaller than every fixed displayed expansion scale.
 
@@ -540,29 +706,50 @@ For effective extraction at arbitrary fixed order, put $z=1/U$, write
 The scalar equation $F(M)=y$ is equivalent to
 \begin{equation}
  B+2\log Z+
- \log\left(1-\frac{z(u+\log Z+1)}Z+\frac{2z^2}{Z^2}\right)=0.\label{eq:Bformal}
+ \log\left(1-\frac{z(u+\log Z+1)}Z+\frac{2z^2}{Z^2}\right)=0.\label{lfm:eq:Bformal}
 \end{equation}
 To obtain the coefficient $[z^r]B$, substitute all previously obtained coefficients in the two logarithms and negate their $z^r$ coefficient. The new coefficient enters those logarithms only at later order, so this is triangular. Then
 \begin{equation}
  M=\frac yU R(z),\qquad
- R(z)=\left(Z-z(u+\log Z)-z+\frac{2z^2}Z\right)^{-1}.\label{eq:Rformal}
+ R(z)=\left(Z-z(u+\log Z)-z+\frac{2z^2}Z\right)^{-1}.\label{lfm:eq:Rformal}
 \end{equation}
-This gives \eqref{eq:inverse-series} and every further fixed order. Taylor remainders in \eqref{eq:Bformal}, whose derivative with respect to $B$ tends to one, bound the error after any fixed truncation; substitution in \eqref{eq:Rformal} gives its stated order. Thus the procedure has analytic remainder control.
+This gives \eqref{lfm:eq:inverse-series} and every further fixed order. Taylor remainders in \eqref{lfm:eq:Bformal}, whose derivative with respect to $B$ tends to one, bound the error after any fixed truncation; substitution in \eqref{lfm:eq:Rformal} gives its stated order. Thus the procedure has analytic remainder control.
 
 One can also retain the effect of the extra $w^2/4$ term without truncating the large-scale inverse. With $\omega=W(2M)$,
 \begin{equation}
  m_0=M-\frac{\omega^2}{4(\omega-\log\omega)}+o(1),\qquad
- \nu_a(X)=M-\frac{\omega^2}{4(\omega-\log\omega)}+O(1).\label{eq:inverse-shift}
+ \nu_a(X)=M-\frac{\omega^2}{4(\omega-\log\omega)}+O(1).\label{lfm:eq:inverse-shift}
 \end{equation}
-Indeed $J(M)-y=\omega^2/4$, while $J'\asymp\omega$ near $M$, so $m_0-M=O(\omega)$. On this interval $F''=O(1/M)$ and the derivative of $W(2m)^2/4$ is $O(\omega/M)$. Taylor's theorem makes the residual after the displayed first-order displacement $O(\omega^2/M)=o(1)$; division by $F'(M)\asymp\omega$ is harmless. This proves \eqref{eq:inverse-shift}.
+Indeed $J(M)-y=\omega^2/4$, while $J'\asymp\omega$ near $M$, so $m_0-M=O(\omega)$. On this interval $F''=O(1/M)$ and the derivative of $W(2m)^2/4$ is $O(\omega/M)$. Taylor's theorem makes the residual after the displayed first-order displacement $O(\omega^2/M)=o(1)$; division by $F'(M)\asymp\omega$ is harmless. This proves \eqref{lfm:eq:inverse-shift}.
 
-\textbf{Accuracy warning.} The additive $O(1)$ guarantee belongs to \eqref{eq:scalarJ}, or to \eqref{eq:inverse-shift} using the untruncated implicit $M$. Any fixed truncation of \eqref{eq:inverse-series} has its own much larger error, for example $O(yu^4/U^5)$ at the displayed order. It does not inherit additive $O(1)$ accuracy.
+\textbf{Accuracy warning.} The additive $O(1)$ guarantee belongs to \eqref{lfm:eq:scalarJ}, or to \eqref{lfm:eq:inverse-shift} using the untruncated implicit $M$. Any fixed truncation of \eqref{lfm:eq:inverse-series} has its own much larger error, for example $O(yu^4/U^5)$ at the displayed order. It does not inherit additive $O(1)$ accuracy.
 
-\section{An independent relative rare-event refinement}\label{sec:star}
-This section proves a stronger statement for the vertex-labelled product and exact-total models. The upper probability bound developed here was not required for Theorem~\ref{thm:main}; its lower bound was already supplied by Lemma~\ref{lem:rare-lower}.
+\begin{writenote}[Added 5 October 2026, batch~100]
+\emph{Credits and relations.} The series \eqref{lfm:eq:Arecur} is the
+classical asymptotic expansion of the Lambert function at $+\infty$, with
+$\log x$ and $\log\log x$ at $x=2m$: its coefficients $a_1$, $a_2$, $a_3$
+above are the familiar ones (de~Bruijn; Comtet; Corless, Gonnet, Hare,
+Jeffrey and Knuth). What is specific here is its use in $F(m)/m$ and in the
+inversion. In the repository, the transseries volume
+\nolinkurl{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex}
+treats such inversions in general: its theorem \nolinkurl{p0:thm:lambert-core}
+solves the linear-logarithmic core exactly by the Lambert function, and
+\nolinkurl{p0:thm:core-reversion} gives the triangular recurrence for the
+reversion about a core, of the same kind as the recurrence after
+\eqref{lfm:eq:Bformal}; the write did not compare coefficients between the
+two. Its staircase theorem \nolinkurl{p0:thm:staircase} recovers the integer
+threshold from an interpolated inverse of a \emph{strictly increasing}
+sequence. The threshold statement \eqref{lfm:eq:inverse} needs no
+monotonicity, which this report does not prove (the shipped tables increase for
+$2\le m\le50$, which proves nothing about larger $m$), and it brackets the
+threshold only within $O(1)$.
+\end{writenote}
+
+\section{An independent relative rare-event refinement}\label{lfm:sec:star}
+This section proves a stronger statement for the vertex-labelled product and exact-total models. The upper probability bound developed here was not required for Theorem~\ref{lfm:thm:main}; its lower bound was already supplied by Lemma~\ref{lfm:lem:rare-lower}.
 
 \subsection{Exact star-conditioning comparison}
-\begin{theorem}\label{thm:star}
+\begin{theorem}\label{lfm:thm:star}
 Let $n\ge3$, and give the pairs of distinct vertices independent, identically distributed nonnegative integer multiplicities. Let $B_i$ be the event that vertex $i$ has degree at most one. Put
 \[
  q=\Prob(B_i),\quad \rho=\Prob(X_e>0),\quad
@@ -571,12 +758,12 @@ Let $n\ge3$, and give the pairs of distinct vertices independent, identically di
 Assume $q_0<1$, and define $c=1+\rho q_0/(1-q_0)$. For every vertex $i$ and $J\subseteq[n]\setminus\{i\}$,
 \begin{equation}
  q c^{-|J|}\le
- \Prob\left(B_i\,\middle|\,\bigcap_{j\in J}B_j^c\right)\le q.\label{eq:starconditional}
+ \Prob\left(B_i\,\middle|\,\bigcap_{j\in J}B_j^c\right)\le q.\label{lfm:eq:starconditional}
 \end{equation}
 Every conditioning event is positive. Consequently
 \begin{equation}
  (1-q)^n\le\Prob(\delta\ge2)
- \le\prod_{j=0}^{n-1}(1-qc^{-j}).\label{eq:starsandwich}
+ \le\prod_{j=0}^{n-1}(1-qc^{-j}).\label{lfm:eq:starsandwich}
 \end{equation}
 \end{theorem}
 \begin{proof}
@@ -592,7 +779,7 @@ Association in the unconditional nonstar product measure gives, for $j\in K$,
 \]
 Thus $\Prob(A_J^0)\ge(1-q_0)^{|J|}>0$, and removing constraints in any $H\subseteq J$ gives
 \begin{equation}
- \Prob(A_{J\setminus H}^0)\le\Prob(A_J^0)(1-q_0)^{-|H|}.\label{eq:remove}
+ \Prob(A_{J\setminus H}^0)\le\Prob(A_J^0)(1-q_0)^{-|H|}.\label{lfm:eq:remove}
 \end{equation}
 
 For a fixed star configuration $s$, let $H(s)=\{j\in J:s_{ij}>0\}$ and
@@ -603,7 +790,7 @@ The actual event depends on the star values, not just their support. Nonetheless
 \[
  A_J^0\subseteq A(s)\subseteq A_{J\setminus H(s)}^0.
 \]
-If $s_{ij}=1$, dropping that endpoint's constraint is an upper bound; if $s_{ij}\ge2$, the constraint really disappears. Both cases are covered. By \eqref{eq:remove},
+If $s_{ij}=1$, dropping that endpoint's constraint is an upper bound; if $s_{ij}\ge2$, the constraint really disappears. Both cases are covered. By \eqref{lfm:eq:remove},
 \[
  \Prob_Y(A(s))\le\Prob(A_J^0)(1-q_0)^{-|H(s)|}.
 \]
@@ -611,27 +798,27 @@ Let $A=\bigcap_{j\in J}B_j^c$. In the unconditional star law the support indicat
 \begin{equation}
  \Prob(A)\le\Prob(A_J^0)
  \left(1-\rho+\frac\rho{1-q_0}\right)^{|J|}
- =\Prob(A_J^0)c^{|J|}.\label{eq:average}
+ =\Prob(A_J^0)c^{|J|}.\label{lfm:eq:average}
 \end{equation}
 Also $A_J^0\subseteq A$ and $A_J^0$ is independent of $B_i$, so
-$\Prob(A\mid B_i)\ge\Prob(A_J^0)$. Bayes's formula and \eqref{eq:average} now give the left inequality in \eqref{eq:starconditional}. Its right inequality follows from association because $B_i$ is decreasing and $A$ is increasing. Positivity follows from $A_J^0\subseteq A$.
+$\Prob(A\mid B_i)\ge\Prob(A_J^0)$. Bayes's formula and \eqref{lfm:eq:average} now give the left inequality in \eqref{lfm:eq:starconditional}. Its right inequality follows from association because $B_i$ is decreasing and $A$ is increasing. Positivity follows from $A_J^0\subseteq A$.
 
-Finally order the vertices. At stage $j+1$ the conditional probability of its good event lies between $1-q$ and $1-qc^{-j}$. Multiplying these positive conditional probabilities proves \eqref{eq:starsandwich}.
+Finally order the vertices. At stage $j+1$ the conditional probability of its good event lies between $1-q$ and $1-qc^{-j}$. Multiplying these positive conditional probabilities proves \eqref{lfm:eq:starsandwich}.
 \end{proof}
 
 The guard $q_0<1$ cannot be dropped from this formula: for Bernoulli edge variables at $n=3$, $q_0=1$ and $c$ is undefined. The geometric asymptotic regime below satisfies the guard.
 
 \subsection{Logarithmic error and the geometric law}
-Theorem~\ref{thm:star} implies the explicit bounds
+Theorem~\ref{lfm:thm:star} implies the explicit bounds
 \begin{equation}
  -nq-\frac{nq^2}{2(1-q)}
  \le\log\Prob(\delta\ge2)
- \le-nq+\frac{n(n-1)}2q\log c.\label{eq:starlog}
+ \le-nq+\frac{n(n-1)}2q\log c.\label{lfm:eq:starlog}
 \end{equation}
 For the lower bound use $\log(1-q)\ge-q-q^2/[2(1-q)]$. For the upper one, sum $\log(1-qc^{-j})\le-qc^{-j}$ and use $1-e^{-j\log c}\le j\log c$. Since $\log c\le\rho q_0/(1-q_0)$, when $q,q_0,\rho=O(\log n/n)$,
 \begin{equation}
  \log\Prob(\delta\ge2)=-nq+O(nq^2+n^2q\rho q_0)
- =-nq+O(\log^3n/n).\label{eq:starerror}
+ =-nq+O(\log^3n/n).\label{lfm:eq:starerror}
 \end{equation}
 
 For geometric multiplicities, the mean degree is $\lambda=(n-1)\rho/(1-\rho)$ and
@@ -647,49 +834,49 @@ $\rho=\lambda/(n-1+\lambda)$ gives $q,q_0,\rho=O(\log n/n)$ and
 These estimates are uniform for $|\lambda-\log n|\le1$. Therefore
 \begin{equation}
  \Prob_{\mathrm{geom}}(\delta\ge2)
- =\exp\{-n(1+\lambda)e^{-\lambda}+O(\log^3n/n)\}.\label{eq:geomrelative}
+ =\exp\{-n(1+\lambda)e^{-\lambda}+O(\log^3n/n)\}.\label{lfm:eq:geomrelative}
 \end{equation}
 The logarithmic error tends to zero, yielding a relative equivalent for this rare event.
 
 \subsection{Two-sided transfer to an exact total}
-\begin{corollary}\label{cor:exactrelative}
+\begin{corollary}\label{lfm:cor:exactrelative}
 If $2m/n=\log n+o(1)$, then
 \begin{equation}
  \Prob_{\U(n,m)}(\delta\ge2)
- \sim\exp\{-n(1+2m/n)e^{-2m/n}\}.\label{eq:exactrelative}
+ \sim\exp\{-n(1+2m/n)e^{-2m/n}\}.\label{lfm:eq:exactrelative}
 \end{equation}
 The relative error tends to zero uniformly on every shrinking envelope $|2m/n-\log n|\le\eta_n$, $\eta_n\to0$.
 \end{corollary}
 \begin{proof}
-Put $\ell=\log n$, $d=3\sqrt{m\ell}$, $\mu_\pm=m\pm d$, and choose product geometric laws with parameters $\rho_\pm=\mu_\pm/(N+\mu_\pm)$. Let $T_\pm$ be their totals and $P_\pm$ their good-degree probabilities. For the lower-mean upper tail use $t=d/\mu_-$ in \eqref{eq:mgf}; for the upper-mean lower tail use $t=-d/\mu_+$. Both have magnitude $O(n^{-1/2})$. The two signed Chernoff calculations give
+Put $\ell=\log n$, $d=3\sqrt{m\ell}$, $\mu_\pm=m\pm d$, and choose product geometric laws with parameters $\rho_\pm=\mu_\pm/(N+\mu_\pm)$. Let $T_\pm$ be their totals and $P_\pm$ their good-degree probabilities. For the lower-mean upper tail use $t=d/\mu_-$ in \eqref{lfm:eq:mgf}; for the upper-mean lower tail use $t=-d/\mu_+$. Both have magnitude $O(n^{-1/2})$. The two signed Chernoff calculations give
 \begin{equation}
  \tau_-:=\Prob(T_->m)\le n^{-9/2}e^{o(1)},\qquad
- \tau_+:=\Prob(T_+<m)\le n^{-9/2}e^{o(1)}.\label{eq:both-tails}
+ \tau_+:=\Prob(T_+<m)\le n^{-9/2}e^{o(1)}.\label{lfm:eq:both-tails}
 \end{equation}
-These are upper bounds only. The expansion is the same as \eqref{eq:tail}, with $\mu_\pm$ in place of $\mu$.
+These are upper bounds only. The expansion is the same as \eqref{lfm:eq:tail}, with $\mu_\pm$ in place of $\mu$.
 
-By Lemma~\ref{lem:couple}, $f_k=\Prob_{\U(n,k)}(B)$ is nondecreasing. Consequently
+By Lemma~\ref{lfm:lem:couple}, $f_k=\Prob_{\U(n,k)}(B)$ is nondecreasing. Consequently
 \[
  P_-\le f_m+\tau_-,\qquad
  P_+\ge f_m(1-\tau_+),
 \]
 and hence
 \begin{equation}
- P_--\tau_-\le f_m\le\frac{P_+}{1-\tau_+}.\label{eq:decondition}
+ P_--\tau_-\le f_m\le\frac{P_+}{1-\tau_+}.\label{lfm:eq:decondition}
 \end{equation}
 The shifted mean degrees $\lambda_\pm=2\mu_\pm/n$ differ from $\lambda=2m/n$ by $O(\ell/\sqrt n)$. Since the derivative of $a(x)=n(1+x)e^{-x}$ is $O(\ell)$ in magnitude,
 \[
  P_\pm=e^{-a(\lambda)}
  \left(1+O(\ell^2/\sqrt n+\ell^3/n)\right)
 \]
-by \eqref{eq:geomrelative}. Moreover $a(\lambda)=(1+o(1))\ell$, so $e^{-a(\lambda)}=n^{-1+o(1)}$. The subtracted tail in \eqref{eq:decondition} has relative size at most $n^{-7/2+o(1)}$; the upper denominator tends to one. This proves \eqref{eq:exactrelative}.
+by \eqref{lfm:eq:geomrelative}. Moreover $a(\lambda)=(1+o(1))\ell$, so $e^{-a(\lambda)}=n^{-1+o(1)}$. The subtracted tail in \eqref{lfm:eq:decondition} has relative size at most $n^{-7/2+o(1)}$; the upper denominator tends to one. This proves \eqref{lfm:eq:exactrelative}.
 
 All estimates have uniform constants in a bounded neighborhood of $\ell$. Enlarging a shrinking envelope by the shifts $O(\ell/\sqrt n)$ still produces a shrinking envelope, and $a(\lambda)/\ell=1+O(\eta_n+1/\ell)$ there. This proves the stated uniformity.
 \end{proof}
 
-Combining the corollary with Lemma~\ref{lem:cuts} gives connectedness with conditional probability at least $1-n^{-1+o(1)}$ in this labelled model, and the stronger $1-O(\log^2n/n)$ bound in the narrower regime. Neither statement supplies the expected automorphism contribution required for a sharp unlabelled equivalent.
+Combining the corollary with Lemma~\ref{lfm:lem:cuts} gives connectedness with conditional probability at least $1-n^{-1+o(1)}$ in this labelled model, and the stronger $1-O(\log^2n/n)$ bound in the narrower regime. Neither statement supplies the expected automorphism contribution required for a sharp unlabelled equivalent.
 
-\section{Exact checks, limitations, and further questions}
+\section{Exact checks, limitations, and further questions}\label{lfm:sec:checks}
 \subsection{Finite checks and the component identity}
 The initial values are
 \[
@@ -703,12 +890,12 @@ The reproducible package contains OEIS fixtures through $m=50$, with their publi
 
 Unique decomposition into connected components gives the formal Euler product
 \begin{equation}
- \sum_{m\ge0}A_mz^m=\prod_{k\ge1}(1-z^k)^{-C_k}.\label{eq:euler}
+ \sum_{m\ge0}A_mz^m=\prod_{k\ge1}(1-z^k)^{-C_k}.\label{lfm:eq:euler}
 \end{equation}
 Only $k\ge1$ occurs, so the exceptional $C_0=1$ convention causes no factor. The product is a well-defined formal series: only finitely many component sizes contribute to any coefficient. Each of the $C_k$ distinct connected types can occur with any nonnegative multiplicity, independently. Taking a formal logarithmic derivative gives
 \begin{equation}
  mA_m=\sum_{j=1}^m b_jA_{m-j},\qquad
- b_j=\sum_{d\mid j}dC_d.\label{eq:eulerrec}
+ b_j=\sum_{d\mid j}dC_d.\label{lfm:eq:eulerrec}
 \end{equation}
 This recurrence and its divisor inversion check every supplied fixture term.
 
@@ -716,21 +903,227 @@ Other exact checks evaluate the composition factorial moments, incoming masses o
 
 \textbf{What the checks establish.} They test finite identities, transcription, implementation, and artifact integrity. They do not establish uniform asymptotic estimates, prove Wright's theorem, certify a global historical priority claim, or turn an unproved relative enumeration into a theorem.
 
-\subsection{What remains unresolved here}
+\begin{writenote}[Added 5 October 2026, batch~100]
+\emph{The package in the repository.} The delivered files ship flattened:
+the scripts in \nolinkurl{code/} (the verifier \nolinkurl{checks/verify.py} as
+\nolinkurl{code/checks-verify.py}), the fixtures, recorded results, b-file
+snapshots and build record in \nolinkurl{data/} (with a \nolinkurl{checks-}
+prefix for files from \nolinkurl{checks/}), and the verifier's README as
+\nolinkurl{checks-README.md}. ``The README'' above is the delivery README,
+which the report's README replaces; the delivered PDF and the checksum
+manifest \nolinkurl{CHECKSUMS.sha256} (the ``closed byte inventory'') are not
+shipped, by repository policy. All three remain in the archive of the
+arrival commit. Flattening breaks the scripts' relative paths, and the
+verifier refuses to run without the POSIX flags \texttt{O\_NOFOLLOW} and
+\texttt{O\_DIRECTORY}, so the report's README gives a rerun on a POSIX copy
+of the delivered layout. On 5 October 2026 the intake restored that layout
+from the archive on Windows (Python~3.14.4): the inventory check passed for
+21 files, and the six mathematical sections of the verifier (imported, since
+its command line refuses Windows) reproduced the recorded results exactly,
+key by key, in normal and optimized mode; the thirty adversarial cases need
+POSIX and were not run. The two recorded result files
+\nolinkurl{data/checks-results-normal.json} and
+\nolinkurl{data/checks-results-optimized.json} are byte-identical, as
+the verifier's README requires: they record the runs without and with
+\texttt{python -O}, and their equality is the evidence that the optimized
+mode, which strips \texttt{assert} statements, changes nothing. Both are
+shipped for that reason. The b-file snapshots and the fixture terms are OEIS
+data, published by The OEIS Foundation under CC~BY-SA~4.0, not MIT-0.
+\end{writenote}
+
+\subsection{What remains unresolved here}\label{lfm:sec:unresolved}
 \begin{enumerate}
-\item \textbf{A sharp unlabelled equivalent.} The factor-$e^w$ gap in \eqref{eq:sandwich} remains. Even the relative labelled probability \eqref{eq:exactrelative} does not prove $A_m\sim H_m$ or $C_m\sim H_m$. A sharp analysis must control global vertex-count tails and the relevant automorphism weights, or use another direct unlabelled enumeration.
+\item \textbf{A sharp unlabelled equivalent.} The factor-$e^w$ gap in \eqref{lfm:eq:sandwich} remains. Even the relative labelled probability \eqref{lfm:eq:exactrelative} does not prove $A_m\sim H_m$ or $C_m\sim H_m$. A sharp analysis must control global vertex-count tails and the relevant automorphism weights, or use another direct unlabelled enumeration.
 \item \textbf{A leading disconnected correction.} The proved deficit is $O(w^3/m)$, obtained from a polynomial sandwich. It need not be the true order. The two-edge parallel-pair component is a natural candidate for the leading contribution, but replacing the coarse ratio control by $A_{m-2}/A_m$ asymptotics requires new work.
 \item \textbf{Growing degree restrictions.} The product comparison suggests analogous questions for minimum degree at least a fixed $r>2$. No such relative theorem, nor uniformity for growing $r$, is claimed here.
 \item \textbf{Full expansions.} Every fixed order in inverse powers of $\log m$ is available for the logarithm. This is distinct from relative corrections to $A_m$, exponentially small contributions, or a full transseries. The $W^2/4$ correction and implicit additive-$O(1)$ inverse are finer information, but do not close these gaps.
 \item \textbf{Complete historical verification.} Wright's 1972 result and 1974 successor must be credited; earlier graph-by-edges work of Lupanov also belongs in a full historical investigation. The original Lupanov work and the full Wright successor proof were not inspected here. The absence of an asymptotic formula on an OEIS page is not evidence of novelty.
 \end{enumerate}
 
-\subsection{Related models and the symmetric-polynomial interpretation}
+\begin{writenote}[Added 5 October 2026, batch~100]
+All five items are restated, with what is missing and the intake's
+numerical evidence, as items~1--5 of Section~\ref{lfm:sec:further}. Item~2
+is advanced there, not settled: Proposition~\ref{lfm:prop:deficit} proves
+$A_m-C_m\ge A_{m-2}$ for $m\ge4$, and shows that the parallel-pair term is
+the leading one, $(A_m-C_m)/A_m\sim A_{m-2}/A_m\sim w^4/(4m^2)$, as soon as
+$A_m\sim\kappa H_m$ for some constant $\kappa>0$.
+\end{writenote}
+
+\subsection{Related models and the symmetric-polynomial interpretation}\label{lfm:sec:related}
 Greenhill and McKay \cite{greenhill} enumerate vertex-labelled sparse multigraphs with a prescribed degree sequence under a maximum-degree condition. That does not automatically perform the degree-sequence summation and unlabelled reduction needed here. Cameron, Prellberg, and Stark \cite{cameron} use unlabelled vertices but labelled edges in their multigraph interpretation of 2-covers. Dividing such counts by $m!$ without controlling edge symmetries is not justified.
 
 Komiske, Metodiev, and Thaler \cite{komiske} discuss these sequences in the enumeration of symmetric kinematic polynomials. The proposed identification with the relevant polynomial counts, including the OEIS A226919 comparison, is conjectural. Their stable-particle-number limit is different from the present $m\to\infty$ graph-by-edges limit. Theorems in this report concern graph counts and do not assume that conjectural interpretation.
 
 The strongest justified conclusion is therefore a rigorous refined logarithmic enumeration, an unlabelled connectedness ratio, and a bounded-error implicit inverse, together with a separate relative labelled rare-event theorem. A relative equivalent for the unlabelled counts remains a further question.
+
+\subsection{Further questions and research}\label{lfm:sec:further}
+\begin{writenote}[Added 5 October 2026, batch~100]
+This subsection collects every statement of the source that it does not
+prove, following Vladimir's standing rule of 4 October 2026: each is stated
+as an open question with its source, the argument offered for it, and what
+is missing. The source is Report~131 throughout; items~1--5 are those of
+Section~\ref{lfm:sec:unresolved}, item~6 is from
+Section~\ref{lfm:sec:related}. The intake found no claim of the source
+false. The one assertion made without proof, the last sentence of the proof
+of Lemma~\ref{lfm:lem:cuts}, is proved in the note after that lemma. The
+numbers quoted below were computed by the intake from the shipped b-file
+snapshots ($m\le50$); they are evidence only and prove nothing about the
+limit.
+\end{writenote}
+
+\begin{enumerate}
+\item\label{lfm:q:sharp} \textbf{A sharp equivalent.} Is $A_m\sim H_m$, and
+$C_m\sim H_m$? The theorem leaves a factor $e^w=2m/w$ between its bounds.
+The lower bound counts connected leafless graphs in the central window by
+the symmetry-weighted count, weighted by the labelled probability of
+\eqref{lfm:eq:jointwindow}, which is $e^{-1-w}(1+o(1))$ by
+Corollary~\ref{lfm:cor:exactrelative} and Lemma~\ref{lfm:lem:cuts}; the upper bound counts all
+multigraphs without isolated vertices, leaves allowed, through simple
+supports, and so does not see the degree restriction. The source names what
+is missing: control of the vertex-count tails outside the window and of the
+automorphism weights of leafless classes, or a direct unlabelled
+enumeration. A possible route, suggested by the write and not attempted:
+the neighbouring report
+\nolinkurl{oeis-sequence-asymptotics/a007716-bipartite-multigraphs} proves a
+relative equivalent for bipartite multigraphs with distinguished shores
+through an exact invariant-partition formula that accounts for every vertex
+automorphism, and its Report~92 then shows that a uniform class has a
+nontrivial vertex automorphism with probability $O(W(n)^3/n)$; whether a
+comparable exact formula, or such an automorphism estimate, exists for
+loopless multigraphs with the minimum-degree restriction is open.
+\emph{Evidence.} $\log(A_m/H_m)=0.580$, $0.349$, $0.291$, $0.259$, $0.237$ at
+$m=10,20,30,40,50$, decreasing throughout $10\le m\le50$, against
+$w=W(2m)\approx3.39$ at $m=50$ for the full width of the sandwich (see the
+table below). The counts sit near the lower bound; whether the ratio tends
+to $1$, to another constant or to neither cannot be read off at $m\le50$.
+
+\item\label{lfm:q:deficit} \textbf{The leading disconnected correction.} The
+proved deficit is $O(w^3/m)$. The source proposes the two-edge parallel-pair
+component as the leading contribution, that is
+$(A_m-C_m)/A_m\sim A_{m-2}/A_m$, and says that replacing the coarse ratio
+control by asymptotics of $A_{m-2}/A_m$ needs new work. Proposition
+\ref{lfm:prop:deficit} below proves the unconditional half of this and shows
+that the rest follows from a relative equivalent $A_m\sim\kappa H_m$, in
+particular from item~\ref{lfm:q:sharp}. Without such an equivalent the
+question is open: the sandwich alone bounds $A_{m-3}/A_{m-2}$ only by
+$O(w)$, which does not make the terms $k\ge3$ of \eqref{lfm:eq:convolution}
+smaller than the term $k=2$. \emph{Evidence.} At $m=50$ the deficit is
+$0.0181$, about $43$ times smaller than $w^3/m=0.776$, and
+$1.32\,A_{48}/A_{50}$; the quotient of the deficit by $A_{m-2}/A_m$ falls
+from $2.07$ at $m=10$ to $1.75$, $1.49$, $1.38$, $1.32$ at $m=20,\dots,50$.
+
+\item\label{lfm:q:degree} \textbf{Minimum degree at least $r>2$.} The source
+says only that the product comparison ``suggests'' analogous questions for
+a fixed $r>2$, and claims no theorem, and nothing uniform in growing $r$.
+Missing: the analogues of Lemma~\ref{lfm:lem:rare-lower},
+Theorem~\ref{lfm:thm:star} and Corollary~\ref{lfm:cor:exactrelative} for the
+events $\{\deg\le r-1\}$, the location of the corresponding saddle, and the
+unlabelled transfer, in which the source's simple-support upper bound would
+again lose the degree restriction.
+
+\item\label{lfm:q:expansions} \textbf{Full expansions.} Every fixed order in
+inverse powers of $\log m$ is proved for $\log a_m$, together with the
+$W^2/4$ term and the implicit inverse with additive error $O(1)$. Open:
+relative corrections to $A_m$ and $C_m$ (which presuppose
+item~\ref{lfm:q:sharp}), exponentially small contributions, and a full
+transseries; the source asserts no convergence of any infinite expansion
+(Section~\ref{lfm:sec:series}). For comparison, the a007716 report proves a
+complete fixed-order relative expansion for its bipartite model.
+
+\item\label{lfm:q:wright} \textbf{Checking Wright and Lupanov.} The main
+theorem's upper half rests on \eqref{lfm:eq:wright}, checked by the source
+only in an OCR'd reproduction and a Notices abstract, and by the ProveIt
+intake not at all. Missing: the original scan of Wright's 1972 paper
+\cite{wright72}, checked for the prefactor
+$e^{-1}\sqrt{2\pi V/(1+\log V)}$, the choice of $V$, the range condition on
+$\mu$ and the restriction $q\le\binom n2/2$; the full 1974 proof
+\cite{wright74}; and Lupanov's earlier graph-by-edges work, for which the
+source gives no reference. A literature search for earlier asymptotics of
+A307316 and A307317 belongs to the same task; the source makes no priority
+claim.
+
+\item\label{lfm:q:kinematic} \textbf{The kinematic-polynomial
+identification.} Komiske, Metodiev and Thaler \cite{komiske} discuss these
+sequences in counting symmetric kinematic polynomials. The source calls the
+identification with those polynomial counts, including the comparison with
+OEIS A226919, conjectural, and uses it nowhere. Missing: a proof of the
+identification (a bijection or a generating-function identity), and an
+account of how their stable-particle-number limit relates to the present
+limit $m\to\infty$.
+\end{enumerate}
+
+\begin{proposition}[{[write]}, added 5 October 2026]\label{lfm:prop:deficit}
+For every $m\ge4$,
+\begin{equation}
+ A_{m-2}\le A_m-C_m\le A_{m-2}
+ +\sum_{k=3}^{\lfloor m/2\rfloor}A_kA_{m-k}.\label{lfm:eq:deficit-sandwich}
+\end{equation}
+If $A_m\sim\kappa H_m$ for a constant $\kappa>0$, then
+\begin{equation}
+ \frac{A_m-C_m}{A_m}\sim\frac{A_{m-2}}{A_m}\sim\frac{w^2}{v^2}
+ =\frac{w^4}{4m^2}.\label{lfm:eq:deficit-asym}
+\end{equation}
+\end{proposition}
+\begin{proof}
+Let $D_2$ be the two-vertex graph with one edge of multiplicity two. For a
+leafless class $G$ with $m-2\ge2$ edges, $G\sqcup D_2$ is leafless,
+disconnected and has $m$ edges. The map $G\mapsto G\sqcup D_2$ is injective:
+an isomorphism permutes components, so $G\sqcup D_2\cong G'\sqcup D_2$ gives
+equal multisets of component types, and removing one $D_2$ leaves
+$G\cong G'$. This proves the lower bound in
+\eqref{lfm:eq:deficit-sandwich}; the upper bound is \eqref{lfm:eq:convolution},
+whose term $k=2$ is $A_2A_{m-2}=A_{m-2}$.
+
+Assume $A_m\sim\kappa H_m$, and let $g$, $t$ and $L_0$ be as in
+Section~\ref{lfm:sec:ratio}. Then
+$A_{m-k}/A_m=(1+o(1))e^{g(m-k)-g(m)}$ uniformly for $0\le k\le m/2$, and
+$\log A_k\le F(k)+O(\log^2k)$, hence $A_k\le(Ck)^k$, since
+$\log H_k=F(k)+O(\log^2k)$. By \eqref{lfm:eq:gprime} and
+\eqref{lfm:eq:Fderiv}, $g'=F'+O(w/m)$ and $g''=O(1/m)$ on $[m/2,m]$, so
+$g(m)-g(m-2)=2F'(m)+o(1)$ and, as $e^{-F'(m)}=we^{-w}=w/v$,
+$A_{m-2}/A_m=(1+o(1))w^2/v^2$. For $3\le k\le L_0$, convexity of $g$ gives
+$g(m)-g(m-k)\ge kg'(m-k)=k\{F'(m)+O((L_0+w)/m)\}$, so
+$A_{m-k}/A_m\le(1+o(1))\{(1+o(1))w/v\}^k$ uniformly, the inner $o(1)$
+being $O(L_0^2/m)$ after raising to the power $k\le L_0$. Hence
+\[
+ \sum_{3\le k\le L_0}\frac{A_kA_{m-k}}{A_m}
+ \le\sum_{k\ge3}\Bigl(\frac{2CL_0w}{v}\Bigr)^k
+ =O\Bigl(\frac{L_0^3w^3}{v^3}\Bigr)
+ =o\Bigl(\frac{w^2}{v^2}\Bigr),
+\]
+because $L_0^3w/v=O(\log^5m/m)$. For $L_0<k\le m/2$, convexity and
+monotonicity of $g'$ give $A_{m-k}/A_m\le(1+o(1))t^k$, and the proof of
+\eqref{lfm:eq:small-series} bounds $\sum_{k>L_0}A_kt^k$ by
+$O(m^{-5})=o(w^4/m^2)$. With \eqref{lfm:eq:deficit-sandwich} this proves
+\eqref{lfm:eq:deficit-asym}.
+\end{proof}
+
+The injection $G\mapsto G\sqcup D_2$ is the leafless counterpart of the
+component-removal bijection of Report~92 in the a007716 report, where the
+smallest component is a single edge, a relative equivalent is available, and
+disconnection is accordingly shown to be asymptotic to $W(n)^2/n$, usually
+through one isolated edge. The hypothesis $A_m\sim\kappa H_m$ is exactly what
+item~\ref{lfm:q:sharp} asks for (with $\kappa=1$); without it, \eqref{lfm:eq:deficit-sandwich} and
+\eqref{lfm:eq:ratio} are what is proved. The data below, for comparison
+with items~\ref{lfm:q:sharp} and~\ref{lfm:q:deficit}, were computed from
+\nolinkurl{data/checks-sources-b307316.txt} and
+\nolinkurl{data/checks-sources-b307317.txt} with $w=W(2m)$ by Newton's
+method:
+\[
+\begin{array}{r|rrr|rrrr}
+ m&\log A_m&\log H_m&\log(e^wH_m)&1-C_m/A_m&A_{m-2}/A_m&w^4/(4m^2)&w^3/m\\\hline
+ 10&8.048&7.468&9.673&0.1841&0.0892&0.0591&1.072\\
+ 20&22.979&22.630&25.326&0.0668&0.0382&0.0331&0.981\\
+ 30&40.728&40.437&43.434&0.0364&0.0244&0.0224&0.897\\
+ 40&60.296&60.037&63.251&0.0244&0.0177&0.0167&0.830\\
+ 50&81.251&81.014&84.400&0.0181&0.0137&0.0131&0.776
+\end{array}
+\]
+At every $m$ from $4$ to $50$ the shipped terms satisfy
+$H_m\le C_m\le A_m\le e^wH_m$ without the factors $1\pm o(1)$, and both
+bounds of \eqref{lfm:eq:deficit-sandwich}; the lower one holds with equality
+exactly at $m=4$ and $m=5$, where every disconnected leafless graph is $D_2$
+plus one component.
 
 \begin{thebibliography}{99}
 \bibitem{oeisA} The OEIS Foundation, \emph{A307316: Number of unlabeled leafless loopless multigraphs with $n$ edges}. Entry by P. T. Komiske; extended table by A. Howroyd. \url{https://oeis.org/A307316}. Data: \url{https://oeis.org/A307316/b307316.txt}. Checked 2 October 2026.
