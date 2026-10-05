@@ -173,6 +173,17 @@
 > improvement. The universal84/187 and85/155 points remain unchanged.
 >
 >
+> The [four Borel-report placement reviews](review_borel_placement_54ece48ab.md)
+> authenticate all21 changed paths at54ece48ab:17 exact ancillary additions,
+> four archive retirements,33 members and29 checksum entries. The host guide,
+> article and PDF remain unchanged with17 Parts; XVIII–XXI remain planned
+> writes. Earlier complete manuscript challenges retain their distinct group,
+> support, Borel and effective-presentation hypotheses. The original broken
+> flow reference and pending qualifications remain recorded. Root independently
+> checks45 immutable blobs, all placements and20 span records. Supplied
+> programs and builds stay inert; no paid universal compiler is added.
+>
+>
 > The [Beyond Ord placement followup](review_beyond_ord_placement_111c38012.md)
 > authenticates all17 changed paths at111c38012:13 ancillary files exactly
 > match the four retired archives, whose27 member hashes agree with the
