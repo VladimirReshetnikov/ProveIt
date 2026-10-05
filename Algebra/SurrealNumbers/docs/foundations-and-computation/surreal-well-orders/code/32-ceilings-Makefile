@@ -1,0 +1,16 @@
+PDFLATEX ?= pdflatex
+PYTHON ?= python3
+
+.PHONY: all pdf check clean
+all: pdf check
+
+pdf:
+	$(PDFLATEX) -interaction=nonstopmode -halt-on-error beyond_ord.tex
+	$(PDFLATEX) -interaction=nonstopmode -halt-on-error beyond_ord.tex
+	$(PDFLATEX) -interaction=nonstopmode -halt-on-error beyond_ord.tex
+
+check:
+	$(PYTHON) finite_checks.py --output finite_checks.json
+
+clean:
+	rm -f beyond_ord.aux beyond_ord.log beyond_ord.out beyond_ord.toc
