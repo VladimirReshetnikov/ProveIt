@@ -133,15 +133,30 @@ adaptation78333302d now has a bounded computational-interface review; its
 imported source implementations and archives are not audited. Batch95
 reciprocal ddb36da6c now has the bounded review linked below. The BCH
 history/adaptation abb123637/ad52ef11e now has a bounded formal-interface
-review, an analytic-domain correction and a rebuilt combined PDF. The six archives
-at62846e17a,7be14aa84,fb9f5884b and26e036956 now have authenticated intake
-reviews: four complete manuscript reads, selected atom/hat interfaces and
-a separate hat endpoint-dependency challenge. Earlier guide-only and
+review, an analytic-domain correction and a rebuilt combined PDF. The seven archives
+at62846e17a,7be14aa84,fb9f5884b,26e036956 and78528873b now have authenticated
+intake reviews: five complete manuscript reads, selected atom/hat interfaces
+and a separate hat endpoint-dependency challenge. Earlier guide-only and
 ancillary-placement reviews keep their exact boundaries. Padded
 reversal now has complete129-operation sources:47 witnesses/SOS227/degree40
 or46 witnesses/SOS224/degree52. Native AND remains in the loader, so a
 cheaper loading/accepting-history compiler is still needed for a universal
 improvement. The universal84/187 and85/155 points remain unchanged.
+
+The [two-derivations intake review](review_two_derivations_78528873b.md)
+at **78528873b** reads the complete1347-line manuscript and independently
+challenges the scalar coordinate, simultaneous normal form, finite-dimensional
+Lie classification and whole-field action boundary. All pass within their
+rank-one, left-finite, ordered coefficient-Borel hypotheses. A new review-side
+lemma fixes Gamma=Z and uses noncommuting pairs already in canonical form:
+conjugacy to one fixed pair is co-c.e.-complete for a uniformly computable
+family of coefficient-program presentations whose supports have at most two
+terms. The unknown terminal support bound is essential; the conclusion does
+not concern explicit finite coefficient lists or obstruct cutoff normalization.
+Thus Borel cross-sections and unique conjugators do not supply a uniform
+existential integer conjugacy test at this interface. Archive authentication
+and fresh checks leave the saved669 assertions unreplayed; no paid universal
+Diophantine compiler or arithmetic improvement is supplied.
 
 The [hat endpoint follow-up](review_hat_endpoint_26e036956.md) adds the
 missing418 lines of covariance, Fourier and aggregate-cost dependencies,
@@ -210,6 +225,35 @@ existential Diophantine certificate. The source itself leaves effectivity open.
 Fresh metadata/finite-height checks pass before freezing; the PDF and external
 bibliography were not independently verified. No paid integer compiler or
 operation saving is supplied, and the established universal84 bound remains.
+
+The [shorter selector search](complete83_subpower_selector_bound.md)
+and [independent proof review](review_complete83_subpower_selector_bound.md)
+sharpen the fixed-prime construction to z<=Q^(1+o(1)), and likewise F=Kz,
+on each fixed compiler subsequence. Inclusion-exclusion needs only
+floor(2^omega(N)*N/phi(N))+1 representatives for N=A_out>1; its prime-factor
+product is subpower without any prime-distribution theorem. This search is
+no longer than the earlier square-root bound, so the recorded positivity
+threshold and unconditional odd-scale theorem remain valid. The estimate
+is an upper bound, not an asymptotic equality for the chosen selector.
+The uncontrolled low Q digit still prevents importing the small-z binary
+population proof. This proof-only refinement supplies no complete zero or
+new universal arithmetic bound and executes no supplied program.
+
+The [fixed-prime quotient-carry theorem](complete83_fixed_prime_quotient_carries.md)
+and [independent review](review_complete83_fixed_prime_quotient_carries.md) remove
+the odd-scale hypothesis on explicit infinite subsequences of each fixed
+original compiler. Forcing quotient digits at a fixed finite set of primes
+retains the exact linear depths and gives enough central-binomial carries
+to fit every remaining odd-prime input congruence into the positive interval.
+The complete supported factor exceeds Bn; its squared gain exceeds6ell.
+A quantitative CRT search keeps the enlarged selector below the source slack
+for all sufficiently large subsequence parameters. Thus A³ divides Y with
+positive outer/input coordinates and exact transport. The enlarged-z binary
+population condition is still open: the earlier small-z proof does not apply,
+so full18-witness source zeros remain conditional and no universal83 result
+is claimed. Fresh author and independent checks authenticate the literal
+source interface and corroborate the new lemmas; neither evaluates an actual
+compiler instance or executes a predecessor program.
 
 The [aggregate positive input budget](complete83_aggregate_input_budget.md)
 uses the whole positive input interval in the unchanged83 source. Its exact
@@ -5502,6 +5546,9 @@ New research and the completed75-operation construction:
 
 | Artifact | Established result | Remaining boundary |
 |---|---|---|
+| [Two derivations / Borel conjugacy review](review_two_derivations_78528873b.md) | Full1347-line proof review, exact scalar and simultaneous coordinate interface; new nonhalting reduction even for canonical pairs over Gamma=Z | Program-described coefficient supports differ from explicit finite lists; no uniform existential conjugacy test or paid universal compiler |
+| [Shorter selector search](complete83_subpower_selector_bound.md) and [independent proof review](review_complete83_subpower_selector_bound.md) | Improved coprime interval gives z,F<=Q^(1+o(1)); preserves previous positive odd-scale completion | Upper bound only; low Q digit and enlarged-z binary population remain uncontrolled |
+| [Fixed-prime quotient carries](complete83_fixed_prime_quotient_carries.md) and [independent review](review_complete83_fixed_prime_quotient_carries.md) | Unconditional odd-scale completion A³ divides Y on explicit sufficiently large subsequences of each fixed compiler, with positive input/slack and transport | Enlarged-z binary condition remains open; no actual complete zero, prescribed-input result or universal83 |
 | [Hat endpoint dependency challenge](review_hat_endpoint_26e036956.md) | Adds418 proof lines, completing model-to-endpoint coverage193–822; private and finite-public exclusions pass with marginal cost caps and correct conditioning. | Positive-probability private success and upper constructions remain outside the conclusion; scalar correlated-cost example is not a hat strategy or arithmetic compiler. |
 | [Commuting injections, atom actions and hat randomness](review_new_actions_26e036956.md) | All22 members authenticated; complete commuting proof read and148 finite cases independently recomputed; exact selected atom/hat interfaces reviewed. | Other atom/hat proofs remain outside scope. Pure codes and free-computation query bounds do not supply paid integer compilers; no arithmetic saving. |
 | [Borel flows and finite-window criteria](review_new_borel_flows_fb9f5884b.md) | Full1724-line proof read; nine-member archive and cited BCH interface authenticated. Exact flow/time-one scope and infinite-rank nonclosure checked. | One malformed reference recorded; saved5372 checks not replayed. No effective certificate producer, paid compiler or arithmetic improvement; divisible-group scope retained. |

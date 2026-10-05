@@ -1,0 +1,212 @@
+{
+  "dependencies": [
+    {
+      "bytes": 14049,
+      "name": "complete83_source_coupled_input_lifting.md",
+      "sha256": "822d192578f379e1e81a00caafbb3612db24989902411748f35ee23343d5934f"
+    },
+    {
+      "bytes": 10122,
+      "name": "complete83_aggregate_input_budget.md",
+      "sha256": "803c6d47b503d611a641b456da3887a46a300c55023dfd1e2a7120de5299903f"
+    },
+    {
+      "bytes": 6416,
+      "name": "review_complete83_aggregate_input_budget.md",
+      "sha256": "00c080ae861b0cc176d070340119b031263ae3c6240cb3699d7b48f4d0954e32"
+    },
+    {
+      "bytes": 12034,
+      "name": "complete83_odd_primary_carry_budget.md",
+      "sha256": "4b884c4d9cc6fd7100c67b98caee4ec9f968653e7a03c3d41558dc0d5cbc5f95"
+    },
+    {
+      "bytes": 12239,
+      "name": "complete83_odd_prime_boundary.md",
+      "sha256": "59fb701504a8cab48a4c29b8167ffe459c049feed00dc6a821003747e8a856da"
+    },
+    {
+      "bytes": 10690,
+      "name": "complete83_nondyadic_outer_family.md",
+      "sha256": "42281ee2c1cf99851d4fe67fcfe6f61322fd721d8ebd8ec539983a6edcc44d23"
+    },
+    {
+      "bytes": 10669,
+      "name": "complete83_shared_projection_scout.json",
+      "sha256": "dd9e105d295bf2fb3e3b0246234bb68cb78487ee919405bc052f2b67a9def34c"
+    }
+  ],
+  "forcing": {
+    "actual_source_instances": 0,
+    "cases": 96,
+    "exact_depth_checks": 288,
+    "forced_S_carry_checks": 144,
+    "records_sha256": "c3ea723ae713e10923b70c4c6ad3592028b44bd60c93fc78a023bb437c0be8bc",
+    "scope": "synthetic affine CRT models; positive A0 chosen independently of source masks"
+  },
+  "scalar": {
+    "positive_endpoint_cases": 3456,
+    "scalar_cases": 10192
+  },
+  "schema": "fixed finite-prime quotient carries v1",
+  "scope": {
+    "actual_compiler_examples_evaluated": 0,
+    "binary_condition_for_enlarged_z_proved": false,
+    "complete_positive_source_zeros": 0,
+    "new_circuit_or_gate_saving": false,
+    "predecessor_execution": false,
+    "unconditional_odd_scale_theorem": true
+  },
+  "source_guard": {
+    "array_executed": false,
+    "complete_rows": 83,
+    "literal_rows": [
+      [
+        "repunit",
+        "*",
+        "Bm1",
+        "Jrep"
+      ],
+      [
+        "q",
+        "+",
+        "repunit",
+        1
+      ],
+      [
+        "Lbig",
+        "*",
+        "q",
+        "q"
+      ],
+      [
+        "q_minus_F",
+        "-",
+        "q",
+        "F"
+      ],
+      [
+        "q_minus_FZ",
+        "-",
+        "q_minus_F",
+        "Z"
+      ],
+      [
+        "C_after_alpha",
+        "-",
+        "q_minus_FZ",
+        "alpha"
+      ],
+      [
+        "scaled_t",
+        "*",
+        "twice_cell_bits",
+        "x"
+      ],
+      [
+        "marked_rhs",
+        "-",
+        "C_after_alpha",
+        "scaled_t"
+      ],
+      [
+        "W",
+        "-",
+        "marked_rhs",
+        "Z"
+      ],
+      [
+        "odd_index",
+        "+",
+        "scaled_t",
+        "inner_bits"
+      ],
+      [
+        "gap_product",
+        "*",
+        "repunit",
+        "q_minus_F"
+      ],
+      [
+        "gap",
+        "+",
+        "gap_product",
+        "q_minus_FZ"
+      ],
+      [
+        "Lm1",
+        "-",
+        "Lbig",
+        1
+      ],
+      [
+        "rproduct",
+        "*",
+        "gap",
+        "Lm1"
+      ],
+      [
+        "qMF",
+        "*",
+        "q",
+        "MF"
+      ],
+      [
+        "mask_factor",
+        "+",
+        "MC",
+        "qMF"
+      ],
+      [
+        "mask",
+        "*",
+        "mask_factor",
+        "Jrep"
+      ],
+      [
+        "r_lhs",
+        "+",
+        "rproduct",
+        "mask"
+      ],
+      [
+        "kinner",
+        "+",
+        "Kconstant",
+        "w"
+      ],
+      [
+        "innerC",
+        "*",
+        "kinner",
+        "marked_rhs"
+      ],
+      [
+        "transport_partial",
+        "+",
+        "innerC",
+        "q_minus_F"
+      ],
+      [
+        "local_rhs",
+        "*",
+        "transport_quotient",
+        "repunit"
+      ],
+      [
+        "norm_transport",
+        "-",
+        "transport_partial",
+        "local_rhs"
+      ]
+    ]
+  },
+  "source_sha256": "210506dc2ff70393a975d1768bea748a733f5f6c9b3b7790052c73336315912c",
+  "status": "PASS",
+  "subsequences": {
+    "actual_compiler_instances": 0,
+    "cases": 48,
+    "records_sha256": "e366c3deff797738aae68c713e3e4fa5e5edeb03d6f39728b5ae8df64f8bd6b4",
+    "scope": "exact LTE and subsequence arithmetic; d=1,5 include relaxed compiler bounds"
+  }
+}
