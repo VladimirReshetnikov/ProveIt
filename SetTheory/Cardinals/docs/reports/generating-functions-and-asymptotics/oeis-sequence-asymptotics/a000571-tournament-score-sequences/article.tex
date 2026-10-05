@@ -48,10 +48,14 @@
 \newcommand{\Cev}{\mathcal C_n}
 \newcommand{\Fev}{\mathcal F_n}
 \DeclareMathOperator{\Cov}{Cov}
+% Part III (batch 98, manuscript 03) macros, as delivered (its \Pp is printed as \Prob)
+\newcommand{\Kc}{\mathcal K}
+\DeclareMathOperator{\Li}{Li}
+\DeclareMathOperator{\PPP}{PPP}
 \newenvironment{writenote}[1][]{\par\smallskip\begingroup\small\emergencystretch=3em
  \noindent\textbf{[write]}\if\relax\detokenize{#1}\relax\else~\textbf{#1.}\fi\ }%
  {\par\endgroup\smallskip}
-\hypersetup{pdftitle={Tournament score sequences and weighted component asymptotics},pdfauthor={},pdfsubject={Exact enumeration, fixed-order corrections, uniform logarithmic crossover and inverse localization; Part II: conditional phase coexistence, Gamma and stable laws}}
+\hypersetup{pdftitle={Tournament score sequences and weighted component asymptotics},pdfauthor={},pdfsubject={Exact enumeration, fixed-order corrections, uniform logarithmic crossover and inverse localization; Part II: conditional phase coexistence, Gamma and stable laws; Part III: supercritical pole-branch expansions and tempered-stable crossovers}}
 \begin{document}
 \thispagestyle{empty}
 \begin{center}
@@ -61,7 +65,9 @@
 \vspace{8pt}
 Research report\quad 2 October 2026\par
 \vspace{3pt}
-Part~II: conditional phase coexistence\quad 3 October 2026
+Part~II: conditional phase coexistence\quad 3 October 2026\par
+\vspace{3pt}
+Part~III: beyond criticality\quad 4 October 2026
 \end{center}
 \vspace{8pt}
 \begin{abstract}
@@ -70,6 +76,8 @@ The exact generating function for tournament score sequences permits a clean sep
 The leading enumeration theorem, exact generating function, and general renewal and heavy-traffic mechanisms are established prior work. The emphasis here is the explicit local lattice specialization, correction generators, uniform error bounds, and carefully delimited inverses. No exhaustive novelty claim is made.
 
 \emph{Part~II} (added 3 October 2026) answers the first further question of Part~I. Under a component weight approaching criticality at the coexistence rate, the score sequence is asymptotically a logistic mixture of a giant-block regime and a regime with a linear number of blocks. On the giant event the remaining blocks are, up to total variation $O(1/\log n)$, two independent geometric renewal strings, which gives Gamma$(2,1)$ laws for the block count and the giant's deficit, stable residual fluctuations, a mixed Fr\'echet law for the second-largest block and every fixed inverse-logarithmic correction; on the other event the centered block count has a $3/2$-stable limit jointly with a Fr\'echet largest block. Its coefficient input re-proves Part~I's uniform two-term theorem; the probabilistic results are new to the repository.
+
+\emph{Part~III} (added 5 October 2026) treats the supercritical side that Parts~I and~II exclude, on a fixed small interval of weights above the critical one. The weighted count is an exact moving-pole residue plus a branch-cut expansion to every fixed order, uniformly through criticality, with computable kernels resolving the coalescence at $nt=O(1)$, where $t$ is the excess growth rate. The block statistics change on the different scale $tn^{2/3}=O(1)$: the centred block count has a tempered $3/2$-stable limit, Gaussian beyond that scale, and the large blocks form a tempered Poisson process whose maximum passes from the critical Fr\'echet-type law to a Gumbel law. Convergent Puiseux inversion of the free energy and Lambert-$W$ centrings complete the inverse direction. Its critical-endpoint terms re-prove Part~I's critical expansion, adding its $n^{-3/2}$ coefficient; the rest is new to the repository.
 \end{abstract}
 
 \section*{Results and scope at a glance}
@@ -164,6 +172,30 @@ distributional mixture'' remains true of Corollary~\ref{tss:cor:coexist} by
 itself; the mixture is Part~II's theorem. Part~II's symbols $m$, $a_n$,
 $r_n$, $k$, $K$, $d$ and $B$ do not mean what they mean here; a separate
 table at the start of Part~II fixes them.
+\end{writenote}
+
+\begin{writenote}[Added 5 October 2026, batch~98]
+Since 5 October 2026 this report has three Parts. Part~\ref{tss:sc:part}
+(Sections~\ref{tss:sc:sec:scope}--\ref{tss:sc:sec:conclusion} and
+Appendices~\ref{tss:sc:app:notation}--\ref{tss:sc:app:package}, printed
+after Part~II's two appendices) is manuscript~03 of batch~98, an
+AI-assisted, unrefereed and unformalized manuscript pinned at commit
+\texttt{106eb191a}. It answers Part~\ref{tss:part:one}'s second further
+question, the supercritical crossover, on a fixed small interval of weights
+$u\ge u_c$, and Part~II's RQ6 in part: an exact pole residue plus a
+branch-cut expansion to every fixed order
+(Theorem~\ref{tss:sc:thm:uniform}), tempered-stable and Gaussian block
+counts (Theorems~\ref{tss:sc:thm:tempered}, \ref{tss:sc:thm:gaussian}), a
+tempered Poisson process of large blocks and a Gumbel maximum
+(Theorems~\ref{tss:sc:thm:point}, \ref{tss:sc:thm:gumbel}). The sentence
+before the first note above, that the results do not cover $\tau<0$ or a
+supercritical moving pole, remains true of Part~\ref{tss:part:one} and of
+Part~II; Part~III's argument $a_n(t)\ge0$ is $-\tau$
+(Section~\ref{tss:sc:sec:uniformproof}). The joint theory across $\tau=0$
+is still open (Part~III's RQ4). Part~III's symbols $b_n$, $a_n(t)$, $t$,
+$\tau$, $H$, $B$, $\mathcal K_j$, $\ell$, $L$, $M_n$ and $s$ do not mean
+what they mean in Parts~I or~II; a table at the start of Part~III fixes
+them.
 \end{writenote}
 \clearpage
 \tableofcontents
@@ -395,6 +427,21 @@ W(z,u_c)=a_c^{-1}t^{-2}+\frac{2}{3\mu a_c}t^{-1}+O(1).
 \]
 The exact $t^{-2}$ coefficient is $4^n$. The next nonanalytic term after $t^{-1}$ is $t$, of order $4^nn^{-3/2}$. Nonnegative even powers are locally analytic and produce no algebraic $n^{-1}$ term under the full continuation argument.
 \end{proof}
+
+\begin{writenote}[Added 5 October 2026, batch~98]
+Part~\ref{tss:sc:part} re-derives \eqref{tss:eq:critical} as the endpoint
+$t=0$ of its uniform expansion and supplies the next coefficient:
+\eqref{tss:sc:eq:critical} reads
+$4^{-n}W_n(u_c)=1/a_c+\frac{2}{3\mu a_c\sqrt\pi}n^{-1/2}
++\frac{\kappa\mathcal K_1(0)}{\pi a_c^2}n^{-3/2}+O(n^{-5/2})$, with
+$\kappa=2\e^{-\lambda}/(3p)$ and $\mathcal K_1(0)$ explicit in
+\eqref{tss:sc:eq:K10}, and only the powers $n^{-j-1/2}$ occur after the
+constant. Intake computations from exact coefficients (at placement and
+at the write; not shipped) found $n^{5/2}$ times the remainder after these
+three terms to be $-0.0109$, $-0.0103$, $-0.0101$, $-0.0100$ at
+$n=10,20,40,80$, consistent with the stated $O(n^{-5/2})$. Part~III is unrefereed, prepared with AI assistance and not
+formalized.
+\end{writenote}
 
 \section{A uniform logarithmic near critical expansion}
 \label{tss:sec:uniform}
@@ -783,6 +830,28 @@ source check, so the question stays open. Questions~3 and~4 are unchanged:
 Part~II's block counts grow with $n$, but under the moving weight
 $u_n(b_n+s)$, not in the fixed-$m$ law of \eqref{tss:eq:known} or the
 fixed-$M$ expansions.
+\end{writenote}
+
+\begin{writenote}[Added 5 October 2026, batch~98]
+Question~2 is answered by Part~\ref{tss:sc:part} (unrefereed, AI-assisted,
+not formalized) on a fixed small supercritical interval: for
+$r=up=1/Q(\e^{-t})$ with $0\le t\le t_0$ ($t_0>0$ not made effective) the
+moving pole is the simple real pole $z=\e^{-t}$, separated from the branch
+point on a common slit disk (Lemma~\ref{tss:sc:lem:pole}), its residue is
+$\e^{nt}/m_t$, and the branch integral has an expansion to every fixed
+order uniformly through the coalescence $nt=O(1)$
+(Theorem~\ref{tss:sc:thm:uniform}). Under the parametrization
+$u=u_n(\tau)$ of \eqref{tss:eq:parameter} that side is $\tau=-a_n(t)\le0$.
+Part~III's RQ4 (one analytic family across $\tau=0$, uniformly) remains
+open; a dated note in Section~\ref{tss:sc:sec:questions} shows that
+Part~III's first two terms, re-expanded at bounded $a=-\tau$, reproduce
+\eqref{tss:eq:uniform} formally, through an exact identity for $H(-a)$,
+and records the continuation of Theorem~\ref{tss:thm:allorders} to
+$\tau\in[-C,0]$ as a further question. The sentence after
+Theorem~\ref{tss:thm:allorders} that it claims no ``validity for a
+supercritical weight'' remains true of that theorem. Questions~3--5 are
+unchanged by Part~III; its RQ7 restates the effective-constants part of
+question~3 for the supercritical side.
 \end{writenote}
 
 \clearpage
@@ -2479,7 +2548,1388 @@ estimate as separate analytic dependencies. Merely checking the
 integer table would not formalize any of the limit theorems.
 \end{enumerate}
 
+\begin{writenote}[Added 5 October 2026, batch~98]
+RQ6 is answered in part by Part~\ref{tss:sc:part} (unrefereed, AI-assisted,
+not formalized). The critical law is its endpoint $t=0$: the count limit
+$X_0$ of Theorem~\ref{tss:sc:thm:tempered} at $\sigma=0$ is the law of $-Z$
+in \eqref{tss:cx:eq:fluid}, and the maximum limit of
+Theorem~\ref{tss:sc:thm:point} at $\sigma=0$ is the law of $V$ in
+\eqref{tss:cx:eq:fluidmaxmain}, with the same scale (Part~III's $b_n$ is
+$a_n$ here), now without conditioning and at weights $u\ge u_c$. The
+moving supercritical pole is treated for $0\le t\le t_0$
+(Theorem~\ref{tss:sc:thm:uniform}), with tempered-stable, Gaussian and
+Gumbel regimes (Theorems~\ref{tss:sc:thm:tempered}--\ref{tss:sc:thm:gumbel}).
+The joint structural theorem that RQ6 asks for, connecting the
+logarithmic subcritical window, the critical law and the supercritical
+pole in one statement, is not proved: it is Part~III's RQ4, still open, and
+the sentence ``The present article does not analyze a negative $\tau$''
+remains true of Part~II. RQ4 is not answered either: Part~III's
+$O(n^{-1/3})$ characteristic-function rate \eqref{tss:sc:eq:cfrate} concerns
+the unconditioned count at $u\ge u_c$, not the conditional law on $\Fev$
+in \eqref{tss:cx:eq:fluid}.
+\end{writenote}
+
+\clearpage
+\fancyhead[R]{\small Part~III: beyond criticality}
+\part[Beyond criticality: pole--branch expansions and tempered crossovers]{Beyond criticality: pole--branch expansions and tempered-stable crossovers}\label{tss:sc:part}
+
+\paragraph{Summary.}
+A tournament score sequence has a unique ordered decomposition into strong score sequences. Weighting each strong block by $u$ produces a critical weight $u_c$. The existing ProveIt report (Parts~\ref{tss:part:one} and~\ref{tss:cx:part} of this report) analyzes the subcritical side and explicitly leaves the supercritical moving-pole problem open. We develop that side from the established exact generating function.
+
+The principal analytic result is an exact pole contribution plus a branch-cut expansion to every fixed inverse-power order, uniformly from criticality through a fixed small supercritical interval. A computable kernel resolves the coalescence at $nt=O(1)$, where $t$ is the excess exponential growth rate. A different scale, $t n^{2/3}=O(1)$, controls the block statistics: the centered block count has an explicit tempered $3/2$-stable limit, with an $O(n^{-1/3})$ characteristic-function error on compact parameter sets, and becomes Gaussian when $nt^{3/2}\to\infty$. Large blocks converge to a tempered Poisson point process; their maximum changes from the critical power-law law to a Gumbel law. We also obtain convergent Puiseux inversion of the free energy, a quadratic inverse density response, and Lambert-$W$ and incomplete-gamma centerings for the maximum.
+
+The leading unweighted enumeration, exact generating function, and general stable/renewal mechanisms are prior work, not new claims. The contribution is the supercritical specialization, uniform correction generator, and the detailed crossover proofs. The manuscript is unrefereed and not formally verified; numerical checks are reproducible but are not interval certificates.
+
+\paragraph{Deliverable and scope, as delivered.}
+\textbf{Deliverable.} Self-contained proofs after one explicitly credited exact-enumeration input; LaTeX source, compiled PDF, exact finite checks, numerical diagnostics, and replay scripts.
+\textbf{Scope.} Marginal count and point-process theorems are proved. Joint count--extreme independence, growing truncation orders, and effective finite-size probability bounds are not claimed.
+
+\begin{writenote}[Added 5 October 2026, batch~98: provenance of Part~III]
+Part~III is a single manuscript, printed in full: manuscript~03 of batch~98
+of ProveIt's incoming-reports intake, \emph{Beyond Criticality: Pole--Branch
+Expansions and Tempered-Stable Crossovers for Tournament Score Sequences}
+(``OEIS research / A000571 \& A351822'', dated 4 October 2026; a
+1{,}078-line source and a 27-page PDF; its title page and PDF metadata name
+the author as ``Research manuscript prepared with AI assistance''). It
+arrived as the archive
+\texttt{tournament\_\allowbreak supercritical.zip} (wrapper directory
+\texttt{tournament\_\allowbreak supercritical/}, main file
+\texttt{article.tex}) in commit \texttt{2172df76a} and was placed in commit
+\texttt{9353a7171} (batch~98A) as an addition to this report. It pins the
+repository at commit \texttt{106eb191a2a47ab6281e2c26c7f4fe3d28872b83} (a
+merge commit of 4 October 2026, an ancestor of the placement) and continues
+this report; neither \texttt{article.tex} nor \texttt{README.md} of the
+report changed between the pin and the placement, so the manuscript read
+exactly the text printed as Parts~\ref{tss:part:one}--\ref{tss:cx:part}.
+Its code, data, build scripts and source notes are shipped with the prefix
+\texttt{03-supercrit-}; its own \LaTeX\ source (printed here), delivery
+README, PDF and checksum list are not shipped and survive in the archive of
+the arrival commit. The manuscript is unrefereed and was prepared with AI
+assistance; its proofs are ordinary mathematical proofs, nothing in it is
+formalized in Lean or Rocq, and its place in this report confers no formal
+status.
+
+\emph{What it answers.} Part~III answers Part~\ref{tss:part:one}'s second
+further question (``Supercritical crossover'',
+Section~\ref{tss:sec:questions}) on the fixed small supercritical interval
+$0\le t\le t_0$, that is for weights $u=r(t)/p$ between $u_c$ and
+$r(t_0)/p$, with $t_0>0$ not made effective: the moving pole is separated
+from the branch point (Lemma~\ref{tss:sc:lem:pole}) and its residue plus a
+branch integral expanded to every fixed order give
+Theorem~\ref{tss:sc:thm:uniform}. It answers Part~II's RQ6 (``The critical
+and supercritical sides'', Section~\ref{tss:cx:sec:questions}) in part: the
+critical law and the supercritical side are treated, but the joint theorem
+that RQ6 asks for, connecting them with the subcritical logarithmic window
+in one family, is not proved and is restated as Part~III's RQ4. Dated
+notes at those two questions say so.
+
+\emph{Dictionary.} Part~III uses Part~II's normalization: $r=up$,
+$Z_n(r)=4^{-n}W_n(r/p)$, and $m$, $\kappa$, $d$, $q_j$, $Q$ as in
+\eqref{tss:cx:eq:constants1}--\eqref{tss:cx:eq:Q} ($m$ is Part~I's $a_c$).
+Under Part~II's parametrization $r=(1+m\tau/n)^{-1}$, Part~III's argument
+$a_n(t)=nA_r/m$ of \eqref{tss:sc:eq:a} equals $-\tau$ exactly, so the
+supercritical side $a\ge0$ is $\tau\le0$, which Parts~I and~II exclude.
+Part~III's $b_n=(\kappa n/m)^{2/3}$ is Part~II's stable scale $a_n$, not the
+coexistence centre $b_n$ of Parts~I and~II; the notation note below lists
+every such clash.
+
+\emph{Overlap with Parts~\ref{tss:part:one}--\ref{tss:cx:part}, printed and
+credited.} The strong-block decomposition of
+Section~\ref{tss:sc:sec:exact} is CDFS's, proved by the same argument as
+Section~\ref{tss:cx:sec:model} and Section~\ref{tss:sec:exact}. In
+Lemma~\ref{tss:sc:lem:local} the constants $m$, $\kappa$, $d$ and the tail
+\eqref{tss:sc:eq:qtail} re-derive Lemma~\ref{tss:cx:lem:tail} and
+\eqref{tss:cx:eq:localQ}; its $a_2$ is Part~I's $e_2$ of \eqref{tss:eq:e2}
+(because $\rho^2/2=1/32$), and its $\beta$ equals $-m\ell$ with Part~I's
+$\ell=d_4$ of \eqref{tss:eq:D}; $\kappa_1$ is new. The first two terms of
+the critical expansion \eqref{tss:sc:eq:critical} are
+\eqref{tss:eq:critical} of Proposition~\ref{tss:prop:fixedu} ($1/m=1/a_c$
+and $\kappa/m=k=2/(3\mu)$), as the manuscript itself says; its $n^{-3/2}$
+coefficient $\kappa\mathcal K_1(0)/(\pi m^2)$ is new (Part~I prints only
+$O(n^{-3/2})$; a dated note after Proposition~\ref{tss:prop:fixedu} says
+so). The large-$a$ series of Proposition~\ref{tss:sc:prop:Klarge} is the
+series of \eqref{tss:eq:Hlarge} and of
+Proposition~\ref{tss:cx:prop:allorders} with $\tau=-a$ (because
+$\mathcal K_0(a)/\pi$ and Part~I's $H(\tau)$ have the leading factor
+$\Gamma(5/2)/\pi=3/(4\sqrt\pi)$), and the branch amplitude
+$rd/(r-1)^2$ of \eqref{tss:sc:eq:fixedsuper} is Part~I's subcritical
+amplitude \eqref{tss:eq:subcritical} continued to $r>1$ (with $u=r/p$ and
+$d=\e^{-\lambda}/(2\sqrt\pi p)$). At $\sigma=0$ the limits of
+Theorems~\ref{tss:sc:thm:tempered} and~\ref{tss:sc:thm:point} are the laws
+of $-Z$ and $V$ in Theorem~\ref{tss:cx:thm:fluid}, with the same scale
+(Part~III's $b_n$ is Part~II's $a_n$); Part~II proves them in a different
+regime, conditionally on $\Fev$ at the subcritical coexistence weight,
+while Part~III's are unconditional at weights $u\ge u_c$. Its Lambert-$W$
+centre and integer-threshold separation are instances of theorems of the
+repository's transseries volume (note in Section~\ref{tss:sc:sec:inverse}).
+Everything else is new to the repository:
+Theorems~\ref{tss:sc:thm:uniform}, \ref{tss:sc:thm:inverse},
+\ref{tss:sc:thm:tempered} (for $\sigma>0$), \ref{tss:sc:thm:gaussian},
+\ref{tss:sc:thm:point} (for $\sigma>0$) and~\ref{tss:sc:thm:gumbel},
+Proposition~\ref{tss:sc:prop:tilt}, Lemmas~\ref{tss:sc:lem:h},
+\ref{tss:sc:lem:pole}, \ref{tss:sc:lem:complex} and~\ref{tss:sc:lem:marked},
+Corollary~\ref{tss:sc:cor:renewal}, the kernels $\mathcal K_0$,
+$\mathcal K_1$ with the closed form \eqref{tss:sc:eq:K0closed}, and the
+inverse formulas of Section~\ref{tss:sc:sec:inverse}. Priority beyond the
+repository is discussed in the note at the end of
+Section~\ref{tss:sc:sec:scope}.
+
+\emph{Editorial changes.} Section~$k$ of the manuscript is
+Section~$k+20$ here, and its Appendices~A, B and~C are
+Appendices~\ref{tss:sc:app:notation}, \ref{tss:sc:app:audit}
+and~\ref{tss:sc:app:package}, after Part~II's two appendices, with
+``(Part~III)'' added to their titles; the Part's title is shortened to
+``tempered crossovers'' in the table of contents only. Every label
+carries the prefix \texttt{tss:sc:}. The title page and table of contents
+are dropped; the abstract and the title page's ``Deliverable'' and
+``Scope'' lines are printed as the two paragraphs above. The manuscript's
+references to ``the existing ProveIt report'' and its citation
+\texttt{Repo} (whose pin and the README lines 120--170 it checked are
+recorded in this note) now point to Parts~\ref{tss:part:one}
+and~\ref{tss:cx:part}, in the summary and in
+Section~\ref{tss:sc:sec:scope}; its three OEIS entries are the shared
+\cite{OEIS} entry, and Grabchak's paper \cite{Grabchak} is added to the
+bibliography. The manuscript's macro \verb|\Pp| is printed with Part~II's
+\verb|\Prob| (the same $\mathbb P$), and its five table fragments are read
+from the shipped \texttt{data/03-supercrit-} files. The \textsf{[write]}
+notes and Remark~\ref{tss:sc:rem:lattice} are new. No statement, proof or
+number of the manuscript was altered.
+\end{writenote}
+
+\begin{writenote}[Added 5 October 2026, batch~98: notation of Part~III]
+Part~III keeps the manuscript's symbols. These mean the same as in
+Part~II: $\lambda$, $\mu$, $\rho$, $p$, $u_c$, $A$, $F$, $R$, $N_n$
+(A145855), $S_n$, $I_n$, $I(z)$, $W_n(u)$, $Q$, $q_j$, $m$, $\kappa$, $d$,
+$r=up$, $Z_n(r)$, $K_n$ (the number of blocks) and $\Gamma(-3/2)$. Every
+other symbol below has the meaning in the middle column inside Part~III;
+the right column gives the tempting false reading from Parts~I--II. The
+manuscript's own list is Appendix~\ref{tss:sc:app:notation}.
+{\footnotesize
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.13\linewidth}>{\raggedright\arraybackslash}p{0.41\linewidth}>{\raggedright\arraybackslash}p{0.38\linewidth}@{}}
+\toprule
+symbol & meaning in Part~III & \emph{not}: meaning in Parts~I--II\\
+\midrule\endhead
+$t$, $r(t)$, $h$ & the tilt or excess growth rate, $t\ge0$; $r(t)=1/Q(\e^{-t})$; $h(t)=\log r(t)$, and in Theorem~\ref{tss:sc:thm:inverse} also its value $h=\log r$ & $t=\sqrt{1-4z}$; Part~I's free weight parameter of $\mathcal M_{n,M}(t)$, Part~II's Fourier variable; $h=\log4$ (Part~I), $h_n(T)$ and a Chernoff $h$ (Part~II)\\
+$\tau$ & only in Lemma~\ref{tss:sc:lem:complex}: the local solution of $h(\tau)=\log r$, close to $t\ge0$ & the subcritical parameter of Parts~I--II, with $\tau=-a_n(t)\approx-nt$: opposite sign and scale\\
+$A_r$, $a=a_n(t)$ & $A_r=1-r^{-1}$ and $a_n(t)=nA_r/m=-\tau$ & $A(z)$; $a_n(\tau)=u_n(\tau)c$ of Part~I (Part~II's $rm$); Part~II's stable scale $a_n$\\
+$b_n$ & the stable block scale $(\kappa n/m)^{2/3}$, Part~II's $a_n$ & the coexistence centre $b_n$; Part~I's Puiseux coefficients $b_j$\\
+$H(v)$, $B(v)$ & the real analytic factors of the boundary values of $Q$ on the cut \eqref{tss:sc:eq:HB} & $H(\tau)$, the entire kernel of Parts~I--II; Part~I's odd series $B(t)$\\
+$\mathcal K_j(a)$ & the cut-integral kernels \eqref{tss:sc:eq:K0}, \eqref{tss:sc:eq:K1}, \eqref{tss:sc:eq:generator}; $\mathcal K_0(a)/\pi$ continues Part~I's $H$ to $\tau=-a$ up to an elementary term (note in Section~\ref{tss:sc:sec:questions}) & Part~I's Hankel kernels $\mathcal K_{\alpha,b}(\tau)$ of \eqref{tss:eq:kernel}\\
+$E(\epsilon,x)$, $\epsilon$; $\varepsilon$ & the coefficient-kernel series \eqref{tss:sc:eq:E} in the formal variable $\epsilon$; $\varepsilon$ a sector margin in Lemma~\ref{tss:sc:lem:complex} & Part~I's even part $E(v)$, resolvent error $E_n(w)$ and $\varepsilon=n^{-1/2}$; Part~II's exponential variables $E$\\
+$J$, $C_j$, $c_J$, $C$, $R_0$ & a fixed truncation order; generic constants; the outer radius of Lemma~\ref{tss:sc:lem:pole} & Part~I's compact interval $J$, uniform terms $C_m(\tau)$, divisor remainder $R(z)$; Part~II's $J$, $C$, $R_j$\\
+$v$, $\delta$ & the cut variable $z=1+v$; also $v=h/m$ in Theorem~\ref{tss:sc:thm:inverse}; $\delta$ the cut length in the proof of Lemma~\ref{tss:sc:lem:local} & Part~I's $v=t^2$; Part~II's $\delta_n=1-r_n$\\
+$q_t$, $m_t$, $v_t$, $h_2$ & the tilted block law, its mean and variance, the $t^2$ coefficient of $h$ & ---\\
+$\beta$, $\kappa_1$, $a_2$ & local coefficients of $Q$ at $1$; $a_2=e_2$ and $\beta=-m\ell$ in Part~I's notation & Part~I's $\ell=d_4$ and $e_2$ are the same numbers under other names\\
+$U_t(n)$, $V_{k,t}(N)$ & the renewal visit probability \eqref{tss:sc:eq:U} and its convolution powers \eqref{tss:sc:eq:V} & Part~II's uniform variable $U$ and largest Poisson point $V$\\
+$N$ & an integer argument of $V_{k,t}$ & $N_n$ (A145855); Part~II's string counts $N_\delta$, $N$\\
+$X_n$, $X_\sigma$, $Y_n$ & centred and scaled block counts in Theorem~\ref{tss:sc:thm:tempered} & Part~II's block lengths $X$, $X_i$\\
+$\sigma$, $\sigma_n$ & the tempering parameter, $\sigma_n=t_nb_n\to\sigma$ & Part~I's sign $\sigma=\pm$ (all or strong)\\
+$s$ & $\sqrt{1-z}$ in the proof of Lemma~\ref{tss:sc:lem:pole}; the variable of the generating function \eqref{tss:sc:eq:pgfK}; $t=s/n$ in Sections~\ref{tss:sc:sec:matching} and~\ref{tss:sc:sec:gumbel} & the coexistence shift $s$ and Part~I's Hankel variable $s=nw$\\
+$S$, $T$ & bounds for $\sigma_n$ and $|\xi|$ in Theorem~\ref{tss:sc:thm:tempered} & $S(z)$, $S_n$; Part~II's lengths $T$, $T_{L,n}$\\
+$L_{i,n}$, $M_n$ & the block lengths in their order, and their maximum (Part~II's $M_{1,n}$) & Part~I's truncation order $M$\\
+$L$, $\ell$ & $L=\log B$ in \eqref{tss:sc:eq:wlog}, an order in Proposition~\ref{tss:sc:prop:Klarge}, a cutoff in \eqref{tss:sc:eq:tailtight}; $\ell=\log4+t$ in Section~\ref{tss:sc:sec:inverse} and the number of marked blocks in Lemma~\ref{tss:sc:lem:marked} & Part~I's $L=\log Y$ and $\ell=d_4\simeq1.2257$; Part~II's $L=\log n$\\
+$w$, $\widehat w$, $w_n$, $B$, $B_n$ & $w=1-z$ in Lemma~\ref{tss:sc:lem:local}; the Lambert core and incomplete-gamma centres \eqref{tss:sc:eq:Lambert}, \eqref{tss:sc:eq:wrefined}; $B$ and $B_n$ the large-tail intensity parameters \eqref{tss:sc:eq:wcore}, \eqref{tss:sc:eq:Bn} & Part~I's $w=1-4z$; Part~II's second-maximum scale $B_n$ and giant weight $B_n(r)$; Part~I's $B(t)$\\
+$\theta$, $\Delta$ & the block density $1/m_t$ and $m\theta-1$ & ---\\
+$g$, $y$, $e$, $c$ & the local inverse of $h$ (proof of Theorem~\ref{tss:sc:thm:gaussian}); a target in \eqref{tss:sc:eq:sizeinverse} and an integration variable in \eqref{tss:sc:eq:wrefined}; a coefficient in the proof of Theorem~\ref{tss:sc:thm:inverse}; generic constants & Part~I's $g_\ell(\alpha)$, $y=4z$, $\e$, $c=\e^{-\lambda}\mu$; Part~II's density $g$\\
+$\nu_\sigma$ & the tempered L\'evy intensity of \eqref{tss:sc:eq:PPP} & Part~II's $\nu$ and string law $\nu_\delta$\\
+\bottomrule
+\end{longtable}}
+New macros: \verb|\Kc| ($\mathcal K$), and the operators $\operatorname{Li}$ and $\operatorname{PPP}$; the manuscript's unused \verb|\supp| is not defined here.
+\end{writenote}
+
+\section{The problem, the source gap, and the contributions}
+\label{tss:sc:sec:scope}
+
+Let $S_n$ be the number of nondecreasing score sequences of tournaments on $n$ vertices. This is OEIS A000571 \cite{OEIS}. A score sequence records the sorted vertex scores; it is not a labeled tournament. Different tournaments with the same sorted scores contribute only once. Let $I_n$ count strong score sequences of positive length. These are A351822 with its empty object omitted, so that $I_0=0$ in our generating functions \cite{OEIS}.
+
+The exact enumeration was clarified by Claesson, Dukes, Frankl\'in, and Stef\'ansson (CDFS) \cite{CDFS}. Kolesnik \cite{Kolesnik} established the leading constants for all and strong score sequences, as well as the limiting unweighted number of irreducible subscores. Bassan, Donderwinkel, and Kolesnik \cite{BDK} give a further treatment through the L\'evy--Khintchine method. In particular, the leading asymptotic of A000571 is not an open problem being solved here.
+
+The directly continued repository item is \emph{Tournament Score Sequences and Weighted Component Asymptotics}, Parts I--II, now Parts~\ref{tss:part:one} and~\ref{tss:cx:part} of this report. Its README explicitly excludes the supercritical moving pole, and identifies the supercritical crossover as Part I's second further question and Part II's RQ6. We checked this statement at commit
+\begin{center}
+\texttt{106eb191a2a47ab6281e2c26c7f4fe3d28872b83}.
+\end{center}
+The snapshot was retrieved on 4 October 2026 in Pacific time (5 October UTC). The report's subcritical coexistence results are not imported as assumptions below. Instead, we return to CDFS's exact formula and derive the analytic input needed on the other side.
+
+\subsection{What is added}
+The new development relative to that inspected item has four parts. First, Theorem~\ref{tss:sc:thm:uniform} gives a uniform pole--branch expansion with an explicit error at every fixed order. It covers the critical endpoint and fixed sufficiently small supercritical weights in one formula. Second, Theorems~\ref{tss:sc:thm:tempered} and \ref{tss:sc:thm:gaussian} give the tempered-stable and Gaussian block-count regimes, and identify their transition scale. Third, Theorems~\ref{tss:sc:thm:point} and \ref{tss:sc:thm:gumbel} give the large-block and maximum laws. Finally, Section~\ref{tss:sc:sec:inverse} derives inverses adapted to this side of the transition.
+
+These statements answer the specified repository question in a neighborhood of the critical weight. They do not assert that every formulation of a supercritical model has been exhausted. Exponential tilting, renewal conditioning, singularity analysis, and tempered stable distributions are established methods; for the last topic see, for example, Grabchak \cite{Grabchak}. Our literature check is bounded, not a proof of worldwide publication priority.
+
+\begin{writenote}[Added 5 October 2026, batch~98: priority at the critical endpoint]
+The manuscript's bounded search (Appendix~\ref{tss:sc:app:audit}) cites
+neither Banderier--Flajolet--Schaeffer--Soria \cite{BFSS} nor
+Flajolet--Sedgewick \cite[Section~IX.11, ``Non-Gaussian continuous
+limits'']{FS}, the sources named at placement for limit laws of
+\emph{critical composition schemes} and the map-Airy law. The write checked
+them, as far as they were accessible, before keeping any $\sigma=0$
+statement as new. At $u=u_c$ the weighted construction
+$1/(1-u_cI(z))=1/(1-Q(z/\rho))$ is such a scheme: the outer function
+$1/(1-y)$ is singular at $y=1=Q(1)$, exactly where the inner function has
+its singularity, of exponent $3/2$ by \eqref{tss:sc:eq:Qlocal}. For inner
+exponents between $1$ and~$2$ the number of components in a critical
+composition has a stable limit law of that index, for exponent $3/2$ the
+\emph{map-Airy} law, which BFSS analysed (their Theorem~12, ``partially
+\ldots\ without a precise statement for the right renormalizations'', in
+the account of Banderier--Kuba--Wallner \cite[Section~1]{BKW}, whose
+companion paper on this range is announced there as in preparation).
+Outcome: the stable $3/2$ limit of the centred block count at the critical
+weight itself ($t_n=0$, the case $\sigma=0$ of
+Theorem~\ref{tss:sc:thm:tempered}) is an instance of that known mechanism
+and is \emph{not} claimed as new here; within the repository it is also
+Part~II's law of $-Z$ (Theorem~\ref{tss:cx:thm:fluid}). Whether the
+$\sigma=0$ maximum law of Theorem~\ref{tss:sc:thm:point} (a Fr\'echet-type
+law) appears in the critical-composition literature was not determined,
+so it too is claimed only relative to the repository. Neither of the
+recent phase-transition papers of Banderier, Kuba, Wallner and Wagner
+\cite{BKW,BKWW} perturbs the weight near criticality: both work at fixed
+weights at, below or above the critical value. The uniform pole--branch
+expansion, the window $t_nb_n\to\sigma$ with $t_n>0$ (including the
+intermediate range $n^{-1}\ll t_n\ll n^{-2/3}$ at $\sigma=0$), the tempered
+laws for $\sigma>0$, the Gaussian side with its rate and the Gumbel regime
+were not found in the sources checked; they remain new relative to the
+repository, under the manuscript's own bounded-search caveat above. Limits of this check: the
+text of \cite{FS} was not consulted at the write (only its section title),
+BFSS was read through the account in \cite{BKW}, and the announced
+companion of \cite{BKW} could not be checked.
+\end{writenote}
+
+\subsection{Two scales, not one}
+The natural parameter $t\geq0$ is defined in Section~\ref{tss:sc:sec:tilt}. Its meaning is especially simple: $\log4+t$ is the exponential growth rate of the weighted count. Put
+\begin{equation}\label{tss:sc:eq:bn}
+ b_n=\left(\frac{\kappa n}{m}\right)^{2/3},
+\end{equation}
+where $m,\kappa>0$ are explicit constants. The two transitions are
+\begin{center}
+\begin{tabular}{@{}p{0.28\linewidth}p{0.29\linewidth}p{0.34\linewidth}@{}}
+\toprule
+observable & transition scale & consequence\\
+\midrule
+coefficient correction & $nt=O(1)$ & the pole and the nearby branch endpoint require a uniform kernel\\
+block count and large blocks & $t b_n=O(1)$ & a tempered-stable law and an exponentially tempered Poisson intensity\\
+Gaussian regime & $t b_n\to\infty$, $t\to0$ & a central limit theorem and a continuously scaled Gumbel maximum\\
+\bottomrule
+\end{tabular}
+\end{center}
+In particular, $n^{-1}\ll t\ll n^{-2/3}$ is a genuine intermediate region: the pole already dominates the coefficients, but the scaled block fluctuations still have the critical stable limit.
+
+\section{Exact enumeration and the analytic block law}
+\label{tss:sc:sec:exact}
+
+\subsection{The ordered strong-block decomposition}
+A nondecreasing sequence $s_1,\ldots,s_n$ is a score sequence precisely when
+\begin{equation}\label{tss:sc:eq:landau}
+ \sum_{j=1}^k s_j\geq\binom{k}{2}\quad(1\leq k<n),
+ \qquad \sum_{j=1}^n s_j=\binom n2.
+\end{equation}
+The usual bounds $0\leq s_j\leq n-1$ may be included. A nonempty sequence is strong when all proper inequalities are strict. These characterizations and their role in the decomposition are reviewed by CDFS \cite{CDFS}.
+
+Equality positions in \eqref{tss:sc:eq:landau}, including $0$ and $n$, determine the blocks. If consecutive equality positions are $a<b$, subtract $a$ from $s_{a+1},\ldots,s_b$. The resulting sequence has total $\binom{b-a}{2}$ and satisfies the prefix inequalities, strictly at proper prefixes because no equality position was skipped. Its first term is nonnegative by the original inequality at $a+1$; its last term is at most $b-a-1$ by the inequality at $b-1$. Thus it is a strong score sequence. Conversely, concatenate strong sequences while adding the total length of preceding blocks to every entry of the next block. This produces a score sequence whose equality positions are exactly the block boundaries. The decomposition is unique.
+
+Write
+\begin{equation}\label{tss:sc:eq:SI}
+ S(z)=\sum_{n\geq0}S_nz^n,\qquad I(z)=\sum_{n\geq1}I_nz^n.
+\end{equation}
+The decomposition gives
+\begin{equation}\label{tss:sc:eq:blockgf}
+ S(z)=\frac1{1-I(z)},\qquad
+ \sum_{n\geq0}W_n(u)z^n=\frac1{1-uI(z)},
+\end{equation}
+where $W_n(u)$ is the sum of $u^{K}$ over score sequences of length $n$, and $K$ is the number of strong blocks. For $u>0$ we use the probability measure assigning a score sequence weight $u^K/W_n(u)$.
+
+\subsection{The credited enumeration input}
+Let $N_n$ denote A145855. The exact identity used here is
+\begin{align}
+ A(z)&=\sum_{n\geq1}\frac{N_n}{n}z^n,
+ &S(z)&=\exp A(z), &I(z)&=1-\exp(-A(z)),\label{tss:sc:eq:A}\\
+ N_n&=\frac1{2n}\sum_{d\mid n}(-1)^{n+d}\varphi(n/d)\binom{2d}{d}.
+ \label{tss:sc:eq:N}
+\end{align}
+The identity $S=\exp A$ in \eqref{tss:sc:eq:A}, with both $S$ and $A$ ordinary generating functions, is the CDFS enumeration theorem; the divisor evaluation is attributed there and in A145855 to Alekseyev \cite{CDFS,OEIS}. We do not reprove the CDFS bijection yielding \eqref{tss:sc:eq:A}. All subsequent asymptotic and probability arguments are supplied below.
+
+For exact computations, \eqref{tss:sc:eq:A} immediately gives
+\begin{equation}\label{tss:sc:eq:recurrences}
+ nS_n=\sum_{j=1}^nN_jS_{n-j},\qquad
+ nI_n=N_n-\sum_{j=1}^{n-1}N_jI_{n-j}.
+\end{equation}
+
+\subsection{Separating the singular part}
+Put $\rho=1/4$. Separate the $d=n$ summand in \eqref{tss:sc:eq:N}:
+\begin{equation}\label{tss:sc:eq:split}
+ A(z)=F(z)+R(z),\qquad
+ F(z)=\frac12\sum_{n\geq1}\binom{2n}{n}\frac{z^n}{n^2}.
+\end{equation}
+Every proper divisor $d$ of $n$ satisfies $d\leq n/2$. Since $\varphi(n/d)\leq n$ and $\binom{2d}{d}\leq4^d$, the sum of the absolute values of the proper-divisor contributions to $[z^n]R$ is at most $2^{n-1}$. Consequently $R$ is analytic for $|z|<1/2$. In the scaled variable $z/\rho$, its radius is at least $2$.
+
+Set $y=(1-\sqrt{1-4z})/2$, taking the square root positive on $0<z<\rho$. Termwise differentiation, followed by matching the value at $z=0$, proves
+\begin{equation}\label{tss:sc:eq:F}
+ F(z)=\Li_2(y)-\frac12\log^2(1-y),\qquad
+ zF'(z)=-\log\frac{1+\sqrt{1-4z}}2.
+\end{equation}
+One can check the first identity directly by differentiating and using $z=y(1-y)$. In particular,
+\begin{equation}\label{tss:sc:eq:lammu}
+ \lambda=A(\rho)=\frac{\pi^2}{12}-\log^22+R(\rho),\qquad
+ \mu=\rho A'(\rho)=\log2+\rho R'(\rho).
+\end{equation}
+Both constants are positive. Define
+\begin{equation}\label{tss:sc:eq:constants}
+ \begin{gathered}
+ p=1-\e^{-\lambda},\qquad u_c=p^{-1},\qquad
+ Q(z)=\frac{I(\rho z)}p=\sum_{j\geq1}q_jz^j,\qquad
+ q_j=\frac{I_j4^{-j}}p,\\
+ m=\frac{\e^{-\lambda}\mu}p,\qquad
+ \kappa=\frac{2\e^{-\lambda}}{3p},\qquad
+ d=\frac{\kappa}{\Gamma(-3/2)}=\frac{3\kappa}{4\sqrt\pi}.
+ \end{gathered}
+\end{equation}
+Thus $q_j\geq0$, $Q(1)=1$, and $Q'(1)=m$. Moreover $q_1,q_3>0$, so the support has span one.
+
+\begin{lemma}[Local expansion and tail]\label{tss:sc:lem:local}
+There is a slit neighborhood of $1$ in which $Q$ has a convergent expansion in $\sqrt{1-z}$. With $w=1-z$,
+\begin{equation}\label{tss:sc:eq:Qlocal}
+ Q(1-w)=1-mw+\kappa w^{3/2}+\beta w^2+\kappa_1w^{5/2}+O(w^3),
+\end{equation}
+where
+\begin{align}
+ a_2&=-\tfrac12\log2-\tfrac14+\tfrac12\rho^2R''(\rho),\label{tss:sc:eq:a2}\\
+ \beta&=\frac{\e^{-\lambda}}p\left(a_2-\frac{\mu^2}{2}\right),&
+ \kappa_1&=\frac{\e^{-\lambda}}p\left(\frac8{15}+\frac{2\mu}{3}\right).
+ \label{tss:sc:eq:betak1}
+\end{align}
+Furthermore,
+\begin{equation}\label{tss:sc:eq:qtail}
+ q_j=dj^{-5/2}\bigl(1+O(j^{-1})\bigr).
+\end{equation}
+The tail has a full expansion in integral inverse powers of $j$ to every fixed order.
+\end{lemma}
+\begin{proof}
+Equation~\eqref{tss:sc:eq:F} gives
+\[
+ \frac{\dd}{\dd w}F(\rho(1-w))
+ =\frac{\log((1+\sqrt w)/2)}{1-w}.
+\]
+The right side has a convergent power series in $\sqrt w$ near zero. Integration and addition of the analytic function $R$ give
+\[
+ A(\rho(1-w))=\lambda-\mu w+\tfrac23w^{3/2}
+                 +a_2w^2+\tfrac8{15}w^{5/2}+O(w^3).
+\]
+Expanding $1-\exp(-A)$ proves the asserted constants.
+
+For completeness the tail can be obtained without an unquoted transfer theorem. On the upper side of the cut $z=1+v$, $v>0$, the principal value has $w=-v-\ii0$. Thus there are real analytic $H,B$ such that
+\begin{equation}\label{tss:sc:eq:HB}
+ Q(1+v+\ii0)=1+vH(v)+\ii v^{3/2}B(v),\qquad
+ H(v)=m+\beta v+O(v^2),\quad B(v)=\kappa-\kappa_1v+O(v^2).
+\end{equation}
+The lower value is its conjugate. A Cauchy contour extended to a fixed slit disk gives
+\[
+ q_j=\frac1\pi\int_0^\delta(1+v)^{-j-1}v^{3/2}B(v)\,\dd v+O(R_0^{-j})
+\]
+for some $R_0>1$. Substitution $v=x/j$ and a fixed-order Taylor expansion under an exponentially dominated integral yield
+$\kappa\Gamma(5/2)j^{-5/2}/\pi=dj^{-5/2}$ and every subsequent order. The same domination argument is detailed for the more demanding resolvent in Section~\ref{tss:sc:sec:uniformproof}.
+\end{proof}
+
+Numerically, with the qualifications in Section~\ref{tss:sc:sec:checks},
+\begin{equation}\label{tss:sc:eq:decimals}
+\begin{aligned}
+ u_c&=3.5555932000209863\ldots,&m&=1.7223486864283872\ldots,\\
+ \kappa&=1.7037288000139909\ldots,&d&=0.7209195316186591\ldots,\\
+ \beta&=-2.1110749090341058\ldots,&\kappa_1&=2.5112154976301175\ldots.
+\end{aligned}
+\end{equation}
+
+\section{Exponential tilting and the free-energy parameter}
+\label{tss:sc:sec:tilt}
+
+Use the normalized component weight $r=up$ and normalized count
+\begin{equation}\label{tss:sc:eq:Z}
+ Z_n(r)=4^{-n}W_n(r/p)=[z^n]\frac1{1-rQ(z)}.
+\end{equation}
+The critical value is $r=1$. For $t\geq0$ define
+\begin{equation}\label{tss:sc:eq:tilt}
+ r(t)=\frac1{Q(\e^{-t})},\qquad h(t)=\log r(t),\qquad
+ q_t(j)=r(t)\e^{-tj}q_j.
+\end{equation}
+Then $q_t$ is a probability mass function on the positive integers. Let
+\begin{equation}\label{tss:sc:eq:mtvt}
+ m_t=h'(t),\qquad v_t=-h''(t)\quad(t>0),\qquad m_0=m.
+\end{equation}
+Differentiating a normalized Laplace transform shows that $m_t$ and $v_t$ are the mean and variance of $q_t$, respectively. In particular $m_t>0$, and $v_t>0$ because the law is not concentrated at one point.
+
+Let $U_t(n)$ be the probability that a renewal process with independent increments of law $q_t$ ever visits $n$, including $U_t(0)=1$. Positivity of the increments makes the events of visiting $n$ at different renewal numbers disjoint. Therefore
+\begin{equation}\label{tss:sc:eq:U}
+ U_t(n)=\sum_{k\geq0}q_t^{*k}(n),\qquad 0\leq U_t(n)\leq1.
+\end{equation}
+
+\begin{proposition}[Exact change of measure]\label{tss:sc:prop:tilt}
+For every $n\geq0$ and $t\geq0$,
+\begin{equation}\label{tss:sc:eq:tiltidentity}
+ Z_n(r(t))=\e^{nt}U_t(n).
+\end{equation}
+Moreover, under the score-sequence measure with weight $u=r(t)/p$, the ordered list of block lengths has exactly the law of the $q_t$-renewal increments conditioned to visit $n$.
+\end{proposition}
+\begin{proof}
+For a composition $j_1+\cdots+j_k=n$,
+\[
+ \prod_{\ell=1}^kq_t(j_\ell)
+ =\e^{-nt}4^{-n}(r(t)/p)^k\prod_{\ell=1}^kI_{j_\ell}.
+\]
+Summation proves the coefficient identity; division by its total proves the conditional law. The conditioning permits every possible number of increments. It is not conditioning a fixed number of independent blocks.
+\end{proof}
+
+\begin{lemma}[Small-$t$ free energy]\label{tss:sc:lem:h}
+As $t\downarrow0$,
+\begin{align}
+ h(t)&=mt-\kappa t^{3/2}+h_2t^2+O(t^{5/2}),\label{tss:sc:eq:h}\\
+ h_2&=\frac{m^2-m}{2}-\beta,\nonumber\\
+ m_t&=m-\tfrac32\kappa\sqrt t+2h_2t+O(t^{3/2}),\label{tss:sc:eq:mtexp}\\
+ v_t&=\tfrac34\kappa t^{-1/2}-2h_2+O(\sqrt t).
+ \label{tss:sc:eq:vtexp}
+\end{align}
+All these expansions arise from convergent power series in $\sqrt t$ on a slit neighborhood; differentiated remainders there have the corresponding orders.
+\end{lemma}
+\begin{proof}
+Substitute $w=1-\e^{-t}=t-t^2/2+O(t^3)$ into \eqref{tss:sc:eq:Qlocal}, and expand $-\log Q(\e^{-t})$. The coefficient of $t^2$ is $(m^2-m)/2-\beta$. Analyticity in $\sqrt t$ justifies termwise differentiation.
+\end{proof}
+
+\section{A uniform pole--branch expansion to every fixed order}
+\label{tss:sc:sec:uniformproof}
+
+For $r=r(t)$ set
+\begin{equation}\label{tss:sc:eq:a}
+ A_r=1-r^{-1}=1-Q(\e^{-t}),\qquad
+ a=a_n(t)=\frac{nA_r}{m}.
+\end{equation}
+For a sufficiently small fixed $t_0>0$, $a\geq0$ and $a\asymp nt$ uniformly on $0\leq t\leq t_0$.
+
+Define the leading kernel
+\begin{equation}\label{tss:sc:eq:K0}
+ \Kc_0(a)=\int_0^\infty\frac{\e^{-x}x^{3/2}}{(a+x)^2}\,\dd x,
+ \qquad a\geq0,
+\end{equation}
+and the first correction
+\begin{equation}\label{tss:sc:eq:K1}
+\begin{split}
+ \Kc_1(a)=\int_0^\infty\frac{\e^{-x}x^{3/2}}{(a+x)^2}
+ \biggl(&\frac{x^2}{2}-x-\frac{\kappa_1}{\kappa}x
+ -\frac{2\beta}{m}\frac{x^2}{a+x}\\
+ &-\frac{\kappa^2}{m^2}\frac{x^3}{(a+x)^2}\biggr)\,\dd x.
+\end{split}
+\end{equation}
+They are finite at $a=0$; in particular $\Kc_0(0)=\sqrt\pi$.
+
+\begin{theorem}[Uniform supercritical expansion]\label{tss:sc:thm:uniform}
+There are $t_0>0$ and $R_0>1$ such that, for every fixed integer $J\geq1$, uniformly for $0\leq t\leq t_0$,
+\begin{equation}\label{tss:sc:eq:uniform}
+\begin{split}
+ Z_n(r(t))={}&\frac{\e^{nt}}{m_t}
+ +\frac{\kappa}{\pi r(t)m^2}\,n^{-1/2}
+ \left\{\sum_{j=0}^{J-1}\frac{\Kc_j(a_n(t))}{n^j}
+       +O_J\!\left(\frac{n^{-J}}{(1+a_n(t))^2}\right)\right\}\\
+ &+O_J(R_0^{-n}).
+\end{split}
+\end{equation}
+Every kernel is constructively specified by \eqref{tss:sc:eq:generator} below, and
+\begin{equation}\label{tss:sc:eq:kernelbound}
+ |\Kc_j(a)|\leq C_j(1+a)^{-2}\qquad(a\geq0).
+\end{equation}
+The constants $t_0,R_0$ can be chosen independently of $J$; remainder constants may depend on $J$. No assertion is made for $J$ growing with $n$.
+\end{theorem}
+
+\subsection{The exact branch integral}
+We first justify a contour representation uniformly in the moving pole.
+
+\begin{lemma}[Local pole and contour separation]\label{tss:sc:lem:pole}
+For all real $r\geq1$ sufficiently close to $1$, the only pole of $(1-rQ(z))^{-1}$ in a suitable fixed slit disk $|z|<R_0$, cut along $[1,R_0)$, is the simple pole at $z=\e^{-t}$, with $r=r(t)$; at $r=1$ it merges with the endpoint. For $r>1$,
+\begin{equation}\label{tss:sc:eq:cut}
+\begin{split}
+ Z_n(r)={}&\frac{\e^{nt}}{m_t}
+ +\frac1{\pi r}\int_0^{R_0-1}
+ \frac{(1+v)^{-n-1}v^{3/2}B(v)}
+      {(A_r+vH(v))^2+v^3B(v)^2}\,\dd v
+ +O(R_0^{-n}).
+\end{split}
+\end{equation}
+After shrinking $R_0-1$ if necessary, $H(v)\geq m/2$ and $B(v)\geq\kappa/2$ on the integration interval. Formula~\eqref{tss:sc:eq:cut} remains valid at $r=1$ by a limit.
+\end{lemma}
+\begin{proof}
+For $|z|\leq1$, positivity gives $|Q(z)|\leq Q(|z|)\leq1$. Equality $Q(z)=1$ forces $|z|=1$ and $z^j=1$ at every supported $j$; since $q_1>0$, this forces $z=1$. Compactness away from $1$, followed by continuity into a slightly larger slit disk, separates all other points from zeros of $1-rQ$ when $r$ is close to $1$.
+
+Near $1$, put $s=\sqrt{1-z}$. The map
+\[
+ T(s)=s\sqrt{\frac{1-Q(1-s^2)}{s^2}}
+      =\sqrt m\,s\bigl(1+O(s)\bigr)
+\]
+is analytic with nonzero derivative at zero. The equation $1-Q(z)=A_r$ is $T(s)^2=A_r$. The inverse-function theorem gives two local solutions in the $s$-plane. For real $A_r>0$, exactly the one near $+\sqrt{A_r/m}$ is in the principal-square-root domain. It is the real solution $z=\e^{-t}$. By taking the neighborhood smaller, there are no other local solutions. Together with the preceding compactness argument, this proves the separation assertion and the uniform outer-contour bound.
+
+The residue contribution to coefficient extraction at $z_0=\e^{-t}$ is
+\[
+ \frac{z_0^{-n}}{r z_0Q'(z_0)}=\frac{\e^{nt}}{m_t}.
+\]
+On the upper side of the cut, \eqref{tss:sc:eq:HB} gives
+\[
+ \Im\frac1{1-rQ(1+v+\ii0)}
+ =\frac{v^{3/2}B(v)}{r\{(A_r+vH(v))^2+v^3B(v)^2\}}.
+\]
+A Cauchy contour pushed to the two sides of the slit and the outer circle yields \eqref{tss:sc:eq:cut}. The outer-circle contribution is $O(R_0^{-n})$ uniformly, because its denominator is bounded away from zero.
+
+At $A_r=0$, the branch-integral integrand is bounded near zero by a constant times $v^{-1/2}$. The same bound holds for all $A_r\geq0$ sufficiently small. Dominated convergence, continuity of each fixed coefficient in $r$, and $m_t\to m$ extend the identity to the endpoint.
+\end{proof}
+
+\subsection{The correction generator}
+Introduce a formal variable $\epsilon$ and the power series
+\begin{equation}\label{tss:sc:eq:E}
+ E(\epsilon,x)=\exp\left\{x-(\epsilon^{-1}+1)\log(1+\epsilon x)\right\}.
+\end{equation}
+The apparent singularity at $\epsilon=0$ is removable, and
+\[
+ E(\epsilon,x)=1+\epsilon(x^2/2-x)
+  +\epsilon^2(x^2-5x^3/6+x^4/8)+\cdots.
+\]
+For $H,B$ in \eqref{tss:sc:eq:HB}, define
+\begin{equation}\label{tss:sc:eq:generator}
+ \boxed{\displaystyle
+ \Kc_j(a)=\int_0^\infty \e^{-x}x^{3/2}
+ [\epsilon^j]\frac{\{B(\epsilon x)/\kappa\}E(\epsilon,x)}
+ {[a+xH(\epsilon x)/m]^2+\epsilon x^3B(\epsilon x)^2/m^2}\,\dd x.}
+\end{equation}
+Here coefficient extraction is performed before integration. For every fixed $j$ it uses only finitely many coefficients of $H$ and $B$. It produces a finite rational combination of integrals of the form
+\begin{equation}\label{tss:sc:eq:elementarykernels}
+ \int_0^\infty \frac{\e^{-x}x^{b+1/2}}{(a+x)^c}\,\dd x,
+\end{equation}
+with integrable behavior at zero for the combinations actually produced. They can also be evaluated through incomplete gamma functions, but the positive-axis integrals are more convenient for uniform estimates. Direct coefficient extraction gives \eqref{tss:sc:eq:K0} and \eqref{tss:sc:eq:K1}.
+
+\subsection{Proof of the uniform remainder}
+\begin{proof}[Proof of Theorem~\ref{tss:sc:thm:uniform}]
+In \eqref{tss:sc:eq:cut}, substitute $v=x/n$ and $A_r=ma/n$. The branch contribution becomes
+\[
+ \frac{\kappa}{\pi r m^2}\,n^{-1/2}
+ \int_0^{n(R_0-1)} \e^{-x}x^{3/2}
+ \frac{\{B(x/n)/\kappa\}E(1/n,x)}
+ {[a+xH(x/n)/m]^2+n^{-1}x^3B(x/n)^2/m^2}\,\dd x.
+\]
+We give details of why expansion under this integral is uniform even when $a=0$ or $a$ grows proportionally to $n$.
+
+First, for real $a,x\geq0$ and $0\leq x/n\leq R_0-1$, the exact denominator is comparable to $(a+x)^2$. Indeed $H$ stays between two positive constants, and the extra term is nonnegative. Relative to $(a+x)^2$, every perturbation produced by $H(x/n)-m$ is $O(x/n)$, and
+\[
+ \frac{x^3/n}{(a+x)^2}\leq\frac{x}{n}.
+\]
+Choose the fixed slit length small enough that these relative perturbations have modulus less than a fixed number below one. Taylor expansion of the rational denominator to order $J-1$ then has a remainder bounded by
+\[
+ C_Jn^{-J}(a+x)^{-2}(1+x)^{c_J}
+\]
+for some finite integer $c_J$, with the harmless polynomial allowing all numerator derivatives.
+
+For $E$, its logarithm is an analytic series in $\epsilon x$ with leading term $\epsilon(x^2/2-x)$. Taylor's formula, or Cauchy estimates on a smaller $\epsilon x$-disk, bounds its order-$J$ remainder by
+$C_Jn^{-J}(1+x)^{c'_J}\e^{c x}$, with $c<1$ after reducing the slit length. The same bound applies to the finite product with the analytic numerator and denominator expansions. Multiplication by $\e^{-x}$ leaves exponential domination.
+
+Finally,
+\[
+ \frac1{(a+x)^2}\leq\frac{C}{(1+a)^2}\max(1,x^{-2})
+ \qquad(a,x>0).
+\]
+Each expansion term is bounded near $x=0$ by a polynomial times $x^{-1/2}$: a relative denominator correction contributes at least one additional power of $x$, not a negative one. Thus the integrated remainder is at most
+$C_J n^{-J}(1+a)^{-2}$. The same estimate proves \eqref{tss:sc:eq:kernelbound}. Extending each of the finitely many coefficient integrals from $n(R_0-1)$ to infinity changes it by an exponentially small quantity, which is also dominated by the stated algebraic remainder, uniformly for $a\leq Cn$. Combining these bounds with the exact outer-contour error proves \eqref{tss:sc:eq:uniform}.
+\end{proof}
+
+\begin{corollary}[A uniform renewal estimate]\label{tss:sc:cor:renewal}
+Uniformly for $0\leq t\leq t_0$,
+\begin{equation}\label{tss:sc:eq:renewalerror}
+ U_t(n)=\frac1{m_t}
+ +O\left(\e^{-nt}n^{-1/2}(1+nt)^{-2}\right)
+ +O\left(\e^{-nt}R_0^{-n}\right).
+\end{equation}
+In particular $U_t(n)=m_t^{-1}+O(n^{-1/2})$ uniformly, and $U_t(n)$ has a positive lower bound for all sufficiently large $n$, uniformly in $t$.
+\end{corollary}
+\begin{proof}
+Divide Theorem~\ref{tss:sc:thm:uniform} with $J=1$ by $\e^{nt}$, use \eqref{tss:sc:eq:kernelbound}, and use $a\asymp nt$ and the compact positive range of $m_t$.
+\end{proof}
+
+\section{Matching the regimes and interpreting the transseries}
+\label{tss:sc:sec:matching}
+
+\subsection{A closed form for the coalescence kernel}
+For $a>0$, the leading kernel also has the closed form
+\begin{equation}\label{tss:sc:eq:K0closed}
+ \Kc_0(a)=\sqrt\pi(1+a)
+ -\pi\sqrt a\left(a+\frac32\right)\e^a\operatorname{erfc}(\sqrt a).
+\end{equation}
+To prove it, write
+$I(a)=\int_0^\infty \e^{-x}x^{-1/2}(x+a)^{-1}\,\dd x$.
+A Laplace representation of $(x+a)^{-1}$ gives
+$I(a)=\pi a^{-1/2}\e^a\operatorname{erfc}(\sqrt a)$.
+The identity $x^2/(x+a)^2=1-2a/(x+a)+a^2/(x+a)^2$ yields
+$\Kc_0(a)=\sqrt\pi-2aI(a)-a^2I'(a)$, hence \eqref{tss:sc:eq:K0closed}.
+For large $a$, the integral form is numerically safer because the two terms in \eqref{tss:sc:eq:K0closed} nearly cancel.
+
+A useful endpoint check is
+\begin{equation}\label{tss:sc:eq:K0small}
+ \Kc_0(a)=\sqrt\pi-\frac{3\pi}{2}\sqrt a+4\sqrt\pi\,a+O(a^{3/2}).
+\end{equation}
+The $\sqrt a$ term in the branch correction cancels the leading $\sqrt t$ term of $1/m_t$ as $a\sim nt\downarrow0$. This is required by the analyticity of each fixed coefficient in the weight: a moving-pole approximation by itself would produce a spurious square-root singularity.
+
+\subsection{The critical endpoint}
+At $t=0$, $r=1$ and $a=0$. The first terms of \eqref{tss:sc:eq:uniform} are
+\begin{equation}\label{tss:sc:eq:critical}
+ Z_n(1)=\frac1m+\frac{\kappa}{m^2\sqrt\pi}\,n^{-1/2}
+           +\frac{\kappa\Kc_1(0)}{\pi m^2}\,n^{-3/2}
+           +O(n^{-5/2}).
+\end{equation}
+In particular there is no $n^{-1}$ term. More generally, apart from the constant pole term, only the powers $n^{-j-1/2}$ occur. This critical behavior is a consistency check against the preceding repository report, not a newly discovered critical law.
+
+The first endpoint correction can be read explicitly from \eqref{tss:sc:eq:K1}:
+\begin{equation}\label{tss:sc:eq:K10}
+ \Kc_1(0)=\frac12\Gamma(5/2)
+ -\left(1+\frac{\kappa_1}{\kappa}+\frac{2\beta}{m}
+                   +\frac{\kappa^2}{m^2}\right)\Gamma(3/2).
+\end{equation}
+For a moving $t=s/n$ with $s$ in a compact subset of $[0,\infty)$, it is safest to retain the exact arguments $m_t,r(t),a_n(t)$ in \eqref{tss:sc:eq:uniform}; replacing them by limiting values introduces additional half-power terms. In particular $a_n(s/n)=s+O(n^{-1/2})$, but that replacement alone is not a valid all-orders simplification.
+
+\subsection{The large-argument kernel and fixed supercritical weight}
+\begin{proposition}[Large-$a$ expansion]\label{tss:sc:prop:Klarge}
+For every fixed integer $L\geq1$,
+\begin{equation}\label{tss:sc:eq:Klarge}
+ \Kc_0(a)=\frac{\Gamma(5/2)}{a^2}
+ \left\{\sum_{\ell=0}^{L-1}
+       \frac{(-1)^\ell(\ell+1)(5/2)_\ell}{a^\ell}
+       +O_L(a^{-L})\right\}\qquad(a\to\infty).
+\end{equation}
+The opening coefficients in braces are $1,-5,105/4,-315/2$.
+\end{proposition}
+\begin{proof}
+Expand $(1+x/a)^{-2}$ to order $L-1$. Taylor's integral remainder on $x/a\geq0$ is bounded in absolute value by $(L+1)(x/a)^L$, because the absolute value of its $L$th derivative is at most $(L+1)!$. Integration against $\e^{-x}x^{3/2}$ gives the result.
+\end{proof}
+
+For each fixed $t\in(0,t_0]$, Theorem~\ref{tss:sc:thm:uniform} and Proposition~\ref{tss:sc:prop:Klarge} give
+\begin{equation}\label{tss:sc:eq:fixedsuper}
+ Z_n(r)=\frac{\e^{nt}}{m_t}
+       +\frac{r d}{(r-1)^2}\,n^{-5/2}\bigl(1+O_t(n^{-1})\bigr).
+\end{equation}
+The factor $r/(r-1)^2$ follows from $a=n(r-1)/(rm)$ and $d=\kappa\Gamma(5/2)/\pi$. It is also what direct expansion of $(1-rQ)^{-1}$ about the branch point gives; the sign is positive. At any fixed supercritical weight the algebraic branch contribution is exponentially small \emph{relative} to the pole, although not small on the absolute scale of $Z_n$.
+
+Equation~\eqref{tss:sc:eq:uniform} is a two-scale asymptotic expansion, not just a leading equivalent. For fixed $t>0$, its transmonomials include $\e^{nt}$ and $n^{-5/2-j}$; relative to the leading term they include $\e^{-nt}n^{-5/2-j}$. Near $t=0$ the kernels keep these contributions meaningful through coalescence. No convergence of the inverse-$n$ expansion is asserted. The convergent local expansion in $\sqrt t$, discussed next, is a different statement.
+
+\section{Inverse growth, inverse density, and extreme-value centering}
+\label{tss:sc:sec:inverse}
+
+\subsection{Convergent Puiseux inversion of the free energy}
+\begin{theorem}[Weight-to-growth inversion]\label{tss:sc:thm:inverse}
+For small $h=\log r>0$, put $v=h/m$. The solution of $h=h(t)$ satisfies
+\begin{equation}\label{tss:sc:eq:inverse}
+ \boxed{\displaystyle
+ t=v+\frac{\kappa}{m}v^{3/2}
+ +\left(\frac{3\kappa^2}{2m^2}-\frac{h_2}{m}\right)v^2
+ +O(v^{5/2}).}
+\end{equation}
+It has a convergent Puiseux expansion in $\sqrt v$ near zero, with every coefficient determined recursively by substitution into $h(t)$.
+\end{theorem}
+\begin{proof}
+Write $t=s^2$. By Lemma~\ref{tss:sc:lem:h},
+\[
+ \sqrt{h(s^2)/m}=s-\frac{\kappa}{2m}s^2+O(s^3)
+\]
+is an analytic function of $s$ with derivative one at zero. Its local analytic inverse gives $s$ as a convergent power series in $\sqrt v$; squaring gives the convergent Puiseux expansion for $t$. To calculate the displayed terms, substitute
+$t=v+c v^{3/2}+e v^2+O(v^{5/2})$ into \eqref{tss:sc:eq:h}. The coefficients of $v^{3/2}$ and $v^2$ give $c=\kappa/m$ and $e=3\kappa^2/(2m^2)-h_2/m$.
+\end{proof}
+
+Thus a small supercritical weight increment can be translated into its actual growth rate without repeatedly solving a nearly singular coefficient problem. The branch $t>0$ is specified; neither a negative real branch nor an arbitrary branch of a complex inverse is implicit in the statement.
+
+\subsection{A quadratic inverse density law}
+For fixed $t\in(0,t_0]$, differentiation of the simple-pole asymptotic in a complex neighborhood of the weight gives the thermodynamic block density
+\begin{equation}\label{tss:sc:eq:density}
+ \theta(t)=\lim_{n\to\infty}\frac{\E K_n}{n}=\frac1{m_t}.
+\end{equation}
+The differentiation is justified by the isolated simple pole and exponentially smaller remainder at fixed $t$; it does not assume differentiation of an uncontrolled real asymptotic. Lemma~\ref{tss:sc:lem:h} gives
+\begin{equation}\label{tss:sc:eq:densityexp}
+ \theta(t)=\frac1m+\frac{3\kappa}{2m^2}\sqrt t+O(t).
+\end{equation}
+Let $\Delta=m\theta-1$ measure the excess density in dimensionless units. Since
+$\Delta=(3\kappa/(2m))\sqrt t+O(t)$ and the leading coefficient is positive, local inversion yields
+\begin{equation}\label{tss:sc:eq:densityinverse}
+ \boxed{\displaystyle
+ h=\log(up)=\frac{4m^3}{9\kappa^2}\Delta^2+O(\Delta^3).}
+\end{equation}
+This is an inverse response at the critical boundary, not a finite-$n$ confidence interval for estimating $u$. All higher coefficients again follow from an analytic inverse in $\sqrt t$. The corresponding susceptibility diverges:
+\begin{equation}\label{tss:sc:eq:susceptibility}
+ \frac{\dd\theta}{\dd h}
+ \sim\frac{3\kappa}{4m^3}\,t^{-1/2}.
+\end{equation}
+
+\subsection{A fixed-weight size inverse}
+At fixed $t\in(0,t_0]$, let $\ell=\log4+t$. Equation~\eqref{tss:sc:eq:fixedsuper} gives
+\begin{equation}\label{tss:sc:eq:logcount}
+ \log W_n(r/p)=\ell n-\log m_t+O_t(\e^{-nt}n^{-5/2}).
+\end{equation}
+For a large target $y$, the leading continuous model inverse is
+\begin{equation}\label{tss:sc:eq:sizeinverse}
+ x_0(y)=\frac{\log y+\log m_t}{\log4+t}.
+\end{equation}
+Here $W_n(r/p)$ is a weighted count and need not be an integer. It is nevertheless strictly increasing in $n$: adjoining a final singleton strong block gives an injection whose weight is multiplied by $u=r/p>1$.
+
+A rigorous integer-threshold interpretation must retain a separation condition. If the distance of $x_0(y)$ from the nearest integer exceeds a sufficiently large constant times
+$\e^{-t x_0(y)}x_0(y)^{-5/2}$, then the first integer $n$ with $W_n(r/p)\geq y$ is $\lceil x_0(y)\rceil$. This follows by applying \eqref{tss:sc:eq:logcount} at the two neighboring integers; monotonicity handles all other integers. Without separation from an integer, the leading model does not certify rounding. This is the same model-versus-staircase distinction emphasized in the repository's transseries-inversion program.
+
+\begin{writenote}[Added 5 October 2026, batch~98]
+The ``transseries-inversion program'' is the repository's transseries
+volume,
+\path{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex};
+the manuscript names no label, and no novelty is claimed for these general
+steps. The separation condition just stated is part~(2) of
+\texttt{p0:thm:staircase} there, applied to the model inverse $x_0(y)$
+with the error $\eta$ a constant times $\e^{-tx_0(y)}x_0(y)^{-5/2}$; its
+exact-rounding part~(1) is not used. The Lambert core
+\eqref{tss:sc:eq:Lambert} below is \texttt{p0:thm:lambert-core} for
+$w+\tfrac52\log w=L$ with $L=\log B$, that is $a=1$, $b=5/2>0$, whose branch
+rule gives the unique positive solution on the branch $W_0$ at
+$z=(a/b)\e^{L/b}=\tfrac25B^{2/5}$ (Part~I's inverse \eqref{tss:eq:lambert}
+and Part~II's centre \eqref{tss:cx:eq:Wcenter} are the same theorem with
+$b=-5/2$ and $b=-2$ on the branch $W_{-1}$). The convergent inversion of
+Theorem~\ref{tss:sc:thm:inverse} is the analytic inverse function theorem
+in $\sqrt t$, as its proof says. The Lean lemmas named in the batch-77
+note of Section~\ref{tss:sec:inverse} concern an arbitrary monotone
+function and give Part~III no formal status.
+\end{writenote}
+
+\subsection{The centering inverse needed for maxima}
+For a large positive $B$ consider
+\begin{equation}\label{tss:sc:eq:wcore}
+ B\e^{-w}w^{-5/2}=1.
+\end{equation}
+Its unique positive solution is
+\begin{equation}\label{tss:sc:eq:Lambert}
+ w=\frac52 W_0\left(\frac25 B^{2/5}\right),
+\end{equation}
+where $W_0$ is the positive real branch of Lambert's function. This is an exact inverse of the specified model, not a new inversion method. With $L=\log B$,
+\begin{equation}\label{tss:sc:eq:wlog}
+ w=L-\frac52\log L+\frac{25}{4}\frac{\log L}{L}
+        +O\left(\frac{(\log L)^2}{L^2}\right).
+\end{equation}
+Substituting into $w+(5/2)\log w=L$ proves the displayed expansion and supplies the recursion for further logarithmic terms.
+
+A more accurate continuous tail model replaces \eqref{tss:sc:eq:wcore} by
+\begin{equation}\label{tss:sc:eq:wrefined}
+ B\int_{\widehat w}^\infty\e^{-y}y^{-5/2}\,\dd y=1.
+\end{equation}
+Its unique positive solution can be computed from an upper incomplete gamma function. Repeated integration by parts gives, for every fixed order,
+\begin{equation}\label{tss:sc:eq:gammatail}
+ \int_w^\infty\e^{-y}y^{-5/2}\,\dd y
+ \sim\e^{-w}w^{-5/2}
+ \left(1-\frac5{2w}+\frac{35}{4w^2}-\frac{315}{8w^3}+\cdots\right).
+\end{equation}
+The remainder after any fixed number of integrations is bounded by the next alternating-sign integral term. Inverting this expansion about the exact Lambert core gives
+\begin{equation}\label{tss:sc:eq:wshift}
+ \widehat w=w-\frac5{2w}+\frac{95}{8w^2}+O(w^{-3}).
+\end{equation}
+The incomplete-gamma center and the core center differ by $o(1)$ and hence give the same limiting Gumbel distribution. Their finite-size accuracy can be quite different. Neither continuous center removes the lattice effect at a fixed positive $t$.
+
+\section{The block-count crossover}
+\label{tss:sc:sec:count}
+
+We next prove the probability limits, rather than inferring them from the coefficient scale. Throughout, $K_n$ is sampled with weight $u_n=r(t_n)/p$. Exact centering below uses the tilted mean $m_{t_n}$, not the unknown finite-$n$ mean of $K_n$.
+
+\subsection{A complex continuation lemma}
+Characteristic functions require a small complex perturbation of the weight. The needed extension is local and can be proved by the same contour.
+
+\begin{lemma}[Complex weights near the critical ray]\label{tss:sc:lem:complex}
+Fix $\varepsilon>0$. Let $r$ be complex and close to $1$, and suppose $A_r=1-r^{-1}$ lies in $|\arg A_r|\leq\pi-\varepsilon$. Let $\tau$ be the local solution of $h(\tau)=\log r$ obtained by the principal continuation from positive $\tau$. In a sufficiently small neighborhood, uniformly in this sector,
+\begin{equation}\label{tss:sc:eq:complexpole}
+ [z^n]\frac1{1-rQ(z)}
+ =\frac{\e^{n\tau}}{h'(\tau)}
+ +O_\varepsilon\left(n^{-1/2}(1+|nA_r|)^{-2}\right)
+ +O_\varepsilon(R_0^{-n}).
+\end{equation}
+The endpoint $r=1$ is included by a limit. The pole need not lie strictly inside the unit circle after a complex perturbation.
+\end{lemma}
+\begin{proof}
+The inverse map $T$ in Lemma~\ref{tss:sc:lem:pole} gives the unique pole on the principal sheet also for $A_r$ in the indicated sector: the root corresponding to $+\sqrt{A_r}$ stays in the principal-square-root domain, while the other local root does not. The outer-contour separation persists by compactness.
+
+The upper and lower boundary values of $Q$ on the cut still have the form $1+vH(v)\pm\ii v^{3/2}B(v)$. Subtracting the two resolvents, rather than taking the imaginary part of a complex-$r$ resolvent, gives exactly the same rational jump as in \eqref{tss:sc:eq:cut}. For $a=nA_r/m$ in a sector away from the negative real axis,
+\[
+ |a+x|\geq c_\varepsilon(|a|+x)\qquad(x\geq0).
+\]
+After making the slit smaller, its analytic perturbations preserve this lower bound for the product of the two denominator factors. The leading-kernel estimate in the proof of Theorem~\ref{tss:sc:thm:uniform} therefore applies with $|a|$ in place of $a$. The residue is $\e^{n\tau}/h'(\tau)$, which proves \eqref{tss:sc:eq:complexpole}. The extension does not require $\Re\tau>0$: small characteristic-function perturbations of the critical endpoint may have $\Re\tau<0$ of order $1/n$, and the fixed outer contour still surrounds their poles.
+\end{proof}
+
+\subsection{The tempered-stable window}
+\begin{theorem}[Tempered $3/2$-stable block count]\label{tss:sc:thm:tempered}
+Let $b_n$ be \eqref{tss:sc:eq:bn}, and suppose $t_n\geq0$ with $t_nb_n\to\sigma\in[0,\infty)$. Then
+\begin{equation}\label{tss:sc:eq:X}
+ X_n=\frac{m_{t_n}}{b_n}\left(K_n-\frac n{m_{t_n}}\right)\dto X_\sigma,
+\end{equation}
+where
+\begin{equation}\label{tss:sc:eq:temperedcf}
+ \boxed{\displaystyle
+ \E\e^{\ii\xi X_\sigma}
+ =\exp\left\{(\sigma+\ii\xi)^{3/2}-\sigma^{3/2}
+                      -\frac32\ii\xi\sqrt\sigma\right\}.}
+\end{equation}
+Powers use the principal branch. More precisely, for every fixed $S,T<\infty$, uniformly for $0\leq t_nb_n\leq S$ and $|\xi|\leq T$,
+\begin{equation}\label{tss:sc:eq:cfrate}
+ \left|\E\e^{\ii\xi X_n}
+ -\exp\left\{(\sigma_n+\ii\xi)^{3/2}-\sigma_n^{3/2}
+             -\tfrac32\ii\xi\sqrt{\sigma_n}\right\}\right|
+ =O_{S,T}(n^{-1/3}),\qquad \sigma_n=t_nb_n.
+\end{equation}
+This is a characteristic-function estimate on compact frequency sets, not a Kolmogorov-distance or total-variation bound.
+\end{theorem}
+\begin{proof}
+First center and scale using $m$, defining $Y_n=(mK_n-n)/b_n$. The exact probability generating function is
+\begin{equation}\label{tss:sc:eq:pgfK}
+ \E\e^{sK_n}=\frac{Z_n(r(t_n)\e^s)}{Z_n(r(t_n))}.
+\end{equation}
+For bounded real $\xi$, put $s=\ii\xi m/b_n$, and let $t'$ solve
+\[
+ h(t')=h(t_n)+\ii\xi m/b_n.
+\]
+The local inverse and \eqref{tss:sc:eq:h}, uniformly for $\sigma_n\in[0,S]$, give
+\begin{equation}\label{tss:sc:eq:tprime}
+ t'=t_n+\frac{\ii\xi}{b_n}
+ +\frac{\kappa}{m}\left\{\left(t_n+\frac{\ii\xi}{b_n}\right)^{3/2}
+                         -t_n^{3/2}\right\}
+ +O_{S,T}(b_n^{-2}).
+\end{equation}
+One way to verify the uniform remainder is to use the convergent inverse from Theorem~\ref{tss:sc:thm:inverse}: the omitted analytic-in-square-root terms are $O(|h|^2)$ in a fixed closed sector. Substitution of $h(t_n)$ then gives \eqref{tss:sc:eq:tprime}; the $3/2$-power has bounded derivative on the resulting compact scaled sector. This remains valid as both $\sigma_n$ and $\xi$ approach zero.
+
+The perturbed $A_r$ lies in a sector bounded away from the negative real axis. Lemma~\ref{tss:sc:lem:complex} applies, and
+\[
+ \frac{Z_n(r(t_n)\e^{\ii\xi m/b_n})}{Z_n(r(t_n))}
+ =\frac{m_{t_n}}{h'(t')}\exp\{n(t'-t_n)\}
+   \bigl(1+O_{S,T}(n^{-1/2})\bigr).
+\]
+To justify the relative error, note that $\Re(n(t'-t_n))$ stays bounded on these compact scaled parameter sets after the purely imaginary linear term is removed. Thus the numerator pole cannot be exponentially smaller than its real-weight normalization. The residue ratio is $1+O_{S,T}(b_n^{-1/2})$.
+
+Since
+\[
+ \frac{n\kappa}{m b_n^{3/2}}=1,\qquad
+ nb_n^{-2}=O(n^{-1/3}),\qquad b_n^{-1/2}=O(n^{-1/3}),
+\]
+we obtain
+\begin{equation}\label{tss:sc:eq:Ycf}
+ \E\e^{\ii\xi Y_n}
+ =\exp\{(\sigma_n+\ii\xi)^{3/2}-\sigma_n^{3/2}\}
+       +O_{S,T}(n^{-1/3}).
+\end{equation}
+Finally,
+\[
+ X_n=\frac{m_{t_n}}mY_n
+      +\left(\frac{m_{t_n}}m-1\right)\frac n{b_n},
+\qquad
+ \left(\frac{m_{t_n}}m-1\right)\frac n{b_n}
+ =-\tfrac32\sqrt{\sigma_n}+O_S(n^{-1/3}).
+\]
+The scale factor differs from $1$ by $O_S(n^{-1/3})$. Using \eqref{tss:sc:eq:Ycf} at the correspondingly perturbed frequency proves \eqref{tss:sc:eq:cfrate}. The limiting characteristic function is continuous at zero and is a probability characteristic function by the representation below, so convergence in distribution follows.
+\end{proof}
+
+The exponent in \eqref{tss:sc:eq:temperedcf} has the L\'evy representation
+\begin{equation}\label{tss:sc:eq:levy}
+ \log\E\e^{\ii\xi X_\sigma}
+ =\frac1{\Gamma(-3/2)}\int_0^\infty
+ (\e^{-\ii\xi x}-1+\ii\xi x)\e^{-\sigma x}x^{-5/2}\,\dd x.
+\end{equation}
+The integral is absolutely convergent at both endpoints, also when $\sigma=0$. For $\sigma>0$, differentiate twice in $\xi$, evaluate the ordinary gamma integral, and integrate back using the zero value and zero first derivative at $\xi=0$; dominated convergence then gives the $\sigma=0$ identity. This proves that $X_\sigma$ is centered and spectrally negative, with an exponentially tempered $3/2$-stable L\'evy measure. At $\sigma=0$ it is the stable law; for $\sigma>0$ its variance is $3/(4\sqrt\sigma)$. These properties describe the limiting law and do not assert convergence of all finite-$n$ moments.
+
+\subsection{The Gaussian side of the second transition}
+\begin{theorem}[Gaussian block count]\label{tss:sc:thm:gaussian}
+Suppose $t_n>0$, $t_n\to0$, and $n t_n^{3/2}\to\infty$, equivalently $t_nb_n\to\infty$. Then
+\begin{equation}\label{tss:sc:eq:CLT}
+ \frac{K_n-n/m_{t_n}}
+ {\sqrt{n v_{t_n}/m_{t_n}^3}}\dto N(0,1).
+\end{equation}
+On every compact set of real frequencies, the difference of characteristic functions from $\e^{-\xi^2/2}$ is
+$O((n t_n^{3/2})^{-1/2})$.
+\end{theorem}
+\begin{proof}
+Let $g$ be the local inverse of $h$ about a positive $t=t_n$. Its derivatives satisfy
+\[
+ g'(h(t))=\frac1{m_t},\qquad
+ g''(h(t))=\frac{v_t}{m_t^3},\qquad
+ g'''(h(t))=O(t^{-3/2}).
+\]
+The last estimate follows by differentiating the convergent local expansion in Lemma~\ref{tss:sc:lem:h}; it is uniform on a complex disk of radius a fixed multiple of $t$ about $t$.
+
+Put $s_n=\sqrt{n v_t/m_t^3}$ and perturb the weight by $\exp(\ii\xi/s_n)$. The induced displacement in $t$ divided by $t$ is
+$O((n t^{3/2})^{-1/2})$, so it stays in that analytic disk. Taylor's formula gives
+\[
+ n\{g(h(t)+\ii\xi/s_n)-t\}
+ =\frac{\ii\xi n}{m_t s_n}-\frac{\xi^2}{2}
+      +O_T((n t^{3/2})^{-1/2}).
+\]
+The logarithm of the residue-amplitude ratio is
+$O_T(n^{-1/2}t^{-1/4})$, smaller than the displayed error when $t$ is small. The complex pole estimate and \eqref{tss:sc:eq:renewalerror} show that branch errors are exponentially suppressed, since $nt\to\infty$. Substitution into \eqref{tss:sc:eq:pgfK}, followed by the stated centering, proves the characteristic-function estimate and the limit.
+\end{proof}
+
+The finite-$\sigma$ distributions in \eqref{tss:sc:eq:temperedcf} are non-Gaussian. Thus replacing $t_nb_n=O(1)$ by a Gaussian approximation would miss an entire family of limiting laws. Conversely, the divergence of $v_t$ as $t\downarrow0$ explains why the ordinary fixed-weight central limit scale is not uniform at criticality.
+
+\section{Large blocks: a tempered Poisson point process}
+\label{tss:sc:sec:point}
+
+Let $L_{1,n},\ldots,L_{K_n,n}$ denote the block lengths in their original order, and let $M_n=\max_iL_{i,n}$. The order is not retained in the point processes below. We begin with an exact identity that makes the renewal conditioning explicit.
+
+\begin{lemma}[Ordered marked blocks]\label{tss:sc:lem:marked}
+For a fixed positive integer $\ell$ and bounded functions $f_1,\ldots,f_\ell$ on the positive integers,
+\begin{equation}\label{tss:sc:eq:marked}
+\begin{split}
+ &\E\sum_{i_1,\ldots,i_\ell\ \mathrm{distinct}}
+             \prod_{s=1}^\ell f_s(L_{i_s,n})\\
+ &\quad=\frac{\ell!}{U_t(n)}
+ \sum_{j_1+\cdots+j_\ell\leq n}
+  \left\{\prod_{s=1}^\ell q_t(j_s)f_s(j_s)\right\}
+  V_{\ell+1,t}(n-j_1-\cdots-j_\ell),
+\end{split}
+\end{equation}
+where
+\begin{equation}\label{tss:sc:eq:V}
+ V_{k,t}(N)=[z^N](1-Q_t(z))^{-k},\qquad
+ Q_t(z)=\sum_{j\geq1}q_t(j)z^j.
+\end{equation}
+For each fixed $\ell\geq0$, uniformly on $0\leq t\leq t_0$,
+\begin{equation}\label{tss:sc:eq:Vasymp}
+ V_{\ell+1,t}(N)=\frac{N^\ell}{\ell!m_t^{\ell+1}}
+              +O_\ell\bigl((N+1)^{\ell-1/2}\bigr)\qquad(N\to\infty).
+\end{equation}
+Also $V_{\ell+1,t}(N)\leq\binom{N+\ell}{\ell}$.
+\end{lemma}
+\begin{proof}
+Distinguishing $\ell$ labeled blocks separates an ordered renewal string into $\ell+1$ unmarked strings. There are $\ell!$ possible orders of the labels, giving the numerator in \eqref{tss:sc:eq:marked}; division by the visit probability $U_t(n)$ imposes conditioning. Summing over labeled lengths makes all label orders identical after relabeling, which explains the factor even when the $f_s$ are different.
+
+For the asymptotic, write $U_t(j)=m_t^{-1}+E_t(j)$ with
+$|E_t(j)|\leq C(j+1)^{-1/2}$, by Corollary~\ref{tss:sc:cor:renewal}, enlarging $C$ to cover $j=0$. Since $V_{\ell+1,t}$ is the convolution of $\ell+1$ copies of $U_t$, the all-constant product contributes
+$m_t^{-\ell-1}\binom{N+\ell}{\ell}$. For $\ell\geq1$, a telescoping product estimate bounds the difference by a constant times
+\[
+ \sum_{j=0}^N (j+1)^{-1/2}(N-j+1)^{\ell-1}
+ =O_\ell((N+1)^{\ell-1/2}).
+\]
+All other factors are uniformly bounded. The difference between the binomial coefficient and $N^\ell/\ell!$ is $O_\ell((N+1)^{\ell-1})$. For $\ell=0$ the result is the renewal estimate itself. Finally $U_t(j)\leq1$ in \eqref{tss:sc:eq:U} bounds its convolution by the number of weak compositions, proving the last assertion.
+\end{proof}
+
+\begin{theorem}[Tempered large-block process]\label{tss:sc:thm:point}
+Suppose $t_nb_n\to\sigma\in[0,\infty)$. In the vague topology on point measures on $(0,\infty)$,
+\begin{equation}\label{tss:sc:eq:PPP}
+ \sum_{i=1}^{K_n}\delta_{L_{i,n}/b_n}
+ \dto\PPP(\nu_\sigma),\qquad
+ \nu_\sigma(\dd x)=\frac1{\Gamma(-3/2)}\e^{-\sigma x}x^{-5/2}\,\dd x.
+\end{equation}
+Consequently, for every $x>0$,
+\begin{equation}\label{tss:sc:eq:maxcdf}
+ \boxed{\displaystyle
+ \Prob(M_n/b_n\leq x)\longrightarrow
+ \exp\left\{-\frac1{\Gamma(-3/2)}
+             \int_x^\infty\e^{-\sigma y}y^{-5/2}\,\dd y\right\}.}
+\end{equation}
+At $\sigma=0$ this becomes $\exp\{-1/(2\sqrt\pi x^{3/2})\}$.
+
+There is also a finite-order refinement. Fix $\ell$, a compact interval $[a,b]\subset(0,\infty)$, and Lipschitz functions $f_s$ supported there. Uniformly for $0\leq\sigma_n=t_nb_n\leq S$, the mixed factorial moment of the scaled process equals
+\begin{equation}\label{tss:sc:eq:factorialrate}
+ \prod_{s=1}^\ell\int f_s\,\dd\nu_{\sigma_n}+O(n^{-1/3}).
+\end{equation}
+The implied constant may depend on the functions, their support, $S$, and $\ell$.
+\end{theorem}
+\begin{proof}
+Uniformly for $j/b_n$ in a compact subset of $(0,\infty)$, the tail \eqref{tss:sc:eq:qtail} and $q_t(j)=r(t)\e^{-tj}q_j$ imply the vague convergence of finite measures
+\begin{equation}\label{tss:sc:eq:intensitymeasure}
+ \frac n{m_{t_n}}\sum_{j\geq1}q_{t_n}(j)\delta_{j/b_n}
+ \longrightarrow\nu_\sigma.
+\end{equation}
+Indeed the Riemann-sum prefactor is
+\[
+ \frac{n r(t_n)d}{m_{t_n}b_n^{3/2}}
+ =\frac{m r(t_n)}{m_{t_n}}\frac d\kappa
+ \longrightarrow\frac1{\Gamma(-3/2)}.
+\]
+If $t_nb_n=\sigma_n$ stays bounded, this prefactor differs from its limit by $O(n^{-1/3})$, since $m_t-m=O(\sqrt t)$ and $r(t)-1=O(t)$. The $O(j^{-1})$ tail correction and the Riemann-sum error for Lipschitz test functions are $O(b_n^{-1})$. This proves the corresponding measure approximation with error $O(n^{-1/3})$ on a fixed compact support.
+
+For $j_s/b_n\in[a,b]$, the sum $J=j_1+\cdots+j_\ell$ is $O(b_n)=o(n)$. Lemma~\ref{tss:sc:lem:marked} and the uniform renewal estimate give
+\[
+ \frac{\ell!V_{\ell+1,t_n}(n-J)}{U_{t_n}(n)}
+ =\left(\frac n{m_{t_n}}\right)^\ell
+     \bigl(1+O_\ell(b_n/n+n^{-1/2})\bigr).
+\]
+Inserting this into \eqref{tss:sc:eq:marked} and applying the preceding Riemann-sum estimate proves \eqref{tss:sc:eq:factorialrate}. The limit is the product of the intensity integrals, precisely the mixed factorial moments of a Poisson point process.
+
+Here is a tightness and uniqueness justification for that moment argument. On any compact set away from zero, first moments are bounded. For each fixed order the bound
+$V_{\ell+1,t}(N)\leq\binom{N+\ell}{\ell}$, the positive lower bound on $U_t(n)$, and boundedness of $n\sum q_t(j)$ over the compact range bound the corresponding factorial moments. The limiting Poisson moments determine the finite collection of counts on disjoint continuity intervals (their exponential generating function is finite near zero). Thus the mixed moment convergence gives those finite-dimensional count laws, and the first-moment bound gives local tightness. These characterize the vague point-process limit.
+
+To pass from compact sets to the largest point, the $\ell=1$ identity and $U_t\leq1$ give
+\begin{equation}\label{tss:sc:eq:tailtight}
+ \E\#\{i:L_{i,n}>Lb_n\}
+ \leq Cn\sum_{j>Lb_n}q_t(j)
+ \leq C'L^{-3/2}
+\end{equation}
+uniformly for bounded $t_nb_n$. This tends to zero as $L\to\infty$. The limiting intensity has no atoms, so the void probability above $x$ is the exponential in \eqref{tss:sc:eq:maxcdf}. Finally, evaluating the integral at $\sigma=0$ gives the stated critical formula.
+\end{proof}
+
+\begin{remark}[What the point process does not say]
+The intensity has infinite mass at zero. Accordingly the convergence is local away from zero, and the total number of blocks is not a continuous functional of this point process. Theorems~\ref{tss:sc:thm:tempered} and \ref{tss:sc:thm:point} are separate marginal results. No joint convergence or independence between $X_n$ and the extreme blocks is inferred from them. Their natural coupling is a further question in Section~\ref{tss:sc:sec:questions}.
+\end{remark}
+
+\section{From tempered extremes to a Gumbel maximum}
+\label{tss:sc:sec:gumbel}
+
+\begin{theorem}[The supercritical Gumbel regime]\label{tss:sc:thm:gumbel}
+Suppose $t_n>0$, $t_n\to0$, and $nt_n^{3/2}\to\infty$. Define
+\begin{equation}\label{tss:sc:eq:Bn}
+ B_n=\frac{n r(t_n)d\,t_n^{3/2}}{m_{t_n}},\qquad
+ w_n=\frac52W_0\left(\frac25 B_n^{2/5}\right).
+\end{equation}
+Then $B_n\to\infty$, $w_n\to\infty$, and, vaguely on $\R$,
+\begin{equation}\label{tss:sc:eq:gumbelPPP}
+ \sum_{i=1}^{K_n}\delta_{t_n L_{i,n}-w_n}
+ \dto\PPP(\e^{-x}\,\dd x).
+\end{equation}
+In particular,
+\begin{equation}\label{tss:sc:eq:gumbel}
+ \boxed{\displaystyle
+ \Prob(t_nM_n-w_n\leq x)\longrightarrow\exp(-\e^{-x})
+ \qquad(x\in\R).}
+\end{equation}
+Replacing $w_n$ by the incomplete-gamma center $\widehat w_n$ of \eqref{tss:sc:eq:wrefined}, with $B=B_n$, leaves the same limits.
+\end{theorem}
+\begin{proof}
+Since $r(t_n)\to1$, $m_{t_n}\to m$, and $d>0$, the condition implies $B_n\to\infty$. By construction,
+$B_n\e^{-w_n}w_n^{-5/2}=1$. For $x=t_nj-w_n$ in a compact interval, $j=(w_n+x)/t_n\to\infty$, and the intensity per unit $x$ is asymptotically
+\begin{align*}
+ \frac n{m_{t_n}}\frac{q_{t_n}(j)}{t_n}
+ &=B_n\e^{-w_n-x}(w_n+x)^{-5/2}\bigl(1+O(j^{-1})\bigr)\\
+ &=\e^{-x}\left(1+\frac{x}{w_n}\right)^{-5/2}(1+o(1))
+ \longrightarrow\e^{-x}.
+\end{align*}
+The lattice spacing in $x$ is $t_n\to0$, so Riemann sums converge to this continuous intensity.
+
+The relevant lengths are $o(n)$: $w_n=O(\log B_n)$ and
+$w_n/(nt_n)\to0$, because $nt_n^{3/2}\to\infty$ and $t_n\to0$. The marked-block proof of Theorem~\ref{tss:sc:thm:point} therefore applies with these shifted, shrinking-lattice coordinates. Its convolution factor is again $(n/m_{t_n})^\ell(1+o(1))$ on every fixed compact interval of $x$. This proves the Poisson limit.
+
+For passage to the maximum, use \eqref{tss:sc:eq:marked} with one marked block and the tail estimate
+\[
+ n\sum_{j>(w_n+L)/t_n}q_{t_n}(j)\leq C\e^{-L}
+\]
+for fixed large $L$ and all sufficiently large $n$. It follows either by comparing the monotone exponential-power tail with its integral, or from \eqref{tss:sc:eq:gammatail}; the relative lattice error tends to zero because $t_n\to0$. The expected number of points above $L$ is thus uniformly small as $L\to\infty$. The limiting void probability above $x$ is $\exp(-\e^{-x})$. Finally \eqref{tss:sc:eq:wshift} gives $\widehat w_n-w_n=o(1)$, so replacing the center has no effect on the limit.
+\end{proof}
+
+The condition $t_n\to0$ is essential to this continuous formulation. If $t>0$ is held fixed, $tM_n-w_n$ remains on a lattice of fixed span; a non-oscillatory continuous Gumbel limit cannot be asserted in this form. Likewise, the Gaussian count theorem and the Gumbel theorem do not by themselves imply their asymptotic independence.
+
+\begin{remark}[\textsf{[write]}, added 5 October 2026, batch~98: no continuous limit on a lattice of fixed span]\label{tss:sc:rem:lattice}
+The manuscript states without proof, here and in RQ6 of
+Section~\ref{tss:sc:sec:questions}, that at a fixed $t>0$ a continuous
+Gumbel claim ``would be false''. It is true, in the following stronger
+form, which uses only that $M_n$ is integer-valued. \emph{Let $t>0$, let
+$M_n$ be integer-valued random variables, let $(c_n)$ be any real
+sequence, and let $G$ be a distribution function that is continuous and
+strictly increasing on $\R$, such as $G(x)=\exp(-\e^{-x})$. Then
+$F_n(x)=\Prob(tM_n-c_n\le x)$ does not converge to $G(x)$ at every
+$x\in\R$, not even along a subsequence.}
+
+\emph{Proof.} The variable $tM_n-c_n$ takes values in the lattice
+$t\mathbb Z-c_n$, so $F_n$ is constant on each interval
+$[tk-c_n,\,t(k+1)-c_n)$, $k\in\mathbb Z$. Let $\alpha_n\in(-t,0]$ be the
+left end of the one containing $0$. Given a subsequence, pass to a further
+subsequence along which $\alpha_n\to\alpha\in[-t,0]$, and put
+$x_1=\alpha+t/4$, $x_2=\alpha+3t/4$. For all large $n$ in it,
+$\alpha_n<x_1<x_2<\alpha_n+t$, hence $F_n(x_1)=F_n(x_2)$. Convergence at
+$x_1$ and $x_2$ would give $G(x_1)=G(x_2)$, contradicting strict
+monotonicity. \qed
+
+The same proof applies along any subsequence on which the spans $t_n$
+stay at least $t_\ast>0$: the constancy interval containing $0$ then
+contains an interval of length $t_\ast/2$ whose left end lies in
+$[-t_\ast/2,0]$, and the argument runs with $t_\ast/2$ in place of $t$. Hence a limit $G$ of
+$t_nM_n-c_n$ that is continuous and strictly increasing forces $t_n\to0$,
+the hypothesis of Theorem~\ref{tss:sc:thm:gumbel}. The remark settles only the negative statement; the
+positive formulation, a lattice or oscillatory extreme-value law at fixed
+$t>0$, remains RQ6.
+\end{remark}
+
+\subsection{A diagnostic of the distinction between the two transitions}
+In the pole-coalescence window $t=s/n$,
+$t b_n=O(n^{-1/3})\to0$. Thus the coefficient correction changes with $s$, but the scaled count and maximum have their \emph{untempered} critical laws. In the tempered-statistics window $t=\sigma/b_n$ with fixed $\sigma>0$, we instead have $nt\asymp n^{1/3}\to\infty$. The coefficient is already overwhelmingly represented by its simple pole, while the block statistics still change nontrivially with $\sigma$. This establishes mathematically why the two scales must not be conflated.
+
+\section{Exact checks, numerical diagnostics, and reproducibility}
+\label{tss:sc:sec:checks}
+
+The programs accompanying this article distinguish exact integer assertions from floating-point diagnostics. They make no network requests. All decimal tables below are generated from the shipped CSV files by \texttt{code/make\_tables.py}; they are not hand-entered.
+
+\subsection{Finite exact checks}
+The script \texttt{code/reproduce.py} computes \eqref{tss:sc:eq:N} and \eqref{tss:sc:eq:recurrences} with Python integers through $n=180$. Its initial values match the three OEIS entries in the stated conventions. It independently enumerates all nondecreasing tuples satisfying \eqref{tss:sc:eq:landau} for $1\leq n\leq10$. For each tuple it counts equality positions and compares the resulting complete component-count polynomial with \eqref{tss:sc:eq:blockgf}. Every comparison passes. Thus the checks test not only the total count but also the parameter to which the probability theorems apply.
+
+The coefficient recurrence after scaling by $4^{-n}$ is evaluated separately in double precision, and its values through $n=30$ agree with the exact integer values to the programmed tolerance. A SymPy audit verifies exactly the coefficients in \eqref{tss:sc:eq:h}, \eqref{tss:sc:eq:inverse}, \eqref{tss:sc:eq:K1}, and \eqref{tss:sc:eq:densityinverse}. None of these finite checks substitutes for the contour or probability proofs.
+
+\subsection{Constants and stable numerical evaluation}
+To compute $\lambda,\mu,\beta$ and the other constants, the implementation sums the rapidly convergent proper-divisor part $R$, not the slowly convergent full boundary series for $A$. The coefficient bound in Section~\ref{tss:sc:sec:exact} gives
+\[
+ |[z^n]R(\rho z)|\leq2^{-n-1}.
+\]
+Consequently all fixed derivative tails have explicit bounds obtained by summing a polynomial in $n$ times $2^{-n-1}$. The recorded run uses $180$ terms and $60$ decimal digits. Its decimal arithmetic is not outward-rounded; the data file records numerical values, not certified enclosing intervals.
+
+For $t>0$, put $s=\sqrt{1-\e^{-t}}$, $z=\rho\e^{-t}$, and $M=zA'(z)$. The implementation uses
+\begin{equation}\label{tss:sc:eq:numericalmt}
+ m_t=\frac{M}{\e^{A(z)}-1},\qquad
+ v_t=\frac{(z\partial_z)^2A(z)}{\e^{A(z)}-1}
+      -\frac{M^2\e^{A(z)}}{(\e^{A(z)}-1)^2},
+\end{equation}
+with
+\[
+ M=-\log((1+s)/2)+zR'(z),\qquad
+ (z\partial_z)^2A(z)=\frac{1-s}{2s}+(z\partial_z)^2R(z).
+\]
+This avoids numerical differentiation. The substitution $x=y^2$ removes the integrable endpoint singularity from $\Kc_0(0)$ and is also used for $\Kc_1$.
+
+\subsection{Accuracy of the pole--branch formula}
+Table~\ref{tss:sc:tab:branch} compares the normalized renewal value $U_t(n)$ from its finite convolution recurrence with the pole alone, with the pole plus $\Kc_0$, and with the additional $\Kc_1/n$ term. Errors are approximation minus recurrence value. Using $U_t$ instead of $Z_n$ avoids multiplication by a potentially large $\e^{nt}$.
+
+\begin{table}[htbp]\centering\small
+\input{data/03-supercrit-branch_table.tex}
+\caption{Absolute errors for $U_t(n)$ at the coefficient-coalescence scale. The last column at $nt=4$, $n=4096$ is close enough to floating-point accumulation error that it should not be read as an independently certified remainder.}
+\label{tss:sc:tab:branch}
+\end{table}
+
+At criticality, the $\Kc_0$ error falls as $n^{-3/2}$ and the $\Kc_1$ error as $n^{-5/2}$ over the displayed sizes, in agreement with the analytic expansion. For $nt>0$, the exact values $a_n(t),r(t),m_t$ are retained; replacing them by their limits would invalidate this comparison at the indicated precision.
+
+\subsection{Tempered count and maximum diagnostics}
+Table~\ref{tss:sc:tab:char} evaluates the centered characteristic function in Theorem~\ref{tss:sc:thm:tempered} at frequency $1$. The error decreases much more slowly than the coefficient error, consistent with the distinct $n^{-1/3}$ distributional correction scale. The table is evidence of consistency, not the proof of that rate.
+\begin{table}[htbp]\centering\small
+\input{data/03-supercrit-characteristic_table.tex}
+\caption{Tempered-window characteristic functions at frequency $1$, with $t=\sigma/b_n$.}
+\label{tss:sc:tab:char}
+\end{table}
+
+For maxima, the finite-$n$ CDF is computed exactly at the generating-function level by setting $q_t(j)=0$ for $j>\lfloor xb_n\rfloor$ in the numerator renewal recurrence. This operation counts the event that every block respects the cutoff, not an independent-block approximation. The subsequent recurrence arithmetic is floating point.
+\begin{table}[htbp]\centering\small
+\input{data/03-supercrit-maximum_table.tex}
+\caption{Maximum-block CDFs at $x=1$ in the tempered window. The lattice cutoff and conditioning both matter at these finite sizes. Additional $x=2$ rows are in \texttt{data/maximum\_cdf.csv}.}
+\label{tss:sc:tab:max}
+\end{table}
+
+\subsection{Gaussian and Gumbel diagnostics}
+Table~\ref{tss:sc:tab:gaussian} uses $t=n^{-1/4}$, which is asymptotically in the Gaussian/Gumbel regime. The variance ratio is the recurrence variance of $K_n$ divided by $n v_t/m_t^3$. The characteristic-function error is for the centered, variance-model-scaled count at frequency $1$. The final two columns give the finite-$n$ probability that $tM_n$ is at most the Lambert core $w_n$ or the incomplete-gamma center $\widehat w_n$, respectively; the limiting value is $\e^{-1}=0.367879\ldots$.
+\begin{table}[htbp]\centering\small
+\input{data/03-supercrit-gaussian_table.tex}
+\caption{Gaussian-count and maximum diagnostics. The crude Gumbel center has a large finite-size error; the refined center helps but still shows lattice oscillations.}
+\label{tss:sc:tab:gaussian}
+\end{table}
+
+In particular, the core maximum CDF is still about $0.624$ at $n=4096$. This is not close to its limiting $0.368$. The analytic reason is that $w_n$ is only logarithmically large, and replacing the incomplete-gamma tail by its leading term can be inaccurate. The refined column is not monotone, and no finite-$n$ confidence bound is claimed.
+
+\subsection{Inverse checks}
+Table~\ref{tss:sc:tab:inverse} compares the three displayed truncations of \eqref{tss:sc:eq:inverse} with a high-precision root of the exact analytic model $h(t)=h$. The ``exact-model'' column is a numerical root, not a rational or interval-exact quantity.
+\begin{table}[htbp]\centering\small
+\input{data/03-supercrit-inverse_table.tex}
+\caption{Numerical errors in the free-energy inverse. The last column has the predicted $O(h^{5/2})$ scale.}
+\label{tss:sc:tab:inverse}
+\end{table}
+
+\subsection{Replay commands and computational scope}
+From the package root, the recorded checks can be reproduced with
+\begin{verbatim}
+python -m pip install -r requirements.txt
+python code/reproduce.py --max-n 4096 --dps 60
+python code/symbolic_audit.py
+python code/make_tables.py
+./build.sh
+\end{verbatim}
+The numerical and symbolic scripts accept \texttt{--output} to redirect their data; by default they overwrite the corresponding files in the package's \texttt{data/} directory. Run on a copy to preserve the recorded outputs. The table formatter reads and writes the package's own data directory. The numerical recurrence uses $O(N^2)$ arithmetic operations and $O(N)$ working storage, apart from the exact diagnostic arrays and small output tables. The all-orders proof does not depend on an unlimited symbolic implementation: the supplied numerical code evaluates $\Kc_0,\Kc_1$, while \eqref{tss:sc:eq:generator} specifies every fixed further order.
+
+\begin{writenote}[Added 5 October 2026, batch~98]
+This subsection and Section~\ref{tss:sc:sec:checks} describe the delivered
+package. In this report its files carry the prefix
+\texttt{03-supercrit-}: \texttt{code/\allowbreak reproduce.py},
+\texttt{code/\allowbreak symbolic\_audit.py} and
+\texttt{code/\allowbreak make\_tables.py} are
+\texttt{code/\allowbreak 03-supercrit-reproduce.py} and so on, the two
+build scripts are in \texttt{code/}, \texttt{requirements.txt} and every
+\texttt{data/} file are in \texttt{data/} with the prefix, and the source
+notes are \texttt{03-supercrit-SOURCE\_NOTES.md} at the report root. The
+delivered \texttt{article.tex}, \texttt{article.pdf}, README and checksum
+list are not shipped (they survive in the archive of arrival commit
+\texttt{2172df76a}), so the build scripts, which compile an
+\texttt{article.tex} beside themselves, do not build this report, and
+\texttt{make\_tables.py} reads and writes unprefixed names in the
+\texttt{data/} directory beside its own. The report's \texttt{README.md}
+therefore reruns the programs on a scratch copy with the delivered layout.
+Such a rerun at the write (5 October 2026; Windows, Python~3.13.5 with
+NumPy~2.3.5, mpmath~1.3.0, SymPy~1.14.0; 21~s) exited~0: the exact CSV,
+the symbolic audit and the inverse errors were identical to the recorded
+files up to line endings, \texttt{verification.json} differed only in its
+interpreter, platform and timing fields, and the floating CSVs agreed to
+at most $9\cdot10^{-13}$ absolute ($5.6\cdot10^{-10}$ for the
+Gaussian/Gumbel diagnostics). Four last digits of Table~\ref{tss:sc:tab:branch}
+change on rerun, among them the entry near $10^{-13}$ at $n=4096$, $nt=4$
+($5.76$ becomes $6.56\cdot10^{-14}$), which the caption already marks as
+floating-point noise.
+\end{writenote}
+
+\section{Further research questions}
+\label{tss:sc:sec:questions}
+
+The following questions are not resolved by the preceding theorems. They are proposed in order of proximity to the proofs, rather than as claims that no related result exists in the broader literature.
+
+\begin{enumerate}[label=\textbf{RQ\arabic*.},leftmargin=3.4em]
+\item \textbf{Joint count--extreme coupling.} Prove joint convergence of $X_n$ and the large-block point measure throughout the tempered window. The shared L\'evy density suggests a compensated-jump coupling, not independence. One must control the contribution of blocks whose scaled sizes tend to zero, which the vague point-process theorem discards.
+
+\item \textbf{Gaussian count versus Gumbel maximum.} Determine whether the Gaussian count fluctuation and the centered maximum become independent when $nt^{3/2}\to\infty$, and whether the answer is uniform as that quantity grows slowly. A joint complex-marked resolvent, not two marginal theorems, is needed.
+
+\item \textbf{Effective probability bounds.} Convert the compact-frequency error in \eqref{tss:sc:eq:cfrate} and the factorial-moment error in \eqref{tss:sc:eq:factorialrate} into explicit Kolmogorov or suitable point-process distances. This requires control of growing frequencies or a coupling, not a direct relabeling of the present errors.
+
+\item \textbf{A full two-sided theory.} Combine the positive-$t$ pole--branch formula with the repository's subcritical coexistence window in one analytic family. The continuation across the branch cut must account for the appearance or disappearance of a pole contribution. Uniformity across that change should be proved, not inferred by substituting negative $t$ into a real probability law.
+
+\item \textbf{Growing order and exponentially smaller sectors.} Estimate the growth of $\Kc_j(a)$ as $j\to\infty$, locate an optimal truncation scale, and determine whether a Borel or hyperasymptotic treatment is useful. The fixed-$J$ theorem alone neither proves a Gevrey bound nor identifies all exponentially small singularity contributions.
+
+\item \textbf{Fixed-supercritical lattice extremes.} For each fixed $t>0$, formulate the correct subsequential or oscillatory extreme-value law. The lattice spacing no longer vanishes, so a continuous Gumbel claim with no phase correction would be false in the present normalization.
+
+\item \textbf{Explicit constants and certified calibration.} Make the zero-free slit size, remainder constants, and decimal values effective using interval arithmetic. Use these to certify an inverse weight from a prescribed finite-size count or expected block density, and to certify integer-threshold rounding away from or near the exceptional small neighborhoods in Section~\ref{tss:sc:sec:inverse}.
+
+\item \textbf{Other OEIS block classes and other tail exponents.} For exact sequence constructions with $q_j\sim d j^{-1-\alpha}$, $1<\alpha<2$, test and prove analogues of the two scales $nt$ and $tn^{1/\alpha}$. The proof would need an appropriate complex continuation and a uniform cut estimate for each class; a formal replacement of $3/2$ by $\alpha$ is not yet a theorem.
+
+\item \textbf{Formalization.} Begin with the equality-index decomposition, the exact component polynomial, and the marked-block identity. Next formalize the local algebraic coefficient generator and the Puiseux inverse recursion. Contour deformation, uniform asymptotic remainders, and triangular probability limits require substantially more analytic infrastructure. No Lean or Rocq formalization is claimed for this manuscript.
+\end{enumerate}
+
+\subsection{Further questions and research recorded at the write}
+\label{tss:sc:sec:writequestions}
+\begin{writenote}[Added 5 October 2026, batch~98]
+Under the repository's standing rule (4 October 2026) every claim of the
+manuscript that it does not prove in full is recorded here, with its
+source, its argument sketch and what is missing; none was found to be
+false. The write's own additions are marked as such.
+\end{writenote}
+
+\begin{enumerate}[label=\textbf{F\arabic*.},leftmargin=*]
+\item \textbf{Full tail expansion (Lemma~\ref{tss:sc:lem:local}).} The
+lemma asserts that $q_j$ has an expansion in integral inverse powers of
+$j$ ``to every fixed order''. \emph{Sketch (manuscript):} the cut integral
+for $q_j$ with $v=x/j$ and a fixed-order Taylor expansion under an
+exponentially dominated integral, ``the same domination argument'' as in
+the proof of Theorem~\ref{tss:sc:thm:uniform}. \emph{Missing:} the written
+domination at every order. Only the leading term $dj^{-5/2}(1+O(j^{-1}))$
+is used later, and it is also Lemma~\ref{tss:cx:lem:tail} of Part~II.
+
+\item \textbf{The sector bound in Lemma~\ref{tss:sc:lem:complex}.} For
+complex $r$ the proof asserts that, ``after making the slit smaller'',
+analytic perturbations preserve the lower bound
+$|a+x|\ge c_\varepsilon(|a|+x)$ for the product of the two denominator
+factors $A_r+vH(v)\pm\ii v^{3/2}B(v)$. \emph{Missing:} a written bound,
+uniform in the sector, for the relative perturbations $v(H(v)-m)/(A_r+mv)$
+and $v^{3/2}B(v)/(A_r+mv)$ of the complex factors (the real-weight proof of
+Theorem~\ref{tss:sc:thm:uniform} bounds the real sum of squares instead).
+Theorems~\ref{tss:sc:thm:tempered} and~\ref{tss:sc:thm:gaussian} and item
+F3 depend on this lemma.
+
+\item \textbf{The block density \eqref{tss:sc:eq:density}.} The
+manuscript justifies $\theta(t)=\lim\E K_n/n=1/m_t$ in one sentence
+(``differentiation of the simple-pole asymptotic in a complex neighborhood
+of the weight''). \emph{[write] Proof, conditional on
+Lemma~\ref{tss:sc:lem:complex}.} Fix $t\in(0,t_0]$ and write
+$\E K_n=r\,\partial_r\log Z_n(r)$ at $r=r(t)$. On a small closed disk $D$
+about $r(t)$, $A_r$ stays in the sector of Lemma~\ref{tss:sc:lem:complex},
+the pole parameter $\tau(r)$, defined by $h(\tau(r))=\log r$, is analytic
+with $\Re\tau\ge t/2$, and $h'(\tau(r))\neq0$. The lemma gives
+$Z_n(r)=\e^{n\tau(r)}h'(\tau(r))^{-1}(1+\epsilon_n(r))$ with $\epsilon_n$
+analytic on $D$ and $\sup_D|\epsilon_n|=O(\e^{-nt/2})$, because
+$|\e^{n\tau}|\ge\e^{nt/2}$ while the remainders are $O(n^{-1/2})+O(R_0^{-n})$.
+Cauchy's estimate on the half-radius disk gives
+$\partial_r\log(1+\epsilon_n)=O(\e^{-nt/2})$ at $r(t)$. Since
+$\tau'(r)=1/(rh'(\tau(r)))$,
+\[
+ \E K_n=\frac{n}{h'(t)}-\frac{h''(t)}{h'(t)^2}+O(\e^{-nt/2})
+       =\frac{n}{m_t}+\frac{v_t}{m_t^2}+O(\e^{-nt/2}),
+\]
+which proves \eqref{tss:sc:eq:density} with a bounded correction.
+\emph{Missing:} only item F2.
+
+\item \textbf{Effectivity and the generator (Theorem~\ref{tss:sc:thm:uniform}).}
+$t_0$ and $R_0$ are not effective (the manuscript's RQ7), and the
+generator \eqref{tss:sc:eq:generator} is said to produce integrals with
+``integrable behavior at zero for the combinations actually produced'',
+checked explicitly for $\mathcal K_0$ and $\mathcal K_1$. \emph{[write]
+assessment:} the proof of Theorem~\ref{tss:sc:thm:uniform} supplies the
+reason, since every relative correction it expands is $O(\epsilon x)$ or
+$O(\epsilon x^2/(a+x))\le O(\epsilon x)$, so each coefficient of
+$\epsilon^j$ is bounded near $x=0$ by a polynomial times $x^{3/2}/(a+x)^2\le
+x^{-1/2}$. \emph{Missing:} explicit constants (RQ7) and a term-by-term
+listing of the elementary integrals \eqref{tss:sc:eq:elementarykernels}
+beyond $j=1$.
+
+\item \textbf{Why the $\sqrt a$ term must cancel (Section~\ref{tss:sc:sec:matching}).}
+The manuscript says the cancellation of the $\sqrt t$ term of $1/m_t$ by
+the $\sqrt a$ term of $\mathcal K_0$ is ``required by the analyticity of
+each fixed coefficient in the weight''. The cancellation itself holds: by
+\eqref{tss:sc:eq:mtexp} the pole term contributes
+$+\frac{3\kappa}{2m^2}\sqrt t$, and by \eqref{tss:sc:eq:K0small} the branch
+term contributes
+$\frac{\kappa}{\pi m^2}n^{-1/2}\bigl(-\frac{3\pi}2\sqrt a\bigr)
+=-\frac{3\kappa}{2m^2}\sqrt{a/n}$, with $a/n=t+O(t^{3/2})$. \emph{Missing:}
+the ``required by analyticity'' reasoning is a heuristic, since
+$Z_n(r)$ is a polynomial in $r$ but the asymptotic terms are not shown to
+be individually analytic in $r$.
+
+\item \textbf{Continuation of Part~I's expansion to $\tau<0$ ([write],
+bearing on RQ4 and on Part~II's RQ6).} \emph{An exact identity.} For
+$a>0$, with Part~I's entire kernel $H$ of \eqref{tss:eq:H},
+\begin{equation}\label{tss:sc:eq:Hreflect}
+ H(-a)=\frac{\mathcal K_0(a)}{\pi}
+      +\e^a\Bigl(a^{3/2}+\tfrac32a^{1/2}\Bigr).
+\end{equation}
+\emph{Proof.} By \eqref{tss:sc:eq:K0closed} the right side equals
+$\pi^{-1/2}\bigl(1+a+\sqrt{\pi a}\,(a+\frac32)\e^a\operatorname{erf}\sqrt a\bigr)$,
+and $H(-a)={}_1F_1(2;\frac12;a)/\sqrt\pi$. The classical series
+$\operatorname{erf}x=\frac{2}{\sqrt\pi}\e^{-x^2}\sum_{j\ge0}2^jx^{2j+1}/(2j+1)!!$
+and $(\frac12)_{j+1}=(2j+1)!!/2^{j+1}$ give
+$M_1(a):={}_1F_1(1;\frac12;a)=1+\sqrt{\pi a}\,\e^a\operatorname{erf}\sqrt a$.
+Kummer's relation $zM'(\alpha,b,z)=\alpha\{M(\alpha+1,b,z)-M(\alpha,b,z)\}$
+at $\alpha=1$ gives ${}_1F_1(2;\frac12;a)=M_1(a)+aM_1'(a)$, and
+$aM_1'(a)=a+\sqrt{\pi}\,\e^a\operatorname{erf}\sqrt a\,(\frac12\sqrt a+a^{3/2})$.
+Adding, ${}_1F_1(2;\frac12;a)=1+a+\sqrt{\pi a}\,(a+\frac32)\e^a\operatorname{erf}\sqrt a$.
+\qed\ (At $a=0.01,0.3,1,3,8$ both sides agree to the $40$-digit working precision of a check at the write.)
+
+\emph{A formal consistency.} Put $\tau=-a$ in Part~I's two-term formula
+\eqref{tss:eq:uniform}, which is then evaluated outside its window; with
+Part~II's dictionary its weight is $r=(1-ma/n)^{-1}$, so $A_r=ma/n$ and
+$a_n(t)=a$ in Part~III. Re-expand \eqref{tss:sc:eq:uniform} with $J=1$ at
+bounded $a$, using (i) $nt=a+\frac{\kappa}{m}a^{3/2}n^{-1/2}+O(n^{-1})$,
+from inverting $a=n(1-Q(\e^{-t}))/m$ with \eqref{tss:sc:eq:Qlocal}; (ii)
+$1/m_t=1/m+\frac{3\kappa}{2m^2}\sqrt t+O(t)$ from \eqref{tss:sc:eq:mtexp};
+(iii) $r=1+O(n^{-1})$. The order-$n^{-1/2}$ terms are
+$\frac{\kappa}{m^2}\{\e^a(a^{3/2}+\frac32a^{1/2})+\mathcal K_0(a)/\pi\}$ from
+Part~III and $\frac{\kappa}{m^2}H(-a)$ from Part~I, equal by
+\eqref{tss:sc:eq:Hreflect}. So Part~III's first two terms reproduce
+Part~I's at $\tau=-a$, with a discrepancy that the bookkeeping makes
+$O_C(n^{-1})$ for $0\le a\le C$. Numerical evidence: at $a=1$, with exact
+integer coefficients and $30$-digit arithmetic (an intake computation, not
+shipped), $n\{Z_n(r)-\text{Part~I's two-term model at }\tau=-1\}$ is
+$7.31$, $7.09$, $6.95$, $6.84$ for $n=250$, $500$, $1000$, $2000$.
+\emph{Open question.} Prove that Part~I's every-order expansion,
+Theorem~\ref{tss:thm:allorders} with its entire coefficients $C_m(\tau)$,
+holds uniformly on $-C\le\tau\le C\log n$, and identify how its Hankel
+contour, which excludes the pole $s=-\tau$ only for $\tau\ge0$, must be
+modified when that pole crosses to $s=a>0$ and contributes the residue
+$\e^{a}$. \emph{Missing:} the uniform bookkeeping of (i)--(iii) written as
+a proof (it rests on the unrefereed Theorem~\ref{tss:sc:thm:uniform}), and
+any statement beyond two terms. This is a special case of RQ4.
+
+\item \textbf{RQ1 and Part~II.} The joint count--extreme coupling asked
+for in RQ1 is proved in Part~II in another regime: the joint limit
+$(-Z,V)$ of \eqref{tss:cx:eq:fluidmaxmain}, and the joint limit of the
+count and the point measure of large blocks (Section~\ref{tss:cx:sec:fluidmax}),
+conditionally on $\Fev$ at the subcritical coexistence weight. At
+$\sigma=0$ and $t_n=0$ the same coupling may transfer; RQ1 stays open for
+$\sigma>0$ and for the unconditioned law.
+
+\item \textbf{Priority of the critical-composition statements.} Whether
+BFSS's Theorem~12, the announced companion of \cite{BKW}, or
+Flajolet--Sedgewick's Section~IX.11 already contain the $\sigma=0$
+maximum law, the tempered window or the intermediate range
+$n^{-1}\ll t\ll n^{-2/3}$ is an open bibliographic question (note at the
+end of Section~\ref{tss:sc:sec:scope}).
+\end{enumerate}
+
+\section{Conclusion}
+\label{tss:sc:sec:conclusion}
+The supercritical moving-weight question has a clean resolution once one distinguishes a coefficient problem from a fluctuation problem. Exact exponential tilting isolates the moving pole, and a positive branch integral supplies a uniform, every-fixed-order correction expansion. The count statistics do not change at the pole-coalescence scale: their transition occurs later, at $t n^{2/3}$, where the $3/2$-stable law is tempered. Beyond that scale the block count is Gaussian and the maximum has a shrinking-lattice Gumbel law. Convergent Puiseux inversion and tail-adapted centering make these formulas usable in the inverse direction.
+
+The substantive new claim is this specified supercritical development relative to the inspected repository report. Established enumeration theorems are credited; computations are finite checks; the distinction between proved results, model inverses, and remaining joint or effective questions is maintained throughout.
+
+\clearpage
+\fancyhead[R]{\small Part~II: conditional coexistence and fluctuations}
 \appendix
+\begin{writenote}[Added 5 October 2026, batch~98]
+Appendices~A and~B belong to Part~II; Appendices~C--E, after them, belong
+to Part~\ref{tss:sc:part}, whose sections precede these appendices.
+\end{writenote}
 \section{Notation and normalization checks}\label{tss:cx:app:notation}
 \begin{longtable}{@{}p{0.20\linewidth}p{0.72\linewidth}@{}}
 \toprule
@@ -2545,6 +3995,67 @@ The full source and the output records make the arithmetic and
 typesetting reproducible; analytic correctness rests on the proofs.
 
 
+\clearpage
+\fancyhead[R]{\small Part~III: beyond criticality}
+\section{Notation and normalization dictionary (Part~III)}
+\label{tss:sc:app:notation}
+\begin{longtable}{@{}p{0.18\linewidth}p{0.75\linewidth}@{}}
+\toprule
+symbol & meaning\\\midrule\endhead
+$S_n,I_n$ & all and strong score-sequence counts; $S_0=1$, $I_0=0$\\
+$N_n$ & A145855, the exact divisor sum in \eqref{tss:sc:eq:N}\\
+$A,F,R$ & logarithm of $S$, its central-binomial singular part, and its analytic proper-divisor remainder\\
+$W_n(u)$ & weighted score count with weight $u$ per strong block; not Lambert's function\\
+$\rho$ & the unweighted coefficient radius, $1/4$\\
+$\lambda,\mu$ & $A(\rho)$ and $\rho A'(\rho)$\\
+$p,u_c$ & $I(\rho)=1-\e^{-\lambda}$ and the critical block weight $p^{-1}$\\
+$Q,q_j$ & critical probability generating function $I(\rho z)/p$ and its mass function\\
+$m,\kappa,d$ & critical block mean; coefficient of $(1-z)^{3/2}$ in $Q$; mass-tail constant\\
+$\beta,\kappa_1$ & coefficients of $(1-z)^2$ and $(1-z)^{5/2}$ in $Q$\\
+$r$ & normalized weight $up$, critical at $1$\\
+$t,h(t)$ & supercritical free-energy increment and $\log r(t)$\\
+$q_t,m_t,v_t$ & exponentially tilted mass, its mean, and its variance\\
+$Z_n(r)$ & normalized weighted count $4^{-n}W_n(r/p)$\\
+$U_t(n)$ & renewal visit probability, $\e^{-nt}Z_n(r(t))$\\
+$A_r,a_n(t)$ & $1-r^{-1}$ and $nA_r/m$; neither is the function $A(z)$\\
+$H,B$ & analytic real and imaginary factors of the boundary values of $Q$, \eqref{tss:sc:eq:HB}\\
+$\Kc_j$ & uniform cut-integral correction kernels\\
+$b_n$ & stable block scale $(\kappa n/m)^{2/3}$\\
+$K_n,L_{i,n},M_n$ & block number, ordered block lengths, and maximum length\\
+$\sigma_n$ & $t_nb_n$, the tempering parameter\\
+$B_n,w_n$ & large-tail intensity parameter and Lambert-core maximum center; $B_n$ is not $B(v)$\\
+$W_0$ & principal real Lambert-$W$ function on positive arguments\\
+\bottomrule
+\end{longtable}
+
+\section{Source audit and limitations (Part~III)}
+\label{tss:sc:app:audit}
+The source search covered the three OEIS entries, the CDFS exact-enumeration paper, Kolesnik's asymptotic paper, the Bassan--Donderwinkel--Kolesnik treatment, the cited tempered-stable reference, and the current repository report's scope and proofs as available during this session. It was not an exhaustive MathSciNet, zbMATH, or journal-archive search. The assertion that the supercritical question is unanswered in the continued repository item is supported by its pinned README; that is narrower than a claim that no general theorem in probability theory could imply a related result.
+
+The principal exact input is \eqref{tss:sc:eq:A}--\eqref{tss:sc:eq:N}. Its attribution is independent of the unrefereed repository manuscript. We have rederived the slit expansion, all analytic estimates used here, the renewal transformation, the inverse formulas, and the probability limits. The critical endpoint and leading heavy-tail constant overlap established or preceding results and are used as checks, not as priority claims.
+
+All probability statements concern the measure on \emph{score sequences} with weight $u^K$, not a uniformly random labeled tournament. The maximum theorem at a positive fixed weight would require a lattice qualification and is deliberately not stated. The two point-process theorems are local in their indicated state spaces. The block-count and extreme-value limits are not claimed jointly. The $O$ constants are not numerically certified. The coefficient expansion is for each fixed truncation order. The Puiseux inverse is genuinely convergent locally, but that fact should not be transferred to the inverse-$n$ expansion.
+
+\section{Package contents (Part~III)}
+\label{tss:sc:app:package}
+The package includes \texttt{article.tex}, \texttt{article.pdf}, a build script and dependency list, a source-provenance note, and three Python scripts. The \texttt{data/} directory contains exact OEIS terms through $80$, the full finite-check log through $180$ with independent component-polynomial enumeration through $10$, symbolic-audit output, five numerical CSV tables, and their LaTeX display fragments. The recorded numerical run reaches $n=4096$. The build does not need network access, an external bibliography database, or external figure files. Font files are not distributed.
+
+\begin{writenote}[Added 5 October 2026, batch~98]
+In this report the package is shipped as described in the note at the end
+of Section~\ref{tss:sc:sec:checks}: everything except the delivered
+\texttt{article.tex} (printed as Part~\ref{tss:sc:part}),
+\texttt{article.pdf}, README and \texttt{SHA256SUMS.txt} (a checksum list,
+verified at placement and retired), with the prefix \texttt{03-supercrit-}.
+The ``full finite-check log'' is \texttt{data/\allowbreak 03-supercrit-run.log},
+a transcript of the program's standard output, which the program prints
+but does not write; likewise \texttt{data/\allowbreak 03-supercrit-symbolic\_run.log}.
+\texttt{data/\allowbreak 03-supercrit-build\_quality.json} records the
+delivered PDF's build (27~pages, three pdf\LaTeX\ passes) and the SHA-256 of
+the delivered source and PDF; its ``no \LaTeX\ warnings'' omits the pdfTeX
+warning about a duplicate destination \texttt{page.1} that the title page
+causes in a rebuild of the delivered source.
+\end{writenote}
+
 \begingroup
 \small\raggedright
 \begin{thebibliography}{99}
@@ -2598,6 +4109,7 @@ OEIS Foundation.
 Sequence identification and conventions, checked 2 October 2026.
 A054946 counts strongly connected labeled tournaments, not strong score sequences.
 Part~II's manuscript consulted A000571, A351822 and A145855 on 3 October 2026 (Pacific time).
+Part~III's manuscript inspected A000571, A351822 and A145855 (the last for the Alekseyev attribution of the divisor evaluation) on 4 October 2026 (Pacific time).
 \bibitem{BBBJ}
 P. Bia\l as, L. Bogacz, Z. Burda, and D. Johnston.
 \emph{Finite size scaling of the balls in boxes model}.
@@ -2630,6 +4142,37 @@ on large deviations of their sum}.
 Stochastic Processes and their Applications 121 (2011), 1138--1147.
 \href{https://doi.org/10.1016/j.spa.2011.01.011}{doi:10.1016/j.spa.2011.01.011}.
 \href{https://arxiv.org/abs/0912.1516}{arXiv:0912.1516}.
+
+\bibitem{Grabchak}
+M. Grabchak.
+\emph{On a new class of tempered stable distributions: moments and regular variation}.
+\href{https://arxiv.org/abs/1109.1028}{arXiv:1109.1028} (2011; revised version available at the linked record).
+Cited by Part~III for tempered stable laws in general.
+
+\bibitem{BFSS}
+C. Banderier, P. Flajolet, G. Schaeffer, and M. Soria.
+\emph{Random maps, coalescing saddles, singularity analysis, and Airy phenomena}.
+Random Structures \& Algorithms 19 (2001), 194--246.
+Critical composition schemes and the map-Airy (stable $3/2$) law; added at the batch-98 write for the priority note of Part~III, and read there through the account in \cite{BKW}.
+
+\bibitem{FS}
+P. Flajolet and R. Sedgewick.
+\emph{Analytic Combinatorics}.
+Cambridge University Press, 2009.
+Added at the batch-98 write as the textbook source named for the map-Airy law of critical compositions, Section~IX.11, ``Non-Gaussian continuous limits''; its text was not consulted at the write.
+
+\bibitem{BKW}
+C. Banderier, M. Kuba, and M. Wallner.
+\emph{Phase transitions of composition schemes: Mittag-Leffler and mixed Poisson distributions}.
+\href{https://arxiv.org/abs/2103.03751}{arXiv:2103.03751v3} (4 December 2024).
+Added at the batch-98 write; its introduction summarizes BFSS's Theorem~12 and announces a companion on stable laws.
+
+\bibitem{BKWW}
+C. Banderier, M. Kuba, S. Wagner, and M. Wallner.
+\emph{Composition schemes: $q$-enumerations and phase transitions in Gibbs models}.
+Analysis of Algorithms (AofA 2024), LIPIcs, paper~7.
+\href{https://doi.org/10.4230/LIPIcs.AofA.2024.7}{doi:10.4230/LIPIcs.AofA.2024.7}.
+Added at the batch-98 write.
 \end{thebibliography}
 \endgroup
 \end{document}
