@@ -133,12 +133,98 @@ adaptation78333302d now has a bounded computational-interface review; its
 imported source implementations and archives are not audited. Batch95
 reciprocal ddb36da6c now has the bounded review linked below. The BCH
 history/adaptation abb123637/ad52ef11e now has a bounded formal-interface
-review, an analytic-domain correction and a rebuilt combined PDF. Earlier guide-only and
+review, an analytic-domain correction and a rebuilt combined PDF. The six archives
+at62846e17a,7be14aa84,fb9f5884b and26e036956 now have authenticated intake
+reviews: four complete manuscript reads, selected atom/hat interfaces and
+a separate hat endpoint-dependency challenge. Earlier guide-only and
 ancillary-placement reviews keep their exact boundaries. Padded
 reversal now has complete129-operation sources:47 witnesses/SOS227/degree40
 or46 witnesses/SOS224/degree52. Native AND remains in the loader, so a
 cheaper loading/accepting-history compiler is still needed for a universal
 improvement. The universal84/187 and85/155 points remain unchanged.
+
+The [hat endpoint follow-up](review_hat_endpoint_26e036956.md) adds the
+missing418 lines of covariance, Fourier and aggregate-cost dependencies,
+completing the630-line model-to-endpoint proof interval at26e036956.
+Private-seed and finite-public-seed nonattainment at expected query cap1 pass
+two mathematical challenges. The proof uses marginal cost caps and never
+assumes the same cap after conditioning on a seed. Its nonsharp private
+success gap does not settle the open positive-probability question.
+A fresh scalar example illustrates why correlated costs defeat the analogous
+independence argument; it is explicitly not a hat strategy. Fresh metadata
+and scalar checks pass before freezing, with no supplied program replay.
+Upper constructions and the full article remain outside this follow-up;
+query counts still provide no paid Diophantine operation saving.
+
+The [three action/randomness intake reviews](review_new_actions_26e036956.md)
+at **26e036956** authenticate all22 archive members and read4086 selected
+member lines. The complete1887-line commuting-injections proof receives a
+mathematical challenge, and fresh code independently reproduces its148 finite
+presentation, necklace, subgroup and permutation cases. Atom-actions and
+hat-randomness receive the precisely listed interface reads; their remaining
+proofs are not certified by this packet. No defect was found in that scope.
+Pure component codes are not finite integer loaders, and the hat threshold1
+charges inspections while computation and permitted randomness are free.
+Fresh normal/optimized receipts pass; no supplied program or builder ran.
+The reports supply no paid fixed-arity Diophantine compiler or arithmetic
+saving. External literature, PDFs and unread dependencies remain unaudited.
+
+The [Borel flows intake review](review_new_borel_flows_fb9f5884b.md) reads the
+complete1724-line manuscript at **fb9f5884b**, authenticates all nine members
+and eight delivered checksums, and checks the cited143-line BCH interface.
+The finite-window flow and unique time-one embedding arguments survive the
+recorded proof challenge. Infinite-rank examples show that separately
+integrable derivations need not remain integrable under sums, brackets or
+products of time-one maps. One malformed literal cross-reference is retained
+as an editorial finding; the theorem itself is correctly labeled and proved.
+Fresh metadata checks pass, while the supplied5372 tests remain unreplayed
+claims. The divisible exponent-group hypothesis differs from the preceding
+conjugacy report, so its review-side nondivisible-group obstruction is not
+transferred. No paid integer compiler, Turing-universality construction or
+operation-count improvement is supplied; PDF and external-source checks
+remain outside this intake.
+
+The [support-complexity intake review](review_new_support_complexity_fb9f5884b.md)
+authenticates the eight-member archive arriving at **7be14aa84**, unchanged
+at fb9f5884b, and reads the complete1629-line manuscript plus the pinned
+145-line Lean interface. No proof defect was found within its stated
+classical dependencies. The infinite certificate spaces and continuous
+regularizations do not provide a finite integer compiler. Two new review-side
+observations sharpen the boundary: a computable legal array can have no
+computable incidence-certificate sequence, and even singleton-support
+strong-summability recognition on arbitrary computable arrays cannot have a
+uniform existential Diophantine compiler. These statements do not contradict
+the report's explicit scope. Fresh metadata checks pass; supplied tests were
+not replayed, and the PDF, external papers and prior Library question were
+not independently verified. The universal84 frontier is unchanged.
+
+The [Borel conjugacy intake review](review_new_borel_62846e17a.md) covers the
+complete1874-line manuscript at **62846e17a**, all six archive members and
+all five delivered checksum entries. Its rank-one classification, centralizers
+and time-regularity arguments survive the recorded mathematical challenge;
+the supplied143 jet checks remain saved claims, with no report code replayed.
+A new review-side construction gives a fixed exponent group with decidable
+rational membership whose finite rational Euler-conjugacy slice is
+**co-c.e.-complete**. Thus that orientation cannot have a uniform ordinary
+existential Diophantine certificate. The source itself leaves effectivity open.
+Fresh metadata/finite-height checks pass before freezing; the PDF and external
+bibliography were not independently verified. No paid integer compiler or
+operation saving is supplied, and the established universal84 bound remains.
+
+The [aggregate positive input budget](complete83_aggregate_input_budget.md)
+uses the whole positive input interval in the unchanged83 source. Its exact
+least CRT representative must satisfy `ell*k0<S0`; a sufficient guarantee is
+`Hreq<=ceil(S0/ell)`, where `Hreq=A³/gcd(A³,C0)` and C0 is the central binomial
+coefficient. The capped carry factor is exactly `A²/Hreq`; with half the
+radix left as slack, a factor of at least `6ell` suffices. This replaces the
+older separate per-prime thresholds by a combined requirement of polynomial
+size. The [independent review](review_complete83_aggregate_input_budget.md)
+checks the complete proof,23 actual source rows,269793 CRT endpoint cases,
+5652 cap cases and a full504-term local example. Fresh normal/optimized
+receipts passed before freezing. The local example fails the actual source
+slack and is explicitly scoped accordingly. Occurrence of the required
+carry factor and the enlarged-z binary population condition remain open;
+no actual compiler zero or universal83 theorem is claimed.
 
 The [source-coupled input-lifting theorem](complete83_source_coupled_input_lifting.md)
 constructs exact linear resonances at every odd radix prime while preserving
@@ -5416,6 +5502,12 @@ New research and the completed75-operation construction:
 
 | Artifact | Established result | Remaining boundary |
 |---|---|---|
+| [Hat endpoint dependency challenge](review_hat_endpoint_26e036956.md) | Adds418 proof lines, completing model-to-endpoint coverage193–822; private and finite-public exclusions pass with marginal cost caps and correct conditioning. | Positive-probability private success and upper constructions remain outside the conclusion; scalar correlated-cost example is not a hat strategy or arithmetic compiler. |
+| [Commuting injections, atom actions and hat randomness](review_new_actions_26e036956.md) | All22 members authenticated; complete commuting proof read and148 finite cases independently recomputed; exact selected atom/hat interfaces reviewed. | Other atom/hat proofs remain outside scope. Pure codes and free-computation query bounds do not supply paid integer compilers; no arithmetic saving. |
+| [Borel flows and finite-window criteria](review_new_borel_flows_fb9f5884b.md) | Full1724-line proof read; nine-member archive and cited BCH interface authenticated. Exact flow/time-one scope and infinite-rank nonclosure checked. | One malformed reference recorded; saved5372 checks not replayed. No effective certificate producer, paid compiler or arithmetic improvement; divisible-group scope retained. |
+| [Support complexity, certificates and effective boundaries](review_new_support_complexity_fb9f5884b.md) | Full1629-line manuscript and pinned Lean interface read; eight-member archive authenticated. Two new computability deductions distinguish infinite certificates from ordinary existential integer witnesses. | No paid finite compiler; supplied finite tests not rerun, external foundations accepted at stated scope, PDF and historical Library question unverified. |
+| [Aggregate positive input budget](complete83_aggregate_input_budget.md) | Exact CRT/slack criterion and capped factorization Hreq=A³/gcd(A³,C0); a polynomial-size combined carry factor suffices with half-radix slack. Independent proof/source and fresh checks pass. | Actual carry-factor occurrence and enlarged-z binary population remain unproved; local arithmetic example is not a positive source tuple. |
+| [Borel conjugacy and effective-presentation boundary](review_new_borel_62846e17a.md) | Full manuscript/inert helper read; six-member archive and manifest authenticated. New review-side computable exponent group has co-c.e.-complete finite Euler-conjugacy slice. | No existential Diophantine certificate for that orientation; no paid compiler. Saved jets not replayed; PDF and external sources unverified. |
 | [Source-coupled odd-prime input lifting](complete83_source_coupled_input_lifting.md) | Exact linear resonance representatives fit positive outer slack eventually; normalized input bijections and CRT give conditional simultaneous odd-prime completion. Independently reviewed. | Requires odd central valuations at least2a and a separate binary population condition; no actual full source zero or universal83 result. |
 | [Odd-primary carry budget and source obstruction](complete83_odd_primary_carry_budget.md) | Exact quotient-carry identities; actual positive F=Kz family forbids A² dividing R+1 or R+3 for n>=5. Independent proof/source challenge and fresh receipts pass. | Excludes simultaneous deep-resonance strategies only; mixed branches, sufficient quotient carries and odd-primary completion remain open. |
 | [Sparse compiler coefficients: n>=5 binary cutoff](complete83_outer_family_sparse_two_primary.md) | Actual clause sparsity bounds the three high-digit population losses by less than d/2; every permitted n>=5 passes the full two-primary condition. Independent proof/source review and fresh finite checks pass. | n=1, odd-primary completion, full positive source zero and universal83 remain unproved. |
