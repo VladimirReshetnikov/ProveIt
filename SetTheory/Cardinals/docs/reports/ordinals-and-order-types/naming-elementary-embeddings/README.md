@@ -435,8 +435,22 @@ not a bound on Diophantine witnesses, that the finite checks are regression
 evidence only, and that the proposed formalization is not an implemented
 compiler; the Hilbert's-tenth programme's 84-operation universal polynomial
 is unaffected. It claims no theorem audit, literature check or replay, and
-made no correctness finding; no scope correction was needed. No review of
-Part II's or Part III's manuscripts exists there.
+made no correctness finding; no scope correction was needed. Part III's
+later sources received a [separate intake review](../../../../../../Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/review_new_actions_26e036956.md):
+the commuting-injections manuscript received a complete proof read, while
+the atom-actions manuscript received the selected interface reads listed
+there. A [placement review](../../../../../../Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/review_atom_injection_placement_27f200305.md)
+separately authenticated the ancillary files. These are scoped internal
+reviews, not formal or external certification.
+
+**Review remark 1 (4 October 2026).** The guide at `03683e579` stated
+"No review of Part II's or Part III's manuscripts exists there." The
+Part III assertion is false: both reviews linked above were already
+present at that commit. The intake records full commuting-injections
+proof coverage and selected atom-actions interfaces, and the placement
+review has a separate, narrower scope. This counterexample corrects the
+claim of absence; it does not turn the atom-actions intake into a full
+manuscript audit or establish any new Part II review.
 
 **The same Collection theorem in a surreal report.** Batch-89 manuscript 03,
 *Surreal Cuts, Replacement, and Atom-Support Spectra*, written against the
