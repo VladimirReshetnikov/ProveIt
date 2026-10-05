@@ -10,6 +10,8 @@
 \usepackage{microtype}
 \usepackage[hidelinks]{hyperref}
 \usepackage{enumitem}
+% Added 5 October 2026, batch 100: let long file paths break at _ and -.
+\makeatletter\g@addto@macro\UrlBreaks{\do\_\do\-}\makeatother
 \setlist{itemsep=3pt,topsep=5pt}
 \allowdisplaybreaks[2]
 \emergencystretch=2em
@@ -18,6 +20,7 @@
 \newtheorem{proposition}[theorem]{Proposition}
 \newtheorem{corollary}[theorem]{Corollary}
 \theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+% Macros of Part I (Report 182).
 \newcommand{\E}{\mathbb E}
 \newcommand{\Prob}{\mathbb P}
 \newcommand{\Z}{\mathbb Z}
@@ -31,10 +34,18 @@
 \DeclareMathOperator{\Var}{Var}
 \DeclareMathOperator{\supp}{supp}
 \DeclareMathOperator{\Law}{Law}
-\hypersetup{pdftitle={Report182 Phase resolved asymptotics for A271619},pdfauthor={Research report},pdfsubject={Weighted strict partitions with partition number amplitudes}}
-\title{Report182\\[5pt]Phase resolved asymptotics for A271619}
-\author{A rigorous asymptotic and reproducibility report}
-\date{3 October 2026}
+% Macros of Part II (Report 181); its \E and \Var are Part I's, with the same meaning.
+\newcommand{\PP}{\mathbb P}
+\newcommand{\Cov}{\operatorname{Cov}}\newcommand{\Ree}{\operatorname{Re}}\newcommand{\Imm}{\operatorname{Im}}
+\newcommand{\ZZ}{\mathbb Z}\newcommand{\NN}{\mathbb N}\newcommand{\CC}{\mathbb C}
+\newcommand{\as}{s_*}\newcommand{\eps}{\varepsilon}\newcommand{\poc}[2]{(#1;#2)_\infty}
+% Added 5 October 2026, batch 100: marker for text added in the write.
+\newcommand{\wtag}{\textup{[write]}}
+\hypersetup{pdftitle={Strict twice partitions: phase-resolved asymptotics for A271619 and nested partitions with distinct block lengths (A358836)},pdfauthor={},pdfsubject={Merged report a271619-strict-twice-partitions (batch 100): weighted strict partitions with partition-number amplitudes (Report 182) and nested partitions with distinct block lengths (Report 181)}}
+\title{Strict twice partitions\\[5pt]\large Phase-resolved asymptotics for A271619,\\ and nested partitions with distinct block lengths (A358836)}
+\author{Part I: Report 182 (author line ``A rigorous asymptotic and reproducibility report'')\\
+Part II: Research report 181}
+\date{3 October 2026; merged 5 October 2026 (batch 100)}
 \begin{document}
 \maketitle
 \begin{abstract}
@@ -47,20 +58,284 @@ This is an eventual asymptotic theorem, not a certified practical approximation 
 \paragraph{Scope and provenance.}
 The sequence and its defining product are prior work of Gus Wiseman (2016) in the inspected OEIS entry~\cite{oeis}. The substantive result here is the target-specific relative expansion and its controlled errors. Our bounded source screen found no directly covering theorem; it is not a global priority certification, and no claim of being first is made. This report and its accompanying code have not been submitted externally.
 
+\paragraph{Editorial note (\wtag, 5 October 2026, batch 100).}
+This report is built from two manuscripts of one external research
+session: Reports~182 and~181 of the session bundle of Reports 1--243,
+which arrived in ProveIt commit \texttt{60f54ea06} and were placed together,
+as cluster DPP of batch~100 of the incoming-reports intake, in
+\texttt{36571ae0e}. Report~182 (Part~I, the base; its abstract, finite-index
+warning and scope paragraph stand above) treats OEIS A271619,
+$a(n)=[q^n]\prod_{k\ge1}(1+p(k)q^k)$: collections of integer partitions
+whose \emph{sizes} are distinct. Report~181 (Part~II) treats OEIS A358836,
+$a_n=[q^n]\prod_{k\ge1}(1+q^k/(q;q)_k)$: collections of integer partitions
+whose \emph{lengths} (numbers of parts) are distinct. Both are dated
+3~October 2026. Report~182's package adapts Report~181's build scaffold, as
+its source audit says, but neither manuscript uses the other's mathematics:
+they prove no common theorem and share no proof. Each Part keeps its own
+definitions, hypotheses and notation. Section~\ref{stp:sec:notation}
+tabulates the letters the Parts use differently, above all $b$, which is the
+constant $\pi\sqrt{2/3}$ in Part~I and the variance $L''(t_n)$ in Part~II.
+
+\emph{Status.} Part~I's author line, ``A rigorous asymptotic and
+reproducibility report'', is that manuscript's description of itself, not
+an assessment by anyone else. Neither manuscript has been refereed; the
+reviews named in Part~I's review record (Section~\ref{stp:sum:sec:sources})
+belong to the delivering session; no statement of this report has been
+checked by a proof assistant. Part~I's main theorem is an \emph{eventual}
+result only: at $n=5000$ its leading formula is about $562$ times too small,
+and the first-corrected one about $206$ times (its finite-index warning
+above and Section~\ref{stp:sum:sub:floating}).
+
+Text added in the write is marked \wtag. Sections~\ref{stp:sec:guide}--\ref{stp:sec:limits}
+are front matter written for this report, Section~\ref{stp:sum:sec:further}
+and Section~\ref{stp:len:sec:questions} close each Part with its further
+questions (the manuscripts' own, and the claims the write found stated
+without proof), and Appendix~\ref{stp:app:provenance} records the
+provenance, the numbering crosswalk and every editorial change.
+
+\setcounter{tocdepth}{1}
 \tableofcontents
 \newpage
 
+\section{How the two Parts fit together}\label{stp:sec:guide}
+
+\wtag\ Both sequences count \emph{twice partitions with a strict outer
+level}: an object is a finite collection of ordinary partitions (the
+blocks), and no two blocks share the value of one statistic. Both
+generating functions are decorated distinct-part products
+$\prod_{k\ge1}(1+w_k\,q^k)$.
+
+\begin{center}
+\small
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{.17\textwidth}>{\raggedright\arraybackslash}p{.385\textwidth}>{\raggedright\arraybackslash}p{.385\textwidth}@{}}
+\toprule
+& Part I: A271619 (Report 182) & Part II: A358836 (Report 181)\\
+\midrule
+distinct statistic & block size (weight) & block length (number of parts)\\
+product & $\prod_k(1+p(k)q^k)$, \eqref{stp:sum:eq:model} & $\prod_k(1+q^kP_k(q))$, $P_k=1/(q;q)_k$, \eqref{stp:len:eq:products}\\
+decoration $w_k$ & $p(k)$: fixed, $\log p(k)\sim\pi\sqrt{2k/3}$ & $1/(q;q)_k\to P(q)$: depends on $q$; at the saddle $\log P(e^{-t})\sim A/t\asymp n^{1/4}$\\
+first terms & $1,1,2,5,8,18,34,65,\dots$ & $1,1,2,4,8,15,28,51,\dots$\\
+leading growth & $\log a(n)\sim\frac{4\pi2^{1/4}}{3\sqrt3}n^{3/4}$, constant $2.87598$ (Proposition~\ref{stp:sum:prop:growth}) & $\log a_n\sim\frac{4\pi}{3\cdot24^{1/4}}n^{3/4}$, constant $1.89250$ (Theorem~\ref{stp:len:thm:tiers})\\
+mechanism & two effective charges $M,M-1$ (a filled staircase plus an edge partition) exchanging dominance at the triangular phase $9/16$, with a persistent independent low-hole cloud; a single central saddle provably fails (Section~\ref{stp:sum:sec:resonance}) & one exact saddle, valid at every angle (Lemma~\ref{stp:len:lem:allarc}), after an exact reduction to Jacobi, partition and MacMahon products (Section~\ref{stp:len:sec:reduction})\\
+outer count $K_n$ & $M-B_n-|\cH_\infty|$ in total variation, bounded fluctuations (Theorem~\ref{stp:sum:thm:TV}) & Gaussian, $\Var K_n\sim1/(3t_n)$ (Theorem~\ref{stp:len:thm:clt})\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The two growth constants are computed from Proposition~\ref{stp:sum:prop:growth}
+and~\eqref{stp:len:eq:leadingtwo}; both outer counts are of order
+$\sqrt n$ (Part~I: $M\sim\sqrt{2n}$; Part~II: $K_n/\sqrt n\to\sqrt{2/3}$).
+
+\begin{itemize}
+\item \textbf{Part~I} (Sections~\ref{stp:sum:sec:main}--\ref{stp:sum:sec:further}):
+an expansion of $a(n)$ to every fixed relative order through a smooth
+two-charge carrier (Theorem~\ref{stp:sum:thm:main}), with the explicit first
+and second corrections \eqref{stp:sum:eq:B1}, \eqref{stp:sum:eq:B2}; the
+discrete inverse (Theorem~\ref{stp:sum:thm:inverse}); elementary growth and
+monotonicity (Section~\ref{stp:sum:sec:elementary}); the failure of a single
+central minor-arc bound (Section~\ref{stp:sum:sec:resonance}); the exact
+low-hole filling identity (Section~\ref{stp:sum:sec:filling}); the tame
+edge expansion through Bloch--Okounkov brackets
+(Theorem~\ref{stp:sum:thm:local}); filled-block localization
+(Theorem~\ref{stp:sum:thm:global}); the crossover centre and the product
+normalization (Section~\ref{stp:sum:sec:crossover}); the joint law of the
+filled charge and the low holes (Theorem~\ref{stp:sum:thm:TV}); and
+pure-integer enclosures of $C_0$, $\mu_1$, $\mu_{\rm count}$ and
+$\sigma^2_{\rm count}$ (Section~\ref{stp:sum:sec:computation}).
+\item \textbf{Part~II} (Sections~\ref{stp:len:sec:model}--\ref{stp:len:sec:questions}):
+the exact reduction~\eqref{stp:len:eq:factorization} and the finite-end
+expansion (Proposition~\ref{stp:len:prop:finiteend}); the free energy to
+every fixed order (Theorem~\ref{stp:len:thm:freeenergy}); an all-angle
+bound (Lemma~\ref{stp:len:lem:allarc}) and every fixed Edgeworth order
+(Theorem~\ref{stp:len:thm:coefficient}); three power-log tiers and an
+elementary relative equivalent (Theorems~\ref{stp:len:thm:tiers}
+and~\ref{stp:len:thm:elementary}); controlled inversion
+(Section~\ref{stp:len:sec:inverse}); the Gaussian law of the number of
+blocks (Theorem~\ref{stp:len:thm:clt}); and the Gumbel law of the largest
+length with joint independence (Theorem~\ref{stp:len:thm:gumbel}).
+\end{itemize}
+
+\paragraph{What the write adds.} Proofs of two steps that Part~II states in
+outline: the sharpened mean~\eqref{stp:len:eq:meansharp} (after the proof of
+Theorem~\ref{stp:len:thm:clt}) and the marker-derivative bounds used in the
+proof of Theorem~\ref{stp:len:thm:gumbel}; a one-line justification of a
+sentence of Section~\ref{stp:sum:sec:crossover}; dated notes; and the
+lists of unproved claims in Sections~\ref{stp:sum:sec:further}
+and~\ref{stp:len:sec:questions}. Nothing in either manuscript was found to
+be wrong. One wording is corrected in a note: Part~II calls a
+$\exp(-ct^{-2\delta})$ bound ``exponentially small'' (proof of
+Theorem~\ref{stp:len:thm:coefficient}).
+
+\paragraph{Relation to other reports in the repository.}
+The neighbouring reports named here are in the directory
+\begin{quote}\small
+\path{SetTheory/Cardinals/docs/reports/generating-functions-and-asymptotics/}\\
+\path{oeis-sequence-asymptotics/}.
+\end{quote}
+\begin{itemize}
+\item \path{a291698-moving-fugacity-partitions} (labels \texttt{mfp:})
+treats $[q^n]\prod_k(1+n^\alpha q^k)$. Its exact Jacobi decomposition, its
+equation~(11) in the section ``Exact Jacobi decomposition and the
+finite-sector proof'', continues analytically to complex fugacity; taken at
+$u=e^{\mu(z)}$ its logarithm is Part~II's
+expansion~\eqref{stp:len:eq:Dexp} of $\log D(z)$. Part~II derives
+it independently from the triple product and adds the dual-term bound on
+its moving complex disk (see the note after~\eqref{stp:len:eq:Dexp}). Its
+Section~10.3 asks for the regime $\log u\asymp n^{1/6}$ beyond polynomial
+fugacity. Part~II's effective fugacity has $\log u\asymp n^{1/4}$ and depends
+on $q$ itself; Part~II's own source audit says that direct substitution into
+that report's theorem is not justified, and its all-angle bound leaves no
+resonance sector at all. Part~II is a neighbouring model, not an answer to
+that question.
+\item \path{a022629-distinct-partition-norms} (labels \texttt{dpn:}) treats
+$\prod_k(1+k^\alpha q^k)^\mu$ and slot multiplicities. Its question~7 asks
+which smooth regularly varying weights preserve a single large crossing.
+The weight $p(k)$ of Part~I grows like $e^{\pi\sqrt{2k/3}}$, is not
+regularly varying, and produces two competing charges instead of a single
+crossing: a different regime, not an answer. In the same batch~100,
+Report~93 of the bundle is being written into that report as its
+Section~22 (a critical theta window for a growing power): the same class of
+phenomenon as Section~\ref{stp:sum:sec:resonance} here, near-modulus-one
+Fourier peaks that defeat a single Gaussian saddle, for a different
+product; no theorem is shared.
+\item \path{a126348-stable-hilbert-series} (labels \texttt{shs:}, new in
+batch~100, Report~84 of the bundle) treats $\prod_k(1+q^k/(1-q))$, whose
+fugacity $1/(1-q)$ also depends on $q$; like Part~II it uses Jacobi's triple
+product and the eta transformation. No theorem is shared.
+\item No other report, volume or formal development treats A271619, A358836
+or their neighbour A261049 (searched 5 October 2026).
+\end{itemize}
+
+\paragraph{Formal status.} No statement of this report is formalized. The
+classical identity both Parts start from, Jacobi's triple product, is
+formalized in Lean as \path{Fabius.hasSum_jacobi_triple_product} in
+\begin{quote}\small
+\path{Analysis/FabiusFunction/Lean/FabiusFunction/JacobiTripleProduct.lean}:
+\end{quote}
+$\sum_{k\in\Z}(-1)^kq^{k(k-1)/2}z^k=(z;q)_\infty(q/z;q)_\infty(q;q)_\infty$
+for $|q|<1$, $z\ne0$. Part~I's normalization~\eqref{stp:sum:eq:Jacobi} is its
+instance $q=e^{-\tau}$, $z=-q^{1/2}$, and Part~II's identity~\eqref{stp:len:eq:triple}
+its instance $q=e^{-z}$, $z\mapsto-e^{-\mu(z)}$. Nothing beyond that classical
+identity is formalized.
+
+\section{Notation across the two Parts}\label{stp:sec:notation}
+
+\wtag\ No symbol of either manuscript was renamed. Each Part uses its own
+manuscript's letters, defined where they first occur. The following mean the
+same in both Parts: $A=\pi^2/6$; $\E$ (expectation) and $\Var$; $q=e^{-t}$
+for a real or complex parameter $t$; $K_n$, the number of outer blocks of a
+uniformly chosen object of size $n$; $p(k)$, the partition function (Part~II
+writes $P(q)=\sum_kp(k)q^k$); and $Y$, the logarithm of a threshold in the
+inverse problem. The letters in Table~\ref{stp:tab:notation} mean different
+things in the two Parts; the right-hand column names the tempting false
+reading.
+
+\begin{small}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{.08\textwidth}>{\raggedright\arraybackslash}p{.3\textwidth}>{\raggedright\arraybackslash}p{.3\textwidth}>{\raggedright\arraybackslash}p{.24\textwidth}@{}}
+\caption{Letters with different meanings in Parts~I and~II.}\label{stp:tab:notation}\\
+\toprule
+Letter & Part~I (Report 182) & Part~II (Report 181) & Not to be read as\\
+\midrule
+\endfirsthead
+\toprule
+Letter & Part~I & Part~II & Not to be read as\\
+\midrule
+\endhead
+$b$ & the constant $b=\pi\sqrt{2/3}$ of~\eqref{stp:sum:eq:notation}, so that $\log p(k)\sim b\sqrt k$ & the variance $b=\kappa_2=L''(t_n)\sim6A^2t_n^{-5}$ of~\eqref{stp:len:eq:scale}; $b(s)=L_{tt}(\tau(s),s)$ & Part~II's $b$ grows like $n^{5/4}$ and is not a constant; Part~I's $b$ is not a variance\\
+$a$ & $a(n)$, A271619; the Taylor increment $a(h)$ of Section~\ref{stp:sum:sec:local}; the constant $a=21/5$ of Section~\ref{stp:sum:sub:A2} & $a_n$, A358836; the constant $a=A^2/2=\pi^4/72$ of~\eqref{stp:len:eq:constants} & $a(n)$ and $a_n$ are different sequences; $21/5\ne\pi^4/72$\\
+$B$ & corrections $B_1(c),B_2(c)$, \eqref{stp:sum:eq:B1}, \eqref{stp:sum:eq:B2}; normalization $B(N)$, \eqref{stp:sum:eq:BN}; Bernoulli variables $B_k$ (Section~\ref{stp:sum:sec:resonance}) and $B_n$ (Section~\ref{stp:sum:sec:TV}); $B_{m,r;L}$ & block series $B_k(q)=q^kP_k(q)$, \eqref{stp:len:eq:products}; the tier constant $B_n$ of~\eqref{stp:len:eq:nnotation} & Part~I's $B_n$ is a random variable, Part~II's $B_n$ a number; neither $B_k$ is the other\\
+$C$ & $C_0=\prod_k(1+1/p(k))$; the growth constant $C$ of Proposition~\ref{stp:sum:prop:growth}; $C_P$ of~\eqref{stp:sum:eq:CP} & the tier constant $C_n$ of~\eqref{stp:len:eq:nnotation}; $c=4s_*/3$ in Section~\ref{stp:len:sec:inverse} & \\
+$D$ & tame cutoff $D=\lfloor m^\delta\rfloor$; $D(\varphi)$ of Section~\ref{stp:sum:sec:crossover}; inverse margin $D_J$ & the Jacobi product $D(z)$, $D_s(z)$; $D_n=B_n-A/4$; the disk $\mathcal D_t$ & \\
+$E$ & charge carriers $E_J(x)$, \eqref{stp:sum:eq:EJ}; Eisenstein series $E_2,E_4,E_6$; $E_m^{\rm tame}$ & Edgeworth corrections $E_h(t)$, in particular $E_1,E_2$, \eqref{stp:len:eq:E1}, \eqref{stp:len:eq:E2} & Part~I's $E_2$ is an Eisenstein series or a carrier (Section~\ref{stp:sum:sub:B2} says which), Part~II's $E_2$ the second Edgeworth correction\\
+$F$ & $F(t)=\log\prod_k(1+p(k)e^{-tk})$, a logarithm & the generating function $F(q)$; its logarithm is $L(t)$ & Part~I's $F$ corresponds to Part~II's $L$\\
+$L$ & the low cutoff $L=\lfloor M^{17/20}\rfloor$ & the free energy $L(t)=\log F(e^{-t})$, $L(z,s)$, $L_2$ & \\
+$M$ & $M=M(n)=\lfloor(\sqrt{8n+1}-1)/2\rfloor$; $M_N$ for size $N$ & MacMahon's product $M(q)$; the random largest occupied length $M_n$ & Part~II's $M_n$ is random, Part~I's $M_N$ a deterministic index\\
+$N$ & $N(Y)=\min\{n:\log a(n)\ge Y\}$; a total size $N$ (Section~\ref{stp:sum:sec:global}); the energy $N$ of Section~\ref{stp:sum:sec:local} & $N(x)=\max\{n:a_n\le x\}$, $Y=\log x$; $N_0$ & not one definition: applied to one sequence, Part~II's rule at $x=e^Y$ gives Part~I's $N(Y)-1$, unless $e^Y$ is a value of the sequence ($Y>0$)\\
+$P$ & $P_m=\prod_{k\le m}p(k)$, a number; $\cP(q)=\prod_k(1-q^k)^{-1}$ & $P_k(q)=\prod_{j\le k}(1-q^j)^{-1}$ and $P(q)$, power series & Part~II's $P(q)$ is Part~I's $\cP(q)$, not $P_m$\\
+$Q$ & shifted power sums $Q_j(\lambda)$, \eqref{stp:sum:eq:Qj}, in particular $Q_2,Q_3$; $Q(c)=V(c)-S(c)$; the filled charge $Q_n$ & the inverse carrier $Q_2(t)$, \eqref{stp:len:eq:Q2} & the two $Q_2$ are unrelated\\
+$R$ & $R^{(D)}_{m,r}$; $R_r=r-1/24$ & the finite-end factor $R(z)$, $R_k(z)$; the Taylor remainder $R_H$ & \\
+$T$ & triangular numbers $T_m=m(m+1)/2$; tails $T_s(N)$, \eqref{stp:sum:eq:T0} & $T_k(z)=\mu(z)-\mu_k(z)$; the tail sum $T_m(z,s)$, \eqref{stp:len:eq:Ttail} & Part~II's $T_m$ is not triangular\\
+$Z$ & the normalization $Z(\tau)$, \eqref{stp:sum:eq:Jacobi}; $Z_m(s;D)$ & $Z=\zeta(3)$; a standard normal $Z_0$ & \\
+$G$, $H$, $I$ & $G(d),G_\ell(d)$; the hole set $\cH$ and the width $H_t$; Bessel functions $I_\nu$ & the Gumbel variable $G$, geometric $G_j$, $G_n$; the formal series $H(z)$ and the Edgeworth order $H$; the interpolant $I$ & \\
+$J$ & a fixed expansion order (never a charge) & a fixed truncation order; in~\eqref{stp:len:eq:Etuple} the total Gaussian degree & \\
+$S$, $U$, $V$, $W$ &$S(c)$, $S_D$, $S_t$, the outer set $S$; Bernoulli $U_h,V_h$; $U=Q_3+7/960$; $V(c)$; $W_m(n)$, $W(u)$ & $U=t/\eps$ in the proofs of Theorems~\ref{stp:len:thm:tiers} and~\ref{stp:len:thm:elementary} & \\
+$t$ & the physical parameter, $t=f(M)/M\sim b/\sqrt M$ in Section~\ref{stp:sum:sub:initialtail}; $X(t)$ & the exact saddle $t=t_n\sim s_*n^{-1/4}$ & \\
+$c$, $m$ & $c=r/m$, $c_m(x)$; $m$ an effective filled-edge charge & $c$ a small disk constant; $m$ a threshold index, $m_j$ multiplicities, $m_B(t)$ & \\
+$\mu$ & hole moments $\mu_j=\E h_\infty^j$; $\mu_{\rm count}$ & $\mu(z)=\log P(e^{-z})$, $\mu_k(z)$ & Part~II's $\mu(t)\sim A/t$ is not a moment\\
+$\kappa$, $\tau$ & $\kappa$ positive constants; $\tau=\pi/\sqrt{6r}$ & cumulants $\kappa_j$; the complex saddle $\tau(s)$ and the root $\tau$ of $Q_2(\tau)=Y$ & \\
+$\ell$, $h$ & $\ell=L/m$ and a resonance index; the hole energy $h(\cH)$, $h_\infty$, half-integer positions $h$ & $\ell=\log(t/2\pi)$, $\ell_n$; coefficients $h_j$; an Edgeworth index $h$ & \\
+$\sigma$, $\rho$, $\lambda$ & $\sigma_h^2$, $\sigma^2_{\rm count}$; $\rho_h$, $\rho_\ell(d)$; a partition $\lambda$ & $\sigma=\Ree s$; $\rho=t^{3/2}$; standardized cumulants $\lambda_j$ & \\
+$\varphi,\phi$, $\eps$, $\eta$ & the characteristic function $\phi_t$, the phase $\varphi$, $\varphi(k)=\log p(k)-tk$; small constants $\epsilon$; $\eta=24/25$ & exponent functions $\phi_0,\phi_1,\phi_2$; $\eps=n^{-1/4}$ and absence probabilities $\eps_k$; constants $\eta$, $\eta_R(Y)$ & \\
+\bottomrule
+\end{longtable}
+\end{small}
+
+\section{What neither Part claims}\label{stp:sec:limits}
+
+\wtag\ Every limitation stated by either manuscript is printed in its
+place. Collected:
+\begin{itemize}
+\item \emph{Part~I.} An eventual theorem only, not a practical
+approximation: at $n=5000$ the leading carrier divided by $a(n)$ is about
+$0.00177838$ and the first-corrected one $0.00486243$; a single Gaussian's
+ratio $1.00047777$ there proves nothing. The onset is not effective; there
+is no finite-$n$ accuracy theorem, no convergence of the expansion and no
+uniformity in a growing order $J$; no reconstruction of every
+exponentially smaller charge and no convergent transseries. The inverse need
+not decide the rounding near an integer. The threshold $\alpha=1/3$ of
+Section~\ref{stp:sum:sec:resonance} is a modulus observation, not a
+coefficient theorem. No certified value of $C_P$. The limit $9/16$ is not a
+finite-$M$ threshold (the equal-weight phase is about $1.02188$ at
+$M=1000$). The source screen was bounded: no universal novelty claim; the
+Gingold--Quaintance lead is unverified; the full texts of
+Garoni--Frankel--Glasser and Leboeuf were not audited. The package has no
+all-orders symbolic engine and no interval-certified finite-$n$ carrier; its
+manifest is not a signature and its builder is not a sandbox; its floating
+diagnostics are uncertified. A preliminary dossier error (a resonance
+moment without the upper-region restriction) was corrected before
+delivery (review record, Section~\ref{stp:sum:sec:sources}).
+\item \emph{Part~II.} No effective asymptotic onset; no convergence of the
+complete formal series (the series $H$ is formal); no bounds uniform in a
+growing truncation order and no optimal truncation; no interval
+certificates for asymptotic errors; no unconditional rounding rule and no
+universal exact floor formula for the inverse; no arbitrary accuracy against
+the fixed piecewise-linear interpolant (the order-$t^4$ barrier). The product
+(Howroyd) and the composition model (Wiseman) are prior; the Jacobi, eta,
+MacMahon, saddle, Edgeworth and conditioning methods are classical. The
+source search was bounded and library misses are incomplete; no global
+priority or ``breakthrough'' claim; McIntosh, Knopfmacher et al., Kaneiwa
+and Wright were not read in full. Frozen numerical tables are diagnostics;
+finite checks prove no asymptotic theorem; the further questions are
+suggested, not claimed open in the literature; no reproducibility promise
+across TeX versions.
+\item \emph{The write.} Its proofs of two outline steps of Part~II and its
+numerical comparisons are unrefereed like the rest. Its statements about
+other reports are checked against the repository of 5 October 2026.
+\end{itemize}
+
+\part{Phase-resolved asymptotics for A271619}\label{stp:sum:part}
+
+\wtag\ Part~I is Report~182 of the session bundle, \emph{Phase resolved
+asymptotics for A271619}, author line ``A rigorous asymptotic and
+reproducibility report'', dated 3~October 2026 (30 pages as delivered). The
+author line is the manuscript's own description; the manuscript is
+unrefereed and not formalized. Its abstract, finite-index warning and scope
+paragraph open this report, before the contents. Its text follows unchanged
+except for the label prefix \texttt{stp:sum:}, one label added to a
+subsection, the title of Section~\ref{stp:sum:sec:further} (was ``Further
+directions'') and the notes marked \wtag.
+
 \section{Model, notation, and main results}
-\label{sec:main}
+\label{stp:sum:sec:main}
 An object consists of a finite set $S\subset\N$ of distinct positive outer sizes, together with one ordinary partition of $k$ for each $k\in S$. Its total size is $\sum_{k\in S}k$. Thus
-\begin{equation}\label{eq:model}
+\begin{equation}\label{stp:sum:eq:model}
  a(n)=\sum_{\substack{S\subset\N\text{ finite}\\\sum S=n}}\prod_{k\in S}p(k),
  \qquad \sum_{n\ge0}a(n)q^n=\prod_{k\ge1}(1+p(k)q^k).
 \end{equation}
 The product is analytic for $|q|<1$ because $p(k)=\exp(O(\sqrt k))$. This model allows at most one outer block of each \emph{size}. It is different from $\prod(1+q^k)^{p(k)}$, which permits distinct types of the same size simultaneously.
 
 Throughout, put
-\begin{equation}\label{eq:notation}
+\begin{equation}\label{stp:sum:eq:notation}
  b=\pi\sqrt{2/3},\quad T_m=\frac{m(m+1)}2,\quad
  P_m=\prod_{k=1}^m p(k),\quad
  M=M(n)=\left\lfloor\frac{\sqrt{8n+1}-1}{2}\right\rfloor.
@@ -68,45 +343,45 @@ Throughout, put
 Here $n$ is total size, $m$ is an effective filled-edge charge, and $r_m(x)=x-T_m$ is residual size. Set $c_m(x)=r_m(x)/m$. The symbol $J$ will always denote a fixed expansion order, never a charge. An actual outer cardinality is denoted by $K_n$. A set of missing low levels is denoted by $\cH$; its energy is $h(\cH)=\sum_{k\in\cH}k$. The tame-edge cutoff is $D$, and the low-level cutoff is $L$, avoiding confusion between a cutoff and hole energy.
 
 For sufficiently large real $y$, define
-\begin{equation}\label{eq:f}
+\begin{equation}\label{stp:sum:eq:f}
  f(y)=b\sqrt{u}-\log(4\sqrt3\,u)
        +\log\left(1-\frac1{b\sqrt u}\right),\qquad u=y-\frac1{24}.
 \end{equation}
 This is the logarithm of the dominant exponential branch of the first Rademacher summand, not the whole hyperbolic-sine summand. We prove below that
-\begin{equation}\label{eq:ferror}
+\begin{equation}\label{stp:sum:eq:ferror}
  \log p(k)=f(k)+O(e^{-c\sqrt k}),\qquad
  f^{(j)}(y)=O_j(y^{1/2-j})\quad(j\ge1).
 \end{equation}
 Each derivative has a computable expansion in half-integral powers. The exact low weights remain in $P_m$.
 
 The limiting hole set $\cH_\infty$ has independent memberships
-\begin{equation}\label{eq:holelaw}
+\begin{equation}\label{stp:sum:eq:holelaw}
  \Prob(k\in\cH_\infty)=\frac1{p(k)+1},\qquad
  C_0=\prod_{k\ge1}\left(1+\frac1{p(k)}\right).
 \end{equation}
 It is finite almost surely. Write $h_\infty=\sum_{k\in\cH_\infty}k$ and $\mu_j=\E h_\infty^j$, with $\mu_0=1$. All these moments are finite; no positive ordinary exponential moment exists.
 
-Choose a nonnegative $C^\infty$ function $\chi$, compactly supported in $(1/4,9/4)$ and equal to one on $[1/2,7/4]$. Section~\ref{sec:local} constructs smooth, computable functions $A_k(c)$ with
-\begin{equation}\label{eq:Aone}
+Choose a nonnegative $C^\infty$ function $\chi$, compactly supported in $(1/4,9/4)$ and equal to one on $[1/2,7/4]$. Section~\ref{stp:sum:sec:local} constructs smooth, computable functions $A_k(c)$ with
+\begin{equation}\label{stp:sum:eq:Aone}
  A_0(c)=1,\qquad A_1(c)=b\left(\frac{21c^2}{80}+\frac{c^{5/2}}5\right).
 \end{equation}
 For large real $x$, define the finite sums
 \begin{align}
  E_J(x)&=\sum_{m\ge1}\chi(c_m(x))P_m
   e^{f'(m+1/2)r_m(x)+f(r_m(x))}
-  \sum_{k=0}^J A_k(c_m(x))m^{-k/2},\label{eq:EJ}\\
+  \sum_{k=0}^J A_k(c_m(x))m^{-k/2},\label{stp:sum:eq:EJ}\\
  \cA_J(x)&=C_0\sum_{j=0}^J\frac{\mu_j}{j!}\,E_{J-j}^{(j)}(x).
- \label{eq:carrier}
+ \label{stp:sum:eq:carrier}
 \end{align}
 Only boundedly many $m$ occur at each $x$; summands are defined to be zero outside the cutoff support. On that support all arguments of $f$ tend to infinity. Consequently this convention is smooth and creates no small-argument ambiguity.
 
-\begin{theorem}[All fixed relative orders]\label{thm:main}
+\begin{theorem}[All fixed relative orders]\label{stp:sum:thm:main}
 For every fixed integer $J\ge0$, as $n\to\infty$ through integers,
-\begin{equation}\label{eq:main}
+\begin{equation}\label{stp:sum:eq:main}
  a(n)=\cA_J(n)\left(1+O_J(M^{-(J+1)/2})\right).
 \end{equation}
 The error is uniform through triangular boundaries and the two-charge crossover. The carrier is eventually positive and
-\begin{equation}\label{eq:slope}
+\begin{equation}\label{stp:sum:eq:slope}
  0<c_J M(x)^{-1/2}\le (\log\cA_J)'(x)
  \le C_J M(x)^{-1/2}
 \end{equation}
@@ -114,24 +389,24 @@ for all sufficiently large real $x$. The constants and onset may depend on $J$ a
 \end{theorem}
 
 At integer inputs, its all-algebraic-order content comes from charges $M$ and $M-1$. Write
-\begin{equation}\label{eq:W}
+\begin{equation}\label{stp:sum:eq:W}
  W_m(n)=P_m e^{f'(m+1/2)r_m(n)}p(r_m(n)).
 \end{equation}
 When $r_M$ is small, its charge is exponentially subdominant and can be omitted. The first complete correction is
-\begin{equation}\label{eq:B1}
+\begin{equation}\label{stp:sum:eq:B1}
  B_1(c)=b\left[\frac{21c^2}{80}+\frac{c^{5/2}}5
                  +\frac{\mu_1}{2}(1+c^{-1/2})\right].
 \end{equation}
 Uniformly, with errors relative to the positive leading sum,
-\begin{equation}\label{eq:firstfull}
+\begin{equation}\label{stp:sum:eq:firstfull}
  a(n)=C_0\!\sum_{\substack{m=M,M-1\\r_m\ge m/4}}
  W_m(n)\left[1+\frac{B_1(c_m)}{\sqrt m}+O(M^{-1})\right].
 \end{equation}
-Dropping the small-residual term costs only an exponentially small relative error. A second explicit coefficient and relative error $O(M^{-3/2})$ are proved in Sections~\ref{sub:A2} and~\ref{sub:B2}.
+Dropping the small-residual term costs only an exponentially small relative error. A second explicit coefficient and relative error $O(M^{-3/2})$ are proved in Sections~\ref{stp:sum:sub:A2} and~\ref{stp:sum:sub:B2}.
 
-\begin{theorem}[Discrete inverse]\label{thm:inverse}
+\begin{theorem}[Discrete inverse]\label{stp:sum:thm:inverse}
 Let $N(Y)=\min\{n\ge0:\log a(n)\ge Y\}$. For fixed $J$, let $x_J(Y)$ be the unique sufficiently large solution of $\log\cA_J(x)=Y$. There is a fixed $D_J>0$ such that, for all sufficiently large $Y$,
-\begin{equation}\label{eq:inverse}
+\begin{equation}\label{stp:sum:eq:inverse}
  \left\lceil x_J(Y)-D_J M(x_J(Y))^{-J/2}\right\rceil
  \le N(Y)\le
  \left\lceil x_J(Y)+D_J M(x_J(Y))^{-J/2}\right\rceil.
@@ -141,24 +416,24 @@ At $Y=\log a(k)$, one also has $|x_J(Y)-k|=O_J(M(k)^{-J/2})$.
 For $J=0$ the pre-rounding uncertainty is bounded; for $J\ge1$ it tends to zero. Near an integer, the theorem need not decide the rounding. It concerns integer-point errors and the explicit carrier slope, not an arbitrary interpolation of the sequence.
 
 \paragraph{Meaning of the phase expansion.}
-The competing exponential charge weights, each carrying its own algebraic series, form a two-sector asymptotic transseries in the fixed-order sense made precise by~\eqref{eq:main}. We do not claim a reconstruction of every exponentially smaller charge or a convergent transseries.
+The competing exponential charge weights, each carrying its own algebraic series, form a two-sector asymptotic transseries in the fixed-order sense made precise by~\eqref{stp:sum:eq:main}. We do not claim a reconstruction of every exponentially smaller charge or a convergent transseries.
 
 \paragraph{Proof architecture.}
 We first establish elementary growth and the resonance obstruction. The exact filling identity then separates low holes without double counting. The local expansion applies only to tame edge diagrams. A separate global proof controls non-tame hooks and every other charge, paying for each hook's coordinate entropy with its own Bellman gap. Finally, a two-stage weighted hole truncation and a finite Taylor expansion assemble the carrier. This order avoids circular tail estimates and avoids differentiating any unknown coefficient remainder.
 
 \section{Elementary growth and classical partition input}
-\label{sec:elementary}
+\label{stp:sum:sec:elementary}
 Hardy--Ramanujan and Rademacher give~\cite{dlmfpart}
-\begin{equation}\label{eq:logp}
+\begin{equation}\label{stp:sum:eq:logp}
  \log p(k)=b\sqrt k-\log k-\log(4\sqrt3)+O(k^{-1/2}).
 \end{equation}
-For completeness, the exponentially accurate version~\eqref{eq:ferror} follows directly from the convergent Rademacher series. With $u=k-1/24$, $v=b\sqrt u/j$, and the elementary bound $|A_j(k)|\le j$ on its exponential sum, use
+For completeness, the exponentially accurate version~\eqref{stp:sum:eq:ferror} follows directly from the convergent Rademacher series. With $u=k-1/24$, $v=b\sqrt u/j$, and the elementary bound $|A_j(k)|\le j$ on its exponential sum, use
 \[
  v\cosh v-\sinh v=\int_0^v y\sinh y\,dy\le v^3e^v/3.
 \]
-Every $j\ge2$ summand is $O(j^{-3/2}e^{b\sqrt u/j})$; their sum is $O(e^{b\sqrt u/2})$. The dominant $j=1$ branch has order $u^{-1}e^{b\sqrt u}$, so the relative error is $O(ue^{-b\sqrt u/2})$, hence $O(e^{-c\sqrt u})$. The opposite exponential in the first summand is smaller still. Formula~\eqref{eq:f} and its differentiated expansions follow by elementary differentiation.
+Every $j\ge2$ summand is $O(j^{-3/2}e^{b\sqrt u/j})$; their sum is $O(e^{b\sqrt u/2})$. The dominant $j=1$ branch has order $u^{-1}e^{b\sqrt u}$, so the relative error is $O(ue^{-b\sqrt u/2})$, hence $O(e^{-c\sqrt u})$. The opposite exponential in the first summand is smaller still. Formula~\eqref{stp:sum:eq:f} and its differentiated expansions follow by elementary differentiation.
 
-\begin{lemma}\label{lem:monotone}
+\begin{lemma}\label{stp:sum:lem:monotone}
 $a(n+1)>a(n)$ for $n\ge1$, while $a(0)=a(1)=1$.
 \end{lemma}
 \begin{proof}
@@ -168,12 +443,12 @@ Append a part $1$ to the inner partition decorating the largest outer size. This
 Put $F(t)=\log\prod_{k\ge1}(1+p(k)e^{-tk})$. Since $|\log(1+e^u)-u_+|\le\log2$ and $|(u+v)_+-u_+|\le|v|$, splitting at a sufficiently large constant multiple of $b^2/t^2$ gives
 \begin{align}
  F(t)&=\sum_{k\ge1}(b\sqrt k-tk)_++O(t^{-2}\log(1/t))\notag\\
- &=\frac{b^4}{6t^3}+O(t^{-2}\log(1/t)).\label{eq:Fgrowth}
+ &=\frac{b^4}{6t^3}+O(t^{-2}\log(1/t)).\label{stp:sum:eq:Fgrowth}
 \end{align}
-Indeed the logarithmic errors in~\eqref{eq:logp} sum to the stated bound below that cutoff, the tails decay geometrically above it, and the sum/integral error of the leading unimodal summand is $O(t^{-1})$.
+Indeed the logarithmic errors in~\eqref{stp:sum:eq:logp} sum to the stated bound below that cutoff, the tails decay geometrically above it, and the sum/integral error of the leading unimodal summand is $O(t^{-1})$.
 
-\begin{proposition}\label{prop:growth}
-\begin{equation}\label{eq:growth}
+\begin{proposition}\label{stp:sum:prop:growth}
+\begin{equation}\label{stp:sum:eq:growth}
  \log a(n)=\frac{2b}{3}(2n)^{3/4}+O(\sqrt n\log(n+2)).
 \end{equation}
 Consequently, with $C=(2b/3)2^{3/4}=4\pi2^{1/4}/(3\sqrt3)$,
@@ -182,23 +457,23 @@ Consequently, with $C=(2b/3)2^{3/4}=4\pi2^{1/4}/(3\sqrt3)$,
 \]
 \end{proposition}
 \begin{proof}
-Positivity gives $a(n)\le e^{F(t)+nt}$. Choose $t=b/(2n)^{1/4}$ in~\eqref{eq:Fgrowth}. For the lower bound, take outer sizes $1,\ldots,M$ and add $n-T_M$ to the largest size. Their total weight is at least $P_M$ because $p$ is nondecreasing. Summing~\eqref{eq:logp} gives $\log P_M=(2b/3)M^{3/2}+O(M\log M)$, which matches the upper bound since $M=\sqrt{2n}+O(1)$. Monotonicity and inversion of the leading power give the final formula.
+Positivity gives $a(n)\le e^{F(t)+nt}$. Choose $t=b/(2n)^{1/4}$ in~\eqref{stp:sum:eq:Fgrowth}. For the lower bound, take outer sizes $1,\ldots,M$ and add $n-T_M$ to the largest size. Their total weight is at least $P_M$ because $p$ is nondecreasing. Summing~\eqref{stp:sum:eq:logp} gives $\log P_M=(2b/3)M^{3/2}+O(M\log M)$, which matches the upper bound since $M=\sqrt{2n}+O(1)$. Monotonicity and inversion of the leading power give the final formula.
 \end{proof}
 The elementary exact computation uses descending product updates
 \[
  a^{(k)}(n)=a^{(k-1)}(n)+p(k)a^{(k-1)}(n-k),\qquad a^{(0)}(0)=1.
 \]
-Its independent logarithmic-derivative recurrence is recorded in Section~\ref{sec:computation}.
+Its independent logarithmic-derivative recurrence is recorded in Section~\ref{stp:sum:sec:computation}.
 
 \section{Why a single central minor arc estimate fails}
-\label{sec:resonance}
+\label{stp:sum:sec:resonance}
 The following concerns characteristic-function moduli, not by itself a coefficient formula. Let $X=X(t)$ be the large solution of $f(X)=tX$, and put $H_t=(t-f'(X))^{-1}$. Then
-\begin{equation}\label{eq:XHt}
+\begin{equation}\label{stp:sum:eq:XHt}
  X=\frac{b^2}{t^2}(1+O(t\log(1/t))),\qquad
  H_t=\frac2t(1+O(t\log(1/t))).
 \end{equation}
 Use $X$, not the integer charge $M$, for this physical crossing. Independent Bernoulli variables $B_k$ with odds $p(k)e^{-tk}$ produce total size $S_t=\sum kB_k$. Write $v_k=\Prob(B_k=1)\Prob(B_k=0)$ and $\phi_t(\theta)=\E e^{i\theta S_t}$. Exactly,
-\begin{equation}\label{eq:modulus}
+\begin{equation}\label{stp:sum:eq:modulus}
  \log|\phi_t(\theta)|=\frac12\sum_{k\ge1}
  \log\left(1-4v_k\sin^2(k\theta/2)\right).
 \end{equation}
@@ -208,8 +483,8 @@ $g(y)=e^y/(1+e^y)^2$, with uniformly exponentially decaying tails after fixed-wi
  \sum_{k\ge\epsilon X}(k-X)^2v_k\sim H_t^3\pi^2/3,\qquad
  \sum_{k\ge\epsilon X}(k-X)^4v_k=O(H_t^5).
 \]
-The restriction to $k\ge\epsilon X$ is essential: persistent low holes would make the unrestricted centered second moment of order $X^2$, larger than the upper-edge term. At $\theta=2\pi\ell/X$, the sine in~\eqref{eq:modulus} equals in modulus $\sin(\pi\ell(k-X)/X)$. Expanding sine and logarithm only in this upper region therefore gives, after adding the lower-region estimate below, for each fixed nonzero integer $\ell$,
-\begin{equation}\label{eq:resonance}
+The restriction to $k\ge\epsilon X$ is essential: persistent low holes would make the unrestricted centered second moment of order $X^2$, larger than the upper-edge term. At $\theta=2\pi\ell/X$, the sine in~\eqref{stp:sum:eq:modulus} equals in modulus $\sin(\pi\ell(k-X)/X)$. Expanding sine and logarithm only in this upper region therefore gives, after adding the lower-region estimate below, for each fixed nonzero integer $\ell$,
+\begin{equation}\label{stp:sum:eq:resonance}
  \log|\phi_t(2\pi\ell/X)|
  =-\frac{2\pi^4}{3}\ell^2\frac{H_t^3}{X^2}(1+o(1))
  =-12\ell^2t(1+o(1)).
@@ -226,10 +501,16 @@ If a smooth stretched amplitude satisfies $\log w(k)\sim b k^\alpha$, where $b>0
 \]
 Here $t\sim bX^{\alpha-1}$ and $H_t\sim X^{1-\alpha}/(b(1-\alpha))$. This identifies $\alpha=1/3$ as a natural \emph{modulus} threshold. No general coefficient crossover or all-orders theorem for such weights is asserted.
 
+\wtag\ (5 October 2026, batch 100.) This observation is listed as
+question~(i) of Section~\ref{stp:sum:sec:further}, with what a proof would
+need. At $\alpha=1/2$ it reduces to~\eqref{stp:sum:eq:resonance}: with
+$X\sim b^2/t^2$, $X^{-1/2}\sim t/b$ and $b^4=4\pi^4/9$, the exponent is
+$-16\pi^4\ell^2t/(3b^4)=-12\ell^2t$ (checked in the write).
+
 \section{The exact low hole filling identity}
-\label{sec:filling}
+\label{stp:sum:sec:filling}
 Fix $n$, $M=M(n)$, and $L=\lfloor M^{17/20}\rfloor$. Keep this $L$ fixed even when a hole shift changes the total size. For an outer set $S$ define
-\begin{equation}\label{eq:unique}
+\begin{equation}\label{stp:sum:eq:unique}
  \cH=[1,L]\setminus S,\quad h=\sum_{k\in\cH}k,
  \quad S^+=S\cup[1,L],\quad m=|S^+|=|S|+|\cH|.
 \end{equation}
@@ -241,8 +522,8 @@ $\lambda_i=k_i-(m-i+1)$. Then $\lambda$ is an ordinary partition of $n+h-T_m$ an
 \]
 reconstructs $S^+=\{m-i+1+\lambda_i:1\le i\le m\}$ and then $S=S^+\setminus\cH$. The length restriction ensures that $S^+$ contains $[1,L]$, so its missing-low-level set is precisely $\cH$. These are mutually inverse maps on outer selections. In particular the filled charge is unique, adjacent charge sectors are disjoint, and the actual cardinality is $m-|\cH|$.
 
-Let $A_L(N)$ be the weighted sum~\eqref{eq:model} restricted to selections containing $[1,L]$, and put $p(\cH)=\prod_{k\in\cH}p(k)$. The exact weighted identity is
-\begin{equation}\label{eq:convolution}
+Let $A_L(N)$ be the weighted sum~\eqref{stp:sum:eq:model} restricted to selections containing $[1,L]$, and put $p(\cH)=\prod_{k\in\cH}p(k)$. The exact weighted identity is
+\begin{equation}\label{stp:sum:eq:convolution}
  a(n)=\sum_{\cH\subset[1,L]}\frac{A_L(n+h(\cH))}{p(\cH)}.
 \end{equation}
 This is a weighted identity for decorated objects: the new decorations introduced by filling contribute $p(\cH)$, which is divided out. No literal unweighted bijection to arbitrarily decorated filled objects is needed.
@@ -254,42 +535,42 @@ For completeness, define
  \qquad B_{m,r;L}=0\ (r<0).
 \]
 Then $A_L(N)=\sum_{m\ge L}P_mB_{m,N-T_m;L}$, a finite sum. If $(a_i,b_i)$ are Frobenius arms and legs of $\lambda$, its exact weight ratio is
-\begin{equation}\label{eq:hooks}
+\begin{equation}\label{stp:sum:eq:hooks}
  \prod_i\frac{p(m+a_i+1)}{p(m-b_i)},\qquad
  r=\sum_i(a_i+b_i+1).
 \end{equation}
 Every changed denominator is above $L$. Thus, after coarse localization $m\asymp M$, replacing changed logarithms by $f$ costs at most $O(m e^{-c\sqrt L})$ in the log weight. The untouched product $P_m$ remains exact.
 
 \subsection{Initial weighted hole truncation without a carrier assumption}
-\label{sub:initialtail}
+\label{stp:sum:sub:initialtail}
 Set $t=f(M)/M\sim b/\sqrt M$ and $\varphi(k)=\log p(k)-tk$. The exact product identity gives
 \begin{align}
  F(t)+nt-\log P_M
  &=t(n-T_M)+\sum_{k\le M}\log(1+e^{-\varphi(k)})\notag\\
  &\hspace{28mm}+\sum_{k>M}\log(1+e^{\varphi(k)}).
- \label{eq:physical}
+ \label{stp:sum:eq:physical}
 \end{align}
-The right side is $O(\sqrt M)$. Here are details covering all ranges. For a small fixed $\epsilon$ and sufficiently large $k\le\epsilon M$,~\eqref{eq:logp} gives $\varphi(k)\ge c\sqrt k$; finitely many smaller $k$ contribute $O(1)$. The corrections are summable. On $[\epsilon M,M/2]$, the leading expression $b\sqrt M(\sqrt{k/M}-k/M)$ is at least $c\sqrt M$, so its correction is exponentially small. On $[M/2,CM]$, for fixed large $C$, $f'(x)-t\le-c/\sqrt M$ uniformly. Since $f(M)-tM=0$, the relevant side of $\varphi(k)$ is at most $-c|k-M|/\sqrt M$, up to an exponentially tiny error. Summing gives $O(\sqrt M)$. Finally, for $k\ge CM$, the bound $\log p(k)\le b\sqrt k\le tk/2$ gives a geometric tail. Also $t(n-T_M)=O(\sqrt M)$.
+The right side is $O(\sqrt M)$. Here are details covering all ranges. For a small fixed $\epsilon$ and sufficiently large $k\le\epsilon M$,~\eqref{stp:sum:eq:logp} gives $\varphi(k)\ge c\sqrt k$; finitely many smaller $k$ contribute $O(1)$. The corrections are summable. On $[\epsilon M,M/2]$, the leading expression $b\sqrt M(\sqrt{k/M}-k/M)$ is at least $c\sqrt M$, so its correction is exponentially small. On $[M/2,CM]$, for fixed large $C$, $f'(x)-t\le-c/\sqrt M$ uniformly. Since $f(M)-tM=0$, the relevant side of $\varphi(k)$ is at most $-c|k-M|/\sqrt M$, up to an exponentially tiny error. Summing gives $O(\sqrt M)$. Finally, for $k\ge CM$, the bound $\log p(k)\le b\sqrt k\le tk/2$ gives a geometric tail. Also $t(n-T_M)=O(\sqrt M)$.
 
-Positivity implies $A_L(n+h)\le a(n+h)\le e^{F(t)+t(n+h)}$. For $K=M^\eta$ with $\eta=24/25=0.96$, the contribution of $h>K$ in~\eqref{eq:convolution} is therefore at most
+Positivity implies $A_L(n+h)\le a(n+h)\le e^{F(t)+t(n+h)}$. For $K=M^\eta$ with $\eta=24/25=0.96$, the contribution of $h>K$ in~\eqref{stp:sum:eq:convolution} is therefore at most
 \[
  P_Me^{C\sqrt M}\sum_{\substack{\cH\subset[1,L]\\h>K}}
        \frac{e^{th}}{p(\cH)}.
 \]
-Take $\lambda=b/(8\sqrt L)$. Since $t\sqrt L\to0$, eventually $(t+\lambda)k\le (b/2)\sqrt k$ for every $k\le L$. The lower bound implicit in~\eqref{eq:logp} makes
+Take $\lambda=b/(8\sqrt L)$. Since $t\sqrt L\to0$, eventually $(t+\lambda)k\le (b/2)\sqrt k$ for every $k\le L$. The lower bound implicit in~\eqref{stp:sum:eq:logp} makes
 \[
  \prod_{k\le L}\left(1+\frac{e^{(t+\lambda)k}}{p(k)}\right)\le C
 \]
 uniformly: its logarithm is dominated by a convergent sum of $Ck e^{-b\sqrt k/2}$ plus finitely many factors. Chernoff's inequality bounds the omitted contribution by
-\begin{equation}\label{eq:initialtail}
+\begin{equation}\label{stp:sum:eq:initialtail}
  CP_M\exp(C\sqrt M-cM^{\eta-17/40}).
 \end{equation}
 Since $\eta-17/40=0.535>1/2$, this is smaller than $P_M$ times every fixed negative power of $M$. This argument uses only the elementary lower bound $a(n)\ge P_M$, not the desired carrier. For $h\le M^\eta=o(M)$ the continuous triangular root changes by $O(h/M)=o(1)$; its floor remains $M$ or becomes $M+1$.
 
 \section{The tame edge expansion to every fixed order}
-\label{sec:local}
+\label{stp:sum:sec:local}
 For a partition $\lambda$, set
-\begin{equation}\label{eq:Qj}
+\begin{equation}\label{stp:sum:eq:Qj}
  Q_j(\lambda)=\sum_{i\ge1}\left[(\lambda_i-i+1/2)^j-(-i+1/2)^j\right],
  \qquad d(\lambda)=\max(\lambda_1,\ell(\lambda)).
 \end{equation}
@@ -299,12 +580,12 @@ In particular $Q_1=|\lambda|$. Fix $1/2<\delta<1$ and $D=\lfloor m^\delta\rfloor
  \exp\left\{\sum_i[f(m+1-i+\lambda_i)-f(m+1-i)]-f'(x_m)r\right\}.
 \]
 
-\begin{theorem}[Local expansion with controlled remainders]\label{thm:local}
+\begin{theorem}[Local expansion with controlled remainders]\label{stp:sum:thm:local}
 Uniformly for $c=r/m$ in any fixed compact subset of $(0,\infty)$, for every fixed $J\ge0$,
-\begin{equation}\label{eq:local}
+\begin{equation}\label{stp:sum:eq:local}
  R_{m,r}^{(D)}=\sum_{k=0}^J A_k(c)m^{-k/2}+O_J(m^{-(J+1)/2}).
 \end{equation}
-The coefficients are smooth, effectively computable, independent of $\delta$, and satisfy~\eqref{eq:Aone}. The same expansion holds for actual partition-number weights after multiplication by $P_m e^{f'(x_m)r}p(r)$.
+The coefficients are smooth, effectively computable, independent of $\delta$, and satisfy~\eqref{stp:sum:eq:Aone}. The same expansion holds for actual partition-number weights after multiplication by $P_m e^{f'(x_m)r}p(r)$.
 \end{theorem}
 The theorem is expressly local: it does not apply to an unrestricted cardinality-$m$ sector for all fixed positive $c$. We exhibit the obstruction after its proof.
 
@@ -314,19 +595,19 @@ For positive half-integers $h$, let $U_h,V_h$ be mutually independent Bernoulli 
  C=\sum_h(U_h-V_h),\qquad N=\sum_h h(U_h+V_h).
 \]
 Given $C=0$, the equal-sized particle and hole sets are exactly Frobenius coordinates of a partition. Given also $N=r$, their common unnormalized weight is $e^{-\tau r}$, so the law is uniform on partitions of $r$. Exactly on this event,
-\begin{equation}\label{eq:frobQ}
+\begin{equation}\label{stp:sum:eq:frobQ}
  Q_j=\sum_hh^j[U_h+(-1)^{j+1}V_h],\qquad
  Q_j(\lambda')=(-1)^{j+1}Q_j(\lambda).
 \end{equation}
 The half-integer energy causes no omitted lattice factor: charge zero forces integral energy.
 
 Write $\cP(q)=\prod_{k\ge1}(1-q^k)^{-1}$ and $A=\pi^2/6$. Jacobi's triple product gives the exact normalization
-\begin{equation}\label{eq:Jacobi}
+\begin{equation}\label{stp:sum:eq:Jacobi}
  Z(\tau)=\prod_{h>0}(1+e^{-\tau h})^2
  =\cP(e^{-\tau})\sum_{a\in\Z}e^{-\tau a^2/2}.
 \end{equation}
 Eta and Gaussian transformations give $Z(\tau)\sim e^{A/\tau}$. Hardy--Ramanujan then yields
-\begin{equation}\label{eq:conditioning}
+\begin{equation}\label{stp:sum:eq:conditioning}
  \Prob(C=0,N=r)=\frac{p(r)e^{-\tau r}}{Z(\tau)}
  \sim\frac1{4\sqrt3\,r}.
 \end{equation}
@@ -340,7 +621,7 @@ For $h\le D-1/2$, put
  S_D&=\sum_{0<h\le D-1/2}[a(h)U_h+d(h)V_h].
 \end{align*}
 On the tame conditioning event this is the exact centered exponent. Outside that event it is just a truncated additive random variable, not the true exponent of an unrestricted large partition. Since $D=o(m)$, Taylor's theorem gives uniformly
-\begin{equation}\label{eq:adbound}
+\begin{equation}\label{stp:sum:eq:adbound}
  |a(h)|+|d(h)|\le Cm^{-3/2}h^2,
  \qquad |a(h)+d(h)|\le Cm^{-5/2}h^3.
 \end{equation}
@@ -349,7 +630,7 @@ $C_vm^{-5/2}\sum_h\rho_hh^3=O_v(m^{-5/2}\tau^{-4})=O_v(m^{-1/2})$.
 The quadratic and higher remainder is bounded by
 $C_vm^{-3}\sum_hh^4e^{-\tau h/2}=O_v(m^{-3}\tau^{-5})=O_v(m^{-1/2})$.
 Thus
-\begin{equation}\label{eq:expbound}
+\begin{equation}\label{stp:sum:eq:expbound}
  \E e^{vS_D}=\exp(O_v(m^{-1/2})).
 \end{equation}
 In particular $\E e^{v|S_D|}$ is bounded, using $e^{v|s|}\le e^{vs}+e^{-vs}$.
@@ -360,14 +641,14 @@ The first cumulant is $O(m^{-1/2})$. For $s\ge2$, the Bernoulli bound $|\kappa_s
  =O_s(m^{-(s-1)/2}).
 \]
 In the moment-cumulant formula for a $2k$th moment, pairings have the slowest decay, $O(m^{-k/2})$; every other partition of the cumulant indices decays at least as fast. Hence
-\begin{equation}\label{eq:S-moments}
+\begin{equation}\label{stp:sum:eq:S-moments}
  \E|S_D|^{2k}=O_k(m^{-k/2}).
 \end{equation}
 All these bounds also hold for any fixed Taylor-polynomial replacement of $a,d$ starting at degree two. Its quadratic bound is unchanged and the even Taylor terms still cancel in $a+d$.
 
 \subsection{Finite Taylor reduction with arbitrary accuracy}
-The independent probability of a particle or hole above $D-1/2$ is $O(\tau^{-1}e^{-\tau D})$. Combining Cauchy--Schwarz,~\eqref{eq:expbound}, and~\eqref{eq:conditioning} shows
-\begin{equation}\label{eq:cutofftail}
+The independent probability of a particle or hole above $D-1/2$ is $O(\tau^{-1}e^{-\tau D})$. Combining Cauchy--Schwarz,~\eqref{stp:sum:eq:expbound}, and~\eqref{stp:sum:eq:conditioning} shows
+\begin{equation}\label{stp:sum:eq:cutofftail}
  \E_r[e^{S_D}\ind_{d(\lambda)>D}]
  =O(m^{5/4}e^{-\kappa m^{\delta-1/2}}).
 \end{equation}
@@ -390,7 +671,7 @@ Finally, a fixed polynomial moment in truncated Frobenius sums differs from the 
  J_0>2B+3,\qquad K>4B+3,
 \]
 and use the finite expression
-\begin{equation}\label{eq:finiteTaylor}
+\begin{equation}\label{stp:sum:eq:finiteTaylor}
  \sum_{k=0}^K\frac1{k!}\E_r
  \left(\sum_{j=2}^{J_0}\frac{f^{(j)}(x_m)}{j!}Q_j\right)^k.
 \end{equation}
@@ -400,7 +681,7 @@ No infinite exponential series is interchanged with an uncontrolled partition su
 For a partition statistic $G$, write
 $\langle G\rangle_q=\cP(q)^{-1}\sum_\lambda G(\lambda)q^{|\lambda|}$.
 Bloch--Okounkov's theorem~\cite{BO} applies to the corrected shifted powers
-\begin{equation}\label{eq:shiftcorrect}
+\begin{equation}\label{stp:sum:eq:shiftcorrect}
  \widehat Q_j=Q_j+(1-2^{-j})\zeta(-j),\qquad
  \mathrm{weight}(\widehat Q_j)=j+1.
 \end{equation}
@@ -413,7 +694,7 @@ This growth expansion is transferred by a genuine coefficient argument. The prod
  \log\cP(e^{-\tau})-\log|\cP(e^{-\tau+i\theta})|
  &\ge\sum_{k\ge1}e^{-\tau k}(1-\cos k\theta)\notag\\
  &\gg\frac{\theta^2}{\tau(\tau^2+\theta^2)},\quad |\theta|\le\pi.
- \label{eq:Pminor}
+ \label{stp:sum:eq:Pminor}
 \end{align}
 The first inequality follows by retaining the first term in the logarithmic product series, all terms being nonnegative; the final sum is an explicit difference of geometric sums, with $1-\cos\theta\asymp\theta^2$ on this interval. Outside $|\theta|\le\tau^{1+\epsilon}$, where $0<\epsilon<1/2$, this gives suppression $e^{-\Omega(\tau^{-1+2\epsilon})}$, absorbing every fixed Eisenstein and normalization power. Within that arc, modular remainders are uniformly exponentially small, and the width exceeds the Gaussian width $\tau^{3/2}$.
 
@@ -425,12 +706,12 @@ $\cP(e^{-z})\sim\sqrt{z/(2\pi)}\exp(A/z-z/24)$ shows that a monomial $z^{-d}$ ha
 Substitution $z=\sqrt{A/R_r}\,w$ identifies its local steepest-descent expansion with that of the standard Hankel--Schläfli contour for $I_{d-3/2}(z_r)$~\cite{dlmfbessel}. To make this interpretation precise, take the unit circle in $w$ together with both sides of the negative ray from $-1$ to $-\infty$. On the circle the real exponent is $z_r\cos\theta$; outside a shrinking positive-saddle arc there is superpolynomial attenuation relative to $e^{z_r}$. On the negative rays the exponent is at most $-z_r$. The short bridges deforming the original central vertical arc to the circle retain a fixed fraction of the endpoint saddle drop. Thus the two \emph{local expansions} agree to all algebraic orders. We do not identify a finite arc exactly with a Bessel function, or use an unregularized possibly nonconvergent vertical integral at $d=0$.
 
 Dividing by the identical $d=0$ partition normalization gives the all-algebraic-order rule
-\begin{equation}\label{eq:Besselrule}
+\begin{equation}\label{stp:sum:eq:Besselrule}
  z^{-d}\longmapsto
  \left(\frac{R_r}{A}\right)^{d/2}
  \frac{I_{d-3/2}(z_r)}{I_{-3/2}(z_r)}.
 \end{equation}
-Fixed-order Bessel expansions with controlled remainders therefore produce full half-power expansions for every $\E_rG$. The orders are half-integral; $I_{-3/2}$ and $I_{3/2}$ differ only beyond algebraic order relative to their growing branch. This is consistent with the prefactor $z^{1/2}$ and with~\eqref{eq:f}.
+Fixed-order Bessel expansions with controlled remainders therefore produce full half-power expansions for every $\E_rG$. The orders are half-integral; $I_{-3/2}$ and $I_{3/2}$ differ only beyond algebraic order relative to their growing branch. This is consistent with the prefactor $z^{1/2}$ and with~\eqref{stp:sum:eq:f}.
 
 \subsection{Finiteness at each order and the first coefficient}
 Under the independent law, fixed $L^s$ norms satisfy
@@ -446,7 +727,7 @@ For even $j$ the sums are centered, so cumulant bounds give the first line; for 
  v(\alpha)=\sum_{j\text{ even}}(j/2-3/4)\alpha_j
        +\sum_{\substack{j\ge3\\j\text{ odd}}}(j/2-1)\alpha_j.
 \]
-The derivative-weighted monomial has size $O(m^{-v(\alpha)+\epsilon})$. Conjugation~\eqref{eq:frobQ} makes its expectation vanish unless the number of even-indexed factors is even. For the remaining monomials $v(\alpha)$ is a nonnegative half-integer. Since the exact transferred expansions and derivatives contain only half powers, choosing $\epsilon<1/2$ rules out any term above the valuation bound. Each factor has positive valuation, at least $1/4$, so only finitely many monomials contribute at each fixed half-order. Derivatives remove the sole logarithm in $f$, so the $A_k$ contain no hidden $\log m$ factors. Together with~\eqref{eq:finiteTaylor} this proves the existence and uniform remainder in Theorem~\ref{thm:local}.
+The derivative-weighted monomial has size $O(m^{-v(\alpha)+\epsilon})$. Conjugation~\eqref{stp:sum:eq:frobQ} makes its expectation vanish unless the number of even-indexed factors is even. For the remaining monomials $v(\alpha)$ is a nonnegative half-integer. Since the exact transferred expansions and derivatives contain only half powers, choosing $\epsilon<1/2$ rules out any term above the valuation bound. Each factor has positive valuation, at least $1/4$, so only finitely many monomials contribute at each fixed half-order. Derivatives remove the sole logarithm in $f$, so the $A_k$ contain no hidden $\log m$ factors. Together with~\eqref{stp:sum:eq:finiteTaylor} this proves the existence and uniform remainder in Theorem~\ref{stp:sum:thm:local}.
 
 The first coefficient can be made fully explicit. With
 \[
@@ -455,7 +736,7 @@ The first coefficient can be made fully explicit. With
  E_6=1-504\sum_{n\ge1}\sigma_5(n)q^n,
 \]
 quasimodularity and the weight-four and weight-six bases give
-\begin{equation}\label{eq:twobrackets}
+\begin{equation}\label{stp:sum:eq:twobrackets}
  \langle Q_3\rangle_q=\frac{5E_2^2+2E_4-7}{960},\qquad
  \langle Q_2^2\rangle_q=\frac{5E_2^3-3E_2E_4-2E_6}{6480}.
 \end{equation}
@@ -482,28 +763,28 @@ Since $\E_rQ_2=0$, the only order-$m^{-1/2}$ terms are
 \[
  \frac{f'''(x_m)}6\E_rQ_3+\frac{f''(x_m)^2}8\E_rQ_2^2.
 \]
-Using $f''(x_m)\sim-b/(4m^{3/2})$ and $f'''(x_m)\sim3b/(8m^{5/2})$ gives exactly~\eqref{eq:Aone}, with both signs positive.
+Using $f''(x_m)\sim-b/(4m^{3/2})$ and $f'''(x_m)\sim3b/(8m^{5/2})$ gives exactly~\eqref{stp:sum:eq:Aone}, with both signs positive.
 
-For actual weights, every changed argument in a tame diagram lies in $[m-D,m+D]$, and there are at most $2D$ such arguments. Equation~\eqref{eq:ferror} therefore changes its log weight by $O(De^{-c\sqrt m})$. This proves the last part of Theorem~\ref{thm:local}.
+For actual weights, every changed argument in a tame diagram lies in $[m-D,m+D]$, and there are at most $2D$ such arguments. Equation~\eqref{stp:sum:eq:ferror} therefore changes its log weight by $O(De^{-c\sqrt m})$. This proves the last part of Theorem~\ref{stp:sum:thm:local}.
 
 \subsection{A second explicit local correction}
-\label{sub:A2}
+\label{stp:sum:sub:A2}
 The same controlled calculation gives
-\begin{equation}\label{eq:A2}
+\begin{equation}\label{stp:sum:eq:A2}
  A_2(c)=\frac{A_1(c)^2}{2}-\frac9{10}c^{3/2}
                     -\frac{53}{20}c^2-\frac85c^{5/2}.
 \end{equation}
 We give the exact bracket certificates so that the needed moment products are proved rather than assumed to factor heuristically. Let $U=Q_3+7/960$. Quasimodularity places $\langle U^2\rangle$, $\langle Q_2^2U\rangle$, and $\langle Q_2^4\rangle$ in the complete homogeneous weight $8,10,12$ spans of dimensions $4,5,7$. Their identities are
 \begin{align}
  \langle U^2\rangle={}&\frac{73}{179200}E_4^2+\frac1{4032}E_2E_6
- -\frac1{5120}E_2^2E_4-\frac5{12288}E_2^4,\label{eq:U2}\\
+ -\frac1{5120}E_2^2E_4-\frac5{12288}E_2^4,\label{stp:sum:eq:U2}\\
  \langle Q_2^2U\rangle={}&-\frac{301}{1555200}E_4E_6
  +\frac{49}{1036800}E_2E_4^2+\frac{119}{622080}E_2^2E_6\notag\\
- &+\frac{119}{1244160}E_2^3E_4-\frac{35}{248832}E_2^5,\label{eq:Q2U}\\
+ &+\frac{119}{1244160}E_2^3E_4-\frac{35}{248832}E_2^5,\label{stp:sum:eq:Q2U}\\
  \langle Q_2^4\rangle={}&\frac{151}{3499200}E_6^2+\frac7{93312}E_4^3
  -\frac{149}{1166400}E_2E_4E_6-\frac{199}{1555200}E_2^2E_4^2\notag\\
  &+\frac{29}{699840}E_2^3E_6+\frac{37}{233280}E_2^4E_4
- -\frac{35}{559872}E_2^6.\label{eq:Q24}
+ -\frac{35}{559872}E_2^6.\label{stp:sum:eq:Q24}
 \end{align}
 These are exact identities in the full known spans, not fits to an unrestricted series. In the displayed basis orders, the matrices of coefficients $q^0,\ldots,q^{d-1}$ have determinants
 \begin{gather*}
@@ -518,7 +799,7 @@ Modular substitution gives the leading terms
  \frac{28\pi^8}{675\tau^9},\qquad
  \frac{256\pi^8}{675\tau^{10}},
 \]
-respectively. The controlled transfer~\eqref{eq:Besselrule} proves
+respectively. The controlled transfer~\eqref{stp:sum:eq:Besselrule} proves
 \begin{align*}
  \E_rQ_3^2&=\frac{441}{25}r^4+O(r^{7/2}),\\
  \E_r(Q_2^2Q_3)&=\frac{1344\sqrt6}{25\pi}r^{9/2}+O(r^4),\\
@@ -533,7 +814,7 @@ The first subleading term of the Bessel rule is
  =\left(\frac rA\right)^{d/2}
  \left(1-\frac{d(d-3)}{4\sqrt{Ar}}+O(r^{-1})\right).
 \]
-Combining it with the next Laurent terms in~\eqref{eq:twobrackets} gives
+Combining it with the next Laurent terms in~\eqref{stp:sum:eq:twobrackets} gives
 \begin{align*}
  \E_rQ_3&=\frac{21}5r^2-\frac{36\sqrt6}{5\pi}r^{3/2}+O(r),\\
  \E_rQ_2^2&=\frac{64\sqrt6}{5\pi}r^{5/2}
@@ -552,26 +833,26 @@ The valuation/parity argument proves that through order $m^{-1}$ the only surviv
  \frac{(f'')^4}{384}\E Q_2^4.
 \end{gather*}
 The subleading contributions of the first two are respectively
-$-9c^{3/2}/10-7c^2/5$ and $-5c^2/4-8c^{5/2}/5$. The last three sum to $A_1(c)^2/2$. This proves~\eqref{eq:A2}, with $O(m^{-3/2})$ remainder supplied by the already proved finite Taylor and transfer theorem. Any further nonzero monomial has valuation at least $3/2$.
+$-9c^{3/2}/10-7c^2/5$ and $-5c^2/4-8c^{5/2}/5$. The last three sum to $A_1(c)^2/2$. This proves~\eqref{stp:sum:eq:A2}, with $O(m^{-3/2})$ remainder supplied by the already proved finite Taylor and transfer theorem. Any further nonzero monomial has valuation at least $3/2$.
 
 \paragraph{Why the restriction matters.}
 Adding a full column of height $m$ to a tame partition of $r-m$ gives a family of actual cardinality-$m$ objects with exponential ratio to the putative unrestricted typical term
 \[
  \exp\left\{b\sqrt m\left[\frac12+\sqrt{c-1}-\sqrt c\right]+o(\sqrt m)\right\}.
 \]
-This dominates when $c>25/16$. Such a column encodes a low hole and a changed edge, and is not bounded by the truncated-exponent tail~\eqref{eq:cutofftail}. The global theorem must separate it correctly.
+This dominates when $c>25/16$. Such a column encodes a low hole and a changed edge, and is not bounded by the truncated-exponent tail~\eqref{stp:sum:eq:cutofftail}. The global theorem must separate it correctly.
 
 \section{Global filled block localization}
-\label{sec:global}
+\label{stp:sum:sec:global}
 For total size $N$, let $M_N=\lfloor(\sqrt{8N+1}-1)/2\rfloor$ and $r_m=N-T_m$. Put $L=D=\lfloor M_N^{17/20}\rfloor$. Let $E_m^{\mathrm{tame}}(N;D)$ be the exact-weight cardinality-$m$ sum whose edge partition satisfies $d(\lambda)\le D$, and define
-\begin{equation}\label{eq:BN}
+\begin{equation}\label{stp:sum:eq:BN}
  B(N)=\sum_{m=M_N,M_N-1}P_m e^{f'(m+1/2)r_m}p(r_m).
 \end{equation}
 This $B(N)$ is a positive comparison normalization, not the first correction $B_1(c)$.
 
-\begin{theorem}[Filled block localization]\label{thm:global}
+\begin{theorem}[Filled block localization]\label{stp:sum:thm:global}
 There exist positive constants $C,\kappa$ such that, for all sufficiently large $N$,
-\begin{equation}\label{eq:global}
+\begin{equation}\label{stp:sum:eq:global}
  A_L(N)=E_{M_N}^{\mathrm{tame}}(N;D)
        +E_{M_N-1}^{\mathrm{tame}}(N;D)
        +O(B(N)e^{-\kappa M_N^{7/20}}).
@@ -584,31 +865,31 @@ For the two retained charges and large $N$, $m-D\ge L$, so their tame diagrams r
 Define
 \begin{align}
  S(c)&=c/2+\sqrt c,\qquad
- V(c)=\max_{0\le j\le\lfloor c\rfloor}\{j+S(c-j)\},\label{eq:V}\\
- G(d)&=\begin{cases}1-\sqrt{1-d},&0\le d\le1,\\\sqrt d,&d\ge1.\end{cases}\label{eq:G}
+ V(c)=\max_{0\le j\le\lfloor c\rfloor}\{j+S(c-j)\},\label{stp:sum:eq:V}\\
+ G(d)&=\begin{cases}1-\sqrt{1-d},&0\le d\le1,\\\sqrt d,&d\ge1.\end{cases}\label{stp:sum:eq:G}
 \end{align}
 A hook with hole at $ym$ and particle at $(y+d)m$ has normalized square-root gain $g(y,d)=\sqrt{y+d}-\sqrt y$. This decreases in $y$, and $0\le y\le1$, $y+d\ge1$; hence its maximum is $G(d)$.
 
 Write $w(c)=\sqrt c-c/2$. It increases up to $1$ and decreases thereafter. For $c\ge1$ only the lattice residuals $u=\{c\}$ and $u+1$ can maximize, giving
-\begin{equation}\label{eq:periodicW}
+\begin{equation}\label{stp:sum:eq:periodicW}
  V(c)=c+W(\{c\}),\qquad
  W(u)=\max\{w(u),w(u+1)\}.
 \end{equation}
 Their crossing is $u=9/16$. The periodic extension of $W$ is continuous and Lipschitz, with $15/32\le W\le1/2$. The dominant residual belongs to $[9/16,25/16]$ once $c\ge9/16$. Therefore
 \begin{gather}
- V=S\text{ on }[0,25/16],\quad V(c+1)=V(c)+1\quad(c\ge9/16),\label{eq:Vfacts}\\
- V(y)-V(x)\ge\tfrac9{10}(y-x)\quad(y\ge x\ge0).\label{eq:Vderiv}
+ V=S\text{ on }[0,25/16],\quad V(c+1)=V(c)+1\quad(c\ge9/16),\label{stp:sum:eq:Vfacts}\\
+ V(y)-V(x)\ge\tfrac9{10}(y-x)\quad(y\ge x\ge0).\label{stp:sum:eq:Vderiv}
 \end{gather}
 Indeed the a.e. derivative lies in $[9/10,7/6]$ away from the initial segment, and on the initial segment it is larger than $9/10$. The unbounded derivative at zero is integrable and poses no problem for absolute continuity. Put $Q(c)=V(c)-S(c)$. Then $Q\ge0$, $Q(c)>0$ for $c>25/16$, and $Q(c)\ge c/4$ for $c\ge16$.
 
 The Bellman inequality is
-\begin{equation}\label{eq:bellman}
+\begin{equation}\label{stp:sum:eq:bellman}
  V(c)\ge G(d)+V(c-d),\qquad 0\le d\le c.
 \end{equation}
 For $0<d<1$, choose a maximizing integer $j$ for $V(c-d)$ and let $u=c-j$. The variable part is $G(d)+S(u-d)$. If $u\le1$, its derivative is at most $-1/2$; if $u>1$, its second derivative is
 $[4(1-d)^{3/2}]^{-1}-[4(u-d)^{3/2}]^{-1}>0$.
 Its maximum therefore lies at an allowed integer endpoint, strictly so for interior $d$. For $1<d<2$, splitting increases the gain because
-$\sqrt d<2-\sqrt{2-d}$; for larger $d$ use $\sqrt d<1+\sqrt{d-1}$ repeatedly. The endpoints are controlled by $V(x+1)\ge1+V(x)$. This proves~\eqref{eq:bellman}; the only possible zero-gap positive hook has $d=1$.
+$\sqrt d<2-\sqrt{2-d}$; for larger $d$ use $\sqrt d<1+\sqrt{d-1}$ repeatedly. The endpoints are controlled by $V(x+1)\ge1+V(x)$. This proves~\eqref{stp:sum:eq:bellman}; the only possible zero-gap positive hook has $d=1$.
 
 \subsection{A quantitative gap after filling low holes}
 Let $\ell=L/m$. Because filled selections have no hole below $L+1$, the constrained envelope is
@@ -619,36 +900,36 @@ Let $\ell=L/m$. Because filled selections have no hole below $L+1$, the constrai
  \sqrt{d+\ell}-\sqrt\ell,&d\ge1-\ell.
  \end{cases}
 \]
-\begin{lemma}\label{lem:gap}
+\begin{lemma}\label{stp:sum:lem:gap}
 For sufficiently small $\ell>0$, uniformly in $c\ge d\ge0$,
-\begin{equation}\label{eq:gap}
+\begin{equation}\label{stp:sum:eq:gap}
  V(c)-G_\ell(d)-V(c-d)\ge\kappa\rho_\ell(d),\qquad
  \rho_\ell(d)=\min\{d,|d-1|+\sqrt\ell\}.
 \end{equation}
 Moreover $\rho_\ell(d)\ge(\sqrt\ell/2)d$, and if $D/m$ is comparable to $\ell$, every $d\ge D/m$ pays $\rho_\ell(d)\ge\kappa D/m$.
 \end{lemma}
 \begin{proof}
-Near $d=0$, use~\eqref{eq:Vderiv} and $G(d)=d/2+O(d^2)$. For $d\ge2$ the gap is at least $0.9d-\sqrt d\ge(0.9-1/\sqrt2)d$. Away from zero and one in $0<d<2$, strictness of~\eqref{eq:bellman} gives a positive compact minimum. This is uniform in unbounded $c$: if $c-d\ge9/16$, subtract $\lfloor c-d-9/16\rfloor$ from both arguments of $V$, preserving the gap by~\eqref{eq:Vfacts} and placing them in a fixed compact range. Otherwise they already lie in a compact range.
+Near $d=0$, use~\eqref{stp:sum:eq:Vderiv} and $G(d)=d/2+O(d^2)$. For $d\ge2$ the gap is at least $0.9d-\sqrt d\ge(0.9-1/\sqrt2)d$. Away from zero and one in $0<d<2$, strictness of~\eqref{stp:sum:eq:bellman} gives a positive compact minimum. This is uniform in unbounded $c$: if $c-d\ge9/16$, subtract $\lfloor c-d-9/16\rfloor$ from both arguments of $V$, preserving the gap by~\eqref{stp:sum:eq:Vfacts} and placing them in a fixed compact range. Otherwise they already lie in a compact range.
 
 The simultaneous limits near $d=1$ require separate estimates. For $d=1-\epsilon$ and $c\ge1.1$, use $V(c)-V(c-1)\ge1$ and uniform Lipschitz bounds on $[0.1,\infty)$. If $\epsilon\ge\ell$, the gap is at least $\sqrt\epsilon-C\epsilon$, which dominates $\epsilon+\sqrt\ell$ for small $\epsilon$. If $\epsilon\le\ell$, then $G_\ell(d)\le1+\ell/2-\sqrt\ell$ and the gap is at least $\sqrt\ell-(C+1/2)\ell$. For $c<1.1$ near $d=1$, the unfilled gap is bounded below by a positive constant: at $c=d=1$ it is $1/2$, and on $1\le c\le1.1$, $V(c)-V(c-1)-1$ has a positive minimum; continuity also covers nearby $c<1$.
 
-For $d=1+\epsilon$, the unfilled gap is at least $0.4\epsilon$, by~\eqref{eq:Vderiv} and $\sqrt{1+\epsilon}\le1+\epsilon/2$. Filling adds
+For $d=1+\epsilon$, the unfilled gap is at least $0.4\epsilon$, by~\eqref{stp:sum:eq:Vderiv} and $\sqrt{1+\epsilon}\le1+\epsilon/2$. Filling adds
 $\sqrt\ell-[\sqrt{d+\ell}-\sqrt d]\ge\sqrt\ell-\ell/(2\sqrt d)\ge\sqrt\ell/2$.
-These estimates prove~\eqref{eq:gap}. For $d\le2$ both terms in the minimum defining $\rho_\ell$ are at least $(\sqrt\ell/2)d$; for $d\ge2$ use $d-1\ge d/2$. Finally, when $D/m\asymp\ell\to0$, eventually $\sqrt\ell\ge\kappa D/m$; the displayed minimum then proves the last assertion.
+These estimates prove~\eqref{stp:sum:eq:gap}. For $d\le2$ both terms in the minimum defining $\rho_\ell$ are at least $(\sqrt\ell/2)d$; for $d\ge2$ use $d-1\ge d/2$. Finally, when $D/m\asymp\ell\to0$, eventually $\sqrt\ell\ge\kappa D/m$; the displayed minimum then proves the last assertion.
 \end{proof}
 
 \subsection{Exact extraction and a uniform tame core bound}
-In~\eqref{eq:hooks}, remove every diagonal hook whose arm or leg violates the tame cutoff. Removing any subset of Frobenius coordinates leaves strictly decreasing arm and leg lists of equal length, hence another partition. Put
+In~\eqref{stp:sum:eq:hooks}, remove every diagonal hook whose arm or leg violates the tame cutoff. Removing any subset of Frobenius coordinates leaves strictly decreasing arm and leg lists of equal length, hence another partition. Put
 \[
  d_i=(a_i+b_i+1)/m,\quad D_*=\sum_{\rm removed}d_i,
  \quad c=r_m/m,\quad v=c-D_*.
 \]
-Each removed hook has $d_i\ge D/m$ up to one harmless integer endpoint. Its hole exceeds $L$. Successive applications of Lemma~\ref{lem:gap}, at the \emph{same} anchor $m$, telescope:
-\begin{equation}\label{eq:telescope}
+Each removed hook has $d_i\ge D/m$ up to one harmless integer endpoint. Its hole exceeds $L$. Successive applications of Lemma~\ref{stp:sum:lem:gap}, at the \emph{same} anchor $m$, telescope:
+\begin{equation}\label{stp:sum:eq:telescope}
  \sum_{\rm removed}g(y_i,d_i)+V(v)
  \le V(c)-\kappa\sum_{\rm removed}\rho_\ell(d_i).
 \end{equation}
-No anchor-change error occurs. Uniformly for $u>v\ge L$,~\eqref{eq:logp} gives
+No anchor-change error occurs. Uniformly for $u>v\ge L$,~\eqref{stp:sum:eq:logp} gives
 \[
  \log\frac{p(u)}{p(v)}
  =b(\sqrt u-\sqrt v)-\log(u/v)+O(L^{-1/2})
@@ -658,14 +939,14 @@ The error is only $O(L^{-1/2})$ per hook; its negative logarithmic prefactor is 
 
 Let $Z_m(s;D)$ be the exact tame sum of residual energy $s$, divided by $P_m$, and put $v=s/m$. We need an upper bound uniformly down to $s=0$ and for growing $v$, not just the compact-positive local theorem.
 
-Fix an arbitrary constant $C_*\ge16$. For $1\le s\le C_*m$, use the Bernoulli representation with $\tau=\pi/\sqrt{6s}$. Equation~\eqref{eq:conditioning}, with finitely many small $s$ absorbed, gives conditioning cost at most $C(s+1)$. The estimates~\eqref{eq:adbound} still give
+Fix an arbitrary constant $C_*\ge16$. For $1\le s\le C_*m$, use the Bernoulli representation with $\tau=\pi/\sqrt{6s}$. Equation~\eqref{stp:sum:eq:conditioning}, with finitely many small $s$ absorbed, gives conditioning cost at most $C(s+1)$. The estimates~\eqref{stp:sum:eq:adbound} still give
 \[
  \log\E e^{S_D}
  \le C[m^{-5/2}\tau^{-4}+m^{-3}\tau^{-5}]
  \le C_{C_*}m^{-1/2}.
 \]
-Indeed $(|a|+|d|)/(\tau h)=O(m^{-3/2}D\sqrt s)=O(D/m)=o(1)$ uniformly in this larger endpoint range. Since $f'(m+1/2)\le b/(2\sqrt m)$ eventually,~\eqref{eq:ferror} gives
-\begin{equation}\label{eq:tamebounded}
+Indeed $(|a|+|d|)/(\tau h)=O(m^{-3/2}D\sqrt s)=O(D/m)=o(1)$ uniformly in this larger endpoint range. Since $f'(m+1/2)\le b/(2\sqrt m)$ eventually,~\eqref{stp:sum:eq:ferror} gives
+\begin{equation}\label{stp:sum:eq:tamebounded}
  Z_m(s;D)\le C(s+1)p(s)e^{bs/(2\sqrt m)}
  \le m^{C_1} e^{b\sqrt mS(v)}.
 \end{equation}
@@ -677,15 +958,15 @@ For arbitrary tame energy, every hook lies in $[m-D,m+D]$. The square-root mean-
  \le\frac{s}{2\sqrt m}+C\frac Dm\frac s{\sqrt m}.
 \]
 The logarithmic partition corrections are nonpositive apart from $O(m^{-1/2})$ per hook. There are at most $\sqrt s$ diagonal hooks. Multiplying by the number $p(s)$ of possible partitions gives
-\begin{equation}\label{eq:tamegrowing}
+\begin{equation}\label{stp:sum:eq:tamegrowing}
  \log Z_m(s;D)\le b\sqrt mS(v)+C(D/m)v\sqrt m+O(\sqrt v).
 \end{equation}
-For $v\ge16$, $Q(v)\ge v/4$, so half of $b\sqrt mQ(v)$ absorbs the positive errors uniformly, since $D/m\to0$. For $v\le16$, use~\eqref{eq:tamebounded}. Hence throughout the required range,
-\begin{equation}\label{eq:tameuniform}
+For $v\ge16$, $Q(v)\ge v/4$, so half of $b\sqrt mQ(v)$ absorbs the positive errors uniformly, since $D/m\to0$. For $v\le16$, use~\eqref{stp:sum:eq:tamebounded}. Hence throughout the required range,
+\begin{equation}\label{stp:sum:eq:tameuniform}
  Z_m(s;D)\le m^{C_1}\exp\{b\sqrt m[V(v)-Q(v)/2]\}.
 \end{equation}
-Combining this with exact extraction and~\eqref{eq:telescope}, the sum for each fixed removed-coordinate list is at most
-\begin{equation}\label{eq:listbound}
+Combining this with exact extraction and~\eqref{stp:sum:eq:telescope}, the sum for each fixed removed-coordinate list is at most
+\begin{equation}\label{stp:sum:eq:listbound}
  P_mm^{C_1}\exp\left\{b\sqrt m\left[V(c)
        -\kappa\sum_i\rho_\ell(d_i)-Q(v)/2\right]\right\}.
 \end{equation}
@@ -699,7 +980,7 @@ The elementary bound $p(k)\le e^{b\sqrt k}$ follows from
 and optimization of $p(k)\le e^{A/t+tk}$. The integral bounds the sum because its summand is positive and decreasing.
 
 For $m$ distinct positive integers of sum $N$, write them increasingly as $i+a_i$, where $a_i$ is nonnegative and nondecreasing, with mean $a=(N-T_m)/m$. Concavity and opposite-order covariance give
-\begin{equation}\label{eq:covariance}
+\begin{equation}\label{stp:sum:eq:covariance}
  \sum_i\sqrt{i+a_i}\le\sum_i\sqrt{i+a}
  +\sum_i\frac{a_i-a}{2\sqrt{i+a}}
  \le\sum_i\sqrt{i+a}.
@@ -717,44 +998,44 @@ Here $a\ge j$ and $u/R\le1/24+o(1)$. The upper-end increment is bounded by
  \le\left(\frac{\sqrt{25/24}}3+o(1)\right)j^{3/2}+O(\sqrt R),
 \]
 because $\sqrt{j/R}/[2(1-j/R)]\le1/3$ for $j/R\le1/4$. Its coefficient is less than $0.341<2/3$. After weakening the margin,
-\begin{equation}\label{eq:coarsegap}
+\begin{equation}\label{stp:sum:eq:coarsegap}
  \sum_i\sqrt{i+a_i}\le\frac23R^{3/2}-\frac14j^{3/2}+O(\sqrt R)
 \end{equation}
 uniformly in that range. For $m\le3R/4$, Jensen directly gives
 $\sum\sqrt{k_i}\le\sqrt{mN}\le(\sqrt{3/8}+o(1))R^{3/2}$, a fixed gap below $(2/3)R^{3/2}$.
 
 There are at most $p(N)=e^{O(R)}$ selections, whereas $\log P_R=(2b/3)R^{3/2}-O(R\log R)$. Thus all $j\ge R^{7/10}$ contribute at most $P_Re^{-\kappa R^{21/20}}$, after absorbing $O(R\log R)$. This step uses neither filled holes nor a global equivalent. Since $B(N)\ge P_R$ eventually, we may restrict to
-\begin{equation}\label{eq:coarsewindow}
+\begin{equation}\label{stp:sum:eq:coarsewindow}
  0\le j=R-m\le R^{7/10},\qquad m\sim R,\qquad c=r_m/m=O(R^{7/10}).
 \end{equation}
 
 \subsection{Rebasing the envelope to the two-charge carrier}
-In~\eqref{eq:coarsewindow}, let $u_0=r/R$ and $c=j+u$, with $u$ as above. Uniformly including $r=0$, $\log p(r)=b\sqrt r+O(\log(r+2))$. The two carrier logarithms, after subtracting $\log P_R$, are
+In~\eqref{stp:sum:eq:coarsewindow}, let $u_0=r/R$ and $c=j+u$, with $u$ as above. Uniformly including $r=0$, $\log p(r)=b\sqrt r+O(\log(r+2))$. The two carrier logarithms, after subtracting $\log P_R$, are
 \[
  b\sqrt R S(u_0)+O(\log R),\qquad
  b\sqrt R[S(u_0+1)-1]+O(\log R).
 \]
 Taking the log of their positive sum changes the maximum by at most $\log2$, so
-\begin{equation}\label{eq:logBphase}
+\begin{equation}\label{stp:sum:eq:logBphase}
  \log B(N)=\log P_R+b\sqrt R[u_0+W(u_0)]+O(\log R).
 \end{equation}
 At $r=0$, $p(0)=1$ is exact and the other charge supplies the positive $b\sqrt R/2$ term; no positive-residual asymptotic is applied to $p(0)$.
 
-Summing~\eqref{eq:logp} over $m+1,\ldots,R$ gives
+Summing~\eqref{stp:sum:eq:logp} over $m+1,\ldots,R$ gives
 \begin{align*}
  \log P_R-\log P_m
  &=bj\sqrt m+\frac{bj(j+1)}{4\sqrt m}-j\log m\\
  &\hspace{10mm}+O(j+j^2/m+j^3/m^{3/2}).
 \end{align*}
 For $j\ge1$, $V(c)=c+W(u)$ with periodic $W$, and $|u-u_0|=O((j^2+j)/R)$. Its Lipschitz bound, together with the square-root changes, proves
-\begin{equation}\label{eq:rebase}
+\begin{equation}\label{stp:sum:eq:rebase}
  \log P_m+b\sqrt mV(c)
  \le\log B(N)+C[(j+1)\log R+j^2/\sqrt R].
 \end{equation}
 For $j=0$ the actual first carrier summand gives the result immediately. In particular the potentially large $j\sqrt R$ terms cancel explicitly; they are not hidden in the error. Exact $P_m$ is still retained in the final algebraic carrier.
 
 \subsection{Paying for every hook and concluding localization}
-Within the coarse window every hook coordinate is at most $N=O(R^2)$. A list of $q$ removed hooks therefore has at most $R^{Cq}$ choices. Its total energy fixes the core energy. Reserve a fixed fraction of the loss in~\eqref{eq:listbound} for entropy. By Lemma~\ref{lem:gap}, every removed hook pays order
+Within the coarse window every hook coordinate is at most $N=O(R^2)$. A list of $q$ removed hooks therefore has at most $R^{Cq}$ choices. Its total energy fixes the core energy. Reserve a fixed fraction of the loss in~\eqref{stp:sum:eq:listbound} for entropy. By Lemma~\ref{stp:sum:lem:gap}, every removed hook pays order
 \[
  \sqrt m(D/m)=D/\sqrt m\asymp R^{7/20},
 \]
@@ -764,7 +1045,7 @@ The remaining loss is coercive in total residual. For sufficiently large fixed $
 \[
  \sum_i\rho_\ell(d_i)+Q(v)\ge\kappa c\sqrt\ell.
 \]
-After multiplication by $\sqrt m$, the loss is at least $\kappa c\sqrt L$. It dominates the rebasing error uniformly in~\eqref{eq:coarsewindow}, since
+After multiplication by $\sqrt m$, the loss is at least $\kappa c\sqrt L$. It dominates the rebasing error uniformly in~\eqref{stp:sum:eq:coarsewindow}, since
 \[
  \log R=o(\sqrt L),\qquad
  \frac{j^2/\sqrt R}{j\sqrt L}
@@ -772,46 +1053,46 @@ After multiplication by $\sqrt m$, the loss is at least $\kappa c\sqrt L$. It do
 \]
 Polynomial prefactors and summation over at most $R$ charges are absorbed. Hence all sufficiently large deficits $j$ are negligible.
 
-Only bounded $j$ remain. If any hook was extracted, its surviving per-hook penalty gives $e^{-\kappa R^{7/20}}$, absorbing all polynomial losses. If none was extracted and $j\ge2$, then $c\ge2$, and $Q(c)$ has a fixed positive minimum, giving $e^{-\kappa\sqrt R}$. With no extracted hook and $j=0,1$, the selections are exactly the two retained tame sectors. Their filled constraint was checked above. The coarse tail is smaller still. This proves Theorem~\ref{thm:global}, with nonnegative discarded weights and the asserted uniformity in nearby-reference cutoffs. No effective $\kappa$ or onset is claimed.
+Only bounded $j$ remain. If any hook was extracted, its surviving per-hook penalty gives $e^{-\kappa R^{7/20}}$, absorbing all polynomial losses. If none was extracted and $j\ge2$, then $c\ge2$, and $Q(c)$ has a fixed positive minimum, giving $e^{-\kappa\sqrt R}$. With no extracted hook and $j=0,1$, the selections are exactly the two retained tame sectors. Their filled constraint was checked above. The coarse tail is smaller still. This proves Theorem~\ref{stp:sum:thm:global}, with nonnegative discarded weights and the asserted uniformity in nearby-reference cutoffs. No effective $\kappa$ or onset is claimed.
 
 \section{Finite moment assembly and smooth carrier bounds}
-\label{sec:assembly}
-We now prove Theorem~\ref{thm:main}, keeping the order of limits and truncations explicit. Fix the order $J$, the reference $M=M(n)$, and $L=\lfloor M^{17/20}\rfloor$. The initial truncation in Section~\ref{sub:initialtail} removes $h>M^{24/25}$ from~\eqref{eq:convolution} with a superpolynomial error relative to $P_M$.
+\label{stp:sum:sec:assembly}
+We now prove Theorem~\ref{stp:sum:thm:main}, keeping the order of limits and truncations explicit. Fix the order $J$, the reference $M=M(n)$, and $L=\lfloor M^{17/20}\rfloor$. The initial truncation in Section~\ref{stp:sum:sub:initialtail} removes $h>M^{24/25}$ from~\eqref{stp:sum:eq:convolution} with a superpolynomial error relative to $P_M$.
 
-For every retained $N=n+h$, Theorem~\ref{thm:global} applies uniformly with this same $L$. The tame theorem supplies the integer-point approximation
-\begin{equation}\label{eq:filledlocal}
+For every retained $N=n+h$, Theorem~\ref{stp:sum:thm:global} applies uniformly with this same $L$. The tame theorem supplies the integer-point approximation
+\begin{equation}\label{stp:sum:eq:filledlocal}
  A_L(N)=E_J(N)+O_J(E_0(N)M^{-(J+1)/2}).
 \end{equation}
-Here is why the local theorem's compact-positive scope suffices. The leading phase is $w(c)=\sqrt c-c/2$, whose two competing residuals have dominant value in $[9/16,25/16]$, up to $o(1)$ shifts. The plateau of $\chi$ strictly contains this range. Its omitted or transition-support charges have a fixed positive $\sqrt M$-scale gap. The small-residual $m=M_N$ term is exponentially subdominant and its upper bound follows from~\eqref{eq:tamebounded}; no local expansion at $r=o(m)$ is required. Thus $E_0(N)$ is uniformly comparable to $B(N)$ even through triangular boundaries. In particular $A_L(n)\ge cB(n)$, and~\eqref{eq:convolution} gives $a(n)\ge cB(n)$.
+Here is why the local theorem's compact-positive scope suffices. The leading phase is $w(c)=\sqrt c-c/2$, whose two competing residuals have dominant value in $[9/16,25/16]$, up to $o(1)$ shifts. The plateau of $\chi$ strictly contains this range. Its omitted or transition-support charges have a fixed positive $\sqrt M$-scale gap. The small-residual $m=M_N$ term is exponentially subdominant and its upper bound follows from~\eqref{stp:sum:eq:tamebounded}; no local expansion at $r=o(m)$ is required. Thus $E_0(N)$ is uniformly comparable to $B(N)$ even through triangular boundaries. In particular $A_L(n)\ge cB(n)$, and~\eqref{stp:sum:eq:convolution} gives $a(n)\ge cB(n)$.
 
 \subsection{Direct derivative bounds on explicit functions}
 For a bulk summand of $E_0$, its logarithmic slope is
-\begin{equation}\label{eq:bulkSlope}
+\begin{equation}\label{stp:sum:eq:bulkSlope}
  f'(m+1/2)+f'(r_m)
  =\frac{b}{2\sqrt m}(1+c_m^{-1/2})+O(m^{-1}).
 \end{equation}
 This is positive and comparable to $M^{-1/2}$ on the dominant compact range. Cutoff derivatives cost $O(M^{-1})$ times exponentially smaller weights. Consequently
-\begin{equation}\label{eq:EzeroSlope}
+\begin{equation}\label{stp:sum:eq:EzeroSlope}
  cM^{-1/2}\le E_0'(x)/E_0(x)\le CM^{-1/2}.
 \end{equation}
 For each fixed local index $k$ and derivative order $d$, differentiating its explicit summand gives a bound of size
-\begin{equation}\label{eq:refinedDeriv}
+\begin{equation}\label{stp:sum:eq:refinedDeriv}
  C_{k,d}\,(\text{corresponding leading weight})M^{-(k+d)/2}.
 \end{equation}
 Here the corresponding leading weight is the uncut factor $P_m\exp\{f'(m+1/2)r_m+f(r_m)\}$, without $\chi$; no bound of a derivative of $\chi$ by $\chi$ is assumed. Indeed its first exponential derivative is $O(M^{-1/2})$; the $d$th higher derivative of its exponent for $d\ge2$ is $O(M^{1/2-d})$. Product/Bell differentiation therefore gives the asserted scale. Derivatives of $A_k(c_m)$ and $\chi(c_m)$ each cost $M^{-1}$, a smaller scale. Cutoff terms are absorbed using their phase gap. Summing boundedly many charges yields
-\begin{equation}\label{eq:Ederiv}
+\begin{equation}\label{stp:sum:eq:Ederiv}
  |E_K^{(d)}(x)|\le C_{K,d}E_0(x)M^{-d/2}
 \end{equation}
 for fixed $K,d$. These are derivatives of explicitly defined smooth functions; no coefficient remainder is being differentiated.
 
-Integrating~\eqref{eq:EzeroSlope} and using $E_0\asymp B$ gives the carrier ratio bound
-\begin{equation}\label{eq:ratio}
+Integrating~\eqref{stp:sum:eq:EzeroSlope} and using $E_0\asymp B$ gives the carrier ratio bound
+\begin{equation}\label{stp:sum:eq:ratio}
  B(n+h)\le CB(n)\exp(Ch/\sqrt M),\qquad 0\le h\le M^{24/25}.
 \end{equation}
 This now permits summation of the local errors and a much sharper hole truncation.
 
 \subsection{The second hole truncation and the absence of an ordinary MGF}
-For every $v>0$, the unrestricted law in~\eqref{eq:holelaw} has
+For every $v>0$, the unrestricted law in~\eqref{stp:sum:eq:holelaw} has
 \[
  \E e^{v h_\infty}=C_0^{-1}\prod_{k\ge1}(1+e^{vk}/p(k))=\infty,
 \]
@@ -821,52 +1102,52 @@ For fixed $C$ and $k\le L=o(M)$, eventually $Ck/\sqrt M\le(b/4)\sqrt k$. Since $
 \begin{align}
  \sum_{\cH\subset[1,L]}\frac{\exp(Ch/\sqrt M+c\sqrt h)}{p(\cH)}
  &\le\prod_{k\le L}\left(1+\frac{e^{(b/4+c)\sqrt k}}{p(k)}\right)
- \le C'.\label{eq:stretchedtilt}
+ \le C'.\label{stp:sum:eq:stretchedtilt}
 \end{align}
-The final bound follows from~\eqref{eq:logp} and summability. It implies all fixed tilted polynomial moment bounds and
-\begin{equation}\label{eq:secondtail}
+The final bound follows from~\eqref{stp:sum:eq:logp} and summability. It implies all fixed tilted polynomial moment bounds and
+\begin{equation}\label{stp:sum:eq:secondtail}
  \sum_{\substack{\cH\subset[1,L]\\h>K}}
  \frac{e^{Ch/\sqrt M}}{p(\cH)}\le C'e^{-c\sqrt K}.
 \end{equation}
-After~\eqref{eq:ratio}, we may take any small fixed power $K=M^\epsilon$, for example $\epsilon=1/10$. This removes its complement superpolynomially relative to $B(n)$. The unweighted version also proves finiteness of every $\mu_j$. Extending a fixed polynomial moment from $[1,L]$ to all levels changes it by a polynomial in $L$ times $e^{-c\sqrt L}$: split the independent low and high parts and bound a nonempty high part by sums of $k^j/p(k)$.
+After~\eqref{stp:sum:eq:ratio}, we may take any small fixed power $K=M^\epsilon$, for example $\epsilon=1/10$. This removes its complement superpolynomially relative to $B(n)$. The unweighted version also proves finiteness of every $\mu_j$. Extending a fixed polynomial moment from $[1,L]$ to all levels changes it by a polynomial in $L$ times $e^{-c\sqrt L}$: split the independent low and high parts and bound a nonempty high part by sums of $k^j/p(k)$.
 
-An equivalent elementary proof of~\eqref{eq:secondtail} splits sets containing some $k>K$ from those entirely in $[1,K]$. The former are bounded by $C\sum_{K<k\le L}e^{Ck/\sqrt M}/p(k)$. For the latter use the \emph{new} Chernoff parameter $b/(8\sqrt K)$, not the first-stage parameter involving $L$. Its finite tilted product is bounded, and it pays $e^{-c\sqrt K}$ for energy $h>K$. This makes explicit why the initial and later truncations are distinct arguments.
+An equivalent elementary proof of~\eqref{stp:sum:eq:secondtail} splits sets containing some $k>K$ from those entirely in $[1,K]$. The former are bounded by $C\sum_{K<k\le L}e^{Ck/\sqrt M}/p(k)$. For the latter use the \emph{new} Chernoff parameter $b/(8\sqrt K)$, not the first-stage parameter involving $L$. Its finite tilted product is bounded, and it pays $e^{-c\sqrt K}$ for energy $h>K$. This makes explicit why the initial and later truncations are distinct arguments.
 
 \subsection{Assembly at the correct fixed order}
-First convolve the pointwise estimate~\eqref{eq:filledlocal} in~\eqref{eq:convolution}; bounds~\eqref{eq:ratio} and~\eqref{eq:stretchedtilt} control the total error. Then restrict to $h\le M^\epsilon$ by~\eqref{eq:secondtail}. Taylor-expand the explicit $E_J(n+h)$ through degree $J$. Equations~\eqref{eq:Ederiv} and~\eqref{eq:ratio} bound its remainder by
+First convolve the pointwise estimate~\eqref{stp:sum:eq:filledlocal} in~\eqref{stp:sum:eq:convolution}; bounds~\eqref{stp:sum:eq:ratio} and~\eqref{stp:sum:eq:stretchedtilt} control the total error. Then restrict to $h\le M^\epsilon$ by~\eqref{stp:sum:eq:secondtail}. Taylor-expand the explicit $E_J(n+h)$ through degree $J$. Equations~\eqref{stp:sum:eq:Ederiv} and~\eqref{stp:sum:eq:ratio} bound its remainder by
 \[
  C_JE_0(n)M^{-(J+1)/2}h^{J+1}e^{Ch/\sqrt M}.
 \]
-Its sum is bounded by the fixed tilted moment in~\eqref{eq:stretchedtilt}. Extending each of the finitely many moments to the full hole law therefore gives
+Its sum is bounded by the fixed tilted moment in~\eqref{stp:sum:eq:stretchedtilt}. Extending each of the finitely many moments to the full hole law therefore gives
 \[
  C_0\sum_{j=0}^J\frac{\mu_j}{j!}E_J^{(j)}(n)
  +O_J(E_0(n)M^{-(J+1)/2}).
 \]
-In the $j$th term replace $E_J^{(j)}$ by $E_{J-j}^{(j)}$. Every omitted explicit local index has $k+j\ge J+1$, so~\eqref{eq:refinedDeriv} gives
-\begin{equation}\label{eq:bookkeeping}
+In the $j$th term replace $E_J^{(j)}$ by $E_{J-j}^{(j)}$. Every omitted explicit local index has $k+j\ge J+1$, so~\eqref{stp:sum:eq:refinedDeriv} gives
+\begin{equation}\label{stp:sum:eq:bookkeeping}
  |(E_J-E_{J-j})^{(j)}|\le C_JE_0M^{-(J+1)/2}.
 \end{equation}
-This produces exactly~\eqref{eq:carrier} and~\eqref{eq:main}. Every sum used here is finite or a fixed controlled moment. There is no interchange with an infinite Taylor series or a nonexistent positive MGF.
+This produces exactly~\eqref{stp:sum:eq:carrier} and~\eqref{stp:sum:eq:main}. Every sum used here is finite or a fixed controlled moment. There is no interchange with an infinite Taylor series or a nonexistent positive MGF.
 
 Direct termwise estimates further give
 \[
  \cA_J=C_0E_0(1+O(M^{-1/2})),\qquad
  \cA_J'=C_0E_0'(1+O(M^{-1/2})).
 \]
-Terms with $j\ge1$ have sizes $O(E_0M^{-j/2})$ and derivatives $O(E_0M^{-(j+1)/2})$. Together with~\eqref{eq:EzeroSlope}, this proves eventual positivity and~\eqref{eq:slope}. It also shows why a floor-defined two-charge expression can be replaced by this genuinely smooth finite-charge carrier: any extra cutoff charges and their derivatives are exponentially small.
+Terms with $j\ge1$ have sizes $O(E_0M^{-j/2})$ and derivatives $O(E_0M^{-(j+1)/2})$. Together with~\eqref{stp:sum:eq:EzeroSlope}, this proves eventual positivity and~\eqref{stp:sum:eq:slope}. It also shows why a floor-defined two-charge expression can be replaced by this genuinely smooth finite-charge carrier: any extra cutoff charges and their derivatives are exponentially small.
 
-At first order, the local correction is $A_1(c)/\sqrt m$. The first hole moment contributes $\mu_1E_0'$, whose leading relative value is $b\mu_1(1+c^{-1/2})/(2\sqrt m)$ by~\eqref{eq:bulkSlope}. This proves~\eqref{eq:B1} and~\eqref{eq:firstfull}. On its retained compact range, replacing $e^{f(r_m)}$ by exact $p(r_m)$ is exponentially accurate.
+At first order, the local correction is $A_1(c)/\sqrt m$. The first hole moment contributes $\mu_1E_0'$, whose leading relative value is $b\mu_1(1+c^{-1/2})/(2\sqrt m)$ by~\eqref{stp:sum:eq:bulkSlope}. This proves~\eqref{stp:sum:eq:B1} and~\eqref{stp:sum:eq:firstfull}. On its retained compact range, replacing $e^{f(r_m)}$ by exact $p(r_m)$ is exponentially accurate.
 
 \subsection{The second complete relative correction}
-\label{sub:B2}
+\label{stp:sum:sub:B2}
 Let $\sigma_h^2=\Var(h_\infty)=\sum_{k\ge1}k^2p(k)/(p(k)+1)^2$; this is the variance of hole \emph{energy}, not of hole count. The explicit second coefficient is
 \begin{align}
  B_2(c)={}&\frac{B_1(c)^2}{2}-\frac9{10}c^{3/2}-\frac{53}{20}c^2
  -\frac85c^{5/2}-\mu_1(1+c^{-1})\notag\\
- &+\frac{b^2\sigma_h^2}{8}(1+c^{-1/2})^2.\label{eq:B2}
+ &+\frac{b^2\sigma_h^2}{8}(1+c^{-1/2})^2.\label{stp:sum:eq:B2}
 \end{align}
-In particular~\eqref{eq:firstfull} strengthens to
-\begin{equation}\label{eq:secondfull}
+In particular~\eqref{stp:sum:eq:firstfull} strengthens to
+\begin{equation}\label{stp:sum:eq:secondfull}
  a(n)=C_0\!\sum_{\substack{m=M,M-1\\r_m\ge m/4}}W_m(n)
  \left[1+\frac{B_1(c_m)}{\sqrt m}+\frac{B_2(c_m)}m+O(M^{-3/2})\right],
 \end{equation}
@@ -885,14 +1166,14 @@ Uniformly in the retained compact range,
  &=d_0m^{-1/2}+(d_1+d_0A_1)m^{-1}+O(m^{-3/2}).
 \end{align*}
 The derivative of $A_1(c)m^{-1/2}$ is $A_1'(c)m^{-3/2}$ and does not enter the displayed second coefficient. The order-two finite carrier is
-$C_0(E_2+\mu_1 E_1'+\mu_2E_0''/2)$, where these $E_j$ denote the charge carriers~\eqref{eq:EJ}, not Eisenstein series. It follows that
+$C_0(E_2+\mu_1 E_1'+\mu_2E_0''/2)$, where these $E_j$ denote the charge carriers~\eqref{stp:sum:eq:EJ}, not Eisenstein series. It follows that
 \[
  B_2=A_2+\mu_1(d_1+d_0A_1)+\frac{\mu_2}2d_0^2.
 \]
-Using $B_1=A_1+\mu_1d_0$ and $\mu_2=\mu_1^2+\sigma_h^2$ yields~\eqref{eq:B2}. All interchanges and remainders are covered by the finite assembly above. This extra term does not assert good finite-index accuracy or an effective onset.
+Using $B_1=A_1+\mu_1d_0$ and $\mu_2=\mu_1^2+\sigma_h^2$ yields~\eqref{stp:sum:eq:B2}. All interchanges and remainders are covered by the finite assembly above. This extra term does not assert good finite-index accuracy or an effective onset.
 
 \section{Crossover, product normalization, and inversion}
-\label{sec:crossover}
+\label{stp:sum:sec:crossover}
 \subsection{The slowly moving transition}
 For a physical cell $T_M\le n<T_{M+1}$, put $\varphi=(n-T_M)/M$. At integer inputs, $0\le\varphi\le1$. Near $\varphi_0=9/16$, the two leading weights are
 \[
@@ -905,7 +1186,7 @@ For real phase calculations use $e^f$ in place of $p$. Expanding their log ratio
  &=b\sqrt M\left[\sqrt{\varphi+1}-\sqrt\varphi-\frac12\right]
        +\log M+\log(4\sqrt3)-1\notag\\
  &\hspace{30mm}-\log((\varphi+1)/\varphi)+O(M^{-1/2}).
- \label{eq:crossratio}
+ \label{stp:sum:eq:crossratio}
 \end{align}
 To verify the constant rather than infer it from a fit, decompose the ratio into
 $-\log p(M)$, the linear-edge difference, and the residual-partition difference. These are, respectively,
@@ -917,10 +1198,10 @@ $-\log p(M)$, the linear-edge difference, and the residual-partition difference.
        =b\sqrt M[\sqrt{\varphi+1}-\sqrt\varphi]
           -\log((\varphi+1)/\varphi)+O(M^{-1/2}).
 \end{align*}
-Their sum is~\eqref{eq:crossratio} uniformly on a fixed neighborhood of $9/16$.
+Their sum is~\eqref{stp:sum:eq:crossratio} uniformly on a fixed neighborhood of $9/16$.
 
 Let $D(\varphi)=\sqrt{\varphi+1}-\sqrt\varphi-1/2$. Then $D(9/16)=0$ and $D'(9/16)=-4/15$. The smooth equal-leading-weight center has the expansion
-\begin{equation}\label{eq:center}
+\begin{equation}\label{stp:sum:eq:center}
  \varphi_*(M)=\frac9{16}
  +\frac{15}{4b\sqrt M}\left[\log M+\log\frac{36\sqrt3}{25}-1\right]
  +O\left(\frac{\log^2M}{M}\right).
@@ -929,12 +1210,16 @@ The positive shift converges slowly. The width is $M^{-1/2}$. With
 \[
  u=\frac{4b}{15}\sqrt M(\varphi-\varphi_*(M)),
 \]
-where the center is defined by the exact smooth leading-carrier equality, $W_1/W_0\to e^{-u}$ and the upper-charge proportion tends to $(1+e^{-u})^{-1}$. The common $C_0$ cancels. First relative corrections change the center only at order $M^{-1}$.
+where the center is defined by the exact smooth leading-carrier equality, $W_1/W_0\to e^{-u}$ and the upper-charge proportion tends to $(1+e^{-u})^{-1}$. The common $C_0$ cancels. First relative corrections change the center only at order $M^{-1}$. \wtag\ Indeed, the first relative corrections change $\log(W_1/W_0)$
+by $B_1(c_{M-1})/\sqrt{M-1}-B_1(c_M)/\sqrt M=O(M^{-1/2})$, while
+by~\eqref{stp:sum:eq:crossratio} its derivative in $\varphi$ near $9/16$ is
+$b\sqrt M\,D'(\varphi)+O(1)=-(4b/15+o(1))\sqrt M$; the centre therefore moves
+by $O(M^{-1/2})/\sqrt M=O(M^{-1})$ (added in the write).
 
 The limiting fraction $9/16$ is not an accurate finite-$M$ threshold by itself. Uncertified binary64 calculations give equal-leading-weight phases approximately $1.02188178$ at $M=1000$, $0.71601628$ at $10^4$, $0.58296425$ at $10^6$, and $0.56518714$ at $10^8$. The first lies outside the physical cell. These are diagnostics of the slow approach, not rigorous enclosures or onset bounds.
 
 \subsection{An explicit expansion of the exact normalization}
-Expanding~\eqref{eq:f} gives
+Expanding~\eqref{stp:sum:eq:f} gives
 \[
  f(k)=b\sqrt k-\log k+c_0+d_1k^{-1/2}+d_2k^{-1}+O(k^{-3/2}),
 \]
@@ -943,30 +1228,31 @@ where $c_0=-\log(4\sqrt3)$, $d_1=-b/48-1/b$, and $d_2=1/24-1/(2b^2)$. Euler--Mac
  \log P_M={}&\frac{2b}3M^{3/2}-M\log M+(1+c_0)M
   +\left(\frac{11b}{24}-\frac2b\right)\sqrt M\notag\\
  &+\left(-\frac{11}{24}-\frac1{2b^2}\right)\log M+C_P+O(M^{-1/2}),
- \label{eq:logP}
+ \label{stp:sum:eq:logP}
 \end{align}
 with the absolutely convergent explicit constant
 \begin{align}
  C_P={}&\sum_{k\ge1}\left[\log p(k)-b\sqrt k+\log k-c_0
                          -\frac{d_1}{\sqrt k}-\frac{d_2}{k}\right]\notag\\
  &+b\zeta(-1/2)+d_1\zeta(1/2)+d_2\gamma-\tfrac12\log(2\pi).
- \label{eq:CP}
+ \label{stp:sum:eq:CP}
 \end{align}
 The summand is $O(k^{-3/2})$. Subtracting more differentiated asymptotic terms accelerates the constant and generates every further half-power coefficient by classical Euler--Maclaurin machinery. For example the next coefficient, multiplying $M^{-1/2}$, is
 \[
  \frac{73b}{2304}-\frac{11}{24b}+\frac{2}{3b^3}.
 \]
-It follows from $d_3=-b/4608-1/(48b)-1/(3b^3)$ through $b/24+d_1/2-2d_3$. No certified numerical value of $C_P$ is claimed in the package. Keeping $P_m$ exact avoids a normalization constant error entirely.
+It follows from $d_3=-b/4608-1/(48b)-1/(3b^3)$ through $b/24+d_1/2-2d_3$. No certified numerical value of $C_P$ is claimed in the package. Keeping $P_m$ exact avoids a normalization constant error entirely. \wtag\ A certified value of $C_P$ is question~(ii) of
+Section~\ref{stp:sum:sec:further}; no theorem of this Part needs it.
 
 \subsection{Proof of the discrete inverse theorem}
-Fix $J$ and let $x=x_J(Y)$. By~\eqref{eq:main}, at integer $k$ in the relevant large range,
+Fix $J$ and let $x=x_J(Y)$. By~\eqref{stp:sum:eq:main}, at integer $k$ in the relevant large range,
 \[
  |\log a(k)-\log\cA_J(k)|\le C_JM(k)^{-(J+1)/2}.
 \]
-The positive slope~\eqref{eq:slope} makes the sufficiently large carrier strictly increasing and unbounded, hence its root unique. Choose a strict margin $\Delta=D_JM(x)^{-J/2}$ larger than the coefficient error divided by the lower slope, uniformly in the small surrounding interval. Every integer below $\lceil x-\Delta\rceil$ lies strictly below $x-\Delta$ and therefore has $\log a(k)<Y$. The integer $\lceil x+\Delta\rceil$ lies at or above $x+\Delta$ and has $\log a(k)\ge Y$. Monotonicity proves~\eqref{eq:inverse}; the same mean-value estimate proves the sequence-value assertion. This uses only pointwise errors at integers. Differentiating an unknown coefficient remainder or postulating a true real crossing is unnecessary.
+The positive slope~\eqref{stp:sum:eq:slope} makes the sufficiently large carrier strictly increasing and unbounded, hence its root unique. Choose a strict margin $\Delta=D_JM(x)^{-J/2}$ larger than the coefficient error divided by the lower slope, uniformly in the small surrounding interval. Every integer below $\lceil x-\Delta\rceil$ lies strictly below $x-\Delta$ and therefore has $\log a(k)<Y$. The integer $\lceil x+\Delta\rceil$ lies at or above $x+\Delta$ and has $\log a(k)\ge Y$. Monotonicity proves~\eqref{stp:sum:eq:inverse}; the same mean-value estimate proves the sequence-value assertion. This uses only pointwise errors at integers. Differentiating an unknown coefficient remainder or postulating a true real crossing is unnecessary.
 
 \section{Joint charge and low hole laws}
-\label{sec:TV}
+\label{stp:sum:sec:TV}
 Under the probability measure on size-$n$ objects, outer selections have weights proportional to $\prod_{k\in S}p(k)$. With $L=\lfloor M^{17/20}\rfloor$, define
 \[
  \cH_n=[1,L]\setminus S,\qquad Q_n=|S|+|\cH_n|,
@@ -978,9 +1264,9 @@ The effective filled-edge charge $Q_n$ is different from the actual outer count 
 \]
 and let $B_n$ be Bernoulli of parameter $\pi_1(n)$, independent of $\cH_\infty$.
 
-\begin{theorem}[Uniform positive mass approximation]\label{thm:TV}
+\begin{theorem}[Uniform positive mass approximation]\label{stp:sum:thm:TV}
 Embedding $\cH_n$ into finite subsets of $\N$, uniformly through crossovers and triangular boundaries,
-\begin{equation}\label{eq:TV}
+\begin{equation}\label{stp:sum:eq:TV}
  \TV\bigl(\Law(Q_n-M,\cH_n),\Law(-B_n,\cH_\infty)\bigr)
  =O(M^{-1/2}).
 \end{equation}
@@ -991,9 +1277,9 @@ Put
 \]
 Then
 \begin{align}
- \E K_n&=M-\pi_1(n)-\mu_{\rm count}+O(M^{-1/2}),\label{eq:countmean}\\
+ \E K_n&=M-\pi_1(n)-\mu_{\rm count}+O(M^{-1/2}),\label{stp:sum:eq:countmean}\\
  \Var K_n&=\pi_1(n)(1-\pi_1(n))+\sigma_{\rm count}^2+O(M^{-1/2}).
- \label{eq:countvar}
+ \label{stp:sum:eq:countvar}
 \end{align}
 \end{theorem}
 This is a moving comparison measure, so no fixed phase subsequence is required. The actual count never reduces asymptotically to only two values: it includes the nondegenerate low-hole shift.
@@ -1001,8 +1287,8 @@ This is a moving comparison measure, so no fixed phase subsequence is required. 
 \begin{proof}
 The exact unnormalized joint mass at $(m,\cH)$ is $p(\cH)^{-1}$ times the charge-$m$ filled coefficient at $n+h$. The two-stage weighted truncations, the global localization, and the carrier-ratio bound reduce to $h\le M^\epsilon$ with superpolynomial lost joint mass relative to $a(n)$. Positivity is crucial: the sum of charge-resolved discarded masses equals the nonnegative global discarded mass, so the unmarked localization estimate controls their total absolute mass.
 
-For the dominant charges with $r_m/m\ge1/4$, the local theorem gives their filled mass at $n+h$ as $W_m(n+h)(1+O(M^{-1/2}))$. Before using a derivative, replace both integer values $p(r_m)$ and $p(r_m+h)$ by their exponentially accurate smooth values $e^{f(r_m)}$, $e^{f(r_m+h)}$. Apply~\eqref{eq:bulkSlope} to these explicit smooth carriers. For integer $h\ge1$ the replacement errors are absorbed, giving
-\begin{equation}\label{eq:WratioTV}
+For the dominant charges with $r_m/m\ge1/4$, the local theorem gives their filled mass at $n+h$ as $W_m(n+h)(1+O(M^{-1/2}))$. Before using a derivative, replace both integer values $p(r_m)$ and $p(r_m+h)$ by their exponentially accurate smooth values $e^{f(r_m)}$, $e^{f(r_m+h)}$. Apply~\eqref{stp:sum:eq:bulkSlope} to these explicit smooth carriers. For integer $h\ge1$ the replacement errors are absorbed, giving
+\begin{equation}\label{stp:sum:eq:WratioTV}
  \left|\frac{W_m(n+h)}{W_m(n)}-1\right|
  \le ChM^{-1/2}e^{Ch/\sqrt M}.
 \end{equation}
@@ -1014,13 +1300,13 @@ $p(\cH)^{-1}W_m(n)$ for $m=M,M-1$ is at most
  CM^{-1/2}(W_M+W_{M-1})
  \sum_{\cH\subset[1,L]}\frac{(1+h)e^{Ch/\sqrt M}}{p(\cH)}.
 \]
-The sum is uniformly bounded by~\eqref{eq:stretchedtilt}. Extending the comparison set to all finite holes costs only a superpolynomial error. Its total mass is $C_0(W_M+W_{M-1})$. Dividing by the two normalizing totals changes the error only by a fixed factor, proving~\eqref{eq:TV}.
+The sum is uniformly bounded by~\eqref{stp:sum:eq:stretchedtilt}. Extending the comparison set to all finite holes costs only a superpolynomial error. Its total mass is $C_0(W_M+W_{M-1})$. Dividing by the two normalizing totals changes the error only by a fixed factor, proving~\eqref{stp:sum:eq:TV}.
 
-Total variation alone would not prove unbounded moments. Multiply this raw $L^1$ estimate separately by $(1+h)^j$ for $j=1,2$, and use the corresponding fixed tilted moments. On the retained two charges, $|K_n-M|\le1+h$. On discarded exact tails, $K_n\le M$, $Q_n\le M+L$, and $h\le L(L+1)/2$, so fixed polynomial weights are absorbed by the superpolynomial tail estimates. The comparison law has finite stretched-exponential energy moments. Hence the first two centered moments of $K_n-M$ differ by $O(M^{-1/2})$. Independence of $B_n$ and the limiting holes gives~\eqref{eq:countmean}--\eqref{eq:countvar}.
+Total variation alone would not prove unbounded moments. Multiply this raw $L^1$ estimate separately by $(1+h)^j$ for $j=1,2$, and use the corresponding fixed tilted moments. On the retained two charges, $|K_n-M|\le1+h$. On discarded exact tails, $K_n\le M$, $Q_n\le M+L$, and $h\le L(L+1)/2$, so fixed polynomial weights are absorbed by the superpolynomial tail estimates. The comparison law has finite stretched-exponential energy moments. Hence the first two centered moments of $K_n-M$ differ by $O(M^{-1/2})$. Independence of $B_n$ and the limiting holes gives~\eqref{stp:sum:eq:countmean}--\eqref{stp:sum:eq:countvar}.
 \end{proof}
 
 \section{Exact checks and certified hole constants}
-\label{sec:computation}
+\label{stp:sum:sec:computation}
 The proof is analytic; finite agreement does not certify an asymptotic remainder or its onset. The accompanying standard-library code independently checks the finite algebra and normalizations, with integer or rational arithmetic throughout the exact path.
 
 \subsection{Independent recurrences and combinatorial tests}
@@ -1028,7 +1314,7 @@ Ordinary partition numbers through $10000$ are computed by unbounded coin-change
 \[
  np(n)=\sum_{j=1}^n\sigma_1(j)p(n-j).
 \]
-The descending $0/1$ product dynamic program computes $a(n)$ through $5000$. An algebraically different recurrence follows by logarithmic differentiation of~\eqref{eq:model}. If
+The descending $0/1$ product dynamic program computes $a(n)$ through $5000$. An algebraically different recurrence follows by logarithmic differentiation of~\eqref{stp:sum:eq:model}. If
 \[
  d(j)=\sum_{k\mid j}k(-1)^{j/k+1}p(k)^{j/k},
 \]
@@ -1042,7 +1328,7 @@ Every numerator is checked for exact divisibility by $n$ and agreement through $
 \]
 The original source check agreed with all 37 displayed initial values in the inspected live OEIS entry. The attempted b-file fetch failed; no full OEIS b-file comparison is claimed.
 
-An independent enumeration covers all $81156$ ordinary partitions of sizes $0$ through $35$. It uses doubled half-integer coordinates to check the row and Frobenius formulas, conjugation for $Q_1,\ldots,Q_6$, and both exact q-brackets~\eqref{eq:twobrackets}. The low-hole identity is independently exhausted for $0\le n\le28$ and $0\le L\le5$: $174$ cases and $8898$ triples. Checks include energy, unique recovery, exact missing set, actual/filled cardinality, integer weight cancellation, Frobenius weight equality, and every changed denominator exceeding $L$.
+An independent enumeration covers all $81156$ ordinary partitions of sizes $0$ through $35$. It uses doubled half-integer coordinates to check the row and Frobenius formulas, conjugation for $Q_1,\ldots,Q_6$, and both exact q-brackets~\eqref{stp:sum:eq:twobrackets}. The low-hole identity is independently exhausted for $0\le n\le28$ and $0\le L\le5$: $174$ cases and $8898$ triples. Checks include energy, unique recovery, exact missing set, actual/filled cardinality, integer weight cancellation, Frobenius weight equality, and every changed denominator exceeding $L$.
 
 These are independent finite checks of implementations and algebra. The explicit inverse map and analytic estimates, not enumeration, prove the general assertions.
 
@@ -1050,10 +1336,10 @@ These are independent finite checks of implementations and algebra. The explicit
 For $g(j)=j(j+3)/2\le k$, every subset of $\{2,\ldots,j+1\}$ can be completed by ones to a distinct partition of $k$, so $p(k)\ge2^j$. The block $g(j)\le k<g(j+1)$ has $j+2$ integers. Let $T_s(N)=\sum_{k>N}k^s/p(k)$. With $N=10000$, $j_0=139$, $g(j_0)=9869$, and $132$ already-included integers in that block, exact geometric power sums yield
 \begin{align}
  T_0(N)&\le\frac{2j_0+6-132}{2^{j_0}}
- =\frac{19}{87112285931760246646623899502532662132736},\label{eq:T0}\\
+ =\frac{19}{87112285931760246646623899502532662132736},\label{stp:sum:eq:T0}\\
  T_1(N)&\le\frac{j_0^3+10j_0^2+37j_0+56-132g(j_0+1)}{2^{j_0}}\notag\\
  &=\frac{390677}{174224571863520493293247799005065324265472}.
- \label{eq:T1}
+ \label{stp:sum:eq:T1}
 \end{align}
 For $T_1$ we bound every $k$ in a block by $g(j+1)$; summing $(j+2)g(j+1)2^{-j}$ and subtracting the corresponding first-block majorant gives the displayed polynomial. The identities use
 $\sum_{i\ge0}i^r2^{-i}=2,2,6,26$ for $r=0,1,2,3$.
@@ -1073,7 +1359,7 @@ Rounding the resulting exact intervals further outward gives the following short
 \end{align*}
 The package contains the full 100-decimal rational endpoints. They lie strictly inside an independently produced earlier interval certificate. This comparison itself is performed by exact rational inequalities.
 
-\subsection{Floating diagnostics and their limits}
+\subsection{Floating diagnostics and their limits}\label{stp:sum:sub:floating}
 Optional floating files are separate from the exact core and certificates. They test carrier ratios, slow crossover locations, and product-normalization trends. Selected leading and first-corrected ratios to the exact coefficient are:
 \begin{center}
 \begin{tabular}{rcc}
@@ -1098,8 +1384,17 @@ The source package includes the TeX report, Python exact checker, frozen exact v
 
 The manifest detects accidental changes; it is not a signature protecting against coordinated replacement of both files and manifest. The build assumes trusted source, Python/TeX installations and executable search path. Disabling shell escape does not turn TeX into a sandbox for arbitrary hostile inputs. No network or external upload is required to run the package. The README gives precise commands and the final build receipt records hashes separately from the self-contained archive.
 
+\wtag\ (5 October 2026.) In this repository the package's files are shipped
+under the prefix \texttt{182-strict-} (code in \path{code/}, data in
+\path{data/}); the delivery README is replaced by the report README, the
+manifest \texttt{SHA256SUMS.json} and the PDF are not shipped, and the
+1.43\,MB table \path{data/references/coefficients_0_5000.txt}, which
+\texttt{code/verify.py} reads, is not shipped either. The commands work only
+in the delivered layout; the report README gives the retrieval from the
+arrival commit and rerun routes on copies.
+
 \section{Attribution and the limits of the source screen}
-\label{sec:sources}
+\label{stp:sum:sec:sources}
 The exact sequence, product and twice-partitioned interpretation are attributed to OEIS A271619 and its contributor Gus Wiseman~\cite{oeis}. Hardy--Ramanujan/Rademacher estimates and eta identities are classical~\cite{dlmfpart}; shifted-symmetric quasimodularity and the effective $n$-point construction are Bloch--Okounkov's~\cite{BO}; modified-Bessel transfer expansions are classical~\cite{dlmfbessel}. Generic all-orders saddle-point transfer, including Harris--Schoenfeld admissibility as discussed by Odlyzko--Richmond, is established methodology~\cite{OR}. The target-specific work here is verification of localization, tame remainder bounds, finite hole assembly and their consequences for this amplitude product.
 
 The bounded comparison screen inspected the following particularly relevant theorem scopes:
@@ -1111,12 +1406,34 @@ The bounded comparison screen inspected the following particularly relevant theo
 \end{itemize}
 The actual complete prior A022629 article was also checked within the project~\cite{Prior22629}. Its main family covers power amplitudes, fixed convolution powers and integer slot multiplicities; its section on more general weights does not supply a theorem for these stretched amplitudes. Prior A291698 moving-fugacity material~\cite{Prior291698} concerns a different model and explicitly leaves its beyond-polynomial regime outside its result. Exact-ID/title repository and Library searches produced no direct match, but negative searches are not proofs of absence.
 
+\wtag\ (5 October 2026, batch 100.) Checked at the write: the passages
+of~\cite{Prior22629} and~\cite{Prior291698} described here (question~7 of
+the A022629 report; Section~10.3 of the A291698 report) are as described;
+neither report has changed since 2 October 2026, before this manuscript's
+date. No other report in the repository treats A271619. Part~II of this report
+treats the neighbouring sequence A358836, and Section~\ref{stp:sec:guide}
+records the relations to these reports and to the new report on A126348.
+
 Our precise conclusion is only that no inspected primary theorem directly preempted the target result in this bounded screen. We make no universal novelty claim. A bibliographic lead to Gingold--Quaintance's work on integer power products remained unverified at full-theorem level and is not used to support either coverage or noncoverage.
 
 \paragraph{Review record.}
-Separate mathematical reviews reconstructed the local remainder/transfer proof, the global Bellman/entropy proof, and the full finite-moment assembly and inverse interface. The optional total-variation proof was reviewed after clarifying that exact integer partition weights are smoothed before differentiation and that the zero-shift ratio is treated exactly. An independent finite checker recomputed the algebra and constant intervals. A preliminary working-dossier resonance moment incorrectly omitted the upper-region restriction; the manuscript's split in Section~\ref{sec:resonance} corrects that before publication. No finite computation is presented as validation of an unproved analytic gate.
+Separate mathematical reviews reconstructed the local remainder/transfer proof, the global Bellman/entropy proof, and the full finite-moment assembly and inverse interface. The optional total-variation proof was reviewed after clarifying that exact integer partition weights are smoothed before differentiation and that the zero-shift ratio is treated exactly. An independent finite checker recomputed the algebra and constant intervals. A preliminary working-dossier resonance moment incorrectly omitted the upper-region restriction; the manuscript's split in Section~\ref{stp:sum:sec:resonance} corrects that before publication. No finite computation is presented as validation of an unproved analytic gate.
 
-\section{Further directions}
+\wtag\ (5 October 2026.) The reviews named here were made within the
+delivering session; their records are not part of the delivery, apart from
+the provenance files of the exact checks (\path{data/182-strict-PROVENANCE.json},
+\path{data/182-strict-SECOND_ORDER_PROVENANCE.json} and the frozen
+independent checkers). No referee or reviewer outside that session has
+checked the proofs, and the repository adds no review of its own beyond the
+notes marked \wtag.
+
+\section{Further questions and research}\label{stp:sum:sec:further}
+\wtag\ Section title changed in the write (5 October 2026, batch 100) from
+``Further directions''. The first list is the manuscript's own. The second,
+added in the write under ProveIt's standing rule of 4 October 2026, collects
+the claims of this Part that are stated without proof, with the source, its
+sketch and what is missing.
+
 The following are proposed directions for additional work, not assertions that each is globally open in the literature.
 \begin{itemize}
 \item Make the asymptotic onset effective, or develop a practical positive multi-charge approximation with finite-index error bounds. The poor moderate-index performance documented here makes this a substantive numerical problem.
@@ -1125,6 +1442,1135 @@ The following are proposed directions for additional work, not assertions that e
 \item Prove coefficient-level phase theorems for more general stretched amplitudes, including the putative $\alpha=1/3$ transition suggested by the resonance modulus. That observation alone supplies no coefficient theorem.\par
 \end{samepage}
 \item Extend the positive joint-law argument to further conditioned diagram statistics, and investigate higher-order distributional corrections while keeping the persistent low-hole cloud separate from edge fluctuations.
+\end{itemize}
+
+\paragraph{Claims of Part~I stated without proof (\wtag).}
+\begin{enumerate}[label=(\roman*)]
+\item \emph{The stretched-amplitude modulus law.} Report~182,
+Section~\ref{stp:sum:sec:resonance}, ``A bounded general observation'': if
+$\log w(k)\sim bk^\alpha$ with $0<\alpha<1$, ``with sufficiently controlled
+differentiated remainders and negligible lower-edge contributions'', then
+$\log|\phi(2\pi\ell/X)|\sim-2\pi^4\ell^2X^{1-3\alpha}/(3b^3(1-\alpha)^3)$, so
+that $\alpha=1/3$ is a natural modulus threshold. The source calls it an
+observation and asserts no coefficient theorem. Sketch: the computation
+of~\eqref{stp:sum:eq:resonance}, with $t\sim bX^{\alpha-1}$ and
+$H_t\sim X^{1-\alpha}/(b(1-\alpha))$. Missing: the hypotheses made precise
+(which remainder control, which bound on the lower region, whose proof for
+$\alpha=1/2$ uses $v_k\le Ce^{-c\sqrt k}$), a proof under them, and any
+coefficient-level consequence (the manuscript's third direction above).
+The write notes a parallel: at $\alpha=1/3$ the resonance damping is of
+order one, as at $\log u\asymp n^{1/6}$ in Section~10.3 of the A291698
+report and in the critical theta window of Report~93 (Section~22 of the
+A022629 report, batch~100); whether a theta-type multiplier over many
+charges replaces the two-charge phase there is open.
+\item \emph{A certified value of $C_P$.} Section~\ref{stp:sum:sec:crossover}
+gives $C_P$ as the absolutely convergent series~\eqref{stp:sum:eq:CP} and
+claims no certified value. Missing: an explicit bound for the
+$O(k^{-3/2})$ summand (an explicit-error form of~\eqref{stp:sum:eq:ferror})
+and interval values of $\zeta(-1/2)$, $\zeta(1/2)$ and $\gamma$. No theorem
+of this Part uses $C_P$: $P_m$ is kept exact.
+\end{enumerate}
+Nothing else in Part~I was found stated without proof. The one-line claim
+that first relative corrections move the crossover centre only at order
+$M^{-1}$ is justified in a note in Section~\ref{stp:sum:sec:crossover}.
+
+
+\part{Nested partitions with distinct block lengths (A358836)}\label{stp:len:part}
+
+\wtag\ Part~II is Report~181 of the session bundle, \emph{Nested Partitions
+with Distinct Block Lengths: All fixed asymptotic orders, explicit relative
+growth, inverse bounds and conditioned limits for OEIS A358836}, author line
+``Research report 181'', dated 3~October 2026 (21 pages as delivered). Its
+abstract follows. Its text is unchanged except for the label prefix
+\texttt{stp:len:}, the citation key of its OEIS entry, the title of
+Section~\ref{stp:len:sec:questions} (was ``Further questions'') and the notes
+marked \wtag; its running headers and table-of-contents spacing were not
+carried over. Its letters differ from Part~I's
+(Table~\ref{stp:tab:notation}): here $b$ is a variance, $a=\pi^4/72$, $\mu(z)=\log P(e^{-z})$
+and $E_h$ are Edgeworth corrections.
+
+\paragraph{Abstract of Part~II.}
+{\small
+Let $a_n$ count multisets of integer partitions of total weight $n$ in which the numbers of parts of the constituent blocks are distinct. Andrew Howroyd's recorded product for OEIS A358836 is
+$\prod_{k\ge1}(1+q^k/\prod_{j\le k}(1-q^j))$.
+We reduce its logarithm to a moving-argument Jacobi product, the ordinary partition product, the MacMahon product and a finite-end correction. The latter admits a computable formal expansion with uniform analytic remainders on disks of radius proportional to $t^2$, where $q=e^{-t}$.
+
+An all-angle characteristic-function bound gives an exact-saddle coefficient expansion through every fixed Edgeworth order, with a rigorously integrated remainder. The leading logarithm grows as $n^{3/4}$, followed by explicit $n^{1/2}\log n$ and $n^{1/4}$ power-log terms. We also give the constant-order completion, yielding a fully elementary relative equivalent with error $O(n^{-1/4}\log^4 n)$. Controlled inversion includes a bounded-error numerical carrier and arbitrary-order two-floor envelopes; neither an unconditional rounding rule nor arbitrary accuracy against a fixed piecewise-linear interpolation is asserted.
+
+For uniform objects of weight $n$, the number of occupied lengths has a Gaussian limit, and the largest occupied length has a Gumbel limit, jointly independent. The moving complex saddle and truncated-product conditioning steps are proved. The product and composition interpretation are prior, and the modular, Mellin, saddle-point and conditioning methods are classical. The report establishes sequence-specific deductions and records a bounded source comparison, without a global priority claim. Exact finite checks and optional floating-point diagnostics are kept separate.
+}
+
+\section{The model and the scope of the results}\label{stp:len:sec:model}
+A block is an ordinary integer partition. Its \emph{length} is its number of positive parts, and its weight is their sum. An object is an unordered collection of blocks, with no two blocks of the same length. The total weight is the sum of the block weights. The empty collection has weight zero. Write $a_n$ for the number of objects of weight $n$.
+
+This is the sequence A358836~\cite{oeisA358836}, whose initial values are
+% BEGIN VERIFIED OEIS PREFIX
+\[
+1,1,2,4,8,15,28,51,92,164,289,504,871,1493,2539,4290,7201,12017,19939
+\]
+% END VERIFIED OEIS PREFIX
+The restriction concerns block \emph{lengths}, not block weights or distinct block contents. This distinction separates the model from A271619 and A261049~\cite{neighbor}.
+
+Define
+\begin{equation}\label{stp:len:eq:products}
+ P_k(q)=\prod_{j=1}^k(1-q^j)^{-1},\qquad B_k(q)=q^kP_k(q),\qquad
+ F(q)=\sum_{n\ge0}a_nq^n=\prod_{k\ge1}(1+B_k(q)).
+\end{equation}
+Conjugation of partitions shows that $B_k$ counts partitions with exactly $k$ parts. Taking zero or one block of each length gives the last identity. This is the elementary specialization of Howroyd's formula recorded on 31 December 2022; it is not a new product. For $|q|\le r<1$, $|B_k(q)|\le r^kP(r)$, where
+\[
+ P(q)=\prod_{j\ge1}(1-q^j)^{-1}.
+\]
+Thus the product converges normally in $|q|<1$ and defines an analytic function there.
+
+Gus Wiseman's composition interpretation, recorded on 21 August 2024, has a direct bijection. Conjugate each block, sort the resulting partitions by their distinct largest parts in increasing order, and concatenate them. Inside each block the parts weakly decrease. Between consecutive blocks there is an ascent, since the old last part is at most its leader and the new leader is larger. Hence the blocks are exactly the maximal weakly decreasing runs, whose leaders strictly increase. Conversely, split such a composition into these runs and conjugate them.
+
+Appending a part $1$ preserves this property and is injective. For $n\ge1$ the one-part composition $(n+1)$ is not in its image. Consequently
+\begin{equation}\label{stp:len:eq:monotone}
+ a_{n+1}>a_n\quad(n\ge1),\qquad 1\le a_n\le2^{n-1}\quad(n\ge1).
+\end{equation}
+The repeated initial value $a_0=a_1=1$ causes no difficulty for eventual inversion.
+
+Throughout, put
+\begin{equation}\label{stp:len:eq:constants}
+ A=\frac{\pi^2}{6},\qquad Z=\zeta(3),\qquad a=\frac{A^2}{2},\qquad
+ \as=(3a)^{1/4}=\frac{\pi}{24^{1/4}},\qquad L(t)=\log F(e^{-t}).
+\end{equation}
+An expansion through \emph{all fixed orders} means that the order is fixed before $t\downarrow0$ or $n\to\infty$. The error constants may depend on that order. We do not assert convergence of the complete formal series, bounds uniform in a growing truncation order, an effective asymptotic onset or numerical interval certificates for the asymptotic errors.
+
+The Jacobi, Dedekind eta and MacMahon identities are classical~\cite{dlmfjacobi,dlmftheta,dlmfeta,dlmfmacmahon}. The complete MacMahon logarithmic expansion is part of the Ramanujan--Wright theory; the inspected proof is Koshkin's~\cite{koshkin}, with Wright~\cite{wright} cited historically. Saddle-point and Gaussian-moment coefficient extraction are standard~\cite{fs}. The model-specific work below is the nested-denominator reduction, its small-disk estimates and the global coefficient and conditioning arguments. Section~\ref{stp:len:sec:sources} states exactly the limits of the source comparison.
+
+\section{An exact reduction to classical products}\label{stp:len:sec:reduction}
+Let $q=e^{-z}$, $\Ree z>0$, and use the logarithms defined by convergent power series to set
+\[
+ \mu_k(z)=\log P_k(e^{-z}),\qquad \mu(z)=\log P(e^{-z}),\qquad
+ M(q)=\prod_{j\ge1}(1-q^j)^{-j}.
+\]
+Define
+\begin{align*}
+ D(z)&=\prod_{k\ge1}(1+e^{\mu(z)-kz}),&
+ T_k(z)&=\mu(z)-\mu_k(z),\\
+ u_k(z)&=e^{kz-\mu_k(z)},&w_k(z)&=e^{\mu(z)-kz}.
+\end{align*}
+For positive real $z$, and then wherever the quotients are analytic, the elementary factor identity is
+\[
+ \frac{1+B_k(e^{-z})}{1+P(e^{-z})e^{-kz}}
+ =\frac{P_k(e^{-z})}{P(e^{-z})}\,
+   \frac{1+u_k(z)}{1+w_k(z)^{-1}}.
+\]
+Moreover,
+\[
+ \prod_{k\ge1}\frac{P_k(q)}{P(q)}
+ =\prod_{j\ge1}(1-q^j)^{j-1}=\frac{P(q)}{M(q)}.
+\]
+All extracted products converge absolutely on the positive axis. Thus
+\begin{equation}\label{stp:len:eq:factorization}
+ F(e^{-z})=D(z)\frac{P(e^{-z})}{M(e^{-z})}R(z),\qquad
+ R(z)=\prod_{k\ge1}R_k(z),
+\end{equation}
+where the useful unsplit factor is
+\begin{equation}\label{stp:len:eq:Rk}
+ R_k(z)=\frac{w_k(z)+e^{T_k(z)}}{w_k(z)+1}
+       =1+\frac{e^{T_k(z)}-1}{1+w_k(z)}.
+\end{equation}
+For large $k$ one must estimate this quotient as a whole. Separating its numerator and denominator logarithms into two infinite sums would introduce artificial divergence.
+
+\subsection{The analytic disk and its denominators}
+Fix a sufficiently small constant $c>0$ and work on
+\begin{equation}\label{stp:len:eq:disk}
+ \mathcal D_t=\{z:|z-t|\le ct^2\},\qquad t\downarrow0.
+\end{equation}
+Slightly smaller concentric disks will be used for Cauchy estimates. A disk with radius proportional to $t$ is not justified: edge factors can have zeros at distances of order $t^2$.
+
+\begin{lemma}\label{stp:len:lem:denominator}
+Uniformly for every $k\in\NN\cup\{\infty\}$ and $z\in\mathcal D_t$,
+\[
+ \mu_k(z)-\mu_k(t)=O(c).
+\]
+There is a fixed $\eta>0$ such that, for all $k$ and sufficiently small $t$,
+\begin{equation}\label{stp:len:eq:denominator}
+ |1+w_k(z)|\ge\eta\max(1,|w_k(z)|).
+\end{equation}
+The same conclusion holds with $\mu(z)$ replaced by $\mu(z)+s$ for all complex $s$ in a sufficiently small fixed disk.
+\end{lemma}
+\begin{proof}
+For $\Ree z\asymp t$,
+\[
+ |\mu_k'(z)|\le\sum_{j\ge1}\frac{j}{e^{j\Ree z}-1}=O(t^{-2}),
+\]
+independently of $k$. Integrating along the segment from $t$ proves the first assertion. The eta transformation~\cite{dlmfeta} gives uniformly on $\mathcal D_t$
+\begin{equation}\label{stp:len:eq:mu}
+ \mu(z)=\frac A z+\frac12\log\frac{z}{2\pi}-\frac z{24}
+        +O(e^{-d/t}),
+\end{equation}
+with the logarithm continued from the positive axis and some $d>0$. For example the exact identity has residual product at $Q=e^{-4\pi^2/z}$, whose logarithm is exponentially small on this disk.
+
+If $|w_k|\le1/2$ or $|w_k|\ge2$, the reverse triangle inequality proves~\eqref{stp:len:eq:denominator}. Otherwise~\eqref{stp:len:eq:mu} implies
+\[
+ k=\frac A{t^2}+O\left(\frac{|\log t|}{t}\right),\qquad
+ |\Imm(\mu(z)-kz)|\le2Ac+o(1).
+\]
+Choose $c$ so that this is less than $\pi/4$. In this transition band $w_k$ stays in a fixed sector about the positive axis, proving the bound. Reserving some slack in the sector proves the assertion with $\mu+s$.
+\end{proof}
+
+\subsection{The finite-end expansion}
+For fixed $J$, define the rational numbers $h_j$ formally by
+\begin{equation}\label{stp:len:eq:Hformal}
+ H(z)=\sum_{k\ge1}\log\left(1+e^{kz}\prod_{j=1}^k(1-e^{-jz})\right)
+     =\sum_{j\ge1}h_jz^j.
+\end{equation}
+This is a formal power series definition: the summand indexed by $k$ has order $z^k$, so the coefficient of $z^j$ uses only $k\le j$. The displayed infinite logarithmic sum is not claimed to converge for real $z>0$.
+
+\begin{proposition}\label{stp:len:prop:finiteend}
+For every fixed integer $J\ge1$, $R$ has a zero-free analytic logarithm on $\mathcal D_t$ for all sufficiently small $t$, and
+\begin{equation}\label{stp:len:eq:Rexpansion}
+ \log R(z)=\sum_{j=1}^Jh_jz^j+O_J(t^{J+1})
+\end{equation}
+uniformly there. Its first ten coefficients are
+\begin{equation}\label{stp:len:eq:hvalues}
+\begin{split}
+ h_1&=1,\quad h_2=2,\quad h_3=7,\quad h_4=\frac{68}{3},\quad
+ h_5=\frac{391}{4},\quad h_6=\frac{40043}{90},\\
+ h_7&=\frac{96787}{40},\quad h_8=\frac{17366357}{1260},\quad
+ h_9=\frac{157752233}{1728},\quad h_{10}=\frac{285439229213}{453600}.
+\end{split}
+\end{equation}
+\end{proposition}
+\begin{proof}
+Choose a small fixed $\delta>0$ and a large fixed $C>0$. We estimate four ranges, using Lemma~\ref{stp:len:lem:denominator} throughout.
+
+For $k\le\delta/t$, the inequality $|1-e^{-jz}|\le j|z|$, valid for $\Ree z\ge0$ by integration along a segment, gives
+\[
+ \left|\frac{u_{k+1}(z)}{u_k(z)}\right|
+ =|e^z(1-e^{-(k+1)z})|\le r<1.
+\]
+Since $u_1=e^z-1=O(t)$ and $u_{J+1}=O_J(t^{J+1})$, the sum of $|\log(1+u_k)|$ over $J<k\le\delta/t$ is $O_J(t^{J+1})$.
+
+For $\delta/t\le k\le C/t$, the first $\lfloor\delta/t\rfloor$ partition factors on the real axis give $\mu_k(t)\ge d_\delta/t$ with $d_\delta>0$. This follows, for instance, from a positive lower Riemann sum for $-\log(1-e^{-x})$ on a fixed subinterval of $(0,\delta)$. The uniform $O(c)$ transfer and $k\Ree z\le C+o(1)$ then give
+\[
+ |u_k(z)|\le e^{-d_\delta/(2t)}.
+\]
+For $C/t\le k\le A/(2t^2)$, use
+\[
+ \mu(t)-\mu_k(t)=O(t^{-1}e^{-kt})\qquad(kt\ge C).
+\]
+Choosing $C$ large and using~\eqref{stp:len:eq:mu} yields $\Ree\mu_k(z)\ge3A/(4t)$. It follows that $|u_k(z)|\le e^{-A/(5t)}$ after decreasing the constant in the exponent. These two ranges contain $O(t^{-2})$ indices. Their total is therefore exponentially small. On all $k\le A/(2t^2)$, the complementary terms $\log(1+e^{kz-\mu(z)})$ also have exponentially small total.
+
+Finally, for $k\ge A/(2t^2)$,
+\[
+ |T_k(z)|\le C_1t^{-1}e^{-k\Ree z}.
+\]
+Equation~\eqref{stp:len:eq:Rk} and~\eqref{stp:len:eq:denominator} show that $|\log R_k|\le C_2|T_k|$ on this range. Consequently
+\[
+ \sum_{k\ge A/(2t^2)}|\log R_k(z)|
+ =O\left(t^{-2}e^{-A/(2t)+O(1)}\right).
+\]
+All these logarithms can be chosen analytically and close to zero; the finitely many remaining factors $1+u_k$ are also close to one. This proves zero-freeness of $R$ and
+\[
+ \log R(z)=\sum_{k=1}^J\log(1+u_k(z))+O_J(t^{J+1}).
+\]
+Taylor expansion of the fixed finite sum proves~\eqref{stp:len:eq:Rexpansion}. Rational formal arithmetic gives~\eqref{stp:len:eq:hvalues}.
+\end{proof}
+
+\section{The complete free-energy expansion}\label{stp:len:sec:freeenergy}
+The reduction~\eqref{stp:len:eq:factorization} isolates all the large terms. We give the classical normalizations explicitly because a shift error in the theta square would change the lower-order coefficients.
+
+\subsection{Jacobi normalization on the small disk}
+The triple product~\cite{dlmfjacobi} gives the exact identity
+\begin{equation}\label{stp:len:eq:triple}
+ D(z)\poc{-e^{-\mu(z)}}{e^{-z}}\poc{e^{-z}}{e^{-z}}
+ =\sum_{m\in\ZZ}\exp\{-\mu(z)m-zm(m-1)/2\}.
+\end{equation}
+Put $\gamma=1/2-\mu(z)/z$. Completing the square produces the prefactor
+$\exp((\mu-z/2)^2/(2z))$. Gaussian Poisson summation~\cite{dlmftheta} gives
+\[
+ \sum_{m\in\ZZ}e^{-z(m-\gamma)^2/2}
+ =\sqrt{\frac{2\pi}{z}}\sum_{l\in\ZZ}e^{-2\pi^2l^2/z}e^{2\pi i l\gamma},
+\]
+where the square root is continued from the positive axis. On $\mathcal D_t$,
+\[
+ \Ree(1/z)=t^{-1}+O(c),\qquad
+ |\Imm(\mu(z)/z)|\le\frac{2Ac+o(1)}t.
+\]
+Hence a nonzero dual term is bounded by
+\[
+ \exp\left\{\frac{-2\pi^2l^2+(4\pi Ac+o(1))|l|}{t}+O(cl^2)\right\}.
+\]
+Decreasing $c$ makes the sum of all these terms $O(e^{-d/t})$. Also
+$\log\poc{-e^{-\mu}}{e^{-z}}=O(t^{-1}e^{-\Ree\mu})$.
+Taking analytic logarithms of~\eqref{stp:len:eq:triple}, and then using~\eqref{stp:len:eq:mu}, gives
+\begin{align}
+ \log D(z)
+ &=\frac{\mu^2}{2z}-\frac\mu2+\frac z8
+    +\frac12\log\frac{2\pi}{z}+\mu+O(e^{-d/t})\notag\\
+ &=\frac{\mu^2}{2z}+\frac A z-\frac\mu2+\frac z{12}+O(e^{-d/t}).\label{stp:len:eq:Dexp}
+\end{align}
+These bounds also establish the required local analytic logarithm of $D$.
+
+\wtag\ (5 October 2026, batch 100.) With $u=e^{\mu(z)}$, $D(z)$ is the
+product $\prod_{k\ge1}(1+uq^k)$ of the A291698 report~\cite{priorfugacity},
+whose exact Jacobi decomposition (its equation~(11)) continues
+analytically to complex $u$; its logarithm,
+$(\mu^2/2+A)/z+z/12-\mu/2$ plus the logarithms of the dual theta sum and of
+$(Q;Q)_\infty^{-1}$ and $(-1/u;e^{-z})_\infty^{-1}$, is the second line
+of~\eqref{stp:len:eq:Dexp}. The identity is classical and is derived here
+independently; what this Part adds is the bound on the dual terms on the
+moving complex disk~\eqref{stp:len:eq:disk}. Identity~\eqref{stp:len:eq:triple}
+is the instance $q=e^{-z}$, $z\mapsto-e^{-\mu(z)}$ of Jacobi's triple
+product as formalized in Lean
+(\path{Fabius.hasSum_jacobi_triple_product}; Section~\ref{stp:sec:guide}).
+
+\subsection{MacMahon residues}
+Mellin inversion gives, initially on $\Ree w>2$,
+\begin{equation}\label{stp:len:eq:mellin}
+ \log M(e^{-z})=\frac1{2\pi i}\int
+ \Gamma(w)\zeta(w+1)\zeta(w-1)z^{-w}\,dw.
+\end{equation}
+This follows by expanding $-\log(1-e^{-jz})$ and using the Mellin transform of the exponential; absolute convergence justifies interchange. The pole at $w=2$ contributes $Z/z^2$. The double pole at zero contributes $(\log z)/12+\zeta'(-1)$, and the poles at $w=-2m$ contribute
+\begin{equation}\label{stp:len:eq:c2m}
+ c_{2m}=\frac{\zeta(1-2m)\zeta(-1-2m)}{(2m)!},\qquad c_2=-\frac1{2880}.
+\end{equation}
+These are the classical Ramanujan--Wright coefficients~\cite{koshkin,wright}. Gamma decay dominates the polynomial zeta bounds in any fixed closed sector $|\arg z|\le\alpha<\pi/2$. Shifting the contour past sufficiently many poles therefore gives, for each fixed $J$,
+\begin{equation}\label{stp:len:eq:Mexp}
+ \log M(e^{-z})=\frac Z{z^2}+\frac1{12}\log z+\zeta'(-1)
+ +\sum_{1\le m\le J/2}c_{2m}z^{2m}+O_J(t^{J+1})
+\end{equation}
+uniformly on $\mathcal D_t$. If a desired remainder exponent coincides with a pole, shift farther, include that residue and absorb terms of the target size into the remainder. This does not assert convergence of the full residue series.
+
+\begin{theorem}\label{stp:len:thm:freeenergy}
+Write $\ell=\log(t/(2\pi))$. Then
+\begin{equation}\label{stp:len:eq:Lexplicit}
+\begin{split}
+ L(t)={}&\frac a{t^3}+\frac{A\ell/2-Z}{t^2}
+ +\frac{\ell^2/8+35A/24}{t}\\
+ &+\frac7{48}\log t-\frac{11}{48}\log(2\pi)-\zeta'(-1)
+ +\frac{1225}{1152}t+\frac{5761}{2880}t^2+7t^3+O(t^4).
+\end{split}
+\end{equation}
+At every fixed higher order the expansion is obtained by substituting~\eqref{stp:len:eq:mu}, \eqref{stp:len:eq:Rexpansion}, \eqref{stp:len:eq:Dexp} and~\eqref{stp:len:eq:Mexp} into
+\begin{equation}\label{stp:len:eq:combination}
+ L(z)=\frac{\mu(z)^2}{2z}+\frac A z+\frac{\mu(z)}2+\frac z{12}
+       -\log M(e^{-z})+\log R(z)+O(e^{-d/t}).
+\end{equation}
+Every fixed number of derivatives has the corresponding differentiated expansion with natural remainder order. In particular, for each fixed $r\ge0$,
+\begin{equation}\label{stp:len:eq:derivatives}
+ (-1)^rL^{(r)}(t)\sim a(3)_rt^{-3-r},\qquad
+ |L^{(r)}(z)|=O_r(t^{-3-r})
+\end{equation}
+on a smaller fixed disk, where $(3)_r=3\cdot4\cdots(r+2)$ and $(3)_0=1$.
+\end{theorem}
+\begin{proof}
+The product identity gives $L=\log D+\mu-\log M+\log R$. Substitution proves~\eqref{stp:len:eq:combination} and elementary collection of terms gives~\eqref{stp:len:eq:Lexplicit}. For example the uncombined regular term from the first three classical terms is $73t/1152$, to which $h_1t=t$ is added; the $t^2$ term is $h_2-c_2=5761/2880$.
+
+The derivative statement needs care. Cauchy's estimate on a radius-$ct^2$ disk loses \emph{two} powers of $t$ for each derivative. To differentiate a truncation through $t^J$ a fixed $r$ times with remainder $O(t^{J+1-r})$, first establish the undifferentiated expansion through $t^{J+r}$. Cauchy's estimate for its remainder gives
+\[
+ O(t^{J+r+1-2r})=O(t^{J+1-r}).
+\]
+The derivatives of the extra explicitly retained powers $t^{J+1},\ldots,t^{J+r}$ are of the same or smaller order. Nested disks give the analogous uniform bounds near $t$. The leading term is $at^{-3}$, proving~\eqref{stp:len:eq:derivatives}.
+\end{proof}
+
+\section{The exact saddle and a global arc bound}\label{stp:len:sec:arcs}
+Under the Boltzmann law with parameter $e^{-t}$, an object of weight $N$ has probability proportional to $e^{-tN}$. The block choices are independent. Block $k$ is absent with probability $(1+B_k)^{-1}$; conditional on its presence its weight is
+\begin{equation}\label{stp:len:eq:blocklaw}
+ k+\sum_{j\le k}jG_j,\qquad
+ \PP(G_j=r)=(1-e^{-tj})e^{-tjr}\quad(r\ge0).
+\end{equation}
+In particular $-L'(t)$ is the mean total weight and $L''(t)>0$ is its variance. The mean decreases continuously from infinity to zero as $t$ increases from zero to infinity. Thus for each $n>0$ there is exactly one $t=t_n>0$ such that
+\begin{equation}\label{stp:len:eq:saddle}
+ -L'(t_n)=n.
+\end{equation}
+By~\eqref{stp:len:eq:derivatives},
+\begin{equation}\label{stp:len:eq:scale}
+ t_n\sim\as n^{-1/4},\qquad
+ b=L''(t_n)\sim12at_n^{-5}=6A^2t_n^{-5}.
+\end{equation}
+
+\begin{lemma}\label{stp:len:lem:allarc}
+For sufficiently small real $t>0$, there is a constant $c_1>0$ such that, for every $-\pi\le\theta\le\pi$,
+\begin{equation}\label{stp:len:eq:allarc}
+ \frac{|F(e^{-t+i\theta})|}{F(e^{-t})}
+ \le\exp\{-c_1\min(\theta^2/t^5,t^{-3})\}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Fix $0<\alpha<\beta<A$ and select all integers $k\in[\alpha/t^2,\beta/t^2]$. There are $\Theta(t^{-2})$ such blocks. For them
+\[
+ B_k(e^{-t})=\exp\{(A-kt^2)/t+O(|\log t|)\},
+\]
+so their absence probabilities $\eps_k$ satisfy $\eps_k\le e^{-d/t}$ for some $d>0$.
+
+Each selected occupied block contains all the geometric variables with $j\in[1/t,2/t]$. For $r_j=e^{-tj}$, uniformly bounded away from zero and one,
+\[
+ \left|\frac{1-r_j}{1-r_je^{ij\theta}}\right|^2
+ =\left(1+\frac{4r_j\sin^2(j\theta/2)}{(1-r_j)^2}\right)^{-1}
+ \le e^{-c\sin^2(j\theta/2)}.
+\]
+The remaining conditional factors have modulus at most one. Hence the modulus of the occupied-block characteristic function is at most
+\begin{equation}\label{stp:len:eq:conditionalarc}
+ \exp\left\{-c\sum_{1/t\le j\le2/t}\sin^2(j\theta/2)\right\}
+ \le\exp\{-c_2\min(\theta^2/t^3,1/t)\}.
+\end{equation}
+To see the second inequality on the full interval, use three ranges. For $|\theta|/t$ sufficiently small, a sine lower bound gives a constant times $\theta^2\sum j^2$. For $|\theta|/t$ in a fixed positive compact interval, the rescaled sum converges uniformly to the positive integral $\int_1^2\sin^2(x\theta/(2t))\,dx$. For $|\theta|\ge Ct$ with $C$ large, use
+\[
+ \sum\sin^2(j\theta/2)=\frac{\#\{j\}}2-\frac12\Ree\sum e^{ij\theta},
+ \qquad \left|\sum e^{ij\theta}\right|\le\frac1{|\sin(\theta/2)|}.
+\]
+Together these cover all angles, including roots of unity.
+
+It remains to retain attenuation after mixing in the absent state. Put $u=\min(\theta^2/t^3,1/t)$ and decrease $c_2$ to $c_0\le\min(c_2,d/2)$. For any $\eps\le e^{-d/t}$,
+\begin{align*}
+ \log\{\eps+(1-\eps)e^{-c_0u}\}
+ &=-c_0u+\log\{1+\eps(e^{c_0u}-1)\}\\
+ &\le-c_0u+\eps c_0u e^{c_0u}\\
+ &\le-c_0u(1-e^{-d/(2t)})\le-c_0u/2.
+\end{align*}
+We used $e^x-1\le xe^x$ and $u\le1/t$. Multiplying over the $\Theta(t^{-2})$ selected blocks gives~\eqref{stp:len:eq:allarc}; every unused normalized factor has modulus at most one.
+\end{proof}
+
+Cauchy's formula at the exact saddle reads
+\begin{equation}\label{stp:len:eq:cauchy}
+ a_n=\frac{e^{nt+L(t)}}{2\pi}\int_{-\pi}^{\pi}
+ \frac{F(e^{-t+i\theta})}{F(e^{-t})}e^{-in\theta}\,d\theta.
+\end{equation}
+Only on a zero-free local arc do we express the ratio by an exponential involving $L(t-i\theta)$. No global logarithm across possible zeros is required. Lemma~\ref{stp:len:lem:allarc} supplies coefficient control that a positive-real asymptotic alone would not provide.
+
+\section{Every fixed Edgeworth order}\label{stp:len:sec:edgeworth}
+Set, at $t=t_n$,
+\[
+ \kappa_j=(-1)^jL^{(j)}(t),\qquad b=\kappa_2.
+\]
+For $h\ge1$, define
+\begin{equation}\label{stp:len:eq:Etuple}
+ E_h(t)=\sum_{\substack{m_3,\ldots,m_{2h+2}\ge0\\
+                 \sum(j-2)m_j=2h}}
+ \frac{(-1)^{J/2}(J-1)!!}{b^{J/2}}
+ \prod_{j=3}^{2h+2}\frac{\kappa_j^{m_j}}{m_j!(j!)^{m_j}},
+ \qquad J=\sum_{j=3}^{2h+2}jm_j,
+\end{equation}
+and put $E_0=1$. The letter $J$ in this formula is the total Gaussian degree, not a free-energy truncation order. Its parity is even.
+
+\begin{theorem}\label{stp:len:thm:coefficient}
+For every fixed integer $H\ge0$,
+\begin{equation}\label{stp:len:eq:coefficient}
+ a_n=\frac{\exp(nt_n+L(t_n))}{\sqrt{2\pi L''(t_n)}}
+ \left\{\sum_{h=0}^HE_h(t_n)+O_H(t_n^{3H+3})\right\},
+ \qquad E_h(t)=O(t^{3h}).
+\end{equation}
+The first two corrections are
+\begin{align}
+ E_1&=\frac{\kappa_4}{8b^2}-\frac{5\kappa_3^2}{24b^3}
+       \sim-\frac{35}{4\pi^4}t^3,\label{stp:len:eq:E1}\\
+ E_2&=-\frac{\kappa_6}{48b^3}
+       +\frac{7\kappa_3\kappa_5}{48b^4}
+       +\frac{35\kappa_4^2}{384b^4}
+       -\frac{35\kappa_3^2\kappa_4}{64b^5}
+       +\frac{385\kappa_3^4}{1152b^6}.\label{stp:len:eq:E2}
+\end{align}
+\end{theorem}
+\begin{proof}
+Fix $0<\delta<1/2$ and take the core $|\theta|\le t^{5/2-\delta}$. Its complement has exponentially small integral by~\eqref{stp:len:eq:allarc}. \wtag\ At $|\theta|=t^{5/2-\delta}$ the
+bound~\eqref{stp:len:eq:allarc} is $\exp(-c_1t^{-2\delta})$: superpolynomially
+small in $t$, not exponentially small in $1/t$. This suffices for every
+fixed order (correction of wording, 5 October 2026). The core lies in the analytic disk~\eqref{stp:len:eq:disk} for small $t$.
+
+Put $v=\theta\sqrt b$ and $\rho=t^{3/2}$. By~\eqref{stp:len:eq:derivatives}, the standardized cumulants
+\[
+ \lambda_j=\frac{\kappa_j}{b^{j/2}}=O(\rho^{j-2})\qquad(j\ge3)
+\]
+have fixed-order bounds. Taylor expansion through degree $2H+3$ gives
+\begin{equation}\label{stp:len:eq:taylorremainder}
+\begin{split}
+ L(t-i\theta)-L(t)-in\theta
+ &=-\frac{v^2}{2}+\sum_{j=3}^{2H+3}\lambda_j\frac{(iv)^j}{j!}+R_H,\\
+ |R_H|&\le C_H\rho^{2H+2}|v|^{2H+4}.
+\end{split}
+\end{equation}
+The derivative bound in Theorem~\ref{stp:len:thm:freeenergy}, obtained by expanding extra orders before differentiation, is what gives this remainder. The total non-Gaussian exponent, including $R_H$, is $o(v^2)$ uniformly on the core: its leading ratio is $O(\rho|v|)=o(1)$.
+
+Assign weight $j-2$ to $\lambda_j(iv)^j/j!$. Expand its exponential, retaining all products of total weight at most $2H+1$. Here is an explicit integrable remainder argument. Introduce an auxiliary variable $r$, replace each term of weight $d$ by $r^d$ times that term, and apply Taylor's theorem at $r=0$ through degree $2H+1$, evaluated at $r=1$. Each monomial in the remainder derivatives has total weight at least $2H+2$. Since only finitely many cumulant terms occur, these derivatives are bounded by
+\[
+ C_H\rho^{2H+2}P_H(|v|)e^{\epsilon_t v^2},\qquad \epsilon_t\longrightarrow0,
+\]
+for a fixed polynomial $P_H$. The same form bounds the effect of $R_H$ in~\eqref{stp:len:eq:taylorremainder}. Multiplication by $e^{-v^2/2}$ gives an integrable Gaussian majorant and total error $O_H(\rho^{2H+2})=O_H(t^{3H+3})$. Gaussian tails allow the retained polynomial integrals to extend from the core to the whole real axis.
+
+The parity of $\sum jm_j$ equals the parity of $\sum(j-2)m_j$, so all odd weights integrate to zero. For an even total degree $J$,
+\[
+ \frac1{\sqrt{2\pi}}\int_{\mathbb R}e^{-v^2/2}(iv)^J\,dv
+ =(-1)^{J/2}(J-1)!!.
+\]
+The even weight $2h$ therefore gives exactly~\eqref{stp:len:eq:Etuple}. The prefactor from~\eqref{stp:len:eq:cauchy} is $1/\sqrt{2\pi b}$. This proves~\eqref{stp:len:eq:coefficient} with no logarithmic loss in the integrated remainder. Direct tuple enumeration gives~\eqref{stp:len:eq:E1} and~\eqref{stp:len:eq:E2}; substitution of $\kappa_j\sim a(3)_jt^{-3-j}$ gives the stated leading constant.
+\end{proof}
+
+\section{Explicit growth and an elementary relative equivalent}\label{stp:len:sec:explicit}
+Put
+\begin{equation}\label{stp:len:eq:nnotation}
+\begin{gathered}
+ \eps=n^{-1/4},\qquad \ell_n=\log\frac{\as\eps}{2\pi},\qquad
+ B_n=\frac A2\ell_n-Z,\\
+ C_n=\frac{\ell_n^2}{8}+\frac{35A}{24},\qquad D_n=B_n-\frac A4.
+\end{gathered}
+\end{equation}
+
+\begin{theorem}\label{stp:len:thm:tiers}
+The first saddle correction is
+\begin{equation}\label{stp:len:eq:saddlecorrection}
+ t_n=\as\eps+\frac{D_n}{2\as^2}\eps^2
+       +O(\eps^3(\log n)^2).
+\end{equation}
+The three divergent power-log tiers are
+\begin{equation}\label{stp:len:eq:tiers}
+ \log a_n=\frac{4\as}{3}n^{3/4}
+ +\frac{B_n}{\as^2}n^{1/2}
+ +\left(\frac{C_n}{\as}-\frac{D_n^2}{2\as^5}\right)n^{1/4}
+ +O((\log n)^3).
+\end{equation}
+In particular,
+\begin{equation}\label{stp:len:eq:leadingtwo}
+ \log a_n=\frac{4\pi}{3\,24^{1/4}}n^{3/4}
+           -\frac{\sqrt6}{24}n^{1/2}\log n+O(n^{1/2}).
+\end{equation}
+There is a recursive power-log expansion of $\log a_n$ to any prescribed fixed algebraic accuracy, obtained by the substitution described below.
+\end{theorem}
+\begin{proof}
+Write $t=\eps U$ in the saddle equation. Then
+\[
+ 1+\eps^4L'(\eps U)=0.
+\]
+Its leading term is $1-3a/U^4$, which vanishes at $U=\as$ and has derivative $4/\as$ there. Recursively solve with
+\[
+ U=\as+\sum_{j\ge1}\eps^ju_j(\log\eps).
+\]
+At each stage the coefficient of the next unknown polynomial is $4/\as$, so the recursion is unique. The first one is $u_1=D_n/(2\as^2)$.
+
+This is more than a formal construction. The differentiated expansion in Theorem~\ref{stp:len:thm:freeenergy} gives a controlled residual after any fixed finite substitution. The derivative of the scaled equation remains bounded away from zero near $\as$. The mean value theorem, or the local analytic implicit-function theorem with the same bounds, turns the residual into a corresponding error for the true saddle. Thus the recursion gives genuine asymptotic expansions with polynomial logarithms.
+
+Substitute in
+\begin{equation}\label{stp:len:eq:logalgorithm}
+ nt+L(t)-\tfrac12\log(2\pi L''(t))
+ +\log\left(\sum_{h=0}^HE_h(t)\right).
+\end{equation}
+The first-order saddle displacement cancels by stationarity. The second-order contribution is the negative completed square $-D_n^2/(2\as^5)$ in~\eqref{stp:len:eq:tiers}. The Gaussian logarithm and Edgeworth terms are below the three displayed tiers. Keeping more free-energy, saddle and Edgeworth terms in~\eqref{stp:len:eq:logalgorithm} gives any fixed power accuracy. One may over-truncate by a fixed amount, avoiding any claim about optimal truncation. Exponentiating a remainder tending to zero gives the corresponding relative expansion.
+\end{proof}
+
+The three tiers alone are not a relative equivalent because their omitted logarithmic terms still diverge. The next result completes all terms down through order one.
+
+\begin{theorem}\label{stp:len:thm:elementary}
+Define
+\begin{equation}\label{stp:len:eq:Gn}
+ G_n=\frac{D_n^3}{3\as^8}-\frac{AD_n^2}{8\as^8}
+     +\frac{D_n(\ell_n/4-C_n)}{2\as^4}
+\end{equation}
+and the fully explicit expression
+\begin{equation}\label{stp:len:eq:Tn}
+\begin{split}
+ \mathcal T(n)={}&\frac{4\as}{3}n^{3/4}+\frac{B_n}{\as^2}n^{1/2}
+ +\left(\frac{C_n}{\as}-\frac{D_n^2}{2\as^5}\right)n^{1/4}+G_n\\
+ &+\frac7{48}\log(\as\eps)-\frac{11}{48}\log(2\pi)-\zeta'(-1)
+   +\frac52\log\eps-\frac12\log\frac{8\pi}{\as}.
+\end{split}
+\end{equation}
+Then
+\begin{equation}\label{stp:len:eq:elementary}
+ \log a_n=\mathcal T(n)+O(n^{-1/4}(\log n)^4),\qquad
+ a_n=e^{\mathcal T(n)}\{1+O(n^{-1/4}(\log n)^4)\}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+The first three exponent functions in the variable $U=t/\eps$ are
+\begin{align*}
+ \phi_0(U)&=U+a/U^3,\\
+ \phi_1(U)&=\{A(\ell_n+\log(U/\as))/2-Z\}/U^2,\\
+ \phi_2(U)&=\{(\ell_n+\log(U/\as))^2/8+35A/24\}/U.
+\end{align*}
+Thus $nt+L(t)$ begins with $\eps^{-3}\phi_0(U)+\eps^{-2}\phi_1(U)+\eps^{-1}\phi_2(U)$. At $U=\as$,
+\[
+ \phi_0''=\frac4\as,\qquad \phi_0'''=-\frac{20}{\as^2},\qquad
+ \phi_1''=\frac{6B_n-5A/2}{\as^4},\qquad
+ \phi_2'=\frac{\ell_n/4-C_n}{\as^2}.
+\]
+With $u_1=D_n/(2\as^2)$, the constant Legendre contribution is
+\[
+ \frac16\phi_0'''u_1^3+\frac12\phi_1''u_1^2+\phi_2'u_1=G_n.
+\]
+Any terms involving the next saddle coefficient $u_2$ cancel because $\phi_0''u_1+\phi_1'=0$. The logarithmic part of~\eqref{stp:len:eq:Lexplicit} gives the next three terms of~\eqref{stp:len:eq:Tn}. Finally
+\[
+ b=\frac4\as\eps^{-5}\{1+O(\eps|\log\eps|)\}
+\]
+gives the last two Gaussian terms there.
+
+For the error, set $t_0=\as\eps+u_1\eps^2$. Equation~\eqref{stp:len:eq:saddlecorrection} gives $t_n-t_0=O(\eps^3(\log n)^2)$. By stationarity, replacing $t_n$ by $t_0$ in $nt+L(t)$ costs
+\[
+ O\bigl(\eps^{-5}(t_n-t_0)^2\bigr)=O(\eps(\log n)^4).
+\]
+The fourth-order Taylor term of $\phi_0$, the third-order one of $\phi_1$ and the second-order one of $\phi_2$ are of this order or smaller. Changes in the logarithmic term, Gaussian prefactor, first regular $t$ term and Edgeworth corrections are smaller. This proves the first assertion in~\eqref{stp:len:eq:elementary}. Its remainder tends to zero, so exponentiation proves the second.
+\end{proof}
+
+\section{Controlled inversion and its rounding limits}\label{stp:len:sec:inverse}
+For $x\ge1$, let
+\[
+ N(x)=\max\{n\ge0:a_n\le x\},\qquad Y=\log x.
+\]
+Equation~\eqref{stp:len:eq:monotone} and the growth theorem make this finite and eventually unambiguous. Put $c=4\as/3$ and $N_0=(Y/c)^{4/3}$.
+
+\begin{proposition}\label{stp:len:prop:inversefirst}
+As $x\to\infty$,
+\begin{equation}\label{stp:len:eq:inversefirst}
+\begin{split}
+ N(x)=N_0-\frac{N_0^{3/4}}{\as^3}
+ \left\{\frac A2\log\frac{\as N_0^{-1/4}}{2\pi}-Z\right\}
+ +O\bigl(N_0^{1/2}(\log N_0)^2\bigr).
+\end{split}
+\end{equation}
+\end{proposition}
+\begin{proof}
+The derivative of the leading carrier $cn^{3/4}$ is $\as n^{-1/4}$. Dividing the second growth tier $B_n n^{1/2}/\as^2$ by this slope gives the displayed displacement. Taylor expansion of the leading carrier and the next tier after this displacement leaves vertical error $O(N_0^{1/4}(\log N_0)^2)$, which gives the stated horizontal remainder. Rounding contributes at most a bounded amount and is smaller.
+\end{proof}
+
+For a much sharper carrier, let $L_2(t)$ denote precisely the right side of~\eqref{stp:len:eq:Lexplicit} through its $t^2$ term, with no remainder, and set
+\begin{equation}\label{stp:len:eq:Q2}
+ Q_2(t)=L_2(t)-tL_2'(t)-\frac12\log(2\pi L_2''(t)).
+\end{equation}
+For small positive $t$, $L_2''(t)>0$ and
+\[
+ Q_2'(t)=-tL_2''(t)-\frac{L_2'''(t)}{2L_2''(t)}
+ \sim-6A^2t^{-4}<0.
+\]
+Thus the small positive solution of $Q_2(\tau)=Y$ is unique for all sufficiently large $Y$. Define
+\begin{equation}\label{stp:len:eq:nu2}
+ \nu_2(Y)=-L_2'(\tau),\qquad Q_2(\tau)=Y.
+\end{equation}
+This is an explicitly specified one-dimensional root problem involving only the displayed constants and elementary functions.
+
+\begin{theorem}\label{stp:len:thm:boundedinverse}
+Let $I$ be the strictly increasing piecewise-linear interpolant with $I(n)=\log a_n$ for integers $n\ge1$. Then
+\begin{equation}\label{stp:len:eq:boundedinverse}
+ I^{-1}(Y)-\nu_2(Y)=O(Y^{-2/3}),\qquad
+ N(x)=\nu_2(\log x)+O(1).
+\end{equation}
+No fixed floor of $\nu_2(Y)$ is asserted to equal $N(e^Y)$ for every sufficiently large $Y$.
+\end{theorem}
+\begin{proof}
+The differentiated free-energy theorem gives
+\[
+ L-L_2=O(t^3),\quad (L-L_2)'=O(t^2),\quad (L-L_2)''=O(t).
+\]
+At the exact saddle $t_n$, Theorem~\ref{stp:len:thm:coefficient} with $H=0$ and these bounds give
+\[
+ \log a_n-Q_2(t_n)=O(t_n^3),\qquad -L_2'(t_n)-n=O(t_n^2).
+\]
+If $Q_2(\tau)=\log a_n$, then $\tau-t_n=O(t_n^7)$ since $|Q_2'|\asymp t_n^{-4}$. Multiplication by $L_2''=O(t_n^{-5})$ shows
+\[
+ \nu_2(\log a_n)-n=O(t_n^2).
+\]
+For a statement between integers, define $g_2(v)=Q_2(t_2(v))$, where $-L_2'(t_2(v))=v$. Direct differentiation gives $g_2'(v)=t_2(v)(1+o(1))$ and $g_2''(v)=O(t_2(v)^5)$. Its linear interpolation on a unit interval has vertical error $O(t^5)$, while its endpoint errors relative to $\log a_n$ are $O(t^3)$. Dividing by a slope asymptotic to $t$ gives the uniform horizontal error $O(t^2)$. Since $Y\asymp t^{-3}$, this is $O(Y^{-2/3})$.
+
+For $Y$ in the interval $[\log a_n,\log a_{n+1})$, $N(e^Y)=n=\lfloor I^{-1}(Y)\rfloor$; the same identity holds at the endpoints. This proves the bounded-error assertion, but a small smooth error can still change a floor arbitrarily near an integer.
+\end{proof}
+
+\subsection{Higher-order inverse information}
+It is important not to strengthen~\eqref{stp:len:eq:boundedinverse} incorrectly. A smooth carrier for $\log a_n$ has curvature of order $t^5$ on a unit interval. Its piecewise-linear interpolation therefore contributes a vertical error of order $t^5$, or a horizontal error of order $t^4$, away from the endpoints. Higher smooth asymptotic truncations alone cannot supply arbitrary accuracy relative to the \emph{fixed} interpolant $I^{-1}$; fractional-part corrections would be needed.
+
+The appropriate arbitrary-order discrete statement uses pointwise errors and two floors.
+\begin{theorem}\label{stp:len:thm:envelopes}
+Let $g_R(v)$ be a sufficiently high fixed-order smooth saddle carrier, obtained from~\eqref{stp:len:eq:logalgorithm}, increasing for large real $v$. Suppose, for fixed $p>1$ and $m\ge0$, its integer-point error has the proved bound
+\[
+ |\log a_n-g_R(n)|\le Ct_n^p(1+|\log t_n|)^m.
+\]
+Write $g_R(\nu_R(Y))=Y$, and let $t$ be the saddle scale at $\nu_R(Y)$. For a sufficiently large fixed $C'$ put
+\[
+ \eta_R(Y)=C't^{p-1}(1+|\log t|)^m.
+\]
+Then for all sufficiently large $Y$,
+\begin{equation}\label{stp:len:eq:envelopes}
+ \lfloor\nu_R(Y)-\eta_R(Y)\rfloor
+ \le N(e^Y)\le
+ \lfloor\nu_R(Y)+\eta_R(Y)\rfloor.
+\end{equation}
+The exponent $p$ can be made arbitrarily large by adding enough free-energy and Edgeworth terms.
+\end{theorem}
+\begin{proof}
+The construction and differentiated remainders give $g_R'(v)\sim t(v)$, uniformly over the small relevant horizontal range. With a strict margin in $C'$, the change in $g_R$ from $\nu_R$ to either boundary dominates the pointwise integer error. Thus the integer at or below the lower boundary has logarithmic coefficient at most $Y$, whereas every integer strictly above the upper boundary has logarithmic coefficient greater than $Y$. Monotonicity~\eqref{stp:len:eq:monotone} then proves~\eqref{stp:len:eq:envelopes}. Arbitrarily large fixed $p$ follows from Theorems~\ref{stp:len:thm:coefficient} and~\ref{stp:len:thm:tiers}.
+\end{proof}
+If both floors agree, the threshold is determined. If the carrier is exceptionally close to an integer, the envelope may retain two adjacent integers. This is a genuine rounding ambiguity, not a defect repaired by asserting an unproved exact floor rule.
+
+\section{Marking the number of occupied lengths}\label{stp:len:sec:marked}
+Let $K_n$ be the number of blocks in a uniformly chosen object of total weight $n$. Its marked generating function is
+\[
+ F(q,e^s)=\prod_{k\ge1}(1+e^sB_k(q)),\qquad
+ A_n(s)=[q^n]F(q,e^s),\qquad L(z,s)=\log F(e^{-z},e^s).
+\]
+Thus $\E e^{sK_n}=A_n(s)/A_n(0)$. Below $t=t_n$ is the unmarked saddle. Write
+\begin{equation}\label{stp:len:eq:mB}
+ m_B(t)=L_s(t,0)=\sum_{k\ge1}\frac{B_k(e^{-t})}{1+B_k(e^{-t})}.
+\end{equation}
+The real-marker estimates alone would not justify differentiating a coefficient asymptotic. We therefore establish the fixed complex-marker version first.
+
+\subsection{Uniform marked free energy}
+Use small fixed $|s|\le s_0$ and $|z-t|\le ct^2$, decreasing $s_0$ and $c$ if needed. The denominator argument in Lemma~\ref{stp:len:lem:denominator} now uses $\mu+s$. The marked Jacobi factor is $D_s(z)=\prod_{k\ge1}(1+e^{\mu(z)+s-kz})$. In the dual theta sum from Section~\ref{stp:len:sec:freeenergy}, replacing $\mu$ by $\mu+s$ adds at most $(2\pi s_0+o(1))|l|/t$ to the exponent of the $l$th dual term. Shrinking $c$ and $s_0$ therefore retains exponential suppression of all $l\ne0$; the complementary product remains exponentially close to one. Consequently, uniformly on the joint complex disks,
+\[
+ \log D_s(z)=\frac{(\mu+s)^2}{2z}+\frac A z-\frac{\mu+s}{2}
+               +\frac z{12}+O(e^{-d/t}).
+\]
+In the finite-end factor replace $u_k$ by $e^{-s}u_k$. Its formal coefficients $h_j(s)$ are finite polynomials in $e^{-s}$ and hence analytic. The exact decomposition and the same four-region estimates give
+\begin{equation}\label{stp:len:eq:markedL}
+\begin{split}
+ L(z,s)-L(z,0)
+ =s\left(\frac{\mu(z)}z-\frac12\right)+\frac{s^2}{2z}
+ +\sum_{j=1}^J\{h_j(s)-h_j(0)\}z^j+O_J(t^{J+1}).
+\end{split}
+\end{equation}
+The remainder is uniform and analytic on smaller disks. Extra $z$ orders before Cauchy differentiation supply natural mixed derivative remainders; Cauchy differentiation in $s$ uses a fixed-radius disk. No analytic meaning is assigned to the divergent infinite formal $H$ series.
+
+In particular,
+\begin{align}
+ m_B(t)&=\frac\mu t-\frac12+O(t)
+ =\frac A{t^2}+\frac{\log(t/(2\pi))}{2t}-\frac{13}{24}+O(t),\label{stp:len:eq:mBexp}\\
+ L_{ss}(t,0)&=t^{-1}+O(t),\notag\\
+ L_{ts}(t,0)&=-2At^{-3}+O(t^{-2}|\log t|),\label{stp:len:eq:markedderivatives}\\
+ L_{tt}(t,0)&=6A^2t^{-5}+O(t^{-4}|\log t|).\notag
+\end{align}
+
+\subsection{The moving complex saddle and global arcs}
+For $n=-L_t(t,0)$ seek $\tau(s)$ satisfying $L_t(\tau(s),s)+n=0$. Set $\tau=t+t^2v$. Uniformly for bounded $v$ and small $s$,
+\[
+ t^3\{L_t(t+t^2v,s)+n\}\longrightarrow6A^2v-2As.
+\]
+The analytic implicit-function theorem applied to this scaled equation gives a unique analytic saddle on a sufficiently small fixed $s$ disk, with
+\begin{equation}\label{stp:len:eq:taus}
+ \tau(0)=t,\qquad \tau(s)-t=O(|s|t^2),\qquad
+ \tau'(0)=\frac{t^2}{3A}(1+o(1)).
+\end{equation}
+Take the marker disk small enough that $\tau(s)$ stays in the zero-free $z$ disk.
+
+For the coefficient integral, choose the line $\Ree z=\Ree\tau$. Since $n$ is an integer, its integrand is $2\pi i$-periodic, so the integration interval can be centered at $\Imm\tau$, giving $z=\tau+iy$, $-\pi\le y\le\pi$. This is a reparametrization of the same circle, with no extra contour-crossing hypothesis.
+
+Choose a small fixed $\delta_0>0$ and then $s_0$ much smaller than $\delta_0$. On $|y|\le\delta_0t^2$, the uniform derivative expansion implies
+\[
+ \Ree L_{tt}(\tau+iy,s)\ge c_3t^{-5}.
+\]
+Stationarity gives Gaussian decay $\exp(-c_4y^2/t^5)$ throughout this band, including the intermediate local tails outside the Gaussian core. A positive-real modulus estimate centered at zero would not by itself establish this shifted local bound.
+
+For the remaining arcs, put $r=\Ree\tau$ and $\sigma=\Ree s$. The proof of Lemma~\ref{stp:len:lem:allarc} applies to the marked factors normalized by $F(e^{-r},e^\sigma)$: taking modulus and using the triangle inequality removes the phase of $e^{i\Imm s}$ from the occupied term. Since $|\Imm\tau|\le Cs_0t^2$, for $|y|\ge\delta_0t^2$ the angular distance modulo $2\pi$ is at least $\delta_0t^2/2$. The normalized bound is therefore $\exp(-c_5\delta_0^2/t)$ or smaller.
+
+To compare this with the complex saddle main term, expand from the real point $(r,\sigma)$ to $(\tau,s)$. The first-order change is purely imaginary. The second derivative bounds $L_{tt}=O(t^{-5})$, $L_{ts}=O(t^{-3})$, $L_{ss}=O(t^{-1})$ and $|\Imm\tau|=O(t^2|\Imm s|)$ yield
+\[
+ L(r,\sigma)-\Ree L(\tau,s)=O(s_0^2/t).
+\]
+Taking $s_0$ sufficiently small makes this cost strictly less than the negative global-arc exponent. Thus the global arcs are exponentially negligible relative to the complex saddle main term.
+
+The weighted Taylor proof in Section~\ref{stp:len:sec:edgeworth} now applies uniformly for complex $|s|\le s_0$. Set
+$b(s)=L_{tt}(\tau(s),s)$. It has positive real part and is asymptotic to $6A^2t^{-5}$; use the principal square root. The complex Gaussian moments have exactly the same formulas for $\Ree b>0$. In particular,
+\begin{equation}\label{stp:len:eq:markedcoefficient}
+ A_n(s)=\frac{e^{n\tau(s)+L(\tau(s),s)}}{\sqrt{2\pi b(s)}}
+ \{1+O(t^3)\},
+\end{equation}
+uniformly and analytically on a smaller fixed marker disk. The full fixed-order expansion also holds. Its uniform analytic remainder can be differentiated by Cauchy in $s$. \wtag\ Only the first-order form~\eqref{stp:len:eq:markedcoefficient}, with its
+$O(t^3)$ remainder and that remainder's Cauchy $s$-derivatives, is used
+below (Theorems~\ref{stp:len:thm:clt} and~\ref{stp:len:thm:gumbel}). The
+full fixed-order marked expansion is asserted on the strength of the
+weighted Taylor proof applying uniformly; it is listed as question~(vii) of
+Section~\ref{stp:len:sec:questions} (5 October 2026).
+
+\subsection{The Gaussian block-count law}
+\begin{theorem}\label{stp:len:thm:clt}
+For uniform objects of weight $n$, with $t=t_n$,
+\begin{align}
+ \E K_n&=m_B(t)+O(t),& \Var K_n&\sim\frac1{3t},\label{stp:len:eq:moments}\\
+ \frac{K_n-m_B(t)}{\sqrt{1/(3t)}}&\ \Longrightarrow\ \mathcal N(0,1),&
+ \frac{K_n}{\sqrt n}&\ \longrightarrow\ \sqrt{\frac23}
+ \quad\text{in probability}.\label{stp:len:eq:clt}
+\end{align}
+More precisely,
+\begin{equation}\label{stp:len:eq:meansharp}
+ \E K_n-m_B(t)=\frac{t}{3A}+O(t^2|\log t|).
+\end{equation}
+\end{theorem}
+\begin{proof}
+Take an analytic logarithm of~\eqref{stp:len:eq:markedcoefficient} and write $\Psi_n(s)=\log A_n(s)$. Then
+\[
+ \Psi_n(s)=n\tau(s)+L(\tau(s),s)-\tfrac12\log(2\pi b(s))+O(t^3).
+\]
+The saddle equation cancels the $\tau'$ terms in the first derivative of the optimized exponent, while $\tau'=-L_{ts}/L_{tt}$. Consequently
+\[
+ \Psi_n'(0)=m_B(t)-\frac12\frac{b_s^{\rm total}}b+O(t^3),\qquad
+ b_s^{\rm total}=L_{tts}+L_{ttt}\tau'.
+\]
+The leading terms are
+\[
+ L_{tts}\sim6At^{-4},\qquad L_{ttt}\sim-30A^2t^{-6},\qquad
+ \tau'\sim t^2/(3A),
+\]
+so $b_s^{\rm total}\sim-4At^{-4}$. The differentiated expansions sharpen this to~\eqref{stp:len:eq:meansharp}.
+
+\wtag\ \emph{Proof of~\eqref{stp:len:eq:meansharp}, added in the write
+(5 October 2026).} Since $\E e^{sK_n}=A_n(s)/A_n(0)$, $\E K_n=\Psi_n'(0)$
+exactly. The $O(t^3)$ remainder in~\eqref{stp:len:eq:markedcoefficient} is
+analytic and uniform on a fixed marker disk, so its $s$-derivative at $0$
+is $O(t^3)$ by Cauchy's estimate; hence
+$\E K_n=m_B(t)-b_s^{\rm total}/(2b)+O(t^3)$, all derivatives taken at
+$(t,0)$. Each derivative involved has a leading term with relative error
+$O(t|\log t|)$: $L_{tt}=6A^2t^{-5}(1+O(t|\log t|))$ and
+$L_{ts}=-2At^{-3}(1+O(t|\log t|))$ by~\eqref{stp:len:eq:markedderivatives};
+$L_{ttt}=-30A^2t^{-6}(1+O(t|\log t|))$ by three differentiations
+of~\eqref{stp:len:eq:Lexplicit}, legitimate by
+Theorem~\ref{stp:len:thm:freeenergy}; and
+by~\eqref{stp:len:eq:markedL} and~\eqref{stp:len:eq:mu},
+$L_s(z,0)=A/z^2+\log(z/2\pi)/(2z)-13/24+O(|z|)$, whose second $z$-derivative,
+legitimate by the mixed-derivative remainders stated
+after~\eqref{stp:len:eq:markedL}, is $L_{tts}=6At^{-4}(1+O(t|\log t|))$.
+Therefore $\tau'(0)=-L_{ts}/L_{tt}=\frac{t^2}{3A}(1+O(t|\log t|))$,
+$b_s^{\rm total}=L_{tts}+L_{ttt}\tau'(0)=-4At^{-4}(1+O(t|\log t|))$ and
+\[
+ \E K_n-m_B(t)=-\frac{b_s^{\rm total}}{2b}+O(t^3)
+ =\frac{4At^{-4}}{12A^2t^{-5}}\bigl(1+O(t|\log t|)\bigr)
+ =\frac t{3A}+O(t^2|\log t|).
+\]
+\wtag\ \emph{A numerical comparison (binary64, uncertified).} Evaluating
+$L(t,s)=\sum_k\log(1+e^sB_k(e^{-t}))$ and its derivatives termwise at the
+exact saddle reproduces the Boltzmann means $m_B(t)$ recorded in
+\path{data/181-nested-references-marked_verification.json} to ten digits,
+and $m_B(t)-b_s^{\rm total}/(2b)$ agrees with the exact means $\E K_n$
+recorded there to within $2.9\cdot10^{-3}$, $1.4\cdot10^{-3}$,
+$6.6\cdot10^{-4}$ and $4.1\cdot10^{-4}$ at $n=100,200,400,600$. The
+correction divided by $t$ is $0.324$, $0.332$, $0.330$, $0.324$ there, still
+far from its limit $1/(3A)=0.2026$; at $n=600$, $\tau'(0)$ is $1.38$ times
+$t^2/(3A)$. The first-order identity is accurate already at these sizes; its
+leading constant is approached slowly. (The computation is a short script
+of the write, not shipped.)
+
+
+
+The second derivative of the optimized exponent is the Schur complement
+\[
+ L_{ss}-\frac{L_{ts}^2}{L_{tt}}=\frac1{3t}+O(|\log t|).
+\]
+Twice differentiating the logarithmic prefactor contributes a smaller order, giving the variance assertion. On a smaller fixed marker disk the third derivative of the optimized exponent is
+\[
+ L_{sss}+3L_{tss}\tau'+3L_{tts}(\tau')^2+L_{ttt}(\tau')^3=O(1).
+\]
+This follows directly from~\eqref{stp:len:eq:markedL}: $L_{sss}=O(t)$, $L_{tss}=O(t^{-2})$, $L_{tts}=O(t^{-4})$, $L_{ttt}=O(t^{-6})$, and $\tau'=O(t^2)$. The prefactor and remainder also have bounded third derivatives. Taylor expansion at $s=iv\sqrt{3t}$, for fixed real $v$, gives the standard-normal characteristic function after centering by $m_B(t)$. The difference between this centering and the true mean is negligible on the standard-deviation scale.
+
+Finally $m_B(t)\sim A/t^2$, $n\sim3A^2/(2t^4)$ and the variance is lower order than $n$. These prove the last convergence in~\eqref{stp:len:eq:clt}.
+\end{proof}
+
+\section{Largest length and joint independence}\label{stp:len:sec:maximum}
+Let $M_n$ be the largest occupied block length of a uniformly chosen object of positive weight $n$. This statistic concerns the number of parts in the largest-length block, not the largest part within a block. Define the standard Gumbel law by $\PP(G\le x)=\exp(-e^{-x})$.
+
+\begin{theorem}\label{stp:len:thm:gumbel}
+With $t=t_n$ and $\mu(t)=\log P(e^{-t})$,
+\begin{equation}\label{stp:len:eq:gumbel}
+ tM_n-\mu(t)-\log(1/t)\ \Longrightarrow\ G.
+\end{equation}
+Moreover the pair
+\begin{equation}\label{stp:len:eq:joint}
+ \left(\sqrt{3t}\{K_n-m_B(t)\},\ tM_n-\mu(t)-\log(1/t)\right)
+ \ \Longrightarrow\ (Z_0,G),
+\end{equation}
+where $Z_0$ is standard normal and $Z_0$ and $G$ are independent.
+\end{theorem}
+\begin{proof}
+Fix $x\in\mathbb R$ and put
+\[
+ m=\left\lfloor\frac{\mu(t)+\log(1/t)+x}{t}\right\rfloor.
+\]
+For $k>m$, the partition tail estimate gives
+\[
+ P_k/P=1+O(t^{-1}e^{-kt}),\qquad
+ \max_{k>m}B_k=O(t),\qquad \sum_{k>m}B_k^2=O(t).
+\]
+The relative partition-tail error is exponentially small here. Also
+\[
+ \sum_{k>m}Pe^{-tk}
+ =\frac{e^{\mu-t(m+1)}}{1-e^{-t}}\longrightarrow e^{-x},
+\]
+since the floor perturbs the exponent by only $O(t)$. Hence
+\begin{equation}\label{stp:len:eq:Ttail}
+ T_m(z,s)=\sum_{k>m}\log(1+e^sB_k(e^{-z}))
+ \quad\text{satisfies}\quad T_m(t,0)\longrightarrow e^{-x}.
+\end{equation}
+The product with all $k>m$ deleted is $F_{\le m}=F\exp(-T_m)$.
+
+For every fixed $r\ge1$,
+\begin{equation}\label{stp:len:eq:tailderivatives}
+ \partial_z^rT_m(t,0)=O(t^{-2r}).
+\end{equation}
+Indeed, a conditional block in~\eqref{stp:len:eq:blocklaw} has mean $k+O(t^{-2})$, and its higher geometric cumulant sums are $O(t^{-r-1})$. The Bell-polynomial expression for derivatives of $B_k$ bounds them by a constant times $B_k(k+t^{-2})^r$. Summation against the exponentially decaying tail gives~\eqref{stp:len:eq:tailderivatives}. The same estimates hold locally for $|z-t|\le Ct^{5/2}$ and $|s|\le C\sqrt t$, with the evident bounds for marker derivatives. \wtag\ \emph{Those bounds, added in the write (5 October 2026).} Let
+$|z-t|\le Ct^{5/2}$, $r=\Ree z$, $|s|\le C\sqrt t$ and $x_k=e^sB_k(e^{-z})$
+for $k>m$. Then $|x_k|\le e^{|s|}B_k(e^{-r})\le e^{|s|}P(e^{-r})e^{-rk}$, and
+since $r-t=O(t^{5/2})$ changes $\mu$ by $O(\sqrt t)$ and $rm$ by $O(\sqrt t)$
+($m=O(t^{-2})$), the computation before~\eqref{stp:len:eq:Ttail} gives
+$\sum_{k>m}|x_k|=O(1)$ and $\max_{k>m}|x_k|=O(t)$. With $y=x/(1+x)$,
+$\partial_s\log(1+x)=y$ and $\partial_sy=y(1-y)$, so every
+$\partial_s^r\log(1+x_k)$ is a polynomial in $y_k$ without constant term and
+is $O_r(|x_k|)$; similarly $\partial_zy=y(1-y)\partial_z\log B_k$, and the
+Bell-polynomial bound above gives
+$|\partial_z^{r'}\partial_s^r\log(1+x_k)|\le C_{r,r'}|x_k|(k+t^{-2})^{r'}$.
+Summing against the geometric tail,
+$\partial_z^{r'}\partial_s^rT_m(z,s)=O_{r,r'}(t^{-2r'})$ on the whole region,
+and in particular $T_m(z,s)-T_m(z,0)=O(|s|)=O(\sqrt t)$.
+
+The truncated product retains all the deep occupied lengths $k\in[\alpha/t^2,\beta/t^2]$ with $\beta<A$. It therefore has the same global suppression from Lemma~\ref{stp:len:lem:allarc}. On every bounded Gaussian-scale interval $z=t+iy$, $y=O(t^{5/2})$, equation~\eqref{stp:len:eq:tailderivatives} gives
+\[
+ T_m(t+iy,0)=T_m(t,0)+O(\sqrt t).
+\]
+Apply dominated convergence to the coefficient integrals, using the retained-block Gaussian bound for the tails. This proves
+\begin{equation}\label{stp:len:eq:truncatedratio}
+ \frac{[q^n]F_{\le m}(q)}{[q^n]F(q)}\longrightarrow\exp(-e^{-x}).
+\end{equation}
+This is the required conditioning step. Boltzmann independence alone would not prove it. Equivalently, deleting the tail changes the mean weight by $O(t^{-2})=o(\sqrt b)$ and the variance by $O(t^{-4})=o(b)$, consistently with the same local limit argument. Equation~\eqref{stp:len:eq:truncatedratio} proves~\eqref{stp:len:eq:gumbel}.
+
+For the joint law, take $s=iv\sqrt{3t}$ with $v$ in a fixed real compact set. The complex saddle from~\eqref{stp:len:eq:taus} satisfies $\tau(s)-t=O(t^{5/2})$, so
+\[
+ T_m(\tau(s),s)=T_m(t,0)+O(\sqrt t)\longrightarrow e^{-x}.
+\]
+To make the contour domination explicit, let $r=\Ree\tau(s)$. Since $r-t=O(t^{5/2})$, positivity and the geometric tail sum give
+\[
+ \sup_\theta\sum_{k>m}|e^sB_k(e^{-r-i\theta})|=O(1),\qquad
+ \sup_{k>m,\theta}|e^sB_k(e^{-r-i\theta})|=O(t).
+\]
+Thus $|T_m|=O(1)$ on the entire contour. Multiplication by $e^{-T_m}$ preserves the full marked integrand's Gaussian and outer-arc majorants up to a bounded factor. The local $O(\sqrt t)$ tail perturbation above and dominated convergence now show
+\[
+ \frac{A_{n,\le m}(s)}{A_n(s)}\longrightarrow\exp(-e^{-x}).
+\]
+Multiplying by the centered block-count characteristic function gives
+\[
+ \E\left[e^{iv\sqrt{3t}(K_n-m_B(t))}
+       \mathbf1_{\{tM_n-\mu(t)-\log(1/t)\le x\}}\right]
+ \longrightarrow e^{-v^2/2}e^{-e^{-x}}.
+\]
+At every $x$, the limiting CDF is continuous. These mixed characteristic-function/CDF limits determine the product of the normal and Gumbel laws, proving~\eqref{stp:len:eq:joint}.
+\end{proof}
+
+\section{Finite exact verification and diagnostic boundaries}\label{stp:len:sec:checks}
+The supplied source package separates a standard-library exact core from optional floating-point experiments. Finite verification checks the algebra and implementation; the proofs above establish the asymptotic conclusions.
+
+\subsection{Exact arithmetic checks}
+The core uses arbitrary-precision integers and rational numbers only. It computes $a_0,\ldots,a_{600}$ by ordinary coefficient-array convolution, maintaining the partition polynomial $P_k$ and multiplying successively by $1+q^kP_k$. It agrees at every one of these 601 indices with the frozen coefficient data. A direct recursive composition enumeration, independent of the product computation, checks all weights $0\le n\le18$ using the increasing-run-leader characterization. The first 39 values of the supplied reference data were checked against the displayed OEIS entry during the source audit.
+
+A finite rational power-series implementation computes all ten $h_j$ in~\eqref{stp:len:eq:hvalues}. Exact tuple enumeration checks both~\eqref{stp:len:eq:E1} and~\eqref{stp:len:eq:E2}; substituting the leading cumulants checks the coefficient $-35/(144A^2)$ of $t^3$ in $E_1$. Exact formal algebra checks the displayed free-energy coefficients through $t^3$, the further formal positive-power coefficients through $t^{10}$, and the constant Legendre identity in Theorem~\ref{stp:len:thm:elementary}. These checks do not assume convergence of $H$.
+
+The composition bound in~\eqref{stp:len:eq:monotone} can also justify a separate integer-encoding coefficient implementation: choosing a base larger than $2^{600}$ prevents digit carries for the finite range. Such an encoding is optional; the package's ordinary convolution provides the primary transparent computation.
+
+\subsection{Optional numerical experiments}
+The exploratory computation obtains cumulants directly from independent sums of geometric cumulants and Bernoulli/Bell-polynomial composition, rather than differentiating the claimed free-energy expansion. It compares exact coefficients with exact-saddle Gaussian and Edgeworth approximations at $n=100,200,400,600$. If
+\[
+ \mathcal G_n=\frac{e^{nt_n+L(t_n)}}{\sqrt{2\pi L''(t_n)}},\qquad
+ r_H=\frac{a_n}{\mathcal G_n}-\sum_{h=0}^HE_h(t_n),
+\]
+the exploratory values are
+\begin{center}
+\begin{tabular}{r r r r}
+\toprule
+$n$ & $r_0$ & $r_1$ & $r_2$\\
+\midrule
+100 & $-1.21515\cdot10^{-2}$ & $-9.29042\cdot10^{-5}$ & $-3.06935\cdot10^{-7}$\\
+200 & $-7.00214\cdot10^{-3}$ & $-2.49941\cdot10^{-5}$ & $ 4.21502\cdot10^{-7}$\\
+400 & $-3.95934\cdot10^{-3}$ & $-6.05749\cdot10^{-6}$ & $ 1.16867\cdot10^{-7}$\\
+600 & $-2.82485\cdot10^{-3}$ & $-2.61937\cdot10^{-6}$ & $ 4.89453\cdot10^{-8}$\\
+\bottomrule
+\end{tabular}
+\end{center}
+These are rounded diagnostics from the supplied floating-point experiment, not interval enclosures, rigorous error certificates or evidence of a uniform error rate at these small indices. In particular the second corrected residual need not be monotone in this range.
+
+Further optional experiments compare exact first and second block-count moments through $n=600$, and exact largest-length cutoff coefficients at $n=100,200,400,600$, with the proved limiting carriers. Visible lattice effects and slow convergence are expected; they do not alter the fixed-order or weak-limit statements. No claims of optimized coefficient complexity or validated floating-point intervals are made.
+
+\subsection{Rebuilding the package}
+The editable source is \texttt{Report181.tex}. The source ZIP contains this manuscript, the exact core, frozen reference data, optional numerical scripts and their separate dependency information, a deterministic no-shell-escape builder, integrity checks and build tests. The README gives the precise commands. The standard build runs the exact checks and compiles with \texttt{pdflatex -no-shell-escape}; no optional numerical dependency is needed. A manifest records the packaged bytes. The PDF and ZIP are tested by extraction and rebuild. These reproducibility checks certify the finite supplied implementation and artifact identity, not the non-effective constants in asymptotic theorems.
+
+\wtag\ (5 October 2026.) In this repository the manuscript is Part~II of
+\path{article.tex}; \texttt{Report181.tex} itself is not shipped, although
+\texttt{code/verify.py} and \texttt{guard\_tests.py} read its marked OEIS
+prefix. The package's other files are shipped under the prefix
+\texttt{181-nested-}; its README, PDF, manifest and its copy of
+\texttt{verify\_manifest.py} (identical to Part~I's) are not. The commands
+work only in the delivered layout; the report README gives the retrieval
+from the arrival commit and rerun routes on copies.
+
+\section{Sources and the limits of the comparison}\label{stp:len:sec:sources}
+The primary OEIS record was read in full, including its formula, comments and references~\cite{oeisA358836}. It credits the product to Howroyd and the composition interpretation to Wiseman; neither is presented here as a discovery. The inspected record links coefficient data through $n=1000$ but does not give an asymptotic formula or a research-paper citation. That observation concerns the inspected entry only.
+
+Two related delivered reports were compared in the bounded audit. The first treats fixed norm-weighted products such as $\prod_k(1+k^\alpha q^k)^\mu$ and multiplicity variants~\cite{priornorm}; its full repository README and the first five pages of a related delivered PDF were read. The second treats $[q^n]\prod_k(1+n^\alpha q^k)$ for fixed positive $\alpha$~\cite{priorfugacity}; its README and the relevant article text were read. Those reports already use all-order logarithmic and saddle expansions, inverse analysis and conditioned limit methods. Here the effective activity is $P(e^{-t})$, so $\log P(e^{-t})\sim A/t\asymp n^{1/4}$ at the saddle, and it depends on the coefficient variable itself. It is therefore outside the directly substitutable polynomial-fugacity regime. This model distinction does not turn shared methods into new methods.
+
+The inspected primary literature includes Brunel's distinct-partition Fermi formulation~\cite{brunel}, the open-access moving-argument $q$-product article of Arabi Ardehali and Rosengren~\cite{ardehali}, and the abstract and introductory definitions of Merca's MacMahon-type series~\cite{merca}. None of those inspected portions identifies the present coefficient problem. In particular, the uniform moving-argument range of Corollary 2 in~\cite{ardehali} keeps a lower bound on the real part of its argument, whereas the effective argument here has real part of order $-A/t$. Direct substitution into that corollary is not justified. Its exact eta identity and the classical transformations remain relevant.
+
+McIntosh's complete $q$-shifted factorial expansion~\cite{mcintosh} was inspected only at the publisher abstract and metadata level; the subscription full text was not read. The unequal-block-size \emph{labeled set partition} paper~\cite{unequal} concerns $\prod_k(1+x^k/k!)$; only bibliographic material and a primary-paper search excerpt were available in this audit, and a direct full-text fetch failed. The full Kaneiwa text cited by neighboring A261049 was also inaccessible. The original Wright paper~\cite{wright} was verified bibliographically, while the actual MacMahon theorem and proof were read in Koshkin~\cite{koshkin}. None of these access limits is treated as a negative full-text finding.
+
+Targeted searches for the sequence identifier, nested product, distinct block lengths, and run-leader interpretation did not locate an exact prior asymptotic match. Repository searches did not locate an A358836 duplicate. Library retrieval also had known misses for an already identified related report, so its negative results were incomplete. The audit was bounded, not exhaustive over journals, delivered artifacts or unpublished work. Accordingly this report makes no global novelty claim and does not characterize the results as a previously open-problem breakthrough. The classical ingredients are credited independently of the outcome of those searches. The companion source audit preserves the read-versus-inaccessible distinctions in more detail.
+
+\wtag\ (5 October 2026, batch 100.) The companion source audit is shipped as
+\path{181-nested-SOURCE_AUDIT.md}. The three repository files it read (the
+A022629 README and the A291698 README and article) are byte-identical at the
+write to the versions it records; no other report treats A358836. The
+A291698 report's identity~(11) is the one used for~\eqref{stp:len:eq:Dexp}
+(note there). Part~I of this report treats the neighbouring sequence
+A271619, and the new report on A126348 (batch~100) treats another
+$q$-dependent fugacity, $1/(1-q)$; Section~\ref{stp:sec:guide} records
+these relations.
+
+\section{Further questions and research}\label{stp:len:sec:questions}
+\wtag\ Section title changed in the write (5 October 2026, batch 100) from
+``Further questions''. Questions 1--6 are the manuscript's own; question~(vii)
+and the closing paragraph were added in the write under ProveIt's standing
+rule of 4 October 2026.
+
+The proofs leave several concrete directions open. They are questions suggested by this analysis, not claims that no prior literature addresses them.
+\begin{enumerate}
+\item Can one determine the large-order growth of the finite-end coefficients $h_j$ and combine it with the theta and MacMahon exponentially small terms to obtain an optimally truncated expansion? The present fixed-order estimates do not answer this.
+\item Can the non-effective small-$t$ constants be made explicit enough to give certified coefficient and inverse intervals at useful finite $n$? This would require rigorous tail, arc and rounding controls in addition to the current diagnostics.
+\item Does the rescaled collection of extreme occupied lengths converge to a Poisson point process with intensity $e^{-x}\,dx$, jointly with the Gaussian block count? The maximum theorem proves only the one-threshold statement and its joint independence.
+\item What global shape and fluctuation field describe the occupied-length profile near its moving transition, after conditioning on total weight? The deep-occupied range and extreme tail treated here leave the transition window largely unexplored.
+\begin{samepage}
+\item How do the asymptotics change if each length can occur up to a fixed multiplicity, or if the outer block restriction is modified while preserving nested partition denominators? The exact factorization would have to be rederived rather than assumed.\par
+\end{samepage}
+\item Can a fractional-part correction give an arbitrarily accurate explicit inverse of the particular piecewise-linear logarithmic interpolant? Section~\ref{stp:len:sec:inverse} identifies the $t^4$ horizontal curvature barrier that a smooth carrier alone cannot remove.
+\end{enumerate}
+
+\paragraph{Claims of Part~II argued only in outline (\wtag).}
+\begin{enumerate}[label=(\roman*),start=7]
+\item \emph{The full fixed-order marked expansion.} Section~\ref{stp:len:sec:marked},
+after~\eqref{stp:len:eq:markedcoefficient}: ``The full fixed-order
+expansion also holds.'' Sketch (source): the weighted Taylor proof of
+Theorem~\ref{stp:len:thm:coefficient} applies uniformly for complex
+$|s|\le s_0$, with $\Ree b(s)>0$ and the same complex Gaussian moments.
+Missing: complex-marker versions of the standardized cumulant bounds
+$\lambda_j=O(\rho^{j-2})$ and of the Taylor remainder~\eqref{stp:len:eq:taylorremainder},
+uniform on the marker disk (they should follow from the mixed-derivative
+remainders of~\eqref{stp:len:eq:markedL}). Nothing in this Part uses
+more than the first-order form.
+\end{enumerate}
+Two further steps given in outline are completed in the write and are not
+open: the sharpened mean~\eqref{stp:len:eq:meansharp} (``the differentiated
+expansions sharpen this'') and the marker-derivative bounds in the proof of
+Theorem~\ref{stp:len:thm:gumbel} (``the evident bounds for marker
+derivatives''); both proofs are printed in place. Question~3 is the
+occupied-length counterpart of question~5 of the A022629
+report~\cite{priornorm} (the Poisson process of the largest parts there).
+
+
+\appendix
+\section{Provenance, numbering and editorial changes}\label{stp:app:provenance}
+
+\wtag\ Written 5 October 2026 (batch 100).
+
+\paragraph{Sources.} The report is built from two manuscripts, delivered as
+two ZIP archives of the session bundle of Reports 1--243. Both arrived
+unchanged in ProveIt commit \texttt{60f54ea06} (``Arrival: 177 research
+archives from the session bundle of Reports 1-243'', 5 October 2026) and
+were placed as cluster DPP of batch~100 in \texttt{36571ae0e}, which removed
+the archives from \path{docs/incoming/}; they survive in the arrival commit
+(\texttt{git show 60f54ea06:docs/incoming/<archive>}).
+
+\begin{center}
+\small
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{.12\textwidth}>{\raggedright\arraybackslash}p{.41\textwidth}>{\raggedright\arraybackslash}p{.41\textwidth}@{}}
+\toprule
+& Report 182 (base) & Report 181\\
+\midrule
+archive & \path{Strict_Twice_Partitions_Phase_Asymptotics_Source.zip}, 2{,}961{,}159 bytes, 38 files & \path{Nested_Partitions_Asymptotics_and_Inverses_Source.zip}, 692{,}760 bytes, 32 files\\
+manuscript & \texttt{Report182.tex}, 1{,}148 lines; PDF 30 pages & \texttt{Report181.tex}, 898 lines; PDF 21 pages\\
+title & \emph{Report182: Phase resolved asymptotics for A271619} & \emph{Nested Partitions with Distinct Block Lengths: All fixed asymptotic orders, explicit relative growth, inverse bounds and conditioned limits for OEIS A358836}\\
+author line, date & ``A rigorous asymptotic and reproducibility report'' (PDF author ``Research report''); 3 October 2026 & ``Research report 181''; 3 October 2026\\
+pin & none; cites \texttt{main} URLs of the A022629 README and the A291698 article & none; its source audit records the git blob hashes of the three repository files it read (\texttt{ef1b42ed}, \texttt{1100837c}, \texttt{36949d3f}), all equal to the files at the write\\
+file prefix & \texttt{182-strict-} & \texttt{181-nested-}\\
+printed as & Part~I, Sections~\ref{stp:sum:sec:main}--\ref{stp:sum:sec:further} & Part~II, Sections~\ref{stp:len:sec:model}--\ref{stp:len:sec:questions}\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Neither manuscript says that it is AI-assisted or ``prepared for private
+review''. Neither has been refereed; Report~182 says it has not been
+submitted externally, and Report~181's source audit records ``No external
+writes''.
+
+\paragraph{Where the merge chose.} Report~182 is the base: A271619 is the
+sequence that the name ``strict twice partitions'' denotes, its OEIS entry
+is the older (2016, against 2022), its mechanism is the more general one
+(it includes the stretched-amplitude observation), and its text is the
+longer. Base selection by weaker hypotheses does not apply, since the two
+manuscripts prove different theorems about different sequences. No result
+is proved in both, so nothing is printed twice. Both bibliographies are
+kept in full, Part~I's entries first; the two manuscripts' entries for the
+A022629 and A291698 reports (\cite{Prior22629} and~\cite{priornorm},
+\cite{Prior291698} and~\cite{priorfugacity}) stay separate because each
+records what its own source inspected. Part~II's OEIS entry is cited under
+the key \texttt{oeisA358836} (the key \texttt{oeis} is Part~I's).
+
+\paragraph{Numbering.} Sections are numbered continuously: Part~I's
+Section~$k$ is the manuscript's Section~$k-3$, and Part~II's Section~$k$ is
+Report~181's Section~$k-15$; theorems, lemmas and propositions are numbered
+within sections, so they shift with them. Equations are numbered
+continuously as well: Part~I's equation numbers are Report~182's, and
+Part~II's equation~($j$) is Report~181's equation~($j-83$). The
+delivered READMEs, audits and code comments use the manuscripts' own
+numbers. Table~\ref{stp:tab:crosswalk} maps the numbered results.
+
+\begin{center}
+\small
+\begin{longtable}{@{}lll@{}}
+\caption{Numbered results: manuscript numbering and this report's.}\label{stp:tab:crosswalk}\\
+\toprule
+Report & Manuscript & Here\\
+\midrule
+\endfirsthead
+\toprule
+Report & Manuscript & Here\\
+\midrule
+\endhead
+182 & Theorem 1.1 (all fixed relative orders) & Theorem~\ref{stp:sum:thm:main}\\
+182 & Theorem 1.2 (discrete inverse) & Theorem~\ref{stp:sum:thm:inverse}\\
+182 & Lemma 2.1 (monotonicity) & Lemma~\ref{stp:sum:lem:monotone}\\
+182 & Proposition 2.2 (growth) & Proposition~\ref{stp:sum:prop:growth}\\
+182 & Theorem 5.1 (tame local expansion) & Theorem~\ref{stp:sum:thm:local}\\
+182 & Theorem 6.1 (filled block localization) & Theorem~\ref{stp:sum:thm:global}\\
+182 & Lemma 6.2 (quantitative gap) & Lemma~\ref{stp:sum:lem:gap}\\
+182 & Theorem 9.1 (uniform positive mass approximation) & Theorem~\ref{stp:sum:thm:TV}\\
+181 & Lemma 2.1 (denominators) & Lemma~\ref{stp:len:lem:denominator}\\
+181 & Proposition 2.2 (finite end) & Proposition~\ref{stp:len:prop:finiteend}\\
+181 & Theorem 3.1 (free energy) & Theorem~\ref{stp:len:thm:freeenergy}\\
+181 & Lemma 4.1 (all-arc bound) & Lemma~\ref{stp:len:lem:allarc}\\
+181 & Theorem 5.1 (Edgeworth orders) & Theorem~\ref{stp:len:thm:coefficient}\\
+181 & Theorem 6.1 (power-log tiers) & Theorem~\ref{stp:len:thm:tiers}\\
+181 & Theorem 6.2 (elementary equivalent) & Theorem~\ref{stp:len:thm:elementary}\\
+181 & Proposition 7.1 (first inverse) & Proposition~\ref{stp:len:prop:inversefirst}\\
+181 & Theorem 7.2 (bounded inverse) & Theorem~\ref{stp:len:thm:boundedinverse}\\
+181 & Theorem 7.3 (two-floor envelopes) & Theorem~\ref{stp:len:thm:envelopes}\\
+181 & Theorem 8.1 (block-count law) & Theorem~\ref{stp:len:thm:clt}\\
+181 & Theorem 9.1 (Gumbel law, joint limit) & Theorem~\ref{stp:len:thm:gumbel}\\
+\bottomrule
+\end{longtable}
+\end{center}
+
+\paragraph{Editorial changes.}
+\begin{itemize}
+\item Labels: Report~182's 105 labels carry the prefix \texttt{stp:sum:},
+Report~181's 81 the prefix \texttt{stp:len:}; the write added
+\texttt{stp:sum:part}, \texttt{stp:sum:sub:floating},
+\texttt{stp:sum:sec:further} (the manuscript's closing section had no
+label), \texttt{stp:len:part}, and the front-matter and appendix labels
+\texttt{stp:sec:guide}, \texttt{stp:sec:notation}, \texttt{stp:tab:notation},
+\texttt{stp:sec:limits}, \texttt{stp:app:provenance} and
+\texttt{stp:tab:crosswalk}. Every \verb|\ref| and \verb|\eqref| follows its
+label.
+\item Preamble: Report~182's, with Report~181's macros added; both define
+$\E$ and $\Var$ with the same meaning, and one definition of each is kept.
+Report~181's running headers (\texttt{fancyhdr}), coloured links and
+table-of-contents spacing are not carried over; the contents list sections
+only. The title, author and date lines are new; the PDF metadata names the
+merged report.
+\item Abstracts: Report~182's opens the report, with its finite-index
+warning and scope paragraph; Report~181's opens Part~II.
+\item Section titles changed: Report~182's ``Further directions'' and
+Report~181's ``Further questions'' are both now ``Further questions and
+research''.
+\item Citation key: Report~181's \texttt{oeis} is \texttt{oeisA358836}.
+\item Added text: the editorial note, Sections~\ref{stp:sec:guide}--\ref{stp:sec:limits},
+the two Part openings, this appendix, and the notes marked \wtag\ in
+Sections \ref{stp:sum:sec:resonance}, \ref{stp:sum:sec:crossover},
+\ref{stp:sum:sec:computation}, \ref{stp:sum:sec:sources},
+\ref{stp:sum:sec:further}, \ref{stp:len:sec:freeenergy},
+\ref{stp:len:sec:edgeworth}, \ref{stp:len:sec:marked},
+\ref{stp:len:sec:maximum}, \ref{stp:len:sec:checks},
+\ref{stp:len:sec:sources} and~\ref{stp:len:sec:questions}. No other
+sentence, formula or reference of either manuscript was changed.
 \end{itemize}
 
 \begin{thebibliography}{99}
@@ -1144,5 +2590,21 @@ The following are proposed directions for additional work, not assertions that e
 \bibitem{GST} A. Gil, J. Segura and N. M. Temme, \emph{Complete asymptotic expansions for the relativistic Fermi--Dirac integral}. \url{https://arxiv.org/abs/2108.11210}.
 \bibitem{RL} J. Roccia and P. Leboeuf, \emph{Level density of a Fermi gas and integer partitions: a Gumbel-like finite-size correction}. \url{https://arxiv.org/abs/1001.5365}.
 \bibitem{Leboeuf} P. Leboeuf, \emph{Level density of a Fermion gas: average growth, fluctuations, universality}, AIP Conference Proceedings 777 (2005), 180. DOI: \href{https://doi.org/10.1063/1.1996884}{10.1063/1.1996884}. \url{https://arxiv.org/abs/nucl-th/0504026}. Abstract/metadata inspected; full paper not audited here.
+\bibitem{oeisA358836} OEIS Foundation, \emph{A358836}, sequence by Gus Wiseman (5 December 2022), product by Andrew Howroyd (31 December 2022), composition interpretation by Gus Wiseman (21 August 2024). \url{https://oeis.org/A358836}. Inspected 3 October 2026.
+\bibitem{neighbor} OEIS Foundation, \emph{A271619} and \emph{A261049}. \url{https://oeis.org/A271619}; \url{https://oeis.org/A261049}. Inspected for model distinctions.
+\bibitem{dlmfjacobi} NIST Digital Library of Mathematical Functions, Jacobi's triple product, Eq.~17.8.1. \url{https://dlmf.nist.gov/17.8.E1}.
+\bibitem{dlmftheta} NIST Digital Library of Mathematical Functions, theta modular transformation, Eq.~20.7.32. \url{https://dlmf.nist.gov/20.7.E32}.
+\bibitem{dlmfeta} NIST Digital Library of Mathematical Functions, Dedekind eta product and transformation, Eqs.~27.14.12 and 27.14.14. \url{https://dlmf.nist.gov/27.14.E12}; \url{https://dlmf.nist.gov/27.14.E14}.
+\bibitem{dlmfmacmahon} NIST Digital Library of Mathematical Functions, MacMahon's plane-partition product, Eq.~26.12.20. \url{https://dlmf.nist.gov/26.12.E20}.
+\bibitem{koshkin} S. Koshkin, \emph{Quantum Barnes Function as the Partition Function of the Resolved Conifold}, International Journal of Mathematics and Mathematical Sciences (2008), Article 438648. \url{https://doi.org/10.1155/2008/438648}. Author preprint, Theorem 1 and Eq.~(42): \url{https://arxiv.org/abs/0710.2929}. Published theorem and author-preprint proof inspected; numbering differs.
+\bibitem{wright} E. M. Wright, \emph{Asymptotic Partition Formulae I Plane Partitions}, Quarterly Journal of Mathematics, Oxford Series 2 (1931), 177--189. \url{https://doi.org/10.1093/qmath/os-2.1.177}. Historical reference; metadata inspected, original full text not read in the audit.
+\bibitem{fs} P. Flajolet and R. Sedgewick, \emph{Analytic Combinatorics}, Cambridge University Press, 2009, Chapter VIII. \url{https://ac.cs.princeton.edu/home/}. General saddle-point background, not an attribution of the sequence-specific estimates.
+\bibitem{brunel} V. Brunel, \emph{A general asymptotic formula for distinct partitions}, arXiv:1709.04955 (2017); journal DOI \url{https://doi.org/10.1016/j.aop.2018.03.023}. \url{https://arxiv.org/abs/1709.04955}. Main distinct-partition setup and Section 3 inspected.
+\bibitem{ardehali} A. Arabi Ardehali and H. Rosengren, \emph{A New Product Formula for $(z;q)_\infty$, with Applications to Asymptotics}, published 19 September 2026. \url{https://doi.org/10.1007/s00365-026-09783-2}. Open primary text inspected, especially Introduction, Corollary 2 and Eq.~(15).
+\bibitem{mcintosh} R. J. McIntosh, \emph{Some Asymptotic Formulae for $q$-Shifted Factorials}, Ramanujan Journal 3 (1999), 205--214. \url{https://doi.org/10.1023/A:1006949508631}. Publisher abstract and metadata only.
+\bibitem{merca} M. Merca, \emph{Family of MacMahon-type $q$-series and their combinatorial interpretations}, Ramanujan Journal 70 (2026), Article 4. \url{https://doi.org/10.1007/s11139-026-01382-w}. Abstract and introductory definitions inspected.
+\bibitem{unequal} A. Knopfmacher, A. M. Odlyzko, B. Pittel, L. B. Richmond, D. Stark, G. Szekeres and N. C. Wormald, \emph{The asymptotic number of set partitions with unequal block sizes}, Electronic Journal of Combinatorics 6 (1999), R2. \url{https://doi.org/10.37236/1434}. Bibliographic material and primary-paper excerpt only; full text not read.
+\bibitem{priornorm} V. Reshetnikov, ProveIt report collection, \emph{A022629 distinct partition norms}, repository README inspected. \href{https://github.com/VladimirReshetnikov/ProveIt/tree/main/SetTheory/Cardinals/docs/reports/generating-functions-and-asymptotics/oeis-sequence-asymptotics/a022629-distinct-partition-norms}{Repository directory and README}.
+\bibitem{priorfugacity} V. Reshetnikov, ProveIt report collection, \emph{A291698 moving fugacity partitions}, repository README and relevant article text inspected. \href{https://github.com/VladimirReshetnikov/ProveIt/tree/main/SetTheory/Cardinals/docs/reports/generating-functions-and-asymptotics/oeis-sequence-asymptotics/a291698-moving-fugacity-partitions}{Repository directory and article}.
 \end{thebibliography}
 \end{document}
