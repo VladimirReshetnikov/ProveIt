@@ -1,0 +1,222 @@
+{
+  "status": "PASS",
+  "arithmetic": "exact integers and rationals; symbolic derivatives and identities",
+  "python_optimized": false,
+  "sympy_version": "1.14.0",
+  "models": {
+    "corner": {
+      "Q": "Matrix([[1/6, 5/6], [5/6, 1/6]])",
+      "conditional_drift": "Matrix([[-1/3, -1/3], [1/3, 1/3]])",
+      "corrector": "Matrix([[-1/5, -1/5], [1/5, 1/5]])",
+      "covariance": "Matrix([[4/5, -9/20], [-9/20, 4/5]])",
+      "phase_covariances": [
+        "Matrix([[3/5, -9/20], [-9/20, 1]])",
+        "Matrix([[1, -9/20], [-9/20, 3/5]])"
+      ],
+      "physical_covariance": "Matrix([[16/5, -9/5], [-9/5, 16/5]])",
+      "rho": "-9/16",
+      "fourier_determinant": -1,
+      "seeds": [
+        {
+          "direction": "forward",
+          "endpoint": "(H,H)",
+          "end_phase": 0,
+          "length": "2*H + 1",
+          "range": "every integer H >= 1"
+        },
+        {
+          "direction": "dual",
+          "endpoint": "(H,H)",
+          "end_phase": 1,
+          "length": "4*H",
+          "range": "every integer H >= 1"
+        }
+      ],
+      "exponential_certificate": {
+        "exp_t": "6/5",
+        "bound": "524/405",
+        "norm": "quotient l1 displacement"
+      },
+      "alpha_interval": "4 < alpha < 5",
+      "twice_cos_angle": "9/8",
+      "endpoint_probability_horizon": 12
+    },
+    "schnyder": {
+      "Q": "Matrix([[1/8, 7/8], [7/8, 1/8]])",
+      "conditional_drift": "Matrix([[-1/2, 3/8], [1/2, -3/8]])",
+      "corrector": "Matrix([[-2/7, 3/14], [2/7, -3/14]])",
+      "covariance": "Matrix([[9/7, -22/21], [-22/21, 9/7]])",
+      "phase_covariances": [
+        "Matrix([[3/2, -22/21], [-22/21, 15/14]])",
+        "Matrix([[15/14, -22/21], [-22/21, 3/2]])"
+      ],
+      "physical_covariance": "Matrix([[36/7, -88/21], [-88/21, 36/7]])",
+      "rho": "-22/27",
+      "fourier_determinant": 1,
+      "seeds": [
+        {
+          "direction": "forward",
+          "endpoint": "(H,H)",
+          "end_phase": 1,
+          "length": "4*H + 1",
+          "range": "every integer H >= 1"
+        },
+        {
+          "direction": "dual",
+          "endpoint": "(H,H)",
+          "end_phase": 0,
+          "length": "4*H + 1",
+          "range": "every integer H >= 1"
+        }
+      ],
+      "face_exponential_row_sum": "162/175",
+      "exponential_certificate": {
+        "exp_t": "6/5",
+        "bound": "189/13",
+        "norm": "sum of elementary physical l1 lengths"
+      },
+      "alpha_interval": "6 < alpha < 7",
+      "twice_cos_angle": "44/27",
+      "endpoint_probability_horizon": 12
+    }
+  },
+  "not_certified": [
+    "FCLT",
+    "unrestricted or killed LLT",
+    "cone survival or fixed-endpoint asymptotics",
+    "non-D-finiteness without analytic hypotheses",
+    "all-n coefficient exponent for A377921 without the report surgery and analytic proofs",
+    "full multiplicative equivalents or amplitudes",
+    "current completeness of live OEIS entries"
+  ],
+  "sleeve": {
+    "local_degree_cases": "k=0 and arbitrary k>=1 via contiguous-block reduction",
+    "annular_vertices": 12,
+    "annular_edges": 18,
+    "four_cycles": 6,
+    "all_four_cycles_are_faces": true,
+    "size_delta_vertices_edges_inner_faces": [
+      6,
+      12,
+      6
+    ],
+    "old_root_recovered_at_output_boundary_position": 1,
+    "comparison_shift": 6,
+    "scope": "finite sleeve data and symbolic local rule; general surgery/injectivity proof is in report",
+    "finite_comparison_indices": "8..30"
+  },
+  "counts": {
+    "A377922_posted_terms": 32,
+    "A377920_posted_terms": 31,
+    "A377921_recorded_terms": 16,
+    "A377921_reconstructed_terms": 31,
+    "A377921_window_indices": "4..30",
+    "A377921_inverse_probes": 151,
+    "A377921_inverse_y_interval": [
+      "1",
+      "505313862930261/4"
+    ],
+    "corner_sandwich_indices": "1..31",
+    "corner_fixed_endpoint_counts": [
+      0,
+      0,
+      1,
+      0,
+      2,
+      2,
+      8,
+      18,
+      55,
+      160,
+      498,
+      1586,
+      5193,
+      17392,
+      59380,
+      206260,
+      727281,
+      2599094,
+      9400445,
+      34369092,
+      126892414,
+      472680206,
+      1775127883,
+      6716298716,
+      25586522654,
+      98094737022,
+      378295197688,
+      1466850069594,
+      5716735904621,
+      22385763937226,
+      88049125873740,
+      347766534831148,
+      1378958634082459
+    ],
+    "schnyder_subfamily_counts": [
+      1,
+      0,
+      1,
+      0,
+      2,
+      2,
+      8,
+      18,
+      58,
+      172,
+      570,
+      1904,
+      6672,
+      23890,
+      87994,
+      330778,
+      1268802,
+      4950482,
+      19622630,
+      78879258,
+      321183622,
+      1323170216,
+      5509804900,
+      23170439372,
+      98329185092,
+      420809501688,
+      1815025053112,
+      7885672630476,
+      34493975206616,
+      151846804327166,
+      672440141999574
+    ],
+    "A377921_reconstructed": [
+      0,
+      0,
+      0,
+      1,
+      0,
+      3,
+      4,
+      15,
+      42,
+      131,
+      438,
+      1467,
+      5204,
+      18687,
+      69306,
+      261473,
+      1007328,
+      3943155,
+      15679474,
+      63199785,
+      257983836,
+      1065186381,
+      4444618518,
+      18725820855,
+      79603364236,
+      341206137453,
+      1473818915658,
+      6411853714819,
+      28082121491796,
+      123764682835371,
+      548675459164202
+    ]
+  }
+}

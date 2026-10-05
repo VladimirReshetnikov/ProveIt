@@ -1,0 +1,589 @@
+\pdfinfoomitdate=1
+\pdftrailerid{}
+\pdfsuppressptexinfo=15
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=28mm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,booktabs,microtype}
+\usepackage{xcolor}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,urlcolor=blue!45!black,citecolor=blue!45!black]{hyperref}
+\usepackage{enumitem}
+\setlist{itemsep=3pt,topsep=5pt}
+\setlength{\emergencystretch}{2em}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Prob}{\mathbb P}
+\newcommand{\E}{\mathbb E}
+\DeclareMathOperator{\Var}{Var}
+\title{All logarithmic orders for closed lambda terms\\[4pt]\large Uniform counting bounds and a controlled threshold inverse}
+\author{Report 110}
+\date{2 October 2026}
+\hypersetup{pdftitle={Report 110 All logarithmic orders for closed lambda terms},pdfauthor={Report 110},pdfsubject={OEIS A135501 and A220894 logarithmic asymptotics and inverse}}
+\begin{document}
+\maketitle
+\begin{abstract}
+We determine every fixed inverse-logarithmic order in the logarithms of two unrestricted closed lambda-term counts: OEIS A135501 and A220894. If variable occurrences have size $s\in\{0,1\}$, while abstractions and applications have size one, put $r=s+1$, $N=n+1$, and $t=W(4eNe^{-r/2})$. Then
+\[
+ M_r(N)-O(\log N)\le\log A_s(n)\le M_r(N)+O\!\left(N^{1-1/(3r)}(\log N)^{-2/3+1/(3r)}\right),
+\]
+where $M_r(N)=\frac Nr(t-2+t^{-1})+\frac N2$. A height-sensitive reduced-tree majorant supplies the upper bound. An exact single-spine generating function, Catalan convolution, and a one-sided variance bound supply the lower bound at the moving saddle. Two localization stages make the error uniform. We give arbitrary-order polynomial recurrences with analytic remainders and a controlled inverse, including its asymmetric threshold bracket. The report is self-contained and does not assume that a fixed-abstraction singular expansion is uniform. The conclusions concern logarithms; they do not establish a multiplicative equivalent, an amplitude, or a full multiplicative transseries. Reproducible finite checks are supplementary to the analytic proofs.
+\end{abstract}
+\newpage
+\tableofcontents
+\newpage
+
+\section{Models and main conclusions}
+A lambda term is built from variables, abstractions $\lambda x.M$, and ordered applications $(M\,N)$. Alpha-equivalence identifies consistent changes of bound-variable names. A term is closed if every variable occurrence is bound by an enclosing abstraction. The two sequences considered here count all closed terms up to alpha-equivalence, without typing, normalization, linearity, or index restrictions.
+
+Let variables have size $s\in\{0,1\}$ and abstractions and applications size one. Write $A_s(n)$ for the number of closed alpha-classes of size $n$. Then
+\[
+ A_1(n)=\href{https://oeis.org/A135501}{\mathrm{A135501}(n)},\qquad
+ A_0(n)=\href{https://oeis.org/A220894}{\mathrm{A220894}(n)}.
+\]
+The index starts at $n=0$. The term $\lambda x.x$ has size two for $s=1$ and size one for $s=0$. All logarithms are natural. If a skeleton has $b$ application vertices and $u$ abstraction vertices, it has $b+1$ variable leaves. Consequently, with $r=s+1$ and $N=n+1$,
+\begin{equation}\label{eq:size}
+ n=u+rb+s,\qquad b=\frac{N-u}{r}-1.
+\end{equation}
+An admissible $u$ is a positive integer with $N-u$ a positive multiple of $r$. This congruence is retained throughout. Let $A(b,u)$ count the closed terms with these fixed parameters; the size convention does not otherwise affect it.
+
+The positive Lambert function satisfies $W(z)e^{W(z)}=z$ for $z>0$. Define
+\begin{align}
+ t&=W(4eNe^{-r/2}),& u_*&=N/t,\label{eq:saddledef}\\
+ M_r(N)&=\frac Nr\left(t-2+\frac1t\right)+\frac N2,&
+ R_r(N)&=N^{1-1/(3r)}(\log N)^{-2/3+1/(3r)}.\label{eq:MR}
+\end{align}
+\begin{theorem}[Uniform logarithmic approximation]\label{thm:main}
+For each $s\in\{0,1\}$ and $n\to\infty$,
+\begin{equation}\label{eq:main}
+ M_r(N)-O(\log N)\le\log A_s(n)\le M_r(N)+O(R_r(N)).
+\end{equation}
+The constants depend at most on $r$. Since there are only two choices, common constants can be chosen.
+\end{theorem}
+For every fixed real $k$,
+\begin{equation}\label{eq:scale}
+ \frac{R_r(N)}{N/(\log N)^k}
+ =N^{-1/(3r)}(\log N)^{k-2/3+1/(3r)}\longrightarrow0.
+\end{equation}
+Thus the main expression determines every fixed inverse-logarithmic order of the log-count. This is stronger than merely expanding a candidate saddle expression formally: the error in the full count lies below every scale being identified.
+
+For an explicit form, set
+\begin{equation}\label{eq:z}
+ L=\log N,\quad \ell=\log L,\quad a=1+\log4-r/2,\quad z=\ell-a.
+\end{equation}
+Section~\ref{sec:expansion} proves that for every fixed integer $J\ge1$,
+\begin{equation}\label{eq:allorders}
+ \log A_s(n)=\frac Nr\left[L-\ell+\log4-1+
+        \sum_{j=1}^J\frac{P_j(z)}{L^j}\right]
+ +O\!\left(\frac{N(1+\ell)^{J+1}}{L^{J+1}}\right).
+\end{equation}
+In particular, the coefficient at the newly separated $n/\log n$ scale is determined by
+\[
+ \frac nr\,\frac{\log\log n-\log4+r/2}{\log n}.
+\]
+The polynomial recurrences specify arbitrary fixed order; they make no assertion about truncation orders growing with $n$.
+
+\subsection{The threshold inverse}
+Define
+\[
+ \nu_s(y)=\min\{n\in\N:A_s(n)\ge y\},\qquad Y=\log y.
+\]
+Adding an unused root abstraction is an injection from size $n$ into size $n+1$ in both models, so $A_s(n)$ is nondecreasing. Theorem~\ref{thm:main} makes it unbounded.
+\begin{theorem}[Controlled inverse]\label{thm:inverse}
+Let $N_0$ be the unique sufficiently large solution of $M_r(N_0)=Y$. Then
+\begin{equation}\label{eq:threshold}
+ \nu_s(y)=N_0-1+O\!\left(\frac{R_r(N_0)}{\log N_0}+1\right).
+\end{equation}
+More precisely,
+\begin{equation}\label{eq:asymmetric}
+ N_0-O\!\left(\frac{R_r(N_0)}{\log N_0}\right)
+ \le\nu_s(y)+1\le N_0+O(1).
+\end{equation}
+Put
+\[
+ K_r=\frac{e^{r/2}}{4er},\qquad \Pi_r(t)=t^2+(r/2-2)t+1.
+\]
+If $t_y$ is the unique large positive solution of
+\begin{equation}\label{eq:inverseparam}
+ Y=K_re^{t_y}\Pi_r(t_y),
+ \qquad\text{then}\qquad N_0=\frac{rYt_y}{\Pi_r(t_y)}.
+\end{equation}
+In the variables $v=\log Y$ and $k=\log v$,
+\begin{equation}\label{eq:inverseexplicit}
+ \nu_s(y)=\frac{rY}{v-2k+\log(4r)-1+
+            [4k+1+r/2-2\log(4r)]/v}
+       +O\!\left(\frac{Y(1+k)^2}{v^4}\right).
+\end{equation}
+An arbitrary-order inverse recurrence with a proved remainder is given in Section~\ref{sec:inverse}.
+\end{theorem}
+The notation $\Pi_r$ distinguishes the exact quadratic from the forward coefficient polynomials $P_j$. The error terms in these statements are asymptotic, with no claimed explicit numerical onset.
+
+\section{Exact recurrence and reduced trees}\label{sec:recurrence}
+Let $T_m(x,z)$ count terms with $m$ available outer binders, where $x$ marks applications and $z$ marks abstractions. A variable occurrence chooses one of its available binders. This is the alpha-class encoding, so no labeling factorial is present. The root decomposition is
+\begin{equation}\label{eq:T}
+ T_m=m+zT_{m+1}+xT_m^2.
+\end{equation}
+Write $B_{m,k}(x)=[z^k]T_m(x,z)$. Then
+\begin{align}
+ B_{m,0}(x)&=\frac{1-\sqrt{1-4mx}}{2x},\label{eq:B0}\\
+ B_{m,k}(x)&=\frac{B_{m+1,k-1}(x)+x\sum_{j=1}^{k-1}B_{m,j}(x)B_{m,k-j}(x)}
+                  {\sqrt{1-4mx}},\qquad k\ge1.\label{eq:B}
+\end{align}
+The value at $x=0$ in \eqref{eq:B0} is interpreted as $m$. To obtain \eqref{eq:B}, move the two terms $xB_{m,0}B_{m,k}$ to the left and use $1-2xB_{m,0}=\sqrt{1-4mx}$. These are identities of nonnegative formal power series, and
+\[
+ A(b,u)=[x^b]B_{0,u}(x).
+\]
+The recursion in \eqref{eq:B} terminates: a unary branch decreases $k$ by one, and both children of a binary branch have smaller positive unary counts.
+
+Expanding this finite recursion gives plane reduced trees with exactly $u$ unary vertices. A unary vertex increments $m$; a binary vertex has two children each containing at least one unary vertex. A terminal leaf carries $B_{m,0}$. Every terminal leaf therefore has a unary parent. At a vertex, $m$ is the number of strict unary ancestors. Every internal vertex contributes a radical $(1-4mx)^{-1/2}$ and every binary vertex also contributes $x$.
+
+Let $q$ be the number of binary vertices and let $h$ be the largest unary depth of a terminal leaf. Write $d=u-h$. A deepest path contains $h$ unary vertices. There are $q+1$ terminal leaves in all. The other $q$ leaves have distinct unary parents off this path, because a unary vertex on the selected path has its unique child on that path. Hence
+\begin{equation}\label{eq:qdeficit}
+ 1\le h\le u,\qquad q\le d=u-h.
+\end{equation}
+Every terminal depth is at most $h$. Every internal depth is at most $h-1$, since its descendant subtree still contains a unary vertex.
+
+\begin{lemma}[Exact reduced shape count]\label{lem:shapes}
+For $u\ge1$ and $0\le q\le u-1$, the number of reduced shapes with $u$ unary and $q$ binary vertices is
+\begin{equation}\label{eq:shapes}
+ C_q\binom{u+q-1}{2q},\qquad C_q=\frac1{q+1}\binom{2q}{q}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Suppress all unary vertices. The remaining full plane binary tree has $q$ binary vertices and is counted by $C_q$. Its $2q+1$ incoming vertex slots, including the root slot, receive unary chains. Every one of the $q+1$ leaf slots must contain at least one unary. After assigning these mandatory vertices, distribute $u-q-1$ remaining unaries among $2q+1$ slots. Stars and bars gives the binomial in \eqref{eq:shapes}. Conversely every such assignment is a permitted reduced tree. For $q=0$ this gives the unique unary chain.
+\end{proof}
+
+\section{A coarse bound for global localization}\label{sec:coarse}
+We include the uniform majorant needed to exclude the tails of the abstraction count. This makes the later moving-saddle argument independent of an external asymptotic result.
+\begin{lemma}[Coarse uniform majorant]\label{lem:coarse}
+For every integer $u\ge1$ and $b\ge0$,
+\begin{equation}\label{eq:coarse}
+ A(b,u)\le2uK^u(4u)^b,\qquad K=e(2+\sqrt3).
+\end{equation}
+\end{lemma}
+\begin{proof}
+Set $\rho=1/(4u)$. Every $B_{m,k}(\rho)$ with $m+k\le u$ is finite. This follows by induction on $k$ in \eqref{eq:B}: the base Catalan values are finite for $m\le u$, and every denominator used with $k\ge1$ has $m<u$. Positivity justifies endpoint evaluation by monotone convergence. Normalize $H_{m,k}=B_{m,k}(\rho)/(2u)$ and $d_m=\sqrt{1-m/u}$. Then
+\[
+ H_{m,0}=1-d_m\le1,\qquad
+ H_{m,k}=d_m^{-1}\left(H_{m+1,k-1}+
+                \frac12\sum_{j=1}^{k-1}H_{m,j}H_{m,k-j}\right).
+\]
+A reduced tree contributes at most $2^{-q}$ times its internal radical product.
+
+For an integer $m\ge0$, consider the descendant forest consisting of the internal vertices with unary depth at least $m$, together with their descendant terminal leaves. If nonempty, at least $m$ unary vertices lie outside it, by following a path to one of its roots. It therefore has at most $u-m$ unary vertices. Every terminal leaf in each component still has a unary parent within that component. For each component, binary vertices plus one equal leaves, and leaves are at most unary vertices. Thus there are at most $2(u-m)-1$ internal vertices of depth at least $m$. Leaves whose unary parents have depth $m-1$ are not included alone in this forest.
+
+Assign each internal vertex the deficit $\delta(v)=u-m(v)\in\{1,\ldots,u\}$. There are at most $2j-1$ deficits at most $j$. Pad the list with deficits $u$ to length $2u-1$. In increasing order its smallest possible product is
+\[
+ 1\cdot2^2\cdot3^2\cdots u^2=(u!)^2.
+\]
+Padding changes no radical factor, so the original radical product is at most
+\[
+ \frac{u^{u-1/2}}{u!}\le e^u,
+\]
+using $u!\ge(u/e)^u$. This also covers $u=1$.
+
+Let $d_u$ be the sum of $2^{-q}$ over reduced shapes with $u$ unary vertices. The shape generating function satisfies
+\[
+ D(z)=\sum_{u\ge1}d_uz^u=z(1+D(z))+\tfrac12D(z)^2
+     =1-z-\sqrt{1-4z+z^2}.
+\]
+At $\tau=2-\sqrt3$, $D(\tau)=\sqrt3-1<1$. Its coefficients are nonnegative, so $d_u\le\tau^{-u}=(2+\sqrt3)^u$. Combining the shape sum, radical bound, and exterior normalization gives $B_{0,u}(\rho)\le2uK^u$. Finally positivity gives $[x^b]B_{0,u}\le\rho^{-b}B_{0,u}(\rho)$, proving the lemma.
+\end{proof}
+
+\section{A height sensitive uniform upper bound}\label{sec:height}
+The key improvement comes from retaining the height before coefficient extraction. Let $A_h(b,u)$ count the terms belonging to reduced shapes with maximum unary depth $h$.
+\begin{lemma}[Height bound]\label{lem:height}
+For $b\ge1$, $1\le h<u$, and $d=u-h$,
+\begin{equation}\label{eq:heightbound}
+ A_h(b,u)\le2h e^{h/2}(4h)^b(d+1)
+                  \left[\frac{2e^3u^2(b+d)}{d^3}\right]^d.
+\end{equation}
+For $h=u$,
+\begin{equation}\label{eq:heightzero}
+ A_u(b,u)\le2u e^{u/2}(4u)^b.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Fix the height subclass first. For $0<\delta<1$ evaluate only its finite reduced-tree products at
+\[
+ x=\frac{1-\delta}{4h}.
+\]
+Every such product converges there: terminal parameters satisfy $m\le h$ and internal parameters satisfy $m<h$. When $h<u$, this radius may exceed the unrestricted radius $1/(4u)$; we never evaluate the unrestricted $B_{0,u}$ there.
+
+Normalize every factor $B$ in \eqref{eq:B} by $2h$. A binary vertex has normalized factor $2hx=(1-\delta)/2\le1/2$. For $0\le m\le h$, a terminal factor satisfies
+\begin{equation}\label{eq:terminal}
+ \frac{B_{m,0}(x)}{2h}
+ =\frac{1-\sqrt{1-(1-\delta)m/h}}{1-\delta}
+ \le\frac{1-\sqrt\delta}{1-\delta}
+ =\frac1{1+\sqrt\delta}\le1.
+\end{equation}
+There is no extra factor $(1-\delta)^{-1}$ to retain. The $q+1$ terminal normalizations and $q$ binary normalizations leave one exterior factor $2h$.
+
+On a selected deepest path, the $h$ unary vertices have depths $0,1,\ldots,h-1$. Their radical product is at most
+\[
+ \prod_{m=0}^{h-1}(1-m/h)^{-1/2}=\sqrt{h^h/h!}\le e^{h/2}.
+\]
+There are $u+q-h=d+q\le2d$ other internal vertices, each with radical at most $\delta^{-1/2}$. A normalized shape contribution is therefore at most
+\begin{equation}\label{eq:shapebound}
+ e^{h/2}\delta^{-d}2^{-q}.
+\end{equation}
+For $h=1$, the distinguished unary radical is simply one, so the argument still applies.
+
+For $1\le q\le d\le u-1$, the elementary estimates $C_q\le4^q$ and $\binom nk\le(en/k)^k$ give
+\[
+ 2^{-q}C_q\binom{u+q-1}{2q}\le[2e^2(u/q)^2]^q.
+\]
+The function $v\log(2e^2(u/v)^2)$ increases on $0<v\le u$, since its derivative is $\log2+2\log(u/v)>0$. Including the $q=0$ summand gives
+\begin{equation}\label{eq:shapesum}
+ \sum_{q=0}^{d}2^{-q}C_q\binom{u+q-1}{2q}
+       \le(d+1)[2e^2(u/d)^2]^d.
+\end{equation}
+This overcounts heights other than $h$, which is harmless; every desired shape has $q\le d$. Positivity and \eqref{eq:shapebound}--\eqref{eq:shapesum} imply
+\[
+ A_h(b,u)\le2h e^{h/2}(4h)^b(d+1)
+    (1-\delta)^{-b}\delta^{-d}[2e^2(u/d)^2]^d.
+\]
+Choose $\delta=d/(b+d)$. Then $(1-\delta)^{-b}=(1+d/b)^b\le e^d$, proving \eqref{eq:heightbound}.
+
+If $d=0$, \eqref{eq:qdeficit} forces $q=0$: there is one reduced unary chain. Evaluate it at $x=1/(4u)$. Its terminal factor is $2u$ and its radical product is at most $e^{u/2}$. All internal depths are below $u$, so this endpoint is legitimate. This proves \eqref{eq:heightzero}, also for $u=1$.
+\end{proof}
+
+\begin{proposition}[Uniform fixed parameter estimate]\label{prop:upper}
+For $u\ge1$, $b\ge0$, and $\alpha=b/u$, put
+\begin{equation}\label{eq:E}
+ E(b,u)=3\,2^{1/3}u(1+\alpha)^{1/3}e^{-\alpha/3}.
+\end{equation}
+Then
+\begin{align}
+ A(b,u)&\le2u^2(u+1)(4u)^b\exp\{u/2+E(b,u)\},\label{eq:uniform}\\
+ \log A(b,u)&\le b\log(4u)+u/2+E(b,u)+O(\log(u+1)),\label{eq:loguniform}
+\end{align}
+with an absolute uniform constant.
+\end{proposition}
+\begin{proof}
+Relative to $(4u)^be^{u/2}$, the exponential correction in \eqref{eq:heightbound} is at most
+\[
+ d\left[-\alpha+\log(2e^3(1+\alpha))+3\log(u/d)\right].
+\]
+Here we used $(h/u)^b\le e^{-bd/u}$ and $b+d\le u(1+\alpha)$, and discarded the favorable term $-d/2$. For $A=-\alpha+\log(2e^3(1+\alpha))$, the maximum of $v(A-3\log v)$ over all $v>0$ is $3e^{A/3-1}$. Apply this with $v=d/u$ to get exactly $E(b,u)$. Summing at most $u$ heights and using $2h\le2u$, $d+1\le u+1$ proves \eqref{eq:uniform} when $b\ge1$. The $d=0$ term obeys the same bound. When $b=0$, the only skeleton is a unary chain, with $u$ choices for its final variable; thus $A(0,u)=u$ and the inequality is immediate. Finally $\log(2u^2(u+1))\le4\log(u+1)$.
+\end{proof}
+
+\section{A single spine lower bound}\label{sec:lower}
+A single-spine term is one in which every abstraction lies on one ancestor path. Applications and unary-free Catalan branches are allowed along that path; the abstractions need not form a consecutive initial chain. Iterating only the unary term of \eqref{eq:B} gives its exact application generating function
+\begin{equation}\label{eq:spine}
+ L_u(x)=B_{u,0}(x)Q_u(x),\qquad
+ Q_u(x)=\prod_{m=0}^{u-1}(1-4mx)^{-1/2}.
+\end{equation}
+Equivalently, between consecutive abstractions, a path application has two possible continuing children and a unary-free side branch. The context sequence has generating function
+$1/(1-2xB_{m,0}(x))=(1-4mx)^{-1/2}$. This proves the interpretation without any singular asymptotic approximation.
+
+At $\rho=1/(4u)$ all factors of $Q_u$ are finite, and
+\begin{equation}\label{eq:Q}
+ Q_u(\rho)=\sqrt{u^u/u!},\qquad
+ \log Q_u(\rho)=u/2+O(\log(u+1)).
+\end{equation}
+The logarithmic factorial estimate follows from upper and lower integral bounds on $\sum_{j=1}^u\log j$.
+
+Normalize these nonnegative coefficients into a probability law:
+\begin{equation}\label{eq:J}
+ \Prob(J=j)=\frac{[x^j]Q_u(x)\rho^j}{Q_u(\rho)},\qquad
+ \E[z^J]=\prod_{m=0}^{u-1}
+       \left(\frac{1-m/u}{1-(m/u)z}\right)^{1/2}.
+\end{equation}
+Each factor is a negative-binomial probability generating function of shape $1/2$; this displayed formula specifies the parameter convention. The factor with $m=0$ is identically one. Thus $J$ is a sum of independent such variables. Differentiating the factors gives
+\begin{align}
+ \mu=\E J&=\frac12\sum_{m=0}^{u-1}\frac m{u-m}
+       =\frac u2(H_u-1)\le\frac u2\log u,\label{eq:mean}\\
+ \sigma^2=\Var J&=\frac12\sum_{k=1}^{u-1}\frac{u(u-k)}{k^2}\le u^2.\label{eq:var}
+\end{align}
+Here $H_u=\sum_{j=1}^u1/j\le1+\log u$, and $\sum_{j\ge1}j^{-2}<2$ follows by an integral bound. Empty sums for $u=1$ cause no problem.
+
+The Catalan ratio $C_{k+1}/(4C_k)=(2k+1)/(2k+4)<1$ implies $C_{b-j}\ge4^{-j}C_b$ for $0\le j\le b$. Coefficient convolution in \eqref{eq:spine} therefore yields the exact lower inequality
+\begin{equation}\label{eq:convolution}
+ A(b,u)\ge[x^b]L_u(x)
+       \ge C_bu^{b+1}Q_u(\rho)\Prob(J\le b).
+\end{equation}
+Indeed the convolution sum is $\sum_{j=0}^b[x^j]Q_u\,C_{b-j}u^{b-j+1}$, and the stated Catalan inequality produces the factor $\rho^j$.
+
+Define the two smooth functions
+\begin{equation}\label{eq:FH}
+ F_N(u)=\frac{N-u}{r}\log(4u),\qquad H_N(u)=F_N(u)+u/2.
+\end{equation}
+Direct differentiation gives
+\[
+ H_N'(u)=\frac{N/u-1-\log(4u)}r+\frac12,\qquad
+ H_N''(u)=-\frac1r\left(\frac N{u^2}+\frac1u\right)<0.
+\]
+The derivative changes from positive to negative, so the maximum is unique. Its critical point is $u_*=N/t$, where
+\begin{equation}\label{eq:saddle}
+ t+\log t=\log(4eN)-r/2,\qquad
+ \log(4u_*)=t-1+r/2,\qquad H_N(u_*)=M_r(N).
+\end{equation}
+In particular $t\sim\log N$ and $u_*\sim N/\log N$.
+
+Choose an admissible integer $u_0$ within $r/2$ of $u_*$. For large $N$ it lies in the admissible interior, since $u_*\to\infty$ and $N-r-u_*\to\infty$. Put $b_0=(N-u_0)/r-1$. The bounded rounding shift changes $N/u$ by $O((\log N)^2/N)$, and
+\begin{equation}\label{eq:roundalpha}
+ \frac{b_0}{u_0}=\frac{\log(4u_0)}r-\frac12+o(1).
+\end{equation}
+Combining \eqref{eq:mean} and \eqref{eq:roundalpha},
+\[
+ \frac{b_0-\mu}{u_0}\ge
+ \left(\frac1r-\frac12\right)\log u_0+\frac{\log4}r-\frac12+o(1).
+\]
+For $r=2$, the right side tends to $\log2-1/2>0$; for $r=1$, it tends to infinity. Hence the common constant $a_0=(\log2-1/2)/2>0$ satisfies $b_0-\mu\ge a_0u_0$ eventually. Cantelli's inequality and \eqref{eq:var} give
+\begin{equation}\label{eq:Cantelli}
+ \Prob(J\le b_0)\ge\frac{a_0^2}{1+a_0^2}>0.
+\end{equation}
+For completeness, if $X$ has mean zero and variance $\sigma^2$, Markov's inequality applied to $(X+h)^2$ on $X\ge c>0$ gives
+$\Prob(X\ge c)\le(\sigma^2+h^2)/(c+h)^2$. Taking $h=\sigma^2/c$ proves Cantelli; zero variance is immediate. Here $\{J>b_0\}\subseteq\{J-\mu\ge a_0u_0\}$, so the integer endpoint is harmless.
+
+The elementary bound $C_b\ge4^b/((2b+1)(b+1))$, \eqref{eq:Q}, \eqref{eq:convolution}, and \eqref{eq:Cantelli} now imply
+\[
+ \log A_s(n)\ge H_N(u_0)-O(\log N).
+\]
+Taylor's theorem at $u_*$ loses only $O((\log N)^2/N)=o(1)$, because $|u_0-u_*|\le r/2$ and $|H_N''|=O((\log N)^2/N)$ on the intervening segment. This proves the lower half of Theorem~\ref{thm:main}, including both residue classes in the $r=2$ model.
+
+\section{Two stages of saddle localization}\label{sec:localization}
+We prove the upper half without assuming a uniform fixed-$u$ singular expansion. Put $L=\log N$ and $c=\log K$, where $K$ is from Lemma~\ref{lem:coarse}. Since $b+1=(N-u)/r$, the coarse bound gives exactly
+\begin{equation}\label{eq:G}
+ \log A(b,u)\le G_N(u):=F_N(u)+cu-\log2.
+\end{equation}
+There is no omitted $u$-dependent prefactor. This envelope is strictly concave, with maximizer $v_N=N/W(4eNe^{-rc})\sim N/L$. For large $N$, this point lies in
+\[
+ I_N=[N/(2L),2N/L].
+\]
+Concavity implies that the largest envelope value outside $I_N$ is bounded by one of its endpoint values. For fixed $x\in\{1/2,2\}$,
+\begin{align*}
+ G_N(xN/L)&=\frac Nr[L-\log L+\log4+\log x-x]+o(N),\\
+ M_r(N)&=\frac Nr[L-\log L+\log4-1]+o(N).
+\end{align*}
+Both numbers $\log x-x+1$ are strictly negative. There is therefore $\eta>0$ such that every admissible $u\notin I_N$ satisfies
+\begin{equation}\label{eq:outer}
+ \log A(b,u)\le M_r(N)-\eta N.
+\end{equation}
+This includes the possible endpoint $b=0$.
+
+Within $I_N$, $\alpha=(N/u-1)/r-1/u$ satisfies $L/(2r)-O(1)\le\alpha\le2L/r$. Use these separately in the factors of \eqref{eq:E} to obtain the uniform bound
+\begin{equation}\label{eq:Ewide}
+ E(b,u)=O(N^{1-1/(6r)}L^{-2/3})=o(N/L^2).
+\end{equation}
+By \eqref{eq:loguniform} and $b\log(4u)=F_N(u)-\log(4u)$,
+\begin{equation}\label{eq:Hupper}
+ \log A(b,u)\le H_N(u)+E(b,u)+O(\log N).
+\end{equation}
+Throughout $I_N$, $H_N''(u)\le-L^2/(4rN)$. Also $u_*\in I_N$ and $u_*\ge N/(2L)$ eventually. If $u\in I_N$ but $|u/u_*-1|\ge1/L$, Taylor's theorem on the segment from $u_*$ to $u$ gives
+\[
+ M_r(N)-H_N(u)\ge\frac12\frac{L^2}{4rN}\left(\frac{N}{2L^2}\right)^2
+                  =\frac{N}{32rL^2}.
+\]
+Combining with \eqref{eq:Ewide} and \eqref{eq:Hupper}, eventually
+\begin{equation}\label{eq:middle}
+ \log A(b,u)\le M_r(N)-\frac{N}{64rL^2}.
+\end{equation}
+
+It remains to consider $|u/u_*-1|<1/L$. Write $u=u_*(1+\varepsilon)$, so $|\varepsilon|<1/L$. Since $t\asymp L$,
+\[
+ \alpha-\alpha_*=O(1),\qquad
+ \alpha_*:=\frac{N/u_*-1}r-\frac1{u_*}
+           =\frac{\log(4u_*)}r-\frac12-\frac1{u_*}.
+\]
+Consequently $1+\alpha_*\asymp L$ and $e^{-\alpha_*/3}\asymp u_*^{-1/(3r)}$. The bounded change in $\alpha$ changes its exponential factor only by a bounded multiplier. Thus
+\begin{equation}\label{eq:Enarrow}
+ E(b,u)=O(u_*^{1-1/(3r)}L^{1/3})
+       =O(N^{1-1/(3r)}L^{-2/3+1/(3r)})=O(R_r(N)).
+\end{equation}
+Now \eqref{eq:Hupper} and $H_N(u)\le M_r(N)$ prove the desired bound in this narrow interval. Sum it with \eqref{eq:outer} and \eqref{eq:middle} over at most $N$ admissible values of $u$. Taking the logarithm costs at most $\log N$, which is absorbed in $R_r(N)$. This finishes Theorem~\ref{thm:main}.
+
+\section{Every fixed logarithmic order}\label{sec:expansion}
+We now convert the controlled main expression to polynomial expansions, including analytic error estimates. Retain $L,\ell,a,z$ from \eqref{eq:z}. The equation defining $t$ is
+\begin{equation}\label{eq:timplicit}
+ t+\log t=L+a.
+\end{equation}
+Define polynomials $p_j(z)$ successively, using a formal variable $x$, by
+\begin{equation}\label{eq:p}
+ p_j(z)=-[x^j]\log\left(1-zx+\sum_{k=1}^{j-1}p_k(z)x^{k+1}\right),\qquad j\ge1.
+\end{equation}
+This is genuinely triangular: the coefficient of $x^j$ involves only the earlier polynomials. Induction gives $\deg p_j\le j$. Set
+\begin{equation}\label{eq:P}
+ P_j(z)=p_j(z)+[x^{j-1}]
+       \left(1-zx+\sum_{k=1}^{j-1}p_k(z)x^{k+1}\right)^{-1}.
+\end{equation}
+The first six coefficient polynomials are
+\begin{align}
+ P_1(z)&=z+1,& P_2(z)&=z^2/2,\nonumber\\
+ P_3(z)&=z^3/3-z^2/2,& P_4(z)&=z^4/4-5z^3/6+z^2/2,\label{eq:Pfirst}\\
+ P_5(z)&=z^5/5-13z^4/12+3z^3/2-z^2/2,\nonumber\\
+ P_6(z)&=z^6/6-77z^5/60+71z^4/24-7z^3/3+z^2/2.\nonumber
+\end{align}
+The coefficient identities are reproducible by two independent exact-rational series algorithms in the package.
+
+\begin{lemma}[Analytic remainder for the reversion]\label{lem:reversion}
+For each fixed $J\ge1$,
+\begin{equation}\label{eq:texpand}
+ t=L-z+\sum_{j=1}^Jp_j(z)L^{-j}
+       +O((1+|z|)^{J+1}L^{-J-1}).
+\end{equation}
+\end{lemma}
+\begin{proof}
+Let $T_J$ be the displayed finite expression without its error and set $U_J=T_J/L$. Then
+\[
+ T_J+\log T_J-L-a=\sum_{j=1}^Jp_j(z)L^{-j}+\log U_J.
+\]
+The recurrence \eqref{eq:p} cancels all powers $L^{-1}$ through $L^{-J}$. Put $D=1+|z|$. For fixed $J$, $D/L\to0$, $T_J>0$ eventually, and $U_J-1=O(D/L)$. The analytic Taylor remainder of the logarithm through degree $J$ is $O((D/L)^{J+1})$. Every uncancelled monomial in its finite Taylor part has power of $L^{-1}$ at least $J+1$, and degree in $z$ at most that power, so its value has the same bound. Thus the full residual is $O(D^{J+1}L^{-J-1})$. The derivative of $t+\log t$ is $1+1/t\ge1$ for $t>0$. The mean value theorem transfers the residual bound to $T_J-t$.
+\end{proof}
+
+Since $1/T_J=L^{-1}U_J^{-1}$, the reciprocal contribution at $L^{-j}$ is the coefficient in \eqref{eq:P}. Substitution in $M_r$ preserves the error in Lemma~\ref{lem:reversion}; the derivative of $t-2+1/t$ is bounded near the large solution. The leading constant becomes $a-2+r/2=\log4-1$. By \eqref{eq:scale}, the counting uncertainty is smaller than the fixed-order remainder. This proves \eqref{eq:allorders}.
+
+For example,
+\begin{align*}
+ t={}&L-z+\frac zL+\frac{z^2/2-z}{L^2}
+       +\frac{z^3/3-3z^2/2+z}{L^3}
+       +O\!\left(\frac{(1+|z|)^4}{L^4}\right),\\
+ \log A_s(n)={}&\frac Nr\left[L-\ell+\log4-1
+        +\frac{z+1}L+\frac{z^2}{2L^2}
+        +\frac{z^3/3-z^2/2}{L^3}\right]
+       +O\!\left(\frac{N(1+\ell)^4}{L^4}\right).
+\end{align*}
+Here $z+1=\log\log N-\log4+r/2$. Replacing $N=n+1$ by $n$ in any fixed smooth truncation changes its value by $O(\log n)$, because that truncation has derivative $O(\log n)$. This change is below the displayed remainders. We differentiate the explicitly given truncation, not an unknown counting error.
+
+\section{The controlled inverse to every fixed order}\label{sec:inverse}
+Differentiate the exact envelope $M_r(N)=H_N(u_*(N))$. The term involving $du_*/dN$ vanishes because $H_N'(u_*)=0$, so
+\begin{equation}\label{eq:Mprime}
+ M_r'(N)=\frac{\log(4u_*)}r=\frac{t-1+r/2}r\sim\frac{\log N}r.
+\end{equation}
+This is positive eventually, and $M_r$ tends to infinity. Hence $M_r(N_0)=Y$ has a unique sufficiently large solution.
+
+Choose a sufficiently large fixed $C$ and put $\Delta=C R_r(N_0)/\log N_0=o(N_0)$. On shifts of this size, $M_r'$ is comparable to $\log N_0$ and $R_r(N)$ is comparable to $R_r(N_0)$. The upper bound in Theorem~\ref{thm:main} is strictly below $Y$ at $N_0-\Delta$ for large enough $C$, so monotonicity and integer rounding give
+\[
+ \nu_s(y)+1\ge N_0-O(R_r(N_0)/\log N_0).
+\]
+For the opposite side, the lower counting error is only $O(\log N)$. A sufficiently large fixed positive shift of $N_0$ raises $M_r$ by more than this loss, by \eqref{eq:Mprime}. Taking the next integer adds at most one. Thus
+\[
+ \nu_s(y)+1\le N_0+O(1).
+\]
+This proves both \eqref{eq:asymmetric} and \eqref{eq:threshold}. It uses explicit envelope derivatives and monotone bracketing, never derivatives of an unknown remainder.
+
+The saddle equation gives the exact relation $N=e^{r/2}te^t/(4e)$. Substitute it in $M_r$ to get
+\[
+ M_r(N)=K_re^t\Pi_r(t),\qquad
+ K_r=\frac{e^{r/2}}{4er},\quad \Pi_r(t)=t^2+(r/2-2)t+1.
+\]
+This proves \eqref{eq:inverseparam}. The quadratics for $r=1,2$ are positive on the real line, and the derivative of $t+\log\Pi_r(t)$ is positive for large $t$, verifying the intended branch directly. Since $N_0\sim rY/\log Y$, the counting uncertainty in \eqref{eq:threshold} is equivalently
+\begin{equation}\label{eq:inverseerrorY}
+ O\!\left(Y^{1-1/(3r)}(\log Y)^{-8/3+2/(3r)}+1\right).
+\end{equation}
+
+\subsection{The first explicit inverse correction}
+Put $v=\log Y$, $k=\log v$, $A=r/2-2$, and $B=-\log K_r=1+\log(4r)-r/2$. The scalar equation becomes
+\begin{equation}\label{eq:invimplicit}
+ t+2\log t+\log(1+A/t+1/t^2)=v+B.
+\end{equation}
+With $s_0=B-2k$, expansion gives
+\[
+ t=v+s_0+\frac{-2s_0-A}{v}+O((1+k)^2/v^2).
+\]
+The exact denominator in $N_0=rY/(t+A+1/t)$ is consequently
+\[
+ t+A+1/t=v-2k+(A+B)+\frac{4k-2B-A+1}{v}
+          +O((1+k)^2/v^2).
+\]
+The identities
+\[
+ A+B=\log(4r)-1,\qquad -2B-A+1=1+r/2-2\log(4r)
+\]
+produce the denominator in \eqref{eq:inverseexplicit}. Its omitted error is $O((1+k)^2/v^2)$, and both denominators are asymptotic to $v$, so the induced error in $N_0$ is $O(Y(1+k)^2/v^4)$. The much smaller counting error \eqref{eq:inverseerrorY} and the shift $-1$ are absorbed at this explicit truncation scale. The shift remains present in the more precise controlled formula \eqref{eq:threshold}.
+
+\subsection{A recurrence for all inverse orders}
+Set $z=2\log v-B$ and use a formal variable $x$. When computing $q_j(z)$, put
+\[
+ U=1-zx+\sum_{k=1}^{j-1}q_k(z)x^{k+1}
+\]
+and define
+\begin{equation}\label{eq:q}
+ q_j(z)=-[x^j]\left\{2\log U+\log(1+Ax/U+x^2/U^2)\right\}.
+\end{equation}
+This is triangular and $\deg q_j\le j$. The first two are
+\[
+ q_1=2z-A,\qquad
+ q_2=z^2-(A+4)z+A^2/2+2A-1.
+\]
+For every fixed $J$, the finite approximation
+\begin{equation}\label{eq:Tinv}
+ T_J=v-z+\sum_{j=1}^Jq_j(z)v^{-j}
+\end{equation}
+has residual $O((1+\log v)^{J+1}/v^{J+1})$ in \eqref{eq:invimplicit}. To see this, divide $T_J$ by $v$, use the recurrence to cancel the first $J$ powers of $v^{-1}$, and expand the logarithms and reciprocals analytically near $(v^{-1},T_J/v)=(0,1)$. Here $z=O(\log v)$, and the same polynomial-degree argument as in Lemma~\ref{lem:reversion} bounds the finite uncancelled terms. The derivative of the left side of \eqref{eq:invimplicit} is
+\[
+ 1+\frac{2t+A}{t^2+At+1}\ge1
+\]
+for all sufficiently large positive $t$. The mean value theorem therefore proves
+\[
+ t_y=T_J+O((1+\log v)^{J+1}/v^{J+1}).
+\]
+Substitution into the denominator $t+A+1/t$ gives the useful quantitative form
+\begin{equation}\label{eq:invarbitrary}
+ \nu_s(y)=\frac{rY}{T_J+A+1/T_J}-1
+ +O\!\left(\frac{Y(1+\log v)^{J+1}}{v^{J+3}}
+       +Y^{1-1/(3r)}v^{-8/3+2/(3r)}+1\right).
+\end{equation}
+Further expansion of the denominator or its reciprocal gives every prescribed fixed inverse-logarithmic order. The counting uncertainty lies below each such order. This completes Theorem~\ref{thm:inverse}.
+
+\section{Historical comparison and scope}\label{sec:scope}
+The two size conventions are essential. Natural-size de Bruijn terms charge increasing size for deeper indices and have different asymptotics. Fixed index or unary-height bounds, linear or affine terms, typed terms, and beta-normal subclasses likewise do not settle these unrestricted sequences.
+
+Bodini, Gardy, Gittenberger, and Jacquot~\cite{bggj2013} give explicit unrestricted bounds for the variable-size-one model, with exponential bases corresponding to $4n/(e\log n)$ and $9(1+\varepsilon)n/(e\log n)$ raised to $n/2$, up to lower-order factors. These locate the first two logarithmic scales and leave a linear-size logarithmic gap. David, Grygiel, Kozik, Raffalli, Theyssier, and Zaionc~\cite{david2013} study the variable-size-zero convention and prove broad enumeration and structural estimates. Bodini, Gardy, Gittenberger, and Go\l\k{e}biewski~\cite{bggg2018} analyze fixed abstraction counts and bounded unary-height structures. Their checked expanded 2015 preprint provides fixed-parameter singularity results, but no proved error uniform at the moving regime $u\asymp n/\log n$ used here.
+
+The historical comparison is bounded to the located, checked sources. No claim of global priority is made. The present proof is an ordinary analytic proof accompanied by exact finite corroboration. It is not a Lean formalization and has not undergone external peer review. The report develops the all-logarithmic-order counting and inverse result; it does not repeat separate large-deviation results for binding geometry.
+
+The approximation \eqref{eq:main} permits a stretched-exponential multiplicative discrepancy between the full count and its envelope or the single-spine subclass. Thus it does not imply $A_s(n)\sim C(n)e^{M_r(n+1)}$ for any specified amplitude $C(n)$, a ratio limit between subclasses, or a full multiplicative transseries. Those conclusions need estimates below the logarithmic accuracy established here.
+
+\subsection{Concrete remaining questions}
+\begin{enumerate}
+\item Determine the first scale and coefficient of the residual $\log A_s(n)-M_r(n+1)$ beyond all fixed inverse-logarithmic orders. The exponent $1-1/(3r)$ here is an upper-bound exponent from a shape-entropy optimization, not a proved asymptotic scale.
+\item Determine the typical off-spine deficit $u-h$ near the moving saddle. The proof maximizes a majorant over deficits; that optimizing value is not a distributional law for actual random terms.
+\item Obtain uniform coefficient asymptotics for the enriched spine class and its off-spine corrections, controlling the transition between fixed and growing abstraction count. Such control may identify an amplitude or a multiplicative equivalent.
+\item Only after resolving those residual scales, ask whether an organized multiplicative expansion or transseries exists and which exponential sectors it requires.
+\end{enumerate}
+These are research questions, not conclusions extracted by formal expansion of the current error term.
+
+\section{Reproducibility and verification}\label{sec:verification}
+The analytic proof above does not depend on finite tests. The companion archive contains the TeX source, final PDF, standard-library exact checker, fixtures, deterministic build and integrity tools, corruption tests, and reader-facing validation summaries. It contains no downloaded source PDFs or third-party author code.
+
+\subsection{Three distinct kinds of evidence}
+\begin{enumerate}
+\item \textbf{Analytic proof.} Sections~\ref{sec:recurrence}--\ref{sec:inverse} establish the asymptotic claims for all sufficiently large sizes, with all fixed orders justified by analytic remainders.
+\item \textbf{Exact finite corroboration.} The standalone checker uses integers and rational numbers. It checks root and reduced-tree recurrences, size shifts and parity, reduced shape counts and height constraints, radical inequalities at positive rational parameters, spine convolution inequalities, probability moments, and forward and inverse series generated by independent algebraic routes. Its guards are explicit exceptions, so optimized Python does not disable them.
+\item \textbf{Numerical diagnostics.} Numerical comparisons, if used during exploration, cannot prove eventual inequalities or uniform errors. None are used in the standalone exact checker or in the analytic proof; the packaged checks require neither floating-point arithmetic nor a symbolic-algebra package.
+\end{enumerate}
+
+The standalone checker runs 17,643 exact finite checks. It generates forward coefficients through order eight and inverse coefficients through order six, and compares them with independently implemented formal identities. A separate implementation check and the corruption campaign test that the validation guards reject altered logic and malformed or changed fixtures. The accompanying validation records state their finite scope; they do not replace the analytic arguments or constitute external peer review.
+
+\subsection{Local replay}
+Run the following commands from the extracted package directory:
+\begin{verbatim}
+python3 integrity.py
+python3 -O integrity.py
+python3 check.py
+python3 -O check.py
+python3 corruption_test.py
+python3 build.py
+python3 integrity.py
+\end{verbatim}
+The mathematical checker has no non-standard Python dependencies. The PDF build requires pdfTeX and the standard LaTeX packages named in the source. The build fixes timestamps, suppresses changing PDF metadata, rebuilds from two clean directories, requires byte-identical results, and rejects overfull boxes or unresolved references. A fresh ZIP replay runs both Python modes, the corruption campaign, and a clean PDF rebuild, then verifies that the rebuilt PDF matches the packaged one and that the full file inventory is unchanged. The manifest checks payload integrity against recorded hashes, including the final PDF; it is not a mathematical certificate or a digital signature.
+
+The corruption campaign changes mathematical logic, fixtures, manifest structure, and payload bytes in disposable copies. Mathematical mutants bypass the manifest intentionally, so a hash mismatch cannot hide an inactive mathematical guard. The normal and optimized interpreter runs must both reject them. The archive uses a fixed timestamp and sorted paths. Final checks include rendering and visual inspection of every PDF page; the QA images are not part of the mathematical evidence.
+
+\clearpage
+\begin{thebibliography}{9}
+\bibitem{oeis1} OEIS Foundation, \emph{A135501, Number of closed lambda-terms of size $n$}. \url{https://oeis.org/A135501}.
+\bibitem{oeis0} OEIS Foundation, \emph{A220894, Number of closed lambda-terms of size $n$ when variables have size zero}. \url{https://oeis.org/A220894}.
+\bibitem{bggj2013} O. Bodini, D. Gardy, B. Gittenberger, and A. Jacquot, \emph{Enumeration of generalized BCI lambda-terms}, Electronic Journal of Combinatorics \textbf{20}(4), P30 (2013). \url{https://www.combinatorics.org/ojs/index.php/eljc/article/view/v20i4p30}.
+\bibitem{david2013} R. David, K. Grygiel, J. Kozik, C. Raffalli, G. Theyssier, and M. Zaionc, \emph{Asymptotically almost all lambda-terms are strongly normalizing}, Logical Methods in Computer Science \textbf{9}(1:2) (2013). \url{https://doi.org/10.2168/LMCS-9(1:2)2013}.
+\bibitem{bggg2018} O. Bodini, D. Gardy, B. Gittenberger, and Z. Go\l\k{e}biewski, \emph{On the number of unary-binary tree-like structures with restrictions on the unary height}, Annals of Combinatorics \textbf{22}(1), 45--91 (2018). Expanded preprint (2015): \url{https://arxiv.org/abs/1510.01167}.
+\end{thebibliography}
+\end{document}

@@ -1,0 +1,625 @@
+\pdfinfoomitdate=1
+\pdftrailerid{}
+\pdfsuppressptexinfo=15
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype,amsmath,amssymb,amsthm,mathtools,booktabs,array}
+\usepackage[margin=1in,headheight=15pt]{geometry}
+\usepackage{enumitem,fancyhdr}
+\usepackage[hidelinks,pdfauthor={Research report},pdftitle={A348351 one sided rectangulations logarithmic power and non D finiteness}]{hyperref}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt plus 1pt}
+\setlist{topsep=3pt,itemsep=2pt,parsep=0pt}
+\emergencystretch=2em
+\pagestyle{fancy}\fancyhf{}\lhead{A348351\quad Logarithmic power}\rhead{Report 111}\cfoot{\thepage}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Q}{\mathbb Q}\newcommand{\R}{\mathbb R}\newcommand{\Z}{\mathbb Z}
+\newcommand{\Prob}{\mathbb P}\newcommand{\E}{\mathbb E}
+\newcommand{\one}{\mathbf 1}\newcommand{\ii}{\mathrm i}
+\newcommand{\diag}{\operatorname{diag}}\newcommand{\rad}{\operatorname{rad}}
+\newcommand{\G}{\Gamma}\newcommand{\s}{\sqrt{17}}
+\newcommand{\B}{\mathsf B}\newcommand{\RR}{\mathsf R}\newcommand{\GG}{\mathsf G}\newcommand{\W}{\mathsf W}
+\numberwithin{equation}{section}
+\begin{document}
+\begin{titlepage}
+\vspace*{0.55in}
+{\small RESEARCH REPORT 111\par}
+\vspace{0.4in}
+{\LARGE\bfseries One sided rectangulations\par}
+\vspace{0.15in}
+{\Large Logarithmic power and non D finiteness\par}
+\vspace{0.35in}
+{\large OEIS A348351\par}
+\vspace{0.45in}
+\begin{align*}
+ a(n)&=\G^n n^{-\alpha+o(1)},\\[3pt]
+ \G&=\frac{7+\sqrt{17}}2,\qquad
+ \alpha=1+\frac{\pi}{\arccos((-29+7\sqrt{17})/4)}.
+\end{align*}
+\par\vspace{0.25in}
+\noindent This report proves the exponential growth constant and the logarithmic polynomial exponent for one-sided, equivalently area-universal, rectangulations. It also proves that their ordinary generating function is not D-finite and obtains the corresponding two-term threshold inverse.
+
+The stronger multiplicative equivalent $a(n)\sim c\G^n n^{-\alpha}$, the existence or value of a positive amplitude $c$, and correction or transseries expansions are not established here.
+\vfill
+{\small 2 October 2026\par}
+{\small Self-contained argument with exact finite checks and reproducible source\par}
+\end{titlepage}
+\pagenumbering{roman}
+\tableofcontents
+\clearpage
+\pagenumbering{arabic}
+
+\section{Results and their scope}
+Let $a(n)$ be OEIS A348351, with $a(0)=1$. For $n\ge1$ it counts one-sided rectangulations with $n$ rectangles, also called area-universal rectangulations. Equivalently, it counts permutations of $[n]$ avoiding the four vincular patterns
+\[
+2\text{-}41\text{-}3,\quad 3\text{-}14\text{-}2,\quad
+2\text{-}14\text{-}3,\quad 3\text{-}41\text{-}2.
+\]
+In each pattern the middle two positions must be adjacent; these are not ordinary classical pattern-avoidance conditions \cite{oeis,rect}.
+
+Define
+\begin{equation}\label{eq:parameters}
+ \G=\frac{7+\s}{2},\quad
+ \rho=\frac{29-7\s}{4},\quad
+ \theta=\arccos(-\rho),\quad p=\frac{\pi}{\theta},\quad \alpha=1+p.
+\end{equation}
+Numerically $\G\approx5.561552812808830$ and $\alpha\approx2.9569294595087534$. All arguments below use the exact expressions.
+
+\begin{theorem}\label{thm:main}
+As $n\to\infty$,
+\begin{equation}\label{eq:main}
+ \log a(n)=n\log\G-\alpha\log n+o(\log n),
+ \qquad a(n)=\G^n n^{-\alpha+o(1)}.
+\end{equation}
+In particular $\lim_{n\to\infty}a(n)^{1/n}=\G$.
+The ordinary generating function $F(z)=\sum_{n\ge0}a(n)z^n$ is not D-finite over $\mathbb C(z)$.
+If $N(y)=\min\{n\ge0:a(n)\ge y\}$, then, as $y\to\infty$,
+\begin{equation}\label{eq:inverse}
+ N(y)=\frac{\log y}{\log\G}
+       +\frac{\alpha}{\log\G}\log\log y+o(\log\log y).
+\end{equation}
+\end{theorem}
+
+The published result in Asinowski, Cardinal, Felsner and Fusy \cite[Proposition 4.23 and the following paragraph, printed pp.~39--40]{rect} gives the upper exponential rate $\G$ and conjectures
+\begin{equation}\label{eq:fullconj}
+ a(n)\sim c\G^n n^{-\alpha}\qquad(c>0).
+\end{equation}
+Theorem~\ref{thm:main} determines its exponential rate and its logarithmic power, and proves the stated non-D-finiteness consequence without assuming \eqref{eq:fullconj}. It does not settle the amplitude part of that conjecture. For example, a factor $\exp(o(\log n))$ need not converge. There is no claimed asymptotic correction series, all-orders expansion, or transseries in this report.
+
+Here ``not D-finite'' means that no nonzero linear differential equation with polynomial coefficients annihilates $F$. Equivalently, $a(n)$ has no fixed-order linear recurrence with polynomial coefficients valid for all sufficiently large $n$. This does not rule out other kinds of formulas or recurrences: the multistate lattice recurrence in Section~\ref{sec:model} remains exact and effective.
+
+\paragraph{Proof plan.}
+The source bijection supplies a finite-color quadrant walk. A Perron transform makes it a centered Markov-additive process. An explicit bounded martingale correction gives a Brownian scaling limit. We prove an unrestricted lattice local limit theorem by finite Fourier matrices and derive an exact-time interior bridge estimate. Brownian wedge harmonic measure, transferred uniformly over large annuli, gives the logarithmic escape exponent. Two first-hit prefixes and an exact-time bridge then give the excursion exponent without overcounting. Finally, coefficient positivity and the arithmetic local structure of G-functions imply non-D-finiteness; monotone bracketing gives the inverse.
+
+The color-dependent increments are not i.i.d. No i.i.d. cone-excursion theorem is applied, and no random regeneration time is substituted for the original length. The arithmetic and martingale limit theorems used are explicitly identified with their hypotheses. The finite checks supplement, but do not prove, the probability limits.
+
+\section{The exact colored walk model}\label{sec:model}
+Set $E=(1,0)$, $N=(0,1)$ and $\mathcal C=\{\B,\RR,\GG,\W\}$, in this order. Write $Q=\R_{\ge0}^2$. For $n\ge1$, the source bijection identifies $a(n)$ with length $L=n-1$ walks in $\Z^2\cap Q$, starting at $(0,0)$ in any color, and ending at $(0,0)$ in color $\W$. Every visited point must be in $Q$. The allowed edges are as follows; two entries in a cell mean two distinct displacement choices.
+\begin{center}
+\begin{tabular}{c@{\quad}cccc}
+\toprule
+Start $\backslash$ end & $\B$ & $\RR$ & $\GG$ & $\W$\\
+\midrule
+$\B$ & $E,N$ & $E,N$ & $E,N$ & $E,N$\\
+$\RR$ & $0$ & $0$ & $0,E-N$ & $0,E-N$\\
+$\GG$ & $0$ & $0,N-E$ & $0$ & $0,N-E$\\
+$\W$ & $\varnothing$ & $-E$ & $-N$ & $-E,-N$\\
+\bottomrule
+\end{tabular}
+\end{center}
+This is the weak leftright history-walk model of \cite[Section 4.6, Figure 4.16]{rect}. The weak leftmost and rightmost conditions, rather than their strong counterparts, must be intersected. Their logical ``or'' conditions produce this table. The initial color is unrestricted; imposing an initial white color would change the model.
+
+For an algebraic encoding define $S_{cd}$ to be the cell of displacements for colors $c,d$. One can reconstruct the table independently by putting
+\[
+ \ell(\B)=1,\quad \ell(\RR)=\ell(\GG)=0,\quad \ell(\W)=-1,
+\]
+requiring $v_x+v_y=\ell(c)$ and the two lower bounds
+\begin{align*}
+ v_x&\ge\begin{cases}0,&c\in\{\B,\RR\}\ \text{or }d\in\{\B,\GG\},\\-1,&\text{otherwise},\end{cases}\\
+ v_y&\ge\begin{cases}0,&c\in\{\B,\GG\}\ \text{or }d\in\{\B,\RR\},\\-1,&\text{otherwise}.
+ \end{cases}
+\end{align*}
+The vertical quantity $v_x+v_y$ is prescribed by the departure color, not by the arrival color. These conditions describe this specific source model, not arbitrary rectangulation classes.
+
+The unrestricted step matrix is
+\begin{equation}\label{eq:matrix}
+ M(x,y)=\begin{pmatrix}
+ x+y&x+y&x+y&x+y\\
+ 1&1&1+x/y&1+x/y\\
+ 1&1+y/x&1&1+y/x\\
+ 0&x^{-1}&y^{-1}&x^{-1}+y^{-1}
+ \end{pmatrix},\qquad A=M(1,1).
+\end{equation}
+Here $A^2$ is strictly positive, so $A$ is primitive, and
+\[
+ \det(tI-A)=t(t+1)(t^2-7t+8).
+\]
+Thus $\G$ is its Perron root.
+
+\paragraph{An exact counting recurrence.}
+Let $u_0(x,y,c)=\one_{(x,y)=(0,0)}$ for each $c\in\mathcal C$. Extend all $u_j$ by zero outside $Q$, and put
+\begin{equation}\label{eq:recurrence}
+ u_{j+1}(x,y,d)=\sum_{c\in\mathcal C}\ \sum_{v\in S_{cd}}
+                      u_j(x-v_x,y-v_y,c),\qquad (x,y)\in\Z_{\ge0}^2.
+\end{equation}
+Then $a(L+1)=u_L(0,0,\W)$. The check suite reproduces the source prefix
+\begin{align*}
+&a(0),\ldots,a(16)=\\
+&\quad 1,1,2,6,20,72,274,1088,4470,18884,81652,360054,\\
+&\quad 1614618,7346688,33856008,157777908,742637416.
+\end{align*}
+It also compares against direct permutation enumeration, separately encoding the middle adjacency rule. These finite agreements are useful model checks, not a proof of the source bijection.
+
+\section{The Perron chain and effective covariance}\label{sec:perron}
+Put $s=\sqrt{17}$. A positive right eigenvector for $\G$ is
+\begin{equation}\label{eq:r}
+ r=\left(\frac{1+s}{2},\frac{3+s}{4},\frac{3+s}{4},1\right)^{\!T}.
+\end{equation}
+For each individual allowed edge $c\to d$ with displacement $v$, give that edge probability
+\begin{equation}\label{eq:edgeprob}
+ p_{cd}(v)=\frac{r_d}{\G r_c}.
+\end{equation}
+Set it to zero on forbidden edges. Since $Ar=\G r$, the outgoing probabilities sum to one. The color transition matrix is
+\[
+ P=\G^{-1}\diag(r)^{-1}A\diag(r),
+\]
+a primitive stochastic matrix. Its stationary row vector is
+\begin{equation}\label{eq:stationary}
+ \pi_\B=\pi_\W=\frac{51-5s}{136},\qquad
+ \pi_\RR=\pi_\GG=\frac{17+5s}{136}.
+\end{equation}
+All entries are positive and sum to one; direct multiplication gives $\pi P=\pi$.
+
+Let $C_j$ be the color and $S_j$ the spatial position of the unrestricted chain. The conditional mean displacement $m(c)$ is
+\begin{align*}
+ m(\B)&=(1/2,1/2),&m(\W)&=(-1/2,-1/2),\\
+ m(\RR)&=((s-3)/4,(3-s)/4),&
+ m(\GG)&=((3-s)/4,(s-3)/4).
+\end{align*}
+In particular $\sum_c\pi_c m(c)=0$. The following explicit vector-valued function solves the Poisson equation $(I-P)h=m$:
+\begin{align}
+ h(\B)&=((7+s)/8,(7+s)/8),\nonumber\\
+ h(\RR)&=((-21+13s)/32,(5+3s)/32),\label{eq:h}\\
+ h(\GG)&=((5+3s)/32,(-21+13s)/32),\nonumber\\
+ h(\W)&=(0,0).\nonumber
+\end{align}
+Every coordinate of $h$ lies in $[0,3/2)$. Consequently
+\begin{equation}\label{eq:martingale}
+ Z_j=S_j+h(C_j)-h(C_0)
+\end{equation}
+is a martingale, because the conditional expectation of its increment is $m(c)+(Ph)(c)-h(c)=0$. Its increments have coordinate absolute values below $3$.
+
+The long-run covariance is the stationary average of the corrected increment outer products:
+\begin{equation}\label{eq:covformula}
+ \Sigma=\sum_{c,d}\sum_{v\in S_{cd}}\pi_c p_{cd}(v)
+       [v+h(d)-h(c)][v+h(d)-h(c)]^T.
+\end{equation}
+Substitution gives the exact matrix
+\begin{equation}\label{eq:cov}
+ \Sigma=\frac1{272}\begin{pmatrix}51+13s&-17+5s\\-17+5s&51+13s\end{pmatrix}.
+\end{equation}
+Its eigenvalues are $(34+18s)/272$ and $(68+8s)/272$, both positive. Its correlation is precisely $\rho$ in \eqref{eq:parameters}, and $0<\rho<1/2$.
+
+One independent algebraic check uses the spectral polynomial
+\begin{align}
+ \det(tI-M(x,y))&=t[t^3-U(x,y)t^2+t+V(x,y)],\label{eq:cubic}\\
+ U(x,y)&=x+y+2+x^{-1}+y^{-1},\nonumber\\
+ V(x,y)&=x+y+x/y+y/x+2+x^{-1}+y^{-1}.\nonumber
+\end{align}
+If $\lambda(x,y)$ is the analytic eigenvalue with $\lambda(1,1)=\G$, then differentiating this identity shows that the Hessian at zero of $\log\lambda(e^u,e^v)-\log\G$ is \eqref{eq:cov}; its gradient is zero. This is the cumulant covariance of the additive process and agrees with \eqref{eq:covformula}.
+
+\begin{lemma}[Unrestricted functional limit]\label{lem:fclt}
+For every initial color, with polygonal interpolation,
+\begin{equation}\label{eq:fclt}
+ R^{-1}(S_{\lfloor R^2t\rfloor}-S_0)\ \Longrightarrow\ B_\Sigma(t)
+\end{equation}
+on every compact time interval as $R\to\infty$, where $B_\Sigma$ is Brownian motion with covariance matrix $\Sigma$ per unit time. The convergence is uniform over the finite set of initial colors.
+\end{lemma}
+\begin{proof}
+For $Z$ in \eqref{eq:martingale}, the predictable quadratic variation is the sum of the conditional corrected increment covariance matrices. The ergodic theorem for the finite primitive color chain makes this sum, divided by $R^2$, converge to $t\Sigma$. Bounded increments imply that scaled jumps tend uniformly to zero, that the expected maximum squared scaled jump tends to zero, and that jumps of the scaled predictable quadratic variation tend to zero. Thus the martingale functional central limit theorem, in the predictable-covariation form of \cite[Theorem 2.1(ii), pp.~270--271]{whitt}, applies. The bounded difference $Z_j-S_j$ disappears under scaling. Polygonal and step interpolation differ by $O(R^{-1})$. Finitely many initial colors give the stated uniformity. Translation invariance also permits varying starting positions whose scaled limits exist.
+\end{proof}
+
+\subsection{Reversal and the exact count identity}
+Define the dual unrestricted chain by
+\begin{equation}\label{eq:dual}
+ p^*_{dc}(-v)=\frac{\pi_c}{\pi_d}p_{cd}(v).
+\end{equation}
+Stationarity makes its outgoing probabilities sum to one. Its color matrix
+\[P^*=\diag(\pi)^{-1}P^T\diag(\pi)\]
+is primitive. Its stationary drift is zero. A bounded Poisson corrector exists on the stationary-mean-zero subspace. Reversing a stationary length-$j$ path negates its total displacement, so its long-run covariance is again $\Sigma$. The argument of Lemma~\ref{lem:fclt} therefore applies to the dual chain with the same limit.
+
+Let $K_j((x,c),(y,d))$ be the probability of going between the displayed states in $j$ steps while all visited locations remain in $Q$, and define $K_j^*$ for the dual. Edgewise telescoping gives
+\begin{equation}\label{eq:kdual}
+ \pi_c K_j((x,c),(y,d))=\pi_d K_j^*((y,d),(x,c)).
+\end{equation}
+Every specified length-$L$ original path from color $c$ to $\W$ has probability $1/(\G^Lr_c)$. Consequently
+\begin{equation}\label{eq:countprob}
+ a(L+1)=\G^L\sum_{c\in\mathcal C}r_c K_L((0,c),(0,\W)).
+\end{equation}
+In particular $a(n)\le(3+s)\G^{n-1}$ for $n\ge1$. It remains to prove the polynomial logarithmic exponent of these killed endpoint probabilities.
+
+\section{An unrestricted lattice local limit theorem}\label{sec:llt}
+Define the Fourier matrix
+\[
+ T(t)_{cd}=\sum_v p_{cd}(v)e^{\ii t\cdot v},\qquad t\in[-\pi,\pi]^2.
+\]
+Its spectral radius is at most one. Suppose it has an eigenvalue $z$ with $|z|=1$. The equality case in the triangle inequality, propagated through the irreducible color matrix, forces an eigenvector $u$ to have equal nonzero coordinate moduli and gives
+\begin{equation}\label{eq:phase}
+ e^{\ii t\cdot v}u_d=zu_c
+\end{equation}
+on every allowed edge. The zero $\RR\to\RR$ loop gives $z=1$.
+
+There are red-return paths of common length three with displacements $0,E,-E,N,-N$:
+\begin{itemize}
+\item Three red zero loops have displacement $0$.
+\item $\RR\to\B$ with displacement $0$, then $\B\to\RR$ with $E$ or $N$, then a red zero loop give $E$ or $N$.
+\item $\RR\to\W$ with $0$, then $\W\to\RR$ with $-E$, then a red zero loop give $-E$.
+\item $\RR\to\W$ with $0$, then $\W\to\GG$ with $-N$, then $\GG\to\RR$ with $0$ give $-N$.
+\end{itemize}
+Multiplying \eqref{eq:phase} along these paths forces $e^{\ii t_1}=e^{\ii t_2}=1$. Thus zero is the only point of spectral radius one on the Fourier torus. This verifies both space and time aperiodicity; it is stronger than merely observing that the coordinate increments generate $\Z^2$.
+
+At zero, the simple eigenvalue is $1$ with projection $\one\pi$. Finite-dimensional analytic perturbation, zero drift, and \eqref{eq:cov} give
+\[
+ \lambda_T(t)=1-\tfrac12t^T\Sigma t+O(|t|^3),\qquad
+ \Pi_T(t)\longrightarrow\one\pi.
+\]
+The other eigenvalues are uniformly separated from one near zero. On the complement of a small neighborhood of zero, the preceding strict spectral-radius bound and compactness give uniform exponential decay of matrix powers. This last assertion also holds for nonnormal matrices: choose a common spectral contour strictly inside the unit disk and use the resolvent formula, or a finite covering of power-norm bounds. Near zero, $|\lambda_T(t)|\le e^{-c|t|^2}$.
+
+Fourier inversion, split into this neighborhood and its complement, now proves the local limit theorem. In the neighborhood put $t=u/\sqrt j$ and use dominated convergence. The error is bounded by its Fourier $L^1$ norm independently of the oscillatory spatial factor, hence uniformly in displacement:
+\begin{equation}\label{eq:llt}
+ \sup_{z\in\Z^2,\,c,d}
+ \left|j\Prob_c(S_j-S_0=z,C_j=d)-\pi_d g_\Sigma(z/\sqrt j)\right|\longrightarrow0,
+\end{equation}
+where
+\[
+ g_\Sigma(w)=\frac{1}{2\pi\sqrt{\det\Sigma}}
+                 \exp(-w^T\Sigma^{-1}w/2).
+\]
+For completeness, the analytic eigenvalue expansion is the characteristic-function version of the cumulant expansion following \eqref{eq:cubic}; bounded corrections do not alter its second derivative. Enlarging a constant to cover finitely many small times yields
+\begin{equation}\label{eq:kernelupper}
+ \sup_{x,y,c,d}\Prob_{(x,c)}((S_j,C_j)=(y,d))\le C/j
+ \qquad(j\ge1).
+\end{equation}
+The dual Fourier matrix is $\diag(\pi)^{-1}T(-t)^T\diag(\pi)$, so the same statements hold for the dual. No killed-cone local limit theorem has been used.
+
+\section{Interior bridges at exact integer times}\label{sec:bridge}
+\begin{lemma}\label{lem:bridge}
+Let $A_0$ be a compact subset of the open quadrant, and let $0<a<b<\infty$. There exist $c>0$ and $n_0$ such that for $n\ge n_0$, every integer $m\in[an,bn]$, every $x,y\in\Z^2$ with $x/\sqrt n,y/\sqrt n\in A_0$, and every color pair $c_0,d_0$,
+\begin{equation}\label{eq:bridge}
+ K_m((x,c_0),(y,d_0))\ge c/n.
+\end{equation}
+\end{lemma}
+\begin{proof}
+The unrestricted endpoint probability is at least $c_1/n$ by \eqref{eq:llt}, uniformly over the specified compact ranges. We show that the unrestricted bridge conditioned on this exact endpoint has a uniformly positive probability of staying in $Q$.
+
+First prove its Brownian bridge limit. Through time $k=\lfloor tm\rfloor$, for fixed $t<1$, its density relative to the unconditioned process is
+\begin{equation}\label{eq:bridgeratio}
+ \frac{\Prob_{C_k}(S_{m-k}-S_0=y-S_k,C_{m-k}=d_0)}
+ {\Prob_{c_0}(S_m-S_0=y-x,C_m=d_0)}.
+\end{equation}
+The numerator is at most $C/(m-k)$ by \eqref{eq:kernelupper} and the denominator at least $c/m$. Thus the density is uniformly bounded for fixed $t<1$. On compact scaled spatial sets, \eqref{eq:llt} makes it converge uniformly to the Gaussian transition-density ratio defining a covariance-$\Sigma$ Brownian bridge. The terminal color factor $\pi_{d_0}$ cancels. The unrestricted functional limit, tightness, and this bounded density prove convergence on each $[0,t]$. Contributions outside a compact spatial set are uniformly negligible by unrestricted tightness and the density bound.
+
+The reversed conditioned bridge is exactly the dual conditioned bridge: the path-reversal factor depends only on endpoints and cancels upon conditioning. Apply the same argument to the dual bridge. The forward restriction to $[0,2/3]$ and the backward restriction to $[1/3,1]$ are tight. If two times are less than $1/3$ apart, both lie in at least one of these overlapping intervals; their two modulus-of-continuity bounds therefore give tightness on $[0,1]$. The finite-dimensional limits and fixed terminal point identify the full Brownian bridge limit.
+
+For endpoints in a compact subset of the open quadrant, their joining segments stay uniformly away from the axes. The deviation of a Brownian bridge from its joining segment is a centered Brownian bridge independent of its endpoints. It has positive probability of remaining in a fixed sufficiently thin tube around zero. This gives a uniform positive probability for the desired tube around each joining segment, also uniformly in the allowed duration ratios. The tube condition is open in continuous path space. Portmanteau gives a positive lower bound for the corresponding discrete conditioned probabilities.
+
+All uniform claims can alternatively be proved by contradiction: a failing sequence has convergent scaled endpoints and duration ratios and constant endpoint colors along a subsequence. The preceding limit applies to that subsequence. Convexity of $Q$ means that the polygonal path stays in $Q$ precisely when its lattice vertices do. Multiplying by the unrestricted endpoint lower bound proves \eqref{eq:bridge}.
+\end{proof}
+This lemma concerns endpoints at distances of order $\sqrt n$ from the sides. It is not an endpoint limit theorem at the cone vertex.
+
+\section{Brownian wedge crossings}\label{sec:brownian}
+Whiten spatial positions by $X_j=\Sigma^{-1/2}S_j$. The Brownian limit becomes standard planar Brownian motion. The image of $Q$ is a closed wedge $K$ whose angle is
+\[
+ \theta=\arccos(-\rho).
+\]
+Indeed the cosine of the angle between $\Sigma^{-1/2}E$ and $\Sigma^{-1/2}N$ is $-\rho$. After a rotation,
+\[
+ K^\circ=\{(r,\phi):r>0,\ 0<\phi<\theta\}.
+\]
+Its central angular interval is $J=[\theta/3,2\theta/3]$. Coordinate interchange symmetry of $\Sigma$ makes the ray through $\Sigma^{-1/2}(1,1)$ the bisector.
+
+For Brownian motion in the wedge truncated at radius $q>1$, the probability of exiting through an outer-arc set with indicator $f$ is the bounded harmonic function
+\begin{equation}\label{eq:harmonic}
+ H_f(r,\phi)=\sum_{k\ge1}b_k(r/q)^{kp}\sin(kp\phi),\qquad
+ b_k=\frac2\theta\int_0^\theta f(\psi)\sin(kp\psi)\,d\psi,
+ \quad p=\pi/\theta.
+\end{equation}
+This follows by separation of variables in Laplace's equation: the sine modes vanish on the wedge sides and the radial powers give the boundary Fourier sine series on the circle. Bounded-domain uniqueness identifies the harmonic measure. At $r=1$ the series is absolutely convergent. The finitely many indicator discontinuities and corners have zero Brownian exit probability and do not change the formula.
+
+For $f=1$, the coefficients are $4/(k\pi)$ for odd $k$ and zero for even $k$. For $f=\one_J$, $b_1=2/\pi>0$ and $|b_k|\le2$. For $\phi\in J$, $\sin(p\phi)\ge\sqrt3/2$. Thus the positive first mode dominates the $O(q^{-2p})$ tail for all sufficiently large $q$. There exist $q_B>1$ and positive constants $c_B,C_B$, independent of $q\ge q_B$, such that
+\begin{align}
+ \sup_{\phi\in[0,\theta]}\Prob_{(1,\phi)}
+   (\text{reach radius }q\text{ before leaving }K)&\le C_Bq^{-p},\label{eq:brownupper}\\
+ \inf_{\phi\in J}\Prob_{(1,\phi)}
+   (\text{exit at radius }q\text{ inside }J)&\ge c_Bq^{-p}.\label{eq:brownlower}
+\end{align}
+At a wedge-side start the first probability is zero, because the normal one-dimensional Brownian projection visits the exterior immediately. The harmonic expression extends continuously to zero on either side.
+
+There are also universal disk exit-time constants. From any starting point in a disk of radius $q$, an increment of norm greater than $3q$ at time $q^2$ forces exit by that time. Brownian scaling gives a positive lower bound independent of the point and $q$. Iteration gives constants $A_B,b_B>0$ such that
+\begin{equation}\label{eq:browntail}
+ \Prob(\text{stay in the radius-}q\text{ disk up to }Tq^2)
+ \le A_Be^{-b_BT}.
+\end{equation}
+For each fixed $q$, choose finite $T(q)$ large enough that the probability in \eqref{eq:brownlower}, with the extra condition of hitting before $T(q)q^2$, is still at least $(c_B/2)q^{-p}$. A time cutoff can be chosen at a continuity point, or enlarged slightly.
+
+\section{Uniform annular transfer and survival}\label{sec:annuli}
+The next arguments apply to both the original and the dual process, with common constants. Let $b$ bound the norm of a single whitened displacement in either process.
+
+\subsection{Disk confinement}
+There are $\beta>0$ and $R_1<\infty$ such that for $R\ge R_1$, every color and every point in the radius-$R$ disk,
+\[
+ \Prob(\text{stay in that disk for }\lceil R^2\rceil\text{ steps})\le1-\beta.
+\]
+To see this, the event $|X_{\lceil R^2\rceil}-X_0|>3R$ forces an exit and has probability uniformly bounded below by Lemma~\ref{lem:fclt}. Its law is independent of $X_0$ by translation invariance. The Markov property yields
+\begin{equation}\label{eq:disktail}
+ \Prob_x\left(\max_{j\le t}|X_j|\le R\right)
+ \le(1-\beta)^{\lfloor t/\lceil R^2\rceil}
+ \le A\exp(-b_0t/R^2).
+\end{equation}
+The last bound holds after changing absolute constants for $R\ge R_1$.
+
+\subsection{Transfer including limiting starts on the sides}
+Fix $q\ge q_B$. Start at a lattice state with whitened radius in $[R,R+b]$. Let $\sigma$ be its first discrete time at radius at least $qR$ and let $\tau$ be its first discrete time outside the closed wedge. There are constants $c,C>0$, independent of sufficiently large $q$, followed by choices $T=T(q)<\infty$ and $R_0=R_0(q)<\infty$, for which every $R\ge R_0$ satisfies
+\begin{align}
+ \Prob_x(\sigma<\tau)&\le Cq^{-p}
+ &&\text{for every initial angle in }K,\label{eq:annupper}\\
+ \Prob_x(\sigma<\tau,\ \arg X_\sigma\in J,\
+                \sigma\le T(qR)^2)&\ge cq^{-p}
+ &&\text{for every initial angle in }J.\label{eq:annlower}
+\end{align}
+A successful event requires $\sigma<\infty$. The radial overshoot is at most $b$.
+
+Here are the needed uniformity details. Rescale space by $R$ and time by $R^2$. Any sequence of admissible starting positions has a subsequence tending to a point of radius one, and initial colors can be fixed along a further subsequence.
+
+For a fixed finite horizon $H$, the continuous-path event
+\[
+ \mathcal E_H=\{w:\exists t\le H, |w(t)|\ge q,
+                           \ w([0,t])\subseteq K\}
+\]
+is closed in the uniform topology. Given convergent paths and witness times, pass to a convergent subsequence of those times; continuity and closedness of $K$ preserve both conditions. A successful discrete trajectory before the horizon has its polygonal interpolation in this event because $K$ is convex. For Brownian paths, \eqref{eq:brownupper} bounds its probability. If the limiting initial point lies on a side, its probability is zero: a normal Brownian projection crosses outside arbitrarily soon, while the outer radius cannot be reached at time zero. Touching a side before an outer hit adds no contribution, by the same immediate-crossing property after the first touch.
+
+Portmanteau and the compact-subsequence argument therefore give the upper bound uniformly over starts, including those only a bounded number of lattice steps from a side, for hits by time $Tq^2$ after scaling. Later hits have probability at most the disk-confinement tail \eqref{eq:disktail}, bounded by $Ae^{-b_0T}$. Choose $T(q)$ so this is at most $q^{-p}$, then $R_0(q)$ so the FCLT error costs at most one further $q^{-p}$. This proves \eqref{eq:annupper}, for example with $C=C_B+2$. Floors and ceilings can be absorbed by a slightly enlarged fixed time horizon.
+
+For the lower bound, use Brownian paths whose first exit is through the interior of the outer arc $J$ before $Tq^2$. Increase $T(q)$ so their probability is at least $(c_B/2)q^{-p}$. This is an almost-sure continuity event for Brownian motion from the compact interior starting arc. The exit time is finite, the path hits none of the finitely many corners or arc endpoints, and it crosses the smooth exit circle immediately. On a successful path it stays a positive distance from both wedge sides up to and just beyond its exit, by continuity on this compact time interval. Exceptional boundary points are polar for planar Brownian motion. An exit time has no atom at a positive deterministic time, since exit exactly then would place a Gaussian position on the boundary.
+
+Equivalently, restrict first to successful paths with terminal angle in a smaller open subarc and time strictly below the cutoff, then take open uniform neighborhoods of such paths. Vanishing one-step radial and angular overshoots guarantee a discrete exit in $J$ for all sufficiently close paths. Portmanteau gives \eqref{eq:annlower} with, say, $c=c_B/4$. Compactness of the initial arc and finiteness of the colors give uniformity by the same subsequence argument.
+
+These transfers use the raw positions, not a fictitious fixed boundary for the corrected martingale. They require no equality of color-conditioned covariances, only the common effective covariance and unrestricted limit.
+
+\subsection{Logarithmic escape and survival bounds}
+Fix $\eta\in(0,p)$. Select a single sufficiently large $q\ge\max(2,q_B)$ such that
+\begin{equation}\label{eq:qchoice}
+ Cq^{-p}\le q^{-p+\eta},\qquad cq^{-p}\ge q^{-p-\eta}.
+\end{equation}
+Only after choosing $q$ select $T(q)$ and $R_0(q)$ as above, and enlarge $R_0$ so that
+\begin{equation}\label{eq:noskip}
+ (q-1)R_0>b.
+\end{equation}
+Fix $r_0\ge R_0$ and put $r_j=q^jr_0$. At a first hit of $r_j$ the radius belongs to $[r_j,r_j+b]$; \eqref{eq:noskip} ensures the next radius cannot already have been skipped. The strong Markov property and \eqref{eq:annupper} show, uniformly over colors at the origin,
+\begin{equation}\label{eq:escapeupper}
+ \Prob_0(\text{reach radius }R\text{ before leaving }K)
+ \le C_\eta R^{-p+\eta},\qquad R\ge r_0.
+\end{equation}
+Indeed the initial reach of $r_0$ costs at most one, and reaching $r_J$ requires $J$ successful crossings. For an arbitrary $R$, take $J$ with $r_J\le R<r_{J+1}$ and absorb the fixed factors into $C_\eta$.
+
+Let $s_n(c)=\Prob_{(0,c)}(\tau>n)$. A surviving path either reaches $R$ or stays in its disk for $n$ steps. Hence
+\[
+ s_n(c)\le C_\eta R^{-p+\eta}+A\exp(-b_0n/R^2).
+\]
+Take $R=\sqrt{n/(M\log n)}$, where fixed $M$ is sufficiently large to make the second term at most a constant times $n^{-p-1}$. Logarithmic factors in the first term are $n^{o(1)}$. Since $\eta$ is arbitrary, for every $\varepsilon>0$,
+\begin{equation}\label{eq:survival}
+ \max_c s_n(c)\le C_\varepsilon n^{-p/2+\varepsilon}.
+\end{equation}
+The same bound holds for dual survival $s_n^*(c)$. No survival equivalent or limiting constant is asserted.
+
+\section{Time bounded escapes and exact excursion gluing}\label{sec:gluing}
+\subsection{Fixed seeds and accepted first hit prefixes}
+There are fixed positive-probability seeds from $(0,\B)$ in the original chain and from $(0,\W)$ in the dual chain to $(H,H)$ with the respective colors unchanged. Take $H$ east steps followed by $H$ north steps: $\B\to\B$ allows both original steps, and the reversals of $\W\to\W$ west and south steps allow both dual steps.
+
+Choose the integer $H$ large enough that $r_0=|\Sigma^{-1/2}(H,H)|\ge R_0$. This seed ends on the bisector, inside $J$. It stays at whitened radius at most $r_0$. To verify the last point, its squared whitened norm is a positive multiple of
+\[
+ x^2+y^2-2\rho xy.
+\]
+This convex quadratic takes its maximum on $[0,H]^2$ at a vertex, and the value at $(H,H)$ exceeds those at $(H,0)$ and $(0,H)$ because $\rho<1/2$. Thus the entire seed stays below $r_0$. Its length $2H$ is fixed independently of $n$.
+
+With $r_j=q^jr_0$, successively require the lower crossing events \eqref{eq:annlower}. Each ends in $J$ and takes at most $Tr_{j+1}^2$ steps. The mass of successful prefixes through radius $r_J$ is at least the positive seed probability times
+\begin{equation}\label{eq:prefixprob}
+ q^{-(p+\eta)J},
+\end{equation}
+and their total time is at most
+\begin{equation}\label{eq:timesum}
+ 2H+T\sum_{j=1}^Jr_j^2
+ \le2H+\frac{Tr_J^2}{1-q^{-2}}.
+\end{equation}
+Choose a fixed $\delta>0$ so small that $T\delta^2/(1-q^{-2})\le1/8$. For each sufficiently large integer $n$, choose the largest $J$ with $r_J\le\delta\sqrt n$. Then $J\ge1$ and
+\[
+ \delta\sqrt n/q<r_J\le\delta\sqrt n.
+\]
+For all sufficiently large $n$, \eqref{eq:timesum} is at most $n/4$.
+
+These accepted prefixes stop at their first hit of the final radius $r_J$. This follows from the first-hit crossing construction, the no-skip condition, and the seed bound. Their scaled terminal points belong to one fixed compact subset $A_0$ of the open quadrant: after whitening, their radii are between $\delta/q$ and $\delta+o(1)$ and their angles lie in $J$. Enlarge this compact set slightly to cover all sufficiently large $n$.
+
+Let $F_n$ and $G_n$ be the total masses of accepted original and dual prefixes, respectively. By \eqref{eq:prefixprob},
+\begin{equation}\label{eq:prefixmass}
+ F_n\ge c_\eta n^{-(p+\eta)/2},\qquad
+ G_n\ge c_\eta n^{-(p+\eta)/2}.
+\end{equation}
+Their actual integer stopping times, at most $n/4$, are retained throughout. No random-time replacement has occurred.
+
+\subsection{The upper endpoint estimate}
+Split $n$ into three integer parts $n_1+n_2+n_3=n$, each comparable to $n$. Drop killing in the middle part and apply \eqref{eq:kernelupper}:
+\begin{align*}
+ K_n((0,c),(0,\W))
+ &\le\frac Cn
+  \left(\sum_{x,a}K_{n_1}((0,c),(x,a))\right)
+  \left(\sum_{y,b}K_{n_3}((y,b),(0,\W))\right)\\
+ &\le\frac{C'}n\,s_{n_1}(c)s_{n_3}^*(\W).
+\end{align*}
+The second step uses \eqref{eq:kdual} and the bounded factor $\pi_\W/\pi_b$. Applying \eqref{eq:survival} with half the desired error gives, for every $\varepsilon>0$,
+\begin{equation}\label{eq:upperendpoint}
+ \max_c K_n((0,c),(0,\W))\le C_\varepsilon n^{-p-1+\varepsilon}.
+\end{equation}
+
+\subsection{The lower endpoint estimate and injectivity}
+For each accepted original prefix of length $t\le n/4$ ending at $(x,a)$ and each accepted dual prefix of length $u\le n/4$ ending at $(y,b)$, insert an original-chain quadrant bridge between these states of exact integer length
+\[
+ m=n-t-u\in[n/2,n].
+\]
+Lemma~\ref{lem:bridge} gives total bridge probability at least $c/n$, uniformly in these data. Reverse the dual prefix to form the final suffix ending at $(0,\W)$. Its original probability is $\pi_\W/\pi_b$ times its dual probability, bounded below by a positive constant times that probability.
+
+There is no overcounting in summing over all such triples. In a resulting full path, the first forward hit of $r_J$ uniquely recovers its accepted original prefix. The first backward hit of $r_J$, read from the terminal origin, uniquely recovers its accepted dual prefix. These pieces cannot overlap because $t,u\le n/4$. Their colors, endpoints, stopping times, and complete histories are fixed by the full path, and the middle segment is then fixed as well. Further radial crossings in the bridge do not change either recovered first hit.
+
+Summing over actual stopping times, positions, colors, and prefix histories consequently gives
+\begin{equation}\label{eq:lowerendpoint}
+ K_n((0,\B),(0,\W))\ge\frac cnF_nG_n
+                  \ge c_\eta n^{-p-1-\eta}.
+\end{equation}
+Together \eqref{eq:upperendpoint} and \eqref{eq:lowerendpoint} imply
+\[
+ K_n((0,\B),(0,\W))=n^{-p-1+o(1)}.
+\]
+The same logarithmic exponent holds for the positive finite weighted sum in \eqref{eq:countprob}: only the black start is needed for its lower bound, while all colors satisfy the upper bound. Finally $L=n-1$ changes $\G^L$ by a constant factor and $\log L$ by $o(1)$. This proves \eqref{eq:main}.
+
+\paragraph{Order of constants.}
+The proof fixes an exponent tolerance $\eta$ first; then a sufficiently large $q\ge2$ absorbing the Brownian crossing constants; then a time cutoff $T(q)$ and a least radius $R_0(q)$ including the no-skip bound; then the integer seed height $H$ and $r_0$; and finally $\delta$. Only after all these are fixed does $n$ tend to infinity. The functional limit is never required to be uniform as $q\to\infty$.
+
+\section{The threshold inverse}\label{sec:inverse}
+The sequence is nondecreasing. For any excursion starting in color $c$, prepend a zero-displacement edge $\RR\to c$, available for every $c$. This produces an excursion one step longer; deleting its first edge recovers the original, so the map is injective. Also $a(0)=a(1)=1$. By the exponential growth theorem the sequence is unbounded, so $N(y)$ is well defined.
+
+Put $g=\log\G$ and $L=\log y$. From \eqref{eq:main}, $\log a(n)/n\to g>0$, and monotone bracketing gives $N(y)\sim L/g$. More explicitly, with $N=N(y)$ and $y>1$, minimality gives
+\[
+ \log a(N-1)<L\le\log a(N).
+\]
+Apply the already proved asymptotic separately at $N$ and at $N-1$. Since $N\to\infty$, $(N-1)g=Ng+O(1)$ and $\log(N-1)=\log N+o(1)$, both sides have the form
+\[
+ gN-\alpha\log N+o(\log N).
+\]
+Consequently
+\[
+ L=gN-\alpha\log N+o(\log N),\qquad
+ \log N=\log L-\log g+o(1).
+\]
+Substitution yields
+\[
+ N=\frac Lg+\frac\alpha g\log L+o(\log L),
+\]
+which is \eqref{eq:inverse}. The constant contribution $-(\alpha/g)\log g$ lies below the proved error scale. It cannot be claimed as a resolved bounded term. The argument does not differentiate the $o(\log n)$ remainder or assume a bound on its finite differences.
+
+\section{Non D finiteness from the logarithmic power}\label{sec:nonD}
+\subsection{An irrational exponent between two and three}
+The exact inequalities $-1<(-29+7\sqrt{17})/4<0$ show $\pi/2<\theta<\pi$, hence $2<\alpha<3$. Furthermore
+\[
+ u=2\cos\theta=\frac{-29+7\sqrt{17}}2
+\]
+has conjugate $u'=(-29-7\sqrt{17})/2<-2$. It satisfies the irreducible quadratic $u^2+29u+2=0$, whose discriminant is $833=49\cdot17$, not a rational square. If $\theta/\pi$ were rational, $e^{\ii\theta}$ would be a root of unity and every algebraic conjugate of $e^{\ii\theta}+e^{-\ii\theta}$ would belong to $[-2,2]$. The conjugate $u'$ contradicts that property. Thus $\theta/\pi$, $p=\pi/\theta$, and $\alpha$ are irrational. This is an exact algebraic certificate, not a decimal test.
+
+\subsection{A real singular exponent forced by positive coefficients}
+The radius of convergence of $F$ is $R=\G^{-1}$. Define $H(t)=F(Rt)$ for $0<t<1$. Equation~\eqref{eq:main} gives
+\[
+ a(n)R^n=n^{-\alpha+o(1)},\qquad
+ H''(t)=\sum_{n\ge2}n(n-1)a(n)R^nt^{n-2}.
+\]
+For every sufficiently small $\varepsilon>0$, the coefficients of this positive series are, for all sufficiently large $n$, between fixed positive multiples of $n^{2-\alpha-\varepsilon}$ and $n^{2-\alpha+\varepsilon}$. Both exponents exceed $-1$ if $\varepsilon<3-\alpha$.
+
+For each fixed real $s>-1$,
+\begin{equation}\label{eq:powersum}
+ \sum_{n\ge1}n^st^n\asymp(1-t)^{-s-1}\qquad(t\uparrow1).
+\end{equation}
+To prove the comparison, write $t=e^{-u}$. Terms with $n\in[1/u,2/u]$ give the lower bound. For the upper bound, split into the initial block $n\le1/u$ and successive blocks $n\in[k/u,(k+1)/u]$, $k\ge1$. The initial bound uses integrability of $x^s$ at zero; the other blocks sum a convergent exponentially decaying series times $u^{-s-1}$. Finally $u\sim1-t$. Removing finitely many terms does not affect the comparison.
+
+Let $\beta=3-\alpha>0$. Positivity and \eqref{eq:powersum} give
+\[
+ c_\varepsilon(1-t)^{-\beta+\varepsilon}
+ \le H''(t)\le C_\varepsilon(1-t)^{-\beta-\varepsilon}
+\]
+for $t$ near one. In particular $H''(t)\to+\infty$, and division of logarithms, followed by $\varepsilon\downarrow0$, gives
+\begin{equation}\label{eq:singlimit}
+ \lim_{z\uparrow R}\frac{\log F''(z)}{\log(R-z)}=\alpha-3\notin\Q.
+\end{equation}
+Here $H''(t)=R^2F''(Rt)$; fixed factors and the linear change of variable do not alter the limit. This uses only the logarithmic coefficient power, not a coefficient equivalent.
+
+\subsection{The arithmetic obstruction}
+Suppose that $F$ were D-finite over $\Q(z)$. Its coefficients are integers with exponential growth, by \eqref{eq:countprob}; all their algebraic conjugates obey the same bound and their common denominators equal one. Thus it satisfies the definition of a G-function. The same is true of $F''$, whose coefficients are $(n+2)(n+1)a(n+2)$ and remain exponentially bounded integers.
+
+The arithmetic local-structure theorem for G-functions says that their minimal differential operators are regular singular with rational exponents. We use the formulation in Fischler and Rivoal \cite[Definition 1, pp.~313--314; Theorem 6, pp.~328--329; Corollary 1, p.~329]{FR}. At an algebraic point, on a chosen local branch, a solution is a finite sum of terms
+\[
+ w^q(\log w)^k f(w),\qquad q\in\Q,\quad k\in\Z_{\ge0},
+\]
+where $f$ is holomorphic at zero. This is the Andr\'e--Chudnovsky--Katz arithmetic theorem in that source. Here the relevant algebraic point is $R$ and we take $w=R-z$ along the real interval $z<R$ on the original power-series branch. Any operator singularities inside the convergence disk cause no obstruction: this particular power-series solution is analytic through them, even if other solutions are not. A sufficiently small punctured neighborhood of $R$ contains no other operator singularity; choose its slit so that the real interval to the left of $R$ lies in the branch domain.
+
+Combining like rational exponents and taking the first nonzero Taylor coefficients gives a leading term
+\begin{equation}\label{eq:ratlead}
+ F''(z)=c(R-z)^q\bigl(\log(R-z)\bigr)^k(1+o(1)),
+ \qquad q\in\Q,\quad k\ge0,\quad c\ne0.
+\end{equation}
+To see why cancellation is harmless, group exponents whose differences are integers, combine their holomorphic coefficients and logarithmic polynomials, and then take the least remaining power and its largest nonzero logarithmic degree. The finite collection has a first nonzero term. This consequence is also stated in the cited Corollary~1. Reality and positivity of $F''$ on this interval select a positive real leading sign after the factor $(-1)^k$ is absorbed. Equation~\eqref{eq:ratlead} implies
+\[
+ \lim_{z\uparrow R}\frac{\log F''(z)}{\log(R-z)}=q\in\Q,
+\]
+contradicting \eqref{eq:singlimit}.
+
+If D-finiteness were initially allowed over $\mathbb C(z)$, clear rational-function denominators and fix the finite order and polynomial degrees of a nonzero annihilating operator. Its unknown coefficients solve homogeneous linear equations with rational entries, because the coefficients of $F$ are rational. This infinite system has a finite-dimensional row space and therefore a finite rational basis of rows. A nonzero complex solution entails a nonzero rational solution by rational row reduction. Thus D-finiteness descends to $\Q(z)$ and is already excluded.
+
+Bostan, Raschel and Salvy \cite[Theorem 3]{BRS} use the same arithmetic mechanism with a full coefficient equivalent. That criterion is not directly applied here: the positive-second-derivative comparison above supplies the extra argument needed for the weaker information $n^{-\alpha+o(1)}$. Nor is any claim being made about arbitrary nonarithmetic D-finite functions.
+
+\section{Validation and remaining questions}\label{sec:validation}
+\subsection{What can be checked finitely}
+The accompanying source-checks package supplies a deterministic build and exact finite checks, with explicit runtime guards that remain enabled under Python optimization. It verifies the walk prefix against the 17 source terms, independently enumerates vincular pattern avoiders, checks Perron and stationary equations and the corrector covariance in $\Q(\sqrt{17})$, and verifies reversal, aperiodicity paths, seed and connector steps, annular scheduling inequalities, and the algebraic irrationality certificate. Deliberately corrupted inputs are required to fail. A strict manifest rejects missing, changed, or unexpected payload files; a fresh extraction is replayed through verification and PDF compilation.
+
+These checks establish reproducibility of the finite data and symbolic identities. They cannot certify the functional central limit theorem, harmonic measure, uniform annular transfer, bridge tightness, or the asymptotic conclusion by numerical testing. Those steps are proved in the text. The source-check record identifies the supporting primary references and exact locations; third-party source PDFs are not redistributed.
+
+\subsection{Bounded literature scope}
+The relevant published comparison is the 2025 source \cite{rect}; its Proposition~4.23 and following conjecture are distinguished explicitly above. A targeted literature review through 2 October 2026 did not locate a later proof resolving this same logarithmic statement. This is a bounded search, not an assertion that all literature or unpublished work has been exhausted. The result should be compared with subsequent specialist work before any publication or priority claim.
+
+\subsection{Concrete next mathematical questions}
+\begin{enumerate}
+\item Prove the full coefficient equivalent \eqref{eq:fullconj}. This would require finer control than fixed-error annular powers, for example a valid finite-state killed-cone local limit theorem with the appropriate endpoint harmonic functions.
+\item Identify positive forward and dual discrete harmonic functions, normalize them consistently, and express or compute the proposed amplitude $c$. The present proof discards fixed crossing constants and cannot determine it.
+\item Obtain a quantitative error in the logarithmic asymptotic. A rate in the annular transfer or an exact killed-kernel theorem could potentially replace $o(\log n)$ by a more informative remainder.
+\item Determine whether correction powers, logarithms, or additional singular contributions occur. The covariance angle predicts the leading logarithmic power only; no correction hierarchy follows from it.
+\item If a full equivalent with amplitude becomes available, refine the threshold inverse to its bounded term. Any claimed smaller inverse error must also handle the integer rounding inherent in $N(y)$.
+\end{enumerate}
+
+\clearpage
+\begin{thebibliography}{9}
+\addcontentsline{toc}{section}{References}
+\bibitem{oeis}
+The OEIS Foundation Inc.
+\emph{A348351}, number of permutations avoiding four specified vincular patterns.
+Offset $0$; terms through $n=16$ checked 2 October 2026.
+\url{https://oeis.org/A348351}.
+
+\bibitem{rect}
+A. Asinowski, J. Cardinal, S. Felsner and \'E. Fusy.
+\emph{Combinatorics of rectangulations: Old and new bijections}.
+Combinatorial Theory \textbf{5}(1) (2025), article 14.
+DOI: \href{https://doi.org/10.5070/C65165025}{10.5070/C65165025}.
+Section 4.6, printed pp.~39--40, Figure 4.16, Proposition 4.23 and following paragraph.
+\url{https://escholarship.org/uc/item/92s0c9qg}.
+
+\bibitem{whitt}
+W. Whitt. \emph{Proofs of the martingale FCLT}.
+Probability Surveys \textbf{4} (2007), 268--302.
+DOI: \href{https://doi.org/10.1214/07-PS122}{10.1214/07-PS122}.
+Theorem 2.1(ii), pp.~270--271.
+\url{https://www.columbia.edu/~ww2040/WWproofs2007pub.pdf}.
+
+\bibitem{FR}
+S. Fischler and T. Rivoal. \emph{On the values of G-functions}.
+Commentarii Mathematici Helvetici \textbf{89} (2014), 313--341.
+DOI: \href{https://doi.org/10.4171/CMH/321}{10.4171/CMH/321}.
+Definition 1, pp.~313--314; Theorem 6, pp.~328--329; Corollary 1, p.~329.
+\url{https://ems.press/content/serial-article-files/43350}.
+
+\bibitem{BRS}
+A. Bostan, K. Raschel and B. Salvy.
+\emph{Non-D-finite excursions in the quarter plane}.
+Journal of Combinatorial Theory, Series A \textbf{121} (2014), 45--63.
+Theorem 3 is discussed for comparison, not invoked as a full-equivalent criterion here.
+\url{https://specfun.inria.fr/bostan/publications/BoRaSa14.pdf}.
+\end{thebibliography}
+\end{document}

@@ -1,0 +1,630 @@
+\pdfinfoomitdate=1
+\pdftrailerid{}
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=27mm,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,booktabs}
+\usepackage{enumitem,fancyhdr}
+\usepackage[hidelinks]{hyperref}
+\hypersetup{pdftitle={Report 106 - The second logarithmic term for regular Tesler matrices},pdfauthor={Research report prepared for Vladimir}}
+\pagestyle{fancy}\fancyhf{}\lhead{\small Regular Tesler matrices}\rhead{\small Report 106}\cfoot{\thepage}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\R}{\mathbb R}\newcommand{\Z}{\mathbb Z}\newcommand{\N}{\mathbb N}
+\newcommand{\ee}{\mathrm e}\newcommand{\dd}{\,\mathrm d}
+\renewcommand{\Cap}{\operatorname{Cap}}\newcommand{\CT}{\operatorname{CT}}
+\newcommand{\Hg}{H_{\rm g}}\newcommand{\floor}[1]{\left\lfloor#1\right\rfloor}
+\setlength{\emergencystretch}{2em}
+\numberwithin{equation}{section}
+\title{\textbf{The Second Logarithmic Term for Regular Tesler Matrices}\\[7pt]\large A uniform entropy construction and integer throughput decomposition}
+\author{Research report 106\\Prepared for Vladimir}
+\date{2 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+Let $a_n$ count the $n\times n$ nonnegative integer Tesler matrices with all hook sums equal to one, as in OEIS A008608. We prove
+\[
+\log a_n=Cn^{3/2}-\frac34n\log n+O(n\log\log n),
+\qquad C=\pi\sqrt{\frac8{27}}.
+\]
+The leading logarithmic equivalent is an established result of Balashov, Bulavenko and Molybog (2026). The refinement here is the coefficient $-3/4$ of $n\log n$. An elementary partition-product upper bound is matched at this scale by a feasible geometric-entropy flow, independent triangle moves producing many integer throughput vectors, and the existing arbitrary-support contingency-table capacity bound of Br\"and\'en, Leake and Pak. The proof controls the initial and terminal boundaries and is uniform as the number of variables grows.
+
+We give a two-sided refinement with lower loss $2n\log\log n+O(n)$, an explicit linear constant in the upper estimate, and the resulting next correction to the integer threshold inverse. Exact rational verification of finite combinatorial identities is supplied separately from floating-point sanity checks. An $O(n)$ remainder, multiplicative equivalent, amplitude, and full expansion remain unproved.
+\end{abstract}
+\begingroup
+\small
+\makeatletter
+\renewcommand{\l@section}{\@dottedtocline{1}{0pt}{1.8em}}
+\makeatother
+\tableofcontents
+\endgroup
+\newpage
+
+\section{Statement and relation to prior work}\label{sec:main}
+All logarithms are natural. We use the matrix-size indexing $a_0=1$ and
+\[
+a_1,a_2,a_3,a_4,a_5,a_6,a_7,a_8
+=1,2,7,40,357,4820,96030,2766572.
+\]
+The OEIS entry starts at $n=1$ \cite{oeis}. Define
+\begin{equation}\label{eq:constants}
+c=\frac\pi{\sqrt6},\qquad C=\frac{4c}{3}=\pi\sqrt{\frac8{27}},\qquad
+B_U=\frac34+\frac32\log c-\frac12\log(2\pi).
+\end{equation}
+Numerically, $B_U=0.204336693648386\ldots$; this decimal is descriptive and is not used in a proof.
+
+\begin{theorem}\label{thm:main}
+For regular Tesler matrices, as $n\to\infty$,
+\begin{align}
+\log a_n&\ge Cn^{3/2}-\frac34n\log n-2n\log\log n-O(n),\label{eq:lowerintro}\\
+\log a_n&\le Cn^{3/2}-\frac34n\log n+B_Un+O(\sqrt n).\label{eq:upperintro}
+\end{align}
+In particular,
+\begin{equation}\label{eq:second}
+\log a_n=Cn^{3/2}-\frac34n\log n+O(n\log\log n),
+\qquad
+\lim_{n\to\infty}\frac{Cn^{3/2}-\log a_n}{n\log n}=\frac34.
+\end{equation}
+The constants implicit in $O(\cdot)$ are absolute and independent of $n$.
+\end{theorem}
+
+\paragraph{What is already known.}
+Balashov--Bulavenko--Molybog \cite[Corollary 37]{bbm} prove
+$\log a_n\sim Cn^{3/2}$. Their paper was published on 8 May 2026. That leading result and its leading inverse consequence are not claimed as new here. Br\"and\'en--Leake--Pak \cite[Theorem 2.1]{blp} supply the counting inequality used in the lower proof. Leake--Morales \cite{lm} develop the corresponding capacity theory for integral flows and the Kostant partition function; their work provides important context, while the proof below uses the arbitrary-cell-bound theorem of \cite{blp} directly.
+
+\paragraph{Scope of the refinement.}
+The theorem determines a logarithmic coefficient. Exponentiating an $O(n\log\log n)$ error does not produce a relative-error asymptotic for $a_n$. In particular $B_U$ is a constant in an upper bound, not a proved coefficient of $n$ in $\log a_n$. A bounded source check through 2 October 2026 did not locate the $-3/4$ refinement in the primary works consulted. This does not certify exhaustive novelty, and no priority claim is needed for the proof.
+
+\paragraph{Proof architecture.}
+Singleton elimination makes the upper bound inexpensive. For the lower bound, a geometric profile has entropy
+$Cn^{3/2}-\tfrac14\log(n!)-O(n)$. Each constructed bulk throughput is only $O(\sqrt j\log(j+1))$, so the two margin penalties together cost at most $\log(n!)+2n\log\log(n+1)+O(n)$. Independent local moves supply $\exp(\tfrac12\log(n!)-O(n))$ disjoint integer margin vectors. The three factorial coefficients therefore combine as
+$-\tfrac14-1+\tfrac12=-\tfrac34$.
+
+\section{Exact matrix interval and flow models}\label{sec:model}
+A regular Tesler matrix is an upper-triangular matrix $A=(A_{ij})_{1\le i,j\le n}$ with entries in $\Z_{\ge0}$ and hook sums
+\begin{equation}\label{eq:hook}
+A_{ii}+\sum_{k=i+1}^n A_{ik}-\sum_{k=1}^{i-1}A_{ki}=1
+\qquad(1\le i\le n).
+\end{equation}
+Associate $A_{ij}$ for $i<j$ with the edge $(i-1,j-1)$, and $A_{ii}$ with $(i-1,n)$, on the complete directed acyclic graph with vertices $0,1,\ldots,n$. Then \eqref{eq:hook} says that the net outflow is $1$ at each vertex $0,\ldots,n-1$, and $-n$ at vertex $n$.
+
+For every interval $[a,b]$, $1\le a\le b\le n$, let $m_{[a,b]}$ be the flow on the edge $(a-1,b)$. Its cut loads are
+\begin{equation}\label{eq:cuts}
+S_i(m)=\sum_{a\le i\le b}m_{[a,b]},\qquad 1\le i\le n.
+\end{equation}
+Summing netflows to the left of the cut gives $S_i=i$. Conversely, differences of successive cut loads give all netflows, with the two endpoint conditions included. Thus
+\begin{equation}\label{eq:coefficient}
+a_n=[x_1x_2^2\cdots x_n^n]
+\prod_{1\le a\le b\le n}(1-x_ax_{a+1}\cdots x_b)^{-1}.
+\end{equation}
+The staircase $1,2,\ldots,n$ consists of \emph{cut loads}; the netflow is the constant vector $(1,\ldots,1,-n)$. A staircase netflow would be a different counting problem.
+
+\begin{lemma}[Singleton elimination]\label{lem:singletons}
+The same $a_n$ counts the nonnegative integer arrays on intervals $a<b$ with nonsingleton cut loads at most $i$ at cut $i$.
+\end{lemma}
+\begin{proof}
+Given the nonsingletons, set
+\[
+m_{[i,i]}=i-\sum_{\substack{a\le i\le b\\a<b}}m_{[a,b]}.
+\]
+These are the unique possible singleton values. They are nonnegative integers exactly under the stated inequalities.
+\end{proof}
+
+An independent exact recurrence follows by removing the first row of a Tesler matrix. If $T(h_1,\ldots,h_n)$ counts matrices of nonnegative integer hook-sum vector $h$, then
+\begin{equation}\label{eq:hookrec}
+T(h_1,\ldots,h_n)=
+\sum_{\substack{x_2,\ldots,x_n\ge0\\x_2+\cdots+x_n\le h_1}}
+T(h_2+x_2,\ldots,h_n+x_n),\qquad T(\varnothing)=1.
+\end{equation}
+The omitted diagonal entry is $h_1-\sum x_j$; hence each summand has multiplicity one. In particular $a_n=T(1,\ldots,1)$. The supplied finite checker compares this recurrence with interval enumeration.
+
+\section{One dimensional partition and entropy estimates}\label{sec:analytic}
+Put, for $t>0$ and $u\ge0$,
+\begin{gather}
+Q(t)=\frac1{\ee^t-1},\quad F(t)=-\log(1-\ee^{-t}),\quad
+L(t)=\sum_{\ell\ge1}F(\ell t),\quad R(t)=\sum_{\ell\ge1}\ell Q(\ell t),\label{eq:functions}\\
+h(u)=(u+1)\log(u+1)-u\log u,\quad h(0)=0,\qquad
+E(t)=h(Q(t))=tQ(t)+F(t).\label{eq:entropyfunctions}
+\end{gather}
+All these series converge absolutely at every positive argument. The function $h$ is increasing, with
+\begin{equation}\label{eq:hfacts}
+h'(u)=\log(1+u^{-1})\le u^{-1}\quad(u>0),\qquad
+\log(1+u)\le h(u)\le\log(1+u)+1.
+\end{equation}
+The upper inequality follows from $u\log(1+1/u)\le1$; the value at zero is by continuity.
+
+\begin{lemma}[Partition estimates]\label{lem:partition}
+Uniformly for $0<t\le c$,
+\begin{align}
+L(t)&=\frac{\pi^2}{6t}+\frac12\log\frac{t}{2\pi}-\frac t{24}
++O(\ee^{-4\pi^2/t}),\label{eq:L}\\
+R(t)&=\frac{\pi^2}{6t^2}-\frac1{2t}+O(1),\label{eq:R}\\
+\sum_{\ell\ge1}E(\ell t)&=\frac{\pi^2}{3t}+\frac12\log\frac{t}{2\pi}+O(1).\label{eq:Erow}
+\end{align}
+Also $R(t)\le\pi^2/(6t^2)$ for every $t>0$.
+\end{lemma}
+\begin{proof}
+The classical Dedekind eta transformation \cite[\S23.18]{dlmf}, applied on the positive imaginary axis, gives the exact identity
+\begin{equation}\label{eq:modular}
+L(t)=\frac{\pi^2}{6t}+\frac12\log\frac{t}{2\pi}-\frac t{24}
++L(4\pi^2/t).
+\end{equation}
+Indeed, substitute $\eta(\mathrm i t/(2\pi))=
+\ee^{-t/24}\prod_{\ell\ge1}(1-\ee^{-\ell t})$ into
+$\eta(-1/\tau)=\sqrt{-\mathrm i\tau}\,\eta(\tau)$ and take logarithms. For $s\ge4\pi^2/c$, the series gives $L(s)=O(\ee^{-s})$, proving \eqref{eq:L}. Differentiating the exact identity, rather than an unspecified error term, gives
+\[
+R(t)=\frac{\pi^2}{6t^2}-\frac1{2t}+\frac1{24}
+-\frac{4\pi^2}{t^2}R(4\pi^2/t).
+\]
+The last term is bounded uniformly on $(0,c]$, since $R(s)=O(\ee^{-s})$ for large $s$. This proves \eqref{eq:R}. Since
+$\sum E(\ell t)=tR(t)+L(t)$, \eqref{eq:Erow} follows.
+
+Finally $x/(\ee^{tx}-1)$ is decreasing for $x>0$. Its right Riemann sum is no greater than its integral, so
+\[
+R(t)\le\int_0^\infty\frac{x}{\ee^{tx}-1}\dd x
+=t^{-2}\sum_{k\ge1}\int_0^\infty x\ee^{-kx}\dd x
+=\frac{\pi^2}{6t^2}.
+\]
+Positive summands justify the interchange.
+\end{proof}
+
+\begin{lemma}[Entropy tails]\label{lem:Etail}
+The function $E$ is positive and decreasing, and
+\begin{equation}\label{eq:Eintegrals}
+\int_0^\infty E(x)\dd x=\frac{\pi^2}{3},\qquad
+\int_0^\infty xE(x)\dd x=3\zeta(3).
+\end{equation}
+For every $\lambda>0$,
+\begin{equation}\label{eq:Etail}
+\sum_{\ell\ge1}\ell E(\ell\lambda)
+\le\frac{3\zeta(3)}{\lambda^2}+\frac{\pi^2}{3\lambda}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Differentiation gives $E'(t)=-t\ee^t/(\ee^t-1)^2<0$. Near zero $E(t)=O(1+|\log t|)$; at infinity $E(t)=O((1+t)\ee^{-t})$. Expanding $Q(x)=\sum_{k\ge1}\ee^{-kx}$ and $F(x)=\sum_{k\ge1}\ee^{-kx}/k$ proves \eqref{eq:Eintegrals} by termwise integration. For $x\in[(\ell-1)\lambda,\ell\lambda]$,
+$\ell\lambda\le x+\lambda$ and $E(\ell\lambda)\le E(x)$. Integrate their product and sum to obtain \eqref{eq:Etail}.
+\end{proof}
+
+\section{The elementary upper bound}\label{sec:upper}
+Set $\lambda_i=c/\sqrt i$. Every array in Lemma~\ref{lem:singletons} has weighted energy at most $\sum_i i\lambda_i$. Summing the geometric series over all nonsingletons, without the cut constraints, therefore gives
+\begin{equation}\label{eq:boltzupper}
+a_n\le\exp\left(\sum_{i=1}^n i\lambda_i\right)
+\prod_{a<b}\left(1-\exp\left(-\sum_{k=a}^b\lambda_k\right)\right)^{-1}.
+\end{equation}
+For example, this follows by multiplying each admissible array's indicator by
+$\exp(\sum_i i\lambda_i-\sum_{a<b}m_{[a,b]}\sum_{k=a}^b\lambda_k)\ge1$.
+
+Because $\lambda_i$ decreases, an interval of length $\ell$ ending at $j$ has energy at least $\ell\lambda_j$. Grouping by $j$, and extending lengths $2\le\ell\le j$ to all $\ell\ge2$, yields
+\begin{equation}\label{eq:Un}
+\log a_n\le U_n:=\sum_{j=1}^n\left[
+c\sqrt j+L(c/\sqrt j)+\log(1-\ee^{-c/\sqrt j})\right].
+\end{equation}
+Here the last term removes the singleton factor, which is the source of an important logarithmic correction.
+
+For $0<t\le c$, Taylor's formula with a bounded remainder on this fixed interval gives
+\[
+\log(1-\ee^{-t})=\log t-\frac t2+O(t^2).
+\]
+Use Lemma~\ref{lem:partition}. The exponential remainders summed over $t=c/\sqrt j$ are bounded, $\sum j^{-1/2}=O(\sqrt n)$, and $\sum j^{-1}=O(\log n)$. Thus
+\begin{equation}\label{eq:upperfactorial}
+U_n=2c\sum_{j=1}^n\sqrt j-\frac34\log(n!)
++n\left(\frac32\log c-\frac12\log(2\pi)\right)+O(\sqrt n).
+\end{equation}
+The elementary sum estimate $\sum_{j=1}^n\sqrt j=\tfrac23n^{3/2}+O(\sqrt n)$ and Stirling's formula now give \eqref{eq:upperintro}, including the stated $B_U$.
+
+\section{An exactly feasible high entropy flow}\label{sec:feasible}
+Fix once and for all
+\begin{equation}\label{eq:cutoff}
+M=1024.
+\end{equation}
+For $1\le a\le b\le n$, define
+\begin{equation}\label{eq:q}
+q_{[a,b]}=\begin{cases}
+Q\bigl(c(b-a+1)/\sqrt a\bigr),&a\ge M,\\
+0,&a<M,
+\end{cases}
+\qquad T_i=\sum_{a\le i\le b}q_{[a,b]}.
+\end{equation}
+There are at most $\ell$ intervals of length $\ell$ through cut $i$, and $a\le i$ implies $c/\sqrt a\ge c/\sqrt i$. Hence
+\begin{equation}\label{eq:Tbound}
+0\le T_i\le R(c/\sqrt i)\le i.
+\end{equation}
+Fill the remaining cut load by singletons:
+\begin{equation}\label{eq:f}
+f_{[a,b]}=q_{[a,b]}\quad(a<b),\qquad
+f_{[i,i]}=q_{[i,i]}+i-T_i.
+\end{equation}
+This real array is nonnegative and has cut loads exactly $i$, hence exactly the required netflow. Define its geometric entropy by
+$\Hg(f)=\sum_{a\le b}h(f_{[a,b]})$.
+
+\begin{proposition}\label{prop:entropy}
+The flow \eqref{eq:f} satisfies
+\begin{equation}\label{eq:Hg}
+\Hg(f)\ge Cn^{3/2}-\frac14\log(n!)-O(n).
+\end{equation}
+\end{proposition}
+\begin{proof}
+By monotonicity of $h$, it is enough to bound $\sum h(q_{[a,b]})$. First temporarily remove the terminal restriction $b\le n$ and the fixed initial cutoff. A full row at start $a$ contributes, by \eqref{eq:Erow},
+\[
+\sum_{\ell\ge1}E(\ell c/\sqrt a)
+=2c\sqrt a-\frac14\log a+O(1).
+\]
+Summing over $1\le a\le n$ gives $Cn^{3/2}-\tfrac14\log(n!)+O(n)$. Removing starts $a<M$ loses only a fixed constant: there are finitely many such infinite rows, each of finite entropy.
+
+The entropy lost on imposing $b\le n$ is bounded above, before the cutoff, by
+\begin{align*}
+D_n&=\sum_{a=1}^n\sum_{\ell>n-a+1}E(\ell c/\sqrt a)\\
+&\le\sum_{\ell\ge1}\ell E(\ell c/\sqrt n)
+\le\frac{3\zeta(3)}{c^2}n+\frac{\pi^2}{3c}\sqrt n.
+\end{align*}
+The first inequality uses $a\le n$, the decrease of $E$, and the fact that at most $\ell$ start positions contribute for a fixed omitted length. The last inequality is Lemma~\ref{lem:Etail}. Thus the terminal loss is $O(n)$, not merely an uncontrolled $o(n^{3/2})$.
+\end{proof}
+
+Let $r_j$ denote the total outflow at vertex $j$, $0\le j<n$. Feasibility gives
+\begin{equation}\label{eq:r-basic}
+r_0=1,\qquad \text{inflow at }j=r_j-1\ (1\le j<n),\qquad
+1\le r_j\le j+1.
+\end{equation}
+The last inequality holds because the outgoing edges of $j$ form a subset of cut $j+1$. The inflow at the terminal vertex is $n$.
+
+\begin{lemma}[Initial integer throughputs]\label{lem:initial}
+For $0\le j<M$ with $j<n$, one has $r_j=j+1$.
+\end{lemma}
+\begin{proof}
+If $i=j+1<M$, no $q$ interval starts at or before $i$, so its outgoing row is just the singleton of value $i$. At $i=M$, every $q$ interval crossing cut $M$ starts at $M$. Consequently its entire row mass is $T_M$, and adding the singleton gap $M-T_M$ makes the outgoing total exactly $M$. This verifies the boundary case $j=M-1$ as well.
+\end{proof}
+
+\section{Load deficits and bulk throughput control}\label{sec:throughput}
+The main reason the margin penalty is manageable is that most outgoing totals are much smaller than the crude bound $j+1$.
+
+\begin{lemma}[Infinite load deficit]\label{lem:deficit}
+Let $T_i^\infty$ be the load through cut $i$ in the uncut, untruncated array
+$q_{[a,b]}=Q(c(b-a+1)/\sqrt a)$, $1\le a\le i\le b<\infty$.
+Then
+\begin{equation}\label{eq:infinite-deficit}
+0\le i-T_i^\infty=O(\sqrt i).
+\end{equation}
+The same assertion holds after removing the fixed rows $a<M$.
+\end{lemma}
+\begin{proof}
+Put $\lambda=c/\sqrt i$. We already have $T_i^\infty\le R(\lambda)\le i$, and \eqref{eq:R} gives
+\[
+R(\lambda)=i-\frac{\sqrt i}{2c}+O(1).
+\]
+We show that the inhomogeneity changes the homogeneous sum by at most $O(\sqrt i)$.
+For $\ell\le i/2$, the possible starts of a length-$\ell$ interval crossing cut $i$ are $a=i-r$, $0\le r<\ell$. The mean value theorem gives
+\[
+0\le\frac c{\sqrt{i-r}}-\lambda\le K\frac{\lambda r}{i}
+\]
+with an absolute constant $K$. Write
+$V(t)=-Q'(t)=\ee^t/(\ee^t-1)^2$; this is positive and decreasing. It follows that
+\[
+0\le Q(\ell\lambda)-Q\bigl(c\ell/\sqrt{i-r}\bigr)
+\le K\frac\lambda i\ell rV(\ell\lambda).
+\]
+After summing in $r$ and $\ell$, this part of the discrepancy is at most
+\begin{equation}\label{eq:Vsum}
+K\frac\lambda i\sum_{\ell\ge1}\ell^3V(\ell\lambda)=O(\sqrt i).
+\end{equation}
+To check the last bound uniformly, use $V(t)=O(t^{-2})$ on $(0,1]$ and $V(t)=O(\ee^{-t})$ on $[1,\infty)$. Splitting at $\ell=1/\lambda$ gives
+$\sum\ell^3V(\ell\lambda)=O(\lambda^{-4})$; when $\lambda>1$ the bounded interval $1\le\lambda\le c$ is harmless. Since $\lambda=c/\sqrt i$, \eqref{eq:Vsum} is $O(\sqrt i)$.
+
+For all remaining lengths, the total homogeneous contribution is
+\[
+\sum_{\ell>i/2}\ell Q(\ell\lambda)
+=O\bigl(i^{3/2}\ee^{-c\sqrt i/2}\bigr)=O(\sqrt i).
+\]
+For sufficiently large $i$ this follows from the geometric-series tail; finitely many $i$ are absorbed in the constant. The inhomogeneous contribution is between zero and this homogeneous tail. Therefore
+$0\le R(\lambda)-T_i^\infty=O(\sqrt i)$, proving \eqref{eq:infinite-deficit}.
+
+Finally, deleting $a<M$ changes a cut load by at most
+$\sum_{a<M}\sum_{\ell\ge1}Q(c\ell/\sqrt a)<\infty$.
+This constant does not depend on $i$ or $n$.
+\end{proof}
+
+\begin{lemma}[Terminal layer]\label{lem:terminal}
+Put
+\begin{equation}\label{eq:B}
+B_n=\left\lceil\frac4c\sqrt n\log(n+1)\right\rceil.
+\end{equation}
+For $M\le i\le n-B_n$, the finite, cut-off loads in \eqref{eq:q} satisfy
+$i-T_i=O(\sqrt i)$, uniformly in both $i$ and $n$.
+\end{lemma}
+\begin{proof}
+An interval crossing cut $i$ and removed by $b>n$ has length greater than $d=n-i$. Its missing load is therefore at most
+$\sum_{\ell>d}\ell Q(\ell c/\sqrt i)$.
+When $dc/\sqrt i\ge1$, compare $Q(t)\le(1-\ee^{-1})^{-1}\ee^{-t}$ and sum the geometric tail to bound this by
+\begin{equation}\label{eq:terminalmass}
+K(d\sqrt i+i+\sqrt i)\exp(-cd/\sqrt i).
+\end{equation}
+If $d\ge B_n$, the exponential is at most $(n+1)^{-4}$, whereas the prefactor is $O(n^{3/2}+n)$. The missing load is thus $O(1)$. Combine this with Lemma~\ref{lem:deficit}. If the displayed index range is empty, there is nothing to prove.
+\end{proof}
+
+\begin{proposition}[Uniform bulk bound]\label{prop:bulk}
+There is an absolute $K$ such that
+\begin{equation}\label{eq:rbulk}
+r_j\le K\sqrt j\log(j+1)\qquad(M\le j\le n-B_n-1).
+\end{equation}
+The terminal set contains at most $B_n+1$ vertices and satisfies $r_j\le j+1$.
+\end{proposition}
+\begin{proof}
+The full $q$ row at start $i$ has mass
+\[
+\sum_{\ell\ge1}Q(\ell c/\sqrt i)=O(\sqrt i\log(i+1)).
+\]
+For $\ell c/\sqrt i\le1$ use $Q(t)\le1/t$ and the harmonic sum; for larger arguments use an exponential tail. The outgoing row at vertex $j=i-1$ is a truncated $q$ row plus $i-T_i$. Lemma~\ref{lem:terminal} now proves \eqref{eq:rbulk}, after changing the constant to replace $i$ by $j$.
+\end{proof}
+
+A bound needed below is
+\begin{equation}\label{eq:boundarycost}
+B_n\log(n+1)=O(\sqrt n\log^2(n+1))=O(n).
+\end{equation}
+This uses $\log^2(n+1)=O(\sqrt n)$. It makes the entire endpoint layer inexpensive at the present precision, despite its growing size.
+
+\section{Independent integer margins from local triangles}\label{sec:triangles}
+For each internal vertex $j=M,\ldots,n-1$, the edge $(j-1,j+1)$, equivalently interval $[j,j+1]$, has initial flow
+\begin{equation}\label{eq:wj}
+w_j=Q(2c/\sqrt j).
+\end{equation}
+Choose $t_j\in[0,w_j/2]$ and replace the direct two-step edge by the same amount through the intermediate vertex:
+\begin{align}
+f_{(j-1,j+1)}&\longmapsto f_{(j-1,j+1)}-t_j,\notag\\
+f_{(j-1,j)}&\longmapsto f_{(j-1,j)}+t_j,\label{eq:triangle}\\
+f_{(j,j+1)}&\longmapsto f_{(j,j+1)}+t_j.\notag
+\end{align}
+Here edge subscripts are used, rather than interval subscripts.
+
+\begin{lemma}[Independence and number of choices]\label{lem:triangles}
+All the moves \eqref{eq:triangle} can be made simultaneously. They preserve nonnegativity and every cut load. The move at $j$ increases $r_j$ by $t_j$ and leaves every other outgoing total unchanged. The choices making every outgoing total integral yield a set $\mathcal R_n$ of distinct integer throughput vectors with
+\begin{equation}\label{eq:Nr}
+\log|\mathcal R_n|\ge\frac12\log(n!)-O(n).
+\end{equation}
+\end{lemma}
+\begin{proof}
+The reduced edges are distinct nonsingletons. All other affected edges are singletons receiving only additions. Thus no choices conflict, and each reduced edge retains at least $w_j/2$. A cut crossed by the removed edge is crossed by exactly one of the two replacement edges, so its load is unchanged. In outgoing row $j-1$ the decrease and increase cancel; row $j$ increases by $t_j$; no other row changes. This proves independence even when consecutive moves share a singleton.
+
+For $j\ge M$, $2c/\sqrt j\le1$, and $\ee^x-1\le2x$ on $[0,1]$ gives
+\[
+\frac{w_j}{2}\ge\frac{\sqrt j}{8c}\ge2.
+\]
+Every closed real interval of length $w_j/2$ contains at least $\lfloor w_j/2\rfloor$ integers. Since its length is at least two, this number is at least $\sqrt j/(16c)$. Choose $\rho_j\in\Z\cap[r_j,r_j+w_j/2]$ and set $t_j=\rho_j-r_j$. The early throughputs are already integers by Lemma~\ref{lem:initial}, and are unchanged. Consequently
+\[
+|\mathcal R_n|\ge\prod_{j=M}^{n-1}\frac{\sqrt j}{16c}.
+\]
+Taking logarithms gives \eqref{eq:Nr}; replacing $(n-1)!$ by $n!$ costs only $\tfrac12\log n$. Distinct choices give distinct throughput vectors because each coordinate is independently specified. All statements are for sufficiently large $n$; finitely many smaller sizes may be absorbed in constants.
+\end{proof}
+
+\begin{lemma}[Uniform entropy and throughput control]\label{lem:uniform}
+Every resulting real flow $f^{(\rho)}$, $\rho\in\mathcal R_n$, satisfies
+\begin{equation}\label{eq:uniformH}
+\Hg(f^{(\rho)})\ge Cn^{3/2}-\frac14\log(n!)-O(n).
+\end{equation}
+The bulk estimate \eqref{eq:rbulk} and exact bound $\rho_j\le j+1$ continue to hold, uniformly in the chosen vector.
+\end{lemma}
+\begin{proof}
+Only the direct edge in a triangle loses flow. All singleton entropy changes are nonnegative. By \eqref{eq:hfacts}, each direct-edge loss costs at most
+\[
+h(w_j)-h(w_j-t_j)\le h(w_j)-h(w_j/2)
+\le\int_{w_j/2}^{w_j}\frac{\dd u}{u}=\log2.
+\]
+The total entropy loss is at most $(n-M)\log2$, proving \eqref{eq:uniformH} by Proposition~\ref{prop:entropy}. Also
+$t_j\le w_j/2\le\sqrt j/(4c)$, using $\ee^x-1\ge x$. This preserves the bulk bound. The exact bound follows afresh from preserved cut feasibility.
+\end{proof}
+
+\section{Capacity counting with the triangular support}\label{sec:capacity}
+We state precisely the external counting theorem used. For a nonnegative integer row vector $\alpha\in\Z_{\ge0}^{m}$, column vector $\beta\in\Z_{\ge0}^{p}$ of equal total, and cell-bound matrix $K=(k_{ij})$ with $k_{ij}\in\Z_{\ge0}\cup\{\infty\}$, let $\CT_K(\alpha,\beta)$ count nonnegative integer matrices with those margins and entries at most $k_{ij}$. Write
+\[
+P_K(x,y)=\prod_{i,j}\left(\sum_{\ell=0}^{k_{ij}}(x_i y_j)^\ell\right).
+\]
+An infinite upper bound means a convergent geometric series. Capacity is the infimum of $x^{-\alpha}y^{-\beta}P_K(x,y)$ over positive arguments in its convergence domain; divergent geometric factors are assigned $+\infty$. This is the positive-series convention of \cite[\S5.1]{blp}, rather than a rational evaluation beyond a pole.
+
+\begin{theorem}[Br\"and\'en--Leake--Pak]\label{thm:BLP}
+With the preceding hypotheses, put
+\[
+\lambda_i=\sum_jk_{ij},\quad\gamma_j=\sum_i k_{ij},\quad
+u_i=\min\{\alpha_i,\lambda_i-\alpha_i\},\quad
+v_j=\min\{\beta_j,\gamma_j-\beta_j\}.
+\]
+For feasible margins,
+\begin{equation}\label{eq:BLPexact}
+\CT_K(\alpha,\beta)\ge
+\left(\prod_{i=2}^{m}\frac{u_i^{u_i}}{(u_i+1)^{u_i+1}}\right)
+\left(\prod_{j=1}^{p}\frac{v_j^{v_j}}{(v_j+1)^{v_j+1}}\right)
+\Cap_{\alpha,\beta}(P_K),
+\end{equation}
+where the zero-margin factor is interpreted as one. Arbitrary zero patterns and infinite cell bounds are allowed.
+\end{theorem}
+The omission of one row factor is part of the source theorem. Only the case with all support row and column sums infinite is used below, so $u_i=\alpha_i$ and $v_j=\beta_j$. Inserting the omitted factor $\ee^{-h(\alpha_1)}\le1$ weakens \eqref{eq:BLPexact} to the convenient symmetric bound
+\begin{equation}\label{eq:BLPweak}
+\CT_K(\alpha,\beta)\ge
+\exp\left(-\sum_i h(\alpha_i)-\sum_jh(\beta_j)\right)
+\Cap_{\alpha,\beta}(P_K).
+\end{equation}
+No equal-margin hypothesis or complete rectangular support hypothesis is being added.
+
+Fix $\rho\in\mathcal R_n$. Use row indices $i=0,\ldots,n-1$ and column indices $j=1,\ldots,n$, allowing precisely the cells $i<j$. The row and column margins of $f^{(\rho)}$ are
+\begin{equation}\label{eq:margins}
+\alpha=(1,\rho_1,\ldots,\rho_{n-1}),\qquad
+\beta=(\rho_1-1,\ldots,\rho_{n-1}-1,n).
+\end{equation}
+Both are nonnegative integer vectors and their totals agree, because
+$1+\sum\rho_j=\sum(\rho_j-1)+n$. Set $k_{ij}=\infty$ when $i<j$ and zero otherwise. Every row and column has an allowed cell, hence infinite support sum. The displayed real flow proves feasibility.
+
+Every integer table with these margins is an integral flow of netflow $(1,\ldots,1,-n)$: the margin difference at internal vertex $j$ is $\rho_j-(\rho_j-1)=1$. Conversely every such flow with outgoing vector $\rho$ is one of these tables. Different $\rho$ give disjoint sets, since a flow uniquely determines its outgoing totals.
+
+\begin{lemma}[Entropy lower bound for capacity]\label{lem:capacityentropy}
+For any feasible nonnegative real table $G$ with margins $(\alpha,\beta)$ on this support,
+\begin{equation}\label{eq:capentropy}
+\log\Cap_{\alpha,\beta}(P_K)\ge\sum_{i<j}h(G_{ij}).
+\end{equation}
+\end{lemma}
+\begin{proof}
+For $u\ge0$ and $0<z<1$,
+\begin{equation}\label{eq:dualcell}
+-\log(1-z)-u\log z\ge h(u).
+\end{equation}
+For $u>0$ minimize the left side at $z=u/(1+u)$; for $u=0$ its infimum is zero. Apply \eqref{eq:dualcell} to $z=x_iy_j$ and $u=G_{ij}$. The margin identities imply
+$\sum_{i<j}G_{ij}\log(x_i y_j)=\sum_i\alpha_i\log x_i+\sum_j\beta_j\log y_j$.
+Summing and taking the infimum over the positive convergence domain proves \eqref{eq:capentropy}. This is a one-sided elementary inequality; it assumes neither saddle existence nor strong duality.
+\end{proof}
+
+\section{Margin summation and completion of the theorem}\label{sec:summation}
+\begin{lemma}[Uniform margin penalty]\label{lem:penalty}
+For every $\rho\in\mathcal R_n$, the margins \eqref{eq:margins} satisfy
+\begin{equation}\label{eq:penalty}
+\sum_i h(\alpha_i)+\sum_jh(\beta_j)
+\le\log(n!)+2n\log\log(n+1)+O(n),
+\end{equation}
+with the same implied constant for all such vectors.
+\end{lemma}
+\begin{proof}
+Separate the fixed initial segment, the bulk, and the terminal layer. The initial segment has fixed integer margins and costs $O(1)$. The endpoint factors $h(1)+h(n)$ cost $O(\log(n+1))$. In the bulk, Lemma~\ref{lem:uniform} and \eqref{eq:hfacts} give
+\begin{align*}
+h(\rho_j)+h(\rho_j-1)
+&\le2\log(\rho_j+1)+2\\
+&\le\log j+2\log\log(j+1)+O(1).
+\end{align*}
+The constants are uniform because $j\ge M$. For the at most $B_n+1$ terminal vertices, use $\rho_j\le j+1$ to bound each pair by $O(\log(n+1))$. Their total is $O(n)$ by \eqref{eq:boundarycost}. Summing the bulk logarithms bounds them by $\log(n!)$ and $2n\log\log(n+1)$ respectively. This proves the claim.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+For each $\rho\in\mathcal R_n$, apply \eqref{eq:BLPweak}, Lemma~\ref{lem:capacityentropy} with $G=f^{(\rho)}$, and Lemmas~\ref{lem:uniform} and \ref{lem:penalty}. This gives at least
+\begin{equation}\label{eq:eachmargin}
+\exp\left(Cn^{3/2}-\frac54\log(n!)-2n\log\log(n+1)-O(n)\right)
+\end{equation}
+integer flows with that margin vector. The estimate is uniform over the family. Summing its disjoint contributions and using \eqref{eq:Nr} yields
+\begin{equation}\label{eq:lowerfactorial}
+\log a_n\ge Cn^{3/2}-\frac34\log(n!)-2n\log\log(n+1)-O(n).
+\end{equation}
+Stirling's formula and $n[\log\log(n+1)-\log\log n]=O(1)$ for large $n$ give \eqref{eq:lowerintro}. The upper bound is Section~\ref{sec:upper}. Since $\log\log n=o(\log n)$, both the expansion and limit in \eqref{eq:second} follow.
+\end{proof}
+
+\paragraph{Where the growing dimension is controlled.}
+The counting theorem applies for each finite $n$ with explicit margin factors. The feasible entropy, load deficit, boundary estimates, local entropy losses, and margin estimates all have constants independent of $n$. Therefore the proof does not invoke a fixed-dimensional saddle theorem in a growing dimension, nor an unproved local central limit approximation.
+
+\section{The integer threshold inverse}\label{sec:inverse}
+Define
+\begin{equation}\label{eq:Ndef}
+N(y)=\min\{n\ge0:a_n\ge y\},\qquad y>1.
+\end{equation}
+The sequence is nondecreasing: retain an interval array of size $n$, put all new intervals ending at $n+1$ equal to zero except the singleton $[n+1,n+1]$ of value $n+1$, and obtain an injective map to size $n+1$. The leading theorem implies $a_n\to\infty$, so the minimum exists.
+
+\begin{theorem}\label{thm:inverse}
+Let $L=\log y$ and $x=(L/C)^{2/3}$. Then
+\begin{align}
+N(y)&=x+\frac1{2C}\sqrt x\log x
++O(\sqrt x\log\log x)\label{eq:inversex}\\
+&=\left(\frac LC\right)^{2/3}
++\frac{L^{1/3}}{3C^{4/3}}\log\frac LC
++O(L^{1/3}\log\log L).\label{eq:inverseL}
+\end{align}
+The error is asymptotic with an unspecified constant, not a finite certified numerical error bar or an $O(1)$ inverse.
+\end{theorem}
+\begin{proof}
+Put $b_n=\log a_n$ and $G(t)=Ct^{3/2}-\tfrac34t\log t$ for $t>0$. Theorem~\ref{thm:main} gives
+\begin{equation}\label{eq:inverseerr}
+b_n=G(n)+O(n\log\log n).
+\end{equation}
+By the definition of the minimum, the exact integer inequalities are
+\begin{equation}\label{eq:integerbracket}
+b_{N(y)-1}<L\le b_{N(y)}.
+\end{equation}
+They do not assume any continuous interpolation of $a_n$.
+
+First $N(y)\to\infty$, and $b_n\sim Cn^{3/2}$ in \eqref{eq:integerbracket} gives $N(y)\sim x$. Write $N=N(y)$. Applying \eqref{eq:inverseerr} at both $N$ and $N-1$ yields
+\[
+G(N-1)\le L+O(x\log\log x),\qquad
+G(N)\ge L-O(x\log\log x).
+\]
+The mean value theorem gives
+$G(N)-G(N-1)=O(\sqrt x+\log x)=O(\sqrt x)$, since $N\sim x$. Hence the two inequalities together give the two-sided estimate
+\begin{equation}\label{eq:GN}
+G(N)=L+O(x\log\log x).
+\end{equation}
+As $L=Cx^{3/2}$, equation \eqref{eq:GN} first implies
+$C(N^{3/2}-x^{3/2})=O(x\log x)$. Another mean value estimate on a fixed relative neighborhood of $x$ therefore gives
+$\delta:=N-x=O(\sqrt x\log x)$.
+Taylor expansion with this bound now gives
+\begin{align*}
+G(x+\delta)-L
+&=\frac{3C}{2}\sqrt x\,\delta-\frac34x\log x\\
+&\quad+O\left(\frac{\delta^2}{\sqrt x}+|\delta|\log x\right)\\
+&=\frac{3C}{2}\sqrt x\,\delta-\frac34x\log x
++O(\sqrt x\log^2x).
+\end{align*}
+Because $\sqrt x\log^2x=o(x\log\log x)$, comparison with \eqref{eq:GN} proves \eqref{eq:inversex}. Substitution of $x=(L/C)^{2/3}$ proves \eqref{eq:inverseL}.
+
+For an explicit asymptotic integer bracket, let
+$z=x+(2C)^{-1}\sqrt x\log x$ and $s=\sqrt x\log\log x$. There is a constant $D>0$ such that, for all sufficiently large $y$,
+\begin{equation}\label{eq:explicitbracket}
+\lfloor z-Ds\rfloor<N(y)\le\lceil z+Ds\rceil.
+\end{equation}
+Indeed, at $m_-=\lfloor z-Ds\rfloor$ and $m_+=\lceil z+Ds\rceil$ the Taylor expansion gives
+\[
+G(m_\pm)-L=\pm\frac{3C}{2}D\,x\log\log x+o(x\log\log x).
+\]
+Choose $D$ larger than the constant needed to dominate the error in \eqref{eq:inverseerr}. Then $b_{m_-}<L\le b_{m_+}$, and monotonicity gives \eqref{eq:explicitbracket}. Rounding perturbs the smooth estimate by only $O(\sqrt x)$ in logarithmic count, already negligible here. This last argument verifies the integer bracketing directly rather than assuming that rounding a continuous inverse is valid.
+\end{proof}
+
+\section{Verification scope and reproducibility}\label{sec:verification}
+The accompanying source package separates three kinds of evidence.
+\begin{enumerate}[leftmargin=*,itemsep=4pt]
+\item The analytic proof above establishes the asymptotic result. Its non-elementary counting input is the stated Br\"and\'en--Leake--Pak theorem; the classical eta transformation supplies the one-dimensional partition estimate.
+\item Exact integer and rational checks verify finite model identities and local algebra. The checker uses explicit exceptions, so it remains active under Python optimization. Deliberately corrupted inputs must be rejected with nonzero exit status. These computations do not certify a uniform asymptotic estimate or replace any lemma.
+\item Floating-point sanity computations illustrate the exponential-profile construction at finite sizes. They are stored separately and are neither interval arithmetic nor exact certificates for transcendental inequalities.
+\end{enumerate}
+The build instructions, dependency record, checksums, and source provenance are supplied with the editable \LaTeX{} source. The PDF is reproducible with the documented deterministic build settings. Source replay and visual page inspection are independent of the mathematical argument.
+
+\paragraph{Finite exact objects.}
+The rational fixtures are finite flows chosen to exercise cut/netflow conversion, singleton completion, simultaneous triangle updates, nonnegativity, integer margin enumeration, and disjointness of outgoing-margin classes. They need not equal the transcendental profile \eqref{eq:q}. The small-size enumerator checks \eqref{eq:hookrec} against the cut model and the published initial A008608 values. Deliberate perturbations test that the validation rejects inconsistencies rather than silently continuing.
+
+\paragraph{Finite floating observations.}
+The provided sanity program evaluates the genuine profile with $M=1024$ at $n=2048$ and $n=4096$, makes one integer choice at each internal triangle, and recomputes entropy and margins. For example, at $n=4096$ the observed maximal internal netflow residual is of order $10^{-12}$, while the entropy loss is less than $(n-M)\log2$. These are numerical consistency observations. A floating value of a theoretically valid bound is not itself a directed-rounding certificate.
+
+\section{Further questions}\label{sec:questions}
+The present result leaves several concrete next steps.
+\begin{enumerate}[leftmargin=*,itemsep=5pt]
+\item \textbf{Remove the logarithm of a logarithm loss.} The lower proof pays for $O(\sqrt j\log j)$ throughputs via two separate margin factors. Showing $\log a_n=Cn^{3/2}-\tfrac34n\log n+O(n)$ would require recovering the resulting $2n\log\log n$ loss or a sharper counting argument. It does not follow from the estimates proved here.
+\item \textbf{Identify a linear term.} The upper constant $B_U$ comes from a convenient nonsingleton product bound. There is no proof that it equals an actual next coefficient. Boundary corrections, the optimized entropy action, and the distribution of margin classes may all matter at this scale.
+\item \textbf{Understand a full coefficient equivalent.} A relative-error equivalent requires control well below the present logarithmic error, including any growing-dimensional lattice and non-Gaussian effects. No determinant approximation, amplitude, or full transseries is asserted.
+\item \textbf{Sharpen the inverse only after sharpening the forward error.} An $O(n)$ forward remainder would already reduce the inverse uncertainty to $O(\sqrt x)$ while keeping the same displayed correction. A bounded-error integer inverse would require far finer forward information.
+\item \textbf{Generalize the cut profile carefully.} The feasibility comparison suggests studying other slowly varying cumulative loads. The netflow, boundary costs, entropy scale, and the availability of independent margin moves would all have to be checked anew; the present proof does not automatically supply a theorem for other profiles.
+\end{enumerate}
+
+\begin{thebibliography}{9}
+\bibitem{oeis}
+OEIS Foundation, \emph{A008608: Regular Tesler matrices},
+\url{https://oeis.org/A008608}. Definition and initial values checked 2 October 2026.
+
+\bibitem{bbm}
+I. Balashov, C. Bulavenko and Y. Molybog,
+\emph{Tesler matrices and Lusztig data},
+Electronic Journal of Combinatorics \textbf{33}(2) (2026), P2.25.
+\href{https://doi.org/10.37236/13427}{doi:10.37236/13427}.
+See Corollary 37, p.\ 17, for the established leading logarithmic equivalent.
+
+\bibitem{blp}
+P. Br\"and\'en, J. Leake and I. Pak,
+\emph{Lower bounds for contingency tables via Lorentzian polynomials},
+Israel Journal of Mathematics \textbf{253} (2023), 43--90.
+\href{https://doi.org/10.1007/s11856-022-2364-9}{doi:10.1007/s11856-022-2364-9}.
+Primary version checked: \href{https://arxiv.org/abs/2008.05907v3}{arXiv:2008.05907v3}, 13 February 2021, Theorem 2.1 and \S5.1.
+
+\bibitem{lm}
+J. Leake and A. H. Morales,
+\emph{Capacity bounds on integral flows and the Kostant partition function},
+Advances in Applied Mathematics \textbf{175} (2026), 103002.
+\href{https://doi.org/10.1016/j.aam.2025.103002}{doi:10.1016/j.aam.2025.103002}.
+Primary version checked: \href{https://arxiv.org/abs/2406.07838v3}{arXiv:2406.07838v3}, 22 November 2024.
+
+\bibitem{dlmf}
+NIST Digital Library of Mathematical Functions,
+\emph{Dedekind eta modular transformation}, \S23.18, Eq.\ (23.18.5),
+\url{https://dlmf.nist.gov/23.18.E5}. Accessed 2 October 2026.
+\end{thebibliography}
+\end{document}
