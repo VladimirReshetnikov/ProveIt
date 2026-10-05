@@ -2237,6 +2237,33 @@ $t^2/(3A)$. The first-order identity is accurate already at these sizes; its
 leading constant is approached slowly. (The computation is a short script
 of the write, not shipped.)
 
+\wtag\ \emph{What the proof rests on (5 October 2026).} The proof
+of~\eqref{stp:len:eq:meansharp} is as strong as the uniform $O(t^3)$
+remainder of~\eqref{stp:len:eq:markedcoefficient} over complex markers,
+which the source asserts on the strength of its weighted Taylor proof. In
+this first-order form the remainder needs only bounds on $L_{ttt}$ and
+$L_{tttt}$ over the marker disk, and these follow
+from~\eqref{stp:len:eq:markedL}, with~\eqref{stp:len:eq:Lexplicit} at $s=0$,
+by Cauchy estimates; the full fixed-order expansion of question~(vii) is not
+used.
+
+\wtag\ \emph{Dated note (5 October 2026).} An independent adversarial check
+of this write, made by the intake after the write, found both of its
+completions valid: the proof of~\eqref{stp:len:eq:meansharp} above, and the
+marker-derivative bounds in the proof of Theorem~\ref{stp:len:thm:gumbel}.
+For the latter it noted that the complex-$z$ form of the Bell-polynomial
+bound was used without its one-line justification, which is now supplied
+there. It computed $a_n$ and $\E K_n$ independently, in exact integers from
+the bivariate product, for $n\le600$; they agree with the shipped terms
+$0$ to $600$ and with the shipped exact means. At the exact saddle, to
+40 digits, it reproduced every figure of the comparison above. It followed
+the correction $-b_s^{\rm total}/(2b)$, divided by $t$, to smaller $t$ in
+binary64: $0.2441$, $0.2233$, $0.2114$, $0.2072$, $0.2051$, $0.2037$ and
+$0.2032$ at $t=0.1$, $0.05$, $0.02$, $0.01$, $0.005$, $0.002$ and $0.001$,
+approaching $1/(3A)=0.20264$, with its deviation from $1/(3A)$ divided by
+$t|\log t|$ bounded and decreasing. The check's programs are not shipped; it
+is not a formal verification or an external review.
+
 
 
 The second derivative of the optimized exponent is the Schur complement
@@ -2298,7 +2325,15 @@ $|z-t|\le Ct^{5/2}$, $r=\Ree z$, $|s|\le C\sqrt t$ and $x_k=e^sB_k(e^{-z})$
 for $k>m$. Then $|x_k|\le e^{|s|}B_k(e^{-r})\le e^{|s|}P(e^{-r})e^{-rk}$, and
 since $r-t=O(t^{5/2})$ changes $\mu$ by $O(\sqrt t)$ and $rm$ by $O(\sqrt t)$
 ($m=O(t^{-2})$), the computation before~\eqref{stp:len:eq:Ttail} gives
-$\sum_{k>m}|x_k|=O(1)$ and $\max_{k>m}|x_k|=O(t)$. With $y=x/(1+x)$,
+$\sum_{k>m}|x_k|=O(1)$ and $\max_{k>m}|x_k|=O(t)$. The Bell-polynomial
+bound for the derivatives of $B_k$, stated above at real $t$, holds at such
+complex $z$ with $r$ in place of $t$ (justification added 5 October 2026):
+$\log B_k(e^{-z})=-kz-\sum_{j=1}^k\log(1-e^{-jz})$, the $p$th $z$-derivative
+of $\log(1-e^{-jz})$ is $j^p$ times a polynomial without constant term in
+$1/(e^{jz}-1)$, and $|e^{jz}-1|\ge|e^{jz}|-1=e^{jr}-1$ for $j\ge1$, since
+$r>0$ for small $t$. Hence $|\partial_z\log B_k(e^{-z})|\le k+O(t^{-2})$ and
+$\partial_z^p\log B_k(e^{-z})=O_p(t^{-p-1})$ for $p\ge2$, so that
+$|\partial_z^pB_k(e^{-z})|\le C_p|B_k(e^{-z})|(k+t^{-2})^p$. With $y=x/(1+x)$,
 $\partial_s\log(1+x)=y$ and $\partial_sy=y(1-y)$, so every
 $\partial_s^r\log(1+x_k)$ is a polynomial in $y_k$ without constant term and
 is $O_r(|x_k|)$; similarly $\partial_zy=y(1-y)\partial_z\log B_k$, and the

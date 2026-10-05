@@ -49,8 +49,8 @@ material").
 ```
 README.md                                         this guide (replaces source 28's delivered README)
 article.tex                                       the report (replaces source 28's delivered article.tex)
-article.pdf                                       the compiled report, 71 pages (unnumbered title page,
-                                                  contents pages 1-3, text pages 4-69, references page 70)
+article.pdf                                       the compiled report, 72 pages (unnumbered title page,
+                                                  contents pages 1-3, text pages 4-70, references pages 70-71)
 code/16-irrational-check_low_defect_injectivity.py   source 16: low-defect quadratic forms (SymPy; prints, writes no file)
 code/16-irrational-verify.py                         source 16: degree, parity, structural point, elimination (SymPy)
 code/20-algebraic-replay_low_counts.py               source 20: congruence-product counts, 102 cases (standard library)
@@ -334,10 +334,14 @@ points of the two quartics Z² = 150K̃⁴ − 120K̃² − 30K̃ + 196 and
 Z² = 10K̃⁴ − 40K̃² − 30K̃ + 256 (a model for the second is missing);
 (3) estimates uniform in a growing defect; (4) the write's outlook: the
 leading Hermite term holds for every 0 < a < 1 in ξ = K√(3/(|c|N)) (proof
-given there), and the first correction and root shifts for a ≠ 1/2 are
-open. Source 35 has no demonstrably wrong mathematical claim; its
-overstated contribution sentence (Remark 24.1) and its README's wording on
-the elliptic model (Remark 23.2) are kept on record with corrections.
+given there), but its window k = (2 − 1/a)N + O(√N) meets the physical
+cells only for 1/2 ≤ a < 1, and at a = 1/2 only the leading term matches
+source 35's (restricted on 5 October 2026 after an independent check,
+which found the computation valid; the first wording is kept in a dated
+note); the first correction and root shifts for a ≠ 1/2 are open.
+Source 35 has no demonstrably wrong mathematical claim; its overstated
+contribution sentence (Remark 24.1) and its README's wording on the
+elliptic model (Remark 23.2) are kept on record with corrections.
 
 ## Relation to neighbouring material
 
@@ -380,7 +384,7 @@ latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
 The source is self-contained (no `\input`, no figures, internal
-bibliography) and builds with pdfLaTeX (MiKTeX here): 71 pages, no warnings,
+bibliography) and builds with pdfLaTeX (MiKTeX here): 72 pages, no warnings,
 no overfull boxes, no undefined or multiply defined references. The six
 underfull lines of the 1 October build are unchanged; Part IV adds none.
 

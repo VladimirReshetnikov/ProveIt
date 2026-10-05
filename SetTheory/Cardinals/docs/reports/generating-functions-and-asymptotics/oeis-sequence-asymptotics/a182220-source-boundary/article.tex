@@ -1542,7 +1542,10 @@ Section~11.1 and manuscript~01's shipped table, and is not printed again.
 Statements marked [write] are the writing step's: two results with proofs
 (Lemma~\ref{sbd:wr:lem:dominant} with Theorem~\ref{sbd:wr:thm:sections}, and
 Proposition~\ref{sbd:wr:prop:orderL}), the notes, and the merged question
-list. No statement, proof or number of either manuscript was otherwise
+list. Corollary~\ref{sbd:wr:cor:ratio} and the paragraphs headed ``Dated note
+(5~October 2026)'' in Sections~\ref{sbd:wr:sec:dominant}, \ref{sbd:xtm:sec:computation}
+and~\ref{sbd:xtm:sec:future} were added by the intake after its check of
+the write. No statement, proof or number of either manuscript was otherwise
 altered.
 
 \emph{Status and non-claims, kept from both sources.} Both manuscripts are
@@ -1576,6 +1579,10 @@ reading. Shared notions keep Part~\ref{sbd:part:one}'s symbols: $u(n,s)$,
 $u_m$ (A001192; manuscript~05 writes $U_m$), $q=q(n)=\lceil\log_2n\rceil$,
 $b_n^{(d)}$, $B_d$, $R_d$, $\fall nm$.
 {\footnotesize
+% [intake, 5 October 2026] a distinct hyperref name for the counter step of
+% this uncaptioned longtable, so that Table 3 no longer reuses the PDF
+% destination table.3 (pdfTeX reported "duplicate ignored").
+\def\theHtable{notation.\arabic{table}}%
 \begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.17\linewidth}>{\raggedright\arraybackslash}p{0.37\linewidth}>{\raggedright\arraybackslash}p{0.15\linewidth}>{\raggedright\arraybackslash}p{0.22\linewidth}@{}}
 \toprule
 symbol & meaning in Part~II & in source~01 & \emph{not}: Part~I's meaning\\
@@ -3020,15 +3027,129 @@ For $r=2^s$, $j_q=j_0$ for all large $q$ and \eqref{sbd:wr:eq:sections}
 recovers Theorem~\ref{sbd:edge:thm:subsequences} along the restricted radii.
 When $r$ has an odd factor $r'>1$, $j_q$ depends on $2^{q-1}\bmod r'$, which
 is periodic in $q$ with period the order of $2$ modulo $r'$; the bracket in
-\eqref{sbd:wr:eq:sections} then changes with $q_t$, and nothing is proved
-about the existence of a radial ratio limit, about the radii with $y_0(L)$
-near $0$, where two blocks compete, or about non-dyadic angles. The theorem
-is the writing step's; it has not been independently reviewed. Its only
+\eqref{sbd:wr:eq:sections} then changes with $q_t$. Whether the radial ratio
+at a dyadic root then has a limit is decided by
+Corollary~\ref{sbd:wr:cor:ratio} below; nothing is proved about the radii
+with $y_0(L)$ near $0$, where two blocks compete, beyond the sign change
+noted after that corollary, or about non-dyadic angles. The theorem is the
+writing step's; it has not been externally reviewed. Its only
 inputs are Lemma~\ref{sbd:xtm:lem:block-profile}, the Stirling form
 \eqref{sbd:xtm:eq:amplitude-stirling}, Part~\ref{sbd:part:one}'s marked-source
 identity and the envelope \eqref{sbd:xtm:eq:amplitude-envelope}. A numerical
 illustration for $d=0$ and $r=3$ is in Section~\ref{sbd:xtm:sec:computation}.
+
+\emph{Dated note (5~October 2026).} Until this date the remark's third
+sentence ended ``and nothing is proved about the existence of a radial ratio
+limit, about the radii with $y_0(L)$ near $0$, where two blocks compete, or
+about non-dyadic angles'', and the next sentence read ``The theorem is the
+writing step's; it has not been independently reviewed.'' The first item
+understated the theorem, which already decides it
+(Corollary~\ref{sbd:wr:cor:ratio}). The intake's later check of the theorem
+is recorded in item~13 of Section~\ref{sbd:xtm:sec:future}; it is not an
+external review.
 \end{remark}
+
+\begin{corollary}[Radial ratios of a section at a dyadic root; intake]
+\label{sbd:wr:cor:ratio}
+Fix $d\ge0$, a step $r\ge1$, a residue $0\le r_0<r$ and a dyadic root of
+unity $\zeta$ of order $2^e$. Let $j_q$ be as in
+Theorem~\ref{sbd:wr:thm:sections}, let $J$ be the set of residues that
+$j_q$ takes for infinitely many $q$, and put
+\[
+ \kappa_j(\zeta)=\zeta^{1+j}\,\frac{1-(a_dR_d)^r}{1-(a_dR_d\zeta)^r}
+ \qquad(0\le j<r),
+\]
+so that $\kappa_j(\zeta)/\kappa_{j'}(\zeta)=\zeta^{j-j'}$. Write
+$\varrho(t)=B_d^{(r,r_0)}(R_d\e^{-t}\zeta)/B_d^{(r,r_0)}(R_d\e^{-t})$.
+\begin{enumerate}[label=(\roman*)]
+\item For every $j\in J$ and $\delta\in(0,1/2]$, $\varrho(t)\to\kappa_j(\zeta)$
+as $t\downarrow0$ with $\delta\le y_0(L)\le1-\delta$ and $j_{q_t}=j$, and
+such $t$ exist arbitrarily close to~$0$.
+\item $\varrho(t)$ has a limit as $t\downarrow0$ if and only if
+$\zeta^{j_q}$ is eventually constant, that is, $2^e$ divides $j-j'$ for all
+$j,j'\in J$. The limit is then the common value of the $\kappa_j(\zeta)$,
+$j\in J$, and it is attained along all $t\downarrow0$, with no restriction
+on $y_0(L)$.
+\end{enumerate}
+\end{corollary}
+\begin{proof}
+Write $a=a_d$, $R=R_d$, $B=B_d^{(r,r_0)}$ and $g_j(w)=w^j/(1-w^r)$. Then
+$g_j(aR)\ge(aR)^{r-1}>0$ and $\zeta g_j(aR\zeta)=\kappa_j(\zeta)g_j(aR)$.
+Since $K_q=2^{q-1}$ is eventually periodic modulo $r$, so is $j_q$; hence
+$J$ is not empty and $j_q\in J$ for all large $q$.
+
+(i) Along $\delta\le y_0(L)\le1-\delta$, \eqref{sbd:wr:eq:sections} at
+$\zeta$ and at $1$ gives
+$B(R\e^{-t}\zeta)=\omega_{q_t}(t)\bigl[\zeta g_{j_{q_t}}(aR\zeta)+o(1)\bigr]$
+and $B(R\e^{-t})=\omega_{q_t}(t)\bigl[g_{j_{q_t}}(aR)+o(1)\bigr]$, and the
+second bracket is at least $(aR)^{r-1}/2$ for small $t$; so
+$\varrho(t)=\kappa_{j_{q_t}}(\zeta)+o(1)$. Since $X=(L+\log L)/h$ increases
+continuously to $\infty$ with $L$, every large $q$ is $q_t$ for some $t$
+with $y_0(L)=1/2$ (take $X=q-3/2$); taking the $q$ with $j_q=j$ gives the
+required $t$.
+
+(ii) If $\zeta^j\ne\zeta^{j'}$ for some $j,j'\in J$, part~(i) gives the two
+subsequential limits $\kappa_j(\zeta)\ne\kappa_{j'}(\zeta)$, so there is no
+limit. Conversely, let $\kappa$ be the common value of $\kappa_j(\zeta)$,
+$j\in J$, and fix $\epsilon>0$. As in the proof of
+Theorem~\ref{sbd:wr:thm:sections}, for $q>e$ block $q$ contributes
+$\zeta\,\omega_q(t)P_q^{(r,r_0)}(R\e^{-t}\zeta)$ at $R\e^{-t}\zeta$ and
+$\omega_q(t)P_q^{(r,r_0)}(R\e^{-t})$ at $R\e^{-t}$, and
+$P_q^{(r,r_0)}(R\e^{-t}w)=g_{j_q}(aRw)+O_d(m/K)+O_r(t)$ uniformly in
+$|w|\le1$ and $q$. Choose $Q>e$ with $j_q\in J$ for $q\ge Q$ and the
+$O_d(m/K)$ term below $\epsilon$ there. Because
+$\zeta g_{j_q}(aR\zeta)=\kappa g_{j_q}(aR)$ for $q\ge Q$, and the head and
+the blocks $q<Q$ contribute $O_Q(1)$,
+\[
+ \bigl|B(R\e^{-t}\zeta)-\kappa B(R\e^{-t})\bigr|
+ \le(1+|\kappa|)\bigl(\epsilon+O_r(t)\bigr)S_d(t)+O_Q(1).
+\]
+All coefficients of $B$ and of every $P_q^{(r,r_0)}$ are nonnegative, so
+if $\epsilon\le(aR)^{r-1}/4$, then for small $t$
+$B(R\e^{-t})\ge\sum_{q\ge Q}\omega_q(t)P_q^{(r,r_0)}(R\e^{-t})
+\ge\tfrac12(aR)^{r-1}\bigl(S_d(t)-O_Q(1)\bigr)$. As $S_d(t)\to\infty$,
+$\limsup_{t\downarrow0}|\varrho(t)-\kappa|\le2(1+|\kappa|)\epsilon/(aR)^{r-1}$
+for every small $\epsilon$, so $\varrho(t)\to\kappa$.
+\end{proof}
+The converse in~(ii) is the argument of Lemma~\ref{sbd:edge:lem:transfer},
+with the positive weights $\omega_q(t)g_{j_q}(aR)$; it uses neither
+Lemma~\ref{sbd:wr:lem:dominant} nor a restriction on $y_0(L)$. For
+$r=2^s$, $J=\{j_0\}$ and~(ii) is \eqref{sbd:edge:eq:filtered-ratio}.
+
+\emph{Dated note (5~October 2026).} The intake added this corollary after
+its check of the write (item~13 of Section~\ref{sbd:xtm:sec:future}), which
+observed that Theorem~\ref{sbd:wr:thm:sections} already answers the
+radial-ratio part of Remark~\ref{sbd:wr:rem:sections} and of item~5 of
+Section~\ref{sbd:xtm:sec:future}. Examples, with $K_q=2^{q-1}$ reduced
+modulo $r$ for $q\ge2$:
+\begin{itemize}[leftmargin=*,nosep]
+\item $r=3$: $K_q\equiv2,1$ alternately, so $J=\{0,1\}$, $\{1,2\}$, $\{0,2\}$
+for $r_0=0,1,2$. For $r_0=0,1$ the ratio has no limit at any dyadic
+$\zeta\ne1$; for $r_0=2$ it has one at $\zeta=-1$ but not at roots of order
+$4$ or more. For $d=0$ ($a_0R_0=1/4$), $r_0=0$ and $\zeta=-1$ it jumps
+between $\kappa_0(-1)=-63/65$ and $\kappa_1(-1)=63/65$; the intake's exact
+coefficients give $-0.9687$ at $q_t=40$ ($j_{q_t}=0$) and $y_0(L)=1/2$,
+against $-63/65=-0.96923\ldots$.
+\item $r=5$: $K_q$ runs through all four nonzero residues, so $J$ has four of
+the five residues, of both parities; there is no limit at any dyadic
+$\zeta\ne1$, for every $r_0$.
+\item $r=6$: $K_q\equiv2,4$ alternately, so $J=\{1,3\}$ for $r_0=0$: the
+limit exists at $\zeta=-1$ but not at $\zeta=\ii$. For $r_0=3,4$ the two
+residues differ by $4$, and the limit also exists at $\pm\ii$, but not at
+roots of order~$8$.
+\end{itemize}
+Near the radii where two blocks compete the section can vanish. For $d=0$,
+$r=3$, $r_0=0$ and $\zeta=-1$ the values $B_0^{(3,0)}(-R_0\e^{-t})$ are
+real, and by \eqref{sbd:wr:eq:sections} they are
+$\omega_{q_t}(t)(-64/65+o(1))$ when $j_{q_t}=0$ and
+$\omega_{q_t}(t)(16/65+o(1))$ when $j_{q_t}=1$; since $j_q$ alternates, the
+section has zeros on $(-R_0,0)$ accumulating at $-R_0$, and
+$|B_0^{(3,0)}|$ does not tend to infinity along the whole radius. So the
+restriction $\delta\le y_0(L)\le1-\delta$ in
+Theorem~\ref{sbd:wr:thm:sections} cannot be dropped. In the intake's
+computation at $q_t=40$ the ratio $B_0^{(3,0)}(-R_0\e^{-t})/\omega_{q_t}(t)$
+moves from $-0.984$ at $y_0(L)=1/2$ to $+1.78$ as $y_0(L)\downarrow0$,
+changing sign near $y_0(L)\approx0.06$.
 
 \section{Computation, checks, and examples}
 \label{sbd:xtm:sec:computation}
@@ -3216,10 +3337,20 @@ $S_d(t)/\omega_{q_t}(t)=1.023$, $1.0035$, $1.00065$, $1.00009$; and for $d=0$,
 step $r=3$ and $L\approx20.2$ ($q_t=35$), the exact coefficients give
 $|B_0^{(3,0)}(\tfrac14\e^{-t}\zeta)|/\omega_{q_t}(t)=0.2427$ at $\zeta=-1$ and
 $0.24999$ at $\zeta=\ii$, against the values $0.2462$ and $0.24997$ of the
-bracket in \eqref{sbd:wr:eq:sections} (at $L\approx16.3$, $q_t=27$, they are
-$0.2319$ and $0.2504$; at $L\approx11.7$, $q_t=20$, where $j_{q_t}$ differs,
+bracket in \eqref{sbd:wr:eq:sections} (at $L\approx16.3$, $q_t=29$, they are
+$0.2319$ and $0.2504$; at $L\approx11.7$, $q_t=22$, where $j_{q_t}$ differs,
 $0.968$ and $1.00003$ against $0.985$ and $0.9999$). These are
 floating-point illustrations, not proofs.
+
+\emph{Dated note (5~October 2026).} The intake's check (item~13 of
+Section~\ref{sbd:xtm:sec:future}) reproduced these values and found two
+labels wrong. Under the definition \eqref{sbd:wr:eq:phase},
+$L\approx16.3$ and $L\approx11.7$ give $q_t=29$ and $q_t=22$, not $q_t=27$
+and $q_t=20$ as first printed; the printed values are those at $q_t=29$
+($L=16.272$) and $q_t=22$ ($L=11.746$), with $y_0(L)=1/2$, and the labels
+are corrected above. At $q_t=27$ and $q_t=20$ the values would be $0.2236$,
+$0.2510$ and $0.9587$, $1.00023$. The values of $j_{q_t}$ and of the
+brackets are unaffected.
 \end{writenote}
 
 \section{First corrections inside a dyadic block}
@@ -3372,12 +3503,26 @@ the whole series does not automatically pass to a section: root-of-unity
 filters can introduce cancellation, and the block starting residues depend
 on $q$. Manuscript~01 proves the natural boundary for every step $2^s$
 (Theorem~\ref{sbd:edge:thm:subsequences}), and
-Theorem~\ref{sbd:wr:thm:sections} [write] proves it for every step. Still
+Theorem~\ref{sbd:wr:thm:sections} [write] proves it for every step. For a
+step with an odd factor, Corollary~\ref{sbd:wr:cor:ratio} decides whether
+the radial ratio at a dyadic root has a limit. Still open for such a step:
+the behaviour near radii where two blocks compete, beyond the sign changes
+noted after that corollary. Manuscript~01's question which phase alignments
+force dense singularities is answered at the level of natural boundaries.
+
+\emph{Dated note (5~October 2026).} Until this date the item read: ``Still
 open for a step with an odd factor: whether the radial ratio at a dyadic
 root has a limit, or only the subsequential values that
 \eqref{sbd:wr:eq:sections} suggests, and the behaviour near radii where two
-blocks compete. Manuscript~01's question which phase alignments force dense
-singularities is answered at the level of natural boundaries.
+blocks compete.'' The intake's check (item~13) found that
+Theorem~\ref{sbd:wr:thm:sections} already answers the first part: the ratio
+has a limit exactly when $\zeta^{j_q}$ is eventually constant, and otherwise
+its distinct subsequential limits are the values
+$\zeta^{1+j}(1-(a_dR_d)^r)/(1-(a_dR_d\zeta)^r)$
+(Corollary~\ref{sbd:wr:cor:ratio}). For $r=3$, $r_0=0$ there is no limit
+at any dyadic $\zeta\ne1$ (for $d=0$ the ratio at $\zeta=-1$ jumps between
+$-63/65$ and $63/65$); for $r=6$, $r_0=0$ the limit exists at $-1$ but not
+at~$\ii$. That part is therefore no longer listed as open.
 
 \item \textbf{Growing defects} (05, Q6; 01, Q5; Part~\ref{sbd:part:one},
 Question~3). Find useful uniform ranges for the counting and block
@@ -3448,6 +3593,44 @@ shared theorems independently, but neither is a review. Missing: an
 external mathematical review of Part~II, including the writing step's
 Lemma~\ref{sbd:wr:lem:dominant}, Theorem~\ref{sbd:wr:thm:sections} and
 Proposition~\ref{sbd:wr:prop:orderL}.
+
+\emph{Dated note (5~October 2026).} An independent adversarial check of the
+results added at the write, made by the intake after the write, found
+Lemma~\ref{sbd:wr:lem:dominant}, Theorem~\ref{sbd:wr:thm:sections} and
+Proposition~\ref{sbd:wr:prop:orderL} valid, with Remark~\ref{sbd:wr:rem:alpha}
+reproduced. It reread every step of the three proofs and tested them
+against independent exact computations. The bounds
+\eqref{sbd:wr:eq:core-ratio} and the marked-source identity behind them hold
+exactly for $m\le63$, where all 2{,}145 cells of the shipped triangle agree
+with the sieve. The ratios $S_d/\omega_{q_t}$ of the note at the end of
+Section~\ref{sbd:xtm:sec:computation} were reproduced from the exact
+amplitudes for $d=0,1$. The asymptotic \eqref{sbd:wr:eq:sections} was
+tested with exact coefficients $b_n^{(d)}$ ($n$ up to $2^{52}$) for $d=0$,
+steps $r=2,3,5,6$, every residue $r_0$ and
+$\zeta\in\{1,-1,\ii,\e^{\ii\pi/4},\e^{3\ii\pi/8}\}$ at $y_0(L)=1/2$: the
+largest absolute error inside the bracket falls from $0.11$ at $q_t=20$ to
+$2.4\cdot10^{-4}$ at $q_t=46$, and for $d=1$ ($r=3,5,6$) it is
+$9\cdot10^{-5}$ at $L\approx30.2$. For large $r$ the relative error can stay
+large at moderate $L$ when $j_{q_t}=r-1$ ($0.90$ for $r=6$,
+$\zeta=\e^{\ii\pi/4}$, $q_t=35$, where the bracket is about $4^{-5}$); the
+theorem's $o(1)$ is absolute, so this is allowed. An adversarial probe at the
+crossover radii ($d=0$, $r=3$, $r_0=0$, $\zeta=-1$) found the section
+changing sign near $y_0(L)\approx0.06$, which shows that the theorem's
+restriction on $y_0(L)$ is necessary (the note after
+Corollary~\ref{sbd:wr:cor:ratio} derives this from the theorem). For
+Proposition~\ref{sbd:wr:prop:orderL} the check confirmed the envelope
+\eqref{sbd:wr:eq:A-envelope} against the exact amplitudes for $q\le64-d$,
+$d=0,1,2$, the constants of
+Remark~\ref{sbd:wr:rem:alpha} ($\log(u_{m+1}/u_m)-hm$ lies in
+$[-0.3974857226,-0.3974857210]$ for $30\le m\le63$, and
+$\alpha/h-3/2\approx-2.5735$), and the predicted term
+$(\alpha/h-3/2+\varphi(y_0(L)))L$ in exact sums for $d=0,1,2$ and
+$7\le L\le36$. It found one understatement, corrected by
+Corollary~\ref{sbd:wr:cor:ratio} and the dated note in item~5, and two
+wrong labels $q_t$ in the note at the end of
+Section~\ref{sbd:xtm:sec:computation}, corrected there. The check was a
+careful reading with computations, not a formal verification or an
+external review, so this item stays open.
 \end{enumerate}
 
 \begin{proposition}[The order-$L$ term; write]\label{sbd:wr:prop:orderL}
@@ -3652,12 +3835,17 @@ Positive-fugacity zero radius & Proved for real $v>0$; no arbitrary
 complex-$v$ claim.\\
 First block and amplitude corrections & Taylor expansions with uniform
 remainders (Section~\ref{sbd:xtm:app:expansions}).\\
-Single dominant block; sections of every step; the order-$L$ term & The
-writing step's Lemma~\ref{sbd:wr:lem:dominant},
+Single dominant block; sections of every step; the order-$L$ term &
+The writing step's Lemma~\ref{sbd:wr:lem:dominant},
 Theorem~\ref{sbd:wr:thm:sections} and
-Proposition~\ref{sbd:wr:prop:orderL}: proofs included, not independently
-reviewed; part~(ii) of the proposition is conditional on
+Proposition~\ref{sbd:wr:prop:orderL}: proofs included; found valid by the
+intake's adversarial check after the write (5~October 2026;
+Section~\ref{sbd:xtm:sec:future}, item~13), not externally reviewed;
+part~(ii) of the proposition is conditional on
 \eqref{sbd:wr:eq:alpha}.\\
+Radial ratios of sections at dyadic roots & Corollary~\ref{sbd:wr:cor:ratio}
+(the intake's, 5~October 2026): a limit exactly when $\zeta^{j_q}$ is
+eventually constant, derived from Theorem~\ref{sbd:wr:thm:sections}.\\
 Exact finite enumeration and recurrence checks & Reproducible
 computational checks, with recorded output; rerun at intake.\\
 Numerical diagnostics, profile and radial plots & Reproducible

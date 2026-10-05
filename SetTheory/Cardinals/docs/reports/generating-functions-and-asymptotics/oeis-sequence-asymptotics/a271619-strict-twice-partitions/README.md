@@ -251,7 +251,12 @@ gives in outline — the sharpened mean shift (after the proof of Theorem
 23.1, with a binary64 comparison against the frozen exact means at
 `n ≤ 600`: the first-order identity agrees to within `4·10⁻⁴` at `n = 600`,
 while the limit constant `1/(3A)` is approached slowly) and the
-marker-derivative bounds in the proof of Theorem 24.1; a one-line
+marker-derivative bounds in the proof of Theorem 24.1 (an independent
+check after the write found both valid, recomputing `a_n` and `E K_n`
+exactly for `n ≤ 600` and following the correction to `t = 0.001`, where
+it is `0.2032 t` against `1/(3A) = 0.20264`; it is recorded in a dated
+note, with the complex-`z` form of the Bell-polynomial bound and the
+reliance on Part II's uniform complex-marker remainder now stated); a one-line
 justification that first corrections move Part I's crossover centre only at
 order `M⁻¹`; a check that Part I's stretched-amplitude law reduces to its
 proved resonance formula at `α = 1/2`; dated notes; the front matter.
@@ -449,10 +454,11 @@ latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
 pdfLaTeX (MiKTeX), in a scratch copy; commit only `article.pdf`. The write's
-build: 60 pages, no errors, no undefined or multiply defined references, no
-duplicate destinations, no overfull or underfull boxes. The log carries one
-"Infinite glue shrinkage found in box being split" message from the page
-break of the notation longtable (Table 1), as in other reports with
+build: 61 pages, no errors, no undefined or multiply defined references, no
+duplicate destinations, no overfull or underfull boxes. The log carries two
+"Infinite glue shrinkage found in box being split" messages, one from each
+longtable that breaks across a page (the notation table, Table 1, and the
+numbering crosswalk, Table 2), as in other reports with
 longtables (for example `a196460-clipping-tables`).
 
 ## Delivered path → shipped path
