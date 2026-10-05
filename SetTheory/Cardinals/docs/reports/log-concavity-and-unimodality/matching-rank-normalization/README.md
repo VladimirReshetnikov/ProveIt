@@ -1,9 +1,10 @@
 # Normalization by the Matching Number for Weighted Matching-Support Polynomials
 
-**Small ranks, unit and one-shore counterexamples, rank six, eventual scaling, and three-tail boundaries**
+**Small ranks, unit and one-shore counterexamples, rank six, eventual scaling, three-tail boundaries, and the third Newton inequality**
 
-This is a research report dated 1 October 2026, merged from 31
-manuscripts of ProveIt's incoming-report intake, in five Parts. Parts I–IV
+This is a research report dated 1 October 2026, merged from 32
+manuscripts of ProveIt's incoming-report intake, in six Parts (Part VI
+added 5 October 2026). Parts I–IV
 come from the 27 manuscripts of batch 72, cluster C:
 26 archives that arrived in `1512ef835` and one manuscript (08s,
 *Top Conditional Gaps and the Rank Seven Reduction*) that was delivered only
@@ -95,6 +96,23 @@ cluster (`physical-cover-three-result.zip`, `three-core-rayleigh-result.zip`,
 `bipartite-and-pendant-support-result.zip`) were handed to the batch's
 directed-support placement (73C2), not to this report.
 
+**Part VI (batch 100).** One manuscript of batch 100, the bundle's Report
+81, arrived in `60f54ea06` (the session bundle of eleven archives) and was
+placed in `36571ae0e` as Part VI, *The third Newton inequality at matching
+number six*. It is numbered 81, continuing this report's local sequence after
+77–80; that this equals its bundle report number is an accident. It is dated
+1 October 2026; author line "Research note prepared for Vladimir Reshetnikov
+with OpenAI" (title page and PDF metadata); no "prepared for private review"
+marking anywhere in the package. It names no ProveIt commit, path or report,
+cites its predecessors by title as "sealed" reports, and ships in
+`prerequisites/` the PDFs of sources 74, 05, 13 and 23 and source 05's
+batch-72 archive byte for byte (blob `d1ddedd2e` at `1512ef835`); none of
+these is shipped again here.
+
+| Source | Bundle report | Archive (`docs/incoming/…` at `60f54ea06`) | Pin | Placed | Printed as |
+|---|---|---|---|---|---|
+| 81 | 81 | `ProveIt_Rank_Six_Third_Newton_Inequality.zip` (*The Third Newton Inequality at Rank Six — A Lorentzian quartic and a universal quadratic graph bound*, 17 pp., A4) | none | `36571ae0e` | Part VI, Section 45; its Appendices A and B are Sections 45.7 and 45.8; questions in Section 46 |
+
 **Status: AI-assisted, unrefereed, not formalized.** The sources give
 ordinary mathematical proofs supported by exact finite checks. Nothing here
 is formalized in Lean or Rocq, and no Lean or Rocq development in the
@@ -104,7 +122,7 @@ repository states or uses these results.
 
 ```
 article.tex                                                              the report, standalone LaTeX with an internal bibliography (pdfLaTeX)
-article.pdf                                                              the compiled report, 236 pages, A4
+article.pdf                                                              the compiled report, 260 pages, A4
 README.md                                                                this guide
 05-second-newton-VERIFICATION.md                                         source 05, Part III: delivered `VERIFICATION.md`
 10-three-vertex-VERIFICATION.md                                          source 10, Part III: delivered `VERIFICATION.md`
@@ -700,6 +718,566 @@ Source 74's `article.tex` was delivered with eight section files
 `star_transfer.tex`, `verification_scope.tex`); they were placed beside it
 in `8bb543f0f`, are inlined into `article.tex` by this write and are removed.
 
+Part VI (batch 100) ships 534 files, 8,500,490 bytes, under the prefix
+`81-third-newton-`, placed in `36571ae0e`: 6 proof and audit notes at the
+report root, 41 programs in `code/` and 487 records in `data/`, all
+byte-identical to the delivery. The delivered `code/` container is dropped
+and the remaining directories are joined into the name with `-` (for example
+`code/rank6_quartic_BR/independent_reconstruction/reconstruct.py` is
+`code/81-third-newton-rank6_quartic_BR-independent_reconstruction-reconstruct.py`).
+Not shipped (all survive in the archive of `60f54ea06`): the manuscript
+(`article.tex` with its seven inputs `quadratic.tex`, `br.tex`, `bb.tex`,
+`nested.tex`, `analytic.tex`, `bb370.tex`, `limitations.tex`; its text is in
+`article.tex` here), its PDF and delivery README; the checksum manifests
+`SHA256.json` and `code/rank6_quartic_truncation/audit_snapshot/SHA256.json`
+(590/590 and 101/101 verified at placement); `prerequisites/` (above);
+`build_local.sh`, byte-identical to `preorder-root-polytopes`'
+`code/15-leaf-compression-build_local.sh`;
+`code/check_fifth_truncation_barrier.py` and `.json`, byte-identical to
+`code/05-second-newton-check_fifth_truncation_barrier.py` and
+`data/05-second-newton-check_fifth_truncation_barrier.json` here; the 34
+files of `code/rank6_quartic_truncation/audit_snapshot/` that are byte
+copies of the files of the same names one level up (shipped once, as the
+upper-level files); and three files over 1 MB (see "Reconstructing the
+excluded data of Part VI" below). Part VI's files:
+
+```
+81-third-newton-rank6_BB_nested-profile_130_proof.md                                           source 81, Part VI: delivered `code/rank6_BB_nested/profile_130_proof.md`
+81-third-newton-rank6_BB_nested-profile_170_proof.md                                           source 81, Part VI: delivered `code/rank6_BB_nested/profile_170_proof.md`
+81-third-newton-rank6_quartic_BB_audit-profile_370-README.md                                   source 81, Part VI: delivered `code/rank6_quartic_BB_audit/profile_370/README.md`
+81-third-newton-rank6_quartic_BB_audit-profile_370-proof.md                                    source 81, Part VI: delivered `code/rank6_quartic_BB_audit/profile_370/proof.md`
+81-third-newton-rank6_quartic_BR-reduction.md                                                  source 81, Part VI: delivered `code/rank6_quartic_BR/reduction.md`
+81-third-newton-rank6_quartic_truncation-audit_snapshot-BB_reduction.md                        source 81, Part VI: delivered `code/rank6_quartic_truncation/audit_snapshot/BB_reduction.md`
+code/81-third-newton-check_integrity.py                                                        source 81, Part VI: delivered `check_integrity.py`
+code/81-third-newton-check_regular_matrix.py                                                   source 81, Part VI: delivered `code/check_regular_matrix.py`
+code/81-third-newton-rank6_BB_nested-check_130_schur.py                                        source 81, Part VI: delivered `code/rank6_BB_nested/check_130_schur.py`
+code/81-third-newton-rank6_BB_nested-check_170_schur.py                                        source 81, Part VI: delivered `code/rank6_BB_nested/check_170_schur.py`
+code/81-third-newton-rank6_BB_nested-replay_reduced_certificates.py                            source 81, Part VI: delivered `code/rank6_BB_nested/replay_reduced_certificates.py`
+code/81-third-newton-rank6_BB_nested-run_checks.py                                             source 81, Part VI: delivered `code/rank6_BB_nested/run_checks.py`
+code/81-third-newton-rank6_quartic_BB_audit-check_110.py                                       source 81, Part VI: delivered `code/rank6_quartic_BB_audit/check_110.py`
+code/81-third-newton-rank6_quartic_BB_audit-check_330.py                                       source 81, Part VI: delivered `code/rank6_quartic_BB_audit/check_330.py`
+code/81-third-newton-rank6_quartic_BB_audit-check_determinants.py                              source 81, Part VI: delivered `code/rank6_quartic_BB_audit/check_determinants.py`
+code/81-third-newton-rank6_quartic_BB_audit-check_factors.py                                   source 81, Part VI: delivered `code/rank6_quartic_BB_audit/check_factors.py`
+code/81-third-newton-rank6_quartic_BB_audit-profile_370-check_regions.py                       source 81, Part VI: delivered `code/rank6_quartic_BB_audit/profile_370/check_regions.py`
+code/81-third-newton-rank6_quartic_BB_audit-profile_370-check_support_counts.py                source 81, Part VI: delivered `code/rank6_quartic_BB_audit/profile_370/check_support_counts.py`
+code/81-third-newton-rank6_quartic_BB_audit-profile_370-check_zero_overlap.py                  source 81, Part VI: delivered `code/rank6_quartic_BB_audit/profile_370/check_zero_overlap.py`
+code/81-third-newton-rank6_quartic_BB_audit-profile_370-derive_scalar.py                       source 81, Part VI: delivered `code/rank6_quartic_BB_audit/profile_370/derive_scalar.py`
+code/81-third-newton-rank6_quartic_BB_audit-profile_370-finalize.py                            source 81, Part VI: delivered `code/rank6_quartic_BB_audit/profile_370/finalize.py`
+code/81-third-newton-rank6_quartic_BB_audit-profile_370_independent-check_regions.py           source 81, Part VI: delivered `code/rank6_quartic_BB_audit/profile_370_independent/check_regions.py`
+code/81-third-newton-rank6_quartic_BB_audit-profile_370_independent-check_scalar.py            source 81, Part VI: delivered `code/rank6_quartic_BB_audit/profile_370_independent/check_scalar.py`
+code/81-third-newton-rank6_quartic_BB_audit-profile_370_independent-finalize.py                source 81, Part VI: delivered `code/rank6_quartic_BB_audit/profile_370_independent/finalize.py`
+code/81-third-newton-rank6_quartic_BB_audit-verify_Rayleigh_repairs.py                         source 81, Part VI: delivered `code/rank6_quartic_BB_audit/verify_Rayleigh_repairs.py`
+code/81-third-newton-rank6_quartic_BB_audit-verify_rayleigh_sos.py                             source 81, Part VI: delivered `code/rank6_quartic_BB_audit/verify_rayleigh_sos.py`
+code/81-third-newton-rank6_quartic_BR-br_support_core.py                                       source 81, Part VI: delivered `code/rank6_quartic_BR/br_support_core.py`
+code/81-third-newton-rank6_quartic_BR-build_br.py                                              source 81, Part VI: delivered `code/rank6_quartic_BR/build_br.py`
+code/81-third-newton-rank6_quartic_BR-check_identities.py                                      source 81, Part VI: delivered `code/rank6_quartic_BR/check_identities.py`
+code/81-third-newton-rank6_quartic_BR-finalize_batch.py                                        source 81, Part VI: delivered `code/rank6_quartic_BR/finalize_batch.py`
+code/81-third-newton-rank6_quartic_BR-independent_reconstruction-check_R_blocks.py             source 81, Part VI: delivered `code/rank6_quartic_BR/independent_reconstruction/check_R_blocks.py`
+code/81-third-newton-rank6_quartic_BR-independent_reconstruction-check_categories.py           source 81, Part VI: delivered `code/rank6_quartic_BR/independent_reconstruction/check_categories.py`
+code/81-third-newton-rank6_quartic_BR-independent_reconstruction-finalize.py                   source 81, Part VI: delivered `code/rank6_quartic_BR/independent_reconstruction/finalize.py`
+code/81-third-newton-rank6_quartic_BR-independent_reconstruction-reconstruct.py                source 81, Part VI: delivered `code/rank6_quartic_BR/independent_reconstruction/reconstruct.py`
+code/81-third-newton-rank6_quartic_BR-replay_br.py                                             source 81, Part VI: delivered `code/rank6_quartic_BR/replay_br.py`
+code/81-third-newton-rank6_quartic_truncation-audit_snapshot-run_BB_batch.py                   source 81, Part VI: delivered `code/rank6_quartic_truncation/audit_snapshot/run_BB_batch.py`
+code/81-third-newton-rank6_quartic_truncation-build_BB_R.py                                    source 81, Part VI: delivered `code/rank6_quartic_truncation/build_BB_R.py`
+code/81-third-newton-rank6_quartic_truncation-build_BB_certificate.py                          source 81, Part VI: delivered `code/rank6_quartic_truncation/build_BB_certificate.py`
+code/81-third-newton-rank6_quartic_truncation-check_770_endpoints.py                           source 81, Part VI: delivered `code/rank6_quartic_truncation/check_770_endpoints.py`
+code/81-third-newton-rank6_quartic_truncation-multiply_sparse.cpp                              source 81, Part VI: delivered `code/rank6_quartic_truncation/multiply_sparse.cpp`
+code/81-third-newton-rank6_quartic_truncation-root_reconstruction-check_endpoints.py           source 81, Part VI: delivered `code/rank6_quartic_truncation/root_reconstruction/check_endpoints.py`
+code/81-third-newton-rank6_quartic_truncation-root_reconstruction-check_kernels.py             source 81, Part VI: delivered `code/rank6_quartic_truncation/root_reconstruction/check_kernels.py`
+code/81-third-newton-rank6_quartic_truncation-root_reconstruction-endpoint_core.py             source 81, Part VI: delivered `code/rank6_quartic_truncation/root_reconstruction/endpoint_core.py`
+code/81-third-newton-rank6_quartic_truncation-root_reconstruction-finalize.py                  source 81, Part VI: delivered `code/rank6_quartic_truncation/root_reconstruction/finalize.py`
+code/81-third-newton-rank6_quartic_truncation-root_reconstruction-independent_product.cpp      source 81, Part VI: delivered `code/rank6_quartic_truncation/root_reconstruction/independent_product.cpp`
+code/81-third-newton-rank6_quartic_truncation-root_reconstruction-reconstruct.py               source 81, Part VI: delivered `code/rank6_quartic_truncation/root_reconstruction/reconstruct.py`
+code/81-third-newton-verify.py                                                                 source 81, Part VI: delivered `verify.py`
+data/81-third-newton-CHECKS.json                                                               source 81, Part VI: delivered `CHECKS.json`
+data/81-third-newton-PORTABILITY.json                                                          source 81, Part VI: delivered `PORTABILITY.json`
+data/81-third-newton-rank6_BB_nested-aggregate_170.json                                        source 81, Part VI: delivered `code/rank6_BB_nested/aggregate_170.json`
+data/81-third-newton-rank6_BB_nested-check_130_schur.json                                      source 81, Part VI: delivered `code/rank6_BB_nested/check_130_schur.json`
+data/81-third-newton-rank6_BB_nested-check_170_schur.json                                      source 81, Part VI: delivered `code/rank6_BB_nested/check_170_schur.json`
+data/81-third-newton-rank6_BB_nested-reduced_130_repair_1_2.json                               source 81, Part VI: delivered `code/rank6_BB_nested/reduced_130_repair_1_2.json`
+data/81-third-newton-rank6_BB_nested-reduced_130_repair_1_3.json                               source 81, Part VI: delivered `code/rank6_BB_nested/reduced_130_repair_1_3.json`
+data/81-third-newton-rank6_BB_nested-reduced_130_repair_1_6.json                               source 81, Part VI: delivered `code/rank6_BB_nested/reduced_130_repair_1_6.json`
+data/81-third-newton-rank6_BB_nested-reduced_130_repair_1_7.json                               source 81, Part VI: delivered `code/rank6_BB_nested/reduced_130_repair_1_7.json`
+data/81-third-newton-rank6_BB_nested-reduced_130_repair_2_3.json                               source 81, Part VI: delivered `code/rank6_BB_nested/reduced_130_repair_2_3.json`
+data/81-third-newton-rank6_BB_nested-reduced_130_repair_2_5.json                               source 81, Part VI: delivered `code/rank6_BB_nested/reduced_130_repair_2_5.json`
+data/81-third-newton-rank6_BB_nested-reduced_130_repair_2_7.json                               source 81, Part VI: delivered `code/rank6_BB_nested/reduced_130_repair_2_7.json`
+data/81-third-newton-rank6_BB_nested-reduced_130_repair_3_3.json                               source 81, Part VI: delivered `code/rank6_BB_nested/reduced_130_repair_3_3.json`
+data/81-third-newton-rank6_BB_nested-reduced_130_repair_3_5.json                               source 81, Part VI: delivered `code/rank6_BB_nested/reduced_130_repair_3_5.json`
+data/81-third-newton-rank6_BB_nested-reduced_130_repair_3_6.json                               source 81, Part VI: delivered `code/rank6_BB_nested/reduced_130_repair_3_6.json`
+data/81-third-newton-rank6_BB_nested-reduced_130_repair_3_7.json                               source 81, Part VI: delivered `code/rank6_BB_nested/reduced_130_repair_3_7.json`
+data/81-third-newton-rank6_BB_nested-reduced_130_repair_5_6.json                               source 81, Part VI: delivered `code/rank6_BB_nested/reduced_130_repair_5_6.json`
+data/81-third-newton-rank6_BB_nested-reduced_130_repair_5_7.json                               source 81, Part VI: delivered `code/rank6_BB_nested/reduced_130_repair_5_7.json`
+data/81-third-newton-rank6_BB_nested-reduced_130_repair_6_7.json                               source 81, Part VI: delivered `code/rank6_BB_nested/reduced_130_repair_6_7.json`
+data/81-third-newton-rank6_BB_nested-reduced_130_repair_7_7.json                               source 81, Part VI: delivered `code/rank6_BB_nested/reduced_130_repair_7_7.json`
+data/81-third-newton-rank6_BB_nested-reduced_130_repairs.json                                  source 81, Part VI: delivered `code/rank6_BB_nested/reduced_130_repairs.json`
+data/81-third-newton-rank6_BB_nested-reduced_130_target.json                                   source 81, Part VI: delivered `code/rank6_BB_nested/reduced_130_target.json`
+data/81-third-newton-rank6_BB_nested-reduced_170_repair_1_2.json                               source 81, Part VI: delivered `code/rank6_BB_nested/reduced_170_repair_1_2.json`
+data/81-third-newton-rank6_BB_nested-reduced_170_repair_1_3.json                               source 81, Part VI: delivered `code/rank6_BB_nested/reduced_170_repair_1_3.json`
+data/81-third-newton-rank6_BB_nested-reduced_170_repair_1_6.json                               source 81, Part VI: delivered `code/rank6_BB_nested/reduced_170_repair_1_6.json`
+data/81-third-newton-rank6_BB_nested-reduced_170_repair_1_7.json                               source 81, Part VI: delivered `code/rank6_BB_nested/reduced_170_repair_1_7.json`
+data/81-third-newton-rank6_BB_nested-reduced_170_repair_2_3.json                               source 81, Part VI: delivered `code/rank6_BB_nested/reduced_170_repair_2_3.json`
+data/81-third-newton-rank6_BB_nested-reduced_170_repair_2_5.json                               source 81, Part VI: delivered `code/rank6_BB_nested/reduced_170_repair_2_5.json`
+data/81-third-newton-rank6_BB_nested-reduced_170_repair_2_7.json                               source 81, Part VI: delivered `code/rank6_BB_nested/reduced_170_repair_2_7.json`
+data/81-third-newton-rank6_BB_nested-reduced_170_repair_3_3.json                               source 81, Part VI: delivered `code/rank6_BB_nested/reduced_170_repair_3_3.json`
+data/81-third-newton-rank6_BB_nested-reduced_170_repair_3_5.json                               source 81, Part VI: delivered `code/rank6_BB_nested/reduced_170_repair_3_5.json`
+data/81-third-newton-rank6_BB_nested-reduced_170_repair_3_6.json                               source 81, Part VI: delivered `code/rank6_BB_nested/reduced_170_repair_3_6.json`
+data/81-third-newton-rank6_BB_nested-reduced_170_repair_3_7.json                               source 81, Part VI: delivered `code/rank6_BB_nested/reduced_170_repair_3_7.json`
+data/81-third-newton-rank6_BB_nested-reduced_170_repair_5_6.json                               source 81, Part VI: delivered `code/rank6_BB_nested/reduced_170_repair_5_6.json`
+data/81-third-newton-rank6_BB_nested-reduced_170_repair_5_7.json                               source 81, Part VI: delivered `code/rank6_BB_nested/reduced_170_repair_5_7.json`
+data/81-third-newton-rank6_BB_nested-reduced_170_repair_6_7.json                               source 81, Part VI: delivered `code/rank6_BB_nested/reduced_170_repair_6_7.json`
+data/81-third-newton-rank6_BB_nested-reduced_170_repair_7_7.json                               source 81, Part VI: delivered `code/rank6_BB_nested/reduced_170_repair_7_7.json`
+data/81-third-newton-rank6_BB_nested-reduced_170_repairs.json                                  source 81, Part VI: delivered `code/rank6_BB_nested/reduced_170_repairs.json`
+data/81-third-newton-rank6_BB_nested-replay_reduced_130.json                                   source 81, Part VI: delivered `code/rank6_BB_nested/replay_reduced_130.json`
+data/81-third-newton-rank6_BB_nested-replay_reduced_170.json                                   source 81, Part VI: delivered `code/rank6_BB_nested/replay_reduced_170.json`
+data/81-third-newton-rank6_BB_nested-standalone_receipt.json                                   source 81, Part VI: delivered `code/rank6_BB_nested/standalone_receipt.json`
+data/81-third-newton-rank6_BB_nested-standalone_replay.log                                     source 81, Part VI: delivered `code/rank6_BB_nested/standalone_replay.log`
+data/81-third-newton-rank6_quartic_BB_audit-Rayleigh_SOS_cones.json                            source 81, Part VI: delivered `code/rank6_quartic_BB_audit/Rayleigh_SOS_cones.json`
+data/81-third-newton-rank6_quartic_BB_audit-Rayleigh_all_four_checks.json                      source 81, Part VI: delivered `code/rank6_quartic_BB_audit/Rayleigh_all_four_checks.json`
+data/81-third-newton-rank6_quartic_BB_audit-Rayleigh_polynomial.json                           source 81, Part VI: delivered `code/rank6_quartic_BB_audit/Rayleigh_polynomial.json`
+data/81-third-newton-rank6_quartic_BB_audit-check_110.json                                     source 81, Part VI: delivered `code/rank6_quartic_BB_audit/check_110.json`
+data/81-third-newton-rank6_quartic_BB_audit-check_330.json                                     source 81, Part VI: delivered `code/rank6_quartic_BB_audit/check_330.json`
+data/81-third-newton-rank6_quartic_BB_audit-determinant_checks.json                            source 81, Part VI: delivered `code/rank6_quartic_BB_audit/determinant_checks.json`
+data/81-third-newton-rank6_quartic_BB_audit-factor_checks.json                                 source 81, Part VI: delivered `code/rank6_quartic_BB_audit/factor_checks.json`
+data/81-third-newton-rank6_quartic_BB_audit-profile_370-certificate_g.json                     source 81, Part VI: delivered `code/rank6_quartic_BB_audit/profile_370/certificate_g.json`
+data/81-third-newton-rank6_quartic_BB_audit-profile_370-certificate_h.json                     source 81, Part VI: delivered `code/rank6_quartic_BB_audit/profile_370/certificate_h.json`
+data/81-third-newton-rank6_quartic_BB_audit-profile_370-certificate_zero.json                  source 81, Part VI: delivered `code/rank6_quartic_BB_audit/profile_370/certificate_zero.json`
+data/81-third-newton-rank6_quartic_BB_audit-profile_370-certificate_zero_overlap_h.json        source 81, Part VI: delivered `code/rank6_quartic_BB_audit/profile_370/certificate_zero_overlap_h.json`
+data/81-third-newton-rank6_quartic_BB_audit-profile_370-certificate_zero_overlap_zero.json     source 81, Part VI: delivered `code/rank6_quartic_BB_audit/profile_370/certificate_zero_overlap_zero.json`
+data/81-third-newton-rank6_quartic_BB_audit-profile_370-cross.json                             source 81, Part VI: delivered `code/rank6_quartic_BB_audit/profile_370/cross.json`
+data/81-third-newton-rank6_quartic_BB_audit-profile_370-manifest.json                          source 81, Part VI: delivered `code/rank6_quartic_BB_audit/profile_370/manifest.json`
+data/81-third-newton-rank6_quartic_BB_audit-profile_370-scalar_certificate.json                source 81, Part VI: delivered `code/rank6_quartic_BB_audit/profile_370/scalar_certificate.json`
+data/81-third-newton-rank6_quartic_BB_audit-profile_370-schur.txt                              source 81, Part VI: delivered `code/rank6_quartic_BB_audit/profile_370/schur.txt`
+data/81-third-newton-rank6_quartic_BB_audit-profile_370-support_count_certificate.json         source 81, Part VI: delivered `code/rank6_quartic_BB_audit/profile_370/support_count_certificate.json`
+data/81-third-newton-rank6_quartic_BB_audit-profile_370_independent-check_g.json               source 81, Part VI: delivered `code/rank6_quartic_BB_audit/profile_370_independent/check_g.json`
+data/81-third-newton-rank6_quartic_BB_audit-profile_370_independent-check_h.json               source 81, Part VI: delivered `code/rank6_quartic_BB_audit/profile_370_independent/check_h.json`
+data/81-third-newton-rank6_quartic_BB_audit-profile_370_independent-check_h0.json              source 81, Part VI: delivered `code/rank6_quartic_BB_audit/profile_370_independent/check_h0.json`
+data/81-third-newton-rank6_quartic_BB_audit-profile_370_independent-check_scalar.json          source 81, Part VI: delivered `code/rank6_quartic_BB_audit/profile_370_independent/check_scalar.json`
+data/81-third-newton-rank6_quartic_BB_audit-profile_370_independent-check_zero.json            source 81, Part VI: delivered `code/rank6_quartic_BB_audit/profile_370_independent/check_zero.json`
+data/81-third-newton-rank6_quartic_BB_audit-profile_370_independent-check_zero0.json           source 81, Part VI: delivered `code/rank6_quartic_BB_audit/profile_370_independent/check_zero0.json`
+data/81-third-newton-rank6_quartic_BB_audit-profile_370_independent-independent_manifest.json  source 81, Part VI: delivered `code/rank6_quartic_BB_audit/profile_370_independent/independent_manifest.json`
+data/81-third-newton-rank6_quartic_BB_audit-rayleigh_sos_certificate.json                      source 81, Part VI: delivered `code/rank6_quartic_BB_audit/rayleigh_sos_certificate.json`
+data/81-third-newton-rank6_quartic_BB_audit-schur_770.txt                                      source 81, Part VI: delivered `code/rank6_quartic_BB_audit/schur_770.txt`
+data/81-third-newton-rank6_quartic_BR-br_1_0_0_0.json                                          source 81, Part VI: delivered `code/rank6_quartic_BR/br_1_0_0_0.json`
+data/81-third-newton-rank6_quartic_BR-br_1_0_0_2.json                                          source 81, Part VI: delivered `code/rank6_quartic_BR/br_1_0_0_2.json`
+data/81-third-newton-rank6_quartic_BR-br_1_0_0_6.json                                          source 81, Part VI: delivered `code/rank6_quartic_BR/br_1_0_0_6.json`
+data/81-third-newton-rank6_quartic_BR-br_1_0_2_2.json                                          source 81, Part VI: delivered `code/rank6_quartic_BR/br_1_0_2_2.json`
+data/81-third-newton-rank6_quartic_BR-br_1_0_2_4.json                                          source 81, Part VI: delivered `code/rank6_quartic_BR/br_1_0_2_4.json`
+data/81-third-newton-rank6_quartic_BR-br_1_0_2_6.json                                          source 81, Part VI: delivered `code/rank6_quartic_BR/br_1_0_2_6.json`
+data/81-third-newton-rank6_quartic_BR-br_1_0_6_6.json                                          source 81, Part VI: delivered `code/rank6_quartic_BR/br_1_0_6_6.json`
+data/81-third-newton-rank6_quartic_BR-br_1_2_0_0.json                                          source 81, Part VI: delivered `code/rank6_quartic_BR/br_1_2_0_0.json`
+data/81-third-newton-rank6_quartic_BR-br_1_2_0_2.json                                          source 81, Part VI: delivered `code/rank6_quartic_BR/br_1_2_0_2.json`
+data/81-third-newton-rank6_quartic_BR-br_1_2_0_4.json                                          source 81, Part VI: delivered `code/rank6_quartic_BR/br_1_2_0_4.json`
+data/81-third-newton-rank6_quartic_BR-br_1_2_0_6.json                                          source 81, Part VI: delivered `code/rank6_quartic_BR/br_1_2_0_6.json`
+data/81-third-newton-rank6_quartic_BR-br_1_2_2_2.json                                          source 81, Part VI: delivered `code/rank6_quartic_BR/br_1_2_2_2.json`
+data/81-third-newton-rank6_quartic_BR-br_1_2_2_4.json                                          source 81, Part VI: delivered `code/rank6_quartic_BR/br_1_2_2_4.json`
+data/81-third-newton-rank6_quartic_BR-br_1_2_2_6.json                                          source 81, Part VI: delivered `code/rank6_quartic_BR/br_1_2_2_6.json`
+data/81-third-newton-rank6_quartic_BR-br_1_2_4_4.json                                          source 81, Part VI: delivered `code/rank6_quartic_BR/br_1_2_4_4.json`
+data/81-third-newton-rank6_quartic_BR-br_1_2_4_6.json                                          source 81, Part VI: delivered `code/rank6_quartic_BR/br_1_2_4_6.json`
+data/81-third-newton-rank6_quartic_BR-br_1_2_6_6.json                                          source 81, Part VI: delivered `code/rank6_quartic_BR/br_1_2_6_6.json`
+data/81-third-newton-rank6_quartic_BR-br_1_6_0_0.json                                          source 81, Part VI: delivered `code/rank6_quartic_BR/br_1_6_0_0.json`
+data/81-third-newton-rank6_quartic_BR-br_1_6_0_2.json                                          source 81, Part VI: delivered `code/rank6_quartic_BR/br_1_6_0_2.json`
+data/81-third-newton-rank6_quartic_BR-br_1_6_0_6.json                                          source 81, Part VI: delivered `code/rank6_quartic_BR/br_1_6_0_6.json`
+data/81-third-newton-rank6_quartic_BR-br_1_6_2_2.json                                          source 81, Part VI: delivered `code/rank6_quartic_BR/br_1_6_2_2.json`
+data/81-third-newton-rank6_quartic_BR-br_1_6_2_4.json                                          source 81, Part VI: delivered `code/rank6_quartic_BR/br_1_6_2_4.json`
+data/81-third-newton-rank6_quartic_BR-br_1_6_2_6.json                                          source 81, Part VI: delivered `code/rank6_quartic_BR/br_1_6_2_6.json`
+data/81-third-newton-rank6_quartic_BR-br_1_6_6_6.json                                          source 81, Part VI: delivered `code/rank6_quartic_BR/br_1_6_6_6.json`
+data/81-third-newton-rank6_quartic_BR-br_3_0_0_0.json                                          source 81, Part VI: delivered `code/rank6_quartic_BR/br_3_0_0_0.json`
+data/81-third-newton-rank6_quartic_BR-br_3_0_0_1.json                                          source 81, Part VI: delivered `code/rank6_quartic_BR/br_3_0_0_1.json`
+data/81-third-newton-rank6_quartic_BR-br_3_0_0_4.json                                          source 81, Part VI: delivered `code/rank6_quartic_BR/br_3_0_0_4.json`
+data/81-third-newton-rank6_quartic_BR-br_3_0_0_5.json                                          source 81, Part VI: delivered `code/rank6_quartic_BR/br_3_0_0_5.json`
+data/81-third-newton-rank6_quartic_BR-br_3_0_1_1.json                                          source 81, Part VI: delivered `code/rank6_quartic_BR/br_3_0_1_1.json`
+data/81-third-newton-rank6_quartic_BR-br_3_0_1_4.json                                          source 81, Part VI: delivered `code/rank6_quartic_BR/br_3_0_1_4.json`
+data/81-third-newton-rank6_quartic_BR-br_3_0_1_5.json                                          source 81, Part VI: delivered `code/rank6_quartic_BR/br_3_0_1_5.json`
+data/81-third-newton-rank6_quartic_BR-br_3_0_4_4.json                                          source 81, Part VI: delivered `code/rank6_quartic_BR/br_3_0_4_4.json`
+data/81-third-newton-rank6_quartic_BR-br_3_0_4_5.json                                          source 81, Part VI: delivered `code/rank6_quartic_BR/br_3_0_4_5.json`
+data/81-third-newton-rank6_quartic_BR-br_3_0_5_5.json                                          source 81, Part VI: delivered `code/rank6_quartic_BR/br_3_0_5_5.json`
+data/81-third-newton-rank6_quartic_BR-br_3_1_0_0.json                                          source 81, Part VI: delivered `code/rank6_quartic_BR/br_3_1_0_0.json`
+data/81-third-newton-rank6_quartic_BR-br_3_1_0_1.json                                          source 81, Part VI: delivered `code/rank6_quartic_BR/br_3_1_0_1.json`
+data/81-third-newton-rank6_quartic_BR-br_3_1_0_4.json                                          source 81, Part VI: delivered `code/rank6_quartic_BR/br_3_1_0_4.json`
+data/81-third-newton-rank6_quartic_BR-br_3_1_0_5.json                                          source 81, Part VI: delivered `code/rank6_quartic_BR/br_3_1_0_5.json`
+data/81-third-newton-rank6_quartic_BR-br_3_1_1_1.json                                          source 81, Part VI: delivered `code/rank6_quartic_BR/br_3_1_1_1.json`
+data/81-third-newton-rank6_quartic_BR-br_3_1_1_4.json                                          source 81, Part VI: delivered `code/rank6_quartic_BR/br_3_1_1_4.json`
+data/81-third-newton-rank6_quartic_BR-br_3_1_1_5.json                                          source 81, Part VI: delivered `code/rank6_quartic_BR/br_3_1_1_5.json`
+data/81-third-newton-rank6_quartic_BR-br_3_1_4_4.json                                          source 81, Part VI: delivered `code/rank6_quartic_BR/br_3_1_4_4.json`
+data/81-third-newton-rank6_quartic_BR-br_3_1_4_5.json                                          source 81, Part VI: delivered `code/rank6_quartic_BR/br_3_1_4_5.json`
+data/81-third-newton-rank6_quartic_BR-br_3_1_5_5.json                                          source 81, Part VI: delivered `code/rank6_quartic_BR/br_3_1_5_5.json`
+data/81-third-newton-rank6_quartic_BR-br_3_4_0_0.json                                          source 81, Part VI: delivered `code/rank6_quartic_BR/br_3_4_0_0.json`
+data/81-third-newton-rank6_quartic_BR-br_3_4_0_1.json                                          source 81, Part VI: delivered `code/rank6_quartic_BR/br_3_4_0_1.json`
+data/81-third-newton-rank6_quartic_BR-br_3_4_0_4.json                                          source 81, Part VI: delivered `code/rank6_quartic_BR/br_3_4_0_4.json`
+data/81-third-newton-rank6_quartic_BR-br_3_4_0_5.json                                          source 81, Part VI: delivered `code/rank6_quartic_BR/br_3_4_0_5.json`
+data/81-third-newton-rank6_quartic_BR-br_3_4_1_1.json                                          source 81, Part VI: delivered `code/rank6_quartic_BR/br_3_4_1_1.json`
+data/81-third-newton-rank6_quartic_BR-br_3_4_1_4.json                                          source 81, Part VI: delivered `code/rank6_quartic_BR/br_3_4_1_4.json`
+data/81-third-newton-rank6_quartic_BR-br_3_4_1_5.json                                          source 81, Part VI: delivered `code/rank6_quartic_BR/br_3_4_1_5.json`
+data/81-third-newton-rank6_quartic_BR-br_3_4_4_4.json                                          source 81, Part VI: delivered `code/rank6_quartic_BR/br_3_4_4_4.json`
+data/81-third-newton-rank6_quartic_BR-br_3_4_4_5.json                                          source 81, Part VI: delivered `code/rank6_quartic_BR/br_3_4_4_5.json`
+data/81-third-newton-rank6_quartic_BR-br_3_4_5_5.json                                          source 81, Part VI: delivered `code/rank6_quartic_BR/br_3_4_5_5.json`
+data/81-third-newton-rank6_quartic_BR-br_3_5_0_0.json                                          source 81, Part VI: delivered `code/rank6_quartic_BR/br_3_5_0_0.json`
+data/81-third-newton-rank6_quartic_BR-br_3_5_0_1.json                                          source 81, Part VI: delivered `code/rank6_quartic_BR/br_3_5_0_1.json`
+data/81-third-newton-rank6_quartic_BR-br_3_5_0_4.json                                          source 81, Part VI: delivered `code/rank6_quartic_BR/br_3_5_0_4.json`
+data/81-third-newton-rank6_quartic_BR-br_3_5_0_5.json                                          source 81, Part VI: delivered `code/rank6_quartic_BR/br_3_5_0_5.json`
+data/81-third-newton-rank6_quartic_BR-br_3_5_1_1.json                                          source 81, Part VI: delivered `code/rank6_quartic_BR/br_3_5_1_1.json`
+data/81-third-newton-rank6_quartic_BR-br_3_5_1_4.json                                          source 81, Part VI: delivered `code/rank6_quartic_BR/br_3_5_1_4.json`
+data/81-third-newton-rank6_quartic_BR-br_3_5_1_5.json                                          source 81, Part VI: delivered `code/rank6_quartic_BR/br_3_5_1_5.json`
+data/81-third-newton-rank6_quartic_BR-br_3_5_4_4.json                                          source 81, Part VI: delivered `code/rank6_quartic_BR/br_3_5_4_4.json`
+data/81-third-newton-rank6_quartic_BR-br_3_5_4_5.json                                          source 81, Part VI: delivered `code/rank6_quartic_BR/br_3_5_4_5.json`
+data/81-third-newton-rank6_quartic_BR-br_3_5_5_5.json                                          source 81, Part VI: delivered `code/rank6_quartic_BR/br_3_5_5_5.json`
+data/81-third-newton-rank6_quartic_BR-br_7_0_0_0.json                                          source 81, Part VI: delivered `code/rank6_quartic_BR/br_7_0_0_0.json`
+data/81-third-newton-rank6_quartic_BR-br_7_0_0_1.json                                          source 81, Part VI: delivered `code/rank6_quartic_BR/br_7_0_0_1.json`
+data/81-third-newton-rank6_quartic_BR-br_7_0_0_3.json                                          source 81, Part VI: delivered `code/rank6_quartic_BR/br_7_0_0_3.json`
+data/81-third-newton-rank6_quartic_BR-br_7_0_1_1.json                                          source 81, Part VI: delivered `code/rank6_quartic_BR/br_7_0_1_1.json`
+data/81-third-newton-rank6_quartic_BR-br_7_0_1_2.json                                          source 81, Part VI: delivered `code/rank6_quartic_BR/br_7_0_1_2.json`
+data/81-third-newton-rank6_quartic_BR-br_7_0_1_3.json                                          source 81, Part VI: delivered `code/rank6_quartic_BR/br_7_0_1_3.json`
+data/81-third-newton-rank6_quartic_BR-br_7_0_3_3.json                                          source 81, Part VI: delivered `code/rank6_quartic_BR/br_7_0_3_3.json`
+data/81-third-newton-rank6_quartic_BR-br_7_1_0_0.json                                          source 81, Part VI: delivered `code/rank6_quartic_BR/br_7_1_0_0.json`
+data/81-third-newton-rank6_quartic_BR-br_7_1_0_1.json                                          source 81, Part VI: delivered `code/rank6_quartic_BR/br_7_1_0_1.json`
+data/81-third-newton-rank6_quartic_BR-br_7_1_0_2.json                                          source 81, Part VI: delivered `code/rank6_quartic_BR/br_7_1_0_2.json`
+data/81-third-newton-rank6_quartic_BR-br_7_1_0_3.json                                          source 81, Part VI: delivered `code/rank6_quartic_BR/br_7_1_0_3.json`
+data/81-third-newton-rank6_quartic_BR-br_7_1_1_1.json                                          source 81, Part VI: delivered `code/rank6_quartic_BR/br_7_1_1_1.json`
+data/81-third-newton-rank6_quartic_BR-br_7_1_1_2.json                                          source 81, Part VI: delivered `code/rank6_quartic_BR/br_7_1_1_2.json`
+data/81-third-newton-rank6_quartic_BR-br_7_1_1_3.json                                          source 81, Part VI: delivered `code/rank6_quartic_BR/br_7_1_1_3.json`
+data/81-third-newton-rank6_quartic_BR-br_7_1_2_2.json                                          source 81, Part VI: delivered `code/rank6_quartic_BR/br_7_1_2_2.json`
+data/81-third-newton-rank6_quartic_BR-br_7_1_2_3.json                                          source 81, Part VI: delivered `code/rank6_quartic_BR/br_7_1_2_3.json`
+data/81-third-newton-rank6_quartic_BR-br_7_1_2_4.json                                          source 81, Part VI: delivered `code/rank6_quartic_BR/br_7_1_2_4.json`
+data/81-third-newton-rank6_quartic_BR-br_7_1_3_3.json                                          source 81, Part VI: delivered `code/rank6_quartic_BR/br_7_1_3_3.json`
+data/81-third-newton-rank6_quartic_BR-br_7_3_0_0.json                                          source 81, Part VI: delivered `code/rank6_quartic_BR/br_7_3_0_0.json`
+data/81-third-newton-rank6_quartic_BR-br_7_3_0_1.json                                          source 81, Part VI: delivered `code/rank6_quartic_BR/br_7_3_0_1.json`
+data/81-third-newton-rank6_quartic_BR-br_7_3_0_3.json                                          source 81, Part VI: delivered `code/rank6_quartic_BR/br_7_3_0_3.json`
+data/81-third-newton-rank6_quartic_BR-br_7_3_1_1.json                                          source 81, Part VI: delivered `code/rank6_quartic_BR/br_7_3_1_1.json`
+data/81-third-newton-rank6_quartic_BR-br_7_3_1_2.json                                          source 81, Part VI: delivered `code/rank6_quartic_BR/br_7_3_1_2.json`
+data/81-third-newton-rank6_quartic_BR-br_7_3_1_3.json                                          source 81, Part VI: delivered `code/rank6_quartic_BR/br_7_3_1_3.json`
+data/81-third-newton-rank6_quartic_BR-br_7_3_3_3.json                                          source 81, Part VI: delivered `code/rank6_quartic_BR/br_7_3_3_3.json`
+data/81-third-newton-rank6_quartic_BR-br_R_inverses.json                                       source 81, Part VI: delivered `code/rank6_quartic_BR/br_R_inverses.json`
+data/81-third-newton-rank6_quartic_BR-identity_checks.json                                     source 81, Part VI: delivered `code/rank6_quartic_BR/identity_checks.json`
+data/81-third-newton-rank6_quartic_BR-independent_reconstruction-R_block_checks.json           source 81, Part VI: delivered `code/rank6_quartic_BR/independent_reconstruction/R_block_checks.json`
+data/81-third-newton-rank6_quartic_BR-independent_reconstruction-category_checks.json          source 81, Part VI: delivered `code/rank6_quartic_BR/independent_reconstruction/category_checks.json`
+data/81-third-newton-rank6_quartic_BR-independent_reconstruction-endpoint_checks.json          source 81, Part VI: delivered `code/rank6_quartic_BR/independent_reconstruction/endpoint_checks.json`
+data/81-third-newton-rank6_quartic_BR-independent_reconstruction-independent_manifest.json     source 81, Part VI: delivered `code/rank6_quartic_BR/independent_reconstruction/independent_manifest.json`
+data/81-third-newton-rank6_quartic_BR-independent_reconstruction-input_snapshot.json           source 81, Part VI: delivered `code/rank6_quartic_BR/independent_reconstruction/input_snapshot.json`
+data/81-third-newton-rank6_quartic_BR-independent_reconstruction-replay_1_0_0_0.json           source 81, Part VI: delivered `code/rank6_quartic_BR/independent_reconstruction/replay_1_0_0_0.json`
+data/81-third-newton-rank6_quartic_BR-independent_reconstruction-replay_1_0_0_2.json           source 81, Part VI: delivered `code/rank6_quartic_BR/independent_reconstruction/replay_1_0_0_2.json`
+data/81-third-newton-rank6_quartic_BR-independent_reconstruction-replay_1_0_0_6.json           source 81, Part VI: delivered `code/rank6_quartic_BR/independent_reconstruction/replay_1_0_0_6.json`
+data/81-third-newton-rank6_quartic_BR-independent_reconstruction-replay_1_0_2_2.json           source 81, Part VI: delivered `code/rank6_quartic_BR/independent_reconstruction/replay_1_0_2_2.json`
+data/81-third-newton-rank6_quartic_BR-independent_reconstruction-replay_1_0_2_4.json           source 81, Part VI: delivered `code/rank6_quartic_BR/independent_reconstruction/replay_1_0_2_4.json`
+data/81-third-newton-rank6_quartic_BR-independent_reconstruction-replay_1_0_2_6.json           source 81, Part VI: delivered `code/rank6_quartic_BR/independent_reconstruction/replay_1_0_2_6.json`
+data/81-third-newton-rank6_quartic_BR-independent_reconstruction-replay_1_0_6_6.json           source 81, Part VI: delivered `code/rank6_quartic_BR/independent_reconstruction/replay_1_0_6_6.json`
+data/81-third-newton-rank6_quartic_BR-independent_reconstruction-replay_1_2_0_0.json           source 81, Part VI: delivered `code/rank6_quartic_BR/independent_reconstruction/replay_1_2_0_0.json`
+data/81-third-newton-rank6_quartic_BR-independent_reconstruction-replay_1_2_0_2.json           source 81, Part VI: delivered `code/rank6_quartic_BR/independent_reconstruction/replay_1_2_0_2.json`
+data/81-third-newton-rank6_quartic_BR-independent_reconstruction-replay_1_2_0_4.json           source 81, Part VI: delivered `code/rank6_quartic_BR/independent_reconstruction/replay_1_2_0_4.json`
+data/81-third-newton-rank6_quartic_BR-independent_reconstruction-replay_1_2_0_6.json           source 81, Part VI: delivered `code/rank6_quartic_BR/independent_reconstruction/replay_1_2_0_6.json`
+data/81-third-newton-rank6_quartic_BR-independent_reconstruction-replay_1_2_2_2.json           source 81, Part VI: delivered `code/rank6_quartic_BR/independent_reconstruction/replay_1_2_2_2.json`
+data/81-third-newton-rank6_quartic_BR-independent_reconstruction-replay_1_2_2_4.json           source 81, Part VI: delivered `code/rank6_quartic_BR/independent_reconstruction/replay_1_2_2_4.json`
+data/81-third-newton-rank6_quartic_BR-independent_reconstruction-replay_1_2_2_6.json           source 81, Part VI: delivered `code/rank6_quartic_BR/independent_reconstruction/replay_1_2_2_6.json`
+data/81-third-newton-rank6_quartic_BR-independent_reconstruction-replay_1_2_4_4.json           source 81, Part VI: delivered `code/rank6_quartic_BR/independent_reconstruction/replay_1_2_4_4.json`
+data/81-third-newton-rank6_quartic_BR-independent_reconstruction-replay_1_2_4_6.json           source 81, Part VI: delivered `code/rank6_quartic_BR/independent_reconstruction/replay_1_2_4_6.json`
+data/81-third-newton-rank6_quartic_BR-independent_reconstruction-replay_1_2_6_6.json           source 81, Part VI: delivered `code/rank6_quartic_BR/independent_reconstruction/replay_1_2_6_6.json`
+data/81-third-newton-rank6_quartic_BR-independent_reconstruction-replay_1_6_0_0.json           source 81, Part VI: delivered `code/rank6_quartic_BR/independent_reconstruction/replay_1_6_0_0.json`
+data/81-third-newton-rank6_quartic_BR-independent_reconstruction-replay_1_6_0_2.json           source 81, Part VI: delivered `code/rank6_quartic_BR/independent_reconstruction/replay_1_6_0_2.json`
+data/81-third-newton-rank6_quartic_BR-independent_reconstruction-replay_1_6_0_6.json           source 81, Part VI: delivered `code/rank6_quartic_BR/independent_reconstruction/replay_1_6_0_6.json`
+data/81-third-newton-rank6_quartic_BR-independent_reconstruction-replay_1_6_2_2.json           source 81, Part VI: delivered `code/rank6_quartic_BR/independent_reconstruction/replay_1_6_2_2.json`
+data/81-third-newton-rank6_quartic_BR-independent_reconstruction-replay_1_6_2_4.json           source 81, Part VI: delivered `code/rank6_quartic_BR/independent_reconstruction/replay_1_6_2_4.json`
+data/81-third-newton-rank6_quartic_BR-independent_reconstruction-replay_1_6_2_6.json           source 81, Part VI: delivered `code/rank6_quartic_BR/independent_reconstruction/replay_1_6_2_6.json`
+data/81-third-newton-rank6_quartic_BR-independent_reconstruction-replay_1_6_6_6.json           source 81, Part VI: delivered `code/rank6_quartic_BR/independent_reconstruction/replay_1_6_6_6.json`
+data/81-third-newton-rank6_quartic_BR-independent_reconstruction-replay_3_0_0_0.json           source 81, Part VI: delivered `code/rank6_quartic_BR/independent_reconstruction/replay_3_0_0_0.json`
+data/81-third-newton-rank6_quartic_BR-independent_reconstruction-replay_3_0_0_1.json           source 81, Part VI: delivered `code/rank6_quartic_BR/independent_reconstruction/replay_3_0_0_1.json`
+data/81-third-newton-rank6_quartic_BR-independent_reconstruction-replay_3_0_0_4.json           source 81, Part VI: delivered `code/rank6_quartic_BR/independent_reconstruction/replay_3_0_0_4.json`
+data/81-third-newton-rank6_quartic_BR-independent_reconstruction-replay_3_0_0_5.json           source 81, Part VI: delivered `code/rank6_quartic_BR/independent_reconstruction/replay_3_0_0_5.json`
+data/81-third-newton-rank6_quartic_BR-independent_reconstruction-replay_3_0_1_1.json           source 81, Part VI: delivered `code/rank6_quartic_BR/independent_reconstruction/replay_3_0_1_1.json`
+data/81-third-newton-rank6_quartic_BR-independent_reconstruction-replay_3_0_1_4.json           source 81, Part VI: delivered `code/rank6_quartic_BR/independent_reconstruction/replay_3_0_1_4.json`
+data/81-third-newton-rank6_quartic_BR-independent_reconstruction-replay_3_0_1_5.json           source 81, Part VI: delivered `code/rank6_quartic_BR/independent_reconstruction/replay_3_0_1_5.json`
+data/81-third-newton-rank6_quartic_BR-independent_reconstruction-replay_3_0_4_4.json           source 81, Part VI: delivered `code/rank6_quartic_BR/independent_reconstruction/replay_3_0_4_4.json`
+data/81-third-newton-rank6_quartic_BR-independent_reconstruction-replay_3_0_4_5.json           source 81, Part VI: delivered `code/rank6_quartic_BR/independent_reconstruction/replay_3_0_4_5.json`
+data/81-third-newton-rank6_quartic_BR-independent_reconstruction-replay_3_0_5_5.json           source 81, Part VI: delivered `code/rank6_quartic_BR/independent_reconstruction/replay_3_0_5_5.json`
+data/81-third-newton-rank6_quartic_BR-independent_reconstruction-replay_3_1_0_0.json           source 81, Part VI: delivered `code/rank6_quartic_BR/independent_reconstruction/replay_3_1_0_0.json`
+data/81-third-newton-rank6_quartic_BR-independent_reconstruction-replay_3_1_0_1.json           source 81, Part VI: delivered `code/rank6_quartic_BR/independent_reconstruction/replay_3_1_0_1.json`
+data/81-third-newton-rank6_quartic_BR-independent_reconstruction-replay_3_1_0_4.json           source 81, Part VI: delivered `code/rank6_quartic_BR/independent_reconstruction/replay_3_1_0_4.json`
+data/81-third-newton-rank6_quartic_BR-independent_reconstruction-replay_3_1_0_5.json           source 81, Part VI: delivered `code/rank6_quartic_BR/independent_reconstruction/replay_3_1_0_5.json`
+data/81-third-newton-rank6_quartic_BR-independent_reconstruction-replay_3_1_1_1.json           source 81, Part VI: delivered `code/rank6_quartic_BR/independent_reconstruction/replay_3_1_1_1.json`
+data/81-third-newton-rank6_quartic_BR-independent_reconstruction-replay_3_1_1_4.json           source 81, Part VI: delivered `code/rank6_quartic_BR/independent_reconstruction/replay_3_1_1_4.json`
+data/81-third-newton-rank6_quartic_BR-independent_reconstruction-replay_3_1_1_5.json           source 81, Part VI: delivered `code/rank6_quartic_BR/independent_reconstruction/replay_3_1_1_5.json`
+data/81-third-newton-rank6_quartic_BR-independent_reconstruction-replay_3_1_4_4.json           source 81, Part VI: delivered `code/rank6_quartic_BR/independent_reconstruction/replay_3_1_4_4.json`
+data/81-third-newton-rank6_quartic_BR-independent_reconstruction-replay_3_1_4_5.json           source 81, Part VI: delivered `code/rank6_quartic_BR/independent_reconstruction/replay_3_1_4_5.json`
+data/81-third-newton-rank6_quartic_BR-independent_reconstruction-replay_3_1_5_5.json           source 81, Part VI: delivered `code/rank6_quartic_BR/independent_reconstruction/replay_3_1_5_5.json`
+data/81-third-newton-rank6_quartic_BR-independent_reconstruction-replay_3_4_0_0.json           source 81, Part VI: delivered `code/rank6_quartic_BR/independent_reconstruction/replay_3_4_0_0.json`
+data/81-third-newton-rank6_quartic_BR-independent_reconstruction-replay_3_4_0_1.json           source 81, Part VI: delivered `code/rank6_quartic_BR/independent_reconstruction/replay_3_4_0_1.json`
+data/81-third-newton-rank6_quartic_BR-independent_reconstruction-replay_3_4_0_4.json           source 81, Part VI: delivered `code/rank6_quartic_BR/independent_reconstruction/replay_3_4_0_4.json`
+data/81-third-newton-rank6_quartic_BR-independent_reconstruction-replay_3_4_0_5.json           source 81, Part VI: delivered `code/rank6_quartic_BR/independent_reconstruction/replay_3_4_0_5.json`
+data/81-third-newton-rank6_quartic_BR-independent_reconstruction-replay_3_4_1_1.json           source 81, Part VI: delivered `code/rank6_quartic_BR/independent_reconstruction/replay_3_4_1_1.json`
+data/81-third-newton-rank6_quartic_BR-independent_reconstruction-replay_3_4_1_4.json           source 81, Part VI: delivered `code/rank6_quartic_BR/independent_reconstruction/replay_3_4_1_4.json`
+data/81-third-newton-rank6_quartic_BR-independent_reconstruction-replay_3_4_1_5.json           source 81, Part VI: delivered `code/rank6_quartic_BR/independent_reconstruction/replay_3_4_1_5.json`
+data/81-third-newton-rank6_quartic_BR-independent_reconstruction-replay_3_4_4_4.json           source 81, Part VI: delivered `code/rank6_quartic_BR/independent_reconstruction/replay_3_4_4_4.json`
+data/81-third-newton-rank6_quartic_BR-independent_reconstruction-replay_3_4_4_5.json           source 81, Part VI: delivered `code/rank6_quartic_BR/independent_reconstruction/replay_3_4_4_5.json`
+data/81-third-newton-rank6_quartic_BR-independent_reconstruction-replay_3_4_5_5.json           source 81, Part VI: delivered `code/rank6_quartic_BR/independent_reconstruction/replay_3_4_5_5.json`
+data/81-third-newton-rank6_quartic_BR-independent_reconstruction-replay_3_5_0_0.json           source 81, Part VI: delivered `code/rank6_quartic_BR/independent_reconstruction/replay_3_5_0_0.json`
+data/81-third-newton-rank6_quartic_BR-independent_reconstruction-replay_3_5_0_1.json           source 81, Part VI: delivered `code/rank6_quartic_BR/independent_reconstruction/replay_3_5_0_1.json`
+data/81-third-newton-rank6_quartic_BR-independent_reconstruction-replay_3_5_0_4.json           source 81, Part VI: delivered `code/rank6_quartic_BR/independent_reconstruction/replay_3_5_0_4.json`
+data/81-third-newton-rank6_quartic_BR-independent_reconstruction-replay_3_5_0_5.json           source 81, Part VI: delivered `code/rank6_quartic_BR/independent_reconstruction/replay_3_5_0_5.json`
+data/81-third-newton-rank6_quartic_BR-independent_reconstruction-replay_3_5_1_1.json           source 81, Part VI: delivered `code/rank6_quartic_BR/independent_reconstruction/replay_3_5_1_1.json`
+data/81-third-newton-rank6_quartic_BR-independent_reconstruction-replay_3_5_1_4.json           source 81, Part VI: delivered `code/rank6_quartic_BR/independent_reconstruction/replay_3_5_1_4.json`
+data/81-third-newton-rank6_quartic_BR-independent_reconstruction-replay_3_5_1_5.json           source 81, Part VI: delivered `code/rank6_quartic_BR/independent_reconstruction/replay_3_5_1_5.json`
+data/81-third-newton-rank6_quartic_BR-independent_reconstruction-replay_3_5_4_4.json           source 81, Part VI: delivered `code/rank6_quartic_BR/independent_reconstruction/replay_3_5_4_4.json`
+data/81-third-newton-rank6_quartic_BR-independent_reconstruction-replay_3_5_4_5.json           source 81, Part VI: delivered `code/rank6_quartic_BR/independent_reconstruction/replay_3_5_4_5.json`
+data/81-third-newton-rank6_quartic_BR-independent_reconstruction-replay_3_5_5_5.json           source 81, Part VI: delivered `code/rank6_quartic_BR/independent_reconstruction/replay_3_5_5_5.json`
+data/81-third-newton-rank6_quartic_BR-independent_reconstruction-replay_7_0_0_0.json           source 81, Part VI: delivered `code/rank6_quartic_BR/independent_reconstruction/replay_7_0_0_0.json`
+data/81-third-newton-rank6_quartic_BR-independent_reconstruction-replay_7_0_0_1.json           source 81, Part VI: delivered `code/rank6_quartic_BR/independent_reconstruction/replay_7_0_0_1.json`
+data/81-third-newton-rank6_quartic_BR-independent_reconstruction-replay_7_0_0_3.json           source 81, Part VI: delivered `code/rank6_quartic_BR/independent_reconstruction/replay_7_0_0_3.json`
+data/81-third-newton-rank6_quartic_BR-independent_reconstruction-replay_7_0_1_1.json           source 81, Part VI: delivered `code/rank6_quartic_BR/independent_reconstruction/replay_7_0_1_1.json`
+data/81-third-newton-rank6_quartic_BR-independent_reconstruction-replay_7_0_1_2.json           source 81, Part VI: delivered `code/rank6_quartic_BR/independent_reconstruction/replay_7_0_1_2.json`
+data/81-third-newton-rank6_quartic_BR-independent_reconstruction-replay_7_0_1_3.json           source 81, Part VI: delivered `code/rank6_quartic_BR/independent_reconstruction/replay_7_0_1_3.json`
+data/81-third-newton-rank6_quartic_BR-independent_reconstruction-replay_7_0_3_3.json           source 81, Part VI: delivered `code/rank6_quartic_BR/independent_reconstruction/replay_7_0_3_3.json`
+data/81-third-newton-rank6_quartic_BR-independent_reconstruction-replay_7_1_0_0.json           source 81, Part VI: delivered `code/rank6_quartic_BR/independent_reconstruction/replay_7_1_0_0.json`
+data/81-third-newton-rank6_quartic_BR-independent_reconstruction-replay_7_1_0_1.json           source 81, Part VI: delivered `code/rank6_quartic_BR/independent_reconstruction/replay_7_1_0_1.json`
+data/81-third-newton-rank6_quartic_BR-independent_reconstruction-replay_7_1_0_2.json           source 81, Part VI: delivered `code/rank6_quartic_BR/independent_reconstruction/replay_7_1_0_2.json`
+data/81-third-newton-rank6_quartic_BR-independent_reconstruction-replay_7_1_0_3.json           source 81, Part VI: delivered `code/rank6_quartic_BR/independent_reconstruction/replay_7_1_0_3.json`
+data/81-third-newton-rank6_quartic_BR-independent_reconstruction-replay_7_1_1_1.json           source 81, Part VI: delivered `code/rank6_quartic_BR/independent_reconstruction/replay_7_1_1_1.json`
+data/81-third-newton-rank6_quartic_BR-independent_reconstruction-replay_7_1_1_2.json           source 81, Part VI: delivered `code/rank6_quartic_BR/independent_reconstruction/replay_7_1_1_2.json`
+data/81-third-newton-rank6_quartic_BR-independent_reconstruction-replay_7_1_1_3.json           source 81, Part VI: delivered `code/rank6_quartic_BR/independent_reconstruction/replay_7_1_1_3.json`
+data/81-third-newton-rank6_quartic_BR-independent_reconstruction-replay_7_1_2_2.json           source 81, Part VI: delivered `code/rank6_quartic_BR/independent_reconstruction/replay_7_1_2_2.json`
+data/81-third-newton-rank6_quartic_BR-independent_reconstruction-replay_7_1_2_3.json           source 81, Part VI: delivered `code/rank6_quartic_BR/independent_reconstruction/replay_7_1_2_3.json`
+data/81-third-newton-rank6_quartic_BR-independent_reconstruction-replay_7_1_2_4.json           source 81, Part VI: delivered `code/rank6_quartic_BR/independent_reconstruction/replay_7_1_2_4.json`
+data/81-third-newton-rank6_quartic_BR-independent_reconstruction-replay_7_1_3_3.json           source 81, Part VI: delivered `code/rank6_quartic_BR/independent_reconstruction/replay_7_1_3_3.json`
+data/81-third-newton-rank6_quartic_BR-independent_reconstruction-replay_7_3_0_0.json           source 81, Part VI: delivered `code/rank6_quartic_BR/independent_reconstruction/replay_7_3_0_0.json`
+data/81-third-newton-rank6_quartic_BR-independent_reconstruction-replay_7_3_0_1.json           source 81, Part VI: delivered `code/rank6_quartic_BR/independent_reconstruction/replay_7_3_0_1.json`
+data/81-third-newton-rank6_quartic_BR-independent_reconstruction-replay_7_3_0_3.json           source 81, Part VI: delivered `code/rank6_quartic_BR/independent_reconstruction/replay_7_3_0_3.json`
+data/81-third-newton-rank6_quartic_BR-independent_reconstruction-replay_7_3_1_1.json           source 81, Part VI: delivered `code/rank6_quartic_BR/independent_reconstruction/replay_7_3_1_1.json`
+data/81-third-newton-rank6_quartic_BR-independent_reconstruction-replay_7_3_1_2.json           source 81, Part VI: delivered `code/rank6_quartic_BR/independent_reconstruction/replay_7_3_1_2.json`
+data/81-third-newton-rank6_quartic_BR-independent_reconstruction-replay_7_3_1_3.json           source 81, Part VI: delivered `code/rank6_quartic_BR/independent_reconstruction/replay_7_3_1_3.json`
+data/81-third-newton-rank6_quartic_BR-independent_reconstruction-replay_7_3_3_3.json           source 81, Part VI: delivered `code/rank6_quartic_BR/independent_reconstruction/replay_7_3_3_3.json`
+data/81-third-newton-rank6_quartic_BR-portable_source_replay.json                              source 81, Part VI: delivered `code/rank6_quartic_BR/portable_source_replay.json`
+data/81-third-newton-rank6_quartic_truncation-BB_M_centered_0_0.json                           source 81, Part VI: delivered `code/rank6_quartic_truncation/BB_M_centered_0_0.json`
+data/81-third-newton-rank6_quartic_truncation-BB_M_centered_0_1.json                           source 81, Part VI: delivered `code/rank6_quartic_truncation/BB_M_centered_0_1.json`
+data/81-third-newton-rank6_quartic_truncation-BB_M_centered_0_3.json                           source 81, Part VI: delivered `code/rank6_quartic_truncation/BB_M_centered_0_3.json`
+data/81-third-newton-rank6_quartic_truncation-BB_M_centered_0_7.json                           source 81, Part VI: delivered `code/rank6_quartic_truncation/BB_M_centered_0_7.json`
+data/81-third-newton-rank6_quartic_truncation-BB_M_centered_1_1.json                           source 81, Part VI: delivered `code/rank6_quartic_truncation/BB_M_centered_1_1.json`
+data/81-third-newton-rank6_quartic_truncation-BB_M_centered_1_2.json                           source 81, Part VI: delivered `code/rank6_quartic_truncation/BB_M_centered_1_2.json`
+data/81-third-newton-rank6_quartic_truncation-BB_M_centered_1_3.json                           source 81, Part VI: delivered `code/rank6_quartic_truncation/BB_M_centered_1_3.json`
+data/81-third-newton-rank6_quartic_truncation-BB_M_centered_1_6.json                           source 81, Part VI: delivered `code/rank6_quartic_truncation/BB_M_centered_1_6.json`
+data/81-third-newton-rank6_quartic_truncation-BB_M_centered_1_7.json                           source 81, Part VI: delivered `code/rank6_quartic_truncation/BB_M_centered_1_7.json`
+data/81-third-newton-rank6_quartic_truncation-BB_M_centered_3_3.json                           source 81, Part VI: delivered `code/rank6_quartic_truncation/BB_M_centered_3_3.json`
+data/81-third-newton-rank6_quartic_truncation-BB_M_centered_3_5.json                           source 81, Part VI: delivered `code/rank6_quartic_truncation/BB_M_centered_3_5.json`
+data/81-third-newton-rank6_quartic_truncation-BB_M_centered_3_7.json                           source 81, Part VI: delivered `code/rank6_quartic_truncation/BB_M_centered_3_7.json`
+data/81-third-newton-rank6_quartic_truncation-BB_M_centered_7_7.json                           source 81, Part VI: delivered `code/rank6_quartic_truncation/BB_M_centered_7_7.json`
+data/81-third-newton-rank6_quartic_truncation-BB_R_0_0.json                                    source 81, Part VI: delivered `code/rank6_quartic_truncation/BB_R_0_0.json`
+data/81-third-newton-rank6_quartic_truncation-BB_R_0_1.json                                    source 81, Part VI: delivered `code/rank6_quartic_truncation/BB_R_0_1.json`
+data/81-third-newton-rank6_quartic_truncation-BB_R_0_3.json                                    source 81, Part VI: delivered `code/rank6_quartic_truncation/BB_R_0_3.json`
+data/81-third-newton-rank6_quartic_truncation-BB_R_0_7.json                                    source 81, Part VI: delivered `code/rank6_quartic_truncation/BB_R_0_7.json`
+data/81-third-newton-rank6_quartic_truncation-BB_R_1_1.json                                    source 81, Part VI: delivered `code/rank6_quartic_truncation/BB_R_1_1.json`
+data/81-third-newton-rank6_quartic_truncation-BB_R_1_2.json                                    source 81, Part VI: delivered `code/rank6_quartic_truncation/BB_R_1_2.json`
+data/81-third-newton-rank6_quartic_truncation-BB_R_1_3.json                                    source 81, Part VI: delivered `code/rank6_quartic_truncation/BB_R_1_3.json`
+data/81-third-newton-rank6_quartic_truncation-BB_R_1_6.json                                    source 81, Part VI: delivered `code/rank6_quartic_truncation/BB_R_1_6.json`
+data/81-third-newton-rank6_quartic_truncation-BB_R_1_7.json                                    source 81, Part VI: delivered `code/rank6_quartic_truncation/BB_R_1_7.json`
+data/81-third-newton-rank6_quartic_truncation-BB_R_3_3.json                                    source 81, Part VI: delivered `code/rank6_quartic_truncation/BB_R_3_3.json`
+data/81-third-newton-rank6_quartic_truncation-BB_R_3_5.json                                    source 81, Part VI: delivered `code/rank6_quartic_truncation/BB_R_3_5.json`
+data/81-third-newton-rank6_quartic_truncation-BB_R_3_7.json                                    source 81, Part VI: delivered `code/rank6_quartic_truncation/BB_R_3_7.json`
+data/81-third-newton-rank6_quartic_truncation-BB_R_7_7.json                                    source 81, Part VI: delivered `code/rank6_quartic_truncation/BB_R_7_7.json`
+data/81-third-newton-rank6_quartic_truncation-BB_certificate_3_3_1_pairs.json                  source 81, Part VI: delivered `code/rank6_quartic_truncation/BB_certificate_3_3_1_pairs.json`
+data/81-third-newton-rank6_quartic_truncation-BB_certificate_3_5_0_pairs.json                  source 81, Part VI: delivered `code/rank6_quartic_truncation/BB_certificate_3_5_0_pairs.json`
+data/81-third-newton-rank6_quartic_truncation-BB_certificate_7_7_1_pairs.json                  source 81, Part VI: delivered `code/rank6_quartic_truncation/BB_certificate_7_7_1_pairs.json`
+data/81-third-newton-rank6_quartic_truncation-BB_certificate_7_7_3_pairs.json                  source 81, Part VI: delivered `code/rank6_quartic_truncation/BB_certificate_7_7_3_pairs.json`
+data/81-third-newton-rank6_quartic_truncation-BB_manifest.json                                 source 81, Part VI: delivered `code/rank6_quartic_truncation/BB_manifest.json`
+data/81-third-newton-rank6_quartic_truncation-Rayleigh_cone_3_3_1_1_2.json                     source 81, Part VI: delivered `code/rank6_quartic_truncation/Rayleigh_cone_3_3_1_1_2.json`
+data/81-third-newton-rank6_quartic_truncation-Rayleigh_cone_3_3_1_1_3.json                     source 81, Part VI: delivered `code/rank6_quartic_truncation/Rayleigh_cone_3_3_1_1_3.json`
+data/81-third-newton-rank6_quartic_truncation-Rayleigh_cone_3_3_1_1_6.json                     source 81, Part VI: delivered `code/rank6_quartic_truncation/Rayleigh_cone_3_3_1_1_6.json`
+data/81-third-newton-rank6_quartic_truncation-Rayleigh_cone_3_3_1_1_7.json                     source 81, Part VI: delivered `code/rank6_quartic_truncation/Rayleigh_cone_3_3_1_1_7.json`
+data/81-third-newton-rank6_quartic_truncation-Rayleigh_cone_3_3_1_2_3.json                     source 81, Part VI: delivered `code/rank6_quartic_truncation/Rayleigh_cone_3_3_1_2_3.json`
+data/81-third-newton-rank6_quartic_truncation-Rayleigh_cone_3_3_1_2_5.json                     source 81, Part VI: delivered `code/rank6_quartic_truncation/Rayleigh_cone_3_3_1_2_5.json`
+data/81-third-newton-rank6_quartic_truncation-Rayleigh_cone_3_3_1_2_7.json                     source 81, Part VI: delivered `code/rank6_quartic_truncation/Rayleigh_cone_3_3_1_2_7.json`
+data/81-third-newton-rank6_quartic_truncation-Rayleigh_cone_3_3_1_3_3.json                     source 81, Part VI: delivered `code/rank6_quartic_truncation/Rayleigh_cone_3_3_1_3_3.json`
+data/81-third-newton-rank6_quartic_truncation-Rayleigh_cone_3_3_1_3_5.json                     source 81, Part VI: delivered `code/rank6_quartic_truncation/Rayleigh_cone_3_3_1_3_5.json`
+data/81-third-newton-rank6_quartic_truncation-Rayleigh_cone_3_3_1_3_6.json                     source 81, Part VI: delivered `code/rank6_quartic_truncation/Rayleigh_cone_3_3_1_3_6.json`
+data/81-third-newton-rank6_quartic_truncation-Rayleigh_cone_3_3_1_3_7.json                     source 81, Part VI: delivered `code/rank6_quartic_truncation/Rayleigh_cone_3_3_1_3_7.json`
+data/81-third-newton-rank6_quartic_truncation-Rayleigh_cone_3_3_1_5_6.json                     source 81, Part VI: delivered `code/rank6_quartic_truncation/Rayleigh_cone_3_3_1_5_6.json`
+data/81-third-newton-rank6_quartic_truncation-Rayleigh_cone_3_3_1_5_7.json                     source 81, Part VI: delivered `code/rank6_quartic_truncation/Rayleigh_cone_3_3_1_5_7.json`
+data/81-third-newton-rank6_quartic_truncation-Rayleigh_cone_3_3_1_6_7.json                     source 81, Part VI: delivered `code/rank6_quartic_truncation/Rayleigh_cone_3_3_1_6_7.json`
+data/81-third-newton-rank6_quartic_truncation-Rayleigh_cone_3_3_1_7_7.json                     source 81, Part VI: delivered `code/rank6_quartic_truncation/Rayleigh_cone_3_3_1_7_7.json`
+data/81-third-newton-rank6_quartic_truncation-Rayleigh_cone_3_5_0_1_2.json                     source 81, Part VI: delivered `code/rank6_quartic_truncation/Rayleigh_cone_3_5_0_1_2.json`
+data/81-third-newton-rank6_quartic_truncation-Rayleigh_cone_3_5_0_1_3.json                     source 81, Part VI: delivered `code/rank6_quartic_truncation/Rayleigh_cone_3_5_0_1_3.json`
+data/81-third-newton-rank6_quartic_truncation-Rayleigh_cone_3_5_0_1_6.json                     source 81, Part VI: delivered `code/rank6_quartic_truncation/Rayleigh_cone_3_5_0_1_6.json`
+data/81-third-newton-rank6_quartic_truncation-Rayleigh_cone_3_5_0_1_7.json                     source 81, Part VI: delivered `code/rank6_quartic_truncation/Rayleigh_cone_3_5_0_1_7.json`
+data/81-third-newton-rank6_quartic_truncation-Rayleigh_cone_3_5_0_2_3.json                     source 81, Part VI: delivered `code/rank6_quartic_truncation/Rayleigh_cone_3_5_0_2_3.json`
+data/81-third-newton-rank6_quartic_truncation-Rayleigh_cone_3_5_0_2_5.json                     source 81, Part VI: delivered `code/rank6_quartic_truncation/Rayleigh_cone_3_5_0_2_5.json`
+data/81-third-newton-rank6_quartic_truncation-Rayleigh_cone_3_5_0_2_7.json                     source 81, Part VI: delivered `code/rank6_quartic_truncation/Rayleigh_cone_3_5_0_2_7.json`
+data/81-third-newton-rank6_quartic_truncation-Rayleigh_cone_3_5_0_3_3.json                     source 81, Part VI: delivered `code/rank6_quartic_truncation/Rayleigh_cone_3_5_0_3_3.json`
+data/81-third-newton-rank6_quartic_truncation-Rayleigh_cone_3_5_0_3_5.json                     source 81, Part VI: delivered `code/rank6_quartic_truncation/Rayleigh_cone_3_5_0_3_5.json`
+data/81-third-newton-rank6_quartic_truncation-Rayleigh_cone_3_5_0_3_6.json                     source 81, Part VI: delivered `code/rank6_quartic_truncation/Rayleigh_cone_3_5_0_3_6.json`
+data/81-third-newton-rank6_quartic_truncation-Rayleigh_cone_3_5_0_3_7.json                     source 81, Part VI: delivered `code/rank6_quartic_truncation/Rayleigh_cone_3_5_0_3_7.json`
+data/81-third-newton-rank6_quartic_truncation-Rayleigh_cone_3_5_0_5_6.json                     source 81, Part VI: delivered `code/rank6_quartic_truncation/Rayleigh_cone_3_5_0_5_6.json`
+data/81-third-newton-rank6_quartic_truncation-Rayleigh_cone_3_5_0_5_7.json                     source 81, Part VI: delivered `code/rank6_quartic_truncation/Rayleigh_cone_3_5_0_5_7.json`
+data/81-third-newton-rank6_quartic_truncation-Rayleigh_cone_3_5_0_6_7.json                     source 81, Part VI: delivered `code/rank6_quartic_truncation/Rayleigh_cone_3_5_0_6_7.json`
+data/81-third-newton-rank6_quartic_truncation-Rayleigh_cone_3_5_0_7_7.json                     source 81, Part VI: delivered `code/rank6_quartic_truncation/Rayleigh_cone_3_5_0_7_7.json`
+data/81-third-newton-rank6_quartic_truncation-Rayleigh_cone_7_7_1_1_2.json                     source 81, Part VI: delivered `code/rank6_quartic_truncation/Rayleigh_cone_7_7_1_1_2.json`
+data/81-third-newton-rank6_quartic_truncation-Rayleigh_cone_7_7_1_1_3.json                     source 81, Part VI: delivered `code/rank6_quartic_truncation/Rayleigh_cone_7_7_1_1_3.json`
+data/81-third-newton-rank6_quartic_truncation-Rayleigh_cone_7_7_1_1_6.json                     source 81, Part VI: delivered `code/rank6_quartic_truncation/Rayleigh_cone_7_7_1_1_6.json`
+data/81-third-newton-rank6_quartic_truncation-Rayleigh_cone_7_7_1_1_7.json                     source 81, Part VI: delivered `code/rank6_quartic_truncation/Rayleigh_cone_7_7_1_1_7.json`
+data/81-third-newton-rank6_quartic_truncation-Rayleigh_cone_7_7_1_2_3.json                     source 81, Part VI: delivered `code/rank6_quartic_truncation/Rayleigh_cone_7_7_1_2_3.json`
+data/81-third-newton-rank6_quartic_truncation-Rayleigh_cone_7_7_1_2_5.json                     source 81, Part VI: delivered `code/rank6_quartic_truncation/Rayleigh_cone_7_7_1_2_5.json`
+data/81-third-newton-rank6_quartic_truncation-Rayleigh_cone_7_7_1_2_7.json                     source 81, Part VI: delivered `code/rank6_quartic_truncation/Rayleigh_cone_7_7_1_2_7.json`
+data/81-third-newton-rank6_quartic_truncation-Rayleigh_cone_7_7_1_3_3.json                     source 81, Part VI: delivered `code/rank6_quartic_truncation/Rayleigh_cone_7_7_1_3_3.json`
+data/81-third-newton-rank6_quartic_truncation-Rayleigh_cone_7_7_1_3_5.json                     source 81, Part VI: delivered `code/rank6_quartic_truncation/Rayleigh_cone_7_7_1_3_5.json`
+data/81-third-newton-rank6_quartic_truncation-Rayleigh_cone_7_7_1_3_6.json                     source 81, Part VI: delivered `code/rank6_quartic_truncation/Rayleigh_cone_7_7_1_3_6.json`
+data/81-third-newton-rank6_quartic_truncation-Rayleigh_cone_7_7_1_3_7.json                     source 81, Part VI: delivered `code/rank6_quartic_truncation/Rayleigh_cone_7_7_1_3_7.json`
+data/81-third-newton-rank6_quartic_truncation-Rayleigh_cone_7_7_1_5_6.json                     source 81, Part VI: delivered `code/rank6_quartic_truncation/Rayleigh_cone_7_7_1_5_6.json`
+data/81-third-newton-rank6_quartic_truncation-Rayleigh_cone_7_7_1_5_7.json                     source 81, Part VI: delivered `code/rank6_quartic_truncation/Rayleigh_cone_7_7_1_5_7.json`
+data/81-third-newton-rank6_quartic_truncation-Rayleigh_cone_7_7_1_6_7.json                     source 81, Part VI: delivered `code/rank6_quartic_truncation/Rayleigh_cone_7_7_1_6_7.json`
+data/81-third-newton-rank6_quartic_truncation-Rayleigh_cone_7_7_1_7_7.json                     source 81, Part VI: delivered `code/rank6_quartic_truncation/Rayleigh_cone_7_7_1_7_7.json`
+data/81-third-newton-rank6_quartic_truncation-Rayleigh_cone_7_7_3_1_2.json                     source 81, Part VI: delivered `code/rank6_quartic_truncation/Rayleigh_cone_7_7_3_1_2.json`
+data/81-third-newton-rank6_quartic_truncation-Rayleigh_cone_7_7_3_1_3.json                     source 81, Part VI: delivered `code/rank6_quartic_truncation/Rayleigh_cone_7_7_3_1_3.json`
+data/81-third-newton-rank6_quartic_truncation-Rayleigh_cone_7_7_3_1_6.json                     source 81, Part VI: delivered `code/rank6_quartic_truncation/Rayleigh_cone_7_7_3_1_6.json`
+data/81-third-newton-rank6_quartic_truncation-Rayleigh_cone_7_7_3_1_7.json                     source 81, Part VI: delivered `code/rank6_quartic_truncation/Rayleigh_cone_7_7_3_1_7.json`
+data/81-third-newton-rank6_quartic_truncation-Rayleigh_cone_7_7_3_2_3.json                     source 81, Part VI: delivered `code/rank6_quartic_truncation/Rayleigh_cone_7_7_3_2_3.json`
+data/81-third-newton-rank6_quartic_truncation-Rayleigh_cone_7_7_3_2_5.json                     source 81, Part VI: delivered `code/rank6_quartic_truncation/Rayleigh_cone_7_7_3_2_5.json`
+data/81-third-newton-rank6_quartic_truncation-Rayleigh_cone_7_7_3_2_7.json                     source 81, Part VI: delivered `code/rank6_quartic_truncation/Rayleigh_cone_7_7_3_2_7.json`
+data/81-third-newton-rank6_quartic_truncation-Rayleigh_cone_7_7_3_3_3.json                     source 81, Part VI: delivered `code/rank6_quartic_truncation/Rayleigh_cone_7_7_3_3_3.json`
+data/81-third-newton-rank6_quartic_truncation-Rayleigh_cone_7_7_3_3_5.json                     source 81, Part VI: delivered `code/rank6_quartic_truncation/Rayleigh_cone_7_7_3_3_5.json`
+data/81-third-newton-rank6_quartic_truncation-Rayleigh_cone_7_7_3_3_6.json                     source 81, Part VI: delivered `code/rank6_quartic_truncation/Rayleigh_cone_7_7_3_3_6.json`
+data/81-third-newton-rank6_quartic_truncation-Rayleigh_cone_7_7_3_3_7.json                     source 81, Part VI: delivered `code/rank6_quartic_truncation/Rayleigh_cone_7_7_3_3_7.json`
+data/81-third-newton-rank6_quartic_truncation-Rayleigh_cone_7_7_3_5_6.json                     source 81, Part VI: delivered `code/rank6_quartic_truncation/Rayleigh_cone_7_7_3_5_6.json`
+data/81-third-newton-rank6_quartic_truncation-Rayleigh_cone_7_7_3_5_7.json                     source 81, Part VI: delivered `code/rank6_quartic_truncation/Rayleigh_cone_7_7_3_5_7.json`
+data/81-third-newton-rank6_quartic_truncation-Rayleigh_cone_7_7_3_6_7.json                     source 81, Part VI: delivered `code/rank6_quartic_truncation/Rayleigh_cone_7_7_3_6_7.json`
+data/81-third-newton-rank6_quartic_truncation-Rayleigh_cone_7_7_3_7_7.json                     source 81, Part VI: delivered `code/rank6_quartic_truncation/Rayleigh_cone_7_7_3_7_7.json`
+data/81-third-newton-rank6_quartic_truncation-Rayleigh_four_manifest.json                      source 81, Part VI: delivered `code/rank6_quartic_truncation/Rayleigh_four_manifest.json`
+data/81-third-newton-rank6_quartic_truncation-audit_snapshot-BB_certificate_0_0_0_pairs.json   source 81, Part VI: delivered `code/rank6_quartic_truncation/audit_snapshot/BB_certificate_0_0_0_pairs.json`
+data/81-third-newton-rank6_quartic_truncation-audit_snapshot-BB_certificate_0_0_1_pairs.json   source 81, Part VI: delivered `code/rank6_quartic_truncation/audit_snapshot/BB_certificate_0_0_1_pairs.json`
+data/81-third-newton-rank6_quartic_truncation-audit_snapshot-BB_certificate_0_0_3_pairs.json   source 81, Part VI: delivered `code/rank6_quartic_truncation/audit_snapshot/BB_certificate_0_0_3_pairs.json`
+data/81-third-newton-rank6_quartic_truncation-audit_snapshot-BB_certificate_0_0_7_pairs.json   source 81, Part VI: delivered `code/rank6_quartic_truncation/audit_snapshot/BB_certificate_0_0_7_pairs.json`
+data/81-third-newton-rank6_quartic_truncation-audit_snapshot-BB_certificate_0_1_0_pairs.json   source 81, Part VI: delivered `code/rank6_quartic_truncation/audit_snapshot/BB_certificate_0_1_0_pairs.json`
+data/81-third-newton-rank6_quartic_truncation-audit_snapshot-BB_certificate_0_1_1_pairs.json   source 81, Part VI: delivered `code/rank6_quartic_truncation/audit_snapshot/BB_certificate_0_1_1_pairs.json`
+data/81-third-newton-rank6_quartic_truncation-audit_snapshot-BB_certificate_0_1_2_pairs.json   source 81, Part VI: delivered `code/rank6_quartic_truncation/audit_snapshot/BB_certificate_0_1_2_pairs.json`
+data/81-third-newton-rank6_quartic_truncation-audit_snapshot-BB_certificate_0_1_3_pairs.json   source 81, Part VI: delivered `code/rank6_quartic_truncation/audit_snapshot/BB_certificate_0_1_3_pairs.json`
+data/81-third-newton-rank6_quartic_truncation-audit_snapshot-BB_certificate_0_1_6_pairs.json   source 81, Part VI: delivered `code/rank6_quartic_truncation/audit_snapshot/BB_certificate_0_1_6_pairs.json`
+data/81-third-newton-rank6_quartic_truncation-audit_snapshot-BB_certificate_0_1_7_pairs.json   source 81, Part VI: delivered `code/rank6_quartic_truncation/audit_snapshot/BB_certificate_0_1_7_pairs.json`
+data/81-third-newton-rank6_quartic_truncation-audit_snapshot-BB_certificate_0_3_0_pairs.json   source 81, Part VI: delivered `code/rank6_quartic_truncation/audit_snapshot/BB_certificate_0_3_0_pairs.json`
+data/81-third-newton-rank6_quartic_truncation-audit_snapshot-BB_certificate_0_3_1_pairs.json   source 81, Part VI: delivered `code/rank6_quartic_truncation/audit_snapshot/BB_certificate_0_3_1_pairs.json`
+data/81-third-newton-rank6_quartic_truncation-audit_snapshot-BB_certificate_0_3_3_pairs.json   source 81, Part VI: delivered `code/rank6_quartic_truncation/audit_snapshot/BB_certificate_0_3_3_pairs.json`
+data/81-third-newton-rank6_quartic_truncation-audit_snapshot-BB_certificate_0_3_4_pairs.json   source 81, Part VI: delivered `code/rank6_quartic_truncation/audit_snapshot/BB_certificate_0_3_4_pairs.json`
+data/81-third-newton-rank6_quartic_truncation-audit_snapshot-BB_certificate_0_3_5_pairs.json   source 81, Part VI: delivered `code/rank6_quartic_truncation/audit_snapshot/BB_certificate_0_3_5_pairs.json`
+data/81-third-newton-rank6_quartic_truncation-audit_snapshot-BB_certificate_0_3_7_pairs.json   source 81, Part VI: delivered `code/rank6_quartic_truncation/audit_snapshot/BB_certificate_0_3_7_pairs.json`
+data/81-third-newton-rank6_quartic_truncation-audit_snapshot-BB_certificate_0_7_0_pairs.json   source 81, Part VI: delivered `code/rank6_quartic_truncation/audit_snapshot/BB_certificate_0_7_0_pairs.json`
+data/81-third-newton-rank6_quartic_truncation-audit_snapshot-BB_certificate_0_7_1_pairs.json   source 81, Part VI: delivered `code/rank6_quartic_truncation/audit_snapshot/BB_certificate_0_7_1_pairs.json`
+data/81-third-newton-rank6_quartic_truncation-audit_snapshot-BB_certificate_0_7_3_pairs.json   source 81, Part VI: delivered `code/rank6_quartic_truncation/audit_snapshot/BB_certificate_0_7_3_pairs.json`
+data/81-third-newton-rank6_quartic_truncation-audit_snapshot-BB_certificate_0_7_7_pairs.json   source 81, Part VI: delivered `code/rank6_quartic_truncation/audit_snapshot/BB_certificate_0_7_7_pairs.json`
+data/81-third-newton-rank6_quartic_truncation-audit_snapshot-BB_certificate_1_1_1_pairs.json   source 81, Part VI: delivered `code/rank6_quartic_truncation/audit_snapshot/BB_certificate_1_1_1_pairs.json`
+data/81-third-newton-rank6_quartic_truncation-audit_snapshot-BB_certificate_1_1_2_pairs.json   source 81, Part VI: delivered `code/rank6_quartic_truncation/audit_snapshot/BB_certificate_1_1_2_pairs.json`
+data/81-third-newton-rank6_quartic_truncation-audit_snapshot-BB_certificate_1_1_3_pairs.json   source 81, Part VI: delivered `code/rank6_quartic_truncation/audit_snapshot/BB_certificate_1_1_3_pairs.json`
+data/81-third-newton-rank6_quartic_truncation-audit_snapshot-BB_certificate_1_1_6_pairs.json   source 81, Part VI: delivered `code/rank6_quartic_truncation/audit_snapshot/BB_certificate_1_1_6_pairs.json`
+data/81-third-newton-rank6_quartic_truncation-audit_snapshot-BB_certificate_1_1_7_pairs.json   source 81, Part VI: delivered `code/rank6_quartic_truncation/audit_snapshot/BB_certificate_1_1_7_pairs.json`
+data/81-third-newton-rank6_quartic_truncation-audit_snapshot-BB_certificate_1_2_0_pairs.json   source 81, Part VI: delivered `code/rank6_quartic_truncation/audit_snapshot/BB_certificate_1_2_0_pairs.json`
+data/81-third-newton-rank6_quartic_truncation-audit_snapshot-BB_certificate_1_2_1_pairs.json   source 81, Part VI: delivered `code/rank6_quartic_truncation/audit_snapshot/BB_certificate_1_2_1_pairs.json`
+data/81-third-newton-rank6_quartic_truncation-audit_snapshot-BB_certificate_1_2_3_pairs.json   source 81, Part VI: delivered `code/rank6_quartic_truncation/audit_snapshot/BB_certificate_1_2_3_pairs.json`
+data/81-third-newton-rank6_quartic_truncation-audit_snapshot-BB_certificate_1_2_4_pairs.json   source 81, Part VI: delivered `code/rank6_quartic_truncation/audit_snapshot/BB_certificate_1_2_4_pairs.json`
+data/81-third-newton-rank6_quartic_truncation-audit_snapshot-BB_certificate_1_2_5_pairs.json   source 81, Part VI: delivered `code/rank6_quartic_truncation/audit_snapshot/BB_certificate_1_2_5_pairs.json`
+data/81-third-newton-rank6_quartic_truncation-audit_snapshot-BB_certificate_1_2_7_pairs.json   source 81, Part VI: delivered `code/rank6_quartic_truncation/audit_snapshot/BB_certificate_1_2_7_pairs.json`
+data/81-third-newton-rank6_quartic_truncation-audit_snapshot-BB_certificate_1_3_1_pairs.json   source 81, Part VI: delivered `code/rank6_quartic_truncation/audit_snapshot/BB_certificate_1_3_1_pairs.json`
+data/81-third-newton-rank6_quartic_truncation-audit_snapshot-BB_certificate_1_3_2_pairs.json   source 81, Part VI: delivered `code/rank6_quartic_truncation/audit_snapshot/BB_certificate_1_3_2_pairs.json`
+data/81-third-newton-rank6_quartic_truncation-audit_snapshot-BB_certificate_1_3_3_pairs.json   source 81, Part VI: delivered `code/rank6_quartic_truncation/audit_snapshot/BB_certificate_1_3_3_pairs.json`
+data/81-third-newton-rank6_quartic_truncation-audit_snapshot-BB_certificate_1_3_4_pairs.json   source 81, Part VI: delivered `code/rank6_quartic_truncation/audit_snapshot/BB_certificate_1_3_4_pairs.json`
+data/81-third-newton-rank6_quartic_truncation-audit_snapshot-BB_certificate_1_3_5_pairs.json   source 81, Part VI: delivered `code/rank6_quartic_truncation/audit_snapshot/BB_certificate_1_3_5_pairs.json`
+data/81-third-newton-rank6_quartic_truncation-audit_snapshot-BB_certificate_1_3_6_pairs.json   source 81, Part VI: delivered `code/rank6_quartic_truncation/audit_snapshot/BB_certificate_1_3_6_pairs.json`
+data/81-third-newton-rank6_quartic_truncation-audit_snapshot-BB_certificate_1_3_7_pairs.json   source 81, Part VI: delivered `code/rank6_quartic_truncation/audit_snapshot/BB_certificate_1_3_7_pairs.json`
+data/81-third-newton-rank6_quartic_truncation-audit_snapshot-BB_certificate_1_6_0_pairs.json   source 81, Part VI: delivered `code/rank6_quartic_truncation/audit_snapshot/BB_certificate_1_6_0_pairs.json`
+data/81-third-newton-rank6_quartic_truncation-audit_snapshot-BB_certificate_1_6_1_pairs.json   source 81, Part VI: delivered `code/rank6_quartic_truncation/audit_snapshot/BB_certificate_1_6_1_pairs.json`
+data/81-third-newton-rank6_quartic_truncation-audit_snapshot-BB_certificate_1_6_2_pairs.json   source 81, Part VI: delivered `code/rank6_quartic_truncation/audit_snapshot/BB_certificate_1_6_2_pairs.json`
+data/81-third-newton-rank6_quartic_truncation-audit_snapshot-BB_certificate_1_6_3_pairs.json   source 81, Part VI: delivered `code/rank6_quartic_truncation/audit_snapshot/BB_certificate_1_6_3_pairs.json`
+data/81-third-newton-rank6_quartic_truncation-audit_snapshot-BB_certificate_1_6_6_pairs.json   source 81, Part VI: delivered `code/rank6_quartic_truncation/audit_snapshot/BB_certificate_1_6_6_pairs.json`
+data/81-third-newton-rank6_quartic_truncation-audit_snapshot-BB_certificate_1_6_7_pairs.json   source 81, Part VI: delivered `code/rank6_quartic_truncation/audit_snapshot/BB_certificate_1_6_7_pairs.json`
+data/81-third-newton-rank6_quartic_truncation-audit_snapshot-BB_certificate_1_7_1_pairs.json   source 81, Part VI: delivered `code/rank6_quartic_truncation/audit_snapshot/BB_certificate_1_7_1_pairs.json`
+data/81-third-newton-rank6_quartic_truncation-audit_snapshot-BB_certificate_1_7_2_pairs.json   source 81, Part VI: delivered `code/rank6_quartic_truncation/audit_snapshot/BB_certificate_1_7_2_pairs.json`
+data/81-third-newton-rank6_quartic_truncation-audit_snapshot-BB_certificate_1_7_3_pairs.json   source 81, Part VI: delivered `code/rank6_quartic_truncation/audit_snapshot/BB_certificate_1_7_3_pairs.json`
+data/81-third-newton-rank6_quartic_truncation-audit_snapshot-BB_certificate_1_7_6_pairs.json   source 81, Part VI: delivered `code/rank6_quartic_truncation/audit_snapshot/BB_certificate_1_7_6_pairs.json`
+data/81-third-newton-rank6_quartic_truncation-audit_snapshot-BB_certificate_1_7_7_pairs.json   source 81, Part VI: delivered `code/rank6_quartic_truncation/audit_snapshot/BB_certificate_1_7_7_pairs.json`
+data/81-third-newton-rank6_quartic_truncation-audit_snapshot-BB_certificate_3_3_3_pairs.json   source 81, Part VI: delivered `code/rank6_quartic_truncation/audit_snapshot/BB_certificate_3_3_3_pairs.json`
+data/81-third-newton-rank6_quartic_truncation-audit_snapshot-BB_certificate_3_3_4_pairs.json   source 81, Part VI: delivered `code/rank6_quartic_truncation/audit_snapshot/BB_certificate_3_3_4_pairs.json`
+data/81-third-newton-rank6_quartic_truncation-audit_snapshot-BB_certificate_3_3_5_pairs.json   source 81, Part VI: delivered `code/rank6_quartic_truncation/audit_snapshot/BB_certificate_3_3_5_pairs.json`
+data/81-third-newton-rank6_quartic_truncation-audit_snapshot-BB_certificate_3_3_7_pairs.json   source 81, Part VI: delivered `code/rank6_quartic_truncation/audit_snapshot/BB_certificate_3_3_7_pairs.json`
+data/81-third-newton-rank6_quartic_truncation-audit_snapshot-BB_certificate_3_5_1_pairs.json   source 81, Part VI: delivered `code/rank6_quartic_truncation/audit_snapshot/BB_certificate_3_5_1_pairs.json`
+data/81-third-newton-rank6_quartic_truncation-audit_snapshot-BB_certificate_3_5_2_pairs.json   source 81, Part VI: delivered `code/rank6_quartic_truncation/audit_snapshot/BB_certificate_3_5_2_pairs.json`
+data/81-third-newton-rank6_quartic_truncation-audit_snapshot-BB_certificate_3_5_3_pairs.json   source 81, Part VI: delivered `code/rank6_quartic_truncation/audit_snapshot/BB_certificate_3_5_3_pairs.json`
+data/81-third-newton-rank6_quartic_truncation-audit_snapshot-BB_certificate_3_5_6_pairs.json   source 81, Part VI: delivered `code/rank6_quartic_truncation/audit_snapshot/BB_certificate_3_5_6_pairs.json`
+data/81-third-newton-rank6_quartic_truncation-audit_snapshot-BB_certificate_3_5_7_pairs.json   source 81, Part VI: delivered `code/rank6_quartic_truncation/audit_snapshot/BB_certificate_3_5_7_pairs.json`
+data/81-third-newton-rank6_quartic_truncation-audit_snapshot-BB_certificate_3_7_1_pairs.json   source 81, Part VI: delivered `code/rank6_quartic_truncation/audit_snapshot/BB_certificate_3_7_1_pairs.json`
+data/81-third-newton-rank6_quartic_truncation-audit_snapshot-BB_certificate_3_7_3_pairs.json   source 81, Part VI: delivered `code/rank6_quartic_truncation/audit_snapshot/BB_certificate_3_7_3_pairs.json`
+data/81-third-newton-rank6_quartic_truncation-audit_snapshot-BB_certificate_3_7_4_pairs.json   source 81, Part VI: delivered `code/rank6_quartic_truncation/audit_snapshot/BB_certificate_3_7_4_pairs.json`
+data/81-third-newton-rank6_quartic_truncation-audit_snapshot-BB_certificate_3_7_5_pairs.json   source 81, Part VI: delivered `code/rank6_quartic_truncation/audit_snapshot/BB_certificate_3_7_5_pairs.json`
+data/81-third-newton-rank6_quartic_truncation-audit_snapshot-BB_certificate_3_7_7_pairs.json   source 81, Part VI: delivered `code/rank6_quartic_truncation/audit_snapshot/BB_certificate_3_7_7_pairs.json`
+data/81-third-newton-rank6_quartic_truncation-audit_snapshot-BB_certificate_7_7_7_pairs.json   source 81, Part VI: delivered `code/rank6_quartic_truncation/audit_snapshot/BB_certificate_7_7_7_pairs.json`
+data/81-third-newton-rank6_quartic_truncation-audit_snapshot-stable_expected.json              source 81, Part VI: delivered `code/rank6_quartic_truncation/audit_snapshot/stable_expected.json`
+data/81-third-newton-rank6_quartic_truncation-profile_770_endpoints.json                       source 81, Part VI: delivered `code/rank6_quartic_truncation/profile_770_endpoints.json`
+data/81-third-newton-rank6_quartic_truncation-raw_3_3_1_0.txt                                  source 81, Part VI: delivered `code/rank6_quartic_truncation/raw_3_3_1_0.txt`
+data/81-third-newton-rank6_quartic_truncation-raw_7_7_1_0.txt                                  source 81, Part VI: delivered `code/rank6_quartic_truncation/raw_7_7_1_0.txt`
+data/81-third-newton-rank6_quartic_truncation-raw_7_7_3_0.txt                                  source 81, Part VI: delivered `code/rank6_quartic_truncation/raw_7_7_3_0.txt`
+data/81-third-newton-rank6_quartic_truncation-root_reconstruction-endpoint_results.json        source 81, Part VI: delivered `code/rank6_quartic_truncation/root_reconstruction/endpoint_results.json`
+data/81-third-newton-rank6_quartic_truncation-root_reconstruction-independent_manifest.json    source 81, Part VI: delivered `code/rank6_quartic_truncation/root_reconstruction/independent_manifest.json`
+data/81-third-newton-rank6_quartic_truncation-root_reconstruction-kernel_results.json          source 81, Part VI: delivered `code/rank6_quartic_truncation/root_reconstruction/kernel_results.json`
+data/81-third-newton-rank6_quartic_truncation-root_reconstruction-replay_0_0_0.json            source 81, Part VI: delivered `code/rank6_quartic_truncation/root_reconstruction/replay_0_0_0.json`
+data/81-third-newton-rank6_quartic_truncation-root_reconstruction-replay_0_0_1.json            source 81, Part VI: delivered `code/rank6_quartic_truncation/root_reconstruction/replay_0_0_1.json`
+data/81-third-newton-rank6_quartic_truncation-root_reconstruction-replay_0_0_3.json            source 81, Part VI: delivered `code/rank6_quartic_truncation/root_reconstruction/replay_0_0_3.json`
+data/81-third-newton-rank6_quartic_truncation-root_reconstruction-replay_0_0_7.json            source 81, Part VI: delivered `code/rank6_quartic_truncation/root_reconstruction/replay_0_0_7.json`
+data/81-third-newton-rank6_quartic_truncation-root_reconstruction-replay_0_1_0.json            source 81, Part VI: delivered `code/rank6_quartic_truncation/root_reconstruction/replay_0_1_0.json`
+data/81-third-newton-rank6_quartic_truncation-root_reconstruction-replay_0_1_1.json            source 81, Part VI: delivered `code/rank6_quartic_truncation/root_reconstruction/replay_0_1_1.json`
+data/81-third-newton-rank6_quartic_truncation-root_reconstruction-replay_0_1_2.json            source 81, Part VI: delivered `code/rank6_quartic_truncation/root_reconstruction/replay_0_1_2.json`
+data/81-third-newton-rank6_quartic_truncation-root_reconstruction-replay_0_1_3.json            source 81, Part VI: delivered `code/rank6_quartic_truncation/root_reconstruction/replay_0_1_3.json`
+data/81-third-newton-rank6_quartic_truncation-root_reconstruction-replay_0_1_6.json            source 81, Part VI: delivered `code/rank6_quartic_truncation/root_reconstruction/replay_0_1_6.json`
+data/81-third-newton-rank6_quartic_truncation-root_reconstruction-replay_0_1_7.json            source 81, Part VI: delivered `code/rank6_quartic_truncation/root_reconstruction/replay_0_1_7.json`
+data/81-third-newton-rank6_quartic_truncation-root_reconstruction-replay_0_3_0.json            source 81, Part VI: delivered `code/rank6_quartic_truncation/root_reconstruction/replay_0_3_0.json`
+data/81-third-newton-rank6_quartic_truncation-root_reconstruction-replay_0_3_1.json            source 81, Part VI: delivered `code/rank6_quartic_truncation/root_reconstruction/replay_0_3_1.json`
+data/81-third-newton-rank6_quartic_truncation-root_reconstruction-replay_0_3_3.json            source 81, Part VI: delivered `code/rank6_quartic_truncation/root_reconstruction/replay_0_3_3.json`
+data/81-third-newton-rank6_quartic_truncation-root_reconstruction-replay_0_3_4.json            source 81, Part VI: delivered `code/rank6_quartic_truncation/root_reconstruction/replay_0_3_4.json`
+data/81-third-newton-rank6_quartic_truncation-root_reconstruction-replay_0_3_5.json            source 81, Part VI: delivered `code/rank6_quartic_truncation/root_reconstruction/replay_0_3_5.json`
+data/81-third-newton-rank6_quartic_truncation-root_reconstruction-replay_0_3_7.json            source 81, Part VI: delivered `code/rank6_quartic_truncation/root_reconstruction/replay_0_3_7.json`
+data/81-third-newton-rank6_quartic_truncation-root_reconstruction-replay_0_7_0.json            source 81, Part VI: delivered `code/rank6_quartic_truncation/root_reconstruction/replay_0_7_0.json`
+data/81-third-newton-rank6_quartic_truncation-root_reconstruction-replay_0_7_1.json            source 81, Part VI: delivered `code/rank6_quartic_truncation/root_reconstruction/replay_0_7_1.json`
+data/81-third-newton-rank6_quartic_truncation-root_reconstruction-replay_0_7_3.json            source 81, Part VI: delivered `code/rank6_quartic_truncation/root_reconstruction/replay_0_7_3.json`
+data/81-third-newton-rank6_quartic_truncation-root_reconstruction-replay_0_7_7.json            source 81, Part VI: delivered `code/rank6_quartic_truncation/root_reconstruction/replay_0_7_7.json`
+data/81-third-newton-rank6_quartic_truncation-root_reconstruction-replay_1_1_1.json            source 81, Part VI: delivered `code/rank6_quartic_truncation/root_reconstruction/replay_1_1_1.json`
+data/81-third-newton-rank6_quartic_truncation-root_reconstruction-replay_1_1_2.json            source 81, Part VI: delivered `code/rank6_quartic_truncation/root_reconstruction/replay_1_1_2.json`
+data/81-third-newton-rank6_quartic_truncation-root_reconstruction-replay_1_1_3.json            source 81, Part VI: delivered `code/rank6_quartic_truncation/root_reconstruction/replay_1_1_3.json`
+data/81-third-newton-rank6_quartic_truncation-root_reconstruction-replay_1_1_6.json            source 81, Part VI: delivered `code/rank6_quartic_truncation/root_reconstruction/replay_1_1_6.json`
+data/81-third-newton-rank6_quartic_truncation-root_reconstruction-replay_1_1_7.json            source 81, Part VI: delivered `code/rank6_quartic_truncation/root_reconstruction/replay_1_1_7.json`
+data/81-third-newton-rank6_quartic_truncation-root_reconstruction-replay_1_2_0.json            source 81, Part VI: delivered `code/rank6_quartic_truncation/root_reconstruction/replay_1_2_0.json`
+data/81-third-newton-rank6_quartic_truncation-root_reconstruction-replay_1_2_1.json            source 81, Part VI: delivered `code/rank6_quartic_truncation/root_reconstruction/replay_1_2_1.json`
+data/81-third-newton-rank6_quartic_truncation-root_reconstruction-replay_1_2_3.json            source 81, Part VI: delivered `code/rank6_quartic_truncation/root_reconstruction/replay_1_2_3.json`
+data/81-third-newton-rank6_quartic_truncation-root_reconstruction-replay_1_2_4.json            source 81, Part VI: delivered `code/rank6_quartic_truncation/root_reconstruction/replay_1_2_4.json`
+data/81-third-newton-rank6_quartic_truncation-root_reconstruction-replay_1_2_5.json            source 81, Part VI: delivered `code/rank6_quartic_truncation/root_reconstruction/replay_1_2_5.json`
+data/81-third-newton-rank6_quartic_truncation-root_reconstruction-replay_1_2_7.json            source 81, Part VI: delivered `code/rank6_quartic_truncation/root_reconstruction/replay_1_2_7.json`
+data/81-third-newton-rank6_quartic_truncation-root_reconstruction-replay_1_3_1.json            source 81, Part VI: delivered `code/rank6_quartic_truncation/root_reconstruction/replay_1_3_1.json`
+data/81-third-newton-rank6_quartic_truncation-root_reconstruction-replay_1_3_2.json            source 81, Part VI: delivered `code/rank6_quartic_truncation/root_reconstruction/replay_1_3_2.json`
+data/81-third-newton-rank6_quartic_truncation-root_reconstruction-replay_1_3_3.json            source 81, Part VI: delivered `code/rank6_quartic_truncation/root_reconstruction/replay_1_3_3.json`
+data/81-third-newton-rank6_quartic_truncation-root_reconstruction-replay_1_3_4.json            source 81, Part VI: delivered `code/rank6_quartic_truncation/root_reconstruction/replay_1_3_4.json`
+data/81-third-newton-rank6_quartic_truncation-root_reconstruction-replay_1_3_5.json            source 81, Part VI: delivered `code/rank6_quartic_truncation/root_reconstruction/replay_1_3_5.json`
+data/81-third-newton-rank6_quartic_truncation-root_reconstruction-replay_1_3_6.json            source 81, Part VI: delivered `code/rank6_quartic_truncation/root_reconstruction/replay_1_3_6.json`
+data/81-third-newton-rank6_quartic_truncation-root_reconstruction-replay_1_3_7.json            source 81, Part VI: delivered `code/rank6_quartic_truncation/root_reconstruction/replay_1_3_7.json`
+data/81-third-newton-rank6_quartic_truncation-root_reconstruction-replay_1_6_0.json            source 81, Part VI: delivered `code/rank6_quartic_truncation/root_reconstruction/replay_1_6_0.json`
+data/81-third-newton-rank6_quartic_truncation-root_reconstruction-replay_1_6_1.json            source 81, Part VI: delivered `code/rank6_quartic_truncation/root_reconstruction/replay_1_6_1.json`
+data/81-third-newton-rank6_quartic_truncation-root_reconstruction-replay_1_6_2.json            source 81, Part VI: delivered `code/rank6_quartic_truncation/root_reconstruction/replay_1_6_2.json`
+data/81-third-newton-rank6_quartic_truncation-root_reconstruction-replay_1_6_3.json            source 81, Part VI: delivered `code/rank6_quartic_truncation/root_reconstruction/replay_1_6_3.json`
+data/81-third-newton-rank6_quartic_truncation-root_reconstruction-replay_1_6_6.json            source 81, Part VI: delivered `code/rank6_quartic_truncation/root_reconstruction/replay_1_6_6.json`
+data/81-third-newton-rank6_quartic_truncation-root_reconstruction-replay_1_6_7.json            source 81, Part VI: delivered `code/rank6_quartic_truncation/root_reconstruction/replay_1_6_7.json`
+data/81-third-newton-rank6_quartic_truncation-root_reconstruction-replay_1_7_1.json            source 81, Part VI: delivered `code/rank6_quartic_truncation/root_reconstruction/replay_1_7_1.json`
+data/81-third-newton-rank6_quartic_truncation-root_reconstruction-replay_1_7_2.json            source 81, Part VI: delivered `code/rank6_quartic_truncation/root_reconstruction/replay_1_7_2.json`
+data/81-third-newton-rank6_quartic_truncation-root_reconstruction-replay_1_7_3.json            source 81, Part VI: delivered `code/rank6_quartic_truncation/root_reconstruction/replay_1_7_3.json`
+data/81-third-newton-rank6_quartic_truncation-root_reconstruction-replay_1_7_6.json            source 81, Part VI: delivered `code/rank6_quartic_truncation/root_reconstruction/replay_1_7_6.json`
+data/81-third-newton-rank6_quartic_truncation-root_reconstruction-replay_1_7_7.json            source 81, Part VI: delivered `code/rank6_quartic_truncation/root_reconstruction/replay_1_7_7.json`
+data/81-third-newton-rank6_quartic_truncation-root_reconstruction-replay_3_3_1.json            source 81, Part VI: delivered `code/rank6_quartic_truncation/root_reconstruction/replay_3_3_1.json`
+data/81-third-newton-rank6_quartic_truncation-root_reconstruction-replay_3_3_3.json            source 81, Part VI: delivered `code/rank6_quartic_truncation/root_reconstruction/replay_3_3_3.json`
+data/81-third-newton-rank6_quartic_truncation-root_reconstruction-replay_3_3_4.json            source 81, Part VI: delivered `code/rank6_quartic_truncation/root_reconstruction/replay_3_3_4.json`
+data/81-third-newton-rank6_quartic_truncation-root_reconstruction-replay_3_3_5.json            source 81, Part VI: delivered `code/rank6_quartic_truncation/root_reconstruction/replay_3_3_5.json`
+data/81-third-newton-rank6_quartic_truncation-root_reconstruction-replay_3_3_7.json            source 81, Part VI: delivered `code/rank6_quartic_truncation/root_reconstruction/replay_3_3_7.json`
+data/81-third-newton-rank6_quartic_truncation-root_reconstruction-replay_3_5_0.json            source 81, Part VI: delivered `code/rank6_quartic_truncation/root_reconstruction/replay_3_5_0.json`
+data/81-third-newton-rank6_quartic_truncation-root_reconstruction-replay_3_5_1.json            source 81, Part VI: delivered `code/rank6_quartic_truncation/root_reconstruction/replay_3_5_1.json`
+data/81-third-newton-rank6_quartic_truncation-root_reconstruction-replay_3_5_2.json            source 81, Part VI: delivered `code/rank6_quartic_truncation/root_reconstruction/replay_3_5_2.json`
+data/81-third-newton-rank6_quartic_truncation-root_reconstruction-replay_3_5_3.json            source 81, Part VI: delivered `code/rank6_quartic_truncation/root_reconstruction/replay_3_5_3.json`
+data/81-third-newton-rank6_quartic_truncation-root_reconstruction-replay_3_5_6.json            source 81, Part VI: delivered `code/rank6_quartic_truncation/root_reconstruction/replay_3_5_6.json`
+data/81-third-newton-rank6_quartic_truncation-root_reconstruction-replay_3_5_7.json            source 81, Part VI: delivered `code/rank6_quartic_truncation/root_reconstruction/replay_3_5_7.json`
+data/81-third-newton-rank6_quartic_truncation-root_reconstruction-replay_3_7_1.json            source 81, Part VI: delivered `code/rank6_quartic_truncation/root_reconstruction/replay_3_7_1.json`
+data/81-third-newton-rank6_quartic_truncation-root_reconstruction-replay_3_7_3.json            source 81, Part VI: delivered `code/rank6_quartic_truncation/root_reconstruction/replay_3_7_3.json`
+data/81-third-newton-rank6_quartic_truncation-root_reconstruction-replay_3_7_4.json            source 81, Part VI: delivered `code/rank6_quartic_truncation/root_reconstruction/replay_3_7_4.json`
+data/81-third-newton-rank6_quartic_truncation-root_reconstruction-replay_3_7_5.json            source 81, Part VI: delivered `code/rank6_quartic_truncation/root_reconstruction/replay_3_7_5.json`
+data/81-third-newton-rank6_quartic_truncation-root_reconstruction-replay_3_7_7.json            source 81, Part VI: delivered `code/rank6_quartic_truncation/root_reconstruction/replay_3_7_7.json`
+data/81-third-newton-rank6_quartic_truncation-root_reconstruction-replay_7_7_1.json            source 81, Part VI: delivered `code/rank6_quartic_truncation/root_reconstruction/replay_7_7_1.json`
+data/81-third-newton-rank6_quartic_truncation-root_reconstruction-replay_7_7_3.json            source 81, Part VI: delivered `code/rank6_quartic_truncation/root_reconstruction/replay_7_7_3.json`
+data/81-third-newton-rank6_quartic_truncation-root_reconstruction-replay_7_7_7.json            source 81, Part VI: delivered `code/rank6_quartic_truncation/root_reconstruction/replay_7_7_7.json`
+data/81-third-newton-verification_certificates.json                                            source 81, Part VI: delivered `verification_certificates.json`
+```
+
 ## Labels
 
 Every label in `article.tex` carries the prefix `mrn:`. Labels written in
@@ -714,10 +1292,20 @@ source NN becomes `mrn:<part>:<slug>:X`:
 | III (`mrn:s:`) | 60 `rb`, 10 `tv`, 23 `rs`, 13 `lg`, 05 `sn`, 69 `ce`, 63 `ne` |
 | IV (`mrn:e:`) | 08s `tg`, 21 `ec`, 43 `cc`, 38 `mh`, 35 `tr`, 32 `tc`, 29 `se`, 08 `r7`, 03 `fp`, 02 `ff`, 01 `r8` |
 | V (`mrn:v:`) | 77 `rf4`, 78 `st`, 79 `te`, 80 `tt` |
+| VI (`mrn:t:`) | 81 `tn` |
 
-The article has 554 labels: 84 under `mrn:w:`,
-72 under `mrn:u:`, 88 under `mrn:s:`, 170 under
-`mrn:e:`, 94 under `mrn:v:` and 46 others. Batch 73 (Part V) added 99
+The article has 594 labels: 84 under `mrn:w:`,
+72 under `mrn:u:`, 89 under `mrn:s:`, 170 under
+`mrn:e:`, 94 under `mrn:v:`, 37 under `mrn:t:` and 48 others.
+Batch 100 (Part VI) added 40 labels and removed or renumbered none (checked
+against the `.aux` of a build of the previous text): the 32 delivered labels
+of source 81 (for example `mrn:t:tn:thm:quartic`, `mrn:t:tn:cor:third`,
+`mrn:t:tn:thm:quadratic`; the delivered inner names `br:`, `bb:`, `nbb:`,
+`bb370:`, `app:` are kept), three labels on unlabelled delivered subsections
+(`mrn:t:tn:sec:completion`, `mrn:t:tn:sec:limit`, `mrn:t:tn:sec:fourth`),
+`mrn:part:six`, `mrn:src:81`, `mrn:t:sec:questions`, `mrn:t:rem:twoshore`,
+and `mrn:s:sn:sec:scope` on source 05's closing subsection (Section 26.7),
+whose research direction Part VI carries out. Batch 73 (Part V) added 99
 labels and removed none: the 86 delivered labels of sources 77–80 (38, 12,
 14 and 22), seven labels on unlabelled delivered sections
 (`mrn:v:st:sec:boolean`, `mrn:v:st:sec:outer`, `mrn:v:te:sec:constructions`,
@@ -805,6 +1393,8 @@ by source 74 one may assume a genuine `3+3` minimum cover):
   a Lorentzian cubic truncation for every genuine `3+3` cover. With the
   first gap (Theorem 180.2 of `preorder-root-polytopes`), only gaps three
   and four remain open at matching number six with one weighted shore.
+  [Updated 5 October 2026, batch 100: source 81 (Part VI) proves gap three;
+  only gap four remains open.]
 - **Sources 69 and 63.** All five inequalities for every `3×3` core with
   complete exterior neighbourhoods (69) and for the complete core with
   nested exterior neighbourhoods (63); a 20-vertex graph whose full right
@@ -890,6 +1480,51 @@ by 26 exact certificates); source 79's graph corollaries (source 74); source
 `preorder-root-polytopes`, source 74), with two extra numerical instances
 (86 and 72 vertices).
 
+Part VI (batch 100; unit left activities, arbitrary positive right
+activities, matching number six, unless stated). New:
+
+- **Source 81, the third gap.** For a genuine `3+3` minimum cover,
+  `F_4 = 15s⁴ + 10p_1s³ + 6p_2s² + 3p_3s + p_4`, with every right variable
+  retained, is Lorentzian (Theorem 45.1). Hence `9p_3² ≥ 16p_2p_4` for every
+  graph of matching number six (Corollary 45.2; the other cover splits come
+  from source 74's scalar theorem). With gaps one, two and five (Theorem 180.2
+  of `preorder-root-polytopes`, sources 05 and 13) only the fourth gap
+  `8p_4² ≥ 15p_3p_5` remains open in this setting. This is the research
+  direction printed by source 05 (Section 26.7). The proof checks every
+  quadratic derivative: exterior roots by residual-graph conditioning and
+  Theorem 45.3 at rank four; mixed roots by exact class reductions, ten
+  retained determinants and 89 profiles × 51 cones = 4,539 translated
+  polynomials with 43,344,919 nonnegative coefficients; two core roots by 192
+  factor/cone checks, a private-leaf lemma, 960 identities with 43,891,306
+  coefficients, 60 positive-Rayleigh identities (465 multiplier and 2,452,009
+  remainder terms), two nested profiles (30 identities with 488 and 371,340
+  terms, and a real-chart Rayleigh certificate of 1,524 coefficients), three
+  analytic profiles, and a five-region Bernstein certificate for the profile
+  `(3,7,0)` (365,114 slots: 363,633 positive, 1,481 zero).
+- **Source 81, every matching number.** With arbitrary positive left
+  activities, `G ⪰ dd^T/r` on signed vectors (`G_ii = d_i²`,
+  `G_ij = d_id_j − a_ij`, `r` the matching number), so
+  `C(r,2)s² + (r−1)p_1 s + p_2` is Lorentzian (Theorem 45.3). This
+  generalizes, by the same route, source 80's Theorem 43.3, which normalizes
+  by the number of indexed vertices.
+- **Source 81, Appendix A (Section 45.7).** The rank-3 matrix
+  `M = (0 0 0 1 1 1; 1 1 1 0 0 1; −1 0 1 −1 0 −1; 0 1 2 0 1 1)` has
+  `d = (2,2,3,2,2,4)`, `z^T(2dd^T − 3A)z = −4` at `z = (3,3,1,4,4,−2)` and
+  `det(2dd^T − 3A) = −62208`: the matrix bound fails for regular-minor
+  supports normalized by matrix rank (a signed obstruction only).
+- **Source 81, Appendix B (Section 45.8).** Every cubic core-restoration
+  coefficient of the fourth gap is nonnegative (via
+  `Σ_{i≠r} d_i ≥ d_r + n − 2` for allowed-edge degrees).
+- **Merge, Remark 46.1.** If a minimum cover has exactly two right vertices,
+  `F_4` is Lorentzian (source 74's lift and `∂_s²F_6 = 2F_4`).
+
+Second routes and repetitions in Part VI (not new): the first-gap inequality
+and its equality case (Theorem 180.2 and Corollary 180.3 of
+`preorder-root-polytopes`; Section 11 and Theorem 14.6 of Part I), by the
+random-choice Gram bound; source 05's bound `G ⪰ dd^T/6` (case `r = 6` of
+Theorem 45.3); source 05's quintic barrier on source 23's graph, printed as a
+pointer.
+
 ## What is not claimed
 
 - Source 74's theorem asserts neither real-rootedness nor stability of the
@@ -910,12 +1545,15 @@ by 26 exact certificates); source 79's graph corollaries (source 74); source
   answers Research question 88 of `preorder-root-polytopes`, which puts
   weight on both cores.
 - Part III does not prove `ULC_6` at every finite one-shore activity: gaps
-  three and four are open in general. Source 60's conditioned and eventual
+  three and four are open in general [updated 5 October 2026, batch 100:
+  gap three is now proved by source 81, Part VI; gap four is open]. Source
+  60's conditioned and eventual
   results do not give `ULC` of the original polynomial at every activity;
   source 23's obstruction refutes neither rank-six `ULC` nor an
   eventual-scaling theorem; source 13's local lemma is graph-generic only;
-  source 05's quartic route is a research direction and its quintic route
-  is refuted (not scalar `ULC_6`); the barriers of sources 63 and 69
+  source 05's quartic route is a research direction (carried out by source
+  81 in Part VI, batch 100) and its quintic route is refuted (not scalar
+  `ULC_6`); the barriers of sources 63 and 69
   obstruct proof methods, not `ULC`.
 - Part IV proves nothing at finite activities beyond Parts I–III, and no
   uniform threshold over graphs or fields. Source 08s proves no middle-gap
@@ -936,6 +1574,23 @@ by 26 exact certificates); source 79's graph corollaries (source 74); source
   (the scalar sequences stay `ULC`), it gives no unweighted counterexample and
   no minimum-vertex bound, and its first-layer theorem does not assert full
   Lorentzianity for more than three left vertices.
+- Part VI: source 81 asserts retained-right `F_4` Lorentzianity only for
+  genuine `3+3` covers ("It does not assert retained-right quartic
+  Lorentzianity for every other cover orientation"); scalar `ULC` does not
+  imply a retained-variable statement. The fourth gap stays open, and the
+  quintic counterexample "is not a counterexample to the remaining scalar
+  fourth gap". Appendix A is a signed-variable obstruction ("no positive-field
+  scalar ULC failure is inferred"); Appendix B "proves only a core-restoration
+  statement". Its first-gap equality proof is "an alternative proof … not a
+  claim of a new equality principle". Fractional populations are "an
+  algebraic continuity argument, not a graph interpretation", and the
+  analytic profiles concern actual unit populations. Optimization only found
+  rational weights; every identity is exact, "No floating tolerance is a
+  proof premise", and searches and logs are omitted. Source 81 claims no
+  proof-assistant certification, refereeing or exhaustive priority. Its full
+  mode, which regenerates the two large arrays, was not rerun for this report
+  (see the rerun section): their nonnegativity rests on source 81's own
+  pre-release reconstruction, recorded in the shipped records.
 - No source claims global priority, Lean certification or referee review.
 
 What `preorder-root-polytopes` already proves is cited, not claimed: the
@@ -968,10 +1623,10 @@ its incidence lemma is a pointer to source 13's printed copy of it.
 | RQ 89 `hb:q:asymmetry` | in large part: full Hall classification (source 75), asymmetric failures (sources 74, 75); unequal core activities (sources 73, 55, 47) |
 | RQ 90 `hb:q:defects` | bears on it: equality at every gap under the cover hypothesis (source 72) |
 | RQ 84 `hb:q:unit` | answered negatively: connected all-unit graph with `nu = 3450` (source 71); least rank open, in `[6, 3450]` |
-| RQ 85 `hb:q:oneshore` | answered negatively: `nu = 50` (125 vertices) and `nu = 38` (source 73); exactly 38 for one common right-core activity on full Hall graphs (sources 55, 47); least rank in `[6, 38]`; at `nu = 6` gaps 1, 2 and 5 hold for every one-shore graph (Part XI, sources 05, 13); eventually after scaling the right part of a minimum cover through `nu = 8` (Part IV) |
+| RQ 85 `hb:q:oneshore` | answered negatively: `nu = 50` (125 vertices) and `nu = 38` (source 73); exactly 38 for one common right-core activity on full Hall graphs (sources 55, 47); least rank in `[6, 38]`; at `nu = 6` gaps 1, 2 and 5 hold for every one-shore graph (Part XI, sources 05, 13), and gap 3 too [5 October 2026, batch 100: source 81], so only gap 4 is open; eventually after scaling the right part of a minimum cover through `nu = 8` (Part IV) |
 | RQ 88 `hb:q:phase` | not answered (both cores weighted); its one-shore analogue is answered by sources 47 and 51 |
 | RQ 94 `mr:q:allrank` | answered negatively at unit weights (source 71) |
-| RQ 101 `mr:q:bimatroid` | in part: rank-two exterior blocks with ordinary columns (source 60) |
+| RQ 101 `mr:q:bimatroid` | in part: rank-two exterior blocks with ordinary columns (source 60); bears on it [5 October 2026, batch 100]: a rank-3 `4×6` regular-minor matrix violates the signed matrix form of source 81's quadratic bound normalized by matrix rank (source 81, Appendix A) |
 | RQ 37 `lor:q:first` (Part V) | weighted: holds through `nu = 5`, fails from 6; unit and one-shore: fail (sources 71, 73) |
 
 Part V answers none of these anew. Source 77 claims RQ 93, RQ 95 and the
@@ -985,6 +1640,18 @@ realizations (source 77). The least order of a unit-weight nonreal zero is
 special to matching number three: for `nu ≥ 4` it is `2nu` (the theta graph of
 `preorder-root-polytopes` plus disjoint edges), as a merge note in Section 40
 records.
+
+Part VI (batch 100) advances RQ 85 (gap three at `nu = 6`, every one-shore
+graph) and bears on RQ 101 (Appendix A). Section 46 of the article lists what
+it leaves open, each with its source, argument and missing step (standing rule
+of 4 October 2026): the fourth gap `8p_4² ≥ 15p_3p_5`; the constant, linear
+and quadratic core-restoration terms of Appendix B; retained-right `F_4` for
+covers with no minimum cover of two or three right vertices (Remark 46.1,
+written in the merge, settles exactly two); which regular-minor supports
+satisfy the quadratic bound, with an exact check made in the merge that
+Appendix A's matrix is copositive (minimum `15/31` on the simplex); and an
+independent regeneration of the two large coefficient arrays. Source 81
+contains no claim found to be wrong.
 
 ## Relation to neighbouring reports and formal projects
 
@@ -1011,9 +1678,15 @@ records.
   reciprocal-notes commit adds two further notes marked "Added 1 October
   2026, batch 73" here, on the first two points, after the existing notes
   at Theorem 15.1 and Corollary 2.2.
+- Part VI (batch 100) bears on `preorder-root-polytopes` too: its README
+  says that this report "proves the second and last rank-six inequalities"
+  (still true; the third is now proved as well), and Appendix A of source 81
+  bears on its Research question 101 (`mr:q:bimatroid`) beside its Theorem
+  192.1. That report has no note on Part VI yet; a reciprocal note is drafted
+  for the batch's reciprocal-notes commit.
 - Placement in this collection beside other work confers no formal status.
   No Lean or Rocq declaration in the repository concerns matching-support
-  polynomials; nothing in this report, Part V included, is formalized.
+  polynomials; nothing in this report, Parts V and VI included, is formalized.
 
 ## Build
 
@@ -1107,6 +1780,60 @@ checker (where its producer `replay_core_certificates.py`, which has no
 output option, must also be run). Each receipt then equals the shipped one
 apart from its timing field; source 77's receipts, written to standard
 output, have CRLF line endings on Windows.
+
+**Part VI (batch 100).** Use the batch-100 arrival commit; the archive root
+is the package root (no inner directory). Do not run source 81's programs in
+this directory: they need the delivered layout and names, the unshipped
+`SHA256.json`, the 34 unshipped `audit_snapshot/` copies and the three
+excluded large files, and they refresh their JSON records in place with
+current running times; `verify.py` also writes `verification_<mode>.json` at
+the package root (the shipped `data/81-third-newton-verification_certificates.json`
+is the delivered record of the certificates mode).
+
+```sh
+W=$(mktemp -d)
+git -C /path/to/ProveIt show 60f54ea06:docs/incoming/ProveIt_Rank_Six_Third_Newton_Inequality.zip > "$W/a.zip"
+cd "$W" && unzip -q a.zip
+python check_integrity.py                 # first: 590 files against SHA256.json
+python -O verify.py --mode receipts
+python -O verify.py --mode certificates   # the default mode
+python -O verify.py --mode full           # needs g++ (C++17) with GMP
+```
+
+| Mode | What it checks | Placement run (Python 3.14.4, SymPy 1.14.0, Windows) |
+|---|---|---|
+| `check_integrity.py` | the release hashes | 590/590; the nested `audit_snapshot/SHA256.json` 101/101 |
+| `receipts` | the complete saved reconstruction records, their counts, every coefficient hash and the immutable inputs | PASS, 76 s |
+| `certificates` | additionally every endpoint and matrix identity, every reduced Rayleigh/SOS certificate, the nested, symmetric and `(3,7,0)` profiles, and the saved large-array records | every step PASS, in two runs on copies, about 40 min in all (the package README says "several minutes"); `check_kernels` alone took about 20 min |
+| `full` | additionally regenerates both large coefficient arrays (43,344,919 and 43,891,306 entries) | not run: `gmpxx.h` is absent from the local toolchain, and the package warns of "several gigabytes" of memory |
+
+The standalone check `python -O code/rank6_quartic_BB_audit/check_determinants.py`
+(36,060 interpolation points; not part of `verify.py`) was not rerun. On
+Windows, regenerated text files have CRLF line endings; compare modulo line
+endings.
+
+## Reconstructing the excluded data of Part VI
+
+Three delivered files over 1 MB are not shipped (Vladimir, 2 October 2026:
+exclude heavy regenerable artifacts). Each is retrieved from the arrival
+commit with
+
+```sh
+git -C /path/to/ProveIt show 60f54ea06:docs/incoming/ProveIt_Rank_Six_Third_Newton_Inequality.zip > a.zip
+unzip a.zip <delivered path>
+```
+
+| Delivered path | Bytes | Rebuild |
+|---|---|---|
+| `code/rank6_quartic_BR/br_manifest.json` | 1,213,303 | `python -O finalize_batch.py` in `code/rank6_quartic_BR` of a delivered-layout copy (shipped as `code/81-third-newton-rank6_quartic_BR-finalize_batch.py`); 26 s at placement, byte-identical apart from CRLF line endings on Windows |
+| `code/rank6_BB_nested/reduced_170_target.json` | 2,370,150 | no shipped program writes it; it is the coefficient list of `576·simple_numerator` from `data/81-third-newton-rank6_BB_nested-aggregate_170.json`, and `replay_reduced_certificates.py 170` (shipped as `code/81-third-newton-rank6_BB_nested-replay_reduced_certificates.py`) reads it and checks it against a fresh recomposition from that file; retrieve it from the archive |
+| `code/rank6_quartic_truncation/raw_3_5_0_0.txt` | 2,393,306 | written by `build_BB_certificate.py` through the GMP helper `multiply_sparse.cpp` (shipped as `code/81-third-newton-rank6_quartic_truncation-build_BB_certificate.py` and `…-multiply_sparse.cpp`; C++17 and GMP); not attempted here, retrieve it from the archive |
+
+The other three raw files of the same certificate,
+`data/81-third-newton-rank6_quartic_truncation-raw_{3_3_1_0,7_7_1_0,7_7_3_0}.txt`,
+are shipped. Earlier sources of this report shipped certificates of 1.2–2.5 MB
+(for example `data/13-last-newton-exact_certificate.json`, 2,535,544 bytes);
+batch 100 excluded files over 1 MB instead, following the directive above.
 
 ## Delivery names and discrepancies
 
@@ -1237,3 +1964,43 @@ output, have CRLF line endings on Windows.
   `code/79-two-element-build.sh` and `code/80-three-tail-build.sh` build the
   unshipped manuscripts. The four `requirements.txt` of Part V
   (`sympy==1.14.0`) are identical, each kept beside its own checkers.
+- Part VI (batch 100): `data/81-third-newton-PORTABILITY.json` records four
+  edits made to copied programs before packaging, with the hashes of the
+  originals and of the packaged files: in
+  `rank6_quartic_BB_audit/check_factors.py`, `check_determinants.py` and
+  `verify_Rayleigh_repairs.py` the absolute sandbox path
+  `/workspace/shared/rank6_quartic_truncation` was replaced by a path
+  relative to the script, and `check_regular_matrix.py` had its assertions
+  hardened. The shipped programs are the edited ones; the record keeps the
+  historical path `/workspace/shared/…`, which is not a path in this
+  repository.
+- `code/81-third-newton-check_integrity.py` reads the unshipped
+  `SHA256.json`, and `code/81-third-newton-verify.py` and the checkers it
+  drives use delivery paths (`code/rank6_…/…`), the 34 unshipped
+  `audit_snapshot/` copies and the three excluded large files; they run only
+  in a delivered-layout copy (rerun section). The package README's "Expect
+  several minutes" for the certificates mode was about 40 minutes here.
+- The proof notes `81-third-newton-rank6_quartic_BR-reduction.md` ("A fresh
+  full coefficient reconstruction remains pending; the entire quartic theorem
+  also needs its separate RR and BB cases") and
+  `81-third-newton-rank6_quartic_truncation-audit_snapshot-BB_reduction.md`
+  ("does not assert the final BB theorem") are historical drafts that belong
+  to the package's immutable input snapshot; as the package README says,
+  their "pending" status is superseded by the article and the final
+  reconstruction records. They are kept as delivered.
+- `data/81-third-newton-CHECKS.json` describes the delivered 17-page PDF and
+  its build, which are not shipped; its `portable_gmp_reconstruction_smoke`
+  and `full_array_reconstruction_before_packaging` entries are the package's
+  own records of runs not repeated here.
+  `81-third-newton-rank6_quartic_BB_audit-profile_370-README.md` describes
+  the delivered directory `code/rank6_quartic_BB_audit/profile_370/`.
+- Source 81's text cites its predecessors as sealed reports by title only
+  (`[smallcover]`, `[second]`, `[last]`, `[rooted]`); the article maps them to
+  sources 74, 05, 13 and 23 (bibliography notes; `b:m13` was added for source
+  13). Its delivered `article.tex` was split into seven `\input` files; the
+  article inlines them in delivered order.
+- `data/81-third-newton-rank6_BB_nested-standalone_replay.log` is a delivered
+  `.log` record, tracked despite the repository's `*.log` ignore rule.
+- In the article, the two side-by-side arrays of the three symmetric profiles
+  (Section 45.5.5) are set as two displays, to fit this report's margins; no
+  entry changed.
