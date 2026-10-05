@@ -1,0 +1,130 @@
+{
+  "title": "Ascent Sequences with Bounded Multiplicities",
+  "date": "2026-10-02",
+  "variables": {
+    "N": "word length; tends to infinity with fixed cap r",
+    "r": "integer cap, at least 2",
+    "R": "r+1 in the separate cap analysis"
+  },
+  "proved": [
+    "Exact sorted residual-capacity recurrence and histogram refinement",
+    "Fixed-cap root and consecutive-ratio limits with mu_r=1/integral g(E_r)",
+    "O(N^(r+2)) arithmetic enumeration with O(N^(r+1)) memory",
+    "All-positive-terminal-mark pressure limit",
+    "Endpoint concentration and full large-deviation principle",
+    "Lambert W_0 word-length inverse with o(log(y)/(log log(y))^2) error",
+    "Exact positive cap sectors and all inverse-cap orders for each fixed sector",
+    "Reciprocal gap, continuous cap inversion and qualified integer thresholds"
+  ],
+  "not_claimed": [
+    "Word-length coefficient equivalent or prefactor",
+    "Word-length subexponential transseries or amplitude",
+    "Central limit theorem or covariance limit",
+    "Uniform asymptotics for a cap growing with word length",
+    "Uniform expansion with a growing number of cap sectors",
+    "Unconditional single-integer rounding of the Lambert cap approximation"
+  ],
+  "sources": [
+    {
+      "url": "https://doi.org/10.1016/j.jcta.2009.12.007",
+      "role": "Ascent sequence background"
+    },
+    {
+      "url": "https://doi.org/10.37236/713",
+      "role": "Pattern-avoidance background"
+    },
+    {
+      "url": "https://doi.org/10.37236/11266",
+      "role": "Adjacent-label compaction antecedent and r=2 conjecture"
+    },
+    {
+      "url": "https://oeis.org/A294220",
+      "role": "Full bounded-multiplicity array and published finite overlap"
+    },
+    {
+      "url": "https://oeis.org/A202058/b202058.txt",
+      "role": "Published r=2 finite overlap"
+    }
+  ],
+  "exact_verification": {
+    "caps": [
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "all_caps_total_max_N": 10,
+    "all_caps_histogram_max_N": 10,
+    "r2_additional_max_N": 11,
+    "frozen_counts": 55,
+    "frozen_histograms": 50,
+    "frozen_nonzero_histogram_bins": 985,
+    "literal_prefixes_visited": 919973,
+    "published_entries": 57,
+    "refined_swap_cases": 12220,
+    "deterministic_buffered_paths": 78570,
+    "positive_drift_blocks": 5,
+    "negative_fixtures": 64,
+    "negative_subprocesses": 128,
+    "optimization_modes": [
+      "normal",
+      "python -O"
+    ],
+    "optional_exact_analytic": {
+      "dependency": "SymPy",
+      "printed_coefficients": "m=1..3, j=0..3",
+      "kappa_caps": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        8,
+        12
+      ],
+      "invalid_input_checks": 26,
+      "modes": [
+        "normal",
+        "python -O"
+      ]
+    }
+  },
+  "pdf": {
+    "pages": 28,
+    "math_and_layout_review": "Completed before staging; full build has no unresolved references or TeX warnings"
+  },
+  "numerical_status": "Optional diagnostic quadrature is not interval certified and is not used as mathematical proof",
+  "payload_sha256": {
+    "README.md": "fbca74b0781a6cc6bf82baac5d399dab8e6be4b8459d4f988ee12d622aaf57e4",
+    "article.pdf": "04b531f731030faad0ec97d087f6ff4b62bfdda5d570444a214588229d881395",
+    "article.tex": "86ea12d1141dd9908394c9ef67d4f95c5ca81ea03b9924319009cfea94a99879",
+    "article_standalone.tex": "a82b1330840603c8032c3f8f467aaddaf683681349433f06014762597ff4831d",
+    "blocks.tex": "f2cebfc60f0489f1620fd8d0a4fbbb43402096d4f8bd6c29f328efefccbcbf47",
+    "build_local.sh": "ea9107a57c8fbcb02aae583ecaae341addb45c3648728d5b76b4d6c65a92df84",
+    "calibration.tex": "0c2edb8d127be30e851b2d05a24197ba9f1ea45f4c46e5b53cf72340f7599e07",
+    "checks.tex": "da0fa72f1e126793ffa7c03a32133c00882eda23661b6f153849ad1ebdf444c7",
+    "checks/README.md": "4992f2f27e0fe37ad9ff406f7ae1067bac0128b3fabf77fdb0bb1d9891c9ed51",
+    "checks/analytics/README.md": "e8ac9f78bc4045143c3615825fdf2091f1456996b1fdc418324f627e2070d378",
+    "checks/analytics/check_analytic_coefficients.py": "d94ad03ec263300a76bc6ced104fcee9210424981bd4d198768d43e4d7464b67",
+    "checks/analytics/diagnostic_cap_inversion.py": "2256da2441f75a6b31bcfe36cb23d491d71813d3be0e5a7587270e8b10443b92",
+    "checks/analytics/diagnostic_sectors.py": "1e5c2fa2f4899566472fbea7c01c7d2c5e84d6d928f925c398c40ac5815c9602",
+    "checks/analytics/run_analytic_checks.sh": "57e852b248a6354f4e207f8b5303d9f4777585582f1316f487a43e01410b5cf5",
+    "checks/analytics/sector_coefficients.py": "3ae590e89b17eabae0b6395c8c51a9ed933d6a3a436dc32ff2c937d357cbde23",
+    "checks/bounded_exact.py": "51eb98d0b962dca43d90a21632994f18dbbbef514f3ab21f26548a64e05dfa29",
+    "checks/data/expected_counts.json": "df2550bf95c186d16e970920967a42c714d8ddabfddf1c51c2f08e5339d45aef",
+    "checks/data/expected_histograms.json": "09cdd8d9a882c1fd87cb07952592eea761a9f35d974aa83152a9564cb95ccbb7",
+    "checks/data/published_counts.json": "81ff63a0514f883c2a55f67c945f7fa18d1a54a120ec13591e802ce890a7a2d8",
+    "checks/diagnostic_characteristic.py": "9fee858b12e153bc2e8e5f5e42f0b6a562aef8517a8869e79edc3b70929385e4",
+    "checks/test_validators.py": "c693769cd5828677430860b8d666d8709b27a8ea4c19fe656654c17995886469",
+    "compaction.tex": "9d3d001d823391faebd02d871b7ca51618f60fe597d47b585e0da4b1bf05273a",
+    "growth.tex": "152aecaa980c0bafdff033daddda503800ea21d24e9c949a201ab6a66fee2424",
+    "inverse.tex": "49761c6a106a2cdaf7041f50dcaac0b4e461fb5f6540d732726c1ef4c6589dcc",
+    "large_cap.tex": "704f7daaf42cbc1d39cb49397da47448111da76d92a7c97b824a2da7fa06e454",
+    "questions.tex": "d40b7ec5662d3212d831ef9e09a22d25f9b8c7a8e0120cac62ed85cf2239a564",
+    "ratio.tex": "94190c094011c02cbc3f66c4c617d4954a5f19efb950632e70a9145ca64318b4",
+    "references.tex": "f87d442b4a91bbbb7321c2e9d94a849f4a620ddc0d68665cc31592e176097e53",
+    "results.tex": "994c7e951d5131c35426d92bcd3485fd71038c9baf2b2246f1373af1821007b8",
+    "run_checks.sh": "a627f44abfc0ddc307bbf513b9ee05fb44de35c7ae5147bc7728c7454c014c6a"
+  }
+}

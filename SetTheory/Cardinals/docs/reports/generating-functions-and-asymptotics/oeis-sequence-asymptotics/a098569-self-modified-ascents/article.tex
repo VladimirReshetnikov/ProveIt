@@ -1,0 +1,49 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,booktabs,array}
+\usepackage{xcolor,enumitem,fancyhdr,needspace}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black,breaklinks=true]{hyperref}
+\pdfmapfile{+lm.map}\pdfmapfile{+cm.map}\pdfmapfile{+symbols.map}
+\pdfinfoomitdate=1\pdfsuppressptexinfo=15
+\pdftrailerid{<417363656E743234323230323631303035><417363656E743234323230323631303035>}
+\providecommand{\ReportNumber}{242}
+\hypersetup{pdftitle={Self Modified Ascent Sequences and Positive Diagonal Tables},pdfauthor={Report \ReportNumber},pdfsubject={A098569 A098568 A121690 exact gamma saddle expansions dimension laws binary probabilities and inversion}}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small Self modified ascent sequences}\fancyhead[R]{\small Report \ReportNumber}\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0pt}\setlength{\headheight}{14pt}
+\setlength{\parskip}{4pt}\setlength{\emergencystretch}{2em}
+\setlist{itemsep=2pt,topsep=4pt}\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]\newtheorem{lemma}[theorem]{Lemma}\newtheorem{proposition}[theorem]{Proposition}\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\E}{\mathbb E}\newcommand{\Prob}{\mathbb P}\newcommand{\Var}{\operatorname{Var}}\newcommand{\asc}{\operatorname{asc}}
+\newcommand{\R}{\mathbb R}\newcommand{\Z}{\mathbb Z}\newcommand{\N}{\mathbb N}\newcommand{\dd}{\,\mathrm d}
+\newcommand{\ceil}[1]{\left\lceil #1\right\rceil}\newcommand{\fall}[2]{(#1)_{\underline{#2}}}
+\begin{document}
+\begin{center}
+{\large Report \ReportNumber}\par\vspace{8pt}
+{\LARGE\bfseries Self Modified Ascent Sequences\\[5pt] and Positive Diagonal Tables}\par\vspace{8pt}
+{\large Exact saddle expansions, dimension laws, binary probabilities and inversion}\par\vspace{7pt}
+5 October 2026
+\end{center}
+\begin{abstract}
+Let $b_N$ count nonnegative upper-triangular integer tables of total sum $N$ with positive diagonal, and let $c_N$ count their binary members. These are the prior self-modified ascent-sequence models, with the current indexing $b_N=\mathrm{A098569}(N-1)$ and $c_N=\mathrm{A121690}(N-1)$ for $N\ge1$. Starting from their established exact sums, we prove arbitrary fixed-order expansions at the exact gamma saddle, with global tail bounds and an explicit lattice transfer. Bounded real dimension marks are allowed. A full-span local Gaussian law and moment corrections determine the row distribution of A098568. If $u(u+2)e^u=2N$, the counts have elementary relative carriers proportional to
+\[
+ \exp\!\left(\frac{Nu(u+1)}{u+2}\pm\frac u2\pm\frac{u^2}4\right),
+\]
+with prefactor $\sqrt{2/(u^2+4u+2)}$. The binary probability is asymptotic to $e^{-u^2/2-u}$; we give its explicit rational first correction and an all-fixed-order quotient algorithm. Smooth exact-saddle inverses yield two-ceiling integer brackets, and elementary inverse seeds have vanishing absolute error. The log-square factor, the rare-event tail scale and the rounding qualifications are essential. Exact enumeration and model identifications are credited to the historical literature. Finite reproducible computations are consistency checks, not interval certificates or substitutes for the proofs.
+\end{abstract}
+\input{sections/01_models}
+\input{sections/02_saddle}
+\input{sections/03_localization}
+\input{sections/04_transfer}
+\input{sections/05_dimension}
+\input{sections/06_elementary}
+\input{sections/07_binary}
+\input{sections/08_rational}
+\input{sections/09_inverse}
+\input{sections/10_checks}
+\input{sections/11_outlook}
+\input{sections/12_references}
+\end{document}

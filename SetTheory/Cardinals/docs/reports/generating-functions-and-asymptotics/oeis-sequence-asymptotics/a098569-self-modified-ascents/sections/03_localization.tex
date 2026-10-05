@@ -1,0 +1,143 @@
+\section{Global localization and differentiable estimates}
+\label{sec:localization}
+The analytic inputs are the standard positive-real Stirling, digamma and polygamma estimates \cite{dlmf}. They also follow by integral comparison from
+\[
+ \psi_j(z)=(-1)^{j+1}j!\sum_{k\ge0}(z+k)^{-j-1}\quad(j\ge1,z>0),
+\]
+with the digamma asymptotic $\psi(z)=\log z+O(z^{-1})$. We will use fixed derivative orders only.
+
+\subsection{A comparison valid up to the endpoint}
+Define
+\begin{equation}\label{eq:Hphase}
+ H_N(x)=(N-x)\left\{\log\frac{x^2}{2(N-x)}+1\right\},
+ \qquad H_N(N)=0.
+\end{equation}
+For every fixed $a>0$,
+\begin{equation}\label{eq:valuecompare}
+ f_N(x)=H_N(x)+O_a(L^2),\qquad aN/L\le x\le N.
+\end{equation}
+To prove this uniformly, including $x=N$, set $s=M(x)$ and $q=N-x$. The exact integral representation
+\begin{align}
+ \log\Gamma(s+q)-\log\Gamma(s)&=q\log s+R(s,q),\label{eq:remainder}\\
+ R(s,q)&=\int_0^q\bigl(\psi(s+v)-\log s\bigr)\dd v
+       =O\!\left(\frac{q(q+1)}s\right)\label{eq:Rbound}
+\end{align}
+holds in this range. Also
+\[
+ q\log s=q\log(x^2/2)+O(N/x),\qquad
+ \log\Gamma(q+1)=q\log q-q+O(\log(q+2)),
+\]
+where $q\log q=0$ at zero. The latter bound follows from Stirling for $q\ge1$ and continuity on $[0,1]$. These estimates give \eqref{eq:valuecompare}, without any assumption that $q$ is large at the endpoint.
+
+For each fixed $\alpha>0$,
+\begin{equation}\label{eq:fixedalpha}
+ H_N(\alpha N/L)=N\bigl[L-2\log L+2\log\alpha-\log2+1-\alpha\bigr]
+        +O_\alpha(N\log L/L).
+\end{equation}
+In particular, at $x_*=2N/L$,
+\[
+ f_N(x_*)+tx_*=N[L-2\log L+\log2-1]+O_T(N\log L/L).
+\]
+
+\begin{lemma}[Global exclusion]\label{lem:global}
+Uniformly for $|t|\le T$, for all sufficiently large $N$,
+\begin{equation}\label{eq:globalgap}
+ \sup_{x\in[1,N]\setminus I_N}\{f_N(x)+tx\}
+ \le f_N(x_*)+tx_*-cN,
+\end{equation}
+where, for example, $c=1/4$ is admissible eventually.
+\end{lemma}
+\begin{proof}
+For the lower tail, let
+\[
+ \mathcal B(s,q)=\frac{\Gamma(s+q)}{\Gamma(s)\Gamma(q+1)}.
+\]
+For $s\ge1,q\ge0$, this function is nondecreasing in both variables because
+\[
+ \partial_s\log\mathcal B=\psi(s+q)-\psi(s)\ge0,\qquad
+ \partial_q\log\mathcal B=\psi(s+q)-\psi(q+1)\ge0.
+\]
+Here $s+q\ge q+1$ and $\psi$ is increasing. If $x\le aN/L$, $a=1/2$, then
+\[
+ f_N(x)\le\log\mathcal B(M(aN/L),N)
+ =N[L-2\log L+2\log a-\log2+1]+O(L^2).
+\]
+The mark is $O_T(N/L)$ in this tail. Comparison with $x_*$ gives a gap
+$(2\log4-2)N+o(N)$.
+
+For the upper tail, direct differentiation gives
+\begin{align}
+ H_N'(x)&=2N/x-2-2\log x+\log(2(N-x)),\label{eq:Hprime}\\
+ H_N''(x)&=-2N/x^2-2/x-1/(N-x)<0.\label{eq:Hsecond}
+\end{align}
+At $x=4N/L$, $H_N'(x)+t=-L/2+2\log L+O_T(1)<0$. Thus $H_N(x)+tx$ is decreasing thereafter. Equations \eqref{eq:valuecompare} and \eqref{eq:fixedalpha} give an upper-tail gap $(2-2\log2)N+o(N)$. Both constants exceed $1/4$, proving the assertion.
+\end{proof}
+
+\subsection{Derivatives from an explicit remainder}
+We do not differentiate the unstructured error in \eqref{eq:valuecompare}. On a fixed proportional interval
+\[
+ aN/L\le x\le bN/L,\qquad 0<a<b<\infty,
+\]
+we have $q\asymp N$, $s\asymp x^2$ and $q/s=o(1)$. The integral \eqref{eq:remainder}, differentiated at fixed orders, gives
+\begin{align*}
+ \partial_s^aR&=O_a(q(q+1)s^{-a-1}),\\
+ \partial_s^a\partial_qR&=O_a((q+1)s^{-a-1}),\\
+ \partial_s^a\partial_q^bR&=O_{a,b}(s^{-a-b+1})\quad(b\ge2).
+\end{align*}
+For example,
+\[
+ \frac{\mathrm d^a}{\mathrm ds^a}\bigl(\psi(s+v)-\log s\bigr)
+       =O_a((v+1)s^{-a-1})
+\]
+is uniform for $0\le v\le q$. Composition with the quadratic $s(x)$ and linear $q(x)$ shows
+\[
+ \frac{\mathrm d^j}{\mathrm dx^j}R(s(x),q(x))=O_j(N^2x^{-j-2}).
+\]
+Terms with zero $q$ derivatives have this size, those with one have size at most $Nx^{-j-1}$, and terms with $b\ge2$ have size at most $x^{-j-b+2}$; all are bounded by the displayed quantity in this range. The term $q\log(1+1/x)$ contributes $O_j(Nx^{-j-1})$, while the differentiated Stirling remainder for $q$ contributes $O_j(N^{-j})$. Consequently,
+\begin{equation}\label{eq:derivativecompare}
+ f_N^{(j)}(x)-H_N^{(j)}(x)
+ =O_j\!\left(\frac N{x^{j+1}}+\frac{N^2}{x^{j+2}}+N^{-j}\right),\qquad j\ge1.
+\end{equation}
+All orders are fixed and the constants may depend on $a,b,j$.
+
+For $j\ge2$, the explicit derivative is
+\begin{equation}\label{eq:Hderivatives}
+ H_N^{(j)}(x)=\frac{2(-1)^{j-1}(j-1)!N}{x^j}
+ +\frac{2(-1)^{j-1}(j-2)!}{x^{j-1}}
+ -\frac{(j-2)!}{(N-x)^{j-1}}.
+\end{equation}
+It follows that
+\begin{equation}\label{eq:highderivatives}
+ f_N^{(j)}(x)=\frac{2(-1)^{j-1}(j-1)!N}{x^j}
+             \bigl(1+O_j(L^{-1})\bigr),\qquad j\ge2.
+\end{equation}
+No derivative estimate for $q\asymp N$ has been used at $x=N$.
+
+\subsection{The unique dominant saddle and lattice tails}
+On $I_N$, \eqref{eq:derivativecompare} implies
+\[
+ f_N'(x)=2N/x-2-2\log x+\log(2(N-x))+O(L^3/N).
+\]
+At its left and right endpoints, respectively, $f_N'(x)+t$ equals
+$3L+2\log L+O_T(1)>0$ and $-L/2+2\log L+O_T(1)<0$.
+Equation \eqref{eq:highderivatives} gives strict concavity throughout $I_N$.
+This proves existence and uniqueness there; Lemma~\ref{lem:global} proves global dominance.
+
+Set $y=2N/r$. The saddle equation becomes
+\[
+ y=L-2\log y+\log2+2-t-\log(1-2/y)+O(L^3/N).
+\]
+First $y\sim L$, and substitution then gives \eqref{eq:rscale}. The other estimates in Theorem~\ref{thm:main} follow from \eqref{eq:highderivatives}. In addition,
+\begin{equation}\label{eq:curvature}
+ -c_2L^2/N\le f_N''(x)\le-c_1L^2/N\quad(x\in I_N),
+\end{equation}
+so with $\Phi(x)=f_N(x)+tx$,
+\begin{equation}\label{eq:gausstail}
+ \Phi(x)\le\Phi(r)-c_3 A(x-r)^2\quad(x\in I_N).
+\end{equation}
+The nearest integer to $r$ has phase $\Phi(r)+O(A)$; more strongly, the $\asymp\sigma$ integers within a fixed multiple of $\sigma$ give a lower bound $c\sigma e^{\Phi(r)}$ for the sum. The global tail is at most $Ne^{\Phi(r)-cN}$. Gaussian lattice-tail comparison therefore gives, for $w\ge1$,
+\begin{equation}\label{eq:relative-tail}
+ \frac{\sum_{|m-r|>w\sigma}e^{\Phi(m)}}{B_N(t)}
+ \le C e^{-c'w^2}+CNe^{-c'N},
+\end{equation}
+when the sum is over $1\le m\le N$, with constants adjusted if the window crosses the ends of $I_N$. An analogous bound with a fixed polynomial in $|m-r|/\sigma$ follows by integrating a Gaussian polynomial tail. These estimates will justify moments, lattice limits and the rarer binary event.

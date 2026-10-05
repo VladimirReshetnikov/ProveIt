@@ -1,0 +1,73 @@
+\section{The models and their exact enumeration}
+\label{sec:models}
+All logarithms are natural. A table of dimension $m$ is an $m$-by-$m$ upper-triangular matrix of nonnegative integers. Its size is the sum of its entries, rather than its dimension. We require every diagonal entry to be positive. The empty table has size and dimension zero and is counted once. Let $T(N,m)$ count tables of size $N$ and dimension $m$, and put
+\begin{equation}\label{eq:counts}
+ b_0=1,\qquad b_N=\sum_{m=1}^N T(N,m)\quad(N\ge1).
+\end{equation}
+Write
+\begin{equation}\label{eq:Mq}
+ M(x)=\frac{x(x+1)}2,\qquad q=N-x.
+\end{equation}
+Subtracting one from every diagonal entry leaves a weak composition of $N-m$ into $M(m)$ cells. Hence the established enumeration is
+\begin{equation}\label{eq:T}
+ T(N,m)=\binom{M(m)+N-m-1}{N-m},\qquad 1\le m\le N.
+\end{equation}
+The binary subclass has all diagonal entries equal to one. Its remaining $N-m$ ones occupy distinct off-diagonal cells, so
+\begin{equation}\label{eq:binary-count}
+ U(N,m)=\binom{m(m-1)/2}{N-m},\qquad
+ c_0=1,\quad c_N=\sum_{m=1}^N U(N,m).
+\end{equation}
+An infeasible binomial coefficient in \eqref{eq:binary-count} is zero. In particular $b_1=c_1=1$.
+
+\subsection{Self modified ascent sequences}
+An ordinary ascent sequence is a word $a_1\cdots a_N$ of nonnegative integers satisfying $a_1=0$ and
+\[
+ 0\le a_i\le1+\asc(a_1\cdots a_{i-1})\quad(i\ge2),
+\]
+where an ascent is a strict increase between consecutive entries. In the modification operation of Bousquet-M\'elou, Claesson, Dukes and Kitaev \cite{bcdk}, an ascent to a value $v$ increases by one every earlier entry at least $v$. A sequence is self modified if this operation leaves it unchanged. Equivalently, each ascent top is a new strict maximum. Indeed, unchangedness forces precisely that condition at every processed ascent; conversely, under the condition there is no earlier entry to increase.
+
+The resulting factorization is
+\begin{equation}\label{eq:word}
+ 0A_0\,1A_1\,\cdots\,(m-1)A_{m-1},
+\end{equation}
+where $A_i$ is a weakly decreasing word with letters in $\{0,\ldots,i\}$. The first appearances of the maxima cannot skip a value, by the ascent-sequence inequality, and each intervening segment must be weakly decreasing. Conversely every word \eqref{eq:word} is such an ascent sequence and is self modified. There are $m-1$ ascents and maximum $m-1$.
+
+For completeness, the explicit table bijection sends block $iA_i$ to column $i+1$: its entry in row $j+1$ is the number of occurrences of $j$ in that block. This is upper triangular and has positive diagonal. To invert, read the multiset of each column in weakly decreasing order, then concatenate the columns. Thus size is word length and dimension is one plus the maximum, or one plus the number of ascents. This bridge and its refinements are prior results \cite{bcdk,dm}.
+
+The binary subclass makes every block strictly decreasing, starting with its maximum. It is the $d=1$ specialization of self-modified difference ascent sequences, whereas all positive-diagonal tables give $d=0$; see Cerbai, Claesson and Sagan \cite{ccs}, Lemma 4.3 and Theorem 4.4. We use these two specializations only and make no claim here about other fixed difference parameters.
+
+\subsection{Formal series and current OEIS indexing}
+Marking dimension by $h$ gives the formal identities
+\begin{align}
+ B(z,h)&=1+\sum_{m\ge1}\frac{h^m z^m}{(1-z)^{m(m+1)/2}},\label{eq:B}\\
+ C(z,h)&=1+\sum_{m\ge1}h^m z^m(1+z)^{m(m-1)/2},\label{eq:C}\\
+ B(z,h)&=C\!\left(\frac z{1-z},h\right).\label{eq:transform}
+\end{align}
+These are coefficientwise formal series: each fixed power of $z$ receives finitely many summands. Equation \eqref{eq:transform} also follows by expanding each chosen binary cell into a positive multiplicity. It implies, for $N\ge1$,
+\begin{equation}\label{eq:bin-transform}
+ b_N=\sum_{j=1}^N\binom{N-1}{j-1}c_j.
+\end{equation}
+Both the exact formulas and this substitution have historical antecedents \cite{bek,khamis}.
+
+The current sequence conventions \cite{oeis} are
+\begin{equation}\label{eq:index}
+ \begin{split}
+ b_N&=\mathrm{A098569}(N-1),\\
+ c_N&=\mathrm{A121690}(N-1)\qquad(N\ge1),\\
+ \mathrm{A098568}(n,k)&=T(n+1,k+1)\qquad(0\le k\le n).
+ \end{split}
+\end{equation}
+For example, at sizes $N=1,\ldots,9$, the values of $b_N$ are
+\[
+ 1,\ 2,\ 5,\ 14,\ 43,\ 143,\ 510,\ 1936,\ 7775.
+\]
+The row at $N=4$ is $(1,6,6,1)$, which is row $n=3$ of A098568. Keeping the shift in \eqref{eq:index} is necessary when applying every asymptotic or inverse statement below.
+
+\subsection{Historical boundaries and the problem addressed}
+Bayoumi, El-Zahar and Khamis \cite{bek} already identify the exact binary interval subclass and the multiplicity substitution. Khamis \cite{khamis} refines by height: Lemma 4.1 gives \eqref{eq:binary-count}, and Theorem 4.2 gives \eqref{eq:transform}. Their strictly upper-triangular block matrix has one more row than the present table; deleting its forced zero first column and last row turns its positive superdiagonal into our positive diagonal. Their height is our dimension $m$.
+
+There is an important terminology distinction. These historical papers use $N$-freeness in the \emph{directed covering graph}. This must not be silently replaced by induced-subposet $N$-avoidance or by the series-parallel/Catalan class. The positive-diagonal class in Dukes--McNamara \cite{dm} is their larger class with a chain meeting every strict-downset level. We consequently state our results in table and word language.
+
+The 1989 asymptotic theorems concern the larger class of all covering-graph $N$-free posets, using the interval subclass for a lower bound; they do not give the relative formulas proved here. The leading $N\log N$ scale is prior, and finer logarithmic expressions already appear in V\'aclav Kote\v{s}ovec's OEIS postings \cite{oeis}. An asymptotic equivalence for a displayed logarithmic expression, by itself, does not establish all of its lower-order terms with additive error $o(N)$, much less a relative count equivalent. Exact enumerative antecedents also include \cite{kr,bcuf,cfz}.
+
+Our purpose is the relative analysis of \eqref{eq:T}: the exact saddle carrier, arbitrary fixed correction orders, a full-lattice dimension law, a binary rare-event ratio and controlled integer inversion. The row-distribution question explicitly posed in A098568 is answered by Section~\ref{sec:dimension}. General Fishburn-matrix results, such as \cite{hj}, concern different generating functions and do not automatically transfer to this positive-diagonal model. The source search described in the accompanying source note is bounded; no worldwide novelty, external peer review or formal proof verification is claimed.

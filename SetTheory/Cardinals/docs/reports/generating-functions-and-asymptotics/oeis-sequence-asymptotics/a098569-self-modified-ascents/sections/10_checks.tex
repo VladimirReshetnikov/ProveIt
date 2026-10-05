@@ -1,0 +1,43 @@
+\section{Reproducible checks and their precise scope}
+\label{sec:checks}
+The accompanying package contains the complete TeX source, four deterministic computational receipts, the checking programs, an immutable-source builder and an actual-archive replay verifier. The programs use Python 3.11 or later, mpmath 1.3.0 and SymPy 1.14.0. Their roles are finite validation and reproducibility; the preceding analytic arguments establish the theorems.
+
+\subsection{Exact and symbolic checks}
+The exact verifier independently computes the binomial sums and the coefficients obtained by multiplying individual cell generating polynomials. Its default range is $0\le N\le40$. It checks all 820 positive-size triangle entries in that range, 820 conditional binary products, 820 fixed-dimension binomial-transform identities, 1640 residual-cell tail identities, 1640 direct bad-cell expectation comparisons, and the 40 total transforms. The expectation check uses a separate cell-polynomial recurrence carrying summed indicators and includes the zero-residual cases. Source-linked finite fixtures check 26 ordinary and 25 binary terms with the current shifts in \eqref{eq:index}. The code also calculates exact sums at $N=100,200,500,1000,2000$.
+
+The symbolic verifier independently enumerates weighted multi-indices, applies exact Gaussian moments, and compares the results with $C_1,C_2,Q_1,Q_2$. It generates $C_3$ as well. A second weighted-exponential route checks the numerator contractions through weight four. Further exact algebra checks the moment formulas, the constants $1/24$ and $1/1152$, the rational identity in Theorem~\ref{thm:rational}, $F_0'=u$, the inverse equation and the seed separation. No coefficient is fitted to numerical data.
+
+Large exact integers are hashed using their unsigned big-endian byte encodings; they are not converted to unbounded decimal strings. Each Python process explicitly sets a 640-digit decimal conversion cap and disables bytecode writes. Every child invocation repeats these settings. Guards use explicit exceptions, so optimized Python cannot remove validation.
+
+\subsection{Finite numerical diagnostics}
+The default numerical cases use 90 decimal digits at unmarked sizes $100,200,500,1000,2000$, together with marks $t=\pm0.25$ at $N=500$. The exact gamma phase is retained. A bounded finite-precision bisection solves the saddle equation, checking endpoint signs and residuals. The script compares exact integer sums with the saddle carriers and moment corrections, records the full-support leading local-limit error and the tail mass outside $I_N$, and evaluates both binary carriers and inverse seeds.
+
+At $N=1000,t=0$, selected values are
+\begin{center}
+\begin{tabular}{@{}lr@{}}
+\toprule
+Quantity & Numerical value\\
+\midrule
+Saddle $r$ & $315.5139205982$\\
+Exact weighted mean & $315.6063993121$\\
+Exact weighted variance & $36.5565672868$\\
+Binary probability $p_N$ & $1.3110712105\times10^{-6}$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Here ``exact weighted'' describes the underlying finite integer sums; the displayed evaluations are rounded floating-point values. At $N=1000$, the residual
+\[
+ \frac{b_N}{e^{f_N(r)}\sqrt{2\pi/A}}-\sum_{\ell=0}^{K-1}C_\ell
+\]
+is approximately $-1.1264\times10^{-5}$ for $K=1$, $6.0743\times10^{-10}$ for $K=2$, and $-5.5610\times10^{-13}$ for $K=3$. These numbers are useful consistency checks; a short finite range need not yet show the limiting sign of a coefficient.
+
+The inverse diagnostic at $X=b_{1000}$ also computes the $K=2$ smooth-carrier root, approximately $1000.0000000001412$, using a bounded sign-bracketed secant iteration. Its computed log residual is about $-1.20\times10^{-44}$. This is not an interval enclosure and does not supply the asymptotic constant in \eqref{eq:inversebracket}. Its position just above the exact integer reinforces the rounding warning rather than certifying a ceiling rule.
+
+\subsection{Build and replay discipline}
+The public source inventory is complete: every file other than the manifest itself is hashed, and extra files, directories, symlinks or malformed names are rejected. The builder does not regenerate its own manifest. It requires a new output directory outside the source tree and compares source inventories before and after its work.
+
+The PDF is compiled from a disposable copy with a private TeX format and cache, three passes, fixed date and metadata, and shell escape disabled. Overfull boxes, missing glyphs and unresolved references are rejected. The builder requires the regenerated PDF and all four computational receipts to match their frozen originals byte for byte. It writes a deterministic archive with fixed member order, timestamps and modes.
+
+The archive replay first validates the actual input ZIP against the trusted source package. It extracts two separate copies and builds under ordinary Python and Python with optimization. It compares all seven top-level output files: the PDF, ZIP, four receipts and build-check record. It also compares archive member bytes and metadata, requires each regenerated ZIP to equal the original input archive, and checks that the trusted source tree, both extracted source trees and input archive remain unchanged. The 241 finite guard cases and operational bounds are enumerated in the computation note. These filesystem tests are not a general security proof against hostile concurrent changes.
+
+The document was rendered and visually inspected page by page before packaging. Reproducibility is asserted for the recorded toolchain, not arbitrary TeX or library versions. All finite checks remain distinct from effective asymptotic bounds, external peer review and formal proof verification.
