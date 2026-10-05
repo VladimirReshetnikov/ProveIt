@@ -79,7 +79,8 @@ explicit Newton count and exact one-comparison threshold rules.
 **Claimed (Part IV, source 102, d = 2).** Theorems 34.1, 37.1 and 38.1 prove Theorem 14.1 again in the
 factorial gauge 3^p p! (a fourth route), with the amplitude formula γ₂ = √(2/27) p_∞ C_λ (eq. 205). New:
 - L₅ = B(108 − B³)/8748 and L₆ = 2B³/2187 − 1/162 (eq. 217); Part II's own generator, rerun at order 9
-  on a copy in writing, gives exactly these values (Remark 39.1);
+  on a copy in writing, gives exactly these values, and exact counts to n = 7000 confirm them at the
+  independent check (Remark 39.1, Section 41);
 - the ratio a_n/(12n a_{n−1}) through n^(−3) (eq. 220);
 - Proposition 34.3: TC_n/TC_{n,n−1} = √e(1 + O(n^(−2/3))) and a total-variation distance O(n^(−2/3)) from
   Poisson(1/2), from Chang et al. Lemmas 3.17–3.20 alone, without the Pons–Batle identity used in
@@ -101,7 +102,9 @@ logarithmic form); see Section 41.
 
 The uncertified diagnostics γ₂ ≈ 2.02264201 (Section 19) and 2.0226420146 (Section 39.3) are not claimed
 values. Nor are the intake's fits γ₃ ≈ 3.784368, γ₄ ≈ 3.478351, γ₅ ≈ 2.384755 (Section 31): uncertified,
-computed in writing with C_{d,1} fixed, script not shipped.
+computed in writing with C_{d,1} fixed, script not shipped. Nor are the independent check's fits
+γ₂ ≈ 2.0226420155 (n ≤ 7000, six coefficients fixed), L_{4,3} ≈ −0.3185 and L_{5,3} ≈ −0.3943 (n ≤ 1600,
+L_{d,1}, L_{d,2} fixed), recorded as seeds in Section 41, item 2, and Section 32, item 6.
 
 The Lambert-W inversions are instances of the repository volume *Transseries and inversion*
 (`Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/`, theorems
@@ -186,12 +189,41 @@ Parts III–IV (batch 102, written 5 October 2026):
 - **Bibliography.** Nine entries added from the two sources (AofA 2026 Pons–Batle framework, four 2026
   arXiv preprints, Elvey Price–Fang–Louf–Wallner, A213864, A213275, A167484); the others coincide with
   existing entries.
+- *[Independent check, 5 October 2026.]* An adversarial check of Parts III and IV made by the intake
+  after the write (`7e85b5a0c`) found all fifteen items it examined valid, with no counterexample and no
+  gap in any proof chain: in Part III, Remark 22.2 with eq. 87 (B-form, values at d = 2, 3, sign and
+  field of C_{d,1}), the write's notes on eqs. 146 (bracket, sign change at d = 22, E_{d,1}, E_{d,2}),
+  149–150 (with C_{3,3}), 134 (h₂), 109 and 152, Remarks 23.1 and 28.2, the identification of γ_d at the
+  end of Section 21.3 and the limit C_{d,1} → −19z²/90 (Section 32, item 4); in Part IV, Remarks 34.4 and
+  39.1 and the notes on eqs. 220, 219 and Section 40. Three refinements were adopted where they stand,
+  with no statement or number changed: Remark 34.4 cited the expansion of 𝓡_n to (D8), which is the
+  d_TV expansion, and now cites the proof of Theorem 18.2, where it is displayed (marked "corrected at
+  the independent check"); Remark 39.1 gains one sentence on the exact-count confirmation of L₅, L₆;
+  Section 32, item 6, and Section 41, write-phase item 2, gain the check's uncertified numerics
+  (L_{4,3} ≈ −0.3185, L_{5,3} ≈ −0.3943; γ₂ ≈ 2.0226420155). The tests, none of which used the delivered
+  or the write's programs: an own exact big-integer implementation of recurrence (6), matching all 321
+  terms (n = 0..320) of the OEIS A213863 b-file and Part I's d = 3 start 1, 1, 25, 2305, run to n = 7000
+  at d = 2, n = 2000 at d = 3 and n = 1600 at d = 4, 5; more than eighty exact SymPy checks of the
+  conversions, among them 8(d+1)² − 27(d−1)² = −19d² + 70d − 19 (roots (35 ± 12√6)/19 ≈ 0.295, 3.389,
+  so C_{d,1} < 0 exactly for integer d ≥ 4, also checked for 4 ≤ d ≤ 10⁴) and
+  27(d−1)² − (d+1)³ = (d−2)(−d² + 22d − 13) (root 11 + 6√3 ≈ 21.392, so the bracket of eq. 146 is
+  negative exactly for d ≥ 22), h₂ from the carrier identity through t⁵, and eq. 220 with L₇–L₉ symbolic;
+  and 70-digit least-squares fits of the log-remainder with unknown amplitude, windows and truncation
+  varied. At d = 3, 4, 5 the free fits reproduce C_{d,1} to six or seven digits (so the negative sign at
+  d = 4, 5 is confirmed by exact counts) and, with C_{d,1} fixed, L_{d,2} to six; perturbing C_{d,1}
+  by 0.1% moves the fitted L_{d,2} by 4–10%, and perturbing L_{d,2} by 1% moves the fitted L_{d,3} by
+  23–42%. At d = 2, on 3500 ≤ n ≤ 7000, L₅ fits as −0.056413 and L₆ as −0.04124 (claims −0.0564125,
+  −0.0412396), and after all six corrections the remainder decays like n^(−7/3) (ratios 5.08 for
+  n = 1000 → 2000 and 13.1 for 1000 → 3000, against 5.04 and 12.98; a wrong L₅ or L₆ would give 3.17
+  or 4). The Section 39.3 table is reproduced to every printed digit. A careful reading with numerical
+  tests, not a formal verification; the dated note is at the end of Section 41. No label was added,
+  and none was renumbered (aux files compared).
 
 ## Files
 
 ```
 article.tex                                   the merged report (standalone LaTeX, internal bibliography)
-article.pdf                                   the compiled report, 92 pages (contents on pages 1–4)
+article.pdf                                   the compiled report, 93 pages (contents on pages 1–4)
 README.md                                     this guide
 16-dcomb-expanded-proof.md                    source 16's expanded derivation notes, as delivered
 16-dcomb-mathematical-audit.md                source 16's independent mathematical audit (of its draft)
@@ -316,7 +348,8 @@ Every label in `article.tex` carries the prefix `tcn:`: `tcn:sec:` and `tcn:part
 section and the Parts, `tcn:d:` for Part I (source 16), `tcn:b:` for Part II (source 69), `tcn:f:` for
 Part III (source 104) and `tcn:w:` for Part IV (source 102). Source 16's 39 labels are kept with the prefix
 `tcn:d:`. The article has **367** labels (170 before batch 102: 106 `tcn:f:`, 89 `tcn:w:` and 2
-`tcn:part:` were added; none was renamed, removed or renumbered); the file staged at placement had 39.
+`tcn:part:` were added; none was renamed, removed or renumbered; the independent check of 5 October 2026
+added none); the file staged at placement had 39.
 No `tcn:` label has a Lean mapping.
 
 ## Delivered text that uses delivery names or names unshipped files
@@ -390,7 +423,9 @@ latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
 The build has 0 errors, 0 undefined references or citations, 0 multiply defined labels, 0 duplicate
-destinations, and no overfull or underfull boxes. It yields 92 pages. Copy back only `article.pdf`.
+destinations, and no overfull or underfull boxes. It yields 93 pages (last rebuilt on 5 October 2026,
+after the independent check, with four pdfLaTeX passes; every label keeps its number). Copy back only
+`article.pdf`.
 
 ## Rerunning the programs
 
