@@ -2,27 +2,40 @@
 \usepackage[T1]{fontenc}
 \usepackage{lmodern,microtype}
 \usepackage[margin=1in]{geometry}
-\usepackage{amsmath,amssymb,amsthm,mathtools,booktabs,array}
+\usepackage{amsmath,amssymb,amsthm,mathtools,booktabs,array,longtable}
 \usepackage{xcolor,enumitem,fancyhdr,needspace}
 \usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black,breaklinks=true]{hyperref}
 \pdfmapfile{+lm.map}\pdfmapfile{+cm.map}\pdfmapfile{+symbols.map}
 \pdfinfoomitdate=1\pdfsuppressptexinfo=15
-\pdftrailerid{<417363656E743234333230323631303035><417363656E743234333230323631303035>}
-\providecommand{\ReportNumber}{243}
-\hypersetup{pdftitle={The Sharp Linear Logarithmic Constant for 100 Avoiding Ascent Sequences},pdfauthor={Report \ReportNumber},pdfsubject={A202059 triangular comparisons simultaneous 000 100 avoidance and improved 110 brackets}}
-\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small The linear logarithmic constant for 100 avoidance}\fancyhead[R]{\small Report \ReportNumber}\fancyfoot[C]{\thepage}
+% Changed 5 October 2026, batch 102: Report 243's fixed trailer identifier and
+% \ReportNumber are dropped; this merged PDF is not the delivered one.
+\pdftrailerid{}
+\hypersetup{pdftitle={Ascent sequences avoiding 100 or 110: the sharp linear logarithmic constant (A202059) and factorial logarithmic growth (A202060)},pdfauthor={},pdfsubject={Merged report a202059-ascent-100-110-growth (batch 102): Report 243 (base) and Report 241 of the session bundle}}
+% Added 5 October 2026, batch 102: running head names the Part.
+\newcommand{\PartMark}{a202059-ascent-100-110-growth}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small Ascent sequences avoiding 100 or 110}\fancyhead[R]{\small\PartMark}\fancyfoot[C]{\thepage}
 \renewcommand{\headrulewidth}{0pt}\setlength{\headheight}{14pt}
 \setlength{\parskip}{4pt}\setlength{\emergencystretch}{2em}
 \setlist{itemsep=2pt,topsep=4pt}\numberwithin{equation}{section}
 \newtheorem{theorem}{Theorem}[section]\newtheorem{lemma}[theorem]{Lemma}\newtheorem{proposition}[theorem]{Proposition}\newtheorem{corollary}[theorem]{Corollary}
 \theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+% Macros of Part I (Report 243).
 \newcommand{\asc}{\operatorname{asc}}\newcommand{\Av}{\operatorname{Av}}\newcommand{\N}{\mathbb N}\newcommand{\E}{\mathbb E}\newcommand{\Prob}{\mathbb P}
+% Macro of Part II (Report 241); its \asc and \N are Part I's, with the same meaning.
+\newcommand{\A}{\mathcal A}
+% Added 5 October 2026, batch 102: marker for text added in the write; long paths break at _ and -.
+\newcommand{\wtag}{\textup{[write]}}
+% Added 5 October 2026, batch 102: results added in the write are numbered W1, W2, ...
+% on their own counter, so that no manuscript number shifts.
+\theoremstyle{remark}\newtheorem{wremark}{Remark}\renewcommand{\thewremark}{W\arabic{wremark}}
+\theoremstyle{plain}\newtheorem{wcorollary}[wremark]{Corollary}
+\makeatletter\g@addto@macro\UrlBreaks{\do\_\do\-}\makeatother
 \begin{document}
 \begin{center}
-{\large Report \ReportNumber}\par\vspace{8pt}
-{\LARGE\bfseries The Sharp Linear Logarithmic Constant\\[5pt] for 100 Avoiding Ascent Sequences}\par\vspace{8pt}
-{\large Triangular comparisons and controlled inverse bounds}\par\vspace{7pt}
-5 October 2026
+{\LARGE\bfseries Ascent Sequences Avoiding 100 or 110}\par\vspace{8pt}
+{\large The sharp linear logarithmic constant for A202059,\\ brackets for A202060, and factorial logarithmic growth}\par\vspace{8pt}
+{\normalsize Part I: Report 243\quad Part II: Report 241}\par\vspace{5pt}
+5 October 2026; merged 5 October 2026 (batch 102)
 \end{center}
 \begin{abstract}
 Let $a_n$ count ordinary ascent sequences avoiding the arbitrary-subsequence pattern $100$, and let $e_n$ count those avoiding both $000$ and $100$. For either $u_n=a_n$ or $u_n=e_n$, we prove
@@ -32,17 +45,1885 @@ Let $a_n$ count ordinary ascent sequences avoiding the arbitrary-subsequence pat
 \]
 Consequently $(\log n)^2(u_n/n!)^{1/n}\to2$. The upper comparison refines an earlier marked-occurrence encoding by retaining the exact increasing-run index. The lower comparison converts triangular weak compositions into positive-block words, repairing empty rows and explicitly bounding three many-to-one fibers. An elementary localization proof supplies the required logarithmic estimate for the historically known triangular sum. A doubled seed gives normalized-root liminf at least $1/2$ for $110$ avoidance and for simultaneous $000,100,110$ avoidance; both have limsup at most $2$. We also prove two-term first-crossing inverses, with a bracket rather than a determined second coefficient for these latter classes. No relative counting equivalent or existence of their linear logarithmic constants is claimed.
 \end{abstract}
-\input{sections/01_results}
-\input{sections/02_triangular}
-\input{sections/03_upper}
-\input{sections/04_upper_cost}
-\input{sections/05_positive}
-\input{sections/06_repair}
-\input{sections/07_lower}
-\input{sections/08_common}
-\input{sections/09_inverse}
-\input{sections/10_scope}
-\input{sections/11_computation}
-\input{sections/12_questions}
-\input{sections/12_references}
+
+\paragraph{Editorial note (\wtag, 5 October 2026, batch 102).}
+This report is built from two manuscripts of one external research
+session: Reports~243 and~241 of the session bundle of Reports 1--243,
+which arrived in ProveIt commit \texttt{60f54ea06} and were placed together,
+as cluster 102-ASC100 of batch~102 of the incoming-reports intake, in
+\texttt{6ab1f1979}. Both are dated 5~October 2026 and both treat ordinary
+ascent sequences avoiding the classical patterns $100$ (OEIS A202059,
+$a_n$) or $110$ (OEIS A202060, $d_n$), and the common class avoiding
+$000$, $100$ and $110$ ($c_n$).
+
+Report~243 (Part~I, the base; its abstract stands above) proves the
+linear logarithmic constant: $\log a_n=n(\log n-2\log\log n+\log2-1)+o(n)$,
+the same for the class $e_n$ avoiding $000$ and $100$, and the bracket
+$[-\log2-1,\log2-1]$ for $d_n$ and $c_n$. Report~241 (Part~II) is the
+\emph{earlier} report, and Report~243 says that it refines it. Report~241
+has priority for the two logarithmic orders
+$\log u_n=n\log n-2n\log\log n+O(n)$ ($u=c,a,d$), for the marked-occurrence
+upper encoding that Part~I sharpens, and for the consequence that Part~I
+cites but does not reprove: Corollary~\ref{a59:g:cor:contradiction}, which
+refutes the fixed fractional-factorial scale
+$\Gamma(3n/4+1)\mu^nn^g$ conjectured for $a_n$ and $d_n$ by Conway,
+Conway, Elvey Price and Guttmann \cite[Sections~6--7]{conway}. Part~II
+also alone proves that the three sequences are not P-recursive
+(Corollary~\ref{a59:g:cor:nonprecursive}), constructs the exactly counted
+fresh-label block family (Proposition~\ref{a59:g:prop:family}), and gives the
+fixed-block-size argument with its order of limits
+(Section~\ref{a59:g:sub:fixed}). Part~I is the base because its setting
+contains Part~II's (the same model; four classes $\{a,e,d,c\}$ instead of
+$\{a,d,c\}$) and every main estimate of Part~II follows from Part~I's
+(Table~\ref{a59:tab:map}). Part~II is nevertheless printed in full: its
+proofs of the implied statements are different routes and are kept as
+such.
+
+\emph{Status.} Neither manuscript names an author or says that it is
+AI-assisted; the author lines are ``Report~243'' and ``Report~241''.
+Neither has been refereed, and no statement of this report has been checked
+by a proof assistant.
+
+Text added in the write is marked \wtag. Sections~\ref{a59:sec:guide}--\ref{a59:sec:limits}
+are front matter written for this report;
+Sections~\ref{a59:sec:questions} and~\ref{a59:g:sec:outlook} close each
+Part with its further questions (the manuscripts' own, dated notes on
+what the other Part answers, and the items moved there under ProveIt's
+standing rule); Appendix~\ref{a59:app:provenance} records the provenance,
+the numbering crosswalk and every editorial change.
+
+\setcounter{tocdepth}{1}
+\tableofcontents
+\newpage
+
+\section{How the two Parts fit together}\label{a59:sec:guide}
+
+\wtag\ Both Parts use the same model: an ordinary ascent sequence has
+$x_1=0$ and $x_i\le1+\asc(x_1\cdots x_{i-1})$, the entering edge excluded;
+patterns are classical (arbitrary subsequences); the empty word is counted
+at length zero. Their counting sequences agree:
+\begin{align*}
+ &a_n=|\Av_n(100)|,\quad d_n=|\Av_n(110)|,\quad
+ c_n=|\Av_n(000,100,110)|&&\text{(both Parts)},\\
+ &e_n=|\Av_n(000,100)|&&\text{(Part~I only)}.
+\end{align*}
+Part~II writes $\A_n(P)$ for Part~I's $\Av_n(P)$.
+
+\begin{center}
+\small
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{.17\textwidth}>{\raggedright\arraybackslash}p{.385\textwidth}>{\raggedright\arraybackslash}p{.385\textwidth}@{}}
+\toprule
+& Part I: Report 243 (base) & Part II: Report 241 (earlier)\\
+\midrule
+classes & $a,e,d,c$ & $c,a,d$\\
+main estimate & $\log u_n=n(\log n-2\log\log n+C_+)+O(n(\log\log n)^2/\log n)$ for $u=a,e$; $C_-\le$ constant $\le C_+$ for $u=d,c$; $C_\pm=\pm\log2-1$ (Theorem~\ref{a59:thm:main}) & $\log u_n=n\log n-2n\log\log n+O(n)$ (Theorem~\ref{a59:g:thm:main})\\
+normalized root $(\log n)^2(u_n/n!)^{1/n}$ & $\to2$ for $a,e$; in $[\frac12,2]$ asymptotically for $d,c$ & bounded above and below\\
+lower construction & triangular weak compositions, repaired rows, rank bijection, three fibers; doubled seed for $c,d$ (Sections~\ref{a59:sec:positive}--\ref{a59:sec:common}) & exactly counted fresh-label block family (Proposition~\ref{a59:g:prop:family}), uniform in the block size\\
+upper bound & run-indexed encoding, $u_n\le\sum_rS(n,r)T(n+1,r+1)$ (Proposition~\ref{a59:prop:finiteupper}) & marked-occurrence encoding, $u_n\le16^n\sum_r\binom{n+(r+1)^2}{n-r}$ (Proposition~\ref{a59:g:prop:finite-upper})\\
+comparison count & $b_n=\sum_rT(n,r)=\mathrm{A098569}(n-1)$, with $a_n/b_n=e^{o(n)}$ & none\\
+inverse & $\nu_u(X)=L/\lambda+(3\mu+1-\log2)L/\lambda^2+O(L\mu^2/\lambda^3)$ for $a,e$ (Theorem~\ref{a59:thm:inverse}) & $N_u(X)=L/w+2L\log w/w^2+O(L/w^2)$, $w=W_0(L)$ (Proposition~\ref{a59:g:prop:inverse})\\
+only here & the constant $C_+$; class $e$; brackets for $d,c$; Section~\ref{a59:sec:scope}'s non-transfer witnesses & refutation of the CCEG scale; non-P-recursiveness; exact family; fixed-$b$ argument\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\paragraph{Report~241's results against Part~I.}
+Table~\ref{a59:tab:map} classifies every numbered result of Report~241.
+``Implied'' means that the statement follows from Part~I's results by the
+\wtag\ argument cited in the last column; Part~II's own proof is then a
+second route and is printed as such.
+
+\begin{small}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{.3\textwidth}>{\raggedright\arraybackslash}p{.16\textwidth}>{\raggedright\arraybackslash}p{.48\textwidth}@{}}
+\caption{Report 241's numbered results (manuscript numbering) and their relation to Part~I.}\label{a59:tab:map}\\
+\toprule
+Report 241 & Here & Relation to Part~I\\
+\midrule
+\endfirsthead
+\toprule
+Report 241 & Here & Relation to Part~I\\
+\midrule
+\endhead
+Theorem 1.1: two logarithmic orders, $O(n)$ remainder, $(u_n/n!)^{1/n}=\Theta((\log n)^{-2})$, for $c,a,d$ & Theorem~\ref{a59:g:thm:main} & implied by Theorem~\ref{a59:thm:main} (Remark~\ref{a59:g:rem:implied}); Part~II has priority (Part~I says so in Section~\ref{a59:sec:results})\\
+Proposition 2.1: exact fresh-label family of size $F_b(m)$ in $\A_{N_b(m)}(000,100,110)$, padding injection & Proposition~\ref{a59:g:prop:family} & only in Part~II; Part~I's lower construction is different (triangular arrays). The doubled seed is credited by both to \cite[Section~7]{conway}\\
+Lemma 3.1: uniform bounds on $T$, $S$, $\log F_b(m)$ & Lemma~\ref{a59:g:lem:uniform} & only in Part~II\\
+equation (3.6): fixed $b$ gives $\liminf\log c_n/(n\log n)\ge b/(b+2)$; $b\to\infty$ afterwards & \eqref{a59:g:eq:fixed-exponent}, Section~\ref{a59:g:sub:fixed} & only in Part~II; implied for the limit itself by Theorem~\ref{a59:thm:main}, but the fixed-$b$ argument needs no growing parameter and alone gives the bound $4/5>3/4$ used in Corollary~\ref{a59:g:cor:contradiction}\\
+Section 3.3: quantitative lower bound $\log c_n\ge n\log n-2n\log\log n-O(n)$ & Section~\ref{a59:g:sub:quant} & implied by~\eqref{a59:eq:commonlower}; second route\\
+Lemma 4.1: prefix maximum at most the ascent count; at most $r+1$ runs & Lemma~\ref{a59:g:lem:prefix-max} & the same statement as Lemma~\ref{a59:lem:prefix}; two proofs\\
+Proposition 4.2: $u_n\le16^n\sum_r\binom{n+(r+1)^2}{n-r}$ for $a,d$ & Proposition~\ref{a59:g:prop:finite-upper} & implied by Proposition~\ref{a59:prop:finiteupper} (Remark~\ref{a59:g:rem:upperimplied}); Part~I refines this encoding and credits Report~241 for it\\
+Lemma 4.3: uniform optimization of $\binom{n+(r+1)^2}{n-r}$ & Lemma~\ref{a59:g:lem:optimization} & second route to the $O(n)$ upper bound; Part~I's Section~\ref{a59:sec:uppercost} gives the sharper constant\\
+Corollary 5.1: no $u_n\sim C\Gamma(3n/4+1)\mu^nn^g$ for $a,d$; no fixed $\alpha\in(0,1)$ & Corollary~\ref{a59:g:cor:contradiction} & only in Part~II; Part~I cites it (Section~\ref{a59:sec:scope}) and claims no second refutation\\
+Lemma 6.1: an entire D-finite function has finite order & Lemma~\ref{a59:g:lem:entire-growth} & classical (note after the lemma); reproved in Part~II\\
+Corollary 6.2: $c_n,a_n,d_n$ not P-recursive; EGFs entire of infinite order; OGFs not D-finite & Corollary~\ref{a59:g:cor:nonprecursive} & only in Part~II; the same proof applies to $e_n$ with Part~I's bounds (Corollary~\ref{a59:g:cor:enonp})\\
+Proposition 7.1: $N_u(X)=L/w+2L\log w/w^2+O(L/w^2)$ & Proposition~\ref{a59:g:prop:inverse} & implied by Theorem~\ref{a59:thm:inverse} (Remark~\ref{a59:g:rem:inverseimplied})\\
+Section 8: count table through $n=11$; recurrences (8.1)--(8.2) & Section~\ref{a59:g:sec:checks} & finite data; Part~I's package checks the same prefixes (Section~\ref{a59:sec:computation})\\
+Section 9: questions 1--3 & Section~\ref{a59:g:sec:outlook} & question~1 answered by Part~I for $a$ (and $e$), bracketed for $d,c$; questions 2--3 open, partly advanced (dated notes there)\\
+\bottomrule
+\end{longtable}
+\end{small}
+
+\paragraph{What the write adds.} Short proofs (marked \wtag) that Part~I
+implies Report~241's Theorem~1.1, Proposition~4.2 and Proposition~7.1
+(Remarks~\ref{a59:g:rem:implied}, \ref{a59:g:rem:upperimplied}
+and~\ref{a59:g:rem:inverseimplied}); the extension of the
+non-P-recursiveness corollary to $e_n$ (Corollary~\ref{a59:g:cor:enonp});
+a proof of the leading order $L^2/4$ that Part~I's remark after
+Lemma~\ref{a59:lem:triangular} states; the observation that Report~242's
+relative asymptotic for $b_n$ implies Lemma~\ref{a59:lem:triangular}; a
+comparison of $d_n$ with $b_n$ for $n\le15$ (Section~\ref{a59:sec:questions});
+dated notes; the front matter. Nothing in either manuscript was found to be
+wrong.
+
+\paragraph{Relation to other reports in the repository.}
+The neighbouring reports named here are in the directory
+\begin{quote}\small
+\path{SetTheory/Cardinals/docs/reports/generating-functions-and-asymptotics/}\\
+\path{oeis-sequence-asymptotics/}.
+\end{quote}
+\begin{itemize}
+\item \emph{The same Conway--Conway--Elvey Price--Guttmann family.}
+\path{a202058-ascent-000-growth} (labels \texttt{a58:}, the $000$ class),
+\path{a202061-ascent-120-deficit} (\texttt{a61:}, $120$),
+\path{a202062-ascent-201-enumeration} (\texttt{a62:}, $201$) and
+\path{a294220-ascent-multiplicity-caps} (\texttt{amc:}, every multiplicity
+cap) treat other length-3 patterns of the paper~\cite{conway}; their READMEs
+list the family without $100$ and $110$, which this report now covers.
+Report~241 read the A202058 and A294220 articles (\cite{MultiplicityReports}) and
+uses neither as an input. No theorem is shared. Part~I's class
+$\Av(000,100)$ lies inside the $000$ class of
+\path{a202058-ascent-000-growth}, whose counts have factorial-normalized
+root tending to $8/(3\pi^2)$ (that report's Part~I); here $e_n$ loses a
+further factor $(\log n)^{-2}$ in the root, which is consistent. In that
+report $a_n$ is A202058 and $c_n=a_nT^n/n!$; here both letters mean other
+things.
+\item \emph{The triangular comparison count.} Part~I's $b_n=\sum_rT(n,r)$
+is $\mathrm{A098569}(n-1)$, the number of self-modified ascent sequences of
+length~$n$. In the same batch~102, Report~242 of the bundle was written
+as the new report \path{a098569-self-modified-ascents} (labels
+\texttt{pdt:}); its Theorem~6.1 gives the relative asymptotic of $b_N$,
+which implies Lemma~\ref{a59:lem:triangular}, and its Lemma~3.1 uses the
+same comparison phase and the same two gaps
+(Remark~\ref{a59:rem:report242}). Part~I's lemma is an elementary second
+route to a weaker statement. That report's Section~1 already points here.
+\item \emph{Weak ascent sequences.} The new report \path{a336070-weak-ascents}
+(batch~102) treats a different object with factorial root $6/\pi^2$; no
+theorem is shared.
+\item No other report, volume or formal development treats A202059 or
+A202060 (searched 5 October 2026).
+\end{itemize}
+
+\paragraph{Formal status.} No statement of this report is formalized, and
+placement in the collection confers no formal status.
+
+\section{Notation across the two Parts}\label{a59:sec:notation}
+
+\wtag\ No symbol of either manuscript was renamed. Each Part uses its own
+manuscript's letters, defined where they first occur. The following mean
+the same in both Parts: the ascent condition and $\asc$; $a_n$, $d_n$,
+$c_n$ (above); $\Av_n(P)$ (Part~I) and $\A_n(P)$ (Part~II); the first
+crossing $\nu_u(X)$ (Part~I) and $N_u(X)$ (Part~II), both
+$\min\{n\ge0:u_n\ge X\}$; and natural logarithms. The letters in
+Table~\ref{a59:tab:notation} mean different things in the two Parts; the
+right-hand column names the tempting false reading.
+
+\begin{small}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{.07\textwidth}>{\raggedright\arraybackslash}p{.31\textwidth}>{\raggedright\arraybackslash}p{.31\textwidth}>{\raggedright\arraybackslash}p{.23\textwidth}@{}}
+\caption{Letters with different meanings in Parts~I and~II.}\label{a59:tab:notation}\\
+\toprule
+Letter & Part~I (Report 243) & Part~II (Report 241) & Not to be read as\\
+\midrule
+\endfirsthead
+\toprule
+Letter & Part~I & Part~II & Not to be read as\\
+\midrule
+\endhead
+$b$ & the triangular sum $b_n=\sum_rT(n,r)=\mathrm{A098569}(n-1)$, \eqref{a59:eq:T}; bar positions $b_i$ (Section~\ref{a59:sec:positive}) & the block size $b\ge2$ (Sections~\ref{a59:g:sec:construction}--\ref{a59:g:sec:bounds}; $b=\lceil\log n\rceil$ in Section~\ref{a59:g:sub:quant}); $b_n=u_n/n!$ in the proof of Corollary~\ref{a59:g:cor:nonprecursive} & Part~II's $b_n$ is \emph{not} the triangular count, and its $b$ is a parameter, not a sequence\\
+$T$ & $T(n,r)=\binom{M_r+n-r-1}{n-r}$, \eqref{a59:eq:T} & the number $T$ of stages, \eqref{a59:g:eq:FN} & \\
+$S$ & the skeleton bound $S(n,r)$, \eqref{a59:eq:skeleton} & $S=\sum_jk_j$, the total stage size & \\
+$H$ & the phase $H_n(x)$ (Lemma~\ref{a59:lem:triangular}); a word's maximum $H$ (proof of Proposition~\ref{a59:prop:repair}) & the chunk count $H_b(k)$, \eqref{a59:g:eq:H}; $H=\log n-2\log\log n$ (Lemma~\ref{a59:g:lem:optimization}) & \\
+$L$ & $L=\log n$ (Sections~\ref{a59:sec:triangular}--\ref{a59:sec:lower}); $L=\log N$ (Section~\ref{a59:sec:common}); $L=\log X$ (Section~\ref{a59:sec:inverse}) & the guaranteed ascents $L_b(k)$, \eqref{a59:g:eq:krec}; $L=\log X$ (Section~\ref{a59:g:sec:inverse}) & \\
+$M$ & $M_r=r(r+1)/2$; $M=r(r+1)/2$ in Proposition~\ref{a59:prop:repair}; $M=M_m$ in Lemma~\ref{a59:lem:triangular} & the current maximum $M$, $M_0=2m-1$ (Proposition~\ref{a59:g:prop:family}) & Part~II's $M$ is a label, not a cell count\\
+$r$ & repeated occurrences (Sections~\ref{a59:sec:upper}--\ref{a59:sec:uppercost}); the triangle dimension, seed size (Sections~\ref{a59:sec:triangular}, \ref{a59:sec:positive}--\ref{a59:sec:common}) & repeated occurrences (Section~\ref{a59:g:sec:upper}); a remainder $k=bt+r$ (proof of Lemma~\ref{a59:g:lem:uniform}) & Part~I's seed size $r\sim2n/\log n$ is a construction parameter, not the typical number of repeats\\
+$q$ & $q=n-r$; repeats in a prefix (Lemma~\ref{a59:lem:pool}) & $q=1-1/b$ (Lemma~\ref{a59:g:lem:uniform}); repeats in a prefix (Section~\ref{a59:g:sec:upper}) & \\
+$E$ & the error scale $E(n)=n(\log\log n)^2/\log n$, \eqref{a59:eq:constants}; expectation $\E$ & the entropy loss $E$ (Lemma~\ref{a59:g:lem:uniform}) & \\
+$N$ & a target length (Sections~\ref{a59:sec:lower}--\ref{a59:sec:common}) & the family length $N_b(m)$; the first crossing $N_u(X)$; $N=n+(r+1)^2$ (Lemma~\ref{a59:g:lem:optimization}) & $N_u(X)$ is Part~I's $\nu_u(X)$, not a length\\
+$F$, $f$ & $f(x)$, $f_c(x)=x(\log x-2\log\log x+c)$ & the family size $F_b(m)$; $F(x)=x\log x-2x\log\log x$ (Section~\ref{a59:g:sec:inverse}); the EGF $F(z)$ of $u_n/n!$ (Corollary~\ref{a59:g:cor:nonprecursive}) & Part~II's $F(x)$ is Part~I's $f_0(x)$\\
+$D$ & the inverse error $D=L\mu^2/\lambda^3$ (Theorem~\ref{a59:thm:inverse}) & a fixed constant $D>C+2$ (proof of Proposition~\ref{a59:g:prop:inverse}) & \\
+$\kappa$ & the function $\kappa_u(n)=(\log u_n-n\log n+2n\log\log n)/n$ & a hypothetical limit constant $\kappa$ (Section~\ref{a59:g:sec:outlook}, question~1) & Part~II's $\kappa$ would be $\lim\kappa_u(n)$; Part~I proves it equals $C_+$ for $a$\\
+$\mu$, $\lambda$, $w$ & $\lambda=\log\log X$, $\mu=\log\lambda$ (Section~\ref{a59:sec:inverse}) & the growth rate $\mu$ of the CCEG conjecture (Section~\ref{a59:g:sec:conjecture}); $w=W_0(\log X)$ (Section~\ref{a59:g:sec:inverse}) & $w=\lambda-\mu+O(\mu/\lambda)$, so $w\ne\lambda$ at second order\\
+$R$ & $R=\lceil4n\log L/L\rceil$ (Section~\ref{a59:sec:uppercost}); the normalized root $R_u(n)$; the error $\mathcal R$ & a record $R$, $R_0$ (Proposition~\ref{a59:g:prop:family}); a radius $R$ (Lemma~\ref{a59:g:lem:entire-growth}) & \\
+$m$, $k$ & $m=\lceil n/(2L)\rceil$ (Lemma~\ref{a59:lem:triangular}); $k_j$ unmarked positions in run $j$; a row width $k$ & the seed size $m$; stage sizes $k_j$; unmarked positions $k_i$ (Section~\ref{a59:g:sec:upper}) & \\
+$x_c$, $x_s$ & $x_c=\frac L\lambda(1+\frac{3\mu-c}\lambda)$ & $x_s=y(1+\frac{2\log w+s}w)$ & different parametrizations of the same window\\
+\bottomrule
+\end{longtable}
+\end{small}
+
+Outside this report, \path{a202058-ascent-000-growth} uses $a_n$ for
+A202058 and $c_n$ for a normalized count; there $a_n$ avoids $000$, here
+$a_n$ avoids $100$.
+
+\section{What neither Part claims}\label{a59:sec:limits}
+
+\wtag\ Every limitation stated by either manuscript is printed in its
+place. Collected:
+\begin{itemize}
+\item \emph{Part~I (Report~243).} No relative equivalent $a_n\sim b_n$,
+$e_n\sim b_n$ or $d_n\sim b_n$; only $a_n/b_n=e^{o(n)}$ and
+$e_n/b_n=e^{o(n)}$. No existence or value of the linear constant for $d$ or
+$c$, and no claim that $C_-$ is optimal for $c$. The doubled seed is not new
+(credited to \cite[Section~7]{conway} and Report~241); the marked-occurrence
+encoding is Report~241's, refined; the triangular enumeration and the
+self-modified and matrix bridges are prior; Report~241's refutation is not
+claimed as a second new refutation. No inequality $u_n\le b_n$ and no
+injection into self-modified words. The inverse error $D$ tends to
+infinity; no rounding rule; implicit constants and thresholds are not
+explicit. No poset transfer (covering-graph $N$-freeness is not induced-$N$
+avoidance). The CCEG abstract reverses its algorithm-efficiency labels; the
+actual Sections~2.3--2.4 are followed. No exhaustive priority, peer review
+or formal verification; byte reproducibility is not proof.
+\item \emph{Part~II (Report~241).} No relative equivalent, no limit of
+$(\log n)^2(u_n/n!)^{1/n}$, no linear-order constant, prefactor or
+consecutive-ratio asymptotic. The inverse has a growing additive error, no
+exact ceiling formula and no effective onset. The refutation concerns the
+conjectural scale, not CCEG's finite counts or algorithms. A common
+logarithmic order does not decide $d_n/a_n$. The OGF's non-D-finiteness is
+a formal conclusion, not an inference from radius zero. The pattern class
+and permutation blocks are not new; the doubled seed is CCEG's. The bounds
+``do not assert that those scales are unresolved throughout the
+literature''; the bounded search ``did not locate'' a published correction
+of the conjecture, which is not a priority certificate. No peer review or
+formal verification; finite checks are regression tests, not proof; the
+manifest establishes integrity, not authorship.
+\item \emph{The write.} Its short proofs (marked \wtag) and its numerical
+comparison of $d_n$ with $b_n$ are unrefereed like the rest. Its statements
+about other reports are checked against the repository of 5 October 2026.
+\end{itemize}
+
+\part{The sharp linear logarithmic constant for 100 avoidance (Report 243)}\label{a59:part}
+\renewcommand{\PartMark}{Part I: Report 243}
+
+\wtag\ Part~I is Report~243 of the session bundle, \emph{The Sharp Linear
+Logarithmic Constant for 100 Avoiding Ascent Sequences}, subtitle
+\emph{Triangular comparisons and controlled inverse bounds}, author line
+``Report~243'', dated 5~October 2026 (16 pages as delivered). It is
+unrefereed and not formalized. Its abstract opens this report. Its text
+follows unchanged except for the label prefix \texttt{a59:}, the title of
+Section~\ref{a59:sec:questions} (was ``Questions suggested by the
+comparison'') and the notes marked \wtag. Its citation~\cite{report241} is
+Report~241, printed in this report as Part~II.
+
+\section{Models and results}\label{a59:sec:results}
+An \emph{ordinary ascent sequence} of length $n\ge1$ is a word $x=x_1\cdots x_n$ of nonnegative integers with $x_1=0$ and
+\begin{equation}\label{a59:eq:ascent}
+ 0\le x_i\le1+\asc(x_1\cdots x_{i-1})\qquad(2\le i\le n),
+\end{equation}
+where $\asc$ counts strict adjacent rises. The entering edge $(x_{i-1},x_i)$ is excluded from the right side. A pattern occurrence uses arbitrary indices $i<j<k$: $100$ means $x_i>x_j=x_k$, $110$ means $x_i=x_j>x_k$, and $000$ means $x_i=x_j=x_k$. In particular, these are not contiguous-factor restrictions.
+
+Write $\Av_n(P)$ for the ordinary ascent sequences avoiding every pattern in $P$, and set
+\begin{align*}
+ a_n&=|\Av_n(100)|,&e_n&=|\Av_n(000,100)|,\\
+ d_n&=|\Av_n(110)|,&c_n&=|\Av_n(000,100,110)|.
+\end{align*}
+The empty word has count one in each class. The single-pattern sequences are A202059 and A202060, respectively \cite{conway,oeis100,oeis110}. We attach no OEIS identifier to $e_n$. The common triple class $c_n$ appears in the classification of Callan and Mansour \cite{callan}. All logarithms below are natural.
+
+Define constants and an error scale by
+\begin{equation}\label{a59:eq:constants}
+ C_+=\log2-1,\qquad C_-=-\log2-1,\qquad
+ E(n)=\frac{n(\log\log n)^2}{\log n}.
+\end{equation}
+These expressions are used only for sufficiently large $n$.
+\begin{theorem}\label{a59:thm:main}
+For $u_n=a_n$ and for $u_n=e_n$,
+\begin{equation}\label{a59:eq:main}
+ \log u_n=n(\log n-2\log\log n+C_+)+O(E(n)).
+\end{equation}
+For either $u_n=d_n$ or $u_n=c_n$, there is a constant $C>0$ such that, eventually,
+\begin{equation}\label{a59:eq:bracket}
+ n(\log n-2\log\log n+C_-)-CE(n)
+ \le \log u_n
+ \le n(\log n-2\log\log n+C_+)+CE(n).
+\end{equation}
+Thus, with $R_u(n)=(\log n)^2(u_n/n!)^{1/n}$,
+\begin{equation}\label{a59:eq:roots}
+ R_a(n),R_e(n)\longrightarrow2,\qquad
+ \tfrac12\le\liminf R_u(n)\le\limsup R_u(n)\le2
+ \quad(u=d,c).
+\end{equation}
+No existence or value of a limit for $R_d$ or $R_c$ is asserted.
+\end{theorem}
+The normalized-root statements follow directly from $\log n!=n\log n-n+O(\log n)$. Equivalently, the centered linear logarithmic quantity
+\[
+ \kappa_u(n)=\frac{\log u_n-n\log n+2n\log\log n}{n}
+\]
+tends to $C_+$ for $a,e$, while its liminf and limsup lie between $C_-$ and $C_+$ for $d,c$.
+
+Report~241 \cite{report241} established the two logarithmic orders with an $O(n)$ remainder, and already ruled out the earlier proposed fractional-factorial scale. The advance here is the linear constant for $a,e$, quantitative remainders and inverses, and improved brackets for $d,c$. We use its marked-occurrence approach, refining the run bound; we do not present that earlier encoding or the earlier conjecture correction as new. Exact enumeration of the triangular comparison model is also prior. The present proof requires only its elementary logarithmic estimate, proved next.
+
+\paragraph{Note (\wtag, 5 October 2026).} Report~241 is Part~II of this
+report: its two logarithmic orders are Theorem~\ref{a59:g:thm:main}, the
+correction of the fractional-factorial scale is
+Corollary~\ref{a59:g:cor:contradiction}, and the marked-occurrence encoding
+is Proposition~\ref{a59:g:prop:finite-upper}. Theorem~\ref{a59:thm:main}
+implies Theorem~\ref{a59:g:thm:main} (Remark~\ref{a59:g:rem:implied}).
+\section{The triangular sum and its logarithmic estimate}\label{a59:sec:triangular}
+For integers $1\le r\le n$, put
+\begin{equation}\label{a59:eq:T}
+ M_r=\frac{r(r+1)}2,\qquad q=n-r,\qquad
+ T(n,r)=\binom{M_r+q-1}{q},\qquad b_n=\sum_{r=1}^n T(n,r),
+\end{equation}
+and $b_0=1$. A nonnegative triangular array of dimension $r$ has $M_r$ cells. Requiring its diagonal to be positive uses $r$ units; after subtracting those units, its weight-$n$ count is exactly $T(n,r)$ by stars and bars. Thus
+\[
+ \sum_{n\ge0}b_nz^n=1+\sum_{r\ge1}\frac{z^r}{(1-z)^{r(r+1)/2}}.
+\]
+This exact triangular enumeration has older interval-poset antecedents \cite{bayoumi,khamis}. The identification with self-modified ascent sequences and the positive-diagonal matrix correspondence are established in \cite{bcdk,dukes}. The size convention is
+\begin{equation}\label{a59:eq:shift}
+ b_n=\mathrm{A098569}(n-1)\qquad(n\ge1),
+\end{equation}
+using the current offset \cite{oeistriangular}. Neither the matrix formula nor that correspondence is a new result of this report. Our comparisons will use the explicit sum \eqref{a59:eq:T}, so no unproved transfer between word classes is required.
+
+\begin{lemma}\label{a59:lem:triangular}
+As $n\to\infty$,
+\begin{equation}\label{a59:eq:blog}
+ \log b_n=n(\log n-2\log\log n+C_+)
+       +O\!\left(\frac{n\log\log n}{\log n}\right).
+\end{equation}
+The single term with $r=\lfloor2n/\log n\rfloor$ has the same estimate.
+\end{lemma}
+\begin{proof}
+Write $L=\log n$ and use the continuous comparison phase
+\[
+ H_n(x)=(n-x)\left(\log\frac{x^2}{2(n-x)}+1\right),
+ \qquad H_n(n)=0.
+\]
+For integer $r$ and $q=n-r$, the exact product identity gives
+\begin{equation}\label{a59:eq:product}
+ \log T(n,r)=q\log M_r-\log(q!)+\mathcal R,
+ \qquad 0\le\mathcal R\le\frac{q(q-1)}{2M_r}.
+\end{equation}
+Here $\mathcal R=\sum_{i=0}^{q-1}\log(1+i/M_r)$, so the bound uses only $0\le\log(1+t)\le t$. The convention $0!=1$ covers $q=0$. Comparing the increasing function $\log x$ with its integral gives
+\[
+ \log(q!)=q\log q-q+O(\log(q+2)),
+\]
+with $0\log0=0$. Since $\log M_r=2\log r-\log2+O(1/r)$, it follows uniformly for $n/(2L)\le r\le n$ that
+\begin{equation}\label{a59:eq:phasecomp}
+ \log T(n,r)=H_n(r)+O(L^2).
+\end{equation}
+This is a value estimate; we will differentiate the explicit $H_n$, never its error.
+
+For $\alpha$ in the fixed interval $[1/2,4]$, expansion of $\log(1-\alpha/L)$ gives, uniformly,
+\begin{equation}\label{a59:eq:alpha}
+ H_n(\alpha n/L)
+ =n\left[L-2\log L+2\log\alpha-\log2+1-\alpha\right]
+     +O(n\log L/L).
+\end{equation}
+The elementary function $2\log\alpha-\alpha$ has its unique maximum at $\alpha=2$. Consequently the phase on this interval is at most
+\[
+ n[L-2\log L+\log2-1]+O(n\log L/L),
+\]
+and equality with that error holds at $x=2n/L$.
+
+It remains to exclude the two outer ranges; a local calculation alone would not bound the sum. For $0<x<n$,
+\[
+ H_n'(x)=\frac{2n}{x}-2-2\log x+\log(2(n-x)),\qquad
+ H_n''(x)=-\frac{2n}{x^2}-\frac2x-\frac1{n-x}<0.
+\]
+At $x=4n/L$, the first derivative is $-L/2+2\log L+O(1)<0$. Therefore $H_n$ decreases thereafter. Formula \eqref{a59:eq:alpha} shows that its value there is below the value at $2n/L$ by
+\[
+ (2-2\log2)n+O(n\log L/L),
+\]
+a positive linear gap. Together with \eqref{a59:eq:phasecomp}, this controls all $r\ge4n/L$, including $r=n$.
+
+For $r<n/(2L)$, let $m=\lceil n/(2L)\rceil$ and $M=M_m$. The integer function $\binom{M+q-1}{q}$ is nondecreasing in both $M\ge1$ and $q\ge0$. Hence
+\[
+ T(n,r)\le\binom{M+n-1}{n}.
+\]
+Apply \eqref{a59:eq:product} with this $M$ and $q=n$. Since
+$M=n^2/(8L^2)(1+O(L/n))$, its logarithm is
+\[
+ n[L-2\log L-\log8+1]+O(L^2+L),
+\]
+which is below $n[L-2\log L+\log2-1]$ by
+$(\log16-2)n+o(n)$. Thus both outer ranges are exponentially smaller on the logarithmic scale needed here.
+
+Rounding $2n/L$ to $r_0=\lfloor2n/L\rfloor$ changes $H_n$ by $O(L)$, for instance by its displayed derivative on a unit neighborhood. Equations \eqref{a59:eq:phasecomp} and \eqref{a59:eq:alpha} therefore prove the claimed estimate for $T(n,r_0)$. Finally,
+\[
+ \max_r T(n,r)\le b_n\le n\max_r T(n,r),
+\]
+and $L+L^2=O(n\log L/L)$ eventually. This proves the lemma.
+\end{proof}
+\begin{remark}
+The error in \eqref{a59:eq:product} near $r=2n/L$ is only $O(L^2)$, but it is not bounded: its leading order is $L^2/4$. Discarding it is harmless for \eqref{a59:eq:blog}, not for a relative equivalent. Likewise, equality of logarithms up to $o(n)$ does not imply a ratio tending to one.
+\end{remark}
+
+\begin{wremark}[\wtag, 5 October 2026: the leading order $L^2/4$]\label{a59:rem:Rlead}
+The remark's claim that the error $\mathcal R$ of~\eqref{a59:eq:product} has
+leading order $L^2/4$ near $r=2n/L$ is stated without proof; here is one.
+Let $r=2n/L+O(1)$, $q=n-r$ and $M=M_r$. From $t-t^2/2\le\log(1+t)\le t$ for
+$t\ge0$ and $\sum_{i<q}i^2\le q^3/3$,
+\[
+ \frac{q(q-1)}{2M}-\frac{q^3}{6M^2}\le\mathcal R\le\frac{q(q-1)}{2M}.
+\]
+Here $M=\frac{2n^2}{L^2}\bigl(1+O(L/n)\bigr)$ and
+$q=n\bigl(1-\frac2L+O(\frac1n)\bigr)$, so $q^3/M^2=O(L^4/n)\to0$ and
+\[
+ \frac{q(q-1)}{2M}=\frac{L^2}4\Bigl(1-\frac2L\Bigr)^2+O\Bigl(\frac{L^3}n\Bigr)
+ =\frac{L^2}4-L+1+o(1).
+\]
+Hence $\mathcal R=L^2/4-L+O(1)$: unbounded, of leading order $L^2/4$, as
+stated.
+\end{wremark}
+
+\begin{wremark}[\wtag, 5 October 2026: a sharper statement in Report~242]\label{a59:rem:report242}
+In the same batch~102, Report~242 of the bundle, written as the new
+report \path{a098569-self-modified-ascents} (labels \texttt{pdt:}), proves
+in its Theorem~6.1 (\texttt{pdt:thm:elementary}; the same number there as
+in the manuscript) the relative asymptotic
+\[
+ b_N=\sqrt{\frac2{P(u)}}\exp\Bigl(N\frac{u(u+1)}{u+2}+\frac u2+\frac{u^2}4\Bigr)
+ \Bigl(1+O\Bigl(\frac{\log^4N}N\Bigr)\Bigr),
+ \qquad u(u+2)e^u=2N,\quad P(u)=u^2+4u+2,
+\]
+for the same $b_N$ (its tables of size $N$ and dimension $m$ are $T(N,m)$
+of~\eqref{a59:eq:T}). It implies Lemma~\ref{a59:lem:triangular}. With
+$L=\log N$, the defining equation gives $u+\log u+\log(u+2)=L+\log2$, hence
+$u=L-2\log L+O(1)$, then $\log u,\log(u+2)=\log L+O(\log L/L)$, and so
+$u=L-2\log L+\log2+O(\log L/L)$. Since
+$u(u+1)/(u+2)=u-1+O(1/L)$ and the remaining terms are $O(L^2)$,
+\[
+ \log b_N=N(L-2\log L+\log2-1)+O(N\log L/L),
+\]
+which is~\eqref{a59:eq:blog}. Lemma~\ref{a59:lem:triangular} is thus an
+elementary second route to a weaker statement; Part~I needs only the weaker
+one. The two proofs share more than the conclusion: that report's
+comparison phase (\texttt{pdt:eq:Hphase}) is exactly the $H_n$ of the
+proof above, and its global-exclusion Lemma~3.1 (\texttt{pdt:lem:global})
+uses the same two gaps, $(\log16-2)n=(4\log2-2)n$ below the window and
+$(2-2\log2)n$ above it. The two manuscripts came from the same pipeline on
+the same day and neither cites the other; the a098569 report already
+records this relation in its Section~1. Report~242 also records that the leading $N\log N$ scale of $b_N$ is
+prior and that finer logarithmic expressions were posted in OEIS by
+V\'aclav Kot\v{e}\v{s}ovec; Report~243 does not claim the estimate as new.
+\end{wremark}
+\section{The refined increasing run encoding}\label{a59:sec:upper}
+The key improvement over the earlier occurrence encoding is to keep the index of each increasing run. This retains a triangular rather than rectangular candidate budget.
+
+\begin{lemma}\label{a59:lem:prefix}
+A nonempty ordinary ascent prefix with $A$ ascents has maximum at most $A$. A length-$n$ word with $K$ distinct labels and $r=n-K$ repeated occurrences has at most $r$ nonascent boundaries, and hence at most $r+1$ maximal strictly increasing runs.
+\end{lemma}
+\begin{proof}
+The maximum bound is inductive. A new maximum must enter by a strict rise, and \eqref{a59:eq:ascent} bounds it by the ascent count after that rise. An entry that is not a new maximum preserves the bound. Since $K$ distinct nonnegative labels have maximum at least $K-1$, the complete word has at least $K-1$ ascents. Its number of nonascent boundaries is therefore at most $n-1-(K-1)=r$.
+\end{proof}
+
+Mark every non-first occurrence in a $110$-avoiding word, or every non-last occurrence in a $100$-avoiding word. There are exactly $r$ marks in either case. Their labels, read from left to right, are weakly increasing. Indeed, a decrease $v>w$ between two marked labels yields $v,v,w$ by using an earlier equal $v$ in the first case, or yields $v,w,w$ by using a later equal $w$ in the second. This supplies a forbidden subsequence in each case.
+
+Fix the marked positions, their labels, and all nonascent boundaries. We call these data the \emph{skeleton}. They determine the run lengths $\ell_1,\ldots,\ell_s$, with $s\le r+1$, and the numbers $k_j$ of unmarked positions in each run. The unmarked labels in a run are distinct, as the run is strictly increasing. A set of those labels, together with its specified marked labels, determines that run uniquely when the data are consistent.
+
+\begin{lemma}\label{a59:lem:pool}
+Conditional on any consistently decoded prefix, the unmarked labels in run $j$ can be selected from a pool of at most
+\begin{equation}\label{a59:eq:pool}
+ \ell_j+r-j+1
+\end{equation}
+labels. Thus there are at most $\binom{\ell_j+r-j+1}{k_j}$ choices for them.
+\end{lemma}
+\begin{proof}
+Write $\ell=\ell_j$. The preceding $j-1$ complete runs have total length $p$ and exactly $A=p-j+1$ ascents. For $j=1$, the prefix is empty and we set $A=0$, consistent with the same expression. The first run is necessarily $0,1,\ldots,\ell-1$: induction uses strict increase and the ordinary ascent bound.
+
+For $j\ge2$, the first entry is a nonascent from the preceding prefix, so it is at most that prefix's maximum and therefore at most $A$. At position $t\ge2$ within the run, the entering nonascent has contributed no ascent and the preceding internal edges contribute exactly $t-2$. Its legality bound is $A+t-1$. In both cases every run label is at most
+\begin{equation}\label{a59:eq:ceiling}
+ A+\ell-1.
+\end{equation}
+This count excludes the current entering edge, as required by \eqref{a59:eq:ascent}.
+
+Let $d$ be the number of distinct labels in the prefix and $q=p-d$ its repeated occurrences. All previously seen labels lie in the interval $\{0,\ldots,A+\ell-1\}$. The number of unseen labels in that interval is exactly
+\[
+ A+\ell-d=\ell+q-j+1.
+\]
+For $110$ avoidance, every unmarked occurrence is a first occurrence, so the unseen labels suffice and $q\le r$ gives \eqref{a59:eq:pool}.
+
+For $100$ avoidance, an unmarked occurrence is a last occurrence. Besides unseen labels, it may use an \emph{unfinished} label already seen in the prefix whose final occurrence has not yet appeared. The decoded prefix and its marks determine which seen labels are unfinished: their last occurrence in that prefix was marked. Each unfinished label needs a future repeated occurrence, so there are at most $r-q$ such labels. The union of unseen and unfinished candidates has size at most
+\[
+ (\ell+q-j+1)+(r-q)=\ell+r-j+1.
+\]
+Some choices may violate a marked label or a boundary condition. Counting them only enlarges the upper bound. The pool may depend on the decoded prefix, but its uniform size bounds conditional branching at each step.
+\end{proof}
+
+Every label is at most $n-1$. For fixed $r$, the number of skeletons is at most
+\begin{equation}\label{a59:eq:skeleton}
+ S(n,r)=\binom nr\binom{n+r-1}{r}
+          \sum_{h=0}^r\binom{n-1}{h},\qquad S(n,0)=1.
+\end{equation}
+The three factors choose marked positions, weakly increasing marked labels, and at most $r$ nonascent boundaries. Inconsistent skeletons again cause only overcounting. Because $\sum k_j=n-r$ and $\sum\ell_j=n$, Vandermonde's identity gives
+\begin{align}
+ \prod_{j=1}^s\binom{\ell_j+r-j+1}{k_j}
+ &\le\binom{n+sr-s(s-1)/2}{n-r}\notag\\
+ &\le\binom{n+r(r+1)/2}{n-r}
+   =T(n+1,r+1).\label{a59:eq:vandermonde}
+\end{align}
+For completeness, the first inequality selects one nonnegative summand from the coefficient of $z^{n-r}$ in the product of $(1+z)^{\ell_j+r-j+1}$. The second follows because $sr-s(s-1)/2$ is nondecreasing for integer $1\le s\le r+1$ and has maximum $r(r+1)/2$.
+
+\begin{proposition}\label{a59:prop:finiteupper}
+For $n\ge1$ and for $u_n=a_n$ or $u_n=d_n$,
+\begin{equation}\label{a59:eq:finiteupper}
+ u_n\le\sum_{r=0}^{n-1}S(n,r)T(n+1,r+1).
+\end{equation}
+\end{proposition}
+\begin{proof}
+Encode a word by its skeleton and the successive run subsets. The preceding arguments reconstruct the word whenever those data are valid, and bound each conditional set of possibilities. Summing over $r$ proves the inequality.
+\end{proof}
+The exact appearance of the triangular term in \eqref{a59:eq:vandermonde} is useful, but it does not give $u_n\le b_n$. Skeletons carry additional information. Nor have we injected these words into self-modified ascent words.
+
+\paragraph{Note (\wtag, 5 October 2026).} This is Report~241's encoding
+(Proposition~\ref{a59:g:prop:finite-upper}) with the run index kept;
+Proposition~\ref{a59:prop:finiteupper} implies that proposition
+(Remark~\ref{a59:g:rem:upperimplied}). On the inequality $u_n\le b_n$ that
+the paragraph above declines to claim: it fails for $a_n$ already at $n=5$
+($a_5=44>43=b_5$), while $d_n\le b_n$ holds for every $n\le15$ (data in
+Section~\ref{a59:sec:questions}, where the question is recorded).
+\section{Subexponential skeleton cost and the large repeat tail}\label{a59:sec:uppercost}
+We now show that the extra skeleton information in \eqref{a59:eq:finiteupper} does not change the linear logarithmic constant. Let $L=\log n$ and
+\[
+ R=\left\lceil\frac{4n\log L}{L}\right\rceil.
+\]
+Eventually $R<n/2$. For $1\le r\le R$, the binomial coefficients $\binom nh$ are increasing for $h\le r$. Hence
+\[
+ \sum_{h=0}^r\binom{n-1}{h}\le(r+1)\binom nr.
+\]
+Using $\binom ab\le(ea/b)^b$ in the three factors of \eqref{a59:eq:skeleton} yields
+\begin{equation}\label{a59:eq:smallS}
+ S(n,r)\le(r+1)(2en/r)^{3r},\qquad
+ \max_{0\le r\le R}\log S(n,r)=O\!\left(\frac{n(\log L)^2}{L}\right).
+\end{equation}
+For the second estimate, $r\log(2en/r)$ is increasing for $r\le n$, and at $r=R$ the factor $\log(2en/r)$ is $O(\log L)$. The case $r=0$ has zero skeleton cost. Consequently the small-$r$ part is bounded by
+\begin{equation}\label{a59:eq:smallupper}
+ \sum_{r=0}^R S(n,r)T(n+1,r+1)
+ \le\exp(O(E(n)))b_{n+1}.
+\end{equation}
+
+A uniform estimate for the remaining range is essential: it is not valid to assume the encoding's $r$ lies near a triangular saddle. From \eqref{a59:eq:skeleton}, for every $r<n$,
+\[
+ S(n,r)\le2^n\,2^{2n}\,2^n=16^n.
+\]
+For $n\ge2$, the top argument in \eqref{a59:eq:vandermonde} is at most $n^2$. Write $K=n-r\ge1$. Then
+\begin{align*}
+ \log T(n+1,r+1)
+ &\le K\log(en^2/K)\\
+ &=(n-r)L+K+K\log(n/K)\\
+ &\le(n-r)L+(1+1/e)n.
+\end{align*}
+The last step uses $0<t\le1\Rightarrow t\log(1/t)\le1/e$. For $r>R$, $rL\ge4n\log L$, and the sum of at most $n$ such terms is therefore at most
+\begin{equation}\label{a59:eq:tail}
+ \exp\bigl(nL-4n\log L+O(n)\bigr).
+\end{equation}
+Lemma~\ref{a59:lem:triangular} already gives a single triangular term of logarithm $nL-2n\log L+O(n)$, so this tail is smaller by more than any fixed linear exponential factor eventually.
+
+Combining \eqref{a59:eq:smallupper}, \eqref{a59:eq:tail}, and Lemma~\ref{a59:lem:triangular}, and observing that replacing $n$ by $n+1$ changes the displayed main term by $O(L)$, gives
+\begin{equation}\label{a59:eq:upperfinal}
+ \log u_n\le n(L-2\log L+C_+)+O(E(n))
+ \qquad(u=a,d).
+\end{equation}
+The same upper bound follows for $e,c$ by containment in $a,d$. It remains to produce enough ordinary words, with losses explicitly smaller than $\exp(\varepsilon n)$ for every fixed $\varepsilon>0$.
+\section{Positive rows and distinct suffix words}\label{a59:sec:positive}
+Fix $r\ge1$. Start with the increasing seed $0,1,\ldots,r-1$. Append $r$ nonempty increasing blocks $B_1,\ldots,B_r$, of lengths $\ell_j\ge1$, making every suffix entry distinct across all blocks. Put $p_j=\ell_1+\cdots+\ell_j$ and $p_0=0$. For block $j$, select an $\ell_j$-element subset of
+\begin{equation}\label{a59:eq:lowerpool}
+ \{0,1,\ldots,r+p_j-j-1\}\setminus
+       \{\text{entries in earlier suffix blocks}\},
+\end{equation}
+and list it in increasing order. The ceiling increases by $\ell_j-1\ge0$ from the preceding block, so all earlier suffix entries belong to the current interval. Its candidate count is exactly
+\begin{equation}\label{a59:eq:rowchoices}
+ r+\ell_j-j=\ell_j+(r-j+1)-1.
+\end{equation}
+Thus a row of width $k=r-j+1$ and total $\ell_j$ has precisely the right stars-and-bars count to parametrize the block.
+
+\subsection{An explicit stars and bars rank bijection}
+The correspondence is an actual reversible map, not merely equality of two counts. Let $y_1,\ldots,y_k\ge0$ sum to $\ell$, and set
+\[
+ b_i=y_1+\cdots+y_i+i\qquad(1\le i\le k-1).
+\]
+The $b_i$ are the increasing bar positions in $\{1,\ldots,\ell+k-1\}$. Take the complement of this bar set, an $\ell$-element set of star positions. Order the pool \eqref{a59:eq:lowerpool} increasingly; its size is $\ell+k-1$ by \eqref{a59:eq:rowchoices}. Select exactly the pool entries with those star ranks.
+
+Conversely, a block and its decoded earlier suffix determine the pool and the ranks of the selected entries. The complementary ranks recover $b_1<\cdots<b_{k-1}$, and then
+\[
+ y_1=b_1-1,\quad y_i=b_i-b_{i-1}-1\ (2\le i<k),\quad
+ y_k=\ell+k-1-b_{k-1}.
+\]
+For $k=1$, there are no bars and the unique row is $(\ell)$. This defines a bijection for every row and fixes the encoding unambiguously.
+
+\begin{lemma}\label{a59:lem:legalpositive}
+Every word constructed above belongs to $\Av(000,100)$.
+\end{lemma}
+\begin{proof}
+Before block $j$, the seed and internal block ascents alone guarantee at least
+\[
+ A_0=(r-1)+\sum_{h<j}(\ell_h-1)=r+p_{j-1}-j
+\]
+ascents. We deliberately ignore any ascents between blocks. If the selected entries of block $j$ are $x_1<\cdots<x_{\ell_j}$, their ceiling and their remaining successors imply
+\[
+ x_t\le r+p_j-j-1-(\ell_j-t)=A_0+t-1.
+\]
+For $t=1$, the bound is $x_1\le A_0$ and is legal. For $t\ge2$, the prefix before that entry has at least $A_0+t-2$ ascents, so \eqref{a59:eq:ascent} holds. This remains true even if a block boundary is an ascent and two chosen blocks merge into one maximal increasing run.
+
+Only seed labels can repeat, and each repeats at most once in the suffix. Thus $000$ is absent. For a seed label $v$, its first copy in the increasing seed precedes every larger label in the whole word. A larger entry cannot precede both copies of $v$, so $100$ is absent as well.
+\end{proof}
+
+\begin{lemma}\label{a59:lem:blockfiber}
+At a fixed suffix length $p\ge r$, the map from positive-row triangular arrays to the resulting words has fibers of size at most $\binom{p-1}{r-1}$.
+\end{lemma}
+\begin{proof}
+Decorate a resulting word with its positive length composition $(\ell_1,\ldots,\ell_r)$. The seed length is fixed. Cutting its suffix at those lengths recovers all blocks, and the rank bijection recovers every row. Hence the decorated map is injective. There are exactly $\binom{p-1}{r-1}$ positive compositions of $p$ into $r$ parts.
+\end{proof}
+No claim is made that blocks can be recovered as maximal runs. For instance, an ascending boundary can disappear in the undecorated word. The explicit decoration and fiber bound account for this ambiguity.
+\section{Repairing empty rows and bounding all fibers}\label{a59:sec:repair}
+The triangular sum counts rows of total zero as well. Enforcing positivity by discarding all such arrays would need a separate probability estimate. Instead, a small deterministic repair suffices for at least half the arrays.
+
+\begin{proposition}\label{a59:prop:repair}
+Let $n>r\ge1$, $q=n-r$, $M=r(r+1)/2$, and
+\begin{equation}\label{a59:eq:Q}
+ Q=\left\lceil\frac{2(M+q)}q\right\rceil.
+\end{equation}
+Then
+\begin{equation}\label{a59:eq:finitelower}
+ e_{n+Q}\ge
+ \frac{T(n,r)}{2^{r+1}(Q+1)\binom{n+Q}{r}}.
+\end{equation}
+In particular the same lower bound holds for $a_{n+Q}$.
+\end{proposition}
+\begin{proof}
+Choose uniformly among the $T(n,r)$ weak compositions of $q$ into $M$ cells and group the cells into rows of widths $r,r-1,\ldots,1$. A row of width $k$ has emptiness probability
+\begin{align}
+ \Prob(\text{row }k\text{ empty})
+ &=\frac{\binom{M-k+q-1}{q}}{\binom{M+q-1}{q}}\notag\\
+ &=\prod_{i=0}^{q-1}\frac{M-k+i}{M+i}
+ \le\exp\left(-\frac{kq}{M+q-1}\right),\label{a59:eq:empty}
+\end{align}
+when $M-k\ge1$. If $M-k=0$, emptiness has probability zero because $q>0$, so the displayed upper bound remains valid. The product bound follows from $1-t\le e^{-t}$ and $M+i\le M+q-1$.
+
+Let $Z$ count the empty rows. With $\theta=q/(M+q-1)>0$, linearity of expectation and a geometric sum give
+\begin{equation}\label{a59:eq:expect}
+ \E Z\le\sum_{k=1}^r e^{-k\theta}
+ \le\frac1{e^\theta-1}\le\frac{M+q-1}{q}<\frac Q2.
+\end{equation}
+No independence between rows is used. Markov's inequality shows that at least half the arrays have $Z\le Q$.
+
+For each such array add one unit to the first cell of every empty row. The repaired array has all row totals positive, and total $q+t$ where $t=Z\in\{0,\ldots,Q\}$. The remainder of the proof records three separate possible losses.
+
+\emph{First fiber, repair.} In a repaired row, the only ambiguity is whether a first-cell singleton $(1,0,\ldots,0)$ was originally that singleton or was originally empty. Every other row has a unique preimage. Thus an entire repaired array has at most $2^r$ preimages. The fixed original total $q$ can only reduce this bound. At least $T(n,r)/2^{r+1}$ distinct repaired arrays remain.
+
+\emph{Second fiber, block boundaries.} Apply Section~\ref{a59:sec:positive} to a repaired array. Its suffix has length $p=q+t$, its full word has length $n+t$, and it avoids $000$ and $100$. Lemma~\ref{a59:lem:blockfiber} bounds its fiber by
+\[
+ \binom{n+t-r-1}{r-1}\le\binom{n+Q}{r}.
+\]
+For example, the inequality follows by adding one distinguished cut to a set of $r-1$ cuts and then enlarging the ambient set. Across different $t$, the output lengths are distinct. Thus at least
+\[
+ \frac{T(n,r)}{2^{r+1}\binom{n+Q}{r}}
+\]
+words of lengths between $n$ and $n+Q$ have been produced.
+
+\emph{Third fiber, padding.} A word of maximum $H$ and ascent count $A$ satisfies $H\le A$ by Lemma~\ref{a59:lem:prefix}. Appending the fresh record $H+1$ is legal, since $H+1\le A+1$. Successive fresh records preserve each of $000$, $100$, and $110$ avoidance. Pad every word to length $n+Q$ in this way. At each fixed original length, truncation recovers the original word, so this padding is injective. With up to $Q+1$ possible original lengths, its total fiber is at most $Q+1$. Combining the three bounds proves \eqref{a59:eq:finitelower}.
+\end{proof}
+The right side is a real lower bound and need not be an integer. The proposition is a finite counting inequality, with no assumed bijection between its original triangular arrays and its final words. It remains valid when $Q\ge r$, although the asymptotic use below has $Q=o(r)$.
+\section{The sharp lower constant at every length}\label{a59:sec:lower}
+First use the finite comparison with
+\[
+ r=\lfloor2n/\log n\rfloor,\qquad q=n-r,\qquad M=r(r+1)/2.
+\]
+Writing $L=\log n$, these parameters satisfy
+\begin{equation}\label{a59:eq:optimparameters}
+ r=\frac{2n}{L}+O(1),\qquad M\sim\frac{2n^2}{L^2},\qquad
+ Q\sim\frac{4n}{L^2}.
+\end{equation}
+The three fiber costs are subexponential. More explicitly,
+\begin{align}
+ \log\left(2^{r+1}(Q+1)\binom{n+Q}{r}\right)
+ &\le(r+1)\log2+\log(Q+1)
+      +r\log\frac{e(n+Q)}r\notag\\
+ &=O(n\log L/L).\label{a59:eq:lowercost}
+\end{align}
+By Lemma~\ref{a59:lem:triangular},
+\begin{equation}\label{a59:eq:singlelower}
+ \log T(n,r)=n(L-2\log L+C_+)+O(n\log L/L).
+\end{equation}
+Equations \eqref{a59:eq:finitelower}--\eqref{a59:eq:singlelower} give the desired lower constant at lengths $n+Q$, but those lengths alone are not enough for an all-length theorem.
+
+Fix a sufficiently large target $N$, and choose instead
+\begin{equation}\label{a59:eq:alllength}
+ n=N-\left\lceil\frac{8N}{(\log N)^2}\right\rceil,
+ \qquad r=\lfloor2n/\log n\rfloor,
+\end{equation}
+with $Q$ as in \eqref{a59:eq:Q}. Then $n/N\to1$, $Q\sim4N/(\log N)^2$, and consequently $n+Q\le N$ eventually. Apply Proposition~\ref{a59:prop:repair}, then append additional fresh records to reach exactly $N$. This extra padding is injective because its starting length is fixed.
+
+For $f(x)=x(\log x-2\log\log x+C_+)$, the explicit derivative is
+\[
+ f'(x)=\log x-2\log\log x+C_++1-\frac2{\log x}=O(\log x).
+\]
+The shift in \eqref{a59:eq:alllength} is $O(N/(\log N)^2)$, so
+\[
+ f(n)=f(N)+O(N/\log N).
+\]
+All the losses in \eqref{a59:eq:lowercost} are $O(N\log\log N/\log N)$. It follows that
+\begin{equation}\label{a59:eq:lowerfinal}
+ \log e_N\ge N(\log N-2\log\log N+C_+)
+                  -O(N\log\log N/\log N).
+\end{equation}
+Since $e_N\le a_N$ and both satisfy the upper bound \eqref{a59:eq:upperfinal}, this proves \eqref{a59:eq:main} for $a,e$. In particular, the stronger lower construction lands entirely in the multiplicity-at-most-two subclass $\Av(000,100)$.
+
+Combining \eqref{a59:eq:main} with \eqref{a59:eq:blog} also yields
+\[
+ \log a_n-\log b_n=o(n),\qquad \log e_n-\log b_n=o(n).
+\]
+This means $a_n/b_n=\exp(o(n))$ and $e_n/b_n=\exp(o(n))$, often called subexponential equivalence. It is strictly weaker than either ratio tending to one, and gives no relative equivalent for $a_n$ or $e_n$.
+\section{A doubled seed and the common class}\label{a59:sec:common}
+The words of Section~\ref{a59:sec:positive} need not avoid $110$. For example, seed $(0,1)$ and blocks $(1)$, $(0,2)$ produce
+\[
+ (0,1,1,0,2),
+\]
+a legal $000$- and $100$-avoider containing $110$. The following transform obtains a common-class lower bound with an explicit additional length cost.
+
+\begin{lemma}\label{a59:lem:doubling}
+Replace the seed $(0,1,\ldots,r-1)$ of a word constructed in Section~\ref{a59:sec:positive} by two consecutive copies of that seed, and increase every suffix label by $r$. The transformed word belongs to $\Av(000,100,110)$. For fixed $r$, this transform is injective and adds $r$ to the length.
+\end{lemma}
+\begin{proof}
+The doubled seed is itself legal and has $2r-2$ ascents. The first original suffix entry is at most $r-1$, by the first-block order-statistic bound, so its entering edge from the original seed is a nonascent. Its transformed value lies between $r$ and $2r-1$, and is legal after the doubled seed; its entering edge is an ascent. Before that entry, the transformed ascent count exceeds the original count by $r-1$. After that entry, the difference is $r$. All later comparisons within the suffix are unchanged by translation, while every later suffix value has increased by $r$. Their legality therefore follows from the original legality bounds. This argument includes $r=1$.
+
+The only repeated labels are the seed labels, each occurring exactly twice, so $000$ is absent. A seed label's first occurrence precedes every larger label, excluding $100$. After its second occurrence, all remaining seed entries are larger, and all suffix entries are at least $r$. No smaller entry can follow the two equal copies, excluding $110$. Finally, remove the first $r$ entries and subtract $r$ from the suffix to recover the original word; fixed $r$ makes the transform injective.
+\end{proof}
+The use of a doubled increasing seed has antecedents in Conway et al.\ \cite[Section~7]{conway} and in Report~241. Here its translated distinct suffix is combined with the triangular repair argument. We do not claim the doubled-seed idea itself as new.
+
+Repeating all three fiber estimates from Proposition~\ref{a59:prop:repair}, and padding with fresh records after the transform, gives the finite inequality
+\begin{equation}\label{a59:eq:commonfinite}
+ c_{n+r+Q}\ge
+ \frac{T(n,r)}{2^{r+1}(Q+1)\binom{n+Q}{r}}
+ \quad(n>r\ge1),
+\end{equation}
+with exactly the same $Q$ as in \eqref{a59:eq:Q}. The transformed lengths are $n+r+t$, so padding still has at most $Q+1$ possible original lengths. The rank and decoration fibers are unchanged by the injective transform.
+
+To reach an arbitrary sufficiently large target $N$, set $L=\log N$ and choose
+\begin{equation}\label{a59:eq:commonparameters}
+ r=\lfloor N/L\rfloor,\qquad
+ n=N-r-\lceil4N/L^2\rceil,\qquad q=n-r.
+\end{equation}
+Now $M\sim N^2/(2L^2)$, $q=N-2N/L+O(N/L^2)$, and $Q\sim N/L^2$. Therefore $n+r+Q\le N$ eventually. The denominator in \eqref{a59:eq:commonfinite} has logarithm $O(N\log L/L)$, by the same binomial estimate as before.
+
+For clarity, the linear constant can be calculated directly, without applying a saddle formula outside its chosen dimension. We have
+\[
+ \log M=2L-2\log L-\log2+O(L/N),\qquad
+ \log q=L-2/L+O(1/L^2).
+\]
+Use \eqref{a59:eq:product} and the factorial estimate, with $q^2/M=O(L^2)$. Then
+\begin{align*}
+ \log T(n,r)
+ &=q(\log M-\log q+1)+O(L^2+L)\\
+ &=N(L-2\log L-\log2-1)+O(N\log L/L).
+\end{align*}
+The $-2N$ contribution from $q=N-2N/L+O(N/L^2)$ combines with the factorial's $+N$ contribution to give the $-1$ in $C_-$. Fresh-record padding and \eqref{a59:eq:commonfinite} imply
+\begin{equation}\label{a59:eq:commonlower}
+ \log c_N\ge N(\log N-2\log\log N+C_-)
+                   -O(N\log\log N/\log N).
+\end{equation}
+Since $c_N\le d_N$, this lower bound also holds for $d_N$. Together with \eqref{a59:eq:upperfinal}, it proves \eqref{a59:eq:bracket} and completes Theorem~\ref{a59:thm:main}.
+
+The interval $[C_-,C_+]$ has width $2\log2$. The proof does not show that either $\kappa_d(N)$ or $\kappa_c(N)$ converges, nor that their possible limits agree. Improving the common-class lower construction or finding a matching $110$ comparison remains a separate problem.
+
+\paragraph{Note (\wtag, 5 October 2026).} Report~241's exactly counted
+family (Proposition~\ref{a59:g:prop:family}) is a second lower construction
+inside the same common class, built on the same doubled seed: it spends the
+guaranteed internal ascents of each fresh-label block to open the next one.
+With the block size $b=\lceil\log n\rceil$ it gives
+$\log c_n\ge n\log n-2n\log\log n-O(n)$ (Section~\ref{a59:g:sub:quant}),
+an unspecified linear constant, so it does not compete
+with~\eqref{a59:eq:commonlower}; with $b$ fixed it gives the elementary
+bound~\eqref{a59:g:eq:fixed-exponent}.
+\section{Controlled first crossing inverses}\label{a59:sec:inverse}
+For any of the four counting sequences, define
+\[
+ \nu_u(X)=\min\{n\ge0:u_n\ge X\}\qquad(X>1).
+\]
+Fresh-record padding gives an injection at every length and preserves each class, so every $u_n$ is nondecreasing. The lower bounds above make each sequence unbounded. Thus its first crossing exists; strict increase is unnecessary.
+
+\begin{theorem}\label{a59:thm:inverse}
+Put $L=\log X$, $\lambda=\log L$, $\mu=\log\lambda$, and
+\[
+ D=\frac{L\mu^2}{\lambda^3}.
+\]
+For $u=a$ or $u=e$,
+\begin{equation}\label{a59:eq:inverseexact}
+ \nu_u(X)=\frac L\lambda
+       +(3\mu+1-\log2)\frac L{\lambda^2}+O(D).
+\end{equation}
+For $u=d$ or $u=c$, there is a fixed $C>0$, depending on the class, such that eventually
+\begin{align}
+ \frac L\lambda+(3\mu+1-\log2)\frac L{\lambda^2}-CD
+ &\le\nu_u(X)\notag\\
+ &\le\frac L\lambda+(3\mu+1+\log2)\frac L{\lambda^2}+CD.
+ \label{a59:eq:inversebracket}
+\end{align}
+These are asymptotic error bounds, not exact integer-rounding prescriptions.
+\end{theorem}
+\begin{proof}
+For a fixed real constant $c$, define
+\[
+ f_c(x)=x(\log x-2\log\log x+c),\qquad
+ x_c=\frac L\lambda\left(1+\frac{3\mu-c}{\lambda}\right).
+\]
+For sufficiently large $X$, all quantities are positive. Taylor expansion of the ordinary logarithm gives
+\begin{align}
+ \log x_c&=\lambda-\mu+\frac{3\mu-c}{\lambda}
+                +O(\mu^2/\lambda^2),\notag\\
+ \log\log x_c&=\mu-\frac\mu\lambda+O(\mu^2/\lambda^2),\notag\\
+ f_c(x_c)&=L+O(L\mu^2/\lambda^2).\label{a59:eq:inverseexpand}
+\end{align}
+For the middle line, divide the first line by $\lambda$ before expanding the second logarithm. Substitution then proves the last line: the order-$\mu/\lambda$ terms cancel by the choice $3\mu-c$.
+
+On every fixed-width multiple of the window $x=x_c+O(D)$, one has $x\sim L/\lambda$ and
+\begin{equation}\label{a59:eq:slope}
+ f_c'(x)=\log x-2\log\log x+c+1-2/\log x\sim\lambda.
+\end{equation}
+The logarithmic count error from Theorem~\ref{a59:thm:main}, evaluated at any integer in that window, is
+\begin{equation}\label{a59:eq:inverseerror}
+ O\!\left(\frac{x(\log\log x)^2}{\log x}\right)
+       =O(L\mu^2/\lambda^2).
+\end{equation}
+The constants can be taken uniform there, since the original all-integer error bound holds for every sufficiently large integer and the displayed scales are uniformly comparable.
+
+For $u=a,e$, take $c=C_+$. The mean-value theorem, \eqref{a59:eq:inverseexpand}--\eqref{a59:eq:inverseerror}, and a sufficiently large fixed $C$ imply
+\[
+ \log u_{\lfloor x_{C_+}-CD\rfloor}<L,
+ \qquad
+ \log u_{\lceil x_{C_+}+CD\rceil}\ge L.
+\]
+Rounding changes $f_c$ by only $O(\lambda)$, negligible compared with $L\mu^2/\lambda^2$. Monotonicity brackets the first crossing between these two neighboring integer endpoints. Because $D\to\infty$, their unit rounding errors are absorbed in $O(D)$. This proves \eqref{a59:eq:inverseexact}.
+
+For $u=d,c$, apply the upper count estimate with $c=C_+$ to the lower endpoint: it implies the count is still below $X$ at $\lfloor x_{C_+}-CD\rfloor$. Apply the lower count estimate with $c=C_-$ to the upper endpoint: the count is at least $X$ at $\lceil x_{C_-}+CD\rceil$. Choose one $C$ large enough for both estimates and absorb the unit rounding errors as before. This proves \eqref{a59:eq:inversebracket}. In particular the directions reverse: the larger counting constant gives the smaller inverse endpoint.
+\end{proof}
+The error $D=L(\log\log L)^2/(\log L)^3$ tends to infinity in absolute size. Even for $a,e$, rounding the two displayed terms does not determine the true first crossing. The error is smaller than their second term, but is not bounded. In \eqref{a59:eq:inversebracket}, the unresolved counting constant leaves an inverse interval of width
+\[
+ 2\log2\,\frac L{\lambda^2}+O(D),
+\]
+and $D=o(L/\lambda^2)$. Thus the second coefficient for $d,c$ is genuinely undetermined by this argument. The constants implicit in the error terms and their eventual thresholds are not supplied as numerical certification tolerances.
+
+\paragraph{Note (\wtag, 5 October 2026).} Part~II's first crossing $N_u(X)$
+is the same function as $\nu_u(X)$. Its Lambert-$W$ form,
+Proposition~\ref{a59:g:prop:inverse}, follows from
+Theorem~\ref{a59:thm:inverse} for all four classes
+(Remark~\ref{a59:g:rem:inverseimplied}): both say
+$\nu_u(X)=L/\lambda+3\mu L/\lambda^2+O(L/\lambda^2)$, and
+Theorem~\ref{a59:thm:inverse} determines the next term for $a,e$.
+\section{Why direct model transfer is insufficient}\label{a59:sec:scope}
+A self-modified ascent sequence is an ordinary ascent sequence fixed by the standard modification algorithm of \cite[Section~4.1]{bcdk}. That algorithm visits the ascent positions in order and, for each ascent top, increases by one every earlier entry at least that top. Its fixed-point characterization and matrix interpretation are prior results \cite{bcdk,dukes}; they do not identify self-modified words with the ordinary avoidance classes considered here.
+
+The four-letter word $(0,1,0,1)$ is an ordinary ascent sequence avoiding both $100$ and $110$. Standard modification sends it to $(0,2,0,1)$, which is not an ordinary ascent sequence: its second entry exceeds one. Conversely, the self-modified word $(0,1,1,0)$ contains $110$, and the self-modified word $(0,1,0,0)$ contains $100$. These witnesses refute literal containment in either direction for either single-pattern comparison. They also rule out using the standard modification map as an automatic transfer into the desired self-modified ordinary class.
+
+The comparisons proved here have a different form. The upper map records skeleton data before making its triangular estimate. The lower map starts with triangular arrays, repairs rows, decodes rank subsets, and keeps track of three finite fibers. Merged increasing blocks are allowed and handled by positive-composition decorations. None of these steps is replaced by a claim that two equal-looking generating functions or similar numerical prefixes imply a bijection.
+
+The historical sources must also be kept at their actual scope. Bayoumi, El-Zahar, and Khamis \cite{bayoumi} and Khamis \cite{khamis} provide older exact interval-poset enumerations related to the triangular model. Their covering-graph $N$-freeness is not an interchangeable name for forbidding an induced $N$ subposet. We do not need a poset interpretation for the proof, and do not transfer asymptotic results for a larger poset class to this subclass. Bousquet-M\'elou et al.\ \cite{bcdk} and Dukes--McNamara \cite{dukes} supply the specific self-modified and matrix bridges used to identify $b_n$.
+
+The ordinary model and its exact recurrences are taken from the actual $100$ and $110$ sections of Conway et al.\ \cite[Sections~2.3--2.4]{conway}; the abstract reverses their algorithm-efficiency labels. The paper's earlier fractional-factorial conjecture was already addressed in Report~241. The present result is a refinement of that completed result, not a second new refutation. The pair-pattern paper of Baxter and Pudwell \cite{baxter} and the triple-pattern classification \cite{callan} provide context for simultaneous avoidance, but no theorem for a different or larger class is used as the lower bound here.
+
+\paragraph{Note (\wtag, 5 October 2026).} Report~241's treatment of the
+conjecture is Section~\ref{a59:g:sec:conjecture} of this report
+(Corollary~\ref{a59:g:cor:contradiction}). Theorem~\ref{a59:thm:main}
+yields the same contradiction for every fixed $\alpha\in(0,1)$ and also for
+$e_n$ and $c_n$, since each of the four sequences has
+$\log u_n/(n\log n)\to1$; as the paragraph above says, this is not a second
+refutation.
+
+The claims are the displayed inequalities, limits, and inverse bounds proved in this article. We make no claim of exhaustive worldwide priority, external peer review, or formal proof-assistant verification. In particular, no relative equivalent $a_n\sim b_n$, $e_n\sim b_n$, or $d_n\sim b_n$ follows, and no matching $110$ or common-class linear constant has been proved.
+\section{Bounded computation and reproducibility}\label{a59:sec:computation}
+The accompanying source package contains this \LaTeX\ article, bounded Python programs, source-prefix fixtures with URLs, deterministic receipts, an integrity manifest, and a builder. It redistributes no third-party paper. The computational checks exercise the finite maps and inequalities; the proofs above establish the all-length asymptotics.
+
+The checks recompute source recurrence prefixes for $100$ and $110$ and compare small cases with independent literal pattern enumeration. They inspect refined run ceilings, candidate pools, skeleton reconstruction, the Vandermonde bound, and the exact triangular-term identity. The lower checks use explicit stars-and-bars ranks and inverse decoding, test positivity and legality, and measure repair, block-composition, and padding fibers separately. They also test doubled seeds and all-length parameter choices. Exact empty-row distributions include cases with a nonzero rejected tail and $Q<r$, so the retained-half check is not limited to vacuous cutoffs. No fitted exponent or numerical trend is used as a proof of an asymptotic assertion.
+
+Inputs and resources are bounded; validation uses explicit exceptions rather than removable assertion statements. Every spawned Python process runs with bytecode writing disabled and the integer-to-decimal conversion limit fixed at $640$ digits. Large integers are summarized by byte-based hashes when necessary. Both ordinary and optimized Python execution must reproduce the same receipts.
+
+The builder verifies the complete source manifest, works in a fresh output directory outside the sources, and compiles a disposable copy with a private \TeX\ format, fixed timestamps, and shell escape disabled. The archived PDF and fresh PDF must agree byte for byte on the recorded toolchain. The separate replay command validates an actual archive, extracts two copies, builds under normal and optimized Python, and compares all archive members, metadata, PDFs, receipts, and build outputs. Its original-build directory option also checks those outputs against the first build. Source-tree inventories must remain unchanged. An integrity manifest is not a digital signature, and byte reproducibility is not a substitute for mathematical proof.
+
+The companion files \texttt{README.md} and \texttt{COMPUTATION.md} give the exact bounded ranges, commands, and receipt interpretation. A different \TeX\ distribution or font version may change PDF bytes even when the mathematics and rendered appearance agree; the strict comparison intentionally reports such a difference rather than silently accepting it.
+
+\paragraph{Note (\wtag, 5 October 2026).} In this repository the package is
+shipped under other names (the report README maps them): the delivery
+\texttt{README.md} is replaced by the report's guide, \texttt{COMPUTATION.md}
+and \texttt{SOURCES.md} are \path{243-sharp-COMPUTATION.md} and
+\path{243-sharp-SOURCES.md}, the programs are \path{code/243-sharp-*.py}, and
+the receipts, CSV views and source fixtures are \path{data/243-sharp-*}. The
+delivered PDF and \texttt{MANIFEST.sha256} are not shipped. The programs
+expect the delivered layout, so they are rerun on a fresh extraction of the
+arrival archive, never in the repository. At the placement the three
+mathematical receipts (counts, upper bound, positive rows) were reproduced
+byte for byte on such a copy, under normal and optimized Python, after
+normalizing Windows line ends; the guard tests stop on Windows at a POSIX
+path guard, which is not mathematics.
+\section{Further questions and research}\label{a59:sec:questions}
+\wtag\ Section title changed in the write (5 October 2026, batch 102) from
+``Questions suggested by the comparison''. The opening sentence and the
+five headed paragraphs are the manuscript's own; the closing paragraphs
+were added in the write under ProveIt's standing rule of 4 October 2026.
+
+The finite inequalities separate several issues that the leading constant alone cannot decide.
+
+\paragraph{The $110$ and common-class constants.}
+Do $\kappa_d(n)$ and $\kappa_c(n)$ converge? A natural question for $110$ avoidance is whether its limit is $C_+$, as in the $100$ class. A proof would need a $110$-preserving lower comparison with subexponential loss and a sufficiently small length shift. The doubled-seed construction spends an extra $r$ positions and currently gives $C_-$. It does not establish that $C_-$ is optimal for the common class, or that the two classes share a limit.
+
+\paragraph{Sublinear terms and relative equivalents.}
+What is the first correction after $C_+n$ for $a_n$ and $e_n$? The present upper error is $O(n(\log\log n)^2/\log n)$, while the lower comparison loses $O(n\log\log n/\log n)$. Determining their actual sublinear terms would clarify how much entropy the ordinary words gain or lose relative to triangular arrays. Even equality through several logarithmic orders would not imply $a_n\sim b_n$ or $e_n\sim b_n$: a relative equivalent requires logarithmic error tending to zero. The ratio $e_n/a_n$, which measures the cost of excluding a third occurrence, is also left open.
+
+\paragraph{Sharper skeleton and fiber counts.}
+The upper bound treats marked positions, marked labels, and boundaries independently, although many resulting skeletons are inconsistent. Can their compatibility be counted sharply? On the lower side, $2^r$, $\binom{p-1}{r-1}$, and $Q+1$ are worst-case fiber bounds. Their typical values may be much smaller. A refined analysis could reduce the error without pretending the undecorated maps are injective.
+
+\paragraph{Typical word structure.}
+The triangular lower construction uses $r\sim2n/\log n$, but its seed size is a construction parameter, not automatically the number of repeated occurrences in a uniform ordinary avoider. Likewise, an upper-bound saddle does not prove concentration of that statistic. It remains to determine typical multiplicities, the number and lengths of maximal increasing runs, and the prevalence of merged block boundaries for these word classes. Such results require distributional comparisons stronger than total-count inequalities.
+
+\paragraph{More accurate threshold inversion.}
+The present inverse has a diverging absolute error. A tighter count remainder would transport to a tighter inverse by division by a slope of order $\log n$, but a uniformly exact rounding rule needs far more: a sufficiently accurate count approximation and control near integer boundaries. For $d,c$, determining the linear constant is already necessary to identify the second inverse coefficient. No finite numerical fit or rounding of \eqref{a59:eq:inverseexact} resolves these questions.
+
+\paragraph{Added in the write (\wtag, 5 October 2026).}
+Report~243 states no claim without proof that would have to be moved here:
+its one unproved aside, the leading order $L^2/4$ in the remark after
+Lemma~\ref{a59:lem:triangular}, is proved in Remark~\ref{a59:rem:Rlead}, and
+nothing in it was found to be wrong. Its five questions above stay as
+printed; question~1 of Part~II (the linear constant) is answered here for
+$a$ and $e$ and is the first of them for $d$ and $c$. The write adds one
+question suggested by the data.
+\begin{enumerate}[label=(\roman*)]
+\item \emph{Is $d_n\le b_n$ for every $n$?} The paragraph after
+Proposition~\ref{a59:prop:finiteupper} declines to claim $u_n\le b_n$. For
+$a_n$ it is false from $n=5$ on in the range below. For $d_n$ the
+inequality holds for $n\le15$, with equality for $n\le8$:
+\begin{center}
+\small
+\begin{tabular}{@{}rrrrr@{\qquad}rrrrr@{}}
+\toprule
+$n$ & $b_n$ & $a_n$ & $d_n$ & $b_n-d_n$ & $n$ & $b_n$ & $a_n$ & $d_n$ & $b_n-d_n$\\
+\midrule
+5 & 43 & 44 & 43 & 0 & 11 & 145665 & 257393 & 145398 & 267\\
+6 & 143 & 153 & 143 & 0 & 12 & 674338 & 1374187 & 671641 & 2697\\
+7 & 510 & 583 & 510 & 0 & 13 & 3251208 & 7722862 & 3227218 & 23990\\
+8 & 1936 & 2410 & 1936 & 0 & 14 & 16282580 & 45520064 & 16084747 & 197833\\
+9 & 7775 & 10721 & 7774 & 1 & 15 & 84512702 & 280502924 & 82955090 & 1557612\\
+10 & 32869 & 50965 & 32848 & 21 & & & & &\\
+\bottomrule
+\end{tabular}
+\end{center}
+($b_n$ from~\eqref{a59:eq:T}; $a_n$, $d_n$ for $n\le4$ equal $b_n=1,1,2,5,14$.)
+The ratio $d_n/b_n$ falls slowly, to $0.9816$ at $n=15$, while $a_n/b_n$
+rises to $3.32$. An inequality $d_n\le b_n$ would be an upper comparison
+for $110$ without skeleton data; an inequality $d_n\ge b_ne^{-o(n)}$ would
+answer the first question above (the $110$ constant would be $C_+$). The
+data prove neither. Source: the write's comparison (5 October 2026) of the
+A202059 and A202060 prefixes in \path{data/243-sharp-source_prefixes.json}
+(OEIS data, recomputed by the package from the source recurrences) with
+$b_n$ computed exactly from~\eqref{a59:eq:T}. Missing: any injection or
+counting argument relating $110$-avoiders to the triangular arrays; the
+dossier of the intake found the first discrepancy, $d_9=b_9-1$.
+\item For the record, the class $e_n$ of Part~I begins
+$1,1,2,4,10,27,83,276,1005,3923$ ($n=0,\dots,9$;
+\path{data/243-sharp-counts.csv}), so $e_9/a_9\approx0.366$; this bears on
+the open ratio $e_n/a_n$ above and decides nothing.
+\end{enumerate}
+
+\part{Factorial logarithmic growth of pattern avoiding ascent sequences (Report 241)}\label{a59:g:part}
+\renewcommand{\PartMark}{Part II: Report 241}
+
+\wtag\ Part~II is Report~241 of the session bundle, \emph{Factorial
+Logarithmic Growth of Pattern Avoiding Ascent Sequences}, subtitle
+\emph{Ordinary ascent sequences avoiding 100 or 110}, author line
+``Report~241'', dated 5~October 2026 (13 pages as delivered). It is
+unrefereed and not formalized. It is the earlier of the two reports:
+Report~243 calls it the ``earlier companion report'' whose
+marked-occurrence encoding it refines, and credits it with the two
+logarithmic orders and with ruling out the fractional-factorial scale
+(Section~\ref{a59:sec:results}). Four of its contributions appear only
+here: the exactly counted family (Proposition~\ref{a59:g:prop:family}, with
+Lemma~\ref{a59:g:lem:uniform}), the fixed-block-size
+bound~\eqref{a59:g:eq:fixed-exponent} with its order of limits,
+Corollary~\ref{a59:g:cor:contradiction} (the refutation of the
+fractional-factorial scale) and Corollary~\ref{a59:g:cor:nonprecursive}
+(non-P-recursiveness, with the classical
+Lemma~\ref{a59:g:lem:entire-growth}). Its other estimates follow from
+Part~I's, and its proofs of them are second routes;
+Table~\ref{a59:tab:map} classifies every numbered result. The text follows unchanged
+except for the label prefix \texttt{a59:g:}, two labels added to
+subsections, the citation keys of the four works both manuscripts cite
+(merged with Part~I's entries), the title of
+Section~\ref{a59:g:sec:outlook} (was ``Beyond two logarithmic orders''),
+and the notes marked \wtag. Its abstract follows.
+
+\begin{quote}\small
+\textbf{Abstract of Report~241.}
+Let $a_n$ and $d_n$ count ordinary ascent sequences avoiding the classical subsequence patterns $100$ and $110$, and let $c_n$ count those avoiding $000$, $100$, and $110$ simultaneously. We prove, for each $u_n\in\{c_n,a_n,d_n\}$,
+\[
+ \log u_n=n\log n-2n\log\log n+O(n),\qquad
+ \left(\frac{u_n}{n!}\right)^{1/n}=\Theta\bigl((\log n)^{-2}\bigr).
+\]
+A fresh-label block construction gives the lower bound inside the common class. For the upper bound, deleting non-first occurrences in the $110$ case, or non-last occurrences in the $100$ case, leaves distinct labels that can be encoded by subsets within increasing runs. Thus the factorial-normalized root tends to zero, while the logarithmic factorial exponent is one. This rules out the fixed $\Gamma(3n/4+1)\mu^n n^g$ scale conjectured for both single-pattern classes in the 2022 paper of Conway, Conway, Elvey Price, and Guttmann. We credit that paper's doubled seed and refine its continuation. The sequences are also not P-recursive: their exponential generating functions are entire of infinite order. Exact finite family counts, a controlled Lambert-$W$ inverse, and bounded reproducible checks accompany the proof. No relative equivalent, limiting scaled-root constant, or ratio asymptotic is asserted.
+\end{quote}
+
+\section{The model and the result}\label{a59:g:sec:model}
+For a word $x=(x_1,\ldots,x_n)$ of nonnegative integers, put
+\[
+ \asc(x)=\#\{i<n:x_i<x_{i+1}\}.
+\]
+An \emph{ordinary ascent sequence} has $x_1=0$ and
+\begin{equation}\label{a59:g:eq:ascent}
+ 0\leq x_i\leq 1+\asc(x_1,\ldots,x_{i-1})\qquad(2\leq i\leq n).
+\end{equation}
+The ascent entering $x_i$ is not included in this upper bound. We include the empty word at length zero. Pattern occurrences are arbitrary subsequences, with equalities preserved. In particular, $100$ means $x_i>x_j=x_k$ for some $i<j<k$, $110$ means $x_i=x_j>x_k$, and $000$ means that some value occurs three times. These are the conventions of \cite[p.~2]{conway}.
+
+Write $a_n=|\A_n(100)|$, $d_n=|\A_n(110)|$, and
+\[
+ c_n=|\A_n(000,100,110)|.
+\]
+The first two sequences are OEIS A202059 and A202060, with offset zero \cite{oeis100,oeis110}. The third class already appears in Callan and Mansour's classification as Class~36 in Table~2 \cite[p.~25]{callan}. It is a stricter class than the multiplicity-at-most-two class $\A_n(000)$.
+
+\Needspace{12\baselineskip}
+\begin{theorem}\label{a59:g:thm:main}
+For each $u_n\in\{c_n,a_n,d_n\}$, as $n\to\infty$,
+\begin{equation}\label{a59:g:eq:main}
+ \log u_n=n\log n-2n\log\log n+O(n).
+\end{equation}
+Consequently,
+\begin{equation}\label{a59:g:eq:exponent}
+ \lim_{n\to\infty}\frac{\log u_n}{n\log n}=1,\qquad
+ \left(\frac{u_n}{n!}\right)^{1/n}=\Theta\bigl((\log n)^{-2}\bigr)\longrightarrow0.
+\end{equation}
+All logarithms are natural. The constants implicit in $O$ and $\Theta$ are independent of $n$; no limit is asserted after multiplying the last root by $(\log n)^2$.
+\end{theorem}
+
+A coarse universal upper bound is immediate: \eqref{a59:g:eq:ascent} implies $0\leq x_i\leq i-1$, so there are at most $\prod_{i=1}^n i=n!$ possible words. The lower bound in \eqref{a59:g:eq:main} is proved within the common triple-avoidance class. A matching upper bound for each single-pattern class uses a separate increasing-run encoding.
+
+The published paper \cite[\S\S6--7]{conway} proposed a fixed fractional-factorial scale for $a_n$ and $d_n$. Its Section~7 already uses the doubled seed
+$(0,1,\ldots,m-1)(0,1,\ldots,m-1)$ followed by a permutation of new labels to prove a weaker factorial lower bound. We retain that seed and repeatedly use the ascents from one fresh-label block to make the next block available. This continuation, together with simultaneous avoidance and uniform estimates, is the lower-bound construction proved here. Neither the pattern class itself nor the general use of permutation blocks is being introduced as new.
+
+\begin{wremark}[\wtag, 5 October 2026: Part~I implies Theorem~\ref{a59:g:thm:main}]\label{a59:g:rem:implied}
+Theorem~\ref{a59:thm:main} gives, for each $u\in\{a,d,c\}$, a constant $C$
+with
+\[
+ n(\log n-2\log\log n-\log2-1)-CE(n)\le\log u_n
+ \le n(\log n-2\log\log n+\log2-1)+CE(n)
+\]
+for all large $n$ (for $a$ the equality~\eqref{a59:eq:main} is stronger).
+Since $E(n)=n(\log\log n)^2/\log n=o(n)$, this is
+$|\log u_n-n\log n+2n\log\log n|\le3n$ eventually, which
+is~\eqref{a59:g:eq:main}. Dividing by $n\log n$ gives the first limit
+in~\eqref{a59:g:eq:exponent}, and~\eqref{a59:eq:roots} gives
+$\frac13\le(\log n)^2(u_n/n!)^{1/n}\le3$ for large $n$, which is the
+$\Theta$ statement. So Theorem~\ref{a59:g:thm:main} follows from Part~I. It
+was proved first, here, with the different lower construction of
+Sections~\ref{a59:g:sec:construction}--\ref{a59:g:sec:bounds} and the coarser
+upper bound of Section~\ref{a59:g:sec:upper}; both proofs are kept.
+\end{wremark}
+\section{An exactly counted family}\label{a59:g:sec:construction}
+\subsection{Increasing position chunks}
+Fix integers $b\geq2$ and $m\geq1$. For a specified set of $k\geq1$ distinct labels, split the positions of a permutation into consecutive chunks of size $b$, with a possible final shorter chunk. Require the entries \emph{within} each chunk to increase; impose no restriction across chunk boundaries. There are exactly
+\begin{equation}\label{a59:g:eq:H}
+ H_b(k)=\frac{k!}{(b!)^{\lfloor k/b\rfloor}(k\bmod b)!}
+\end{equation}
+such permutations, since choosing the unordered labels of each ordered chunk determines their internal order. Every permitted permutation has at least
+\begin{equation}\label{a59:g:eq:krec}
+ L_b(k)=k-\lceil k/b\rceil
+       =\left\lfloor\left(1-\frac1b\right)k\right\rfloor
+\end{equation}
+strict internal ascents. These are position chunks, not intervals of consecutive values.
+
+Set $k_0=m$ and $k_{j+1}=L_b(k_j)$, stopping at the first $T$ with $k_T=0$. Since $k_{j+1}<k_j$ whenever $k_j>0$, there are finitely many stages. Put
+\begin{equation}\label{a59:g:eq:FN}
+ S=\sum_{j=0}^{T-1}k_j,\qquad
+ F_b(m)=\prod_{j=0}^{T-1}H_b(k_j),\qquad
+ N_b(m)=2m+S+T.
+\end{equation}
+
+\begin{proposition}\label{a59:g:prop:family}
+There are exactly $F_b(m)$ words in an explicitly specified family of length $N_b(m)$ in $\A_{N_b(m)}(000,100,110)$. Every word ends at its global maximum $M$ and has at least $M$ ascents. For every $n\geq N_b(m)$, appending successive fresh records gives an injection of this family into $\A_n(000,100,110)$. In particular,
+\begin{equation}\label{a59:g:eq:finite-lower}
+ c_n\geq F_b(m)\qquad(n\geq N_b(m)).
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Begin with the doubled increasing seed
+\begin{equation}\label{a59:g:eq:seed}
+ (0,1,\ldots,m-1)(0,1,\ldots,m-1).
+\end{equation}
+It is legal and has $2m-2$ ascents, also when $m=1$. Choose a permitted permutation $P_0$ of the interval $\{m,\ldots,2m-1\}$. Every letter is legal from the beginning of this block, because $1+(2m-2)=2m-1$. The step into its first letter is an ascent. With $M_0=2m-1$, the ascent count after $P_0$ is at least
+\[
+ (2m-2)+1+k_1=M_0+k_1.
+\]
+Append the new record $R_0=M_0+k_1+1$. The defining bound \eqref{a59:g:eq:ascent} permits it; its own ascent leaves the word ending at its maximum $R_0$, with at least $R_0$ ascents. The unused interval
+$\{M_0+1,\ldots,R_0-1\}$ has size $k_1$.
+
+The general transition is now the following. Suppose the current word ends at its maximum $M$ with ascent count $A\geq M$, and a specified interval of $k$ unused labels lies below $M$. Append any permitted permutation $P$ of that interval. Its letters are legal since each is at most $M\leq A+1$, and the ascent count cannot decrease. No ascent at the boundary into $P$ is needed. Its internal ascents number at least $k'=L_b(k)$, so the ascent count is at least $M+k'$ before the new record
+\begin{equation}\label{a59:g:eq:record}
+ R=M+k'+1
+\end{equation}
+is appended. This record is legal, adds an ascent, and restores the invariant $A_{\rm new}\geq R$. The next interval is exactly
+$\{M+1,\ldots,R-1\}$, of size $k'$. All these labels are unused: every earlier label was at most $M$, and the only larger label just appended was $R$. Continue to $k'=0$, including the final record.
+
+Only the seed labels occur twice; all later labels, including records, are fresh. For a repeated seed label $v$, its first occurrence precedes every larger label in the entire word. Thus no larger letter precedes both copies, excluding $100$. After its second occurrence, all subsequent seed labels and all later letters are larger than $v$, excluding $110$. No label occurs three times, excluding $000$. This reasoning also covers occurrences crossing stage boundaries.
+
+For fixed $b,m$, every stage length, interval, and record position is deterministic. Reading the corresponding positions therefore recovers each chosen $P_j$. The map from the tuple $(P_0,\ldots,P_{T-1})$ to the word is injective, and independent choices yield exactly the product \eqref{a59:g:eq:FN}. The seed contributes $2m$ letters, the blocks contribute $S$, and the records contribute $T$.
+
+Finally append $M+1,M+2,\ldots$ to reach length $n$. The invariant $A\geq M$ makes each step legal and is preserved by each new ascent. No new equal pair is created; a new largest final letter also cannot finish a $110$ occurrence. Thus all three patterns remain absent. The original length is fixed throughout the family, so deleting the padding recovers the original word and preserves injectivity.
+\end{proof}
+
+\subsection{A worked block}
+Take $b=2$, $m=4$. The stage sizes are $(4,2,1)$, followed by zero. One choice is
+\begin{equation}\label{a59:g:eq:example}
+ \underbrace{0,1,2,3,0,1,2,3}_{\text{seed}},\quad
+ \underbrace{4,7\mid5,6}_{P_0},\quad10,\quad
+ \underbrace{8,9}_{P_1},\quad12,\quad
+ \underbrace{11}_{P_2},\quad13.
+\end{equation}
+The bar indicates the position-chunk boundary. The first block has two guaranteed internal ascents; $7$ to $5$ is a descent and causes no problem. The next unused intervals are $\{8,9\}$ and $\{11\}$. The length is $8+7+3=18$, and the ascent count at the end is $13$, equal to the final maximum. The family has
+\[
+ H_2(4)H_2(2)H_2(1)=\frac{4!}{2!2!}\cdot1\cdot1=6
+\]
+members. Appending $14,15,\ldots$ gives six distinct valid words at every larger length. Repeating the final maximum would preserve the two single-pattern conditions but could destroy $000$ avoidance, which is why fresh records are used.
+\section{Uniform bounds and all lengths}\label{a59:g:sec:bounds}
+The estimates in this section hold uniformly in the integer parameters $b,m$. This matters when $b$ later grows with the target length.
+
+\begin{lemma}\label{a59:g:lem:uniform}
+For $b\geq2$, $m\geq1$, and $S,T$ from \eqref{a59:g:eq:FN},
+\begin{align}
+ T&\leq b\log m+1, & bm-(b-1)T&\leq S\leq bm,\label{a59:g:eq:ST}\\
+ \log F_b(m)&\geq S\log(m/b)-S-2bm.\label{a59:g:eq:uniform}
+\end{align}
+\end{lemma}
+\begin{proof}
+Put $q=1-1/b$. By induction $k_j\leq q^jm$. Hence
+\[
+ T\leq\left\lfloor\frac{\log m}{-\log q}\right\rfloor+1
+   \leq b\log m+1,
+\]
+using $-\log(1-1/b)\geq1/b$. For integer $k$,
+$k/b\leq\lceil k/b\rceil\leq k/b+(b-1)/b$.
+Summing $k_j-k_{j+1}=\lceil k_j/b\rceil$ and telescoping gives the bounds for $S$.
+
+For $k=bt+r$, $0\leq r<b$, the denominator in \eqref{a59:g:eq:H} is at most $b^{bt+r}=b^k$. The elementary bound $k!\geq(k/e)^k$ then gives
+\[
+ \log F_b(m)\geq\sum_{j<T}k_j\log k_j-S(1+\log b).
+\]
+For $0<x\leq1$ one has $x\log(1/x)\leq\sqrt x$: writing $x=e^{-t}$ reduces this to $te^{-t/2}\leq1$, whose maximum is $2/e<1$. Therefore the entropy loss satisfies
+\begin{align*}
+ E&:=\sum_{j<T} k_j\log(m/k_j)\\
+  &\leq m\sum_{j<T}\sqrt{k_j/m}
+   \leq m\sum_{j\geq0}q^{j/2}
+   =\frac{m}{1-\sqrt q}=bm(1+\sqrt q)\leq2bm.
+\end{align*}
+Substitute $\sum_j k_j\log k_j=S\log m-E$ to obtain \eqref{a59:g:eq:uniform}.
+\end{proof}
+
+\subsection{Fixed block size and the order of limits}\label{a59:g:sub:fixed}
+For each fixed $b$, \eqref{a59:g:eq:ST} gives $S=bm+O_b(\log m)$ and $T=O_b(\log m)$. The lower bound \eqref{a59:g:eq:uniform} and the upper bound
+$F_b(m)\leq\prod_j k_j!\leq m^S$ consequently yield
+\begin{equation}\label{a59:g:eq:fixed}
+ \log F_b(m)=bm\log m+O_b(m),\qquad
+ N_b(m)=(b+2)m+O_b(\log m).
+\end{equation}
+Here an intermediate $O_b((\log m)^2)$ error is absorbed into $O_b(m)$.
+
+For every sufficiently large integer $n$, choose
+\begin{equation}\label{a59:g:eq:m-choice}
+ m=\left\lfloor\frac{n-b\log n-1}{b+2}\right\rfloor.
+\end{equation}
+Then $1\leq m\leq n$ and
+\begin{equation}\label{a59:g:eq:fits}
+ N_b(m)\leq(b+2)m+b\log m+1
+          \leq(b+2)m+b\log n+1\leq n.
+\end{equation}
+Padding and \eqref{a59:g:eq:fixed} give the all-index bound
+\begin{equation}\label{a59:g:eq:fixed-exponent}
+ \liminf_{n\to\infty}\frac{\log c_n}{n\log n}\geq\frac{b}{b+2}.
+\end{equation}
+For each $b$ the $n$-limit is taken first; letting the fixed integer $b$ tend to infinity afterwards proves the logarithmic limit in \eqref{a59:g:eq:exponent}, together with $c_n\leq a_n,d_n\leq n!$. This argument uses no uniformity hidden in $O_b$ notation. Already $b=8$ gives the lower coefficient $4/5$.
+
+\paragraph{Note (\wtag, 5 October 2026).} This fixed-$b$ argument is
+Report~241's alone; Part~I reaches the logarithmic limit only through its
+growing seed $r\sim2n/\log n$ or $r\sim N/\log N$. The bound
+$\liminf\log c_n/(n\log n)\ge4/5$ at $b=8$ is what
+Corollary~\ref{a59:g:cor:contradiction} uses against the exponent $3/4$.
+
+\subsection{The quantitative lower bound}\label{a59:g:sub:quant}
+To prove the lower-bound half of \eqref{a59:g:eq:main}, use the uniform lemma instead of substituting into \eqref{a59:g:eq:fixed}. Let $n$ be sufficiently large, set
+\[
+ b=\lceil\log n\rceil,
+ \qquad m=\left\lfloor\frac{n-b\log n-1}{b+2}\right\rfloor,
+\]
+and use \eqref{a59:g:eq:fits} again. Elementary floor bounds give, with absolute implied constants,
+\begin{align}
+ bm&=n-\frac{2n}{b}+O\!\left(\frac{n}{b^2}+b\log n+b\right),\label{a59:g:eq:bm}\\
+ S&=bm+O(b^2\log m+b).
+\end{align}
+Since $b=\log n+O(1)$ and $(\log n)^3=o(n/\log n)$, these imply
+\begin{align}
+ 0\leq n-S&=O(n/\log n), & bm&\leq n,\label{a59:g:eq:Sclose}\\
+ m&=\frac nb\bigl(1+O(1/b)\bigr), &
+ \log(m/b)&=\log n-2\log\log n+O(1/\log n).\label{a59:g:eq:logmb}
+\end{align}
+The last logarithm is positive for large $n$ and is $O(\log n)$. Multiplying it by $S=n-O(n/\log n)$ loses at most $O(n)$, while $S+2bm\leq3n$. Thus \eqref{a59:g:eq:uniform} gives
+\[
+ \log c_n\geq\log F_b(m)
+ \geq n\log n-2n\log\log n-O(n).
+\]
+This holds at every sufficiently large integer length, by the explicit choice of $m$ and fresh-record padding. It establishes the required lower bound for all three classes.
+
+\paragraph{Note (\wtag, 5 October 2026).} Part~I's
+bound~\eqref{a59:eq:commonlower} for the common class, with the explicit
+linear constant $C_-=-\log2-1$, implies this one; the family here is a
+second, independent route (Part~I's construction uses triangular arrays,
+not chunked permutation blocks).
+\section{A matching increasing run upper bound}\label{a59:g:sec:upper}
+The upper bound uses a different property for each pattern, but the same encoding. A \emph{run} here is a maximal contiguous strictly increasing segment; equalities break a run.
+
+\begin{lemma}\label{a59:g:lem:prefix-max}
+Every nonempty ascent-sequence prefix with $A$ ascents has maximum at most $A$. Consequently, a length-$n$ ascent sequence with $K$ distinct labels and $r=n-K$ repeated occurrences has at most $r+1$ runs.
+\end{lemma}
+\begin{proof}
+For maximum $M=0$ there is nothing to prove. If $M>0$, its first occurrence is entered by an ascent. Writing $B$ for the ascent count before that position, its legality gives $M\leq B+1$, while the prefix has at least $B+1$ ascents. Thus $M\leq A$. In the whole word, $K-1\leq M\leq A$, so the number $n-1-A$ of nonascent boundaries is at most $n-K=r$.
+\end{proof}
+\noindent\wtag\ The same statement is Part~I's Lemma~\ref{a59:lem:prefix},
+proved there by induction over new maxima; both proofs are kept.
+
+\begin{proposition}\label{a59:g:prop:finite-upper}
+For either $u_n=a_n$ or $u_n=d_n$ and every integer $n\geq1$,
+\begin{equation}\label{a59:g:eq:finite-upper}
+ u_n\leq16^n\sum_{r=0}^{n-1}
+               \binom{n+(r+1)^2}{n-r}.
+\end{equation}
+\end{proposition}
+\begin{proof}
+Fix $r=n-K$. In the $110$ case mark every non-first occurrence of a label; in the $100$ case mark every non-last occurrence. In either case there are $r$ marked positions, and the $K$ unmarked labels are all distinct.
+
+The marked labels are weakly increasing in chronological order. For $110$, a descent $x>y$ between marked positions would combine with the earlier occurrence of $x$ to give $x,x,y$. For $100$, such a descent would combine with the later occurrence of the marked $y$ to give $x,y,y$.
+
+An encoding first specifies the marked positions, their labels, and the nonascent boundaries. Every label lies in $\{0,\ldots,n-1\}$, so for fixed $r$ there are at most
+\begin{equation}\label{a59:g:eq:skeleton}
+ \binom nr\binom{n+r-1}{r}2^{n-1}\leq16^n
+\end{equation}
+possible specifications, with the middle binomial interpreted as one for $r=0$. We need only those specifying $s\leq r+1$ runs. If their lengths are $\ell_1,\ldots,\ell_s$ and the respective numbers of unmarked positions are $k_1,\ldots,k_s$, then
+\[
+ \sum_i\ell_i=n,\qquad \sum_i k_i=n-r.
+\]
+
+We decode runs in order. Consider a run of length $\ell$ after a known prefix of length $p$, with $A$ ascents, $d$ distinct labels, and $q=p-d$ repeated occurrences. Every letter in the run is at most $A+\ell$: before its $j$th entry there have been at most $j-1$ new ascents. All previously seen labels are in $\{0,\ldots,A+\ell\}$ by Lemma~\ref{a59:g:lem:prefix-max}. Therefore the number of unseen labels in that interval is at most
+\begin{equation}\label{a59:g:eq:unseen}
+ A+\ell+1-d\leq q+\ell+1.
+\end{equation}
+For $p\geq1$ use $A\leq p-1$; the stated weaker inequality also covers the empty prefix with $A=d=q=0$.
+
+For $110$, each unmarked entry is a first occurrence. The unmarked labels in this run are thus a $k$-element subset of at most $q+\ell+1\leq r+\ell+1$ candidates. Their increasing order determines their assignment to the unmarked positions, while the marked labels are already known.
+
+For $100$, unmarked entries are last occurrences and may have appeared previously. Let $U$ be the previously seen labels whose last occurrence has not yet occurred, and put $u=|U|$. This set is determined by the decoded prefix and the marking: a marked entry leaves its label unfinished, and an unmarked entry finishes it. Every label in $U$ needs a later repeated occurrence. Since $q$ repetitions have already been used and the total is $r$,
+\begin{equation}\label{a59:g:eq:unfinished}
+ u\leq r-q.
+\end{equation}
+An unmarked label in this run is either unseen at the run's start or in $U$; it cannot have appeared earlier within the same strictly increasing run. By \eqref{a59:g:eq:unseen} and \eqref{a59:g:eq:unfinished}, this union has size at most $r+\ell+1$. Again its $k$-element subset uniquely assigns the unmarked values.
+
+For every already decoded valid prefix, either case has at most $\binom{r+\ell+1}{k}$ branches. Candidate sets may differ between prefixes, but their size bounds are uniform. Choices violating legality, order, or first/last status are discarded, so no converse realizability assertion is needed. Multiplying these conditional bounds and using Vandermonde's inequality gives
+\begin{equation}\label{a59:g:eq:vandermonde}
+ \prod_{i=1}^s\binom{r+\ell_i+1}{k_i}
+ \leq\binom{n+s(r+1)}{n-r}
+ \leq\binom{n+(r+1)^2}{n-r}.
+\end{equation}
+The first inequality counts subsets of a disjoint union while dropping prescribed intersection sizes. The marking, boundaries, marked labels, and chosen run subsets recover the entire word. Combining the bound per specification with \eqref{a59:g:eq:skeleton} and summing over $r$ proves \eqref{a59:g:eq:finite-upper}.
+\end{proof}
+
+\begin{wremark}[\wtag, 5 October 2026: Part~I's refinement implies Proposition~\ref{a59:g:prop:finite-upper}]\label{a59:g:rem:upperimplied}
+Part~I keeps the index $j$ of each run, which lowers the candidate pool
+from $r+\ell+1$ to $\ell+r-j+1$ (Lemma~\ref{a59:lem:pool}), and so obtains
+Proposition~\ref{a59:prop:finiteupper}:
+$u_n\le\sum_{r=0}^{n-1}S(n,r)T(n+1,r+1)$. That bound is at most the right
+side of~\eqref{a59:g:eq:finite-upper}, term by term. Indeed $S(n,r)\le16^n$
+for every $r<n$ (Section~\ref{a59:sec:uppercost}: the three factors
+of~\eqref{a59:eq:skeleton} are at most $2^n$, $2^{2n}$ and $2^n$), and
+\[
+ T(n+1,r+1)=\binom{(r+1)(r+2)/2+n-r-1}{n-r}=\binom{n+r(r+1)/2}{n-r}
+ \le\binom{n+(r+1)^2}{n-r},
+\]
+because $\binom{N}{K}$ is nondecreasing in $N$ for fixed $K\ge0$ and
+$r(r+1)/2\le(r+1)^2$. Part~I credits this encoding to Report~241
+(Section~\ref{a59:sec:results}).
+\end{wremark}
+
+\begin{lemma}\label{a59:g:lem:optimization}
+Uniformly for integers $0\leq r\leq n-1$,
+\begin{equation}\label{a59:g:eq:optimized}
+ \log\binom{n+(r+1)^2}{n-r}
+ \leq n\log n-2n\log\log n+O(n).
+\end{equation}
+\end{lemma}
+\begin{proof}
+Put $H=\log n-2\log\log n$, $K=n-r$, and $N=n+(r+1)^2$. The standard bound $\binom NK\leq(eN/K)^K$ gives
+\begin{align*}
+ \log\binom NK
+ &\leq K\log(N/n)+K\log(n/K)+K\\
+ &\leq(n-r)\log\!\left(1+\frac{(r+1)^2}{n}\right)+(1+1/e)n,
+\end{align*}
+since $x\log(1/x)\leq1/e$ for $0<x\leq1$.
+
+If $r+1\leq n/\log n$, then for large $n$,
+\[
+ 1+\frac{(r+1)^2}{n}\leq\frac{2n}{(\log n)^2},
+\]
+so the remaining term is at most $n(H+\log2)$. Otherwise set $t=(r+1)\log n/n>1$. Now $(r+1)^2/n\geq1$ eventually, and
+\[
+ \log\!\left(1+\frac{(r+1)^2}{n}\right)\leq H+2\log t+\log2.
+\]
+For sufficiently large $n$, $H>0$ and $H/\log n\geq1/2$. Consequently,
+\begin{align*}
+ (n-r)\log\!\left(1+\frac{(r+1)^2}{n}\right)
+ &\leq nH+n(2\log t+\log2)-rH\\
+ &\leq nH+n(2\log t+\log2-t/2)+H\\
+ &\leq nH+O(n).
+\end{align*}
+The last constant is uniform: $2\log t-t/2$ has a finite global maximum at $t=4$.
+\end{proof}
+
+The factor $16^n$ and the $n$ summands in \eqref{a59:g:eq:finite-upper} cost only $O(n)$ in the logarithm. Lemma~\ref{a59:g:lem:optimization} therefore supplies the upper bound in \eqref{a59:g:eq:main} for both single-pattern classes, and hence for their common subclass. Together with Section~\ref{a59:g:sec:bounds}, this proves the main logarithmic formula. Stirling's estimate then gives
+\[
+ \frac1n\log\left(\frac{u_n}{n!}\right)
+   =-2\log\log n+O(1),
+\]
+which establishes the $\Theta$ assertion and the zero limit in Theorem~\ref{a59:g:thm:main}.
+
+\paragraph{Note (\wtag, 5 October 2026).} Lemma~\ref{a59:g:lem:optimization}
+optimizes over all $r$ at once and so pays an $O(n)$ loss; Part~I instead
+splits at $R=\lceil4n\log L/L\rceil$, bounds the skeleton cost below $R$ by
+$O(n(\log L)^2/L)$ and the tail above it separately
+(Section~\ref{a59:sec:uppercost}), and reaches the constant $C_+$. The
+argument here is a second, coarser route to the upper half of
+Theorem~\ref{a59:g:thm:main}.
+\section{The published fractional factorial conjecture}\label{a59:g:sec:conjecture}
+The final journal version of \cite{conway}, rather than only its 2021 preprint, is the relevant source. Its Section~6, pp.~19--22, treats $100$ avoidance and proposes
+\[
+ a_n\sim C\,\Gamma(\alpha n+1)\mu^n n^g
+\]
+with a numerical estimate $\alpha\approx3/4$; Section~7, p.~23, equation~(11), gives the corresponding proposal for $110$ avoidance. The summary on p.~3 and the explicit statement about both classes on p.~24 identify $3/4$ as the conjectured dominant factorial exponent. Those locations disambiguate the labels independently of editorial slips elsewhere in the paper.
+
+\begin{corollary}\label{a59:g:cor:contradiction}
+For either $u_n=a_n$ or $u_n=d_n$, there are no fixed constants $C,\mu>0$ and $g\in\mathbb R$ such that
+\begin{equation}\label{a59:g:eq:refuted}
+ u_n\sim C\,\Gamma(3n/4+1)\mu^n n^g.
+\end{equation}
+More generally, a fixed exponent $0<\alpha<1$ is impossible in place of $3/4$, even after multiplication by any positive factor whose logarithm is $o(n\log n)$.
+\end{corollary}
+\begin{proof}
+Stirling's formula gives
+\[
+ \log\Gamma(\alpha n+1)=\alpha n\log n+O_\alpha(n).
+\]
+The logarithm of a relative equivalent of the proposed kind therefore has leading coefficient $\alpha$ on the $n\log n$ scale, contradicting Theorem~\ref{a59:g:thm:main}. For $\alpha=3/4$, even the fixed choice $b=8$ in \eqref{a59:g:eq:fixed-exponent} gives $\liminf\log u_n/(n\log n)\geq4/5>3/4$. Thus the contradiction does not depend on a growing block size or on the sharper quantitative bound.
+\end{proof}
+
+The conclusion concerns the conjectural asymptotic scale, not the paper's exact coefficients or its enumeration algorithms. The finite checks below reproduce its source recurrences and the OEIS prefixes. Nor does a common leading logarithmic exponent decide the asymptotic quotient $d_n/a_n$: an exponential separation, for example, would be invisible on the $n\log n$ scale.
+
+\paragraph{Note (\wtag, 5 October 2026).} Corollary~\ref{a59:g:cor:contradiction}
+is Report~241's result; Report~243 cites it and says that its own sharper
+theorem is ``not a second new refutation'' (Section~\ref{a59:sec:scope}).
+Report~241's sources note says that bounded searches ``did not locate'' a
+published correction of the conjecture; the intake's own quick web search
+(5 October 2026) found none either. Neither search is a priority
+certificate. With Part~I, the corollary extends to $e_n$ and $c_n$, whose
+logarithms also have leading term $n\log n$; and on the exponential scale
+Part~I bounds the quotient this paragraph leaves open:
+$4^{-n(1+o(1))}\le d_n/a_n\le e^{o(n)}$ and $4^{-n(1+o(1))}\le c_n/a_n\le1$,
+by~\eqref{a59:eq:main} and~\eqref{a59:eq:bracket} (the width of the bracket
+is $2\log2$).
+
+Equation~\eqref{a59:g:eq:main} also implies
+\[
+ u_n=(n!)^{1+o(1)}\qquad(u_n=c_n,a_n,d_n),
+\]
+where this means $\log u_n/\log(n!)\to1$. It is not the relative equivalent $u_n\sim n!$. In fact the factorial-normalized root tends to zero:
+\[
+ \left(\frac{u_n}{n!}\right)^{1/n}
+      =\Theta\bigl((\log n)^{-2}\bigr).
+\]
+Thus a positive factorial-normalized growth constant is excluded for all three classes. The theorem still does not prove convergence after multiplying this root by $(\log n)^2$, nor determine a relative equivalent. The ordinary generating series have radius zero. Section~\ref{a59:g:sec:nonholonomic} proves their non-D-finiteness by a separate argument using the more precise logarithmic loss.
+\section{Non P recursiveness}\label{a59:g:sec:nonholonomic}
+A sequence is \emph{P-recursive over $\mathbb C$} if it satisfies an eventual nontrivial recurrence $\sum_{j=0}^s P_j(n)u_{n+j}=0$ with $P_j\in\mathbb C[n]$. A formal power series is \emph{D-finite} if it satisfies a nontrivial homogeneous linear differential equation with polynomial coefficients. These properties are equivalent for a sequence and its ordinary generating series; finite initial changes do not affect them \cite[Theorems~1.4--1.5]{Stanley}.
+
+\begin{lemma}\label{a59:g:lem:entire-growth}
+An entire D-finite function has finite order. More explicitly, there are constants $B,C>0$, an integer $d\geq1$, and $R\geq1$ such that
+\[
+ M_f(r):=\max_{|z|=r}|f(z)|\leq B\exp(Cr^d)\qquad(r\geq R).
+\]
+\end{lemma}
+\begin{proof}
+The zero function is immediate. For a nonzero function, write an equation of order $m\geq1$ as $\sum_{j=0}^m p_j(z)f^{(j)}(z)=0$, with $p_m\not\equiv0$. A formal identity for an entire function holds analytically everywhere. Choose $R$ outside all zeros of $p_m$. The vector $Y=(f,f',\ldots,f^{(m-1)})^T$ satisfies $Y'=A(z)Y$ on $|z|\geq R$, where $A$ is the companion matrix with superdiagonal entries one and last row $-p_j/p_m$. Rational-function growth at infinity gives
+$\|A(z)\|\leq C_1|z|^{d-1}$ for some integer $d\geq1$, uniformly in the argument of $z$.
+
+The derivatives are bounded on $|z|=R$; put $B=\max(1,\max_{|z|=R}\|Y(z)\|)$. Integrating along any ray and using Gronwall's inequality gives
+\[
+ \|Y(re^{i\theta})\|\leq
+ B\exp\left(C_1\int_R^r t^{d-1}\,dt\right)
+ \leq B\exp(C_1r^d/d).
+\]
+The same constants work for every $\theta$, proving the claim without crossing any singularity of the differential equation.
+\end{proof}
+\noindent\wtag\ Lemma~\ref{a59:g:lem:entire-growth} is classical: every entire
+solution of a linear differential equation with polynomial coefficients has
+finite (indeed rational) order, a standard consequence of Wiman--Valiron
+theory; see, for instance, \cite{laine} and \cite{gsw}. Report~241 does not
+claim it as new; its Gronwall proof is printed because it is short and
+self-contained. The new content of this Section is
+Corollary~\ref{a59:g:cor:nonprecursive}.
+
+\begin{corollary}\label{a59:g:cor:nonprecursive}
+Each of $c_n,a_n,d_n$ is not P-recursive over $\mathbb C$. Its ordinary generating series is not D-finite even as a formal series. Its exponential generating function is entire of infinite order and is not D-finite.
+\end{corollary}
+\begin{proof}
+Let $b_n=u_n/n!$ for any of the three sequences. Theorem~\ref{a59:g:thm:main} gives fixed positive constants $c,C$ with
+\[
+ \frac{c}{(\log n)^2}\leq b_n^{1/n}\leq\frac{C}{(\log n)^2}
+\]
+for large $n$. Thus $F(z)=\sum_{n\geq0}b_nz^n$ is entire. If $F$ had finite order, a bound $M_F(r)\leq B\exp(C_2r^d)$ would hold for some integer $d\geq1$. Cauchy's coefficient estimate at $r=n^{1/d}$ would imply
+\[
+ b_n\leq B e^{C_2n}n^{-n/d},\qquad
+ b_n^{1/n}\leq B^{1/n}e^{C_2}n^{-1/d}.
+\]
+This contradicts the lower bound because $n^{1/d}/(\log n)^2\to\infty$. Hence $F$ has infinite order, and Lemma~\ref{a59:g:lem:entire-growth} shows that $F$ is not D-finite.
+
+If $u_n$ were P-recursive, dividing its recurrence by $n!$ would give
+\[
+ \sum_{j=0}^s P_j(n)\left(\prod_{h=1}^j(n+h)\right)b_{n+j}=0,
+\]
+with the empty product equal to one. This is a nontrivial polynomial recurrence for $b_n$, so its ordinary generating function $F$ would be D-finite, a contradiction. The coefficient/series equivalence gives the assertion about $\sum u_nz^n$. That series has radius zero, but its non-D-finiteness here is a formal conclusion, not an inference from radius zero alone.
+\end{proof}
+\noindent\wtag\ In this proof $b_n=u_n/n!$; it is \emph{not} Part~I's
+triangular count $b_n$ (Table~\ref{a59:tab:notation}).
+
+\begin{wcorollary}[\wtag, 5 October 2026]\label{a59:g:cor:enonp}
+The sequence $e_n=|\Av_n(000,100)|$ of Part~I is not P-recursive over
+$\mathbb C$; its ordinary generating series is not D-finite, and its
+exponential generating function is entire of infinite order and not
+D-finite.
+\end{wcorollary}
+\begin{proof}
+The proof of Corollary~\ref{a59:g:cor:nonprecursive} uses only $u_n\ge1$
+and two-sided bounds $c/(\log n)^2\le(u_n/n!)^{1/n}\le C/(\log n)^2$ for
+large $n$. For $u=e$ these hold with $c=1$ and $C=3$, because
+$(\log n)^2(e_n/n!)^{1/n}\to2$ by~\eqref{a59:eq:roots}; and $e_n\ge1$ for
+every $n$ (the word $0,1,\dots,n-1$ avoids all three patterns). The proof
+then applies word for word.
+\end{proof}
+\noindent For $c_n$, $a_n$, $d_n$ the hypotheses also follow
+from~\eqref{a59:eq:roots} (with $c=1/3$, $C=3$), so
+Corollary~\ref{a59:g:cor:nonprecursive} holds on Part~I's bounds as well; it
+is Report~241's, and Part~I does not state it.
+\section{A refined first crossing inverse}\label{a59:g:sec:inverse}
+For any one of $u_n=c_n,a_n,d_n$ and real $X>1$, define
+\[
+ N_u(X)=\min\{n\geq0:u_n\geq X\}.
+\]
+The minimum exists because Theorem~\ref{a59:g:thm:main} makes the counts unbounded. The counts are nondecreasing: by Lemma~\ref{a59:g:lem:prefix-max}, a word with maximum $M$ has at least $M$ ascents, so appending $M+1$ is legal. This creates no equal pair and cannot finish a $110$ occurrence, since the new letter is largest. Deleting the appended position recovers the input. The empty word maps separately to $(0)$.
+
+\begin{proposition}\label{a59:g:prop:inverse}
+Let $L=\log X$ and $w=W_0(L)$, where $W_0$ is the positive real Lambert function, so $we^w=L$. Then, as $X\to\infty$,
+\begin{equation}\label{a59:g:eq:inverse}
+ N_u(X)=\frac Lw+\frac{2L\log w}{w^2}
+                    +O\!\left(\frac L{w^2}\right)
+       \sim\frac{\log X}{\log\log X}.
+\end{equation}
+In particular the first correction to $L/W_0(L)$ is determined. The remaining additive error grows; no exact ceiling formula or effective onset is asserted.
+\end{proposition}
+\begin{proof}
+Put $y=L/w=e^w$ and
+\[
+ F(x)=x\log x-2x\log\log x.
+\]
+Theorem~\ref{a59:g:thm:main} gives a fixed $C$ with
+$|\log u_n-F(n)|\leq Cn$ for all sufficiently large integers $n$.
+For any fixed real $s$, set
+\[
+ x_s=y\left(1+\frac{2\log w+s}{w}\right).
+\]
+Writing $\delta=(2\log w+s)/w=o(1)$ and using
+$\log(1+\delta)=\delta+O(\delta^2)$, we obtain
+\begin{align*}
+ x_s\log x_s
+   &=L+(2\log w+s)y+O\!\left(\frac{y\log w}{w}\right),\\
+ 2x_s\log\log x_s
+   &=2y\log w+O\!\left(\frac{y(\log w)^2}{w}\right).
+\end{align*}
+Thus
+\begin{equation}\label{a59:g:eq:inverse-perturb}
+ F(x_s)=L+sy+O\!\left(\frac{y(\log w)^2}{w}\right)=L+sy+o(y).
+\end{equation}
+Choose a fixed $D>C+2$, and put $n_- =\lfloor x_{-D}\rfloor$ and $n_+=\lceil x_D\rceil$. Rounding changes $F$ by $O(w)=o(y)$, since $F'(x)=O(w)$ near $y$, and $n_\pm/y=1+o(1)$. Hence \eqref{a59:g:eq:inverse-perturb} implies
+\[
+ \log u_{n_-}<L<\log u_{n_+}
+\]
+for all sufficiently large $X$. Monotonicity gives $n_-<N_u(X)\leq n_+$. These test indices bracket
+$y+2y\log w/w$ within $O(y/w)$, proving \eqref{a59:g:eq:inverse}. Finally $w\sim\log L$ gives the stated first-order equivalent.
+\end{proof}
+
+The universal bound $u_n\leq n!\leq n^n$ also yields
+$N_u(X)\geq\lceil L/W_0(L)\rceil$. The positive second term in \eqref{a59:g:eq:inverse} explains why this elementary ceiling is not an exact asymptotic rounding rule.
+
+\begin{wremark}[\wtag, 5 October 2026: Part~I implies Proposition~\ref{a59:g:prop:inverse}]\label{a59:g:rem:inverseimplied}
+$N_u(X)$ is Part~I's $\nu_u(X)$. Put $\lambda=\log L$ and $\mu=\log\lambda$
+as in Theorem~\ref{a59:thm:inverse}. From $w+\log w=\lambda$ and $w\sim\lambda$
+one gets $\log w=\mu+O(\mu/\lambda)$, hence $w=\lambda-\mu+O(\mu/\lambda)$
+and $1/w=\lambda^{-1}\bigl(1+\mu/\lambda+O(\mu^2/\lambda^2)\bigr)$. Therefore
+\[
+ \frac Lw+\frac{2L\log w}{w^2}
+ =\frac L\lambda+\frac{3\mu L}{\lambda^2}+O\Bigl(\frac{L\mu^2}{\lambda^3}\Bigr),
+ \qquad\frac L{w^2}\asymp\frac L{\lambda^2},
+\]
+so~\eqref{a59:g:eq:inverse} says exactly
+$N_u(X)=L/\lambda+3\mu L/\lambda^2+O(L/\lambda^2)$. Theorem~\ref{a59:thm:inverse}
+gives $\nu_u(X)=L/\lambda+(3\mu+\gamma)L/\lambda^2+O(L\mu^2/\lambda^3)$ with
+$\gamma=1-\log2$ for $u=a,e$, and brackets with
+$\gamma\in[1-\log2,1+\log2]$ for $u=d,c$. Since $\mu^2/\lambda\to0$, either
+form implies~\eqref{a59:g:eq:inverse}, for all four classes. Part~I adds the
+determined coefficient $1-\log2$ of $L/\lambda^2$ for $a,e$ (it is hidden
+in Part~II's $O(L/w^2)$), and its error $O(L\mu^2/\lambda^3)$ is smaller
+than Part~II's $O(L/w^2)$; both still grow.
+\end{wremark}
+\section{Finite checks and reproducibility}\label{a59:g:sec:checks}
+The proof is the explicit injection and its inequalities; no fitted exponent or finite computation is needed to establish the limit. The accompanying Python verifies finite instances by methods kept separate from the construction's invariant argument.
+
+\subsection{Published count prefixes}
+The following values use length as index and include the empty word. The $a_n,d_n$ prefixes agree with OEIS A202059 and A202060. The positive-length $c_n$ values are the Class~36 row of \cite[Table~2]{callan}.
+\begin{center}
+\begin{tabular}{r r r r}
+\toprule
+$n$ & $a_n$ avoiding $100$ & $d_n$ avoiding $110$ & $c_n$ avoiding all three\\
+\midrule
+0&1&1&1\\
+1&1&1&1\\
+2&2&2&2\\
+3&5&5&4\\
+4&14&14&9\\
+5&44&43&22\\
+6&153&143&58\\
+7&583&510&163\\
+8&2410&1936&486\\
+9&10721&7774&1526\\
+10&50965&32848&5019\\
+11&257393&145398&17208\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The verifier transcribes the dynamic recurrences of \cite[\S\S2.3--2.4]{conway} through $n=15$. To specify exactly which formulas are used, set $\chi(\ell,i)=\mathbf1_{\ell<i}$ and take a base value of one when the remaining length $r$ is zero. For $r>0$ the two recurrences are
+\begin{align}
+ f_{100}(r,A,\ell,M)
+ &=\sum_{i=0}^{A+1}
+ \begin{cases}
+ f_{100}(r-1,A+\chi(\ell,i)-1,i-1,M-1),&i<M,\\
+ f_{100}(r-1,A+\chi(\ell,i),i,i),&i\geq M,
+ \end{cases}\label{a59:g:eq:rec100}\\
+ f_{110}(r,A,\ell,U)
+ &=\sum_{i=0}^{A+1}
+ \begin{cases}
+ f_{110}(r-1,A+\chi(\ell,i)-i,0,\rho(U,i)),&i\in U,\\
+ f_{110}(r-1,A+\chi(\ell,i),i,U\cup\{i\}),&i\notin U,
+ \end{cases}\label{a59:g:eq:rec110}
+\end{align}
+where $\rho(U,i)=\{u-i:u\in U,\ u\geq i\}$. The counts are
+$f_{100}(n-1,0,0,0)$ and $f_{110}(n-1,0,0,\{0\})$ for $n\geq1$. The compressed states in these source recurrences are not asserted to be the literal ascent count and maximum of an unrenumbered prefix.
+
+Separately, all ordinary ascent sequences through length nine are generated directly from \eqref{a59:g:eq:ascent}. Literal index-triple tests are compared against independent linear-time pattern predicates on every such word; the resulting single-class counts are checked against the recurrence outputs. The triple class is also enumerated through length eleven against the published row. Exact finite construction tests compare the number of generated distinct words to \eqref{a59:g:eq:FN}, check each prefix bound, verify the forbidden triples, and test injectivity after fresh-record padding. The concrete cutoffs and receipts are supplied with the code.
+
+\subsection{The occurrence encodings}
+A separate verifier tests the upper-bound encoding on every $100$- or $110$-avoiding word obtained by literal selection from all ascent sequences through length nine. It records non-last or non-first positions, respectively, the marked labels, the run boundaries, and the retained-label subset in every run. It decodes these data back to the original word and checks uniqueness of encodings. It also tests monotonicity of the marked labels, the run-count bound, the unseen and unfinished candidate bounds, and the exact finite Vandermonde inequalities. These finite reconstruction checks corroborate the two distinct marking conventions without supplying the uniform asymptotic optimization, which is proved in Section~\ref{a59:g:sec:upper}.
+
+\subsection{The reproducible package}
+The archive contains this PDF, the TeX sources, bounded Python verifiers, source and computation notes, fixed receipts, and a checksum manifest. It contains no third-party paper or private review material. The builder verifies its complete source inventory, runs the finite checks, compiles a disposable TeX copy with shell escape disabled, and checks that its PDF matches the included frozen PDF byte for byte on the recorded toolchain. It then emits a deterministic archive with fixed member order, timestamps, and modes, without modifying its sources.
+
+The archive-level reproducer extracts the actual ZIP and performs both normal and optimized-Python builds. It compares every packaged byte, archive metadata, receipts, and PDF, and checks source immutability. Python child processes disable bytecode writes and enforce the decimal integer conversion limit of $640$ digits. Explicit exceptions enforce guards under optimization; correctness does not depend on removable \texttt{assert} statements. These are bounded regression and reproducibility checks, not a machine-checked proof of the asymptotic theorem. Toolchain changes can change PDF bytes without changing the mathematics.
+
+\paragraph{Note (\wtag, 5 October 2026).} In this repository the programs
+are \path{code/241-growth-*.py} and the four receipts
+\path{data/241-growth-*_receipt.json}; \texttt{SOURCES.md} and
+\texttt{COMPUTATION.md} are \path{241-growth-SOURCES.md} and
+\path{241-growth-COMPUTATION.md}. The delivered PDF, README, manuscript
+sources and \texttt{MANIFEST.sha256} are not shipped, and the package's
+\path{code/source_prefixes.json} and \path{requirements.txt}, byte
+copies of Report~243's, are shipped once, as
+\path{data/243-sharp-source_prefixes.json} and
+\path{data/243-sharp-requirements.txt}. The programs expect the delivered
+layout and are rerun on a fresh extraction of the arrival archive. At the
+placement the three mathematical receipts (counts, construction, upper
+bound) were reproduced byte for byte on such a copy under normal and
+optimized Python, after normalizing Windows line ends. The $a_n$ and $d_n$
+columns of the table above are OEIS data (A202059, A202060), and the $c_n$
+column is Callan and Mansour's Table~2; the package recomputes all three.
+\section{Further questions and research}\label{a59:g:sec:outlook}
+\wtag\ Section title changed in the write (5 October 2026, batch 102) from
+``Beyond two logarithmic orders''. The text up to the closing paragraph
+of Report~241 is the manuscript's own; the dated notes after each question
+and the last paragraph were added in the write under ProveIt's standing
+rule of 4 October 2026.
+
+The matching estimates determine the coefficient $2$ of $n\log\log n$ and the zero factorial-normalized root limit. The bounds established here leave finer scales undetermined; they do not assert that those scales are unresolved throughout the literature. Three questions distinguish the next levels of precision.
+\begin{enumerate}
+\item \textbf{The linear-order constant.} For each class, does
+\[
+ \log u_n=n\log n-2n\log\log n+\kappa n+o(n)
+\]
+hold with a constant $\kappa$? Equivalently, does
+$(\log n)^2(u_n/n!)^{1/n}$ converge? We prove that this quantity stays between fixed positive constants, but not that it has a limit or that the limits for the three classes would coincide.
+\item \textbf{Relative asymptotics.} What finer exponential corrections and prefactors are needed for a relative equivalent? Even knowing $\kappa$ would leave errors of size $\exp(o(n))$, which can be far from a $1+o(1)$ relative error.
+\item \textbf{Ratios and comparisons.} Can one determine $u_n/u_{n-1}$ or the finer scale of $d_n/a_n$ and $c_n/a_n$? The two common logarithmic orders alone allow exponential differences between the classes and do not determine consecutive ratios.
+\end{enumerate}
+
+The simultaneous class is already catalogued in \cite{callan}, and the doubled-seed mechanism is already present in \cite{conway}. Related reports treat the larger multiplicity-bounded classes \cite{MultiplicityReports}. Their lower bounds do not transfer to $\A_n(000,100,110)$: the ordering of the two seed copies and the freshness of every later label are essential here. The separate upper bound exploits monotone non-first or non-last occurrences and an increasing-run set encoding. The results are presented with directly checkable proofs and a precise consequence for a published conjecture; no exhaustive historical-priority claim or external peer-review status is asserted.
+
+\paragraph{Dated notes on the three questions (\wtag, 5 October 2026).}
+\begin{enumerate}
+\item \emph{Answered for $a$, open for $d$ and $c$.} Part~I proves
+$\kappa=C_+=\log2-1$ for $a_n$ (and for the subclass count $e_n$), with
+error $O((\log\log n)^2/\log n)$, so $(\log n)^2(a_n/n!)^{1/n}\to2$
+(Theorem~\ref{a59:thm:main}). For $d_n$ and $c_n$ it proves only that every
+limit point of $\kappa_u(n)$ lies in $[-\log2-1,\log2-1]$, equivalently that
+the normalized root has $\liminf\ge1/2$ and $\limsup\le2$; the existence
+of $\kappa$ and whether the three classes share it stay open, and are the
+first question of Section~\ref{a59:sec:questions}. The write's data there
+($d_n\le b_n$ for $n\le15$) bear on whether $\kappa_d=C_+$ and prove
+nothing.
+\item \emph{Open.} Part~I improves the error to
+$O(n(\log\log n)^2/\log n)$ for $a,e$, still $e^{o(n)}$, so no relative
+equivalent follows; Part~I says so and asks for the first sublinear
+correction (Section~\ref{a59:sec:questions}).
+\item \emph{Open, partly advanced.} On the exponential scale Part~I gives
+$4^{-n(1+o(1))}\le d_n/a_n\le e^{o(n)}$ and $4^{-n(1+o(1))}\le c_n/a_n\le1$
+(note after Corollary~\ref{a59:g:cor:contradiction}). Consecutive ratios
+$u_n/u_{n-1}$ are not determined by either Part.
+\end{enumerate}
+Report~241 states no other claim without proof, and nothing in it was found
+to be wrong. Its sources note's sentence that bounded searches ``did not
+locate'' an earlier correction of the conjecture is a non-claim of
+priority, not an open question.
+
+\appendix
+\renewcommand{\PartMark}{Appendix}
+\section{Provenance, numbering and editorial changes}\label{a59:app:provenance}
+
+\wtag\ Written 5 October 2026 (batch 102).
+
+\paragraph{Sources.} The report is built from two manuscripts, delivered as
+two ZIP archives of the session bundle of Reports 1--243. Both arrived
+unchanged in ProveIt commit \texttt{60f54ea06} (``Arrival: 177 research
+archives from the session bundle of Reports 1-243'', 5 October 2026) and
+were placed as cluster 102-ASC100 of batch~102 in \texttt{6ab1f1979}, which
+removed the archives from \path{docs/incoming/}; they survive in the arrival
+commit (\texttt{git show 60f54ea06:docs/incoming/<archive>}).
+
+\begin{center}
+\small
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{.12\textwidth}>{\raggedright\arraybackslash}p{.41\textwidth}>{\raggedright\arraybackslash}p{.41\textwidth}@{}}
+\toprule
+& Report 243 (base) & Report 241\\
+\midrule
+archive & \path{Report243.zip}, 576{,}065 bytes, 39 files & \path{Report241.zip}, 554{,}046 bytes, 29 files\\
+manuscript & \texttt{article.tex} (40 lines) and 13 files \texttt{sections/*.tex} (612 lines); PDF 16 pages & \texttt{article.tex} (40 lines) and 10 files \texttt{sections/*.tex} (506 lines); PDF 13 pages\\
+title & \emph{The Sharp Linear Logarithmic Constant for 100 Avoiding Ascent Sequences: Triangular comparisons and controlled inverse bounds} & \emph{Factorial Logarithmic Growth of Pattern Avoiding Ascent Sequences: Ordinary ascent sequences avoiding 100 or 110}\\
+author line, date & ``Report 243''; 5 October 2026 & ``Report 241''; 5 October 2026\\
+pin & none; cites Report~241 by title, no repository path & none; cites the A202058 and A294220 report articles on ProveIt's \texttt{main}, ``inspected 5 October 2026'' (both exist at the write)\\
+file prefix & \texttt{243-sharp-} (manuscript files unprefixed) & \texttt{241-growth-}\\
+printed as & Part~I, Sections~\ref{a59:sec:results}--\ref{a59:sec:questions} & Part~II, Sections~\ref{a59:g:sec:model}--\ref{a59:g:sec:outlook}\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Neither manuscript says that it is AI-assisted or ``prepared for private
+review''; both say that their packages contain no private review material.
+Neither has been refereed.
+
+\paragraph{Where the merge chose.} Report~243 is the base: its setting
+contains Report~241's (the same model, the classes $\{a,e,d,c\}$ against
+$\{a,d,c\}$) and its main estimates imply Report~241's
+(Table~\ref{a59:tab:map}). Report~241 keeps its priority, stated in the
+editorial note, in Section~\ref{a59:sec:guide} and in Part~II's opening;
+its two statements Part~I does not reproduce, the refutation and
+non-P-recursiveness, and its exact family and fixed-block-size argument
+are printed in full in Part~II, and so are its proofs of the implied
+statements, as second routes. Nothing is printed twice except the one
+statement both manuscripts prove verbatim, the prefix-maximum lemma (Lemmas~\ref{a59:lem:prefix}
+and~\ref{a59:g:lem:prefix-max}), keeps both proofs because they differ.
+The bibliographies are merged: Report~241's entries for Conway et al.,
+Callan--Mansour and the two OEIS entries are Report~243's entries for the
+same works (\texttt{CCEG}$\to$\texttt{conway}, \texttt{CM}$\to$\texttt{callan},
+\texttt{OEIS100}$\to$\texttt{oeis100}, \texttt{OEIS110}$\to$\texttt{oeis110}),
+and each merged entry keeps both manuscripts' annotations.
+
+\paragraph{Numbering.} Sections are numbered continuously: Part~I's
+Section~$k$ is Report~243's Section~$k-3$, and Part~II's Section~$k$ is
+Report~241's Section~$k-15$; equations, theorems, lemmas, propositions,
+corollaries and remarks are numbered within sections, so they shift with
+them, and are otherwise unchanged. Results added in the write are numbered
+W1, W2, \dots\ on a separate counter, so they shift nothing. The delivered
+READMEs, computation notes and code comments use the manuscripts' own
+numbers. Table~\ref{a59:tab:crosswalk} maps the numbered results.
+
+\begin{center}
+\small
+\begin{longtable}{@{}lll@{}}
+\caption{Numbered results: manuscript numbering and this report's.}\label{a59:tab:crosswalk}\\
+\toprule
+Report & Manuscript & Here\\
+\midrule
+\endfirsthead
+\toprule
+Report & Manuscript & Here\\
+\midrule
+\endhead
+243 & Theorem 1.1 (constants and brackets) & Theorem~\ref{a59:thm:main}\\
+243 & Lemma 2.1 (triangular sum) & Lemma~\ref{a59:lem:triangular}\\
+243 & Lemma 3.1 (prefix maximum, runs) & Lemma~\ref{a59:lem:prefix}\\
+243 & Lemma 3.2 (candidate pool) & Lemma~\ref{a59:lem:pool}\\
+243 & Proposition 3.3 (finite upper bound) & Proposition~\ref{a59:prop:finiteupper}\\
+243 & Lemma 5.1 (positive-row words avoid $000,100$) & Lemma~\ref{a59:lem:legalpositive}\\
+243 & Lemma 5.2 (block fibers) & Lemma~\ref{a59:lem:blockfiber}\\
+243 & Proposition 6.1 (repair and three fibers) & Proposition~\ref{a59:prop:repair}\\
+243 & Lemma 8.1 (doubled seed) & Lemma~\ref{a59:lem:doubling}\\
+243 & Theorem 9.1 (first-crossing inverses) & Theorem~\ref{a59:thm:inverse}\\
+241 & Theorem 1.1 (two logarithmic orders) & Theorem~\ref{a59:g:thm:main}\\
+241 & Proposition 2.1 (exact family) & Proposition~\ref{a59:g:prop:family}\\
+241 & Lemma 3.1 (uniform bounds) & Lemma~\ref{a59:g:lem:uniform}\\
+241 & Lemma 4.1 (prefix maximum) & Lemma~\ref{a59:g:lem:prefix-max}\\
+241 & Proposition 4.2 (finite upper bound) & Proposition~\ref{a59:g:prop:finite-upper}\\
+241 & Lemma 4.3 (optimization) & Lemma~\ref{a59:g:lem:optimization}\\
+241 & Corollary 5.1 (the refutation) & Corollary~\ref{a59:g:cor:contradiction}\\
+241 & Lemma 6.1 (entire D-finite functions) & Lemma~\ref{a59:g:lem:entire-growth}\\
+241 & Corollary 6.2 (non-P-recursiveness) & Corollary~\ref{a59:g:cor:nonprecursive}\\
+241 & Proposition 7.1 (Lambert-$W$ inverse) & Proposition~\ref{a59:g:prop:inverse}\\
+write & Remarks and Corollary W1--W\arabic{wremark} & listed in Section~\ref{a59:sec:guide}\\
+\bottomrule
+\end{longtable}
+\end{center}
+
+\paragraph{Editorial changes.}
+\begin{itemize}
+\item Labels: Report~243's 61 labels carry the prefix \texttt{a59:},
+Report~241's 49 the prefix \texttt{a59:g:}; the seven label names the two
+manuscripts share (\texttt{eq:ascent}, \texttt{eq:main},
+\texttt{eq:skeleton}, \texttt{eq:vandermonde}, \texttt{sec:inverse},
+\texttt{sec:upper}, \texttt{thm:main}) are thereby distinct. The write added
+\texttt{a59:part}, \texttt{a59:g:part}, \texttt{a59:g:sub:fixed},
+\texttt{a59:g:sub:quant} (two subsections of Part~II), the labels of its
+remarks and corollary, and the front-matter and appendix labels. Every
+\verb|\ref| and \verb|\eqref| follows its label.
+\item Manuscript layout: Report~243's \texttt{article.tex} read its text from
+thirteen files \texttt{sections/*.tex} (staged at placement); the write
+inlines them and Report~241's ten section files into this one
+\texttt{article.tex}, in the manuscripts' \verb|\input| order, so the
+\texttt{sections/} directory is no longer part of the report.
+\item Preamble: Report~243's, with Report~241's macro $\A$ added (both define
+$\asc$ and $\N$ alike), \texttt{longtable}, the \wtag\ marker and the W
+counter. Report~243's fixed PDF trailer identifier and its
+\verb|\ReportNumber| macro are dropped; the running head names the Part
+instead of ``Report 243''. The title block is new; the PDF metadata names
+the merged report.
+\item Abstracts: Report~243's opens the report; Report~241's opens Part~II.
+\item Section titles changed: Report~243's ``Questions suggested by the
+comparison'' and Report~241's ``Beyond two logarithmic orders'' are both now
+``Further questions and research''.
+\item Citation keys: Report~241's \texttt{CCEG}, \texttt{CM},
+\texttt{OEIS100}, \texttt{OEIS110} are Report~243's \texttt{conway},
+\texttt{callan}, \texttt{oeis100}, \texttt{oeis110}; Report~241's
+\texttt{MultiplicityReports} and \texttt{Stanley} are kept; the write added
+\texttt{laine} and \texttt{gsw} (after Lemma~\ref{a59:g:lem:entire-growth}).
+\item Added text: the editorial note, Sections~\ref{a59:sec:guide}--\ref{a59:sec:limits},
+the two Part openings, this appendix, and the notes, remarks and corollary
+marked \wtag. No other sentence, formula or reference of either manuscript
+was changed.
+\end{itemize}
+
+\begin{thebibliography}{99}
+\bibitem{conway}
+A. R. Conway, M. Conway, A. Elvey Price, and A. J. Guttmann,
+\emph{Pattern-Avoiding Ascent Sequences of Length 3},
+Electronic Journal of Combinatorics \textbf{29}(4) (2022), P4.25.
+\href{https://doi.org/10.37236/11266}{doi:10.37236/11266}.
+[Report~241's entry \texttt{CCEG} adds:] The final 32-page journal version is cited throughout; the related preprint is
+\href{https://arxiv.org/abs/2111.01279}{arXiv:2111.01279} (2021).
+
+\bibitem{bcdk}
+M. Bousquet-M\'elou, A. Claesson, M. Dukes, and S. Kitaev,
+\emph{$(2+2)$-free posets, ascent sequences and pattern avoiding permutations},
+Journal of Combinatorial Theory, Series A \textbf{117} (2010), 884--909.
+\href{https://doi.org/10.1016/j.jcta.2009.12.007}{doi:10.1016/j.jcta.2009.12.007};
+\href{https://arxiv.org/abs/0806.0666}{arXiv:0806.0666}.
+
+\bibitem{dukes}
+M. Dukes and P. R. W. McNamara,
+\emph{Refining the bijections among ascent sequences, $(2+2)$-free posets, integer matrices and pattern-avoiding permutations},
+Journal of Combinatorial Theory, Series A \textbf{167} (2019), 403--430.
+\href{https://arxiv.org/abs/1807.11505}{arXiv:1807.11505}.
+
+\bibitem{bayoumi}
+B. I. Bayoumi, M. H. El-Zahar, and S. M. Khamis,
+\emph{Asymptotic enumeration of $N$-free partial orders},
+Order \textbf{6} (1989), 219--225.
+\href{https://doi.org/10.1007/BF00563522}{doi:10.1007/BF00563522}.
+
+\bibitem{khamis}
+S. M. Khamis,
+\emph{Height counting of unlabeled interval and $N$-free posets},
+Discrete Mathematics \textbf{275} (2004), 165--175.
+\href{https://doi.org/10.1016/S0012-365X(03)00106-7}{doi:10.1016/S0012-365X(03)00106-7}.
+
+\bibitem{baxter}
+A. M. Baxter and L. K. Pudwell,
+\emph{Ascent sequences avoiding pairs of patterns},
+Electronic Journal of Combinatorics \textbf{22}(1) (2015), P1.58.
+\href{https://arxiv.org/abs/1406.4100}{arXiv:1406.4100}.
+
+\bibitem{callan}
+D. Callan and T. Mansour,
+\emph{Ascent sequences avoiding a triple of length-3 patterns},
+Electronic Journal of Combinatorics \textbf{32}(1) (2025), P1.40.
+\href{https://doi.org/10.37236/12720}{doi:10.37236/12720}.
+
+\bibitem{oeis100}
+OEIS Foundation Inc., \emph{The On-Line Encyclopedia of Integer Sequences},
+\href{https://oeis.org/A202059}{A202059}, ordinary $100$-avoiding ascent sequences, offset $0$.
+[Report~241's entry \texttt{OEIS100}:] \emph{A202059: Number of ascent sequences of length $n$ avoiding the pattern 100},
+\url{https://oeis.org/A202059}. Accessed 5 October 2026.
+
+\bibitem{oeis110}
+OEIS Foundation Inc., \emph{The On-Line Encyclopedia of Integer Sequences},
+\href{https://oeis.org/A202060}{A202060}, ordinary $110$-avoiding ascent sequences, offset $0$.
+[Report~241's entry \texttt{OEIS110}:] \emph{A202060: Number of ascent sequences of length $n$ avoiding the pattern 110},
+\url{https://oeis.org/A202060}. Accessed 5 October 2026.
+
+\bibitem{oeistriangular}
+OEIS Foundation Inc., \emph{The On-Line Encyclopedia of Integer Sequences},
+\href{https://oeis.org/A098569}{A098569}; with the current offset,
+size-$n$ positive-diagonal triangular arrays have count A098569$(n-1)$.
+
+\bibitem{report241}
+\emph{Factorial Logarithmic Growth of Pattern Avoiding Ascent Sequences},
+Report 241, 5 October 2026. Earlier companion report; its marked-occurrence upper encoding is refined here. The present proof includes all bounds needed for its conclusions.
+[\wtag: printed in this report as Part~II.]
+
+\bibitem{MultiplicityReports}
+ProveIt repository, reports on $000$-avoiding ascent sequences and fixed
+multiplicity caps, inspected 5 October 2026.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/main/SetTheory/Cardinals/docs/reports/generating-functions-and-asymptotics/oeis-sequence-asymptotics/a202058-ascent-000-growth/article.tex}{A202058 report source};
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/main/SetTheory/Cardinals/docs/reports/generating-functions-and-asymptotics/oeis-sequence-asymptotics/a294220-ascent-multiplicity-caps/article.tex}{A294220 report source}.
+Cited for related models; their finer asymptotic
+claims are not inputs to the present proof.
+
+\bibitem{Stanley}
+R.~P.~Stanley, \emph{Differentiably Finite Power Series},
+European Journal of Combinatorics \textbf{1} (1980), 175--188.
+\href{https://doi.org/10.1016/S0195-6698(80)80051-5}{doi:10.1016/S0195-6698(80)80051-5};
+\href{https://math.mit.edu/~rstan/pubs/pubfiles/45.pdf}{author-hosted paper}.
+
+\bibitem{laine}
+[\wtag] I. Laine, \emph{Nevanlinna Theory and Complex Differential
+Equations}, de Gruyter Studies in Mathematics~15, Walter de Gruyter, Berlin,
+1993. Cited for the classical finite order of entire solutions of linear
+differential equations with polynomial coefficients; not re-read in the
+write.
+
+\bibitem{gsw}
+[\wtag] G. G. Gundersen, E. M. Steinbart, and S. Wang, \emph{The possible
+orders of solutions of linear differential equations with polynomial
+coefficients}, Transactions of the American Mathematical Society
+\textbf{350} (1998), 1225--1247. Cited for the same classical fact; not
+re-read in the write.
+\end{thebibliography}
 \end{document}
