@@ -343,11 +343,51 @@ does not turn levels into `d`-ascents: `H_3(2) = 12`, `a_3^{(2)} = 6`.
 20.1 — with Part III, `log P(E_n = 0) = −(w/2)(log n)² + O(log n)`; Remark
 33.1 — the statements of Theorem 24.1 and Corollary 24.2 also hold at `d = 0`
 (coefficient 0), by the Fishburn asymptotic and the `K + 2` children
-monotonicity, not by Part III's proof; the observation that the fixed-`d`
+monotonicity `a_{i+1} ≥ 2a_i` for `i ≥ 1`, not by Part III's proof; the
+observation that the fixed-`d`
 subexponential factors differ by `((d − d')/2)(log n)² + O(log n)`; the residuals
 `R_n = log(a_n/(n!μⁿ)) − ½(log n)²` = 3.356, 4.197, 4.725, 5.112, 5.419 at
 `n = 100..500` from the shipped terms (evidence only); dated supersession notes;
 the attribution of Part I's binomial transform; the front matter.
+
+**Independent check of the write (5 October 2026).** An adversarial check made
+by the intake after the write (`32122c09e`) reread the six deductions the write
+supplied — Remark 20.1 (zero-level atom, error `O_𝒲(log n)`); Remark 33.1 (the
+endpoint `d = 0`); the note after "Why fixed means fixed" in Section 9
+(fixed-`d` factors differ by `((d − d')/2)(log n)² + O_{d,d'}(log n)`); the
+exclusion of a next term of exact order `log n log log n` (Section 12 note and
+item 2 of Section 12.3); the error `O(1/log n)` in (19.2) (note after Theorem
+13.2); and the closing of Part III's item 9 (real `d` acts as `⌈d⌉`) — and
+found all six valid, with no counterexample and no gap in any proof chain;
+`d = 0` is genuinely the Fishburn family, with coefficient 0. Remark 33.1 had
+one defect of wording: its proof stated `a_{i+1}^{(0)} ≥ 2a_i^{(0)}` without a
+range, and it fails at `i = 0` (`a_0 = a_1 = 1`); it now says "for `i ≥ 1`",
+which is all the first crossing needs, with a dated note keeping the first
+wording. Two precisions are adopted: the MGF error of the note after Theorem
+13.2 now carries its subscript, `O_{𝒲,J}(1/log n)`; and item 9 of Section 37.1
+now says that `⌈d⌉` depends on the strict inequality `x_{i+1} > x_i − d` (under
+`x_{i+1} ≥ x_i − d` the effective parameter would be `⌊d⌋ + 1`: `d = 1` would
+give 24 instead of 23 at `n = 4`), so that for real `d > 0` the coefficient of
+`(log n)²` is `⌈d⌉/2`, not `d/2`. The check used neither the delivered
+programs nor the write's: its own exact big-integer state recursion over
+`(K, l)` computed `a_n^{(d)}` (`d = 0..3`) and `H_n(w)` (`w = 0, ½, 2`) to
+`n = 400`, agreeing with brute-force enumeration for `n ≤ 9` (also at real
+`d = ½, 3/2, 2.7`); its `d = 0` column is A022493, its `d = 1` column equals
+every shipped term of `data/105-growth-weak_ascent_terms.txt` to `n = 400`
+(A336070), its `H_n(0)` column is A138265 (primitive ascent sequences), and it
+reproduces Table 1 entry for entry. Residual analyses at `n = 25..400`:
+`n(log F_n − log n! − n log μ − ½ log n − log C_F) → −0.565` (confirming `C_F`
+and `O(1/n)`), `n(P_n/F_n − e^{−π²/6}) ≈ 0.477`; for Remark 20.1, `[log P(E_n =
+0) + (w/2)(log n)²]/log n` = −0.510, −0.461, 0.189 at `n = 400` for `w = ½, 1,
+2`; at `d = 0`, `N(Y) − x` in `[−2.26, −0.44]` for `5 ≤ m ≤ 400`; the pairwise
+quotients `[log(a^{(d)}/a^{(d')}) − ((d − d')/2)(log n)²]/log n` bounded (0.187,
+−0.875, −2.205, −1.330 at `n = 400`); the MGF error times `log n` bounded
+(−0.049, −0.650, −0.699). Caveat: the local slope of the `d = 1` residual
+against `log n` (1.07, 1.25, 1.36 at `n = 100, 200, 400`) is still rising; it
+neither supports nor refutes Part III's question 1, and the residuals stay
+evidence only. This was a careful reading with numerical tests, not a formal
+verification or an external review; the article records it in full at the end
+of "Provenance and merge decisions".
 
 ## What the report does not claim
 
@@ -393,7 +433,9 @@ re-scoped those that a later Part answers:
   Problem 8.7 (the unrestricted generating function for general `d`), (7) OEIS
   identification of the `d = 2, 3` columns, (8) an explanation of the common
   coefficient form `w/2`, `d/2`; (9) its remark that real `d` acts as `⌈d⌉` was
-  checked and closes.
+  checked and closes (it depends on the strict inequality `x_{i+1} > x_i − d`;
+  the non-strict one would give `⌊d⌋ + 1`), so for real `d > 0` the
+  coefficient of `(log n)²` is `⌈d⌉/2`.
 
 Superseded statements stay as printed with dated notes pointing forward: Part
 I's and Part II's remainders `O((log n)²/log log n)` (Theorem 24.1); their
@@ -540,12 +582,16 @@ OEIS.
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-pdfLaTeX (MiKTeX), in a scratch copy; commit only `article.pdf`. The write's
-build: 72 pages, no errors, no undefined or multiply defined references or
-citations, no duplicate destinations, no overfull or underfull boxes. The log
-carries one "Infinite glue shrinkage found in box being split" message, from the
-notation longtable breaking across a page, as in other reports with
-longtables. A build of the staged base (`report105.tex` as placed) is
+pdfLaTeX (MiKTeX), in a scratch copy; commit only `article.pdf`. The build
+after the independent check (5 October 2026): 73 pages (the write's: 72), no
+errors, no undefined or multiply defined references or citations, no overfull
+or underfull boxes; every one of the 334 labels keeps the number it had in the
+write's build (`.aux` compared). The log carries one "Infinite glue shrinkage
+found in box being split" message, from the notation longtable breaking across
+a page, as in other reports with longtables, and one pdfTeX warning
+"destination with the same identifier (name{table.1}) has been already used,
+duplicate ignored", from the uncaptioned notation longtable and Table 1; both
+were already in the write's build, whose record here overlooked the second. A build of the staged base (`report105.tex` as placed) is
 warning-free with 24 pages; its 121 labels keep their numbers here.
 
 ## Delivered path → shipped path

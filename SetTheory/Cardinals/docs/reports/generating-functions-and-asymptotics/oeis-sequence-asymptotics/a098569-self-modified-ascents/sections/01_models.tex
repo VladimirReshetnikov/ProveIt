@@ -148,11 +148,29 @@ report: Report~243, filed as
 (written concurrently), bounds ascent sequences avoiding 100 by the same
 triangular sum, which it calls $b_n$ with $b_n=\mathrm{A098569}(n-1)$, and
 proves in its Section~2 (as delivered, Lemma~2.1) that
-$\log b_n=n(\log n-2\log\log n+\log2-1)+O(n\log\log n/\log n)$. Its proof uses
+$\log b_n=n(\log n-2\log\log n+\log2-1)+O(n\log\log n/\log n)$, and that
+the single term of the sum with $m=\lfloor2n/\log n\rfloor$ has the same
+estimate; its Section~7 uses the single-term statement for a lower bound.
+Its proof uses
 the comparison phase $H_N$ of \eqref{pdt:eq:Hphase} and the same two global
-gaps, $4\log2-2$ and $2-2\log2$, as Lemma~\ref{pdt:lem:global}; its
-estimate follows from Theorem~\ref{pdt:thm:elementary} on expanding
-$u=\log N-2\log\log N+\log2+O(\log\log N/\log N)$. Neither report cites the
+gaps, $4\log2-2$ and $2-2\log2$, as Lemma~\ref{pdt:lem:global}. The
+estimate for $b_n$ follows from Theorem~\ref{pdt:thm:elementary} on expanding
+$u=\log N-2\log\log N+\log2+O(\log\log N/\log N)$. The single-term
+statement does not: a relative asymptotic for the whole sum says nothing
+about one term away from the saddle, and $x_*=2N/L$ lies about
+$4N\log L/L^2$ from $r$, far outside the Gaussian window of width
+$\sigma\asymp N^{1/2}/L$. It is in Section~\ref{pdt:sec:localization}
+instead: the display after \eqref{pdt:eq:fixedalpha} (the case
+$\alpha=2$, here at $t=0$) gives
+$f_N(x_*)=N[L-2\log L+\log2-1]+O(N\log L/L)$, and $e^{f_N(m)}=T(N,m)$
+exactly; since $f_N'=O(L)$ on $I_N$ (Section~\ref{pdt:sec:localization})
+and $|\lfloor x_*\rfloor-x_*|<1$, the same estimate holds at the integer
+$\lfloor x_*\rfloor$. (Corrected 5~October 2026 after an independent
+check of Report~243's write: this passage first described that lemma
+only by its estimate for $b_n$ and said that ``its estimate follows from
+Theorem~\ref{pdt:thm:elementary} on expanding'' $u$, which left out the
+lemma's single-term statement; Theorem~\ref{pdt:thm:elementary} does not
+give that statement.) Neither report cites the
 other; the two were produced by the same pipeline on the same day. The
 following ascent-sequence reports of the same collection treat other models
 and share no theorem with this report:

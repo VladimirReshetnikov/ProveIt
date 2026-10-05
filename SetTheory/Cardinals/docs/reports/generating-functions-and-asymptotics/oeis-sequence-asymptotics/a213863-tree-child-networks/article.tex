@@ -22,15 +22,18 @@
 \newtheorem{theorem}{Theorem}[section]
 \newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
-\hypersetup{pdftitle={Airy asymptotics for tree-child networks},pdfauthor={},pdfsubject={A213863 and fixed combining degree: positive amplitude, all finite orders, binary total count, deficit law and inversion}}
+\hypersetup{pdftitle={Airy asymptotics for tree-child networks},pdfauthor={},pdfsubject={A213863 and fixed combining degree: positive amplitude, all finite orders, explicit universal coefficients, binary total count, deficit law and inversion}}
 \title{Airy asymptotics for tree-child networks:\\fixed combining degree, and the binary\\total count, deficit law and inverse}
-\author{AI-assisted research report, merged from two manuscripts}
+\author{AI-assisted research report, merged from four manuscripts}
 \date{Sources dated 2 October 2026}
 \begin{document}\maketitle\vspace{-1.3em}
 \begin{abstract}
 For every fixed integer $d\ge2$, we prove a positive limiting amplitude and expansions to every finite Airy order for maximally reticulated $d$-combining tree-child networks and for their word diagonal $a_n$; at $d=2$ this diagonal is OEIS A213863. A shifted partial-sum recurrence gives an exact contractive Jacobi reduction; global spectral confinement, a parity singular gap, summable adjoint drift and Catalan boundary smoothing establish the positive limit, and polynomial--Airy profiles with a zero-limit bootstrap transfer every finite formal order to the exact counts (Part~I, source 16). For the binary case $d=2$, Part~II (source 69) gives a detailed second route with explicit coefficients, transfers every finite order to the total number of binary tree-child networks through the recently proved tableau-to-network identity, derives weighted all-orders expansions of the reticulation deficit around its Poisson$(1/2)$ limit, an exact eventual total-variation identity with a sharp rate, and explicit Lambert $W$ inversions with integer brackets. Ternary-combining coefficients are given; for total counts at $d\ge3$ only the leading equivalent is claimed. The amplitudes have convergent exact definitions; numerical diagnostics are not certified enclosures. This is an AI-assisted research report, unrefereed and not formalized; it claims no external peer review or publication.
+
+\emph{[5 October 2026, batch~102.]} Two further manuscripts, written independently of Parts~I--II, prove the main theorem again. Part~III (source 104) works for every fixed $d$ in an exact gamma-product gauge and adds closed forms of the first two coefficients for every $d$, the first of them negative for $d\ge4$, and, resting on its reading of a published proof, the first total-count correction at $d=3$ with relative remainder $O(n^{-1/2})$; it also gives $d=4$ prefixes. Part~IV (source 102) treats $d=2$ in a factorial gauge and adds the fifth and sixth logarithmic coefficients, the successive ratio through $n^{-3}$, and an $O(n^{-2/3})$ ratio and total-variation rate that does not use the identity on which Part~II's transfer rests.
 \end{abstract}
 \begingroup\small\setlength{\parskip}{0pt}
 \makeatletter\renewcommand\l@section{\@dottedtocline{1}{0em}{1.8em}}\makeatother
@@ -40,7 +43,7 @@ For every fixed integer $d\ge2$, we prove a positive limiting amplitude and expa
 \emph{This section was written when the two manuscripts were merged into this report (batch~77, 2 October 2026). Elsewhere, text added in writing is marked ``[Write phase: \dots]''.}
 
 \subsection{Sources}\label{tcn:sec:sources}
-The report is built from two manuscripts of batch~77 of the repository's incoming research reports. Both archives arrived in commit \texttt{096ee7b87} and were placed in this directory by commit \texttt{34f1acd4b} (batch 77P3). Neither manuscript names a repository commit, so neither has a repository pin.
+The report is built from two manuscripts of batch~77 of the repository's incoming research reports. \emph{[5 October 2026: and, since batch~102, from two further manuscripts, sources 104 and 102; see the last two rows of the table and the note below it.]} Both archives arrived in commit \texttt{096ee7b87} and were placed in this directory by commit \texttt{34f1acd4b} (batch 77P3). Neither manuscript names a repository commit, so neither has a repository pin.
 
 \begin{center}\small
 \begin{tabular}{@{}l>{\raggedright}p{0.33\linewidth}>{\raggedright}p{0.16\linewidth}>{\raggedright\arraybackslash}p{0.25\linewidth}@{}}
@@ -49,11 +52,15 @@ Source & Archive and main file & Shipped as & Printed as\\
 \midrule
 16 (base) & \textup{\nolinkurl{d-combining-asymptotics-reproducibility.zip}}, \textup{\nolinkurl{d-combining-asymptotics.tex}} (406 lines, 10-page PDF) & \textup{\nolinkurl{article.tex}} (rewritten), files \textup{\nolinkurl{16-dcomb-*}} & Part~I (Sections \ref{tcn:d:sec:results}--\ref{tcn:d:sec:record})\\
 69 & \textup{\nolinkurl{tree-child-asymptotics-reproducibility.zip}}, \textup{\nolinkurl{article/tree-child-asymptotics.tex}} (1,233 lines, 23-page PDF) & files \textup{\nolinkurl{69-binary-*}}; manuscript not shipped & Part~II (Sections \ref{tcn:b:sec:results}--\ref{tcn:b:sec:literature})\\
+104 & \textup{\nolinkurl{Fixed_Degree_Tree_Child_Networks_All_Orders_Source.zip}}, \textup{\nolinkurl{general_tree_child_amplitudes.tex}} (926 lines, 22-page PDF) & files \textup{\nolinkurl{104-fixdeg-*}}; manuscript not shipped & Part~III (Sections \ref{tcn:f:sec:reading}--\ref{tcn:f:sec:questions})\\
+102 & \textup{\nolinkurl{A213863_Tableaux_and_Tree_Child_Networks_Source.zip}}, \textup{\nolinkurl{tree_child_amplitude_sources/tree_child_amplitude.tex}} (903 lines, 21-page PDF) & files \textup{\nolinkurl{102-tableaux-*}}; manuscript not shipped & Part~IV (Sections \ref{tcn:w:sec:reading}--\ref{tcn:w:sec:questions})\\
 \bottomrule
 \end{tabular}
 \end{center}
 
 Source 16 proves the theorem for every fixed combining degree $d\ge2$. Source 69 proves the binary case $d=2$ independently and adds results that exist only at $d=2$. Source 16's integrated audit pins its manuscript at SHA-256 \texttt{70a1aab9\dots}, the delivered file. Source 16's first audit also hashed the binary manuscript it compared against, \texttt{86217958\dots}; that is exactly the delivered manuscript of source 69, whose own verification record pins the same hash. So source 16 was checked against the text printed here as Part~II. Source 16 calls source 69 ``the binary research report'' and uses it ``for comparison and algebraic regression'' only; source 69 does not cite source 16.
+
+\emph{[5 October 2026, batch~102.]} Two bundle manuscripts were added as Parts~III and~IV: Reports~104 and~102 of the session bundle, numbered here as sources 104 and 102 after their file prefixes. Both arrived in commit \texttt{60f54ea06} and were placed by \texttt{6ab1f1979}; neither names a repository commit, so neither has a pin. Their archives were closed on 1 October 2026 (Pacific time), before the batch-77 archives of sources 16 and 69 arrived in \texttt{096ee7b87}, so both prove the main theorem independently of Parts~I--II; neither cites them, and source 102 does not cite source 104. Theorem~\ref{tcn:d:main} was printed here first; sources 104 and 102 are credited as independent further routes (Sections~\ref{tcn:f:sec:provenance} and~\ref{tcn:w:sec:provenance}). Source 104 is dated 2 October 2026 with the author line ``Research prepared for Vladimir / Report 104''; source 102 is dated 2 October 2026 with the author line ``Research prepared for private review'' (title page and PDF metadata), disclosed here.
 
 \subsection{How the two manuscripts are merged}\label{tcn:sec:merge}
 \begin{enumerate}[itemsep=2pt]
@@ -64,6 +71,7 @@ Source 16 proves the theorem for every fixed combining degree $d\ge2$. Source 69
 \item \emph{Environments.} Sections 9 and 11 of source 69 were delivered as converted Markdown, with theorems as bold paragraphs. They are now theorem and proof environments. Their equation tags, T1--T24 and D1--D14, are kept, and each tag now has a label (source 69 has no tag D12).
 \item \emph{Additions and corrections.} Remark~\ref{tcn:d:rem:compact} spells out source 16's one-paragraph compactness step from the derivations shipped with both sources. Remark~\ref{tcn:d:rem:tai} relates both inversions to the repository's inversion volume. Source 69's sentence about an ``extended-precision'' run is corrected in Section~\ref{tcn:b:sec:numerics}, because that run is vacuous on platforms where NumPy's \texttt{longdouble} is double precision. Source 16's first open question is re-scoped in Section~\ref{tcn:d:sec:status}, since Part~II settles it at $d=2$. Its description of a ``companion archive'' is corrected in Section~\ref{tcn:d:sec:record} to the files actually shipped.
 \item \emph{Notation.} Symbols that the two sources use for different notions, or that one source uses twice, are renamed as listed in Section~\ref{tcn:sec:notation}. No formula changed otherwise.
+\item \emph{[5 October 2026, batch~102.] Parts~III and~IV.} Source 104 proves the theorem for every fixed $d$ and is the more general of the two new sources, so it is Part~III, printed in full; source 102 ($d=2$, same architecture, another gauge) is Part~IV, printed with its binary-specific material in full and with pointers to Part~III where its displays are literally Part~III's at $d=2$ (the formal system and algorithm, the residual estimate, the forced-product proof). Each Part opens with its source's abstract and a section on provenance, credit, a map onto Parts~I--II, and its own notation table; each closes with a ``Further questions and research'' section. Nothing in Parts~I--II was renumbered; dated notes record where the new Parts answer, sharpen or bear on them.
 \end{enumerate}
 
 \subsection{What is claimed and what is not}\label{tcn:sec:scope}
@@ -71,8 +79,10 @@ Claimed, for each fixed $d\ge2$: a positive amplitude $\gamma_d$, defined by con
 
 Not claimed, by either source: uniformity in $d$ as $d\to\infty$; convergence of any infinite correction series; exponentially small or transseries corrections beyond all finite orders; higher-order total-count corrections for $d\ge3$; a $d\ge3$ OEIS accession (none was verified, assigned or submitted); a closed form, certified digits or an effective error constant for any amplitude; a certified threshold algorithm or an unconditional ceiling rule; novelty beyond a bounded literature search. Neither source imports the other's argument: source 16 calls the binary report ``only a historical comparison'' and does not import the binary Pons--Batle identity. Each source's audits are independent research review, not external peer review, publication, a computer-verified proof or a numerical certification, and neither source was published or submitted. In the repository the report is AI-assisted and unrefereed. No statement of it has a Lean or Rocq declaration, and its placement in the repository confers no formal status.
 
+\emph{[5 October 2026, batch~102.]} Parts~III and~IV add, for every fixed $d$, closed forms of $C_{d,1}$ and $C_{d,2}$ in $\Q[B]$; at $d=3$, the first total-count correction with relative remainder $O(n^{-1/2})$, conditional on source 104's reading of a published proof (Remark~\ref{tcn:f:rem:reading}); at $d=2$, $L_5$, $L_6$, the successive ratio through $n^{-3}$ and an identity-free $O(n^{-2/3})$ ratio and total-variation rate. The non-claims above are those of sources 104 and 102 as well: neither claims uniformity in $d$, convergence of a correction series, an exponentially small sector, certified amplitude digits, an all-order total expansion (at $d\ge4$ only the leading total equivalent), an OEIS accession for $d\ge3$, or exhaustive priority.
+
 \subsection{Notation across the two Parts}\label{tcn:sec:notation}
-Part~I keeps source 16's notation and Part~II keeps source 69's, except for the renamings below. A letter kept in both Parts means the same notion in both, with $d=2$ in Part~II. At $d=2$: $\Lambda=3$, $\Gamma=12$, $c=2/3$, $\ell=(2/3)^{2/3}z=2^{2/3}B/3$, $B=3^{1/3}z$, $\eta=1/6$, $\rho=-2/3$, $\alpha=-5/3$, $\gamma=\gamma_2$, $\kappa=\kappa_2$ and $c_r=C_{2,r}$. Here $z=-2.338107410459767\ldots$ is the largest zero of $\Ai$ in both sources.
+Part~I keeps source 16's notation and Part~II keeps source 69's, except for the renamings below. \emph{[5 October 2026, batch~102: Parts~III and~IV have their own notation tables, Sections~\ref{tcn:f:sec:notation} and~\ref{tcn:w:sec:notation}; they use the letters below for the host's notions and rename the sources' clashing letters, notably their Airy zero $\alpha$, which is $z$ here.]} A letter kept in both Parts means the same notion in both, with $d=2$ in Part~II. At $d=2$: $\Lambda=3$, $\Gamma=12$, $c=2/3$, $\ell=(2/3)^{2/3}z=2^{2/3}B/3$, $B=3^{1/3}z$, $\eta=1/6$, $\rho=-2/3$, $\alpha=-5/3$, $\gamma=\gamma_2$, $\kappa=\kappa_2$ and $c_r=C_{2,r}$. Here $z=-2.338107410459767\ldots$ is the largest zero of $\Ai$ in both sources.
 
 \begingroup\small
 \begin{longtable}{@{}>{\raggedright}p{0.2\linewidth}>{\raggedright}p{0.37\linewidth}>{\raggedright\arraybackslash}p{0.35\linewidth}@{}}
@@ -111,6 +121,7 @@ $t$ & $n^{-1/3}$ in \eqref{tcn:b:T8}; $(N/2)^{-1/3}$ in the coefficient-field ar
 
 \subsection{Relation to other reports of the repository}\label{tcn:sec:relation}
 \emph{Airy amplitudes of trees and automata.} The report \textup{\nolinkurl{a082161-airy-amplitudes}} in this collection (the sibling directory \nolinkurl{../a082161-airy-amplitudes} of this report's directory, written in the same batch) proves positive amplitudes and all finite orders for relaxed and compacted trees and for minimal automata, by the same family of lemmas. Its relaxed-binary Part (source 62 of batch~77) uses the polynomial--Airy identity $(P''+4(x+a)Q'+2Q)F+(2P'+Q'')F'$. That is \eqref{tcn:d:airyalg} with $c=2$ and $\ell=2a$, together with the same triangular inverse, normalization and zero-limit projection bootstrap. The objects, recurrences and sequences are different, the two families of manuscripts do not cite each other, and the reports are kept separate. Neither is an input to the other.
+\emph{[5 October 2026, batch~102: sources 104 and 102 belong to the same delivery series as bundle Reports~100, 101 and~103, which \texttt{6ab1f1979} placed as Part~V of that report; they share its lemma family (positive Jacobi products, the killed half-line kernel, the forced-product bootstrap). The reports stay separate.]}
 
 \emph{Inversion.} The Lambert $W$ seeds, Newton refinements and integer brackets of Sections~\ref{tcn:d:sec:inversion} and~\ref{tcn:b:sec:inversion} are instances of the inversion machinery of the volume \emph{Transseries and inversion} \cite{TAI} (Remark~\ref{tcn:d:rem:tai}). No novelty is claimed for them.
 
@@ -147,6 +158,7 @@ Moreover $T_{n,n-1}^{(d)}=n!a_{n-1}$ has an expansion to every finite order with
 For $d\ge3$, the total count $T_n^{(d)}$ has the same leading equivalent as \eqref{tcn:d:maximal}.
 \end{theorem}
 The all-orders assertion means a family of finite Poincar\'e expansions. Neither convergence of the infinite series nor higher-order total-count corrections is claimed.
+\emph{[5 October 2026, batch~102: Theorem~\ref{tcn:f:thm:main} of Part~III (source 104) proves this theorem again for the word counts by a different gauge, with the closed form \eqref{tcn:f:c1} of $C_{d,1}$; its Corollary~\ref{tcn:f:cor:network} gives, at $d=3$, the first total-count correction with relative remainder $O(n^{-1/2})$, resting on source 104's reading of the proof of \cite[Lemma 3.24]{Chang2024} (Remark~\ref{tcn:f:rem:reading}).]}
 
 Chang et al., Theorem 1.8, prove the corresponding two-sided $\Theta$ scale. Their Corollary 1.11 gives $T_n^{(d)}/T_{n,n-1}^{(d)}\to1$ for $d\ge3$; Remark 1.12 explicitly notes that their method does not give the leading equivalent. The lower half of their two-sided bound is the only external enumeration-asymptotic input to our positive-amplitude argument.
 
@@ -442,6 +454,7 @@ For the coefficient field, use $t=(N/2)^{-1/3}$ and $y=(j+1)t$. Then
  \widetilde F''=\left(\frac{d-1}{d+1}y+\frac B3\right)\widetilde F.
 \]
 The transformed recurrence, polynomial inverses, time dilation and scalar matching have rational coefficients for fixed integer $d$. The endpoint derivative cancels after normalization. Hence every $C_{d,r}$ lies in $\mathbb Q[B]$.
+\emph{[5 October 2026, batch~102: the first two are now explicit for every $d$ (Part~III, \eqref{tcn:f:c1} and \eqref{tcn:f:c2}): $C_{d,1}=B^2(8(d+1)^2-27(d-1)^2)/(810(d-1)^2)$, negative for $d\ge4$, and $C_{d,2}=C_{d,1}^2/2+\frac B3\bigl(\frac1{d+1}-\frac{(d+1)^2}{27(d-1)^2}\bigr)$.]}
 
 \section{Network counts and ternary coefficients}\label{tcn:d:sec:networks}
 The exact leaf shift $T_{n,n-1}^{(d)}=n!a_{n-1}$ transfers every finite order in \eqref{tcn:d:forward}. The factorial shift contributes $n^{-(d-1)}$, the base contributes $\Gamma^{-1}$, and the remaining factors have finite Taylor expansions. Therefore
@@ -450,6 +463,7 @@ The exact leaf shift $T_{n,n-1}^{(d)}=n!a_{n-1}$ transfers every finite order in
  \left(1+\sum_{r=1}^M E_{d,r}n^{-r/3}+O_{d,M}(n^{-(M+1)/3})\right).
 \end{equation}
 For $d\ge3$, the published ratio $T_n^{(d)}/T_{n,n-1}^{(d)}\to1$ gives only the leading total-count equivalent. A separate uniform deficit argument is needed for higher total-count corrections; the binary Pons--Batle identity is not imported here. \emph{[Write phase: at $d=2$ that identity, now proved, gives every finite order of the total count; this is Part~II, Theorem~\ref{tcn:b:thm:transfer}.]}
+\emph{[5 October 2026, batch~102: at $d=3$ Part~III gives the first correction, $T^{(3)}_n=(\gamma_3/32)(n!)^332^n\ee^{Bn^{1/3}}n^{-3}(1+\frac{B^2}{162}n^{-1/3}+O(n^{-1/2}))$, conditional on source 104's reading of a published proof (Proposition~\ref{tcn:f:prop:total3rate}, Remark~\ref{tcn:f:rem:reading}); for $d\ge4$ only the leading equivalent is known here.]}
 
 For $d=3$, $\Gamma=32$, $\rho=-1$ and $B=3z/2^{2/3}$. The exact polynomial recursion through degree six yields
 \begin{align}\label{tcn:d:ternary}
@@ -458,6 +472,7 @@ For $d=3$, $\Gamma=32$, $\rho=-1$ and $B=3z/2^{2/3}$. The exact polynomial recur
  &+\left(\frac{4B^3}{6561}-\frac3{16}\right)n^{-1}+O(n^{-4/3}).
 \end{align}
 In time $N$, these logarithmic coefficients are $\ell^2/36$, $11\ell/108$ and $(16\ell^3-729)/1944$. At $d=2$, replay instead gives $\ell^2/4$, $0$ and $-2/9$, agreeing with the binary report (Part~II: with $N=2n$ and $\ell=2^{2/3}B/3$ they are the coefficients $B^2/18$, $0$, $-1/9$ of \eqref{tcn:b:logforward} in Theorem~\ref{tcn:b:thm:main}). These are symbolic identities, not fitted coefficients.
+\emph{[5 October 2026, batch~102: source 104 derives \eqref{tcn:d:ternary} independently, in another gauge, with identical values (Part~III, \eqref{tcn:f:ternarylog3}), and adds the multiplicative third coefficient $C_{3,3}=B^6/25509168+43B^3/52488-3/16$.]}
 
 \section{Asymptotic inversion}\label{tcn:d:sec:inversion}
 For either $a_n$ or $T_{n,n-1}^{(d)}$, let the factorial power be $\mathsf p=d-1$ or $d$, the polynomial exponent be $\mathsf r=\rho$ or $\alpha$, and the amplitude be $\gamma_\star=\gamma_d$ or $\gamma_d/\Gamma$. Stirling's expansion gives the logarithmic smooth model
@@ -491,12 +506,12 @@ The inversion of this section, and that of Section~\ref{tcn:b:sec:inversion} at 
 \section{Source status and remaining questions}\label{tcn:d:sec:status}
 The source scope was checked against the 2024 primary paper, the 2026-listed Chang dissertation \cite{ChangThesis}, and recent binary enumeration discussions already screened with the binary report (Part~II, Section~\ref{tcn:b:sec:literature}). The dissertation repeats the missing-equivalent issue (Remark 35, printed page 137). A bounded search found no later fixed-$d$ amplitude proof. This is a bounded negative finding, not a certification of universal novelty.
 
-A213863 is the $d=2$ specialization. Phrase and initial-term searches did not verify a $d\ge3$ OEIS accession; none is assigned or submitted here. Natural remaining questions are:
+A213863 is the $d=2$ specialization. Phrase and initial-term searches did not verify a $d\ge3$ OEIS accession; none is assigned or submitted here. \emph{[5 October 2026, batch~102: Part~III, Section~\ref{tcn:f:sec:literature}, adds the $d=4$ diagonal $1,1,91,51821,\ldots$, the $d=3$ and $d=4$ maximal-network prefixes, and a trap: A213864 ($1,1,19,1075,\ldots$) is not the $d=3$ sequence.]} Natural remaining questions are:
 \begin{enumerate}[itemsep=2pt]
-\item Establishing uniform deficit expansions that transfer every finite order to total counts for $d\ge3$. \emph{[Write phase: for $d=2$ this is done in Part~II (Theorem~\ref{tcn:b:thm:transfer}), through the binary identity \eqref{tcn:b:T1}; the question stays open for every $d\ge3$, where no such identity is available in the sources.]}
-\item Obtaining certified numerical enclosures for $\gamma_d$ and effective remainder constants. \emph{[Write phase: still open, also at $d=2$; Part~II gives only the uncertified diagnostic $\gamma_2\approx2.02264201$ of Section~\ref{tcn:b:sec:numerics}.]}
-\item Quantifying a joint regime in which $d$ grows with $n$; the present proof fixes $d$.
-\item Studying exponentially small corrections beyond finite Poincar\'e orders.
+\item Establishing uniform deficit expansions that transfer every finite order to total counts for $d\ge3$. \emph{[Write phase: for $d=2$ this is done in Part~II (Theorem~\ref{tcn:b:thm:transfer}), through the binary identity \eqref{tcn:b:T1}; the question stays open for every $d\ge3$, where no such identity is available in the sources.]} \emph{[5 October 2026, batch~102: partly advanced at $d=3$, first order only, conditionally on source 104's reading of a published proof (Proposition~\ref{tcn:f:prop:total3rate}); re-scoped in Part~III, Section~\ref{tcn:f:sec:questions}, items~1--2.]}
+\item Obtaining certified numerical enclosures for $\gamma_d$ and effective remainder constants. \emph{[Write phase: still open, also at $d=2$; Part~II gives only the uncertified diagnostic $\gamma_2\approx2.02264201$ of Section~\ref{tcn:b:sec:numerics}.]} \emph{[5 October 2026, batch~102: still open. Parts~III and~IV give two further convergent representations, \eqref{tcn:f:gamma} and \eqref{tcn:w:gamma}, and uncertified diagnostics: $\gamma_2\approx2.0226420146$ (Part~IV) and the intake's fits $\gamma_3\approx3.784368$, $\gamma_4\approx3.478351$, $\gamma_5\approx2.384755$ (Part~III, Section~\ref{tcn:f:sec:reproducibility}).]}
+\item Quantifying a joint regime in which $d$ grows with $n$; the present proof fixes $d$. \emph{[5 October 2026, batch~102: still open; Part~III's closed forms are for fixed $d$.]}
+\item Studying exponentially small corrections beyond finite Poincar\'e orders. \emph{[5 October 2026, batch~102: still open; neither new source treats them.]}
 \end{enumerate}
 The exact shifted recurrence and the factorwise contractive gauge are essential. The proof has not presumed that the original two-weight recurrence automatically inherits the binary argument.
 
@@ -557,6 +572,7 @@ In particular the $n^{-2/3}$ logarithmic coefficient is zero, and
 
 \begin{remark}[Relation to Part~I; write phase]\label{tcn:b:rem:partI}
 Theorem~\ref{tcn:b:thm:main} is Theorem~\ref{tcn:d:main} at $d=2$, with $\gamma=\gamma_2$ and $c_r=C_{2,r}$; at $d=2$, $\Gamma=12$, $\rho=-2/3$ and $B=3^{1/3}z$. Its existence part is proved twice: for every $d$ in Part~I (source 16), and at $d=2$ in Section~\ref{tcn:b:sec:route} (source 69). The two amplitude formulas agree: \eqref{tcn:d:gamma} at $d=2$ is $\kappa_2A_\infty\sqrt{2/3}\,2^{-1/6}=(2^{1/3}/\sqrt3)\kappa_2A_\infty$, which is \eqref{tcn:b:gamma}. The explicit coefficients $c_1,c_2,c_3$ and the four logarithmic coefficients of \eqref{tcn:b:logforward} are source 69's. Source 16's symbolic replay reproduces the first three (Section~\ref{tcn:d:sec:networks}), and every entry of source 16's shipped $d=2$ coefficient file agrees with source 69's order-seven file, which runs one order further (checked in writing).
+\emph{[5 October 2026, batch~102: source 102 (Part~IV) derives the four coefficients of \eqref{tcn:b:logforward} and $c_1,c_2,c_3$ again, independently and in another gauge, and adds two: $L_5=B(108-B^3)/8748$ and $L_6=2B^3/2187-1/162$ (Part~IV, \eqref{tcn:w:logcoeffs}). Source 69's own generator, rerun at order nine on a copy, gives exactly these two values (Remark~\ref{tcn:w:rem:L56}). Source 104 (Part~III) proves Theorem~\ref{tcn:d:main} again for every $d$.]}
 \end{remark}
 
 Let $\TC_n$ denote the total number of binary tree-child networks with $n$ labelled leaves, with the root convention of \cite{FYZ2021,Chang2024}. We will prove
@@ -1583,6 +1599,8 @@ sum for \(\pi_n\) is at most the corresponding Poisson upper-tail sum.
 This observation is a direct consequence of the published insertion
 inequality; no claim of priority is made for it.
 
+\emph{[5 October 2026, batch~102: source 102 (Part~IV, Proposition~\ref{tcn:w:prop:ratio-rate}) proves the weaker bounds $\mathcal R_n=\sqrt e(1+O(n^{-2/3}))$ and $d_{\mathrm{TV}}=O(n^{-2/3})$ from Lemmas 3.17--3.20 of \cite{Chang2024} alone, without the identity \eqref{tcn:b:T1}; \eqref{tcn:b:D7} implies its bound for all large $n$ (Remark~\ref{tcn:w:rem:tv}).]}
+
 The use of \(n+1\) leaves is explicit throughout. Replacing \(n\) by the
 leaf number minus one does not change the coefficients displayed in \eqref{tcn:b:D8}
 or \eqref{tcn:b:D9}; index-shift effects first enter at order \(n^{-5/3}\).
@@ -1648,6 +1666,7 @@ $n$ & Four-correction amplitude diagnostic\\
 \textbf{These are uncertified numerical diagnostics.} They are not rigorous enclosures for $\gamma$, and their printed digits are not claimed correct digits of that limit. Exact integer checks through $n=80$ and a separate run in the platform's extended precision through $n=10000$ support the implementation, \emph{[write phase: the script uses NumPy's \texttt{longdouble}, which is the 80-bit extended format on x86-64 Linux. The recorded run (\textup{\nolinkurl{data/69-binary-coef-forward-numerical.json}}) reports nonzero relative differences from double precision, up to $2.0\times10^{-14}$, so it used a genuinely extended format. On platforms where \texttt{longdouble} is double precision, as on Windows, a rerun of this comparison is vacuous and reports differences of exactly zero]} but do not bound the finite-$n$ asymptotic remainder. Likewise, direct tridiagonal eigenvalue calculations support the frozen coefficients without replacing the quasimode proof.
 
 The exact mathematical specification of the amplitude remains \eqref{tcn:b:kappa}, \eqref{tcn:b:amplitude-limit}, and \eqref{tcn:b:gamma}. An effective numerical enclosure would require quantitative constants for spectral remainders and projection tails, or a different certified method.
+\emph{[5 October 2026, batch~102: source 102's independent diagnostic, with six logarithmic corrections, gives $2.0226420146$ at $n=2000$ (Part~IV, Section~\ref{tcn:w:sec:numerics}), consistent with this table; it is equally uncertified.]}
 
 \section{Literature status and scope of the conclusion}\label{tcn:b:sec:literature}
 The source check distinguishes the following milestones.
@@ -1658,12 +1677,1804 @@ The source check distinguishes the following milestones.
  \item Lin et al.\ \cite{LL2026}, version 3 dated 6 September 2026, proved the exact tableau relation used in the total-count transfer. The identity must not be retrospectively attributed as already proved by the 2024 paper alone.
 \end{itemize}
 The source receipts in the archive record the inspected versions and relevant locations \emph{[write phase: shipped as \textup{\nolinkurl{69-binary-sources-source-status.md}} and \textup{\nolinkurl{data/69-binary-sources-source-status.json}}]}. They support the stated relationship to these papers. They are not an exhaustive guarantee that no other author has obtained a similar result in unpublished work.
+\emph{[5 October 2026, batch~102: sources 104 and 102 screened further 2026 works \cite{LWY2026,YZ2026,FY2026,YZ2026short,Liu2026,EFLW2026}, which concern exact identities, bounded, sparse or one-reticulation regimes, and likewise found no positive amplitude for the maximal diagonal in the literature (Sections~\ref{tcn:f:sec:literature} and~\ref{tcn:w:sec:position}).]}
 
 The report establishes a positive limiting amplitude, every finite algebraic Airy correction, a transfer to total binary tree-child networks, sharp distributional corrections and total-variation rates, and all-finite-order asymptotic inversion. It does not determine a closed form for $\gamma$, prove convergence of the infinite correction series, provide a beyond-all-orders transseries, or certify an unconditional integer rounding rule. No external publication or submission has been made.
 
 \paragraph{Bibliography note.} \emph{[Write phase: the bibliography merges those of both sources. Source 16's entries \texttt{Chang} and \texttt{Thesis} are \cite{Chang2024} and \cite{ChangThesis}; its entry \texttt{Binary}, the then-unpublished binary report without a locator, is source 69 and is cited here as Part~II. Source 69's entry \texttt{OEIS}, uncited in its text, is now cited in Section~\ref{tcn:b:sec:results}.]}
 
-\begin{thebibliography}{9}\small\setlength{\itemsep}{2pt}
+\part{Fixed degree in the gamma gauge: explicit universal coefficients (source 104)}\label{tcn:part:f}
+\emph{Source 104 (bundle Report 104, archive \textup{\nolinkurl{Fixed_Degree_Tree_Child_Networks_All_Orders_Source}}), printed in full; its title was ``Positive amplitudes and all order expansions for fixed degree tree child networks: a self contained proof for every fixed combining degree''. Its abstract reads:} For every fixed integer $d\ge2$, we prove that the constrained-word counts underlying maximally reticulated $d$-combining tree-child networks have a strictly positive finite leading amplitude and a complete Poincar\'e expansion in powers of $n^{-1/3}$. An exact gamma-product normalization yields contractive positive Jacobi products for every such $d$, including the degrees where a simpler factorial normalization fails to be contractive. We prove the Airy spectral limit, localization, endpoint smoothing, positivity of the product amplitude, and arbitrary-depth transfer of polynomial--Airy profiles. We give a canonical convergent amplitude representation, an exact coefficient algorithm, explicit first corrections, and all-order Lambert--Newton inverses. Published total-to-maximal ratio results then give leading equivalents for total networks at every fixed degree. For $d=3$, a quantitative consequence of the published proof transfers the first correction with relative remainder $O(n^{-1/2})$. The all-order theorem concerns word and maximal counts; an all-order expansion for total networks is not asserted. Finite exact checks accompany the proof. No certified amplitude digits, convergence of the infinite correction series, exponentially small sector, or exhaustive priority claim is made.
+
+\section{Reading Part III: provenance, credit and notation}\label{tcn:f:sec:reading}
+\emph{This section was written when source 104 was added to the report (batch~102, 5 October 2026). In Part~III, text added in writing is marked ``[Write phase: \dots]''.}
+
+\subsection{Provenance and credit}\label{tcn:f:sec:provenance}
+Source 104 is bundle Report~104 of the repository's incoming research reports, archive \textup{\nolinkurl{Fixed_Degree_Tree_Child_Networks_All_Orders_Source.zip}} (489,776 bytes), main file \textup{\nolinkurl{general_tree_child_amplitudes.tex}} (926 lines, 22-page PDF), dated 2 October 2026, with the author line ``Research prepared for Vladimir / Report 104''. It arrived in commit \texttt{60f54ea06} and was placed in this directory by \texttt{6ab1f1979} (batch~102), with the file prefix \textup{\nolinkurl{104-fixdeg-}}. It names no repository commit, so it has no pin.
+
+\emph{Credit order.} The archive of source 104 was closed on 1 October 2026 at 23:18 Pacific time (06:18 UTC on 2 October), before the batch-77 archives of sources 16 and 69 reached the repository (\texttt{096ee7b87}, 2 October, 11:05 Pacific) and before they were placed and written here (\texttt{34f1acd4b}, \texttt{4dde85e7f}). Source 104 therefore proves Theorem~\ref{tcn:d:main} independently of Parts~I--II; it neither cites nor uses them. In the repository Theorem~\ref{tcn:d:main} was printed first, from sources 16 and 69; source 104 is a third, independent route to it for every fixed $d$, by a different gauge, and is credited as such, not as a derivative of Parts~I--II. Its literature-priority sentences (Sections~\ref{tcn:f:sec:results} and~\ref{tcn:f:sec:literature}) are true of the literature it inspected and are qualified below only where the repository already held the same theorem.
+
+\subsection{What Part III proves again and what it adds}\label{tcn:f:sec:map}
+\begin{center}\small
+\begin{tabular}{@{}>{\raggedright}p{0.4\linewidth}>{\raggedright\arraybackslash}p{0.52\linewidth}@{}}
+\toprule
+Source 104 & Relation to Parts I--II\\
+\midrule
+Theorem~\ref{tcn:f:thm:main} (positive amplitude, all orders) & second proof of Theorem~\ref{tcn:d:main} (third route counting Part~II at $d=2$): two-step elimination in an exact gamma-product gauge with a Gram factor, instead of Part~I's one-step partial-sum gauge with a parity gap\\
+Closed forms \eqref{tcn:f:c1}, \eqref{tcn:f:b2}, \eqref{tcn:f:c2}, \eqref{tcn:f:maximalfirsttwo} for every $d$; $C_{d,1}<0$ for $d\ge4$ & new: Part~I proves $C_{d,r}\in\Q[B]$ and makes them explicit only at $d=2,3$\\
+Amplitude formula \eqref{tcn:f:gamma} & a new convergent representation of the same $\gamma_d$ as \eqref{tcn:d:gamma}\\
+Proposition~\ref{tcn:f:prop:total3rate} and \eqref{tcn:f:total3} ($d=3$ total ratio and first total correction) & new; Part~I has only the leading total equivalent for $d\ge3$; rests on source 104's reading of a published proof (Section~\ref{tcn:f:sec:questions})\\
+Ternary logarithmic coefficients \eqref{tcn:f:ternarylog3} & second derivation of \eqref{tcn:d:ternary}, identical values; the multiplicative third coefficient is new\\
+Corollary~\ref{tcn:f:cor:network} & second proof of \eqref{tcn:d:maximal} and of the leading total equivalents\\
+Section~\ref{tcn:f:sec:inverse} (inverses, thresholds) & second route of Section~\ref{tcn:d:sec:inversion}; the amplitude-free rounding inverse, the explicit Newton count and the $d=3$ total inverse are new details; no novelty claimed (Remark~\ref{tcn:d:rem:tai})\\
+Section~\ref{tcn:f:sec:literature} ($d=4$ prefixes, the A213864 trap) & new information; Part~I says only that no $d\ge3$ accession was verified\\
+Remark on the naive factorial gauge (Section~\ref{tcn:f:sec:contraction}) & concerns source 104's two-step frame only; Part~I is unaffected (Remark~\ref{tcn:f:rem:naive})\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Notation of Part III}\label{tcn:f:sec:notation}
+Part~III uses the host's letters for every notion the host already names, and source 104's letters, renamed where they collide, for its own proof apparatus. The renamings are listed below; no formula changed otherwise. Source 104's proof runs in the two-step time $n$ (the host's $N=2n$) and in its own gauge, so its eigenvalues, vectors and carriers are not those of Parts~I--II even where the role is the same. A letter not listed has the host's meaning. Here $d_-=d-1$ and $d_+=d+1$.
+
+\begingroup\small
+\begin{longtable}{@{}>{\raggedright}p{0.24\linewidth}>{\raggedright}p{0.36\linewidth}>{\raggedright\arraybackslash}p{0.32\linewidth}@{}}
+\toprule
+Symbol here & Meaning & Source 104; the false reading to avoid\\
+\midrule\endhead
+$z$, $z_j$ & Airy zeros, $z=z_1$ & $\alpha$, $\alpha_j$; not the network exponent $\alpha$\\
+$d_-$, $d_+$ & $d-1$, $d+1$ & $r$, $a$; not the index of $C_{d,r}$, the residual $r_N$, the sequence $a_n$ or the gap constant $a_d$\\
+$\Lambda$, $\Gamma$ & $d_+^{d_-}/d_-!$, $4\Lambda$ (host's) & $\ell$, $g$; source 104's $\ell$ is not the host's $\ell=c^{2/3}z$\\
+$B/3$ & $z(d_-/d_+)^{2/3}$, a third of the host's $B$ & $\rho$; not the host's exponent $\rho$\\
+$\rho$, $\alpha$ & word and maximal exponents (host's) & $\theta$, $\mu$\\
+$c$, $\ell$ & $2d_-/d_+$, $c^{2/3}z$ (host's) & $\chi$, $\kappa$ (identical meaning)\\
+$c_A$; $f_A$; $\mathcal H_A$ & $(4c)^{1/3}=(8d_-/d_+)^{1/3}$; unit Dirichlet ground state \eqref{tcn:f:airyprofile}; its operator & $b_A$; $f$; $\mathcal H$\\
+$F$ & $\Ai(z+c^{1/3}x)$, the host's $F$ & $A(x)$\\
+$\delta_f$, $\zeta_f$, $\eta_f$ & $d_-d/(2d_+)$, $3d_-/(2d_+)$, $\zeta_f-1/6$ & $\delta$, $\zeta$, $\eta$; not the host's $\eta=(d-1)^2/(2(d+1))$, not Riemann's $\zeta(2/3)$\\
+$Q_\Gamma$; $G_\Gamma(p)$ & $\prod_{i\le d_-}\Gamma(1+i/d_+)$; the gamma-product gauge \eqref{tcn:f:G} & $Q$; $G(p)$; not $Q_N(j)$, $G_N(j)$\\
+$\widetilde b(p,q)$; $\mathcal W$, $\mathcal V$ & $b_{p+1,q+1}$; the rotated weights & $B(p,q)$; $W$, $V$; not the Airy constant $B$, nor $W_0$, $W_N$\\
+$\mathcal Y(N,h)$; $\omega^\pm_N(h)$; $e_n(k)$ & one-step gauged array; its weights; $\mathcal Y(2n,2k)$ & $y(N,h)$; $u_N(h)$, $v_N(h)$; $e_n$; not the target logarithm $y$, Part~I's $u_N,v_N$, Part~II's $\omega_{n,m}$, or the error vector $e_N$\\
+$\mathfrak z$, $\mathfrak P$ & $d_+n+d_-k$, $d_+(n+k)$ & $z$, $P$ (local)\\
+$\mathsf A_n,\mathsf B_n,\mathsf C_n,\mathsf F_n$; $\mathsf L_n,\mathsf U_n,\mathsf D_n$; $\mathsf M_n$ & factors \eqref{tcn:f:coefficients}; entries of the two-step matrix $\mathsf M_n$ & $A_n,B_n,C_n,F_n$; $L_n,U_n,D_n$; $M_n$; not $A_{n,k}$, $D_N(j)$, $M_N$, nor the sans-serif inversion letters of Sections~\ref{tcn:d:sec:inversion} and~\ref{tcn:b:sec:inversion}\\
+$\Sigma_n$, $\varsigma_n(j)$; $\mathsf R_n$ & symmetrizer, its edge ratio; inter-time ratio \eqref{tcn:f:R} & $S_n$, $s_n(j)$; $R_n$; not the Jacobi matrix $S_N$ or $\mathcal R_n$\\
+$J_n$; $J_\infty$; $\mathsf b_n(k)$; $\mathsf K_n$ & symmetric two-step matrix; $J+2I-e_0e_0^{\mathsf T}$ (diagonal $1,2,2,\ldots$); its off-diagonal; Gram factor & same; same; $\beta_n(k)$; $K_n$; the host's $J$ (no index) is half-line adjacency; not Part~II's $\beta_n(m)$\\
+$\lambda_n$, $\lambda_n^{(j)}$, $\psi_n$, $\psi^A_n$ & top and $j$-th eigenvalue of $J_n$ (near $4$); Perron vector; normalized Airy sample & $\lambda_n$, $\phi_n$, $q_n$; the host's $\lambda_N$ is near $2$\\
+$P_n$, $u_n$, $\mathsf T_n$ & $\prod_{j\le n}\lambda_j$; normalized vector; one normalized step $(J_n/\lambda_n)\mathsf R_n$ & $\Lambda_n$, $w_n$, $T_n=H_nR_n$; the roles of the host's $P_N$, $u_N$, $M_N$\\
+$p_n$, $p_n^\perp$, $p_\infty$; $C_\lambda$ & Perron coefficient and transverse norm of $u_n$, its limit; eigenvalue-product constant & $p_n$, $q_n^\perp$, $p_\infty$; $C_\lambda$; not $p_N(j)$\\
+$\mathcal K$; $\mathsf z_n$, $\varrho_n$; $\Delta$ & $J_\infty/4$; signed errors and forcing; Duhamel window $\lfloor n^{2/3}\rfloor$ & $P$; $z_n$, $\varrho_n$; $L$ (renamed as in Part~I)\\
+$a^{\rm err}_n,b^{\rm err}_n$, $c_{\rm gap}$ & quantities of Lemma~\ref{tcn:f:lem:forced} & $a_n$, $b_n$, $c_1$\\
+$s(t)$, $\sigma_j$, $h_j$; $P_j,Q_j,f_j$; $\mathfrak F$, $\mathfrak F^{[M]}$ & formal eigenvalue series, its scalars, carrier coefficients; profiles; formal series & $s,\sigma_j,h_j$; same; $F$, $F^{[M]}$; the host's $s_m$, $h_r$ are Part~I's gauge, with other values; the host's $\sigma$ is a threshold exponent\\
+$\mathcal H_N^{[M]}$, $E_n^{[M]}$, $K_E$, $V_n^{[M]}$, $Z^\Gamma_n$, $\Theta_n$ & carrier, even-time profile, its constant, normalized profile, gamma conversion, bulk scale & same, $K$, $U_n^{[M]}$, $Z_n$, $B_n^{\rm bulk}$; not the host's $H_N$, $Z_N$\\
+$\mathfrak B_\ell$ & Airy solution with $\mathfrak B_\ell(0)=0$, $\mathfrak B_\ell'(0)=1$ & $B_\kappa$\\
+$C_{d,j}$, $L_{d,j}$; $E_{d,j}$ & multiplicative and logarithmic coefficients of $a_n$; of $T^{(d)}_{n,n-1}$ & $c_j(d)$, $b_j(d)$; $C_{d,j}$ and $E_{d,j}$ are the host's $C_{d,r}$, $E_{d,r}$\\
+$a_n$; $T^{(d)}_{n,k}$, $T^{(d)}_{n,n-1}$, $T^{(d)}_n$; $K_d$ & word count (fixed $d$); network counts; total amplitude & $c_d(n)$; $\TC^{(d)}_{n,k}$, $M_d(n)$, $T_d(n)$; $K_d$\\
+$\mathsf p,\mathsf r,\gamma_\star$; $S(n)$; $\Phi$ & factorial power, exponent, amplitude of an inverted scale; that scale; smooth model & $q,\tau,K$; $A(n)$; $G(x)$ (as in Section~\ref{tcn:d:sec:inversion})\\
+$y$; $Y$ & logarithm of a target; a threshold value & $Y$; $y$ (swapped to agree with Sections~\ref{tcn:d:sec:inversion} and~\ref{tcn:b:sec:inversion})\\
+$\hat x_{\mathsf p,\mathsf r}(y)$; $m_J$; $k_A$, $A_0$; $\Psi$ & amplitude-free inverse; Newton count; localization cut $\lceil A_0/\eps\rceil$; digamma & $z_{q,\tau}(Y)$; $K$; $K$, $A$; $\psi$\\
+$\mathfrak C_m$; $\mathfrak r(\omega')$, $\mathfrak s(\omega)$ & ratio bound of Proposition~\ref{tcn:f:prop:total3rate}; class cardinalities & $C_m$; $r(\omega')$, $s(\omega)$\\
+$\eps$, $x_k$, $X$ & $n^{-1/3}$, $\eps(k+\frac12)$, $\eps(k+\frac12)$ (two-step time) & same; the host's $\eps$ is $N^{-1/3}$\\
+\bottomrule
+\end{longtable}
+\endgroup
+The amplitude $\gamma_d$ of Part~III is the host's $\gamma_d$: both are the limit of $a_n/((n!)^{d-1}\Gamma^n\ee^{Bn^{1/3}}n^\rho)$ for the same sequence $a_n$, since source 104's $3\rho$, $\theta$ and $g$ are the host's $B$, $\rho$ and $\Gamma$. \emph{[Write phase: checked symbolically, together with every conversion of a displayed coefficient below.]}
+
+\section{The counts and the main results}\label{tcn:f:sec:results}
+\subsection{Original combinatorial conventions}
+Fix an integer $d\ge2$. Throughout this Part, $d$ is fixed as $n\to\infty$; constants in bounds may depend on $d$. Use the conventions of Chang, Fuchs, Liu, Wallner, and Yu \cite{Chang2024}. A network is a simple directed acyclic graph with one root of indegree zero and outdegree one, $n$ leaves of indegree one and outdegree zero bijectively labelled by $[n]$, and internal vertices of either indegree one and outdegree two (tree vertices), or indegree $d$ and outdegree one (reticulations). There are no vertices of indegree and outdegree one. The tree-child condition requires every nonleaf vertex to have at least one child that is not a reticulation. Networks are counted up to isomorphism preserving leaf labels; no plane ordering is imposed.
+
+Write $T^{(d)}_{n,k}$ for their number with $k$ reticulations. The maximum is $k=n-1$; the maximal and total counts are $T^{(d)}_{n,n-1}$ and $T^{(d)}_n=\sum_{k=0}^{n-1}T^{(d)}_{n,k}$. These are general tree-child networks, rather than the one-component subclass in which each reticulation is directly followed by a leaf.
+
+The relevant words use $n$ ordered letters $\omega_1,\ldots,\omega_n$, each occurring $d+1$ times. In each prefix, if the count of $\omega_i$ exceeds $d-2$, that count must be at least the count of every $\omega_j$ with $j>i$. Let $a_n$ denote the number of these words, and set $a_0=1$. Equivalently they are the rectangular $(d+1)\times n$ Young tableaux with the wall convention in \cite[Remark 3.3]{Chang2024}, with vertical walls in all but the first two rows. Their exact recurrence, from \cite[(17)]{Chang2024}, is \eqref{tcn:d:brec}. \emph{[Write phase: source 104 prints the same display with $b(n,m)$ for $b_{n,m}$ and $c_d(n)$ for $a_n$; it is printed once, in Part~I.]} The index $d$ on $b$ is suppressed, but never varied within a recurrence. The exact network bijection gives
+\begin{equation}\label{tcn:f:maximalidentity}
+ T^{(d)}_{n,n-1}=n!\,a_{n-1}.
+\end{equation}
+It is essential to keep the startup $b_{1,1}=1$: a convenient rescaling for a two-sided order estimate would change the amplitude here.
+
+\subsection{The canonical asymptotic scale}
+Let $z=z_1>z_2>\cdots$ be the negative zeros of the Airy function $\Ai$, $z=-2.338107410459767\ldots$. With the host's $\Lambda,\Gamma,c,\ell,B,\rho,\alpha$ of Section~\ref{tcn:d:sec:results}, define further
+\begin{equation}\label{tcn:f:constants}
+ Q_\Gamma=\prod_{i=1}^{d_-}\Gamma(1+i/d_+),\qquad
+ \delta_f=\frac{d_-d}{2d_+},\qquad\zeta_f=\frac{3d_-}{2d_+},
+\end{equation}
+so that $B/3=z(d_-/d_+)^{2/3}$ and
+\[
+ \rho=\delta_f-d_-+\zeta_f-\frac12=-\frac{d_-^2+d_-+2}{2d_+},\qquad
+ \alpha=\rho-d_-=-\frac{d(3d-1)}{2(d+1)}.
+\]
+Here $\Gamma$ is the exponential base, not the unknown amplitude. Source 104 chose a separate letter for it to avoid confusing it with the notation $\gamma(d)$ for that base in \cite[Theorem 1.8]{Chang2024}; Part~I's $\Gamma=4\Lambda$ serves the same purpose.
+
+\begin{theorem}[Positive amplitude and all orders; source 104]\label{tcn:f:thm:main}
+For each fixed integer $d\ge2$ there is a canonically determined $\gamma_d\in(0,\infty)$ and a compatible sequence $C_{d,j}$, $C_{d,0}=1$, such that for every fixed $J\ge0$,
+\begin{equation}\label{tcn:f:allorders}
+ a_n=\gamma_d(n!)^{d-1}\Gamma^n\ee^{Bn^{1/3}}n^\rho
+ \left(\sum_{j=0}^J C_{d,j}n^{-j/3}+O(n^{-(J+1)/3})\right).
+\end{equation}
+The first coefficient is
+\begin{equation}\label{tcn:f:c1}
+ C_{d,1}=\frac{z^2\bigl(8(d+1)^2-27(d-1)^2\bigr)}
+ {90(d+1)^{4/3}(d-1)^{2/3}}
+ =\frac{B^2\bigl(8(d+1)^2-27(d-1)^2\bigr)}{810(d-1)^2}.
+\end{equation}
+In particular,
+\[
+ C_{2,1}=\frac{z^2}{2\,3^{4/3}}=\frac{B^2}{18},\qquad
+ C_{3,1}=\frac{z^2}{36\,2^{1/3}}=\frac{B^2}{162},\qquad
+ C_{d,1}<0\quad(d\ge4).
+\]
+All coefficients are effectively obtained by the exact polynomial algorithm in Section~\ref{tcn:f:sec:formal}. They lie in $\Q[z,(d_-/d_+)^{1/3}]$ for fixed $d$.
+\end{theorem}
+This is a Poincar\'e expansion, meaning an asymptotic statement for each fixed finite depth. Neither convergence of the infinite formal series nor exponentially small terms is part of the theorem.
+
+\begin{remark}[Relation to Part~I; write phase]\label{tcn:f:rem:main}
+Theorem~\ref{tcn:f:thm:main} is Theorem~\ref{tcn:d:main} for the word counts, proved again by a different route; its $C_{d,j}$ are Part~I's $C_{d,r}$. The second form of \eqref{tcn:f:c1}, in the host's $B=3z(d_-/d_+)^{2/3}$, is a write-phase conversion: $B^2=9z^2(d_-/d_+)^{4/3}$, so the two forms agree identically. It reproduces the host's $C_{2,1}=B^2/18$ (Theorem~\ref{tcn:b:thm:main}) and the first coefficient $B^2/162$ of \eqref{tcn:d:ternary}. The sign assertion holds because $8(d+1)^2-27(d-1)^2$ is $45$ at $d=2$, $20$ at $d=3$, $-43$ at $d=4$, and is a downward parabola in $d$ whose larger root is $(35+12\sqrt6)/19=3.389\ldots$; so $C_{d,1}<0$ exactly for $d\ge4$. Source 104's coefficient field $\Q[z,(d_-/d_+)^{1/3}]$ contains $B$; Part~I's statement $C_{d,r}\in\Q[B]$ (Section~\ref{tcn:d:sec:transfer}) is sharper, and \eqref{tcn:f:c1} is visibly in $\Q[B]$.
+\end{remark}
+
+\begin{corollary}[Maximal and total network equivalents; source 104]\label{tcn:f:cor:network}
+For every fixed $d\ge2$,
+\begin{equation}\label{tcn:f:maximalequivalent}
+ T^{(d)}_{n,n-1}\sim\frac{\gamma_d}{\Gamma}(n!)^d\Gamma^n\ee^{Bn^{1/3}}n^\alpha.
+\end{equation}
+Its full Poincar\'e expansion follows by substituting $n-1$ in \eqref{tcn:f:allorders} and using \eqref{tcn:f:maximalidentity}. Its first correction is again $C_{d,1}n^{-1/3}$. Moreover,
+\begin{equation}\label{tcn:f:totalequivalent}
+ T^{(d)}_n\sim K_d(n!)^d\Gamma^n\ee^{Bn^{1/3}}n^\alpha,
+ \qquad K_d=\begin{cases}\sqrt\ee\,\gamma_2/12,&d=2,\\\gamma_d/\Gamma,&d\ge3.\end{cases}
+\end{equation}
+For $d=3$ specifically, with $B=3z/2^{2/3}$,
+\begin{equation}\label{tcn:f:total3}
+ T^{(3)}_n=\frac{\gamma_3}{32}(n!)^3 32^n
+ \ee^{Bn^{1/3}}n^{-3}
+ \left(1+\frac{z^2}{36\,2^{1/3}}n^{-1/3}+O(n^{-1/2})\right),
+\end{equation}
+where $z^2/(36\cdot2^{1/3})=B^2/162$.
+\end{corollary}
+\begin{proof}
+The factorial shift is $(n-1)!=n!/n$, the exponential-base shift is $\Gamma^{n-1}=\Gamma^n/\Gamma$, and the stretched-exponential shift first contributes at order $n^{-2/3}$. The polynomial shift first contributes at order $n^{-1}$. These prove the maximal claims. For totals, \cite[Corollary 1.11]{Chang2024} proves $T^{(2)}_n/T^{(2)}_{n,n-1}\to\sqrt\ee$ and $T^{(d)}_n/T^{(d)}_{n,n-1}\to1$ for $d\ge3$. The quantitative ternary assertion is proved in Section~\ref{tcn:f:sec:ternarytotal}.
+\end{proof}
+
+The prior result \cite[Theorem 1.8]{Chang2024} already gives the full two-sided $\Theta$ scale in \eqref{tcn:f:maximalequivalent}, both for maximal and total counts. The positive limiting amplitude and the all-order maximal/word expansion are the additional assertions proved here. \emph{[Write phase: ``additional'' relative to the published literature; in the repository the same assertions are Theorem~\ref{tcn:d:main} of Part~I, proved independently from source 16 and printed first (Section~\ref{tcn:f:sec:provenance}).]} The published ratio theorem alone would not give an all-order total expansion. For $d\ge4$ only the leading total equivalent is asserted in this Part.
+
+\section{An exact normalization and a positive Jacobi product}\label{tcn:f:sec:exact}
+\subsection{Rotating the recurrence without changing its startup}
+Put $\widetilde b(p,q)=b_{p+1,q+1}$ on $0\le q\le p$, so that $\widetilde b(0,0)=1$. Subtract the successive prefix equations in \eqref{tcn:d:brec}. With forbidden inputs zero, the result away from the prescribed initial point is
+\begin{align}
+ \widetilde b(p,q)&=\mathcal W(p,q)\widetilde b(p-1,q)+\mathcal V(p,q)\widetilde b(p,q-1),\label{tcn:f:B}\\
+ \mathcal W(p,q)&=\frac1{d_-!}\prod_{i=1}^{d_-}(dp+q+i),&
+ \mathcal V(p,q)&=\frac{dp+q+d_-}{dp+q}.\notag
+\end{align}
+No expression with the zero denominator at $(0,0)$ is evaluated. The endpoint identity is
+\begin{equation}\label{tcn:f:endpointexact}
+ a_n=\frac{\widetilde b(n,n)}{\mathcal W(n,n)},\qquad n\ge0,
+\end{equation}
+with the endpoint convention $\mathcal W(0,0)=1$. For $n\ge1$, this follows from $b_{n+1,n+1}=\mathcal W(n,n)a_n$.
+
+Use the exact diagonal product
+\begin{equation}\label{tcn:f:G}
+ G_\Gamma(p)=\prod_{l=1}^p\mathcal W(l,l)
+ =\Lambda^p\prod_{i=1}^{d_-}(1+i/d_+)_p,\qquad G_\Gamma(0)=1,
+\end{equation}
+where $(x)_p=\Gamma(x+p)/\Gamma(x)$. On the parity-compatible domain $0\le h\le N$, define
+\[
+ \mathcal Y(N,h)=\frac{\widetilde b((N+h)/2,(N-h)/2)}{G_\Gamma((N+h)/2)}.
+\]
+Then $\mathcal Y(0,0)=1$ and
+\begin{align}
+ \mathcal Y(N,h)&=\omega^-_N(h)\mathcal Y(N-1,h-1)+\omega^+_N(h)\mathcal Y(N-1,h+1),\label{tcn:f:onestep}\\
+ \omega^-_N(h)&=\prod_{i=1}^{d_-}\frac{d_+N+d_-h+2i}{d_+(N+h)+2i},&
+ \omega^+_N(h)&=\frac{d_+N+d_-h+2d_-}{d_+N+d_-h}.\notag
+\end{align}
+For instance $\mathcal Y(1,1)=\mathcal W(1,0)/\mathcal W(1,1)$ and $\mathcal Y(2,0)=1$, exactly.
+
+\subsection{The two step matrix and its Gram factor}
+Let $e_n(k)=\mathcal Y(2n,2k)$, $0\le k\le n$, and $e_0=\delta_0$. For fixed $n,k$ write $\mathfrak z=d_+n+d_-k$, $\mathfrak P=d_+(n+k)$, and define
+\begin{align}
+ \mathsf A_n(k)&=\prod_{i=1}^{d_-}\frac{\mathfrak z+i}{\mathfrak P+i},&
+ \mathsf B_n(k)&=\frac{\mathfrak z+d_-}{\mathfrak z},\notag\\
+ \mathsf C_n(k)&=\prod_{i=1}^{d_-}\frac{\mathfrak z+i-1}{\mathfrak P+i}=\frac{\mathsf A_n(k)}{\mathsf B_n(k)},&
+ \mathsf F_n(k)&=\frac{\mathfrak z+d_--1}{\mathfrak z-1}.\label{tcn:f:coefficients}
+\end{align}
+Eliminating odd times in \eqref{tcn:f:onestep} gives $e_n=\mathsf M_ne_{n-1}$ after zero extension, where the lower, upper and diagonal entries are
+\begin{align}
+ \mathsf L_n(k)&=\mathsf A_n(k)\mathsf C_n(k-1),\notag\\
+ \mathsf U_n(k)&=\mathsf B_n(k)\mathsf F_n(k),\label{tcn:f:matrixentries}\\
+ \mathsf D_n(0)&=\mathsf B_n(0)\mathsf C_n(0)=\mathsf A_n(0)=1,\notag\\
+ \mathsf D_n(k)&=\mathsf A_n(k)\mathsf F_n(k-1)+\mathsf B_n(k)\mathsf C_n(k)
+ =\mathsf A_n(k)\left(1+\frac{\mathfrak z-1}{\mathfrak z-d}\right),\quad k\ge1.\notag
+\end{align}
+Use this full bulk diagonal also at the new coordinate $k=n$. It multiplies $e_{n-1}(n)=0$, so it leaves the exact evolution unchanged. It also avoids an artificial order-one jump at the old terminal coordinate when comparing consecutive matrices.
+
+Set $\Sigma_n(0)=1$ and
+\[
+ \left(\frac{\Sigma_n(k)}{\Sigma_n(k-1)}\right)^2=\frac{\mathsf L_n(k)}{\mathsf U_n(k-1)}.
+\]
+Here $\Sigma_n$ also denotes the diagonal matrix with these entries. The symmetric matrix $J_n=\Sigma_n^{-1}\mathsf M_n\Sigma_n$ has diagonal $\mathsf D_n$ and positive off-diagonal entries
+\begin{equation}\label{tcn:f:beta}
+ \mathsf b_n(k)^2=\mathsf L_n(k)\mathsf U_n(k-1)
+ =\mathsf A_n(k)\mathsf A_n(k-1)\frac{\mathfrak z-1}{\mathfrak z-d}.
+\end{equation}
+It is positive definite: $J_n=\mathsf K_n\mathsf K_n^{\mathsf T}$, with the square lower bidiagonal factor
+\begin{equation}\label{tcn:f:gram}
+ \mathsf K_n(k,k)^2=\mathsf A_n(k),\qquad
+ \mathsf K_n(k,k-1)^2=\mathsf A_n(k)\frac{\mathfrak z-1}{\mathfrak z-d}\quad(k\ge1).
+\end{equation}
+Every displayed nonzero factor is positive. Let $\lambda_n$ be the largest eigenvalue of $J_n$, and $\psi_n$ its positive unit eigenvector, extended by zero in $\ell^2(\N_0)$. Put $\psi_0=\delta_0$.
+
+\subsection{An exact contraction at every fixed degree}\label{tcn:f:sec:contraction}
+Write $\varsigma_n(j)=\Sigma_n(j)/\Sigma_n(j-1)$. With $\mathfrak z=d_+n+d_-j$, its square factors as
+\begin{align}
+ \varsigma_n(j)^2={}&\prod_{i=1}^{d_-}\frac{\mathfrak z+i}{d_+(n+j)+i}
+ \prod_{i=1}^{d_-}\frac{\mathfrak z-d+i}{d_+(n+j-1)+i}\notag\\
+ &\hspace{25mm}\cdot\frac{\mathfrak z-d_-}{\mathfrak z}\,\frac{\mathfrak z-d}{\mathfrak z-1}.\label{tcn:f:edgefactor}
+\end{align}
+For $n\ge j\ge1$, every factor is in $(0,1]$. Denominator minus numerator equals, respectively, $2j$, $2j-1$, $d_-$, and $d_-$. Each numerator and denominator has the same positive slope $d_+$ as a function of $n$, so every factor increases with $n$. Thus $\Sigma_n(k)\le1$, and the zero-extended diagonal operator
+\begin{equation}\label{tcn:f:R}
+ \mathsf R_n(k)=\begin{cases}\Sigma_{n-1}(k)/\Sigma_n(k),&k<n,\\0,&k\ge n\end{cases}
+ \quad\hbox{satisfies}\quad 0\le \mathsf R_n\le I.
+\end{equation}
+In particular $\mathsf R_n(0)=1$. On $n-1\le t\le n$ and $1\le j\le n-1$, all factors in \eqref{tcn:f:edgefactor} are bounded below by a positive constant depending only on $d$, and differentiation gives
+\[
+ 0\le\partial_t\log \varsigma_t(j)\le C_d(j+1)/n^2.
+\]
+Integrate in $t$ and sum over $j\le k$. Enlarging the constant to include the new coordinate gives
+\begin{equation}\label{tcn:f:Rdefect}
+ 0\le1-\mathsf R_n(k)\le C_d k(k+1)/n^2.
+\end{equation}
+
+This exact normalization is important at large fixed degrees. If $G_\Gamma(p)$ were replaced by $\Lambda^p(p!)^{d_-}$, its symmetrizer edge would instead satisfy, for fixed $j$,
+\[
+ \log(\varsigma_n(j)^2)=\frac{d_-(d_--4j)}{d_+n}+O(n^{-2}).
+\]
+When $d_->4$ and $j=1$, it decreases as $n$ increases, and the corresponding $\mathsf R_n(1)$ exceeds one for all sufficiently large $n$. Thus that simpler normalization does not prove contraction for $d\ge6$. Formula~\eqref{tcn:f:edgefactor} resolves the issue by an exact factorwise argument.
+
+\begin{remark}[The obstruction does not touch Part~I; write phase]\label{tcn:f:rem:naive}
+The obstruction concerns source 104's two-step frame with a factorial gauge. Part~I uses a different, one-step frame: its gauge ratio $Q_N=G_{N-1}/G_N$ is built from the weights $p_N(j)$ of \eqref{tcn:d:productp}, each of whose $d-1$ factors has the positive $N$-derivative displayed after \eqref{tcn:d:recover}, for every $d$. So $Q_N$ is a contraction at every fixed degree, and Part~I is unaffected. Part~IV's factorial gauge is the case $d=2$, where $d_-=1<4$ and no obstruction arises (Lemma~\ref{tcn:w:lem:R}).
+\end{remark}
+
+Finally let
+\begin{equation}\label{tcn:f:product}
+ P_n=\prod_{j=1}^n\lambda_j,\quad
+ u_n=P_n^{-1}\Sigma_n^{-1}e_n,\quad
+ \mathsf T_n=(J_n/\lambda_n)\mathsf R_n.
+\end{equation}
+Then $u_n=\mathsf T_nu_{n-1}$ and $u_0=\delta_0$. Each $\mathsf T_n$ is entrywise nonnegative and an $\ell^2$ contraction. The Gram factor proves positivity of the whole spectrum of $J_n/\lambda_n$, not just of its Perron eigenvalue.
+
+\section{The Airy limit and quantitative spectral estimates}\label{tcn:f:sec:spectral}
+\subsection{Global estimates and form compactness}
+Put $\eps=n^{-1/3}$, $x_k=\eps(k+1/2)$, and
+\begin{equation}\label{tcn:f:airyprofile}
+ c_A=(4c)^{1/3}=(8d_-/d_+)^{1/3},\qquad
+ f_A(x)=\frac{\sqrt{c_A}\Ai(z+c_Ax)}{\Ai'(z)}.
+\end{equation}
+Then $\int_0^\infty f_A^2\,dx=1$, $f_A'(0)=\sqrt{4c}$, and $f_A$ is the ground state of the Dirichlet operator
+\[
+ \mathcal H_A=-\frac{d^2}{dx^2}+4cx,\qquad
+ \mathcal H_Af_A=-c_A^2zf_A.
+\]
+Let $J_\infty$ have diagonal $1,2,2,\ldots$ and unit off-diagonals. The exact finite-product coefficients satisfy
+\begin{align}
+ 0<c_d&\le \mathsf b_n(k)\le C_d,\notag\\
+ 0\le J_n&\le(1+C_d/n)J_\infty\quad\hbox{entrywise},\label{tcn:f:global}\\
+ 4-\mathsf D_n(k)-\mathsf b_n(k)-\mathsf b_n(k+1)&\ge c_d k/n-C_d/n\quad(k\ge1),\notag\\
+ 4-\mathsf D_n(0)-\mathsf b_n(1)&=2+O(n^{-1}).\notag
+\end{align}
+Only existing edges enter these statements; a missing terminal edge is zero. To check them uniformly, put $\vartheta=(d_+n+d_-k)/(d_+(n+k))$. Then $d/d_+\le \vartheta\le1$ and
+\[
+ \mathsf A_n(k)=\vartheta^{d_-}+O(n^{-1}),\quad \mathsf D_n(k)=2\vartheta^{d_-}+O(n^{-1}),\quad
+ \mathsf b_n(k),\mathsf b_n(k+1)=\vartheta^{d_-}+O(n^{-1})
+\]
+in the bulk. Extract $\vartheta$ from every factor; the remaining denominators are bounded below by a constant times $n$. Moreover
+\[
+ 1-\vartheta^{d_-}\ge1-\vartheta=\frac{2k}{d_+(n+k)}\ge\frac{k}{d_+n}.
+\]
+The omitted terminal edge only increases the potential. Uniform positive bounds for the factors prove the edge bounds; $\mathsf A_n\le1$ and $(\mathfrak z-1)/(\mathfrak z-d)=1+O(n^{-1})$ prove the entrywise bound. Adjacent bulk coefficients differ by $O(n^{-1})$, also when the explicit expression for $\mathsf b_n$ is continued to the fictitious edge $n+1$.
+
+On the common time domain, direct differentiation gives
+\begin{equation}\label{tcn:f:timederivative}
+ |\mathsf D_n(k)-\mathsf D_{n-1}(k)|+|\mathsf b_n(k)-\mathsf b_{n-1}(k)|
+ \le C_d(k+1)/n^2.
+\end{equation}
+Here $\mathsf D_n(0)=1$ is exact, and the new edge is excluded.
+
+The quadratic form of $4I-J_n$ is the weighted edge-gradient sum plus the potential in \eqref{tcn:f:global}. Its $n^{2/3}$-scaled low-energy limit is $\mathcal H_A$. We give the compactness details because the boundary and increasing dimension matter. For a unit vector of energy at most $C\eps^2$, the form bound implies
+\[
+ \sum_k k|u_k|^2\le C/\eps,\qquad |u_0|^2\le C\eps^2.
+\]
+Interpolate $u_k/\sqrt\eps$ linearly at $x_k$, start at zero at $x=0$, and add a one-mesh ramp to zero after $x_n$. The first half-cell derivative energy is $2|u_0|^2/\eps^2$, provided by the boundary potential tending to $2$. The other local derivative energies are bounded by the edge form. The first moment bounds the squared $L^2$ mass beyond $R$ by $C/R$. Local Rellich compactness together with this tail bound gives strong $L^2$ compactness, preserving norms and orthogonality. The negative potential correction is only $O(n^{-1})$ and disappears after scaling. Local coefficient convergence gives the gradient and potential lower limits. Sampled compactly supported smooth Dirichlet functions give matching upper bounds. \emph{[Write phase: this is the compactness argument of Remark~\ref{tcn:d:rem:compact} on the half-grid $x_k=\eps(k+\frac12)$, where the boundary half-cell replaces Part~I's fictitious first interval; Part~IV prints it at $d=2$ with a little more detail.]} The min--max principle therefore yields, for each fixed $j$,
+\begin{equation}\label{tcn:f:spectrallimit}
+ \frac{4-\lambda_n^{(j)}}{\eps^2}\longrightarrow-c_A^2z_j.
+\end{equation}
+In particular, positive definiteness and separation of the first two Airy levels give
+\begin{equation}\label{tcn:f:gap}
+ 0\le\lambda_n^{(2)}/\lambda_n\le1-c_d n^{-2/3}.
+\end{equation}
+\emph{[Write phase: here the Gram factor excludes the negative half of the spectrum, so a full spectral gap holds, whereas Part~I's one-step matrix $S_N$ has a parity-symmetric spectrum and needs the parity singular gap of Section~\ref{tcn:d:sec:spectrum}.]}
+
+\subsection{The scalar term at order n inverse}
+On the half-grid, the exact coefficients have expansions
+\begin{align}
+ \mathsf D_n(k)&=2-2cx\eps^2+\tfrac32c\eps^3
+             +O(\eps^4(1+x^2)),\notag\\
+ \mathsf b_n(k)&=1-cx\eps^2+\tfrac54c\eps^3
+             +O(\eps^4(1+x^2)),\label{tcn:f:localcoeff}\\
+ \mathsf b_n(k+1)&=1-cx\eps^2+\tfrac14c\eps^3
+             +O(\eps^4(1+x^2)).\notag
+\end{align}
+For example, first expand $\mathsf A_n(k)=1-ck/n+O((k^2+k)/n^2)$ and $(\mathfrak z-1)/(\mathfrak z-d)=1+c/(2n)+O((k+1)/n^2)$, then use \eqref{tcn:f:beta} and \eqref{tcn:f:matrixentries}. \emph{[Write phase: source 104 writes these coefficients as $4r/a$, $3r/a$, $2r/a$, $5r/(2a)$, $r/(2a)$ and $r/(an)$, which are $2c$, $\tfrac32c$, $c$, $\tfrac54c$, $\tfrac14c$ and $c/(2n)$.]} The expansions are uniform for $k\le n/2$. Pairing $f_A(x+\eps)$ and $f_A(x-\eps)$ and using the adjacent-coefficient difference bound for odd derivative terms gives
+\[
+ J_nf_A=4f_A+\eps^2\left(f_A''-4cxf_A\right)
+              +3c\eps^3f_A+O_{\ell^2}(\eps^4),
+\]
+where the samples include their factor $\sqrt\eps$. More explicitly, before that sampling factor the pointwise error is bounded by $C\eps^4$ times a fixed polynomial--Airy derivative envelope; its squared lattice sum times $\eps$ is bounded. The part $k>n/2$ is exponentially small.
+
+At the first row, $\mathsf D_n(0)=1$ and $\mathsf b_n(1)=1-c\eps^3/4+O(\eps^6)$. The unsampled boundary residual is $O(\eps^4)$: the cubic term in $f_A(3\eps/2)-3f_A(\eps/2)$ cancels the eigenvalue term by
+\[
+ f_A(0)=f_A''(0)=0,\qquad f_A'''(0)=c_A^2zf_A'(0).
+\]
+Its sampled size is $O(\eps^{9/2})$. The chosen upper terminal diagonal contributes only an exponentially small error.
+
+Let $\psi^A_n$ be the normalized sample $\sqrt\eps f_A(x_k)$. Midpoint quadrature gives pre-normalization squared norm $1+O(\eps^2)$. The residual estimate and isolation from \eqref{tcn:f:spectrallimit} identify the nearby eigenvalue as the largest one, and the gap gives
+\begin{align}
+ \lambda_n&=4+c_A^2z\,n^{-2/3}+3c\,n^{-1}
+                                      +O(n^{-4/3}),\label{tcn:f:lambda}\\
+ \norm{\psi_n-\psi^A_n}_2&=O(\eps^2).\label{tcn:f:profileapprox}
+\end{align}
+\emph{[Write phase: $c_A^2z=4^{2/3}\ell$. This agrees with two steps of Part~I's \eqref{tcn:d:lambda}: $(2+\ell N^{-2/3})^2=4+4^{2/3}\ell\,n^{-2/3}+O(n^{-1})$ at $N=2n$; the $n^{-1}$ terms differ because the gauges differ.]}
+
+\subsection{Localization and changes in dimension}
+Entrywise domination and positivity of $\psi_n$ give
+\[
+ \ip{\psi_n}{(4I-J_\infty)\psi_n}
+ \le4-\frac{\lambda_n}{1+C_d/n}\le C\eps^2.
+\]
+The left side is $\sum_k|\psi_n(k+1)-\psi_n(k)|^2+2\psi_n(0)^2$. Discrete Sobolev therefore yields $\norm{\psi_n}_\infty\le C\sqrt\eps$.
+
+Choose $k_A=\lceil A_0/\eps\rceil$ with $A_0$ large, and a fixed small $c_0>0$. The test function $w(k)=\exp[-c_0\eps(k-k_A)]$ is a strict supersolution $J_nw<\lambda_nw$ for $k>k_A$. Indeed, the full bulk row sum is at most $4-c_dk/n+C_d/n$. Continue the upper edge first to its fictitious value at $n+1$. The paired exponential shifts change that sum by $O(\eps^2)$; the first-order part uses the adjacent-coefficient difference $O(n^{-1})$. Comparing with \eqref{tcn:f:lambda}, choose $A_0$ large enough, then omit the positive fictitious contribution at $k=n$. The finite maximum principle gives
+\begin{equation}\label{tcn:f:localization}
+ \psi_n(k)\le C\sqrt\eps\,\ee^{-c_0\eps(k-k_A)}\quad(k\ge k_A),\qquad
+ \norm{k^p\psi_n}_2\le C_p n^{p/3}\quad(p\ge0\text{ fixed}).
+\end{equation}
+In particular the old terminal component is exponentially small in $n^{2/3}$. Combining \eqref{tcn:f:timederivative} and \eqref{tcn:f:localization}, with the new edge estimated separately, gives
+\[
+ \norm{(J_n-J_{n-1})\psi_{n-1}}_2\le Cn^{-5/3}.
+\]
+Projecting this residual and using the gap proves
+\begin{align}
+ \norm{\psi_n-\psi_{n-1}}_2&\le C/n,\label{tcn:f:drift}\\
+ \norm{(I-\mathsf R_n)\psi_n}_2+\norm{(I-\mathsf R_n)\psi_{n-1}}_2
+                                      &\le Cn^{-4/3}.\label{tcn:f:Rperron}
+\end{align}
+The latter estimate is also an immediate consequence of \eqref{tcn:f:Rdefect} and the second moment in \eqref{tcn:f:localization}.
+
+\subsection{Endpoint smoothing}
+Let $\mathcal K=J_\infty/4$. The half-grid sine transform gives
+\begin{equation}\label{tcn:f:kernel}
+ \mathcal K^m(0,0)=\frac2\pi\int_0^\pi\cos^{2m}(u/2)\sin^2(u/2)\,du
+ \le C(m+1)^{-3/2}.
+\end{equation}
+Hence $\norm{\delta_0^{\mathsf T}\mathcal K^l}_2\le C(l+1)^{-3/4}$. Positivity, $\mathsf R_j\le I$, \eqref{tcn:f:global}, and \eqref{tcn:f:lambda} imply, for $0\le l\le n^{2/3}$,
+\begin{align}
+ 0\le \mathsf T_n\cdots \mathsf T_{n-l+1}&\le C\mathcal K^l,\notag\\
+ \norm{\delta_0^{\mathsf T}\mathsf T_n\cdots \mathsf T_{n-l+1}}_2&\le C(l+1)^{-3/4}.\label{tcn:f:smoothing}
+\end{align}
+The accumulated comparison scalar is bounded because its logarithm is $O(ln^{-2/3})$. This is an entrywise product comparison and requires no commutativity. The same bound holds for powers of a fixed $J_n/\lambda_n$. \emph{[Write phase: this is Part~I's Catalan bound \eqref{tcn:d:smoothing} for the killed kernel $J_\infty/4$ in place of half-line adjacency.]}
+
+For $\mathsf z=\psi_n-\psi^A_n$, the quasimode estimates give $\mathsf z=(J_n/\lambda_n)\mathsf z+\varrho$ with $\norm\varrho_2=O(\eps^4)$. Iterate $\Delta=\lfloor n^{2/3}\rfloor$ times and apply \eqref{tcn:f:smoothing}:
+\[
+ |\mathsf z(0)|\le C\Delta^{-3/4}\eps^2+C\eps^4\sum_{l<\Delta}(l+1)^{-3/4}
+ =O(\eps^{7/2}).
+\]
+Since $\psi^A_n(0)=(f_A'(0)/2)\eps^{3/2}(1+O(\eps^2))$, this proves the precise endpoint scale
+\begin{equation}\label{tcn:f:perronendpoint}
+ \psi_n(0)=\sqrt c\,n^{-1/2}\left(1+O(n^{-2/3})\right).
+\end{equation}
+
+\section{A strictly positive limiting amplitude}\label{tcn:f:sec:amplitude}
+\subsection{Convergence of the normalized product}
+Write
+\[
+ p_n=\ip{\psi_n}{u_n},\qquad
+ p_n^\perp=\norm{(I-\psi_n\psi_n^{\mathsf T})u_n}_2.
+\]
+Contractivity gives $\norm{u_n}_2\le1$. The gap, drift, and symmetrizer defect give
+\[
+ p_n^\perp\le(1-cn^{-2/3})p_{n-1}^\perp+C/n.
+\]
+A power supersolution yields $p_n^\perp=O(n^{-1/3})$. The exact scalar increment is
+\begin{align}
+ p_n-p_{n-1}={}&p_{n-1}\bigl(\ip{\psi_n}{\mathsf R_n\psi_{n-1}}-1\bigr)\notag\\
+ &+\ip{\mathsf R_n\psi_n-\psi_{n-1}}
+ {(I-\psi_{n-1}\psi_{n-1}^{\mathsf T})u_{n-1}}.\label{tcn:f:scalarincrement}
+\end{align}
+The first bracket is $O(n^{-4/3})$: without $\mathsf R_n$ it is minus half the squared Perron-vector drift. The second term is $O(n^{-1}p_{n-1}^\perp)=O(n^{-4/3})$. Thus there exists $p_\infty\ge0$ such that
+\begin{equation}\label{tcn:f:productlimit}
+ |p_n-p_\infty|+\norm{u_n-p_\infty\psi_n}_2\le Cn^{-1/3}.
+\end{equation}
+
+Convergence alone does not prove strict positivity. Restart the same exact normalized product at a large $N$ from the vector $\psi_N$. The preceding estimates hold with constants independent of $N$ above a fixed threshold; its initial perpendicular component is zero and its norm is one. Summing its scalar increments shows that its limiting Perron mass differs from one by at most $CN^{-1/3}$. Choose $N$ so large that this mass exceeds $1/2$. Every coordinate of the actual $u_N$ on $0,\ldots,N$ is strictly positive, by the original recurrence. Thus $u_N\ge\theta_0\psi_N$ for some $\theta_0>0$. Positivity of subsequent operators implies $p_\infty\ge\theta_0/2>0$.
+
+Set $\mathsf z_n=u_n-p_\infty\psi_n$. Its exact evolution has forcing $p_\infty(\mathsf T_n\psi_{n-1}-\psi_n)$ of norm $O(n^{-1})$. Iterate through the last $\Delta=\lfloor n^{2/3}\rfloor$ steps, use \eqref{tcn:f:productlimit}, then \eqref{tcn:f:smoothing}. The result is
+\[
+ |\mathsf z_n(0)|\le C\Delta^{-3/4}n^{-1/3}+\frac Cn\sum_{l<\Delta}(l+1)^{-3/4}
+ =O(n^{-5/6}).
+\]
+Consequently
+\begin{equation}\label{tcn:f:productendpoint}
+ u_n(0)=p_\infty\sqrt c\,n^{-1/2}\left(1+O(n^{-1/3})\right).
+\end{equation}
+\emph{[Write phase: this is the restart comparison of source 104, not the contradiction with the lower $\Theta$ bound used in Part~I (Section~\ref{tcn:d:sec:amplitude}) and Part~II; source 104's positivity proof therefore needs no external enumeration-asymptotic input.]}
+
+\subsection{The exact gamma normalization}
+Equation~\eqref{tcn:f:lambda} gives
+\[
+ \log(\lambda_n/4)=\frac B3n^{-2/3}+\zeta_fn^{-1}+O(n^{-4/3}).
+\]
+It follows that
+\begin{equation}\label{tcn:f:Climit}
+ C_\lambda=\lim_{n\to\infty}
+ \frac{P_n}{4^n\ee^{Bn^{1/3}}n^{\zeta_f}}\in(0,\infty),
+\end{equation}
+with relative error $O(n^{-1/3})$. A positive convergent representation is
+\begin{align}
+ C_\lambda={}&\frac{\lambda_1}{4}\ee^{-B}
+ \prod_{j=2}^{\infty}\left[
+ \frac{\lambda_j}{4}
+ \ee^{-B(j^{1/3}-(j-1)^{1/3})}
+ \left(\frac{j-1}{j}\right)^{\zeta_f}\right].\label{tcn:f:Cproduct}
+\end{align}
+Each factor is $1+O(j^{-4/3})$. Also, from $\ip{\psi_n}{\mathsf T_nu_{n-1}}=\ip{\mathsf R_n\psi_n}{u_{n-1}}$,
+\begin{equation}\label{tcn:f:pseries}
+ p_\infty=1+\sum_{n=1}^{\infty}
+ \ip{\mathsf R_n\psi_n-\psi_{n-1}}{u_{n-1}},
+\end{equation}
+and this scalar series is absolutely convergent by \eqref{tcn:f:scalarincrement}.
+
+The exact product \eqref{tcn:f:G} has the asymptotics
+\begin{align}
+ G_\Gamma(n)&=\Lambda^n(n!)^{d_-} n^{\delta_f}Q_\Gamma^{-1}(1+O(n^{-1})),\notag\\
+ \mathcal W(n,n)&=\Lambda n^{d_-}(1+O(n^{-1})),\label{tcn:f:gammaconversion}\\
+ a_n&=\frac{G_\Gamma(n)}{\mathcal W(n,n)}e_n(0),\qquad e_n(0)=P_nu_n(0).\notag
+\end{align}
+The equality $\delta_f-d_-+\zeta_f-1/2=\rho$ now proves the leading instance of Theorem~\ref{tcn:f:thm:main}, with
+\begin{equation}\label{tcn:f:gamma}
+ \boxed{\displaystyle\gamma_d=
+ \frac{\sqrt c\,p_\infty C_\lambda}{\Lambda Q_\Gamma}>0.}
+\end{equation}
+This fixes the amplitude for the exact original startup, including $a_0=a_1=1$. No closed form or certified numerical enclosure of $\gamma_d$ is asserted. The existence of a convergent defining product should not be confused with convergence of the all-order correction series proved next. \emph{[Write phase: \eqref{tcn:f:gamma} and Part~I's \eqref{tcn:d:gamma} are two convergent representations of one number, through different gauges; their factors $p_\infty$, $C_\lambda$ and $A_\infty$, $\kappa_d$ are not individually comparable.]}
+
+\section{The all order coefficient algorithm}\label{tcn:f:sec:formal}
+\subsection{An exact scaled one step equation}
+Use a different Airy scaling for the one-step equation:
+\begin{equation}\label{tcn:f:onescaling}
+ t=N^{-1/3},\quad x=(h+1)t,\quad
+ F(x)=\Ai(z+c^{1/3}x),\quad \eta_f=\zeta_f-\frac16.
+\end{equation}
+Then $F''=(cx+\ell)F$, $F(0)=0$, and $F'(0)=c^{1/3}\Ai'(z)\ne0$. The exact scaled weights of \eqref{tcn:f:onestep} are
+\begin{align}
+ U(t,x)&=\prod_{i=1}^{d_-}
+ \frac{d_++d_-x t^2+(2i-d_-)t^3}{d_++d_+x t^2+(2i-d_+)t^3},\notag\\
+ V(t,x)&=\frac{d_++d_-x t^2+d_-t^3}{d_++d_-x t^2-d_-t^3},\qquad
+ t_1=t(1-t^3)^{-1/3}.\label{tcn:f:weights}
+\end{align}
+Seek formal series
+\begin{align}
+ s(t)&=2+\ell t^2+\sum_{j\ge3}\sigma_jt^j,\notag\\
+ \mathfrak F(t,x)&=\sum_{j\ge0}t^jf_j(x),\qquad f_j=P_jF+Q_jF',\label{tcn:f:formalansatz}\\
+ P_0&=1,\quad Q_0=0,\qquad
+ Q_j(0)=0,\quad P_j(0)+Q_j'(0)=0\quad(j\ge1),\notag
+\end{align}
+satisfying
+\begin{align}
+ s(t)\mathfrak F(t,x)={}&U(t,x)\mathfrak F\bigl(t_1,(x-t)(1-t^3)^{-1/3}\bigr)\notag\\
+ &+V(t,x)\mathfrak F\bigl(t_1,(x+t)(1-t^3)^{-1/3}\bigr).\label{tcn:f:formalequation}
+\end{align}
+For fixed $d$, the profiles $P_j,Q_j$ and scalars $\sigma_j$ have rational polynomial coefficients in $\ell,x$ or $\ell$. The first nontrivial equation is the Airy equation at order $t^2$.
+
+Suppose earlier orders are solved. At order $t^k$, write the known residual as $R_0F+R_1F'$. The new profile has index $k-2$, and it and $\sigma_k$ must solve
+\begin{align}
+ P''+2(cx+\ell)Q'+cQ-\sigma_k+R_0&=0,\notag\\
+ 2P'+Q''+R_1&=0.\label{tcn:f:solveprofile}
+\end{align}
+Define the polynomial operator
+\[
+ \mathcal T=D^3-4(cx+\ell)D-2c.
+\]
+On polynomials of degree at most $m$, this operator is triangular with diagonal $-2c(2j+1)$, $0\le j\le m$. None is zero. Thus the following is an exact finite algorithm:
+\begin{align}
+ \widetilde q&=\mathcal T^{-1}(2R_0-R_1'),&
+ \sigma_k&=-c\,\widetilde q(0),\notag\\
+ Q&=\widetilde q+\sigma_k/c,&
+ P(x)&=\int_0^x\frac{-R_1(y)-Q''(y)}2\,dy-Q'(0).\label{tcn:f:algorithm}
+\end{align}
+To verify it, eliminate $P''$ from \eqref{tcn:f:solveprofile}; this gives
+$\mathcal TQ=2R_0-R_1'-2\sigma_k$. Substituting \eqref{tcn:f:algorithm} proves both equations and both gauges. Conversely the nonzero triangular diagonal and the gauges give uniqueness. This proves existence and compatibility to every formal depth. It also shows
+\[
+ f_j(0)=0\quad(j\ge0),\qquad f_j'(0)=0\quad(j\ge1).
+\]
+\emph{[Write phase: $\mathcal T$ is $-2$ times the left side of Part~I's triangular equation \eqref{tcn:d:triangular}; the polynomial inverse is the same.]}
+
+For the first correction,
+\[
+ R_0=2c,\quad R_1=(c+2/3)x,\quad
+ \sigma_3=3c/2-1/3=2\eta_f,
+\]
+so $Q_1=0$ and $P_1=-(3c+2)x^2/12$. The next two scalars are
+\begin{align}
+ \sigma_4&=\frac{\ell^2(189c^2-64)}{540c^2},\label{tcn:f:sigma4}\\
+ \sigma_5&=\frac{\ell(351c^3-90c^2+64)}{324c^2}.\label{tcn:f:sigma5}
+\end{align}
+They are exact symbolic consequences of the recurrence, not numerical fits.
+
+\subsection{Compatible scalar carriers}
+Define $h_j$ by the formal difference identity
+\begin{align}
+ \log\frac{s(t)}2={}&\frac{3\ell}{2t}\bigl[1-(1-t^3)^{1/3}\bigr]
+                    -\eta_f\log(1-t^3)\notag\\
+ &+\sum_{j\ge1}h_jt^j\bigl[1-(1-t^3)^{-j/3}\bigr].\label{tcn:f:carrieridentity}
+\end{align}
+The coefficients at $t^2,t^3$ are $\ell/2,\eta_f$. At order $t^{j+3}$, the new unknown $h_j$ has nonzero coefficient $-j/3$. Thus all $h_j$ are uniquely determined, with no arbitrary additive constants. In particular,
+\begin{equation}\label{tcn:f:h1}
+ h_1=\frac{3\ell^2}{8}-\frac{3\sigma_4}{2}
+     =\frac{\ell^2(32-27c^2)}{180c^2}.
+\end{equation}
+\emph{[Write phase: the next carrier coefficient, used in Section~\ref{tcn:f:sec:coefficients} but not printed by source 104, is $h_2=-\ell(27c^3-36c^2+16)/(108c^2)$, from \eqref{tcn:f:carrieridentity} and \eqref{tcn:f:sigma5} (computed symbolically in writing). At $d=2$, where $c=2/3$, $\sigma_4=\ell^2/12$, $\sigma_5=8\ell/9$, $h_1=\ell^2/4$ and $h_2=-\ell/6$.]}
+For any fixed finite depth $M$, put
+\begin{align}
+ \mathcal H_N^{[M]}&=2^N
+ \ee^{(3\ell/2)N^{1/3}}N^{\eta_f}
+ \exp\left(\sum_{j=1}^Mh_jN^{-j/3}\right),\notag\\
+ \mathfrak F^{[M]}(t,x)&=\sum_{j=0}^Mt^jf_j(x).\label{tcn:f:carrier}
+\end{align}
+Every carrier has leading multiplicative constant exactly one. Its exact consecutive ratio agrees with the formal $s$-series through at least order $t^{M+3}$; when needed the $h_j$ are computed using profiles beyond the retained profile depth.
+
+At even times, write $N=2n$, $h=2k$, $\eps=n^{-1/3}$, and $X=\eps(k+1/2)$. Then $t=2^{-1/3}\eps$ and $x=2^{2/3}X$. Define
+\begin{align}
+ E_n^{[M]}(k)&=K_E\mathcal H_{2n}^{[M]}
+ \mathfrak F^{[M]}(2^{-1/3}\eps,2^{2/3}X),\notag\\
+ K_E&=\frac{\Lambda Q_\Gamma\,2^{1/3-\eta_f}}{F'(0)}.\label{tcn:f:Eprofile}
+\end{align}
+At $k=0$ the argument is $x=t$, and
+\[
+ \mathfrak F^{[M]}(t,t)=F'(0)t(1+O(t^2)).
+\]
+The derivative gauges ensure that higher profiles do not alter this leading endpoint normalization. Consequently every depth shares
+\begin{equation}\label{tcn:f:Eleading}
+ E_n^{[M]}(0)=\Lambda Q_\Gamma\,4^n\ee^{Bn^{1/3}}n^{\zeta_f-1/2}(1+O(\eps)).
+\end{equation}
+
+The exact conversion back to the counted sequence is crucial. Define
+\begin{equation}\label{tcn:f:Z}
+ Z^\Gamma_n=\frac{Q_\Gamma G_\Gamma(n)}{\Lambda^n(n!)^{d_-} n^{\delta_f}}\cdot
+             \frac{\Lambda n^{d_-}}{\mathcal W(n,n)}.
+\end{equation}
+It tends to one and has a full expansion in integer powers of $n^{-1}$, from gamma-ratio asymptotics and the finite polynomial $\mathcal W(n,n)$. Its first term is
+\begin{equation}\label{tcn:f:Zfirst}
+ Z^\Gamma_n=1+\left(\frac{d_-d(2d_-+1)}{12d_+^2}-\frac{d_-d}{4d_+}\right)n^{-1}
+       +O(n^{-2}).
+\end{equation}
+The canonical multiplicative coefficient series is the expansion of
+\begin{equation}\label{tcn:f:endpointseries}
+ \frac{Z^\Gamma_nE_n^{[M]}(0)}
+ {\Lambda Q_\Gamma\,4^n\ee^{Bn^{1/3}}n^{\zeta_f-1/2}}.
+\end{equation}
+The gamma constant $Q_\Gamma$ and $\Ai'(z)$ cancel here. The coefficients stabilize as the retained depth increases.
+
+In particular, $Z^\Gamma_n$ has no $n^{-1/3}$ term and the endpoint profile has no term of order $t$. Hence $C_{d,1}=2^{-1/3}h_1$, which simplifies to \eqref{tcn:f:c1}. If $\omega^3=1$ and the Airy-equation solution is normalized by $\mathfrak B_\ell(0)=0$, $\mathfrak B_\ell'(0)=1$, then
+\[
+ \mathfrak B_{\omega\ell}(\omega x)=\omega\mathfrak B_\ell(x).
+\]
+The weights $U,V$ are invariant under simultaneous $(t,x,\ell)\mapsto(\omega t,\omega x,\omega\ell)$. Formal uniqueness preserves this grading. Thus a scalar monomial $\ell^mt^j$ in the normalized endpoint has $m+j$ divisible by three. On substituting $\ell=(2d_-/d_+)^{2/3}z$, $t=2^{-1/3}\eps$, the power $(2m-j)/3$ of $2$ is an integer. Together with the rational expansion of $Z^\Gamma_n$, this proves the coefficient field stated in Theorem~\ref{tcn:f:thm:main}.
+
+\section{Transferring arbitrary formal depth to the exact counts}\label{tcn:f:sec:transfer}
+\subsection{Residual estimates and the boundary}
+For each fixed $M$ and $C_0$, the exact one-step residual of
+$\mathcal H_N^{[M]}\mathfrak F^{[M]}(N^{-1/3},(h+1)N^{-1/3})$, divided by its scalar carrier, is bounded by
+\begin{equation}\label{tcn:f:oneresidual}
+ C t^{M+3}(1+x)^D\ee^{-c_0x^{3/2}},\qquad 0\le h\le C_0\sqrt N,
+\end{equation}
+for constants depending on the fixed depth and degree. Here $c_0>0$ is a bound constant. In this region $x=O(t^{-1/2})$, so $xt^2=O(t^{3/2})$, and every denominator in the exact weights stays separated from zero. A finite rational Taylor expansion has a remainder bounded by the stated power of $t$ times a polynomial in $x$. The shifted arguments differ from $x$ by
+\[
+ \pm t+O(xt^3+t^4)=O(t).
+\]
+All derivatives of the finite polynomial--Airy profiles obey polynomial times $\ee^{-c_0x^{3/2}}$ bounds on those intervals. The exact finite-carrier ratio is analytic near $t=0$ after its constant $2$ is removed. Formal cancellation through degree $M+2$ gives \eqref{tcn:f:oneresidual}. This argument uses only finitely many terms, not convergence of an infinite profile series.
+
+At the lower boundary $h=0$, the ghost predecessor $h=-1$ has scaled argument zero. Every finite profile vanishes there exactly, before Taylor expansion. The lower boundary is therefore exact. Eliminating the odd step gives precisely the even boundary diagonal $\mathsf D_n(0)=1$; the even residual is a bounded linear combination of one-step residuals.
+
+Choose a smooth fixed cutoff $\chi$, equal to one on $[0,1/2]$ and zero on $[1,\infty)$, and let
+\[
+ \widetilde E_n^{[M]}(k)=\chi(k/\sqrt n)E_n^{[M]}(k).
+\]
+In the transition region $X$ is comparable to $n^{1/6}$, so the profiles and adjacent values are polynomial times $\ee^{-c_0n^{1/4}}$. Every cutoff error is therefore smaller than any fixed inverse power after removing the common scalar carrier. Include also the extra possible residual edge at $k=\lfloor\sqrt n\rfloor+1$. From \eqref{tcn:f:edgefactor},
+\[
+ -\log \Sigma_n(k)=O((k^2+k)/n)=O(1),\qquad k\le\sqrt n+O(1).
+\]
+Thus $\Sigma_n^{-1}$ is uniformly bounded on the whole residual support.
+
+Let $\Theta_n=4^n\ee^{Bn^{1/3}}n^{\eta_f}$. The squared polynomial--Airy envelope has lattice sum $O(\eps^{-1})$, so
+\[
+ \norm{\widetilde E_n^{[M]}-\mathsf M_n\widetilde E_{n-1}^{[M]}}_2
+ =O(\Theta_n\eps^{M+5/2}).
+\]
+Since $\Theta_n/P_n=O(\eps^{1/2})$, we obtain the normalized defect
+\begin{equation}\label{tcn:f:normalizeddefect}
+ \norm{P_n^{-1}\Sigma_n^{-1}
+  [\widetilde E_n^{[M]}-\mathsf M_n\widetilde E_{n-1}^{[M]}]}_2
+ =O(\eps^{M+3})=O(n^{-(M+3)/3}).
+\end{equation}
+
+\subsection{The amplitude is the same at every depth}
+Set $V_n^{[M]}=P_n^{-1}\Sigma_n^{-1}\widetilde E_n^{[M]}$. The leading coefficient in \eqref{tcn:f:Eprofile} and the normalized Airy sample give
+\begin{equation}\label{tcn:f:normalmatch}
+ \norm{V_n^{[M]}-\frac{\Lambda Q_\Gamma}{\sqrt c\,C_\lambda}\psi_n}_2
+ =O(\eps).
+\end{equation}
+For the scalar calculation, $K_E2^{\eta_f}=\Lambda Q_\Gamma(d_+/d_-)^{1/3}/\Ai'(z)$; divide by the Airy normalization $\sqrt{c_A}/\Ai'(z)$ and include the half-power scalar ratio. The finite carrier correction and weighted profile correction are $O(\eps)$. On the cutoff support, $\Sigma_n^{-1}-1=O(\eps(1+X^2))$ in the polynomial--Airy weighted norm; the cutoff discards an exponentially small tail. Finally \eqref{tcn:f:profileapprox} has error $O(\eps^2)$. These justify \eqref{tcn:f:normalmatch} globally.
+
+By the exact amplitude formula,
+\[
+ \gamma_d\frac{\Lambda Q_\Gamma}{\sqrt c\,C_\lambda}=p_\infty.
+\]
+Hence the signed error $\mathsf z_n=u_n-\gamma_dV_n^{[M]}$ has norm $O(n^{-1/3})$, limiting Perron projection zero, and exact evolution
+\begin{equation}\label{tcn:f:forced}
+ \mathsf z_n=\mathsf T_n\mathsf z_{n-1}+\varrho_n,\qquad
+ \norm{\varrho_n}_2=O(n^{-p}),\qquad p=(M+3)/3.
+\end{equation}
+The profiles need not be positive. Positivity was used to prove the actual limiting amplitude; it is not assumed for the signed error.
+
+\subsection{A forced product bootstrap}
+\begin{lemma}\label{tcn:f:lem:forced}
+Suppose \eqref{tcn:f:forced} holds with $p>4/3$, $\norm{\mathsf z_n}_2=O(n^{-1/3})$, and $\ip{\psi_n}{\mathsf z_n}\to0$. Then
+\[
+ \norm{\mathsf z_n}_2=O(n^{-p+1}),\qquad \mathsf z_n(0)=O(n^{-p+1/2}).
+\]
+\end{lemma}
+\begin{proof}
+Put $a^{\rm err}_n=\ip{\psi_n}{\mathsf z_n}$ and $b^{\rm err}_n=\norm{(I-\psi_n\psi_n^{\mathsf T})\mathsf z_n}_2$. The gap, drift, and $\mathsf R$-defect estimates give
+\begin{align}
+ b^{\rm err}_n&\le(1-c_{\rm gap}n^{-2/3})b^{\rm err}_{n-1}+Cn^{-1}|a^{\rm err}_{n-1}|+Cn^{-p},\notag\\
+ |a^{\rm err}_n-a^{\rm err}_{n-1}|&\le Cn^{-4/3}|a^{\rm err}_{n-1}|+Cn^{-1}b^{\rm err}_{n-1}+Cn^{-p}.\label{tcn:f:bootstrap}
+\end{align}
+If $|a^{\rm err}_n|+b^{\rm err}_n=O(n^{-q})$, the first inequality improves the transverse bound to
+\[
+ b^{\rm err}_n=O(n^{-q-1/3}+n^{-p+2/3}).
+\]
+This follows by a power supersolution for
+$x_n\le(1-c_{\rm gap}n^{-2/3})x_{n-1}+O(n^{-s})$, which gives $x_n=O(n^{-s+2/3})$; any finite startup contribution decays as $\ee^{-c_2n^{1/3}}$. Substitute the improved transverse bound in the second inequality and sum from $n+1$ to infinity, using $a^{\rm err}_\infty=0$. Then
+\[
+ a^{\rm err}_n=O(n^{-q-1/3}+n^{-p+1}).
+\]
+All increments are absolutely summable: initially $q=1/3$ and $p>4/3$. Finitely many iterations improve the exponent by $1/3$ until reaching $p-1$, proving the norm estimate.
+
+For the endpoint, iterate over the last $\Delta=\lfloor n^{2/3}\rfloor$ steps and use \eqref{tcn:f:smoothing}:
+\[
+ |\mathsf z_n(0)|\le C\Delta^{-3/4}n^{-p+1}
+       +Cn^{-p}\sum_{l<\Delta}(l+1)^{-3/4}
+ =O(n^{-p+1/2}).
+\]
+\end{proof}
+\emph{[Write phase: Lemma~\ref{tcn:f:lem:forced} is the zero-limit bootstrap \eqref{tcn:d:boot} of Part~I in source 104's frame; Part~IV's Lemma is the same statement at $d=2$.]}
+
+The endpoint scale of $E_n^{[M]}$ is $4^n\ee^{Bn^{1/3}}n^{\zeta_f-1/2}$, whereas $P_n$ has power $\zeta_f$. Lemma~\ref{tcn:f:lem:forced} therefore gives relative error $O(n^{-p+1})=O(\eps^M)$ in $e_n(0)$, and after the exact common factor $G_\Gamma(n)/\mathcal W(n,n)$, also in $a_n$. To obtain the expansion through $\eps^J$, choose $M\ge J+1$ and $M\ge2$. Expand \eqref{tcn:f:endpointseries} through degree $J$; its next term is $O(\eps^{J+1})$ and the transfer error is at most that size. All coefficients come from compatible formal profiles, carriers and gamma factors, so they are independent of the deeper chosen truncation. This completes the proof of Theorem~\ref{tcn:f:thm:main}.
+
+\section{Explicit coefficients and total ternary networks}\label{tcn:f:sec:coefficients}
+\subsection{The second universal coefficient}
+Writing the normalized logarithmic series as
+\[
+ \log\left(1+\sum_{j\ge1}C_{d,j}\eps^j\right)
+ =\sum_{j\ge1}L_{d,j}\eps^j,
+\]
+one has $L_{d,1}=C_{d,1}$ and
+\begin{equation}\label{tcn:f:b2}
+ L_{d,2}=z\left(\frac{d_-}{d_+}\right)^{2/3}\left(\frac1{d_+}-\frac{d_+^2}{27d_-^2}\right)
+ =\frac B3\left(\frac1{d+1}-\frac{(d+1)^2}{27(d-1)^2}\right).
+\end{equation}
+Consequently
+\begin{equation}\label{tcn:f:c2}
+ C_{d,2}=\frac{C_{d,1}^2}{2}
+       +\frac B3\left(\frac1{d+1}-\frac{(d+1)^2}{27(d-1)^2}\right).
+\end{equation}
+To derive it, extract $h_2$ from \eqref{tcn:f:carrieridentity} using \eqref{tcn:f:sigma5}. The endpoint contributes $\ell t^2/6$, since $F(t)/(F'(0)t)=1+\ell t^2/6+O(t^3)$. No higher profile or $Z^\Gamma_n$ contributes before order $t^3$. Thus $L_{d,2}=2^{-2/3}(h_2+\ell/6)$, which simplifies to \eqref{tcn:f:b2}.
+
+\emph{[Write phase: the second forms in \eqref{tcn:f:b2} and \eqref{tcn:f:c2} are in the host's $B$ and were checked symbolically against source 104's forms. At $d=2$, $L_{2,2}=0$, as in \eqref{tcn:b:logforward}; at $d=3$, $L_{3,2}=11B/324$, as in \eqref{tcn:d:ternary}. For $d=3,4,5,6,7,8$ the bracket in \eqref{tcn:f:b2} is $11/108$, $118/1215$, $1/12$, $332/4725$, $115/1944$, $22/441$; it has the sign of $27(d-1)^2-(d+1)^3$, so it vanishes at $d=2$, is positive for $3\le d\le21$ (where $L_{d,2}<0$, since $B<0$) and negative for $d\ge22$ (where $L_{d,2}>0$; at $d=21$, $10800>10648$, and at $d=22$, $11907<12167$). Numerically $(C_{d,1},L_{d,2})\approx(0.12053,-0.15002)$, $(-0.14686,-0.16154)$ and $(-0.31838,-0.14869)$ at $d=3,4,5$.]}
+
+The maximal-network expansion has a different second coefficient:
+\begin{equation}\label{tcn:f:maximalfirsttwo}
+ \frac{T^{(d)}_{n,n-1}}{(\gamma_d/\Gamma)(n!)^d\Gamma^n\ee^{Bn^{1/3}}n^\alpha}
+ =1+C_{d,1}n^{-1/3}+\left(C_{d,2}-\frac B3\right)n^{-2/3}+O(n^{-1}).
+\end{equation}
+Indeed $B[(n-1)^{1/3}-n^{1/3}]=-(B/3)n^{-2/3}+O(n^{-5/3})$. This shift must not be omitted when using word coefficients for network counts. \emph{[Write phase: in Part~I's notation \eqref{tcn:d:netall}, $E_{d,1}=C_{d,1}$ and $E_{d,2}=C_{d,2}-B/3$.]}
+
+For $d=3$, $d_-=2$, $d_+=4$, $\Gamma=32$, $\rho=-1$, $\alpha=-3$, and $B/3=z2^{-2/3}$. In particular,
+\begin{align}
+ C_{3,1}&=\frac{z^2}{36\,2^{1/3}}=\frac{B^2}{162},\notag\\
+ C_{3,2}&=\frac{z^4}{2592\,2^{2/3}}
+          +\frac{11z}{108\,2^{2/3}}=\frac{B^4}{52488}+\frac{11B}{324}.\label{tcn:f:ternarycoeffs}
+\end{align}
+The exact degree-six reconstruction also gives the next ternary logarithmic coefficient. More explicitly,
+\begin{align}
+ \log\frac{a_n}{\gamma_3(n!)^2 32^n
+ \ee^{Bn^{1/3}}n^{-1}}
+ ={}&\frac{z^2}{36\,2^{1/3}}n^{-1/3}
+ +\frac{11z}{108\,2^{2/3}}n^{-2/3}\notag\\
+ &+\left(\frac{z^3}{243}-\frac3{16}\right)n^{-1}
+ +O(n^{-4/3})\qquad(d=3).\label{tcn:f:ternarylog3}
+\end{align}
+The exact gamma factor contributes $-7/(32n)$ to this expression; omitting it would give the wrong cubic logarithmic coefficient. The corresponding multiplicative third coefficient is
+\[
+ C_{3,3}=\frac{z^6}{559872}+\frac{43z^3}{7776}-\frac3{16}
+ =\frac{B^6}{25509168}+\frac{43B^3}{52488}-\frac3{16}.
+\]
+Here $a_n$ in \eqref{tcn:f:ternarylog3} denotes the word count at degree $d=3$. The exact reconstruction in the source package checks the recurrence, scalar carrier, local Airy solution and gamma conversion before comparing these coefficients.
+
+\emph{[Write phase: with $B=3z/2^{2/3}$ the three coefficients of \eqref{tcn:f:ternarylog3} are $B^2/162$, $11B/324$ and $4B^3/6561-3/16$, exactly those of Part~I's \eqref{tcn:d:ternary}: two independent derivations, by different gauges, agree. The $B$-forms of $C_{3,2}$ and $C_{3,3}$ are write-phase conversions, checked symbolically; $C_{3,3}$ is new.]}
+
+\subsection{A quantitative consequence of the published ternary proof}\label{tcn:f:sec:ternarytotal}
+\begin{proposition}[source 104; conditional on its reading of {\cite{Chang2024}}, see Remark~\ref{tcn:f:rem:reading}]\label{tcn:f:prop:total3rate}
+For $d=3$,
+\begin{equation}\label{tcn:f:totalratio3}
+ T^{(3)}_n/T^{(3)}_{n,n-1}=1+O(n^{-1/2}).
+\end{equation}
+This rate follows directly from the proof of \cite[Lemma 3.24 and Theorem 1.9(ii)]{Chang2024}.
+\end{proposition}
+\begin{proof}
+The published argument partitions ternary word/network objects into augmentation classes associated with binary objects. In its paired classes, the cardinalities $\mathfrak r(\omega')$ and $\mathfrak s(\omega)$ have the uniform ratio bound
+\[
+ \frac{\mathfrak r(\omega')}{\mathfrak s(\omega)}\ge \mathfrak C_m,
+ \qquad \mathfrak C_m=\prod_{i=2}^m\frac{4i-3}{4i-5}
+ =\frac{\Gamma(3/4)}{\Gamma(5/4)}
+   \frac{\Gamma(m+1/4)}{\Gamma(m-1/4)}\asymp\sqrt m.
+\]
+For $n$ leaves the word has exactly $m=n-1$ letters. The source temporarily shifts its word subscript within this paragraph; using $m$ separates the word size from the leaf count. The binary indexing pairs the classes bijectively. Summing $\mathfrak r$ over them gives the ternary maximal count, up to the common permutation factor, whereas summing $\mathfrak s$ gives twice the first-deficit count. That factor two is the marked free-edge encoding in the published construction. Hence, explicitly,
+\[
+ \frac{T^{(3)}_{n,n-2}}{T^{(3)}_{n,n-1}}
+ \le\frac1{2\mathfrak C_{n-1}}=O(n^{-1/2}).
+\]
+The proof of \cite[Theorem 1.9(ii)]{Chang2024}, by iterating its inequality (15), also gives
+\[
+ T^{(3)}_{n,n-1-k}\le\frac{T^{(3)}_{n,n-2}}{2^{k-1}k!},
+ \qquad 1\le k\le n-1.
+\]
+Summing the convergent factorial majorant proves \eqref{tcn:f:totalratio3}.
+\end{proof}
+Combining the all-order maximal theorem with this ratio proves \eqref{tcn:f:total3}: the first maximal correction is $C_{3,1}n^{-1/3}$, and its next error $O(n^{-2/3})$ is smaller than the ratio error $O(n^{-1/2})$. The second word or maximal coefficient in \eqref{tcn:f:maximalfirsttwo} and \eqref{tcn:f:ternarycoeffs} does not transfer with this error bound. The displayed rate is a quantitative extraction from the published proof, not a claim to a separate new combinatorial rate theorem. For $d\ge4$, the published leading ratio suffices for \eqref{tcn:f:totalequivalent}; no unproved quantitative extension is used here.
+
+\begin{remark}[Status of Proposition~\ref{tcn:f:prop:total3rate}; write phase]\label{tcn:f:rem:reading}
+The proof above reads two quantitative facts out of the \emph{proofs} of \cite[Lemma 3.24 and Theorem 1.9(ii)]{Chang2024}: the uniform class-ratio bound $\mathfrak C_m$ with $m=n-1$, and the factor two between the summed class sizes and the first-deficit count. Neither is a stated result of that paper (source 104's \textup{\nolinkurl{104-fixdeg-SOURCES.md}} says so), the paper is not shipped, and the reading was not checked against it in writing. The algebra after the two facts is correct: $\mathfrak C_m=\prod_{i=2}^m(i-\frac34)/(i-\frac54)$ telescopes to the displayed Gamma ratio, which is $\asymp\sqrt m$, and $\sum_{k\ge1}1/(2^{k-1}k!)=2(\ee^{1/2}-1)$ is finite. Proposition~\ref{tcn:f:prop:total3rate} and \eqref{tcn:f:total3} are therefore printed as conditional on that reading, and the verification is listed in Section~\ref{tcn:f:sec:questions}. If the reading holds, the proposition is the first total-count correction known here for any $d\ge3$ (Section~\ref{tcn:d:sec:networks}).
+\end{remark}
+
+\section{All order inverses and exact threshold rules}\label{tcn:f:sec:inverse}
+\subsection{A common Lambert starting point}
+The factorial power must be included in the inverse. Consider a scale
+\[
+ S(n)=\gamma_\star(n!)^{\mathsf p}\Gamma^n\ee^{Bn^{1/3}}n^{\mathsf r}(1+o(1)),\qquad \mathsf p>0.
+\]
+For words use $(\mathsf p,\mathsf r,\gamma_\star)=(d_-,\rho,\gamma_d)$; for maximal networks use $(d,\alpha,\gamma_d/\Gamma)$; for total networks use $(d,\alpha,K_d)$. With $y>0$ large, define
+\begin{align}
+ x_0(y)&=\frac{y}{\mathsf pW_0(\Gamma^{1/\mathsf p}y/(\mathsf p\ee))},\label{tcn:f:lambert}\\
+ L_0(y)&=\mathsf p\log(\Gamma^{1/\mathsf p}x_0(y)),\notag\\
+ \hat x_{\mathsf p,\mathsf r}(y)&=x_0(y)-
+ \frac{Bx_0(y)^{1/3}+(\mathsf r+\mathsf p/2)\log x_0(y)
+                     +(\mathsf p/2)\log(2\pi)}{L_0(y)}.\label{tcn:f:amplitudefree}
+\end{align}
+Here $W_0$ is the positive real principal branch of Lambert's $W$ function. The point $x_0$ solves
+\[
+ \mathsf px_0\bigl(\log(\Gamma^{1/\mathsf p}x_0)-1\bigr)=y.
+\]
+\emph{[Write phase: this is Part~I's seed \eqref{tcn:d:seed}, since $\mathsf px(\log(\Gamma^{1/\mathsf p}x)-1)=\mathsf px\log x+\mathsf ax$ with $\mathsf a=\log\Gamma-\mathsf p$.]}
+
+\begin{proposition}[Amplitude free eventual inverse]\label{tcn:f:prop:amplitudefree}
+Even the known two-sided $\Theta$ estimate for any of the three sequences implies
+\begin{equation}\label{tcn:f:inverseweak}
+ \hat x_{\mathsf p,\mathsf r}(\log S(n))=n+O(1/\log n).
+\end{equation}
+Thus nearest-integer rounding eventually recovers the index of an exact sequence value without evaluating the amplitude.
+\end{proposition}
+\begin{proof}
+By Stirling's formula, the two-sided scale gives $\log S(n)=\Phi(n)+O(1)$, where
+\[
+ \Phi(x)=\mathsf px\bigl(\log(\Gamma^{1/\mathsf p}x)-1\bigr)
+   +Bx^{1/3}+(\mathsf r+\mathsf p/2)\log x+(\mathsf p/2)\log(2\pi).
+\]
+Write $\Phi=\Phi_0+\varphi_1$. At $x_0$, $\Phi_0(x_0)=y$ and $\Phi_0'(x_0)=L_0$. For $h=-\varphi_1(x_0)/L_0=O(x_0^{1/3}/\log x_0)$,
+\[
+ \Phi(x_0+h)-y=\varphi_1'(x_0)h+O(h^2/x_0)
+                   =O(x_0^{-1/3}/\log x_0).
+\]
+Since $\Phi'(x)\sim\mathsf p\log x$, the mean value theorem proves \eqref{tcn:f:inverseweak}. The omitted $\log\gamma_\star$ is a bounded constant, so it is consistent with this accuracy.
+\end{proof}
+The statement is eventual and has no effective numerical cutoff. It does not assert that a floating-point implementation rounds correctly from the first few terms.
+
+\subsection{Arbitrary order word and maximal inverses}
+Let $L_{d,j}$ be the logarithmic coefficients defined in Section~\ref{tcn:f:sec:coefficients}. With the true canonical amplitude, set
+\begin{equation}\label{tcn:f:FJ}
+ \mathcal F_J(x)=d_-\log\Gamma(x+1)+x\log\Gamma+Bx^{1/3}
+ +\rho\log x+\log\gamma_d+\sum_{j=1}^JL_{d,j}x^{-j/3},
+\end{equation}
+where $\Gamma(x+1)$ is Euler's Gamma function and $\log\Gamma$ the logarithm of the base. For sufficiently large $x$, its derivative is positive and asymptotic to $d_-\log x$. If $x_J(y)$ is its unique sufficiently large inverse, Theorem~\ref{tcn:f:thm:main} and the mean value theorem give
+\begin{equation}\label{tcn:f:wordinverse}
+ x_J(\log a_n)=n+O\left(\frac{n^{-(J+1)/3}}{\log n}\right).
+\end{equation}
+The exact shifted maximal model is
+\begin{equation}\label{tcn:f:MJ}
+ \mathcal M_J(x)=\log\Gamma(x+1)+\mathcal F_J(x-1).
+\end{equation}
+Its derivative is asymptotic to $d\log x$, and its inverse at $\log T^{(d)}_{n,n-1}$ has the same error order as \eqref{tcn:f:wordinverse}. This shifted model automatically includes every index correction, including the $-B/3$ in \eqref{tcn:f:maximalfirsttwo}.
+
+For either model $\mathcal A_J$, a prescribed finite number of Newton steps suffices asymptotically. Start at \eqref{tcn:f:lambert}, with $\mathsf p=d_-$ for $\mathcal F_J$ or $\mathsf p=d$ for $\mathcal M_J$, and iterate
+\begin{equation}\label{tcn:f:newton}
+ x_{k+1}=x_k-\frac{\mathcal A_J(x_k)-y}{\mathcal A_J'(x_k)},\qquad
+ m_J=\lceil\log_2(J+4)\rceil-1.
+\end{equation}
+The $m_J$th iterate already has the inverse error in \eqref{tcn:f:wordinverse}. Indeed, if $x_*$ is the exact model root and $L=\log x_0$, then
+\[
+ x_*-x_0=O(x_0^{1/3}/L),\qquad
+ \mathcal A_J'(x)\asymp L,\qquad
+ \mathcal A_J''(x)=O(1/x_0)
+\]
+in the relevant neighborhood. Taylor's theorem gives
+\[
+ |x_{k+1}-x_*|\le\frac{C}{x_0L}|x_k-x_*|^2,
+ \qquad
+ x_k-x_*=O\left(\frac{x_0^{1-2^{k+1}/3}}{L^{2^{k+1}-1}}\right).
+\]
+The iterates stay in that neighborhood. Since $2^{m_J+1}\ge J+4$, the numerical-model error is at most the asymptotic-model error. All statements here refer to exact mathematical evaluations; uncertified amplitude digits do not provide a certified numerical inverse. \emph{[Write phase: the same quadratic estimate is Part~II's \eqref{tcn:b:newton}.]}
+
+For reference,
+\[
+ \mathcal F_J'(x)=d_-\Psi(x+1)+\log\Gamma+\frac B3x^{-2/3}
+ +\frac\rho x-\sum_{j=1}^J\frac j3L_{d,j}x^{-j/3-1},
+\]
+where $\Psi$ is the digamma function. If only elementary functions and $W_0$ are desired, replace each $\log\Gamma(x+1)$ by
+\begin{equation}\label{tcn:f:stirlinginverse}
+ (x+\tfrac12)\log x-x+\tfrac12\log(2\pi)
+ +\sum_{m=1}^R\frac{\mathrm B_{2m}}{2m(2m-1)x^{2m-1}},\quad
+ R=\max\left(0,\left\lceil\frac{J-2}{6}\right\rceil\right),
+\end{equation}
+with the Bernoulli numbers $\mathrm B_{2m}$. Its remainder is $O(x^{-2R-1})$ and $2R+1\ge(J+1)/3$. Use the corresponding expression at $x-1$ in the shifted model and differentiate the replacement consistently. The same inverse order and finite Newton count follow.
+
+\subsection{The information available for total counts}
+For totals at any fixed degree, the leading model
+\begin{equation}\label{tcn:f:T0}
+ \mathcal T_{d,0}(x)=d\log\Gamma(x+1)+x\log\Gamma+Bx^{1/3}
+                        +\alpha\log x+\log K_d
+\end{equation}
+has eventual inverse satisfying
+\[
+ \mathcal T_{d,0}^{-1}(\log T^{(d)}_n)=n+o(1/\log n).
+\]
+This uses just the leading equivalent. For $d\ge4$, no power-law remainder for this inverse is inferred from the published ratio limit. For $d=3$, the source-derived refinement gives the stronger model
+\begin{equation}\label{tcn:f:T31}
+ \mathcal T_{3,1}(x)=3\log\Gamma(x+1)+x\log32
+ +Bx^{1/3}-3\log x+\log(\gamma_3/32)
+ +\frac{z^2}{36\,2^{1/3}}x^{-1/3},
+\end{equation}
+and
+\begin{equation}\label{tcn:f:totalinverse3}
+ \mathcal T_{3,1}^{-1}(\log T^{(3)}_n)
+ =n+O\left(\frac{n^{-1/2}}{\log n}\right).
+\end{equation}
+Starting from \eqref{tcn:f:lambert} with $\mathsf p=3$, $\Gamma=32$, two Newton steps suffice for this accuracy: their root error is $O(x_0^{-5/3}/\log^7x_0)$, smaller than the model error. This is not an all-order total-count inverse. \emph{[Write phase: \eqref{tcn:f:T31} and \eqref{tcn:f:totalinverse3} inherit the conditional status of Proposition~\ref{tcn:f:prop:total3rate}. At $d=2$ Part~II's \eqref{tcn:b:ht} and \eqref{tcn:b:inverse-total} are stronger.]}
+
+\subsection{Exact floor and ceiling thresholds}
+The asymptotic inverse of an exact sequence value and a threshold query are different tasks. A threshold can be arbitrarily close to a count. For words, \eqref{tcn:d:brec} gives, for $n\ge2$,
+\[
+ a_n\ge b_{n,n}=\binom{d_+n-2}{d_-}a_{n-1}>a_{n-1}.
+\]
+The initial equality $a_0=a_1=1$ is a finite exception. The maximal sequence is strictly increasing eventually by its exact identity; the total equivalent also gives $T^{(d)}_{n+1}/T^{(d)}_n\sim\Gamma n^d$, hence eventual strict monotonicity. The amplitude-free approximation satisfies $\hat x_{\mathsf p,\mathsf r}'(y)\sim1/(\mathsf p\log x_0)>0$.
+
+Let $S(n)$ be any of these sequences and let $Y$ be a sufficiently large positive threshold. Define
+\[
+ k_\le(Y)=\max\{n:S(n)\le Y\},\qquad
+ j_0=\operatorname{round}(\hat x_{\mathsf p,\mathsf r}(\log Y)).
+\]
+Since the monotone approximation is $n+o(1)$ at each exact count, $j_0\in\{k_\le(Y),k_\le(Y)+1\}$. Therefore one exact or rigorously certified comparison gives
+\begin{equation}\label{tcn:f:thresholdfloor}
+ k_\le(Y)=\begin{cases}j_0,&S(j_0)\le Y,\\j_0-1,&S(j_0)>Y.\end{cases}
+\end{equation}
+For the least index $k_\ge(Y)=\min\{n:S(n)\ge Y\}$,
+\begin{equation}\label{tcn:f:thresholdceiling}
+ k_\ge(Y)=\begin{cases}j_0,&S(j_0)\ge Y,\\j_0+1,&S(j_0)<Y.\end{cases}
+\end{equation}
+Equality belongs to the first branch in both formulas. To see the ceiling assertion at equality, note that an exact sufficiently large count rounds to its exact index; strictly between counts the only candidates are the adjacent two. Any deterministic tie rule for nearest-integer rounding works eventually. No unverified floating-point comparison arbitrarily near equality is enough. No effective cutoff or certified numerical precision prescription is supplied here; a practical implementation must certify the comparison and account for the finite initial region. \emph{[Write phase: $k_\ge(Y)$ is Part~II's $\mathcal N(Y)$; the bracket \eqref{tcn:b:threshold} and this one-comparison rule are two forms of the separation condition of Remark~\ref{tcn:d:rem:tai}.]}
+
+\section{Sequence identification and the scope of the literature check}\label{tcn:f:sec:literature}
+The $d=2$ word sequence is OEIS A213863 \cite{OEIS}. For $d=3,4$, the original recurrence gives
+\begin{center}
+\begin{tabular}{crrrr}
+\toprule
+$d$ & $a_0$ & $a_1$ & $a_2$ & $a_3$\\
+\midrule
+2 & 1 & 1 & 7 & 106\\
+3 & 1 & 1 & 25 & 2305\\
+4 & 1 & 1 & 91 & 51821\\
+\bottomrule
+\end{tabular}
+\end{center}
+The corresponding maximal-network prefixes, starting at $n=1$, are
+\[
+\begin{array}{ll}
+ d=3:&1,2,150,55320,57939000,132120450000,\ldots,\\
+ d=4:&1,2,546,1243704,11351644920,291451508298720,\ldots.
+\end{array}
+\]
+They agree with the maximal entries in \cite[Appendix A, Tables 3--4]{Chang2024}. No OEIS identifier was established for the exact $d=3$ or $d=4$ word or unranked-network sequence in the focused search. This means no entry was located, not that the database contains none. \emph{[Write phase: the $d=3$ row continues Part~I's diagonal in Section~\ref{tcn:d:sec:recurrence}; the $d=4$ prefixes and both maximal prefixes were recomputed from \eqref{tcn:d:brec} in writing and agree.]}
+
+A nearby identifier is an important trap: A213864 begins $1,1,19,1075,\ldots$ and is not the $d=3$ sequence. Although it also uses four copies of each letter, it imposes its prefix ordering once a letter has appeared. The $d=3$ condition permits one occurrence before requiring the comparison. Varying multiplicity while keeping the zero-occurrence exception fixed, as in A213275, changes the family. Ranked tree-child counts, including A167484, also count different objects \cite{OEIS213864,OEIS213275,OEIS167484}.
+
+The main baseline is \cite{Chang2024}, whose Theorem 1.8 gives the full Airy $\Theta$ scale, whose Corollary 1.11 gives the ratio limit, and whose Remark 1.12 explicitly distinguishes those facts from a first-order equivalent. Its one-component equivalents concern a different subclass. The positive amplitude above does not rediscover the already published exponent, stretched exponential, or exponential base.
+
+A focused primary-source check through 2 October 2026 located no prior positive-amplitude equivalent or all-order expansion in the fixed-$d\ge3$ maximal-reticulation regime. The relevant newer binary work has different scope: the Young-tableau and Pons--Batle results in \cite{LL2026,LWY2026,YZ2026short} concern exact identities and fixed or bounded reticulation regimes; \cite{YZ2026,FY2026} study sparse binary regimes; and the trident-tableau work \cite{Liu2026} concerns binary networks with exactly one reticulation. These scope distinctions do not constitute an exhaustive priority certificate. The article's mathematical claims rest on the explicit proof above, not on absence of a search result. \emph{[Write phase: in the repository Part~I (source 16) proves the same positive amplitude and all-order expansion for every fixed $d$; it was written independently of source 104 and printed first (Section~\ref{tcn:f:sec:provenance}). The sentence is accurate for the literature source 104 inspected.]}
+
+\section{Reproducibility and remaining boundaries}\label{tcn:f:sec:reproducibility}
+The accompanying package contains the standalone TeX source, this PDF, build instructions, exact finite certificates and a fail-closed checker. It separates finite algebraic verification from the analytic proof.
+
+The rational checks compare the original recurrence with the rotated one-step recurrence, the two-step evolution, the exact endpoint normalization, the symmetrizer edges and the Gram factor. They also test the repaired contraction at degrees including $d\ge6$, where the naive normalization obstruction matters. The polynomial--Airy checks clear the exact recurrence denominators and check both Airy coordinates, value and derivative gauges, and the modulo-three grading. The endpoint reconstruction uses the normalized Airy differential equation, integrates the scalar ratio, and includes the exact gamma conversion $Z^\Gamma_n$. These tests identify the displayed coefficients and detect algebraic or startup mistakes; they are not machine proofs of the global spectral or all-order analytic estimates.
+
+All verification gates use explicit exceptions, so they remain active under \texttt{python -O}. The release suite is run in ordinary and optimized modes and requires deliberately corrupted inputs to be rejected. The source archive has been rebuilt and replayed from a fresh extraction; every page of the final PDF is visually reviewed after rendering. The shipped provenance identifies the primary sources and relevant versions without redistributing third-party papers or development notes.
+
+\emph{[Write phase: in the repository the checker, runner and build script are \textup{\nolinkurl{code/104-fixdeg-verify_exact.py}}, \textup{\nolinkurl{code/104-fixdeg-run_checks.py}} and \textup{\nolinkurl{code/104-fixdeg-build.sh}}; the inputs, results and provenance are \textup{\nolinkurl{data/104-fixdeg-*}}; the package documentation and review are \textup{\nolinkurl{104-fixdeg-checks-README.md}}, \textup{\nolinkurl{104-fixdeg-checks-RESULTS.md}}, \textup{\nolinkurl{104-fixdeg-SOURCES.md}} and \textup{\nolinkurl{104-fixdeg-qa-REVIEW.md}}. The manuscript, its PDF, the release verifier and the release manifest are not shipped; they survive in the arrival commit. The intake reran the suite on copies of the delivered layout on 5 October 2026. A first run failed after 34 of 50 rejections, during a machine-wide resource shortage, with ``verifier did not produce result JSON''; that case rejects correctly in isolation. A rerun on a fresh copy passed: both baselines (5,655 gates each) and 50 of 50 rejections, in 475 seconds on a loaded laptop. The regenerated result files equal the delivered ones apart from timestamps, durations and the Python version. The release verifier \textup{\nolinkurl{verify_release.py}} fails on Windows (``Unsafe inventory path'': it requires \texttt{str(Path(name)) == name}, which backslashes break); this is a portability defect, not an integrity failure, and the delivered manifest was verified (25 of 25) at placement. The README of this report gives the rerun route.]}
+
+\paragraph{Amplitude digits.}
+The convergent representations \eqref{tcn:f:Cproduct}, \eqref{tcn:f:pseries}, and \eqref{tcn:f:gamma} define $\gamma_d$ exactly. Certified decimal enclosures would additionally require effective bounds for the spectral, drift, projection and smoothing tails, together with rigorously controlled finite computations. None is claimed here.
+
+\emph{[Write phase: uncertified diagnostics, computed at the intake (5 October 2026; exact integer recurrence for $n\le900$, $700$, $600$, then least-squares fits of the logarithmic remainder with $C_{d,1}$ fixed by \eqref{tcn:f:c1}; the script is not shipped) give $\gamma_3\approx3.784368$, $\gamma_4\approx3.478351$ and $\gamma_5\approx2.384755$. The fitted second logarithmic coefficients, $-0.15001$, $-0.16151$ and $-0.14867$, agree with \eqref{tcn:f:b2} to four or five digits. Part~I's shipped diagnostics (\textup{\nolinkurl{data/16-dcomb-numerical-diagnostics.json}}) give $3.7843665$ for $d=3$ at $n=6000$, corrected through $n^{-1}$, and, for $d=4$, uncorrected ratios that \emph{increase} from $3.4036$ at $n=500$ to $3.4485$ at $n=6000$, as a negative $C_{4,1}$ requires. None of these digits is certified.]}
+
+\paragraph{Total count corrections.}
+The $d=3$ augmentation argument transfers the first coefficient with an $O(n^{-1/2})$ relative remainder. It does not determine the next total coefficient. Sharper deficit-sector asymptotics would be needed for an all-order total expansion; for $d\ge4$ this Part uses only the leading published ratio.
+
+\paragraph{Uniformity and exponentially small terms.}
+Every estimate allows dependence on the fixed integer $d$, and on fixed truncation depth where applicable. There is no uniform limit with $d\to\infty$. Formal solvability at every finite depth and a Poincar\'e remainder do not establish a convergent infinite series or a transseries. Separate exponentially small amplitudes and their interaction would require further analysis.
+
+\paragraph{What makes the argument apply at every fixed degree.}
+The exact gamma-product normalization, full new-coordinate diagonal, factorwise contraction, form compactness at the half-grid boundary, localization across changing dimension, boundary kernel, strictly positive product comparison, finite polynomial inverse, and signed forced-product bootstrap are all proved here. No unproved analogy with the binary case is needed.
+
+\section{Further questions and research (Part III)}\label{tcn:f:sec:questions}
+\emph{Written in the write phase (5 October 2026), under the repository's rule that unproved claims are recorded, not dropped. No claim of source 104 was found to be wrong: every checked constant agrees with Parts~I--II or with an independent computation.}
+\begin{enumerate}[itemsep=2pt]
+\item \emph{Verify the ternary reading.} Proposition~\ref{tcn:f:prop:total3rate}, hence \eqref{tcn:f:total3} and \eqref{tcn:f:totalinverse3}, rests on source 104's reading of the proofs of \cite[Lemma 3.24 and Theorem 1.9(ii)]{Chang2024}: the uniform class-ratio bound $\mathfrak C_m\asymp\sqrt m$ with $m=n-1$, and the factor two from the marked free-edge encoding (sketch in the proof above). What is missing is a check of both facts against the paper, or a self-contained proof of $T^{(3)}_{n,n-2}/T^{(3)}_{n,n-1}=O(n^{-1/2})$ from the recurrence. (Source 104.)
+\item \emph{Further total-count corrections for $d\ge3$.} The second total coefficient at $d=3$, and any total correction for $d\ge4$, need sharper deficit-sector asymptotics; the published ratio limit gives no rate for $d\ge4$. This is Part~I's question~1 of Section~\ref{tcn:d:sec:status}, now re-scoped. At $d=2$ Part~II settles it through the binary identity \eqref{tcn:b:T1}, which has no known analogue for $d\ge3$. (Sources 104 and 16.)
+\item \emph{Certified amplitudes.} Enclosures of $\gamma_d$ through \eqref{tcn:f:Cproduct}, \eqref{tcn:f:pseries} need effective constants for the spectral, drift, projection and smoothing tails. The intake values $\gamma_3\approx3.784368$, $\gamma_4\approx3.478351$, $\gamma_5\approx2.384755$ (Section~\ref{tcn:f:sec:reproducibility}) are uncertified. Part~I's question~2. (Sources 104 and 16.)
+\item \emph{Uniformity in $d$.} All constants depend on $d$; a joint regime with $d$ growing with $n$ is open. The closed forms \eqref{tcn:f:c1}, \eqref{tcn:f:b2} have limits as $d\to\infty$ (for instance $C_{d,1}\to-19z^2/90$, since $B\to3z$), but this proves nothing uniform about the remainders. Part~I's question~3. (Sources 104 and 16.)
+\item \emph{Exponentially small terms and convergence.} Neither a transseries nor convergence or divergence of the correction series is established. Part~I's question~4. (Sources 104 and 16.)
+\item \emph{Closed forms beyond two coefficients.} \eqref{tcn:f:c1} and \eqref{tcn:f:b2} are universal in $d$; whether every $L_{d,j}$ is a polynomial in $B$ with coefficients rational in $d$ of a recognizable shape, and what the next one is, is not computed. The algorithm of Section~\ref{tcn:f:sec:formal} gives each one for fixed $d$. (Write phase.)
+\item \emph{OEIS.} No accession was established for $d=3,4$ (Section~\ref{tcn:f:sec:literature}); none is claimed or submitted. (Source 104.)
+\end{enumerate}
+
+\part{The binary word count in the factorial gauge: six logarithmic terms and an identity-free ratio rate (source 102)}\label{tcn:part:w}
+\emph{Source 102 (bundle Report 102, archive \textup{\nolinkurl{A213863_Tableaux_and_Tree_Child_Networks_Source}}), printed with its binary-specific material in full and its generic steps as pointers to Part~III at $d=2$; its title was ``Positive Airy amplitudes for Young tableaux and tree child networks: a self contained Jacobi product proof for A213863''. Its abstract reads (symbols renamed as in Section~\ref{tcn:w:sec:notation}):} For the Young-tableau and constrained-word sequence $a_n$ recorded as OEIS A213863, we prove the existence of a strictly positive finite amplitude $\gamma_2$ in
+\[
+ a_n=\gamma_2 n!12^n\ee^{z(3n)^{1/3}}n^{-2/3}\bigl(1+O(n^{-1/3})\bigr),
+\]
+where $z$ is the largest zero of the Airy function. The exact recurrence is converted into a product of positive contractive operators obtained from finite Jacobi matrices. A Dirichlet Airy limit, quantitative eigenvector drift, and a killed-walk boundary estimate yield a convergent amplitude representation. We then construct compatible polynomial--Airy profiles to arbitrary depth and transfer them to genuine Poincar\'e expansions with the same amplitude. The known exact normalization for maximally reticulated binary tree-child networks and the proved total-to-maximal ratio $\sqrt\ee$ give a first-order equivalent for the total network count. A direct quantitative consequence of published lemmas gives an $O(n^{-2/3})$ ratio error and transfers the first correction to the total count; a full all-order total-network expansion is not claimed. We give exact coefficient algorithms, inverse asymptotics, reproducible finite checks, and precise proof boundaries. No certified decimal value of $\gamma_2$, exponentially small sector, or exhaustive literature-priority claim is made.
+
+\section{Reading Part IV: provenance, credit and notation}\label{tcn:w:sec:reading}
+\emph{This section was written when source 102 was added to the report (batch~102, 5 October 2026). In Part~IV, text added in writing is marked ``[Write phase: \dots]''.}
+
+\subsection{Provenance and credit}\label{tcn:w:sec:provenance}
+Source 102 is bundle Report~102, archive \textup{\nolinkurl{A213863_Tableaux_and_Tree_Child_Networks_Source.zip}} (543,991 bytes), main file \textup{\nolinkurl{tree_child_amplitude_sources/tree_child_amplitude.tex}} (903 lines, 21-page PDF), dated 2 October 2026. Its title page and its PDF metadata give the author as ``Research prepared for private review''; that wording is the delivery's and is disclosed here, as in the placement commit. It arrived in commit \texttt{60f54ea06} and was placed in this directory by \texttt{6ab1f1979} (batch~102), with the file prefix \textup{\nolinkurl{102-tableaux-}}. It names no repository commit, so it has no pin.
+
+\emph{Credit order.} The archive of source 102 was closed on 1 October 2026 at 22:36 Pacific time (05:36 UTC on 2 October), before the batch-77 archives of sources 16 and 69 reached the repository (\texttt{096ee7b87}, 2 October, 11:05 Pacific). Source 102 thus proves Theorem~\ref{tcn:b:thm:main} (and Theorem~\ref{tcn:d:main} at $d=2$) independently of Parts~I--II. It does not cite source 104 (Part~III), which belongs to the same delivery series, was closed 42 minutes later and shares its architecture. In the repository the theorem was printed first, from sources 16 and 69; source 102 is a further independent route at $d=2$ and is credited as such. Source 104 proves the same theorem for every $d$ with the same architecture in another gauge, so Part~IV is printed after Part~III and points to it where the two arguments coincide at $d=2$.
+
+\subsection{What Part IV proves again and what it adds}\label{tcn:w:sec:map}
+\begin{center}\small
+\begin{tabular}{@{}>{\raggedright}p{0.4\linewidth}>{\raggedright\arraybackslash}p{0.52\linewidth}@{}}
+\toprule
+Source 102 & Relation to Parts I--III\\
+\midrule
+Theorems~\ref{tcn:w:thm:leading}, \ref{tcn:w:thm:constant}, \ref{tcn:w:thm:allorders} & second proofs of Theorem~\ref{tcn:b:thm:main} at $d=2$ (the fourth route, counting Parts~I--III), in the factorial gauge $3^pp!$; same architecture as Part~III\\
+$L_1,\ldots,L_4$, $c_1,c_2,c_3$ in \eqref{tcn:w:logcoeffs}, \eqref{tcn:w:firstcoeffs} & second derivation of \eqref{tcn:b:logforward}, identical values\\
+$L_5$, $L_6$ in \eqref{tcn:w:logcoeffs} & new; confirmed in writing by Part~II's own generator at order nine (Remark~\ref{tcn:w:rem:L56})\\
+Ratio expansion \eqref{tcn:w:ratio} through $n^{-3}$ & new\\
+Proposition~\ref{tcn:w:prop:ratio-rate} ($O(n^{-2/3})$ ratio and total variation) & weaker than Theorems~\ref{tcn:b:thm:transfer} and~\ref{tcn:b:thm:tv}, but by a route that does not use the identity \eqref{tcn:b:T1}; a second route (Remark~\ref{tcn:w:rem:tv})\\
+Total count with first correction \eqref{tcn:w:totalfirst} & weaker re-proof of \eqref{tcn:b:total-forward}\\
+Eigenvalue \eqref{tcn:w:lambda}, amplitude formula \eqref{tcn:w:gamma}, gauge-specific constants & new formulas of the factorial gauge (a further convergent representation of $\gamma_2$)\\
+Inverses (Section~\ref{tcn:w:sec:inverse}) & second route of Section~\ref{tcn:b:sec:inversion} and Part~III's Section~\ref{tcn:f:sec:inverse} at $d=2$; no novelty claimed\\
+Numerical table (Section~\ref{tcn:w:sec:numerics}) & uncertified; consistent with Section~\ref{tcn:b:sec:numerics}\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Notation of Part IV}\label{tcn:w:sec:notation}
+Part~IV uses Part~II's letters for every notion Part~II names, and for its proof apparatus the letters of Part~III, which play the same roles at $d=2$ in the factorial gauge $3^pp!$ instead of the gamma gauge $3^p(4/3)_p$. Values therefore differ from Part~III's (for example the $n^{-1}$ term of the eigenvalue is $10/3$ here and $3c=2$ there). The renamings of source 102's letters are listed below; no formula changed otherwise. A letter not listed has its Part~III meaning at $d=2$ (Section~\ref{tcn:f:sec:notation}) or, failing that, the host's.
+
+\begingroup\small
+\begin{longtable}{@{}>{\raggedright}p{0.24\linewidth}>{\raggedright}p{0.36\linewidth}>{\raggedright\arraybackslash}p{0.32\linewidth}@{}}
+\toprule
+Symbol here & Meaning & Source 102; the false reading to avoid\\
+\midrule\endhead
+$z$, $z_j$; $B$ & Airy zeros; $3^{1/3}z$ (Part~II's) & $\alpha$, $\alpha_j$; $\alpha$ is the network exponent here\\
+$B/3$ & $3^{-2/3}z$ & $\rho$; not the exponent $\rho=-2/3$\\
+$\gamma_2$; $\gamma_T$ & the amplitude ($\gamma$ of Part~II); $\sqrt\ee\gamma_2/12$ & $\gamma_w$; $K_T$\\
+$b_{n,m}$; $\widetilde b(p,q)$ & the array \eqref{tcn:d:brec} at $d=2$; $b_{p+1,q+1}$ & $b(n,m)$; $B(p,q)$\\
+$\mathcal Y(N,h)$, $\omega^\pm_N(h)$, $e_n(k)$ & factorial-gauge array, weights, even-time vector & $d(N,h)$, $u_N(h)$, $v_N(h)$, $e_n(k)$; not Part~I's $D_N(j)$, which uses $3^nn!$ with the other index pair\\
+$\mathsf M_n$; $\mathsf L_n,\mathsf U_n,\mathsf D_n$; $\mathsf b_n(k)$; $\mathsf K_n$ & two-step matrix; its entries; Jacobi off-diagonal; bidiagonal factor & $A_n$; $L_n,U_n,D_n$; $\beta_n(k)$; $C_n$; not $A_{n,k}$, Part~II's $\beta_n(m)$ or $C_r(m)$\\
+$\Sigma_n$, $\varsigma_n(j)$, $\mathsf R_n$; $\mathfrak f_1,\mathfrak f_2$ & symmetrizer, edge ratio, inter-time ratio; factors of $\varsigma_n(j)^2$ & $S_n$, $r_n(j)$, $R_n$; $F_1$, $F_2$\\
+$P_n$, $u_n$, $\mathsf T_n$, $J_n/\lambda_n$ & as in Part~III & $\Lambda_n$, $v_n$, $T_n$, $H_n$\\
+$\psi_n$, $\psi^A_n$, $f_A$, $\mathcal H_A$, $c_A$ & Perron vector, Airy sample, ground state, operator, $2\cdot3^{-1/3}$ & $\phi_n$, $q_n$, $f$, $\mathcal H$, $c_A$\\
+$\mathsf V_n(k)$; $\vartheta_n(k)$ & potential of the form; $(3n+k)/(3(n+k))$ & $V_n(k)$; $t_n(k)$\\
+$p_n$, $p_n^\perp$, $p_\infty$; $\mathsf z$, $\varrho$, $\varrho_n$ & Perron coefficient, transverse norm, limit; errors and forcings & $c_n$, $d_n$, $c_\infty$; $z$, $\rho$, $\eta_n$\\
+$c$, $\ell$, $F$; $h_j$; $\mathfrak B_\ell$ & $2/3$, $c^{2/3}z$, $\Ai(z+c^{1/3}x)$ (Part~II's); carrier coefficients; normalized Airy solution & $c$, $\kappa$, $\mathcal A$; $\ell_j$; $\mathcal B(\kappa,\cdot)$\\
+$\mathcal H_N^{[M]}$, $\mathfrak F$, $E_n^{[M]}$, $V_n^{[M]}$, $\Theta_n$ & carrier, formal series, even-time profile, normalized profile, bulk scale & $H_N^{[M]}$, $F$, $E_n^{[M]}$, $U_n^{[M]}$, $B_n^{\rm bulk}$\\
+$L_j$; $c_j$ & logarithmic and multiplicative coefficients of $a_n$ (Part~II's $L_r$, $c_r$) & $b_j$; $c_j$\\
+$\TC_{n,k}$, $\TC_n$ & binary counts with $n$ leaves ($T^{(2)}_{n,k}$, $T_n$) & same\\
+$\theta_k$, $\varpi_k$, $\mathfrak f_k$; $\mathcal R_{n-1}$ & $\TC_{n,n-1-k}/\TC_{n,n-1}$, $1/(2^kk!)$, free-root-child ratio; $\TC_n/\TC_{n,n-1}$ & $t_k$, $w_k$, $f_k$; $T$; $W=\sqrt\ee$; the counts $F_{n,r}$ of \cite{Chang2024} keep their letter\\
+$x_0(y)$, $L_0(y)$, $\hat x(y)$, $\hat x_T(y)$; $\Phi$; $y$, $Y$; $m_J$; $\Psi$ & inverse quantities as in Part~III; the target logarithm and threshold; Newton count; digamma & $x_0(Y)$, $L_0(Y)$, $z(Y)$, $z_T(Y)$; $G$; $Y$, $y$; $K$; $\psi$\\
+\bottomrule
+\end{longtable}
+\endgroup
+
+\section{The result and its combinatorial meaning}\label{tcn:w:sec:results}
+Let $b_{1,1}=1$, let $b_{n,m}=0$ outside $1\le m\le n$, and for $n\ge2$ let $b_{n,m}=(2n+m-2)\sum_{j\le m}b_{n-1,j}$; this is \eqref{tcn:d:brec} at $d=2$. Set $a_0=1$ and $a_n=\sum_{m=1}^n b_{n,m}$ for $n\ge1$. The first values are
+\[
+ 1,1,7,106,2575,87595,3864040,210455470.
+\]
+This is OEIS A213863. Its word interpretation uses three copies of each of $n$ letters: in every prefix, whenever a smaller letter has appeared, its count is at least the count of any larger letter. It also counts the three-row Young-tableau family with walls considered in \cite{BW2021}. The recurrence and the network bijection are established in \cite{FYZ2021}.
+
+Let $z=z_1>z_2>\cdots$ be the negative zeros of $\Ai$, the real solution of $\Ai''(x)=x\Ai(x)$ decaying at positive infinity. Thus $z=-2.338107410459767\ldots$; this is a standard Airy constant, distinct from the uncomputed amplitude below.
+\begin{theorem}[Positive amplitude; source 102]\label{tcn:w:thm:leading}
+There exists $\gamma_2\in(0,\infty)$ such that
+\begin{equation}\label{tcn:w:main}
+ a_n=\gamma_2 n!12^n\ee^{z(3n)^{1/3}}n^{-2/3}
+          \left(1+O(n^{-1/3})\right).
+\end{equation}
+The positive convergent representation in Theorem~\ref{tcn:w:thm:constant} fixes $\gamma_2$ canonically.
+\end{theorem}
+
+The already known result for $a_n$ is the two-sided bound \eqref{tcn:b:known-theta} with the same full scale, proved in the network analysis of \cite{FYZ2021} and stated for the identical tableau sequence in \cite[Theorem 4.1]{BW2021}. The existence of a limiting multiplicative constant is the additional assertion here. In particular, the stretched exponential is $z(3n)^{1/3}=Bn^{1/3}$, with no additional factor $3$ before $z$. \emph{[Write phase: Theorem~\ref{tcn:w:thm:leading} is the leading case of Theorem~\ref{tcn:b:thm:main}, and $\gamma_2$ is Part~II's $\gamma$, Part~I's and Part~III's $\gamma_2$: all are the limit of $a_n/(n!12^n\ee^{Bn^{1/3}}n^{-2/3})$. ``Additional'' refers to the published literature; in the repository Parts~I--II hold the assertion (Section~\ref{tcn:w:sec:provenance}).]}
+
+\subsection{Network conventions and the consequence for total counts}
+Use the convention of \cite[Definition 1]{FYZ2021}: a rooted, directed acyclic binary phylogenetic network has root indegree zero and outdegree one, $n$ leaves of indegree one and outdegree zero bijectively labelled by $[n]$, tree nodes of indegree one and outdegree two, and reticulation nodes of indegree two and outdegree one. The tree-child condition says that every nonleaf vertex has a child that is a tree node or leaf. Networks are counted up to isomorphism preserving the leaf labels. Write $\TC_{n,k}$ for the count with $k$ reticulations and $\TC_n$ for the total. The maximal possible $k$ is $n-1$.
+
+The exact identity and the later ratio theorem are
+\begin{equation}\label{tcn:w:networkinputs}
+ \TC_{n,n-1}=n!a_{n-1},\qquad
+ \TC_n\sim\sqrt\ee\,\TC_{n,n-1}.
+\end{equation}
+The first is \cite[Proposition 2]{FYZ2021}. The second is \cite[Corollary 1.11(i)]{Chang2024}, at $d=2$, under the same root, leaf, and binary-degree convention. Its class $\TC$, rather than its one-component subclass $\mathrm{OTC}$, is used here.
+\begin{corollary}[Total binary tree-child networks; source 102]\label{tcn:w:cor:network}
+Under these conventions,
+\begin{align}
+ \TC_n&\sim\frac{\gamma_2\sqrt\ee}{12}(n!)^2 12^n
+       \ee^{z(3n)^{1/3}}n^{-5/3}\label{tcn:w:total}\\
+ &\sim\frac{\gamma_2\pi\sqrt\ee}{6}\,n^{-2/3}
+       \left(\frac{12}{\ee^2}\right)^n n^{2n}\ee^{z(3n)^{1/3}}.\notag
+\end{align}
+\end{corollary}
+\begin{proof}
+Substitute \eqref{tcn:w:main} at $n-1$ into \eqref{tcn:w:networkinputs}. Use $(n-1)!=n!/n$, $12^{n-1}=12^n/12$, and
+$\ee^{z(3(n-1))^{1/3}}/\ee^{z(3n)^{1/3}}=1+O(n^{-2/3})$.
+The power changes by the extra $1/n$ to $n^{-5/3}$. Stirling's formula gives the second line.
+\end{proof}
+\emph{[Write phase: \eqref{tcn:w:total} is the leading term of \eqref{tcn:b:total-forward} and of \eqref{tcn:b:T24}.]} The ratio limit alone would not transfer an error rate. The following quantitative consequence of the same paper's lemmas does so. It is a direct deduction from published estimates, not a separate literature-priority claim.
+
+\begin{proposition}[A quantitative ratio from published lemmas; source 102]\label{tcn:w:prop:ratio-rate}
+As $n\to\infty$,
+\begin{equation}\label{tcn:w:ratio-rate}
+ \frac{\TC_n}{\TC_{n,n-1}}=\sqrt\ee\left(1+O(n^{-2/3})\right).
+\end{equation}
+Moreover, the reticulation deficit of a uniformly selected binary tree-child network with $n$ leaves has total-variation distance $O(n^{-2/3})$ from $\operatorname{Poisson}(1/2)$.
+\end{proposition}
+\begin{proof}
+For fixed $n\ge2$ put $M=\TC_{n,n-1}$, $\theta_k=\TC_{n,n-1-k}/M$, and $\varpi_k=1/(2^kk!)$, for $0\le k\le n-1$. In the notation of \cite{Chang2024}, $F_{n,r}$ counts networks whose root's child is a free tree node, meaning that neither of that node's children is a reticulation node. Set $\mathfrak f_k=F_{n,n-1-k}/M$. Lemma 3.17 and Remark 3.18 of \cite{Chang2024} give
+\[
+ \theta_k=2(k+1)\theta_{k+1}+\mathfrak f_k\quad(0\le k\le n-2),\qquad \theta_0=1,\quad \mathfrak f_0=0.
+\]
+Lemmas 3.19 and 3.20 give, on the full finite range,
+\[
+ 0\le \mathfrak f_k\le\frac{\mathfrak f_1}{2^{k-1}(k-1)!}\quad(1\le k\le n-1),\qquad
+ \mathfrak f_1=O(n^{-2/3}).
+\]
+Since $\varpi_k=2(k+1)\varpi_{k+1}$, induction yields
+\[
+ 0\le\frac{\varpi_k-\theta_k}{\varpi_k}=\sum_{j=0}^{k-1}\frac{\mathfrak f_j}{\varpi_j}
+        \le2\mathfrak f_1\sum_{j=1}^{k-1}j=\mathfrak f_1k(k-1).
+\]
+Write $\sum_{k\ge0}\varpi_k=\sqrt\ee$ and $\mathcal R_{n-1}=\sum_{k=0}^{n-1}\theta_k=\TC_n/M$.
+The factorial second moment satisfies $\sum_{k\ge0}k(k-1)\varpi_k=\sqrt\ee/4$. Therefore the exact finite bound is
+\begin{equation}\label{tcn:w:finite-deficit}
+ 0\le \sqrt\ee-\mathcal R_{n-1}\le\frac{\sqrt\ee}4\mathfrak f_1+\sum_{k=n}^{\infty}\frac1{2^kk!}.
+\end{equation}
+The tail is at most $[2^nn!(1-1/(2(n+1)))]^{-1}$, hence smaller than every negative power of $n$, proving \eqref{tcn:w:ratio-rate}. Extend $\theta_k=0$ for $k\ge n$. The actual deficit law is $\theta_k/\mathcal R_{n-1}$ and the Poisson law is $\varpi_k/\sqrt\ee$. Since $0\le \theta_k\le \varpi_k$,
+\[
+ \frac12\sum_{k\ge0}\left|\frac{\theta_k}{\mathcal R_{n-1}}-\frac{\varpi_k}{\sqrt\ee}\right|
+ \le\frac12\left(\frac{\sqrt\ee-\mathcal R_{n-1}}{\sqrt\ee}+\frac{\sqrt\ee-\mathcal R_{n-1}}{\sqrt\ee}\right)
+ =\frac{\sqrt\ee-\mathcal R_{n-1}}{\sqrt\ee}=O(n^{-2/3}).
+\]
+This proves the total-variation assertion.
+\end{proof}
+
+\begin{remark}[Relation to Part~II; write phase]\label{tcn:w:rem:tv}
+Proposition~\ref{tcn:w:prop:ratio-rate} is weaker than Part~II, which has every finite order of $\mathcal R_n$ (Theorem~\ref{tcn:b:thm:transfer}) and the exact eventual identity $d_{\mathrm{TV}}=\tfrac32(1/\mathcal R_n-\ee^{-1/2})$ with its expansion (Theorem~\ref{tcn:b:thm:tv}). It is kept as a second route because it uses only Lemmas 3.17--3.20 and Remark 3.18 of \cite{Chang2024}, not the Pons--Batle identity \eqref{tcn:b:T1} proved in \cite{LL2026}, on which Part~II's transfer rests. The two are consistent. Part~II's identity can be written $d_{\mathrm{TV}}=\frac3{2\mathcal R_n}\cdot\frac{\sqrt\ee-\mathcal R_n}{\sqrt\ee}$; since $\mathcal R_n\to\sqrt\ee>3/2$, the prefactor tends to $3/(2\sqrt\ee)=0.9098\ldots<1$, so the exact value lies below source 102's bound $(\sqrt\ee-\mathcal R_n)/\sqrt\ee$ for all large $n$, and both are of exact order $n^{-2/3}$ because $\mathcal R_n=\sqrt\ee(1+\tfrac B{72}n^{-2/3}+O(n^{-1}))$ with $B\ne0$ (\eqref{tcn:b:D8}). Source 102 counts $n$ leaves and Part~II $n+1$; the shift does not affect these orders. Source 102 cites \cite{LL2026} but does not use it.
+\end{remark}
+
+In particular \eqref{tcn:w:total} has relative error $O(n^{-1/3})$ by Theorem~\ref{tcn:w:thm:leading}. Section~\ref{tcn:w:sec:coefficients} sharpens it by one explicit correction. The all-order theorem below applies to $a_n$ and, by exact shifting, to $\TC_{n,n-1}$. The quantitative ratio bound alone does not yield every correction for $\TC_n$.
+
+\subsection{Position relative to the inspected literature}\label{tcn:w:sec:position}
+The final discussion of \cite{FYZ2021} asks for a first-order equivalent and identifies two obstacles: the amplitude of $a_n$, and the total/maximal ratio. The latter was resolved by \cite{Chang2024}, whose Remark 1.12 still points to the former. The result here supplies the amplitude input. \emph{[Write phase: so do Parts~I--II and Part~III, independently; in the repository Part~II, from source 69, was printed first and goes further (Section~\ref{tcn:w:sec:provenance}).]}
+The September 2026 version of \cite{LL2026} proves an enumerative identity, while its asymptotics fix the number of reticulations. The 2026 works \cite{LWY2026,YZ2026,FY2026} concern bounded or sparse reticulation regimes, not $k=n-1$. The September paper \cite{YZ2026short} supplies a short proof of the exact Pons--Batle enumerative identity and recurrence, rather than a diagonal asymptotic theorem. The April 2026 version of \cite{EFLW2026} discusses tableau and phylogenetic applications in its Section 10.1. These inspected sources locate the particular gap addressed here. They do not constitute an exhaustive worldwide priority certificate. Formal Airy expansions and numerical extrapolation are established techniques; the analytic convergence and transfer arguments, rather than the ansatz alone, carry the theorem.
+
+\section{The exact finite Jacobi product in the factorial gauge}\label{tcn:w:sec:jacobi}
+\subsection{Safe startup and rotated coordinates}
+The prefix sum in the recurrence is constant above the preceding diagonal, not zero. Subtracting neighboring prefix identities gives, away from the separately initialized first entry,
+\[
+ b_{n,m}=(2n+m-2)b_{n-1,m}
+       +\frac{2n+m-2}{2n+m-3}b_{n,m-1}.
+\]
+Put $\widetilde b(p,q)=b_{p+1,q+1}$ for $0\le q\le p$, and set it to zero elsewhere. Then $\widetilde b(0,0)=1$ and, at noninitial allowed indices,
+\begin{equation}\label{tcn:w:B}
+ \widetilde b(p,q)=(2p+q+1)\widetilde b(p-1,q)
+       +\frac{2p+q+1}{2p+q}\widetilde b(p,q-1).
+\end{equation}
+The only zero denominator would be at the excluded initial entry. The zero term with $q=-1$ causes no difficulty at any other index. Moreover,
+\begin{equation}\label{tcn:w:diagonal}
+ a_n=\frac{\widetilde b(n,n)}{3n+1},\qquad n\ge0.
+\end{equation}
+\emph{[Write phase: \eqref{tcn:w:B} and \eqref{tcn:w:diagonal} are \eqref{tcn:f:B} and \eqref{tcn:f:endpointexact} at $d=2$, where $\mathcal W(p,q)=2p+q+1$ and $\mathcal W(n,n)=3n+1$.]}
+For integers $N\ge h\ge0$ of the same parity, define
+\[
+ \mathcal Y(N,h)=\frac{\widetilde b((N+h)/2,(N-h)/2)}{3^{(N+h)/2}((N+h)/2)!}.
+\]
+Outside this wedge or off parity let $\mathcal Y=0$, and let $\mathcal Y(0,0)=1$. Equation~\eqref{tcn:w:B} yields
+\begin{align}
+ \mathcal Y(N,h)&=\omega^-_N(h)\mathcal Y(N-1,h-1)+\omega^+_N(h)\mathcal Y(N-1,h+1),\label{tcn:w:walk}\\
+ \omega^-_N(h)&=\frac{3N+h+2}{3(N+h)},&
+ \omega^+_N(h)&=\frac{3N+h+2}{3N+h}.\notag
+\end{align}
+This is evaluated only at noninitial allowed indices. Its lower ghost coordinate is $\mathcal Y(N,-1)=0$. \emph{[Write phase: Part~III divides by $G_\Gamma(p)=3^p(4/3)_p$ at $d=2$ instead of $3^pp!$; the two gauges differ by $(4/3)_p/p!\sim p^{1/3}/\Gamma(4/3)$, which accounts for the different powers and $n^{-1}$ terms below.]}
+
+Define $e_n(k)=\mathcal Y(2n,2k)$ for $0\le k\le n$, and zero-extend vectors to $\ell^2(\N_0)$. Eliminating the odd step gives $e_0=\delta_0$ and $e_n=\mathsf M_ne_{n-1}$, where
+\begin{equation}\label{tcn:w:A}
+ (\mathsf M_nu)(k)=\mathsf L_n(k)u(k-1)+\mathsf D_n(k)u(k)+\mathsf U_n(k)u(k+1)
+\end{equation}
+with
+\begin{align}
+ \mathsf L_n(k)&=\frac{(3n+k+1)(3n+k-1)}{9(n+k)(n+k-1)},&&1\le k\le n,\notag\\
+ \mathsf U_n(k)&=\frac{3n+k+1}{3n+k-1},&&0\le k<n,\label{tcn:w:coeff}\\
+ \mathsf D_n(k)&=\frac{(3n+k+1)(6n+2k-3)}{3(n+k)(3n+k-2)},&&1\le k\le n,\notag\\
+ \mathsf D_n(0)&=\frac{3n+1}{3n}.&&\notag
+\end{align}
+Missing off-diagonal terms at $0$ and $n$ are omitted. We deliberately keep the full bulk diagonal at $k=n$: its extra down-up contribution multiplies $e_{n-1}(n)=0$, so the actual evolution is unchanged. This choice removes an exceptional old terminal diagonal from the later drift estimate.
+
+\subsection{Symmetrization and positivity}
+Let $(x)_k=x(x+1)\cdots(x+k-1)$, with $(x)_0=1$. Define $\Sigma_n(0)=1$ and
+\begin{equation}\label{tcn:w:S}
+ \Sigma_n(k)^2=\frac{(3n-1)_k(3n)_k(3n+2)_k}
+ {9^k(n)_k(n+1)_k(3n+1)_k},\qquad 1\le k\le n.
+\end{equation}
+Also $\Sigma_0(0)=1$. Since $\Sigma_n(k)/\Sigma_n(k-1)=\sqrt{\mathsf L_n(k)/\mathsf U_n(k-1)}$, the matrix $J_n=\Sigma_n^{-1}\mathsf M_n\Sigma_n$ is symmetric, with diagonal $\mathsf D_n$ and off-diagonal
+\begin{equation}\label{tcn:w:beta}
+ \mathsf b_n(k)=\sqrt{\frac{(3n+k+1)(3n+k-1)(3n+k)}
+ {9(n+k)(n+k-1)(3n+k-2)}},\qquad1\le k\le n.
+\end{equation}
+It factors as $J_n=\mathsf K_n\mathsf K_n^{\mathsf T}$, where $\mathsf K_n$ is the square lower bidiagonal matrix of order $n+1$ whose nonzero entries are positive and obey
+\begin{align}
+ \mathsf K_n(k,k)^2&=\frac{3n+k+1}{3(n+k)},&&0\le k\le n,\label{tcn:w:factor}\\
+ \mathsf K_n(k,k-1)^2&=\frac{(3n+k+1)(3n+k-1)}{3(n+k)(3n+k-2)},&&1\le k\le n.\notag
+\end{align}
+The adjacent squared products give $\mathsf b_n(k)^2$, and the diagonal sums give precisely \eqref{tcn:w:coeff}, including $\mathsf D_n(0)$. Thus $J_n$ is positive definite on its finite support and positive semidefinite after zero extension. Let $\lambda_n$ be its largest eigenvalue and $\psi_n$ its strictly positive unit eigenvector. Set $\psi_0=\delta_0$.
+
+\subsection{A contractive change of gauge between times}
+For $k<n$, put $\mathsf R_n(k)=\Sigma_{n-1}(k)/\Sigma_n(k)$; put $\mathsf R_n(k)=0$ for $k\ge n$, with $\mathsf R_1(0)=1$.
+\begin{lemma}[source 102]\label{tcn:w:lem:R}
+For every $n\ge1$,
+\begin{equation}\label{tcn:w:Rbound}
+ 0\le \mathsf R_n\le I,\qquad 0\le1-\mathsf R_n(k)\le Ck^2/n^2\quad(0\le k\le n).
+\end{equation}
+\end{lemma}
+\begin{proof}
+Write $\varsigma_n(j)=\Sigma_n(j)/\Sigma_n(j-1)$. Its square factors as $\mathfrak f_1\mathfrak f_2$, where
+\[
+ \mathfrak f_1=\frac{3n+j-1}{3(n+j-1)},\qquad
+ \mathfrak f_2=\frac{(3n+j-2)(3n+j+1)}{3(n+j)(3n+j)}.
+\]
+Both lie in $(0,1]$ and increase with real $n\ge1$. For $\mathfrak f_1$ this follows from
+$\mathfrak f_1=1-2(j-1)/(3(n+j-1))$. For $\mathfrak f_2$, set $\mathfrak z=3n+j$, $\mathfrak n=n+j$; then
+\[
+ \mathfrak f_2=\frac{\mathfrak z-1-2/\mathfrak z}{3\mathfrak n},\qquad
+ \partial_n\mathfrak f_2=\frac{2j+1+6\mathfrak n/\mathfrak z^2+2/\mathfrak z}{3\mathfrak n^2}>0.
+\]
+Thus $\mathsf R_n(k)=\prod_{j=1}^k \varsigma_{n-1}(j)/\varsigma_n(j)\le1$ on the common support.
+For $n-1\le t\le n$ and $j\le n-1$, the factors are uniformly bounded below and
+$|\partial_t\log \varsigma_t(j)|\le C(j+1)/n^2$. Integration and summation give
+$0\le-\log \mathsf R_n(k)\le Ck(k+1)/n^2$. For integral $k\ge1$ this implies \eqref{tcn:w:Rbound}; $k=0$ is exact, and $k=n$ is covered by increasing $C$.
+\end{proof}
+Set
+\begin{equation}\label{tcn:w:T}
+ P_n=\prod_{j=1}^n\lambda_j,\quad P_0=1,\qquad
+ u_n=P_n^{-1}\Sigma_n^{-1}e_n,\qquad
+ \mathsf T_n=(J_n/\lambda_n)\mathsf R_n.
+\end{equation}
+Then $u_n=\mathsf T_nu_{n-1}$ exactly. Positive semidefiniteness makes $J_n/\lambda_n$ a Hilbert-space contraction; Lemma~\ref{tcn:w:lem:R} does the same for $\mathsf R_n$. All matrices are entrywise nonnegative. Hence
+\begin{equation}\label{tcn:w:contract}
+ \norm{\mathsf T_n}_{2\to2}\le1,\qquad\norm{u_n}_2\le1.
+\end{equation}
+
+\section{A quantitative frozen Airy limit, localization and smoothing}\label{tcn:w:sec:spectral}
+We prove all the spectral estimates needed in the product argument. Let $\lambda_n^{(2)}$ be the second largest eigenvalue, with the spectrum sorted in decreasing order.
+\begin{proposition}[source 102]\label{tcn:w:prop:spectral}
+As $n\to\infty$,
+\begin{align}
+ \lambda_n&=4+4\cdot3^{-2/3}z\,n^{-2/3}+\frac{10}{3}n^{-1}
+                 +O(n^{-4/3}),\label{tcn:w:lambda}\\
+ 0\le\lambda_n^{(2)}/\lambda_n&\le1-cn^{-2/3},\label{tcn:w:gap}\\
+ \norm{k^p\psi_n}_2&\le C_pn^{p/3}\quad(p\ge0\text{ fixed}),\label{tcn:w:moments}\\
+ \norm{\psi_n-\psi_{n-1}}_2&\le C/n,\label{tcn:w:drift}\\
+ \psi_n(0)&=\sqrt{2/3}\,n^{-1/2}\bigl(1+O(n^{-2/3})\bigr).\label{tcn:w:endpointphi}
+\end{align}
+\end{proposition}
+\emph{[Write phase: in \eqref{tcn:w:gap} $c$ is a positive constant, not $2/3$. The terms $4\cdot3^{-2/3}z=c_A^2z$ and $\sqrt{2/3}=\sqrt c$ agree with Part~III's \eqref{tcn:f:lambda} and \eqref{tcn:f:perronendpoint} at $d=2$; the $n^{-1}$ term is $10/3$ here and $3c=2$ there, because the gauges differ.]}
+
+\subsection{Form convergence and the spectral gap}
+Put $\eps=n^{-1/3}$ and $x_k=\eps(k+1/2)$. The continuum operator is
+\[
+ \mathcal H_A=-\frac{d^2}{dx^2}+\frac83x
+ \quad\text{on }L^2(0,\infty),\qquad f(0)=0.
+\]
+Write $c_A=2\cdot3^{-1/3}$. Its eigenvalues are $-c_A^2z_j$, and its positive unit ground state is
+\begin{equation}\label{tcn:w:airyf}
+ f_A(x)=\frac{\sqrt{c_A}\,\Ai(c_Ax+z)}{\Ai'(z)}.
+\end{equation}
+The Airy equation and the integral of $[\Ai'(x)^2-x\Ai(x)^2]'=-\Ai(x)^2$ give $\int_0^\infty f_A^2=1$ and $f_A'(0)=c_A^{3/2}=\sqrt{8/3}$.
+
+For this paragraph set $\mathsf b_n(0)=\mathsf b_n(n+1)=0$ and
+$\mathsf V_n(k)=4-\mathsf D_n(k)-\mathsf b_n(k)-\mathsf b_n(k+1)$. The exact quadratic form is
+\begin{equation}\label{tcn:w:form}
+ \ip{u}{(4I-J_n)u}
+ =\sum_{k=0}^{n-1}\mathsf b_n(k+1)|u(k+1)-u(k)|^2
+    +\sum_{k=0}^n\mathsf V_n(k)|u(k)|^2.
+\end{equation}
+For $1\le k\le n$, let $\vartheta_n(k)=(3n+k)/(3(n+k))$. Factoring the explicit rational coefficients gives, uniformly on existing bulk edges,
+\[
+ \mathsf D_n(k)=2\vartheta_n(k)+O(n^{-1}),\quad
+ \mathsf b_n(k)=\vartheta_n(k)+O(n^{-1}),\quad
+ \mathsf b_n(k+1)=\vartheta_n(k)+O(n^{-1})\quad(k<n).
+\]
+For example, with $\mathfrak z=3n+k$, $\mathfrak n=n+k$,
+\[
+ \mathsf D_n(k)=\frac{\mathfrak z}{3\mathfrak n}\frac{(1+1/\mathfrak z)(2-3/\mathfrak z)}{1-2/\mathfrak z},\qquad
+ \mathsf b_n(k)^2=\left(\frac{\mathfrak z}{3\mathfrak n}\right)^2
+        \frac{1-1/\mathfrak z^2}{(1-1/\mathfrak n)(1-2/\mathfrak z)}.
+\]
+All denominators are bounded away from zero for large $n$. In particular,
+\begin{equation}\label{tcn:w:potential}
+ \mathsf V_n(k)\ge\frac{4k}{3n}-\frac Cn\quad(k\ge1),\qquad \mathsf V_n(0)=2+O(n^{-1}),
+\end{equation}
+and existing $\mathsf b_n(k)$ are bounded above and below by positive constants. The omitted edge at $n$ only increases the potential. On fixed scaled compact intervals away from zero,
+\[
+ \mathsf b_n(k)\longrightarrow1,\qquad \mathsf V_n(k)/\eps^2\longrightarrow\tfrac83x_k
+\]
+uniformly. Adding $C/n$ to the quadratic form makes its potential nonnegative; the scaled added energy is $O(\eps)$ and disappears in the limit.
+
+Here are details of the compactness and boundary argument. A unit vector with form at most $C\eps^2$ satisfies
+\[
+ \sum k|u(k)|^2\le C/\eps,\qquad |u(0)|^2\le C\eps^2,\qquad
+ \sum|u(k+1)-u(k)|^2\le C\eps^2.
+\]
+Interpolate $u(k)/\sqrt\eps$ linearly at $x_k$, from zero at $x=0$ to the first node, and from the last node to zero one mesh interval later; set the function to zero thereafter. The first half-cell has derivative energy $2|u(0)|^2/\eps^2$, supplied by $\mathsf V_n(0)\to2$. The other cells give a bounded $H^1$ seminorm on every fixed compact interval. The moving final ramp eventually lies outside each such interval. Its mass, and all mass beyond $x=R$, are $O(1/R)$ by the first-moment estimate.
+
+Local Rellich compactness and this tail bound yield strong global $L^2$ compactness. Locally the difference from the piecewise-constant embedding is bounded by $C\eps$ times the $H^1$ seminorm, while both embeddings have small tails. Norms and inner products, hence orthogonality, are preserved in the limit. Weak lower semicontinuity gives the gradient liminf including the boundary half-cell. For the potential liminf, first restrict away from zero to a fixed compact interval, use uniform convergence, then enlarge the interval. The negative $O(n^{-1})$ part vanishes after scaling. Smooth compactly supported Dirichlet trial functions sampled on the grid supply matching upper bounds. The min--max principle on each fixed-dimensional trial or low-energy subspace now gives
+\begin{equation}\label{tcn:w:minmax}
+ (4-\lambda_n^{(j)})/\eps^2\longrightarrow -c_A^2z_j
+ \quad\text{for every fixed }j.
+\end{equation}
+This identifies the top eigenvalue and proves \eqref{tcn:w:gap}; positive semidefiniteness controls the opposite end of the spectrum. \emph{[Write phase: this is the argument of Part~III, Section~\ref{tcn:f:sec:spectral}, at $d=2$, written out in more detail; compare Remark~\ref{tcn:d:rem:compact}.]}
+
+\subsection{A global quasimode and the coefficient ten thirds}
+Sample $\sqrt\eps f_A(x_k)$ for $0\le k\le n$ and normalize it to a unit vector $\psi^A_n$. Midpoint quadrature and Airy decay give the pre-normalization norm $1+O(\eps^2)$. In the bulk, direct expansion gives
+\begin{align}
+ \mathsf D_n(k)&=2-\tfrac43x_k\eps^2+\tfrac53\eps^3
+                  +O\bigl(\eps^4(1+x_k^2)\bigr),\notag\\
+ \mathsf b_n(k)&=1-\tfrac23x_k\eps^2+\tfrac76\eps^3
+                  +O\bigl(\eps^4(1+x_k^2)\bigr),\label{tcn:w:expansions}\\
+ \mathsf b_n(k+1)&=1-\tfrac23x_k\eps^2+\tfrac12\eps^3
+                  +O\bigl(\eps^4(1+x_k^2)\bigr).\notag
+\end{align}
+The remainders are uniform for $k\le n/2$, since the rescaled denominators stay separated from zero. Also $|\mathsf b_n(k+1)-\mathsf b_n(k)|\le C/n$ on the entire bulk. Pair the Taylor expansions of $f_A(x+\eps)$ and $f_A(x-\eps)$. The operator then acts as
+\[
+ J_nf_A=4f_A+\eps^2(f_A''-\tfrac83xf_A)+\tfrac{10}{3}\eps^3f_A
+                   +O_{\ell^2}(\eps^4).
+\]
+To justify the global norm, the unsampled remainder is bounded by $C\eps^4$ times a fixed polynomial in $1+x$ times the maximum of $|f_A^{(j)}(y)|$, $j\le4$, $|y-x|\le\eps$, $y\ge0$. The odd derivative terms carry the coefficient differences $\eps(\mathsf b_n(k+1)-\mathsf b_n(k))$ and $\eps^3(\mathsf b_n(k+1)-\mathsf b_n(k))/6$, and fit this bound. The Airy equation and decay bound the envelope by $C(1+x)^{M'}\ee^{-c'x^{3/2}}$, whose squared sampled norm $\eps\sum$ is uniformly bounded. The region $k>n/2$ contributes exponentially little in $n$.
+
+At zero, $\mathsf D_n(0)=1+\eps^3/3$ and $\mathsf b_n(1)=1+\eps^3/6+O(\eps^6)$. Since
+$f_A(0)=f_A''(0)=0$ and $f_A'''(0)=c_A^2zf_A'(0)$, the cubic term in
+$f_A(3\eps/2)-3f_A(\eps/2)$ cancels $c_A^2z\eps^2f_A(\eps/2)$. The remaining unsampled boundary residual is $O(\eps^4)$, hence the sampled one is $O(\eps^{9/2})$. The terminal diagonal affects only an exponentially small term. Therefore
+\begin{equation}\label{tcn:w:residual}
+ \norm{\bigl(J_n-[4+c_A^2z\eps^2+\tfrac{10}{3}\eps^3]\bigr)\psi^A_n}_2
+                  \le C\eps^4.
+\end{equation}
+For a self-adjoint matrix, expansion in an orthonormal eigenbasis puts an eigenvalue within the residual norm of the proposed value. The gap from \eqref{tcn:w:minmax} identifies it as $\lambda_n$ and proves \eqref{tcn:w:lambda}. The same expansion, projected off the Perron vector, gives
+\begin{equation}\label{tcn:w:qclose}
+ \norm{\psi_n-\psi^A_n}_2\le C\eps^2.
+\end{equation}
+
+\subsection{Uniform moments and the moving upper edge}
+Let $J_\infty$ have diagonal $1$ at zero, diagonal $2$ elsewhere, and off-diagonals $1$. The coefficient formulas give the entrywise comparison
+\begin{equation}\label{tcn:w:domination}
+ 0\le J_n\le(1+C/n)J_\infty.
+\end{equation}
+The factor $1+C/n$ is necessary: some downward weights exceed one and $\mathsf D_n(0)=1+1/(3n)>1$. For the nonnegative unit Perron vector,
+\[
+ \ip{\psi_n}{(4I-J_\infty)\psi_n}
+ \le4-\lambda_n/(1+C/n)\le C\eps^2.
+\]
+The left side is $\sum_{k\ge0}|\psi_n(k+1)-\psi_n(k)|^2+2\psi_n(0)^2$.
+Telescoping $u(k)^2$ from infinity and applying Cauchy--Schwarz bounds $\norm{u}_\infty^2$ by $2\norm{u}_2\norm{\nabla u}_2$, with $\nabla$ the forward difference. Thus
+$\norm{\psi_n}_\infty\le C\sqrt\eps$.
+
+Let $k_A=\lceil A_0/\eps\rceil$, with fixed $A_0$ sufficiently large, and choose a small fixed $c_0>0$. On $k>k_A$ take $w(k)=\ee^{-c_0\eps(k-k_A)}$. For this estimate only, continue the explicit off-diagonal formula to the fictitious positive edge $\mathsf b_n(n+1)$. The full row sum is at most $4-c'k/n+C/n$, while adjacent coefficients differ by $O(n^{-1})$. Replacing neighboring values by $\ee^{\pm c_0\eps}w(k)$ changes the full row sum by $O(\eps^2)$: the symmetric part is $O(\eps^2)$ and the antisymmetric part is $O(\eps/n)$. Choose $A_0$ large enough and use \eqref{tcn:w:lambda}; then $(J_nw)(k)<\lambda_nw(k)$ for $k>k_A$. Omitting the fictitious positive upper-edge contribution at $k=n$ only improves this inequality.
+
+The finite maximum principle applied to $\psi_n(k)/w(k)$, with its value at $k_A$ as boundary, gives
+\begin{equation}\label{tcn:w:tail}
+ \psi_n(k)\le C\sqrt\eps\,\ee^{-c_0\eps(k-k_A)},\qquad k\ge k_A.
+\end{equation}
+Indeed a strictly larger interior maximum would contradict the positive supersolution inequality. Together with the supremum bound below $k_A$, this proves every moment estimate \eqref{tcn:w:moments}. In particular the mass beyond $n/2$ is exponentially small in $n^{2/3}$.
+
+On common coordinates, differentiating the explicit rational factors yields
+\begin{equation}\label{tcn:w:coefdrift}
+ |\mathsf D_n(k)-\mathsf D_{n-1}(k)|+|\mathsf b_n(k)-\mathsf b_{n-1}(k)|
+                  \le C(k+1)/n^2.
+\end{equation}
+For instance, $\partial_n\vartheta_n(k)=2k/(3(n+k)^2)$, while derivatives of its correction factors are $O(n^{-2})$. There is no old exceptional terminal diagonal, by our full-bulk choice. The new edge $\mathsf b_n(n)$ is order one, but acts on $\psi_{n-1}(n-1)$, exponentially small by \eqref{tcn:w:tail}; the new diagonal acts on the zero extension. Hence
+\[
+ \norm{(J_n-J_{n-1})\psi_{n-1}}_2
+ \le Cn^{-2}\norm{(k+1)\psi_{n-1}}_2+O(\ee^{-cn^{2/3}})
+ \le Cn^{-5/3}.
+\]
+The continuum spectral limit separates $\lambda_{n-1}$ from every non-Perron eigenvalue of $J_n$ by $cn^{-2/3}$. Orthogonal projection of this residual proves \eqref{tcn:w:drift}, with the positive signs of both eigenvectors fixing the phase. Lemma~\ref{tcn:w:lem:R} and the second moment estimate also give
+\begin{equation}\label{tcn:w:Rsmall}
+ \norm{(I-\mathsf R_n)\psi_n}_2+\norm{(I-\mathsf R_n)\psi_{n-1}}_2\le Cn^{-4/3}.
+\end{equation}
+
+\subsection{The killed half-line kernel}
+Put $\mathcal K=J_\infty/4$. The functions $\sin((k+1/2)\theta)$ diagonalize $J_\infty$, with eigenvalue $2+2\cos\theta$ and squared integral $\pi/2$ on $(0,\pi)$. Therefore
+\[
+ \mathcal K^m(0,0)=\frac2\pi\int_0^\pi
+       \cos^{2m}(\theta/2)\sin^2(\theta/2)\,d\theta
+       \le C(m+1)^{-3/2}.
+\]
+The bound follows by splitting away from zero and using Gaussian decay near zero, where the weight is $O(\theta^2)$. By symmetry, $\norm{\delta_0^{\mathsf T}\mathcal K^l}_2^2=\mathcal K^{2l}(0,0)$ and $\norm{\delta_0^{\mathsf T}\mathcal K^l}_2\le C(l+1)^{-3/4}$.
+For $0\le l\le n^{2/3}$, positivity, \eqref{tcn:w:domination}, and $\mathsf R_j\le I$ imply
+\[
+ 0\le \mathsf T_n\cdots \mathsf T_{n-l+1}
+ \le\left(\prod_{j=n-l+1}^n\frac{4(1+C/j)}{\lambda_j}\right)\mathcal K^l\le C'\mathcal K^l.
+\]
+The logarithm of the scalar product is $O(ln^{-2/3})=O(1)$ by \eqref{tcn:w:lambda}. This entrywise argument does not assume commutation of the varying matrices. We conclude
+\begin{equation}\label{tcn:w:smoothing}
+ \norm{\delta_0^{\mathsf T}\mathsf T_n\cdots \mathsf T_{n-l+1}}_2
+             \le C(l+1)^{-3/4},\qquad 0\le l\le n^{2/3}.
+\end{equation}
+The identical proof bounds $\delta_0^{\mathsf T}(J_n/\lambda_n)^l$ on that window. \emph{[Write phase: this is \eqref{tcn:f:kernel}--\eqref{tcn:f:smoothing} of Part~III at $d=2$, with the sine basis written out.]}
+
+Let $\mathsf z=\psi_n-\psi^A_n$. Equations~\eqref{tcn:w:lambda} and \eqref{tcn:w:residual} give
+$\mathsf z=(J_n/\lambda_n)\mathsf z+\varrho$, with $\norm{\varrho}_2\le C\eps^4$ and $\norm{\mathsf z}_2\le C\eps^2$.
+Iterate $\Delta=\lfloor n^{2/3}\rfloor$ times and use the fixed-matrix version of \eqref{tcn:w:smoothing}:
+\[
+ |\mathsf z(0)|\le C(\Delta+1)^{-3/4}\eps^2
+     +C\eps^4\sum_{l=0}^{\Delta-1}(l+1)^{-3/4}=O(\eps^{7/2}).
+\]
+Since $\psi^A_n(0)=\tfrac12f_A'(0)\eps^{3/2}(1+O(\eps^2))$, this proves \eqref{tcn:w:endpointphi} and completes Proposition~\ref{tcn:w:prop:spectral}.
+
+\section{Convergence and strict positivity of the amplitude}\label{tcn:w:sec:amplitude}
+Let
+\[
+ p_n=\ip{\psi_n}{u_n},\qquad
+ p_n^\perp=\norm{(I-\psi_n\psi_n^{\mathsf T})u_n}_2.
+\]
+Project the exact recurrence $u_n=(J_n/\lambda_n)\mathsf R_nu_{n-1}$ onto the complement of $\psi_n$. Use the spectral gap on that complement, contractivity of $\mathsf R_n$, the $O(n^{-1})$ drift, and \eqref{tcn:w:Rsmall}. Since $\norm{u_n}_2\le1$,
+\begin{equation}\label{tcn:w:perp}
+ p_n^\perp\le(1-cn^{-2/3})p_{n-1}^\perp+C/n.
+\end{equation}
+A sufficiently large multiple of $n^{-1/3}$ is a supersolution for large $n$; absorb the finite initial segment into its constant. Thus $p_n^\perp=O(n^{-1/3})$.
+
+Because $(J_n/\lambda_n)\psi_n=\psi_n$, the scalar increment is exactly
+\begin{align}
+ p_n-p_{n-1}
+ &=p_{n-1}\bigl[\ip{\psi_n}{\mathsf R_n\psi_{n-1}}-1\bigr]\notag\\
+ &\quad+\ip{\mathsf R_n\psi_n-\psi_{n-1}}
+ {(I-\psi_{n-1}\psi_{n-1}^{\mathsf T})u_{n-1}}.\label{tcn:w:increment}
+\end{align}
+Without $\mathsf R_n$, the first bracket is $-\norm{\psi_n-\psi_{n-1}}_2^2/2=O(n^{-2})$; its $\mathsf R_n$ correction is $O(n^{-4/3})$. The second line is $O(n^{-1}p_{n-1}^\perp)=O(n^{-4/3})$. Consequently the scalar increments are absolutely summable. There is $p_\infty\ge0$ such that
+\begin{equation}\label{tcn:w:l2limit}
+ |p_n-p_\infty|+\norm{u_n-p_\infty\psi_n}_2\le Cn^{-1/3}.
+\end{equation}
+
+A separate comparison proves strict positivity. Restart the normalized evolution at a sufficiently large $N$ with initial vector $\psi_N$. Its norm is one and its perpendicular component initially vanishes. The same supersolution and increment bounds have constants independent of $N$ once $N$ is above a fixed threshold. Summing the increments of this restarted product shows that its limiting Perron coefficient $p_\infty'$ satisfies $|p_\infty'-1|\le CN^{-1/3}$. Choose $N$ so this is less than $1/2$.
+Every coordinate of the actual $u_N$ and $\psi_N$ on $0,\ldots,N$ is strictly positive. Their finite support therefore allows $u_N\ge\theta_0\psi_N$ coordinatewise for some $\theta_0>0$. Positive subsequent products preserve the inequality, so $p_\infty\ge\theta_0p_\infty'>0$.
+
+To reach the counting coordinate, set $\mathsf z_n=u_n-p_\infty\psi_n$. Its recurrence is
+\[
+ \mathsf z_n=\mathsf T_n\mathsf z_{n-1}+p_\infty\varrho_n,\qquad
+ \varrho_n=\mathsf T_n\psi_{n-1}-\psi_n,\qquad\norm{\varrho_n}_2\le C/n.
+\]
+Iterate through the last $\Delta=\lfloor n^{2/3}\rfloor$ steps. Equations~\eqref{tcn:w:l2limit} and \eqref{tcn:w:smoothing} give
+\[
+ |\mathsf z_n(0)|\le C\Delta^{-3/4}n^{-1/3}
+       +\frac Cn\sum_{l=0}^{\Delta-1}(l+1)^{-3/4}=O(n^{-5/6}).
+\]
+Together with \eqref{tcn:w:endpointphi} and $p_\infty>0$, this yields
+\begin{equation}\label{tcn:w:vboundary}
+ u_n(0)=p_\infty\sqrt{2/3}\,n^{-1/2}(1+O(n^{-1/3})).
+\end{equation}
+
+\subsection{The convergent scalar product}
+The eigenvalue expansion gives
+\[
+ \log(\lambda_n/4)=\frac B3n^{-2/3}+\tfrac56n^{-1}+O(n^{-4/3}),
+\]
+since $3^{-2/3}z=B/3$. The summable remainder proves that
+\begin{equation}\label{tcn:w:Climit}
+ C_\lambda=\lim_{n\to\infty}
+ \frac{P_n}{4^n\ee^{Bn^{1/3}}n^{5/6}}
+ \in(0,\infty),
+\end{equation}
+with relative error $O(n^{-1/3})$. An explicit product is
+\begin{equation}\label{tcn:w:Cproduct}
+ C_\lambda=\frac{\lambda_1}{4}\ee^{-B}
+ \prod_{j=2}^\infty\left[
+ \frac{\lambda_j}{4}
+ \ee^{-B(j^{1/3}-(j-1)^{1/3})}
+ \left(\frac{j-1}{j}\right)^{5/6}\right].
+\end{equation}
+Each factor is $1+O(j^{-4/3})$, and finite products telescope to the quotient in \eqref{tcn:w:Climit}. The scalar projection has the absolutely convergent representation
+\begin{equation}\label{tcn:w:cseries}
+ p_\infty=1+\sum_{n=1}^\infty
+       \ip{\mathsf R_n\psi_n-\psi_{n-1}}{u_{n-1}},
+\end{equation}
+whose summands are $O(n^{-4/3})$. Its positivity follows from the preceding restart argument, not merely from this signed series.
+\begin{theorem}[Canonical amplitude; source 102]\label{tcn:w:thm:constant}
+With the finite matrices, eigenvectors, and initial state specified in Section~\ref{tcn:w:sec:jacobi},
+\begin{equation}\label{tcn:w:gamma}
+ \gamma_2=\sqrt{2/27}\,p_\infty C_\lambda\in(0,\infty),
+\end{equation}
+where \eqref{tcn:w:Cproduct} and \eqref{tcn:w:cseries} converge as stated.
+\end{theorem}
+\begin{proof}[Proof of Theorems~\ref{tcn:w:thm:leading} and \ref{tcn:w:thm:constant}]
+The exact diagonal identity is
+\[
+ a_n=\frac{3^n n!}{3n+1}e_n(0)
+     =\frac{3^n n!}{3n+1}P_nu_n(0),
+\]
+since $\Sigma_n(0)=1$. Combine \eqref{tcn:w:Climit} and \eqref{tcn:w:vboundary}. The exponential is $Bn^{1/3}=z(3n)^{1/3}$ and the power is $5/6-1/2-1=-2/3$. The leading constant is $\sqrt{2/3}\,p_\infty C_\lambda/3$, which is \eqref{tcn:w:gamma}.
+\end{proof}
+\emph{[Write phase: \eqref{tcn:w:gamma}, Part~II's \eqref{tcn:b:gamma} and Part~III's \eqref{tcn:f:gamma} at $d=2$ are three convergent representations of one number, through three gauges; none is evaluated with certified digits. Source 102's restart comparison, like Part~III's, needs no lower $\Theta$ bound.]}
+
+\section{The all order construction and its transfer}\label{tcn:w:sec:formal}
+The next results establish genuine arbitrary-order asymptotics, not just finitely verified identities. The infinite series need not converge.
+\begin{theorem}[All-order expansion; source 102]\label{tcn:w:thm:allorders}
+There are compatible real coefficients $c_j$, $c_0=1$, such that for every fixed $J\ge0$,
+\begin{equation}\label{tcn:w:allorders}
+ \frac{a_n}{\gamma_2 n!12^n\ee^{Bn^{1/3}}n^{-2/3}}
+ =\sum_{j=0}^Jc_jn^{-j/3}+O(n^{-(J+1)/3}).
+\end{equation}
+Equivalently, compatible $L_j$ satisfy
+\begin{equation}\label{tcn:w:logseries}
+ \log\frac{a_n}{\gamma_2 n!12^n\ee^{Bn^{1/3}}n^{-2/3}}
+ =\sum_{j=1}^JL_jn^{-j/3}+O(n^{-(J+1)/3}).
+\end{equation}
+The coefficients lie in $\Q[z,3^{1/3}]$ and are generated by the polynomial recursion below. The amplitude is the same $\gamma_2$ at every depth.
+\end{theorem}
+\emph{[Write phase: this is Theorem~\ref{tcn:b:thm:main}; Part~II's coefficient field $\Q[B]$, with $B=3^{1/3}z$, is contained in $\Q[z,3^{1/3}]$ and is the sharper statement.]}
+
+\subsection{An invertible polynomial equation at each depth}
+Return to the one-step recurrence \eqref{tcn:w:walk}. Put
+\[
+ t=N^{-1/3},\quad x=(h+1)t,\quad c=2/3,\quad
+ \ell=c^{2/3}z,\quad F(x)=\Ai(z+c^{1/3}x).
+\]
+Then $F''=(cx+\ell)F$, $F(0)=0$, and $F'(0)\ne0$. Primes here and below mean derivatives in $x$. Let $t_1=t(1-t^3)^{-1/3}$. The exact weights become
+\[
+ U(t,x)=\frac{3+xt^2+t^3}{3+3xt^2-3t^3},\qquad
+ V(t,x)=\frac{3+xt^2+t^3}{3+xt^2-t^3}.
+\]
+Seek polynomial pairs $P_j,Q_j\in\Q[\ell,x]$ and scalars $\sigma_j\in\Q[\ell]$ with the gauges \eqref{tcn:f:formalansatz} and
+\[
+ s(t)=2+\ell t^2+\sum_{j\ge3}\sigma_jt^j,\qquad
+ \mathfrak F(t,x)=\sum_{j\ge0}t^j[P_j(x)F(x)+Q_j(x)F'(x)],
+\]
+satisfying formally the one-step equation \eqref{tcn:f:formalequation} with these weights. The orders $t^0,t^1$ cancel, and the $t^2$ equation is the Airy equation. The new profile and scalar at order $t^k$ solve \eqref{tcn:f:solveprofile} with $c=2/3$, uniquely, by the algorithm \eqref{tcn:f:algorithm}; on polynomials of degree at most $m$ the operator $\mathcal T$ has diagonal $-2c(2j+1)$, and its inverse preserves $\Q[\ell,x]$. \emph{[Write phase: source 102 prints the system, the operator and the algorithm in full; they are literally Part~III's displays at $d=2$ and are printed once, there.]} This proves existence, uniqueness, and compatibility to every formal depth.
+
+Each profile $f_j=P_jF+Q_jF'$ vanishes exactly at $x=0$; for $j\ge1$ its derivative there also vanishes. For example at order three,
+$R_0=2$, $R_1=4x/3$, hence $\widetilde q=-2$, $\sigma_3=4/3$, $Q_1=0$, $P_1=-x^2/3$. The next order gives $\sigma_4=\ell^2/12$. These are outputs of the recurrence, not additional assumptions. \emph{[Write phase: here $R_0=2$ and $\sigma_3=4/3$, whereas Part~III at $d=2$ has $R_0=2c=4/3$ and $\sigma_3=2\eta_f=2/3$: the factorial gauge shifts the weights. $\sigma_4=\ell^2/12$ in both.]}
+
+\subsection{A compatible scalar carrier and the endpoint normalization}
+Define $h_j$ by the formal difference identity
+\begin{align}
+ \log\frac{s(t)}2
+ &=\frac{3\ell}{2t}\bigl[1-(1-t^3)^{1/3}\bigr]-\frac23\log(1-t^3)\notag\\
+ &\quad+\sum_{j\ge1}h_jt^j\bigl[1-(1-t^3)^{-j/3}\bigr].\label{tcn:w:carrier}
+\end{align}
+Its coefficients at $t^2,t^3$ agree with $\sigma_2=\ell$, $\sigma_3=4/3$. The new $h_j$ first has coefficient $-j/3$ at order $t^{j+3}$, so is determined uniquely. No additive integration constant is introduced; for example $h_1=\ell^2/4$.
+
+For fixed $M\ge1$, set
+\begin{align}
+ \mathcal H_N^{[M]}&=2^N\ee^{(3\ell/2)N^{1/3}}N^{2/3}
+                  \exp\!\left(\sum_{j=1}^Mh_jN^{-j/3}\right),\label{tcn:w:H}\\
+ \mathfrak F^{[M]}(t,x)&=\sum_{j=0}^Mt^jf_j(x).\notag
+\end{align}
+Every carrier has leading multiplicative constant exactly one. Its exact consecutive ratio has the common expansion $s$ through at least order $t^{M+3}$. Coefficients in the carrier may use profiles beyond depth $M$; their existence has already been proved. This avoids inconsistent finite-product initialization constants.
+
+At even time let $\eps=n^{-1/3}$, $X=(k+1/2)\eps$, so $N=2n$, $h=2k$, $t=2^{-1/3}\eps$, $x=2^{2/3}X$. Define
+\begin{equation}\label{tcn:w:E}
+ E_n^{[M]}(k)=\frac{3^{4/3}}{2^{2/3}\Ai'(z)}
+       \mathcal H_{2n}^{[M]}\mathfrak F^{[M]}(2^{-1/3}\eps,2^{2/3}X).
+\end{equation}
+The leading bulk factor is
+\[
+ \frac{3^{4/3}}{\Ai'(z)}4^n\ee^{Bn^{1/3}}n^{2/3}
+            \Ai(z+2\cdot3^{-1/3}X).
+\]
+At $k=0$, the Airy factor equals $\Ai'(z)3^{-1/3}\eps(1+O(\eps^2))$. Hence
+\begin{equation}\label{tcn:w:Eend}
+ E_n^{[M]}(0)=3\cdot4^n\ee^{Bn^{1/3}}n^{1/3}(1+O(\eps)),
+\end{equation}
+with leading coefficient $3$ at every depth. The canonical endpoint correction series is therefore the expansion of
+\begin{equation}\label{tcn:w:canonicalendpoint}
+ \frac{E_n^{[M]}(0)}{3\cdot4^n\ee^{Bn^{1/3}}n^{1/3}}
+                    \left(1+\frac1{3n}\right)^{-1}.
+\end{equation}
+The last exact factor comes from \eqref{tcn:w:diagonal}, contributes from order $\eps^3$, and must be retained. All its coefficients stabilize with increasing depth.
+
+\paragraph{The coefficient field.}
+Here is why cube roots of $2$ disappear from the endpoint coefficients. Write $\mathfrak B_\ell(x)$ for the solution of $\mathfrak B''=(cx+\ell)\mathfrak B$ normalized by $\mathfrak B_\ell(0)=0$ and $\mathfrak B_\ell'(0)=1$. If $\omega^3=1$, its power-series differential equation gives
+$\mathfrak B_{\omega\ell}(\omega x)=\omega\mathfrak B_\ell(x)$.
+The simultaneous substitution $(t,x,\ell)\mapsto(\omega t,\omega x,\omega\ell)$ preserves the exact weights, shifts, and recurrence. Uniqueness of the polynomial recursion and gauges therefore gives, for each monomial $\ell^ix^s$, the congruences
+\[
+ i+s+j\equiv0\pmod3\quad\text{in }P_j,\qquad
+ i+s+j\equiv1\pmod3\quad\text{in }Q_j.
+\]
+Likewise $i+j\equiv0\pmod3$ in $\sigma_j$ and $h_j$. Evaluation at $x=t$, division by the leading endpoint $t$, and the factor $(1+(2/3)t^3)^{-1}$ preserve invariance. Thus a term $\ell^it^j$ in the endpoint correction has $i+j\equiv0\pmod3$. Under $t=2^{-1/3}\eps$ and $\ell=(2/3)^{2/3}z$, it becomes
+$2^{(2i-j)/3}3^{-2i/3}z^i\eps^j$.
+Its exponent of $2$ is integral, proving the asserted field $\Q[z,3^{1/3}]$.
+
+\subsection{Uniform residuals and all order transfer}
+Fix $M$ and $C_0>0$. In the exact one-step recurrence, the residual of
+$\mathcal H_N^{[M]}\mathfrak F^{[M]}(N^{-1/3},(h+1)N^{-1/3})$, divided by $\mathcal H_N^{[M]}$, is bounded by
+\begin{equation}\label{tcn:w:uniformres}
+ Ct^{M+3}(1+x)^{D'}\ee^{-c_0x^{3/2}},\qquad 0\le h\le C_0\sqrt N,
+\end{equation}
+for large $N$. Constants may depend on the fixed depth and $C_0$; $c_0>0$ here is unrelated to the slope $c=2/3$. The proof is that of \eqref{tcn:f:oneresidual} in Part~III, with these weights: $x=O(t^{-1/2})$, the rescaled denominators stay separated from zero, finite rational Taylor expansions and polynomial--Airy envelopes control the remainders, and formal cancellation through order $t^{M+2}$ does the rest. This argument uses no convergence of an infinite expansion.
+
+At $h=0$, the ghost predecessor has height $-1$, hence $x=0$, where every finite profile vanishes exactly before expansion. The bottom boundary is therefore exact. Eliminating the odd step gives the first row $\mathsf D_n(0)=(3n+1)/(3n)$ and $\mathsf U_n(0)=(3n+1)/(3n-1)$ already used above. The even-time residual is a bounded linear combination of the one-step residuals because the weights and carrier ratios are bounded in the cutoff region.
+
+Choose fixed smooth $\chi$ with $0\le\chi\le1$, $\chi=1$ on $[0,1/2]$, and $\chi=0$ on $[1,\infty)$. Replace $E_n^{[M]}$ by
+$\widetilde E_n^{[M]}(k)=\chi(k/\sqrt n)E_n^{[M]}(k)$.
+This leaves the endpoint unchanged. In the transition region $X$ is comparable to $n^{1/6}$. Every fixed profile and needed neighbor is bounded by a polynomial in $n$ times $\ee^{-cn^{1/4}}$, after removing the scalar carrier. Every cutoff error, including change of cutoff from $n-1$ to $n$, is thus smaller than every power. Application of $\mathsf M_n$ extends the residual support at most to $k\le\sqrt n+1$.
+
+The exact edge ratios of $\Sigma_n$ give $-\log \Sigma_n(k)=O(k^2/n+k/n)=O(1)$ on this support, so $\Sigma_n^{-1}$ is uniformly bounded there. Write
+$\Theta_n=4^n\ee^{Bn^{1/3}}n^{2/3}$.
+The squared polynomial--Airy envelope has lattice sum $O(\eps^{-1})$, whence
+\[
+ \norm{\widetilde E_n^{[M]}-\mathsf M_n\widetilde E_{n-1}^{[M]}}_2
+            =O(\Theta_n\eps^{M+5/2}).
+\]
+Since $\Theta_n/P_n=O(\eps^{1/2})$ by \eqref{tcn:w:Climit}, the normalized defect obeys
+\begin{equation}\label{tcn:w:normalizedres}
+ \norm{P_n^{-1}\Sigma_n^{-1}
+   (\widetilde E_n^{[M]}-\mathsf M_n\widetilde E_{n-1}^{[M]})}_2
+              =O(\eps^{M+3})=O(n^{-(M+3)/3}).
+\end{equation}
+Increasing the depth gives an arbitrarily large forcing exponent.
+
+Set $V_n^{[M]}=P_n^{-1}\Sigma_n^{-1}\widetilde E_n^{[M]}$. Comparing the leading bulk factor in \eqref{tcn:w:E} with the sampled unit Airy profile \eqref{tcn:w:airyf} gives
+\begin{equation}\label{tcn:w:compatibility}
+ \norm{V_n^{[M]}-\frac{\sqrt{27/2}}{C_\lambda}\psi_n}_2=O(\eps).
+\end{equation}
+In detail, the leading constant is
+$3^{4/3}/(\sqrt{c_A}C_\lambda)=\sqrt{27/2}/C_\lambda$.
+The finite carrier differs from its leading carrier by $1+O(\eps)$, the finitely many profile corrections have weighted $\ell^2$ norm $O(\eps)$, and the cutoff loses exponentially little. On its support,
+$\Sigma_n^{-1}-1=O(\eps(1+X^2))$ in this weighted norm; this follows from the logarithmic edge-ratio estimate and the polynomial--Airy decay. Equation~\eqref{tcn:w:qclose} contributes $O(\eps^2)$ and \eqref{tcn:w:Climit} contributes $O(\eps)$. These prove \eqref{tcn:w:compatibility}.
+
+By \eqref{tcn:w:gamma}, $\gamma_2\sqrt{27/2}/C_\lambda=p_\infty$. Consequently
+$\mathsf z_n=u_n-\gamma_2V_n^{[M]}$ has norm $O(n^{-1/3})$, its Perron projection tends to zero, and it obeys the exact signed recurrence
+\begin{equation}\label{tcn:w:forced}
+ \mathsf z_n=\mathsf T_n\mathsf z_{n-1}+\varrho_n,\qquad\norm{\varrho_n}_2=O(n^{-p}),\qquad p=(M+3)/3.
+\end{equation}
+Neither the residual nor the approximate profiles need be positive.
+
+\begin{lemma}[Forced product; source 102]\label{tcn:w:lem:forced}
+For the exact operators $\mathsf T_n$ above, suppose \eqref{tcn:w:forced} holds with $p>4/3$,
+$\norm{\mathsf z_n}_2=O(n^{-1/3})$, and $\ip{\psi_n}{\mathsf z_n}\to0$. Then
+\[
+ \norm{\mathsf z_n}_2=O(n^{-(p-1)}),\qquad \mathsf z_n(0)=O(n^{-1/2-(p-1)}).
+\]
+\end{lemma}
+\begin{proof}
+This is Lemma~\ref{tcn:f:lem:forced} at $d=2$, with the operators of this Part, and its proof is literally the same: project as in \eqref{tcn:w:perp} and \eqref{tcn:w:increment}, now with forcing; improve the perpendicular bound by the stability fact $x_n\le(1-cn^{-2/3})x_{n-1}+O(n^{-r})\Rightarrow x_n=O(n^{-r+2/3})$; sum the scalar increments from $n+1$ to infinity using the zero limit; repeat finitely many times to reach $p-1$; and finish at the endpoint with \eqref{tcn:w:smoothing} over $\Delta=\lfloor n^{2/3}\rfloor$ steps, which gives $O(n^{-p+1/2})+O(n^{-p+1/6})$. Source 102 adds three observations: no sign assumption enters; no logarithmic boundary is encountered, since the exponent improves to $\min(q+1/3,p-1)$ at each round; and the factor $1+C/n$ in \eqref{tcn:w:domination} is already included in the boundary estimate and introduces no additional loss.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{tcn:w:thm:allorders}]
+Take $M\ge2$ so $p>4/3$. Lemma~\ref{tcn:w:lem:forced} applies to the normalized error identified above. Since $\Sigma_n(0)=1$ and
+\[
+ \frac{P_n}{3\cdot4^n\ee^{Bn^{1/3}}n^{1/3}}=O(n^{1/2}),
+\]
+its endpoint conclusion gives
+\[
+ \frac{e_n(0)-\gamma_2\widetilde E_n^{[M]}(0)}
+ {3\cdot4^n\ee^{Bn^{1/3}}n^{1/3}}=O(n^{-(p-1)})=O(\eps^M).
+\]
+The common exact factor $3^nn!/(3n+1)$ transfers this to $a_n$ without changing the relative error. Given $J$, take $M\ge\max(2,J+1)$ and expand \eqref{tcn:w:canonicalendpoint} through order $\eps^J$. Its coefficients are independent of the deeper truncation, its tail is $O(\eps^{J+1})$, and the transferred error is no larger. This proves \eqref{tcn:w:allorders}; formal logarithm gives \eqref{tcn:w:logseries}.
+\end{proof}
+The expansion is Poincar\'e asymptotics in one dominant Airy sector. It does not establish convergence of the infinite series or contributions smaller than every algebraic power.
+
+\section{Exact coefficients, the total first correction and reproducible checks}\label{tcn:w:sec:coefficients}
+The first six logarithmic coefficients from \eqref{tcn:w:carrier} and \eqref{tcn:w:canonicalendpoint} are
+\begin{align}
+ L_1&=\frac{3^{2/3}z^2}{18}=\frac{B^2}{18},&L_2&=0,\notag\\
+ L_3&=-\frac19,&L_4&=-\frac{3^{2/3}z^2}{162}=-\frac{B^2}{162},\label{tcn:w:logcoeffs}\\
+ L_5&=\frac{3^{1/3}z(36-z^3)}{2916}=\frac{B(108-B^3)}{8748},&
+ L_6&=\frac{2z^3}{729}-\frac1{162}=\frac{2B^3}{2187}-\frac1{162}.\notag
+\end{align}
+For example $c_1=L_1=z^2/(2\cdot3^{4/3})$. The multiplicative expansion begins
+\begin{equation}\label{tcn:w:firstcoeffs}
+ 1+\frac{3^{2/3}z^2}{18}n^{-1/3}
+ +\frac{3^{1/3}z^4}{216}n^{-2/3}
+ +\left(\frac{z^6}{3888}-\frac19\right)n^{-1}+O(n^{-4/3}).
+\end{equation}
+All remaining $c_j$ follow by formal exponentiation of $\sum L_j\eps^j$.
+
+\begin{remark}[The fifth and sixth coefficients; write phase]\label{tcn:w:rem:L56}
+$L_1,\ldots,L_4$ and $c_1,c_2,c_3$ are Part~II's \eqref{tcn:b:logforward}: $c_2=3^{1/3}z^4/216=B^4/648$ and $c_3=z^6/3888-1/9=B^6/34992-1/9$. The $B$-forms in \eqref{tcn:w:logcoeffs} are write-phase conversions ($B=3^{1/3}z$, $z^3=B^3/3$), checked symbolically. $L_5$ and $L_6$ are new: Part~II's shipped coefficient file \textup{\nolinkurl{data/69-binary-coef-coefficients.json}} stops at $L_4$. At the intake (5 October 2026) Part~II's own generator \textup{\nolinkurl{code/69-binary-coef-derive_coefficients.py}}, written independently of source 102, was rerun on a copy with \texttt{--order 9} (392 seconds); its output \texttt{logforward\_n} ends with $3^{1/3}z(36-z^3)/2916$ and $2z^3/729-1/162$, exactly $L_5$ and $L_6$. So two independent symbolic computations agree. Numerically $L_5\approx-0.056413$ and $L_6\approx-0.041240$; direct fits of the exact sequence for $n\le1500$ cannot resolve them, which is why the confirmation is symbolic.
+\end{remark}
+
+\subsection{The first correction for total networks}
+The first correction transfers to the \emph{total} network count. Put $\gamma_T=\gamma_2\sqrt\ee/12$. The exact maximal-count identity, Theorem~\ref{tcn:w:thm:allorders}, and Proposition~\ref{tcn:w:prop:ratio-rate} give
+\begin{equation}\label{tcn:w:totalfirst}
+ \TC_n=\gamma_T(n!)^2 12^n\ee^{Bn^{1/3}}n^{-5/3}
+       \left(1+L_1n^{-1/3}+O(n^{-2/3})\right).
+\end{equation}
+Indeed shifting $n$ to $n-1$ first changes the stretched exponential at order $n^{-2/3}$; the factorial, polynomial, and $L_1$ shifts contribute no new term at order $n^{-1/3}$. The ratio error is also $O(n^{-2/3})$. Its bound does not identify the next total-count coefficient, even though the maximal-count coefficients are available to all orders. \emph{[5 October 2026, batch~102: Part~II identifies it. Its Theorem~\ref{tcn:b:thm:transfer} gives every finite order of $\TC_n$, through the identity \eqref{tcn:b:T1}; by \eqref{tcn:b:total-forward} the logarithmic coefficient at $n^{-2/3}$ is $-23B/72$, so the multiplicative second coefficient in \eqref{tcn:w:totalfirst} is $B^4/648-23B/72$. Source 102 could not know this; see Section~\ref{tcn:w:sec:questions}.]}
+
+As a separate shift check, the normalized successive ratio has
+\begin{align}
+ \frac{a_n}{12n a_{n-1}}
+ &=1+\frac B3n^{-2/3}-\frac23n^{-1}
+      +\frac{B^2}{27}n^{-4/3}
+      -\frac{B}{9}n^{-5/3}\notag\\
+ &\quad+\frac{2B^2}{243}n^{-7/3}
+      -\frac{B(B^3+216)}{6561}n^{-8/3}
+      +\frac{2B^3}{2187}n^{-3}+O(n^{-10/3}).\label{tcn:w:ratio}
+\end{align}
+The coefficients at $n^{-1/3}$ and $n^{-2}$ vanish. To justify \eqref{tcn:w:ratio}, apply the all-order theorem at a sufficiently deeper truncation before shifting and dividing. Unknown log coefficients of orders seven, eight, and nine enter the difference only at orders ten, eleven, and twelve. No arbitrary big-$O$ remainder has been differentiated. \emph{[Write phase: source 102 writes the coefficients in $z$: $3^{1/3}z/3$, $3^{2/3}z^2/27$, $-3^{1/3}z/9$, $2\cdot3^{2/3}z^2/243$, $-3^{1/3}z(z^3+72)/2187$ and $2z^3/729$; the $B$-forms were checked symbolically, and the intake checked that \eqref{tcn:w:ratio} follows exactly from $L_1,\ldots,L_6$.]}
+
+\subsection{What is verified by finite computation}
+The accompanying source package separates exact identities from analytic theorems. Rational finite-index checks compare the original row recurrence, the rotated one-step recurrence, the two-step evolution, the diagonal shift, the symmetrizer, and the positive bidiagonal factorization. These detect algebra and startup errors; they do not prove the spectral asymptotics.
+
+The exact symbolic checks reconstruct the formal shifted polynomial--Airy recurrence through $t^9$, clear the rational denominators, and test both Airy coordinates. They check every profile's boundary and derivative gauge. A separate endpoint reconstruction solves the normalized Airy differential equation as a formal power series, evaluates the profiles at $x=t$, integrates the scalar ratio by \eqref{tcn:w:carrier}, includes the factor $(1+(2/3)t^3)^{-1}$, and matches \eqref{tcn:w:logcoeffs}, the multiplicative coefficients through order six, and \eqref{tcn:w:ratio} through order nine. These are exact finite consistency certificates. The arbitrary-depth assertion rests on the polynomial inversion and analytic transfer proved above.
+
+All verification gates in the release checker use explicit exceptions rather than Python assertions, and the full checks are executed under ordinary Python and under \texttt{python -O}. Deliberately altered input values and coefficient tables are required to fail in both modes. The package includes the exact inputs, build and replay instructions, source provenance, and the verification summary; it does not require access to the development workspace.
+
+\emph{[Write phase: in the repository the checker, harness, reference derivation snapshots and diagnostic script are \textup{\nolinkurl{code/102-tableaux-*}}; inputs, results, replays and provenance are \textup{\nolinkurl{data/102-tableaux-*}}; the package documentation and review are \textup{\nolinkurl{102-tableaux-checks-README.md}}, \textup{\nolinkurl{102-tableaux-checks-RESULTS.md}}, \textup{\nolinkurl{102-tableaux-diag-README.md}}, \textup{\nolinkurl{102-tableaux-SOURCES.md}} and \textup{\nolinkurl{102-tableaux-qa-REVIEW.md}}. The manuscript, its PDF, the release verifier and manifest, the generic requirements file and an in-package duplicate of \textup{\nolinkurl{endpoint_9.json}} are not shipped. The intake reran everything on copies of the delivered layout on 5 October 2026: the release verifier passed; the suite harness kills each run after 300 seconds, so its first run failed by timeout on the loaded laptop (302 seconds; the delivered record took 136 seconds in total), and a rerun with the machine quieter passed, with both baselines (4,999 gates each) and 44 of 44 rejections, in 690 seconds; direct runs of the checker passed in both modes in 114 seconds each; and \texttt{reproduce\_dp.py 100} reproduced the delivered replay. Regenerated results equal the delivered ones apart from timestamps, durations and the Python version.]}
+
+\subsection{Numerical diagnostics without certified amplitude digits}\label{tcn:w:sec:numerics}
+For context only, exact integer dynamic programming through $n=3000$, followed by high-precision floating-point evaluation, gives the following diagnostics. The second column is the uncorrected normalized count in \eqref{tcn:w:allorders}; the third removes the six displayed logarithmic corrections.
+\begin{center}
+\begin{tabular}{rrr}
+\toprule
+$n$ & Uncorrected normalization & After six log corrections\\
+\midrule
+100 & $2.3145214818$ & $2.0226159639$\\
+500 & $2.1896829266$ & $2.0226419866$\\
+1000 & $2.1542867259$ & $2.0226420109$\\
+2000 & $2.1265206841$ & $2.0226420146$\\
+\bottomrule
+\end{tabular}
+\end{center}
+These values suggest a limit near $2.022642$, but no decimal of $\gamma_2$ is certified here. Exact integer recurrence evaluation does not turn an asymptotic remainder with unspecified constants into an interval bound. The table is a consistency diagnostic and is unnecessary for the proofs. The optional reproduction script and saved diagnostic values make its scope explicit. \emph{[Write phase: the uncorrected column agrees with Part~I's diagnostics at $n=500,1000,2000$, and the corrected values are consistent with Part~II's four-correction diagnostics of Section~\ref{tcn:b:sec:numerics} (2.0226420138 at $n=50000$). The saved values are \textup{\nolinkurl{data/102-tableaux-diag-saved_dp_3000.json}}.]}
+
+\section{Inverse asymptotics}\label{tcn:w:sec:inverse}
+There are two different questions: recovering the index from an exact sequence value, and finding a floor or ceiling index for an arbitrary threshold. An asymptotic approximation alone need not resolve a threshold arbitrarily close to a count. \emph{[Write phase: this section is Part~III's Section~\ref{tcn:f:sec:inverse} at $d=2$, with its proofs; it is printed with its binary constants because source 102 adds a first-correction total inverse. Remark~\ref{tcn:d:rem:tai} applies, and Part~II's Section~\ref{tcn:b:sec:inversion} is stronger for totals.]}
+
+\subsection{An eventual inverse without knowing the amplitude}
+For large positive $y$, define
+\begin{align}
+ x_0(y)&=\frac{y}{W_0(12y/\ee)},&L_0(y)&=\log(12x_0(y)),\label{tcn:w:lambert}\\
+ \hat x(y)&=x_0(y)-\frac{z(3x_0(y))^{1/3}-\tfrac16\log x_0(y)
+                         +\tfrac12\log(2\pi)}{L_0(y)},\label{tcn:w:z}
+\end{align}
+where $W_0$ is the principal positive real branch of Lambert's $W$ function.
+\begin{proposition}[source 102]\label{tcn:w:prop:inverse}
+The known two-sided bound \eqref{tcn:b:known-theta} alone implies
+\[
+ \hat x(\log a_n)=n+O(1/\log n).
+\]
+Thus nearest-integer rounding recovers $n$ for all sufficiently large exact values $a_n$.
+\end{proposition}
+\begin{proof}
+This is Proposition~\ref{tcn:f:prop:amplitudefree} with $(\mathsf p,\mathsf r)=(1,-2/3)$, $\Gamma=12$: Stirling's formula yields $\log a_n=\Phi(n)+O(1)$ with $\Phi(x)=x(\log(12x)-1)+z(3x)^{1/3}-\tfrac16\log x+\tfrac12\log(2\pi)$, and the Taylor and mean-value steps there apply verbatim. The error tends to zero, so rounding eventually succeeds.
+\end{proof}
+There is no effective cutoff in this assertion. The omitted $\log\gamma_2$ is a bounded constant and explains why its error is only $O(1/\log n)$.
+
+For $n\ge2$, the original recurrence gives
+$a_n\ge b_{n,n}=(3n-2)a_{n-1}>a_{n-1}$.
+Also differentiating \eqref{tcn:w:z} gives $\hat x'(y)\sim1/\log x_0>0$. Therefore for a sufficiently large threshold $Y$, if
+\[
+ k_\le(Y)=\max\{n:a_n\le Y\},\qquad j_0=\operatorname{round}(\hat x(\log Y)),
+\]
+then $j_0\in\{k_\le(Y),k_\le(Y)+1\}$, and
+\begin{equation}\label{tcn:w:threshold}
+ k_\le(Y)=\begin{cases}j_0,&a_{j_0}\le Y,\\j_0-1,&a_{j_0}>Y.\end{cases}
+\end{equation}
+Indeed $\hat x(\log Y)$ lies between $k_\le(Y)+o(1)$ and $k_\le(Y)+1+o(1)$. One exact or rigorously certified comparison selects the floor inverse. For the least index with $a_n\ge Y$, return $j_0$ if $a_{j_0}\ge Y$, and $j_0+1$ otherwise. Equality belongs to the first branch. Unverified floating-point comparison near equality is insufficient.
+
+\subsection{Arbitrary order inverses for the tableau and maximal counts}
+With the true canonically defined amplitude, put
+\begin{equation}\label{tcn:w:FJ}
+ \mathcal F_J(x)=\log\Gamma(x+1)+x\log12+z(3x)^{1/3}
+       -\frac23\log x+\log\gamma_2+\sum_{j=1}^JL_jx^{-j/3}.
+\end{equation}
+Its derivative is eventually positive and asymptotic to $\log x$. Let $x_J(y)$ be the unique sufficiently large root of $\mathcal F_J(x)=y$. Taking logarithms in the all-order theorem and using the mean value theorem gives
+\begin{equation}\label{tcn:w:inverseall}
+ x_J(\log a_n)=n+O\!\left(\frac{n^{-(J+1)/3}}{\log n}\right).
+\end{equation}
+This is a mathematical inverse statement with the true constant. Replacing that constant by uncertified decimal digits does not give a certified inverse. A prescribed finite number of Newton steps, $m_J=\lceil\log_2(J+4)\rceil-1$, started at \eqref{tcn:w:lambert}, suffices asymptotically, by the quadratic estimate of Part~III's \eqref{tcn:f:newton}; here
+\[
+ \mathcal F_J'(x)=\Psi(x+1)+\log12+\frac B3x^{-2/3}
+       -\frac2{3x}-\sum_{j=1}^J\frac j3L_jx^{-j/3-1},
+\]
+and the elementary Stirling replacement \eqref{tcn:f:stirlinginverse}, with the same $R$, keeps the inverse order and Newton count.
+
+For the maximal-reticulation sequence, the exact identity in \eqref{tcn:w:networkinputs} gives the model
+$\mathcal M_J(x)=\log\Gamma(x+1)+\mathcal F_J(x-1)$.
+Its root at $y=\log\TC_{n,n-1}$ differs from $n$ by
+$O(n^{-(J+1)/3}/\log n)$, since $\mathcal M_J'(x)\sim2\log x$.
+The appropriate initial Lambert approximation is
+\begin{equation}\label{tcn:w:networklambert}
+ x_0^{\rm net}(y)=\frac{y}{2W_0(\sqrt{12}\,y/(2\ee))}.
+\end{equation}
+The same fixed number $m_J$ of Newton steps has the desired order: the initial error remains $O(x_0^{1/3}/\log x_0)$ and the same quadratic estimate applies.
+
+\subsection{A first correction inverse for total networks}
+Let $\gamma_T=\gamma_2\sqrt\ee/12$ and define
+\begin{align}
+ \mathcal T_0(x)&=2\log\Gamma(x+1)+x\log12+z(3x)^{1/3}
+                        -\tfrac53\log x+\log \gamma_T,\notag\\
+ \mathcal T_1(x)&=\mathcal T_0(x)+L_1x^{-1/3}.\label{tcn:w:totalmodel}
+\end{align}
+Equation~\eqref{tcn:w:totalfirst} gives
+$\log\TC_n=\mathcal T_1(n)+O(n^{-2/3})$. The derivative is asymptotic to $2\log n$, so the unique sufficiently large inverse satisfies
+\begin{equation}\label{tcn:w:totalinverse}
+ \mathcal T_1^{-1}(\log\TC_n)=n+O\!\left(\frac{n^{-2/3}}{\log n}\right).
+\end{equation}
+With $y=\log(\text{target})$, starting at \eqref{tcn:w:networklambert}, two exact Newton steps for $\mathcal T_1(x)=y$ suffice for this order. The initial error is $O(x_0^{1/3}/\log x_0)$, while the first and second Newton root errors are respectively $O(x_0^{-1/3}/\log^3x_0)$ and $O(x_0^{-5/3}/\log^7x_0)$, by the same quadratic estimate as above. The second is smaller than the model error in \eqref{tcn:w:totalinverse}.
+
+For comparison, using only the leading model gives
+$\mathcal T_0^{-1}(\log\TC_n)=n+O(n^{-1/3}/\log n)$.
+An explicit simplified one-step expression, with $x_0=x_0^{\rm net}(y)$, is
+\[
+ \hat x_T(y)=x_0-
+ \frac{z(3x_0)^{1/3}-\tfrac23\log x_0+\log(2\pi \gamma_T)}
+ {2\log(\sqrt{12}\,x_0)}.
+\]
+Taylor's theorem gives $\hat x_T(\log\TC_n)=n+O(n^{-1/3}/\log n)$. Its analytic root error is $O(x_0^{-1/3}/\log^2x_0)$; omitting $L_1$ limits its model accuracy. It is not an implementation of the sharper two-step estimate. If $\log \gamma_T$ is omitted as well, only $O(1/\log n)$ is asserted.
+
+The leading equivalent implies $\TC_{n+1}/\TC_n\sim12n^2$, hence eventual monotonicity. The same two-candidate threshold rule applies, but still needs an exact or certified comparison and an eventual cutoff. The constants must be evaluated accurately enough for any numerical use. No all-order total-count inverse is claimed; more terms require more than the ratio bound proved here. \emph{[Write phase: Part~II's \eqref{tcn:b:ht} and \eqref{tcn:b:inverse-total} already include the $n^{-2/3}$ and $n^{-1}$ total corrections, and its transfer gives every order; \eqref{tcn:w:totalinverse} is the identity-free counterpart. $\hat x_T$ is exactly the truncation displayed in Part~II's \eqref{tcn:b:inverse-total}: there $x=x_0^{\rm net}(y)$, $\mathsf s=2\log(2\sqrt3\,x)$ and $C_T=\log(2\pi\gamma_T)$.]}
+
+\section{Further questions and research (Part IV)}\label{tcn:w:sec:questions}
+Source 102's closing section, ``Further questions and boundaries of the result'', is printed first, with dated notes; the write-phase items follow. No claim of source 102 was found to be wrong.
+
+\paragraph{Certified amplitude computation.}
+The product and scalar series in \eqref{tcn:w:Cproduct} and \eqref{tcn:w:cseries} give a route to numerical enclosure. Effective constants in the spectral, drift, projection, and smoothing estimates would be needed to bound the tails explicitly. Interval computations of finite matrices could then certify digits of $\gamma_2$ and effective inverse cutoffs. The present proof supplies existence and qualitative rates, not such numerical enclosures. \emph{[Write phase: still open; Part~I's question~2 (Section~\ref{tcn:d:sec:status}).]}
+
+\paragraph{Corrections for total networks.}
+The quantitative ratio and total-variation bound transfer the first correction. Identifying the total-count coefficient at order $n^{-2/3}$, and then an all-order total-count expansion, requires sharper information on the free-root-child counts $F_{n,r}$ or their aggregate weights. A big-$O$ bound for their contribution cannot determine those coefficients. \emph{[5 October 2026, batch~102: answered in the repository. Part~II's Theorem~\ref{tcn:b:thm:transfer} gives the all-order total-count expansion, and \eqref{tcn:b:total-forward} gives the coefficient asked for: $-23B/72$ in logarithmic form, $B^4/648-23B/72$ in the multiplicative form of \eqref{tcn:w:totalfirst}. It uses the Pons--Batle identity \eqref{tcn:b:T1}, proved in \cite{LL2026}, which source 102 cites but does not use, rather than information on $F_{n,r}$. Whether the free-root-child route of Proposition~\ref{tcn:w:prop:ratio-rate} can itself be pushed to all orders remains open; see item~1 below.]}
+
+\paragraph{Beyond all algebraic orders.}
+The Airy spectrum suggests additional decaying components, but a transseries would require their separate amplitudes, interactions, and uniform remainders. Neither the all-depth polynomial algorithm nor a finite numerical residual proves an exponentially small sector.
+
+\paragraph{Other network regimes.}
+Fixed, sparse, and maximal reticulation counts occupy different asymptotic regimes. The exact all-order statement here is for the maximal diagonal through its word/tableau normalization. A uniform bridge to sparse-reticulation results would need a separate two-parameter analysis.
+
+\paragraph{Scope of the proof and source package.}
+The leading proof includes its own form compactness, localization, dimension-change treatment, boundary kernel, positivity argument, and amplitude product. The all-order proof includes its own forced-product lemma and does not require a companion relaxed-tree article. Exact finite checks are reproducibility safeguards, not a machine verification of the analytic proof. The finite literature inspection supports precise attribution of the prior scale and ratio theorem, but is not a claim of exhaustive novelty. \emph{[Write phase: the ``companion relaxed-tree article'' is presumably the relaxed-tree manuscript of the same delivery series, bundle Report~100, placed as Part~V of the sibling report \textup{\nolinkurl{../a082161-airy-amplitudes}} by \texttt{6ab1f1979}; the two share the lemma family of Parts~I--IV.]}
+
+\paragraph{Write-phase items.}
+\begin{enumerate}[itemsep=2pt]
+\item \emph{An identity-free all-order transfer.} Proposition~\ref{tcn:w:prop:ratio-rate} obtains $\mathcal R_{n-1}=\sqrt\ee(1+O(n^{-2/3}))$ from Lemmas 3.17--3.20 of \cite{Chang2024} alone. Whether expansions of the free-root-child ratios $\mathfrak f_k$ could give the all-order transfer of Theorem~\ref{tcn:b:thm:transfer} without the identity \eqref{tcn:b:T1} is open; such a route might extend to $d\ge3$, where no analogue of \eqref{tcn:b:T1} is known (Part~III, Section~\ref{tcn:f:sec:questions}, item~2). (Write phase.)
+\item \emph{Certified digits.} The diagnostics $2.0226420146$ (here) and $2.02264201$ (Part~II) are uncertified; see the first paragraph. (Sources 102 and 69.)
+\item \emph{The next logarithmic coefficients.} $L_7,L_8,L_9$ enter \eqref{tcn:w:ratio} only beyond $n^{-3}$; they are computable by the same algorithm (Part~II's generator at higher order) but were not computed. (Write phase.)
+\end{enumerate}
+
+\paragraph{Bibliography note for Parts III--IV.} \emph{[Write phase: source 104's entries \texttt{cfllwy}, \texttt{fyz}, \texttt{walls26}, \texttt{oeis213863} and source 102's \texttt{fyz}, \texttt{bw}, \texttt{cfllwy}, \texttt{walls26}, \texttt{oeis} are the existing entries \cite{Chang2024}, \cite{FYZ2021}, \cite{LL2026}, \cite{OEIS} and \cite{BW2021}; their remaining entries are added at the end of the bibliography. Source 104's entry for the AofA paper and source 102's agree; source 102 also gives its arXiv number.]}
+
+\begin{thebibliography}{99}\small\setlength{\itemsep}{2pt}
 \bibitem{FYZ2021}
 M. Fuchs, G.-R. Yu and L. Zhang,
 \emph{On the Asymptotic Growth of the Number of Tree-Child Networks},
@@ -1704,5 +3515,52 @@ OEIS Foundation, \emph{The On-Line Encyclopedia of Integer Sequences}, entry A21
 \emph{Transseries and inversion}, a volume of the ProveIt repository:
 \nolinkurl{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex}
 (theorems \textup{\nolinkurl{p0:thm:lambert-core}}, \textup{\nolinkurl{p0:thm:perturbed-inversion}}, \texttt{p0:thm:staircase}). Added in writing (batch~77).
+\bibitem{LWY2026}
+H. Liu, M. Wallner and G.-R. Yu,
+\emph{A combinatorial framework for the Pons--Batle identity: Young tableaux, lattice paths, and limit laws},
+LIPIcs \textbf{381}, AofA 2026, Article 13, pp.~13:1--13:20, 13 July 2026.
+\url{https://doi.org/10.4230/LIPIcs.AofA.2026.13}; arXiv:2605.07587v1. Added in writing (batch~102), from sources 104 and 102.
+
+\bibitem{YZ2026}
+H. Yu and L. Zhang,
+\emph{Asymptotic counting of binary phylogenetic networks},
+arXiv:2605.23126v2, 13 June 2026.
+\url{https://arxiv.org/abs/2605.23126}. Added in writing (batch~102).
+
+\bibitem{FY2026}
+M. Fuchs and H. Yu,
+\emph{A cube-root phase transition in tree-child networks and the enumeration threshold for galled networks},
+arXiv:2608.20860v1, 21 August 2026.
+\url{https://arxiv.org/abs/2608.20860}. Added in writing (batch~102).
+
+\bibitem{YZ2026short}
+H. Yu and L. Zhang,
+\emph{A short combinatorial proof of the Pons--Batle identity for counting tree-child networks},
+arXiv:2609.04979v1, 4 September 2026.
+\url{https://arxiv.org/abs/2609.04979}. Added in writing (batch~102).
+
+\bibitem{Liu2026}
+H. Liu,
+\emph{Trident tableaux for tree-child networks with one reticulation node: A bijection with two-wall tableaux},
+arXiv:2609.28892v1, 24 September 2026.
+\url{https://arxiv.org/abs/2609.28892}. Added in writing (batch~102), from source 104.
+
+\bibitem{EFLW2026}
+A. Elvey Price, W. Fang, B. Louf and M. Wallner,
+\emph{Bivariate asymptotics via random walks: application to large genus maps},
+arXiv:2506.06924v2, April 2026, Section 10.1.
+\url{https://arxiv.org/abs/2506.06924}. Added in writing (batch~102), from source 102.
+
+\bibitem{OEIS213864}
+OEIS Foundation, sequence A213864.
+\url{https://oeis.org/A213864}. Accessed by source 104 on 2 October 2026; added in writing (batch~102).
+
+\bibitem{OEIS213275}
+OEIS Foundation, sequence A213275.
+\url{https://oeis.org/A213275}. Accessed by source 104 on 2 October 2026; added in writing (batch~102).
+
+\bibitem{OEIS167484}
+OEIS Foundation, sequence A167484.
+\url{https://oeis.org/A167484}. Accessed by source 104 on 2 October 2026; added in writing (batch~102).
 \end{thebibliography}
 \end{document}

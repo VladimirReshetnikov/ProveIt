@@ -7,6 +7,14 @@ dated 2 October 2026. The author line is empty in sources 62, 15, 29 and 48 and 
 "Research report" in sources 18 and 66; no tool or person is named. Each source calls
 itself an independently checked research report and disclaims publication and peer review.
 
+On 5 October 2026 (batch 102) three bundle reports, Reports 100, 101 and 103, all dated
+2 October 2026, were added as **Part V**. They prove the binary theorems of Parts I, II and
+IV a second time, by a different route, and add a few new results (listed below). The
+author line of Reports 100 and 101, on the title page and in the PDF metadata, is
+"Research prepared for private review"; that of Report 103 is "Research prepared for
+Vladimir", and Report 103's bibliography calls Report 100 a "companion research report
+prepared for private review". No tool or person is named.
+
 | Source | Batch-77 manuscript | Archive (main file) | Pin | Placed | Printed as |
 |---|---|---|---|---|---|
 | 62 | 62 | `relaxed-binary-trees-reproducibility.zip` (`article/relaxed-binary-trees.tex`, 1,221 lines, 23-page PDF) | none | `34f1acd4b` | Part I, Sections 1–15 (the base) |
@@ -15,10 +23,19 @@ itself an independently checked research report and disclaims publication and pe
 | 66 | 66 | `ternary-airy-amplitudes-result.zip` (`report/ternary-airy-amplitudes.tex`, 656 lines, 14 pp.) | none | `34f1acd4b` | Part III, ternary section, Sections 38–46 |
 | 29 | 29 | `larger-alphabet-automata-report.zip` (`article/larger-alphabet-automata.tex`, 344 lines, 6 pp.) | none (its search receipt refers to `4b874cea0`) | `34f1acd4b` (handed over from cluster P4) | Part III, comparison section, Sections 47–52 |
 | 48 | 48 | `oeis-dfa-finite-language-report.zip` (`article/dfa-finite-languages.tex`, 967 lines, 16 pp.) | `a68b926cf` (overlap receipt) | `aa7345800` (cluster P2) | Part IV, Sections 53–65 |
+| Report 100 | batch 102 | `A082161_Positive_Airy_Amplitude_and_All_Orders_Source.zip` (`Relaxed_Tree_Amplitude_Source/relaxed_tree_amplitude.tex`, 992 lines, 24 pp.) | `4b874cea0` (repository collision check) | `6ab1f1979` | Part V, Sections 67–79 |
+| Report 101 | batch 102 | `A254789_Positive_Airy_Amplitude_and_All_Orders_Source.zip` (`compacted_tree_amplitude/compacted_tree_amplitude.tex`, 693 lines, 19 pp.) | none (embeds Report 100) | `6ab1f1979` | Part V, Sections 80–91 |
+| Report 103 | batch 102 | `A331120_Minimal_Binary_Automata_All_Orders_Source.zip` (`minimal_dfa_amplitude/minimal_dfa_amplitude.tex`, 927 lines, 23 pp.) | none (embeds Report 100) | `6ab1f1979` | Part V, Sections 92–104 |
 
-All six archives arrived in commit `096ee7b87` and survive there
+All six batch-77 archives arrived in commit `096ee7b87` and survive there
 (`git show 096ee7b87:docs/incoming/<archive>`). The three commits named in the Pin column
-are ancestors of both placement commits; none is a continuation pin.
+for them are ancestors of both placement commits; none is a continuation pin. The three
+batch-102 archives arrived in commit `60f54ea06` and survive there. Report 100's pin
+`4b874cea0` (recorded in `data/102-100-relaxed-PROVENANCE.json`) is the collision check of
+its bounded repository search, an ancestor of `34f1acd4b`; Reports 101 and 103 each embed
+Report 100's PDF and source archive byte for byte (verified at the write: SHA-256
+`4684736e…` and `72e79141…`) and name no repository path. None of the three knew of
+Parts I–IV.
 
 The six manuscripts are one family. Relaxed trees, compacted trees and minimal
 deterministic automata accepting finite languages satisfy one triangular recurrence
@@ -40,6 +57,15 @@ proof step, kept with a pointer. Source 66's two theorems are kept, marked as th
 case of source 18's, because the proof after them is the base proof 18 generalizes. Part 0
 of the article ("Where the merge had to choose") gives the reasons.
 
+Part V prints Reports 100, 101 and 103 in full, each opening with its abstract, with two
+exceptions: the Sections 3 of Reports 101 and 103 restate Report 100's definitions and
+summarize its proofs; those restatements are replaced by pointers (the lemma and the
+proposition they cite are kept, each line traced to Report 100). Reports 101 and 103 run
+the same signed-memory argument with different coefficients; they paraphrase each other
+and both are printed. Section 66 of the article (Part V's guide) gives the provenance, a
+table mapping every result to its counterpart in Parts I, II, IV, a notation table and the
+assembly choices; Section 105 is Part V's register of open and answered questions.
+
 **Status: AI-assisted, unrefereed, not formalized.** No Lean or Rocq declaration exists for
 any statement of this report.
 
@@ -48,7 +74,7 @@ any statement of this report.
 ```
 article.tex   the merged report, standalone LaTeX with an internal bibliography (source 62's
               delivered article/relaxed-binary-trees.tex, rewritten as the merged text)
-article.pdf   the compiled report, 98 pages
+article.pdf   the compiled report, 175 pages
 README.md     this guide (replaces source 62's delivered README.md)
 ```
 
@@ -241,7 +267,94 @@ data/48-dfa-requirements.txt                    <- requirements.txt
 data/48-dfa-visual-qa.json                      <- review/visual-qa.json
 ```
 
-All 159 files other than `article.tex`, `article.pdf` and `README.md` are byte-identical
+Report 100 (Part V), from `A082161_Positive_Airy_Amplitude_and_All_Orders_Source.zip` (wrapper `Relaxed_Tree_Amplitude_Source/`):
+
+```
+102-100-relaxed-checks-README.md                                 <- checks/README.md
+102-100-relaxed-checks-diagnostics-README.md                     <- checks/diagnostics/README.md
+102-100-relaxed-numerics-README.md                               <- numerics/README.md
+code/102-100-relaxed-checks-formal_engine.py                     <- checks/formal_engine.py
+code/102-100-relaxed-checks-negative_tests.py                    <- checks/negative_tests.py
+code/102-100-relaxed-checks-verify.py                            <- checks/verify.py
+code/102-100-relaxed-numerics-analyze_numerics.py                <- numerics/analyze_numerics.py
+code/102-100-relaxed-numerics-check_dp.py                        <- numerics/check_dp.py
+code/102-100-relaxed-numerics-check_jacobi.py                    <- numerics/check_jacobi.py
+code/102-100-relaxed-numerics-compute_canonical_amplitude.py     <- numerics/compute_canonical_amplitude.py
+code/102-100-relaxed-replay.sh                                   <- replay.sh
+data/102-100-relaxed-PROVENANCE.json                             <- PROVENANCE.json
+data/102-100-relaxed-RELEASE_VALIDATION.json                     <- RELEASE_VALIDATION.json
+data/102-100-relaxed-checks-data-endpoint_9.json                 <- checks/data/endpoint_9.json
+data/102-100-relaxed-checks-data-formal_9.json                   <- checks/data/formal_9.json
+data/102-100-relaxed-checks-diagnostics-exact_dp_3000.json       <- checks/diagnostics/exact_dp_3000.json
+data/102-100-relaxed-checks-diagnostics-numerical_analysis.json  <- checks/diagnostics/numerical_analysis.json
+data/102-100-relaxed-checks-logs-exact_normal.log                <- checks/logs/exact_normal.log
+data/102-100-relaxed-checks-logs-exact_optimized.log             <- checks/logs/exact_optimized.log
+data/102-100-relaxed-checks-logs-negative_normal.log             <- checks/logs/negative_normal.log
+data/102-100-relaxed-checks-logs-negative_optimized.log          <- checks/logs/negative_optimized.log
+data/102-100-relaxed-checks-logs-run_records.json                <- checks/logs/run_records.json
+data/102-100-relaxed-checks-provenance-source_hashes.json        <- checks/provenance/source_hashes.json
+data/102-100-relaxed-checks-requirements.txt                     <- checks/requirements.txt
+data/102-100-relaxed-numerics-check_jacobi.txt                   <- numerics/check_jacobi.txt
+data/102-100-relaxed-numerics-compute_canonical_amplitude.txt    <- numerics/compute_canonical_amplitude.txt
+```
+
+Report 101 (Part V), from `A254789_Positive_Airy_Amplitude_and_All_Orders_Source.zip` (wrapper `compacted_tree_amplitude/`):
+
+```
+102-101-compacted-VERIFICATION.md                                   <- VERIFICATION.md
+102-101-compacted-checks-formal-README.md                           <- checks/formal/README.md
+102-101-compacted-numerics-README.md                                <- numerics/README.md
+code/102-101-compacted-checks-verify_compacted.py                   <- checks/verify_compacted.py
+code/102-101-compacted-numerics-compute_canonical_amplitude.py      <- numerics/compute_canonical_amplitude.py
+code/102-101-compacted-replay.sh                                    <- replay.sh
+code/102-101-compacted-verify_release.py                            <- verify_release.py
+data/102-101-compacted-PROVENANCE.json                              <- PROVENANCE.json
+data/102-101-compacted-checks-formal-provenance-source_hashes.json  <- checks/formal/provenance/source_hashes.json
+data/102-101-compacted-numerics-compute_canonical_amplitude.txt     <- numerics/compute_canonical_amplitude.txt
+```
+
+Report 103 (Part V), from `A331120_Minimal_Binary_Automata_All_Orders_Source.zip` (wrapper `minimal_dfa_amplitude/`):
+
+```
+102-103-dfa-checks-README.md                         <- checks/README.md
+102-103-dfa-numerics-README.md                       <- numerics/README.md
+code/102-103-dfa-checks-formal_engine.py             <- checks/formal_engine.py
+code/102-103-dfa-checks-negative_tests.py            <- checks/negative_tests.py
+code/102-103-dfa-checks-replay.sh                    <- checks/replay.sh
+code/102-103-dfa-checks-verify.py                    <- checks/verify.py
+code/102-103-dfa-numerics-diagonal_diagnostics.py    <- numerics/diagonal_diagnostics.py
+code/102-103-dfa-replay.sh                           <- replay.sh
+data/102-103-dfa-PROVENANCE.json                     <- PROVENANCE.json
+data/102-103-dfa-RELEASE_VALIDATION.json             <- RELEASE_VALIDATION.json
+data/102-103-dfa-checks-data-dependencies.json       <- checks/data/dependencies.json
+data/102-103-dfa-checks-data-endpoint_7.json         <- checks/data/endpoint_7.json
+data/102-103-dfa-checks-data-exact.json              <- checks/data/exact.json
+data/102-103-dfa-checks-data-formal_7.json           <- checks/data/formal_7.json
+data/102-103-dfa-checks-data-inverse.json            <- checks/data/inverse.json
+data/102-103-dfa-checks-logs-exact_normal.log        <- checks/logs/exact_normal.log
+data/102-103-dfa-checks-logs-exact_optimized.log     <- checks/logs/exact_optimized.log
+data/102-103-dfa-checks-logs-negative_normal.log     <- checks/logs/negative_normal.log
+data/102-103-dfa-checks-logs-negative_optimized.log  <- checks/logs/negative_optimized.log
+data/102-103-dfa-checks-logs-run_records.json        <- checks/logs/run_records.json
+data/102-103-dfa-numerics-diagonal_diagnostics.txt   <- numerics/diagonal_diagnostics.txt
+```
+
+The 57 Part V files (255,432 bytes) were staged by `6ab1f1979` byte-identical to the
+delivery; the eight delivered `.log` files were force-added. **Not shipped** (all survive in
+`60f54ea06`): the three manuscripts and PDFs, the three delivery READMEs and `build.sh`
+scripts, the ledgers (`SHA256SUMS` of 100 and 103, verified 33/33 and 29/29; 101's
+`MANIFEST.json`, checked by its `verify_release.py`) and the manifests `checks/manifest.json`
+(100, 103) and `checks/formal/manifest.json` (101); the copies of Report 100's PDF and
+source archive in the `dependencies/` directories of 101 and 103; ten files of 101's
+`checks/formal/` that are byte copies of Report 100's `checks/` (`verify.py`,
+`formal_engine.py`, `negative_tests.py`, `requirements.txt`, `data/*`, `diagnostics/*`);
+Report 100's in-package copies `checks/data/formal_9_linear_solver.json` (= `formal_9.json`)
+and `numerics/endpoint_9.json` (= `checks/data/endpoint_9.json`); and 103's
+`checks/requirements.txt` (= Report 100's, `sympy==1.14.0`). No heavy regenerable file was
+excluded; the largest shipped Part V file is `data/102-100-relaxed-checks-diagnostics-exact_dp_3000.json`
+(59,915 bytes of decimal diagnostics, regenerable by `numerics/check_dp.py`).
+
+All 159 batch-77 files other than `article.tex`, `article.pdf` and `README.md` are byte-identical
 to the delivered members (verified at placement). `article.tex` is source 62's delivered
 article rewritten as the merged text; source 62's delivered `README.md` (a guide to its
 reproducibility package) is replaced by this file and survives in `096ee7b87`.
@@ -278,6 +391,17 @@ references point to Part II's identical labels. The write added 52 labels: secti
 for sources 15, 18, 66, 29 and 48 (36), two displays in Part IV's bootstrap pointer, nine
 guide and five Part labels.
 
+Part V (5 October 2026) added 290 labels, for **563** in all, none of the 273 earlier labels
+lost or renumbered (checked against the build of the committed text): `air:jp:rb:` (Report
+100, 93), `air:jp:cb:` (Report 101, 80), `air:jp:dfa:` (Report 103, 98), `air:part:jp`, and
+18 labels of Part V's own Sections 66 and 105 (`air:jp:sec:`, `air:jp:rem:`, `air:jp:cor:`,
+`air:jp:q:`). Of the reports' 275 labels, 269 are printed with the prefix; the six display
+labels of the restatements replaced by pointers (101's `eq:S`, `eq:R`; 103's `eq:A`, `eq:S`,
+`eq:j`, `eq:T`) were unreferenced and are not printed. The first sections of Reports 100 and
+101 had no label and received `sec:result`. Report 100's Section k is Section k + 66,
+Report 101's k + 79, Report 103's k + 91; Section 66 is Part V's guide and Section 105 its
+question register. Notes added then are marked **[write, 5 October 2026, batch 102]**.
+
 Sections are numbered through the report: source 62's Section k is Section k; source 15's
 is k + 15; source 18's k + 29; source 66's k + 37; source 29's k + 46; source 48's k + 52.
 Theorems keep their position in their section (source 15's Theorem 1.1 is Theorem 16.1).
@@ -305,6 +429,11 @@ The readings most likely to mislead:
 - **Part III at k = 2.** Its general c₁, c₂ reduce exactly to Part I's (F3) at k = 2
   (checked symbolically at the write), but Part III claims only k ≥ 3, and at k = 2 the
   compacted and automaton powers are n^{3/4} and n^{7/8}, not n.
+- **Part V** has its own conventions (article Section 66.3). There a (or a₁) *is* the Airy
+  zero, κ = ϰ = 2^{2/3} a is twice the a of Parts I, II, IV, time is halved (n = N/2,
+  ε = n^{−1/3}), S_n is a diagonal symmetrizer (not the Jacobi matrix), λ_n ≈ 4 (not 2), and
+  the scalar coefficients are σ_m = 2 s_m. Report 101 writes b_j (logarithmic) and d_j
+  (multiplicative); Report 103 writes d_j (logarithmic) and c_j (multiplicative).
 
 ## What is claimed
 
@@ -330,6 +459,19 @@ The readings most likely to mislead:
 - **Part IV (source 48).** For finite binary languages (A331120), b_n = γ n! 8^n e^{3z n^{1/3}}
   n^{7/8} (1 + Σ 𝔠_k n^{−k/3} + O_M) with γ > 0, corrections 53z²/90, 623z/432,
   3497/4480 − 1304z³/42525; a nonnegative renewal representation; a selected smooth inverse.
+- **Part V (Reports 100, 101, 103).** Second routes to the theorems of Parts I, II and IV
+  (even-time two-step Jacobi product, killed lazy-walk smoothing, three-lag signed memory).
+  New: Report 100's Lemma 72.1, a proof that the relaxed amplitude is positive from the exact
+  recurrence alone, without the Elvey Price–Fang–Wallner lower bound every earlier Part
+  uses (checked at intake; Remark 66.1 applies it to Part I and recovers the relaxed Θ
+  theorem); the endpoint law φ_n(0) = √2 n^{−1/2}(1 + O(n^{−2/3})), sharper than Part I's
+  O(N^{−1/3}); a telescoping series for the projection constant; relaxed b₄ = −422z²/1215,
+  b₅, b₆ and r_n/(4n r_{n−1}) through n^{−3}; compacted b₄ = −2053z²/9720, b₅, b₆ (proved by
+  Report 101; formal in Report 100) and, by Corollary 66.3, c_n/(4n c_{n−1}) through n^{−3};
+  automaton d₄ = −5429z²/19440, c₄, σ₇, b_n/(8n b_{n−1}) through n^{−7/3} and the explicit
+  X^{−1/3} term of the inverse. Proved at the write: Remarks 66.1 (positivity in Part I),
+  66.2 (σ_m = 2 s_m for every m, ℓ_j = h_j) and Corollary 66.3 (Report 100's compacted
+  formal expansions are genuine).
 
 ## What is not claimed
 
@@ -348,16 +490,33 @@ The readings most likely to mislead:
   arXiv v1, Lemma 15 published) uses a false pointwise bound U ≤ q. The inequality does fail
   near the boundary for the coefficient as the sources define it, but the printed text of
   the paper was **not** checked; neither source uses the bound.
+- Part V: no amplitude is enclosed. 166.9520924395 and the extrapolation 166.9520895742200
+  (relaxed), 173.1267049959 and 173.1267048501473 (compacted) and 76.438 (automata,
+  G⁽⁴⁾₃₀₀₀ = 76.4383234197) are uncertified evidence. Reports 101 and 103 still take
+  positivity from published lower bounds (compacted; for 103 with the comparison
+  b_n ≥ 2^{n−1} c_n); whether Lemma 72.1's argument can replace them is open (Question V.5).
+  Report 103's remark that the transformed arrays printed on pp. 11:6–11:7 of the AofA 2020
+  paper give 5/4 instead of 3/2 at one entry when read uniformly was **not** checked against
+  the paper (Question V.4); Report 103 says it is not a claim that the published theorem is
+  false. The two-step Jacobi estimates are partly sketched (min–max bounds, Taylor
+  envelopes; Question V.8). Every non-claim of the three reports is kept in the article.
 
 ## Relation to other reports and to formal developments
 
 - No earlier repository report treats any of these sequences; this report is the first.
   The repository searches recorded by sources 15, 29 and 48 were right when made, and
-  notes in the Parts say so.
+  notes in the Parts say so. So was Report 100's "no duplicate relaxed-amplitude result in
+  the inspected repository snapshot" at `4b874cea0` (its Section 13, article Section 79); it
+  is stale now, since Part I (placed `34f1acd4b`) proves the same theorem, and a dated note
+  says so.
 - `../a213863-tree-child-networks` (batch 77) proves the same polynomial–Airy identity
   L(PF + QF′) = (P″ + 2(cx + ℓ)Q′ + cQ)F + (2P′ + Q″)F′ with general c, ℓ, and uses the
   same zero-limit projection bootstrap, for tree-child networks. The two reports neither
-  cite nor depend on each other.
+  cite nor depend on each other. Its Parts III–IV (bundle Reports 104 and 102, same
+  delivery series as Part V's Reports 100, 101, 103; written in `7e85b5a0c`) share the
+  lemma family, including the restart positivity comparison of Report 100's Lemma 72.1;
+  Report 102's "companion relaxed-tree article", which it does not need, is presumably
+  Report 100. The reports stay separate.
 - `SetTheory/Cardinals/docs/reports/automata-and-formal-languages/accessible-and-strong-automata`
   (batch 77) counts accessible and strongly connected automata in the Korshunov–Liskovets
   regime of inverse-power corrections: no stretched exponential, no shared lemma.
@@ -382,11 +541,14 @@ BibTeX):
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The build of 2 October 2026 has 0 errors, 0 warnings (no undefined references or
+The build of 5 October 2026 has 0 errors, 0 warnings (no undefined references or
 citations, no multiply defined labels, no duplicate destinations) and 0 overfull boxes,
-and gives 98 pages: title, abstract and contents pp. 1–5, Part 0 (guide) pp. 6–13,
-Part I pp. 13–35, Part II pp. 35–51, Part III pp. 51–84 (source 18 pp. 52–64, source 66
-pp. 64–78, source 29 pp. 78–84), Part IV pp. 84–94, Appendix A pp. 94–98, references p. 98.
+and gives 175 pages: title, abstract and contents pp. 1–7, Part 0 (guide) pp. 8–16,
+Part I pp. 16–38, Part II pp. 38–55, Part III pp. 55–88, Part IV pp. 88–99, Part V
+pp. 99–171 (guide Section 66 pp. 99–105, Report 100 pp. 105–129, Report 101 pp. 129–146,
+Report 103 pp. 146–169, Section 105 pp. 169–171), Appendix A pp. 171–174, references
+pp. 174–175. (The build of 2 October 2026, before Part V, had 98 pages.) The contents use a
+2em number box for Sections 66–105 (`\airwidertoc`), since 100–105 have three digits.
 
 ## Rerunning the programs
 
@@ -409,11 +571,27 @@ mkdir /tmp/air && cd /tmp/air && unzip -q ../air.zip && cd <wrapper>
 | 29 | `larger-alphabet-automata-report` / `larger-alphabet-automata-report` | `python3 run_all.py` |
 | 48 | `oeis-dfa-finite-language-report` / `dfa-finite-languages` | `python run_all.py` (asserts the ledger; writes `output/checks/`) |
 
+Part V's three archives are fetched the same way from `60f54ea06`:
+
+| Source | Archive / wrapper | Command (Python 3 with SymPy 1.14.0; numerics also mpmath, NumPy, SciPy) |
+|---|---|---|
+| Report 100 | `A082161_Positive_Airy_Amplitude_and_All_Orders_Source` / `Relaxed_Tree_Amplitude_Source` | `bash replay.sh` (in `checks/`: `verify.py` and `negative_tests.py`, each normally and under `python -O`); optional `numerics/` scripts as its README says (`python check_dp.py 3000` writes `numerics/exact_dp_3000.json`) |
+| Report 101 | `A254789_Positive_Airy_Amplitude_and_All_Orders_Source` / `compacted_tree_amplitude` | `python verify_release.py` (ledger `MANIFEST.json`), then `bash replay.sh` (`checks/verify_compacted.py`, its `--negative` cases, and the formal suite in `checks/formal/`) |
+| Report 103 | `A331120_Minimal_Binary_Automata_All_Orders_Source` / `minimal_dfa_amplitude` | `bash replay.sh` (runs `checks/replay.sh`); optional `python3 numerics/diagonal_diagnostics.py` |
+
+These suites check the unshipped manifests (`checks/manifest.json`, `checks/formal/manifest.json`,
+`MANIFEST.json`) and, for 101 and 103, the `dependencies/` copies of Report 100's PDF and
+archive, all by delivered names, so they run only in the delivered layout. Unlike the
+batch-77 suites they are fail-closed and *meant* to be run under `python -O` as well. Report
+103's `checks/replay.sh` deletes and rewrites `checks/logs/` (and its success record
+`run_records.json`); never run it beside the shipped logs.
+
 To run a shipped copy instead, copy it to a scratch directory under its delivered name
 (the tables above give every name) together with the files it reads. Hazards:
 
-- Do not run with `python -O`: the checks are assertions, and source 62's programs reject
-  optimized mode explicitly.
+- Do not run the batch-77 programs with `python -O`: their checks are assertions, and
+  source 62's programs reject optimized mode explicitly. (Part V's suites raise explicit
+  exceptions and are run under `-O` by their own replay scripts.)
 - On Windows, Python writes CRLF: compare regenerated JSON and text with the shipped
   receipts after stripping CR (`diff --strip-trailing-cr`), or by parsed JSON.
 - Source 62's `replay.py` replaces earlier files under `output/`; its own README suggests
@@ -442,6 +620,27 @@ n = 900 (γ_r ≈ 166.9508, γ_c ≈ 173.1263, against the published fits 166.95
 18's k = 3 defects 8/27, 4/27 and cancellation −4/27 numerically; 66's c₃ by the rate of
 the corrected differences; 48's 𝔠₂ symbolically and 𝔠₃ to about 0.2 % by an exact recurrence
 to n = 500. None of these numbers is an enclosure.
+
+**Part V reruns** (5 October 2026, copies of the delivered layout, Python 3.14.4, SymPy
+1.14.0, `PYTHONUTF8=1`, one at a time on a loaded machine): ledgers 100 33/33 and 103 29/29,
+101's `verify_release.py` PASS; Report 100's `checks/verify.py` PASS (325 s here, 40 s
+recorded) and `negative_tests.py` PASS with 53 rejections, output equal to the delivered
+logs up to the Python-version line, the elapsed time and CR line ends; Report 101's
+`verify_compacted.py` PASS and `--negative` PASS (10 rejections), 12 s (its `checks/formal/`
+suite is byte-identical to Report 100's and was not rerun); Report 103's `checks/verify.py`
+PASS (372 s) and `negative_tests.py` PASS (269 s), equal to the delivered logs up to the
+Python-version line. The `-O` reruns and the optional n = 3000 numerics were not repeated
+(the delivered logs record them). Independent checks at intake and write: exact counts to
+n = 1000 reproduce Report 100's ratio residuals at n = 500 and 1000 and Report 103's
+G₁₀₀₀ = 102.077189105… (printed …106, last-digit rounding) and G⁽⁴⁾₁₀₀₀ = 76.4392078929; a
+SymPy recomputation at the write confirms every conversion between printed coefficients
+(b ↦ ratio for all three models, b ↦ d for 101, d ↦ c for 103 including c₄, agreement of
+b₁…b₃ and d₁…d₃ with Parts I, II, IV, and σ_m = 2 s_m for m = 3…6), difference zero.
+
+The shipped logs and `data/102-103-dfa-checks-data-exact.json`, like source 62's and 15's
+fixtures and `data/48-dfa-A331120.seq`, contain initial terms of OEIS A082161, A254789 and
+A331120 (computed from the recurrences, and matching the OEIS); OEIS data are licensed
+CC BY-SA 4.0.
 
 ## Delivered files that use delivery names or name unshipped files
 
@@ -475,6 +674,20 @@ to n = 500. None of these numbers is an enclosure.
 - Every audit, review and receipt refers to its source's delivered paths (`output/…`,
   `fixtures/…`, `expected/…`, `verification/…`); the tables above map them to the shipped
   names.
+- Part V: the shipped READMEs and `102-101-compacted-VERIFICATION.md` describe the
+  delivered layouts (`checks/`, `numerics/`, `checks/formal/`, `dependencies/`) and name the
+  unshipped manifests, ledgers, PDFs and build scripts. `102-101-compacted-checks-formal-README.md`
+  describes a `checks/formal/` suite whose programs and data are shipped once, under Report
+  100's prefix (`code/102-100-relaxed-checks-*`, `data/102-100-relaxed-checks-data-*`).
+  `102-101-compacted-numerics-README.md` points to `checks/formal/diagnostics` (Report 100's
+  `checks/diagnostics/`, shipped as `data/102-100-relaxed-checks-diagnostics-*`).
+  `data/102-103-dfa-checks-data-dependencies.json` pins the two unshipped `dependencies/`
+  files by SHA-256. `102-100-relaxed-checks-diagnostics-README.md` explains that
+  `exact_dp_3000.json` is a legacy name for decimal diagnostics, not an integer archive. The
+  provenance and run-record JSON files record delivered paths and Python 3.12 environments;
+  the two `run_records.json` files (Reports 100 and 103) also record the producer's
+  interpreter path under `/opt/codex/…`, a path of the producing environment, not of this
+  repository.
 
 ## Other discrepancies
 
@@ -485,3 +698,12 @@ to n = 500. None of these numbers is an enclosure.
   merged bibliography has it, and Part I's higher-arity question now points to Part III.
 - Source 48 does not say that its Sections 3–8 and appendix follow source 15; the article
   supplies the attribution (Part IV, Section 55).
+- Reports 101 and 103 call Report 100 a "private companion" supplied unchanged with them;
+  here it is printed as Sections 67–79, and the dependency copies are not shipped.
+  Report 101's text says the companion's JSON certificates are "included"; they are Report
+  100's, shipped once.
+- Report 100 states its compacted expansion only as a formal ansatz and its compacted
+  inverse only conditionally; Report 101 and Part II prove both, and dated notes in Part V
+  say so (Corollary 66.3).
+- Report 103's table prints G₁₀₀₀ = 102.077189106; the exact value is 102.077189105…
+  (rounding of the last digit), noted in the article.
