@@ -1,19 +1,22 @@
 # Fixed-composition excursions
 
-**D-finiteness, transcendence, and all-order asymptotics for OEIS A215561, with an explicit correction for A215570 and asymptotic inversion; merged with an elementary convolution route, general step sets, and the giant-component law; Part IV: a proof of the Kauers–Koutschan recurrence for A215570 and the exact coefficients α_{5,2}, …, α_{5,8}; Part V: the first correction α_{4,1} of A215562**
+**D-finiteness, transcendence, and all-order asymptotics for OEIS A215561, with an explicit correction for A215570 and asymptotic inversion; merged with an elementary convolution route, general step sets, and the giant-component law; Part IV: a proof of the Kauers–Koutschan recurrence for A215570 and the exact coefficients α_{5,2}, …, α_{5,8}; Part V: the first correction α_{4,1} of A215562; Part VI: direct excursion proofs for every fixed alphabet, the second correction of A215570 without the recurrence, and strict monotonicity at every index**
 
 A research report on the words with n copies of each letter 1, …, r whose
 every prefix sum is at most (r+1)/2 times its length. Write A_r(n) for
 their number; the rows of the OEIS array A215561 are A000108 (r = 2),
 A007004 (3), A215562 (4), A215570 (5), A215571 (6) and A215593 (7). The
-report is built from four independent manuscripts: two of batch 73 that
+report is built from six independent manuscripts: two of batch 73 that
 prove the same theorems, written the same day, a third of batch 75 that
 proves, among results the first two already have, the explicit A215570
-recurrence they left open, and a fourth of batch 77 (cluster P2) that
-proves the main theorems once more and adds the first correction of
-A215562. All four are dated October 1, 2026; the first three were prepared
-for Vladimir Reshetnikov, and the fourth has the author line "Research note
-with independently reviewed proofs".
+recurrence they left open, a fourth of batch 77 (cluster P2) that proves
+the main theorems once more and adds the first correction of A215562, and
+two reports of a session bundle (batch 101, bundle Reports 90 and 86) that
+prove them a fifth and a sixth time and add a second correction of A215570
+computed without the recurrence. All six are dated October 1, 2026; the
+first three were prepared for Vladimir Reshetnikov, the fourth has the
+author line "Research note with independently reviewed proofs", and the
+last two "Research note".
 
 | Source | Manuscript | Archive | Pin | Arrival | Placed | Printed as |
 |---|---|---|---|---|---|---|
@@ -21,6 +24,8 @@ with independently reviewed proofs".
 | 42 (member) | batch 73, manuscript 42: *Balanced Late-Growing Permutations* (953-line source, 22-page letter PDF) | `late_growing_excursions.zip` | `bc4d1fa2b` | `bdf1a1a73` | `6e193dd4f` | Sections 14–21; notes and second proofs in Sections 2–13; merged into Sections 7, 22, 23 and Appendix B |
 | 75-03 (addition) | batch 75, manuscript 03: *Fixed-Content Ballot Words. A proof of the A215570 recurrence, a fixed-row asymptotic theorem, and all-orders inversion* (917-line source with 87 labels, 22-page A4 PDF) | `OEIS_Fixed_Content_Ballot_Words.zip` | `29aca108e` | `4b874cea0` | `6ea60e367` | Part IV (Sections 24–29) and Appendix C; its re-proofs as rows of Table 5; its questions merged into Section 22 (Part III); notes in Sections 1, 2, 4, 9, 11, 13, 22, 23 and Appendices A, B |
 | 77-44 (addition) | batch 77, manuscript 44: *Equal-content ballot words: leading constants and fixed-order expansions for OEIS A215562 and A215570* (594-line source with 18 labels, 8-page A4 PDF) | `oeis-ballot-asymptotics-20261001.zip` | none | `096ee7b87` | `aa7345800` | Part V (Sections 30–34); its re-proofs as rows of Table 8; notes in Sections 1, 7, 9, 22 and 23 and Appendix B; files prefixed `77-44-bal-` |
+| 101-90 (addition; base of Part VI) | batch 101, bundle Report 90: *Balanced ballot words over every fixed alphabet: exact constants, all algebraic orders, and inversion* (474-line source with 24 labels, 8-page US-letter PDF) | `A215561_Fixed_Alphabet_Asymptotics.zip` | none | `60f54ea06` | `f7c612c72` | Part VI: Section 36, with Sections 35 and 38; its re-proofs as rows of Table 9 and second routes in Table 10; files prefixed `101-90-alphabet-` |
+| 101-86 (addition) | batch 101, bundle Report 86: *Balanced five-letter ballot words: an all-orders asymptotic and its inverse* (433-line source with 21 labels, 7-page US-letter PDF) | `A215570_Balanced_Ballot_Asymptotics.zip` | none | `60f54ea06` | `f7c612c72` | Part VI: Section 37, with Sections 35 and 38; rows of Tables 9 and 10; files prefixed `101-86-five-`. Dated notes of both in Sections 1, 6, 11, 13, 20, 22, 23, 27, 28 and Appendices A, B |
 
 Section 1 gives the provenance, a result-by-result crosswalk (Table 1,
 with three rows for source 75-03 and two for source 77-44), the merge
@@ -52,9 +57,27 @@ formula; those results are rows of Table 8. It adds one new value,
 of the fourth row, a nested-logarithm inverse for every row, and two
 literature pointers.
 
+Sources 101-90 and 101-86 (bundle Reports 90 and 86 of the 177-archive
+session bundle that arrived in `60f54ea06`; placed in `f7c612c72`) were
+also written without knowledge of this report: their PDFs were created at
+09:37 and 10:16 PDT on October 1, about nine hours before the placement
+`6e193dd4f`; they name no ProveIt commit and record no repository search,
+and only 1.3 % (101-86) and 1.5 % (101-90) of their 8-word shingles occur
+in this report. Source 101-90 proves Theorem 3.1 and the D-finiteness of
+Theorem 3.2 for every fixed alphabet, with the two extreme steps unmarked;
+source 101-86 proves Theorems 3.1–3.3 for r = 5 after deleting the zero
+steps. Those are the fifth and sixth proofs; Table 9 lists them and Table
+10 maps them as second routes beside the earlier four. Their claims to have
+found "no proof" of the result in a bounded source check, and their "still
+unproved" for the A215570 recurrence, are corrected by dated notes
+(Section 38.3).
+
 Status: AI-assisted (sources 61, 42 and 75-03; source 77-44 says nothing
 about it, and its "independently reviewed" refers to its own pre-delivery
-approval receipt), unrefereed, **not formalized**. No Lean or Rocq
+approval receipt; sources 101-90 and 101-86 say nothing about it either, and
+their QA receipts record approval by their producing pipeline, "Root and an
+independent research reviewer", not refereeing), unrefereed, **not
+formalized**. No Lean or Rocq
 development checks any statement of this report, and its place in the
 research-report collection confers no formal status.
 
@@ -62,10 +85,12 @@ research-report collection confers no formal status.
 
 ```
 article.tex                                         the merged report, standalone LaTeX, internal bibliography
-article.pdf                                         the compiled report, 68 pages (unnumbered title page, then pages 1–67)
+article.pdf                                         the compiled report, 88 pages (title page, whose status box runs onto a second page, then pages 1–86)
 README.md                                           this guide
 61-balanced-SOURCES.md                              source 61's source and claim provenance, as delivered
 61-balanced-BUILD.md                                source 61's build and visual-QA receipt, as delivered
+101-90-alphabet-structural_review.md                source 101-90: its review of two undelivered drafts (see Disclosures)
+101-86-five-structural_review.md                    source 101-86: its review of an undelivered draft and of the second correction
 code/61-balanced-verify.py                          source 61: exact count-vector DP, bridge-logarithm and sextic checks, diagnostics
 code/61-balanced-derive_alpha5.py                   source 61: exact symbolic sextic elimination and first r = 5 correction
 code/42-late-growing-verify.py                      source 42: exact DP with primitive/return arrays, bridge identity, sextic, constants r ≤ 12
@@ -79,6 +104,18 @@ code/77-44-bal-ballot_four_correction.py            source 77-44: exact D_uni, D
 code/77-44-bal-verify_ballot_kernels.py             source 77-44: box enumeration, bridge identity, degree-six equation
 code/77-44-bal-verify_ballot_large_dp.py            source 77-44: rolling-array DP for the two diagonals through n = 30
 code/77-44-bal-verify_ballot_numerical_derivatives.py  source 77-44: first corrections by numerical implicit differentiation
+code/101-90-alphabet-run_checks.py                  source 101-90: driver (the four checks below, run in checks/; writes check_receipt.json)
+code/101-90-alphabet-check_constants.py             source 101-90: exact kappa_2..kappa_5, c(4), c(5); root products r <= 10 (orientation for r >= 6)
+code/101-90-alphabet-check_balanced_counts.py       source 101-90: content-vector DP for r = 2..7 up to n = 30, 20, 16, 9, 7, 5
+code/101-90-alphabet-check_lattice.py               source 101-90: torus phase classes, gauge phases, det H_ex, bridge normalization, r = 2..20
+code/101-90-alphabet-check_recipe_small.py          source 101-90: coefficient rule for r = 2, 3 at orders 1, 2; second-order inverse
+code/101-86-five-run_checks.py                      source 101-86: driver (the six programs below, run in checks/; writes check_receipt.json)
+code/101-86-five-check_kernel.py                    source 101-86: sextic over the box 0 <= n_i <= 3, diagonal, zero-step removal
+code/101-86-five-direct_terms.py                    source 101-86: DP for the zero-free count A°_5(n), n <= 30 (argument 30)
+code/101-86-five-check_jets.py                      source 101-86: first-order jets and alpha_{5,1} (SymPy)
+code/101-86-five-check_second_correction.py         source 101-86: every second-order jet, b°_2 and alpha_{5,2} (SymPy, about 100 s)
+code/101-86-five-check_auxiliary.py                 source 101-86: pair-product elimination of the sextic, second inverse correction, b_2
+code/101-86-five-audit-check_second_assembly_fast.py  source 101-86: review program (delivered in checks/audit/; reads second_correction.json)
 data/61-balanced-exact_rows.json                    source 61: enumerated rows, indexed from n = 0
 data/61-balanced-kernel_constants.json              source 61: kappa_r, c(r) and reduced kernels, r ≤ 8
 data/61-balanced-diagnostics.json                   source 61: asymptotic and inverse diagnostics with input origins
@@ -101,6 +138,21 @@ data/77-44-bal-verify_ballot_kernels.json           source 77-44: kernel-check r
 data/77-44-bal-verify_ballot_large_dp.json          source 77-44: DP receipt (diagonals through n = 30)
 data/77-44-bal-verify_ballot_numerical_derivatives.json  source 77-44: numerical first corrections and discrepancies
 data/77-44-bal-visual-qa.json                       source 77-44: visual QA of its delivered 8-page PDF
+data/101-90-alphabet-check_constants.json           source 101-90: output of check_constants.py
+data/101-90-alphabet-check_balanced_counts.json     source 101-90: output of check_balanced_counts.py (the enumerated rows)
+data/101-90-alphabet-check_lattice.json             source 101-90: output of check_lattice.py
+data/101-90-alphabet-check_recipe_small.json        source 101-90: output of check_recipe_small.py
+data/101-90-alphabet-check_receipt.json             source 101-90: driver receipt (12 s)
+data/101-90-alphabet-QA.json                        source 101-90: pipeline QA receipt (self-reported)
+data/101-86-five-kernel_checks.json                 source 101-86: output of check_kernel.py
+data/101-86-five-direct_terms.json                  source 101-86: output of direct_terms.py (A°_5(n) and A_5(n), n <= 30)
+data/101-86-five-jet_checks.json                    source 101-86: output of check_jets.py
+data/101-86-five-second_correction.json             source 101-86: output of check_second_correction.py (every jet of Section 37.4)
+data/101-86-five-auxiliary_checks.json              source 101-86: output of check_auxiliary.py
+data/101-86-five-audit-check_second_assembly_fast.json  source 101-86: output of the review program
+data/101-86-five-structural_review_constants.json   source 101-86: the review's exact recombination (K_5, transfer ratio, b°_1, alpha_{5,1})
+data/101-86-five-check_receipt.json                 source 101-86: driver receipt (131 s; one hand-added key, see Disclosures)
+data/101-86-five-QA.json                            source 101-86: pipeline QA receipt (self-reported)
 ```
 
 The three source-42 CSV files and the source-75-03 CSV file have CRLF
@@ -114,13 +166,21 @@ retired) and its `requirements.txt` (byte-identical to the shipped one);
 source 77-44's manuscript (printed as Part V in part, the rest as rows of
 Table 8), PDF, README, `MANIFEST.json` (a SHA-256 ledger, verified 19/19
 and retired) and `requirements.txt` (byte-identical to
-`data/61-balanced-requirements.txt`). All survive in the arrival commits.
-`article.pdf` is a build of the merged text.
+`data/61-balanced-requirements.txt`). Of sources 101-90 and 101-86: their
+manuscripts, PDFs and READMEs (Part VI prints their content, the rest is
+rows of Table 9), their `MANIFEST.json` files (SHA-256 ledgers, verified
+16/16 and 21/21 at placement and retired) and their identical
+`build_local.sh` (the generic TeX helper already tracked as the blob
+`890ccb0f9`, for example as
+`SetTheory/Cardinals/docs/reports/enumerative-combinatorics/preorder-root-polytopes/code/15-leaf-compression-build_local.sh`;
+it builds only the unshipped manuscript). All survive in the arrival
+commits. `article.pdf` is a build of the merged text.
 
 ## Labels and numbering
 
 Every label carries the prefix `fce:`; source 42's material carries
-`fce:lg:` and source 75-03's `fce:kk:`. Source 61 delivered 70 unprefixed
+`fce:lg:`, source 75-03's `fce:kk:`, source 77-44's `fce:ba:` and Part VI's
+(sources 101-90 and 101-86) `fce:dx:`. Source 61 delivered 70 unprefixed
 labels; all 70 are kept, with the prefix (14 of them collided with source
 42's bare labels: `eq:Q`, `eq:diag`, `eq:kernel`, `eq:markedP`,
 `eq:oeisconj`, `eq:phase`, `eq:prefix`, `eq:sextic`, `eq:steps`,
@@ -131,10 +191,13 @@ merged tables, and labels on unlabelled sections of source 61) and 61
 renamed or removed none: **203**. The batch-77 write added 20 `fce:ba:`
 labels (Part V) and renamed or removed none, and every existing section,
 statement, equation and table keeps its number (checked against a build of
-the previous text): **223** in total. Source 42's labels on results
-printed once from source 61, and the delivered labels of sources 75-03 (87)
-and 77-44 (18), are not used as such (Parts IV and V label their own
-statements afresh).
+the previous text): **223** in total. The batch-101 write added 71
+`fce:dx:` labels (Part VI) and renamed or removed none, and every existing
+section, statement, equation and table keeps its number (checked against a
+build of the committed text): **294** in total. Source 42's labels on
+results printed once from source 61, and the delivered labels of sources
+75-03 (87), 77-44 (18), 101-90 (24) and 101-86 (21), are not used as such
+(Parts IV, V and VI label their own statements afresh).
 
 Source 61's Section k is Section k + 1 here for k = 1, …, 12, its
 Sections 13 and 14 are Sections 22 and 23, and its Appendices A and B keep
@@ -167,10 +230,27 @@ its Section 7 is Section 31 (the r = 4 evaluation; the recipe and the
 r = 5 values are rows); its Section 8 is Remark 33.1; its Section 9 is
 Sections 33 and 34.
 
+Part VI follows Part V, before the appendices, as Sections 35–38 (Tables
+9–11). Source 101-90's Section 1 (its theorem) is rows of Table 9; its
+Section 2 is rows of Table 9 and Proposition 36.1 (the zero-step identity);
+its Sections 3 and 4 are Section 36.2 (Proposition 36.2), Section 36.3
+(Lemma 36.3) and Section 36.4; its Section 5 is Section 36.4 (the rule
+(36.16)); its Section 6 is (36.17) and Section 36.5; its Section 7 is
+merged into Sections 35.1, 38.2–38.4. Source 101-86's Section 1 is rows of
+Table 9; its Sections 2 and 3 are Section 37.1 (its sextic is a row); its
+Section 4 is Proposition 37.1 and Section 37.3; its Section 5 is Theorem
+37.2 with Section 37.4; its Section 6 is Section 37.5 (Proposition 37.3);
+its Section 7 is merged into Section 38.2. Statements and proofs supplied
+by the write are marked [write] (Propositions 36.1 (the balanced form and
+the proof), 36.2 (second proof), 37.3 (general form); Lemma 36.3 (gauge
+computation); Remarks 36.4, 36.5 and 38.1 (iii); the consistency checks
+after Proposition 37.1 and Theorem 37.2).
+
 ## What is proved
 
 For every fixed r ≥ 2 (Theorem 3.1, sources 61 and 42; leading term also
-source 75-03, with error O(n^(−1/5))):
+source 75-03, with error O(n^(−1/5)); fourth to sixth proofs by sources
+77-44, 101-90 and, for r = 5, 101-86):
 
     A_r(n) ~ kappa_r (rn)! / (rn (n!)^r),   kappa_r = exp( sum_{m≥1} P(S_m = 0)/m ),
 
@@ -199,6 +279,40 @@ m^(−1/2) gap tail with infinite mean (Section 19, source 42); eventual
 strict log-convexity (source 42); an exact lower-branch Lambert-W core
 with corrections (all three) and an explicit rounding bound (source 42).
 Table 3 gives kappa_r, c(r) and 2 kappa_r − 1 for r ≤ 12.
+
+New in Part VI (sources 101-90 and 101-86):
+
+- **α_{5,2} = 36/25 − 63√5/125 without the recurrence** (Theorem 37.2,
+  source 101-86): the Gaussian-moment rule on the zero-free walk, in exact
+  arithmetic, with every intermediate value printed (phase through degree
+  six, amplitude through degree four, the marked transfer correction to
+  degree two, the Puiseux coefficients e_1, e_3, e_5); it agrees with Part
+  IV's recurrence-derived value, and Part IV's second-order inverse (28.1)
+  is now recurrence-free as well. This advances the target of Section 22.3
+  for r = 5 "by the engine";
+- the leading constant of the zero-free count, A°_5(n) ~ φ^(−2) 256^n /
+  (√2 π^(3/2) n^(5/2)) (Proposition 37.1), with three consistency checks
+  added at the write;
+- A_5(n+1) ≥ 35 A_5(n) for every n (source 101-86), generalized at the
+  write to A_r(m+n) ≥ A_r(m) A_r(n) (Proposition 37.3): every row with
+  r ≥ 3 is strictly increasing at every index, not only eventually;
+- for every odd r, E_r(t) = E°_r(t/(1−t))/(1−t), κ_r = (r/(r−1)) E°_r(1/(r−1))
+  and A_r(n) = C(rn, n) A°_r(n) (Proposition 36.1, source 101-90; the
+  balanced form at the write);
+- in coordinates with the two extreme steps unmarked: det H_ex =
+  4h²/(r^r V) = 12(r−1)/(r^r(r+1)) = (r−1)² det H (Proposition 36.2), and
+  r − 1 dominant mark points with ν time phases each (Lemma 36.3); Remark
+  36.4 (write) shows that the count depends on the coordinates and the
+  constant does not. Source 101-90's coefficient rule (36.16), unexercised
+  by its package for r ≥ 4, was evaluated at the write for r = 4, 5 at first
+  order and reproduces α_{4,1} and α_{5,1} to 33 and 34 digits (numerics,
+  Remark 36.5);
+- Remark 38.1: source 101-86's "lattice factor 4" is **not** an instance of
+  the lattice-peak transfer theorem of
+  [`a357825-theta-ballot-power-sums`](../a357825-theta-ballot-power-sums/)
+  Part II (no power sum, no growing exponent; read as a lattice sum it is
+  the phase-independent fine-lattice limit; and it depends on the
+  coordinates).
 
 New in Part V (source 77-44):
 
@@ -258,7 +372,17 @@ comprehensive novelty or publication-priority claim, no exponentially
 improved transseries or canonical exact interpolation, no uniform
 exact-rounding claim; its "no proof of the particular guessed recurrence"
 is now answered for A215570 by Part IV (a dated note says so) and still
-holds for A215562.
+holds for A215562. Sources 101-90 and 101-86 keep theirs in Part VI
+(Section 35.1): fixed alphabet only; D-finiteness is existence only, with
+no particular or minimal recurrence; no smaller exponential sectors, no
+exponentially improved error and no numerical remainder constants; no
+unconditional exact-ceiling rule; root products for larger r are
+orientation only; their code is not a general-purpose implementation; no
+claim that the coefficients lie in Q(κ_r); their source checks are not
+exhaustive priority claims. Their stale "no proof found" and "still
+unproved" statements are corrected in Section 38.3; nothing in them was
+found wrong. Their open questions are merged into Section 22 (items
+101.1–101.6 of Section 38.4); none is answered.
 
 ## Repository context
 
@@ -276,8 +400,9 @@ holds for A215562.
   source 75-03's corrections and nested-logarithm anchor are instances of
   `p0:thm:lambert-centered` and of `t2:thm:balanced-inverse` in
   `Analysis/Transseries/docs/series-and-transseries/Combinatorial_Transseries_Inverses/Combinatorial_Transseries_Inverses.tex`.
-  None of the four sources cited these; the report does, and claims no
-  novelty there (source 77-44's inverse: Remark 33.1).
+  None of the six sources cited these; the report does, and claims no
+  novelty there (source 77-44's inverse: Remark 33.1; sources 101-90 and
+  101-86: Section 36.5).
 - The bridge–excursion identity is the composition-marked case of
   Corollary `cor:excursion` of
   [`multiple-chain-exponential-formula`](../../../enumerative-combinatorics/multiple-chain-exponential-formula/).
@@ -286,6 +411,12 @@ holds for A215562.
   report's Gaussian-moment method (Sections 17–18) as prior methodology
   for its positive-density expansion of the galled-tree triangle A399421.
   The objects differ; nothing of this report is re-proved there.
+- [`a357825-theta-ballot-power-sums`](../a357825-theta-ballot-power-sums/)
+  Part II (lattice-peak transfer theorem for growing power sums): source
+  101-86's "lattice factor 4" was examined at the batch-101 write and is
+  not an instance (Remark 38.1); that report's README still lists the
+  archive among later arrivals "not examined", and a reciprocal note there
+  is due separately.
 - No other repository report concerns A215561 or its rows. Cluster O2's
   balanced Smirnov words report (A330266) and the theta-ballot power-sum
   report (A357825) use "balanced" and "ballot" in different senses, and
@@ -299,9 +430,10 @@ From this directory:
     latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 
 (or three `pdflatex` passes). The committed PDF was built this way with
-MiKTeX on 2026-10-02: 68 pages, no errors, warnings, undefined
+MiKTeX on 2026-10-05: 88 pages, no errors, warnings, undefined
 references, multiply defined labels, duplicate destinations or
-overfull/underfull boxes.
+overfull/underfull boxes. (The title page's status box has run onto a
+second page since before Part VI; the page count above includes it.)
 
 ## Rerun the checks
 
@@ -376,6 +508,41 @@ the derivation scripts; its default is the producer's
 `/workspace/shared/…`) and the driver did not finish within three minutes
 and were not rerun; their delivered receipts record PASS.
 
+Sources 101-90 and 101-86 expect their delivered layout: the driver
+`run_checks.py` at the package root runs every program in `checks/`
+(source 101-86's review program in `checks/audit/`), each program writes
+its JSON output beside itself, the driver writes `check_receipt.json` at
+the root, and the review program reads `../second_correction.json`. Rebuild
+that layout on a copy:
+
+    mkdir -p /tmp/b90/checks /tmp/b86/checks/audit
+    cp code/101-90-alphabet-run_checks.py /tmp/b90/run_checks.py
+    for f in check_constants check_balanced_counts check_lattice check_recipe_small; do cp code/101-90-alphabet-$f.py /tmp/b90/checks/$f.py; done
+    cp code/101-86-five-run_checks.py /tmp/b86/run_checks.py
+    for f in check_kernel direct_terms check_jets check_second_correction check_auxiliary; do cp code/101-86-five-$f.py /tmp/b86/checks/$f.py; done
+    cp code/101-86-five-audit-check_second_assembly_fast.py /tmp/b86/checks/audit/check_second_assembly_fast.py
+    (cd /tmp/b90 && python -O run_checks.py)
+    (cd /tmp/b86 && python -O run_checks.py)
+    for f in check_constants check_balanced_counts check_lattice check_recipe_small; do diff <(tr -d '\r' < /tmp/b90/checks/$f.json) data/101-90-alphabet-$f.json; done
+    for f in kernel_checks direct_terms jet_checks second_correction auxiliary_checks; do diff <(tr -d '\r' < /tmp/b86/checks/$f.json) data/101-86-five-$f.json; done
+    diff <(tr -d '\r' < /tmp/b86/checks/audit/check_second_assembly_fast.json) data/101-86-five-audit-check_second_assembly_fast.json
+
+Source 101-90 needs SymPy (about 25 s); source 101-86 needs SymPy, and its
+second-correction program dominates (about 2 minutes recorded, 2–8 minutes
+on a loaded machine). The delivered packages can also be re-extracted from
+the arrival commit, `git show 60f54ea06:docs/incoming/A215561_Fixed_Alphabet_Asymptotics.zip > x.zip`
+(likewise `A215570_Balanced_Ballot_Asymptotics.zip`), and run with
+`python -O run_checks.py` inside the extracted package directory. At the
+placement both suites were rerun on copies (Windows, Python 3.14.4, SymPy
+1.14.0): source 101-86's six jobs passed in 445 s (131 s recorded) and
+source 101-90's four in 24 s (12 s recorded); every regenerated output
+equals the shipped one after removal of carriage returns or except its
+`seconds` field. At this write the route above was replayed for source
+101-90 (all four outputs equal modulo CR and `seconds`, 16 s) and, for
+source 101-86, for `check_kernel.py`, `direct_terms.py 30`, `check_jets.py`,
+`check_auxiliary.py` and the review program (fed the shipped
+`second_correction.json`; 65 s): all equal modulo CR and `seconds`.
+
 ## Disclosures
 
 - The shipped programs, data and markdown files are byte-identical to the
@@ -429,3 +596,46 @@ and were not rerun; their delivered receipts record PASS.
   `29aca108e`) is reported in Section 24.1 with the note that its pin
   could not see this report; its claim to an independent proof of the
   A215561 conjecture is reported as a third, weaker proof.
+- Sources 101-90 and 101-86: rename map `run_checks.py` →
+  `code/101-90-alphabet-run_checks.py`, `code/101-86-five-run_checks.py`;
+  `checks/<name>.py` → `code/<prefix><name>.py`;
+  `checks/audit/check_second_assembly_fast.py` and its JSON →
+  `code/101-86-five-audit-check_second_assembly_fast.py` and
+  `data/101-86-five-audit-check_second_assembly_fast.json`;
+  `checks/<name>.json`, `check_receipt.json`, `QA.json` →
+  `data/<prefix><name>`; `audit/structural_review.md` →
+  `<prefix>structural_review.md` at the root;
+  `audit/structural_review_constants.json` →
+  `data/101-86-five-structural_review_constants.json`.
+- Source 101-86's `check_receipt.json` carries the key
+  `"independent_portable_replay_passed": true`, which its driver
+  `run_checks.py` never writes: it was added by hand after the run. The
+  replay it refers to is the review program.
+- Source 101-86's README calls the review program the "final independent
+  check" and says its files are "included unchanged from the independent
+  review". The program reads the main checker's output
+  `second_correction.json`: it takes the implicit-root jet from there and
+  only verifies it by its residual, recomputes the phase, amplitude and
+  transfer jets by another method and compares them with the recorded ones,
+  and then assembles b°_2 and α_{5,2} from the recorded (verified) jets. It
+  is a verification of the main computation, not an independent
+  derivation (Section 38.2).
+- Both review files cite drafts that were not delivered
+  (`leading_comparison.md` and `all_orders_and_inverse.md` for source
+  101-90; `asymptotic_proof.md` for source 101-86), and both QA receipts
+  record approvals by the producing pipeline; these reviews are
+  self-reported, not refereeing.
+- The files of sources 101-90 and 101-86 keep their letters: in source
+  101-90's output `exact_e4`, `exact_e5` and `critical_excursion_value_numeric`
+  are κ_r (its γ_r, its review's e_r) and `OEIS_pi_free_constant_numeric` is
+  c(r); `c1`, `c2` are α_{r,1}, α_{r,2}. In source 101-86's output
+  `basketball` is A°_5(n); `basketball_b1`, `basketball_b2`,
+  `basketball_correction_in_N` (and the review's `b1`, `b2`) are b°_1, b°_2;
+  `transfer_B1_jets`, `univariate_first_correction` and `transfer_B2` are
+  the jets of G_1/G_0 and the value of G_2/G_0; `Puiseux_e1`, `Puiseux_e3`,
+  `puiseux_e5` are e_1, e_3, e_5; `c1`, `c2` and `A215570_first_correction`
+  are α_{5,1}, α_{5,2}; `second_log_correction` is b_2.
+- OEIS data: source 101-86's `check_kernel.py` and `direct_terms.py` and
+  source 101-90's `check_balanced_counts.py` embed initial terms of
+  A215570, A215562, A215571 and A215593 as comparison values. OEIS content
+  is available under CC BY-SA 4.0 (The OEIS Foundation).
