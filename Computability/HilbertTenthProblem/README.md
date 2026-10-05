@@ -180,6 +180,19 @@ or46 witnesses/SOS224/degree52. Native AND remains in the loader, so a
 cheaper loading/accepting-history compiler is still needed for a universal
 improvement. The universal84/187 and85/155 points remain unchanged.
 
+The [hat Part V publication review](Papers/research-wip/native-stream-queue/review_hat_write_a21208b3f.md) at
+**a21208b3f** verifies the seed-support repairs and declared main-body
+preservation:42 source statements,29 proofs,38 equations and all80 delivered
+labels. Two new errors are corrected and retained with counterexamples in
+Remark75.9: finite public randomness has no uniform private-style success
+gap, and atomic output labels require an inequality in Corollary75.7.
+Root authenticates20 immutable blobs, eight members,17 spans and both raw
+diffs, independently checks the counterexamples, and rebuilds the edited
+article directly in three passes:175 pages, with the corrected page visually
+inspected and no undefined references or bad boxes. Supplied programs and
+frozen helpers remain unexecuted; normalized preservation does not certify
+all unchanged proofs. Expected hat queries supply no paid integer compiler.
+
 The [gamma83 radical-order theorem](Papers/research-wip/native-stream-queue/gamma83_next_arithmetic.md) and its
 [independent proof challenge](Papers/research-wip/native-stream-queue/review_gamma83_radical_order.md) prove that
 removing repeated prime factors from the actual modulus H changes the

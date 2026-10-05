@@ -158,6 +158,19 @@ or46 witnesses/SOS224/degree52. Native AND remains in the loader, so a
 cheaper loading/accepting-history compiler is still needed for a universal
 improvement. The universal84/187 and85/155 points remain unchanged.
 
+The [hat Part V publication review](review_hat_write_a21208b3f.md) at
+**a21208b3f** verifies the seed-support repairs and declared main-body
+preservation:42 source statements,29 proofs,38 equations and all80 delivered
+labels. Two new errors are corrected and retained with counterexamples in
+Remark75.9: finite public randomness has no uniform private-style success
+gap, and atomic output labels require an inequality in Corollary75.7.
+Root authenticates20 immutable blobs, eight members,17 spans and both raw
+diffs, independently checks the counterexamples, and rebuilds the edited
+article directly in three passes:175 pages, with the corrected page visually
+inspected and no undefined references or bad boxes. Supplied programs and
+frozen helpers remain unexecuted; normalized preservation does not certify
+all unchanged proofs. Expected hat queries supply no paid integer compiler.
+
 The [gamma83 radical-order theorem](gamma83_next_arithmetic.md) and its
 [independent proof challenge](review_gamma83_radical_order.md) prove that
 removing repeated prime factors from the actual modulus H changes the
@@ -5701,6 +5714,7 @@ New research and the completed75-operation construction:
 
 | Artifact | Established result | Remaining boundary |
 |---|---|---|
+| [Hat Part V write and corrections](review_hat_write_a21208b3f.md) | Seed repairs and source preservation checked; finite-public gap and label-collision errors corrected with Remark75.9; edited175-page PDF rebuilt | Selected proof scope only; no supplied verifier replay or arithmetic compiler bound |
 | [Gamma83 radical order](gamma83_next_arithmetic.md), [review](review_gamma83_radical_order.md) | Exact radical quotient1/3/9; fixed-cofactor prime-power bounds, including H=3p^e ⇒ m divides3 | Conditional on native history factorization; no occurrence, false-input zero or operation saving proved |
 | [Beyond Ord package intake](review_beyond_ord_package_d7cf7d554.md) | Selected GB constructor/interface challenge; nine members, four hash bindings and exact read scopes | Relative ordinal primitives are unpaid; omitted proofs and supplied programs unreviewed; no universal bound change |
 | [Hat-seed definition correction](review_hat_seed_definition_correction.md) and [root challenge](review_hat_seed_definition_correction_root.md) | Atom-count reading fails for uniform and one-atom mixed laws; explicit cap1 counterexample; probability-one finite support repairs exclusion | Earlier no-correction assessments qualified and retained; abstract quantifier clarified; host manuscript write still pending |
