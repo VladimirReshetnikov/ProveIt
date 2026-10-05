@@ -173,6 +173,15 @@
 > improvement. The universal84/187 and85/155 points remain unchanged.
 >
 >
+> The [Beyond-Ord horizons placement review](review_beyond_ord_horizons_placement_6571ee1af.md) authenticates all nine original members and five exact ancillary placements at6571ee1af, including four internal hashes and17 inherited read spans. Part XVII is a planned assignment at that checkpoint: the host guide, article and PDF are unchanged, despite the commit wording “printed whole.” The finite-tree arithmetic is relative to supplied ordinal coefficient operations; the natural-coefficient demo provides no paid fixed-arity history. Full source proofs, supplied tests and PDFs remain unreviewed. Root independently checks39 byte records and34 spans and rereads the216-line selected arithmetic interface.
+>
+>
+> The [Beyond-Ord Part XVI publication review](review_beyond_ord_write_62b16914e.md), with [independent GB proof challenge](review_beyond_ord_gb_62b16914e.md) and [root correction/build record](review_beyond_ord_write_62b16914e_root.md), checks the selected choice-free history and completion chain at62b16914e, including internal finite-code induction. Three metadata errors are corrected and retained as numbered remarks:1,665 manuscript lines within2,468 archive lines, the actual Mathlibv4.32 pin, and the script output beside itself. Four archives/27members,13placements and227source-label routes authenticate; all2,188labels survive the correction and the994-page PDF rebuild. Full Part XVI, truth/separation/spectrum proofs and supplied programs remain outside the review. Class-order syntax supplies no paid fixed-arity ordinary-integer compiler or operation improvement.
+>
+>
+> The [integer-matrix Markov lift](markov_mask_matrix_lift.md), with [independent proof review](review_markov_mask_matrix_lift.md), embeds any finite family of integer r-by-r matrices into strictly positive normalized trigonometric masks. With dilation2r+1 and common denominator q=2S+1, the signed cosine block is exactly M/q; finite products preserve zero and homogeneous tests. All-size frequency separation excludes leakage and retains the fixed constant block. Fresh rational checks cover24 masks,192 basis images and336 two-step images. This is an exact substrate bridge, not a universality proof or gate saving: admissible words, inputs and fixed-arity histories retain their original costs. The84/187/18 frontier is unchanged.
+>
+>
 > The [six-report analytic triage](review_new_analytic_reports_e88ed8bf6.md)
 > reviews the new e88ed8bf6 archives through complete guide reads and selected
 > exact interfaces, with101 regular members authenticated. Fixed polynomial
@@ -232,6 +241,9 @@
 > with their correction. No prime complement, numerical order certificate or
 > rejected-input alias is produced. **Independent-gamma83 remains unresolved**,
 > and the proved universal operation point remains84/187/18.
+>
+>
+> The [nonlinear two-norm classification](complete84_nonlinear_norm_next.md), with [independent proof review](review_complete84_nonlinear_norm_next.md), extends the actual-field restriction from affine maps to arbitrary polynomial re-factorizations: only separate norm similitudes or classical composition with a constant companion pair remain. A specific positive rational Cayley chart has no simultaneous integer outputs at any parent positive zero, since its determinant coefficient lies strictly between0 and1. Complete denominator-cleared evaluators cost87=49M+38A or98=56M+42A; these are implementation upper bounds, with all25 supplied ports live. Fresh root coefficient/graph checks and the independent proof pass. No operation saving, witness reduction or general circuit lower bound results.
 >
 >
 > The [affine norm-pair rigidity theorem](complete84_affine_norm_pair_rigidity.md)
