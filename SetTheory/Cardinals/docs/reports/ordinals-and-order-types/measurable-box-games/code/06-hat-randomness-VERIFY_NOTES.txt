@@ -1,0 +1,84 @@
+FINITE VERIFICATION NOTES
+=========================
+
+Reproduce the checks
+--------------------
+Python 3.10 or later is sufficient. No third-party packages are required.
+
+    python3 verify_finite.py
+
+The program writes results.json beside itself. To choose another location:
+
+    python3 verify_finite.py --output /path/to/results.json
+
+The JSON has no timestamps or random sampling output. Its rational numbers
+are exact strings, such as "3/4"; integer quantities remain JSON integers.
+
+What is checked
+---------------
+1. Activated early-stopping Eldredge blocks:
+   Every hat assignment and every effective activation mask is checked for
+   m=1,...,5 and alpha=1/2,1/4. Biased masks carry exact integer weights.
+   The operational query transcript is checked for owner blindness and
+   fresh inspections, and against the independent Boolean block formula.
+   Checks include the all-black surplus law -Binomial(m,alpha), the
+   singleton gain probability alpha*m*4^(-m), neutral configurations,
+   nonbad completed-pair monotonicity, and bounds at every logical prefix.
+   Exact query means, partner-conditioned means, and geometric tails are
+   checked. The m=1 case is an intentional edge case; charged query counts
+   follow the displayed algorithm, even when a Boolean rule simplifies.
+
+2. Public gating:
+   A single public gate, independent of the hats and private activations,
+   is off with probability epsilon=alpha. Off-gate players guess zero
+   without querying; on-gate players use the activated block.
+   Exact per-owner means are checked against
+
+       S: (1-alpha)*(1+alpha*(1-2^(-(2*m-2))))
+       T: 1-alpha.
+
+   Both are at most one. This is one shared gate for the whole strategy;
+   the program makes no assertion of almost-sure success for these gates.
+
+3. Finite sign and variance inequalities:
+   Constant guesses, neutral pairs, privately thinned pairs, activated
+   blocks, and public-gated blocks are enumerated. The centered score,
+   variance bounds, general zero-query sign inequality, and cost-only
+   inequality are checked with exact fractions. The stronger private
+   inequality is checked only when independent private seeds apply.
+
+4. Owner-indexed Fourier accounting:
+   The integer Walsh transform is used, without floating-point arithmetic.
+   Every deterministic activation profile for blocks m=1,...,4 is checked.
+   There are also 32 fixed synthetic profiles for each ambient size n=1,...,5
+   and parity teams. Synthetic profiles are selected by the specified
+   xorshift64 stream with seed 0x20261004C0FFEE. Their full hat truth tables
+   are then checked exhaustively; no statistical inference is drawn.
+
+   Every scored prefix is checked, so later hats can lie outside the scored
+   set. The checks compare direct scores with aggregated owner coefficients,
+   compare Fourier influence with direct coordinate derivatives, and verify
+   Parseval, total owner energy, support multiplicity, and the critical
+   low-degree estimate Var(F) <= 4*Var(P_{<=2}F)+3*K whenever the displayed
+   exact slack K=max(0,total_influence-number_of_scored_owners) applies.
+
+Executed result
+---------------
+All 499,552 logical checks passed:
+
+   10 activated-block strategies: 74,896 weighted hat/seed state cases.
+   10 public-gate strategies:     77,624 weighted hat/seed state cases.
+   15 additional strategies:       8,946 weighted hat/seed state cases.
+   195 deterministic Fourier profiles; 691 scored prefixes, 445 with K=0.
+
+"State cases" counts effective hat/mask combinations before probability
+weights are applied; it is not the number of underlying fair-bit strings.
+The detailed exact laws, costs, and prefix energy data are in results.json.
+
+Limits of the certificate
+------------------------
+These are finite algebraic and algorithmic checks. They do not prove the
+infinite schedule, Borel--Cantelli conclusions, supermartingale convergence,
+almost-sure divergence, or nonattainment theorem. Those assertions require
+the proofs in the article. The verification is supplementary evidence of
+the finite identities and implementations used in those proofs.

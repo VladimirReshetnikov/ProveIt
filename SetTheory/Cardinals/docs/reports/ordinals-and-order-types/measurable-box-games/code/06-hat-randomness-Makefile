@@ -1,0 +1,12 @@
+.PHONY: all verify pdf clean
+
+all: verify pdf
+
+verify:
+	python3 verify_finite.py
+
+pdf:
+	latexmk -pdf -interaction=nonstopmode -halt-on-error hat_randomness_frontier.tex
+
+clean:
+	latexmk -c hat_randomness_frontier.tex
