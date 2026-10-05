@@ -57612,11 +57612,13 @@ this Part is formalized (\cref{swo:sec:formal}). The ProveIt files the sources
 name are \path{SetTheory/ZF/Lean/ZF/Zf.lean} (source~32's Section~11.6,
 printed below), whose declarations \code{Sep\_form},
 \code{Repl\_form}, \code{ZFax} and \code{ZFprov} and import
-\code{FirstOrder.Calculus} exist as source~32 says; in the Mathlib version
-this repository pins (\code{v4.31.0}, \path{Mathlib/SetTheory/Ordinal/Univ.lean})
-\code{Ordinal.univ} and \code{Ordinal.type\_lt\_ordinal} exist and
-\code{Ordinal.univ\_id} is deprecated in favour of the latter (``since
-2026-03-20''), as source~32 says.
+\code{FirstOrder.Calculus} exist as source~32 says. Source~32 also reports
+\code{Ordinal.univ} and \code{Ordinal.type\_lt\_ordinal} in
+\path{Mathlib/SetTheory/Ordinal/Univ.lean}, with \code{Ordinal.univ\_id}
+deprecated in favour of the latter (``since 2026-03-20''). These remain
+attributed API/deprecation claims; this review has not rechecked their
+external history. Both repository manifests pin \code{v4.32.0}, revision
+\path{81a5d257c8e410db227a6665ed08f64fea08e997}.
 
 % ---- source 35, its Sections 9.4--9.5
 \subsection{Source 35: five formalization routes and a proof-assistant design}
@@ -58496,8 +58498,8 @@ Gitman, Hamkins, Holy, Schlicht and Williams.
 \merge\ \emph{Reviews.} The Hilbert's-tenth research tree reviewed the four
 archives in a bounded intake
 (\path{Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/review_beyond_ord_e3839ad2c.md},
-commit \code{fcc4098ec}): it read 2,468 selected lines of the four
-manuscripts, checked source~34's choice-free power theorem and set-subset
+commit \code{fcc4098ec}): it read 2,468 archive-member lines, including
+1,665 manuscript lines, checked source~34's choice-free power theorem and set-subset
 criterion in full (\cref{swo:bo:power:GB,swo:bo:found:settest}) and ``found no
 defect'', confirmed that this report states the $\GBC$ equivalence and leaves
 the $\GB$ base open at the sources' pins, and found no demonstrably wrong
@@ -58520,6 +58522,41 @@ by this write against Part~XIV, \cref{swo:xvi:note:hist}), source~32's exact
 truth presentation (\cref{swo:dc:thm:truth}), source~35's separation on $\Ord$
 (\cref{swo:fc:thm:definability-separation}), and this write's
 \cref{swo:xvi:thm:choicefree}.
+
+\merge\ \emph{Later bounded publication review.} The subsequent
+\path{review_beyond_ord_write_62b16914e.md} and separate
+\path{review_beyond_ord_gb_62b16914e.md} in the same research tree examine the
+actual Part~XVI publication. The selected $\GB$ history, floors, finite
+changes, normal forms, anchored restriction and completion arguments pass,
+including the internal finite-code induction in
+\cref{swo:xvi:thm:choicefree}. This is neither a full audit nor a
+formalization. Truth presentation, separation and spectrum proofs remain
+outside that scope. Finite notation relative to supplied coefficient orders
+does not provide a paid fixed-arity ordinary-integer computation history.
+
+\paragraph{Review remark R1 (coverage counterevidence).}
+The earlier phrase ``2,468 selected lines of the four manuscripts'' counted
+non-manuscript material as manuscript reading. The pinned intake receipt
+instead counts $392+318+584+371=1,665$ TeX lines and 803 other archive-member
+lines, totaling 2,468. Its 446 context lines are separate. The corrected
+wording above does not enlarge the earlier proof coverage.
+
+\paragraph{Review remark R2 (dependency-pin counterevidence).}
+The earlier claim that this repository pins \code{v4.31.0} is false at
+\code{62b16914e}: both the root and surreal \path{lake-manifest.json} give
+\code{inputRev: v4.32.0}, with revision
+\path{81a5d257c8e410db227a6665ed08f64fea08e997}. This corrects the repository
+pin, not any separately consulted documentation. The named API/deprecation
+claims remain attributed to source~32, without a new audit of Mathlib history.
+
+\paragraph{Review remark R3 (output-path counterevidence).}
+The early guide said source~35 writes
+\path{artifacts/finite_notation_results.json} relative to its working
+directory. Line~161 of the placed program instead constructs
+\code{Path(\_\_file\_\_).with\_name("finite\_notation\_results.json")},
+which writes beside the script. The later delivery instructions already
+state that convention. This is an inert source observation; no supplied
+program was run.
 
 % ---- end of Part XVI: restore the report's section numbering
 \setcounter{section}{112}

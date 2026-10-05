@@ -52,8 +52,9 @@ archives have a written-proof review in the Hilbert's-tenth research tree,
 and the batch-80 merged text a scoped synthesis review and a preservation
 audit there, whose corrections are applied; no review of the batch-81,
 batch-83 or batch-89 sources exists yet, and the four batch-96 archives have a
-bounded intake review there that checks source 34's choice-free power theorem
-only (see "Reviews" below).
+bounded intake review there. A later bounded publication review checks the
+selected GB history and completion chain and corrects three metadata claims;
+it does not certify all of Part XVI (see "Reviews" below).
 
 | Source | Batch, manuscript | Archive | Pin | Placed | Printed as |
 |---|---|---|---|---|---|
@@ -463,8 +464,9 @@ printed in Section 111 (its subsections on checks, audits and the shipped checks
 manifest" (the unshipped `MANIFEST.sha256`); `data/33-heights-BUILD_REPORT.json`
 describes the unshipped 30-page PDF; `34-choicefree-PROOF_STATUS.txt` describes
 its own 32-page PDF and sections; source 35's program writes
-`artifacts/finite_notation_results.json` relative to the directory it is run
-from. The appendices printed in Section XVI.11 name delivery files and carry
+`finite_notation_results.json` beside itself (here in `code/`), using
+`Path(__file__).with_name`, independently of the working directory. The
+appendices printed in Section XVI.11 name delivery files and carry
 `[merge]` notes with the shipped names.
 
 ## Labels
@@ -973,8 +975,11 @@ domain-size criterion, a verified bounded uniformization theorem) do not
 exist. Sources 32–35 ship no Lean or Rocq code; no statement of Part XVI is
 formalized. Source 32 cites `SetTheory/ZF/Lean/ZF/Zf.lean` (whose
 `Sep_form`, `Repl_form`, `ZFax`, `ZFprov` exist as it says) and Mathlib's
-`Ordinal.univ` and `Ordinal.type_lt_ordinal` (current in the pinned Mathlib
-v4.31.0, where `Ordinal.univ_id` is deprecated since 2026-03-20, as it says);
+`Ordinal.univ` and `Ordinal.type_lt_ordinal`, and reports that
+`Ordinal.univ_id` is deprecated since 2026-03-20. These API/deprecation claims
+remain attributed to source 32; this review does not recheck their external
+history. Both repository manifests pin Mathlib **v4.32.0**, revision
+`81a5d257c8e410db227a6665ed08f64fea08e997`;
 source 33's proposed directory `SetTheory/ClassWellOrders/` does not exist.
 Placement in the surreal collection beside the Lean foundations confers
 no formal status.
@@ -1163,7 +1168,8 @@ cleveref. No external figures or bibliography file.
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-Built with MiKTeX (pdfLaTeX): 994 pages; no errors, undefined references
+The publication at `62b16914e` reported a MiKTeX (pdfLaTeX) build:
+994 pages; no errors, undefined references
 or citations, multiply defined labels, duplicate destinations, LaTeX or package
 warnings, or overfull boxes; 38 underfull-box warnings, the same 38 as the
 860-page build before batch 96 and the 831-page build before batch 89 (15 in the build before batch 83, 10 before
@@ -1172,6 +1178,14 @@ questions, delivery record, abstract and crosswalk (831 → 860 pages). The
 batch-96 write added Part XVI and the front matter (1.3.4, 1.11), questions
 (113.28–113.29), delivery record (A.13), abstracts and crosswalk (D.24–D.27) of
 sources 32–35, and dated notes in Sections 108, 112 and 113 (860 → 994 pages).
+The later R1–R3 metadata corrections were rebuilt directly with TeX Live
+pdfLaTeX, with shell escape disabled, in three passes: 994 pages, no errors,
+undefined references, duplicate labels/destinations or overfull boxes. The
+final log has 37 underfull-box warnings and the expected shell-escape-disabled
+package warning. All 2,188 literal labels remain in their original order.
+Corrected text was extracted and PDF pages 824 and 840 visually inspected;
+this checks those pages, not the entire PDF.
+
 Its `.aux`, compared with a build of the committed text, keeps every one of
 the 1,876 earlier `\newlabel` entries with an unchanged number: Part XVI
 numbers its sections XVI.1–XVI.12 as Part XV does, the contents' number box is
@@ -1510,8 +1524,9 @@ claim most in need of one, as source 31 itself says.
 
 Batch 96: the same tree reviewed the four archives in a bounded intake
 (`Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/review_beyond_ord_e3839ad2c.md`,
-commit `fcc4098ec`). It read 2,468 selected lines of the four manuscripts and
-446 lines of context, checked source 34's choice-free power theorem and
+commit `fcc4098ec`). It read 2,468 archive-member lines, including 1,665
+manuscript lines, and a separate 446 lines of context, checked source 34's
+choice-free power theorem and
 set-subset criterion (Theorem XVI.4.2, Lemma XVI.2.2) in full and "found no
 defect", confirmed that this report states the equivalence over GBC and left
 the GB base open at the sources' pins, and found no demonstrably wrong
@@ -1530,3 +1545,35 @@ covers Part XVI as written (Section XVI.12). The claims most in need of review
 are the full GB dependency analysis (Theorem XVI.5.8; Note XVI.5.10), source
 32's exact truth presentation (Theorem XVI.8.12), source 35's separation on
 `Ord` (Theorem XVI.7.11) and this write's Theorem XVI.6.21.
+
+A later bounded review of the actual Part XVI publication at `62b16914e` is
+recorded in `review_beyond_ord_write_62b16914e.md` in the same research tree,
+with the separate `review_beyond_ord_gb_62b16914e.md`. The selected GB
+history, floors, finite changes, normal forms, anchored restriction and
+completion arguments pass, including the internal finite-code induction in
+Theorem XVI.6.21. This is neither a full proof audit of Part XVI nor a
+formalization. Truth presentation, separation and spectrum proofs remain
+outside that scope. The finite notation interfaces provide no paid
+fixed-arity ordinary-integer computation history.
+
+The following numbered review remarks retain three incorrect publication
+claims and their concrete counterevidence.
+
+1. **Review remark R1 (coverage).** The earlier phrase “2,468 selected lines
+   of the four manuscripts” counted non-manuscript material as manuscript
+   reading. The pinned intake receipt counts 392+318+584+371=1,665 TeX
+   lines and 803 other archive-member lines, totaling 2,468. Its 446 context
+   lines are separate. The corrected wording above preserves that scope.
+2. **Review remark R2 (dependency pin).** The phrase “pinned Mathlib
+   v4.31.0” is false at `62b16914e`: both root and surreal `lake-manifest.json`
+   give `inputRev: v4.32.0` and revision
+   `81a5d257c8e410db227a6665ed08f64fea08e997`. This corrects the repository
+   pin, not any separately consulted documentation. The source's named API
+   and deprecation statements remain attributed claims, not newly audited
+   Mathlib history.
+3. **Review remark R3 (output path).** The early guide said the program
+   writes `artifacts/finite_notation_results.json` relative to its working
+   directory. Its line 161 instead constructs
+   `Path(__file__).with_name("finite_notation_results.json")`, so it writes
+   beside the script. This inert source observation agrees with the later
+   delivery instructions; no supplied program was run.

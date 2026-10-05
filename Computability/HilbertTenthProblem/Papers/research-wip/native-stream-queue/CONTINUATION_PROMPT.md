@@ -173,6 +173,9 @@
 > improvement. The universal84/187 and85/155 points remain unchanged.
 >
 >
+> The [Beyond-Ord Part XVI publication review](review_beyond_ord_write_62b16914e.md), with [independent GB proof challenge](review_beyond_ord_gb_62b16914e.md) and [root correction/build record](review_beyond_ord_write_62b16914e_root.md), checks the selected choice-free history and completion chain at62b16914e, including internal finite-code induction. Three metadata errors are corrected and retained as numbered remarks:1,665 manuscript lines within2,468 archive lines, the actual Mathlibv4.32 pin, and the script output beside itself. Four archives/27members,13placements and227source-label routes authenticate; all2,188labels survive the correction and the994-page PDF rebuild. Full Part XVI, truth/separation/spectrum proofs and supplied programs remain outside the review. Class-order syntax supplies no paid fixed-arity ordinary-integer compiler or operation improvement.
+>
+>
 > The [integer-matrix Markov lift](markov_mask_matrix_lift.md), with [independent proof review](review_markov_mask_matrix_lift.md), embeds any finite family of integer r-by-r matrices into strictly positive normalized trigonometric masks. With dilation2r+1 and common denominator q=2S+1, the signed cosine block is exactly M/q; finite products preserve zero and homogeneous tests. All-size frequency separation excludes leakage and retains the fixed constant block. Fresh rational checks cover24 masks,192 basis images and336 two-step images. This is an exact substrate bridge, not a universality proof or gate saving: admissible words, inputs and fixed-arity histories retain their original costs. The84/187/18 frontier is unchanged.
 >
 >
