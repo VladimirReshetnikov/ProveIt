@@ -204,6 +204,18 @@
 > checks every mapping, diff, host blob and read span. No arithmetic bound changes.
 >
 >
+> The [two-type ordinal promise obstruction](ordinal_two_type_effectivity_boundary.md)
+> and [root proof challenge](review_ordinal_two_type_effectivity_boundary.md)
+> strengthen the earlier invalid-code decoder boundary. A uniformly decidable
+> order is always a well-order, of type omega when a machine halts and
+> omega+1 otherwise. Thus even this two-type promise does not permit effective
+> semantic normalization or finite verifiable existential witnesses for the
+> upper type on arbitrary program indices. The generated lower-type side
+> still has halting-time certificates. Explicit constructor syntax, restricted
+> coefficient systems and oracle interfaces remain outside this obstruction;
+> no claim of a defective Beyond Ord theorem or new arithmetic bound is made.
+>
+>
 > The [four Beyond Ord archive reviews](review_beyond_ord_e3839ad2c.md)
 > authenticate all27 members delivered at e3839ad2c, all16 delivered checksum
 > entries, and38 read spans covering2,468 lines plus446 context lines.

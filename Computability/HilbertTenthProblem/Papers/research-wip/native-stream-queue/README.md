@@ -186,6 +186,17 @@ spans cover241 lines. The previous endpoint review remains at its recorded
 scope; supplied finite checks and builds were not replayed. Root independently
 checks every mapping, diff, host blob and read span. No arithmetic bound changes.
 
+The [two-type ordinal promise obstruction](ordinal_two_type_effectivity_boundary.md)
+and [root proof challenge](review_ordinal_two_type_effectivity_boundary.md)
+strengthen the earlier invalid-code decoder boundary. A uniformly decidable
+order is always a well-order, of type omega when a machine halts and
+omega+1 otherwise. Thus even this two-type promise does not permit effective
+semantic normalization or finite verifiable existential witnesses for the
+upper type on arbitrary program indices. The generated lower-type side
+still has halting-time certificates. Explicit constructor syntax, restricted
+coefficient systems and oracle interfaces remain outside this obstruction;
+no claim of a defective Beyond Ord theorem or new arithmetic bound is made.
+
 The [four Beyond Ord archive reviews](review_beyond_ord_e3839ad2c.md)
 authenticate all27 members delivered at e3839ad2c, all16 delivered checksum
 entries, and38 read spans covering2,468 lines plus446 context lines.
@@ -5637,6 +5648,7 @@ New research and the completed75-operation construction:
 
 | Artifact | Established result | Remaining boundary |
 |---|---|---|
+| [Two-type ordinal promise boundary](ordinal_two_type_effectivity_boundary.md) and [root review](review_ordinal_two_type_effectivity_boundary.md) | Halting reduction uses only valid computable well-orders of types omega and omega+1; upper-type predicate has no effective finite existential certificates | Applies to arbitrary program presentations with semantic order-type meaning; explicit constructor syntax and generated lower-type certificates remain available |
 | [Beyond Ord placement followup](review_beyond_ord_placement_111c38012.md) |17 changed paths,13 exact ancillary copies and27 source members; unchanged host with15 Part headings | Part XVI write and proposed mathematical corrections remain plans; original bounded intake scope retained |
 | [Atom / injection placement review](review_atom_injection_placement_27f200305.md) | Seven exact ancillary copies,14 members and eight checksums; nine paths and unchanged host authenticated | Part III body remains unwritten in this commit; inherited proof scopes and proposed corrections retained |
 | [Hat-randomness placement review](review_hat_placement_635a3e026.md) | Five exact ancillary placements and one archive retirement;8 members,6 diffs and241 read lines authenticated | Guide/article/PDF unchanged; Part V publication not shown; prior proof scope retained and supplied checks inert |
