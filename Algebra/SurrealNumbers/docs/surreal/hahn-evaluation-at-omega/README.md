@@ -170,6 +170,17 @@ The complete coefficient-recursion proof and the summability proofs are
 in the article. No Lean, other proof assistant, or surreal arithmetic kernel
 was used.
 
+[Added 5 October 2026.] That describes the delivery. Since then the
+repository's Lean development has proved the article's main theorem
+`thm:exact` in full: all four existence alternatives, strong additivity, the
+literal evaluation formula and nonzero-input injectivity, with uniqueness among
+coefficient-fixing strongly additive maps, on the universe-indexed carrier
+with an explicit lower-universe index bound. The declarations are listed in
+the `hahn-evaluation-at-omega` section of
+[`docs/FORMALIZATION.md`](../../FORMALIZATION.md). The corrected
+`rem:incomparable`, the simple algebraic extension/root correspondence and
+Laurent-field geometric convergence remain unformalized.
+
 ## Build the PDFs
 
 A reasonably complete TeX Live or MiKTeX installation is sufficient. The
@@ -198,6 +209,8 @@ public-source search on 20 September 2026 did not locate a prior resolution.
 This is not a guarantee of priority and does not exclude unpublished or
 unindexed observations. The proofs were developed and reviewed during this
 session, but have not been independently refereed or proof-assistant checked.
+[Added 5 October 2026: the main theorem `thm:exact` has since been proved in
+Lean; see the note under the verification instructions above.]
 
 The result answers the explicit monomial-normalized ring-homomorphism
 question. It does not settle Lipparini's broader Problem 7.5 about infinitary
