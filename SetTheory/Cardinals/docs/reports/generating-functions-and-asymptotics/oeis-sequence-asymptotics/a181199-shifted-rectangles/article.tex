@@ -2413,6 +2413,22 @@ Part~\ref{shr:part:one}'s model and estimates and the hook argument of
 Proposition~\ref{shr:bp:prop:core}. Like the rest of the report it is
 unrefereed; the exact identity (a) and the asymptotic (b) were checked
 against exact values for $m=2,3,4$ (table of Remark~\ref{shr:bp:rem:q4}).
+
+\emph{Dated note (5~October 2026).} An independent adversarial check of
+the results added at this write, made by the intake after the write, found
+all of them valid: Proposition~\ref{shr:bp:prop:boundary}, parts (a), (b)
+and~(c); the table of Remark~\ref{shr:bp:rem:q4}, all ten rows to every
+printed digit; and the completed arguments for \eqref{shr:bp:eq:CLT} and
+\eqref{shr:bp:eq:tails} in the notes after them. The check was a careful
+reading with independent exact computations: $T_m(n)$ by a new prefix-state
+recursion, cross-checked against a direct linear-extension count of the
+poset for $mn\le22$; $E_{m,n}(1/2)$ in exact rationals from conditional
+path counts, without the hook formula; $R_m(n)$ recomputed; 116 exact rows
+($m=2,\ldots,5$, $n$ up to $80$ at $m=2$), with floating extensions to
+$n=1600$ at $m=3$; and the bound \eqref{shr:bp:eq:tails} tested at every
+atom of the beta--binomial law for $n\le400$. In those rows $D_{m,n}$ lies far
+inside its bound. It is not a formal verification or an external review.
+No fix was needed; the observed rate in (b) is recorded after the proof.
 \end{writenote}
 
 \begin{proposition}[\textbf{[write]} Leading boundary error at the central cut]
@@ -2529,7 +2545,32 @@ power of $n$ is $-\binom{m-1}2+\frac{1-m}2+\frac{(m-2)^2}2=-\frac{2m-3}2$.
 \end{proof}
 
 At $m=2$, (c) reads $\binom{2n}nE_{2,n}(1/2)\sim\frac{2}{3\sqrt\pi}2^n
-n^{-1/2}$, since $R_2(n)=1$. Part~(a) is also the first step of an
+n^{-1/2}$, since $R_2(n)=1$.
+
+\emph{The rate in (b): an observation (dated 5~October 2026).}
+Part~(b) states no rate. The independent check recorded at the head of
+this subsection observed numerically that the ratio of $E_{m,n}(1/2)$ to
+the right side of \eqref{shr:bp:eq:boundary-lead} behaves like
+$1+c_m/n+O(n^{-2})$, with no
+$n^{-1/2}$ term (consistent with the symmetry $Y\mapsto-Y$):
+$n$ times the excess tends to about $0.500$ at $m=3$ (to $n=1600$), to
+about $0.667$ at $m=4$ (to $n=400$), and is still settling near $1.42$ at
+$m=5$ (to $n=100$). For $m=2$ the constant is $c_2=4/9$, by a short
+calculation. There are no pairs and $J_1=1$, so by
+\eqref{shr:bp:eq:boundary-exact} the ratio is
+$3\E[\ind_{\mathcal I'}X'_1/(2n-X'_1)]+O(2^{-n})$. The excluded atom
+$X'_1=0$ has weight~$0$ and $X'_1=n$ has probability $2^{-n}$. With
+$t=(2X'_1-n)/n\in[-1,1]$,
+\[
+ \frac{X'_1}{2n-X'_1}=\frac{1+t}{3-t}
+ =\frac13+\frac{4t}9+\frac{4t^2}{27}+\frac{4t^3}{81}+O(t^4)
+\]
+uniformly, and $\E t=\E t^3=0$, $\E t^2=1/n$, $\E t^4=O(n^{-2})$, so the
+ratio is $1+\frac4{9n}+O(n^{-2})$. The values $c_3\approx\frac12$ and
+$c_4\approx\frac23$ are numerical observations only; the expansion to all
+orders is item~(F2) of Section~\ref{shr:bp:sec:further}.
+
+Part~(a) is also the first step of an
 all-order expansion: the expectation in
 \eqref{shr:bp:eq:boundary-exact} is an interior sum of Part~I's type with
 $m-1$ rows and one extra rational factor per row, so the method of
