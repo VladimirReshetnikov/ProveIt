@@ -1,0 +1,1148 @@
+\pdfinfoomitdate=1
+\pdftrailerid{}
+\pdfsuppressptexinfo=15
+\newcommand{\DoNotLoadEpstopdf}{}
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools,booktabs,longtable,array}
+\usepackage[margin=1in]{geometry}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+\usepackage{enumitem}
+\setlist{itemsep=3pt,topsep=5pt}
+\allowdisplaybreaks[2]
+\emergencystretch=2em
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Prob}{\mathbb P}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathbb N}
+\newcommand{\TV}{d_{\mathrm{TV}}}
+\newcommand{\ind}{\mathbf 1}
+\newcommand{\la}{\lambda}
+\newcommand{\cA}{\mathcal A}
+\newcommand{\cH}{\mathcal H}
+\newcommand{\cP}{\mathcal P}
+\DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\Law}{Law}
+\hypersetup{pdftitle={Report182 Phase resolved asymptotics for A271619},pdfauthor={Research report},pdfsubject={Weighted strict partitions with partition number amplitudes}}
+\title{Report182\\[5pt]Phase resolved asymptotics for A271619}
+\author{A rigorous asymptotic and reproducibility report}
+\date{3 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+Let $a(n)=[q^n]\prod_{k\ge1}(1+p(k)q^k)$, where $p(k)$ is the ordinary partition number. These are twice-partitioned numbers with a strict outer partition, recorded as OEIS A271619. We prove a phase-resolved expansion to every fixed relative order. Its two effective upper-edge charges exchange dominance near a fractional triangular phase $9/16$, with a positive $(\log M)/\sqrt M$ shift and an $M^{-1/2}$ transition width. A persistent independent low-hole cloud supplies the leading multiplier $C_0=\prod_{k\ge1}(1+1/p(k))$ and higher finite-moment corrections. The proof combines an exact unique filling map, quantitative per-hook localization, controlled exponential moments, shifted-symmetric quasimodularity, and coefficient extraction with explicit minor-arc control. A smooth finite-charge carrier yields integer inverse enclosures with two ceilings; a positive-$L^1$ argument also gives a uniform joint charge/hole approximation and actual-cardinality moments. Classical partition, Fermi, quasimodular, and asymptotic methods are explicitly credited.
+\end{abstract}
+
+\paragraph{Finite-index warning.}
+This is an eventual asymptotic theorem, not a certified practical approximation at moderate indices. At $n=5000$, a floating evaluation of the leading two-charge carrier divided by the exact coefficient is approximately $0.00177838$; including the first correction gives approximately $0.00486243$. An ordinary single-saddle Gaussian happens to give approximately $1.00047777$ there. These observations do not establish its eventual validity. The asymptotic onset is not made effective. Even at $M=1000$, the smooth equal-weight phase is approximately $1.02188$, outside the physical cell $[0,1]$. All such floating diagnostics are separated from the exact computations and rigorous constant intervals.
+
+\paragraph{Scope and provenance.}
+The sequence and its defining product are prior work of Gus Wiseman (2016) in the inspected OEIS entry~\cite{oeis}. The substantive result here is the target-specific relative expansion and its controlled errors. Our bounded source screen found no directly covering theorem; it is not a global priority certification, and no claim of being first is made. This report and its accompanying code have not been submitted externally.
+
+\tableofcontents
+\newpage
+
+\section{Model, notation, and main results}
+\label{sec:main}
+An object consists of a finite set $S\subset\N$ of distinct positive outer sizes, together with one ordinary partition of $k$ for each $k\in S$. Its total size is $\sum_{k\in S}k$. Thus
+\begin{equation}\label{eq:model}
+ a(n)=\sum_{\substack{S\subset\N\text{ finite}\\\sum S=n}}\prod_{k\in S}p(k),
+ \qquad \sum_{n\ge0}a(n)q^n=\prod_{k\ge1}(1+p(k)q^k).
+\end{equation}
+The product is analytic for $|q|<1$ because $p(k)=\exp(O(\sqrt k))$. This model allows at most one outer block of each \emph{size}. It is different from $\prod(1+q^k)^{p(k)}$, which permits distinct types of the same size simultaneously.
+
+Throughout, put
+\begin{equation}\label{eq:notation}
+ b=\pi\sqrt{2/3},\quad T_m=\frac{m(m+1)}2,\quad
+ P_m=\prod_{k=1}^m p(k),\quad
+ M=M(n)=\left\lfloor\frac{\sqrt{8n+1}-1}{2}\right\rfloor.
+\end{equation}
+Here $n$ is total size, $m$ is an effective filled-edge charge, and $r_m(x)=x-T_m$ is residual size. Set $c_m(x)=r_m(x)/m$. The symbol $J$ will always denote a fixed expansion order, never a charge. An actual outer cardinality is denoted by $K_n$. A set of missing low levels is denoted by $\cH$; its energy is $h(\cH)=\sum_{k\in\cH}k$. The tame-edge cutoff is $D$, and the low-level cutoff is $L$, avoiding confusion between a cutoff and hole energy.
+
+For sufficiently large real $y$, define
+\begin{equation}\label{eq:f}
+ f(y)=b\sqrt{u}-\log(4\sqrt3\,u)
+       +\log\left(1-\frac1{b\sqrt u}\right),\qquad u=y-\frac1{24}.
+\end{equation}
+This is the logarithm of the dominant exponential branch of the first Rademacher summand, not the whole hyperbolic-sine summand. We prove below that
+\begin{equation}\label{eq:ferror}
+ \log p(k)=f(k)+O(e^{-c\sqrt k}),\qquad
+ f^{(j)}(y)=O_j(y^{1/2-j})\quad(j\ge1).
+\end{equation}
+Each derivative has a computable expansion in half-integral powers. The exact low weights remain in $P_m$.
+
+The limiting hole set $\cH_\infty$ has independent memberships
+\begin{equation}\label{eq:holelaw}
+ \Prob(k\in\cH_\infty)=\frac1{p(k)+1},\qquad
+ C_0=\prod_{k\ge1}\left(1+\frac1{p(k)}\right).
+\end{equation}
+It is finite almost surely. Write $h_\infty=\sum_{k\in\cH_\infty}k$ and $\mu_j=\E h_\infty^j$, with $\mu_0=1$. All these moments are finite; no positive ordinary exponential moment exists.
+
+Choose a nonnegative $C^\infty$ function $\chi$, compactly supported in $(1/4,9/4)$ and equal to one on $[1/2,7/4]$. Section~\ref{sec:local} constructs smooth, computable functions $A_k(c)$ with
+\begin{equation}\label{eq:Aone}
+ A_0(c)=1,\qquad A_1(c)=b\left(\frac{21c^2}{80}+\frac{c^{5/2}}5\right).
+\end{equation}
+For large real $x$, define the finite sums
+\begin{align}
+ E_J(x)&=\sum_{m\ge1}\chi(c_m(x))P_m
+  e^{f'(m+1/2)r_m(x)+f(r_m(x))}
+  \sum_{k=0}^J A_k(c_m(x))m^{-k/2},\label{eq:EJ}\\
+ \cA_J(x)&=C_0\sum_{j=0}^J\frac{\mu_j}{j!}\,E_{J-j}^{(j)}(x).
+ \label{eq:carrier}
+\end{align}
+Only boundedly many $m$ occur at each $x$; summands are defined to be zero outside the cutoff support. On that support all arguments of $f$ tend to infinity. Consequently this convention is smooth and creates no small-argument ambiguity.
+
+\begin{theorem}[All fixed relative orders]\label{thm:main}
+For every fixed integer $J\ge0$, as $n\to\infty$ through integers,
+\begin{equation}\label{eq:main}
+ a(n)=\cA_J(n)\left(1+O_J(M^{-(J+1)/2})\right).
+\end{equation}
+The error is uniform through triangular boundaries and the two-charge crossover. The carrier is eventually positive and
+\begin{equation}\label{eq:slope}
+ 0<c_J M(x)^{-1/2}\le (\log\cA_J)'(x)
+ \le C_J M(x)^{-1/2}
+\end{equation}
+for all sufficiently large real $x$. The constants and onset may depend on $J$ and $\chi$. No convergence of the infinite expansion and no uniformity in growing $J$ are claimed.
+\end{theorem}
+
+At integer inputs, its all-algebraic-order content comes from charges $M$ and $M-1$. Write
+\begin{equation}\label{eq:W}
+ W_m(n)=P_m e^{f'(m+1/2)r_m(n)}p(r_m(n)).
+\end{equation}
+When $r_M$ is small, its charge is exponentially subdominant and can be omitted. The first complete correction is
+\begin{equation}\label{eq:B1}
+ B_1(c)=b\left[\frac{21c^2}{80}+\frac{c^{5/2}}5
+                 +\frac{\mu_1}{2}(1+c^{-1/2})\right].
+\end{equation}
+Uniformly, with errors relative to the positive leading sum,
+\begin{equation}\label{eq:firstfull}
+ a(n)=C_0\!\sum_{\substack{m=M,M-1\\r_m\ge m/4}}
+ W_m(n)\left[1+\frac{B_1(c_m)}{\sqrt m}+O(M^{-1})\right].
+\end{equation}
+Dropping the small-residual term costs only an exponentially small relative error. A second explicit coefficient and relative error $O(M^{-3/2})$ are proved in Sections~\ref{sub:A2} and~\ref{sub:B2}.
+
+\begin{theorem}[Discrete inverse]\label{thm:inverse}
+Let $N(Y)=\min\{n\ge0:\log a(n)\ge Y\}$. For fixed $J$, let $x_J(Y)$ be the unique sufficiently large solution of $\log\cA_J(x)=Y$. There is a fixed $D_J>0$ such that, for all sufficiently large $Y$,
+\begin{equation}\label{eq:inverse}
+ \left\lceil x_J(Y)-D_J M(x_J(Y))^{-J/2}\right\rceil
+ \le N(Y)\le
+ \left\lceil x_J(Y)+D_J M(x_J(Y))^{-J/2}\right\rceil.
+\end{equation}
+At $Y=\log a(k)$, one also has $|x_J(Y)-k|=O_J(M(k)^{-J/2})$.
+\end{theorem}
+For $J=0$ the pre-rounding uncertainty is bounded; for $J\ge1$ it tends to zero. Near an integer, the theorem need not decide the rounding. It concerns integer-point errors and the explicit carrier slope, not an arbitrary interpolation of the sequence.
+
+\paragraph{Meaning of the phase expansion.}
+The competing exponential charge weights, each carrying its own algebraic series, form a two-sector asymptotic transseries in the fixed-order sense made precise by~\eqref{eq:main}. We do not claim a reconstruction of every exponentially smaller charge or a convergent transseries.
+
+\paragraph{Proof architecture.}
+We first establish elementary growth and the resonance obstruction. The exact filling identity then separates low holes without double counting. The local expansion applies only to tame edge diagrams. A separate global proof controls non-tame hooks and every other charge, paying for each hook's coordinate entropy with its own Bellman gap. Finally, a two-stage weighted hole truncation and a finite Taylor expansion assemble the carrier. This order avoids circular tail estimates and avoids differentiating any unknown coefficient remainder.
+
+\section{Elementary growth and classical partition input}
+\label{sec:elementary}
+Hardy--Ramanujan and Rademacher give~\cite{dlmfpart}
+\begin{equation}\label{eq:logp}
+ \log p(k)=b\sqrt k-\log k-\log(4\sqrt3)+O(k^{-1/2}).
+\end{equation}
+For completeness, the exponentially accurate version~\eqref{eq:ferror} follows directly from the convergent Rademacher series. With $u=k-1/24$, $v=b\sqrt u/j$, and the elementary bound $|A_j(k)|\le j$ on its exponential sum, use
+\[
+ v\cosh v-\sinh v=\int_0^v y\sinh y\,dy\le v^3e^v/3.
+\]
+Every $j\ge2$ summand is $O(j^{-3/2}e^{b\sqrt u/j})$; their sum is $O(e^{b\sqrt u/2})$. The dominant $j=1$ branch has order $u^{-1}e^{b\sqrt u}$, so the relative error is $O(ue^{-b\sqrt u/2})$, hence $O(e^{-c\sqrt u})$. The opposite exponential in the first summand is smaller still. Formula~\eqref{eq:f} and its differentiated expansions follow by elementary differentiation.
+
+\begin{lemma}\label{lem:monotone}
+$a(n+1)>a(n)$ for $n\ge1$, while $a(0)=a(1)=1$.
+\end{lemma}
+\begin{proof}
+Append a part $1$ to the inner partition decorating the largest outer size. This raises that size by one, preserves strictness, and is injective: the unique largest block identifies the inverse operation. A single inner partition of $n+1$ having no part $1$, for example $(n+1)$ when $n\ge1$, is outside the image. Thus the inequality is strict.
+\end{proof}
+
+Put $F(t)=\log\prod_{k\ge1}(1+p(k)e^{-tk})$. Since $|\log(1+e^u)-u_+|\le\log2$ and $|(u+v)_+-u_+|\le|v|$, splitting at a sufficiently large constant multiple of $b^2/t^2$ gives
+\begin{align}
+ F(t)&=\sum_{k\ge1}(b\sqrt k-tk)_++O(t^{-2}\log(1/t))\notag\\
+ &=\frac{b^4}{6t^3}+O(t^{-2}\log(1/t)).\label{eq:Fgrowth}
+\end{align}
+Indeed the logarithmic errors in~\eqref{eq:logp} sum to the stated bound below that cutoff, the tails decay geometrically above it, and the sum/integral error of the leading unimodal summand is $O(t^{-1})$.
+
+\begin{proposition}\label{prop:growth}
+\begin{equation}\label{eq:growth}
+ \log a(n)=\frac{2b}{3}(2n)^{3/4}+O(\sqrt n\log(n+2)).
+\end{equation}
+Consequently, with $C=(2b/3)2^{3/4}=4\pi2^{1/4}/(3\sqrt3)$,
+\[
+ N(Y)=(Y/C)^{4/3}\left(1+O(Y^{-1/3}\log Y)\right).
+\]
+\end{proposition}
+\begin{proof}
+Positivity gives $a(n)\le e^{F(t)+nt}$. Choose $t=b/(2n)^{1/4}$ in~\eqref{eq:Fgrowth}. For the lower bound, take outer sizes $1,\ldots,M$ and add $n-T_M$ to the largest size. Their total weight is at least $P_M$ because $p$ is nondecreasing. Summing~\eqref{eq:logp} gives $\log P_M=(2b/3)M^{3/2}+O(M\log M)$, which matches the upper bound since $M=\sqrt{2n}+O(1)$. Monotonicity and inversion of the leading power give the final formula.
+\end{proof}
+The elementary exact computation uses descending product updates
+\[
+ a^{(k)}(n)=a^{(k-1)}(n)+p(k)a^{(k-1)}(n-k),\qquad a^{(0)}(0)=1.
+\]
+Its independent logarithmic-derivative recurrence is recorded in Section~\ref{sec:computation}.
+
+\section{Why a single central minor arc estimate fails}
+\label{sec:resonance}
+The following concerns characteristic-function moduli, not by itself a coefficient formula. Let $X=X(t)$ be the large solution of $f(X)=tX$, and put $H_t=(t-f'(X))^{-1}$. Then
+\begin{equation}\label{eq:XHt}
+ X=\frac{b^2}{t^2}(1+O(t\log(1/t))),\qquad
+ H_t=\frac2t(1+O(t\log(1/t))).
+\end{equation}
+Use $X$, not the integer charge $M$, for this physical crossing. Independent Bernoulli variables $B_k$ with odds $p(k)e^{-tk}$ produce total size $S_t=\sum kB_k$. Write $v_k=\Prob(B_k=1)\Prob(B_k=0)$ and $\phi_t(\theta)=\E e^{i\theta S_t}$. Exactly,
+\begin{equation}\label{eq:modulus}
+ \log|\phi_t(\theta)|=\frac12\sum_{k\ge1}
+ \log\left(1-4v_k\sin^2(k\theta/2)\right).
+\end{equation}
+In the upper-edge window $k=X+H_ty$, the variance profile tends to
+$g(y)=e^y/(1+e^y)^2$, with uniformly exponentially decaying tails after fixed-window enlargement. Taylor expansion of $f(k)-tk$ around $X$ proves this, using $H_t/X\to0$. Since $\int_{\mathbb R}y^2g(y)\,dy=\pi^2/3$,
+\[
+ \sum_{k\ge\epsilon X}(k-X)^2v_k\sim H_t^3\pi^2/3,\qquad
+ \sum_{k\ge\epsilon X}(k-X)^4v_k=O(H_t^5).
+\]
+The restriction to $k\ge\epsilon X$ is essential: persistent low holes would make the unrestricted centered second moment of order $X^2$, larger than the upper-edge term. At $\theta=2\pi\ell/X$, the sine in~\eqref{eq:modulus} equals in modulus $\sin(\pi\ell(k-X)/X)$. Expanding sine and logarithm only in this upper region therefore gives, after adding the lower-region estimate below, for each fixed nonzero integer $\ell$,
+\begin{equation}\label{eq:resonance}
+ \log|\phi_t(2\pi\ell/X)|
+ =-\frac{2\pi^4}{3}\ell^2\frac{H_t^3}{X^2}(1+o(1))
+ =-12\ell^2t(1+o(1)).
+\end{equation}
+Here the lower boundary has not been forgotten. For a sufficiently small fixed $\epsilon>0$, $v_k\le Ce^{-c\sqrt k}$ on $k\le\epsilon X$, apart from finitely many harmless terms. Thus $\sum_{k<\epsilon X} k^2v_k=O(1)$. Using the original sine $\sin(\pi\ell k/X)$ there gives modulus contribution $O(\ell^2X^{-2})=O(\ell^2t^4)$, uniformly for $|\ell|\le Ct^{-1/2}$. The centered Taylor approximation is not used in that lower region. The intermediate regions are exponentially small. In the upper edge, fourth moments control the sine/logarithm remainders. Uniformly on $|\ell|\le C t^{-1/2}$, the relative profile error is $O(t\log(1/t))$ and the quartic error is $O(\ell^4t^3)$.
+
+Noncentral resonances thus approach modulus one, and on the modulus scale there are order $t^{-1/2}$ relevant resonances. In particular a proposed bound tending uniformly to zero outside a single central saddle is false. This statement alone does \emph{not} logically rule out every possible Gaussian coefficient equivalent; the phase-resolved coefficient theorem requires the independent arguments below. The exceptionally good finite Gaussian fit in the opening warning does not repair the failed minor-arc hypothesis.
+
+\paragraph{A bounded general observation.}
+If a smooth stretched amplitude satisfies $\log w(k)\sim b k^\alpha$, where $b>0$ and $0<\alpha<1$, with sufficiently controlled differentiated remainders and negligible lower-edge contributions on the scale in question, the same calculation gives
+\[
+ \log|\phi(2\pi\ell/X)|\sim
+ -\frac{2\pi^4}{3b^3(1-\alpha)^3}\ell^2X^{1-3\alpha}.
+\]
+Here $t\sim bX^{\alpha-1}$ and $H_t\sim X^{1-\alpha}/(b(1-\alpha))$. This identifies $\alpha=1/3$ as a natural \emph{modulus} threshold. No general coefficient crossover or all-orders theorem for such weights is asserted.
+
+\section{The exact low hole filling identity}
+\label{sec:filling}
+Fix $n$, $M=M(n)$, and $L=\lfloor M^{17/20}\rfloor$. Keep this $L$ fixed even when a hole shift changes the total size. For an outer set $S$ define
+\begin{equation}\label{eq:unique}
+ \cH=[1,L]\setminus S,\quad h=\sum_{k\in\cH}k,
+ \quad S^+=S\cup[1,L],\quad m=|S^+|=|S|+|\cH|.
+\end{equation}
+Sort $S^+$ decreasingly as $k_1>\cdots>k_m$ and set
+$\lambda_i=k_i-(m-i+1)$. Then $\lambda$ is an ordinary partition of $n+h-T_m$ and $\ell(\lambda)\le m-L$. Conversely every triple
+\[
+ \cH\subset[1,L],\quad m\ge L,\quad
+ \lambda\vdash n+h-T_m,\quad \ell(\lambda)\le m-L
+\]
+reconstructs $S^+=\{m-i+1+\lambda_i:1\le i\le m\}$ and then $S=S^+\setminus\cH$. The length restriction ensures that $S^+$ contains $[1,L]$, so its missing-low-level set is precisely $\cH$. These are mutually inverse maps on outer selections. In particular the filled charge is unique, adjacent charge sectors are disjoint, and the actual cardinality is $m-|\cH|$.
+
+Let $A_L(N)$ be the weighted sum~\eqref{eq:model} restricted to selections containing $[1,L]$, and put $p(\cH)=\prod_{k\in\cH}p(k)$. The exact weighted identity is
+\begin{equation}\label{eq:convolution}
+ a(n)=\sum_{\cH\subset[1,L]}\frac{A_L(n+h(\cH))}{p(\cH)}.
+\end{equation}
+This is a weighted identity for decorated objects: the new decorations introduced by filling contribute $p(\cH)$, which is divided out. No literal unweighted bijection to arbitrarily decorated filled objects is needed.
+
+For completeness, define
+\[
+ B_{m,r;L}=\sum_{\substack{\lambda\vdash r\\\ell(\lambda)\le m-L}}
+ \prod_{i=1}^m\frac{p(m-i+1+\lambda_i)}{p(m-i+1)},
+ \qquad B_{m,r;L}=0\ (r<0).
+\]
+Then $A_L(N)=\sum_{m\ge L}P_mB_{m,N-T_m;L}$, a finite sum. If $(a_i,b_i)$ are Frobenius arms and legs of $\lambda$, its exact weight ratio is
+\begin{equation}\label{eq:hooks}
+ \prod_i\frac{p(m+a_i+1)}{p(m-b_i)},\qquad
+ r=\sum_i(a_i+b_i+1).
+\end{equation}
+Every changed denominator is above $L$. Thus, after coarse localization $m\asymp M$, replacing changed logarithms by $f$ costs at most $O(m e^{-c\sqrt L})$ in the log weight. The untouched product $P_m$ remains exact.
+
+\subsection{Initial weighted hole truncation without a carrier assumption}
+\label{sub:initialtail}
+Set $t=f(M)/M\sim b/\sqrt M$ and $\varphi(k)=\log p(k)-tk$. The exact product identity gives
+\begin{align}
+ F(t)+nt-\log P_M
+ &=t(n-T_M)+\sum_{k\le M}\log(1+e^{-\varphi(k)})\notag\\
+ &\hspace{28mm}+\sum_{k>M}\log(1+e^{\varphi(k)}).
+ \label{eq:physical}
+\end{align}
+The right side is $O(\sqrt M)$. Here are details covering all ranges. For a small fixed $\epsilon$ and sufficiently large $k\le\epsilon M$,~\eqref{eq:logp} gives $\varphi(k)\ge c\sqrt k$; finitely many smaller $k$ contribute $O(1)$. The corrections are summable. On $[\epsilon M,M/2]$, the leading expression $b\sqrt M(\sqrt{k/M}-k/M)$ is at least $c\sqrt M$, so its correction is exponentially small. On $[M/2,CM]$, for fixed large $C$, $f'(x)-t\le-c/\sqrt M$ uniformly. Since $f(M)-tM=0$, the relevant side of $\varphi(k)$ is at most $-c|k-M|/\sqrt M$, up to an exponentially tiny error. Summing gives $O(\sqrt M)$. Finally, for $k\ge CM$, the bound $\log p(k)\le b\sqrt k\le tk/2$ gives a geometric tail. Also $t(n-T_M)=O(\sqrt M)$.
+
+Positivity implies $A_L(n+h)\le a(n+h)\le e^{F(t)+t(n+h)}$. For $K=M^\eta$ with $\eta=24/25=0.96$, the contribution of $h>K$ in~\eqref{eq:convolution} is therefore at most
+\[
+ P_Me^{C\sqrt M}\sum_{\substack{\cH\subset[1,L]\\h>K}}
+       \frac{e^{th}}{p(\cH)}.
+\]
+Take $\lambda=b/(8\sqrt L)$. Since $t\sqrt L\to0$, eventually $(t+\lambda)k\le (b/2)\sqrt k$ for every $k\le L$. The lower bound implicit in~\eqref{eq:logp} makes
+\[
+ \prod_{k\le L}\left(1+\frac{e^{(t+\lambda)k}}{p(k)}\right)\le C
+\]
+uniformly: its logarithm is dominated by a convergent sum of $Ck e^{-b\sqrt k/2}$ plus finitely many factors. Chernoff's inequality bounds the omitted contribution by
+\begin{equation}\label{eq:initialtail}
+ CP_M\exp(C\sqrt M-cM^{\eta-17/40}).
+\end{equation}
+Since $\eta-17/40=0.535>1/2$, this is smaller than $P_M$ times every fixed negative power of $M$. This argument uses only the elementary lower bound $a(n)\ge P_M$, not the desired carrier. For $h\le M^\eta=o(M)$ the continuous triangular root changes by $O(h/M)=o(1)$; its floor remains $M$ or becomes $M+1$.
+
+\section{The tame edge expansion to every fixed order}
+\label{sec:local}
+For a partition $\lambda$, set
+\begin{equation}\label{eq:Qj}
+ Q_j(\lambda)=\sum_{i\ge1}\left[(\lambda_i-i+1/2)^j-(-i+1/2)^j\right],
+ \qquad d(\lambda)=\max(\lambda_1,\ell(\lambda)).
+\end{equation}
+In particular $Q_1=|\lambda|$. Fix $1/2<\delta<1$ and $D=\lfloor m^\delta\rfloor$. A partition is called tame when $d(\lambda)\le D$. For $x_m=m+1/2$, define
+\[
+ R_{m,r}^{(D)}=\frac1{p(r)}\sum_{\substack{\lambda\vdash r\\d(\lambda)\le D}}
+ \exp\left\{\sum_i[f(m+1-i+\lambda_i)-f(m+1-i)]-f'(x_m)r\right\}.
+\]
+
+\begin{theorem}[Local expansion with controlled remainders]\label{thm:local}
+Uniformly for $c=r/m$ in any fixed compact subset of $(0,\infty)$, for every fixed $J\ge0$,
+\begin{equation}\label{eq:local}
+ R_{m,r}^{(D)}=\sum_{k=0}^J A_k(c)m^{-k/2}+O_J(m^{-(J+1)/2}).
+\end{equation}
+The coefficients are smooth, effectively computable, independent of $\delta$, and satisfy~\eqref{eq:Aone}. The same expansion holds for actual partition-number weights after multiplication by $P_m e^{f'(x_m)r}p(r)$.
+\end{theorem}
+The theorem is expressly local: it does not apply to an unrestricted cardinality-$m$ sector for all fixed positive $c$. We exhibit the obstruction after its proof.
+
+\subsection{Bernoulli coordinates and the conditioning cost}
+For positive half-integers $h$, let $U_h,V_h$ be mutually independent Bernoulli variables of probability $\rho_h=(1+e^{\tau h})^{-1}$, with $\tau=\pi/\sqrt{6r}$. They have almost surely finite support. Define charge and energy
+\[
+ C=\sum_h(U_h-V_h),\qquad N=\sum_h h(U_h+V_h).
+\]
+Given $C=0$, the equal-sized particle and hole sets are exactly Frobenius coordinates of a partition. Given also $N=r$, their common unnormalized weight is $e^{-\tau r}$, so the law is uniform on partitions of $r$. Exactly on this event,
+\begin{equation}\label{eq:frobQ}
+ Q_j=\sum_hh^j[U_h+(-1)^{j+1}V_h],\qquad
+ Q_j(\lambda')=(-1)^{j+1}Q_j(\lambda).
+\end{equation}
+The half-integer energy causes no omitted lattice factor: charge zero forces integral energy.
+
+Write $\cP(q)=\prod_{k\ge1}(1-q^k)^{-1}$ and $A=\pi^2/6$. Jacobi's triple product gives the exact normalization
+\begin{equation}\label{eq:Jacobi}
+ Z(\tau)=\prod_{h>0}(1+e^{-\tau h})^2
+ =\cP(e^{-\tau})\sum_{a\in\Z}e^{-\tau a^2/2}.
+\end{equation}
+Eta and Gaussian transformations give $Z(\tau)\sim e^{A/\tau}$. Hardy--Ramanujan then yields
+\begin{equation}\label{eq:conditioning}
+ \Prob(C=0,N=r)=\frac{p(r)e^{-\tau r}}{Z(\tau)}
+ \sim\frac1{4\sqrt3\,r}.
+\end{equation}
+For a nonnegative variable $Y$, therefore $\E_rY\le Cr\E Y$. More flexibly, Hölder gives $\E_r|Y|\le C_q r^{1/q}\|Y\|_q$ for any fixed $q>1$. We shall choose high fixed moments to reduce this conditioning penalty to any desired small power.
+
+\subsection{Exponential moments of the centered tame exponent}
+For $h\le D-1/2$, put
+\begin{align*}
+ a(h)&=f(x_m+h)-f(x_m)-f'(x_m)h,\\
+ d(h)&=-f(x_m-h)+f(x_m)-f'(x_m)h,\\
+ S_D&=\sum_{0<h\le D-1/2}[a(h)U_h+d(h)V_h].
+\end{align*}
+On the tame conditioning event this is the exact centered exponent. Outside that event it is just a truncated additive random variable, not the true exponent of an unrestricted large partition. Since $D=o(m)$, Taylor's theorem gives uniformly
+\begin{equation}\label{eq:adbound}
+ |a(h)|+|d(h)|\le Cm^{-3/2}h^2,
+ \qquad |a(h)+d(h)|\le Cm^{-5/2}h^3.
+\end{equation}
+For every fixed real $v$, $(|va|+|vd|)/(\tau h)=O_v(h/m)=o(1)$ on this cutoff. Expand the independent Bernoulli logarithmic moment generating functions. Their linear terms pair; their sum is bounded by
+$C_vm^{-5/2}\sum_h\rho_hh^3=O_v(m^{-5/2}\tau^{-4})=O_v(m^{-1/2})$.
+The quadratic and higher remainder is bounded by
+$C_vm^{-3}\sum_hh^4e^{-\tau h/2}=O_v(m^{-3}\tau^{-5})=O_v(m^{-1/2})$.
+Thus
+\begin{equation}\label{eq:expbound}
+ \E e^{vS_D}=\exp(O_v(m^{-1/2})).
+\end{equation}
+In particular $\E e^{v|S_D|}$ is bounded, using $e^{v|s|}\le e^{vs}+e^{-vs}$.
+
+The first cumulant is $O(m^{-1/2})$. For $s\ge2$, the Bernoulli bound $|\kappa_s(\mathrm{Bernoulli}(\rho))|\le C_s\rho$ gives
+\[
+ |\kappa_s(S_D)|\le C_sm^{-3s/2}\sum_h h^{2s}e^{-\tau h}
+ =O_s(m^{-(s-1)/2}).
+\]
+In the moment-cumulant formula for a $2k$th moment, pairings have the slowest decay, $O(m^{-k/2})$; every other partition of the cumulant indices decays at least as fast. Hence
+\begin{equation}\label{eq:S-moments}
+ \E|S_D|^{2k}=O_k(m^{-k/2}).
+\end{equation}
+All these bounds also hold for any fixed Taylor-polynomial replacement of $a,d$ starting at degree two. Its quadratic bound is unchanged and the even Taylor terms still cancel in $a+d$.
+
+\subsection{Finite Taylor reduction with arbitrary accuracy}
+The independent probability of a particle or hole above $D-1/2$ is $O(\tau^{-1}e^{-\tau D})$. Combining Cauchy--Schwarz,~\eqref{eq:expbound}, and~\eqref{eq:conditioning} shows
+\begin{equation}\label{eq:cutofftail}
+ \E_r[e^{S_D}\ind_{d(\lambda)>D}]
+ =O(m^{5/4}e^{-\kappa m^{\delta-1/2}}).
+\end{equation}
+This comparison deliberately uses the truncated $S_D$ outside the tame event.
+
+Taylor expansion of $e^{S_D}$ through degree $K$ has conditional remainder at most
+\[
+ C_Kr(\E|S_D|^{2K+2})^{1/2}(\E e^{2|S_D|})^{1/2}
+ =O_K(m^{1-(K+1)/4}).
+\]
+Replacing $f$ by its Taylor polynomial through degree $J_0$ introduces an additive error bounded by
+\[
+ C_{J_0}m^{-J_0-1/2}\sum_h h^{J_0+1}(U_h+V_h).
+\]
+Every fixed $L^s$ norm of this variable is $O_{J_0,s}(m^{(1-J_0)/2})$. For example Minkowski and
+$\sum h^{J_0+1}\rho_h^{1/s}=O_s(\tau^{-J_0-2})$ give this directly. The exponential mean-value inequality and Cauchy--Schwarz, followed by conditioning, give expectation error $O_{J_0}(m^{(3-J_0)/2})$.
+
+Finally, a fixed polynomial moment in truncated Frobenius sums differs from the full $Q_j$ moment by a polynomial in $m$ times $e^{-\kappa m^{\delta-1/2}}$, by the same tail event, Hölder, and higher fixed moments. Thus for any requested $O(m^{-B})$ error, it suffices to choose fixed integers
+\[
+ J_0>2B+3,\qquad K>4B+3,
+\]
+and use the finite expression
+\begin{equation}\label{eq:finiteTaylor}
+ \sum_{k=0}^K\frac1{k!}\E_r
+ \left(\sum_{j=2}^{J_0}\frac{f^{(j)}(x_m)}{j!}Q_j\right)^k.
+\end{equation}
+No infinite exponential series is interchanged with an uncontrolled partition sum.
+
+\subsection{Quasimodular moments and coefficient extraction}
+For a partition statistic $G$, write
+$\langle G\rangle_q=\cP(q)^{-1}\sum_\lambda G(\lambda)q^{|\lambda|}$.
+Bloch--Okounkov's theorem~\cite{BO} applies to the corrected shifted powers
+\begin{equation}\label{eq:shiftcorrect}
+ \widehat Q_j=Q_j+(1-2^{-j})\zeta(-j),\qquad
+ \mathrm{weight}(\widehat Q_j)=j+1.
+\end{equation}
+Every fixed polynomial bracket is a finite mixed-weight polynomial in the normalized Eisenstein series $E_2,E_4,E_6$. Their explicit $n$-point determinant formula supplies an effective construction of these polynomials. We do not assume an unspecified number of Fourier coefficients always suffices to determine an arbitrary bracket.
+
+At $q=e^{-z}$ its modular transformation has a finite Laurent growth part $\sum_{d\ge0}h_dz^{-d}$, with exponentially small corrections in the narrow sector used below. On the whole circle $|q|=e^{-\tau}$, the absolute Fourier/Lambert series bounds any fixed Eisenstein polynomial by a fixed power of $\tau^{-1}$.
+
+This growth expansion is transferred by a genuine coefficient argument. The product satisfies
+\begin{align}
+ \log\cP(e^{-\tau})-\log|\cP(e^{-\tau+i\theta})|
+ &\ge\sum_{k\ge1}e^{-\tau k}(1-\cos k\theta)\notag\\
+ &\gg\frac{\theta^2}{\tau(\tau^2+\theta^2)},\quad |\theta|\le\pi.
+ \label{eq:Pminor}
+\end{align}
+The first inequality follows by retaining the first term in the logarithmic product series, all terms being nonnegative; the final sum is an explicit difference of geometric sums, with $1-\cos\theta\asymp\theta^2$ on this interval. Outside $|\theta|\le\tau^{1+\epsilon}$, where $0<\epsilon<1/2$, this gives suppression $e^{-\Omega(\tau^{-1+2\epsilon})}$, absorbing every fixed Eisenstein and normalization power. Within that arc, modular remainders are uniformly exponentially small, and the width exceeds the Gaussian width $\tau^{3/2}$.
+
+Set $R_r=r-1/24$ and $z_r=2\sqrt{AR_r}$. The eta expansion
+$\cP(e^{-z})\sim\sqrt{z/(2\pi)}\exp(A/z-z/24)$ shows that a monomial $z^{-d}$ has local integrand
+\[
+ (2\pi)^{-1/2}z^{1/2-d}\exp(A/z+R_rz).
+\]
+Substitution $z=\sqrt{A/R_r}\,w$ identifies its local steepest-descent expansion with that of the standard Hankel--Schläfli contour for $I_{d-3/2}(z_r)$~\cite{dlmfbessel}. To make this interpretation precise, take the unit circle in $w$ together with both sides of the negative ray from $-1$ to $-\infty$. On the circle the real exponent is $z_r\cos\theta$; outside a shrinking positive-saddle arc there is superpolynomial attenuation relative to $e^{z_r}$. On the negative rays the exponent is at most $-z_r$. The short bridges deforming the original central vertical arc to the circle retain a fixed fraction of the endpoint saddle drop. Thus the two \emph{local expansions} agree to all algebraic orders. We do not identify a finite arc exactly with a Bessel function, or use an unregularized possibly nonconvergent vertical integral at $d=0$.
+
+Dividing by the identical $d=0$ partition normalization gives the all-algebraic-order rule
+\begin{equation}\label{eq:Besselrule}
+ z^{-d}\longmapsto
+ \left(\frac{R_r}{A}\right)^{d/2}
+ \frac{I_{d-3/2}(z_r)}{I_{-3/2}(z_r)}.
+\end{equation}
+Fixed-order Bessel expansions with controlled remainders therefore produce full half-power expansions for every $\E_rG$. The orders are half-integral; $I_{-3/2}$ and $I_{3/2}$ differ only beyond algebraic order relative to their growing branch. This is consistent with the prefactor $z^{1/2}$ and with~\eqref{eq:f}.
+
+\subsection{Finiteness at each order and the first coefficient}
+Under the independent law, fixed $L^s$ norms satisfy
+\[
+ \|Q_j\|_s=
+ \begin{cases}
+ O_s(r^{j/2+1/4}),&j\text{ even},\\
+ O_s(r^{(j+1)/2}),&j\text{ odd}.
+ \end{cases}
+\]
+For even $j$ the sums are centered, so cumulant bounds give the first line; for odd $j$ the positive mean dominates. Higher-moment Hölder makes the conditioning loss at most any prescribed $m^\epsilon$. For multiplicities $\alpha_j$ define
+\[
+ v(\alpha)=\sum_{j\text{ even}}(j/2-3/4)\alpha_j
+       +\sum_{\substack{j\ge3\\j\text{ odd}}}(j/2-1)\alpha_j.
+\]
+The derivative-weighted monomial has size $O(m^{-v(\alpha)+\epsilon})$. Conjugation~\eqref{eq:frobQ} makes its expectation vanish unless the number of even-indexed factors is even. For the remaining monomials $v(\alpha)$ is a nonnegative half-integer. Since the exact transferred expansions and derivatives contain only half powers, choosing $\epsilon<1/2$ rules out any term above the valuation bound. Each factor has positive valuation, at least $1/4$, so only finitely many monomials contribute at each fixed half-order. Derivatives remove the sole logarithm in $f$, so the $A_k$ contain no hidden $\log m$ factors. Together with~\eqref{eq:finiteTaylor} this proves the existence and uniform remainder in Theorem~\ref{thm:local}.
+
+The first coefficient can be made fully explicit. With
+\[
+ E_2=1-24\sum_{n\ge1}\sigma_1(n)q^n,\quad
+ E_4=1+240\sum_{n\ge1}\sigma_3(n)q^n,\quad
+ E_6=1-504\sum_{n\ge1}\sigma_5(n)q^n,
+\]
+quasimodularity and the weight-four and weight-six bases give
+\begin{equation}\label{eq:twobrackets}
+ \langle Q_3\rangle_q=\frac{5E_2^2+2E_4-7}{960},\qquad
+ \langle Q_2^2\rangle_q=\frac{5E_2^3-3E_2E_4-2E_6}{6480}.
+\end{equation}
+The first basis has dimension two and is determined by the constant and $q$ coefficients of $Q_3+7/960$; the second has dimension three and is determined by its first three coefficients. The systems are nonsingular. In particular the $q^2$ numerator in the second identity is $51840$, whereas $\sum_{\lambda\vdash2}Q_2^2=8$, fixing the denominator $6480$.
+
+At $q=e^{-\tau}$ the growth parts are
+\[
+ E_2=-4\pi^2\tau^{-2}+12\tau^{-1},\quad
+ E_4=16\pi^4\tau^{-4},\quad E_6=-64\pi^6\tau^{-6}.
+\]
+Consequently
+\begin{align*}
+ \langle Q_3\rangle&\sim\frac{7\pi^4}{60}\tau^{-4}
+     -\frac{\pi^2}{2}\tau^{-3}+\frac34\tau^{-2}-\frac7{960},\\
+ \langle Q_2^2\rangle&\sim\frac{16\pi^4}{45}\tau^{-5}
+     -\frac{4\pi^2}{3}\tau^{-4}+\frac43\tau^{-3}.
+\end{align*}
+The controlled transfer gives
+\[
+ \E_rQ_3=\frac{21}5r^2+O(r^{3/2}),\qquad
+ \E_rQ_2^2=\frac{64\sqrt6}{5\pi}r^{5/2}+O(r^2).
+\]
+Since $\E_rQ_2=0$, the only order-$m^{-1/2}$ terms are
+\[
+ \frac{f'''(x_m)}6\E_rQ_3+\frac{f''(x_m)^2}8\E_rQ_2^2.
+\]
+Using $f''(x_m)\sim-b/(4m^{3/2})$ and $f'''(x_m)\sim3b/(8m^{5/2})$ gives exactly~\eqref{eq:Aone}, with both signs positive.
+
+For actual weights, every changed argument in a tame diagram lies in $[m-D,m+D]$, and there are at most $2D$ such arguments. Equation~\eqref{eq:ferror} therefore changes its log weight by $O(De^{-c\sqrt m})$. This proves the last part of Theorem~\ref{thm:local}.
+
+\subsection{A second explicit local correction}
+\label{sub:A2}
+The same controlled calculation gives
+\begin{equation}\label{eq:A2}
+ A_2(c)=\frac{A_1(c)^2}{2}-\frac9{10}c^{3/2}
+                    -\frac{53}{20}c^2-\frac85c^{5/2}.
+\end{equation}
+We give the exact bracket certificates so that the needed moment products are proved rather than assumed to factor heuristically. Let $U=Q_3+7/960$. Quasimodularity places $\langle U^2\rangle$, $\langle Q_2^2U\rangle$, and $\langle Q_2^4\rangle$ in the complete homogeneous weight $8,10,12$ spans of dimensions $4,5,7$. Their identities are
+\begin{align}
+ \langle U^2\rangle={}&\frac{73}{179200}E_4^2+\frac1{4032}E_2E_6
+ -\frac1{5120}E_2^2E_4-\frac5{12288}E_2^4,\label{eq:U2}\\
+ \langle Q_2^2U\rangle={}&-\frac{301}{1555200}E_4E_6
+ +\frac{49}{1036800}E_2E_4^2+\frac{119}{622080}E_2^2E_6\notag\\
+ &+\frac{119}{1244160}E_2^3E_4-\frac{35}{248832}E_2^5,\label{eq:Q2U}\\
+ \langle Q_2^4\rangle={}&\frac{151}{3499200}E_6^2+\frac7{93312}E_4^3
+ -\frac{149}{1166400}E_2E_4E_6-\frac{199}{1555200}E_2^2E_4^2\notag\\
+ &+\frac{29}{699840}E_2^3E_6+\frac{37}{233280}E_2^4E_4
+ -\frac{35}{559872}E_2^6.\label{eq:Q24}
+\end{align}
+These are exact identities in the full known spans, not fits to an unrestricted series. In the displayed basis orders, the matrices of coefficients $q^0,\ldots,q^{d-1}$ have determinants
+\begin{gather*}
+ -17336861982720,\qquad 3559021983729451008000,\\
+ -124747187309624027471021601904499097600000.
+\end{gather*}
+They are nonzero. Direct enumeration of the first $d$ partition sizes therefore determines the true bracket uniquely in its complete span and gives the displayed coefficients. Independent additional checks through $q^{20}$ are redundant diagnostics. The included exact-rational checker exposes the finite coefficient systems and their determinants.
+
+Modular substitution gives the leading terms
+\[
+ \frac{49\pi^8}{3600\tau^8},\qquad
+ \frac{28\pi^8}{675\tau^9},\qquad
+ \frac{256\pi^8}{675\tau^{10}},
+\]
+respectively. The controlled transfer~\eqref{eq:Besselrule} proves
+\begin{align*}
+ \E_rQ_3^2&=\frac{441}{25}r^4+O(r^{7/2}),\\
+ \E_r(Q_2^2Q_3)&=\frac{1344\sqrt6}{25\pi}r^{9/2}+O(r^4),\\
+ \E_rQ_2^4&=\frac{73728}{25\pi^2}r^5+O(r^{9/2}).
+\end{align*}
+Removing the anomaly in $U$ affects only smaller orders. Writing $a=21/5$ and $v=64\sqrt6/(5\pi)$, these constants equal $a^2,av,3v^2$. Their values have been obtained from exact brackets without an unproved conditional central limit or independence assertion.
+
+The first subleading term of the Bessel rule is
+\[
+ \left(\frac{R_r}{A}\right)^{d/2}
+ \frac{I_{d-3/2}(2\sqrt{AR_r})}{I_{-3/2}(2\sqrt{AR_r})}
+ =\left(\frac rA\right)^{d/2}
+ \left(1-\frac{d(d-3)}{4\sqrt{Ar}}+O(r^{-1})\right).
+\]
+Combining it with the next Laurent terms in~\eqref{eq:twobrackets} gives
+\begin{align*}
+ \E_rQ_3&=\frac{21}5r^2-\frac{36\sqrt6}{5\pi}r^{3/2}+O(r),\\
+ \E_rQ_2^2&=\frac{64\sqrt6}{5\pi}r^{5/2}
+                        -\frac{240}{\pi^2}r^2+O(r^{3/2}).
+\end{align*}
+Direct differentiation at $x_m=m+1/2$ gives
+\[
+ f''(x_m)=-\frac b4m^{-3/2}+m^{-2}+O(m^{-5/2}),\quad
+ f'''(x_m)=\frac{3b}8m^{-5/2}-2m^{-3}+O(m^{-7/2}).
+\]
+The valuation/parity argument proves that through order $m^{-1}$ the only surviving terms are
+\begin{gather*}
+ \frac{f'''}6\E Q_3,\qquad \frac{(f'')^2}{8}\E Q_2^2,\qquad
+ \frac{(f''')^2}{72}\E Q_3^2,\\
+ \frac{(f'')^2f'''}{48}\E(Q_2^2Q_3),\qquad
+ \frac{(f'')^4}{384}\E Q_2^4.
+\end{gather*}
+The subleading contributions of the first two are respectively
+$-9c^{3/2}/10-7c^2/5$ and $-5c^2/4-8c^{5/2}/5$. The last three sum to $A_1(c)^2/2$. This proves~\eqref{eq:A2}, with $O(m^{-3/2})$ remainder supplied by the already proved finite Taylor and transfer theorem. Any further nonzero monomial has valuation at least $3/2$.
+
+\paragraph{Why the restriction matters.}
+Adding a full column of height $m$ to a tame partition of $r-m$ gives a family of actual cardinality-$m$ objects with exponential ratio to the putative unrestricted typical term
+\[
+ \exp\left\{b\sqrt m\left[\frac12+\sqrt{c-1}-\sqrt c\right]+o(\sqrt m)\right\}.
+\]
+This dominates when $c>25/16$. Such a column encodes a low hole and a changed edge, and is not bounded by the truncated-exponent tail~\eqref{eq:cutofftail}. The global theorem must separate it correctly.
+
+\section{Global filled block localization}
+\label{sec:global}
+For total size $N$, let $M_N=\lfloor(\sqrt{8N+1}-1)/2\rfloor$ and $r_m=N-T_m$. Put $L=D=\lfloor M_N^{17/20}\rfloor$. Let $E_m^{\mathrm{tame}}(N;D)$ be the exact-weight cardinality-$m$ sum whose edge partition satisfies $d(\lambda)\le D$, and define
+\begin{equation}\label{eq:BN}
+ B(N)=\sum_{m=M_N,M_N-1}P_m e^{f'(m+1/2)r_m}p(r_m).
+\end{equation}
+This $B(N)$ is a positive comparison normalization, not the first correction $B_1(c)$.
+
+\begin{theorem}[Filled block localization]\label{thm:global}
+There exist positive constants $C,\kappa$ such that, for all sufficiently large $N$,
+\begin{equation}\label{eq:global}
+ A_L(N)=E_{M_N}^{\mathrm{tame}}(N;D)
+       +E_{M_N-1}^{\mathrm{tame}}(N;D)
+       +O(B(N)e^{-\kappa M_N^{7/20}}).
+\end{equation}
+The discarded difference is nonnegative. The result is uniform when $L,D$ are instead taken from a reference $M$ with $M_N/M\to1$, provided both are comparable to $M_N^{17/20}$ with fixed positive comparison constants.
+\end{theorem}
+For the two retained charges and large $N$, $m-D\ge L$, so their tame diagrams really do contain $[1,L]$. Thus the right side retains genuine disjoint subfamilies. Integer shifts of cutoff conventions only affect constants.
+
+\subsection{The Bellman envelope and its equality cases}
+Define
+\begin{align}
+ S(c)&=c/2+\sqrt c,\qquad
+ V(c)=\max_{0\le j\le\lfloor c\rfloor}\{j+S(c-j)\},\label{eq:V}\\
+ G(d)&=\begin{cases}1-\sqrt{1-d},&0\le d\le1,\\\sqrt d,&d\ge1.\end{cases}\label{eq:G}
+\end{align}
+A hook with hole at $ym$ and particle at $(y+d)m$ has normalized square-root gain $g(y,d)=\sqrt{y+d}-\sqrt y$. This decreases in $y$, and $0\le y\le1$, $y+d\ge1$; hence its maximum is $G(d)$.
+
+Write $w(c)=\sqrt c-c/2$. It increases up to $1$ and decreases thereafter. For $c\ge1$ only the lattice residuals $u=\{c\}$ and $u+1$ can maximize, giving
+\begin{equation}\label{eq:periodicW}
+ V(c)=c+W(\{c\}),\qquad
+ W(u)=\max\{w(u),w(u+1)\}.
+\end{equation}
+Their crossing is $u=9/16$. The periodic extension of $W$ is continuous and Lipschitz, with $15/32\le W\le1/2$. The dominant residual belongs to $[9/16,25/16]$ once $c\ge9/16$. Therefore
+\begin{gather}
+ V=S\text{ on }[0,25/16],\quad V(c+1)=V(c)+1\quad(c\ge9/16),\label{eq:Vfacts}\\
+ V(y)-V(x)\ge\tfrac9{10}(y-x)\quad(y\ge x\ge0).\label{eq:Vderiv}
+\end{gather}
+Indeed the a.e. derivative lies in $[9/10,7/6]$ away from the initial segment, and on the initial segment it is larger than $9/10$. The unbounded derivative at zero is integrable and poses no problem for absolute continuity. Put $Q(c)=V(c)-S(c)$. Then $Q\ge0$, $Q(c)>0$ for $c>25/16$, and $Q(c)\ge c/4$ for $c\ge16$.
+
+The Bellman inequality is
+\begin{equation}\label{eq:bellman}
+ V(c)\ge G(d)+V(c-d),\qquad 0\le d\le c.
+\end{equation}
+For $0<d<1$, choose a maximizing integer $j$ for $V(c-d)$ and let $u=c-j$. The variable part is $G(d)+S(u-d)$. If $u\le1$, its derivative is at most $-1/2$; if $u>1$, its second derivative is
+$[4(1-d)^{3/2}]^{-1}-[4(u-d)^{3/2}]^{-1}>0$.
+Its maximum therefore lies at an allowed integer endpoint, strictly so for interior $d$. For $1<d<2$, splitting increases the gain because
+$\sqrt d<2-\sqrt{2-d}$; for larger $d$ use $\sqrt d<1+\sqrt{d-1}$ repeatedly. The endpoints are controlled by $V(x+1)\ge1+V(x)$. This proves~\eqref{eq:bellman}; the only possible zero-gap positive hook has $d=1$.
+
+\subsection{A quantitative gap after filling low holes}
+Let $\ell=L/m$. Because filled selections have no hole below $L+1$, the constrained envelope is
+\[
+ G_\ell(d)=
+ \begin{cases}
+ G(d),&d\le1-\ell,\\
+ \sqrt{d+\ell}-\sqrt\ell,&d\ge1-\ell.
+ \end{cases}
+\]
+\begin{lemma}\label{lem:gap}
+For sufficiently small $\ell>0$, uniformly in $c\ge d\ge0$,
+\begin{equation}\label{eq:gap}
+ V(c)-G_\ell(d)-V(c-d)\ge\kappa\rho_\ell(d),\qquad
+ \rho_\ell(d)=\min\{d,|d-1|+\sqrt\ell\}.
+\end{equation}
+Moreover $\rho_\ell(d)\ge(\sqrt\ell/2)d$, and if $D/m$ is comparable to $\ell$, every $d\ge D/m$ pays $\rho_\ell(d)\ge\kappa D/m$.
+\end{lemma}
+\begin{proof}
+Near $d=0$, use~\eqref{eq:Vderiv} and $G(d)=d/2+O(d^2)$. For $d\ge2$ the gap is at least $0.9d-\sqrt d\ge(0.9-1/\sqrt2)d$. Away from zero and one in $0<d<2$, strictness of~\eqref{eq:bellman} gives a positive compact minimum. This is uniform in unbounded $c$: if $c-d\ge9/16$, subtract $\lfloor c-d-9/16\rfloor$ from both arguments of $V$, preserving the gap by~\eqref{eq:Vfacts} and placing them in a fixed compact range. Otherwise they already lie in a compact range.
+
+The simultaneous limits near $d=1$ require separate estimates. For $d=1-\epsilon$ and $c\ge1.1$, use $V(c)-V(c-1)\ge1$ and uniform Lipschitz bounds on $[0.1,\infty)$. If $\epsilon\ge\ell$, the gap is at least $\sqrt\epsilon-C\epsilon$, which dominates $\epsilon+\sqrt\ell$ for small $\epsilon$. If $\epsilon\le\ell$, then $G_\ell(d)\le1+\ell/2-\sqrt\ell$ and the gap is at least $\sqrt\ell-(C+1/2)\ell$. For $c<1.1$ near $d=1$, the unfilled gap is bounded below by a positive constant: at $c=d=1$ it is $1/2$, and on $1\le c\le1.1$, $V(c)-V(c-1)-1$ has a positive minimum; continuity also covers nearby $c<1$.
+
+For $d=1+\epsilon$, the unfilled gap is at least $0.4\epsilon$, by~\eqref{eq:Vderiv} and $\sqrt{1+\epsilon}\le1+\epsilon/2$. Filling adds
+$\sqrt\ell-[\sqrt{d+\ell}-\sqrt d]\ge\sqrt\ell-\ell/(2\sqrt d)\ge\sqrt\ell/2$.
+These estimates prove~\eqref{eq:gap}. For $d\le2$ both terms in the minimum defining $\rho_\ell$ are at least $(\sqrt\ell/2)d$; for $d\ge2$ use $d-1\ge d/2$. Finally, when $D/m\asymp\ell\to0$, eventually $\sqrt\ell\ge\kappa D/m$; the displayed minimum then proves the last assertion.
+\end{proof}
+
+\subsection{Exact extraction and a uniform tame core bound}
+In~\eqref{eq:hooks}, remove every diagonal hook whose arm or leg violates the tame cutoff. Removing any subset of Frobenius coordinates leaves strictly decreasing arm and leg lists of equal length, hence another partition. Put
+\[
+ d_i=(a_i+b_i+1)/m,\quad D_*=\sum_{\rm removed}d_i,
+ \quad c=r_m/m,\quad v=c-D_*.
+\]
+Each removed hook has $d_i\ge D/m$ up to one harmless integer endpoint. Its hole exceeds $L$. Successive applications of Lemma~\ref{lem:gap}, at the \emph{same} anchor $m$, telescope:
+\begin{equation}\label{eq:telescope}
+ \sum_{\rm removed}g(y_i,d_i)+V(v)
+ \le V(c)-\kappa\sum_{\rm removed}\rho_\ell(d_i).
+\end{equation}
+No anchor-change error occurs. Uniformly for $u>v\ge L$,~\eqref{eq:logp} gives
+\[
+ \log\frac{p(u)}{p(v)}
+ =b(\sqrt u-\sqrt v)-\log(u/v)+O(L^{-1/2})
+ \le b(\sqrt u-\sqrt v)+O(L^{-1/2}).
+\]
+The error is only $O(L^{-1/2})$ per hook; its negative logarithmic prefactor is not an uncontrolled loss.
+
+Let $Z_m(s;D)$ be the exact tame sum of residual energy $s$, divided by $P_m$, and put $v=s/m$. We need an upper bound uniformly down to $s=0$ and for growing $v$, not just the compact-positive local theorem.
+
+Fix an arbitrary constant $C_*\ge16$. For $1\le s\le C_*m$, use the Bernoulli representation with $\tau=\pi/\sqrt{6s}$. Equation~\eqref{eq:conditioning}, with finitely many small $s$ absorbed, gives conditioning cost at most $C(s+1)$. The estimates~\eqref{eq:adbound} still give
+\[
+ \log\E e^{S_D}
+ \le C[m^{-5/2}\tau^{-4}+m^{-3}\tau^{-5}]
+ \le C_{C_*}m^{-1/2}.
+\]
+Indeed $(|a|+|d|)/(\tau h)=O(m^{-3/2}D\sqrt s)=O(D/m)=o(1)$ uniformly in this larger endpoint range. Since $f'(m+1/2)\le b/(2\sqrt m)$ eventually,~\eqref{eq:ferror} gives
+\begin{equation}\label{eq:tamebounded}
+ Z_m(s;D)\le C(s+1)p(s)e^{bs/(2\sqrt m)}
+ \le m^{C_1} e^{b\sqrt mS(v)}.
+\end{equation}
+Here $C_1>0$ is a fixed polynomial-loss exponent, and $p(s)\le e^{b\sqrt s}$, proved in the next subsection. At $s=0$, $Z_m(0;D)=1$ exactly, closing the endpoint without a degenerate Bernoulli parameter.
+
+For arbitrary tame energy, every hook lies in $[m-D,m+D]$. The square-root mean-value theorem gives
+\[
+ \sum_i(\sqrt{u_i}-\sqrt{v_i})
+ \le\frac{s}{2\sqrt m}+C\frac Dm\frac s{\sqrt m}.
+\]
+The logarithmic partition corrections are nonpositive apart from $O(m^{-1/2})$ per hook. There are at most $\sqrt s$ diagonal hooks. Multiplying by the number $p(s)$ of possible partitions gives
+\begin{equation}\label{eq:tamegrowing}
+ \log Z_m(s;D)\le b\sqrt mS(v)+C(D/m)v\sqrt m+O(\sqrt v).
+\end{equation}
+For $v\ge16$, $Q(v)\ge v/4$, so half of $b\sqrt mQ(v)$ absorbs the positive errors uniformly, since $D/m\to0$. For $v\le16$, use~\eqref{eq:tamebounded}. Hence throughout the required range,
+\begin{equation}\label{eq:tameuniform}
+ Z_m(s;D)\le m^{C_1}\exp\{b\sqrt m[V(v)-Q(v)/2]\}.
+\end{equation}
+Combining this with exact extraction and~\eqref{eq:telescope}, the sum for each fixed removed-coordinate list is at most
+\begin{equation}\label{eq:listbound}
+ P_mm^{C_1}\exp\left\{b\sqrt m\left[V(c)
+       -\kappa\sum_i\rho_\ell(d_i)-Q(v)/2\right]\right\}.
+\end{equation}
+The per-hook partition error is absorbed by reducing $\kappa$. Ignoring compatibility constraints between the removed list and the core only enlarges the sum; each original selection has one canonical list.
+
+\subsection{Coarse cardinality localization with an explicit margin}
+The elementary bound $p(k)\le e^{b\sqrt k}$ follows from
+\[
+ \log\cP(e^{-t})\le\int_0^\infty-\log(1-e^{-tx})\,dx=A/t
+\]
+and optimization of $p(k)\le e^{A/t+tk}$. The integral bounds the sum because its summand is positive and decreasing.
+
+For $m$ distinct positive integers of sum $N$, write them increasingly as $i+a_i$, where $a_i$ is nonnegative and nondecreasing, with mean $a=(N-T_m)/m$. Concavity and opposite-order covariance give
+\begin{equation}\label{eq:covariance}
+ \sum_i\sqrt{i+a_i}\le\sum_i\sqrt{i+a}
+ +\sum_i\frac{a_i-a}{2\sqrt{i+a}}
+ \le\sum_i\sqrt{i+a}.
+\end{equation}
+The second sum is nonpositive because its first sequence increases with zero sum and its second decreases.
+
+Temporarily write $R=M_N$, $j=R-m$, and $r=N-T_R\le R$. If $m\ge3R/4$, then
+\[
+ a=j+u,\qquad u=\frac{r+j(j+1)/2}{m},\qquad
+ \sum_{i=1}^m\sqrt{i+a}\le\frac23[(R+u+1)^{3/2}-a^{3/2}].
+\]
+Here $a\ge j$ and $u/R\le1/24+o(1)$. The upper-end increment is bounded by
+\[
+ \sqrt{R+u+1}(u+1)
+ \le\left(\frac{\sqrt{25/24}}3+o(1)\right)j^{3/2}+O(\sqrt R),
+\]
+because $\sqrt{j/R}/[2(1-j/R)]\le1/3$ for $j/R\le1/4$. Its coefficient is less than $0.341<2/3$. After weakening the margin,
+\begin{equation}\label{eq:coarsegap}
+ \sum_i\sqrt{i+a_i}\le\frac23R^{3/2}-\frac14j^{3/2}+O(\sqrt R)
+\end{equation}
+uniformly in that range. For $m\le3R/4$, Jensen directly gives
+$\sum\sqrt{k_i}\le\sqrt{mN}\le(\sqrt{3/8}+o(1))R^{3/2}$, a fixed gap below $(2/3)R^{3/2}$.
+
+There are at most $p(N)=e^{O(R)}$ selections, whereas $\log P_R=(2b/3)R^{3/2}-O(R\log R)$. Thus all $j\ge R^{7/10}$ contribute at most $P_Re^{-\kappa R^{21/20}}$, after absorbing $O(R\log R)$. This step uses neither filled holes nor a global equivalent. Since $B(N)\ge P_R$ eventually, we may restrict to
+\begin{equation}\label{eq:coarsewindow}
+ 0\le j=R-m\le R^{7/10},\qquad m\sim R,\qquad c=r_m/m=O(R^{7/10}).
+\end{equation}
+
+\subsection{Rebasing the envelope to the two-charge carrier}
+In~\eqref{eq:coarsewindow}, let $u_0=r/R$ and $c=j+u$, with $u$ as above. Uniformly including $r=0$, $\log p(r)=b\sqrt r+O(\log(r+2))$. The two carrier logarithms, after subtracting $\log P_R$, are
+\[
+ b\sqrt R S(u_0)+O(\log R),\qquad
+ b\sqrt R[S(u_0+1)-1]+O(\log R).
+\]
+Taking the log of their positive sum changes the maximum by at most $\log2$, so
+\begin{equation}\label{eq:logBphase}
+ \log B(N)=\log P_R+b\sqrt R[u_0+W(u_0)]+O(\log R).
+\end{equation}
+At $r=0$, $p(0)=1$ is exact and the other charge supplies the positive $b\sqrt R/2$ term; no positive-residual asymptotic is applied to $p(0)$.
+
+Summing~\eqref{eq:logp} over $m+1,\ldots,R$ gives
+\begin{align*}
+ \log P_R-\log P_m
+ &=bj\sqrt m+\frac{bj(j+1)}{4\sqrt m}-j\log m\\
+ &\hspace{10mm}+O(j+j^2/m+j^3/m^{3/2}).
+\end{align*}
+For $j\ge1$, $V(c)=c+W(u)$ with periodic $W$, and $|u-u_0|=O((j^2+j)/R)$. Its Lipschitz bound, together with the square-root changes, proves
+\begin{equation}\label{eq:rebase}
+ \log P_m+b\sqrt mV(c)
+ \le\log B(N)+C[(j+1)\log R+j^2/\sqrt R].
+\end{equation}
+For $j=0$ the actual first carrier summand gives the result immediately. In particular the potentially large $j\sqrt R$ terms cancel explicitly; they are not hidden in the error. Exact $P_m$ is still retained in the final algebraic carrier.
+
+\subsection{Paying for every hook and concluding localization}
+Within the coarse window every hook coordinate is at most $N=O(R^2)$. A list of $q$ removed hooks therefore has at most $R^{Cq}$ choices. Its total energy fixes the core energy. Reserve a fixed fraction of the loss in~\eqref{eq:listbound} for entropy. By Lemma~\ref{lem:gap}, every removed hook pays order
+\[
+ \sqrt m(D/m)=D/\sqrt m\asymp R^{7/20},
+\]
+which absorbs its own $R^C$ coordinate choices. Summing over $q$ is then bounded by a geometric majorant. Comparing one isolated hook loss against the entropy of all hook lists would not be a valid substitute.
+
+The remaining loss is coercive in total residual. For sufficiently large fixed $c$, if $D_*\ge c/2$, use $\sum\rho_\ell(d_i)\ge\kappa\sqrt\ell D_*$; otherwise $v\ge c/2$ and $Q(v)\ge v/4$. Thus
+\[
+ \sum_i\rho_\ell(d_i)+Q(v)\ge\kappa c\sqrt\ell.
+\]
+After multiplication by $\sqrt m$, the loss is at least $\kappa c\sqrt L$. It dominates the rebasing error uniformly in~\eqref{eq:coarsewindow}, since
+\[
+ \log R=o(\sqrt L),\qquad
+ \frac{j^2/\sqrt R}{j\sqrt L}
+ \le R^{1/5-17/40}=R^{-9/40}\longrightarrow0.
+\]
+Polynomial prefactors and summation over at most $R$ charges are absorbed. Hence all sufficiently large deficits $j$ are negligible.
+
+Only bounded $j$ remain. If any hook was extracted, its surviving per-hook penalty gives $e^{-\kappa R^{7/20}}$, absorbing all polynomial losses. If none was extracted and $j\ge2$, then $c\ge2$, and $Q(c)$ has a fixed positive minimum, giving $e^{-\kappa\sqrt R}$. With no extracted hook and $j=0,1$, the selections are exactly the two retained tame sectors. Their filled constraint was checked above. The coarse tail is smaller still. This proves Theorem~\ref{thm:global}, with nonnegative discarded weights and the asserted uniformity in nearby-reference cutoffs. No effective $\kappa$ or onset is claimed.
+
+\section{Finite moment assembly and smooth carrier bounds}
+\label{sec:assembly}
+We now prove Theorem~\ref{thm:main}, keeping the order of limits and truncations explicit. Fix the order $J$, the reference $M=M(n)$, and $L=\lfloor M^{17/20}\rfloor$. The initial truncation in Section~\ref{sub:initialtail} removes $h>M^{24/25}$ from~\eqref{eq:convolution} with a superpolynomial error relative to $P_M$.
+
+For every retained $N=n+h$, Theorem~\ref{thm:global} applies uniformly with this same $L$. The tame theorem supplies the integer-point approximation
+\begin{equation}\label{eq:filledlocal}
+ A_L(N)=E_J(N)+O_J(E_0(N)M^{-(J+1)/2}).
+\end{equation}
+Here is why the local theorem's compact-positive scope suffices. The leading phase is $w(c)=\sqrt c-c/2$, whose two competing residuals have dominant value in $[9/16,25/16]$, up to $o(1)$ shifts. The plateau of $\chi$ strictly contains this range. Its omitted or transition-support charges have a fixed positive $\sqrt M$-scale gap. The small-residual $m=M_N$ term is exponentially subdominant and its upper bound follows from~\eqref{eq:tamebounded}; no local expansion at $r=o(m)$ is required. Thus $E_0(N)$ is uniformly comparable to $B(N)$ even through triangular boundaries. In particular $A_L(n)\ge cB(n)$, and~\eqref{eq:convolution} gives $a(n)\ge cB(n)$.
+
+\subsection{Direct derivative bounds on explicit functions}
+For a bulk summand of $E_0$, its logarithmic slope is
+\begin{equation}\label{eq:bulkSlope}
+ f'(m+1/2)+f'(r_m)
+ =\frac{b}{2\sqrt m}(1+c_m^{-1/2})+O(m^{-1}).
+\end{equation}
+This is positive and comparable to $M^{-1/2}$ on the dominant compact range. Cutoff derivatives cost $O(M^{-1})$ times exponentially smaller weights. Consequently
+\begin{equation}\label{eq:EzeroSlope}
+ cM^{-1/2}\le E_0'(x)/E_0(x)\le CM^{-1/2}.
+\end{equation}
+For each fixed local index $k$ and derivative order $d$, differentiating its explicit summand gives a bound of size
+\begin{equation}\label{eq:refinedDeriv}
+ C_{k,d}\,(\text{corresponding leading weight})M^{-(k+d)/2}.
+\end{equation}
+Here the corresponding leading weight is the uncut factor $P_m\exp\{f'(m+1/2)r_m+f(r_m)\}$, without $\chi$; no bound of a derivative of $\chi$ by $\chi$ is assumed. Indeed its first exponential derivative is $O(M^{-1/2})$; the $d$th higher derivative of its exponent for $d\ge2$ is $O(M^{1/2-d})$. Product/Bell differentiation therefore gives the asserted scale. Derivatives of $A_k(c_m)$ and $\chi(c_m)$ each cost $M^{-1}$, a smaller scale. Cutoff terms are absorbed using their phase gap. Summing boundedly many charges yields
+\begin{equation}\label{eq:Ederiv}
+ |E_K^{(d)}(x)|\le C_{K,d}E_0(x)M^{-d/2}
+\end{equation}
+for fixed $K,d$. These are derivatives of explicitly defined smooth functions; no coefficient remainder is being differentiated.
+
+Integrating~\eqref{eq:EzeroSlope} and using $E_0\asymp B$ gives the carrier ratio bound
+\begin{equation}\label{eq:ratio}
+ B(n+h)\le CB(n)\exp(Ch/\sqrt M),\qquad 0\le h\le M^{24/25}.
+\end{equation}
+This now permits summation of the local errors and a much sharper hole truncation.
+
+\subsection{The second hole truncation and the absence of an ordinary MGF}
+For every $v>0$, the unrestricted law in~\eqref{eq:holelaw} has
+\[
+ \E e^{v h_\infty}=C_0^{-1}\prod_{k\ge1}(1+e^{vk}/p(k))=\infty,
+\]
+since $\log p(k)\sim b\sqrt k$. Its moment series is not an analytic positive-argument MGF. The argument below instead uses a finite tilted product and a stretched-exponential moment.
+
+For fixed $C$ and $k\le L=o(M)$, eventually $Ck/\sqrt M\le(b/4)\sqrt k$. Since $\sqrt{\sum k}\le\sum\sqrt k$, for any fixed $0<c<b/2$ we have
+\begin{align}
+ \sum_{\cH\subset[1,L]}\frac{\exp(Ch/\sqrt M+c\sqrt h)}{p(\cH)}
+ &\le\prod_{k\le L}\left(1+\frac{e^{(b/4+c)\sqrt k}}{p(k)}\right)
+ \le C'.\label{eq:stretchedtilt}
+\end{align}
+The final bound follows from~\eqref{eq:logp} and summability. It implies all fixed tilted polynomial moment bounds and
+\begin{equation}\label{eq:secondtail}
+ \sum_{\substack{\cH\subset[1,L]\\h>K}}
+ \frac{e^{Ch/\sqrt M}}{p(\cH)}\le C'e^{-c\sqrt K}.
+\end{equation}
+After~\eqref{eq:ratio}, we may take any small fixed power $K=M^\epsilon$, for example $\epsilon=1/10$. This removes its complement superpolynomially relative to $B(n)$. The unweighted version also proves finiteness of every $\mu_j$. Extending a fixed polynomial moment from $[1,L]$ to all levels changes it by a polynomial in $L$ times $e^{-c\sqrt L}$: split the independent low and high parts and bound a nonempty high part by sums of $k^j/p(k)$.
+
+An equivalent elementary proof of~\eqref{eq:secondtail} splits sets containing some $k>K$ from those entirely in $[1,K]$. The former are bounded by $C\sum_{K<k\le L}e^{Ck/\sqrt M}/p(k)$. For the latter use the \emph{new} Chernoff parameter $b/(8\sqrt K)$, not the first-stage parameter involving $L$. Its finite tilted product is bounded, and it pays $e^{-c\sqrt K}$ for energy $h>K$. This makes explicit why the initial and later truncations are distinct arguments.
+
+\subsection{Assembly at the correct fixed order}
+First convolve the pointwise estimate~\eqref{eq:filledlocal} in~\eqref{eq:convolution}; bounds~\eqref{eq:ratio} and~\eqref{eq:stretchedtilt} control the total error. Then restrict to $h\le M^\epsilon$ by~\eqref{eq:secondtail}. Taylor-expand the explicit $E_J(n+h)$ through degree $J$. Equations~\eqref{eq:Ederiv} and~\eqref{eq:ratio} bound its remainder by
+\[
+ C_JE_0(n)M^{-(J+1)/2}h^{J+1}e^{Ch/\sqrt M}.
+\]
+Its sum is bounded by the fixed tilted moment in~\eqref{eq:stretchedtilt}. Extending each of the finitely many moments to the full hole law therefore gives
+\[
+ C_0\sum_{j=0}^J\frac{\mu_j}{j!}E_J^{(j)}(n)
+ +O_J(E_0(n)M^{-(J+1)/2}).
+\]
+In the $j$th term replace $E_J^{(j)}$ by $E_{J-j}^{(j)}$. Every omitted explicit local index has $k+j\ge J+1$, so~\eqref{eq:refinedDeriv} gives
+\begin{equation}\label{eq:bookkeeping}
+ |(E_J-E_{J-j})^{(j)}|\le C_JE_0M^{-(J+1)/2}.
+\end{equation}
+This produces exactly~\eqref{eq:carrier} and~\eqref{eq:main}. Every sum used here is finite or a fixed controlled moment. There is no interchange with an infinite Taylor series or a nonexistent positive MGF.
+
+Direct termwise estimates further give
+\[
+ \cA_J=C_0E_0(1+O(M^{-1/2})),\qquad
+ \cA_J'=C_0E_0'(1+O(M^{-1/2})).
+\]
+Terms with $j\ge1$ have sizes $O(E_0M^{-j/2})$ and derivatives $O(E_0M^{-(j+1)/2})$. Together with~\eqref{eq:EzeroSlope}, this proves eventual positivity and~\eqref{eq:slope}. It also shows why a floor-defined two-charge expression can be replaced by this genuinely smooth finite-charge carrier: any extra cutoff charges and their derivatives are exponentially small.
+
+At first order, the local correction is $A_1(c)/\sqrt m$. The first hole moment contributes $\mu_1E_0'$, whose leading relative value is $b\mu_1(1+c^{-1/2})/(2\sqrt m)$ by~\eqref{eq:bulkSlope}. This proves~\eqref{eq:B1} and~\eqref{eq:firstfull}. On its retained compact range, replacing $e^{f(r_m)}$ by exact $p(r_m)$ is exponentially accurate.
+
+\subsection{The second complete relative correction}
+\label{sub:B2}
+Let $\sigma_h^2=\Var(h_\infty)=\sum_{k\ge1}k^2p(k)/(p(k)+1)^2$; this is the variance of hole \emph{energy}, not of hole count. The explicit second coefficient is
+\begin{align}
+ B_2(c)={}&\frac{B_1(c)^2}{2}-\frac9{10}c^{3/2}-\frac{53}{20}c^2
+ -\frac85c^{5/2}-\mu_1(1+c^{-1})\notag\\
+ &+\frac{b^2\sigma_h^2}{8}(1+c^{-1/2})^2.\label{eq:B2}
+\end{align}
+In particular~\eqref{eq:firstfull} strengthens to
+\begin{equation}\label{eq:secondfull}
+ a(n)=C_0\!\sum_{\substack{m=M,M-1\\r_m\ge m/4}}W_m(n)
+ \left[1+\frac{B_1(c_m)}{\sqrt m}+\frac{B_2(c_m)}m+O(M^{-3/2})\right],
+\end{equation}
+with uniform error relative to the positive leading sum.
+
+To check the formula, differentiate only the smooth replacement
+$\widetilde W_m(y)=P_m\exp\{f'(m+1/2)(y-T_m)+f(y-T_m)\}$. Put
+\[
+ d_0(c)=\frac b2(1+c^{-1/2}),\qquad d_1(c)=-(1+c^{-1}).
+\]
+Uniformly in the retained compact range,
+\begin{align*}
+ (\log\widetilde W_m)'&=d_0m^{-1/2}+d_1m^{-1}+O(m^{-3/2}),\\
+ \widetilde W_m''/\widetilde W_m&=d_0^2m^{-1}+O(m^{-3/2}),\\
+ [\widetilde W_m(1+A_1(c)m^{-1/2})]'/\widetilde W_m
+ &=d_0m^{-1/2}+(d_1+d_0A_1)m^{-1}+O(m^{-3/2}).
+\end{align*}
+The derivative of $A_1(c)m^{-1/2}$ is $A_1'(c)m^{-3/2}$ and does not enter the displayed second coefficient. The order-two finite carrier is
+$C_0(E_2+\mu_1 E_1'+\mu_2E_0''/2)$, where these $E_j$ denote the charge carriers~\eqref{eq:EJ}, not Eisenstein series. It follows that
+\[
+ B_2=A_2+\mu_1(d_1+d_0A_1)+\frac{\mu_2}2d_0^2.
+\]
+Using $B_1=A_1+\mu_1d_0$ and $\mu_2=\mu_1^2+\sigma_h^2$ yields~\eqref{eq:B2}. All interchanges and remainders are covered by the finite assembly above. This extra term does not assert good finite-index accuracy or an effective onset.
+
+\section{Crossover, product normalization, and inversion}
+\label{sec:crossover}
+\subsection{The slowly moving transition}
+For a physical cell $T_M\le n<T_{M+1}$, put $\varphi=(n-T_M)/M$. At integer inputs, $0\le\varphi\le1$. Near $\varphi_0=9/16$, the two leading weights are
+\[
+ W_0=P_Me^{f'(M+1/2)\varphi M}p(\varphi M),\quad
+ W_1=P_{M-1}e^{f'(M-1/2)(\varphi+1)M}p((\varphi+1)M).
+\]
+For real phase calculations use $e^f$ in place of $p$. Expanding their log ratio gives
+\begin{align}
+ \log(W_1/W_0)
+ &=b\sqrt M\left[\sqrt{\varphi+1}-\sqrt\varphi-\frac12\right]
+       +\log M+\log(4\sqrt3)-1\notag\\
+ &\hspace{30mm}-\log((\varphi+1)/\varphi)+O(M^{-1/2}).
+ \label{eq:crossratio}
+\end{align}
+To verify the constant rather than infer it from a fit, decompose the ratio into
+$-\log p(M)$, the linear-edge difference, and the residual-partition difference. These are, respectively,
+\begin{align*}
+ &-b\sqrt M+\log M+\log(4\sqrt3)+O(M^{-1/2}),\\
+ &M[(\varphi+1)f'(M-1/2)-\varphi f'(M+1/2)]
+       =b\sqrt M/2-1+O(M^{-1/2}),\\
+ &f((\varphi+1)M)-f(\varphi M)
+       =b\sqrt M[\sqrt{\varphi+1}-\sqrt\varphi]
+          -\log((\varphi+1)/\varphi)+O(M^{-1/2}).
+\end{align*}
+Their sum is~\eqref{eq:crossratio} uniformly on a fixed neighborhood of $9/16$.
+
+Let $D(\varphi)=\sqrt{\varphi+1}-\sqrt\varphi-1/2$. Then $D(9/16)=0$ and $D'(9/16)=-4/15$. The smooth equal-leading-weight center has the expansion
+\begin{equation}\label{eq:center}
+ \varphi_*(M)=\frac9{16}
+ +\frac{15}{4b\sqrt M}\left[\log M+\log\frac{36\sqrt3}{25}-1\right]
+ +O\left(\frac{\log^2M}{M}\right).
+\end{equation}
+The positive shift converges slowly. The width is $M^{-1/2}$. With
+\[
+ u=\frac{4b}{15}\sqrt M(\varphi-\varphi_*(M)),
+\]
+where the center is defined by the exact smooth leading-carrier equality, $W_1/W_0\to e^{-u}$ and the upper-charge proportion tends to $(1+e^{-u})^{-1}$. The common $C_0$ cancels. First relative corrections change the center only at order $M^{-1}$.
+
+The limiting fraction $9/16$ is not an accurate finite-$M$ threshold by itself. Uncertified binary64 calculations give equal-leading-weight phases approximately $1.02188178$ at $M=1000$, $0.71601628$ at $10^4$, $0.58296425$ at $10^6$, and $0.56518714$ at $10^8$. The first lies outside the physical cell. These are diagnostics of the slow approach, not rigorous enclosures or onset bounds.
+
+\subsection{An explicit expansion of the exact normalization}
+Expanding~\eqref{eq:f} gives
+\[
+ f(k)=b\sqrt k-\log k+c_0+d_1k^{-1/2}+d_2k^{-1}+O(k^{-3/2}),
+\]
+where $c_0=-\log(4\sqrt3)$, $d_1=-b/48-1/b$, and $d_2=1/24-1/(2b^2)$. Euler--Maclaurin summation, with the exponentially small integer error already controlled, gives
+\begin{align}
+ \log P_M={}&\frac{2b}3M^{3/2}-M\log M+(1+c_0)M
+  +\left(\frac{11b}{24}-\frac2b\right)\sqrt M\notag\\
+ &+\left(-\frac{11}{24}-\frac1{2b^2}\right)\log M+C_P+O(M^{-1/2}),
+ \label{eq:logP}
+\end{align}
+with the absolutely convergent explicit constant
+\begin{align}
+ C_P={}&\sum_{k\ge1}\left[\log p(k)-b\sqrt k+\log k-c_0
+                         -\frac{d_1}{\sqrt k}-\frac{d_2}{k}\right]\notag\\
+ &+b\zeta(-1/2)+d_1\zeta(1/2)+d_2\gamma-\tfrac12\log(2\pi).
+ \label{eq:CP}
+\end{align}
+The summand is $O(k^{-3/2})$. Subtracting more differentiated asymptotic terms accelerates the constant and generates every further half-power coefficient by classical Euler--Maclaurin machinery. For example the next coefficient, multiplying $M^{-1/2}$, is
+\[
+ \frac{73b}{2304}-\frac{11}{24b}+\frac{2}{3b^3}.
+\]
+It follows from $d_3=-b/4608-1/(48b)-1/(3b^3)$ through $b/24+d_1/2-2d_3$. No certified numerical value of $C_P$ is claimed in the package. Keeping $P_m$ exact avoids a normalization constant error entirely.
+
+\subsection{Proof of the discrete inverse theorem}
+Fix $J$ and let $x=x_J(Y)$. By~\eqref{eq:main}, at integer $k$ in the relevant large range,
+\[
+ |\log a(k)-\log\cA_J(k)|\le C_JM(k)^{-(J+1)/2}.
+\]
+The positive slope~\eqref{eq:slope} makes the sufficiently large carrier strictly increasing and unbounded, hence its root unique. Choose a strict margin $\Delta=D_JM(x)^{-J/2}$ larger than the coefficient error divided by the lower slope, uniformly in the small surrounding interval. Every integer below $\lceil x-\Delta\rceil$ lies strictly below $x-\Delta$ and therefore has $\log a(k)<Y$. The integer $\lceil x+\Delta\rceil$ lies at or above $x+\Delta$ and has $\log a(k)\ge Y$. Monotonicity proves~\eqref{eq:inverse}; the same mean-value estimate proves the sequence-value assertion. This uses only pointwise errors at integers. Differentiating an unknown coefficient remainder or postulating a true real crossing is unnecessary.
+
+\section{Joint charge and low hole laws}
+\label{sec:TV}
+Under the probability measure on size-$n$ objects, outer selections have weights proportional to $\prod_{k\in S}p(k)$. With $L=\lfloor M^{17/20}\rfloor$, define
+\[
+ \cH_n=[1,L]\setminus S,\qquad Q_n=|S|+|\cH_n|,
+ \qquad K_n=|S|=Q_n-|\cH_n|.
+\]
+The effective filled-edge charge $Q_n$ is different from the actual outer count $K_n$. Define the moving probability
+\[
+ \pi_1(n)=\frac{W_{M-1}(n)}{W_M(n)+W_{M-1}(n)},
+\]
+and let $B_n$ be Bernoulli of parameter $\pi_1(n)$, independent of $\cH_\infty$.
+
+\begin{theorem}[Uniform positive mass approximation]\label{thm:TV}
+Embedding $\cH_n$ into finite subsets of $\N$, uniformly through crossovers and triangular boundaries,
+\begin{equation}\label{eq:TV}
+ \TV\bigl(\Law(Q_n-M,\cH_n),\Law(-B_n,\cH_\infty)\bigr)
+ =O(M^{-1/2}).
+\end{equation}
+Put
+\[
+ \mu_{\rm count}=\sum_{k\ge1}\frac1{p(k)+1},\qquad
+ \sigma_{\rm count}^2=\sum_{k\ge1}\frac{p(k)}{(p(k)+1)^2}.
+\]
+Then
+\begin{align}
+ \E K_n&=M-\pi_1(n)-\mu_{\rm count}+O(M^{-1/2}),\label{eq:countmean}\\
+ \Var K_n&=\pi_1(n)(1-\pi_1(n))+\sigma_{\rm count}^2+O(M^{-1/2}).
+ \label{eq:countvar}
+\end{align}
+\end{theorem}
+This is a moving comparison measure, so no fixed phase subsequence is required. The actual count never reduces asymptotically to only two values: it includes the nondegenerate low-hole shift.
+
+\begin{proof}
+The exact unnormalized joint mass at $(m,\cH)$ is $p(\cH)^{-1}$ times the charge-$m$ filled coefficient at $n+h$. The two-stage weighted truncations, the global localization, and the carrier-ratio bound reduce to $h\le M^\epsilon$ with superpolynomial lost joint mass relative to $a(n)$. Positivity is crucial: the sum of charge-resolved discarded masses equals the nonnegative global discarded mass, so the unmarked localization estimate controls their total absolute mass.
+
+For the dominant charges with $r_m/m\ge1/4$, the local theorem gives their filled mass at $n+h$ as $W_m(n+h)(1+O(M^{-1/2}))$. Before using a derivative, replace both integer values $p(r_m)$ and $p(r_m+h)$ by their exponentially accurate smooth values $e^{f(r_m)}$, $e^{f(r_m+h)}$. Apply~\eqref{eq:bulkSlope} to these explicit smooth carriers. For integer $h\ge1$ the replacement errors are absorbed, giving
+\begin{equation}\label{eq:WratioTV}
+ \left|\frac{W_m(n+h)}{W_m(n)}-1\right|
+ \le ChM^{-1/2}e^{Ch/\sqrt M}.
+\end{equation}
+At $h=0$ the ratio is exactly one, handled separately. No interpolation or derivative of $p(r)$ is asserted. The small-residual charge is exponentially subdominant. If $n+h$ crosses a triangular boundary, its extra charge has residual $o(M)$ and is likewise negligible, while the common residual-near-one charge remains dominant.
+
+Thus the raw $L^1$ error in replacing the exact joint mass by
+$p(\cH)^{-1}W_m(n)$ for $m=M,M-1$ is at most
+\[
+ CM^{-1/2}(W_M+W_{M-1})
+ \sum_{\cH\subset[1,L]}\frac{(1+h)e^{Ch/\sqrt M}}{p(\cH)}.
+\]
+The sum is uniformly bounded by~\eqref{eq:stretchedtilt}. Extending the comparison set to all finite holes costs only a superpolynomial error. Its total mass is $C_0(W_M+W_{M-1})$. Dividing by the two normalizing totals changes the error only by a fixed factor, proving~\eqref{eq:TV}.
+
+Total variation alone would not prove unbounded moments. Multiply this raw $L^1$ estimate separately by $(1+h)^j$ for $j=1,2$, and use the corresponding fixed tilted moments. On the retained two charges, $|K_n-M|\le1+h$. On discarded exact tails, $K_n\le M$, $Q_n\le M+L$, and $h\le L(L+1)/2$, so fixed polynomial weights are absorbed by the superpolynomial tail estimates. The comparison law has finite stretched-exponential energy moments. Hence the first two centered moments of $K_n-M$ differ by $O(M^{-1/2})$. Independence of $B_n$ and the limiting holes gives~\eqref{eq:countmean}--\eqref{eq:countvar}.
+\end{proof}
+
+\section{Exact checks and certified hole constants}
+\label{sec:computation}
+The proof is analytic; finite agreement does not certify an asymptotic remainder or its onset. The accompanying standard-library code independently checks the finite algebra and normalizations, with integer or rational arithmetic throughout the exact path.
+
+\subsection{Independent recurrences and combinatorial tests}
+Ordinary partition numbers through $10000$ are computed by unbounded coin-change dynamic programming. A separate recurrence checks them through $600$:
+\[
+ np(n)=\sum_{j=1}^n\sigma_1(j)p(n-j).
+\]
+The descending $0/1$ product dynamic program computes $a(n)$ through $5000$. An algebraically different recurrence follows by logarithmic differentiation of~\eqref{eq:model}. If
+\[
+ d(j)=\sum_{k\mid j}k(-1)^{j/k+1}p(k)^{j/k},
+\]
+then
+\[
+ na(n)=\sum_{j=1}^n d(j)a(n-j).
+\]
+Every numerator is checked for exact divisibility by $n$ and agreement through $600$. The initial values are
+\[
+ 1,1,2,5,8,18,34,65,109,223,386,698,1241,2180,3804,6788.
+\]
+The original source check agreed with all 37 displayed initial values in the inspected live OEIS entry. The attempted b-file fetch failed; no full OEIS b-file comparison is claimed.
+
+An independent enumeration covers all $81156$ ordinary partitions of sizes $0$ through $35$. It uses doubled half-integer coordinates to check the row and Frobenius formulas, conjugation for $Q_1,\ldots,Q_6$, and both exact q-brackets~\eqref{eq:twobrackets}. The low-hole identity is independently exhausted for $0\le n\le28$ and $0\le L\le5$: $174$ cases and $8898$ triples. Checks include energy, unique recovery, exact missing set, actual/filled cardinality, integer weight cancellation, Frobenius weight equality, and every changed denominator exceeding $L$.
+
+These are independent finite checks of implementations and algebra. The explicit inverse map and analytic estimates, not enumeration, prove the general assertions.
+
+\subsection{A pure integer interval certificate}
+For $g(j)=j(j+3)/2\le k$, every subset of $\{2,\ldots,j+1\}$ can be completed by ones to a distinct partition of $k$, so $p(k)\ge2^j$. The block $g(j)\le k<g(j+1)$ has $j+2$ integers. Let $T_s(N)=\sum_{k>N}k^s/p(k)$. With $N=10000$, $j_0=139$, $g(j_0)=9869$, and $132$ already-included integers in that block, exact geometric power sums yield
+\begin{align}
+ T_0(N)&\le\frac{2j_0+6-132}{2^{j_0}}
+ =\frac{19}{87112285931760246646623899502532662132736},\label{eq:T0}\\
+ T_1(N)&\le\frac{j_0^3+10j_0^2+37j_0+56-132g(j_0+1)}{2^{j_0}}\notag\\
+ &=\frac{390677}{174224571863520493293247799005065324265472}.
+ \label{eq:T1}
+\end{align}
+For $T_1$ we bound every $k$ in a block by $g(j+1)$; summing $(j+2)g(j+1)2^{-j}$ and subtracting the corresponding first-block majorant gives the displayed polynomial. The identities use
+$\sum_{i\ge0}i^r2^{-i}=2,2,6,26$ for $r=0,1,2,3$.
+
+All finite products and sums are enclosed by outward-rounded integer arithmetic on the scale $10^{100}$. For example, if $[l,u]/10^{100}$ encloses a product, multiplying by $(p(k)+1)/p(k)$ updates the lower endpoint by floor division and the upper by ceiling division. Sums use the same directed divisions. The tail multiplier for $C_0$ is at most $e^{T_0}\le1/(1-T_0)$, so no transcendental interval routine is needed. The remaining tails for mean energy, mean count and count variance are at most $T_1,T_0,T_0$ respectively.
+
+Rounding the resulting exact intervals further outward gives the following shorter readable enclosures:
+\begin{align*}
+ &7.60150293364724365227288154074110141857<C_0,\\
+ &C_0<7.60150293364724365227288154074110141858,\\[2pt]
+ &6.08634257165234578177405930993613318243<\mu_1,\\
+ &\mu_1<6.08634257165234578177405930993613318468,\\[2pt]
+ &1.69334813525351189239046960428498655116<\mu_{\rm count},\\
+ &\mu_{\rm count}<1.69334813525351189239046960428498655117,\\[2pt]
+ &1.21130990884242092190904749282953762059<\sigma_{\rm count}^2,\\
+ &\sigma_{\rm count}^2<1.21130990884242092190904749282953762060.
+\end{align*}
+The package contains the full 100-decimal rational endpoints. They lie strictly inside an independently produced earlier interval certificate. This comparison itself is performed by exact rational inequalities.
+
+\subsection{Floating diagnostics and their limits}
+Optional floating files are separate from the exact core and certificates. They test carrier ratios, slow crossover locations, and product-normalization trends. Selected leading and first-corrected ratios to the exact coefficient are:
+\begin{center}
+\begin{tabular}{rcc}
+\toprule
+$n$ & Leading carrier divided by $a(n)$ & First corrected divided by $a(n)$\\
+\midrule
+100 & $0.1495141$ & $0.9306268$\\
+400 & $0.00669010$ & $0.03071625$\\
+1000 & $0.000346150$ & $0.00122480$\\
+2000 & $0.00124365$ & $0.00410422$\\
+3200 & $0.000954154$ & $0.00281057$\\
+5000 & $0.00177838$ & $0.00486243$\\
+\bottomrule
+\end{tabular}
+\end{center}
+These are uncertified numerical evaluations of the eventual formula at small indices. In this range slow $\log M/\sqrt M$ centering and additional preasymptotic charges matter. The table supplies no effective threshold beyond which the formula is accurate. A Gaussian's close fit here is likewise not a proof of its eventual coefficient behavior.
+
+The all-orders construction in this report is effective through Bloch--Okounkov brackets and finite moments, but the package does not implement a general symbolic all-orders engine. It implements the exact finite core, stated first-normalization checks, rigorous hole intervals, and optional diagnostics. Nor does it implement an interval-certified finite-$n$ coefficient approximation from the asymptotic carrier.
+
+\subsection{Reproducible packaging and trust boundaries}
+The source package includes the TeX report, Python exact checker, frozen exact vectors and reference certificates, separate optional diagnostics, a builder, guard tests, and a manifest verifier. Explicit runtime guards remain active under \texttt{python -O}. The deterministic builder uses an isolated Python invocation, disables TeX shell escape, rejects unresolved references and overfull boxes, and creates a sorted ZIP with fixed metadata and an exact file inventory. Extracted rebuilding is checked for byte identity with the same installed Python/TeX stack; identity across different toolchain versions is not promised.
+
+The manifest detects accidental changes; it is not a signature protecting against coordinated replacement of both files and manifest. The build assumes trusted source, Python/TeX installations and executable search path. Disabling shell escape does not turn TeX into a sandbox for arbitrary hostile inputs. No network or external upload is required to run the package. The README gives precise commands and the final build receipt records hashes separately from the self-contained archive.
+
+\section{Attribution and the limits of the source screen}
+\label{sec:sources}
+The exact sequence, product and twice-partitioned interpretation are attributed to OEIS A271619 and its contributor Gus Wiseman~\cite{oeis}. Hardy--Ramanujan/Rademacher estimates and eta identities are classical~\cite{dlmfpart}; shifted-symmetric quasimodularity and the effective $n$-point construction are Bloch--Okounkov's~\cite{BO}; modified-Bessel transfer expansions are classical~\cite{dlmfbessel}. Generic all-orders saddle-point transfer, including Harris--Schoenfeld admissibility as discussed by Odlyzko--Richmond, is established methodology~\cite{OR}. The target-specific work here is verification of localization, tame remainder bounds, finite hole assembly and their consequences for this amplitude product.
+
+The bounded comparison screen inspected the following particularly relevant theorem scopes:
+\begin{itemize}
+\item Granovsky--Stark's multiplicative framework has factors $S(a_kz^k)^{b_k}$ with $0<a_k\le1$ in its stated theorem~\cite{GS}. Substituting $a_k=p(k)$ in the target factor $1+a_kz^k$ violates that amplitude bound. Related ``sub exponential'' papers retain this restriction~\cite{G16,G17}; that phrase in their titles does not license arbitrary growing amplitudes.
+\item Expansive selection theorems concern $\prod(1+q^k)^{a_k}$~\cite{GSexp}. They select distinct component types and therefore count a different class.
+\item Bridges--Brindle--Bringmann--Franke provide genuine arbitrary-order expansions for $\prod(1-q^n)^{-f(n)}$ under nonnegative multiplicities and Dirichlet-series hypotheses~\cite{BBBF}. A formal Euler-product rewrite does not establish those hypotheses for the present amplitudes.
+\item Fermi--Dirac integral expansions and physical Fermi level-counting/shell effects are relevant prior methods and phenomena~\cite{GFG,GST,RL,Leboeuf}. No originality is claimed for Fermi smoothing or discrete oscillations. The full theorem text of Garoni--Frankel--Glasser and the full Leboeuf paper were not retrieved in the screen; they are credited as background, not used as an exhaustive theorem-level exclusion.
+\end{itemize}
+The actual complete prior A022629 article was also checked within the project~\cite{Prior22629}. Its main family covers power amplitudes, fixed convolution powers and integer slot multiplicities; its section on more general weights does not supply a theorem for these stretched amplitudes. Prior A291698 moving-fugacity material~\cite{Prior291698} concerns a different model and explicitly leaves its beyond-polynomial regime outside its result. Exact-ID/title repository and Library searches produced no direct match, but negative searches are not proofs of absence.
+
+Our precise conclusion is only that no inspected primary theorem directly preempted the target result in this bounded screen. We make no universal novelty claim. A bibliographic lead to Gingold--Quaintance's work on integer power products remained unverified at full-theorem level and is not used to support either coverage or noncoverage.
+
+\paragraph{Review record.}
+Separate mathematical reviews reconstructed the local remainder/transfer proof, the global Bellman/entropy proof, and the full finite-moment assembly and inverse interface. The optional total-variation proof was reviewed after clarifying that exact integer partition weights are smoothed before differentiation and that the zero-shift ratio is treated exactly. An independent finite checker recomputed the algebra and constant intervals. A preliminary working-dossier resonance moment incorrectly omitted the upper-region restriction; the manuscript's split in Section~\ref{sec:resonance} corrects that before publication. No finite computation is presented as validation of an unproved analytic gate.
+
+\section{Further directions}
+The following are proposed directions for additional work, not assertions that each is globally open in the literature.
+\begin{itemize}
+\item Make the asymptotic onset effective, or develop a practical positive multi-charge approximation with finite-index error bounds. The poor moderate-index performance documented here makes this a substantive numerical problem.
+\item Determine how far the fixed-order estimates can be made uniform in a growing truncation order, and whether optimal truncation exposes controlled exponentially small corrections. No such conclusion follows from the present all-fixed-orders expansion.
+\begin{samepage}
+\item Prove coefficient-level phase theorems for more general stretched amplitudes, including the putative $\alpha=1/3$ transition suggested by the resonance modulus. That observation alone supplies no coefficient theorem.\par
+\end{samepage}
+\item Extend the positive joint-law argument to further conditioned diagram statistics, and investigate higher-order distributional corrections while keeping the persistent low-hole cloud separate from edge fluctuations.
+\end{itemize}
+
+\begin{thebibliography}{99}
+\bibitem{Prior22629} V. Reshetnikov, ProveIt project, \emph{A022629 distinct partition norms}, project report and linked source. \href{https://github.com/VladimirReshetnikov/ProveIt/blob/main/SetTheory/Cardinals/docs/reports/generating-functions-and-asymptotics/oeis-sequence-asymptotics/a022629-distinct-partition-norms/README.md}{Verified project report link}. Complete merged article inspected in the bounded overlap audit.
+\bibitem{Prior291698} V. Reshetnikov, ProveIt project, \emph{A291698 moving fugacity partitions}. \href{https://github.com/VladimirReshetnikov/ProveIt/blob/main/SetTheory/Cardinals/docs/reports/generating-functions-and-asymptotics/oeis-sequence-asymptotics/a291698-moving-fugacity-partitions/article.tex}{Verified article source link}.
+\bibitem{oeis} OEIS Foundation Inc., \emph{A271619: Twice-partitioned numbers with strict outer partition}, contribution by Gus Wiseman (2016), inspected 3 October 2026. \url{https://oeis.org/A271619}.
+\bibitem{dlmfpart} NIST Digital Library of Mathematical Functions, \S27.14, especially formulas 27.14.8--10 and the eta transformation formulas. \url{https://dlmf.nist.gov/27.14}.
+\bibitem{BO} S. Bloch and A. Okounkov, \emph{The character of the infinite wedge representation}, Advances in Mathematics 149 (2000), 1--60. DOI: \href{https://doi.org/10.1006/aima.1999.1845}{10.1006/aima.1999.1845}. Author preprint: \url{https://arxiv.org/abs/alg-geom/9712009}. Theorems 0.2, 0.5 and 4.1 and the shifted-power/Frobenius conventions are the relevant inputs.
+\bibitem{dlmfbessel} NIST Digital Library of Mathematical Functions, \S10.32.12 and \S10.40, modified-Bessel contour representation and large-argument expansions. \url{https://dlmf.nist.gov/10.32.E12}; \url{https://dlmf.nist.gov/10.40}.
+\bibitem{GS} B. L. Granovsky and D. Stark, \emph{Developments in the Khintchine--Meinardus probabilistic method for asymptotic enumeration}, Electronic Journal of Combinatorics 22(4) (2015), P4.32. DOI: \href{https://doi.org/10.37236/4581}{10.37236/4581}. \url{https://arxiv.org/abs/1311.2254}.
+\bibitem{G16} B. L. Granovsky, \emph{Asymptotic enumeration by Khintchine--Meinardus method: Necessary and sufficient conditions for sub exponential growth} (2016). \url{https://arxiv.org/abs/1606.08016}.
+\bibitem{G17} B. L. Granovsky, \emph{Explicit asymptotic formulae for sub exponentially growing multiplicative structures} (2017). \url{https://arxiv.org/abs/1705.00438}.
+\bibitem{GSexp} B. L. Granovsky and D. Stark, \emph{Asymptotic enumeration and logical limit laws for expansive multisets and selections}. \url{https://arxiv.org/abs/math/0407322}.
+\bibitem{BBBF} W. Bridges, B. Brindle, K. Bringmann and J. Franke, \emph{Asymptotic expansions for partitions generated by infinite products}, Mathematische Annalen 390 (2024), 2593--2632. DOI: \href{https://doi.org/10.1007/s00208-024-02807-x}{10.1007/s00208-024-02807-x}. \url{https://arxiv.org/abs/2303.11864}.
+\bibitem{OR} A. M. Odlyzko and L. B. Richmond, \emph{Asymptotic expansions for the coefficients of analytic generating functions}. Author-hosted primary text: \url{https://www-users.cse.umn.edu/~odlyzko/doc/arch/admissible.fns.pdf}. Its Theorem 3 discusses the Harris--Schoenfeld all-orders transfer framework.
+\bibitem{GFG} T. M. Garoni, N. E. Frankel and M. L. Glasser, \emph{Complete asymptotic expansions of the Fermi--Dirac integrals}, Journal of Mathematical Physics 42 (2001), 1860--1868. DOI: \href{https://doi.org/10.1063/1.1350634}{10.1063/1.1350634}. Background citation; full theorem text was not audited here.
+\bibitem{GST} A. Gil, J. Segura and N. M. Temme, \emph{Complete asymptotic expansions for the relativistic Fermi--Dirac integral}. \url{https://arxiv.org/abs/2108.11210}.
+\bibitem{RL} J. Roccia and P. Leboeuf, \emph{Level density of a Fermi gas and integer partitions: a Gumbel-like finite-size correction}. \url{https://arxiv.org/abs/1001.5365}.
+\bibitem{Leboeuf} P. Leboeuf, \emph{Level density of a Fermion gas: average growth, fluctuations, universality}, AIP Conference Proceedings 777 (2005), 180. DOI: \href{https://doi.org/10.1063/1.1996884}{10.1063/1.1996884}. \url{https://arxiv.org/abs/nucl-th/0504026}. Abstract/metadata inspected; full paper not audited here.
+\end{thebibliography}
+\end{document}

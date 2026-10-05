@@ -1,0 +1,469 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}\usepackage{lmodern,microtype}
+\usepackage[margin=25mm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,booktabs}
+\usepackage[hidelinks]{hyperref}\usepackage{xurl}
+\hypersetup{pdftitle={Asymptotic Expansions for Unlabeled Bipartite Multigraphs},pdfauthor={Research note prepared for Vladimir Reshetnikov with OpenAI}}
+\setlength{\parskip}{2pt}
+\newtheorem{theorem}{Theorem}[section]\newtheorem{lemma}[theorem]{Lemma}\newtheorem{proposition}[theorem]{Proposition}
+\newcommand{\E}{\mathbb E}\newcommand{\Pp}{\mathbb P}
+\newcommand{\fall}[2]{(#1)_{\underline{#2}}}\newcommand{\rise}[2]{(#1)^{\overline{#2}}}
+\newcommand{\Aut}{\operatorname{Aut}}\newcommand{\ee}{\mathrm e}
+\title{Asymptotic Expansions for\\Unlabeled Bipartite Multigraphs\\[3pt]\large OEIS A007716 and its inverse growth}
+\author{Research note prepared for Vladimir Reshetnikov with OpenAI}
+\date{1 October 2026}
+\begin{document}\maketitle
+\begin{abstract}
+Let $a_n$ count nonnegative integer $n\times n$ matrices of total sum $n$, modulo independent row and column permutations. Equivalently, these are bipartite multigraphs with $n$ edges, no isolated vertices and distinguished shores. We prove a relative equivalent
+$a_n\sim B_n^2\exp(W(n)^2/2)/n!$, where $B_n$ is the Bell number, and a complete fixed-order expansion with rational functions of $W(n)$ as coefficients. An exact invariant-partition formula controls all vertex automorphisms; the nonnegligible parallel-edge contribution is retained by a positive weighted count. We give the first two corrections, a finite coefficient algorithm, and all-orders smooth inverse models with rigorous integer-threshold brackets. The result strengthens the published logarithmic estimate for this sequence. No full classification of exponentially small sectors is claimed.
+\end{abstract}
+
+\section{The sequence and main results}
+Write $a_n$ for the number of nonnegative integer $n\times n$ matrices whose entries sum to $n$, up to separate row and column permutations. Deleting zero rows and columns identifies these objects with bipartite multigraphs with distinguished shores, no isolated vertices and $n$ edges. Their first terms are
+\[
+1,1,4,10,33,91,298,910,3017,9945,34207,\ldots .
+\]
+This is OEIS A007716~\cite{OEIS}. Transposition is not an additional identification.
+Let $B_n$ denote the Bell number and set $w=W(n)$, so that $w\ee^w=n$.
+
+\begin{theorem}\label{thm:leading}
+As $n\to\infty$,
+\begin{equation}\label{eq:leading}
+ a_n\sim\frac{B_n^2}{n!}\exp(w^2/2)
+ \sim\frac{\exp\{n(w-\log w-1+2/w)+w^2/2-2\}}
+ {(w+1)\sqrt{2\pi n}}.
+\end{equation}
+\end{theorem}
+The factor $\exp(w^2/2)$ diverges. Keeping only the identity permutation in Burnside's lemma would miss it.
+
+\begin{theorem}\label{thm:all}
+For every fixed integer $J\ge0$, there are rational functions $Q_j(w)$, with $Q_0=1$, and a finite exponent $M_J$ such that
+\begin{equation}\label{eq:all}
+ a_n=\frac{B_n^2}{n!}\ee^{w^2/2}
+ \left\{\sum_{j=0}^J\frac{Q_j(w)}{n^j}
+       +O_J\!\left(\frac{(1+w)^{M_J}}{n^{J+1}}\right)\right\}.
+\end{equation}
+Section~\ref{sec:profiles} gives a finite exact algorithm. The first correction is
+\begin{equation}\label{eq:Q1}
+ Q_1(w)=\frac{w^2(w^4+11w^3+22w^2+12w-6)}{12(w+1)^2}.
+\end{equation}
+At order one, the remainder in braces is $O((1+w)^{10}/n^2)$.
+\end{theorem}
+All orders are fixed as $n$ tends to infinity. No convergence of the infinite series is asserted. In particular, this is stronger than a logarithmic equivalent.
+
+Pavlichin, Jiao and Weissman~\cite[Theorem 12 and Appendix C]{PML} explicitly identify this sequence and prove $\log a_n\sim n\log n$. Their displayed result is $\exp((1+o(1))n\log n)$, despite the accompanying phrase ``precise asymptotics.'' The incidence-matrix results of Cameron, Prellberg and Stark~\cite{CPS,CPS2} concern zero-one matrices and different labeling conventions. We discuss this distinction further in Section~\ref{sec:scope}.
+
+\section{Exact weighted counts and invariant partitions}
+Let $M_{k,l}(n)$ be the number of nonnegative $k\times l$ matrices of total $n$ with no zero row or column. Define
+\begin{equation}\label{eq:Z}
+ Z_n=\sum_{k,l\ge0}\frac{M_{k,l}(n)}{k!l!}
+     =\sum_{[G]}\frac1{|\Aut(G)|},
+\end{equation}
+where automorphisms preserve the shores. Orbit--stabilizer proves the second equality. Adding isolated vertices gives
+\[
+ \binom{kl+n-1}{n}=\sum_{i\le k,j\le l}\binom ki\binom lj M_{i,j}(n).
+\]
+Summing nonnegative terms after division by $k!l!$ yields
+\begin{equation}\label{eq:mass}
+ Z_n=\ee^{-2}\sum_{k,l\ge0}\frac{\binom{kl+n-1}{n}}{k!l!}.
+\end{equation}
+For $n>0$, terms with $kl=0$ are zero.
+
+A pair of set partitions of $[n]$ represents a multigraph with edge labels $[n]$: label $i$ joins its containing block in each partition. Removing edge labels is the simultaneous $S_n$ action. Thus, if $f(\sigma)$ counts the set partitions invariant under $\sigma$,
+\begin{equation}\label{eq:Burnside}
+ a_n=\frac1{n!}\sum_{\sigma\in S_n}f(\sigma)^2.
+\end{equation}
+
+\begin{lemma}\label{lem:fixed}
+If $\sigma$ has $c$ element cycles with lengths $\ell_1,\ldots,\ell_c$, then
+\begin{equation}\label{eq:fixed}
+ f(\sigma)=\sum_{\pi\in\Pi_c}\prod_{S\in\pi}
+ \sum_{k\mid\gcd(\ell_i:i\in S)}k^{|S|-1}.
+\end{equation}
+Moreover, writing $d=n-c$,
+\begin{equation}\label{eq:globalf}
+ B_c\le f(\sigma)\le B_c\prod_i\ell_i\le2^d B_c,
+ \qquad
+ Z_n=\frac1{n!}\sum_{\sigma\in S_n}B_{c(\sigma)}^2.
+\end{equation}
+\end{lemma}
+\begin{proof}
+An orbit of $k$ blocks consumes a nonempty group $S$ of element cycles. Its length $k$ divides each $\ell_i$ in that group. Each cycle chooses a residue phase among the $k$ blocks, and a common cyclic shift has no effect, giving $k^{|S|-1}$ choices. The groups of consumed cycles partition $[c]$, proving~\eqref{eq:fixed}.
+The $k=1$ terms give $B_c$. For any group, its divisor sum is at most $\prod_{i\in S}\ell_i$: if $g$ is their gcd, the sum is at most $g^{|S|}$, including the case $|S|=1$. Also $\ell\le2^{\ell-1}$.
+Finally, Dobinski's identity $B_c=\ee^{-1}\sum_{k\ge0}k^c/k!$ and
+$\sum_{\sigma\in S_n}x^{c(\sigma)}=\rise xn$ turn the last sum in~\eqref{eq:globalf} into~\eqref{eq:mass}.
+\end{proof}
+
+\subsection*{An elementary Bell ratio bound}
+For all $j\ge1$,
+\begin{equation}\label{eq:Bellratio}
+ \frac{B_j}{B_{j-1}}\ge\frac{j}{16\log(j+1)}.
+\end{equation}
+Bell numbers are moments of a Poisson variable, so they are log-convex and $B_j/B_{j-1}\ge B_j^{1/j}$. For $j\ge2$, put $k=\lfloor j/\log(j+1)\rfloor$. Then $k\ge j/(2\log(j+1))$, $k\log k\le j$, and the corresponding term of Dobinski's sum gives
+\[
+ B_j^{1/j}\ge k\exp\{-(1+\log k!)/j\}\ge k\ee^{-1-1/j}.
+\]
+This implies~\eqref{eq:Bellratio}; $j=1$ is immediate.
+
+Let $s(n,n-d)$ be the unsigned Stirling number of the first kind. Since it equals $e_d(1,\ldots,n-1)$,
+\begin{equation}\label{eq:Stirlingbound}
+ s(n,n-d)\le\binom{n-1}{d}\fall{n-1}{d}
+             \le\frac{\fall nd^2}{d!}.
+\end{equation}
+Every $d$-subset product is at most $\fall{n-1}{d}$, which proves the first inequality. Combining~\eqref{eq:globalf}--\eqref{eq:Stirlingbound}, the contribution of $d>D$ in~\eqref{eq:Burnside}, relative to $B_n^2/n!$, is at most
+\begin{equation}\label{eq:deficittail}
+ \sum_{d>D}\frac{(4C^2\log^2(n+1))^d}{d!}.
+\end{equation}
+With $D=\lfloor A\log^2(n+1)\rfloor$ and a sufficiently large fixed $A$, this is $\exp(-c\log^2n)$.
+
+\subsection*{A quantitative comparison with the weighted count}
+Split off the nontrivial element cycles used by block orbits of length at least two. If $h$ cycles are selected, their extra weight is at most $B_h$ times their lengths' product. Their total length is at most $2d$. On $d\le D$, equation~\eqref{eq:Bellratio} gives $B_{c-h}/B_c\le\eta^h$, where $\eta=C'\log n/n$. Thus
+\[
+ 1\le\frac{f(\sigma)}{B_c}
+ \le\sum_{h=0}^d\frac{B_h}{h!}(2d\eta)^h
+ \le\frac1{1-2d\eta}=1+O(\log^3n/n).
+\]
+Here $B_h\le h!$, for example by writing each partition block as an increasing permutation cycle. Squaring, summing positive terms, and using~\eqref{eq:deficittail} proves
+\begin{equation}\label{eq:asymmetry}
+ \frac{a_n}{Z_n}=1+O(\log^3n/n).
+\end{equation}
+This bounds the weighted effect of automorphisms, rather than relying only on high-probability asymmetry.
+
+\section{The relative weighted saddle}
+Put $x=n/w=\ee^w$. Let $K,L$ be independent with Dobinski law
+\[
+ \Pp(K=k)=\frac{k^n}{\ee B_n k!},\qquad k\ge1.
+\]
+Equation~\eqref{eq:mass} gives exactly
+\begin{equation}\label{eq:Dobinski}
+ Z_n=\frac{B_n^2}{n!}\E R_n(KL),\qquad
+ R_n(z)=\prod_{j=0}^{n-1}(1+j/z).
+\end{equation}
+For $\varepsilon\le1/4$ with $n\varepsilon^2\gg\log n$,
+\begin{equation}\label{eq:concentrate}
+ \Pp(|K/x-1|>\varepsilon)\le\exp(-c n\varepsilon^2),
+ \qquad \Pp(K<x/2)\le\exp(-c n).
+\end{equation}
+Indeed Stirling reduces the logarithmic mass to
+$h(k)-\tfrac12\log(2\pi k)+O(1/k)$, where
+$h(k)=n\log k-k\log k+k$. Its real maximum is at $x$, and
+$h''\le-n/(4x^2)$ on $[x/2,2x]$. Comparing with the term nearest $x$ gives the bounds there, with only polynomial summation factors. Below $x/2$ concavity gives an exponential loss. Above $2x$, the exact successive ratio $(1+1/k)^n/(k+1)$ is at most $\ee^{-cw}$, giving a geometric tail.
+
+Choose $\varepsilon=w^{-3}$. On the central rectangle,
+\[
+ \log R_n(KL)=\frac{n(n-1)}{2KL}+O\!\left(\frac{n^3}{(KL)^2}\right)
+ =\frac{w^2}2+O(w^2\varepsilon+w^2/n+w^4/n)
+ =\frac{w^2}2+o(1).
+\]
+Three estimates control the complement, including rare small products.
+\begin{enumerate}
+\item If $K,L\ge x/2$, then $\log R_n(KL)\le2w^2$. Equation~\eqref{eq:concentrate} bounds the noncentral contribution by $\exp(2w^2-cn/w^6)$.
+\item If $\min(K,L)<x/2$ but $KL\ge n^{3/2}$, then $\log R_n(KL)\le\sqrt n/2$, giving $2\exp(\sqrt n/2-cn)$.
+\item If $KL<n^{3/2}$, bound the unnormalized sum~\eqref{eq:mass} directly by
+\[
+ \binom{KL+n-1}{n}\le[\ee(\sqrt n+1)]^n.
+\]
+Since $\ee^{-2}\sum1/(k!l!)\le1$, this region has mass at most $\exp(\tfrac12n\log n+O(n))$. The single Dobinski term nearest $x$ gives
+\[
+ \log(B_n^2/n!)\ge n\log n-2n\log w-n+2n/w-O(\log n),
+\]
+so this region is negligible even compared with $B_n^2/n!$.
+\end{enumerate}
+We have proved $Z_n\sim(B_n^2/n!)\ee^{w^2/2}$. Together with~\eqref{eq:asymmetry} and the classical Bell equivalent below, this proves Theorem~\ref{thm:leading}. The last two tail estimates remain exponentially small after multiplication by any fixed power of $n$; we will use this fact again.
+
+\section{Bell expansions and uniform finite shifts}\label{sec:Bell}
+The Bell EGF is $\exp(\ee^z-1)$. At its saddle $w\ee^w=n$, the cumulants are $\kappa_j=\ee^w T_j(w)$, with $T_j$ the Touchard polynomial. In particular,
+\[
+ \kappa_2=n(w+1),\quad \kappa_3=n(w^2+3w+1),\quad
+ \kappa_4=n(w^3+6w^2+7w+1).
+\]
+The classical saddle method~\cite{OR} gives, to every fixed order, rational functions of $w$ and controlled remainders. We record the precise form needed here:
+\begin{equation}\label{eq:Bell}
+ B_n=\frac{\exp\{n(w-1+1/w)-1\}}{\sqrt{w+1}}
+ \left(1+\frac{\beta_1(w)}n+O\!\left(\frac{(1+w)^2}{n^2}\right)\right),
+\end{equation}
+where
+\begin{equation}\label{eq:beta}
+ \beta_1(w)=-\frac{w^2(2w^2+7w+10)}{24(w+1)^3}.
+\end{equation}
+At order $J$, the remainder is $O_J((1+w)^{J+1}/n^{J+1})$.
+
+Here are direct uniformity details. On the circle $z=w\ee^{i\theta}$, the logarithmic modulus loss is at least $c n w\theta^2$ for $|\theta|\le c_0/w$. Beyond this interval, discarding the inner cosine gives a loss at least $c n/w^2$. For the central variable $X=\theta\sqrt{n(w+1)}$, put $\epsilon=\sqrt{w/n}$. The exact phase before subtracting its linear and quadratic terms is
+\[
+ \epsilon^{-2}\left[\exp\left\{w\left(
+ \exp\frac{i\epsilon X}{\sqrt{w(w+1)}}-1\right)\right\}-1\right].
+\]
+Its remaining singularity at zero is removable, and its correction is $O(\epsilon|X|^3)$ uniformly for $w\ge1$. On the auxiliary circle $|\epsilon|=c_J/(1+|X|)^3$, it is bounded. Cauchy expansion through odd degree $2J+1$, followed by symmetric Gaussian integration with cutoff $|X|\le\epsilon^{-1/4}$, gives error $O_J(\epsilon^{2J+2})$. This proves the stated fixed-order remainder. The first Gaussian correction is
+\[
+ \frac1n\left\{\frac{w^3+6w^2+7w+1}{8(w+1)^2}
+       -\frac{5(w^2+3w+1)^2}{24(w+1)^3}\right\}.
+\]
+Adding the factorial correction $1/(12n)$ gives~\eqref{eq:beta}.
+
+Let $b(x)$ be the logarithm of the leading factor in~\eqref{eq:Bell}. Exactly,
+\[
+ b'(x)=w_x-\frac{w_x}{2x(1+w_x)^2},\qquad w_x=W(x),
+\]
+and $b''(x)=w_x/(x(1+w_x))+O(x^{-2})$, $b'''(x)=O(x^{-2})$.
+Uniformly for $0\le s\le2D+2$,
+\begin{align}\label{eq:Bellshift}
+ \log\frac{B_{n-s}}{B_n}
+ ={}&-sw+\frac1n\left\{\frac{sw}{2(w+1)^2}
+                     +\frac{s^2w}{2(w+1)}\right\}\nonumber\\
+ &+O\!\left(\frac{s^3+s(1+w)+(1+w)^2}{n^2}\right).
+\end{align}
+This follows by Taylor expansion of the explicit smooth Bell model, using its remainder at the two endpoints. No derivative of an uncontrolled remainder is taken. At every fixed order, the same argument gives coefficients polynomial in $s$, rational in $w$, with error $n^{-J-1}$ times a fixed polynomial in $s,w$.
+
+\section{A finite marked profile expansion}\label{sec:profiles}
+We now prove Theorem~\ref{thm:all}, including the effects of all automorphisms.
+For a finite vector $b=(b_2,b_3,\ldots)$ with $h=\sum b_i$, define $E(b)$ on a labeled multiset of cycles of these lengths by
+\begin{equation}\label{eq:E}
+ E(b)=\sum_{\pi\in\Pi_h}\prod_{S\in\pi}
+       \sum_{k\ge2,\ k\mid\gcd(\ell_i:i\in S)}k^{|S|-1},
+ \qquad E(0)=1.
+\end{equation}
+It is a finite integer. A recurrence chooses the block containing the least labeled selected cycle and applies the same rule to its complement. If $m_i$ counts the cycles of length $i$ of $\sigma$, the exact formula is
+\begin{equation}\label{eq:marked}
+ f(\sigma)=\sum_{0\le b_i\le m_i, i\ge2}
+ E(b)\prod_i\binom{m_i}{b_i}\,B_{c-h}.
+\end{equation}
+For $f(\sigma)^2$, take two independent selections $b,b'$. Their binomial factors multiply. This includes every overlap of the two selected sets: they need not be disjoint, and no additional matching factor is present.
+
+\subsection*{Two positive cutoffs}
+First restrict to $d=n-c\le D=A_J\log^2(n+1)$; equation~\eqref{eq:deficittail} controls the discarded part. Let $M$ be moved support. On this range $M\le2D$, and the normalized degree-$h$ sum in~\eqref{eq:marked} is at most $(\eta M)^h$, where $\eta=C'\log n/n$. Terms with $h+h'>J$ in its square have total at most
+\[
+ \sum_{j>J}(j+1)(\eta M)^j=O_J((\eta M)^{J+1}).
+\]
+Summing positive weighted terms gives relative error
+$O_J(n^{-J-1}\log^{3J+3}n)$.
+
+Next define the long-cycle defect
+\[
+ v=\sum_{i\ge3}(i-2)m_i.
+\]
+Under the probability law with weights $B_{c(\sigma)}^2/(n!Z_n)$, first sample positive $K,L$ with weights proportional to $\rise{KL}{n}/(K!L!)$, then sample an Ewens permutation with parameter $T=KL$. Its factorial moments are exactly
+\begin{equation}\label{eq:Ewens}
+ \E\prod_i\fall{m_i}{a_i}
+ =\frac{\fall ns\,T^{\sum_i a_i}}
+ {\prod_i i^{a_i}\,\rise{T+n-s}{s}},\qquad s=\sum_i ia_i\le n.
+\end{equation}
+The formula follows by marking the ordered cycles and summing over the remaining permutation.
+The region $\min(K,L)<x/2$ is negligible by the weighted-mass tails. Otherwise $T\ge n^2/(4w^2)$. For $u\ge1$, expansion in the nonnegative quantities $u^{i-2}-1$ and~\eqref{eq:Ewens} give
+\[
+ \E(u^v\mid T)\le
+ \exp\left\{\sum_{j\ge1}\frac{n^{j+2}}{(j+2)T^{j+1}}(u^j-1)\right\}.
+\]
+Take $u=n/(16w^4)$. For large $n$ it exceeds one, and
+\[
+ \sum_{j\ge1}\frac{n^{j+2}u^j}{(j+2)T^{j+1}}
+ \le4w^2\sum_{j\ge1}(4w^2)^{-j}\le2.
+\]
+Therefore
+\begin{equation}\label{eq:longtail}
+ \Pp(v>J\mid T)\le\ee^2(16w^4/n)^{J+1}.
+\end{equation}
+On the retained deficit range $f^2/B_c^2$ is uniformly bounded. Thus discarding $v>J$ in the unweighted count has relative error $O_J(n^{-J-1}w^{4J+4})$, plus a negligible tail.
+
+\subsection*{The exact retained summand}
+Fix the finitely many long-cycle multiplicities $(m_i)_{i\ge3}$ with $v\le J$, and write
+\[
+ H=\sum_{i\ge3}m_i,\quad t=m_2,\quad d=t+v+H,\quad
+ M=2t+v+2H.
+\]
+Choose $b,b'$ with $h+h'\le J$. Their contribution to $a_n/(B_n^2/n!)$ is
+\begin{align}\label{eq:summand}
+ &\frac{\fall nM}{2^t t!\prod_{i\ge3}i^{m_i}m_i!}
+ \frac{B_{n-d-h}B_{n-d-h'}}{B_n^2}\,E(b)E(b')\nonumber\\
+ &\hspace{12mm}\cdot\binom t{b_2}\binom t{b_2'}
+ \prod_{i\ge3}\binom{m_i}{b_i}\binom{m_i}{b_i'}.
+\end{align}
+After extracting $(w/n)^{2d+h+h'}$ from the Bell factors and $n^M$ from the falling factorial, its explicit scale is
+\begin{equation}\label{eq:scale}
+ \frac{\lambda^t}{t!}\,
+ n^{-v-h-h'}\frac{w^{2v+2H+h+h'}}{\prod_{i\ge3}i^{m_i}m_i!},
+ \qquad\lambda=w^2/2,
+\end{equation}
+times the finite selection factors in~\eqref{eq:summand}.
+
+For a requested order, retain $v+h+h'\le J$. The normalized falling factorial expands by
+\[
+ \log\frac{\fall nM}{n^M}
+ =-\sum_{j\ge1}\frac{n^{-j}}j\sum_{a=0}^{M-1}a^j.
+\]
+Together with Section~\ref{sec:Bell}, every retained coefficient is polynomial in $t$ and rational in $w$, and every remainder is $n^{-J-1}$ times a fixed polynomial in $t,w$, uniformly for $t\le D$. Profiles inadmissible at a small integer $t$ have zero binomial selection factors; the finitely many small cases may equivalently be separated.
+
+Extend each polynomial sum in $t$ to infinity. Since $D$ is a sufficiently large multiple of $\log^2n$, the polynomial-weighted Poisson tail is $\exp(-c\log^2n)$. Finally,
+\begin{equation}\label{eq:Poisson}
+ \ee^{-\lambda}\sum_{t\ge0}\frac{t^k\lambda^t}{t!}=T_k(\lambda).
+\end{equation}
+This produces $Q_0,\ldots,Q_J$ by finite rational operations. The same positive moments sum all error polynomials. Both cutoffs are already controlled, proving Theorem~\ref{thm:all}.
+
+\section{The first corrections and exact checks}
+The weighted count has the same algorithm with no selected cycles. Its first correction can also be checked through
+\[
+ s(n,n-d)=\frac{n^{2d}}{2^d d!}
+ \left\{1-\frac{d(2d+1)}{3n}
+       +O\!\left(\frac{(d+1)^4}{n^2}\right)\right\},\qquad d\le D.
+\]
+The all-transposition term contributes $-d(2d-1)/n$; one 3-cycle contributes $4d(d-1)/(3n)$. Profiles of long defect $j\ge2$ are bounded by the geometric series in $8d^2/n$, proving the uniform error. Combining with~\eqref{eq:Bellshift} and taking Poisson moments gives
+\begin{equation}\label{eq:R1}
+ R_1(w)=\frac{w^4(w-2)}{12(w+1)}-\frac{w^2}{2(w+1)^2}.
+\end{equation}
+At extra order one, the only marked possibility is a single transposition, on either shore. Its weight is one and its selection factor is $t$. The extra Bell shift contributes $w/n$, so the Poisson mean gives $2\lambda w/n=w^3/n$. Thus $Q_1=R_1+w^3$, proving~\eqref{eq:Q1}.
+The displayed fourth-degree errors average to $O((1+w)^{10}/n^2)$; the two cutoff errors at this order are respectively $O(w^6/n^2)$ and $O(w^8/n^2)$.
+
+The finite algorithm yields
+\begin{equation}\label{eq:Q2}
+ Q_2(w)=\frac{w^3\mathcal P(w)}{288(w+1)^5},
+\end{equation}
+where
+\begin{align*}
+ \mathcal P(w)={}&w^{10}+23w^9+343w^8+1441w^7+2600w^6+2440w^5\\
+ &+1944w^4+1980w^3+1068w^2-324w-576.
+\end{align*}
+The source code constructs the marked profiles, including independent overlapping selections, and uses exact rational Poisson moments. It explicitly rejects floating coefficients.
+
+A separate standard-library checker uses the exact fixed-partition recurrence and Burnside's sum. It checks 2,714 cycle types through $n=20$ and reproduces every listed sequence value there. Independent checks additionally enumerate fixed set partitions directly at small sizes and verify the mass normalization and Ewens factorial moments. These finite tests validate identities and transcription, not the asymptotic tail proofs.
+
+\section{Explicit inverse models and integer thresholds}
+Put
+\begin{equation}\label{eq:Phi}
+ \Phi(x)=x(w-\log w-1+2/w)+\frac{w^2}2-2
+          -\log(w+1)-\frac12\log(2\pi x),\qquad w=W(x).
+\end{equation}
+Its exact derivative is
+\begin{equation}\label{eq:Phiderivative}
+ \Phi'(x)=w-\log w+\frac1x
+ \left(\frac{w^2}{w+1}-\frac{w}{(w+1)^2}-\frac12\right)
+ \sim\log x.
+\end{equation}
+In particular the leading model is eventually increasing. If $\nu(y)$ is the eventual solution of $\Phi(\nu)=\log y$, Theorem~\ref{thm:leading} gives
+\[
+ \nu(a_n)=n+o(1/\log n).
+\]
+Nearest-integer rounding therefore recovers the index on the sequence range eventually. Also $a_{n+1}/a_n\sim n/W(n)^2$, so the actual sequence is eventually strictly increasing.
+
+Combining the all-orders Bell expansion and Stirling with~\eqref{eq:all} gives rational functions $P_j(w)$ such that
+\[
+ a_n=\ee^{\Phi(n)}\left\{\sum_{j=0}^J\frac{P_j(W(n))}{n^j}
+             +O_J(n^{-J-1}(1+W(n))^{M_J'})\right\},\qquad P_0=1.
+\]
+Their finite rule multiplies the $Q$ series by the square of the Bell correction series and the reciprocal Stirling series. For example,
+\begin{equation}\label{eq:P1}
+ P_1(w)=\frac{w^7+12w^6+33w^5+32w^4-2w^3-19w^2-3w-1}
+ {12(w+1)^3}.
+\end{equation}
+This equals $Q_1+2\beta_1-1/12$.
+For fixed $J$ define the explicit smooth tail model
+\[
+ F_J(x)=\ee^{\Phi(x)}\sum_{j=0}^J P_j(W(x))x^{-j}.
+\]
+It is positive and strictly increasing eventually, with logarithmic derivative asymptotic to $\log x$. Write $x_J(y)$ for its tail inverse. For the discrete threshold $N(y)=\min\{n:a_n\ge y\}$, there is a constant $C_J$ such that
+\begin{equation}\label{eq:ceil}
+ \lceil x_J(y)-\varepsilon_J(y)\rceil\le N(y)
+ \le\lceil x_J(y)+\varepsilon_J(y)\rceil,\qquad
+ \varepsilon_J(y)=\frac{C_J x_J^{-J-1}(1+W(x_J))^{M_J'}}{\log x_J}
+\end{equation}
+for sufficiently large $y$, enlarging $C_J$ at endpoints if necessary. This follows by the mean-value theorem and monotone bracketing. In particular a single ceiling is valid when both endpoint ceilings agree, and range inversion has vanishing index error.
+
+For a compositional rule, let $X=\nu(y)$ and formally put
+$h(X)=\log(\sum_{j\ge0}P_j(W(X))X^{-j})$. Then the compatible inverse expansion is
+\begin{equation}\label{eq:inverserule}
+ X+\sum_{k\ge1}\frac{(-1)^k}{k!}
+ \left(\frac1{\Phi'(X)}\frac{\mathrm d}{\mathrm dX}\right)^{k-1}
+ \frac{h(X)^k}{\Phi'(X)}.
+\end{equation}
+At every fixed order, only finitely many terms are needed. Taylor's theorem applies to the finite smooth model, and~\eqref{eq:ceil} transfers the error to thresholds. No exact interpolation of the discrete sequence or unconditional ceiling formula is imposed.
+
+\section{A consequence for recurrence equations}
+\begin{proposition}
+The sequence $a_n$ is not P-recursive, even with complex polynomial
+coefficients. Equivalently, its ordinary generating function
+is not D-finite.
+\end{proposition}
+\begin{proof}
+Theorem~\ref{thm:leading} gives
+\[
+ \log\frac{n!}{a_n}=2n\log\log n+O(n).
+\]
+Thus $E(z)=\sum_{n\ge0}(a_n/n!)z^n$ is entire. If $a_n$ were
+P-recursive, substitution of $a_{n+j}=(n+j)![z^{n+j}]E(z)$ in its
+polynomial recurrence would make the coefficients of $E$ P-recursive,
+so $E$ would satisfy a nonzero linear differential equation with polynomial
+coefficients.
+
+Any entire solution of such an equation has a bound
+$\max_{|z|=r}|E(z)|\le\exp(Cr^M)$ for some fixed $C,M>0$ and large $r$.
+Indeed, outside a circle containing the zeros of the leading polynomial,
+the companion first-order system has rational coefficients bounded by a
+fixed power of $r$. Integrating along each radial segment and applying
+Gronwall gives the stated bound uniformly in the direction; the initial
+values on the fixed circle are bounded.
+Cauchy's coefficient estimate at $r=(n/(CM))^{1/M}$ would then imply
+\[
+ \log\frac{n!}{a_n}\ge\frac nM\log n-O(n),
+\]
+contradicting the displayed coefficient growth. This proves the claim.
+\end{proof}
+The ODE criterion is classical; this is a direct consequence of the proved
+relative asymptotic, with no separate priority assertion.
+
+\section{More than two distinguished shores}
+Let $a_n^{(r)}$ count simultaneous $S_n$ orbits on ordered $r$-tuples
+of set partitions of $[n]$, equivalently $r$-partite multihypergraphs
+with $n$ hyperedges, distinguished shores and no isolated vertices.
+\begin{proposition}
+For every fixed integer $r\ge3$,
+\[
+ a_n^{(r)}=\frac{B_n^r}{n!}
+ \left\{1+O_r\!\left(\frac{\log^r n}{n^{r-2}}\right)\right\}.
+\]
+More precisely, the first relative excess is
+$W(n)^r/(2n^{r-2})(1+o(1))$.
+\end{proposition}
+\begin{proof}
+Burnside gives $a_n^{(r)}=\sum_\sigma f(\sigma)^r/n!$.
+Equations~\eqref{eq:globalf}, \eqref{eq:Bellratio} and
+\eqref{eq:Stirlingbound} bound the normalized deficit-$d$ contribution by
+\[
+ \frac{(2C\log(n+1))^{rd}}{d!\,\fall nd^{r-2}}.
+\]
+The geometric mean of the largest $d$ factors of $n!$ is at least
+$(n!)^{1/n}\ge n/\ee$, so $\fall nd\ge(n/\ee)^d$.
+Summing $d\ge1$ gives $\exp(O_r(\log^r n/n^{r-2}))-1$.
+For $d=1$, a transposition fixes $B_{n-1}+B_{n-2}$ set partitions,
+so its contribution is
+$\binom n2[(B_{n-1}+B_{n-2})/B_n]^r\sim W(n)^r/(2n^{r-2})$.
+The bound just proved makes the $d\ge2$ contribution of smaller order.
+\end{proof}
+Thus two shores form an exceptional fixed-shore case: their correction
+factor diverges, whereas for every fixed larger number of shores the
+identity term is a relative equivalent.
+
+\section{Further questions}
+The proof suggests the following extensions, which are not asserted here.
+\begin{itemize}
+\item Effective remainder constants and useful numerical onset bounds for
+coefficient estimates and inverse rounding.
+\item A scaled distributional description of rare nontrivial vertex
+automorphisms, beyond their total weighted contribution.
+\item Uniform all-orders multipartite expansions, including a regime where
+the number of distinguished shores grows with $n$.
+\item Precisely normalized exponentially small sectors after optimal
+algebraic truncation, with their dependence on any chosen interpolation
+made explicit.
+\end{itemize}
+
+\section{Source scope and reproducibility}\label{sec:scope}
+The current OEIS entry gives a cycle-index formula but no asymptotic equivalent. The exact-sequence theorem located in the bounded primary-literature search is the logarithmic result of~\cite{PML}. The two incidence-matrix papers~\cite{CPS,CPS2} explicitly use zero-one entries. Their fully unlabeled shore-preserving class is A049311, and their main relative formula uses labeled rows and columns. It cannot be transferred to A007716 without a new argument. Bell saddles, Burnside averaging, Dobinski's identity and Poisson moment expansions are classical. We claim no exhaustive determination of priority.
+
+The archive contains editable source, exact code and output, independent checks and a manifest. The mathematical statements are ordinary unrefereed proofs with exact regression tests; they are not Lean formalizations. The all-orders assertions concern fixed algebraic orders with logarithmic coefficient functions. They do not classify all exponentially small sectors or Stokes data, and no effective numerical onset is supplied.
+
+\begin{thebibliography}{9}\small
+\bibitem{OEIS} OEIS Foundation Inc., A007716, consulted 1 October 2026. \url{https://oeis.org/A007716}.
+\bibitem{PML} D.~Pavlichin, J.~Jiao and T.~Weissman, \emph{Approximate Profile Maximum Likelihood}, J. Mach. Learn. Res. \textbf{20}(122) (2019), 1--55. \url{https://jmlr.org/papers/v20/18-075.html}.
+\bibitem{CPS} P.~J.~Cameron, T.~Prellberg and D.~Stark, \emph{Asymptotics for incidence matrix classes}, Electron. J. Combin. \textbf{13}(1) (2006), R85. \url{https://arxiv.org/abs/math/0510155}.
+\bibitem{CPS2} P.~J.~Cameron, T.~Prellberg and D.~Stark, \emph{Asymptotic enumeration of incidence matrices}, J. Phys. Conf. Ser. \textbf{42} (2006), 59--70. \url{https://arxiv.org/abs/math/0511008}.
+\bibitem{OR} A.~M.~Odlyzko and L.~B.~Richmond, \emph{Asymptotic expansions for the coefficients of analytic generating functions}, Aequationes Math. \textbf{28} (1985), 50--63. \url{https://doi.org/10.1007/BF02189391}.
+\end{thebibliography}
+\end{document}
