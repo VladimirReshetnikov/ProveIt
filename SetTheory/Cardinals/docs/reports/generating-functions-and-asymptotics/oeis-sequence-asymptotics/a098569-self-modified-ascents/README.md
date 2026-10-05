@@ -105,10 +105,12 @@ Added by the write (5 October 2026), with proofs, marked `[write]`:
 - **Remark 2.2 (`pdt:rem:C1sign`), the slow approach of `N C_1` to
   `1/24`:** `N C_1 = −0.0113, −0.0016, 0.0056, 0.0109, 0.0206, 0.0257,
   0.0321` at `N = 10³, 10⁴, 10⁵, 10⁶, 10⁹, 10¹², 10²⁰`. So **`C_1` stays
-  negative until `N` is between `10⁴` and `10⁶`**: on a 51-point logarithmic
-  grid from 10 to `10⁶` there is one sign change, which bisection places
-  between `N = 15,864` and `N = 15,865` (40-digit polygamma evaluation,
-  uncertified). The cause: `N C_1 = −3/8 + 5/12 + O(1/L)`.
+  negative until `N` is between `10⁴` and `10⁵`** (the change occurs at
+  `N = 15,865`): on a 51-point logarithmic grid from 10 to `10⁶` there is one
+  sign change, which bisection places between `N = 15,864` and `N = 15,865`
+  (40-digit polygamma evaluation, uncertified). The cause:
+  `N C_1 = −3/8 + 5/12 + O(1/L)`. (Sharpened after the independent check;
+  the remark first said "between `10⁴` and `10⁶`", kept in a dated note.)
 - **Remark 8.2 (`pdt:rem:slowbinary`):** the rational correction is
   accurate at practical sizes (ratio to the exact correction `0.989–0.998`
   for `N = 100…8000`), but the scaled limits `1/4` and `−1/2` of eq. (8.3)
@@ -118,6 +120,41 @@ Added by the write (5 October 2026), with proofs, marked `[write]`:
   mean column `314.606` and variance `36.557`, against the leading forms
   `288.5` and `41.9`), at the condensed steps of Theorems 7.1 and 9.2, and
   the provenance, credits, notation and non-claims of Section 1.4.
+
+**Independent check of the write (5 October 2026).** An adversarial check
+made by the intake after the write (`3daaab24e`) found all three results the
+write supplied valid — Proposition 5.3, the window of the note after
+Theorem 9.2, and Remark 2.2 — with no counterexample and no gap in any proof
+chain. Two changes followed: the note before Proposition 5.3 now lists
+eq. (2.5) (`pdt:eq:rscale`) among the inputs of the proof, which uses it in
+its first sentence; and Remark 2.2's "between `10⁴` and `10⁶`", true but
+loose, now reads "between `10⁴` and `10⁵` (the change occurs at
+`N = 15,865`)", with a dated note keeping the first wording. The check used
+neither the delivered programs nor the write's: its own gamma phase, with
+derivatives by the Faà di Bruno formula for a composition with a quadratic
+(checked against numerical differentiation to `1e−49`), a sign-checked
+bisection saddle on `I_N`, and `C_ℓ` by direct enumeration of the
+contraction (2.8). It stress-tested Proposition 5.3 against the exact
+probabilities for `t = −1, 0, 1` and `N = 10³, 10⁴, 10⁵`, over all `m` with
+`|m − r| ≤ r/2` (up to `|z| ≈ 250`): the error divided by the bound
+`|z|³N^{−1/2} + 1/N` is at most `0.31`, worst at `m ≈ r/2` and creeping
+towards the leading-order value `4√2 (log 2 − 5/8) ≈ 0.385`. It tested the
+window of the note after Theorem 9.2 with exact `b_n`, `c_n` to `n = 600`
+(4000 sampled `X`: `ν_c − ν_b − v/2` in `[0.035, 1.764]`, both brackets
+held with `C = 1`), rebuilt `N C_1` independently (every table entry, the
+grid and the sign change between `N = 15,864` and `15,865`; a 600-point grid
+on `[10, 10⁶]` has exactly one sign change), and spot-checked the source:
+the `N = 1000` table of Section 10 with its residuals, `b_1..b_9`, the
+binomial transform (1.9) for `N ≤ 30`, and the rounding counterexample at
+`b_1000`. A side finding: `c_n` increases only weakly
+(`c_0 = c_1 = c_2 = 1`), consistent with the source, whose injection gives
+`c_{n+1} ≥ c_n`; `b_n` is strictly increasing on `1..600`. Separately, a
+parallel check of Report 243's write found that this report's credit to
+that report overclaimed (see "Relation to the repository"); it is corrected
+with a dated note. This was a careful reading with numerical tests (30- to
+60-digit floating point, not interval-certified), not a formal verification
+or an external review; the end of Section 11.1 of the article records it in
+full.
 
 ## What is not claimed
 
@@ -227,11 +264,21 @@ place in the collection confers no formal status.
   (batch-102 sibling, bundle Report 243, written concurrently): bounds
   ascent sequences avoiding 100 by **the same triangular sum** (its `b_n`,
   `b_n = A098569(n−1)`) and proves, in its Section 2 (as delivered,
-  Lemma 2.1), `log b_n = n(log n − 2 log log n + log 2 − 1) + O(n log log n/log n)`
-  with the comparison phase `H_N` (here eq. 3.1) and the same two global
-  gaps `4 log 2 − 2`, `2 − 2 log 2` as Lemma 3.1 here. That estimate follows
-  from Theorem 6.1 here. Neither report cites the other; a reciprocal note
-  for that report is proposed separately.
+  Lemma 2.1), `log b_n = n(log n − 2 log log n + log 2 − 1) + O(n log log n/log n)`,
+  and the same estimate for the single term `m = ⌊2n/log n⌋` (used in its
+  Section 7 for a lower bound), with the comparison phase `H_N` (here
+  eq. 3.1) and the same two global gaps `4 log 2 − 2`, `2 − 2 log 2` as
+  Lemma 3.1 here. The estimate for `b_n` follows from Theorem 6.1 here; the
+  single-term statement does not (a relative asymptotic for the sum says
+  nothing about one term away from the saddle), and is instead the display
+  after eq. (3.5) (`pdt:eq:fixedalpha`) at `x_* = 2N/L`, in Section 3.
+  (Corrected 5 October 2026 after an independent check of Report 243's
+  write: this paragraph first said "That estimate follows from Theorem 6.1
+  here", describing the lemma by its estimate for `b_n` alone, and
+  Section 1.4 said the same; the article keeps its first wording in a dated
+  note.) Neither
+  report cites the other; a reciprocal note for that report is proposed
+  separately.
 - `a202058-ascent-000-growth`, `a294220-ascent-multiplicity-caps`,
   `a202061-ascent-120-deficit`, `a202062-ascent-201-enumeration`: other
   ascent-sequence models; `a336070-weak-ascents` (batch-102 sibling): weak
@@ -280,7 +327,12 @@ notation, collected non-claims); Remark 2.2; the note before and
 Proposition 5.3 itself; the A098568 note at the end of Section 5; notes
 after the proofs of Theorems 7.1 and 9.2; Remark 8.2; the shipped layout and
 intake reruns (end of Section 10); and Section 11.1. No statement, proof or
-number of the manuscript was changed.
+number of the manuscript was changed. After the write, the independent check
+of 5 October 2026 added an unlabelled dated paragraph at the end of
+Section 11.1, completed the input list of the note before Proposition 5.3,
+sharpened Remark 2.2 (dated note there) and corrected the credit to
+Report 243 in Section 1.4 (dated note there); no label was added or
+renumbered (aux files compared).
 
 ## Files
 
@@ -289,7 +341,7 @@ README.md                    this guide (replaces the delivery README)
 SOURCES.md                   the source's literature and indexing note (delivered)
 COMPUTATION.md               the source's computational supplement (delivered)
 article.tex                  the report's main file (delivered; preamble additions, title-page note)
-article.pdf                  compiled report, 30 pages
+article.pdf                  compiled report, 31 pages
 sections/01_models.tex       Section 1 (delivered; labels prefixed, Section 1.4 added)
 sections/02_saddle.tex       Section 2 (delivered; labels prefixed, Remark 2.2)
 sections/03_localization.tex Section 3 (delivered; labels prefixed)
@@ -300,7 +352,7 @@ sections/07_binary.tex       Section 7 (delivered; labels prefixed, note after T
 sections/08_rational.tex     Section 8 (delivered; labels prefixed, Remark 8.2)
 sections/09_inverse.tex      Section 9 (delivered; labels prefixed, note after Theorem 9.2)
 sections/10_checks.tex       Section 10 (delivered; labels prefixed, shipped-layout note)
-sections/11_outlook.tex      Section 11 (delivered; references prefixed, Section 11.1 added)
+sections/11_outlook.tex      Section 11 (delivered; references prefixed, Section 11.1 added, independent-check note)
 sections/12_references.tex   bibliography (delivered, unchanged)
 code/algebra_checks.py       symbolic Gaussian-contraction checks (delivered code/)
 code/build.py                manifest check, immutable build, deterministic ZIP (delivered at the package root)
@@ -446,9 +498,11 @@ B=$(mktemp -d); cp -r article.tex sections "$B/"; cd "$B"
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The committed PDF was built this way with MiKTeX: 30 pages; no errors or
-warnings, no undefined references or citations, no multiply defined labels,
-no duplicate PDF destinations, no overfull or underfull boxes. The delivered
+The committed PDF was built this way with MiKTeX (rebuilt 5 October 2026
+after the independent check, with four pdfLaTeX passes; every label keeps
+its number): 31 pages; no errors or warnings, no undefined references or
+citations, no multiply defined labels, no duplicate PDF destinations, no
+overfull or underfull boxes. The delivered
 source built the same way gives 24 pages, equally clean. The article keeps
 the delivered preamble lines that set the font maps and suppress PDF dates
 and trailer identifiers.

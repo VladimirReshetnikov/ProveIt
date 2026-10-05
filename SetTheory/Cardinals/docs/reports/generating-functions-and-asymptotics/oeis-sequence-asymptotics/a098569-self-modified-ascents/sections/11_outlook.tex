@@ -112,3 +112,88 @@ note after Theorem~\ref{pdt:thm:seeds}.
  whether Kote\v{s}ovec's finer logarithmic expressions~\cite{oeis} have a
  published proof (the inspected records cite none).
 \end{enumerate}
+
+\paragraph{Independent check of the write (dated note, 5~October 2026).}
+An independent adversarial check of the three results this write supplied,
+made by the intake after the write (\nolinkurl{3daaab24e}), found all three
+valid: Proposition~\ref{pdt:prop:moderate}, the window of the note after
+Theorem~\ref{pdt:thm:seeds}, and Remark~\ref{pdt:rem:C1sign}. It found no
+counterexample and no gap in any proof chain. Two changes followed. The
+note before Proposition~\ref{pdt:prop:moderate} listed the inputs of the
+proof without \eqref{pdt:eq:rscale}, which the proof uses in its first
+sentence; the list now includes it. In Remark~\ref{pdt:rem:C1sign} the
+statement that $C_1<0$ until $N$ lies ``between $10^4$ and $10^6$'' was true
+but loose; it now reads ``between $10^4$ and $10^5$'', with a dated note
+keeping the first wording. The check reread every step and used neither the
+delivered programs nor the write's. Its own programs (Python~3.14.4,
+mpmath~1.3.0) evaluate the exact gamma phase \eqref{pdt:eq:phase}, with
+derivatives by the Fa\`a di Bruno formula for a composition with a
+quadratic (checked against numerical differentiation to $10^{-49}$), find
+the saddle by sign-checked bisection on $I_N$, and compute $C_\ell$ by
+direct enumeration of the contraction \eqref{pdt:eq:contraction}, which
+agrees exactly with \eqref{pdt:eq:C1}.
+
+For Proposition~\ref{pdt:prop:moderate}: the range $|m-r|\le r/2$ lies in
+$I_N$ for large $N$ (for $T=1$ from about $L>14$ on), the cubic bound, the
+Lagrange remainder, the normalization by \eqref{pdt:eq:exactshape} with
+$K=1$ and the second assertion are correct, and the window
+$|z|=o(N^{1/6})$ is the natural one, since $\lambda_3\sim\sqrt2\,N^{-1/2}$.
+As a stress test, for $t=-1,0,1$ and $N=10^3,10^4,10^5$ the check computed
+the exact probabilities $\Prob_t(D_N=m)$ (normalized over $r/4\le m\le3r$;
+the omitted terms have relative weight below $e^{-1300}$) and took the
+supremum, over the integers $m$ with $|m-r|\le r/2$ (every seventh one at
+$N=10^5$), that is up to $|z|\approx250$, of
+$\bigl|\log\bigl(\Prob_t(D_N=m)/(\sqrt A\,\varphi(z))\bigr)\bigr|$ divided by
+$|z|^3N^{-1/2}+N^{-1}$. It is $0.24$--$0.26$ at $N=10^3$, $0.28$--$0.29$ at
+$N=10^4$ and $0.30$--$0.31$ at $N=10^5$, attained at the left end
+$m\approx r/2$. The slow growth matches the leading-order value
+$4\sqrt2\,(\log2-\frac58)\approx0.385$ of this ratio at $m=r/2$, from
+$\rho\approx2N(\log(1+u)-u+u^2/2)$ with $u=(m-r)/r$; no failure of
+uniformity appeared.
+
+For the note after Theorem~\ref{pdt:thm:seeds}: the window was rederived
+from the brackets \eqref{pdt:eq:bseedbracket}--\eqref{pdt:eq:cseedbracket}
+and the exact gap $z_c-z_b=v/2+1$. With exact $b_n$ and $c_n$ for
+$n\le600$ (big-integer sums), for 4000 log-uniformly sampled $X$ in
+$[b_{60},c_{600}]$ both brackets held with $C=1$, and
+$\nu_c(X)-\nu_b(X)-v/2$ ranged over $[0.035,1.764]$, inside the window. The
+seed errors $z_b(b_n)-n$ and $z_c(c_n)-n$ are at most $0.06\,v^3/n_0$ in
+absolute value for $n=50,\ldots,3200$, as \eqref{pdt:eq:seederror} allows.
+A side finding: $b_n$ is strictly increasing on $1\le n\le600$, but $c_n$
+increases only weakly ($c_0=c_1=c_2=1$), consistent with the source, whose
+injection gives $c_{n+1}\ge c_n$ and which needs no more.
+
+For Remark~\ref{pdt:rem:C1sign}: the check reproduced every entry of the
+table; on the 51-point grid the last negative point is $N=15{,}849$ and
+the first positive one $N=19{,}953$, with least value $-0.0217$ at $N=50$
+(over the integers $10\le N\le199$ the least value is $-0.021713$, at
+$N=48$); $NC_1=-1.0722\times10^{-7}$ at $N=15{,}864$ and
+$+1.0975\times10^{-7}$ at $N=15{,}865$; and a 600-point logarithmic grid on
+$[10,10^6]$ shows exactly one sign change. The heuristic
+$-\frac38+\frac5{12}=\frac1{24}$ and $1/L\approx0.07$ at $N=10^6$ are
+correct. For $N\le46$ the interval $I_N$ does not bracket the saddle
+(there $4N/L>N$), so the check took the root on $[1,N)$; this affects only
+grid points below $50$.
+
+Spot checks of the source: $b_1,\ldots,b_9=1,2,5,14,43,143,510,1936,7775$,
+the row $(1,6,6,1)$ at $N=4$ and the binomial transform
+\eqref{pdt:eq:bin-transform} for $N\le30$; at $N=1000$ the saddle, mean,
+variance, $p_N$ and the residuals for $K=1,2,3$ of
+Section~\ref{pdt:sec:checks}, and the write's corrected-moment errors
+$7.0\times10^{-6}$ and $1.47\times10^{-6}$, all to every printed digit; and
+the rounding counterexample at $X=b_{1000}$: $z_b=1000.0014164605$, whose
+ceiling $1001$ exceeds the threshold $1000$ ($b_{999}<b_{1000}$), the $K=2$
+smooth root $1000.00000000014117$ by the check's own bisection, and
+$z_c(c_{1000})=1000.0028242626$.
+
+Separately, a parallel check of Report~243's write found that this
+report's credit to that report (Section~\ref{pdt:sec:provenance}) said
+that the estimate of its Lemma~2.1 follows from
+Theorem~\ref{pdt:thm:elementary}; that holds for the estimate of $b_n$
+but not for the lemma's single-term statement, which is the display after
+\eqref{pdt:eq:fixedalpha}. The credit is corrected where it stands, with a
+dated note keeping the first wording.
+
+This was a careful reading with numerical tests in 30- to 60-digit floating
+point, not interval-certified, and not a formal verification or an
+external review.
