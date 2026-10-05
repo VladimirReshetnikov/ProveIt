@@ -233,6 +233,19 @@ Fresh metadata/finite-height checks pass before freezing; the PDF and external
 bibliography were not independently verified. No paid integer compiler or
 operation saving is supplied, and the established universal84 bound remains.
 
+The [shorter selector search](Papers/research-wip/native-stream-queue/complete83_subpower_selector_bound.md)
+and [independent proof review](Papers/research-wip/native-stream-queue/review_complete83_subpower_selector_bound.md)
+sharpen the fixed-prime construction to z<=Q^(1+o(1)), and likewise F=Kz,
+on each fixed compiler subsequence. Inclusion-exclusion needs only
+floor(2^omega(N)*N/phi(N))+1 representatives for N=A_out>1; its prime-factor
+product is subpower without any prime-distribution theorem. This search is
+no longer than the earlier square-root bound, so the recorded positivity
+threshold and unconditional odd-scale theorem remain valid. The estimate
+is an upper bound, not an asymptotic equality for the chosen selector.
+The uncontrolled low Q digit still prevents importing the small-z binary
+population proof. This proof-only refinement supplies no complete zero or
+new universal arithmetic bound and executes no supplied program.
+
 The [fixed-prime quotient-carry theorem](Papers/research-wip/native-stream-queue/complete83_fixed_prime_quotient_carries.md)
 and [independent review](Papers/research-wip/native-stream-queue/review_complete83_fixed_prime_quotient_carries.md) remove
 the odd-scale hypothesis on explicit infinite subsequences of each fixed
