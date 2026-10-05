@@ -1,44 +1,44 @@
 \section{The exact gamma saddle and the all orders theorem}
-\label{sec:saddle}
+\label{pdt:sec:saddle}
 For a real dimension mark $t$, let
-\begin{equation}\label{eq:marked}
+\begin{equation}\label{pdt:eq:marked}
  B_N(t)=\sum_{m=1}^N T(N,m)e^{tm},\qquad B_N(0)=b_N.
 \end{equation}
 The real phase on $1\le x\le N$ is
-\begin{equation}\label{eq:phase}
+\begin{equation}\label{pdt:eq:phase}
  f_N(x)=\log\Gamma(M(x)+N-x)-\log\Gamma(N-x+1)-\log\Gamma(M(x)).
 \end{equation}
-It agrees \emph{exactly} with the summands: $e^{f_N(m)}=T(N,m)$. Replacing this phase by only its leading logarithmic approximation would lose an unbounded exponential factor; Section~\ref{sec:elementary} quantifies this issue.
+It agrees \emph{exactly} with the summands: $e^{f_N(m)}=T(N,m)$. Replacing this phase by only its leading logarithmic approximation would lose an unbounded exponential factor; Section~\ref{pdt:sec:elementary} quantifies this issue.
 
-\begin{theorem}[Exact saddle expansion]\label{thm:main}
+\begin{theorem}[Exact saddle expansion]\label{pdt:thm:main}
 Fix a finite $T\ge0$ and an integer $K\ge1$. Write $L=\log N$ and
 \[
  I_N=[N/(2L),4N/L].
 \]
 For all sufficiently large $N$, uniformly for real $|t|\le T$, there is exactly one root $r=r_N(t)$ in $I_N$ of
-\begin{equation}\label{eq:saddle}
+\begin{equation}\label{pdt:eq:saddle}
  f_N'(r)+t=0.
 \end{equation}
 It is the unique global maximizer of $f_N(x)+tx$ on $[1,N]$. Put
-\begin{equation}\label{eq:standard}
+\begin{equation}\label{pdt:eq:standard}
  A=-f_N''(r),\qquad \sigma=A^{-1/2},\qquad
  \lambda_j=f_N^{(j)}(r)A^{-j/2}\quad(j\ge3).
 \end{equation}
 Then
 \begin{align}
- r&=\frac{2N}{L-2\log L+\log2+2-t+O_T(\log L/L)},\label{eq:rscale}\\
- A&=\frac{2N}{r^2}\bigl(1+O_T(L^{-1})\bigr)\sim\frac{L^2}{2N},\label{eq:Ascale}\\
- \lambda_j&=O_{j,T}(N^{1-j/2}).\label{eq:lamscale}
+ r&=\frac{2N}{L-2\log L+\log2+2-t+O_T(\log L/L)},\label{pdt:eq:rscale}\\
+ A&=\frac{2N}{r^2}\bigl(1+O_T(L^{-1})\bigr)\sim\frac{L^2}{2N},\label{pdt:eq:Ascale}\\
+ \lambda_j&=O_{j,T}(N^{1-j/2}).\label{pdt:eq:lamscale}
 \end{align}
 Define $C_0=1$ and, for $\ell\ge1$,
-\begin{equation}\label{eq:contraction}
+\begin{equation}\label{pdt:eq:contraction}
  C_\ell=\sum_{\substack{k_3,\ldots,k_{2\ell+2}\ge0\\
                  \sum_{j=3}^{2\ell+2}(j-2)k_j=2\ell}}
  \left(\sum_{j=3}^{2\ell+2}jk_j-1\right)!!
  \prod_{j=3}^{2\ell+2}\frac{(\lambda_j/j!)^{k_j}}{k_j!}.
 \end{equation}
 Here $(-1)!!=1$. This is a finite sum, its double factorial is an even Gaussian moment, and $C_\ell=O_{\ell,T}(N^{-\ell})$. The marked count satisfies
-\begin{equation}\label{eq:main}
+\begin{equation}\label{pdt:eq:main}
  B_N(t)=e^{f_N(r)+tr}\sqrt{\frac{2\pi}{A}}
  \left(\sum_{\ell=0}^{K-1}C_\ell+O_{K,T}(N^{-K})\right).
 \end{equation}
@@ -47,16 +47,46 @@ The theorem permits each \emph{fixed} $K$ and bounded real $t$. It asserts neith
 
 For $f_j=f_N^{(j)}(r)$, the first corrections are
 \begin{align}
- C_1&=\frac{f_4}{8A^2}+\frac{5f_3^2}{24A^3},\label{eq:C1}\\
+ C_1&=\frac{f_4}{8A^2}+\frac{5f_3^2}{24A^3},\label{pdt:eq:C1}\\
  C_2&=\frac{f_6}{48A^3}+\frac{7f_3f_5}{48A^4}
        +\frac{35f_4^2}{384A^4}
        +\frac{35f_3^2f_4}{64A^5}
-       +\frac{385f_3^4}{1152A^6}.\label{eq:C2}
+       +\frac{385f_3^4}{1152A^6}.\label{pdt:eq:C2}
 \end{align}
 In particular,
-\begin{equation}\label{eq:C-limits}
+\begin{equation}\label{pdt:eq:C-limits}
  C_1\sim\frac1{24N},\qquad C_2\sim\frac1{1152N^2}.
 \end{equation}
-The limits in \eqref{eq:C-limits} cannot replace the exact coefficients in \eqref{eq:main} at its stated power accuracy. Their logarithmic relative corrections are larger than the next inverse-$N$ power. For example, in the bounded computations through $N=1000$, the exact $C_1$ at $t=0$ is still negative.
+The limits in \eqref{pdt:eq:C-limits} cannot replace the exact coefficients in \eqref{pdt:eq:main} at its stated power accuracy. Their logarithmic relative corrections are larger than the next inverse-$N$ power. For example, in the bounded computations through $N=1000$, the exact $C_1$ at $t=0$ is still negative.
+
+\begin{remark}[{[write]} How slowly $NC_1$ approaches $1/24$]\label{pdt:rem:C1sign}
+Added 5 October 2026, batch~102. The intake evaluated $C_1$ at $t=0$ from
+\eqref{pdt:eq:C1}, with the exact gamma phase \eqref{pdt:eq:phase} and its
+derivatives at the exact saddle, in 40- to 60-digit floating point (not
+interval arithmetic). It found
+\begin{center}
+\begin{tabular}{@{}lccccccc@{}}
+\toprule
+$N$ & $10^3$ & $10^4$ & $10^5$ & $10^6$ & $10^9$ & $10^{12}$ & $10^{20}$\\
+\midrule
+$NC_1$ & $-0.0113$ & $-0.0016$ & $0.0056$ & $0.0109$ & $0.0206$ & $0.0257$ & $0.0321$\\
+\bottomrule
+\end{tabular}
+\end{center}
+against the limit $1/24=0.0417$. On a logarithmic grid of 51 sizes from 10
+to $10^6$, $NC_1$ is negative up to $N=15{,}849$ and positive from
+$N=19{,}953$ on, with its least value $-0.0217$ near $N=50$; bisection
+places the sign change between $N=15{,}864$ ($NC_1\approx-1.1\times10^{-7}$)
+and $N=15{,}865$ ($NC_1\approx+1.1\times10^{-7}$). So $C_1<0$ until $N$ lies
+between $10^4$ and $10^6$, as the source's caution that ``a short finite
+range need not yet show the limiting sign'' (Section~\ref{pdt:sec:checks})
+anticipates. The reason is visible in the proof:
+by \eqref{pdt:eq:highderivatives}, each of the two terms of
+\eqref{pdt:eq:C1} carries a relative error $O(1/L)$, so
+$NC_1=-\frac38+\frac5{12}+O(1/L)=\frac1{24}+O(1/L)$, the difference of two
+terms of size about $0.4$; at $N=10^6$, $1/L\approx0.07$. The table is a
+finite uncertified evaluation, not a theorem
+(Question~\ref{pdt:q:effective}).
+\end{remark}
 
 The rest of the proof is split into global localization and a lattice expansion. This makes explicit why neither an isolated formal saddle calculation nor an unproved replacement of the sum by an integral is enough.

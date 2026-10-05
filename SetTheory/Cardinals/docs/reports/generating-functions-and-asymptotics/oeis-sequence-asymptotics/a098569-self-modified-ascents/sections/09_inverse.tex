@@ -1,28 +1,28 @@
 \section{Controlled inversion and integer thresholds}
-\label{sec:inverse}
+\label{pdt:sec:inverse}
 For $X>1$ define the thresholds
-\begin{equation}\label{eq:thresholds}
+\begin{equation}\label{pdt:eq:thresholds}
  \nu_b(X)=\min\{n\ge0:b_n\ge X\},\qquad
  \nu_c(X)=\min\{n\ge0:c_n\ge X\}.
 \end{equation}
 The question is intrinsically discrete. An approximation with error tending to zero can still give the wrong ceiling near an integer, so the final conclusions will be two-sided ceiling brackets.
 
 \subsection{Differentiating the exact smooth carrier}
-Extend the size variable to real $y$ sufficiently large, keeping exactly the gamma phase \eqref{eq:phase}. Let $r_y$ denote its unmarked dominant saddle, $A_y=-f_y''(r_y)$, and let $C_\ell(y)$ be the same derivative contractions. For fixed $K\ge1$, set
-\begin{equation}\label{eq:smoothcarrier}
+Extend the size variable to real $y$ sufficiently large, keeping exactly the gamma phase \eqref{pdt:eq:phase}. Let $r_y$ denote its unmarked dominant saddle, $A_y=-f_y''(r_y)$, and let $C_\ell(y)$ be the same derivative contractions. For fixed $K\ge1$, set
+\begin{equation}\label{pdt:eq:smoothcarrier}
  \begin{split}
  S_K(y)&=e^{f_y(r_y)}\sqrt{2\pi/A_y}\,V_K(y),\\
  V_K(y)&=\sum_{\ell=0}^{K-1}C_\ell(y),\qquad F_K(y)=\log S_K(y).
  \end{split}
 \end{equation}
 Eventually $V_K(y)=1+O_K(y^{-1})>0$. The count theorem gives, at integer $n$,
-\begin{equation}\label{eq:logerror}
+\begin{equation}\label{pdt:eq:logerror}
  \log b_n=F_K(n)+O_K(n^{-K}).
 \end{equation}
 We shall \emph{not} differentiate this asymptotic error.
 
 Put $P_y(x)=M(x)+y-x$ and $q=y-x$. At fixed $x$,
-\begin{equation}\label{eq:mixedfirst}
+\begin{equation}\label{pdt:eq:mixedfirst}
  \partial_y f_y=\psi(P_y)-\psi(q+1),\qquad
  \partial_y\partial_x f_y=(M'(x)-1)\psi_1(P_y)+\psi_1(q+1)>0
 \end{equation}
@@ -31,39 +31,39 @@ near the saddle. Here $P_y\asymp x^2$, $P_y'=O(x)$ and $P_y''=1$. For $j\ge1$, a
  \psi^{(k)}(P_y)(P_y')^{2k-j}(P_y'')^{j-k}=O(x^{-j}),
 \]
 where the nonnegative exponents describe the usual quadratic-chain derivative formula. The $q$ term is $O(q^{-j})$. Thus
-\begin{equation}\label{eq:mixedbounds}
+\begin{equation}\label{pdt:eq:mixedbounds}
  \partial_y f_y^{(j)}(x)=O_j(x^{-j})
 \end{equation}
-on fixed proportional saddle neighborhoods. The implicit-function theorem and \eqref{eq:mixedfirst} give
-\begin{equation}\label{eq:rderivative}
+on fixed proportional saddle neighborhoods. The implicit-function theorem and \eqref{pdt:eq:mixedfirst} give
+\begin{equation}\label{pdt:eq:rderivative}
  r_y'=\frac{\partial_y\partial_x f_y(r_y)}{A_y}
        =O(r_y/y)>0.
 \end{equation}
 Consequently, direct differentiation of the exact quantities yields
-\begin{equation}\label{eq:coeffderivatives}
+\begin{equation}\label{pdt:eq:coeffderivatives}
  A_y'=O(A_y/y),\qquad
  \lambda_j'(y)=O_j(y^{-j/2}),\qquad
  C_\ell'(y)=O_\ell(y^{-\ell-1}).
 \end{equation}
-For example, the total derivative of $f_y^{(j)}(r_y)$ is $O(r_y^{-j})$ by \eqref{eq:mixedbounds}, \eqref{eq:rderivative} and the next $x$ derivative bound. The derivative of each finite contraction then has one extra factor $y^{-1}$ at its weight.
+For example, the total derivative of $f_y^{(j)}(r_y)$ is $O(r_y^{-j})$ by \eqref{pdt:eq:mixedbounds}, \eqref{pdt:eq:rderivative} and the next $x$ derivative bound. The derivative of each finite contraction then has one extra factor $y^{-1}$ at its weight.
 
-The saddle's $x$ derivative vanishes in differentiating its phase value. Equations \eqref{eq:mixedfirst}--\eqref{eq:coeffderivatives} therefore prove
-\begin{equation}\label{eq:Fslope}
+The saddle's $x$ derivative vanishes in differentiating its phase value. Equations \eqref{pdt:eq:mixedfirst}--\eqref{pdt:eq:coeffderivatives} therefore prove
+\begin{equation}\label{pdt:eq:Fslope}
  \begin{split}
  F_K'(y)&=\psi(M(r_y)+y-r_y)-\psi(y-r_y+1)+O_K(y^{-1})\\
  &=\log y-2\log\log y+\log2+o(1)\sim\log y>0.
  \end{split}
 \end{equation}
-This is a derivative statement about the explicit smooth carrier, obtained independently of \eqref{eq:logerror}.
+This is a derivative statement about the explicit smooth carrier, obtained independently of \eqref{pdt:eq:logerror}.
 
-\begin{theorem}[Exact carrier inverse bracket]\label{thm:inverse}
+\begin{theorem}[Exact carrier inverse bracket]\label{pdt:thm:inverse}
 For every fixed $K\ge1$ and all sufficiently large $X$, the equation
-\begin{equation}\label{eq:inverse-equation}
+\begin{equation}\label{pdt:eq:inverse-equation}
  F_K(y_K(X))=\log X
 \end{equation}
 has a unique sufficiently large solution. It satisfies
 $y_K(X)\sim\log X/\log\log X$. There exist constants $C_K,X_K$ such that, for $X\ge X_K$,
-\begin{equation}\label{eq:inversebracket}
+\begin{equation}\label{pdt:eq:inversebracket}
  \ceil{y_K-\frac{C_Ky_K^{-K}}{\log y_K}}
  \le\nu_b(X)\le
  \ceil{y_K+\frac{C_Ky_K^{-K}}{\log y_K}}.
@@ -72,20 +72,20 @@ $y_K(X)\sim\log X/\log\log X$. There exist constants $C_K,X_K$ such that, for $X
 \begin{proof}
 Since $F_K(y)\sim y\log y$ and its derivative is positive eventually, its sufficiently large inverse exists uniquely and has the claimed scale. The sequence $b_n$ is strictly increasing for $n\ge1$: for each old dimension its stars-and-bars count is nondecreasing as $n$ increases, and the new dimension contributes one extra table.
 
-Let the absolute error in \eqref{eq:logerror} be at most $D_Kn^{-K}$ eventually. By \eqref{eq:Fslope}, a horizontal shift
-$\delta=C_Ky_K^{-K}/\log y_K$ changes the smooth logarithmic carrier by more than this error when $C_K$ is sufficiently large. At $n=\ceil{y_K+\delta}$, monotonicity of the carrier and the lower count bound give $b_n\ge X$. Every integer $n<y_K-\delta$ has $b_n<X$, first within a fixed neighborhood by the same mean-value argument, and then farther away by monotonicity of $b_n$. This yields \eqref{eq:inversebracket}, including the case in which a bracket endpoint is an integer.
+Let the absolute error in \eqref{pdt:eq:logerror} be at most $D_Kn^{-K}$ eventually. By \eqref{pdt:eq:Fslope}, a horizontal shift
+$\delta=C_Ky_K^{-K}/\log y_K$ changes the smooth logarithmic carrier by more than this error when $C_K$ is sufficiently large. At $n=\ceil{y_K+\delta}$, monotonicity of the carrier and the lower count bound give $b_n\ge X$. Every integer $n<y_K-\delta$ has $b_n<X$, first within a fixed neighborhood by the same mean-value argument, and then farther away by monotonicity of $b_n$. This yields \eqref{pdt:eq:inversebracket}, including the case in which a bracket endpoint is an integer.
 \end{proof}
-If the two ceilings in \eqref{eq:inversebracket} coincide, their common value is the exact threshold. A sufficient condition is that $y_K$ remain farther than the stated horizontal error from every integer. There is no uniform assertion that $\nu_b(X)=\ceil{y_K(X)}$ at all large thresholds.
+If the two ceilings in \eqref{pdt:eq:inversebracket} coincide, their common value is the exact threshold. A sufficient condition is that $y_K$ remain farther than the stated horizontal error from every integer. There is no uniform assertion that $\nu_b(X)=\ceil{y_K(X)}$ at all large thresholds.
 
 The constants in this theorem are non-effective in the present proof. A certified finite integer answer requires validated evaluation of the smooth carrier, effective error constants, and possibly exact neighboring counts. Ordinary high-precision floating-point arithmetic alone does not supply that certificate.
 
 \subsection{Elementary seeds with vanishing absolute error}
 Write $\Lambda=\log X$, and let $v>0$ be the unique solution of
-\begin{equation}\label{eq:veq}
+\begin{equation}\label{pdt:eq:veq}
  v^2(v+1)e^v=2\Lambda.
 \end{equation}
 Define
-\begin{equation}\label{eq:seeds}
+\begin{equation}\label{pdt:eq:seeds}
  \begin{split}
  n_0&=\frac{\Lambda(v+2)}{v(v+1)},\\
  z_b(X)&=n_0-\frac v4-\frac12+\frac{\log(P(v)/2)}{2v},\\
@@ -93,18 +93,18 @@ Define
  \end{split}
 \end{equation}
 
-\begin{theorem}[Elementary inverse brackets]\label{thm:seeds}
+\begin{theorem}[Elementary inverse brackets]\label{pdt:thm:seeds}
 For each fixed $K\ge1$,
-\begin{equation}\label{eq:seederror}
+\begin{equation}\label{pdt:eq:seederror}
  y_K(X)=z_b(X)+O_K(v^3/n_0).
 \end{equation}
 For some constants $C,X_0$ and $X\ge X_0$,
 \begin{align}
- \ceil{z_b-Cv^3/n_0}&\le\nu_b(X)\le\ceil{z_b+Cv^3/n_0},\label{eq:bseedbracket}\\
- \ceil{z_c-Cv^3/n_0}&\le\nu_c(X)\le\ceil{z_c+Cv^3/n_0}.\label{eq:cseedbracket}
+ \ceil{z_b-Cv^3/n_0}&\le\nu_b(X)\le\ceil{z_b+Cv^3/n_0},\label{pdt:eq:bseedbracket}\\
+ \ceil{z_c-Cv^3/n_0}&\le\nu_c(X)\le\ceil{z_c+Cv^3/n_0}.\label{pdt:eq:cseedbracket}
 \end{align}
 The error $v^3/n_0$ tends to zero. The smooth elementary inverse roots for $b$ and $c$ differ by $v/2+1+o(1)$, and
-\begin{equation}\label{eq:inverse-separation}
+\begin{equation}\label{pdt:eq:inverse-separation}
  \nu_c(X)-\nu_b(X)=v/2+1+O(1).
 \end{equation}
 \end{theorem}
@@ -115,33 +115,58 @@ For real $y$, let $u=u(y)$ solve $u(u+2)e^u=2y$. Define
  g_\pm(u)=\pm u^2/4\pm u/2-\tfrac12\log(P(u)/2).
 \]
 Differentiating the implicit equation gives the exact identities
-\begin{equation}\label{eq:elementary-slope}
+\begin{equation}\label{pdt:eq:elementary-slope}
  u'(y)=\frac{u(u+2)}{yP(u)}=O(y^{-1}),\qquad F_0'(y)=u(y).
 \end{equation}
-Equation \eqref{eq:veq} is precisely $F_0(n_0)=\Lambda$, with $u(n_0)=v$. The smooth derivation of Theorem~\ref{thm:elementary}, applied to the exact finite carrier in \eqref{eq:smoothcarrier}, gives
-\begin{equation}\label{eq:smooth-elementary}
+Equation \eqref{pdt:eq:veq} is precisely $F_0(n_0)=\Lambda$, with $u(n_0)=v$. The smooth derivation of Theorem~\ref{pdt:thm:elementary}, applied to the exact finite carrier in \eqref{pdt:eq:smoothcarrier}, gives
+\begin{equation}\label{pdt:eq:smooth-elementary}
  F_K(y)=F_0(y)+g_+(u(y))+O_K(u(y)^4/y).
 \end{equation}
 Now $z_b=n_0-g_+(v)/v$ and $z_b-n_0=O(v)$. Taylor's theorem, $F_0''(y)=O(1/y)$ and $(g_+\circ u)'=O(u/y)$ show that
 \[
  F_K(z_b)-\Lambda=O_K(v^4/n_0).
 \]
-Division by \eqref{eq:Fslope}, which is asymptotic to $v$ here, proves \eqref{eq:seederror}. Combining this with the count error, or applying the same mean-value comparison directly, proves \eqref{eq:bseedbracket}.
+Division by \eqref{pdt:eq:Fslope}, which is asymptotic to $v$ here, proves \eqref{pdt:eq:seederror}. Combining this with the count error, or applying the same mean-value comparison directly, proves \eqref{pdt:eq:bseedbracket}.
 
 For the binary count, the explicit smooth logarithmic carrier is
-$F_-(y)=F_0(y)+g_-(u(y))$. Its derivative is $u+O(u/y)>0$. The count formula \eqref{eq:ccarrier} gives
-$\log c_n=F_-(n)+O(u(n)^4/n)$, and the same Taylor calculation shows its root is $z_c+O(v^3/n_0)$. The needed monotonicity of $c_n$ follows by an injection: append a final row and column with new diagonal entry one and all new off-diagonal entries zero. Deleting that row and column recovers the original table. This raises the size by one while preserving the binary class. Individual fixed-dimension binomial terms need not be monotone. The same ceiling argument proves \eqref{eq:cseedbracket}.
+$F_-(y)=F_0(y)+g_-(u(y))$. Its derivative is $u+O(u/y)>0$. The count formula \eqref{pdt:eq:ccarrier} gives
+$\log c_n=F_-(n)+O(u(n)^4/n)$, and the same Taylor calculation shows its root is $z_c+O(v^3/n_0)$. The needed monotonicity of $c_n$ follows by an injection: append a final row and column with new diagonal entry one and all new off-diagonal entries zero. Deleting that row and column recovers the original table. This raises the size by one while preserving the binary class. Individual fixed-dimension binomial terms need not be monotone. The same ceiling argument proves \eqref{pdt:eq:cseedbracket}.
 
-Finally $z_c-z_b=v/2+1$ exactly, while the continuous root errors vanish. Passing to integer thresholds introduces bounded rounding uncertainty, proving \eqref{eq:inverse-separation}.
+Finally $z_c-z_b=v/2+1$ exactly, while the continuous root errors vanish. Passing to integer thresholds introduces bounded rounding uncertainty, proving \eqref{pdt:eq:inverse-separation}.
 \end{proof}
+\begin{writenote}[Added 5 October 2026, batch~102: reading \eqref{pdt:eq:inverse-separation}]
+As printed, the ``$+1$'' in \eqref{pdt:eq:inverse-separation} is absorbed
+by the $O(1)$: the statement is $\nu_c(X)-\nu_b(X)=v/2+O(1)$. This is a
+point of wording, not a correction of substance. The exact statement behind
+it is the identity $z_c-z_b=v/2+1$ of the smooth seeds \eqref{pdt:eq:seeds},
+and the brackets give an explicit window around it: with
+$\delta=Cv^3/n_0$ as in \eqref{pdt:eq:bseedbracket}--\eqref{pdt:eq:cseedbracket},
+\[
+ \frac v2-2\delta<\nu_c(X)-\nu_b(X)<\frac v2+2+2\delta\qquad(X\ge X_0),
+\]
+an interval of length $2+4\delta\to2$ centred at $v/2+1$.
+
+\emph{Proof} [write]. For real $a$ and integer $\nu$, $\ceil a\le\nu$ is
+equivalent to $a\le\nu$, and $\nu\le\ceil a$ implies $\nu<a+1$. Hence
+\eqref{pdt:eq:bseedbracket} gives $z_b-\delta\le\nu_b<z_b+\delta+1$, and
+\eqref{pdt:eq:cseedbracket} gives $z_c-\delta\le\nu_c<z_c+\delta+1$.
+Subtracting, $z_c-z_b-1-2\delta<\nu_c-\nu_b<z_c-z_b+1+2\delta$, and
+$z_c-z_b=v/2+1$ by \eqref{pdt:eq:seeds}. \qed
+
+The step \eqref{pdt:eq:smooth-elementary} of the proof above, the
+real-size form of Theorem~\ref{pdt:thm:elementary} for the smooth carrier
+$F_K$, is asserted as ``the smooth derivation'' of that theorem, and the
+derivative bounds \eqref{pdt:eq:coeffderivatives} are argued in one
+sentence. A written-out version is Question~\ref{pdt:q:smooth}.
+\end{writenote}
 
 \subsection{All fixed logarithmic orders}
 Let $w=\log\Lambda$. The equation for $v$ becomes
-\begin{equation}\label{eq:vlogs}
+\begin{equation}\label{pdt:eq:vlogs}
  v+3\log v+\log(1+1/v)=w+\log2.
 \end{equation}
 It first gives $v=w-3\log w+\log2+O(\log w/w)$, whence for either threshold
-\begin{equation}\label{eq:twoinverseorders}
+\begin{equation}\label{pdt:eq:twoinverseorders}
  \nu_\bullet(X)=\frac{\Lambda}{w}
        +(3\log w+1-\log2)\frac{\Lambda}{w^2}
        +O\!\left(\frac{\Lambda(\log w)^2}{w^3}\right).
@@ -149,17 +174,17 @@ It first gives $v=w-3\log w+\log2+O(\log w/w)$, whence for either threshold
 The additive seed corrections $O(w)$ and integer errors $O(1)$ are smaller than this remainder.
 
 Every fixed logarithmic order can be generated recursively. Substitute
-\begin{equation}\label{eq:vrecursion}
+\begin{equation}\label{pdt:eq:vrecursion}
  v=w-3\log w+\log2+\sum_{j=1}^J\frac{P_j(\log w)}{w^j}
 \end{equation}
-into \eqref{eq:vlogs} and cancel successive inverse powers of $w$. At each stage the new polynomial $P_j$ has coefficient one, so the recursion determines it uniquely. For example,
+into \eqref{pdt:eq:vlogs} and cancel successive inverse powers of $w$. At each stage the new polynomial $P_j$ has coefficient one, so the recursion determines it uniquely. For example,
 \[
  P_1(s)=9s-3\log2-1.
 \]
-The residual after $P_J$ is $O_J((\log w)^{J+1}/w^{J+1})$. Since the derivative of the left side of \eqref{eq:vlogs} tends to one, the error in $v$ has this same order. Substitution into $n_0=\Lambda(v+2)/(v(v+1))$, whose derivative in $v$ is $O(\Lambda/w^2)$, gives error
-\begin{equation}\label{eq:log-order-error}
+The residual after $P_J$ is $O_J((\log w)^{J+1}/w^{J+1})$. Since the derivative of the left side of \eqref{pdt:eq:vlogs} tends to one, the error in $v$ has this same order. Substitution into $n_0=\Lambda(v+2)/(v(v+1))$, whose derivative in $v$ is $O(\Lambda/w^2)$, gives error
+\begin{equation}\label{pdt:eq:log-order-error}
  O_J\!\left(\frac{\Lambda(\log w)^{J+1}}{w^{J+3}}\right).
 \end{equation}
-For each fixed $J$, the omitted $O(w)$ elementary seed correction is negligible compared with \eqref{eq:log-order-error}. These are controlled scale expansions; they are not exact rounding prescriptions.
+For each fixed $J$, the omitted $O(w)$ elementary seed correction is negligible compared with \eqref{pdt:eq:log-order-error}. These are controlled scale expansions; they are not exact rounding prescriptions.
 
-For practical refinement, $z_b$ is a useful starting value for a safeguarded Newton or bisection solver for \eqref{eq:inverse-equation}. The positivity in \eqref{eq:Fslope} supplies the local monotonicity. Evaluation error and asymptotic count error must be tracked separately. A finite check illustrates the warning: at $X=b_{1000}$, the elementary seed is approximately $1000.0014164605$, so taking its ceiling gives $1001$, while the exact threshold is $1000$. Even a much more accurate smooth root can lie on the wrong side of the same integer. The two-ceiling formulation is indispensable.
+For practical refinement, $z_b$ is a useful starting value for a safeguarded Newton or bisection solver for \eqref{pdt:eq:inverse-equation}. The positivity in \eqref{pdt:eq:Fslope} supplies the local monotonicity. Evaluation error and asymptotic count error must be tracked separately. A finite check illustrates the warning: at $X=b_{1000}$, the elementary seed is approximately $1000.0014164605$, so taking its ceiling gives $1001$, while the exact threshold is $1000$. Even a much more accurate smooth root can lie on the wrong side of the same integer. The two-ceiling formulation is indispensable.
