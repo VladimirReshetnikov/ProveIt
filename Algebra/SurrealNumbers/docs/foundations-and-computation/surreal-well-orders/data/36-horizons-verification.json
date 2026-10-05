@@ -1,0 +1,55 @@
+{
+  "status": "passed",
+  "program": "notation_demo.py",
+  "python_version": "3.12.14",
+  "coefficient_domain": "positive natural numbers only",
+  "term_representation": "immutable recursive tuples",
+  "random_seed": 20261004,
+  "independent_oracle": {
+    "method": "exact ordinary-natural evaluation at one common finite radix",
+    "base": 7,
+    "maximum_coefficient_in_oracle_samples": 4,
+    "exhaustive_shallow_samples": 625,
+    "generated_nested_samples_before_union": 384,
+    "distinct_total_samples": 994,
+    "maximum_syntax_height": 3,
+    "largest_evaluated_integer_bit_length": 92,
+    "unordered_pair_checks": 493521,
+    "additional_ordered_pair_checks": 2000,
+    "reflexive_checks": 994,
+    "validation_identity_checks": 994,
+    "distinct_evaluations": 994
+  },
+  "malformed_inputs_rejected": 16,
+  "named_checks": [
+    "zero_before_nonzero",
+    "proper_prefix_both_directions",
+    "equal_exponent_coefficient_decision",
+    "leading_exponent_dominates_large_finite_tail",
+    "canonical_equality",
+    "eight_tower_boundaries_structural_only",
+    "prettyprinting_examples",
+    "malformed_shape_coefficients_order_and_nested_nodes",
+    "all_sample_pairs_against_independent_exact_natural_values",
+    "oracle_rejects_bad_radix_and_huge_towers"
+  ],
+  "examples": {
+    "zero": "0",
+    "natural_seventeen": "17",
+    "Omega": "Ω",
+    "Omega_to_Omega": "Ω^Ω",
+    "w_2": "Ω^(Ω^Ω)",
+    "w_3": "Ω^(Ω^(Ω^Ω))",
+    "mixed_term": "Ω^Ω·2 + Ω^3·4 + 3"
+  },
+  "limitations": [
+    "Finite tests do not prove class well-foundedness or any theorem in the paper.",
+    "This is not a Lean formalization, or any other proof-assistant formalization.",
+    "Natural coefficients omit all infinite set-ordinal constants and coefficients.",
+    "The fragment is not closed under the whole ordinal arithmetic of the paper; arbitrary ordinal-indexed sums and arbitrary ordinal coefficients leave it.",
+    "The finite-radix oracle is a test device, not the interpretation of Omega as Ord.",
+    "Tower boundaries beyond the bounded oracle range are tested structurally only.",
+    "No arithmetic on arbitrary class order presentations is implemented.",
+    "Python's ordinary recursion and memory limits apply."
+  ]
+}
