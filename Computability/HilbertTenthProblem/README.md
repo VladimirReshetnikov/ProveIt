@@ -248,6 +248,17 @@ Fresh metadata/finite-height checks pass before freezing; the PDF and external
 bibliography were not independently verified. No paid integer compiler or
 operation saving is supplied, and the established universal84 bound remains.
 
+The [growing resonant selectors](Papers/research-wip/native-stream-queue/complete83_growing_resonant_selectors.md)
+and [independent proof review](Papers/research-wip/native-stream-queue/review_complete83_growing_resonant_selectors.md)
+shift the coprime search to indices1 through L, forcing the exact selector
+quotient h to grow at least quadratically in n while log(h)/log(Q) tends
+to zero. The canonical resonant residues are proved in both shapes.
+The selector bound doubles to2Zbound; the correspondingly doubled
+positivity threshold preserves transport and the complete odd-scale
+construction. Fresh bounded arithmetic and independent inert-source
+checks support the proof. This packet leaves binary population to a
+separate argument and makes no complete-zero or improved-bound claim.
+
 The [shorter selector search](Papers/research-wip/native-stream-queue/complete83_subpower_selector_bound.md)
 and [independent proof review](Papers/research-wip/native-stream-queue/review_complete83_subpower_selector_bound.md)
 sharpen the fixed-prime construction to z<=Q^(1+o(1)), and likewise F=Kz,
