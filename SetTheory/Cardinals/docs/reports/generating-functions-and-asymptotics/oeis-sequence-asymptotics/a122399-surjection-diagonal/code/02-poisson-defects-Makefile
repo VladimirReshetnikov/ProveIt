@@ -1,0 +1,26 @@
+PYTHON ?= python3
+LATEX ?= pdflatex
+LATEXFLAGS = -interaction=nonstopmode -halt-on-error
+
+.PHONY: all pdf coefficients verify numerics certificate reproduce clean
+all: pdf
+pdf:
+	$(LATEX) $(LATEXFLAGS) article.tex
+	$(LATEX) $(LATEXFLAGS) article.tex
+	$(LATEX) $(LATEXFLAGS) article.tex
+coefficients:
+	$(PYTHON) code/coefficients.py --order 4
+verify:
+	$(PYTHON) code/verify.py
+numerics:
+	$(PYTHON) code/numerics.py --dps 80
+certificate:
+	$(PYTHON) code/certify_threshold.py
+reproduce:
+	$(MAKE) coefficients
+	$(MAKE) verify
+	$(MAKE) numerics
+	$(MAKE) certificate
+	$(MAKE) pdf
+clean:
+	rm -f article.aux article.log article.out article.toc
