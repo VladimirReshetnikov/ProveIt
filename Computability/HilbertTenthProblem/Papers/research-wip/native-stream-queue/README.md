@@ -158,6 +158,23 @@ or46 witnesses/SOS224/degree52. Native AND remains in the loader, so a
 cheaper loading/accepting-history compiler is still needed for a universal
 improvement. The universal84/187 and85/155 points remain unchanged.
 
+The [actual Borel publication review](review_borel_write_20262718e.md)
+checks the integration of four manuscripts as Parts XVIII–XXI at20262718e:
+the full guide diff, selected article/proof interfaces,33 archive members,
+17 placements and268 original-label routes. Separate
+[support](review_borel_support_20262718e.md) and
+[flow](review_pma_borel_flow_interfaces_20262718e.md) challenges retain their
+exact reading scopes. The [root corrections](review_borel_write_20262718e_root.md)
+repair two summaries omitting `Gamma={0}`, a dense-group citation lacking
+its dyadic-root hypothesis, and overstated archive-reading coverage.
+Numbered remarks preserve each claim and its counterexample or scope;
+the earlier flow sampling assessment is qualified by the publication's
+finite-rank counterexample and infinite-rank repair. The corrected PDF
+builds to744 pages with all1740 source labels preserved. These are bounded
+publication and interface reviews, not a new full-manuscript certification.
+No paid ordinary-integer compiler or arithmetic saving follows;
+84/187/18 remains the proved universal operation point.
+
 The [multiway Hadamard packing certificate](hadamard_next_arithmetic.md)
 isolates a k-fold coefficientwise product in one central digit band using
 k-1 products after loading. A fully paid fixed-width, fixed-horizon cyclic
@@ -5776,6 +5793,7 @@ New research and the completed75-operation construction:
 
 | Artifact | Established result | Remaining boundary |
 |---|---|---|
+| [Actual Borel publication review](review_borel_write_20262718e.md), [support challenge](review_borel_support_20262718e.md), [flow challenge](review_pma_borel_flow_interfaces_20262718e.md), [root corrections](review_borel_write_20262718e_root.md) | Four actual Parts:33 members,17 placements,268 routes; selected proofs checked; zero-group summaries, citation premise and review scope corrected with retained remarks;744-page PDF built. | Exact scoped reads and inherited proofs distinguished; Borel/certificate interfaces supply no paid integer compiler or universal arithmetic saving. |
 | [Multiway Hadamard packing](hadamard_next_arithmetic.md), [review](review_hadamard_next_arithmetic.md), [root binding](hadamard_next_arithmetic.json), [saved arrays](hadamard_next_arithmetic_checks.json) | All-k carry-free central band; fully paid finite cyclic trajectory, exact degree6 and `(13n+18)T+11n-1` operations with given numerals. | Direct guarded evaluation is cheaper by `18T+2n-2`; variable-width loaders and unbounded-history compiler remain unpaid. |
 | [Native gamma83 restrictions](gamma83_native_next.md), [review](review_gamma83_native_next.md), [binding](gamma83_native_next.json) | Reciprocal-Eisenstein irreducibility of `H_r(T^k)`; genuine filtered `H=3u^f` forces `gcd(f,30)=1`, order30 modulo31 and `u=1+4q^3 mod8q^3`. | Formal irreducibility does not control specialized factorization; prime-power occurrence and the independent-gamma83 alias problem remain open. |
 | [Affine norm-pair rigidity](complete84_affine_norm_pair_rigidity.md), [review](review_complete84_affine_norm_pair_rigidity.md) | Exact affine product symmetries separate the two norm pairs; positive half-difference also fails the unit condition | Generic-field identity class only, not a gate lower bound or exclusion of nonlinear/positive-zero charts |
