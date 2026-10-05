@@ -16,6 +16,8 @@ Manuscript 60 pins no repository revision. It cites the repository only by the p
 
 **Status: AI-assisted, unrefereed, not formalized.** The intakes reran every shipped program of all five manuscripts on copies and spot-checked the mathematics (see "Checks by the intake"). They did not re-derive every proof.
 
+**Post-publication notation review.** The quadrature in equation (58.4) now consistently uses `\mathcal J(n)`; one plain `J(n)` survived the Part V renaming. The original term is retained in the [numbered publication-review remark](../../../../../../../Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/review_path_forest_publication_eea159818.md). Direct before/after pdfLaTeX builds keep all 114 pages and byte-identical auxiliary label data (958 entries), with no warnings or box diagnostics; the corrected quadrature page was visually checked. This notation repair does not extend the bounded mathematical review to the full analytic proofs.
+
 ## Files
 
 ```
