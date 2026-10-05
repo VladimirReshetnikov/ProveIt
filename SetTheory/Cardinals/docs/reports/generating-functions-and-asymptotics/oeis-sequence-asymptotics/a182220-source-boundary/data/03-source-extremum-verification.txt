@@ -1,0 +1,90 @@
+OEIS SOURCE-BOUNDARY VERIFICATION
+================================
+
+EXACT INTEGER CHECKS: PASS
+Two independently constructed source triangles agree through n=64.
+  independently_matching_triangle_cells: 2080
+  exact_divisibility_checks: 2080
+  support_checks: 2080
+  general_covering_checks: 2080
+  sharp_covering_checks: 2016
+  extremizer_formula_checks: 64
+  finite_defect_checks_d_0_through_3: 242
+  two_sided_core_bound_checks: 64
+  marked_first_moment_checks: 64
+
+Independent enumeration of all topologically labeled DAGs:
+n    all graphs    extensional graphs    isomorphism classes    source row
+1    1             1                     1                      [1]
+2    2             1                     1                      [1, 0]
+3    8             2                     2                      [2, 0, 0]
+4    64            10                    9                      [8, 1, 0, 0]
+5    1024          120                   88                     [68, 20, 0, 0, 0]
+6    32768         3240                  1802                   [1248, 534, 20, 0, 0, 0]
+
+BLOCK PROFILES (exact integer coefficient prefixes, numerical evaluation):
+d  q     Q_q(R)                limiting value           absolute difference
+0  5    1.3796799966882       1.3333333333333          0.0463466634
+0  8    1.349192019713        1.3333333333333          0.0158586864
+0  11   1.336548930483        1.3333333333333          0.00321559715
+0  14   1.3338949373443       1.3333333333333          0.000561604011
+1  5    1.6418450309721       1.4628571428571          0.178987888
+1  8    1.4971773508876       1.4628571428571          0.034320208
+1  11   1.4689177227332       1.4628571428571          0.00606057988
+1  14   1.4638551844175       1.4628571428571          0.00099804156
+2  5    1.862746978429        1.5234819973639          0.339264981
+2  8    1.5727604107836       1.5234819973639          0.0492784134
+2  11   1.5315911858757       1.5234819973639          0.00810918851
+2  14   1.5247758862512       1.5234819973639          0.00129388889
+
+RADIAL RATIOS (numerical, with analytic truncation/covering majorants):
+d  order   r       ratio real          ratio imaginary     error from limit
+0  4      0.9     -0.16478899383      0.68402636405       0.024781927
+0  4      0.99    -0.17669788525      0.70594295814       0.00023523801
+0  4      0.999   -0.17648417997      0.70588757901       1.4561837e-05
+0  4      0.9999  -0.17647231883      0.70588062525       2.4453819e-06
+0  8      0.9     0.43426621922       0.69512427211       0.072339781
+0  8      0.99    0.48374186853       0.74825954585       0.00026395086
+0  8      0.999   0.48358821093       0.7480664683        1.7219148e-05
+0  8      0.9999  0.48357582909       0.74805459543       1.3218763e-06
+1  4      0.9     -0.15776997477      0.53738768369       0.092542528
+1  4      0.99    -0.19701871311      0.62039407855       0.0010719268
+1  4      0.999   -0.19663526882      0.62132499765       6.5130936e-05
+1  4      0.9999  -0.19661258986      0.62137760627       7.8690032e-06
+1  8      0.9     0.25645371943       0.5691059229        0.22970001
+1  8      0.99    0.40844720107       0.74076028484       0.00078920069
+1  8      0.999   0.40917948037       0.74064391665       4.7734931e-05
+1  8      0.9999  0.40922034606       0.74063618474       6.2073847e-06
+2  4      0.9     -0.21802945341      0.49553785322       0.092979539
+2  4      0.99    -0.20218006104      0.58522927726       0.0019026528
+2  4      0.999   -0.20175314708      0.58696280175       0.00011733461
+2  4      0.9999  -0.20172738793      0.58706470027       1.2236331e-05
+2  8      0.9     0.32581391816       0.68695144138       0.070019811
+2  8      0.99    0.37583272083       0.73414696676       0.0016186887
+2  8      0.999   0.37734903031       0.73423892584       9.9593743e-05
+2  8      0.9999  0.37743782741       0.73424356484       1.0687496e-05
+
+FIRST-ORDER CORRECTIONS
+Exact coefficient checks from independent truncated products: 1040.
+Exact amplitude correction checks from shifted-binomial products and Stirling: 80.
+Parameters: c=2,4,8,16; m=1..20; profile coefficients j=0..12.
+Numerical remainders and 64-point circle samples are in first_correction_checks.csv.
+Circle samples are diagnostic; their maximum does not bound the unsampled circle.
+Generated LaTeX: diagnostic_tables.tex and optional first_correction_tables.tex.
+
+DIAGNOSTIC METHODS AND LIMITATIONS
+- Blocks q<=11 use retained coefficients from the exact finite-defect formula.
+- Blocks q>=12 use U_m*binom(2^m-m,n-m), with covering error <=m*2^(-(n-m)).
+- Radial sums include q<=24 and at most 220 coefficients of each block.
+- Within-block omitted terms are bounded by a decreasing geometric ratio.
+- For q>=25: block <= Rr/(1-2aR) * 2^((q+d)(q+d-1)/2) * r^(2^(q-1)).
+  Here m<=K/2 and k0=K+1-m<=K<=cK/2; therefore
+  binom(cK-m,k0)<=binom(cK,k0)<=binom(cK,K)<=R^(-K).
+  The last inequality follows by bounding the Kth term of (1+1/a)^(cK).
+  The ratios of successive majorants decrease; their geometric sum bounds all later blocks.
+- Ratios' analytic error majorants include all omitted terms and covering discrepancies.
+- Those majorants do not bound mpmath roundoff. No floating evaluation is interval-certified.
+- Numerical phase convergence is illustrative; it does not establish a natural boundary.
+- CSV and JSON files retain more digits than the compact tables above.
+
+Elapsed wall time: 9.71 seconds.

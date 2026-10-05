@@ -1,0 +1,24 @@
+PYTHON ?= python3
+LATEXMK ?= latexmk
+ARTICLE := ead_natural_boundaries
+LATEXFLAGS := -pdf -interaction=nonstopmode -halt-on-error
+
+.PHONY: all pdf verify tables regenerate
+
+all: pdf
+
+# Uses the shipped figures and table source; no numerical rerun is needed.
+pdf: $(ARTICLE).tex data/article_tables.tex figures/profile_convergence.pdf figures/radial_behavior.pdf
+	$(LATEXMK) $(LATEXFLAGS) $(ARTICLE).tex
+
+verify:
+	$(PYTHON) code/verify.py > data/run-output.txt
+
+tables:
+	$(PYTHON) code/make_article_tables.py
+
+# Recipe order is intentional, including when make is invoked with -j.
+regenerate:
+	$(PYTHON) code/verify.py > data/run-output.txt
+	$(PYTHON) code/make_article_tables.py
+	$(LATEXMK) $(LATEXFLAGS) $(ARTICLE).tex
