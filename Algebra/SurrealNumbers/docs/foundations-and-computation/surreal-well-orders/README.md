@@ -2,7 +2,7 @@
 
 **Set approximations, the singular birthday transition, set-length words, class orders, and higher-order structure**
 
-This is a research report merged from **twenty-seven** manuscripts. The first four
+This is a research report merged from **twenty-eight** manuscripts. The first four
 were written independently on 2 October 2026 and delivered together in
 batch 80 (arrival `4e270aa46`, placement `ccc046989`, cluster K3) and form
 Parts I–V. Six more, written independently on 3 October 2026 as
@@ -22,8 +22,11 @@ whole as Part XV (write `193e2e942`). Four more, sources 32–35, written
 independently on 4 and 5 October 2026 in answer to one request (how far
 definable class well-orders reach beyond `Ord`), were delivered in batch 96
 (manuscripts 08–11; arrival `e3839ad2c`, placement `111c38012`, batch 96D) and
-are merged as Part XVI, with source 34 as base (the commit that adds this README
-text). Author lines: 08 and 09 "Research manuscript
+are merged as Part XVI, with source 34 as base (write `62b16914e`). One more,
+source 36, a fifth independent answer to the same request, was delivered in
+batch 97 (manuscript 01; arrival `d7cf7d554`, fifteen minutes after the batch-96
+placement; placement `6571ee1af`, batch 97A) and is printed whole as Part XVII
+(the commit that adds this README text). Author lines: 08 and 09 "Research manuscript
 prepared for Vladimir Reshetnikov", 11 "Research report", 12 "Research report
 prepared for Vladimir Reshetnikov"; 13, 14 and 17 "Research manuscript
 prepared for Vladimir Reshetnikov", 15, 16 and 18 "Research article prepared
@@ -44,7 +47,10 @@ its localized theorem as "the next scholarly step". Of batch 96, sources 32
 and 33 say "Research manuscript prepared for Vladimir Reshetnikov" and call
 themselves AI-assisted and unrefereed; sources 34 and 35 say "Research report
 prepared for Vladimir Reshetnikov", "not a refereed publication" and
-"unrefereed", with "independent mathematical checks during preparation". The report is
+"unrefereed", with "independent mathematical checks during preparation". Source
+36 has no author line ("An investigation prompted by the ProveIt repository"),
+does not use the word AI-assisted, and reports "conventional written proofs
+with independent review during preparation". The report is
 AI-assisted, unrefereed and not formalized. Its review in the collection's
 [review record](../../REVIEW.md) is **pending**, and it is not yet indexed in
 the [formalization ledger](../../FORMALIZATION.md). The four batch-80
@@ -52,9 +58,12 @@ archives have a written-proof review in the Hilbert's-tenth research tree,
 and the batch-80 merged text a scoped synthesis review and a preservation
 audit there, whose corrections are applied; no review of the batch-81,
 batch-83 or batch-89 sources exists yet, and the four batch-96 archives have a
-bounded intake review there. A later bounded publication review checks the
-selected GB history and completion chain and corrects three metadata claims;
-it does not certify all of Part XVI (see "Reviews" below).
+bounded intake review there that checks source 34's choice-free power theorem
+only, and a later bounded publication review there checks the selected GB
+history and completion chain and corrects three metadata claims without
+certifying all of Part XVI; source 36's archive has a bounded intake review
+there that checks its arithmetic and notation proofs but not its spectrum
+proofs (see "Reviews" below).
 
 | Source | Batch, manuscript | Archive | Pin | Placed | Printed as |
 |---|---|---|---|---|---|
@@ -85,6 +94,7 @@ it does not certify all of Part XVI (see "Reviews" below).
 | 35 | 96, 11 | `class_orders_beyond_ord.zip`, same inner directory (*Definable Class Well-Orders Beyond Ord: Arithmetic, canonical notation, fixed-point completion, and the limits of uniform definability*; 3,132 lines, 40-page PDF) | `f158f27b4` | `111c38012` | "Source 35" subsections of XVI.1–XVI.10 (its Sections 1–7 in XVI.1–XVI.7, its Section 3 split between XVI.3 and XVI.4, Sections 5–6 in XVI.6, Section 8 in XVI.9, Sections 9.1–9.3 in XVI.8 and 9.4–9.5 in XVI.10), XVI.11.2; 113.28; C; D.25 |
 | 32 | 96, 08 | `Beyond_Ord_Research.zip`, same inner directory (*Beyond Ord: Definable Class Well-Orders. Explicit arithmetic, condensation, definability ceilings, and truth jumps*; 982 lines, 27-page PDF) | commit `8f7d4a5c8` (its "root tree") | `111c38012` | "Source 32" subsections of XVI.1–XVI.10, XVI.11.3–XVI.11.5; 113.28; C; D.26 |
 | 33 | 96, 09 | `Beyond_Ord_Class_Well_Orders.zip`, same inner directory (*Beyond Ord: Definable Class Well-Orders, Arithmetic, Condensation, and Definability Heights*; 1,981 lines, 30-page PDF) | none (two blobs; between `c14a866bc` and `e3839ad2c`) | `111c38012` | "Source 33" subsections of XVI.1–XVI.10, XVI.11.6–XVI.11.8; 113.28; C; D.27 |
+| 36 | 97, 01 | `Beyond_Ord_Research_Package.zip`, inner directory `Beyond_Ord` (*Beyond Ord: Definable Class Well-Orders, Finite-Support Arithmetic, and Definability Horizons*; 2,950 lines, 40-page PDF; no author line, "October 2026") | `e1d2f3048` (the pin of source 34) | `6571ee1af` | Sections XVII.1–XVII.10 (its Sections 1–9 and Appendix A, whole, with its numbering: its statement *k.m* is XVII.*k.m*), XVII.11 status; its questions in 113.30, dated notes 113.31; 1.3.5, 1.12; A.14; C; D.28 |
 
 The two pairs of batch-80 archives sharing a name (08/09 and 11/12) are
 **not editions**: every pair of the four texts has word 8-gram overlap of
@@ -191,8 +201,26 @@ dated notes on earlier questions in 113.29; their abstracts close Appendix C,
 their delivery record is A.13, and their 188 numbered statements and agenda
 items are mapped in Appendix D.24–D.27.
 
+Source 36 (batch 97) is an independent fifth answer to the same request: it
+shares no file with sources 32–35 and 0.36–0.78 % of word 8-grams with each,
+and 0.90 % with this report including Part XVI. It read this report at
+`e1d2f3048`, with Parts I–XV, and did not see Part XVI, which was written
+and committed before it could join that merge. It is printed whole as Part
+XVII, as source 31 is in Part XV: Sections XVII.1–XVII.8 are its Sections
+1–8 with its numbering, XVII.9 its Section 9 (its ten questions are printed
+in Section 113.30), XVII.10 its Appendix A and XVII.11 the status section.
+Where it proves a result of Part XVI again (set localization, the power
+calculus, the hereditary order, the uniform diagonal, the `V_κ` horizon
+theorem, the bounded-complexity diagonal, truth promotion and others), a
+numbered credit Note follows its statement; the fifteen credit Notes are
+numbered XVII.*k*.A, XVII.*k*.B, … so that no source number moves. Its
+novelty sentences carry dated credit notes to sources 32–34, and the stronger
+leastness that its proof of Theorem XVII.4.5 gives is stated in Note XVII.4.B
+with credit to source 34. Its 42 numbered statements and 10 questions are
+mapped in Appendix D.28.
+
 Every result, proof, example, remark, question and limitation of the
-twenty-seven manuscripts is printed. A result proved again by the same argument is
+twenty-eight manuscripts is printed. A result proved again by the same argument is
 recorded in a numbered **Note** that gives the source's statement, number and
 differences, or, where each source builds on its own proof, printed whole as
 a marked route under a credit note (the represented-cut theorem is proved six
@@ -203,9 +231,17 @@ source-specific results are printed in full where they belong. Each source's
 introduction, foundational section, model section, Lean plan, questions,
 conclusion, ledger and reproducibility record are printed whole. Text written
 for the merge is marked `[merge]`. Appendix D maps every numbered statement of
-the twenty-seven sources (311 of sources 13–18, 644 of sources 19–30, 43 of
-source 31, 176 of sources 32–35 and source 34's 12 agenda items) to its place
-here. For sources 32–35 a line-by-line check (`coverage.py` of the write, not
+the twenty-eight sources (311 of sources 13–18, 644 of sources 19–30, 43 of
+source 31, 176 of sources 32–35 and source 34's 12 agenda items, 52 of source
+36) to its place here. For source 36 a line-by-line check (`coverage97.py` of
+the write, not shipped) confirms that of the 2,357 non-blank, non-comment
+lines of its body (its lines 136–2830, Sections 1–9 and Appendix A), 2,187
+are printed verbatim up to label prefixes, citation keys and macro names, and
+the other 170 differ only by the renamings of Section 1.3.5 (finite-support
+powers `A^{[B]}`, horizons `𝔥`, height stages `𝖤^{≤n+1}`), by tagged displays
+printed as starred displays, by question headings, or by one citation of its
+starred equation by its tag; its title page and abstract are printed in
+Appendix C. For sources 32–35 a line-by-line check (`coverage.py` of the write, not
 shipped) confirms that every non-blank, non-comment line of each delivered
 body (from `\begin{document}` to the bibliography) is printed verbatim, up to
 the renamings and label prefixes of Section 1.3.4, except: title-page and
@@ -234,7 +270,7 @@ XI's on source 29 keep the statement and cite the printed proof).
 
 ```
 article.tex                              the report, standalone LaTeX with an internal bibliography
-article.pdf                              the compiled report, 994 pages (title page unnumbered)
+article.pdf                              the compiled report, 1,050 pages (title page unnumbered)
 README.md                                this guide
 09-core-RESEARCH_STATUS.md               source 09's research status and audit, as delivered
 11-raw-orders-repository_audit.md        source 11's targeted repository audit, as delivered
@@ -264,6 +300,7 @@ README.md                                this guide
 33-heights-PROOF_STATUS.md               source 33's proof status and assumptions, as delivered
 33-heights-SOURCE_AUDIT.md               source 33's source and repository audit, as delivered
 34-choicefree-PROOF_STATUS.txt           source 34's proof status and assumption ledger, as delivered
+36-horizons-SOURCE_AUDIT.txt             source 36's repository snapshot and literature audit, as delivered
 code/08-skeleton-build.sh                source 08's build script (builds nothing here; see below)
 code/08-skeleton-verify_finite.py        source 08's finite checks
 code/09-core-build.sh                    source 09's build script (builds nothing here)
@@ -304,6 +341,8 @@ code/32-ceilings-finite_checks.py        source 32's finite checks (--output)
 code/33-heights-build.sh                 source 33's build script (compiles an unshipped .tex; builds nothing here)
 code/33-heights-finite_checks.py         source 33's finite checks (--output)
 code/35-completion-finite_notation_checks.py  source 35's finite illustrations (writes beside itself)
+code/36-horizons-build.sh                source 36's build script (compiles an unshipped .tex; builds nothing here)
+code/36-horizons-notation_demo.py        source 36's notation demonstrator (PYTHONUTF8=1 on Windows; --report overwrites its argument)
 data/08-skeleton-verification_results.json     source 08's recorded run
 data/09-core-finite_checks.json                source 09's recorded run
 data/11-raw-orders-finite_checks_results.txt   source 11's recorded run
@@ -332,9 +371,11 @@ data/32-ceilings-finite_checks.json            source 32's recorded run
 data/33-heights-BUILD_REPORT.json              source 33's record of its (unshipped) PDF build
 data/33-heights-verification_results.json      source 33's recorded run
 data/35-completion-finite_notation_results.json source 35's recorded run
+data/36-horizons-DOCUMENT_CHECKS.json          source 36's record of its (unshipped) PDF build and four package hashes
+data/36-horizons-verification.json             source 36's recorded run
 ```
 
-All code, data and the 28 audit and status files are byte-identical to the
+All code, data and the 29 audit and status files are byte-identical to the
 delivery. Source 18 shipped no code or data; source 15 no status file. Of batch
 83 (49 files, 211,105 bytes; no CR bytes, longest path 133 characters, none
 over 1 MB), sources 21 and 29 shipped no code, source 21 no data, and source 20
@@ -343,7 +384,12 @@ file: its archive holds only its manuscript, its PDF and a delivery
 `README.txt`, so nothing of it is in this directory except the text of Part XV
 and its related sections. Of batch 96 (13 files, 39,802 bytes; LF only, longest
 path 123 characters, none over 1 MB), source 34 shipped only its status file
-and source 35 no status file; source 34 shipped no code or data.
+and source 35 no status file; source 34 shipped no code or data. Of batch 97,
+source 36 ships 5 files (24,944 bytes; LF only; longest path 113 characters
+below the repository root; none over 1 MB): its source audit, build script,
+demonstrator, recorded run and document-check record. Its demonstrator's
+guide (`code/README.md`) is not shipped; its scope text is reproduced under
+"Rerunning the checks".
 
 **Disclosure for `data/29-birthdays-source_manifest.json`.** Source 29's
 provenance manifest mixes SHA-256 hashes (sixteen repository files at its pin,
@@ -387,6 +433,7 @@ are not edited, and identify nothing in this repository.
 | 33 | `PROOF_STATUS.md`, `SOURCE_AUDIT.md`, `build.sh`, `finite_checks.py`, `verification_results.json`, `BUILD_REPORT.json` | `33-heights-PROOF_STATUS.md`, `33-heights-SOURCE_AUDIT.md`, `code/33-heights-build.sh`, `code/33-heights-finite_checks.py`, `data/33-heights-verification_results.json`, `data/33-heights-BUILD_REPORT.json` |
 | 34 | `PROOF_STATUS.txt` | `34-choicefree-PROOF_STATUS.txt` |
 | 35 | `artifacts/finite_notation_checks.py`, `artifacts/finite_notation_results.json` | `code/35-completion-finite_notation_checks.py`, `data/35-completion-finite_notation_results.json` |
+| 36 | `Beyond_Ord/SOURCE_AUDIT.txt`, `Beyond_Ord/build.sh`, `Beyond_Ord/code/notation_demo.py`, `Beyond_Ord/code/verification.json`, `Beyond_Ord/DOCUMENT_CHECKS.json` | `36-horizons-SOURCE_AUDIT.txt`, `code/36-horizons-build.sh`, `code/36-horizons-notation_demo.py`, `data/36-horizons-verification.json`, `data/36-horizons-DOCUMENT_CHECKS.json` |
 
 Not shipped (recoverable with `git show 4e270aa46:"docs/incoming/<archive>.zip"`
 for batch 80, `git show 9a4ce14e9:"docs/incoming/<archive>.zip"` for sources
@@ -430,6 +477,15 @@ directory of the same name): the four manuscripts (`beyond_ord.tex` of 32 and of
 and `MANIFEST.sha256` of 33 (9/9), verified at placement. Nothing was excluded
 as regenerable.
 
+Not shipped from batch 97 (recoverable with
+`git show d7cf7d554:docs/incoming/Beyond_Ord_Research_Package.zip`, inner
+directory `Beyond_Ord/`): source 36's manuscript `beyond_ord.tex` (2,950
+lines, 130,010 bytes), its 40-page PDF (674,664 bytes), its delivery
+`README.txt` (3,348 bytes) and the demonstrator's guide `code/README.md`
+(5,590 bytes). It shipped no checksum manifest; the `sha256` block of
+`DOCUMENT_CHECKS.json` (manuscript, PDF, demonstrator, report) matches the
+delivered files. Nothing was excluded as regenerable.
+
 Shipped files whose text still uses delivery names or names unshipped files:
 `11-raw-orders-repository_audit.md` ("the accompanying article"; its audit
 inputs are named by their delivery copies, which are not shipped);
@@ -468,6 +524,13 @@ its own 32-page PDF and sections; source 35's program writes
 `Path(__file__).with_name`, independently of the working directory. The
 appendices printed in Section XVI.11 name delivery files and carry
 `[merge]` notes with the shipped names.
+Of batch 97: `code/36-horizons-build.sh` compiles the unshipped
+`beyond_ord.tex` (it builds nothing here); `36-horizons-SOURCE_AUDIT.txt`
+names `beyond_ord.tex`; `data/36-horizons-DOCUMENT_CHECKS.json` names
+`beyond_ord.tex`, `beyond_ord.pdf`, `code/notation_demo.py` and
+`code/verification.json` (the delivery paths of the last two); the
+demonstrator's documented command `--report code/verification.json` and its
+printed rerun in Section XVII.10.2 use delivery paths, annotated there.
 
 ## Labels
 
@@ -506,9 +569,22 @@ statements are *prefix*`n`*number* (`swo:fc:n2.1`), source 34's agenda items
 `swo:bo:R1`–`swo:bo:R12`; displayed equations keep their numbers as (S34.*k*),
 (S35.*k*), (S32.*k*) and (S33.*s*.*k*); the Part label is `swo:part:beyondord`
 and the other labels written for the merge begin `swo:xvi:`.
+The batch-97 source 36's labels carry `swo:hn:` before the delivered label
+(its prefixes `intro:`, `ar:`, `ns:`, `hz:`, `form:`, `agenda:`, `audit:`);
+its unlabelled Definition 6.1 is `swo:hn:n6.1` and its research questions,
+numbered 1–10 in its PDF, `swo:hn:q1`–`swo:hn:q10`; its displayed equations
+keep their numbers as (S36.*k*.*m*) and its starred equation as (S36.∗); the
+Part label is `swo:part:horizons`, the merge labels begin `swo:xvii:`, and the
+fifteen credit notes use a note counter of their own, printed XVII.*k*.A, ….
 
-Totals: **2,188 labels** (1,876 before batch 96, 1,799 before batch 89, 794
-before batch 83; none renamed or lost). Batch 96 added 312: `swo:bo:` 68 (53
+Totals: **2,293 labels** (2,188 before batch 97, 1,876 before batch 96, 1,799
+before batch 89, 794 before batch 83; none renamed or lost). Batch 97 added
+105: `swo:hn:` 81 (70 delivered labels of source 36, 1 for its unlabelled
+Definition 6.1, 10 for its questions), `swo:xvii:` 23 (15 credit notes, the
+notation addendum, the batch subsection, the status section, the two question
+subsections, the delivery record, the abstract and the crosswalk) and
+`swo:part:horizons`; every one of the 70 delivered labels is present exactly
+once. Batch 96 added 312: `swo:bo:` 68 (53
 delivered labels of source 34, 3 for its unlabelled statements, 12 for its
 agenda items), `swo:fc:` 73 (57 + 16), `swo:dc:` 71 (55 + 15, and the merge
 label `swo:dc:sec:conclusion` for its unlabelled conclusion), `swo:dh:` 84 (62
@@ -537,7 +613,7 @@ sources 08–18, of the 760 delivered labels of sources 19–30 and of the 47 of
 source 31 is present exactly once. Cross-references are typed (lemma, note, …)
 through alias counters. No `swo:` label has a Lean mapping.
 
-## Notation (Sections 1.3, 1.3.1, 1.3.2, 1.3.3 and 1.3.4)
+## Notation (Sections 1.3, 1.3.1, 1.3.2, 1.3.3, 1.3.4 and 1.3.5)
 
 `GB` includes **no** choice principle (as in `found:sub:gbconvention` and
 the [notation guide](../../NOTATION.md)); sources 09 and 12 work over GB with
@@ -635,6 +711,23 @@ exists `↪`, none exists `↪̸`, initial and proper initial ones `≼_init`,
 exponent class); 32's and 33's diagonals `D`, `D_n` (not `D_W`); 35's `T` for a
 class of terms and for the reflection tree; source 33's digit map `Φ` and
 source 35's completion isomorphism `Φ`.
+
+For source 36 (dated addendum, Section 1.3.5): its bold `Ω` is `Ω`; its
+finite-support powers `A^B` of class orders are printed `A^{[B]}` (in term and
+point displays `Ω^t α` the superscript is a term or an exponent point, and set
+ordinal powers keep `^`); its term class, sans-serif `𝖳_Ω`, is `𝖤`, and its
+height stages `T_n` (height at most `n+1`) are `𝖤^{≤n+1}`; its sans-serif `𝖤`
+for the epsilon-term functor is printed `𝖤𝗉`, since `𝖤` is the hereditary order
+here; its horizons `H(M)`, `H_0(M)`, `H_p(M)`, `H_G`, `H_{G,T}` are `𝔥(M)`, …,
+`𝔥_{G,T}` (Fraktur H), since `H`, `H_i` are histories; its truth predicate keeps
+`T`, as source 33's does. Kept with false readings: the tower codes `w_n`
+(source 34's terms `τ_{n+1}`), `⊞`, `⊠` (not natural sums), `𝓗_κ` (a set of
+horizons, not source 32's `ℋ(A)`), `H_{κ⁺}` (hereditarily small sets), the
+diagonals `D_n`, heights `h_n` (not source 20's `h_κ`), the order `E_G` (not a
+stage equivalence), the zeta order `W`, the ordinals `τ_n` in one proof (not
+source 34's terms) and `Ω_u` (an ordinal of the next universe level, not the
+presentation `Ω`). Over `V_κ`, `𝔥_G` is source 34's `Θ_L` for `L = {∈, G}`,
+source 33's `δ_G` and source 32's `δ_A` for trivial `A`.
 
 ## What the report claims
 
@@ -850,6 +943,41 @@ first.
     answers over GB the question of `swo:xiv:note:strength` and source 20's
     Research question 113.111 (`swo:lm:n11.5`), and source 31's Research
     question 113.239 (`swo:gcz:n7`) in part.
+18. **Finite-support arithmetic and definability horizons (Part XVII, source
+    36).** Over GB with ZF sets and no choice: normal-form addition and
+    multiplication of the points of the hereditary order `𝖤` (and of every
+    `Ω^{[B]}`) are class isomorphisms of the represented initial segments
+    (Theorems XVII.5.1, XVII.5.2; `D + Ω^{[B]} ≅ Ω^{[B]}` for every point-cut);
+    `A^{[B]}` has the exact predecessor decomposition for every base (Theorem
+    XVII.3.5) and is set-like iff `A` is a set and `B` set-like or `B` is a
+    singleton and `A` set-like (Theorem XVII.3.6), with `a^{[Ω·B]} ≅ Ω^{[B]}`
+    (Corollary XVII.3.7); every proper class well-order has a presentation on
+    the carrier `Ord` (Proposition XVII.2.4); a finite-support term operator
+    with the restriction property that preserves set well-orders preserves
+    class well-orders (Theorem XVII.6.2); the epsilon-term functor `𝖤𝗉` sends
+    class well-orders to class well-orders, with set-case type `ε_β` (Theorem
+    XVII.6.4). Over every transitive `M ⊨ ZFC` of height `κ`: `ε_κ = ζ_κ = κ`,
+    `otp 𝖤^M = ε_{κ+1}`, `otp 𝖤𝗉(𝖤)^M = ε_{ε_{κ+1}}`, a parameter-free order of
+    type `ζ_{κ+1}` (Lemma XVII.6.5, Theorems XVII.6.6, XVII.6.7); the definable
+    order types form `[0, 𝔥(M))`, those of internally proper carriers
+    `[κ, 𝔥(M))`, with `𝔥(M) < |κ|⁺` and a parameter-preserving transfer to
+    `Ord^M` (Theorem XVII.6.9, Proposition XVII.6.10); `ε_{𝔥(M)} = 𝔥(M)` and
+    `ζ_{κ+1} < 𝔥_0(M) ≤ 𝔥_p(M) ≤ 𝔥(M)`, both parameter-restricted horizons of
+    cofinality ω (Proposition XVII.6.11); `𝔥(M)` is bounded by every admissible
+    height above `M` (equation (S36.6.2), after Blass). At `V_κ`, `κ`
+    inaccessible, with a named enumeration `G`: the ceiling theorem of Part
+    XVI again, with `ε_{𝔥_G} = 𝔥_G` (Theorem XVII.7.5), the bounded-complexity
+    diagonal (Proposition XVII.7.6), an effective strict complexity hierarchy
+    (Corollary XVII.7.7), truth promotion (Theorem XVII.7.9, source 32's
+    Theorem XVI.8.12 again), and `sup_G 𝔥_G = κ⁺` with every
+    `α ∈ [κ, κ⁺)` the type of a parameter-free `G`-definable order for some `G`,
+    by coding any subset of `κ` into `G` (Lemma XVII.7.10, Theorem XVII.7.11);
+    the full model unrolls to `H_{κ⁺}` (Proposition XVII.8.1). This answers
+    source 33's research question 12.4 (`swo:dh:n12.4`) and the addition and
+    multiplication part of source 34's R3, and advances `swo:dc:n12.4`,
+    `swo:dh:n12.3`, R4 and R9 (Sections XVII.11, 113.31). Note XVII.4.B states
+    the leastness of `𝖤` against initial pre-fixed points that the proof of
+    Theorem XVII.4.5 gives; it is source 34's Theorem XVI.6.7.
 
 ## What the report does not claim
 
@@ -948,6 +1076,29 @@ Section 1.4 keeps every limitation of every source; none was dropped.
   checks are "NOT machine proofs"; the Lean module plans are proposals; the
   repository and literature searches were targeted. This write's Theorem
   XVI.6.21 and Remarks XVI.5.24, XVI.5.29, XVI.5.31 are the write's, unreviewed.
+  (Dated note, 4 October 2026: an independent check has since found all four
+  valid after editorial corrections, which are made; see "Reviews".)
+
+- Batch 97 (Section 1.4, addendum for source 36): "publication priority and a
+  breakthrough resolution of a recognized open problem are not asserted";
+  long class orders, their arithmetic and the epsilon notation functor "have
+  established antecedents" (Barton–Williams; Marcone–Montalbán); its `V_κ`
+  horizon theorem, bounded-complexity diagonal and truth promotion are
+  theorems of sources 32–34 (credit notes in Part XVII); the converse from
+  comparability to `ETR` is not established; the arithmetic is relative to
+  ordinal coefficients, and no normalization of general powers inside `𝖤` is
+  proved; the transfer theorem does not apply to an arbitrary normal ordinal
+  function; the spectra count externally well-founded orders, an arbitrary
+  transitive model need not recognize external ill-foundedness, the `V_κ`
+  theorems use inaccessibility and a named `G`, "parameter-free" excludes only
+  set parameters, and `cf 𝔥(M) = ω` is not claimed for unrestricted
+  parameters over an arbitrary `M`; the diagonal formulas are an external
+  schema, not one evaluator; the size of the truth jump is not computed; the
+  admissible bound's equality cases (Taranovsky) are not claimed as new; the
+  proofs are conventional, with no referee and no Lean or Rocq; the five
+  proposed modules are design targets; the demonstrator checks natural
+  coefficients only and "does not prove any class-theoretic theorem"; its
+  repository audit was targeted and did not read this report's article.
 
 ## Formal status
 
@@ -981,10 +1132,18 @@ remain attributed to source 32; this review does not recheck their external
 history. Both repository manifests pin Mathlib **v4.32.0**, revision
 `81a5d257c8e410db227a6665ed08f64fea08e997`;
 source 33's proposed directory `SetTheory/ClassWellOrders/` does not exist.
+Source 36 ships no Lean or Rocq code; no statement of Part XVII is formalized.
+Its five proposed modules (`ClassOrderPresentation`, `FiniteSupportPower`,
+`OmegaNormalForm`, `EpsilonTerms`, `DefinabilityHorizon`) do not exist; it
+cites `Logic/PeanoArithmetic/ListCoding/README.md` (natural-number hereditary
+codes below `ε_0`, with Lean denotation theorems and separately scoped Rocq
+results) and Mathlib's `Mathlib/SetTheory/Ordinal/CantorNormalForm.lean`
+(present in the pinned Mathlib) as engineering patterns, not as theorems
+about class orders.
 Placement in the surreal collection beside the Lean foundations confers
 no formal status.
 
-## Where one source answers another (Sections 1.7, 33, 39, 50, 60, 72, 79, 85, 105, 112, 113.25, XV.15, 113.27, XVI.12, 113.29)
+## Where one source answers another (Sections 1.7, 33, 39, 50, 60, 72, 79, 85, 105, 112, 113.25, XV.15, 113.27, XVI.12, 113.29, XVII.11, 113.31)
 
 - Source 12's question on the weak-choice strength (its Remark 4.2 and
   Question 14.5): **answered** by source 11's Theorem 13.1; printed as
@@ -1063,6 +1222,18 @@ no formal status.
   answered positively by this write (Theorem XVI.6.21); source 32's claim to
   answer this report's termination question repeats source 20 (Remark XVI.1.1).
   All stay on record with these statuses (Section 113.28).
+- Batch 97 (dated notes of 4 October 2026 in Sections XVII.11 and 113.31,
+  after six questions of Section 113.28, and in Section 1.7): source 33's
+  research question 12.4 (`swo:dh:n12.4`, how far `δ_G` varies with `G`) is
+  **answered** by source 36 (unbounded in `κ⁺`; any subset of `κ` can be coded
+  into `G`); source 34's R3 is **answered for addition and multiplication**
+  (exponentiation open, source 36's question 6); source 32's question 12.4,
+  source 33's 12.3 (new necessary conditions `ε_δ = δ`, `δ > ζ_{κ+1}`) and
+  source 34's R4 and R9 are advanced; source 31's `swo:gcz:n7` is advanced for
+  external order types at every transitive height. Source 36's own question 2
+  is answered in part by source 34's Theorem XVI.8.3 (β-models with a
+  parameter-free definable global well-order). Its other questions coincide
+  with questions of Section 113.28, as the notes in Section 113.30 say.
 
 ## Relation to the neighbouring reports
 
@@ -1154,6 +1325,12 @@ Part XVI has no counterpart in the research-report collection's
 individual surreal numbers, not presentations of class well-orders (source 34,
 its Section 1.1).
 
+**ListCoding** (`Logic/PeanoArithmetic/ListCoding/README.md`) is cited by
+source 36 as an engineering pattern for its proposed modules: hereditary
+Cantor-normal-form codes below `ε_0` for natural numbers, with Lean and Rocq
+results of its own scope. Nothing of Part XVII is proved there, and Part XVII
+confers nothing on it.
+
 The Lean development in `Algebra/SurrealNumbers/Surreal/Foundations/` is
 cited, not extended: see "Formal status".
 
@@ -1168,11 +1345,10 @@ cleveref. No external figures or bibliography file.
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The publication at `62b16914e` reported a MiKTeX (pdfLaTeX) build:
-994 pages; no errors, undefined references
+Built with MiKTeX (pdfLaTeX): 1,050 pages; no errors, undefined references
 or citations, multiply defined labels, duplicate destinations, LaTeX or package
 warnings, or overfull boxes; 38 underfull-box warnings, the same 38 as the
-860-page build before batch 96 and the 831-page build before batch 89 (15 in the build before batch 83, 10 before
+994-page build before batch 97, the 860-page build before batch 96 and the 831-page build before batch 89 (15 in the build before batch 83, 10 before
 Part IX). The batch-89 write added Part XV and source 31's front matter,
 questions, delivery record, abstract and crosswalk (831 → 860 pages). The
 batch-96 write added Part XVI and the front matter (1.3.4, 1.11), questions
@@ -1186,6 +1362,19 @@ package warning. All 2,188 literal labels remain in their original order.
 Corrected text was extracted and PDF pages 824 and 840 visually inspected;
 this checks those pages, not the entire PDF.
 
+The batch-97 write added Part XVII and source 36's front matter (1.3.5, 1.12),
+questions (113.30–113.31), delivery record (A.14), abstract and crosswalk
+(D.28), dated notes in Sections 1.4, 1.7, 1.11, XVI.12 and 113.28, and the
+four corrections to Part XVI (994 → 1,049 pages; 1,050 after merging the
+concurrent R1–R3 review remarks of `ec4b972db`, rebuilt with the same 38
+underfull boxes and nothing else). Its `.aux`, compared with a
+build of the committed text, keeps every one of the 2,188 earlier `\newlabel`
+entries with an unchanged number: Part XVII numbers its sections
+XVII.1–XVII.11 as Parts XV and XVI do (contents' number box 5.0em for Part
+XVII only), its credit notes have a counter of their own, and its new
+questions 113.295–113.304 follow all earlier ones; every one of source 36's
+70 labels carries its source number (XVII.*k.m*, S36.*k.m*). Its tagged
+displays are printed as starred displays, as elsewhere in the report.
 Its `.aux`, compared with a build of the committed text, keeps every one of
 the 1,876 earlier `\newlabel` entries with an unchanged number: Part XVI
 numbers its sections XVI.1–XVI.12 as Part XV does, the contents' number box is
@@ -1343,6 +1532,68 @@ The manuscripts can be rebuilt on a copy from
 `git show e3839ad2c:docs/incoming/<archive>.zip` (their READMEs give
 `latexmk -pdf` or three `pdflatex` passes).
 
+**Batch 97.** Source 36's demonstrator (Python 3.10 or later, standard
+library only) prints the letter `Ω`. On Windows it must run with
+`PYTHONUTF8=1` (or `py -X utf8`): under the default code page it stops with
+`UnicodeEncodeError`, and the report run then leaves a **0-byte** report
+file. Its documented command `--report code/verification.json` overwrites
+its argument, so run it on a copy. With this directory as `$R` and an empty
+scratch directory `$S`:
+
+```
+cp "$R"/code/36-horizons-notation_demo.py "$S/notation_demo.py"
+cd "$S"
+PYTHONUTF8=1 python notation_demo.py --examples-only
+PYTHONUTF8=1 python notation_demo.py --report verification.json
+```
+
+(PowerShell: `$env:PYTHONUTF8 = '1'` before the two commands.) Compare
+`verification.json` with `data/36-horizons-verification.json`. Rerun on a copy
+on 4 October 2026 with Python 3.14.4 on Windows: status `passed`, 994 distinct
+terms, 493,521 unordered and 2,000 ordered pair checks against the independent
+base-7 evaluator, 994 reflexive checks, 16 malformed inputs rejected, 8 tower
+boundaries, largest evaluated integer 92 bits (seed 20261004); the report
+equals the record except for `python_version` (3.14.4; recorded 3.12.14) and
+CRLF line endings. `code/36-horizons-build.sh` compiles the unshipped
+`beyond_ord.tex`; the manuscript can be rebuilt on a copy from
+`git show d7cf7d554:docs/incoming/Beyond_Ord_Research_Package.zip` with
+`latexmk -pdf -interaction=nonstopmode -halt-on-error beyond_ord.tex` in
+`Beyond_Ord/` (40 pages, as recorded in `data/36-horizons-DOCUMENT_CHECKS.json`).
+
+Scope and limitations of the demonstrator, from its unshipped guide
+`code/README.md` (quoted as delivered):
+
+> The article permits arbitrary positive **set-ordinal** coefficients. Python
+> integers implement only the positive natural coefficients. In particular,
+> the program has no code for an infinite set-ordinal constant such as ω. The
+> printed symbol Ω denotes the paper's formal `Ord` symbol and is not that
+> missing ω constant.
+>
+> Consequently this restricted language is not closed under the whole ordinal
+> arithmetic of the article: arbitrary ordinal coefficients and arbitrary
+> ordinal-indexed sums can leave it. For example, the supremum of the natural
+> constants is the missing set-ordinal constant ω; similarly, the full grammar
+> allows the term `Ω·ω`, which this program cannot express. No claim about a
+> complete arithmetic implementation is made.
+>
+> This is **not a Lean formalization** or a formalization in another proof
+> assistant. It does not implement proper classes, class quantifiers, a truth
+> predicate, general elementary transfinite recursion, or an enumeration of
+> all set ordinals. Python's ordinary recursion and memory limits apply.
+>
+> The report's successful outcome means that the listed bounded computations
+> completed without disagreement. The proofs, foundational assumptions, and
+> research-status qualifications belong to the accompanying article.
+
+The same guide says that `monomial` "does not implement exponentiation of
+arbitrary class-order presentations", that "there is no addition or
+multiplication API", and that the checks compare the structural comparator
+with an "independently implemented exact ordinary-natural evaluator" at the
+radix 7; "these finite computations are evidence about the Python
+implementation; **they do not prove any class-theoretic theorem**". Its tower
+convention `w_0 = Ω`, `w_{n+1} = Ω^{w_n}` is the article's: `w_0 = [(1̄, 1)]`
+is the term displayed `Ω`.
+
 ## Other discrepancies
 
 - Source 11 is dated 3 October 2026, the UTC date of its pin; the other three
@@ -1453,6 +1704,37 @@ The manuscripts can be rebuilt on a copy from
   (Remark XVI.5.29), its consequence under `ETR_{Γ+1}` (Remark XVI.5.31), and the
   choice-free completion theorem (Theorem XVI.6.21).
 - No retraction was made; no claim of another report or README is refuted.
+- Batch 97. Source 36 has no author line; its title page is dated "October
+  2026" and its source audit "4–5 October 2026"; its PDF was created on 4
+  October 2026, before its arrival (18:06 PDT). Its pin `e1d2f3048` is source
+  34's; its audit adds that a code-search index first offered the older
+  commit `555ee36fb`. It did not see Part XVI: its sentences presenting the
+  horizon theorem, parameter-free cofinality and truth promotion as "proved
+  results of this investigation" (Section XVII.1.5, its title page, its status
+  table in Section XVII.10.5) are printed as delivered with dated credit notes
+  to sources 32–34. Its Theorem XVII.4.5 states leastness only against
+  isomorphisms `Ω^{[X]} ≅ X`; its proof gives source 34's form against initial
+  pre-fixed points, stated in Note XVII.4.B, not in the theorem. Its PDF title
+  metadata drops "Finite-Support" (cosmetic). Its web citations (MSE 4072813,
+  MathOverflow 116590 and 379630, Freire–Williams, Marcone–Montalbán, Traytel,
+  Mathlib documentation) were not checked by this write. Two sentences of its
+  question commentary are conjectures without proof ("Further finitary
+  notation operators may force additional closure conditions"; "An audited
+  coding might yield a small constant shift"); they are marked so in Section
+  113.30. No statement of source 36 was found false, and none was moved or
+  refuted.
+- Corrections to Part XVI, made by the batch-97 write after an independent
+  check of the four statements the batch-96 write had added (each marked
+  "[corrected after independent check, 4 October 2026]" where made):
+  Theorem XVI.6.21, the class of terms in item (1) misprinted `Tm` (it is the
+  lemma's `T`), and the proof's first sentence reworded to mention that
+  source 35's proof of Corollary XVI.6.19 also cites the GBC equivalence,
+  which item (4) replaces; Remark XVI.5.24, "Γ nonempty" added; Remark
+  XVI.5.29, the sentence calling the last part of source 33's question 12.7
+  answered replaced by two readings (the base theory for `Φ`: GB; existence
+  for every `W` of a map with initial image: exactly `CWO` over GB, while plain
+  embeddings `x ↦ e_x` into `P(W)` are free in GB); Remark XVI.5.31, "for
+  nonempty `W` and `Γ`" added to its last clause. No mathematical gap was found.
 
 ## Reviews
 
@@ -1577,3 +1859,39 @@ claims and their concrete counterevidence.
    `Path(__file__).with_name("finite_notation_results.json")`, so it writes
    beside the script. This inert source observation agrees with the later
    delivery instructions; no supplied program was run.
+
+Independent check of the Part XVI write (dated 4 October 2026): an
+adversarial verification of the four statements the batch-96 write added
+(Theorem XVI.6.21; Remarks XVI.5.24, XVI.5.29, XVI.5.31), made by the intake
+session for the batch-97 write (a working note, not shipped), rechecked source
+34's set-subset criterion, every use of global choice in source 35's proofs
+of its 3.5, 5.3, 5.7, 5.8, 5.9 and 5.10, the internal induction of Theorem
+XVI.6.21 (3), the identification of towers with histories, the digit map and
+source 33's converse, and found no mathematical gap: Theorem XVI.6.21 is
+valid after two editorial fixes, the remarks after the fixes listed under
+"Other discrepancies". The fixes are made, each with a dated note; Theorem
+XVI.6.21 is now marked as independently checked. This is a careful reading,
+not a formal verification, an external review or an entry of the
+collection's review record.
+
+Batch 97: the same tree reviewed source 36's archive in a bounded intake
+before placement
+(`Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/review_beyond_ord_package_d7cf7d554.md`,
+commit `39bb02ece`). It authenticated the nine members and the four hashes of
+`DOCUMENT_CHECKS.json`, read 1,879 lines of the manuscript, checked the
+set-localization lemma, the ordinal initial segment and carrier reduction, the
+power calculus with its transport, continuity, predecessor and set-likeness
+results, the hereditary comparison, root decomposition, towers and least
+fixed point, the normal-form addition and multiplication and the transfer
+theorem, read the uniform diagonal and the horizon theorem's setting, filter
+and complexity hierarchy, and found no defect and requested no correction. It
+records that the arithmetic procedures keep ordinal-label primitives and that
+the demonstrator has no addition or multiplication API. It did not read the
+proofs of the epsilon interpretation, the epsilon and zeta calibrations, the
+general spectrum theorem, truth promotion, the variation of `G`, the
+admissible bound or the unrolling proposition, and ran no delivered program.
+The placement (`6571ee1af`) read the main proofs and recomputed the three
+worked products. No review covers Part XVII as written (Section XVII.11). The
+claims most in need of review are those the intake left unread: Theorems
+XVII.6.4, XVII.6.6, XVII.6.7, Proposition XVII.6.11 and Theorem XVII.7.11, and
+the stronger leastness of Note XVII.4.B.
