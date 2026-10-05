@@ -241,6 +241,16 @@ Fresh metadata/finite-height checks pass before freezing; the PDF and external
 bibliography were not independently verified. No paid integer compiler or
 operation saving is supplied, and the established universal84 bound remains.
 
+The [shared83 / independent-gamma83 comparison](shared83_to_gamma83_interface.md)
+and [root proof review](review_shared83_to_gamma83_interface.md) identify the
+exact rational coordinate map and its integral boundary H|U. The new shared
+W=0 family cannot transfer: independent gamma's input norm is divisible by
+H=4a+3, so its raw finalizer would force H to divide9, while the positive
+domain gives H>=99. This obstruction holds before any compiler or Pell
+decoding. The two83-operation sources are distinct; their rational identity
+does not equate positive integer zero sets. Independent-gamma83 remains
+unresolved for different outer data, and the universal bound stays84.
+
 The [PLUS resonant population proof](complete83_plus_resonant_population.md)
 and [MINUS resonant population proof](complete83_resonant_minus_binary.md),
 with a [root mathematical review](review_complete83_resonant_binary.md),
@@ -5587,6 +5597,7 @@ New research and the completed75-operation construction:
 
 | Artifact | Established result | Remaining boundary |
 |---|---|---|
+| [Shared83 / independent-gamma83 interface](shared83_to_gamma83_interface.md) and [root review](review_shared83_to_gamma83_interface.md) | Exact rational map; integral inverse needs H\|U; raw input/finalizer excludes every positive independent-gamma tuple with W=0 | Blocks transfer of the new false-positive family; changed outer data and independent-gamma language remain unresolved |
 | [Actual rejecting compiler for shared83](complete83_rejecting_compiler.md) and [independent semantic review](review_complete83_rejecting_compiler.md) | Unbounded positive inputs with full83 zeros on every original compiler slice; explicit empty-language program proves false positives | Refutes this source with its inherited recipe, not all83 constructions or every input; universal84/187/18 remains |
 | [PLUS](complete83_plus_resonant_population.md) / [MINUS](complete83_resonant_minus_binary.md) resonant binary proofs and [root review](review_complete83_resonant_binary.md) | Authentic compiler sparsity and exact resonant residues prove the binary scale on sufficiently large subpower tails in both shapes | Full-zero semantic consequence requires a specified program; no improved universal bound |
 | [Growing resonant selectors](complete83_growing_resonant_selectors.md) and [independent review](review_complete83_growing_resonant_selectors.md) | Shifted search forces h→infinity and log(h)/log(Q)→0 in both shapes; preserves positive odd-scale completion with doubled size bound | Binary population and complete source zeros require separate proofs |
