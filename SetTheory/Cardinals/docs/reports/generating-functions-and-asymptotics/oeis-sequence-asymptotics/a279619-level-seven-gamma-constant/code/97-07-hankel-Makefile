@@ -1,0 +1,13 @@
+.PHONY: all verify regenerate experiments clean
+all: article.pdf
+article.pdf: article.tex
+	latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
+verify:
+	python code/verify_certificates.py
+regenerate:
+	python code/generate_certificates.py
+	python code/verify_certificates.py
+experiments:
+	python code/asymptotics_and_experiments.py
+clean:
+	latexmk -c article.tex
