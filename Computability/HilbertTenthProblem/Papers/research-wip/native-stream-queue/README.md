@@ -158,6 +158,19 @@ or46 witnesses/SOS224/degree52. Native AND remains in the loader, so a
 cheaper loading/accepting-history compiler is still needed for a universal
 improvement. The universal84/187 and85/155 points remain unchanged.
 
+The [new Beyond Ord package review](review_beyond_ord_package_d7cf7d554.md)
+at **d7cf7d554** authenticates nine members and four delivered checksum
+bindings. Selected GB localization, finite-support powers, hereditary-tree
+and relative arithmetic proofs pass the bounded challenge:17 archive spans,
+2269 lines and five context spans,519 lines. Arbitrary ordinal labels remain
+inputs to relative procedures; the natural-coefficient demonstrator supplies
+no addition/multiplication API or paid ordinary-integer compiler. Fixed
+complexity syntax generation is distinct from semantic evaluation. Root
+independently authenticates14 blobs,36 new/prior members and22 read spans.
+No supplied program runs, full-manuscript certification or improved universal
+bound are claimed; unread spectrum, unrolling and truth-promotion proofs
+remain outside review.
+
 The [hat-seed definition correction](review_hat_seed_definition_correction.md)
 and [root proof challenge](review_hat_seed_definition_correction_root.md)
 qualify the earlier endpoint reviews. Finitely many atoms do not imply
@@ -5675,6 +5688,7 @@ New research and the completed75-operation construction:
 
 | Artifact | Established result | Remaining boundary |
 |---|---|---|
+| [Beyond Ord package intake](review_beyond_ord_package_d7cf7d554.md) | Selected GB constructor/interface challenge; nine members, four hash bindings and exact read scopes | Relative ordinal primitives are unpaid; omitted proofs and supplied programs unreviewed; no universal bound change |
 | [Hat-seed definition correction](review_hat_seed_definition_correction.md) and [root challenge](review_hat_seed_definition_correction_root.md) | Atom-count reading fails for uniform and one-atom mixed laws; explicit cap1 counterexample; probability-one finite support repairs exclusion | Earlier no-correction assessments qualified and retained; abstract quantifier clarified; host manuscript write still pending |
 | [Four Borel-report placement reviews](review_borel_placement_54ece48ab.md) |21 changed paths,17 exact ancillary copies,33 members and29 checksums; unchanged guide/article/PDF with17Parts | XVIII–XXI remain intended writes; inherited proof scopes, broken flow reference and pending qualifications retained |
 | [Two-type ordinal promise boundary](ordinal_two_type_effectivity_boundary.md) and [root review](review_ordinal_two_type_effectivity_boundary.md) | Halting reduction uses only valid computable well-orders of types omega and omega+1; upper-type predicate has no effective finite existential certificates | Applies to arbitrary program presentations with semantic order-type meaning; explicit constructor syntax and generated lower-type certificates remain available |
