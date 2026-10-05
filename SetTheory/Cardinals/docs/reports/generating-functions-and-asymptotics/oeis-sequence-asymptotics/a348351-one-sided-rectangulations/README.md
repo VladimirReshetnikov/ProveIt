@@ -81,8 +81,9 @@ the section counter.
 Added by the write (5 October 2026), with proofs, marked `[write]`:
 
 - **Remark 1.2 (`osr:rem:cone`):** the chain satisfies hypotheses (H1)–(H5)
-  of Report 112's Theorem 2.1 (`cps:log:thm:cone`, see "Relation to the
-  repository") at the phases `(c, W)`, `c ∈ {B, R, G}`, and
+  of Report 112's Theorem 2.1, printed as Theorem 24.1 in
+  `a377922-corner-polyhedra-schnyder` (`cps:log:thm:cone`, see "Relation to
+  the repository") at the phases `(c, W)`, `c ∈ {B, R, G}`, and
   `K_L((0,W),(0,W)) = 0` for `L ≥ 1`; so the exponent of Theorem 1.1 also
   follows from that general theorem.
 - **Remark 9.1 (`osr:rem:lambert`):**
@@ -91,16 +92,65 @@ Added by the write (5 October 2026), with proofs, marked `[write]`:
   at this precision.
 - **Remark 10.1 (`osr:rem:criterion`):** the criterion in general: nonnegative
   integers with `a_n = μⁿ n^{−α+o(1)}`, `μ > 1`, `α` irrational, have a
-  non-D-finite generating function.
+  non-D-finite generating function. (After the independent check it also
+  says why `R = 1/μ` is algebraic if the series is D-finite: by Pringsheim's
+  theorem `R` is a singularity, hence a root of the leading coefficient of
+  an annihilating operator over `ℚ[z]`.)
 - **Note in Section 9:** `a(n+1) ≥ 2a(n)` for `n ≥ 1` (prepend a zero edge
   from `R` or from `G`), so the sequence is strictly increasing from `n = 1`.
 - **Notes after Lemma 3.1 and in Section 4:** the condensed steps 1 and 2
   written out (the predictable quadratic variation as an additive functional
   of the colour chain; uniform matrix-power decay by Gelfand's formula and a
-  finite cover). Notes at steps 3 and 4 say what is missing.
+  finite cover, with `δ_t ∈ (0,1)` since the independent check, first
+  `δ_t > 0`). Notes at steps 3 and 4 say what is missing.
 - Section 1.1 (provenance, credits, relation to the repository, notation,
   collected non-claims), the shipped-layout note in Section 11.1, and
   Section 11.4.
+
+**Independent check of the write (5 October 2026).** An adversarial check
+made by the intake after the write (`0c2cdf435`) examined the seven items
+the write supplied with proofs or relies on — Remarks 1.2, 9.1 and 10.1,
+the note `a(n+1) ≥ 2a(n)`, the notes completing steps 1 and 2, and the
+irrationality certificate of Section 10 — and found all seven valid, with
+no counterexample and no gap in any proof chain. Changes: in the step-2
+note, "there are `δ_t > 0`" now reads `δ_t ∈ (0,1)` (with `δ_t = 1`, the
+bound `(1−δ)^{j/k−1}` would be `0` to a negative power for `j < k`;
+cosmetic, marked there); Remark 10.1 now says why `R` is algebraic
+(Pringsheim) and names Report 112's derivative order `m` (our `k`).
+Separately, Part III of `a377922-corner-polyhedra-schnyder` has been
+written since (`9b4001d29`): Remark 1.2, Remark 10.1 and Question 6 now
+give its printed numbers (Theorem 24.1, Lemma 24.2, Section 27,
+Remark 27.1, read from its built PDF), and Remark 1.2 records in a dated
+note that Part III's Section 22.5 cites this report (it first said "written
+concurrently" and "Neither report cites the other"). The check used
+neither the delivered programs nor the write's. Its own programs (Python
+3.14.4, sympy 1.14.0, mpmath 1.3.0, NumPy) rebuilt the step table from the
+two weak inequalities and compared it cell by cell; ran an exact
+big-integer transfer recursion to `n = 600`, reproducing `a(0..16)` (all
+the OEIS has; its b-file is synthesized from the entry); and counted the
+vincular avoiders by brute force for `n ≤ 9`, independently of the walk.
+`a(n+1) ≥ 2a(n)` holds for every `1 ≤ n ≤ 599`, with equality at `n = 1`,
+and fails at `n = 0`, so `n ≥ 1` is needed; `a(n) ≤ (3+√17)Γ^{n−1}` for
+`1 ≤ n ≤ 600`; the observations of Question 1 are correct roundings. Exact
+`ℚ(√17)` algebra confirmed (H1)–(H5): `A² > 0`, the characteristic
+polynomial, `r`, `π`, `m`, `h`, `Σ` (unchanged when `h` is shifted by a
+constant), `ρ`, `α = 2.9569294595087535…`; the Hessian of `log λ` (40-digit
+finite differences) equals `Σ` to 12 digits; `K_L((0,W),(0,W)) = 0` for
+`L ≥ 1`; the dual seed probability is `p*_WW(−v) = p_WW(v) = 1/Γ ≈ 0.1798`;
+on a 401 × 401 torus grid the Fourier spectral radius is at most `0.9981`
+for `|t| ≥ 0.1`, `0.954` for `|t| ≥ 0.5`, `0.823` for `|t| ≥ 1`. Whitt's
+hypotheses follow from the deterministic jump bounds (largest
+corrected-increment coordinate `1.5428 < 3`; `max ‖V(c)‖ = 0.557`) and the
+ergodic theorem. The Lambert threshold is `L > α(1 − log(α/g)) ≈ 1.3477`;
+`N(10^e) = 33, 74, 142, 278` against `X_0 = 32.86, 74.53, 142.74, 278.08`
+(`e = 20, 50, 100, 200`), with `X_0` minus the two-term form drifting
+towards `−(α/g) log g ≈ −0.9304`. The criterion uses the `o(1)` form only
+through the Abelian comparison; no Tauberian step is needed. `2 cos θ` has
+minimal polynomial `x² + 29x + 2` (an algebraic integer; conjugate
+`≈ −28.93 < −2`). This was a careful reading with numerical tests (exact
+rational, big-integer and `ℚ(√17)` arithmetic; floating-point grids not
+interval-certified), not a formal verification or an external review; the
+end of Section 11.4 of the article records it in full.
 
 ## What is not claimed
 
@@ -199,14 +249,21 @@ Rocq, and its place in the collection confers no formal status.
     `cps:lem:irrational` (there `2 cos θ` is a rational non-integer; here it
     is an algebraic integer, and the certificate is its conjugate below −2).
   - **Part III** (Report 112 of the same bundle, file prefix `47-logcone-`,
-    labels `cps:log:`; written concurrently with this report) proves the
-    method of Sections 3–8 as a general cone theorem for finite-phase
-    Markov-additive walks with exponential-tail jumps (its Theorem 2.1,
-    `cps:log:thm:cone`, hypotheses (H1)–(H5)). Remark 1.2 checks that this
-    walk satisfies (H1)–(H5), so the exponent of Theorem 1.1 also follows
-    from that theorem; this report is the earlier (bundle index 08:51 against
-    09:26 UTC), model-specific proof with bounded steps. Its non-D-finiteness
-    argument is that of Report 112's Section 5. Neither cites the other.
+    labels `cps:log:`; written by ProveIt in `9b4001d29`, after this report)
+    proves the method of Sections 3–8 as a general cone theorem for
+    finite-phase Markov-additive walks with exponential-tail jumps (its
+    Theorem 2.1, printed there as Theorem 24.1, `cps:log:thm:cone`,
+    hypotheses (H1)–(H5); Report 112's Section k is Section k + 22 there).
+    Remark 1.2 checks that this walk satisfies (H1)–(H5), so the exponent of
+    Theorem 1.1 also follows from that theorem; this report is the earlier
+    (bundle index 08:51 against 09:26 UTC), model-specific proof with
+    bounded steps. Its non-D-finiteness argument is that of Report 112's
+    Section 5 (Section 27 there; the criterion in general is Remark 27.1,
+    `cps:log:rem:criterion`). Neither source manuscript cites the other;
+    ProveIt's write of Part III cites Remarks 1.2 and 10.1 here in its
+    Section 22.5 (`cps:log:sec:siblings`). (Updated 5 October 2026 after
+    Part III was written; this bullet first said "written concurrently with
+    this report" and "Neither cites the other.")
 - `Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/`
   (`p0:thm:lambert-core`): the inverse is an instance (Remark 9.1); no
   novelty is claimed for the inversion mechanics.
@@ -245,14 +302,20 @@ and every reference was updated (37 `\eqref`, 5 `\ref`). The write added 12:
 `osr:q:sketches`, `osr:q:external`. The report has 67 labels; a build of the
 delivered text and of this one give every delivered label the same number
 (aux files compared). No statement, proof or number of the manuscript was
-changed.
+changed. After the write, the independent check of 5 October 2026 added an
+unlabelled dated paragraph at the end of Section 11.4, made the range of
+`δ_t` explicit in the step-2 note (marked there), clarified Remark 10.1,
+and updated the references to Part III of `a377922-corner-polyhedra-schnyder`
+in Remarks 1.2 and 10.1 and Question 6 (dated note in Remark 1.2); no label
+was added or renumbered (aux files of the previous and the new build
+compared).
 
 ## Files
 
 ```text
 README.md                                     this guide (replaces the delivery README)
 article.tex                                   the report (delivered report111.tex; labels prefixed, [write] additions)
-article.pdf                                   compiled report, 24 pages
+article.pdf                                   compiled report, 25 pages
 checks-README.md                              the checks README (delivered checks/README.md)
 VALIDATION.md                                 validation summary (delivered checks/VALIDATION.md)
 code/verify_report111.py                      exact finite checker (delivered checks/)
@@ -381,7 +444,9 @@ B=$(mktemp -d); cp article.tex "$B/"; cd "$B"
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The committed PDF was built this way with MiKTeX on 5 October 2026: 24 pages;
+The committed PDF was built this way with MiKTeX on 5 October 2026
+(rebuilt the same day after the independent check, with four pdfLaTeX
+passes; every label keeps its number): 25 pages;
 no errors or warnings, no undefined references or citations, no multiply
 defined labels, no duplicate PDF destinations, no overfull or underfull
 boxes. The delivered source built the same way gives 18 pages. The article
