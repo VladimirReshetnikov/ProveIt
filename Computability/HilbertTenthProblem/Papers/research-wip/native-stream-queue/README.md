@@ -226,6 +226,32 @@ Fresh metadata/finite-height checks pass before freezing; the PDF and external
 bibliography were not independently verified. No paid integer compiler or
 operation saving is supplied, and the established universal84 bound remains.
 
+The [PLUS resonant population proof](complete83_plus_resonant_population.md)
+and [MINUS resonant population proof](complete83_resonant_minus_binary.md),
+with a [root mathematical review](review_complete83_resonant_binary.md),
+close the binary population condition on the growing subpower selector
+families. Exact resonance fixes the repeated low selector word; literal
+compiler sparsity supplies a positive population margin. PLUS uses four
+high complement blocks and a dense low region; MINUS uses a joint cyclic
+population bound and signed carry normalization. Both proofs apply to
+all sufficiently large parameters and survive the odd-prime input lift.
+Root independently checks54 relaxed index examples and11,935 Mersenne
+controls, without executing predecessor programs or materializing Pell
+witnesses. Together with odd completion these yield positive83 zeros at
+constructed inputs; their semantic consequence is a separate question.
+No new universal operation bound is asserted.
+
+The [growing resonant selectors](complete83_growing_resonant_selectors.md)
+and [independent proof review](review_complete83_growing_resonant_selectors.md)
+shift the coprime search to indices1 through L, forcing the exact selector
+quotient h to grow at least quadratically in n while log(h)/log(Q) tends
+to zero. The canonical resonant residues are proved in both shapes.
+The selector bound doubles to2Zbound; the correspondingly doubled
+positivity threshold preserves transport and the complete odd-scale
+construction. Fresh bounded arithmetic and independent inert-source
+checks support the proof. This packet leaves binary population to a
+separate argument and makes no complete-zero or improved-bound claim.
+
 The [shorter selector search](complete83_subpower_selector_bound.md)
 and [independent proof review](review_complete83_subpower_selector_bound.md)
 sharpen the fixed-prime construction to z<=Q^(1+o(1)), and likewise F=Kz,
@@ -5546,6 +5572,8 @@ New research and the completed75-operation construction:
 
 | Artifact | Established result | Remaining boundary |
 |---|---|---|
+| [PLUS](complete83_plus_resonant_population.md) / [MINUS](complete83_resonant_minus_binary.md) resonant binary proofs and [root review](review_complete83_resonant_binary.md) | Authentic compiler sparsity and exact resonant residues prove the binary scale on sufficiently large subpower tails in both shapes | Full-zero semantic consequence requires a specified program; no improved universal bound |
+| [Growing resonant selectors](complete83_growing_resonant_selectors.md) and [independent review](review_complete83_growing_resonant_selectors.md) | Shifted search forces h→infinity and log(h)/log(Q)→0 in both shapes; preserves positive odd-scale completion with doubled size bound | Binary population and complete source zeros require separate proofs |
 | [Two derivations / Borel conjugacy review](review_two_derivations_78528873b.md) | Full1347-line proof review, exact scalar and simultaneous coordinate interface; new nonhalting reduction even for canonical pairs over Gamma=Z | Program-described coefficient supports differ from explicit finite lists; no uniform existential conjugacy test or paid universal compiler |
 | [Shorter selector search](complete83_subpower_selector_bound.md) and [independent proof review](review_complete83_subpower_selector_bound.md) | Improved coprime interval gives z,F<=Q^(1+o(1)); preserves previous positive odd-scale completion | Upper bound only; low Q digit and enlarged-z binary population remain uncontrolled |
 | [Fixed-prime quotient carries](complete83_fixed_prime_quotient_carries.md) and [independent review](review_complete83_fixed_prime_quotient_carries.md) | Unconditional odd-scale completion A³ divides Y on explicit sufficiently large subsequences of each fixed compiler, with positive input/slack and transport | Enlarged-z binary condition remains open; no actual complete zero, prescribed-input result or universal83 |

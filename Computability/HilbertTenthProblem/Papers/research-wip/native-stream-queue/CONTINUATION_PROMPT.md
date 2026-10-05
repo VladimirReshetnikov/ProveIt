@@ -246,6 +246,34 @@
 > operation saving is supplied, and the established universal84 bound remains.
 >
 >
+> The [PLUS resonant population proof](complete83_plus_resonant_population.md)
+> and [MINUS resonant population proof](complete83_resonant_minus_binary.md),
+> with a [root mathematical review](review_complete83_resonant_binary.md),
+> close the binary population condition on the growing subpower selector
+> families. Exact resonance fixes the repeated low selector word; literal
+> compiler sparsity supplies a positive population margin. PLUS uses four
+> high complement blocks and a dense low region; MINUS uses a joint cyclic
+> population bound and signed carry normalization. Both proofs apply to
+> all sufficiently large parameters and survive the odd-prime input lift.
+> Root independently checks54 relaxed index examples and11,935 Mersenne
+> controls, without executing predecessor programs or materializing Pell
+> witnesses. Together with odd completion these yield positive83 zeros at
+> constructed inputs; their semantic consequence is a separate question.
+> No new universal operation bound is asserted.
+>
+>
+> The [growing resonant selectors](complete83_growing_resonant_selectors.md)
+> and [independent proof review](review_complete83_growing_resonant_selectors.md)
+> shift the coprime search to indices1 through L, forcing the exact selector
+> quotient h to grow at least quadratically in n while log(h)/log(Q) tends
+> to zero. The canonical resonant residues are proved in both shapes.
+> The selector bound doubles to2Zbound; the correspondingly doubled
+> positivity threshold preserves transport and the complete odd-scale
+> construction. Fresh bounded arithmetic and independent inert-source
+> checks support the proof. This packet leaves binary population to a
+> separate argument and makes no complete-zero or improved-bound claim.
+>
+>
 > The [shorter selector search](complete83_subpower_selector_bound.md)
 > and [independent proof review](review_complete83_subpower_selector_bound.md)
 > sharpen the fixed-prime construction to z<=Q^(1+o(1)), and likewise F=Kz,
