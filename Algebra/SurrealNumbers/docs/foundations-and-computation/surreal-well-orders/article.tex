@@ -1336,8 +1336,9 @@ $\lVert t\rVert=\hncut{\Eps}{t}$. \emph{False reading:} $\Eps^{\le n+1}$ is a
 subclass of $\Eps$, isomorphic to but not equal to source~33's separate order
 $T_n$; $w_n$ is not a word.\\[3pt]
 $f\boxplus g$, $f\boxtimes g$, $F_\beta$ &
-Normal-form addition and multiplication of points of $\Eps$ or $\fsp{\Omega}{B}$
-(\cref{swo:hn:ar:addition,swo:hn:ar:multiplication}) and the coefficient
+Normal-form addition and multiplication of points of $\Eps$
+(\cref{swo:hn:ar:addition,swo:hn:ar:multiplication}); the addition rule also
+applies to points of $\fsp{\Omega}{B}$. The terms $F_\beta$ are the coefficient
 multiples \eqref{swo:hn:ar:coefficientmultiples}. \emph{False reading:} not the
 natural (Hessenberg) sum and product; $\lVert f\boxplus g\rVert\cong\lVert
 f\rVert+\lVert g\rVert$ is ordinal addition of presentations.\\[3pt]
@@ -1746,7 +1747,9 @@ no review covers Part~XVI as written (\cref{swo:xvi:sec:status}). (Dated note,
 4 October 2026: an independent check of the four statements written for
 Part~XVI, \cref{swo:xvi:thm:choicefree,swo:xvi:rem:towers,swo:xvi:rem:digits,swo:xvi:rem:converse},
 is recorded in \cref{swo:xvi:sec:status}; it found them valid after
-editorial corrections.)
+editorial corrections.) A later bounded publication review and the
+empty-domain follow-up are also recorded there; Review remark~H5 qualifies
+the earlier passes and records the remaining cases repaired in this text.
 % ---- hand chunk claims97 (batch 97A)
 \smallskip
 \merge\ \emph{Addendum of 4 October 2026: source~36.} The batch-97 addition
@@ -1784,8 +1787,10 @@ article was not read end to end, and the audit is ``not an exhaustive duplicate
 search''.
 \end{itemize}
 The Hilbert's-tenth research tree's bounded intake of the archive (commit
-\code{39bb02ece}) found no defect in the proofs it read; no review covers
-Part~XVII as written (\cref{swo:xvii:sec:status}).
+\code{39bb02ece}) found no defect in the proofs it read. A later bounded
+publication review of \code{a21a42d8c} checks selected arithmetic and
+effective-interface proofs and corrects three editorial scope claims;
+its coverage and remaining exclusions are in \cref{swo:xvii:sec:status}.
 % ---- hand chunk formal
 \subsection{Formal status}\label{swo:sec:formal}
 
@@ -54236,8 +54241,11 @@ can be obtained, but that assertion is not used in the proof above.
 source~33's research question \cref{swo:dh:n12.7} asks for which supplied towers
 it is initial. It always is; the remark and the first part of the question are
 stale, and stay on record with this proof. Let $(F_b)_{b\in\Gamma^+}$ be a
-supplied uniform exhausting exact tower on $W$ and let $H$ be the terminating
-history of \cref{swo:xvi:rem:towers}, with floors $p_b(x)=\min_W[x]_{F_b}$.
+supplied uniform exhausting exact tower on $W$. If $\Gamma$ is empty,
+exhaustion of equality forces the nonempty $W$ to be a singleton; then
+$P(\Gamma)=1$ and $\Phi$ is the unique isomorphism, hence initial. Assume
+henceforth that $\Gamma$ is nonempty, and let $H$ be the terminating history
+of \cref{swo:xvi:rem:towers}, with floors $p_b(x)=\min_W[x]_{F_b}$.
 Fix $a\in\Gamma$ and $x\in W$. The $F_a$-classes $C$ contained in
 $[x]_{F_{a^+}}$ with $C<[x]_{F_a}$ are represented by their least points; these
 lie in $H_a$, are at least $\min_W[x]_{F_{a^+}}=p_{a^+}(x)$ and are below
@@ -54266,7 +54274,13 @@ while mere embeddings $x\mapsto e_x$ into $P(W)$ are free.
 \merge\ [corrected after independent check, 4 October 2026] The text of 4~October 2026 said that this part
 of the question ``is answered by the same identification: $\Phi$ needs only
 $\GB$ and the supplied tower''; that holds only for the first reading, and
-the two readings are now separated.
+the two readings are now separated. A further bounded review found that
+the earlier proof immediately invoked a terminating history for every
+supplied tower. For $W=1$ and $\Gamma=0$ the exhausting tower exists but the
+printed canonical-history definition requires nonempty $\Gamma$; the
+singleton case above repairs that invocation without restricting the
+initiality conclusion. The old domain claim is retained here with this
+counterexample.
 \end{remark}
 
 % ---- source 33 (batch-96 manuscript 09), lines 773-811
@@ -54276,7 +54290,7 @@ along the specified class well-order $\Lambda$ has a solution. It is more
 than a notational license to write a recursively defined family.
 
 \begin{proposition}[Conditional converse]\label{swo:dh:prop:converse}
-Assume $\GBC+\ETR_{\Gamma^+}$. If a class well-order $W$ embeds into
+Assume $\GBC+\ETR_{\Gamma^+}$. If a nonempty class well-order $W$ embeds into
 $P(\Gamma)$, then its exact condensation tower indexed by $\Gamma^+$ exists
 and is exhausting. Consequently, in this theory,
 \[
@@ -54310,20 +54324,29 @@ is universal, so is $F_\infty$. The reverse implication is
 \end{proof}
 
 \begin{remark}[\merge; under $\ETR_{\Gamma+1}$ an embedding into $P(\Gamma)$ becomes initial]\label{swo:xvi:rem:converse}
-Combine \cref{swo:dh:prop:converse} with \cref{swo:xvi:rem:digits}: in
-$\GBC+\ETR_{\Gamma^+}$, if a class well-order $W$ embeds into $P(\Gamma)$ by
-an arbitrary order embedding, then its exact tower on $\Gamma^+$ exists and is
-exhausting, so $W$ is isomorphic to an initial segment of $P(\Gamma)$ by its
-normal-form map. Thus in that theory the displayed equivalence of
-\cref{swo:dh:prop:converse} reads $W\emb P(\Gamma)\Leftrightarrow W\iemb
-P(\Gamma)$, and, for nonempty $W$ and $\Gamma$, by \cref{swo:bo:hist:schedule}
+In $\GBC+\ETR_{\Gamma^+}$, suppose a class well-order $W$ embeds into
+$P(\Gamma)$. If $W$ is empty, its unique embedding is initial. If $W$ is
+nonempty and $\Gamma$ is empty, then $P(\Gamma)=1$ forces $W$ to be a
+singleton, again giving an initial embedding. For nonempty $W$ and $\Gamma$,
+combine \cref{swo:dh:prop:converse} with \cref{swo:xvi:rem:digits}: its exact
+tower exists and is exhausting, so its normal-form map has initial image.
+Thus in that theory, for every $W$ and $\Gamma$,
+$W\emb P(\Gamma)\Leftrightarrow W\iemb P(\Gamma)$, and, for nonempty $W$ and $\Gamma$, by \cref{swo:bo:hist:schedule}
 both say that $W$ has a
 terminating history on $\Gamma+1$. Source~33 states only the embedding form;
 the upgrade is this write's, by the two cited proofs.
 
 \merge\ [corrected after independent check, 4 October 2026] The hypothesis that $W$ and $\Gamma$ are
 nonempty, which \cref{swo:bo:hist:schedule} requires, was missing from the
-last clause.
+last clause. For $W=1$ and $\Gamma=0$ the initial embedding exists but
+the stated canonical history is undefined, as in \cref{swo:xvi:rem:towers}.
+The source's \cref{swo:dh:prop:converse} and this remark also said that the
+exact tower exists for ``a class well-order $W$'', without the nonemptiness
+required by \cref{swo:dh:def:tower}. For $W=0$ and $\Gamma=1$ the embedding
+premise holds but that tower lies outside its definition. The proposition
+now states its nonempty domain, and the separate empty cases above prove the
+broader embedding/initial-embedding equivalence. These counterexamples
+retain both earlier omissions; no tower convention is silently extended.
 \end{remark}
 
 \begin{note}[Source~33, Proposition~5.7, ``Exhaustion under a sufficient recursion principle'']\label{swo:dh:prop:exhaust}
@@ -54336,9 +54359,11 @@ strictly below $x$ lie in one $F_x$-class: at $x=y^+$ the point $y$ lies in
 that class or the next, and one condensation step merges the prefix through
 $y$; at a limit any two points of the prefix lie below an earlier stage. It
 calls this ``a sufficient axiom bound, not an optimality theorem''. The
-existence of exhausting towers for all class well-orders is $\CTH$ by
+existence of exhausting towers for all nonempty class well-orders is $\CTH$ by
 \cref{swo:xvi:rem:towers}, hence equivalent to $\CWO$
-(\cref{swo:bo:hist:equivalence}).
+(\cref{swo:bo:hist:equivalence}). The earlier wording ``all class well-orders''
+included $W=0$, which lies outside \cref{swo:dh:def:tower}; that domain
+counterexample is retained here, and the nonempty qualification is explicit.
 \end{note}
 
 % ---- source 33 (batch-96 manuscript 09), lines 826-829
@@ -55327,6 +55352,7 @@ been reviewed when written; an independent adversarial check of 4~October 2026
 (\cref{swo:xvi:sec:status}) found it valid, with no mathematical gap, after the
 two editorial corrections recorded next.
 
+\paragraph{Review remark H4 (retained dependency correction).}
 \merge\ [corrected after independent check, 4 October 2026] In~(1) the class of terms of
 \cref{swo:fc:lem:bounded-specialization}, printed $T$ there, was misprinted
 $\mathrm{Tm}$ twice. The first sentence of the proof said that source~35's
@@ -58926,6 +58952,23 @@ question (\cref{swo:xvi:rem:digits}). The fixes are made, each with a dated
 note. The check is a careful reading by the intake, not a formal verification
 or an external review.
 
+\paragraph{Review remark H5 (qualification of earlier review passes).}
+The preceding working-note report said that it ``found no mathematical gap
+and no counterexample'' and that the remarks were valid after the listed
+fixes. The frozen Hilbert's-tenth reviews of \code{62b16914e} likewise passed
+the tower/history and digit/converse chain without its empty-domain
+qualifications. A bounded review of \code{a21a42d8c}, recorded in
+\path{review_horizons_xvi_corrections_a21a42d8c.md} in that research tree,
+found the residual cases now repaired in
+\cref{swo:xvi:rem:digits,swo:xvi:rem:converse}: $W=1$, $\Gamma=0$ has an
+exhausting tower but no canonical history under the printed definition;
+$W=0$, $\Gamma=1$ has an initial embedding but is outside the exact-tower
+definition. The earlier unqualified passes remain historical evidence and
+are qualified by these counterexamples. The nonempty arguments, the
+embedding endpoints with their new empty cases, and the choice-free
+completion theorem remain valid within this bounded review. No full review
+of Part~XVI is asserted.
+
 % ---- end of Part XVI: restore the report's section numbering
 \setcounter{section}{112}
 \let\thesection\swoSavedThesection
@@ -58954,9 +58997,9 @@ sources~32--35 and was written on 4~October 2026, and it arrived fifteen
 minutes after their placement, too late to join their merge.
 
 \emph{What it adds to Part~XVI.} Explicit normal-form addition and
-multiplication of the points of $\Eps$ and of every $\fsp{\Omega}{B}$, proved as
-class isomorphisms of the represented initial segments
-(\cref{swo:hn:ar:addition,swo:hn:ar:multiplication}); the exact predecessor
+multiplication on the points of $\Eps$, representing sums and products of
+their initial segments; the addition rule also applies to points of every
+$\fsp{\Omega}{B}$ (\cref{swo:hn:ar:addition,swo:hn:ar:multiplication}); the exact predecessor
 decomposition of $\fsp{A}{B}$ for an arbitrary base and a complete criterion
 for its set-likeness (\cref{swo:hn:ar:predecessor,swo:hn:ar:setlike}), with
 $\fsp{a}{\Omega\cdot B}\cong\fsp{\Omega}{B}$ for set ordinals $a\ge2$
@@ -62133,10 +62176,42 @@ epsilon and zeta calibrations, the general spectrum theorem, truth promotion,
 the variation of $G$, the admissible bound or the unrolling proposition, and it
 ran no delivered program. The placement check
 (\code{6571ee1af}) read the main proofs, recomputed the three worked products
-and found no false statement. No review covers the text written for this
-Part. The claims most in need of review are those the bounded intake left
-unread: \cref{swo:hn:ns:epsilon,swo:hn:ns:treeheight,swo:hn:ns:zeta,swo:hn:ns:horizon,swo:hn:hz:varying-enumerations}
-and the stronger leastness stated in \cref{swo:xvii:note:fixed}.
+and found no false statement. A later bounded publication review at
+\code{a21a42d8c}, recorded in
+\path{review_horizons_write_a21a42d8c.md} in the same research tree, reads the
+whole 557-line guide diff and 1,698 selected article lines. It authenticates
+the source archive, all five ancillary placements and all 70 source-label
+routes. The selected arithmetic proofs, the initial-embedding leastness of
+\cref{swo:xvii:note:fixed}, and the fixed-standard-complexity syntax hierarchy
+pass within their hypotheses. Three editorial arithmetic summaries are
+corrected below. This review does not certify the epsilon interpretation,
+the epsilon/zeta calibrations, general transitive-model spectrum, truth
+promotion, variation of $G$, admissible bound or unrolling proof; downstream
+uses retain those dependencies. No supplied program was run and no paid
+fixed-arity integer compiler follows from the ordinal-relative arithmetic.
+
+\paragraph{Review remark H1 (multiplication scope).}
+The guide originally extended ``addition and multiplication'' to every
+$\fsp{\Omega}{B}$; the notation table said ``points of $\Eps$ or
+$\fsp{\Omega}{B}$'', and this Part's introduction made the same extension.
+For $B=2$, the point-cut $\Omega$ belongs to $\fsp{\Omega}{2}$, but its
+product with itself is the whole order $\Omega^2=\fsp{\Omega}{2}$, which
+cannot be a proper initial point-cut of itself. Only the addition rule is
+asserted on every such power; both operations are defined on $\Eps$.
+The printed theorems retain that scope.
+
+\paragraph{Review remark H2 (set-likeness hypotheses).}
+The guide omitted ``$A$ has at least two elements and $B$ is nonempty''
+from \cref{swo:hn:ar:setlike}. For $A=1$, $B=\Ord+1$, the power is the
+set-like singleton, but neither stated alternative holds. Independently,
+$A=\Ord$, $B=0$ again gives the set-like singleton without either alternative.
+Both restrictions are now explicit in the guide; the theorem is unchanged.
+
+\paragraph{Review remark H3 (set-base collapse).}
+The guide stated $\fsp{a}{\Omega\cdot B}\cong\fsp{\Omega}{B}$ without the
+assumption that $a$ is a set ordinal at least two. Taking $a=1$ and $B=1$
+would assert $1\cong\Ord$. The guide now repeats the premise of
+\cref{swo:hn:ar:setbase}; its proof is unchanged.
 
 % ---- end of Part XVII: restore the report's section numbering
 \setcounter{section}{112}

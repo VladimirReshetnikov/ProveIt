@@ -945,13 +945,16 @@ first.
     question 113.239 (`swo:gcz:n7`) in part.
 18. **Finite-support arithmetic and definability horizons (Part XVII, source
     36).** Over GB with ZF sets and no choice: normal-form addition and
-    multiplication of the points of the hereditary order `𝖤` (and of every
-    `Ω^{[B]}`) are class isomorphisms of the represented initial segments
-    (Theorems XVII.5.1, XVII.5.2; `D + Ω^{[B]} ≅ Ω^{[B]}` for every point-cut);
-    `A^{[B]}` has the exact predecessor decomposition for every base (Theorem
-    XVII.3.5) and is set-like iff `A` is a set and `B` set-like or `B` is a
-    singleton and `A` set-like (Theorem XVII.3.6), with `a^{[Ω·B]} ≅ Ω^{[B]}`
-    (Corollary XVII.3.7); every proper class well-order has a presentation on
+    multiplication on the hereditary order `𝖤` represent sums and products
+    of its initial segments (Theorems XVII.5.1, XVII.5.2). The addition rule
+    also applies to points of every `Ω^{[B]}`, and
+    `D + Ω^{[B]} ≅ Ω^{[B]}` for every point-cut D. Finite-support powers
+    have the exact predecessor decomposition of Theorem XVII.3.5. If A
+    has at least two elements and B is nonempty, `A^{[B]}` is set-like iff
+    A is a set and B is set-like, or B is a singleton and A is set-like
+    (Theorem XVII.3.6). For every set ordinal a≥2,
+    `a^{[Ω·B]} ≅ Ω^{[B]}` (Corollary XVII.3.7); every proper class well-order
+    has a presentation on
     the carrier `Ord` (Proposition XVII.2.4); a finite-support term operator
     with the restriction property that preserves set well-orders preserves
     class well-orders (Theorem XVII.6.2); the epsilon-term functor `𝖤𝗉` sends
@@ -1345,7 +1348,19 @@ cleveref. No external figures or bibliography file.
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-Built with MiKTeX (pdfLaTeX): 1,050 pages; no errors, undefined references
+The current H1–H5 and empty-domain corrections were rebuilt directly with
+TeX Live pdfLaTeX, shell escape disabled, in three passes: **1,051 pages**.
+The committed 1,050-page before-image was separately rebuilt under the same
+settings. Both final logs have 37 underfull boxes and the expected
+shell-escape-disabled warning, with no errors, undefined references or
+citations, duplicate labels/destinations or overfull boxes. All 2,293 literal
+labels remain in the same order; all 4,586 ordinary/cleveref auxiliary label
+entries keep their displayed numbers. PDF pages 25, 31, 780–782, 794, 848,
+888 and 889 were rendered and visually checked. This verifies those affected
+pages and the build diagnostics, not the whole PDF or all proofs.
+
+The previous merged release was built with MiKTeX (pdfLaTeX): 1,050 pages;
+no errors, undefined references
 or citations, multiply defined labels, duplicate destinations, LaTeX or package
 warnings, or overfull boxes; 38 underfull-box warnings, the same 38 as the
 994-page build before batch 97, the 860-page build before batch 96 and the 831-page build before batch 89 (15 in the build before batch 83, 10 before
@@ -1826,7 +1841,9 @@ coefficient orders and selected effective systems and refutes no claim. None
 covers Part XVI as written (Section XVI.12). The claims most in need of review
 are the full GB dependency analysis (Theorem XVI.5.8; Note XVI.5.10), source
 32's exact truth presentation (Theorem XVI.8.12), source 35's separation on
-`Ord` (Theorem XVI.7.11) and this write's Theorem XVI.6.21.
+`Ord` (Theorem XVI.7.11) and this write's Theorem XVI.6.21. This is the
+historical intake assessment; the later bounded reviews below cover selected
+publication proofs, with the empty-domain qualifications of Review remark H5.
 
 A later bounded review of the actual Part XVI publication at `62b16914e` is
 recorded in `review_beyond_ord_write_62b16914e.md` in the same research tree,
@@ -1874,6 +1891,23 @@ XVI.6.21 is now marked as independently checked. This is a careful reading,
 not a formal verification, an external review or an entry of the
 collection's review record.
 
+**Review remark H5 (qualification of earlier passes).** The preceding
+working-note report and the frozen `62b16914e` GB/publication reviews missed
+empty-domain qualifications in the tower/history and digit/converse chain.
+The later [four-correction review](../../../../../Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/review_horizons_xvi_corrections_a21a42d8c.md)
+retains the counterexamples: `W=1, Γ=0` has an exhausting tower but no
+canonical history under the printed definition; `W=0, Γ=1` embeds initially
+but is outside the exact-tower definition. The digit proof now treats the
+empty schedule, the source converse states nonempty W, and the broader
+embedding equivalence treats both empty cases separately. The adjacent
+Note XVI.5.32 likewise says “all nonempty class well-orders” and retains
+its former unrestricted wording with the same empty-carrier counterexample.
+Those fixes
+preserve the endpoint results. The GB completion proof remains valid;
+the earlier unqualified passes remain on record with this scope correction.
+Its retained dependency correction now has the explicit locator Review
+remark H4 in the article; the notation correction was typographical.
+
 Batch 97: the same tree reviewed source 36's archive in a bounded intake
 before placement
 (`Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/review_beyond_ord_package_d7cf7d554.md`,
@@ -1891,7 +1925,26 @@ proofs of the epsilon interpretation, the epsilon and zeta calibrations, the
 general spectrum theorem, truth promotion, the variation of `G`, the
 admissible bound or the unrolling proposition, and ran no delivered program.
 The placement (`6571ee1af`) read the main proofs and recomputed the three
-worked products. No review covers Part XVII as written (Section XVII.11). The
-claims most in need of review are those the intake left unread: Theorems
-XVII.6.4, XVII.6.6, XVII.6.7, Proposition XVII.6.11 and Theorem XVII.7.11, and
-the stronger leastness of Note XVII.4.B.
+worked products. A later [bounded publication review](../../../../../Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/review_horizons_write_a21a42d8c.md)
+at `a21a42d8c` reads the full 557-line guide diff and 1,698 selected article
+lines, authenticates all nine archive members, five placements and 70 source
+label routes, and passes the selected arithmetic proofs, the stronger
+initial-embedding leastness of Note XVII.4.B and the fixed-standard-complexity
+syntax hierarchy. It corrects three editorial claims, retained below and
+as Review remarks H1–H3 in the article. It does not certify the epsilon
+interpretation/calibrations, general spectrum, truth promotion, varying-G,
+admissible-bound or unrolling proofs. No supplied program was run, and the
+ordinal-relative arithmetic supplies no paid fixed-arity integer compiler.
+
+1. **Review remark H1 (multiplication scope).** The guide, notation table
+   and Part XVII introduction extended multiplication to points of every
+   `Ω^{[B]}`. At `B=2`, multiplying the point-cut Ω by itself gives the
+   whole order Ω², which cannot be a proper point-cut of itself. Both
+   operations are proved on `𝖤`; only addition extends to every such power.
+2. **Review remark H2 (set-likeness).** The guide omitted `A≥2` and
+   nonempty B. At `A=1, B=Ord+1`, the power is the set-like singleton
+   although neither criterion alternative holds. At `A=Ord, B=0` the
+   same failure shows why the second hypothesis is needed.
+3. **Review remark H3 (set-base collapse).** The guide omitted “set ordinal
+   a≥2” from `a^{[Ord·B]}≅Ord^{[B]}`. Taking `a=1, B=1` would assert
+   `1≅Ord`. The corrected guide repeats the printed corollary's premise.
