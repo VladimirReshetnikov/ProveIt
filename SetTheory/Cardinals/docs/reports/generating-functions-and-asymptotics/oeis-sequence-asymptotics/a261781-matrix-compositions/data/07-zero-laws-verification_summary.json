@@ -1,0 +1,46 @@
+{
+  "checks": {
+    "symbolic_determinant_checks": 12,
+    "rational_determinant_checks": 96,
+    "algebraic_determinant_checks": 3,
+    "high_precision_cotangent_identity_checks": 78,
+    "degree_and_primitive_multiplicity_checks": 91,
+    "independent_root_merging_and_CDF_checks": 18,
+    "independent_tail_count_checks": 20,
+    "exact_full_support_CDF_computations": 18,
+    "independent_high_precision_first_moment_checks": 2,
+    "one_page_PDF_structure_checks": 4
+  },
+  "constants": {
+    "zeta2": 1.6449340668482264,
+    "C2": 0.03044845705839327,
+    "C4": 0.0001751045791711974,
+    "first_moment_constant": -0.6273278444052115,
+    "discrepancy_scaled_limit": 0.91189065278104,
+    "order2_half_jump_scaled_limit": 0.3039635509270133,
+    "edge_support_endpoint": 0.15915494309189535
+  },
+  "versions": {
+    "python": "3.12.14",
+    "sympy": "1.14.0",
+    "mpmath": "1.3.0",
+    "numpy": "2.3.5",
+    "matplotlib": "3.10.8"
+  },
+  "scope": {
+    "symbolic": "QQ[u], k=1..4, s=1..3; independently recurrence-derived Hankel matrices",
+    "rational": "k=1..4, s=1..3; u=-2,-1,-1/2,-1/3,0,1/2,1,2",
+    "algebraic": "QQ(sqrt(3)*I), k=4, s=1..3; u=(-1+I/sqrt(3))/2",
+    "exact_CDF": "All rational support angles, both left and right limits; selected k through 2048",
+    "exact_moments": "Rational scaled moments for p=2,4; selected k through 4096",
+    "floating_point": "Asymptotic ratios, transcendental constants, tail thresholds, and figures"
+  },
+  "limitations": [
+    "Finite computations do not prove a determinant identity for arbitrary k or any limiting law.",
+    "CDF discrepancies are exact on the complete finite support, not sampled on a plotting grid.",
+    "The identity degree=N and primitive multiplicities checks share the direct pair aggregation; independent root merging is additionally checked for k=3..20.",
+    "The constant 9/pi^2 in the discrepancy figure is established by the article's proof; the finite values are well below it, and do not by themselves establish it. Maximizers need not be the order-2 atom.",
+    "Edge-tail masses are integer counts, but deciding a transcendental threshold uses floating point; the independent 70-digit checks use generic thresholds away from atoms.",
+    "PNG rendering and PDF metadata can vary across library versions; exact CSV values are reproducible."
+  ]
+}
