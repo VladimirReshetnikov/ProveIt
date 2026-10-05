@@ -684,8 +684,9 @@ Section numbers are the manuscript's plus 69.
   squared) are re-proofs.
 - **Lemma 75.1, Theorem 75.2, Corollary 75.4, Theorem 75.5:** a stopped
   supermartingale lemma; **with independent private seeds and `E Q_i ≤ 1` for
-  every `i`, `P(D_n → +∞) < 1`**, indeed `≤ 1 − 1/5184`; the same with a
-  public seed that is almost surely finitely valued.
+  every `i`, `P(D_n → +∞) < 1`**, indeed `≤ 1 − 1/5184`. For a public seed
+  with finite mass-one support, Theorem 75.5 proves `P(D_n → +∞) < 1`;
+  no uniform gap holds (Proposition 79.3).
 - **Lemmas 76.1–76.2, Theorem 76.3, Lemma 76.4:** Part IV's early-stopping Eldredge block with private
   activation (law, query tails), a general stage schedule, and deletion of
   finitely many stages.
@@ -729,6 +730,17 @@ Theorem 74.6 is new). Dated notes after Sections 57 and 68 record this.
 
 ### Corrections and claims moved (standing rule of 4 October 2026)
 
+- **Post-write review, 4 October 2026: two claims refuted and retained in
+  Remark 75.9.** The guide at `a21208b3f` said "indeed `≤ 1 − 1/5184`; the
+  same with a public seed that is almost surely finitely valued". This
+  incorrectly extended the private uniform gap: Proposition 79.3 gives a
+  two-valued gate with success at least `9999/10000 > 5183/5184` and cap
+  below 1. The finite-public theorem excludes probability 1 only. In the
+  proof of Corollary 75.7, the equality `P(g(Θ) = j) = c·2^(−j)` also fails
+  when an atom is named integer `j`: for `Θ` of law `(δ₁ + U[0,1))/2`, its
+  displayed construction gives `P(g(Θ) = 1) = 3/4`, whereas `c/2 = 1/4`.
+  The proof now uses the sufficient inequality `≥`; neither theorem
+  changes. The immutable review records its selected proof-read scope.
 - **Refuted as worded, corrected in place, kept on record.** Definition 71.1
   called a public seed finite-valued when it "has a finite set of possible
   values of positive probability", and Theorem 75.5 assumed "finite
@@ -1484,6 +1496,16 @@ underfull boxes. The log has six informational lines "Infinite glue shrinkage
 found in box being split" (four in a build of the committed text, 144 pages,
 made the same way). Printed pages 1, 111, 142–144, 146, 156, 168 and 174
 (PDF pages 2, 112, 143–145, 147, 157, 169 and 175) were rendered and inspected.
+
+
+The post-write arithmetic review corrected the finite-public gap summary and
+one label-collision equality in Corollary 75.7, retaining both counterexamples
+in Remark 75.9. A direct three-pass `pdflatex -no-shell-escape` build produced
+175 pages, with no undefined references/citations, duplicate labels or
+bad boxes; the only warning reports intentionally disabled shell escape.
+PDF page 158 (printed page 157), including the repaired proof and both
+counterexamples, was rendered and visually inspected. No supplied verifier
+or build wrapper was executed in this review.
 
 ## Provenance
 

@@ -158,6 +158,69 @@ or46 witnesses/SOS224/degree52. Native AND remains in the loader, so a
 cheaper loading/accepting-history compiler is still needed for a universal
 improvement. The universal84/187 and85/155 points remain unchanged.
 
+The [cross-block multiplication bound](complete84_cross_block_next.md)
+and [independent review](review_complete84_cross_block_next.md) show that
+six retained scale/first-norm/index monomials require at least eight
+multiplications from their stated paid coordinates, even if q² is dropped
+as an extra output. The current eight rows attain the bound. A fixed-mask
+refactor reconstructs an identical full polynomial at84=47M+37A, with all
+84 rows and25 supplied ports live; it is an exact tie. Fresh author normal/
+optimized checks and independent proof challenges pass; root reads frozen
+evidence inertly. Additions, cancellation, outside donors and changed output
+coordinates lie outside the lower bound, so no full-circuit optimality or
+new arithmetic saving is claimed.
+
+The [atom-action Part III publication review](review_atom_write_03683e579.md)
+at **03683e579** checks the complete guide diff and1588 selected article
+lines covering rooted codes, definable kernels, presentation effectivity,
+Replacement and forcing. All146 old labels remain among284, and96 source
+labels have valid destinations; this is not a complete merged-body audit.
+Root independently authenticates44 blobs,14 members, eight manifest entries,
+14 read spans and all96 routes. The guide's false claim that no Part III
+reviews existed is corrected at6d06f8952, retaining the original wording and
+scope-qualified counterexample. Pure real/set parameters and the finite
+commutative-presentation decision procedure supply no paid ordinary-integer
+compiler. Source programs and the article/PDF are not rebuilt in this review.
+
+The [hat Part V publication review](review_hat_write_a21208b3f.md) at
+**a21208b3f** verifies the seed-support repairs and declared main-body
+preservation:42 source statements,29 proofs,38 equations and all80 delivered
+labels. Two new errors are corrected and retained with counterexamples in
+Remark75.9: finite public randomness has no uniform private-style success
+gap, and atomic output labels require an inequality in Corollary75.7.
+Root authenticates20 immutable blobs, eight members,17 spans and both raw
+diffs, independently checks the counterexamples, and rebuilds the edited
+article directly in three passes:175 pages, with the corrected page visually
+inspected and no undefined references or bad boxes. Supplied programs and
+frozen helpers remain unexecuted; normalized preservation does not certify
+all unchanged proofs. Expected hat queries supply no paid integer compiler.
+
+The [gamma83 radical-order theorem](gamma83_next_arithmetic.md) and its
+[independent proof challenge](review_gamma83_radical_order.md) prove that
+removing repeated prime factors from the actual modulus H changes the
+ordinary-input alias period by only1,3 or9. On the genuine constructed
+histories with v3(H)=1, the period is exactly unchanged. A fixed-cofactor
+bound broadens the conditional H=3p target to **H=3p^e**, which still forces
+m to divide3; C=15 also gives m|3 and C=9 gives m|9. Actual occurrence of
+these factorizations in the native half-binomial history is unproved.
+The H=75 separation from older power tests is explicitly nonnative.
+Root authenticates seven dependencies and challenges both proofs without
+replaying saved helpers. Independent-gamma83 remains unresolved and the
+proved universal minimum-operation point remains84/187/18.
+
+The [new Beyond Ord package review](review_beyond_ord_package_d7cf7d554.md)
+at **d7cf7d554** authenticates nine members and four delivered checksum
+bindings. Selected GB localization, finite-support powers, hereditary-tree
+and relative arithmetic proofs pass the bounded challenge:17 archive spans,
+2269 lines and five context spans,519 lines. Arbitrary ordinal labels remain
+inputs to relative procedures; the natural-coefficient demonstrator supplies
+no addition/multiplication API or paid ordinary-integer compiler. Fixed
+complexity syntax generation is distinct from semantic evaluation. Root
+independently authenticates14 blobs,36 new/prior members and22 read spans.
+No supplied program runs, full-manuscript certification or improved universal
+bound are claimed; unread spectrum, unrolling and truth-promotion proofs
+remain outside review.
+
 The [hat-seed definition correction](review_hat_seed_definition_correction.md)
 and [root proof challenge](review_hat_seed_definition_correction_root.md)
 qualify the earlier endpoint reviews. Finitely many atoms do not imply
@@ -5675,6 +5738,11 @@ New research and the completed75-operation construction:
 
 | Artifact | Established result | Remaining boundary |
 |---|---|---|
+| [Cross-block monomial bound and mask tie](complete84_cross_block_next.md), [review](review_complete84_cross_block_next.md) | Six targets need8M in the stated multiplication-only model; full outer refactor remains84=47M+37A with identical polynomial | No additions/cancellation/outside donors or changed charts; no unrestricted circuit optimum or saving |
+| [Atom-action Part III publication](review_atom_write_03683e579.md) | Selected kernel/effectivity/Replacement/forcing challenge;96 source-label routes; provenance claim corrected at6d06f8952 | Not a full merged-body/PDF audit; pure parameters and finite presentation effectivity do not lower universal arithmetic cost |
+| [Hat Part V write and corrections](review_hat_write_a21208b3f.md) | Seed repairs and source preservation checked; finite-public gap and label-collision errors corrected with Remark75.9; edited175-page PDF rebuilt | Selected proof scope only; no supplied verifier replay or arithmetic compiler bound |
+| [Gamma83 radical order](gamma83_next_arithmetic.md), [review](review_gamma83_radical_order.md) | Exact radical quotient1/3/9; fixed-cofactor prime-power bounds, including H=3p^e ⇒ m divides3 | Conditional on native history factorization; no occurrence, false-input zero or operation saving proved |
+| [Beyond Ord package intake](review_beyond_ord_package_d7cf7d554.md) | Selected GB constructor/interface challenge; nine members, four hash bindings and exact read scopes | Relative ordinal primitives are unpaid; omitted proofs and supplied programs unreviewed; no universal bound change |
 | [Hat-seed definition correction](review_hat_seed_definition_correction.md) and [root challenge](review_hat_seed_definition_correction_root.md) | Atom-count reading fails for uniform and one-atom mixed laws; explicit cap1 counterexample; probability-one finite support repairs exclusion | Earlier no-correction assessments qualified and retained; abstract quantifier clarified; host manuscript write still pending |
 | [Four Borel-report placement reviews](review_borel_placement_54ece48ab.md) |21 changed paths,17 exact ancillary copies,33 members and29 checksums; unchanged guide/article/PDF with17Parts | XVIII–XXI remain intended writes; inherited proof scopes, broken flow reference and pending qualifications retained |
 | [Two-type ordinal promise boundary](ordinal_two_type_effectivity_boundary.md) and [root review](review_ordinal_two_type_effectivity_boundary.md) | Halting reduction uses only valid computable well-orders of types omega and omega+1; upper-type predicate has no effective finite existential certificates | Applies to arbitrary program presentations with semantic order-type meaning; explicit constructor syntax and generated lower-type certificates remain available |
