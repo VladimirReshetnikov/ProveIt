@@ -237,6 +237,9 @@
 > and the proved universal operation point remains84/187/18.
 >
 >
+> The [nonlinear two-norm classification](complete84_nonlinear_norm_next.md), with [independent proof review](review_complete84_nonlinear_norm_next.md), extends the actual-field restriction from affine maps to arbitrary polynomial re-factorizations: only separate norm similitudes or classical composition with a constant companion pair remain. A specific positive rational Cayley chart has no simultaneous integer outputs at any parent positive zero, since its determinant coefficient lies strictly between0 and1. Complete denominator-cleared evaluators cost87=49M+38A or98=56M+42A; these are implementation upper bounds, with all25 supplied ports live. Fresh root coefficient/graph checks and the independent proof pass. No operation saving, witness reduction or general circuit lower bound results.
+>
+>
 > The [affine norm-pair rigidity theorem](complete84_affine_norm_pair_rigidity.md)
 > and [root proof challenge](review_complete84_affine_norm_pair_rigidity.md)
 > classify every invertible affine change preserving the product of the main
