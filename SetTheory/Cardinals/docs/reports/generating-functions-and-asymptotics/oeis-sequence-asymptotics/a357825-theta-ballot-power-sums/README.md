@@ -1,16 +1,20 @@
 # Theta Asymptotics for High-Power Ballot Sums
 
-**OEIS A357825, A357871 and the growing-power array A357824: exact oscillation envelopes, all-orders theta expansions, exponential multiset sectors and inverse asymptotics**
+**OEIS A357825, A357871 and the growing-power array A357824: exact oscillation envelopes, all-orders theta expansions, exponential multiset sectors and inverse asymptotics; Part II: a general lattice-peak transfer theorem for growing power sums**
 
-This research report is dated 1 October 2026. It was built from one
-manuscript, manuscript 59 of batch 73 (cluster O1) of ProveIt's
-incoming-reports intake. Its author line is "Prepared with ChatGPT as a
-proposed contribution to the ProveIt research corpus" (PDF author: "Research
-article prepared with ChatGPT").
+This research report is dated 1 October 2026, with Part II added on
+5 October 2026. It is built from two manuscripts. Part I is manuscript 59 of
+batch 73 (cluster O1) of ProveIt's incoming-reports intake; its author line
+is "Prepared with ChatGPT as a proposed contribution to the ProveIt research
+corpus" (PDF author: "Research article prepared with ChatGPT"). Part II is
+the late batch-98 arrival placed as batch 98D (the twelfth manuscript of
+batch 98, local number 02); its author line is "Research report for the
+ProveIt project", and it does not say whether an AI assistant was used.
 
-| Source | Batch-73O1 manuscript | Archive | Pin | Arrived | Placed | Printed as |
+| Source | Batch manuscript | Archive | Pin | Arrived | Placed | Printed as |
 |---|---|---|---|---|---|---|
-| single source | 59 | `OEIS_Theta_Ballot_Sums.zip` (*Theta Asymptotics for High-Power Ballot Sums*, main file `article.tex`, 25-page PDF as delivered) | `50f93367b` | `aa43cc555` | `9df4ba51a` | the whole report, Sections 1–11 and Appendices A–B |
+| Part I | 73O1, 59 | `OEIS_Theta_Ballot_Sums.zip` (*Theta Asymptotics for High-Power Ballot Sums*, main file `article.tex`, 25-page PDF as delivered) | `50f93367b` | `aa43cc555` | `9df4ba51a` | Part I: Sections 1–11 and Appendices A–B |
+| Part II | 98D, 12 (local 02) | `ProveIt_OEIS_Lattice_Peak_Transfer_2026-10-05.zip` (*A Lattice-Peak Transfer Theorem for Growing Power Sums*, main file `ProveIt_OEIS_Lattice_Peak_Transfer.tex`, 641 lines, 14-page PDF) | none named ("checked against the ProveIt default branch on 5 October 2026"; it knows `67d54b7ac`) | `1ec443bc4` | `3b9458b31` | Part II: Sections 12–26 and Appendices C–D |
 
 The pin `50f93367b2859b2727c34c68cf87684c101768cc` is the ProveIt commit the
 manuscript inspected (its root README and `Combinatorics/README.md`). The
@@ -19,17 +23,25 @@ commit. No other manuscript of batch 73 treats these sequences, so nothing
 was merged. The delivered README, PDF and `SHA256SUMS` ledger (20/20
 verified at placement) are not shipped and survive in `aa43cc555`.
 
-**Status: AI-assisted, unrefereed, not formalized.** The intake reran the
-verifier on a copy and checked selected values and the expansion
-independently (see "Rerunning the script"). It did not re-derive every
-proof.
+Part II's package held only its article and PDF (no README, code, data or
+checksum list), so nothing of it is staged; both survive in the arrival
+commit (`git show 1ec443bc4:docs/incoming/ProveIt_OEIS_Lattice_Peak_Transfer_2026-10-05.zip`).
+It answers question Q6 of Part I. It is the only manuscript of batch 98 on
+these sequences or on the Mahonian power sums.
+
+**Status: Part I AI-assisted, Part II AI provenance unstated; both
+unrefereed, not formalized.** The intake reran Part I's verifier on a copy
+and checked selected values and the expansion independently (see "Rerunning
+the script"). It did not re-derive every Part I proof. Part II's main proofs
+were checked by the batch-98 intake and by the write, which completed two of
+them and corrected one identity (see "Part II" below).
 
 ## Files
 
 ```
 README.md                         this guide
-article.tex                       the report (LaTeX, internal bibliography)
-article.pdf                       the compiled report, 27 pages (unnumbered title page, then pages 1-26)
+article.tex                       the report, Parts I and II (LaTeX, internal bibliography)
+article.pdf                       the compiled report, 50 pages (unnumbered title page, then pages 1-49)
 source_audit.md                   the manuscript's source and claim audit, as delivered
 code/verify.py                    exact, symbolic and high-precision checks, tables and plots (SymPy, mpmath, Matplotlib)
 code/build.sh                     the delivered build script (runs verify.py --all, then pdflatex three times; see below)
@@ -50,7 +62,8 @@ figures/oscillation.png           raster version, as delivered
 ```
 
 Every file except `article.tex`, `article.pdf`, `README.md` and the two
-figure PDFs is byte-identical to the delivery. The five CSV files are CRLF
+figure PDFs is byte-identical to Part I's delivery; every file belongs to
+Part I, since Part II ships none. The five CSV files are CRLF
 as delivered (kept by `-text` lines in `SetTheory/Cardinals/.gitattributes`);
 `data/coefficients.json`, `data/constants.json` and
 `data/verification_status.json` have no final newline, as delivered.
@@ -73,6 +86,22 @@ The title
 page also gained a `\par` after its status box, so that the author line no
 longer starts beside the box (a layout defect of the delivered PDF). No
 symbol was renamed.
+
+The batch-98D write (5 October 2026) added the Part headings (Part I is the
+text above, unchanged), Part II (Sections 12–26, before the appendices, and
+Appendices C–D, after Part I's), a table-of-contents line for the
+appendices, four bibliography entries (`lptA380275`, `lptWang`, `lptCJZ`,
+`lptMahonian`) and three notes dated 5 October 2026 in Part I: in Section
+1.4 (a paragraph on Part II), after Theorem 6.2 (an instance of Part II's
+theorem) and at the end of question Q6 (answered; the batch-77P2 note's
+"this question stays open" is superseded). Part II's 90 labels carry the
+prefix `tbs:lpt:`; the report now has **195 labels** (105 before). No
+existing label was renamed or removed and no existing number changed (the
+`.aux` files of builds before and after agree on all 105 old labels; only
+page numbers moved). Section k of Part II's manuscript is Section k+12, its
+Appendices A–B are C–D, and every numbered item and equation keeps the
+manuscript's number within its section; the write's additions follow the
+manuscript's items of their section.
 
 ## What is claimed
 
@@ -108,6 +137,52 @@ Kotesovec's OEIS observations of November 2022 (a_n^{1/n} ~ K_n, and no limit
 of a_n/𝒜_n; the same for b_n) are the starting point and are credited as
 such, not claimed.
 
+**Part II** (a general lattice-peak transfer theorem; it answers question Q6
+in a sufficient-hypothesis form). For a positive array C_{n,x} on a moving
+lattice with peak phase δ_n, power r_n and q_n = r_n d_n²/σ_n², with
+ϑ(q,δ) = Σ_j exp(−(q/2)(j−δ)²) (Part I's Θ_τ is ϑ(8τ,·); the Mahonian
+report's Z_δ(q) is ϑ(q,δ)):
+
+- **Theorem 15.1**: under a local quadratic law (H1), a uniform Gaussian
+  majorant (H2) and interior completeness (H3), S_n(r_n)/Ω_n^{r_n} =
+  ϑ(q_n,δ_n) + o(1) uniformly for q_n in a compact K, with an explicit
+  three-term bound; Corollary 15.2: the cluster set is ϑ(q, set of phase
+  limits).
+- **Theorem 15.4 and Proposition 15.5** (added by the write): (H2) may be
+  weakened to an exponential majorant (H2e), which log-concavity of the row
+  supplies.
+- **Theorem 17.2**: every fixed order, with coefficients given by a Bell
+  recurrence (the theta-side tail of its proof completed by the write);
+  Section 17.1 and Remark 17.4 reduce them to phase derivatives of ϑ.
+- **Theorem 18.1**: the multidimensional version with a quadratic-form theta
+  function; **Theorem 19.1**: a first-order inverse (existence and
+  localisation completed by the write), and Corollary 19.2.
+- **Instances** (added by the write): the ballot array satisfies (H1)–(H3)
+  (Proposition 20.1), so Theorem 6.2's leading term is an instance; the
+  Mahonian array satisfies (H1), (H2e), (H3) (Proposition 21.1), so the
+  critical window of `a380274-mahonian-growing-powers` is one too. The
+  manuscript itself only predicted the Mahonian case.
+
+Corrections made under Vladimir's standing rule (4 October 2026):
+
+- **Refuted** (Remark 17.4): the manuscript's identity
+  Σ u³e^{−qu²/2} = q^{−1}∂_δ(−2∂_qϑ) drops the term 2q^{−2}∂_δϑ. At q = 2.7,
+  δ = 0.31 the sum is 0.018988…, the printed formula 0.022256…; the
+  corrected formula agrees to 40 digits.
+- **Overstated** (Remark 20.2): Part I's all-orders coefficients are
+  "precisely" the T_s only at first order with the printed dictionary
+  (T_2 ≈ 0.108 against F_2 ≈ 1.090 at n = 400…6400); with q = 8 and
+  Ω_n^n = e^{−5/6}𝒜_n they agree at every order.
+- **Unstated normalization**: the cluster set (20.4) is that of Kotesovec's
+  a_n/𝒜_n (the batch-98 dossier called it "(8.5)"; the manuscript's number
+  is (8.4)).
+- **Moved to further questions** (Section 25, F1–F7, besides the
+  manuscript's R1–R12): Gaussian (H2) for the Mahonian rows; the regimes
+  outside the critical window; constrained and boundary variants; the
+  heuristics of Sections 23.3 and 24; the inverse theorem for A357825 across
+  parities (Remark 20.3 applies it per parity branch); the case M′ = 0 of
+  Definition 17.1; the all-orders hypotheses for the ballot rows.
+
 ## What is not claimed
 
 The manuscript's non-claims are all kept in the text (title-page box, the
@@ -126,6 +201,15 @@ table of Section 1.2, Sections 9 and 10, Appendix B):
   certificates.
 - No publication priority: the literature and OEIS search was limited.
 - No Lean or other formal proof.
+
+Part II's non-claims are kept in its Sections 13, 24 and Appendix D: the
+hypotheses are sufficient, not necessary; general discrete Laplace theory
+(Helton–Hughes–Schlosser, a fine-lattice regime) is not superseded; no new
+proof of Part I's theorem; degenerate, boundary and multiple peaks are out
+of scope; the all-orders theorem is Poincaré only (no convergence, optimal
+truncation, Borel summability or resurgence); nothing arithmetic, in
+particular not Bala's congruence; nothing formalized; no worldwide novelty
+or priority claim; the standard ingredients are not claimed as new methods.
 
 The OEIS data and attributions quoted in the article (terms n ≤ 14 embedded in
 `code/verify.py`, the dates of Kotesovec's and Bala's comments) are as the
@@ -153,15 +237,34 @@ them.
   powers of Mahonian numbers (OEIS A380274, A380275), with only the two
   lattice shifts δ ∈ {0, 1/2} instead of a varying phase. It is an instance
   for one more triangular array, not the general lattice-peak theorem of
-  question Q6, which stays open (dated note in Q6). Its theta functions are
-  normalized differently: Z_δ(q) there is Θ_{q/8}(δ) here.
+  question Q6, which stays open (dated note in Q6). *[Update, batch 98D,
+  5 October 2026: Q6 is now answered in a sufficient-hypothesis form by
+  Part II, and the Mahonian critical window is proved there to be an
+  instance (Proposition 21.1, with the exponential majorant (H2e) that
+  log-concavity supplies; it reorganizes that report's own proof). Dated
+  note at the end of Q6.]* Its theta functions are normalized differently:
+  Z_δ(q) there is Θ_{q/8}(δ) here, and both are Part II's ϑ(q,δ); its
+  Θ_δ(q) is e^{qδ²/2}ϑ(q,δ).
+- **Inversion and staircases** (Part II): Theorem 19.1 is the first-order,
+  real, bounded-perturbation analogue of the M = 1 term of
+  `p0:thm:perturbed-inversion` in
+  `Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex`
+  (analytic, small parameter; neither contains the other). For question
+  R11 the only related formal statement is the generic Lean lemma
+  `Fabius.staircase_separation`
+  (`Analysis/FabiusFunction/Lean/FabiusFunction/StaircaseInversion.lean`),
+  about an arbitrary real number, not these sums.
+- **Later arrivals.** The 177-archive arrival `60f54ea06` (not batch 98)
+  contains `ProveIt_Critical_Theta_Power_Weighted_Distinct_Partitions.zip`
+  and `A215570_Balanced_Ballot_Asymptotics.zip`, possibly further theta or
+  ballot instances; they were not examined for this write.
 - [`ballot-polynomial-hankel-determinants`](../../../hankel-determinants/catalan-and-ballot/ballot-polynomial-hankel-determinants/)
   studies Hankel determinants of ballot moments, not growing powers; there
   is no overlap.
 - **Lean.** Placement in this collection confers no formal status. No Lean
   or Rocq declaration of the repository concerns these sums, and none of the
   statements of this report is formalized. Question Q10 sketches a staged
-  formalization plan.
+  formalization plan, and Part II's R12 one for the transfer theorem.
 
 ## Building
 
@@ -173,11 +276,11 @@ latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 
 The build needs `figures/phase_collapse.pdf` and `figures/oscillation.pdf`
 beside `article.tex`. pdfLaTeX (MiKTeX 26.2) produced the shipped
-`article.pdf`: 27 pages, with no errors, no warnings, no undefined
+`article.pdf`: 50 pages, with no errors, no warnings, no undefined
 references or citations, no multiply defined labels, no duplicate
 destinations, no overfull boxes, and one underfull line in the bibliography
 (also present in a build of the delivered text). It contains no Type 3 font
-(`pdffonts`: 14 Type 1, 6 CID TrueType). Copy back only `article.pdf`.
+(`pdffonts`: 17 Type 1, 6 CID TrueType). Copy back only `article.pdf`.
 
 The shipped `code/build.sh` does not work from `code/`: it changes into its
 own directory and then calls `code/verify.py`, and it expects `article.tex`
@@ -214,11 +317,48 @@ expansion through F_2 against exact sums at n = 100, 200, 400, 800 (relative
 errors 1.2e−5, −6.4e−5, 7.9e−7, −1.4e−5 after F_2, consistent with
 O(m^{−3/2})), and the first exponential sector at n = 100, 200, 400.
 
+## Checking Part II
+
+Part II ships no program, and none was added. Its rebuild needs only
+`article.tex`; it was also rebuilt on a copy from the arrival commit (14
+pages, no errors). The intake and the write checked it with mpmath 1.3.0 and
+SymPy 1.14.0 at 40 digits, on scratch copies outside the repository:
+
+- Section 17.1: the first two identities hold to 40 digits at q = 2.7,
+  δ = 0.31; the third, as printed, gives 0.0222562 against the true
+  0.0189884, and the corrected form, the recurrence (17.11) and the closed
+  form of Σ_3 agree with the direct sum to 40 digits.
+- The dictionary (12.1) at three (q, δ) points (18 digits), and
+  e^{−5/6}ϑ(8,½), e^{−5/6}ϑ(8,0) against Part I's C_∓ (21 digits).
+- The ballot dictionary on exact sums: S_{n,k}/Ω_n^k against ϑ(8τ, α_n) for
+  τ = 0.5, 1, 2 at n = 400, 1600, 6400 (relative errors falling like 1/m,
+  from 8.9e−3 to 4.0e−6); Remark 20.2's polynomials P_2, Q_2 by series
+  expansion from Part I's A_1..A_4 (`data/coefficients.json`), and both
+  order-2 truncations against exact a_n.
+- The Mahonian rows (exact integers, n = 40, 41, 80, 82): log-concavity, the
+  bound (15.5) with the constants of Proposition 15.5 (largest ratio 0.106),
+  and the window errors η_n(3); and S_n(ρσ_n²)/C_n^r against
+  Θ^mgp_δ(ρ) for ρ = 0.5, 1, 3 (relative errors about 1/n).
+
+These are numerical checks of formulas and conventions, not of the
+asymptotic statements, which rest on the proofs.
+
 ## Disclosures and discrepancies
 
 - **Not shipped:** the delivered `README.md` (replaced by this guide), the
   delivered `article.pdf` (replaced by a build of this text) and the
-  `SHA256SUMS` ledger.
+  `SHA256SUMS` ledger. Of Part II, the article and its PDF (printed as
+  Part II; they survive in `1ec443bc4`).
+- **Part II edits.** Symbols colliding with Part I or the Mahonian report
+  are renamed (Table 2 of the article): Θ(q,δ) → ϑ(q,δ), A_n → Ω_n,
+  ε_n → t_n, Λ_n = a_n + d_nℤ → L_n = ξ_n + d_nℤ, m_n → ν_n, Q_n → **Q**_n,
+  D → 𝒟, B, c → B_*, c_*, M_n(j), q, V_n (Mahonian) → I_n(j), z, σ_n²,
+  among others; no normalization changed. Part II's bibliography entry for
+  this report is dropped (it is this report); its A357825 and A357824
+  entries are cited as Part I's, and its A380275 entry with the entry's
+  name. Its two paraphrased OEIS titles are recorded, with the names fetched
+  on 5 October 2026, in Appendix D (OEIS text CC BY-SA 4.0). Wang's preprint and the Helton–Hughes–Schlosser
+  paper were not re-fetched.
 - **Renamed paths:** `requirements.txt` → `data/requirements.txt`;
   `build.sh` → `code/build.sh`. Every other file keeps its delivered path.
   Section 9.4 of the article (a verbatim delivered passage, followed by a

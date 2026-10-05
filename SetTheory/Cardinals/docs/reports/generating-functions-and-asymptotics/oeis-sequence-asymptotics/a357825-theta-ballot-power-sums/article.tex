@@ -114,6 +114,8 @@ provenance and status in Section~\ref{tbs:sec:collection}.]}
 \endgroup
 \newpage
 
+\part{Theta asymptotics for high-power ballot sums}
+
 \section{The question, the contribution, and its provenance}\label{tbs:sec:context}
 
 \subsection{What the OEIS already records}
@@ -270,6 +272,19 @@ report. The report
 studies Hankel determinants of ballot moments, not growing powers. Bala's
 supercongruence (question~Q9 of Section~\ref{tbs:sec:research}) remains
 open.
+
+\emph{[Write note, batch 98D, 5 October 2026.]} Since batch~98 the report
+has two Parts. Part~I is manuscript~59 of batch~73, as described above.
+Part~II (Section~\ref{tbs:lpt:sec:front}) prints a later manuscript, the
+late batch-98 arrival \nolinkurl{ProveIt_OEIS_Lattice_Peak_Transfer_2026-10-05.zip}
+(arrival \code{1ec443bc4}, placement \code{3b9458b31}), which answers
+question~Q6 in a sufficient-hypothesis form: a general lattice-peak
+transfer theorem, with an all-orders, a multidimensional and an inverse
+version, of which Theorem~\ref{tbs:thm:critical} and the Mahonian
+report's critical window are instances. Its labels carry the prefix
+\code{tbs:lpt:}, and its provenance is in
+Section~\ref{tbs:lpt:sec:provenance}. Nothing of Part~I was changed
+except the Part heading and the notes dated 5 October 2026.
 
 \section{The shifted ballot identity and the main theorem}\label{tbs:sec:main}
 
@@ -892,6 +907,10 @@ Gaussian with constants uniform on that interval. The argument of
 The width in $r$ is of order $\sqrt{m/k}$. It is large in
 \eqref{tbs:eq:subcritical}, but of order one in \eqref{tbs:eq:critical}.
 This explains the first localization transition, $k\asymp m$.
+\emph{[Write note, batch 98D, 5 October 2026: the leading term of
+Theorem~\ref{tbs:thm:critical} is an instance of Part~II's general
+transfer theorem (Theorem~\ref{tbs:lpt:thm:transfer} with
+Proposition~\ref{tbs:lpt:prop:ballot}), with $q=8\tau$.]}
 
 For a probabilistic formulation, choose an endpoint with probability
 $\mathbb P_{n,k}(h)=B(n,h)^k/S_{n,k}$. After writing $u=h+1-\sqrt m$,
@@ -1549,6 +1568,26 @@ $\Theta_\delta(q)=\ee^{q\delta^2/2}Z_\delta(q)$; its subscript $\delta$ is a
 lattice shift, the subscript $\tau$ here a scale. Neither manuscript cites
 the other.
 
+\emph{[Write note, batch 98D, 5 October 2026.]} The question is answered
+in a sufficient-hypothesis form by Part~II. Its
+Theorem~\ref{tbs:lpt:thm:transfer} gives the theta limit for a general
+positive array under a local quadratic law, a Gaussian majorant and
+interior completeness, with arbitrary drifting phase;
+Theorem~\ref{tbs:lpt:thm:allorders} gives every fixed order through a
+Bell-polynomial recurrence, and Theorem~\ref{tbs:lpt:thm:multi} the
+multidimensional version with a quadratic-form theta function. This
+report's critical regime satisfies the hypotheses
+(Proposition~\ref{tbs:lpt:prop:ballot}), and so does the Mahonian
+report's critical window once the Gaussian majorant is weakened to an
+exponential one, which log-concavity supplies
+(Proposition~\ref{tbs:lpt:prop:mahonian}). The sentence above that ``this
+question stays open'' is therefore superseded. Still open are a
+characterization, degenerate, boundary and multiple peaks, and concrete
+weighted-meander or multidimensional applications
+(Section~\ref{tbs:lpt:sec:questions}). In Part~II's notation the
+Mahonian $Z_\delta(q)$ and this report's $\Theta_{q/8}(\delta)$ are both
+$\vartheta(q,\delta)$ (equation~\eqref{tbs:lpt:eq:dictionary}).
+
 \item \textbf{Joint phase laws and higher discrete differences.}
 Determine effective joint laws of several neighboring normalized terms,
 and use them to analyze higher logarithmic differences or Jensen
@@ -1604,6 +1643,1426 @@ ordered-tuple sequence. Together these results turn a recorded
 nonconvergence phenomenon into a coherent analytic and combinatorial
 structure, while leaving the distinct arithmetic and formalization
 questions clearly identified.
+
+\part{A lattice-peak transfer theorem for growing power sums}
+\label{tbs:lpt:part}
+
+\section{Provenance, scope and notation of Part II}\label{tbs:lpt:sec:front}
+
+\emph{[Write note, batch 98D, 5 October 2026.]} Part~II was added in the
+write of batch~98D. It prints one manuscript, which answers question~Q6
+of Part~I (Section~\ref{tbs:sec:research}) in a sufficient-hypothesis
+form: a general theorem of which Part~I's critical theta regime
+(Theorem~\ref{tbs:thm:critical}) and the Mahonian report's critical
+window are instances.
+
+\subsection{Provenance}\label{tbs:lpt:sec:provenance}
+The source is the archive
+\nolinkurl{ProveIt_OEIS_Lattice_Peak_Transfer_2026-10-05.zip}, a late
+arrival of batch~98 of ProveIt's incoming-reports intake (its twelfth
+manuscript, the only one of placement 98D), which arrived in commit
+\code{1ec443bc4} and was placed in this report by commit
+\code{3b9458b31}. It holds only the article
+\nolinkurl{ProveIt_OEIS_Lattice_Peak_Transfer.tex} (641 lines) and its
+14-page PDF, titled \emph{A Lattice-Peak Transfer Theorem for Growing
+Power Sums}, with the subtitles ``Phase-dependent theta asymptotics,
+all-orders corrections, multidimensional peaks, and inverse transfer''
+and ``Applications to the OEIS ballot-power and Mahonian-power
+families''. It is dated 5 October 2026; its author line is ``Research
+report for the ProveIt project''. Whether it was prepared with an AI
+assistant is not stated. It names no pinned commit: its source audit
+(Appendix~\ref{tbs:lpt:app:audit}) says the repository facts were
+``checked against the ProveIt default branch on 5 October 2026'', and it
+knows the batch-77P2 note of 2 October 2026 at the end of question~Q6
+(commit \code{67d54b7ac}). Both reports it cites, this one and
+\nolinkurl{a380274-mahonian-growing-powers}, were unchanged between that
+commit and the placement. No code, data, README or checksum list was
+delivered, so nothing was staged; the article and its PDF survive in the
+arrival commit. Part~II is unrefereed, and nothing in it is formalized.
+
+\subsection{What the write changed}\label{tbs:lpt:sec:changes}
+Section~$k$ of the manuscript is Section~$k+12$ here, and its
+Appendices~A and~B are Appendices~\ref{tbs:lpt:app:lemmas}
+and~\ref{tbs:lpt:app:audit}. Within each section every numbered statement
+and equation keeps the manuscript's number after that shift (manuscript
+Theorem~3.1 is Theorem~\ref{tbs:lpt:thm:transfer}, equation~(5.9) is
+\eqref{tbs:lpt:eq:u3}); the write's additions follow the manuscript's
+numbered items of their section. All labels carry the prefix
+\code{tbs:lpt:}. Symbols that collide with Part~I or with the Mahonian
+report are renamed (Table~\ref{tbs:lpt:tab:notation}); otherwise the
+text is the manuscript's, with references to ``the ballot report''
+turned into references to Part~I. The write added, marked
+\emph{[write]}:
+\begin{itemize}
+\item the correction of a false identity of the manuscript's Section~5.1
+ (Remark~\ref{tbs:lpt:rem:u3}, with a counterexample);
+\item the completion of two proofs: the theta-side tail in the all-orders
+ theorem (Theorem~\ref{tbs:lpt:thm:allorders}) and the existence and
+ localisation step of the inverse theorem
+ (Theorem~\ref{tbs:lpt:thm:inverse}); a definition of ``local
+ completeness'' in Theorem~\ref{tbs:lpt:thm:multi}; a proof of
+ Corollary~\ref{tbs:lpt:cor:no-constant};
+\item an exponential-majorant form of the transfer theorem
+ (Theorem~\ref{tbs:lpt:thm:exp-majorant}) and a log-concavity criterion
+ for it (Proposition~\ref{tbs:lpt:prop:logconcave}), with which the
+ Mahonian critical window is proved to fit the hypotheses
+ (Proposition~\ref{tbs:lpt:prop:mahonian}); the manuscript only predicted
+ this;
+\item a verification that the ballot array satisfies the hypotheses
+ (Proposition~\ref{tbs:lpt:prop:ballot}), the correction of the
+ manuscript's claim that Part~I's all-orders coefficients are
+ ``precisely'' its own (Remark~\ref{tbs:lpt:rem:precisely}), the
+ normalization of the cluster set \eqref{tbs:lpt:eq:a357825-cluster}, and
+ the branchwise application of the inverse theorem to Part~I's models
+ (Remark~\ref{tbs:lpt:rem:ballot-inverse});
+\item the section of further questions (Section~\ref{tbs:lpt:sec:questions}),
+ which keeps the manuscript's R1--R12 and adds every claim of the
+ manuscript that is not proved.
+\end{itemize}
+Under Vladimir's standing rule of 4 October 2026 on unproved and wrong
+claims: one identity is refuted with a counterexample
+(Remark~\ref{tbs:lpt:rem:u3}); one identification is shown overstated
+(Remark~\ref{tbs:lpt:rem:precisely}); the unproved claims are listed in
+Section~\ref{tbs:lpt:sec:questions}, items F1--F7.
+
+\subsection{Notation}\label{tbs:lpt:sec:notation}
+Three theta functions appear in this report and its neighbour, and they
+are normalized differently. Part~II writes
+\begin{equation}\label{tbs:lpt:eq:dictionary}
+ \vartheta(q,\delta)=\sum_{j\in\Z}\ee^{-\frac q2(j-\delta)^2}
+ =\Theta_{q/8}(\delta)
+ =Z_\delta(q)
+ =\ee^{-q\delta^2/2}\,\Theta^{\mathrm{mgp}}_\delta(q),
+\end{equation}
+where $\Theta_\tau(\alpha)$ is Part~I's \eqref{tbs:eq:theta}, whose
+subscript is a scale, and $Z_\delta(q)$ and
+$\Theta^{\mathrm{mgp}}_\delta(q)=\ee^{q\delta^2/2}Z_\delta(q)$ are the
+Mahonian report's (its equation \code{mgp:eq:theta}), whose subscript is a
+lattice shift \cite{lptMahonian}. In particular Part~I's $\Theta(\alpha)=\Theta_1(\alpha)$ is
+$\vartheta(8,\alpha)$, not $\vartheta(1,\alpha)$, and the Mahonian
+$\Theta^{\mathrm{mgp}}_\delta(q)$ equals $\vartheta(q,\delta)$ only at
+$\delta=0$. The identities \eqref{tbs:lpt:eq:dictionary} were checked
+numerically to 18 digits at three points.
+
+\begin{longtable}{@{}>{\raggedright}p{0.2\textwidth}>{\raggedright}p{0.27\textwidth}>{\raggedright}p{0.14\textwidth}p{0.3\textwidth}@{}}
+\caption{Symbols of Part~II that differ from the manuscript or collide
+with Part~I or the Mahonian report (mgp).}\label{tbs:lpt:tab:notation}\\
+\toprule
+Part~II & Meaning & Manuscript & Elsewhere\\
+\midrule\endfirsthead
+\toprule
+Part~II & Meaning & Manuscript & Elsewhere\\
+\midrule\endhead
+$\vartheta(q,\delta)$ & translated theta series \eqref{tbs:lpt:eq:theta} & $\Theta(q,\delta)$ & Part~I $\Theta_\tau$, $\Theta$; mgp $Z_\delta$, $\Theta_\delta$; see \eqref{tbs:lpt:eq:dictionary}\\
+$\vartheta_{\mathbf Q}(\delta)$, $\mathbf Q_n$, $\mathbf Q$ & quadratic-form theta series and forms & $\Theta_Q$, $Q_n$, $Q$ & Part~I $Q$: number of multiset sectors (Theorem~\ref{tbs:thm:sectors})\\
+$Q_m(u;q)$ & Bell polynomials \eqref{tbs:lpt:eq:bell-rec} & $Q_m$ & as above\\
+$\mathcal T_m(q,\delta)$ & all-orders coefficients & same & Part~I $T_\pm$: Tur\'an constants\\
+$L_n=\xi_n+d_n\Z$, $\nu_n$ & lattice, offset, integer part & $\Lambda_n=a_n+d_n\Z$, $m_n$ & Part~I $a_n$ (A357825), $\Lambda(\alpha)$, $m=n+1$\\
+$L_n=\boldsymbol\xi_n+\mathbf D_n\Z^d$ & $d$-dimensional lattice & $b_n+D_n\Z^d$ & Part~I $b_n$ (A357871), $D_j(u)$\\
+$\Omega_n$ & carrier amplitude & $A_n$, $A_n^{(0)}$ & Part~I $A_\ell(x)$, $\Acal_n$\\
+$t_n$ & small parameter of the all-orders theorem & $\eps_n$ & Part~I $\eps_n=m\bmod2$; Part~I $t=m^{-1/2}$ is $t_n$ in Section~\ref{tbs:lpt:sec:ballot}\\
+$B_*$, $c_*$ & majorant constants of (H2) & $B$, $c$ & Part~I $B(n,h)$, $c$ in \eqref{tbs:eq:g}, $C,c$ in Lemma~\ref{tbs:lem:gaussian}\\
+$\mathcal D$ & set of phase accumulation points & $D$ & Part~I $D_j(u)$\\
+$\operatorname{gap}(\delta)$ & squared-distance gap in Proposition~\ref{tbs:lpt:prop:theta-regimes} & $\gamma(\delta)$ & ---\\
+$\omega_{n,j}$, $\gamma_{n,j}$ & powered summand and Gaussian in proofs & $T_{n,j}$, $G_{n,j}$ & Part~I $T_\pm$, $g$\\
+$\tilde H(x)$ & non-theta part of $H$ in Theorem~\ref{tbs:lpt:thm:inverse} & $h_0(x)$ & Part~I $h$: height\\
+$I_n(k)$, $z$ & Mahonian numbers, $q$-factorial variable & $M_n(j)$, $q$ & Part~I $M_p$, $M_{p,\tau}$: moments; mgp $M_n(k)$\\
+$\sigma_n^2$ (Mahonian) & inversion variance & $V_n$ & Part~I $V_m$; mgp $V_n$\\
+$r_n$ & the growing power & $r$ & Part~I: the power is $k$ and $r=h+1$; Section~\ref{tbs:lpt:sec:ballot} uses Part~I's letters\\
+$\sigma_n$ & curvature scale & same & Part~I $\sigma\in\{0,1\}$: parity branch (Section~\ref{tbs:sec:inverse})\\
+$R$, $R_n$; $R(x)$ & window radii; remainder in \eqref{tbs:lpt:eq:logF} & same & Part~I $R_j(u)$: correction polynomials\\
+$K=[q_-,q_+]$ & compact scale window & same & Part~I $K_n$\\
+$C_{n,x}$; $C_n$ & array entry; mgp's central coefficient & same & Part~I $C_\pm$, $C$\\
+$\delta_n\in[-\frac12,\frac12)$ & lattice phase & same & mgp $\delta=\mu-\lfloor\mu\rfloor\in\{0,\frac12\}$; $\vartheta$ is even and $1$-periodic in $\delta$, so the two conventions give the same values\\
+\bottomrule
+\end{longtable}
+
+\section{Problem, scope, and relation to the OEIS reports}\label{tbs:lpt:sec:problem}
+
+Let $C_{n,k}>0$ be a positive triangular array, with $k$ belonging to a
+one-dimensional lattice that may translate with $n$. For an exponent
+$r=r_n>0$ consider
+\begin{equation}\label{tbs:lpt:eq:power-sum}
+ S_n(r)=\sum_k C_{n,k}^{\,r}.
+\end{equation}
+When $r$ is fixed and the row has a central-limit shape, the usual
+local-limit/Riemann-sum heuristic gives a Gaussian integral. When $r$
+grows, raising the row to the $r$th power narrows its effective width by
+$r^{-1/2}$. The transition occurs when that width becomes comparable to
+the lattice spacing. At that point a Riemann integral is no longer the
+correct leading object: the individual lattice sites survive, and the
+answer is a theta sum.
+
+This mechanism is visible in two existing ProveIt reports. The report on
+the ballot array $S_{n,k}=\sum_h B(n,h)^k$ (Part~I) proves a critical
+theta regime for $k\asymp n$ and asks, as its Question Q6, for ``a
+reusable lattice-peak theorem for other path models.'' A later report on
+Mahonian power sums proves the same type of transition when the power is
+comparable to the inversion variance, but explicitly records itself as an
+instance rather than a solution of Q6. The public OEIS entry A357825
+records the diagonal ballot power sum and a nonconvergent normalized
+ratio, while A380275 records fixed-power Mahonian asymptotics; Wang's 2026
+preprint proves the fixed-real-power Mahonian expansion but does not claim
+uniformity in a growing power \cite{oeisa,lptA380275,lptWang}.
+
+The present report addresses precisely the missing abstraction. It
+deliberately does \emph{not} try to supersede general discrete Laplace
+theory. Recent work of Helton, Hughes and Schlosser \cite{discretelaplace}
+treats discrete Laplace asymptotics in the regime where a lattice becomes
+fine in the natural Laplace scale. Our focus is the complementary
+critical regime in which the rescaled lattice has a nonzero limiting
+mesh, so the lattice survives as a theta multiplier.
+
+\subsection*{Main contributions}
+The new statements proved here are:
+\begin{enumerate}[label=(\roman*)]
+\item a one-dimensional lattice-peak transfer theorem with arbitrary
+ drifting phase and uniformity on compact critical windows;
+\item a stable version for subsequences with only compactness, yielding
+ the complete set of theta cluster values;
+\item an all-orders theorem whose coefficients are generated by a
+ universal Bell-polynomial recurrence and can be written through theta
+ derivatives;
+\item a multidimensional version with a positive-definite Hessian and a
+ translated lattice theta function;
+\item an inverse-transfer theorem showing exactly how the theta factor
+ perturbs a smooth inverse;
+\item a dictionary recovering the leading critical theorems of the ballot
+ and Mahonian OEIS reports as instances.
+\end{enumerate}
+The theorem is sufficient, not necessary: many arrays will satisfy weaker
+hypotheses. Its value is that each hypothesis is checkable by standard
+local asymptotic and tail tools.
+
+\emph{[write]} For item~(vi): the ballot array satisfies the hypotheses
+(Proposition~\ref{tbs:lpt:prop:ballot}); the Mahonian array satisfies
+them with the Gaussian majorant (H2) replaced by the exponential majorant
+(H2e) of Theorem~\ref{tbs:lpt:thm:exp-majorant}
+(Proposition~\ref{tbs:lpt:prop:mahonian}). The manuscript's abstract says
+that both ``fit the hypotheses''; its Section~9 only predicts it for the
+Mahonian array.
+
+\section{The lattice-peak normalization}\label{tbs:lpt:sec:normalization}
+
+\begin{definition}[Moving lattice and phase]\label{tbs:lpt:def:lattice}
+For each $n$, let
+\[
+ L_n=\xi_n+d_n\Z,\qquad d_n>0,
+\]
+and let $x_n\in\R$ be a distinguished continuous peak location. Choose
+$\delta_n\in[-1/2,1/2)$ so that
+\begin{equation}\label{tbs:lpt:eq:phase}
+ x_n=\xi_n+d_n(\nu_n+\delta_n)
+\end{equation}
+for some $\nu_n\in\Z$. Thus the lattice sites near the peak are
+\[
+ x_{n,j}=x_n+d_n(j-\delta_n),\qquad j\in\Z.
+\]
+The number $\delta_n$ is the \emph{lattice phase} of the continuous peak.
+\end{definition}
+
+Let $\Omega_n>0$ be a continuous carrier amplitude and
+$\sigma_n\to\infty$ the curvature scale. We write
+\begin{equation}\label{tbs:lpt:eq:qdef}
+ q_n=\frac{r_n d_n^2}{\sigma_n^2}.
+\end{equation}
+The critical window is $q_n\asymp1$. The basic translated theta function
+is
+\begin{equation}\label{tbs:lpt:eq:theta}
+ \vartheta(q,\delta)=\sum_{j\in\Z}
+ \exp\!\left[-\frac q2(j-\delta)^2\right],
+ \qquad q>0,
+\end{equation}
+which is $1$-periodic and even in $\delta$ modulo integers.
+
+\begin{definition}[Critical lattice-peak hypotheses]\label{tbs:lpt:def:hyp}
+Fix a compact interval $K=[q_-,q_+]\subset(0,\infty)$. A family $C_{n,k}$
+satisfies the critical lattice-peak hypotheses on $K$ if, whenever
+$r_n>0$ is chosen so that $q_n\in K$, the following hold.
+\begin{enumerate}[label=\textup{(H\arabic*)}]
+\item \textbf{Local quadratic law.} For every fixed $R>0$,
+\begin{equation}\label{tbs:lpt:eq:localquad}
+ \sup_{|j-\delta_n|\le R}
+ \left|r_n\log\frac{C_{n,x_{n,j}}}{\Omega_n}
+ +\frac{q_n}{2}(j-\delta_n)^2\right|\longrightarrow0.
+\end{equation}
+Here $C_{n,x}$ denotes the row entry at the lattice site $x$.
+\item \textbf{Uniform Gaussian domination.} There are constants
+$B_*,c_*>0$, independent of $n$ and of $q_n\in K$, such that for every
+admissible lattice site,
+\begin{equation}\label{tbs:lpt:eq:gaussdom}
+ \left(\frac{C_{n,x_{n,j}}}{\Omega_n}\right)^{r_n}
+ \le B_*\exp[-c_*(j-\delta_n)^2].
+\end{equation}
+\item \textbf{Interior completeness.} For every fixed $R$, all sites with
+$|j-\delta_n|\le R$ are admissible for sufficiently large $n$.
+\end{enumerate}
+\end{definition}
+
+The hypotheses separate the proof into the two ingredients that
+repeatedly appear in concrete OEIS analyses: a local
+Taylor/Stirling/Edgeworth expansion and a global log-concavity or Fourier
+tail estimate. Notice that no probabilistic interpretation is required.
+
+\section{The critical theta transfer theorem}\label{tbs:lpt:sec:transfer}
+
+\begin{theorem}[One-dimensional lattice-peak transfer]\label{tbs:lpt:thm:transfer}
+Assume the hypotheses of Definition~\ref{tbs:lpt:def:hyp}. Then,
+uniformly for all exponent choices with $q_n\in K$,
+\begin{equation}\label{tbs:lpt:eq:maintransfer}
+ \frac{S_n(r_n)}{\Omega_n^{r_n}}
+ =\vartheta(q_n,\delta_n)+o(1).
+\end{equation}
+More generally, if the local law has a uniform additive error
+$\eta_n(R)$ on $|j-\delta_n|\le R$, then for every fixed $R$
+\begin{align}\label{tbs:lpt:eq:explicitbound}
+ \left|\frac{S_n(r_n)}{\Omega_n^{r_n}}-\vartheta(q_n,\delta_n)\right|
+ &\le \left(\ee^{\eta_n(R)}-1\right)
+       \sum_{|j-\delta_n|\le R}\ee^{-q_n(j-\delta_n)^2/2}\\
+ &\quad +B_*\sum_{|j-\delta_n|>R}\ee^{-c_*(j-\delta_n)^2}
+       +\sum_{|j-\delta_n|>R}\ee^{-q_-(j-\delta_n)^2/2},\notag
+\end{align}
+for all sufficiently large $n$.
+\end{theorem}
+
+\begin{proof}
+Write
+\[
+ \omega_{n,j}=\left(C_{n,x_{n,j}}/\Omega_n\right)^{r_n},\qquad
+ \gamma_{n,j}=\exp[-q_n(j-\delta_n)^2/2].
+\]
+Fix $R$. By interior completeness all lattice sites in the finite window
+$|j-\delta_n|\le R$ occur in the row for large $n$. The local quadratic
+law gives
+\[
+ \omega_{n,j}=\gamma_{n,j}\ee^{e_{n,j}},\qquad |e_{n,j}|\le\eta_n(R),
+\]
+there, proving the first term in \eqref{tbs:lpt:eq:explicitbound}.
+Outside the window, hypothesis (H2) bounds the actual row tail by the
+second term, while $q_n\ge q_-$ bounds the omitted theta tail by the
+third. The two Gaussian tails tend to zero uniformly as $R\to\infty$, and
+then $\eta_n(R)\to0$ for fixed $R$. This proves
+\eqref{tbs:lpt:eq:maintransfer} by the standard ``first $n$, then $R$''
+argument. Every estimate is uniform in $q_n\in K$ and in the phase
+because translating a unit lattice does not change the elementary
+Gaussian tail bound by more than an absolute constant.
+\end{proof}
+
+\begin{corollary}[Critical subsequential limits and phase law]\label{tbs:lpt:cor:clusters}
+Suppose $q_n\to q\in(0,\infty)$. If $\delta_{n_j}\to\delta$ along a
+subsequence, then
+\begin{equation}\label{tbs:lpt:eq:subseq}
+ \frac{S_{n_j}(r_{n_j})}{\Omega_{n_j}^{r_{n_j}}}
+ \longrightarrow\vartheta(q,\delta).
+\end{equation}
+Consequently, if the set of phase accumulation points is
+$\mathcal D\subset\R/\Z$, the set of accumulation points of the
+normalized power sum is exactly
+\begin{equation}\label{tbs:lpt:eq:cluster-set}
+ \vartheta(q,\mathcal D)=\{\vartheta(q,\delta):\delta\in\mathcal D\}.
+\end{equation}
+If the phases are dense modulo $1$, the cluster set is the full compact
+interval
+\[
+ [\min_\delta\vartheta(q,\delta),\max_\delta\vartheta(q,\delta)].
+\]
+\end{corollary}
+
+\begin{proof}
+The theta series and all its phase derivatives converge locally uniformly
+for $q>0$, so $\vartheta(q_n,\delta_n)\to\vartheta(q,\delta)$ on any
+convergent phase subsequence. Theorem~\ref{tbs:lpt:thm:transfer} supplies
+the same limit for the normalized power sum. Compactness of the circle
+gives the converse inclusion for cluster points. Continuity maps a
+connected dense phase closure to the interval between its extrema.
+\end{proof}
+
+\begin{remark}[Why a ``constant amplitude'' can fail]\label{tbs:lpt:rem:constant}
+At fixed power, a local central limit theorem often produces one Gaussian
+integral and hence one constant. In the critical regime, the mesh after
+peak rescaling is asymptotically nonzero. The phase $\delta_n$ is
+therefore not an error term: it is part of the leading order. Replacing
+$\vartheta(q,\delta_n)$ by its phase average is generally false pointwise,
+even when it is correct after Ces\`aro averaging under an
+equidistribution hypothesis.
+\end{remark}
+
+\emph{[write]} The proof of Theorem~\ref{tbs:lpt:thm:transfer} uses (H2)
+only through the second term of \eqref{tbs:lpt:eq:explicitbound}, that is,
+through a phase-uniformly summable majorant. The Gaussian form of (H2)
+can therefore be weakened, and the weakened form follows from
+log-concavity. The uniformity ``for all exponent choices'' in
+Theorem~\ref{tbs:lpt:thm:transfer} follows from the statement for single
+sequences by the usual argument: a sequence of counterexamples at
+indices $n_k\to\infty$ can be completed, by any exponents with $q_n\in K$
+at the other indices, to a sequence violating the single-sequence
+statement.
+
+\begin{theorem}[Exponential-majorant transfer; {[write]}]\label{tbs:lpt:thm:exp-majorant}
+Let $r_n$ be a sequence of exponents with $q_n\in K$ for which (H1) and
+(H3) hold, and suppose instead of (H2):
+\begin{enumerate}[label=\textup{(H2e)}]
+\item there are $B_*,c_*>0$ and $n_0$ such that for $n\ge n_0$ and every
+ admissible site
+ \begin{equation}\label{tbs:lpt:eq:expdom}
+ \left(\frac{C_{n,x_{n,j}}}{\Omega_n}\right)^{r_n}
+ \le B_*\exp[-c_*|j-\delta_n|].
+ \end{equation}
+\end{enumerate}
+Then $S_n(r_n)/\Omega_n^{r_n}=\vartheta(q_n,\delta_n)+o(1)$, and
+\eqref{tbs:lpt:eq:explicitbound} holds for $n\ge n_0$ with its second term
+replaced by $B_*\sum_{|j-\delta_n|>R}\ee^{-c_*|j-\delta_n|}$.
+\end{theorem}
+
+\begin{proof}
+Repeat the proof of Theorem~\ref{tbs:lpt:thm:transfer}. The only change is
+the bound for the actual row tail. For $R\ge1$ and
+$\delta\in[-\frac12,\frac12)$, the sites with $|j-\delta|>R$ have
+$|j|>R-\frac12$, so
+\[
+ \sum_{|j-\delta|>R}\ee^{-c_*|j-\delta|}
+ \le2\sum_{i>R-1/2}\ee^{-c_*(i-1/2)}
+ \le\frac{2\ee^{-c_*(R-1)}}{1-\ee^{-c_*}},
+\]
+which tends to $0$ as $R\to\infty$ uniformly in the phase. The window
+term and the theta tail are unchanged.
+\end{proof}
+
+\begin{proposition}[Log-concave rows; {[write]}]\label{tbs:lpt:prop:logconcave}
+Suppose that for all large $n$ the admissible sites form a set of
+consecutive $j$, on which $j\mapsto C_{n,x_{n,j}}$ is positive and
+log-concave:
+$C_{n,x_{n,j}}^2\ge C_{n,x_{n,j-1}}C_{n,x_{n,j+1}}$. Let $r_n$ have
+$q_n\in K$ and satisfy (H1) and (H3). Then (H2e) holds with
+\[
+ B_*=\ee^{1+3q_-},\qquad c_*=q_-.
+\]
+Consequently $S_n(r_n)/\Omega_n^{r_n}=\vartheta(q_n,\delta_n)+o(1)$.
+\end{proposition}
+
+\begin{proof}
+Write $u_j=j-\delta_n$ and $\ell_j=\log\omega_{n,j}$, a concave sequence on
+the admissible set (because $r_n>0$). By (H1) and (H3) with $R=3$, for
+large $n$ every site with $|u_j|\le3$ is admissible and
+$|\ell_j+q_nu_j^2/2|\le\eta$ there, where $\eta=\eta_n(3)\le\min(1,q_-/4)$.
+
+Let $j_1$ be the least integer with $u_{j_1}\ge1$, so
+$u_{j_1}\in[1,2)$ and $u_{j_1+1}\in[2,3)$. Then
+\[
+ \ell_{j_1+1}-\ell_{j_1}
+ \le-\frac{q_n}{2}\bigl(u_{j_1+1}^2-u_{j_1}^2\bigr)+2\eta
+ =-\frac{q_n}{2}(2u_{j_1}+1)+2\eta\le-\frac32q_-+2\eta\le-q_-.
+\]
+By concavity the increments $\ell_{j+1}-\ell_j$ do not increase, so for
+every admissible $j\ge j_1+1$,
+\[
+ \ell_j\le\ell_{j_1+1}-q_-(j-j_1-1)\le\eta-q_-(u_j-3)
+ \le1+3q_--q_-|u_j|,
+\]
+using $\ell_{j_1+1}\le-2q_n+\eta\le\eta$ and $u_{j_1+1}<3$. The sites
+with $u_j\le-2$ are treated in the same way from the greatest $j_{-1}$
+with $u_{j_{-1}}\le-1$. The remaining sites have $|u_j|<3$, where
+$\ell_j\le\eta\le1\le1+3q_--q_-|u_j|$. This is \eqref{tbs:lpt:eq:expdom}.
+Theorem~\ref{tbs:lpt:thm:exp-majorant} gives the conclusion.
+\end{proof}
+
+\section{Subcritical and supercritical companions}\label{tbs:lpt:sec:companions}
+
+The critical theorem is the part needed to answer Q6, but the same
+normalization clarifies both adjacent regimes.
+
+\begin{proposition}[Theta limits at small and large $q$]\label{tbs:lpt:prop:theta-regimes}
+Uniformly in $\delta\in\R$,
+\begin{align}
+ \vartheta(q,\delta)&=\sqrt{\frac{2\pi}{q}}\left(1+\OO\left(\ee^{-2\pi^2/q}\right)\right),&&q\downarrow0,\label{tbs:lpt:eq:theta-small}\\
+ \vartheta(q,\delta)&=\sum_{j:\,|j-\delta|=\mathrm{d}(\delta)}\ee^{-q\,\mathrm{d}(\delta)^2/2}
+ \left(1+\OO\left(\ee^{-q\operatorname{gap}(\delta)/2}\right)\right),&&q\to\infty,\label{tbs:lpt:eq:theta-large}
+\end{align}
+where $\mathrm{d}(\delta)=\dist(\delta,\Z)$ and $\operatorname{gap}(\delta)$
+is the gap between the squared distance of a nearest lattice point and
+the next distinct squared distance. Away from half-integer phases, the
+first sum in \eqref{tbs:lpt:eq:theta-large} has one term; at half-integer
+phase it has two equal terms.
+\end{proposition}
+
+\begin{proof}
+Poisson summation gives
+\[
+ \vartheta(q,\delta)=\sqrt{\frac{2\pi}{q}}
+ \sum_{m\in\Z}\ee^{-2\pi^2m^2/q}\ee^{2\pi i m\delta},
+\]
+from which \eqref{tbs:lpt:eq:theta-small} follows. The large-$q$
+statement is direct: isolate the nearest lattice point or tied nearest
+pair and bound the remaining geometric-Gaussian tail by the first omitted
+squared-distance gap.
+\end{proof}
+
+\emph{[write]} The Poisson form is Part~I's \eqref{tbs:eq:poisson} at
+$\tau=q/8$. In \eqref{tbs:lpt:eq:theta-large} the implied constant is
+uniform in $\delta$, but the rate is not: $\operatorname{gap}(\delta)\to0$
+as $\delta$ approaches a half-integer, where the bound degenerates until
+the tied pair is used. (Here $\mathrm{d}(\delta)$ is the manuscript's
+$d(\delta)$, renamed only to avoid the lattice span $d_n$.)
+
+\begin{remark}[What extra hypotheses are needed outside the critical window]\label{tbs:lpt:rem:outside}
+Theorem~\ref{tbs:lpt:thm:transfer} assumes $q_n$ remains in a fixed
+compact subset of $(0,\infty)$. Letting $q_n\to0$ requires the local
+expansion on a window whose number of lattice sites grows like
+$q_n^{-1/2}$; letting $q_n\to\infty$ requires errors small enough after
+multiplication by $q_n$ at the one or two nearest sites. These are
+genuinely stronger demands. In applications, the subcritical side is
+usually obtained from a uniform local limit theorem, while the far
+supercritical side is often better handled by exact adjacent-entry
+ratios, as in the ballot report (Theorem~\ref{tbs:thm:two-sites}).
+\emph{[write: this remark is a heuristic; it is item F2 of
+Section~\ref{tbs:lpt:sec:questions}.]}
+\end{remark}
+
+\section{An all-orders transfer theorem}\label{tbs:lpt:sec:allorders}
+
+The leading theta theorem is only the first layer. Concrete OEIS problems
+often provide a full local logarithmic expansion, and then every
+coefficient can be transferred through the lattice sum.
+
+\begin{definition}[Polynomial local expansion]\label{tbs:lpt:def:polyexp}
+Let $t_n\to0$. For a fixed integer $J\ge0$, suppose that on windows
+$|j-\delta_n|\le R_n$ with $R_n\to\infty$ slowly enough,
+\begin{equation}\label{tbs:lpt:eq:powered-expansion}
+ r_n\log\frac{C_{n,x_{n,j}}}{\Omega_n}
+ =-\frac{q_n}{2}u^2+\sum_{\ell=1}^{J}t_n^\ell P_\ell(u;q_n)
+ +\OO\!\left(t_n^{J+1}(1+|u|)^M\right),
+ \qquad u=j-\delta_n,
+\end{equation}
+where each $P_\ell$ is a polynomial in $u$, with coefficients continuous
+in $q\in K$, and the remainder is uniform. Assume moreover that for some
+$c_*,B_*>0$ and some exponent $M'$, uniformly in $n$ and phase,
+\begin{equation}\label{tbs:lpt:eq:weighted-majorant}
+ \left(\frac{C_{n,x_{n,j}}}{\Omega_n}\right)^{r_n}(1+|j-\delta_n|)^{M'}
+ \le B_*\ee^{-c_*(j-\delta_n)^2},
+\end{equation}
+and that the chosen $R_n\to\infty$ satisfies
+\begin{equation}\label{tbs:lpt:eq:tail-order}
+ \sum_{|j-\delta_n|>R_n}(1+|j-\delta_n|)^{M'}
+       \ee^{-c_*(j-\delta_n)^2}=\OO(t_n^{J+1})
+\end{equation}
+uniformly in the phase. Enlarging $M'$ if necessary is harmless.
+\end{definition}
+
+Define polynomials $Q_m$ recursively by
+\begin{equation}\label{tbs:lpt:eq:bell-rec}
+ Q_0=1,\qquad
+ mQ_m=\sum_{\ell=1}^{m}\ell P_\ell Q_{m-\ell}\quad(m\ge1).
+\end{equation}
+Thus
+\[
+ Q_1=P_1,\qquad Q_2=P_2+\frac12P_1^2,\qquad
+ Q_3=P_3+P_1P_2+\frac16P_1^3.
+\]
+
+\begin{theorem}[All-orders lattice transfer]\label{tbs:lpt:thm:allorders}
+Under Definition~\ref{tbs:lpt:def:polyexp}, including
+\eqref{tbs:lpt:eq:weighted-majorant}--\eqref{tbs:lpt:eq:tail-order},
+\begin{equation}\label{tbs:lpt:eq:allorders}
+ \frac{S_n(r_n)}{\Omega_n^{r_n}}
+ =\sum_{m=0}^{J}t_n^m\mathcal T_m(q_n,\delta_n)
+ +\OO(t_n^{J+1}),
+\end{equation}
+where
+\begin{equation}\label{tbs:lpt:eq:T_m}
+ \mathcal T_m(q,\delta)=\sum_{j\in\Z}
+ Q_m(j-\delta;q)\ee^{-q(j-\delta)^2/2}.
+\end{equation}
+The error is uniform for $q_n\in K$ and all phases. If the coefficients
+of $P_\ell$ are smooth in $q$, then every $\mathcal T_m$ is smooth in
+$(q,\delta)$.
+\end{theorem}
+
+\begin{proof}
+Exponentiating \eqref{tbs:lpt:eq:powered-expansion} gives
+\[
+ \exp\!\left(\sum_{\ell=1}^{J}t_n^\ell P_\ell\right)
+ =\sum_{m=0}^{J}t_n^m Q_m+\OO\!\left(t_n^{J+1}(1+|u|)^{M'}\right)
+\]
+for some $M'$, uniformly on the retained window. The coefficient
+recurrence is obtained by differentiating the formal identity
+$Q(t)=\exp(\sum_{\ell\ge1}t^\ell P_\ell)$ and comparing coefficients in
+$tQ'(t)=Q(t)\sum_{\ell\ge1}\ell t^\ell P_\ell$. Multiplication by the
+leading Gaussian and summation are justified termwise by
+\eqref{tbs:lpt:eq:weighted-majorant}. The complement of the local window
+is $\OO(t_n^{J+1})$ by \eqref{tbs:lpt:eq:tail-order}. Absolute and
+locally uniform convergence also permits differentiation in $q$ and
+$\delta$.
+
+\emph{[write] Completion.} The last-but-one sentence bounds the actual
+summands outside the window, $\omega_{n,j}\le
+B_*(1+|u|)^{M'}\ee^{-c_*u^2}$; the proof also has to discard the
+\emph{theta-side} tail
+$\sum_{|u|>R_n}Q_m(u;q_n)\ee^{-q_nu^2/2}$, $m\le J$, which it does not
+mention. Assume $M'>0$. Fix $U\ge1$ with
+$M'\log(1+U)\ge\log B_*+2$, and for each $n$ a site with
+$|u|\in[U,U+1]$ (one exists for every phase). For large $n$ this site
+lies in the window, where \eqref{tbs:lpt:eq:powered-expansion} gives
+$\omega_{n,j}\ge\ee^{-q_nu^2/2-1}$ (the polynomials $P_\ell$ have
+coefficients bounded on $K$, and $t_n\to0$). Inserting this into
+\eqref{tbs:lpt:eq:weighted-majorant} gives
+$(c_*-q_n/2)u^2\le\log B_*+1-M'\log(1+|u|)\le-1$, hence
+\[
+ c_*\le\frac{q_n}2-\kappa,\qquad \kappa=(U+1)^{-2},
+\]
+for all large $n$. Since $|Q_m(u;q)|\le C_m(1+|u|)^{e_m}$ for $q\in K$,
+\[
+ \sum_{|u|>R_n}|Q_m(u;q_n)|\ee^{-q_nu^2/2}
+ \le C_m\sup_{v\in\R}\Bigl[(1+|v|)^{e_m-M'}\ee^{-\kappa v^2}\Bigr]
+ \sum_{|u|>R_n}(1+|u|)^{M'}\ee^{-c_*u^2},
+\]
+which is $\OO(t_n^{J+1})$ by \eqref{tbs:lpt:eq:tail-order}. With the two
+tails discarded, the window sum of the expansion completes
+\eqref{tbs:lpt:eq:allorders}. On the window, ``$R_n\to\infty$ slowly
+enough'' is read as: the exponent
+$\sum_\ell t_n^\ell P_\ell+\OO(t_n^{J+1}(1+|u|)^M)$ stays bounded for
+$|u|\le R_n$, which is what the finite Taylor expansion of the exponential
+needs. The manuscript's sentence ``Enlarging $M'$ if necessary is
+harmless'' is not justified as stated: a larger $M'$ in
+\eqref{tbs:lpt:eq:weighted-majorant} forces a smaller $c_*$, and
+\eqref{tbs:lpt:eq:tail-order} with the smaller $c_*$ is a stronger
+requirement on $R_n$. The completion above needs only $M'>0$; the case
+$M'=0$ is item F6 of Section~\ref{tbs:lpt:sec:questions}.
+\end{proof}
+
+\subsection{Theta-derivative calculus}\label{tbs:lpt:sec:theta-calculus}
+Polynomial-Gaussian sums in \eqref{tbs:lpt:eq:T_m} can be reduced to theta
+derivatives. From
+\[
+ \partial_\delta\ee^{-qu^2/2}=qu\ee^{-qu^2/2},\qquad
+ \partial_q\ee^{-qu^2/2}=-\frac12u^2\ee^{-qu^2/2},
+\]
+one obtains, for example,
+\begin{align}
+ \sum_j u\ee^{-qu^2/2}&=q^{-1}\partial_\delta\vartheta,\label{tbs:lpt:eq:u1}\\
+ \sum_j u^2\ee^{-qu^2/2}&=-2\partial_q\vartheta,\label{tbs:lpt:eq:u2}\\
+ \sum_j u^3\ee^{-qu^2/2}&=q^{-1}\partial_\delta(-2\partial_q\vartheta)
+ +2q^{-2}\partial_\delta\vartheta.\label{tbs:lpt:eq:u3}
+\end{align}
+\emph{[write: \eqref{tbs:lpt:eq:u3} is corrected; the manuscript omits its
+last term. See Remark~\ref{tbs:lpt:rem:u3}.]} Hence every coefficient in
+Theorem~\ref{tbs:lpt:thm:allorders} is a finite differential operator,
+with rational functions of $q$ as coefficients, applied to
+$\vartheta(q,\delta)$. This is the abstract explanation for the
+theta-derivative structures that appear separately in the ballot and
+Mahonian calculations.
+
+\begin{corollary}[Parity cancellation]\label{tbs:lpt:cor:parity}
+Suppose $P_\ell(-u;q)=(-1)^\ell P_\ell(u;q)$. Then
+$Q_m(-u;q)=(-1)^mQ_m(u;q)$. At symmetric phases $\delta\equiv0$ or
+$1/2\pmod1$, every odd coefficient $\mathcal T_{2s+1}(q,\delta)$ vanishes.
+\end{corollary}
+
+\begin{proof}
+The parity statement follows inductively from \eqref{tbs:lpt:eq:bell-rec}.
+At integer or half-integer phase, the translated lattice is invariant
+under $u\mapsto-u$, so every odd polynomial-Gaussian sum cancels term by
+term.
+\end{proof}
+
+\begin{remark}[Correction of the third identity; {[write]}]\label{tbs:lpt:rem:u3}
+The manuscript prints the third identity as
+\begin{equation}\label{tbs:lpt:eq:u3-printed}
+ \sum_j u^3\ee^{-qu^2/2}\overset{?}{=}q^{-1}\partial_\delta(-2\partial_q\vartheta),
+\end{equation}
+which is false. Since $u=j-\delta$,
+$\partial_\delta\bigl(u^2\ee^{-qu^2/2}\bigr)=(-2u+qu^3)\ee^{-qu^2/2}$;
+summing and using \eqref{tbs:lpt:eq:u1},
+\[
+ q^{-1}\partial_\delta(-2\partial_q\vartheta)
+ =\sum_j u^3\ee^{-qu^2/2}-\frac2q\sum_ju\ee^{-qu^2/2}
+ =\sum_j u^3\ee^{-qu^2/2}-2q^{-2}\partial_\delta\vartheta,
+\]
+which is \eqref{tbs:lpt:eq:u3}. The dropped term is not zero in general.
+\emph{Counterexample:} at $q=2.7$, $\delta=0.31$ the left side of
+\eqref{tbs:lpt:eq:u3-printed} is $0.0189884\ldots$
+($0.01898839563097749448\ldots$), its right side is $0.0222562\ldots$
+($0.02225616196228909469\ldots$), and the right side of
+\eqref{tbs:lpt:eq:u3} agrees with the left to 40 digits (direct lattice
+sums, the derivatives taken termwise; the printed form was also evaluated
+by numerical differentiation, with the same value). The dropped term
+vanishes exactly when $\partial_\delta\vartheta=0$, that is, at integer
+and half-integer phases, where both sides of \eqref{tbs:lpt:eq:u3-printed}
+are zero.
+
+The general claim after the identities is true, and in a sharper form:
+with $\Sigma_p=\sum_ju^p\ee^{-qu^2/2}$, the same differentiation gives
+$\partial_\delta\Sigma_p=-p\Sigma_{p-1}+q\Sigma_{p+1}$, so
+\begin{equation}\label{tbs:lpt:eq:moment-rec}
+ \Sigma_0=\vartheta,\qquad
+ \Sigma_{p+1}=q^{-1}\partial_\delta\Sigma_p+pq^{-1}\Sigma_{p-1}
+ \quad(p\ge0,\ \Sigma_{-1}=0),
+\end{equation}
+and every $\Sigma_p$ is a polynomial in $q^{-1}$ times phase derivatives
+of $\vartheta$ alone; for instance
+$\Sigma_2=q^{-2}\partial_\delta^2\vartheta+q^{-1}\vartheta$ and
+$\Sigma_3=q^{-3}\partial_\delta^3\vartheta+3q^{-2}\partial_\delta\vartheta$.
+This is Part~I's moment recurrence \eqref{tbs:eq:momentrec} in the other
+normalization: Part~I's moments are $M_{p,\tau}=2^p\Sigma_p$ at $q=8\tau$,
+and at $q=8$ the two formulas give Part~I's
+$M_2=\Theta''/16+\Theta/2$ and $M_3=\Theta'''/64+3\Theta'/8$
+(Appendix~\ref{tbs:app:coefficients}). At the point of the counterexample
+the formula for $\Sigma_3$ agrees with the direct sum to 40 digits.
+\end{remark}
+
+\section{A multidimensional lattice-peak theorem}\label{tbs:lpt:sec:multi}
+
+Many combinatorial arrays have several coupled endpoint statistics. The
+same proof survives with almost no change.
+
+Let $L_n=\boldsymbol\xi_n+\mathbf D_n\Z^d$ be a full-rank lattice in
+$\R^d$, where $\mathbf D_n\to\mathbf D$ with $\mathbf D$ invertible after
+any desired normalization. Write the peak as
+$x_n=\boldsymbol\xi_n+\mathbf D_n(\nu_n+\delta_n)$ with
+$\delta_n\in[-1/2,1/2)^d$. Let $H_n$ be a positive-definite curvature
+matrix and assume the powered local logarithm has the form
+\begin{equation}\label{tbs:lpt:eq:multi-local}
+ r_n\log\frac{C_{n,x_{n,j}}}{\Omega_n}
+ =-\frac12(j-\delta_n)^T\mathbf Q_n(j-\delta_n)+o(1),
+\end{equation}
+for fixed $j$, where
+\[
+ \mathbf Q_n=r_n \mathbf D_n^T H_n \mathbf D_n\longrightarrow\mathbf Q>0.
+\]
+Define
+\begin{equation}\label{tbs:lpt:eq:multi-theta}
+ \vartheta_{\mathbf Q}(\delta)=\sum_{j\in\Z^d}
+ \exp\!\left[-\frac12(j-\delta)^T\mathbf Q(j-\delta)\right].
+\end{equation}
+
+\begin{theorem}[Multidimensional transfer]\label{tbs:lpt:thm:multi}
+Assume \eqref{tbs:lpt:eq:multi-local}, local completeness, and a uniform
+summable bound
+\[
+ \left(C_{n,x_{n,j}}/\Omega_n\right)^{r_n}
+ \le B_*\exp[-c_*\|j-\delta_n\|^2].
+\]
+Then
+\begin{equation}\label{tbs:lpt:eq:multi-main}
+ \frac{S_n(r_n)}{\Omega_n^{r_n}}
+ =\vartheta_{\mathbf Q_n}(\delta_n)+o(1).
+\end{equation}
+If $\mathbf Q_n\to\mathbf Q$ and $\delta_n\to\delta$ along a subsequence,
+the right side tends to $\vartheta_{\mathbf Q}(\delta)$.
+\end{theorem}
+
+\begin{proof}
+The proof of Theorem~\ref{tbs:lpt:thm:transfer} applies verbatim with
+Euclidean balls replacing intervals. The Gaussian majorant is summable on
+$\Z^d$, and the family of tails is uniform because the phases remain in a
+compact fundamental cube and the eigenvalues of $\mathbf Q_n$ stay
+bounded above and below on a compact positive-definite set.
+\end{proof}
+
+\emph{[write]} ``Local completeness'' is not defined in the manuscript;
+it is read as the $d$-dimensional form of (H3): for every fixed $R$, all
+sites with $\|j-\delta_n\|\le R$ are admissible for large $n$. The local
+law \eqref{tbs:lpt:eq:multi-local} is assumed for fixed $j$; since the
+phases lie in a compact cube, it holds uniformly on every ball
+$\|j-\delta_n\|\le R$, which is what the window step uses. The bounds on
+the eigenvalues of $\mathbf Q_n$ hold for large $n$ because
+$\mathbf Q_n\to\mathbf Q>0$.
+
+\begin{remark}[Root-lattice and constrained variants]\label{tbs:lpt:rem:variants}
+Nothing essential requires the lattice to be a copy of $\Z^d$. A fixed
+full-rank lattice is reduced to this form by a basis matrix. If the peak
+lies on an affine sublattice or a linear conservation law, one first
+parametrizes that sublattice and applies the theorem in its intrinsic
+dimension. Boundary peaks require half-theta or cone-theta functions and
+are a separate extension. \emph{[write: the last two sentences are not
+proved here; item F3 and question R3 of
+Section~\ref{tbs:lpt:sec:questions}.]}
+\end{remark}
+
+\section{Inverse transfer: how theta oscillations move thresholds}\label{tbs:lpt:sec:inverse}
+
+Growing combinatorial sequences are often inverted: given a large target
+$Y$, one asks for the real or integer index at which the count reaches
+$Y$. A phase-dependent multiplier produces a systematic correction.
+
+\begin{theorem}[One-step inverse transfer]\label{tbs:lpt:thm:inverse}
+Let $F(x)$ be a positive smooth interpolation of a growing sequence on an
+interval $x\to\infty$, and suppose
+\begin{equation}\label{tbs:lpt:eq:logF}
+ \log F(x)=G(x)+H(x)+R(x),
+\end{equation}
+where $G'(x)>0$, $G'(x)\to\infty$ or stays bounded away from $0$,
+$H(x)=O(1)$, and $R(x)=o(1)$. Let $x_0=x_0(Y)$ solve $G(x_0)=\log Y$.
+Assume
+\begin{equation}\label{tbs:lpt:eq:inverse-regularity}
+ \frac{G''(x_0)}{G'(x_0)^2}=o(1),\qquad
+ \frac{H'(x_0)}{G'(x_0)}=o(1),\qquad
+ \frac{R(x_0)}{1+|H(x_0)|}=o(1).
+\end{equation}
+Then the solution $x=x(Y)$ of $F(x)=Y$ satisfies
+\begin{equation}\label{tbs:lpt:eq:inverse-correction}
+ x=x_0-\frac{H(x_0)}{G'(x_0)}
+ +o\!\left(\frac{1+|H(x_0)|}{G'(x_0)}\right).
+\end{equation}
+If
+\[
+ H(x)=\log\vartheta(q(x),\delta(x))+\tilde H(x),
+\]
+then the theta factor contributes exactly
+\begin{equation}\label{tbs:lpt:eq:theta-inverse}
+ -\frac{\log\vartheta(q(x_0),\delta(x_0))}{G'(x_0)}
+\end{equation}
+to first order.
+\end{theorem}
+
+\begin{proof}
+Put $\Delta=x-x_0$. Taylor expansion gives
+\[
+ 0=G'(x_0)\Delta+H(x_0)+R(x_0)
+ +\OO(G''(x_0)\Delta^2)+\OO(H'(x_0)\Delta)+o(|\Delta|G'(x_0)).
+\]
+The candidate $\Delta_0=-H(x_0)/G'(x_0)$ is $O((1+|H|)/G')$. Substituting
+this scale and using \eqref{tbs:lpt:eq:inverse-regularity} shows that
+every remaining term is $o(1+|H|)$. Division by $G'(x_0)$ proves
+\eqref{tbs:lpt:eq:inverse-correction}.
+
+\emph{[write] Completion.} The proof above presupposes a solution $x$
+with $\Delta$ of the order of the candidate, and evaluates $G''$ and $H'$
+at $x_0$ although Taylor's theorem needs them between $x_0$ and $x$. We
+read $G\in C^2$, $H\in C^1$, $R$ continuous on some $[x_1,\infty)$, and
+the $o(1)$ in \eqref{tbs:lpt:eq:inverse-regularity} as $Y\to\infty$.
+Because $G$ is continuous and increases to $\infty$ ($G'$ is bounded
+below), $x_0(Y)$ runs through every large real number, so
+\eqref{tbs:lpt:eq:inverse-regularity} says $G''/G'^2\to0$ and
+$H'/G'\to0$ as $x\to\infty$; and the third condition follows from
+$R=o(1)$.
+
+\emph{Existence and localisation.} Let $K_0\ge\sup_{x\ge x_1}(|H|+|R|)$,
+enlarging $x_1$ if needed, and let $X=G^{-1}$. For
+$s\in I=[\log Y-K_0-1,\log Y+K_0+1]$,
+$\frac{\dd}{\dd s}\log G'(X(s))=G''(X(s))/G'(X(s))^2=o(1)$, so
+$G'=G'(x_0)(1+o(1))$ on $X(I)$, and $X(I)$ lies within
+$2(K_0+1)/G'(x_0)$ of $x_0$ for large $Y$. At $x_\pm=X(\log Y\pm(K_0+1))$,
+$\log F(x_\pm)-\log Y=\pm(K_0+1)+H(x_\pm)+R(x_\pm)$ is positive at $x_+$
+and negative at $x_-$, so $F=Y$ has a root between them by the
+intermediate value theorem. Conversely every root $x\ge x_1$ has
+$|G(x)-\log Y|=|H(x)+R(x)|\le K_0$, so it lies in $X(I)$. Uniqueness is
+not claimed; the conclusion holds for every root.
+
+\emph{Taylor step.} For a root $x$ and $\Delta=x-x_0$,
+$|\Delta|\le2(K_0+1)/G'(x_0)$ and
+\[
+ 0=G'(x_0)\Delta+\tfrac12G''(\xi)\Delta^2+H(x_0)+H'(\zeta)\Delta+R(x)
+\]
+with $\xi,\zeta\in X(I)$. There $G''(\xi)=o(G'(x_0)^2)$ and
+$H'(\zeta)=o(G'(x_0))$, so the second, fourth and fifth terms are $o(1)$.
+Hence $G'(x_0)\Delta=-H(x_0)+o(1)$, which implies
+\eqref{tbs:lpt:eq:inverse-correction} (with $o(1/G'(x_0))$, the same
+thing because $H$ is bounded). The last assertion follows by inserting
+$H=\log\vartheta+\tilde H$.
+\end{proof}
+
+\begin{corollary}[No universal constant inverse correction under drifting phase]\label{tbs:lpt:cor:no-constant}
+If $q(x)\to q_*>0$ while $\delta(x)$ has at least two accumulation points
+at which $\vartheta(q_*,\delta)$ takes different values, then no
+replacement of the theta term in \eqref{tbs:lpt:eq:theta-inverse} by a
+single constant can be valid to the displayed order along all
+subsequences.
+\end{corollary}
+
+This is useful conceptually: a nonconvergent normalized ratio is not
+merely a nuisance in the forward asymptotics. It propagates into the
+inverse as a deterministic phase oscillation.
+
+\begin{proof}[Proof {[write]}]
+The manuscript gives none. Let $\delta(x^{(i)}_k)\to\delta_i$ ($i=1,2$)
+along $x^{(i)}_k\to\infty$, with
+$\vartheta(q_*,\delta_1)\ne\vartheta(q_*,\delta_2)$, and take
+$Y=\ee^{G(x^{(i)}_k)}$, so that $x_0=x^{(i)}_k$. If some constant $c$
+gave $x=x_0-(c+\tilde H(x_0))/G'(x_0)+o(1/G'(x_0))$ along both
+sequences, subtracting \eqref{tbs:lpt:eq:inverse-correction} would give
+$\log\vartheta(q(x_0),\delta(x_0))-c=o(1)$ along both, hence
+$\log\vartheta(q_*,\delta_1)=c=\log\vartheta(q_*,\delta_2)$ by continuity,
+a contradiction.
+\end{proof}
+
+\emph{[write]} Theorem~\ref{tbs:lpt:thm:inverse} is the first-order,
+real, bounded-perturbation analogue of the $M=1$ term of the perturbed
+inversion theorem \code{p0:thm:perturbed-inversion} of the
+series-and-transseries volume
+\nolinkurl{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex},
+which is analytic and assumes a small perturbation parameter; neither
+statement contains the other.
+
+\section{Application I: high powers of ballot numbers}\label{tbs:lpt:sec:ballot}
+
+Part~I studies
+\[
+ S_{n,k}=\sum_h B(n,h)^k,
+\]
+where $B(n,h)$ counts nonnegative $\pm1$ paths of length $n$ ending at
+height $h$. It uses
+\[
+ m=n+1,\qquad r=h+1,
+\]
+so $r$ lies on a parity class with spacing $d=2$, and the continuous peak
+is at $r=\sqrt m$. Its phase is
+\begin{equation}\label{tbs:lpt:eq:ballot-phase}
+ \alpha_n=\frac{\sqrt m-(m\bmod2)}{2},
+\end{equation}
+and its theta normalization is
+\begin{equation}\label{tbs:lpt:eq:ballot-theta}
+ \Theta_\tau(\alpha)
+ =\sum_{j\in\Z}\ee^{-4\tau(j-\alpha)^2}.
+\end{equation}
+\emph{[write: this is Part~I's \eqref{tbs:eq:theta}; the manuscript writes
+$\Theta^{\mathrm{bal}}_\tau$. In this section the power is Part~I's $k$,
+and $r=h+1$.]}
+
+Part~I proves, uniformly for $\tau=k/m$ in compact subsets of
+$(0,\infty)$ (Theorem~\ref{tbs:thm:critical}),
+\begin{equation}\label{tbs:lpt:eq:ballot-known}
+ S_{n,k}=V_m^k\ee^{\tau/6}
+ \left[\Theta_\tau(\alpha_n)+\OO(m^{-1/2})\right].
+\end{equation}
+This is exactly Theorem~\ref{tbs:lpt:thm:transfer}: in our convention
+\[
+ q=8\tau,\qquad \delta=\alpha_n,\qquad
+ \Omega_n=V_m\ee^{1/(6m)}.
+\]
+The ballot report's local Stirling expansion verifies (H1), its global
+trigamma/log-concavity estimate verifies (H2), and the peak remains
+macroscopically far from the endpoints, giving (H3).
+\emph{[write: verified in Proposition~\ref{tbs:lpt:prop:ballot}; the
+phase $\alpha_n$ is used modulo~$1$.]}
+
+The conceptual gain is not a new proof of
+\eqref{tbs:lpt:eq:ballot-known}; that theorem is already in the
+repository. The gain is that its theta factor is now identified as the
+universal output of a reusable set of hypotheses. Moreover, the report's
+all-orders coefficient functions
+\[
+ \sum_{j\in\Z}R_s(2(j-\alpha_n))\ee^{-4\tau(j-\alpha_n)^2}
+\]
+are precisely the $\mathcal T_s$ of Theorem~\ref{tbs:lpt:thm:allorders}
+after the change of variable $u=2(j-\alpha_n)$. Its observed odd-order
+cancellation at integer and half-integer phases is
+Corollary~\ref{tbs:lpt:cor:parity}. \emph{[write: the ``precisely'' holds
+only at first order with the dictionary above; see
+Remark~\ref{tbs:lpt:rem:precisely}.]}
+
+For the diagonal A357825, $k=n$ and hence $\tau=n/(n+1)\to1$. The leading
+normalized ratio therefore has the cluster set
+\begin{equation}\label{tbs:lpt:eq:a357825-cluster}
+ \ee^{-5/6}\{\Theta_1(\delta):\delta\in\mathcal D\},
+\end{equation}
+where $\mathcal D$ is the phase cluster set of
+\eqref{tbs:lpt:eq:ballot-phase}. The existing ballot report analyzes this
+phase in detail; the transfer theorem explains why the same structure
+must recur in any array with the same local lattice geometry.
+
+\emph{[write] Normalization of \eqref{tbs:lpt:eq:a357825-cluster}.} The
+``leading normalized ratio'' is Kotesovec's $a_n/\Acal_n$ of
+\eqref{tbs:eq:normalizations-a}, not $a_n/\Omega_n^n$, which by
+Corollary~\ref{tbs:lpt:cor:clusters} has the cluster set
+$\{\Theta_1(\delta):\delta\in\mathcal D\}$ without the factor. The factor
+comes from $\Omega_n^n/\Acal_n=(n/m)^n\ee^{n/(6m)}\to\ee^{-1}\ee^{1/6}$,
+since $V_m=K_nn/m$ by \eqref{tbs:eq:V}. By
+Proposition~\ref{tbs:prop:equidist} the phases are dense, so
+$\mathcal D=\R/\Z$ and \eqref{tbs:lpt:eq:a357825-cluster} is the interval
+$[C_-,C_+]$ of Theorem~\ref{tbs:thm:envelope}; numerically
+$\ee^{-5/6}\vartheta(8,\tfrac12)=0.319866759530995726129\ldots$ and
+$\ee^{-5/6}\vartheta(8,0)=0.450518194019661974351\ldots$, equal to
+\eqref{tbs:eq:Cminus} and \eqref{tbs:eq:Cplus}.
+
+\begin{proposition}[The ballot array satisfies (H1)--(H3); {[write]}]\label{tbs:lpt:prop:ballot}
+Let $K=[8\tau_-,8\tau_+]$ with $0<\tau_-<\tau_+$, and let the exponent
+$k=\tau m$ have $\tau\in[\tau_-,\tau_+]$. In the dictionary above
+($d_n=2$, sites $r=\sqrt m+2(j-\alpha_n)$, $\sigma_n^2=m/2$), the ballot
+rows satisfy (H1), (H2) and (H3) on $K$, with
+$B_*=\ee^{2\tau_+(C+1)}$ and $c_*=4c\tau_-$, where $C,c$ are the
+constants of Lemma~\ref{tbs:lem:gaussian}. Hence
+Theorem~\ref{tbs:lpt:thm:transfer} recovers the leading term of
+\eqref{tbs:lpt:eq:ballot-known}, with error $o(1)$ instead of Part~I's
+$\OO(m^{-1/2})$.
+\end{proposition}
+
+\begin{proof}
+(H1): the display in the proof of Theorem~\ref{tbs:thm:critical} gives,
+with $u=r-\sqrt m=2(j-\alpha_n)$,
+$k\log(\bcont_m(\sqrt m+u)/V_m)=\tau(\frac16-u^2)+\OO(m^{-1/2})$ on
+bounded windows, uniformly in $\tau$; subtracting
+$k\log\ee^{1/(6m)}=\tau/6$ leaves $-\tau u^2=-\frac q2(j-\alpha_n)^2$ up
+to $\OO(m^{-1/2})$. (H2): Lemma~\ref{tbs:lem:gaussian} gives
+$n\log(\bcont_m(r)/K_n)\le C-cu^2$ for $0<r\le m$ and large $n$. Since
+$\Omega_n=K_n(n/m)\ee^{1/(6m)}$,
+\[
+ k\log\frac{\bcont_m(r)}{\Omega_n}
+ =\frac{k}{n}\,n\log\frac{\bcont_m(r)}{K_n}+k\log\frac mn-\frac\tau6
+ \le\frac{\tau m}{n}(C-cu^2)+\tau\,m\log\frac{m}{m-1},
+\]
+and $1\le m/n\le2$, $m\log\frac m{m-1}\le2$ give
+$k\log(\bcont_m/\Omega_n)\le2\tau_+(C+1)-4c\tau_-(j-\alpha_n)^2$ (if
+$C<0$, replace $C$ by $0$). (H3): the admissible $r$ are the integers of
+parity $m$ in $(0,m]$, and the window sites
+$\sqrt m+2(j-\alpha_n)$, $|j-\alpha_n|\le R$, lie in that range for
+large $m$.
+\end{proof}
+
+\begin{remark}[``Precisely the $\mathcal T_s$'' holds only at first order; {[write]}]\label{tbs:lpt:rem:precisely}
+With the dictionary printed above ($r_n=k=n$ on the diagonal, $q_n=8n/m$,
+$\Omega_n=V_m\ee^{1/(6m)}$, $t_n=m^{-1/2}$), the polynomials of
+Definition~\ref{tbs:lpt:def:polyexp} are obtained from
+Lemma~\ref{tbs:lem:stirling} with $\tau=n/m=1-t^2$. Written in Part~I's
+variable $u=2(j-\alpha_n)$, a series computation with Part~I's
+$A_1,\dots,A_4$ gives
+\[
+ P_1=\frac{u^3}3+\frac{2u}3=D_1,\qquad
+ P_2=-\frac{u^4}4-\frac7{60}\ne D_2=-\frac{u^4}4+u^2+\frac{13}{60},
+\]
+so $Q_1=R_1$ but
+$Q_2=\frac{u^6}{18}-\frac{u^4}{36}+\frac{2u^2}9-\frac7{60}\ne R_2$
+(compare \eqref{tbs:eq:R2}). Both expansions are valid; they expand
+different normalized quantities. At $n=400$, $1600$, $6400$ the
+truncation after $\mathcal T_2$ of $a_n/\Omega_n^n$ has relative errors
+$-3.4\cdot10^{-6}$, $-2.1\cdot10^{-7}$, $-1.3\cdot10^{-8}$, and the
+truncation after $F_2$ of $a_n/\Acal_n$ (Theorem~\ref{tbs:thm:main})
+$7.9\cdot10^{-7}$, $5.0\cdot10^{-8}$, $3.2\cdot10^{-9}$, both
+$\OO(m^{-3/2})$; but $\mathcal T_2(q_n,\alpha_n)\approx0.108$ while
+$F_2(\alpha_n)\approx1.090$ at these $n$. The identification is exact at
+every order after re-choosing the dictionary: take $q=8$ fixed,
+$t_n=m^{-1/2}$, and $\Omega_n$ with $\Omega_n^n=\ee^{-5/6}\Acal_n$. Then
+\eqref{tbs:eq:master} reads
+$n\log(\bcont_m(\sqrt m+u)/\Omega_n)=-u^2+\sum_{s\ge1}D_s(u)t^s$, so
+$P_s(v)=D_s(2v)$ in the variable $v=j-\alpha_n$, the recurrence
+\eqref{tbs:lpt:eq:bell-rec} becomes \eqref{tbs:eq:Rrecurrence},
+$Q_s(v)=R_s(2v)$, and $\mathcal T_s(8,\alpha)=F_s(\alpha)$ of
+\eqref{tbs:eq:F}. The display above the remark, with
+$\ee^{-4\tau(\cdots)^2}$ and $\tau\ne1$, matches neither dictionary
+beyond $s=1$.
+\end{remark}
+
+\begin{remark}[The inverse theorem on Part~I's branches; {[write]}]\label{tbs:lpt:rem:ballot-inverse}
+The phase $\alpha_n$ jumps with the parity of $m$, so the integer
+sequence $a_n$ has no smooth interpolation with a smooth phase, and
+Theorem~\ref{tbs:lpt:thm:inverse} cannot be applied to it directly; the
+manuscript does not carry out the application. On each parity branch it
+applies to Part~I's smooth model $A_{\sigma,J}$ of
+\eqref{tbs:eq:inverse-model}: take $G=g$ of \eqref{tbs:eq:g}, $R=0$ and
+$H=\log\bigl(\ee^{-5/6}\sum_{j\le J}(x+1)^{-j/2}F_j(\alpha_\sigma(x))\bigr)$,
+which is bounded because $\Theta\ge\ee^{-1}$, with $H'=\OO(x^{-1/2})$
+because $\alpha_\sigma'(x)=1/(4\sqrt{x+1})$; and $g'(x)=2\lambda x+\OO(\log
+x)$, $g''$ bounded. Then \eqref{tbs:lpt:eq:inverse-correction} gives
+$r_{\sigma,J}(L)=x_0-H(x_0)/g'(x_0)+o(1/x_0)$ with $g(x_0)=L$, whose theta
+part is $-\log\Theta(\alpha_\sigma(x_0))/g'(x_0)$, the
+$\log\Theta$-part of the term $-d_0(\beta)/(2\lambda s)$ of
+Theorem~\ref{tbs:thm:inverse}, which is sharper. A single statement for
+the integer thresholds across both parities is item F5 of
+Section~\ref{tbs:lpt:sec:questions}.
+\end{remark}
+
+\section{Application II: growing powers of Mahonian coefficients}\label{tbs:lpt:sec:mahonian}
+
+Let $I_n(j)$ be the coefficient of $z^j$ in the $z$-factorial
+\[
+ [n]_z!=\prod_{m=1}^n(1+z+\cdots+z^{m-1}),
+\]
+and let
+\[
+ S_n(r)=\sum_j I_n(j)^r.
+\]
+The inversion statistic has mean
+\[
+ \mu_n=\frac{n(n-1)}4
+\]
+and variance
+\[
+ \sigma_n^2=\frac{n(n-1)(2n+5)}{72}.
+\]
+The lattice has unit spacing, while the center has phase
+\[
+ \delta_n=\mu_n-\lfloor\mu_n\rfloor\in\{0,1/2\}.
+\]
+A local Edgeworth expansion gives, in the central window,
+\begin{equation}\label{tbs:lpt:eq:mahon-local}
+ \log\frac{I_n(j)}{I_n(\lfloor\mu_n\rfloor)}
+ =-\frac{(j-\mu_n)^2-\delta_n^2}{2\sigma_n^2}
+ +\text{higher local terms}.
+\end{equation}
+Thus the critical parameter is
+\[
+ q_n=\frac{r_n}{\sigma_n^2}.
+\]
+When $q_n\to\rho\in(0,\infty)$, Theorem~\ref{tbs:lpt:thm:transfer}
+predicts
+\begin{equation}\label{tbs:lpt:eq:mahon-transfer}
+ \frac{S_n(r_n)}{C_n^{r_n}}
+ \sim \ee^{\rho\delta_n^2/2}
+ \sum_{x\in\Z+\delta_n}\ee^{-\rho x^2/2},
+ \qquad C_n=I_n(\lfloor\mu_n\rfloor),
+\end{equation}
+which is exactly the theta normalizer used in the repository's Mahonian
+growing-power report.
+\emph{[write: the manuscript's $M_n(j)$, $q$ and $V_n$ are renamed $I_n(j)$,
+$z$ and $\sigma_n^2$ (Table~\ref{tbs:lpt:tab:notation}); the Mahonian
+report writes $M_n(k)$ and $V_n$. The right side of
+\eqref{tbs:lpt:eq:mahon-transfer} is that report's
+$\Theta^{\mathrm{mgp}}_\delta(\rho)$; its phase convention $\{0,\frac12\}$
+differs from Definition~\ref{tbs:lpt:def:lattice}'s $[-\frac12,\frac12)$
+only by an integer, which changes nothing.]}
+
+The public OEIS entry A380275 records the fourth-power sum and now cites
+Wang's proof of the fixed-real-power asymptotic. Wang's preprint
+explicitly keeps $r$ fixed and states no uniformity in $r$; the critical
+scaling $r\asymp\sigma_n^2\asymp n^3$ is therefore a genuinely different
+asymptotic regime. Canfield, Janson and Zeilberger provide classical
+central and local-normal background for Mahonian statistics
+\cite{lptCJZ}. The transfer theorem isolates the additional fact needed
+for growing powers: after the local quadratic law is multiplied by $r_n$,
+the unit lattice no longer disappears.
+
+\subsection{A two-instance universality statement}\label{tbs:lpt:sec:two-instance}
+The ballot and Mahonian rows have very different combinatorial origins
+and different peak scales:
+\begin{center}
+\small
+\begin{tabular}{@{}lll@{}}
+\toprule
+ & Ballot endpoints & Mahonian inversions\\
+\midrule
+continuous center & $\sqrt{n+1}$ (shifted variable) & $n(n-1)/4$\\
+lattice span & $2$ & $1$\\
+curvature scale & order $\sqrt n$ in endpoint coordinate & $\sigma_n\asymp n^{3/2}$\\
+critical power & $k\asymp n$ & $r\asymp\sigma_n^2\asymp n^3$\\
+phase & drifting square-root/parity phase & $0$ or $1/2$\\
+leading critical object & translated theta sum & translated theta sum\\
+\bottomrule
+\end{tabular}
+\end{center}
+After normalization, both reduce to the same datum $(q,\delta)$ in
+Theorem~\ref{tbs:lpt:thm:transfer}. This is the precise sense in which Q6
+has a positive answer.
+
+\emph{[write]} The manuscript's ``predicts'' is accurate: it does not
+verify (H1)--(H3) for the Mahonian rows, and its abstract and
+contribution~(vi) say more. The leading statement is proved below, with
+(H2) weakened to (H2e). Its ingredients are the Mahonian report's own
+(the cancellation-respecting profile estimate
+\code{mgp:eq:profileleading} and log-concavity of the row), so the
+proposition is a reorganization of that report's proof of its
+critical window, not an independent second proof.
+
+\begin{proposition}[The Mahonian critical window is an instance; {[write]}]\label{tbs:lpt:prop:mahonian}
+Take $\xi_n=0$, $d_n=1$, $x_n=\mu_n$ (so $\delta_n\equiv\mu_n\pmod1$,
+$\delta_n\in\{0,-\frac12\}$), $\sigma_n^2$ as above and
+$\Omega_n=C_n\ee^{\delta_n^2/(2\sigma_n^2)}$. For every compact
+$K\subset(0,\infty)$ and exponents with $q_n=r_n/\sigma_n^2\in K$, the
+Mahonian rows satisfy (H1), (H2e) with $B_*=\ee^{1+3q_-}$, $c_*=q_-$,
+and (H3). Consequently
+\[
+ \frac{S_n(r_n)}{C_n^{r_n}}
+ =\ee^{q_n\delta_n^2/2}\vartheta(q_n,\delta_n)+o(1)
+ =\Theta^{\mathrm{mgp}}_{\delta}(q_n)+o(1),
+\]
+uniformly for $q_n\in K$: the critical-window case of the Mahonian
+report's Theorem \code{mgp:thm:main}.
+\end{proposition}
+
+\begin{proof}
+The sites are $\mu_n+v$ with $v=j-\delta_n\in\Z+\delta$. In the Mahonian
+report, $I_n(\mu_n+v)=n!\,f_n(v)$ with $f_n$ even, and $C_n=n!f_n(\delta)$
+(for $\delta=\frac12$ by the symmetry $I_n(k)=I_n(N-k)$, $N=2\mu_n$). Its
+estimate \code{mgp:eq:profileleading},
+$\log(f_n(v)/f_n(\delta))=-\frac{v^2-\delta^2}{2\sigma_n^2}\{1+\OO_B(n^{-1})\}$
+for $|v|\le B\sigma_n$ and $|v|\ge\delta$, gives on $|v|\le R$
+\[
+ r_n\log\frac{I_n(\mu_n+v)}{\Omega_n}
+ =-\frac{q_n}{2}v^2+\frac{q_n}2(v^2-\delta^2)\,\OO_R(n^{-1}),
+\]
+whose error is at most $q_+R^2\OO_R(n^{-1})\to0$: this is (H1). The
+window sites lie in the support $[0,N]$, $N=n(n-1)/2$, for large $n$,
+which is (H3); every $I_n(k)$ with $0\le k\le N$ is positive. The
+Mahonian report proves that the row is log-concave (its Section~3), so
+Proposition~\ref{tbs:lpt:prop:logconcave} gives (H2e) and the transfer.
+Finally $\Omega_n^{r_n}=C_n^{r_n}\ee^{q_n\delta_n^2/2}$, and
+\eqref{tbs:lpt:eq:dictionary} converts $\ee^{q\delta^2/2}\vartheta(q,\delta)$
+to $\Theta^{\mathrm{mgp}}_\delta(q)$.
+\end{proof}
+
+A numerical check on exact rows ($n=40,41,80,82$; $q_n=0.5,1,3$) found the
+rows log-concave and the bound \eqref{tbs:lpt:eq:expdom} with these
+constants satisfied with room (the largest ratio of a powered summand to
+the bound was $0.106$), and window errors $\eta_n(3)$ from $0.36$ at
+$n=40$, $q_n=3$ down to $0.020$ at $n=82$, $q_n=0.5$, decreasing like
+$1/n$. Whether the Mahonian rows satisfy the Gaussian (H2) itself is
+item F1 of Section~\ref{tbs:lpt:sec:questions}.
+
+\section{A practical verification checklist for new OEIS arrays}\label{tbs:lpt:sec:checklist}
+
+For future applications, the theorem suggests a short proof architecture.
+\begin{enumerate}[label=\textbf{Step \arabic*.},leftmargin=*]
+\item \textbf{Find a continuous carrier.} Extend the row locally to a
+smooth function and locate its peak $x_n$. Record the lattice spacing and
+phase before replacing $x_n$ by a rounded mode.
+\item \textbf{Measure curvature.} Compute
+$\sigma_n^2=-1/(\partial_x^2\log C_n)(x_n)$ to leading order. The
+critical power is $r_n\asymp\sigma_n^2/d_n^2$.
+\item \textbf{Expand the powered logarithm, not merely the row.} The
+right error criterion is $r_n$ times the local logarithmic error. An
+error negligible for fixed powers may be leading at critical powers.
+\item \textbf{Prove a global summable majorant.} Log-concavity, an exact
+adjacent ratio, a characteristic-function estimate, or a large-deviation
+bound can supply (H2). A local Edgeworth expansion alone is not enough.
+\emph{[write: log-concavity supplies (H2e), which suffices for the
+leading theorem (Proposition~\ref{tbs:lpt:prop:logconcave}), not (H2)
+itself.]}
+\item \textbf{Keep the phase.} Express sites as $x_n+d_n(j-\delta_n)$. Do
+not round the peak until after the theta sum is visible.
+\item \textbf{For all orders, expand the logarithm first.} Insert the
+resulting $P_\ell$ into recurrence \eqref{tbs:lpt:eq:bell-rec}; this
+avoids repeated hand expansion of exponentials.
+\item \textbf{For inversion, transport the theta factor explicitly.}
+Apply Theorem~\ref{tbs:lpt:thm:inverse} rather than replacing an
+oscillatory amplitude by a fitted constant.
+\end{enumerate}
+
+\section{Further deductions from the abstract theorem}\label{tbs:lpt:sec:deductions}
+
+\subsection{Phase averaging}\label{tbs:lpt:sec:phase-average}
+Suppose the phases $\delta_n$ are equidistributed modulo $1$ and
+$q_n\to q>0$. Then for every continuous test function $\varphi$,
+\begin{equation}\label{tbs:lpt:eq:phase-average}
+ \frac1N\sum_{n\le N}
+ \varphi\!\left(\frac{S_n(r_n)}{\Omega_n^{r_n}}\right)
+ \longrightarrow\int_0^1\varphi(\vartheta(q,\delta))\dd\delta,
+\end{equation}
+provided the equidistribution is known independently. In particular,
+\begin{equation}\label{tbs:lpt:eq:theta-average}
+ \int_0^1\vartheta(q,\delta)\dd\delta=\sqrt{\frac{2\pi}{q}}.
+\end{equation}
+Thus the continuous Gaussian amplitude reappears as the \emph{phase
+average} of the critical lattice law. This identity cleanly relates the
+subcritical Riemann-sum picture to the critical theta picture.
+
+\begin{proof}
+The first claim is Weyl equidistribution plus
+Theorem~\ref{tbs:lpt:thm:transfer} and continuity of
+$\varphi\circ\vartheta$. For \eqref{tbs:lpt:eq:theta-average}, integrate
+termwise and use the translates of $[0,1]$ to tile $\R$:
+\[
+ \int_0^1\sum_j\ee^{-q(j-\delta)^2/2}\dd\delta
+ =\int_\R\ee^{-qx^2/2}\dd x.
+\]
+\end{proof}
+
+\emph{[write]} At $q=8$ this is Part~I's
+$\int_0^1\Theta(\alpha)\dd\alpha=\sqrt\pi/2$ in the proof of
+Corollary~\ref{tbs:cor:law}, where the equidistribution is
+Proposition~\ref{tbs:prop:equidist}.
+
+\subsection{A quantitative phase sensitivity bound}\label{tbs:lpt:sec:sensitivity}
+Differentiating the theta sum gives
+\[
+ \partial_\delta\vartheta(q,\delta)
+ =q\sum_j(j-\delta)\ee^{-q(j-\delta)^2/2}.
+\]
+For $q$ in a compact interval $K\subset(0,\infty)$, the derivative is
+uniformly bounded. Therefore a phase approximation $\widetilde\delta_n$
+with $|\widetilde\delta_n-\delta_n|=o(1)$ changes the leading term only by
+$o(1)$. In contrast, replacing $\delta_n$ by a fixed value with an $O(1)$
+phase error can change the leading constant by an $O(1)$ amount.
+
+\subsection{Mode multiplicity as a large-\texorpdfstring{$q$}{q} invariant}\label{tbs:lpt:sec:modes}
+Proposition~\ref{tbs:lpt:prop:theta-regimes} shows that in the
+supercritical theta model the number of nearest lattice points becomes
+the leading discrete multiplicity. A generic phase has one nearest site;
+a half-lattice phase has two. This explains the ubiquitous
+logistic/two-mode transition near exact ties in concrete high-power sums.
+\emph{[write: the last sentence is a heuristic, item F4 of
+Section~\ref{tbs:lpt:sec:questions}. Part~I's logistic transition
+(Corollary~\ref{tbs:cor:logistic}) is proved from the exact entry ratio,
+outside the critical window, not from
+Proposition~\ref{tbs:lpt:prop:theta-regimes}.]}
+
+\section{Limits of the theorem}\label{tbs:lpt:sec:limits}
+
+The result resolves the repository question in the sense of giving broad,
+checkable sufficient hypotheses. Several boundaries should remain
+explicit.
+\begin{enumerate}[leftmargin=*]
+\item The theorem is not a characterization. Arrays with weaker tail
+control or nonquadratic peaks may still have theta limits.
+\item Degenerate peaks are outside scope. If the first nonzero local term
+is quartic or higher, the critical lattice sum is no longer
+Gaussian-theta; a different universal kernel appears.
+\item Boundary peaks require a half-lattice or cone treatment. The
+symmetric whole-lattice extension used here is then invalid.
+\item Multiple separated peaks produce a sum of theta sectors with
+relative exponential weights and possible Stokes-like switching as
+parameters vary.
+\item The all-orders theorem is Poincar\'e, with fixed truncation order.
+No convergence, optimal truncation, Borel summability, or resurgence is
+asserted.
+\item The theorem says nothing arithmetic about the exact integers. In
+particular it does not address the prime-power congruence conjecture
+recorded on OEIS A357825.
+\item No statement in this article is formalized in Lean or another
+proof assistant, and no publication-priority claim is made.
+\end{enumerate}
+\emph{[write: the assertions in items 2--4 about what happens outside the
+scope are not proved; item F4 of Section~\ref{tbs:lpt:sec:questions}.
+Item~6 is Part~I's question~Q9.]}
+
+\section{Further questions and research}\label{tbs:lpt:sec:questions}
+
+The transfer theorem suggests a concrete continuation program.
+\begin{enumerate}[label=\textbf{R\arabic*.},leftmargin=*]
+\item \textbf{Necessary and sufficient conditions.} Replace the
+sufficient local-plus-tail hypotheses by a characterization in terms of
+convergence of the powered row as a point process on the peak lattice.
+\item \textbf{Degenerate saddles.} Develop the analogue for quartic and
+higher even-order maxima. The expected critical objects are lattice sums
+of $\exp(-c|j-\delta|^{2m})$, with new phase diagrams.
+\item \textbf{Boundary and cone theta laws.} Treat peaks approaching a
+hard boundary at the same scale as the powered width; in several
+dimensions this should produce theta sums over cones or affine
+semigroups.
+\item \textbf{Multiple peaks and switching.} Give a uniform theorem for
+finitely many competing peaks and locate the parameter surfaces on which
+dominant theta sectors exchange order.
+\item \textbf{Growing-order asymptotics.} Bound the growth of the $Q_m$
+from \eqref{tbs:lpt:eq:bell-rec} and identify conditions under which
+optimal truncation is possible.
+\item \textbf{Exponential completion.} After optimal algebraic truncation,
+identify secondary lattice peaks or complex saddles that generate
+exponentially small sectors.
+\item \textbf{Certified finite thresholds.} Make the Gaussian majorant
+and local remainder constants explicit enough to certify the first $n$ at
+which a chosen asymptotic bracket holds.
+\item \textbf{Multidimensional OEIS cases.} Search arrays indexed by two
+or more endpoint statistics for critical growing powers whose limiting
+multiplier is a nontrivial quadratic-form theta function.
+\item \textbf{Coxeter-group Mahonian arrays.} Combine local limit
+theorems for inversion statistics in other finite Coxeter groups with
+Theorem~\ref{tbs:lpt:thm:multi}; determine which root lattices and phase
+classes occur.
+\item \textbf{Phase equidistribution.} For square-root, algebraic, or
+logarithmic peak locations arising in concrete arrays, prove discrepancy
+estimates strong enough to obtain effective versions of
+\eqref{tbs:lpt:eq:phase-average}.
+\item \textbf{Inverse staircase certification.} Combine
+Theorem~\ref{tbs:lpt:thm:inverse} with monotone interpolation bounds to
+turn oscillatory real inverses into exact ceiling/floor statements for
+integer thresholds.
+\item \textbf{Formalization.} Formalize the finite-window
+dominated-convergence core first, then a reusable Gaussian lattice-tail
+lemma, and finally the one-dimensional transfer theorem. This would
+create a small analytic library usable by several OEIS developments.
+\end{enumerate}
+
+\emph{[write] Relation to Part~I's questions.} R5 and R6 are the general
+form of Q4, R7 of Q1, R10 of Q8 and R12 of Q10
+(Section~\ref{tbs:sec:research}). For R11, the repository's only related
+formal statement is the generic staircase lemma
+\code{Fabius.staircase\_separation} in
+\nolinkurl{Analysis/FabiusFunction/Lean/FabiusFunction/StaircaseInversion.lean}
+(a ceiling is determined when an uncertainty interval does not straddle
+an integer), which concerns an arbitrary real number, not these sums.
+
+\paragraph{Claims of the manuscript that are not proved (standing rule).}
+\emph{[write, 5 October 2026.]} Each is stated as an open question, with
+its source in the manuscript, its argument sketch and what is missing.
+\begin{enumerate}[label=\textbf{F\arabic*.},leftmargin=*]
+\item \textbf{Gaussian domination for the Mahonian rows.} Source: the
+abstract and contribution~(vi) (``the ballot and Mahonian theorems fit
+the hypotheses''), Section~\ref{tbs:lpt:sec:mahonian}. The write proves
+(H1), (H2e), (H3) (Proposition~\ref{tbs:lpt:prop:mahonian}), which
+suffices for the leading theorem. Open: does (H2) hold, uniformly for
+$q_n\in K$? Sketch: on $|v|\le B\sigma_n$ the profile estimate gives a
+Gaussian bound; beyond, one needs a large-deviation bound
+$\log(I_n(\mu_n+v)/C_n)\le-c\,v^2/\sigma_n^2$ uniformly up to the edge of
+the support, i.e.\ a quadratic lower bound on the rate function of the
+inversion count that is uniform in $n$. Missing: that uniform bound, and
+for Theorem~\ref{tbs:lpt:thm:allorders} its polynomially weighted form.
+\item \textbf{Outside the critical window.} Source:
+Remark~\ref{tbs:lpt:rem:outside}. Open: which hypotheses give the
+$q_n\to0$ and $q_n\to\infty$ limits \eqref{tbs:lpt:eq:theta-small},
+\eqref{tbs:lpt:eq:theta-large} for the power sums themselves? The sketch
+(local expansion on $\asymp q_n^{-1/2}$ sites; errors $o(1/q_n)$ at the
+nearest sites) is a heuristic; no theorem is stated. The Mahonian report
+proves both adjacent regimes for its array (Theorem \code{mgp:thm:main},
+cases 1 and 3), Part~I the supercritical one for the ballot array
+(Theorem~\ref{tbs:thm:two-sites}).
+\item \textbf{Constrained and boundary variants.} Source:
+Remark~\ref{tbs:lpt:rem:variants}, Section~\ref{tbs:lpt:sec:limits}
+item~3. Open: the claimed reduction of sublattice and conservation-law
+peaks, and the claim that boundary peaks lead to half-theta or cone-theta
+functions; overlaps R3. Missing: statement and proof.
+\item \textbf{Heuristics about other regimes.} Source:
+Section~\ref{tbs:lpt:sec:limits} items 2--4 (``a different universal
+kernel appears'' at degenerate peaks; ``Stokes-like switching'' between
+separated peaks) and Section~\ref{tbs:lpt:sec:modes} (``this explains the
+ubiquitous logistic/two-mode transition''). Open: overlaps R2 and R4; for
+the last, a theorem deriving a logistic law near ties from a
+supercritical lattice-peak hypothesis, of which Part~I's
+Corollary~\ref{tbs:cor:logistic} would be an instance. Missing: any such
+statement.
+\item \textbf{The inverse theorem for A357825 across parities.} Source:
+Section~\ref{tbs:lpt:sec:inverse} with Section~\ref{tbs:lpt:sec:ballot}
+(a nonconvergent ratio ``propagates into the inverse'').
+Remark~\ref{tbs:lpt:rem:ballot-inverse} applies
+Theorem~\ref{tbs:lpt:thm:inverse} on each parity branch. Open: a
+first-order inverse statement for interpolations whose phase is only
+piecewise smooth (switching at a sequence of points), which would cover
+the integer thresholds $N(y)$ of Part~I's Section~\ref{tbs:sec:inverse}
+without choosing a branch; overlaps R11.
+\item \textbf{The case $M'=0$ of Definition~\ref{tbs:lpt:def:polyexp}.}
+Source: the sentence ``Enlarging $M'$ if necessary is harmless''. The
+write's completion of Theorem~\ref{tbs:lpt:thm:allorders} uses $M'>0$.
+Open: does the theorem hold with $M'=0$? It does if additionally
+$c_*<q_-/2$; missing is a proof that the hypotheses force this, or a
+counterexample.
+\item \textbf{The manuscript's (H2) for the ballot array at all orders.}
+Source: Section~\ref{tbs:lpt:sec:ballot} (``all-orders coefficient
+functions are precisely the $\mathcal T_s$''). With the re-chosen
+dictionary of Remark~\ref{tbs:lpt:rem:precisely} the coefficients agree;
+Part~I proves the expansion directly. Open: a check that
+Definition~\ref{tbs:lpt:def:polyexp}, including
+\eqref{tbs:lpt:eq:weighted-majorant} and \eqref{tbs:lpt:eq:tail-order},
+holds for the ballot rows, so that Theorem~\ref{tbs:lpt:thm:allorders}
+re-derives Theorem~\ref{tbs:thm:main} rather than merely matching it.
+Sketch: Part~I's window $|u|\le m^{1/12}$ and
+Lemma~\ref{tbs:lem:gaussian} with polynomial weights. Missing: the
+bookkeeping.
+\end{enumerate}
+
+\section{Conclusion}\label{tbs:lpt:sec:conclusion}
+
+The common structure behind the ballot and Mahonian OEIS examples is now
+explicit. A positive row has a moving smooth peak; taking a growing power
+narrows it; when the narrowed width reaches the lattice spacing, the
+lattice phase survives in the leading term. Under a local quadratic law
+and a global Gaussian majorant, the outcome is universally a translated
+theta function. Higher local terms pass through a universal
+Bell-polynomial mechanism and become theta derivatives, while several
+endpoint coordinates produce quadratic-form theta series.
+
+This resolves the specific open request for a reusable lattice-peak
+theorem in the ProveIt OEIS collection. It also clarifies the neighboring
+regimes and inversion: the ordinary Gaussian constant is the phase
+average of the critical theta law, exact or near ties control the
+supercritical limit, and the same phase-dependent multiplier shifts
+inverse thresholds by an explicit Newton term. The theorem therefore
+supplies a common analytic interface between local limit theory, discrete
+Laplace asymptotics, OEIS high-power sums, and transseries-style
+inversion.
+
+\emph{[write]} ``Resolves'' is meant in the sufficient-hypothesis sense of
+Section~\ref{tbs:lpt:sec:limits}; the ``neighboring regimes'' are
+clarified at the level of the theta function
+(Proposition~\ref{tbs:lpt:prop:theta-regimes}), not proved for power sums
+(item F2).
+
+\addcontentsline{toc}{part}{Appendices}
 
 \appendix
 \section{Additional explicit coefficients}\label{tbs:app:coefficients}
@@ -1664,6 +3123,76 @@ The exact computations test definitions and coefficient algebra; the
 numerical tables test consequences. Neither is a premise of an analytic
 theorem. The standard gamma and theta inputs are cited explicitly.
 No conjecture from ProveIt or OEIS is imported as a lemma.
+
+\section{Elementary analytic lemmas (Part II)}\label{tbs:lpt:app:lemmas}
+
+\emph{[write] This appendix and the next are Appendices~A and~B of the
+manuscript of Part~II.}
+
+\begin{lemma}[Uniform translated Gaussian tails]\label{tbs:lpt:lem:tails}
+For every $c>0$,
+\[
+ \sup_{\delta\in[-1/2,1/2]}
+ \sum_{|j-\delta|>R}\ee^{-c(j-\delta)^2}\longrightarrow0
+ \qquad(R\to\infty).
+\]
+\end{lemma}
+\begin{proof}
+For $R\ge1$ and $|j-\delta|>R$, one has $|j|>R-1/2$. Hence the left side is
+bounded by $2\sum_{m>R-1/2}\exp[-c(m-1/2)^2]$, a convergent tail
+independent of $\delta$.
+\end{proof}
+
+\begin{lemma}[Continuity of theta in scale and phase]\label{tbs:lpt:lem:theta-cont}
+The series \eqref{tbs:lpt:eq:theta} and all mixed derivatives in
+$(q,\delta)$ converge locally uniformly on $(0,\infty)\times\R$. In
+particular $\vartheta$ is smooth there and periodic in $\delta$.
+\end{lemma}
+\begin{proof}
+On a compact $q\in[q_-,q_+]$, any derivative is a polynomial in
+$j-\delta$ times $\exp[-q(j-\delta)^2/2]$. Uniform convergence follows
+from Lemma~\ref{tbs:lpt:lem:tails} with a polynomially weighted variant,
+which is proved identically.
+\end{proof}
+
+\section{Source and novelty audit (Part II)}\label{tbs:lpt:app:audit}
+
+The repository facts used to motivate the problem were checked against
+the ProveIt default branch on 5 October 2026. The A357825 report
+explicitly lists Q6, ``A reusable lattice-peak theorem for other path
+models,'' and the A380274 report explicitly says that its Mahonian
+theorem is another instance but does not prove the general result. Public
+checks of OEIS A357825 and A380275 confirm the sequence definitions and
+the currently displayed asymptotic comments. Wang's 2026 Mahonian
+preprint states a fixed-real-power expansion and explicitly disclaims
+uniformity in the power. Canfield--Janson--Zeilberger supply classical
+asymptotic-normal and local-limit background. Helton--Hughes--Schlosser
+give a recent general discrete Laplace framework in a fine-lattice
+regime.
+
+No exhaustive worldwide novelty search is claimed. The mathematically
+precise claim of this article is narrower: the theorems above are proved
+here and answer the \emph{repository's} Q6 by giving explicit sufficient
+hypotheses that simultaneously cover its ballot and Mahonian examples.
+The standard ingredients--dominated convergence, Gaussian tails, Poisson
+summation, local expansions, and Newton inversion--are not claimed as new
+methods.
+
+\emph{[Write note, batch 98D, 5 October 2026.]} The manuscript's
+bibliography gives two OEIS titles in paraphrase (``power-sum array of
+semi-Dyck path endpoint counts'' for A357824, ``fourth powers of Mahonian
+coefficients'' for A380275). The entries' names, fetched by the write on
+5 October 2026, are ``Total number A(n,k) of k-tuples of semi-Dyck paths
+from (0,0) to (n,n-2*j) for j=0..floor(n/2); square array A(n,k), n>=0,
+k>=0, read by antidiagonals'' (A357824; Part~I's \cite{oeisarray}
+paraphrases it too) and ``Sum of the fourth powers of the coefficients of
+q in the q-factorials'' (A380275, \cite{lptA380275}). OEIS text is
+licensed CC~BY-SA~4.0; no OEIS data is shipped with Part~II. The write did not
+re-fetch Wang's preprint or the Helton--Hughes--Schlosser paper; the
+latter is Part~I's \cite{discretelaplace}. The claim that the hypotheses
+``simultaneously cover'' the Mahonian example holds, after the write, in
+the form of Proposition~\ref{tbs:lpt:prop:mahonian}. The manuscript's own
+bibliography entry for this report is omitted: it is this report.
 
 \begin{thebibliography}{99}
 \small
@@ -1744,6 +3273,32 @@ inspected at commit
 \url{https://github.com/VladimirReshetnikov/ProveIt}.
 \href{https://github.com/VladimirReshetnikov/ProveIt/blob/50f93367b2859b2727c34c68cf87684c101768cc/Combinatorics/README.md}{Combinatorics map at the inspected commit}.
 Accessed 1 October 2026.
+
+\bibitem{lptA380275}
+[Added in the batch-98D write, from the manuscript of Part~II.] The OEIS
+Foundation Inc., \emph{A380275: Sum of the fourth powers of the
+coefficients of $q$ in the $q$-factorials}; A380274 is the sum of cubes.
+\url{https://oeis.org/A380275}. Name checked 5 October 2026.
+
+\bibitem{lptWang}
+[Added in the batch-98D write, from the manuscript of Part~II.]
+X.~Wang, \emph{Fixed-Power Sums of Mahonian Coefficients}, 2026.
+DOI: 10.5281/zenodo.20548010.
+\url{https://doi.org/10.5281/zenodo.20548010}. Not re-fetched by the
+write.
+
+\bibitem{lptCJZ}
+[Added in the batch-98D write, from the manuscript of Part~II.]
+E.~R. Canfield, S.~Janson and D.~Zeilberger, \emph{The Mahonian
+probability distribution on words is asymptotically normal}, Advances in
+Applied Mathematics 46 (2011), 109--124. DOI: 10.1016/j.aam.2009.10.001.
+
+\bibitem{lptMahonian}\begingroup\raggedright
+[Added in the batch-98D write.] ProveIt research-report collection,
+\emph{Growing powers of Mahonian coefficients}, directory
+\nolinkurl{SetTheory/Cardinals/docs/reports/generating-functions-and-asymptotics/}\
+\nolinkurl{oeis-sequence-asymptotics/a380274-mahonian-growing-powers}
+(labels \code{mgp:}).\par\endgroup
 
 \end{thebibliography}
 \end{document}
