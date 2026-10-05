@@ -19,7 +19,7 @@ The pin `e6190a94552f119e9a2140e5fea8450a045a0837` is the ProveIt commit at whic
 ```
 README.md                                  this guide (replaces the delivered READMEs)
 article.tex                                the report (LaTeX, internal bibliography; \inputs three data/ tables)
-article.pdf                                the compiled report, 63 pages
+article.pdf                                the compiled report, 64 pages
 SOURCE_NOTES.md                            manuscript 39's source and repository audit, as delivered
 02-laws-code-README.txt                    manuscript 06's computational documentation (delivered code/README.txt)
 code/catalan_partitions.py                 Part I: exact coefficients, cumulants, phase and asymptotic formulas (mpmath)
@@ -133,7 +133,7 @@ From a scratch copy of this directory (the article `\input`s `data/02-laws-*_tab
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-pdfLaTeX (MiKTeX 26.2) produced the shipped `article.pdf`: 63 pages, with no errors, no warnings, no undefined references or citations, no multiply defined labels, no duplicate destinations, and no overfull or underfull boxes. Copy back only `article.pdf`. Do not use `code/build.sh` or `code/03-endpoint-build.sh`: both change into `code/`, where there is no `article.tex`, and stop with an error.
+pdfLaTeX (MiKTeX 26.2) produced the shipped `article.pdf`: 64 pages, with no errors, no warnings, no undefined references or citations, no multiply defined labels, no duplicate destinations, and no overfull or underfull boxes. Copy back only `article.pdf`. Do not use `code/build.sh` or `code/03-endpoint-build.sh`: both change into `code/`, where there is no `article.tex`, and stop with an error.
 
 ## Rerunning the scripts
 

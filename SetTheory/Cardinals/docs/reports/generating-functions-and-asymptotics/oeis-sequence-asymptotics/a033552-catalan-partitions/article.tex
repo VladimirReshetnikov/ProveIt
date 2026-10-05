@@ -3337,6 +3337,52 @@ remain open (\cref{ctp:cl:sec:future}). Manuscript~06's phase-function file
 records $\Xi$ as ``gamma'' with the caution that it is a limit of
 covariances of truncated energies, not the covariance of an $L^2$ total
 energy, which does not exist.
+
+\emph{Dated note (5~October 2026).} An independent adversarial check of
+the results added at this write, made by the intake after the write, found
+\cref{ctp:cl:thm:mixedcov}, \cref{ctp:cl:cor:var} and
+\cref{ctp:te:rem:bperiodic} valid. The check was a careful reading with
+independent computations: a floating-point recursion over residue classes
+for $p(n)$, the first two moments of $N_n$ and the threshold sums of $J_n$
+at 2500 values of $n$ in $[300,1.6\cdot10^7]$ ($m$ from $5.35$ to
+$13.40$), checked against a separate big-integer recursion to relative
+error $2\cdot10^{-15}$ and reproducing the printed $-1.4368$,
+$0.938223$, $-4.06$, $0.578$ and $-1.3205626659$; $\Xi$ by independent
+lattice sums; manuscript~10's operator with exact saddle cumulants for
+\cref{ctp:cl:cor:var}; and the constants of \cref{ctp:te:rem:bperiodic}
+to 37--50 digits at eight phases. It is not a formal verification or an
+external review. No fix was needed. The check made three further
+observations.
+(i)~\emph{A sharper remainder (argument sketched; the theorem is left as
+stated).} The proof of \cref{ctp:te:thm:growing} bounds its error by
+$O(H_-^4/m^2)$ with $H_-=1+\max(0,-h)$, which for $h>0$ is stronger than
+the stated $(1+|h|)^4$. Used in Step~1, together with the $C/m$ bounds of
+Step~2 for $h\ge0$, it makes the per-threshold error $O(m^{-2})$ uniformly
+in $0\le h\le m^{1/8}$. The positive thresholds then need summing only up
+to $H_+=\log_2\log m+O(1)$, beyond which the bound $C\e^{-c2^h}$ of Step~3
+sums to $O(m^{-2})$; on the negative side the weights
+$G_{-r}\le4^{-r(r-1)/2}$ already make the errors sum to $O(m^{-2})$. The
+same proof therefore gives the remainder $O(\log\log m/m)$ in
+\eqref{ctp:cl:eq:mixedcov}.
+(ii)~\emph{A closed form for $\Xi$.} Since
+$\partial_\theta G_h=-\alpha A_hG_h$ (with $\alpha=\log4$, as before
+\eqref{ctp:cl:eq:differentialcorrection}) and \eqref{ctp:cl:eq:b} may be
+differentiated termwise,
+\[
+ \Xi(\theta)=-\frac1\alpha\sum_{h\in\Z}\partial_\theta G_h(\theta)
+ =\frac{\bar\Jl\,'(\theta)}\alpha=\frac{1+F_0'(\theta)}\alpha,
+\]
+so \eqref{ctp:cl:eq:mixedcov} reads
+$m\Cov(t_nN_n,J_n)=-S_1(1+F_0'(\theta_n))/\alpha+O((\log m)^{5/2}/m)$, and $\Xi>0$
+says that $\bar\Jl$ is strictly increasing. The check confirmed the
+identity numerically to 15 digits at $\theta=0$, $0.35639$, $0.5$ and $0.8$.
+(iii)~\emph{Numerical evidence on the open question above.} The quantity
+$m\bigl(m\Cov(t_nN_n,J_n)+S_1\Xi(\theta_n)\bigr)$ is a clean periodic
+function of the phase, between $-1.33$ and $-1.03$ for $m\ge6.5$; at
+$\theta\approx0.35$ it takes the values $-1.281$, $-1.324$, $-1.332$,
+$-1.329$, $-1.322$, $-1.317$, $-1.313$ for $m$ from $7.35$ to $13.33$,
+with no logarithmic growth. This suggests, but does not prove, that the
+true remainder is $O(1/m)$.
 \end{remark}
 
 \section{The law of \texorpdfstring{$W$}{W}: spectral expansion, natural boundary and inverse tail}
@@ -4083,7 +4129,12 @@ to $|h|\asymp\sqrt{\log m}$. A joint version of
 \cref{ctp:cl:thm:maxweighted} with the number-of-parts mark, as manuscript~06
 proposed (``a marked coefficient expansion with a uniform remainder in the
 marking parameter, followed by differentiated and weighted versions of the
-maximum-law expansion''), would settle both.
+maximum-law expansion''), would settle both. \emph{Dated note
+(5~October 2026):} the independent check recorded in
+\cref{ctp:cl:rem:mixedcov} observed that the same proof already reduces
+the logarithmic factor to $\log\log m$, and that the numerics at
+$m\le13.4$ show no logarithmic growth; removing it altogether remains
+open.
 
 \subsection{Distinct sizes and near-edge holes (06)}
 Let $D_n=\#\{k:Z_k>0\}$. Manuscript~06 proposes, without proof, the edge
