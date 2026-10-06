@@ -76,7 +76,8 @@ Added by the write (6 October 2026), with proofs, marked `[write]`:
 - **Remark 2 (`lsd:rem:c3`)**: the delivered recipe at order 3 gives
   `c_3 = −sqrt2 N_3(ℓ)/(106168320 ℓ^(9/2) (ℓ − 1)^3) = −0.26674650591076…`,
   the value the source stored but did not claim; the exact counts behave
-  accordingly.
+  accordingly, approaching `c_4 = 1.00342017659501811…` (stated since the
+  independent check below; the remark first said "close to 1").
 - **Remark 3 (`lsd:rem:transseries`)**: Section 5 against the transseries
   volume, statement by statement (next sections).
 - **Remark 4 (`lsd:rem:oeis`)**: the three OEIS entries quoted; the entry's
@@ -129,8 +130,9 @@ reading convention, not a correction of the entry.
   instances,** of `p0:thm:staircase` (no interpolation is constructed; they
   come from envelopes);
 - `y_M` is a numerical root, not a formal object; `plt:thm:lw-template` does
-  not apply to `Φ_M` (the `β sqrt y` term violates (H3)) but applies to the
-  core alone.
+  not apply to `Φ_M` (the `β sqrt y` term, and `−(5/4) log y` with
+  Stirling's corrections, violate (H3); the write first named only the
+  former) but applies to the core alone.
 
 No novelty is claimed for the inversions.
 
@@ -199,6 +201,28 @@ OEIS text.
   about 10 s) and from the shipped files (route B: pass).
 - Not read: Khera's dissertation; the journal versions behind the arXiv
   texts.
+- **Independent check of the write (6 October 2026).** An adversarial check
+  made by the intake after the write (`6ef3f0983`), with its own code:
+  Remark 1 by four independent deciders (literal decomposition search with
+  lonesum as uniqueness of the line sums, criterion (b), Kamano's 12-matrix
+  set, induced-`P_5` search) on every shape up to `4 × 4`, and by the last two
+  on every shape up to `5 × 5` (all `2^25` matrices at `5 × 5`): no
+  disagreement, `D(5,4) = D(4,5) = 90946`, `D(5,5) = 833432`. The A299906
+  misprint confirmed in the live entry (still #24): `T(5,4) = 90946` by the
+  formula, by enumerating all `2^20` matrices of size `5 × 4` and by
+  transposition; all 66 data terms and all 16 terms of A299907 match. An
+  independent 90-digit expansion of eq. (9) through `t^8` gives `c_1`, `c_2`
+  (to `10^{−89}`), `c_3` (agreeing with the closed form of Remark 2 to 88
+  digits) and `c_4 = 1.0034201765950181116370…`; the delivered
+  `derive_general.py 4`, rerun when the check was applied, gives the same
+  `c_4` to 69 digits (denominator `30·192^4 ℓ^6 (ℓ−1)^4`, numerator degree 12:
+  the pattern of Question 5, not claimed). Exact `a_n` to `n = 3200`
+  reproduce the table and Remark 2; `n²(R_n − Σ_{j≤3})` = 0.916 … 0.987
+  approaches `c_4`, and the next remainder times `n^{5/2}` is a stable
+  −0.874 … −0.907. Remark 3 re-derived (SymPy for (b)). No mathematical error;
+  two statements made more precise with dated notes keeping the first
+  wording (Remark 2 states `c_4`; Remark 3(d) names all the terms that
+  violate (H3)). The check is recorded at the end of Section 6.
 
 ## Relation to the repository
 
@@ -349,8 +373,8 @@ B=$(mktemp -d); cp article.tex "$B/"; cd "$B"
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The committed PDF was built this way with MiKTeX on 6 October 2026: 15
-pages; no errors or warnings, no undefined references or citations, no
+The committed PDF was built this way with MiKTeX on 6 October 2026, after
+the independent check (also 15 pages at the write): 15 pages; no errors or warnings, no undefined references or citations, no
 multiply defined labels, no duplicate PDF destinations, no overfull or
 underfull boxes. The delivered source builds the same way to 8 pages, also
 without warnings. The article keeps the delivered preamble lines that
