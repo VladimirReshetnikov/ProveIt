@@ -87,6 +87,8 @@ import GowersSzemeredi.Proofs16SynchronizedSliceCover
 import GowersSzemeredi.Proofs16LocalAffineLift
 import GowersSzemeredi.Proofs16LiftWidth
 import GowersSzemeredi.Proofs16LiftAllScales
+import GowersSzemeredi.Proofs16FiniteCoverPadding
+import GowersSzemeredi.Proofs16GlobalAffineLift
 import GowersSzemeredi.Proofs16ArrangementSelection
 import GowersSzemeredi.Proofs16CubeDensity
 import GowersSzemeredi.Proofs05Progressions

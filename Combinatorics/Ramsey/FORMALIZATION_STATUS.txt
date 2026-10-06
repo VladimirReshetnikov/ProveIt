@@ -12,8 +12,8 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 190 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 1,780 public Gowers theorems and found only propext,
+  All 192 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 1,786 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 99 exact
   companion proofs and 21 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -281,9 +281,17 @@ Corrected distinct-anchor sampling estimate
   including zero. When w<16 it uses genuine singleton boxes and one graph
   per cell; its control-range proof verifies that the graph budget allows one.
   The output width is sqrt((m/8)^a)/4 and the loss remains 2*tau+epsilon.
-  A complete Lemma 16.10 proof still needs global cell assembly with a uniform
-  graph count and the unresolved final comparison with its prescribed width
-  and graph controls. The verified local formula is not that comparison.
+  Proofs16FiniteCoverPadding reindexes arbitrary finite candidate types and
+  pads them to a uniform natural count, preserving multilinearity and coverage.
+  Proofs16GlobalAffineLift applies the local lift throughout Section16LineCover,
+  flattens all proper box refinements, and intersects the original good set
+  with the union of the new local good sets. The total loss is sigma+2*tau+epsilon.
+  With b=multipleQ(epsilon/(r*s),gamma,k)^(r*s), the global graph count is at
+  most r*b+r*r*b*b; the width remains sqrt((m/8)^a)/4 for m<=l.
+  This closes global cell assembly under the explicit positive-count and
+  sampling-budget hypotheses. A complete Lemma 16.10 proof still needs the
+  unresolved comparison with its prescribed width and graph controls. The
+  verified global formula is not that comparison.
   The newly received gowers_interpolation_article.zip proposes sampling
   without replacement and singleton recovery for a sharper local bound. Its
   argument has been inspected, but is not a checked Lean result at this stage.
