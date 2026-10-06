@@ -181,6 +181,21 @@ adds three:
 No claim of the source was found to be wrong, and no research question of
 another report is answered.
 
+**Independent check of the write (6 October 2026).** An adversarial check
+made by the intake after the write (`b7d0d5e96`), with its own code, found
+every addition of the write correct; no item needed a correction. Remark
+5.2 was followed step by step and confirmed on all 16,430 deterministic
+decision trees on n = 3 in exact rationals (strictly below `G(c)` at every
+tested non-integer `c < 3`, equal at `c = 1, 2, 3`); Remark 6.4 re-derived
+and checked for `p_i = 2^−i` and `p_i = 6/(π² i²)`; the main optimum and the
+maximizers of Theorem 6.1 confirmed by brute force over all Boolean
+functions on n ≤ 4 (65,536 at n = 4, without the Fourier step, including a
+tie between `±χ_[2]` and `±χ_[3]`); the Lean descriptions
+(`ThueMorseBooleanCube.lean`, `ThueMorseWalsh.lean`, the substitution
+`u = −η/(1−η)`), the repository searches and the two pointers into
+`measurable-box-games` (Lemmas 49.1, 64.1) confirmed. Recorded in a dated
+note at the end of Section 13.1.
+
 ## Checks made at intake
 
 - Placement (batch-114 dossier `dossier114_PUZ`, 5 October 2026): the
@@ -391,7 +406,8 @@ B=$(mktemp -d); cp article.tex "$B/"; cp -r figures "$B/"; cd "$B"
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The committed PDF was built this way with MiKTeX on 5 October 2026: 39 pages;
+The committed PDF was built this way with MiKTeX on 5 October 2026 and rebuilt
+after the independent check on 6 October 2026: 39 pages (unchanged);
 no errors or warnings, no undefined references or citations, no multiply
 defined labels, no duplicate PDF destinations, no overfull or underfull boxes.
 The delivered source built the same way gives 32 pages, equally clean.
