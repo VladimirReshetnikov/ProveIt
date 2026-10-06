@@ -107,8 +107,10 @@ Sloane, with the asymptotic line), attributed "(Lengyel)"; revision #30
 2003. **The correct equation is `Z(z) = ½(Z(e^z − 1) + z)`.** One-line
 proof: `n![zⁿ] Z(e^z − 1) = Σ_{k≤n} S(n,k) z_k`, which is `2z_n` for
 `n ≥ 2` (by the recurrence and `S(n,n) = 1`) and `z_1 = 1` for `n = 1`;
-so `Z(e^z − 1) = 2Z(z) − z`. With the printed minus sign the coefficient of
-`z` reads `1 = ½(1 − 1) = 0`; Remark 2.1 proves that the printed equation
+so `Z(e^z − 1) = 2Z(z) − z`. Applied to `Z` itself, the printed right side
+is therefore exactly `Z(z) − z`: the line fails only at the coefficient of
+`z`, where it would require `z_1 = ½(z_1 − 1)`, that is `1 = 0`; Remark 2.1
+proves that the printed equation
 has exactly one formal solution, `−Z`, the e.g.f. of `(−1, −1, −4, −32,
 −436, …)`. The same entry's PARI program (Somos, 2007) and
 `a139383-iterated-bell-diagonals` (Part II, Section 17.2) use the correct
@@ -163,12 +165,36 @@ recorded is in the OEIS entry.
    from exact `H(n,m)` at the two `m` nearest `n/L` gives
    `L^{L/3−1}I(L)/2 ≈ 1.102044, 1.100861, 1.100269` at `n = 200, 300, 400`
    (excess over `C` about `0.65/n`); two-point extrapolation in `1/n` gives
-   1.098494 and 1.098492, about `1.9·10⁻⁴` below `C`. Missing: tail bounds
+   1.098494 and 1.098492, about `1.9·10⁻⁴` below `C`. The gap is the
+   `−(L²/18)(log n)²/n` term of `a139383`'s first correction
+   (`ibd:pd:eq:P1`), which extrapolation in `1/n` cannot remove; a fit with
+   that term recovers its coefficient (−0.02937 against −0.02933) and the
+   constant to about `10⁻⁵` (independent check, below). Missing: tail bounds
    outside compact slopes, the logarithmic corrections of `a139383`, a
    certified `I(L)`.
 7. **An evaluated inverse** (`spc:q:inverse`).
 8. **Van Cutsem–Ycart's variance conjecture** (`spc:q:variance`), not
    resolved here.
+
+**Independent check of the write (5 October 2026).** An adversarial check
+made by the intake after the write (`44ebdfef9`) found every item valid and
+no mathematical error. It confirmed the live entry, the formula line and its
+history (all 79 revisions paged: first in #8 of 13 September 2003, the
+attribution alone changed in #30 of 18 April 2014); chains counted directly
+from the definition give `1, 1, 4, 32, 436, 9012` for `n = 1, …, 6`, and the
+recurrence reproduces all 19 live data terms. Applied to `Z` itself the
+printed right side equals exactly `Z − z`, so the line fails only at the
+coefficient of `z`; Remark 2.1 now says so (dated note keeping the first
+wording). It confirmed the five parts of Remark 10.5 (part (e)'s second
+route to Theorem 10.4 line by line). In `spc:q:depth` every printed digit
+reproduces, and the `1.9·10⁻⁴` gap is explained by the `−(L²/18)(log n)²/n`
+term predicted by `a139383`'s `P_1`, which Richardson extrapolation in `1/n`
+cannot remove: a 16-point fit (`n = 100, …, 400`) recovers `D_2 = −0.02937`
+against the predicted `−L²C/18 = −0.02933`, and the constant then agrees
+with `C` to about `10⁻⁵` (sentence replaced, dated note). From exact `z_n` to
+`n = 400`, an eight-node fit gives `C = 1.09868580552518701`, with
+`c_1, …, c_4` confirmed to 12, 12, 9 and 7 digits. The record is a dated
+note at the end of Section 12.1.
 
 ## Checks made at intake
 
@@ -269,7 +295,7 @@ unnumbered, so no theorem or equation number moved.
 ```text
 README.md                          this guide (replaces the delivery README)
 article.tex                        the report (delivered Report223.tex; labels prefixed, [write] additions)
-article.pdf                        compiled report, 26 pages
+article.pdf                        compiled report, 27 pages
 code/lengyel_exact.py              standard-library exact core and CLI (delivered code/)
 code/test_lengyel_exact.py         exact tests, full poset enumeration n <= 6, real CLI tests (delivered code/)
 code/symbolic.py                   SymPy coefficient, cumulant and inverse algebra (delivered code/)
@@ -363,8 +389,8 @@ B=$(mktemp -d); cp article.tex "$B/"; cd "$B"
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The committed PDF was built this way with MiKTeX on 5 October 2026: 26
-pages; no errors or warnings, no undefined references or citations, no
+The committed PDF was built this way with MiKTeX on 5 October 2026: 27
+pages after the independent check (26 at the write); no errors or warnings, no undefined references or citations, no
 multiply defined labels, no duplicate PDF destinations, no overfull or
 underfull boxes. The delivered source builds the same way to 19 pages, also
 without warnings. The article keeps the delivered preamble lines that

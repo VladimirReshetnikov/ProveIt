@@ -360,9 +360,15 @@ using $S(n,n)=1$. So each sign has exactly one formal solution, and
 by~\eqref{spc:eq:recurrence} at $q=1$ it is $w_n=\varepsilon z_n$. For
 $\varepsilon=+1$ this is $\mathcal Z$, proving~\eqref{spc:eq:formal}. For
 $\varepsilon=-1$, the OEIS line, the only solution is $-\mathcal Z$, the
-generating function of $(-1,-1,-4,-32,-436,\dots)$; already the coefficient
-of $z$ in the OEIS line reads $1=\tfrac12(1-1)=0$ for $\mathcal Z$. Equivalently,
-$-\mathcal Z$ satisfies the printed line, and $\mathcal Z$ does not.
+generating function of $(-1,-1,-4,-32,-436,\dots)$. For $\mathcal Z$ itself
+the right-hand side of the printed line is
+$\tfrac12\bigl(\mathcal Z(e^z-1)-z\bigr)=\mathcal Z(z)-z$
+by~\eqref{spc:eq:formal}, so the line fails exactly at the coefficient
+of~$z$, where it would require $z_1=\tfrac12(z_1-1)$, that is $1=0$.
+Equivalently, $-\mathcal Z$ satisfies the printed line, and $\mathcal Z$ does
+not. \textup{(Wording sharpened after the independent check of 5~October
+2026; the first wording read ``already the coefficient of $z$ in the OEIS
+line reads $1=\tfrac12(1-1)=0$ for $\mathcal Z$''.)}
 \qed
 
 The same entry's PARI program (Michael Somos, September~22, 2007) iterates,
@@ -1193,14 +1199,30 @@ in the OEIS entry (Remark~\ref{spc:rem:oeis}).
  $L^{L/3-1}I(L)/2\approx1.102044$, $1.100861$, $1.100269$ at $n=200$, $300$,
  $400$; these exceed $C$ by $3.36$, $2.18$, $1.58$ thousandths, about
  $0.65/n$, and two-point extrapolation in $1/n$ gives $1.098494$ (from
- $n=200,300$) and $1.098492$ (from $n=300,400$), about $1.9\cdot10^{-4}$ below~$C$, a gap
- attributable to the logarithmic corrections of that theorem. Missing for a
+ $n=200,300$) and $1.098492$ (from $n=300,400$), about $1.9\cdot10^{-4}$ below~$C$.
+ The gap is the logarithmic correction of that theorem: by
+ \file{ibd:pd:eq:P1} with $\delta=0$, $\beta=L$, the first correction
+ $P_1/n$ contains $-\tfrac{L^2}{18}(\log n)^2/n$, which extrapolation in
+ $1/n$ does not remove. Fitting $A+B/n+D_1\log n/n+D_2(\log n)^2/n$ to the
+ sixteen values $n=100,120,\ldots,400$ (verification run, 5~October 2026)
+ returns $D_2=-0.02937$, against the predicted $-L^2C/18=-0.02933$, and
+ $A=1.098694$, within $10^{-5}$ of~$C$; with $D_2$ fixed at its predicted
+ value, $A$ agrees with $C$ to $3\cdot10^{-6}$ ($n\ge200$). These are fits
+ to numerics, not a proof. \textup{(Sentence replaced after the independent
+ check of 5~October 2026; the first wording read ``about
+ $1.9\cdot10^{-4}$ below~$C$, a gap attributable to the logarithmic
+ corrections of that theorem''.)} Missing for a
  proof: that theorem is uniform only for slopes in compact sets and rests on
  the contour foundation of that report's Part~I, so the sum needs separate
  bounds for $m\le\varepsilon n$ and $m\ge n/\varepsilon$ (note
  $H(n,m)\le H(n,m+1)$, since $S(n,n)=1$); its corrections
  $P_j(\log n;\lambda,\delta)$ are polynomials in $\log n$ whereas
- \eqref{spc:eq:expansion} has none, which a summation would have to explain;
+ \eqref{spc:eq:expansion} has none, which a summation would have to explain
+ (at the level of $(\log n)^2/n$ it does: the tilt $m^{-n/(3m)}$ of the
+ Laplace window contributes a factor
+ $\exp\bigl(\tfrac{L^2}{18}(\log n)^2/n+\cdots\bigr)$, which cancels the
+ term of $P_1$ above; the $\log n/n$ terms were not compared; added after
+ the independent check of 5~October 2026);
  and $I(L)$ is not certified (that report certifies only $\beta=1$). If
  proved, the identity would express $C$ by that report's contour functional,
  which bears on Question~\ref{spc:q:analytic}. Conversely, nothing here gives
@@ -1219,6 +1241,34 @@ in the OEIS entry (Remark~\ref{spc:rem:oeis}).
  \eqref{spc:eq:varintro} for this model only. Missing: an argument for their
  general class.
 \end{enumerate}
+\begin{writenote}[Independent check of the write, 5~October 2026]
+An adversarial check made by the intake after the write (commit
+\file{44ebdfef9}) found every item valid and no mathematical error. It
+confirmed the live entry A005121 (revision \#79) and its formula line
+verbatim, and, paging all 79 revisions of the history, that the line first
+appears in revision~\#8 (13~September 2003) as ``(Lengyel)'', that
+revision~\#30 (18~April 2014) changed only the attribution to
+``[Lengyel]'', and that the sign is unchanged since 2003. Chains counted
+directly from the definition (refinement chains from the finest to the
+coarsest set partition) give $z_1,\ldots,z_6=1,1,4,32,436,9012$; the
+recurrence reproduces these and all 19 live data terms; and the printed line,
+solved with generic coefficients, has the unique solution $-\mathcal Z$
+through $z^7$. Applied to $\mathcal Z$ itself the printed right-hand side
+equals $\mathcal Z-z$ exactly, so the line fails only at the coefficient
+of~$z$ (wording of Remark~\ref{spc:rem:oeis} sharpened, with a dated note).
+It confirmed the five parts of Remark~\ref{spc:rem:transseries} against the
+transseries volume, including a line-by-line check of the second route to
+Theorem~\ref{spc:thm:threshold} in part~(e). In
+Question~\ref{spc:q:depth} every printed digit reproduces, and the
+$1.9\cdot10^{-4}$ gap is explained by the term
+$-\tfrac{L^2}{18}(\log n)^2/n$ of \file{ibd:pd:eq:P1}: a free fit recovers
+$D_2=-0.02937$ against the predicted $-0.02933$, and the constant then
+agrees with $C$ to about $10^{-5}$ (sentence replaced, with a dated note).
+From exact $z_n$ to $n=400$, an eight-node fit
+$z_n/f_n=C\bigl(1+\sum_{k\le7}a_kn^{-k}\bigr)$ on $n=225,\ldots,400$ gives
+$C=1.09868580552518701$, and $a_1,\ldots,a_4$ agree with $c_1,\ldots,c_4$
+of \eqref{spc:eq:cs} to $12$, $12$, $9$ and $7$ digits.
+\end{writenote}
 
 \begin{thebibliography}{99}
 \bibitem{Lengyel}
