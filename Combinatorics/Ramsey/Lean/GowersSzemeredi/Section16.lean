@@ -44,15 +44,17 @@ def GraphContained {N k : Nat} (B : Finset (Point N k))
 
 /-- The paper's `(gamma,r)`-multiple `k`-linearity.  Natural graph counts are
 bounded by the real-valued control function, avoiding the article's informal
-use of real numbers as cardinalities. -/
+use of real numbers as cardinalities. Boxes have proper axes, and the loss
+parameter lies in `(0,1]`; these conditions prevent inflated formal widths
+and out-of-range loss parameters from changing the geometric assertion. -/
 def MultiplyLinear {N k : Nat} [NeZero N] (gamma r : Real)
     (Gamma : Finset (Point N k × ZMod N)) : Prop :=
-  ∀ theta : Real, 0 < theta → ∀ P : Box N k,
+  ∀ theta : Real, 0 < theta → theta ≤ 1 → ∀ P : Box N k, P.IsProper →
     ∃ M q : Nat, ∃ H : Finset (Point N k),
       ∃ Q : Fin M → Box N k,
         ∃ mu : Fin M → Fin q → Point N k → ZMod N,
           H ⊆ P.carrier ∧ (1 - theta) * P.carrier.card ≤ H.card ∧
-          IsBoxPartition Q P ∧
+          IsBoxPartition Q P ∧ (∀ j, (Q j).IsProper) ∧
           (q : Real) ≤ (multipleQ (r⁻¹ * theta) gamma k) ^ r ∧
           (∀ j, (P.width : Real) ^
               ((multipleC (r⁻¹ * theta) gamma k) ^ r) ≤ (Q j).width) ∧
