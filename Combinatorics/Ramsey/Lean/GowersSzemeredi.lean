@@ -87,6 +87,10 @@ import GowersSzemeredi.Proofs16SynchronizedSliceCover
 import GowersSzemeredi.Proofs16LocalAffineLift
 import GowersSzemeredi.Proofs16LiftWidth
 import GowersSzemeredi.Proofs16LiftAllScales
+import GowersSzemeredi.Proofs16FiniteCoverPadding
+import GowersSzemeredi.Proofs16GlobalAffineLift
+import GowersSzemeredi.Proofs16GlobalLiftParameters
+import GowersSzemeredi.Proofs16ClosingComparison
 import GowersSzemeredi.Proofs16ArrangementSelection
 import GowersSzemeredi.Proofs16CubeDensity
 import GowersSzemeredi.Proofs05Progressions
@@ -127,6 +131,8 @@ import GowersSzemeredi.Proofs13InitialProgression
 import GowersSzemeredi.Proofs13LargeSpectrumCover
 import GowersSzemeredi.Proofs13QuadraticRecurrence
 import GowersSzemeredi.Proofs13BilinearRestriction
+import GowersSzemeredi.Proofs13RowCoefficients
+import GowersSzemeredi.Proofs13RowSelection
 import GowersSzemeredi.Proofs14Fourier
 import GowersSzemeredi.Proofs14Configurations
 import GowersSzemeredi.Proofs14Arrangements
