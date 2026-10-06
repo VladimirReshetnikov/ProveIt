@@ -1,146 +1,559 @@
-REPORT 118
-Inversion sequence asymptotics from iterated kernels
-Rigorous asymptotics and counting index inverses
-2 October 2026
+# Inversion Sequences Solved by Kernel Orbits
 
-START HERE
+**Square-root asymptotics to every fixed order and Lambert-W₋₁ threshold inverses for OEIS A279544, A279567, A279569 and A279558**
 
-Read report118.pdf. The complete editable mathematical source is
-report118.tex. The report proves the leading asymptotic laws stated
-numerically for classes 214 and 1509 in Britt and Beaton, Completing the
-enumeration of inversion sequences avoiding triples of relations,
-arXiv:2512.21943v3 (29 September 2026), and establishes every fixed
-algebraic correction and a counting-index inverse theorem.
+This is a research report built on 5 October 2026 (write batch 104) from
+three manuscripts of one external research session, Reports 118, 119 and 122
+of the session bundle of Reports 1–243, all dated 2 October 2026. An
+inversion sequence of length `n` is an integer vector with `0 ≤ e_i < i`.
+Britt and Beaton (*Completing the enumeration of inversion sequences avoiding
+triples of relations*, arXiv:2512.21943v3, 29 September 2026) gave exact
+generating trees and catalytic equations for the classes avoiding a triple of
+relations, and stated numerically — explicitly as non-rigorous, in their
+Section 4.2 — laws `a_n ~ C μⁿ n^(−3/2)` for four classes whose generating
+functions they believe to be nonalgebraic. The three manuscripts prove these
+four laws by one method: a kernel substitution reduces the catalytic equation
+to a scalar affine functional equation, solved by a normally convergent sum or
+quotient along contracting Möbius-type orbits seeded at an algebraic kernel
+root; global continuation, exclusion of competing singularities and an exact
+certificate of a nonzero square-root amplitude then give coefficient
+asymptotics to every fixed order and a Lambert-W₋₁ threshold inverse.
 
-The sequences are ordinary counts of inversion sequences, indexed from
-n=0. A279544 forbids e_j >= e_k and e_i >= e_k for i<j<k; A279567 forbids
-e_j >= e_k and e_i > e_k. Their growth constants are respectively 4 and
-3+2*sqrt(2), with exponent -3/2. The first two relative correction
-constants and the leading amplitudes have exact outward interval
-certificates. Numerical amplitude values were already recorded by
-Vaclav Kotesovec in both OEIS entries in 2021; the report supplies proofs
-and certificates, not a claim to have discovered those digits.
+- **Part I** (Report 118, the base): class 214 = A279544 (`μ = 4`) and class
+  1509 = A279567 (`μ = 3 + 2√2`); a forward orbit sum, and for 1509 a backward
+  orbit quotient with a global nonvanishing-denominator certificate; the
+  generic threshold-inverse theorem.
+- **Part II** (Report 119): class 1953A = A279569 (`μ = 27/4`), from both small
+  roots of a cubic kernel; continuation by a real determinant gap,
+  Pringsheim's theorem and removal of boundary poles; the explicit log-log
+  inverse. By the Wilf-equivalence that Britt and Beaton record, the counting
+  statements hold also for class 1953B.
+- **Part III** (Report 122): class 830 = A279558 (`μ = 27/4`), from a
+  re-derived tree, the ternary anchor `R = 1 + zR³` and two contracting orbits,
+  with a zero-free orbit product on a larger disc; the inverse in `log M`
+  coordinates with all-order discrete localization.
 
-The first model uses a convergent forward Mobius-orbit sum. The second
-uses a backward sum and a quotient, requiring a uniform proof that its
-denominator does not vanish. Global continuation and positive critical
-derivatives are established before coefficient transfer. The local
-square-root expansions converge, whereas the coefficient expansions
-are proved to every fixed order; no convergence of the inverse-power
-series as its order increases is asserted.
+| Source | Bundle report | Archive | Pin | Placed | Printed as |
+|---|---|---|---|---|---|
+| *Inversion sequence asymptotics from iterated kernels: Rigorous asymptotics and counting index inverses* (base); title block "REPORT 118", no author line | 118 | `Inversion_Sequences_A279544_A279567_Asymptotics_and_Inverses_Source.zip` (413,366 bytes, 16 files; `report118.tex`, 1,100 lines, 18 pp.) | none | `612787fb4` | Part I, Sections 1–9 |
+| *Inversion sequence asymptotics from two kernel roots: A279569 and class 1953A*; "REPORT 119" | 119 | `A279569_Two_Kernel_Asymptotics_and_Inverses_Source.zip` (398,990 bytes, 18 files; `report119.tex`, 1,005 lines, 16 pp.) | none | `612787fb4` | Part II, Sections 10–19 |
+| *A279558 asymptotics and inversion: A ternary root and two contracting orbits*; "REPORT 122" | 122 | `A279558_Asymptotic_Expansion_and_Inverse_Thresholds_Source.zip` (407,593 bytes, 28 files; `report122.tex`, 1,065 lines, 17 pp.) | none | `612787fb4` | Part III, Sections 20–30 |
 
-The inverse takes a target count to the least index meeting that target.
-Its leading real approximation uses the W_-1 branch of Lambert W.
-Rigorously shrinking two-ceiling brackets preserve the possible
-ambiguity near exact integer thresholds. The inverse error constants
-and starting thresholds are existential: this is not an effective
-certified finite-target inverse routine. The report does not establish
-nonalgebraicity or non-D-finiteness, all exponentially small sectors,
-literature priority, or external peer review.
+All three archives arrived unchanged in `60f54ea06` ("Arrival: 177 research
+archives from the session bundle of Reports 1-243") and survive there
+(`git show 60f54ea06:docs/incoming/<archive> > <archive>`); the placement
+commit `612787fb4` (batch 104, "Place batch 104: twelve bundle reports as four
+new reports") removed them from `docs/incoming/` and split the triage's
+eight-source Britt–Beaton cluster into three reports by method. The write is
+"Write batch 104 (a279544-inversion-kernel-classes): new report, four
+algebraic-kernel inversion-sequence classes".
 
-FILES
+**Status.** Unrefereed; not formalized; no statement has been checked by a
+proof assistant. None of the manuscripts names an author or a tool, says it is
+AI-assisted, or carries "prepared for private review" wording; none pins a
+ProveIt commit. The packages' own "exact reproducibility companions" and
+mutation campaigns are the delivering session's checks of its own work, not an
+assessment by a referee or by this repository. Every result, proof, remark,
+question and limitation of the three manuscripts is printed; no passage is
+shared verbatim between them (8-gram overlap at most 3.3%, longest common run
+27 words of title-page matter), so every Part is complete.
 
-report118.tex                  Standalone mathematical source
-report118.pdf                  Rendered report
-build.py                       Two clean byte-identical PDF builds
-build-environment.txt          Tested Python and PDF toolchain
-pack.py                        Deterministic verified ZIP generation
-integrity.py                   Closed outer SHA-256 inventory check
-CHECKSUMS.sha256                Closed package inventory
-checks/                        Independent exact checks and fixtures
-checks/MANIFEST.json            Closed inner checker inventory
-test_integrity.py              Negative tests for outer inventory
-verification_results.json      Successful checker validation summary
+## Files
 
-The package contains no source-paper PDFs, private research notes,
-rendering intermediates, or private machine-specific source paths.
+The directory holds 49 files: 6 at the root, 30 in `code/`, 13 in `data/`.
 
-DEPENDENCIES
+**Report files**, written in the write: this guide, the merged article and its PDF.
 
-All exact checks, schema and integrity checks, and negative tests need
-only Python 3.10+ standard library; tested with Python 3.12. No network
-or installation is needed.
+```
+README.md
+article.pdf
+article.tex
+```
 
-PDF build: pdfTeX/pdflatex and the standard LaTeX packages geometry,
-fontenc, lmodern, amsmath, amssymb, amsthm, mathtools, booktabs, microtype,
-hyperref and enumitem. Tested with pdfTeX 1.40.26.
+**Report 118, prefix `118-kernels-`**: 11 files besides the article (1 at the
+root, 7 in `code/`, 3 in `data/`); its `report118.tex` is the base of
+`article.tex`. Root: the guide to its exact checks. `code/`: the exact checker
+and its companion module, the mutation and replay harness, the outer integrity
+check and its negative tests, the deterministic PDF build and ZIP packer.
+`data/`: the closed fixture (certificate), the recorded campaign summary
+(738 negative runs: 312 fixture leaves and 369 named cases, each in normal and
+optimized mode) and the tested toolchain.
 
-The build creates its TeX format in an isolated temporary directory.
-Different TeX/font versions may produce different PDF bytes without
-changing the mathematics. ZIP byte identity likewise assumes the same
-Python/zlib compression toolchain. A fresh-directory replay is not a
-newly provisioned operating system. No script installs software or
-accesses the network.
+```
+118-kernels-checks-README.md
+code/118-kernels-build.py
+code/118-kernels-checks-check.py
+code/118-kernels-checks-companion.py
+code/118-kernels-checks-validate_bundle.py
+code/118-kernels-integrity.py
+code/118-kernels-pack.py
+code/118-kernels-test_integrity.py
+data/118-kernels-build-environment.txt
+data/118-kernels-checks-fixtures-certificate.json
+data/118-kernels-verification_results.json
+```
 
-CHECK THE RECEIVED PACKAGE
+**Report 119, prefix `119-tworoot-`**: 12 files (1 at the root, 8 in `code/`,
+3 in `data/`). Root: the guide to its exact checks. `code/`: the runner, the
+exact algebra and enumeration module, the `Q(√3)` jet certificate, the shared
+support module, the mutation campaign, the outer negative tests, the PDF build
+and packer. `data/`: the fixture, the recorded campaign summary (690 negative
+runs: 232 fixture leaves and 345 named cases, in both modes) and the tested
+toolchain. Its `integrity.py` is a byte copy of Report 118's and is not shipped
+again: `code/118-kernels-integrity.py` is the same file.
 
-Run from the report118 directory after extracting the ZIP:
+```
+119-tworoot-checks-README.md
+code/119-tworoot-build.py
+code/119-tworoot-checks-exact_math.py
+code/119-tworoot-checks-jet_certificate.py
+code/119-tworoot-checks-mutation_tests.py
+code/119-tworoot-checks-run_checks.py
+code/119-tworoot-checks-support.py
+code/119-tworoot-pack.py
+code/119-tworoot-test_integrity.py
+data/119-tworoot-build-environment.txt
+data/119-tworoot-checks-fixtures.json
+data/119-tworoot-verification_results.json
+```
 
-  python3 -B integrity.py .
-  python3 -B checks/check.py
-  python3 -B -O checks/check.py
-  python3 -B checks/validate_bundle.py --output /tmp/report118-checks.json
-  python3 -B test_integrity.py
+**Report 122, prefix `122-anchor-`**: 23 files (1 at the root, 15 in `code/`,
+7 in `data/`). Root: the guide to its exact companion. `code/`: the
+authoritative verifier, its exact model and analytic modules and negative
+tests; the five auxiliary `scripts/` programs (original certificate formulas,
+assertion-based, refusing `-O`); the outer integrity check and its tests; the
+full replay driver, PDF build (`build.py`, `build.sh`) and packer. `data/`: the
+151 exact terms `a_0..a_150` generated from the tree (not an OEIS b-file), the
+certificate fixture, the recorded verifier and negative-test results, the
+original certificate and correction outputs, and the tested toolchain.
 
-Use -B to prevent Python from adding bytecode-cache files to the closed
-package. Put new validation outputs outside the extracted package.
-Do not use integrity.py --write when validating a received package: it
-replaces the inventory and is intended only for deliberate repackaging.
-The inventory rejects missing, changed and unexpected files. Checksums
-are modification detectors, not authenticated signatures.
+```
+122-anchor-checks-README.md
+code/122-anchor-build.py
+code/122-anchor-build.sh
+code/122-anchor-checks-exact_analytic.py
+code/122-anchor-checks-exact_model.py
+code/122-anchor-checks-negative_tests.py
+code/122-anchor-checks-verify.py
+code/122-anchor-integrity.py
+code/122-anchor-repack.py
+code/122-anchor-reproduce.py
+code/122-anchor-scripts-certify.py
+code/122-anchor-scripts-certify_corrections.py
+code/122-anchor-scripts-global_bounds.py
+code/122-anchor-scripts-verify_model.py
+code/122-anchor-scripts-verify_orbit.py
+code/122-anchor-test_integrity.py
+data/122-anchor-a279558_n0_150.txt
+data/122-anchor-build-environment.txt
+data/122-anchor-certificate_output.txt
+data/122-anchor-checks-certificate.json
+data/122-anchor-correction_output.txt
+data/122-anchor-negative_results.json
+data/122-anchor-verification_results.json
+```
 
-The exact checker distinguishes 29 external posted prefix terms for
-A279544 and 26 for A279567 from the 81 coefficients n=0,...,80 generated
-internally for each class. Independent state dynamic programming and
-orbit-series reconstruction agree at every one of those 81 indices for
-both models. Brute force over the original inversion-sequence definition
-independently agrees for n=0,...,8 in each class.
+**Not shipped** (all retrievable from `60f54ea06`): the three PDFs; the three
+`CHECKSUMS.sha256` files and the inner manifests `checks/MANIFEST.json`
+(Reports 118, 119) and `checks/inventory.json` (Report 122) — checksum
+manifests, verified at placement (15, 17 and 27 entries; 5, 7 and 6 inner
+entries; no mismatch, nothing unlisted); the delivery READMEs (Report 118's
+`README.txt` was staged as `README.md` and is replaced by this guide; Report
+119's `README.txt` and Report 122's `README.md`, which holds its replay
+instructions, were not staged); `report119.tex` and `report122.tex` (printed as
+Parts II and III); Report 119's `integrity.py` (byte copy, see above).
 
-Exact certificates include the normal-convergence majorants used in
-the displayed analytic tails; the critical derivative recurrences;
-Machin arctangent intervals and integer square roots; rational local
-jets and outward Cauchy-error widening; the class-1509 global nonzero
-denominator bound; gamma-ratio coefficient recurrences; and symbolic
-checks of the first inverse corrections. Every executable guard remains
-active under Python -O. The mathematical arguments proving infinite
-convergence and continuation appear in the report; finite checking does
-not replace them.
+## Labels and numbering
 
-The checker README specifies its closed fixture schema and full
-mutation scope. The final successful campaign individually mutates all
-312 fixture leaves and runs 369 named negative cases in both normal and
-optimized modes, totaling 738 negative subprocesses. Every failure must
-match its expected diagnostic. Full baseline outputs agree between
-normal and optimized modes and after fresh-directory replay; source
-hashes remain unchanged. validate_bundle.py repeats this campaign.
-test_integrity.py adds ten named outer-inventory mutations in normal
-and optimized modes (20 negative runs), all in fresh temporary folders.
+Label prefix **`ivk:`**: Part I uses `ivk:orb:` (Report 118's 79 labels), Part
+II `ivk:two:` (Report 119's 64), Part III `ivk:anc:` (Report 122's 85). The
+write added 24 labels: the front matter (`ivk:sec:guide`, `ivk:sec:status`,
+`ivk:sec:pipeline`, `ivk:sec:notation`, `ivk:sec:provenance`,
+`ivk:sec:neighbours`); the Parts (`ivk:orb:part`, `ivk:two:part`,
+`ivk:anc:part`); the further-questions subsections (`ivk:orb:sub:further`,
+`ivk:two:sub:further`, `ivk:anc:sub:further`); the two remarks
+(`ivk:two:rem:wilf`, `ivk:anc:rem:strict`); and ten delivered headings that had
+no label (`ivk:orb:sec:slit`, `ivk:orb:sec:amplitude`, `ivk:orb:sec:reproduce`,
+`ivk:orb:sec:questions`, `ivk:two:sec:contrast`, `ivk:two:sec:amplitude`,
+`ivk:two:sec:inverses`, `ivk:two:sec:loglog`, `ivk:two:sec:reproduce`,
+`ivk:two:sec:questions`). 252 labels in all, all distinct.
 
-REBUILD THE PDF
+Sections are numbered continuously and statements within sections; equations
+are numbered continuously through the report, as in the deliveries:
 
-  python3 -B build.py
-  python3 -B integrity.py .
+| Part | Manuscript | Section here | Statement `k.j` | Equation `(m)` |
+|---|---|---|---|---|
+| I | Report 118 | `k` (unchanged, 1–9) | unchanged | unchanged, (1)–(72) |
+| II | Report 119 | `k + 9` (10–19) | `(k+9).j` | `(m+72)`, (73)–(128) |
+| III | Report 122 | `k + 19` (20–30) | `(k+19).j` | `(m+128)`, (129)–(195) |
 
-The build fixes timestamps and metadata, compiles three passes in each
-of two independent temporary directories, rejects overfull boxes and
-unresolved references, and requires the two PDFs to be byte-identical.
-It writes report118.pdf without changing report118.tex. Every page of
-the final PDF was rendered and visually checked for clipping, overlap,
-legibility and broken references.
+For example Report 119's Theorem 8.1 is Theorem 17.1 and its equation (55) is
+(127); Report 122's Proposition 9.1 is Proposition 28.1. The write's additions
+are unnumbered notes, Remarks 10.2 and 28.2 (each the last statement of its
+section) and Subsections 9.1, 19.1 and 30.1 (each at the end of its Part), so
+no delivered number moved. A comparison of the build's `.aux` with separate
+builds of the three delivered `.tex` files confirmed all 228 delivered labels
+under these offsets. The delivered READMEs and code use the manuscripts' own
+numbers.
 
-RECREATE THE ZIP
+## Notation
 
-  python3 -B pack.py /tmp/report118-reproducibility.zip
+No symbol was renamed. Each Part keeps its manuscript's letters and opens with
+a short reading-conventions table; the front matter's "Notation across the
+three Parts" lists every letter whose meaning changes. The most dangerous:
+**the correction letters** — Part I writes `c_j` (relative), `d_j`
+(logarithmic), `e_j` (inverse), Parts II and III write `d_j` for the *relative*
+corrections (`ℓ_j`, `ℓ_k` logarithmic; `η_j`, `P_j(log L)` inverse), and Part II
+also has orbit coefficients `e_j, c_j, d_j^orb`; **`b`** — Part I's `b_n` counts
+A279567 while its `b(z, x)` is an orbit forcing term, and Parts II–III's `b_m`,
+`b_j` are Puiseux coefficients (Part I's `h_m`, `ĥ_j`); **`A`** — the generating
+function in Parts I and II, the constant `log C + p log λ` in Part III (whose
+generating function is `F`); **`L`** — `log μ` in Part I, `log T` or `log M`
+(the target) in Parts II and III. Others: `F`, `H`, `P`, `Q`, `R`, `K`, `M`,
+`X`, `u`, `t`, `y`, `α`, `β`, `E_N`, and the target letter (`Y`, `T`, `M`).
+Citation keys: Report 119's `oeis` is `oeis1953`, Report 122's is `oeis830`.
 
-The output must be outside the package. The archive script first checks
-the complete inventory, then writes sorted files under report118/ with
-fixed timestamps and modes. The delivered archive was freshly extracted,
-its PDF rebuilt, its checks replayed, and its ZIP reproduced byte for
-byte in the tested toolchain.
+## What the report claims
 
-SOURCES
+**Part I (Report 118).**
+- Theorem 1.1 (A279544): radius `1/4`, holomorphic continuation to the slit
+  disc `|z| < R`, `R < 1/2`, unique dominant singularity, and for every fixed
+  `K`, `a_n = C 4ⁿ n^(−3/2)(1 + Σ_{j≤K} c_j n^(−j) + O(n^(−K−1)))`, `C > 0`; the
+  orbit representation `A = Φ(z, r(z))/z` (Proposition 2.1), normal
+  convergence (Lemma 3.1), `C = 4Φ_x(1/4, 1)/√π` with a rational recurrence and
+  a proved tail; `C` enclosed to 52 decimals (24), `c₁ ≈ 27.6041`,
+  `c₂ ≈ 43.9889` to 24 decimals (32).
+- Theorem 6.1 (A279567): radius `3 − 2√2`, all fixed orders; the backward
+  orbit quotient (45), the global bound `|1 − yV| > 1/3` (49),
+  `Ĉ ≈ 0.0660857088256494310036700131193`, `ĉ₁ ≈ 8.05528`, `ĉ₂ ≈ −17.4929`
+  certified (63).
+- Theorem 7.1 (both sequences): the Lambert-W₋₁ centre, the all-order inverse
+  recursion and the two-ceiling bracket `⌈y_K − E_K u^(−K−1)⌉ ≤ N(Y) ≤
+  ⌈y_K + E_K u^(−K−1)⌉` (existential `E_K`, `Y_K`); strict monotonicity for
+  `n ≥ 1` by an injection plus an extra object.
 
-Primary paper: https://arxiv.org/html/2512.21943v3
-Sequence definitions and previously posted numerical amplitudes:
-https://oeis.org/A279544 and https://oeis.org/A279567
-Full mathematical references are given in report118.pdf and report118.tex.
+**Part II (Report 119).**
+- Theorem 10.1 (A279569): radius `4/27`, unique dominant singularity,
+  Δ-domain, convergent Puiseux series, all fixed orders;
+  `C = 0.01116841071267033797867998293487861864…` (38 decimals, (115)),
+  `d₁ ≈ 26.9486067786116`, `d₂ ≈ 53.3933565681159` certified (114).
+- The continuation: Proposition 12.1 (the even quotient of two orbit limits is
+  the germ), Lemma 13.1 (explicit product domain), Lemma 14.1 (real
+  determinant gap), Proposition 14.2 (Pringsheim, absolute convergence at `ρ`,
+  removable boundary poles), the certificate `F_v(ρ, 3, 3/4) > 0` (107).
+- Theorem 17.1 and (128): the same inverse theorem for A279569, with the
+  explicit log-log form; strict monotonicity by injection plus the all-zero
+  sequence.
+
+**Part III (Report 122).**
+- Theorem 20.1 (A279558): radius `4/27`, unique dominant singularity,
+  Δ-domain, convergent Puiseux series, all fixed orders;
+  `C = 0.000180963775465117907270430806495787169143…` (43 decimals, (133)),
+  `d₁ ≈ 137.2216`, `d₂ ≈ 4914.561` certified (134)–(135).
+- The tree with its all-zero correction (Proposition 21.1), the anchor
+  `H(z, Y) = R` (151), the formal two-orbit representation (Lemma 22.1),
+  normal convergence (Proposition 23.1), the zero-free product
+  `|P(z)| > e^(−32/3)` on `|z| ≤ 149/1000` (Proposition 24.1), transfer
+  (Proposition 27.1).
+- Theorem 20.2 and Proposition 28.1: the inverse in `L = log M` with
+  polynomials `P_j(log L)` and error `B_J(1 + log L)^(J+1)/L^(J+1)`; monotonicity
+  `a_{n+1} ≥ a_n` by injection, strict for large `n` from the ratio limit.
+
+**Added by the write** (all marked `[write]`, dated 5 October 2026):
+- Remark 10.2: the counting statements of Part II hold for class 1953B
+  (`(≠, ≥, >)`, avoidance of 100, 120, 210), by the Wilf-equivalence that
+  Britt and Beaton (Table 1, Section 3.7) attribute to Martinez and Savage
+  (J. Integer Seq. 21 (2018), Article 18.2.2; not consulted here); a brute
+  force at the write gives equal counts for `n ≤ 10`.
+- Remark 28.2: `a_{n+1} ≥ a_n + 1` for `n ≥ 1` for class 830, by the extra
+  object `(0, …, 0, n)` outside the image of "append the current maximum".
+  Report 122 proves only weak monotonicity directly and strictness from the
+  asymptotics; the remark says so and completes it.
+- Notes: Theorem 20.2 is the case `J = 1` of Proposition 28.1 (with
+  `(1 + log L)² ≤ 4(log L)²` for `L ≥ e`); Part II's (128) and Part III's (136)
+  are the same expansion (`B(L) = q_L`), and the error term of (128) is proved
+  by Part III's argument; the three inverse theorems are one theorem; the
+  checks against Britt–Beaton v3 and the OEIS; cross-references between the
+  three continuation devices; the front matter ("The common pipeline" prints
+  the shared method once, with pointers to each class).
+
+**Checks recorded** (placement dossier and write, 5 October 2026): the proofs
+were read in full with no gap found; 58 symbolic identities and 25 rational
+certificate premises re-derived; brute force from each forbidden-relation
+definition agrees with the generating trees for `n ≤ 9`; independent dynamic
+programs to `n = 1500` give bounded, converging residuals
+`(a_n/(Cμⁿn^(−3/2)) − 1 − c₁/n − c₂/n²)·n³` (about −1062, 21.04, −489 and 26826
+at `n = 1500` for classes 214, 1509, 1953A, 830) with the certified constants.
+Kotěšovec's OEIS amplitudes (7 October 2021 for A279544, A279567, A279569;
+13 January 2026 for A279558, normalization `c = C√π`) lie inside the certified
+intervals for A279544 and A279567 and agree digit for digit, as far as they are
+displayed, with those for A279569 and A279558. **No digits are new**: the
+contribution is proof and certification.
+
+## What the report does not claim
+
+Every limitation is printed in place. In short: **no nonalgebraicity or
+non-D-finiteness** (Britt and Beaton's belief is not proved; a square-root
+singularity is compatible with both); no convergence of the `1/n` series as the
+order grows, optimal truncation, Stokes data, exponentially small sectors or
+complete transseries; **the inverse constants** `E_K, Y_K` / `M_K, T_K` /
+`B_J, L_J` **and the transfer onsets are existential** — not a certified
+finite-target inverse routine, and dropping the error inside the ceiling is
+invalid; only the first two corrections per class are certified; Part I's
+`R < 1/2` is a sufficient domain, not a claim of a singularity at `1/2`; Part
+II claims no zero-free region for its orbit determinant (only boundary zeros
+cancel); Part III gives no explicit `n_0`, and its higher orders are "a theorem
+with an algorithm", run only for the first coefficients. **All three**: no
+literature priority and no external review; the numerical amplitudes were known
+(Kotěšovec); finite checks corroborate, they do not prove continuation or
+transfer; byte reproducibility holds only in the tested toolchain; checksums
+are not signatures; OEIS b-files were not used, and terms beyond the displayed
+prefixes are internally generated.
+
+## Further questions, and the standing rule
+
+Each Part's last section keeps its delivered question list and gains a
+subsection "Further questions and research" (9.1, 19.1, 30.1). Under
+Vladimir's standing rule of 4 October 2026 the write moved there every claim
+stated without proof or left open, with source, sketch and what is missing:
+
+- **Effective thresholds** (118 Q1, 119 Q1, 122 Q1): explicit Δ-domains,
+  transfer constants and inverse constants.
+- **Algebraic / D-finite status** (118 Q2, 119 Q4, 122 Q5), crediting Britt and
+  Beaton's belief (Sections 2.4, 3.5–3.7, 4.2).
+- **Secondary singularities and maximal continuation** (118 Q3, 122 Q4); the
+  complex zeros of Part II's determinant and their cancellation (119 Q2).
+- **Higher coefficients** (only `c₁, c₂` certified), sign pattern, large-order
+  growth, optimal truncation; why class 830's corrections are so large
+  (`d₁/n > 1` at `n = 100`) (119 Q3, 122 Q2–Q3).
+- **Other classes** admitting a contracting orbit with an effective
+  nonvanishing or determinant-gap certificate (118 Q4, 119 Q5); refined
+  statistics through the catalytic variables (122 Q6).
+- **Class 1953B** directly (Part II, item 6): the transfer of Remark 10.2 rests
+  on a cited Wilf-equivalence, checked only for `n ≤ 10`.
+- **Earlier rigorous proofs**: the wider literature was not searched beyond
+  Britt–Beaton and the OEIS, at placement or at the write.
+
+**Nothing in any of the three manuscripts was found to be wrong; no claim was
+refuted.** One statement proved only in a weaker form (Report 122's strict
+monotonicity, from the asymptotics) is completed by Remark 28.2, and one error
+term stated after a sketch (Report 119's (128)) is covered by Report 122's
+proof (note after (128)).
+
+## Relation to neighbouring reports
+
+All in `SetTheory/Cardinals/docs/reports/generating-functions-and-asymptotics/oeis-sequence-asymptotics/`:
+
+- **Sibling reports** placed in the same commit from the same Britt–Beaton
+  paper, by unrelated methods: `a279571-inversion-cone-walk` (A279571, Reports
+  125 and 123: a quadrant cone walk, irrational exponent, non-D-finiteness) and
+  `a279551-inversion-log-deficit` (A279551/A279556, Reports 126, 127 and 129:
+  stretched-exponential deficits, refuting Britt–Beaton's numerical `n^(3/8)`
+  forms). No shared lemma; only the source paper, the definition and the
+  existence of a threshold inverse are common.
+- The **transseries volume**
+  `Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex`:
+  the three threshold inverses are instances of `p0:thm:lambert-core` (its
+  `b < 0` branch rule gives `W₋₁`), `p0:thm:lambert-centered` (the all-order
+  reversion), `p0:def:three-inverses` / `p0:thm:staircase` (the integer
+  staircase and the separation condition) and `p0:cor:forward-to-inverse`
+  (the mean-value step). The manuscripts bracket by two smooth envelopes
+  instead of an admissible interpolation; same conclusion. Cited as context;
+  not new inverse mechanics.
+- No other report treats A279544, A279567, A279569 or A279558 (searched
+  5 October 2026). This write edits no other report; suggested sibling
+  cross-links are left to a reciprocal-notes commit.
+
+## Relation to the formal project
+
+Placement in the collection confers no formal status, and no statement of this
+report is formalized: no Lean or Rocq file in the repository mentions
+inversion sequences (searched 5 October 2026).
+
+## Delivery names, renames and discrepancies
+
+- Every delivered file keeps its bytes (all 46 staged delivered files other
+  than `article.tex` and `README.md` checked against a fresh extraction at the
+  write: 0 differences; no CR bytes). Only names changed (tables below). The
+  delivered code and markdown use delivery paths (`checks/…`, `data/…`,
+  `scripts/…`, `CHECKSUMS.sha256`, `checks/MANIFEST.json`,
+  `checks/inventory.json`, `report11N.tex`, `report11N.pdf`, `README.md`), most
+  of which are shipped under other names or not at all. The integrity checks
+  and harnesses read a **closed inventory** of the delivered layout, so **none
+  of the scripts runs in this directory**.
+- `README.md` at placement was Report 118's `README.txt`, renamed byte for
+  byte; this guide replaces it (the original is in the archive).
+- The delivered guides name `/tmp/report118-checks.json`,
+  `/tmp/report118-validation.json`, `/tmp/report118-reproducibility.zip`,
+  `/tmp/report119-check-results.json` and similar outputs; use a scratch
+  directory outside the repository instead.
+- **In-place writes.** `integrity.py --write` (all three packages) rewrites the
+  outer inventory, and Report 118's and 119's `build.py` rewrite `report11N.pdf` in the
+  package; run them only on a copy, and never to validate a received package.
+- `122-anchor-checks-README.md` names `inventory.json` (not shipped) and
+  provenance hashes of "audited producer" snapshots that were never delivered;
+  `119-tworoot-checks-README.md` says its infrastructure is adapted from Report
+  118's.
+- Report 119's `integrity.py` is not shipped; `code/118-kernels-integrity.py`
+  is byte-identical.
+
+## Rerunning the checks
+
+Run on a copy in a scratch directory, never in this directory. Recreate the
+delivered layout from the arrival commit:
+
+```
+git show 60f54ea06:docs/incoming/Inversion_Sequences_A279544_A279567_Asymptotics_and_Inverses_Source.zip > s118.zip
+git show 60f54ea06:docs/incoming/A279569_Two_Kernel_Asymptotics_and_Inverses_Source.zip > s119.zip
+git show 60f54ea06:docs/incoming/A279558_Asymptotic_Expansion_and_Inverse_Thresholds_Source.zip > s122.zip
+mkdir r118 r119 r122 && unzip -q s118.zip -d r118 && unzip -q s119.zip -d r119 && unzip -q s122.zip -d r122
+cd r118/report118
+python3 -B integrity.py .
+python3 -B checks/check.py                       # also with python3 -B -O
+python3 -B test_integrity.py
+python3 -B checks/validate_bundle.py --output ../validation118.json   # see the caveats below
+cd ../../r119/report119
+python3 -B integrity.py .
+python3 -B checks/run_checks.py                  # also with python3 -B -O
+python3 -B test_integrity.py
+python3 -B checks/mutation_tests.py --output ../results119.json      # POSIX only
+cd ../../r122/report122
+python3 -B integrity.py
+python3 -B checks/verify.py --output ../results122.json              # also with -O
+python3 -B checks/negative_tests.py --output ../negative122.json
+python3 -B test_integrity.py
+python3 -B reproduce.py --skip-pdf --output ../replay122.json        # byte comparisons need LF output
+```
+
+Python 3.10 or later and its standard library suffice (on Windows use `py`
+for `python3`). Always pass `-B`: the inventories are closed, and a bytecode
+cache file makes them fail.
+
+**Results.** At placement (5 October 2026, Windows, Python 3.14.4, on copies;
+recorded in the batch-104 dossier): every `integrity.py` and
+`test_integrity.py` passed; Report 118's `checks/check.py` passed in normal and
+`-O` mode (about 48 s each), its output equal as parsed JSON to the baseline in
+`data/118-kernels-verification_results.json`; Report 119's
+`checks/run_checks.py` passed in both modes (20 s, 16 s), equal to its
+baseline; Report 122's `checks/verify.py` passed in both modes (32 s each) and
+`checks/negative_tests.py` passed (125 s), their outputs equal to
+`data/122-anchor-verification_results.json` and
+`data/122-anchor-negative_results.json` up to CRLF line ends, and its five
+`scripts/` programs passed with outputs equal to the shipped `data/` files up
+to CRLF. **Three harness runs did not pass unmodified on Windows**, none for a
+mathematical reason:
+
+- Report 118's `checks/validate_bundle.py` stopped with `HARNESS_TIMEOUT` after
+  845 s: it caps each subprocess at 45 s, and `check.py` needed 47–48 s on the
+  loaded machine (119 s at the write, under heavier load).
+- Report 119's `checks/mutation_tests.py` stopped with an error after 481 s:
+  one case uses `os.mkfifo`, which Windows lacks (Report 118's harness has the
+  same case).
+- Report 122's `reproduce.py --skip-pdf` stopped at `CHECKER_BYTE_MISMATCH`:
+  on Windows the checker writes CRLF, so its output differs from the shipped
+  LF bytes although the content is equal; its remaining steps, run by hand,
+  passed. The ZIP repack was not attempted.
+
+As a diagnostic only, the two campaigns were also run on scratch copies with
+the harness patched (the FIFO case removed, budgets raised to 600 s per process
+and 7200 s in all, inner manifests resealed in the copy): Report 118's passed
+in 538 s (736 runs: 312 fixture leaves and 368 named cases), Report 119's in
+332 s (688 runs: 232 leaves, 344 named), each with normal output equal to
+optimized, a fresh replay and unchanged sources. These are runs of modified
+harnesses; the FIFO case remains untested, and an unmodified campaign is
+expected to pass only on a POSIX host without heavy load. The delivered
+`data/118-kernels-verification_results.json` and
+`data/119-tworoot-verification_results.json` record the delivering session's
+own passing campaigns (738 and 690 negative runs). The PDF and ZIP replays
+(`build.py`, `pack.py`, `repack.py`) need the TeX Live pdfTeX 1.40.26 toolchain
+of the `build-environment.txt` files for byte identity and were not run.
+
+At the write (5 October 2026, fresh extractions of the three archives, Windows,
+Python 3.14.4), the integrity checks and main checkers were rerun to confirm
+this route: Report 118 `integrity.py` (15 files) and `checks/check.py` passed
+(119 s); Report 119 `integrity.py` (17 files) and `checks/run_checks.py`
+passed (53 s); Report 122 `integrity.py` (27 files) and `checks/verify.py`
+passed (64 s), its output equal to the shipped record up to CRLF.
+
+## Rights
+
+Repository contents are MIT-0. The sequence terms printed in the article and
+contained in the fixtures and data (A279544, A279567, A279569, A279558) are
+recomputed by the shipped programs; the fixtures embed the displayed OEIS
+prefixes as external checks (29 and 26 terms in Report 118's, 26 in Report
+119's, 26 in Report 122's), and Report 122's 151-term table is generated from
+its tree, not an OEIS b-file. OEIS data are available under CC BY-SA 4.0
+([OEIS license](https://oeis.org/LICENSE)). The OEIS entries are credited for
+the sequences and Kotěšovec for the numerical amplitudes; Britt and Beaton for
+the generating trees, catalytic equations and the numerical laws; Martinez and
+Savage for the class-1953 Wilf-equivalence. No third-party code or paper is
+shipped. Nothing was submitted to the OEIS.
+
+## Build
+
+```
+latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
+```
+
+pdfLaTeX (MiKTeX), in a scratch copy; commit only `article.pdf`. The write's
+build: 65 pages; no errors, warnings, undefined or multiply defined references
+or citations, duplicate destinations, or overfull or underfull boxes. The log
+carries one "Infinite glue shrinkage found in box being split" message, from
+the front matter's notation longtable breaking across a page, as in other
+reports with longtables. Builds of the three delivered `.tex` files (18, 16 and
+17 pages) are warning-free; their 228 labels keep their numbers here under the
+offsets above (`.aux` compared).
+
+## Delivered path → shipped path
+
+Report 118 (`118-kernels-`; `README.txt` replaced by this guide):
+
+| Delivered | Shipped |
+|---|---|
+| `report118.tex` | `article.tex` (Part I) |
+| `README.txt` | staged as `README.md`, replaced by this guide |
+| `build.py`, `integrity.py`, `pack.py`, `test_integrity.py` | `code/118-kernels-<name>` |
+| `checks/<name>.py` (check, companion, validate_bundle) | `code/118-kernels-checks-<name>.py` |
+| `checks/fixtures/certificate.json` | `data/118-kernels-checks-fixtures-certificate.json` |
+| `verification_results.json`, `build-environment.txt` | `data/118-kernels-<name>` |
+| `checks/README.md` | `118-kernels-checks-README.md` |
+| `report118.pdf`, `CHECKSUMS.sha256`, `checks/MANIFEST.json` | not shipped |
+
+Report 119 (`119-tworoot-`):
+
+| Delivered | Shipped |
+|---|---|
+| `report119.tex` | not shipped; printed as Part II of `article.tex` |
+| `build.py`, `pack.py`, `test_integrity.py` | `code/119-tworoot-<name>` |
+| `checks/<name>.py` (exact_math, jet_certificate, mutation_tests, run_checks, support) | `code/119-tworoot-checks-<name>.py` |
+| `checks/fixtures.json` | `data/119-tworoot-checks-fixtures.json` |
+| `verification_results.json`, `build-environment.txt` | `data/119-tworoot-<name>` |
+| `checks/README.md` | `119-tworoot-checks-README.md` |
+| `integrity.py` | not shipped (byte copy of Report 118's) |
+| `README.txt`, `report119.pdf`, `CHECKSUMS.sha256`, `checks/MANIFEST.json` | not shipped |
+
+Report 122 (`122-anchor-`):
+
+| Delivered | Shipped |
+|---|---|
+| `report122.tex` | not shipped; printed as Part III of `article.tex` |
+| `build.py`, `build.sh`, `integrity.py`, `repack.py`, `reproduce.py`, `test_integrity.py` | `code/122-anchor-<name>` |
+| `checks/<name>.py` (exact_analytic, exact_model, negative_tests, verify) | `code/122-anchor-checks-<name>.py` |
+| `scripts/<name>.py` (certify, certify_corrections, global_bounds, verify_model, verify_orbit) | `code/122-anchor-scripts-<name>.py` |
+| `checks/certificate.json` | `data/122-anchor-checks-certificate.json` |
+| `data/<name>` (a279558_n0_150.txt, certificate_output.txt, correction_output.txt, negative_results.json, verification_results.json) | `data/122-anchor-<name>` |
+| `build-environment.txt` | `data/122-anchor-build-environment.txt` |
+| `checks/README.md` | `122-anchor-checks-README.md` |
+| `README.md`, `report122.pdf`, `CHECKSUMS.sha256`, `checks/inventory.json` | not shipped |
+
+## Provenance
+
+Three manuscripts (bundle Reports 118, 119, 122) → one report; base 118.
+Arrival `60f54ea06`, placement `612787fb4`, write batch 104 (5 October 2026).
+No manuscript pins a ProveIt commit. Merge choices (a report of its own rather
+than a Part of an eight-source Britt–Beaton umbrella; base and bundle order;
+every Part printed in full since nothing is shared verbatim; the shared method
+summarized once in "The common pipeline"; prefixed labels and renamed citation
+keys; the merged bibliography with two added entries, Martinez–Savage and the
+transseries volume) are listed in the article's front matter, "Provenance and
+merge decisions".
