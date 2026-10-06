@@ -202,9 +202,12 @@ theorem, section and equation of the source keeps its delivered number.
 \emph{The sources, as the write read them} (6~October 2026).
 \begin{itemize}\raggedright
 \item OEIS A308338~\cite{oeis308338}, live revision~\#21 (5~October 2026);
- the source froze revision~\#17 (15~January 2026). Revisions \#18--\#21, by
+ the source froze revision~\#17 (15~January 2026). Revisions~\#18--\#20, by
  Alois P. Heinz on 5~October 2026, add a Maple program and a b-file for
- $0\le n\le445$; the 22 data terms are unchanged. Riedel's comment
+ $0\le n\le445$ (\#21 is the OEIS server installing that b-file); the 22 data
+ terms are unchanged. \textup{(Wording corrected after the independent check
+ of 6~October 2026; the first wording read ``Revisions \#18--\#21, by Alois
+ P. Heinz''.)} Riedel's comment
  identifying the terms as nested cycle partitions and his formula
  $a(n)=\sum_kT(n,k)$ date from 14~January 2026. The entry states no
  asymptotic and no conjecture.
@@ -1260,7 +1263,18 @@ $\sum_jf_j(p+1)=C\Gamma(p+2)$. The covariance~(4.13) of Theorem~4.1(ii)
 (preprint~(4.49); published p.~926) carries the same denominator and fails
 in the same way: at $q=1$, $p=1$, $C=3$, $u_1=10$ its
 entry $f_0(0)-f_0(1)^2/\Gamma(3)$ equals $-1.4956\ldots$ (corrected:
-$1.5014\ldots$). The write did not trace which step first drops~$C$.
+$1.5014\ldots$). Their own identity $f_0(p+1)+f_1(p+1)=C\Gamma(p+2)$ and
+(5.73) give $\det\Theta^\star(1)=C\,T_1$ for their matrix~(5.74), so (5.72) as
+printed holds only for $C=1$: the factor is lost with (5.62) and carried
+through~$T_q$, while the quadratic form $\Theta^\star$, built from the $f_j$
+and~$w_j$, carries~$C$ correctly. The inversion that produces (4.13) was not
+checked. \textup{(Sentence strengthened after the independent check of
+6~October 2026; the first wording read ``The write did not trace which step
+first drops~$C$''. Writing $a_j=f_j(p+1)/(f_j(p-1)w_j)$ and
+$b_j=f_j(p)/(f_j(p-1)w_j)$, (5.73) says $a_j=1/f_j(p-1)+b_j^2w_j$, and the
+determinant of (5.74) is
+$a_0a_1(1/w_0+1/w_1)-a_1b_0^2-a_0b_1^2
+=\bigl(f_0(p+1)+f_1(p+1)\bigr)/\prod_{j=0}^{1}w_jf_j(p-1)$.)}
 
 \emph{(d) The display against this report.} The model here has weights
 $p_m\to c$ (Section~\ref{ncy:sec:exact}), that is $p=1$ and $C=c$ in the
@@ -1332,6 +1346,47 @@ statements.
 \end{enumerate}
 These are research questions, not consequences of the finite numerical
 or symbolic checks.
+\begin{writenote}[Independent check of the write, 6~October 2026]
+An adversarial check made by the intake after the write (commit
+\file{399df8a49}) re-derived the statements marked [write] from their sources.
+\emph{Remark~\ref{ncy:rem:riedel}.} Riedel's note was fetched again in both
+versions (byte-identical to the write's copies); the paragraph ``The
+conjecture'' on p.~3 is paraphrased exactly ($M\ge0.4704567259$, not
+$M\approx0.47$). The check's own computation (exact rationals for $n\le120$, 320-bit
+fixed point to $n=4501$, double precision to $n=40000$; fixed point against
+exact at $n=100$: $1.8\times10^{-40}$) gives
+$\EE K_{4500}/\sqrt{4500}=0.771935140148$, $2.48\times10^{-10}$ above Riedel's
+$N$; the ratio is $0.7719368665$ at $n=4499$ and $0.7719334143$ at $n=4501$,
+the first $n$ below Riedel's value. The table, $\EE K_{100}$, $\Var K_{100}$,
+the algebra of~(b) and the claims ``$>e^{-\gamma/2}$'' (minimum margin
+$0.01031$, at $n=40000$) and ``strictly decreasing from $n=4$'' were
+confirmed. One further candidate for~$M$ also fails: the single-point
+exponent $\log\EE K_n/\log n$ is $0.46923$ at $n=4500$ and is closest to
+$0.4704567259$ at $n=7510$, off by $6\times10^{-8}$; so Riedel's value is
+still not identified. \emph{Remark~\ref{ncy:rem:eg}.} The published pages
+925--927 and 936--938 and the preprint numbers were read again;
+(a) and~(b) were re-derived, and the correction was confirmed independently
+in this very model: exact finite-$n$ variances of the number of components of
+size at least $ur_N$ (from $\exp(H_S+wH_L)$) give $\Var/r_N=0.10799$,
+$0.05448$, $0.02976$ at $n=20000$ for $u=0.5$, $1$, $2$, against the
+corrected $0.10817$, $0.05458$, $0.02971$ and the printed $0.21008$,
+$0.12122$, $0.05000$ (similarly at $n=5000$; at $u=0$, $0.28804$ against
+$c/2=0.28073$). (5.62), (5.69) and the identity on p.~938 were confirmed on
+the page images; from (5.73)--(5.74) the check derived
+$\det\Theta^\star(1)=C\,T_1$, which the intake re-derived symbolically, and
+(c) now says so. Part~(d), its normalization caveat and the shift lemma were
+confirmed. \emph{Remark~\ref{ncy:rem:transseries}.} The Lambert instance, the
+strict increase for $n\ge1$ and the classification as an analogue were
+confirmed. \emph{The OEIS records}, fetched again with their histories and
+b-files, are as described, except one attribution: in A308338 revisions
+\#18--\#20 are Heinz's and \#21 is the OEIS server installing his b-file
+(likewise A392471: \#38--\#41 Heinz, \#42 the server). Own exact values of
+$T(n,k)$ for rows $0\le n\le40$, of $a_n$ for $n\le120$ and of A007838 for
+$n\le40$ equal the b-files. No mathematical error was found. One attribution
+is corrected, with a dated note keeping the first wording, and the last
+sentence of Remark~\ref{ncy:rem:eg}(c) is strengthened, also with a dated
+note.
+\end{writenote}
 
 \begin{thebibliography}{9}
 \bibitem{oeis7838}

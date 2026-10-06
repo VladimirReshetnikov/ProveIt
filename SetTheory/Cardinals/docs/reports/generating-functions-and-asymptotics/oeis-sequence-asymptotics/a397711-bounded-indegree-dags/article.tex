@@ -972,7 +972,14 @@ as the window shrinks and the basis grows. These fits presuppose an
 expansion of $\log Z_n$ in those functions, which is not proved (the theorem
 gives only $o(n^{1/3})$), so they are consistent with $\kappa$ under that
 assumption and confirm nothing; their coefficient of $\log n$ ($0.46$ to
-$0.56$) is not stable, and suggests no power prefactor. The question is
+$0.56$) is not stable across windows and bases, and no power prefactor is
+inferred from it. \textup{(Wording corrected after the independent check of
+6~October 2026; the first wording read ``is not stable, and suggests no power
+prefactor'', which can be read as evidence against a power prefactor. The data
+do not support that reading: the fitted coefficient of $\log n$ stays
+near~$\frac12$, and with the coefficient of $n^{1/3}$ fixed at $-\kappa$ the
+same three windows give $0.542$, $0.549$, $0.554$. Nothing is inferred from
+this either.)} The question is
 Question~\ref{bid:q:remainder}.
 \end{remark}
 
@@ -1284,6 +1291,51 @@ the source.
  $q_i=\log(i/(i-1))$; whether a082161's structures carry over was not
  examined.
 \end{enumerate}
+\begin{writenote}[Independent check of the write, 6~October 2026]
+An adversarial check made by the intake after the write (commit
+\file{e5152f378}) re-derived the statements marked [write] from their sources.
+\emph{Remark~\ref{bid:rem:oeis}.} A literal brute force over all simple
+digraphs (each ordered pair present or not, indegree at most~$2$, acyclicity
+by source peeling) gives $1,1,3,25,443$ for $0\le n\le4$, and a brute force
+over parent-set choices gives $13956$ and $695902$ for $n=5,6$. Independent
+code for the sink recurrence~\eqref{bid:eq:sink} reproduces these and equals
+the live b-file term by term for $0\le n\le100$ (the entry and the mirror file
+are still revision~\#9 of 12~July 2026); the columns $c=2,\dots,5$ of
+\file{data/counts.json} equal the recurrence with $g_c$; the entry's own Python
+program agrees with it for $n\le60$ (the write said $n\le40$); and $c=1$ gives
+$(n+1)^{n-1}$ for $n\le30$. The quotations, the author and date, the
+two-line proof (with $g(n-1)=(n^2-n+2)/2$) and the congruences for $n\le100$
+were confirmed, and the entry's inequality holds for every $n\le100$.
+\emph{Remark~\ref{bid:rem:finite}.} Every number of the table and of the fits
+was reproduced in 50-digit arithmetic; the logic (consistent under an unproved
+ansatz, no confirmation) is right. \emph{Remark~\ref{bid:rem:transseries}.}
+The instance of \file{p0:prop:factorial-core} was re-derived. The strict
+increase is proved: by~\eqref{bid:eq:monotonicity}, $a_n\ge na_{n-1}$ for
+$n\ge2$ (the $n$ sink extensions of a graph on $[n-1]$ are distinct and
+admissible, and removing the sink recovers the graph), so
+$a_n\ge2a_{n-1}>a_{n-1}$ for $n\ge2$ and $N(x)$ is literally the staircase
+$N_\ast$ with $n_0=n_1=1$ (also checked numerically to $n=100$). The
+classification of Theorem~\ref{bid:thm:inverse} as an analogue of
+\file{p0:thm:staircase}\,(2), and the formal $m=1$ term of the operator
+series, were confirmed. \emph{Mallein.} Lemmas~2.6 and~2.7 of
+arXiv:1307.4496v3, with the hypotheses (2.12)--(2.13), were read again on the
+page images of pp.~11 and~13; the write's note states exactly these, and
+agrees with the note of \file{a238873-diagonal-partitions} Part~IV.
+Section~\ref{bid:sec:transfer} was re-read line by line: the upper bound uses
+only (2.15) at fixed $h_-$; the lower bound uses only (2.19) at fixed $h_+$ with
+fixed scaled intervals (the containments \eqref{bid:eq:incominginterval}
+and~\eqref{bid:eq:outgoinginterval} re-checked); the uniformity over block
+lengths is the elementary consequence of Remark~\ref{bid:rem:quantifier}; the
+initial segment and the terminal descent (probability exactly $e^{-L_n}$) are
+elementary; the identities \eqref{bid:eq:upperconstant}
+and~\eqref{bid:eq:lowerconstant} and the constants of
+Theorem~\ref{bid:thm:fixedc} were re-derived; and no strip estimate, no
+time-inhomogeneous case and no exact endpoint is taken from Mallein. No
+mathematical error was found. One wording is corrected, with a dated note
+keeping the first wording: Remark~\ref{bid:rem:finite} said that the unstable
+coefficient of $\log n$ ``suggests no power prefactor''; that coefficient stays
+near~$\frac12$, and no power prefactor is inferred from it either way.
+\end{writenote}
 
 \begin{thebibliography}{99}
 \raggedright
