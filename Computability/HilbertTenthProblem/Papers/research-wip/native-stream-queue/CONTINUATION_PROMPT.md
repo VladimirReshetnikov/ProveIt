@@ -191,6 +191,22 @@
 > The [scalar complement reuse](residue_affine_complement_reuse.md) and [vector positive-guard template](counter_vector_positive_guard.md), with [independent proof and source review](review_counter_positive_guard_extensions.md), extend the counter-step savings to every fixed program of the stated form. Reusing the scalar remainder-complement equation saves one addition: the complete SOS costs **10B+21**, with six positive witnesses; its B=14 fixture costs **161=76M+85A**, of exact degree28. For r counters and K states represented directly, positivity forces the branch selector using only two witnesses, giving a paid SOS template of **2(r+2)K+7r+11** operations and degree at most2K+2. This saves three operations against the same template with an explicit Boolean residual. The distinct endpoint interfaces cannot be compared without a paid conversion. The scalar source receives independent inert structure and polynomial checks; the vector result is proof-only. Neither result supplies unbounded iteration or improves the universal84 frontier.
 >
 >
+> The [complete literal Higman presentation](positive7_higman_literal_presentation_riemann.md)
+> now supplies all **499 generators and 17,678 relators** of the preembedding
+> construction. The [independent full comparison](review_positive7_higman_literal_presentation_pascal.md)
+> passed for every generator, relator, all124 operation traces, all123 cached
+> lists and the three final words; both original programs ran once after
+> full preflight and are frozen. The [focused word-premise review](review_positive7_higman_word_premises_aristotle.md)
+> records exact spellings and imported subgroup lemmas. The
+> [mandatory metadata correction](review_positive7_higman_literal_linecount_correction_pascal.md)
+> amends a frozen primary-text line count (3483 lines,3482 LF separators),
+> retains the separate failed root metadata check, and changes no scientific
+> result or execution count. This closes the literal-expansion audit; the
+> historical20808 continuation remains invalidated by the Section7 kernel
+> counterexample below. A faithful paid arithmetic interface is still
+> required, and **84 operations /18 positive witnesses /degree187** is unchanged.
+>
+>
 > The [Section 7 embedding counterexample](review_higman_section7_noninjective_root.md)
 > refutes an injectivity claim in the printed downstream group construction.
 > Four independent source conjugates map to the dependent target words
