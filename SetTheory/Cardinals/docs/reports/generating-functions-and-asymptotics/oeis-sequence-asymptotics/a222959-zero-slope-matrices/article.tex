@@ -32,6 +32,13 @@
 \newcommand{\dist}{\operatorname{dist}}
 \newcommand{\ceilodd}{\operatorname{ceil}_{\rm odd}}
 \newcommand{\normT}[1]{\lVert #1\rVert_{\T}}
+% Added by the ProveIt write phase (batch 108, 6 October 2026): dated notes
+% marked [write] and a macro for file, label and declaration names.
+\newcommand{\file}[1]{\nolinkurl{#1}}
+\expandafter\def\expandafter\UrlBreaks\expandafter{\UrlBreaks\do\-\do\_\do\.}
+\newenvironment{writenote}[1][]{\par\smallskip\begingroup\small
+ \noindent\textbf{[write]}\if\relax\detokenize{#1}\relax\else~\textbf{#1.}\fi\ }%
+ {\par\endgroup\smallskip}
 \hypersetup{pdftitle={Report194 Asymptotics for Binary Matrices with Zero Row and Column Slopes},pdfauthor={Research report},pdfsubject={OEIS A222959 weighted binary matrices Fourier localization rational asymptotics}}
 \title{Report194\\[5pt]Asymptotics for Binary Matrices\\with Zero Row and Column Slopes}
 \author{A self contained study of the square diagonal of OEIS A222959}
@@ -61,6 +68,41 @@ asymptotic proof. The known small counts are strongly preasymptotic. No practica
 onset, convergence of the full formal series, or absolute priority is claimed.
 \end{abstract}
 
+\begin{writenote}[Status and trust boundary, added 6 October 2026, batch~108]
+This is bundle Report~194 of an external AI-assisted research session, filed
+in ProveIt as the single-source research report
+\file{a222959-zero-slope-matrices} (provenance, the sources as the write read
+them, relation to the repository, the collected non-claims and reading
+conventions in Section~\ref{zsm:sec:provenance}). It is unrefereed and not
+formalized; its author line is a subtitle and its PDF author field reads
+``Research report''. \emph{What rests on what.} The proofs of
+Theorems~\ref{zsm:thm:main} and~\ref{zsm:thm:globalintro} and of
+Corollary~\ref{zsm:cor:thresholdintro} are written out in the text and cite
+no external theorem: the lattice, Haar and Gaussian normalizations, the
+inverse lemmas, the defect estimate, the dimension-free moment bound and the
+connected power count are all proved here; the literature of
+Section~\ref{zsm:sec:literature} is credited as method precedent, not used as
+input. The value $c_1$ is computed by hand in Section~\ref{zsm:sec:first}.
+The value $c_2$ uses only the leading terms~\eqref{zsm:eq:Klead}
+and~\eqref{zsm:eq:Tlead}, which the source also obtains by summing the
+per-graph entries of its table in Section~\ref{zsm:sec:second} (the write
+rechecked that sum); the complete polynomials
+\eqref{zsm:eq:Kexact}--\eqref{zsm:eq:Texact} come from the package's symbolic
+computation, replayed at intake. The finite counts are exact computations
+and are used by no proof. The program behind the source's ``recorded'' $n=9$
+count, a C++ meet-in-the-middle enumeration, is not shipped; the intake
+reproduced every count through $n=9$ with the shipped Python and with its own
+program, and, from the OEIS b-file the source could not retrieve, the count
+$C_{10}=615667968$ (Remark~\ref{zsm:rem:oeisdata}). The write also adds
+Remark~\ref{zsm:rem:wiseman} (the conjecture recorded in A222955 is a theorem
+of Richomme; a two-line second proof), Remark~\ref{zsm:rem:transseries} (the
+inversions of Section~\ref{zsm:sec:inverse} against the transseries volume:
+the smooth inverse is a formal instance, the integer envelopes analogues) and
+Proposition~\ref{zsm:prop:narrow} (narrow arrays, and the sharper sector
+bound $C_n\ge b_n^{\lceil n/2\rceil}$), with the open questions in
+Section~\ref{zsm:sec:limits}.
+\end{writenote}
+
 \paragraph{Attribution and scope.}
 The matrix sequence is OEIS A222959 \cite{oeis959}. Its one-dimensional row
 condition belongs to the earlier theory of fair binary words, including
@@ -70,14 +112,14 @@ strategy is part of the maximum-entropy and Edgeworth framework of Barvinok and
 Hartigan \cite{bhgaussian,bhedgeworth}. The present report supplies a complete
 problem-specific proof for the simultaneous growing arithmetic-progression row
 and column constraints. The primary-source comparison in
-Section~\ref{sec:literature} is deliberately scoped; a failure to locate an
+Section~\ref{zsm:sec:literature} is deliberately scoped; a failure to locate an
 identical theorem is not a certificate of originality.
 
 \newpage
 {\footnotesize\tableofcontents}
 \newpage
 
-\section{The counting problem and the main results}\label{sec:main}
+\section{The counting problem and the main results}\label{zsm:sec:main}
 All logarithms are natural. All asymptotic assertions refer to $n\to\infty$;
 constants may depend on a fixed truncation order, but not on parity. The symbol
 $O_J$ makes that dependence explicit. No constant below is optimized.
@@ -90,14 +132,14 @@ $1,\ldots,n$, including an intercept. Its slope is
 \]
 Thus zero slope is a homogeneous weighted-sum condition. Define the primitive
 integer weight vector $w=(w_1,\ldots,w_n)^T$ by
-\begin{equation}\label{eq:weights}
+\begin{equation}\label{zsm:eq:weights}
  w_j=\begin{cases}j-(n+1)/2,&n\text{ odd},\\
                   2j-n-1,&n\text{ even}.
        \end{cases}
 \end{equation}
 The entries sum to zero, contain $1$, and form a symmetric arithmetic
 progression of spacing $d_0=1$ or $2$. Write
-\begin{equation}\label{eq:S}
+\begin{equation}\label{zsm:eq:S}
  S=S_n=\sum_jw_j^2=
  \begin{cases}n(n^2-1)/12,&n\text{ odd},\\
  n(n^2-1)/3,&n\text{ even}.
@@ -115,26 +157,26 @@ probability that a random sign matrix has this prescribed vector as both a
 right and a left nullvector.
 
 Define
-\begin{equation}\label{eq:G}
+\begin{equation}\label{zsm:eq:G}
  G_n=\sqrt{\frac2\pi}\left(\frac2{\pi S_n}\right)^{n-1}
      =\left(\frac2\pi\right)^{n-1/2}S_n^{1-n}.
 \end{equation}
 The parity dependence in $S_n$ is essential: removing it would introduce an
 exponential error.
 
-\begin{theorem}[All fixed orders]\label{thm:main}
+\begin{theorem}[All fixed orders]\label{zsm:thm:main}
 There is a sequence of rational numbers $(c_j)_{j\ge0}$, independent of parity,
 with $c_0=1$, $c_1=171/350$, and $c_2=483051/245000$, such that, for every fixed integer $J\ge0$,
-\begin{equation}\label{eq:main}
+\begin{equation}\label{zsm:eq:main}
  C_n=2^{n^2}G_ne^{-7/5}
  \left(\sum_{j=0}^J\frac{c_j}{n^j}+O_J(n^{-J-1})\right).
 \end{equation}
-Section~\ref{sec:allorders} gives a finite exact coefficient prescription. No
+Section~\ref{zsm:sec:allorders} gives a finite exact coefficient prescription. No
 convergence of the infinite formal series is asserted. The coefficients $c_0$, $c_1$, and $c_2$
 are explicitly evaluated in this report.
 \end{theorem}
 
-\begin{theorem}[Relative global localization]\label{thm:globalintro}
+\begin{theorem}[Relative global localization]\label{zsm:thm:globalintro}
 Let $\T=\R/\Z$, let coefficient variables $a,b$ range over $\T^n$, and put
 \[
  x_{ij}=w_ja_i+w_ib_j\pmod1,\qquad
@@ -143,7 +185,7 @@ Let $\T=\R/\Z$, let coefficient variables $a,b$ range over $\T^n$, and put
 Let $E=\{aw^T+wb^T:a,b\in\R^n\}$ and
 $\Lambda=E\cap\Z^{n\times n}$. Let $U$ be the image in $E/\Lambda$ of
 $\{X\in E:\max_{ij}|X_{ij}|<1/16\}$. There is an absolute $c>0$ such that
-\begin{equation}\label{eq:globalintro}
+\begin{equation}\label{zsm:eq:globalintro}
  \int_{\{(a,b):x\notin U\}}F(a,b)\,da\,db=O(G_ne^{-cn}).
 \end{equation}
 The measure on every coefficient torus is normalized Haar measure.
@@ -153,9 +195,9 @@ The second theorem is stronger than locating the exact maximum set of the
 characteristic function. It controls all approximate modular resonances,
 relative to the small main mass $G_n=\exp(-3n\log n+O(n))$.
 
-\begin{corollary}[Parity and the first threshold]\label{cor:thresholdintro}
+\begin{corollary}[Parity and the first threshold]\label{zsm:cor:thresholdintro}
 One has
-\begin{equation}\label{eq:parityratio}
+\begin{equation}\label{zsm:eq:parityratio}
  \frac{C_{2m}}{C_{2m-1}}\sim\frac{6e^{-3}}{\pi m^3}.
 \end{equation}
 Each parity subsequence is eventually strictly increasing, whereas the
@@ -164,32 +206,172 @@ threshold index
 \[
  N(Y)=\min\{n\ge1:C_n\ge Y\}
 \]
-is odd. Section~\ref{sec:inverse} gives rigorous upper and lower envelopes for
+is odd. Section~\ref{zsm:sec:inverse} gives rigorous upper and lower envelopes for
 $N(Y)$, including possible near-integer ambiguities.
 \end{corollary}
 
 \paragraph{Proof structure.}
-Sections~\ref{sec:lattice} and \ref{sec:fourier} establish the exact lattice,
-measure, and sign conventions. Sections~\ref{sec:inverselemmas}--\ref{sec:defects}
-prove relative global localization. Sections~\ref{sec:gaussian}--\ref{sec:allorders}
-then prove the fixed-order expansion, and Sections~\ref{sec:first} and~\ref{sec:second} compute its
+Sections~\ref{zsm:sec:lattice} and \ref{zsm:sec:fourier} establish the exact lattice,
+measure, and sign conventions. Sections~\ref{zsm:sec:inverselemmas}--\ref{zsm:sec:defects}
+prove relative global localization. Sections~\ref{zsm:sec:gaussian}--\ref{zsm:sec:allorders}
+then prove the fixed-order expansion, and Sections~\ref{zsm:sec:first} and~\ref{zsm:sec:second} compute its
 first two corrections. The analytic estimates are independent of the finite checks
-in Section~\ref{sec:checks}.
+in Section~\ref{zsm:sec:checks}.
 
-\section{Lattices and Gaussian normalization}\label{sec:lattice}
+\subsection{Provenance, sources and reading conventions}\label{zsm:sec:provenance}
+\begin{writenote}[Added 6 October 2026, batch~108]
+\emph{Provenance.} This report is Report~194 of the session bundle that
+ProveIt's \file{docs/incoming} intake processed as batch~108: the archive
+\file{A222959_Zero_Slope_Matrices_All_Orders_and_Inverses_Source.zip}
+(798{,}678 bytes, SHA-256 \file{87c6a152db72...a446a10}, 22 files at the
+archive root, no wrapper directory), arrival commit \file{60f54ea06}, placed
+in \file{602e5bd0f}. The text is the delivered \file{Report194.tex} (1613
+lines, dated 4~October 2026), shipped as \file{article.tex}. The delivered
+27-page PDF and the checksum manifest \file{SHA256SUMS.json} (21 entries,
+verified at placement) are not shipped, and the delivered README is replaced
+by the report README; all three are retrievable from the arrival commit. The
+package records no ProveIt commit (it cites nothing in the repository), no
+``prepared for private review'' line and no personal data; its READMEs give
+generic \file{/tmp} example paths. It is a single-source report, so no merge
+choice was made. The write prefixed the 94 delivered labels with
+\file{zsm:} and updated the 83 references to them; it added this subsection,
+the notes marked [write], Remarks~\ref{zsm:rem:transseries},
+\ref{zsm:rem:oeisdata} and~\ref{zsm:rem:wiseman},
+Proposition~\ref{zsm:prop:narrow}, the questions after the list of
+Section~\ref{zsm:sec:limits}, the dated notes, and one bibliography entry
+(the b-files). No statement,
+proof or number of the source was changed: the added statements are the
+last numbered ones of their sections, the added subsection comes after the
+last text of Section~\ref{zsm:sec:main}, and the added displays are
+unnumbered, so every theorem, section and equation of the source keeps its
+delivered number.
+
+\emph{The sources, as the write read them} (6~October 2026).
+\begin{itemize}\raggedright
+\item OEIS A222959~\cite{oeis959} (revision~\#8, 3~October 2025) and
+ A222955~\cite{oeis955} (revision~\#24, 17~March 2026), in the OEIS internal
+ format, and both b-files (R.~H. Hardin: A222959 by antidiagonals,
+ $1\le n\le199$; A222955, $1\le n\le210$). Quoted in
+ Remarks~\ref{zsm:rem:oeisdata} and~\ref{zsm:rem:wiseman}.
+\item Richomme~\cite{richomme}, arXiv:2510.07159v1 (HTML): Theorems~5.13
+ and~5.14 and the paragraphs on A222955 and on the conjecture recorded
+ there, read for Remark~\ref{zsm:rem:wiseman}.
+\item The transseries volume
+ \path{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex}:
+ \file{p0:def:core}, \file{p0:thm:lambert-core},
+ \file{p0:prop:factorial-core}, \file{p0:thm:core-reversion},
+ \file{p0:thm:flattening}, \file{p0:def:three-inverses},
+ \file{p0:thm:staircase} and \file{p0:rem:parity-instances}, read for
+ Remark~\ref{zsm:rem:transseries}.
+\item Not read by the write: Prodinger~\cite{prodinger} and the other works
+ compared in Section~\ref{zsm:sec:literature}
+ (\cite{bera,arratia,bhgaussian,bhedgeworth,klp,harrison,aw}). What
+ Section~\ref{zsm:sec:literature} says about them is the source's account;
+ \file{DATA_SOURCES.md} records what the source inspected. The one-row
+ forms attributed to Prodinger there agree with the form Richomme states,
+ $b_n\sim2^{2\lfloor(n-1)/2\rfloor+1}(3/\pi)^{1/2}\lfloor n/2\rfloor^{-3/2}$.
+\end{itemize}
+
+\emph{What was checked at intake.} The batch-108 dossier read the manuscript
+in full and found no error; it rechecked by hand $r_1=521/350$ and
+$r_2=2983/3500$, the parity ratio~\eqref{zsm:eq:parityratio} and the
+two-step ratio~\eqref{zsm:eq:step2ratio}, the smooth inverse
+\eqref{zsm:eq:smoothinverse} by constant-term algebra, the palindromic
+bound~\eqref{zsm:eq:palindromic} at $n=7,8,9$ and the energy and defect
+arithmetic of Section~\ref{zsm:sec:defects}; its own meet-in-the-middle
+program gave $C_1,\dots,C_8$. It reran the package on a copy (the exact
+replay reproduces the delivered receipt byte for byte, normal and optimized;
+the guard tests pass; the optional $n=9$ run gives $1808243216$). The write
+recomputed every entry of the coefficient table of
+Section~\ref{zsm:sec:second} from the displayed exact formulas for $m$, $A$,
+$B$, $H_3$, $\sum_eh_e^4$, $K$ and $T$ (SymPy), and $L_1$, $L_2$, $c_2$,
+$r_1$, $r_2$ from them; rechecked the parity and two-step ratios and the
+smooth inverse through its $X^{-1}$ term; recomputed the ratios
+$21.15$, $3558.9$, $23.66$ of Section~\ref{zsm:sec:checks}; counted
+$C_n$ for $n\le10$ with a program of its own
+(Remark~\ref{zsm:rem:oeisdata}); and reran the package from a fresh
+extraction of the archive (note at the end of Section~\ref{zsm:sec:checks}).
+Finite computations are observations, not certificates.
+
+\emph{Relation to the repository.} Before batch~108 no file of the
+repository mentioned A222959 or A222955, and none does outside this report
+and the collection's catalogue entry for it.
+No statement of this report is formalized in Lean or Rocq, and its place in
+the collection confers no formal status. The nearest report in method is
+\file{a380592-tied-football-seasons}, in the same directory as this one
+(tied football seasons, A380592): a growing-dimensional Fourier count with
+its own global localization, every fixed order, and residue-class inverse
+thresholds. Its all-orders step imports Isaev's complex cumulant theorem;
+the all-orders step here (Section~\ref{zsm:sec:allorders}) uses instead the
+one-sided bound $Z_K\ge-m(n)$ and a finite Taylor expansion, and imports no
+cumulant theorem. Neither report uses the other. The report
+\file{a005163-diagonally-symmetric-asms} is unrelated despite its matrix
+setting. The inversions of Section~\ref{zsm:sec:inverse} are compared with
+the transseries volume in Remark~\ref{zsm:rem:transseries}.
+\end{writenote}
+\begin{writenote}[What is not claimed, collected from the source]
+Every fixed order only: no convergence, Borel summability or optimal
+truncation of the formal series, and no uniformity in an order $J$ growing
+with~$n$. No practical onset or numerical error bound: the localization
+constants (such as $\delta=10^{-10}$) prove only the existence of a positive
+rate and an eventual threshold, ``not a usable numerical error estimate''.
+The small exact counts are strongly preasymptotic and validate neither the
+error term nor an onset. The coefficients $c_j$, $j\ge3$, are not computed,
+and the package is not an all-orders Wick engine. The envelopes
+\eqref{zsm:eq:oddenvelope} leave rounding ambiguities near threshold
+coincidences; no uniform single rounded smooth formula is claimed, and no
+interpolation is assigned the smooth formula's $X^{-1}$ coefficient. No
+absolute priority: the literature comparison is a focused search, ``not a
+certificate of originality''; the obstructions to Barvinok--Hartigan
+concern the natural coordinates, not ``every possible reformulation''; the
+Arratia--DeSalvo estimates are ``conceptual predecessors''. The finite
+checks corroborate finite algebra and implementation only; they prove no
+localization, certify no threshold and are not a formal verification;
+reproducible PDF bytes are claimed only for a fixed TeX toolchain, and the
+integrity manifests are not signatures. The write adds: its
+Remark~\ref{zsm:rem:wiseman} rests on its own two-line proof and on
+Richomme's text as read; its value of $C_{10}$ is an exact computation
+reproducing the OEIS b-file, used by no proof.
+\end{writenote}
+\medskip\noindent\begin{minipage}{\textwidth}
+\emph{Reading conventions} (letters the manuscript reuses, with the tempting
+false readings; no symbol was renamed; $T_{959}$, $\ell_X$ and the
+subscript ``vol'' are the write's).\par
+\smallskip
+\begingroup\small\renewcommand{\arraystretch}{1.1}
+\noindent\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.9in}>{\raggedright\arraybackslash}p{3.05in}>{\raggedright\arraybackslash}p{2.15in}@{}}
+\toprule
+Symbol & Meaning here (where) & Not to be read as\\
+\midrule
+$C_n$; $T_{959}(n,k)$ & the square diagonal of A222959, $C_1=2$; the whole array, $n$ rows and $k$ columns (Remark~\ref{zsm:rem:oeisdata}) & $C$ the retained column set (Section~\ref{zsm:sec:core}), $C_G$, $C_{d,p}$, $C_K$; the colour C in Lemma~\ref{zsm:lem:cumulants}\\
+$b_n$, $V_n$ & A222955$(n)$: zero-slope words of length $n$, and the set of them & $V=\E D^2$ and the projection $V$ of Section~\ref{zsm:sec:first}\\
+$E$, $\E$, $\mathcal E$, $E_d$ & phase subspace; expectation; modular energy; an inverse constant & the volume's displacement $E_{\rm vol}$ (Remark~\ref{zsm:rem:transseries})\\
+$d_0$, $d$, $D$, $D_d$ & AP spacing $1$ or $2$; $d\in\{12,3\}$ with $S_n=n(n^2-1)/d$ (Section~\ref{zsm:sec:inverse}); $D=Q_4-m(n)$; an inverse constant & the volume's $d$ of \file{p0:prop:factorial-core}\\
+$c$, $c_0$, $c_1$, $c_j$ & an absolute rate; the energy threshold; a Gaussian tail constant in~\eqref{zsm:eq:gausstail}; the coefficients of~\eqref{zsm:eq:main} & $c$ the column margin vector of~\eqref{zsm:eq:marginlattice}; $c_1=171/350$ is the coefficient\\
+$h_{ij}=h_e$, $H$ & projection diagonal (leverages); $\lfloor n/2\rfloor$ in the lemmas, $\operatorname{diag}(h)$, $Q_8$, the hyperplane $(w,-w)^\perp$ & the volume's $h_{\rm vol}$, $H$ of \file{p0:thm:flattening}\\
+$K$, $F$, $T$, $L$ & target order of~\eqref{zsm:eq:finiteQ}, $\operatorname{Cov}(Q_4,Q_6)$, a kernel length, an integer matrix, $K_J$; $|\Phi|$, a Gaussian polynomial, $Q_6$, lifts; $\T$, $T_J$, $\kappa_3(Q_4)$, $T_0$; margin lattice, $2J+3$, $\log Y$, $L_1,L_2$ & each section's local letters, as the source warns in Section~\ref{zsm:sec:second}\\
+$\kappa$, $\kappa(\cdot)$ & the density constant $10^{-4}$; joint cumulants & the volume's $\kappa$ of \file{p0:prop:factorial-core}\\
+$N(Y)$, $X$, $x_\pm$ & $\min\{n\ge1:C_n\ge Y\}$; $\sqrt{\log Y/A_0}$; envelope roots & the staircase $N_\ast$ of \file{p0:def:three-inverses}, which presupposes a sequence increasing from some index on; $X$ is also the volume's core solution, here with the same meaning\\
+$u$, $v$, $\ell_i$, $\ell_X$ & an integer vector, centred weights, inverse corrections; normalized weights, defect count; loop counts; $\log X$ (the write's) & \\
+\bottomrule
+\end{tabular}
+\endgroup
+\end{minipage}
+
+\section{Lattices and Gaussian normalization}\label{zsm:sec:lattice}
 We work with Euclidean inner products, using the Frobenius inner product on
 matrix spaces. The covolume of a full lattice in a subspace means the Euclidean
 volume of one fundamental parallelepiped in that subspace.
 
 \subsection{The margin lattice}
 Let $A(M)=(Mw,M^Tw)$. Its integer image is exactly
-\begin{equation}\label{eq:marginlattice}
+\begin{equation}\label{zsm:eq:marginlattice}
  L=\{(r,c)\in\Z^{2n}:w^Tr=w^Tc\}.
 \end{equation}
 Indeed, the compatibility equation is necessary. Choose $u\in\Z^n$ with
 $w^Tu=1$; one may choose a coordinate vector at a weight $1$. For any
 compatible integer $(r,c)$, the integer matrix
-\begin{equation}\label{eq:preimage}
+\begin{equation}\label{zsm:eq:preimage}
  M=ru^T+uc^T-(w^Tr)uu^T
 \end{equation}
 satisfies $Mw=r$ and $M^Tw=c$. This proves saturation.
@@ -215,11 +397,11 @@ multiplicity one. Thus
 This is an exact calculation of the Gaussian lattice factor, not by itself a
 local limit theorem.
 
-\subsection{A rectangular phase lattice lemma}\label{sec:rectlattice}
+\subsection{A rectangular phase lattice lemma}\label{zsm:sec:rectlattice}
 The localization proof needs the same calculation after some rows and columns
 are removed. The retained weights need not be centered.
 
-\begin{lemma}[Primitive rectangular phase lattice]\label{lem:rectlattice}
+\begin{lemma}[Primitive rectangular phase lattice]\label{zsm:lem:rectlattice}
 Let $u\in\Z^r$ and $v\in\Z^s$ be nonzero primitive vectors, and write
 $S_u=\|u\|^2$, $S_v=\|v\|^2$. Set
 \[
@@ -227,7 +409,7 @@ $S_u=\|u\|^2$, $S_v=\|v\|^2$. Set
  \Lambda_{u,v}=E_{u,v}\cap\Z^{r\times s}.
 \]
 Then $\dim E_{u,v}=r+s-1$,
-\begin{equation}\label{eq:rectcovol}
+\begin{equation}\label{zsm:eq:rectcovol}
  B(\Z^{r+s})=\Lambda_{u,v},\qquad
  \covol(\Lambda_{u,v})=S_v^{(r-1)/2}S_u^{(s-1)/2}.
 \end{equation}
@@ -242,7 +424,7 @@ $p,q$ with $u^Tp=v^Tq=1$. For an integer $X\in E_{u,v}$, put
  a=Xq,\qquad b=X^Tp-(p^TXq)v.
 \]
 If $X=a_0v^T+ub_0^T$, substitution gives $av^T+ub^T=X$; $a,b$ are integer.
-This proves the first equality in \eqref{eq:rectcovol}.
+This proves the first equality in \eqref{zsm:eq:rectcovol}.
 
 The nonzero eigenvalues of $B^*B$ are
 $S_v$ with multiplicity $r-1$, $S_u$ with multiplicity $s-1$, and
@@ -268,7 +450,7 @@ primitive integer generator, a circle.
 
 On any embedded real subset of $E_{u,v}/\Lambda_{u,v}$ the normalized Haar
 density is $1/\covol(\Lambda_{u,v})$ times Euclidean volume. In particular,
-\begin{equation}\label{eq:rectG}
+\begin{equation}\label{zsm:eq:rectG}
  \frac1{\covol(\Lambda_{u,v})}
  \int_{E_{u,v}}e^{-\pi^2\|X\|^2/2}\,dX
  =\left(\frac2\pi\right)^{(r+s-1)/2}
@@ -277,9 +459,9 @@ density is $1/\covol(\Lambda_{u,v})$ times Euclidean volume. In particular,
 For $u=v=w$, this is exactly $G_n$. The quotient calculation explains why no
 extra gauge-circle length belongs in the answer.
 
-\section{Fourier inversion and the positive central tube}\label{sec:fourier}
+\section{Fourier inversion and the positive central tube}\label{zsm:sec:fourier}
 The elementary identity $\int_{\T}e^{2\pi ikt}\,dt=1_{\{k=0\}}$ yields
-\begin{equation}\label{eq:fourier}
+\begin{equation}\label{zsm:eq:fourier}
  \frac{C_n}{2^{n^2}}=
  \int_{\T^{2n}}\prod_{i,j}
     \frac{1+e^{2\pi i(w_ja_i+w_ib_j)}}2\,da\,db.
@@ -288,7 +470,7 @@ One may integrate all $2n$ margins even though one equation is redundant.
 For real representatives of the coefficient variables, write
 $X_{ij}=w_ja_i+w_ib_j$. Because the full weight lists are centered,
 $\sum_{ij}X_{ij}=0$. Thus the signed characteristic function is
-\begin{equation}\label{eq:Phi}
+\begin{equation}\label{zsm:eq:Phi}
  \Phi(a,b)=\prod_{ij}\cos(\pi X_{ij}),\qquad |\Phi|=F.
 \end{equation}
 Although one cosine is not a function on $\R/\Z$, its absolute value is, and
@@ -310,13 +492,13 @@ zero. Consequently
 There is therefore no local sign cancellation or missing parity multiplier.
 
 The only exact maximum phases of $F$ are integer phases, which constitute the
-identity of $E/\Lambda$; Lemma~\ref{lem:rectlattice} identifies their coefficient
+identity of $E/\Lambda$; Lemma~\ref{zsm:lem:rectlattice} identifies their coefficient
 preimage as the gauge circle $(a,b)=(tw,-tw)$. This fact alone does not exclude
 nearby or distant approximate resonances. The next three sections establish
 the necessary quantitative statement.
 
 We will use the global scalar estimate
-\begin{equation}\label{eq:cosbound}
+\begin{equation}\label{zsm:eq:cosbound}
  |\cos(\pi t)|\le
  \exp\left(-\frac{\pi^2}2\normT{t}^2\right),
  \qquad \normT{t}=\dist(t,\Z).
@@ -324,14 +506,14 @@ We will use the global scalar estimate
 For $|x|<1/2$, the derivative of $\log\cos(\pi x)+\pi^2x^2/2$ is
 $-\pi\tan(\pi x)+\pi^2x$, nonpositive for $x\ge0$; symmetry and the endpoint
 limit prove the inequality. Outside the central tube, the modular distance in
-\eqref{eq:cosbound} cannot be replaced by an arbitrary real lift.
+\eqref{zsm:eq:cosbound} cannot be replaced by an arbitrary real lift.
 
-\section{Dense arithmetic progression inverse lemmas}\label{sec:inverselemmas}
+\section{Dense arithmetic progression inverse lemmas}\label{zsm:sec:inverselemmas}
 All statements in this section hold for sufficiently large $n$, uniformly in
 its parity. Their deliberately generous constants make the required density
 and no-wrap conditions transparent.
 
-\begin{lemma}[Scalar inverse]\label{lem:scalar}
+\begin{lemma}[Scalar inverse]\label{zsm:lem:scalar}
 Suppose $0<\tau<1/8$ and $0\le\rho<1/4$. If $t\in\T$ satisfies
 $\normT{w_jt}\le\tau$ for at least $(1-\rho)n$ indices, then
 \[
@@ -357,16 +539,16 @@ The integer branch gives the claimed bound. The constants cover all rounding
 for sufficiently large $n$.
 \end{proof}
 
-\begin{lemma}[Dense circuit stability]\label{lem:dense}
+\begin{lemma}[Dense circuit stability]\label{zsm:lem:dense}
 Put $\kappa=10^{-4}$. Let $I\subseteq\{1,\ldots,n\}$ omit at most
 $\kappa n$ indices. Suppose $\theta_i\in\T$, $i\in I$, and
-\begin{equation}\label{eq:circuit}
+\begin{equation}\label{zsm:eq:circuit}
  \normT{\sum_i z_i\theta_i}\le\eta
 \end{equation}
 for every integer vector $z$ supported in $I$ with
 $\sum_i z_iw_i=0$ and $\sum_i|z_i|\le4$. If $6n\eta<1/2$, there is $t\in\T$
 such that
-\begin{equation}\label{eq:denseconclusion}
+\begin{equation}\label{zsm:eq:denseconclusion}
  \normT{\theta_i-w_it}\le500\eta\qquad(i\in I).
 \end{equation}
 \end{lemma}
@@ -374,11 +556,11 @@ such that
 Set $H=\lfloor n/4\rfloor$. For each $0\le h\le H$, choose a pair
 $x,x+h\in I$ and define $f(h)=\theta_{x+h}-\theta_x$, with $f(0)=0$.
 Pairs exist because $n-h-2\kappa n>0$. Any two choices differ in circle norm by
-at most $\eta$: their difference is a four-term circuit in \eqref{eq:circuit}.
+at most $\eta$: their difference is a four-term circuit in \eqref{zsm:eq:circuit}.
 For $h,k\ge0$, $h+k\le H$, a triple $x,x+h,x+h+k\in I$ exists because at
 least $n-H-3\kappa n>0$ starting positions remain. Comparing the three chosen
 increments gives
-\begin{equation}\label{eq:fadd}
+\begin{equation}\label{zsm:eq:fadd}
  \normT{f(h+k)-f(h)-f(k)}\le3\eta.
 \end{equation}
 
@@ -386,7 +568,7 @@ Choose $F(0)=0$, choose any real lift $F(1)$, and choose subsequent real lifts
 recursively with $|F(h)-F(h-1)-F(1)|\le3\eta$. Then
 $|F(h)-hF(1)|\le3(h-1)\eta$. For positive $h,k$ with $h+k\le H$, the real
 additive defect has absolute value at most $6H\eta<1/2$. It is a lift of the
-circle element in \eqref{eq:fadd}, so its absolute value is at most $3\eta$.
+circle element in \eqref{zsm:eq:fadd}, so its absolute value is at most $3\eta$.
 This step is what prevents an accumulated integer winding error.
 
 Put $A=F(H)/H$ and $g(h)=F(h)-Ah$. For $2h\le H$,
@@ -425,24 +607,24 @@ least $n/2$ weights would be omitted. It gives
 $\normT{2B}\le\eta+2(112\eta)=225\eta$. Thus $B$ is within $112.5\eta$ of
 an integer or a half-integer. All $w_i$ are odd, so a half-integer constant is
 absorbed into the coefficient of $w_i$ modulo one. The total error is then at
-most $224.5\eta<500\eta$. This proves \eqref{eq:denseconclusion} in both
+most $224.5\eta<500\eta$. This proves \eqref{zsm:eq:denseconclusion} in both
 parities.
 \end{proof}
 
-\section{A robust central core and its Gaussian cost}\label{sec:core}
+\section{A robust central core and its Gaussian cost}\label{zsm:sec:core}
 Fix, once and for all,
-\begin{equation}\label{eq:smallconstants}
+\begin{equation}\label{zsm:eq:smallconstants}
  \epsilon=10^{-3},\qquad\kappa=10^{-4},\qquad\delta=10^{-10}.
 \end{equation}
 An entry is called bad when $\normT{x_{ij}}\ge\delta$.
 
-\begin{lemma}[Robust central core]\label{lem:core}
+\begin{lemma}[Robust central core]\label{zsm:lem:core}
 Let $R,C\subseteq\{1,\ldots,n\}$ each omit at most $\kappa n$ indices.
 Suppose every row in $R$ and every column in $C$ has at most $\epsilon n$ bad
 entries in its full row or column. There is $t\in\T$ such that
 \begin{align}
- \normT{a_i-w_it}&\le16000\delta/n&& (i\in R),\label{eq:corea}\\
- \normT{b_j+w_jt}&\le2064064\delta/n&& (j\in C).\label{eq:coreb}
+ \normT{a_i-w_it}&\le16000\delta/n&& (i\in R),\label{zsm:eq:corea}\\
+ \normT{b_j+w_jt}&\le2064064\delta/n&& (j\in C).\label{zsm:eq:coreb}
 \end{align}
 The core phases have a real lift in $E_{w_R,w_C}$ with every entry of absolute
 value at most $2080064\delta<1/16$.
@@ -455,8 +637,8 @@ other column,
  \normT{w_j\sum_i z_i a_i}
  =\normT{\sum_i z_i x_{ij}}\le4\delta.
 \]
-Lemma~\ref{lem:scalar}, with $\rho=4\epsilon<1/4$ and $\tau=4\delta$, gives
-$\normT{\sum_i z_i a_i}\le32\delta/n$. Apply Lemma~\ref{lem:dense} with
+Lemma~\ref{zsm:lem:scalar}, with $\rho=4\epsilon<1/4$ and $\tau=4\delta$, gives
+$\normT{\sum_i z_i a_i}\le32\delta/n$. Apply Lemma~\ref{zsm:lem:dense} with
 $\eta=32\delta/n$; its lift condition follows from $192\delta<1/2$. We get
 $a_i=w_it+e_i$ modulo one, where $|e_i|\le16000\delta/n$. By the transposed
 argument $b_j=w_js+f_j$, with $|f_j|\le16000\delta/n$.
@@ -473,7 +655,7 @@ The retained row set is dense, so a second scalar inversion gives
  \normT{h}\le64\tau/n^2=2048064\delta/n^2.
 \]
 Choose the nearest-integer real lift of $h$ and combine it with $f_j$. This
-gives \eqref{eq:coreb}, while \eqref{eq:corea} already holds. Using these real
+gives \eqref{zsm:eq:coreb}, while \eqref{zsm:eq:corea} already holds. Using these real
 residual coefficients, the lift is $e_iw_j+w_i\widetilde f_j$; it genuinely
 lies in the core phase space and its maximum is at most
 $(16000+2064064)\delta=0.0002080064<1/16$.
@@ -489,19 +671,19 @@ A dense retained list contains consecutive indices. For odd $n$, the
 corresponding weights are consecutive integers; for even $n$, they are
 consecutive odd numbers with difference two. Their greatest common divisor is
 one in either case. Thus both retained lists are primitive and
-Lemma~\ref{lem:rectlattice} applies.
+Lemma~\ref{zsm:lem:rectlattice} applies.
 
-On the embedded core tube, \eqref{eq:cosbound} and \eqref{eq:rectG} give
-\begin{equation}\label{eq:coreintegral}
+On the embedded core tube, \eqref{zsm:eq:cosbound} and \eqref{zsm:eq:rectG} give
+\begin{equation}\label{zsm:eq:coreintegral}
  \int_{\{\text{core in its central tube}\}}
  \prod_{i\in R,j\in C}|\cos(\pi x_{ij})|\,da_R\,db_C\le G_{R,C}.
 \end{equation}
 Only an absolute-product estimate is used here. Restricted weights need not
 sum to zero, so we do not assert the signed-integrand property for a core.
 
-\begin{lemma}[Uniform Gaussian cost per defect]\label{lem:ratio}
+\begin{lemma}[Uniform Gaussian cost per defect]\label{zsm:lem:ratio}
 Let $k=n-r$, $l=n-s$, and $v=k+l\le\kappa n$. Then
-\begin{equation}\label{eq:coreratio}
+\begin{equation}\label{zsm:eq:coreratio}
  \frac{G_{R,C}}{G_n}\le(C_Gn^{3/2})^v,
  \qquad C_G=\sqrt{\pi/2}\,e^{16}.
 \end{equation}
@@ -527,14 +709,14 @@ Bounding the last two logarithms by $16l$ and $16k$ proves the claim.
 In particular there is no extraneous factor $e^{O(n)}$ independent of $v$.
 \end{proof}
 
-\section{Global relative localization by defects}\label{sec:defects}
-We now prove Theorem~\ref{thm:globalintro}. Define the modular energy
+\section{Global relative localization by defects}\label{zsm:sec:defects}
+We now prove Theorem~\ref{zsm:thm:globalintro}. Define the modular energy
 \[
  \mathcal E(a,b)=\sum_{i,j}\normT{x_{ij}}^2,
  \qquad c_0=\delta^2\epsilon\kappa/2.
 \]
-On $\mathcal E>c_0n^2$, \eqref{eq:cosbound} gives the integral bound
-\begin{equation}\label{eq:highenergy}
+On $\mathcal E>c_0n^2$, \eqref{zsm:eq:cosbound} gives the integral bound
+\begin{equation}\label{zsm:eq:highenergy}
  \int_{\{\mathcal E>c_0n^2\}}F\le e^{-\pi^2c_0n^2/2}
  =O(G_ne^{-cn})
 \end{equation}
@@ -546,18 +728,18 @@ with more than $\epsilon n$ bad entries, counting bad entries in the original
 full rows and columns. Let $k,l$ be the numbers removed, $v=k+l$, and let
 $R,C$ be the retained sets. If $B$ is the total number of bad entries, then
 $B\delta^2\le\mathcal E$, and
-\begin{equation}\label{eq:defectnumber}
+\begin{equation}\label{zsm:eq:defectnumber}
  v\le\frac{2B}{\epsilon n}
  \le\frac{2\mathcal E}{\delta^2\epsilon n}\le\kappa n.
 \end{equation}
-Thus the retained core satisfies Lemma~\ref{lem:core}.
+Thus the retained core satisfies Lemma~\ref{zsm:lem:core}.
 
 Each removed row has at least $\epsilon n-l\ge\epsilon n/2$ bad entries in
 retained columns. Each removed column likewise has at least $\epsilon n/2$
 bad entries in retained rows, since $\kappa\le\epsilon/2$. These charges are
 on the disjoint sets $R^c\times C$ and $R\times C^c$, and no charged factor is
 counted twice. There are at least $\epsilon nv/2$ charged factors, so
-\begin{equation}\label{eq:crosspenalty}
+\begin{equation}\label{zsm:eq:crosspenalty}
  F\le e^{-\pi^2\delta^2\epsilon nv/4}
        \prod_{i\in R,j\in C}|\cos(\pi x_{ij})|.
 \end{equation}
@@ -567,32 +749,32 @@ where it would round to one.
 Fix particular removed sets, and let $\mathcal A_{R,C}$ be the event that these
 are exactly the removed sets and that $\mathcal E\le c_0n^2$. Put
 $\gamma=\pi^2\delta^2\epsilon/4>0$. On this event the core lies in its central
-tube. Enlarge just that event after applying \eqref{eq:crosspenalty}:
+tube. Enlarge just that event after applying \eqref{zsm:eq:crosspenalty}:
 \begin{align}
  \int 1_{\mathcal A_{R,C}}F\,da\,db
  &\le e^{-\gamma nv}
  \int1_{\{\text{core in central tube}\}}
        \prod_{i\in R,j\in C}|\cos(\pi x_{ij})|\,da\,db\notag\\
- &\le e^{-\gamma nv}G_{R,C}.\label{eq:patternintegral}
+ &\le e^{-\gamma nv}G_{R,C}.\label{zsm:eq:patternintegral}
 \end{align}
 The discarded coefficient coordinates integrate over full tori of total
 volume one. The remaining variables push forward to core Haar measure as in
-Lemma~\ref{lem:rectlattice}. This argument does not assume independence of the
+Lemma~\ref{zsm:lem:rectlattice}. This argument does not assume independence of the
 defect event and does not introduce a conditional fiber-volume loss.
 
 For each $v$, the number of pairs of removed sets is
 $\sum_{k+l=v}\binom nk\binom nl=\binom{2n}v\le(2n)^v$. By
-\eqref{eq:coreratio}, the total contribution of nonempty low-energy defect
+\eqref{zsm:eq:coreratio}, the total contribution of nonempty low-energy defect
 patterns is at most
-\begin{equation}\label{eq:defectsum}
+\begin{equation}\label{zsm:eq:defectsum}
  G_n\sum_{v\ge1}\left(2C_G n^{5/2}e^{-\gamma n}\right)^v
  =O(G_ne^{-cn}).
 \end{equation}
 The last step holds eventually, because the bracket is at most
 $e^{-\gamma n/2}$ for all sufficiently large $n$. If $v=0$,
-Lemma~\ref{lem:core} applies to the whole phase matrix and puts it in $U$.
-Hence every point outside $U$ is covered by \eqref{eq:highenergy} or
-\eqref{eq:defectsum}. This proves Theorem~\ref{thm:globalintro}.
+Lemma~\ref{zsm:lem:core} applies to the whole phase matrix and puts it in $U$.
+Hence every point outside $U$ is covered by \eqref{zsm:eq:highenergy} or
+\eqref{zsm:eq:defectsum}. This proves Theorem~\ref{zsm:thm:globalintro}.
 
 \paragraph{What the constants do and do not establish.}
 The small fixed $\delta$ proves existence of a positive localization rate and
@@ -600,24 +782,24 @@ an eventual threshold. It is not a usable numerical error estimate. The cost
 of one defect is only polynomial in $n$, whereas its cross-edge penalty is
 exponential in $n$; that comparison is the structural reason the proof closes.
 
-\section{The local Gaussian and a dimension free moment bound}\label{sec:gaussian}
+\section{The local Gaussian and a dimension free moment bound}\label{zsm:sec:gaussian}
 \subsection{Projection and shrinking cutoff}
 Put $v_i=w_i/\sqrt S$, $a_i=v_i^2$, and $s_r=\sum_i a_i^r$. The orthogonal
 projection onto $E$ is
-\begin{equation}\label{eq:Paction}
+\begin{equation}\label{zsm:eq:Paction}
  P(X)=Xvv^T+vv^TX-vv^TXvv^T.
 \end{equation}
 Indeed the two first summands are commuting orthogonal projections whose
 intersection is spanned by $vv^T$. In entry notation,
-\begin{equation}\label{eq:P}
+\begin{equation}\label{zsm:eq:P}
  P_{(ij),(kl)}=1_{\{i=k\}}v_jv_l+1_{\{j=l\}}v_iv_k-v_iv_jv_kv_l.
 \end{equation}
 Its diagonal entries are
-\begin{equation}\label{eq:h}
+\begin{equation}\label{zsm:eq:h}
  h_{ij}=a_i+a_j-a_ia_j,\qquad \max h_{ij}=O(n^{-1}),\quad
  \sum_{ij}h_{ij}=2n-1.
 \end{equation}
-Here $s_1=1$ and $\max a_i=O(n^{-1})$, directly from \eqref{eq:S}.
+Here $s_1=1$ and $\max a_i=O(n^{-1})$, directly from \eqref{zsm:eq:S}.
 
 Under the normalized Gaussian with density proportional to
 $e^{-\pi^2\|X\|^2/2}$ on $E$, the matrix $Y=\pi X$ is a centered Gaussian with
@@ -626,7 +808,7 @@ covariance $P$. Fix any $0<\zeta<1/6$ and let
  \mathcal B_n=\{\max_{ij}|Y_{ij}|\le n^{-1/2+\zeta}\}.
 \]
 The Gaussian one-coordinate tail and a union bound give
-\begin{equation}\label{eq:gausstail}
+\begin{equation}\label{zsm:eq:gausstail}
  \Prob(\mathcal B_n^c)\le2n^2e^{-c_1n^{2\zeta}}.
 \end{equation}
 For completeness, the scalar bound follows by applying Markov's inequality to
@@ -634,8 +816,8 @@ $e^{tZ}$, using $\E e^{tZ}=e^{t^2\sigma^2/2}$, and minimizing over $t$; apply
 it to both signs. The cutoff tube lies in $U$ for sufficiently large $n$.
 On the intervening part of $U$, the absolute integrand is bounded by its
 Gaussian quadratic part. Global localization, the positive sign in $U$, and
-\eqref{eq:gausstail} therefore imply, for every fixed $M$,
-\begin{equation}\label{eq:Gaussianreduction}
+\eqref{zsm:eq:gausstail} therefore imply, for every fixed $M$,
+\begin{equation}\label{zsm:eq:Gaussianreduction}
  \frac{C_n}{2^{n^2}G_n}=
  \E\left[1_{\mathcal B_n}
   \exp\left\{\sum_{ij}\left(\log\cos Y_{ij}+\frac{Y_{ij}^2}2\right)\right\}\right]
@@ -647,7 +829,7 @@ All logs inside this cutoff are of positive cosines.
 We record the dimension-free estimate required to expand the quartic term.
 For a random variable $Z$, write $\|Z\|_p=(\E|Z|^p)^{1/p}$.
 
-\begin{lemma}[Fixed-degree Gaussian moments]\label{lem:moments}
+\begin{lemma}[Fixed-degree Gaussian moments]\label{zsm:lem:moments}
 For each fixed nonnegative integer $d$ and $1\le p<\infty$, there is a constant
 $C_{d,p}$ independent of the dimension such that every polynomial $F(g)$ of
 degree at most $d$ in a standard Gaussian vector satisfies
@@ -708,14 +890,14 @@ Define positive rational coefficients by
 and put $Q_{2k}=q_k\sum_{ij}Y_{ij}^{2k}$. Rationality and positivity follow
 recursively from $\tan'=1+\tan^2$, $\tan0=0$, followed by integration.
 For each fixed $k,p$, Minkowski and scalar Gaussian moments give
-\begin{equation}\label{eq:Qmoments}
+\begin{equation}\label{zsm:eq:Qmoments}
  \|Q_{2k}\|_p\le C_{k,p}\sum_e h_e^k
  \le C_{k,p}(\max h)^{k-1}\tr P=O_{k,p}(n^{2-k}),
 \end{equation}
 where a single index $e$ denotes a cell.
 
 The quartic mean is
-\begin{equation}\label{eq:m}
+\begin{equation}\label{zsm:eq:m}
  m(n)=\E Q_4=\frac14\sum_eh_e^2
       =\frac{2ns_2+2-4s_2+s_2^2}{4},\qquad
  s_2=\frac{3(3n^2-7)}{5n(n^2-1)}.
@@ -727,21 +909,21 @@ Wick pairing gives
 \]
 There are $72$ pairings with exactly two cross pairs and $24$ with four;
 the no-cross pairings cancel in the covariance. Thus
-\begin{equation}\label{eq:variance}
+\begin{equation}\label{zsm:eq:variance}
  \Var Q_4=\frac12\sum_{e,f}h_eh_fP_{ef}^2+
           \frac16\sum_{e,f}P_{ef}^4=O(n^{-1}).
 \end{equation}
 Indeed $|P_{ef}|^2\le h_eh_f$, by positivity of a covariance matrix, and
 $\sum_{e,f}P_{ef}^2=\tr P=2n-1$. Each displayed sum is bounded by a constant
 times $(\max h)^2\tr P$.
-For $D=Q_4-m(n)$, Lemma~\ref{lem:moments} consequently yields
-\begin{equation}\label{eq:Dmoments}
+For $D=Q_4-m(n)$, Lemma~\ref{zsm:lem:moments} consequently yields
+\begin{equation}\label{zsm:eq:Dmoments}
  \|D\|_p=O_p(n^{-1/2})
 \end{equation}
 for every fixed $p$. This remains valid in the growing dimension $2n-1$.
 
-\section{A constructive expansion to every fixed order}\label{sec:allorders}
-We now prove Theorem~\ref{thm:main}, except for the evaluations of $c_1$ and $c_2$.
+\section{A constructive expansion to every fixed order}\label{zsm:sec:allorders}
+We now prove Theorem~\ref{zsm:thm:main}, except for the evaluations of $c_1$ and $c_2$.
 
 \subsection{Two finite Taylor expansions with controlled remainders}
 Fix $K\ge2$. On $|y|\le1/2$, positivity and analyticity of the log-cosine
@@ -758,8 +940,8 @@ Hence on $\mathcal B_n$, for all sufficiently large $n$,
 The difference of the two exponentials with and without $R_K$ is at most
 $R_K$, since the retained $Q$'s are nonnegative. Its expected value is
 $O_K(\sum_e h_e^{K+1})=O_K(n^{1-K})$. Removing the cutoff from
-$\exp(-\sum Q_{2k})\le1$ costs at most \eqref{eq:gausstail}. Therefore
-\begin{equation}\label{eq:finiteQ}
+$\exp(-\sum Q_{2k})\le1$ costs at most \eqref{zsm:eq:gausstail}. Therefore
+\begin{equation}\label{zsm:eq:finiteQ}
  \frac{C_n}{2^{n^2}G_n}=\E\exp\left(-\sum_{k=2}^KQ_{2k}\right)
  +O_K(n^{1-K}).
 \end{equation}
@@ -767,10 +949,10 @@ No pointwise maximum bound multiplied by $n^2$ is used for this remainder;
 the integrated Gaussian moments provide its stated order.
 
 For the target order $J\ge0$, choose
-\begin{equation}\label{eq:KLZ}
+\begin{equation}\label{zsm:eq:KLZ}
  K=J+3,\qquad L=2J+3,\qquad Z_K=D+\sum_{k=3}^KQ_{2k}.
 \end{equation}
-Equations~\eqref{eq:Qmoments} and \eqref{eq:Dmoments} show
+Equations~\eqref{zsm:eq:Qmoments} and \eqref{zsm:eq:Dmoments} show
 $\|Z_K\|_p=O_{J,p}(n^{-1/2})$. Crucially,
 $Z_K=\sum_{k=2}^KQ_{2k}-m(n)\ge-m(n)$. All derivatives of $e^{-z}$ along the
 segment from $0$ to $Z_K$ are bounded by $e^{m(n)}=O(1)$. The ordinary finite
@@ -779,13 +961,13 @@ Taylor theorem, for every realization, thus gives
  \left|e^{-Z_K}-\sum_{r=0}^L\frac{(-Z_K)^r}{r!}\right|
  \le\frac{e^{m(n)}}{(L+1)!}|Z_K|^{L+1}.
 \]
-Its expectation is $O_J(n^{-J-2})$, as is the error in \eqref{eq:finiteQ}.
+Its expectation is $O_J(n^{-J-2})$, as is the error in \eqref{zsm:eq:finiteQ}.
 Define the finite quantity
-\begin{equation}\label{eq:TJ}
+\begin{equation}\label{zsm:eq:TJ}
  T_J(n)=\sum_{r=0}^{2J+3}\frac{(-1)^r}{r!}\E Z_{J+3}^r.
 \end{equation}
 We have proved the stronger intermediate approximation
-\begin{equation}\label{eq:finiteapproximant}
+\begin{equation}\label{zsm:eq:finiteapproximant}
  \frac{C_n}{2^{n^2}G_n}=e^{-m(n)}T_J(n)+O_J(n^{-J-2}).
 \end{equation}
 There has been no exchange of an infinite series with an expectation. The
@@ -794,7 +976,7 @@ one-sided bound on $Z_K$ avoids any need for an exponential moment of $|D|$.
 The polynomial families in this argument also have negligible weighted tails
 on $\mathcal B_n^c$: H\"older and the fixed-moment bounds give polynomial
 $L^2$ bounds for every fixed product, and Cauchy--Schwarz with
-\eqref{eq:gausstail} makes the tail superpolynomially small. This assertion is
+\eqref{zsm:eq:gausstail} makes the tail superpolynomially small. This assertion is
 about these controlled families, not arbitrary polynomials with unrestricted
 $n$-dependent coefficients.
 
@@ -803,13 +985,13 @@ For this part use $u_i=i-(n+1)/2$ for every $n$, even when the $u_i$ are
 half-integers, and put $S_u=n(n^2-1)/12$. Scaling all weights by a nonzero
 constant does not change $E$ or $P$. Thus in both parities the same covariance
 formula is
-\begin{equation}\label{eq:rationalP}
+\begin{equation}\label{zsm:eq:rationalP}
  P_{(ij),(kl)}=
  1_{\{i=k\}}\frac{u_ju_l}{S_u}
  +1_{\{j=l\}}\frac{u_iu_k}{S_u}
  -\frac{u_iu_ju_ku_l}{S_u^2}.
 \end{equation}
-Every fixed Wick moment in \eqref{eq:TJ} is an exact rational function of $n$.
+Every fixed Wick moment in \eqref{zsm:eq:TJ} is an exact rational function of $n$.
 Here is a constructive reduction proving that claim.
 \begin{enumerate}
 \item Expand the finitely many powers of $D=Q_4-m(n)$ and the higher $Q$'s.
@@ -818,11 +1000,11 @@ rational.
 \item Apply Wick's rule to each Gaussian monomial, a finite sum of covariance
 products. The number of slots and pairings depends only on $J$.
 \item For each covariance factor choose one of the three terms in
-\eqref{eq:rationalP}. Merge index variables wherever a Kronecker delta imposes
+\eqref{zsm:eq:rationalP}. Merge index variables wherever a Kronecker delta imposes
 equality.
 \item Sum each remaining free index independently. Every result is a rational
 coefficient times a power of $S_u^{-1}$ and a product of centered power sums
-\begin{equation}\label{eq:Mr}
+\begin{equation}\label{zsm:eq:Mr}
  M_r(n)=\sum_{i=1}^n\left(i-\frac{n+1}2\right)^r,\qquad r\ge0.
 \end{equation}
 \end{enumerate}
@@ -833,7 +1015,7 @@ power-sum recursion is
  \frac{(n+1)^{r+1}-1-\sum_{k=0}^{r-1}\binom{r+1}k\sum_{i=1}^n i^k}{r+1},
 \]
 which follows by telescoping $(i+1)^{r+1}-i^{r+1}$. Binomially expand the
-centered powers in \eqref{eq:Mr}; odd centered powers vanish by reflection,
+centered powers in \eqref{zsm:eq:Mr}; odd centered powers vanish by reflection,
 and $M_0(n)=n$. This supplies a finite rational implementation without invoking
 an unevaluated summation theorem.
 
@@ -855,19 +1037,19 @@ As a rational function, $T_J$ therefore has no pole at infinity: its Laurent
 expansion contains only a constant and negative powers of $n$. Likewise
 $m(n)-7/5=O(n^{-1})$ has rational coefficients there. For $0\le j\le J$,
 define
-\begin{equation}\label{eq:cj}
+\begin{equation}\label{zsm:eq:cj}
  c_j=[z^j]\left\{\exp\bigl(7/5-m(1/z)\bigr)T_J(1/z)\right\}.
 \end{equation}
 The expression in braces is analytic near $z=0$, has constant term one, and
 has rational Taylor coefficients. Its finite Taylor remainder through degree
 $J$ is $O_J(n^{-J-1})$ at $z=1/n$. Together with
-\eqref{eq:finiteapproximant}, this proves \eqref{eq:main}.
+\eqref{zsm:eq:finiteapproximant}, this proves \eqref{zsm:eq:main}.
 
 If two target orders $J,J'$ are used, both finite analytic approximants
 approximate the same normalized exact count. Their difference along $z=1/n$
 is $O(n^{-\min(J,J')-2})$. An analytic function with a first nonzero term of
 lower degree could not have that bound. Their coefficients therefore agree
-through every common displayed order. Thus \eqref{eq:cj} defines one consistent
+through every common displayed order. Thus \eqref{zsm:eq:cj} defines one consistent
 sequence $(c_j)$.
 
 This is a constructive all-fixed-orders result, not an efficient algorithm
@@ -875,27 +1057,27 @@ claim: naive Wick enumeration is expensive. It does not imply that the full
 formal series converges, that $J$ may grow with $n$, or that truncation errors
 are numerically small at the currently tabulated dimensions.
 
-\section{The explicit first correction}\label{sec:first}
+\section{The explicit first correction}\label{zsm:sec:first}
 We give enough exact algebra to isolate the value $171/350$ and to make its
 independent rational checks transparent. Finite centered power summation gives
 \begin{align}
- s_2&=\frac{3(3n^2-7)}{5n(n^2-1)}=\frac9{5n}+O(n^{-3}),\label{eq:s2}\\
+ s_2&=\frac{3(3n^2-7)}{5n(n^2-1)}=\frac9{5n}+O(n^{-3}),\label{zsm:eq:s2}\\
  s_3&=\frac{9(3n^4-18n^2+31)}{7n^2(n^2-1)^2}
-       =\frac{27}{7n^2}+O(n^{-4}).\label{eq:s3}
+       =\frac{27}{7n^2}+O(n^{-4}).\label{zsm:eq:s3}
 \end{align}
 These identities hold exactly for both parities because normalized weights are
-scale-invariant. Equation~\eqref{eq:m} gives
-\begin{equation}\label{eq:mexp}
+scale-invariant. Equation~\eqref{zsm:eq:m} gives
+\begin{equation}\label{zsm:eq:mexp}
  m(n)=\frac75-\frac9{5n}+O(n^{-2}).
 \end{equation}
 Expanding $(a_i+a_j-a_ia_j)^3$ and summing yields
 \begin{align}
  H_3:=\sum_{ij}h_{ij}^3
  &=2ns_3+6s_2-6s_3-6s_2^2+6s_2s_3-s_3^2\notag\\
- &=\frac{648}{35n}+O(n^{-2}).\label{eq:H3}
+ &=\frac{648}{35n}+O(n^{-2}).\label{zsm:eq:H3}
 \end{align}
 Since $\E Y_e^6=15h_e^3$,
-\begin{equation}\label{eq:EQ6}
+\begin{equation}\label{zsm:eq:EQ6}
  \E Q_6=\frac13H_3=\frac{216}{35n}+O(n^{-2}).
 \end{equation}
 
@@ -905,7 +1087,7 @@ Write
  A=\sum_{e,f}h_eh_fP_{ef}^2,\qquad B=\sum_{e,f}P_{ef}^4.
 \]
 Let $U,V$ be respectively the same-row and same-column projections in
-\eqref{eq:P}, and let $R=zz^T$ with $z=v\otimes v$. Then $P=U+V-R$ and
+\eqref{zsm:eq:P}, and let $R=zz^T$ with $z=v\otimes v$. Then $P=U+V-R$ and
 $A=\tr(HPHP)$ for $H=\operatorname{diag}(h)$. The following intermediate
 finite sums evaluate its trace terms:
 \begin{align*}
@@ -916,14 +1098,14 @@ finite sums evaluate its trace terms:
  V_0&=\sum_{ij}h_{ij}a_ia_j=2s_2-s_2^2.
 \end{align*}
 Expansion of the trace gives $A=2F_0+2T_0-4W_0+V_0^2$. Hence the exact identity
-\begin{equation}\label{eq:Aexact}
+\begin{equation}\label{zsm:eq:Aexact}
  A=6s_2+(2n-12)s_2^2+6s_2^3+s_2^4-4s_2^2s_3+2s_3^2
   =\frac{432}{25n}+O(n^{-2}).
 \end{equation}
 For $B$, divide the ordered pair of cells into four disjoint cases: same row
 only, same column only, equal cells, and different rows and columns. With
 $s_4=\sum_i a_i^4$, this gives
-\begin{equation}\label{eq:Bpartition}
+\begin{equation}\label{zsm:eq:Bpartition}
  B=2\left[\sum_i(1-a_i)^4\right](s_2^2-s_4)
      +\sum_{ij}h_{ij}^4+(s_2^2-s_4)^2.
 \end{equation}
@@ -934,20 +1116,20 @@ $s_2^2-s_4$. Direct expansion gives
  \sum_{ij}h_{ij}^4={}&6s_2^2-24s_2s_3+12s_2s_4+12s_3^2-8s_3s_4\\
  &+8s_3+s_4^2+2ns_4-8s_4.
 \end{align*}
-After substitution into \eqref{eq:Bpartition}, every $s_4$ term cancels:
+After substitution into \eqref{zsm:eq:Bpartition}, every $s_4$ term cancels:
 \begin{align}
  B={}&(2n-2)s_2^2+12s_2^3+s_2^4+8s_3-24s_2s_3
              -8s_2^2s_3+12s_3^2\notag\\
-   ={}&\frac{162}{25n}+O(n^{-2}).\label{eq:Bexact}
+   ={}&\frac{162}{25n}+O(n^{-2}).\label{zsm:eq:Bexact}
 \end{align}
-By \eqref{eq:variance},
-\begin{equation}\label{eq:varlead}
+By \eqref{zsm:eq:variance},
+\begin{equation}\label{zsm:eq:varlead}
  \Var Q_4=\frac12A+\frac16B=\frac{243}{25n}+O(n^{-2}).
 \end{equation}
 
 \subsection{Remainder control and the coefficient}
-Taking $K=3$ in \eqref{eq:finiteQ} gives an $O(n^{-2})$ error. Since
-$D\ge-m$ and $m=O(1)$, Taylor's theorem and \eqref{eq:Dmoments} yield
+Taking $K=3$ in \eqref{zsm:eq:finiteQ} gives an $O(n^{-2})$ error. Since
+$D\ge-m$ and $m=O(1)$, Taylor's theorem and \eqref{zsm:eq:Dmoments} yield
 \[
  \E e^{-Q_4}=e^{-m}\left(1+\frac12\Var Q_4+O(n^{-3/2})\right).
 \]
@@ -966,19 +1148,19 @@ The order $n^{-1}$ correction inside these parentheses is
 \[
  \frac{243}{50}-\frac{216}{35}=-\frac{459}{350}.
 \]
-Multiplication by \eqref{eq:mexp} contributes $9/5$, giving
+Multiplication by \eqref{zsm:eq:mexp} contributes $9/5$, giving
 \[
  c_1=\frac95-\frac{459}{350}=\frac{171}{350}.
 \]
 This calculation on its own has an $O(n^{-3/2})$ remainder. The all-fixed-orders
-theorem already proved in Section~\ref{sec:allorders}, and uniqueness of the
+theorem already proved in Section~\ref{zsm:sec:allorders}, and uniqueness of the
 first coefficient, improve the first-order statement to $O(n^{-2})$. No
 uncomputed higher coefficient is inferred from this remainder improvement.
 
-\section{The explicit second correction}\label{sec:second}
+\section{The explicit second correction}\label{zsm:sec:second}
 The finite coefficient prescription can be evaluated one order further. We
 prove
-\begin{equation}\label{eq:c2}
+\begin{equation}\label{zsm:eq:c2}
  c_2=\frac{483051}{245000},\qquad
  \log\left(\frac{e^{7/5}C_n}{2^{n^2}G_n}\right)
  =\frac{171}{350n}+\frac{6483}{3500n^2}+O(n^{-3}).
@@ -996,9 +1178,9 @@ where the sum is over all set partitions of $\{1,\ldots,r\}$. This is a finite
 algebraic definition and does not assume existence of a moment-generating
 function near zero.
 
-\begin{lemma}[Connected power count]\label{lem:cumulants}
+\begin{lemma}[Connected power count]\label{zsm:lem:cumulants}
 For fixed integers $k_i\ge2$,
-\begin{equation}\label{eq:cumulantbound}
+\begin{equation}\label{zsm:eq:cumulantbound}
  \kappa(Q_{2k_1},\ldots,Q_{2k_r})
  =O\left(n^{1-\sum_{i=1}^r(k_i-1)}\right).
 \end{equation}
@@ -1009,7 +1191,7 @@ give multigraphs on these vertices, allowing self-loops. Grouping pairings by
 their connected components is exactly the moment-cumulant recursion, so the
 cumulant is the sum of connected pairings.
 
-There are $M=\sum_i k_i$ paired edges. In each covariance from \eqref{eq:P},
+There are $M=\sum_i k_i$ paired edges. In each covariance from \eqref{zsm:eq:P},
 choose the row-equality term, the column-equality term, or the negative product
 term, denoted respectively R, C, and X. Let $t$ be the number of X edges, and
 let $\rho_R,\rho_C$ be the ranks of the R and C edge graphs on the $r$ vertices;
@@ -1024,7 +1206,7 @@ this includes an unweighted block with $d=0$. The colored term therefore is
 Replace the R and C subgraphs by spanning forests in each of their components,
 and retain the X edges. Connectivity of the full graph is preserved, whence
 $\rho_R+\rho_C+t\ge r-1$. The exponent is at most $r+1-M$, which is the
-one in \eqref{eq:cumulantbound}. Only finitely many pairings and color choices
+one in \eqref{zsm:eq:cumulantbound}. Only finitely many pairings and color choices
 occur at fixed degrees. This argument bounds their absolute sums, without
 using a favorable cancellation or a sign assumption on covariance entries.
 \end{proof}
@@ -1037,7 +1219,7 @@ Write $x=s_2$, $y=s_3$, $z=s_4$, and use
 \]
 These local letters are unrelated to the phase characteristic function or the
 margin subspace used earlier. The bivariate Wick formula gives
-\begin{equation}\label{eq:Kcontraction}
+\begin{equation}\label{zsm:eq:Kcontraction}
  K=\sum_{e,f}\left(h_eh_f^2P_{ef}^2+\frac23h_fP_{ef}^4\right).
 \end{equation}
 For $T$, write
@@ -1047,12 +1229,12 @@ The four possible triples of chaos degrees give
  T={}&\sum_{e,f,g}h_eh_fh_gP_{ef}P_{eg}P_{fg}
  +\frac32\sum_{e,f,g}h_eh_fP_{eg}^2P_{fg}^2\notag\\
  &+2\sum_{e,f,g}h_eP_{ef}P_{eg}P_{fg}^3
- +\sum_{e,f,g}P_{ef}^2P_{eg}^2P_{fg}^2.\label{eq:Tcontraction}
+ +\sum_{e,f,g}P_{ef}^2P_{eg}^2P_{fg}^2.\label{zsm:eq:Tcontraction}
 \end{align}
 All cell indices are unrestricted. For example, the chaos degree triples
 $(2,2,2)$, $(2,2,4)$, $(2,4,4)$, and $(4,4,4)$ have respectively
 $8$, $24$, $192$, and $1728$ pairings for one ordering; the coefficients in
-\eqref{eq:Tcontraction} include the three possible positions in the two mixed
+\eqref{zsm:eq:Tcontraction} include the three possible positions in the two mixed
 cases and the coefficients in $D$.
 
 For reproducibility, the complete polynomial reductions of these contractions
@@ -1063,19 +1245,19 @@ are as follows:
  -\frac53x^2y^2\notag\\
  &-\frac{40}3x^2z-\frac{40}3xy-\frac{76}3xy^2
  +\frac{28}3xyz-\frac{64}3xz-22y^2+40yz+\frac{16}3z-10z^2,
- \label{eq:Kexact}\\
+ \label{zsm:eq:Kexact}\\
  T={}&11nx^3+37x^2+2y-104x^3+124x^4+40x^5+\frac{11}2x^6
  -50x^4y-232x^3y\notag\\
  &+70x^3z-114x^2y+94x^2y^2+50x^2z+46xy+258xy^2
  -210xyz\notag\\
- &+8xz-22y^2-102yz+4z+90z^2.\label{eq:Texact}
+ &+8xz-22y^2-102yz+4z+90z^2.\label{zsm:eq:Texact}
 \end{align}
 We specify an exact finite derivation so these are not identities inferred
 from interpolation. For a degree vector $(d_1,\ldots,d_r)$, enumerate loop
 counts $\ell_i$ and nonnegative off-diagonal edge multiplicities $e_{ij}$ with
 $2\ell_i+\sum_{j\ne i}e_{ij}=d_i$, retaining connected graphs. The number of
 slot pairings for each graph is
-\begin{equation}\label{eq:graphmultiplicity}
+\begin{equation}\label{zsm:eq:graphmultiplicity}
  \frac{\prod_i d_i!}
       {\prod_i(2^{\ell_i}\ell_i!)\prod_{i<j}e_{ij}!}.
 \end{equation}
@@ -1087,9 +1269,9 @@ column blocks along C edges. At each endpoint an R edge adds one column
 weight power, a C edge one row power, and an X edge one of each; a loop adds
 twice at its endpoint. After merging, a block of even degree $2j$ contributes
 $s_j$ and a block of odd degree contributes zero, by reflection. Here $s_0=n$.
-Multiply by \eqref{eq:graphmultiplicity} and the appropriate $q_k$'s, and sum.
-This finite distributive expansion of \eqref{eq:P} proves
-\eqref{eq:Kexact}--\eqref{eq:Texact} for every $n\ge2$. The package implements
+Multiply by \eqref{zsm:eq:graphmultiplicity} and the appropriate $q_k$'s, and sum.
+This finite distributive expansion of \eqref{zsm:eq:P} proves
+\eqref{zsm:eq:Kexact}--\eqref{zsm:eq:Texact} for every $n\ge2$. The package implements
 exactly this symbolic computation and checks the two polynomial coefficient
 lists independently.
 
@@ -1115,13 +1297,13 @@ $(4,4,4)$, double triangle, no loops&1&1728&$2nx^3$\\
 It follows, also directly from the exact polynomials, that
 \begin{align}
  K&=\frac{10}3nxy+4y+\frac{34}3x^2+O(n^{-3})
-    =\frac{13176}{175n^2}+O(n^{-3}),\label{eq:Klead}\\
+    =\frac{13176}{175n^2}+O(n^{-3}),\label{zsm:eq:Klead}\\
  T&=11nx^3+2y+37x^2+O(n^{-3})
-    =\frac{167778}{875n^2}+O(n^{-3}).\label{eq:Tlead}
+    =\frac{167778}{875n^2}+O(n^{-3}).\label{zsm:eq:Tlead}
 \end{align}
 
 \subsection{A finite exponential expansion with an order three remainder}
-Equation~\eqref{eq:finiteQ} with $K=4$ gives
+Equation~\eqref{zsm:eq:finiteQ} with $K=4$ gives
 \[
  \frac{C_n}{2^{n^2}G_n}=\E e^{-Q_4-F-H}+O(n^{-3}).
 \]
@@ -1133,7 +1315,7 @@ absolute moments, use the cumulant partitions of $\E D^aF^bH^c$.
 Singleton $D$ blocks vanish. Every surviving partition has at most
 $\lfloor a/2\rfloor+b+c$ blocks: blocks containing no $F,H$ require at least
 two $D$'s, and each other block can be charged to one $F$ or $H$. By
-Lemma~\ref{lem:cumulants}, its product is
+Lemma~\ref{zsm:lem:cumulants}, its product is
 \[
  O\bigl(n^{-a-2b-3c+\#\text{blocks}}\bigr)
  =O\bigl(n^{-\lceil a/2\rceil-b-2c}\bigr).
@@ -1151,7 +1333,7 @@ $\mu_H=\E H$,
 \begin{align}
  \E e^{-Q_4-F-H}=e^{-m}\bigg[&1-\mu_F-\mu_H+\frac V2+K+
  \frac{\mu_F^2}2-\frac T6\notag\\
- &-\frac{V\mu_F}2+\frac{V^2}8+O(n^{-3})\bigg].\label{eq:secondexp}
+ &-\frac{V\mu_F}2+\frac{V^2}8+O(n^{-3})\bigg].\label{zsm:eq:secondexp}
 \end{align}
 All other degree-at-most-five terms are $O(n^{-3})$ by the displayed partition
 bound. No infinite cumulant series has been interchanged with an expectation.
@@ -1166,8 +1348,8 @@ More generally, $s_r=n^{1-r}(3^r/(2r+1)+O(n^{-2}))$ for fixed $r$; this
 follows by expanding centered even power sums, or by the midpoint sum for the
 fixed polynomial of degree $2r$. The mean of $Q_8$ is
 $\mu_H=(17/24)\sum_eh_e^4$, using the Gaussian eighth moment $105$.
-Equations~\eqref{eq:m}, \eqref{eq:Aexact}, \eqref{eq:Bexact},
-\eqref{eq:H3}, and the displayed fourth leverage sum give the coefficients
+Equations~\eqref{zsm:eq:m}, \eqref{zsm:eq:Aexact}, \eqref{zsm:eq:Bexact},
+\eqref{zsm:eq:H3}, and the displayed fourth leverage sum give the coefficients
 \begin{center}
 \begin{tabular}{crr}
 \toprule
@@ -1183,7 +1365,7 @@ $T$&$0$&$167778/875$\\
 \end{tabular}
 \end{center}
 Taking the ordinary logarithm of the finite expansion
-\eqref{eq:secondexp} cancels its square terms. Its first coefficient is
+\eqref{zsm:eq:secondexp} cancels its square terms. Its first coefficient is
 $L_1=171/350$ as before, and the second is
 \[
  L_2=\frac{39}{100}-\frac{2691}{350}+\frac{2484}{175}
@@ -1196,20 +1378,20 @@ Exponentiating this finite expansion gives
      =\frac{6483}{3500}+\frac{29241}{245000}
      =\frac{483051}{245000},
 \]
-proving \eqref{eq:c2}. The symbolic contraction computation and the independent
+proving \eqref{zsm:eq:c2}. The symbolic contraction computation and the independent
 raw-Gaussian-moment checks in the package use rational arithmetic; they do not
 use finite matrix counts to estimate this coefficient.
 
-\section{Parity aware inversion and integer thresholds}\label{sec:inverse}
+\section{Parity aware inversion and integer thresholds}\label{zsm:sec:inverse}
 \subsection{The logarithmic phase}
 Use $d=12$ on odd indices and $d=3$ on even indices, so that
 $S_n=n(n^2-1)/d$. Define
-\begin{equation}\label{eq:inverseconstants}
+\begin{equation}\label{zsm:eq:inverseconstants}
  A_0=\log2,\quad B_0=\log(2/\pi),\quad
  D_d=\log(2d/\pi),\quad E_d=-\log d-B_0/2-7/5.
 \end{equation}
-Taking logarithms in Theorem~\ref{thm:main} gives, on the specified parity,
-\begin{equation}\label{eq:logphase}
+Taking logarithms in Theorem~\ref{zsm:thm:main} gives, on the specified parity,
+\begin{equation}\label{zsm:eq:logphase}
  \log C_n=A_0n^2-3n\log n+D_dn+3\log n+E_d
           +\sum_{j=1}^Jr_jn^{-j}+O_J(n^{-J-1}).
 \end{equation}
@@ -1236,10 +1418,10 @@ Here
  S_{2m}=\frac{2m(2m-1)(2m+1)}3,\qquad
  \frac{S_{2m-1}}{S_{2m}}=\frac{m-1}{2(2m+1)}.
 \]
-Canceling the powers of four leaves \eqref{eq:parityratio}, since
+Canceling the powers of four leaves \eqref{zsm:eq:parityratio}, since
 $((2m-2)/(2m+1))^{2m-2}\to e^{-3}$.
 On either fixed parity,
-\begin{equation}\label{eq:step2ratio}
+\begin{equation}\label{zsm:eq:step2ratio}
  \frac{C_{n+2}}{C_n}\sim
  2^{4n+4}e^{-6}\left(\frac{2d}{\pi}\right)^2n^{-6}\longrightarrow\infty.
 \end{equation}
@@ -1247,15 +1429,15 @@ Thus each parity subsequence eventually increases strictly and tends to
 infinity, while every sufficiently large even term is below its preceding odd
 term. Once $Y$ exceeds the maximum of the finitely many exceptional early
 terms, its first crossing cannot be even. This proves
-Corollary~\ref{cor:thresholdintro}, without asserting a numerical onset.
+Corollary~\ref{zsm:cor:thresholdintro}, without asserting a numerical onset.
 
 \subsection{The inverse of a smooth asymptotic phase}
 Let $L=\log Y$ and $X=\sqrt{L/A_0}$. A large real root of a smooth truncation of
-\eqref{eq:logphase}, for either $d$, has the expansion
+\eqref{zsm:eq:logphase}, for either $d$, has the expansion
 \begin{align}
  x={}&X+u+
  \frac{A_0u^2+3u-3\log X-E_d}{2A_0X}
- +O\left(\frac{\log^3X}{X^2}\right),\label{eq:smoothinverse}\\
+ +O\left(\frac{\log^3X}{X^2}\right),\label{zsm:eq:smoothinverse}\\
  u={}&\frac{3\log X-D_d}{2A_0}.\notag
 \end{align}
 To verify it, substitute $x=X+u+v/X$. The order-$X$ terms cancel when
@@ -1269,9 +1451,9 @@ order than the $X^{-1}$ term displayed here.
 
 \subsection{Rigorous odd integer envelopes}
 For the odd branch $d=12$, let $M_J(x)$ be the right side of
-\eqref{eq:logphase} truncated after $r_Jx^{-J}$, omitting the sum if $J=0$.
+\eqref{zsm:eq:logphase} truncated after $r_Jx^{-J}$, omitting the sum if $J=0$.
 There are constants $K_J,n_J$ such that, for all odd $n\ge n_J$,
-\begin{equation}\label{eq:phasebounds}
+\begin{equation}\label{zsm:eq:phasebounds}
  M_J(n)-K_Jn^{-J-1}\le\log C_n\le M_J(n)+K_Jn^{-J-1}.
 \end{equation}
 Both bounding functions are strictly increasing for all sufficiently large
@@ -1286,7 +1468,7 @@ Then $x_+\le x_-$. Define
  \ceilodd(x)=2\left\lceil\frac{x-1}2\right\rceil+1,
 \]
 the least odd integer not below $x$. For all sufficiently large $Y$,
-\begin{equation}\label{eq:oddenvelope}
+\begin{equation}\label{zsm:eq:oddenvelope}
  \ceilodd(x_+(\log Y))\le N(Y)\le\ceilodd(x_-(\log Y)).
 \end{equation}
 Indeed every large odd $n<x_+$ has its upper phase bound below $L$, while the
@@ -1305,7 +1487,7 @@ asymptotic information intentionally leaves a rounding ambiguity. No uniform
 single rounded smooth formula follows at all thresholds.
 
 \paragraph{An interpolation qualification.}
-Formula~\eqref{eq:smoothinverse} concerns a smooth asymptotic phase. Even on
+Formula~\eqref{zsm:eq:smoothinverse} concerns a smooth asymptotic phase. Even on
 one parity branch, ordinary piecewise-linear interpolation across intervals
 of length two has a chord error of order one, since the smooth phase's second
 derivative tends to $2\log2$. This can produce an inverse error of order
@@ -1315,7 +1497,92 @@ oscillation. Neither interpolation is silently assigned the smooth formula's
 $X^{-1}$ coefficient. The envelope construction is the rigorous discrete
 inverse statement.
 
-\section{Finite counts and exact reproducible checks}\label{sec:checks}
+\begin{remark}[{[write]} The inversions against the transseries volume, 6~October 2026]\label{zsm:rem:transseries}
+The volume is
+\path{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/}.
+Its symbols are marked ``vol'' where they would collide with this report's
+($h$, $E$, $t$, $f$, $\Lambda$, $\kappa$, $d$). Fix a parity, hence $d$, and
+put $\ell_X:=\log X$.
+\begin{enumerate}
+\item[(a)] \emph{The smooth inverse~\eqref{zsm:eq:smoothinverse} is a formal
+ instance of \file{p0:thm:core-reversion}, after a change of variable, and
+ of no Lambert theorem of the volume.} The core $\Phi_0(X)=A_0X^2$ is
+ admissible in the sense of \file{p0:def:core} ($\Phi_0'=2A_0X>0$ increases
+ to $+\infty$ and $X\Phi_0'\to\infty$), with core solution
+ $X=\sqrt{L/A_0}$, the $X$ of~\eqref{zsm:eq:smoothinverse}. It is neither
+ the linear--logarithmic core $aX+b\log X$ nor the factorial core
+ $X(\kappa_{\rm vol}\log X+d_{\rm vol})$, so~\eqref{zsm:eq:smoothinverse} is
+ not an instance of \file{p0:thm:lambert-core} or
+ \file{p0:prop:factorial-core}, nor of \file{p0:thm:lambert-centered} or
+ \file{p0:thm:flattening}, which concern the model $ax+b\log x+Q(1/x)$.
+ Write the truncated phase of~\eqref{zsm:eq:logphase} as
+ $M(x)=A_0x^2-3x\log x+D_dx+3\log x+E_d+\sum_{j=1}^Jr_jx^{-j}$ and
+ substitute $x=X(1+E_{\rm vol})$, $t_{\rm vol}=1/X$, so that
+ $\log x=\ell_X+\log(1+E_{\rm vol})$. Dividing $M(x)-L$ by $X^2$ gives
+ exactly
+ \[
+  \Lambda_{\rm vol}E_{\rm vol}+h_{\rm vol}(E_{\rm vol})
+  +f_{\rm vol}(t_{\rm vol},E_{\rm vol})=0,\qquad
+  \Lambda_{\rm vol}=2A_0,\quad h_{\rm vol}(u)=A_0u^2,
+ \]
+ \begin{align*}
+  f_{\rm vol}(t,u)={}&t\bigl[D_d(1+u)-3(1+u)\bigl(\ell_X+\log(1+u)\bigr)\bigr]\\
+  &+t^2\bigl[3\ell_X+3\log(1+u)+E_d\bigr]
+  +\sum_{j=1}^Jr_jt^{j+2}(1+u)^{-j},
+ \end{align*}
+ over the commutative $\Q$-algebra $R=\R[\ell_X]$, with $\ell_X$ an
+ indeterminate and $\Lambda_{\rm vol}=2\log2$ invertible; $h_{\rm vol}\in
+ u^2R[[u]]$ and $f_{\rm vol}\in tR[[t,u]]$, as the theorem requires. Its
+ unique solution $E_{\rm vol}=\sum_{n\ge1}e_nt^n$ has, by the triangular
+ recurrence~(\file{p0:eq:core-triangular}), $2A_0e_1=3\ell_X-D_d$ and
+ $2A_0e_2=A_0e_1^2+3e_1-3\ell_X-E_d$ (at order $t^2$ the terms
+ $-3e_1\ell_X+D_de_1$ equal $-2A_0e_1^2$). So $e_1=u$, $e_2=v$, and
+ $x=X+e_1+e_2X^{-1}+\cdots$ is~\eqref{zsm:eq:smoothinverse} through its
+ $X^{-1}$ term. The source's ``higher inverse coefficients follow
+ recursively by formal substitution'' is that recurrence; $r_1$ enters first
+ at order $t^3$, that is in the $X^{-2}$ term of~$x$, as the source says.
+ The instance is formal only: \file{p0:thm:core-reversion} is a statement
+ about formal series, and the analytic statement, that the large root of
+ the truncated phase differs from the truncation through $e_2$ by
+ $O(\log^3X/X^2)$, is the source's own argument; for higher truncations
+ see Question~\ref{zsm:q:smoothinverse}.
+\item[(b)] \emph{The first threshold and the odd envelopes are analogues,
+ not instances, of \file{p0:thm:staircase}.} The staircase of
+ \file{p0:def:three-inverses} presupposes a sequence strictly increasing
+ from some index on, and $(C_n)$ is not: by~\eqref{zsm:eq:parityratio},
+ $C_{2m}<C_{2m-1}$ for all large~$m$. Each parity subsequence is eventually
+ strictly increasing by~\eqref{zsm:eq:step2ratio}, and the proof of
+ \file{p0:thm:staircase}(4) uses only such classwise monotonicity; read
+ that way, (4) with $r=2$ gives
+ $N(Y)=\min\bigl(2\lceil\nu_0(Y)/2\rceil,\ \ceilodd(\nu_1(Y))\bigr)$ for
+ large $Y$, for any admissible interpolations of the two classes (the
+ parity pattern of \file{p0:rem:parity-instances}), and
+ Corollary~\ref{zsm:cor:thresholdintro} says that the odd candidate is the
+ minimum. But (4) is stated under the standing hypothesis that $(C_n)$
+ violates, so this is an extension of the volume's statement, not an
+ instance. The envelope~\eqref{zsm:eq:oddenvelope} is likewise an analogue
+ of \file{p0:thm:staircase}(2): $x_\pm$ are roots of two smooth envelopes
+ evaluated at odd integers, not approximations, with a proved error bound,
+ to the inverse of an interpolation (the paragraph above explains why an
+ interpolated inverse may differ from the smooth one at order $X^{-1}$); the
+ ambiguity when $\ceilodd(x_+)\ne\ceilodd(x_-)$ is the failure mode
+ of~(2).
+\item[(c)] \emph{No continuous formula.} For all large $k$,
+ $N(Y)=2k+1$ on $(C_{2k-1},C_{2k+1}]$: $N(Y)$ is odd there by
+ Corollary~\ref{zsm:cor:thresholdintro}, the odd subsequence is eventually
+ strictly increasing, and $C_{2k-1}$ exceeds the finitely many early terms.
+ So $N$ jumps by $2$ at $Y_0=C_{2k-1}$, and for every continuous $g$, as in
+ the proof of \file{p0:thm:staircase}(5),
+ $2=|N(Y_0+\varepsilon)-N(Y_0)|\le|N(Y_0+\varepsilon)-g(Y_0+\varepsilon)|
+ +|g(Y_0+\varepsilon)-g(Y_0)|+|g(Y_0)-N(Y_0)|$; letting
+ $\varepsilon\downarrow0$ gives $\sup_{Y\ge Y_1}|N(Y)-g(Y)|\ge1$ for every
+ $Y_1$. This makes precise the source's sentence that no uniform single
+ rounded smooth formula follows.
+\end{enumerate}
+No novelty is claimed for these inversions.
+\end{remark}
+
+\section{Finite counts and exact reproducible checks}\label{zsm:sec:checks}
 \subsection{An exact meet in the middle formula}
 Let
 \[
@@ -1326,13 +1593,13 @@ into positive, negative, and, if $n$ is odd, one zero weight. Reflection pairs
 the positive and negative lists. For a choice of rows $v_k\in V_n$ indexed by
 the positive weights $k$, form $s=\sum_{k>0}kv_k\in\Z^n$ and let $f_n(s)$ be
 the number of such choices producing $s$. Then
-\begin{equation}\label{eq:MITM}
+\begin{equation}\label{zsm:eq:MITM}
  C_n=b_n^{\,n\bmod2}\sum_{s\in\Z^n}f_n(s)^2.
 \end{equation}
 The column constraints say that the positive and reflected-negative weighted
 row sums agree; their choices are independent and use the same list of
 weights. When present, the row of weight zero is any element of $V_n$. This
-proves \eqref{eq:MITM} exactly.
+proves \eqref{zsm:eq:MITM} exactly.
 
 The finite values are
 \begin{center}
@@ -1358,6 +1625,61 @@ positive weighted row tuples. The standard build's bounded check range and any
 optional larger enumeration are documented explicitly in the code package;
 recorded $n=9$ evidence is not mislabeled as a fresh default replay.
 
+\begin{writenote}[The $n=9$ evidence and the program that is not shipped, 6~October 2026]
+The package's \file{DATA_SOURCES.md} and \file{data-README.md} (delivered
+\file{data/README.md}) say that ``all nine diagonal values were
+independently checked by a C++ positive/negative-row meet-in-the-middle
+implementation'', and \file{data/reference.json} records $n=9$ as such a
+``recorded independent computation''. That C++ program is not part of the
+delivered package, so this report cannot ship it, and the claim cannot be
+checked as stated. It is not needed: the shipped Python
+(\file{code/check_exact.py}, option \texttt{--max-n9}) recomputes
+$C_9=1808243216$ from the $7{,}311{,}616$ tuples in about ten seconds on a
+copy of the delivered layout (rerun at the dossier and at the write), the
+intake's own programs reproduce $C_1,\dots,C_9$, and the OEIS records the
+same values (Remark~\ref{zsm:rem:oeisdata}).
+\end{writenote}
+
+\begin{remark}[{[write]} The OEIS records, and $C_{10}$, 6~October 2026]\label{zsm:rem:oeisdata}
+The entry A222959~\cite{oeis959} (revision~\#8, read on 6~October 2026) is
+named
+\begin{center}\small
+\parbox{0.92\textwidth}{\raggedright\texttt{T(n,k)=Number of nXk 0..1 arrays with every row and column least squares fitting to a zero slope straight line, with a single point array taken as having zero slope.}}
+\end{center}
+(quoted verbatim). Write $T_{959}(n,k)$ for this array, so that
+$C_n=T_{959}(n,n)$, and $C_1=2$ is the entry's single-point convention. Its
+data lines list the array by antidiagonals, $T_{959}(n,k)$ at index
+$(n+k-1)(n+k-2)/2+n$ (the array is symmetric), and reach the diagonal only
+through $T_{959}(6,6)=512$; the value $8000$ that occurs there is
+$T_{959}(5,7)$, not a diagonal term. The comment ``Table starts'' displays
+the array for $n\le12$ rows, with the diagonal $2, 2, 16, 16, 512, 512,
+323600, 144930, 1808243216$ for $n\le9$, the values of the table above. The
+entry links Hardin's b-file of $199$ terms~\cite{bfiles}, which the source
+could not retrieve (HTTP~403) and the write could: its diagonal entries for
+$n\le9$ are the same, and its index~$181$ gives
+\[
+ C_{10}=T_{959}(10,10)=615667968 .
+\]
+A222955~\cite{oeis955} is the first column, $b_n=T_{959}(n,1)$ (its
+cross-reference reads ``Column 1 of A222959''); its data and b-file agree
+with the alphabet sizes of Section~\ref{zsm:sec:checks} for $n\le14$, and
+its formula line says only ``An asymptotic formula for a(n) can be found in
+Prodinger's paper.''
+
+\emph{Independent counts.} A meet-in-the-middle program written for the
+write (not part of this report), which evaluates~\eqref{zsm:eq:MITM} with
+the sums $s$ partitioned exactly by their first two coordinates, gives
+$C_n$ for $2\le n\le10$; for $n\le9$ these are the table's values, and for
+$n=10$ ($b_{10}=48$, $48^5=254{,}803{,}968$ positive row tuples) it gives
+$615667968$, the b-file value. \emph{One more ratio.} At $n=10$ the ratio
+of $C_n$ to $2^{n^2}G_ne^{-7/5}$ is $6670.0$ (and $6241.9$ after division
+by $1+c_1/n+c_2/n^2$; the corresponding values at $n=7,8,9$ are $19.05$,
+$3259.4$ and $21.94$). The even-index ratios grow from $n=8$ to $n=10$
+while the odd ones stay near~$22$: at these sizes the counts are further
+from the asymptotic regime on even indices, which is consistent with the
+source's warning and validates nothing. Nothing was submitted to the OEIS.
+\end{remark}
+
 \subsection{Why these values do not validate the asymptotic numerically}
 For $n=7,8,9$, the ratios of the exact counts to $2^{n^2}G_ne^{-7/5}$ are
 approximately $21.15$, $3558.9$, and $23.66$. These large discrepancies are
@@ -1365,7 +1687,7 @@ strongly preasymptotic, not confirmation of numerical asymptotic accuracy.
 A simple admissible sector already explains some small-dimension structure:
 matrices palindromic in both rows and columns have
 $\lceil n/2\rceil^2$ free binary entries, and hence
-\begin{equation}\label{eq:palindromic}
+\begin{equation}\label{zsm:eq:palindromic}
  C_n\ge2^{\lceil n/2\rceil^2}.
 \end{equation}
 Opposite weights cancel pairwise in each row and column, proving this bound.
@@ -1408,7 +1730,32 @@ verification in a proof assistant. Reproducible PDF bytes are claimed only for
 a fixed installed TeX toolchain; independent toolchain versions may render the
 same source with different bytes.
 
-\section{Primary source comparison and limits of the search}\label{sec:literature}
+\begin{writenote}[The package here, and the intake reruns, 6~October 2026]
+``The accompanying source archive'' is the delivered one. In this report its
+programs are in \file{code/} (\file{matrix_exact.py}, \file{check_exact.py},
+\file{derive_second_correction.py}, \file{verify_second_correction.py}, and
+the delivered root files \file{reproduce.py}, \file{build.py},
+\file{verify_manifest.py}, \file{test_build.py}); the provenance record
+\file{code/PROVENANCE.json} is \file{data/PROVENANCE.json}; the generated
+receipts \file{generated/*.json} are \file{data/generated-*.json}; the code
+and data READMEs are \file{code-README.md} and \file{data-README.md}; the
+manuscript is \file{article.tex}; the checksum manifest and the PDF are not
+shipped. The programs pin these files by path and SHA-256 and the manifest
+checker expects the closed delivered inventory, so they run only on a copy
+of the delivered layout (the report README gives the route). On a fresh
+extraction of the archive at the write (Windows, Python 3.14.4):
+\texttt{verify\_manifest.py} passes (21 files); \texttt{reproduce.py} passes
+in about 12~s, and both its normal and optimized \file{exact_checks.json}
+equal the delivered receipt byte for byte; \texttt{test\_build.py} passes
+with 321 tests (84 acceptance, 237 rejection), against 326 (242 rejection)
+in the delivered \file{generated/build_guards.json} (the five others, three
+named-pipe and two double-slash-path rejections, run only where
+\texttt{os.mkfifo} exists or \texttt{os.name} is \texttt{posix}); the optional
+\texttt{--max-n9} run reproduces $C_9$. The PDF and archive builder was not
+run.
+\end{writenote}
+
+\section{Primary source comparison and limits of the search}\label{zsm:sec:literature}
 This section separates established predecessors from the specific theorem
 proved here. The comparison is based on the primary statements identified
 below, rather than titles alone. Its scope is a focused search completed on
@@ -1438,6 +1785,42 @@ quoted one-dimensional leading forms are
 The row interpretation and its asymptotics are therefore prior work. They do
 not by themselves count simultaneous row and column constraints in a square
 matrix, whose number of independent equations grows with $n$.
+
+\begin{writenote}[6 October 2026]
+The A222959 b-file that the source could not retrieve is available and is
+used in Remark~\ref{zsm:rem:oeisdata}. The forms displayed above agree with
+Richomme's Theorem~5.12,
+$b_n\sim2^{2\lfloor(n-1)/2\rfloor+1}(3/\pi)^{1/2}\lfloor n/2\rfloor^{-3/2}$,
+read by the write; Prodinger's paper was not read.
+\end{writenote}
+
+\begin{remark}[{[write]} The conjecture recorded in A222955 is a theorem, 6~October 2026]\label{zsm:rem:wiseman}
+The entry A222955~\cite{oeis955} (revision~\#24, 17~March 2026, read on
+6~October 2026) carries the comment
+\begin{center}\small
+\parbox{0.92\textwidth}{\raggedright\texttt{Conjecture: A binary word is counted iff it has the same sum of positions of 1's as its reverse, or, equivalently, the same sum of partial sums as its reverse. - \_Gus Wiseman\_, Jan 07 2023}}
+\end{center}
+(quoted verbatim). Richomme proved it~\cite{richomme}: his Theorem~5.13
+identifies the zero-slope words with the fair words, and his Theorem~5.14
+states that a binary word is fair exactly when the positions of one letter
+have the same sum in the word and in its mirror image; his introduction says
+the paper
+solves ``a 2023 conjecture presented in'' the entry. The entry still labels
+the comment a conjecture. \emph{A second, direct proof} of both forms, in
+the notation of Section~\ref{zsm:sec:main}: for $v\in\{0,1\}^n$ put
+$|v|=\sum_jv_j$, $P(v)=\sum_jjv_j$ and $v^R_j=v_{n+1-j}$. Then
+$P(v^R)=\sum_j(n+1-j)v_j=(n+1)|v|-P(v)$, so $P(v)=P(v^R)$ if and only if
+$P(v)=(n+1)|v|/2$. For $n\ge2$ the slope numerator of
+Section~\ref{zsm:sec:main} is $\sum_j(j-(n+1)/2)v_j=P(v)-(n+1)|v|/2$, so
+the slope vanishes exactly when $v$ and $v^R$ have the same sum of
+positions of $1$'s. The sum of the partial sums of $v$ is
+$\sum_{k=1}^n\sum_{i\le k}v_i=\sum_i(n+1-i)v_i=P(v^R)$, and that of $v^R$ is
+$P(v)$; so the second form is the same condition. For $n=1$ both words are
+counted by the entry's convention and both equal their reverses, so the
+statement holds for every $n\ge1$. In particular $b_n$ counts the words with
+$w^Tv=0$, as Section~\ref{zsm:sec:checks} uses. Nothing was submitted to the
+OEIS.
+\end{remark}
 
 \subsection{Fair picture arrays have weaker aggregate conditions}
 Bera, Sriram, Nagar, Pan, and Subramanian study Parikh matrices of binary picture
@@ -1494,7 +1877,7 @@ central region. Its ordinary contingency-margin specialization does not
 verify that condition for growing signed arithmetic-progression coefficients.
 We credit the maximum-entropy, Fourier, and Wick correction framework; we
 prove the necessary problem-specific global estimate in
-Sections~\ref{sec:inverselemmas}--\ref{sec:defects} instead of treating the
+Sections~\ref{zsm:sec:inverselemmas}--\ref{zsm:sec:defects} instead of treating the
 framework as an automatic theorem.
 
 \subsection{General high dimensional lattice counting}
@@ -1536,14 +1919,32 @@ defect-core localization proof. Absolute priority remains open. The package's
 source ledger records links, inspected theorem scope, and retrieval limits;
 no novelty assertion rests on a search-result title or absence from a catalog.
 
-\section{Limitations and further research}\label{sec:limits}
+\section{Limitations and further research}\label{zsm:sec:limits}
+\begin{writenote}[Added 6 October 2026, batch~108]
+This section serves as the report's ``Further questions and research''
+section under Vladimir Reshetnikov's standing rule of 4~October 2026: every
+claim of the source that is not proved in full is stated here as an open
+question, with its source, the argument offered and what is missing. Items
+1--7 are the source's and state their own source, sketch and gap; its other
+non-claims are collected in Section~\ref{zsm:sec:provenance}. The intake and
+the write found no false claim in the source. Two further statements of the
+source are not proved in full: the sentence of
+Section~\ref{zsm:sec:inverse} on higher inverse coefficients (now
+Question~\ref{zsm:q:smoothinverse}), and the package's statement that a C++
+program checked all nine counts (that program is not shipped; the counts
+are reproduced, note in Section~\ref{zsm:sec:checks}). Item~5 is advanced by
+Proposition~\ref{zsm:prop:narrow} below, which sharpens the palindromic
+bound~\eqref{zsm:eq:palindromic}, and item~1 by the count $C_{10}$
+(Remark~\ref{zsm:rem:oeisdata}): at $n=10$ the ratio to the main term is
+about $6670$, so the even branch is still far from its asymptotic regime.
+\end{writenote}
 The following questions are not resolved by the theorem or by its code.
 \begin{enumerate}
 \item \textbf{Practical error and onset.} The proof is eventual and deliberately
 uses tiny absolute thresholds. A useful explicit error bound at accessible
 $n$ would require substantially sharper localization and local estimates.
 The small exact values cannot locate that onset.
-\item \textbf{Higher explicit coefficients.} Formula~\eqref{eq:cj} gives every
+\item \textbf{Higher explicit coefficients.} Formula~\eqref{zsm:eq:cj} gives every
 fixed coefficient by a finite computation, and $c_1,c_2$ have been evaluated
 here. The supplied contraction-class computation treats the two contractions
 needed at second order. Extending that implementation systematically could
@@ -1570,6 +1971,86 @@ could find additional predecessors. A formal proof assistant development
 would require encoding the global inverse lemmas, Haar normalization, and
 uniform analytic remainders; the current standard-library checks are not
 such a formalization.
+\end{enumerate}
+
+For $n,k\ge1$ let $T_{959}(n,k)$ be the number of $n\times k$ binary arrays
+whose $n$ rows (of length $k$) and $k$ columns (of length $n$) all have zero
+least-squares slope, length one counting as zero slope; so
+$T_{959}(n,n)=C_n$, $T_{959}(n,1)=b_n$, and $T_{959}$ is the array of
+A222959 (Remark~\ref{zsm:rem:oeisdata}).
+
+\begin{proposition}[{[write]} Palindromic rows, narrow arrays]\label{zsm:prop:narrow}
+\begin{enumerate}
+\item[(1)] For all $n,k\ge1$, $T_{959}(n,k)\ge b_n^{\lceil k/2\rceil}$.
+\item[(2)] Equality holds in~(1) for every $n\ge1$ when $k\le6$, and fails
+ for every $n\ge1$ when $k\ge7$.
+\item[(3)] $C_n\ge b_n^{\lceil n/2\rceil}\ge2^{\lceil n/2\rceil^2}$ for
+ $n\ge1$, and $b_n^{\lceil n/2\rceil}/(2^{n^2}G_n)\to0$.
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+A palindrome $v\in\{0,1\}^k$ has zero slope: for $k\ge2$ the positions $j$
+and $k+1-j$ carry opposite weights $\pm(j-(k+1)/2)$ and equal entries, so
+the slope numerator of Section~\ref{zsm:sec:main} vanishes; for $k=1$ by
+convention. There are $2^{\lceil k/2\rceil}$ palindromes of length $k$, so
+$b_k\ge2^{\lceil k/2\rceil}$.
+
+(1) An $n\times k$ array all of whose rows are palindromes has column $j$
+equal to column $k+1-j$. Such an array is counted exactly when each column
+lies in $V_n$ (its rows have zero slope already), and its columns
+$1,\dots,\lceil k/2\rceil$ can be chosen freely in $V_n$ and determine it.
+This gives $b_n^{\lceil k/2\rceil}$ distinct counted arrays.
+
+(2) For $k\le6$, $b_k=2,2,4,4,8,8=2^{\lceil k/2\rceil}$ (the table of
+Section~\ref{zsm:sec:checks}, and A222955), so the zero-slope words of
+length $k$ are exactly the palindromes; every counted array then has
+palindromic rows, and~(1) is an equality. For $k\ge7$ let $u$ have its ones
+at positions $\{1,4,k-2,k-1\}$, four distinct positions since $k-2\ge5$.
+Then $\sum_jju_j=2k+2=(k+1)|u|/2$, so $u$ has zero slope (by the
+computation in Remark~\ref{zsm:rem:wiseman}), and $u$ is not a palindrome:
+its mirror image has its ones at $\{2,3,k-3,k\}$, which contains~$2$. The
+$n\times k$ array all of whose rows equal $u$ is counted, because its
+columns are constant and a constant column has zero slope ($\sum_iw_i=0$
+for $n\ge2$; convention for $n=1$); its rows are not palindromes, so it is
+not among the arrays of~(1), and the inequality is strict.
+
+(3) Take $k=n$ in~(1) and use $b_n\ge2^{\lceil n/2\rceil}$. Since
+$b_n\le2^n$, $b_n^{\lceil n/2\rceil}\le2^{n(n+1)/2}$, while
+$\log(2^{n^2}G_n)=n^2\log2-3n\log n+O(n)$ by~\eqref{zsm:eq:G}; the ratio is at
+most $\exp(-n^2\log2/2+O(n\log n))\to0$.
+\end{proof}
+Part~(2) explains the equal columns of the displayed OEIS array
+($T_{959}(n,1)=T_{959}(n,2)=b_n$, $T_{959}(n,3)=T_{959}(n,4)=b_n^2$,
+$T_{959}(n,5)=T_{959}(n,6)=b_n^3$; for instance $T_{959}(7,5)=20^3=8000$,
+the value noted in Remark~\ref{zsm:rem:oeisdata}). Part~(3) improves the
+palindromic bound~\eqref{zsm:eq:palindromic}: at $n=7,8,9,10$ it gives
+$160000$, $104976$, $380204032$ and $254803968$, against $2^{16}$, $2^{16}$,
+$2^{25}$, $2^{25}$ and the counts $323600$, $144930$, $1808243216$,
+$615667968$. Like that bound, it is negligible as $n\to\infty$; it says that
+the row-palindromic sector alone already carries $72\%$ of $C_8$ and $41\%$
+of $C_{10}$, part of the small-dimension structure of item~5.
+
+\begin{enumerate}[start=8]
+\item\label{zsm:q:smoothinverse} \textbf{Higher terms of the smooth inverse}
+ (source: Section~\ref{zsm:sec:inverse}, ``Higher inverse coefficients follow
+ recursively by formal substitution, using the finite-order remainders to
+ justify any fixed truncation''). The formal coefficients are those of the
+ instance of \file{p0:thm:core-reversion} in
+ Remark~\ref{zsm:rem:transseries}(a), polynomials in $\log X$. The source
+ proves the error $O(\log^3X/X^2)$ for the truncation through the $X^{-1}$
+ term. Open, as written: for each fixed $N$, an error bound for the
+ truncation through $e_N$ for the large root of the truncated phase. Missing:
+ the written estimate, which the source gives in one sentence (substitute
+ the truncation into the phase, bound the defect, divide by the phase
+ derivative $\sim2A_0X$).
+\item\label{zsm:q:narrow} \textbf{Fixed width} (added by the write, not a
+ claim of the source). For fixed $k\ge7$, the asymptotics of
+ $T_{959}(n,k)$ as $n\to\infty$: a $k$-variable local limit over the finite
+ row alphabet $V_k$, with the parity of $n$ entering through the column
+ weights. Proposition~\ref{zsm:prop:narrow} settles $k\le6$ exactly; for
+ $k\ge7$ only the lower bound $b_n^{\lceil k/2\rceil}$, strict, is known
+ here. Missing: the local limit theorem for this lattice, as in
+ Section~\ref{zsm:sec:lattice} with a fixed number of columns.
 \end{enumerate}
 
 \clearpage
@@ -1609,5 +2090,10 @@ arXiv:1301.3928v1 (2013), author copy
 \bibitem{aw} A. J. Aw, \emph{Asymptotic enumeration of admixed arrays and a
 different independence heuristic}, arXiv:2604.08857v1 (2026),
 \url{https://arxiv.org/html/2604.08857v1}.
+\bibitem{bfiles} R. H. Hardin, \emph{Table of n, a(n) for n = 1..199} (A222959,
+by antidiagonals) and \emph{Table of n, a(n) for n = 1..210} (A222955), OEIS
+b-files, \url{https://oeis.org/A222959/b222959.txt} and
+\url{https://oeis.org/A222955/b222955.txt}. Read by the ProveIt write on
+6 October 2026.
 \end{thebibliography}
 \end{document}

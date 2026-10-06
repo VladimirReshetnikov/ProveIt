@@ -27,6 +27,13 @@
 \newcommand{\Rea}{\operatorname{Re}}
 \newcommand{\Imma}{\operatorname{Im}}
 \newcommand{\ceil}[1]{\left\lceil #1\right\rceil}
+% Added by the ProveIt write phase (batch 108, 6 October 2026): dated notes
+% marked [write] and a macro for file, label and declaration names.
+\newcommand{\file}[1]{\nolinkurl{#1}}
+\expandafter\def\expandafter\UrlBreaks\expandafter{\UrlBreaks\do\-\do\_\do\.}
+\newenvironment{writenote}[1][]{\par\smallskip\begingroup\small
+ \noindent\textbf{[write]}\if\relax\detokenize{#1}\relax\else~\textbf{#1.}\fi\ }%
+ {\par\endgroup\smallskip}
 \title{Sparse binary matrices with line sums at most two\\\large Exact counts and all fixed order asymptotics}
 \author{Report 168}
 \date{3 October 2026}
@@ -60,49 +67,85 @@ asymptotics, not a complete beyond-all-orders description. Remainder
 constants and eventual thresholds are existential, not numerically
 certified.
 \end{abstract}
+
+\begin{writenote}[Status and trust boundary, added 6 October 2026, batch~108]
+This is bundle Report~168 of an external AI-assisted research session, filed
+in ProveIt as the single-source research report
+\file{a197458-line-sum-two-matrices} (provenance, the sources as the write
+read them, relation to the repository, reading conventions and the collected
+non-claims in Section~\ref{sbm:sec:provenance}). It is unrefereed and not
+formalized; its author line reads ``Report 168'' and its PDF author field is
+empty. \emph{What rests on what.} The generating function~\eqref{sbm:eq:egf},
+the Bessel diagonal~\eqref{sbm:eq:bessel}, the differential
+equation~\eqref{sbm:eq:ode} and the recurrence~\eqref{sbm:eq:recurrence} are
+exact identities; the first is equivalent to a formula recorded in OEIS
+A062154 (Remark~\ref{sbm:rem:oeis}). Theorem~\ref{sbm:thm:main},
+Corollary~\ref{sbm:cor:log} and Theorems~\ref{sbm:thm:smooth-inverse}
+and~\ref{sbm:thm:integer} are proved by the source's own saddle-point
+argument (Sections~\ref{sbm:sec:bessel}--\ref{sbm:sec:inverse}), which uses
+no computation and no external asymptotic theorem beyond Stirling's formula;
+their constants and onsets are existential. The ODE route to
+$c_1,\dots,c_4$ after the proof of Theorem~\ref{sbm:thm:main} is an identity
+check only. The write adds, with proofs: Remark~\ref{sbm:rem:oeis} (the OEIS
+entries A197458, A062154, A062156 and A001499, quoted; the source's
+generating function as $e^{x+y-xy}$ times the A062154 formula; the
+exactly-two family A001499 inside the same decomposition, with Knuth's
+equivalent and the ratio $a_n/\mathrm{A001499}(n)$);
+Remark~\ref{sbm:rem:transseries} (the inverses against the transseries
+volume: $N$ is an instance of the factorial core, the
+expansion~\eqref{sbm:eq:inverse} truncates an instance of the formal core
+reversion, and Theorem~\ref{sbm:thm:integer} follows from the staircase
+theorem through an explicit admissible interpolation);
+Lemma~\ref{sbm:lem:transfer} and Proposition~\ref{sbm:prop:offset} (the
+expansion for $(n+d)\times n$ matrices with $d$ fixed, and an independent
+Poisson$(1)$ limit for the numbers of zero rows and zero columns, which
+advance two of the source's questions); notes on the reruns and on the
+literature; and the numbered open questions at the end of
+Section~\ref{sbm:sec:future}. Nothing was submitted to the OEIS.
+\end{writenote}
 \newpage
 \tableofcontents
 \medskip
 \noindent\textbf{Reading guide.}
-Section~\ref{sec:results} states the asymptotic results. Sections
-\ref{sec:exact}--\ref{sec:gaussian} prove the exact formulas and the
-coefficient expansion. Section~\ref{sec:inverse} proves real and integer
-inversion. Sections~\ref{sec:checks}--\ref{sec:literature} record
+Section~\ref{sbm:sec:results} states the asymptotic results. Sections
+\ref{sbm:sec:exact}--\ref{sbm:sec:gaussian} prove the exact formulas and the
+coefficient expansion. Section~\ref{sbm:sec:inverse} proves real and integer
+inversion. Sections~\ref{sbm:sec:checks}--\ref{sbm:sec:literature} record
 reproducibility and the precisely bounded source coverage. All analytic
 arguments used for the main theorem are included.
 \newpage
 
-\section{Results and conventions}\label{sec:results}
+\section{Results and conventions}\label{sbm:sec:results}
 Rows and columns are individually labeled. A line means either a row
 or a column. Write $b_n=a_n/(n!)^2$, and use $[z^k]$ for coefficient
 extraction. Every asymptotic statement below is as its argument tends
 to positive infinity. An order index such as $J$ is fixed before the
 limit; implied constants may depend on it.
 
-\begin{theorem}\label{thm:main}
+\begin{theorem}\label{sbm:thm:main}
 For each integer $J\geq0$ there are constants $c_j\in\QQ(\sqrt2)$ such
 that
-\begin{equation}\label{eq:main}
+\begin{equation}\label{sbm:eq:main}
  a_n=\frac{(n!)^2e^{2\sqrt{2n}}}{2^{5/4}\pi n^{3/4}}
  \left(\sum_{j=0}^J c_jn^{-j/2}
               +O_J\bigl(n^{-(J+1)/2}\bigr)\right).
 \end{equation}
 The first five coefficients are
-\begin{align}\label{eq:cs}
+\begin{align}\label{sbm:eq:cs}
  c_0&=1,&c_1&=-\frac{17\sqrt2}{96},&c_2&=\frac{6409}{9216},\notag\\
  c_3&=-\frac{18114133\sqrt2}{13271040},&
  c_4&=\frac{13052721749}{2548039680}.
 \end{align}
-The finite rule in Section~\ref{sec:gaussian} specifies every $c_j$.
+The finite rule in Section~\ref{sbm:sec:gaussian} specifies every $c_j$.
 \end{theorem}
 The theorem asserts a Poincar\'e expansion at every fixed order. It
 neither asserts convergence of the formal coefficient series nor
 identifies every exponentially small contribution. In particular,
 letting $J$ grow with $n$ is not justified by the theorem.
 
-\begin{corollary}\label{cor:log}
+\begin{corollary}\label{sbm:cor:log}
 The logarithmic expansion begins
-\begin{align}\label{eq:log}
+\begin{align}\label{sbm:eq:log}
  \log a_n={}&2n(\log n-1)+2\sqrt{2n}
        +\tfrac14\log n-\tfrac14\log2\notag\\
  &-\frac{17\sqrt2}{96\sqrt n}+\frac{319}{384n}
@@ -121,7 +164,139 @@ is
 Positivity of the leading normalized quantity for sufficiently large
 $n$ justifies taking its logarithm with the stated remainder.
 
-\section{Exact component decomposition and diagonal}\label{sec:exact}
+\subsection{Provenance, sources and reading conventions}\label{sbm:sec:provenance}
+\begin{writenote}[Added 6 October 2026, batch~108]
+\emph{Provenance.} This report is Report~168 of the session bundle that
+ProveIt's \file{docs/incoming} intake processed as batch~108: the archive
+\file{Sparse_Binary_Matrices_All_Orders_and_Inverses_Source.zip}
+(523{,}157 bytes, SHA-256 \file{b67e3c4e515b...32a02a9a0b8}, 24 files at the
+archive root, no wrapper directory), arrival commit \file{60f54ea06}, placed
+in \file{602e5bd0f}. The text is the delivered \file{Report168.tex} (879
+lines, dated 3~October 2026), shipped as \file{article.tex}. The delivered
+15-page PDF and the checksum manifest \file{SHA256SUMS} (23 entries,
+verified at placement) are not shipped, and the delivered README is replaced
+by the report README; all three are retrievable from the arrival commit. The
+package records no ProveIt commit (it cites nothing in the repository), no
+``prepared for private review'' line and no personal data. It is a
+single-source report, so no merge choice was made. The write prefixed the
+50 delivered labels with \file{sbm:} and updated the 45 references to them;
+it added this subsection, the notes marked [write],
+Remarks~\ref{sbm:rem:oeis} and~\ref{sbm:rem:transseries},
+Lemma~\ref{sbm:lem:transfer}, Proposition~\ref{sbm:prop:offset}, the
+numbered questions at the end of Section~\ref{sbm:sec:future} and two
+bibliography entries. No statement, proof or number of the source was
+changed: the added statements are the last numbered items of their
+sections, the added subsection is the only numbered subsection, and the
+added displays are unnumbered, so every theorem, section and equation of the
+source keeps its delivered number.
+
+\emph{The sources, as the write read them} (6~October 2026).
+\begin{itemize}\raggedright
+\item OEIS A197458~\cite{oeis}: the live entry is still revision~\#25
+ (8~April 2020), the revision the source used; its 17 terms are those frozen
+ in \file{data/oeis_fixtures.json}, and it still has no asymptotic formula.
+ Its name is quoted in Remark~\ref{sbm:rem:oeis}; the source's bibliography
+ paraphrases it.
+\item OEIS A062154 (revision~\#14, 18~August 2024), A062156 (\#7,
+ 3~February 2021)~\cite{companion} and A001499 (\#130, 21~September
+ 2026)~\cite{regular}, quoted in Remark~\ref{sbm:rem:oeis}; A283500 and
+ A247158~\cite{oeisk}, which list A197458 as the column $k=2$ of the square
+ ``at most $k$ ones'' family and cite Mathar's note.
+\item The abstract of Ordentlich, Parvaresh and Roth~\cite{opr} (through
+ Crossref), on the regime $k=n/2$ of that family; the source does not cite it.
+\item The transseries volume
+ \path{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex}:
+ \file{p0:def:core}, \file{p0:prop:factorial-core},
+ \file{p0:rem:factorial-core}, \file{p0:thm:core-reversion},
+ \file{p0:rem:core-instances}, \file{p0:def:three-inverses} and
+ \file{p0:thm:staircase}, read for Remark~\ref{sbm:rem:transseries}.
+\item Not read by the write: Mathar's note~\cite{mathar}, the Math Stack
+ Exchange thread~\cite{mse}, Goulden and Jackson's exercise, Knuth's
+ solution, Greenhill, McKay and Wang~\cite{gmw}, and Caizergues and
+ de~Panafieu~\cite{cp}. What Section~\ref{sbm:sec:literature} says about them
+ is the source's; \file{data/SOURCE_PROVENANCE.json} records what the source
+ inspected.
+\end{itemize}
+
+\emph{What was checked at intake.} The batch-108 dossier read the
+manuscript, recomputed the constants of Corollary~\ref{sbm:cor:log}, and
+reran the companion on copies (all 17 OEIS terms, the ODE recurrence to
+$n=200$, the four corrections; 35 companion tests pass; 10 of the 11 release
+tests error on Windows, which the delivered README says need POSIX). The
+write rechecked the proofs line by line and found no error; it rederived the
+component table and~\eqref{sbm:eq:egf}, the loss~\eqref{sbm:eq:D}, the
+endpoint difference~\eqref{sbm:eq:endpoint}, the scaling~\eqref{sbm:eq:scale}
+and the leading constant, the Bessel coefficients $\gamma_k$, the expansions
+\eqref{sbm:eq:hexp} and the inverse residual~\eqref{sbm:eq:inverse-residual}
+with~$\delta_1$, and made the independent computations recorded at the end of
+Section~\ref{sbm:sec:checks} (terms of A197458, A062156 and A001499 by its
+own programs; Theorem~\ref{sbm:thm:main}, Corollary~\ref{sbm:cor:log} and
+Theorem~\ref{sbm:thm:smooth-inverse} against exact values to $n=4000$).
+Finite computations are observations, not certificates.
+
+\emph{Relation to the repository.} Before batch~108 no file of the
+repository mentioned A197458, A062154, A062156, A001499 or binary matrices
+with line sums at most two, and none does outside this report and the
+collection catalogue. No statement of this report is formalized in Lean or
+Rocq, and its place in the collection confers no formal status. The inverses
+of Section~\ref{sbm:sec:inverse} are compared with the transseries volume in
+Remark~\ref{sbm:rem:transseries}.
+\end{writenote}
+\begin{writenote}[What is not claimed, collected from the source]
+No historical priority is claimed: general bounded-degree enumeration and
+configuration-model methods are classical, the component generating
+functions are older (Remark~\ref{sbm:rem:oeis} makes this precise), and the
+literature check is bounded (the Goulden--Jackson exercise and Knuth's
+solution were not inspected). Theorem~\ref{sbm:thm:main} is a Poincar\'e
+expansion at each fixed order: it asserts no convergence of the coefficient
+series, does not identify the exponentially small contributions or give a
+transseries, and does not justify letting $J$ grow with $n$. No remainder
+constant or onset is effective; Theorem~\ref{sbm:thm:integer} has
+existential constants and is not a certified finite-input rounding
+algorithm, and no universally correct rounding of an asymptotic inverse is
+asserted. The ODE route to $c_1,\dots,c_4$ proves neither the existence of
+the expansion nor its leading constant. Finite exact agreement checks
+implementations and identities, not the asymptotic theorem, and decimal
+diagnostics are uncertified. The four directions of
+Section~\ref{sbm:sec:future} are not proved there. The write adds:
+Remark~\ref{sbm:rem:transseries} compares statements and proves no new
+inverse; its part~(c) re-derives Theorem~\ref{sbm:thm:integer} and claims
+nothing stronger; Proposition~\ref{sbm:prop:offset} covers bounded offsets
+$m-n$ and the zero lines only, with existential constants; the decimal
+values printed at the ends of Sections~\ref{sbm:sec:checks}
+and~\ref{sbm:sec:future} are floating-point observations.
+\end{writenote}
+\medskip\noindent\begin{minipage}{\textwidth}
+\emph{Reading conventions} (letters the manuscript reuses, with the tempting
+false readings; no symbol of the source was renamed; $F_{154}$, $\tau$,
+$\xi$, $h_{\mathrm{vol}}$, $f_{\mathrm{vol}}$, $d$, $\omega_1$, $\omega_2$,
+$Z_{\mathrm r}$, $Z_{\mathrm c}$ are the write's).\par
+\smallskip
+\begingroup\small\renewcommand{\arraystretch}{1.1}
+\noindent\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.95in}>{\raggedright\arraybackslash}p{3.0in}>{\raggedright\arraybackslash}p{2.15in}@{}}
+\toprule
+Symbol & Meaning here (where) & Not to be read as\\
+\midrule
+$a_n$, $b_n$, $A_{m,n}$ & A197458; $a_n/(n!)^2$; the rectangular count (Section~\ref{sbm:sec:exact}) & the $A_n$ of \file{p0:def:three-inverses} (which is $a_n$ in Remark~\ref{sbm:rem:transseries})\\
+$F$, $F_J$, $F_{154}$ & the bivariate EGF~\eqref{sbm:eq:egf}; the smooth comparison~\eqref{sbm:eq:FJ}; the A062154 EGF (Remark~\ref{sbm:rem:oeis}) & one function\\
+$q(t)$, $q$ & the Bessel argument $2\sqrt t\,h(t)$ of~\eqref{sbm:eq:Pq} (a complex variable in Lemma~\ref{sbm:lem:bessel}); $q=\log N$ in Theorem~\ref{sbm:thm:smooth-inverse} & each other: the source uses $q$ for both\\
+$h(t)$, $h_j$, $H$ & $(2-t)/(2(1-t))$; the coefficients of the amplitude $H(s)$ of~\eqref{sbm:eq:H} & $h_{\mathrm{vol}}$ of \file{p0:thm:core-reversion}\\
+$L(t)$, $L$ & $P'/P$ (Section~\ref{sbm:sec:ode}); $\log y$ (Section~\ref{sbm:sec:inverse}) & each other\\
+$I_0$, $I(y)$ & the modified Bessel function; the integer crossing of Theorem~\ref{sbm:thm:integer} & each other\\
+$p(s)$, $p_i$ & $\sqrt{1-s}(1+s)$ of~\eqref{sbm:eq:local-p}; the ODE polynomials~\eqref{sbm:eq:poly} & \\
+$E(s)$, $E_m$ & the real phase of Section~\ref{sbm:sec:arcs}; the coefficients of $e^\Psi$ in~\eqref{sbm:eq:exp-rec} & the displacement $E$ of \file{p0:thm:core-reversion} (here $\xi$)\\
+$N$, $n$ & $L/(2W(L/(2e)))$, a real number; the matrix size & the integer crossing $I(y)$, or the staircase $N_\ast$ of the volume\\
+$W$ & the branch $W_0$ on $(0,\infty)$ & $W_{-1}$\\
+$\varepsilon$, $u$, $\mathcal M$, $M$ & $n^{-1/4}$; the Gaussian variable; the moment functional~\eqref{sbm:eq:moment}; a truncation order & $u$ of \file{p0:thm:core-reversion}\\
+$D(r,\theta)$, $D_J$; $\delta$, $\delta_0$, $\delta_1$ & the loss~\eqref{sbm:eq:D}, an exponent in~\eqref{sbm:eq:gaussian-rem}; the sector margin of Lemma~\ref{sbm:lem:bessel}, the inverse corrections & \\
+$e(t)$, $\alpha$, $z$ & $t^{-\alpha}/\log t$ with $\alpha=(J+1)/2$ (proof of Theorem~\ref{sbm:thm:integer}); $z=n^{-1/2}$ (the ODE check) & Euler's number $e$\\
+$d$, $c^{(d)}_j$, $T_d$ & a fixed offset $m-n$ (Proposition~\ref{sbm:prop:offset}); its coefficients; the Chebyshev polynomial & the volume's $d$ in Remark~\ref{sbm:rem:transseries}(a)\\
+\bottomrule
+\end{tabular}
+\endgroup
+\end{minipage}
+
+\section{Exact component decomposition and diagonal}\label{sbm:sec:exact}
 A matrix is a simple bipartite graph with specified shores of size $n$.
 Maximum degree two means that each connected component is an isolated
 vertex, a path, or an even cycle. Let $A_{m,n}$ count the rectangular
@@ -150,7 +325,7 @@ $2k$ equivalent oriented starting descriptions. The lower cutoff
 $k=2$ for cycles excludes the parallel-edge component forbidden in a
 binary matrix. The exponential formula for sets of labeled connected
 components now gives
-\begin{equation}\label{eq:egf}
+\begin{equation}\label{sbm:eq:egf}
  F(x,y)=(1-t)^{-1/2}
  \exp\left\{\frac{t}{1-t}-\frac t2
              +(x+y)\frac{2-t}{2(1-t)}\right\}.
@@ -160,14 +335,14 @@ series for the four kinds of components, so no asymptotic input is
 being invoked.
 
 Put
-\begin{equation}\label{eq:Pq}
+\begin{equation}\label{sbm:eq:Pq}
  P(t)=(1-t)^{-1/2}e^{t/(1-t)-t/2},\quad
  h(t)=\frac{2-t}{2(1-t)},\quad
  q(t)=2\sqrt t\,h(t).
 \end{equation}
 The diagonal requires equal powers from $e^{xh(t)}$ and $e^{yh(t)}$.
 Consequently
-\begin{equation}\label{eq:bessel}
+\begin{equation}\label{sbm:eq:bessel}
  G(t):=\sum_{n\geq0}b_nt^n
    =P(t)\sum_{k\geq0}\frac{t^kh(t)^{2k}}{(k!)^2}
    =P(t)I_0\left(\frac{\sqrt t(2-t)}{1-t}\right),
@@ -180,7 +355,82 @@ The square root is harmless because $I_0$ is even. In particular,
 $q(t)^2=t(2-t)^2/(1-t)^2$ is rational, and $G$ is analytic in $|t|<1$
 with nonnegative coefficients.
 
-\section{Differential equation and exact recurrence}\label{sec:ode}
+\begin{remark}[{[write]} The four OEIS entries, quoted, and the older generating functions, 6~October 2026]\label{sbm:rem:oeis}
+The entries were read on 6~October 2026; their names, verbatim, are:
+A197458, ``Number of n X n binary matrices with at most two 1's in each row
+and column, other entries 0.'' (Felix A. Pahl, 2011; revision~\#25,
+8~April 2020); A062154, ``Number T(n,m) of n X m matrices over \{0,1,2\}
+with all row and column sums equal to 1 or 2, m=0,..,2*n.'' (Vladeta
+Jovovic, 2001; revision~\#14); A062156, ``Number of n X n matrices over
+\{0,1,2\} with all row and column sums equal to 1 or 2.'' (its main
+diagonal); and A001499, ``Number of n X n matrices with exactly 2 1's in
+each row and column, other entries 0.'' (revision~\#130). The source's
+account of them in Section~\ref{sbm:sec:literature} is accurate; the
+following makes ``closely related'' precise.
+\begin{enumerate}
+\item[(a)] \emph{The generating function~\eqref{sbm:eq:egf} is the A062154
+ formula times $e^{x+y-xy}$.} The A062154 entry gives (typeset from its
+ plain-text formula line; the README quotes the line verbatim)
+ \[
+  F_{154}(x,y):=\sum_{n,m\ge0}T(n,m)\frac{x^ny^m}{n!\,m!}
+  =\frac1{\sqrt{1-xy}}\exp\Bigl(\frac{xy}2+\frac{xy+x^2y/2+xy^2/2}{1-xy}\Bigr).
+ \]
+ With $t=xy$ its exponent is $\frac t2+\frac t{1-t}+(x+y)\frac t{2(1-t)}$,
+ while that of~\eqref{sbm:eq:egf} is
+ $\frac t{1-t}-\frac t2+(x+y)\bigl(1+\frac t{2(1-t)}\bigr)$; the difference
+ is $x+y-t$, so
+ \[
+  F(x,y)=e^{\,x+y-xy}\,F_{154}(x,y).
+ \]
+ Combinatorially, $e^{x+y}$ adjoins zero rows and columns, and $e^{-xy}$
+ removes the components that consist of a single entry~$2$ (such an entry
+ fills its row and its column, so it is a whole component, with exponential
+ generating function $xy$); what remains are exactly the binary matrices with
+ line sums at most two. So~\eqref{sbm:eq:egf} follows in one line from a
+ formula of the OEIS entry, which dates from June 2001 (the formula line is
+ present in the earliest snapshot of the OEIS data repository, February
+ 2023; when it was added was not traced). The entry's only literature
+ reference is Goulden and Jackson's Problem~3.4.15 (not inspected by the
+ source or the write). The
+ source derives~\eqref{sbm:eq:egf} independently and claims no priority for
+ it. By the extraction of~\eqref{sbm:eq:bessel}, A062156 also has a Bessel
+ diagonal:
+ $\sum_n\mathrm{A062156}(n)\,t^n/(n!)^2
+ =(1-t)^{-1/2}e^{t/2+t/(1-t)}I_0\bigl(t^{3/2}/(1-t)\bigr)$.
+\item[(b)] \emph{The exactly-two family.} The components all of whose
+ vertices have degree two are the even cycles of the table in
+ Section~\ref{sbm:sec:exact} ($k\ge2$), so
+ $B(t):=\sum_n\mathrm{A001499}(n)\,t^n/(n!)^2=(1-t)^{-1/2}e^{-t/2}$, the
+ formula the A001499 entry attributes to Bricard
+ (``Sum\_\{n >= 0\} a(n)*x\^{}n/(n!)\^{}2 = exp(-x/2)/sqrt(1-x)''). Hence
+ $P(t)=B(t)\,e^{t/(1-t)}$ and $G(t)=B(t)\,e^{t/(1-t)}\,I_0(q(t))$. From $B$
+ alone, $\mathrm{A001499}(n)/(n!)^2\sim e^{-1/2}/\sqrt{\pi n}$, which with
+ Stirling's formula is the equivalent the entry attributes to Knuth,
+ ``a(n) \textasciitilde{} 2 sqrt(Pi) n\^{}(2n + 1/2) e\^{}(-2n - 1/2)''. With
+ Theorem~\ref{sbm:thm:main} it follows that
+ \[
+  \frac{a_n}{\mathrm{A001499}(n)}\sim
+  \frac{e^{1/2}\,e^{2\sqrt{2n}}}{2^{5/4}\sqrt\pi\,n^{1/4}} .
+ \]
+ \emph{Proof of the equivalent.} Let $u_m=\binom{2m}m4^{-m}$, the
+ coefficients of $(1-t)^{-1/2}$. Then
+ $u_m^2=\prod_{i=1}^m\bigl(\frac{2i-1}{2i}\bigr)^2
+ \le\prod_{i=1}^m\frac{2i-1}{2i}\cdot\frac{2i}{2i+1}=\frac1{2m+1}$, and
+ $u_m\sqrt{\pi m}\to1$ (Wallis). Now
+ $\sqrt n\,[t^n]B(t)=\sum_{k=0}^n\frac{(-1/2)^k}{k!}\sqrt n\,u_{n-k}$. For
+ $k\le n/2$ the $k$-th term is at most $2^{-k}/k!$ in absolute value, since
+ $\sqrt n\,u_{n-k}\le\sqrt{n/(2(n-k)+1)}\le1$, and it tends to
+ $\frac{(-1/2)^k}{k!}\pi^{-1/2}$ for each fixed~$k$; the terms with $k>n/2$
+ add up to at most $\sqrt n\sum_{k>n/2}2^{-k}/k!\to0$. By dominated
+ convergence $\sqrt n\,[t^n]B(t)\to e^{-1/2}\pi^{-1/2}$. Stirling's formula
+ $(n!)^2\sim2\pi n^{2n+1}e^{-2n}$ gives Knuth's form, and dividing the
+ equivalent of Theorem~\ref{sbm:thm:main} by $e^{-1/2}/\sqrt{\pi n}$ gives
+ the ratio.
+\end{enumerate}
+Nothing was submitted to the OEIS.
+\end{remark}
+
+\section{Differential equation and exact recurrence}\label{sbm:sec:ode}
 Let
 \[
  R(t)=\frac{t(2-t)^2}{(1-t)^2},\quad
@@ -193,11 +443,11 @@ $Rf''+f'-f/4=0$. Under the pullback $R=R(t)$ define
 \]
 The pulled-back solution satisfies $Y''+AY'-BY=0$. Conjugating by
 $P$, then clearing denominators, yields
-\begin{equation}\label{eq:ode}
+\begin{equation}\label{sbm:eq:ode}
  p_2(t)G''+p_1(t)G'+p_0(t)G=0,
 \end{equation}
 with
-\begin{align}\label{eq:poly}
+\begin{align}\label{sbm:eq:poly}
  p_0(t)&=t^6-2t^5-3t^4+20t^3-36t^2+32,\notag\\
  p_1(t)&=4t^6-12t^5+8t^4+28t^3-92t^2+96t-16,\\
  p_2(t)&=4t^6-20t^5+44t^4-60t^3+48t^2-16t.\notag
@@ -208,7 +458,7 @@ identity check of every displayed polynomial.
 
 Write $p_{i,k}=[t^k]p_i(t)$ and interpret negative-index $b$'s as zero.
 The coefficient equation is
-\begin{align}\label{eq:recurrence}
+\begin{align}\label{sbm:eq:recurrence}
 0={}&\sum_{k=0}^6p_{2,k}(n-k+2)(n-k+1)b_{n-k+2}\notag\\
  &+\sum_{k=0}^6p_{1,k}(n-k+1)b_{n-k+1}
    +\sum_{k=0}^6p_{0,k}b_{n-k}.
@@ -223,10 +473,10 @@ exact, as follows either from the generating function or the
 combinatorial interpretation. The companion checks this division at
 every step rather than silently truncating it.
 
-\section{A sectorial Bessel expansion with remainder}\label{sec:bessel}
+\section{A sectorial Bessel expansion with remainder}\label{sbm:sec:bessel}
 The following elementary proof specifies the uniformity needed later.
 For all complex $q$,
-\begin{equation}\label{eq:bessel-integral}
+\begin{equation}\label{sbm:eq:bessel-integral}
  I_0(q)=\frac1\pi\int_0^\pi e^{q\cos v}\dd v
        =\frac{e^q}\pi\int_0^2
           e^{-qw^2/2}(1-w^2/4)^{-1/2}\dd w.
@@ -235,10 +485,10 @@ The first identity follows by expanding the exponential and
 integrating powers of cosine; the second uses the real substitution
 $w=2\sin(v/2)$.
 
-\begin{lemma}\label{lem:bessel}
+\begin{lemma}\label{sbm:lem:bessel}
 For any fixed $M\geq1$ and $\delta>0$, uniformly as $|q|\to\infty$ in
 $|\arg q|\leq\pi/2-\delta$,
-\begin{equation}\label{eq:bessel-asym}
+\begin{equation}\label{sbm:eq:bessel-asym}
  I_0(q)=\frac{e^q}{\sqrt{2\pi q}}
   \left(\sum_{k=0}^{M-1}\gamma_kq^{-k}+O_{M,\delta}(|q|^{-M})\right),
  \qquad
@@ -270,18 +520,18 @@ No complex substitution of the original real integration path is used.
 \end{proof}
 
 Set $s=1-t$ and
-\begin{equation}\label{eq:local-p}
+\begin{equation}\label{sbm:eq:local-p}
  p(s)=\sqrt{1-s}(1+s),\qquad q(t)=p(s)/s,
 \end{equation}
 where $p$ is analytic and positive at zero. Direct substitution into
-\eqref{eq:bessel} gives, in a sufficiently narrow fixed sector about
+\eqref{sbm:eq:bessel} gives, in a sufficiently narrow fixed sector about
 positive real $s$,
-\begin{equation}\label{eq:localG}
+\begin{equation}\label{sbm:eq:localG}
  G(1-s)=\frac{e^{-1}}{\sqrt{2\pi}}e^{2/s}
  \left(\sum_{j=0}^{M-1}h_js^j+O_M(|s|^M)\right).
 \end{equation}
 The formal series $H(s)=\sum h_js^j$ is specified by
-\begin{equation}\label{eq:H}
+\begin{equation}\label{sbm:eq:H}
  H(s)=p(s)^{-1/2}
    \exp\left(\frac{p(s)-1}{s}-\frac12+\frac s2\right)
    \sum_{k\geq0}\gamma_k\left(\frac{s}{p(s)}\right)^k.
@@ -290,7 +540,7 @@ Only finite truncations are used. The first factors are analytic at
 zero: the apparent singularity in $(p(s)-1)/s$ is removable. Their
 product with a finite Bessel expansion gives the stated remainder, but
 no convergence of the infinite formal $H$ is asserted. In particular,
-\begin{align}\label{eq:hexp}
+\begin{align}\label{sbm:eq:hexp}
  H(s)&=1-\frac s4+\frac{7s^2}{32}-\frac{47s^3}{384}
                       +\frac{1361s^4}{6144}+O(s^5),\notag\\
  \frac{p(s)-1}{s}-\frac12+\frac s2
@@ -299,9 +549,9 @@ no convergence of the infinite formal $H$ is asserted. In particular,
 \end{align}
 Here and subsequently a finite-order $O$ attached to a formal series
 means the corresponding finite truncation, justified analytically by
-\eqref{eq:localG} when it is used in a contour integral.
+\eqref{sbm:eq:localG} when it is used in a contour integral.
 
-\section{Whole-circle control and contour deformation}\label{sec:arcs}
+\section{Whole-circle control and contour deformation}\label{sbm:sec:arcs}
 Choose
 \[
  s_0=\sqrt{2/n},\qquad r=1-s_0,\qquad
@@ -315,40 +565,40 @@ $q(t)=\sqrt t\,(1+(1-t)^{-1})$,
 The nonnegative coefficients of $I_0$ give
 $|I_0(q(t))|\leq I_0(|q(t)|)\leq I_0(q(r))$. Also
 $|1-t|\geq1-r$. Define the exact loss
-\begin{equation}\label{eq:D}
+\begin{equation}\label{sbm:eq:D}
  D(r,\theta)=\frac r{1-r}-\Rea\frac t{1-t}
   =\frac{r(1+r)(1-\cos\theta)}
         {(1-r)|1-re^{i\theta}|^2}.
 \end{equation}
 The remaining factor $e^{-t/2}$ costs at most $e$, and hence
-\begin{equation}\label{eq:global}
+\begin{equation}\label{sbm:eq:global}
  |G(re^{i\theta})|\leq e\,G(r)e^{-D(r,\theta)}.
 \end{equation}
 Uniformly on the whole circle,
-\begin{equation}\label{eq:Dlower}
+\begin{equation}\label{sbm:eq:Dlower}
  D(r,\theta)\geq c\min\{\theta^2/s_0^3,1/s_0\}
 \end{equation}
 for an absolute $c>0$. Indeed $1-\cos\theta$ is bounded above and below
 by positive multiples of $\theta^2$ on $[-\pi,\pi]$, and
 $|1-re^{i\theta}|^2=s_0^2+2r(1-\cos\theta)$.
 
-Take $\theta_0=s_0^{3/2}\log n$. By \eqref{eq:global} and
-\eqref{eq:Dlower}, the coefficient integral outside
+Take $\theta_0=s_0^{3/2}\log n$. By \eqref{sbm:eq:global} and
+\eqref{sbm:eq:Dlower}, the coefficient integral outside
 $|\theta|\leq\theta_0$ is bounded by
-\begin{equation}\label{eq:minor}
+\begin{equation}\label{sbm:eq:minor}
  O\left(r^{-n}G(r)e^{-c\log^2n}\right).
 \end{equation}
-The positive-axis instance of \eqref{eq:localG} shows
-$r^{-n}G(r)=O(e^{2\sqrt{2n}})$. Thus \eqref{eq:minor} is smaller than
+The positive-axis instance of \eqref{sbm:eq:localG} shows
+$r^{-n}G(r)=O(e^{2\sqrt{2n}})$. Thus \eqref{sbm:eq:minor} is smaller than
 $e^{2\sqrt{2n}}n^{-3/4}$ by every fixed power of $n$. This estimates
 all other Bessel sectors without using the local Bessel expansion
 there.
 
 On the retained arc, $s=1-t$ satisfies $|s|\asymp s_0$ and
-$\arg s=O(n^{-1/4}\log n)$, so \eqref{eq:localG} is uniform.
+$\arg s=O(n^{-1/4}\log n)$, so \eqref{sbm:eq:localG} is uniform.
 To see explicitly that its remainder retains the Gaussian width,
 observe the exact circle identity
-\begin{equation}\label{eq:Re2s}
+\begin{equation}\label{sbm:eq:Re2s}
  \Rea(2/s)=2/s_0-2D(r,\theta).
 \end{equation}
 An $O(s_0^M)$ amplitude remainder contributes at most a constant times
@@ -357,7 +607,7 @@ An $O(s_0^M)$ amplitude remainder contributes at most a constant times
        \int_{-\theta_0}^{\theta_0}e^{-2D(r,\theta)}\dd\theta
   =O\left(s_0^{M+3/2}r^{-n}e^{2/s_0}\right).
 \]
-The equality follows from \eqref{eq:Dlower} and the substitution
+The equality follows from \eqref{sbm:eq:Dlower} and the substitution
 $\theta=s_0^{3/2}v$. Relative to the saddle scale this is $O(s_0^M)$,
 without any extra power or logarithm of $n$.
 
@@ -375,7 +625,7 @@ Define the real phase
  E(s)=\Rea\{2/s-(n+1)\log(1-s)\}.
 \]
 At a vertical endpoint the exact difference is
-\begin{equation}\label{eq:endpoint}
+\begin{equation}\label{sbm:eq:endpoint}
  E(s_0+iv_n)-E(s_0)
   =-\frac{2v_n^2}{s_0(s_0^2+v_n^2)}
     -\frac{n+1}{2}\log(1+v_n^2/r^2)
@@ -388,18 +638,18 @@ On either connector,
 \]
 Therefore its phase varies by only
 $O(n\theta_0^2)=O(n^{-1/2}\log^2n)=o(1)$. The finite amplitude from
-\eqref{eq:localG} is bounded there. The connector integrals are again
+\eqref{sbm:eq:localG} is bounded there. The connector integrals are again
 smaller than the saddle term by every power. This separate estimate
-is essential: the circle-only bound \eqref{eq:global} was not applied
+is essential: the circle-only bound \eqref{sbm:eq:global} was not applied
 to an off-circle path.
 
-\section{Gaussian coefficient rule and sharp remainder}\label{sec:gaussian}
+\section{Gaussian coefficient rule and sharp remainder}\label{sbm:sec:gaussian}
 Let $\varepsilon=n^{-1/4}$ and put
-\begin{equation}\label{eq:scale}
+\begin{equation}\label{sbm:eq:scale}
  s=\sqrt2\,\varepsilon^2+i2^{1/4}\varepsilon^3u.
 \end{equation}
 The vertical endpoints satisfy $|u|\sim\sqrt2\log n$. Define
-\begin{equation}\label{eq:Psi}
+\begin{equation}\label{sbm:eq:Psi}
  \Psi(\varepsilon,u)=\frac2s-(\varepsilon^{-4}+1)\log(1-s)
                   -2\sqrt2\,\varepsilon^{-2}-1+u^2.
 \end{equation}
@@ -409,13 +659,13 @@ $\Psi\in\varepsilon\CC[u][[\varepsilon]]$. Notice the $n+1$ in this
 expression, which comes from the coefficient kernel $(1-s)^{-n-1}$.
 
 Define the Gaussian functional $\mathcal M$ on polynomials by
-\begin{equation}\label{eq:moment}
+\begin{equation}\label{sbm:eq:moment}
  \mathcal M(u^{2k})=\frac{(2k)!}{4^kk!},\qquad
  \mathcal M(u^{2k+1})=0.
 \end{equation}
 Equivalently, $\mathcal M(Q)=\pi^{-1/2}\int_{\mathbb R}e^{-u^2}Q(u)\dd u$.
 The promised all-fixed-order rule is
-\begin{equation}\label{eq:calculator}
+\begin{equation}\label{sbm:eq:calculator}
  \boxed{\quad c_j=\mathcal M\left(
  [\varepsilon^{2j}]\,H(s)e^{\Psi(\varepsilon,u)}\right).\quad}
 \end{equation}
@@ -428,18 +678,18 @@ expansion. All operations are exact algebraic operations.
 
 For an explicit implementation, if $\Psi=\sum_{m\geq1}\psi_m(u)
 \varepsilon^m$ and $e^\Psi=\sum E_m(u)\varepsilon^m$, use
-\begin{equation}\label{eq:exp-rec}
+\begin{equation}\label{sbm:eq:exp-rec}
  E_0=1,\qquad E_m=\frac1m\sum_{k=1}^m k\psi_k E_{m-k}.
 \end{equation}
 It follows by differentiating the formal exponential. Equations
-\eqref{eq:H}, \eqref{eq:Psi}, \eqref{eq:moment}, and \eqref{eq:exp-rec}
+\eqref{sbm:eq:H}, \eqref{sbm:eq:Psi}, \eqref{sbm:eq:moment}, and \eqref{sbm:eq:exp-rec}
 are a finite calculator at every requested fixed order, independent
 of any numerical fitting.
 
-\begin{proof}[Proof of Theorem~\ref{thm:main}]
+\begin{proof}[Proof of Theorem~\ref{sbm:thm:main}]
 The discarded circle arcs and horizontal connectors are already
-controlled. On the vertical segment substitute \eqref{eq:localG} and
-\eqref{eq:scale} into Cauchy's formula. The leading constant is
+controlled. On the vertical segment substitute \eqref{sbm:eq:localG} and
+\eqref{sbm:eq:scale} into Cauchy's formula. The leading constant is
 \[
  \frac{e^{-1}}{\sqrt{2\pi}}\,
  \frac{2^{1/4}}{2\pi}\,e\,\sqrt\pi
@@ -454,12 +704,12 @@ would change the leading normalization.
 It remains to justify finite expansion and its sharp integrated
 remainder. Choose the Bessel expansion with $M=J+1$. Its error is
 $O(|s|^{J+1})=O(\varepsilon^{2J+2})$, and integrates to that relative
-order by \eqref{eq:Re2s}, or by the analogous vertical Gaussian bound
-from \eqref{eq:endpoint}. Use the resulting finite polynomial
+order by \eqref{sbm:eq:Re2s}, or by the analogous vertical Gaussian bound
+from \eqref{sbm:eq:endpoint}. Use the resulting finite polynomial
 $H_J(s)=\sum_{j=0}^Jh_js^j$ in the analytic factor
 $H_J(s)e^{\Psi(\varepsilon,u)}$.
 
-After cancellation in \eqref{eq:Psi}, this factor is analytic in
+After cancellation in \eqref{sbm:eq:Psi}, this factor is analytic in
 $\varepsilon$ near zero whenever $|\varepsilon u|$ is sufficiently
 small. For each fixed derivative order, the derivatives of its
 rational and logarithmic factors are bounded by fixed polynomials
@@ -476,7 +726,7 @@ Since $\varepsilon\log n\to0$, the cubic term is at most $u^2/4$
 for large $n$, while the other terms are bounded by $u^2/4+O(1)$.
 Taylor's integral remainder through degree $2J+1$, multiplied by
 $e^{-u^2}$, is therefore bounded by
-\begin{equation}\label{eq:gaussian-rem}
+\begin{equation}\label{sbm:eq:gaussian-rem}
  C_J\varepsilon^{2J+2}(1+|u|)^{D_J}e^{-u^2/2}
 \end{equation}
 for a fixed $D_J$. Its integral is $O_J(\varepsilon^{2J+2})$,
@@ -487,8 +737,8 @@ symmetry for $\Psi$, makes every odd $\varepsilon$ coefficient an odd
 polynomial in $u$. Its integral over the symmetric segment vanishes.
 The Gaussian tails of each retained polynomial outside the segment
 are superpolynomially small. Thus the even coefficients are precisely
-\eqref{eq:calculator}, proving \eqref{eq:main} and its remainder.
-The finite calculation through degree eight yields \eqref{eq:cs}.
+\eqref{sbm:eq:calculator}, proving \eqref{sbm:eq:main} and its remainder.
+The finite calculation through degree eight yields \eqref{sbm:eq:cs}.
 \end{proof}
 
 \subsection*{An independent algebraic check of the corrections}
@@ -497,7 +747,7 @@ coefficients, without proving existence of the expansion. Insert
 \[
  b_n=C e^{2\sqrt{2n}}n^{-3/4}\sum_{j\geq0}c_jn^{-j/2}
 \]
-into \eqref{eq:recurrence}, put $z=n^{-1/2}$, and normalize each shift
+into \eqref{sbm:eq:recurrence}, put $z=n^{-1/2}$, and normalize each shift
 $n\mapsto n+d$ by the unshifted leading factor. Its contribution is
 \[
  \exp\left(\frac{2\sqrt2}{z}
@@ -512,61 +762,61 @@ equations, with previous coefficients substituted, are
  24\sqrt2c_3+18114133/276480&=0,\\
  \sqrt2(2548039680c_4-13052721749)/79626240&=0.
 \end{align*}
-They independently recover \eqref{eq:cs}. This is a finite symbolic
+They independently recover \eqref{sbm:eq:cs}. This is a finite symbolic
 identity check, not a replacement for the all-arcs and remainder proof.
 
-\section{Real inverse and discrete threshold}\label{sec:inverse}
+\section{Real inverse and discrete threshold}\label{sbm:sec:inverse}
 For a fixed $J\geq0$ define the explicit smooth comparison
-\begin{equation}\label{eq:FJ}
+\begin{equation}\label{sbm:eq:FJ}
  F_J(x)=\frac{\Gamma(x+1)^2e^{2\sqrt{2x}}}
                    {2^{5/4}\pi x^{3/4}}
                 \sum_{j=0}^Jc_jx^{-j/2}.
 \end{equation}
 The correction polynomial tends to one, so $F_J$ is positive for
 all sufficiently large $x$. Differentiated Stirling expansions give
-\begin{equation}\label{eq:derivative}
+\begin{equation}\label{sbm:eq:derivative}
  (\log F_J)'(x)=2\log x+O_J(x^{-1/2}),
 \end{equation}
 and therefore it is eventually strictly increasing and unbounded.
 Let $x_J(y)$ denote its inverse on any such eventual interval.
 The interval's finite initial choice has no effect for large $y$.
 
-\begin{theorem}\label{thm:smooth-inverse}
+\begin{theorem}\label{sbm:thm:smooth-inverse}
 For $L=\log y$, let $W$ be the positive real branch of Lambert's
 function and put
-\begin{equation}\label{eq:N}
+\begin{equation}\label{sbm:eq:N}
  N=\frac{L}{2W(L/(2e))},\qquad q=\log N.
 \end{equation}
 For every fixed $J$, the inverse has the expansion
-\begin{equation}\label{eq:inverse}
+\begin{equation}\label{sbm:eq:inverse}
  x_J(y)=N-\frac{\sqrt{2N}}q-\frac18+
              \frac{\log2}{8q}+\frac1{q^2}-\frac1{q^3}
              +O_J\left(\frac1{\sqrt N\,q}\right).
 \end{equation}
 Moreover,
-\begin{equation}\label{eq:sequence-inverse}
+\begin{equation}\label{sbm:eq:sequence-inverse}
  x_J(a_n)=n+O_J\left(\frac{n^{-(J+1)/2}}{\log n}\right).
 \end{equation}
-In particular the right side of \eqref{eq:inverse}, evaluated with
+In particular the right side of \eqref{sbm:eq:inverse}, evaluated with
 $y=a_n$, equals $n+O(1/(\sqrt{N}\log N))$.
 \end{theorem}
 \begin{proof}
 The definition of $W$ gives exactly $2N(\log N-1)=L$.
 For $f(x)=2x(\log x-1)$ we have $f'(N)=2q$ and $f''(N)=2/N$.
-Stirling's formula in \eqref{eq:FJ} gives
+Stirling's formula in \eqref{sbm:eq:FJ} gives
 \[
  \log F_J(x)=f(x)+2\sqrt{2x}
                   +\tfrac14\log x-\tfrac14\log2+O_J(x^{-1/2}).
 \]
 Set $\delta_0=-\sqrt{2N}/q$. Taylor expansion at $N$ shows that
 $\log F_J(N+\delta_0)-L$ equals
-\begin{equation}\label{eq:inverse-residual}
+\begin{equation}\label{sbm:eq:inverse-residual}
  \frac{q-\log2}{4}-\frac2q+\frac2{q^2}+O_J(N^{-1/2}).
 \end{equation}
 The $\sqrt N$ terms cancel by the choice of $\delta_0$; the quadratic
 term of $f$ contributes $2/q^2$, and the linear term of the square
 root contributes $-2/q$.
-Dividing the displayed part of \eqref{eq:inverse-residual} by $-2q$
+Dividing the displayed part of \eqref{sbm:eq:inverse-residual} by $-2q$
 gives
 \[
  \delta_1=-\frac18+\frac{\log2}{8q}+\frac1{q^2}-\frac1{q^3}.
@@ -580,19 +830,19 @@ $O(1/(\sqrt Nq))$. These estimates prove that
 \[
  \log F_J(N+\delta_0+\delta_1)-L=O_J(N^{-1/2}).
 \]
-The derivative in \eqref{eq:derivative} is at least $q$ near this point
+The derivative in \eqref{sbm:eq:derivative} is at least $q$ near this point
 for large $N$. For completeness, the residual and this derivative
 bound place a root inside a fixed sufficiently large multiple of
 $1/(\sqrt Nq)$ of the point by the intermediate value theorem.
 Monotonicity identifies that root as $x_J(y)$, proving
-\eqref{eq:inverse}.
+\eqref{sbm:eq:inverse}.
 
-By Theorem~\ref{thm:main},
+By Theorem~\ref{sbm:thm:main},
 $\log a_n-\log F_J(n)=O_J(n^{-(J+1)/2})$.
 Bracketing near $n$ with derivative at least $\log n$, or applying
 the mean value theorem after that bracketing, proves
-\eqref{eq:sequence-inverse}. The final statement follows by combining
-this estimate with \eqref{eq:inverse}; $N\sim n$.
+\eqref{sbm:eq:sequence-inverse}. The final statement follows by combining
+this estimate with \eqref{sbm:eq:inverse}; $N\sim n$.
 \end{proof}
 
 \subsection*{Constructing further fixed inverse orders}
@@ -615,7 +865,7 @@ function follows from the usual Stirling remainder and the convergent
 logarithm of the finite correction polynomial near one.
 
 Starting at $X_0=N$, iterate the entirely explicit rule
-\begin{equation}\label{eq:newton}
+\begin{equation}\label{sbm:eq:newton}
  X_{k+1}=X_k-\frac{T(X_k)-L}{T'(X_k)}.
 \end{equation}
 The root of $T(x)=L$ is within $O(\sqrt N/\log N)$ of $N$ and within
@@ -630,18 +880,18 @@ number of iterations suffices. Choosing $B$ larger than that desired
 power yields a finite expression to that accuracy. Expanding these
 finite expressions gives the customary formal inverse series.
 For an inverse valid at sequence values, increasing $J$ in
-\eqref{eq:sequence-inverse} supplies any requested fixed half-power
+\eqref{sbm:eq:sequence-inverse} supplies any requested fixed half-power
 accuracy divided by $\log n$. This procedure does not determine
 unspecified effective error constants or threshold locations.
 
-\begin{theorem}\label{thm:integer}
+\begin{theorem}\label{sbm:thm:integer}
 Define the actual integer crossing by
 \[
  I(y)=\min\{n\geq0:a_n\geq y\}.
 \]
 For every fixed $J$, there are $K_J>0$ and $Y_J$ such that for
 $y\geq Y_J$, with $x=x_J(y)$,
-\begin{equation}\label{eq:ceil}
+\begin{equation}\label{sbm:eq:ceil}
  \ceil{x-K_J\frac{x^{-(J+1)/2}}{\log x}}
  \ \leq I(y)\leq\
  \ceil{x+K_J\frac{x^{-(J+1)/2}}{\log x}}.
@@ -657,7 +907,7 @@ permutation matrix. Thus $I(y)$ exists.
 
 Put $\alpha=(J+1)/2$, $e(t)=t^{-\alpha}/\log t$, and
 $z_n=x_J(a_n)$ for sufficiently large $n$. Equation
-\eqref{eq:sequence-inverse} says $|z_n-n|\leq C e(n)$.
+\eqref{sbm:eq:sequence-inverse} says $|z_n-n|\leq C e(n)$.
 For large $y$ all relevant indices are in this range, and strict
 monotonicity gives
 \[
@@ -686,12 +936,102 @@ The enclosure is an asymptotic theorem with existential constants.
 It is not a finite-input certified rounding algorithm. In general one
 cannot round an asymptotic real inverse in a universally correct way:
 $y$ can be arbitrarily close to a discrete threshold. Formula
-\eqref{eq:inverse} alone therefore gives $I(y)$ equal to its displayed
-real expression plus $O(1)$, while \eqref{eq:ceil} supplies the stronger
+\eqref{sbm:eq:inverse} alone therefore gives $I(y)$ equal to its displayed
+real expression plus $O(1)$, while \eqref{sbm:eq:ceil} supplies the stronger
 rounding-safe statement when the comparison and error allowance are
 retained.
 
-\section{Exact fixtures and reproducibility}\label{sec:checks}
+\begin{remark}[{[write]} The inverses against the transseries volume, 6~October 2026]\label{sbm:rem:transseries}
+The volume is
+\path{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/};
+below its $h$, $f$, $E$ and $t$ of \file{p0:thm:core-reversion} are written
+$h_{\mathrm{vol}}$, $f_{\mathrm{vol}}$, $\xi$ and $\tau$, to keep them apart
+from the source's $h(t)$, $f(x)$, $E(s)$ and $t=xy$.
+\begin{enumerate}
+\item[(a)] \emph{$N$ is an instance} of \file{p0:prop:factorial-core},
+ verbatim, with $(\kappa,d,L):=(2,-2,L)$: the phase is
+ $X(2\log X-2)=2X(\log X-1)$, the solution is
+ $v=W_0\bigl((L/2)e^{-1}\bigr)=W_0(L/(2e))$ and $X=e^{v+1}=L/(2v)=N$
+ (because $ve^v=L/(2e)$), and the side condition $2\log X-2>0$ is $v>0$,
+ that is $L>0$, that is $y>1$. Hence $q=\log N=v+1$, and the core slope
+ $\kappa(v+1)=2q$ is the $f'(N)=2q$ of the proof of
+ Theorem~\ref{sbm:thm:smooth-inverse}. This is the core of
+ \file{p0:rem:factorial-core} (the double factorial normalization
+ $\tfrac s2(\log s-1)$) at the target $L/4$. The source's positive real
+ branch is $W_0$.
+\item[(b)] \emph{The expansion~\eqref{sbm:eq:inverse} truncates an instance
+ of the formal theorem} \file{p0:thm:core-reversion}, after the change of
+ variables $x=N(1+\xi)$, $\tau=N^{-1/2}$ and division by $2N$. By
+ $L=2N(q-1)$ and Stirling's series, $\log F_J(x)=L$ becomes
+ \[
+  q\,\xi+h_{\mathrm{vol}}(\xi)+f_{\mathrm{vol}}(\tau,\xi)=0,\qquad
+  h_{\mathrm{vol}}(\xi)=(1+\xi)\log(1+\xi)-\xi,
+ \]
+ \[
+  f_{\mathrm{vol}}(\tau,\xi)=\sqrt2\,\tau(1+\xi)^{1/2}
+   +\frac{\tau^2}8\bigl(q+\log(1+\xi)-\log2\bigr)+\tau^3\rho(\tau,\xi),
+ \]
+ where $\tau^3\rho$ collects $\frac{\tau^2}2\log\sum_{j\le J}c_jx^{-j/2}$
+ (a power series without constant term in $x^{-1/2}=\tau(1+\xi)^{-1/2}$)
+ and the terms
+ $\frac{\tau^2}2\cdot\frac1{6x}+\cdots$ of Stirling's series. This is the master
+ equation of the theorem over $R=\QQ(\sqrt2)[\log2,q,q^{-1}]$, with
+ $\Lambda=q$, $h_{\mathrm{vol}}\in u^2R[[u]]$ (the $h$ of
+ \file{p0:rem:core-instances}) and $f_{\mathrm{vol}}\in\tau R[[\tau,u]]$.
+ Its triangular recurrence gives $\xi=e_1\tau+e_2\tau^2+O(\tau^3)$ with
+ $qe_1+\sqrt2=0$ and
+ $qe_2+\tfrac12e_1^2+\tfrac{\sqrt2}2e_1+\tfrac q8-\tfrac{\log2}8=0$, that is
+ $e_1=-\sqrt2/q$ and
+ $e_2=-\frac18+\frac{\log2}{8q}+\frac1{q^2}-\frac1{q^3}$; so
+ $N\xi=e_1\sqrt N+e_2+O(N^{-1/2})$ has exactly the $\delta_0$ and $\delta_1$
+ of the proof. Two qualifications. The half power $(1+\xi)^{1/2}$ and the
+ logarithm put $f_{\mathrm{vol}}$ outside the Bell form
+ (\file{p0:eq:core-bell}), which needs integer exponents $-\mu_k$, so only the
+ general part of the theorem applies; and because $f_{\mathrm{vol}}$
+ contains $\tau^2q/8$ the coefficients $e_n$ are Laurent polynomials in $q$,
+ not polynomials in $q^{-1}$ as in \file{p0:rem:core-instances}. The theorem
+ is formal: the remainder $O_J(1/(\sqrt N\,q))$ in~\eqref{sbm:eq:inverse},
+ \eqref{sbm:eq:sequence-inverse} and the Newton procedure~\eqref{sbm:eq:newton}
+ are the source's own analysis, not supplied by the volume.
+\item[(c)] \emph{Theorem~\ref{sbm:thm:integer} is not an instance} of
+ \file{p0:thm:staircase} as proved (its proof uses no interpolation), but it
+ follows from part~(1) of that theorem once an admissible interpolation is
+ supplied, and here is one. The hypotheses of \file{p0:def:three-inverses}
+ hold for $A_n=a_n$: $a_n$ is strictly increasing for $n\ge0$ and unbounded
+ (proof of Theorem~\ref{sbm:thm:integer}), and $I(y)=N_\ast(y)$ for every
+ $n_1$ once $y>a_{n_1-1}$. Fix $J$; let $C$, $e(\cdot)$ and $z_n=x_J(a_n)$ be
+ as in that proof, and choose $n_1$ so large that for $n\ge n_1-1$ the value
+ $a_n$ lies in the domain of $x_J$, $|z_n-n|\le Ce(n)$, and $e$ is decreasing.
+ Let $\varphi$ be the piecewise-linear function on $[n_1,\infty)$ with
+ $\varphi(n)=z_n$, and $\mathcal A:=F_J\circ\varphi$. \emph{[write] Claim:
+ $\mathcal A$ is admissible, and $|\nu(y)-x_J(y)|\le2Ce(x_J(y))$ for all
+ large $y$, where $\nu=\mathcal A^{-1}$.} Indeed $z_n$ is strictly increasing
+ ($x_J$ and $a_n$ are), so $\varphi$ is continuous, strictly increasing and
+ unbounded with values in the interval on which $F_J$ increases;
+ $\mathcal A$ is therefore continuous and strictly increasing, and
+ $\mathcal A(n)=F_J(x_J(a_n))=a_n$. For $y\ge a_{n_1}$ put $x=x_J(y)$ and
+ $w=\nu(y)$, so $\varphi(w)=x$. If $n\le w\le n+1$, then $\varphi(w)-w$ is a
+ convex combination of $z_n-n$ and $z_{n+1}-(n+1)$, so
+ $|x-w|\le C\max(e(n),e(n+1))=Ce(n)$. As $y\to\infty$, $w\to\infty$ and
+ $|x-w|\to0$, so $e(n)/e(x)\to1$ and $|x-w|\le2Ce(x)$ eventually. By
+ \file{p0:thm:staircase}(1), $I(y)=\lceil\nu(y)\rceil$, and since the
+ ceiling is nondecreasing,
+ $\lceil x-2Ce(x)\rceil\le I(y)\le\lceil x+2Ce(x)\rceil$: this
+ is~\eqref{sbm:eq:ceil} with $K_J=2C$. Part~(2) of the theorem adds that
+ $I(y)$ equals the common value whenever the two ceilings agree.
+\item[(d)] \emph{Rounding at the sequence values is an instance} of
+ \file{p0:thm:staircase}(3): with $\mathcal A$ as in~(c), $\nu(a_n)=n$, and
+ the right side $x_\ast$ of~\eqref{sbm:eq:inverse} at $y=a_n$ satisfies
+ $|x_\ast-n|=O(1/(\sqrt N\log N))<\frac12$ for large $n$
+ (Theorem~\ref{sbm:thm:smooth-inverse}), so $n=\lfloor x_\ast+\frac12\rfloor$
+ beyond an existential onset. (The write's evaluations of $x_\ast-n$ at
+ $n=20$, $100$, $1000$, $4000$ are $-0.0103$, $-0.0036$, $-0.00088$,
+ $-0.00038$; end of Section~\ref{sbm:sec:checks}.)
+\end{enumerate}
+No novelty is claimed for these inversions.
+\end{remark}
+
+\section{Exact fixtures and reproducibility}\label{sbm:sec:checks}
 The seventeen values in the inspected OEIS record, beginning at $n=0$,
 are reproduced below as finite numeric fixtures. The companion checks
 every value against the exact recurrence.
@@ -745,9 +1085,72 @@ bound or proof. The release README records build requirements and
 replay commands; the verification receipt reports the actual completed
 checks.
 
-\section{Questions for further research}\label{sec:future}
-The exact bivariate function \eqref{eq:egf} suggests several concrete
+\begin{writenote}[The package here, the intake reruns and the write's computations, 6~October 2026]
+``The source archive'', ``the companion'', ``the release README'' and ``the
+verification receipt'' above are the delivered ones. In this report the
+companion programs are \file{code/companion-exact_matrix.py} and
+\file{code/companion-symbolic_coefficients.py}, with their tests
+\file{code/companion-test_exact_matrix.py} and
+\file{code/companion-test_symbolic_coefficients.py} (delivered
+\file{companion/...}); the usage guide is \file{companion-USAGE.md}; the
+release tools \file{build_pdf.py}, \file{make_zip.py},
+\file{release_tools.py} and \file{test_release.py} are in \file{code/};
+\file{SOURCE_PROVENANCE.json} and \file{verification_receipt.json} are in
+\file{data/} with the frozen outputs; the manifest and the PDF are not
+shipped, and the receipt's hashes refer to the delivered \file{Report168.tex}
+and PDF. The programs read their data from \file{data/} beside the directory
+that holds them and the tests import the programs by their delivered names,
+so they run only on a copy with the delivered names (the report README gives
+two routes); the release tools need the whole delivered package and POSIX.
+\emph{Reruns on copies at the write} (Windows, Python 3.14.4): the
+\texttt{verify} output and the order-4 symbolic output equal
+\file{data/exact_verification.json} and \file{data/symbolic_order4.json} once
+Windows line endings are converted; the 35 companion tests pass, both from a
+fresh extraction and from the shipped files restored to their delivered
+names; 10 of the 11 release tests error (no \texttt{os.mkfifo}; ``POSIX
+O\_NOFOLLOW is required''). The symbolic program at order~6 gives
+$c_5=-\frac{3563067617707\sqrt2}{342456532992}=-14.7140\ldots$ and
+$c_6=\frac{109526487454949291}{2465687037542400}=44.4202\ldots$.
+
+\emph{The write's own computations} (programs of the write, not shipped).
+(i) $a_n$ for $n\le4$ by enumerating all $2^{n^2}$ matrices, for $n\le7$ by a
+row-by-row count over the full vector of column degrees, and for $n\le16$ as
+$(n!)^2[x^ny^n]\,e^{x+y-xy}F_{154}$ from the A062154 formula
+(Remark~\ref{sbm:rem:oeis}): all equal the OEIS terms. The same series gives
+the 17 listed terms of A062156 and rows 1--3 of A062154, and
+$(1-t)^{-1/2}e^{-t/2}$ gives A001499 for $n\le16$; exact rationals throughout.
+(ii) The Bessel diagonal~\eqref{sbm:eq:bessel}, expanded exactly to $t^{80}$,
+satisfies~\eqref{sbm:eq:recurrence} for $n\le77$; the recurrence was then run
+in 120-digit arithmetic to $n=4000$. With $R_n$ the ratio of $a_n$ to the
+leading term of~\eqref{sbm:eq:main},
+$n^{5/2}\bigl(R_n-\sum_{j\le4}c_jn^{-j/2}\bigr)$ is $-11.33$, $-13.44$,
+$-14.05$ at $n=100$, $1000$, $4000$ (compare $c_5=-14.71$), and after
+subtracting also the $c_5$ and $c_6$ terms the remainder times $n^{7/2}$ is
+$-116.4$, $-127.4$, $-133.7$ at $n=250$, $1000$, $4000$. (iii) $\log a_n$ minus
+the expansion~\eqref{sbm:eq:log}, times $n^{3/2}$: $-1.41$, $-1.63$, $-1.69$
+at $n=100$, $1000$, $4000$. (iv) The right side of~\eqref{sbm:eq:inverse} at
+$y=a_n$, minus $n$, times $\sqrt N\,q$: from $-0.151$ to $-0.199$ at
+$n=20$, $50$, $100$, $1000$, $4000$; and $x_4(a_n)-n$, computed as the root of
+$\log F_4(x)=\log a_n$, times $n^{5/2}\log n$: from $-4.3$ at $n=20$ to
+$-7.0$ at $n=4000$, consistent with the heuristic limit $c_5/2$.
+These are floating-point observations at finitely many~$n$, consistent with
+the orders proved; they certify nothing.
+\end{writenote}
+
+\section{Questions for further research}\label{sbm:sec:future}
+The exact bivariate function \eqref{sbm:eq:egf} suggests several concrete
 extensions that are not proved here.
+
+\begin{writenote}[Added 6 October 2026, batch~108]
+Following Vladimir Reshetnikov's standing rule of 4~October 2026, every claim
+of the source that is not proved in full is stated as an open question at the
+end of this section, with its source, the argument offered and what is
+missing. The source asserts nothing beyond its proofs; its non-claims are
+collected in Section~\ref{sbm:sec:provenance}. The intake found no false
+claim in the source and the write found none either. The write proves two
+cases of the first two directions below (Lemma~\ref{sbm:lem:transfer},
+Proposition~\ref{sbm:prop:offset}).
+\end{writenote}
 
 \paragraph{Rectangular aspect ratios.}
 For $m\neq n$, the coefficient $m!n![x^my^n]F(x,y)$ invites a bivariate saddle analysis, or a uniform analysis of
@@ -779,7 +1182,212 @@ the Bessel factor. Determining late coefficient growth, optimal
 truncation, and exponentially small contributions is a separate
 problem. No complete transseries is supplied by the current proof.
 
-\section{Literature coverage and claim boundaries}\label{sec:literature}
+\subsection*{Two cases proved at the write}
+The proof of Theorem~\ref{sbm:thm:main} uses the diagonal $G$ only through
+two properties, and other diagonals of the same family have them.
+
+\begin{lemma}[{[write]} Transfer of the proof of Theorem~\ref{sbm:thm:main}]\label{sbm:lem:transfer}
+Let $\widetilde G(t)=\sum_{n\ge0}\tilde g_nt^n$ have nonnegative coefficients
+and radius of convergence at least~$1$, and suppose:
+\begin{enumerate}
+\item[(A)] there is an absolute $C_0$ with
+ $|\widetilde G(re^{i\theta})|\le C_0\,\widetilde G(r)\,e^{-D(r,\theta)}$
+ for $0<r<1$ and $-\pi\le\theta\le\pi$, with $D$ as in~\eqref{sbm:eq:D};
+\item[(B)] there are a sector $|\arg s|\le\sigma$, $\sigma>0$, and a formal
+ series $\widetilde H(s)=\sum_{j\ge0}\tilde h_js^j$ such that for every
+ $M\ge1$, uniformly as $s\to0$ in the sector,
+ \[
+  \widetilde G(1-s)=\frac{e^{-1}}{\sqrt{2\pi}}e^{2/s}
+  \Bigl(\sum_{j=0}^{M-1}\tilde h_js^j+O_M(|s|^M)\Bigr).
+ \]
+\end{enumerate}
+Then for every $J\ge0$
+\[
+ \tilde g_n=\frac{e^{2\sqrt{2n}}}{2^{5/4}\pi n^{3/4}}
+ \Bigl(\sum_{j=0}^J\tilde c_jn^{-j/2}+O_J\bigl(n^{-(J+1)/2}\bigr)\Bigr),
+ \qquad
+ \tilde c_j=\mathcal M\Bigl([\varepsilon^{2j}]\,\widetilde H(s)e^{\Psi(\varepsilon,u)}\Bigr),
+\]
+and in particular $\tilde c_0=\tilde h_0$.
+\end{lemma}
+\begin{proof}
+Sections~\ref{sbm:sec:arcs} and~\ref{sbm:sec:gaussian} use $G$ only through
+the circle bound~\eqref{sbm:eq:global}, the local
+expansion~\eqref{sbm:eq:localG} in a sector about the positive axis (every
+point used has $|\arg s|=O(n^{-1/4}\log n)$), and the consequence
+$r^{-n}G(r)=O(e^{2\sqrt{2n}})$ of~\eqref{sbm:eq:localG} on the positive axis;
+and the coefficient rule uses only the coefficients of~$H$, which depends on
+$s$ alone, as the parity argument requires. Hypotheses (A) and (B) are these
+properties for $\widetilde G$ and $\widetilde H$ (with the constant $e$
+of~\eqref{sbm:eq:global} replaced by $C_0$; (B) on the positive axis gives
+$\widetilde G(r)=O(e^{2/s_0})$ and so $r^{-n}\widetilde G(r)=O(e^{2\sqrt{2n}})$).
+Hence the argument from~\eqref{sbm:eq:minor} to the end of the proof of
+Theorem~\ref{sbm:thm:main} applies word for word with $G$, $H$, $b_n$, $c_j$
+replaced by $\widetilde G$, $\widetilde H$, $\tilde g_n$, $\tilde c_j$.
+Since $\Psi$ has no $\varepsilon^0$ term, $\tilde c_0=\tilde h_0$.
+\end{proof}
+
+\begin{proposition}[{[write]} Fixed offsets and empty lines]\label{sbm:prop:offset}
+\begin{enumerate}
+\item[(a)] For each fixed integer $d\ge0$ and every $J\ge0$,
+ $A_{n+d,n}=A_{n,n+d}$ and
+ \[
+  \frac{A_{n+d,n}}{(n+d)!\,n!}=\frac{e^{2\sqrt{2n}}}{2^{5/4}\pi n^{3/4}}
+  \Bigl(\sum_{j=0}^Jc^{(d)}_jn^{-j/2}+O_{d,J}\bigl(n^{-(J+1)/2}\bigr)\Bigr),
+ \]
+ where $c^{(d)}_j$ is given by~\eqref{sbm:eq:calculator} with $H$ replaced by
+ \[
+  H_d(s)=(1-s)^{-d/2}p(s)^{-1/2}
+  \exp\Bigl(\frac{p(s)-1}s-\frac12+\frac s2\Bigr)
+  \sum_{k\ge0}\gamma^{(d)}_k\Bigl(\frac s{p(s)}\Bigr)^k,
+  \qquad \gamma^{(d)}_k=(2k-1)!!\,\beta^{(d)}_k,
+ \]
+ $\sum_k\beta^{(d)}_kw^{2k}=T_d(1-w^2/2)(1-w^2/4)^{-1/2}$ and $T_d$ the
+ Chebyshev polynomial ($(-1)!!=1$). In particular $c^{(d)}_0=1$,
+ $c^{(0)}_j=c_j$, and
+ $c^{(d)}_1=c_1-\frac{\sqrt2}2d(d-1)=-\frac{\sqrt2}{96}\bigl(17+48d(d-1)\bigr)$.
+\item[(b)] Let $Z_{\mathrm r}$ and $Z_{\mathrm c}$ be the numbers of zero
+ rows and of zero columns of a matrix drawn uniformly from the $a_n$. As
+ $n\to\infty$, $(Z_{\mathrm r},Z_{\mathrm c})$ converges in distribution to a
+ pair of independent Poisson variables of mean~$1$, with convergence of all
+ mixed moments. In particular the proportion of the $a_n$ matrices with no
+ zero row and no zero column tends to $e^{-2}$.
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+(a) Transposition gives $A_{n+d,n}=A_{n,n+d}$. In~\eqref{sbm:eq:egf}, the
+monomials $x^{k+d}y^k$ of $e^{xh(t)}e^{yh(t)}$ carry
+$h^{2k+d}/((k+d)!\,k!)$, so, as for~\eqref{sbm:eq:bessel},
+\[
+ G_d(t):=\sum_{n\ge0}\frac{A_{n+d,n}}{(n+d)!\,n!}t^n=P(t)S_d(t),\qquad
+ S_d(t)=\sum_{k\ge0}\frac{t^kh(t)^{2k+d}}{k!\,(k+d)!}=t^{-d/2}I_d(q(t)),
+\]
+with $I_d(z)=\sum_k(z/2)^{2k+d}/(k!\,(k+d)!)$. \emph{(A).} On $|t|=r$,
+$|h(t)|=|\frac12+\frac1{2(1-t)}|\le h(r)$, so $|S_d(t)|\le S_d(r)$; with the
+bound $|P(t)|\le e\,P(r)e^{-D(r,\theta)}$ from the derivation
+of~\eqref{sbm:eq:global}, (A) holds with $C_0=e$. \emph{(B).} For integer $d$,
+$I_d(z)=\frac1\pi\int_0^\pi e^{z\cos v}\cos(dv)\dd v$, and
+$\cos(dv)=T_d(\cos v)=T_d(1-w^2/2)$ for $w=2\sin(v/2)$. The proof of
+Lemma~\ref{sbm:lem:bessel} applies with $(1-w^2/4)^{-1/2}$ replaced by
+$T_d(1-w^2/2)(1-w^2/4)^{-1/2}$: on $[0,1]$ expand it as
+$\sum_{k<M}\beta^{(d)}_kw^{2k}+O(w^{2M})$; on $[1,2]$ it is still integrable
+($|T_d|\le1$ there); and
+$\frac1\pi2^{k-1/2}\Gamma(k+\frac12)=\frac{(2k-1)!!}{\sqrt{2\pi}}$. Hence
+$I_d(q)=\frac{e^q}{\sqrt{2\pi q}}\bigl(\sum_{k<M}\gamma^{(d)}_kq^{-k}+O(|q|^{-M})\bigr)$
+uniformly in $|\arg q|\le\pi/2-\delta$, and the substitution
+of~\eqref{sbm:eq:local-p}--\eqref{sbm:eq:H}, with the extra factor
+$t^{-d/2}=(1-s)^{-d/2}$, gives (B) with $\widetilde H=H_d$. For $d=0$,
+$T_0=1$ and $\gamma^{(0)}_k=\gamma_k$, so $H_0=H$.
+Lemma~\ref{sbm:lem:transfer} gives the expansion and $c^{(d)}_0=H_d(0)=1$.
+For $c^{(d)}_1$: $T_d(1-x)=1-d^2x+O(x^2)$ gives
+$\beta^{(d)}_1=\frac18-\frac{d^2}2$, so $\gamma^{(d)}_1-\gamma_1=-\frac{d^2}2$,
+and $(1-s)^{-d/2}=1+\frac d2s+O(s^2)$; hence
+$[s^1]H_d-[s^1]H=-\frac{d(d-1)}2$. In~\eqref{sbm:eq:calculator} at $j=1$ the
+amplitude enters only through $h_0E_2+\sqrt2\,h_1$ (as
+$s=\sqrt2\varepsilon^2+O(\varepsilon^3)$ and $E_1$ is odd in~$u$), and
+$h_0=1$ for both, so $c^{(d)}_1-c_1=-\frac{\sqrt2}2d(d-1)$; with
+$c_1=-\frac{17\sqrt2}{96}$ this is the stated value.
+
+(b) A zero row or column is an isolated vertex, the term $x+y$ of the
+component table. Marking zero rows by $\omega_1\ge0$ and zero columns by
+$\omega_2\ge0$ replaces the factor $e^{(x+y)h(t)}$ of~\eqref{sbm:eq:egf} by
+$e^{x(h(t)-1+\omega_1)+y(h(t)-1+\omega_2)}$, so
+\[
+ \widetilde G_\omega(t):=P(t)\sum_{k\ge0}
+  \frac{t^k\bigl(h(t)-1+\omega_1\bigr)^k\bigl(h(t)-1+\omega_2\bigr)^k}{(k!)^2}
+ =\sum_{n\ge0}b_n\,\mathbb E_n\bigl[\omega_1^{Z_{\mathrm r}}\omega_2^{Z_{\mathrm c}}\bigr]t^n .
+\]
+\emph{(A).} $h(t)-1=t/(2(1-t))$, so on $|t|=r$,
+$|h(t)-1+\omega_i|\le h(r)-1+\omega_i$; as in~(a), (A) holds with $C_0=e$.
+\emph{(B).} The sum is $I_0(\tilde q)$ with
+$\tilde q^2=4t(h-1+\omega_1)(h-1+\omega_2)$ ($I_0$ is even, so the choice of
+root is immaterial). With $t=1-s$ and $h-1=(1-s)/(2s)$,
+\[
+ \tilde q=\frac{(1-s)^{3/2}}s
+ \Bigl(1+\frac{2s\omega_1}{1-s}\Bigr)^{1/2}\Bigl(1+\frac{2s\omega_2}{1-s}\Bigr)^{1/2}
+ =\frac{p(s)}s+\rho(s),
+\]
+with $\rho$ analytic at $0$ and $\rho(0)=\omega_1+\omega_2-2$, because
+$(1-s)^{3/2}-p(s)=-2s\sqrt{1-s}$ and the product of the square roots is
+$1+s(\omega_1+\omega_2)+O(s^2)$. In a narrow sector
+$|\arg\tilde q|\le\pi/2-\delta$, so Lemma~\ref{sbm:lem:bessel} and the
+computation of~\eqref{sbm:eq:localG} give (B) with
+\[
+ \widetilde H_\omega(s)=\bigl(p+s\rho\bigr)^{-1/2}
+ \exp\Bigl(\frac{p-1}s-\frac12+\frac s2+\rho(s)\Bigr)
+ \sum_{k\ge0}\gamma_k\Bigl(\frac s{p+s\rho}\Bigr)^k,\qquad
+ \widetilde H_\omega(0)=e^{\omega_1+\omega_2-2}.
+\]
+Lemma~\ref{sbm:lem:transfer} with $J=0$ and Theorem~\ref{sbm:thm:main} give
+$\mathbb E_n[\omega_1^{Z_{\mathrm r}}\omega_2^{Z_{\mathrm c}}]\to
+e^{(\omega_1-1)+(\omega_2-1)}$ for all $\omega_1,\omega_2\ge0$: the joint
+generating function of two independent Poisson$(1)$ variables. Convergence on
+$[0,1]^2$ gives convergence in distribution (continuity theorem for
+probability generating functions). Convergence at $(2,2)$ bounds
+$\mathbb E_n[2^{Z_{\mathrm r}+Z_{\mathrm c}}]$ for large $n$; since
+$z^i\le C_i(3/2)^z$, every mixed moment $Z_{\mathrm r}^iZ_{\mathrm c}^j$ is
+uniformly integrable, and the moments converge.
+\end{proof}
+The write's exact computations agree: brute force confirms the generating
+functions of (a) for $d=1,2$, $n\le3$, and of (b) at $\omega=(0,0)$ for
+$n\le4$; the ratio $A_{n+2,n}/((n+2)!\,n!\,b_n)$ is $0.8395$, $0.8767$,
+$0.9070$ at $n=40$, $80$, $160$, with $\sqrt n$ times its distance from~$1$
+equal to $-1.01$, $-1.10$, $-1.18$ (the proposition gives the limit
+$c^{(2)}_1-c_1=-\sqrt2$); for $d=1$ the ratio is $1.0067$, $1.0040$, $1.0023$
+($c^{(1)}_1=c_1$); and the proportion with no zero line is $0.2290$,
+$0.2002$, $0.1804$, $0.1718$ at $n=20$, $40$, $80$, $120$, approaching
+$e^{-2}=0.1353$ slowly.
+
+\subsection*{The open questions}
+\begin{enumerate}
+\item\label{sbm:q:rectangular} \textbf{Rectangular aspect ratios} (source:
+ the paragraph so named above). Proved: Theorem~\ref{sbm:thm:main} for $m=n$,
+ and (write) Proposition~\ref{sbm:prop:offset}(a) for $|m-n|=d$ fixed, where
+ the offset diagonal is a Bessel function of fixed order~$d$. Open: a uniform
+ formula for $A_{m,n}$ with $m/n$ in a compact subinterval of $(0,\infty)$,
+ and the transition as $m/n\to1$ with $|m-n|\to\infty$. The source suggests a
+ bivariate saddle analysis or Bessel functions of growing order; missing are
+ the uniform estimates.
+\item\label{sbm:q:marked} \textbf{Marked components and distributions}
+ (source: the paragraph so named above). Proved (write):
+ Proposition~\ref{sbm:prop:offset}(b), an independent Poisson$(1)$ limit for
+ zero rows and zero columns, whose marks enter only the Bessel argument. Open:
+ means, variances and limit laws for the numbers of balanced paths,
+ unbalanced paths and cycles. A mark on balanced or on unbalanced paths
+ changes the coefficient of the pole in $t/(1-t)$ or in the Bessel argument
+ and so moves the saddle point, and a mark on cycles changes the power
+ $(1-t)^{-1/2}$ of $P$; either way hypothesis~(B) of
+ Lemma~\ref{sbm:lem:transfer} fails as stated, and, as the source says,
+ complex-uniform marked estimates and control of the normalization are
+ needed.
+\item\label{sbm:q:effective} \textbf{Effective errors and onset} (source: the
+ paragraph so named above). Open: explicit constants in
+ Lemma~\ref{sbm:lem:bessel}, the arc and connector estimates and the Taylor
+ majorant~\eqref{sbm:eq:gaussian-rem}, which would turn
+ Theorem~\ref{sbm:thm:integer} into a certified finite-input enclosure and
+ make Remark~\ref{sbm:rem:transseries}(d) effective. Fitting constants to
+ finite data does not do this.
+\item\label{sbm:q:exponential} \textbf{Exponentially small terms} (source:
+ the paragraph so named above). Open: the secondary saddles and Stokes effects
+ of the Bessel factor, the growth of $c_j$ (the values $c_4=5.12\ldots$,
+ $c_5=-14.71\ldots$, $c_6=44.42\ldots$ grow in size, which says nothing
+ about the late terms), optimal truncation and a transseries.
+\item\label{sbm:q:literature} \textbf{The literature boundary} (source:
+ Section~\ref{sbm:sec:literature}). Open: the exact scope of Goulden and
+ Jackson's Problem~3.4.15, Knuth's solution and a specialization of
+ Greenhill, McKay and Wang to the sum over degree vectors; by
+ Remark~\ref{sbm:rem:oeis} the generating function itself follows from a
+ formula of OEIS A062154. The source's bounded search did not find the
+ scalar expansion in print; the write made no further search.
+\item\label{sbm:q:k} \textbf{At most $k$ ones, $k\ge3$} (added by the write,
+ not a claim of the source). A283500 lists A197458 as the column $k=2$ of the
+ square family with at most $k$ ones per line; for $k\ge3$ the components are
+ no longer paths and cycles, and no analogue of~\eqref{sbm:eq:egf} or of
+ Theorem~\ref{sbm:thm:main} is known to the write. The regime $k=n/2$ is
+ treated by Ordentlich, Parvaresh and Roth~\cite{opr}.
+\end{enumerate}
+
+\section{Literature coverage and claim boundaries}\label{sbm:sec:literature}
 The inspected A197458 record defines the same square binary class and
 provides a multivariate recurrence and Java implementation
 \cite{oeis}. Its revision is number 25, dated 8 April 2020; the
@@ -830,6 +1438,17 @@ remainder constant, or universally correct rounded inverse is
 asserted. The theorem and exact checks remain valid independently of
 whether the scalar equivalent appears elsewhere in the literature.
 
+\begin{writenote}[The OEIS records and the literature at the write, 6~October 2026]
+A197458 is still at revision~\#25, without an asymptotic formula; A062154,
+A062156 and A001499 are at revisions \#14, \#7 and \#130, and say what this
+section reports. The A062154 formula determines~\eqref{sbm:eq:egf}
+(Remark~\ref{sbm:rem:oeis}(a)), so the exact part of the report is older than
+``closely related'' suggests; the source claims no priority for it. Its
+asymptotic results are not affected. The source does not cite the A283500
+family or the result of Ordentlich, Parvaresh and Roth~\cite{opr} for $k=n/2$
+(abstract read), which does not bear on fixed~$k$.
+\end{writenote}
+
 \begin{thebibliography}{9}
 \bibitem{oeis}
 OEIS Foundation Inc., A197458, \emph{Number of $n\times n$ binary
@@ -875,5 +1494,18 @@ E. Caizergues and \'E. de Panafieu,
 constraints}, EuroComb 2023, pp.~254--262, Theorem 2.
 \url{https://doi.org/10.5817/CZ.MUNI.EUROCOMB23-035}.
 Publisher text: \url{https://journals.muni.cz/eurocomb/article/view/35569}.
+
+\bibitem{oeisk}
+OEIS Foundation Inc., A283500 (\emph{Triangle read by rows: T(n,k) = number
+of n X n (0,1) matrices with at most k 1's in each row or column}) and
+A247158. \url{https://oeis.org/A283500}; \url{https://oeis.org/A247158}.
+Added by the write (6~October 2026).
+
+\bibitem{opr}
+E. Ordentlich, F. Parvaresh, and R. M. Roth,
+\emph{Asymptotic enumeration of binary matrices with bounded row and column
+sums}, SIAM J. Discrete Math. 26 (2012), no.~4, 1550--1575.
+\url{https://doi.org/10.1137/110857465}.
+Added by the write (6~October 2026); abstract read.
 \end{thebibliography}
 \end{document}
