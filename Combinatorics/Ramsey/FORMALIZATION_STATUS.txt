@@ -12,8 +12,8 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 210 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 1,919 public Gowers theorems and found only propext,
+  All 215 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 1,966 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 101 exact
   companion proofs and 19 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -419,6 +419,40 @@ Universal maps and the coefficient selection for Lemma 13.9
   not provide the integer step and translation control needed for the later
   square-grid argument. A separate necessary-condition theorem shows that
   Stage 13.9 forces enough distinct points in Q, not just a large formal length.
+
+Constructed height models and the Stage 13.6--13.9 chain
+  Proofs13CommonStepSelection partitions the prime cyclic group into proper
+  progressions with any prescribed nonzero step and lengths m or m+1 when
+  m^2 <= N. A sigma-domain partition and weighted averaging preserve the
+  aggregate row mass. The numerical budget m+1 <= |Q| retains |R| <= |Q|,
+  instead of discarding the upper length bound needed by Lemma 13.9.
+  The Stage 13.4 frequency cover and Stage 13.5 smallness imply the common
+  Bohr-step condition. Corollary 10.14 then supplies affine formulas on cells.
+  Proofs13EdgeModels identifies the total and respected height-arrangement
+  counts with the multifunction edge-domain tuple counts, exactly. A good
+  height gives the required error 2^-43. Fibre cardinalities, their Fourier
+  function, and the large spectrum are preserved under the edge representation.
+  Proofs13EdgeDensity proves C(h) <= |X_h|*N^29 by retaining one actual edge
+  in the injective arrangement encoding. Consequently, a strong height has
+  actual edge density beta between alpha^32/16 and alpha. Theorem 10.13 is
+  applied at beta, not at a lower bound incorrectly treated as an equality.
+  Its selected set has at least 2^-43*alpha^224*N^2 points.
+  Proofs13UniformEdgeModels proves monotonicity of the rounded spectrum
+  parameter and corrected Bohr radius. All strong-height models are restricted
+  to the common parameter a=alpha^32/16, threshold section10Lambda(a), and
+  radius section10Zeta(a). This construction currently assumes alpha<=1/6,
+  as required by the checked Theorem 10.13; the larger-density case is unresolved.
+  lemma_13_6_from_initial_stages constructs all required row sets and models
+  from the preceding stages, with explicit integer and Bohr-radius budgets.
+  Proofs13BilinearExtraction assembles Stages 13.6--13.9 and their mass bounds,
+  using an additional displayed width inequality for Lemma 13.8. No row sets,
+  affine partitions, or coefficient models are assumed as extra inputs.
+  The numerical budgets still require proof: a positive integer target, its
+  square bounded by N, m+1 <= |Q|, the Stage 13.6 lower length, the Bohr-radius
+  inequality with the corrected rounded radius, and the Stage 13.8 width.
+  The catalogue remains at 101 exact companions and 19 open statements.
+  This chain does not supply the stronger integer step/translation geometry
+  needed for Corollary 13.10, nor establish a final Szemeredi bound.
 
 New Section 18 infrastructure
   Proofs18IntervalTransfer:
