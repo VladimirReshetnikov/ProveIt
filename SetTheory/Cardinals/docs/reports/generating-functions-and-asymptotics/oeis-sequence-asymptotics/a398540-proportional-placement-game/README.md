@@ -83,8 +83,8 @@ The directory holds 31 files: 10 at the root, 11 in `code/`, 10 in `data/`.
 | File | Bytes | What it is |
 |---|---|---|
 | `README.md` | — | this guide (replaces Report 146's delivered README) |
-| `article.tex` | 252,705 | the merged article: front matter, Parts I–III, Section 38 |
-| `article.pdf` | 1,062,495 | its build, 81 pages |
+| `article.tex` | 262,319 | the merged article: front matter, Parts I–III, Section 38 |
+| `article.pdf` | 1,084,668 | its build, 83 pages |
 
 **Delivered files**, byte-identical to the delivery (all 28 checked against
 the pristine extraction at the write: 0 differences):
@@ -220,11 +220,18 @@ Added in the write, with proofs (each tagged **[write]** in the article):
   `A = r_* √(2π) ∈ (1.32, 1.59)`; it is approached from above, with no
   `n^{−1/2}` term, contrary to his "approached from below" and Remark 6.19's
   `C(1 − b/√n + O(1/n))`; the lost factor `r^{−1}` comes from replacing the
-  child sizes `k−1, n−k` (sum `n−1`) by `xn, (1−x)n` (sum `n`).
+  child sizes `k−1, n−k` (sum `n−1`) by `xn, (1−x)n` (sum `n`). His
+  Proposition 6.17 is a correct formal computation for his integral equation
+  (140); what fails is (140) as a model of the recurrence (47), and every
+  statement that transfers `√(2π)` to `W(n)`. Serra does not define
+  `C_eff(n)`; it is read as `W(n)/(√n r_∞^n)`, compatible with his (8).
 - **Proposition 10.3**: Serra's integral equation (200) (his Open Problem 3),
   with `W(xn)` read through any measurable extension `W̃(t) ≤ K√(t+1) r_*^t`,
-  `W̃(t) ~ A√t r_*^t` (his own profile, or an interpolation of `W_n`), has
-  `E(n)/W(n) → 1 − r_* ∈ (46/125, 473/1000)`, not `o(1)`.
+  `W̃(t) ~ A√t r_*^t` (his Step-2 ansatz taken with the true amplitude `A`,
+  or an interpolation of `W_n`), has
+  `E(n)/W(n) → 1 − r_* ∈ (46/125, 473/1000)`, not `o(1)`. With any amplitude,
+  `W̃(t) ~ C√t r_*^t`, the limit is `1 − C²/(2πr_*)`: `1 − 1/r_* ≈ −0.738` for
+  Serra's own `C = √(2π)`, and zero only for `C = √(2πr_*) ≈ 1.90 ≠ A`.
 - **Remark 33.3**: Serra's Open Problem 2, the expansion (199) of
   `W(n+1)/W(n)` in pure inverse powers with `O(n^{−p−1})` remainder, holds for
   `p = 1` (with `a_1 = r_*/2`) and fails for every `p ≥ 2`.
@@ -232,7 +239,13 @@ Added in the write, with proofs (each tagged **[write]** in the article):
   `p0:thm:lambert-core` of the transseries volume (`a = λ`, `b = −1/2`); the
   ceiling brackets are of the kind in the separation condition of
   `p0:thm:staircase`; Theorem 34.1 with `M = 1` implies Theorem 11.2 and with
-  `M = 2` implies Theorem 23.1 (explicit centre comparison).
+  `M = 2` implies Theorem 23.1 (explicit centre comparison). The centres with
+  `M ≥ 2` have coefficients polynomial in `log x`: `f_M(Z) = L_ε` is of the type
+  of the volume's formal template `plt:thm:lw-template` (data
+  `(λ, −1/2, −log A, −Σ_{j≤M} 𝓛_j(log Z) Z^{−j})`), which expands formally
+  about `(L_ε + log A)/λ`; Section 34 centres at the Lambert root and proves an
+  analytic bracket, so it extends the volume's results rather than
+  instantiating one.
 - Section 38, question 2: Serra's suggested approach calls his inequality
   (198) equivalent to log-convexity; it is equivalent to strict
   log-concavity.
@@ -276,10 +289,14 @@ any Part. The placement dossier found it equal to `1/12` to about 8 digits in
 float64. The write computed `x_0, …, x_4000` from the exact kernel
 factorization (24-point Gauss–Legendre for each kernel integral, fixed point
 with resolution `2^{−200}`, the 18-digit OEIS `r_*`; the exact `W_2, …, W_5`
-are reproduced to `10^{−59}`) and fitted the partial sums with five tail orders
-and a term for the error in `r_*`: `S_A − 1/12 = −1.9·10^{−19}`
-(`600 ≤ N ≤ 4000`), at most `3.8·10^{−18}` over the other windows; the fitted
-`log N/N` coefficient is `7/540` to 12 digits. A fit of `log x_n` confirms the
+are reproduced to `10^{−59}`) and fitted the partial sums with four tail orders
+(`(log N)^k/N^{j−1}`, `2 ≤ j ≤ 5`; this README first said "five") and a term
+for the error in `r_*`: `S_A − 1/12 = −1.9·10^{−19}`
+(`600 ≤ N ≤ 4000`), at most `3.8·10^{−18}` over the other windows (with three
+tail orders, `2 ≤ j ≤ 4`, at most `4·10^{−14}`); the fitted
+`log N/N` coefficient is `7/540` to 12 digits. The independent check below
+reproduced these values from its own data and, with five tail orders, found
+`|S_A − 1/12| < 10^{−23}`. A fit of `log x_n` confirms the
 third-order prediction `5/504` for the `log n/n³` coefficient and the
 cancellation of `(log n)²/n³` (about `2·10^{−12}`), and gives
 `B_2 ≈ −0.0573920672`, and `ρ_0 > ρ_1 > … > ρ_3999`. Uncertified. If
@@ -292,19 +309,72 @@ profile reading (Proposition 10.3); his expansion (199) for `p ≥ 2` (Remark
 33.3); his "log-convexity" reading of (198) (Section 38). No claim of the three
 manuscripts was found to be wrong.
 
+**Independent check of the write (5 October 2026).** An adversarial check
+made by the intake after the write (`0480c6184`) reread every write addition
+against Serra's version-1 PDF (rendered pages 1, 8, 24, 48–50, 69–70, not only
+the text dump): Remark 10.2, Proposition 10.3, Remark 33.3, the (198) reading
+of Section 38, Remarks 11.3, 23.3, 34.3 and the implications between the
+inverse theorems, the note after Theorem 22.1, the identity
+`S_A = Σ (q_i W_i R^{i+1} − 1)`, every number of Section 38, and the merge
+(offsets 0/13/25, all 103/132/120 delivered labels, no delivered sentence
+dropped). It found every Serra citation accurate, every correction of Serra
+valid, no mathematical error in anything the write added, and the merge
+faithful. Five wordings were corrected, each with a dated note keeping the
+first wording; the record is an unlabelled dated paragraph at the end of
+Section 38, with a pointer in the front matter:
+
+- Remark 10.2 (fairness): Serra's Proposition 6.17 is a correct formal
+  computation for his (140); what fails is (140) as a model of (47). The
+  undefined `C_eff(n)` is read as `W(n)/(√n r_∞^n)`. A note adds that
+  `W_n/(√n r_*^n)` decreases strictly for `1 ≤ n ≤ 4000`, from 1.7377 to
+  1.442585, with `n(W_n/(A√n r_*^n) − 1) = 0.24996` at `n = 4000` (uncertified).
+- Proposition 10.3: `A√t r_*^t` is Serra's Step-2 ansatz *with the true
+  amplitude*, not "Serra's profile" (his carries `√(2π)`); a note gives the
+  general limit `1 − C²/(2πr_*)`, which is `1 − 1/r_* ≈ −0.738` for Serra's `C`.
+- Remark 33.3: the proof now identifies `r_∞ = r_*` before comparing
+  coefficients (a missing step).
+- Front matter (neighbours paragraph, merge decisions) and Remark 34.3: the
+  inverse theorems "use the mechanics of" / are "related to" the transseries
+  volume, not "instances" of it (the paragraph also said the `M ≥ 2` centres are
+  not instances); the comparison with `plt:thm:lw-template`, which the write
+  had missed, is added, and the label joins the `tsvol` bibliography entry.
+- Section 38, question 8: the fit with `2 ≤ j ≤ 4` has three tail orders, not
+  four; the note adds `|S_A − 1/12| < 10^{−23}` with five.
+
+The tests, none of which used the delivered or the write's programs: exact
+`W_n` for `n ≤ 120` from the definition (`n^n Q_{n,k}` as an integer binomial
+sum); `W_n` for `n ≤ 4000` to about 70 digits by a different route
+(`Q_{n,k} = (n−1)!/n^{n−1} ∫_0^1 φ_i(s) φ_j(1−s) ds`, `φ_i(s) = (i+s)^i/i!`,
+own Gauss–Legendre nodes, 30 and 40 of them, fixed point `2^{−240}`, no value
+of `r_*` injected; relative agreement `3.4·10^{−70}` with the exact values and
+`4.2·10^{−69}` between node counts); from these its own fit
+`r_* = 0.575472381511152252066…`, the coefficients `−1/4`, `−7/540`,
+`B_2 = −0.05739206722949`, `5/504` for `log n/n³` and about `10^{−15}` for
+`(log n)²/n³`, `ρ_0 > … > ρ_3999`, and the `S_A` fits with three, four and
+five tail orders; the third-order rationals checked exactly. The rate-bracket
+certificate was not rerun. This was a careful reading with numerical tests, not
+a formal verification.
+
 ## Relation to neighbouring reports
 
 No other report in the repository treats A398540, the placement game,
 Serra's manuscript or this recurrence (searched 5 October 2026); the other
 reports placed in batch 105 (`a217057-unique-pattern-occurrences`,
 `a224182-unique-1432-order`, `a292692-weighted-dyck-newton-diagonal`) treat
-other sequences. The inverse theorems are instances of the transseries volume
+other sequences. The inverse theorems use the mechanics of the transseries
+volume
 `Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex`
 (`p0:thm:lambert-core`, `p0:def:three-inverses`, `p0:thm:staircase`,
 `p0:cor:forward-to-inverse`), which the manuscripts neither cite nor need; the
-centres with `M ≥ 2` carry polynomials in `log x` and extend rather than
-instantiate `p0:thm:lambert-centered` and `p0:thm:flattening`. No reciprocal
-note is proposed for the volume.
+centres with `M ≥ 2` carry polynomials in `log x` and are not instances of
+`p0:thm:lambert-centered` and `p0:thm:flattening` (constant coefficients).
+The volume's formal template `plt:thm:lw-template` does admit coefficients
+polynomial in `log Z`, but it expands formally in the flattened chart, whereas
+Section 34 centres at the Lambert root and proves an analytic bracket; so Part
+III extends the volume's results rather than instantiating one. (This
+paragraph first called the inverse theorems "instances of the transseries
+volume"; corrected after the independent check above.) No reciprocal note is
+proposed for the volume.
 
 ## Relation to the formal project
 
@@ -413,6 +483,14 @@ build: 81 pages, no errors, no warnings, no undefined or multiply defined
 references or citations, no duplicate destinations, no overfull or underfull
 boxes. The three delivered `.tex` files compile with MiKTeX pdfLaTeX to 21, 21
 and 22 pages.
+
+Rebuilt on 5 October 2026 after the independent check, in a scratch copy with
+four pdfLaTeX passes: 83 pages (81 before; the record and the notes add two),
+no errors, no warnings, no undefined or multiply defined references or
+citations, no duplicate destinations, no overfull or underfull boxes; all 385
+labels keep their numbers (`.aux` compared with a build of the committed text,
+which reproduced the committed PDF byte for byte; page numbers move by at most
+two).
 
 ## Delivered path → shipped path
 
