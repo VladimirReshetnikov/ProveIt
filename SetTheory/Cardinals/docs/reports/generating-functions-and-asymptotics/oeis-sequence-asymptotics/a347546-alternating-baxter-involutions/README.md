@@ -74,13 +74,15 @@ Report 149 is printed once, in Part I.
   involution), have the shape of her Lemma 2.1 with `k = 5`, and have a
   non-involutive `π₁*`; they are the two objects her count misses.
 - **Explicit proof** (`[write]` Proposition 23.2): the even formula holds
-  for the class for `3 ≤ n ≤ 9` and fails for every `n ≥ 10`, by
+  for the class for `3 ≤ n ≤ 9` and fails for every `n ≥ 10` (here `n` is
+  Min's half-index: lengths `2n ≥ 20`), by
   `Σ_{j≥4}(C_j − o_j) e_{n−2j−2} ≥ 2`; the recurrence-defined sequence equals
   the class for `n ≤ 19` and `n = 21` and is **strictly smaller for `n = 20`
   and every `n ≥ 22`**.
 - **Min's printed list** (p. 257) is wrong at `n = 20, 22, …, 26`
   (2166, 6012, 14592, 17234, 42198, 49336 for 2168, 6014, 14594, 17252,
-  42204, 49360) (Remark 23.4).
+  42204, 49360) (Remark 23.4); all six class values are direct counts
+  (independent check, below).
 - **OEIS A347546** (revision #20, Jun 29 2022, read 5 October 2026): the
   **definition is right**, but the data and the `%o` Python program implement
   Min's recurrence, so **21 of the 42 terms are wrong**: `n = 20` and
@@ -318,6 +320,26 @@ of values at `n = 20, 22–26`; the data and program of A347546 at `n = 20,
 22–41` — each with a proof (Proposition 23.2) and the counterexample
 (Remark 23.3). **Nothing in the two manuscripts was found to be wrong.**
 
+**Independent check of the write (5 October 2026).** An adversarial check
+made by the intake after the write (`742754a50`) found every item valid and
+no mathematical error. Its own literal brute force, written from the
+definition (backtracking over alternating involutions, the Baxter property
+tested in Min's strict four-index form, no vincular form, pattern avoidance
+or structure theorem), matches the corrected `a_n` for every `n ≤ 26`, so
+2168, 6014, 14594, 17252, 42204, 49360 are direct counts. At length 20
+exactly 14 objects start with 11; 12 of them have an involutive first block,
+the other two are `π⁽¹⁾`, `π⁽²⁾`. It rederived the all-`n` induction of
+Proposition 23.2(iii) (shortfall `≥ 2` from the `j = 4` term at even
+half-index `≥ 10`, from the `i = 10` term at odd half-index `≥ 11`), and the
+recurrence stays strictly below the class for `22 ≤ n ≤ 3000`. It also
+confirmed the quotations of Min (publisher's PDF), the live A347546 and its
+program (run verbatim; equal to Min's recurrence for `n ≤ 60`), Barnabei et
+al.'s Section 10, the transseries instance-versus-analogue statements, the
+merge of Report 151 and the second-hand Guibert–Linusson credit. One
+clarification, with a dated note: Proposition 23.2(ii) counts `n` as Min's
+half-index (lengths `2n`), (iii) as the length. The record is a dated note at
+the end of Section 23.
+
 ## Relation to neighbouring reports
 
 - No other report of the collection treats A347546, Baxter involutions or
@@ -436,7 +458,7 @@ latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
 pdfLaTeX (MiKTeX), in a scratch copy; commit only `article.pdf`. The build
-(44 pages): no errors, no undefined or multiply defined references or
+(45 pages after the independent check; 44 at the write): no errors, no undefined or multiply defined references or
 citations, no duplicate destinations, no overfull or underfull boxes, no
 warnings.
 

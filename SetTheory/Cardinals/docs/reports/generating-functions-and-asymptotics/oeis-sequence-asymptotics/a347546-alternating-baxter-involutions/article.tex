@@ -2013,12 +2013,13 @@ which is Part~I's \eqref{abx:en:eq:erec} with $m=n$ and $j=n-k-1$.
 Let $\hat b_n$ be the sequence defined by Min's Theorem~2.7 with $\hat b_0=\hat b_1=\hat b_2=1$ and $\hat b_4=2$ (the even formula at $n=2$ also gives $2$). Then:
 \begin{enumerate}[label=\textup{(\roman*)}]
 \item the odd formula holds for the class counts $a_n$ for every $n\ge2$;
-\item the even formula holds for the class counts for $3\le n\le9$ and fails for every $n\ge10$, where its right-hand side falls short of $a_{2n}$ by
+\item the even formula holds for the class counts for $3\le n\le9$ (lengths $2n\le18$) and fails for every $n\ge10$ (lengths $2n\ge20$), where its right-hand side falls short of $a_{2n}$ by
 \[
  \sum_{j=4}^{\lfloor(n-2)/2\rfloor}(C_j-o_j)\,e_{n-2j-2}\ \ge\ 2e_{n-10}\ \ge\ 2;
 \]
 \item $\hat b_n=a_n$ for $n\le19$ and for $n=21$, and $\hat b_n<a_n$ for $n=20$ and for every $n\ge22$; in particular $a_{20}-\hat b_{20}=2$.
 \end{enumerate}
+\textup{(The two parentheses on lengths in~(ii) were added after the independent check of 5~October 2026: in~(ii), as in Theorem~2.7, $n$ is Min's half-index, the formula being one for $b_{2n}$; in~(iii) $n$ is the length.)}
 \end{proposition}
 \begin{proof}
 Write $\hat e_m=\hat b_{2m}$ and $\hat o_m=\hat b_{2m+1}$. In the odd formula put $n=m+1$ and $i=k-1$: it reads $o_m=\sum_{i=0}^{m-1}e_io_{m-1-i}$ for $m\ge1$, which is Part~I's \eqref{abx:en:eq:orec}; this proves~(i). In the even formula put $n=m$ and $j=m-k-1$. Then $2n-2k-1=2j+1$ and $4k-2n=2(m-2j-2)$, and $\lceil m/2\rceil\le k\le m-1$ becomes $0\le j\le m-1-\lceil m/2\rceil=\lfloor(m-2)/2\rfloor$; the formula reads
@@ -2052,7 +2053,7 @@ The two involutions $\pi^{(1)}$, $\pi^{(2)}$ of length~$20$ printed in Section~\
 \end{remark}
 
 \begin{remark}[\wtag\ Min's list of values, 5~October 2026]\label{abx:rem:list}
-Min's paper ends (p.~257): ``The first few values of $b_n$ ($n=0,1,2,3,\ldots$) are $1,\allowbreak 1,\allowbreak 1,\allowbreak 1,\allowbreak 2,\allowbreak 2,\allowbreak 3,\allowbreak 5,\allowbreak 8,\allowbreak 12,\allowbreak 16,\allowbreak 32,\allowbreak 44,\allowbreak 84,\allowbreak 105,\allowbreak 231,\allowbreak 292,\allowbreak 636,\allowbreak 768,\allowbreak 1792,\allowbreak 2166,\allowbreak 5080,\allowbreak 6012,\allowbreak 14592,\allowbreak 17234,\allowbreak 42198,\allowbreak 49336,\allowbreak \ldots$''. By Proposition~\ref{abx:prop:hat} the values for $n=20$ and $n=22,\ldots,26$ are those of the recurrence, not of the class: the class has $2168$, $6014$, $14594$, $17252$, $42204$, $49360$ there (Part~I's table in Section~\ref{abx:en:sec:results} gives $n\le24$). The first twenty values and $b_{21}=5080$ are right.
+Min's paper ends (p.~257): ``The first few values of $b_n$ ($n=0,1,2,3,\ldots$) are $1,\allowbreak 1,\allowbreak 1,\allowbreak 1,\allowbreak 2,\allowbreak 2,\allowbreak 3,\allowbreak 5,\allowbreak 8,\allowbreak 12,\allowbreak 16,\allowbreak 32,\allowbreak 44,\allowbreak 84,\allowbreak 105,\allowbreak 231,\allowbreak 292,\allowbreak 636,\allowbreak 768,\allowbreak 1792,\allowbreak 2166,\allowbreak 5080,\allowbreak 6012,\allowbreak 14592,\allowbreak 17234,\allowbreak 42198,\allowbreak 49336,\allowbreak \ldots$''. By Proposition~\ref{abx:prop:hat} the values for $n=20$ and $n=22,\ldots,26$ are those of the recurrence, not of the class: the class has $2168$, $6014$, $14594$, $17252$, $42204$, $49360$ there (Part~I's table in Section~\ref{abx:en:sec:results} gives $n\le24$). \textup{(Added after the independent check of 5~October 2026: a direct enumeration under Min's strict four-index definition, written independently of the report, gives all six values; dated note at the end of this section.)} The first twenty values and $b_{21}=5080$ are right.
 \end{remark}
 
 \begin{remark}[\wtag\ The data of OEIS A347546, 5~October 2026]\label{abx:rem:oeis}
@@ -2077,7 +2078,7 @@ $n$ & A347546 & class $a_n$ & difference && $n$ & A347546 & class $a_n$ & differ
 \bottomrule
 \end{tabular}
 \end{center}
-The class values are computed from Part~I's Theorem~\ref{abx:en:thm:enumeration}; for $n\le22$ they agree with the two direct enumerations made at intake. The first wrong odd term is $n=23$. The entry's definition, and its links, are right. Barnabei et al.\ \cite{barnabei} cite Min's recurrence for this sequence but print no value of it. This report records the correction; nothing has been submitted to the OEIS, and no erratum has been sent to the journal or to the author. OEIS data are available under CC BY-SA~4.0.
+The class values are computed from Part~I's Theorem~\ref{abx:en:thm:enumeration}; for $n\le22$ they agree with the two direct enumerations made at intake \textup{(and for $n\le26$ with the direct enumeration of the independent check of 5~October 2026; dated note at the end of this section)}. The first wrong odd term is $n=23$. The entry's definition, and its links, are right. Barnabei et al.\ \cite{barnabei} cite Min's recurrence for this sequence but print no value of it. This report records the correction; nothing has been submitted to the OEIS, and no erratum has been sent to the journal or to the author. OEIS data are available under CC BY-SA~4.0.
 \end{remark}
 
 \subsection{Further questions and research}\label{abx:sub:questions}
@@ -2093,6 +2094,10 @@ The class values are computed from Part~I's Theorem~\ref{abx:en:thm:enumeration}
 \end{enumerate}
 
 \emph{Not open.} Min's Theorem~2.7, her list of values, and the data and program of A347546 are corrected above, with proofs. No question of either manuscript is answered by the other: Part~II refines Part~I's count and imports its decomposition; it does not touch the length asymptotics or the length inverses.
+
+\begin{writenote}[Independent check of the write, 5~October 2026]
+An adversarial check made by the intake after the write (commit \file{742754a50}) found every item valid and no mathematical error. It reread Min's Theorem~2.7, the quoted sentences of p.~256 and the list of p.~257 in the publisher's PDF (Remarks~\ref{abx:rem:min} and~\ref{abx:rem:list}); the live entry A347546 (revision \#20, 42 terms), whose Python program, run verbatim, reproduces the data and equals Min's recurrence for every $n\le60$ (Remark~\ref{abx:rem:oeis}); and Section~10 of Barnabei et al. It wrote its own literal brute force from the definition: backtracking over alternating involutions, with the Baxter property tested in Min's strict four-index form of p.~253 and no use of the vincular form, of the avoidance of $2413$ and $3142$, or of any structure theorem. It matches the corrected $a_n$ for every $n\le26$, so the class values $2168$, $6014$, $14594$, $17252$, $42204$, $49360$ of Remark~\ref{abx:rem:list} are direct counts, not only values of the recurrence. At length~$20$ exactly $14$ of the $2168$ objects begin with~$11$; in each the last block is the inverse of the standardized first block, $12$ of the $14$ first blocks are involutions, and the other two are $\pi^{(1)}$ and $\pi^{(2)}$ (Remark~\ref{abx:rem:witness}). The check rederived the all-$n$ induction of Proposition~\ref{abx:prop:hat}\,(iii): the shortfall is at least~$2$, from the term $j=4$ of the even equation at every even half-index $m\ge10$ and from the term $i=10$ of the odd equation at every odd half-index $m\ge11$. Computed from both recurrences, the recurrence sequence stays strictly below the class for $22\le n\le3000$; within $0\le n\le3000$ the two agree exactly for $n\le19$ and $n=21$, and the recurrence is never above. It also confirmed the substitutions behind Proposition~\ref{abx:prop:hat}\,(i)--(ii), the arithmetic $2166$ against $2168$, the instance-versus-analogue statements against the transseries volume, the handling of Report~151's restatement of Report~149 with its shifted section references, and that the Guibert--Linusson credit is disclosed as quoted from secondary sources. One clarification was made: in Proposition~\ref{abx:prop:hat}\,(ii) $n$ is Min's half-index and in~(iii) the length, so the lengths $2n$ were added to~(ii), with a dated note.
+\end{writenote}
 
 \begin{thebibliography}{99}
 \raggedright
