@@ -12,8 +12,8 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 183 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 1,753 public Gowers theorems and found only propext,
+  All 185 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 1,760 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 99 exact
   companion proofs and 21 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -256,10 +256,18 @@ Corrected distinct-anchor sampling estimate
   a single base partition and a common pool of p candidates for all r sampled
   slices. Anchored interpolation gives r*r*p*p global multilinear candidates
   per base cell, with the union theorem's explicit width and graph bounds.
-  A complete Lemma 16.10 proof still needs short-column handling, synchronization
+  Proofs16ShortColumns now handles every nonempty column set: when it is too
+  short for the two-anchor threshold, the same corrected sample budget can
+  enumerate all its columns. Directly sampled points use slice candidates
+  lifted constantly in the final variable; the long-column case uses paired
+  interpolation. Their combined candidate count is r*p+r*r*p*p.
+  Proofs16RecoveredSliceCover puts both cases on the common slice partition
+  and intersects the sampling good set with the lifted good base domain.
+  The resulting product good set loses at most the sum of those two losses.
+  A complete Lemma 16.10 proof still needs global cell assembly, synchronization
   of base and final-coordinate steps, and the unresolved final width comparison
   with the corrected sampling cost. The base-cell conclusion does not assert
-  synchronized product boxes.
+  synchronized product boxes, and empty column cells require separate bookkeeping.
   The newly received gowers_interpolation_article.zip proposes sampling
   without replacement and singleton recovery for a sharper local bound. Its
   argument has been inspected, but is not a checked Lean result at this stage.
