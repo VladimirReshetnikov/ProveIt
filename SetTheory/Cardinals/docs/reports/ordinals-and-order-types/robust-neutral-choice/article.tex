@@ -52,6 +52,12 @@
 \newcommand{\neutral}{\mathcal N}
 \newcommand{\code}[1]{\texttt{\detokenize{#1}}}
 \DeclareMathOperator{\Inf}{Inf}
+% Added by the ProveIt write phase (batch 114, 5 October 2026): dated notes
+% marked [write].
+\newcommand{\file}[1]{\nolinkurl{#1}}
+\newenvironment{writenote}[1][]{\par\smallskip\begingroup\small
+ \noindent\textbf{[write]}\if\relax\detokenize{#1}\relax\else~\textbf{#1.}\fi\ }%
+ {\par\endgroup\smallskip}
 
 \title{\textbf{Robust Choices That Never Settle}\\[5pt]
   \large An exact finite--infinite puzzle about resilience, choice, and randomness}
@@ -91,12 +97,47 @@ carefully distinguished.
 \noindent\textbf{Keywords.} Boolean functions; Hamming robustness; Kleitman diameter
 theorem; mixing convergence; finite-change equivalence; Baire category; choice.
 
+\begin{writenote}[Status and trust boundary, added 5 October 2026, batch~114]
+This is an unrefereed external manuscript, filed in ProveIt as the
+single-source research report \file{robust-neutral-choice} (provenance, the
+sources as the write read them, relation to the repository, the collected
+non-claims and the reading conventions are in
+Section~\ref{rch:sec:provenance}). Its author line and its PDF author field
+read ``Research article prepared for Vladimir Reshetnikov''; the package
+says nothing about how the text was produced, and the write adds no
+authorship statement. No statement of the report is formalized in Lean or
+Rocq (Remark~\ref{rch:rem:lean} says which proved Lean declarations bear on
+the category half of Theorem~\ref{rch:thm:choice}).
+\emph{What rests on what.} The finite optimum,
+Theorem~\ref{rch:thm:finite}, is a corollary of Kleitman's diameter theorem
+(Theorem~\ref{rch:thm:kleitman}, quoted without proof and credited, as the
+source credits it, to~\cite{Kleitman,HKP}); the source proves the
+antipodal-core reduction (Lemma~\ref{rch:lem:core}) and the matching
+majority construction, and claims no novelty for the optimum.
+Theorem~\ref{rch:thm:bias} takes Kakutani's product-measure
+dichotomy~\cite{Kakutani} as an explicit input. Every other theorem,
+lemma and proposition of the source is proved in the text from standard probability, measure theory
+and topology (the central limit theorem and Stirling's formula in
+Proposition~\ref{rch:prop:scales}; conditional expectations, Borel--Cantelli,
+Radon--Nikodym and compactness later); the mixing conclusions are
+consequences of R\'enyi's theory of mixing sequences~\cite{Renyi} and the
+sparse extraction belongs to the subsequence-principle
+literature~\cite{Aldous,AldousEagleson}, both credited by the source. The
+exhaustive program \file{code/verify.py} checks the finite statements in
+dimensions one to five and proves nothing in higher dimension. The source
+claims no novelty or priority and does not claim to settle a published open
+problem. The write adds Remark~\ref{rch:rem:lean},
+Proposition~\ref{rch:prop:alphabet} (the regularity obstruction for more
+than two labels), short notes marked [write] and
+Section~\ref{rch:sec:further}.
+\end{writenote}
+
 \newpage
 \tableofcontents
 \newpage
 
 \section{The problem and its mathematical setting}
-\label{sec:problem}
+\label{rch:sec:problem}
 
 Imagine a committee receiving a binary vote from each member. A rule must always
 return a decision. Renaming the two alternatives must rename the decision too.
@@ -113,7 +154,7 @@ requirements pull in different directions: improving resilience can erase the
 influence of every fixed initial segment without producing a measurable limit.
 
 \begin{problem}[Robust neutral choice]
-\label{prob:main}
+\label{rch:prob:main}
 Answer the following linked questions.
 \begin{enumerate}[label=(\roman*)]
 \item For \(n\) fair binary inputs, what is the largest fraction on which a
@@ -145,7 +186,7 @@ obstructions to regular finite-label rules. The abstract theorems
 \code{Cantor.transitive}, supply the category mechanism used here
 \cite{ProveIt}. The present question adds exact finite robustness and a
 quantitative analysis of what finite approximations can do. Section
-\ref{sec:formal} identifies the precise existing ingredients and the additional
+\ref{rch:sec:formal} identifies the precise existing ingredients and the additional
 formalization tasks.
 
 \subsection{Definitions and conventions}
@@ -157,18 +198,18 @@ Write \(Q_n=\{-1,1\}^n\), with uniform probability \(\mu_n\), and let
 A rule \(f:Q_n\to\{-1,1\}\) is \emph{neutral}, or self-dual, if
 \begin{equation}
  f(-x)=-f(x) \qquad(x\in Q_n).
- \label{eq:neutral}
+ \label{rch:eq:neutral}
 \end{equation}
 Its \emph{change distance} is
 \begin{equation}
  R_f(x)=\min\{\dist(x,y): f(y)\ne f(x)\}.
- \label{eq:radius}
+ \label{rch:eq:radius}
 \end{equation}
 For an integer \(r\ge0\), define
 \begin{equation}
  \rho_f(r)=\mu_n(R_f>r),\qquad
  \eps_f(r)=1-\rho_f(r)=\mu_n(R_f\le r).
- \label{eq:profiles}
+ \label{rch:eq:profiles}
 \end{equation}
 Thus \(R_f\ge1\), and \(R_f=1\) means that a single vote can change the answer.
 \end{definition}
@@ -204,36 +245,259 @@ proved below. Their proofs do not certify historical priority. The two substanti
 theorems quoted without proof are the explicitly stated diameter theorem and,
 in the optional biased extension, Kakutani's product-measure dichotomy. No new
 Lean verification is claimed. The further questions in Section
-\ref{sec:questions} are research proposals, with their status qualified there.
+\ref{rch:sec:questions} are research proposals, with their status qualified there.
+
+\subsection{Provenance, sources and reading conventions}
+\label{rch:sec:provenance}
+\begin{writenote}[Added 5 October 2026, batch~114]
+\emph{Provenance.} The report is built from one manuscript, the archive
+\file{robust_choices.zip} (617{,}494 bytes; wrapper directory
+\file{robust_choices/}, 12 files), which reached ProveIt's
+\file{docs/incoming} in the arrival commit \file{2399df2bd} (5~October 2026,
+``New research reports''), outside the session bundle of the intake, and
+was placed as batch~114 in \file{99053b5d1}. The text is the delivered
+\file{robust_choices.tex} (1{,}539 lines), shipped as \file{article.tex};
+the delivered code, data and figure files are shipped unchanged (the README
+lists them). The delivered 22-page PDF is not shipped; it and the delivery
+README (staged at placement and replaced by the report README) are
+retrievable from the arrival commit. The package pins ProveIt revision
+\file{3b9458b31f459b480ab43a068d7cc56f4cfdbb28}
+(Section~\ref{rch:sec:formal}, bibliography entry~\cite{ProveIt} and the
+delivery README); that commit is the batch-98D placement commit of this
+repository and an ancestor of the commit this write is based on. The author
+line and the PDF author field read ``Research article prepared for Vladimir
+Reshetnikov''. The package contains no statement of how the text was
+produced, no ``unrefereed'' or ``prepared for private review'' line, no
+checksum manifest and no personal data. Single source: no merge choice was
+made. The write prefixed the 79 delivered labels with \file{rch:} and
+updated every reference; it added the notes marked [write], this
+subsection, Remark~\ref{rch:rem:lean}, Section~\ref{rch:sec:further} with
+Proposition~\ref{rch:prop:alphabet}, and nothing else. No statement, proof
+or number of the source was changed: the added remark and proposition are
+the only numbered statements of their sections and the added displays are
+unnumbered, so every delivered theorem and equation keeps its number.
+
+\emph{The sources, as the write read them} (5~October 2026).
+\begin{itemize}\raggedright
+\item Huang, Klurman and Pohoata~\cite{HKP}, arXiv version~1: their
+ Theorem~1.1 is Theorem~\ref{rch:thm:kleitman} as printed here (both
+ parities, diameter at most $D<n$, both bounds sharp, the same extremal
+ sets), credited to Kleitman as the solution of a conjecture of Erd\H{o}s;
+ the paper gives a new, algebraic proof. Read.
+\item Kleitman~\cite{Kleitman}: the bibliographic data were confirmed through
+ the DOI; the paper itself was not read.
+\item Wu, Li, Feng, Liu and Yu~\cite{WuEtAl}: abstract of version~2 (10~June
+ 2025) read. It states Kleitman's theorem with the odd bound in the form
+ $\sum_{i\le s}\binom ni+\binom{n-1}s$, credits Frankl (2017) with the
+ characterization of the extremal families and a first stability result,
+ and proves a second one; it concerns extremal families of a given
+ diameter, as Question~Q2 says. The body was not read.
+\item Kakutani~\cite{Kakutani}, R\'enyi~\cite{Renyi}, Aldous~\cite{Aldous},
+ Aldous and Eagleson~\cite{AldousEagleson}: not read by the write. The
+ statement used in Section~\ref{rch:sec:bias}, equivalence of the two
+ product measures exactly when the product \eqref{rch:eq:kakutani} is
+ positive, is the usual form of Kakutani's dichotomy for these products.
+\item Epoch AI's biographical note~\cite{Epoch} and Glazer's
+ dissertation~\cite{Glazer}: motivation only, not read by the write. The
+ source says that the problem has not been reviewed or endorsed by Glazer.
+\item The repository at the pin and at the write's base commit: see the note
+ in Section~\ref{rch:sec:formal}.
+\end{itemize}
+
+\emph{What was checked at intake.} The batch-114 dossier read the manuscript
+in full and checked the diameter bound $n-2r-1$ of the core and both
+parities of the reduction to Kleitman's theorem, the nine-voter row, the
+induction of Lemma~\ref{rch:lem:minboundary}, the fibre cancellation, the
+sharpness sandwich \eqref{rch:eq:sharpsandwich}, the code construction
+(complement invariance needs $\sum_{v\ne0}v=0$, true for $d\ge2$), the
+likelihood product bounds, openness by nested compactness, the singular
+case $A'=A\setminus\kappa A$ of Theorem~\ref{rch:thm:bias} and the example
+$\gamma\le1/2$; no error. Independent programs confirmed the nine-voter row
+exactly and brute-forced the construction of
+Proposition~\ref{rch:prop:code} for $d=2$, $N=3$ with $L=1$ and $L=3$: the
+rule is neutral, $R_f\le2$ everywhere, and
+$\eps_f(1)=u_N+t_L-u_Nt_L$ exactly. The delivered verifier passed on a
+copy, and its four outputs equal the shipped data files up to newline style
+(the CSV byte for byte). The write reread every proof, found no error, and
+made the two exhaustive computations reported in
+Section~\ref{rch:sec:further}.
+
+\emph{Relation to the repository.}
+\begin{itemize}\raggedright
+\item \emph{Formal status.} No statement of this report is formalized in
+ Lean or Rocq, and its place in the collection confers no formal status.
+ The Lean file the source cites,
+ \path{SetTheory/Cardinals/Cardinals/Countable/GenericErgodicity.lean},
+ proves the topological zero-one law and its two corollaries that the
+ category half of Theorem~\ref{rch:thm:choice} needs;
+ Remark~\ref{rch:rem:lean} assembles them and names what is missing.
+\item The large-cardinal synthesis
+ (\path{SetTheory/Cardinals/docs/cardinals/research-synthesis/}),
+ Proposition~15.3, \file{prop:baire} (the Baire-measurable classification of finite-label rules
+ at $\lambda=\omega$), is what that Lean file formalizes; its discussion
+ notes that a selection from a quotient of $E_0$ type cannot be Baire
+ measurable, the mechanism of the category half of
+ Theorem~\ref{rch:thm:choice}. There the symmetries are permutations of
+ coordinates; here the symmetry is global complementation.
+\item \file{noisy-parity-cubes} (same collection and batch; \emph{see
+ also}): a total parity label there changes sign under every
+ \emph{single} flip and is nonmeasurable for fair measure
+ (\file{np:found:choice}, \file{np:found:regularity}); a rule here is
+ \emph{invariant} under finite changes and changes sign under global
+ complementation. The biased thresholds differ accordingly: every parity
+ label is measurable for the product of Bernoulli$(q_i)$ laws exactly when
+ $\sum_i\min(q_i,1-q_i)<\infty$ (\file{np:found:biased}), whereas a
+ measurable rule of the present kind exists exactly when
+ $\sum_i(p_i-\frac12)^2=\infty$ (Theorem~\ref{rch:thm:bias}). Neither
+ source cites the other; no theorem is shared.
+\item Batch~114 also filed \file{freiling-symmetry-blacklists},
+ \file{bounded-width-power-set-compression} and
+ \file{random-bits-arithmetic-cuts} in the same category, and
+ \file{measurable-box-games} shares the motivation from Glazer's work; no
+ theorem is shared with any of them.
+\item \emph{Stale claims.} The source's three statements about the repository
+ (what \file{GenericErgodicity.lean} contains, the role of
+ \file{FiniteCycles.lean}, and that targeted searches did not find the
+ quantitative development) are still correct at the write's base commit
+ (note in Section~\ref{rch:sec:formal}); nothing needed correcting.
+\end{itemize}
+\end{writenote}
+
+\begin{writenote}[What is not claimed, collected from the source]
+The problem is designed; the source does not claim to have settled ``a
+previously advertised major conjecture'', its proofs ``do not certify
+historical priority'', and its delivery README says that it ``makes no
+unverified claim of worldwide novelty or a breakthrough on a published open
+problem''. The finite optimum is a corollary of Kleitman's theorem, quoted
+without proof; Theorem~\ref{rch:thm:bias} is ``a deduction from a classical
+product-measure theorem, not a new version of Kakutani's theorem'', concerns
+existence in one completed biased law and gives no universally measurable
+neutral selector. The mixing mechanism is R\'enyi's and sparse extraction
+belongs to the subsequence-principle literature; the source gives direct
+proofs specialized to the puzzle. No new Lean or Rocq verification is
+claimed; the exact finite program is a check, not a proof of the
+infinite-dimensional theorems, and its tables for larger $n$ evaluate the
+formula rather than enumerate rules. Equation \eqref{rch:eq:plateau} is not
+a claim about every fairness criterion or voting model; the attaining rules
+are not classified. The constant of Theorem~\ref{rch:thm:prefix} is sharp
+only uniformly over dimensions, not for each fixed $(n,m,r)$. In
+\eqref{rch:eq:nooracle} the candidate $G$ is fixed before the limit; nothing
+is uniform over $G$ depending on $n$, and selecting a constant-sign
+subsequence after seeing the input is not excluded.
+Proposition~\ref{rch:prop:influences} says nothing about small coalitions.
+The selected outputs of Theorem~\ref{rch:thm:recoding} need not be
+independent (equivalence with product measure is the claim); the coupling
+lives on an enlarged probability space and does not provide an independent
+sequence as a function of the input. \eqref{rch:eq:E0hom} is a homomorphism
+of equivalence relations on $E$, not a reduction, and $H|_E$ is not claimed
+open or onto. The choice construction does not identify the existence of
+the rule with full choice, and its exact weak-choice strength is left open.
+The Lean declarations should not be reported as ``an already named, directly
+matching repository theorem''; the repository searches are ``evidence about
+the inspected material, not a certification of novelty''. The explicit
+majority schedule is not proposed as optimal. The research questions are
+proposals; a question labelled a target is not asserted to be a previously
+published open problem. Randomized rules must be neutral for each fixed seed.
+The problem has not been reviewed or endorsed by Glazer.
+\end{writenote}
+
+\begin{writenote}[Reading conventions]
+The abstract's ``For stronger resilience, we extract'' covers more than it
+needs: the open map and the bounded density of
+Theorem~\ref{rch:thm:recoding} need only one-vote resilience
+\eqref{rch:eq:oneassumption}; resilience at every fixed budget
+\eqref{rch:eq:allassumption} is the hypothesis of
+\eqref{rch:eq:radiusdiverge} and of Theorem~\ref{rch:thm:typical}. The
+cube is $\{-1,1\}^n$ throughout the text, but
+Proposition~\ref{rch:prop:code} uses $\F_2$ coordinates and the delivered
+program uses $\{0,1\}^n$ with outputs $\pm1$ and the first $m$ coordinates as
+the low bits. The source reuses letters as follows; no symbol was renamed.
+\end{writenote}
+\begin{center}\small
+\renewcommand{\arraystretch}{1.12}
+\begin{tabularx}{\textwidth}{@{}P{0.16\textwidth}YP{0.27\textwidth}@{}}
+\toprule
+Symbol & Meaning here (where) & Not to be read as\\
+\midrule
+\emph{neutral}, $R_f$ & self-dual, \eqref{rch:eq:neutral}; the change
+ distance \eqref{rch:eq:radius}, so $R_f\ge1$ & anonymous (permutation
+ invariant); a covering radius\\
+$\eps_f(r)$, $\eps_n(r)$ & vulnerability $\mu_n(R_f\le r)$,
+ \eqref{rch:eq:profiles} & the tolerance $\epsilon>0$ of the Chebyshev step
+ in Section~\ref{rch:sec:bias}\\
+$\eta$, $a$, $\delta_j$ & the density tolerance of
+ Theorem~\ref{rch:thm:recoding}; $a=1-e^{-\eta}$; $\delta_j=a2^{1-j}$ &
+ $\eta$ of \file{noisy-parity-cubes}; the growth function $a(n)$ of
+ Proposition~\ref{rch:prop:slow}; $a$ in $d=2a+1$ (proof of
+ Theorem~\ref{rch:thm:finite})\\
+$d(n)$, $d$, $d_i$ & the largest odd integer $\le n$ (also $d=2a+1$);
+ the dimension of $\F_2^d$ in Proposition~\ref{rch:prop:code};
+ $d_i=p_i-\frac12$ in Section~\ref{rch:sec:bias} & Hamming distance, printed
+ $d_H$\\
+$m$ & a prefix length (Sections~\ref{rch:sec:prefix}--\ref{rch:sec:extraction});
+ $n=2m+1$ or $2m$ in Sections~\ref{rch:sec:finite}--\ref{rch:sec:scales} &
+ each other\\
+$C_r(f)$, $C$ & the robust positive core \eqref{rch:eq:core}; the Hamming
+ code of Proposition~\ref{rch:prop:code}; an input cylinder
+ (Theorems~\ref{rch:thm:mixing}, \ref{rch:thm:recoding}, \ref{rch:thm:typical})
+ & each other\\
+$D$ & the diameter bound of Theorem~\ref{rch:thm:kleitman}; $D=C\times C$
+ in Proposition~\ref{rch:prop:code} & each other\\
+$N$, $N_r(\cdot)$, $\N$ & $N=2^d-1$ (Proposition~\ref{rch:prop:code}) and an
+ index in proofs; radius-$r$ neighbourhoods; the natural numbers & \\
+$A$, $A_n$, $A_+$ & a fibre $F^{-1}(1)$ or a Borel set
+ (Sections~\ref{rch:sec:choice}--\ref{rch:sec:bias}), the negative set in
+ Lemma~\ref{rch:lem:minboundary}; $A_n=\{f_n=1\}$ in \eqref{rch:eq:renyi} but
+ $A_n=\sum_{i\le n}b_i^2$ in Section~\ref{rch:sec:bias}; $A_+$ the event of
+ eventually positive output & each other\\
+$b$, $b_i$ & an output word (Theorem~\ref{rch:thm:recoding}); $b_i=2p_i-1$
+ (Section~\ref{rch:sec:bias}) & \\
+$F$, $F_\ell$ & the infinite rule \eqref{rch:eq:infiniterule}; the
+ sharpness construction \eqref{rch:eq:sharpconstruction} & the finite label
+ type \texttt{F} of the Lean file\\
+$H$, $h_\ell$, $h_L$ & the decision map \eqref{rch:eq:H}; majorities of
+ tail votes & the family \texttt{H} of homeomorphisms in the Lean file\\
+$E$, $E_0$ & the divergence set \eqref{rch:eq:E}; the finite-change
+ equivalence relation & each other\\
+$K(n,m,r)$, $K$ & the constant of Question~Q1; an index in the proof of
+ Theorem~\ref{rch:thm:typical} & \\
+$\flip_i$, $\kappa$ & the flip of coordinate $i$; global complementation
+ $\kappa x=-x$ & \\
+$\mu$, $\mu_n$, $\mu_p$, $\nu$, $\beta$ & fair product measure; uniform
+ measure on $Q_n$; the biased product \eqref{rch:eq:biasedlaw};
+ $\nu=H_*\mu$; fair product on the output space & \\
+\bottomrule
+\end{tabularx}
+\end{center}
 
 \section{An exact solution for every finite committee}
-\label{sec:finite}
+\label{rch:sec:finite}
 
 Let \(d(n)\) be the largest odd integer at most \(n\), and use the convention
 that a sum with negative upper endpoint is zero.
 
 \begin{theorem}[Exact finite robustness]
-\label{thm:finite}
+\label{rch:thm:finite}
 For every \(n\ge1\) and integer \(r\ge0\),
 \begin{equation}
  \boxed{\quad
  \max_{f\text{ neutral}}\rho_f(r)
  =2^{1-d(n)}\sum_{j=0}^{(d(n)-1)/2-r}\binom{d(n)}j.
  \quad}
- \label{eq:optimum}
+ \label{rch:eq:optimum}
 \end{equation}
 Majority on \(d(n)\) coordinates attains the maximum simultaneously for all
 \(r\). In particular,
 \begin{equation}
  \rho_{2m-1}^{*}(r)=\rho_{2m}^{*}(r),
- \label{eq:plateau}
+ \label{rch:eq:plateau}
 \end{equation}
 where the star denotes the optimum over neutral rules.
 \end{theorem}
 
 The extra voter in an even committee therefore does not improve this extremal
 objective. The attaining rule may distinguish one voter and ignore that vote.
-Equation \eqref{eq:plateau} is not a claim about every fairness criterion or every
+Equation \eqref{rch:eq:plateau} is not a claim about every fairness criterion or every
 voting model.
 
 \subsection{The antipodal-core reduction}
@@ -241,20 +505,20 @@ voting model.
 For a neutral rule, let
 \begin{equation}
  C_r(f)=\{x\in Q_n:f(x)=1,\ R_f(x)>r\}.
- \label{eq:core}
+ \label{rch:eq:core}
 \end{equation}
 The negative robust core is exactly \(-C_r(f)\). Thus
 \begin{equation}
  \rho_f(r)=\frac{2|C_r(f)|}{2^n}.
- \label{eq:corecount}
+ \label{rch:eq:corecount}
 \end{equation}
 
 \begin{lemma}[Small diameter of a robust core]
-\label{lem:core}
+\label{rch:lem:core}
 If \(x,y\in C_r(f)\), then
 \begin{equation}
  \dist(x,y)\le n-2r-1.
- \label{eq:diamcore}
+ \label{rch:eq:diamcore}
 \end{equation}
 If \(2r\ge n\), the core is empty.
 \end{lemma}
@@ -268,31 +532,45 @@ Consequently
 \[
  2r<\dist(x,-y)=n-\dist(x,y),
 \]
-which gives \eqref{eq:diamcore}. If \(2r\ge n\), even \(y=x\) would contradict
+which gives \eqref{rch:eq:diamcore}. If \(2r\ge n\), even \(y=x\) would contradict
 this inequality.
 \end{proof}
 
 Here is the classical extremal input, stated in the exact form needed.
 
 \begin{theorem}[Kleitman's diameter theorem \cite{Kleitman,HKP}]
-\label{thm:kleitman}
+\label{rch:thm:kleitman}
 If \(A\subseteq Q_n\) has diameter at most \(D<n\), then
 \begin{align}
- |A|&\le\sum_{j=0}^{s}\binom nj &&\text{if }D=2s,\label{eq:kleiteven}\\
+ |A|&\le\sum_{j=0}^{s}\binom nj &&\text{if }D=2s,\label{rch:eq:kleiteven}\\
  |A|&\le2\sum_{j=0}^{s}\binom{n-1}j &&\text{if }D=2s+1.
- \label{eq:kleitodd}
+ \label{rch:eq:kleitodd}
 \end{align}
 Both bounds are attained: respectively by a Hamming ball and by the product of
 a free coordinate with a Hamming ball in the remaining coordinates.
 \end{theorem}
 
-\begin{proof}[Proof of Theorem \ref{thm:finite}]
-First take \(n=2m+1\). If \(r>m\), Lemma \ref{lem:core} gives an empty core.
+\begin{writenote}[5~October 2026]
+Theorem~1.1 of~\cite{HKP} (arXiv version~1, read by the write) states
+exactly these two bounds for a set of diameter at most $D<n$, says that both
+are sharp, names the same extremal sets (for odd $D$ also a Hamming ball of
+radius $D/2$ centred at $(\frac12,0,\ldots,0)$), and attributes the theorem
+to Kleitman. The bibliographic data of~\cite{Kleitman} were confirmed
+through its DOI; Kleitman's text was not read. (The bibliography
+of~\cite{HKP} gives a different reference for Kleitman's paper,
+\emph{J.~Combin. Theory Ser.~A} \textbf{43} (1986), 85--90, which the write
+did not check.) The abstract of~\cite{WuEtAl} writes the odd bound as
+$\sum_{i\le s}\binom ni+\binom{n-1}s$, which equals \eqref{rch:eq:kleitodd}
+by Pascal's rule.
+\end{writenote}
+
+\begin{proof}[Proof of Theorem \ref{rch:thm:finite}]
+First take \(n=2m+1\). If \(r>m\), Lemma \ref{rch:lem:core} gives an empty core.
 Otherwise the core has diameter at most \(2(m-r)\), so
 \[
  |C_r(f)|\le\sum_{j=0}^{m-r}\binom nj.
 \]
-Equation \eqref{eq:corecount} gives the upper bound.
+Equation \eqref{rch:eq:corecount} gives the upper bound.
 
 For \(n=2m\) and \(r\le m-1\), the diameter is at most
 \(2(m-r-1)+1\). The odd case of Kleitman's theorem gives
@@ -310,7 +588,7 @@ coordinates are positive, then
 \]
 The condition \(R_f>r\) is exactly
 \(w\le a-r\) or \(w\ge a+r+1\). Counting these two symmetric tails proves
-\eqref{eq:optimum}. Coordinates ignored by the rule do not change its change
+\eqref{rch:eq:optimum}. Coordinates ignored by the rule do not change its change
 distance. One and the same majority rule therefore attains all the bounds.
 \end{proof}
 
@@ -340,25 +618,25 @@ cores must still be translated into a classification of the full decision rule,
 including its nonrobust region.
 
 \section{The scale of finite resilience}
-\label{sec:scales}
+\label{rch:sec:scales}
 
 Take \(n=2m+1\) and write \(\rho_n^*\) for the optimal profile. If
 \(W_n\sim\operatorname{Bin}(n,1/2)\), then
 \begin{equation}
  \rho_n^*(r)=2\Prb(W_n\le m-r).
- \label{eq:binomial}
+ \label{rch:eq:binomial}
 \end{equation}
 The critical budget is of order \(\sqrt n\), rather than of order \(n\).
 
 \begin{proposition}[Three regimes]
-\label{prop:scales}
+\label{rch:prop:scales}
 For integer budgets \(r_n\ge0\):
 \begin{enumerate}[label=(\roman*)]
 \item If \(r_n=o(\sqrt n)\), then \(\rho_n^*(r_n)\to1\).
 \item If \(r_n/\sqrt n\to c\in[0,\infty)\), then
 \begin{equation}
  \rho_n^*(r_n)\longrightarrow2\Phi(-2c),
- \label{eq:normalprofile}
+ \label{rch:eq:normalprofile}
 \end{equation}
 where \(\Phi\) is the standard normal distribution function.
 \item If \(r_n/\sqrt n\to\infty\), then \(\rho_n^*(r_n)\to0\).
@@ -368,19 +646,19 @@ For integers \(1\le r=o(\sqrt n)\), more precisely,
  1-\rho_n^*(r)
  =2r\sqrt{\frac{2}{\pi n}}
    \left(1+O\!\left(\frac{r^2+1}{n}\right)\right).
- \label{eq:smallbudget}
+ \label{rch:eq:smallbudget}
 \end{equation}
 \end{proposition}
 
 \begin{proof}
 The standardized variable \(2(W_n-n/2)/\sqrt n\) converges to a standard
-normal variable. Its cutoff in \eqref{eq:binomial} is
-\(-(2r+1)/\sqrt n\), which proves \eqref{eq:normalprofile}. For the finer
+normal variable. Its cutoff in \eqref{rch:eq:binomial} is
+\(-(2r+1)/\sqrt n\), which proves \eqref{rch:eq:normalprofile}. For the finer
 estimate, the vulnerable weights are the \(2r\) consecutive integers
 \(m-r+1,\ldots,m+r\). Stirling's formula gives central mass
 \(\sqrt{2/(\pi n)}(1+O(n^{-1}))\). Ratios of adjacent binomial coefficients
 show that each of these \(2r\) masses differs relatively from a central mass
-by \(O((r^2+1)/n)\), proving \eqref{eq:smallbudget}.
+by \(O((r^2+1)/n)\), proving \eqref{rch:eq:smallbudget}.
 
 For completeness, a direct exponential bound proves the third regime without
 a normal approximation. For a sum \(S_n\) of \(n\) fair signs,
@@ -388,7 +666,7 @@ a normal approximation. For a sum \(S_n\) of \(n\) fair signs,
 optimized at \(t=(2r+1)/n\), gives
 \begin{equation}
  \rho_n^*(r)\le2\exp\left(-\frac{(2r+1)^2}{2n}\right).
- \label{eq:chernoff}
+ \label{rch:eq:chernoff}
 \end{equation}
 This tends to zero when the budget exceeds the square-root scale.
 \end{proof}
@@ -401,7 +679,7 @@ three odd committee sizes, plotted against \(r/\sqrt n\), with its Gaussian
 limit. Right: resistance to fixed budgets improves as the committee grows.
 The figure is generated from exact binomial probabilities, not Monte Carlo
 estimates.}
-\label{fig:profiles}
+\label{rch:fig:profiles}
 \end{figure}
 
 An elementary bound is useful for explicit extraction schedules. Put
@@ -412,31 +690,31 @@ An elementary bound is useful for explicit extraction schedules. Put
 \begin{equation}
  \eps_{\Maj_n}(r)\le
  \min\left\{1,\;2r\sqrt{\frac{2}{n+1}}\right\}.
- \label{eq:elementarymajority}
+ \label{rch:eq:elementarymajority}
 \end{equation}
 For \(r\le m\) this counts \(2r\) central masses; for larger budgets the
 right-hand expression before truncation already exceeds one. In particular,
 \(n+1\ge8r^2\delta^{-2}\) suffices for vulnerability at most \(\delta\).
-The constant is deliberately elementary; \eqref{eq:smallbudget} is sharper.
+The constant is deliberately elementary; \eqref{rch:eq:smallbudget} is sharper.
 
 \section{A sharp inequality for what early voters can predict}
-\label{sec:prefix}
+\label{rch:sec:prefix}
 
 The key quantitative bridge does not require Kleitman's theorem. For
 \(1\le m\le n\), define
 \begin{equation}
  \alpha_f(m)=\left\|\E[f\mid\cF_m]\right\|_\infty.
- \label{eq:alpha}
+ \label{rch:eq:alpha}
 \end{equation}
 This is the largest possible conditional bias after any particular assignment
 of the first \(m\) votes. Also put
 \begin{equation}
  \vol(m,r)=\sum_{j=0}^{\min(m,r)}\binom mj.
- \label{eq:volume}
+ \label{rch:eq:volume}
 \end{equation}
 
 \begin{theorem}[Sharp finite-prefix inequality]
-\label{thm:prefix}
+\label{rch:thm:prefix}
 For every neutral \(f:Q_n\to\{-1,1\}\), and every
 \(1\le r\le m\le n\),
 \begin{equation}
@@ -444,7 +722,7 @@ For every neutral \(f:Q_n\to\{-1,1\}\), and every
  \alpha_f(m)\le
  \min\left\{1,\frac{2^m}{\vol(m,r)}\eps_f(r)\right\}.
  \quad}
- \label{eq:sharpalpha}
+ \label{rch:eq:sharpalpha}
 \end{equation}
 The coefficient \(2^m/\vol(m,r)\) is the best possible constant independent
 of the ambient dimension \(n\), for each fixed pair \((m,r)\).
@@ -452,18 +730,18 @@ In particular,
 \begin{equation}
  \alpha_f(m)\le\eps_f(m),\qquad
  \alpha_f(m)\le\frac{2^m}{m+1}\eps_f(1).
- \label{eq:alphaspecial}
+ \label{rch:eq:alphaspecial}
 \end{equation}
 \end{theorem}
 
 \subsection{The smallest vulnerable region in a nonconstant cube}
 
 \begin{lemma}
-\label{lem:minboundary}
+\label{rch:lem:minboundary}
 If \(h:Q_m\to\{-1,1\}\) is nonconstant and \(1\le r\le m\), then
 \begin{equation}
  |\{x:R_h(x)\le r\}|\ge\vol(m,r).
- \label{eq:minboundary}
+ \label{rch:eq:minboundary}
 \end{equation}
 A rule with exactly one input of its minority color attains equality.
 \end{lemma}
@@ -475,7 +753,7 @@ vulnerable. Proceed by induction, separating the last coordinate into two
 
 If both slices are nonconstant, within-slice changes alone make at least
 \(2\vol(m-1,r)\) vertices vulnerable. With the volume convention
-\eqref{eq:volume}, this is at least
+\eqref{rch:eq:volume}, this is at least
 \(\vol(m-1,r)+\vol(m-1,r-1)=\vol(m,r)\).
 
 If one slice is constant, rename outputs so it is constantly positive. Let
@@ -498,7 +776,7 @@ is exactly \(\Ball_r(a)\) for \(r\ge1\). This proves attainment.
 
 \subsection{Complementary fibres cancel}
 
-\begin{proof}[Proof of the inequality in Theorem \ref{thm:prefix}]
+\begin{proof}[Proof of the inequality in Theorem \ref{rch:thm:prefix}]
 Write an input as \((s,y)\), where \(s\in Q_m\) is the prefix and
 \(y\in Q_{n-m}\) is the tail. Let \(B\) be the set of tails for which
 \(s\mapsto f(s,y)\) is nonconstant. On \(B^c\), denote its common output by
@@ -511,18 +789,18 @@ vanishes. For each fixed prefix \(s\),
  \left|\E_y f(s,y)\right|
  =\left|\E_y\bigl[\one_B(y)f(s,y)\bigr]\right|
  \le\Prb_y(B).
- \label{eq:fibrecancel}
+ \label{rch:eq:fibrecancel}
 \end{equation}
 When the tail has zero coordinates, the neutral full prefix fibre is
 nonconstant, so the same argument has no homogeneous part to cancel.
 
-By Lemma \ref{lem:minboundary}, each bad tail contributes at least
+By Lemma \ref{rch:lem:minboundary}, each bad tail contributes at least
 \(\vol(m,r)\) prefix inputs vulnerable to \(r\) prefix changes. Such changes
 are also legal changes in the whole input. Consequently
 \[
  \eps_f(r)\ge\Prb_y(B)\frac{\vol(m,r)}{2^m}.
 \]
-Together with \eqref{eq:fibrecancel}, this proves \eqref{eq:sharpalpha}.
+Together with \eqref{rch:eq:fibrecancel}, this proves \eqref{rch:eq:sharpalpha}.
 \end{proof}
 
 \subsection{Why the constant cannot be improved}
@@ -536,7 +814,7 @@ number \(\ell\) of tail votes. Define
  -1,&s=(-1,\ldots,-1),\\
  h_\ell(y),&\text{otherwise}.
  \end{cases}
- \label{eq:sharpconstruction}
+ \label{rch:eq:sharpconstruction}
 \end{equation}
 This is neutral and \(\alpha_{F_\ell}(m)=1\). For a fixed tail, the prefix
 rule is constant except for the corner forced to have the opposite output.
@@ -551,9 +829,9 @@ that corner, or leave it if they start there. It follows that
  \le\eps_{F_\ell}(r)
  \le\frac{\vol(m,r)}{2^m}
    +\left(1-\frac{\vol(m,r)}{2^m}\right)\eps_{h_\ell}(r).
- \label{eq:sharpsandwich}
+ \label{rch:eq:sharpsandwich}
 \end{equation}
-By Section \ref{sec:scales}, the last factor tends to zero. Hence
+By Section \ref{rch:sec:scales}, the last factor tends to zero. Hence
 \(\alpha_{F_\ell}(m)/\eps_{F_\ell}(r)\to2^m/\vol(m,r)\).
 This proves sharpness uniformly over dimensions. It does not determine the
 best constant for every fixed triple \((n,m,r)\).
@@ -565,7 +843,7 @@ For every positive-probability event \(A\in\cF_m\),
  \frac{1-\alpha_f(m)}2
  \le\Prb(f=1\mid A)
  \le\frac{1+\alpha_f(m)}2.
- \label{eq:history}
+ \label{rch:eq:history}
 \end{equation}
 The estimate does not deteriorate when \(A\) is a very rare prefix event.
 For any earlier decision \(g:Q_m\to\{-1,1\}\),
@@ -573,7 +851,7 @@ For any earlier decision \(g:Q_m\to\{-1,1\}\),
  \left|\Prb(f=g)-\frac12\right|
  \le\frac12\alpha_f(m)
  \le\frac{2^{m-1}}{\vol(m,r)}\eps_f(r).
- \label{eq:twocommittees}
+ \label{rch:eq:twocommittees}
 \end{equation}
 Indeed, \(\Prb(f=g)=(1+\E[fg])/2\), and conditional expectation bounds the
 correlation. This is the precise reason strong resistance to changes in early
@@ -581,28 +859,28 @@ votes can coexist with a later decision that is almost unrelated to the earlier
 one.
 
 \section{Why increasingly resilient decisions cannot settle}
-\label{sec:oscillation}
+\label{rch:sec:oscillation}
 
 Let \(f_n\) be neutral and depend on the first \(n\) inputs, and put
 \(\eps_n(r)=\eps_{f_n}(r)\). Distinguish two assumptions:
 \begin{align}
  \eps_n(1)&\longrightarrow0,
- &&\text{one-vote resilience;}\label{eq:oneassumption}\\
+ &&\text{one-vote resilience;}\label{rch:eq:oneassumption}\\
  \eps_n(r)&\longrightarrow0\quad\text{for every fixed }r,
- &&\text{resilience at every fixed budget.}\label{eq:allassumption}
+ &&\text{resilience at every fixed budget.}\label{rch:eq:allassumption}
 \end{align}
 The first is enough to prevent stabilization. The second allows us to arrange
 almost-sure divergence of robustness along an extracted subsequence.
 
 \begin{theorem}[Mixing and unavoidable oscillation]
-\label{thm:mixing}
-Under \eqref{eq:oneassumption}:
+\label{rch:thm:mixing}
+Under \eqref{rch:eq:oneassumption}:
 \begin{enumerate}[label=(\roman*)]
 \item For every \(g\in L^1(\mu)\), \(\E[f_ng]\to0\).
 \item For every fixed measurable \(G:\Omega\to\{-1,1\}\),
 \begin{equation}
  \Prb(f_n=G)\longrightarrow\frac12.
- \label{eq:nooracle}
+ \label{rch:eq:nooracle}
 \end{equation}
 \item The decisions take both signs infinitely often on a conull, comeager set.
 Their set of pointwise convergence is null and meager.
@@ -611,7 +889,7 @@ Their set of pointwise convergence is null and meager.
 \end{theorem}
 
 \begin{proof}
-For each fixed \(m\), Theorem \ref{thm:prefix} implies
+For each fixed \(m\), Theorem \ref{rch:thm:prefix} implies
 \(\alpha_{f_n}(m)\le2^m\eps_n(1)/(m+1)\to0\). Given \(g\in L^1\),
 conditional expectations on finite prefixes approximate \(g\) in \(L^1\).
 More explicitly,
@@ -619,7 +897,7 @@ More explicitly,
  |\E[f_ng]|
  \le\alpha_{f_n}(m)\|g\|_1
    +\|g-\E[g\mid\cF_m]\|_1.
- \label{eq:L1estimate}
+ \label{rch:eq:L1estimate}
 \end{equation}
 First take \(n\to\infty\), then \(m\to\infty\). This proves (i), and
 the identity \(\Prb(f_n=G)=(1+\E[f_nG])/2\) gives (ii).
@@ -640,7 +918,7 @@ signs occur infinitely often.
 All the arguments apply to each fixed deterministic infinite subsequence.
 If such a subsequence converged in probability, a further subsequence would
 converge almost surely to a measurable sign-valued limit \(G\), contradicting
-\eqref{eq:nooracle}. This proves (iv).
+\eqref{rch:eq:nooracle}. This proves (iv).
 \end{proof}
 
 Part (i) is weak-* convergence to zero in \(L^\infty\). For the sets
@@ -648,11 +926,11 @@ Part (i) is weak-* convergence to zero in \(L^\infty\). For the sets
 \begin{equation}
  \mu(A_n\cap B)\longrightarrow\tfrac12\mu(B)
  \qquad\text{for every fixed measurable }B.
- \label{eq:renyi}
+ \label{rch:eq:renyi}
 \end{equation}
 This is mixing with density \(1/2\) in R\'enyi's terminology \cite{Renyi}.
 The zero weak limit is not an admissible decision, which must be a sign.
-The order of quantifiers matters: \(G\) in \eqref{eq:nooracle} is fixed before
+The order of quantifiers matters: \(G\) in \eqref{rch:eq:nooracle} is fixed before
 the limit. The statement is not uniform over a choice of \(G\) depending on
 \(n\), and does not prohibit selecting a constant-sign subsequence after seeing
 the entire input.
@@ -663,11 +941,11 @@ Let \(x^{(i)}=\flip_i x\) denote \(x\) with coordinate \(i\) flipped, and set
 \(\Inf_i(f)=\Prb(f(X)\ne f(X^{(i)}))\).
 
 \begin{proposition}
-\label{prop:influences}
-The conclusions of Theorem \ref{thm:mixing} remain true if
+\label{rch:prop:influences}
+The conclusions of Theorem \ref{rch:thm:mixing} remain true if
 \begin{equation}
  \Inf_i(f_n)\longrightarrow0\quad\text{for every fixed }i.
- \label{eq:influences}
+ \label{rch:eq:influences}
 \end{equation}
 \end{proposition}
 
@@ -681,23 +959,23 @@ For \(i\in S\), invariance of product measure under a coordinate flip gives
 so \(|\widehat f_n(S)|\le\Inf_i(f_n)\to0\). Neutrality gives
 \(\widehat f_n(\varnothing)=0\). The conditional expectation on a fixed
 \(m\)-prefix is the finite Walsh expansion over \(S\subseteq[m]\), so its
-uniform norm tends to zero. The proof of Theorem \ref{thm:mixing} now applies.
+uniform norm tends to zero. The proof of Theorem \ref{rch:thm:mixing} now applies.
 \end{proof}
 
 This statement says that if every particular early voter eventually loses
 influence, no fixed measurable eventual decision can emerge. It does not say
 that all small adversarial coalitions become harmless. For example,
-\(f_n(x)=x_n\) satisfies \eqref{eq:influences} but is always one-vote fragile.
+\(f_n(x)=x_n\) satisfies \eqref{rch:eq:influences} but is always one-vote fragile.
 
 \subsection{One-vote resilience does not imply two-vote resilience}
-\label{sec:separation}
+\label{rch:sec:separation}
 
-There is a sharper separation between \eqref{eq:oneassumption} and
-\eqref{eq:allassumption}. We give the construction because it rules out a
+There is a sharper separation between \eqref{rch:eq:oneassumption} and
+\eqref{rch:eq:allassumption}. We give the construction because it rules out a
 potentially misleading inference in the puzzle.
 
 \begin{proposition}[A sharp separation of budgets]
-\label{prop:code}
+\label{rch:prop:code}
 There are neutral rules of dimensions tending to infinity for which
 \(\eps_f(1)\to0\) but \(\eps_f(2)=1\) identically.
 \end{proposition}
@@ -734,7 +1012,7 @@ One-change vulnerability occurs exactly when the code coordinates lie in
 disjoint input coordinates. Writing \(t_L=\eps_{h_L}(1)\), we obtain
 \begin{equation}
  \eps_f(1)=u_N+t_L-u_Nt_L\longrightarrow0
- \label{eq:codeseparation}
+ \label{rch:eq:codeseparation}
 \end{equation}
 as \(d,L\to\infty\). Taking, for example, \(L=N\) gives the claimed
 sequence of dimensions. Padding by ignored coordinates supplies a rule at
@@ -742,41 +1020,41 @@ every intermediate horizon if desired.
 \end{proof}
 
 \section{Extracting a continuous open stream of almost fair decisions}
-\label{sec:extraction}
+\label{rch:sec:extraction}
 
 Oscillation alone leaves substantial freedom. We can arrange much more: a fixed
 subsequence of horizons has an output law uniformly comparable with a product
 of fair coins, while every output stream remains topologically attainable.
 
 \begin{theorem}[Quantitative open recoding]
-\label{thm:recoding}
+\label{rch:thm:recoding}
 Suppose \(f_n\) is neutral and \(\eps_n(1)\to0\). For every \(\eta>0\)
 there is a deterministic strictly increasing sequence \(n_1<n_2<\cdots\)
 such that the map
 \begin{equation}
  H:\Omega\longrightarrow\Omega,
  \qquad H(x)=(f_{n_j}(x))_{j\ge1}
- \label{eq:H}
+ \label{rch:eq:H}
 \end{equation}
 is continuous, open, and onto. If \(\nu=H_*\mu\) and \(\beta\) is fair
 product measure on the output space, then
 \begin{equation}
  e^{-\eta}\beta(A)\le\nu(A)\le e^\eta\beta(A)
  \quad\text{for every Borel }A.
- \label{eq:boundedmeasure}
+ \label{rch:eq:boundedmeasure}
 \end{equation}
 Equivalently,
 \begin{equation}
  e^{-\eta}\le\frac{d\nu}{d\beta}\le e^\eta
  \quad\beta\text{-almost everywhere}.
- \label{eq:density}
+ \label{rch:eq:density}
 \end{equation}
-If the stronger assumption \eqref{eq:allassumption} holds, the same selection
+If the stronger assumption \eqref{rch:eq:allassumption} holds, the same selection
 can also ensure
 \begin{equation}
  R_{f_{n_j}}(x)\longrightarrow\infty
  \quad\text{for }\mu\text{-almost every }x.
- \label{eq:radiusdiverge}
+ \label{rch:eq:radiusdiverge}
 \end{equation}
 \end{theorem}
 
@@ -789,26 +1067,26 @@ Let \(a=1-e^{-\eta}\), and for \(j\ge2\) put
 has been chosen, take \(n_j>n_{j-1}\) so large that
 \begin{equation}
  \alpha_{f_{n_j}}(n_{j-1})\le\delta_j.
- \label{eq:selection}
+ \label{rch:eq:selection}
 \end{equation}
-This is possible by Theorem \ref{thm:prefix}. Under
-\eqref{eq:allassumption}, additionally require
+This is possible by Theorem \ref{rch:thm:prefix}. Under
+\eqref{rch:eq:allassumption}, additionally require
 \begin{equation}
  \eps_{n_j}(\max\{n_{j-1},j\})\le\delta_j;
- \label{eq:strongselection}
+ \label{rch:eq:strongselection}
 \end{equation}
-this stronger condition already implies \eqref{eq:selection}.
+this stronger condition already implies \eqref{rch:eq:selection}.
 
 The first selected output is exactly fair by neutrality. Any history of
 preceding selected outputs is an event in \(\cF_{n_{j-1}}\). By
-\eqref{eq:history}, every next conditional probability lies between
+\eqref{rch:eq:history}, every next conditional probability lies between
 \((1-\delta_j)/2\) and \((1+\delta_j)/2\). For every finite output word
 \(b=(b_1,\ldots,b_J)\),
 \begin{equation}
  \prod_{j=2}^{J}(1-\delta_j)
  \le\frac{\nu([b])}{2^{-J}}
  \le\prod_{j=2}^{J}(1+\delta_j).
- \label{eq:cylinderdensity}
+ \label{rch:eq:cylinderdensity}
 \end{equation}
 The elementary inequalities
 \[
@@ -818,12 +1096,12 @@ The elementary inequalities
 \]
 give uniform bounds. They extend from cylinder sets and their finite unions
 to all Borel sets, for example by regularity of finite measures on Cantor space.
-This proves \eqref{eq:boundedmeasure}, and the Radon--Nikodym theorem gives
-\eqref{eq:density}.
+This proves \eqref{rch:eq:boundedmeasure}, and the Radon--Nikodym theorem gives
+\eqref{rch:eq:density}.
 
-Under \eqref{eq:strongselection},
+Under \eqref{rch:eq:strongselection},
 \(\sum_j\Prb(R_{f_{n_j}}\le j)<\infty\). Borel--Cantelli implies that
-\(R_{f_{n_j}}>j\) eventually almost surely, proving \eqref{eq:radiusdiverge}.
+\(R_{f_{n_j}}>j\) eventually almost surely, proving \eqref{rch:eq:radiusdiverge}.
 \end{proof}
 
 The density estimate is stronger than just convergence of finite-dimensional
@@ -834,7 +1112,7 @@ need not be independent; equivalence with product measure is the claim.
 
 \subsection{Why the decision map is open and onto}
 
-\begin{proof}[Completion of the topological part of Theorem \ref{thm:recoding}]
+\begin{proof}[Completion of the topological part of Theorem \ref{rch:thm:recoding}]
 Every output coordinate depends on finitely many input coordinates, so \(H\)
 is continuous. Let \(C\) be an input cylinder fixing the first \(k\) votes,
 and choose \(J\) with \(n_J\ge k\). Fix an output word \(b\) of length
@@ -851,7 +1129,7 @@ space, so every infinite continuation is realized.
 It follows that \(H(C)\) is exactly the union of the output cylinders
 \([b]\) over all length-\(J\) words compatible with \(C\). This is a finite
 union of cylinders, and is open. Hence \(H\) is an open map. Equation
-\eqref{eq:cylinderdensity} gives a preimage for every finite output word;
+\eqref{rch:eq:cylinderdensity} gives a preimage for every finite output word;
 compactness again realizes every infinite output stream. Thus \(H\) is onto.
 \end{proof}
 
@@ -862,7 +1140,7 @@ such that, writing \(Y_j=f_{n_j}(X)\),
 \begin{equation}
  \sum_{j\ge2}\Prb(Y_j\ne Z_j)
  \le\frac12\sum_{j\ge2}\delta_j<\infty.
- \label{eq:coupling}
+ \label{rch:eq:coupling}
 \end{equation}
 One way to see this is to construct the pair sequentially. Given the already
 constructed pair histories, let the next \(Y_j\) have its true conditional
@@ -882,28 +1160,28 @@ above are direct properties of the deterministic map \(H\).
 \subsection{An explicit schedule for ordinary majorities}
 
 For \(f_n=\Maj_n\) at odd horizons, set
-\(q_j=\max\{n_{j-1},j\}\). By \eqref{eq:elementarymajority}, any odd
+\(q_j=\max\{n_{j-1},j\}\). By \eqref{rch:eq:elementarymajority}, any odd
 \(n_j>n_{j-1}\) satisfying
 \begin{equation}
  n_j+1\ge8q_j^2\delta_j^{-2}
- \label{eq:explicitschedule}
+ \label{rch:eq:explicitschedule}
 \end{equation}
-meets \eqref{eq:strongselection}. This produces a completely specified,
+meets \eqref{rch:eq:strongselection}. This produces a completely specified,
 although deliberately sparse, subsequence. Finding much denser sequences with
 comparably strong infinite-stream guarantees is a meaningful further problem.
 
 \section{Opposite answers from probability and category}
-\label{sec:category}
+\label{rch:sec:category}
 
-Assume \eqref{eq:allassumption}, and use the stronger selection in Theorem
-\ref{thm:recoding}. Define
+Assume \eqref{rch:eq:allassumption}, and use the stronger selection in Theorem
+\ref{rch:thm:recoding}. Define
 \begin{equation}
  E=\{x:R_{f_{n_j}}(x)\to\infty\}.
- \label{eq:E}
+ \label{rch:eq:E}
 \end{equation}
 
 \begin{theorem}[Two notions of typical input]
-\label{thm:typical}
+\label{rch:thm:typical}
 The selected horizons have the following properties.
 \begin{enumerate}[label=(\roman*)]
 \item For almost every input, \(R_{f_{n_j}}\to\infty\), and the output
@@ -914,25 +1192,25 @@ overlapping frequency \(2^{-k}\).
  \liminf_{J\to\infty}\frac1J\sum_{j=1}^J\one_{\{f_{n_j}=1\}}=0,
  \qquad
  \limsup_{J\to\infty}\frac1J\sum_{j=1}^J\one_{\{f_{n_j}=1\}}=1,
- \label{eq:wildfreq}
+ \label{rch:eq:wildfreq}
 \end{equation}
 and \(R_{f_{n_j}}=1\) infinitely often.
 \item The set \(E\) is Borel, conull, meager, and invariant under finite
 changes and global complementation. For \(x,y\in E\),
 \begin{equation}
  x\mathrel{E_0}y\quad\Longrightarrow\quad H(x)\mathrel{E_0}H(y).
- \label{eq:E0hom}
+ \label{rch:eq:E0hom}
 \end{equation}
 \end{enumerate}
 \end{theorem}
 
 \begin{proof}
-The radius conclusion in (i) is \eqref{eq:radiusdiverge}. Normality has full
+The radius conclusion in (i) is \eqref{rch:eq:radiusdiverge}. Normality has full
 fair-product measure. To verify this standard fact directly, fix a word of
 length \(k\). Its occurrence indicators at positions in any fixed residue
 class modulo \(k\) depend on disjoint input blocks and are iid with mean
 \(2^{-k}\). Apply the strong law to each of the \(k\) classes, then to the
-countably many words. The measure equivalence \eqref{eq:density} transfers this
+countably many words. The measure equivalence \eqref{rch:eq:density} transfers this
 full-measure property to \(H(X)\).
 
 For (ii), in the output Cantor space the set of sequences with frequencies
@@ -941,7 +1219,7 @@ each \(q,N\ge1\), the requirement that some prefix of length at least \(N\)
 has positive frequency below \(1/q\) is open and dense: append a sufficiently
 long block of negative signs. The analogous upper requirement is also open and
 dense. Intersect them. A continuous open surjection pulls dense open sets back
-to dense open sets, so \eqref{eq:wildfreq} holds on a comeager input set.
+to dense open sets, so \eqref{rch:eq:wildfreq} holds on a comeager input set.
 
 For recurring fragility, fix a nonempty input cylinder \(C\). At all
 sufficiently large selected horizons, both decisions occur on \(C\), since
@@ -952,13 +1230,13 @@ bichromatic edge, and its endpoints have \(R_f=1\). Hence, for every \(K\),
  \bigcup_{j\ge K}\{x:R_{f_{n_j}}(x)=1\}
 \]
 is open and dense. Intersect over \(K\). This also shows that \(E\) is
-meager. Its Borel character follows directly from \eqref{eq:E}.
+meager. Its Borel character follows directly from \eqref{rch:eq:E}.
 
 Finally, suppose \(x\) and \(y\) differ in at most \(s\) coordinates.
 Whenever \(R_f(x)>s\), the outputs agree and
 \begin{equation}
  R_f(y)\ge R_f(x)-s.
- \label{eq:radiuslipschitz}
+ \label{rch:eq:radiuslipschitz}
 \end{equation}
 Indeed, an opposite-output point within distance less than \(R_f(x)-s\) of
 \(y\) would contradict the definition of \(R_f(x)\), by the triangle
@@ -966,6 +1244,19 @@ inequality. Thus \(x\in E\) implies \(y\in E\), and the two output
 streams eventually agree. Neutrality preserves all change distances under
 complementation. This proves (iii).
 \end{proof}
+
+\begin{writenote}[A step made explicit, 5~October 2026]
+The recurring-fragility step uses, for a cylinder $C$ fixing the first $k$
+votes, that $\alpha_{f_{n_j}}(k)<1$ once $n_{j-1}\ge k$. This follows from
+\eqref{rch:eq:selection} because $\alpha_f$ is nondecreasing: for
+$k\le m$ the tower property gives
+$\E[f\mid\cF_k]=\E\bigl[\E[f\mid\cF_m]\bigm|\cF_k\bigr]$, and conditional
+expectation does not increase the uniform norm, so
+$\alpha_f(k)\le\alpha_f(m)$. Hence
+$\alpha_{f_{n_j}}(k)\le\alpha_{f_{n_j}}(n_{j-1})\le\delta_j<1$. Since $C$ is
+an atom of $\cF_k$, the average of $f_{n_j}$ over $C$ has absolute value at
+most $\alpha_{f_{n_j}}(k)<1$, so $f_{n_j}$ takes both values on $C$.
+\end{writenote}
 
 \begin{center}
 \begin{tabularx}{\textwidth}{@{}P{0.25\textwidth}YY@{}}
@@ -981,15 +1272,15 @@ Eventual decision & Does not exist & Does not exist\\
 \end{center}
 
 There is no contradiction: a conull set may be meager. Also,
-\eqref{eq:E0hom} is a homomorphism of equivalence relations on \(E\), not
+\eqref{rch:eq:E0hom} is a homomorphism of equivalence relations on \(E\), not
 a reduction; no converse is asserted. The restriction \(H|_E\) is not claimed
 to remain open or onto.
 
 \subsection{Why no fair-frequency conclusion holds for all horizons}
 
 \begin{proposition}[Arbitrarily slow changes and wild full-sequence frequencies]
-\label{prop:slow}
-There are neutral rules satisfying \eqref{eq:allassumption} for which the
+\label{rch:prop:slow}
+There are neutral rules satisfying \eqref{rch:eq:allassumption} for which the
 positive-decision frequency along \emph{all} horizons has liminf zero and
 limsup one almost surely. Moreover, for any prescribed nondecreasing unbounded
 function \(a:\N\to\N\), they can be chosen so that, for every input,
@@ -1006,7 +1297,7 @@ so large that the first \(j\) blocks have been read by \(t_j\),
 for \(t_j\le n<t_{j+1}\), and use \(f_n(x)=x_1\) before \(t_1\).
 
 At each horizon the rule only uses available votes. Its robustness profile is
-that of \(\Maj_{\ell_j}\), so \eqref{eq:allassumption} holds. Changes can
+that of \(\Maj_{\ell_j}\), so \eqref{rch:eq:allassumption} holds. Changes can
 occur only at the release horizons, with no changes before \(t_1\).
 There are at most \(j\) changes during stage \(j\), which is at most
 \(a(n)\) for \(n\ge t_j\). At horizon \(t_{j+1}-1\), the
@@ -1021,22 +1312,22 @@ also impose quantitative resilience, restrictions on ignored votes, or regular
 growth conditions on the rules.
 
 \section{A perfect infinite rule exists under choice}
-\label{sec:choice}
+\label{rch:sec:choice}
 
 The direct infinite version asks for \(F:\Omega\to\{-1,1\}\) satisfying
 \begin{equation}
  x\mathrel{E_0}y\Longrightarrow F(x)=F(y),
  \qquad F(-x)=-F(x).
- \label{eq:infiniterule}
+ \label{rch:eq:infiniterule}
 \end{equation}
 The first condition says that every finite intervention is harmless, at every
 input. This is an exact, global requirement, stronger than the probabilistic
 finite-horizon hypotheses.
 
 \begin{theorem}[Existence and complete failure of regularity]
-\label{thm:choice}
+\label{rch:thm:choice}
 In ZFC there is an everywhere-defined rule satisfying
-\eqref{eq:infiniterule}. No such rule is measurable for completed fair-product
+\eqref{rch:eq:infiniterule}. No such rule is measurable for completed fair-product
 measure, and neither fibre has the Baire property. In fact both fibres have
 inner measure zero and outer measure one.
 \end{theorem}
@@ -1054,7 +1345,7 @@ the assertion with full choice. Another sufficient principle is the existence
 of a nonprincipal ultrafilter \(\mathcal U\) on \(\N\). Then
 \begin{equation}
  F(x)=1\quad\Longleftrightarrow\quad\{i:x_i=1\}\in\mathcal U
- \label{eq:ultrafilter}
+ \label{rch:eq:ultrafilter}
 \end{equation}
 is neutral and finite-change invariant. It is also monotone in the votes.
 This gives a concrete set-theoretic form of an infinite decision, while leaving
@@ -1090,21 +1381,21 @@ so they cannot be one meager and one comeager. They also cannot both be
 meager or both be comeager in Cantor space. Thus neither has the Baire property.
 \end{proof}
 
-The existence of \(F\) does not contradict Theorem \ref{thm:mixing}.
+The existence of \(F\) does not contradict Theorem \ref{rch:thm:mixing}.
 An arbitrary choice function can have no measurable pointwise approximation
 on a positive-measure set of the specified kind. Finite combinatorial solvability
 and set-theoretic existence do not by themselves provide regular limits.
 
 \section{How a small statistical bias changes the infinite answer}
-\label{sec:bias}
+\label{rch:sec:bias}
 
 The perfect rule remains a global object satisfying
-\eqref{eq:infiniterule}, but change the law of the votes. Let
+\eqref{rch:eq:infiniterule}, but change the law of the votes. Let
 \(0<p_i<1\) and
 \begin{equation}
  \mu_p=\bigotimes_{i\ge1}\operatorname{Bernoulli}(p_i),
  \qquad \bar p_i=1-p_i,
- \label{eq:biasedlaw}
+ \label{rch:eq:biasedlaw}
 \end{equation}
 where each Bernoulli law is on \(\{-1,1\}\), assigning probability \(p_i\)
 to \(1\) and probability \(1-p_i\) to \(-1\).
@@ -1112,13 +1403,13 @@ Neutrality still concerns renaming the alternatives; the evaluation law is
 now permitted to favor one.
 
 \begin{theorem}[Exact bias threshold]
-\label{thm:bias}
+\label{rch:thm:bias}
 In ZFC, there is an everywhere-defined rule satisfying
-\eqref{eq:infiniterule} that is measurable for the completion of \(\mu_p\)
+\eqref{rch:eq:infiniterule} that is measurable for the completion of \(\mu_p\)
 if and only if
 \begin{equation}
  \boxed{\quad \sum_{i=1}^{\infty}(p_i-\tfrac12)^2=\infty.\quad}
- \label{eq:biasthreshold}
+ \label{rch:eq:biasthreshold}
 \end{equation}
 Even in the affirmative case, no such globally defined rule is Borel or has
 the Baire property.
@@ -1131,7 +1422,7 @@ either mutually absolutely continuous or mutually singular, and are equivalent
 exactly when
 \begin{equation}
  \prod_{i=1}^{\infty}2\sqrt{p_i(1-p_i)}>0.
- \label{eq:kakutani}
+ \label{rch:eq:kakutani}
 \end{equation}
 Writing \(d_i=p_i-1/2\), we have
 \[
@@ -1145,10 +1436,10 @@ the sum of its deficits from one is finite. Thus
  \qquad
  \mu_p\perp\mu_{\bar p}\quad\Longleftrightarrow\quad
  \sum_i d_i^2=\infty.
- \label{eq:productdichotomy}
+ \label{rch:eq:productdichotomy}
 \end{equation}
 
-\begin{proof}[Proof of Theorem \ref{thm:bias}]
+\begin{proof}[Proof of Theorem \ref{rch:thm:bias}]
 Suppose first that the measures are equivalent. A completed-measurable
 finite-change-invariant set obeys the product zero--one law, so if
 \(A=F^{-1}(1)\), then \(\mu_p(A)\) is zero or one. Complementation maps
@@ -1175,12 +1466,12 @@ Then \(A'\) and \(\kappa A'\) are disjoint invariant Borel sets,
 on these two sets. Their complement is invariant under finite changes and
 under \(\kappa\), and is null for both product measures. On its remaining
 complementary \(E_0\)-class pairs, use the choice construction of Theorem
-\ref{thm:choice}.
+\ref{rch:thm:choice}.
 
 The resulting full-domain rule is measurable in the completion of \(\mu_p\),
 because the arbitrary part lies in a Borel null set. The equivalence
-\eqref{eq:productdichotomy} gives \eqref{eq:biasthreshold}. Global Borel or
-Baire regularity is still impossible by Theorem \ref{thm:choice}, independently
+\eqref{rch:eq:productdichotomy} gives \eqref{rch:eq:biasthreshold}. Global Borel or
+Baire regularity is still impossible by Theorem \ref{rch:thm:choice}, independently
 of which law is used to evaluate a particular completion.
 \end{proof}
 
@@ -1217,7 +1508,7 @@ two sets and use choice only on the remaining null set. This makes the
 statistical part of the construction explicit.
 
 \section{Computation, reproducibility, and the ProveIt connection}
-\label{sec:formal}
+\label{rch:sec:formal}
 
 \subsection{What the supplied computation checks}
 
@@ -1230,12 +1521,12 @@ so the numbers of rules are
 \]
 for a total of \(65\,814\). The program computes Hamming erosions of each
 positive fibre, obtaining the complete exact robustness profile. It verifies
-the envelope \eqref{eq:optimum} and the prefix inequalities with exact integer
+the envelope \eqref{rch:eq:optimum} and the prefix inequalities with exact integer
 comparisons. Its larger-majority tables also use exact rational values.
 
 The successful exhaustive run includes \(394\,576\) checks of
 \(\alpha_f(m)\le\eps_f(m)\), and \(985\,710\) checks of the general
-volume inequality \eqref{eq:sharpalpha}. These counts overlap at \(r=m\).
+volume inequality \eqref{rch:eq:sharpalpha}. These counts overlap at \(r=m\).
 An independent direct minimum-Hamming-distance calculation agrees with the
 erosion method for all \(278\) neutral maps in dimensions one through four.
 
@@ -1296,6 +1587,51 @@ searches did not locate the quantitative robustness-to-prefix-predictability
 development proved here. That is evidence about the inspected material, not
 a certification of novelty across all literature or repository history.
 
+\begin{writenote}[Checked against the repository, 5~October 2026]
+At the commit this write is based on,
+\path{GenericErgodicity.lean} is byte-identical to its state at the pin
+(blob \file{c9b5ce93}), and so is \path{FiniteCycles.lean} (blob
+\file{b1da77ef}). The five declarations of the table exist with the roles
+stated, in the namespace \file{Cardinals.Countable} (the last two in its
+sub-namespace \file{Cantor}); the file's header says ``Everything is proved;
+nothing is admitted''; the library root
+\path{SetTheory/Cardinals/Cardinals.lean} imports it; and the library's
+README lists these declarations as the proved formalization of
+Proposition~15.3 of the large-cardinal synthesis. No Lean build was run for
+this report. \file{Cantor.global_fixed_point} does act through permutations
+of the index set, and global complementation is not among the
+homeomorphisms the file defines. The intake's searches found no repository
+file other than this report that treats Kleitman's diameter theorem or
+the worst-case (adversarial) Hamming robustness of neutral decision rules
+(the only other occurrence of Kleitman's name in a report, in
+\file{bounded-width-power-set-compression}, cites the Greene--Kleitman
+symmetric-chain decomposition), so the statement above is still true.
+\end{writenote}
+
+\begin{remark}[{[write]} The category half from the Lean declarations, 5~October 2026]
+\label{rch:rem:lean}
+Identify $\Omega$ with the Cantor space $\N\to\mathrm{Bool}$ of the Lean
+file, a compact Hausdorff and hence Baire space, and let $F$ satisfy
+\eqref{rch:eq:infiniterule}. Suppose one fibre of $F$ has the Baire
+property. The other fibre is its complement, so both fibres are Baire
+measurable. (1) The finite flips \file{Cantor.flip} $S$ ($S$ a finite set
+of coordinates) are homeomorphisms
+acting topologically transitively (\file{Cantor.transitive}), and $F$ is
+invariant under each of them by the first condition of
+\eqref{rch:eq:infiniterule}; \file{generic_const} therefore gives a label
+$\ell_0$ with $F=\ell_0$ on a comeager set. (2) Complementation $\kappa$ is a
+homeomorphism and $F\circ\kappa=-F$ everywhere; \file{fixed_label}, applied
+with $\sigma=\kappa$ and $\rho$ the negation of labels, gives
+$-\ell_0=\ell_0$, which is impossible. So neither fibre has the Baire
+property: this is the category half of Theorem~\ref{rch:thm:choice}, by the
+route the source describes above. \emph{Formal status.} The three
+declarations are proved in Lean; complementation as a Lean homeomorphism and
+the assembled statement are not in the repository, so, as the source says,
+this is not a named repository theorem. The measure half of
+Theorem~\ref{rch:thm:choice} and every finite statement of this report have
+no Lean counterpart.
+\end{remark}
+
 \subsection{A practical formalization order}
 
 The following order separates finite algebraic obligations from measure and
@@ -1303,13 +1639,13 @@ category arguments.
 \begin{enumerate}
 \item Define neutrality, finite Hamming balls, change distance, and erosions.
 Prove that robust negative cores are antipodal images of robust positive cores.
-\item Formalize Lemma \ref{lem:core} and the majority count. State the exact
+\item Formalize Lemma \ref{rch:lem:core} and the majority count. State the exact
 external dependency on Kleitman's diameter theorem until that theorem itself
 is formalized; do not hide it behind an unrestricted axiom.
-\item Prove Lemma \ref{lem:minboundary} by dimension induction. This gives a
+\item Prove Lemma \ref{rch:lem:minboundary} by dimension induction. This gives a
 fully elementary finite component and is well suited to independent Lean and
 Rocq developments.
-\item Prove the fibre-cancellation identity and Theorem \ref{thm:prefix}
+\item Prove the fibre-cancellation identity and Theorem \ref{rch:thm:prefix}
 using finite uniform sums. Its sharpness uses only the majority estimate.
 \item Transfer finite rules to product space. Establish the conditional
 expectation bounds, the \(L^1\) approximation lemma, and mixing.
@@ -1324,11 +1660,11 @@ If a family of finite truth tables is computable, the extraction indices can be
 found by exhaustive search for the required rational inequalities, under the
 proved promise that they eventually hold. This is an effective search procedure,
 but no efficient complexity bound follows without a quantitative modulus of
-resilience. For majorities, \eqref{eq:explicitschedule} supplies an explicit
+resilience. For majorities, \eqref{rch:eq:explicitschedule} supplies an explicit
 modulus directly.
 
 \section{Further research questions and topics}
-\label{sec:questions}
+\label{rch:sec:questions}
 
 The questions below extend the designed problem. A question labeled a
 \emph{target} is not being asserted to be a previously published open problem;
@@ -1342,7 +1678,7 @@ Determine the exact function
  K(n,m,r)=\sup_{f\text{ neutral}}
  \frac{\alpha_f(m)}{\eps_f(r)}.
 \]
-Theorem \ref{thm:prefix} determines \(\sup_{n\ge m}K(n,m,r)\), but generally
+Theorem \ref{rch:thm:prefix} determines \(\sup_{n\ge m}K(n,m,r)\), but generally
 uses increasing ambient dimension for sharpness. The exact finite-dimensional
 correction is a concrete extremal target amenable to certificates.
 
@@ -1357,14 +1693,14 @@ known anticode stability would not constitute progress.
 \item \textbf{The joint tradeoff between two intervention budgets.}
 Determine attainable pairs \((\eps_f(1),\eps_f(2))\), and more generally
 entire profiles, subject to neutrality and dimension. Proposition
-\ref{prop:code} shows that small one-vote vulnerability alone gives no
+\ref{rch:prop:code} shows that small one-vote vulnerability alone gives no
 asymptotic two-vote guarantee. Quantitative restrictions on rule complexity,
 monotonicity, or anonymity may restore implications.
 
 \item \textbf{Dense extraction from majority.}
 Find the slowest growth of \(n_j\) that allows the majority output law to be
 equivalent to Bernoulli measure, or to have uniformly bounded density as in
-\eqref{eq:density}. The sufficient schedule \eqref{eq:explicitschedule} is
+\eqref{rch:eq:density}. The sufficient schedule \eqref{rch:eq:explicitschedule} is
 not proposed as optimal. Distinguish equivalence of full-stream laws from
 pairwise decorrelation and from a central limit theorem.
 
@@ -1372,7 +1708,7 @@ pairwise decorrelation and from a central limit theorem.
 Impose a specified estimate such as
 \(\eps_n(r)\le C r/\sqrt n\) over a stated range, and bound the smallest
 possible number of decision changes up to horizon \(n\). Proposition
-\ref{prop:slow} rules out a rate theorem based only on qualitative resilience.
+\ref{rch:prop:slow} rules out a rate theorem based only on qualitative resilience.
 Restrictions requiring substantial use of all available voters may be needed.
 
 \item \textbf{Several alternatives and other symmetry groups.}
@@ -1399,7 +1735,7 @@ preservation changes the question and must be specified explicitly.
 \item \textbf{Beyond independent biased inputs.}
 For dependent laws \(\mu\), investigate whether equivalence or singularity
 of \(\mu\) and its complemented law still characterizes completed-measure
-selectors. Theorem \ref{thm:bias} uses both product tail triviality and
+selectors. Theorem \ref{rch:thm:bias} uses both product tail triviality and
 nonsingularity of finite flips. Counterexamples should isolate which of those
 hypotheses fails.
 
@@ -1409,6 +1745,181 @@ Develop a reusable interface turning finite vulnerability bounds into measurable
 and Baire nonconvergence theorems, with explicit assumptions about measure
 completion and choice.
 \end{enumerate}
+
+\subsection{Further questions and research}\label{rch:sec:further}
+\begin{writenote}[Added 5 October 2026, batch~114]
+Following Vladimir Reshetnikov's standing rule of 4~October 2026, every
+claim of the source that is not proved in full is stated here as an open
+question, with its source, the argument offered and what is missing.
+Questions Q1--Q10 above are the source's own research proposals, and all
+ten are open. Four sentences of the body that point beyond what is proved
+are attached to the question they belong to: the end of
+Section~\ref{rch:sec:finite} (classification,
+Question~\ref{rch:q:classify}), the end of the explicit schedule in
+Section~\ref{rch:sec:extraction} (denser sequences,
+Question~\ref{rch:q:dense}), the paragraph after
+Proposition~\ref{rch:prop:slow} (rates, Question~\ref{rch:q:mind}) and the
+``natural generalization'' of the infinite obstruction in Q6
+(Question~\ref{rch:q:groups}; Proposition~\ref{rch:prop:alphabet} below
+proves its regularity half). The intake found no false claim in the source.
+The computations reported below were made by the write with its own
+program (not shipped), an exhaustive enumeration of all $65{,}814$ neutral
+rules in dimensions $1$--$5$ in exact rational arithmetic; they are
+observations about those dimensions only.
+\end{writenote}
+\begin{enumerate}[leftmargin=*,label=\textbf{\arabic*.},ref=\arabic*]
+\item\label{rch:q:constants} \textbf{Fixed-dimension prefix constants}
+ (Q1). Proved: $K(n,m,r)\le2^m/\vol(m,r)$
+ (Theorem~\ref{rch:thm:prefix}), and the rules $F_\ell$ show that the bound
+ is the supremum over $n$. The write adds three facts with proofs.
+ (a)~$K(n,m,r)$ is nondecreasing in $n$: a neutral rule on $n$ coordinates,
+ read on $n+1$ coordinates by ignoring the last, is neutral, with the same
+ change distances and the same $\alpha_f(m)$ for $m\le n$; so the supremum
+ over $n$ is a limit. (b)~$K(n,m,r)\le1/(1-\rho_n^*(r))$, with $\rho_n^*$
+ given by \eqref{rch:eq:optimum}, and equality holds for $m=n$: always
+ $\alpha_f(m)\le1$, and $\eps_f(r)\ge1-\rho_n^*(r)$ by
+ Theorem~\ref{rch:thm:finite}, which a maximizer attains; for $m=n$ the
+ prefix determines $f$, so $\alpha_f(n)=1$ for every neutral $f$.
+ (c)~$K(n,2,1)=4/3$ for $n\ge3$: majority of three votes has
+ $\alpha(2)=1$ (two equal votes decide) and $\eps(1)=3/4$, so (a) gives
+ $K(n,2,1)\ge4/3=2^2/\vol(2,1)$. \emph{Observation:} for every $n\le5$ and
+ $1\le r\le m\le n$,
+ \[
+  K(n,m,r)=\min\Bigl\{\frac{2^m}{\vol(m,r)},\ \frac1{1-\rho_n^*(r)}\Bigr\},
+ \]
+ so the inequality of Theorem~\ref{rch:thm:prefix} is strict in those
+ dimensions except when $r=m$ (both sides are $1$) or $(m,r)=(2,1)$ with
+ $n\ge3$; for
+ example $K(5,3,1)=8/5<2$, $K(5,4,2)=16/15<16/11$ and $K(5,5,1)=8/5<16/3$.
+ Missing: whether the displayed minimum is $K(n,m,r)$ for all $n$ (the next
+ dimension has $2^{32}$ neutral rules), and in any case a formula for
+ $m<n$ and the rate at which $K(n,m,r)\to2^m/\vol(m,r)$.
+\item\label{rch:q:classify} \textbf{Classification and stability of optimal
+ rules} (Q2; the end of Section~\ref{rch:sec:finite}). Proved: majority on
+ $d(n)$ coordinates attains every budget at once. Maximizers are not unique:
+ composing with an isometry of the cube (a permutation of coordinates and
+ sign changes of some of them) preserves neutrality and every change
+ distance, and for even $n$ the ignored coordinate is arbitrary. For any
+ maximizer of $\rho_f(r)$ with nonempty core, Lemma~\ref{rch:lem:core} and
+ \eqref{rch:eq:corecount} make $C_r(f)$ a set of the largest size allowed by
+ Theorem~\ref{rch:thm:kleitman} for diameter $n-2r-1$, so the
+ characterization of those extremal families (credited to Frankl in the
+ abstract of~\cite{WuEtAl}; not read by the write) describes the cores. The
+ source's sketch stops there. Missing: control of the rule outside the two
+ cores, which is what a classification of rules needs, and a stability
+ statement for whole rules that is more than the known stability of
+ cores.
+\item\label{rch:q:tradeoff} \textbf{Two budgets} (Q3).
+ Proved: Proposition~\ref{rch:prop:code} ($\eps(1)\to0$ with $\eps(2)=1$).
+ \emph{Observation:} the attainable pairs $(\eps_f(1),\eps_f(2))$ are
+ $(1,1)$ for $n=2$; $(3/4,1)$ and $(1,1)$ for $n=3$; three pairs, all with
+ $\eps(2)=1$, for $n=4$; and $(5/8,15/16)$, $(3/4,1)$, $(13/16,1)$,
+ $(7/8,1)$, $(15/16,1)$, $(1,1)$ for $n=5$. So in dimensions up to five a
+ two-vote guarantee exists only at the smallest one-vote vulnerability,
+ where majority of five attains $(5/8,15/16)$. Missing: the attainable
+ region in general, and which restrictions (complexity, monotonicity,
+ anonymity) force $\eps(2)\to0$ from $\eps(1)\to0$.
+\item\label{rch:q:dense} \textbf{Dense extraction from majority} (Q4; the end
+ of Section~\ref{rch:sec:extraction}). Proved: the schedule
+ \eqref{rch:eq:explicitschedule} suffices. Since $q_j\ge n_{j-1}$ and
+ $\delta_j^{-2}=4^{j-1}/a^2>1$, it forces $n_j+1\ge8n_{j-1}^2$, so
+ $n_j>n_{j-1}^2$: the schedule grows at least doubly exponentially. Missing:
+ any lower bound on the growth needed for bounded density
+ \eqref{rch:eq:density} or for equivalence with $\beta$, and the separation
+ from pairwise decorrelation and from central limit theorems.
+\item\label{rch:q:mind} \textbf{A quantitative cost of changing one's mind}
+ (Q5; the paragraph after Proposition~\ref{rch:prop:slow}). Proved:
+ qualitative resilience gives no rate (Proposition~\ref{rch:prop:slow}).
+ The source proposes assuming a bound such as $\eps_n(r)\le Cr/\sqrt n$ and
+ restricting ignored votes. Missing: any rate theorem.
+\item\label{rch:q:groups} \textbf{Several alternatives and other symmetry
+ groups} (Q6). The source says the infinite obstruction ``has a natural
+ generalization''; Proposition~\ref{rch:prop:alphabet} proves its regularity
+ half for a finite alphabet and a group without a global fixed label.
+ Missing: existence of such rules under choice (when an element of the group
+ fixes an $E_0$-class the construction of Theorem~\ref{rch:thm:choice} does
+ not apply as it stands), the finite multi-part packing problem, and an
+ analogue of the prefix inequality.
+\item\label{rch:q:metrics} \textbf{Other adversarial metrics} (Q7). The
+ source's sketch separates two invariants: the smallest vulnerable fraction
+ of a nonconstant fibre (Lemma~\ref{rch:lem:minboundary} for Hamming
+ distance) and the largest separated cores (Lemma~\ref{rch:lem:core}).
+ Missing: both invariants for any other metric.
+\item\label{rch:q:weakchoice} \textbf{The exact weak-choice principle} (Q8).
+ Proved: choice for the pairs of complementary $E_0$-classes, or a
+ nonprincipal ultrafilter on $\N$, suffices. The write notes that the first
+ is also necessary, over ZF: a rule $F$ satisfying
+ \eqref{rch:eq:infiniterule} is constant on each $E_0$-class and takes
+ opposite values on complementary classes, so the classes on which $F=1$
+ select one class from each complementary pair. The question is therefore
+ where this selection principle lies among weak choice principles (the
+ sibling \file{noisy-parity-cubes}, \file{np:found:choice}, records the
+ analogous equivalence for parity labels and a model of Serafin separating
+ it from ultrafilters and $E_0$-transversals). Missing: that placement.
+\item\label{rch:q:dependent} \textbf{Beyond independent biased inputs} (Q9).
+ Theorem~\ref{rch:thm:bias} uses the zero--one law for finite-change
+ invariant sets and nonsingularity of finite flips. Missing: a criterion for
+ dependent laws, or counterexamples isolating the hypothesis that fails.
+\item\label{rch:q:formal} \textbf{Effective and formal quantitative
+ ergodicity} (Q10). Remark~\ref{rch:rem:lean} shows what the existing Lean
+ declarations give. The formalization order of Section~\ref{rch:sec:formal}
+ is a proposal. Missing: every formal statement of this report.
+\end{enumerate}
+
+\begin{proposition}[{[write]} Several labels: the regularity obstruction, 5~October 2026]
+\label{rch:prop:alphabet}
+Let $\Sigma$ be a finite set with at least two elements, and let a group
+$G$ act on $\Sigma$ so that no element of $\Sigma$ is fixed by all of $G$.
+Let $G$ act on $\Sigma^{\N}$ coordinatewise, and give $\Sigma^{\N}$ the
+product topology and the uniform product measure $\lambda$. Suppose
+$F:\Sigma^{\N}\to\Sigma$ satisfies $F(x)=F(y)$ whenever $x$ and $y$ differ
+in finitely many coordinates, and $F(gx)=gF(x)$ for all $g\in G$ and all
+$x$. Then the fibres of $F$ are not all measurable for the completion of
+$\lambda$, and they do not all have the Baire property. If $G$ acts
+transitively on $\Sigma$, no fibre is measurable and no fibre has the Baire
+property.
+\end{proposition}
+
+For $\Sigma=\{-1,1\}$ and $G=\{\pm1\}$ acting by multiplication this gives
+the nonmeasurability and the Baire-property statement of
+Theorem~\ref{rch:thm:choice}, without its inner- and outer-measure
+refinement.
+
+\begin{proof}
+Write $A_s=F^{-1}(s)$. For $k\ge1$ and a permutation $\pi$ of $\Sigma^k$, let
+$\phi_\pi$ replace the first $k$ coordinates $w$ of a point by $\pi(w)$.
+Each $\phi_\pi$ is a homeomorphism preserving $\lambda$ and changes only
+finitely many coordinates, so every fibre is invariant under all
+$\phi_\pi$; for each $k$ these maps act transitively on the cylinders
+$[w]$, $w\in\Sigma^k$.
+
+\emph{Zero--one laws.} Let $A$ be invariant under all $\phi_\pi$. If $A$ is
+measurable for the completion, then $\lambda(A\cap[w])$ is the same for all
+$w\in\Sigma^k$, so $\lambda(A\cap[w])=\lambda(A)\lambda([w])$. The
+cylinders and $\varnothing$ form a $\pi$-system generating the Borel sets,
+so $A$ is independent of every Borel set; choosing a Borel $B$ with
+$\lambda(A\triangle B)=0$ gives $\lambda(A)=\lambda(A\cap B)=\lambda(A)^2$,
+so $\lambda(A)\in\{0,1\}$. If $A$ has the Baire property and is not meager,
+it is comeager in some cylinder $[w]$; each $[w']$ with $w'$ of the same
+length is the image of $[w]$ under some $\phi_\pi$, which maps $A$ to
+itself, so $A$ is comeager in each of these finitely many cylinders, which
+cover $\Sigma^{\N}$, and $A$ is comeager.
+
+\emph{The fibres.} For $g\in G$ the map $x\mapsto gx$ is a homeomorphism
+preserving $\lambda$ (it permutes the letters of each coordinate), and it
+maps $A_s$ onto $A_{gs}$, since $F(gx)=gF(x)$. If all fibres are
+measurable, they are disjoint, cover the space and have measure $0$ or $1$,
+so exactly one, $A_{s_0}$, has measure one; then $A_{gs_0}=gA_{s_0}$ has
+measure one, so $gs_0=s_0$ for every $g$, contrary to the hypothesis. If all
+fibres have the Baire property, each is meager or comeager; they are not all
+meager, since finitely many meager sets cannot cover the compact Hausdorff,
+hence Baire, space $\Sigma^{\N}$, and two disjoint sets cannot both be
+comeager; so exactly one, $A_{s_0}$, is comeager, and
+$A_{gs_0}=gA_{s_0}$ is comeager, so again $gs_0=s_0$ for every $g$. If $G$
+acts transitively and one fibre $A_s$ is measurable (or has the Baire
+property), then so is every $A_{gs}=gA_s$, that is, every fibre, and the
+previous case applies.
+\end{proof}
 
 \clearpage
 \appendix
@@ -1431,10 +1942,10 @@ like an infinite fair-coin sequence while individual finite interventions
 eventually become harmless almost surely.
 \end{quote}
 
-The finite answer is \eqref{eq:optimum}. Stabilization is impossible in both
+The finite answer is \eqref{rch:eq:optimum}. Stabilization is impossible in both
 regularity senses. A direct everywhere assignment exists under choice and lacks
 both regularities. The selected-size statistical assertion holds in the precise
-bounded-density and coupling senses of Section \ref{sec:extraction}.
+bounded-density and coupling senses of Section \ref{rch:sec:extraction}.
 
 \section{Scope and assumptions at a glance}
 
