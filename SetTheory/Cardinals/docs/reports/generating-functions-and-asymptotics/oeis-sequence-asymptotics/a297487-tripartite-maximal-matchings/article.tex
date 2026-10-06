@@ -1,0 +1,628 @@
+\pdfinfoomitdate=1
+\pdftrailerid{}
+\pdfsuppressptexinfo=15
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype,amsmath,amssymb,amsthm,mathtools,booktabs,array}
+\usepackage[margin=1in]{geometry}
+\usepackage{xcolor}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,urlcolor=blue!45!black,citecolor=blue!45!black]{hyperref}
+\usepackage{enumitem,fancyhdr}
+\makeatletter
+\renewcommand*\l@section[2]{%
+  \ifnum\c@tocdepth>\z@
+    \addpenalty\@secpenalty\addvspace{0.25em\@plus\p@}%
+    \setlength\@tempdima{1.5em}%
+    \begingroup\parindent\z@\rightskip\@pnumwidth
+      \parfillskip-\@pnumwidth\leavevmode\bfseries
+      \advance\leftskip\@tempdima\hskip-\leftskip
+      #1\nobreak\hfil\nobreak\hb@xt@\@pnumwidth{\hss#2}\par
+    \endgroup
+  \fi}
+\makeatother
+\hypersetup{pdftitle={Maximal Matchings in Balanced Complete Tripartite Graphs},pdfauthor={Research report 176},pdfsubject={All fixed order asymptotics, unmatched vertices, and inverse thresholds}}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small Maximal tripartite matchings}\fancyhead[R]{\small Report 176}\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}\setlength{\emergencystretch}{2em}
+\setlist{itemsep=3pt,topsep=5pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\E}{\mathbb E}\newcommand{\Pp}{\mathbb P}
+\newcommand{\Var}{\operatorname{Var}}\newcommand{\Poi}{\operatorname{Poisson}}
+\newcommand{\one}{\mathbf 1}\newcommand{\TV}{d_{\mathrm{TV}}}
+\newcommand{\ceil}[1]{\left\lceil #1\right\rceil}
+\newcommand{\fall}[2]{(#1)_{\underline{#2}}}
+\title{\textbf{Maximal Matchings in Balanced\\Complete Tripartite Graphs}\\[7pt]\large All fixed order asymptotics, unmatched vertices,\\and inverse thresholds}
+\author{Research report 176}
+\date{3 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+Let $A_n$ count maximal matchings of the labeled complete tripartite graph $K_{n,n,n}$, the sequence OEIS A297487. We derive a real-positive marked expansion to every fixed algebraic order, uniformly on compact marking intervals, with an explicit finite coefficient algorithm and the first four correction polynomials. Its leading term is the equivalent already recorded by V\'aclav Kot\v e\v sovec in OEIS. The positive finite sum underlying the proof is already implicit in Andrew Howroyd's OEIS program.
+
+For a uniform maximal matching, the number of unmatched vertices is within $O(n^{-1/4})$ in total variation of a parity-conditioned Poisson law of mean $\sqrt{n/2}$. Direct inserted-moment expansions give refined means and variances; a central limit theorem, a span-two local law, and all-fixed-order relative expansions for the rare maximum-matchings probabilities follow. Smooth asymptotic models have inverses with arbitrarily high fixed algebraic accuracy and boundary-safe two-ceiling enclosures for integer thresholds. A Lambert $W$ approximation gives an $o(1)$-accurate real inverse.
+
+All error constants and onsets are existential. No exponentially accurate count transseries, complex-marking theorem, unconditional ceiling rule, or global priority claim is made. Exact offline verification accompanies the proofs.
+\end{abstract}
+\setcounter{tocdepth}{1}\tableofcontents
+\newpage
+
+\section{Counting convention and attribution}
+The three parts of $K_{n,n,n}$ are distinguished and contain labeled vertices. A matching is a set of edges with disjoint endpoints. It is \emph{maximal} if no edge can be added, and \emph{maximum} if its cardinality is largest possible. These are different conditions. We count matchings without identifying graph automorphisms. Set $A_0=1$ for the empty graph; asymptotic assertions concern positive integers $n\to\infty$.
+
+The live OEIS entry A297487~\cite{oeis}, consulted on 3 October 2026, records the leading equivalent
+\begin{equation}\label{eq:known}
+ A_n\sim 3\sqrt2\left(\frac{2n}{e}\right)^{3n/2}
+             \exp\left(\sqrt{\frac n2}-\frac38\right),
+\end{equation}
+credited to V\'aclav Kot\v e\v sovec on 6 February 2026. The entry also gives Andrew Howroyd's positive-sum program dated 30 December 2017 and a hypergeometric expression containing the even perfect-matching correction. Neither the leading equivalent, the positive sum, nor that exact correction is claimed as new here. We supply a proof and refinements, using standard gamma asymptotics and Poisson moments.
+
+A bounded literature search found related Hermite pairing theory~\cite{azor,paris}, extremal cardinalities of maximal matchings in complete multipartite graphs~\cite{song}, and enumeration over subcritical graph classes~\cite{drmota}. Paris's full paper was read; the Azor--Gillis--Victor and Song--Miao--Wang--Zhao full texts were not obtained. Their abstracts and available primary metadata do not certify theorem-by-theorem nonoverlap. No matching marked all-fixed-order result was located in the sources examined, but this is not a proof of worldwide novelty. Section~\ref{sec:sources} records the limits of this comparison.
+
+Throughout put
+\begin{equation}\label{eq:notation}
+ \lambda=\sqrt{n/2},\qquad B_n=\frac{(n!)^3}{\Gamma(n/2+1)^3},
+ \qquad h=\lambda^{-1}.
+\end{equation}
+For a polynomial series, $[h^j]$ denotes formal coefficient extraction. Every use of ``all orders'' below means: for each fixed nonnegative integer truncation order, with constants allowed to depend on that order. It does not assert convergence of an infinite asymptotic series.
+
+\section{Exact enumeration and the marked polynomial}\label{sec:exact}
+\begin{lemma}\label{lem:maximal}
+A matching of a complete multipartite graph is maximal if and only if all its unmatched vertices lie in at most one part.
+\end{lemma}
+\begin{proof}
+Two unmatched vertices in different parts could be joined by an edge. Conversely, if all unmatched vertices lie in one part, there is no edge between them and no edge can be added to the matching.
+\end{proof}
+
+Suppose that $k$ vertices in a distinguished part are unmatched. If $a,b,c$ are the numbers of edges between the three pairs of parts, then
+\[
+ a+b=n-k,\quad a+c=n,\quad b+c=n.
+\]
+Thus $a=b=(n-k)/2$, $c=(n+k)/2$. Admissible values of $k$ are exactly
+\[
+ 0\le k\le n,\qquad k\equiv n\pmod2.
+\]
+Partition the vertices of each part according to their destinations, and then bijectively pair the classes assigned to each edge type. The resulting count is
+\begin{equation}\label{eq:t}
+ t(n,k)=\frac{(n!)^3}{k!\,((n-k)/2)!^2\,((n+k)/2)!}.
+\end{equation}
+For $k>0$ the unmatched part is unique. At $k=0$ the three choices represent the same perfect matching. Define
+\begin{equation}\label{eq:S}
+ S_n(v)=\sum_{\substack{0\le k\le n\\k\equiv n\ (2)}}t(n,k)v^k.
+\end{equation}
+If $A_n(v)$ counts maximal matchings with weight $v^k$ for $k$ unmatched vertices, then
+\begin{equation}\label{eq:Amark}
+ A_n(v)=3S_n(v)-2\one_{2\mid n}B_n,\qquad A_n=A_n(1).
+\end{equation}
+Here $B_n=t(n,0)$ when $n$ is even; for odd $n$ it is only a useful positive normalization. Formula~\eqref{eq:Amark} also gives $A_0(v)=1$ directly, before introducing $\lambda$.
+
+For part sizes $a,b,c$, let $M_{a,b,c}(v)$ be the analogous marked count. The multivariate exponential generating function is
+\begin{equation}\label{eq:egf}
+ \sum_{a,b,c\ge0}M_{a,b,c}(v)\frac{x^ay^bz^c}{a!b!c!}
+  =(e^{vx}+e^{vy}+e^{vz}-2)e^{xy+xz+yz}.
+\end{equation}
+The first factor chooses the unmatched set in one part and counts its empty choice once; the second is a labeled set of cross-part edges. In particular $A_n(v)=(n!)^3[x^ny^nz^n]$ of the right side.
+
+The first values for $n=0,\ldots,8$ are
+\[
+ 1,\ 3,\ 14,\ 342,\ 5256,\ 252360,\ 7950960,\ 582346800,\ 30400755840.
+\]
+The package checks all 16 displayed OEIS values and independently computes $n=0,\ldots,100$. The remote b-file was not retrieved, so a full b-file comparison is not claimed.
+
+\section{A globally bounded Poisson reduction}\label{sec:poisson}
+Set $x=\lambda^2=n/2$ and define, for integers $0\le k\le n$,
+\begin{equation}\label{eq:R}
+ R_n(k)=\frac{\Gamma(x+1)^3}
+ {\Gamma(x-k/2+1)^2\Gamma(x+k/2+1)\lambda^k}.
+\end{equation}
+Then $t(n,k)=B_n\lambda^kR_n(k)/k!$ on the admissible parity class.
+
+\begin{lemma}\label{lem:bound}
+For $n\ge1$ and every integer $0\le k\le n$,
+\begin{equation}\label{eq:globalbound}
+ 0<R_n(k)\le e^2.
+\end{equation}
+Consequently, for $P\sim\Poi(v\lambda)$ and real $v>0$,
+\begin{equation}\label{eq:poisson}
+ \frac{S_n(v)}{B_ne^{v\lambda}}
+  =\E\left[R_n(P)\one_{P\le n}\one_{P\equiv n\ (2)}\right].
+\end{equation}
+The product with the cutoff is understood as zero when $P>n$.
+\end{lemma}
+\begin{proof}
+Write $\psi=(\log\Gamma)'$. Convexity of $\log\Gamma$ and the functional equation imply
+\[
+ \psi(t)\le\log t\le\psi(t+1)\le\log(t+1)\quad(t>0).
+\]
+With $a=k/2$,
+\begin{align*}
+ \log\frac{\Gamma(x+1)}{\Gamma(x-a+1)}
+ &=\int_{x-a}^x\psi(t+1)\,dt\le a\log(x+1),\\
+ \log\frac{\Gamma(x+1)}{\Gamma(x+a+1)}
+ &=-\int_x^{x+a}\psi(t+1)\,dt\le-a\log x.
+\end{align*}
+The first integral is still valid when $x-a=0$, since $\psi(t+1)$ is continuous there. Twice the first bound plus the second, minus $a\log x$, gives
+\[
+ \log R_n(k)\le k\log(1+1/x)\le k/x\le2.
+\]
+Positivity follows from the positive gamma arguments. Equation~\eqref{eq:poisson} is the exact Poisson probability formula.
+\end{proof}
+
+Fix a marking compact $K=[a,b]\subset(0,\infty)$ and the larger interval
+\begin{equation}\label{eq:compact}
+ K^*=[a/2,2b].
+\end{equation}
+The positive margins are important. Uniform Poisson Chernoff bounds give
+\begin{equation}\label{eq:tail}
+ \Pp(P/\lambda\notin K^*)=O_K(e^{-c_K\lambda})
+\end{equation}
+for some $c_K>0$, uniformly in $v\in K$. A fixed polynomial in $P/\lambda$ can be inserted without changing the exponential nature of this bound. Also $2b\lambda<n=2\lambda^2$ eventually. Lemma~\ref{lem:bound} therefore controls both tails and the hard cutoff in the following argument.
+
+\section{Uniform gamma expansions and the coefficient algorithm}\label{sec:gamma}
+On $K^*$ write $z=k/\lambda$ and $D(h,z)=\log R_n(k)$. For each fixed $J$, Stirling's expansion gives
+\begin{equation}\label{eq:D}
+ D(h,z)=-\frac{3z^2}{8}+\sum_{j=1}^Jd_j(z)h^j+O_{K,J}(h^{J+1}),
+\end{equation}
+uniformly with any prescribed finite number of $z$ derivatives. The first four polynomials are
+\begin{align}
+ d_1(z)&=\frac z4-\frac{z^3}{48},&
+ d_2(z)&=\frac{3z^2}{16}-\frac{z^4}{64},\label{eq:d12}\\
+ d_3(z)&=-\frac z{24}+\frac{z^3}{48}-\frac{z^5}{640},&
+ d_4(z)&=-\frac{z^2}{16}+\frac{3z^4}{128}-\frac{z^6}{640}.\label{eq:d34}
+\end{align}
+
+For clarity, a finite procedure defines all further $d_j$. In the formal Stirling expression
+\begin{equation}\label{eq:stirlingalg}
+ G(X)=\left(X+\frac12\right)\log X-X+\frac12\log(2\pi)
+ +\sum_{m\ge1}\frac{B_{2m}}{2m(2m-1)X^{2m-1}},
+\end{equation}
+substitute $X=h^{-2}$ and $X=h^{-2}\pm z/(2h)$, and take the coefficient of $h^j$ in
+\begin{equation}\label{eq:dalg}
+ 3G(h^{-2})-2G(h^{-2}-z/(2h))-G(h^{-2}+z/(2h))
+             +\frac zh\log h.
+\end{equation}
+Here $G(X)$ is the expansion of $\log\Gamma(X+1)$, and only finitely many Bernoulli terms contribute to a fixed coefficient. The leading term of~\eqref{eq:dalg} is $-3z^2/8$; logarithms cancel. Taylor expansion of $\log(1\pm zh/2)$ performs the extraction using rational arithmetic.
+
+The uniformity and differentiated remainder are standard consequences of the sectorial log-gamma expansion~\cite[\S5.11]{dlmf}. Indeed, for $z$ in a fixed complex neighborhood of $K^*$, both gamma arguments tend uniformly to positive infinity inside a sector bounded away from the negative real axis. Use a sufficiently long uniform Stirling expansion there, and then Cauchy's estimate on fixed-radius $z$ discs. This justifies finitely many $z$ derivatives; it does not prove a complex-$v$ version of the marked theorem.
+
+Define $p_j(z)$ by
+\begin{equation}\label{eq:p}
+ \exp\left(\sum_{s\ge1}d_s(z)h^s\right)=\sum_{j\ge0}p_j(z)h^j,
+ \quad p_0=1,\quad
+ p_j=\frac1j\sum_{s=1}^j s\,d_s p_{j-s}.
+\end{equation}
+Thus $d_j$ has rational coefficients, degree at most $j+2$, and parity $j$, while $p_j$ has degree at most $3j$ and parity $j$.
+
+\begin{theorem}[Marked expansion]\label{thm:marked}
+There are rational polynomials $q_j(v)$, with $q_0=1$, degree at most $3j$, and parity $j$, such that for every fixed $J\ge0$ and compact $K\subset(0,\infty)$,
+\begin{equation}\label{eq:marked}
+ S_n(v)=\frac{B_n}{2}e^{v\lambda-3v^2/8}
+ \left(\sum_{j=0}^Jq_j(v)\lambda^{-j}
+                    +O_{K,J}(\lambda^{-J-1})\right)
+\end{equation}
+uniformly for real $v\in K$. A finite coefficient algorithm is
+\begin{equation}\label{eq:qalg}
+ q_j(v)=e^{3v^2/8}[h^j]\left.
+ \exp\left(\sum_{r\ge2}\frac{v h^{r-1}}{r!}\partial_z^r\right)
+ \left[e^{-3z^2/8}\exp\left(\sum_{s\ge1}d_s(z)h^s\right)\right]
+ \right|_{z=v}.
+\end{equation}
+The parameter $v$ is held fixed during differentiation in $z$. The operator is a formal coefficient algorithm, not an asserted convergent infinite operator.
+\end{theorem}
+\begin{proof}
+Using~\eqref{eq:tail} and~\eqref{eq:globalbound}, restrict~\eqref{eq:poisson} to $P/\lambda\in K^*$. Uniform exponentiation of~\eqref{eq:D} gives
+\[
+ R_n(P)=\sum_{j=0}^Jh^j f_j(P/\lambda)+O(h^{J+1}),
+ \qquad f_j(z)=e^{-3z^2/8}p_j(z).
+\]
+Taylor-expand $f_j$ at $z=v$ through degree $2(J-j)+1$. Its remainder is bounded by a constant times $|P/\lambda-v|^{2(J-j)+2}$ on the central interval. Exact even centered Poisson moments show
+\[
+ \E|P/\lambda-v|^{2m}=O_{K,m}(\lambda^{-m}).
+\]
+Hence the expectation of this remainder after multiplication by $h^j$ is $O(h^{J+1})$. The Taylor polynomial can be averaged over the whole Poisson distribution because its omitted tail is exponentially small. The exact centered moment generating function is
+\[
+ \E e^{s(P/\lambda-v)}
+   =\exp\left(\sum_{r\ge2}\frac{v h^{r-1}s^r}{r!}\right),
+\]
+which gives~\eqref{eq:qalg} for the unsigned expectation.
+
+It remains to impose the parity. Exactly,
+\[
+ \one_{P\equiv n\ (2)}=\frac{1+(-1)^{P-n}}2,
+ \qquad \E[(-1)^P\fall P r]=(-v\lambda)^r e^{-2v\lambda}.
+\]
+Every finite Taylor polynomial is a polynomial in $P$, so its signed expectation is an exponential times a fixed polynomial in $\lambda$ and $\lambda^{-1}$. The signed Taylor remainder has the same absolute bound as the unsigned one. Thus the parity-restricted expectation is half the unsigned expansion to every fixed algebraic order, proving~\eqref{eq:marked}.
+
+For the degree assertion, an operator monomial of $h$ order $m$ uses $\ell$ derivative blocks, has total derivative order $r=m+\ell$, and carries a factor $v^\ell$, where $\ell\le m$. After extracting $e^{-3z^2/8}$, differentiation increases polynomial degree by at most $r$. Therefore it increases the eventual degree by at most $r+\ell\le3m$. Starting with $p_{j-m}$ proves the bound $3j$. Derivative parity and the factor $v^\ell$ change parity by $r+\ell\equiv m\pmod2$, proving parity $j$.
+\end{proof}
+
+\begin{remark}\label{rem:parity}
+The signed Taylor remainder above is bounded algebraically, not exponentially. The theorem therefore does not identify the exponentially small parity sector of the count. In particular, the exact subtraction in~\eqref{eq:Amark} cannot be promoted into an exponentially accurate count transseries by combining it with~\eqref{eq:marked}.
+\end{remark}
+
+An alternative exact implementation of~\eqref{eq:qalg} uses the centered moments $\mu_r(t)=\E(P-t)^r$ for $P\sim\Poi(t)$:
+\begin{equation}\label{eq:mu}
+ \mu_0=1,\quad\mu_1=0,\quad
+ \mu_{r+1}(t)=t\{\mu_r'(t)+r\mu_{r-1}(t)\}.
+\end{equation}
+Only $r\le2J$ can affect order $h^J$. If $\mathcal D=\partial_z-3z/4$, then $f_j^{(r)}=e^{-3z^2/8}\mathcal D^rp_j$, allowing every coefficient to be computed in rational polynomial arithmetic.
+
+\section{Four explicit corrections and the unmarked count}\label{sec:coeff}
+The first four polynomials obtained from Theorem~\ref{thm:marked} are
+\begin{align}
+ q_1(v)&=\frac{v(25v^2-12)}{96},\label{eq:q1}\\
+ q_2(v)&=\frac{v^2(625v^4-5208v^2+6768)}{18432},\label{eq:q2}\\
+ q_3(v)&=\frac{v}{26542080}\bigl(78125v^8-1840500v^6\notag\\
+ &\hspace{35mm}+11037168v^4-16925760v^2+3525120\bigr),\label{eq:q3}\\
+ q_4(v)&=\frac{v^2}{10192158720}\bigl(1953125v^{10}-90150000v^8
+                   +1295321760v^6\notag\\
+ &\hspace{24mm}-6818390784v^4+11911691520v^2-4349583360\bigr).\label{eq:q4}
+\end{align}
+In particular, writing $a_j=q_j(1)$,
+\begin{equation}\label{eq:a}
+ (a_0,a_1,a_2,a_3,a_4)=
+ \left(1,\frac{13}{96},\frac{2185}{18432},
+       -\frac{4125847}{26542080},\frac{1950842261}{10192158720}\right).
+\end{equation}
+For later use set
+\begin{equation}\label{eq:Q}
+ Q_J(v,\lambda)=\sum_{j=0}^Jq_j(v)\lambda^{-j},\qquad
+ Q_J(\lambda)=Q_J(1,\lambda).
+\end{equation}
+On any fixed marking compact, $Q_J(v,\lambda)$ is positive for sufficiently large $\lambda$.
+
+\begin{corollary}\label{cor:count}
+For each fixed $J\ge0$,
+\begin{equation}\label{eq:count}
+ A_n=\frac32B_ne^{\lambda-3/8}
+          \left(Q_J(\lambda)+O_J(\lambda^{-J-1})\right).
+\end{equation}
+If $L_n$ denotes the right side of~\eqref{eq:known}, then
+\begin{align}
+ \frac{A_n}{L_n}
+ ={}&1+\frac{13}{96\lambda}-\frac{119}{18432\lambda^2}
+       -\frac{4575127}{26542080\lambda^3}\notag\\
+    &+\frac{1879441301}{10192158720\lambda^4}+O(\lambda^{-5}).\label{eq:carrier}
+\end{align}
+With $C=\log(3\sqrt2)-3/8$, the logarithm is
+\begin{align}
+ \log A_n={}&\frac{3n}{2}\log\frac{2n}{e}+\lambda+C
+  +\frac{13}{96\lambda}-\frac{1}{64\lambda^2}\notag\\
+ &-\frac{5243}{30720\lambda^3}+\frac{425}{2048\lambda^4}
+  +O(\lambda^{-5}).\label{eq:logcount}
+\end{align}
+\end{corollary}
+\begin{proof}
+At $v=1$ the subtracted term in~\eqref{eq:Amark} is $O(e^{-\lambda})$ relative to the main term in~\eqref{eq:marked}. It is absorbed at every fixed order. Stirling's expansion further gives
+\begin{equation}\label{eq:logB}
+ \log B_n=\frac{3n}{2}\log\frac{2n}{e}+\log(2\sqrt2)
+        -\frac1{8\lambda^2}+\frac7{960\lambda^6}+O(\lambda^{-10}).
+\end{equation}
+Multiplying $Q_4$ by $\exp(-1/(8\lambda^2))$ yields~\eqref{eq:carrier}. Taking the formal logarithm yields~\eqref{eq:logcount}. These are exact rational coefficient operations, not numerical fits.
+\end{proof}
+
+\section{Marked laws and directly inserted moments}\label{sec:moments}
+Let $U_n$ be the number of unmatched vertices in a uniformly chosen maximal matching. Its probability generating polynomial is exactly $A_n(v)/A_n$. From Theorem~\ref{thm:marked}, for every fixed $J$ and compact $K\subset(0,\infty)$,
+\begin{equation}\label{eq:mgf}
+ \E v^{U_n}=e^{\lambda(v-1)-3(v^2-1)/8}
+ \left(\frac{Q_J(v,\lambda)}{Q_J(1,\lambda)}
+                 +O_{K,J}(\lambda^{-J-1})\right).
+\end{equation}
+The error is inside the displayed exponential normalization. This is a real-parameter mod-Poisson type statement only; no uniform fixed complex neighborhood of $v=1$ is asserted.
+
+Differentiating an unspecified real remainder would not justify moment expansions. Instead insert factorial powers in the exact sum. If $r\ge1$ is fixed and $P\sim\Poi(\lambda)$, the exact factorial-shift identity
+\begin{equation}\label{eq:shift}
+ \E[\fall P r f(P)]=\lambda^r\E f(P+r)
+\end{equation}
+implies
+\begin{equation}\label{eq:insert}
+ \E\fall{U_n}r=
+ \frac{3B_ne^\lambda\lambda^r}{A_n}
+ \E\left[R_n(P+r)\one_{P+r\le n}\one_{P+r\equiv n\ (2)}\right].
+\end{equation}
+The perfect term has no contribution because $\fall0r=0$.
+
+A finite inserted coefficient algorithm follows from~\eqref{eq:qalg} by replacing every $z$ inside its square bracket by $z+rh$, retaining $v=1$ in the operator, and then evaluating at $z=1$. In detail let
+\begin{equation}\label{eq:Tr}
+ T_r(h)=e^{3/8}\left.
+ \exp\left(\sum_{m\ge2}\frac{h^{m-1}}{m!}\partial_z^m\right)
+ \left[e^{-3(z+rh)^2/8}
+       \exp\left(\sum_{s\ge1}d_s(z+rh)h^s\right)\right]
+ \right|_{z=1}
+\end{equation}
+as a formal series. Then $T_0(h)=\sum a_jh^j$. Applying the same enlarged-central-interval proof to the shifted argument gives, for each fixed $M$,
+\begin{equation}\label{eq:momentseries}
+ \E\fall{U_n}r
+   =h^{-r}\left(\frac{\sum_{j=0}^M[h^j]T_r(h)\,h^j}
+                         {Q_M(1/h)}+O_{M,r}(h^{M+1})\right).
+\end{equation}
+Changing parity in~\eqref{eq:insert} changes only the signed negligible polynomial contribution. The hard cutoff and tails are controlled as before. Formula~\eqref{eq:momentseries} proves direct moment expansions at every fixed order; one chooses $M$ sufficiently large before cancellations.
+
+\begin{theorem}\label{thm:moments}
+The first two moments have the expansions
+\begin{align}
+ \E U_n&=\lambda-\frac34+\frac{21}{32\lambda}
+                         -\frac9{32\lambda^2}+O(\lambda^{-3}),\label{eq:mean}\\
+ \Var U_n&=\lambda-\frac32+\frac{71}{32\lambda}
+                         -\frac{41}{16\lambda^2}+O(\lambda^{-3}).\label{eq:variance}
+\end{align}
+\end{theorem}
+\begin{proof}
+Use~\eqref{eq:momentseries} for $r=1,2$ through $h^5$, and form
+$\Var U_n=\E\fall{U_n}2+\E U_n-(\E U_n)^2$.
+The error for the mean is then $O(h^5)$ and for the second factorial moment $O(h^4)$; the subsequent square and subtraction leave an error at most $O(h^4)$ before truncating the displayed series, so $O(h^3)$ in~\eqref{eq:mean}--\eqref{eq:variance} is justified.
+
+For a compact way to check the retained coefficients, the already justified finite formal calculation agrees with applying $v\partial_v$ and its square to the formal logarithm in~\eqref{eq:mgf}. In that calculation
+\[
+ q_2(v)-\frac12q_1(v)^2=-\frac{v^2(16v^2-23)}{64}.
+\]
+The leading correction $-3v^2/8$, together with this polynomial and $q_1(v)$, gives exactly the displayed values. This algebraic check is used only after the inserted-moment remainder proof.
+\end{proof}
+
+\section{Conditioned Poisson comparison and local limits}\label{sec:limits}
+Let $\Pi_n$ denote the distribution of a Poisson random variable of mean $\lambda$ conditioned to have parity $n$. We use the convention
+$\TV(\mu,\nu)=\frac12\sum_k|\mu(k)-\nu(k)|$.
+
+\begin{theorem}\label{thm:tv}
+As $n\to\infty$,
+\begin{equation}\label{eq:tv}
+ \TV(\mathcal L(U_n),\Pi_n)=O(\lambda^{-1/2})=O(n^{-1/4}),
+ \qquad \frac{U_n-\lambda}{\sqrt\lambda}\ \Longrightarrow\ N(0,1).
+\end{equation}
+For every fixed $M>0$, uniformly over integers $k\equiv n\pmod2$ with $|k-\lambda|\le M\sqrt\lambda$,
+\begin{equation}\label{eq:local}
+ \Pp(U_n=k)=\frac{2}{\sqrt{2\pi\lambda}}
+ e^{-(k-\lambda)^2/(2\lambda)}(1+o(1)).
+\end{equation}
+The factor two is the lattice-span correction.
+\end{theorem}
+\begin{proof}
+First ignore the multiplicity adjustment at $k=0$, and let $V_n$ have probabilities $t(n,k)/S_n(1)$ on the admissible support. It is the $\Pi_n$ law tilted by $R_n(k)\one_{k\le n}$. On, for example, $k/\lambda\in[1/2,2]$, the smooth gamma expansion yields
+\[
+ |R_n(k)-e^{-3/8}|
+   \le C\left(\frac{|k-\lambda|}{\lambda}+\lambda^{-1}\right).
+\]
+The probability of each parity under $\Poi(\lambda)$ is
+$(1+(-1)^ne^{-2\lambda})/2$, bounded away from zero. Cauchy--Schwarz and Poisson variance therefore give a conditioned first absolute deviation $O(\sqrt\lambda)$. Outside the central interval, Chernoff bounds and $R_n\le e^2$ apply. Hence
+\[
+ \E_{\Pi_n}|R_n(P)\one_{P\le n}-e^{-3/8}|=O(\lambda^{-1/2}).
+\]
+The normalizing expectation tends to $e^{-3/8}>0$. Normalizing a nonnegative tilt changes its total variation distance by at most a constant times this $L^1$ error, proving $\TV(\mathcal L(V_n),\Pi_n)=O(\lambda^{-1/2})$. For odd $n$, $U_n=V_n$ in distribution. For even $n$, the weights at zero change from $3B_n$ to $B_n$ when passing from $3S_n$ to $A_n$; their total variation effect is $O(B_n/S_n)=O(e^{-\lambda})$ by~\eqref{eq:marked}. This proves the first assertion.
+
+For completeness the conditioned-Poisson central limit theorem follows from its exact moment generating function. With $\epsilon_n=(-1)^n$ and every real $t$,
+\begin{align}
+ &\E\left[e^{t(P-\lambda)/\sqrt\lambda}\mid P\equiv n\ (2)\right]\notag\\
+ &\quad=\exp\left(\lambda(e^{t/\sqrt\lambda}-1)-t\sqrt\lambda\right)
+ \frac{1+\epsilon_n e^{-2\lambda e^{t/\sqrt\lambda}}}
+      {1+\epsilon_n e^{-2\lambda}}.\label{eq:condmgf}
+\end{align}
+For each fixed $t$ this tends to $e^{t^2/2}$. Moment generating function convergence in a real neighborhood of zero proves the conditional central limit theorem. Total variation decreases under a measurable transformation, so the first part of~\eqref{eq:tv} transfers it to $U_n$. This transfer is not used to infer moments; those were proved separately.
+
+For the local assertion, $k>0$ eventually in the stated window, so the exact probability is $3t(n,k)/A_n$. Uniform Stirling expansion of $k!$ gives the ordinary Poisson local Gaussian approximation there. Also $R_n(k)=e^{-3/8}(1+o(1))$ uniformly, while $A_n\sim(3/2)B_ne^{\lambda-3/8}$. Substitution gives~\eqref{eq:local}.
+\end{proof}
+
+The number of edges is $(3n-U_n)/2$, and the largest possible number is $\lfloor3n/2\rfloor$. The gap from maximum size is therefore exactly
+\begin{equation}\label{eq:gap}
+ G_n=\frac{U_n-(n\bmod2)}2.
+\end{equation}
+In particular its mean is $\lambda/2+O(1)$ and its standard deviation is $\sqrt\lambda/2\,(1+o(1))$. Thus the typical gap has order $\sqrt n$ and its fluctuations have order $n^{1/4}$.
+
+\section{Rare maximum matchings}\label{sec:rare}
+For even $n$, maximum matchings have $U_n=0$; for odd $n$, they have $U_n=1$. These are the smallest allowed unmatched counts, and~\eqref{eq:t} proves that they occur.
+
+\begin{theorem}\label{thm:rare}
+For every fixed $J\ge0$, the probability $p_n^{\max}$ that a uniform maximal matching is maximum satisfies
+\begin{align}
+ p_n^{\max}
+ &=\frac23e^{-\lambda+3/8}
+       \left(Q_J(\lambda)^{-1}+O_J(\lambda^{-J-1})\right),
+       &&n\ \text{even},\label{eq:evenrare}\\
+ p_n^{\max}
+ &=2\lambda e^{-\lambda+3/8}R_n(1)
+       \left(Q_J(\lambda)^{-1}+O_J(\lambda^{-J-1})\right),
+       &&n\ \text{odd}.\label{eq:oddrare}
+\end{align}
+The fixed-shift ratio has an expansion to every fixed order in $\lambda^{-2}$, beginning
+\begin{equation}\label{eq:R1}
+ R_n(1)=1-\frac1{8\lambda^2}+\frac{17}{128\lambda^4}
+           -\frac{75}{1024\lambda^6}+\frac{1035}{32768\lambda^8}
+           +O(\lambda^{-10}).
+\end{equation}
+These are relative expansions of exponentially small probabilities.
+\end{theorem}
+\begin{proof}
+The exact numerators are $B_n$ and $3t(n,1)=3B_n\lambda R_n(1)$, respectively. Divide by~\eqref{eq:count}, using eventual positivity of $Q_J$. The relative error in the denominator remains a relative error in the quotient regardless of the small numerator.
+
+For the odd ratio, the gamma functional equation gives, with $x=\lambda^2$,
+\begin{equation}\label{eq:R1exact}
+ R_n(1)=\frac{[\Gamma(x+1)/\Gamma(x+1/2)]^3}{(x+1/2)\sqrt x}.
+\end{equation}
+The standard fixed-shift log-gamma expansion, obtained by substituting into Stirling's formula, gives for any fixed $M$
+\begin{equation}\label{eq:shiftgamma}
+ \log R_n(1)=\sum_{m=1}^M\ell_m x^{-m}+O_M(x^{-M-1}),
+\end{equation}
+where the Bernoulli-polynomial formula is
+\begin{equation}\label{eq:ellm}
+ \ell_m=\frac{3(-1)^{m+1}\{B_{m+1}(1)-B_{m+1}(1/2)\}}{m(m+1)}
+                       +\frac{(-1)^m}{m2^m}.
+\end{equation}
+The first four values are $-1/8,1/8,-11/192,1/64$. Exponentiation gives~\eqref{eq:R1} and all further fixed orders.
+\end{proof}
+
+For explicit use, the four relative corrections after removing the leading prefactors are
+\begin{align}
+ \frac{p_n^{\max}}{(2/3)e^{-\lambda+3/8}}
+ ={}&1-\frac{13}{96\lambda}-\frac{1847}{18432\lambda^2}
+ +\frac{4912087}{26542080\lambda^3}\notag\\
+ &-\frac{2299743979}{10192158720\lambda^4}+O(\lambda^{-5}),
+ \qquad n\text{ even},\label{eq:even4}\\
+ \frac{p_n^{\max}}{2\lambda e^{-\lambda+3/8}}
+ ={}&1-\frac{13}{96\lambda}-\frac{4151}{18432\lambda^2}
+ +\frac{5361367}{26542080\lambda^3}\notag\\
+ &-\frac{818433259}{10192158720\lambda^4}+O(\lambda^{-5}),
+ \qquad n\text{ odd}.\label{eq:odd4}
+\end{align}
+Theorem~\ref{thm:rare} does not require an exponentially accurate expansion for $A_n$. Its exact rare numerator avoids subtracting nearly equal approximate quantities. This is the reason these probability results coexist with the limitation in Remark~\ref{rem:parity}.
+
+\section{Smooth inversion and integer thresholds}\label{sec:inverse}
+Define the integer threshold
+\begin{equation}\label{eq:N}
+ N(y)=\min\{n\ge1:A_n\ge y\},\qquad y>0.
+\end{equation}
+It exists because~\eqref{eq:known} tends to infinity.
+
+\begin{lemma}\label{lem:monotone}
+The sequence $A_n$ is nondecreasing, and is eventually strictly increasing.
+\end{lemma}
+\begin{proof}
+Given a maximal matching on the old vertices, add one new vertex to each part. If the old matching has unmatched vertices, leave the new vertex of that part unmatched and join the other two new vertices. If it is perfect, use the first distinguished part for the new unmatched vertex. All unmatched vertices of the result lie in one part, so it is maximal. Restricting to the old vertices recovers the original matching, proving an injection.
+
+By~\eqref{eq:logcount}, the difference of consecutive logarithms is
+$\log A_{n+1}-\log A_n\sim(3/2)\log(2n)>0$. Here even a leading log expansion with an $o(1)$ remainder suffices to bound the consecutive remainder difference. This proves eventual strict increase.
+\end{proof}
+
+For each fixed $J\ge0$ define the smooth positive model, for all sufficiently large real $x$,
+\begin{equation}\label{eq:FJ}
+ F_J(x)=\frac32\frac{\Gamma(x+1)^3}{\Gamma(x/2+1)^3}
+ e^{\sqrt{x/2}-3/8}Q_J(\sqrt{x/2}).
+\end{equation}
+Its logarithmic derivative is
+\begin{align}
+ \frac{d}{dx}\log F_J(x)
+ ={}&3\psi(x+1)-\frac32\psi(x/2+1)+\frac1{4\sqrt{x/2}}\notag\\
+ &+\frac{Q_J'(\sqrt{x/2})}{4\sqrt{x/2}\,Q_J(\sqrt{x/2})}
+ =\frac32\log(2x)+O_J(x^{-1/2})>0.\label{eq:derivative}
+\end{align}
+Consequently $F_J$ has an eventual real inverse, denoted $x_J(y)$.
+
+\begin{theorem}[Boundary-safe threshold enclosure]\label{thm:enclosure}
+For every fixed $J\ge0$ there are constants $c_J>0$ and $y_J$ such that, for $y\ge y_J$, with $x=x_J(y)$ and
+\begin{equation}\label{eq:epsilon}
+ \varepsilon_J(y)=c_J\frac{x^{-(J+1)/2}}{\log x},
+\end{equation}
+one has
+\begin{equation}\label{eq:ceil}
+ \ceil{x-\varepsilon_J(y)}\le N(y)\le\ceil{x+\varepsilon_J(y)}.
+\end{equation}
+Eventually this integer bracket has width zero or one. It is an exact asymptotic existence statement, with no numerical error constant or onset certified here.
+\end{theorem}
+\begin{proof}
+Write $a=(J+1)/2$ and $f_J=\log F_J$. The relative expansion~\eqref{eq:count} gives
+\[
+ |\log A_n-f_J(n)|\le C_Jn^{-a}
+\]
+for all sufficiently large integers $n$. In a fixed-width neighborhood of $x$, equation~\eqref{eq:derivative} bounds $f_J'$ below by a positive multiple of $\log x$, while $n^{-a}$ is comparable with $x^{-a}$. Choose $c_J$ larger than the corresponding error-to-slope constant. At $n_+=\ceil{x+\varepsilon_J}$ the mean value theorem gives $\log A_{n_+}\ge\log y$. At $n_- =\ceil{x-\varepsilon_J}-1<x-\varepsilon_J$ it gives $\log A_{n_-}<\log y$. Monotonicity proves~\eqref{eq:ceil}. Since $2\varepsilon_J<1$ eventually, its endpoints differ by at most one.
+\end{proof}
+
+Away from integer boundaries, if the two ceilings agree they determine $N(y)$ exactly. A bare rule $N(y)=\ceil{x_J(y)}$ is not proved: an arbitrarily small real error can change the ceiling near an integer. The existential constants in Theorem~\ref{thm:enclosure} also prevent interpreting an uncalibrated numerical bracket as a certified one.
+
+\subsection{An explicit Lambert W approximation}
+Let $\ell=\log y$ and use the positive real branch of Lambert $W$:
+\begin{equation}\label{eq:lambert}
+ w=W\left(\frac{4\ell}{3e}\right),\qquad
+ x_0=\frac{2\ell}{3w},\qquad
+ D=\frac32(w+1),\qquad \lambda_0=\sqrt{x_0/2}.
+\end{equation}
+These quantities are used only for sufficiently large $y$, so $\ell,w>0$.
+
+\begin{theorem}\label{thm:W}
+For every fixed $J\ge0$,
+\begin{equation}\label{eq:inverseW}
+ x_J(y)=x_0-\frac{\lambda_0+C}{D}
+             +\frac1{4D^2}-\frac3{8D^3}
+             +O_J\left(\frac1{\sqrt{x_0}D}\right).
+\end{equation}
+In particular,
+\begin{equation}\label{eq:simpleW}
+ x_J(y)=x_0-\frac{\lambda_0+C}{D}+O(D^{-2}),
+\end{equation}
+which has $o(1)$ absolute real error.
+\end{theorem}
+\begin{proof}
+Let $H(x)=(3x/2)\log(2x/e)$ and $g(x)=\sqrt{x/2}+C$. Equations~\eqref{eq:logB} and~\eqref{eq:FJ} imply
+\[
+ \log F_J(x)=H(x)+g(x)+O_J(x^{-1/2}).
+\]
+The identity $we^w=4\ell/(3e)$ gives $H(x_0)=\ell$, and
+\[
+ H'(x_0)=D,\qquad H''(x_0)=\frac3{2x_0},\qquad
+ g'(x_0)=\frac1{4\lambda_0}.
+\]
+Monotonicity and the mean value theorem first localize the solution to $x_0+O(\sqrt{x_0}/D)$. The $O(x^{-1/2})$ term in the logarithm changes the solution by $O(1/(\sqrt{x_0}D))$. Taylor inversion of $H+g$ then yields
+\[
+ \delta=-\frac gD+\frac{g'g}{D^2}-\frac{H''g^2}{2D^3}
+                   +O\left(\frac1{\sqrt{x_0}D}\right),
+\]
+with functions evaluated at $x_0$. Terms involving $C$ in the last two corrections fit the stated remainder. The remaining coefficients follow from
+\[
+ g'g=\frac14+O(x_0^{-1/2}),\qquad
+ H''g^2=\frac34+O(x_0^{-1/2}).
+\]
+For the Taylor remainder, $H'''(x)=O(x^{-2})$ and $g''(x)=O(x^{-3/2})$ throughout the localized interval. Substituting $\delta=O(\sqrt{x_0}/D)$ and dividing the resulting residual by the slope $\asymp D$ gives terms of size $O(1/(\sqrt{x_0}D^3))$ or smaller. The unretained substitutions in the second-order correction obey the same bound. This proves~\eqref{eq:inverseW}. Finally $D\to\infty$ and $D/\sqrt{x_0}\to0$, yielding~\eqref{eq:simpleW}.
+\end{proof}
+
+The models~\eqref{eq:FJ}, together with~\eqref{eq:qalg}, specify inverse approximations at arbitrarily high fixed algebraic orders. Each $x_J$ may be obtained by solving a one-dimensional eventually monotone equation. Formal Newton expansion about~\eqref{eq:lambert} gives further explicit terms when desired; the threshold theorem uses the model itself and does not require writing a long mixed expansion in $x_0^{-1/2}$ and $D^{-1}$.
+
+\section{Exact verification and reproducibility}\label{sec:verification}
+The accompanying ZIP is an offline source and verification package, not a substitute for the uniform analytic proofs. Its standard-library Python code uses arbitrary precision integers and exact fractions. It reconstructs the gamma and Poisson coefficient calculations, checks the displayed count, logarithm, moment, and rare-probability coefficients, and compares exact finite counts. Two independent mathematical routes were used during development: shifted polygamma expansion with a cumulant operator, and Stirling substitution with centered Poisson moments. Their displayed coefficients agree exactly.
+
+For the finite combinatorics, an independent recursion selects the first remaining labeled vertex. It either leaves that vertex unmatched, if this is compatible with the previously chosen unmatched part, or pairs it with each remaining vertex in a different part. At termination it records the total unmatched count. Memoization by remaining part counts and unmatched-part state avoids enumerating each labeled matching separately, while the number of available partners supplies the correct label multiplicity. Its full histograms agree with~\eqref{eq:t} through $n=8$.
+
+The certificates include exact totals for $0\le n\le100$; the 16 source-displayed values are distinguished from values computed by the formulas. Coefficient arrays, rational denominators, dimensions, parity, ranges, and schema are checked rather than trusted. Corruption tests run under both ordinary Python and \texttt{python -O}; mathematical validation does not depend on removable \texttt{assert} statements. Build and manifest checks reject changed, missing, added, or unsafe package entries.
+
+The deterministic build uses a fixed source inventory, fixed timestamps, normalized PDF metadata, and \texttt{pdflatex -no-shell-escape}. The ZIP includes the article source, PDF, code, certificates, source audit, instructions, and an exact SHA-256 manifest. A rebuild into a new directory is required; existing output is not overwritten. Byte-for-byte reproducibility is tested in fresh extracted copies using the same installed TeX distribution. Cross-version TeX installations may produce different PDF bytes while preserving the mathematics and source integrity.
+
+Finite tests do not prove uniform tail estimates, all-order remainder bounds, a numerical onset, or worldwide novelty. Those distinctions are deliberate. In particular, numerical stabilization of a rescaled omitted term is a diagnostic and is not used as an analytic proof.
+
+\section{Source scope and further questions}\label{sec:sources}
+\subsection{What was compared}
+The source audit in the package gives links and the access level for each source. OEIS A297487 supplies the exact target, credited leading formula, and positive-sum program. Paris~\cite{paris} gives an all-order expansion for four equal Hermite factors; this already covers a nearby perfect-matching problem and is a reason not to treat every apparently unexpanded OEIS entry as a fresh target. The present object is the marked count of maximal matchings on the fixed dense graph $K_{n,n,n}$.
+
+Azor, Gillis, and Victor~\cite{azor} develop Hermite-polynomial pairing applications; their full paper was unavailable in this search. Song, Miao, Wang, and Zhao~\cite{song} study maximum and minimum cardinalities and edge domination in complete multipartite graphs according to their primary abstract; their full paper was also unavailable. Drmota, Ramos, Requil\'e, and Ru\'e~\cite{drmota} count graph-and-marking pairs over series-parallel and related graph classes, a different random model. These observations delimit the comparison; they do not exclude an unlocated theorem.
+
+A bounded check of the accessible report catalogue and repository found no A297487 or maximal-tripartite asymptotic report. Search negatives and incomplete catalogues are supporting evidence only. The appropriate description of this article is a self-contained derivation and refinement of the credited OEIS equivalent, with no global first-priority assertion.
+
+\subsection{Questions beyond the present theorems}
+\begin{enumerate}
+\item \textbf{Exponentially accurate count parity.} Determine the signed gamma-weighted Poisson expectation beyond all algebraic orders. This would require a separate analysis of the signed remainder, not just the exact perfect-matching subtraction.
+\item \textbf{Marking transition regimes.} The proof is uniform only when $v$ stays in a compact subset of $(0,\infty)$. The scales $v\to0$ and $v\to\infty$ may interpolate between fixed unmatched counts and macroscopic deficiency. The present theorem gives no uniform statement there.
+\item \textbf{Complex marking and sharper local laws.} Establish a controlled complex-$v$ expansion, if available, and derive Edgeworth corrections with explicit lattice terms. Real-positive uniformity alone is insufficient.
+\item \textbf{Effective constants.} Quantify Stirling, tail, and Taylor remainders to produce certified finite-$n$ errors and usable threshold onsets. Such work would turn the existential ceiling enclosure into a numerical certificate.
+\item \textbf{Unequal parts and more parts.} For $K_{a,b,c}$ or a growing number of parts, identify the feasibility boundaries and competing unmatched-part contributions. Symmetry is central to the simple scalar gamma ratio used here.
+\end{enumerate}
+
+\begin{thebibliography}{9}
+\bibitem{oeis}
+OEIS Foundation Inc., \emph{A297487: Number of maximal matchings in the complete tripartite graph $K_{n,n,n}$}.
+Entry consulted 3 October 2026. Positive-sum program by Andrew Howroyd (30 December 2017); leading asymptotic and recurrence credited to V\'aclav Kot\v e\v sovec (6 February 2026).
+\url{https://oeis.org/A297487}.
+
+\bibitem{dlmf}
+F. W. J. Olver et al., eds., \emph{NIST Digital Library of Mathematical Functions}, \S5.11, Asymptotic expansions of the gamma function, and \S24.2, Bernoulli polynomials.
+\url{https://dlmf.nist.gov/5.11}; \url{https://dlmf.nist.gov/24.2}.
+
+\bibitem{paris}
+R. B. Paris, Asymptotics of integrals of Hermite polynomials,
+\emph{Applied Mathematical Sciences} \textbf{4} (61) (2010), 3043--3056.
+\url{https://www.m-hikari.com/ams/ams-2010/ams-61-64-2010/parisAMS61-64-2010.pdf}.
+
+\bibitem{azor}
+R. Azor, J. Gillis, and J. D. Victor, Combinatorial applications of Hermite polynomials,
+\emph{SIAM Journal on Mathematical Analysis} \textbf{13} (5) (1982), 879--890.
+\url{https://doi.org/10.1137/0513062}.
+Primary abstract and metadata consulted; full text not obtained.
+
+\bibitem{song}
+W. Song, L. Miao, H. Wang, and Y. Zhao, Maximal matching and edge domination in complete multipartite graphs,
+\emph{International Journal of Computer Mathematics} \textbf{91} (5) (2014), 857--862.
+\url{https://doi.org/10.1080/00207160.2013.818668}.
+Primary abstract consulted; full text not obtained.
+
+\bibitem{drmota}
+M. Drmota, L. Ramos, C. Requil\'e, and J. Ru\'e, Maximal independent sets and maximal matchings in series-parallel and related graph classes,
+\emph{29th International Conference on Probabilistic, Combinatorial and Asymptotic Methods for the Analysis of Algorithms}, LIPIcs \textbf{110} (2018), 18:1--18:15.
+\url{https://doi.org/10.4230/LIPIcs.AofA.2018.18}.
+\end{thebibliography}
+\end{document}

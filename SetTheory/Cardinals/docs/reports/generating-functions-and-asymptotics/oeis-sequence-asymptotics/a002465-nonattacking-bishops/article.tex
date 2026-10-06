@@ -1,0 +1,534 @@
+\pdfinfoomitdate=1
+\pdftrailerid{}
+\pdfsuppressptexinfo=15
+\newcommand{\DoNotLoadEpstopdf}{}
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools,booktabs,longtable,array}
+\usepackage[margin=1in]{geometry}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\setlength{\headheight}{14pt}
+\pagestyle{fancy}\fancyhf{}\lhead{Report 219}\rhead{Diagonal bishop asymptotics}\cfoot{\thepage}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{1.2em}
+\setlist{itemsep=2pt,topsep=4pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\E}{\mathbb E}
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\fall}[2]{(#1)_{\underline{#2}}}
+\newcommand{\ceil}[1]{\left\lceil #1\right\rceil}
+\newcommand{\floor}[1]{\left\lfloor #1\right\rfloor}
+\newcommand{\coef}[2]{[#1^{#2}]}
+\DeclareMathOperator{\diag}{diag}
+\hypersetup{pdftitle={Report219 The amplitude and diagonal corrections for nonattacking bishops},pdfauthor={Research report},pdfsubject={OEIS A002465 and A238260 exact amplitude, fixed-order parity expansion and inverse}}
+\title{The amplitude and diagonal corrections\newline for nonattacking bishops}
+\author{Report 219}
+\date{4 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+Let $B_n$ count placements of $n$ indistinguishable nonattacking bishops on an $n\times n$ board, without identifying placements under board symmetries. For the unique $r\in(1,2)$ satisfying $r/(1-e^{-r})=2$, we prove that the amplitude recorded numerically in OEIS A238260 is $e^r/(2\pi\sqrt{r^2-1})$. We give a self-contained all-fixed-order expansion of OEIS A002465 about Kot\v e\v sovec's stated leading equivalent, an exact rational-function coefficient rule, the first two corrections, and the first parity difference $r^3/[4(r+1)]$ at order $n^{-3}$. The proof derives the exact formula from the board, controls the moving amplitude uniformly, and proves that the coefficient torus has only one maximum. A parity-preserving inverse is stated with two ceilings, including at exact thresholds. The companion code uses independent counting and symbolic coefficient routes. All remainder and onset claims here are eventual; numerical diagnostics are not certified error bounds.
+\end{abstract}
+
+\section{Main result and its scope}
+Write $B_0=1$. For $n\geq1$, a placement is a subset of $n$ cells, and two bishops attack if their cells share either diagonal. Define
+\begin{equation}\label{eq:rqb}
+ \frac{r}{1-e^{-r}}=2,\qquad
+ q=\frac{e^r}{r}=\frac{2}{r(2-r)},\qquad
+ b=\frac{e^r}{2\pi\sqrt{r^2-1}},\qquad 1<r<2.
+\end{equation}
+The function on the left is strictly increasing on $(0,\infty)$: its derivative has positive numerator $1-(1+r)e^{-r}$. Its limit at zero is $1$, and its values at $1$ and $2$ lie on opposite sides of $2$. Thus $r$ exists and is unique. The rearranged equation $e^r(2-r)=2$ also has the inadmissible root $0$; throughout, $r$ means the positive root in $(1,2)$.
+
+\begin{theorem}\label{thm:main}
+For each fixed integer $J\geq0$, there are explicitly computable rational functions $c_j^{(p)}(r)$, with $p\in\{0,1\}$ and $c_0^{(p)}=1$, such that
+\begin{equation}\label{eq:main}
+ B_n=b\,\Gamma(n)q^n
+ \left(\sum_{j=0}^{J}\frac{c_j^{(n\bmod2)}(r)}{n^j}
+       +O_J(n^{-J-1})\right).
+\end{equation}
+The error constant can be chosen for both parities at once. The first two corrections agree across parity, while
+\begin{equation}\label{eq:parity}
+ c_3^{(1)}-c_3^{(0)}=\frac{r^3}{4(r+1)}>0.
+\end{equation}
+A finite exact rule for every fixed $c_j^{(p)}$ is given in Section~\ref{sec:engine}.
+\end{theorem}
+
+For concise explicit formulas, set
+\begin{align*}
+ C_1(r)={}&3r^6-4r^5+7r^4-4r^3-21r^2+12r+12,\\
+ C_2(r)={}&9r^{13}-24r^{12}-14r^{11}+280r^{10}-69r^9-1292r^8\\
+ &+478r^7+2388r^6-495r^5-1788r^4-816r^3+288r^2+1152r+288.
+\end{align*}
+Then
+\begin{equation}\label{eq:c12}
+ c_1=-\frac{rC_1(r)}{12(r-1)^3(r+1)^2},\qquad
+ c_2=\frac{rC_2(r)}{288(r-1)^6(r+1)^4}.
+\end{equation}
+Appendix~\ref{app:c3} gives the full third coefficient. The companion machine-readable data contain both parity formulas and the amplitude polynomials.
+
+\begin{center}
+\begin{tabular}{@{}ll@{}}
+\toprule
+Quantity & Numerical value, rounded\\\midrule
+$r$ & $1.5936242600400401$\\
+$q$ & $3.0882773047417402$\\
+$b$ & $0.6312668788741155$\\
+$c_1$ & $-1.3945475876486183$\\
+$c_2$ & $2.3422725603922019$\\
+$c_3^{(0)}$ & $-4.2624100995985707$\\
+$c_3^{(1)}$ & $-3.8722968090405358$\\\bottomrule
+\end{tabular}
+\end{center}
+These decimal values are diagnostics, not interval certificates.
+
+\paragraph{Relation to previous work.}
+Kot\v e\v sovec states the leading equivalent $B_n\sim bq^n(n-1)!$ as a theorem on page~249 of his book, with symbolic $q$ and numerical $b$ \cite{kotesovec}. The exact enumeration and exponential base are prior results. OEIS A238260 records the amplitude numerically and by its limit \cite{oeisconstant}; A002465 records the counting sequence and leading asymptotic \cite{oeisbishops}. The purpose here is an explicit evaluation of that amplitude and controlled diagonal corrections. The inspected book passage, the OEIS entries, and the close sources discussed in Section~\ref{sec:sources} do not supply these symbolic corrections. This is a bounded comparison, not a claim of global historical priority. In particular, the original Arshon and Robinson full texts have not been inspected for this report.
+
+Theorem~\ref{thm:main} is an expansion for each \emph{fixed} order. It asserts neither convergence of the infinite formal series nor bounds as $J$ grows. The proof gives eventual error constants but does not evaluate a numerical remainder constant or a finite usable onset. Standard saddle-point methods and fixed-piece parity phenomena are prior; the regime here is the diagonal one in which the number of pieces equals the board size.
+
+\section{An exact formula derived from the board}\label{sec:exact}
+Let $S(a,m)$ denote a Stirling number of the second kind, with $S(0,0)=1$ and $S(a,m)=0$ when $m<0$ or $m>a$. Falling factorials are denoted by $\fall{h}{a}$. All sums below have nonnegative upper Stirling arguments.
+
+\subsection{The two Ferrers boards}
+Represent a cell $(i,j)$, $1\leq i,j\leq n$, by the two diagonal labels $d=i-j$ and $s=i+j$. A set of nonattacking bishops is exactly a matching between the two families of diagonals. The parity of $s$ (equivalently of $d$) splits this graph into its two square colors.
+
+For a fixed $d$, the possible $s$ form the interval
+\[
+ |d|+2,\ |d|+4,\ldots,2n-|d|.
+\]
+Within one color these intervals have a common center and are nested as $|d|$ decreases. Ordering the columns by successive central pairs makes each neighborhood an initial segment; order the rows by increasing length. Up to exchanging the two colors, and adding one empty row to the shorter list, the two row-length lists are the first $n$ entries of
+\begin{equation}\label{eq:boards}
+ W:\ 1,1,3,3,5,5,\ldots,\qquad
+ K:\ 0,2,2,4,4,6,\ldots.
+\end{equation}
+Indeed the diagonal lengths are $n-|d|$, each noncentral length occurring twice, and the central length $n$ once. Separating their odd and even lengths gives exactly \eqref{eq:boards}. The nested neighborhoods make these Ferrers boards. For example, at $n=4$ their row lengths are $(1,1,3,3)$ and $(0,2,2,4)$.
+
+Let $W(n,k)$ and $K(n,k)$ count $k$ nonattacking rooks on these boards, and write $\pi(n)=n\bmod2$. On appending a longest row of length $b_n$, a placement using that row is obtained from a $(k-1)$-rook placement on the preceding board. Its $k-1$ occupied columns all lie in the new row, leaving $b_n-k+1$ choices. Hence
+\begin{align}
+ W(n,k)&=W(n-1,k)+(n-k+\pi(n))W(n-1,k-1),\label{eq:W}\\
+ K(n,k)&=K(n-1,k)+(n-k+1-\pi(n))K(n-1,k-1).\label{eq:K}
+\end{align}
+Here $W(0,0)=K(0,0)=1$, out-of-range piece counts are zero, and the recurrences are applied for $0\leq k\leq n$. These are the exact recurrences also given by Santos \cite{santos}. The two colors do not interact, so
+\begin{equation}\label{eq:conv}
+ B_n=\sum_{k=0}^n W(n,k)K(n,n-k).
+\end{equation}
+
+\subsection{Stirling forms and coefficient extraction}
+Set $h=\ceil{n/2}$, $g=\floor{n/2}$. To solve \eqref{eq:W}, put
+\[
+ A(n,m)=\sum_{a=0}^{h}\binom ha S(n-a,m).
+\]
+The Stirling recurrence and Pascal's identity give
+\begin{equation}\label{eq:Arec}
+ A(n,m)=A(n-1,m-1)+(m+\pi(n))A(n-1,m).
+\end{equation}
+For an even step, $h$ does not change, and the Stirling recurrence alone proves this. For an odd step, writing $\binom ha=\binom{h-1}a+\binom{h-1}{a-1}$ gives one additional copy of $A(n-1,m)$. The same calculation with $\floor{n/2}$ gives the coefficient $m+1-\pi(n)$. The initial values agree, so
+\[
+ W(n,k)=\sum_{a=0}^{h}\binom ha S(n-a,n-k),\qquad
+ K(n,k)=\sum_{a=0}^{g}\binom ga S(n-a,n-k).
+\]
+Inserting these into \eqref{eq:conv} proves, for all $n\geq1$,
+\begin{equation}\label{eq:stirling}
+ B_n=\sum_{m=0}^n
+ \left(\sum_{a=0}^{h}\binom ha S(n-a,m)\right)
+ \left(\sum_{b=0}^{g}\binom gb S(n-b,n-m)\right).
+\end{equation}
+The endpoint terms vanish for $n>1$; the formula gives $B_1=1$. This is a reindexing of the prior Arshon--Kot\v e\v sovec form, for which Santos supplies an alternative proof \cite{santos}. The derivation above also fixes all conventions without assuming that formula.
+
+Define
+\begin{equation}\label{eq:H}
+ H_{n,h}(x)=\sum_{a=0}^{h}\frac{\fall h a}{\fall n a}\frac{x^a}{a!},
+ \qquad F(x,y)=e^x+e^y-2.
+\end{equation}
+\begin{proposition}\label{prop:exact}
+For every $n\geq1$,
+\begin{equation}\label{eq:coefficient}
+ B_n=n![x^ny^n]F(x,y)^n H_{n,h}(x)H_{n,g}(y).
+\end{equation}
+\end{proposition}
+\begin{proof}
+Expand $F^n$ by the binomial theorem and use
+$[x^N](e^x-1)^m=m!S(N,m)/N!$. Thus
+\[
+ [x^{n-a}y^{n-b}]F^n
+ =\frac{n!}{(n-a)!(n-b)!}
+   \sum_{m=0}^n S(n-a,m)S(n-b,n-m).
+\]
+The two $H$ coefficients and the exterior $n!$ multiply its factorial factor to
+\[
+ n!\,\frac{\fall h a}{\fall n a\,a!}
+       \frac{\fall g b}{\fall n b\,b!}
+       \frac{n!}{(n-a)!(n-b)!}=\binom ha\binom gb.
+\]
+Equation~\eqref{eq:stirling} now proves the claim.
+\end{proof}
+
+\section{A uniform expansion for the moving amplitude}\label{sec:amplitude}
+For signed $\delta\in\{-\tfrac12,0,\tfrac12\}$ and admissible $n$, write $h=n/2+\delta$. For even $n$ the two factors use $\delta=0$; for odd $n$ they use $\delta=\tfrac12$ and $-\tfrac12$.
+
+For each integer $s\geq1$ define the polynomial
+\begin{equation}\label{eq:Ls}
+ L_s(a,\delta)=\frac1s\sum_{k=0}^{a-1}
+       \bigl((-1)^{s+1}(2\delta-2k)^s+k^s\bigr).
+\end{equation}
+The finite sum, first defined for integer $a\geq0$, has a unique polynomial continuation in $a$. Set
+\begin{equation}\label{eq:Qs}
+ Q_0(a,\delta)=1,\qquad
+ Q_j(a,\delta)=\frac1j\sum_{s=1}^j sL_s(a,\delta)Q_{j-s}(a,\delta).
+\end{equation}
+If $Q_j(a,\delta)=\sum_m q_{jm}(\delta)a^m$, put
+\begin{equation}\label{eq:Ps}
+ P_j(x,\delta)=\sum_m q_{jm}(\delta)T_m(x/2),\qquad
+ T_m(v)=e^{-v}\sum_{a\geq0}a^m\frac{v^a}{a!}.
+\end{equation}
+Here $T_m$ is the Touchard polynomial and $T_0=1$.
+
+\begin{lemma}\label{lem:amplitude}
+For fixed $R>0$ and integer $J\geq0$, uniformly on $|x|\leq R$ and on the admissible signed parameters,
+\begin{equation}\label{eq:ampexpand}
+ H_{n,n/2+\delta}(x)=e^{x/2}
+ \left(\sum_{j=0}^J P_j(x,\delta)n^{-j}+O_{R,J}(n^{-J-1})\right).
+\end{equation}
+Any fixed number of complex derivatives has the same uniform remainder on a smaller disk.
+\end{lemma}
+\begin{proof}
+For $a\geq0$, introduce the rational function
+\[
+ \mathcal Q_a(t)=\prod_{k=0}^{a-1}
+      \frac{1+(2\delta-2k)t}{1-kt}.
+\]
+For $a\leq h$, $\fall h a/\fall n a=2^{-a}\mathcal Q_a(1/n)$. Formal logarithmic expansion gives $\log\mathcal Q_a(t)=\sum_{s\geq1}L_s(a,\delta)t^s$, so its Taylor coefficients are the $Q_j$ of \eqref{eq:Qs}. Since $\deg_aL_s\leq s+1$, induction gives $\deg_aQ_j\leq2j$.
+
+Here is a remainder estimate with no hidden $n$ dependence. On the disk
+\[
+ |t|\leq\rho_a=\frac1{8(a+1)^2},
+\]
+all numerator and denominator perturbations have modulus below $1/2$. Applying $|\log(1+z)|\leq2|z|$ termwise gives
+\[
+ |\log\mathcal Q_a(t)|
+ \leq2\rho_a\sum_{k=0}^{a-1}(3k+1)
+ =\frac{3a^2-a}{8(a+1)^2}<\frac38
+\]
+for $a\geq1$; $a=0$ is immediate. Hence $|\mathcal Q_a(t)|<2$ there. Cauchy's coefficient estimate and a geometric tail imply, when $1/n\leq\rho_a/2$,
+\begin{equation}\label{eq:Qremainder}
+ \left|\mathcal Q_a(1/n)-\sum_{j=0}^JQ_j(a,\delta)n^{-j}\right|
+ \leq4[8(a+1)^2]^{J+1}n^{-J-1}.
+\end{equation}
+
+Split the defining sum at $a\leq\floor{\log n}$. For large $n$ this range lies below $h$ and satisfies the Cauchy condition. On $|x|\leq R$, its total error is at most
+\[
+ 4\cdot8^{J+1}n^{-J-1}
+ \sum_{a\geq0}(a+1)^{2J+2}\frac{(R/2)^a}{a!},
+\]
+a finite constant times $n^{-J-1}$. For the remaining terms, the original falling-factor ratio lies in $[0,1]$; extend it by zero for $a>h$. Its tail is bounded by $\sum_{a>\log n}R^a/a!$, which is $o(n^{-M})$ for every fixed $M$: Stirling's elementary factorial bound makes its logarithm at most $-(\log n)\log\log n+O(\log n)$. The finitely many polynomially weighted approximating tails have the same property. We may therefore extend their sums to infinity. Equation~\eqref{eq:Ps} sums each polynomial against $(x/2)^a/a!$ and proves \eqref{eq:ampexpand}. Cauchy estimates on a larger disk prove the derivative statements.
+\end{proof}
+
+The first polynomials, useful both for checking normalization and for parity, are
+\begin{align}
+ P_0={}&1,\nonumber\\
+ P_1={}&\delta x-\frac{x^2}{8},\nonumber\\
+ P_2={}&\frac{\delta^2x^2}{2}-\frac{\delta x^3}{8}
+               +\frac{x^4}{128}-\frac{x^2}{8},\label{eq:Pfirst}\\
+ P_3={}&\frac{\delta^3x^3}{6}-\frac{\delta^2x^4}{16}
+       +\frac{\delta^2x^2}{2}+\frac{\delta x^5}{128}
+       -\frac{7\delta x^3}{24}-\frac{x^6}{3072}
+       +\frac{x^4}{32}-\frac{x^2}{8}.\nonumber
+\end{align}
+
+\section{The torus and the complete saddle argument}\label{sec:saddle}
+Use the Cauchy torus $x=re^{\ii\theta}$, $y=re^{\ii\phi}$. Since $F(r,r)=re^r$, the local phase is
+\begin{equation}\label{eq:phase}
+ \Psi(\theta,\phi)=\log\frac{F(re^{\ii\theta},re^{\ii\phi})}{F(r,r)}
+                    -\ii(\theta+\phi).
+\end{equation}
+Only near $(0,0)$ is this logarithm needed; there $F$ is nonzero. The saddle equation in each variable is $re^r/F(r,r)=1$. Direct differentiation gives
+\begin{equation}\label{eq:hessian}
+ \Psi(\theta,\phi)=-\frac12(r\theta^2-2\theta\phi+r\phi^2)
+                 +O((|\theta|+|\phi|)^3).
+\end{equation}
+Thus
+\begin{equation}\label{eq:Ksigma}
+ K=\begin{pmatrix}r&-1\\-1&r\end{pmatrix},\qquad
+ \Sigma=K^{-1}=\frac1{r^2-1}\begin{pmatrix}r&1\\1&r\end{pmatrix}.
+\end{equation}
+The eigenvalues $r-1$ and $r+1$ are positive.
+
+\subsection{There is only one modulus maximum}
+The power series of $F$ has positive coefficients at all $(k,0)$ and $(0,k)$, $k\geq1$. Equality in
+\[
+ |F(re^{\ii\theta},re^{\ii\phi})|\leq F(r,r)
+\]
+requires every phase $e^{\ii k\theta}$ and $e^{\ii k\phi}$ to agree. Comparing $k=1$ and $k=2$ first forces $e^{\ii\theta}=e^{\ii\phi}=1$. Thus the origin is the unique maximum on the torus. On the compact complement of any fixed neighborhood, continuity supplies $\eta>0$ such that $|F|/F(r,r)\leq1-\eta$. Also
+\[
+ |H_{n,h}(re^{\ii\theta})|\leq e^r
+\]
+because its falling-factor ratios lie in $[0,1]$. The complementary integral is exponentially small, even relative to the local $n^{-1}$ scale. In particular parity does not arise from an overlooked second saddle.
+
+\subsection{The normalized local remainder}
+We supply the domination argument to justify arbitrary fixed order, rather than just a formal expansion. Put $\varepsilon=n^{-1/2}$, $w=(u,v)$, and $l_2(w)=-w^{\mathsf T}Kw/2$. On a small ball $|\varepsilon w|\leq\rho$, define the analytic continuation at $\varepsilon=0$ of
+\[
+ R(\varepsilon,w)
+ =\frac{\Psi(\varepsilon u,\varepsilon v)-\varepsilon^2l_2(w)}{\varepsilon^2}.
+\]
+Taylor's integral formula gives $R=O(\varepsilon|w|^3)$. For every fixed derivative order, its $\varepsilon$ derivatives are bounded by a fixed polynomial in $|w|$ on this ball; this follows either from the integral formula or the convergent power series of $\Psi$. Take $\rho$ so small that
+\[
+ |e^{R(s,w)}|\leq e^{(r-1)|w|^2/4}\qquad(0\leq s\leq\varepsilon).
+\]
+This is possible since $|R(s,w)|\leq C\rho|w|^2$. Multiplication by $e^{l_2(w)}$ leaves the integrable Gaussian majorant $e^{-(r-1)|w|^2/4}$.
+
+Lemma~\ref{lem:amplitude} replaces the two moving $H$ factors by a finite sum of analytic amplitudes through $n^{-J}$. Their remainder is uniformly $O(n^{-J-1})$. On the small ball, $\Re(n\Psi)\leq-c|w|^2$, so its integrated contribution has the same normalized order. Compose each retained analytic amplitude with $re^{\ii\varepsilon u}$ and $re^{\ii\varepsilon v}$. Every fixed $\varepsilon$ derivative is polynomially bounded in $|w|$. Taylor-expand the product of these amplitudes, the factors $\varepsilon^{2j}$, and $e^R$ through degree $2J+1$. The integral remainder formula bounds the integrated error by
+\[
+ C_J\varepsilon^{2J+2}
+ \int_{\R^2}(1+|w|)^{M_J}e^{-(r-1)|w|^2/4}\,dw
+ =O_J(n^{-J-1}).
+\]
+No bound uniform in $J$ is being asserted.
+
+The coefficient of an odd power of $\varepsilon$ is odd under $w\mapsto-w$: each phase monomial of degree $m$ accompanies $\varepsilon^{m-2}$, and each amplitude derivative of degree $k$ accompanies $\varepsilon^{2j+k}$. It therefore integrates to zero over the symmetric local ball. Extending each remaining polynomial Gaussian integral to all of $\R^2$ changes it by an exponentially small quantity. This proves the required all-fixed-order error, including the moving-amplitude contribution.
+
+\subsection{The leading normalization}
+From \eqref{eq:coefficient}, the Cauchy prefactor is $n!q^n/(2\pi)^2$. The local change of variables supplies $n^{-1}$, the leading amplitude is $e^r$, and
+\[
+ \int_{\R^2}e^{-w^{\mathsf T}Kw/2}\,dw=\frac{2\pi}{\sqrt{r^2-1}}.
+\]
+Consequently
+\[
+ B_n\sim\frac{n!q^n e^r}{2\pi n\sqrt{r^2-1}}
+       =b\,\Gamma(n)q^n.
+\]
+The argument above gives every fixed correction. In particular no Stirling approximation to $n!$ has been used in this normalization, so no additional Stirling correction belongs in the coefficients $c_j$.
+
+\section{A finite exact rule for every coefficient}\label{sec:engine}
+Let $(U,V)$ be a centered Gaussian pair with covariance \eqref{eq:Ksigma}. All operations in this section may equivalently be read as formal polynomial moment operations. Define
+\begin{align}
+ f_m(U,V)&=\frac{\ii^m T_m(r)}{r\,m!}(U^m+V^m),\quad m\geq1,\label{eq:fm}\\
+ l_1&=f_1,\qquad
+ l_m=f_m-\frac1m\sum_{k=1}^{m-1}k l_k f_{m-k},\quad m\geq2.\label{eq:lm}
+\end{align}
+Indeed $1+\sum f_m\varepsilon^m$ is the Taylor series of $F(re^{\ii\varepsilon U},re^{\ii\varepsilon V})/F(r,r)$. Differentiating its formal logarithm proves \eqref{eq:lm}. The linear term is $l_1=\ii(U+V)$, canceled by the coefficient kernel, and $l_2$ is the quadratic form already included in the Gaussian measure.
+
+Set
+\begin{equation}\label{eq:G}
+ G(\varepsilon;U,V)=\exp\left(\sum_{m\geq3}l_m(U,V)\varepsilon^{m-2}\right).
+\end{equation}
+For $j,k\geq0$ put
+\begin{equation}\label{eq:Ajk}
+ A_{j,k}(\delta)=e^{-r/2}
+ \left[(x\partial_x)^k\{e^{x/2}P_j(x,\delta)\}\right]_{x=r},
+\end{equation}
+and define
+\begin{align}
+ M_\delta(\varepsilon;U,V)
+ ={}&\left(\sum_{j,k\geq0}\varepsilon^{2j+k}
+          \frac{\ii^kU^k}{k!}A_{j,k}(\delta)\right)\nonumber\\
+ &\quad\cdot\left(\sum_{j,k\geq0}\varepsilon^{2j+k}
+          \frac{\ii^kV^k}{k!}A_{j,k}(-\delta)\right).\label{eq:M}
+\end{align}
+Then the promised coefficient rule is
+\begin{equation}\label{eq:engine}
+ \boxed{\quad c_J^{(p)}(r)=
+ \E\bigl([\varepsilon^{2J}]G(\varepsilon;U,V)M_{p/2}(\varepsilon;U,V)\bigr).\quad}
+\end{equation}
+For order $J$, one needs only $m\leq2J+2$ in the phase and $2j+k\leq2J$ in the amplitude. Thus this is a finite algorithm for every fixed order, subject only to computing resources.
+
+For completeness, Gaussian moments can be evaluated without an integration routine. Write $M_{a,b}=\E U^aV^b$. Odd total degree gives zero, $M_{0,0}=1$, and Gaussian integration by parts gives, for $a\geq1$,
+\[
+ M_{a,b}=(a-1)\Sigma_{11}M_{a-2,b}+b\Sigma_{12}M_{a-1,b-1},
+\]
+with terms of zero multiplier omitted. For $a=0$ and even $b\geq2$, use $M_{0,b}=(b-1)\Sigma_{22}M_{0,b-2}$. These rules show that every moment is rational in $r$. Equations~\eqref{eq:Ls}--\eqref{eq:engine} involve only rational algebra, so every $c_J^{(p)}$ is a rational function. The local proof in Section~\ref{sec:saddle} identifies these formal coefficients with those in Theorem~\ref{thm:main}, completing that proof.
+
+\subsection{A distinct symbolic cross check}
+An independent local coordinate choice is
+\[
+ x=r(1+\ii\varepsilon U),\qquad y=r(1+\ii\varepsilon V).
+\]
+Now the coefficients of $F/F(r,r)$ are $\ii^m r^{m-1}(U^m+V^m)/m!$, and the phase is
+\[
+ \log(F/F(r,r))-\log(1+\ii\varepsilon U)-\log(1+\ii\varepsilon V).
+\]
+The quadratic form is still $l_2$, but the amplitude must include the Jacobian
+\[
+ \frac1{(1+\ii\varepsilon U)(1+\ii\varepsilon V)}.
+\]
+Locally these contours are analytic deformations of the angular ones: at a fixed small distance from the saddle the connecting arcs remain in a region with strictly negative real phase. Their integrals are exponentially small. The coefficient expansions must therefore agree.
+
+The companion oracle uses finite powers for logarithms, integer partitions for exponentials, and Newton finite differences of the products $\mathcal Q_a$ to construct the amplitude polynomials. It evaluates moments by $U=Z+W$, $V=Z-W$, where $Z,W$ are independent centered Gaussians with variances $1/[2(r-1)]$ and $1/[2(r+1)]$. This differs from both the angular differential operators and the correlated-moment recurrence above. Agreement through order three is a finite exact algebra check, not the analytic justification of the theorem.
+
+\section{Why parity first appears at third order}\label{sec:parity}
+The integral is invariant under $x\leftrightarrow y$. Therefore replace its amplitude by the symmetric part, which eliminates all terms odd in $\delta$. Factoring out $e^{(x+y)/2}$ and using \eqref{eq:Pfirst}, the $\delta$-dependent terms relevant through $n^{-3}$ are
+\begin{align*}
+ n^{-1}:&\quad \delta(x-y) \quad\text{before symmetrization},\\
+ n^{-2}:&\quad \frac{\delta^2}{2}(x-y)^2,\\
+ n^{-3}:&\quad \delta^2\left\{\frac{x^2+y^2}{2}
+                    -\frac{(x-y)^2(x^2+y^2)}{16}\right\}.
+\end{align*}
+There is no even positive power of $\delta$ at the first order. The second displayed term vanishes to second order at $x=y=r$, so it contributes nothing to $c_2$. In local angular coordinates,
+\[
+ x-y=\ii r\varepsilon(U-V)+O(\varepsilon^2).
+\]
+Its first contribution to $c_3$ is therefore
+\[
+ -\frac{\delta^2r^2}{2}\E(U-V)^2
+ =-\frac{\delta^2r^2}{r+1},
+ \qquad \E(U-V)^2=\frac2{r+1}.
+\]
+The third-order term contributes its value $\delta^2r^2$ at the saddle. No phase or leading-amplitude correction can enter this calculation at the same order: the second-order difference already starts two local powers later, and the third-order term uses only its constant local term. Their sum is
+\[
+ \frac{\delta^2r^3}{r+1}.
+\]
+Substitute $\delta=1/2$ for odd $n$ and $0$ for even $n$ to obtain \eqref{eq:parity}. This small-polynomial derivation verifies the first split without relying on the large polynomial in Appendix~\ref{app:c3}.
+
+\section{Inverting the count without losing parity}\label{sec:inverse}
+The leading equivalent implies $B_{n+1}/B_n\sim qn$, hence eventual strict increase. Choose an integer $n_0$ beyond that onset and define
+\[
+ N(y)=\min\{n\geq n_0:B_n\geq y\}.
+\]
+For $y>\max_{1\leq n<n_0}B_n$ this equals the natural global threshold $\min\{n\geq1:B_n\geq y\}$. Thus excluding the finite prefix changes none of the large-$y$ statements.
+
+Define logarithmic coefficient functions by formal expansion:
+\begin{equation}\label{eq:logcoeff}
+ \log\left(1+\sum_{j\geq1}c_j^{(p)}u^j\right)
+ =\sum_{j\geq1}\ell_j^{(p)}u^j.
+\end{equation}
+For example, $\ell_1=c_1$, $\ell_2=c_2-c_1^2/2$, and $\ell_3^{(p)}=c_3^{(p)}-c_1c_2+c_1^3/3$. Choose the smooth interpolation
+\begin{align}
+ \ell_j(x)&=\frac{\ell_j^{(0)}+\ell_j^{(1)}}2
+       +\frac{\ell_j^{(0)}-\ell_j^{(1)}}2\cos(\pi x),\label{eq:cosine}\\
+ \Phi_J(x)&=\log b+\log\Gamma(x)+x\log q
+                +\sum_{j=1}^J\frac{\ell_j(x)}{x^j}.\label{eq:Phi}
+\end{align}
+This is a chosen model preserving the integer parity coefficients, not a canonical interpolation of the exact sequence. Its oscillating derivative begins only at $x^{-3}$. Using the usual real digamma estimate gives
+\begin{equation}\label{eq:Phideriv}
+ \Phi'_J(x)=\log(qx)+O(1/x)>0
+\end{equation}
+on a terminal interval. For large $y$, let $t_J(y)$ be the unique root there of $\Phi_J(t)=\log y$.
+
+\begin{theorem}\label{thm:inverse}
+For each fixed $J\geq0$, a constant $D_J>0$ exists such that, for sufficiently large $y$, writing $t=t_J(y)$ and
+\[
+ \rho_J(t)=\frac{D_J}{t^{J+1}\log(qt)},
+\]
+one has the pointwise enclosure
+\begin{equation}\label{eq:ceilings}
+ \ceil{t-\rho_J(t)}\ \leq\ N(y)\ \leq\ \ceil{t+\rho_J(t)}.
+\end{equation}
+It remains valid when $y=B_n$ exactly. No effective numerical value of $D_J$ or onset is provided.
+\end{theorem}
+\begin{proof}
+Taking logarithms in Theorem~\ref{thm:main} gives constants $K_J$ and an eventual bound
+\[
+ |\log B_n-\Phi_J(n)|\leq K_J n^{-J-1}.
+\]
+Put $A=\log(qt)$ and choose $D_J>2^{J+2}K_J$. For large $t$, $\rho=\rho_J(t)<1$, and \eqref{eq:Phideriv} implies $\Phi'_J\geq A/2$ on $[t-2,t+2]$. Define
+\[
+ n_- = \ceil{t-\rho}-1,\qquad n_+=\ceil{t+\rho}.
+\]
+Both integers lie in that interval, and their distances from $t$ in the appropriate direction are at least $\rho$. The log-remainder bound at either integer is at most $2^{J+1}K_Jt^{-J-1}$, while the mean-value displacement is at least $A\rho/2=D_Jt^{-J-1}/2$, strictly larger. Consequently
+\[
+ \log B_{n_-}<\log y<\log B_{n_+}.
+\]
+Eventual discrete monotonicity implies $n_-+1\leq N(y)\leq n_+$, which is \eqref{eq:ceilings}. No separation from integers was assumed.
+\end{proof}
+
+Although $\rho_J(t)\to0$, its two ceiling values may still differ by one arbitrarily close to a threshold. A universal single-ceiling formula, or a uniform real approximation $N(y)=t+o(1)$ for the integer threshold itself, does not follow. Separate parity-branch roots and parity-adjusted ceilings offer an alternative; the cosine construction is a convenient single-root formulation.
+
+\subsection{An explicit Lambert inverse center}
+Let $L=\log y$, use the principal real Lambert branch, and set
+\begin{equation}\label{eq:lambert}
+ w=W(qL/e),\qquad t=\frac Lw,\qquad A=\log(qt),\qquad
+ \gamma_0=\log(b\sqrt{2\pi}),\qquad
+ h=\frac{\tfrac12\log t-\gamma_0}{A}.
+\end{equation}
+Thus $t(\log(qt)-1)=L$ and $h=O(1)$. For any fixed $J\geq1$, the real root $t_J(y)$ has
+\begin{align}
+ t_J(y)&=t+h+O\left(\frac1{t\log t}\right),\label{eq:inverse1}\\
+ t_J(y)&=T+O\left(\frac1{t^2\log t}\right),\label{eq:inverse2}\\
+ T&=t+h-\frac{(h^2-h)/2+1/12+c_1}{tA}.\nonumber
+\end{align}
+Indeed Stirling's expansion in \eqref{eq:Phi} gives
+\[
+ \Phi_J(x)=x(\log(qx)-1)-\tfrac12\log x+\gamma_0
+              +\frac{1/12+c_1}{x}+O(x^{-2}).
+\]
+At $x=t+h$, its residual after subtracting $L$ is
+\[
+ \frac{(h^2-h)/2+1/12+c_1}{t}+O(t^{-2}).
+\]
+One Newton correction proves \eqref{eq:inverse2} using derivative $A+O(1/t)$; omitting it proves \eqref{eq:inverse1}. These centers yield corresponding eventual two-ceiling enclosures with radii of their stated horizontal error scales. For finer inverse orders, retain \eqref{eq:Phi}, including its parity term from $J=3$ onward.
+
+\section{Exact checks and reproducibility}\label{sec:checks}
+The accompanying archive is self-contained and contains this TeX source, its PDF, exact coefficient data, public Python programs, build instructions, and deterministic receipts. Third-party papers are linked in the bibliography and are not redistributed. Python's exact integers and SymPy rational functions are used for the algebra; optional decimal diagnostics use mpmath. Input checks raise explicit exceptions, so optimized Python does not remove them.
+
+The public verification distinguishes four logically separate questions.
+\begin{enumerate}
+\item \textbf{Board conventions.} Literal increasing-cell-subset enumeration checks every piece count through $k=n$ on boards $n\leq5$. A separate rook inclusion--exclusion count on the actual diagonal graph checks larger small boards.
+\item \textbf{Exact identities.} The board counts, the two Santos recurrences, the Stirling convolution, and direct rational bivariate coefficient extraction check the exact normalization. Selected large even and odd values through $600$ compare the recurrence and Stirling routes.
+\item \textbf{Finite symbolic algebra.} The angular and affine-contour engines independently reconstruct $c_0$ through $c_3$ at both parities and compare exact rational functions. Formal logarithm and inverse residual checks retain the first parity term.
+\item \textbf{Diagnostic behavior.} Optional high-precision evaluation compares exact counts with truncated expansions and parity-aware real inverse models. This is a numerical check only; it supplies no certified asymptotic remainder or onset.
+\end{enumerate}
+
+For clarity, the independent inclusion--exclusion formula has a short proof. In a bipartite graph with $m$ column vertices let $d_i(S)$ be the number of neighbors of row $i$ in $S$. If $r_k$ counts $k$-matchings and $e_k$ is an elementary symmetric polynomial, then
+\begin{equation}\label{eq:IE}
+ r_k=\sum_{\substack{S\subseteq[m]\\|S|\leq k}}
+       (-1)^{k-|S|}\binom{m-|S|}{k-|S|}
+       e_k(d_1(S),\ldots,d_l(S)).
+\end{equation}
+For each fixed set of $k$ rows and $k$ columns, inclusion--exclusion removes functions omitting a chosen column. Surjectivity is then bijectivity. Sum first over the surviving subset $S$; there are $\binom{m-|S|}{k-|S|}$ column supersets. Finally summing the products of row degrees over $k$ rows gives $e_k$. This count uses the actual board graph and does not presume the Ferrers or Stirling formulas.
+
+The first values, starting at $n=0$, are
+\[
+ 1,\ 1,\ 4,\ 26,\ 260,\ 3368,\ 53744,\ 1022320,\ 22522960,
+\]
+and $B_{10}=15915225216$, $B_{12}=17029582652416$. Agreement on a finite range checks implementations and conventions; Sections~\ref{sec:exact}--\ref{sec:parity} prove the theorem independently of those tests. The archive README specifies the tested ranges, commands, dependency versions, receipt fields, and the resource limits of higher symbolic orders. Rebuilding from the actual archive in fresh directories, both normally and with \texttt{python -O}, is the reproducibility target. PDF byte stability refers to the pinned build toolchain, not an assertion that unrelated TeX installations produce identical bytes.
+
+\section{Source comparison and further questions}\label{sec:sources}
+The source comparison is intentionally narrow and explicit. Perott's 1883 paper splits colors and develops exact enumeration, including the eight-bishop count \cite{perott}. The inspected pages 242--253 of Kot\v e\v sovec's sixth edition include the exact Stirling formula and the stated leading asymptotic, but display the amplitude numerically \cite{kotesovec}. Santos gives modern exact recurrences and closed forms and studies coefficients in the fixed-piece regime \cite{santos}. Chaiken, Hanusa, and Zaslavsky record the exact bishop formula and investigate quasipolynomial parity for a fixed number of pieces \cite{favorite,period}. Their period-two theorem in board size for fixed $k\geq3$ does not assert the diagonal expansion when $k=n$. Finch's inspected bishop references point back to Kot\v e\v sovec and A002465 \cite{finch}.
+
+The original Arshon paper is credited through those later exact-enumeration sources; its full text was not read here. Robinson's full 1976 paper was also not inspected. Generic asymptotic work on Stirling numbers, cited in Kot\v e\v sovec's discussion, is prior art for the analytic method. No exhaustive survey of that literature is claimed. The report's mathematical conclusions rest on the proofs above, while the absence of a symbolic amplitude or diagonal correction in inspected sources supports only this bounded description of the contribution.
+
+Several questions remain useful.
+\begin{enumerate}
+\item Can one obtain practical certified constants and an explicit onset for the relative remainder and inverse enclosure? That requires quantitative global contour gaps and Taylor bounds, beyond diagnostic fitting.
+\item What is the growth of $c_J^{(p)}$ as $J\to\infty$? The fixed-order proof gives no convergence or optimal-truncation theorem.
+\item Is there a simpler closed description of the first parity-dependent contribution at every later order, avoiding full two-variable expansion?
+\item How does the analysis change for $k=\alpha n+O(1)$ bishops or rectangular boards? The two-color exact structure suggests nearby saddle problems, but their uniformity and possible transitions require a separate proof.
+\item Does a complete inspection of the older original literature change the historical scope of the symbolic amplitude or refinements? That question is independent of the correctness of the present argument.
+\end{enumerate}
+
+\appendix
+\section{The third correction in reusable form}\label{app:c3}
+Define
+\begin{align*}
+ C_3(r)={}&135r^{20}-540r^{19}-3195r^{18}+26572r^{17}-21576r^{16}\\
+ &-117156r^{15}+235079r^{14}-6816r^{13}-669756r^{12}\\
+ &+952564r^{11}+1122759r^{10}-2739096r^9-1945791r^8\\
+ &+4512672r^7+3004830r^6-4316220r^5-2844720r^4\\
+ &+1356480r^3+1257120r^2+570240r+51840.
+\end{align*}
+Then
+\[
+ c_3^{(0)}=-\frac{rC_3(r)}{51840(r-1)^9(r+1)^6},\qquad
+ c_3^{(1)}=c_3^{(0)}+\frac{r^3}{4(r+1)}.
+\]
+This form is smaller than two separate degree-twenty numerators and explicitly preserves the proved parity difference. Both expanded numerators, and exact $c_0,c_1,c_2$, are provided in the companion JSON data. The coefficients are rational functions in the symbol $r$; the only transcendental step is selecting the real saddle root in \eqref{eq:rqb} for evaluation.
+
+\begin{thebibliography}{9}
+\bibitem{oeisbishops} The OEIS Foundation Inc., \emph{A002465: Number of ways to place $n$ nonattacking bishops on an $n\times n$ board}. \url{https://oeis.org/A002465}. Inspected 4 October 2026.
+\bibitem{oeisconstant} The OEIS Foundation Inc., \emph{A238260: Decimal expansion of a multiplicative constant related to A002465}. \url{https://oeis.org/A238260}. Inspected 4 October 2026.
+\bibitem{kotesovec} V. Kot\v e\v sovec, \emph{Non-attacking chess pieces}, sixth edition, 2013, pp.~242--253, especially pp.~248--251. \url{https://www.kotesovec.cz/books/kotesovec_non_attacking_chess_pieces_2013_6ed.pdf}.
+\bibitem{perott} J. Perott, Sur le probl\`eme des fous, \emph{Bulletin de la Soci\'et\'e Math\'ematique de France} \textbf{11} (1883), 173--186. \url{https://www.numdam.org/item/10.24033/bsmf.267.pdf}.
+\bibitem{santos} E. G. Santos, Counting nonattacking chess piece placements: bishops and anassas, \emph{Journal of Integer Sequences} \textbf{28} (2025), Article 25.8.6. \url{https://cs.uwaterloo.ca/journals/JIS/VOL28/Santos/santos3.pdf}.
+\bibitem{favorite} S. Chaiken, C. R. H. Hanusa, and T. Zaslavsky, \emph{A $q$-Queens Problem. V. Some of Our Favorite Pieces: Queens, Bishops, Rooks, and Nightriders}, arXiv:1609.00853, especially Section~4.1. \url{https://arxiv.org/abs/1609.00853}.
+\bibitem{period} S. Chaiken, C. R. H. Hanusa, and T. Zaslavsky, \emph{A $q$-Queens Problem. VI. The Bishops' Period}, arXiv:1405.3001, version of 3 October 2018. \url{https://arxiv.org/abs/1405.3001}.
+\bibitem{finch} S. R. Finch, \emph{Errata and Addenda to Mathematical Constants}, arXiv:2001.00578, inspected bishop references on pp.~52 and 132. \url{https://arxiv.org/abs/2001.00578}.
+\end{thebibliography}
+\end{document}

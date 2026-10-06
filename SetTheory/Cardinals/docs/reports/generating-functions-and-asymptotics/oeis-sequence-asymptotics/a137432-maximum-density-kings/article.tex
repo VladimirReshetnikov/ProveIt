@@ -1,0 +1,805 @@
+\pdfinfoomitdate=1
+\pdftrailerid{}
+\documentclass[11pt]{article}
+\usepackage[letterpaper,margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype,amsmath,amssymb,amsthm,mathtools,booktabs,array}
+\usepackage{xcolor,enumitem,fancyhdr}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black]{hyperref}
+\hypersetup{pdftitle={Report 174 Aspect ratio transition for cylindrical kings},pdfsubject={Uniform asymptotics, critical crossover, spectral structure and inverse thresholds}}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small Report 174}\fancyhead[R]{\small Aspect ratio transition for cylindrical kings}\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}\setlength{\parskip}{0.25em}\setlength{\emergencystretch}{2em}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Oh}{\mathcal O}\newcommand{\Q}{\mathbb Q}\newcommand{\N}{\mathbb N}\newcommand{\R}{\mathbb R}
+\DeclareMathOperator{\tr}{tr}\DeclareMathOperator{\TV}{TV}\DeclareMathOperator{\erfc}{erfc}
+\newcommand{\comp}{\mathcal C}
+\title{\textbf{Aspect ratio transition for cylindrical kings}\\[0.5em]
+\large Uniform asymptotics and inverse thresholds for maximum density rectangles\\[0.6em]\normalsize Report 174}
+\author{}\date{3 October 2026}
+\makeatletter
+\renewcommand\@maketitle{\newpage\null\vskip0.5em\begin{center}
+{\LARGE\@title\par}\vskip1em{\normalsize\@date}\end{center}\par\vskip0.6em}
+\makeatother
+\begin{document}\maketitle
+\begin{abstract}
+Let $A(h,w)$ count placements of $hw$ nonattacking kings on a labeled $2h\times2w$ board with columns identified cyclically and rows left open. As $h,w\to\infty$ with $w/h\to\lambda>0$, the dominant binary run changes from a linear defect to a finite defect at $\lambda=\log2$. A uniform marked-star approximation, with relative error $\Oh(h^{-1})$, proves the free energy and the subcritical equivalent. Above the transition we prove an expansion to every fixed algebraic order and give explicit first and second corrections. In the critical window $w=(\log2)h+t\sqrt h$, with the actual lattice-compatible $t$ retained, we obtain $A(h,w)/h^w=hG(t)+\sqrt h H(t)+J(t)+\Oh(h^{-1/2})$, including the endpoint and spectral contributions to $J$. We also prove three geometric limit laws, Lambert $W$ inverse brackets along rational rays, and exact fixed-height spectral consequences. Existing rectangular formulas and fixed-height asymptotics of Kot\v{e}\v{s}ovec, earlier factor-generation work credited to Alekseyev, Wilf's transfer coordinates, Matsuo's cylindrical encoding, and Kot\v{e}\v{s}ovec's square leading constant are explicitly distinguished from the joint-limit analysis. This is an unrefereed report with reproducible checks and no exhaustive priority claim.
+\end{abstract}
+\setcounter{tocdepth}{1}\begingroup\small\setlength{\parskip}{0pt}\tableofcontents\endgroup\clearpage
+
+\section{Model and the phase diagram}\label{sec:main}
+The squares have coordinates $(r,s)$ with $0\le r<2h$ and $s\in\mathbb Z/(2w\mathbb Z)$. Two distinct kings attack when their row difference and circular column distance are both at most one. Rows do not wrap. We count placements on this labeled board, without dividing by rotations, reflections, or translations. Throughout $h,w$ are positive integers. A partition into $hw$ disjoint $2\times2$ blocks gives an upper bound of $hw$ kings; occupying every other row and column attains it. Thus $A(h,w)$ is exactly a maximum-density count.
+
+The square diagonal $A(n,n)$ is \href{https://oeis.org/A137432}{OEIS A137432}. Fixed-height rectangular families already appear in Kot\v{e}\v{s}ovec's book, notably Section 2.6, pp.~169--196 \cite{Kotesovec}, and in OEIS entries such as A194644, A194647, and A195656 \cite{RectOEIS}. The orientation convention is important: $h$ always refers here to the open direction and $w$ to the wrapped direction. In general $A(h,w)\ne A(w,h)$.
+
+Set
+\[
+L=\log2,\qquad \lambda_h=\frac wh,
+\]
+and define the explicitly evaluable marked-star sum
+\begin{equation}\label{eq:S}
+S(h,w)=2(h+1)^w+\sum_{m=1}^{h-1}(h-m+3)2^{h-m-1}(m+1)^w.
+\end{equation}
+The terminology records a marked run in an exact binary encoding; $S$ itself is not an exact count of king placements.
+
+\begin{theorem}[Uniform marked-star approximation]\label{thm:star}
+For every fixed $0<a\le b<\infty$, uniformly over integers $w$ with $a\le w/h\le b$,
+\begin{equation}\label{eq:uniform}
+A(h,w)=S(h,w)\bigl(1+\Oh_{a,b}(h^{-1})\bigr).
+\end{equation}
+No assumption that the longest run exceeds $h/2$ is required.
+\end{theorem}
+
+\begin{theorem}[Free energy and the two fixed regimes]\label{thm:phases}
+If $\lambda_h\to\lambda>0$, then
+\begin{equation}\label{eq:phi}
+\lim_{h\to\infty}\frac1h\log\frac{A(h,w)}{h^w}=\Phi(\lambda),\qquad
+\Phi(\lambda)=
+\begin{cases}
+L-\lambda+\lambda\log(\lambda/L),&0<\lambda<L,\\
+0,&\lambda\ge L.
+\end{cases}
+\end{equation}
+The maximizing run fraction is $s(\lambda)=\min(\lambda/L,1)$. The function $\Phi$ is continuously differentiable; its second derivative has left limit $1/L$ and right limit zero at $L$.
+
+Uniformly on each compact subset of $0<\lambda_h<L$,
+\begin{equation}\label{eq:sub}
+A(h,w)=h^{w+3/2}B(\lambda_h)e^{h\Phi(\lambda_h)}\bigl(1+\Oh(h^{-1})\bigr),\qquad
+B(\lambda)=\frac{\sqrt{2\pi\lambda}}{L}\left(1-\frac\lambda L\right).
+\end{equation}
+Uniformly on each compact subset of $\lambda_h>L$, for every fixed integer $M\ge0$,
+\begin{equation}\label{eq:super}
+A(h,w)=h^w C(\lambda_h)
+\left(\sum_{j=0}^M\frac{c_j(\lambda_h)}{h^j}+\Oh_M(h^{-M-1})\right),
+\end{equation}
+where
+\begin{equation}\label{eq:C}
+F(q)=\frac{1-q}{1-2q},\qquad
+C(\lambda)=2e^\lambda F(e^{-\lambda})^2,\qquad
+c_0=1,\quad c_j(\lambda)\in\Q(\lambda,e^{-\lambda}).
+\end{equation}
+The notation for the coefficient field means that each $c_j$ is a rational function of the displayed variables, evaluated on the supercritical interval.
+\end{theorem}
+Section~\ref{sec:coeff} gives $c_1,c_2$ explicitly and a finite algorithm for every fixed order. The quantifier ``fixed $M$'' does not assert convergence of the formal infinite series, uniformity for growing $M$, or a complete expansion in exponentially small sectors.
+
+\begin{theorem}[Critical crossover through constant order]\label{thm:critical}
+Let
+\[
+t_h=\frac{w-Lh}{\sqrt h},\qquad I_j(t)=\int_0^\infty x^j e^{-tx-Lx^2/2}\,dx.
+\]
+For every fixed $T<\infty$, uniformly for $|t_h|\le T$,
+\begin{equation}\label{eq:critical}
+\frac{A(h,w)}{h^w}=hG(t_h)+\sqrt h H(t_h)+J(t_h)+\Oh_T(h^{-1/2}).
+\end{equation}
+Writing $f_t(x)=e^{-tx-Lx^2/2}$, set
+\begin{align}
+a_t(x)&=t+Lx-\tfrac t2x^2-\tfrac L3x^3,\label{eq:a}\\
+b_t(x)&=L(-\tfrac12+x^2-\tfrac14x^4)+t(x-\tfrac13x^3).\label{eq:b}
+\end{align}
+Then
+\begin{align}
+G(t)&=I_1(t),\label{eq:G}\\
+H(t)&=\int_0^\infty[3+xa_t(x)]f_t(x)\,dx
+      =4I_0(t)-I_2(t)-\tfrac t6I_3(t),\label{eq:H}\\
+J(t)&=\frac{29}{12}+\int_0^\infty
+ \left\{3a_t(x)+x\left[b_t(x)+\frac{a_t(x)^2}{2}\right]\right\}f_t(x)\,dx
+ +4LG(t).\label{eq:J}
+\end{align}
+The $29/12$ is an endpoint correction. The $4LG(t)$ is the first nontrivial spectral correction, which is absent from the marked-star sum.
+\end{theorem}
+All refined formulas use the exact parameters $\lambda_h$ or $t_h$, not a rounded nominal parameter. Section~\ref{sec:floors} gives the explicit floor corrections. In particular,
+\[
+A(h,\lfloor Lh\rfloor)\sim\frac{h^{\lfloor Lh\rfloor+1}}{L}.
+\]
+
+\paragraph{What is carried over and what is analyzed here.}
+Binary/threshold coordinates already occur in Wilf's planar block decomposition \cite{Wilf} and are presented explicitly for the cylinder by Matsuo \cite{Matsuo}. We prove the cylindrical encoding here to make the report self-contained. Kot\v{e}\v{s}ovec already gives exact rectangular fixed-height spectral formulas and the law $A(h,w)\sim2(h+1)^w$ for fixed $h$ and $w\to\infty$ \cite[p.~192]{Kotesovec}. His p.~178 credits a 2011 direct factor-generation method and a degree bound to Alekseyev. The linked full argument was inaccessible in the bounded source review, so priority for the spectral reduction is not asserted. The square constant
+\[
+C(1)=\frac{2e(e-1)^2}{(e-2)^2}
+\]
+is explicitly credited to Kot\v{e}\v{s}ovec in A137432, dated 29 July 2023 and updated 18 March 2024 \cite{OEIS}. The present focus is the joint aspect-ratio limit, uniform approximation, crossover, geometry, and inverse consequences. No reading of an earlier square report is needed.
+
+\section{The exact geometric encoding}\label{sec:encoding}
+Index the $2\times2$ blocks by $(i,j)$, with $0\le i<h$ and $j$ modulo $w$. The unique king in block $(i,j)$ has position
+\[
+(2i+x_{ij},\,2j+y_{ij}),\qquad x_{ij},y_{ij}\in\{0,1\}.
+\]
+If $y_{ij}=1$ and $y_{i,j+1}=0$, the kings in these neighboring blocks attack: their column distance is one and their row distance is at most one. Hence the cyclic sequence $y_{ij}$ cannot descend, so it is constant in $j$:
+\begin{equation}\label{eq:word}
+y_{ij}=b_i,\qquad b=(b_0,\ldots,b_{h-1})\in\{0,1\}^h.
+\end{equation}
+For $w=1$ constancy is automatic and involves no comparison of a king with itself. Similarly $x_{ij}=1,x_{i+1,j}=0$ would cause a vertical attack. Thus, for each $j$, the row offsets are nondecreasing in $i$, and there is a unique threshold $c_j\in\{0,\ldots,h\}$ with
+\[
+x_{ij}=0\quad(i<c_j),\qquad x_{ij}=1\quad(i\ge c_j).
+\]
+For two successive block-columns with thresholds $u=c_j$ and $v=c_{j+1}$, a down-right diagonal attack occurs exactly when
+\[
+u\le i<v-1,\qquad (b_i,b_{i+1})=(1,0).
+\]
+If $u<v$, excluding these attacks says that $b_u,\ldots,b_{v-1}$ is nondecreasing. The opposite diagonal direction similarly says, when $u>v$, that $b_v,\ldots,b_{u-1}$ is nonincreasing. If $u=v$, there is no extra condition. These conditions exclude every possible attack; nonneighboring blocks cannot contain attacking squares. When $w=2$, the two directions between block-columns meet the same pair, and both ordered conditions are imposed by the cyclic product below. When $w=1$, its single diagonal condition is automatic and the vertical rule already excludes the relevant attacks.
+
+Define an $(h+1)\times(h+1)$ zero-one matrix $M_b$ by these allowed transitions. The list of thresholds is cyclic and labeled. Consequently
+\begin{equation}\label{eq:trace}
+A(h,w)=\sum_{b\in\{0,1\}^h}\tr(M_b^w),\qquad w\ge1.
+\end{equation}
+There is no factor $w$ and no division by $w$. The identity is not an empty-width convention: at $w=0$ its right side is $2^h(h+1)$.
+
+\section{From a transfer matrix to a caterpillar}\label{sec:tree}
+Take the path with vertices $0,\ldots,h$ and edge colors $b_0,\ldots,b_{h-1}$. Let $E_c[u,v]$ be one if the entire interval from $u$ to $v$ has color $c$, including the empty interval. Then
+\begin{equation}\label{eq:factor}
+M_b=E_0E_1.
+\end{equation}
+Indeed an intermediate vertex must be in the same color-0 component as $u$ and the same color-1 component as $v$. There is at most one such vertex, since two would require a nonempty interval of both colors. For $u<v$ it exists precisely when the interval is $0^*1^*$; for $u>v$, the increasing-order interval must be $1^*0^*$. An intermediate vertex outside the interval would again require a nonempty segment of both colors. This proves the factorization entry by entry.
+
+Let $R_0,R_1$ be the indicator matrices of the color-0 and color-1 path components. We have $E_c=R_cR_c^{\mathsf T}$. Put
+\[
+C_b=R_0^{\mathsf T}R_1.
+\]
+Distinct components of different colors intersect in at most one path vertex, so $C_b$ is a zero-one matrix. Its bipartite incidence graph $T_b$ is connected: successive original path vertices give edges sharing the component of their connecting color. It has $h+1$ edges, one for each path vertex. If there are $n_0$ zero edges and $n_1$ one edges, its number of vertices is $(n_1+1)+(n_0+1)=h+2$. Thus it is a tree.
+
+By cyclicity of trace (or the equality of nonzero spectra of rectangular products), for every positive $w$,
+\begin{equation}\label{eq:gram}
+\tr(M_b^w)=\tr((C_bC_b^{\mathsf T})^w)
+ =\frac12\tr(\mathcal A_b^{2w}),\qquad
+\mathcal A_b=\begin{pmatrix}0&C_b\\C_b^{\mathsf T}&0\end{pmatrix}.
+\end{equation}
+In particular the eigenvalues contributing to the trace are nonnegative squared adjacency eigenvalues. The zero eigenvalues are irrelevant at positive powers.
+
+If $b$ has successive run lengths $r_1,\ldots,r_s$, $T_b$ is a caterpillar. For $s\ge2$ its spine consists of $s$ vertices, with pendant-leaf counts
+\[
+r_1,\ r_2-1,\ldots,r_{s-1}-1,\ r_s.
+\]
+For $s=1$ it is the star with $h+1$ leaves. This follows by contracting the alternating monochromatic components along the original path; each internal run loses one endpoint to each neighboring spine edge. In every case a run of length $m$ gives a hub of degree $m+1$. Deleting that hub removes $m+1$ of the tree's $h+1$ edges; hence its remaining branches contain $h-m$ edges in total.
+
+\subsection{Bounds and the rooted Schur equation}
+Write $\Lambda_b=\|\mathcal A_b\|^2$. If the longest run has length $m$, separate the caterpillar adjacency into pendant-star edges and spine-path edges. These have norms at most $\sqrt{m+1}$ and $2$, respectively. Therefore
+\begin{equation}\label{eq:norm}
+\Lambda_b\le(\sqrt{m+1}+2)^2.
+\end{equation}
+Now mark a run of length $m$ and delete its hub. Apart from isolated pendant leaves, there are at most two rooted branches, with adjacency matrices $Q_\ell,Q_r$. Let $\beta$ bound their squared norms and let
+\[
+B_j=\langle e_\ell,Q_\ell^{2j}e_\ell\rangle+
+     \langle e_r,Q_r^{2j}e_r\rangle,\qquad j\ge1,
+\]
+with absent branches contributing zero. The spectral theorem gives
+\begin{equation}\label{eq:moments}
+0\le B_j\le B_1\beta^{j-1}.
+\end{equation}
+If $\Lambda=\Lambda_b>\beta$, the resolvent expansion in the Schur complement at $\sqrt\Lambda$ gives
+\begin{equation}\label{eq:schur}
+\Lambda=m+1+\sum_{j\ge1}B_j\Lambda^{-j},\qquad
+0\le\Lambda-(m+1)\le\frac{B_1}{\Lambda-\beta}.
+\end{equation}
+To see the constant term, each neighbor of the deleted hub contributes $1/\sqrt\Lambda$ to the first resolvent term; there are $m+1$ such neighbors. Odd rooted moments vanish because each branch is bipartite. Multiplication by $\sqrt\Lambda$ yields the displayed equation. The lower bound $\Lambda\ge m+1$ follows from the hub star.
+
+If $k=h-m$, then also $\beta\le k$: the squared adjacency norm of any bipartite graph is the squared operator norm of its incidence matrix, at most its squared Frobenius norm, namely its number of edges. If the first two outward run lengths on each branch are $s_\ell,t_\ell$ and $s_r,t_r$, missing lengths being zero, rooted walk counts give
+\begin{equation}\label{eq:B12}
+B_1=s_\ell+s_r,\qquad B_2=s_\ell^2+t_\ell+s_r^2+t_r.
+\end{equation}
+Interlacing after deleting the hub bounds every adjacency eigenvalue other than the Perron pair by $\sqrt\beta$ in absolute value. Thus
+\begin{equation}\label{eq:nonperron}
+0\le\tr(M_b^w)-\Lambda_b^w\le(h+1)\beta^w.
+\end{equation}
+These estimates keep the non-Perron trace contribution separate from the Perron expansion.
+
+\section{Marked runs and the uniform approximation}\label{sec:uniform}
+Mark a particular run of length $m$ in a word of length $h$. Set $k=h-m$ and let $\ell,r$ be the total lengths on its left and right, so $\ell+r=k$. Each boundary is encoded by its outward run composition. The inner bit is forced opposite to the central bit. Let
+\[
+\alpha_0=1,\qquad \alpha_j=2^{j-1}\ (j\ge1),\qquad
+\sum_{j\ge0}\alpha_jq^j=F(q)=\frac{1-q}{1-2q}.
+\]
+There are two choices of the central bit. Therefore the exact number of marked words with this run length is
+\begin{equation}\label{eq:marked}
+R_h(h)=2,\qquad R_h(h-k)=2\sum_{\ell=0}^k\alpha_\ell\alpha_{k-\ell}
+=(k+3)2^{k-1}\quad(1\le k<h).
+\end{equation}
+This counts marked runs of exact length $m$, not just longest runs. A word with several eligible runs appears several times. The distinction will be dealt with before a one-hub approximation is used.
+
+\begin{lemma}[Bounded average branch moment]\label{lem:mean}
+For the marked words of defect $k$, with $B_1=s_\ell+s_r$,
+\begin{equation}\label{eq:mean}
+\mathbb E_k B_1=\frac{4k}{k+3}\quad(k\ge1),\qquad \mathbb E_0B_1=0.
+\end{equation}
+\end{lemma}
+\begin{proof}
+The weighted series for the first run length on one outward composition is
+$F(q)\sum_{s\ge1}s q^s=F(q)q/(1-q)^2$.
+For the two boundaries, before the central-bit factor, the total series is
+\[
+2F(q)^2\frac q{(1-q)^2}=\frac{2q}{(1-2q)^2}.
+\]
+Its coefficient at $q^k$ is $k2^k$. The count coefficient is
+$[q^k]F(q)^2=(k+3)2^{k-2}$. The central-bit factor cancels in their ratio.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:star}]
+Fix $a\le w/h\le b$. All constants below may depend on $a,b$. Choose a small fixed $\delta>0$ with $L+a\log\delta<0$, allowing strict slack in this inequality.
+
+\emph{Small longest runs.} For words whose longest run satisfies $m<\delta h$, the norm bound \eqref{eq:norm}, the $2^h$ choices of word, and the at most $h+1$ nonzero trace terms give
+\[
+\sum_{\max\mathrm{run}<\delta h}\tr(M_b^w)\le h^w e^{-ch}
+\]
+for sufficiently large $h$. Strict slack absorbs the $\Oh(\sqrt h)$ norm correction and all polynomial factors. The portion of the marked-star sum with $m<\delta h$ has the same estimate: there are at most $h2^h$ marked runs and their weights are $(m+1)^w$. The baseline $S(h,w)\ge2(h+1)^w\ge2h^w$ makes these errors exponentially small relative to $S$.
+
+\emph{Two macroscopic runs.} Choose $0<\epsilon<\delta/16$. For a marked run of length $m\ge\delta h$, states having a second run of length at least $\epsilon h$ are at most
+\[
+\operatorname{poly}(h)\,2^{h-m-\epsilon h}
+\]
+in number. Indeed specify the two disjoint run intervals and their bits, then allow all other positions freely. There are polynomially many choices of interval endpoints. This upper bound compared with $R_h(m)\ge2^{h-m-1}$ is exponentially small. If there is no space for the second run the count is zero.
+
+For the actual king contribution, mark a longest run $m$. Uniformly for $m\ge\delta h$, \eqref{eq:norm} yields
+\[
+\frac{\Lambda_b^w}{(m+1)^w}\le e^{C\sqrt h}.
+\]
+The trace dimension and possible choices of longest run contribute only polynomial factors. The entropy penalty $2^{-\epsilon h}$ dominates these factors and $e^{C\sqrt h}$. Summing over $m$ bounds all such bad words by $S e^{-c_\epsilon h}$; the same argument removes bad marked states from $S$. This explicitly includes ties and multiple large hubs.
+
+\emph{One macroscopic run.} Every remaining word has a unique run $m\ge\delta h$, with all other runs shorter than $\epsilon h$. It corresponds to exactly one good marked state. On deleting its hub, \eqref{eq:norm} applied to the remaining caterpillar branches gives
+\[
+\beta\le(\sqrt{\epsilon h+1}+2)^2\le2\epsilon h
+\]
+for large $h$. Since $\Lambda\ge m+1\ge\delta h$, the Schur bound gives
+\[
+0\le\Lambda-(m+1)\le C\frac{B_1}{h}.
+\]
+Moreover $B_1\le2\epsilon h$. Hence
+\begin{equation}\label{eq:relativeperturb}
+0\le\frac{\Lambda^w}{(m+1)^w}-1\le C\frac{B_1}{h}.
+\end{equation}
+For precision, the logarithm of the ratio is bounded by $CB_1/h$, a uniformly bounded number, and $e^x-1\le C'x$ on such a bounded interval. The non-Perron bound \eqref{eq:nonperron} is exponentially small relative to $(m+1)^w$ because $\beta/(m+1)\le2\epsilon/\delta<1$ and $w\ge ah$.
+
+For each $m$, the sum of $B_1$ over good marked states is at most its sum over all marked states, which is less than $4R_h(m)$ by Lemma~\ref{lem:mean}. Summing \eqref{eq:relativeperturb} therefore produces an error $\Oh(S/h)$. Each good word contributes at least its star weight, so the same decomposition gives both inequalities in \eqref{eq:uniform}. There is no remaining multiplicity or trace-dimension loss.
+\end{proof}
+
+\section{Evaluation below the transition}\label{sec:sub}
+The exponential rate of a marked-run summand with $s=m/h$ is
+\[
+f_\lambda(s)=(1-s)L+\lambda\log s,\qquad0<s\le1.
+\]
+Its maximum is attained at $s=\lambda/L$ if $\lambda<L$, and at $s=1$ otherwise. Polynomial multiplicities do not change the logarithm divided by $h$. Finite-sum upper bounds and a term near the maximizing integer give \eqref{eq:phi}, using Theorem~\ref{thm:star}. The same observation also explains why the transition occurs at $L$.
+
+For a sharp subcritical equivalent, substitute $j=m+1$ in \eqref{eq:S}:
+\begin{equation}\label{eq:Sj}
+S(h,w)=2(h+1)^w+2^h\sum_{j=2}^h(h-j+4)j^w e^{-Lj}.
+\end{equation}
+When $w/h$ lies in a fixed compact subinterval of $(0,L)$, the saddle $j=w/L$ is a linear distance below $h$. Extending separately the positive sums of $j^w e^{-Lj}$ and $j^{w+1}e^{-Lj}$ to infinity changes each by an exponentially small relative error. Their resulting difference remains of order $h$ times the first sum, since $1-w/(Lh)$ stays bounded away from zero. Thus cancellation does not invalidate this operation. The $j=1$ and star-endpoint terms are also exponentially negligible.
+
+For any integer $p\ge1$, the exact pole series is
+\begin{equation}\label{eq:polesum}
+\sum_{j\ge1}j^p e^{-Lj}
+=p!\sum_{\ell\in\mathbb Z}(L+2\pi i\ell)^{-p-1}
+=\frac{\Gamma(p+1)}{L^{p+1}}\bigl(1+\Oh(\rho^p)\bigr)
+\end{equation}
+for a fixed $\rho<1$. One derivation differentiates the partial-fraction expansion of $(e^z-1)^{-1}$ $p$ times at $z=L$; after differentiation the pole series is absolutely convergent, including $p=1$. Alternatively it follows by Poisson summation applied to $x^pe^{-Lx}$ on the positive half-line. The nonzero poles are uniformly farther from $L$ than the pole at zero; summing their absolute values gives the displayed geometric estimate.
+
+Applying \eqref{eq:polesum} with $p=w,w+1$ yields
+\begin{equation}\label{eq:subgamma}
+A(h,w)=\frac{2^h\Gamma(w+1)}{L^{w+1}}
+\left(h+4-\frac{w+1}{L}\right)\bigl(1+\Oh(h^{-1})\bigr).
+\end{equation}
+For $S$ the error here is exponentially small; for $A$ the relative $\Oh(h^{-1})$ comes from the spectral approximation. Uniform Stirling expansion gives \eqref{eq:sub}. The constants $4$ and $1/L$ inside the parentheses do not by themselves give the full first correction to $A$: spectral structure also contributes at that order.
+
+\section{All fixed orders above the transition}\label{sec:super}
+Assume $a\le\lambda_h\le b$ with $a>L$. We give the uniform argument, not just a formal expansion at each fixed boundary.
+
+\subsection{Localization and summable tails}
+For every fixed small $\epsilon>0$, words whose longest run is at most $(1-\epsilon)h$ contribute $\Oh(h^w e^{-c_\epsilon h})$. For $m/h$ bounded away from zero this follows from \eqref{eq:norm}, the bound $2h2^{h-m}$ on words with a marked longest run, and
+\[
+(1-m/h)L+\lambda_h\log(m/h)<0.
+\]
+The inequality is uniform away from $m/h=1$ because $\lambda_h\ge a>L$. For sufficiently small $m/h$, counting all $2^h$ words gives a strictly negative rate as in Section~\ref{sec:uniform}.
+
+For $m=h-k$ with $k\le\epsilon h<h/2$, the long run is unique. Put $d=1-k$, $D=h+d$. By \eqref{eq:schur} and $B_1\le k$, $\beta\le k$,
+\begin{equation}\label{eq:tailperturb}
+0\le\Lambda-D\le\frac{k}{h-2k+1}.
+\end{equation}
+The inequality $\log x\le x-1$ consequently gives
+\begin{equation}\label{eq:tail}
+(\Lambda/h)^w\le C e^{-ak}\qquad(0\le k\le\epsilon h).
+\end{equation}
+The constant is uniform in $h,k,\lambda_h\in[a,b]$. Multiplicity is $\Oh((k+1)2^k)$, so this is summable with ratio at most $2e^{-a}<1$. Separately, by \eqref{eq:nonperron}, the normalized non-Perron sum is bounded by a polynomial factor times
+\[
+\exp\{h[\epsilon L+a\log\epsilon]\},
+\]
+which is exponentially small for sufficiently small $\epsilon$. After that separate bound, no trace dimension factor is carried into the Perron coefficient expansion.
+
+For any desired fixed algebraic order, truncate at $k\le A_M\log h$, where $A_M$ is sufficiently large. Equation~\eqref{eq:tail} makes the omitted tail smaller than the requested power of $h^{-1}$.
+
+\subsection{Uniform analytic remainder}
+Put $u=1/h$ and $y=\Lambda/h$. The Schur equation becomes
+\begin{equation}\label{eq:implicit}
+y=1+du+\sum_{j\ge1}B_j u^{j+1}y^{-j}.
+\end{equation}
+The bound $B_j\le k^j$ shows, by geometric-series estimates, that on a complex disk $|u|\le c/(k+1)$ the right side is a contraction in $|y-1|\le1/4$, for a fixed sufficiently small $c>0$. It maps the disk into itself and has derivative of absolute value less than one there. Its fixed point is analytic and agrees with the positive Perron solution on small positive $u$. In particular
+\[
+y=1+du+\Oh(ku^2),\qquad \frac{\log y}{u}-d=\Oh((k+1)^2|u|),
+\]
+where the apparent singularity at $u=0$ is removable; for $k=0$ the first remainder is exactly zero.
+
+On the smaller disk $|u|\le c'/(k+1)^2$, the analytic function
+\[
+\mathcal H_\lambda(u)=\exp\left\{\lambda\left(\frac{\log y}{u}-d\right)\right\}
+\]
+is uniformly bounded for $\lambda\in[a,b]$. Cauchy estimates imply that its order-$j$ coefficient is $\Oh_j((k+1)^{2j})$, and that
+\begin{equation}\label{eq:cauchy}
+\mathcal H_\lambda(1/h)=\sum_{j=0}^M P_j(\lambda;\ell,r)h^{-j}
+ +\Oh_M((k+1)^{2M+2}h^{-M-1})
+\end{equation}
+provided $1/h\le c'/(2(k+1)^2)$. This holds uniformly for $k\le A_M\log h$ once $h$ is large. The coefficient notation includes the full outward compositions, not just their lengths. Multiplying by $e^{\lambda d}$ and summing the remainder against the marked multiplicities costs only a fixed moment of the geometric tail $(2e^{-a})^k$. Thus the total error is $\Oh_M(h^{-M-1})$ without a logarithmic loss. Coefficient tails can also be extended to all finite boundary compositions. This proves \eqref{eq:super} with the leading sum
+\[
+2e^\lambda\sum_{\ell,r\ge0}\alpha_\ell\alpha_r e^{-\lambda(\ell+r)}
+=2e^\lambda F(e^{-\lambda})^2.
+\]
+
+\subsection{A finite coefficient procedure}\label{sec:coeff}
+For a rooted branch with outward run lengths $s_1,\ldots,s_v$, define formal series recursively by
+\begin{equation}\label{eq:resolvent}
+R_{v+1}(z)=1,\qquad
+R_i(z)=\frac1{1-z(s_i-1+R_{i+1}(z))}.
+\end{equation}
+Eliminating pendant leaves in the rooted caterpillar proves this diagonal-resolvent identity. Padding missing run lengths by zero preserves $R=1$. The coefficient of $z^j$ involves only the first $j$ runs, with the right value when a branch terminates earlier. The branch sum satisfies
+\[
+B_j=[z^j](R_{\ell,1}(z)+R_{r,1}(z)-2).
+\]
+Formal substitution in \eqref{eq:implicit}, followed by logarithm and exponentiation, computes each $P_j$ as a finite rational polynomial in $k$, $\lambda$, and finitely many outward run lengths.
+
+Write $D_q=q\,d/dq$ and
+\[
+h_j(q)=\sum_{s\ge1}s^jq^s\quad(j\ge0),\qquad h_0=\frac q{1-q},\quad
+h_1=\frac q{(1-q)^2},\quad h_2=\frac{q(1+q)}{(1-q)^3}.
+\]
+For a monomial in the first $v$ run lengths with last exponent $a_v>0$, its weighted sum over finite compositions is
+\[
+F(q)\prod_{i=1}^v h_{a_i}(q).
+\]
+The constant monomial has sum $F(q)$. Products combine independent left and right boundaries; powers of their total size $k$ are implemented by $D_q$. Since $h_{j+1}=D_qh_j$, all these sums are rational functions of $q$. This proves the claimed rationality at every fixed order, and specifies a finite coefficient algorithm rather than relying on interpolation.
+
+For the first two corrections let $S_1=B_1$ and $T_1=B_2$. Expansion gives
+\begin{align}
+\Lambda&=h+d+S_1h^{-1}+(T_1-dS_1)h^{-2}+\Oh_k(h^{-3}),\label{eq:lambdaexpand}\\
+\frac{\Lambda^w}{h^w}
+&=e^{\lambda_h d}\left[1+\frac{\lambda_h(S_1-d^2/2)}h\right.\notag\\[-0.3em]
+&\hspace{4em}\left.+\frac{\lambda_h(T_1-2dS_1+d^3/3)
+ +(\lambda_h^2/2)(S_1-d^2/2)^2}{h^2}+\Oh_k(h^{-3})\right].\label{eq:perronexpand}
+\end{align}
+The fixed-$k$ notation in this display is made uniform upon summation by \eqref{eq:cauchy}.
+
+For a compact operator form put $\Delta=1-D_q$ and
+\begin{equation}\label{eq:weights}
+\begin{split}
+W&=F^2,\qquad W_S=2F^2h_1,\\
+W_{SS}&=2F^2h_2+2F^2h_1^2,\qquad
+W_T=2F^2(h_2+h_0h_1).
+\end{split}
+\end{equation}
+These are the weighted sums of $1,S_1,S_1^2,T_1$ for two boundaries. Holding $\lambda$ fixed under differentiation and evaluating at $q=e^{-\lambda}$,
+\begin{align}
+c_1(\lambda)&=\frac{\lambda}{W}\left(W_S-\frac12\Delta^2W\right),\label{eq:c1op}\\
+c_2(\lambda)&=\frac1W\left\{\lambda\left(W_T-2\Delta W_S+\frac13\Delta^3W\right)
++\frac{\lambda^2}{2}\left(W_{SS}-\Delta^2W_S+\frac14\Delta^4W\right)\right\}.\label{eq:c2op}
+\end{align}
+In explicit rational form,
+\begin{equation}\label{eq:c1}
+c_1(\lambda)=-\frac{\lambda(4q^4-40q^3+45q^2-12q+1)}{2(1-q)^2(1-2q)^2},
+\qquad q=e^{-\lambda},
+\end{equation}
+and
+\begin{equation}\label{eq:c2}
+c_2(\lambda)=\frac{\lambda P_6(q)}{3(1-q)^3(1-2q)^3}
++\frac{\lambda^2 P_8(q)}{8(1-q)^4(1-2q)^4},
+\end{equation}
+where
+\begin{align*}
+P_6(q)&=8q^6-380q^5+690q^4-401q^3+69q^2-5q+1,\\
+P_8(q)&=16q^8-976q^7+2920q^6-2940q^5+977q^4+14q^3+2q^2-6q+1.
+\end{align*}
+At $\lambda=1$ these specialize to the square corrections
+\[
+c_1(1)=-13.572052159046386\ldots,\qquad
+c_2(1)=576.331755295050712\ldots.
+\]
+The large size of these coefficients warns against assuming that a few terms give accurate finite-height numerics without a remainder estimate.
+
+\section{The critical expansion}\label{sec:criticalproof}
+Fix $|t|\le T$ and write $w=Lh+t\sqrt h$, using only pairs for which $w$ is integral. For intermediate algebra the real exponent is also meaningful for the star sum, but it is not a king count unless $w$ is integral. In this section put
+\[
+\varepsilon_h=h^{-1/2},\qquad x=k\varepsilon_h,\qquad D=h+1-k.
+\]
+
+\subsection{Localization and spectral perturbation}
+Choose a small fixed $\epsilon>0$, for example $1/4$. Words with no run longer than $(1-\epsilon)h$ are exponentially negligible after division by $h^w$. For $m/h=r$ away from zero their upper rate is
+\[
+(1-r)L+(w/h)\log r=L(1-r+\log r)+o(1),
+\]
+strictly negative on each compact subinterval bounded away from $r=1$. For $m\le h/4$, counting all words and using \eqref{eq:norm} gives the negative upper rate $L+L\log(1/4)$. This covers the remaining endpoint. The $o(1)$ is uniform for bounded $t$.
+
+Near the long run, $k\le\epsilon h$, non-Perron eigenvalues give an exponentially small aggregate contribution by \eqref{eq:nonperron}: its rate is at most $\epsilon L+(w/h)\log\epsilon<0$. We may thus focus on the Perron eigenvalue of the unique long run. Here the stronger moment bound is
+\[
+0\le B_j\le B_1 k^{j-1}.
+\]
+Writing $S_1=B_1\le k$, the Schur equation gives
+\begin{equation}\label{eq:criticaldelta}
+\Lambda-D=\frac{S_1}{h}+\Oh\left(\frac{S_1(k+1)}{h^2}\right).
+\end{equation}
+Indeed isolate $B_1/\Lambda$, bound the remaining sum by
+$S_1k/[\Lambda(\Lambda-k)]$, and compare $1/\Lambda$ to $1/h$ using \eqref{eq:tailperturb}. It follows that
+\begin{equation}\label{eq:criticalpower}
+(\Lambda/D)^w=1+\frac{w}{h}\frac{S_1}{h}
++\Oh\left(\frac{S_1(k+1)}{h^2}\right).
+\end{equation}
+The exponent is uniformly bounded; its squared-error contribution is absorbed using $S_1^2\le kS_1$. A uniform second-moment assumption is unnecessary.
+
+Let $N_0=2$ and $N_k=(k+3)2^{k-1}$ for $k\ge1$, and define the truncated base sum
+\begin{equation}\label{eq:Bbase}
+\mathcal B_h=2(1+1/h)^w+\sum_{1\le k\le\epsilon h}N_k(D/h)^w.
+\end{equation}
+The choice of rounding at the upper limit is exponentially immaterial. Averaging \eqref{eq:criticalpower} with \eqref{eq:mean} gives
+\begin{equation}\label{eq:averagecritical}
+\frac{A(h,w)}{h^w}=\mathcal B_h+
+\frac{w/h}{h}\sum_{1\le k\le\epsilon h}N_k(D/h)^w\frac{4k}{k+3}
++\Oh_T(h^{-1/2}).
+\end{equation}
+For completeness, the error is bounded by
+\[
+\frac{C}{h^2}\sum_{k\ge1}(k+1)^2
+\exp\left(\frac{Tk}{\sqrt h}-c\frac{k^2}{h}\right)=\Oh_T(h^{-1/2}),
+\]
+using the Gaussian estimate established next. The correction sum in \eqref{eq:averagecritical} equals
+\begin{equation}\label{eq:4LG}
+4LG(t)+\Oh_T(h^{-1/2}).
+\end{equation}
+The leading Riemann sum has this value because the exact average $4k/(k+3)$ cancels the multiplicity factor $k+3$. This is the full spectral contribution at constant order.
+
+\subsection{A summably uniform Taylor expansion}
+The inequality $\log(1-u)\le-u-u^2/2$, with $u=(k-1)/h$, yields
+\begin{equation}\label{eq:gaussian}
+2^k(D/h)^w\le C_T e^{Tx-cx^2},\qquad1\le k\le\epsilon h.
+\end{equation}
+The replacement of $D$ by $\Lambda$ adds only a bounded factor by \eqref{eq:criticaldelta}. Therefore the region $x>R_h=\sqrt{B\log h}$ has a tail smaller than any specified inverse power of $h$ if the fixed $B$ is sufficiently large. All needed polynomial moments are dominated uniformly for $|t|\le T$.
+
+For $x\le R_h$, Taylor's theorem gives
+\begin{equation}\label{eq:logcritical}
+kL+w\log(1+(1-k)/h)
+=L-tx-\frac L2x^2+\varepsilon_h a_t(x)+\varepsilon_h^2b_t(x)
++\Oh_T(\varepsilon_h^3(1+x^5)).
+\end{equation}
+The $a_t,b_t$ are exactly \eqref{eq:a}--\eqref{eq:b}. Since $\varepsilon_h(1+R_h^3)\to0$, exponentiation yields
+\begin{equation}\label{eq:expcritical}
+2^k(D/h)^w=2f_t(x)
+\left[1+\varepsilon_ha_t(x)+\varepsilon_h^2\left(b_t(x)+\frac12a_t(x)^2\right)
++\Oh_T(\varepsilon_h^3(1+x^9))\right].
+\end{equation}
+The integrated error after multiplication by $k+3$ and summation is $\Oh_T(\varepsilon_h)$ without logarithmic loss: use the displayed polynomial times the Gaussian majorant, whose moments are uniformly finite, and choose the discarded tails stronger than the desired remainder.
+
+To make the pointwise bookkeeping explicit, put $v_t=b_t+a_t^2/2$ and
+\[
+g_0=xf_t,\qquad g_1=(3+xa_t)f_t,\qquad g_2=(3a_t+xv_t)f_t.
+\]
+For $k\ge1$ the summand is
+\begin{equation}\label{eq:pointwise}
+N_k(D/h)^w=\varepsilon_h^{-1}g_0(x)+g_1(x)+\varepsilon_hg_2(x)
++3\varepsilon_h^2v_t(x)f_t(x)
++\Oh_T(\varepsilon_h^3(k+3)(1+x^9)f_t(x)).
+\end{equation}
+The explicit fourth term has total $\Oh_T(\varepsilon_h)$ after summation. It cannot be hidden inside the smaller displayed pointwise remainder; it is absorbed only after summing.
+
+\subsection{Endpoint terms and the constant coefficient}
+Euler--Maclaurin with uniform Gaussian derivative bounds gives, for the functions needed here,
+\begin{equation}\label{eq:EM}
+\sum_{k\ge1}g(k\varepsilon_h)
+=\varepsilon_h^{-1}\int_0^\infty g(x)\,dx
+-\frac{g(0)}2-\frac{\varepsilon_hg'(0)}{12}+\Oh_T(\varepsilon_h^3),
+\end{equation}
+or its lower-order version where sufficient. Here
+\[
+g_0(0)=0,\qquad g_0'(0)=1,\qquad g_1(0)=3.
+\]
+The exceptional $k=0$ term is $2(1+1/h)^w=4+\Oh_T(\varepsilon_h)$. Applying \eqref{eq:EM} to \eqref{eq:pointwise} therefore gives
+\[
+\mathcal B_h=hG(t)+\sqrt hH(t)
++\left(4-\frac1{12}-\frac32+\int_0^\infty g_2(x)\,dx\right)
++\Oh_T(h^{-1/2}).
+\]
+The endpoint combination is $4-1/12-3/2=29/12$. Adding \eqref{eq:4LG} proves Theorem~\ref{thm:critical}. Extending the formula $(k+3)2^{k-1}$ to $k=0$ would give a wrong constant.
+
+\subsection{Evaluation and matching of the coefficient functions}
+Completing the square gives
+\begin{equation}\label{eq:I0}
+I_0(t)=\sqrt{\frac\pi{2L}}e^{t^2/(2L)}\erfc\left(\frac{t}{\sqrt{2L}}\right),
+\qquad G(t)=\frac{1-tI_0(t)}{L}.
+\end{equation}
+Integration by parts gives
+\begin{equation}\label{eq:Irec}
+LI_1+tI_0=1,\qquad LI_{j+1}+tI_j=jI_{j-1}\quad(j\ge1).
+\end{equation}
+Thus $G,H,J$ are explicit polynomial combinations of $t,L,I_0(t)$. The recurrence also reduces the integral expression for $H$ to \eqref{eq:H}. At the center,
+\begin{align}
+G(0)&=\frac1L=1.4426950408889634\ldots,\notag\\
+H(0)&=\left(4-\frac1L\right)\sqrt{\frac\pi{2L}}=3.8497251900678098\ldots,\label{eq:center}\\
+J(0)&=\frac{119}{12}-\frac8{3L}+\frac2{3L^2}=7.457059211633169\ldots.\notag
+\end{align}
+These are coefficient values, not an assertion that an integer pair has $w=Lh$.
+
+For $t\to+\infty$, rescaling $x=y/t$ in $G$ and expanding the Gaussian under its Laplace integral gives
+\[
+G(t)=t^{-2}-3Lt^{-4}+15L^2t^{-6}+\Oh(t^{-8}).
+\]
+For $t\to-\infty$, completing the square and localizing at $x=-t/L$ gives
+\[
+G(t)\sim\frac{-t}{L}\sqrt{\frac{2\pi}{L}}e^{t^2/(2L)}.
+\]
+The first matches $C(L+\delta)\sim\delta^{-2}$; the second matches the formal nearcritical limit of \eqref{eq:sub}. These are matching statements about coefficient functions and neighboring fixed-regime formulas. They do not extend the proven compact-$t$ remainder to an arbitrary growing window.
+
+\section{Three limiting geometries}\label{sec:laws}
+Choose a maximum-density placement uniformly. Its associated word has weight $\tr(M_b^w)$. Write $M_h$ for the longest run and $K=h-M_h$ for the defect. On the high-probability event of a unique macroscopic run, record its central bit and its two outward compositions. Let $\ell,r$ be their lengths, so $\ell+r=K$. Set both boundary lengths and their fractions to zero on the exceptional event, and set $\ell/K=0$ when $K=0$; these conventions have no effect on the critical or subcritical limits.
+
+The proof of Theorem~\ref{thm:star} gives more than a scalar estimate. On the good marked-state set, the sum of absolute differences between the true state weights and the star weights is $\Oh(S/h)$; the omitted mass is exponentially small. After normalization, the two probability measures differ in total variation by $\Oh(h^{-1})$. One may adjoin a single exceptional state to make the comparison a statement on a common space. The central bit is exactly fair and independent of the run-composition data, by word complementation, which preserves the tree spectrum.
+
+\begin{theorem}[Supercritical finite defect]\label{thm:law-super}
+If $\lambda_h\to\lambda>L$, set $q=e^{-\lambda}$. The left and right outward run compositions converge jointly to independent finite compositions, a specified composition of total length $j$ having probability $q^j/F(q)$. Their central bit is independent and fair. The limiting defect satisfies
+\begin{equation}\label{eq:defectpgf}
+\mathbb E[z^{K_\infty}]=\frac{F(qz)^2}{F(q)^2},\qquad |z|\le1.
+\end{equation}
+Uniformly on compact supercritical intervals, comparison to the law with the exact $q_h=e^{-\lambda_h}$ has total variation error $\Oh(h^{-1})$, and every fixed nonnegative integer defect moment has error $\Oh(h^{-1})$.
+\end{theorem}
+\begin{proof}
+The leading state weight is $2e^{\lambda_h}q_h^{\ell+r}$ before separating the two equally likely bits. Section~\ref{sec:super} bounds the first-order error by a summable polynomial in $K$ times $(2e^{-a})^K$. The same remains true after multiplication by any fixed power of $K$. Normalizing gives the stated total variation and moment bounds, and summing the two independent size series gives \eqref{eq:defectpgf}.
+\end{proof}
+Equivalently, on each side the number of runs is geometric on $\{0,1,\ldots\}$ with ratio $q/(1-q)$; conditional on that number, run lengths are independent with probabilities $(1-q)q^{s-1}$, $s\ge1$. Literal boundary bits are constrained by the central bit; independence concerns outward compositions or boundaries encoded relative to it.
+
+\begin{theorem}[Critical square-root defect]\label{thm:law-critical}
+If $t_h\to t\in\R$, then $K/\sqrt h$ converges in distribution, and in every fixed nonnegative integer moment, to $X_t$ with density
+\begin{equation}\label{eq:density}
+p_t(x)=\frac{x e^{-tx-Lx^2/2}}{G(t)},\qquad x>0.
+\end{equation}
+Jointly the boundary lengths satisfy
+\begin{equation}\label{eq:jointdensity}
+(\ell/\sqrt h,r/\sqrt h)\ \Longrightarrow\ (U_t,V_t),\qquad
+p(u,v)=\frac{e^{-t(u+v)-L(u+v)^2/2}}{G(t)},\quad u,v>0.
+\end{equation}
+Thus $\ell/K$ converges to a uniform variable on $[0,1]$, independent of $K/\sqrt h$ and the fair central bit. At $t=0$, $X_0$ is Rayleigh with density $Lxe^{-Lx^2/2}$.
+\end{theorem}
+\begin{proof}
+The leading marked weight is $(k+3)f_t(k/\sqrt h)$ and its total is asymptotic to $hG(t)$. Riemann sums give \eqref{eq:density}. The Gaussian bounds from Section~\ref{sec:criticalproof}, also valid with a fixed polynomial multiplier and a bounded spectral factor, give the asserted moment convergence for the true weights. For a given $k\ge2$, each interior split $1\le\ell\le k-1$ has multiplicity $2^{k-1}$; each endpoint split has twice this multiplicity. The endpoints have total mass $\Oh(h^{-1/2})$. The interior two-dimensional Riemann sum gives \eqref{eq:jointdensity}. Transforming $(u,v)$ to $(x=u+v,z=u/(u+v))$ introduces Jacobian $x$ and factorizes the density as $p_t(x)\,dz$.
+\end{proof}
+
+\begin{theorem}[Subcritical linear defect and Gaussian run]\label{thm:law-sub}
+If $\lambda_h\to\lambda\in(0,L)$, then
+\begin{equation}\label{eq:sub-law}
+\frac{M_h}{h}\ \longrightarrow\ \frac\lambda L\quad\hbox{in probability},\qquad
+\frac{M_h-w/L}{\sqrt h}\ \Longrightarrow\ N\left(0,\frac\lambda{L^2}\right).
+\end{equation}
+The fraction $\ell/(h-M_h)$ converges to a uniform variable on $[0,1]$, independent of the Gaussian limit and central bit. All other runs have maximum $\Oh(\log h)$ with probability tending to one.
+\end{theorem}
+\begin{proof}
+The saddle for $j=m+1$ in \eqref{eq:Sj} is $j=w/L$, and the smooth prefactor $h-j+4$ changes its location by only $\Oh(1)$. Taylor expansion of $w\log j-Lj$ at the saddle has quadratic term $-L^2(j-w/L)^2/(2w)$. Standard Gaussian localization follows directly from the strict concavity of this exponent on a fixed proportional neighborhood of the saddle, with exponentially small complementary tails. This proves \eqref{eq:sub-law}; replacing $j$ by $m=j-1$ affects the scaled center by $o(1)$. The uniform-split calculation is the same as above, with $k$ now proportional to $h$, so endpoint mass tends to zero. Conditional on a boundary length, all its compositions are equally likely; their cuts are independent fair choices among the internal positions. A union bound gives probability at most $Ch2^{-v}$ for any noncentral run to have length at least $v$. Taking $v$ a sufficiently large multiple of $\log h$ proves the last assertion for the marked measure, and total variation transfer proves it for placements.
+\end{proof}
+The transition is between linear, square-root, and finite defect scales. A unique macroscopic run persists for every fixed positive aspect ratio; it does not disappear in the subcritical regime.
+
+\section{Floors and exact parameter conventions}\label{sec:floors}
+For a fixed $0<\lambda<L$, write $w=\lfloor\lambda h\rfloor=\lambda h+d_h$ with $-1<d_h\le0$. Since $\Phi'(\lambda)=\log(\lambda/L)$,
+\begin{equation}\label{eq:subfloor}
+\frac{A(h,w)}{h^w}=h^{3/2}B(\lambda)e^{h\Phi(\lambda)}
+\left(\frac\lambda L\right)^{d_h}\bigl(1+\Oh(h^{-1})\bigr).
+\end{equation}
+Discarding the factor $(\lambda/L)^{d_h}$ is not generally an asymptotic equivalent.
+
+For fixed $\lambda>L$, the cleanest all-order statement is to keep $\lambda_h$ in \eqref{eq:super}. At the first two orders, Taylor expansion with $w=\lambda h+d_h$ gives
+\begin{align}\label{eq:superfloor}
+\frac{A(h,w)}{h^w}
+=C(\lambda)\biggl[1&+\frac{c_1+d_hC'/C}{h}\notag\\
+&+\frac{c_2+d_hc_1'+d_h(C'/C)c_1+(d_h^2/2)C''/C}{h^2}
++\Oh(h^{-3})\biggr],
+\end{align}
+where every unmarked function and derivative on the right is evaluated at $\lambda$. Uniformity holds for bounded $d_h$, including floor sequences. In particular replacing $C(\lambda_h)$ by $C(\lambda)$ preserves the leading equivalent, but not all higher coefficients.
+
+For a critical floor sequence $w=\lfloor Lh+t\sqrt h\rfloor$, put $d_h=w-Lh-t\sqrt h$. The actual parameter is $t_h=t+d_h/\sqrt h$. Theorem~\ref{thm:critical} and Taylor expansion yield the floor-aware formula
+\begin{equation}\label{eq:criticalfloor}
+\frac{A(h,w)}{h^w}
+=hG(t)+\sqrt h\,[H(t)+d_hG'(t)]
++J(t)+d_hH'(t)+\frac{d_h^2}{2}G''(t)+\Oh_T(h^{-1/2}).
+\end{equation}
+All derivatives exist and are bounded on compact intervals by their Gaussian-integral representations. Even the coefficient of $\sqrt h$ oscillates with the floor. For $t=0$, the center values in \eqref{eq:center} must therefore be combined with these derivative terms before making a next-order assertion about $\lfloor Lh\rfloor$.
+
+\section{Lambert W inversion along rational rays}\label{sec:inverse}
+Fix positive integers $p,q$ and set
+\[
+\lambda=p/q,\qquad a_n=A(qn,pn),\qquad n\ge1.
+\]
+A rational $p/q$ cannot equal $\log2$, so the ray is in one of the two fixed regimes. Define
+\begin{equation}\label{eq:inversedata}
+\begin{split}
+\beta&=\begin{cases}3/2,&\lambda<L,\\0,&\lambda>L,\end{cases}
+\qquad b=p\log q+q\Phi(\lambda),\\
+D&=\begin{cases}q^{3/2}B(\lambda),&\lambda<L,\\C(\lambda),&\lambda>L.
+\end{cases}
+\end{split}
+\end{equation}
+The forward theorems give
+\begin{equation}\label{eq:logray}
+\log(a_n/D)=pn\log n+bn+\beta\log n+\Oh(n^{-1}).
+\end{equation}
+This proves eventual strict increase: the main consecutive difference is $p\log n+\Oh(1)$ and the difference of two individually $\Oh(1/n)$ errors is still $\Oh(1/n)$.
+
+For a sufficiently large target $y$, put $Y=\log(y/D)$ and $d=b/p$. Let $W_0$ be the positive real Lambert $W$ branch and set
+\begin{equation}\label{eq:Lambert}
+N=\frac{Y/p}{W_0(e^dY/p)}.
+\end{equation}
+Then $pN\log N+bN=Y$: setting $z=e^dN$ reduces the equation to $z\log z=e^dY/p$. Let $t=t(y)$ be the unique sufficiently large solution of
+\begin{equation}\label{eq:inverseg}
+g(t)=pt\log t+bt+\beta\log t=Y.
+\end{equation}
+Its derivative is $p(\log t+1+d)+\beta/t>0$ for large $t$, and
+\begin{equation}\label{eq:rootapprox}
+t=N-\frac{\beta\log N}{p(\log N+1+d)}+\Oh\left(\frac1{N\log N}\right).
+\end{equation}
+Indeed the displayed displacement is $\Oh(1)$ and cancels $\beta\log N$ against the linear term of $pt\log t+bt$. The remaining residual is $\Oh(1/N)$, and division by a derivative of order $\log N$ proves the error. When $\beta=0$, $t=N$ exactly.
+
+\begin{theorem}[Integer first-crossing bracket]\label{thm:inverse}
+For the fixed ray define $\nu(y)=\min\{n\ge1:a_n\ge y\}$. There are constants $K,y_0>0$, depending on $p,q$, such that for $y\ge y_0$, with
+\[
+\eta(y)=\frac{K}{t(y)(1+\log t(y))},
+\]
+we have
+\begin{equation}\label{eq:ceil}
+\lceil t(y)-\eta(y)\rceil\le\nu(y)\le\lceil t(y)+\eta(y)\rceil.
+\end{equation}
+The bracket eventually contains at most two adjacent integer candidates.
+\end{theorem}
+\begin{proof}
+By \eqref{eq:logray}, $|\log(a_n/D)-g(n)|\le K_0/n$ beyond a fixed index. On a unit neighborhood of $t$, $g'$ is bounded below by a positive multiple of $1+\log t$. For sufficiently large $K$, the changes of $g$ from $t$ to $t\pm\eta$ dominate the possible $K_0/n$ errors. More explicitly, the integer $\lceil t-\eta\rceil-1$ is strictly below the target and $\lceil t+\eta\rceil$ is at or above it, by this derivative bound; both are within a fixed neighborhood of $t$. Eventual monotonicity then bounds every other large integer. Finally $y$ eventually exceeds every value in the finite initial segment. This proves the first-crossing assertion, including equality targets. Since $2\eta\to0$, the two ceiling endpoints differ by at most one eventually.
+\end{proof}
+The constants and onset in this theorem are asymptotic existence constants. The statement alone is not a certified finite-input algorithm. Near an exact threshold, exact comparison of the remaining integer candidates is necessary; there is no justified unconditional single-ceiling rule. The uncertainty in \eqref{eq:rootapprox} is a real interval before rounding, not a vanishing real error for the integer $\nu(y)$.
+
+\subsection{Higher-order inverse above the transition}
+For $\lambda>L$, let
+\[
+\ell_j(\lambda)=[u^j]\log\left(\sum_{r\ge0}c_r(\lambda)u^r\right).
+\]
+For each fixed $M$,
+\begin{equation}\label{eq:lograyM}
+\log(a_n/D)=pn\log n+bn+
+\sum_{j=1}^M\frac{\ell_j(\lambda)}{q^jn^j}+\Oh_M(n^{-M-1}).
+\end{equation}
+Let $t_M$ solve the truncated smooth equation at target $Y$. The same proof gives a ceiling bracket around $t_M$ of half-width
+\[
+\Oh_M\left(\frac{t_M^{-M-1}}{1+\log t_M}\right),
+\]
+with fixed sufficiently large implicit constants. For $M=1$, put $\alpha_1=c_1(\lambda)/q$. The exact root of the first-order truncated equation satisfies
+\begin{equation}\label{eq:t1}
+t_1=N-\frac{\alpha_1}{pN(\log N+1+d)}
++\Oh\left(\frac{N^{-3}}{(\log N)^2}\right).
+\end{equation}
+Substitution leaves a residual $\Oh(N^{-3}/\log N)$ in that truncated equation. Its derivative is of order $\log N$, proving the displayed error. The discrete bracket has the larger half-width $\Oh(N^{-2}/\log N)$ because the forward logarithmic remainder is $\Oh(n^{-2})$.
+
+Rational rays keep the dimensions integral without a changing fractional-part correction. These inverse assertions do not silently cover arbitrary sequences $w=\lfloor\lambda h\rfloor$, nor a nominal critical ray. Those require separate treatment of their lattice oscillations.
+
+\appendix
+\section{Exact fixed height spectral structure}\label{sec:structure}
+This appendix concerns an exact family already studied by Kot\v{e}\v{s}ovec and Alekseyev. In particular, Kot\v{e}\v{s}ovec's Conjecture 2 on p.~83, dated 15 September 2011, explicitly proposes maximal irreducible degree $\lfloor h/2\rfloor+1$ for the planar and horizontally cylindrical families; the accompanying discussion records cylindrical checks through $h=20$ by Alekseyev \cite[pp.~82--83]{Kotesovec}. The following argument proves the cylindrical upper bound and equality at infinitely many heights. It does not prove equality for every height or the planar conjecture, and does not establish whether these consequences were already proved elsewhere.
+
+For fixed $h\ge1$ write
+\[
+\mathcal F_h(z)=\sum_{w\ge1}A(h,w)z^w.
+\]
+The Gram representation \eqref{eq:gram} gives a finite set $\mathcal R_h$ of distinct positive real algebraic integers and positive integer weights $a_h(\rho)$ with
+\begin{equation}\label{eq:spectralpowers}
+A(h,w)=\sum_{\rho\in\mathcal R_h}a_h(\rho)\rho^w,\qquad
+\mathcal F_h(z)=\sum_{\rho\in\mathcal R_h}a_h(\rho)\frac{\rho z}{1-\rho z}.
+\end{equation}
+Complementing the word swaps the two colors and transposes $C_b$ up to reorderings. Its nonzero singular-value squares and multiplicities are unchanged. No word equals its bitwise complement when $h\ge1$, so every weight $a_h(\rho)$ is a positive even integer.
+
+Each $\rho$ produces a nonzero simple pole at $z=1/\rho$, and all other terms are analytic there. Thus no spectral parameter cancels, and the minimal denominator is squarefree over characteristic zero. This proves the assertion recorded explicitly as Kot\v{e}\v{s}ovec's Conjecture 1, dated 29 August 2011, on p.~83 \cite{Kotesovec}; the source records Alekseyev's checks through $h=20$. We do not claim this is its first proof. The characteristic polynomial of each integer Gram matrix is integral, so algebraic conjugates occur with equal multiplicity. Summing over words shows that $a_h(\rho)$ is constant on each conjugacy class. Every conjugate is a nonnegative real Gram eigenvalue; nonzero conjugates are strictly positive. These observations explain the simple-factor and equal-coefficient patterns discussed on pp.~178--180 of the book; no new-priority claim is attached to that explanation.
+
+If $b$ has $n_0$ zero edges and $n_1$ one edges, then $C_b$ has size $(n_1+1)\times(n_0+1)$. Either Gram matrix has the same nonzero spectrum. Choosing the smaller one proves
+\begin{equation}\label{eq:degree}
+\deg_{\Q}(\rho)\le\min(n_0+1,n_1+1)\le\left\lfloor\frac{h+2}{2}\right\rfloor
+=\left\lfloor\frac h2\right\rfloor+1.
+\end{equation}
+Hence every irreducible factor of the minimal fixed-height recurrence polynomial, equivalently the reversed minimal generating-function denominator, has degree at most this bound. It is stronger than the $h+1$ bound credited to Alekseyev on p.~178, and matches the upper-bound portion of the earlier explicit conjecture on p.~83. The comparison to both passages is essential.
+
+The bound is attained for infinitely many heights. Take $h=p-3$, where $p\ge5$ is an odd prime, and choose an alternating word. Its tree is the path on $p-1$ vertices, whose largest squared adjacency eigenvalue is
+\[
+\rho=4\cos^2\left(\frac\pi p\right)=2+2\cos\left(\frac{2\pi}p\right).
+\]
+For a primitive $p$th root of unity $\zeta$, $[\Q(\zeta):\Q]=p-1$ and $\zeta$ satisfies $X^2-(\zeta+\zeta^{-1})X+1$ over the real subfield. Since $\zeta$ is nonreal, that quadratic extension has degree exactly two. Thus
+\[
+\deg_{\Q}(\rho)=\frac{p-1}{2}=\left\lfloor\frac{h+2}{2}\right\rfloor.
+\]
+The positive spectral weight prevents cancellation of this irreducible factor. Infinitely many primes give infinitely many equality heights.
+
+For context, the fixed-height leading law is also transparent. Every $C_b$ has $h+1$ entries equal to one, so its squared norm is at most $h+1$. Equality forces rank one, since its squared singular values sum to $h+1$. A connected zero-one rank-one incidence graph is complete bipartite, and a complete bipartite tree is a star. Here that means $b$ is constant. The two constant words each give the eigenvalue $h+1$ once; every nonconstant word has smaller top eigenvalue. Therefore, for fixed $h$,
+\[
+A(h,w)\sim2(h+1)^w\qquad(w\to\infty),
+\]
+recovering the prior law on p.~192. This limit holds in a different parameter regime from Theorems~\ref{thm:phases} and~\ref{thm:critical}.
+
+\section{Small cases and independent verification}\label{sec:checks}
+The first exact rectangle is
+\begin{center}\small
+\begin{tabular}{r|rrrrrr}
+\toprule
+$h\backslash w$&1&2&3&4&5&6\\\midrule
+1&4&8&16&32&64&128\\
+2&12&32&90&256&732&2102\\
+3&32&100&344&1220&4392&15988\\
+4&80&276&1082&4460&18890&81606\\
+5&192&708&3036&13932&66532&327192\\
+6&448&1732&7918&39316&205628&1118398\\\bottomrule
+\end{tabular}
+\end{center}
+For example $A(1,2)=8$ but $A(2,1)=12$. The diagonal is $4,32,344,4460,66532,1118398$, in agreement with A137432.
+
+Several formulas can be derived without asymptotic arguments:
+\begin{align}
+A(h,1)&=(h+1)2^h,\label{eq:tiny1}\\
+A(1,w)&=2^{w+1},\label{eq:tiny2}\\
+A(h,2)&=(5h-3)2^h+4,\label{eq:tiny3}\\
+A(2,w)&=2\left[3^w+\left(\frac{3+\sqrt5}{2}\right)^w+
+                       \left(\frac{3-\sqrt5}{2}\right)^w\right].\label{eq:tiny4}
+\end{align}
+For \eqref{eq:tiny1}, choose $h$ nonadjacent occupied rows from a path of $2h$ rows, in $h+1$ ways, and choose either column for each king. For \eqref{eq:tiny2}, the occupied columns alternate around the even cycle in two ways, and each of the $w$ kings can use either row. For \eqref{eq:tiny3}, the trace $\tr(M_b^2)$ counts ordered threshold pairs. An unequal pair $u<v$ is allowed in both directions precisely when its interval of $v-u$ letters is constant. Thus
+\[
+A(h,2)=2^h(h+1)+4\sum_{j=1}^h(h+1-j)2^{h-j}=(5h-3)2^h+4.
+\]
+For \eqref{eq:tiny4}, two constant words contribute $3^w$ each; the other two have spectrum $0,(3+\sqrt5)/2,(3-\sqrt5)/2$. The conjugate power sum is also computable entirely in integers by $s_0=2,s_1=3,s_w=3s_{w-1}-s_{w-2}$.
+
+\subsection{What the companion checks establish}
+The package contains independently written standard-library verification code. The direct geometric method enumerates legal masks in a physical row of cyclic width $2w$, requiring no adjacent cyclic bits. A mask $s$ is compatible with a previous mask $p$ when $p$ avoids $s$ and both cyclic one-step shifts of $s$. Dynamic programming through $2h$ rows tracks the largest king number and the number of ways attaining it. This method does not use the binary-run or tree encoding.
+
+A separate implementation constructs every $M_b$ directly from monotonicity of threshold intervals and sums exact integer traces. The companion compares these methods on a bounded rectangle, adds direct subset enumeration on tiny boards, checks $M_b=E_0E_1$, and verifies the Gram/tree trace identity on bounded instances. Marked-run multiplicities and the summed first branch moment are checked by exhaustive finite-word enumeration. Exact symbolic arithmetic checks the first two supercritical corrections and the critical Taylor and endpoint identities. These are finite checks supporting the derivation, not a proof of its asymptotic estimates.
+
+Star-sum residuals are explicitly labeled as diagnostics for $S(h,w)$ or its base critical sum. A real formal exponent $w=Lh$ may be used there to isolate coefficient arithmetic; it is never presented as an exact king count. In particular a diagnostic convergence to $J(0)-4$ tests the star constant only. The true count requires the separately proved spectral correction $4LG(0)=4$.
+
+The README states bounded default and extended modes, prerequisites, output paths, and limitations. The build and verification commands run in a fresh output directory, test the code with normal Python and with optimization enabled, compile the report, and record and verify file hashes. The source package uses an explicit allowlist; downloaded books, papers, and research working files are not redistributed. Numerical residual checks do not constitute interval-certified error constants.
+
+\section{Sources scope and further questions}\label{sec:sources}
+The principal exact-family source is Kot\v{e}\v{s}ovec's sixth edition \cite{Kotesovec}, particularly pp.~82--83 and Section 2.6, pp.~169--196. Its p.~169 explicitly fixes the open dimension and lets the wrapped dimension grow; pp.~169--192 display exact formulas, recurrence and generating-function factorizations, and spectral power sums. Page 192 gives the fixed-height leading equivalent, and p.~193 tabulates leading and subleading roots. Page 178 credits Alekseyev's September 2011 factor-generation method and a degree bound, while the earlier p.~83 gives the sharper explicit conjecture discussed in Appendix~\ref{sec:structure}. The linked Zealint discussion was not recovered in the bounded review \cite{Zealint}; its unavailability is a gap in historical coverage, not evidence about its contents or about priority.
+
+Matsuo supplies the binary-word and cyclic-height encoding and an $\Oh(n^4)$ multiprecision-operation algorithm in the square setting \cite{Matsuo}. Wilf's earlier planar transfer-matrix analysis provides a related block-decomposition antecedent \cite{Wilf}. Planar maximum-density asymptotics in Wilf and Larsen \cite{Wilf,Larsen}, and the later planar enumeration of Brown \cite{Brown}, have different boundary conditions. They should not be identified with the cylindrical joint-limit theorem. Likewise a cylinder problem with exactly one king in each row and column is a different density constraint.
+
+The aspect-ratio transition and joint-limit laws in this report were not located in the primary materials inspected. This is a bounded comparison, not an exhaustive priority certification. Exact fixed-height enumeration, the square leading constant, and broad transfer-matrix ideas are established antecedents. The structural appendix is framed as a consequence of the exact representation with explicit credit to the prior conjecture, not as a claim of a newly proposed bound. No external publication, OEIS edit, author contact, or public repository modification is part of this report.
+
+Several questions remain beyond the theorems proved here:
+\begin{enumerate}[leftmargin=1.6em]
+\item Determine the intermediate regimes as $\lambda_h\to0$. The present uniform theorem requires a positive lower bound on $w/h$, and its one-macroscopic-run argument does not by itself cover the transition to fixed or slowly growing width.
+\item Extend the critical expansion with effective uniform remainders to growing $|t_h|$, and determine maximal matching ranges with the two fixed-regime expansions. The large-$|t|$ formulas for $G$ alone do not answer this.
+\item Make the error constants and onsets effective, especially for the integer inverse brackets. This would turn the asymptotic brackets into certified finite-input threshold tools.
+\item Derive subcritical corrections beyond the relative $\Oh(h^{-1})$ equivalent. The marked-star sum is explicit, but averaging the spectral perturbation with a long, extensive boundary needs additional coefficient analysis.
+\item Resolve the exact maximal degree at every cylindrical height and locate any earlier complete proof of the 2011 conjecture. The infinitely many equality heights proved here do not settle the every-height assertion or its planar counterpart.
+\end{enumerate}
+
+\begin{thebibliography}{9}
+\bibitem{Kotesovec}V. Kot\v{e}\v{s}ovec, \emph{Non-attacking Chess Pieces}, sixth edition, 2013, especially pp.~82--83, 169--196, and 209--210. Author PDF: \url{http://www.kotesovec.cz/books/kotesovec_non_attacking_chess_pieces_2013_6ed.pdf}.
+\bibitem{OEIS}The OEIS Foundation, \emph{A137432}, maximum placements on the square horizontal cylinder. The leading equivalent is credited to V. Kot\v{e}\v{s}ovec, 29 July 2023, updated 18 March 2024. \url{https://oeis.org/A137432}.
+\bibitem{RectOEIS}The OEIS Foundation, fixed-height cylindrical families, including \href{https://oeis.org/A194644}{A194644}, \href{https://oeis.org/A194647}{A194647}, and \href{https://oeis.org/A195656}{A195656}. For the latter, primary data also at \url{https://github.com/oeis/oeisdata/blob/main/seq/A195/A195656.seq}.
+\bibitem{Matsuo}R. Matsuo, \emph{OEIS calculation, A137432}, binary/height encoding and exact algorithm, primary repository. \url{https://github.com/windows-server-2003/OEIS_calculation/tree/master/contents/A137432}.
+\bibitem{Zealint}A. M. Karavaev, linked Zealint cylindrical-kings discussion, 2011. Cited by the book and A195656; full discussion inaccessible during this source review. \url{http://zealint.ru/koroli-na-cilindricheskoj-doske-predlozhenie.html}.
+\bibitem{Wilf}H. S. Wilf, \emph{The Problem of the Kings}, Electronic Journal of Combinatorics 2 (1995), R3. \url{https://www.combinatorics.org/ojs/index.php/eljc/article/view/v2i1r3}.
+\bibitem{Larsen}M. Larsen, \emph{The Problem of Kings}, Electronic Journal of Combinatorics 2 (1995), R18. \url{https://www.combinatorics.org/ojs/index.php/eljc/article/download/v2i1r18/pdf}.
+\bibitem{Brown}T. Muldoon Brown, \emph{Maximum arrangements of nonattacking kings on the $2n\times2n$ chessboard}, arXiv:2111.10331; published 2025. \url{https://arxiv.org/abs/2111.10331}.
+\end{thebibliography}
+\end{document}

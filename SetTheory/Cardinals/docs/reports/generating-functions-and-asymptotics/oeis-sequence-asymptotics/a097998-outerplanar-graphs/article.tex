@@ -1,0 +1,921 @@
+\newcommand{\DoNotLoadEpstopdf}{}
+\pdfinfoomitdate=1
+\pdftrailerid{}
+\pdfsuppressptexinfo=-1
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage[margin=1in]{geometry}
+\usepackage{booktabs,array,microtype,longtable}
+\usepackage[hidelinks]{hyperref}
+\hypersetup{pdftitle={Report 170 Labeled outerplanar graph expansions},pdfauthor={},pdfsubject={Exact coefficients component refinements and safe inversion for A097998 and A098000}}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{1.2em}
+\setlength{\emergencystretch}{3em}
+\setcounter{tocdepth}{1}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\CC}{\mathbb C}
+\newcommand{\QQ}{\mathbb Q}
+\newcommand{\NN}{\mathbb N}
+\newcommand{\EE}{\mathbb E}
+\newcommand{\Rea}{\operatorname{Re}}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\Pois}{\operatorname{Poisson}}
+\newcommand{\TV}{d_{\mathrm{TV}}}
+\newcommand{\ceil}[1]{\left\lceil #1\right\rceil}
+\title{Labeled outerplanar graph expansions\\\large Exact coefficients component refinements and safe inversion}
+\author{Report 170}
+\date{3 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+Let $c_n$ and $g_n$ count connected and arbitrary outerplanar simple
+graphs on the fixed label set $[n]$, respectively. These are the
+positive-index terms of OEIS A097998 and A098000. Starting with the
+classical block decomposition, we give an explicit finite algebraic
+rule for every fixed-order correction to
+\[
+ c_n\sim A n!\rho^{-n}n^{-5/2},\qquad
+ g_n\sim e^\nu A n!\rho^{-n}n^{-5/2},
+\]
+and evaluate the first four corrections. An exact component-marked
+coefficient identity leads to a uniform complex-parameter saddle proof
+with a Gaussian-integrable remainder and no logarithmic loss.
+
+For the component count $K_n$ we obtain second-order expansions of its
+mean, variance, and connectivity probability, and prove
+\[
+ \TV\bigl(\mathcal L(K_n),\mathcal L(1+\Pois(\nu+5\tau/(2n)))\bigr)
+ =O(n^{-2}).
+\]
+A logarithmic expansion gives a Lambert-$W$ starting point and a
+rounding-safe, two-ceiling enclosure for the generalized inverse.
+The companion supplies exact recurrences, algebraic certificates,
+literal small-graph enumeration, independent formal coefficient
+checks, and bounded regression tests.
+
+The leading equivalents and limiting shifted-Poisson law are established
+results. General subcritical graph theory already implies fixed-order
+expansions. This report is an explicit specialization and reproducible
+refinement, without a worldwide-priority claim. Decimal evaluations are
+not certified intervals; inverse error constants and starting thresholds
+are existential rather than evaluated.
+\end{abstract}
+\clearpage
+\tableofcontents
+\bigskip
+
+\section{Objects conventions and scope}
+
+An outerplanar graph is an abstract simple graph that admits a planar
+embedding with all its vertices on the unbounded face. We count each
+edge set on $[n]=\{1,\ldots,n\}$ once, regardless of the number of its
+embeddings. Neither plane maps nor unlabelled isomorphism classes are
+being counted.
+
+For $n\geq1$, put $c_n=\mathrm{A097998}(n)$, and for $n\geq0$ put
+$g_n=\mathrm{A098000}(n)$ \cite{oeisconn,oeisall}. The initial terms are
+\[
+\begin{array}{c|rrrrrr}
+n&0&1&2&3&4&5\\\hline
+c_n\text{ in the EGF}&0&1&1&4&37&602\\
+g_n&1&1&2&8&63&893
+\end{array}
+\]
+The OEIS connected sequence conventionally prepends $1$ at index zero.
+That convention is not used in the connected exponential generating
+function (EGF):
+\begin{equation}\label{eq:egfs}
+ C(z)=\sum_{n\geq1}c_n\frac{z^n}{n!},\qquad
+ G(z)=\sum_{n\geq0}g_n\frac{z^n}{n!}=e^{C(z)}.
+\end{equation}
+Including the prepended term in $C$ would incorrectly multiply $G$ by
+$e$. A block means a 2-connected outerplanar graph on at least three
+vertices, or the single edge $K_2$. There is no singleton block.
+
+Bodirsky and Kang develop exact labeled enumeration and sampling
+\cite{bk}; Bodirsky, Gim\'enez, Kang, and Noy (BGKN) establish the leading
+count equivalents and the limiting component law \cite{bgkn}. Kang's
+thesis also supplies the correct analytic amplitude relation
+\cite{kang}. The analytic framework for labeled subcritical graph
+classes includes this family \cite{subcritical}. We retain these
+attributions throughout. The useful content here is the finite exact
+coefficient generator, four computed corrections, explicit finite-size
+component refinements, a direct complete remainder proof, and the
+integer-safe inverse construction.
+
+Every asymptotic assertion below takes its order $J$ or $m$ fixed before
+$n$ tends to infinity. No convergence of the resulting infinite formal
+series is asserted. Uniformity in a marker means uniformity on each
+fixed compact subset of $\CC$, not for markers growing with $n$.
+
+\section{Exact block and marked identities}
+
+\subsection{Block generating function}
+Let $B$ be the block EGF and write $b=B'$. The classical polygon-dissection
+normalization gives
+\begin{equation}\label{eq:block}
+ b(u)=\frac{1+5u-\sqrt{1-6u+u^2}}8,\qquad B(u)=\int_0^u b(t)\dd t.
+\end{equation}
+The square root is the branch equal to $1$ at zero. In particular,
+\begin{equation}\label{eq:blockseries}
+ b(u)=u+\frac{u^2}{2}+\frac{3u^3}{2}
+          +\frac{11u^4}{2}+\frac{45u^5}{2}+O(u^6).
+\end{equation}
+For a 2-connected outerplanar graph with $n\geq3$, its outer Hamilton
+cycle is unique. There are $(n-1)!/2$ unoriented Hamilton cycles on the
+fixed labels, and for each cycle the allowable chords are polygon
+dissections. Thus the dissection count is multiplied by $(n-1)!/2$,
+not by the number of plane embeddings. The edge $K_2$ supplies the
+linear term $u$ in $b$ separately \cite{bk}.
+
+For an independent recurrence formulation, let
+\[
+ S(u)=1+uS(u)+uS(u)^2=1+2u+6u^2+22u^3+90u^4+\cdots.
+\]
+The branch with constant term $1$ is
+$S=(1-u-\sqrt{1-6u+u^2})/(2u)$, and
+$b=u+u(S-1)/4$. This also checks \eqref{eq:blockseries}. For example,
+there are nine 2-connected outerplanar graphs on four labels, so the
+coefficient of $u^3$ in $b$ is $9/3!=3/2$.
+
+\subsection{Rooting and integration}
+Define the vertex-rooted connected EGF $T=zC'(z)$. The rooted block
+set decomposition and subsequent integration give
+\begin{equation}\label{eq:rooted}
+ T=z\exp(b(T)),\qquad C(z)=\psi(T(z)),\qquad
+ \psi(u)=u-ub(u)+B(u).
+\end{equation}
+Indeed $\psi'(u)=1-ub'(u)$, and
+$\dd z/z=(1/u-b'(u))\dd u$ under $z=u e^{-b(u)}$.
+Both sides of $C=\psi(T)$ vanish at zero. Lagrange inversion applied
+to $T$ therefore gives the exact connected coefficient identity
+\begin{equation}\label{eq:connexact}
+ \frac{c_n}{n!}=\frac1{n^2}[u^{n-1}]e^{nb(u)},\qquad n\geq1.
+\end{equation}
+
+The component-marked polynomial is
+\begin{equation}\label{eq:fn}
+ f_n(v)=n![z^n]e^{vC(z)}.
+\end{equation}
+For $n\geq1$, $f_n(1)=g_n$, $f_n(0)=0$, and $f_n'(0)=c_n$.
+For a uniformly chosen graph counted by $g_n$, the probability generating
+function (PGF) of its number $K_n$ of components is $f_n(v)/g_n$.
+
+\begin{proposition}[Exact marked cancellation]\label{prop:marked}
+For every $n\geq1$ and every complex $v$,
+\begin{equation}\label{eq:marked}
+ \frac{f_n(v)}{n!}=\frac{v}{n^2}[u^{n-1}]
+ e^{v\psi(u)}\bigl(1+vu\psi'(u)\bigr)e^{nb(u)}.
+\end{equation}
+\end{proposition}
+\begin{proof}
+Lagrange inversion initially gives
+$(v/n)[u^{n-1}]e^{v\psi}\psi'e^{nb}$. Set
+$A_v(u)=e^{v\psi(u)}$ and $E(u)=e^{nb(u)}$. Coefficient differentiation
+implies
+\[
+ (n-1)[u^{n-1}]A_vE
+  =[u^{n-1}]u(A_v'+nb'A_v)E.
+\]
+Rearranging, and using $A_v'=v\psi'A_v$, gives
+\[
+ [u^{n-1}]A_vE(1-ub')
+   =\frac1n[u^{n-1}]A_vE(1+vu\psi').
+\]
+Since $\psi'=1-ub'$, this proves \eqref{eq:marked}.
+\end{proof}
+
+The cancellation removes an amplitude that vanishes at the saddle.
+Keeping its exact extra factor $1/n$ is essential for the unrooted
+exponent $n^{-5/2}$ and its amplitude. No asymptotic approximation has
+been used in these identities.
+
+\section{Saddle constants and exact coefficient generator}
+
+Let $R=3-2\sqrt2$, the positive branch singularity of $b$.
+The nonnegative coefficients of $b$ show that $ub'(u)$ is strictly
+increasing from zero to infinity on $(0,R)$. There is a unique
+$\tau\in(0,R)$ with
+\begin{equation}\label{eq:saddle}
+ \tau b'(\tau)=1.
+\end{equation}
+Equivalently, it is the root in $(0.17076,0.17077)$ of
+\begin{equation}\label{eq:quartic}
+ 3\tau^4-28\tau^3+70\tau^2-58\tau+8=0
+\end{equation}
+that satisfies the unsquared equation \eqref{eq:saddle}. The unsquared
+condition fixes the radical branch; merely squaring an equation is not
+a root-selection rule.
+
+Put
+\begin{equation}\label{eq:constants}
+ \rho=\tau e^{-b(\tau)},\quad \nu=\psi(\tau),\quad
+ D=u\frac{\dd}{\dd u},\quad \kappa_j=(D^jb)(\tau),\quad
+ A=\frac{\tau}{\sqrt{2\pi\kappa_2}}.
+\end{equation}
+Then $\kappa_1=1$ and $\kappa_2>0$. Useful approximate values are
+\[
+\begin{aligned}
+ \tau&=0.170764986812629023408139791998\ldots,\\
+ \rho&=0.136593733696039583904892236367\ldots,\\
+ \rho^{-1}&=7.32098005480462334884554918493\ldots,\\
+ \nu&=0.148886742687358857557744764544\ldots,\\
+ A&=0.00697609450712314901934080444574\ldots,\\
+ e^\nu A&=0.00809604747608070499620425650041\ldots.
+\end{aligned}
+\]
+These are numerical evaluations, not certified decimal intervals.
+The exact definitions are \eqref{eq:saddle}--\eqref{eq:constants}.
+
+At the selected root,
+\[
+ \sqrt{1-6\tau+\tau^2}=\frac{\tau(3-\tau)}{8-5\tau}.
+\]
+Consequently all the $\kappa_j$ belong to $\QQ(\tau)$. The correction
+coefficients below also lie in this field. The leading constant $A$
+itself includes the universal Gaussian factor $1/\sqrt{2\pi}$;
+$A\sqrt{2\pi}=\tau/\sqrt{\kappa_2}$ is algebraic. We do not call $A$
+an algebraic number.
+
+Define formal analytic germs at $t=0$ by
+\begin{align}
+ K(t)&=b(\tau e^t)=\sum_{j\geq0}\frac{\kappa_j}{j!}t^j,\label{eq:K}\\
+ Q(t)&=\psi(\tau e^t)-\nu,\qquad
+ Q'(t)=\tau e^t(1-K'(t)),\quad Q(0)=0,\label{eq:Q}\\
+ M_v(t)&=e^{t+vQ(t)}(1+vQ'(t)).\label{eq:M}
+\end{align}
+Here $Q(t)=O(t^2)$ and $M_v(0)=1$.
+Let $\EE$ denote the formal Gaussian moment operation on polynomials
+in $x$, determined by
+$\EE x^{2h}=(2h-1)!!$ and $\EE x^{2h+1}=0$, with $(-1)!!=1$.
+
+\begin{theorem}[All fixed orders with a complex marker]\label{thm:main}
+For every fixed $J\geq0$ and every compact $\mathcal K\subset\CC$,
+\begin{equation}\label{eq:main}
+ \frac{f_n(v)}{v e^{v\nu}A n!\rho^{-n}n^{-5/2}}
+ =\sum_{j=0}^{J}\frac{d_j(v)}{n^j}
+       +O_{\mathcal K,J}(n^{-J-1}),
+\end{equation}
+uniformly for $v\in\mathcal K$, with the removable value used at $v=0$.
+Here $d_0=1$, $d_j\in\QQ(\tau)[v]$, $\deg_v d_j\leq j$, and the exact
+finite coefficient rule is
+\begin{equation}\label{eq:generator}
+ d_j(v)=[\epsilon^{2j}]\EE\left[
+ M_v\left(\frac{i\epsilon x}{\sqrt{\kappa_2}}\right)
+ \exp\left\{\sum_{k\geq3}
+ \frac{\kappa_k(i x)^k\epsilon^{k-2}}
+      {k!\kappa_2^{k/2}}\right\}\right].
+\end{equation}
+Only $k\leq2j+2$ and amplitude powers at most $2j$ are needed.
+In particular,
+\begin{align}
+ c_n&=A n!\rho^{-n}n^{-5/2}
+ \left(\sum_{j=0}^{J}\frac{d_j(0)}{n^j}+O_J(n^{-J-1})\right),\label{eq:conna}\\
+ g_n&=e^\nu A n!\rho^{-n}n^{-5/2}
+ \left(\sum_{j=0}^{J}\frac{d_j(1)}{n^j}+O_J(n^{-J-1})\right).\label{eq:alla}
+\end{align}
+\end{theorem}
+
+For readers preferring a formula without a formal expectation, put
+$a_\ell(v)=[t^\ell]M_v(t)$. Sum over $\ell\geq0$ and nonnegative
+integers $m_k$, $3\leq k\leq2j+2$, satisfying
+\[
+ \ell+\sum_{k=3}^{2j+2}(k-2)m_k=2j.
+\]
+If $q=\ell+\sum k m_k$, then
+\begin{equation}\label{eq:finitesum}
+ d_j(v)=\sum
+ \frac{a_\ell(v)(-1)^{q/2}(q-1)!!}{\kappa_2^{q/2}}
+ \prod_{k=3}^{2j+2}\frac{(\kappa_k/k!)^{m_k}}{m_k!}.
+\end{equation}
+The constraint makes $q$ even. This is a finite algebraic formula for
+every coefficient and makes no reference to fitted count data.
+
+\section{Complete uniform saddle proof}
+
+\subsection{Exact contour and the unique dominant point}
+Cauchy's formula on $u=\tau e^{i\theta}$ transforms
+Proposition~\ref{prop:marked} into the exact identity
+\begin{equation}\label{eq:contour}
+ f_n(v)=\frac{n!v\tau e^{v\nu}\rho^{-n}}{n^2}
+ \frac1{2\pi}\int_{-\pi}^{\pi}M_v(i\theta)e^{n\Phi(\theta)}\dd\theta,
+\end{equation}
+where
+\[
+ \Phi(\theta)=K(i\theta)-K(0)-i\theta.
+\]
+Every power of $n$ and $\tau$ in \eqref{eq:contour} is exact. The extra
+$e^{i\theta}$ from extracting $[u^{n-1}]$ is the factor $e^t$ in $M_v$.
+
+Write $b(u)=\sum_{k\geq1}b_ku^k$. Since $b_k\geq0$ and $b_1=1$,
+\begin{equation}\label{eq:global}
+ \Rea\Phi(\theta)
+ =\sum_{k\geq1}b_k\tau^k(\cos(k\theta)-1)
+ \leq\tau(\cos\theta-1).
+\end{equation}
+On $[-\pi,\pi]$, this is strictly negative except at zero. Thus the
+whole integration circle has one dominant saddle. On closed arcs
+away from zero there is a fixed strictly negative bound.
+Also
+\[
+ \Phi(\theta)=-\frac{\kappa_2\theta^2}{2}+O(\theta^3),
+\]
+so there are fixed $\eta,c>0$ with
+$\Rea\Phi(\theta)\leq-c\theta^2$ for $|\theta|\leq\eta$.
+The amplitude is uniformly bounded for $v$ in each fixed compact set
+and $\theta\in[-\pi,\pi]$, because $\tau<R$ and its dependence on $v$
+is entire. These observations prove both global dominance and marker
+uniformity without invoking a $\Delta$-domain for $T(z)$.
+
+\subsection{An integrable remainder}
+Let $a=\sqrt{\kappa_2}$ and $\epsilon=n^{-1/2}$. On the central arc use
+\[
+ \theta=\epsilon x/a,\qquad |x|\leq\epsilon^{-1/5}.
+\]
+The angular cutoff is $\epsilon^{4/5}/a$, a fixed multiple of $n^{-2/5}$.
+Set
+\[
+ R_3(t)=K(t)-K(0)-t-\kappa_2t^2/2=t^3h(t),
+\]
+where $h$ is analytic in a fixed neighborhood of zero, and define
+\begin{align*}
+ S(s,x)&=s^{-2}R_3(isx/a)=s(ix/a)^3h(isx/a),\\
+ U_v(s,x)&=M_v(isx/a)e^{S(s,x)}.
+\end{align*}
+The value at $s=0$ is understood by analytic continuation. After leading
+normalization, the central integral is
+\begin{equation}\label{eq:central}
+ \frac1{\sqrt{2\pi}}
+ \int_{|x|\leq\epsilon^{-1/5}}e^{-x^2/2}U_v(\epsilon,x)\dd x.
+\end{equation}
+
+Fix $J$ and put $N=2J+2$. For $0\leq s\leq\epsilon$ on this arc,
+the arguments $isx/a$ lie in a fixed smaller disk of analyticity once
+$\epsilon$ is small. Uniform derivative bounds give
+\[
+ |S(s,x)|\leq C\epsilon|x|^3\leq C\epsilon^{2/5}\leq C,
+ \qquad |\partial_s^r S(s,x)|\leq C_r|x|^{r+2}\quad(1\leq r\leq N).
+\]
+For completeness, writing $w=ix/a$ shows the latter estimate directly:
+\[
+ \partial_s^r S=s w^{r+3}h^{(r)}(sw)
+                       +r w^{r+2}h^{(r-1)}(sw).
+\]
+The factor $s|w|$ is uniformly bounded. Similarly,
+$|\partial_s^rM_v(isx/a)|\leq C_{\mathcal K,r}|x|^r$.
+The product rule and the finite Bell-polynomial formula for derivatives
+of an exponential now imply
+\begin{equation}\label{eq:uderiv}
+ |\partial_s^r U_v(s,x)|\leq C_{\mathcal K,r}(1+|x|)^{3r},
+ \qquad 0\leq r\leq N.
+\end{equation}
+Indeed, a product of derivatives of $S$ whose derivative orders sum to
+$r$ has degree at most $r+2r=3r$ in this bound; derivatives of $M_v$
+do not increase it. The factor $e^S$ is bounded by $e^C$.
+
+Taylor's theorem in the real parameter $s$, with its integral remainder,
+therefore gives
+\begin{align}
+ U_v(\epsilon,x)&=\sum_{k=0}^{2J+1}p_k(v,x)\epsilon^k+E_n(v,x),
+ \label{eq:taylor}\\
+ |E_n(v,x)|&\leq C_{\mathcal K,J}\epsilon^{2J+2}(1+|x|)^{6J+6}.
+ \label{eq:remainder}
+\end{align}
+Keeping the polynomial inside the Gaussian integral yields
+\[
+ \int e^{-x^2/2}|E_n(v,x)|\dd x
+ \leq C'_{\mathcal K,J}\epsilon^{2J+2}.
+\]
+Thus there is no logarithmic loss. Taking the supremum of the polynomial
+on a growing interval before integrating would not give the required
+sharp estimate.
+
+Each $p_k$ has parity $k$ in $x$: an amplitude monomial has equal
+$x$- and $\epsilon$-degrees, while a phase monomial has degrees $q$
+and $q-2$. All odd terms integrate to zero on the symmetric interval.
+Extending each even polynomial integral to the real line incurs an
+error smaller than every fixed power of $\epsilon$. The omitted
+intermediate arc contributes at most a constant times
+\[
+ \epsilon^{-1}e^{-c'\epsilon^{-2/5}},
+\]
+and the distant arc contributes
+$O_{\mathcal K}(\epsilon^{-1}e^{-c''/\epsilon^2})$ after leading
+normalization. Both are smaller than every fixed power. Equations
+\eqref{eq:central}--\eqref{eq:remainder} prove \eqref{eq:main}, with
+\eqref{eq:generator} obtained by the finite Taylor multiplication.
+
+\subsection{Algebraic coefficients and marker degree}
+Since $Q'=\tau e^t(1-K')$ and $Q(0)=0$, all Taylor coefficients of $Q$
+lie in $\QQ(\tau)$. Gaussian moments supply rational factors; only even
+total powers of $x$ survive, so the square roots of $\kappa_2$ cancel.
+Hence $d_j(v)\in\QQ(\tau)[v]$.
+
+For $h\geq1$, the coefficient of $v^h$ in
+$e^{vQ}(1+vQ')$ starts at degree at least $2h-1$ in $t$, because
+$Q=O(t^2)$ and $Q'=O(t)$. Multiplication by $e^t$ does not lower that
+degree. To contribute to $\epsilon^{2j}$ requires $2h-1\leq2j$,
+which for integer $h$ gives $h\leq j$. This proves the degree bound.
+The proof of Theorem~\ref{thm:main} is complete.
+
+\section{Four corrections and independent coefficient checks}
+
+Set $d=d_1(0)$ and define
+\begin{align}
+ d&=-\frac1{2\kappa_2}+\frac{\kappa_3}{2\kappa_2^2}
+      +\frac{\kappa_4}{8\kappa_2^2}
+      -\frac{5\kappa_3^2}{24\kappa_2^3},\label{eq:d1}\\
+ t_2&=\tau\left(\frac1{\kappa_2}-\frac{\kappa_3}{3\kappa_2^2}\right).
+ \label{eq:t2}
+\end{align}
+Then the first two complete marker polynomials are
+\begin{align}
+ d_1(v)&=d+\frac{5\tau}{2}v,\label{eq:d1v}\\
+ d_2(v)&=d_2(0)+\left(\frac72\tau d-\frac{35}8t_2\right)v
+                     +\frac{35}8\tau^2v^2.\label{eq:d2v}
+\end{align}
+Here \eqref{eq:generator} at $j=2,v=0$ is a short exact definition of
+$d_2(0)$; no decimal is needed to specify the theorem. For example,
+\[
+ [t]M_v=1-v\tau\kappa_2,\qquad
+ [t^2]M_v=\frac12-\frac{v\tau}{2}(5\kappa_2+\kappa_3).
+\]
+Substitution in \eqref{eq:finitesum} gives \eqref{eq:d1v} directly.
+The analogous finite algebra gives \eqref{eq:d2v}.
+
+\begin{center}
+\begin{tabular}{crr}
+\toprule
+$j$&Connected $d_j(0)$&All $d_j(1)$\\
+\midrule
+1&2.28327991621488764390&2.71019238324646020242\\
+2&5.05931216558214791991&7.37088006509066565629\\
+3&12.62518674698345424780&22.53510992886156396083\\
+4&37.15520265458457580487&78.66695831469578724957\\
+\bottomrule
+\end{tabular}
+\end{center}
+The table uses approximate evaluations of exact algebraic quantities.
+For all four rows, the companion encodes the exact values in the basis
+$1,\tau,\tau^2,\tau^3$ of
+\[
+ \QQ[t]/(3t^4-28t^3+70t^2-58t+8),
+\]
+with the real root selected by \eqref{eq:saddle}. As one readable example,
+\begin{equation}\label{eq:fieldd}
+ d=\frac{146018067}{47538652}
+ -\frac{892831981}{178269945}\tau
+ +\frac{834955523}{356539890}\tau^2
+ -\frac{63474793}{237693260}\tau^3.
+\end{equation}
+The finite generator is a more compact exact presentation of higher
+orders than expanding every large rational coefficient in print.
+
+\subsection{An independent formal singular expansion}
+This subsection checks coefficients independently; the analytic proof
+is already complete. Put $X=\sqrt{1-z/\rho}$ and
+$t=\log(T/\tau)$. Then
+\[
+ 1-X^2=\exp(t-K(t)+K(0)),\qquad
+ W(t)=\frac{1-\exp(t-K(t)+K(0))}{t^2},\quad W(0)=\kappa_2/2.
+\]
+The physical branch is $X=-t\sqrt{W(t)}$. Formal Lagrange inversion gives
+\begin{equation}\label{eq:formalT}
+ T_k:=[X^k]T
+ =\frac{\tau(-1)^k}{k}[t^{k-1}]e^tW(t)^{-k/2},\qquad k\geq1,
+\end{equation}
+with $T_0=\tau$. Termwise integration of $zC'=T$ gives
+\begin{equation}\label{eq:formalC}
+ C_0=\nu,\quad C_1=0,\qquad
+ C_j=-\frac2j\sum_{\substack{r\geq0\\j-2-2r\geq0}}T_{j-2-2r}
+ \quad(j\geq2).
+\end{equation}
+In particular,
+\[
+ T_1=-\tau\sqrt{2/\kappa_2},\quad T_2=t_2,\quad C_2=-\tau,
+ \quad C_3=\frac23\tau\sqrt{2/\kappa_2},\quad C_4=-\frac{\tau+t_2}{2}.
+\]
+Since $\Gamma(-3/2)=4\sqrt\pi/3$,
+\begin{equation}\label{eq:normalization}
+ \frac{C_3}{\Gamma(-3/2)}=A,\qquad
+ \frac{[X^3]e^{C}}{\Gamma(-3/2)}=e^\nu A.
+\end{equation}
+This makes the factorial and Gamma normalization transparent.
+
+For noninteger $\alpha$ the exact coefficient identity is
+\[
+ [z^n](1-z/\rho)^\alpha
+ =\rho^{-n}\frac{\Gamma(n-\alpha)}{\Gamma(-\alpha)\Gamma(n+1)}.
+\]
+The fixed-order formal Gamma-ratio expansion follows from
+\[
+ \log\frac{\Gamma(n+a)}{\Gamma(n+b)}
+ =(a-b)\log n+
+ \sum_{k\geq1}\frac{(-1)^{k+1}\{B_{k+1}(a)-B_{k+1}(b)\}}
+                         {k(k+1)n^k}.
+\]
+Here the infinite sum is used only after truncation to a fixed order.
+For an independently coded alternative, expand $b(\tau+y)$ in ordinary
+Taylor powers, invert $X^2=1-(1+y/\tau)e^{-(b(\tau+y)-b(\tau))}$,
+and use the central-binomial expansion to handle half-integer Gamma
+ratios. The companion implements this second route without Euler
+derivative or Gaussian-moment inputs.
+
+For example, $d=15/8-(5/2)C_5/C_3$. After division by $ve^{v\nu}$,
+the $X^5$ coefficient of $e^{vC}$ is $C_5+vC_2C_3$, and its $X^7$
+coefficient is
+\[
+ C_7+v(C_2C_5+C_3C_4)+\frac{v^2}2C_2^2C_3.
+\]
+The Gamma ratios $-5/2$ and $35/4$ then recover
+\eqref{eq:d1v}--\eqref{eq:d2v}. To promote these formal local calculations
+to a separate analytic coefficient proof one must supply suitable
+$\Delta$-domain continuation and transfer remainder hypotheses, as in
+the established subcritical theory \cite{subcritical}. That additional
+route is not silently assumed here.
+
+\section{Component law moments and connectivity}
+
+Put
+\begin{equation}\label{eq:aq}
+ a=\frac{5\tau}{2},\qquad
+ q=\tau d-\frac{35}8t_2+\frac52\tau^2.
+\end{equation}
+Dividing the marker expansion by its value at $1$ gives, uniformly on
+fixed compact sets,
+\begin{equation}\label{eq:pgffirst}
+ P_n(v):=\EE v^{K_n}
+ =ve^{\nu(v-1)}\left(1+\frac{a(v-1)}n+O(n^{-2})\right).
+\end{equation}
+In particular, the classical limit is $1+\Pois(\nu)$ \cite{bgkn}.
+The next statement strengthens the approximation at finite $n$.
+
+\begin{theorem}[Total variation refinement]\label{thm:TV}
+For $\lambda_n=\nu+5\tau/(2n)$,
+\[
+ \TV\bigl(\mathcal L(K_n),\mathcal L(1+\Pois(\lambda_n))\bigr)
+ =O(n^{-2}).
+\]
+\end{theorem}
+\begin{proof}
+The parameter is positive. Fix a real $r>1$. The comparison PGF is
+$Q_n(v)=v\exp(\lambda_n(v-1))$. Equation~\eqref{eq:pgffirst}, proved
+complex-uniformly on the circle $|v|=r$, gives
+\[
+ \sup_{|v|=r}|P_n(v)-Q_n(v)|\leq C_r n^{-2}
+\]
+for all sufficiently large $n$. Write $p_{n,k}=[v^k]P_n$ and
+$q_{n,k}=[v^k]Q_n$. Cauchy's coefficient estimate gives
+\[
+ |p_{n,k}-q_{n,k}|\leq C_r n^{-2}r^{-k}\qquad(k\geq0).
+\]
+Both constant coefficients are zero for $n\geq1$. Therefore the entire
+coefficient sum, including the Poisson tail above $n$, satisfies
+\[
+ \frac12\sum_{k\geq1}|p_{n,k}-q_{n,k}|
+ \leq\frac{C_r}{2n^2}\sum_{k\geq1}r^{-k}
+ =\frac{C_r}{2(r-1)n^2}.
+\]
+This is exactly the total variation distance.
+\end{proof}
+
+To obtain second-order moments, write
+$d_2(v)=e+hv+kv^2$, where
+\[
+ e=d_2(0),\qquad h=\frac72\tau d-\frac{35}8t_2,
+ \qquad k=\frac{35}8\tau^2.
+\]
+On a fixed sufficiently small disk about $v=1$, the normalized expansion
+is nonzero for all sufficiently large $n$. Taking its analytic logarithm
+gives
+\begin{align}
+ \log P_n(v)
+ &=\log v+\nu(v-1)+\frac{a(v-1)}n \nonumber\\
+ &\quad+\frac{q(v-1)+(5\tau^2/4)(v-1)^2}{n^2}+O(n^{-3}).
+ \label{eq:logPGF}
+\end{align}
+Indeed the second-order polynomial before simplification is
+$(h-da)(v-1)+(k-a^2/2)(v^2-1)$ and
+$k-a^2/2=5\tau^2/4$.
+The error is analytic and uniformly $O(n^{-3})$ on a slightly larger
+disk, so Cauchy estimates justify differentiating it.
+
+\begin{corollary}[Moments and connectivity]\label{cor:moments}
+The component mean and variance satisfy
+\begin{align}
+ \EE K_n&=1+\nu+\frac an+\frac q{n^2}+O(n^{-3}),\label{eq:mean}\\
+ \Var K_n&=\nu+\frac an+
+           \frac{q+5\tau^2/2}{n^2}+O(n^{-3}).\label{eq:variance}
+\end{align}
+The probability of connectivity satisfies
+\begin{equation}\label{eq:connectivity}
+ \frac{c_n}{g_n}=e^{-\nu}\left[
+ 1-\frac{5\tau}{2n}
+ +\frac{-\tau d+(35/8)t_2+(15/8)\tau^2}{n^2}
+ +O(n^{-3})\right].
+\end{equation}
+\end{corollary}
+\begin{proof}
+The first derivative of $\log P_n$ at $1$ is the mean; its second
+derivative plus its first derivative is the variance. Apply these
+identities to \eqref{eq:logPGF}. Dividing \eqref{eq:conna} by
+\eqref{eq:alla} gives the second coefficient
+$-h+da+a^2-k=-\tau d+(35/8)t_2+(15/8)\tau^2$ in
+\eqref{eq:connectivity}.
+\end{proof}
+
+Numerically,
+\[
+\begin{aligned}
+ a&=0.42691246703157255852034948\ldots,\\
+ q&=1.28213096120148270341548384\ldots,\\
+ q+5\tau^2/2&=1.35503266300427611409382198\ldots,\\
+ -\tau d+(35/8)t_2+(15/8)\tau^2
+   &=-1.15455298304659423472839209\ldots,\\
+ e^{-\nu}&=0.861666699427543\ldots.
+\end{aligned}
+\]
+In particular, connectivity approaches its limiting probability from
+below to first order. All higher fixed-order component and connectivity
+corrections can be obtained by algebraic operations on the same marked
+generator.
+
+\section{Logarithmic expansion and a safe threshold inverse}
+
+Take either $a_n=c_n$ or $a_n=g_n$. Write $A_*=A$ or $e^\nu A$,
+respectively, and $e_j=d_j(0)$ or $d_j(1)$. Combining
+Theorem~\ref{thm:main} with Stirling's expansion gives, for every fixed
+integer $m\geq0$,
+\begin{equation}\label{eq:logcount}
+ \log a_n=F_m(n)+O(n^{-m-1}),
+\end{equation}
+where
+\begin{equation}\label{eq:F}
+ F_m(x)=x\left(\log\frac{x}{\rho}-1\right)-2\log x
+       +\log(A_*\sqrt{2\pi})+\sum_{j=1}^m\frac{\ell_j}{x^j}.
+\end{equation}
+The $\ell_j$ are obtained by adding the Stirling series to the formal
+logarithm of $1+\sum e_jx^{-j}$. In particular,
+\begin{align*}
+ \ell_1&=e_1+\frac1{12},\\
+ \ell_2&=e_2-\frac12e_1^2,\\
+ \ell_3&=e_3-e_1e_2+\frac13e_1^3-\frac1{360},\\
+ \ell_4&=e_4-e_1e_3-\frac12e_2^2+e_1^2e_2-\frac14e_1^4.
+\end{align*}
+Thus every $\ell_j\in\QQ(\tau)$, for either sequence.
+
+Both sequences are eventually strictly increasing. Adding the new label
+as an isolated vertex injects the all-graph class on $[n]$ into that on
+$[n+1]$, with other graphs outside its image. Attaching the new label as
+a leaf to vertex $1$ similarly injects the connected class; for $n\geq2$
+a tree with the new vertex of degree two is outside the image. Define
+\[
+ N(X)=\min\{n\geq1:a_n\geq X\}
+\]
+for sufficiently large real $X$.
+
+Let $L=\log X$. A convenient explicit starting point for a continuous
+inverse is
+\begin{equation}\label{eq:Lambert}
+ x_0=\frac{L}{W(L/(e\rho))},
+\end{equation}
+where $W$ is the positive real Lambert function. It solves
+$x_0(\log(x_0/\rho)-1)=L$. For all large $L$, $F_m$ is strictly
+increasing in the relevant range and has a unique large root $r_m$ of
+$F_m(r_m)=L$. Since the lower-order residual at $x_0$ is $O(\log x_0)$
+and the derivative is asymptotic to $\log x_0$, $r_m=x_0+O(1)$.
+One bounded correction is also explicit. Set
+$k_*=\log(A_*\sqrt{2\pi})$ and $\Lambda_0=\log(x_0/\rho)$. For every
+fixed $m\geq0$,
+\begin{equation}\label{eq:inverseshift}
+ r_m=x_0+\frac{2\log x_0-k_*}{\Lambda_0}
+           +O\!\left(\frac1{x_0\Lambda_0}\right).
+\end{equation}
+To verify this, the displayed displacement $h$ is bounded and tends to
+$2$. Expanding $F_m(x_0+h)-L$ gives
+$\Lambda_0h-2\log x_0+k_*+O(x_0^{-1})=O(x_0^{-1})$.
+The curvature of the leading term, the change in $-2\log x$, and any
+retained inverse-power terms are all $O(x_0^{-1})$. Division by
+$F_m'(x)\sim\Lambda_0$ gives \eqref{eq:inverseshift}. Thus $r_m-x_0\to2$;
+this is a statement about the continuous comparison root.
+
+Newton iteration uses the explicit derivative
+\begin{equation}\label{eq:Newton}
+ F_m'(x)=\log(x/\rho)-\frac2x
+             -\sum_{j=1}^m\frac{j\ell_j}{x^{j+1}}.
+\end{equation}
+
+\begin{theorem}[Integer-safe inverse]\label{thm:inverse}
+For each fixed $m\geq0$ there is $K_m>0$ such that, for all sufficiently
+large $X$, with $r=r_m(X)$ and
+\[
+ \delta=\frac{K_m r^{-m-1}}{\log r},
+\]
+one has
+\begin{equation}\label{eq:inverse}
+ \ceil{r-\delta}\ \leq\ N(X)\ \leq\ \ceil{r+\delta}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Write the error in \eqref{eq:logcount} as $E_m(n)$, with
+$|E_m(n)|\leq C_mn^{-m-1}$ beyond a fixed integer threshold. Increase
+that threshold so that for $|x-r|\leq2$,
+\[
+ F_m'(x)\geq\tfrac12\log r,
+ \qquad |E_m(n)|\leq2C_m r^{-m-1}\quad(n\in\NN,\ |n-r|\leq2).
+\]
+Choose $K_m=8C_m$, or any larger positive constant; enlarge $C_m$ to be
+positive if necessary. Eventually $\delta<1$. The explicit integer test
+points are
+\[
+ n_-:=\ceil{r-\delta}-1,\qquad n_+:=\ceil{r+\delta}.
+\]
+Both lie within distance two of $r$, with $n_-<r-\delta$ and
+$n_+\geq r+\delta$. The mean value theorem gives
+\[
+ F_m(n_-)<L-4C_mr^{-m-1},\qquad
+ F_m(n_+)\geq L+4C_mr^{-m-1}.
+\]
+Allowing for $E_m$ shows $a_{n_-}<X$ and $a_{n_+}\geq X$.
+Eventual monotonicity, together with $X$ exceeding the finitely many
+earlier values, proves $n_-+1\leq N(X)\leq n_+$, which is
+\eqref{eq:inverse}.
+\end{proof}
+
+The two ceilings agree except in a shrinking neighborhood of an integer.
+One cannot replace the enclosure by an unconditional formula
+$N(X)=\ceil{r_m(X)}$. Exact-threshold inputs $X=a_n$ are particularly
+sensitive: even a tiny positive error $r_m(X)-n$ makes the latter ceiling
+wrong. The companion can exhibit this numerically, but such diagnostics
+are not proofs of a remainder constant or of a finite-input enclosure.
+Theorem~\ref{thm:inverse} is an asymptotic existence result. A certified
+finite-input algorithm would additionally require evaluated error
+constants, a starting threshold, and interval evaluation of the root.
+
+\section{Reproducibility and the meaning of the checks}
+
+The companion is self-contained after its documented Python dependencies
+are installed. No network access is needed for its tests. It contains
+frozen OEIS b-files with source URLs, exact coefficient fixtures, portable
+programs, bounded commands, and deterministic release construction.
+The report and code use the same definitions, while several independent
+routes check their implementation.
+
+The checks are deliberately separated by what they establish:
+\begin{enumerate}
+\item Exact block coefficients are computed from the square-root identity
+and independently from $S=1+uS+uS^2$. Integer Bell recurrences implement
+\eqref{eq:connexact}, and the exponential formula computes $g_n$.
+All 200 positive-index terms of each included OEIS b-file agree.
+The connected index-zero convention is checked separately.
+\item Literal enumeration visits each simple edge set through $n=5$.
+It accepts an edge set if some cyclic ordering of all vertices has no
+alternating-endpoint pair of edges, and tests connectivity directly.
+This is the circular straight-line characterization of outerplanarity.
+An edge set is counted only once, not once per successful ordering.
+It reproduces $c_1,\ldots,c_5=1,1,4,37,602$ and
+$g_1,\ldots,g_5=1,2,8,63,893$.
+\item Exact arithmetic in $\QQ(\tau)$ implements the finite Gaussian
+rule through four corrections and checks the marked identities
+\eqref{eq:d1v}--\eqref{eq:d2v}, as well as the moment and connectivity
+algebra. Stored rational-basis certificates are compared exactly.
+\item A separately coded ordinary-Taylor implicit inversion and
+central-binomial transfer checks the coefficient values at high
+precision. This is independent formal coefficient verification; it
+is not a second analytic $\Delta$-domain proof.
+\item Frozen decimal fixtures check numerical regression. Explicit
+failure predicates remain active under \texttt{python -O}. Generated
+results are compared between normal and optimized runs, and manifests
+check file integrity.
+\end{enumerate}
+
+These finite checks do not prove asymptotic convergence, bound the
+constants hidden in $O(\cdot)$, or certify a finite-input inverse.
+Count-ratio, moment, and inverse residual tables, when produced, are
+diagnostics only. The analytic theorem rests on the exact identities
+and the uniform contour proof. High working precision and agreement
+between implementations do not turn approximate decimals into rigorous
+intervals.
+
+The precise commands, dependency versions, source URLs, fixture hashes,
+and generated files are described in the companion's README and source
+provenance file. Output directories must be new; an existing output is
+rejected rather than silently overwritten. The release manifest records
+the bytes actually delivered.
+
+\section{Source normalization and attribution}
+
+The leading outerplanar theorem in published BGKN
+\cite[Theorem 5.1, pp.~2102--2103]{bgkn} uses the same unrooted labeled
+normalization as \eqref{eq:alla}. It prints the all-graph amplitude as
+$0.018216$. Equations \eqref{eq:constants} and \eqref{eq:normalization}
+give instead
+\[
+ e^\nu A=0.008096047476080704996204256500405217\ldots,
+\]
+while
+\[
+ \frac94e^\nu A=0.018216106821181586241459577125911738\ldots.
+\]
+Thus the printed amplitude agrees, to its printed precision, with
+$9/4$ times the value obtained from the defining generating functions.
+No cause of that discrepancy is established here.
+
+Version distinctions matter. The earlier full preprint
+\cite{bgknpreprint} prints $0.017657$, a different decimal.
+The published component theorem already gives the compatible approximate
+parameter $0.14889$ and connectivity probability $0.86166$; its
+introductory decimals $0.14840$ and $0.86208$ are stale. The published
+introduction also retains an inconsistent $n^{-3/2}$ outerplanar
+exponent, while its main theorem has $n^{-5/2}$. These introductory
+issues do not alter the correct exponent in the theorem.
+
+Kang's thesis \cite[p.~55]{kang} already gives the correct analytic
+connected-amplitude expression and the relation
+$\alpha_0=\alpha_1\exp(C(R))$. Its printed all-graph decimal
+$0.008095$ is inaccurate, not just a lower-precision rounding of
+$0.008096047\ldots$. The correct analytic normalization was therefore
+already present in the source set. This report resolves numerical
+normalization reproducibly; it does not announce a new leading constant.
+
+The bounded source pass included the published and preprint BGKN
+versions, Kang's thesis, the labeled section of the Bodirsky--Kang
+sampling paper, the subcritical graph-class framework, and Finch's
+outerplanar growth-constant note \cite{finch}. Finch's block convention
+excludes $K_2$ from his block function and compensates with an extra
+linear term in the rooted equation; combining them yields
+\eqref{eq:block}. Unlabelled outerplanar graph work \cite{unlabelled}
+concerns different sequences and constants.
+
+No explicit first-four correction table, two-order component-moment
+formula, or threshold inverse for these two labeled sequences was found
+in the inspected source portions and bounded searches. This is a source
+coverage statement, not proof of worldwide novelty. The leading theorem,
+the shifted-Poisson limit, and the general machinery remain prior work.
+
+\section{Further questions}
+
+Several next steps would add information beyond merely printing more
+terms from the same generator.
+\begin{enumerate}
+\item Evaluate explicit remainder constants and starting thresholds,
+then combine them with interval arithmetic to turn
+Theorem~\ref{thm:inverse} into a finite-input certified algorithm.
+\item Determine the growth of $d_j(v)$ as $j$ increases. The fixed-order
+proof does not address optimal truncation, divergence, or exponentially
+small corrections.
+\item Extract higher-order signed corrections to the shifted-Poisson
+law and quantify their total-variation effect. Positivity of a proposed
+finite-order distributional approximation requires care.
+\item Extend the marked exact cancellation to edge statistics jointly
+with components, retaining complex uniformity and the abstract-graph
+normalization. The leading edge-count limit theory is already classical.
+\end{enumerate}
+
+\clearpage
+\begin{thebibliography}{10}
+\bibitem{oeisconn} OEIS Foundation Inc.,
+\emph{A097998: Number of connected outerplanar graphs on $n$ labeled nodes},
+\url{https://oeis.org/A097998}. Positive-index b-file checked 3 October 2026.
+\bibitem{oeisall} OEIS Foundation Inc.,
+\emph{A098000: Number of outerplanar graphs on $n$ labeled nodes},
+\url{https://oeis.org/A098000}. Positive-index b-file checked 3 October 2026.
+\bibitem{bk} M. Bodirsky and M. Kang,
+\emph{Generating Outerplanar Graphs Uniformly at Random},
+Combinatorics, Probability and Computing 15 (2006), 333--343.
+\url{https://doi.org/10.1017/S0963548305007303}.
+\bibitem{bgkn} M. Bodirsky, O. Gim\'enez, M. Kang, and M. Noy,
+\emph{Enumeration and limit laws of series-parallel graphs},
+European Journal of Combinatorics 28 (2007), 2091--2105.
+Published author-hosted version:
+\url{https://web.mat.upc.edu/marc.noy/uploads/2013/05/Graphs-SP.pdf}.
+\bibitem{bgknpreprint} M. Bodirsky, O. Gim\'enez, M. Kang, and M. Noy,
+\emph{Enumeration and limit laws of series-parallel graphs},
+earliest full preprint version, arXiv:math/0512435.
+\url{https://arxiv.org/abs/math/0512435}.
+\bibitem{kang} M. Kang,
+\emph{Random Planar Structures and Random Graph Processes},
+habilitation thesis, Humboldt-Universit\"at zu Berlin, June 2007,
+Chapter 5, especially p.~55.
+\href{https://edoc.hu-berlin.de/server/api/core/bitstreams/23f83814-f327-4458-9787-474e750b8262/content}{University repository PDF}.
+\bibitem{subcritical} M. Drmota, \'E. Fusy, M. Kang, V. Kraus, and J. Ru\'e,
+\emph{Asymptotic study of subcritical graph classes},
+SIAM Journal on Discrete Mathematics 25 (2011), 1615--1651.
+\url{https://arxiv.org/abs/1003.4699}; author-hosted version:
+\url{https://web.mat.upc.edu/juan.jose.rue/Research/Subcritical.pdf}.
+\bibitem{finch} S. R. Finch, \emph{Planar graph growth constants},
+OEIS-hosted author note,
+\url{https://oeis.org/A097999/a097999.pdf}.
+\bibitem{unlabelled} M. Bodirsky, \'E. Fusy, M. Kang, and S. Vigerske,
+\emph{Enumeration and asymptotic properties of unlabeled outerplanar graphs},
+\url{https://arxiv.org/abs/math/0511422}.
+\end{thebibliography}
+\end{document}
