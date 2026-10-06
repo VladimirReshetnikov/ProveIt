@@ -172,7 +172,11 @@ of `n^{1/3}` as −5.502, −5.506, −5.509 with the basis `{n^{1/3}, log n, 1}
 and −5.515, −5.534, −5.542 with `n^{−1/3}` added: all above `−κ`, by 1.2 %
 down to 0.5 %. These fits presuppose an expansion form that is not proved, so
 they are consistent with `κ` only under that assumption and confirm nothing;
-their `log n` coefficient (0.46 to 0.56) is unstable.
+their `log n` coefficient (0.46 to 0.56) is unstable across windows and bases,
+and no power prefactor is inferred from it. It stays near `1/2` (with the
+`n^{1/3}` coefficient fixed at `−κ` the same windows give 0.542, 0.549,
+0.554). Remark 6.1 first said that it "suggests no power prefactor"; that
+wording was corrected after the independent check below.
 
 ## What is not claimed
 
@@ -252,6 +256,27 @@ wrong**, at intake or at the write.
   Chen–Pearl, Yin (what the source read is fingerprinted in
   `data/SOURCE_PROVENANCE.json`).
 
+**Independent check of the write (6 October 2026).** An adversarial check
+made by the intake after the write (`e5152f378`) re-derived every `[write]`
+statement. Counts: a literal brute force over all simple digraphs gives
+1, 1, 3, 25, 443 for `n ≤ 4`, a brute force over parent sets 13956 and
+695902 for `n = 5, 6`; independent sink-recurrence code equals the live
+b-file for `n ≤ 100` (entry and mirror still revision #9), the `c = 2..5`
+columns of `counts.json`, the entry's Python program for `n ≤ 60` (the write
+said `n ≤ 40`) and `(n+1)^{n−1}` for `c = 1`. The quotations, the two-line
+proof, the bound for `n ≤ 100` and the congruences were confirmed; every
+number of Remark 6.1 was reproduced (50 digits). Remark 7.1: the Lambert
+instance re-derived, and the strict increase proved by `a_n ≥ n a_{n−1}`
+(`n ≥ 2`), so `N(x)` is the staircase `N_*` with `n_1 = 1`; "only an
+analogue" confirmed. Mallein's Lemmas 2.6 and 2.7 were read again on the
+page images of pp. 11 and 13, and their use in Section 5 re-read line by
+line: only (2.15) at fixed `h_−` and (2.19) at fixed `h_+` with fixed scaled
+intervals, no strip estimate, no time-inhomogeneous case, no exact endpoint;
+the containments and constants re-derived. No mathematical error was found.
+One wording was corrected, with a dated note keeping the first wording:
+Remark 6.1's "suggests no power prefactor" (the fitted `log n` coefficient
+stays near `1/2`; nothing is inferred from it).
+
 ## Relation to the repository
 
 **Formal status.** No statement of this report is formalized, and no Lean or
@@ -324,7 +349,7 @@ unnumbered.
 ```text
 README.md                      this guide (replaces the delivery README)
 article.tex                    the report (delivered Report157.tex; labels prefixed, [write] additions)
-article.pdf                    compiled report, 20 pages
+article.pdf                    compiled report, 21 pages
 code/companion.py              bounded exact counts and finite checks, CLI (delivered at the root)
 code/test_companion.py         34 companion tests (delivered at the root)
 code/build_pdf.py              deterministic PDF build (delivered at the root)
@@ -420,8 +445,8 @@ B=$(mktemp -d); cp article.tex "$B/"; cd "$B"
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The committed PDF was built this way with MiKTeX on 6 October 2026: 20
-pages; no errors or warnings, no undefined references or citations, no
+The committed PDF was built this way with MiKTeX on 6 October 2026, after
+the independent check (20 pages at the write): 21 pages; no errors or warnings, no undefined references or citations, no
 multiply defined labels, no duplicate PDF destinations, no overfull or
 underfull boxes. The delivered source builds the same way to 15 pages, also
 without warnings. The article keeps the delivered preamble lines that
