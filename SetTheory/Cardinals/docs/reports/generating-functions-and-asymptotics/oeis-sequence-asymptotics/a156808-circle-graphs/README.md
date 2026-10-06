@@ -310,6 +310,28 @@ about 10 and 5 standard errors; the `M = 400` value is within 1.5 standard
 errors of both `−10` and `0`. It concerns a proved statement and says nothing
 about `β`.
 
+**Independent check of the write (5 October 2026).** An adversarial check
+made by the intake after the write (`c6557f9c9`) reread printed p. 23 of
+arXiv:2402.06394v1 (the recorded SHA-256) and confirmed Remark 3.3 by brute
+force over all matchings of `2n ≤ 14` points against each nonidentity
+dihedral symmetry: a half-turn and every gap reflection fix
+`t_n = 3, 7, 25, 81, 331, 1303` (`n = 2, …, 7`), a reflection through two
+endpoints fixes `t_{n−1}`. It found that the source's relabelling
+"2n − i ↔ n + i" works only read as `2n + 1 − i ↔ n + i` (a reversal of the
+block `n + 1, …, 2n`), which confirms that the source meant its gap-type
+reversal (sentence added to the remark). It also confirmed `e^{−4} → e^{−3}`
+from the source's Lemmas 5.7–5.8; the live OEIS entries, Johnston's post and
+`c_13 = 21,593,488,017`; every ratio of the Section 11 notes and the
+percentages of item 7; the Monte Carlo standard errors (not rerun); the
+rooted counts `1, 3, 11, 58` and the stabilizer orders; that every graph on
+at most five vertices is a circle graph (now independent of the companion;
+note in Subsection 19.4); the sum `353.9617` at `M = 12`; and the
+factorial-core, Lambert-core and non-staircase classifications. No
+mathematical error was found. One wording was corrected, with a dated note
+keeping the first wording: the side condition `log(2u) > 1` holds for every
+`L > 0` (it is `W_0(2L/e) > 0`), not only for large `L`. The record is a
+dated note at the end of Section 25.
+
 ## Relation to neighbouring reports
 
 - No other report of the collection treats circle graphs or A156808/A156809
@@ -457,7 +479,7 @@ latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
 pdfLaTeX (MiKTeX), in a scratch copy; commit only `article.pdf`. The build
-(53 pages): no errors, no warnings, no undefined or multiply defined
+(54 pages after the independent check; 53 at the write): no errors, no warnings, no undefined or multiply defined
 references or citations, no duplicate destinations, no overfull or underfull
 boxes.
 
