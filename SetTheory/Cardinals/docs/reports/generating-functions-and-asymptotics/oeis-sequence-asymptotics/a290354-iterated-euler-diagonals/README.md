@@ -82,9 +82,14 @@ fresh adaptation) and is shipped under its own prefix.
 (and repeats Part I's Corollary 6.2 with its proof); Part III's Section 25
 restates Part I's coordinate and density and Part II's absolute estimates.
 They are printed in full, with notes naming the Part I or Part II statement
-behind each item, because nearly every display in them is cited later and
-each contains material found nowhere else (Part II's inverse-orbit bound,
-Part III's `L¹` bound and its comparison with the iterated Bell report). The
+behind each item, because nearly every display in them is cited later,
+because Part II's states as interface items several estimates that Part I
+proves only inside its proofs (the inverse-orbit bound, which is in Part I's
+proof of Lemma 4.1, and the disk and neighbourhood forms of the tail and outer
+bounds), and because Part III's contains material found nowhere else (its
+`L¹` bound and its comparison with the iterated Bell report). (Corrected after
+the independent check below; the write had said that each section contains
+material found nowhere else, naming Part II's inverse-orbit bound.) The
 intake dossier had suggested pointers instead, as a139383 did for its Part II.
 
 ## Files
@@ -330,6 +335,36 @@ for the expansion of `h` at zero and the side `n/m → 0` on logarithmic bands
 (Part III). **Nothing in the three manuscripts was found to be wrong**, and
 no claim was refuted.
 
+**Independent check of the write (6 October 2026).** An adversarial check
+made by the intake after the write (`84fc1aaed`) re-pulled A290354 (live
+revision #26, Jun 21 2018) and A290353 (#28) and found every quoted line
+character for character. The date "Aug 14 2017" that the write gives the
+conjecture is not the date of the revision read but that of Kotěšovec's
+revision #23, which added the formula line; it is correct. The check
+recomputed `a_n` exactly (equal to the b-file for `n ≤ 40`;
+`a_40 (T/40)^40 40^{4/3} = 4.6013347`), confirmed that Theorem 1.1 is exactly
+the conjectured form and the rows `A(2,m)`, `A(3,m)`, `A(4,m)` for `m ≤ 12`.
+It re-derived Remark 37.2, found it labelled conditional wherever it appears
+(and not listed as proved in the status table), and reproduced its table to
+every printed digit from an own exact computation of `H(n,m)`; extended to
+`n = 160` it gives `R_lab = 0.73782182` at `λ = 1` (`m = 812`; distance
+`0.0213` to the limit, `0.0014` after the `K_lab` term) and `0.54374893` at
+`λ = 0.5` (`m = 406`; `0.0303`, `0.0018`). It evaluated the closed form of `κ`
+to 35 digits (`−0.25434816985107480385506489650373339`) and matched it against
+an independent quadrature of (II.23) to `5·10⁻²⁸`; recomputed `h(1)` (above);
+and confirmed the classification of the inverses (factorial core and Lambert
+core with `a = b = 1` instances; corrections, rounding and Part III's
+reversion and prescriptions not). No mathematical error was found. Two
+wordings are corrected, each with a dated note keeping the first wording:
+the front matter's justification of the printed restatements (twice; likewise
+the README above) overstated Part II's novelty, since its inverse-orbit bound
+is in Part I's proof of Lemma 4.1; and the note after Part II's Section 13 now
+flags the neighbourhood form of the outer bound (Lemma 5.3), as it already
+flagged the disk form of the tail bound (Proposition 5.2), as proved only
+inside Part I's proofs. Added: the name `L = log(Y/T)` of the Lambert-core
+instance, and the independent `h(1)` and `c` (front matter, Remark 37.1). The
+record is a dated note at the end of Section 37.
+
 ## Relation to neighbouring reports
 
 - **`a139383-iterated-bell-diagonals`** (labels `ibd:`), the labelled
@@ -340,7 +375,13 @@ no claim was refuted.
   `Ψ_IBD = −Φ + (log 2)/3`, and the unproved relation
   `I(β) = β 2^{β/3} h(β)`, which agrees to eight significant digits at `β = 1`
   (`2^{1/3} h(1) = 2.2862647816` against a139383's exploratory
-  `I(1) = 2.2862647847 … 2.2862647982`; both uncertified). A reciprocal note
+  `I(1) = 2.2862647847 … 2.2862647982`; both uncertified). The independent
+  check below evaluated Part I's constant integral (6) anew (four values of `σ`,
+  Gauss–Legendre quadrature to `|u| = 4·10⁴` with an integration-by-parts
+  tail; uncertified): `h(1) = 1.814609559835`, `2^{1/3} h(1) = 2.2862647818`,
+  `c = 4.4923298971`; the shipped diagnostic is low by `1.6·10⁻¹⁰` (its
+  vertical tail is cut at `|u| = 3000`), and the comparison is unchanged
+  (differences `2.9·10⁻⁹ … 1.65·10⁻⁸`, eight significant digits). A reciprocal note
   for a139383 is proposed in the write's record (not applied here).
 - No other report treats A290353 or A290354 (searched 6 October 2026; A290354
   occurs elsewhere only in a cross-reference line of a139383's OEIS data). The
@@ -450,8 +491,9 @@ latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
 pdfLaTeX (MiKTeX), in a scratch copy; commit only `article.pdf`. The build
-(67 pages: title, abstract and contents 1–3, front matter 4–10, Part I 11–27,
-Part II 28–45, Part III 46–63, Section 37 and references 64–67): no errors, no
+(69 pages after the independent check, 67 at the write: title, abstract and
+contents 1–3, front matter 4–11, Part I 12–28, Part II 29–46, Part III 47–64,
+Section 37 and references 65–69): no errors, no
 undefined or multiply defined references or citations, no duplicate
 destinations, no overfull or underfull boxes. The log carries two "Infinite
 glue shrinkage found in box being split" messages from the two front-matter

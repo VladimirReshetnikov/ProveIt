@@ -475,6 +475,15 @@ All in `SetTheory/Cardinals/docs/reports/generating-functions-and-asymptotics/oe
   difference ascents (searched 5 October 2026). Pointers from those two reports
   back to this one are a separate reciprocal-notes commit; this write edits no
   other report.
+- *See also* (dated 6 October 2026, batch-106 reciprocal note):
+  [`a005975-interval-graphs`](../a005975-interval-graphs/) (bundle Report 133,
+  unlabeled interval graphs A005975/A005976, labels `ivg:`) uses the same
+  external input, Hwang–Jin (1.1) for the Fishburn numbers A022493, together
+  with two further Hwang–Jin statements (the diagonal size, Theorem 25(ii) of
+  the 54-page author PDF, and the self-dual count, Corollary 29). It proves
+  `C_n = F_n/2 − F_{n−1} − F_{n−2} log n + O(F_{n−2})` and
+  `I_n = F_n/2 − F_{n−1}/2 − F_{n−2} log n + O(F_{n−2})`. No shared theorem;
+  a sibling, not a host.
 
 ## Relation to the formal project
 

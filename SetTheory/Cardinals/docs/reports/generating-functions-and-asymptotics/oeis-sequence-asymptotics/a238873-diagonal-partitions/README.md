@@ -351,7 +351,10 @@ tables; Section 47; and:
   (revision #19 of Sep 07 2026, comment of Aug 31 2026), saying it proves the
   corresponding conjectures in A238873, A387118 and A388711; A238873 (revision
   #36 of Oct 07 2025) still displays the conjecture. Checked by exhaustive
-  search for `n ≤ 24`.
+  search for `n ≤ 24`. Since the equivalence holds partition by partition and
+  keeps the number of parts, it also proves the refinement by number of parts
+  conjectured in A388711 and the prime-index form conjectured in A387112 (one
+  sentence added after the independent check below).
 - **Equation (9.1)**: `P_n(R ≤ 0) − s_0(n)/p(n) = β/4 + (7/16 − 3/(2π²))β² + O(β³)`, from
   Part I's (2.5) and Part II's (11.10) at `r = 0` and (10.2). It answers Part I's
   question about the defect at `r = 0` (order `n^(−1/2)`, not `1/log n`).
@@ -437,6 +440,44 @@ open-access text, and the arXiv record of Li's preprint (only v1, no journal
 reference, 6 October 2026). **Not verified**: the proofs of these external
 theorems (and of Hardy–Ramanujan–Rademacher), and the manuscripts' analytic
 estimates beyond reading them and checking their displayed algebra.
+
+**Independent check of the write (6 October 2026).** An adversarial check
+made by the intake after the write (`0ca2804be`) re-read the proofs of
+Theorems 1.1 and 1.2, Corollary 4.1 and Theorem 5.1 step by step (no gap) and
+recomputed `B_* = 2.0617406`, `B = 2.2829105`, `B − π/√3 = 0.46911`,
+`B_* − π/√3 = 0.24794`. Its own dynamic programs for `A(n)` and `s(n)`
+(enumeration-checked for `n ≤ 20`) agree with the OEIS data (61 terms of
+A238873, 57 of A238875, 49 of A387118 as `p − A`); `A(200) = 25548856857`,
+`s(200) = 1930845918142`; `q(n)/A(n)` decreases strictly for `16 ≤ n ≤ 400`.
+An independent bipartite matching confirms Proposition 1.3 partition by
+partition for `n ≤ 24`. The OEIS records were fetched again: A387112 is
+revision #19 of Sep 07 2026 and Garrot's comment, signed Aug 31 2026, gives the
+same proof and names A238873, A387118 and A388711, so the credit, date and
+revision are exactly as printed. The check re-derived `7/16 − 3/(2π²) =
+0.285518224536` in (9.1), reproduced the write's six numbers, and extended
+them: at `n = 2000`, defect/β = 0.258505 and (defect − β/4)/β² = 0.296561; the
+cubic residual drifts from 0.553 (`n = 100`) to 0.385 (`n = 2000`) towards the
+next coefficient `B(0)/2 − c_3 = 0.3249`, corroborating the `β²` and `β³`
+coefficients jointly. `s(n)/p(n) < 1/2` for every `10 ≤ n ≤ 2000` (exact to
+400; float beyond). Part V's conditional status is stated wherever its results
+appear, and Štampach–Šťovíček's extraneous factor `q` was confirmed. Part II's
+`b_0 = 7/24 + 3/π²` and `b_1 = 23/32 + 45/(2π⁴)` were re-derived from the
+volume's coefficient recursion; at exact thresholds `y = s(n)`,
+`(n − x_0 − b_0)/β_0 = 1.198, 1.065, 1.006, 0.9915` at `n = 100, 400, 1200,
+2000` (against `b_1 = 0.949735`). No mathematical error was found. One
+wording is corrected with a dated note keeping the first wording: the front
+matter said the ratio `q(n)/A(n)` "decays like" `exp(−(B_* − π/√3 − η)√n)`,
+but Theorem 1.2 gives an upper bound only. Three dated additions: the note on
+Dousse–Mertens now says that their Theorem 1.2, read literally at `m = 0`,
+would give `N(0,n) = βp(n)/4` exactly, which is false
+(`N(0,2000)/(βp(2000)) = 0.25103`; the `β²` coefficient is
+`3/16 − 3/(2π²) ≠ 0`), and that the report never uses that case (the
+verification's suggestion that their Remark 1.3 repairs `m = 0` was not
+adopted: the alternative error term there vanishes at `m = 0` too); the note
+after Proposition 1.3 adds A388711 and A387112 (above); and the note on
+`s(n)/p(n)` versus `1/2` adds `n = 4, 6, 7, 8` (below `1/2`, completing the list
+under 10) and the extension to `n = 2000`. The record is a dated note at the
+end of Section 47.
 
 ## Relation to neighbouring reports
 
@@ -533,7 +574,7 @@ toolchain only.
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-pdfLaTeX (MiKTeX or TeX Live), single file, 90 pages; packages: amsmath,
+pdfLaTeX (MiKTeX or TeX Live), single file, 91 pages (90 at the write); packages: amsmath,
 amssymb, amsthm, mathtools, geometry, booktabs, longtable, array, pict2e,
 microtype, hyperref, xurl, lmodern. Build in a scratch directory; only
 `article.pdf` is committed.

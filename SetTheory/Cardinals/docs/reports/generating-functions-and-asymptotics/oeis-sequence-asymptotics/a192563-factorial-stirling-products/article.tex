@@ -1,4 +1,3 @@
-\newcommand{\DoNotLoadEpstopdf}{}
 \pdfinfoomitdate=1
 \pdftrailerid{}
 \pdfsuppressptexinfo=-1
@@ -9,12 +8,11 @@
 \usepackage[margin=1in]{geometry}
 \usepackage{booktabs,longtable,array}
 \usepackage{microtype}
-\usepackage[hidelinks]{hyperref}
-\hypersetup{pdftitle={Report 154 Diagonal poly Cauchy permutations at all fixed orders},pdfauthor={},pdfsubject={OEIS A192563 exact saddle expansion, growing cycle moments, and inverse thresholds}}
+\usepackage[colorlinks=true,linkcolor=black,citecolor=black,urlcolor=blue]{hyperref}
+\usepackage{xurl}
 \setlength{\parskip}{4pt}
 \setlength{\parindent}{1.2em}
 \setlength{\emergencystretch}{2em}
-\setcounter{tocdepth}{1}
 \numberwithin{equation}{section}
 \newtheorem{theorem}{Theorem}[section]
 \newtheorem{lemma}[theorem]{Lemma}
@@ -22,22 +20,229 @@
 \newtheorem{corollary}[theorem]{Corollary}
 \theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
 \theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+% Macros of the two sources. Names defined by both (\QQ, \NN, \ceil, \floor,
+% \dd) have the same definition in each; Part II's \stir is Part I's \sone.
 \newcommand{\EE}{\mathbb E}
 \newcommand{\NN}{\mathbb N}
 \newcommand{\QQ}{\mathbb Q}
+\newcommand{\CC}{\mathbb C}
 \newcommand{\eps}{\varepsilon}
 \newcommand{\sone}[2]{\genfrac{[}{]}{0pt}{}{#1}{#2}}
 \newcommand{\stwo}[2]{\genfrac{\{} {\}}{0pt}{}{#1}{#2}}
+\newcommand{\stir}{\sone}
 \newcommand{\ceil}[1]{\left\lceil #1\right\rceil}
 \newcommand{\floor}[1]{\left\lfloor #1\right\rfloor}
 \newcommand{\dd}{\,\mathrm d}
 \newcommand{\ii}{\mathrm i}
-\title{Diagonal poly Cauchy permutations at all fixed orders\\\large Exact saddle expansion and inverse thresholds for OEIS A192563}
-\author{Report 154}
-\date{3 October 2026}
+\newcommand{\Fock}[1]{\left\lVert #1\right\rVert_{\mathcal F}^{2}}
+% Added in the merge (batch 107).
+\newcommand{\file}[1]{\nolinkurl{#1}}
+\newenvironment{writenote}[1][]{\par\smallskip\begingroup\small
+ \noindent\textbf{[write]}\if\relax\detokenize{#1}\relax\else~\textbf{#1.}\fi\ }%
+ {\par\endgroup\smallskip}
+\newcommand{\wtag}{\textup{\textbf{[write]}}}
+\newenvironment{partabstract}{\begin{quote}\small\noindent\textbf{Abstract of this Part (as delivered).}\ }{\end{quote}}
+\newcommand{\partsource}[1]{\par\noindent\begin{minipage}{\textwidth}\small #1\end{minipage}\par\medskip}
+\hypersetup{pdftitle={Factorial-weighted Stirling products (OEIS A192563 and A192561)},pdfauthor={},pdfsubject={Merged report a192563-factorial-stirling-products (batch 107): diagonal poly-Cauchy numbers at all fixed orders (Report 154); exact certificates, all orders and inverses for matched cycles (Report 155)}}
+\title{\textbf{Factorial-weighted Stirling products\\ (OEIS A192563 and A192561)}\\[7pt]
+\large Diagonal poly-Cauchy numbers at all fixed orders, and matched cycles:\\ exact certificates, all orders and inverses}
+\author{Two research reports of one external research session\\(bundle Reports 154 and 155), merged into one ProveIt report}
+\date{Both Parts: 3 October 2026\quad merged: 6 October 2026}
 \begin{document}
+\hypersetup{pageanchor=false}
 \maketitle
 \begin{abstract}
+This report prints two manuscripts as Parts~I and~II. They treat two members of one OEIS family entered by Emanuele Munarini on 4~July 2011, sums over $k$ of $k!$ times a product of two Stirling numbers. Part~I treats A192563, $a_n=\sum_kk!\sone{n+1}{k+1}\stwo{n+1}{k+1}=\sum_m\sone nm(m+1)^n$, the diagonal of the poly-Cauchy array A344639 of B\'enyi and Ram\'irez; $a_n/n!$ is the $n$th moment of one plus the cycle count of a uniform random permutation. It proves an asymptotic expansion of $a_n$ to every fixed order in $r/n$, where $r=\log n-\log\log n-\log\log\log n+o(1)$ is the exact saddle of $e^z\Gamma(n+e^z)/\Gamma(e^z)$ and the coefficients are explicit Gaussian contraction polynomials in exact cumulants; the same expansion for the entries $A_{n,k}$ of A344639, uniformly for $k/n$ in a compact subset of $(0,\infty)$; a smooth inverse with floor and ceiling bounds for both threshold indices, correct at equality cases; and a nested-logarithm inverse. Part~II treats A192561, $b_n=\sum_kk!\sone{n+1}{k+1}^2$, as the Gaussian Fock norm of $\sum_k\sone{n+1}{k+1}z^k$. It proves an exact positive expansion with an explicit tail at every $n\ge1$, a rational-centre certificate that isolates $b_{10}=1273270076895432$, the same certificate for finite products with negative real zeros, an expansion to every fixed order in $1/w$, $w=W_0(en)$, with rational coefficients, and a nested-Lambert inverse with two-ceiling threshold bounds. The two manuscripts use different methods and do not cite each other. The write adds, for the third member A192562, which neither treats, the identity $A192562(n)=a_n-nA_{n-1,n}$, and states what the two methods suggest for its asymptotics. Effective constants and onsets, growing orders, the $1/n$-scale correction for A192561 and the asymptotics of A192562 remain open. The report is unrefereed, and nothing in it is formalized.
+\end{abstract}
+\hypersetup{pageanchor=true}
+\setcounter{tocdepth}{1}
+{\small\setlength{\parskip}{0pt}\tableofcontents}
+\newpage
+
+\section*{Guide to this report}\phantomsection\label{sfp:sec:guide}
+\addcontentsline{toc}{section}{Guide to this report}
+The two Parts are two manuscripts of the session bundle of Reports 1--243 (arrival commit \texttt{60f54ea06}), placed in this directory by commit \texttt{3988bf5c4} (batch~107, cluster 107-STIRL). They treat two members of one OEIS family, sums over $k$ of $k!$ times a product of two Stirling numbers, entered by Emanuele Munarini on 4~July 2011 (quoted below):
+\begin{center}
+\small
+\begin{tabular}{@{}l l >{\raggedright\arraybackslash}p{0.47\textwidth} l@{}}
+\toprule
+Part & Bundle report & Delivered title & Labels\\
+\midrule
+I & 154 (base) & Diagonal poly Cauchy permutations at all fixed orders: Exact saddle expansion and inverse thresholds for OEIS A192563 & \texttt{sfp:pc:}\\
+II & 155 & Exact positive certificates and all orders for matched cycles: Factorial weighted squared Stirling numbers in OEIS A192561 & \texttt{sfp:mc:}\\
+\bottomrule
+\end{tabular}
+\end{center}
+\emph{Arrangement.} The base of the merge is Report~154; its \file{Report154.tex} was staged as this \file{article.tex}, and it is printed first, as Part~I. It treats the whole two-parameter array A344639 of which its sequence A192563 is the diagonal. Report~155 is printed second, as Part~II. Neither Part uses, cites or restates the other, so the order is that of the bundle numbers and of the generality of the object, not a dependency. Why two manuscripts with different methods make one report is explained below (``One family, two methods'').
+
+\emph{Numbering.} Sections are numbered continuously, and statements and equations within sections. Part~I keeps Report~154's Sections~1--11 and all its numbers. Report~155's Section~$k$ is Section~$k+11$ here (Sections~12--22), and its statement or equation $k.j$ is $(k+11).j$: its Lemma~3.1 and Theorems~3.2 and~3.3 are Lemma~\ref{sfp:mc:lem:saddle} and Theorems~\ref{sfp:mc:thm:exact} and~\ref{sfp:mc:thm:generic}, its Theorem~4.1 is Theorem~\ref{sfp:mc:thm:rational}, its Proposition~6.1 is Proposition~\ref{sfp:mc:prop:reduction}, its Theorems~7.1 and~7.2 are Theorems~\ref{sfp:mc:thm:H} and~\ref{sfp:mc:thm:main}, and its Theorem~8.1 is Theorem~\ref{sfp:mc:thm:inverse}. Its Table~1 is Table~\ref{sfp:mc:tab:coeff}. Section~\ref{sfp:sec:further}, which closes the report, was added in the write; no delivered number moved.
+
+Notes added when the manuscripts were merged are set in small type and tagged \textbf{[write]}, with their date (6~October 2026). They connect the two Parts, record what the write checked, and say how each inverse statement relates to the repository's transseries volume. No delivered statement was changed and no delivered symbol was renamed. Each Part ends with its own section of open questions (Sections~\ref{sfp:pc:sec:questions} and~\ref{sfp:mc:sec:future}); Section~\ref{sfp:sec:further} gathers them for the whole report under Vladimir's standing rule of 4~October 2026, with their sources, sketches and what is missing, and it treats the third member of the family, A192562, which neither manuscript treats.
+
+\section*{What is proved, and where}\phantomsection\label{sfp:sec:status}
+\addcontentsline{toc}{section}{What is proved, and where}
+Here $\sone nm$ and $\stwo nm$ are the unsigned Stirling numbers of the first kind and the Stirling numbers of the second kind; $a_n$ is A192563 and $A_{n,k}$ the array A344639 (Part~I); $b_n$ is A192561 and $P_n(z)=\prod_{j=1}^n(1+z/j)$ (Part~II).
+\begin{center}
+\small
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.56\textwidth} >{\raggedright\arraybackslash}p{0.39\textwidth}@{}}
+\toprule
+Statement & Where\\
+\midrule
+$a_n=\sum_m\sone nm(m+1)^n=\sum_kk!\sone{n+1}{k+1}\stwo{n+1}{k+1}$, Munarini's form, for every $n$; $a_n/n!=\EE(C_n+1)^n$; the poly-Cauchy interpretation (prior art, credited) & Part~I, \eqref{sfp:pc:eq:definition}, \eqref{sfp:pc:eq:moment}, \eqref{sfp:pc:eq:stirlingproduct}\\
+The exact saddle $r$: existence, uniqueness, smoothness; $r=\log N-\log\log N-\log\log\log N+o(1)$; $\kappa_j\sim Nr^{j-1}$ & Part~I, Lemmas~\ref{sfp:pc:lem:exist}--\ref{sfp:pc:lem:scales}\\
+$a_n$ to every fixed order in $r/n$, with exact cumulants and explicit Gaussian contraction polynomials $E_q$; the whole complementary circle by a positive exponential sum & Part~I, Theorem~\ref{sfp:pc:thm:main}, Lemma~\ref{sfp:pc:lem:minor}, \eqref{sfp:pc:eq:E2}\\
+The same expansion for $A_{n,k}$, uniformly for $\alpha\le k/n\le\beta$ & Part~I, Theorem~\ref{sfp:pc:thm:aspect}\\
+Smooth model $Y_R$ eventually increasing; $\lfloor\nu_R-\eps_R\rfloor+1\le T_\ge\le T_>\le\lceil\nu_R+\eps_R\rceil$ (asymptotic, no effective onset); nested-logarithm inverse with relative remainder $O(m^2/\ell^2)$; $a_{n+1}>a_n$ & Part~I, Theorem~\ref{sfp:pc:thm:inverse}, Sections~\ref{sfp:pc:sec:differentiation}--\ref{sfp:pc:sec:nested}, \eqref{sfp:pc:eq:monotone}\\
+$b_n/(n!)^2=\Fock{P_n}$ (classical Fock identity); exact positive expansion with explicit tail for every $n\ge1$ and $K\ge2$; $S_2\le1/\varphi$ & Part~II, \eqref{sfp:mc:eq:polynomial}, Lemma~\ref{sfp:mc:lem:saddle}, Theorem~\ref{sfp:mc:thm:exact}\\
+The same certificate for finite products with negative real zeros (priority not established) & Part~II, Theorem~\ref{sfp:mc:thm:generic}\\
+Rational-centre certificate; $b_{10}=1273270076895432$ isolated in an interval of width $<2.3\cdot10^{-18}$ & Part~II, Theorem~\ref{sfp:mc:thm:rational}, \eqref{sfp:mc:eq:exampleinteger}\\
+Exact-centre asymptotics and the two-dimensional Gaussian approximation & Part~II, Section~\ref{sfp:mc:sec:moment}\\
+Reduction to a universal Gamma norm with relative error $O(w^2/n)$; $b_n$ to every fixed order in $1/w$, $w=W_0(en)$, with rational $A_0,\dots,A_{10}$ & Part~II, Proposition~\ref{sfp:mc:prop:reduction}, Theorems~\ref{sfp:mc:thm:H} and~\ref{sfp:mc:thm:main}, Table~\ref{sfp:mc:tab:coeff}\\
+$b_{n+1}>b_n$; leading inverse $u=L/(2W_0(L/(2e)))$; nested-Lambert centre $v_R$ with a two-ceiling bracket (asymptotic, no effective onset); a finite certificate protocol & Part~II, Section~\ref{sfp:mc:sec:inverse}, Theorem~\ref{sfp:mc:thm:inverse}\\
+A192562: $A192562(n)=a_n-nA_{n-1,n}=\sum_m\sone{n-1}m\{(m+2)^n-(m+1)^n\}$ for $n\ge1$ & \wtag\ Proposition~\ref{sfp:prop:a192562}\\
+\midrule
+\multicolumn{2}{@{}l}{\emph{Open}}\\
+\multicolumn{2}{@{}p{0.96\textwidth}@{}}{Effective constants and onsets; the regimes $k/n\to0$ and $k/n\to\infty$ of A344639; limit laws under the moment weights; growing orders, optimal truncation and Borel summability; the $1/n$-scale correction for A192561; other root classes and weights; the asymptotics of A192562; full-text priority comparisons. See Section~\ref{sfp:sec:further}.}\\
+\bottomrule
+\end{tabular}
+\end{center}
+The finite computations of the two companions (exact integers and rationals) check identities, coefficients, finite values and one interval certificate; no asymptotic statement rests on them. Part~II's rational interval for $b_{10}$ is a proof of that one value, from Theorem~\ref{sfp:mc:thm:rational}, not a numerical observation.
+
+\section*{The OEIS family}\phantomsection\label{sfp:sec:oeis}
+\addcontentsline{toc}{section}{The OEIS family}
+The three entries, read by the write on 6~October 2026 (A192561 revision \#10 of June 25, 2024; A192562 revision \#4 of March 30, 2012; A192563 revision \#13 of May 26, 2021), each with the author line \verb!_Emanuele Munarini_, Jul 04 2011!. Their names, verbatim:
+\begin{itemize}
+\item \textbf{A192561}: \verb|a(n) = Sum_{k=0..n} Stirling1(n+1,k+1)^2*k!.|
+\item \textbf{A192562}: \verb|a(n) = sum(abs(stirling1(n,k))*stirling2(n+1,k+1)*k!,k=0..n).|
+\item \textbf{A192563}: \verb|a(n) = Sum_{k=0..n} abs(Stirling1(n+1,k+1))*Stirling2(n+1,k+1)*k!.|\\
+with the cross-reference \verb!Diagonal of the array A344639.!
+\end{itemize}
+So all three are $\sum_kk!\,X_kY_k$ over a pair of Stirling rows: two first-kind rows $\sone{n+1}{k+1}$ (A192561; the square makes the sign of \texttt{Stirling1} irrelevant), a first-kind and a second-kind row, both shifted (A192563), or both with the first row unshifted, $\sone nk\stwo{n+1}{k+1}$ (A192562). The pattern is one, but A192562's index shift differs from the other two. Part~II treats A192561, Part~I treats A192563, neither treats A192562. The listed terms (17 in each entry) agree with the write's exact recomputation from these definitions, and A192563's b-file ($0\le n\le270$, Stefano Spezia) agrees with Part~I's \eqref{sfp:pc:eq:definition} at every index. None of the three entries states an asymptotic formula.
+
+\emph{Munarini's form of A192563.} Part~I defines $a_n=\sum_m\sone nm(m+1)^n$ \eqref{sfp:pc:eq:definition}. The diagonal $k=n$ of its identity \eqref{sfp:pc:eq:stirlingproduct}, $A_{n,k}=\sum_jj!\sone{n+1}{j+1}\stwo{k+1}{j+1}$, is word for word the entry's definition, and that identity holds for all $n,k\ge0$: it is Theorem~2.6 of B\'enyi--Ram\'irez \cite{benyi}, and Part~I's Subsection~\ref{sfp:pc:sub:signs} reproves it in a few lines, a complete proof (the one step it calls standard is proved in a dated note there). So the two forms agree for every~$n$, not only for the $n\le11$ checked at intake, the $n,k\le64$ of the companion and the $n,k<30$ of the write.
+
+\emph{A344639.} The entry, read on 6~October 2026 (revision \#35 of April 15, 2025; Stefano Spezia, May 25, 2021), reads, verbatim:
+\begin{itemize}
+\item name: \verb|Array read by ascending antidiagonals: A(n, k) is the number of|\\
+ \verb|(n, k)-poly-Cauchy permutations.|
+\item first formula (beginning): \verb|A(n, k) = Sum_{m=0..n} abs(S1(n, m)) * (m + 1)^k|
+\item cross-reference: \verb|Main diagonal gives A192563.|
+\end{itemize}
+So $A(n,k)$ is Part~I's $A_{n,k}$ \eqref{sfp:pc:eq:definition} with the same indices; the write recomputed the 55 listed entries. The entry cites the arXiv preprint of B\'enyi--Ram\'irez by its own theorem numbers; Part~I cites the final version. What Part~I proves about the array:
+\begin{itemize}
+\item the identities it uses, all credited as prior art: the moment form \eqref{sfp:pc:eq:moment}, the Stirling product \eqref{sfp:pc:eq:stirlingproduct} (the entry's formula ``Theorem 14''), the coefficient form \eqref{sfp:pc:eq:coefficient} and the double generating function \eqref{sfp:pc:eq:doubleegf} (consistent with the entry's column generating functions of April 2025);
+\item Theorem~\ref{sfp:pc:thm:aspect}: for every fixed order $R$ and every compact $[\alpha,\beta]\subset(0,\infty)$, an asymptotic expansion of $A(n,k)$ in powers of $r/k$ with exact cumulants, uniformly for $\alpha\le k/n\le\beta$, together with the saddle scale \eqref{sfp:pc:eq:aspectr}; Theorem~\ref{sfp:pc:thm:main} is its main diagonal.
+\end{itemize}
+It proves nothing for fixed $n$ (rows, $k/n\to\infty$) or fixed $k$ (columns, $k/n\to0$), which it states explicitly and lists as a question (Section~\ref{sfp:sec:further}, item~\ref{sfp:q:transition}), and nothing about the antidiagonal sums A344640. The entry contains no asymptotic formula. \emph{Nothing was submitted to the OEIS.}
+
+\section*{One family, two methods}\phantomsection\label{sfp:sec:family}
+\addcontentsline{toc}{section}{One family, two methods}
+The two manuscripts were written in one session, carry the same date and the same release tooling, and do not cite each other. They are printed as one report because they treat two members of one OEIS family, and because one bilinear form and one polynomial put both in the same frame. In Part~II's notation \eqref{sfp:mc:eq:inner}, $\langle f,g\rangle_{\mathcal F}=\sum_kk![t^k]f\,[t^k]g$, and with
+\begin{gather*}
+ n!P_n(z)=\sum_k\sone{n+1}{k+1}z^k\ \ \eqref{sfp:mc:eq:polynomial},\qquad
+ \mathfrak T_n(z)=\sum_k\stwo{n+1}{k+1}z^k,\\
+ z^{\overline n}=z(z+1)\cdots(z+n-1)=\sum_k\sone nkz^k,
+\end{gather*}
+the three definitions read
+\[
+ A192561(n)=\langle n!P_n,n!P_n\rangle_{\mathcal F},\qquad
+ A192563(n)=\langle n!P_n,\mathfrak T_n\rangle_{\mathcal F},\qquad
+ A192562(n)=\langle z^{\overline n},\mathfrak T_n\rangle_{\mathcal F}
+\]
+(the notation $z^{\overline n}$ and $\mathfrak T_n$ is the write's). Part~II's sequence is a norm, and Part~II exploits exactly that: a translated Gaussian norm is a sum of nonnegative terms, which gives an exact expansion with an explicit tail. Part~I's sequence is a pairing of two different polynomials, and Part~I does not use the Fock form at all. It works with the summed form $A_{n,k}=\sum_m\sone nm(m+1)^k$, equal to the pairing by \eqref{sfp:pc:eq:stirlingproduct}, and extracts a coefficient,
+\[
+ a_n=n![z^n]F_n(z),\qquad F_n(z)=e^z\prod_{q=0}^{n-1}(e^z+q)=n!\,e^z\,P_n(e^z-1),
+\]
+the last form being Part~II's polynomial after the substitution $z\mapsto e^z-1$ (both products are $\prod_{j=1}^n(j+e^z-1)$). Positivity enters Part~I differently: $F_n$ is a positive exponential sum \eqref{sfp:pc:eq:positive}, which controls the whole circle (Lemma~\ref{sfp:pc:lem:minor}).
+
+The scales differ accordingly. Part~I's saddle is the exact root $r=\log n-\log\log n-\log\log\log n+o(1)$ in the variable of $e^z$, and its expansion is in powers of $r/n$ with coefficients depending on $n$ through exact cumulants. Part~II's saddle $a\sim\log n$ and its anchor $w-1$, $w=W_0(en)$, give an expansion in $1/w$ with rational coefficients, after a reduction whose error $O(w^2/n)$ is beyond all orders in $1/w$. The leading growths share one factorial core: $\log b_n=2n\log n-2n+O((\log n)^2)$ \eqref{sfp:mc:eq:logleading}, while Lemma~\ref{sfp:pc:lem:loggrowth} and \eqref{sfp:pc:eq:logerror} give $\log a_n=2n\log n-n\log\log n-2n+O(n\log\log n/\log n)$; so $\log(a_n/b_n)=-n\log\log n+O(n\log\log n/\log n)$. Both Parts prove every fixed order and integer-safe inverse brackets, both leave constants and onsets non-effective, and both state their priority searches as bounded. No lemma is shared, and neither manuscript applies its method to the other's sequence. The third member, A192562, is the subject of Section~\ref{sfp:sec:further}, item~\ref{sfp:q:a192562}, where the write proves an exact identity for it.
+
+\section*{The inverses and the transseries volume}\phantomsection\label{sfp:sec:inverses}
+\addcontentsline{toc}{section}{The inverses and the transseries volume}
+How each inverse statement relates to the transseries volume \cite{TSvol} (\file{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex}), statement by statement. No inverse here is an instance of the volume's Lambert core \file{p0:thm:lambert-core}.
+\begin{itemize}
+\item Part~II, \eqref{sfp:mc:eq:leadinginverse}: the equation $2u(\log u-1)=L$ is the factorial core $X(\kappa\log X+d)=L$ of \file{p0:prop:factorial-core} with $\kappa=2$, $d=-2$. That proposition gives $v=W_0\bigl((L/2)e^{-1}\bigr)=W_0(L/(2e))$ and $X=e^{v+1}$, and $e^{v}=L/(2ev)$ gives $X=L/(2v)$, which is \eqref{sfp:mc:eq:leadinginverse}; the side condition $2\log X-2>0$ selects the solution $u>e$. An \emph{instance}.
+\item Part~II, Theorem~\ref{sfp:mc:thm:inverse} and \eqref{sfp:mc:eq:implicitbracket}: the centre $v_R=u-J_R(u)/(2D)$ is a one-step correction of the core solution, proved from the smooth model $F_R$ of \eqref{sfp:mc:eq:FR}, whose terms in $w(x)=W_0(ex)$ lie outside the volume's exponential--power model \file{p0:def:model}. The two-ceiling brackets have the form of \file{p0:thm:staircase}\,(2), but that theorem presupposes an admissible interpolation of the sequence itself, and $F_R$ is a model with an error $\pm D_Rw^{-R}$, not an interpolation of $(b_n)$. Not an instance; proved directly; analogous to the separation condition~(2).
+\item Part~I, Theorem~\ref{sfp:pc:thm:inverse}, bracket \eqref{sfp:pc:eq:bracket}: likewise rounded from the smooth model $Y_R$, which is not an interpolation of $(a_n)$; not an instance of \file{p0:thm:staircase}, analogous to its condition~(2). The lower edge $\lfloor\nu_R-\eps_R\rfloor+1$ and the strict threshold $T_>$ are Part~I's own refinements (Section~\ref{sfp:pc:sec:thresholds}).
+\item Part~I, nested inverse \eqref{sfp:pc:eq:nested}: the model $\log Y_R(N)=2N\log N-N\log\log N-2N+O(N\log\log N/\log N)$ \eqref{sfp:pc:eq:loggrowth} contains the term $-N\log\log N$, outside the factorial core $X(2\log X-2)$; \emph{not} an instance of \file{p0:prop:factorial-core}. After the change of variables $\xi=\log\log X$, $Z=\log N$ it reads $\xi=Z+\log Z+\log2+B(Z)$ with $B=b_1(\log Z)/Z+O((\log Z)^2/Z^2)$, $b_1(\lambda)=-\lambda/2-1$; this is the monomial--logarithmic datum $(\rho,\mu,\beta)=(1,1,\log2)$ of \file{plt:def:lw-monomial-log-datum}, but only its first coefficient $b_1$ is determined. The write checked that the first two coefficients which \file{plt:thm:lw-template} produces from $(1,1,\log2,b_1)$, namely $q_0=-\log X'$ and $q_1=\frac32\log X'+1$ in the template's variable $X'=\xi-\log2$, give exactly \eqref{sfp:pc:eq:nested}. The template is a formal statement about a complete series $B$; Part~I's remainder $O(m^2/\ell^2)$ is its own mean-value argument (Section~\ref{sfp:pc:sec:nested}). An analogue, with first-order agreement; not an instance.
+\end{itemize}
+Neither manuscript claims novelty for the inversion mechanics; both call the underlying tools classical.
+
+\section*{Notation across the two Parts}\phantomsection\label{sfp:sec:notation}
+\addcontentsline{toc}{section}{Notation across the two Parts}
+Common to both Parts, with the same meaning: $n$ the index; the unsigned Stirling numbers of the first kind (Part~I writes \verb!\sone!, Part~II \verb!\stir!; they print the same symbol); natural logarithms; $\psi$ and its derivatives; $[z^k]$; the DLMF as the source of the Gamma-function inputs. Part~II alone uses $W_0$, $\zeta(\cdot,w)$, the golden ratio $\varphi$ and the Fock norm $\Fock{\cdot}$; Part~I alone uses the second-kind numbers $\stwo nk$ (the front matter and Section~\ref{sfp:sec:further} use both). The symbols below change meaning between the Parts or within one; each Part's text fixes its meaning there, and each Part opens with a short table of its own readings. No symbol was renamed.
+\begingroup\small
+\renewcommand{\theHtable}{notation.\arabic{table}}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.12\textwidth} >{\raggedright\arraybackslash}p{0.84\textwidth}@{}}
+\toprule
+Symbol & Meanings\\
+\midrule
+\endhead
+$a$ & Part~I: $a_n$ the sequence A192563. Part~II: $a=a_n>0$ the saddle point of \eqref{sfp:mc:eq:saddle}, $a\sim\log n$. \emph{Tempting false reading:} Part~II's $a_n$ is a real number near $\log n$, not A192563.\\
+$b$, $B$ & Part~I: $b=\kappa_2$ the second cumulant at the saddle; $B_j(p)$ the Bernoulli cumulant polynomials \eqref{sfp:pc:eq:bernoulli}. Part~II: $b_n$ the sequence A192561; $b\ge0$ a translation centre (Sections~\ref{sfp:mc:sec:fock} and~\ref{sfp:mc:sec:rational}); $b_*=w-1$; $B_n=b_n/(n!)^2$; $B_{2j}$ Bernoulli numbers; $B_{m+1}(t)$ Bernoulli polynomials with $B_1(t)=t-\frac12$ \eqref{sfp:mc:eq:gm}. \emph{False reading:} Part~II's $b$ is not a variance, and its $B_{m+1}(t)$ are not Part~I's $B_j(p)$.\\
+$A$ & Part~I: $A_{n,k}$ the array A344639. Part~II: $A_r$ the coefficients of Theorem~\ref{sfp:mc:thm:main} and Table~\ref{sfp:mc:tab:coeff}; $A$ planar Lebesgue measure in \eqref{sfp:mc:eq:norm}.\\
+$r$, $t$ & Part~I: $r=r(N)$ the exact saddle \eqref{sfp:pc:eq:saddle}; $t=e^r$. Part~II: $r$ an index ($A_r$, $S_r$, $H_r$, $p_r$) and a radius in the proof of \eqref{sfp:mc:eq:fock}; $t$ the complex translation variable. \emph{False reading:} Part~II's $A_r/w^r$ has nothing to do with Part~I's saddle.\\
+$E$ & Part~I: $E_q$ the contraction polynomials \eqref{sfp:pc:eq:Ek}, $E_1\sim-r/(12N)$; $\EE$ expectation. Part~II: $E(x)$, $E_r$ the Stirling-series coefficients \eqref{sfp:mc:eq:Edef}, $E_1=-1/6$; $E_M^\pm(x)$ exponential enclosures \eqref{sfp:mc:eq:expbounds}; $E=qd^2/(s(1-q))$.\\
+$C$, $c$ & Part~I: $C_n$ the cycle count of a uniform permutation; $C_R$, $C_j$ constants; $c=\frac32m+1+\log2$ \eqref{sfp:pc:eq:x0}; $c_j$ bounded coefficients. Part~II: $C_{n,K}$ and $C_n$ the truncated and full normalized norm \eqref{sfp:mc:eq:exactnorm}; $C$ a finite rational sum; $C_R$ constants; $c_k$, $c_k(b)$ Taylor coefficients.\\
+$L$ & Part~I: $L_N(z)$ of \eqref{sfp:pc:eq:LN}; $L=\log X$. Part~II: $L(x)=-\log(1-x)$; $L=\log T$; $\mathcal L$ a lower endpoint \eqref{sfp:mc:eq:fullyrational}.\\
+$H$, $h$ & Part~I: $H(s,u)$, $H_d(u)$ \eqref{sfp:pc:eq:H}, \eqref{sfp:pc:eq:formalQ}; $h=r/N$; $h_N(u)$ \eqref{sfp:pc:eq:digammadiff}. Part~II: $H_b(t)$ \eqref{sfp:mc:eq:offcenterdefs}; $H_r$ the norm coefficients \eqref{sfp:mc:eq:inner}; $\mathcal H(w)$ \eqref{sfp:mc:eq:gammanorm}; $H_n$ a harmonic number (proof of Lemma~\ref{sfp:mc:lem:saddle}); $h_w(t)$, $h_{n,w}(t)$, $h_k(w)$; $h$ an upper bisection endpoint.\\
+$P$, $Q$ & Part~I: $P_R(N)=\sum_{q<R}E_q$ \eqref{sfp:pc:eq:YR}; $Q(u)$ \eqref{sfp:pc:eq:Q}, $Q_w(u)$. Part~II: $P_n(z)=\prod_{j\le n}(1+z/j)$, $P(z)$ in Theorem~\ref{sfp:mc:thm:generic}; $p_r(t)$ \eqref{sfp:mc:eq:pr}; $Q_R(w)=\sum_{r<R}A_rw^{-r}$.\\
+$F$, $Y$, $\nu$, $v$ & Part~I: $F_n(z)$ the coefficient function \eqref{sfp:pc:eq:Fn}; $Y_R(N)$ the smooth model \eqref{sfp:pc:eq:YR}; $\nu_R$ its inverse. Part~II: $F_R(x)$ the smooth \emph{logarithmic} model \eqref{sfp:mc:eq:FR}; $v_R$ the inverse centre \eqref{sfp:mc:eq:inverseintro}; $y_R$ the smooth root. \emph{False reading:} $F_R(n)$ approximates $\log b_n$, while $Y_R(n)$ approximates $a_n$ itself.\\
+$N$, $T$, $X$ & Part~I: $N$ a real size parameter; $X$ the target; $T_\ge(X)$, $T_>(X)$ the nonstrict and strict thresholds. Part~II: $N(T)=\min\{n:b_n\ge T\}$, the nonstrict threshold (Part~II has no strict one); $T$ the target; $T_R$ an onset.\\
+$q$, $K$, $D$ & Part~I: $q$ the index of $E_q$ and of $p_q$ \eqref{sfp:pc:eq:p}; $q_N(t)$ \eqref{sfp:pc:eq:q}. Part~II: $q\in(S_2,1)$ the scale of the tail bound; $K$ the truncation; $D=\log u$, $D_R$ a constant.\\
+$\lambda$, $\eta$, $\rho$, $\delta$ & Part~I: $\lambda_j=\kappa_j/b^{j/2}$ \eqref{sfp:pc:eq:normalization}, $\lambda=k/n$ (Section~\ref{sfp:pc:sec:aspect}); $\eta=\sqrt{r/n}$; $\rho$ a disk radius; $\delta=n^{-2/5}$. Part~II: $\lambda_j>0$ the roots of Theorem~\ref{sfp:mc:thm:generic}; $\eta_m$ exponent coefficients \eqref{sfp:mc:eq:Erec}.\\
+$u$, $s$, $w$, $x$ & Part~I: $u=\sqrt b\,\theta$ and integration variables; $s$ an auxiliary variable \eqref{sfp:pc:eq:H}; $w$ the index of $Q_w$; $x=N/t$, $x_0$ \eqref{sfp:pc:eq:x0}, $x_j$ indeterminates. Part~II: $u=L/(2W_0(L/(2e)))$; $w=W_0(en)$, $w_u=W_0(eu)$; $s=S_2(b)$; $x$ a generating-function variable, $x_j=(j+b)^{-1}$, $x_\pm$ model roots.\\
+$m$, $J$, $M$, $U$, $R$ & Part~I: $m=\log\ell$; $m_j$ multiplicities; $J$ a total degree; $M_R$ an integer, $M_n$ the diagnostic normalizer \eqref{sfp:pc:eq:diagnostic}; $U$ a cutoff; $\mathcal R$ a remainder. Part~II: $m$ the degree in Theorem~\ref{sfp:mc:thm:generic} and an integer in \eqref{sfp:mc:eq:uniqueinteger}; $J$ a number of bisection steps and $J_R(u)$ \eqref{sfp:mc:eq:inverseB}; $M$ a Taylor order; $\mathcal U$ an upper endpoint; $R_{n,w}(t)$ \eqref{sfp:mc:eq:gammaratio}. $R$ is a fixed order in both Parts.\\
+$\eps$, $g$, $G$, $d$, $S$, $Z$ & Part~I: $\eps_R$ \eqref{sfp:pc:eq:epsilon}; $G(u)$ \eqref{sfp:pc:eq:G}. Part~II: $\varepsilon_{n,K}$, $\varepsilon_{b,K}$ tails; $g(a)$, $g_m(t)$ \eqref{sfp:mc:eq:gm}; $d$, $d_w$, $d_{n,w}$ linear coefficients; $S_r$, $S_r(b)$ moments; $Z=(n!)^2P_n(b)^2$.\\
+\bottomrule
+\end{longtable}
+\addtocounter{table}{-1}% the uncaptioned longtable must not consume a table number
+\endgroup
+
+\section*{Provenance and merge decisions}\phantomsection\label{sfp:sec:provenance}
+\addcontentsline{toc}{section}{Provenance and merge decisions}
+Two manuscripts of the session bundle of Reports 1--243. Their author lines read ``Report 154'' and ``Report 155''; neither names an author, a tool or an addressee, and each sets an empty PDF author field. Neither names a ProveIt commit or path, so neither carries a pin. They arrived in commit \texttt{60f54ea06} and were placed by \texttt{3988bf5c4} (batch~107, cluster 107-STIRL).
+\begin{itemize}
+\item \textbf{Part~I}, bundle Report~154, archive \file{Diagonal_Poly_Cauchy_All_Orders_and_Inverse_Thresholds_Source.zip} (24 files, 714,622 bytes unpacked; \file{Report154.tex}, 1311 lines, 19 pages, dated 3 October 2026); the base. Contributes the exact-saddle expansion of A192563 and of A344639 on compact aspect ratios, the smooth inverse with its equality-safe brackets, and the nested-logarithm inverse.
+\item \textbf{Part~II}, bundle Report~155, archive \file{Matched_Cycles_Exact_Certificates_All_Orders_and_Inverses_Source.zip} (22 files, 923,684 bytes unpacked; \file{Report155.tex}, 1243 lines, 20 pages, dated 3 October 2026). Contributes the positive Fock certificate and its rational version, the negative-root generalization, the all-orders expansion in $1/W_0(en)$ with its coefficient generator, and the nested-Lambert inverse.
+\end{itemize}
+Where the merge had to choose:
+\begin{enumerate}
+\item \emph{One report rather than two.} The two sequences are two members of one OEIS family and fit one frame (``One family, two methods''); the intake's alternative, two single-source reports, was not taken. The cost is a heavier notation: the table above separates the letters, and the two Parts are printed whole and independently.
+\item \emph{Base and order.} Report~154 first: its object is the two-parameter array, and it has the lower bundle number. There is no dependency either way.
+\item \emph{Front matter and bibliography.} The two title blocks, abstracts and scope paragraphs are printed at the heads of their Parts; one table of contents replaces two. The two bibliographies are merged into one, keeping every detail of every entry. Both cite the DLMF, with different details; the entries are kept apart, as \cite{dlmf} (Part~I) and \cite{dlmf-mc} (Part~II). The write added the entries \cite{oeisA192562} and \cite{TSvol}.
+\item \emph{Macros.} Part~II's \verb!\stir! is defined as Part~I's \verb!\sone!; the printed symbol is the same. The other macros the two sources share have the same definitions.
+\item \emph{Write additions.} This front matter, the reading-conventions tables of the Parts, the dated notes, Section~\ref{sfp:sec:further} with Proposition~\ref{sfp:prop:a192562} and Remark~\ref{sfp:rem:a192562}, labels for the subsections cited, and the label prefixes. Everything else is delivered text.
+\end{enumerate}
+
+\section*{What was checked, and what was not}\phantomsection\label{sfp:sec:trust}
+\addcontentsline{toc}{section}{What was checked, and what was not}
+The report is unrefereed and not formalized. At intake (dossier of batch~107, 5--6~October 2026) both manuscripts were read in full and no step was found false. Checked there by hand: Lemma~\ref{sfp:pc:lem:exist} ($h_N$ nonincreasing, the derivative $b/r$ of $rL_N'(r)$); Lemma~\ref{sfp:pc:lem:minor}; the recurrence step of \eqref{sfp:pc:eq:monotone}; the cancellation in \eqref{sfp:pc:eq:x0}; Part~II's golden bound \eqref{sfp:mc:eq:golden}, the admissibility of $q=K/(K+1)$ for $K\ge2$, the cancellation after \eqref{sfp:mc:eq:normalization}, \eqref{sfp:mc:eq:FRu} and the directions of the brackets. Checked numerically there: $\kappa_1=n$ at the solved saddle and the $R=2$ entries of Table~\ref{sfp:pc:tab:residuals} at $n=20,100$; $b_{10}$ by the Stirling recurrence; the diagnostics recorded at Proposition~\ref{sfp:mc:prop:reduction}. The write re-read both manuscripts; recomputed the listed terms of A192561, A192562, A192563 and A344639, A192563's b-file to $n=270$, the identity \eqref{sfp:pc:eq:stirlingproduct} for $n,k<30$ and Proposition~\ref{sfp:prop:a192562} for $1\le n\le55$; checked Part~II's $c_2,\dots,c_6$ and \eqref{sfp:mc:eq:weight6} symbolically, and $E_1,E_2,E_3$, $A_2$, $A_3$ and $H_1$, $H_2$ by hand; recomputed Part~II's diagnostic at $n=200$ (and $400$); and derived the classifications of the inverses above, including the template coefficients $q_0$, $q_1$. The delivered suites were rerun on copies (README).
+
+What was \emph{not} done: the analytic estimates (the contour and weighted Taylor bounds and the parameter derivatives of Part~I; the global product bound, the scaled tails, the Gamma-ratio estimate and the inverse windows of Part~II) were read and their displayed algebra checked, but they are the manuscripts' proofs, not an independent verification. The write did not read any of the cited papers or the cited DLMF equations: what is said about B\'enyi--Ram\'irez, Komatsu, Jha, Yakymiv, Komatsu--Szalay, Wilf, Alpay--Porat, Gittenberger--Mandlburger, Bender--Richmond and Gao--Laferri\`ere--Panario, and the inspection levels recorded, are the manuscripts'. In particular Part~I's novelty statements remain provisional on Yakymiv's paper \cite{yakymiv}, as Part~I says.
+
+\section*{Relation to neighbouring reports and formal projects}\phantomsection\label{sfp:sec:neighbours}
+\addcontentsline{toc}{section}{Relation to neighbouring reports and formal projects}
+No other report of the repository treats A192561, A192562, A192563, A344639 or poly-Cauchy numbers (repository search, 6~October 2026). Neighbours by object or method only: \file{a064856-stirling-catalan-transforms} (same batch) studies Stirling transforms of the Catalan numbers; \file{a122399-surjection-diagonal} gives an all-orders saddle expansion of a two-parameter array uniformly for compact aspect ratios, as Theorem~\ref{sfp:pc:thm:aspect} does here; \file{a139383-iterated-bell-diagonals} extracts coefficients $n![z^n]$ of functions that change with $n$, as \eqref{sfp:pc:eq:coefficient} does; \file{a277364-bell-asymptotics} treats partial row sums of second-kind Stirling numbers; \file{a124380-signed-moment-asymptotics} treats $\sum_kz^k\prod_{j\le k}(1+jz)$, a different product of linear factors. None shares a definition, lemma or constant with this report. The transseries volume \cite{TSvol} is related to the inverses as stated above.
+
+Placement in the collection confers no formal status, and no statement of this report is formalized. The two classical identities that Part~I's re-proof of \eqref{sfp:pc:eq:stirlingproduct} combines are formalized in the FabiusFunction Lean layer, as \file{Fabius.X_pow_eq_sum_stirlingSecond_succ_mul_descPochhammer_comp} (\file{Analysis/FabiusFunction/Lean/FabiusFunction/StirlingShiftedEvaluations.lean}) and \file{Fabius.stirlingFirst_succ_succ_eq_sum_choose} (\file{.../StirlingBasisChange.lean}); \eqref{sfp:pc:eq:stirlingproduct} itself is not.
+\clearpage
+\part{Diagonal poly-Cauchy permutations at all fixed orders}\label{sfp:pc:part}
+\partsource{Bundle Report~154, archive \file{Diagonal_Poly_Cauchy_All_Orders_and_Inverse_Thresholds_Source.zip}, delivered as \file{Report154.tex} (19 pages), the base of the merge. Delivered title block ``Diagonal poly Cauchy permutations at all fixed orders / Exact saddle expansion and inverse thresholds for OEIS A192563 / Report 154 / 3 October 2026''. Printed as delivered, with \textbf{[write]} notes; section, statement, equation and table numbers are those of the delivery.}
+\begin{center}
+\small
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.46\textwidth} >{\raggedright\arraybackslash}p{0.46\textwidth}@{}}
+\toprule
+Reading conventions of Part~I & Elsewhere in the report\\
+\midrule
+$a_n$ the sequence A192563; $A_{n,k}$ the array A344639 & Part~II: $a=a_n$ a saddle point; $A_r$ coefficients\\
+$b=\kappa_2$; $B_j(p)$ Bernoulli cumulant polynomials & Part~II: $b_n$ = A192561, $b$ a centre; $B_n=b_n/(n!)^2$; Bernoulli $B_{2j}$, $B_{m+1}(t)$\\
+$r$ the saddle, $t=e^r$; $E_q$ contraction polynomials & Part~II: $r$ an index, $t$ a complex variable; $E_r$ Stirling-series coefficients\\
+$L_N(z)$; $L=\log X$; $F_n$, $P_R$, $Y_R$, $\nu_R$; thresholds $T_\ge$, $T_>$ & Part~II: $L(x)$, $L=\log T$; $F_R$ a logarithmic model; $P_n(z)$; $N(T)$\\
+\bottomrule
+\end{tabular}
+\end{center}
+\begin{partabstract}
 The diagonal second-kind poly-Cauchy numbers satisfy
 $a_n=\sum_m\sone nm(m+1)^n$ and count the $(n,n)$-poly-Cauchy
 permutations of B\'enyi and Ram\'irez. Equivalently,
@@ -59,7 +264,7 @@ We also obtain an explicit nested-logarithm inversion,
 including its relative remainder. Exact companion calculations
 check the coefficient identities and the OEIS prefix; optional
 high-precision diagnostics are separated from the proof.
-\end{abstract}
+\end{partabstract}
 \noindent\textbf{Scope and attribution.}
 The sequence, signed conventions, exact identities, and combinatorial
 interpretation are established prior art. This report supplies a
@@ -69,16 +274,15 @@ full texts, notably Yakymiv's cycle-moment paper, remain uninspected.
 No numerical asymptotic onset or universal error constant is certified
 here. No claim concerns growing truncation order or exponentially
 small sectors.
-\newpage
-\tableofcontents
-\newpage
+\medskip
 
-\section{Results and mathematical purpose}\label{sec:results}
+
+\section{Results and mathematical purpose}\label{sfp:pc:sec:results}
 
 Let $\sone nm$ and $\stwo nm$ be, respectively, the unsigned
 Stirling numbers of the first kind and the Stirling numbers of the
 second kind, with both $(0,0)$ entries equal to one. Define
-\begin{equation}\label{eq:definition}
+\begin{equation}\label{sfp:pc:eq:definition}
  A_{n,k}=\sum_{m=0}^n\sone nm(m+1)^k,
  \qquad a_n=A_{n,n}\quad(n,k\geq0).
 \end{equation}
@@ -91,11 +295,15 @@ It is OEIS A192563, the diagonal of A344639
 all asymptotic statements refer to positive arguments tending to
 infinity.
 
+\begin{writenote}[6 October 2026]
+The live entries, read by the write: A192563 revision \#13 (26 May 2021, the date of the mirror snapshot of \cite{oeisdiag}) and A344639 revision \#35 (15 April 2025); they are quoted in the front matter (``The OEIS family''). The eight values above agree with the entry; its b-file ($0\le n\le270$, Stefano Spezia), which the manuscript could not retrieve (Subsection~\ref{sfp:pc:sub:screen}), agrees with \eqref{sfp:pc:eq:definition} at every index (exact recomputation by the write). Part~\ref{sfp:mc:part} treats A192561, entered by the same author on the same day in the same pattern; there $a$ is a saddle point and $b_n$ the sequence.
+\end{writenote}
+
 \subsection{Why this diagonal is a natural asymptotic problem}
 
 If $C_n$ is the number of cycles of a uniform random permutation
 of $n$ labels, then
-\begin{equation}\label{eq:moment}
+\begin{equation}\label{sfp:pc:eq:moment}
  \frac{A_{n,k}}{n!}=\EE(C_n+1)^k.
 \end{equation}
 Thus the diagonal studies a moment order that grows with the
@@ -124,18 +332,18 @@ to grow at comparable but unequal rates.
 \subsection{The exact saddle and its coefficients}
 
 For real $N\geq1$ and real $z$, set
-\begin{equation}\label{eq:LN}
+\begin{equation}\label{sfp:pc:eq:LN}
  L_N(z)=z+\log\Gamma(N+e^z)-\log\Gamma(e^z).
 \end{equation}
 Let $r=r(N)>0$ solve
-\begin{equation}\label{eq:saddle}
+\begin{equation}\label{sfp:pc:eq:saddle}
  rL_N'(r)=N,
  \quad\text{or}\quad
  r\bigl[1+e^r\{\psi(N+e^r)-\psi(e^r)\}\bigr]=N.
 \end{equation}
 Here $\psi$ is the digamma function. Existence and uniqueness for
-every $N\geq1$ are proved in Section~\ref{sec:real}. Define
-\begin{equation}\label{eq:cumulants}
+every $N\geq1$ are proved in Section~\ref{sfp:pc:sec:real}. Define
+\begin{equation}\label{sfp:pc:eq:cumulants}
  \kappa_j(N)=\left.(z\partial_z)^jL_N(z)\right|_{z=r(N)},
  \qquad b=\kappa_2,
  \qquad h=\frac rN.
@@ -144,7 +352,7 @@ The differential operator acts with $N$ held fixed, before evaluation
 at the saddle. In particular $\kappa_1=N$ and $b>0$.
 
 Put $E_0=1$. For $q\geq1$, define the finite polynomial expression
-\begin{equation}\label{eq:Ek}
+\begin{equation}\label{sfp:pc:eq:Ek}
  E_q=\sum_{\substack{m_3,\ldots,m_{2q+2}\geq0\\
                     \sum_{j=3}^{2q+2}(j-2)m_j=2q}}
  (-1)^{J/2}(J-1)!!
@@ -156,20 +364,20 @@ The constraint makes $J$ even; the apparent half-powers of $b$ thus
 combine to integer powers in every monomial. We use $(-1)!!=1$
 when representing $E_0$ by the empty product.
 
-\begin{theorem}[All fixed orders on the diagonal]\label{thm:main}
+\begin{theorem}[All fixed orders on the diagonal]\label{sfp:pc:thm:main}
 For every fixed integer $R\geq1$, as $n\to\infty$,
-\begin{equation}\label{eq:main}
+\begin{equation}\label{sfp:pc:eq:main}
  a_n=\frac{n!\exp L_n(r)}{r^n\sqrt{2\pi b}}
        \left(\sum_{q=0}^{R-1}E_q(n)+O_R\left((r/n)^R\right)\right).
 \end{equation}
 Moreover, for each fixed $j\geq1$,
 \begin{align}
- r(N)&=\log N-\log\log N-\log\log\log N+o(1),\label{eq:rscale}\\
+ r(N)&=\log N-\log\log N-\log\log\log N+o(1),\label{sfp:pc:eq:rscale}\\
  \kappa_j(N)&\sim Nr^{j-1},\qquad
- E_q(N)=O_q\left((r/N)^q\right).\label{eq:kappascale}
+ E_q(N)=O_q\left((r/N)^q\right).\label{sfp:pc:eq:kappascale}
 \end{align}
 In particular,
-\begin{equation}\label{eq:E1}
+\begin{equation}\label{sfp:pc:eq:E1}
  E_1=\frac{\kappa_4}{8b^2}
        -\frac{5\kappa_3^2}{24b^3}
        \sim-\frac{r}{12N}.
@@ -187,13 +395,13 @@ be much larger than $(r/n)^2$. This is an exact-saddle expansion with
 slowly varying coefficients, not a constant-coefficient power series
 in $1/n$.
 
-\begin{theorem}[Compact aspect ratios]\label{thm:aspect}
+\begin{theorem}[Compact aspect ratios]\label{sfp:pc:thm:aspect}
 Fix $0<\alpha\leq\beta<\infty$ and a fixed integer $R\geq1$.
 For positive integers $n,k$ with $\alpha\leq k/n\leq\beta$,
 let $r>0$ solve $rL_n'(r)=k$ and define $\kappa_j,b,E_q$ as in
-\eqref{eq:cumulants}--\eqref{eq:Ek}, with $n$ held fixed. Uniformly
+\eqref{sfp:pc:eq:cumulants}--\eqref{sfp:pc:eq:Ek}, with $n$ held fixed. Uniformly
 in this range,
-\begin{equation}\label{eq:aspect}
+\begin{equation}\label{sfp:pc:eq:aspect}
  A_{n,k}=\frac{k!\exp L_n(r)}{r^k\sqrt{2\pi b}}
     \left(\sum_{q=0}^{R-1}E_q
           +O_{R,\alpha,\beta}\left((r/k)^R\right)\right).
@@ -201,17 +409,20 @@ in this range,
 Also, uniformly in the same range,
 \begin{align}
  r&=\log n-\log\log n-\log\log\log n
-               +\log(k/n)+o(1),\label{eq:aspectr}\\
+               +\log(k/n)+o(1),\label{sfp:pc:eq:aspectr}\\
  \kappa_j&\sim kr^{j-1},\qquad b\sim kr.
 \end{align}
 The theorem makes no uniform assertion as $k/n$ approaches zero or
 infinity.
 \end{theorem}
+\begin{writenote}[6 October 2026]
+$A_{n,k}$ is the entry $A(n,k)$ of OEIS A344639 (rows $n$, columns $k$), so Theorem~\ref{sfp:pc:thm:aspect} expands that array to every fixed order, uniformly in every sector $\alpha\le k/n\le\beta$; Theorem~\ref{sfp:pc:thm:main} is its main diagonal. It says nothing about fixed rows or fixed columns of the array, or about its antidiagonal sums (A344640). See the front matter, ``The OEIS family''.
+\end{writenote}
 
 \subsection{Inverse results and rounding}
 
 For fixed $R\geq1$, put
-\begin{equation}\label{eq:YR}
+\begin{equation}\label{sfp:pc:eq:YR}
  P_R(N)=\sum_{q=0}^{R-1}E_q(N),\qquad
  Y_R(N)=\frac{\Gamma(N+1)\exp L_N(r(N))}
                    {r(N)^N\sqrt{2\pi b(N)}}P_R(N).
@@ -220,16 +431,16 @@ This defines an explicit smooth function for sufficiently large real
 $N$. It does not assert an extension of the combinatorial sequence
 to noninteger indices.
 
-\begin{theorem}[Smooth inverse and integer thresholds]\label{thm:inverse}
+\begin{theorem}[Smooth inverse and integer thresholds]\label{sfp:pc:thm:inverse}
 The function $P_R$ is eventually positive and $Y_R$ is eventually
 strictly increasing, with
-\begin{equation}\label{eq:Yderivative}
+\begin{equation}\label{sfp:pc:eq:Yderivative}
  (\log Y_R)'(N)=2\log N-\log r(N)+o(1)\sim2\log N.
 \end{equation}
 For sufficiently large $X$, let $\nu_R$ be the unique solution of
 $Y_R(\nu_R)=X$ in the eventual increasing range. There is a constant
 $C_R>0$ such that, with
-\begin{equation}\label{eq:epsilon}
+\begin{equation}\label{sfp:pc:eq:epsilon}
  \eps_R=C_R\frac{(\log\nu_R)^{R-1}}{\nu_R^R},
 \end{equation}
 the two thresholds
@@ -238,14 +449,14 @@ the two thresholds
  T_{>}(X)=\min\{n\geq0:a_n>X\}
 \]
 satisfy
-\begin{equation}\label{eq:bracket}
+\begin{equation}\label{sfp:pc:eq:bracket}
  \floor{\nu_R-\eps_R}+1
  \ \leq T_{\geq}(X)\leq T_{>}(X)
  \ \leq\ceil{\nu_R+\eps_R}.
 \end{equation}
 In addition, if $L=\log X$, $\ell=\log L$, and $m=\log\ell$,
 then
-\begin{equation}\label{eq:nested}
+\begin{equation}\label{sfp:pc:eq:nested}
  \nu_R=\frac{L}{2\ell}
        \left[1+\frac{\tfrac32m+1+\log2}{\ell}
                +O_R\left(\frac{m^2}{\ell^2}\right)\right].
@@ -258,14 +469,17 @@ $\nu_R+o(1)$ without a rounding qualification. If the interval
 $[\nu_R-\eps_R,\nu_R+\eps_R]$ lies strictly between consecutive
 integers $j$ and $j+1$, both thresholds equal $j+1$. If $X=a_n$,
 then $T_{\geq}(X)=n$ and $T_>(X)=n+1$; the two-sided statement
-\eqref{eq:bracket} deliberately retains that possibility.
+\eqref{sfp:pc:eq:bracket} deliberately retains that possibility.
 The explicit nested-log expression has a much coarser error than
-\eqref{eq:epsilon}; it must not silently replace $\nu_R$ in that
+\eqref{sfp:pc:eq:epsilon}; it must not silently replace $\nu_R$ in that
 fine bracket.
+\begin{writenote}[6 October 2026]
+Relation to the transseries volume \cite{TSvol} (front matter, ``The inverses and the transseries volume''): the bracket \eqref{sfp:pc:eq:bracket} rounds a smooth model, not an interpolation of $(a_n)$, so it is not an instance of \file{p0:thm:staircase}; it plays the role of that theorem's separation condition~(2). The nested inverse \eqref{sfp:pc:eq:nested} is not an instance of \file{p0:prop:factorial-core}, because of the term $-N\log\log N$ in \eqref{sfp:pc:eq:loggrowth}; its first correction agrees with the first coefficients that \file{plt:thm:lw-template} gives for a truncated datum, and its remainder is proved here (Section~\ref{sfp:pc:sec:nested}).
+\end{writenote}
 
-\section{Established identities and source boundaries}\label{sec:sources}
+\section{Established identities and source boundaries}\label{sfp:pc:sec:sources}
 
-\subsection{Signs and the OEIS identification}
+\subsection{Signs and the OEIS identification}\label{sfp:pc:sub:signs}
 
 In Komatsu's notation for second-kind poly-Cauchy numbers,
 \[
@@ -275,18 +489,18 @@ B\'enyi--Ram\'irez write the nonnegative normalization as
 $\widehat c_{n,k}$. These conventions exclude the signed first-kind
 poly-Cauchy numbers, which are a different family
 \cite[Theorem 4]{komatsu2013}. The final published version of
-B\'enyi--Ram\'irez gives \eqref{eq:definition} and its interpretation
+B\'enyi--Ram\'irez gives \eqref{sfp:pc:eq:definition} and its interpretation
 in Theorem 2.1 and gives
-\begin{equation}\label{eq:stirlingproduct}
+\begin{equation}\label{sfp:pc:eq:stirlingproduct}
  A_{n,k}=\sum_{j=0}^k j!\sone{n+1}{j+1}\stwo{k+1}{j+1}
 \end{equation}
 in Theorem 2.6 \cite{benyi}. The diagonal of
-\eqref{eq:stirlingproduct} is precisely the defining formula in
+\eqref{sfp:pc:eq:stirlingproduct} is precisely the defining formula in
 A192563. The theorem numbers in the earlier preprint are different;
 all theorem references here use the final 2022 volume version.
 
 For completeness, a direct algebraic check of
-\eqref{eq:stirlingproduct} is short. The standard identity
+\eqref{sfp:pc:eq:stirlingproduct} is short. The standard identity
 \[
  (m+1)^k=\sum_{j=0}^k\stwo{k+1}{j+1}(m)_j
 \]
@@ -300,34 +514,37 @@ is $\sone{n+1}{j+1}$, and also equals
 $\sum_m\sone nm\binom mj$. Multiplying by $j!$ and interchanging
 finite sums proves the formula. The companion verifies both sides
 by independent recurrences.
+\begin{writenote}[6 October 2026]
+On the diagonal $k=n$, \eqref{sfp:pc:eq:stirlingproduct} is word for word the defining formula of A192563, \verb|Sum_{k=0..n} abs(Stirling1(n+1,k+1))*Stirling2(n+1,k+1)*k!|, so \eqref{sfp:pc:eq:definition} agrees with Munarini's form for every $n\ge0$. The check above is a complete proof. Its standard identity has a one-line proof: dividing $(m+1)^{k+1}=\sum_{i\ge1}\stwo{k+1}{i}(m+1)_i$ by $m+1$, with $(m+1)_i=(m+1)(m)_{i-1}$, gives $(m+1)^k=\sum_{j\ge0}\stwo{k+1}{j+1}(m)_j$ (the term $i=0$ vanishes because $\stwo{k+1}0=0$). The intake checked the equality for $n\le11$, the companion checks \eqref{sfp:pc:eq:stirlingproduct} for $0\le n,k\le64$, and the write for $0\le n,k<30$. A344639 cites the arXiv preprint of \cite{benyi} for these formulas, by the preprint's own theorem numbers. Both classical inputs of the check are formalized in the repository's FabiusFunction Lean layer (front matter, last section); \eqref{sfp:pc:eq:stirlingproduct} itself is not.
+\end{writenote}
 
 \subsection{The coefficient function}
 
 The rising-factorial identity gives the entire function
 \begin{align}
- F_n(z)&=\sum_{m=0}^n\sone nm e^{(m+1)z}\label{eq:positive}\\
+ F_n(z)&=\sum_{m=0}^n\sone nm e^{(m+1)z}\label{sfp:pc:eq:positive}\\
        &=e^z\prod_{q=0}^{n-1}(e^z+q)
         =e^z\frac{\Gamma(n+e^z)}{\Gamma(e^z)}.
-        \label{eq:Fn}
+        \label{sfp:pc:eq:Fn}
 \end{align}
-The gamma quotient in \eqref{eq:Fn} is understood through its
+The gamma quotient in \eqref{sfp:pc:eq:Fn} is understood through its
 finite product wherever necessary; $F_n$ is entire. Hence
-\begin{equation}\label{eq:coefficient}
+\begin{equation}\label{sfp:pc:eq:coefficient}
  A_{n,k}=k![z^k]F_n(z),\qquad a_n=n![z^n]F_n(z).
 \end{equation}
 Summing the rising-factorial exponential generating function in
 $n$ also gives
-\begin{equation}\label{eq:doubleegf}
+\begin{equation}\label{sfp:pc:eq:doubleegf}
  \sum_{n,k\geq0}A_{n,k}\frac{x^n}{n!}\frac{y^k}{k!}
      =e^y(1-x)^{-e^y}.
 \end{equation}
 These are exact prior-art identities, including the shifted-family
-specialization behind \eqref{eq:doubleegf}. The one-variable form
-\eqref{eq:coefficient} is the convenient route for the asymptotic
+specialization behind \eqref{sfp:pc:eq:doubleegf}. The one-variable form
+\eqref{sfp:pc:eq:coefficient} is the convenient route for the asymptotic
 analysis; it changes with $n$, so the proof must control a triangular
 family of entire functions.
 
-\subsection{What the literature screen establishes}
+\subsection{What the literature screen establishes}\label{sfp:pc:sub:screen}
 
 The official OEIS data-mirror entry for A192563 was inspected in
 full on 3 October 2026, as was A344639; the latter was also read at
@@ -363,23 +580,26 @@ application with a complete fixed-order error argument, exact
 coefficient retention, compact aspect-ratio uniformity, and
 rounding-aware inverse consequences. Source snapshots and precise
 inspection levels are recorded in the accompanying provenance file.
+\begin{writenote}[6 October 2026]
+The write read the live A192563 entry and its b-file (note in Section~\ref{sfp:pc:sec:results}); neither, nor the current A344639, states an asymptotic formula. The provenance file is shipped as \file{data/154-polycauchy-SOURCE_PROVENANCE.json}. The write did not read any of the cited papers, so the inspection levels stated here, and the caveat about Yakymiv's paper \cite{yakymiv}, are the manuscript's. Part~\ref{sfp:mc:part} cites none of these sources; the two manuscripts share only the DLMF.
+\end{writenote}
 
-\section{Real parameter saddles and scale estimates}\label{sec:real}
+\section{Real parameter saddles and scale estimates}\label{sfp:pc:sec:real}
 
 This section works with real $N\geq1$. It simultaneously supplies
 integer saddle estimates and the smooth continuation required for
 inversion. Write $t=e^r$ and
-\begin{equation}\label{eq:q}
+\begin{equation}\label{sfp:pc:eq:q}
  q_N(t)=t\{\psi(N+t)-\psi(t)\}.
 \end{equation}
 
-\begin{lemma}[Existence and uniqueness]\label{lem:exist}
+\begin{lemma}[Existence and uniqueness]\label{sfp:pc:lem:exist}
 For every real $N\geq1$, the equation $rL_N'(r)=N$ has exactly
 one solution $r>0$. At this solution $b>0$, and $r(N)$ is smooth.
 \end{lemma}
 \begin{proof}
 The digamma difference integral from DLMF 5.9.16 \cite{dlmf} gives
-\begin{equation}\label{eq:digammadiff}
+\begin{equation}\label{sfp:pc:eq:digammadiff}
  q_N(t)=\int_0^\infty te^{-tu}h_N(u)\dd u,
  \qquad h_N(u)=\frac{1-e^{-Nu}}{1-e^{-u}}.
 \end{equation}
@@ -391,7 +611,7 @@ For $u>0$,
 because $e^{Nu}-1\geq N(e^u-1)$ for $N\geq1$.
 The last inequality follows, for example, from convexity in the
 exponent parameter. If $V$ is exponential with rate one,
-\eqref{eq:digammadiff} is $\EE h_N(V/t)$. Since $h_N$ is
+\eqref{sfp:pc:eq:digammadiff} is $\EE h_N(V/t)$. Since $h_N$ is
 nonincreasing, this expectation is nondecreasing in $t$.
 The integral is smooth for $t>0$, so $q_N'(t)\geq0$.
 Consequently
@@ -404,22 +624,22 @@ $L_N'(r)+rL_N''(r)=b/r>0$. Existence, uniqueness, and smoothness
 follow from continuity and the implicit function theorem.
 \end{proof}
 
-\begin{lemma}[Derivative bounds with an integral remainder]\label{lem:psi}
+\begin{lemma}[Derivative bounds with an integral remainder]\label{sfp:pc:lem:psi}
 For every fixed integer $j\geq0$ and $x>0$,
-\begin{equation}\label{eq:psiremainder}
+\begin{equation}\label{sfp:pc:eq:psiremainder}
  \left|\frac{\mathrm d^j}{\mathrm dx^j}
           \{\psi(x)-\log x\}\right|
        \leq \frac{j!}{x^{j+1}}.
 \end{equation}
 In particular, for each fixed $j\geq1$,
-\begin{equation}\label{eq:polygamma}
+\begin{equation}\label{sfp:pc:eq:polygamma}
  \psi(x)=\log x+O(x^{-1}),\qquad
  \psi^{(j)}(x)=(-1)^{j-1}(j-1)!x^{-j}+O_j(x^{-j-1}).
 \end{equation}
 \end{lemma}
 \begin{proof}
 The digamma remainder integral, DLMF 5.9.13 \cite{dlmf}, is
-\begin{equation}\label{eq:G}
+\begin{equation}\label{sfp:pc:eq:G}
  \psi(x)-\log x=-\int_0^\infty G(u)e^{-xu}\dd u,
  \qquad G(u)=\frac1{1-e^{-u}}-\frac1u.
 \end{equation}
@@ -427,46 +647,46 @@ For $u>0$ one has $0<G(u)<1$: the lower inequality uses
 $1-e^{-u}<u$, and the upper one uses $e^u-1>u$.
 On each compact subinterval of $x>0$, dominated differentiation is
 valid to every fixed order. The absolute value of the $j$th
-derivative of \eqref{eq:G} is at most
+derivative of \eqref{sfp:pc:eq:G} is at most
 $\int_0^\infty u^je^{-xu}\dd u=j!x^{-j-1}$.
 This proves the claims without differentiating an unspecified
 asymptotic remainder.
 \end{proof}
 
-\begin{lemma}[Saddle and cumulant scales]\label{lem:scales}
+\begin{lemma}[Saddle and cumulant scales]\label{sfp:pc:lem:scales}
 As $N\to\infty$, with $t=e^{r(N)}$,
-\begin{equation}\label{eq:tscale}
+\begin{equation}\label{sfp:pc:eq:tscale}
  \frac tN\sim\frac1{r\log r},\qquad
  r\sim\log N,\qquad
  r=\log N-\log\log N-\log\log\log N+o(1).
 \end{equation}
 For every fixed $j\geq1$,
-\begin{equation}\label{eq:Lderivatives}
+\begin{equation}\label{sfp:pc:eq:Lderivatives}
  L_N^{(j)}(r)=\frac Nr+O_j(t+1)\sim\frac Nr,
  \qquad \kappa_j\sim Nr^{j-1}.
 \end{equation}
 \end{lemma}
 \begin{proof}
-Lemma~\ref{lem:psi} first yields, uniformly for $N,t\geq1$,
-\begin{equation}\label{eq:qapprox}
+Lemma~\ref{sfp:pc:lem:psi} first yields, uniformly for $N,t\geq1$,
+\begin{equation}\label{sfp:pc:eq:qapprox}
  q_N(t)=t\log(1+N/t)+O(1).
 \end{equation}
 At $r=\tfrac12\log N$, the left side of the saddle equation is
 $O(\sqrt N\log^2N)=o(N)$. At $r=\log N$ it exceeds $N$ for
 large $N$, since $q_N(N)=N\log2+O(1)$. Monotonicity therefore
 gives
-\begin{equation}\label{eq:roughr}
+\begin{equation}\label{sfp:pc:eq:roughr}
  \tfrac12\log N<r<\log N
 \end{equation}
 for all sufficiently large $N$.
 
-Put $x=N/t$. The saddle equation and \eqref{eq:qapprox} give
-\begin{equation}\label{eq:xequation}
+Put $x=N/t$. The saddle equation and \eqref{sfp:pc:eq:qapprox} give
+\begin{equation}\label{sfp:pc:eq:xequation}
  \frac xr=\log(1+x)+O(t^{-1}).
 \end{equation}
 Here $x\geq1$, $r\to\infty$, and $t\to\infty$.
 A bounded subsequence of $x$ would contradict
-\eqref{eq:xequation}, so $x\to\infty$. Hence
+\eqref{sfp:pc:eq:xequation}, so $x\to\infty$. Hence
 $x/(r\log x)\to1$. The function $x/\log x$ is eventually
 increasing. Substitution of fixed multiples of $r\log r$ into
 this function brackets $x$ between such multiples, proving
@@ -476,12 +696,12 @@ Taking logarithms once more gives
  \log x=\log r+\log\log r+o(1).
 \]
 Since $r=\log N-\log x$, the refined formula in
-\eqref{eq:tscale} follows from \eqref{eq:roughr} and
+\eqref{sfp:pc:eq:tscale} follows from \eqref{sfp:pc:eq:roughr} and
 $r/\log N\to1$.
 
 For derivatives, apply $(t\partial_t)^{j-1}$ to $q_N(t)$.
-The explicit bounds \eqref{eq:psiremainder} imply that the
-remainder in \eqref{eq:qapprox} and each of its fixed
+The explicit bounds \eqref{sfp:pc:eq:psiremainder} imply that the
+remainder in \eqref{sfp:pc:eq:qapprox} and each of its fixed
 $t\partial_t$ derivatives are $O_j(1)$. Indeed each resulting
 term has a power of $t$ multiplying a derivative bounded at
 $t$ or at $N+t$ by the corresponding inverse power. In the main
@@ -497,7 +717,7 @@ $L_N'(r)=N/r$. Since $rt/N\sim1/\log r\to0$, these expressions
 are asymptotic to $N/r$.
 
 Finally, the Stirling differential-operator identity is
-\begin{equation}\label{eq:operator}
+\begin{equation}\label{sfp:pc:eq:operator}
  (z\partial_z)^jL_N(z)
    =\sum_{v=1}^j\stwo jv z^v L_N^{(v)}(z).
 \end{equation}
@@ -509,17 +729,17 @@ other fixed terms are smaller. This proves the cumulant estimate.
 
 For integer $n$, the product form gives a second, elementary
 calculus for the derivatives. Write
-\begin{equation}\label{eq:p}
+\begin{equation}\label{sfp:pc:eq:p}
  p_q=\frac{t}{t+q}\quad(0\leq q\leq n-1).
 \end{equation}
 Let $B_j(p)$ be the $j$th cumulant polynomial of a Bernoulli
 variable with success probability $p$. These polynomials satisfy
-\begin{equation}\label{eq:bernoulli}
+\begin{equation}\label{sfp:pc:eq:bernoulli}
  B_1(p)=p,\qquad
  B_{j+1}(p)=p(1-p)B_j'(p),\qquad B_j(p)=p+O_j(p^2).
 \end{equation}
 Then
-\begin{equation}\label{eq:integerderivatives}
+\begin{equation}\label{sfp:pc:eq:integerderivatives}
  L_n'=1+\sum_qp_q,\qquad
  L_n^{(j)}=\sum_qB_j(p_q)\quad(j\geq2).
 \end{equation}
@@ -533,23 +753,23 @@ differentiation. It also furnishes the optional diagnostic program
 with a numerically stable finite-sum route, independent of repeated
 differentiation of the gamma quotient.
 
-\section{Contour control and the integrated expansion}\label{sec:contour}
+\section{Contour control and the integrated expansion}\label{sfp:pc:sec:contour}
 
 Only integer $n$ is needed in the coefficient integral. All real
 parameter arguments above serve estimates and the later inverse;
 we do not integrate a noninteger-size generating function.
 Fix a small constant $0<\rho<\pi/3$.
 
-\begin{lemma}[A fixed complex neighborhood]\label{lem:complex}
+\begin{lemma}[A fixed complex neighborhood]\label{sfp:pc:lem:complex}
 For each fixed $j\geq1$, the analytic logarithm of $F_n$ agreeing
 with $L_n$ on the real line satisfies
-\begin{equation}\label{eq:complex}
+\begin{equation}\label{sfp:pc:eq:complex}
  |L_n^{(j)}(z)|\leq C_jn/r\qquad(|z-r|\leq\rho)
 \end{equation}
 for all sufficiently large $n$. If
 $f(\theta)=L_n(re^{\ii\theta})$, then, on intervals with
 $r|\theta|=o(1)$,
-\begin{equation}\label{eq:fderivatives}
+\begin{equation}\label{sfp:pc:eq:fderivatives}
  |f^{(j)}(\theta)|\leq C_jnr^{j-1}.
 \end{equation}
 \end{lemma}
@@ -562,14 +782,14 @@ $e^z+q$ is nonzero there, and
        \leq C\frac{t}{t+q}=Cp_q.
 \]
 The logarithmic derivatives of $e^z+q$ are the same fixed
-Bernoulli cumulant polynomials as in \eqref{eq:bernoulli},
+Bernoulli cumulant polynomials as in \eqref{sfp:pc:eq:bernoulli},
 evaluated at $e^z/(e^z+q)$. Each has zero constant coefficient.
 The sum of their absolute values is bounded by a fixed multiple
 of $\sum_qp_q=O(n/r)$; the extra term $z$ is harmless.
 A nonvanishing analytic function on this disk has an analytic
-logarithm, establishing \eqref{eq:complex}. Applying the chain
-rule repeatedly, or \eqref{eq:operator}, gives
-\eqref{eq:fderivatives}.
+logarithm, establishing \eqref{sfp:pc:eq:complex}. Applying the chain
+rule repeatedly, or \eqref{sfp:pc:eq:operator}, gives
+\eqref{sfp:pc:eq:fderivatives}.
 \end{proof}
 
 Set $\delta=n^{-2/5}$. At $\theta=0$,
@@ -578,20 +798,20 @@ therefore gives, uniformly for $|\theta|\leq\delta$,
 \begin{align}
  \operatorname{Re}\{L_n(re^{\ii\theta})-L_n(r)-\ii n\theta\}
  &\leq-\tfrac12b\theta^2+Cnr^2|\theta|^3\notag\\
- &\leq-\tfrac14b\theta^2.\label{eq:localgaussian}
+ &\leq-\tfrac14b\theta^2.\label{sfp:pc:eq:localgaussian}
 \end{align}
 The last inequality follows from $b\sim nr$ and $r\delta\to0$.
 
-\begin{lemma}[The full complementary circle]\label{lem:minor}
+\begin{lemma}[The full complementary circle]\label{sfp:pc:lem:minor}
 For some fixed $c>0$ and all large $n$,
-\begin{equation}\label{eq:minor}
+\begin{equation}\label{sfp:pc:eq:minor}
  \sup_{\delta\leq|\theta|\leq\pi}
  \frac{|F_n(re^{\ii\theta})|}{F_n(r)}
        \leq e^{-cn\delta^2}=e^{-cn^{1/5}}.
 \end{equation}
 \end{lemma}
 \begin{proof}
-The positive exponential sum \eqref{eq:positive} implies
+The positive exponential sum \eqref{sfp:pc:eq:positive} implies
 \begin{align*}
  |F_n(re^{\ii\theta})|
  &\leq\sum_m\sone nm e^{(m+1)r\cos\theta}\\
@@ -602,7 +822,7 @@ The function $F_n$ is increasing on the entire real line because
 all its exponential-sum coefficients are nonnegative and their
 exponents are positive. On $s\in[r\cos\delta,r]$, one has
 $s-r=o(1)$. The finite-sum estimates
-\eqref{eq:integerderivatives} give $L_n'(s)\sim n/r$ uniformly
+\eqref{sfp:pc:eq:integerderivatives} give $L_n'(s)\sim n/r$ uniformly
 there. Since $r-r\cos\delta\asymp r\delta^2$,
 \[
  L_n(r\cos\delta)-L_n(r)
@@ -620,7 +840,7 @@ no alleged periodic peak has been omitted.
 \subsection{Normalization and the central cutoff}
 
 Cauchy's coefficient formula is
-\begin{equation}\label{eq:cauchy}
+\begin{equation}\label{sfp:pc:eq:cauchy}
  \frac{a_nr^n}{n!F_n(r)}
  =\frac1{2\pi}\int_{-\pi}^{\pi}
       \exp\{L_n(re^{\ii\theta})-L_n(r)-\ii n\theta\}\dd\theta,
@@ -629,14 +849,14 @@ where the integrand on the full circle is interpreted as
 $F_n(re^{\ii\theta})e^{-\ii n\theta}/F_n(r)$, so a global
 logarithm is unnecessary. Only the local arc uses its chosen
 analytic logarithm. After multiplying by $\sqrt{2\pi b}$,
-Lemma~\ref{lem:minor} bounds the complementary contribution by
+Lemma~\ref{sfp:pc:lem:minor} bounds the complementary contribution by
 \[
  O\bigl(\sqrt b\,e^{-cn^{1/5}}\bigr),
 \]
 which is smaller than every fixed power of $r/n$.
 
 Write
-\begin{equation}\label{eq:normalization}
+\begin{equation}\label{sfp:pc:eq:normalization}
  \eta=\sqrt{r/n},\qquad u=\sqrt b\,\theta,\qquad
  \lambda_j=\frac{\kappa_j}{b^{j/2}}.
 \end{equation}
@@ -646,20 +866,20 @@ inside $|\theta|\leq\delta$, since
 \[
  \frac U{\sqrt b}=O(n^{-5/12}r^{-7/12})=o(n^{-2/5}).
 \]
-By \eqref{eq:localgaussian}, the omitted part of the local arc
+By \eqref{sfp:pc:eq:localgaussian}, the omitted part of the local arc
 has normalized integral $O(e^{-cU^2})$. This too is smaller than
 any fixed power of $\eta$.
 
 \subsection{A weighted remainder that can be integrated}
 
 Fix $R\geq1$. Taylor expansion through degree $2R+2$, using
-Lemma~\ref{lem:complex} at degree $2R+3$, gives
-\begin{equation}\label{eq:centralphase}
+Lemma~\ref{sfp:pc:lem:complex} at degree $2R+3$, gives
+\begin{equation}\label{sfp:pc:eq:centralphase}
  L_n(re^{\ii\theta})-L_n(r)-\ii n\theta
        =-u^2/2+Q(u)+\mathcal R(u),
 \end{equation}
 where
-\begin{equation}\label{eq:Q}
+\begin{equation}\label{sfp:pc:eq:Q}
  Q(u)=\sum_{j=3}^{2R+2}\frac{\lambda_j(\ii u)^j}{j!},
  \qquad
  |\mathcal R(u)|\leq C_R\eta^{2R+1}|u|^{2R+3}.
@@ -680,7 +900,7 @@ For the remaining exponential, write
 $\lambda_j=\eta^{j-2}c_j$, where all the finitely many $c_j$
 are bounded uniformly in $n$. Introduce an auxiliary real variable
 $s$ and set
-\begin{equation}\label{eq:H}
+\begin{equation}\label{sfp:pc:eq:H}
  H(s,u)=\exp\left(
     \sum_{j=3}^{2R+2}\frac{c_j(\ii u)^j s^{j-2}}{j!}
                        \right).
@@ -690,7 +910,7 @@ $|u|\leq U$. Differentiating $H$ exactly $2R$ times with respect
 to $s$ produces $H$ times a finite polynomial in $u$, the bounded
 $c_j$, and nonnegative powers of $s$. Thus there is a fixed
 integer $M_R$ for which Taylor's theorem in $s$ yields
-\begin{equation}\label{eq:weightedTaylor}
+\begin{equation}\label{sfp:pc:eq:weightedTaylor}
  H(\eta,u)=\sum_{d=0}^{2R-1}\eta^dH_d(u)
           +O_R\bigl(\eta^{2R}(1+|u|^{M_R})\bigr).
 \end{equation}
@@ -706,25 +926,25 @@ Odd $d$ terms integrate to zero on the symmetric interval.
 For even $d=2q$, extending each polynomial Gaussian integral from
 $[-U,U]$ to $\mathbb R$ incurs only an exponentially decaying
 error. The identities
-\begin{equation}\label{eq:Gaussian}
+\begin{equation}\label{sfp:pc:eq:Gaussian}
  \frac1{\sqrt{2\pi}}\int_{\mathbb R}e^{-u^2/2}u^{2v}\dd u
      =(2v-1)!!,\qquad
  \int_{\mathbb R}e^{-u^2/2}u^{2v+1}\dd u=0
 \end{equation}
-give precisely the contraction formula \eqref{eq:Ek}.
-Combining \eqref{eq:cauchy}--\eqref{eq:weightedTaylor} proves
-\eqref{eq:main} with error $O_R(\eta^{2R})=O_R((r/n)^R)$.
+give precisely the contraction formula \eqref{sfp:pc:eq:Ek}.
+Combining \eqref{sfp:pc:eq:cauchy}--\eqref{sfp:pc:eq:weightedTaylor} proves
+\eqref{sfp:pc:eq:main} with error $O_R(\eta^{2R})=O_R((r/n)^R)$.
 Each monomial of $E_q$ is $O_q(\eta^{2q})$, proving its size
 claim. Finally, substituting $\kappa_j\sim nr^{j-1}$ and
-$b\sim nr$ into \eqref{eq:E1} gives
+$b\sim nr$ into \eqref{sfp:pc:eq:E1} gives
 $(1/8-5/24)r/n=-r/(12n)$. This completes the proof of
-Theorem~\ref{thm:main}.
+Theorem~\ref{sfp:pc:thm:main}.
 
-\section{Exact coefficient calculus}\label{sec:coefficients}
+\section{Exact coefficient calculus}\label{sfp:pc:sec:coefficients}
 
 The coefficients are finite universal expressions in the exact
-cumulants. For example, the next one after \eqref{eq:E1} is
-\begin{align}\label{eq:E2}
+cumulants. For example, the next one after \eqref{sfp:pc:eq:E1} is
+\begin{align}\label{sfp:pc:eq:E2}
  E_2={}&-\frac{\kappa_6}{48b^3}
       +\frac{7\kappa_3\kappa_5}{48b^4}
       +\frac{35\kappa_4^2}{384b^4}\notag\\
@@ -735,18 +955,18 @@ No limiting replacement of a cumulant is part of this formula.
 
 \subsection{Two independent finite generation rules}
 
-Formula \eqref{eq:Ek} can be generated by enumerating the
+Formula \eqref{sfp:pc:eq:Ek} can be generated by enumerating the
 nonnegative integer solutions of
 $\sum_{j\geq3}(j-2)m_j=2q$. There is also an algebraically
 independent formal exponential recurrence. For indeterminates
 $x_3,x_4,\ldots$, set
-\begin{equation}\label{eq:formalQ}
+\begin{equation}\label{sfp:pc:eq:formalQ}
  Q_w(u)=\frac{x_{w+2}(\ii u)^{w+2}}{(w+2)!},\qquad
  \exp\left(\sum_{w\geq1}Q_w(u)s^w\right)
      =\sum_{d\geq0}H_d(u)s^d.
 \end{equation}
 Formal differentiation with respect to $s$ gives
-\begin{equation}\label{eq:formalrecurrence}
+\begin{equation}\label{sfp:pc:eq:formalrecurrence}
  H_0(u)=1,\qquad
  H_d(u)=\frac1d\sum_{w=1}^d wQ_w(u)H_{d-w}(u).
 \end{equation}
@@ -758,8 +978,8 @@ asserted or needed. The companion compares this recurrence with
 the weighted-partition formula using exact rational arithmetic.
 
 For the Bernoulli polynomials there are likewise two exact rules:
-\eqref{eq:bernoulli} and
-\begin{equation}\label{eq:BernoulliStirling}
+\eqref{sfp:pc:eq:bernoulli} and
+\begin{equation}\label{sfp:pc:eq:BernoulliStirling}
  B_j(p)=\sum_{v=1}^j(-1)^{v-1}(v-1)!\stwo jv p^v.
 \end{equation}
 The latter follows by expanding
@@ -775,7 +995,7 @@ all be certified by terminating exact calculations. They check
 signs, factorial normalizations, parity, and the correct sequence
 convention. They do not prove the uniform contour estimate or an
 asymptotic remainder. Those claims depend on the analytic arguments
-in Sections~\ref{sec:real} and \ref{sec:contour}.
+in Sections~\ref{sfp:pc:sec:real} and \ref{sfp:pc:sec:contour}.
 
 Similarly, a small numerical residual at a finite list of sizes is
 not an interval bound for all larger sizes. The optional numerical
@@ -783,9 +1003,9 @@ program is explicitly a diagnostic. In particular, it cannot turn
 the asymptotic threshold theorem into a certified finite-$X$
 rounding oracle without explicit constants and an onset.
 
-\section{Uniformity for comparable moment orders}\label{sec:aspect}
+\section{Uniformity for comparable moment orders}\label{sfp:pc:sec:aspect}
 
-We give the details needed for Theorem~\ref{thm:aspect}, rather than
+We give the details needed for Theorem~\ref{sfp:pc:thm:aspect}, rather than
 merely substituting $k$ for $n$ in the diagonal formula. Let
 $\lambda=k/n\in[\alpha,\beta]$ and choose the unique positive
 saddle satisfying $rL_n'(r)=k$. The same existence proof applies,
@@ -798,7 +1018,7 @@ $r=\log n$ now gives
 \]
 for all large $n$, uniformly in $\lambda$. Put $t=e^r$ and
 $x=n/t$. The saddle relation becomes
-\begin{equation}\label{eq:aspectx}
+\begin{equation}\label{sfp:pc:eq:aspectx}
  \frac{\lambda x}{r}=\log(1+x)+O(t^{-1}).
 \end{equation}
 Since $\lambda$ stays bounded above and away from zero,
@@ -808,14 +1028,14 @@ $x\to\infty$ uniformly and inversion gives
  \qquad \log x=\log r+\log\log r-\log\lambda+o(1),
 \]
 uniformly. Taking $r=\log n-\log x$ proves
-\eqref{eq:aspectr}. The derivative estimates become
+\eqref{sfp:pc:eq:aspectr}. The derivative estimates become
 \[
  L_n^{(j)}(r)=k/r+O_j(t+1)\sim k/r,
  \qquad \kappa_j\sim kr^{j-1}.
 \]
 The constants can be chosen uniformly on the compact ratio interval.
 
-The disk $|z-r|\leq\rho$ used in Lemma~\ref{lem:complex} is
+The disk $|z-r|\leq\rho$ used in Lemma~\ref{sfp:pc:lem:complex} is
 unchanged. The derivative bound is now $C_jkr^{j-1}$ for the
 angular function. With $\delta=n^{-2/5}$, positivity gives a
 complementary-circle bound $\exp(-ck\delta^2)$, where $c>0$
@@ -824,56 +1044,56 @@ is at most $\exp(-c' n^{1/5})$. The central Gaussian argument
 uses $\eta=\sqrt{r/k}$ and $U=\eta^{-1/6}$; both the cutoff
 inclusion and every fixed-degree integrated remainder remain
 uniform. Applying Cauchy's formula to
-$A_{n,k}=k![z^k]F_n(z)$ proves \eqref{eq:aspect}.
+$A_{n,k}=k![z^k]F_n(z)$ proves \eqref{sfp:pc:eq:aspect}.
 
 This theorem leaves two different boundary regimes open. Fixed
 or slowly growing $k$ is not covered by a compact positive ratio;
 neither is $k/n\to\infty$. A theorem connecting these regimes
 would need new uniform estimates, not an unqualified appeal to
-\eqref{eq:aspect}.
+\eqref{sfp:pc:eq:aspect}.
 
-\section{Differentiating the smooth model}\label{sec:differentiation}
+\section{Differentiating the smooth model}\label{sfp:pc:sec:differentiation}
 
 We now prove the derivative claim needed for inversion. All
 derivatives in this section are of exact gamma, polygamma, and
 finite cumulant expressions. No derivative is taken of the
-asymptotic error in \eqref{eq:main}.
+asymptotic error in \eqref{sfp:pc:eq:main}.
 
-\begin{lemma}[Parameter derivatives]\label{lem:parameter}
+\begin{lemma}[Parameter derivatives]\label{sfp:pc:lem:parameter}
 For fixed $j\geq1$, along the real saddle,
-\begin{equation}\label{eq:kappaderivative}
+\begin{equation}\label{sfp:pc:eq:kappaderivative}
  r_N\sim N^{-1},\qquad
  \frac{\mathrm d\kappa_j}{\mathrm dN}=O_j(r^{j-1}),
  \qquad \frac{b_N}{b}=O(N^{-1}).
 \end{equation}
 For fixed $q\geq1$,
-\begin{equation}\label{eq:Ederivative}
+\begin{equation}\label{sfp:pc:eq:Ederivative}
  E_q'(N)=O_q\left(\frac{(r/N)^q}{N}\right).
 \end{equation}
 \end{lemma}
 \begin{proof}
 With $r$ temporarily held fixed, direct differentiation gives
-\begin{equation}\label{eq:partialN}
+\begin{equation}\label{sfp:pc:eq:partialN}
  \partial_NL_N^{(j)}(r)
   =(t\partial_t)^j\psi(N+t)
   =\sum_{v=1}^j\stwo jv t^v\psi^{(v)}(N+t)
   =O_j(t/N).
 \end{equation}
-The last bound follows from Lemma~\ref{lem:psi}, since $t/N\to0$.
-Implicit differentiation of \eqref{eq:saddle} gives exactly
-\begin{equation}\label{eq:rprime}
+The last bound follows from Lemma~\ref{sfp:pc:lem:psi}, since $t/N\to0$.
+Implicit differentiation of \eqref{sfp:pc:eq:saddle} gives exactly
+\begin{equation}\label{sfp:pc:eq:rprime}
  r_N=\frac{r\{1-rt\psi'(N+t)\}}{b}.
 \end{equation}
 Now $rt\psi'(N+t)\sim rt/N\sim1/\log r\to0$ and
 $b\sim Nr$, proving $r_N\sim1/N$.
 
-From \eqref{eq:operator}, \eqref{eq:Lderivatives}, and
-\eqref{eq:partialN}, with the other variable fixed,
+From \eqref{sfp:pc:eq:operator}, \eqref{sfp:pc:eq:Lderivatives}, and
+\eqref{sfp:pc:eq:partialN}, with the other variable fixed,
 \[
  \partial_r\kappa_j=O_j(Nr^{j-1}),\qquad
  \partial_N\kappa_j=O_j(r^jt/N).
 \]
-The chain rule and \eqref{eq:rprime} give
+The chain rule and \eqref{sfp:pc:eq:rprime} give
 \[
  \frac{\mathrm d\kappa_j}{\mathrm dN}
  =\partial_N\kappa_j+r_N\partial_r\kappa_j
@@ -884,29 +1104,29 @@ $\kappa_j\sim Nr^{j-1}$ shows that every fixed $\kappa_j$
 is eventually positive with logarithmic derivative $O_j(1/N)$.
 The same applies to $b$.
 
-Differentiate each monomial of \eqref{eq:Ek} separately.
+Differentiate each monomial of \eqref{sfp:pc:eq:Ek} separately.
 Its size is $O_q((r/N)^q)$, and the product rule multiplies
 that bound by $O_q(1/N)$. Summing finitely many terms proves
-\eqref{eq:Ederivative}. This argument does not assume that the
+\eqref{sfp:pc:eq:Ederivative}. This argument does not assume that the
 sum $E_q$ itself is nonzero.
 \end{proof}
 
 It follows that
-\begin{equation}\label{eq:Pbounds}
+\begin{equation}\label{sfp:pc:eq:Pbounds}
  P_R=1+O_R(r/N),\qquad
  P_R'=O_R(r/N^2).
 \end{equation}
 For $R=1$, the derivative is exactly zero. Thus $P_R>0$ for
-large $N$. In the logarithm of \eqref{eq:YR}, all terms involving
+large $N$. In the logarithm of \eqref{sfp:pc:eq:YR}, all terms involving
 $r_N$ from $L_N(r)-N\log r$ cancel by the saddle equation.
 The exact derivative is
-\begin{equation}\label{eq:envelope}
+\begin{equation}\label{sfp:pc:eq:envelope}
  (\log Y_R)'=
  \psi(N+1)+\psi(N+t)-\log r
  -\frac{b_N}{2b}+\frac{P_R'}{P_R}.
 \end{equation}
-Lemma~\ref{lem:psi} and \eqref{eq:Pbounds} yield
-\begin{equation}\label{eq:logYderivative}
+Lemma~\ref{sfp:pc:lem:psi} and \eqref{sfp:pc:eq:Pbounds} yield
+\begin{equation}\label{sfp:pc:eq:logYderivative}
  (\log Y_R)'=2\log N-\log r
              +O_R(t/N+1/N)
            =2\log N-\log r+o(1).
@@ -916,47 +1136,50 @@ $Y_R(N)\to\infty$, so every sufficiently large $X$ has one
 solution in the eventual increasing range. There is no need to
 assert global monotonicity of $Y_R$ at small $N$.
 
-\section{Threshold windows and strict equality edges}\label{sec:thresholds}
+\section{Threshold windows and strict equality edges}\label{sfp:pc:sec:thresholds}
 
 We first check exact monotonicity of the original sequence.
 The unsigned Stirling recurrence gives, for $n\geq1$,
-\begin{equation}\label{eq:monotone}
+\begin{equation}\label{sfp:pc:eq:monotone}
  a_{n+1}=\sum_{m=0}^n\sone nm
        \{n(m+1)^{n+1}+(m+2)^{n+1}\}>a_n.
 \end{equation}
 Also $a_1=2>a_0=1$. Since $a_n\geq n!$, the sequence tends to
 infinity, and both thresholds are well defined.
+\begin{writenote}[6 October 2026]
+The step behind \eqref{sfp:pc:eq:monotone} is $\sone{n+1}m=n\sone nm+\sone n{m-1}$. Applied to \eqref{sfp:pc:eq:stirlingproduct} instead, the same recurrence gives an identity for the third member of the family, A192562 (Proposition~\ref{sfp:prop:a192562}).
+\end{writenote}
 
-Theorem~\ref{thm:main} and $P_R=1+O_R(r/n)$ imply
-\begin{equation}\label{eq:logerror}
+Theorem~\ref{sfp:pc:thm:main} and $P_R=1+O_R(r/n)$ imply
+\begin{equation}\label{sfp:pc:eq:logerror}
  \log a_n-\log Y_R(n)
    =O_R\left((r(n)/n)^R\right)
    =O_R\left((\log n/n)^R\right).
 \end{equation}
 Fix a sufficiently large $X$, abbreviate $\nu=\nu_R$, and take
-\begin{equation}\label{eq:rounded}
+\begin{equation}\label{sfp:pc:eq:rounded}
  n_- =\floor{\nu-\eps},\qquad
  n_+ =\ceil{\nu+\eps},\qquad
  \eps=C_R\frac{(\log\nu)^{R-1}}{\nu^R}.
 \end{equation}
 Both integers are asymptotic to $\nu$ and, for large $X$, lie
 beyond every onset used in the proof. On the short intervals
-joining them to $\nu$, \eqref{eq:logYderivative} is at least
+joining them to $\nu$, \eqref{sfp:pc:eq:logYderivative} is at least
 $\log\nu$. Consequently
 \begin{align}
  \log Y_R(\nu)-\log Y_R(n_-)&\geq\eps\log\nu,\notag\\
  \log Y_R(n_+)-\log Y_R(\nu)&\geq\eps\log\nu.
- \label{eq:strictgaps}
+ \label{sfp:pc:eq:strictgaps}
 \end{align}
-The local errors in \eqref{eq:logerror} are bounded by a constant
+The local errors in \eqref{sfp:pc:eq:logerror} are bounded by a constant
 multiple of $(\log\nu/\nu)^R$. Choose $C_R$ strictly larger
 than that constant, increasing the onset if necessary. Since
 $\eps\log\nu=C_R(\log\nu/\nu)^R$, this gives the
 \emph{strict} inequalities
-\begin{equation}\label{eq:strictendpoints}
+\begin{equation}\label{sfp:pc:eq:strictendpoints}
  a_{n_-}<X<a_{n_+}.
 \end{equation}
-Exact monotonicity now proves \eqref{eq:bracket}. A fixed initial
+Exact monotonicity now proves \eqref{sfp:pc:eq:bracket}. A fixed initial
 prefix causes no difficulty: increasing $X$ past its largest entry
 excludes it automatically.
 
@@ -967,8 +1190,8 @@ bounds the strict threshold because $X<a_{n_+}$, not just
 $X\leq a_{n_+}$. If $X=a_j$, the threshold definitions give
 $j$ and $j+1$ respectively. Any derivation which tacitly identifies
 these two thresholds at equality would be false. The strictly
-larger error constant in \eqref{eq:strictgaps} ensures that
-\eqref{eq:bracket} covers this case as written.
+larger error constant in \eqref{sfp:pc:eq:strictgaps} ensures that
+\eqref{sfp:pc:eq:bracket} covers this case as written.
 
 The theorem supplies a hierarchy of centers. At $R=1$, the
 smooth uncertainty is $O(\nu^{-1})$; at $R=2$ it is
@@ -979,15 +1202,15 @@ precomputed finite-input guarantees. A certified implementation
 would require effective constants for the contour and central
 errors together with interval evaluation of the saddle and inverse.
 
-\section{First corrected nested logarithm inversion}\label{sec:nested}
+\section{First corrected nested logarithm inversion}\label{sfp:pc:sec:nested}
 
 The fine inverse center is defined implicitly, but its leading
 nested-logarithm form can be proved with an explicit relative
 remainder. We begin with the required logarithmic growth estimate.
 
-\begin{lemma}[Logarithmic size of the smooth model]\label{lem:loggrowth}
+\begin{lemma}[Logarithmic size of the smooth model]\label{sfp:pc:lem:loggrowth}
 For every fixed $R\geq1$,
-\begin{equation}\label{eq:loggrowth}
+\begin{equation}\label{sfp:pc:eq:loggrowth}
  \log Y_R(N)
  =2N\log N-N\log\log N-2N
    +O_R\left(\frac{N\log\log N}{\log N}\right).
@@ -997,7 +1220,7 @@ For every fixed $R\geq1$,
 The logarithmic Stirling formula with its positive-real remainder
 bound \cite[5.11.1 and 5.11(ii)]{dlmf}, together with $t/N\to0$,
 gives
-\begin{equation}\label{eq:Stirlingratio}
+\begin{equation}\label{sfp:pc:eq:Stirlingratio}
  \log\Gamma(N+t)-\log\Gamma(t)
  =N\log N-N+t\log(N/t)
       +O(t+t^2/N+\log N).
@@ -1009,58 +1232,58 @@ The saddle relation yields
 $t\log(1+N/t)=N/r+O(1)$ and hence
 $t\log(N/t)=O(N/r)$. Also
 $t+t^2/N+\log N=O(N/r)$.
-Adding the initial term $r$ in \eqref{eq:LN} therefore gives
+Adding the initial term $r$ in \eqref{sfp:pc:eq:LN} therefore gives
 \[
  L_N(r)=N\log N-N+O(N/r).
 \]
 Now use
 $\log\Gamma(N+1)=N\log N-N+O(\log N)$,
 $\log b=O(\log N)$, and $\log P_R=O_R(r/N)$ in
-\eqref{eq:YR}. We obtain
-\begin{equation}\label{eq:loggrowthr}
+\eqref{sfp:pc:eq:YR}. We obtain
+\begin{equation}\label{sfp:pc:eq:loggrowthr}
  \log Y_R(N)=2N\log N-N\log r-2N+O_R(N/r).
 \end{equation}
-From \eqref{eq:rscale},
+From \eqref{sfp:pc:eq:rscale},
 $\log r=\log\log N+O(\log\log N/\log N)$.
-Substitution proves \eqref{eq:loggrowth}.
+Substitution proves \eqref{sfp:pc:eq:loggrowth}.
 \end{proof}
 
 Let $L=\log X$, $\ell=\log L$, and $m=\log\ell$.
-Equation \eqref{eq:loggrowth} first implies
+Equation \eqref{sfp:pc:eq:loggrowth} first implies
 $\nu_R\sim L/(2\ell)$: it gives
 $L\sim2\nu_R\log\nu_R$, so
 $\log\nu_R\sim\log L$ and then the stated equivalent.
 Set
-\begin{equation}\label{eq:x0}
+\begin{equation}\label{sfp:pc:eq:x0}
  c=\tfrac32m+1+\log2,
  \qquad x_0=\frac{L}{2\ell}\left(1+\frac c\ell\right).
 \end{equation}
 Elementary logarithmic expansions give
 \begin{align}
  \log x_0&=\ell-m-\log2+c/\ell+O(m^2/\ell^2),
-                  \label{eq:logx0}\\
+                  \label{sfp:pc:eq:logx0}\\
  \log\log x_0&=m-(m+\log2)/\ell+O(m^2/\ell^2).
-                  \label{eq:loglogx0}
+                  \label{sfp:pc:eq:loglogx0}
 \end{align}
-On substituting \eqref{eq:logx0}--\eqref{eq:loglogx0} into
-\eqref{eq:loggrowth}, the coefficient of $L/\ell$ cancels:
+On substituting \eqref{sfp:pc:eq:logx0}--\eqref{sfp:pc:eq:loglogx0} into
+\eqref{sfp:pc:eq:loggrowth}, the coefficient of $L/\ell$ cancels:
 \[
  c-\tfrac32m-1-\log2=0.
 \]
 The result is
-\begin{equation}\label{eq:x0error}
+\begin{equation}\label{sfp:pc:eq:x0error}
  \log Y_R(x_0)=L+O_R(Lm^2/\ell^2).
 \end{equation}
 Both $x_0$ and $\nu_R$ are asymptotic to $L/(2\ell)$.
-Throughout the interval between them, \eqref{eq:Yderivative}
+Throughout the interval between them, \eqref{sfp:pc:eq:Yderivative}
 is of order $\ell$. The mean value theorem applied to
-\eqref{eq:x0error} consequently gives
+\eqref{sfp:pc:eq:x0error} consequently gives
 \[
  \nu_R-x_0=O_R(Lm^2/\ell^3).
 \]
-This is exactly \eqref{eq:nested}, including its relative
+This is exactly \eqref{sfp:pc:eq:nested}, including its relative
 $O_R(m^2/\ell^2)$ remainder, and completes the proof of
-Theorem~\ref{thm:inverse}.
+Theorem~\ref{sfp:pc:thm:inverse}.
 
 The coefficient $3/2$ has two contributions: inversion of
 $N\log N$ contributes one factor of $\log\log L$, and the
@@ -1069,8 +1292,11 @@ normalization by $2N\log N$. The constants $1+\log2$ likewise
 come from the $-2N$ term and the leading factor two. This explanation
 is an interpretation of the explicit cancellation, not a substitute
 for its remainder calculation.
+\begin{writenote}[6 October 2026]
+With \eqref{sfp:pc:eq:logerror}, Lemma~\ref{sfp:pc:lem:loggrowth} gives $\log a_n=2n\log n-n\log\log n-2n+O(n\log\log n/\log n)$. Part~II's \eqref{sfp:mc:eq:logleading} is $\log b_n=2n\log n-2n+O((\log n)^2)$, so $\log(a_n/b_n)=-n\log\log n+O(n\log\log n/\log n)$: the two sequences share the factorial core $2N\log N-2N$, and Part~II's leading inverse \eqref{sfp:mc:eq:leadinginverse} is the exact inverse of that core. Because of the extra term $-N\log\log N$, Part~I inverts by nested logarithms \eqref{sfp:pc:eq:nested} rather than through that core.
+\end{writenote}
 
-\section{Reproducible exact checks and numerical diagnostics}\label{sec:repro}
+\section{Reproducible exact checks and numerical diagnostics}\label{sfp:pc:sec:repro}
 
 The accompanying archive contains this PDF, its standalone LaTeX
 source, deterministic build and packaging scripts, source provenance,
@@ -1083,17 +1309,17 @@ The exact companion checks are designed around independent routes:
 \begin{enumerate}
 \item Generate unsigned first-kind and second-kind Stirling rows by
       their integer recurrences, and compare the moment sum with
-      \eqref{eq:stirlingproduct} and a derivative-product evaluation
-      of \eqref{eq:Fn}.
+      \eqref{sfp:pc:eq:stirlingproduct} and a derivative-product evaluation
+      of \eqref{sfp:pc:eq:Fn}.
 \item Reproduce the entire 17-term prefix in the inspected official
       A192563 mirror snapshot, with offset zero and the specified
       sign normalization.
 \item Compare weighted-partition Gaussian contractions with the
-      formal exponential recurrence \eqref{eq:formalrecurrence},
+      formal exponential recurrence \eqref{sfp:pc:eq:formalrecurrence},
       using exact rational coefficients. Check the displayed
       $E_1$ and $E_2$ separately.
 \item Compare Bernoulli cumulant polynomials generated by
-      \eqref{eq:bernoulli} and \eqref{eq:BernoulliStirling}, and
+      \eqref{sfp:pc:eq:bernoulli} and \eqref{sfp:pc:eq:BernoulliStirling}, and
       verify the Stirling differential-operator identity at finite
       degrees.
 \item Check strict and nonstrict threshold definitions at exact
@@ -1113,7 +1339,7 @@ The companion README lists the commands; result files record the checks.
 Optional diagnostics solve the real saddle, evaluate cumulants by
 finite Bernoulli sums, and compare the leading and corrected saddle
 models with exact integer counts. They report the normalized error
-\begin{equation}\label{eq:diagnostic}
+\begin{equation}\label{sfp:pc:eq:diagnostic}
  \frac{a_n/M_n-\sum_{q=0}^{R-1}E_q}{(r/n)^R},
  \qquad M_n=\frac{n!F_n(r)}{r^n\sqrt{2\pi b}},
 \end{equation}
@@ -1126,9 +1352,9 @@ sampled residuals.
 
 \begin{table}[htbp]
 \centering
-\caption{Observed scaled residuals in \eqref{eq:diagnostic}.
+\caption{Observed scaled residuals in \eqref{sfp:pc:eq:diagnostic}.
 These rounded 100-digit calculations are diagnostics, not error bounds.}
-\label{tab:residuals}
+\label{sfp:pc:tab:residuals}
 \begin{tabular}{rrrr}
 \toprule
 $n$ & $R=2$ & $R=3$ & $R=4$\\
@@ -1148,6 +1374,9 @@ at $n=50,200,500$, and all corrections through $E_6$. Changes of
 sign in the scaled residuals are compatible with the theorem:
 it supplies a fixed-order magnitude estimate, not a prescribed sign
 or a monotone approach to a limit.
+\begin{writenote}[6 October 2026]
+Shipped names: the companion is \file{code/154-polycauchy-companion-*.py} with its inputs and results in \file{data/154-polycauchy-companion-*}, its README is \file{154-polycauchy-companion-README.md}, and the release scripts are \file{code/154-polycauchy-*.py}; \file{Report154.pdf} and \file{SHA256SUMS} are not shipped. At the write (Python 3.14.4, Windows, fresh extraction from the arrival commit), \file{exact_checks.py} reproduced \file{results/exact.json} and \file{exact-optimized.json}, and \file{numerical_diagnostics.py} (mpmath 1.3.0) reproduced \file{numerical.json}, byte for byte after removal of carriage returns; of the 33 tests, 23 passed and the 10 output-safety tests stopped with ``POSIX O\_NOFOLLOW is required'' (the companion README requires POSIX). An independent computation at intake reproduced the $R=2$ entries of Table~\ref{sfp:pc:tab:residuals} at $n=20$ and $n=100$ to every printed digit, and found $E_1/(-r/12n)=1.226$ and $1.154$ there: the slow convergence against which the manuscript warns after Theorem~\ref{sfp:pc:thm:main}.
+\end{writenote}
 
 \subsection{Build and release boundaries}
 
@@ -1169,7 +1398,7 @@ submission is part of this report. The source references are public;
 the archive distributes original exposition and programs, not copies
 of the cited journal PDFs or private review material.
 
-\section{Limits and further research}\label{sec:questions}
+\section{Limits and further research}\label{sfp:pc:sec:questions}
 
 The results cover each fixed truncation order with a proved
 integrated remainder. They do not provide estimates uniform in
@@ -1197,7 +1426,7 @@ Several extensions have concrete mathematical content:
       large poly-Cauchy structures rather than just their total
       number. No such limit law is asserted here.
 \item \textbf{Further explicit inverse terms.}
-      Sharpen \eqref{eq:loggrowthr} using higher saddle-scale and
+      Sharpen \eqref{sfp:pc:eq:loggrowthr} using higher saddle-scale and
       gamma expansions, and derive a full hierarchy in nested
       logarithms with proved remainders. Its error should remain
       distinct from the much finer exact-saddle inverse window.
@@ -1219,6 +1448,1281 @@ proved results or of absence from all prior literature. In particular,
 reading the uninspected cycle-moment source is a priority before
 making stronger originality statements about restricted permutations
 or growing moments.
+\begin{writenote}[6 October 2026]
+Section~\ref{sfp:sec:further} collects these questions with those of Part~II under Vladimir's standing rule. Question~2 concerns the fixed rows and columns of A344639, which Theorem~\ref{sfp:pc:thm:aspect} does not reach; question~3 has a counterpart in Part~II (Subsection~\ref{sfp:mc:sub:weights}).
+\end{writenote}
+
+\part{Exact positive certificates and all orders for matched cycles}\label{sfp:mc:part}
+\partsource{Bundle Report~155, archive \file{Matched_Cycles_Exact_Certificates_All_Orders_and_Inverses_Source.zip}, delivered as \file{Report155.tex} (20 pages). Delivered title block ``Exact positive certificates and all orders for matched cycles / Factorial weighted squared Stirling numbers in OEIS A192561 / Report 155 / 3 October 2026''. Printed as delivered, with \textbf{[write]} notes. Delivered Section~$k$ is Section~$k+11$ here, its statement or equation $k.j$ is $(k+11).j$, and its Table~1 is Table~\ref{sfp:mc:tab:coeff}. Section~\ref{sfp:sec:further}, which closes the report, is added in the write.}
+\begin{center}
+\small
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.46\textwidth} >{\raggedright\arraybackslash}p{0.46\textwidth}@{}}
+\toprule
+Reading conventions of Part~II & Elsewhere in the report\\
+\midrule
+$b_n$ the sequence A192561; $B_n=b_n/(n!)^2$; $b$ a centre & Part~I: $b=\kappa_2$; $B_j(p)$ cumulant polynomials\\
+$a=a_n$ the saddle point of \eqref{sfp:mc:eq:saddle}; $A_r$ coefficients & Part~I: $a_n$ = A192563; $A_{n,k}$ = A344639\\
+$w=W_0(en)$; $E_r$, $E(x)$ Stirling-series coefficients; $H_r$, $\mathcal H(w)$ & Part~I: $E_q$ contraction polynomials; $H(s,u)$, $H_d(u)$\\
+$L(x)=-\log(1-x)$, $L=\log T$; $F_R$ a logarithmic model; $N(T)$ & Part~I: $L_N(z)$, $L=\log X$; $Y_R$; $T_\ge$, $T_>$\\
+\bottomrule
+\end{tabular}
+\end{center}
+\begin{partabstract}
+For $b_n=\sum_{k=0}^{n}\stir{n+1}{k+1}^{\!2}k!$, we give an exact
+positive expansion with an explicit tail valid at every $n\geq1$.
+It is obtained by translating the classical Gaussian Fock norm of
+$\prod_{j=1}^{n}(1+z/j)$ to a positive real center. The saddle moments
+satisfy the uniform bound $S_2\leq1/\varphi$, where
+$\varphi=(1+\sqrt5)/2$, yielding a geometrically convergent certificate
+with a universal choice of truncation parameter. A rational-center
+version makes the certificate computable using rational arithmetic
+and elementary exponential bounds. The companion isolates the exact
+integer $b_{10}=1273270076895432$ in this way.
+
+For every fixed $R\geq1$, with $w=W_0(en)$, we also prove
+\[
+ b_n=\frac{(n!)^2e^{w^2+1}}{2\pi w}
+ \left(\sum_{r=0}^{R-1}\frac{A_r}{w^r}+O_R(w^{-R})\right),
+\]
+where $A_0=1$, $A_1=-1/6$, $A_2=55/72$, and
+$A_3=1381/6480$. An exact rational recurrence generates every fixed
+order; values through $A_{10}$ are supplied. The proof of the
+all-orders remainder uses a scaled Fock tail and finitely many
+coefficients. We derive explicit nested Lambert inverses with safe
+two-ceiling threshold brackets and extend the exact certificate to
+polynomials whose zeros are strictly negative real numbers.
+\end{partabstract}
+\noindent\textbf{Scope and priority.}
+Fock orthogonality, shifted Gamma expansions, and saddle methods are
+classical. Wilf's unweighted squared-Stirling asymptotic is a close
+antecedent. No sequence-specific formula of the present form was
+located in the bounded source search; scholarly priority is not
+established. Constants and starting indices for the inverse-logarithm
+remainders are not numerically supplied here. The finite-$n$ positive
+certificate, in contrast, has fully explicit bounds.
+\medskip
+
+
+\section{Sequence and principal conclusions}\label{sfp:mc:sec:overview}
+
+Throughout, $\stir{m}{j}$ denotes an unsigned Stirling number of the
+first kind. Define
+\begin{equation}\label{sfp:mc:eq:definition}
+ b_n=\sum_{k=0}^{n}\stir{n+1}{k+1}^{\!2}k!,\qquad
+ P_n(z)=\prod_{j=1}^{n}\left(1+\frac zj\right),\qquad
+ B_n=\frac{b_n}{(n!)^2}.
+\end{equation}
+An empty product is $1$, so $b_0=B_0=1$.
+The sequence is OEIS A192561~\cite{oeis}; the indexing in
+\eqref{sfp:mc:eq:definition} is maintained throughout. All logarithms of
+positive real quantities are natural logarithms, and $W_0$ denotes
+the principal real Lambert function: $W_0(x)e^{W_0(x)}=x$ for $x>0$.
+\begin{writenote}[6 October 2026]
+The live entry (A192561 revision \#10, 25 June 2024; front matter) defines the sequence with the signed \verb!Stirling1(n+1,k+1)^2!, which is \eqref{sfp:mc:eq:definition}; its 17 listed terms agree with the write's recomputation, and its term $n=10$ is \eqref{sfp:mc:eq:exampleinteger}. In this Part $a=a_n$ is a saddle point and $b_n$ the sequence; in Part~\ref{sfp:pc:part} $a_n$ is A192563 and $b=\kappa_2$ (front matter, ``Notation across the two Parts''). In the notation \eqref{sfp:mc:eq:inner}, $b_n=\langle n!P_n,n!P_n\rangle_{\mathcal F}$, while Part~I's $a_n=\langle n!P_n,\mathfrak T_n\rangle_{\mathcal F}$ with $\mathfrak T_n(z)=\sum_k\stwo{n+1}{k+1}z^k$: the two sequences pair the same polynomial with itself and with a second-kind polynomial (front matter, ``One family, two methods'').
+\end{writenote}
+
+The factorial weight is essential. It rewards configurations with
+many cycles and changes the analytic norm from a circle norm to a
+planar Gaussian norm. An asymptotic for the unweighted sum of squares
+cannot be substituted for \eqref{sfp:mc:eq:definition}.
+
+\subsection{An exact expansion before taking any limit}
+For $n\geq1$, let $a=a_n>0$ solve
+\begin{equation}\label{sfp:mc:eq:saddle}
+ a=\sum_{j=1}^{n}\frac1{j+a},
+\end{equation}
+and let $S_r=\sum_{j=1}^{n}(j+a)^{-r}$. Write
+\begin{equation}\label{sfp:mc:eq:centerdef}
+ e^{-at}\frac{P_n(a+t)}{P_n(a)}=\sum_{k\geq0}c_k t^k,
+ \qquad C_{n,K}=\sum_{k=0}^{K-1}k!c_k^2.
+\end{equation}
+The coefficients are real, $c_0=1$, $c_1=0$, and the recurrence
+\begin{equation}\label{sfp:mc:eq:recintro}
+ kc_k=\sum_{r=2}^{k}(-1)^{r-1}S_r c_{k-r}\qquad(k\geq2)
+\end{equation}
+uses only finite sums. We prove the exact statement
+\begin{equation}\label{sfp:mc:eq:certificateintro}
+ B_n=e^{-a^2}P_n(a)^2(C_{n,K}+\varepsilon_{n,K}),\qquad
+ 0\leq\varepsilon_{n,K}\leq
+ (K+1)\left(\frac{K+1}{K}S_2\right)^K
+\end{equation}
+for every $n\geq1$ and $K\geq2$. In particular, the error is at most
+$e(K+1)\varphi^{-K}$. This is an absolute bound on the normalized
+factor in parentheses; since that factor is at least $1$, it also
+bounds the relative error made by retaining $C_{n,K}$.
+
+A rational center replaces the algebraic root $a$ when an exact
+arithmetic certificate is desired. The resulting recurrence has a
+nonzero linear term, and its explicit tail contains one additional
+positive exponential factor. Section~\ref{sfp:mc:sec:rational} supplies
+both the theorem and a rational exponential enclosure.
+
+\subsection{All fixed logarithmic orders}
+Put $w=W_0(en)$. For every fixed integer $R\geq1$, we prove
+\begin{equation}\label{sfp:mc:eq:mainintro}
+ B_n=\frac{e^{w^2+1}}{2\pi w}
+ \left\{\sum_{r=0}^{R-1}\frac{A_r}{w^r}+O_R(w^{-R})\right\}.
+\end{equation}
+The first terms are
+\begin{equation}\label{sfp:mc:eq:firstintro}
+ \frac{2\pi wB_n}{e^{w^2+1}}
+ =1-\frac1{6w}+\frac{55}{72w^2}
+  +\frac{1381}{6480w^3}+\frac{76541}{155520w^4}+O(w^{-5}).
+\end{equation}
+The constant in the exponential is $+1$. Every coefficient is
+rational and generated symbolically, rather than fitted to data.
+No convergence of the series in $1/w$, and no growing-order error
+bound, is asserted.
+
+\subsection{Threshold inversion with rounding retained}
+Let $N(T)=\min\{n\geq0:b_n\geq T\}$ for $T>1$. With
+\begin{equation}\label{sfp:mc:eq:inverseintrodefs}
+ L=\log T,\qquad
+ u=\frac{L}{2W_0(L/(2e))},\qquad D=\log u,\qquad w_u=W_0(eu),
+\end{equation}
+define $Q_R(w)=\sum_{r=0}^{R-1}A_rw^{-r}$ and
+\begin{equation}\label{sfp:mc:eq:inverseintro}
+ v_R=u-\frac{w_u^2+\log(u/w_u)+1+\log Q_R(w_u)}{2D}.
+\end{equation}
+For each fixed $R$, there are constants $C_R,T_R>0$ such that, for
+$T\geq T_R$,
+\begin{equation}\label{sfp:mc:eq:inverseintrobracket}
+ \ceil{v_R-C_RD^{-R-1}}\leq N(T)
+ \leq\ceil{v_R+C_RD^{-R-1}}.
+\end{equation}
+The constants and onset are not numerically provided. Consequently,
+\eqref{sfp:mc:eq:inverseintrobracket} is an asymptotic theorem, not a
+ready-to-use finite-$T$ numerical certificate. Actual certified
+threshold decisions can instead use the explicit Fock bounds and
+exact integer checks.
+
+\section{Combinatorial interpretation and Gaussian orthogonality}
+\label{sfp:mc:sec:fock}
+
+\subsection{Matched cycles and the bivariate generating function}
+Consider a permutation on an $n$-element labeled set together with
+one special element. If the permutation has $k+1$ cycles, exactly
+one cycle contains the special element. Thus $\stir{n+1}{k+1}$
+counts a distinguished cycle and $k$ other cycles. Take two such
+permutations on separate labeled sets of size $n$, and a bijection
+between their $k$ nondistinguished cycles. There are $k!$ choices
+of this bijection. Summing gives \eqref{sfp:mc:eq:definition}. We use
+``matched cycles'' as a descriptive name for this interpretation,
+without a historical naming claim.
+
+Let $L(x)=-\log(1-x)$. A cycle containing the special element is
+an ordered list of ordinary labels, with exponential generating
+function $(1-x)^{-1}$. An ordinary cycle has generating function
+$L(x)$. A set of matched pairs of cycles on the two label types
+has generating function $\exp(L(x)L(y))$. Therefore
+\begin{equation}\label{sfp:mc:eq:egf}
+ \frac{\exp(L(x)L(y))}{(1-x)(1-y)}
+ =\sum_{m,n\geq0}\left(\sum_{k\geq0}
+   \stir{m+1}{k+1}\stir{n+1}{k+1}k!\right)
+   \frac{x^m y^n}{m!n!}.
+\end{equation}
+In particular, $B_n$ is its diagonal coefficient. Substituting
+$x=y$ would sum all coefficients on an antidiagonal, not extract
+this diagonal. That distinction matters when comparing univariate
+alg-log results with the present problem.
+\begin{writenote}[6 October 2026]
+Equation~\eqref{sfp:mc:eq:egf} also follows termwise from $\sum_m\stir{m+1}{k+1}x^m/m!=L(x)^k/(k!\,(1-x))$, the derivative of $\sum_N\stir N{k+1}x^N/N!=L(x)^{k+1}/(k+1)!$. Part~I's double generating function \eqref{sfp:pc:eq:doubleegf} is the counterpart for the array A344639; there the diagonal is extracted by the one-variable coefficient formula \eqref{sfp:pc:eq:coefficient}, here by the norm \eqref{sfp:mc:eq:polynomial}.
+\end{writenote}
+
+\subsection{The classical Fock identity}
+For an entire function $f(t)=\sum_{k\geq0}f_kt^k$, define
+\begin{equation}\label{sfp:mc:eq:norm}
+ \Fock{f}=\frac1\pi\int_{\CC}e^{-|t|^2}|f(t)|^2\dd A(t),
+\end{equation}
+where $A$ is planar Lebesgue area; the value is allowed to be
+infinite. Polar coordinates and circle orthogonality give
+\begin{equation}\label{sfp:mc:eq:fock}
+ \Fock{f}=\sum_{k\geq0}k!|f_k|^2.
+\end{equation}
+Indeed, for each radius $r$, uniform convergence on the circle
+allows termwise integration and gives
+$(2\pi)^{-1}\int_0^{2\pi}|f(re^{i\theta})|^2\dd\theta
+=\sum_k|f_k|^2r^{2k}$. Tonelli's theorem then applies to the
+nonnegative sum, and
+$2\int_0^\infty e^{-r^2}r^{2k+1}\dd r=k!$.
+Thus no exchange of a conditionally convergent series is involved.
+This is the standard Gaussian Fock norm~\cite{alpayporat}.
+
+The rising-factorial identity yields
+\begin{equation}\label{sfp:mc:eq:polynomial}
+ P_n(z)=\frac1{n!}\sum_{k=0}^{n}\stir{n+1}{k+1}z^k,
+ \qquad B_n=\Fock{P_n}.
+\end{equation}
+This norm representation will be used directly; a two-variable
+contour deformation is unnecessary.
+
+\subsection{Translation and a global product bound}
+For any $b\geq0$, set
+\begin{equation}\label{sfp:mc:eq:offcenterdefs}
+ H_b(t)=e^{-bt}\frac{P_n(b+t)}{P_n(b)},\quad
+ S_r(b)=\sum_{j=1}^{n}(j+b)^{-r},\quad
+ d=S_1(b)-b,\quad s=S_2(b).
+\end{equation}
+Translating $z=b+t$ in \eqref{sfp:mc:eq:norm} cancels the linear terms
+from $e^{-|z|^2}$ and $e^{bt}$, giving the exact identity
+\begin{equation}\label{sfp:mc:eq:translation}
+ B_n=e^{-b^2}P_n(b)^2\Fock{H_b}.
+\end{equation}
+The decisive estimate is global in $t$:
+\begin{equation}\label{sfp:mc:eq:global}
+ |H_b(t)|^2\leq\exp\{2d\operatorname{Re}t+s|t|^2\}.
+\end{equation}
+To prove it, write $x_j=(j+b)^{-1}>0$. Then
+$|1+x_jt|^2=1+2x_j\operatorname{Re}t+x_j^2|t|^2$.
+The elementary inequality $1+u\leq e^u$ for real $u$ applies,
+including when the left side vanishes. Multiply over $j$ and
+include $|e^{-bt}|^2$. There is no logarithmic branch choice and
+no excluded zero in this argument.
+
+\section{The exact saddle and its uniform positive certificate}
+\label{sfp:mc:sec:exact}
+
+\begin{lemma}[The center and its moments]\label{sfp:mc:lem:saddle}
+For every $n\geq1$, equation~\eqref{sfp:mc:eq:saddle} has exactly one
+positive solution. At that solution,
+\begin{equation}\label{sfp:mc:eq:golden}
+ 0<S_2\leq\min\left\{\frac{a}{a+1},\frac1a\right\}
+ \leq\frac1\varphi<\frac23.
+\end{equation}
+Moreover, as $n\to\infty$,
+\begin{equation}\label{sfp:mc:eq:momentorders}
+ a\sim\log n,\qquad S_r\leq\frac{a^{1-r}}{r-1}\quad(r\geq2).
+\end{equation}
+\end{lemma}
+\begin{proof}
+The function $g(a)=\sum_{j=1}^{n}(j+a)^{-1}-a$ is continuous,
+strictly decreasing, positive at $0$, and tends to $-\infty$.
+This proves existence and uniqueness. Since
+$(j+a)^{-1}\leq(a+1)^{-1}$,
+$S_2\leq S_1/(a+1)=a/(a+1)$.
+The decreasing-integral estimate gives
+\[
+ S_r\leq\int_0^n(a+x)^{-r}\dd x
+ <\frac{a^{1-r}}{r-1}.
+\]
+The functions $a/(a+1)$ and $1/a$ meet at $a=\varphi$,
+where both equal $1/\varphi$. One is increasing and the other
+decreasing, which proves \eqref{sfp:mc:eq:golden}.
+
+Integral comparison in the defining equation also gives
+\begin{equation}\label{sfp:mc:eq:abounds}
+ \log\frac{a+n+1}{a+1}\leq a\leq\log\frac{a+n}{a}.
+\end{equation}
+First $a\to\infty$, since a bounded $a$ would make the sum in
+\eqref{sfp:mc:eq:saddle} diverge. Also $a\leq H_n=O(\log n)$.
+The left inequality in \eqref{sfp:mc:eq:abounds} is then
+$a\geq\log n-O(\log\log n)$, proving $a/\log n\to1$.
+\end{proof}
+
+\begin{theorem}[Positive expansion and explicit tail]\label{sfp:mc:thm:exact}
+Let $n\geq1$ and use \eqref{sfp:mc:eq:saddle}--\eqref{sfp:mc:eq:centerdef}.
+Then
+\begin{equation}\label{sfp:mc:eq:exactnorm}
+ B_n=e^{-a^2}P_n(a)^2 C_n,\qquad
+ C_n=\sum_{k\geq0}k!c_k^2\geq1,
+\end{equation}
+where $c_0=1$, $c_1=0$, and \eqref{sfp:mc:eq:recintro} holds.
+For every integer $K\geq1$ and every $S_2<q<1$,
+\begin{equation}\label{sfp:mc:eq:tail}
+ 0\leq C_n-C_{n,K}\leq\frac{(S_2/q)^K}{1-q}.
+\end{equation}
+For fixed $K$, the right side is minimized at $q=K/(K+1)$
+whenever that point is admissible. It is admissible for every
+$n\geq1$ if $K\geq2$, giving \eqref{sfp:mc:eq:certificateintro}.
+\end{theorem}
+\begin{proof}
+At $b=a$, the linear coefficient $d$ in \eqref{sfp:mc:eq:offcenterdefs}
+is zero. Hence \eqref{sfp:mc:eq:global} becomes
+$|H_a(t)|^2\leq e^{S_2|t|^2}$. By \eqref{sfp:mc:eq:golden}, this
+is integrable against the standard Gaussian. Equations
+\eqref{sfp:mc:eq:translation} and \eqref{sfp:mc:eq:fock} prove the positive
+expansion. Near $t=0$,
+\[
+ \log H_a(t)=\sum_{r\geq2}\frac{(-1)^{r-1}S_r}{r}t^r
+ \qquad(|t|<a+1).
+\]
+Differentiate this local identity and compare Taylor coefficients
+to obtain \eqref{sfp:mc:eq:recintro}. Although the displayed logarithmic
+series is local, $H_a$ itself is entire and the recurrence gives
+all its Taylor coefficients.
+
+For the tail, apply \eqref{sfp:mc:eq:fock} to
+$H_a(\sqrt{q/S_2}\,t)$. The global bound yields
+\[
+ \sum_{k\geq0}k!c_k^2\left(\frac q{S_2}\right)^k
+ \leq\frac1\pi\int_{\CC}e^{-(1-q)|t|^2}\dd A(t)
+ =\frac1{1-q}.
+\]
+Since $q/S_2>1$, deleting the first $K$ terms and multiplying
+by $(S_2/q)^K$ proves \eqref{sfp:mc:eq:tail}. Finally,
+\[
+ \frac\dd{\dd q}\log\frac{(S_2/q)^K}{1-q}
+ =-\frac Kq+\frac1{1-q}
+\]
+changes sign from negative to positive at $K/(K+1)$.
+For $K\geq2$, that point is at least $2/3>1/\varphi\geq S_2$.
+The estimate $(1+1/K)^K\leq e$ finishes the stated simplification.
+\end{proof}
+
+A particularly simple choice works even at $K=1$: $q=3/4$ gives
+\begin{equation}\label{sfp:mc:eq:uniformsimple}
+ C_n-C_{n,K}\leq4(4S_2/3)^K
+ \leq4\left(\frac4{3\varphi}\right)^K.
+\end{equation}
+Thus the exact expansion is uniformly convergent in this normalized
+sense over all positive indices. For a tolerance $\epsilon>0$,
+choosing a $K$ with the last expression at most $\epsilon$ is a
+fully explicit universal rule. It is conservative: the actual
+$S_2$ becomes small with $n$.
+
+\subsection{A broader negative real root theorem}
+\begin{theorem}[Finite products with negative zeros]\label{sfp:mc:thm:generic}
+Let $m\geq1$, $\lambda_j>0$, and
+$P(z)=\prod_{j=1}^{m}(1+z/\lambda_j)$.
+Let $a>0$ be the unique solution of
+$a=\sum_{j=1}^{m}(a+\lambda_j)^{-1}$, and put
+$S_r=\sum_{j=1}^{m}(a+\lambda_j)^{-r}$.
+Then $S_2<1$ and
+\[
+ \Fock{P}=e^{-a^2}P(a)^2\sum_{k\geq0}k!c_k^2,
+ \qquad
+ \sum_{k\geq K}k!c_k^2\leq\frac{(S_2/q)^K}{1-q}
+\]
+for $S_2<q<1$, where $c_0=1$, $c_1=0$, and the recurrence
+\eqref{sfp:mc:eq:recintro} uses these moments.
+\end{theorem}
+\begin{proof}
+Existence and uniqueness follow as before. Since $a+\lambda_j>a$,
+\[
+ S_2<\frac1a\sum_{j=1}^{m}\frac1{a+\lambda_j}=1.
+\]
+The translation, product inequality, coefficient recurrence, and
+scaled Gaussian argument are unchanged.
+\end{proof}
+
+Repeated roots are allowed. A nonzero constant multiplier is
+handled by multiplying the norm and prefactor by its squared
+modulus. The universal golden-ratio bound is specific to the
+arithmetic progression $\lambda_j=j$; it is not asserted for
+arbitrary negative-root polynomials. The general certificate is an
+elementary consequence of classical Fock theory, and its scholarly
+priority in this formulation has not been established.
+
+\section{Rational centers and certified finite arithmetic}
+\label{sfp:mc:sec:rational}
+
+\begin{theorem}[Off-saddle certificate]\label{sfp:mc:thm:rational}
+Let $n\geq1$, $b\geq0$, and use \eqref{sfp:mc:eq:offcenterdefs}.
+Suppose $0<s<q<1$, and write $H_b(t)=\sum_{k\geq0}c_k(b)t^k$.
+Then $c_0(b)=1$, $c_1(b)=d$, and
+\begin{equation}\label{sfp:mc:eq:rationalrec}
+ kc_k(b)=d\,c_{k-1}(b)+
+ \sum_{r=2}^{k}(-1)^{r-1}S_r(b)c_{k-r}(b).
+\end{equation}
+For every integer $K\geq1$,
+\begin{align}
+ B_n&=e^{-b^2}P_n(b)^2
+    \left(\sum_{k<K}k!c_k(b)^2+\varepsilon_{b,K}\right),
+    \label{sfp:mc:eq:rationalidentity}\\
+ 0\leq\varepsilon_{b,K}
+ &\leq\frac{(s/q)^K}{1-q}
+     \exp\left(\frac{qd^2}{s(1-q)}\right).
+    \label{sfp:mc:eq:rationaltail}
+\end{align}
+\end{theorem}
+\begin{proof}
+Translation proves \eqref{sfp:mc:eq:rationalidentity}; the local logarithmic
+derivative proves \eqref{sfp:mc:eq:rationalrec}. Scale \eqref{sfp:mc:eq:global}
+by $t\mapsto\sqrt{q/s}\,t$. Writing $t=x+iy$, the Gaussian
+integral is
+\[
+ \frac1\pi\int_{\mathbb R^2}
+ \exp\{-(1-q)(x^2+y^2)+2d\sqrt{q/s}\,x\}\dd x\dd y
+ =\frac1{1-q}\exp\left(\frac{qd^2}{s(1-q)}\right).
+\]
+Apply Fock orthogonality, remove the first $K$ terms, and use
+$(q/s)^k\geq(q/s)^K$ for $k\geq K$.
+\end{proof}
+
+\subsection{A rational center with a guaranteed admissible scale}
+The root lies in $[0,n]$: $g(0)>0$ and
+$g(n)=\sum_{j=1}^{n}(j+n)^{-1}-n<0$.
+Bisection evaluates $g$ using rational arithmetic at every rational
+midpoint. After $J$ steps, keep endpoints $\ell\leq a\leq h$
+with $h-\ell=n2^{-J}$, and choose $b=h$. Then
+\begin{equation}\label{sfp:mc:eq:uppercenter}
+ S_2(b)\leq S_2(a)\leq1/\varphi,\qquad
+ d=g(b)\leq0,\qquad b-a\leq|d|.
+\end{equation}
+The last inequality follows from $g'(x)=-1-S_2(x)\leq-1$.
+For example, $|d|\leq(1+S_2(a))(b-a)$ by integration, so the
+extra exponential factor tends to $1$ as the bracket narrows.
+No algebraic-number representation of $a$ is needed.
+
+The scales $q=3/4$ and, for $K\geq2$, $q=K/(K+1)$ remain
+admissible. When $d\ne0$, the latter is \emph{not generally the
+minimizer} of \eqref{sfp:mc:eq:rationaltail}: the extra exponential also
+depends on $q$. Calling it the optimal off-saddle scale would be
+incorrect. It is a convenient explicit admissible choice.
+
+\subsection{Rational upper and lower bounds for the exponential}
+For rational $x\geq0$ and integer $M\geq0$ with $x<M+2$, put
+\begin{equation}\label{sfp:mc:eq:expbounds}
+ E_M^-(x)=\sum_{j=0}^{M}\frac{x^j}{j!},\qquad
+ E_M^+(x)=E_M^-(x)+
+ \frac{x^{M+1}}{(M+1)!}\frac1{1-x/(M+2)}.
+\end{equation}
+Every quantity is rational, and
+\begin{equation}\label{sfp:mc:eq:expineq}
+ E_M^-(x)\leq e^x\leq E_M^+(x).
+\end{equation}
+The first omitted term is $x^{M+1}/(M+1)!$, and every successive
+ratio in the tail is at most $x/(M+2)<1$. A geometric series
+therefore bounds the omitted tail. For $x<0$, reciprocation gives
+\begin{equation}\label{sfp:mc:eq:expnegative}
+ \frac1{E_M^+(-x)}\leq e^x\leq\frac1{E_M^-(-x)}.
+\end{equation}
+Range reduction or increasing $M$ can improve efficiency; neither
+is needed for the displayed finite certificate.
+
+To make the interval explicit, abbreviate
+\[
+ C=\sum_{k<K}k!c_k(b)^2,\quad
+ V=\frac{(s/q)^K}{1-q},\quad
+ E=\frac{qd^2}{s(1-q)},\quad
+ Z=(n!)^2P_n(b)^2.
+\]
+Suppose rational bounds $l_1\leq e^{-b^2}\leq u_1$ and
+$l_2\leq e^{E-b^2}\leq u_2$ have been computed by
+\eqref{sfp:mc:eq:expbounds}--\eqref{sfp:mc:eq:expnegative}. Then
+\begin{equation}\label{sfp:mc:eq:fullyrational}
+ \mathcal L=ZCl_1\leq b_n\leq Z(Cu_1+Vu_2)=\mathcal U.
+\end{equation}
+All comparisons can be performed by exact integer arithmetic on
+rational numerators and denominators. In particular,
+\begin{equation}\label{sfp:mc:eq:uniqueinteger}
+ \ceil{\mathcal L}=\floor{\mathcal U}=m
+ \quad\Longrightarrow\quad b_n=m.
+\end{equation}
+A narrow floating-point interval alone would not establish this
+conclusion. The exponential-tail inequalities and the exact
+rational comparisons are the certification mechanism.
+
+\subsection{A small rigorous example}
+The companion uses $n=10$, $K=80$, $48$ exact bisection steps,
+a rational center $b=h$, and the admissible scale $q=80/81$.
+It computes $\mathcal L$ and $\mathcal U$ as exact fractions and
+verifies that their only integer is
+\begin{equation}\label{sfp:mc:eq:exampleinteger}
+ b_{10}=1273270076895432.
+\end{equation}
+An independent integer Stirling recurrence returns the same value.
+Here the center is exactly $b=59940575424575/35184372088832$.
+Outward rounding by integer floor and ceiling on a decimal grid gives
+\begin{align*}
+ \mathcal L_{\rm grid}&=1273270076895431.999999999999999999999999999999,\\
+ \mathcal U_{\rm grid}&=1273270076895432.000000000000000002283679986302.
+\end{align*}
+These finite decimal strings are exact rationals, not floating-point
+approximations. They enclose the full rational interval, and their
+lower ceiling and upper floor both equal \eqref{sfp:mc:eq:exampleinteger}.
+The full interval has width strictly less than the exact rational
+$2283679986302/10^{30}$, or $2.283679986302\cdot10^{-18}$.
+The full rational endpoints, selected scale, and exact width are
+stored in the companion result. This example is intended to show an
+end-to-end certificate, not a speed advantage over exact Stirling
+enumeration at such a small index.
+\begin{writenote}[6 October 2026]
+At the write the four delivered results \file{certificate_n10.json}, \file{certificate_n0.json}, \file{coefficients_A10.json} and \file{enumeration_n10.json} were regenerated byte for byte on a copy (fresh extraction, Windows), with the intake's replacement of the POSIX output layer by plain exclusive writes that keep the delivered encoder and input validation. The value \eqref{sfp:mc:eq:exampleinteger} is also the term $n=10$ of the OEIS entry and of the write's Stirling recurrence.
+\end{writenote}
+
+\section{Exact center asymptotics and the Gaussian correction}
+\label{sfp:mc:sec:moment}
+
+The explicit tail already contains an all-orders exact-center
+expansion. For each fixed $K$, take $q=3/4$ in \eqref{sfp:mc:eq:tail}
+and use $S_2=O(a^{-1})$ to obtain
+\begin{equation}\label{sfp:mc:eq:centerasymptotic}
+ B_n=e^{-a^2}P_n(a)^2\{C_{n,K}+O_K(a^{-K})\}.
+\end{equation}
+The coefficients $c_k$ in this statement are the exact finite-$n$
+moment polynomials. Replacing moments by their leading values
+without controlling the accumulated errors would change the claim.
+
+The exponential formula gives a second finite description:
+\begin{equation}\label{sfp:mc:eq:partitioncoeff}
+ c_k=\sum_{\substack{m_2,\ldots,m_k\geq0\\
+                    \sum_{r=2}^{k}r m_r=k}}
+       \prod_{r=2}^{k}\frac1{m_r!}
+       \left(\frac{(-1)^{r-1}S_r}{r}\right)^{m_r}.
+\end{equation}
+Assign weight $r-1$ to $S_r$ because $S_r=O(a^{1-r})$.
+In a monomial of $c_k$, the weight is
+$k-\sum m_r\geq\ceil{k/2}$. Hence the product of two monomials
+from $c_k$ has weight at least $2\ceil{k/2}\geq k$.
+Only finitely many $k$ can contribute below any fixed weight.
+This observation, together with the tail bound, rigorously justifies
+collecting the expansion by weight.
+
+The first coefficients are
+\begin{align*}
+ c_2&=-S_2/2,&
+ c_3&=S_3/3,&
+ c_4&=S_2^2/8-S_4/4,\\
+ c_5&=S_5/5-S_2S_3/6,&
+ c_6&=-S_6/6+S_2S_4/8+S_3^2/18-S_2^3/48.
+\end{align*}
+Squaring with the $k!$ weights and retaining total weight at most
+six gives
+\begin{align}
+ C_n={}&1+\frac12S_2^2+\frac38S_2^4+\frac23S_3^2
+       -\frac32S_2^2S_4 \notag\\
+      &+\frac5{16}S_2^6+\frac{10}{3}S_2^2S_3^2
+       +\frac32S_4^2+O(a^{-7}).\label{sfp:mc:eq:weight6}
+\end{align}
+For example, $24c_4^2=3S_2^4/8-3S_2^2S_4/2+3S_4^2/2$.
+The $c_5^2$ term contributes $10S_2^2S_3^2/3$ at weight six,
+and the $c_6^2$ term contributes $5S_2^6/16$ there.
+\begin{writenote}[6 October 2026]
+Checked by the write symbolically (SymPy): $c_2,\dots,c_6$ above and every term of \eqref{sfp:mc:eq:weight6}.
+\end{writenote}
+
+Keeping just the quadratic part of $\log H_a$ gives
+$e^{-S_2t^2/2}$. Its norm is exactly
+\begin{equation}\label{sfp:mc:eq:gaussian}
+ \Fock{e^{-S_2t^2/2}}
+ =\sum_{j\geq0}\frac{(2j)!}{(j!)^2}
+                  \left(\frac{S_2^2}{4}\right)^j
+ =\frac1{\sqrt{1-S_2^2}}.
+\end{equation}
+Thus the two-dimensional Gaussian approximation is
+\begin{equation}\label{sfp:mc:eq:gaussianapprox}
+ B_n=\frac{e^{-a^2}P_n(a)^2}{\sqrt{1-S_2^2}}
+      \{1+O(a^{-4})\}.
+\end{equation}
+Its first nonquadratic contribution in the normalized norm is
+$2S_3^2/3$, of order $a^{-4}$. The complete finite positive sum,
+with \eqref{sfp:mc:eq:tail}, is preferable when a numerical certificate
+is required; \eqref{sfp:mc:eq:weight6} is an explanatory asymptotic
+rearrangement.
+
+\section{A universal Gamma norm at the Lambert anchor}
+\label{sfp:mc:sec:gamma}
+
+The exact center is ideal for finite-$n$ certification. To express
+coefficients as rational numbers independent of $n$, use the
+Lambert anchor
+\begin{equation}\label{sfp:mc:eq:anchor}
+ w=W_0(en),\qquad b_*=w-1,\qquad
+ \log n=w+\log w-1.
+\end{equation}
+For $w\geq2$, define the entire function and its norm
+\begin{equation}\label{sfp:mc:eq:gammanorm}
+ h_w(t)=\frac{w^t\Gamma(w)}{\Gamma(w+t)},\qquad
+ \mathcal H(w)=\Fock{h_w}.
+\end{equation}
+Here $w^t=e^{t\log w}$. We will use
+\begin{equation}\label{sfp:mc:eq:gamma-ds}
+ d_w=\log w-\psi(w),\qquad
+ s_w=\zeta(2,w)=\sum_{j\geq0}(w+j)^{-2},
+\end{equation}
+where $\psi=\Gamma'/\Gamma$.
+
+The reciprocal-Gamma canonical product gives
+\begin{equation}\label{sfp:mc:eq:canonicalgamma}
+ h_w(t)=e^{d_wt}
+    \prod_{j\geq0}\left(1+\frac{t}{w+j}\right)e^{-t/(w+j)}.
+\end{equation}
+The product converges locally uniformly. Applying the same factor
+inequality as before to its finite partial products and passing to
+the limit yields
+\begin{equation}\label{sfp:mc:eq:gammaglobal}
+ |h_w(t)|^2\leq e^{2d_w\operatorname{Re}t+s_w|t|^2}.
+\end{equation}
+As $w\to\infty$, $d_w=O(w^{-1})$ and $s_w=O(w^{-1})$.
+In particular the norm is finite for all sufficiently large $w$,
+and $\mathcal H(w)\geq1$ by the constant coefficient in
+\eqref{sfp:mc:eq:fock}. In fact $s_w<1$ for $w\geq2$.
+
+\begin{proposition}[Reduction to the universal norm]\label{sfp:mc:prop:reduction}
+As $n\to\infty$, with $w=W_0(en)$,
+\begin{equation}\label{sfp:mc:eq:reduction}
+ B_n=\frac{n^{2(w-1)}e^{-(w-1)^2}}{\Gamma(w)^2}
+       \mathcal H(w)\{1+O(w^2/n)\}.
+\end{equation}
+\end{proposition}
+\begin{proof}
+Let
+$h_{n,w}(t)=e^{-(w-1)t}P_n(w-1+t)/P_n(w-1)$.
+Its linear logarithmic coefficient and quadratic majorant are
+\begin{align*}
+ d_{n,w}&=\psi(n+w)-\psi(w)-(w-1)
+          =O(w^{-1})+O(w/n),\\
+ s_{n,w}&=\sum_{j=0}^{n-1}(w+j)^{-2}=O(w^{-1}).
+\end{align*}
+The global estimate \eqref{sfp:mc:eq:global} therefore shows that both
+$e^{-|t|^2}|h_{n,w}(t)|^2$ and
+$e^{-|t|^2}|h_w(t)|^2$ are bounded by
+$C e^{-|t|^2/2}$ for all sufficiently large $n$, with a fixed $C$.
+This follows, for example, by absorbing the linear term into a
+small multiple of $|t|^2$ and a constant.
+
+The Gamma product identity gives
+\begin{equation}\label{sfp:mc:eq:gammaratio}
+ h_{n,w}(t)=h_w(t)R_{n,w}(t),\qquad
+ R_{n,w}(t)=\frac{\Gamma(n+w+t)}{\Gamma(n+w)n^t}.
+\end{equation}
+On $|t|\leq\sqrt n/4$, the arguments of the Gamma function in
+$R_{n,w}$ lie in the positive half-plane. Thus $R_{n,w}$ has a
+consistent analytic logarithm there. Identity
+\eqref{sfp:mc:eq:gammaratio} is interpreted by analytic continuation at
+zeros of $h_w$, so division by a vanishing function is not needed.
+The standard uniform digamma estimate in that half-plane gives
+\[
+ \psi(n+w+u)-\log n
+   =O\left(\frac{w+|u|+1}{n}\right)
+ \qquad(|u|\leq\sqrt n/4).
+\]
+Integrating along the segment from $0$ to $t$ shows that
+\begin{equation}\label{sfp:mc:eq:ratiobound}
+ \log R_{n,w}(t)
+ =O\left(\frac{(w+1)|t|+|t|^2}{n}\right).
+\end{equation}
+The digamma estimate follows from its usual sectorial asymptotic
+expansion~\cite{dlmf-mc}, here used far from the negative axis.
+
+Use $|e^v-1|\leq |v|e^{|v|}$ in
+\eqref{sfp:mc:eq:gammaratio}. The exponential factor from
+\eqref{sfp:mc:eq:ratiobound} can be absorbed into the global Gaussian
+majorant, since its quadratic coefficient is $O(1/n)$ and its
+linear coefficient is $O(w/n)$. Gaussian integrals of $|t|$ and
+$|t|^2$ then imply a norm difference $O(w/n)$ on this disk.
+Outside the disk, both global bounds give tails $O(e^{-cn})$
+for some $c>0$. Consequently,
+\begin{equation}\label{sfp:mc:eq:normcompare}
+ \Fock{h_{n,w}}=\mathcal H(w)+O(w/n)
+               =\mathcal H(w)\{1+O(w/n)\}.
+\end{equation}
+The last step uses $\mathcal H(w)\geq1$.
+
+Finally,
+$P_n(w-1)=\Gamma(n+w)/(\Gamma(n+1)\Gamma(w))$ and
+\[
+ \frac{\Gamma(n+w)}{\Gamma(n+1)n^{w-1}}
+       =1+O(w^2/n).
+\]
+This follows by integrating the real digamma estimate between
+$n+1$ and $n+w$, an interval of length $O(w)$.
+Combine this prefactor estimate, translation, and
+\eqref{sfp:mc:eq:normcompare}.
+\end{proof}
+
+The error $w^2/n$ is smaller than every fixed power $w^{-1}$,
+since $n=we^{w-1}$. This observation permits an all-orders
+inverse-logarithm expansion, but does not identify a complete
+exponentially small correction or transseries.
+\begin{writenote}[6 October 2026]
+At practical sizes the $O(w^2/n)$ term of \eqref{sfp:mc:eq:reduction} is not small against the inverse-logarithm terms. With exact $b_n$, the intake found $b_n$ divided by the leading term of \eqref{sfp:mc:eq:equivalent} to be $1.0972$ at $n=200$ ($w=4.742$) and $1.0265$ at $n=1000$ ($w=6.100$), and the scaled residual $\bigl(2\pi wb_n/((n!)^2e^{w^2+1})-Q_2(w)\bigr)w^2$ to be $2.976$ and $2.004$, against its limit $A_2=55/72=0.764$; the write recomputed the values at $n=200$, and $2.530$ at $n=400$. The excess over $A_2$, namely $2.21$, $1.77$ and $1.24$ at $n=200$, $400$, $1000$, is $0.87$, $0.88$ and $0.90$ times $w^4/n=2.53$, $2.00$, $1.38$, i.e.\ of the size of the reduction error $O(w^2/n)$ multiplied by $w^2$. This is consistent with Theorem~\ref{sfp:mc:thm:main}, under which the scaled residual tends to $A_2$ only as $n\to\infty$; the manuscript does not compute the $1/n$-scale correction (Subsection~\ref{sfp:mc:sub:beyond}).
+\end{writenote}
+
+\section{All orders by a finite coefficient argument}
+\label{sfp:mc:sec:allorders}
+
+The majorant \eqref{sfp:mc:eq:gammaglobal} makes the all-orders proof
+particularly short: truncate the positive norm first, and only
+then expand the finitely many retained coefficients. There is no
+need to expand the integrand on a growing complex disk.
+
+\subsection{The coefficient generator}
+Use the Bernoulli convention $B_1(t)=t-1/2$, and set
+\begin{equation}\label{sfp:mc:eq:gm}
+ g_m(t)=\frac{(-1)^m}{m(m+1)}
+             \{B_{m+1}(t)-B_{m+1}(0)\}\qquad(m\geq1).
+\end{equation}
+Define real polynomials $p_r(t)$ by
+\begin{equation}\label{sfp:mc:eq:pr}
+ p_0(t)=1,\qquad
+ p_r(t)=\frac1r\sum_{m=1}^{r}m g_m(t)p_{r-m}(t).
+\end{equation}
+Equivalently,
+$\sum_{r\geq0}p_r(t)x^r=\exp(\sum_{m\geq1}g_m(t)x^m)$
+as a formal series. Define the finite polynomial inner product
+\begin{equation}\label{sfp:mc:eq:inner}
+ \langle f,g\rangle_{\mathcal F}
+ =\sum_{k\geq0}k![t^k]f(t)[t^k]g(t),\qquad
+ H_r=\sum_{j=0}^{r}\langle p_j,p_{r-j}\rangle_{\mathcal F}.
+\end{equation}
+No complex conjugation is needed here because all coefficients
+are real.
+
+The shifted Gamma expansion~\cite[Eq.~5.11.8]{dlmf-mc} gives,
+on each fixed $t$-disk,
+\begin{equation}\label{sfp:mc:eq:loggammaexp}
+ \log h_w(t)\sim\sum_{m\geq1}g_m(t)w^{-m}.
+\end{equation}
+For example,
+\[
+ g_1(t)=-\frac{t^2}{2}+\frac t2,\qquad
+ g_2(t)=\frac{t^3}{6}-\frac{t^2}{4}+\frac t{12},
+\]
+and
+\[
+ p_1(t)=g_1(t),\qquad
+ p_2(t)=\frac{t^4}{8}-\frac{t^3}{12}-\frac{t^2}{8}+\frac t{12}.
+\]
+The nonzero linear term in $p_1$ reflects the fact that $w-1$
+is an anchor rather than the exact saddle.
+
+\begin{theorem}[Universal norm expansion]\label{sfp:mc:thm:H}
+For every fixed integer $R\geq1$,
+\begin{equation}\label{sfp:mc:eq:Hexp}
+ \mathcal H(w)=\sum_{r=0}^{R-1}\frac{H_r}{w^r}+O_R(w^{-R})
+ \qquad(w\to\infty),
+\end{equation}
+where \eqref{sfp:mc:eq:gm}--\eqref{sfp:mc:eq:inner} give the coefficients.
+\end{theorem}
+\begin{proof}
+Write $h_w(t)=\sum_{k\geq0}h_k(w)t^k$. The scaled-Fock
+argument used in Theorem~\ref{sfp:mc:thm:rational}, now applied to
+\eqref{sfp:mc:eq:gammaglobal}, gives
+\begin{equation}\label{sfp:mc:eq:gammatail}
+ \sum_{k\geq K}k!h_k(w)^2
+ \leq\frac{(s_w/q)^K}{1-q}
+       \exp\left(\frac{qd_w^2}{s_w(1-q)}\right)
+ \quad(s_w<q<1).
+\end{equation}
+For fixed $K$ and all sufficiently large $w$, take $q=1/2$.
+Since $s_w=O(w^{-1})$ and $d_w=O(w^{-1})$, while
+$s_w\geq\int_0^\infty(w+x)^{-2}\dd x=1/w$,
+the exponent is $O(w^{-1})$. The right side is therefore
+$O_K(w^{-K})$.
+
+Choose $K=R$. The norm differs from the finite sum
+$\sum_{k<R}k!h_k(w)^2$ by $O_R(w^{-R})$.
+Each fixed $h_k$ is determined by
+\begin{equation}\label{sfp:mc:eq:hkrec}
+ kh_k=d_wh_{k-1}
+       +\sum_{j=2}^{k}(-1)^{j-1}\zeta(j,w)h_{k-j},
+       \qquad h_0=1.
+\end{equation}
+The fixed-order digamma and Hurwitz-zeta expansions yield a
+rigorous finite asymptotic expansion of every such coefficient.
+Equivalently, Cauchy's coefficient formula on one fixed disk
+applied to the uniformly valid fixed-disk expansion
+\eqref{sfp:mc:eq:loggammaexp} gives
+\[
+ h_k(w)=\sum_{r=0}^{R-1}[t^k]p_r(t)w^{-r}+O_{R,k}(w^{-R}).
+\]
+Only finitely many coefficients occur, so multiplication and
+summation preserve an $O_R(w^{-R})$ remainder.
+
+It remains to check that truncating $k<R$ does not discard any
+coefficient $H_r$ for $r<R$. From \eqref{sfp:mc:eq:pr},
+$\deg p_r\leq2r$, and $p_r(0)=0$ for $r>0$.
+If $a+b=r$ and a monomial degree $k$ occurs in both $p_a$ and
+$p_b$, then $k\leq\min(2a,2b)\leq r<R$; the cases $a=0$
+or $b=0$ obey the same bound. Thus all the terms defining
+$H_0,\ldots,H_{R-1}$ survive the finite norm truncation.
+Together with \eqref{sfp:mc:eq:gammatail}, this proves \eqref{sfp:mc:eq:Hexp}.
+\end{proof}
+
+\subsection{Stirling normalization and the constant term}
+Define a formal series $E(x)=\sum_{r\geq0}E_rx^r$ by
+\begin{equation}\label{sfp:mc:eq:Edef}
+ E(x)=\exp\left(-\sum_{j\geq1}
+          \frac{2B_{2j}}{2j(2j-1)}x^{2j-1}\right),\qquad
+ A_r=\sum_{j=0}^{r}E_jH_{r-j}.
+\end{equation}
+Here $B_{2j}=B_{2j}(0)$. Stirling's expansion and
+$\log n=w+\log w-1$ show that
+\begin{align}
+ \log\frac{n^{2(w-1)}e^{-(w-1)^2}}{\Gamma(w)^2}
+ ={}&w^2+1-\log(2\pi w)\notag\\
+ &-\sum_{j\geq1}\frac{2B_{2j}}{2j(2j-1)w^{2j-1}},
+ \label{sfp:mc:eq:normalization}
+\end{align}
+where the sum is interpreted asymptotically to each fixed order.
+For clarity, the elementary part of the cancellation is
+\[
+ 2(w-1)(w+\log w-1)-(w-1)^2
+ -2(w-1/2)\log w+2w=w^2+1-\log w.
+\]
+This fixes both the $+1$ and the factor $w^{-1}$.
+
+\begin{theorem}[Complete inverse logarithm expansion]\label{sfp:mc:thm:main}
+With $A_r$ defined by \eqref{sfp:mc:eq:gm}--\eqref{sfp:mc:eq:Edef}, for each
+fixed integer $R\geq1$,
+\begin{equation}\label{sfp:mc:eq:main}
+ b_n=\frac{(n!)^2e^{W_0(en)^2+1}}{2\pi W_0(en)}
+ \left(\sum_{r=0}^{R-1}\frac{A_r}{W_0(en)^r}
+            +O_R(W_0(en)^{-R})\right).
+\end{equation}
+In particular,
+\begin{equation}\label{sfp:mc:eq:equivalent}
+ b_n\sim\frac{(n!)^2e^{W_0(en)^2+1}}{2\pi W_0(en)}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Multiply Proposition~\ref{sfp:mc:prop:reduction},
+Theorem~\ref{sfp:mc:thm:H}, and the fixed-order exponential of
+\eqref{sfp:mc:eq:normalization}. The relative error $O(w^2/n)$ is
+$o(w^{-R})$ for every fixed $R$, and the remaining products are
+finite asymptotic algebra. Their coefficients are exactly the
+convolution \eqref{sfp:mc:eq:Edef}.
+\end{proof}
+
+\subsection{Coefficients and an exact generation procedure}
+The first eleven values are shown in Table~\ref{sfp:mc:tab:coeff}.
+The companion independently implements rational polynomial
+addition, multiplication, the Bernoulli recurrence, and
+\eqref{sfp:mc:eq:pr}--\eqref{sfp:mc:eq:Edef}. No symbolic algebra dependency
+or numeric fitting is required for these coefficients.
+
+\begin{table}[htbp]
+\centering
+\caption{Universal norm and normalized sequence coefficients.}
+\label{sfp:mc:tab:coeff}
+\renewcommand{\arraystretch}{1.17}
+\begin{tabular}{r@{\qquad}r@{\qquad}r}
+\toprule
+$r$ & $H_r$ & $A_r$\\
+\midrule
+0 & $1$ & $1$\\
+1 & $0$ & $-1/6$\\
+2 & $3/4$ & $55/72$\\
+3 & $1/3$ & $1381/6480$\\
+4 & $155/288$ & $76541/155520$\\
+5 & $259/720$ & $1807553/6531840$\\
+6 & $2183/5760$ & $385303949/1175731200$\\
+7 & $2809/60480$ & $-66416099/7054387200$\\
+8 & $3129727/9676800$ & $108926247893/338610585600$\\
+9 & $-3827969/7257600$ & $-584017596861539/1005673439232000$\\
+10 & $138901163/116121600$ & $108854736210330631/84476568895488000$\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+For a check at the first nontrivial order,
+$H_1=2\langle1,p_1\rangle=0$, while
+$H_2=\langle p_1,p_1\rangle=1/4+2!/4=3/4$.
+The first Stirling coefficients are
+$E_0=1$, $E_1=-1/6$, $E_2=1/72$, and $E_3=31/6480$.
+Consequently $A_2=3/4+1/72=55/72$ and
+$A_3=1/3-(1/6)(3/4)+31/6480=1381/6480$.
+
+For general $R$, if $\eta_m$ denotes the coefficient of $x^m$
+in the exponent of \eqref{sfp:mc:eq:Edef}, the recurrence
+\begin{equation}\label{sfp:mc:eq:Erec}
+ E_0=1,\qquad E_r=\frac1r\sum_{m=1}^{r}m\eta_m E_{r-m}
+\end{equation}
+is sufficient. Thus all operations at any requested fixed order
+are exact rational operations on finitely many polynomials.
+The existence of this generator should not be confused with a
+uniform estimate as the order itself grows with $n$.
+
+\section{Inverses and exact integer thresholds}\label{sfp:mc:sec:inverse}
+
+\subsection{Strict increase and the leading inverse}
+The sequence is strictly increasing. One direct proof uses
+\eqref{sfp:mc:eq:definition} and the unsigned Stirling recurrence
+\begin{equation}\label{sfp:mc:eq:stirlingrec}
+ \stir{m+1}{j}=m\stir mj+\stir m{j-1}.
+\end{equation}
+Alternatively, $P_{n+1}(z)=P_n(z)(1+z/(n+1))$ has nonnegative
+coefficients strictly larger in at least one degree, so its squared
+Fock norm strictly increases; $(n!)^2$ also increases except at
+the initial harmless equality $0!=1!$. In particular $b_1=2>b_0$.
+Since $b_n\geq(n!)^2$, the sequence is unbounded, and $N(T)$ is
+well defined for $T>1$.
+
+By Stirling's formula and Theorem~\ref{sfp:mc:thm:main},
+\begin{equation}\label{sfp:mc:eq:logleading}
+ \log b_n=2n(\log n-1)+O((\log n)^2).
+\end{equation}
+The equation $2u(\log u-1)=L$ has the exact positive solution
+\begin{equation}\label{sfp:mc:eq:leadinginverse}
+ u=\frac{L}{2W_0(L/(2e))},\qquad L=\log T.
+\end{equation}
+Monotonicity and \eqref{sfp:mc:eq:logleading} show that $N(T)\sim u$.
+The omitted logarithmic correction induces an additive shift
+of order $\log u$, so the leading inverse alone is not an
+integer threshold rule.
+
+\subsection{The smooth model and an implicit two-sided bracket}
+For fixed $R\geq1$, let
+\begin{equation}\label{sfp:mc:eq:FR}
+ F_R(x)=2\log\Gamma(x+1)+w(x)^2+1-\log(2\pi w(x))
+                       +\log Q_R(w(x)),
+ \qquad w(x)=W_0(ex).
+\end{equation}
+For all sufficiently large real $x$, $Q_R(w(x))>0$, so this is
+smooth. Since $w'(x)=w(x)/(x(1+w(x)))$,
+\begin{equation}\label{sfp:mc:eq:FRderivatives}
+ F_R'(x)\sim2\log x>0,\qquad F_R''(x)=O(1/x).
+\end{equation}
+The forward expansion gives
+\begin{equation}\label{sfp:mc:eq:logmodelerror}
+ \log b_n=F_R(n)+O_R(w(n)^{-R}).
+\end{equation}
+The logarithm is legitimate because $Q_R(w)\to1$.
+
+Choose a sufficiently large fixed constant $D_R$ so that the
+absolute remainder in \eqref{sfp:mc:eq:logmodelerror} is at most
+$D_Rw(n)^{-R}$ for all sufficiently large $n$. For large $T$,
+let $x_-$ and $x_+$ be the large roots of
+\begin{equation}\label{sfp:mc:eq:modelroots}
+ F_R(x_-)+D_Rw(x_-)^{-R}=\log T,\qquad
+ F_R(x_+)-D_Rw(x_+)^{-R}=\log T.
+\end{equation}
+The perturbed model functions are increasing in the relevant
+range, by \eqref{sfp:mc:eq:FRderivatives}. If an integer $n<x_-$,
+then its upper logarithmic bound is strictly below $\log T$,
+so $b_n<T$. If $n\geq x_+$, its lower bound is at least
+$\log T$, so $b_n\geq T$. This proves
+\begin{equation}\label{sfp:mc:eq:implicitbracket}
+ \ceil{x_-}\leq N(T)\leq\ceil{x_+},\qquad
+ x_+-x_-=O_R((\log u)^{-R-1}).
+\end{equation}
+For sufficiently large $T$, every index below the asymptotic onset
+is also excluded, because the finitely many corresponding $b_n$
+have a finite maximum. The equality case at the threshold is
+preserved by the upper bound's weak inequality. Replacing the lower
+ceiling by a floor would give a valid but weaker bound; automatic
+rounding of a single real root is not justified.
+
+\subsection{An explicit nested Lambert center to all fixed orders}
+\begin{theorem}[Explicit inverse center]\label{sfp:mc:thm:inverse}
+Let $u,D,w_u$ be as in \eqref{sfp:mc:eq:inverseintrodefs}, and let
+$v_R$ be as in \eqref{sfp:mc:eq:inverseintro}. For every fixed $R\geq1$,
+there exist $C_R,T_R>0$ such that
+\eqref{sfp:mc:eq:inverseintrobracket} holds for $T\geq T_R$.
+The unrounded real interval has width $O_R(D^{-R-1})$;
+its two ceilings may still differ by one.
+\end{theorem}
+\begin{proof}
+Put
+\begin{equation}\label{sfp:mc:eq:inverseB}
+ J_R(u)=w_u^2+\log(u/w_u)+1+\log Q_R(w_u).
+\end{equation}
+Stirling's expansion of $2\log\Gamma(u+1)$ gives
+\begin{equation}\label{sfp:mc:eq:FRu}
+ F_R(u)-L=J_R(u)+\frac1{6u}+O(u^{-3}).
+\end{equation}
+Here $w_u=O(D)$, $J_R(u)=O(D^2)$, and
+$J_R'(u)=O(D/u)$. The definition $v_R=u-J_R(u)/(2D)$
+therefore has $v_R-u=O(D)$.
+Uniformly on this $O(D)$ neighborhood of $u$, direct
+ differentiation of \eqref{sfp:mc:eq:FR} yields
+\[
+ F_R'(x)=2D+O(D/u),\qquad F_R''(x)=O(1/u).
+\]
+Taylor's theorem and \eqref{sfp:mc:eq:FRu} then show that
+\begin{equation}\label{sfp:mc:eq:FRv}
+ F_R(v_R)-L=O(D^2/u).
+\end{equation}
+Indeed the leading term $J_R(u)$ is canceled exactly by
+$2D(v_R-u)$, while the derivative correction times the shift
+and the quadratic remainder are both $O(D^2/u)$.
+
+The smooth root $y_R$ of $F_R(y_R)=L$ consequently satisfies
+$y_R-v_R=O(D/u)$. Because $D/u$ is smaller than every fixed
+power $D^{-1}$, this error is negligible relative to
+$D^{-R-1}$. The perturbed roots in \eqref{sfp:mc:eq:modelroots} each
+differ from $y_R$ by $O_R(D^{-R-1})$: their perturbation is
+$O_R(D^{-R})$ and their derivative is of order $D$.
+Enclose both roots in
+$[v_R-C_RD^{-R-1},v_R+C_RD^{-R-1}]$ and apply
+\eqref{sfp:mc:eq:implicitbracket}.
+\end{proof}
+
+This expression uses two principal Lambert evaluations and the
+finite coefficient polynomial $Q_R$. Its shift-Taylor error is
+smaller than every inverse-logarithm order. That statement does
+not supply an exponentially improved inverse, nor a full
+transseries. The constants and a numerical starting threshold
+for the asymptotic windows have not been derived in this report;
+there is no claim that they are intrinsically noncomputable.
+\begin{writenote}[6 October 2026]
+Relation to the transseries volume \cite{TSvol} (front matter): \eqref{sfp:mc:eq:leadinginverse} is an instance of \file{p0:prop:factorial-core} with $\kappa=2$, $d=-2$, which gives $v=W_0(L/(2e))$ and $X=e^{v+1}=L/(2v)=u$, the unique solution with $2\log u-2>0$. The centre $v_R$ and the brackets \eqref{sfp:mc:eq:implicitbracket} and \eqref{sfp:mc:eq:inverseintrobracket} are proved here from the smooth model $F_R$, which is not an interpolation of $(b_n)$; they are not instances of \file{p0:thm:staircase} and play the role of its separation condition~(2).
+\end{writenote}
+
+\subsection{A practical certificate protocol}\label{sfp:mc:sub:protocol}
+For a finite threshold $T$, the exact interval
+\eqref{sfp:mc:eq:fullyrational} supports direct decisions:
+\begin{enumerate}
+\item At a candidate index $n$, compute rational
+$\mathcal L_n\leq b_n\leq\mathcal U_n$. If
+$\mathcal U_n<T$, then $n<N(T)$; if
+$\mathcal L_n\geq T$, then $n\geq N(T)$.
+\item If the interval straddles $T$, increase the Fock truncation
+and the exponential accuracy, and if useful refine the rational
+center. Do not convert an inconclusive comparison into a decision.
+\item When equality could be present, use the integer isolation
+criterion \eqref{sfp:mc:eq:uniqueinteger} or the exact recurrence
+\eqref{sfp:mc:eq:stirlingrec}. Convergence to a boundary from both sides
+alone need not decide equality.
+\item Use monotonicity to bracket the index, then test adjacent
+integers. A certificate $b_{m-1}<T\leq b_m$ proves $N(T)=m$.
+\end{enumerate}
+All comparisons with an exact rational or integer threshold can
+remain rational. For a threshold specified only approximately,
+its own uncertainty must also be enclosed. The asymptotic center
+is useful for choosing a candidate, while the finite arithmetic
+certificate supplies the actual decision.
+
+\section{Sources and relation to earlier methods}\label{sfp:mc:sec:sources}
+
+\subsection{What the source inspection establishes}
+The inspected OEIS entry and official data mirror give the
+defining factorial-weighted sum and finite terms~\cite{oeis};
+no asymptotic was present in the inspected snapshot. Focused
+searches covered the identifier, number prefix, factorial-weighted
+Stirling squares, matched cycles, rising-factorial Fock norms,
+and relevant multivariate or alg-log methods. No source containing
+this sequence-specific equivalent and coefficient series was
+located. This is a bounded search result, not proof of novelty.
+
+Wilf~\cite{wilf} proves that the probability that two independent
+uniform permutations on $n$ letters have the same cycle count is
+asymptotic to $1/(2\sqrt{\pi\log n})$. His proof turns the
+unweighted squared-Stirling sum into a circle norm and applies
+Laplace's method. This is a close conceptual precedent. The $k!$
+weight in the present sequence leads instead to the standard
+planar Gaussian norm. No new general norm identity or saddle
+method is being claimed.
+
+Alpay and Porat~\cite{alpayporat} discuss generalized Fock spaces
+whose coefficient norms involve factorial powers; their classical
+case includes \eqref{sfp:mc:eq:fock}. Their work concerns a broader
+functional-analytic setting and Stirling-number operators. The
+identity used here is classical, regardless of whether the
+sequence-specific evaluation appears in that paper.
+
+The shifted Gamma and digamma expansions used in
+Sections~\ref{sfp:mc:sec:gamma} and~\ref{sfp:mc:sec:allorders} are standard;
+DLMF equations 5.11.1, 5.11.2, and 5.11.8 are direct
+references~\cite{dlmf-mc}. The proof added here organizes these
+inputs around an exact positive expansion and a scaled tail,
+so that the all-orders norm remainder involves finitely many
+coefficient expansions.
+
+\subsection{General asymptotic frameworks and remaining overlap}
+Gittenberger and Mandlburger~\cite{gittenberger} develop
+multivariate Hayman admissibility and Gaussian coefficient
+asymptotics. Their cited admissibility setup uses entire
+functions, whereas \eqref{sfp:mc:eq:egf} has logarithmic singularities.
+That particular theorem is not directly applicable without
+additional work. The general idea of a multivariate Gaussian
+coefficient estimate is established prior art.
+
+Bender and Richmond~\cite{bender} give a general framework for
+labelled structures by number of components. The official abstract
+and indexed primary theorem material were inspected, but a full
+PDF reading was not completed in the source pass. Their theorem
+may provide an alternative route to a leading saddle estimate
+once its hypotheses are checked; this report does not claim
+otherwise. It also does not infer that the positive certificate
+or the specific coefficients are absent from every related paper.
+
+Gao, Laferri\`ere, and Panario~\cite{gao} treat a univariate
+$\exp(C(z))$ schema of alg-log type with positive logarithmic
+exponent. The official abstract was inspected; the full PDF could
+not be read through the available reader in the source pass.
+The substitution $x=y$ in \eqref{sfp:mc:eq:egf} gives an antidiagonal
+sum and cannot by itself identify $b_n$. Detailed overlap beyond
+that schema distinction remains unverified.
+
+Accordingly, the defensible contribution of this report is a
+self-contained sequence-specific derivation, its explicit
+all-orders rational coefficients and inverse, and an exact
+finite-$n$ certification procedure. A first-ever claim for either
+the general certificate or the leading method would require a
+broader literature investigation.
+\begin{writenote}[6 October 2026]
+The write did not read Wilf's note, Alpay--Porat, Gittenberger--Mandlburger, Bender--Richmond or Gao--Laferri\`ere--Panario; what is said here about them, and the inspection levels in \file{data/155-matched-SOURCE_PROVENANCE.json}, are the manuscript's. No other report of the repository treats A192561 (repository search, 6~October 2026).
+\end{writenote}
+
+\section{Computation and reproducibility}\label{sfp:mc:sec:computation}
+
+The source archive contains this report, its editable LaTeX,
+a Python standard-library companion, fixed inputs and reproducible
+results, source provenance, and deterministic build and packaging
+scripts. It contains no earlier report, unrelated data, or
+private review notes.
+
+\subsection{Three different kinds of evidence}
+\begin{enumerate}
+\item \textbf{Proof.} Theorems~\ref{sfp:mc:thm:exact},
+\ref{sfp:mc:thm:rational}, \ref{sfp:mc:thm:H}, \ref{sfp:mc:thm:main}, and
+\ref{sfp:mc:thm:inverse} establish their stated mathematical ranges.
+Finite experiments do not supply the all-orders argument.
+\item \textbf{Exact reproducible computation.} Rational polynomial
+arithmetic generates the displayed coefficients. Integer Stirling
+arithmetic evaluates finite terms. The rational-center certificate
+uses exact fractions and \eqref{sfp:mc:eq:expbounds}; its interval and
+unique-integer decision are rigorous for the actual chosen
+finite parameters.
+\item \textbf{Optional numerical diagnostics.} High-precision
+floating-point comparisons can corroborate the positive sums and
+inspect normalized residuals of the Gamma norm. They cannot turn
+floating-point evaluations into interval proofs. The source archive
+prioritizes the exact route and has no numerical-library dependency.
+\end{enumerate}
+
+\subsection{Companion design and safe output behavior}
+The companion exposes bounded commands for its fixed certificate
+and coefficient checks. Numeric input validation uses explicit
+exceptions, so Python's optimized mode does not disable it.
+Imports do not write output. Generated files use new exclusive
+paths, reject parent traversal and symlink paths, and never
+silently overwrite an existing result. Exact fractions are
+serialized without converting proof decisions to floating point.
+The companion README gives the precise commands and resource
+bounds; its checked results can be recomputed using ordinary
+Python and again with \texttt{python3 -O}.
+
+The PDF builder assumes a trusted parent directory with no concurrent
+adversarial path replacement. It creates an exclusive clean directory, disables
+shell escape, pins deterministic metadata, and repeats TeX until
+references stabilize. The archive builder verifies a fixed file
+allowlist against \texttt{SHA256SUMS}, uses fixed ZIP metadata,
+and refuses an existing output destination. Static symlinks and
+parent traversal are rejected; the directory builder is not claimed
+to resist malicious replacement between directory creation and opening.
+The manifest covers
+every payload file; it excludes itself to avoid a self-hash cycle.
+The ZIP includes that manifest. Rebuilding twice in the same
+recorded toolchain is required to obtain byte-identical PDFs and
+archives. Cross-version TeX byte identity is not asserted.
+\begin{writenote}[6 October 2026]
+Shipped names: \file{code/155-matched-companion-fock_exact.py}, \file{-safe_io.py} and \file{-test_companion.py}, the inputs and results in \file{data/155-matched-companion-*}, the companion README as \file{155-matched-companion-README.md}, the release scripts as \file{code/155-matched-*.py}. The companion's own \file{SHA256SUMS}, the root manifest, \file{Report155.pdf} and the delivery README are not shipped. At the write (Python 3.14.4, Windows, fresh extraction) 24 of the 28 tests passed; the four \texttt{SafeIO} tests stop because they need POSIX \texttt{O\_NOFOLLOW}/\texttt{O\_DIRECTORY} or \texttt{os.mkfifo}, as the package requires; all mathematical tests passed. The delivered \file{verification.json} records 28 of 28 on Linux.
+\end{writenote}
+
+\section{Further questions and limitations}\label{sfp:mc:sec:future}
+
+\subsection{Root classes beyond the arithmetic progression}\label{sfp:mc:sub:roots}
+Theorem~\ref{sfp:mc:thm:generic} allows arbitrary positive root parameters,
+but only gives the instance-specific condition $S_2<1$.
+For regularly spaced roots, roots with a limiting density, or
+families with a quantitative gap from zero, one can ask for
+sharp uniform bounds on $S_2$ and explicit rates of decay as the
+degree grows. Such hypotheses may produce other universal
+positive certificates and asymptotic scales. Polynomials with
+nonreal or positive zeros need separate arguments; the present
+product estimate alone does not provide the same real saddle
+or normalized tail.
+
+\subsection{Computational complexity and interval algorithms}\label{sfp:mc:sub:complexity}
+The demonstration uses exact fractions because they make every
+comparison transparent. Their numerators and denominators can
+become large. Useful next steps include complexity estimates in
+$n$, $K$, and requested accuracy; rigorous ball arithmetic;
+range reduction for exponential enclosures; and adaptive choices
+of the center and scale. For an off-saddle center, minimizing
+\eqref{sfp:mc:eq:rationaltail} rather than reusing $K/(K+1)$ may
+substantially improve bounds. An efficiency comparison with
+integer Stirling recurrence or fast polynomial methods would
+require a dedicated benchmark and is not settled by the example.
+
+\subsection{Beyond fixed logarithmic orders}\label{sfp:mc:sub:beyond}
+The proof separates an $O(w^2/n)$ finite-product correction from
+a complete fixed-order expansion in $w^{-1}$. It does not compute
+the first correction on the $1/n$ scale, establish optimal
+truncation, control coefficients at growing order, or prove
+Borel summability. A systematic two-scale expansion could improve
+both the forward formula and its inverse. Quantifying explicit
+constants and starting indices for the logarithmic remainders
+would also turn the asymptotic inverse windows into independent
+numerical tools. Those tasks are distinct from the already
+explicit finite-$n$ Fock certificate.
+
+\subsection{Other factorial weights and statistics}\label{sfp:mc:sub:weights}
+Generalized Fock norms suggest other factorial weights, such as
+$\sum_k\stir{n+1}{k+1}^{2}(k!)^\alpha$, which may require
+different saddle geometry. Only the weight $k!$ and the
+negative-root polynomial extension are proved here. Weighted
+cycle-count distributions, local limits, and concentration
+remain separate research questions.
+\begin{writenote}[6 October 2026]
+Section~\ref{sfp:sec:further} collects these questions with those of Part~I under Vladimir's standing rule.
+\end{writenote}
+
+\section{Further questions and research}\label{sfp:sec:further}
+\noindent\wtag\ \emph{Added in the write, 6~October 2026.} This section collects the open questions of the two Parts (Sections~\ref{sfp:pc:sec:questions} and~\ref{sfp:mc:sec:future}) and their stated non-claims under Vladimir's standing rule of 4~October 2026: each is stated with its source, the sketch the source gives, and what is missing. Neither manuscript contains a claim found to be wrong. The third member of the family, A192562, is treated by neither manuscript; the write proves an exact identity for it (Proposition~\ref{sfp:prop:a192562}) and states its asymptotics as a question (item~\ref{sfp:q:a192562}).
+
+\subsection{The third member of the family: A192562}\label{sfp:sub:a192562}
+Let $c_n=\sum_{k=0}^nk!\sone nk\stwo{n+1}{k+1}$, the sequence A192562 \cite{oeisA192562} (the write's letter; $c_n$ is not used in this sense elsewhere in the report). Here $a_n$, $A_{n,k}$ and $F_n$ are as in Part~I.
+
+\begin{proposition}[\wtag]\label{sfp:prop:a192562}
+For every $n\ge1$,
+\begin{equation}\label{sfp:eq:a192562}
+ c_n=a_n-nA_{n-1,n}
+    =\sum_{m=0}^{n-1}\sone{n-1}m\bigl\{(m+2)^n-(m+1)^n\bigr\}
+    =n![z^n]\,(e^z-1)F_{n-1}(z).
+\end{equation}
+In particular $0<c_n<a_n$; and $c_0=1$.
+\end{proposition}
+\begin{proof}
+All three equalities use the recurrence $\sone{N+1}{i}=N\sone Ni+\sone N{i-1}$ ($N\ge0$, $i\ge1$; $\sone N{-1}=0$). \emph{First equality.} Apply it with $N=n$, $i=k+1$ to the diagonal of \eqref{sfp:pc:eq:stirlingproduct}:
+\[
+ a_n=\sum_{k=0}^nk!\sone{n+1}{k+1}\stwo{n+1}{k+1}
+    =n\sum_{k=0}^nk!\sone n{k+1}\stwo{n+1}{k+1}+\sum_{k=0}^nk!\sone nk\stwo{n+1}{k+1}.
+\]
+The last sum is $c_n$. The first sum is \eqref{sfp:pc:eq:stirlingproduct} with $(n,k)$ replaced by $(n-1,n)$, so it equals $A_{n-1,n}$. \emph{Second equality.} Apply the recurrence with $N=n-1$, $i=m$ inside \eqref{sfp:pc:eq:definition}:
+\[
+ a_n=\sum_{m=0}^n\sone nm(m+1)^n
+    =(n-1)\sum_{m=0}^{n-1}\sone{n-1}m(m+1)^n+\sum_{m=0}^{n-1}\sone{n-1}m(m+2)^n ,
+\]
+and subtract $nA_{n-1,n}=n\sum_m\sone{n-1}m(m+1)^n$. \emph{Third equality.} By \eqref{sfp:pc:eq:Fn}, $F_n(z)=(e^z+n-1)F_{n-1}(z)$, so $(e^z-1)F_{n-1}=F_n-nF_{n-1}$, and by \eqref{sfp:pc:eq:coefficient} $n![z^n]F_n=A_{n,n}=a_n$ and $n![z^n]F_{n-1}=A_{n-1,n}$. Finally, every term of the middle sum is nonnegative and the term $m=n-1$ is $(n+1)^n-n^n>0$; and $A_{n-1,n}\ge\sone{n-1}{n-1}n^n>0$. For $n=0$ the definition gives $c_0=0!\sone00\stwo11=1$.
+\end{proof}
+
+The write checked \eqref{sfp:eq:a192562} by exact integers for $1\le n\le55$, and the 17 listed terms of A192562 against the definition. Since the first equality is a difference of two quantities that Part~I's theorems describe, it is natural to ask how much cancellation it contains.
+
+\begin{remark}[\wtag\ A numerical observation]\label{sfp:rem:a192562}
+Write $c_n=n![z^n]F_n(z)\varphi_n(z)$ with $\varphi_n(z)=(e^z-1)/(e^z+n-1)$, and let $r$ be Part~I's saddle \eqref{sfp:pc:eq:saddle} at $N=n$, $t=e^r$. By Lemma~\ref{sfp:pc:lem:scales}, $t/n\to0$, so $\varphi_n(r)\sim t/n\sim1/(r\log r)$. Exact $c_n$ and $a_n$, with $r$ solved to 40 digits (mpmath \texttt{findroot}), give:
+\begin{center}
+\small
+\begin{tabular}{@{}rcccc@{}}
+\toprule
+$n$ & $c_n/a_n$ & $\varphi_n(r)$ & $c_n/(a_n\varphi_n(r))-1$ & $\bigl(c_n/(a_n\varphi_n(r))-1\bigr)\,n/r$\\
+\midrule
+10 & 0.261567 & 0.260095 & $+0.0056605$ & $+0.0375$\\
+20 & 0.219065 & 0.218984 & $+0.0003675$ & $+0.0039$\\
+50 & 0.171396 & 0.171640 & $-0.0014187$ & $-0.0292$\\
+100 & 0.142211 & 0.142408 & $-0.0013826$ & $-0.0482$\\
+200 & 0.118524 & 0.118649 & $-0.0010546$ & $-0.0633$\\
+400 & 0.099549 & 0.099620 & $-0.0007193$ & $-0.0755$\\
+\bottomrule
+\end{tabular}
+\end{center}
+At these six sizes the ratio $c_n/a_n$ falls from $0.26$ to $0.10$, and $a_n\varphi_n(r)$ matches $c_n$ to a relative error below $0.006$, which divided by $r/n$ lies between $-0.08$ and $+0.04$. These are floating-point observations at six sizes, not bounds; they suggest, but do not prove, the form stated in item~\ref{sfp:q:a192562} below.
+\end{remark}
+
+\subsection{The questions}
+\begin{enumerate}
+\item\label{sfp:q:a192562} \textbf{Asymptotics of A192562.} \emph{Source:} the write; the intake recorded A192562 as treated by neither manuscript. \emph{Question:} is
+\[
+ c_n=a_n\,\varphi_n(r)\bigl(1+O(r/n)\bigr)
+    =\frac{n!\,e^{L_n(r)}\varphi_n(r)}{r^n\sqrt{2\pi b}}\bigl(1+O(r/n)\bigr),
+\]
+with Part~I's $r$, $b$, $L_n$, and is there an expansion to every fixed order? (The two forms agree by Theorem~\ref{sfp:pc:thm:main} at $R=1$.) \emph{Sketch, Part~I's route:} by \eqref{sfp:eq:a192562}, $c_n=n![z^n]G_n(z)$ with $G_n=(e^z-1)F_{n-1}$. On the circle $|z|=r$, $|e^z-1|\le e^{r\cos\theta}+1$ and $|F_{n-1}(re^{\ii\theta})|\le F_{n-1}(r\cos\theta)$ by the positive exponential sum of $F_{n-1}$, so the argument of Lemma~\ref{sfp:pc:lem:minor} bounds the complementary circle up to the factor $(e^{r}+1)/(e^{r}-1)$; the exponential sum of $G_n$ itself has coefficients of both signs, so Lemma~\ref{sfp:pc:lem:minor} does not apply to it verbatim. On the disk $|z-r|\le\rho$ the factor $e^z-1$ is analytic and nonzero, with bounded logarithmic derivatives, so Lemma~\ref{sfp:pc:lem:complex} extends to $\log G_n$. The central expansion then needs either the exact saddle of $\log G_n(z)-n\log z$ or Part~I's saddle with $\varphi_n$ carried as an amplitude, whose Euler derivative $(z\partial_z)\log\varphi_n$ is of order $r$ at $z=r$. Either way the first correction relative to $a_n\varphi_n(r)$ is expected to be of order $r/n$: the amplitude contributes terms such as $\bigl((z\partial_z)\log\varphi_n\bigr)^2/b$ and $(z\partial_z)\log\varphi_n\cdot\kappa_3/b^2$, both $O(r/n)$ by Lemma~\ref{sfp:pc:lem:scales}. \emph{Missing:} the analogues of Lemmas~\ref{sfp:pc:lem:exist}--\ref{sfp:pc:lem:scales} for the new phase (or the amplitude version of the weighted Taylor argument \eqref{sfp:pc:eq:weightedTaylor}), and the resulting coefficients. \emph{Part~II's route:} $c_n=\langle z^{\overline n},\mathfrak T_n\rangle_{\mathcal F}$ in the notation of ``One family, two methods'', a bilinear pairing of two different polynomials, not a norm. The translation identity \eqref{sfp:mc:eq:translation} extends to the pairing, $\langle f,g\rangle_{\mathcal F}=e^{-b^2}f(b)g(b)\langle f_b,g_b\rangle_{\mathcal F}$ with $f_b(t)=e^{-bt}f(b+t)/f(b)$, but the terms $k!\,[t^k]f_b\,[t^k]g_b$ need not be of one sign, so the positive certificate of Theorem~\ref{sfp:mc:thm:exact} and its tail bound do not transfer; $z^{\overline n}$ also vanishes at $0$, outside Theorem~\ref{sfp:mc:thm:generic}. Cauchy--Schwarz gives only the upper bound $c_n\le\|z^{\overline n}\|_{\mathcal F}\|\mathfrak T_n\|_{\mathcal F}$. \emph{Missing:} a signed or two-centre version of the certificate. The same remarks apply to A192563 itself, which Part~II's method does not treat, and conversely Part~I's method has not been applied to A192561.
+\item\label{sfp:q:effective} \textbf{Effective constants, onsets and certified thresholds.} \emph{Sources:} Part~I, question~1 and the last paragraph of Section~\ref{sfp:pc:sec:thresholds}; Part~II, Subsection~\ref{sfp:mc:sub:beyond} and the statement after Theorem~\ref{sfp:mc:thm:inverse} that its constants and onset are not derived (``there is no claim that they are intrinsically noncomputable''). \emph{Sketch:} Part~I proposes making the disk, contour and weighted Taylor bounds explicit and combining them with interval evaluation of the gamma and polygamma functions; Part~II's finite-$n$ certificate (Theorem~\ref{sfp:mc:thm:rational} and the protocol of Subsection~\ref{sfp:mc:sub:protocol}) already decides any finite threshold for A192561 exactly. \emph{Missing:} explicit constants and onsets for Part~I's Theorems~\ref{sfp:pc:thm:main}--\ref{sfp:pc:thm:inverse} and for Part~II's \eqref{sfp:mc:eq:logmodelerror} and Theorem~\ref{sfp:mc:thm:inverse}, which would make the asymptotic windows usable at given~$X$ or~$T$.
+\item\label{sfp:q:transition} \textbf{Transition between moment regimes of A344639.} \emph{Source:} Part~I, question~2, and the closing paragraph of Section~\ref{sfp:pc:sec:aspect}. \emph{Question:} a uniform expansion of $A_{n,k}$ as $k/n\to0$, connecting fixed-order cycle moments with the growing-order regime, and separately as $k/n\to\infty$ (fixed rows of the array). \emph{Missing:} new uniform saddle and contour estimates; Part~I warns that \eqref{sfp:pc:eq:aspect} may not be invoked there.
+\item\label{sfp:q:laws} \textbf{Limit laws under the moment weights.} \emph{Sources:} Part~I, question~3; Part~II, Subsection~\ref{sfp:mc:sub:weights} (``weighted cycle-count distributions, local limits, and concentration''). \emph{Question:} for the probability proportional to $\sone nm(m+1)^k$, a limit law and local estimates for the cycle count $m$; for A192561, the law of the number $k$ of matched pairs of cycles. \emph{Missing:} everything; neither Part asserts a limit law.
+\item\label{sfp:q:nested} \textbf{Further explicit inverse terms.} \emph{Source:} Part~I, question~4. \emph{Sketch:} sharpen \eqref{sfp:pc:eq:loggrowthr} by higher saddle-scale and gamma expansions and derive the nested-logarithm hierarchy with proved remainders, kept distinct from the much finer exact-saddle window. (Part~II's centre $v_R$ is already explicit at every fixed order.) \emph{Missing:} the hierarchy and its remainders.
+\item\label{sfp:q:shifted} \textbf{Restricted and shifted families.} \emph{Source:} Part~I, question~5. \emph{Sketch:} positivity may still control the global contour; the local derivative scales need separate proofs, after a full comparison with Yakymiv \cite{yakymiv} and the shifted-family literature \cite{shifted}. \emph{Missing:} that comparison and the proofs.
+\item\label{sfp:q:growing} \textbf{Growing orders, optimal truncation, exponentially small terms.} \emph{Sources:} Part~I, question~6 and the opening paragraph of Section~\ref{sfp:pc:sec:questions}; Part~II, Subsection~\ref{sfp:mc:sub:beyond}, and its statements that no convergence of the series in $1/w$ and no growing-order bound is asserted (Section~\ref{sfp:mc:sec:overview}, after \eqref{sfp:mc:eq:firstintro}) and that the existence of the coefficient generator is not a uniform estimate (after \eqref{sfp:mc:eq:Erec}). \emph{Question:} the growth of Part~I's contraction polynomials $E_q$ and of Part~II's $A_r$ (Table~\ref{sfp:mc:tab:coeff} shows sign changes at $r=7,9$), estimates uniform in the order, optimal truncation, exponentially small sectors, Borel summability. \emph{Missing:} all of these; both Parts prove fixed orders only.
+\item\label{sfp:q:twoscale} \textbf{The $1/n$-scale correction for A192561.} \emph{Source:} Part~II, Subsection~\ref{sfp:mc:sub:beyond}. \emph{Sketch:} Proposition~\ref{sfp:mc:prop:reduction} separates an $O(w^2/n)$ finite-product correction from the expansion in $1/w$; a systematic two-scale expansion would improve the forward formula and its inverse. The diagnostics in the note after Proposition~\ref{sfp:mc:prop:reduction} show this correction dominating the $w^{-2}$ term at $n\le1000$. \emph{Missing:} the first correction on the $1/n$ scale and its coefficient.
+\item\label{sfp:q:roots} \textbf{Root classes beyond the arithmetic progression.} \emph{Source:} Part~II, Subsection~\ref{sfp:mc:sub:roots}. \emph{Question:} sharp uniform bounds on $S_2$, and decay rates, for regularly spaced roots, roots with a limiting density, or roots with a gap from zero; Theorem~\ref{sfp:mc:thm:generic} gives only $S_2<1$, and the golden bound is specific to $\lambda_j=j$. Polynomials with nonreal or positive zeros need separate arguments. \emph{Missing:} the bounds and those arguments.
+\item\label{sfp:q:complexity} \textbf{Complexity and interval algorithms.} \emph{Source:} Part~II, Subsection~\ref{sfp:mc:sub:complexity}. \emph{Question:} complexity in $n$, $K$ and the accuracy; ball arithmetic; range reduction for the exponential enclosures; adaptive centre and scale, in particular minimizing \eqref{sfp:mc:eq:rationaltail} over $q$ instead of using $K/(K+1)$, which is admissible but not the minimizer off the saddle; a benchmark against the Stirling recurrence. \emph{Missing:} all of these; the $b_{10}$ example is not a speed claim.
+\item\label{sfp:q:weights} \textbf{Other factorial weights.} \emph{Source:} Part~II, Subsection~\ref{sfp:mc:sub:weights}. \emph{Question:} $\sum_k\sone{n+1}{k+1}^2(k!)^\alpha$, suggested by generalized Fock norms, which may need a different saddle geometry. \emph{Missing:} everything beyond $\alpha=1$.
+\item\label{sfp:q:literature} \textbf{Literature and priority.} \emph{Sources:} Part~I, Subsection~\ref{sfp:pc:sub:screen} and the close of Section~\ref{sfp:pc:sec:questions}; Part~II, Section~\ref{sfp:mc:sec:sources} and the remark after Theorem~\ref{sfp:mc:thm:generic}. \emph{Missing:} full-text readings of Yakymiv \cite{yakymiv} (moment-order uniformity), Komatsu--Szalay \cite{shifted}, Komatsu's 2019 paper \cite{recurrence} and the final 2022 transform paper \cite{transform}; of Bender--Richmond \cite{bender} and Gao--Laferri\`ere--Panario \cite{gao}; and a priority search for the formulation of Theorem~\ref{sfp:mc:thm:generic}. Both manuscripts state their searches as bounded; the write read none of these sources.
+\end{enumerate}
 
 \begin{thebibliography}{99}
 
@@ -1228,6 +2732,7 @@ entry last changed 26 May 2021, inspected 3 October 2026.
 \href{https://github.com/oeis/oeisdata/blob/main/seq/A192/A192563.seq}
 {Official mirror entry}.
 The inspected snapshot digest is recorded in the source provenance file.
+\wtag\ The live entry (revision \#13) and its b-file were read on 6~October 2026; see the front matter.
 
 \bibitem{oeisarray}
 OEIS Foundation Inc., \emph{A344639}, sign-normalized second-kind
@@ -1235,6 +2740,7 @@ poly-Cauchy array, inspected 3 October 2026.
 \href{https://oeis.org/A344639}{OEIS entry};
 \href{https://github.com/oeis/oeisdata/blob/main/seq/A344/A344639.seq}
 {official mirror}.
+\wtag\ Revision \#35, read on 6~October 2026.
 
 \bibitem{benyi}
 B. B\'enyi and J. L. Ram\'irez,
@@ -1306,6 +2812,60 @@ derived directly from the integral remainder. Standard fuller
 expansions also appear in
 \href{https://dlmf.nist.gov/5.11.E2}{5.11.2} and
 \href{https://dlmf.nist.gov/5.15.E9}{5.15.9}.
+
+\bibitem{oeis}
+OEIS Foundation Inc., \emph{The On-Line Encyclopedia of Integer
+Sequences}, A192561, accessed 3 October 2026.
+\url{https://oeis.org/A192561}.
+Official data mirror:
+\url{https://github.com/oeis/oeisdata/blob/main/seq/A192/A192561.seq}.
+\wtag\ Revision \#10, read on 6~October 2026.
+
+\bibitem{wilf}
+H. S. Wilf, \emph{The variance of the Stirling cycle numbers},
+arXiv:math/0511428, 2005.
+\url{https://arxiv.org/abs/math/0511428}.
+
+\bibitem{alpayporat}
+D. Alpay and M. Porat, \emph{Generalized Fock spaces and the
+Stirling numbers}, arXiv:1804.05254, 2018.
+\url{https://arxiv.org/abs/1804.05254}.
+
+\bibitem{dlmf-mc}
+NIST Digital Library of Mathematical Functions,
+Sections 5.11 and 25.11, \emph{Asymptotic Expansions}, especially
+Eqs.~5.11.1, 5.11.2, and 5.11.8.
+\url{https://dlmf.nist.gov/5.11}; Hurwitz-zeta expansions:
+\url{https://dlmf.nist.gov/25.11}.
+
+\bibitem{gittenberger}
+B. Gittenberger and J. Mandlburger,
+\emph{Hayman admissible functions in several variables},
+author preprint, 2006.
+\url{https://dmg.tuwien.ac.at/bgitten/preprints/multi-H.pdf}.
+
+\bibitem{bender}
+E. A. Bender and L. B. Richmond,
+\emph{Admissible Functions and Asymptotics for Labelled Structures
+by Number of Components}, Electronic Journal of Combinatorics
+\textbf{3}(1), R34, 1996.
+\url{https://doi.org/10.37236/1258}.
+Full-text inspection incomplete; see Section~\ref{sfp:mc:sec:sources}.
+
+\bibitem{gao}
+Z. Gao, D. Laferri\`ere, and D. Panario,
+\emph{Asymptotics of Decomposable Combinatorial Structures of
+Alg-Log Type With Positive Log Exponent}, 2010.
+\url{https://doi.org/10.46298/dmtcs.2798}.
+Full-text inspection incomplete; see Section~\ref{sfp:mc:sec:sources}.
+
+\bibitem{oeisA192562} \wtag\ OEIS Foundation Inc., \emph{A192562}.
+\url{https://oeis.org/A192562}. Revision \#4 of 30 March 2012, read on 6~October 2026.
+
+\bibitem{TSvol} \wtag\ \emph{Transseries and inversion}, ProveIt volume,
+\file{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex}:
+Definitions \file{p0:def:model} and \file{plt:def:lw-monomial-log-datum}, Theorems \file{p0:thm:lambert-core},
+\file{p0:thm:staircase} and \file{plt:thm:lw-template}, and Proposition \file{p0:prop:factorial-core}.
 
 \end{thebibliography}
 \end{document}

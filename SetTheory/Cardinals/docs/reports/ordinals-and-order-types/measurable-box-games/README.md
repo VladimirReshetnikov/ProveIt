@@ -914,7 +914,8 @@ Part. Before batch 90 nothing in ProveIt treated box, hat, guessing or
 prediction games (search of the tracked tree at the batch-87 placement,
 including `2211.10474` and A005271); Parts II–IV are now the repository's
 hat- and box-game material, and the batch-90 and batch-92 placements found no
-other.
+other. (Qualified 6 October 2026, batch 114: `../noisy-parity-cubes/`
+re-proves two classical lemmas of Part IV as second routes; see below.)
 
 - `../games-on-ordinals/` holds different games: in
   `open-query-membership-games` a Seeker asks open-set queries about a hidden
@@ -943,6 +944,26 @@ other.
   to `discrete-initial-subgroups-and-omnific-normalization`,
   `birthday-cutoffs-and-hereditary-sets` and the new
   `cantor-families-of-surreal-subfields`; none shares a theorem with Part II.
+- `../noisy-parity-cubes/` (batch 114; **see also**, dated 6 October 2026):
+  a single labelling evaluated at a fair configuration and at a noisy copy
+  with one deliberately flipped coordinate. It cites this report as context
+  and re-proves two classical lemmas of Part IV as second routes: total
+  influence at most the expected number of inspections (here the second
+  display of Lemma 64.1, `mbg:insp:var-covariance`; there Lemma 3.2,
+  `np:lem:query`) and the Walsh degree of a depth-`d` tree (here Lemma 49.1,
+  `mbg:qry:lem:degree`; there the statement after Corollary 3.3).
+  Conventions differ (`±1` hats and `χ_A = Π x_j` here, bits and
+  `χ_S = (−1)^{Σ x_i}` there). Its spectral simulation (every measurable rule
+  replaced by a random parity with mean cost equal to total influence) and
+  its exact expected-inspection frontier have no counterpart here; no other
+  theorem is shared.
+- `../freiling-symmetry-blacklists/` (batch 114; **see also**, dated 6
+  October 2026) cites this report as background only: finite blacklist
+  systems (each point refuses at most `k` others), their infinite partition
+  over ZF (between the Boolean prime ideal theorem and choice for families
+  of sets of size 2 to `k + 1`) and perfect safe sets beside Freiling's
+  axiom of symmetry. It shares the motivation from Glazer's work and no
+  theorem.
 
 **Stale claims.** Part I's statement (Section 1.4 note) that the report is a
 single manuscript and that nothing in ProveIt treats hat games was true at its

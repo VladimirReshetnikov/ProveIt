@@ -215,6 +215,14 @@ Prellberg-limitation check; the status of 53's repository search; the
 transseries-volume instances in both inverse sections; the unpacking of each
 package in this directory; the Part I originals of 28's restated displays.
 
+Two reciprocal notes of 6 October 2026 (batch 106) are set as quotes headed
+`[write, 6 October 2026, batch 106]`, because the `writenote` environment
+prints a fixed 2 October date: at the end of Section 8 (Part I's further
+questions), on the unlabelled analogue `a290354-iterated-euler-diagonals`
+and the shared amplitude question; and after the last paragraph of Section
+17.2, on `a005121-strict-partition-chains`. Neither adds a label or changes a
+statement (see "Relation to the repository").
+
 ## Relation to the repository
 
 - **Takeuchi numbers.**
@@ -236,6 +244,36 @@ package in this directory; the Part I originals of 28's restated displays.
   `lim:conj:refined-asymptotic` is "suggested by parabolic iteration theory";
   this report's method is a candidate there, with no claim.
   `a277364-bell-asymptotics` is unrelated.
+- **Unlabelled analogue** (dated note, 6 October 2026, batch 106).
+  `a290354-iterated-euler-diagonals` (same directory) treats the iterated
+  Euler transforms of `1 + x` (A290353, A290354) by the same normalized
+  parabolic orbit of `w ↦ e^w − 1` under subsidiary forcing; no theorem is
+  shared, and no question here is answered. Its Part III records
+  `Ψ = −Φ + (log 2)/3` locally and the **unproved** relation
+  `I(β) = β·2^{β/3}·h(β)` between Part II's amplitude `I` here and the
+  density `h` of its Laplace measure. At `β = 1` the values agree to eight
+  significant digits: `I(1) = 2.2862647847–2.2862647982` from this report's
+  exploratory runs, `2^{1/3} h(1) = 2.2862647818` there (the independent
+  evaluation of its check, Remark 37.1); neither is certified. If proved,
+  its endpoint germ (`h(0) = 2`) gives the amplitude half of the open
+  endpoint `λ → ∞` here; a transfer of Theorem 10.1 to `m ≍ n log n` would
+  still be needed. Its Remark 37.2 derives, conditionally on both,
+  `H(n,m)/(n! m^{n−1} 2^{1−n}) → e^{−1/(3λ)}` for `m/(n log n) → λ`.
+  Recorded there as a shared further question (Section 37, item 9) and here
+  in a dated note at the end of Section 8.
+- **Strict partition chains** (dated note, 6 October 2026, batch 106).
+  `a005121-strict-partition-chains` (same directory, bundle Report 223): the
+  depth sum `Z_n = Σ_m 2^{−m−1} H(n,m)` (A005121, Lengyel's numbers) of Part
+  II, Section 17.2, now has a fixed-order expansion proved there directly
+  from the Stirling recurrence; it does not use this report, and no question
+  here is answered. Its question `spc:q:depth` records a formal
+  Laplace-method link to Part II's amplitude, `C = L^{L/3−1} I(L)/2` with
+  `L = log 2`: extrapolation in `1/n` falls about `1.9·10⁻⁴` short, and its
+  independent check traced the gap to the `−(L²/18)(log n)²/n` term of
+  `P_1` here (a fit including it agrees with `C` to about `10⁻⁵`); not
+  proved. If proved, it would give `I(log 2) ≈ 1.6577006`, an uncertified
+  amplitude value away from `λ = 1`. Dated note after the last paragraph of
+  Section 17.2.
 - **Formal status.** No Lean or Rocq development in ProveIt concerns these
   sequences, and no statement of this report is formalized.
 
@@ -301,7 +339,10 @@ latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 pdfLaTeX with the packages loaded in the preamble (geometry, lmodern,
 microtype, amsmath, amsthm, mathtools, booktabs, longtable, array, enumitem,
 hyperref). The committed build has 30 pages, no errors, no undefined or
-multiply defined references, and no overfull boxes. Do not run
+multiply defined references, and no overfull boxes (rebuilt after the
+batch-106 reciprocal notes of 6 October 2026: still 30 pages, every label
+with its number, and the same six underfull lines as a build of the
+previous text). Do not run
 `code/53-iterated-bell-build.sh`: it builds the delivered `iterated-bell.tex`
 and writes `.build/` and a PDF beside itself.
 

@@ -23,6 +23,13 @@
 \theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
 \newcommand{\floor}[1]{\left\lfloor#1\right\rfloor}
 \newcommand{\ceil}[1]{\left\lceil#1\right\rceil}
+% Added by the ProveIt write phase (batch 107, 6 October 2026): dated notes
+% marked [write] and a macro for file, label and declaration names.
+\newcommand{\file}[1]{\nolinkurl{#1}}
+\expandafter\def\expandafter\UrlBreaks\expandafter{\UrlBreaks\do\-\do\_\do\.}
+\newenvironment{writenote}[1][]{\par\smallskip\begingroup\small
+ \noindent\textbf{[write]}\if\relax\detokenize{#1}\relax\else~\textbf{#1.}\fi\ }%
+ {\par\endgroup\smallskip}
 \title{Growth bounds for maximal families of disjoint partitions\\\large A correction of asymptotic fits for OEIS A068598}
 \author{Report 163}
 \date{3 October 2026}
@@ -50,6 +57,40 @@ coefficient, a multiplicative asymptotic equivalent, nor a transseries
 is established. A bounded exact companion checks conventions and the
 finite encodings independently of the asymptotic argument.
 \end{abstract}
+
+\begin{writenote}[Status and trust boundary, added 6 October 2026, batch~107]
+This is bundle Report~163 of an external AI-assisted research session, filed
+in ProveIt as the single-source research report
+\file{a068598-disjoint-partition-families} (provenance, the sources as the
+write read them, relation to the repository, reading conventions and the
+collected non-claims in Section~\ref{mdp:sec:provenance}). It is unrefereed
+and not formalized; its author line reads ``Report 163'' and its PDF author
+field is empty. \emph{What rests on what.} The upper
+bound~\eqref{mdp:eq:upper} is elementary and self-contained (the mass
+inequality~\eqref{mdp:eq:mass}, credited to Spencer through Nathanson, is
+proved where it is used), and so is everything derived from it alone:
+Corollary~\ref{mdp:cor:fits}, the upper half of~\eqref{mdp:eq:logbounds},
+the lower constant~$4$ of~\eqref{mdp:eq:inverse}, and the left inequality of
+Proposition~\ref{mdp:prop:finiteinverse}. The lower constant $1/5$, the
+linear term of~\eqref{mdp:eq:linear} and the inverse constant $5$ rest on the
+theorem of Luria and Simkin (Theorem~\ref{mdp:thm:queens}), which is cited,
+not reproved; Proposition~\ref{mdp:prop:greedy} gives the constants $1/7$
+and $7$ without it. No proof uses a computation. Two statements in OEIS
+A068598 are corrected, with proofs: Meeussen's graph comment counts
+\emph{maximal} cliques (Remark~\ref{mdp:rem:cliques}, which quotes it and
+works out $n=8$ in full), and Beregovsky's fits $a\exp(bn^c)$ with $c>1$, of
+2022 and 2026, are not asymptotic to $a(n)$ (Remark~\ref{mdp:rem:fits},
+which quotes them and derives the failure from the elementary upper bound
+alone, with explicit ranges of~$n$ on which each fit exceeds that bound).
+Nothing was submitted to the OEIS. The write also adds
+Remark~\ref{mdp:rem:simkin} (Simkin's asymptotic count of queens
+configurations improves the linear term of~\eqref{mdp:eq:linear}),
+Remark~\ref{mdp:rem:transseries} (the Lambert brackets of
+Proposition~\ref{mdp:prop:finiteinverse} against the transseries volume) and
+Section~\ref{mdp:sec:further} (open questions, with
+Proposition~\ref{mdp:prop:typical}, which locates the families that any proof
+of the constant $1/4$ would have to count).
+\end{writenote}
 \tableofcontents
 
 \section{The objects and the main conclusion}
@@ -80,35 +121,212 @@ For instance the three families at $n=8$ are
 \]
 Their cardinalities differ. There is no quotient by a symmetry of labels.
 
-\begin{theorem}\label{thm:main}
+\begin{theorem}\label{mdp:thm:main}
 For every integer $n\ge2$,
-\begin{equation}\label{eq:upper}
+\begin{equation}\label{mdp:eq:upper}
  a(n)\le 3^{n-1}n^{\lfloor(n-2)/4\rfloor}.
 \end{equation}
 If $Q(k)$ counts ordinary nonattacking placements of $k$ queens on a
 labeled $k\times k$ board and $k=\lfloor(n-1)/5\rfloor\ge1$, then
-\begin{equation}\label{eq:lowerfinite}
+\begin{equation}\label{mdp:eq:lowerfinite}
  a(n)\ge Q(k).
 \end{equation}
 Consequently,
-\begin{equation}\label{eq:logbounds}
+\begin{equation}\label{mdp:eq:logbounds}
  \frac15\le\liminf_{n\to\infty}\frac{\log a(n)}{n\log n}
  \le\limsup_{n\to\infty}\frac{\log a(n)}{n\log n}\le\frac14.
 \end{equation}
 In particular $\log a(n)=\Theta(n\log n)$. More precisely, the lower
 bound obtained from the queens theorem is the one-sided estimate
-\begin{equation}\label{eq:linear}
+\begin{equation}\label{mdp:eq:linear}
  \log a(n)\ge \frac n5\log n-\frac{\log5+3}{5}n+o(n).
 \end{equation}
 \end{theorem}
-The meaning of \eqref{eq:linear} is that some error sequence $r_n=o(n)$
+The meaning of \eqref{mdp:eq:linear} is that some error sequence $r_n=o(n)$
 makes the displayed inequality true for all sufficiently large $n$.
 It is not an equality or a determination of the linear term of
 $\log a(n)$. The upper bound is self-contained; the stronger lower
-constant uses precisely the external theorem stated in Section~\ref{sec:queens}.
+constant uses precisely the external theorem stated in Section~\ref{mdp:sec:queens}.
+
+
+\begin{remark}[{[write]} The graph comment of A068598, 6~October 2026]\label{mdp:rem:cliques}
+The live entry (revision~\#50, 17~February 2026, read on 6~October 2026;
+the revision the source inspected) is named ``Number of maximal sets of
+partitions of n with property that all parts in all partitions in the set
+are distinct.'' and carries the comment
+\begin{center}\small
+\parbox{0.92\textwidth}{\raggedright\texttt{Also number of cliques in following graph: each strict partition of n represents a vertex, the relation "having no common integer" defines the edges connecting these. - \_Wouter Meeussen\_, May 27 2002}}
+\end{center}
+(quoted verbatim). Call this graph $G_n$. A set of vertices of $G_n$ spans a
+complete subgraph exactly when its strict partitions are pairwise disjoint,
+that is, when it is a matching of $H_n$; so the vertex sets of the
+\emph{maximal} complete subgraphs of $G_n$ are exactly the maximal matchings,
+and for $n\ge1$
+\[
+ a(n)=\#\{\text{maximal complete subgraphs of }G_n\}.
+\]
+Read with the now usual meaning of ``clique'' (any vertex set spanning a
+complete subgraph), the comment describes a different sequence. \emph{The
+case $n=8$ in full.} The strict partitions of $8$ are the six vertices
+\[
+ v_1=\{8\},\ v_2=\{1,7\},\ v_3=\{2,6\},\ v_4=\{3,5\},\ v_5=\{1,2,5\},\
+ v_6=\{1,3,4\}.
+\]
+The edges of $G_8$ are the five pairs $v_1v_j$ ($2\le j\le6$) and $v_2v_3$,
+$v_2v_4$, $v_3v_4$, $v_3v_6$; the other six pairs share a part ($v_2v_5$,
+$v_2v_6$ and $v_5v_6$ share~$1$, $v_3v_5$ shares~$2$, $v_4v_5$ shares~$5$,
+$v_4v_6$ shares~$3$). Among $v_2,\dots,v_6$ the nonempty complete subgraphs
+are the five vertices, the four edges and the one triangle
+$\{v_2,v_3,v_4\}$ (no other triangle exists, since $v_2v_6$ and $v_4v_6$ are
+not edges), ten in all; $v_1$ is adjacent to every other vertex, so $G_8$
+has $2\cdot10+1=21$ nonempty complete subgraphs ($22$ with the empty one).
+The maximal ones are
+\[
+ \{v_1,v_2,v_3,v_4\},\qquad\{v_1,v_5\},\qquad\{v_1,v_3,v_6\},
+\]
+three in number, the three families displayed above, and $a(8)=3$. So $G_8$
+has six vertices, hence at least six nonempty cliques in the usual sense,
+while $a(8)=3$. The smallest discrepancy is at $n=3$: $G_3$ is one edge
+$\{3\}\{1,2\}$, with three nonempty complete subgraphs but one maximal one.
+For $n=1,\dots,12$ the numbers of nonempty complete subgraphs of $G_n$ are
+$1,1,3,3,7,9,17,21,43,57,109,157$, against
+$a(n)=1,1,1,1,1,2,2,3,4,6,8,13$ (the write's enumeration, whose maximal
+counts agree with the entry's data for $1\le n\le20$). \emph{What is right.}
+Under the older convention in which a clique is by definition a maximal
+complete subgraph the comment is correct as written; it is the convention
+of the Wolfram Language, whose documentation of \texttt{FindClique} reads ``A
+clique is a maximal set of vertices where the corresponding subgraph is a
+complete graph''~\cite{findclique}, and the entry's three programs all
+count maximal families: the first Mathematica program tests maximality
+explicitly, Beregovsky's Mathematica line uses
+\texttt{FindClique[\dots,Infinity,All]}, and Chai Wah Wu's Python program
+counts the output of \texttt{networkx.find\_cliques}, which enumerates
+maximal cliques. The unambiguous wording is ``maximal cliques'', which is
+the source's correction. This is recorded here only; nothing was submitted
+to the OEIS.
+\end{remark}
+
+\subsection{Provenance, sources and reading conventions}\label{mdp:sec:provenance}
+\begin{writenote}[Added 6 October 2026, batch~107]
+\emph{Provenance.} This report is Report~163 of the session bundle that
+ProveIt's \file{docs/incoming} intake processed as batch~107: the archive
+\file{Maximal_Disjoint_Partition_Families_Growth_and_Inverse_Bounds_Source.zip}
+(444{,}037 bytes, SHA-256 \file{f5a5ce9462d5...050163e3}, 15 files at the
+archive root, no wrapper directory), arrival commit \file{60f54ea06}, placed
+in \file{3988bf5c4}. The text is the delivered \file{Report163.tex} (565
+lines, dated 3~October 2026), shipped as \file{article.tex}. The delivered
+nine-page PDF and the checksum manifest \file{SHA256SUMS} (14 entries,
+verified at placement) are not shipped, and the delivered README is replaced
+by the report README; all three are retrievable from the arrival commit. The
+package records no ProveIt commit (it cites nothing in the repository), no
+``prepared for private review'' line and no personal data; its delivered
+README used generic sandbox example paths, which the report README does not
+reproduce. It is a single-source report, so no merge choice was made. The
+write prefixed the 28 delivered labels with \file{mdp:} and updated the 20
+references to them; it added this subsection, the notes marked [write],
+Remarks~\ref{mdp:rem:cliques}, \ref{mdp:rem:simkin}, \ref{mdp:rem:fits}
+and~\ref{mdp:rem:transseries}, Section~\ref{mdp:sec:further} and two
+bibliography entries. No statement, proof or number of the source was
+changed: the added remarks are the last statements of their sections, the
+added section comes after the last one, and the added displays are
+unnumbered, so every theorem, section and equation of the source keeps its
+delivered number.
+
+\emph{The sources, as the write read them} (6~October 2026).
+\begin{itemize}\raggedright
+\item OEIS A068598~\cite{oeis}, live entry at revision~\#50 (17~February
+ 2026), the revision the source recorded; its 46 data terms ($0\le n\le45$)
+ are those frozen in \file{data/source_data.json}, and the linked b-file
+ (Chai Wah Wu, $0\le n\le46$) adds $a(46)=4836923613$, which the source did
+ not use. The comments corrected here are quoted in
+ Remarks~\ref{mdp:rem:cliques} and~\ref{mdp:rem:fits}.
+\item The abstracts of Luria and Simkin~\cite{queens} (arXiv:2105.11431v2)
+ and of Simkin~\cite{simkin} (arXiv:2107.13460v3), and the
+ Wolfram documentation of \texttt{FindClique}~\cite{findclique}.
+\item The transseries volume
+ \path{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex}:
+ \file{p0:def:core}, \file{p0:thm:lambert-core},
+ \file{p0:prop:factorial-core}, \file{p0:def:three-inverses} and
+ \file{p0:thm:staircase}, read for Remark~\ref{mdp:rem:transseries}.
+\item Not read by the write: the full texts of Nathanson~\cite{nathanson},
+ Luria and Simkin~\cite{queens}, Simkin~\cite{simkin} and
+ Filaseta~\cite{filaseta}. The statements made about them in
+ Section~\ref{mdp:sec:queens} and Section~8 are the source's (for
+ Simkin, the abstract's); \file{data/SOURCE_PROVENANCE.json} records what
+ the source inspected, with SHA-256 fingerprints.
+\end{itemize}
+
+\emph{What was checked at intake.} The batch-107 dossier read the manuscript
+in full and found no error; it rechecked by hand that every maximal family
+contains $\{n\}$, the bound $q\le(n-1)^2/(4n)$ and the floor
+identity~\eqref{mdp:eq:floor}, the disjointness of the three value classes
+of~\eqref{mdp:eq:triples} for $n>5k$, the injectivity of
+Lemma~\ref{mdp:lem:extension}, the greedy product $2^kk!$ for $n>7k$, the
+linear coefficient $(\log5+3)/5$ and both Lambert roots of
+Proposition~\ref{mdp:prop:finiteinverse}, and it verified the two OEIS
+corrections. It reran the companion on copies (the counts, verification and
+source outputs reproduce the frozen data). The write rechecked every proof
+line by line and found no error, recomputed the live OEIS data, enumerated the
+complete subgraphs of $G_n$ for $n\le20$ (Remark~\ref{mdp:rem:cliques}),
+evaluated the two fits against the upper bound (Remark~\ref{mdp:rem:fits}),
+and reran the companion (note at the end of Section~7). Finite computations
+are observations, not certificates.
+
+\emph{Relation to the repository.} Before batch~107 no file of the
+repository mentioned A068598, maximal families of disjoint partitions or
+counts of queens configurations, and none does outside this report. No
+statement of this report is formalized in Lean or Rocq, and its place in
+the collection confers no formal status. The Lambert brackets of
+Section~6 are compared with the transseries volume in
+Remark~\ref{mdp:rem:transseries}.
+\end{writenote}
+\begin{writenote}[What is not claimed, collected from the source]
+The report does not prove that $\lim\log a(n)/(n\log n)$ exists, does not
+identify its value, gives no multiplicative equivalent and no all-orders
+expansion or transseries; the linear term in~\eqref{mdp:eq:linear} belongs
+to a lower bound only, not to $\log a(n)$. The constant $1/5$ and the
+inverse constant~$5$ rest on an external theorem whose proof is not
+reproduced and which supplies no explicit onset. Monotonicity of $a(n)$ is
+neither assumed nor asserted, and no exact ceiling formula for $N(y)$ is
+claimed; floating evaluations of $W$ near an integer certify nothing. Corollary~\ref{mdp:cor:fits}
+rejects the posted fits only as asymptotic equivalents, not as
+approximations on a finite range. The quadruple-decomposition direction of
+Section~8 is unproved. The literature check is bounded (Filaseta's chapter
+read at abstract level only); the result is described as ``an independently
+verified proof candidate and application of known ingredients, rather than
+as a certified first proof''. The companion's finite checks prove no
+asymptotic statement, and byte identity of rebuilds is toolchain-specific.
+No OEIS entry was edited. The write adds: Remark~\ref{mdp:rem:simkin} rests
+on Simkin's theorem as stated in its abstract, and the explicit ranges in
+Remark~\ref{mdp:rem:fits} use finitely many floating evaluations of
+elementary numbers (margins stated there).
+\end{writenote}
+\medskip\noindent\begin{minipage}{\textwidth}
+\emph{Reading conventions} (letters the manuscript reuses, with the tempting
+false readings; no symbol was renamed; $G_n$, $\alpha$ and $\Delta$ are the
+write's).\par
+\smallskip
+\begingroup\small\renewcommand{\arraystretch}{1.1}
+\noindent\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.95in}>{\raggedright\arraybackslash}p{3.0in}>{\raggedright\arraybackslash}p{2.15in}@{}}
+\toprule
+Symbol & Meaning here (where) & Not to be read as\\
+\midrule
+$a(n)$ & maximal families of $n$, with $a(0)=1$ & the comment's coefficient $a$ (Remark~\ref{mdp:rem:fits})\\
+$A$, $B$, $c$ & fit parameters (Section~5); the comments' $a$, $b$, $c$ & the anchor set $A$ and an edge $B$ (Section~2); $A=[1,k]$, $B=[k+1,k+m]$ and $c_i$ (Proposition~\ref{mdp:prop:greedy}); $B_i(\pi)$ of~\eqref{mdp:eq:triples}\\
+$H_n$, $\mathcal P_n$, $G_n$ & the hypergraph of strict partitions; its edges; Meeussen's disjointness graph (Remark~\ref{mdp:rem:cliques}) & a ``clique'' of $G_n$ in the usual sense (any complete subgraph)\\
+$\mathcal M$, $m$, $v$, $q$, $F$, $f$ & matching without $\{n\}$, its size, labels used, free labels, free set, anchor map (Section~2) & $m$ in Proposition~\ref{mdp:prop:greedy} (a range length); $v$ in \file{p0:prop:factorial-core} (a $W_0$ value)\\
+$Q(k)$, $k$ & ordinary labelled queens configurations; $k=\lfloor(n-1)/5\rfloor$ (Section~3), $\lfloor(n-1)/7\rfloor$ (Proposition~\ref{mdp:prop:greedy}) & toroidal counts or symmetry classes\\
+$\pi$, $\sigma$, $\alpha$ & queens permutations; Simkin's constant $1.942\pm0.003$ (Remark~\ref{mdp:rem:simkin}) & the number $\pi$\\
+$N(y)$ & $\min\{n\ge0:a(n)\ge y\}$ & the staircase $N_\ast$ of \file{p0:def:three-inverses}, which presupposes a strictly increasing sequence\\
+$L$, $W$, $h$, $r$, $s$ & $\log y$; $W_0$ on $(0,\infty)$; the functions and roots of Proposition~\ref{mdp:prop:finiteinverse} & the target $L$ of \file{p0:prop:factorial-core}, which is $L+\log3$ for~$r$\\
+$\Delta$ & excess of the used labels' sum over $v(v+1)/2$ (Proposition~\ref{mdp:prop:typical}) & \\
+\bottomrule
+\end{tabular}
+\endgroup
+\end{minipage}
 
 \section{An encoding with at most one quarter free labels}
-\label{sec:upper}
+\label{mdp:sec:upper}
 Every maximal matching contains $\{n\}$. Indeed, no other edge of $H_n$
 contains $n$, since every part is positive. Thus $\{n\}$ could be added
 to any matching lacking it. Remove this forced edge and write the
@@ -126,12 +344,12 @@ For each $B\in\mathcal M$, retain its smallest part $a_B$ as an
 and define $f:F\to A$ by assigning each free part to the anchor of its
 edge. Put $q=|F|=v-2m$.
 
-\begin{lemma}\label{lem:code}
+\begin{lemma}\label{mdp:lem:code}
 The code $(A,F,f)$ determines $\mathcal M$ uniquely.
 \end{lemma}
 \begin{proof}
 For each $a\in A$, recover the corresponding edge as
-\begin{equation}\label{eq:decode}
+\begin{equation}\label{mdp:eq:decode}
  \{a\}\ \cup\ f^{-1}(a)\ \cup\
  \left\{n-a-\sum_{x\in f^{-1}(a)}x\right\}.
 \end{equation}
@@ -145,7 +363,7 @@ them.
 
 The used labels are $v$ distinct positive integers and their sum is
 $mn$. Therefore
-\begin{equation}\label{eq:mass}
+\begin{equation}\label{mdp:eq:mass}
  mn\ge1+2+\cdots+v=\frac{v(v+1)}2.
 \end{equation}
 Nathanson \cite[p.~108]{nathanson} explicitly attributes the fixed-arity
@@ -153,16 +371,16 @@ version of this summation argument to Joel Spencer. We use the same
 ingredient for variable edge sizes and combine it with the encoding;
 we make no claim to have originated the mass inequality.
 
-Using \eqref{eq:mass} gives
+Using \eqref{mdp:eq:mass} gives
 \begin{align}
  q=v-2m
  &\le v-\frac{v(v+1)}n\notag\\
  &=\frac{(n-1)^2}{4n}
    -\frac1n\left(v-\frac{n-1}{2}\right)^2
- \le\frac{(n-1)^2}{4n}.\label{eq:qbound}
+ \le\frac{(n-1)^2}{4n}.\label{mdp:eq:qbound}
 \end{align}
 For integers $n\ge2$,
-\begin{equation}\label{eq:floor}
+\begin{equation}\label{mdp:eq:floor}
  \floor{\frac{(n-1)^2}{4n}}=\floor{\frac{n-2}{4}}.
 \end{equation}
 Indeed, the left argument equals $(n-2)/4+1/(4n)$; the fractional
@@ -172,26 +390,26 @@ $1/(4n)\le1/8$ does not cross the next integer.
 There are $3^{n-1}$ choices of a disjoint pair $(A,F)$, assigning each
 label to $A$, $F$, or neither. For a pair supporting an actual code,
 the number of maps is at most $m^q\le n^q$, and
-\eqref{eq:qbound}--\eqref{eq:floor} bound $q$. When $A=F=\varnothing$
+\eqref{mdp:eq:qbound}--\eqref{mdp:eq:floor} bound $q$. When $A=F=\varnothing$
 there is exactly one empty function; when $A=\varnothing$ and
 $F\ne\varnothing$ there is none. Thus no convention about $0^0$ is
-needed. Lemma~\ref{lem:code} now proves \eqref{eq:upper}, and hence
-\begin{equation}\label{eq:logupper}
+needed. Lemma~\ref{mdp:lem:code} now proves \eqref{mdp:eq:upper}, and hence
+\begin{equation}\label{mdp:eq:logupper}
  \log a(n)\le\tfrac14n\log n+(n-1)\log3.
 \end{equation}
 Only the initial forced-singleton step used maximality. In particular,
 the code is also injective on every matching without the singleton.
 
-\section{Recoverable bases from queens configurations}\label{sec:queens}
+\section{Recoverable bases from queens configurations}\label{mdp:sec:queens}
 A queens configuration on a labeled $k\times k$ board is represented by
 a permutation $\pi$ of $[k]$ such that both $i+\pi(i)$ and $i-\pi(i)$
 are pairwise distinct. These are ordinary diagonals, with no reduction
 modulo $k$, and configurations are not identified under board symmetries.
 The sole external asymptotic input is the following published theorem.
 
-\begin{theorem}[Luria and Simkin]\label{thm:queens}
+\begin{theorem}[Luria and Simkin]\label{mdp:thm:queens}
 As $k\to\infty$ through all positive integers,
-\begin{equation}\label{eq:queens}
+\begin{equation}\label{mdp:eq:queens}
  Q(k)\ge \bigl((1-o(1))k/e^3\bigr)^k.
 \end{equation}
 \end{theorem}
@@ -205,7 +423,7 @@ this report.
 
 Fix $n$ and $k=\lfloor(n-1)/5\rfloor\ge1$. Then $n>5k$. Given a
 queens permutation $\pi$, define
-\begin{equation}\label{eq:triples}
+\begin{equation}\label{mdp:eq:triples}
  B_i(\pi)=\{i,\ k+\pi(i),\ n-k-i-\pi(i)\},
  \qquad 1\le i\le k.
 \end{equation}
@@ -220,7 +438,7 @@ $i+\pi(i)$ are distinct. The triples therefore form a matching.
 Only one diagonal condition is needed for this embedding; ordinary
 queens provide a subset for which the required count is known.
 
-\begin{lemma}\label{lem:extension}
+\begin{lemma}\label{mdp:lem:extension}
 Choose any maximal extension in $H_n$ of each matching
 $\{B_i(\pi):1\le i\le k\}$. Distinct queens permutations receive
 distinct extensions, regardless of these choices.
@@ -234,9 +452,9 @@ $i\in[1,k]$ would equal both $B_i(\pi)$ and $B_i(\sigma)$. Each such
 edge has exactly one member of $[k+1,2k]$, so $\pi(i)=\sigma(i)$ for
 every $i$. This proves injectivity.
 \end{proof}
-Lemma~\ref{lem:extension} proves \eqref{eq:lowerfinite}.
+Lemma~\ref{mdp:lem:extension} proves \eqref{mdp:eq:lowerfinite}.
 The cases $k=2,3$, where $Q(k)=0$, are harmless vacuous inequalities.
-For large $k$, taking logarithms in \eqref{eq:queens} yields
+For large $k$, taking logarithms in \eqref{mdp:eq:queens} yields
 \[
  \log a(n)\ge k\log k-3k+o(k).
 \]
@@ -244,25 +462,47 @@ Writing $n=5k+r$ with $r\in\{1,2,3,4,5\}$ gives
 \[
  k\log k=\frac n5\log n-\frac{\log5}{5}n+O(\log n).
 \]
-It follows that \eqref{eq:linear} holds for every sufficiently large
+It follows that \eqref{mdp:eq:linear} holds for every sufficiently large
 $n$, rather than only a subsequence. Together with
-\eqref{eq:logupper}, this completes Theorem~\ref{thm:main}.
+\eqref{mdp:eq:logupper}, this completes Theorem~\ref{mdp:thm:main}.
+
+
+\begin{remark}[{[write]} Simkin's asymptotic count, 6~October 2026]\label{mdp:rem:simkin}
+After the Luria--Simkin lower bound, Simkin~\cite{simkin} proved that there
+is a constant $\alpha=1.942\pm3\cdot10^{-3}$ with
+\[
+ Q(k)=\bigl((1\pm o(1))\,k\,e^{-\alpha}\bigr)^k\qquad(k\to\infty)
+\]
+(the abstract of arXiv:2107.13460v3; the write did not read the proof).
+Using its lower half instead of~\eqref{mdp:eq:queens} in the computation
+above gives $\log a(n)\ge k\log k-\alpha k+o(k)$, hence, for all
+sufficiently large~$n$,
+\[
+ \log a(n)\ge\frac n5\log n-\frac{\log5+\alpha}{5}\,n+o(n),
+ \qquad \frac{\log5+\alpha}{5}\in[0.7099,\,0.7111],
+\]
+against $(\log5+3)/5=0.9219\ldots$ in~\eqref{mdp:eq:linear}. The constant
+$1/5$ is unchanged: it comes from $k\sim n/5$, not from the size of the
+queens count. The upper half of Simkin's theorem bounds only the queens
+contribution, not $a(n)$. As for~\eqref{mdp:eq:linear}, this is a
+one-sided estimate, with no explicit onset.
+\end{remark}
 
 \section{A self contained elementary lower bound}
-The $1/5$ constant depends on Theorem~\ref{thm:queens}, but an
+The $1/5$ constant depends on Theorem~\ref{mdp:thm:queens}, but an
 elementary construction already proves factorial-logarithmic growth.
 
-\begin{proposition}\label{prop:greedy}
+\begin{proposition}\label{mdp:prop:greedy}
 If positive integers $k,m$ satisfy $m\ge2k$ and $3k+2m<n$, then
-\begin{equation}\label{eq:greedyfinite}
+\begin{equation}\label{mdp:eq:greedyfinite}
  a(n)\ge\prod_{i=1}^k(m-2(i-1))\ge(m-2k+2)^k.
 \end{equation}
 In particular, for $n\ge8$ and $k=\lfloor(n-1)/7\rfloor$,
-\begin{equation}\label{eq:factorial}
+\begin{equation}\label{mdp:eq:factorial}
  a(n)\ge 2^k k!.
 \end{equation}
 Consequently,
-\begin{equation}\label{eq:seventh}
+\begin{equation}\label{mdp:eq:seventh}
  \liminf_{n\to\infty}\frac{\log a(n)}{n\log n}\ge\frac17
 \end{equation}
 without invoking the queens theorem.
@@ -281,24 +521,24 @@ The triples $\{i,b_i,c_i\}$ are strict partitions of $n$ with disjoint
 value ranges. Within those ranges there are no repeated values, the
 last because the sums $i+b_i$ are distinct. Each base is a matching,
 and every anchor in $A$ is used. The argument of
-Lemma~\ref{lem:extension}, with middle range $B$, proves that distinct
+Lemma~\ref{mdp:lem:extension}, with middle range $B$, proves that distinct
 choices cannot share a maximal extension. This proves
-\eqref{eq:greedyfinite}.
+\eqref{mdp:eq:greedyfinite}.
 
 Set $m=2k$ and retain the full product rather than its smallest
 factor. If $n>7k$, then
 \[
  \prod_{i=1}^k(2k-2(i-1))=2^k k!,
 \]
-which proves \eqref{eq:factorial} for $k=\lfloor(n-1)/7\rfloor$.
+which proves \eqref{mdp:eq:factorial} for $k=\lfloor(n-1)/7\rfloor$.
 The elementary estimate
 $\log(k!)=k\log k-k+O(\log k)$ gives
 \[
  \log a(n)\ge\frac n7\log n+O(n),
 \]
-and proves \eqref{eq:seventh}.
+and proves \eqref{mdp:eq:seventh}.
 \end{proof}
-Together with \eqref{eq:upper}, this gives a wholly elementary proof
+Together with \eqref{mdp:eq:upper}, this gives a wholly elementary proof
 of $\log a(n)=\Theta(n\log n)$ and of the rejection of the fits below.
 The factorial bound also provides finite first-passage bounds.
 
@@ -309,14 +549,14 @@ parameters approximately $(A,B,c)=(0.57,0.062,1.54)$, and a February
 rules out either model as an asymptotic equivalent, regardless of
 its finite-range numerical quality.
 
-\begin{corollary}\label{cor:fits}
+\begin{corollary}\label{mdp:cor:fits}
 For every fixed $A,B>0$ and $c>1$,
-\begin{equation}\label{eq:fits}
+\begin{equation}\label{mdp:eq:fits}
  \frac{a(n)}{A\exp(Bn^c)}\longrightarrow0.
 \end{equation}
 \end{corollary}
 \begin{proof}
-By \eqref{eq:logupper},
+By \eqref{mdp:eq:logupper},
 \[
  \log\frac{a(n)}{A\exp(Bn^c)}
  \le\tfrac14n\log n+O(n)-Bn^c-\log A\longrightarrow-\infty,
@@ -328,6 +568,74 @@ It does not imply that the two expressions cannot approximate a
 short data range. No regression in the companion is used to prove or
 choose a growth coefficient.
 
+
+\begin{remark}[{[write]} The two posted fits, quoted, and every exponent, 6~October 2026]\label{mdp:rem:fits}
+The live entry (revision~\#50) carries, verbatim,
+\begin{center}\small
+\parbox{0.92\textwidth}{\raggedright\texttt{Conjecture: a(n) asymptotically grows as a*exp(bx\char`\^{}c), where a$\approx$0.57, b$\approx$0.062, c$\approx$1.54. - \_Elijah Beregovsky\_, Nov 12 2022}}
+
+\smallskip
+\parbox{0.92\textwidth}{\raggedright\texttt{Better parameter values for the above approximation are (a,b,c) = (0.26, 0.129, 1.36) (from correspondence with \_Bill McEachen\_). - \_Elijah Beregovsky\_, Feb 17 2026}}
+\end{center}
+(the variable $x$ of the first comment is the index~$n$). Both are of the
+form $A\exp(Bn^c)$ with $A,B>0$ and $c>1$.
+
+\emph{(a) Neither is asymptotic to $a(n)$, nor even logarithmically.}
+For $n\ge2$, \eqref{mdp:eq:upper} gives
+$\log a(n)\le(n-1)\log3+\lfloor(n-2)/4\rfloor\log n\le n\log3+\tfrac n4\log n$,
+so for all $A,B>0$ and $c>1$
+\[
+ \log\frac{a(n)}{A\exp(Bn^c)}
+ \le-n^c\Bigl(B-n^{1-c}\log3-\tfrac14n^{1-c}\log n\Bigr)-\log A .
+\]
+Since $c>1$, $n^{1-c}\log n\to0$ and $n^{1-c}\to0$, so the bracket tends
+to $B>0$ and the right side tends to $-\infty$: the ratio tends to~$0$
+(Corollary~\ref{mdp:cor:fits}). Moreover
+$\log a(n)\le(\tfrac14+o(1))\,n\log n=o(n^c)$, so even the weaker reading
+$\log a(n)\sim Bn^c$ fails. Exponents $c\le1$ fail in the other direction:
+for $n\ge8$ and $k=\lfloor(n-1)/7\rfloor$, \eqref{mdp:eq:factorial} and
+$k!\ge(k/e)^k$ give $\log a(n)\ge k\log(2k/e)=\tfrac n7\log n-O(n)$, so
+$a(n)/(A\exp(Bn^c))\to\infty$ for every $A,B>0$ and $c\le1$. Hence no
+function $A\exp(Bn^c)$ with $A,B,c>0$ is asymptotic to $a(n)$; only the
+upper bound and the elementary Proposition~\ref{mdp:prop:greedy} are used.
+
+\emph{(b) Explicit ranges.} Let
+$g(x)=\log A+Bx^c-x\log3-\tfrac x4\log x$ for $x>0$. By the first display
+of~(a), $g(n)>0$ implies
+$A\exp(Bn^c)>3^{n-1}n^{\lfloor(n-2)/4\rfloor}\ge a(n)$. Now
+$g''(x)=Bc(c-1)x^{c-2}-1/(4x)$, which is positive for
+$x>x_c:=(4Bc(c-1))^{-1/(c-1)}$; $x_c=18.60\ldots$ for the 2022 parameters
+and $45.68\ldots$ for the 2026 parameters. Put $n_0=1219$ and $n_0=8587$
+respectively. Then $n_0>x_c$, and
+$g'(n_0)=Bcn_0^{c-1}-\log3-\tfrac14\log n_0-\tfrac14$ equals $1.304\ldots$
+and $0.961\ldots$, and $g(n_0)$ equals $0.946\ldots$ and $0.722\ldots$. So
+$g'>0$ and $g>0$ on $[n_0,\infty)$. For the finitely many $n$ with
+$1215\le n<1219$, respectively $8579\le n<8587$, the direct difference
+$\log A+Bn^c-\log\bigl(3^{n-1}n^{\lfloor(n-2)/4\rfloor}\bigr)$ is at least
+$2.16$ (at $n=1215$), respectively $0.93$ (at $n=8579$). Hence
+\[
+ 0.57\,e^{0.062\,n^{1.54}}>a(n)\quad(n\ge1215),\qquad
+ 0.26\,e^{0.129\,n^{1.36}}>a(n)\quad(n\ge8579),
+\]
+and both ratios $A\exp(Bn^c)/a(n)$ tend to infinity. The values of $g$,
+$g'$ and of the differences are evaluations of explicit elementary numbers
+in 40-digit floating-point arithmetic (mpmath), with the margins stated;
+they are not interval-certified. Because of the floor, the comparison with
+the upper bound is not monotone just below these ranges: the 2022 fit first
+exceeds it at $n=1212$ but not at $n=1214$, and the 2026 fit first at
+$n=8576$ but not at $n=8578$.
+
+\emph{(c) What is not said.} On the data range the fits are fair: the 2022
+fit gives $0.487$, $0.689$ and $0.728$ times $a(n)$ at $n=24$, $45$ and
+$46$, the 2026 fit $0.940$, $0.907$ and $0.905$ times $a(n)$. The second
+comment calls the formula an approximation; as a finite-range approximation
+it is not judged here, and the parameter values are not recomputed. What
+fails is the asymptotic reading of the first comment, which the second
+inherits: the model class $A\exp(Bn^c)$ cannot describe the growth, which
+is $\exp(\Theta(n\log n))$ by Theorem~\ref{mdp:thm:main}. Nothing was
+submitted to the OEIS.
+\end{remark}
+
 \section{First passage inversion without monotonicity}
 For a real threshold $y>1$ define
 \[
@@ -336,9 +644,9 @@ For a real threshold $y>1$ define
 The all-integer lower bound implies that this set is nonempty for all
 $y>1$. Since each $a(n)$ is finite, $N(y)\to\infty$ as $y\to\infty$.
 
-\begin{corollary}\label{cor:inverse}
+\begin{corollary}\label{mdp:cor:inverse}
 As $y\to\infty$,
-\begin{equation}\label{eq:inverse}
+\begin{equation}\label{mdp:eq:inverse}
  4\le\liminf N(y)\frac{\log\log y}{\log y}
  \le\limsup N(y)\frac{\log\log y}{\log y}\le5.
 \end{equation}
@@ -347,28 +655,28 @@ In particular $N(y)=\Theta(\log y/\log\log y)$.
 \begin{proof}
 Write $L=\log y$. Fix $0<u<4$ and $w>5$, and choose $\varepsilon>0$
 so that $(1/4+\varepsilon)u<1$ and $(1/5-\varepsilon)w>1$.
-Theorem~\ref{thm:main} supplies a fixed $n_0$ such that for all
+Theorem~\ref{mdp:thm:main} supplies a fixed $n_0$ such that for all
 integers $n\ge n_0$,
-\begin{equation}\label{eq:epsilon}
+\begin{equation}\label{mdp:eq:epsilon}
  (1/5-\varepsilon)n\log n\le\log a(n)
  \le(1/4+\varepsilon)n\log n.
 \end{equation}
 Let $n_- =\lfloor uL/\log L\rfloor$. For every
 $n_0\le n\le n_-$, monotonicity of the elementary function $n\log n$
-and \eqref{eq:epsilon} give
+and \eqref{mdp:eq:epsilon} give
 \[
  \log a(n)\le(1/4+\varepsilon)n_-\log n_-
  =(1/4+\varepsilon)uL(1+o(1))<L.
 \]
 The finitely many $n<n_0$ also have $a(n)<y$ for large $y$.
 Thus $N(y)>n_-$. Next put $n_+=\lceil wL/\log L\rceil$.
-The lower bound in \eqref{eq:epsilon} gives
+The lower bound in \eqref{mdp:eq:epsilon} gives
 \[
  \log a(n_+)\ge(1/5-\varepsilon)n_+\log n_+
  =(1/5-\varepsilon)wL(1+o(1))>L,
 \]
 so $N(y)\le n_+$. Letting $u$ increase to $4$ and $w$ decrease to $5$
-proves \eqref{eq:inverse}.
+proves \eqref{mdp:eq:inverse}.
 \end{proof}
 No comparison of $a(n)$ and $a(n+1)$ occurs in this proof. We assert
 neither monotonicity of the sequence nor an exact inverse equivalent.
@@ -379,9 +687,9 @@ and $7$ instead.
 \subsection{Finite elementary inverse bounds}
 Let $W$ be the positive real Lambert function: $W(t)e^{W(t)}=t$ for
 $t>0$. The elementary estimates also give explicit finite bounds.
-\begin{proposition}\label{prop:finiteinverse}
+\begin{proposition}\label{mdp:prop:finiteinverse}
 For every real $y>1$, with $L=\log y$,
-\begin{equation}\label{eq:finiteinverse}
+\begin{equation}\label{mdp:eq:finiteinverse}
  \ceil{\frac{4(L+\log3)}{W(324(L+\log3))}}
  \le N(y)\le
  7\ceil{\frac{L}{W(2L/e)}}+1.
@@ -394,7 +702,7 @@ $h(r)=L+\log3$ is
 \[
  r=\frac{4(L+\log3)}{W(324(L+\log3))}.
 \]
-By \eqref{eq:logupper}, every integer $2\le n<r$ has
+By \eqref{mdp:eq:logupper}, every integer $2\le n<r$ has
 $\log a(n)\le h(n)-\log3<L$. The values $n=0,1$ separately have
 $a(n)=1<y$. Thus $N(y)\ge\lceil r\rceil$.
 
@@ -405,7 +713,7 @@ bound $\log(k!)\ge k\log k-k$ gives
 \[
  2^k k!\ge(2k/e)^k\ge e^L=y.
 \]
-At $n=7k+1$, \eqref{eq:factorial} therefore yields
+At $n=7k+1$, \eqref{mdp:eq:factorial} therefore yields
 $a(n)\ge y$, proving the right inequality without monotonicity.
 \end{proof}
 These are exact-real mathematical inequalities. Uncertified floating-
@@ -416,6 +724,41 @@ explicit upper bound is too small, and supplies an index $7k+1$ for
 which $2^k k!$ reaches the threshold. The finite elementary upper
 bound has leading constant $7$; the asymptotic queens estimate, without an explicit
 onset here, improves the asymptotic upper constant to $5$.
+
+
+\begin{remark}[{[write]} The brackets against the transseries volume, 6~October 2026]\label{mdp:rem:transseries}
+The volume is
+\path{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/}.
+\begin{enumerate}
+\item[(a)] \emph{The root $r$ is an instance} of
+ \file{p0:prop:factorial-core}, verbatim, with
+ $(\kappa,d,L):=(\tfrac14,\log3,L+\log3)$: its phase is
+ $X(\tfrac14\log X+\log3)=h(X)$, its solution is $v=W_0(4(L+\log3)e^{4\log3})
+ =W_0(324(L+\log3))$ and $X=e^{v-4\log3}=e^v/81=4(L+\log3)/v=r$ (using
+ $ve^v=324(L+\log3)$), and its side condition $\tfrac14\log X+\log3>0$
+ holds because $r>1$.
+\item[(b)] \emph{The root $s$ is an instance} of
+ \file{p0:prop:factorial-core}, verbatim, with $(\kappa,d,L):=(1,\log2-1,L)$:
+ the phase is $X(\log X+\log2-1)=X\log(2X/e)$, $v=W_0(2L/e)$ and
+ $X=e^{v+1}/2=L/v=s$, with side condition $X>e/2$, as in the proof. In both
+ cases the positive real Lambert function of the source is $W_0$.
+\item[(c)] \emph{Proposition~\ref{mdp:prop:finiteinverse} and
+ Corollary~\ref{mdp:cor:inverse} are not instances} of
+ \file{p0:thm:staircase}, only analogues. $N(y)$ has the form of the
+ staircase $N_\ast(y)$ of \file{p0:def:three-inverses}, but that definition
+ presupposes a sequence strictly increasing from some index on, and the
+ theorem an interpolation of it; neither is available, since monotonicity of
+ $a(n)$ is not proved (the data are strictly increasing for
+ $7\le n\le46$, which proves nothing about later~$n$). The brackets here
+ come from two envelopes, an upper bound excluding small indices and a lower
+ bound at the single index $7\lceil s\rceil+1$, not from a ceiling of an
+ inverse. If $a(n)$ were proved strictly increasing for $n\ge n_1$, then
+ $N(y)=N_\ast(y)$ for every $y>\max_{n<n_1}a(n)$, and
+ \file{p0:thm:staircase}(1)--(2) would apply to any admissible
+ interpolation.
+\end{enumerate}
+No novelty is claimed for these inversions.
+\end{remark}
 
 \section{Finite verification and the reproducible companion}
 The companion uses exact integer arithmetic and the Python standard
@@ -470,7 +813,7 @@ These computations are finite diagnostics, not proofs of the
 asymptotic statements or of novelty. Earlier independent checks
 through $n=22$ and a separate direct-enumeration audit through $n=24$
 served the same diagnostic role. The proof consists of the explicit
-arguments above together with Theorem~\ref{thm:queens}.
+arguments above together with Theorem~\ref{mdp:thm:queens}.
 
 The release includes complete LaTeX, a deterministic PDF builder,
 fixed-allowlist ZIP creation, and SHA-256 checksums. Builds and archive
@@ -479,6 +822,32 @@ symlink components; they assume a trusted local parent directory.
 Two clean PDF builds and two archive constructions are compared
 byte for byte in the reported environment. Reproduction with a
 different TeX installation can legitimately change PDF bytes.
+
+\begin{writenote}[The package here, and the intake reruns, 6~October 2026]
+``The release'', ``the companion'' and ``the accompanying README'' above are
+the delivered ones. In this report the companion program and its tests are
+\file{code/companion-disjoint_partitions.py} and
+\file{code/companion-test_disjoint_partitions.py} (delivered
+\file{companion/disjoint_partitions.py} and
+\file{companion/test_disjoint_partitions.py}); the frozen outputs are
+\file{data/counts.json}, \file{data/finite_checks.json} and
+\file{data/source_data.json}; the companion README is
+\file{companion-README.md}; the release tools \file{build_pdf.py},
+\file{make_zip.py}, \file{release_tools.py} and \file{test_release.py} are in
+\file{code/}; \file{SOURCE_PROVENANCE.json} is in \file{data/}; the
+checksum manifest is not shipped. The ``earlier independent checks through
+$n=22$'' and the ``direct-enumeration audit through $n=24$'' were not part
+of the delivered package. The tests locate the frozen data in
+\file{data/} beside the directory holding the program, so they run only on
+a copy with the delivered names (the report README gives the route); the
+release tools expect the whole delivered package and POSIX descriptor
+support, and were not run. On copies at the write (Windows, Python 3.14.4):
+the \texttt{counts}, \texttt{verify} and \texttt{sources} outputs equal the
+frozen files once Windows line endings are converted; the threshold scan for
+$1000$ returns $n=22$ and the integer bracket for $10^{20}$ is $[26,127]$;
+13 of the 14 companion tests pass, and the one failure compares raw output
+bytes and sees Windows line endings.
+\end{writenote}
 
 \section{Source provenance and the remaining gap}
 The official A068598 snapshot used here is revision \#50, dated
@@ -517,7 +886,7 @@ The principal mathematical gap is still
 The report does not prove that the lower and upper limits coincide,
 identify their value, establish a multiplicative equivalent, or
 supply any all-orders expansion or transseries. The linear term in
-\eqref{eq:linear} belongs only to a lower bound. Improving either
+\eqref{mdp:eq:linear} belongs only to a lower bound. Improving either
 counting construction or showing a matching upper and lower
 coefficient remains open in this treatment.
 
@@ -530,6 +899,132 @@ $k$-blocks leads to permutations $\pi,\sigma,\tau$ with
 $i+\pi(i)+\sigma(i)+\tau(i)=2k+2$. The elementary complementary-pair
 construction gives only $k!$, far short of that proposed count.
 No stronger count or resulting limit is claimed here.
+
+\begin{writenote}[The OEIS record and the literature at the commit of this write, 6~October 2026]
+The entry was still at revision~\#50 on 6~October 2026, with the comments
+quoted in Remarks~\ref{mdp:rem:cliques} and~\ref{mdp:rem:fits}, all still
+present; the b-file term $a(46)$ is noted in
+Section~\ref{mdp:sec:provenance}. The source does not cite Simkin's later
+asymptotic count~\cite{simkin}, which sharpens the linear term of the lower
+bound (Remark~\ref{mdp:rem:simkin}) but not its constant~$1/5$. The
+quadruple-decomposition direction above is restated, with what is missing,
+as Question~\ref{mdp:q:quadruples}; Proposition~\ref{mdp:prop:typical}
+explains why it is the natural one.
+\end{writenote}
+
+\section{Further questions and research}\label{mdp:sec:further}
+\begin{writenote}[Added 6 October 2026, batch~107]
+Following Vladimir Reshetnikov's standing rule of 4~October 2026, every
+claim of the source that is not proved in full is stated here as an open
+question, with its source, the argument offered and what is missing. The
+source's Section~8 names the gap and one unproved direction; its non-claims
+are collected in Section~\ref{mdp:sec:provenance}. The intake found no
+false claim in the source and the write found none either; the two
+corrections concern OEIS text (Remarks~\ref{mdp:rem:cliques}
+and~\ref{mdp:rem:fits}). The write proves one structural statement first.
+\end{writenote}
+
+For a maximal family of $n\ge2$ let $\mathcal M$, $m$, $v$, $q$ be as in
+Section~\ref{mdp:sec:upper}, and let
+\[
+ \Delta=\sum_{B\in\mathcal M}\sum_{b\in B}b-\frac{v(v+1)}2=mn-\frac{v(v+1)}2 ,
+\]
+the excess of the sum of the used labels over its least possible value
+($\Delta\ge0$ by~\eqref{mdp:eq:mass}).
+
+\begin{proposition}[{[write]} Where the constant $1/4$ would have to come from]\label{mdp:prop:typical}
+\begin{enumerate}
+\item[(1)] Exactly,
+ $q=\dfrac{(n-1)^2}{4n}-\dfrac1n\Bigl(v-\dfrac{n-1}2\Bigr)^2-\dfrac{2\Delta}n$.
+\item[(2)] For real $t\ge0$ let $a_t(n)$ be the number of maximal families of
+ $n$ with $\bigl(v-\tfrac{n-1}2\bigr)^2+2\Delta\ge tn^2$. Then
+ $a_t(n)\le3^{n-1}n^{(1/4-t)n}$ for every $n\ge2$.
+\item[(3)] For every fixed $t>1/20$, $a_t(n)/a(n)\to0$.
+\item[(4)] If $\log a(n_j)/(n_j\log n_j)\to1/4$ along a sequence
+ $n_j\to\infty$, then $a_t(n_j)/a(n_j)\to0$ for every fixed $t>0$. Hence,
+ for every $\varepsilon>0$, all but a vanishing proportion of the maximal
+ families of $n=n_j$ have $|v-\frac{n-1}2|\le\varepsilon n$ and
+ $\Delta\le\varepsilon n^2$, and these have
+ $m=n/8+O(\varepsilon n)+O(1)$ non-singleton edges, of average size
+ $v/m=4+O(\varepsilon)$ for $\varepsilon$ small.
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+(1) Since $mn=v(v+1)/2+\Delta$, $q=v-2m=v-v(v+1)/n-2\Delta/n$, and
+$v-v(v+1)/n=(n-1)^2/(4n)-\frac1n\bigl(v-\frac{n-1}2\bigr)^2$ as
+in~\eqref{mdp:eq:qbound}. (2) For the families counted, (1) gives
+$q\le(n-1)^2/(4n)-tn\le(1/4-t)n$. The counting of Section~\ref{mdp:sec:upper}
+applies unchanged: at most $3^{n-1}$ pairs $(A,F)$, and for each at most
+$n^q\le n^{(1/4-t)n}$ maps, counted as there (when $(1/4-t)n<0$ no family qualifies,
+since $q\ge0$); Lemma~\ref{mdp:lem:code} makes the code injective. (3) By
+the left inequality of~\eqref{mdp:eq:logbounds},
+$\log a(n)\ge(\tfrac15-o(1))\,n\log n$, while by~(2)
+$\log a_t(n)\le(\tfrac14-t)\,n\log n+n\log3$; the difference is at most
+$-(t-\tfrac1{20}-o(1))\,n\log n+n\log3\to-\infty$. (4) The same computation
+with $\log a(n_j)\ge(\tfrac14-o(1))\,n_j\log n_j$ gives $a_t(n_j)/a(n_j)\to0$
+for each $t>0$. A family not counted by $a_{\varepsilon^2}$ has
+$|v-\frac{n-1}2|<\varepsilon n$ and $2\Delta<\varepsilon^2n^2$; for $\varepsilon\le1$
+this gives the two stated bounds. Then $v=n/2+O(\varepsilon n)+O(1)$,
+$m=(v(v+1)/2+\Delta)/n=n/8+O(\varepsilon n)+O(1)$, and $v/m=4+O(\varepsilon)$
+once $n$ is large.
+\end{proof}
+Part~(3) uses Theorem~\ref{mdp:thm:queens} through~\eqref{mdp:eq:logbounds};
+with the elementary~\eqref{mdp:eq:seventh} alone it holds for $t>3/28$.
+Part~(4) says that a proof of $\limsup\log a(n)/(n\log n)=1/4$ must count
+families whose non-singleton edges use about $n/2$ labels, with a nearly
+minimal label sum and average edge size about~$4$: the regime of
+Question~\ref{mdp:q:quadruples}. It proves nothing about whether such
+families are numerous.
+
+\begin{enumerate}
+\item\label{mdp:q:limit} \textbf{The limiting coefficient} (source:
+ Section~8, ``The report does not prove that the lower and upper limits
+ coincide, identify their value, establish a multiplicative equivalent, or
+ supply any all-orders expansion or transseries''). Proved:
+ $\tfrac15\le\liminf\le\limsup\le\tfrac14$ for $\log a(n)/(n\log n)$.
+ Open: whether the limit exists, and its value; a multiplicative
+ equivalent, or at least the linear term of $\log a(n)$ (only lower
+ estimates are known, \eqref{mdp:eq:linear} and
+ Remark~\ref{mdp:rem:simkin}). Missing: a construction beating the
+ queens injection, or an upper bound sharper than the free-label count.
+ Proposition~\ref{mdp:prop:typical} says where an improvement of the lower
+ bound to $1/4$ would have to come from.
+\item\label{mdp:q:quadruples} \textbf{Quadruple decompositions} (source:
+ Section~8, ``One concrete unproved direction''). Let $D(k)$ be the number
+ of decompositions of $[4k]$ into $k$ quadruples each summing to $8k+2$. The
+ source's implication is correct: \emph{[write] if $D(k)\ge k^{2k-o(k)}$,
+ then $\log a(n)\ge(\tfrac14-o(1))\,n\log n$ along $n=8k+2$.} Proof: such a
+ decomposition is a matching of $H_{8k+2}$ (its quadruples are disjoint and
+ sum to $n$, and $4k(4k+1)/2=k(8k+2)$ is consistent); extend it maximally.
+ In the extension the edges meeting $[4k]$ are exactly the $k$ quadruples,
+ because every label of $[4k]$ lies in one of them and edges are disjoint;
+ so the decomposition is recovered and distinct decompositions give
+ distinct maximal families. Hence $a(8k+2)\ge D(k)$ and
+ $\log a(n)\ge(2k-o(k))\log k=(\tfrac14-o(1))\,n\log n$. Open: whether
+ $D(k)\ge k^{2k-o(k)}$; the source's block construction (one part from each
+ of four consecutive $k$-blocks, permutations $\pi,\sigma,\tau$ with
+ $i+\pi(i)+\sigma(i)+\tau(i)=2k+2$) and its complementary-pair
+ construction give only $k!$. Even a positive answer settles only
+ $n\equiv2\pmod 8$, not the full limit.
+\item\label{mdp:q:effective} \textbf{Effective onsets and monotonicity}
+ (source: Section~6, ``the asymptotic queens estimate, without an explicit
+ onset here, improves the asymptotic upper constant to $5$'', and the
+ companion README). The elementary bounds are explicit for every $n$ and
+ every $y>1$ (Proposition~\ref{mdp:prop:finiteinverse}); the queens-based
+ constants $1/5$ and $5$ have no onset, because the $o(1)$ of
+ Theorem~\ref{mdp:thm:queens} is not made explicit. Open: an explicit $k_0$
+ and error function in a queens lower bound, hence explicit forms
+ of~\eqref{mdp:eq:linear} and~\eqref{mdp:eq:inverse}. Added by the write
+ (not a claim of the source): is $a(n)$ nondecreasing, and strictly
+ increasing for $n\ge7$? The data are, through $n=46$; a proof would make
+ $N(y)$ a staircase in the sense of Remark~\ref{mdp:rem:transseries}(c).
+ Missing: any comparison between maximal families of $n$ and of $n+1$.
+\item\label{mdp:q:literature} \textbf{The literature boundary} (source,
+ Section~8). Filaseta's chapter~\cite{filaseta} was read at abstract level
+ only, and the search was bounded. Open: whether it, or other work on
+ maximal families of disjoint partitions or on maximal matchings of the
+ hypergraph $H_n$, already counts these families. Missing: reading it.
+\end{enumerate}
 
 \begin{thebibliography}{9}
 \bibitem{oeis}
@@ -561,5 +1056,17 @@ partitions}, in D.~V. Chudnovsky, G.~V. Chudnovsky, and M.~B. Nathanson
 \href{https://doi.org/10.1007/978-1-4612-2418-1_8}{doi:10.1007/978-1-4612-2418-1\_8}.
 Publisher metadata and abstract were inspected. The full chapter
 was not read.
+
+\bibitem{simkin}
+M.~Simkin, \emph{The number of $n$-queens configurations}, Advances in
+Mathematics \textbf{427} (2023), 109127.
+\href{https://doi.org/10.1016/j.aim.2023.109127}{doi:10.1016/j.aim.2023.109127}.
+Version read by the ProveIt write (abstract only):
+\href{https://arxiv.org/abs/2107.13460v3}{arXiv:2107.13460v3} (23~November 2022).
+
+\bibitem{findclique}
+Wolfram Research, \emph{FindClique}, Wolfram Language documentation, read
+by the ProveIt write on 6~October 2026.
+\href{https://reference.wolfram.com/language/ref/FindClique.html}{Documentation page}.
 \end{thebibliography}
 \end{document}

@@ -264,11 +264,17 @@ Barry's moment integral (Jul 26 2010). Neither gives an asymptotic formula.
 Instances: Part II's centre `t₀ = y/W₀(y/e)` of the factorial core
 `p0:prop:factorial-core` (`κ = 1`, `d = −1`); Part II's ceiling step in
 Theorem 13.2 of `p0:thm:staircase` (1), with the interpolation `a(t)` of
-(10.4) on a half-line where it increases, and (2) when the two ceilings agree;
+(10.4) on a half-line where it increases (`[2, ∞)` suffices, since
+`ψ(t + X) ≥ ψ(2) = 1 − γ > 0` there; added after the independent check below),
+and (2) when the two ceilings agree;
 Part I's seed `R = 2W(√L/4)` of the Lambert core `p0:thm:lambert-core` after
 taking logarithms (`R + 2 log R = log(L/4)`, `a = 1`, `b = 2`); Part I's shift
-recursion (7.21) of `p0:thm:core-reversion` with `h = 0`, `Λ = u = ρ + log 4`,
-`t = w` (the write shows `Φ(0, Δ) = uΔ + h(ρ)` exactly). Analogue: Part II's
+recursion (7.21) of `p0:thm:core-reversion` with the volume's quadratic part
+`h_vol ≡ 0` (not Part I's `h(r)` of (7.10)), `Λ = u = ρ + log 4`, `t = w` (the
+write shows `Φ(0, Δ) = uΔ + h(ρ)` exactly, with Part I's `h`). (Notation
+separated after the independent check of 6 October 2026; the write had
+"with `h = 0`" next to Part I's nonzero `h(ρ)`, here and in the article.)
+Analogue: Part II's
 `v_K` is the first-order term of `p0:eq:operator-series` about the factorial
 core, with its own remainder. Not instances: Part I's carrier `H(ρ) = L`
 (not Lambert); Part I's brackets (7.5) and (1.10), proved directly from model
@@ -329,6 +335,30 @@ says only that it gives no theorem "for other Stirling transforms"; whether
 revision 1 said more cannot be checked. The sentence is kept, with a dated note
 beside it (Section 18). No mathematical statement of either manuscript was
 found wrong.
+
+**Independent check of the write (6 October 2026).** An adversarial check
+made by the intake after the write (`ea25dd768`) read pp. 12–13 of
+Spiridonov's thesis again as page images: the form of `A_k` with
+`b log b = k − 1/2` (attributed there to Graham–Knuth–Patashnik) and
+Conjecture 3.3, "(by numerical estimates) ≈ (1.47^k + 1)A_k", followed by
+"This is sequence A064856", are quoted exactly. It re-proved Remark 6.2 line
+by line and recomputed every figure of its dated note from exact `a_k` and
+`B_k` to `k = 2000` (60 digits), among them `R_56 = 10.57` (the maximum over
+`3 ≤ k ≤ 300`) and `R_2000 = 1.5·10⁻¹¹⁰`. It counted the page breaks of
+Bauer–Golinelli (arXiv cond-mat/0007127v2): Section 5.3 on pp. 23–24,
+Section 5.5 from p. 26 with (9) on pp. 26–27, the proof ending on p. 30, as
+cited. `B_k ≤ M_{2k} ≤ a_k` holds on all 13 listed terms of A094149, with
+equality only for `k ≤ 3`. Recomputed from the definitions, A064856 and
+A086662 match all 23 and 24 listed OEIS terms. The four instance proofs were
+checked step by step; an own computation of `I_0(a_n)` gives the
+single-ceiling failure `⌈I_0(a_n)⌉ = n + 1` for every `20 ≤ n ≤ 400` (and at
+`n = 1000, 2000`) and `⌊I_0(a_n) + 1/2⌋ = n` throughout. No mathematical
+error was found. One notation is corrected (required), with a dated note
+keeping the first wording: the core-reversion bullet of the front matter wrote
+"with `h = 0`" for the transseries volume's quadratic part next to Part I's
+nonzero `h(ρ)` of (7.10); it now reads `h_vol = 0` (likewise above). Added:
+`n_1 = 2` suffices in the staircase bullet. The record is a dated note at the
+end of Section 21.
 
 ## Relation to neighbouring reports
 
@@ -440,7 +470,7 @@ latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 
 pdfLaTeX (MiKTeX), in a scratch copy containing `article.tex` and the four
 `data/205-second-tex-*.tex` files; commit only `article.pdf`. The build (47
-pages): no errors, no undefined or multiply defined references or citations,
+pages, also after the independent check): no errors, no undefined or multiply defined references or citations,
 no duplicate destinations, no overfull or underfull boxes, no warnings. The
 log carries one "Infinite glue shrinkage found in box being split" message,
 from a longtable breaking across pages.
