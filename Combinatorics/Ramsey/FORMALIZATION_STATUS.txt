@@ -12,8 +12,8 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 202 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 1,851 public Gowers theorems and found only propext,
+  All 204 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 1,864 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 100 exact
   companion proofs and 20 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -357,10 +357,15 @@ Section 13.7 selection and remaining partition input
   long affine partition of each dense base row. The original-domain Freiman
   property is inherited by restriction. Stage 13.6 forces the ambient progression
   to be nonempty; the case of empty critical heights is discharged separately.
-  Lemma 13.7 remains open. The integer target rounding can now be handled by
-  Proofs07CeilingPartition, but its explicit scale hypothesis remains. Transport
-  of that theorem to the modular base row and treatment of the remaining scales
-  must precede an unconditional Stage 13.7 conclusion.
+  Lemma 13.7 remains open. Proofs07ModularPartition now transports the ceiling
+  partition to proper modular progressions over a prime modulus, with nonzero
+  cell steps and affine formulas in the original coordinate. The construction
+  reuses the established one-dimensional box index transport.
+  Proofs13LargeScaleExtraction identifies its exponent exactly with
+  2^-100*alpha^448 and proves the full Stage 13.7 conclusion when
+    4096*pi/(2^-43*alpha^224) <= R.length^(2^-100*alpha^448).
+  The prime-modulus and scale hypotheses are explicit. Treating the remaining
+  scales is still required before an unconditional Stage 13.7 conclusion.
 
 Ceiling targets in Corollary 7.11
   Proofs07SimultaneousLinearity now exports the direct sufficient budget
