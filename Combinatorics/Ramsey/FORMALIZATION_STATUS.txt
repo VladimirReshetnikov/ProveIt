@@ -12,8 +12,8 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 208 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 1,897 public Gowers theorems and found only propext,
+  All 210 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 1,919 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 101 exact
   companion proofs and 19 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -393,6 +393,32 @@ Improved partition thresholds and all-scale prime-field result
   The resulting one-map modular theorem retains e at every scale, with no
   density-dependent or ambient-length threshold. These are auxiliary bound
   improvements, not an improved final Szemeredi estimate.
+
+Universal maps and the coefficient selection for Lemma 13.9
+  Proofs07SimultaneousLinearity now chooses the partition before the Freiman
+  maps are specified: its spectrum union and Bohr step depend only on the
+  domains. Proofs07CeilingPartition preserves this quantifier order while
+  rounding the target upward. The former APIs remain direct specializations.
+  Proofs07UniversalPartition transports the universal partition to prime
+  fields and handles every scale with the short-cell constructions. Two
+  coefficient maps on one domain retain the one-domain exponent, with no
+  factor-two loss for counting their spectra separately.
+  Proofs13CoefficientPartition proves coordinate-filter partitions, weighted
+  selection of a cell, translated row-cardinality bounds, and the bilinear
+  formula obtained when both affine row coefficients vary affinely in height.
+  Its generic extraction theorem retains the full real-power cell length and
+  mass density. For Section 13, delta=2^-135*alpha^704 gives exactly the
+  required exponent 2^-284*alpha^1408.
+  lemma_13_9_of_length_comparison proves the current Stage 13.9 conclusion
+  from the actual Stage 13.6--13.8 data, properness of Q, and |S| <= |Q|.
+  Including Stage 13.5 reduces the remaining input to |R| <= |Q|, the
+  assertion printed before Lemma 13.9. That upper length bound is not recorded
+  in Stage 13.6 and has not been derived from its current catalogue antecedent.
+  Lemma 13.9 therefore remains open; no conditional result is counted as an
+  exact companion. The proved modular natural-multiple step relation does
+  not provide the integer step and translation control needed for the later
+  square-grid argument. A separate necessary-condition theorem shows that
+  Stage 13.9 forces enough distinct points in Q, not just a large formal length.
 
 New Section 18 infrastructure
   Proofs18IntervalTransfer:
