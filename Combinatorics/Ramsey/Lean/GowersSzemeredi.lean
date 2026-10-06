@@ -74,6 +74,9 @@ import GowersSzemeredi.Proofs16Interpolation
 import GowersSzemeredi.Proofs16DistinctSampling
 import GowersSzemeredi.Proofs16SampleSelection
 import GowersSzemeredi.Proofs16ClassPruning
+import GowersSzemeredi.Proofs16ClassDeletion
+import GowersSzemeredi.Proofs16AffineClasses
+import GowersSzemeredi.Proofs16AnchoredFibres
 import GowersSzemeredi.Proofs16ArrangementSelection
 import GowersSzemeredi.Proofs16CubeDensity
 import GowersSzemeredi.Proofs05Progressions
