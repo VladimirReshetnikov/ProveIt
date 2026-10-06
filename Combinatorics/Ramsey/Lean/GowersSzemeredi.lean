@@ -80,6 +80,8 @@ import GowersSzemeredi.Proofs16AnchoredFibres
 import GowersSzemeredi.Proofs16ProductAnchors
 import GowersSzemeredi.Proofs16AnchoredCover
 import GowersSzemeredi.Proofs16CommonSliceCover
+import GowersSzemeredi.Proofs16ShortColumns
+import GowersSzemeredi.Proofs16RecoveredSliceCover
 import GowersSzemeredi.Proofs16ArrangementSelection
 import GowersSzemeredi.Proofs16CubeDensity
 import GowersSzemeredi.Proofs05Progressions
