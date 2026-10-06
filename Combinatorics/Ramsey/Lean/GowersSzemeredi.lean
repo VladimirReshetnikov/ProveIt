@@ -131,6 +131,8 @@ import GowersSzemeredi.Proofs13InitialProgression
 import GowersSzemeredi.Proofs13LargeSpectrumCover
 import GowersSzemeredi.Proofs13QuadraticRecurrence
 import GowersSzemeredi.Proofs13BilinearRestriction
+import GowersSzemeredi.Proofs13RowCoefficients
+import GowersSzemeredi.Proofs13RowSelection
 import GowersSzemeredi.Proofs14Fourier
 import GowersSzemeredi.Proofs14Configurations
 import GowersSzemeredi.Proofs14Arrangements

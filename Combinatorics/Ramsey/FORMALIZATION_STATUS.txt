@@ -12,8 +12,8 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 194 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 1,791 public Gowers theorems and found only propext,
+  All 196 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 1,805 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 99 exact
   companion proofs and 21 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -317,6 +317,19 @@ Shared Section 16 migration
   The finite-union and finite-sum proofs now share one proper refinement
   engine. Lemma 16.8 and downward closure use the repaired shared predicate.
   The existing base-case construction now closes the catalogue's Lemma 16.3.
+
+New Section 13 row extraction
+  Proofs13RowCoefficients proves that translating inputs preserves Freiman
+  relations of every order. Over a field, two distinct affine evaluations
+  recover the Freiman relations of both row coefficients. The Section 13
+  application explicitly assumes prime modulus and B contained in S.A;
+  neither assumption is supplied by the current lemma_13_8 antecedent.
+  Proofs13RowSelection proves the cubic row-moment identity, the exact
+  quadratic diagonal contribution, and selection of distinct columns from
+  a lower bound on their difference. A mixed density bound supplies the
+  cubic moment, while a separate theorem bounds the quadratic contribution.
+  Connecting these generic counts to Stage138Data and repairing the missing
+  domain hypotheses remain open; no new numbered completion is claimed.
 
 New Section 18 infrastructure
   Proofs18IntervalTransfer:
