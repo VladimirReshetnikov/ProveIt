@@ -4,7 +4,7 @@ Scope
   The goal remains open. No improvement to the final Szemeredi bound is claimed.
   The source catalogue contains all 120 unique numbered theorem, lemma,
   proposition, and corollary headings in sz-thm-gowers-proof.tex.
-  There are 100 checked exact companion proofs and 20 open statements.
+  There are 101 checked exact companion proofs and 19 open statements.
   The JSON ledger records every statement, its TeX heading lines, its Lean
   definition, and related results. Conditional implications, restricted cases,
   and counterexamples are not counted as proofs of the full statement.
@@ -12,10 +12,10 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 206 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 1,879 public Gowers theorems and found only propext,
-  Classical.choice, and Quot.sound. The audit independently counted 100 exact
-  companion proofs and 20 open catalogue statements from Lean's theorem types.
+  All 208 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 1,897 public Gowers theorems and found only propext,
+  Classical.choice, and Quot.sound. The audit independently counted 101 exact
+  companion proofs and 19 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
   errors remain in this build. The JSON ledger reproduces exactly and has no
   unmatched numbered TeX headings or unmatched catalogue entries.
@@ -344,35 +344,26 @@ Completed Section 13 coefficient extraction
   derives its domain containment from the vertical-edge condition. Adding an
   affine base row and affine vertical difference gives each affine upper row;
   the slopes add (the printed calculation displays a minus sign at this step).
-  The quantitative progression selection in Stage 13.7 remains open; these
-  structural lemmas and the coefficient extraction do not discharge it.
+  The quantitative progression selection is completed by the all-scale
+  prime-modulus affine partition described below.
 
-Section 13.7 selection and remaining partition input
+Completed corrected Section 13.7 extraction
   Proofs13BaseRowSelection proves the exact sum over base heights, selects one
   base row preserving both Stage 13.6 edge-count bounds, and derives its original
   domain density. Proofs13PartitionSelection proves that a column partition
   partitions the selected upper endpoints and uses weighted averaging to retain
   both density bounds on one cell, without assuming equal cell sizes.
-  The full Stage 13.7 conclusion is now proved conditional only on a suitably
-  long affine partition of each dense base row. The original-domain Freiman
-  property is inherited by restriction. Stage 13.6 forces the ambient progression
-  to be nonempty; the case of empty critical heights is discharged separately.
-  Lemma 13.7 remains open. Proofs07ModularPartition now transports the ceiling
-  partition to proper modular progressions over a prime modulus, with nonzero
-  cell steps and affine formulas in the original coordinate. The construction
-  reuses the established one-dimensional box index transport.
-  Proofs13LargeScaleExtraction identifies its exponent exactly with
-  2^-100*alpha^448 and proves the full Stage 13.7 conclusion when
-    4096*pi/(2^-43*alpha^224) <= R.length^(2^-100*alpha^448).
-  The prime-modulus and scale hypotheses are explicit.
-  Proofs07ShortLinearity proves affine extension on domains of size at most two
-  and uses the order-two relation to prove affine linearity on any proper
-  progression of length at most three. A partition into cells of length two or
-  three then handles any target at most two, without a density threshold.
-  Proofs13SmallScaleExtraction applies this to prove the full Stage 13.7
-  conclusion when R.length^(2^-100*alpha^448) <= 2. The intermediate range
-  between this bound and the large-scale threshold remains open; neither
-  scale-qualified theorem is counted as a full numbered completion.
+  Proofs13CompleteRowExtraction discharges the affine partition input at every
+  scale. The exponent is exactly 2^-100*alpha^448, propagated from the corrected
+  density 2^-43*alpha^224. Both required mass bounds and B contained in the
+  original domain are retained. Empty critical heights are handled separately.
+  Fidelity repair: lemma_13_7 now explicitly assumes prime modulus, the paper's
+  standing assumption at TeX line 117 and the same field assumption already
+  recorded for Lemma 13.8. The previous stronger all-moduli encoding is retained
+  as lemma_13_7_without_prime_assumption and remains unproved. The exponent and
+  density constants retain the previously documented upstream corrections;
+  this is not a proof of the uncorrected numerical statement printed in TeX.
+  Earlier small- and large-scale results remain available as separate theorems.
 
 Constant-radius Bogolyubov--Freiman improvement
   Proofs07BohrHom proves lemma_7_8_constant_radius with the same spectrum
@@ -385,16 +376,23 @@ Constant-radius Bogolyubov--Freiman improvement
   This improves an auxiliary radius; no improved final Szemeredi bound follows
   until the remaining extraction and density-increment obligations are proved.
 
-Ceiling targets in Corollary 7.11
-  Proofs07SimultaneousLinearity now exports the direct sufficient budget
-    (1024*pi/alpha) * m^2 <= length^(3*e),
-  where e = 2^-14 * alpha^2 / q. The original exact companion is derived from
-  this construction without changing its catalogue statement or hypotheses.
-  Proofs07CeilingPartition proves that length^e >= 4096*pi/alpha suffices to use
-  m = ceil(length^e). Every cell then has length at least the full real-power
-  target, preserving e and avoiding a floor loss. The common positive integer
-  step, properness, partition, and simultaneous affine formulas are retained.
-  This is an auxiliary partition improvement, not a new final Szemeredi bound.
+Improved partition thresholds and all-scale prime-field result
+  Proofs07SimultaneousLinearity now proves the stronger direct budget
+    34 * m^2 <= length^((23/6)*e),
+  where e = 2^-14 * alpha^2 / q. The density-dependent earlier budget and exact
+  catalogue companion remain compatibility consequences, without API weakening.
+  Proofs07CeilingPartition permits m = ceil(length^e) as soon as length^e >= 8,
+  replacing 4096*pi/alpha. Every cell has length at least the full real-power
+  target, with a common positive integer step, properness, and simultaneous
+  affine formulas. Proofs07ModularPartition transports this to prime fields.
+  Proofs07NinePointLinearity interpolates any Freiman-8 map on a subset of a
+  proper progression of length at most nine, using repeated-point multisets
+  between the extremal domain indices. Thus cells of length eight or nine
+  handle targets at most eight once length >= 64. Below length 64, the
+  one-map exponent gives a target at most two, handled by two/three-point cells.
+  The resulting one-map modular theorem retains e at every scale, with no
+  density-dependent or ambient-length threshold. These are auxiliary bound
+  improvements, not an improved final Szemeredi estimate.
 
 New Section 18 infrastructure
   Proofs18IntervalTransfer:
@@ -428,7 +426,7 @@ Next substantial obligations
   1. Resolve Corollary 5.8's missing common-target scale assumptions. Its
      scale-qualified repair is proved, but does not establish the unrepaired
      catalogue statement.
-  2. Complete extraction stages 13.5--13.7 and 13.9; repaired Lemma 13.8 is proved.
+  2. Complete extraction stages 13.5--13.6 and 13.9; repaired Lemmas 13.7--13.8 are proved.
      Corollary 13.10 requires compatibility and grid inputs; do not silently
      discharge them by citing the paper.
   3. Complete the higher-dimensional Section 16 induction using the migrated
