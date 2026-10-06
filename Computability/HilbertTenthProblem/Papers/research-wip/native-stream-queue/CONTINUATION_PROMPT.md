@@ -191,6 +191,23 @@
 > The [scalar complement reuse](residue_affine_complement_reuse.md) and [vector positive-guard template](counter_vector_positive_guard.md), with [independent proof and source review](review_counter_positive_guard_extensions.md), extend the counter-step savings to every fixed program of the stated form. Reusing the scalar remainder-complement equation saves one addition: the complete SOS costs **10B+21**, with six positive witnesses; its B=14 fixture costs **161=76M+85A**, of exact degree28. For r counters and K states represented directly, positivity forces the branch selector using only two witnesses, giving a paid SOS template of **2(r+2)K+7r+11** operations and degree at most2K+2. This saves three operations against the same template with an explicit Boolean residual. The distinct endpoint interfaces cannot be compared without a paid conversion. The scalar source receives independent inert structure and polynomial checks; the vector result is proof-only. Neither result supplies unbounded iteration or improves the universal84 frontier.
 >
 >
+> The [Accepted centralizer branch](positive7_higman_centralizer_branch_riemann.md)
+> now gives a literal **499-generator,17,679-relator** presentation with the
+> universal word query `W_n=[alpha^(beta^n),t]`. The
+> [hand membership-to-word-problem lemma](positive7_higman_membership_word_problem_aristotle.md)
+> uses Britton's lemma and the inherited Accepted subgroup. The
+> [independent branch audit](review_higman_centralizer_branch_root.md) passed
+> for the complete498-generator/17676-relator retained prefix, all three new
+> fixing relations, query ports and metadata. A separate
+> [finite two-generator embedding proof](positive7_finite_two_generator_embedding_aristotle.md)
+> preserves all17679 relator slots using the full universal words, including
+> identity-valued named generators; a counterexample refutes the source's
+> unqualified shortened formula. The two-generator substitution is proved
+> but its large arrays are not expanded, and the paid matrix/input/history
+> interface remains open. **84 operations /18 positive witnesses /degree187**
+> is unchanged.
+>
+>
 > The [complete literal Higman presentation](positive7_higman_literal_presentation_riemann.md)
 > now supplies all **499 generators and 17,678 relators** of the preembedding
 > construction. The [independent full comparison](review_positive7_higman_literal_presentation_pascal.md)
