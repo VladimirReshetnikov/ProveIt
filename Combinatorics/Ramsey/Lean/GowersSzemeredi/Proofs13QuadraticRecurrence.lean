@@ -256,7 +256,8 @@ private lemma stage135_zero_mem_left : (0 : Fin 16) ∈ stage135Left := by
 private lemma stage135_zero_notMem_right : (0 : Fin 16) ∉ stage135Right := by
   simp [stage135Right]
 
-private lemma stage135_additive_ext {N : Nat}
+/-- An additive sixteen-tuple is determined by its last fifteen coordinates. -/
+lemma stage135_additive_ext {N : Nat}
     {x y : Fin 16 → ZMod N} (hx : IsAdditiveTuple (k := 8) x)
     (hy : IsAdditiveTuple (k := 8) y)
     (htail : ∀ i : Fin 15, x i.succ = y i.succ) : x = y := by
