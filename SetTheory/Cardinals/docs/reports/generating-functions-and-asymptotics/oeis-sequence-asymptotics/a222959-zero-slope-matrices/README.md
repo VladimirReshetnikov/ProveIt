@@ -84,7 +84,12 @@ Added by the write (6 October 2026), with proofs, marked `[write]`:
   coefficients are the source's `u` and `v`. The core `A_0X²` is admissible
   (`p0:def:core`) but is neither Lambert core, so the formula is **not** an
   instance of `p0:thm:lambert-core`, `p0:prop:factorial-core`,
-  `p0:thm:lambert-centered` or `p0:thm:flattening`. The analytic error
+  `p0:thm:lambert-centered` or `p0:thm:flattening`. After
+  `G = √(M/A_0)` it is also a formal instance of `plt:thm:lw-template`
+  (data `(1, −3/(2A_0), D_d/(2A_0), B)`, the route of
+  `a089479-fixed-permanent-matrices`); the write first said it was an
+  instance "of no Lambert theorem of the volume", corrected after the
+  independent check below. The analytic error
   bound is the source's, not the volume's. (b) Corollary 1.3 and the odd
   envelopes are **analogues, not instances**, of `p0:thm:staircase`:
   `p0:def:three-inverses` presupposes a sequence increasing from some index
@@ -119,8 +124,9 @@ verbatim,
     T(n,k)=Number of nXk 0..1 arrays with every row and column least squares fitting to a zero slope straight line, with a single point array taken as having zero slope.
 
 Its 68 data terms list the array by antidiagonals and reach the diagonal
-only through `T(6,6) = 512` (the `8000` there is `T(5,7)`, not a diagonal
-term); the comment "Table starts" displays the diagonal through
+only through `T(6,6) = 512` (the `8000` there, twice, is
+`T(5,7) = T(7,5)`, not a diagonal term; the write first named only
+`T(5,7)`); the comment "Table starts" displays the diagonal through
 `T(9,9) = 1808243216`, the source's values. The entry links R. H. Hardin's
 b-file of 199 terms, which the source could not retrieve (HTTP 403); the
 write could, and its index 181 gives
@@ -142,7 +148,8 @@ A222955 (revision #24, 17 March 2026) still carries, verbatim,
     Conjecture: A binary word is counted iff it has the same sum of positions of 1's as its reverse, or, equivalently, the same sum of partial sums as its reverse. - _Gus Wiseman_, Jan 07 2023
 
 Richomme (arXiv:2510.07159v1, Theorems 5.13 and 5.14, read by the write)
-proved it: zero-slope words are his fair words, and fairness is the
+proved its first form, the second being equivalent by the partial-sum
+identity below (the write first said "proved it"): zero-slope words are his fair words, and fairness is the
 position-sum condition; his introduction says so. The write's direct proof
 (Remark 13.1): with `P(v) = Σ j v_j`, the reverse has `P(v^R) = (n+1)|v| −
 P(v)`, the slope numerator is `P(v) − (n+1)|v|/2`, and the sum of the
@@ -217,6 +224,26 @@ reproductions below.
   five missing are named-pipe and double-slash-path rejections that run only
   where `os.mkfifo` exists or `os.name == 'posix'`), and `--max-n9`
   reproducing `C_9 = 1808243216` in 10 s. Route B was also run.
+- **Independent check of the write (6 October 2026).** An adversarial check
+  made by the intake after the write (`3e9c7ae10`), with its own code, after
+  fetching both entries, both b-files and Richomme's v1 again. Proposition
+  14.1: proof re-read; a general `n × k` counter of its own gave 119 cells
+  (all `n, k ≤ 10`, `n = 11` with `k ≤ 10`, `n ≤ 9` with `k = 11`), each
+  satisfying (1)–(2), the array symmetric where computed both ways, and the
+  118 cells within the b-file in agreement; the shares 72% and 41%
+  recomputed. `C_10 = 615667968` reproduced by that program (a partition
+  different from the write's), `C_1, …, C_9` likewise; the ratios at
+  `n = 7, …, 10` at 30 digits; `r_1 = 521/350`, `r_2 = 2983/3500`.
+  `C_{2m}/C_{2m−1} = 1, 1, 1, 0.4479, 0.3405` (`m = 1, …, 5`) and both
+  parity classes strictly increasing: the sign pattern of Remark 11.1(b),
+  far from the asymptotic ratio. Remark 13.1 checked against Richomme's
+  text. One statement too strong: Remark 11.1(a)'s "and of no Lambert
+  theorem of the volume" (after `G = √(M/A_0)` the smooth inverse is a
+  formal instance of `plt:thm:lw-template`, its solution reproducing `u`,
+  `v` by SymPy); corrected with a dated note keeping the first wording.
+  Made precise, also with dated notes: Remark 12.1 names both cells of the
+  value 8000 (indices 60 and 62), and Remark 13.1 says that Richomme proved
+  the first form. The check is recorded at the end of Section 12.
 
 ## Relation to the repository
 
@@ -225,8 +252,9 @@ Rocq development in the repository concerns these matrices or fair words.
 Placement in the collection confers no formal status.
 
 **The transseries volume.** Remark 11.1: the smooth inverse is a formal
-instance of `p0:thm:core-reversion` (after a change of variable), the
-threshold statements analogues of `p0:thm:staircase`. No novelty is claimed
+instance of `p0:thm:core-reversion` (after a change of variable) and,
+after `G = √(M/A_0)`, of `plt:thm:lw-template`; the threshold statements
+analogues of `p0:thm:staircase`. No novelty is claimed
 for the inversions.
 
 **Neighbouring reports** (under
@@ -275,7 +303,7 @@ and the added displays are unnumbered.
 ```text
 README.md                            this guide (replaces the delivery README)
 article.tex                          the report (delivered Report194.tex; labels prefixed, [write] additions)
-article.pdf                          compiled report, 34 pages
+article.pdf                          compiled report, 35 pages
 DATA_SOURCES.md                      primary sources, data provenance and scope (delivered at the root)
 README_REPRODUCIBILITY.md            commands, dependencies, inventory, trust boundary (delivered at the root)
 code-README.md                       the code README (delivered code/README.md)
@@ -374,8 +402,8 @@ B=$(mktemp -d); cp article.tex "$B/"; cd "$B"
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The committed PDF was built this way with MiKTeX on 6 October 2026: 34
-pages; no errors or warnings, no undefined references or citations, no
+The committed PDF was built this way with MiKTeX on 6 October 2026, after
+the independent check (34 pages at the write): 35 pages; no errors or warnings, no undefined references or citations, no
 multiply defined labels, no duplicate PDF destinations, no overfull or
 underfull boxes. The delivered source builds the same way to 27 pages, also
 without warnings. The article keeps the delivered preamble lines that
