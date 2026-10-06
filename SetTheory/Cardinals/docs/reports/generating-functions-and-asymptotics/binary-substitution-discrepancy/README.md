@@ -28,7 +28,10 @@ Part II — at the end of Section 16, at research questions 2, 3, 4 and 7 of
 Section 21, and in Part II's introduction — and a front matter (title, date
 line, abstract, PDF subject) that also announces Part III. The title "two
 families" is kept: Part III treats Part II's family, and in its critical part
-a wider class of words.
+a wider class of words. On 6 October 2026, after the independent check of
+the batch-114 write, eleven places of Part II that the batch-73O1 rename
+`C → Ĉ` had missed were corrected, with a dated note in Section 11 (see
+"Discrepancies and disclosures").
 
 ## Results
 
@@ -89,7 +92,7 @@ Part III answers Part II's research question 7 (the unbounded regimes of
   `k(a-1)`, with exact lengths `p_k = A(a^(2k)-1) + Bk` (Theorem 32.3;
   a = 3: 4, 32, 276, 2464, …);
 - **supercritical, a >= b+3:** with `alpha = log q / log lambda`, the cluster set of
-  `X(N)/N^alpha` is `[-C, C]`, `C = (lambda-1)/(q^2-1) * ((lambda+q)(lambda^2-1)/(q+1)^2)^alpha`,
+  `X(N)/N^alpha` is `[-𝒞_(a,b), 𝒞_(a,b)]`, `𝒞_(a,b) = (lambda-1)/(q^2-1) * ((lambda+q)(lambda^2-1)/(q+1)^2)^alpha`,
   and `X(N) = c^alpha N^alpha Theta(log_lambda(cN)) + O(N^(alpha^2))` with a continuous
   anti-periodic graph-directed profile `Theta` (Theorem 33.1); exact finite bound
   `|X(N)| <= K L_N^alpha` in geometric length;
@@ -166,9 +169,9 @@ counted by `(a-1)2^(a-2) = A001787(a-1)`.
 
 ```
 article.tex                              the report (Parts I-III), standalone LaTeX with an embedded bibliography
-article.pdf                              the compiled report, 71 pages (title and abstract pp. 1-2, contents
-                                         pp. 3-5, Part I pp. 6-18, Part II pp. 19-34, Part III pp. 35-68,
-                                         Appendices A-C pp. 69-70, references p. 71)
+article.pdf                              the compiled report, 72 pages (title and abstract pp. 1-2, contents
+                                         pp. 3-5, Part I pp. 6-18, Part II pp. 19-34, Part III pp. 35-69,
+                                         Appendices A-C pp. 70-71, references p. 72)
 README.md                                this guide
 Makefile                                 Part I's build and verification targets
 oeis_proposed_updates.txt                Part I's suggested OEIS corrections, not submitted
@@ -264,6 +267,9 @@ Table II.1 of the article lists every symbol shared by the two Parts. Only one
 symbol of manuscript 44 is renamed: its constant `C = (a−q)/(1−q²)` is printed
 as `Ĉ`, because Part I's `C = q/(1−q²)` is the upper end of Part I's error
 intervals, while `Ĉ` is the largest state-1 weight (the role of Part I's `H`).
+The rename of `1af5d1402` missed the eleven places where `C` touched a letter
+(`\frac Cq`, `-qC`, `q+qC`); they printed Part I's `C` until they were
+corrected on 6 October 2026.
 No normalization changed. `q`, `λ`, `r`, `s`, `M`, `X`, `S_a`, `E_0`, `E_1`
 have the same definitions in both Parts, applied to the respective word.
 
@@ -408,6 +414,27 @@ and `supercritical_figure_caption.txt` were byte-identical. The figures were
 not regenerated. Separately programmed spot checks at intake and two checks
 at the write are listed in Section 23 of the article.
 
+**Independent check of the write (6 October 2026).** An adversarial check
+made by the intake after the write (`788a7bd5a`), with its own programs (not
+shipped), found every item of Part III valid and nothing to retract. It
+confirmed: the (8,1) inequality `X(N)^2 + 5X(N) <= 10N` on all 134,225,921
+prefixes (the empty one included) of `tau^13(1)`, worst slack −16, and the
+sqrt-family inequality at (27,5) on 1,592,865 prefixes; the supercritical
+convergence `X(P_k)/|P_k|^alpha → 𝒞_(a,b)` in exact integer arithmetic for
+nine pairs ((8,1), (4,1), (5,1), (5,2), (7,3), (9,2), (27,5), (6,1), (10,6);
+closed forms exact for `k <= 40`; the finite bound `|X(N)| <= K L_N^alpha`
+never exceeded); the critical exact extrema and lengths of Proposition 32.2
+for a = 3..7, the first hits, and the exact slope `d/2` for d = 1..5; the
+profile counts 1, 4, 12, …, 1024 for a = 2..9; the four steps marked
+[write] (Solomyak's and Paquette–Son's preprints re-read); and Remark 23.1
+literally. Four wordings were made more precise, as the check suggested:
+Remark 23.1 now quotes Part III's Question 1 as "does not automatically
+extend" across q = 1; the "does not claim" list of Section 23 names the
+remark on every fixed correction order as well; the notes at Part II's
+questions 3 and 2 state the range `0 < x < (a-1)/2` and point to the exact
+position-error laws at complete cutoffs. The note at the end of Section 35
+records the check and the first wordings.
+
 ## Build the PDF
 
 ```sh
@@ -418,9 +445,11 @@ or `make pdf` (two `pdflatex` passes; Part I's `Makefile`). A TeX installation
 with `newpxtext`, `newpxmath`, `amsmath`, `amsthm`, `mathtools`, `microtype`,
 `tcolorbox`, `listings`, `enumitem`, `hyperref`, `bookmark` and the other
 packages named in the preamble is sufficient. The pre-rendered figures are
-included. The batch-114 build (MiKTeX, pdfLaTeX, 71 pages) has no errors, undefined
-references or citations, multiply defined labels, duplicate destinations, or
-overfull or underfull boxes; Part III needs no package beyond those above.
+included. The batch-114 build (MiKTeX, pdfLaTeX, 71 pages) and the rebuild
+after the independent check of 6 October 2026 (72 pages; every label number
+unchanged) have no errors, undefined references or citations, multiply
+defined labels, duplicate destinations, or overfull or underfull boxes;
+Part III needs no package beyond those above.
 The figure PDFs of Parts I and II and Part III's
 `03-fluct-supercritical_profile.pdf` embed matplotlib Type 3 fonts (Part
 III's other three figures embed TrueType fonts); none was regenerated.
@@ -464,6 +493,18 @@ III's other three figures embed TrueType fonts); none was regenerated.
   number "no. 2" of the delivered reference; the journal version of
   Paquette–Son was not read; Rajabzadeh–Safaee and Bressaud–Bufetov–Hubert
   were read only in abstract; Feller was not checked (Section 23).
+- **Part II, missed renames (corrected 6 October 2026).** The batch-73O1
+  write (`1af5d1402`) printed manuscript 44's `C` as `Ĉ` only where `C` stood
+  next to a non-letter. Eleven places where it touched a letter (`\frac Cq`,
+  `-qC`, `q+qC`: the summary, (13.9), (15.3) and its proof, the
+  nonattainment argument and position-error bounds of Section 15, Section 18,
+  Appendix B) were left as `C` and so printed Part I's `C = q/(1−q²)`. The
+  printed bounds were false: for A284369, (13.9) read `E_0(n) < C/q ≈ 2.1547`,
+  while `E_0` reaches 3.6437 within the first 300,000 letters; the intended
+  sharp bound is `Ĉ/q = 2+√3 ≈ 3.7321` (Theorem 12.1). Found by the
+  independent check of the batch-114 write; all eleven now read `Ĉ`, with a
+  dated note at the provenance bullet of Section 11 (Vladimir's standing rule
+  of 4 October 2026: no wrong statement is dropped unrecorded).
 - **OEIS data.** The OEIS values used as fixtures or cited (A001787,
   A284368–A284371) are under CC BY-SA 4.0. Part III, like Parts I–II,
   submits nothing to OEIS.

@@ -1043,7 +1043,7 @@ q-{\widehat C},\quad q(1+{\widehat C})
 \]
 for positions of ones, and
 \[
-\frac1q-{\widehat C}-1,\quad \frac Cq
+\frac1q-{\widehat C}-1,\quad \frac{\widehat C}q
 \]
 for positions of zeros.  None of these endpoints is attained, and all are
 subsequential limits.
@@ -1104,7 +1104,23 @@ sections. The manuscript's reference to Adamczewski's 2004 paper is merged
 with Part~I's.
 \item The manuscript's constant $C$ is printed as $\widehat C$
 (Table~\ref{qmw:tab:notation}); nothing else is renamed and no
-normalization changed.
+normalization changed. [Corrected 6 October 2026, after the independent
+check of the batch-114 write: the rename of commit \texttt{1af5d1402}
+replaced $C$ only where it stood next to a non-letter and missed the eleven
+places where it touched a letter (the source forms \verb|\frac Cq|,
+\verb|-qC| and \verb|q+qC|): in the summary, in \eqref{qmw:eq:generalE0}, in
+\eqref{qmw:eq:state-extrema} and its proof, three times in the
+nonattainment argument of Section~\ref{qmw:sec:extrema}, twice in its
+position-error bounds, in Section~\ref{qmw:sec:constructive} and in
+Appendix~\ref{qmw:app:checklist}. Until this correction those places
+printed Part~I's constant $C=q/(1-q^2)$, and the bounds so printed were
+false. For A284369, $(a,b)=(2,1)$, \eqref{qmw:eq:generalE0} read
+$E_0(n)<C/q=1/(1-q^2)\approx2.1547$, while $E_0(n)$ reaches $3.6437$ within
+the first $300{,}000$ letters; the intended sharp bound is
+$\widehat C/q=2+\sqrt3\approx3.7321$ (Theorem~\ref{qmw:thm:oeis-main},
+Table~\ref{qmw:tab:bounds}); the bound printed in that form fails likewise
+for $(a,b)=(1,2)$ and~$(3,2)$. All eleven places now read $\widehat C$, the
+manuscript's $C$; nothing else changed.]
 \item File names in the text are the shipped names; the delivered programs
 themselves still use their delivery names (Appendix~\ref{qmw:app:files}).
 \end{itemize}
@@ -1368,7 +1384,7 @@ E_1(n)=(1+q)n-v(n).
 \]
 Then for every $n\geq1$,
 \begin{align}
-\frac1q-{\widehat C}-1&<E_0(n)<\frac Cq,
+\frac1q-{\widehat C}-1&<E_0(n)<\frac{\widehat C}q,
 \label{qmw:eq:generalE0}\\
 q-{\widehat C}&<E_1(n)<q(1+{\widehat C}).
 \label{qmw:eq:generalE1}
@@ -1499,7 +1515,7 @@ In the bounded regime $q<1$, with ${\widehat C}$ as in \eqref{qmw:eq:Cdef},
 \ell_0=-q({\widehat C}+1),\qquad
 u_0={\widehat C}-1,
 \qquad
-\ell_1=-qC,
+\ell_1=-q{\widehat C},
 \qquad
 u_1={\widehat C}.}
 \end{equation}
@@ -1515,7 +1531,7 @@ one fixed point.
 
 We verify the displayed candidate.  Since $u_1={\widehat C}> {\widehat C}-1=u_0$,
 \[
-\ell_1=-qu_1=-qC.
+\ell_1=-qu_1=-q{\widehat C}.
 \]
 Also
 \[
@@ -1538,11 +1554,11 @@ Uniqueness proves \eqref{qmw:eq:state-extrema}.
 
 For nonattainment, suppose first that an actual state-$1$ prefix had weight
 ${\widehat C}$.  The strict inequality between the two maximum branches forces its
-parent to have state-$1$ weight $-qC$ and to use the digit $a-q$.  Attaining
-$-qC$ in turn forces a parent of state $1$ and weight ${\widehat C}$, using digit $0$.
+parent to have state-$1$ weight $-q{\widehat C}$ and to use the digit $a-q$.  Attaining
+$-q{\widehat C}$ in turn forces a parent of state $1$ and weight ${\widehat C}$, using digit $0$.
 Two desubstitutions therefore return to the same extremal requirement while
 strictly shortening a nonempty prefix, an infinite-descent contradiction.
-The same argument starts from $-qC$.  Attainment of either state-$0$ endpoint
+The same argument starts from $-q{\widehat C}$.  Attainment of either state-$0$ endpoint
 would force attainment of the corresponding state-$1$ endpoint through
 \eqref{qmw:eq:K0}.  Finally, iterating the two extremizing transitions from the
 empty prefix constructs sequences converging to the endpoints, so they are
@@ -1572,7 +1588,7 @@ E_1(n)=(1+q)n-v(n)=q-X(P).
 \end{equation}
 Because $X(P)\in S_1$, Proposition~\ref{qmw:prop:extrema} yields
 \[
-q-{\widehat C}<E_1(n)<q+qC=q(1+{\widehat C}).
+q-{\widehat C}<E_1(n)<q+q{\widehat C}=q(1+{\widehat C}).
 \]
 
 Similarly, immediately before the $n$th zero one has
@@ -1582,7 +1598,7 @@ E_0(n)=\left(1+\frac1q\right)n-u(n)=\frac{X(P)+1}{q}.
 \end{equation}
 Using $X(P)\in S_0$ gives
 \[
-\frac1q-{\widehat C}-1<E_0(n)<\frac Cq.
+\frac1q-{\widehat C}-1<E_0(n)<\frac{\widehat C}q.
 \]
 This proves Theorem~\ref{qmw:thm:general}.
 
@@ -1764,7 +1780,7 @@ put
  R_k=\tau_{a,b}(P_k)1,\qquad
  T_k=\tau_{a,b}(Q_k)1\,0^{a-1}.
 \]
-Then $Q_k$ is in state $1$ with weight $-qx_k\to-qC$, so its one-position
+Then $Q_k$ is in state $1$ with weight $-qx_k\to-q{\widehat C}$, so its one-position
 errors tend to $q(1+{\widehat C})$.  The prefixes $R_k$ and $T_k$ are in state $0$ and
 have respective weights
 \[
@@ -1917,7 +1933,9 @@ determines the law of the prefix weight under uniform prefix sampling:
 exact complete-block histograms (Theorem~\ref{bmf:thm:histogram}),
 Gaussian and local limit laws at every cutoff
 (Theorems~\ref{bmf:thm:block-normal} and~\ref{bmf:thm:all-cutoff}) and
-large deviations (Theorem~\ref{bmf:thm:ldp}). The bounded regime $a\leq b+1$
+large deviations (Theorem~\ref{bmf:thm:ldp}); through
+\eqref{bmf:eq:conditioned} it also gives the exact laws of $E_0,E_1$ at
+complete substitution cutoffs. The bounded regime $a\leq b+1$
 asked about here remains open (Question~1 of
 Section~\ref{bmf:sec:research}).]
 
@@ -1928,7 +1946,7 @@ Part~I (A284364--A284366; Section~\ref{sec:consequences}), where sharp supports 
 densities are not.
 [Added 6 October 2026, batch~114: at $a=b+2$, where the errors are
 unbounded, \eqref{bmf:eq:threshold-density} gives the frequency of prefixes
-with $X(n)\geq x\log_aN$ up to a factor $N^{o(1)}$, namely
+with $X(n)\geq x\log_aN$, $0<x<(a-1)/2$, up to a factor $N^{o(1)}$, namely
 $N^{-I_a(x)/\log a+o(1)}$. The densities asked for here, in the bounded
 regime, remain open.]
 
@@ -2273,8 +2291,8 @@ Part~III proves nothing about Part~I's words or about Part~II's bounded
 regime $a\leq b+1$; Part~I's open questions
 (Section~\ref{sec:consequences}) and Part~II's research questions other
 than question~7 stay open (of question~4, Theorem~\ref{bmf:thm:first-hit}
-answers only the extremal slice at $a=b+2$) (Part~III's own Question~1 says that its critical mixture does not
-extend across $q=1$).
+answers only the extremal slice at $a=b+2$); Part~III's own Question~1 notes that its critical mixture does not
+automatically extend across $q=1$.
 
 \emph{Method.} Parts~I and~II solve contracting set recursions and Bellman
 systems for the extremes. Part~III's critical results rest on an exact,
@@ -2300,7 +2318,9 @@ questions are not solved; no absolute continuity or absence of atoms is
 asserted for the phase laws; Theorem~\ref{bmf:thm:realization} counts
 profiles, not words; the error $O(N^{\alpha^2})$ is not claimed sharp; the
 endpoint values of the rate function concern neighbourhoods, not exact
-extremes; and the first local correction is sketched only.
+extremes; and the first local correction and the remark on every fixed
+correction order are argued in outline only
+(Questions~\ref{bmf:q:edgeworth} and~\ref{bmf:q:fixed-orders}).
 
 \section{The question, the answer, and its provenance}\label{bmf:sec:intro}
 
@@ -4307,6 +4327,51 @@ estimate $O_{w,j}(r^{-(j+1)/2})$ after the terms through $r^{-j/2}$; the
 case $j=2$ is Question~\ref{bmf:q:edgeworth}.
 \end{enumerate}
 
+\paragraph{Independent check of the write (6 October 2026).}
+An adversarial check made by the intake after the write (commit
+\texttt{788a7bd5a}), with its own programs (not shipped), found no claim of
+Part~III wrong and nothing to retract. It confirmed: the inequality
+\eqref{bmf:eq:finite-quadratic} at $(a,b)=(8,1)$ on all
+$134{,}225{,}921$ prefixes of $\tau^{13}(1)$, the empty one included,
+without a violation (the largest value of $X(N)^2+5X(N)-10N$ is $-16$), and
+\eqref{bmf:eq:sqrt-family} at $q=3$, $(a,b)=(27,5)$, on the first
+$1{,}592{,}865$ nonempty prefixes; the convergence
+$X(P_k)/\abs{P_k}^\alpha\to\mathcal C_{a,b}$ in exact integer arithmetic for
+nine pairs, $(8,1)$, $(4,1)$, $(5,1)$, $(5,2)$, $(7,3)$, $(9,2)$, $(27,5)$,
+$(6,1)$ and $(10,6)$, with the closed forms of $X(P_k)$ and $\abs{P_k}$
+exact for $k\le40$ and the finite bound $\abs{X(N)}\le KL_N^\alpha$ never
+exceeded (largest ratio $0.99951$); the exact finite extrema and lengths of
+Proposition~\ref{bmf:prop:finite-extrema} for $a=3,\dots,7$ (depths up to
+$13,10,9,8,7$), every intermediate value occurring, the first hits
+\eqref{bmf:eq:pq-length} against literal first occurrences, and the exact
+slope $d/2$ of Theorem~\ref{bmf:thm:general-extremes} for $d=1,\dots,5$
+(the window extrema of $X(N)\mp\frac d2\log_aN$ stay bounded and are
+$2$-periodic in the depth); the profile count
+\eqref{bmf:eq:profile-count} by brute force for $a=2,\dots,9$ ($1$, $4$,
+$12$, $32$, $80$, $192$, $448$, $1024$ profiles, the characterized set at
+every $a$); the four steps marked [write] (the telescoping row of
+Solomyak's Proposition~3.1 symbolically on all $286$ admissible words with
+$a\le6$, the adjacent zeros against Paquette--Son's
+Proposition~3.1(iv)(a), both preprints re-read, the closed form of $x_k$,
+and the position errors at $q=1$ at $800{,}000$ positions of four critical
+words); and Remark~\ref{bmf:rem:partII} literally ($P_k$ is the first
+prefix of weight $k(a-1)$ for $a=3,\dots,7$; the critical $Q_k$ is Part~II's
+$Q_k$ followed by a one, and the first prefix of weight $-k(a-1)-1$, for
+$a=3,4,5$). It reproduced the evidence of Question~\ref{bmf:q:edgeworth} and
+confirmed the dated notes in Part~II's Section~\ref{qmw:sec:phase} and at its
+research questions~2, 3, 4 and~7. Four wordings were made more precise at
+the check: Remark~\ref{bmf:rem:partII} first read that Question~1 ``says
+that its critical mixture does not extend across $q=1$'' (Question~1 says
+``does not automatically extend''); the list ``What Part~III does not
+claim'' first ended ``the first local correction is sketched only'' and now
+also names the remark on every fixed correction order; the note at Part~II's
+question~3 now states the range $0<x<(a-1)/2$ of
+\eqref{bmf:eq:threshold-density}; and the note at Part~II's question~2 now
+also points to the exact laws of $E_0,E_1$ at complete cutoffs given by
+\eqref{bmf:eq:conditioned}. The check also found eleven places of Part~II
+that the rename of its constant had missed; they are corrected, with the
+consequence recorded, in Section~\ref{qmw:sec:provenance}.
+
 \section{Status of the results and source record}
 \label{bmf:sec:status}
 
@@ -4448,7 +4513,7 @@ following algebraic chain.
 \item Since $a-bq=q(q+1)>0$, the extreme state-$1$ digits are $0$ and $a-q$.
 \item The extremum operator is $q$-contractive, and
       \[
-      (-q({\widehat C}+1),\ {\widehat C}-1,\ -qC,\ {\widehat C})
+      (-q({\widehat C}+1),\ {\widehat C}-1,\ -q{\widehat C},\ {\widehat C})
       \]
       is its fixed point because ${\widehat C}(1-q^2)=a-q$ and
       ${\widehat C}-q^2({\widehat C}+1)=qb>0$.
