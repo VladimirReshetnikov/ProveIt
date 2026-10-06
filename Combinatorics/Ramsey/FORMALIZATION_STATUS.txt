@@ -4,7 +4,7 @@ Scope
   The goal remains open. No improvement to the final Szemeredi bound is claimed.
   The source catalogue contains all 120 unique numbered theorem, lemma,
   proposition, and corollary headings in sz-thm-gowers-proof.tex.
-  There are 98 checked exact companion proofs and 22 open statements.
+  There are 99 checked exact companion proofs and 21 open statements.
   The JSON ledger records every statement, its TeX heading lines, its Lean
   definition, and related results. Conditional implications, restricted cases,
   and counterexamples are not counted as proofs of the full statement.
@@ -12,10 +12,10 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 169 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 1,658 public Gowers theorems and found only propext,
-  Classical.choice, and Quot.sound. The audit independently counted 98 exact
-  companion proofs and 22 open catalogue statements from Lean's theorem types.
+  All 173 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 1,689 public Gowers theorems and found only propext,
+  Classical.choice, and Quot.sound. The audit independently counted 99 exact
+  companion proofs and 21 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
   errors remain in this build. The JSON ledger reproduces exactly and has no
   unmatched numbered TeX headings or unmatched catalogue entries.
@@ -183,6 +183,29 @@ Constructive proof of the migrated Lemma 16.6
   allows wrapping and does not express that requirement. Closing the migrated
   companion does not by itself discharge that shared representation issue.
 
+Constructive proof of the migrated Lemma 16.9
+  Proofs16FibreGeometry identifies appendCoordinate with the canonical
+  last-coordinate map, proves exact product cardinalities, transports good
+  base-set density to products, and proves the intersection mass estimate.
+  It also shows that every final-coordinate fibre of a multilinear function
+  is globally affine and constructs global extensions of partial affine maps.
+  Proofs16WidthMonotonicity proves that increasing a delta-side graph count
+  only decreases the required Lemma 16.6 width, and verifies the exact
+  composite exponent in Lemma 16.9 after the gamma-side partition.
+  Proofs16FibreCovers recovers selected base and induced-domain membership
+  from B1 and constructs the affine maps used by the final cover.
+  Proofs16Lemma9 applies Lemma 16.6 in every initial cell, unifies the delta
+  counts below their common real bound, and combines the two good sets with
+  loss at most sigma. Adding the extended induced value to each multilinear
+  fibre retains the separate gamma-side cover count. The resulting width is
+  exactly the corrected catalogue width, not a weaker local substitute.
+  The catalogue migration explicitly carries over prime N, k>=1, and proper
+  input boxes. Section16LineCover now requires proper output boxes, and its
+  all-box premise requires proper inputs. Earlier unrestricted encodings of
+  both predicates and Lemma 16.9 are retained without asserted companions.
+  The proved uniform wrapper supplies Section16AllBoxLineCovers, but does not
+  resolve the documented quantitative gap in the remaining Lemma 16.10.
+
 Shared Section 16 migration
   Box.IsProper is now a shared definition. MultiplyLinear requires proper
   input and output boxes and loss parameters in (0,1]. Former proper-only
@@ -234,8 +257,8 @@ Next substantial obligations
   3. Complete the higher-dimensional Section 16 induction using the migrated
      proper-box predicates, propagate properness through the remaining box
      statements, and resolve the documented Corollary 16.11 bound.
-     Its one-dimensional base case, Lemma 16.3, and the migrated Lemma 16.6
-     are now proved. Lemmas 16.9--16.10 and the inductive extraction remain.
+     Its one-dimensional base case, Lemma 16.3, and migrated Lemmas 16.6 and
+     16.9 are now proved. Lemma 16.10 and the inductive extraction remain.
   4. Prove Theorem 18.1 with explicit thresholds strong enough for iteration.
      The existing Section 18 cyclic dichotomy is conditional on that theorem.
      Account for the epsilon/4 density increment and cell-size prefactor, and

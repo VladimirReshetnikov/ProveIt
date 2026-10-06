@@ -666,8 +666,9 @@ def section16Lemma9Width (m qDelta k : Nat)
       (multipleC (sigma / (2 * t)) delta k) ^ t) /
       (2 * (section16K k : Real) ^ ((2 : Nat) ^ (k + 1) * qDelta)))
 
-/-- The line-cover conclusion of Lemma 16.9 on one box. -/
-def Section16LineCover {N k : Nat} [NeZero N]
+/-- The earlier line-cover predicate, retained to record the unrestricted
+formal-box encoding before proper output boxes were required. -/
+def Section16LineCover_unrestricted_box_encoding {N k : Nat} [NeZero N]
     (P : Box N (k + 1)) (B1 : Finset (Point N (k + 1)))
     (phi1 : Point N (k + 1) → ZMod N)
     (sigma l : Real) (q : Nat) : Prop :=
@@ -685,12 +686,28 @@ def Section16LineCover {N k : Nat} [NeZero N]
             appendCoordinate h x ∈ (S u).carrier →
             ∃ i, phi1 (appendCoordinate h x) = ell u h i x
 
-/-- **Lemma 16.9.** On almost all of every box, `phi_1` is covered on each
-last-coordinate fibre by at most `q(sigma/(2r),gamma,k+1)^r` linear maps.
-The statement exposes the distinct natural graph counts `qGamma` for that
-cover and `qDelta` for the recurrence-width loss inherited from Lemma 16.6;
-the article conflates these quantities in the displayed width. -/
-def lemma_16_9 : Prop :=
+/-- The line-cover conclusion of Lemma 16.9, with proper output boxes.
+This preserves the shared meaning of widths as actual axis cardinalities. -/
+def Section16LineCover {N k : Nat} [NeZero N]
+    (P : Box N (k + 1)) (B1 : Finset (Point N (k + 1)))
+    (phi1 : Point N (k + 1) → ZMod N)
+    (sigma l : Real) (q : Nat) : Prop :=
+  ∃ E : Finset (Point N (k + 1)), ∃ M : Nat,
+    ∃ S : Fin M → Box N (k + 1),
+      ∃ T : Fin M → Box N k, ∃ A : Fin M → ModAP N,
+        ∃ ell : Fin M → Point N k → Fin q → ZMod N → ZMod N,
+          E ⊆ P.carrier ∧ (1 - sigma) * P.carrier.card ≤ E.card ∧
+          IsBoxPartition S P ∧ (∀ u, (S u).IsProper) ∧
+          (∀ u, IsLastCoordinateBoxProduct (S u) (T u) (A u)) ∧
+          (∀ u, l ≤ (S u).width) ∧
+          (∀ u h i, LinearOn Finset.univ (ell u h i)) ∧
+          ∀ u h x, h ∈ (T u).carrier →
+            appendCoordinate h x ∈ B1 → appendCoordinate h x ∈ E →
+            appendCoordinate h x ∈ (S u).carrier →
+            ∃ i, phi1 (appendCoordinate h x) = ell u h i x
+
+/-- The pre-migration Lemma 16.9 encoding, retained without a companion. -/
+def lemma_16_9_unrestricted_box_encoding : Prop :=
   ∀ (N k m : Nat) [NeZero N] (theta gamma sigma : Real),
     0 < theta → theta ≤ 1 → 0 < gamma → gamma ≤ 1 →
     0 < sigma → sigma ≤ 1 →
@@ -713,6 +730,46 @@ def lemma_16_9 : Prop :=
     Section16PhiOneIdentity B1 phi x0 phiPrime →
     MultiplyLinearFunction gamma r B1 (section16PhiRemainder phi x0) →
     ∀ P : Box N (k + 1), m ≤ P.width →
+      ∃ qGamma qDelta : Nat,
+        (qGamma : Real) ≤ section16Lemma9QBound sigma theta gamma k ∧
+        (qDelta : Real) ≤
+          section16Lemma9DeltaQBound sigma delta theta1 k ∧
+        Section16LineCover_unrestricted_box_encoding P B1 (section16PhiOne phi x0) sigma
+          (section16Lemma9Width m qDelta k sigma theta gamma delta theta1 zeta)
+          qGamma
+
+/-- **Lemma 16.9.** On almost all of every proper box, `phi_1` is covered
+on each final-coordinate fibre by at most `qGamma` globally affine maps.
+The delta-side recurrence count `qDelta` independently controls the width.
+Both graph-count bounds and the corrected composite width are unchanged.
+
+As in Lemma 16.6, prime modulus and positive dimension are the paper's
+standing setting, and proper input/output boxes enforce cardinality widths.
+The earlier unrestricted encoding is retained above for auditability. -/
+def lemma_16_9 : Prop :=
+  ∀ (N k m : Nat) [NeZero N] [Fact N.Prime], 1 ≤ k →
+    ∀ (theta gamma sigma : Real),
+    0 < theta → theta ≤ 1 → 0 < gamma → gamma ≤ 1 →
+    0 < sigma → sigma ≤ 1 →
+    ∀ (B : Finset (Point N (k + 1)))
+      (phi : Point N (k + 1) → ZMod N)
+      (H Jbase H1 : Finset (Point N k))
+      (Y : (h : Point N k) → Finset (Section16CubeElement B h))
+      (phiPrime : Point N k → ZMod N → ZMod N) (x0 : Point N k),
+    let theta1 := section16ThetaOne theta gamma k
+    let delta := section16Delta theta1
+    let zeta := section16Zeta theta gamma k
+    let t := section16T delta theta1 k
+    let r := section16Lemma9R theta gamma k
+    let B1 := section16GoodDomain B H1 Y x0
+    H1 = H ∩ Jbase →
+    MultiplyLinear delta t
+      (restrictRelation (section16SpectrumRelation B delta) Jbase) →
+    Section16InducedSelection B phi H Y
+      (fun h => section16LargeSpectrum B h delta) zeta phiPrime →
+    Section16PhiOneIdentity B1 phi x0 phiPrime →
+    MultiplyLinearFunction gamma r B1 (section16PhiRemainder phi x0) →
+    ∀ P : Box N (k + 1), P.IsProper → m ≤ P.width →
       ∃ qGamma qDelta : Nat,
         (qGamma : Real) ≤ section16Lemma9QBound sigma theta gamma k ∧
         (qDelta : Real) ≤
@@ -745,9 +802,8 @@ def FinalCoordinateSectionsMultiplyLinear {N k : Nat} [NeZero N]
     MultiplyLinearFunction gamma r (section16FinalCoordinateSection B1 x)
       (section16FinalCoordinateRestriction phi1 x)
 
-/-- The conclusion of Lemma 16.9 uniformly over all boxes and error
-parameters, packaged as a standing hypothesis for Lemma 16.10. -/
-def Section16AllBoxLineCovers {N k : Nat} [NeZero N]
+/-- Earlier all-box premise retained with its original unrestricted predicate. -/
+def Section16AllBoxLineCovers_unrestricted_box_encoding {N k : Nat} [NeZero N]
     (theta gamma : Real) (B1 : Finset (Point N (k + 1)))
     (phi1 : Point N (k + 1) → ZMod N) : Prop :=
   let theta1 := section16ThetaOne theta gamma k
@@ -755,6 +811,24 @@ def Section16AllBoxLineCovers {N k : Nat} [NeZero N]
   let zeta := section16Zeta theta gamma k
   ∀ sigma : Real, 0 < sigma → sigma ≤ 1 → ∀ m : Nat,
     ∀ P : Box N (k + 1), m ≤ P.width →
+      ∃ qGamma qDelta : Nat,
+        (qGamma : Real) ≤ section16Lemma9QBound sigma theta gamma k ∧
+        (qDelta : Real) ≤
+          section16Lemma9DeltaQBound sigma delta theta1 k ∧
+        Section16LineCover_unrestricted_box_encoding P B1 phi1 sigma
+          (section16Lemma9Width m qDelta k sigma theta gamma delta theta1 zeta)
+          qGamma
+
+/-- Lemma 16.9 uniformly over proper boxes and error parameters. Proper
+inputs are required consistently with the migrated Lemmas 16.6 and 16.9. -/
+def Section16AllBoxLineCovers {N k : Nat} [NeZero N]
+    (theta gamma : Real) (B1 : Finset (Point N (k + 1)))
+    (phi1 : Point N (k + 1) → ZMod N) : Prop :=
+  let theta1 := section16ThetaOne theta gamma k
+  let delta := section16Delta theta1
+  let zeta := section16Zeta theta gamma k
+  ∀ sigma : Real, 0 < sigma → sigma ≤ 1 → ∀ m : Nat,
+    ∀ P : Box N (k + 1), P.IsProper → m ≤ P.width →
       ∃ qGamma qDelta : Nat,
         (qGamma : Real) ≤ section16Lemma9QBound sigma theta gamma k ∧
         (qDelta : Real) ≤

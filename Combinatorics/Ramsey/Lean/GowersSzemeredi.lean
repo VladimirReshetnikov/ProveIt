@@ -66,6 +66,10 @@ import GowersSzemeredi.Proofs16LocalizedThreshold
 import GowersSzemeredi.Proofs16ProductAssembly
 import GowersSzemeredi.Proofs16Lemma6Parameters
 import GowersSzemeredi.Proofs16Lemma6
+import GowersSzemeredi.Proofs16FibreGeometry
+import GowersSzemeredi.Proofs16WidthMonotonicity
+import GowersSzemeredi.Proofs16FibreCovers
+import GowersSzemeredi.Proofs16Lemma9
 import GowersSzemeredi.Proofs16ArrangementSelection
 import GowersSzemeredi.Proofs16CubeDensity
 import GowersSzemeredi.Proofs05Progressions
