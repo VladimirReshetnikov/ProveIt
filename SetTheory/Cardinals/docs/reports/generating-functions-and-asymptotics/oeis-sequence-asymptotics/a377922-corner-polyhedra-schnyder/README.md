@@ -103,6 +103,39 @@ Combin. 30(2) (2023), P2.17). Put `μ_P = 9/2`, `μ_S = 16/3`,
   non-D-finiteness of the three generating functions, and first-threshold
   inverses with error `o(log log Y)` (Theorem 23.1). Table 2 maps every
   result of Report 112 to its counterpart in Parts I–II.
+- *[Independent check, 5 October 2026.]* An adversarial check made by the
+  intake after the write (`9b4001d29`) found all seven items it examined
+  valid: the write's Remarks 22.1, 27.1, 29.3 and 29.4, and, as spot checks
+  of Report 112, the sleeve Proposition 29.1, the moment certificates
+  `189/13` and `524/405`, and the bounds `4 < α_P < 5`, `6 < α_S < 7`. It
+  found no counterexample and no gap in any proof chain. Four refinements
+  were adopted where they stand: Table 3's row `m, h` now says half-scale
+  drift and corrector (only covariances are quarter-scale; the row `G, C`
+  had the same slip and is corrected likewise); in Remark 27.1 the
+  coefficient of `t^(n-m)` in `H^(m)` carries `R^n`, not `R^(n-m)` (dated
+  note after the remark; the constant factor `R^m` changes nothing else);
+  the remark now says that the irrationality of `α_P` and `α_S` is still
+  used, proved at the start of Section 27; and it says why `R = 1/Γ` is
+  algebraic (Pringsheim's theorem and the leading coefficient of the minimal
+  operator). The Fischler–Rivoal locators ("Theorem 6", "Corollary 1",
+  pp. 328–329) are right for the journal version that the bibliography
+  names; in arXiv:1103.6022v2 the same results are Theorem 3 (§4.1) and
+  Corollary 1 (§4.2), and the bibliography entry now gives both numberings.
+  The tests, none of which used the delivered or the write's programs: exact
+  SymPy recomputation of both kernel sets (Part III's `P(u, v)`, `G(u, v)`
+  and Part I's `K_P`, `K_S`), reproducing every drift, corrector and
+  covariance of Remark 22.1 and the factor 4 in both phases; a symbolic check
+  of Remark 29.4 against Remark 20 of Fusy–Narmanli–Schaeffer
+  (arXiv:2202.09172v3) and of the convolution `s_n = b_n + 3b_{n-1} +
+  3b_{n-2} + b_{n-3}` on the OEIS terms for `n = 4..30`; the sleeve
+  sandwich `s_{n-6} ≤ b_n ≤ s_n` on the OEIS terms for `n = 6..30` (no
+  violation; smallest `b_n/s_{n-6}` is 14, at `n = 8`), with the sleeve's
+  definitions compared with that paper's Section 2.1; `189/13` and
+  `524/405` recomputed exactly; and the bounds on `α_P`, `α_S` verified by
+  exact integer comparisons (mpmath: `α_P = 4.2274760821…`,
+  `α_S = 6.0803048461…`). Its record is an unlabelled dated paragraph at
+  the end of Section 31: a careful reading with exact computations and data
+  checks, not a formal verification.
 
 ## What is not claimed
 
@@ -281,7 +314,16 @@ its equations are numbered within sections. The write added 29 notes dated
 `[write, 2026-10-05]`: six in the guide before Part I (and a dated
 paragraph in the abstract), four in Part I, one in Part II, eighteen in
 Part III, and four remarks of its own in Part III (22.1, 27.1, 29.3,
-29.4) and the further questions of Section 31.1.
+29.4) and the further questions of Section 31.1. After the intake's
+independent check of 5 October 2026: one formula of Remark 27.1 corrected,
+with a dated note after the remark keeping its first wording; two rows of
+Table 3 corrected and two sentences of Remark 27.1 clarified, each marked
+"[corrected at the independent check]"; one sentence added to question Q4,
+marked "[added at the independent check]"; a sentence in Section 22 pointing
+to the record;
+the Fischler–Rivoal bibliography entry extended with the arXiv numbering;
+and an unlabelled dated paragraph, "Independent check of the write", at the
+end of Section 31. No label was added, renamed or renumbered.
 
 ## Files
 

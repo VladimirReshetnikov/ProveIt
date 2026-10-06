@@ -1548,7 +1548,8 @@ This section was written when bundle Report 112 was added as Part~\ref{cps:part:
 delivered, apart from labels and the changes listed below, with dated notes marked
 \textbf{[write, 2026-10-05]}. In Part~\ref{cps:part:logcone}, ``this report'' and ``the
 source'' are Report 112's words: the first means Report 112, the second the paper of
-Fusy, Narmanli and Schaeffer \cite{FNS}.
+Fusy, Narmanli and Schaeffer \cite{FNS}. An independent check of the write, made afterwards, is
+recorded at the end of Section~\ref{cps:log:sec:research}.
 
 \subsection{What is new, and what is a second route}\label{cps:log:sec:new}
 Part~\ref{cps:part:logcone} proves no asymptotic statement about A377922, A377920 or A377921
@@ -1727,7 +1728,7 @@ false identification.}\label{cps:log:tab:notation}
 \midrule
 \Sigma_P,\Sigma_S & covariance per unit time in half-scale coordinates & the same per physical unit & they are equal; Part III's is a quarter (Remark~\ref{cps:log:rem:scale})\\
 V^P_c,V^S_c & phase-conditional covariances (Section~\ref{cps:log:sec:literature}) & $C^P_i$, $C^S_i$, four times larger; Part II's $V$ is a harmonic function & \\
-m,h & quarter-scale drift and corrector, $(I-P)h=m$ & $d$, $h$ physical & $h_0=h^{\mathrm I}_{\e}$\\
+m,h & half-scale drift and corrector, $(I-P)h=m$ \textup{[}corrected at the independent check\textup{]} & $d$, $h$ physical & $h_0=h^{\mathrm I}_{\e}$\\
 \Gamma_P,\Gamma_S & growth rates $9/2$, $16/3$ & $\mu_P$, $\mu_S$; Part II's $\Gamma$ is the Gamma function & \\
 \nu & $\pi/\theta$ & $p$; Part II's $\nu$ is the meander endpoint law & $\nu$ a measure\\
 c,d,a,b & phases $0,1$ ($0=\e$, $1=\oState$); $a,b$ endpoint phases in Thm~\ref{cps:log:thm:cone} & $a,b$ points & \\
@@ -1740,7 +1741,7 @@ F & face matrix ($=W$); Fourier matrix; $F(z)$ a generating function & Fourier m
 J & SE matrix ($=E$); angular interval in (H5); a stage index & the state $J_t$ & \\
 W & whitening $\Sigma^{-1/2}$ & Part I: face matrix; Part II whitens with $T=(2\Sigma)^{-1/2}$ & \\
 T & corrected increment; time constant $T(q)$ & Part I: $T(z)$; Part II: whitening & \\
-G,C & Schnyder quarter-scale kernel and its scalar $C(u,v)$ & $K_S$; Part II's $C$ the open quadrant & \\
+G,C & Schnyder half-scale kernel and its scalar $C(u,v)$ \textup{[}corrected at the independent check\textup{]} & $K_S$; Part II's $C$ the open quadrant & \\
 K_n & killed kernel & $q_n$; $K_P$, $K_S$ step matrices & \\
 b_n,B(t) & A377921 and its series & $\widetilde s_n$, $T(z)=\widetilde S(z)$; Part II's $b_j$, $b_P$, $b_S$ & \\
 H & $H(t)=F(Rt)$; Dirichlet solution $H_f$ & Schnyder denominator; Part II's $\mathcal H$ & \\
@@ -2664,20 +2665,34 @@ The G-function arithmetic hypotheses are essential.
 \emph{Let $a_n\ge0$ be integers with $a_n=\Gamma^nn^{-\alpha+o(1)}$, $\Gamma>1$ and
 $\alpha\in\RR\setminus\mathbb Q$. Then $\sum_na_nz^n$ is not D-finite over $\mathbb C(z)$.} This is what
 the argument above proves; it is stated there for the two sequences, with $m=\lfloor\alpha\rfloor$.
-In general take any integer $m\ge0$ with $m>\alpha-1$. The coefficients of $H^{(m)}$ are
-$n(n-1)\cdots(n-m+1)a_nR^{n-m}$, eventually positive and equal to $n^{m-\alpha+o(1)}$, and
+In general take any integer $m\ge0$ with $m>\alpha-1$. The coefficient of $t^{n-m}$ in $H^{(m)}$ is
+$n(n-1)\cdots(n-m+1)a_nR^{n}$, eventually positive and equal to $n^{m-\alpha+o(1)}$, and
 $m-\alpha>-1$. For $0<\epsilon<m-\alpha+1$, the comparison \eqref{cps:log:eq:powersum} with
 exponents $m-\alpha\pm\epsilon$ gives the two-sided bound above, so
 $H^{(m)}(t)\to+\infty$ (the exponent $\alpha-m-1$ is negative) and the limit
 \eqref{cps:log:eq:irrational-limit} equals $\alpha-m-1$, which is irrational. The $G$-function
-step needs only integer coefficients and an exponential bound, both of which hold, and gives a
-rational limit, a contradiction; the reduction from $\mathbb C(z)$ to $\mathbb Q(z)$ is the paragraph
-above. Lemma~\ref{cps:lem:nonD} is the special case $a_n=\Theta(\mu^nn^{-\alpha})$, and
-Theorem~\ref{cps:thm:main} with Lemma~\ref{cps:lem:irrational} is not needed for the three
-sequences once \eqref{cps:log:eq:mainp}--\eqref{cps:log:eq:mainb} are known. The bounds $4<\ap<5$ and
+step needs only integer coefficients and an exponential bound, both of which hold. By Pringsheim's
+theorem $R=1/\Gamma$ is a singularity of $F$, hence a root of the leading coefficient of its
+minimal operator, which lies in $\mathbb Q[z]$; so $R$ is algebraic and the local theorem applies
+at $R$ (in particular $\Gamma$ is algebraic, as it must be) \textup{[}corrected at the independent check; see the end of
+Section~\ref{cps:log:sec:research}\textup{]}.
+The step then gives a rational limit, a contradiction; the reduction from $\mathbb C(z)$ to
+$\mathbb Q(z)$ is the paragraph above. Lemma~\ref{cps:lem:nonD} is the special case $a_n=\Theta(\mu^nn^{-\alpha})$, and
+Theorem~\ref{cps:thm:main} is not needed for the three sequences once
+\eqref{cps:log:eq:mainp}--\eqref{cps:log:eq:mainb} are known; the irrationality of $\ap$ and $\as$ is
+still used, and is proved at the start of this section by the argument of Lemma~\ref{cps:lem:irrational}
+\textup{[}corrected at the independent check; see the end of
+Section~\ref{cps:log:sec:research}\textup{]}. The bounds $4<\ap<5$ and
 $6<\as<7$ above are rechecked: $\cos(\pi/3)=1/2<9/16<\cos(\pi/4)$, and
 $\cos(\pi/5)=(1+\sqrt5)/4<22/27<\cos(\pi/6)$, the last because $(44/27)^2=1936/729<3$.
 \end{remark}
+\noindent(Dated note, 5~October 2026: Remark~\ref{cps:log:rem:criterion} first read ``The
+coefficients of $H^{(m)}$ are $n(n-1)\cdots(n-m+1)a_nR^{n-m}$''. Since $H(t)=F(Rt)$, the
+coefficient of $t^{n-m}$ in $H^{(m)}$ carries $R^{n}$; the factor $R^{n-m}$ belongs to the
+coefficients of $F^{(m)}(Rt)$, which differs from $H^{(m)}(t)$ by the constant factor $R^{m}$.
+The size $n^{m-\alpha+o(1)}$, the two-sided bound and the rest of the argument are unchanged. The
+formula was corrected, and two sentences of the remark were clarified, at the independent check
+recorded at the end of Section~\ref{cps:log:sec:research}.)
 
 \section{First thresholds without monotonicity}\label{cps:log:sec:inverse}
 Let $a_n=\Gamma^n n^{-\alpha+o(1)}$ with $\Gamma>1$ and put
@@ -3064,12 +3079,84 @@ write found to be wrong.
  the bridge tightness in the proof of Lemma~\ref{cps:log:lem:bridge}, and the page locators of
  \cite[Theorem 2.1(ii)]{Whitt} and \cite[Theorem 6, Corollary 1]{FR} are given by Report 112 with
  the arguments printed above; the intake read them as sound but did not verify the cited pages.
+ The locators of \cite{FR} were checked afterwards, against the journal version and the arXiv
+ preprint; see the end of this section \textup{[}added at the independent check\textup{]}.
  The check that Report 111's chain satisfies (H1)--(H5)
  (Section~\ref{cps:log:sec:siblings}) is printed in that report, not here.
 \item\label{cps:log:q:rates} \emph{Rates, corrections and rounding} (Report 112's items 3 and 5):
  open, as in the notes above.
 \end{enumerate}
 \end{enumerate}
+
+\paragraph{Independent check of the write (dated note, 5~October 2026).}
+An independent adversarial check of Part~\ref{cps:part:logcone}, made by the intake after the
+write (\texttt{9b4001d29}), reread the four remarks of the write,
+Remarks~\ref{cps:log:rem:scale}, \ref{cps:log:rem:criterion}, \ref{cps:log:rem:theta}
+and~\ref{cps:log:rem:rigid}, and spot-checked three items of Report~112: the sleeve
+Proposition~\ref{cps:log:prop:sleeve}, the moment certificate $189/13$ of
+\eqref{cps:log:eq:Smoment} with the corner moment $524/405$ of
+Section~\ref{cps:log:sec:repro}, and the bounds $4<\ap<5$, $6<\as<7$ of
+Section~\ref{cps:log:sec:nonD}. It found all seven items valid, no counterexample, and no gap in
+any proof chain. Four refinements were adopted where they stand. In
+Table~\ref{cps:log:tab:notation} the row $m,h$ called the drift and corrector quarter-scale; they
+live in half-scale coordinates, and only the covariances are a quarter of Parts~I--II's. The row
+$G,C$, which called the Schnyder kernel quarter-scale, was corrected in the same way when the
+check was applied. In Remark~\ref{cps:log:rem:criterion} the coefficient of $t^{n-m}$ in
+$H^{(m)}$ now carries $R^{n}$, not $R^{n-m}$ (dated note after the remark; the two differ by the
+constant factor $R^{m}$, so nothing else changes). The remark's sentence on what is not needed
+now says that the irrationality of $\ap$ and $\as$ is still used, and where it is proved. Its
+general statement now says why $R=1/\Gamma$ is algebraic, which the local step at $R$ uses:
+by Pringsheim's theorem $R$ is a singularity of $F$, hence a root of the leading coefficient of
+the minimal operator. No other statement or number changed.
+
+The check also compared the locators of \cite{FR} with the paper. Part~\ref{cps:part:exponents}
+cites Theorem~6 of Section~4.1, and Section~\ref{cps:log:sec:nonD} cites Theorem~6 and
+Corollary~1 on pp.~328--329. They are right for the journal version that the bibliography names
+(Theorem~6 on p.~328, Corollary~1 in Section~4.2 on p.~329, checked against the publisher's PDF
+when the check was applied). In the preprint arXiv:1103.6022v2 the same results are Theorem~3
+(Section~4.1) and Corollary~1 (Section~4.2). The bibliography entry now gives both numberings;
+no citation in the text changed.
+
+The check used neither the delivered programs nor the write's. In exact SymPy arithmetic it
+recomputed both kernel sets. From Part~\ref{cps:part:logcone}'s kernels
+\eqref{cps:log:eq:Pkernel} and \eqref{cps:log:eq:Gkernel}, solving $(I-P)h=m$, it recovered
+$m_0$, $h_0$, $V^P_c$, $V^S_c$ and $\Sigma^{\mathrm{III}}_P$, $\Sigma^{\mathrm{III}}_S$ as
+printed. From Part~\ref{cps:part:exponents}'s physical kernels \eqref{cps:eq:PK} and
+\eqref{cps:eq:SM}, with Part~\ref{cps:part:exponents}'s own corrector equation, it recovered
+$d_{\e}=(1/6,1/6)$ and $(-1/8,-1/8)$, $h^{\mathrm I}_{\e}=(1/10,1/10)$ and $(-1/14,-1/14)$, and
+the matrices of \eqref{cps:eq:PC} and \eqref{cps:eq:SC}. The conversion formulas of
+Remark~\ref{cps:log:rem:scale} reproduce $d$ and $h^{\mathrm I}$ in both phases exactly, and
+$4V^P_c=C^P_c$, $4V^S_c=C^S_c$ for both phases, $\Sigma^{\mathrm{III}}_P=\Sigma_P/4$ and
+$\Sigma^{\mathrm{III}}_S=\Sigma_S/4$. For Remark~\ref{cps:log:rem:criterion} it re-derived the
+argument for every integer $m\ge0$ with $m>\alpha-1$: nonnegativity of all $a_n$ is used, for
+the positivity of $F^{(m)}$, and the reduction from $\mathbb C(z)$ to $\mathbb Q(z)$ is correct.
+It verified the bounds on $\ap$ and $\as$ exactly ($81/256<1/2$, $3645<3721$, $1936<2187$);
+mpmath gives $\ap=4.2274760821\ldots$ and $\as=6.0803048461\ldots$.
+
+For Remark~\ref{cps:log:rem:rigid} it read Remark~20 of \cite{FNS} in arXiv:2202.09172v3, which
+is \eqref{cps:log:eq:921gf}, and confirmed symbolically that
+$(1+t)^3(1+B)-1-3t=(1+t)^3B+3t^2+t^3$; both sums start at $n=2$. On the OEIS terms the identity
+holds for all $31$ coefficients, and $s_n=b_n+3b_{n-1}+3b_{n-2}+b_{n-3}$ holds for
+$n=4,\ldots,30$. For Proposition~\ref{cps:log:prop:sleeve} it compared the definitions used with
+Section~2.1 of \cite{FNS} (white root; outer labels $R,G,B,R,G,B$ counterclockwise from the root;
+the conditions on outer and inner vertices, the latter independent of the vertex colour;
+``isolated'' meaning degree two), checked the rotation at $v_i$ on a convex model, the outer
+labels with $w_5$ white, the four-cycle argument and the rooted inverse, and confirmed
+$s_{n-6}\le b_n\le s_n$ on the OEIS terms for every $n=6,\ldots,30$ with no violation. The
+smallest ratio $b_n/s_{n-6}$ is $14$, at $n=8$, and $b_{30}/s_{30}=0.542906$. The proposition is
+stated for $n\ge8$; the inequality also holds at $n=6,7$. For Remark~\ref{cps:log:rem:theta} it
+checked the direction of both inequalities and that, with Theorem~\ref{cps:thm:main} and
+$\alpha>0$, they give a two-sided $\Theta$ for all large $n$; $b_n\mu_S^{-n}n^{\as}$ is $28.3$,
+$60.6$ and $81.4$ at $n=10$, $20$ and $30$, bounded and slowly rising toward
+$(16/19)^3\kappa_S$. For \eqref{cps:log:eq:Smoment} it substituted the critical tilt into the
+face matrix, whose entries all become $x^4/(1-2x^2)$ with $x=e^t/2$; both row sums equal
+$f(t)=162/175$ at $t=\log(6/5)$, SE contributes $\tfrac34e^{2t}=27/25$, the moment is $1$ at
+$t=0$, and $(27/25)/(13/175)=189/13$ with $e^{2t}=36/25<2$. For $524/405$ it rebuilt the corner
+quotient law (SE with $\ell^1$ length $1$ and probability $2/3$; a face with length $I+J+1$ and
+probability $1/3$, with $I$, $J$ independent and geometric, $\PP(I=i)=\frac23 3^{-i}$), checked
+that it reproduces the kernel weight $\frac2{27}3^{-i-j}$, and summed
+$\frac23R+\frac4{27}R/(1-R/3)^2=\frac45+\frac{40}{81}=\frac{524}{405}$ at $R=6/5$. This was a
+careful reading with exact computations and data checks, not a formal verification.
 
 \section{Reproducibility and interpretation of the checks}\label{cps:log:sec:repro}
 The accompanying reader package contains this editable \LaTeX\ source,
@@ -3234,7 +3321,9 @@ S. Fischler and T. Rivoal,
 \emph{On the values of $G$-functions},
 Commentarii Mathematici Helvetici \textbf{89} (2014), 313--341.
 \href{https://doi.org/10.4171/CMH/321}{doi:10.4171/CMH/321}.
-Theorem 6, Section 4.1, p. 328.
+Theorem 6, Section 4.1, p. 328; Corollary 1, Section 4.2, p. 329.
+In the preprint arXiv:1103.6022v2 the same results are Theorem 3 (Section 4.1) and Corollary 1
+(Section 4.2) (both versions checked 5 October 2026).
 
 \bibitem{BRS}
 A. Bostan, K. Raschel, and B. Salvy,

@@ -1,55 +1,471 @@
-# Report 110 — All logarithmic orders for closed lambda terms
+# Closed Lambda Terms
 
-This local, self-contained research package proves every fixed inverse-logarithmic order in the logarithms of unrestricted closed lambda-term counts OEIS A135501 and A220894, with a controlled threshold inverse. It does not prove a multiplicative equivalent, an amplitude, or a full multiplicative transseries. The proofs are ordinary analytic proofs, not Lean formalizations or external peer review. No priority claim is made.
+**All logarithmic orders, a controlled threshold inverse, and the random binding geometry of a closed term, for OEIS A135501 and A220894**
 
-## Main files
+This is a research report built on 5 October 2026 (write batch 103) from
+two manuscripts of one external research session, Reports 110 and 109 of
+the session bundle of Reports 1–243, both dated 2 October 2026. Both count
+the closed lambda terms of size `n` up to alpha-equivalence, `A_s(n)`, when
+abstractions and applications have size one and variable occurrences size
+`s ∈ {0, 1}`: `A_1` is [A135501](https://oeis.org/A135501)
+(`0, 0, 1, 2, 4, 13, 42, 139, …`) and `A_0` is
+[A220894](https://oeis.org/A220894) (`0, 1, 3, 14, 82, 579, …`).
+Throughout `r = s + 1`, `N = n + 1`, `t = W(4eN e^{−r/2})` and
+`M_r(N) = (N/r)(t − 2 + 1/t) + N/2`.
 
-- `report110.pdf`: final report
-- `report110.tex`: complete, standalone mathematical source
-- `check.py`: exact, standard-library finite checker, independent of floating-point diagnostics
-- `data/`: four exact JSON fixtures, covering total counts through size 30, reduced-height counts, coefficients, and check coverage
-- `validation/`: reader-facing checker, independent implementation review, and corruption records
-- `manifest.json`: strict SHA-256 inventory, including the final PDF and all distributable files except the manifest itself
-- `build.py`, `integrity.py`, `corruption_test.py`, `seal.py`, `replay.py`: reproducible package tools
+- **Part I** (Report 110, the base): `M_r(N) − O(log N) ≤ log A_s(n) ≤ M_r(N) + O(R_r(N))`,
+  `R_r(N) = N^{1−1/(3r)} (log N)^{−2/3+1/(3r)}`, hence every fixed
+  inverse-logarithmic order of `log A_s(n)` (polynomials `P_j`, a recurrence
+  for all orders), in particular the coefficient `1/2 − (log 4)/r` of
+  `n/log n`; a controlled threshold inverse with an asymmetric bracket.
+- **Part II** (Report 109): the weaker four-scale form
+  `log A_s(n) = (N/r)(w − 2 + 1/w) + O(N/log N)`, `w = W(4eN)`, as a second
+  route, with a weaker inverse; the skeleton sandwich; and a joint
+  large-deviation principle at speed `n` for the scaled number of abstractions
+  `T_n = U_n log N/N` and maximum unary height `X_n = H_n log N/N` of a
+  uniform random closed term, rate `(t − 1 − log x)/r` on `0 < x ≤ t`, with
+  `L^p` convergence of both to 1 and the deficit rate `d/r`.
+- **Added by the write**: Remark 18.1, which shows from Part I's estimates
+  that Part II's open ratio `R(b,u) = A(b,u)/(C_b u^{b+1})` satisfies
+  `log R(b,u)/u → 1/2` at the moving saddle.
 
-The report gives the explicit first six forward polynomials and a recurrence for every fixed order. The exact checker generates forward coefficients through order 8 and inverse coefficients through order 6 via independent logarithmic and exponential formal-series identities. It verifies integer recurrences, both size conventions and parity, reduced shape counts and depths, rational radical bounds, exact spine convolution inequalities and moments. All guards remain active with `python3 -O`.
+| Source | Bundle report | Archive | Pin | Placed | Printed as |
+|---|---|---|---|---|---|
+| *All logarithmic orders for closed lambda terms: Uniform counting bounds and a controlled threshold inverse* (base); author line "Report 110" | 110 | `Closed_Lambda_Terms_All_Logarithmic_Orders_Source.zip` (415,377 bytes, 24 files; `report110.tex`, 589 lines, 16 pp.) | none | `9c995cefe` | Part I, Sections 1–10 |
+| *Unrestricted closed lambda terms: Logarithmic growth and random binding geometry*; author line "Report 109" | 109 | `Closed_Lambda_Terms_Growth_and_Binding_Geometry_Source.zip` (469,757 bytes, 20 files; `report109.tex`, 647 lines, 16 pp.) | none | `9c995cefe` | Part II, Sections 11–19, plus the write's Section 20; the proof of its Section 3 in Part I, Section 3 |
 
-The analytic theorem is not inferred from these finite checks. All packaged mathematical checks use exact integer/rational arithmetic and require neither SymPy nor floating-point diagnostics.
+Both archives arrived unchanged in `60f54ea06` ("Arrival: 177 research
+archives from the session bundle of Reports 1-243") and survive there
+(`git show 60f54ea06:docs/incoming/<archive> > <archive>`); the placement
+commit `9c995cefe` (batch 103, cluster closed lambda terms) removed them from
+`docs/incoming/`. The write is batch 103's "Write batch 103
+(a135501-closed-lambda-terms): new report, closed lambda terms". Report 109
+was written about fifteen minutes before Report 110 (index times 08:01:33Z
+and 08:17:00Z); Report 110 never names it, but says that it "does not repeat
+separate large-deviation results for binding geometry".
 
-## Reproduce locally
+**Status.** Unrefereed; not formalized; no statement has been checked by a
+proof assistant. Neither manuscript names an author or a tool, says it is
+AI-assisted, or carries "prepared for private review" wording. Each package's
+`checker_audit.md` is the delivering session's audit of its own finite
+checker, not an assessment by a referee or by this repository. Every result,
+proof, example, remark, question and limitation of the two manuscripts is
+printed, with one proof printed once (see "Labels and numbering").
 
-Python 3.9 or newer is required. The checker uses only the standard library.
+## Files
+
+The directory holds 39 files: 5 at the root, 14 in `code/`, 20 in `data/`.
+
+**Report files**, written in the write: this guide, the merged article and its PDF.
 
 ```
-python3 integrity.py
-python3 -O integrity.py
-python3 check.py
-python3 -O check.py
-python3 corruption_test.py
-python3 build.py
-python3 integrity.py
+README.md
+article.pdf
+article.tex
 ```
 
-The build requires pdfTeX/pdfLaTeX plus the TeX packages listed in `report110.tex`. It performs two clean builds under fixed metadata and requires byte-identical PDFs. It never installs software or accesses the network. Overfull boxes, unresolved citations, and unresolved references fail the build.
-
-The archive can be replayed from a fresh directory, including the final PDF:
+**Report 110, prefix `110-orders-`**: 18 files besides the article (1 at the
+root, 7 in `code/`, 10 in `data/`); its `report110.tex` is the base of
+`article.tex`. Root: the delivering session's audit of its finite checker.
+`code/`: the exact checker, the separately coded auditor probes, the
+integrity, corruption, build, replay and sealing scripts. `data/`: the four
+exact fixtures (counts through size 30, reduced-height counts, series
+coefficients, check summary) and the recorded validation runs.
 
 ```
-python3 replay.py --archive report110_source_checks.zip --out /tmp/report110-fresh
+110-orders-validation-checker_audit.md
+code/110-orders-build.py
+code/110-orders-check.py
+code/110-orders-corruption_test.py
+code/110-orders-integrity.py
+code/110-orders-replay.py
+code/110-orders-seal.py
+code/110-orders-validation-auditor_probes.py
+data/110-orders-check_results.json
+data/110-orders-coefficients.json
+data/110-orders-counts.json
+data/110-orders-height_counts.json
+data/110-orders-validation-auditor_probes_normal.log
+data/110-orders-validation-auditor_probes_optimized.log
+data/110-orders-validation-build.log
+data/110-orders-validation-check_normal.log
+data/110-orders-validation-check_optimized.log
+data/110-orders-validation-corruption.json
+data/110-orders-validation-corruption_optimized.json
+data/110-orders-validation-pdf_qa.json
 ```
 
-The destination must not exist. Replay validates the exact archive inventory, extracts, runs normal/optimized integrity and exact mathematical checks, runs the corruption campaign, rebuilds the PDF, and verifies its bytes against the archived PDF. The output directory receives a structured replay result and step logs. Its mutation campaign uses disposable copies; mathematical mutants bypass the manifest deliberately, ensuring failures are real mathematical guards rather than hash mismatches.
+Two pairs are **byte-identical**: `data/110-orders-validation-check_normal.log`
+= `check_optimized.log`, and `data/110-orders-validation-corruption.json` =
+`corruption_optimized.json`. They are records of two runs (normal and
+`python -O`) whose output happens to be the same, as delivered, not shipped
+copies; both are kept. The two `auditor_probes_*.log` records differ in one
+line (`optimized=False`/`True`).
 
-`python3 check.py --write-data` is an explicit maintainer command to replace fixtures; the normal command only verifies them. `python3 integrity.py --generate` explicitly regenerates the manifest. `python3 seal.py` creates the deterministic source/checks ZIP after verification. Do not regenerate a received manifest to make a verification failure disappear: retain the original archive and investigate.
+**Report 109, prefix `109-binding-`**: 16 files (1 at the root, 7 in `code/`,
+8 in `data/`). Root: the delivering session's audit of its finite checker.
+`code/`: the exact checker, the de Bruijn enumeration probes, the integrity,
+corruption, build, replay and sealing scripts. `data/`: the computed counts
+`A_s(n)` and the sums of abstraction counts for `n ≤ 200` in both models (not
+OEIS b-files; only the first 16 terms per model were compared with OEIS), the
+check summary, and the validation records.
 
-## Provenance and limits
+```
+109-binding-validation-checker_audit.md
+code/109-binding-build.py
+code/109-binding-check.py
+code/109-binding-corruption_test.py
+code/109-binding-integrity.py
+code/109-binding-replay.py
+code/109-binding-seal.py
+code/109-binding-validation-auditor_probes.py
+data/109-binding-A135501_computed.txt
+data/109-binding-A135501_unary_moment.txt
+data/109-binding-A220894_computed.txt
+data/109-binding-A220894_unary_moment.txt
+data/109-binding-check_results.json
+data/109-binding-validation-auditor_results.json
+data/109-binding-validation-build_and_visual_results.json
+data/109-binding-validation-corruption_results.json
+```
 
-The article contains the complete proof, including the coarse localization majorant. The exact bound is
+`code/109-binding-build.py` and `code/110-orders-build.py` differ only in the
+report number; so do the two `seal.py` scripts.
 
-M_r(N) - O(log N) <= log A_s(n) <= M_r(N) + O(R_r(N)),
+**Not shipped** (all retrievable from `60f54ea06`): both PDFs; both
+`manifest.json` files (checksum manifests of 19 and 23 entries, verified at
+placement with no mismatch; repository policy drops checksum manifests); the
+delivered `README.md` of Report 110 (staged at placement and replaced by this
+guide) and of Report 109 (not staged); `report109.tex` (printed as Part II).
 
-where r=s+1, N=n+1, t=W(4eN exp(-r/2)), M_r=N/r*(t-2+1/t)+N/2, and R_r=N^(1-1/(3r))*(log N)^(-2/3+1/(3r)).
+## Labels and numbering
 
-All theorem constants and onset thresholds are asymptotic, not explicit certified numerical bounds. The bibliography credits the located primary sources, including Bodini–Gardy–Gittenberger–Jacquot (2013), David et al. (2013), and fixed-parameter 2015/2018 work. The checked literature comparison is bounded. No downloaded literature PDFs or third-party author code are redistributed. No earlier report was modified and no artifact was published or uploaded.
+Label prefix **`lam:`**: Part I uses `lam:ao:` (Report 110's 68 labels, and the
+8 labels of Report 109's Section 3 proof printed there), Part II `lam:bg:` (50
+of Report 109's 62 labels). Report 109's other 4 labels name its copies of
+Report 110's identities `(2.1)–(2.3)` and of the display after them
+(`eq:biv-gf`, `eq:B0`, `eq:Bk`, `eq:coefficient`); they are printed once, in
+Part I. The front matter uses `lam:` (`lam:sec:guide`, `lam:sec:status`,
+`lam:sec:notation`, `lam:sec:provenance`, `lam:sec:neighbours`), and the write
+added `lam:ao:part`, `lam:bg:part`, `lam:ao:sub:further`,
+`lam:bg:sec:further`, `lam:bg:rem:ratio` and its three equations
+`lam:bg:eq:ratio-upper`, `-lower`, `-saddle`. 139 labels in all, all
+distinct. The six label names that occur in both manuscripts (`eq:B0`,
+`eq:G`, `eq:size`, `eq:uniform`, `sec:inverse`, `thm:inverse`) are distinct
+under the prefixes; `eq:G` and `eq:uniform` name different mathematics in the
+two (front matter, "Notation across the two Parts").
 
-The checksum manifest is an integrity inventory, not a signed authenticity certificate. Generated build/QA directories, local research-input storage, Python caches, the ZIP container, and its external final checksum file are intentionally outside the payload inventory. Every payload file actually included in the ZIP is manifested except `manifest.json` itself; the external final hash list includes the manifest and archive.
+| Part | Manuscript | Section here | Statement / equation `k.j` |
+|---|---|---|---|
+| I | Report 110 | `k` (unchanged, 1–10); Section 9.2 added | `k.j` (unchanged) |
+| I, Section 3 | Report 109, Section 3 (proof only) | 3.1–3.3 | Lemmas 3.2, 3.3 and Remark 3.4 unchanged; equations (3.6)–(3.11) become (3.2)–(3.7) |
+| II | Report 109 | `k + 10` (11–19); Section 20 added | `(k+10).j` |
+
+Report 110's Lemma 3.1 and the upper half of Report 109's Theorem 3.1 are one
+theorem with one proof. The proof is printed once, in Report 109's fuller
+wording, as Part I's Sections 3.1–3.3; Report 110's condensed proof, which
+takes the same steps in the same order, is not reprinted. Part II's Section 13
+keeps the statement of Report 109's Theorem 3.1 (Theorem 13.1) and a pointer.
+Report 109's (3.2)–(3.5) are Part I's (2.1)–(2.3) and the display after them.
+The write's Remark 18.1 is the last statement of Section 18, so no delivered
+number moved. A check of the build's `.aux` against separate builds of the
+two delivered `.tex` files confirmed every label's number under these
+offsets. The delivered READMEs, audits and code use the manuscripts' own
+numbers.
+
+## Notation
+
+One symbol was renamed: in the Report 109 text moved into Part I, the
+variable `t` of the shape series `D(t)` is written `z`, as in Report 110,
+because `t` is Part I's Lambert value. Report 109's citation keys `bci`,
+`david`, `restricted` are Report 110's `bggj2013`, `david2013`, `bggg2018`.
+Otherwise each Part keeps its manuscript's letters; the front matter lists
+every letter whose meaning changes, and each Part opens with a reading
+table. The most dangerous is **`u_*`**: Part I's `u_* = N/t` with
+`t = W(4eN e^{−r/2})` maximizes `F_N(u) + u/2`, Part II's `u_* = N/w` with
+`w = W(4eN)` maximizes `F_N(u)`; Part II's is smaller by about
+`(r/2) N/(log N)²`, and the two maxima differ by `N/(2 log N)(1 + o(1))`,
+exactly the gap between the two counting theorems. Others: **`t`** (Part I's
+Lambert value near `log N`; Part II's scaled abstraction count near 1),
+**`G_N`** (Part I's coarse envelope `F_N + cu − log 2`; Part II's placement
+envelope `F_N + u log(2eN/u)`), `L`, `ℓ`, `k` (Part I: `log N`, `log log N`;
+Part II's inverse: `log y`, `log log y`, which Part I calls `Y`, `v`), `K_r`
+(a constant in Part I, a rate function `K_r(d)` in Part II), `H` (harmonic
+number, envelope, random height), `T`, `z`, `J`, `I`, `R`, `Q`, `D`, `d`,
+`h`, `q`, `a`, `α`, `M`.
+
+## What the report claims
+
+**Part I (Report 110).**
+- Theorem 1.1: `M_r(N) − O(log N) ≤ log A_s(n) ≤ M_r(N) + O(R_r(N))`, with
+  constants depending at most on `r`; since `R_r(N)/(N/(log N)^k) → 0` for every
+  `k`, every fixed inverse-logarithmic order of `log A_s(n)` follows: (1.7)
+  with the polynomials `P_1, …, P_6` printed and a recurrence for all `P_j`; the
+  `n/log n` term is `(n/r)(log log n − log 4 + r/2)/log n`.
+- Theorem 1.2: the threshold inverse `ν_s(y) = min{n : A_s(n) ≥ y}`:
+  `N_0 − O(R_r(N_0)/log N_0) ≤ ν_s(y) + 1 ≤ N_0 + O(1)` with `M_r(N_0) = log y`,
+  the parametric form `N_0 = rY t_y/Π_r(t_y)`, the explicit form with error
+  `O(Y(1 + k)²/v⁴)` (`Y = log y`, `v = log Y`, `k = log v`), and a recurrence
+  for every inverse order.
+- Lemma 2.1 (reduced shape counts `C_q binom(u+q−1, 2q)`), Lemma 3.1 (the coarse
+  majorant `A(b,u) ≤ 2uK^u(4u)^b`, `K = e(2 + √3)`), Lemma 4.1 (a height-sensitive
+  bound evaluated beyond the unrestricted radius), Proposition 4.2
+  (`log A(b,u) ≤ b log(4u) + u/2 + E(b,u) + O(log(u+1))`,
+  `E = 3·2^{1/3} u (1+α)^{1/3} e^{−α/3}`), Section 5 (the exact single-spine
+  series `L_u = B_{u,0} Q_u`, `Q_u(1/(4u)) = √(u^u/u!)`, a negative-binomial
+  law and Cantelli), Section 6 (two-stage localization), Lemma 7.1 (analytic
+  remainder of the reversion).
+
+**Part II (Report 109).**
+- Theorem 11.1 (second route; superseded): `log A_s(n) = (N/r)(w − 2 + 1/w) + O(N/log N)`,
+  the four-scale form, `(log n/n) A_s(n)^{r/n} → 4/e`.
+- Theorem 11.2 (superseded): `ν_s(y) = rL/(ℓ − 2 log ℓ + log r + c_0 + 4 log ℓ/ℓ) + O(L/ℓ³)`,
+  `L = log y`.
+- Theorem 11.3: the joint large-deviation principle for `(T_n, X_n)`, rate
+  `J_r(t,x) = (t − 1 − log x)/r` on `0 < x ≤ t`, marginal rates
+  `I_r(x) = (x − 1 − log x)/r`, `L^p` convergence to 1, `E U_n ~ E H_n ~ n/log n`.
+  Corollary 11.4: the deficit `(U_n − H_n) log N/N` has rate `d/r`; a longest
+  unary path carries all but `o(n/log n)` abstractions in probability.
+- Lemma 12.1: the skeleton sandwich `C_b u^{b+1} ≤ A(b,u) ≤ C_b binom(u+2b, u) u^{b+1}`
+  and the exact weight formula; the size recurrence; the table of `A_s(n)`,
+  `n ≤ 10`; Lemmas 3.2–3.3 and Remark 3.4 (printed in Part I).
+
+**Added by the write** (marked `[write]`, dated 5 October 2026): **Remark
+18.1** with a complete proof — for all `u ≥ 1`, `b ≥ 0`,
+`0 ≤ log R(b,u) ≤ u/2 + E(b,u) + log(2u(u+1)(2b+1)(b+1))`; for
+`b ≥ (u/2)(H_u − 1) + au`, `log R(b,u) ≥ u/2 − (1/4) log u − 1/2 − log(1 + a^{−2})`;
+hence `log R(b,u)/u → 1/2` along such pairs with `log(b+1) = o(u)`, and at the
+moving saddle (admissible `u` with `(u − u_*) log N/u_* → 0`)
+`−O(log u) ≤ log R(b,u) − u/2 ≤ O(u^{1−1/(3r)}(log u)^{1/3})`. It uses only
+Part I's Proposition 4.2, its single-spine inequality (5.6), and Part II's
+Catalan bound and Lemma 12.1. It answers Part II's ratio frontier at the scale
+it names; it does not reprove Theorem 1.1, whose upper bound needs Part I's
+localization away from the saddle. Dated notes: Part I determines the
+coefficient of `n/log n` that Part II leaves undetermined (`1/2 − (log 4)/r`:
+`1/2 − log 2` for A135501, `1/2 − log 4` for A220894); Part II's Lambert
+expression is lower by `N/(2 log N)(1 + o(1))`, so its residual factor
+`exp{O(n/log n)}` is attained; Part II's inverse omits the constant
+`[1 + r/2 − 2 log(4r)]/ℓ` of the denominator, nonzero, so its error
+`O(L/ℓ³)` is of exact order and its approximation lies below `ν_s(y)`. Also:
+the front matter, two further-questions sections, the merged bibliography.
+
+## What the report does not claim
+
+Every limitation is printed in place. In short: **no multiplicative
+equivalent, amplitude, power-of-`n` factor, ratio limit between subclasses or
+multiplicative transseries** in either Part; Theorem 1.1 allows a
+stretched-exponential discrepancy `exp{O(R_r(N))}` above `e^{M_r(N)}`, and
+**the exponent `1 − 1/(3r)` of `R_r` is an upper-bound exponent from a
+shape-entropy majorant, not a proved scale** (Report 110 says so; the write
+repeats it after Theorem 1.1); the polynomial recurrences say nothing about
+truncation orders growing with `n`; no constants or onsets are explicit; no
+central limit theorem or fluctuation law for `U_n`, `H_n`; the
+path-concentration statement concerns a root-to-leaf path, not a consecutive
+root chain; natural-size, linear, affine, typed, beta-normal, bounded-index
+and bounded-height classes are not substitutes; Part II's comparison with
+David et al. does not subsume their normalization or head-abstraction
+theorems. Both packages: finite exact checks prove no asymptotic statement;
+only 16 OEIS prefix terms per model (Report 109) and 22 prefix entries
+(Report 110) were compared with OEIS; the literature comparisons are bounded,
+and neither manuscript claims global priority. **The literature statements
+(Bodini–Gardy–Gittenberger–Jacquot 2013, Theorem 22 and Remark 23; David et
+al. 2013, Theorem 5.4; the 2015 preprint of Bodini–Gardy–Gittenberger–
+Gołębiewski; Gittenberger–Larcher 2019; Grygiel–Larcher 2021;
+Bendkowski–Bodini–Dovgal 2019) were not checked against the papers** at the
+placement or at the write; the article says so in both Parts and in the
+bibliography.
+
+## Further questions, and the standing rule
+
+Each Part closes with "Further questions and research" (Sections 9.2 and 20).
+Under Vladimir's standing rule of 4 October 2026 the write moved there every
+claim stated without proof, with source, sketch and what is missing:
+
+- Part I (Section 9.2): (1) an equivalent, amplitude, multiplicative
+  transseries; (2) the first scale of `log A_s(n) − M_r(N)` beyond all fixed
+  orders (known only between `−O(log N)` and `O(R_r(N))`; residuals from the
+  shipped tables at `n ≤ 200` given as evidence); (3) uniform asymptotics of
+  the enriched spine class, **merged** with Report 109's question 4 on the
+  weighted-placement sum (partly answered for the total count); (4) an
+  organized multiplicative expansion; (5) explicit constants and onsets; (6)
+  the unchecked literature statements.
+- Part II (Section 20): (1) fluctuation scales and limit laws of `U_n`, `H_n`
+  (with the shipped first moments, `E U_n log N/N = 1.25` for `s = 1` at
+  `n = 200`, as evidence); (2) the typical size of `U_n − H_n`, **merged** from
+  Report 109's and Report 110's question 2; (3) the consecutive-root-chain
+  fraction of a longest unary path; (4) pointer to Part I's item 3; (5) the
+  ratio frontier beyond Remark 18.1 (second order at the saddle; bounded
+  `α = b/u`; the part of the saddle window not covered for `r = 2`).
+
+Superseded statements stay as printed with dated notes: Report 109's Theorem
+1.1 ("the coefficient of the next scale `n/log n` is not determined"), its
+Section 4 constant `−log 4/q` and remark on the residual factor
+`exp{O(n/log n)}`, its Theorem 1.2 and Section 5 ("a constant divided by `ℓ`
+… would change the answer at the unresolved error scale"), its Section 8.2
+("Nothing here determines the actual weighted-placement enhancement"), and its
+delivered README's "coefficient of n/log n … remain unresolved here" (README
+not shipped; the note is in Part II, Section 19). **Nothing in either
+manuscript was found to be wrong.**
+
+## Relation to neighbouring reports
+
+All in `SetTheory/Cardinals/docs/reports/generating-functions-and-asymptotics/oeis-sequence-asymptotics/`.
+No other report counts lambda terms or mentions A135501 or A220894 (searched
+5 October 2026); the Bodini and Gittenberger papers cited elsewhere (for
+example by `a082161-airy-amplitudes`) concern other objects.
+`a088714-bell-scale-growth` and `a277364-bell-asymptotics` also solve
+Lambert-`W` saddle equations; they share no theorem with this report. The
+threshold inverse `ν_s` is the integer staircase of Definition
+`p0:def:three-inverses` of the transseries volume
+(`Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex`);
+neither Part uses that volume's staircase theorem. This write edits no other
+report.
+
+## Relation to the formal project
+
+`Computability/CombinatoryLogic/Lean/CombinatoryLogic/Lambda.lean` (line 15)
+defines `inductive Term : Nat → Type` (intrinsically scoped de Bruijn terms:
+`var (index : Fin n)`, `app`, `lam (body : Term (n + 1))`); **`Term 0` is
+exactly the set of closed alpha-classes counted here**, and its constructor
+recursion is the binder-context recursion `T_m = m + z T_{m+1} + x T_m²` of
+Part I, Section 2. The Rocq development has the equivalent `term V` with
+`lam : term (option V) -> term V`
+(`Computability/CombinatoryLogic/Coq/Lambda.v`, line 16). Neither defines a
+size or counts terms, and **no statement of this report is formalized**;
+placement in the collection confers no formal status.
+
+## Delivery names, renames and discrepancies
+
+- Every delivered file keeps its bytes (the 36 staged delivered files other
+  than `article.tex` and `README.md` checked against fresh extractions of the
+  arrival archives at the write: 0 differences; the two replaced files were
+  also identical as placed); only names changed (tables at the end). The delivered code and
+  markdown use delivery paths (`check.py`, `data/counts.json`,
+  `data/A135501_computed.txt`, `validation/…`, `manifest.json`,
+  `report109.tex`, `report110.pdf`, `report1xx_source_checks.zip`,
+  `FINAL_SHA256.txt`), which are shipped under other names or not at all. The
+  scripts resolve paths relative to their own location, and `integrity.py`
+  requires the delivered inventory and `manifest.json`, so **none runs in this
+  directory**.
+- **In-place writes.** `build.py` writes `report1xx.pdf` beside itself and
+  recreates `build/`; `check.py --write-data` (Report 110) and
+  `check.py --generate` (Report 109) rewrite the data fixtures;
+  `integrity.py --generate` rewrites `manifest.json`; `seal.py` writes the
+  ZIP and `FINAL_SHA256.txt`; `replay.py` writes into its `--out` directory.
+  The corruption campaigns and probes work on temporary copies. Run all of
+  them only on a copy.
+- **Recorded runs.** The `data/*validation*` records are the delivering
+  session's captured outputs; no shipped script writes them. On Windows,
+  Report 110's probe output equals the delivered `auditor_probes_*.log` up to
+  CRLF line ends (placement check).
+- **PDF reproducibility.** Both `build.py` scripts require a byte-identical
+  rebuild of the delivered PDF with TeX Live 2025 pdfTeX 1.40.26; this was not
+  rerun (the PDFs are not shipped, and MiKTeX produces different bytes).
+- `replay.py` defaults to `report1xx_source_checks.zip`, which is not in the
+  delivery; the arrival archive has the same `report1xx/` layout and might be
+  passed with `--archive` (not tried; the replay also rebuilds the PDF, see
+  above). Extracting it and running the suites, as below, is the tested route. Both delivered READMEs show output paths under `/tmp/`;
+  use a scratch directory outside the repository.
+- Report 109's `check.py --fixtures-only` is a prefix check through `n = 20`
+  only, as its README says.
+
+## Rerunning the checks
+
+Run on a copy in a scratch directory, never in this directory. The simplest
+route recreates the delivered layout from the arrival commit:
+
+```
+git show 60f54ea06:docs/incoming/Closed_Lambda_Terms_All_Logarithmic_Orders_Source.zip > s110.zip
+git show 60f54ea06:docs/incoming/Closed_Lambda_Terms_Growth_and_Binding_Geometry_Source.zip > s109.zip
+mkdir r110 r109 && unzip -q s110.zip -d r110 && unzip -q s109.zip -d r109
+cd r110/report110
+py integrity.py && py -O integrity.py
+py check.py && py -O check.py
+py validation/auditor_probes.py && py -O validation/auditor_probes.py
+py corruption_test.py                      # about 2 minutes, on temporary copies
+cd ../../r109/report109
+py integrity.py && py -O integrity.py
+py check.py && py -O check.py
+py validation/auditor_probes.py && py -O validation/auditor_probes.py
+py corruption_test.py                      # about 5 minutes, on temporary copies
+```
+
+Python 3.9 or later and its standard library suffice (`python3` on POSIX).
+
+Results: at placement (5 October 2026, on copies, recorded in the batch-103
+dossier) every suite passed — Report 110: `check.py` (normal and `-O`; 17,643
+exact checks, four fixtures, forward orders 1–8 and inverse orders 1–6
+agreeing), `auditor_probes.py` (output equal to the delivered logs up to
+CRLF), `integrity.py` (23 files), `corruption_test.py` (34 cases, 68
+rejections, about 114 s); Report 109: `check.py` (5,457 checks, snapshots
+matched), `auditor_probes.py` (105,723 guards: 105,711 mathematical and 12
+inventory), `integrity.py` (19 files), `corruption_test.py` (26 cases, 52
+rejections, about 273 s); copies unchanged after every run. `build.py` was not
+run. At the write (5 October 2026, Python 3.14.4, Windows, fresh extractions
+of both archives): `check.py` normal and `-O` and `integrity.py` passed for
+both packages (about 2 s and 9 s per checker run; 17,643 and 5,457 checks; 23
+and 19 files).
+
+## Rights
+
+Repository contents are MIT-0. The sequence terms printed in the article and
+contained in the data and code (`A_s(n)` of A135501 and A220894, reduced-height
+counts, abstraction sums) are recomputed by the shipped programs; Report 109's
+checker embeds the first 16 OEIS terms of each sequence and Report 110's
+checker 22 published-prefix entries, as fixtures. OEIS data are available under
+CC BY-SA 4.0 ([OEIS license](https://oeis.org/LICENSE)). The OEIS entries are
+credited for the sequences; Bodini–Gardy–Gittenberger–Jacquot, David et al.,
+Bodini–Gardy–Gittenberger–Gołębiewski, Gittenberger–Larcher, Grygiel–Larcher
+and Bendkowski–Bodini–Dovgal for the cited prior work. No third-party code or
+PDF is shipped. Nothing was submitted to the OEIS.
+
+## Build
+
+```
+latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
+```
+
+pdfLaTeX (MiKTeX), in a scratch copy; commit only `article.pdf`. The write's
+build: 42 pages, no errors, no undefined or multiply defined references or
+citations, no duplicate destinations, no overfull or underfull boxes; every
+one of the 139 labels resolves, and the delivered labels keep the numbers
+stated under "Labels and numbering" (`.aux` compared with builds of the two
+delivered `.tex` files, each 16 pages and warning-free). The log carries one
+"Infinite glue shrinkage found in box being split" message, from the
+notation longtable breaking across a page, as in other reports with
+longtables.
+
+## Delivered path → shipped path
+
+Report 110 (`110-orders-`; `README.md` replaced by this guide):
+
+| Delivered | Shipped |
+|---|---|
+| `report110.tex` | `article.tex` (Part I) |
+| `<name>.py` (build, check, corruption_test, integrity, replay, seal) | `code/110-orders-<name>.py` |
+| `validation/auditor_probes.py` | `code/110-orders-validation-auditor_probes.py` |
+| `data/<name>.json` (check_results, coefficients, counts, height_counts) | `data/110-orders-<name>.json` |
+| `validation/<name>` (auditor_probes_normal.log, auditor_probes_optimized.log, build.log, check_normal.log, check_optimized.log, corruption.json, corruption_optimized.json, pdf_qa.json) | `data/110-orders-validation-<name>` |
+| `validation/checker_audit.md` | `110-orders-validation-checker_audit.md` |
+| `README.md`, `report110.pdf`, `manifest.json` | not shipped |
+
+Report 109 (`109-binding-`):
+
+| Delivered | Shipped |
+|---|---|
+| `report109.tex` | not shipped; printed as Part II of `article.tex` (the proof of its Section 3 in Part I) |
+| `<name>.py` (build, check, corruption_test, integrity, replay, seal) | `code/109-binding-<name>.py` |
+| `validation/auditor_probes.py` | `code/109-binding-validation-auditor_probes.py` |
+| `data/<name>` (A135501_computed.txt, A135501_unary_moment.txt, A220894_computed.txt, A220894_unary_moment.txt, check_results.json) | `data/109-binding-<name>` |
+| `validation/<name>.json` (auditor_results, build_and_visual_results, corruption_results) | `data/109-binding-validation-<name>.json` |
+| `validation/checker_audit.md` | `109-binding-validation-checker_audit.md` |
+| `README.md`, `report109.pdf`, `manifest.json` | not shipped |
+
+## Provenance
+
+Two manuscripts (bundle Reports 110 and 109) → one report; base 110. Arrival
+`60f54ea06`, placement `9c995cefe`, write batch 103 (5 October 2026). Neither
+manuscript pins a ProveIt commit. Merge choices (base and order, the one proof
+printed once in Report 109's wording, the shape variable renamed in the moved
+text, the merged questions, the merged bibliography, the write's Remark 18.1)
+are listed in the article's front matter, "Provenance and merge decisions".
