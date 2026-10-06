@@ -169,7 +169,9 @@ attribution is qualified (Remark 8.1).
    0.0382801, **0.0382927**, 0.0382892 at `n = 10, …, 18`. It exceeds `3/80`
    from `n = 11`, increases through `n = 17` and **decreases for the first
    time at `n = 18`** (by `3.5·10⁻⁶`). Polynomial extrapolations in `1/n`
-   (degrees 1–4, last 2–5 terms) give 0.0382, 0.0361, 0.0367, 0.0370. The
+   (degrees 1–4, last 2–5 terms) give 0.0382, 0.0361, 0.0367, 0.0370; they
+   straddle Conway–Guttmann's interval without lying inside it, so these
+   numbers neither confirm nor contradict it. The
    placement record called the ratio "above 3/80 and rising"; the turn at
    `n = 18` corrects that reading. Nothing here is a bound, and 18 terms
    cannot separate `3/80` from nearby values.
@@ -222,6 +224,23 @@ On copies (5 October 2026; Windows, Python 3.14.4, standard library only):
   Nakamura arXiv:1301.5080 Section 3.2, Theorem 4 (located); Krattenthaler
   Theorems 1–3 (located); Burstein, EJC 18(2) P21 (located). Not read: Regev;
   Backelin–West–Xin.
+
+**Independent check of the write (5 October 2026).** An adversarial check
+made by the intake after the write (`bb5ca9433`) reread the write's four
+remarks and the numerics of Section 9.1. It confirmed Remark 8.1 against MRR's
+text (arXiv v1 pp. 28–29: the deleted letter is "the leftmost letter in the
+leftmost occurrence", whose value is not determined; brute-force maximal
+fibres 2, 4, 6, 9, 12 for `n = 5, …, 9`; the nine preimages of `4571263`
+recounted), the hypotheses of Bóna–Burstein Lemma 6.3 for Remark 6.3, the
+Lambert-core parameters of Remark 6.2, all nine ratios to seven digits, the
+four extrapolants, the Conway–Guttmann quotation, the `3/80 ↔ n/2160`
+equivalence and the constants `1/2187`, `81`, `11/2` (with brute-force checks
+of the split, the bounds and the inflation injection for `n ≤ 9`). No
+mathematical error was found. Three wordings were corrected, each with a
+dated note keeping the first wording: Remark 8.1's last sentence (the split is
+the manuscript's own argument, not one of its sources), the range `x ≥ b_4 = 1`
+of the staircase statement in Remark 6.2, and "consistent with" Conway–Guttmann
+in Section 9.1 (the extrapolants straddle their interval).
 
 ## Relation to the repository
 
