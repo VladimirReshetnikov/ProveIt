@@ -192,6 +192,16 @@ The [packed counter-guard transfer obstruction](Papers/research-wip/native-strea
 
 The [scalar complement reuse](Papers/research-wip/native-stream-queue/residue_affine_complement_reuse.md) and [vector positive-guard template](Papers/research-wip/native-stream-queue/counter_vector_positive_guard.md), with [independent proof and source review](Papers/research-wip/native-stream-queue/review_counter_positive_guard_extensions.md), extend the counter-step savings to every fixed program of the stated form. Reusing the scalar remainder-complement equation saves one addition: the complete SOS costs **10B+21**, with six positive witnesses; its B=14 fixture costs **161=76M+85A**, of exact degree28. For r counters and K states represented directly, positivity forces the branch selector using only two witnesses, giving a paid SOS template of **2(r+2)K+7r+11** operations and degree at most2K+2. This saves three operations against the same template with an explicit Boolean residual. The distinct endpoint interfaces cannot be compared without a paid conversion. The scalar source receives independent inert structure and polynomial checks; the vector result is proof-only. Neither result supplies unbounded iteration or improves the universal84 frontier.
 
+The [bounded review of the latest four report topics](Papers/research-wip/native-stream-queue/triage_batch105_computational_relevance_pascal.md)
+finds no new Turing-completeness or Diophantine interface in the inspected
+guides and theorem statements. A398540's placement game supplies a
+fixed-real approximation theorem, while its “universality” question
+concerns convolution asymptotics. A224182 supplies a finite combinatorial
+certificate; A279551 and A005163 concern enumeration/asymptotic corrections.
+The note preserves the source-recorded corrections and questions without
+claiming a full proof or numerical audit. Research continues with the
+concrete group/word-to-arithmetic bridge.
+
 The [Accepted centralizer branch](Papers/research-wip/native-stream-queue/positive7_higman_centralizer_branch_riemann.md)
 now gives a literal **499-generator,17,679-relator** presentation with the
 universal word query `W_n=[alpha^(beta^n),t]`. The

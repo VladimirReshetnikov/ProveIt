@@ -170,6 +170,16 @@ The [packed counter-guard transfer obstruction](korec_positive_guard_transfer_ob
 
 The [scalar complement reuse](residue_affine_complement_reuse.md) and [vector positive-guard template](counter_vector_positive_guard.md), with [independent proof and source review](review_counter_positive_guard_extensions.md), extend the counter-step savings to every fixed program of the stated form. Reusing the scalar remainder-complement equation saves one addition: the complete SOS costs **10B+21**, with six positive witnesses; its B=14 fixture costs **161=76M+85A**, of exact degree28. For r counters and K states represented directly, positivity forces the branch selector using only two witnesses, giving a paid SOS template of **2(r+2)K+7r+11** operations and degree at most2K+2. This saves three operations against the same template with an explicit Boolean residual. The distinct endpoint interfaces cannot be compared without a paid conversion. The scalar source receives independent inert structure and polynomial checks; the vector result is proof-only. Neither result supplies unbounded iteration or improves the universal84 frontier.
 
+The [bounded review of the latest four report topics](triage_batch105_computational_relevance_pascal.md)
+finds no new Turing-completeness or Diophantine interface in the inspected
+guides and theorem statements. A398540's placement game supplies a
+fixed-real approximation theorem, while its “universality” question
+concerns convolution asymptotics. A224182 supplies a finite combinatorial
+certificate; A279551 and A005163 concern enumeration/asymptotic corrections.
+The note preserves the source-recorded corrections and questions without
+claiming a full proof or numerical audit. Research continues with the
+concrete group/word-to-arithmetic bridge.
+
 The [Accepted centralizer branch](positive7_higman_centralizer_branch_riemann.md)
 now gives a literal **499-generator,17,679-relator** presentation with the
 universal word query `W_n=[alpha^(beta^n),t]`. The
@@ -6072,6 +6082,7 @@ New research and the completed75-operation construction:
 
 | Artifact | Established result | Remaining boundary |
 |---|---|---|
+| [Four incoming report topics: bounded relevance review](triage_batch105_computational_relevance_pascal.md) | Exact guide/theorem scope distinguishes placement-game computability and asymptotic universality from Turing completeness | No new computational/Diophantine bridge found; source proofs and numerical evidence not recertified |
 | [Universal centralizer word query](positive7_higman_membership_word_problem_aristotle.md), [literal branch](positive7_higman_centralizer_branch_riemann.md), [independent audit](review_higman_centralizer_branch_root.md) |499 generators/17679 relators; exact retained prefix and three new fixes checked; `[alpha^(beta^n),t]=1` iff `n` lies in the inherited universal set | Scoped upstream premises; three-fixed-word paid arithmetic interface remains separate |
 | [Finite two-generator embedding](positive7_finite_two_generator_embedding_aristotle.md) | Full universal-word substitution is injective for any finite named presentation and retains17679 relator slots here | Shortened formula fails with identity-valued named generators; no expanded substitution or paid matrix/history compiler yet |
 | [Complete literal preembedding](positive7_higman_literal_presentation_riemann.md), [full independent audit](review_positive7_higman_literal_presentation_pascal.md), [mandatory correction](review_positive7_higman_literal_linecount_correction_pascal.md) | All499 generators,17678 relators,124 events,123 caches and3 final words independently compared; exact first sources/results/logs frozen | Scoped imported subgroup semantics; no valid Section7 continuation or paid arithmetic bound follows |
