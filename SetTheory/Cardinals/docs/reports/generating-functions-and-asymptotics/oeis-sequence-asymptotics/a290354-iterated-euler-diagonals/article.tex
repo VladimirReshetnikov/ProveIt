@@ -1,0 +1,639 @@
+\documentclass[11pt,letterpaper]{article}
+\pdfinfoomitdate=1
+\pdftrailerid{}
+\pdfsuppressptexinfo=15
+\usepackage[T1]{fontenc}
+\usepackage[margin=1in]{geometry}
+\usepackage{lmodern,microtype,amsmath,amssymb,amsthm,mathtools,booktabs}
+\usepackage[hidelinks]{hyperref}
+\usepackage{enumitem}
+\usepackage{bookmark}
+\pdfmapfile{+lm.map}
+\pdfmapfile{+cm.map}
+\pdfmapfile{+symbols.map}
+\hypersetup{pdftitle={Report 225 Diagonal and proportional height asymptotics for iterated Euler transforms},pdfauthor={Research report},pdfsubject={OEIS A290354 and A290353}}
+\setcounter{tocdepth}{1}
+\setlist{nosep}
+\setlength{\emergencystretch}{2em}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\C}{\mathbb C}\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}\newcommand{\e}{\mathrm e}
+\newcommand{\ii}{\mathrm i}\newcommand{\dd}{\,\mathrm d}
+\newcommand{\Oh}{\mathrm O}\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\Rea}{\operatorname{Re}}\newcommand{\Ima}{\operatorname{Im}}
+\newcommand{\asympC}{\asymp}
+\title{Diagonal and proportional height asymptotics\\for iterated Euler transforms}
+\author{Report 225}
+\date{5 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We study the number $a_n$ of unlabeled rooted trees with $n$ leaves, all at level $n$, equivalently the diagonal of the iterated Euler transform in OEIS A290354. We prove
+\[
+ a_n\sim c\left(\frac{2n}{\pi}\right)^n n^{-4/3},\qquad c>0,
+\]
+and identify $c$ by a normalized repelling parametrization of $w\mapsto\e^w-1$. The main estimate is a uniform intermediate-angle bound, obtained from an explicit nonautonomous clock, a positive-coefficient Cauchy entrance, and a forced sector bootstrap. A positive Laplace measure identifies the coefficient amplitude and proves its strict positivity without assuming a density expansion at zero. Uniform proportional-height asymptotics for the array A290353, fixed and square-root height shifts, and a Lambert $W$ inverse corollary are included. Numerical diagnostics give $c\approx4.4923$, agreeing with Kotesovec's conjecture; the decimal computation is not a validated enclosure. This is an unrefereed mathematical research report, not a proof-assistant formalization.
+\end{abstract}
+
+\tableofcontents
+\section{Definition and statement}
+Let
+\begin{equation}\label{eq:rec}
+ F_0(z)=z,\qquad
+ F_{h+1}(z)=\exp\left(\sum_{j\ge1}\frac{F_h(z^j)}j\right)-1.
+\end{equation}
+Each $F_h$ is analytic in $|z|<1$, has nonnegative coefficients, vanishes at zero, and has linear coefficient one. These facts follow by induction; the sum over $j$ converges normally on compact subdisks because $F_h(z)=\Oh(z)$ at zero. For $n\ge1$ put $a_n=[z^n]F_n(z)$ and set $a_0=1$ separately. The constant-term exception matches the OEIS convention and has no asymptotic effect.
+
+For clarity, write $A(n,m)=[z^n]F_m(z)$ for $n\ge1$, and put $A(0,m)=1$ by convention. This is the square array A290353~\cite{array}, with degree $n$ and height $m$; the sequence A290354 is its main diagonal. A tree whose leaves all have level $m+1$ is a root carrying a nonempty unordered multiset of trees whose leaves all have level $m$. If there are $[z^d]F_m(z)$ types of a subtree with $d$ leaves, the ordinary multiset generating function is
+\begin{equation}\label{eq:eulerproduct}
+ 1+F_{m+1}(z)=\prod_{d\ge1}(1-z^d)^{-[z^d]F_m(z)}.
+\end{equation}
+Taking its formal logarithm gives \eqref{eq:rec}. This also proves integrality and explains why there is no factorial normalization. The first diagonal values are
+\[
+1,\ 1,\ 2,\ 6,\ 30,\ 170,\ 1337,\ 12166,\ 133476,\ 1676364.
+\]
+The separate constant row is a generating-function convention, rather than a claim about a nonempty tree with no leaves.
+
+
+Set
+\begin{equation}\label{eq:constants}
+ T=\frac\pi2,\qquad
+ B=\frac12-\frac\pi6-\frac{\pi^2}{16}-\frac{\log2}{6},\qquad
+ D_n=n-\frac13\log n+\frac13\log T-B.
+\end{equation}
+The logarithms used near the positive axis have their real determination there.
+
+\begin{theorem}\label{thm:main}
+There is an entire function $P$ satisfying
+\begin{equation}\label{eq:P}
+ P(s+1)=\e^{P(s)}-1,
+\end{equation}
+whose inverse coordinate near zero is normalized by
+\[
+ \Phi(w)=-\frac2w+\frac13\log w+\Oh(w),\qquad
+ \Phi(\e^w-1)=\Phi(w)+1.
+\]
+It is the Laplace transform of a finite positive measure $\nu$ on $[0,\infty)$ with every exponential moment. This measure has a smooth, strictly positive density $h$ on $(0,\infty)$. Moreover,
+\begin{equation}\label{eq:asymptotic}
+ a_n\sim c(n/T)^n n^{-4/3},\qquad
+ c=T^{1/3}\e^{-B}h(1)>0.
+\end{equation}
+For every real $\sigma$,
+\begin{equation}\label{eq:constantintegral}
+ h(1)=\frac{\e^{-\sigma}}{2\pi}
+ \int_{-\infty}^{\infty}P'(\sigma+\ii t)\e^{-\ii t}\dd t,
+\end{equation}
+and this integral is absolutely convergent.
+\end{theorem}
+
+The normalization of $\Phi$ is essential: translating a Fatou coordinate translates $P$ and changes the density amplitude. Formula \eqref{eq:constants} is tied to the zero constant term in the displayed normalization.
+
+\subsection{Prior work and the scope of the result}
+The OEIS entry attributes \eqref{eq:asymptotic}, with $c=4.4923\ldots$, to V\'aclav Kot\v{e}\v{s}ovec on 14 August 2017 and labels it a conjecture~\cite{oeis}. Kaneiwa's 1980 paper~\cite{kan80}, Propositions 1 and 2 on printed page 19, proves that the unlabeled $r$-fold partition number $p(r;n)$ is a polynomial of degree $n-1$ in $r$ and identifies its leading coefficient through $\tan x+\sec x$. His indexing gives
+\[
+ p(r;n)=[z^n]F_{r+1}(z),\qquad a_n=p(n-1;n)\quad(n\ge1).
+\]
+Thus polynomiality, the tangent leading profile, and its $\pi/2$ pole are prior results. Fixed-$n$ polynomial information does not alone justify the growing-$n$ diagonal limit. Kaneiwa credits Bell's 1938 polynomiality result for the separately defined \emph{labeled} function $\widetilde p(r;n)$ on page 18; that sentence should not be read as attributing his unlabeled Proposition 1 to Bell.
+
+Bechtloff Weising's higher-order Bell symmetric functions~\cite{bw}, Definition 2.1 and Proposition 2.12, specialize in one variable to $1+F_{m+1}$; in particular $a_n=[m_{(n)}]B_n^{(n-1)}$. This is an algebraic and species connection, not a diagonal asymptotic theorem in that source. The related iterated-Bell report~\cite{ibd} concerns $n![z^n](\e^z-1)^{\circ m}$ and cannot be directly transferred: the subsidiary forcing in \eqref{eq:rec} changes both the leading scale and the clock constant. No general priority claim for parabolic-coordinate methods is made here.
+
+\section{Subsidiary terms and the nonautonomous clock}
+Write
+\[
+ R_h(z)=\sum_{j\ge2}\frac{F_h(z^j)}j,\qquad f(w)=\e^w-1.
+\]
+The subsidiary estimate below is independent of the size of the main value $F_h(z)$.
+
+\begin{lemma}\label{lem:subsidiary}
+Uniformly for $h|q|$ sufficiently small and $|q|$ small,
+\begin{equation}\label{eq:smallq}
+ F_h(q)=q+hq^2+\Oh\bigl((h+h^2)|q|^3\bigr).
+\end{equation}
+Consequently, for each fixed $C_0$, uniformly for $h\le C_0/|z|$ as $z\to0$,
+\begin{equation}\label{eq:R}
+ R_h(z)=\frac{z^2}2+\frac{z^3}3+\frac{hz^4}2+\Oh(|z|^4).
+\end{equation}
+\end{lemma}
+\begin{proof}
+For real $0<q<1$, coefficient positivity and the absence of a constant term give
+$F_h(q^j)\le q^{j-1}F_h(q)$. Hence the exponent defining $F_{h+1}(q)$ is at most $F_h(q)[-\log(1-q)]/q$. While $F_h(q)\le2q$, the one-step increment is at most $C F_h(q)^2$. The elementary reciprocal comparison, or induction against $q/(1-C'hq)$ with $C'$ fixed large, proves $F_h(q)\le2q$ for $hq\le c$ and $c$ sufficiently small. Positivity gives the corresponding complex bound.
+
+Summing one-step $\Oh(|q|^2)$ increments gives $F_h(q)=q+\Oh(h|q|^2)$. Substituting this back into the recurrence gives the sharper increment
+$F_{h+1}(q)-F_h(q)=q^2+\Oh((h+1)|q|^3)$, because the quadratic main term and the leading subsidiary term each contribute $q^2/2$. Summation proves \eqref{eq:smallq}. Apply it at $q=z^j$ for $j\ge2$. The $j=2$ error is $\Oh(h^2|z|^6)=\Oh(|z|^4)$; the baseline tail $j\ge4$ and the remaining corrections are bounded by geometric series. This proves \eqref{eq:R}.
+\end{proof}
+
+Define, in a narrow sector about the positive real axis,
+\begin{equation}\label{eq:JL}
+ J(y)=2\arctan y-\frac\pi2,\qquad L(1)=0,\qquad
+ L'(y)=\frac{y^3/3-y-4/3-2J(y)}{(1+y^2)^2}.
+\end{equation}
+Put
+\begin{equation}\label{eq:clock}
+ C_z(w)=\frac{J(w/z)}z+L(w/z).
+\end{equation}
+The clock domain will be $|\arg(w/z)|\le\eta$, $|w/z|\ge1/2$, with a slightly wider fixed sector available for Taylor segments. In particular $C_z(z)=0$.
+
+\begin{lemma}\label{lem:clock}
+Suppose $h\le C_0/|z|$, $w_h=F_h(z)$ remains sufficiently small, and $w_h/z$ remains in the stated clock domain through time $k$. Then, with $E_h=C_z(w_h)-h$,
+\begin{equation}\label{eq:defect}
+ E_{h+1}-E_h
+ =\frac{z^2\bigl(L(w_h/z)-E_h\bigr)}{1+(w_h/z)^2}
+   +\Oh(|w_h|^2+|z|^2),
+\end{equation}
+with uniform constants. Consequently
+\begin{equation}\label{eq:clockbound}
+ |E_k|\le C\left(\sum_{h<k}|F_h(z)|^2+k|z|^2\right).
+\end{equation}
+\end{lemma}
+\begin{proof}
+By Lemma~\ref{lem:subsidiary},
+\begin{align}\label{eq:wstep}
+ w_{h+1}={}&w_h+\frac{w_h^2+z^2}2+\frac{w_h^3}6
+ +\frac{w_hz^2}2+\frac{z^3}3+\frac{hz^4}2
+ +\Oh((|w_h|+|z|)^4).
+\end{align}
+Write $y=w_h/z$, $A(y)=(1+y^2)/2$ and
+$B_1(y,hz)=y^3/6+y/2+1/3+hz/2$. The increment of $y$ is
+$zA+z^2B_1+\Oh((|w_h|+|z|)^4/|z|)$. Since $J'=1/A$, the coefficient of $z$ in the clock increment is
+\[
+ \frac{B_1}{A}-\frac y2+A L'(y)=\frac{hz-J(y)}{1+y^2}.
+\]
+But $hz-J(y)=z(L(y)-E_h)$, proving the cancellation in \eqref{eq:defect}.
+
+For completeness the remainder is analytic and uniform. Derivatives of $J(w/z)/z$ of order $r\ge1$ are $\Oh((|w|+|z|)^{-r-1})$, and derivatives of $L(w/z)$ are $\Oh((|w|+|z|)^{-r})$. The displacement in \eqref{eq:wstep}, divided by $|w|$, is $\Oh(|w|+|z|)$ because $|w/z|$ is bounded below. Nested clock cones therefore keep the full Taylor segment away from $w=\pm\ii z$. The omitted recurrence terms, the mixed quadratic Taylor terms, and the cubic Taylor remainder all contribute $\Oh((|w|+|z|)^2)$ to the clock increment.
+
+Finally $L(y)/(1+y^2)$ is bounded on the clock cone and $|1+y^2|$ is bounded below. The multiplicative discrete Gronwall factor is at most $\exp(Ck|z|^2)$, uniformly bounded in the stated range. Since $E_0=0$, this gives \eqref{eq:clockbound}.
+\end{proof}
+
+\section{Matching and the positive real orbit}
+\begin{lemma}\label{lem:matching}
+Uniformly in a fixed narrow sector about the positive real axis,
+\begin{equation}\label{eq:Lasym}
+ L(y)=\frac13\log y+B+\Oh(y^{-2})\qquad(|y|\to\infty).
+\end{equation}
+Consequently, when $|w/z|$ is sufficiently large in that sector,
+\begin{equation}\label{eq:match}
+ C_z(w)=H(z)-\frac2w+\frac13\log w
+  +\Oh\left(\frac{|z|^2}{|w|^3}+\frac{|z|^2}{|w|^2}\right),
+ \quad H(z)=\frac Tz+\frac13\log\frac1z+B.
+\end{equation}
+For real $0<x\le w\le\epsilon$, with $\epsilon$ small fixed,
+\begin{equation}\label{eq:realcompare}
+ H(x)-C_x(w)\asymp\frac1w,\qquad C_x'(w)>0.
+\end{equation}
+\end{lemma}
+\begin{proof}
+The derivative in \eqref{eq:JL} is $1/(3y)+\Oh(y^{-3})$; in particular there is no $y^{-2}$ term. To compute its constant, integrate the part $(y^3/3-y)/(1+y^2)^2$ first. After subtraction of $(\log y)/3$ its contribution from $1$ to infinity is $-(\log2)/6-1/3$. In the rest set $u=\arctan y$. Its contribution is
+\[
+ \int_{\pi/4}^{\pi/2}(\pi-4/3-4u)\cos^2u\dd u
+ =\frac56-\frac\pi6-\frac{\pi^2}{16}.
+\]
+Their sum is $B$ in \eqref{eq:constants}. The arctangent expansion gives \eqref{eq:match}.
+
+For real $w\ge x$, the arctangent identity gives
+\[
+ H(x)-C_x(w)=\frac2x\arctan\frac xw-\frac13\log w
+              +\Oh((x/w)^2).
+\]
+The first term is between fixed positive multiples of $1/w$; the remaining terms are smaller for small $w$, uniformly for $x/w\le1$. The expansion of $L$ may be bounded on all $y\ge1$ by enlarging its constant on a compact interval. Finally the main derivative $2/(x^2+w^2)$ dominates the $\Oh(1/(x+w))$ derivative of the correction for small $\epsilon$. This proves \eqref{eq:realcompare}.
+\end{proof}
+
+\begin{lemma}\label{lem:real}
+Fix $\sigma\in\R$ and let $r=T/(D_n-\sigma)$. There are constants $M_0,c_0,c,C>0$ such that, for all sufficiently large $n$, if $d=n-h\ge M_0$ and $x>0$ satisfies $|x-r|\le c_0d/n^2$, then every real iterate through $h$ stays in the small-clock range and
+\begin{equation}\label{eq:realbound}
+ \frac cd\le F_h(x)\le\frac Cd.
+\end{equation}
+\end{lemma}
+\begin{proof}
+We have $H(r)=n-\sigma+\Oh(\log n/n)$ and $H'(x)=\Oh(n^2)$ when $x\asymp n^{-1}$. Make $c_0$ small, then $M_0$ large compared with $|\sigma|$. Uniformly in the displayed range,
+\begin{equation}\label{eq:gap}
+ d/2\le H(x)-h\le2d.
+\end{equation}
+It remains to justify that the small-clock hypotheses are not circular. Let $\tau$ be the first time $F_\tau(x)\ge\epsilon$, if it occurs by time $h$. Start with a slightly larger admissible clock radius, so that one-step overshoot gives $F_\tau(x)\le2\epsilon$. Positivity gives
+\[
+ F_{j+1}(x)-F_j(x)\ge\frac12F_j(x)^2,
+ \qquad \sum_{j<\tau}F_j(x)^2\le2(F_\tau(x)-x).
+\]
+Lemma~\ref{lem:clock} therefore gives $E_\tau=\Oh(\epsilon+\tau x^2)$; here $\tau\le h\le n$ and $x\asymp n^{-1}$. Lemma~\ref{lem:matching} and monotonicity of $C_x$ imply
+$\tau\ge H(x)-C/\epsilon$. If $M_0$ is large enough, this contradicts \eqref{eq:gap}. Thus no such first crossing occurs. Apply \eqref{eq:clockbound} again through $h$ and use \eqref{eq:realcompare}; the clock error is $\Oh(F_h(x)+nx^2)$ and can be absorbed into the $1/F_h(x)$ comparison. Equation \eqref{eq:gap} now gives \eqref{eq:realbound}.
+\end{proof}
+
+\begin{lemma}\label{lem:entrance}
+With $r$ as in Lemma~\ref{lem:real}, there is $q>0$ such that for every integer $M_0\le K\le n$ and every $|z-r|\le qK/n^2$, the orbit through $n-K$ lies in the clock cone, satisfies $|F_h(z)|\asymp(n-h)^{-1}$, and obeys
+\begin{equation}\label{eq:entranceclock}
+ C_z(F_{n-K}(z))=n-K+\Oh(K^{-1}+n^{-1}).
+\end{equation}
+\end{lemma}
+\begin{proof}
+At height $h\le n-K$, use the disk about $r$ of radius
+$R_h=c_0(n-h)/n^2$. Positivity and Lemma~\ref{lem:real} bound its supremum by $F_h(r+R_h)\le C/(n-h)$. On its inner half, Cauchy's estimate gives
+$|F_h'|\le Cn^2/(n-h)^2$. Hence
+\[
+ |F_h(z)-F_h(r)|\le C|z-r|\frac{n^2}{(n-h)^2}.
+\]
+Divide by the positive lower bound in \eqref{eq:realbound}. Taking $q\le c_0/2$ and then decreasing it makes the relative error at most $CqK/(n-h)\le Cq$. Also $|z-r|/r\le CqK/n$. Thus $F_h(z)/z$ lies in the required fixed narrow cone, with modulus at least $1/2$, for every $h\le n-K$. The two-sided comparison follows. Finally
+$\sum_{h<n-K}|F_h(z)|^2\le C/K$, so Lemma~\ref{lem:clock} gives \eqref{eq:entranceclock}.
+\end{proof}
+
+\section{The repelling coordinate with uniform sectors}
+The needed coordinate is constructed here to make the sector and branch choices explicit.
+\begin{lemma}\label{lem:fatou}
+For each closed angular sector strictly contained in $|\arg w|<\pi$, there is a sufficiently small radius on which an analytic function $\Phi$ satisfies
+\begin{equation}\label{eq:fatou}
+ \Phi(w)=-2/w+\tfrac13\log w+\Oh(w),\quad
+ \Phi'(w)=2/w^2+\Oh(1/w),\quad
+ \Phi(f(w))=\Phi(w)+1,
+\end{equation}
+whenever both arguments lie in the chosen domain. These functions agree on common smaller sectors. There is a local inverse on every sufficiently distant closed subsector of $|\arg(-s)|<\pi$, with
+\begin{equation}\label{eq:Pinverse}
+ P_{\rm loc}(s)=-2/s+\Oh(\log|s|/|s|^2),\qquad
+ P_{\rm loc}'(s)=2/s^2+\Oh(\log|s|/|s|^3).
+\end{equation}
+For small $w$ in a smaller sector, $P_{\rm loc}(\Phi(w))=w$. The local inverse extends to the entire $P$ in Theorem~\ref{thm:main} and agrees with it on its sector of definition.
+\end{lemma}
+\begin{proof}
+Let $g(w)=\log(1+w)$ and conjugate by $u=2/w$. The resulting map satisfies
+\[
+ G(u)=\frac2{\log(1+2/u)}=u+1-\frac1{3u}+\Oh(u^{-2}).
+\]
+For $Q(u)=u+(\log u)/3$,
+\begin{equation}\label{eq:Qdefect}
+ Q(G(u))-Q(u)=1+\Oh(u^{-2}).
+\end{equation}
+We give the uniform geometric estimate behind summation of this defect. Fix $0<\alpha<\beta<\pi$. If $|\arg u|\le\alpha$, then
+\[
+ |u+j|\ge\cos(\alpha/2)(|u|+j),\qquad j\ge0,
+\]
+and the straight ray has distance at least $c_{\alpha,\beta}(|u|+j)$ from the complement of $|\arg v|<\beta$. Distinguish an inner analyticity radius $R_0$ from a larger starting threshold $R_1$. Bootstrap
+\[
+ |G^j(u)-(u+j)|\le a(|u|+j),
+\]
+where $a$ is less than half the preceding radial and angular margins. This gives $|G^j(u)|\ge c(|u|+j)>R_0$ if $R_1$ is large enough. Summing the one-step $\Oh(1/|G^j(u)|)$ error improves the bound to
+\[
+ |G^j(u)-(u+j)|\le C\left(\frac1{|u|}+\log(1+j/|u|)\right).
+\]
+Divided by $|u|+j$, this is uniformly $\Oh(R_1^{-1})$ because $\log(1+x)/(1+x)$ is bounded. Increase $R_1$ to obtain a strict improvement and $cR_1>2R_0$. This closes the induction, including times when the straight ray decreases in modulus. Only the angular sector is invariant; the starting-radius boundary need not be.
+
+The defects in \eqref{eq:Qdefect} are now absolutely summable with total $\Oh(1/|u|)$. Therefore
+\[
+ \Psi(u)=\lim_{m\to\infty}\bigl(Q(G^m(u))-m\bigr)
+ =Q(u)+\Oh(1/u)
+\]
+exists locally uniformly, is analytic, and satisfies $\Psi(G(u))=\Psi(u)+1$ wherever both sides are defined. Nested sectors and thresholds justify shifting the limit. Cauchy estimates on smaller sectors give derivative bounds. Define
+\[
+ \Phi(w)=-\Psi(2/w)+\frac13\log2.
+\]
+This proves \eqref{eq:fatou}; $g\circ f$ is the identity near zero.
+
+For the inverse, solve $\Psi(u)=-s+(\log2)/3$. A disk of radius $C\log|s|$ centered at the right side stays inside a slightly larger allowed sector for large $|s|$. On its boundary the logarithmic correction to the identity map is smaller than the radius for $C$ large. Rouch\'e's theorem gives exactly one root, and $\Psi'(u)=1+\Oh(1/u)$ is nonzero. The roots depend analytically on $s$, agree on overlaps by uniqueness, and give \eqref{eq:Pinverse}. If a small $w$ already satisfies $\Phi(w)=s$ in a smaller sector, then $u=2/w=-s+\Oh(\log|s|)$ lies in the same uniqueness disk. Thus $P_{\rm loc}(\Phi(w))=w$; global injectivity of $\Phi$ is neither assumed nor needed.
+
+First restrict $P_{\rm loc}$ to a strict left half-plane $\Rea s<-R_2$ so that $f(P_{\rm loc}(s))=P_{\rm loc}(s+1)$ holds when both parameters lie there. On $\Rea s<m-R_2$, define
+$P(s)=f^{\circ m}(P_{\rm loc}(s-m))$. Successive definitions agree on overlaps, so they produce an entire function obeying \eqref{eq:P}. Agreement with $P_{\rm loc}$ on every connected larger inverse sector follows from the identity theorem, since there is agreement on a nonempty open part of the left half-plane. Positivity first far to the left and then forward iteration show $P(s)>0$ for real $s$.
+\end{proof}
+
+Combining Lemmas~\ref{lem:matching}, \ref{lem:entrance}, and \ref{lem:fatou} gives the crucial entrance phase. Restrict $M_0\le K\le\kappa n$ with $\kappa>0$ small fixed, so that $|F_{n-K}(z)/z|\asymp n/K$ lies in the large-ratio matching range. Uniformly on the entrance disk,
+\begin{equation}\label{eq:entryphase}
+ \Phi(F_{n-K}(z))=n-K-H(z)
+   +\Oh(K^{-1}+n^{-1}+K^3/n^2).
+\end{equation}
+Both matching scales below satisfy this restriction.
+
+\section{The local limit and angular tails}
+\begin{proposition}\label{prop:local}
+Locally uniformly for $s\in\C$,
+\begin{equation}\label{eq:local}
+ G_n(s):=F_n\left(\frac T{D_n-s}\right)\longrightarrow P(s).
+\end{equation}
+Here $G_n$ is defined on each fixed compact set for all sufficiently large $n$.
+\end{proposition}
+\begin{proof}
+Fix a compact set $S$ and take $K=\lfloor\sqrt n\rfloor$. The point $z=T/(D_n-s)$ differs from the real reference $T/D_n$ by $\Oh_S(n^{-2})$, so Lemma~\ref{lem:entrance} applies. Exactly,
+\[
+ H\left(\frac T{D_n-s}\right)=n-s+\frac13\log\frac{D_n-s}{n}.
+\]
+Thus \eqref{eq:entryphase} gives entrance phase $s-K+o(1)$ uniformly on $S$.
+
+Choose a fixed integer $L$ larger than the inverse-sector threshold and $2\max_{s\in S}(|s|+1)$. For $0\le j\le K-L$, the prototype $s-K+j$ lies in a fixed interior left sector, has modulus comparable to $K-j$, and has real part bounded away from zero. Bootstrap phase error at most one. By \eqref{eq:R}, the actual $w$-step differs from $f(w)$ by $\Oh(n^{-2})$. The disk of this radius about the unforced image lies in the coordinate domain: the image has distance at least $c/(K-j)$ from its angular boundary and zero. On that disk $|\Phi'|\le C(K-j)^2$. Lemma~\ref{lem:fatou} identifies the perturbed point with the same inverse branch. Thus the phase error at step $j$ is at most $C(K-j)^2/n^2$, and the total is $\Oh(K^3/n^2)=o(1)$. Together with the initial uniform error this strictly improves the bootstrap for large $n$.
+
+At time $n-L$ the value tends uniformly to $P(s-L)$. In the remaining fixed $L$ steps the subsidiary forcing is still $\Oh(n^{-2})$. Finite compositions of the entire function $f$ preserve convergence on these compact images, proving \eqref{eq:local}.
+\end{proof}
+
+\begin{proposition}\label{prop:tail}
+Fix $\sigma\in\R$ and put $r=T/(D_n-\sigma)$. There are $M,\delta,C>0$ such that, for all large $n$ and $M\le t\le\delta n$,
+\begin{equation}\label{eq:tail}
+ |F_n(r\e^{\ii t/n})|\le C/t,\qquad
+ \left|\frac{r\e^{\ii t/n}}n F_n'(r\e^{\ii t/n})\right|\le C/t^2.
+\end{equation}
+The same holds for negative $t$ with $|t|$ in place of $t$.
+\end{proposition}
+\begin{proof}
+Choose $A$ large and $K=\lceil At\rceil$. Let $z_0=r\e^{\ii t/n}$. Since $|z_0-r|\le Ct/n^2$, choosing $A$ after the entrance constant $q$ and then choosing $b>0$ small places
+\[
+ |z-z_0|\le bt/n^2
+ \quad\hbox{inside}\quad |z-r|\le qK/n^2.
+\]
+Choose $\delta$ small enough that $K/n\le\kappa$ and $K\le n/2$. Expansion of $H$, using $H'(z)=\Oh(n^2)$ on this disk and $H(r)=n-\sigma+\Oh(\log n/n)$, gives
+\begin{equation}\label{eq:initialphase}
+ s_0:=\Phi(F_{n-K}(z))
+ =-K+\ii t+\Oh(1+bt+t^2/n+t\log n/n+K^3/n^2).
+\end{equation}
+The bounded term includes fixed $\sigma$. First choose $b$ and $\delta$ to control proportional errors, then $M$ to control fixed constants and the local inverse radius, and finally $n$ to control $\log n/n$. The error in \eqref{eq:initialphase} is at most $t/10$.
+
+Use the fixed prototype $p_j=-K+j+\ii t$, $0\le j\le K$, and bootstrap $|s_j-p_j|\le t/4$. Then
+\[
+ \Ima s_j\ge3t/4,\quad\Rea s_j\le t/4,\quad
+ |\arg(-s_j)|\le\pi/2+\arctan(1/3)<2\pi/3,
+ \quad ct\le|s_j|\le CK.
+\]
+After increasing $M$, the inverse estimate gives
+\[
+ |\arg P_{\rm loc}(s_j)|\le2\pi/3,\qquad
+ c/K\le |P_{\rm loc}(s_j)|\le C/t\le\epsilon/4.
+\]
+Construct $\Phi$ beforehand on the wider sector $|\arg w|<3\pi/4$, $|w|<\epsilon$, with further harmless room for nested-sector estimates. The same bounds hold for $s_j+1$, with the next prototype index. The unforced image $f(P_{\rm loc}(s_j))=P_{\rm loc}(s_j+1)$ has distance at least $c'/K$ from zero and the angular boundary, and at least $\epsilon/2$ from the outer circle.
+
+The actual forcing is $\Oh(n^{-2})$ by Lemma~\ref{lem:subsidiary}. Its full perturbation disk lies inside the wider coordinate domain for large $n$, since $K\le n/2$. On this disk $|\Phi'|\le CK^2$, so one step changes the ideal unit phase increment by at most $CK^2/n^2$. The inverse-identification clause of Lemma~\ref{lem:fatou}, with a fixed slight angular enlargement, ensures that the actual perturbed value is $P_{\rm loc}(s_{j+1})$. It does not switch branches.
+
+The total additional phase error is at most $CK^3/n^2\le C'A^3\delta^2t$. Make this at most $t/20$. Combined with the initial $t/10$ error it is at most $3t/20$, strictly improving the $t/4$ bootstrap. Therefore $|F_n(z)|\le C/t$ throughout the disk about $z_0$. Cauchy's derivative estimate there yields $|F_n'(z_0)|\le Cn^2/t^2$, proving \eqref{eq:tail}. Conjugation proves the negative-angle case.
+
+The noncircular order of constants is: fixed nested sectors and clock cones; small $\epsilon$ and inner analyticity radii; $c_0,q$; large $A$; small $b$; small $\delta$; large $M$; large $n$. All may depend on fixed $\sigma$, but none depends on $n,t$ once chosen.
+\end{proof}
+
+\begin{lemma}\label{lem:outer}
+For each fixed $\delta>0$, uniformly for $\delta\le|\theta|\le\pi$ on the same moving circle,
+\begin{equation}\label{eq:outer}
+ F_n(r\e^{\ii\theta})=\Oh(n^{-1}),\qquad
+ F_n'(r\e^{\ii\theta})=\Oh(1).
+\end{equation}
+\end{lemma}
+\begin{proof}
+Put $z=\zeta/n$ and $v_h=nF_h(z)$. On a bounded $v$-domain, the subsidiary estimate gives
+\[
+ v_{h+1}=v_h+\frac{v_h^2+\zeta^2}{2n}+\Oh(n^{-2}),
+ \qquad v_0=\zeta.
+\]
+The limiting ordinary differential equation has solution
+\[
+ v(u)=\zeta\tan(\zeta u/2+\pi/4),\qquad0\le u\le1.
+\]
+A pole at positive real $u\le1$ requires $\zeta=(\pi/2+2k\pi)/u$. On $|\zeta|=T$ only $\zeta=T$ causes a pole; the negative pole family has modulus at least $3T$. Thus the closed arc away from $T$ has compact complex neighborhoods on which the full ODE trajectory is bounded.
+
+Choose a bounded disk strictly containing those trajectories. Its vector field is uniformly Lipschitz, and the local discretization error is $\Oh(n^{-2})$. Discrete Gronwall gives $\Oh(n^{-1})$ error while the numerical orbit stays in the disk; this estimate prevents a first exit for large $n$. Hence $F_n=\Oh(n^{-1})$ uniformly on the complex neighborhoods. Cauchy in the $\zeta$ variable gives $F_n'=\Oh(1)$. The moving arc is contained in those neighborhoods because $nr\to T$.
+\end{proof}
+
+\section{The positive measure and its density}
+\begin{proposition}\label{prop:measure}
+The entire function $P$ is the Laplace transform of a finite positive measure $\nu$ on $[0,\infty)$ with every exponential moment, no atom at zero, and support $[0,\infty)$. Its restriction to $(0,\infty)$ has a smooth strictly positive density $h$.
+\end{proposition}
+\begin{proof}
+Put $r_n=T/D_n$ and define the finite positive measures
+\[
+ \nu_n=\sum_{m\ge1}[z^m]F_n(z)\,r_n^m\,\delta_{m/n}.
+\]
+Their actual Laplace transforms are $F_n(r_n\e^{s/n})$. The rational parameter in Proposition~\ref{prop:local} is
+\[
+ D_n-\frac{T}{r_n\e^{s/n}}
+ =D_n(1-\e^{-s/n})=s+\Oh_S(\log n/n)
+\]
+on every compact $S$. Hence these transforms converge locally uniformly to $P(s)$.
+
+The masses tend to $P(0)>0$. L\'evy's continuity theorem applied to the normalized characteristic functions gives a finite weak limit $\nu$, supported on $[0,\infty)$. For every real $u$, the transforms at $u+1$ are uniformly bounded. On $t>R$, the integral of $\e^{ut}$ is bounded by $\e^{-R}$ times the integral of $\e^{(u+1)t}$. This proves exponential uniform integrability, so $P(u)=\int\e^{ut}\nu(\dd t)$. Analyticity and the exponential moments extend this identity to every complex $u$.
+
+By Lemma~\ref{lem:fatou}, $P(-x)\sim2/x$. Thus $\nu(\{0\})=0$. Its support has positive points arbitrarily close to zero: a positive gap would imply exponential decay of $P(-x)$, contradicting $2/x$.
+
+For fixed real $\sigma$, Lemma~\ref{lem:fatou} also gives
+$P'(\sigma+\ii t)=\Oh(t^{-2})$ as $|t|\to\infty$, since a vertical line eventually lies in an interior inverse sector. This is the Fourier transform of the finite measure $u\e^{\sigma u}\nu(\dd u)$ and is integrable. Fourier inversion gives this weighted measure a continuous density. Dividing by $u\e^{\sigma u}$ shows that $\nu(\dd u)=h(u)\dd u$ on $(0,\infty)$, with $h$ continuous and nonnegative.
+
+The functional equation \eqref{eq:P} and uniqueness of finite measures give
+\begin{equation}\label{eq:measureidentity}
+ (\e^u-1)\nu=\sum_{k\ge2}\frac{\nu^{*k}}{k!}.
+\end{equation}
+Both sides are finite: the left side has mass $P(1)-P(0)$, and the positive series on the right has finite total mass. In particular $\nu*\nu\le2(\e^u-1)\nu$, so its closed support $S$ is closed under addition. Positive support points tending to zero have integer multiples approaching any prescribed positive number. Therefore $S=[0,\infty)$.
+
+Fix $t>0$. Full support and continuity yield an interval $I\subset(0,t)$ on which $h>0$. Full support also yields a point $b\in t-I$ with $h(b)>0$. Then $h(t-b)>0$, and continuity implies $(h*h)(t)>0$. The convolution is finite and continuous on $(0,\infty)$: near any fixed $t$, split the defining integral into two small endpoint pieces and a compact interior. On an endpoint piece one factor is bounded away from zero's neighborhood while the other has arbitrarily small $L^1$ mass near zero; the interior follows by dominated convergence. Thus the density inequality from \eqref{eq:measureidentity}, initially almost everywhere, holds everywhere by continuity:
+\[
+ (\e^t-1)h(t)\ge\tfrac12(h*h)(t)>0.
+\]
+This proves strict positivity, without a pointwise density expansion at zero.
+\end{proof}
+
+\begin{corollary}\label{cor:smooth}
+The density $h$ is $C^\infty$ on $(0,\infty)$.
+\end{corollary}
+\begin{proof}
+Fix real $\sigma$. Cauchy's estimates in the inverse sectors of Lemma~\ref{lem:fatou}, applied on disks of radius proportional to $|s|$, give
+\[
+ P^{(q)}(\sigma+\ii t)=\Oh_q(|t|^{-q-1})\qquad(|t|\to\infty)
+\]
+for every integer $q\ge1$. This is the Fourier transform of the finite measure $u^q\e^{\sigma u}\nu(\dd u)$. Given $k\ge0$, choose $q>k$. Then $|t|^kP^{(q)}(\sigma+\ii t)$ is integrable. Differentiation under Fourier inversion gives a $C^k$ density for this weighted measure. On $(0,\infty)$ it agrees with $u^q\e^{\sigma u}h(u)$ by uniqueness and continuity. Divide by the positive smooth weight on every compact subinterval of $(0,\infty)$. Since $k$ was arbitrary, $h$ is smooth there.
+\end{proof}
+
+\section{Coefficient extraction and the amplitude}
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+All structural claims about $P$ and $\nu$ were proved above. Fix real $\sigma$ and put $r=T/(D_n-\sigma)$. Differentiating the Cauchy coefficient formula, or integrating it by parts over the full circle, gives exactly
+\begin{equation}\label{eq:cauchy}
+ n a_n r^n=\frac1{2\pi}\int_{-\pi n}^{\pi n}
+ \left[\frac znF_n'(z)\right]\e^{-\ii t}\dd t,
+ \qquad z=r\e^{\ii t/n}.
+\end{equation}
+For the derivative normalization, at $z=T/(D_n-s)$ one has
+\[
+ \frac znF_n'(z)=\frac{D_n-s}{n}G_n'(s).
+\]
+Locally uniform holomorphic convergence in Proposition~\ref{prop:local} gives $G_n'\to P'$. On the circle, the actual parameter is
+$s_n=D_n-(D_n-\sigma)\e^{-\ii t/n}\to\sigma+\ii t$, uniformly for bounded $t$. The central integrand therefore tends to $P'(\sigma+\ii t)\e^{-\ii t}$.
+
+Proposition~\ref{prop:tail} bounds the intermediate tails by $C\int_M^\infty t^{-2}\dd t=\Oh(M^{-1})$, uniformly in $n$. Lemma~\ref{lem:outer} bounds $zF_n'(z)/n$ by $\Oh(n^{-2})$ on outer arcs, whose $t$-length is $\Oh(n)$, so their contribution is $\Oh(n^{-1})$. First let $n\to\infty$ and then $M\to\infty$ in \eqref{eq:cauchy}. Fourier inversion of the density of $u\e^{\sigma u}\nu(\dd u)$ at $u=1$ gives
+\begin{equation}\label{eq:limitcoeff}
+ n a_n r^n\longrightarrow
+ \frac1{2\pi}\int_\R P'(\sigma+\ii t)\e^{-\ii t}\dd t
+ =\e^\sigma h(1)>0.
+\end{equation}
+This also proves \eqref{eq:constantintegral}.
+
+Finally, expansion of \eqref{eq:constants} yields
+\[
+ r^{-n}=(n/T)^n n^{-1/3}T^{1/3}\e^{-B-\sigma}(1+o(1)).
+\]
+The factor $\e^{-\sigma}$ from the contour radius cancels the factor $\e^\sigma$ in \eqref{eq:limitcoeff}. Division by $n$ proves \eqref{eq:asymptotic} with the stated positive constant.
+\end{proof}
+
+\section{Proportional height and fixed shifts}
+\begin{theorem}\label{thm:proportional}
+Let $0<\beta_0<\beta_1<\infty$ be fixed. Uniformly over positive integer pairs $(n,m)$ with $m\to\infty$ and $\beta=n/m\in[\beta_0,\beta_1]$,
+\begin{equation}\label{eq:proportional}
+ A(n,m)\sim\frac{h(\beta)}m
+ \left(\frac mT\right)^n
+ m^{-\beta/3}T^{\beta/3}\e^{-\beta B}.
+\end{equation}
+The exact integer height $m$ and exact ratio $\beta=n/m$ occur in this formula.
+\end{theorem}
+\begin{proof}
+Fix real $\sigma$, let $r_m=T/(D_m-\sigma)$, and extend
+\[
+ Q_m(t)=\frac zmF_m'(z),\quad z=r_m\e^{\ii t/m},\quad |t|\le\pi m,
+\]
+by zero elsewhere. Proposition~\ref{prop:local} gives convergence to $Q(t)=P'(\sigma+\ii t)$ uniformly on each compact interval. Proposition~\ref{prop:tail} gives $|Q_m(t)|\le C/t^2$ in the intermediate range; Lemma~\ref{lem:outer} gives $\Oh(m^{-2})$ in the outer range. The limiting derivative also has an integrable $\Oh(t^{-2})$ tail. Splitting the integral at a fixed $M$, then letting $m\to\infty$ and $M\to\infty$, proves
+\[
+ \|Q_m-Q\|_{L^1(\R)}\longrightarrow0.
+\]
+Their Fourier transforms consequently converge uniformly for all real frequencies, by the $L^1$ norm bound. At the exact frequency $\beta=n/m$, the coefficient identity is
+\[
+ n A(n,m)r_m^n=\frac1{2\pi}\int_\R Q_m(t)\e^{-\ii\beta t}\dd t
+ =\beta\e^{\beta\sigma}h(\beta)+o(1).
+\]
+Fourier inversion applies to the continuous density of $u\e^{\sigma u}\nu(\dd u)$. On the chosen compact interval, $\beta$ is bounded away from zero and $h$ has a strictly positive minimum. The absolute error therefore gives the uniform relative estimate
+\[
+ A(n,m)=\frac{\e^{\beta\sigma}h(\beta)}m r_m^{-n}(1+o(1)).
+\]
+Write $q_m=-(\log m)/3+(\log T)/3-B-\sigma$. Since $n=\beta m$ exactly,
+\begin{align*}
+ r_m^{-n}
+ &= (m/T)^n\exp\left(\beta m\log(1+q_m/m)\right)\\
+ &= (m/T)^n m^{-\beta/3}T^{\beta/3}
+       \e^{-\beta B-\beta\sigma}
+       \left(1+\Oh((\log m)^2/m)\right),
+\end{align*}
+uniformly for these $\beta$. Cancellation of the $\sigma$ factors proves the theorem.
+\end{proof}
+
+\begin{corollary}\label{cor:shifts}
+For every fixed integer $k$, as $n\to\infty$,
+\[
+ \frac{[z^n]F_{n+k}(z)}{a_n}\longrightarrow\e^k.
+\]
+For fixed real $\lambda>0$, put $\alpha_n=\{\lambda n\}$ and $m=\lfloor\lambda n\rfloor$. Then
+\begin{equation}\label{eq:floor}
+ A(n,m)\sim C_\lambda\e^{-\alpha_n/\lambda}
+       (\lambda n/T)^n n^{-1-1/(3\lambda)},
+ \qquad
+ C_\lambda=h(1/\lambda)\lambda^{-1-1/(3\lambda)}
+               T^{1/(3\lambda)}\e^{-B/\lambda}.
+\end{equation}
+\end{corollary}
+\begin{proof}
+For $m=n+k$, continuity gives $h(n/m)\to h(1)$, while $(m/n)^n\to\e^k$. All remaining ratios of prefactors in \eqref{eq:proportional} and \eqref{eq:asymptotic} tend to one. For the second assertion, $m=\lambda n-\alpha_n$ gives
+\[
+ (m/(\lambda n))^n=\e^{-\alpha_n/\lambda}(1+\Oh(n^{-1})),
+ \quad n/m=1/\lambda+\Oh(n^{-1}).
+\]
+Substitution into \eqref{eq:proportional}, using continuity of $h$ and $\Oh(\log n/n)$ for changes in the logarithmic powers, proves \eqref{eq:floor}.
+\end{proof}
+The oscillating floor factor need not tend to one. Dropping it changes the leading equivalent. Neither theorem asserts uniformity as $\beta\downarrow0$ or $\beta\to\infty$.
+
+\begin{corollary}\label{cor:window}
+For each fixed $C>0$, uniformly over integers $|k|\le C\sqrt n$,
+\[
+ \e^{-k}\frac{[z^n]F_{n+k}(z)}{a_n}
+ =\exp\left(-\frac{k^2}{2n}\right)(1+o(1)).
+\]
+\end{corollary}
+\begin{proof}
+Put $m=n+k$ in Theorem~\ref{thm:proportional}. Uniformly in this range, $\beta=n/m=1+\Oh(n^{-1/2})$, so $h(\beta)/h(1)\to1$. The other prefactor ratios tend uniformly to one: their logarithms, aside from the continuous density ratio, are $\Oh((1+|k|)\log n/n)$. The exponential ratio is determined by
+\[
+ n\log(1+k/n)=k-\frac{k^2}{2n}+\Oh_C(n^{-1/2}).
+\]
+Substitution and division by the diagonal equivalent prove the claim.
+\end{proof}
+This is a Gaussian-shaped asymptotic profile for height shifts. It is not a probability central limit theorem; no probability distribution on heights has been introduced.
+
+
+\section{An inverse consequence}
+\begin{corollary}\label{cor:inverse}
+Let $y=a_n$ with $n\to\infty$, put $Y=\log y$, and let $W$ denote the positive real Lambert function. Put
+\[
+ X=\frac{Y}{W(Y/T)},\qquad q=\log(X/T)+1.
+\]
+Then
+\begin{equation}\label{eq:inverse}
+ n=X+\frac{\frac43\log X-\log c}{q}
+      +o(1/\log X).
+\end{equation}
+In particular $n-X\to4/3$. The explicit corrected expression in \eqref{eq:inverse}, and the large real root $x(y)$ of
+\[
+ \log y=x\log(x/T)-\tfrac43\log x+\log c,
+\]
+recover $n$ by nearest-integer rounding for all sufficiently large exact sequence values $y=a_n$.
+\end{corollary}
+\begin{proof}
+Let $L(x)=x\log(x/T)$. Then $L(X)=Y$ and $L'(X)=q$. Theorem~\ref{thm:main} gives
+$L(n)-L(X)=\frac43\log n-\log c+o(1)$. First comparison gives $n/X\to1$, and the mean-value theorem then gives $n-X=\Oh(1)$. Thus
+\[
+ L(n)-L(X)=q(n-X)+\Oh(X^{-1}),\qquad
+ \log n=\log X+\Oh(X^{-1}).
+\]
+Division by $q$ proves \eqref{eq:inverse}. Applying the same mean-value argument to the full leading model gives $x(a_n)=n+o(1/\log n)$; the rounding assertions follow.
+\end{proof}
+No effective onset is asserted. This is recovery from exact sequence values, not a universal threshold-rounding rule for arbitrary $y$ between them. The leading equivalent alone does not provide a higher-order error term.
+
+\section{Exact computation and numerical diagnostics}
+\subsection{The coefficient algorithm}
+Logarithmically differentiating \eqref{eq:eulerproduct} gives
+\[
+ \frac{zF_{h+1}'(z)}{1+F_{h+1}(z)}=\sum_{j\ge1}b_jz^j,
+ \qquad b_j=\sum_{d\mid j}d[z^d]F_h(z).
+\]
+Therefore, writing $1+F_{h+1}(z)=\sum_{k\ge0}c_kz^k$, one obtains
+\begin{equation}\label{eq:exactrec}
+ c_0=1,\qquad c_k=\frac1k\sum_{j=1}^k b_jc_{k-j}\quad(k\ge1).
+\end{equation}
+Truncation at degree $N$ is exact for every coefficient retained. The public standard-library program checks divisibility before each integer division. It stores $F_h$ with constant term zero and restores the convention $A(0,h)=1$ only when reporting the array. Degree and height are each capped at $640$; this is an implementation and testing limit, not a limitation of the theorems. The diagonal calculation uses $\Oh(N^3)$ integer arithmetic operations and $\Oh(N)$ stored integers; operation costs grow with the bit lengths.
+
+An independent product implementation expands each factor using
+\[
+ (1-z^d)^{-a}=\sum_{k\ge0}\binom{a+k-1}{k}z^{dk}\quad(a\ge1)
+\]
+and multiplies the finite truncations. It checks every entry through degree and height $12$. A separate generated exact fixture contains diagonal values through $414$. The public tests also compare the $22$ displayed OEIS values, $n=0,\ldots,21$. The full OEIS b-file was not successfully retrieved in the source review; the $415$-entry fixture is therefore explicitly described as generated mathematical data, not as a $415$-term external comparison.
+
+All public pass/fail checks use explicit exceptions, so Python optimization does not remove them. Local chunked decimal conversion works with Python's minimum configurable integer-string digit limit of $640$ without modifying that process-wide limit. This matters because the largest exact integers exceed that many digits.
+
+\subsection{The amplitude computation is not certified}
+The normalized ratios $a_n(T/n)^n n^{4/3}$ decrease slowly over the tested range: approximately $4.60133$ at $n=40$, $4.55287$ at $n=80$, $4.52400$ at $n=160$, $4.51777$ at $n=200$, and $4.50437$ at $n=414$. These finite values alone neither prove a limit nor certify its decimal digits.
+
+A separate optional numerical script evaluates the repelling parametrization. The first terms of its normalized formal coordinate are
+\[
+ \Phi(w)=-2/w+\tfrac13\log w-\frac w{36}
+          +\frac{w^2}{540}+\frac{w^3}{7776}+\cdots.
+\]
+The script uses nine correction coefficients, solves the truncated inverse equation near $s-M$ by Newton iteration, applies $M$ forward iterates of $f$, and propagates the derivative by multiplication by $\e^w$. Subtracting $2/(1-s)^2$ from the derivative before quadrature improves the observed tail: its known contribution to $h(1)$ is $2/\e$ for $\sigma<1$. Tests varying the forward depth, vertical contour, cutoff, and mesh give values near $4.4923299$, consistent with the conjectured $4.4923\ldots$. Floating-point agreement is not an interval enclosure. There is no certified digit count in this report, and the analytic theorem does not depend on these calculations.
+
+\subsection{Reproducibility and limits}
+The accompanying archive contains the complete editable TeX, exact programs and tests, numerical diagnostic script, exact fixture, source ledger, and a deterministic builder. The builder verifies an input manifest, runs explicit tests, creates a private pdf\LaTeX\ format, compiles three times without shell escape, rejects layout and reference warnings, and packages sorted members with fixed timestamps. It preserves the source tree and writes outputs only to a new separate directory. Ordinary and optimized cap-$640$ runs are compared by full ZIP bytes and by each member. Byte identity is a claim about the same toolchain; arbitrary TeX, font, or numerical-library versions need not reproduce identical bytes.
+
+\section{Further questions and quantitative extensions}
+\subsection{Validated evaluation of the positive constant}
+The exact expression \eqref{eq:constantintegral} is a useful starting point for a certificate, but a validated computation requires more than increased precision. One must bound the omitted Fatou-coordinate terms on a stated sector, enclose the inverse branch, control the forward propagation of both value and derivative, validate the finite-interval quadrature, and give an explicit integrable bound for the remaining vertical tail. The sector proof above supplies qualitative constants; it does not extract numerical values for all of them. A practical goal is a reproducible interval for $c$ narrow enough to validate the conjectured initial digits, with each of these error sources accounted for separately.
+
+The rational subtraction used in the diagnostic script could be extended to several terms derived from the large-$s$ inverse expansion. This can reduce cancellation and the cutoff length, but every subtracted term and its Fourier contribution must be explicit. Mesh or precision stability cannot replace bounds for truncation of the asymptotic coordinate and the infinite integral.
+
+\subsection{Higher corrections to the diagonal}
+The logarithmic center $D_n$ is determined only to the precision needed for a leading equivalent. Higher corrections require retaining more subsidiary terms in $R_h(z)$, including their dependence on $h$, and constructing a corresponding hierarchy of nonautonomous clocks. Their matching constants interact with the inverse-coordinate expansion. It is natural to investigate corrections involving powers of $1/n$ and polynomials in $\log n$, but no complete expansion of this form is asserted here.
+
+A formal expansion at bounded $s$ is insufficient for a coefficient theorem. The error must be controlled in an integrable norm on the growing contour, with the intermediate-angle and outer-angle arguments strengthened to the same order. The present choice $K=\lfloor\sqrt n\rfloor$ balances errors only for convergence; a higher-order theorem would need a new quantified matching analysis. This identifies a concrete obstruction to promoting formal series directly into an all-orders claim.
+
+\subsection{Effective bounds and inverse thresholds}
+Making the constants in the clock, stopping, and sector estimates explicit would give finite-$n$ bounds and a computable onset for the leading equivalent. Such bounds would in turn permit certified recovery of integer thresholds for arbitrary input sizes. Corollary~\ref{cor:inverse} currently supplies eventual rounding at exact sequence values; it does not say how large ``eventually'' is, nor does it control the location of a general input between adjacent terms. A rigorous threshold algorithm should combine exact small-index computation with explicit upper and lower bounds, rather than treat a floating-point evaluation of $c$ as exact.
+
+One can also seek inverse statements for $A(n,\lfloor\lambda n\rfloor)$. Formula~\eqref{eq:floor} shows why the bounded floor phase must enter such statements. A single smooth approximation that discards this phase can have a nonvanishing multiplicative error.
+
+\subsection{Other height scales and the density}
+Theorem~\ref{thm:proportional} treats $n/m$ in a fixed compact subset of $(0,\infty)$. Extending it toward zero or infinity requires information about $h(t)$ at the corresponding endpoint and renewed uniformity estimates. In particular, the strict-positivity proof does not give an expansion of $h(t)$ at zero. The measure identity
+\[
+ (\e^t-1)\nu=\sum_{k\ge2}\nu^{*k}/k!
+\]
+is a possible starting point for endpoint analysis and stronger regularity, such as real analyticity. Smoothness away zero is already established in Corollary~\ref{cor:smooth}, but differentiation of this convolution identity or exchange of limits with its series needs separate justification.
+
+Kaneiwa's fixed-leaf polynomial regime, proportional height, and fixed-height partition regimes are genuinely different limiting questions. A uniform transition theory between them would explain how the polynomial and parabolic descriptions fit together. It may also clarify which parts of this proof extend to other multiset recurrences or other initial generating functions. Such a generalization must recompute the subsidiary forcing and the clock constant; the unforced map alone does not determine the answer.
+
+\begin{thebibliography}{9}
+\bibitem{array} The OEIS Foundation Inc., \emph{A290353}, square array of iterated Euler transforms, entry by Alois P. Heinz, 28 July 2017. Retrieved 5 October 2026. \url{https://oeis.org/A290353}.\small
+\bibitem{oeis} The OEIS Foundation Inc., \emph{A290354}, entry by Alois P. Heinz, 28 July 2017; asymptotic conjecture by V\'aclav Kot\v{e}\v{s}ovec, 14 August 2017. Retrieved 5 October 2026. \url{https://oeis.org/A290354}.
+\bibitem{kan80} R. Kaneiwa, \emph{On r-fold Partitions and a Certain Form of Infinite Products}, Otaru University of Commerce, Humanities Research \textbf{61} (1980), 11--26. \url{https://barrel.repo.nii.ac.jp/records/2331}; persistent identifier \url{https://hdl.handle.net/10252/2056}.
+\bibitem{bw} M. Bechtloff Weising, \emph{Higher Order Bell Symmetric Functions}, arXiv:2505.18504v2. \url{https://arxiv.org/abs/2505.18504v2}. Definitions and statements checked in the versioned HTML on 5 October 2026.
+\bibitem{ibd} \emph{Asymptotics of Iterated Bell Diagonals (OEIS A139383, A261280)}, unrefereed research report in VladimirReshetnikov/ProveIt, combined fixed-shift and proportional-depth manuscripts, 2 October 2026. Catalogue checked 5 October 2026; indexed commit \texttt{65969409cfc007047182e9303e1d2d0106324dea}. \href{https://github.com/VladimirReshetnikov/ProveIt/tree/main/SetTheory/Cardinals/docs/reports/generating-functions-and-asymptotics/oeis-sequence-asymptotics/a139383-iterated-bell-diagonals}{Repository report}.
+\end{thebibliography}
+\end{document}

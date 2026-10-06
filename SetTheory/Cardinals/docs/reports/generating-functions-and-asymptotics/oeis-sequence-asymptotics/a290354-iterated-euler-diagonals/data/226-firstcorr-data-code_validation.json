@@ -1,0 +1,81 @@
+{
+  "code_sha256": {
+    "code/amplitude_diagnostic.py": "64599bf111370810b0ffdb609aa4366f583fe50d0d08e454a1169774cf2c6280",
+    "code/clock_checks.py": "1ed461cc684c040d196557135d679c1b1a1dcfbd996b50dc3a155678278fac77",
+    "code/coordinate_series.py": "57c0fd5abbef3b5ef9fc78c6cc14db04499659ec2c91fa80783db8abce5b8c2d",
+    "code/derivative_diagnostic.py": "859cdc7bfd869f5949a14f9547d2ec2c0b98f9cf7166f890e98707d2189c170c",
+    "code/exact_euler.py": "cd660f0e349749717310ff00666da6333cb9444f393a3599ebb09fc0a9f32276",
+    "code/test_exact.py": "96ec75c6aed4d0e7b7ac68c2d9379d819027eb494f6046d3b497367cc13dfeb2",
+    "code/test_guards.py": "05f3afa70f0ba1328adf3cae53ad8b043a230829ac07c127d22bbf31c6b8d24d"
+  },
+  "commands_in_both_normal_and_optimized_modes": [
+    "python -B [-O] code/test_exact.py --cap 414",
+    "python -B [-O] code/clock_checks.py",
+    "python -B [-O] code/test_guards.py --with-diagnostics",
+    "python -B [-O] code/derivative_diagnostic.py --grid"
+  ],
+  "derivative_grid_results_byte_identical": true,
+  "environment": "PYTHONINTMAXSTRDIGITS=640 for all listed runs; no global digit setting changed",
+  "exact_result": {
+    "cap": 414,
+    "diagonal_sha256": "9c82d2a75991e1e6506866a29d3aaae42eea32c2754d1a8005a2d6495b7799b3",
+    "external_OEIS_comparison_n": [
+      0,
+      21
+    ],
+    "independent_fixture_n": [
+      0,
+      414
+    ],
+    "last_digits": 1000,
+    "product_check_degree": 12,
+    "product_check_height": 12,
+    "status": "passed"
+  },
+  "exact_results_byte_identical": true,
+  "guard_results": [
+    {
+      "diagnostic_guards_checked": true,
+      "guard_and_finite_order_checks": 114,
+      "integer_string_limit": 640,
+      "optimization": 0,
+      "status": "passed",
+      "tested_formal_orders": [
+        0,
+        12
+      ]
+    },
+    {
+      "diagnostic_guards_checked": true,
+      "guard_and_finite_order_checks": 114,
+      "integer_string_limit": 640,
+      "optimization": 1,
+      "status": "passed",
+      "tested_formal_orders": [
+        0,
+        12
+      ]
+    }
+  ],
+  "numpy": "2.3.5",
+  "output_safety_checks": "Derivative diagnostic rejected existing output files and symlinks without modifying the target in both modes",
+  "public_error_budget": "K=n^(1/2), strip=n^(1/20), derivative30: local3/2, integrated29/20, tails3/2, stated relative7/5; finite exponent arithmetic is not an analytic certificate",
+  "python": "3.12.14",
+  "scipy": "1.17.0",
+  "scope": "Actual finite tests and diagnostics; not a formal proof or numerical certification",
+  "status": "passed",
+  "symbolic_check_count": 48,
+  "symbolic_results_byte_identical": true,
+  "sympy": "1.14.0",
+  "unchanged_report225_files": [
+    "code/exact_euler.py",
+    "code/test_exact.py",
+    "code/coordinate_series.py",
+    "code/amplitude_diagnostic.py",
+    "data/exact414.json",
+    "data/amplitude_diagnostic.json",
+    "data/amplitude_grid.json",
+    "sources/A290354_first22.json"
+  ],
+  "untested_scope": "No claim of a fresh full-diagonal rerun above 414; inherited recurrence guard remains 640"
+}

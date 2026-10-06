@@ -1,0 +1,1412 @@
+\newcommand{\DoNotLoadEpstopdf}{}
+\pdfinfoomitdate=1
+\pdftrailerid{}
+\pdfsuppressptexinfo=-1
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage[margin=1in]{geometry}
+\usepackage{booktabs,longtable,array}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+\hypersetup{pdftitle={Report 153 All orders refinement for unlabeled permutation graphs},pdfauthor={},pdfsubject={OEIS A123448 factorial expansion, inverse thresholds, and sharp total variation rate}}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{1.2em}
+\setlength{\emergencystretch}{2em}
+\setcounter{tocdepth}{1}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\PP}{\mathbb P}
+\newcommand{\EE}{\mathbb E}
+\newcommand{\ZZ}{\mathbb Z}
+\newcommand{\QQ}{\mathbb Q}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\ceil}[1]{\left\lceil #1\right\rceil}
+\newcommand{\floor}[1]{\left\lfloor #1\right\rfloor}
+\DeclareMathOperator{\Aut}{Aut}
+\DeclareMathOperator{\TV}{TV}
+\DeclareMathOperator{\Inv}{Inv}
+\title{All orders refinement for unlabeled permutation graphs\\\large Factorial expansion, inverse thresholds, and sampling in OEIS A123448}
+\author{Report 153}
+\date{3 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+Let $a_n$ count unlabeled permutation graphs on $n$ vertices. We establish,
+for every fixed $R\geq1$,
+\[
+ a_n=\frac14\sum_{k=0}^{R-1}h_k(n-k)!+O_R((n-R)!),
+\]
+with a formal coefficient generator using only finite unrooted and
+vertex-rooted graph counts at each order. The first coefficients are
+$1$, $-4$, $-1$, $-94/3$, $-769/6$, $-19969/15$,
+$-531812/45$, and $-40114096/315$.
+The main step is a finite-polynomial approximation: all but
+$O_R((n-R)!)$ permutation realizers have a recoverable large prime
+quotient, bounded decorations, and a bounded vertex-rooted context.
+Borinsky's established factorial composition theorem then transfers
+all fixed orders without assuming an asymptotic expansion of the
+unknown graph series. We derive denominator divisibility,
+arbitrary fixed-order threshold brackets, an explicit second
+Lambert-$W$ inverse shift, and the sharp all-orders sampling comparison beginning
+$d_{\TV}=4/n-15/n^2+O(n^{-3})$ between uniform graph classes and graphs of
+uniform permutations. Exact companion programs provide independent
+coefficient routes, formal inverse checks, and two exhaustive finite
+enumeration options.
+\end{abstract}
+\noindent\textbf{Scope and priority.}
+The exact recurrence and table in Bayoumi--El-Zahar--Khamis (1990),
+classical two-dimensional-poset asymptotics and sampling precedents,
+and the simple-permutation asymptotic machinery are prior art.
+This report presents an all-orders refinement; it makes no first-ever
+claim for the leading equivalent. The final 2026 intersection-graph
+article and two older subscription articles were identified but their
+full final texts were not inspected. All truncation orders are fixed;
+no effective onset or growing-order remainder estimate is claimed.
+\newpage
+\tableofcontents
+\newpage
+
+\section{Results and the proof mechanism}\label{sec:results}
+
+A permutation $\pi\in\mathcal S_n$ determines an inversion graph
+on $\{1,\ldots,n\}$: vertices $i<j$ are adjacent exactly when
+$\pi(i)>\pi(j)$. A \emph{permutation graph} is an abstract graph
+isomorphic to such a graph. Throughout, graphs are simple and
+unlabeled; a graph and its complement are counted separately unless
+they happen to be isomorphic. Write $a_n$ for the number of
+isomorphism classes on $n$ vertices, and $r_n$ for the number of
+classes with one distinguished vertex, with isomorphisms required
+to preserve that vertex. Thus $r_n$ counts vertex orbits across
+unrooted graph classes, not $na_n$.
+
+Introduce ordinary formal power series
+\begin{equation}\label{eq:series}
+ A(x)=\sum_{n\geq1}a_nx^n,\qquad
+ C(x)=\sum_{d\geq0}r_{d+1}x^d,\qquad
+ F(x)=\sum_{n\geq1}n!x^n.
+\end{equation}
+Let $T=F^{\langle-1\rangle}$ denote formal compositional inversion,
+and put $Q=T\circ A$. Neither convergence nor a positive radius of
+convergence is intended for these series.
+
+\begin{theorem}[All fixed orders]\label{thm:main}
+Define
+\begin{equation}\label{eq:H}
+ H(x)=C(x)\frac{xQ'(x)}{Q(x)A'(x)}
+       \exp\left(\frac1x-\frac1{Q(x)}\right)
+      =\sum_{k\geq0}h_kx^k.
+\end{equation}
+This is a well-defined series in $\QQ[[x]]$, with $H(0)=1$.
+For each fixed integer $R\geq1$, as $n\longrightarrow\infty$,
+\begin{equation}\label{eq:main}
+ a_n=\frac14\sum_{k=0}^{R-1}h_k(n-k)!
+       +O_R((n-R)!).
+\end{equation}
+The coefficient $h_k$ depends only on $a_1,\ldots,a_{k+2}$ and
+$r_1,\ldots,r_{k+1}$. These are finite, exactly enumerable inputs.
+Moreover, $k!h_k\in\ZZ$ for every $k\geq0$.
+\end{theorem}
+
+The first eight $h_k$ are displayed in Section~\ref{sec:coefficients}.
+In particular,
+\begin{equation}\label{eq:three}
+ a_n=\frac{n!}{4}\left(1-\frac4n-\frac1{n^2}
+                           -\frac{97}{3n^3}+O(n^{-4})\right).
+\end{equation}
+The inverse-factorial and inverse-power coefficient lists are
+\emph{different}: the $-94/3$ coefficient multiplies $(n-3)!$ in
+\eqref{eq:main}, whereas $-97/3$ multiplies $n^{-3}$ after division
+by $n!$.
+
+The leading equivalent gives a natural comparison of sampling laws.
+Let $\mathsf P_n$ be the law of the unlabeled inversion graph of a
+uniform permutation in $\mathcal S_n$, and let $\mathsf U_n$ be
+uniform on the $a_n$ graph classes. With
+$d_{\TV}(\mu,\nu)=\sup_E|\mu(E)-\nu(E)|$, we prove
+\begin{equation}\label{eq:tvintro}
+ d_{\TV}(\mathsf P_n,\mathsf U_n)=\frac4n-\frac{15}{n^2}
+ +\frac{169}{3n^3}+\frac{215}{2n^4}+O(n^{-5}).
+\end{equation}
+This controls events and uniformly bounded observables. It does not,
+by itself, transfer expectations of unbounded statistics or relative
+errors for rare events.
+
+For $N(X)=\min\{n\geq1:a_n\geq X\}$, the report gives arbitrary
+fixed-order smooth approximations and a shrinking rounding window.
+In particular, with $L=\log X$, $u=L/W_0(L/e)$, $D=\log u$, and
+$c=\frac12\log(2\pi)-\log4$, the explicit center is
+\begin{equation}\label{eq:inverseintro}
+ v_*(X)=u-\frac12-\frac{c}{D}
+         +\frac{97/24-c^2/(2D^2)}{uD}.
+\end{equation}
+For some constant $K>0$ and all sufficiently large $X$,
+\begin{equation}\label{eq:inverseintrobracket}
+ \floor{v_*(X)-\frac{K}{u^2D}}+1
+ \ \leq N(X)\leq\
+ \ceil{v_*(X)+\frac{K}{u^2D}}.
+\end{equation}
+The constants and onset are not made effective here, and the floor
+and ceiling cannot be replaced uniformly by a single unqualified
+ceiling of a truncated expression.
+
+\paragraph{Why the proof is not circular.}
+The series $A$ occurs on the right of \eqref{eq:H}, but only as a
+formal device for collecting stabilized coefficients. For each
+fixed $R$ we first prove an approximation involving the known
+simple-permutation series and two finite polynomials. Only those
+series are submitted to the analytic asymptotic-transfer theorem.
+The resulting coefficients stabilize as the finite cutoff grows.
+No closure theorem is applied to $A$ before its factorial expansion
+has been established.
+
+\section{Structural conventions and established inputs}\label{sec:inputs}
+
+\subsection{Intervals and modular decomposition}
+An interval of a permutation is a consecutive set of positions whose
+values also form a consecutive set. Its length may be one or the
+whole permutation; a \emph{nontrivial proper interval} has length
+between $2$ and $n-1$. A permutation of order at least four is
+\emph{simple} when it has no nontrivial proper interval.
+
+A module in a graph $G$ is a nonempty vertex set $M$ such that every
+vertex outside $M$ is adjacent to all of $M$ or to none of $M$.
+Two sets \emph{overlap} when their intersection and both differences
+are nonempty. A module is \emph{strong} when it overlaps no module.
+The strong modules form the canonical modular decomposition tree.
+At its internal nodes, maximal proper strong modules are the child
+blocks. The quotient is either edgeless (parallel), complete
+(series), or modular-prime. We use \emph{prime} only in this modular
+sense, not in the sense of graph split decomposition.
+
+Inflating a permutation replaces each of its entries by an interval
+carrying a smaller permutation. Its canonical substitution tree has
+simple nodes of arity at least four and increasing or decreasing
+nodes of arity at least two. Consecutive monotone nodes with the
+same sign are flattened. The standard decomposition and the
+simple-permutation generating equation are due to
+Albert--Atkinson--Klazar~\cite{AAK}.
+
+The precise bridge from permutations to graphs is important.
+Habib--Paul~\cite[Lemma 20, printed p.~55]{HP} identify the strong
+modules of an inversion graph with the strong common intervals of
+its two-order representation. Consequently the canonical
+substitution tree agrees with the graph's modular decomposition
+tree: simple nodes become prime quotients, and monotone nodes become
+series or parallel nodes. This does \emph{not} say that every graph
+module is an interval of every realizer. It says that strong modules
+are exactly the canonical interval blocks relevant here.
+
+Permutation graphs are closed under induced subgraphs and graph
+substitution. The latter follows directly by inflating a permutation
+realizer of the quotient by realizers of the child graphs. In
+particular, every graph counted by a context-and-decoration
+construction below is still a permutation graph.
+
+\subsection{Four orientation pairs and weighted prime counts}\label{sec:four}
+A permutation graph is a comparability graph whose complement is
+also a comparability graph. For a prime permutation graph of order
+at least four, the graph has two transitive orientations, reverse
+to one another, and its complement likewise has two. Each of the
+four pairs determines two total orders and hence a normalized
+permutation realizer. These classical facts and their use in
+permutation-graph enumeration are reviewed in
+\cite{BEK,BBFGP}.
+
+Here a \emph{normalized realizer} is an actual permutation in
+$\mathcal S_m$ whose inversion graph belongs to the specified
+unlabeled graph class. No external labeling or ordering of the
+abstract graph's vertices is counted as additional data.
+
+\begin{lemma}[Weighted four-realizer identity]\label{lem:weighted}
+If $P$ is a prime permutation graph on $m\geq4$ vertices, then
+\[
+ f(P):=\#\{\pi\in\mathcal S_m:\Inv(\pi)\simeq P\}
+       =\frac4{|\Aut(P)|}.
+\]
+If $s_m$ is the number of simple permutations of order $m$, then
+\begin{equation}\label{eq:weighted}
+ \sum_{[P]\text{ prime},\ |P|=m}\frac1{|\Aut(P)|}=\frac{s_m}{4}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Fix a vertex set for $P$. An automorphism preserving both chosen
+transitive orientations preserves their union, a total order on
+that vertex set, so it is the identity. The automorphism action on
+the four orientation pairs is therefore free. Two pairs give the
+same normalized permutation exactly when they differ by an
+automorphism. This proves the first formula. Simplicity of a
+permutation is equivalent to modular primality of its inversion
+graph at these orders, by the canonical decomposition. Summing
+$f(P)$ gives $s_m$, proving \eqref{eq:weighted}.
+\end{proof}
+
+The four realizer operations form a Klein group generated by
+inversion $\pi\mapsto\pi^{-1}$ and reverse-complement
+$\pi\mapsto\rho\pi\rho$, where $\rho(i)=m+1-i$. They preserve the
+unlabeled inversion graph. Complementing the graph is not an
+additional equivalence and supplies no extra factor of two.
+Orders one, two, and three do not enter the prime series.
+
+\subsection{The factorial asymptotic transfer used here}\label{sec:borinsky}
+Let
+\begin{equation}\label{eq:S}
+ S(z)=\sum_{m\geq4}s_mz^m=\frac{z-z^2}{1+z}-T(z).
+\end{equation}
+For the factorial class with parameters $\alpha=\beta=1$, write
+$\mathcal D f(x)=\sum_{k\geq0}d_kx^k$ when
+\[
+ [x^n]f(x)=\sum_{k=0}^{R-1}d_k(n-k)!+O_R((n-R)!)
+ \quad\text{for every fixed }R.
+\]
+The basis is $(n-k)!=\Gamma(n+1-k)$, rather than
+$\Gamma(n-k)$. Polynomials have asymptotic derivative zero.
+
+Borinsky's composition and inversion theorems
+\cite[Theorem 35 and equations (62)--(67)]{Borinsky} imply
+\begin{equation}\label{eq:DS}
+ \mathcal D S(z)=T'(z)\frac{z}{T(z)}
+             \exp\left(\frac1z-\frac1{T(z)}\right).
+\end{equation}
+In particular $\mathcal D S(0)=e^{-2}$. For a polynomial $B$ with
+$B(0)=0$ and $B'(0)=1$, the specialization needed here is
+\begin{equation}\label{eq:composition}
+ \mathcal D(S\circ B)(x)=\frac{x}{B(x)}
+  \exp\left(\frac1x-\frac1{B(x)}\right)(\mathcal D S)(B(x)).
+\end{equation}
+For a polynomial $C_0$, multiplication gives
+\begin{equation}\label{eq:polymult}
+ \mathcal D\bigl(C_0(S\circ B)\bigr)=C_0\mathcal D(S\circ B).
+\end{equation}
+The additional chain-rule term in the general theorem vanishes
+because $\mathcal D B=0$. Equations \eqref{eq:DS}--\eqref{eq:polymult}
+are established asymptotic results, not identities inferred solely
+from formal power-series manipulation. We state precisely these
+external inputs and prove the graph-specific finite approximation
+next.
+
+\section{Excluding middle intervals}\label{sec:intervals}
+
+\begin{lemma}[Interval tail]\label{lem:intervals}
+For every fixed integer $R\geq1$,
+\begin{equation}\label{eq:intervaltail}
+ \sum_{k=R+2}^{n-R}\frac{(n-k+1)^2}{\binom nk}=O_R(n^{-R}).
+\end{equation}
+Consequently at most $O_R((n-R)!)$ permutations of order $n$
+have an interval of some length in $[R+2,n-R]$.
+\end{lemma}
+\begin{proof}
+For each interval of $k$ positions, its image set is uniform over
+all $\binom nk$ subsets of size $k$. Exactly $n-k+1$ of these
+subsets are intervals of values. There are $n-k+1$ intervals of
+positions, so the expected number of length-$k$ intervals is
+\[
+ E_k=\frac{(n-k+1)^2}{\binom nk}.
+\]
+For $k\leq n/4$,
+\[
+ \frac{E_{k+1}}{E_k}
+ =\frac{(k+1)(n-k)}{(n-k+1)^2}
+ \leq\frac{k+1}{n-k+1}\leq\frac12
+\]
+for all sufficiently large $n$. The lower-end tail is therefore
+bounded by a constant times $E_{R+2}=O_R(n^{-R})$.
+At the upper end put $\ell=n-k$ and
+$b_\ell=(\ell+1)^2/\binom n\ell$. Then
+\[
+ \frac{b_{\ell+1}}{b_\ell}
+ =\frac{(\ell+2)^2}{(\ell+1)(n-\ell)}.
+\]
+For $1\leq\ell\leq n/4$ this is at most $1/2$ once $n$ is large.
+The upper-end tail starts at $b_R=O_R(n^{-R})$.
+Throughout the remaining central band,
+$\binom nk\geq\binom n{\lfloor n/4\rfloor}$, up to an immaterial
+shift of one in a boundary index. This grows exponentially in $n$,
+whereas the numerator and number of terms are polynomial. The
+central sum is exponentially small. This proves
+\eqref{eq:intervaltail}. A union bound and multiplication by $n!$
+complete the proof, since $n!n^{-R}=O_R((n-R)!)$.
+\end{proof}
+
+\begin{definition}
+A permutation is $R$-good if it has no interval of a length in
+$[R+2,n-R]$. All goodness statements below have $R$ fixed and
+$n$ sufficiently large in terms of $R$.
+\end{definition}
+
+The argument is a probability estimate on uniform \emph{permutations}.
+It is not an assertion that such permutations induce uniform graph
+classes. Later, an exceptional graph class will be charged to one
+of its exceptional realizers; this elementary surjection bound is
+all that is needed to transfer the error count to graphs.
+
+\section{Recovering one large prime node}\label{sec:core}
+
+\begin{lemma}[Large simple node]\label{lem:large}
+The canonical substitution tree of an $R$-good permutation has a
+unique internal node of arity greater than $R+1$. That node is
+simple. Its subtree has at least $n-R+1$ leaves, each of its children
+has at most $R+1$ leaves, and at most $R-1$ leaves lie outside it.
+\end{lemma}
+\begin{proof}
+Every proper canonical subtree is an interval, so its leaf count
+is at most $R+1$ or at least $n-R+1$. Starting at the root, follow
+a child of the latter size for as long as one exists. Such a child
+is unique, because two would have total size exceeding $n$. At the
+terminal node $v$, the subtree has $N\geq n-R+1$ leaves and all
+children have at most $R+1$ leaves.
+
+The node cannot be monotone. Otherwise any consecutive union of its
+children is also a permutation interval. Accumulate children from
+one end until their total size first exceeds $R+1$. The resulting
+interval has size between $R+2$ and $2R+2$. For $n>3R+2$, this lies
+in the forbidden band and is proper. Notice that the union need not
+be a canonical subtree: being a proper \emph{permutation interval}
+is the property used in the contradiction.
+
+Thus $v$ is simple and its arity is at least $N/(R+1)$, eventually
+greater than $R+1$. Any descendant internal node lies inside a child
+with at most $R+1$ leaves. There are at most $R-1$ leaves outside
+$v$, so every ancestor has at most $R$ children: one on the path to
+$v$ and at most $R-1$ off that path. Every off-path node is likewise
+bounded. This proves uniqueness and all size assertions.
+\end{proof}
+
+To turn this into an unlabeled product, the large inserted object
+must be intrinsically recoverable in every bounded context.
+
+\begin{lemma}[Connected and coconnected insertion]\label{lem:insertion}
+Suppose a graph $H$ is substituted at one vertex of a graph $K$.
+If $H$ and its complement are both connected, the set $M$ of
+inserted vertices is a strong module of the resulting graph.
+\end{lemma}
+\begin{proof}
+It is a module by construction. Suppose a module $N$ overlaps $M$.
+Let $X=M\cap N$ and choose $y\in N\setminus M$. Since $M$ is a
+module, $y$ has constant adjacency $\eta\in\{0,1\}$ to $M$.
+For any $z\in M\setminus N$, the module property of $N$ forces
+$z$ to have the same adjacency to every $x\in X$ as it has to $y$.
+Thus every edge across the nontrivial cut $(X,M\setminus N)$ has
+value $\eta$. If $\eta=0$, $H$ is disconnected; if $\eta=1$, its
+complement is disconnected. Both contradict the hypothesis.
+\end{proof}
+
+A prime quotient of order at least four is connected and
+coconnected. Inflating all its vertices by nonempty graphs preserves
+both properties: paths in the quotient connect different blocks,
+and a vertex in another adjacent block connects vertices within a
+block if necessary. Apply the same argument in the complement.
+Thus Lemma~\ref{lem:insertion} applies to every prime-rooted
+inflation used here, regardless of the surrounding context.
+
+\begin{proposition}[Unlabeled context recovery]\label{prop:context}
+Fix $R$. Consider the following construction at order $n$:
+\begin{enumerate}
+\item choose a vertex-rooted permutation graph on $d+1$ vertices,
+      where $0\leq d\leq R-1$;
+\item choose a prime permutation-graph quotient of order $m>R+1$;
+\item decorate each quotient vertex by a nonempty permutation graph
+      of order at most $R+1$, modulo quotient automorphisms;
+\item insert the decorated quotient at the marked context vertex.
+\end{enumerate}
+For sufficiently large $n$, the output graph recovers exactly these
+data, up to the stated isomorphisms. Every graph realized by an
+$R$-good permutation occurs among the outputs.
+\end{proposition}
+\begin{proof}
+The inserted vertex set is a strong module by
+Lemma~\ref{lem:insertion}. Within it, the maximal proper strong
+modules are the decorated ports and the quotient is the chosen
+prime graph. All decoration nodes have arity at most $R+1$, as do
+all nodes of the context, whose order is at most $R$. Hence the
+chosen quotient is the unique node of arity greater than $R+1$
+in the output's canonical modular tree. It is intrinsically
+recognizable, including when the context consists only of its root.
+
+An isomorphism between output graphs must preserve this unique node
+and its strong module. The induced graph on that module recovers
+the inner decorated quotient, with ports identified up to quotient
+automorphism. Collapsing it to one marked vertex recovers the
+context up to root-preserving isomorphism. Conversely each listed
+isomorphism of data gives an isomorphism of outputs. There is no
+extra division by a context root stabilizer and no choice of a
+transitive orientation at the context root.
+
+Finally Lemma~\ref{lem:large} and the Habib--Paul correspondence
+identify exactly such data inside every $R$-good realizer. Taking
+induced subgraphs and collapsing interval blocks preserves the
+permutation-graph property. Thus its graph lies among the outputs.
+\end{proof}
+
+Let $\mathcal U_R(n)$ be this exact subclass of graph classes. It
+may contain graphs with some bad realizers. No converse goodness
+assertion is needed. The two inclusions used are simply
+\[
+ \mathcal U_R(n)\subseteq\{\text{all graph classes of order }n\},
+ \qquad
+ \Inv(\{R\text{-good permutations}\})\subseteq\mathcal U_R(n).
+\]
+Every class outside $\mathcal U_R(n)$ therefore has only bad
+realizers. Selecting one realizer per such class and applying
+Lemma~\ref{lem:intervals} gives
+\begin{equation}\label{eq:subclasserror}
+ 0\leq a_n-|\mathcal U_R(n)|=O_R((n-R)!).
+\end{equation}
+The rooted context factor is precisely $r_{d+1}$. Port decorations,
+by contrast, are \emph{unrooted}, since outside adjacency is uniform
+throughout a port module.
+
+\section{Burnside weights and negligible symmetric quotients}\label{sec:symmetry}
+
+Define finite polynomials
+\begin{equation}\label{eq:BC}
+ B_R(x)=\sum_{j=1}^{R+1}a_jx^j,\qquad
+ C_R(x)=\sum_{d=0}^{R-1}r_{d+1}x^d.
+\end{equation}
+For a fixed prime graph $P$ with $m$ vertices, graph decorations of
+its ports are acted on by $\Aut(P)$. Burnside's lemma says that
+their orbit generating series is the average of the fixed-decoration
+series. The identity contribution is
+$B_R(x)^m/|\Aut(P)|$. Summation over prime classes using
+\eqref{eq:weighted} gives exactly $S(B_R(x))/4$ for these identity
+contributions.
+
+The identity contribution is a rational weight, not in general an
+integer count of a graph family. We must bound the missing
+nonidentity Burnside contributions before using it in an
+asymptotic formula.
+
+\begin{lemma}[Symmetry bound]\label{lem:symmetry}
+The number of permutations of order $m$ fixed by at least one
+nonidentity Klein-group operation is at most
+\begin{equation}\label{eq:J}
+ J_m=\exp\left(\frac m2\log m+O(m)\right).
+\end{equation}
+For fixed $R$, all decorated symmetric prime-quotient contributions
+at total graph order $n$, including bounded contexts, have total
+size at most
+\begin{equation}\label{eq:symdecor}
+ \exp\left(\frac n2\log n+O_R(n)\right)
+       =o((n-R)!).
+\end{equation}
+\end{lemma}
+\begin{proof}
+Inversion-fixed permutations are involutions. The product of
+inversion and reverse-complement is fixed when
+$\pi=\rho\pi^{-1}\rho$, equivalently $(\rho\pi)^2=1$, so it has
+the same count. Reverse-complement-fixed permutations commute with
+$\rho$. There are exactly
+$2^{\lfloor m/2\rfloor}\lfloor m/2\rfloor!$ of them: permute the
+reversal pairs and independently choose their directions, fixing
+the middle point at odd order.
+
+If $I_m$ counts involutions, its exponential generating function is
+$\exp(z+z^2/2)$. Positivity of its coefficients gives, at
+$t=\sqrt m$,
+\[
+ I_m\leq m!\,\frac{\exp(t+t^2/2)}{t^m}
+      =\exp\left(\frac m2\log m+O(m)\right).
+\]
+The reverse-complement count satisfies the same bound by Stirling's
+formula. A union bound proves \eqref{eq:J}.
+
+If $P$ has a nontrivial automorphism, Lemma~\ref{lem:weighted}
+shows that it has fewer than four distinct realizers. Its Klein
+orbit therefore has a nontrivial stabilizer. Such prime classes
+can be injected into the union just counted by choosing one of
+their realizers.
+
+Put $b_R=\sum_{j=1}^{R+1}a_j$. The number of decoration assignments
+at $m$ distinguishable ports, ignoring total size, is at most
+$b_R^m$. This also bounds each fixed-assignment term, and
+$|\Aut(P)|\leq4$. Summing over $m\leq n$ and multiplying by the
+bounded number $\sum_{d<R}r_{d+1}$ of contexts gives the first
+bound in \eqref{eq:symdecor}. Since
+$\log((n-R)!)=n\log n-n+O_R(\log n)$, the second assertion follows.
+\end{proof}
+
+\begin{theorem}[Finite-polynomial approximation]\label{thm:finite}
+For every fixed $R\geq1$,
+\begin{equation}\label{eq:finite}
+ a_n=\frac14[x^n]\,C_R(x)S(B_R(x))+O_R((n-R)!).
+\end{equation}
+\end{theorem}
+\begin{proof}
+Proposition~\ref{prop:context} makes the class construction an
+ordinary unlabeled product of contexts and decorated quotients.
+Burnside's identity terms give the displayed coefficient.
+Lemma~\ref{lem:symmetry} bounds all nonidentity terms by an error
+smaller than every fixed factorial order. The series $S$ also
+contains quotients with arity $m\leq R+1$; these contribute only
+orders at most $(R+1)^2+R-1$ after decoration and context insertion,
+so they disappear at sufficiently large $n$. Finally use
+\eqref{eq:subclasserror}.
+\end{proof}
+
+The theorem has no hidden hypothesis about the unknown growth of
+$a_n$ or $r_n$: for fixed $R$, they enter only as finitely many
+integer coefficients of $B_R$ and $C_R$. The constants may depend
+on those finite inputs and on $R$.
+
+\section{Factorial transfer and all orders}\label{sec:transfer}
+
+We now prove Theorem~\ref{thm:main}. Apply
+\eqref{eq:composition} and \eqref{eq:polymult} to
+Theorem~\ref{thm:finite}. For a fixed $R$, the coefficients through
+degree $R-1$ are generated by
+\begin{equation}\label{eq:HR}
+ H_R(x)=C_R(x)\frac{x}{B_R(x)}
+       \exp\left(\frac1x-\frac1{B_R(x)}\right)
+       (\mathcal D S)(B_R(x)).
+\end{equation}
+Precisely,
+\[
+ a_n=\frac14\sum_{k=0}^{R-1}[x^k]H_R(x)(n-k)!
+             +O_R((n-R)!).
+\]
+The finite graph approximation and the factorial-transfer remainder
+have the same order and can be combined.
+
+Because $A-B_R=O(x^{R+2})$ and both have leading coefficient one,
+\[
+ \frac1A-\frac1{B_R}=O(x^R),\qquad
+ \frac{x}{A}-\frac{x}{B_R}=O(x^{R+1}).
+\]
+Also $C-C_R=O(x^R)$, and ordinary formal substitution into
+$\mathcal D S$ changes no coefficient below degree $R$. Hence
+\begin{equation}\label{eq:stabilize}
+ H_R(x)\equiv C(x)\frac{x}{A(x)}
+       \exp\left(\frac1x-\frac1{A(x)}\right)
+       (\mathcal D S)(A(x))\pmod{x^R}.
+\end{equation}
+Substitute \eqref{eq:DS}. The exponentials combine by cancellation
+of $1/A$, and $T'(A)=Q'/A'$ by the formal chain rule. Thus the
+right side of \eqref{eq:stabilize} is exactly \eqref{eq:H}.
+This proves \eqref{eq:main} at every fixed order.
+
+For well-definedness, $a_1=1$ and $a_2=2$, while
+$F(x)=x+2x^2+\cdots$. Solving $F(Q)=A$ gives
+$Q=x+O(x^3)$. Therefore
+\[
+ E(x):=\frac1x-\frac1{Q(x)}\in x\QQ[[x]],
+ \qquad \frac{xQ'}{QA'}\in1+x\QQ[[x]],
+\]
+and $C(0)=r_1=1$. In particular the constant terms in the
+simple-permutation transfer, $e^{-2}$ from $\mathcal D S$ and
+$e^2$ from $B_R=x+2x^2+\cdots$, cancel. This explains why the
+leading graph constant is $1/4$ rather than $e^{-2}/4$.
+
+The degree-$k$ exponent coefficient uses $Q$ only through degree
+$k+2$. Since $F(Q)=A$ has a unit linear term, these coefficients
+use only $a_1,\ldots,a_{k+2}$. The prefactor needs no more data,
+and its $C$ factor uses $r_1,\ldots,r_{k+1}$. This proves the
+finite dependency assertion.
+
+\begin{corollary}[Denominators]\label{cor:denominator}
+Every coefficient in \eqref{eq:H} satisfies $k!h_k\in\ZZ$.
+\end{corollary}
+\begin{proof}
+The inverse of a series $x+O(x^2)$ with integer coefficients has
+integer coefficients: solving successive coefficients involves no
+division other than by its linear coefficient one. Thus $T$, $Q$,
+and $Q/x$ have integer coefficients. The units $Q/x$ and $A'$ have
+constant term one, so
+\[
+ P(x):=C(x)\frac{xQ'(x)}{Q(x)A'(x)}\in\ZZ[[x]].
+\]
+Moreover $Q=x+O(x^3)$ implies $E\in x\ZZ[[x]]$. In degree $k$,
+$\exp E=\sum_{j=0}^kE^j/j!$ has denominator dividing $k!$.
+Multiplication by $P$ preserves this property, because $j!$ divides
+$k!$ for $j\leq k$.
+\end{proof}
+
+\begin{remark}[The meaning of all orders]\label{rem:fixed}
+The quantifiers are: for each fixed $R$ there exist a constant and
+an onset depending on $R$. The proof does not bound their growth
+with $R$ and does not justify substituting $R=R(n)$, choosing a
+least term, claiming convergence or Borel summability of $H$, identifying all
+exponentially small sectors, or estimating an
+exponentially small remainder by optimally truncating the series.
+Finite exact coefficient algorithms and an all-orders asymptotic
+statement do not establish any of those stronger conclusions.
+\end{remark}
+
+\section{Exact coefficients and finite certification}\label{sec:coefficients}
+
+The necessary small graph data are as follows. The unrooted and rooted
+columns were obtained by two separately implemented exhaustive
+canonicalization routes; no source-table value beyond these orders
+is used in the asymptotic calculation.
+\begin{center}
+\begin{tabular}{r r r r r}
+\toprule
+$n$ & $a_n$ & $r_n$ & $s_n$ & Prime graph classes\\
+\midrule
+1&1&1&0&0\\
+2&2&2&0&0\\
+3&4&6&0&0\\
+4&11&20&2&1\\
+5&33&89&6&3\\
+6&142&504&46&16\\
+7&776&3776&338&92\\
+8&5699&34620&2926&772\\
+9&50723&368683&28146&7122\\
+\bottomrule
+\end{tabular}
+\end{center}
+The zero values in the prime columns below order four reflect the
+convention that the prime series starts at four. Both enumerations
+check the unrooted and vertex-rooted columns; the independent
+refined-color route additionally supplies the displayed simple and
+prime counts. In particular all inputs for $h_0,\ldots,h_7$,
+namely $a_1,\ldots,a_9$ and $r_1,\ldots,r_8$, have two exhaustive
+replays. The extra $r_9$ does not by itself determine $h_8$, which
+would also require $a_{10}$.
+
+Solving $F(Q)=A$ gives
+\begin{align*}
+ Q(x)={}&x-2x^3-5x^4-31x^5-180x^6-1418x^7\\
+       &{}-12327x^8-121659x^9+O(x^{10}).
+\end{align*}
+The coefficient table is
+\begin{center}
+\begin{tabular}{r r r}
+\toprule
+$k$ & $h_k$ & $k!h_k$\\
+\midrule
+0&$1$&$1$\\
+1&$-4$&$-4$\\
+2&$-1$&$-2$\\
+3&$-94/3$&$-188$\\
+4&$-769/6$&$-3076$\\
+5&$-19969/15$&$-159752$\\
+6&$-531812/45$&$-8508992$\\
+7&$-40114096/315$&$-641825536$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+For clarity about the first correction, one can calculate directly:
+\[
+ Q=x-2x^3+O(x^4),\quad E=-2x+O(x^2),\quad
+ C\frac{xQ'}{QA'}=1-2x+O(x^2).
+\]
+Hence $H=1-4x+O(x^2)$. Both the rooted context and the prime
+inflation contribute; replacing $C$ by an unrooted series would
+produce incorrect higher coefficients.
+
+\subsection{Two exact formal calculation routes}
+One route computes $Q$ recursively from $F(Q)=A$ and evaluates
+\eqref{eq:H} with rational truncated-series arithmetic. A second
+route obtains $T$ by Lagrange inversion,
+\begin{equation}\label{eq:lagrange}
+ [z^m]T(z)=\frac1m[w^{m-1}]\left(\frac{w}{F(w)}\right)^m,
+\end{equation}
+then evaluates \eqref{eq:HR} for successive finite cutoffs.
+The factor $e^{-2}$ in \eqref{eq:DS} can be carried symbolically
+and canceled with the constant $e^2$ in the composition factor.
+Every remaining calculation is rational. The routes agree through
+$h_7$, and the finite-cutoff route checks the stabilization in
+\eqref{eq:stabilize} for $R=1,\ldots,8$.
+
+\subsection{Two graph enumeration routes}
+Each route enumerates all $n!$ permutations, constructs its inversion
+graph, and computes an exact isomorphism key. The first partitions
+vertices by degree (and, for rooted keys, root status), then minimizes
+an adjacency encoding over all permutations within the cells.
+For each unrooted representative it counts distinct rooted keys.
+The second refines invariant color classes before exhaustively
+minimizing within them; all minimizing labelings recover the
+vertex orbits and automorphism count. Both are exhaustive rather
+than randomized isomorphism heuristics.
+
+Additional finite checks verify the weighted identity
+$|\Aut(P)|f(P)=4$ and equality of the realizer set with the Klein
+orbit for every prime graph through order nine. Direct subset-module
+checks at smaller orders confirm the prime/simple correspondence.
+These computations are useful normalization tests. They do not
+replace the structural theorems or certify an asymptotic remainder
+constant.
+
+\section{Threshold inversion with rounding preserved}\label{sec:inverse}
+
+\subsection{Strict increase and ordinary inverse powers}
+Adding an isolated vertex gives an injection from graph classes of
+order $n$ to those of order $n+1$: remove one isolated vertex to
+recover the original class. The complete graph on $n+1$ vertices
+is outside the image for $n\geq1$. Thus
+\begin{equation}\label{eq:monotonicity}
+ a_{n+1}>a_n\qquad(n\geq1).
+\end{equation}
+The sequence tends to infinity by Theorem~\ref{thm:main}, so $N(X)$
+is well defined for all real $X>0$.
+
+Let $(n)_k=n(n-1)\cdots(n-k+1)$, with $(n)_0=1$, and define a
+formal inverse-power series
+\begin{equation}\label{eq:U}
+ U(y)=\sum_{k\geq0}h_k\frac{y^k}{\prod_{j=0}^{k-1}(1-jy)}.
+\end{equation}
+At each degree this is a finite sum. Its beginning is
+\begin{equation}\label{eq:Ubegin}
+ U(y)=1-4y-y^2-\frac{97}{3}y^3-\frac{1339}{6}y^4
+                         -\frac{11603}{5}y^5+O(y^6).
+\end{equation}
+Using a formal logarithm and Stirling's expansion gives, in the
+usual fixed-order asymptotic sense,
+\begin{align}\label{eq:logexp}
+ \log a_n={}&n(\log n-1)+\frac12\log n+c
+            -\frac{47}{12n}-\frac9{n^2}+O(n^{-3}),\\
+ &\hspace{15mm}c=\frac12\log(2\pi)-\log4.\nonumber
+\end{align}
+All further inverse-power coefficients follow from \eqref{eq:U},
+$\log U$, and the Bernoulli-number terms in Stirling's formula.
+For example $-47/12=1/12-4$ and $-9=-1-(-4)^2/2$.
+
+\subsection{An arbitrary fixed-order smooth approximation}
+For a fixed $R\geq1$, set
+\begin{equation}\label{eq:AR}
+ \mathcal A_R(v)=\frac{\Gamma(v+1)}4
+       \sum_{k=0}^{R-1}\frac{h_k}{(v)_k},
+ \qquad (v)_k=\prod_{j=0}^{k-1}(v-j).
+\end{equation}
+For sufficiently large real $v$, the finite factor is positive and
+\begin{equation}\label{eq:slope}
+ (\log\mathcal A_R)'(v)=\log v+O_R(v^{-1})>0.
+\end{equation}
+For all sufficiently large $X$, let $\nu_R(X)$ be the unique large
+solution of $\mathcal A_R(v)=X$. The qualifier ``large'' excludes
+irrelevant behavior of the rational factor near its poles at small
+integers. The factorial expansion implies
+\begin{equation}\label{eq:logerror}
+ \log a_n-\log\mathcal A_R(n)=O_R(n^{-R}).
+\end{equation}
+
+\begin{theorem}[Threshold window]\label{thm:threshold}
+For each fixed $R\geq1$, there is a positive function
+\[
+ \eps_R(X)=O_R\left(\frac{\nu_R(X)^{-R}}{\log\nu_R(X)}\right)
+\]
+such that, for all sufficiently large $X$,
+\begin{equation}\label{eq:window}
+ \floor{\nu_R(X)-\eps_R(X)}+1
+       \leq N(X)\leq\ceil{\nu_R(X)+\eps_R(X)}.
+\end{equation}
+In particular $N(X)=\ceil{\nu_R(X)}$ whenever $\nu_R(X)$ stays
+farther than $\eps_R(X)$ from every integer.
+\end{theorem}
+\begin{proof}
+Choose $K_R$ and $n_R$ so that the absolute error in
+\eqref{eq:logerror} is at most $K_Rn^{-R}$ for integers $n\geq n_R$.
+Put $v=\nu_R(X)$. On $[v/2,2v]$, equation~\eqref{eq:slope} gives
+$(\log\mathcal A_R)'\geq\frac12\log v$ once $v$ is large.
+Choose
+\[
+ \eps_R=D_R\frac{v^{-R}}{\log v},\qquad D_R>2^{R+1}K_R.
+\]
+If an integer $n$ in that interval satisfies $n\leq v-\eps_R$,
+then
+\[
+ \log\mathcal A_R(n)-\log X
+ \leq-\tfrac12\eps_R\log v
+ <-2^RK_Rv^{-R}\leq-K_Rn^{-R}.
+\]
+Together with \eqref{eq:logerror}, this yields $a_n<X$.
+The same argument with the opposite sign gives $a_n>X$ for
+integers $n\geq v+\eps_R$ in the interval. Monotonicity
+\eqref{eq:monotonicity} extends these comparisons to integers
+outside it, using nearby integers still inside the interval.
+Thus every integer at or below the lower edge is too small, and
+every integer at or above the upper edge is sufficient. Taking
+floor and ceiling yields \eqref{eq:window}, including integer-edge
+cases because the comparison inequalities are strict.
+\end{proof}
+
+\subsection{The explicit Lambert W center}
+Let $W_0$ be the principal real Lambert function, so
+$W_0(z)e^{W_0(z)}=z$. With
+\begin{equation}\label{eq:u}
+ L=\log X,\qquad u=\frac{L}{W_0(L/e)},\qquad D=\log u,
+\end{equation}
+one has $u(\log u-1)=L$. Set
+\[
+ g(v)=v(\log v-1)+\tfrac12\log v+c-\frac{47}{12v}.
+\]
+Equation~\eqref{eq:logexp} says $\log a_n=g(n)+O(n^{-2})$.
+Write $\delta_0=-\frac12-c/D$. The terms of order one in
+$g(u+\delta_0)-L$ cancel because
+$D\delta_0+D/2+c=0$. Taylor expansion gives the remaining first
+inverse-power residual
+\begin{equation}\label{eq:residual}
+ g(u+\delta_0)-L
+ =\frac{\delta_0^2/2+\delta_0/2-47/12}{u}+O(u^{-2})
+ =\frac{-97/24+c^2/(2D^2)}u+O(u^{-2}).
+\end{equation}
+Canceling this with a second shift divided by the leading slope
+$D$ gives the $v_*$ in \eqref{eq:inverseintro}. Since
+$g'(v)=\log v+O(v^{-1})$, its residual is $O(u^{-2})$ and its
+smooth inverse error is $O(u^{-2}/D)$.
+
+The same strict-comparison argument used for
+Theorem~\ref{thm:threshold}, now using
+$\log a_n-g(n)=O(n^{-2})$, proves
+\eqref{eq:inverseintrobracket}. In particular the less refined
+center
+\[
+ u-\frac12-\frac{c}{D}
+\]
+has inverse error $O(1/(uD))$ before rounding. Under the alternate
+normalization $L_4=\log(4X)$ and $t=L_4/W_0(L_4/e)$, its first
+shift is often written
+\[
+ t-\frac{\log(2\pi t)}{2\log t}.
+\]
+These are compatible after re-expansion; one must not mix $\log X$
+and $\log(4X)$ while retaining the same constant $c$.
+
+\subsection{What the inverse does and does not certify}
+The coefficients and formal shifts can be computed to any fixed
+order. Once $R$ is chosen, a large root of \eqref{eq:AR} can be
+approximated numerically, for example by Newton iteration initialized
+at a Lambert-$W$ center. This is a method for evaluating the smooth
+approximation, not a certified algorithm for the exact integer
+threshold at an arbitrary supplied $X$: no explicit $K_R$ or
+uniformly effective onset has been obtained here.
+
+A staircase with jumps of one cannot be approximated uniformly by a
+continuous expression to $o(1)$. Near an integer center, the two
+neighboring integers in the bracket are genuine possibilities.
+Away from the shrinking boundary window the ceiling is stable.
+Neither additional formal coefficients nor higher floating-point
+precision remove this logical distinction.
+
+\section{All orders comparison of the sampling laws}\label{sec:tv}
+
+Let $\mathcal G_n$ be the finite set of unlabeled permutation graphs
+of order $n$, and write $f(G)$ for the number of normalized
+permutation realizers of $G$. Then
+\begin{equation}\label{eq:laws}
+ \mathsf P_n(G)=\frac{f(G)}{n!},\qquad
+ \mathsf U_n(G)=\frac1{a_n},\qquad
+ \sum_{G\in\mathcal G_n}f(G)=n!.
+\end{equation}
+Put $M_{4,n}=\#\{G\in\mathcal G_n:f(G)=4\}$. We first derive an
+all-orders expansion for this exact fiber-size class, then transfer
+it to total variation.
+
+\subsection{Marked context realizers and exact multiplicativity}
+For a rooted graph $(L,v)$, define its marked-realizer count by
+\begin{equation}\label{eq:t}
+ t(L,v)=\#\{(\kappa,i):(\Inv(\kappa),i)\simeq(L,v)\}
+       =f(L)|\Aut(L)\cdot v|.
+\end{equation}
+For each unmarked realizer $\kappa$, the allowed marked positions
+are exactly the images of the automorphism orbit of $v$. This
+proves the second equality. Root positions are counted separately
+even when the underlying permutation is unchanged.
+
+\begin{lemma}[Exact fiber product]\label{lem:fiberproduct}
+Consider a graph $G\in\mathcal U_R(n)$ with asymmetric prime
+quotient $P$, port graphs $(D_p)_{p\in V(P)}$, and outer rooted
+context $(L,v)$. Then
+\begin{equation}\label{eq:fiberproduct}
+ f(G)=4\,t(L,v)\prod_{p\in V(P)}f(D_p).
+\end{equation}
+\end{lemma}
+\begin{proof}
+Let $H=P[D_p:p\in V(P)]$ be the inserted inner graph. Its child
+modules are its maximal proper strong modules. In every realizer
+of $H$ they are canonical common-interval blocks. Collapsing them
+gives one of the four distinct normalized simple realizers of $P$.
+For each one the identification with the ports of $P$ is unique,
+because $P$ has no automorphisms. Standardizing each interval gives
+an independent choice of a realizer of $D_p$. Conversely these
+choices reconstruct the permutation by inflation. Collapse and
+standardization recover the inputs, so
+$f(H)=4\prod_pf(D_p)$.
+
+In $G$, the vertices of $H$ form the distinguished strong module
+having the uniquely large prime quotient. This follows from
+Lemma~\ref{lem:insertion} even when the context root belongs to a
+series or parallel node. Every realizer of $G$ therefore identifies
+that module as a strong common interval. Collapsing it, retaining
+its position, and standardizing its interior gives a marked context
+realizer counted by $t(L,v)$ and an inner realizer counted by
+$f(H)$. Conversely their marked inflation reconstructs the
+realizer of $G$. The intrinsic recovery proves this is a bijection.
+\end{proof}
+
+Every factor after the initial four in \eqref{eq:fiberproduct}
+is a positive integer. An asymmetric-core output has exactly four
+realizers if and only if every port graph has one realizer and
+its context has one marked realizer. The latter condition need not
+force a one-vertex context.
+
+Define finite counts
+\begin{align}\label{eq:bc}
+ b_j&=\#\{G\in\mathcal G_j:f(G)=1\},\\
+ c_j&=\#\{(L,v):|L|=j,\ t(L,v)=1\},\nonumber
+\end{align}
+and formal series
+\begin{equation}\label{eq:JK}
+ J(x)=\sum_{j\geq1}b_jx^j,\qquad
+ K(x)=\sum_{d\geq0}c_{d+1}x^d.
+\end{equation}
+Let $J_R$ and $K_R$ truncate these series at degrees $R+1$ and
+$R-1$, respectively.
+
+\begin{theorem}[Four-realizer factorial expansion]\label{thm:M4}
+Set $Q_J=T\circ J$ and
+\begin{equation}\label{eq:H4}
+ H_4(x)=K(x)\frac{xQ_J'(x)}{Q_J(x)J'(x)}
+       \exp\left(\frac1x-\frac1{Q_J(x)}\right)
+       =\sum_{k\geq0}g_kx^k.
+\end{equation}
+For every fixed $R\geq1$,
+\begin{equation}\label{eq:M4}
+ M_{4,n}=\frac14\sum_{k=0}^{R-1}g_k(n-k)!
+                   +O_R((n-R)!).
+\end{equation}
+The coefficient $g_k$ uses only $b_1,\ldots,b_{k+2}$ and
+$c_1,\ldots,c_{k+1}$, and $k!g_k\in\ZZ$.
+\end{theorem}
+\begin{proof}
+The same finite-core bounds as in Theorem~\ref{thm:finite}, combined
+with Lemma~\ref{lem:fiberproduct}, give
+\begin{equation}\label{eq:M4finite}
+ M_{4,n}=\frac14[x^n]K_R(x)S(J_R(x))+O_R((n-R)!).
+\end{equation}
+Indeed graph classes outside $\mathcal U_R(n)$ number
+$O_R((n-R)!)$, hence bound the excluded four-realizer classes too.
+Symmetric large quotients contribute only
+$\exp((n/2)\log n+O_R(n))$ classes; this bounds both any genuine
+four-realizer contributions from them and their identity terms in
+the displayed approximation. At asymmetric quotients there are
+exactly four simple realizers and no port identifications; the
+fiber product selects precisely the port and context counts in
+$J_R$ and $K_R$. Bounded quotients disappear at large $n$ as before.
+
+Apply the same polynomial composition theorem to \eqref{eq:M4finite}
+and stabilize the coefficients, with $J,K$ replacing $A,C$.
+Since $b_1=1$, $b_2=2$, and $c_1=1$, one has
+$Q_J=x+O(x^3)$ and $H_4(0)=1$. The finite-dependency and denominator
+arguments of Section~\ref{sec:transfer} apply verbatim. No
+asymptotic property of $J$ or $K$ was assumed before finite transfer.
+\end{proof}
+
+\subsection{The second coefficient and exact finite inputs}
+At order three, the empty and complete graphs have one realizer
+each; the edge-plus-isolated-vertex graph and its complement have
+two each. Thus $(b_1,b_2,b_3)=(1,2,2)$. Both rooted contexts of
+order two have a root orbit of size two, giving $c_1=1,c_2=0$.
+At $R=2$, \eqref{eq:M4finite} reduces to
+\[
+ M_{4,n}=\tfrac14[x^n]S(x+2x^2+2x^3)+O((n-2)!).
+\]
+In the composition transfer the three factors begin
+\begin{align*}
+ x/J_2(x)&=1-2x+O(x^2),\\
+ \exp(1/x-1/J_2(x))&=e^2(1-2x+O(x^2)),\\
+ (\mathcal D S)(J_2(x))&=e^{-2}(1-4x+O(x^2)).
+\end{align*}
+Hence $g_1=-8$ and
+\begin{equation}\label{eq:M4first}
+ M_{4,n}=\frac{n!}{4}\left(1-\frac8n+O(n^{-2})\right).
+\end{equation}
+
+Full fiber enumeration and explicit vertex-orbit checks give
+\begin{center}
+\begin{tabular}{r r r r r r r r r}
+\toprule
+$j$&1&2&3&4&5&6&7&8\\
+\midrule
+$b_j$&1&2&2&4&2&8&4&22\\
+$c_j$&1&0&0&0&0&0&2&0\\
+\bottomrule
+\end{tabular}
+\end{center}
+The nonzero $c_7$ is an explicit warning that the outer factor $K$
+cannot be discarded in an all-orders formula. The companion checks
+these counts and obtains
+\[
+ (g_0,\ldots,g_6)=
+ \left(1,-8,22,-\frac{230}{3},\frac{382}{3},
+                 -\frac{22468}{15},-\frac{283418}{45}\right).
+\]
+The finite-polynomial and direct $Q_J$ routes agree. A separate
+finite structural test compared the fiber product against full
+permutation fibers on all 3,004 asymmetric $R=2$ constructions
+through order eight, finding no discrepancy or construction
+collision. That test is additional evidence for the finite
+implementation; the all-orders claim rests on the bijection and
+error bounds above.
+
+\subsection{The exact sign split and the total variation series}
+A class with $f(G)<4$ has a realizer whose Klein orbit has fewer
+than four elements, hence a nontrivial stabilizer. Selecting one
+such realizer per class and using Lemma~\ref{lem:symmetry} bounds
+the number of these classes by
+$\exp((n/2)\log n+O(n))$. Their total contribution to either
+sampling law is smaller than every inverse power of $n$.
+
+The first correction in \eqref{eq:three} implies
+$4<n!/a_n<5$ eventually. Since fiber sizes are integers,
+$\mathsf P_n(G)-\mathsf U_n(G)$ is negative exactly for $f(G)\leq4$.
+Total variation is the negative mass with its sign reversed.
+Write $A_n=4a_n/n!$ and $B_n=4M_{4,n}/n!$. For every fixed $j$,
+\begin{equation}\label{eq:TVexact}
+ d_{\TV}(\mathsf P_n,\mathsf U_n)
+ =M_{4,n}\left(\frac1{a_n}-\frac4{n!}\right)+o(n^{-j})
+ =B_n(A_n^{-1}-1)+o(n^{-j}).
+\end{equation}
+This uses only the integer sign threshold, not divisibility of all
+fiber sizes by four. The latter is false: finite fibers of sizes
+three, five, and seven occur.
+
+Define the ordinary-power version of the $H_4$ series by
+\begin{equation}\label{eq:V}
+ V(y)=\sum_{k\geq0}g_k\frac{y^k}{\prod_{j=0}^{k-1}(1-jy)}.
+\end{equation}
+Then $A_n$ and $B_n$ have the fixed-order inverse-power expansions
+$U(1/n)$ and $V(1/n)$, respectively. Since $U(0)=1$, finite series
+inversion in \eqref{eq:TVexact} proves the following.
+
+\begin{theorem}[All-orders total variation]\label{thm:tv}
+Put
+\begin{equation}\label{eq:TVseries}
+ Z(y)=V(y)(U(y)^{-1}-1)=\sum_{k\geq1}z_ky^k.
+\end{equation}
+For every fixed integer $q\geq1$,
+\begin{equation}\label{eq:TVall}
+ d_{\TV}(\mathsf P_n,\mathsf U_n)
+       =\sum_{k=1}^{q}z_kn^{-k}+O_q(n^{-q-1}).
+\end{equation}
+In particular,
+\[
+ d_{\TV}(\mathsf P_n,\mathsf U_n)=\frac4n-\frac{15}{n^2}
+           +\frac{169}{3n^3}+\frac{215}{2n^4}+O(n^{-5}).
+\]
+\end{theorem}
+
+To check the second coefficient alone, use
+$A_n^{-1}-1=4/n+17/n^2+O(n^{-3})$ and
+$B_n=1-8/n+O(n^{-2})$. Their product gives $4/n-15/n^2$.
+The uncertainty of order $n^{-2}$ in $B_n$ is multiplied by
+$O(n^{-1})$, so it cannot affect this second coefficient.
+
+The complete finite input tables displayed above give
+\begin{center}
+\begin{tabular}{r r r}
+\toprule
+$k$ & $g_k$ when available & $z_k$\\
+\midrule
+0&$1$&$0$\\
+1&$-8$&$4$\\
+2&$22$&$-15$\\
+3&$-230/3$&$169/3$\\
+4&$382/3$&$215/2$\\
+5&$-22468/15$&$26449/15$\\
+6&$-283418/45$&$232253/10$\\
+7&---&$101570743/315$\\
+\bottomrule
+\end{tabular}
+\end{center}
+There is no missing input for $z_7$: the series $U^{-1}-1$ starts
+in degree one, so $g_0,\ldots,g_6$ together with
+$h_0,\ldots,h_7$ suffice. The seventh-order truncation therefore
+has $O(n^{-8})$ error at fixed order.
+
+\subsection{Scope of probabilistic transfer}
+For any sequence of graph events $E_n$,
+\[
+ |\mathsf P_n(E_n)-\mathsf U_n(E_n)|\leq\frac4n+O(n^{-2}).
+\]
+For real graph statistics $Z_n$ with a uniform absolute bound $M$,
+\[
+ |\EE_{\mathsf P_n}Z_n-\EE_{\mathsf U_n}Z_n|
+       \leq2M\,d_{\TV}(\mathsf P_n,\mathsf U_n)
+       =\frac{8M}{n}+O_M(n^{-2}).
+\]
+If $0\leq Z_n\leq1$, the factor two can be omitted. An unbounded
+statistic requires additional tail or uniform-integrability control.
+The estimate is additive: an event of probability much smaller
+than $1/n$ need not have similar relative probabilities under the
+two laws. As with the enumeration series, no growing-order
+truncation is justified by the all-orders statement.
+
+\section{Source overlap and the boundary of the contribution}\label{sec:sources}
+
+\subsection{Exact enumeration already available in 1990}
+Bayoumi, El-Zahar, and Khamis~\cite{BEK} give prime-automorphism
+information, P\'olya substitution, and a recursive generating-function
+system. Their Lemmas 4.2 and 4.4 and Proposition 4.5 are prior art
+for exact enumeration. Their Table 3, printed p.~4.47, agrees with
+OEIS A123448 through order fourteen and continues through order
+twenty. The original author-uploaded paper and the table page were
+inspected; no asymptotic enumeration statement was located there.
+
+For bibliographic completeness, the six table entries beyond the
+inspected OEIS list are recorded below. They are \emph{quoted
+prior-art table values}, not new enumerations certified by this
+report's companion.
+\begin{center}
+\begin{tabular}{r r}
+\toprule
+$n$ & $a_n$ as printed in the 1990 table\\
+\midrule
+15&232072611578\\
+16&3819032840830\\
+17&66512264611298\\
+18&1222446378826186\\
+19&23650094948059080\\
+20&480517922278457424\\
+\bottomrule
+\end{tabular}
+\end{center}
+The authors state that they used double precision. The remote table's
+large-number typography and that numerical qualification are reasons
+not to describe all its high-order entries as newly verified exact
+integers. None of these six values enters the proof or the eight
+reported asymptotic coefficients. Exact finite verification here is
+bounded by order nine.
+
+\subsection{Classical related asymptotics and sampling}
+The publisher abstract of El-Zahar--Sauer~\cite{ES} states that the
+number of pairwise nonisomorphic two-dimensional posets on $n$
+elements is asymptotic to $n!/2$, using structural decomposition and
+unique representation. This is a close classical antecedent to the
+present leading equivalent. It counts posets rather than undirected
+comparability graphs; nevertheless a first-ever claim for $n!/4$
+would require inspection of the complete proof and its consequences.
+The full subscription article was not obtained in this review.
+
+Winkler's paper~\cite{Winkler}, dated December 1990 by the publisher
+and listed as 1991 in an author bibliography, compares labeled,
+unlabeled, and random-linear-order-pair models of dimension-two
+orders. Its abstract reports the labeled equivalent
+$(n!)^2/(2\sqrt e)$ and discusses rigidity, unique realizability,
+and uniquely orientable comparability graphs. Its full subscription
+text was likewise not inspected. These are sampling precedents,
+so \eqref{eq:tvintro} is presented as a concrete sharp quantitative
+refinement for the two explicitly defined graph laws, not as the
+first comparison of related random-order models.
+
+Literal transitive orientations on labeled vertices must be
+separated from orientations modulo graph automorphisms. For example,
+flipping twin-edge vertices can change a labeled orientation while
+preserving an unlabeled poset type. The exact weighted identity in
+Section~\ref{sec:four} avoids conflating these notions.
+
+\subsection{Later permutation and intersection graph sources}
+Johnston's 2020 account~\cite{Johnston} reports graph enumeration
+through order fourteen and says its author did not know whether
+the count was $o(n!)$. That is a historical statement about that
+account, not a comprehensive assessment of the literature.
+
+The inspected arXiv:2402.06394v1 (2024) of
+Bassino--Bouvel--F\'eray--Gerin--Pierrot~\cite{BBFGP} studies
+scaling and graphon limits and uses coarse bounds
+$n!/30\leq a_n\leq n!$ in its permutation-graph discussion.
+A separately available author-hosted PDF has February 2024 file
+metadata and the same coarse lower bound; it is not evidence that
+the final journal text has been inspected.
+
+The final article, \emph{Dense and nondense limits for uniform
+random intersection graphs}, appeared in \emph{Electronic Journal
+of Probability} 31 (2026), article 110,
+DOI~\href{https://doi.org/10.1214/26-EJP1570}{10.1214/26-EJP1570}.
+The official landing and PDF requests returned an access-error
+page in the source review. The final text remains uninspected, so
+possible overlap with it is explicitly unresolved. No access-control
+bypass, author contact, or purchase was used.
+
+\subsection{What is established here}
+The graph-specific result is the finite rooted-context and
+large-prime-quotient approximation \eqref{eq:finite}, followed by
+its all-orders coefficient formula and the stated inverse and
+sampling consequences. Simple-permutation decomposition, its exact
+functional equation, and its full factorial asymptotics are
+established inputs. The current report and repository-index search
+found no matching permutation-graph topic, but this was a bounded
+absence check, not a universal novelty proof.
+
+The conclusions that require no unresolved priority assertion are:
+the proof gives the fixed-order expansion in the stated model;
+the eight coefficients have independent exact checks; the inverse
+windows preserve rounding; and the sharp total-variation constant
+is four for the laws \eqref{eq:laws}. No OEIS submission, external
+publication, or public repository modification is part of this
+report.
+
+\section{Reproducibility and verification limits}\label{sec:replay}
+
+The source archive contains this LaTeX source, the rendered PDF,
+standard-library Python exact-checking programs and tests,
+machine-readable coefficient claims, a source-provenance record,
+checksums, and deterministic release scripts. It contains neither
+unrelated earlier reports nor private review documents. The root
+README supplies the exact commands and expected outputs.
+
+The fast companion replay checks rational series identities,
+coefficient agreement by two routes, fixed-cutoff stabilization,
+ordinary-power conversion, logarithmic coefficients, the symbolic
+second-shift cancellation, and denominator divisibility. Exhaustive
+graph replay is separately selectable: small orders provide a fast
+regression test, while order nine reruns all finite inputs used for
+the displayed eight coefficients. A full dual-route order-nine
+replay is materially slower and is deliberately not hidden inside
+the default tests.
+
+Tests run under both ordinary Python and \texttt{python3 -O};
+verification does not depend on the presence of Python
+\texttt{assert} statements. Command-line outputs use new files or
+new directories, reject existing destinations and symbolic-link
+traversal, and avoid silently overwriting the report or a prior
+result. Release manifests use a fixed allowlist, and the ZIP has
+fixed member order, timestamps, and metadata. PDF rebuilding uses
+fixed metadata, no shell escape, a clean TeX environment, and
+reference passes to a stable auxiliary state. Byte-for-byte
+reproduction is expected within the recorded toolchain; another
+TeX or font version may typeset identically without producing
+identical bytes.
+
+The release checks certify the finite calculations and packaging,
+not the analytic proof by executable means. In particular they do
+not establish a numerical onset for the asymptotic inequalities,
+turn the formal generating series into convergent analytic
+functions, validate a growing truncation order, or resolve the
+uninspected-source priority questions. Those boundaries are part
+of the result rather than omissions that a finite successful test
+can erase.
+
+\section{Further research questions}\label{sec:future}
+
+\paragraph{Effective remainder constants and threshold decisions.}
+The interval-tail proof can be made numerical at each fixed order,
+but an effective final error also requires explicit constants in
+the simple-permutation transfer and in its finite-polynomial
+composition. A useful next goal is to propagate all of these bounds
+together, producing specified pairs $(K_R,n_R)$ for
+\eqref{eq:logerror}. This would turn the asymptotic threshold window
+into a certified large-input test: evaluate its two integer endpoints,
+and, when they differ, settle the remaining case by an independent
+exact bound on $a_n$. Such a certificate would need directed numerical
+error control in the gamma and Lambert-$W$ evaluations as well as
+the asymptotic remainder; floating-point agreement alone is
+insufficient.
+
+\paragraph{Coefficient growth and orders that increase with size.}
+The rational-coefficient formal generator \eqref{eq:H} determines every fixed
+coefficient, but the growth of $h_k$ is not bounded in this report.
+Additional exact inputs could guide a study of coefficient growth,
+while the proof would need estimates uniform in the cutoff $R$:
+the number of bounded decorations, the interval-exclusion constant,
+and the factorial-transfer remainder all change with $R$. Until
+that dependence is controlled, neither a truncation order tending
+to infinity nor an optimal truncation rule is justified. Questions
+about Borel summation and exponentially small terms go further.
+The symmetric-quotient estimate isolates one negligible scale, but
+does not classify all sectors beyond the factorial Poincar\'e
+expansion or their interactions. A complete transseries description
+would require new information beyond the fixed-order theorem.
+
+\paragraph{Efficient finite input recurrences.}
+Exhaustive canonicalization makes the coefficient formula effective
+at every finite order but rapidly becomes expensive. The 1990
+P\'olya recurrence offers an established starting point for a faster
+unrooted calculation. Extending exact recursive enumeration to
+vertex-rooted contexts and, separately, to one-realizer graphs and
+singleton root orbits could make many more $h_k$, $g_k$, and $z_k$
+accessible. The marked multiplicity \eqref{eq:t} is the quantity
+that must be retained: ordinary vertex pointing by $na_n$ does
+not supply $r_n$, and dropping nontrivial marked contexts fails
+already for seven-vertex contexts. A practical recurrence should first be
+reconciled with both exhaustive routes on their overlapping range.
+
+\paragraph{Finer fiber laws and sampling comparisons.}
+Lemma~\ref{lem:fiberproduct} keeps more information than the event
+$f(G)=4$: it factors the full fiber through a marked context and
+all port fibers. One can therefore investigate other fixed fiber
+sizes or bounded functions of fiber size by retaining these factors
+rather than only selecting those equal to one. The principal
+technical questions are how to organize the resulting finite input
+data and how to control the weighted exceptional classes. For
+unbounded positive weights, the existing class-count error is not
+enough. Likewise, relative comparison of rare events or expectations
+of unbounded graph statistics needs event-specific or tail estimates,
+not merely the total-variation series proved here.
+
+\begin{thebibliography}{99}
+\bibitem{AAK}
+M.~H. Albert, M.~D. Atkinson, and M.~Klazar,
+\emph{The enumeration of simple permutations},
+Journal of Integer Sequences \textbf{6} (2003), Article 03.4.4.
+\href{https://cs.uwaterloo.ca/journals/JIS/VOL6/Albert/albert.html}{Journal article and full text}.
+
+\bibitem{BEK}
+B.~I. Bayoumi, M.~H. El-Zahar, and S.~M. Khamis,
+\emph{Counting Permutation Graphs},
+25th Annual Conference on Statistics, Computer Science and
+Operations Research, Cairo University, 8--10 December 1990,
+pp.~4.23--4.49.
+\href{https://www.research.asu.edu.eg/handle/123456789/1142}{Institutional record};
+\href{https://www.researchgate.net/profile/Soheir-M-Khamis/publication/324587746_Counting_Permutation_Graphs/links/5ad7259ba6fdcc2935835c6e/Counting-Permutation-Graphs.pdf}{author-uploaded full text}.
+
+\bibitem{Borinsky}
+M.~Borinsky,
+\emph{Generating asymptotics for factorially divergent sequences},
+Electronic Journal of Combinatorics \textbf{25}(4) (2018), P4.1.
+\href{https://www.combinatorics.org/ojs/index.php/eljc/article/download/v25i4p1/pdf/}{Published full text}.
+Theorem 35 and equations (62)--(67).
+
+\bibitem{HP}
+M.~Habib and C.~Paul,
+\emph{A survey of the algorithmic aspects of modular decomposition},
+Computer Science Review \textbf{4}(1) (2010), 41--59.
+\href{https://www.irif.fr/~habib/Documents/HP10.pdf}{Author-hosted final text}.
+Lemma 20, printed p.~55.
+
+\bibitem{BBFGP}
+F.~Bassino, M.~Bouvel, V.~F\'eray, L.~Gerin, and A.~Pierrot,
+\emph{Dense and nondense limits for uniform random intersection
+graphs}, arXiv:2402.06394v1 (2024).
+\href{https://arxiv.org/abs/2402.06394v1}{Exact inspected version}.
+The associated final article is
+\emph{Dense and nondense limits for uniform random intersection
+graphs}, Electronic Journal of Probability \textbf{31} (2026),
+article 110, 44 pp.
+\href{https://doi.org/10.1214/26-EJP1570}{Final journal record}.
+The final text was not inspected.
+
+\bibitem{ES}
+M.~El-Zahar and N.~W. Sauer,
+\emph{Asymptotic enumeration of two-dimensional posets},
+Order \textbf{5} (1988), 239--244.
+\href{https://doi.org/10.1007/BF00354891}{Publisher abstract and record}.
+Full subscription text not inspected.
+
+\bibitem{Winkler}
+P.~Winkler,
+\emph{Random orders of dimension 2},
+Order \textbf{7}, 329--339 (publisher date December 1990;
+author bibliography 1991).
+\href{https://doi.org/10.1007/BF00383197}{Publisher abstract and record}.
+Full subscription text not inspected.
+
+\bibitem{OEIS}
+The OEIS Foundation,
+\emph{A123448 Number of permutation graphs on n vertices}.
+\href{https://oeis.org/A123448}{OEIS entry}.
+Inspected source snapshot, 3 October 2026.
+
+\bibitem{Johnston}
+T.~Johnston,
+\emph{Enumerating permutation graphs}, 25 October 2020.
+\href{https://tomjohnston.co.uk/blog/2020-10-25-enumerating-permutation-graphs.html}{Author's enumeration account}.
+\end{thebibliography}
+\end{document}

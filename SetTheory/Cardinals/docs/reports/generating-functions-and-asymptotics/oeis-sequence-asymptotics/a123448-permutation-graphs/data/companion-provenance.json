@@ -1,0 +1,141 @@
+{
+  "claims_policy": "Explicit targets are compared exactly, including their key set. Main h, Q, fixed graph inputs and first logarithm/inverse targets are transcribed from reviewed source data; higher logarithm coefficients are reproducible regression targets. Sampling targets are transcribed from the reviewed exact sampling computation. There is no update-expected-results CLI.",
+  "file_sha256": {
+    "README.md": "8468cb181e603dfa48525b807062cbe4ab4bb839b8e5606918e9131db3e0a001",
+    "claims.json": "5ea9f81f28e218e3bccd8a2fb88621813ed1ec2f5498a7f0ee5624d7707aaf35",
+    "enumeration.py": "005d6270bbcc6daf4a00a9a0994ee0dd573303cb055408617b10422f81c5ae60",
+    "inputs.json": "a410dabbab357994bf3dc894267f3924bbb9610393fb8ba08ba27d3d46188c26",
+    "results/check-full-release-normal.json": "ee7477d6ce4b2db295b512df309bac3496725b8292ff23fb0526cd5b5dcd5ed0",
+    "results/check-full-release-optimized.json": "ee7477d6ce4b2db295b512df309bac3496725b8292ff23fb0526cd5b5dcd5ed0",
+    "results/check-release-normal.json": "6ee2b45ed7815479322875caadc73a16bdeb3828c168af6d31019dbcad435042",
+    "results/check-release-optimized.json": "6ee2b45ed7815479322875caadc73a16bdeb3828c168af6d31019dbcad435042",
+    "results/tests-release-normal.json": "8d919f930af12df01ad4794d24c6b01f0a076645f0d09569299e23b366cbe50b",
+    "results/tests-release-optimized.json": "1dd93a856c99a908eed95eda37fe94a95e4c453f51bd3cee49ebc994bfd6fdfe",
+    "safe_io.py": "dae258b60e01718df2744087768a58bfb297cd17b011981230df4658ff42c5ed",
+    "test_companion.py": "1159ce5334bad93b2dfc8ffb8a14f596c5eb685a6c884d67b2e5c2a31832541e",
+    "verify.py": "e6b1983e53d3dde6dbc5cac3787065982394f4293155ff136de0e006bf8d7996"
+  },
+  "fixed_input_source_evidence": [
+    {
+      "label": "Degree-partition enumeration: n=1 through n=8",
+      "sha256": "830879d24f4dc5b5ec352501826706c91f0ce4e86d2290d7dc8b649ab85b4332"
+    },
+    {
+      "label": "Degree-partition enumeration: separately replayed n=9 extension",
+      "sha256": "cc52ffef808434a4cb3737723b90162c93f5ba4e4c713e150966a39abd87e946"
+    },
+    {
+      "label": "Independent refined-color enumeration: n=1 through n=9",
+      "sha256": "af1257617f77ee09dcd9142e2f1ae33731b0addfb3eb043d17f8dc157267f0ac"
+    },
+    {
+      "label": "One-realizer and marked-context exhaustive enumeration through n=8; original computation shares the earlier refined-color canonicalization primitive",
+      "sha256": "24c4242169f62cae1f691b904be66ff007afb89aca0ad070ad2f40523e0bbec0"
+    }
+  ],
+  "independence": [
+    "Graph methods derive from two independently authored sources and preserve separate graph construction, canonicalization and root-counting implementations",
+    "Sampling fiber counts and marked contexts are freshly implemented in both graph routes; exact t=f*vertex_orbit_size is used",
+    "Original sampling scripts share earlier refined graph/rational primitives, so those original computations are not described as an additional independent method",
+    "Formal coefficient routes are recursive F(Q)=A construction versus Lagrange inversion and finite-polynomial transfer; both use a common exact rational-series arithmetic layer",
+    "The TV product is independently checked by a triangular quotient recurrence; no unknown g7 is supplied"
+  ],
+  "manifest_note": "Provenance cannot hash itself; use the enclosing release manifest for its digest. Earlier local intermediate results are excluded from package_files.",
+  "package_files": [
+    "README.md",
+    "verify.py",
+    "enumeration.py",
+    "safe_io.py",
+    "test_companion.py",
+    "claims.json",
+    "inputs.json",
+    "provenance.json",
+    "results/check-release-normal.json",
+    "results/check-release-optimized.json",
+    "results/check-full-release-normal.json",
+    "results/check-full-release-optimized.json",
+    "results/tests-release-normal.json",
+    "results/tests-release-optimized.json"
+  ],
+  "publication_safety": "Lexical results/ confinement; descriptor-pinned no-follow parent traversal; new .json names only; full temporary write plus fsync and exclusive hard-link publication; no clobber. A renamed pinned directory follows its descriptor. A post-publication directory-fsync failure may leave a complete destination and a failure status.",
+  "recorded_commands_relative_to_companion": [
+    "python3 -B verify.py --output results/check-release-normal.json",
+    "python3 -B -O verify.py --output results/check-release-optimized.json",
+    "python3 -B verify.py --enumerate-through 9 --output results/check-full-release-normal.json",
+    "python3 -B -O verify.py --enumerate-through 9 --output results/check-full-release-optimized.json",
+    "python3 -B test_companion.py --output results/tests-release-normal.json",
+    "python3 -B -O test_companion.py --output results/tests-release-optimized.json"
+  ],
+  "recorded_results": {
+    "full_enumerator_records_equal": true,
+    "full_graph_replay_through_n": 9,
+    "histogram_graph_and_permutation_totals_checked": true,
+    "methods": [
+      "degree",
+      "refined"
+    ],
+    "normal_optimized_checker_bytes_equal": true,
+    "one_realizer_witness_totals_checked": true,
+    "sampling_replay_through_n": 8,
+    "status": "passed",
+    "tests_each_mode": 33
+  },
+  "release_date_utc": "2026-10-03",
+  "report": "Report153",
+  "runtime": {
+    "dependencies": "Python standard library only",
+    "implementation": "CPython",
+    "python": "3.12.14",
+    "system": "Linux"
+  },
+  "schema": "report153-companion-provenance-v2",
+  "scope": "Exact finite enumeration and formal identities only; no analytic remainder, effective onset, inverse rounding or novelty certification",
+  "source_files_read_not_bundled_or_imported": [
+    {
+      "filename": "compute_asymptotics.py",
+      "label": "Original recursive-Q coefficient constructor",
+      "sha256": "5e263798ac142ec842371c495685ee3dfa5ec36bc9bbacb8fcda46cbba1abda0",
+      "use": "Mathematical construction rewritten in rational standard-library arithmetic; no original script imported"
+    },
+    {
+      "filename": "compute_rooted.py",
+      "label": "Original degree-partition/root-colored graph enumerator",
+      "sha256": "c2ae94aa6a9565606b9c4cf47224f533792991b7215c36849f84b09b02667dc7",
+      "use": "Adapted as enumerate_degree with exact cache and twin reductions"
+    },
+    {
+      "filename": "independent_enumeration.py",
+      "label": "Independently authored refined-color/automorphism-orbit graph enumerator",
+      "sha256": "6b3679f8c2a165232e8ab56963eb20a8103d0ea57dfc39efa9256a833c4c3371",
+      "use": "Separately adapted as enumerate_refined; no shared graph or canonicalization code with degree route"
+    },
+    {
+      "filename": "independent_coefficients.py",
+      "label": "Independently authored Lagrange/finite-polynomial coefficient verifier",
+      "sha256": "cdfcf44171b353fe9054864df4804d3bd595caae209a232b4b55a107a5f008e7",
+      "use": "Independent formal route adapted to self-contained rational-series implementation"
+    },
+    {
+      "filename": "enumerate_one_realizer_inputs.py",
+      "label": "Original exact one-realizer and marked-context computation",
+      "sha256": "2ea55d14b8c48db103d971d53db22a1b91d1ca0f102610e5462b325cd1b219e2",
+      "use": "Definitions and fixed sampling inputs; this source reused refined-route graph primitives and is not a third independent graph method"
+    },
+    {
+      "filename": "compute_sampling_coefficients.py",
+      "label": "Original exact H4 and total-variation construction",
+      "sha256": "1e78ad5b0adb9cdfa352ddad5ffea46cee22a5b078eeceb5d1457659e9b3b2f8",
+      "use": "Formula and target coefficients; source reused earlier rational primitives"
+    },
+    {
+      "filename": "asymptotic_coefficients.json",
+      "label": "Original exact h0 through h7 regression data",
+      "sha256": "cdc0a6e8ae55de84b10f9f566ce177afedc9f8e842a94451dd8e3bc849384f11"
+    },
+    {
+      "filename": "sampling_coefficients.json",
+      "label": "Original exact H4 and TV regression data",
+      "sha256": "a14235a0fc7531d665897d3359761f130c48f239794b9d68c59825d210f6264d"
+    }
+  ]
+}

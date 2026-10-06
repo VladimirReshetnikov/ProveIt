@@ -1,0 +1,1444 @@
+\newcommand{\DoNotLoadEpstopdf}{}
+\pdfinfoomitdate=1
+\pdftrailerid{}
+\pdfsuppressptexinfo=-1
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage[margin=1in]{geometry}
+\usepackage{booktabs,longtable,array}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+\hypersetup{pdftitle={Report 150 Leading asymptotics of unlabeled circle graphs},pdfauthor={},pdfsubject={OEIS A156808 and A156809 with recoverable prime cores and threshold inverses}}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{1.2em}
+\setlength{\emergencystretch}{2em}
+\setcounter{tocdepth}{1}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\PP}{\mathbb P}
+\newcommand{\EE}{\mathbb E}
+\newcommand{\one}{\mathbf1}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\ceil}[1]{\left\lceil #1\right\rceil}
+\newcommand{\floor}[1]{\left\lfloor #1\right\rfloor}
+\DeclareMathOperator{\Aut}{Aut}
+\DeclareMathOperator{\Poi}{Poisson}
+\title{Leading asymptotics of unlabeled circle graphs\\\large Connected and all graphs in OEIS A156808 and A156809}
+\author{Report 150}
+\date{3 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+Let $c_n$ and $g_n$ count connected and arbitrary unlabeled circle
+graphs on $n$ vertices. We prove
+\[
+ c_n\sim g_n\sim e^{-3/2}\frac{(2n-1)!!}{4n}.
+\]
+The proof combines published local Poisson limits and uniqueness of
+prime representations with two model-specific arguments: inverse
+representation-fiber weights give an upper bound, while canonically
+recoverable leaf and twin decorations of asymmetric prime cores give
+the matching lower bound. We also prove the connected fraction
+$1-1/(2n)+o(1/n)$, three independent limiting Poisson decoration
+counts of mean $1/2$, a Poisson core deficit of mean $3/2$, and
+asymmetry probability $e^{-1}$. A smooth Lambert-$W$ inverse is
+converted into ceiling-safe least-index brackets. A self-contained forcing-coupling argument sharpens both individual
+count estimates to relative error $O(n^{-1})$ and the connectivity
+error to $O(n^{-2})$. Fresh exact finite checks and a deterministic
+source package accompany the proofs.
+\end{abstract}
+\noindent\textbf{Scope.} The complete primary texts inspected were
+arXiv:2402.06394v1 (2024), an additional complete author-hosted 2024
+copy, and the references specified below. The 2026 journal version
+was identified bibliographically but its final text was not inspected.
+The result fills a leading-equivalent gap in the sources checked;
+this is not an exhaustive priority claim. The proof gives neither an
+all-orders expansion nor an effective finite-$n$ onset. Finite checks
+are not substitutes for the structural proof. No external submission,
+author contact, or public repository change is part of this report.
+\newpage
+\tableofcontents
+\newpage
+
+\section{The result and its counting conventions}
+A circle graph is the intersection graph of finitely many chords of a
+circle, with two vertices adjacent exactly when their corresponding
+chords cross. All graphs in this report are finite, simple and
+undirected. Chord endpoints can be assumed distinct. An unlabeled
+graph means an isomorphism class, counted once regardless of its
+automorphism group.
+
+Let $\mathcal M_n$ be the perfect matchings of a fixed cyclically
+ordered endpoint set $\{0,1,\ldots,2n-1\}$. Its cardinality is
+\begin{equation}\label{eq:mn}
+ m_n=(2n-1)!!=\frac{(2n)!}{2^n n!},\qquad m_0=1.
+\end{equation}
+These are \emph{indexed} matchings: the endpoints are indexed, but
+the chords do not have independent labels. Write $G_D$ for the
+unlabeled intersection graph of $D\in\mathcal M_n$. The dihedral
+group acting on the endpoints has order $4n$. A matching is
+\emph{geometrically asymmetric} when its stabilizer in that group is
+trivial. A graph is \emph{asymmetric} when its graph automorphism
+group is trivial. These two notions must not be interchanged for
+general circle graphs.
+
+Set
+\begin{equation}\label{eq:sequences}
+ c_n=\mathrm{A156808}(n),\quad
+ g_n=\mathrm{A156809}(n),\quad
+ h_n=\frac{m_n}{4n}\quad(n\ge1).
+\end{equation}
+Both OEIS sequences begin at $n=1$. We use $g_0=1$ for the empty
+graph when discussing disjoint unions.
+
+\begin{theorem}[Leading enumeration]\label{thm:main}
+As $n\to\infty$,
+\begin{equation}\label{eq:main}
+ c_n\sim g_n\sim e^{-3/2}h_n
+ \sim\frac{e^{-3/2}}{2\sqrt2\,n}\left(\frac{2n}{e}\right)^n.
+\end{equation}
+Moreover,
+\begin{align}
+ g_n-c_n&=g_{n-1}+O(m_n/n^3)
+          =c_{n-1}+O(m_n/n^3),\label{eq:gap}\\
+ \frac{c_n}{g_n}&=1-\frac1{2n}+o(n^{-1}).\label{eq:connected}
+\end{align}
+Section~\ref{sec:quantitative} strengthens the individual equivalents
+to relative error $O(n^{-1})$ and the error in
+\eqref{eq:connected} to $O(n^{-2})$. The individual first
+correction coefficients are not identified.
+\end{theorem}
+
+The main asymptotic normalization is $h_n$, rather than $m_n$.
+Dividing all matchings by $4n$ alone does not count circle graphs:
+a graph may have several inequivalent chord representations, and
+geometric symmetries can shorten individual orbits. Sections
+\ref{sec:symmetry}--\ref{sec:lower} handle both issues explicitly.
+
+\section{Published inputs and the bounded source review}\label{sec:inputs}
+\subsection{Splits and prime representations}
+A split of a graph is a partition $V=A\sqcup B$ whose crossing
+edges form $A'\times B'$ for some $A'\subseteq A$ and
+$B'\subseteq B$; the crossing set is allowed to be empty. The split
+is nontrivial if $|A|,|B|\ge2$. A graph is \emph{split-prime} if it
+has no nontrivial split.
+
+Bassino, Bouvel, F\'eray, Gerin and Pierrot
+\cite[Definition 5.3 and Proposition 5.5]{BBFGP24} define matching
+decompositions by four successive cyclic intervals, allowing empty
+intervals, such that every chord lies within one interval or joins
+opposite intervals. A $k$-decomposition uses the source's anchored convention: $C_1$
+contains endpoint $0$ (called $1$ in the source), the other
+nonempty intervals follow in cyclic order, and $k$ counts the
+chords in $C_2\cup C_4$. Thus $k$ and $n-k$ are not freely
+interchangeable in the cited probability bound. A decomposition is
+nontrivial when $2\le k\le n-2$. Their equivalence is
+\begin{equation}\label{eq:prime-equivalence}
+ D\text{ is indecomposable}
+ \quad\Longleftrightarrow\quad G_D\text{ is split-prime}.
+\end{equation}
+We accept this published structural theorem. We also use their
+Proposition 5.12, attributed there to Gabor, Supowit and Hsu:
+a split-prime circle graph of order at least five has one matching
+representation up to rotation and reflection.
+
+For the automorphism statement we use the natural geometric action,
+not just an isomorphism between abstract groups. Klav\'ik and Zeman
+\cite[proof of Lemma 8 and the following geometric explanation,
+pp.~548--549]{KZ15} describe prime graph automorphisms as rotations
+or reflections of the unique circle representation. Thus each prime
+graph automorphism is induced by such a symmetry.
+
+For completeness, no nonidentity geometric symmetry can fix every
+chord of a split-prime representation of order at least five. A
+rotation fixing every chord would have order two and all chords
+would be diameters, giving a complete graph. A reflection fixing
+every chord has all but at most one chord perpendicular to its
+axis; these chords do not cross one another. The possible chord on
+the axis gives at most a star together with isolated vertices. None
+of these graphs is split-prime at this order. The natural action on
+chords is therefore faithful. In particular,
+\begin{equation}\label{eq:prime-asym}
+ \text{a prime matching is geometrically asymmetric}
+ \quad\Longleftrightarrow\quad
+ \text{its graph is asymmetric}.
+\end{equation}
+No such equivalence is asserted outside the prime class.
+
+\subsection{The local Poisson input}
+For a uniform $D_n\in\mathcal M_n$, let $X_n$ count chords joining
+consecutive endpoints and $Y_n$ count chords joining endpoints at
+cyclic distance two. Thus a chord counted by $Y_n$ has exactly one
+endpoint in its shorter open arc, for all sufficiently large $n$.
+Let $Z_n$ count unordered pairs of disjoint consecutive endpoint
+pairs whose endpoints are matched to one another; each such local
+configuration is counted once, with either the crossing or
+noncrossing pairing allowed. These definitions agree with
+\cite[Section 5.2.4]{BBFGP24} in the asymptotic range.
+
+The precise published inputs are
+\begin{align}
+ (X_n,Y_n,Z_n)&\xrightarrow{d}(X,Y,Z),\label{eq:poi-source}\\
+ X,Y,Z&\text{ are independent }\Poi(1),\notag\\
+ \PP(D_n\text{ has a }k\text{-decomposition for some }k>2)
+   &=O(n^{-1}),\label{eq:large-decomp}\\
+ \PP(D_n\text{ has no }2\text{-decomposition})&\longrightarrow e^{-3}.
+ \label{eq:no-two}
+\end{align}
+These are respectively Lemma 5.10 (proved in Appendix A.2),
+Lemma 5.7, and Lemma 5.8 of \cite{BBFGP24}. Their Lemma 5.9
+identifies the simultaneous vanishing of $X_n,Y_n,Z_n$ with the
+absence of the two endpoint decomposition sizes. The union bound
+and \eqref{eq:large-decomp}--\eqref{eq:no-two} immediately give
+\begin{equation}\label{eq:prime-prob}
+ \PP(D_n\text{ is indecomposable})=e^{-3}+o(1).
+\end{equation}
+Although their Proposition 5.11 states only the eventual lower
+bound $e^{-4}$, this sharper limit follows directly from the
+preceding lemmas. It is not a new Poisson theorem proved here.
+
+\subsection{What was and was not inspected}
+The version actually used is arXiv:2402.06394v1, dated 9 February
+2024. A complete author-hosted copy with PDF metadata dated
+13 February 2024 was also checked; its relevant text agrees with
+that version and still gives the coarse bound. Journal metadata
+lists \emph{Electronic Journal of Probability} \textbf{31} (2026),
+article 110, DOI \href{https://doi.org/10.1214/26-EJP1570}
+{10.1214/26-EJP1570}. The final journal text was not obtained and
+is not being cited as inspected.
+
+Danielsen and Parker \cite[Section 3, Table 3]{DP09} supply exact
+circle-graph counts through order twelve. The inspected version is
+arXiv:0804.2576v2 (1 October 2009). The OEIS entries
+\cite{OEISc,OEISg} provide the same connected data and one additional
+all-graph value at order thirteen. Neither inspected OEIS entry
+states the equivalent \eqref{eq:main}. An older OEIS-linked paper
+of Arratia, Bollob\'as, Coppersmith and Sorkin was checked only at
+abstract level; its Euler-circuit enumeration is not used as a
+theorem about graph-isomorphism classes.
+
+The literature claim is deliberately bounded: the equivalent was
+not located in these inspected texts or the accompanying targeted
+catalogue search. This is neither proof of universal novelty nor a
+claim to settle a well-known open problem. A final-version source
+reconciliation remains useful future work.
+
+\section{Symmetry bounds and the exact fiber identity}\label{sec:symmetry}
+\subsection{Every geometric exception is negligible}
+Let $S_n$ be the number of indexed matchings fixed by some
+nonidentity symmetry of the regular $2n$-gon.
+
+\begin{lemma}\label{lem:symmetry}
+For every fixed $A>0$, $S_n=o(m_n n^{-A})$.
+In particular, $nS_n/m_n\to0$.
+\end{lemma}
+\begin{proof}
+A rotation of order $d\ge2$ has $k=2n/d$ endpoint cycles. If a
+matching is invariant, it pairs two distinct cycles using one of
+$d$ offsets, or pairs a cycle internally. The latter is possible
+only when $d$ is even and must pair opposite points. Hence its
+number of fixed matchings is
+\begin{equation}\label{eq:rotation-egf}
+ k![z^k]\exp\left(\one_{2\mid d}z+\frac d2z^2\right).
+\end{equation}
+For a power series with nonnegative coefficients,
+$[z^k]F(z)\le F(r)r^{-k}$. Choosing $r=\sqrt{k/d}$ and using
+$k!\le k^k$, the quantity in \eqref{eq:rotation-egf} is at most
+\begin{align}
+ (kd)^{k/2}\exp(k/2+\sqrt{k/d})
+ &\le (2en)^{n/d}\exp(\sqrt n)\notag\\
+ &\le (2en)^{n/2}\exp(\sqrt n).\label{eq:symbound1}
+\end{align}
+There are two reflection types. A reflection through gaps has no
+fixed endpoints, and its fixed-matching count is exactly the
+$d=2$, $k=n$ instance of \eqref{eq:rotation-egf}. A reflection
+through opposite endpoints has two fixed endpoints. They must be
+paired to each other: a fixed endpoint paired to a nonfixed one
+would acquire two partners under reflection. On the remaining
+endpoints the count is the $d=2$, $k=n-1$ instance. Both satisfy
+\eqref{eq:symbound1}. A union bound over fewer than $4n$
+nonidentity symmetries gives
+\begin{equation}\label{eq:symbound}
+ S_n\le 4n(2en)^{n/2}\exp(\sqrt n).
+\end{equation}
+Stirling's formula gives $\log m_n=n\log(2n)-n+O(1)$, so the
+logarithm of the right side of \eqref{eq:symbound} divided by
+$m_n$ is $-\tfrac12 n\log n+O(n)$. This is smaller than
+$-A\log n$ for each fixed $A$ and large enough $n$.
+\end{proof}
+
+This argument explicitly covers both reflection types. It also
+bounds every symmetric matching, a stronger form of exception
+control than bounding only graphs with fewer than $4n$
+representatives.
+
+\subsection{Representation fibers}
+For an unlabeled circle graph $G$ of order $n$, define
+\[
+ R_n(G)=\#\{D\in\mathcal M_n:G_D\cong G\}.
+\]
+This counts all indexed matching representatives, including all
+inequivalent dihedral orbits. Grouping the sum by its graph gives
+the exact identities
+\begin{equation}\label{eq:fiber}
+ g_n=\sum_{D\in\mathcal M_n}\frac1{R_n(G_D)},\qquad
+ c_n=\sum_{D\in\mathcal M_n}
+       \frac{\one_{G_D\text{ connected}}}{R_n(G_D)}.
+\end{equation}
+A geometrically asymmetric matching has an orbit of size $4n$;
+therefore $R_n(G_D)\ge4n$ for such a matching. On symmetric
+matchings we may use the crude bound $1/R_n(G_D)\le1$.
+Consequently
+\begin{equation}\label{eq:coarse-g}
+ g_n\le h_n+S_n=O(m_n/n).
+\end{equation}
+Fix once and for all a constant $C$ such that
+\begin{equation}\label{eq:uniform-g}
+ g_j\le C m_j/j\quad(j\ge1),
+\end{equation}
+enlarging $C$ to handle the finite initial segment. No explicit
+value of this constant or its initial asymptotic onset is required.
+
+\subsection{Deleting a bounded set of chords}
+\begin{lemma}\label{lem:delete-sym}
+For fixed $K$ and $A>0$, the probability that some deletion of at
+most $K$ chords from $D_n$ leaves a geometrically symmetric
+matching is $o(n^{-A})$.
+\end{lemma}
+\begin{proof}
+For a fixed deletion size $r\le K$, choose its $2r$ endpoints,
+match them in $m_r$ ways, and choose a symmetric matching on the
+remaining endpoints, with their cyclic order compressed. There
+are at most
+\begin{equation}\label{eq:delete-bound}
+ \binom{2n}{2r}m_rS_{n-r}
+\end{equation}
+such choices. Multiple counting only increases this bound. For
+fixed $r$, the ratio $m_{n-r}/m_n$ is $O(n^{-r})$, while
+$\binom{2n}{2r}=O(n^{2r})$. Lemma \ref{lem:symmetry}, with a
+sufficiently large exponent, makes \eqref{eq:delete-bound} divided
+by $m_n$ smaller than any prescribed power of $n^{-1}$. Sum over
+$0\le r\le K$.
+\end{proof}
+This is uniform over the choice of deleted chords. Thus the
+chords can later be chosen from the graph's leaf set without any
+unjustified conditioning argument.
+
+\section{Leaves of a typical indexed matching}\label{sec:leaves}
+A chord counted by $Y_n$ is called \emph{short}. Its shorter arc
+contains one endpoint, so it crosses exactly the chord incident to
+that endpoint. It is therefore a graph leaf. Call its unique
+neighbor its parent.
+
+\begin{lemma}\label{lem:long-leaf}
+The expected number of graph leaves which are not short is
+$O(n^{-1})$.
+\end{lemma}
+\begin{proof}
+A graph leaf crosses exactly one other chord. The smaller open arc
+between its endpoints must contain an odd number $2r+1$ of
+endpoints: one is matched outside and the other $2r$ are matched
+internally. For a nonshort leaf $r\ge1$. After its two endpoints
+are fixed, choose the inside and outside endpoints of the unique
+crossing chord. All remaining matchings lie independently inside
+or outside the arc, so the exact number of completions is
+\begin{align}
+ &(2r+1)(2n-2r-3)m_rm_{n-r-2}\notag\\
+ &\hspace{35mm}=m_{r+1}m_{n-r-1}.\label{eq:leaf-completions}
+\end{align}
+For any specified arc length there are at most $2n$ possible
+leaf chords. Diameter choices, when present, are merely
+counted twice. Put $s=r+1$ and
+\begin{equation}\label{eq:q-def}
+ q_s=\frac{m_sm_{n-s}}{m_n}.
+\end{equation}
+The expectation in question is at most
+\begin{equation}\label{eq:long-expectation}
+ 2n\sum_{s=2}^{\floor{n/2}}q_s.
+\end{equation}
+For $0\le s\le(n-1)/2$,
+\begin{equation}\label{eq:q-ratio}
+ \frac{q_{s+1}}{q_s}=\frac{2s+1}{2n-2s-1}\le1.
+\end{equation}
+Thus, for all sufficiently large $n$,
+\begin{align}
+ \sum_{s=2}^{\floor{n/2}}q_s
+ &\le q_2+nq_3=O(n^{-2}),\label{eq:q-tail}\\
+ q_2&=\frac3{(2n-1)(2n-3)},\notag\\
+ q_3&=\frac{15}{(2n-1)(2n-3)(2n-5)}.\notag
+\end{align}
+Substitution into \eqref{eq:long-expectation} proves the claim.
+\end{proof}
+
+\begin{lemma}\label{lem:parents}
+The probability that two short graph leaves have the same parent
+is $O(n^{-1})$.
+\end{lemma}
+\begin{proof}
+Choose the two short-arc positions in $O(n^2)$ ways. When their
+configuration is feasible, the two leaf chords and their common
+parent are three specified distinct matching edges on six
+endpoints: the parent joins the unique endpoint enclosed by each
+short leaf. A uniform matching contains these three edges with
+probability $m_{n-3}/m_n=O(n^{-3})$. Impossible or overlapping
+configurations contribute zero. Summing bounds the expected
+number of such pairs, hence also the probability, by $O(n^{-1})$.
+\end{proof}
+
+In a connected graph of order greater than two, a leaf's parent
+cannot itself be a leaf. Lemmas \ref{lem:long-leaf} and
+\ref{lem:parents} imply that, outside an unconditional event of
+probability $O(n^{-1})$, every graph leaf is short and all parents
+are distinct. The estimates remain adequate after we restrict a
+weighted sum to connected graphs: no conditional probability
+claim is needed.
+
+\section{An upper bound from independent leaf moves}\label{sec:upper}
+Fix $K\ge0$. Call a connected matching good if it has at most
+$K$ graph leaves, all of them are short, their parents are distinct,
+and deleting all leaves leaves a geometrically asymmetric matching
+$D_0$. By the previous lemmas, the bad connected matchings are
+contained in $\{Y_n>K\}$ and an event of probability $o(1)$.
+The geometric-symmetry contribution will be estimated separately.
+
+\begin{lemma}[Leaf moves]\label{lem:leaf-moves}
+If a good matching has $k$ leaves, then its graph $G$ satisfies
+\begin{equation}\label{eq:fiber-lower}
+ R_n(G)\ge4n\,2^k.
+\end{equation}
+\end{lemma}
+\begin{proof}
+View $D_0$ as a cyclic double-occurrence word, one symbol for each
+retained chord. At either occurrence of each parent symbol $p$,
+replace that occurrence by the block $\ell,p,\ell$, where
+$\ell$ is its deleted leaf. This new chord crosses just $p$.
+There are two choices per parent. Distinct parents have distinct
+symbols, so their endpoint occurrences are distinct and the local
+insertions commute, even when occurrences are consecutive.
+Every one of the $2^k$ choices represents $G$.
+
+Suppose two expanded diagrams are dihedrally equivalent. The
+induced graph isomorphism preserves the full set of degree-one
+vertices, which is exactly the inserted leaf set. Delete that set
+on both sides. The remaining equivalence is a dihedral symmetry
+of $D_0$ with its cyclic order compressed. Its geometric
+asymmetry forces the identity on retained endpoints. The parent
+endpoints are therefore individually fixed. Because different
+leaves have different parents, each leaf must occupy the same
+chosen parent endpoint in both expansions. The choices agree.
+Hence the $2^k$ expanded diagrams lie in distinct dihedral orbits.
+
+The same argument applied to a symmetry of a single expanded
+diagram gives the identity on all retained endpoints. For $n-K$
+large enough there are at least three retained endpoints; an
+endpoint rotation or reflection fixing these individually is the
+identity. Therefore every expanded diagram is itself geometrically
+asymmetric and has exactly $4n$ indexed representatives in its
+orbit. Their disjoint orbits prove \eqref{eq:fiber-lower}.
+\end{proof}
+
+The lemma only gives a lower bound on the fiber size. It does not
+need to classify additional representations; extra representations
+would make the reciprocal weight still smaller.
+
+For a connected matching with $n>1$, necessarily $X_n=0$, since
+a chord joining consecutive endpoints is an isolated graph vertex.
+On good matchings $k=Y_n$. Using \eqref{eq:fiber},
+\eqref{eq:fiber-lower}, the weight $1/(4n)$ on all asymmetric
+exceptions and the weight at most one on symmetric exceptions,
+we obtain
+\begin{equation}\label{eq:upper-before-limit}
+ \frac{c_n}{h_n}\le
+ \EE\bigl[\one_{X_n=0}\one_{Y_n\le K}2^{-Y_n}\bigr]
+ +\PP(Y_n>K)+o(1)+\frac{4nS_n}{m_n}.
+\end{equation}
+The last term tends to zero by Lemma \ref{lem:symmetry}.
+Convergence in distribution of integer-valued variables gives
+convergence of each fixed finite collection of point
+probabilities, and the Poisson limit is tight. Thus
+\eqref{eq:poi-source} implies, for fixed $K$,
+\begin{align}
+ \limsup_{n\to\infty}\frac{c_n}{h_n}
+ &\le e^{-1}\sum_{j=0}^{K}2^{-j}\frac{e^{-1}}{j!}
+       +\PP(\Poi(1)>K).\label{eq:upper-truncation}
+\end{align}
+Letting $K\to\infty$ gives
+\begin{equation}\label{eq:upper-final}
+ \limsup_{n\to\infty}\frac{c_n}{h_n}\le e^{-3/2}.
+\end{equation}
+
+\section{A lower bound from recoverable prime decorations}\label{sec:lower}
+\subsection{Asymmetric prime cores}
+Let $p_N^{\mathrm a}$ count asymmetric split-prime circle graphs
+of order $N$. By \eqref{eq:prime-prob}, the number of prime
+indexed matchings is $(e^{-3}+o(1))m_N$. Removing all geometrically
+symmetric matchings changes this by at most $S_N=o(m_N)$.
+Prime uniqueness and \eqref{eq:prime-asym} identify every remaining
+graph with one full orbit of size $4N$. Therefore
+\begin{equation}\label{eq:prime-count}
+ p_N^{\mathrm a}\sim e^{-3}\frac{m_N}{4N}.
+\end{equation}
+
+A split-prime graph of order at least five is connected, has
+minimum degree at least two, and has no twin pair. Here vertices
+$u,v$ are twins if their adjacencies to every vertex outside
+$\{u,v\}$ agree; they are true twins if adjacent and false twins
+if nonadjacent. A twin pair is a split side of size two. A leaf
+and its parent also form a split side of size two. Disconnected
+graphs admit an empty crossing split, or an equivalent split
+using an isolated vertex and another vertex when a component has
+order one. These observations establish the stated properties.
+
+\subsection{Three single-vertex decorations}
+Start from an asymmetric split-prime core $H$ of order $N\ge5$.
+Choose $k$ distinct core vertices. At each selected vertex perform
+exactly one of these operations, each adding one vertex:
+\begin{enumerate}
+\item[$L$.] Add one pendant leaf adjacent to that vertex.
+\item[$T$.] Replace the vertex by two adjacent twins, each with
+its former neighbors.
+\item[$F$.] Replace the vertex by two nonadjacent twins, each
+with its former neighbors.
+\end{enumerate}
+No core vertex receives more than one decoration. The resulting
+graph is connected and has $n=N+k$ vertices. All operations
+preserve the circle-graph class. For $L$, insert a chord around one
+endpoint as in Lemma \ref{lem:leaf-moves}. For $T$ or $F$,
+duplicate the two endpoints of the core chord in very small
+adjacent neighborhoods. Alternating the two chord symbols makes
+them cross; nesting them makes them noncrossing. Both new chords
+meet exactly the former external neighbors. These local
+substitutions can be made simultaneously at distinct core chords.
+
+\begin{lemma}[Canonical recovery]\label{lem:recovery}
+The decorated graph determines its core isomorphism class, every
+selected core vertex, and its $L$, $T$ or $F$ type. Two decoration
+patterns on an asymmetric core are isomorphic only if they are
+identical.
+\end{lemma}
+\begin{proof}
+Every old or cloned vertex retains at least the core's minimum
+degree two. The added $L$ vertices are consequently exactly the
+degree-one vertices of the result. Delete precisely those leaves
+and save their incidences with their parents.
+
+What remains is a blowup of the twin-free graph $H$ with each
+replacement block of size one or two. Distinct core vertices
+$u,v$ have a third vertex $w$ whose adjacency distinguishes them,
+since otherwise $u,v$ would be twins. Every replacement block
+for $w$ is nonempty. Any vertex in that block continues to
+distinguish a vertex in the $u$ block from a vertex in the $v$
+block. Thus twins in the blowup cannot lie in different blocks.
+The only nonsingleton maximal twin classes are exactly the
+intended size-two $T$ and $F$ blocks.
+
+Contract each such class to one vertex. Its internal edge or
+nonedge records whether its type was $T$ or $F$. The quotient is
+$H$, and the saved pendant incidences identify its $L$ vertices.
+All steps are canonical under graph isomorphisms. An isomorphism
+between two outputs therefore induces an isomorphism between
+cores preserving all decorations. On the same asymmetric core
+that isomorphism must fix every vertex. This proves the assertion.
+\end{proof}
+
+Twin swaps in the output graph are allowed, and indeed occur.
+There is no extra division by two for each twin pair: the count
+is of decoration patterns on the recovered asymmetric core, not
+of independently labeled clones.
+
+\subsection{Normalization and the lower sandwich}
+For fixed $k$ the number of constructed graphs of order $n$ is
+exactly
+\begin{equation}\label{eq:decorate-count}
+ 3^k\binom{n-k}{k}p_{n-k}^{\mathrm a}
+\end{equation}
+when $n-k\ge\max(5,k)$. The families for different $k$ are
+disjoint, since recovery determines the core order. For every
+fixed $K$ and all sufficiently large $n$,
+\begin{equation}\label{eq:lower-sum}
+ c_n\ge\sum_{k=0}^{K}3^k\binom{n-k}{k}p_{n-k}^{\mathrm a}.
+\end{equation}
+For fixed $k$,
+\begin{equation}\label{eq:ratio-m}
+ \frac{m_{n-k}}{m_n}
+ =\prod_{j=0}^{k-1}\frac1{2n-2j-1}
+ \sim(2n)^{-k},\qquad
+ \binom{n-k}{k}\sim\frac{n^k}{k!}.
+\end{equation}
+Using \eqref{eq:prime-count}, the exact normalization is
+\begin{align}
+ \frac{3^k\binom{n-k}{k}p_{n-k}^{\mathrm a}}{h_n}
+ &\sim e^{-3}3^k\binom{n-k}{k}
+          \frac n{n-k}\frac{m_{n-k}}{m_n}\notag\\
+ &\longrightarrow e^{-3}\frac{(3/2)^k}{k!}.\label{eq:lower-term}
+\end{align}
+First take the liminf in \eqref{eq:lower-sum} with $K$ fixed,
+and then increase $K$. This gives
+\begin{equation}\label{eq:lower-final}
+ \liminf_{n\to\infty}\frac{c_n}{h_n}
+ \ge e^{-3}\sum_{k=0}^{\infty}\frac{(3/2)^k}{k!}
+ =e^{-3/2}.
+\end{equation}
+Together with \eqref{eq:upper-final}, this proves the connected
+equivalent. The argument never assumes a uniform estimate when
+$k$ grows with $n$ and never interchanges an unbounded sum with
+an unproved asymptotic expansion.
+
+\section{Disconnected graphs and the first connectivity correction}\label{sec:disconnected}
+Circle graphs are closed under disjoint union, by placing their
+chord diagrams in disjoint small arcs. Every disconnected graph
+has a component of order $k\le n/2$. Choosing one such component
+and its complement may overcount, so
+\begin{equation}\label{eq:component-bound}
+ 0\le g_n-c_n\le
+ \sum_{k=1}^{\floor{n/2}}g_kg_{n-k}.
+\end{equation}
+No binomial coefficient occurs: these are unlabeled graph
+isomorphism classes, and disjoint union is a well-defined map
+from pairs of such classes.
+
+Use \eqref{eq:uniform-g} and $n-k\ge n/2$ to get
+\begin{align}
+ g_n-c_n
+ &\le\frac{2C^2m_n}{n}
+       \sum_{k=1}^{\floor{n/2}}\frac{q_k}{k}
+   =O(m_n/n^2),\label{eq:disconnected-small}
+\end{align}
+where $q_k$ is \eqref{eq:q-def}, $q_1=1/(2n-1)$ and
+\eqref{eq:q-tail} bounds the remaining sum. Since
+$c_n\sim e^{-3/2}m_n/(4n)$, this proves
+$g_n/c_n=1+O(1/n)$ and hence the all-graph equivalent in
+Theorem \ref{thm:main}. Stirling's formula proves its elementary
+factorial form.
+
+For a sharper comparison, graphs with at least one isolated vertex
+are in bijection with all graphs on $n-1$ vertices, by removing
+or adding one indistinguishable isolated vertex. The image is
+unique even when several isolates are present. Disconnected
+graphs with no isolated vertex have a component of order between
+$2$ and $n/2$, and their count is at most
+\begin{equation}\label{eq:no-isolates}
+ \sum_{k=2}^{\floor{n/2}}g_kg_{n-k}=O(m_n/n^3).
+\end{equation}
+Thus $g_n-c_n=g_{n-1}+O(m_n/n^3)$. Also
+\eqref{eq:disconnected-small} at $n-1$ gives
+$g_{n-1}-c_{n-1}=O(m_n/n^3)$. Finally,
+\begin{equation}\label{eq:ratio-prev}
+ \frac{g_{n-1}}{g_n}
+ \sim\frac{h_{n-1}}{h_n}
+ =\frac{n}{(n-1)(2n-1)}\sim\frac1{2n}.
+\end{equation}
+Equations \eqref{eq:gap} and \eqref{eq:connected} follow.
+
+\section{Saturation and the typical recovered core}\label{sec:saturation}
+The upper and lower bounds agree exactly in the limit. This
+forces the recoverable decorated families to carry almost all
+unlabeled graphs; it does not require a structural classification
+of every exceptional graph.
+
+For nonnegative integers $\ell,t,f$, put $k=\ell+t+f$ and let
+$\mathcal D_{n;\ell,t,f}$ consist of constructions with exactly
+$\ell$ leaves, $t$ true-twin pairs and $f$ false-twin pairs,
+on distinct vertices of an asymmetric prime core of order
+$N=n-k$. Canonical recovery makes all these families disjoint,
+and for $N\ge\max(5,k)$ their exact size is
+\begin{equation}\label{eq:triple-count}
+ |\mathcal D_{n;\ell,t,f}|
+ =p_N^{\mathrm a}\frac{N!}{\ell!t!f!(N-k)!}.
+\end{equation}
+Consequently, for every fixed triple,
+\begin{equation}\label{eq:triple-h}
+ \frac{|\mathcal D_{n;\ell,t,f}|}{h_n}
+ \longrightarrow e^{-3}\frac{2^{-k}}{\ell!t!f!}.
+\end{equation}
+Divide by either connected or all-graph counts, using
+Theorem \ref{thm:main}, to get the limiting probability
+\begin{equation}\label{eq:triple-prob}
+ e^{-3/2}\frac{(1/2)^\ell}{\ell!}
+              \frac{(1/2)^t}{t!}\frac{(1/2)^f}{f!}.
+\end{equation}
+The sum of \eqref{eq:triple-prob} over all triples is one.
+Given $\eps>0$, choose a finite set of triples whose limiting
+mass exceeds $1-\eps$. Convergence on that finite set proves
+that the probability of the union of \emph{all} decorated
+families has liminf at least $1-\eps$. Let $\eps$ decrease to
+zero. This proves saturation without exchanging an infinite sum
+and an asymptotic estimate.
+
+\begin{theorem}[Typical core and decoration laws]\label{thm:core}
+For a uniform unlabeled circle graph of order $n$, either
+conditioned to be connected or not, with probability tending to
+one there is a canonically recovered asymmetric split-prime core
+of the form described in Lemma \ref{lem:recovery}. Its decoration
+counts satisfy
+\begin{equation}\label{eq:three-poi}
+ (L_n,T_n,F_n)\xrightarrow{d}
+ \bigl(\Poi(1/2),\Poi(1/2),\Poi(1/2)\bigr),
+\end{equation}
+with independent coordinates. Its deficit $n-|H|$ converges in
+distribution to $\Poi(3/2)$.
+\end{theorem}
+\begin{proof}
+On the saturated family the counts and the core are uniquely
+recovered, and \eqref{eq:triple-prob} gives their joint point
+probabilities. The finite-set argument also proves tightness,
+which yields the joint convergence. Outside this family define
+the counts arbitrarily; its probability tends to zero and cannot
+change the limit. Summing the three independent Poisson limits
+gives the deficit law.
+\end{proof}
+The core claim concerns the explicit leaf-deletion and
+maximal-twin-contraction procedure on a probability-one limiting
+family. It is not an assertion that arbitrary iterative deletion
+and contraction orders give the same core for every graph.
+
+\subsection{Automorphisms and a labeled consequence}
+\begin{proposition}\label{prop:aut}
+For a graph in $\mathcal D_{n;\ell,t,f}$,
+\begin{equation}\label{eq:aut-group}
+ \Aut(G)\cong (C_2)^{t+f}.
+\end{equation}
+Thus a uniform unlabeled graph in either model is asymmetric
+with probability tending to $e^{-1}$, and its automorphism-group
+order converges in distribution to $2^P$, where $P\sim\Poi(1)$.
+\end{proposition}
+\begin{proof}
+Every automorphism preserves the leaves, the recovered twin
+classes, and the recovered core with its decorations. The core
+is asymmetric, so each core vertex is fixed. A leaf then is fixed
+by its distinct fixed parent. Each twin pair can be swapped
+independently; these swaps are automorphisms and are the only
+remaining freedoms. This proves \eqref{eq:aut-group}. Saturation
+and Theorem \ref{thm:core} give $T_n+F_n\to\Poi(1)$ and the
+asserted consequences. The arbitrary exceptional graphs have
+vanishing probability.
+\end{proof}
+In particular, geometric asymmetry of typical representations
+must not be used to claim asymmetry of typical graphs. The twin
+swaps above generally do not act as rotations or reflections of
+a given nonprime chord representation.
+
+Other direct consequences are
+\begin{equation}\label{eq:other-prob}
+ \PP(G\text{ leafless})\longrightarrow e^{-1/2},\qquad
+ \PP(G\text{ split-prime})\longrightarrow e^{-3/2}.
+\end{equation}
+The first follows from $L_n=0$. For the second, every nonempty
+decoration creates a nontrivial split: use a twin pair, or a
+leaf-parent pair, as a side of size two. The zero-decoration
+family is prime. Saturation accounts for all remaining cases.
+
+Let $g_n^{\mathrm{lab}}$ and $c_n^{\mathrm{lab}}$ count graphs
+on a fixed labeled $n$-element vertex set. The number of labelings
+of an unlabeled graph is $n!/|\Aut(G)|$. Hence
+\begin{equation}\label{eq:label-expectation}
+ \frac{g_n^{\mathrm{lab}}}{n!g_n}
+ =\EE_{\mathrm{unlabeled}}\left[\frac1{|\Aut(G)|}\right]
+ \longrightarrow\EE[2^{-P}]=e^{-1/2}.
+\end{equation}
+The expectation passage is legitimate because the reciprocal
+automorphism size is bounded by one: first truncate to finitely
+many decoration triples, then use saturation to bound the
+remainder. No uniform integrability assertion about $|\Aut(G)|$
+is being made. The same argument holds in the connected model.
+Therefore
+\begin{equation}\label{eq:labeled}
+ c_n^{\mathrm{lab}}\sim g_n^{\mathrm{lab}}
+ \sim e^{-2}\frac{n!m_n}{4n}
+ =e^{-2}\frac{(2n)!}{2^{n+2}n}.
+\end{equation}
+This is a mathematical consequence of the proved unlabeled law.
+A separate literature and OEIS identification audit for labeled
+counts was not completed, so no separate priority claim is made.
+
+\section{Quantitative error bounds}\label{sec:quantitative}
+The preceding proof establishes the leading equivalent using the
+published qualitative Poisson limit. We now prove a quantitative
+local approximation directly and propagate it through the same
+sandwich. This gives the following strengthening.
+
+\begin{theorem}\label{thm:quantitative}
+For $a_n=c_n$ or $a_n=g_n$,
+\begin{equation}\label{eq:quant-main}
+ a_n=e^{-3/2}h_n\bigl(1+O(n^{-1})\bigr),\qquad
+ \frac{c_n}{g_n}=1-\frac1{2n}+O(n^{-2}).
+\end{equation}
+The exceptional probability outside the canonically decorated-core
+family is $O(n^{-1})$. Its three defect counts are within
+$O(n^{-1})$ total variation of independent $\Poi(1/2)$ variables,
+and its core deficit is within $O(n^{-1})$ total variation of
+$\Poi(3/2)$. The asymmetry, leafless and split-prime probabilities
+in Section \ref{sec:saturation} have additive error $O(n^{-1})$;
+the labeled equivalent \eqref{eq:labeled} has relative error
+$O(n^{-1})$.
+\end{theorem}
+The constants and sufficiently large onsets for graph counts are
+not made explicit. Only the local-pattern bound below has a
+stated numerical constant. No individual first correction
+coefficient is identified.
+
+\subsection*{Atomic patterns and an exact forcing coupling}
+Put $M=2n\ge12$, with endpoints modulo $M$. A prescribed
+matching pattern of $r$ edges occurs with probability
+\begin{equation}\label{eq:pattern-prob}
+ \rho_r=\prod_{j=0}^{r-1}(M-2j-1)^{-1}.
+\end{equation}
+Take as atomic $X$ patterns the $M$ edges $\{i,i+1\}$, as
+$Y$ patterns the $M$ edges $\{i,i+2\}$, and as $Z$ patterns
+the two possible matchings between each unordered pair of
+disjoint cycle edges. There are $M(M-3)/2$ pairs of disjoint
+cycle edges, hence $M(M-3)$ two-edge $Z$ patterns.
+
+These two-edge patterns are distinct for $M\ge6$. Otherwise the
+same four endpoints would admit two distinct perfect matchings
+by cycle edges; their symmetric difference would be a four-cycle
+inside $C_M$, which is impossible. Summing pattern indicators
+therefore gives exactly the source variables $X_n,Y_n,Z_n$.
+Their means are all equal to
+\begin{equation}\label{eq:local-means}
+ \lambda_X=\lambda_Y=M\rho_1=\frac M{M-1},\qquad
+ \lambda_Z=M(M-3)\rho_2=\frac M{M-1}=:\lambda.
+\end{equation}
+Let $\mathcal I$ be the finite pattern set, let $I_\alpha$ be
+the occurrence indicator of pattern $\alpha$, and write
+$p_\alpha=\EE I_\alpha$ and $S_\alpha$ for its endpoint support.
+
+To force an edge $\{u,v\}$ into a matching, do nothing if it is
+already there. Otherwise replace $\{u,x\},\{v,y\}$ by
+$\{u,v\},\{x,y\}$. To force a two-edge pattern, apply this
+operation in a fixed order, excluding already forced endpoints
+on the next step. Denote the result by $D^\alpha$.
+
+The result has precisely the uniform law conditional on
+$I_\alpha=1$. On $L$ currently unforced endpoints, each
+matching containing a prescribed edge has $L-1$ preimages:
+itself and two preimages for each of its $L/2-1$ other edges.
+One force thus pushes the uniform matching law to the uniform
+conditional law. Applying this fact successively proves the
+assertion for two edges.
+
+Every original matching edge whose endpoints lie outside
+$S_\alpha$ survives every forcing step. Only edges incident
+with a forced endpoint are removed. Therefore
+\begin{equation}\label{eq:forcing-monotone}
+ S_\alpha\cap S_\beta=\varnothing
+ \quad\Longrightarrow\quad I_\beta(D^\alpha)\ge I_\beta(D).
+\end{equation}
+This is a statement about disjoint supports only.
+
+\subsection*{A self-contained Poisson approximation bound}
+We use total variation in the convention
+$d_{\rm TV}(P,Q)=\sup_B|P(B)-Q(B)|$.
+
+\begin{lemma}[Reduced conditional coupling bound]\label{lem:stein}
+Let $\Xi=(I_\alpha)_{\alpha\in\mathcal I}$ be any finite family
+of indicators with means $p_\alpha$. Suppose $\Xi^\alpha$ has
+the law of $\Xi-\delta_\alpha$ conditional on $I_\alpha=1$.
+If $\Pi$ has independent Poisson coordinates of means
+$p_\alpha$, then
+\begin{equation}\label{eq:stein-bound}
+ d_{\rm TV}(\mathcal L(\Xi),\mathcal L(\Pi))
+ \le\sum_\alpha p_\alpha\EE\|\Xi-\Xi^\alpha\|_1.
+\end{equation}
+\end{lemma}
+\begin{proof}
+For a function $f$ on nonnegative integer vectors write
+$\Delta_\alpha f(\xi)=f(\xi+\delta_\alpha)-f(\xi)$.
+The independent immigration--death process has generator
+\[
+ \mathcal Af(\xi)=\sum_\alpha p_\alpha\Delta_\alpha f(\xi)
+ -\sum_\alpha\xi_\alpha\Delta_\alpha f(\xi-\delta_\alpha).
+\]
+Each initial particle dies at rate one; particles immigrate in
+coordinate $\alpha$ at rate $p_\alpha$. Its equilibrium law is
+$\Pi$. For an event indicator $J$, the semigroup solution
+\[
+ f_J(\xi)=-\int_0^\infty
+ \bigl(\EE J(Z_\xi(t))-\EE J(\Pi)\bigr)\,dt
+\]
+satisfies $\mathcal Af_J=J-\EE J(\Pi)$. The integral is finite:
+couple equilibrium and nonequilibrium initial states with the
+same immigrants, so that their finite expected initial
+population difference survives with probability decaying as
+$e^{-t}$.
+
+Couple processes with zero, one and two additional initial
+particles, including two in the same coordinate if needed. A
+mixed second difference of a function valued in $[0,1]$ has
+absolute value at most two; it vanishes unless both additional
+particles survive. Every second difference of $f_J$ is thus
+bounded in absolute value by
+$\int_0^\infty2e^{-2t}\,dt=1$. By telescoping coordinate
+changes, $\Delta_\alpha f_J$ is 1-Lipschitz in $\ell^1$.
+Conditional expectation of the death term now gives
+\[
+ \EE\mathcal Af_J(\Xi)=\sum_\alpha p_\alpha\EE
+ \bigl[\Delta_\alpha f_J(\Xi)-
+       \Delta_\alpha f_J(\Xi^\alpha)\bigr].
+\]
+Taking absolute values, then the supremum over events $J$,
+proves \eqref{eq:stein-bound}.
+\end{proof}
+
+Use $\Xi^\alpha_\alpha=0$ and
+$\Xi^\alpha_\beta=I_\beta(D^\alpha)$ for $\beta\ne\alpha$.
+The coordinate $\alpha$ contributes $p_\alpha^2$ to
+\eqref{eq:stein-bound}. By \eqref{eq:forcing-monotone}, a
+pair on disjoint supports contributes exactly
+\[
+ \PP(I_\alpha=I_\beta=1)-p_\alpha p_\beta.
+\]
+An overlapping pair contributes at most
+$p_\alpha p_\beta+\PP(I_\alpha=I_\beta=1)$. We bound the
+diagonal, overlapping product, compatible overlap, and disjoint
+sums separately, always using ordered pairs when summing over
+$\alpha,\beta$.
+
+The diagonal sum is
+\begin{equation}\label{eq:B0}
+ B_0=\sum_\alpha p_\alpha^2
+ =\frac{2M}{(M-1)^2}+\frac M{(M-1)^2(M-3)}.
+\end{equation}
+At an endpoint $v$, cyclic symmetry and the support sizes give
+\[
+ \mu_v=\sum_{\alpha:v\in S_\alpha}p_\alpha
+ =\frac{2\lambda_X+2\lambda_Y+4\lambda_Z}{M}
+ =\frac8{M-1}.
+\]
+Thus the product contribution from overlapping pairs is at most
+\begin{equation}\label{eq:B1}
+ B_1\le\sum_v\mu_v^2=\frac{64M}{(M-1)^2}.
+\end{equation}
+Including diagonal pairs in this upper bound is harmless.
+
+Two compatible matching patterns sharing an endpoint must share
+its incident chord. Distinct singleton patterns cannot overlap
+compatibly. Every fixed chord belongs to at most four $Z$
+patterns: choose one cycle neighbor of each of its endpoints,
+after which the second chord is determined. There are $2M$
+singleton patterns, so there are at most $16M$ ordered
+compatible singleton/$Z$ pairs. Each union forces two edges.
+Two distinct compatible $Z$ patterns cannot share both chords,
+by the no-duplication argument. Choose their unique shared chord
+in at most $\binom M2$ ways and an ordered pair of distinct
+$Z$ patterns containing it in at most $4\cdot3$ ways. Their
+union forces three edges. Therefore
+\begin{align}
+ B_2&\le16M\rho_2+6M(M-1)\rho_3\notag\\
+ &=\frac{16M}{(M-1)(M-3)}
+       +\frac{6M}{(M-3)(M-5)}.\label{eq:B2}
+\end{align}
+Incompatible pairs have zero joint occurrence probability.
+
+For disjoint patterns with $r,s\in\{1,2\}$ edges, the joint
+probability is $\rho_{r+s}$ and
+\[
+ 1\le\frac{\rho_{r+s}}{\rho_r\rho_s}
+ =\prod_{j=0}^{s-1}\frac{M-2j-1}{M-2r-2j-1}
+ \le\frac{(M-1)(M-3)}{(M-5)(M-7)}.
+\]
+The largest ratio occurs at $r=s=2$. With
+$\delta_M=8(M-4)/((M-5)(M-7))$, the total disjoint
+contribution is consequently bounded by
+\begin{equation}\label{eq:B3}
+ B_3\le\delta_M\left(\sum_\alpha p_\alpha\right)^2
+ =\delta_M\left(\frac{3M}{M-1}\right)^2.
+\end{equation}
+All four bounds are $O(M^{-1})$. Summing Poisson pattern
+coordinates by their type gives independent Poisson variables
+of mean $\lambda$. Coupling each to $\Poi(1)$ costs at most
+$\lambda-1$, by adding an independent Poisson increment.
+Total variation decreases under the summing map, so
+\begin{equation}\label{eq:local-TV}
+ d_{\rm TV}\bigl(\mathcal L(X_n,Y_n,Z_n),\Poi(1)^{\otimes3}\bigr)
+ \le B_0+B_1+B_2+B_3+\frac3{M-1}=O(M^{-1}).
+\end{equation}
+For a numerical bound, multiply the explicit right side by
+$M$. Every summand decreases for $M\ge12$; for the only
+less immediate term, use
+\[
+ MB_3\le72\left(\frac M{M-1}\right)^2
+              \frac M{M-5}\frac{M-4}{M-7}.
+\]
+At $M=12$ their sum is less than $354$, hence less than $400$.
+We have proved, for $n\ge6$,
+\begin{equation}\label{eq:explicit-TV}
+ d_{\rm TV}\bigl(\mathcal L(X_n,Y_n,Z_n),\Poi(1)^{\otimes3}\bigr)
+ \le\min\{1,200/n\}.
+\end{equation}
+The generous constant is not intended as a sharp small-$n$
+approximation.
+
+\subsection*{Prime cores and a logarithmic cutoff}
+The published equivalence between simultaneous vanishing of the
+local counts and absence of the endpoint decomposition sizes,
+together with \eqref{eq:large-decomp}, implies
+\[
+ \left|\PP(D_n\text{ indecomposable})-
+       \PP(X_n=Y_n=Z_n=0)\right|=O(n^{-1}).
+\]
+Using \eqref{eq:local-TV} and the symmetry bound, the argument
+of \eqref{eq:prime-count} therefore improves to
+\begin{equation}\label{eq:quant-prime}
+ p_n^{\mathrm a}=e^{-3}h_n\bigl(1+O(n^{-1})\bigr).
+\end{equation}
+Its implicit constant is independent of its integer argument,
+so it is uniform for arguments in
+$[n-\ceil{\log n},n]$.
+
+Put $K=\ceil{\log n}$, with natural logarithms. Write
+$(Y)_K=Y(Y-1)\cdots(Y-K+1)$ for the falling factorial.
+Any compatible ordered list of $K$ distinct $Y$ indicators
+forces $K$ distinct matching edges. Thus
+\begin{align}
+ \EE(Y_n)_K
+ &\le(2n)^K\frac{m_{n-K}}{m_n}\notag\\
+ &=\prod_{j=0}^{K-1}\frac{2n}{2n-2j-1}
+ \le\exp\{O(K^2/n)\}.\label{eq:Y-factorial}
+\end{align}
+Since $(Y_n)_K\ge K!$ on $Y_n\ge K$,
+\begin{equation}\label{eq:Y-tail-quant}
+ \PP(Y_n>K)\le\frac{\exp\{O(K^2/n)\}}{K!}
+   =o(n^{-a})
+\end{equation}
+for every fixed $a>0$. This is a direct growing-order estimate,
+not an unsupported use of fixed-moment convergence.
+
+The deletion bound \eqref{eq:delete-bound} also extends to
+$r\le K$. Uniformly over these $r$,
+\[
+ \binom{2n}{2r}m_r\le\exp\{O((\log n)^2)\},
+ \qquad m_{n-r}/m_n\le1.
+\]
+By \eqref{eq:symbound},
+$S_N/m_N\le\exp\{-\tfrac12N\log N+O(N)\}$.
+Apply it at $N=n-r$ and sum over $r\le K$ to obtain
+\begin{equation}\label{eq:delete-quant}
+ \PP(\text{some deletion of at most }K\text{ chords is symmetric})
+ \le\exp\{-\tfrac12n\log n+O(n+(\log n)^2)\}.
+\end{equation}
+This remains smaller than every fixed inverse power of $n$.
+The bounds for long leaves and repeated parents in
+Section \ref{sec:leaves} already have order $O(n^{-1})$.
+
+\subsection*{The quantitative sandwich}
+Use the definition of good connected matchings with the new
+$K=\ceil{\log n}$. Equations \eqref{eq:Y-tail-quant} and
+\eqref{eq:delete-quant}, and the leaf regularity estimates, show
+that \emph{connected nongood matchings} have unconditional
+probability $O(n^{-1})$. The leaf-movement proof applies
+unchanged, since $n-K\to\infty$. Consequently
+\begin{align}
+ \frac{c_n}{h_n}
+ &\le\EE[\one_{X_n=0}2^{-Y_n}]+O(n^{-1})
+           +\frac{4nS_n}{m_n}\notag\\
+ &=e^{-3/2}+O(n^{-1}).\label{eq:quant-upper}
+\end{align}
+The last equality follows from \eqref{eq:local-TV}, because
+the integrand lies in $[0,1]$.
+
+For the lower bound, canonical recovery still gives
+\eqref{eq:lower-sum}, now for this growing $K$. The exact ratio
+for $0\le k\le K$ is
+\begin{align}
+ \frac{3^k\binom{n-k}{k}h_{n-k}}{h_n}
+ &=\frac{(3/2)^k}{k!}\frac n{n-k}
+   \prod_{j=0}^{k-1}
+       \frac{1-(k+j)/n}{1-(j+1/2)/n}.\label{eq:uniform-product}
+\end{align}
+For large enough $n$ every factor is positive and its logarithm
+is bounded using $|\log(1-z)|\le2|z|$ for $|z|\le1/2$.
+The factors after $(3/2)^k/k!$ are therefore
+$\exp\{O((k+1)^2/n)\}=1+O((k+1)^2/n)$ uniformly for
+$k\le K$. Combining with \eqref{eq:quant-prime} yields
+\begin{equation}\label{eq:uniform-decorate}
+ \frac{3^k\binom{n-k}{k}p_{n-k}^{\mathrm a}}{h_n}
+ =e^{-3}\frac{(3/2)^k}{k!}
+       \left(1+O\left(\frac{(k+1)^2}{n}\right)\right).
+\end{equation}
+Importantly, sum this error against the factorial weights:
+\[
+ \sum_{k\ge0}\frac{(3/2)^k}{k!}(k+1)^2<\infty,\qquad
+ \sum_{k>K}\frac{(3/2)^k}{k!}=o(n^{-a})
+\]
+for every fixed $a>0$. Hence
+\begin{equation}\label{eq:quant-lower}
+ \frac{c_n}{h_n}\ge e^{-3/2}-O(n^{-1}).
+\end{equation}
+The upper and lower inequalities give the connected estimate
+in \eqref{eq:quant-main}. Equation \eqref{eq:disconnected-small}
+gives the same estimate for $g_n$. Finally,
+\[
+ \frac{g_{n-1}}{g_n}
+ =\frac n{(n-1)(2n-1)}\bigl(1+O(n^{-1})\bigr)
+ =\frac1{2n}+O(n^{-2}),
+\]
+and dividing \eqref{eq:gap} by $g_n$ proves the strengthened
+connectivity correction.
+
+\subsection*{Quantitative saturation and automorphisms}
+For $k=\ell+t+f\le K$, the exact family count
+\eqref{eq:triple-count}, the same product bound and the now
+quantitative denominator give, uniformly over these triples,
+\begin{equation}\label{eq:quant-triples}
+ \PP(G\in\mathcal D_{n;\ell,t,f})
+ =e^{-3/2}\frac{2^{-k}}{\ell!t!f!}
+       \left(1+O\left(\frac{(k+1)^2}{n}\right)\right).
+\end{equation}
+This holds for either uniform connected or uniform all graphs.
+Sum the absolute errors over $k\le K$. The limiting deficit is
+$\Poi(3/2)$ and has a finite second moment, so the sum is
+$O(n^{-1})$. Its tail beyond $K$ is superpolynomially small.
+Thus the probability of the complement of the truncated family,
+and in particular the complement of the full decorated family,
+is $O(n^{-1})$.
+
+Give atypical graphs any defect-count convention, or a cemetery
+value. Their total probability is $O(n^{-1})$; the tail and
+summed errors prove the stated total-variation bounds for defect
+counts and core deficit. On the family,
+$\Aut(G)\cong(C_2)^{t+f}$ exactly, so bounded indicators give
+\[
+ \PP(G\text{ asymmetric})=e^{-1}+O(n^{-1}),\quad
+ \PP(G\text{ leafless})=e^{-1/2}+O(n^{-1}),
+\]
+and $\PP(G\text{ split-prime})=e^{-3/2}+O(n^{-1})$.
+The group-order distribution is within $O(n^{-1})$ total
+variation of $2^P$, $P\sim\Poi(1)$. These assertions do not
+claim convergence of unbounded automorphism moments.
+The bounded reciprocal automorphism factor similarly gives
+\[
+ \frac{g_n^{\mathrm{lab}}}{n!g_n}=e^{-1/2}+O(n^{-1}).
+\]
+Multiply by the quantitative unlabeled equivalent to obtain
+\begin{equation}\label{eq:quant-labeled}
+ g_n^{\mathrm{lab}},\ c_n^{\mathrm{lab}}
+ =e^{-2}\frac{(2n)!}{2^{n+2}n}\bigl(1+O(n^{-1})\bigr),
+\end{equation}
+where the displayed estimate holds for each sequence separately.
+This completes the proof of Theorem \ref{thm:quantitative}.
+
+\section{Smooth inversion and ceiling-safe thresholds}\label{sec:inverse}
+\subsection{A precise smooth model}
+For either $a_n=c_n$ or $a_n=g_n$, define the positive real model
+\begin{equation}\label{eq:H}
+ H(t)=\frac{e^{-3/2}2^t\Gamma(t+1/2)}{4\sqrt\pi\,t},
+ \qquad t>0.
+\end{equation}
+Then $H(n)=e^{-3/2}h_n$ and $a_n/H(n)\to1$.
+For large $t$, Stirling's expansion gives
+\begin{align}
+ \log H(t)
+ &=t\bigl(\log(2t)-1\bigr)-\log t-B
+       -\frac1{24t}+O(t^{-3}),\label{eq:logH}\\
+ B&=\frac32(1+\log2).\notag
+\end{align}
+The derivative is $\log(2t)-1/t+O(t^{-2})$, so $H$ is
+strictly increasing on a sufficiently far real tail. Let $\phi$
+be that eventual real inverse.
+
+For $x$ large, write
+\begin{equation}\label{eq:u}
+ L=\log x,\qquad u=\frac{L}{W_0(2L/e)},\qquad A=\log(2u),
+\end{equation}
+where $W_0$ is the positive principal Lambert function. The exact
+identity $W_0(2L/e)e^{W_0(2L/e)}=2L/e$ implies
+\begin{equation}\label{eq:core-root}
+ u\bigl(\log(2u)-1\bigr)=L.
+\end{equation}
+
+\begin{proposition}[Smooth inverse]\label{prop:inverse}
+As $x\to\infty$,
+\begin{equation}\label{eq:smooth-inverse}
+ \phi(x)=u+1+\frac{3+\log2}{2\log(2u)}
+       +O\left(\frac1{u\log u}\right).
+\end{equation}
+\end{proposition}
+\begin{proof}
+Put $F(t)=t(\log(2t)-1)$, so $F'(u)=A$ and
+$F''(u)=1/u$. By \eqref{eq:logH} and \eqref{eq:core-root},
+\[
+ \log H(u)=L-\log u-B+O(u^{-1}).
+\]
+The derivative of $\log H$ is comparable to $A$. Evaluating
+at $u$ and $u+2$ shows that the root $\phi(x)=u+d$ has
+bounded displacement, eventually $0<d<2$. Uniformly for
+bounded $d$, Taylor expansion gives
+\begin{equation}\label{eq:inverse-taylor}
+ 0=\log H(u+d)-L=dA-\log u-B+O(u^{-1}).
+\end{equation}
+Since $\log u=A-\log2$,
+\[
+ d=\frac{\log u+B}{A}+O((uA)^{-1})
+   =1+\frac{B-\log2}{A}+O((uA)^{-1}).
+\]
+Finally $B-\log2=(3+\log2)/2$, proving the formula.
+The $-1/(24u)$ term in \eqref{eq:logH} affects only the stated
+remainder, not the displayed coefficient.
+\end{proof}
+The shift $+1$ is forced by the factor $1/n$ in the forward
+model. It is not an optional change of the OEIS offset.
+
+\subsection{The least integer index}
+Define
+\begin{equation}\label{eq:N}
+ N_a(x)=\min\{n\ge1:a_n\ge x\}.
+\end{equation}
+The leading equivalent implies
+\begin{equation}\label{eq:successive}
+ \frac{a_{n+1}}{a_n}\sim\frac{H(n+1)}{H(n)}
+  =(2n+1)\frac n{n+1}\sim2n,
+\end{equation}
+so $a_n$ is eventually strictly increasing and unbounded.
+For $x$ exceeding the maximum on a finite initial segment,
+$N_a(x)$ lies in that monotone tail.
+
+\begin{proposition}[Fixed-error ceiling bracket]\label{prop:fixed-bracket}
+For each fixed $\eta>0$ and all sufficiently large $x$,
+\begin{equation}\label{eq:eta-bracket}
+ \ceil{\phi(xe^{-\eta})}\le N_a(x)
+       \le\ceil{\phi(xe^{\eta})}.
+\end{equation}
+\end{proposition}
+\begin{proof}
+On a sufficiently far integer tail,
+$e^{-\eta}H(n)\le a_n\le e^{\eta}H(n)$. At $n=N_a(x)$,
+$a_n\ge x$ implies $H(n)\ge xe^{-\eta}$, giving the lower
+bound. At $m=\ceil{\phi(xe^{\eta})}$, monotonicity of $H$
+gives $H(m)\ge xe^{\eta}$ and hence $a_m\ge x$. This proves
+the upper bound, once both indices are in the stated tail.
+\end{proof}
+
+A shrinking bracket can be made explicit as an \emph{existence}
+statement without assuming an unproved convergence rate. Let
+\begin{equation}\label{eq:tail-envelope}
+ r_n=\left|\log\frac{a_n}{H(n)}\right|,\qquad
+ \eta(x)=\sup_{n\ge\floor{u/2}} r_n.
+\end{equation}
+For large enough $x$ this tail supremum is finite. Theorem
+\ref{thm:quantitative} gives $r_n=O(n^{-1})$ and therefore
+$\eta(x)=O(u^{-1})$. It is defined from the actual sequence;
+its implicit constant and onset are not supplied as computable
+finite-input bounds.
+
+To justify applying this moving envelope, first apply
+Proposition \ref{prop:fixed-bracket} with $\eta=1$.
+Proposition \ref{prop:inverse} and the derivative estimate show
+$\phi(xe^{\pm1})=u+O(1)$. Thus $N_a(x)$ is eventually larger
+than $u/2$, and both model endpoints formed with
+$0\le\eta(x)\le1$ also lie above $u/2$. The proof of
+Proposition \ref{prop:fixed-bracket} now applies using the
+uniform bound \eqref{eq:tail-envelope}, without a circular
+choice of its starting index.
+
+By the mean value theorem applied to $\log H$ near $u$,
+\begin{equation}\label{eq:inverse-shift}
+ \phi(xe^{\pm\eta(x)})
+ =\phi(x)+O\left(\frac{\eta(x)}{\log(2u)}\right).
+\end{equation}
+Set
+\begin{equation}\label{eq:s}
+ s(x)=u+1+\frac{3+\log2}{2\log(2u)}.
+\end{equation}
+There exists a nonnegative function $\eps(x)=O(u^{-1})$ such that,
+for all sufficiently large $x$,
+\begin{equation}\label{eq:shrinking-bracket}
+ \ceil{s(x)-\frac{\eps(x)}{\log(2u)}}
+ \le N_a(x)\le
+ \ceil{s(x)+\frac{\eps(x)}{\log(2u)}}.
+\end{equation}
+For example, sufficiently large fixed constants in
+$\eps(x)=C_1\eta(x)+C_2/u$ absorb both
+\eqref{eq:inverse-shift} and the model remainder.
+
+Equivalently, there are constants $C_*>0$ and $x_*>0$ such that
+for $x\ge x_*$,
+\begin{equation}\label{eq:quant-inverse}
+ \ceil{s(x)-\frac{C_*}{u\log(2u)}}
+ \le N_a(x)\le
+ \ceil{s(x)+\frac{C_*}{u\log(2u)}}.
+\end{equation}
+The width uses both the quantitative forward remainder and the
+$O(1/(u\log u))$ error of the displayed smooth-model expansion;
+no smaller truncation error is silently assumed.
+Eventually the bracket contains at most two adjacent integers.
+If its interval contains no integer, the two ceilings agree.
+Near an integer it may retain two possibilities; the leading
+asymptotic alone cannot resolve them uniformly. In particular,
+\eqref{eq:shrinking-bracket} is not a license for unconditional
+nearest-integer rounding, and the report gives no effective
+onset or numerical bound for $\eps(x)$.
+
+\section{Exact finite checks and what they establish}\label{sec:checks}
+\subsection{Source counts and scale}
+Table \ref{tab:counts} records the inspected exact initial values.
+The companion reconciles these with the unlabeled component
+product
+\begin{equation}\label{eq:Euler-product}
+ \sum_{n\ge0}g_nz^n=\prod_{j\ge1}(1-z^j)^{-c_j},
+\end{equation}
+interpreted as a formal power series. It follows because a graph
+is a multiset of connected components, uniquely up to order.
+Finite truncation gives exact coefficient tests; convergence of
+the displayed ordinary generating series is not assumed.
+
+\begin{table}[htbp]
+\centering
+\caption{Exact inspected graph counts by order. The order-thirteen
+all-graph value is from OEIS; no connected value at that order is
+claimed from the inspected table.}\label{tab:counts}
+\begin{tabular}{rrr}
+\toprule
+$n$&$c_n$&$g_n$\\\midrule
+1&1&1\\2&1&2\\3&2&4\\4&6&11\\5&21&34\\
+6&110&154\\7&789&978\\8&8336&9497\\
+9&117283&127954\\10&2026331&2165291\\
+11&40302425&42609994\\12&892278076&937233306\\
+13&---&22576188846\\\bottomrule
+\end{tabular}
+\end{table}
+
+Inverting the logarithmic derivative of \eqref{eq:Euler-product}
+using the inspected all-graph value at order thirteen gives
+$c_{13}=21593488017$. This is a derived value, checked by the
+companion, rather than an entry in the inspected connected source
+table.
+
+For orientation, the connected ratios $c_n/h_n$ at
+$n=8,9,10,11,12$ are approximately
+$0.131598$, $0.122526$, $0.123797$, $0.128974$, and
+$0.135436$. The all-graph ratio at $n=13$ is approximately
+$0.148493$. The limiting constant is
+$e^{-3/2}\approx0.223130$. These small values have not converged
+rapidly enough to estimate the constant reliably. They neither
+prove nor contradict the theorem.
+
+\subsection{The reproducible companion}
+The newly written standard-library Python companion verifies
+finite instances of the fixed-endpoint leaf completion formula
+\eqref{eq:leaf-completions}, enumerates matching and graph
+isomorphism classes at stated small orders, and checks explicit
+independent leaf-move constructions. In each eligible example it
+checks the graph, every dihedral orbit size, and disjointness of
+the $2^k$ orbits. It distinguishes geometric symmetries from graph
+automorphisms rather than conflating the two counts.
+
+Further exact checks reconcile the published graph counts and the
+component product, and verify the inverse coefficient algebra.
+The machine-readable evidence file records all finite ranges and
+examples. A separate validator recomputes the evidence and rejects
+semantic alterations; tests run both normally and with Python
+optimization enabled, so no mathematical checks depend on
+removable \texttt{assert} statements.
+
+The finite tests check implementation, normalization and examples.
+They cannot establish a limiting Poisson law, rule out every
+large-$n$ exceptional representation, prove the recovery lemma
+for all cores, or establish the quantitative asymptotic rates.
+Those tasks are handled by the mathematical arguments and cited
+structural inputs. Small forcing-coupling witnesses likewise do not
+replace the all-size argument of Section~\ref{sec:quantitative}.
+
+\section{Limitations and further work}\label{sec:limits}
+The quantified sandwich proves a relative $O(n^{-1})$ error but
+still does not determine the individual first correction coefficient.
+Several extensions would require additional work.
+\begin{enumerate}
+\item A first individual coefficient requires analysis of the
+order-$1/n$ exceptional configurations, including long leaves,
+shared parents, overlapping local decorations and nonlocal splits,
+and their actual representation fibers. The connectivity correction
+alone does not identify that coefficient.
+\item An all-orders expansion cannot be inferred by freely
+expanding the decorated-core lower bound. Nongeneric cores and
+other decompositions must be controlled at the requested order;
+the current $O(n^{-1})$ exceptional mass cannot simply be dropped.
+\item Effective graph-count constants and onsets would make
+\eqref{eq:quant-inverse} a numerical threshold certificate.
+The explicit $200/n$ bound applies only to the local matching
+patterns, not the complete graph-count argument.
+\item The final 2026 journal text should be reconciled with the
+2024 sources before any stronger priority statement. The optional
+labeled consequence deserves its own source and sequence audit.
+\end{enumerate}
+The central model-specific conclusions established here are the
+reciprocal-fiber upper bound, the canonically recoverable lower
+construction, their exact matching normalization, and the
+consequences forced by saturation.
+
+\appendix
+\section{Dependency map and reproducible release}
+The logical dependencies are as follows.
+\begin{enumerate}
+\item The published matching decomposition and local Poisson
+lemmas give prime probability $e^{-3}$; prime uniqueness and the
+geometric automorphism action connect this to asymmetric prime
+graph counts.
+\item The direct rotation and two-reflection estimates control
+all geometric symmetries, including symmetries induced after
+bounded deletions.
+\item Long-leaf and shared-parent bounds plus independent leaf
+moves bound connected reciprocal fibers from above.
+\item Canonical recovery of the three decorations makes the
+lower count injective, and its normalized exponential sum matches
+the upper constant.
+\item The component convolution transfers the equivalent to all
+graphs and isolates the connected/all correction. Saturation
+gives the core and automorphism laws. A direct local-pattern
+forcing coupling, an elementary Poisson approximation bound and a
+logarithmic cutoff quantify these rates. Monotone smooth inversion
+gives the threshold bracket.
+\end{enumerate}
+The source archive contains the report PDF, editable LaTeX,
+new companion code and evidence, a source-provenance record,
+checksums, deterministic build scripts, and release tests. It
+excludes downloaded papers, private working notes, prior reports,
+and build intermediates. The README gives the exact commands,
+required toolchain, finite computation ranges and output-safety
+rules. PDF byte reproducibility is qualified to the tested
+pdfTeX toolchain; the mathematical contents are not dependent on
+that byte identity. The checksum manifest establishes package
+consistency, not authenticity against replacement of both a
+payload and its manifest.
+
+\begin{thebibliography}{9}
+\bibitem{BBFGP24}
+F. Bassino, M. Bouvel, V. F\'eray, L. Gerin and A. Pierrot,
+\emph{Dense and nondense limits for uniform random intersection
+graphs}, arXiv:2402.06394v1, 9 February 2024.
+\href{https://arxiv.org/abs/2402.06394v1}{Versioned arXiv record}.
+Sections 5.2--5.3 and Appendix A.2 are the primary inputs.
+The 2026 journal metadata is identified in the text; its final
+text was not inspected.
+\bibitem{KZ15}
+P. Klav\'ik and P. Zeman,
+\emph{Automorphism Groups of Geometrically Represented Graphs},
+32nd International Symposium on Theoretical Aspects of Computer
+Science (STACS 2015), LIPIcs \textbf{30}, 540--553, 2015.
+\href{https://doi.org/10.4230/LIPIcs.STACS.2015.540}
+{doi:10.4230/LIPIcs.STACS.2015.540}.
+\bibitem{DP09}
+L. E. Danielsen and M. G. Parker,
+\emph{Interlace Polynomials: Enumeration, Unimodality, and
+Connections to Codes}, arXiv:0804.2576v2, 1 October 2009,
+Section 3, Table 3.
+\href{https://arxiv.org/abs/0804.2576v2}{Versioned arXiv record}.
+\bibitem{OEISc}
+OEIS Foundation Inc., \emph{The On-Line Encyclopedia of Integer
+Sequences}, A156808, number of nonisomorphic connected circle
+graphs of order $n$; inspected 3 October 2026.
+\url{https://oeis.org/A156808}.
+\bibitem{OEISg}
+OEIS Foundation Inc., \emph{The On-Line Encyclopedia of Integer
+Sequences}, A156809, number of nonisomorphic circle graphs of
+order $n$; inspected 3 October 2026.
+\url{https://oeis.org/A156809}.
+\end{thebibliography}
+\end{document}

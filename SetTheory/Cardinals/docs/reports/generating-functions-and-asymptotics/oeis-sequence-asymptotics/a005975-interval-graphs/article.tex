@@ -1,0 +1,694 @@
+\pdfinfoomitdate=1
+\pdftrailerid{}
+\pdfsuppressptexinfo=15
+\documentclass[11pt,letterpaper]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,booktabs,array,microtype}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small Unlabeled interval graphs}\fancyhead[R]{\small Report 133}\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\parskip}{4pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\OO}{\mathrm O}
+\newcommand{\Inc}{\operatorname{Inc}}
+\newcommand{\Comp}{\operatorname{Comp}}
+\newcommand{\E}{\mathbb E}
+\newcommand{\ceil}[1]{\left\lceil #1\right\rceil}
+\title{\textbf{Asymptotics and inversion for unlabeled interval graphs}\\[5pt]\large Leading equivalent and second order corrections}
+\author{Report 133 \quad A005975 and A005976}
+\date{2 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+Let $I_n$ and $C_n$ count all and connected unlabeled interval graphs on $n$ vertices, and let $F_n$ be the Fishburn number counting unlabeled interval orders. We prove
+\[
+ \begin{aligned}
+ C_n&=\tfrac12F_n-F_{n-1}-(\log n+b_0)F_{n-2}+o(F_{n-2}),\\
+ I_n&=\tfrac12F_n-\tfrac12F_{n-1}-(\log n+b_0)F_{n-2}+o(F_{n-2}).
+\end{aligned}
+\]
+Here $b_0=\log(6/\pi^2)+\gamma+1$, with Euler's constant $\gamma$. The proof identifies the graph fibers responsible for the logarithm: a three-element order of shape $V$, or its dual, substituted at a simplicial singleton of an otherwise generic interval order. Their rooted positions number $(2\log n+\OO(1))F_n$. Modular decomposition makes their graph fibers exact and bounds all other losses. We give the factorial normalization, a monotone threshold inversion with the rounding kept inside rigorous ceiling brackets, and finite checks from freshly generated Fishburn matrices. A second canonical fiber family and sharper ordinal estimates determine the displayed constant. No all-orders expansion is asserted.
+\end{abstract}
+{\setlength{\parskip}{0pt}\setcounter{tocdepth}{1}\small\tableofcontents}
+\clearpage
+
+\section{Main results and scope}
+All graphs and orders in this report are finite and counted up to isomorphism. Write $I_n$ for the number of interval graphs on $n$ vertices (OEIS A005975), $C_n$ for the connected count (A005976), and $F_n$ for the number of interval orders (A022493). An interval graph is an intersection graph of intervals on a line. An interval order has an interval representation in which $x<y$ precisely when the interval of $x$ lies strictly to the left of that of $y$. Its incomparability graph is an interval graph; every interval graph arises this way. Put $F_0=I_0=1$ and $C_0=0$.
+
+\begin{theorem}\label{thm:main}
+As $n\to\infty$,
+\begin{align}
+ C_n&=\frac{F_n}{2}-F_{n-1}-F_{n-2}\log n+\OO(F_{n-2}),\label{eq:C}\\
+ I_n&=\frac{F_n}{2}-\frac{F_{n-1}}{2}-F_{n-2}\log n+\OO(F_{n-2}).\label{eq:I}
+\end{align}
+Consequently, with $q=6/\pi^2$,
+\begin{align}
+ \frac{2C_n}{F_n}&=1-\frac{\pi^2}{3n}-\frac{\pi^4\log n}{18n^2}+\OO(n^{-2}),\label{eq:Crel}\\
+ \frac{2I_n}{F_n}&=1-\frac{\pi^2}{6n}-\frac{\pi^4\log n}{18n^2}+\OO(n^{-2}).\label{eq:Irel}
+\end{align}
+\end{theorem}
+In particular both sequences are asymptotic to $F_n/2$. The negative logarithmic term in \eqref{eq:Crel}--\eqref{eq:Irel} is part of the theorem, not a fit to a short sequence. Section~\ref{sec:constant} sharpens the shifted formulas to a little-$o$ remainder and identifies their nonlogarithmic constant.
+
+For an equivalent in conventional factorial form, define
+\begin{equation}\label{eq:constants}
+ K=\frac{6\sqrt3}{\pi^{5/2}}e^{\pi^2/12},\quad
+ a_F=\frac38-\frac{17\pi^2}{144}+\frac{\pi^4}{432},\quad
+ \beta=\frac{\pi^4}{18}.
+\end{equation}
+The constant $K$ is approximately $1.3521662450$.
+\begin{corollary}\label{cor:normalized}
+For $a_n=I_n$ take $\alpha=\alpha_I=a_F-\pi^2/6$; for $a_n=C_n$ take $\alpha=\alpha_C=a_F-\pi^2/3$. Then
+\begin{equation}\label{eq:factorial}
+ a_n=K n!\sqrt n\,q^n
+ \left(1+\frac\alpha n-\beta\frac{\log n}{n^2}+\OO(n^{-2})\right).
+\end{equation}
+Equivalently, both leading terms equal
+\[
+ \frac{6\sqrt6}{\pi^2}e^{\pi^2/12}\,
+ n^{n+1}\left(\frac{6}{e\pi^2}\right)^n.
+\]
+\end{corollary}
+The report proves the structural transfer from interval orders to interval graphs, including the constant refinement in Theorem~\ref{thm:constant}. The analytic Fishburn estimates and Gallai's orientation theorem are stated precisely as external inputs in Section~\ref{sec:inputs}. No historical-priority claim is made. All asymptotic assertions allow a finite initial exceptional range; specifically, the generic-quotient argument uses size $m\ge5$ and its dominant inflated graphs have size $n=m+2\ge7$.
+
+\section{Definitions and established inputs}\label{sec:inputs}
+A poset subset $M$ is \emph{autonomous} if every exterior element is below all of $M$, above all of $M$, or incomparable to all of $M$. A graph subset is a \emph{module} if every exterior vertex is adjacent to all or none of it. Two sets overlap if their intersection and both set differences are nonempty. A graph module is \emph{strong} if it overlaps no graph module. At the root of the strong-module decomposition, the maximal proper strong modules partition the vertices; we call them the \emph{root children} or \emph{bags}. The root quotient records adjacency between bags. A graph is \emph{prime} if it has no proper nonsingleton module.
+
+For a poset $P$ write $H(P)=\Comp(P)$ and $G(P)=\Inc(P)$. An interval order is equivalently a poset with no induced $2+2$, namely two unrelated two-element chains. Consequently $H(P)$ has no induced $2K_2$: orienting two disjoint edges transitively would produce a $2+2$. Duality reverses all order relations; write $P^*$ for the dual and $S_n$ for the number of self-dual interval-order types of size $n$.
+
+A \emph{Fishburn matrix} is an upper triangular matrix of nonnegative integers with no zero row or column. Its size is the sum of its entries. The standard bijection with interval orders assigns $A_{ij}$ indistinguishable elements to the interval $[i,j]$, with $x<y$ when the right endpoint of $x$ is smaller than the left endpoint of $y$. Thus there are $F_n$ such matrices of size $n$. The no-zero-row and no-zero-column conditions recover the canonical chains of strict down-set and up-set levels; this makes the correspondence one-to-one on isomorphism types.
+
+We use the following established results.
+\begin{enumerate}
+\item \textbf{Fishburn asymptotics.} Hwang and Jin~\cite{HJ}, equation (1.1), printed page 2 of the cited author version, state the expansion attributed there to Zagier. In the present normalization it is
+\begin{equation}\label{eq:Fishburn}
+ F_n=2K n!\sqrt n\,q^n\left(1+\frac{a_F}{n}+\OO(n^{-2})\right).
+\end{equation}
+Their coefficient in the normalization $n^{n+1}(q/e)^n$ is
+$c_1=11/24-17\pi^2/144+\pi^4/432$; Stirling's formula subtracts $1/12$, giving $a_F=c_1-1/12$.
+\item \textbf{Diagonal statistic.} If $Y_m$ is the total diagonal weight of a uniformly selected size-$m$ Fishburn matrix, Theorem 25(ii) and the displayed probability-generating-function estimate in its proof, printed pages 40--41 of~\cite{HJ}, give
+\begin{equation}\label{eq:pgf}
+ \E v^{Y_m}=\Gamma(v)^{-2}(qm)^{2(v-1)}
+ \left(1+\OO(m^{-1}\log m)\right)
+\end{equation}
+uniformly for real $v$ in a fixed neighborhood of 1. Real uniformity suffices for this report.
+\item \textbf{Self-duality.} Corollary 29 on printed page 46 of~\cite{HJ}, counting by ordinary size rather than reduced size, implies
+\begin{equation}\label{eq:selfdual}
+ \log S_n=\tfrac12n\log n+\OO(n),\qquad
+ S_n=o(F_n n^{-A})\quad\hbox{for every fixed }A>0.
+\end{equation}
+The second statement follows immediately from \eqref{eq:Fishburn} and Stirling's formula.
+\item \textbf{Gallai orientation decomposition.} We use the statements presented as Theorems 3--6 in Section 4, printed pages 5--7, of Klav\'ik, Kratochv\'il, Krawczyk and Walczak~\cite{Gallai}. Transitive orientations are uniform between adjacent disjoint strong modules, are specified by independent transitive orientations of strong-module quotients, and have root quotient empty, complete, or prime. A prime comparability quotient has exactly two transitive orientations, mutually reversed. In particular every strong module of a comparability graph is autonomous in every transitive orientation, by comparing it with exterior singleton modules.
+\end{enumerate}
+Page and theorem numbers refer to the linked author versions; published versions may differ. These are analytic and structural inputs, not claims newly proved here. All subsequent graph-fiber and error estimates are proved below.
+
+\section{Factorial estimates}\label{sec:factorial}
+From \eqref{eq:Fishburn}, after enlarging constants at finitely many indices, there are positive $c,C$ with
+\begin{equation}\label{eq:twosided}
+ c q^j j!\sqrt j\le F_j\le Cq^j j!\sqrt j\qquad(j\ge1).
+\end{equation}
+\begin{lemma}\label{lem:convolution}
+For fixed positive integers $r,s$ and fixed real $a,b$,
+\begin{equation}\label{eq:convolution}
+ \sum_{k=r}^{N-s} k!(N-k)!k^a(N-k)^b
+ =\OO\!\left(N!\left[N^{b-r}+N^{a-s}\right]\right).
+\end{equation}
+\end{lemma}
+\begin{proof}
+Split the sum at $N/4$ and $3N/4$. In the first range the consecutive-term ratio is
+\[
+ \frac{k+1}{N-k}\left(\frac{k+1}{k}\right)^a
+ \left(\frac{N-k-1}{N-k}\right)^b.
+\]
+After a fixed initial segment, and for large $N$, it is bounded by a constant strictly below 1. The fixed initial terms have the scale of the first endpoint, $N!N^{b-r}$; a geometric tail has the same bound. The final range is symmetric and gives $N!N^{a-s}$. In the middle, $k!(N-k)!=N!/\binom Nk$ is exponentially small relative to $N!$, uniformly in the range. It dominates every fixed polynomial weight and the number of summands. Empty ranges and finitely many small $N$ are absorbed into the constants.
+\end{proof}
+We will use the following consequences of \eqref{eq:twosided} and Lemma~\ref{lem:convolution}:
+\begin{align}
+ \sum_{k=1}^{n-1}F_kF_{n-k}&=\OO(F_{n-1}),&
+ \sum_{k=2}^{n-2}F_kF_{n-k}&=\OO(F_{n-2}),\label{eq:conv12}\\
+ \sum_{k=3}^{n-2}F_kF_{n-k+1}&=\OO(F_{n-2}),&
+ \sum_{k=4}^{n-3}F_kF_{n-k+1}&=\OO(F_{n-3}).\label{eq:conv34}
+\end{align}
+For the second line take $N=n+1$ and exponents $1/2,1/2$; its endpoint pairs are $(3,3)$ and $(4,4)$. The adjacent ratio from \eqref{eq:Fishburn} also gives
+\begin{equation}\label{eq:prefix}
+ \sum_{j=0}^{N}F_j=\OO(F_N),\qquad
+ \sum_{j=1}^{N}jF_j=\OO(NF_N).
+\end{equation}
+For example, beyond a fixed index successive terms grow by at least a factor 2, so the reverse sum is geometrically bounded. Fixed powers of $\log(j+1)$ can be inserted in these prefix sums at the cost of the corresponding factor at $N$. We also record
+\begin{equation}\label{eq:ratios}
+ \frac{F_{n-1}}{F_n}=\frac1{qn}\bigl(1+\OO(n^{-1})\bigr),\qquad
+ \frac{F_{n-2}}{F_n}=\frac1{q^2n^2}\bigl(1+\OO(n^{-1})\bigr).
+\end{equation}
+
+\section{Simplicial roots and diagonal occupancy}\label{sec:diagonal}
+A graph vertex is \emph{simplicial} when its open neighborhood is a clique. Let $T_m$ be the sum of the numbers of simplicial vertices over all size-$m$ interval orders. Let $R_m$ count isomorphism types of size-$m$ interval orders with one simplicial vertex distinguished. These are different counts: the latter counts vertex orbits under order automorphisms.
+
+\begin{lemma}\label{lem:diagonal}
+A vertex of a Fishburn order is simplicial in its incomparability graph exactly when it lies in a diagonal cell. The automorphism orbits of the order are exactly its occupied matrix cells. Thus $T_m$ is total diagonal weight over the matrices and $R_m$ is total diagonal occupancy. With $T_0=0$,
+\begin{equation}\label{eq:exactdiagonal}
+ T_m-R_m=T_{m-1}\qquad(m\ge1).
+\end{equation}
+\end{lemma}
+\begin{proof}
+Every interval meeting $[i,i]$ contains $i$, so a diagonal vertex is simplicial. If a vertex has interval $[i,j]$ with $i<j$, the nonzero column $i$ supplies an element in a cell $(a,i)$ and the nonzero row $j$ supplies one in $(j,b)$. They both meet $[i,j]$ but are disjoint from one another. Hence that vertex is not simplicial.
+
+The distinct strict down-sets of an interval order form a chain by inclusion; so do its distinct strict up-sets. Every automorphism preserves each level of both chains. The two level indices identify a matrix cell, so automorphisms preserve cells. Conversely, arbitrary permutations of elements within a cell preserve all relations. These are precisely the orbits.
+
+A diagonal cell of weight $r\ge2$ contributes $r-1$ to $T_m-R_m$. Decrease its entry by exactly one and keep that cell marked with one of $r-1$ auxiliary indices. Its support does not change, so the result is a size-$(m-1)$ Fishburn matrix with a positive diagonal cell of weight $r-1$ and one of its $r-1$ weight units distinguished. Conversely, increase the entry of any such marked cell by one. The auxiliary index is retained. This is a weighted bijection: the target count is exactly $T_{m-1}$. Cells of weight one contribute zero to the difference. For $m=1$ the same identity uses the empty size-zero matrix and $T_0=0$.
+\end{proof}
+The auxiliary weight unit in the last proof is a counting device, not a claim that its choices give different rooted isomorphism types.
+
+\begin{lemma}\label{lem:roots}
+As $m\to\infty$,
+\begin{equation}\label{eq:rootasym}
+ T_m=(2\log m+\OO(1))F_m,\qquad
+ R_m=(2\log m+\OO(1))F_m.
+\end{equation}
+In fact $T_m-R_m=\OO(F_{m-1}\log m)=o(F_m)$.
+\end{lemma}
+\begin{proof}
+We extract the mean from \eqref{eq:pgf} without differentiating its unspecified remainder. Set $h=(\log m)^{-2}$. For integer $Y\ge0$, Bernoulli's inequalities give
+\[
+ \frac{1-\E(1-h)^Y}{h}\le\E Y\le
+ \frac{\E(1+h)^Y-1}{h}.
+\]
+For $A_m(v)=\Gamma(v)^{-2}(qm)^{2(v-1)}$, Taylor expansion at 1 has linear coefficient $2\log(qm)+2\gamma$ and quadratic remainder $\OO(h^2(\log m)^2)$ uniformly at $1\pm h$. Here $\gamma$ is Euler's constant. The multiplicative error in \eqref{eq:pgf}, divided by $h$, contributes $\OO((\log m)^3/m)=o(1)$; $A_m(1\pm h)$ stays bounded. Both bounds for $\E Y_m$ therefore equal $2\log m+\OO(1)$. Multiplication by $F_m$ proves the assertion for $T_m$. Lemma~\ref{lem:diagonal} and \eqref{eq:ratios} then give the other statements.
+\end{proof}
+
+\section{Substitution and generic quotients}\label{sec:generic}
+To substitute a poset $R$ for a vertex $v$ of a poset $Q$, replace $v$ by $R$ and give every element of $R$ exactly the old relation of $v$ to each exterior element.
+
+\begin{lemma}\label{lem:substitution}
+Let $Q$ and $R$ be interval orders. If $R$ contains a comparable pair, substitution at $v$ produces an interval order if and only if $v$ is simplicial in $G(Q)$. If $R$ is an antichain, substitution always produces an interval order.
+\end{lemma}
+\begin{proof}
+If two exterior elements $y<z$ are both incomparable to $v$, they and a comparable pair in $R$ induce a $2+2$ after substitution. This proves necessity.
+
+For sufficiency, suppose a substituted order contains an induced $2+2$ on a set $X$. With zero, one, or four vertices of $X$ in $R$, an induced $2+2$ would already occur in $Q$ or $R$. With three vertices in $R$, the exterior vertex is comparable to all three or to none; in a $2+2$ every vertex has exactly one comparability, a contradiction. With two vertices in $R$, any exterior-to-interior comparability forces an exterior vertex to be comparable to both interior vertices, also impossible. Thus the two chains must be an internal pair and an exterior pair. The latter pair is comparable and both its vertices are incomparable to $v$, contradicting simpliciality. If $R$ is an antichain, the final internal comparable pair is impossible regardless of $v$.
+\end{proof}
+
+\begin{lemma}\label{lem:bags}
+Substitute nonempty graphs $B_i$ at the vertices of a prime graph $J$ of size at least four. The root children of the resulting graph are exactly the bags $B_i$.
+\end{lemma}
+\begin{proof}
+Every bag is a module. If a graph module $N$ meets at least two bags, the set $S$ of vertices of $J$ corresponding to met bags is a module of $J$: any unmet bag has uniform adjacency to all met bags, by the module property of $N$. Primality implies $S=V(J)$. If $N$ omits a vertex of a bag $B_i$, that omitted vertex must have uniform adjacency to $N$, so $i$ is adjacent either to all other vertices of $J$ or to none. A prime graph of size at least four has no universal or isolated vertex, since the remaining vertices would form a proper nonsingleton module. Thus $N$ omits no vertex and is the whole graph. Every proper module consequently lies within one bag. This proves that the bags are strong and maximal proper strong modules.
+\end{proof}
+
+Call a size-$m$ interval order \emph{generic} in this report if it has no autonomous subset of any kind of size between 3 and $m-1$. This definition includes antichain modules; it is stronger than merely excluding large modules containing comparable pairs.
+
+\begin{lemma}\label{lem:generic}
+The number $B_m^{\rm all}$ of nongeneric interval orders is $\OO(F_m/m)$. For $m\ge5$, a generic interval order has a prime comparability root quotient, and all root children have size at most two. Its comparability and incomparability graphs are both connected; its incomparability graph has exactly one dual orbit of interval-order types above it.
+\end{lemma}
+\begin{proof}
+Choose a forbidden autonomous subset of size $k$, contract it to a distinguished representative, and retain its internal interval order. The quotient is an induced interval order of size $m-k+1$, and its rooted type together with the internal type reconstructs the original order uniquely. There are at most $(m-k+1)F_{m-k+1}$ rooted quotients. Nonunique choices only overcount, so
+\begin{equation}\label{eq:bad}
+ B_m^{\rm all}\le\sum_{k=3}^{m-1}(m-k+1)F_{m-k+1}F_k
+ =\OO(F_m/m).
+\end{equation}
+For the estimate, use Lemma~\ref{lem:convolution} with $N=m+1$, exponents $1/2,3/2$, and endpoints $r=3,s=2$. The result is $\OO(q^{m+1}(m+1)!(m+1)^{-3/2})$. At the large-module endpoint the rooted quotient has size two, not size $m$.
+
+Every proper strong graph module is autonomous, so a generic order has root children of size at most two. If the root quotient is empty, take a union of children with total size 3 or 4; it is a proper autonomous subset when $m\ge5$. Such a union exists by accumulating children until reaching size at least 3. If the quotient is complete, its orientation linearly orders the children; a consecutive prefix with total size 3 or 4 is again proper and autonomous. Both cases contradict genericity, so the quotient is prime. It and its complement are connected, and substitution of nonempty bags preserves these two connections.
+
+Gallai's theorem gives two reversed orientations at the prime root. Within a two-element bag there is a unique order type: an antichain, or a chain whose two orientations are interchanged by swapping its vertices. Those swaps extend to graph automorphisms since the bag is a module. Therefore every interval-order type above this graph is isomorphic to the given order or its dual. Both occur, so there is exactly one dual orbit.
+\end{proof}
+As an immediate leading-order check, all $F_m$ orders have $(F_m+S_m)/2$ dual orbits, and their graph map is onto. The generic orders map into connected graphs with at most two order types per fiber. Thus
+\[
+ \frac{F_m-B_m^{\rm all}}2\le C_m\le I_m\le\frac{F_m+S_m}2,
+\]
+which already proves $I_m,C_m=(F_m/2)(1+\OO(m^{-1}))$.
+
+For $m\ge5$ define $\mathcal E_m$ to be the family of simplicially rooted interval-order types $(Q,v)$ satisfying all three conditions:
+\begin{enumerate}
+\item $Q$ is generic;
+\item $v$ belongs to no autonomous two-element subset;
+\item $Q$ is not self-dual.
+\end{enumerate}
+The second condition makes $v$ a singleton root child. Duality acts freely on $\mathcal E_m$.
+\begin{lemma}\label{lem:eligible}
+As $m\to\infty$,
+\begin{equation}\label{eq:eligible}
+ |\mathcal E_m|=(2\log m+\OO(1))F_m,
+ \qquad R_m-|\mathcal E_m|=\OO(F_m).
+\end{equation}
+\end{lemma}
+\begin{proof}
+The nongeneric orders exclude at most $mB_m^{\rm all}=\OO(F_m)$ rooted types. If a marked vertex belongs to an autonomous pair, contract a chosen such pair. The quotient has size $m-1$ with its contraction vertex distinguished; its internal two-element order has the original root marked. There are three internal rooted types: the antichain, a chain marked below, and a chain marked above. This bounds the excluded types by $3(m-1)F_{m-1}=\OO(F_m)$. Choices of pairs merely overcount. Finally self-dual orders exclude at most $mS_m=o(F_m)$ rooted types. Apply Lemma~\ref{lem:roots}. No assumption of trivial automorphism groups is needed.
+\end{proof}
+
+\section{The exact fibers producing the logarithm}\label{sec:dominant}
+Let $V$ be the three-element order with one lower element below two incomparable upper elements; let $\Lambda=V^*$ be its dual. Their comparability graph is $K_{1,2}$. They are nonisomorphic and are the only two interval-order types with that comparability graph.
+
+For $(Q,v)\in\mathcal E_m$, substitute either $V$ or $\Lambda$ at $v$. Lemma~\ref{lem:substitution} gives interval orders on $n=m+2$ vertices, both with the same incomparability graph. Let $\mathcal D_n$ be the family of these graph types. This construction and the conclusions below use $m\ge5$, hence $n\ge7$.
+
+\begin{proposition}\label{prop:dominant}
+Every graph in $\mathcal D_n$ is connected and has exactly four interval-order types above it, comprising exactly two dual orbits and no self-dual order. The map $\mathcal E_{n-2}\to\mathcal D_n$ is exactly two-to-one. Consequently
+\begin{equation}\label{eq:dominant}
+ |\mathcal D_n|=\tfrac12|\mathcal E_{n-2}|
+ =F_{n-2}\log n+\OO(F_{n-2}).
+\end{equation}
+\end{proposition}
+\begin{proof}
+The prime comparability root quotient of $Q$ survives the substitution. By Lemma~\ref{lem:bags}, its root children are the old bags except that the singleton $\{v\}$ becomes a three-vertex $K_{1,2}$ bag. Every other bag has size at most two. The new bag is therefore the unique three-element root child, identified intrinsically from the graph. Contracting it recovers the rooted graph $(G(Q),v)$. Both the comparability graph and its complement remain connected.
+
+Gallai's orientation decomposition permits just two root orientations, and all unchanged bags have unique order type. The exceptional bag permits $V$ or $\Lambda$. Thus there are at most four order types, represented by
+\[
+ Q[V],\quad Q[\Lambda],\quad Q^*[V],\quad Q^*[\Lambda].
+\]
+All four exist by Lemma~\ref{lem:substitution}. An isomorphism must preserve the unique three-element strong root child. On contracting it, a type with quotient $Q$ cannot become one with quotient $Q^*$ because $Q$ is not self-dual. With quotient fixed, restricting an isomorphism to the exceptional child cannot identify $V$ with $\Lambda$. Thus all four types are distinct. Duality pairs $Q[V]$ with $Q^*[\Lambda]$ and $Q[\Lambda]$ with $Q^*[V]$, so none is self-dual.
+
+The two rooted types $(Q,v)$ and $(Q^*,v)$ give the same graph. Conversely, the unique exceptional child canonically recovers the rooted quotient graph. The proof of Lemma~\ref{lem:generic} works in this rooted setting: the only internal swaps required are in two-element bags, and they fix the singleton root. Its interval-order types are exactly $(Q,v)$ and $(Q^*,v)$, distinct by non-self-duality. This proves the two-to-one statement even in the presence of arbitrary graph automorphisms. Apply \eqref{eq:eligible} and $\log(n-2)=\log n+\OO(n^{-1})$.
+\end{proof}
+For a graph with $t$ dual orbits of orders above it, identifying the orbits into one graph loses $t-1$ counts. Proposition~\ref{prop:dominant} says that each graph in $\mathcal D_n$ contributes a loss of exactly one.
+
+\section{All other fiber losses}\label{sec:loss}
+Let $O_n$ count interval orders with connected incomparability graph, and $A_n=F_n-O_n$. Let $S_n^{\rm conn}$ count the self-dual types among them. The number of their dual orbits is $(O_n+S_n^{\rm conn})/2$. Define the total connected graph-fiber loss by
+\begin{equation}\label{eq:Delta}
+ \Delta_n=\frac{O_n+S_n^{\rm conn}}2-C_n\ge0.
+\end{equation}
+We will prove
+\begin{equation}\label{eq:lossmain}
+ \Delta_n=F_{n-2}\log n+\OO(F_{n-2}).
+\end{equation}
+
+\subsection{Ordinal decomposition}
+Every nonempty poset has a unique ordinal-sum decomposition into its incomparability components: any two such components have a uniform comparability direction, and these directions linearly order the components. To see uniformity, an incomparability edge within one component forces its two endpoints to have the same relation to an element of another component; otherwise transitivity would make the endpoints comparable. Propagate along paths in each component. Transitivity then orders the components. Each component of an interval order remains an interval order. Consequently, as formal series,
+\begin{equation}\label{eq:ordinal}
+ \sum_{n\ge0}F_nz^n=\frac1{1-\sum_{n\ge1}O_nz^n},\qquad
+ A_n=\sum_{k=1}^{n-1}O_kF_{n-k}.
+\end{equation}
+By \eqref{eq:conv12}, $A_n=\OO(F_{n-1})$. Separating the endpoints $k=1,n-1$ for large $n$ gives
+\begin{equation}\label{eq:O}
+ A_n=F_{n-1}+O_{n-1}+\OO(F_{n-2})
+ =2F_{n-1}+\OO(F_{n-2}),\qquad
+ O_n=F_n-2F_{n-1}+\OO(F_{n-2}).
+\end{equation}
+Here ordinal indecomposability means connectedness of the incomparability graph; it is not a claim of connectedness of the comparability graph.
+
+\subsection{Removing universal graph vertices}
+Consider a connected interval graph $G$ and any order $P$ above it. The comparability graph $H$ has no induced $2K_2$, so at most one of its components has an edge. All remaining components are isolated vertices. If there is no edge, $G$ is complete; its fiber consists of the antichain, with zero loss.
+
+Otherwise remove the $u\ge0$ isolated vertices of $H$, exactly the universal vertices of $G$. The remaining $H_0$ is connected with an edge. Let $P_0$ be the core order and $G_0$ its incomparability graph; $G_0$ need not be connected. Restoring the removed vertices adds $u$ elements incomparable to every core element. Thus removing and restoring them gives a bijection of entire order fibers, commuting with duality. The integer $u$ is intrinsic to $G$.
+
+\subsection{A disconnected incomparability core}
+If $G_0$ is disconnected, then $P_0$ is ordinal decomposable and $u\ge1$, since $G$ is connected. Counting every such core, even without requiring connected $H_0$, bounds the number of relevant size-$n$ orders by
+\begin{equation}\label{eq:case1}
+ \sum_{j=1}^{n-1}A_j=\OO(F_{n-2})
+\end{equation}
+using \eqref{eq:O} and \eqref{eq:prefix}. This also bounds their fiber losses.
+
+\subsection{A prime core with a removed universal vertex}
+Suppose both $H_0$ and $G_0$ are connected. Gallai's classification makes the root quotient prime, with at least four children. If every child is an antichain of arbitrary size or a two-element chain, every child has a unique order type and the two reversed root orientations give just one dual orbit. Such a fiber loses nothing.
+
+Otherwise an edge-containing root child has size $k\ge3$. With core size $j$, at least three other children imply $k\le j-3$. Contraction gives a simplicially rooted interval order, by Lemma~\ref{lem:substitution}. Rooted isomorphism types are at most $R_{j-k+1}\le T_{j-k+1}$, so the number of exceptional core orders is at most
+\begin{equation}\label{eq:L}
+ L_j:=\sum_{k=3}^{j-3}T_{j-k+1}F_k
+ =\OO(F_{j-2}\log(j+1)).
+\end{equation}
+For the estimate, bound $T_t$ by $\OO(F_t\log(t+1))$ and use \eqref{eq:conv34}, harmlessly enlarging the upper limit to $j-2$. When $u\ge1$, $j\le n-1$, and the total bound is
+\begin{equation}\label{eq:case2}
+ \sum_{j=1}^{n-1}L_j
+ =\OO(F_{n-3}\log(n+1))=\OO(F_{n-2}).
+\end{equation}
+The last equality follows from \eqref{eq:ratios}. This controls any number of removed universal vertices.
+
+\subsection{No universal vertex and a large comparable child}
+Now the prime core has size $n$. Orders having an edge-containing root child of size at least four number at most
+\begin{equation}\label{eq:case3}
+ \sum_{k=4}^{n-3}T_{n-k+1}F_k
+ =\OO(F_{n-3}\log(n+1))=\OO(F_{n-2}).
+\end{equation}
+Use the second estimate of \eqref{eq:conv34}. The cutoff $n-3$ follows from the four or more root children and is essential to this bound. Antichain children of arbitrary size are not charged here; their internal order type is unique.
+
+\subsection{The remaining three-element children}
+It remains to consider prime-root graphs whose edge-containing children have size at most three. Among comparability graphs with at most three vertices, only $K_{1,2}$ has more than one interval-order type, namely $V$ and $\Lambda$. The other possibilities are an empty graph, one edge and an isolated vertex, and $K_3$, with the unique types antichain, chain plus unrelated singleton, and three-element chain, respectively. Thus if no root child is $K_{1,2}$, the graph fiber has one dual orbit.
+
+Otherwise choose a $K_{1,2}$ root child and contract it, obtaining a simplicially rooted interval order $(Q,v)$ of size $m=n-2$. If $(Q,v)\in\mathcal E_m$, the original graph belongs to $\mathcal D_n$ and was counted exactly in Proposition~\ref{prop:dominant}. If the graph is outside $\mathcal D_n$, every such contraction lies in the excluded rooted family. For each excluded rooted quotient there are only the two internal types $V,\Lambda$. Therefore the remaining order types number at most
+\begin{equation}\label{eq:case4}
+ 2\bigl(R_m-|\mathcal E_m|\bigr)=\OO(F_m)=\OO(F_{n-2}).
+\end{equation}
+This bound handles multiple, nested, and interacting exceptional modules without assuming independence. Any chosen contraction into $\mathcal E_m$ would put the graph in $\mathcal D_n$; otherwise it is covered by \eqref{eq:case4}. The finitely many sizes below $m=5$ do not affect the asymptotic estimate.
+
+\begin{proof}[Proof of \eqref{eq:lossmain}]
+For every positive-loss graph outside $\mathcal D_n$, all its order types lie in the cases bounded above. If one of its types instead satisfies a stated one-dual-orbit condition, that condition proves the whole graph fiber has zero loss, a contradiction. A fiber with $t$ order types loses at most $t$, so \eqref{eq:case1}--\eqref{eq:case4} bound the total loss outside $\mathcal D_n$ by $\OO(F_{n-2})$. Each graph in $\mathcal D_n$ loses exactly one, and \eqref{eq:dominant} completes the proof.
+\end{proof}
+
+\section{Passing to connected and all graph counts}\label{sec:finish}
+\begin{proof}[Proof of Theorem~\ref{thm:main} and Corollary~\ref{cor:normalized}]
+Equations \eqref{eq:Delta}, \eqref{eq:O}, and \eqref{eq:lossmain}, together with $0\le S_n^{\rm conn}\le S_n=o(F_{n-2})$, give
+\[
+ C_n=\frac{O_n+S_n^{\rm conn}}2-\Delta_n
+ =\frac{F_n}2-F_{n-1}-F_{n-2}\log n+\OO(F_{n-2}).
+\]
+For all graphs, disconnected graphs with a component of size $n-1$ are exactly a connected graph of that size plus an isolated vertex. Every other disconnected graph can have its components partitioned into two groups of sizes $k,n-k$ with $2\le k\le n-2$: take a component of size at least two if one exists, or two isolated vertices otherwise. This encodes the graph nonuniquely as a pair of interval graphs. Since $I_j\le F_j$, for $n\ge4$ we obtain
+\[
+ 0\le I_n-C_n-C_{n-1}
+ \le\sum_{k=2}^{n-2}I_kI_{n-k}
+ \le\sum_{k=2}^{n-2}F_kF_{n-k}=\OO(F_{n-2}).
+\]
+The connected formula at $n-1$ gives $C_{n-1}=F_{n-1}/2+\OO(F_{n-2})$, proving \eqref{eq:I}. For reference the exact unlabeled component identity is
+\begin{equation}\label{eq:Euler}
+ \sum_{n\ge0}I_nz^n=\prod_{k\ge1}(1-z^k)^{-C_k},
+\end{equation}
+since a graph is a multiset of connected components. All series identities are formal; no positive radius of convergence is asserted.
+
+Dividing \eqref{eq:C}--\eqref{eq:I} by $F_n/2$ and applying \eqref{eq:ratios} gives \eqref{eq:Crel}--\eqref{eq:Irel}, with common logarithmic coefficient $-2q^{-2}=-\pi^4/18$. Multiplying by \eqref{eq:Fishburn} gives \eqref{eq:factorial}. Products involving $\log n/n^3$ lie within the stated $\OO(n^{-2})$ remainder. Stirling's leading equivalent gives the alternative normalization.
+\end{proof}
+Dropping the now identified logarithmic term gives the previously weaker first-correction precision
+\[
+ C_n=F_n/2-F_{n-1}+\OO(F_{n-2}\log n),\qquad
+ I_n=F_n/2-F_{n-1}/2+\OO(F_{n-2}\log n).
+\]
+It is not valid to transfer the entire Fishburn expansion merely by dividing by two: the graph fibers produce their own inverse-power and logarithmic corrections.
+
+\section{The constant after the logarithmic term}\label{sec:constant}
+The earlier error estimates can be sharpened enough to determine the constant in the exact shifted-Fishburn formulas. This section supplies those refinements; no additional external input is needed. Define
+\begin{equation}\label{eq:bconstant}
+ a_0=\log q+\gamma,\qquad b_0=\log q+\gamma+1.
+\end{equation}
+\begin{theorem}\label{thm:constant}
+As $n\to\infty$,
+\begin{align}
+ C_n&=\frac{F_n}{2}-F_{n-1}-(\log n+b_0)F_{n-2}+o(F_{n-2}),\label{eq:Csharp}\\
+ I_n&=\frac{F_n}{2}-\frac{F_{n-1}}2-(\log n+b_0)F_{n-2}+o(F_{n-2}).\label{eq:Isharp}
+\end{align}
+The exact shifts in $F$ are part of these formulas. Their constant has three contributions: the constant in the rooted diagonal mean, a second graph-fiber family of loss $F_{n-2}/2$, and the next ordinal-decomposition term.
+\end{theorem}
+
+\subsection{A sharper rooted estimate}
+In Lemma~\ref{lem:roots}, use $h=(\log m)^{-3}$ instead of $(\log m)^{-2}$. The same Bernoulli bounds and uniform PGF estimate give, after division by $h$, the errors
+\[
+ \OO(h(\log m)^2)=\OO((\log m)^{-1}),\qquad
+ \OO\!\left(\frac{\log m}{mh}\right)=\OO\!\left(\frac{(\log m)^4}{m}\right).
+\]
+Both are $o(1)$. Since the linear coefficient of the main PGF factor is $2\log(qm)+2\gamma$, the result, together with \eqref{eq:exactdiagonal}, is
+\begin{equation}\label{eq:rootconstant}
+ T_m=(2\log m+2a_0+o(1))F_m,\qquad
+ R_m=(2\log m+2a_0+o(1))F_m.
+\end{equation}
+Indeed $T_{m-1}=\OO(F_{m-1}\log m)=o(F_m)$, so passing from weight to occupancy changes no constant at the $F_m$ scale.
+
+The exclusions defining $\mathcal E_m$ admit the stronger estimate
+\begin{equation}\label{eq:sharpeligible}
+ R_m-|\mathcal E_m|=\OO\!\left(\frac{F_m\log(m+1)}m\right)=o(F_m).
+\end{equation}
+Here is the complete encoding argument. For a nongeneric rooted order $(Q,v)$ choose a forbidden autonomous subset $M$ of size $k$, and put $\ell=m-k+1$.
+\begin{itemize}
+\item If $v\in M$, its restriction remains simplicial in the induced internal order. There are at most $T_k$ internal rooted types and $\ell F_\ell$ quotients with the contraction vertex marked. These data reconstruct $(Q,v)$, giving at most $\ell F_\ell T_k$ types.
+\item If $v\notin M$, its image is simplicial in the induced quotient obtained by keeping a representative of $M$. This quotient has a simplicial mark and a distinct arbitrary contraction mark, so there are at most $\ell R_\ell\le\ell T_\ell$ quotient types. With the internal order there are at most $\ell T_\ell F_k$ encodings.
+\end{itemize}
+Both bounds concern isomorphism types; allowing every module choice overcounts harmlessly. Since $T_j=\OO(F_j\log(j+1))$, summing over $3\le k\le m-1$ and using \eqref{eq:bad} gives
+\[
+ \sum_{k=3}^{m-1}\bigl(\ell F_\ell T_k+\ell T_\ell F_k\bigr)
+ =\OO(\log(m+1))\sum_{k=3}^{m-1}\ell F_\ell F_k
+ =\OO(F_m\log(m+1)/m).
+\]
+If the marked simplicial vertex belongs to an autonomous pair, contracting that pair leaves a simplicial contraction vertex: its exterior neighbors were already neighbors of the original marked vertex and formed a clique. There are only three internal rooted pair types, so this exclusion is at most
+$3R_{m-1}=\OO(F_m\log(m+1)/m)$. The self-dual exclusion remains at most $mS_m$, negligible on this scale. These arguments prove \eqref{eq:sharpeligible}, and hence
+\begin{equation}\label{eq:Econstant}
+ |\mathcal E_m|=(2\log m+2a_0+o(1))F_m.
+\end{equation}
+Proposition~\ref{prop:dominant} remains exact, so its loss family now satisfies
+\begin{equation}\label{eq:Dconstant}
+ |\mathcal D_n|=(\log n+a_0+o(1))F_{n-2}.
+\end{equation}
+These graphs have no universal vertex, since their comparability graphs are connected.
+
+\subsection{A second exact loss family}
+Let $\mathcal Q_m$ consist of the generic, non-self-dual interval-order types of size $m\ge5$. Lemma~\ref{lem:generic} and \eqref{eq:selfdual} give
+\begin{equation}\label{eq:Qfamily}
+ |\mathcal Q_m|=F_m+\OO(F_m/m).
+\end{equation}
+For $Q\in\mathcal Q_m$, take $G(Q)$ disjoint union a singleton $w$, and add a new vertex $u$ adjacent to every existing vertex. Call the resulting graph family $\mathcal J_{m+2}$.
+
+Both special vertices are graph-intrinsic. The vertex $u$ is the unique universal vertex: every vertex in $G(Q)$ misses $w$, and $w$ misses $G(Q)$. The vertex $w$ is the unique leaf: $G(Q)$ is connected on at least five vertices, so each of its vertices has at least one neighbor there and degree at least two after adding $u$. Removing $u,w$ therefore recovers $G(Q)$ canonically.
+
+The fiber of $G(Q)$ consists exactly of $Q,Q^*$, by its prime root and small children and the non-self-duality of $Q$. After removing $u$, the two incomparability components are $G(Q)$ and the singleton. Their ordinal order can be chosen in either direction. Thus the full fiber of a graph in $\mathcal J_{m+2}$ has exactly the four types
+\[
+ Q+1,\quad 1+Q,\quad Q^*+1,\quad 1+Q^*,
+\]
+with $u$ incomparable to all elements understood. The symbol $+$ denotes ordinal sum. The position of the singleton component and the non-self-duality of $Q$ make these four types distinct. Duality pairs the first with the fourth and the second with the third. There are two dual orbits, no self-dual type, and a loss of exactly one.
+
+Canonical removal of $u,w$ also proves that $\mathcal Q_m\to\mathcal J_{m+2}$ is exactly two-to-one. Hence
+\begin{equation}\label{eq:Jfamily}
+ |\mathcal J_n|=\tfrac12|\mathcal Q_{n-2}|
+ =\tfrac12F_{n-2}+o(F_{n-2}).
+\end{equation}
+The families $\mathcal J_n$ and $\mathcal D_n$ are disjoint because only the former has a universal vertex. These structural assertions use $m\ge5$, or $n\ge7$, as before.
+
+\subsection{The remaining loss is little o}
+We refine the four-case exhaustion of Section~\ref{sec:loss}. First note the triple convolution
+\begin{equation}\label{eq:triple}
+ \sum_{r,s,t\ge1\atop r+s+t=j}F_rF_sF_t=\OO(F_{j-2}).
+\end{equation}
+Apply \eqref{eq:conv12} to the inner sum over $s+t$; the remaining sum is $\OO(\sum_{r=1}^{j-2}F_rF_{j-r-1})=\OO(F_{j-2})$ by the same estimate with total $j-1$.
+
+For a disconnected incomparability core, write $u$ for the number of removed universal vertices as before. If $u\ge2$, its possible sizes are at most $n-2$, so \eqref{eq:ordinal} and \eqref{eq:prefix} give only $\OO(F_{n-3})$ orders. If $u=1$, the core size is $j=n-1$ and we distinguish its ordinal components.
+\begin{itemize}
+\item At least three components can be encoded by the first two components and the remaining nonempty suffix. By \eqref{eq:triple} there are at most $\OO(F_{j-2})=\OO(F_{n-3})$ such orders.
+\item Exactly two components, both of size at least two, give at most $\sum_{k=2}^{j-2}F_kF_{j-k}=\OO(F_{n-3})$ orders.
+\item The only remaining case is a singleton component beside a component $Q$ of size $m=n-2$. If $Q\in\mathcal Q_m$, the graph lies in $\mathcal J_n$. Otherwise $Q$ is nongeneric or self-dual, and the two possible ordinal positions give at most $2(B_m^{\rm all}+S_m)=\OO(F_m/m)=\OO(F_{n-3})$ orders.
+\end{itemize}
+Thus the entire disconnected-core contribution outside $\mathcal J_n$ is $o(F_{n-2})$.
+
+For a prime core with $u\ge1$, the earlier bound \eqref{eq:case2} is already $\OO(F_{n-3}\log(n+1))=o(F_{n-2})$. For no universal vertex and a comparable child of size at least four, \eqref{eq:case3} has the same little-$o$ precision. Large antichain bags still have unique internal type and incur no charge.
+
+In the final case, every comparable root child has size at most three. The reasoning of Section~\ref{sec:loss} shows that any positive-loss graph outside $\mathcal D_n$ contracts at a chosen $K_{1,2}$ child into the excluded rooted family. The stronger bound \eqref{eq:sharpeligible} makes the total at most
+\[
+ 2(R_{n-2}-|\mathcal E_{n-2}|)
+ =\OO(F_{n-2}\log(n+1)/n)=o(F_{n-2}).
+\]
+Multiple or nested choices only overcount. As in the earlier exhaustion, every order in a positive-loss fiber outside the two exact families must lie in these exceptional cases: a nonexceptional order would certify a single dual orbit for the whole graph. Loss is at most the number of order types, so the order-count bounds control total loss. Equations \eqref{eq:Dconstant} and \eqref{eq:Jfamily} now yield
+\begin{equation}\label{eq:Deltaconstant}
+ \Delta_n=(\log n+a_0+\tfrac12+o(1))F_{n-2}.
+\end{equation}
+
+\subsection{Ordinal and component corrections at the next shift}
+Since $O_1=O_2=1$, $F_1=1$, and $F_2=2$, isolate the four endpoints $k=1,2,n-2,n-1$ of \eqref{eq:ordinal}. For sufficiently large $n$, the remaining convolution has both factors of size at least three, hence is $\OO(F_{n-3})$. Therefore
+\[
+ A_n=F_{n-1}+F_{n-2}+2O_{n-2}+O_{n-1}+\OO(F_{n-3}).
+\]
+Use \eqref{eq:O} at $n-1$ and $n-2$ to obtain
+\begin{equation}\label{eq:Osecond}
+ O_n=F_n-2F_{n-1}-F_{n-2}+\OO(F_{n-3}).
+\end{equation}
+Together with \eqref{eq:Delta}, \eqref{eq:Deltaconstant}, and negligible $S_n^{\rm conn}$, this gives
+\[
+ C_n=\tfrac12F_n-F_{n-1}-(\log n+a_0+1+o(1))F_{n-2},
+\]
+proving \eqref{eq:Csharp}. The extra $1$ combines the $1/2$ loss from the serial family with the $-F_{n-2}/2$ in $O_n/2$.
+
+For all graphs, those with a component of size $n$, $n-1$, or $n-2$ contribute $C_n$, $C_{n-1}$, or $2C_{n-2}$, respectively, for sufficiently large $n$. The factor two is $I_2=2$, for an edge or two isolated vertices in the remainder. These large components are unique and the three cases are disjoint. Every other graph has largest component at most $n-3$. For $n\ge7$, its components can be partitioned into two groups of sizes between 3 and $n-3$: use a component of size at least three if present; otherwise greedily accumulate components of size at most two until reaching size three or four. Hence the remaining count is at most
+\[
+ \sum_{k=3}^{n-3}I_kI_{n-k}\le\sum_{k=3}^{n-3}F_kF_{n-k}=\OO(F_{n-3}),
+\]
+by Lemma~\ref{lem:convolution}. We have proved the sharper component identity with bounded remainder
+\begin{equation}\label{eq:componentsecond}
+ I_n=C_n+C_{n-1}+2C_{n-2}+\OO(F_{n-3}).
+\end{equation}
+The connected formula implies
+\[
+ C_{n-1}=\tfrac12F_{n-1}-F_{n-2}+o(F_{n-2}),\qquad
+ 2C_{n-2}=F_{n-2}+o(F_{n-2}).
+\]
+Their $F_{n-2}$ terms cancel, giving \eqref{eq:Isharp} and completing the proof of Theorem~\ref{thm:constant}.
+
+\begin{corollary}\label{cor:Frelativeconstant}
+With $b_0$ as in \eqref{eq:bconstant},
+\begin{align}
+ \frac{2C_n}{F_n}&=1-\frac2{qn}
+ +\frac{q^{-1}-2q^{-2}(\log n+b_0)}{n^2}+o(n^{-2}),\label{eq:Crelsharp}\\
+ \frac{2I_n}{F_n}&=1-\frac1{qn}
+ +\frac{(2q)^{-1}-2q^{-2}(\log n+b_0)}{n^2}+o(n^{-2}).\label{eq:Irelsharp}
+\end{align}
+\end{corollary}
+\begin{proof}
+The known first Fishburn correction suffices: dividing \eqref{eq:Fishburn} at consecutive indices gives
+\[
+ \frac{F_{n-1}}{F_n}=\frac1{qn}\left(1-\frac1{2n}+\OO(n^{-2})\right).
+\]
+Indeed $\sqrt{1-1/n}=1-1/(2n)+\OO(n^{-2})$, and the quotient of the factors $1+a_F/(n-1)+\OO(n^{-2})$ and $1+a_F/n+\OO(n^{-2})$ is $1+\OO(n^{-2})$. Combine this with the second ratio in \eqref{eq:ratios} and Theorem~\ref{thm:constant}. The induced logarithmic ratio error is $\OO(\log n/n^3)=o(n^{-2})$. This determines the nonlogarithmic coefficients in the exact $F_n/2$ normalization without needing a second Fishburn coefficient.
+\end{proof}
+
+\section{Inverting a counting threshold}\label{sec:inverse}
+For either sequence $a_n=I_n$ or $a_n=C_n$, define
+\[
+ N_a(T)=\min\{n\ge1:a_n\ge T\}\qquad(T>1).
+\]
+Use the corresponding $\alpha$ from Corollary~\ref{cor:normalized}. Define, for real $y>0$,
+\begin{equation}\label{eq:Phi}
+ \Phi_\alpha(y)=\log K+\log\Gamma(y+1)+\tfrac12\log y
+ +y\log q+\frac\alpha y-\beta\frac{\log y}{y^2}.
+\end{equation}
+For all sufficiently large $T$, there is a unique large solution $y=y_\alpha(T)$ of $\Phi_\alpha(y)=\log T$. The phrase ``large solution'' means the one in an eventual interval on which $\Phi_\alpha$ is strictly increasing; no claim is made about small positive solutions.
+
+\begin{theorem}\label{thm:inverse}
+There are constants $B,T_0>0$, depending only on the selected sequence, such that for $T\ge T_0$,
+\begin{equation}\label{eq:inversebracket}
+ \ceil{y-\frac{B}{y^2\log y}}
+ \ \le N_a(T)\le\\
+ \ceil{y+\frac{B}{y^2\log y}}.
+\end{equation}
+Let $L=\log T$, let $W$ be the positive real Lambert function, and set
+\begin{equation}\label{eq:Lambert}
+ x=\frac{L}{W(qL/e)}.
+\end{equation}
+Starting with $x_0=x$, take two Newton steps
+\begin{equation}\label{eq:newton}
+ x_{j+1}=x_j-\frac{\Phi_\alpha(x_j)-L}{\Phi_\alpha'(x_j)},\qquad j=0,1.
+\end{equation}
+Then
+\begin{equation}\label{eq:newtonerror}
+ x_2-y=\OO\!\left(\frac1{x^3(\log x)^3}\right).
+\end{equation}
+One may therefore replace $y$ by $x_2$ in \eqref{eq:inversebracket}, with width $B'/(x^2\log x)$ for a suitable constant $B'$.
+\end{theorem}
+
+\begin{proof}
+First the counts are nondecreasing. Adding an isolated vertex injects interval-graph types of size $n$ into those of size $n+1$: all isolated vertices are interchangeable, so removing any one recovers the original type. Adding a universal vertex preserves interval graphs, represented by an interval covering all existing intervals, and yields a connected graph. All universal vertices are interchangeable, so this operation injects all interval-graph types of size $n$ into connected types of size $n+1$. Hence
+\begin{equation}\label{eq:monotone}
+ C_{n+1}\ge I_n\ge C_n.
+\end{equation}
+In particular both thresholds are well-defined, since \eqref{eq:factorial} tends to infinity.
+
+Taking logarithms in \eqref{eq:factorial} gives
+\begin{equation}\label{eq:logerror}
+ \log a_n=\Phi_\alpha(n)+\OO(n^{-2}).
+\end{equation}
+The square of the first correction is absorbed in this error, so its coefficient need not be known. Standard Stirling and digamma estimates, or termwise differentiation of the classical smooth Stirling expansion for $\log\Gamma$, give
+\begin{align}
+ \Phi_\alpha(t)&=t\log(qt/e)+\log t+b+\frac{\alpha+1/12}{t}
+ -\beta\frac{\log t}{t^2}+\OO(t^{-3}),\label{eq:Phistirling}\\
+ \Phi_\alpha'(t)&=\log(qt)+\OO(t^{-1}),&
+ \Phi_\alpha''(t)&=t^{-1}+\OO(t^{-2}),\label{eq:Phiderivs}
+\end{align}
+where $b=\log(K\sqrt{2\pi})$. In particular $\Phi_\alpha$ is eventually increasing and unbounded, proving existence and uniqueness of its large root.
+
+Choose $M$ so that the error in \eqref{eq:logerror} is at most $M/n^2$ beyond an index $n_0$. The smooth functions $\Phi_\alpha(t)\pm M/t^2$ are also eventually increasing. Their large roots at level $L$ are, respectively, $r_{\rm low}$ for the plus sign and $r_{\rm high}$ for the minus sign. By the mean value theorem and \eqref{eq:Phiderivs},
+\[
+ r_{\rm low}=y+\OO\!\left(\frac1{y^2\log y}\right),\qquad
+ r_{\rm high}=y+\OO\!\left(\frac1{y^2\log y}\right),
+ \qquad r_{\rm low}\le y\le r_{\rm high}.
+\]
+For sufficiently large $T$, all earlier finite counts are smaller than $T$. Every integer below $\ceil{r_{\rm low}}$ then has $a_n<T$, while the integer $\ceil{r_{\rm high}}$ has $a_n\ge T$. Increasing a common constant in these root estimates proves \eqref{eq:inversebracket}. This argument keeps the rounding inside the brackets, including threshold equalities.
+
+The Lambert definition satisfies $x\log(qx/e)=L$. Equation \eqref{eq:Phistirling} gives
+\[
+ \Phi_\alpha(x)-L=\log x+b+\OO(x^{-1}).
+\]
+Its derivative is comparable to $\log x$ on any fixed-width neighborhood of $x$. Comparing $\Phi_\alpha$ at $x\pm D$ for a sufficiently large fixed $D$ shows $y=x+\OO(1)$. In this neighborhood the second derivative is $\OO(x^{-1})$ and the first derivative is bounded below by a positive constant times $\log x$. Taylor's theorem around $x_j$, using $\Phi_\alpha(y)=L$, gives the explicit Newton error inequality
+\begin{equation}\label{eq:newtonbound}
+ |x_{j+1}-y|\le\frac{A}{x\log x}|x_j-y|^2
+\end{equation}
+for a fixed $A$ and all sufficiently large $x$. The first step has error $\OO((x\log x)^{-1})$ and the second has error $\OO(x^{-3}(\log x)^{-3})$. Both remain in the fixed-width neighborhood, justifying the estimates used. This error is $o(x^{-2}/\log x)$, smaller than the asymptotic inversion uncertainty. Since $y/x\to1$, it is absorbed in the final bracket width.
+\end{proof}
+For actual computation the derivative in \eqref{eq:newton} is
+\begin{equation}\label{eq:Phiexplicitderivative}
+ \Phi_\alpha'(y)=\psi(y+1)+\frac1{2y}+\log q-\frac\alpha{y^2}
+ +\beta\frac{2\log y-1}{y^3},
+\end{equation}
+where $\psi$ is the digamma function. A simpler one-step approximation, at lower precision, follows from \eqref{eq:Phistirling}:
+\[
+ v=x-\frac{\log x+b}{\log(qx)},\qquad
+ y=v+\OO((x\log x)^{-1}).
+\]
+The two-step version retains the proved logarithmic correction.
+
+\begin{remark}[Rounding and effectivity]
+The theorem asserts the existence of constants and an onset; the report does not supply a certified numerical value for either. It is therefore not a finite algorithm that certifies an exact threshold for every given $T$. Away from the shrinking neighborhoods of integers the two ceilings agree, but near an integer exact counts or effective error bounds are needed. In particular an expression such as $N_a(T)=\ceil{y}+\OO(y^{-2}/\log y)$ would discard the relevant rounding ambiguity and is not asserted.
+\end{remark}
+
+\section{Finite verification and reproducibility}\label{sec:checks}
+The accompanying standard-library Python program generates Fishburn matrices directly from their nonnegative triangular entries, requiring nonzero rows and columns. It constructs the associated orders and canonicalizes their comparability graph fibers. The graph canonicalization refines degree classes by neighbor counts and minimizes over the remaining permutations, identifying only true twin permutations as redundant. Poset canonicalization uses the sizes of nested strict down-sets and up-sets; equal pairs identify interchangeable cell elements.
+
+The following values are generated rather than read from a sequence file. The displayed $T_n$ and $R_n$ use diagonal weight and occupancy, respectively.
+\begin{center}
+\begin{tabular}{rrrrrrr}
+\toprule
+$n$&$F_n$&$I_n$&$C_n$&$O_n$&$T_n$&$R_n$\\
+\midrule
+1&1&1&1&1&1&1\\
+2&2&2&1&1&4&3\\
+3&5&4&2&2&14&10\\
+4&15&10&5&6&51&37\\
+5&53&27&15&23&204&153\\
+6&217&92&56&104&911&707\\
+7&1014&369&250&534&4546&3635\\
+8&5335&1807&1328&3051&25212&20666\\
+9&31240&10344&8069&19155&154267&129055\\
+\bottomrule
+\end{tabular}
+\end{center}
+An independent brute-force enumeration of order automorphisms verifies that the occupied cells are exactly the vertex orbits through size five. Through size nine the program checks the simplicial/diagonal characterization, the identity $T_n-R_n=T_{n-1}$, order and graph counts, self-duality, and the complete graph fibers. Through quotient size seven it checks genericity, the singleton-root condition, and the dominant inflation construction:
+\begin{center}
+\begin{tabular}{rrrrr}
+\toprule
+Quotient $m$&Graph size $n$&$|\mathcal E_m|$&$|\mathcal D_n|$&Order types per fiber\\
+\midrule
+5&7&8&4&4\\
+6&8&52&26&4\\
+7&9&380&190&4\\
+\bottomrule
+\end{tabular}
+\end{center}
+The second exact family in Section~\ref{sec:constant} is also checked exhaustively: for core sizes $m=5,6,7$ there are respectively $6,30,188$ generic non-self-dual cores, mapping two-to-one onto $3,15,94$ serial-family graphs of sizes $7,8,9$. Each full serial fiber has four order types, two dual orbits, no self-dual type, a unique universal vertex, and a unique leaf. The two exact families are disjoint. All inside-module, outside-module, and autonomous-pair contractions used in the sharper rooted bounds are checked for retained simpliciality through size seven.
+
+Each displayed dominant graph has exactly two dual orbits, no self-dual order type, and exactly two eligible rooted quotient preimages. Every positive-loss connected fiber through size nine is also classified into the four remainder cases of Section~\ref{sec:loss} or the dominant family. The program checks every order type within these fibers, including universal-vertex removal and restoration.
+
+Additional checks reconstruct $F_n$ from \eqref{eq:ordinal} and $I_n$ from \eqref{eq:Euler}, verify the rational-polynomial normalization of the first and logarithmic coefficients, the exact-$F_n/2$ constant conversion, and the ordinal and graph-component contributions at the next shift, and test the Newton derivative, local Taylor remainder, and two-step inversion at finite real inputs. These are consistency checks on the proof and its implementation. They do not establish the infinite asymptotic estimates, a finite error constant, or a rounding certificate.
+
+The source archive contains this article, its PDF, the checker, deterministic build and packing commands, an integrity verifier, and adversarial tests. The verifier uses an exact flat inventory and hashes every file except its own manifest seal. The manifest is the declared trust anchor, so accidental or adversarial changes require a trusted external archive or manifest digest to detect coordinated resealing. Every check remains active under Python's optimized mode. Commands refuse existing output targets, in-bundle output destinations, and symlinked path components; reader commands write only to new external locations. The explicit author-only sealing command, which exclusively creates the in-bundle manifest, is the documented exception. The README records the exact commands and build environment. The archive contains no third-party source PDFs; the bibliography provides public links.
+
+\section{Source boundaries and further questions}\label{sec:boundaries}
+Hwang and Jin~\cite{HJ} supply the Fishburn expansion and the two statistical inputs used here. Gallai's decomposition, in the presentation~\cite{Gallai}, supplies the orientation structure. Their use does not transfer an interval-order asymptotic to graphs automatically: the root statistics and graph-fiber losses require the arguments in Sections~\ref{sec:diagonal}--\ref{sec:finish}.
+
+Bukh and Jeffs~\cite{BJ}, in the unlabeled-case remark on printed page 11 of the cited version, obtain the logarithmic estimate
+\[
+ \log I_n=n\log n-\left(1+\log(\pi^2/6)\right)n+\OO(\log n).
+\]
+The leading equivalent in this report is consistent with, and sharper than, that stated bound. Their nearby principal theorem concerns labeled graphs, a different enumeration problem. The remark itself does not supply the half-Fishburn equivalent or the correction coefficients proved here.
+
+Hanlon~\cite{Hanlon} is relevant to exact generating-function enumeration. The full primary article was not available for inspection in preparing this report; no claim here relies on an unverified theorem or terminology from it. The limited source comparison, including the cited OEIS entries, is not an exhaustive novelty search and does not certify historical priority.
+
+The exact shifted formulas determine $b_0$. The nonlogarithmic coefficient under the conventional $K n!\sqrt n\,q^n$ normalization is not evaluated here: it also involves the second coefficient in the Fishburn expansion. The inverse theorem retains its stated, valid error scale. Several questions remain within this report's scope.
+\begin{enumerate}
+\item Quantify the remainder beyond the now identified shifted-Fishburn constant. This requires sharper control of excluded rooted families and small-module interactions, rather than the diagonal mean alone.
+\item Determine whether a full power--logarithm expansion exists. The present proof establishes the logarithmic term and its following shifted constant, and gives no all-orders theorem.
+\item Obtain effective constants and an explicit onset in the remainder. These would turn the inverse brackets into certified finite threshold computations.
+\item Analyze higher exceptional graph fibers and their interactions. A systematic description may explain later logarithmic powers, but it must keep rooted isomorphism classes distinct from vertex multiplicities.
+\end{enumerate}
+The finite computations are deliberately separated from these questions: agreement at small sizes verifies exact combinatorial constructions, not asymptotic priority or an unproved extension.
+
+\begin{thebibliography}{9}
+\bibitem{HJ} H.-K. Hwang and E. Y. Jin,
+\emph{Asymptotics and statistics on Fishburn matrices and their generalizations}.
+Author version, arXiv:1911.06690.
+\href{https://algo.stat.sinica.edu.tw/hk/files/2019/11/asymp-fishburn.pdf}{Author PDF};
+\href{https://arxiv.org/abs/1911.06690}{arXiv record}.
+Specific equation, theorem, and page references in this report use the 54-page author PDF.
+\bibitem{Gallai} P. Klav\'ik, J. Kratochv\'il, T. Krawczyk and B. Walczak,
+\emph{Extending partial representations of function graphs and permutation graphs}.
+arXiv:1204.6391, Section 4, Theorems 3--6.
+\href{https://arxiv.org/abs/1204.6391}{arXiv record}.
+\bibitem{BJ} B. Bukh and R. Jeffs,
+\emph{Enumeration of interval graphs and $d$-representable complexes}.
+arXiv:2203.12063v2; unlabeled-case remark, printed page 11.
+\href{https://arxiv.org/abs/2203.12063}{arXiv record}.
+\bibitem{Hanlon} P. Hanlon,
+\emph{Counting interval graphs}, Transactions of the American Mathematical Society
+272 (1982), 383--426.
+\href{https://doi.org/10.1090/S0002-9947-1982-0662044-8}{DOI record}.
+Included for context; full primary text not used as a proof input.
+\bibitem{OEIS} OEIS Foundation Inc.,
+\href{https://oeis.org/A005975}{A005975},
+\href{https://oeis.org/A005976}{A005976}, and
+\href{https://oeis.org/A022493}{A022493}.
+Sequence identifiers and comparison data, consulted 2 October 2026.
+\end{thebibliography}
+\end{document}

@@ -1,0 +1,917 @@
+\newcommand{\DoNotLoadEpstopdf}{}
+\pdfinfoomitdate=1
+\pdftrailerid{}
+\pdfsuppressptexinfo=-1
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage[margin=1in]{geometry}
+\usepackage{booktabs,longtable,array}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+\hypersetup{pdftitle={Report 149 Corrected enumeration and asymptotics of alternating Baxter involutions},pdfauthor={},pdfsubject={Correction of the class intended by OEIS A347546 and parity threshold inverses}}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{1.2em}
+\setlength{\emergencystretch}{2em}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\BB}{\mathcal B}
+\newcommand{\RR}{\mathcal R}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\std}{\operatorname{std}}
+\newcommand{\Ceil}[1]{\left\lceil #1\right\rceil}
+\DeclareMathOperator{\Des}{Des}
+\title{Corrected enumeration and asymptotics of alternating Baxter involutions\\\large The class intended by OEIS A347546 and its parity inverses}
+\author{Report 149}
+\date{3 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+The alternating Baxter involutions named by OEIS A347546 are not
+counted by the recurrence printed in Min's 2021 paper. The first
+incorrect term is at length $20$: the class has $2168$ objects,
+rather than $2166$. The outside blocks of an involution are inverse
+partners; they need not individually be involutions. Starting from
+explicitly identified unrestricted structural lemmas of Min and Park
+(2006), we prove both directions and uniqueness of the corrected
+involution decomposition. Its outside factor is Catalan. The resulting
+even and odd half-length generating functions are algebraic, with exact
+dominant singularity $\rho=(\sqrt5-1)/4$. We give exact leading
+amplitudes, explicit first corrections, an all-orders coefficient
+algorithm with fixed-order error bounds, and Lambert $W_{-1}$ inverses
+for both parity subsequences. Ceiling-safe asymptotic brackets combine
+to at most two adjacent full indices, resolved by exact evaluation.
+Two explicit smallest omitted permutations and a newly written exact
+computational companion make the correction directly checkable.
+\end{abstract}
+\noindent\textbf{Scope.} The substantive finding is the enumeration
+correction. Algebraic singularity transfer and formal inversion are
+standard tools applied to it. The report distinguishes the intended
+permutation class from the old recurrence-defined sequence throughout.
+The finite verification does not replace the all-length structural
+proof. No exhaustive literature-priority claim is made; Min's 2002
+thesis was not inspected. No external submission is part of this report.
+\newpage
+\tableofcontents
+\newpage
+
+\section{Definitions and the corrected result}
+An alternating permutation begins with a rise:
+$\pi_1<\pi_2>\pi_3<\cdots$. Reverse alternation begins with a
+descent. A permutation is doubly alternating if both it and its inverse
+have the specified alternating convention. For an involution these two
+conditions coincide. The empty permutation is admitted.
+
+We use the original strict-index Baxter definition: for every
+$1\le i<j<k<\ell\le n$,
+\begin{align}
+ \pi_i+1=\pi_\ell<\pi_j&\ \Longrightarrow\ \pi_k>\pi_\ell,\label{eq:baxter1}\\
+ \pi_\ell+1=\pi_i<\pi_k&\ \Longrightarrow\ \pi_j>\pi_i.\label{eq:baxter2}
+\end{align}
+Equivalently, Baxter permutations avoid the vincular patterns
+$2\text{-}41\text{-}3$ and $3\text{-}14\text{-}2$: there are no
+$i<j<j+1<\ell$ with, respectively,
+\[
+ \pi_{j+1}<\pi_i<\pi_\ell<\pi_j,
+ \qquad
+ \pi_j<\pi_\ell<\pi_i<\pi_{j+1}.
+\]
+Both forms are checked independently in the companion. Strict indices
+matter: a weak-index version printed in the recalled definition of
+Barnabei et al., Section~10~\cite{barnabei}, is not used here.
+
+Write $\BB_n$ for the doubly ascent-first alternating Baxter class,
+and $\RR_n$ for the doubly reverse-alternating Baxter class. Define
+\[
+ a_n=|\{\pi\in\BB_n:\pi=\pi^{-1}\}|,
+ \qquad e_m=a_{2m},\qquad o_m=a_{2m+1}.
+\]
+Thus $e_0=o_0=1$. Put
+\[
+ E(x)=\sum_{m\ge0}e_mx^m,\qquad
+ O(x)=\sum_{m\ge0}o_mx^m.
+\]
+\[
+ C(x)=\sum_{j\ge0}C_jx^j=\frac{1-\sqrt{1-4x}}{2x},
+ \quad C_j=\frac1{j+1}\binom{2j}{j}.
+\]
+The square root in this expression has constant term $1$.
+
+\begin{theorem}[Corrected enumeration]\label{thm:enumeration}
+For every $m\ge1$,
+\begin{align}
+ o_m&=\sum_{i=0}^{m-1}e_i o_{m-1-i},\label{eq:orec}\\
+ e_m&=o_{m-1}+
+ \sum_{j=0}^{\lfloor(m-2)/2\rfloor}C_j e_{m-2j-2}.\label{eq:erec}
+\end{align}
+An empty sum is zero. Equivalently,
+\begin{equation}\label{eq:system}
+ O=1+xEO=\frac1{1-xE},\qquad
+ E=1+xO+x^2E C(x^2).
+\end{equation}
+These equations uniquely determine the two formal power series.
+\end{theorem}
+
+The first values of the corrected full sequence, indexed from $n=0$,
+are
+\begin{align*}
+&1,1,1,1,2,2,3,5,8,12,16,32,44,84,105,231,292,636,768,1792,\\
+&2168,5080,6014,14594,17252,42204,49360,123120,143672,361288,\ldots.
+\end{align*}
+The value at $n=21$ is unchanged even though the value at $n=20$
+changes: the odd recurrence for $o_{10}$ uses $e_i$ only through $i=9$.
+
+\begin{center}
+\begin{tabular}{rrr}
+\toprule
+Original length $n$ & Corrected class $a_n$ & Printed recurrence\\
+\midrule
+19&1792&1792\\
+20&2168&2166\\
+21&5080&5080\\
+22&6014&6012\\
+23&14594&14592\\
+24&17252&17234\\
+\bottomrule
+\end{tabular}
+\end{center}
+The printed recurrence and the OEIS table inspected on 3 October
+2026~\cite{min2021,oeis} agree with the class through $n=19$.
+We use $a_n$ only for the corrected class, and hats for the distinct
+old recurrence sequence when comparison is necessary.
+
+\section{Published structural inputs and elementary closure}
+\subsection{The precise source dependency}
+The proof uses the following statements from Min and Park's original
+2006 paper~\cite{minpark}. Its scanned printed pages 558--560 were
+checked directly. No involution restriction occurs in these statements.
+\begin{enumerate}
+\item Theorem~4.1: if $\pi\in\BB_{2m}$, then
+$\pi_1=2k+1$ for a unique $0\le k<m$,
+$\pi_{2m-2k}=2m$, and the last $2k$ entries have values exactly
+$1,\ldots,2k$.
+\item Corollary~4.5: if $\pi\in\RR_{2m}$, then
+$\pi_1=2k$ for a unique $1\le k\le m$,
+$\pi_{2k}=1$, and the first $2k$ entries have values exactly
+$1,\ldots,2k$.
+\item Corollary~4.7: every $\pi\in\BB_{2m+1}$ begins with $1$,
+and deletion of this entry followed by subtraction of $1$ gives
+an element of $\RR_{2m}$.
+\end{enumerate}
+They are the unrestricted structural sources underlying Lemmas~2.1,
+2.3, and 2.4 in Min~\cite{min2021}. We accept these published necessity
+lemmas as inputs and prove all required converses, inverse restrictions,
+and counting multiplicities below. We do not import Theorem~2.7 of
+that paper or its involution assertion about an outside block.
+
+Ouchterlony~\cite{ouchterlony} gives an independent structural route:
+his proceedings Corollaries~4.2--4.3 and Lemma~4.4 describe the
+block structure and identify the doubly alternating Baxter class with
+the doubly alternating class avoiding classical $2413$ and $3142$.
+The numbering is different in his thesis version. This is corroborating
+source evidence; the proof below states one complete set of inputs
+rather than switching silently between versions.
+
+\subsection{Direct sums and skew sums}
+For permutations $\alpha$ and $\beta$, $\alpha\oplus\beta$ puts
+all values of $\alpha$ below all values of $\beta$; $\alpha\ominus\beta$
+puts them above. Each block retains its internal order. The inverse
+identities are
+\begin{equation}\label{eq:sum-inverse}
+ (\alpha\oplus\beta)^{-1}=\alpha^{-1}\oplus\beta^{-1},\qquad
+ (\alpha\ominus\beta)^{-1}=\beta^{-1}\ominus\alpha^{-1}.
+\end{equation}
+The change of block order in the second identity is decisive.
+
+\begin{lemma}\label{lem:closure}
+Direct and skew sums of Baxter permutations are Baxter. A contiguous
+block whose values are a consecutive interval inherits the Baxter
+property upon standardization.
+\end{lemma}
+\begin{proof}
+Neither classical pattern $2413$ nor $3142$ has a proper initial
+segment consisting of its smallest or largest values. Thus both are
+indecomposable under either sum. A forbidden vincular occurrence
+crossing a sum boundary would make its underlying classical pattern
+decomposable, which is impossible. An occurrence within a component
+retains the required adjacent positions and is excluded there.
+For the second assertion, standardization of an interval block is a
+translation of values. Any violation inside it would be a violation in
+the original permutation.
+\end{proof}
+This is not a claim that Baxter permutations are closed under arbitrary
+classical pattern extraction. Only the interval-block property just
+proved is needed.
+
+\section{The unrestricted Catalan factor}
+Before imposing involutionhood, the published inputs and closure give
+unique decompositions
+\begin{align}
+\BB_{2m}
+ &=\bigsqcup_{a+b=m-1}
+ \{(1\oplus\sigma\oplus1)\ominus\tau:
+       \sigma\in\RR_{2a},\ \tau\in\BB_{2b}\},\label{eq:Bdec}\\
+\RR_{2m}
+ &=\bigsqcup_{a+b=m-1}
+ \{(1\ominus\tau\ominus1)\oplus\sigma:
+       \tau\in\BB_{2a},\ \sigma\in\RR_{2b}\}.\label{eq:Rdec}
+\end{align}
+We check both directions because the correct outside multiplicity must
+not be inferred from the disputed involution recurrence.
+
+For~\eqref{eq:Bdec}, take $b=k$ from the first structural input.
+The first $2m-2k$ entries form the upper interval, with its minimum
+first and maximum last. Deleting these two endpoints gives
+$\sigma\in\RR_{2m-2k-2}$. Both position and value shifts are one,
+so the forward and inverse alternating conventions switch. The suffix
+has even position and value shifts and remains in $\BB_{2k}$.
+The interval-block argument proves Baxter avoidance. The first value
+recovers $k$, hence every block and its standardization uniquely.
+
+Conversely $A=1\oplus\sigma\oplus1$ and $A^{-1}$ are ascent-first
+alternating: their endpoint comparisons are rises and their interiors
+have the shifted reverse convention. Both $A$ and $\tau$ have even
+length. The skew boundary is a descent at an even position, as required.
+Inversion reverses these two even blocks, so the same boundary check
+applies to $\tau^{-1}\ominus A^{-1}$. Lemma~\ref{lem:closure} gives
+the Baxter property.
+
+For~\eqref{eq:Rdec}, the second structural input identifies the initial
+interval $[2k]$, with maximum first and minimum last. Deleting its two
+endpoints gives $\tau\in\BB_{2k-2}$, and the suffix belongs to
+$\RR_{2m-2k}$. The one-position and one-value shifts change both
+interior conventions; the even suffix shifts preserve them. The first
+value again recovers $k$. Conversely the skew endpoint boundaries are
+descents at odd positions, and the direct boundary after the even
+initial component is a rise at an even position. Inversion preserves
+the direct-block order, so the same checks prove double reverse
+alternation and closure proves Baxter avoidance.
+
+Let $U_m=|\BB_{2m}|$ and $V_m=|\RR_{2m}|$, with $U_0=V_0=1$.
+Their generating functions consequently satisfy
+\[
+ U=1+xVU,\qquad V=1+xUV.
+\]
+Subtracting gives $U=V$, hence $U=V=C$, the unique formal solution
+of $C=1+xC^2$ with constant term $1$. In particular,
+\begin{equation}\label{eq:catalan-factor}
+ |\RR_{2j}|=|\BB_{2j}|=C_j.
+\end{equation}
+Every member in these two decompositions is recursively built from
+direct and skew sums of singletons. Thus it avoids classical $2413$
+and $3142$ as well. This also makes inverse closure transparent for
+these particular classes. The result is consistent with the class
+identification cited by Barnabei et al.~\cite{barnabei}, without
+using their cited involution recurrence.
+
+\section{The involution restriction and its completeness}
+\subsection{Even lengths}
+Let $\pi\in\BB_{2m}$ be an involution and write $\pi_1=2k+1$.
+Put $r=2m-2k$. If $k=0$, then
+$\pi=1\oplus\sigma\oplus1$ and inversion fixes both endpoints.
+Thus $\sigma$ must be an involution in $\RR_{2m-2}$.
+
+Suppose $k>0$. The value $1$ lies in the last $2k$ positions.
+Involutionhood gives $\pi(2k+1)=1$, so $2k+1$ lies among these
+positions. Hence $r\le2k$, or $k\ge\lceil m/2\rceil$.
+The first $r$ positions map onto the last $r$ values. Their inverse
+images force the last $r$ positions to map back to the first $r$
+values, and the center interval is invariant. Standardization gives
+\begin{equation}\label{eq:paired}
+ \pi=A\ominus\eta\ominus A^{-1},\qquad
+ A=1\oplus\sigma\oplus1,
+\end{equation}
+where
+\[
+ \sigma\in\RR_{2j},\quad j=m-k-1,\quad
+ \eta\in\BB_{2(m-2j-2)},\quad \eta=\eta^{-1},\quad
+ 0\le j\le\lfloor(m-2)/2\rfloor.
+\]
+The outside blocks are inverse partners because the full permutation
+is an involution. They are not required to coincide. Their forward
+alternation and inverse pairing imply that $A$ is doubly alternating;
+deleting its endpoints gives the unrestricted $\sigma$ above.
+The center has even shifts and is an alternating Baxter involution.
+
+Conversely, choose any such $\sigma$ and $\eta$, including the empty
+center when $m=2j+2$. The construction~\eqref{eq:paired} is Baxter
+by closure. The even block lengths put all skew boundaries at even
+positions, so they are the required descents. The interior and endpoint
+checks from~\eqref{eq:Bdec} give the remaining alternation. Finally,
+\[
+ (A\ominus\eta\ominus A^{-1})^{-1}
+   =A\ominus\eta^{-1}\ominus A^{-1}
+   =A\ominus\eta\ominus A^{-1}.
+\]
+Its first value is $2(m-j-1)+1$, which recovers $j$. Standardizing
+the recovered intervals then recovers $\sigma$ and $\eta$. This proves
+sufficiency and uniqueness.
+
+There are $C_j$ outside choices by~\eqref{eq:catalan-factor}. There
+is no division by two: the left block has a distinguished position.
+Choosing $\sigma^{-1}$ on the left usually gives a different full
+permutation. With $r_m$ denoting the involutions in $\RR_{2m}$,
+we have proved
+\[
+ e_m=r_{m-1}+\sum_{j=0}^{\lfloor(m-2)/2\rfloor}C_j e_{m-2j-2}.
+\]
+
+\subsection{Odd lengths}
+The third structural input, together with direct-sum closure, gives a
+bijection $\sigma\mapsto1\oplus\sigma$ from $\RR_{2m}$ onto
+$\BB_{2m+1}$. Its inverse preserves involutionhood, so $o_m=r_m$.
+In~\eqref{eq:Rdec}, both the first component and its suffix map their
+own position intervals to themselves. Inversion preserves their order.
+They cannot exchange as the outside skew blocks did. Thus
+$(1\ominus\tau\ominus1)\oplus\sigma$ is an involution exactly
+when both $\tau$ and $\sigma$ are involutions. This proves
+\[
+ o_m=\sum_{i=0}^{m-1}e_i o_{m-1-i}.
+\]
+Together with the even result, this proves
+Theorem~\ref{thm:enumeration}. Every right-hand coefficient uses
+strictly smaller indices, proving formal uniqueness as well.
+
+\subsection{A canonical block interpretation}
+The block $1\oplus\sigma\oplus1$ is skew-indecomposable because
+its first value is its minimum. Iterating~\eqref{eq:Bdec} gives the
+canonical skew sequence of these primitives. Inversion reverses the
+sequence and inverts each primitive. An involution therefore consists
+of any number of inverse-paired outside primitives and an optional
+involutive central primitive. A pair has weight $x^2C(x^2)$; the
+central choices have weight $1+xO$. This gives
+\[
+ E=\frac{1+xO}{1-x^2C(x^2)}.
+\]
+Likewise $1\ominus\tau\ominus1$ is direct-indecomposable, and
+inversion preserves the direct sequence. Each primitive must separately
+be an involution, giving $O=1/(1-xE)$. This restates the same complete
+proof while isolating the source of the different restrictions.
+
+\section{The first missing objects and the published error}
+Min's proof~\cite[p.~256]{min2021} asserts that the standardized first
+outside block belongs to the involution subclass and identifies it with
+the last outside block. The correct assertion is
+\[
+ \std(\pi_3)=\std(\pi_1)^{-1}.
+\]
+Only the middle block is invariant by itself. Replacing the unrestricted
+$C_j$ in~\eqref{eq:erec} by the involution count $o_j$ is the counting
+error. In hat notation the printed equations instead define
+\[
+ \widehat E=1+x\widehat O+x^2\widehat E\widehat O(x^2),
+ \qquad \widehat O=(1-x\widehat E)^{-1}.
+\]
+They are meaningful formal equations for another sequence, but do not
+count the stated class beyond the agreement range.
+
+Now $C_j=o_j$ for $0\le j\le3$, while $C_4=14$ and $o_4=12$.
+The first place where the difference can occur in the even recurrence
+is $m=10$, $j=4$, with empty center. Lower-index recurrence terms still
+agree. Thus the discrepancy of exactly two at length $20$ is structural,
+not just a computational lower bound.
+
+The two non-involutive interiors in $\RR_8$ are the inverse pair
+\[
+ \sigma=(8,4,6,5,7,2,3,1),\qquad
+ \sigma^{-1}=(8,6,7,2,4,3,5,1).
+\]
+Set $A=1\oplus\sigma\oplus1$. Placing either orientation first in
+$A\ominus A^{-1}$ gives the omitted permutations
+\begin{align*}
+\pi^{(1)}={}&(11,19,15,17,16,18,13,14,12,20,\\[-2pt]
+            &\phantom{(}1,9,7,8,3,5,4,6,2,10),\\
+\pi^{(2)}={}&(11,19,17,18,13,15,14,16,12,20,\\[-2pt]
+            &\phantom{(}1,9,5,7,6,8,3,4,2,10).
+\end{align*}
+Both satisfy the original strict-index Baxter definition, the standard
+vincular definition, alternation, and involutionhood. The companion
+checks every one of the $\binom{20}{4}=4845$ strict quadruples for
+each witness, as well as all positional-vincular possibilities. Their
+standardized outside blocks are inverse and unequal. Finite direct
+checks establish their membership; the decomposition proves that they
+account for the entire first discrepancy.
+
+\section{Algebraic generating functions and the dominant singularity}
+Set
+\begin{equation}\label{eq:MP}
+ M(x)=1-x^2C(x^2)=\frac{1+\sqrt{1-4x^2}}2,\qquad
+ P(x)=1-2x-4x^2.
+\end{equation}
+Eliminating $E$ from~\eqref{eq:system} gives
+\begin{equation}\label{eq:quadratic}
+ x^2O^2-(M-x)O+M=0.
+\end{equation}
+Since $M^2-M+x^2=0$, its discriminant factors as
+\begin{equation}\label{eq:D}
+ D(x)=(M-x)^2-4Mx^2=M(x)P(x).
+\end{equation}
+The branches analytic at zero with constant terms $1$ are
+\begin{equation}\label{eq:radicals}
+ O(x)=\frac{M(x)-x-\sqrt{D(x)}}{2x^2},\qquad
+ E(x)=\frac{M(x)+x-\sqrt{D(x)}}{2xM(x)}.
+\end{equation}
+Their apparent singularities at zero are removable. The radical series
+and recurrence coefficients are computed by independent exact algorithms
+in the companion.
+
+For an explicit polynomial relation define
+$P_0=x^2O^2-(1-x)O+1$ and $H=O-1$. Then
+\begin{equation}\label{eq:quartic}
+ P_0^2+HP_0+x^2H^2=0.
+\end{equation}
+Indeed $P_0=-x^2C(x^2)(O-1)$, and the Catalan equation gives this
+identity. Equivalently,
+\[
+ [2x^2O^2-(1-2x)O+1]^2-(1-4x^2)(O-1)^2=0.
+\]
+The specified analytic branch is essential; a polynomial equation alone
+does not select the counting series.
+
+Let
+\begin{equation}\label{eq:rho}
+ \rho=\frac{\sqrt5-1}{4},\qquad
+ \rho_-=-\frac{1+\sqrt5}{4},\qquad
+ \Lambda=\rho^{-1}=1+\sqrt5.
+\end{equation}
+Then $P(x)=(1-x/\rho)(1-x/\rho_-)$.
+The function $M$ is analytic and nonzero for $|x|<1/2$: its square
+root is the branch equal to $1$ at zero, and $M=0$ would force
+$x=0$, where $M=1$. The only zero of $P$ in that disk is $\rho$,
+since $|\rho_-|>1/2$. It is simple, with $P'(\rho)=-2\sqrt5$.
+Thus the two series have a unique dominant singularity at $\rho$,
+with a nonzero square-root amplitude. For any $R$ strictly between
+$\rho$ and $1/2$, their formulas continue to a disk of radius $R$
+slit along the positive real ray from $\rho$. This gives the required
+Delta domain for coefficient transfer.
+
+More explicitly, put $t=1-x/\rho$ and
+\begin{align}
+ K_o(x)&=\frac{\sqrt{M(x)(1-x/\rho_-)}}{2x^2},&
+ A_o(x)&=\frac{M(x)-x}{2x^2},\label{eq:Ko}\\
+ K_e(x)&=\frac{xK_o(x)}{M(x)},&
+ A_e(x)&=\frac{M(x)+x}{2xM(x)}.\label{eq:Ke}
+\end{align}
+In a neighborhood of $\rho$, all four amplitudes are analytic and
+\begin{equation}\label{eq:local}
+ O(x)=A_o(x)-K_o(x)t^{1/2},\qquad
+ E(x)=A_e(x)-K_e(x)t^{1/2}.
+\end{equation}
+The amplitudes here need not be analytic at zero individually; the
+original combinations are. Only their local analyticity at $\rho$ is
+used for singularity analysis.
+
+\section{Leading terms and every fixed asymptotic order}
+\subsection{Exact leading constants and first corrections}
+Let $M_\rho=M(\rho)=(1+\sqrt{2\rho})/2$. Define
+\begin{align}
+ \mathcal A_o&=\frac{\sqrt{2\sqrt5\,\rho M_\rho}}
+                    {4\sqrt\pi\,\rho^2},&
+ \mathcal A_e&=\frac{\sqrt{2\sqrt5\,\rho M_\rho}}
+                    {4\sqrt\pi\,\rho M_\rho}.
+ \label{eq:amplitudes}
+\end{align}
+The symbols $\mathcal A_s$ are constants, distinguished from the
+analytic functions $A_s(x)$ in~\eqref{eq:Ko}--\eqref{eq:Ke}.
+
+\begin{theorem}\label{thm:asymptotic}
+For $s\in\{e,o\}$ and every fixed integer $J\ge0$, there are
+explicit real constants $c_{s,j}$ such that
+\begin{equation}\label{eq:allorders}
+ s_m=\mathcal A_s\Lambda^m m^{-3/2}
+ \left(1+\sum_{j=1}^{J}c_{s,j}m^{-j}
+             +O_{s,J}(m^{-J-1})\right).
+\end{equation}
+Here $s_m=e_m$ or $o_m$ according to $s$. The first constants
+$\lambda_s=c_{s,1}$ are
+\begin{align}
+ \lambda_o&=-\frac{21}{8}
+       +\frac{3\rho}{8}\frac{D''(\rho)}{D'(\rho)},\label{eq:lambdao}\\
+ \lambda_e&=\lambda_o+\frac32
+       -\frac{3\rho}{2}\frac{M'(\rho)}{M(\rho)}.\label{eq:lambdae}
+\end{align}
+The error assertion is for each fixed order, not uniform in $J$.
+\end{theorem}
+Numerically, these constants are
+\begin{align*}
+ \rho&=0.30901699437494742410\ldots,&
+ \Lambda&=3.23606797749978969641\ldots,\\
+ \mathcal A_o&=1.64094172716863543428\ldots,&
+ \mathcal A_e&=0.56778936745075026465\ldots,\\
+ \lambda_o&=-2.62171983544803595042\ldots,&
+ \lambda_e&=-0.71369036117693250404\ldots.
+\end{align*}
+These decimals are informative approximations; the displayed exact
+expressions are the definitions. Per original permutation entry the
+exponential rate is
+$\sqrt\Lambda=1.79890743994786727226\ldots$.
+
+\begin{proof}
+The constant multiplying $-t^{1/2}$ is $K_s(\rho)$, and
+$-1/\Gamma(-1/2)=1/(2\sqrt\pi)$, giving
+$\mathcal A_s=K_s(\rho)/(2\sqrt\pi)$. Since
+$1-\rho/\rho_-=2\sqrt5\rho$, these are precisely
+\eqref{eq:amplitudes}.
+Expand $K_s(\rho(1-t))=k_{s,0}+k_{s,1}t+\cdots$, with
+$k_{s,1}=-\rho K_s'(\rho)$. The first gamma-ratio correction to
+$t^{1/2}$ is $3/(8m)$ and
+$\Gamma(-1/2)/\Gamma(-3/2)=-3/2$. Therefore
+\begin{equation}\label{eq:lambdaK}
+ \lambda_s=\frac38-\frac32\frac{k_{s,1}}{k_{s,0}}
+           =\frac38+\frac{3\rho}{2}\frac{K_s'(\rho)}{K_s(\rho)}.
+\end{equation}
+Using $K_o=\sqrt{D/(1-x/\rho)}/(2x^2)$ gives
+$K_o'/K_o=D''(\rho)/(4D'(\rho))-2/\rho$ at $\rho$.
+This proves~\eqref{eq:lambdao}; logarithmic differentiation of
+$K_e=xK_o/M$ proves~\eqref{eq:lambdae}. The next subsection
+establishes the full expansion and remainder.
+\end{proof}
+As an alternative exact simplification, using $M'(\rho)=-2\rho/\sqrt{2\rho}$,
+\[
+ \lambda_o=-\frac{21}{8}
+      +\frac{3\rho}{4}\frac{M'(\rho)}{M_\rho}
+      +\frac{3\rho}{2\sqrt5},\qquad
+ \lambda_e=-\frac98
+      -\frac{3\rho}{4}\frac{M'(\rho)}{M_\rho}
+      +\frac{3\rho}{2\sqrt5}.
+\]
+
+\subsection{A coefficient algorithm with a rigorous remainder}
+Define for $j\ge0$
+\[
+ k_{s,j}=[t^j]K_s(\rho(1-t)).
+\]
+For every fixed $K\ge1$, the Delta-domain transfer theorem applied
+to~\eqref{eq:local} gives
+\begin{equation}\label{eq:gamma-transfer}
+ s_m=-\rho^{-m}\sum_{j=0}^{K-1}k_{s,j}
+  \frac{\Gamma(m-j-1/2)}{\Gamma(-j-1/2)\Gamma(m+1)}
+    +O_{s,K}(\rho^{-m}m^{-K-3/2}).
+\end{equation}
+The local analytic part contributes no algebraic-order terms to this
+expansion. The next nonanalytic power is $t^{K+1/2}$; the analytic
+continuation established above gives the stated coefficient remainder,
+by the standard transfer theorem~\cite[Chapter~VI]{FS}. Equivalently
+one may retain one further local term before applying a remainder
+estimate. No singularity of equal modulus has been omitted.
+
+For a fully specified inverse-power algorithm, let $B_j(z)$ denote
+the Bernoulli polynomials, normalized by
+$te^{zt}/(e^t-1)=\sum_{j\ge0}B_j(z)t^j/j!$. For fixed $a,b$ define
+$G_r(a,b)$ by
+\begin{equation}\label{eq:gammaG}
+ \sum_{r\ge0}G_r(a,b)z^r
+ =\exp\left(\sum_{\ell\ge1}
+ \frac{(-1)^{\ell+1}\bigl(B_{\ell+1}(a)-B_{\ell+1}(b)\bigr)}
+      {\ell(\ell+1)}z^\ell\right).
+\end{equation}
+Then the fixed-order gamma-ratio expansion is
+\[
+ \frac{\Gamma(m+a)}{\Gamma(m+b)}
+  \sim m^{a-b}\sum_{r\ge0}G_r(a,b)m^{-r}.
+\]
+Put $c_{s,0}=1$. Direct substitution into~\eqref{eq:gamma-transfer}
+gives the finite formula
+\begin{equation}\label{eq:cs}
+ c_{s,q}=-\frac1{\mathcal A_s}
+ \sum_{j=0}^{q}\frac{k_{s,j}}{\Gamma(-j-1/2)}
+             G_{q-j}(-j-1/2,1),\qquad q\ge0.
+\end{equation}
+Thus every coefficient is determined by derivatives of explicit radicals
+at the quadratic irrational $\rho$ and rational Bernoulli-polynomial
+operations. Formula~\eqref{eq:gamma-transfer} with $K=J+1$ proves
+\eqref{eq:allorders}. All relative coefficients $c_{s,q}$ are algebraic;
+the common $\sqrt\pi$ factors cancel. We claim a full fixed-order
+Poincare expansion, not convergence of its infinite formal series.
+
+\subsection{Parity and the full generating function}
+The full ordinary generating function is
+\[
+ \mathcal G(z)=E(z^2)+zO(z^2).
+\]
+It is algebraic, hence D-finite. General algebraicity for alternating
+separable involutions also follows from the earlier theorem of
+Brignall, Huczynska, and Vatter~\cite[Corollary~1.4 and Theorem~5.3]{BHV}:
+the alternating and involution restrictions can be combined in a class
+with finitely many simple permutations. Applying that theorem to the
+separable class is an independent inference, so algebraicity itself is
+not a new claim of this report. The corrected explicit equations identify
+the relevant branch and coefficients. Its dominant singularities are
+$z=\pm\sqrt\rho$; neither leading amplitude cancels, since
+$K_e(\rho)/K_o(\rho)=\rho/M_\rho\ne\sqrt\rho$.
+The parity-specific formulas avoid cancellation
+between their two contributions. In particular,
+\[
+ a_{2m}\sim\mathcal A_e\Lambda^m m^{-3/2},\qquad
+ a_{2m+1}\sim\mathcal A_o\Lambda^m m^{-3/2}.
+\]
+There is no need for logarithmic or log-periodic leading factors.
+The two amplitudes cannot be merged into one amplitude independent of
+parity. Their consequences include
+\begin{equation}\label{eq:ratios}
+ \frac{o_m}{e_m}\longrightarrow\frac{M_\rho}{\rho}>1,
+ \qquad
+ \frac{e_{m+1}}{o_m}\longrightarrow\frac1{M_\rho}>1.
+\end{equation}
+Thus the full sequence is eventually strictly increasing. This is an
+asymptotic conclusion, not a claimed all-index monotonicity proof.
+No claim concerning a natural boundary or non-D-finiteness of the old
+recurrence sequence is needed for the corrected result.
+
+\section{Lambert core and every fixed inverse order}
+\subsection{Large real model inverses}
+Let $p=3/2$ and $b=\log\Lambda>0$. Define logarithmic coefficients
+$d_{s,j}$ formally by
+\begin{equation}\label{eq:logcoeff}
+ \log\left(1+\sum_{j\ge1}c_{s,j}z^j\right)
+       =\sum_{j\ge1}d_{s,j}z^j.
+\end{equation}
+For example $d_{s,1}=c_{s,1}$,
+$d_{s,2}=c_{s,2}-c_{s,1}^2/2$, and
+$d_{s,3}=c_{s,3}-c_{s,1}c_{s,2}+c_{s,1}^3/3$.
+Equation~\eqref{eq:allorders} implies, for fixed $J$,
+\begin{equation}\label{eq:log-forward}
+ \log s_m= b m-p\log m+\log\mathcal A_s
+           +\sum_{j=1}^Jd_{s,j}m^{-j}+O_{s,J}(m^{-J-1}).
+\end{equation}
+For large $y$, the exact large root of the leading real model is
+\begin{equation}\label{eq:Lambert}
+ X_s(y)=-\frac{p}{b}
+ W_{-1}\left(-\frac{b}{p}\left(\frac{\mathcal A_s}{y}\right)^{1/p}\right).
+\end{equation}
+The real branch $W_{-1}$ is required. It selects $X_s>p/b$ and
+satisfies $\mathcal A_s e^{bX_s}X_s^{-p}=y$.
+The other real branch gives the small root, unrelated to inversion of
+the growing sequence. For sufficiently large $y$ the displayed argument
+lies in $(-1/e,0)$.
+
+For fixed $J$ put
+\[
+ F_{s,J}(x)=b x-p\log x+\log\mathcal A_s
+                   +\sum_{j=1}^Jd_{s,j}x^{-j}.
+\]
+Its derivative is $b-p/x+O(x^{-2})\ge b/2$ for all sufficiently
+large $x$. Therefore $F_{s,J}(x)=\log y$ has a unique large real
+root $x_{s,J}(y)$. These are explicitly defined model inverses; no
+unspecified real interpolation of the integer sequence is assumed.
+
+\subsection{Formal recursion and residual proof}
+Set $x=X_s+u$, $\eps=1/X_s$. Subtraction of the exact leading
+root equation gives the formal equation
+\begin{equation}\label{eq:inverse-formal}
+ 0=b u-p\log(1+\eps u)
+       +\sum_{j\ge1}d_{s,j}\eps^j(1+\eps u)^{-j}.
+\end{equation}
+Its coefficient of $u$ at $(\eps,u)=(0,0)$ is $b\ne0$, so there
+is a unique formal solution $u=\sum_{k\ge1}v_{s,k}\eps^k$.
+Coefficient extraction gives, suppressing the subscript $s$,
+\begin{align}
+ v_1&=-d_1/b,\nonumber\\
+ v_2&=(pv_1-d_2)/b,\nonumber\\
+ v_3&=(pv_2+d_1v_1-d_3)/b,\label{eq:vcoeff}\\
+ v_4&=(pv_3-(p/2)v_1^2+d_1v_2+2d_2v_1-d_4)/b.\nonumber
+\end{align}
+Each further equation is linear in the next coefficient, with leading
+coefficient $b$.
+
+\begin{theorem}[Fixed-order inverse expansion]\label{thm:inverse}
+For each fixed $K\ge1$ and $J\ge K$,
+\begin{equation}\label{eq:inverse-exp}
+ x_{s,J}(y)=X_s(y)+\sum_{k=1}^K v_{s,k}X_s(y)^{-k}
+                 +O_{s,J,K}(X_s(y)^{-K-1}).
+\end{equation}
+For $K=0$, $x_{s,J}=X_s+O(X_s^{-1})$.
+\end{theorem}
+\begin{proof}
+Substitution of the truncated formal solution into
+$F_{s,J}(X_s+u)-\log y$ cancels coefficients through order
+$X_s^{-K}$ and leaves $O(X_s^{-K-1})$. All expansions are on
+a fixed small neighborhood of $u=0$ for sufficiently large $X_s$.
+There $F'_{s,J}\ge b/2$. The mean value theorem converts the
+residual to a root error of the same order; existence and uniqueness
+follow from the eventual monotonicity of the model. For $K=0$ the
+uncorrected residual is $O(X_s^{-1})$. No convergence assumption on
+the infinite formal series is used.
+\end{proof}
+The limiting model derivative is a positive constant. Consequently
+inversion here supplies no extra power of $X_s^{-1}$ beyond the
+residual order. Since $d_{s,1}=\lambda_s<0$, the first inverse
+correction $v_{s,1}/X_s=-\lambda_s/(bX_s)$ is positive.
+
+\section{Ceiling-safe thresholds and exact parity choice}
+Define the exact thresholds for $y>0$ by
+\begin{equation}\label{eq:thresholds}
+ N_e(y)=\min\{m\ge0:e_m\ge y\},\qquad
+ N_o(y)=\min\{m\ge0:o_m\ge y\}.
+\end{equation}
+They exist since both subsequences grow without bound. Their eventual
+strict increase follows either from~\eqref{eq:allorders} or
+\eqref{eq:ratios}. In each statement below $y$ is also larger than
+all finitely many values before the chosen monotonicity onset; no early
+crossing is silently ignored.
+
+\begin{theorem}[Safe asymptotic ceilings]\label{thm:ceil}
+For every fixed $J\ge0$ there exist $D_{s,J}>0$ and an onset such
+that, for all sufficiently large $y$,
+\begin{equation}\label{eq:safe-model}
+ \Ceil{x_{s,J}-D_{s,J}x_{s,J}^{-J-1}}
+ \le N_s(y)\le
+ \Ceil{x_{s,J}+D_{s,J}x_{s,J}^{-J-1}}.
+\end{equation}
+For $K\ge1$ set
+$\widehat x_{s,K}=X_s+\sum_{k=1}^{K}v_{s,k}X_s^{-k}$.
+There are constants $H_{s,K}>0$ such that
+\begin{align}
+ L_s(y)&=\Ceil{\widehat x_{s,K}-H_{s,K}X_s^{-K-1}}
+       \le N_s(y),\label{eq:L}\\
+ N_s(y)&\le
+ U_s(y)=\Ceil{\widehat x_{s,K}+H_{s,K}X_s^{-K-1}}.
+ \label{eq:U}
+\end{align}
+For $K=0$ use $\widehat x_{s,0}=X_s$ and half-width $H_{s,0}/X_s$.
+\end{theorem}
+\begin{proof}
+Write $x=x_{s,J}$. At integers within two of $x$, the log-error in
+\eqref{eq:log-forward} is bounded by a constant times $x^{-J-1}$,
+while $F'_{s,J}\ge b/2$. Choose $D$ with enough slack that
+integers $m<x-Dx^{-J-1}$ in this two-unit window satisfy
+$\log s_m<\log y$, and the integer
+$m=\lceil x+Dx^{-J-1}\rceil$ satisfies $\log s_m\ge\log y$.
+For integers outside that window, eventual monotonicity extends
+the lower comparison, and the finite pre-onset range is excluded by
+increasing $y$. This proves~\eqref{eq:safe-model}. Taking $J=K$
+and absorbing the root error of~\eqref{eq:inverse-exp} yields
+\eqref{eq:L}--\eqref{eq:U}. For $K=0$, the uncorrected root and
+log-error estimates both have order $X_s^{-1}$.
+\end{proof}
+The use of $\ge$ in~\eqref{eq:thresholds} is important. The result
+includes inputs equal to exact sequence values. Taking the ceiling of
+an approximate real inverse without its error interval would not be
+justified, however small the approximation error.
+
+The full first-crossing index is exactly
+\begin{equation}\label{eq:full-min}
+ N(y):=\min\{n\ge0:a_n\ge y\}
+       =\min\{2N_e(y),\ 2N_o(y)+1\}.
+\end{equation}
+This identity requires no monotonicity between parities. The bounds
+above therefore give
+\begin{equation}\label{eq:full-bounds}
+ \min\{2L_e,2L_o+1\}\le N(y)\le
+ \min\{2U_e,2U_o+1\}.
+\end{equation}
+
+\begin{corollary}\label{cor:adjacent}
+For every fixed inverse order, the combined interval in
+\eqref{eq:full-bounds} eventually consists of at most two adjacent
+full indices. If the bounds coincide they determine $N(y)$ exactly.
+Otherwise exact evaluation at the candidates resolves the threshold.
+\end{corollary}
+\begin{proof}
+Since $\mathcal A_o/\mathcal A_e=M_\rho/\rho$, subtraction of
+the two model equations, whose derivative tends to $b$, gives
+\begin{equation}\label{eq:delta}
+ x_{e,J}(y)-x_{o,J}(y)\longrightarrow
+ \delta=\frac{\log(M_\rho/\rho)}{\log\Lambda}
+       =1+\frac{\log M_\rho}{\log\Lambda}.
+\end{equation}
+The same limit holds for the finite approximants. Because
+$\rho<M_\rho<1$, we have $0<\delta<1$; numerically
+$\delta=0.9037058146841100247\ldots$.
+The error half-widths tend to zero. Both parity intervals cannot
+simultaneously contain an integer where their endpoint ceilings differ:
+that would force their center difference to approach an integer,
+contradicting~\eqref{eq:delta}.
+If neither interval has distinct endpoint ceilings, both parity
+thresholds are fixed and so is~\eqref{eq:full-min}. If only the even
+interval has possible ceilings $m,m+1$, its center is $m+o(1)$;
+the odd center is $m-\delta+o(1)$ and its ceiling is $m$.
+The full candidates are $2m$ and $2m+1$. If only the odd interval
+has possible ceilings $m,m+1$, the even center is
+$m+\delta+o(1)$ with ceiling $m+1$, and the full candidates are
+$2m+1$ and $2m+2$. Endpoint equality is included by the use of
+closed bounds and ceilings.
+\end{proof}
+The constants $D_{s,J},H_{s,K}$ and their onsets are existence
+constants, not certified finite-input numerical values. The formulas
+are rigorous asymptotic localization theorems. The exact recurrence
+provides a terminating threshold algorithm at any finite input;
+the asymptotic brackets are a proven accelerator only once explicit
+bounds and onsets are additionally supplied. Numerical residual tests
+cannot turn unknown error constants into universal certificates.
+
+\section{Computational evidence and reproducible scope}
+The source package contains a newly written exact companion, with
+no imported code from earlier reports. Its independent routes compare
+the corrected coefficient recurrence with formal expansion of the
+radicals~\eqref{eq:radicals}, verify the functional and polynomial
+identities, locate the first disagreement with the old recurrence, and
+check the two explicit omitted permutations by both Baxter predicates.
+It also performs a bounded exhaustive permutation check and exact
+formal inverse-residual tests. The companion README and deterministic
+JSON specify each finite bound, coefficient range, and schema.
+
+All exact tests are active in both ordinary Python and optimized
+\texttt{python3 -O}; no mathematical validation depends on removable
+\texttt{assert} statements. The semantic fixture checks reject altered
+values and malformed data. Output creation refuses overwriting and
+symlink destinations. These properties concern reproducibility and
+failure detection, not a computational proof of the infinite theorems.
+
+Separate direct involution enumerations performed during the research
+checked the strict value-adjacency definition and the positional-vincular
+definition independently through original length $22$. They give
+$2168$, $5080$, and $6014$ at lengths $20$, $21$, and $22$.
+Those corroborating results are distinguished in the provenance file
+from the smaller checks freshly rerun by the packaged companion.
+The report's all-length result rests on the proved decomposition, not
+extrapolation of either finite list.
+
+The PDF and ZIP builders use fixed inputs, normalized metadata,
+no shell escape, and new output paths. The ZIP allowlist excludes
+working notes, downloaded papers, unrelated report foundations, and
+intermediate build files. The source provenance file records the
+reviewed primary documents, their hashes, and the precise theorem
+locations used. Public source URLs remain the proper route to those
+papers. The final package supplies the report source, report PDF,
+companion, and rebuild instructions.
+
+\section{Source review and limits of the claim}
+The original 2006 structural statements and the full 2021 paper were
+inspected, including the scanned original pages containing the inputs
+and the page containing the erroneous involution restriction. The
+Ouchterlony and Barnabei comparisons support the intended class
+identification. Barnabei's citation of Min is not an independent proof
+of Min's recurrence. Bounded searches of corrected parity prefixes, alternating separable
+involutions, and related symmetric-tree formulations found no matching
+explicit corrected enumeration in the sources checked. General
+algebraicity was already available from~\cite{BHV}. These negative
+search results do not establish global novelty.
+Min's 2021 paper says that its material derives from the author's 2002
+thesis; that thesis remains uninspected.
+
+The conclusions have distinct levels. The corrected enumeration is
+proved from explicit published unrestricted structural inputs. The
+radical formulas, exact singularity, fixed-order asymptotics, and
+inverse-localization statements follow analytically. Finite
+computations independently test their algebra and the first omitted
+objects. The numerical decimals are approximations; the exact formulas
+specify the constants. Effective numerical error bounds for universal
+finite-input ceiling certification, and exponentially improved global
+expansions beyond the fixed-order dominant-singularity series, are not
+claimed here.
+
+\begin{thebibliography}{9}
+\bibitem{minpark}
+S. Min and S. Park,
+\emph{The enumeration of doubly alternating Baxter permutations},
+J. Korean Math. Soc. \textbf{43}(3) (2006), 553--561.
+\href{https://doi.org/10.4134/JKMS.2006.43.3.553}{doi:10.4134/JKMS.2006.43.3.553}.
+Theorem 4.1 and Corollaries 4.5, 4.7, printed pp. 558--560.
+
+\bibitem{min2021}
+S. Min,
+\emph{The enumeration of involutions of doubly alternating Baxter permutations},
+J. Chungcheong Math. Soc. \textbf{34}(3) (2021), 253--257.
+\href{https://doi.org/10.14403/jcms.2021.34.3.253}{doi:10.14403/jcms.2021.34.3.253}.
+Theorem 2.7 and its proof, especially printed p. 256.
+
+\bibitem{oeis}
+OEIS Foundation Inc.,
+\emph{A347546}, \url{https://oeis.org/A347546},
+source and table inspected 3 October 2026.
+The report distinguishes the intended class from the then-tabulated recurrence sequence.
+
+\bibitem{ouchterlony}
+E. Ouchterlony,
+\emph{Pattern avoiding doubly alternating permutations},
+FPSAC 2006 proceedings, Section 4.
+\url{https://garsia.math.yorku.ca/fpsac06/papers/83.pdf}.
+
+\bibitem{barnabei}
+M. Barnabei, F. Bonetti, N. Castronuovo, and M. Silimbani,
+\emph{Pattern Avoiding Alternating Involutions},
+Enumerative Combinatorics and Applications \textbf{3}:1 (2023), Article S2R4,
+Section 10.
+\url{https://ecajournal.haifa.ac.il/Volume2023/ECA2023_S2A4.pdf}.
+
+\bibitem{BHV}
+R. Brignall, S. Huczynska, and V. Vatter,
+\emph{Simple permutations and algebraic generating functions},
+J. Combin. Theory Ser. A \textbf{115}(3) (2008), 423--441.
+\href{https://doi.org/10.1016/j.jcta.2007.06.007}{doi:10.1016/j.jcta.2007.06.007}.
+Corollary 1.4 and Theorem 5.3 in the author-hosted version,
+\url{https://www.rbrignall.org.uk/papers/simple-enum.pdf}.
+
+\bibitem{FS}
+P. Flajolet and R. Sedgewick,
+\emph{Analytic Combinatorics}, Cambridge University Press, 2009,
+Chapter VI.
+\url{https://algo.inria.fr/flajolet/Publications/book.pdf}.
+\end{thebibliography}
+\end{document}

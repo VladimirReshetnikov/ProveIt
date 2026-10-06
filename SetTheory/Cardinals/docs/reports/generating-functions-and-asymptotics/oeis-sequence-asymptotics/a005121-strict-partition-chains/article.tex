@@ -1,0 +1,787 @@
+\pdfinfoomitdate=1
+\pdftrailerid{}
+\pdfsuppressptexinfo=15
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array}
+\usepackage{microtype}
+\usepackage[hidelinks,pdfauthor={},pdftitle={Strict partition chains and their asymptotic expansions},pdfcreator={},pdfproducer={}]{hyperref}
+\usepackage{enumitem}
+\setlist{itemsep=3pt,topsep=5pt}
+\setlength{\emergencystretch}{2em}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\N}{\mathbb N}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\Log}{\operatorname{Log}}
+\newcommand{\coeff}[2]{[#1^{#2}]}
+\newcommand{\fall}[2]{(#1)_{#2}}
+\title{Strict partition chains and their asymptotic expansions}
+\author{Report 223}
+\date{}
+\begin{document}
+\maketitle
+\begin{abstract}
+The Lengyel numbers, OEIS A005121, count strict chains between the two endpoints of a partition lattice. We give a self-contained recurrence proof of their complete fixed-order asymptotic expansion on the known factorial-square scale. An elementary factorial majorant and a finite block-defect expansion yield a uniform kernel remainder. A weighted first-difference operator has limiting norm $2\log 2-1<1$, so recurrence residuals give genuine asymptotic errors and one positive, anchored leading constant. The same argument on a fixed complex marking disk proves all fixed cumulant expansions for chain length. We also give a constructive Lambert-$W$ inverse, eventual recovery on sampled values, and two-ceiling enclosures for arbitrary thresholds. Exact counting and testing code accompanies the article. The leading equivalent, its constant, the leading mean, and the central limit theorem are prior results. Formal higher corrections were previously announced; no priority claim for these coefficients or general inversion machinery is made.
+\end{abstract}
+\tableofcontents
+
+\section{Objects and the main conclusions}
+Let $\Pi_n$ be the lattice of set partitions of $[n]=\{1,\ldots,n\}$, ordered by refinement. Its least element consists of $n$ singleton blocks, and its greatest element has one block. A \emph{strict chain} here starts at the least element, ends at the greatest element, and has strictly increasing successive partitions. It need not be saturated. Its length $H$ is the number of strict transitions, not the number of partitions listed. In particular $H_1=0$; for $n\ge2$, $1\le H\le n-1$.
+
+Let $z_n$ be the number of these chains, and let $Z_n(q)$ count them with weight $q^H$. If $S(n,j)$ denotes a Stirling number of the second kind, then
+\begin{equation}\label{eq:recurrence}
+ Z_1(q)=1,\qquad Z_n(q)=q\sum_{j=1}^{n-1}S(n,j)Z_j(q)\quad(n\ge2),
+ \qquad z_n=Z_n(1).
+\end{equation}
+Indeed, the first transition has a partition with $j<n$ blocks, of which there are $S(n,j)$ possibilities. Its upper interval is a partition lattice on those $j$ blocks. This proves the recurrence without any independence assumption. The first values are
+\[
+(z_1,\ldots,z_{10})=(1,1,4,32,436,9012,262760,10270696,518277560,32795928016).
+\]
+At $q=1$ choose a chain uniformly. Its probability generating function is exactly $Z_n(q)/z_n$.
+
+Write throughout
+\begin{equation}\label{eq:scale}
+ L=\log 2,\qquad b=1+\frac L3,\qquad
+ f_n=(n!)^2(2L)^{-n}n^{-b}.
+\end{equation}
+\begin{theorem}[Unmarked fixed-order expansion]\label{thm:main}
+There is a positive constant $C$, uniquely anchored by
+\begin{equation}\label{eq:C}
+ C=\lim_{n\to\infty}\frac{z_n}{f_n},
+\end{equation}
+such that for every fixed integer $M\ge0$,
+\begin{equation}\label{eq:expansion}
+ z_n=Cf_n\left(\sum_{j=0}^{M}\frac{c_j(L)}{n^j}
+                  +O_M(n^{-M-1})\right),\qquad c_0=1.
+\end{equation}
+The coefficients $c_j\in\Q[L]$ are uniquely and recursively computable. The first four are
+\begin{align}
+ c_1&=\frac L6,\label{eq:cs}\\
+ c_2&=-\frac{L(16L^2+45L-90)}{3240},\notag\\
+ c_3&=\frac{L^2(10L^2-81L-270)}{6480},\notag\\
+ c_4&=\frac{L}{146966400}\bigl(1792L^5+32400L^4+2358405L^3\notag\\[-2pt]
+    &\hspace{40mm}{}-1281420L^2-8108100L-408240\bigr).\notag
+\end{align}
+\end{theorem}
+The proof in Sections~\ref{sec:domination}--\ref{sec:completion} is direct and does not invoke a previously known convergence theorem. This does not make the leading limit new: it is the known Lengyel constant. The point is that the error transfer is proved, rather than inferred from formal substitution.
+
+There is also one complex neighborhood of $q=1$ on which the same polynomials give every fixed-order marked expansion. The initial contraction disk can be taken to be $|q-1|\le1/16$; a once-only further shrink makes the analytic limiting constant nonzero. With $L(q)=\Log(q+1)-\Log q$,
+\begin{equation}\label{eq:markedintro}
+ Z_n(q)=C(q)(n!)^2[2L(q)]^{-n}n^{-1-L(q)/3}
+ \left(\sum_{j=0}^{M}\frac{c_j(L(q))}{n^j}+O_M(n^{-M-1})\right).
+\end{equation}
+The error inside parentheses is analytic and uniform on a fixed disk. Its fixed derivatives, on smaller disks, retain the stated order. This is a statement about a normalized remainder; differentiating the whole prefactor would introduce additional $n$-dependent factors.
+
+In particular, for constants $K_1,K_2$ determined by derivatives of $\log C(e^t)$,
+\begin{align}
+ \E H_n&=\frac{n}{2L}+\frac{\log n}{6}+K_1-\frac1{12n}+O(n^{-2}),\label{eq:meanintro}\\
+ \Var H_n&=\frac{1-L}{4L^2}n-\frac{\log n}{12}+K_2+\frac1{24n}+O(n^{-2}).\label{eq:varintro}
+\end{align}
+Every fixed cumulant has a full fixed-order expansion of the same kind. Section~\ref{sec:inverse} gives the corresponding inverse construction and explains precisely why arbitrary threshold inversion needs an enclosure rather than the ceiling of an unqualified approximation.
+
+\subsection{What the asymptotic assertions mean}
+All orders in this article are \emph{fixed}. For each chosen $M$ there are constants and an onset index for the indicated remainder. Neither their sizes nor the onset need be uniform as $M$ grows. We prove no convergence of the infinite formal series, Gevrey estimate, optimal truncation, exponentially small remainder, local limit theorem, Edgeworth expansion, or large-deviation principle. No interval-certified decimal value of $C$ or its marked derivatives is supplied. Exact calculations and decimal diagnostics are separated in Section~\ref{sec:computation}.
+
+\section{Prior results and the scope of this report}\label{sec:prior}
+Lengyel~\cite{Lengyel} proved two-sided bounds on the scale~\eqref{eq:scale}; his Theorem~1.2 announced a convergence result. Babai and Lengyel~\cite{BabaiLengyel}, Theorem~2, proved the positive limit~\eqref{eq:C} using a general nearly convex recurrence criterion. The end of their Section~2 explicitly asks about convergence speed. Their work also supplies the proper historical setting for the recurrence method. Near-diagonal Stirling expansions, including the fixed-deficit polynomial structure, have earlier origins; Lengyel's discussion credits Hsu.
+
+Prellberg's 2002 presentation~\cite{Prellberg} gives the leading equivalent and a contour expression for the constant by analytic iteration. Its final slide describes additional coefficient computations as using a separate, non-rigorous method. Mishna's seminar summary~\cite{Mishna} records the leading chain asymptotic and the analytic-iteration approach. Thus a rigorous fixed-order remainder proof must be distinguished from an assertion that higher coefficients were previously unknown.
+
+Finch~\cite{Finch}, Section~5.7, credits an unfinished 1990 Flajolet--Salvy manuscript with computation of the constant and analytic-iteration work. That full manuscript was not available for this comparison. This unresolved source prevents a claim about the first occurrence of the correction coefficients or an exhaustive priority determination.
+
+Van Cutsem and Ycart~\cite{VanCutsemYcart}, Theorem~4.1 and Example~1, give the leading mean behavior and a central limit theorem for the strict partition-chain model. Their printed page~997 distinguishes those conclusions from a variance equivalent conjectured under their broader hypotheses. The present marked proof concerns only recurrence~\eqref{eq:recurrence}. It is not a resolution of that general conjecture. Our central limit argument is a reproof of a known result; the complex-uniform fixed-order expansion is what supports the detailed cumulant corrections here.
+
+Related proportional-depth iterated-Bell results already appear in the ProveIt article~\cite{ProveItBell}. The actual article, at the pinned revision stated in the references, was compared. It discusses A005121 as a weighted depth aggregate and proves all-order results for a different, related observable. Those results are relevant context; no claim is made that they cannot imply aggregate statements. The route here is a direct recurrence argument for the aggregate and its chain-length marking. Likewise the inverse method specializes the established Lambert-$W$ and residual-transport apparatus already represented in ProveIt's transseries work~\cite{ProveItTransseries}; it is not a new general inverse theory.
+
+A recent phylogenetic interpretation is given by Dickey and Rosenberg~\cite{DickeyRosenberg}: the simultaneous-merger diagonal in their model is A005121. The arXiv article was compared for its enumerative scope; the published record is included bibliographically. These remarks describe an inspected source boundary, not a worldwide-priority certificate.
+
+\subsection{A formal generating function and a checked source discrepancy}
+Set $\mathcal Z(z)=\sum_{n\ge1}z_nz^n/n!$ as a \emph{formal} series. Adding the diagonal term $S(n,n)z_n=z_n$ to~\eqref{eq:recurrence} gives
+\begin{equation}\label{eq:formal}
+ 2\mathcal Z(z)=z+\mathcal Z(e^z-1).
+\end{equation}
+The coefficient of $z$ on both sides is $2$. The OEIS raw source record~\cite{OEIS}, revision \#79 of 30 May 2026, instead displays a minus sign before $z$ in the equivalent half-formula. That sign conflicts already with $z_1=1$; equation~\eqref{eq:formal} follows immediately from the recurrence. This report records the discrepancy without editing the entry.
+
+Equation~\eqref{eq:formal} is not an analytic equation for a convergent exponential generating function at the origin. The proved growth gives
+\[
+ \left(\frac{z_n}{n!}\right)^{1/n}\sim\frac{n}{2eL}\longrightarrow\infty,
+\]
+so its radius of convergence is zero. Formal composition is nevertheless well defined because $e^z-1$ has zero constant term.
+
+\section{An elementary global kernel bound}\label{sec:domination}
+Put $\fall nk=n(n-1)\cdots(n-k+1)$ and define
+\[
+ a(n,k)=\frac{2^kS(n,n-k)}{\fall nk^2}\quad(0\le k\le n-1),
+ \qquad a(n,0)=1,
+\]
+with value zero outside the natural range when used in recurrences. The expression $\fall nk^2$ means $(\fall nk)^2$.
+\begin{lemma}[Factorial domination]\label{lem:factorial}
+For $0\le k\le n-1$,
+\begin{equation}\label{eq:a-bound}
+ 0\le a(n,k)\le\frac1{k!}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+The Stirling recurrence gives the exact identity
+\begin{equation}\label{eq:arec}
+ a(n,k)=\frac{2(n-k)}{n^2}a(n-1,k-1)
+       +\frac{(n-k)^2}{n^2}a(n-1,k).
+\end{equation}
+The boundary term outside the natural range is zero. Starting with $a(1,0)=1$, induction and nonnegativity imply
+\[
+ k!a(n,k)\le\frac{2k(n-k)+(n-k)^2}{n^2}
+       =1-\frac{k^2}{n^2}\le1.
+\]
+The case $k=0$ is immediate.
+\end{proof}
+The normalized kernel and its limiting weights are
+\begin{equation}\label{eq:K}
+ K(n,k)=S(n,n-k)\frac{f_{n-k}}{f_n}
+ =L^ka(n,k)(1-k/n)^{-b},\qquad p_k=\frac{L^k}{k!}\quad(k\ge1).
+\end{equation}
+Lemma~\ref{lem:factorial} yields
+\begin{equation}\label{eq:global}
+ K(n,k)\le 2^bp_k\quad(k\le n/2),\qquad
+ K(n,k)\le n^bp_k\quad(1\le k<n).
+\end{equation}
+For every fixed $\varepsilon>0$, real $A$, and integer $d\ge0$,
+\begin{equation}\label{eq:superpoly}
+ n^A\sum_{\varepsilon\sqrt n<k<n}(1+k)^dK(n,k)\longrightarrow0.
+\end{equation}
+To check this explicitly, bound $(1+k)^d$ and $n^b$ by powers of $n$. For large $m$ the successive ratios in $L^k/k!$ for $k\ge m$ are at most $1/2$, so its tail is at most $2L^m/m!$. With $m\asymp\sqrt n$ and $m!\ge(m/e)^m$, this is $\exp(-c\sqrt n\log n)$ for some $c>0$, which beats every fixed inverse power. The same tail argument applies to any fixed polynomial in $k$ times $p_k$.
+
+\section{A uniform expansion by block defects}\label{sec:kernel}
+A fixed-$k$ Stirling expansion alone would not justify summing a recurrence with $k$ up to $n-1$. The following construction supplies both the coefficients and the uniform remainder.
+
+\subsection{An exact finite decomposition}
+For a partition with deficit $k$, let $m_j$ be the number of its blocks of size $j\ge2$. Define
+\[
+ e=\sum_{j\ge3}(j-2)m_j,\qquad
+ d=\sum_{j\ge3}(j-1)m_j,\qquad m_2=k-d.
+\]
+The number of vertices in nonsingleton blocks is $2k-e$. Counting labeled blocks gives exactly
+\begin{equation}\label{eq:block}
+ k!a(n,k)=\sum_{e\ge0}C_e(k)\frac{\fall n{2k-e}}{(\fall nk)^2},
+ \qquad
+ C_e(k)=\sum_{\substack{m_j\ge0\ (j\ge3)\\\sum(j-2)m_j=e}}
+ \frac{2^d\fall kd}{\prod_{j\ge3}m_j!(j!)^{m_j}}.
+\end{equation}
+Terms with $d>k$ vanish at integer $k$, so only legitimate block configurations contribute. For example,
+\[
+ C_0=1,\qquad C_1=\frac23\fall k2,\qquad
+ C_2=\frac13\fall k3+\frac29\fall k4.
+\]
+For a nonzero term with $e\ge1$, $e+1\le d\le\min(2e,k)$. There are at most $2^e$ configurations (integer partitions of $e$ are no more numerous than compositions), and therefore
+\begin{equation}\label{eq:Ce}
+ 0\le C_e(k)\le(8k^2)^e.
+\end{equation}
+Moreover, for $k\le n/2$ and a legitimate numerator,
+\begin{equation}\label{eq:blockbound}
+ \frac{\fall n{2k-e}}{(\fall nk)^2}
+ \le n^{-e}\exp(2k^2/n).
+\end{equation}
+Indeed, use $n^{2k-e}$ for the numerator and
+$-2\sum_{i<k}\log(1-i/n)\le4\sum_{i<k}i/n\le2k^2/n$
+for the denominator.
+
+\subsection{The complex Taylor estimate}
+\begin{lemma}[Uniform kernel expansion]\label{lem:kernel}
+For every fixed integer $J\ge0$ there are polynomials
+$q_j(k;L)\in\Q[L,k]$, of degree at most $2j$ in $k$, such that uniformly for $1\le k\le\sqrt n/8$,
+\begin{equation}\label{eq:kernelexp}
+ K(n,k)=p_k\left(\sum_{j=0}^Jq_j(k;L)n^{-j}
+       +O_J\bigl((1+k)^{2J+2}n^{-J-1}\bigr)\right).
+\end{equation}
+Here $q_0=1$ and $q_j(0;L)=0$ for $j\ge1$. The same result is uniform when $L$ ranges over a fixed compact complex neighborhood of $\log2$ and $b=1+L/3$.
+\end{lemma}
+\begin{proof}
+For every relevant $e$, set
+\[
+ H_{e,k}(t)=\frac{\prod_{i=0}^{2k-e-1}(1-it)}
+                 {\prod_{i=0}^{k-1}(1-it)^2}(1-kt)^{-b},
+ \qquad R_k=\frac1{8k^2}.
+\]
+The branches at zero are used. On $|t|\le R_k$ all factors are nonzero, and their arguments $it$ have modulus at most $1/4$. Since
+$|\log(1-z)|\le(4/3)|z|$ for $|z|\le1/4$, summing the logarithms gives
+\[
+ |\log H_{e,k}(t)|\le\frac{3+|b|}{6},\qquad
+ |H_{e,k}(t)|\le B:=\exp((3+|b|)/6).
+\]
+For clarity, the sum of numerator indices is at most $2k^2$, twice the denominator sum is at most $k^2$, and the marking term contributes at most $|b|k$. This proves the stated bound uniformly in the relevant $e$ and $k$.
+
+Write $H_{e,k}(t)=\sum_{r\ge0}A_{e,r}(k)t^r$. Since $8k^2/n\le1/8$, Cauchy's estimate yields, for every fixed $D\ge0$,
+\begin{equation}\label{eq:cauchy}
+ \left|H_{e,k}(1/n)-\sum_{r=0}^DA_{e,r}(k)n^{-r}\right|
+ \le\frac{8B}{7}\,8^{D+1}k^{2D+2}n^{-D-1}.
+\end{equation}
+For $e\le J$ take $D=J-e$ and multiply by $C_e(k)n^{-e}$. Equation~\eqref{eq:Ce} makes every resulting remainder
+$O_J(k^{2J+2}n^{-J-1})$. The remaining defect tail is bounded by
+\[
+ \sum_{e\ge J+1}C_e(k)\frac{\fall n{2k-e}}{(\fall nk)^2}
+ \le e^{2/64}\frac{(8k^2/n)^{J+1}}{1-8k^2/n}.
+\]
+The extra factor $(1-k/n)^{-b}$ is uniformly bounded, completing the remainder proof.
+
+Finally, for $r\ge1$ the coefficient of $t^r$ in $\log H_{e,k}$ is
+\begin{equation}\label{eq:logH}
+ g_{e,r}(k)=\frac{2\sum_{i=0}^{k-1}i^r-
+                    \sum_{i=0}^{2k-e-1}i^r+bk^r}{r}.
+\end{equation}
+For fixed $e$ this is a polynomial in $k$ of degree at most $r+1$. Exponentiation gives $\deg_k A_{e,r}\le2r$, while $\deg C_e\le2e$. Thus
+\begin{equation}\label{eq:qconstruct}
+ q_j(k;L)=\sum_{e=0}^j C_e(k)A_{e,j-e}(k)
+\end{equation}
+has degree at most $2j$. Polynomial power sums may be used when defining these polynomials: terms that would have a negative falling-factorial length at a small integer $k$ have $C_e(k)=0$ and contribute nothing. The finitely many such small $k$ can equivalently be handled directly. For $e>0$, $C_e$ has a factor $k$; the $e=0,k=0$ series is $1$. Hence $q_j(0;L)=0$ for $j>0$. All bounds use only a bound for $|b|$, proving the complex-uniform version as well.
+\end{proof}
+The first coefficients are
+\begin{equation}\label{eq:q12}
+ \begin{split}
+ q_1(k;L)&=\frac{k(L-k+1)}3,\\
+ q_2(k;L)&=\frac{k^2}{18}\bigl(L^2-2Lk+5L+k^2-6k+5\bigr).
+ \end{split}
+\end{equation}
+Equations~\eqref{eq:global} and~\eqref{eq:superpoly} allow the expansion to be summed term by term through any fixed order with any fixed polynomial weight in $k$. In particular,
+\begin{equation}\label{eq:moments}
+ \sum_{k\ge1}p_k=1,\quad \mu:=\sum_{k\ge1}kp_k=2L,
+ \quad\sum_{k\ge1}p_kq_1(k;L)=0,\quad
+ \sum_{k\ge1}p_kq_2(k;L)=-\frac{L^2}3.
+\end{equation}
+
+\section{A triangular construction of every coefficient}\label{sec:coefficients}
+Set $P_M(n)=\sum_{s=0}^Mc_sn^{-s}$ with $c_0=1$. We choose the coefficients so that
+\begin{equation}\label{eq:residual}
+ \sum_{k=1}^{n-1}K(n,k)P_M(n-k)-P_M(n)=O_M(n^{-M-2}).
+\end{equation}
+To see why this is constructive, for $s\ge1$ expand
+\[
+ (n-k)^{-s}=n^{-s}\sum_{h\ge0}\binom{s+h-1}{h}(k/n)^h
+\]
+only through the required finite order; for $s=0$ just the $h=0$ term is present. On the near range this finite Taylor expansion has a uniform remainder; on the far range~\eqref{eq:global} controls the bounded finite sequence values after the patch described below. Lemma~\ref{lem:kernel} through order $M+1$ then gives a residual expansion through order $n^{-M-1}$ with error $O_M(n^{-M-2})$.
+
+The constant term vanishes because $\sum p_k=1$. The coefficient of $n^{-1}$ vanishes because the $q_1$ mean is zero. At order $n^{-m-1}$ the first uncancelled occurrence of $c_m$ has multiplier
+\begin{equation}\label{eq:triangular}
+ \sum_{k\ge1}p_k\bigl(q_1(k;L)+mk\bigr)=m\mu=2mL\ne0.
+\end{equation}
+Thus $c_m$ is minus the contribution of the already known coefficients, divided by $2mL$. The contribution of $c_{m+1}$ in a longer formal series would cancel between the leading kernel and the subtracted $P_M(n)$. There is consequently no hidden higher unknown in this step. At the first nontrivial order the residual is $-L^2/3+2Lc_1$, proving $c_1=L/6$.
+
+For an explicit finite algebraic recipe, define the moment functional on polynomials in $k$ by
+\begin{equation}\label{eq:touchard}
+ \mathcal M(1)=1,\qquad
+ \mathcal M(k^r)=2T_r(L)\quad(r\ge1),\qquad
+ T_r(L)=\sum_{h=0}^rS(r,h)L^h.
+\end{equation}
+Form $q_0,\ldots,q_{m+1}$ using~\eqref{eq:logH}--\eqref{eq:qconstruct}; finite exponential coefficients can be generated by
+\[
+ A_{e,0}=1,\qquad
+ A_{e,r}=\frac1r\sum_{a=1}^r a\,g_{e,a}A_{e,r-a}.
+\]
+Then take the coefficient of $t^{m+1}$ in
+\begin{equation}\label{eq:residualalgorithm}
+ \mathcal M\left[\left(\sum_{a=0}^{m+1}q_a(k;L)t^a\right)
+       \left(\sum_{s=0}^{m}c_st^s(1-kt)^{-s}\right)\right]
+       -\sum_{s=0}^{m}c_st^s,
+\end{equation}
+and set it to zero. Every operation is finite and rational.
+
+\begin{proposition}\label{prop:ring}
+The construction gives $c_m\in\Q[L]$ at every order, not merely $\Q(L)$.
+\end{proposition}
+\begin{proof}
+Each nontrivial polynomial contribution to a positive-order residual vanishes at $k=0$: it contains either $q_a$ for $a>0$ or a positive shift power $k^h$. Every $T_r(L)$ for $r>0$ is divisible by $L$. Hence the known residual contribution is divisible by $L$ whenever earlier $c_s$ lie in $\Q[L]$. Division by $2mL$ in~\eqref{eq:triangular} stays in $\Q[L]$. Induct from $c_0=1$.
+\end{proof}
+This produces~\eqref{eq:cs} and every further fixed coefficient. In subsequent recurrence arguments, redefine $P_M(n)=1$ for the finitely many small integer indices where necessary. Since $P_M(n)\to1$, this makes it positive and bounded above and below. A change at fixed $n-k$ has $k\ge n-O(1)$, so~\eqref{eq:global} makes its effect smaller than every inverse power. The residual~\eqref{eq:residual} is unchanged asymptotically.
+
+\section{Strict contraction of first differences}\label{sec:contraction}
+The formal coefficient calculation is not yet an asymptotic theorem. The following transfer lemma supplies the needed stability and limiting constant.
+\begin{lemma}[Positive first-difference transfer]\label{lem:transfer}
+Suppose $u_n>0$ satisfies
+\[
+ u_n=\sum_{k=1}^{n-1}w(n,k)u_{n-k},\qquad w(n,k)\ge0,
+ \qquad \sigma_n:=\sum_kw(n,k)=1+O(n^{-r}),\quad r>1.
+\]
+Suppose, for fixed constants $A,B,R>0$,
+\[
+ w(n,k)\le A\frac{R^k}{k!}\ (k\le n/2),\qquad
+ w(n,k)\le An^B\frac{R^k}{k!}\ (k<n),
+\]
+and $w(n,k)\to p_k$ at every fixed $k$, where $\sum p_k=1$ and $\mu=\sum kp_k<2$. Then $u_n$ is bounded and bounded away from zero, converges to some $C>0$, and
+\[
+ u_n=C+O(n^{1-r}).
+\]
+\end{lemma}
+\begin{proof}
+Let $U_n=\max_{j\le n}u_j$ and $m_n=\min_{j\le n}u_j$. Nonnegativity gives
+\[
+ U_n\le U_{n-1}\max(1,\sigma_n),\qquad
+ m_n\ge m_{n-1}\min(1,\sigma_n).
+\]
+All row sums are positive. Beyond a finite index $|\sigma_n-1|\le1/2$, and $\sum|\sigma_n-1|<\infty$. Thus the upper product is finite and the lower product strictly positive. We have $0<a\le u_n\le A_0<\infty$ without assuming convergence.
+
+For $n\ge2$ set $d_n=u_n-u_{n-1}$ and, for $1\le j\le n-2$,
+$W(n,j)=\sum_{k=j+1}^{n-1}w(n,k)$. Telescoping the individual term $u_{n-k}$ gives the exact identity
+\begin{equation}\label{eq:diff}
+ d_n=(\sigma_n-1)u_{n-1}-\sum_{j=1}^{n-2}W(n,j)d_{n-j}.
+\end{equation}
+All difference indices are at least $2$. Interchanging finite sums, its weighted norm is
+\begin{equation}\label{eq:T}
+ T_r(n)=\sum_{j=1}^{n-2}W(n,j)\left(\frac n{n-j}\right)^r
+ =\sum_{k=1}^{n-1}w(n,k)\sum_{j=1}^{k-1}\left(\frac n{n-j}\right)^r.
+\end{equation}
+For $k\le n/2$ the inner sum is at most $2^rk$, giving a summable majorant $\mathrm{const}\,kR^k/k!$. For $k>n/2$ it is at most $n^{r+1}$, and the factorial tail makes that entire contribution tend to zero faster than any fixed inverse power. Fixed-$k$ convergence therefore proves
+\begin{equation}\label{eq:Tlimit}
+ T_r(n)\longrightarrow\sum_{k\ge1}(k-1)p_k=\mu-1<1.
+\end{equation}
+Choose $\theta<1$ and $N$ with $T_r(n)\le\theta$ for $n\ge N$. Boundedness of $u$ bounds the forcing term in~\eqref{eq:diff} by $B_0n^{-r}$. Choose $A_1$ no smaller than $B_0/(1-\theta)$ and all finitely many initial $n^r|d_n|$. Induction in~\eqref{eq:diff} gives
+\[
+ |d_n|\le n^{-r}\bigl(B_0+A_1T_r(n)\bigr)\le A_1n^{-r}.
+\]
+The differences are absolutely summable, so a limit $C$ exists, and
+\begin{equation}\label{eq:Ctail}
+ |u_N-C|\le A_1\sum_{n>N}n^{-r}\le\frac{A_1}{r-1}N^{1-r}.
+\end{equation}
+The lower bound on $u_n$ makes $C>0$.
+\end{proof}
+For the Lengyel kernel, $\mu=2L$ and the limiting norm is
+\[
+ 2\log2-1=0.3862943611\ldots<1.
+\]
+The inequality, not the displayed decimal, is what the proof needs. Every weighted limit concerns a fixed $r$; no uniformity for $r=r(n)$ is being used.
+
+\section{Completion and anchoring of the expansion}\label{sec:completion}
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+For a fixed $M$, use the positively patched $P_M$ and put
+\[
+ h_n=f_nP_M(n),\quad u_n=\frac{z_n}{h_n},\quad
+ w_M(n,k)=K(n,k)\frac{P_M(n-k)}{P_M(n)}.
+\]
+These weights are nonnegative and inherit the factorial bounds up to constants. They converge to $p_k$ for each fixed $k$. Dividing~\eqref{eq:residual} by $P_M(n)$ gives
+$\sigma_n=1+O_M(n^{-M-2})$.
+Lemma~\ref{lem:transfer} with $r=M+2$ yields
+\[
+ \frac{z_n}{f_nP_M(n)}=C_M+O_M(n^{-M-1}),\qquad C_M>0.
+\]
+Since $P_M(n)\to1$, each $C_M$ is the same limit of $z_n/f_n$. In particular they all equal the $M=0$ constant $C$. Multiplication by the bounded $P_M$ proves~\eqref{eq:expansion}. The normalization $c_0=1$ and nonzero triangular multipliers prove uniqueness of all coefficients; the limiting normalization proves uniqueness of $C$.
+\end{proof}
+This also explains why successive orders do not fit independent leading constants. The constant is the same already known Lengyel limit at every order.
+
+The proof is effective in principle. If explicit bounds and a finite computation establish $|d_n|\le A_Mn^{-M-2}$ beyond an index, then
+\begin{equation}\label{eq:certificate}
+ \left|C-\frac{z_N}{f_NP_M(N)}\right|
+ \le\frac{A_M}{M+1}N^{-M-1}.
+\end{equation}
+The kernel remainder gives computable bounds, and finite-cutoff estimates make the weighted contraction effective. No numerically efficient $A_M$ or evaluated interval certificate is claimed here. In particular a stable decimal extrapolation is not a substitute for~\eqref{eq:certificate} with verified inputs.
+
+\section{One complex marking disk for all fixed orders}\label{sec:marked}
+We now prove~\eqref{eq:markedintro}. Positivity no longer holds for complex $q$; a separate boundedness bootstrap is necessary.
+\begin{theorem}[Complex-uniform expansion]\label{thm:marked}
+On a neighborhood of the closed disk $D_0=\{q:|q-1|\le1/16\}$ define
+\[
+ L(q)=\Log(q+1)-\Log q,\quad b(q)=1+L(q)/3,\quad
+ f_n(q)=(n!)^2[2L(q)]^{-n}n^{-b(q)},
+\]
+using analytic logarithms in the right half-plane. There is an analytic limit
+$C(q)=\lim_n Z_n(q)/f_n(q)$ in the interior of $D_0$, with uniform convergence on $D_0$. On one smaller closed disk $D$ about $1$, $C$ is nonzero and, for every fixed $M\ge0$,
+\begin{equation}\label{eq:marked}
+ \frac{Z_n(q)}{C(q)f_n(q)}
+   =\sum_{j=0}^M c_j(L(q))n^{-j}+O_{D,M}(n^{-M-1})
+\end{equation}
+uniformly. The same disk $D$ works for every fixed $M$. Constants, finite patches, and onset indices may depend on $M$. On every smaller disk, each fixed derivative of the analytic remainder in~\eqref{eq:marked} has the same order.
+\end{theorem}
+\begin{proof}
+First, the explicit disk has an absolute contraction margin. Since
+$L'(q)=-1/[q(q+1)]$, integration along a radial segment gives
+\[
+ |L(q)-\log2|\le\frac{16}{465}\quad(q\in D_0).
+\]
+The elementary inequality $\log2<7/10$ implies $|L(q)|<3/4$. (Already the first five terms of the exponential series show $e^{7/10}>2$.) The limiting weights are
+\begin{equation}\label{eq:pkq}
+ p_k(q)=q\frac{L(q)^k}{k!},\quad
+ \sum_{k\ge1}p_k(q)=1,\quad
+ \sum_{k\ge1}kp_k(q)=(q+1)L(q).
+\end{equation}
+For $g(x)=(x-1)e^x+1$, $g'(x)=xe^x\ge0$, and $e^{3/4}>2$. Therefore
+\begin{equation}\label{eq:diskcontract}
+ \sum_{k\ge1}(k-1)|p_k(q)|
+ =|q|g(|L(q)|)<\frac{17}{16}g(3/4)<\frac{17}{32}<1.
+\end{equation}
+This disk selection contains no reference to $M$.
+
+The kernel polynomials of Lemma~\ref{lem:kernel} depend only on $L$ and not separately on $q$. For $r\ge1$ their moments now use
+\begin{equation}\label{eq:markedmoments}
+ \sum_{k\ge1}p_k(q)k^r=(q+1)T_r(L(q)),
+\end{equation}
+whereas the zeroth moment remains $1$. The $q_1$ moment is identically zero. Every nontrivial residual polynomial vanishes at $k=0$; its moment therefore has a factor $(q+1)L(q)$. The triangular multiplier is $m(q+1)L(q)$. These common factors cancel, leaving exactly the same $c_m\in\Q[L]$ from Section~\ref{sec:coefficients}. This proves universality at every order, not just for the displayed coefficients.
+
+For fixed $M$, the polynomial
+$P_M(n,q)=\sum_{j=0}^Mc_j(L(q))n^{-j}$ tends uniformly to $1$ on $D_0$. Choose an $M$-dependent $N_M$ beyond which $|P_M-1|\le1/2$, and set $P_M=1$ at the finitely many earlier integer indices. The patch is analytic in $q$ and bounded above and away from zero. Put
+\[
+ h_n(q)=f_n(q)P_M(n,q),\quad u_n(q)=Z_n(q)/h_n(q),\quad
+ w(n,k;q)=qS(n,n-k)\frac{h_{n-k}(q)}{h_n(q)}.
+\]
+Lemma~\ref{lem:factorial} and uniform bounds for the patch give constants $A,B,R$ such that
+\begin{equation}\label{eq:complexbounds}
+ |w(n,k;q)|\le A\frac{R^k}{k!}\ (k\le n/2),\qquad
+ |w(n,k;q)|\le An^B\frac{R^k}{k!}\ (k<n),
+\end{equation}
+uniformly on $D_0$. One may take $R=\sup_{D_0}|L(q)|$ and absorb $|q|$ into $A$. Fixed-$k$ convergence to $p_k(q)$ is uniform. The uniform Cauchy proof in Lemma~\ref{lem:kernel}, the moment cancellations, and the factorial tails give
+\begin{equation}\label{eq:complexrow}
+ \sigma_n(q):=\sum_kw(n,k;q)=1+O_{M,D_0}(n^{-r}),\qquad r=M+2.
+\end{equation}
+The finite patch changes only factorially small tails.
+
+Set $W(n,j;q)=\sum_{k>j}w(n,k;q)$. The triangle inequality, followed by exactly the near/far split in the proof of~\eqref{eq:Tlimit}, yields
+\begin{equation}\label{eq:complexnorm}
+ \limsup_{n\to\infty}\sup_{q\in D_0}
+ \sum_{j=1}^{n-2}|W(n,j;q)|\left(\frac n{n-j}\right)^r
+ \le\sup_{q\in D_0}\sum_{k\ge1}(k-1)|p_k(q)|<1.
+\end{equation}
+A finite-$k$ cutoff makes the uniform convergence explicit; the remaining terms are dominated by a constant multiple of $kR^k/k!$, with the long-jump portion factorially negligible. Thus for this fixed $r$ there are $N$ and $\theta<1$ bounding every weighted norm by $\theta$ beyond $N$.
+
+It remains to prove boundedness without positivity. Identity~\eqref{eq:diff} remains valid for the complex functions. Let $B_0$ bound $n^r|\sigma_n-1|$ uniformly beyond $N$, and define
+\[
+ U_n=\max_{1\le j\le n}\sup_{D_0}|u_j|,\qquad
+ D_n=\max_{2\le j\le n}j^r\sup_{D_0}|u_j-u_{j-1}|.
+\]
+If the maximum defining $D_n$ occurs after the initial segment,~\eqref{eq:diff} implies $D_n\le B_0U_n+\theta D_n$. If it occurs earlier it is $D_{N-1}$. Hence in all cases
+\begin{equation}\label{eq:bootstrap1}
+ D_n\le D_{N-1}+\frac{B_0}{1-\theta}U_n.
+\end{equation}
+Independently, telescoping gives, with $S_N=\sum_{j\ge N}j^{-r}$,
+\begin{equation}\label{eq:bootstrap2}
+ U_n\le U_{N-1}+S_ND_n.
+\end{equation}
+Increase $N$ while retaining the already obtained $B_0,\theta$ until $B_0S_N/(1-\theta)\le1/2$. Combining the two inequalities proves
+\[
+ U_n\le2(U_{N-1}+S_ND_{N-1})
+\]
+for every $n$, and then also bounds $D_n$. The initial maxima are finite because they involve finitely many analytic functions on a compact disk. No boundedness of $u$ was assumed to obtain this conclusion.
+
+We have proved uniformly that $|u_n-u_{n-1}|\le A_Mn^{-M-2}$, so
+\[
+ u_n(q)=C_M(q)+O_{M,D_0}(n^{-M-1}).
+\]
+Uniform convergence makes $C_M$ holomorphic in the disk interior. Since $P_M\to1$ uniformly, all $C_M$ equal the same $M=0$ limit $C$. Theorem~\ref{thm:main} gives $C(1)>0$. Continuity supplies a once-only smaller disk $D$ on which $C$ has no zeros. Dividing by this bounded-away-from-zero function proves~\eqref{eq:marked}. Cauchy's estimates on nested disks give the derivative assertion.
+\end{proof}
+The factor $n^{-b(q)}$ always means $\exp(-b(q)\log n)$ with the real logarithm of the positive integer $n$. The factor $[2L(q)]^{-n}$ has an integer exponent, so it creates no additional branch choice. The order-independent disk does not mean order-independent estimates: the eventual contraction index and the patch can grow with $M$.
+
+\section{Chain length and all fixed cumulants}\label{sec:cumulants}
+Let $\ell_j(L)$ be the formal logarithmic coefficients determined by
+\begin{equation}\label{eq:ell}
+ \log\left(\sum_{j\ge0}c_j(L)x^j\right)=\sum_{j\ge1}\ell_j(L)x^j.
+\end{equation}
+Only finitely many coefficients are used at any one order. In particular,
+\[
+ \ell_1(L)=\frac L6,\qquad
+ \ell_2(L)=-\frac{L(8L^2+45L-45)}{1620}.
+\]
+On a sufficiently small fixed complex $t$-disk define
+\begin{equation}\label{eq:ABD}
+ A(t)=\log\frac{L}{L(e^t)},\qquad
+ B(t)=\frac{L-L(e^t)}3,\qquad
+ D(t)=\log\frac{C(e^t)}{C(1)},
+\end{equation}
+with logarithms zero at $t=0$. Theorem~\ref{thm:marked} makes the normalized bracket uniformly close to $1$ for sufficiently large $n$; its analytic logarithm therefore has the usual fixed-order Taylor remainder. If a common zero-free disk for every finite $n$ is desired, shrink once more for the finitely many remaining polynomials, which are nonzero at $q=1$.
+
+\begin{corollary}[Logarithmic generating function]\label{cor:logmgf}
+For every fixed $M\ge0$, uniformly on a fixed small complex disk,
+\begin{align}\label{eq:logmgf}
+ \log\E e^{tH_n}
+ &=nA(t)+(\log n)B(t)+D(t)\notag\\
+ &\quad+\sum_{j=1}^M\bigl(\ell_j(L(e^t))-\ell_j(L)\bigr)n^{-j}
+       +O_M(n^{-M-1}).
+\end{align}
+The remainder is analytic; every fixed derivative has the same order on smaller disks. Thus the $r$th cumulant, for each fixed $r\ge1$, is
+\begin{equation}\label{eq:cumulants}
+ \kappa_r(H_n)=nA^{(r)}(0)+(\log n)B^{(r)}(0)+D^{(r)}(0)
+ +\sum_{j=1}^M\left.\frac{d^r}{dt^r}\ell_j(L(e^t))\right|_{t=0}n^{-j}
+ +O_{M,r}(n^{-M-1}).
+\end{equation}
+\end{corollary}
+\begin{proof}
+Divide the marked expansion by its value at $q=1$ and take the analytic logarithm. The factorials cancel, the exponential scale gives $nA$, and the power of $n$ gives $(\log n)B$. Finite logarithmic Taylor expansion supplies the $\ell_j$ terms with a uniform analytic remainder. Apply Cauchy's formula on a nested disk to differentiate that remainder.
+\end{proof}
+Direct differentiation gives
+\[
+ A'(0)=\frac1{2L},\quad A''(0)=\frac{1-L}{4L^2},\quad
+ B'(0)=\frac16,\quad B''(0)=-\frac1{12},
+\]
+\[
+ \left.\frac d{dt}\ell_1(L(e^t))\right|_0=-\frac1{12},\qquad
+ \left.\frac {d^2}{dt^2}\ell_1(L(e^t))\right|_0=\frac1{24}.
+\]
+Taking $K_1=D'(0)$ and $K_2=D''(0)$ proves~\eqref{eq:meanintro}--\eqref{eq:varintro}. These constants depend on the strict-transition convention $H_1=0$. Counting partitions in the chain instead would add $1$ to the mean and its constant.
+
+\begin{corollary}[The known central limit theorem]\label{cor:clt}
+Put $v=(1-L)/(4L^2)>0$. Then
+\[
+ \frac{H_n-\E H_n}{\sqrt{nv}}\ \Longrightarrow\ \mathcal N(0,1).
+\]
+The denominator may also be replaced by the true standard deviation.
+\end{corollary}
+\begin{proof}
+In~\eqref{eq:logmgf} take $t=is/\sqrt{nv}$ for fixed real $s$ and subtract the exact mean term. The quadratic contribution of $nA$ tends to $-s^2/2$; its cubic and higher terms are $O(n|t|^3)=O(n^{-1/2})$. After centering, the analytic terms multiplied by $\log n$ or bounded coefficients contribute $o(1)$. Characteristic functions converge to $e^{-s^2/2}$, proving the limit. Equation~\eqref{eq:varintro} gives $\Var H_n/(nv)\to1$.
+\end{proof}
+This deduction credits the earlier theorem of Van Cutsem--Ycart~\cite{VanCutsemYcart}. It is not accompanied here by a distributional error estimate or a local limit assertion.
+
+\section{Logarithmic asymptotics and inversion}\label{sec:inverse}
+Define
+\[
+ \beta=L/3,\qquad K=2\pi C,\qquad
+ \kappa=1+\tfrac12\log(2L),\qquad H(x)=2x\log(x/e^\kappa).
+\]
+\begin{proposition}[The logarithmic coefficients]\label{prop:log}
+For every fixed $M\ge0$,
+\begin{equation}\label{eq:logzn}
+ \log z_n=H(n)-\beta\log n+\log K+
+          \sum_{j=1}^Md_jn^{-j}+O_M(n^{-M-1}).
+\end{equation}
+The $d_j$ are obtained by adding the formal series in~\eqref{eq:ell} to the odd Stirling series:
+\begin{equation}\label{eq:d}
+ \sum_{j\ge1}d_jx^j
+ =\sum_{j\ge1}\ell_j(L)x^j+
+   \sum_{r\ge1}\frac{B_{2r}}{r(2r-1)}x^{2r-1}.
+\end{equation}
+Here the Bernoulli numbers use $B_2=1/6$. In particular,
+\[
+ d_1=\frac{1+L}{6},\qquad
+ d_2=-\frac{L(16L^2+90L-90)}{3240}.
+\]
+\end{proposition}
+\begin{proof}
+At each fixed order, take the logarithm of the positive normalized expansion~\eqref{eq:expansion}; Taylor's remainder is legitimate because the bracket tends to $1$. Add the fixed-order Stirling expansion
+\[
+ 2\log(n!)=2n\log n-2n+\log n+\log(2\pi)
+ +\sum_{r\ge1}\frac{B_{2r}}{r(2r-1)}n^{-(2r-1)},
+\]
+where the last series is truncated as needed with its fixed-order remainder. The $+\log n$ cancels the $-\log n$ in $-b\log n$, leaving exactly $-\beta\log n$. The remaining terms give~\eqref{eq:logzn}--\eqref{eq:d}.
+\end{proof}
+
+\subsection{A Lambert core and a triangular inverse}
+For $y\to+\infty$ let
+\begin{equation}\label{eq:core}
+ w=W_0\!\left(\frac{y}{2e^\kappa}\right),\qquad
+ X=\frac{y}{2w},\qquad U=\log X,\qquad
+ \Lambda=2(1+w)=2U-\log(2L).
+\end{equation}
+The principal real branch is used. Since $we^w=y/(2e^\kappa)$, we have $X=e^{\kappa+w}$, $H(X)=y$, and $H'(X)=\Lambda>0$.
+
+For every fixed $M$ consider the smooth model
+\begin{equation}\label{eq:FM}
+ F_M(x)=H(x)-\beta\log x+\log K+\sum_{j=1}^Md_jx^{-j}.
+\end{equation}
+It is strictly increasing for all sufficiently large $x$, since $F_M'(x)\sim2\log x$. Let $\xi_M(y)$ be its unique sufficiently large solution of $F_M(x)=y$.
+
+\begin{theorem}[Constructive fixed-order inverse]\label{thm:inverse}
+Set $v_0(U)=(\beta U-\log K)/\Lambda$. The coefficients $v_m(U)$ for $m\ge1$ are uniquely determined by requiring the following formal expression, with $t=1/X$ and $\delta=\sum_{m\ge0}v_m(U)t^m$, to vanish:
+\begin{align}\label{eq:inverseformal}
+ 0={}&\Lambda\delta-\beta U+\log K
+ +\sum_{r\ge2}\frac{2(-1)^r}{r(r-1)}\delta^rt^{r-1}\notag\\
+ &-\beta\log(1+t\delta)
+ +\sum_{j\ge1}d_jt^j(1+t\delta)^{-j}.
+\end{align}
+At order $m\ge1$, take minus the coefficient of $t^m$ in all terms except $\Lambda\delta$, using $v_0,\ldots,v_{m-1}$, and divide by $\Lambda$. Then
+\begin{equation}\label{eq:inverseexp}
+ \xi_M(y)=X+\sum_{m=0}^Mv_m(\log X)X^{-m}
+                 +O_M\!\left(\frac{X^{-M-1}}{\log X}\right).
+\end{equation}
+Each $v_m$ is a rational function of $U$ over
+$\Q[L,\log K,\log(2L)]$; $v_0=O(1)$ and $v_m=O(1/U)$ for $m\ge1$.
+\end{theorem}
+\begin{proof}
+Taylor expansion at $X$ gives
+\[
+ \frac{H^{(r)}(X)}{r!}=\frac{2(-1)^r}{r(r-1)X^{r-1}}\quad(r\ge2),
+\]
+which produces the first nonlinear sum in~\eqref{eq:inverseformal}. The other terms follow from the Taylor expansions of $\log(X+\delta)$ and $(X+\delta)^{-j}$. Every nonlinear term carries at least one factor of $t$; hence $v_m$ first appears as $\Lambda v_m$ at degree $m$. This proves triangularity, uniqueness, and the rational-function claim. Since $\Lambda\asymp U$, $v_0$ is bounded. Inductively the remaining degree-$m$ expression is bounded for large $U$, proving $v_m=O(1/U)$.
+
+For fixed $M$, substitute the finite displacement in $F_M$. The recursion cancels the residual through $X^{-M}$, and the remaining Taylor remainder is $O_M(X^{-M-1})$. All finitely many displacement coefficients are bounded; for large $X$ the Taylor expansions are uniform on $|\delta|/X<1/2$. On a fixed-size neighborhood of $X$, $F_M'(x)\sim2\log X$. The intermediate value theorem supplies a root there, eventual monotonicity makes it the unique large root, and the mean value theorem divides the residual by this derivative, proving~\eqref{eq:inverseexp}.
+\end{proof}
+The first terms are
+\begin{align}\label{eq:v12}
+ v_1&=-\frac{v_0^2-\beta v_0+d_1}{\Lambda},\notag\\
+ v_2&=-\frac{(2v_0-\beta)v_1-v_0^3/3+\beta v_0^2/2-d_1v_0+d_2}{\Lambda}.
+\end{align}
+In particular
+\[
+ \xi_1(y)=X+v_0-\frac{v_0^2-\beta v_0+d_1}{X\Lambda}
+              +O\!\left(\frac1{X^2\log X}\right).
+\]
+Although $v_0\to\beta/2=L/6$, replacing the full $U$-dependent $v_0$ by that limit discards a generally much larger $1/\log X$ correction and is not valid at the displayed precision.
+
+\subsection{Sampled values and the threshold staircase}
+The sequence is strictly increasing from $n=2$ onward, because
+\begin{equation}\label{eq:increasing}
+ z_{n+1}\ge S(n+1,n)z_n=\binom{n+1}{2}z_n>z_n\quad(n\ge2).
+\end{equation}
+The equality $z_1=z_2=1$ is why range inversion is stated for $n\ge2$.
+\begin{corollary}[Eventual recovery on sampled inputs]\label{cor:sampled}
+If the input is known to be $y=\log z_n$, then
+\[
+ \xi_M(y)=n+O_M\!\left(\frac{n^{-M-1}}{\log n}\right).
+\]
+The finite expression in~\eqref{eq:inverseexp} has the same accuracy. Nearest-integer rounding therefore recovers $n$ for all sufficiently large sampled inputs.
+\end{corollary}
+\begin{proof}
+Equation~\eqref{eq:logzn} gives $F_M(n)=y+O_M(n^{-M-1})$. Around $n$ the derivative is comparable to $\log n$. Apply the same mean-value residual argument as above; also $X\sim n$. The error eventually falls below $1/2$.
+\end{proof}
+This is an asymptotic recovery theorem, not an implemented certified cutoff using approximate $C$.
+
+For an arbitrary real threshold define
+\[
+ N(y)=\min\{n\ge2:\log z_n\ge y\}.
+\]
+\begin{theorem}[Two-ceiling threshold enclosure]\label{thm:threshold}
+For every fixed $M$ there are $A_M>0$ and $Y_M$ such that for $y\ge Y_M$, writing $\xi=\xi_M(y)$ and
+\[
+ \varepsilon_M(y)=A_M\frac{\xi^{-M-1}}{\log\xi},
+\]
+one has
+\begin{equation}\label{eq:ceilings}
+ \left\lceil\xi-\varepsilon_M(y)\right\rceil
+ \le N(y)\le
+ \left\lceil\xi+\varepsilon_M(y)\right\rceil.
+\end{equation}
+The center can be replaced by the finite expression in~\eqref{eq:inverseexp} after increasing $A_M$. Choose $Y_M$ also so that $2\varepsilon_M(y)<1$. Then the two ceilings either agree or differ by one, giving at most two adjacent candidates.
+\end{theorem}
+\begin{proof}
+Choose $B_M,N_0$ such that
+$|\log z_n-F_M(n)|\le B_Mn^{-M-1}$ for $n\ge N_0$. On $[\xi/2,2\xi]$, for large $\xi$ we have $F_M'(x)\ge c\log\xi$. Choose $A_M$ large enough that this derivative times $\varepsilon_M$ dominates $B_Mn^{-M-1}$ throughout the interval. For every integer $n\ge\xi+\varepsilon_M$ there, $\log z_n\ge y$; for every integer $n<\xi-\varepsilon_M$ there, $\log z_n<y$. Integer nodes near $\xi/2$ and $2\xi$, together with monotonicity, extend these statements outside the interval once the finite initial segment is excluded by enlarging $Y_M$. Taking ceilings gives~\eqref{eq:ceilings}. The inverse approximation error is of the same order as $\varepsilon_M$ and is absorbed by enlarging its constant. Finally $\varepsilon_M\to0$, so $Y_M$ can be enlarged until the interval width is less than $1$.
+\end{proof}
+The strict lower comparison and non-strict upper comparison match the definition with $\ge y$. Even an arbitrarily accurate asymptotic approximation need not have the correct ceiling at every real threshold near a jump. Thus no single-ceiling formula without an error envelope is asserted. The constants $A_M,Y_M$ have not been numerically evaluated or certified; the exact integer inverse in the code avoids them entirely within its declared resource bound.
+
+\section{Exact computation and reproducibility}\label{sec:computation}
+The accompanying package has three deliberately separate layers.
+\begin{enumerate}
+\item The standard-library core computes exact integers, chain polynomials, fixed moments and cumulants, and a resource-bounded exact integer threshold inverse. It does not require a numerical value of $C$.
+\item An optional SymPy program constructs kernel and correction coefficients by the finite recipe in Section~\ref{sec:coefficients}, checks logarithmic and cumulant algebra, and checks formal inverse cancellation. Its output is exact symbolic algebra.
+\item An optional mpmath program evaluates normalized sequences and centered moments at finite $n$. Its decimal outputs are diagnostics, not interval enclosures or proofs of error bounds.
+\end{enumerate}
+All public checks use explicit exceptions rather than assertions, so optimized Python execution does not remove the checks. Input lengths and resource parameters are validated before expensive operations. Computed large integers are converted to decimal in bounded chunks without changing Python's process-wide integer conversion limit. The package tests genuinely large output through the real command-line interface with \texttt{PYTHONINTMAXSTRDIGITS=640}. No global recursion, integer-conversion, or precision settings are changed; optional numerical work uses a local mpmath context.
+
+\subsection{Independent finite checks}
+Full partition-poset enumeration is feasible at small $n$ and provides a check independent of the rank-only recurrence. Enumerate all set partitions of $[n]$, test refinement for every pair, and sum chains over all strictly coarser partitions. This gives
+\begin{align*}
+ Z_1(q)&=1,\\
+ Z_2(q)&=q,\\
+ Z_3(q)&=q+3q^2,\\
+ Z_4(q)&=q+13q^2+18q^3,\\
+ Z_5(q)&=q+50q^2+205q^3+180q^4,\\
+ Z_6(q)&=q+201q^2+1865q^3+4245q^4+2700q^5.
+\end{align*}
+The numbers of poset elements are $1,2,5,15,52,203$. These results also check the exact length convention.
+
+For exact moment computations one may use ordinary derivatives $R_r(n)=Z_n^{(r)}(1)$:
+\begin{equation}\label{eq:derivrec}
+ R_r(n)=\sum_{j<n}S(n,j)\bigl(R_r(j)+rR_{r-1}(j)\bigr),
+\end{equation}
+with $R_0(1)=1$, higher derivatives zero, and the second summand absent when $r=0$. Alternatively, Euler derivatives give raw moments directly by the binomial theorem applied to the additional first step. Stirling conversion relates these two implementations. Dividing the exact sums by $z_n$ gives rational moments, and the standard triangular moment--cumulant identity gives exact rational cumulants. The package checks both against the chain polynomials and the full poset enumeration.
+
+A further exact check is the inequality $2^kk!S(n,n-k)\le(\fall nk)^2$ from Lemma~\ref{lem:factorial}. Exact inverse checks verify both attainment and minimality: if the bounded search returns $n>2$, then $z_{n-1}<T\le z_n$ for its positive integer input $T$.
+
+\subsection{Numerical diagnostics and their limits}
+For reference, numerical substitution of $L=\log2$ in the exact coefficients gives
+\[
+ \begin{aligned}
+ c_1&\approx 0.1155245300933242,& c_2&\approx 0.0109365636395843,\\
+ c_3&\approx-0.0238254567258004,& c_4&\approx-0.0275946778045995.
+ \end{aligned}
+\]
+Finite-$n$ corrected normalizations are consistent with
+$C\approx1.098685805525187$. The following centered quantities from exact integer moment sums illustrate the smaller terms:
+\[
+ M_n=\E H_n-\frac n{2L}-\frac{\log n}{6}+\frac1{12n},\qquad
+ V_n=\Var H_n-\frac{1-L}{4L^2}n+\frac{\log n}{12}-\frac1{24n}.
+\]
+\begin{center}
+\begin{tabular}{rcc}
+\toprule
+$n$ & $M_n$ & $V_n$\\
+\midrule
+100 & $-0.56552859348282824923$ & $-0.22033553105629492173$\\
+200 & $-0.56552929520692838409$ & $-0.22033372829125359404$\\
+400 & $-0.56552946656943563565$ & $-0.22033328277962673835$\\
+600 & $-0.56552949796082401647$ & $-0.22033320071484707943$\\
+\bottomrule
+\end{tabular}
+\end{center}
+These are compatible with $K_1\approx-0.565529523$ and $K_2\approx-0.220333135$. Neither these estimates nor the displayed estimate for $C$ is interval-certified. Their role is to detect algebraic or indexing mistakes; they are not used in any theorem proof or exact threshold decision.
+
+The README gives the exact commands, supported bounds, dependency versions, source links, checksums, and deterministic rebuild procedure. The PDF has no creation date or trailer identifier; the archive uses a fixed member order, timestamp, permissions, and compression policy. A full rebuild is intended to preserve every archive member and the entire archive byte for byte under the recorded toolchain, in ordinary and optimized Python modes and with the supported integer conversion cap. Cross-version TeX byte identity is not promised. No third-party source PDFs or private research notes are included.
+
+\section{Further questions within a clear boundary}\label{sec:questions}
+The arguments leave several concrete directions open without assuming their answers.
+\begin{enumerate}
+\item \textbf{Certified constants.} Turn the constructive bounds behind~\eqref{eq:certificate} into practical interval enclosures for $C$, then extend them to derivatives of $\log C(e^t)$. This would support evaluated inverse enclosures rather than existence constants alone.
+\item \textbf{Dependence on the order.} Quantify how $C_e$, the Taylor remainder constants, the finite patches, and the weighted contraction onset grow with $M$. Such estimates are prerequisites for a justified late-order or optimal-truncation analysis; the fixed-order theorem itself supplies none.
+\item \textbf{A larger marking region.} The explicit disk $|q-1|\le1/16$ is convenient rather than optimal. A larger analytic domain would require tracking the absolute contraction and possible zeros of $C(q)$. The local proof does not establish a global marked-parameter result.
+\item \textbf{Distributional refinements.} A local limit theorem, a quantitative normal approximation, or large deviations would require additional arguments not supplied here. Local limits and global large-deviation statements may also require control outside the small complex neighborhood. The cumulant expansion alone should not be promoted to those conclusions.
+\item \textbf{Comparison with analytic iteration.} Relate the anchored recurrence limit and its marked derivatives directly to the contour constants in the prior analytic-iteration treatment, and clarify the full contents of the unrecovered Flajolet--Salvy manuscript if it becomes available.
+\item \textbf{Aggregate versus depth asymptotics.} Compare this direct aggregate proof with consequences obtainable by summing proportional-depth iterated-Bell asymptotics, with particular attention to tail control and uniformity in depth. Their relationship deserves an actual derivation rather than an absence claim.
+\end{enumerate}
+These are research questions, not additional asserted theorems. The completed result of this report is the explicit fixed-order recurrence expansion, its local analytic marking, the cumulant consequences, and the specialized inverse bounds proved above.
+
+\begin{thebibliography}{99}
+\bibitem{Lengyel}
+T. Lengyel, \emph{On a recurrence involving Stirling numbers}, European Journal of Combinatorics \textbf{5} (1984), 313--321.
+\href{https://doi.org/10.1016/S0195-6698(84)80035-9}{DOI 10.1016/S0195-6698(84)80035-9}.
+\href{https://sites.oxy.edu/lengyel/originals/papers/hivatkozo/81989948\%20On\%20a\%20Recurrence\%20involving\%20Stirling\%20Numbers\%20EuropJComb1984.pdf}{Author-hosted full text}.
+
+\bibitem{BabaiLengyel}
+L. Babai and T. Lengyel, \emph{A convergence criterion for recurrent sequences with application to the partition lattice}, Analysis \textbf{12} (1992), 109--119.
+\href{https://doi.org/10.1524/anly.1992.12.12.109}{DOI 10.1524/anly.1992.12.12.109}.
+\href{https://sites.oxy.edu/lengyel/papers/analysis.pdf}{Author-hosted full text}.
+
+\bibitem{Prellberg}
+T. Prellberg, \emph{On the asymptotic analysis of a class of linear recurrences}, FPSAC presentation (2002).
+\href{https://sites.oxy.edu/lengyel/papers/prellberg/recurrence.pdf}{Author-hosted mirror of the presentation}.
+The final slide distinguishes formal higher corrections from the leading theorem.
+
+\bibitem{Mishna}
+M. Mishna, summary of T. Prellberg's 2002 seminar, \emph{On the asymptotic analysis of a class of linear recurrences}, Algorithms Seminar 2002--2004 (2005), 47--50.
+\href{https://sites.oxy.edu/lengyel/papers/prellberg/Prellberg2002a.pdf}{Full text}.
+
+\bibitem{VanCutsemYcart}
+B. Van Cutsem and B. Ycart, \emph{Renewal-type behavior of absorption times in Markov chains}, Advances in Applied Probability \textbf{26} (1994), 988--1005.
+\href{https://doi.org/10.2307/1427901}{DOI 10.2307/1427901}.
+\href{https://sites.oxy.edu/lengyel/originals/papers/hivatkozo/Renewal-Type\%20Behavior\%20of\%20Absorption\%20Times\%20in\%20MCh\%20VanCutsem_Ycart\%20AdvApplProb94.pdf}{Author-archive full text}.
+
+\bibitem{Finch}
+S. R. Finch, \emph{Mathematical Constants}, Cambridge University Press (2003), Section 5.7, 316--321.
+\href{https://sites.oxy.edu/lengyel/originals/MathConst2003.pdf}{Author-hosted scan}.
+Printed pages 319--320 discuss the unfinished Flajolet--Salvy work and the chain-length limit law.
+
+\bibitem{DickeyRosenberg}
+E. H. Dickey and N. A. Rosenberg, \emph{Labeled histories and maximally probable labeled topologies with multifurcation}, arXiv:2511.16799; Discrete Applied Mathematics (2026).
+\href{https://arxiv.org/abs/2511.16799}{arXiv record};
+\href{https://doi.org/10.1016/j.dam.2026.04.032}{DOI 10.1016/j.dam.2026.04.032}.
+The full arXiv version, rather than the published version, was the compared text.
+
+\bibitem{OEIS}
+OEIS Foundation, \emph{A005121}, Lengyel numbers.
+\href{https://oeis.org/A005121}{Sequence entry};
+\href{https://raw.githubusercontent.com/oeis/oeisdata/main/seq/A005/A005121.seq}{official raw source}.
+The inspected source header is revision \#79, 30 May 2026, 16:39:47; its formal generating-function sign is discussed in Section~\ref{sec:prior}.
+
+\bibitem{ProveItBell}
+V. Reshetnikov, ProveIt, \emph{Iterated Bell diagonals}, article in the OEIS sequence asymptotics collection, inspected at commit
+\texttt{9f19e58de1fa83abdc8504c166975d724d8a9791}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/9f19e58de1fa83abdc8504c166975d724d8a9791/SetTheory/Cardinals/docs/reports/generating-functions-and-asymptotics/oeis-sequence-asymptotics/a139383-iterated-bell-diagonals/article.tex}{Pinned article source}.
+The compared blob is \texttt{ab5014ecd6366ef621d4d45393609bf177c88339}.
+
+\bibitem{ProveItTransseries}
+V. Reshetnikov, ProveIt, \emph{Transseries and Inversion} and companion combinatorial material, repository revision
+\texttt{9f19e58de1fa83abdc8504c166975d724d8a9791}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/9f19e58de1fa83abdc8504c166975d724d8a9791/Analysis/Transseries/docs/series-and-transseries}{Pinned transseries collection}.
+The Lambert core, residual transport, and staircase qualifications are used here as established general methods.
+\end{thebibliography}
+\end{document}
