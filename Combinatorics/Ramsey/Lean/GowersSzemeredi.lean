@@ -113,6 +113,8 @@ import GowersSzemeredi.Proofs17Regions
 import GowersSzemeredi.Proofs18Consequences
 import GowersSzemeredi.Proofs18QuantitativeSzemeredi
 import GowersSzemeredi.Proofs18IntervalTransfer
+import GowersSzemeredi.Proofs18AffineTransfer
+import GowersSzemeredi.Proofs18UniformInterval
 
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
