@@ -90,14 +90,16 @@ def section16WidthThreshold (k q : Nat) : Nat :=
 
 /-- **Lemma 16.1.** The OCR-lost exponent is
 `K^(-2^(k+1)*q)`.  The undefined proof constant `C_(k+1)` is omitted: the
-cited Corollary 5.11 supplies the displayed constant `2`. -/
+cited Corollary 5.11 supplies the displayed constant `2`. Proper input and
+output axes identify the formal lengths with the cardinalities used in the
+paper and in the corrected Corollary 5.11. -/
 def lemma_16_1 : Prop :=
   ∀ (N k q m : Nat) [NeZero N] (P : Box N k)
       (mu : Fin q → Point N k → ZMod N),
-    section16WidthThreshold k q ≤ m → m ≤ P.width →
+    P.IsProper → section16WidthThreshold k q ≤ m → m ≤ P.width →
     (∀ i, IsMultilinear (mu i)) →
     ∃ M : Nat, ∃ Q : Fin M → Box N k,
-      IsBoxPartition Q P ∧
+      IsBoxPartition Q P ∧ (∀ j, (Q j).IsProper) ∧
       (∀ j, (m : Real) ^ section16RecurrenceExponent k q ≤ (Q j).width) ∧
       ∀ i j x, x ∈ (Q j).carrier →
         (centeredAbs (mu i x * (Q j).commonDiff) : Real) ≤
