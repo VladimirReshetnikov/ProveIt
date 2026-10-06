@@ -33,7 +33,9 @@ The report counts sorted sequences, not tournaments or isomorphism classes.
   `f⋆(0) = √(2/3) Γ(3/4)²/π = 0.39027621886917…` at 0. Part I's printed
   `f_Y(0) = 0.0377237…` is about ten times too small. Hence
   `A = √6 Γ(3/4) π^{−3/2} V_DW(1/√2,1/√2)`, and the one lemma whose proof used
-  the printed shape is repaired.
+  the printed shape is repaired. An independent check of the write
+  (5 October 2026) confirmed the corrected density numerically, by a dynamic
+  programme of the conditioned walk to `n = 600` (below).
 
 | Source | Bundle report | Archive | Pin | Placed | Printed as |
 |---|---|---|---|---|---|
@@ -216,7 +218,12 @@ are the same thresholds.
   `f_Y = f⋆`, and the rectangle positivity of Lemma 9.1 and of Part II's
   Section 16.2 holds unchanged.
 - Remark 4.5: what the misprint affects, why `h⋆` is the density of `μ`, the
-  numerical evidence and the literature search.
+  numerical evidence and the literature search. Since the independent check
+  it also proves the mean area
+  `∫∫ x h⋆ = (12/(5√2)) Γ(3/4)/Γ(1/4) = 0.5735865569…`, from
+  `∫∫_{x>0} x q_u(x,−y;0,−w) dx dy = wu` (time reversal of the Gaussian
+  kernel); the identity is the check's, the integrability argument (Fisher
+  information of the mean shift) the write's.
 - The amplitude `A = √6 Γ(3/4) π^{−3/2} V_DW(1/√2,1/√2) = 0.539057… × V_DW`.
 - The front-matter explanation of why the strong fraction is `e^{−λ}` here and
   `e^{−2λ}` in a000571.
@@ -228,9 +235,70 @@ The same quadrature of the printed display gives mass 0.115455296005 and
 `f_Y(0) = 0.037723723892`, agreeing with the placement's 40-digit values.
 mpmath confirms the hypergeometric steps to 40 digits. The velocity marginal
 of `h⋆` has `f⋆(1)/f⋆(0) = 1.128`, `f⋆(2)/f⋆(0) = 0.338` and
-`f⋆(−1)/f⋆(0) = 0.0713`. The placement's Monte Carlo of the conditioned
-Gaussian walk at `n = 2000` gave 1.107, 0.347 and 0.0775; the printed display
-renormalized gives 1.803, 0.180 and 0.0135.
+`f⋆(−1)/f⋆(0) = 0.0713`; the printed display renormalized gives 1.803,
+0.180 and 0.0135. (The write compared these with the placement's Monte Carlo
+of the conditioned Gaussian walk at `n = 2000`, 1.107, 0.347 and 0.0775; that
+evidence is superseded by the independent check's walk computation below.)
+
+**Independent check of the write (5 October 2026).** An adversarial check
+made by the intake after the write (`1b792e07a`) reread Section 4.2
+(Remark 4.2, Proposition 4.3 with its proof, Remarks 4.4 and 4.5) and the
+front matter's "Relation to the ordinary score sequences". It found every
+mathematical claim valid, with no counterexample and no gap in any proof
+chain, and four defects in the supporting text. Each is corrected in the
+article with a dated note keeping the first wording:
+
+1. With the printed density the prediction is `A ≈ 0.0374`, not `0.038`
+   (Remark 4.2): `2^{1/4} · 0.83360 · 0.0377237 = 0.03740`.
+2. The Monte Carlo evidence (Remarks 4.2 and 4.5, Section 12.1 item 1, this
+   guide) is replaced by the walk computation below. Two of its values were
+   wrong: the conditional velocity density at 0 was "0.448 at `n = 500`"
+   (the walk computation gives 0.396060, and 0.404539 at `n = 100`,
+   decreasing), and `c_{(1,1)} = 0.8426` at `n = 2000` lies about 0.009 above
+   the monotone sequence (0.835866 at `n = 600`, limit 0.83360).
+   `0.8355` at `n = 500` was right (0.836094).
+3. The paraphrase of Denisov–Wachtel's Lemma 16 omitted a factor: the limit
+   is `κ h̄(u,v)`, not `h̄(u,v)`.
+4. The literature paragraph now says that the misprint is in the journal
+   version only (below).
+
+Section 12.1, item 6 is re-scoped. The check also noted that the integral
+defining `h⋆` converges absolutely for every `x > 0`, not only almost
+everywhere; the statement is kept (true and weaker).
+
+The decisive check was a dynamic programme of the conditioned
+geometric-minus-one walk from `(1,1)` to `n = 600` (floating point on a
+truncated state space, discarded mass below `10⁻⁹`, extrapolated in powers of
+`n^{−1/2}`; evidence, not certification):
+
+| Quantity | Walk, `n = 600` | Walk, extrapolated | `h⋆` | Printed display, renormalized |
+|---|---|---|---|---|
+| `σ√n P(V_n = 0 ∣ τ > n)` | 0.395520 | 0.390277 | 0.390276 | 0.3267 |
+| `f(1)/f(0)`, `f(2)/f(0)`, `f(−1)/f(0)` | 1.0876, 0.3423, 0.0644 | 1.1280, 0.3386, 0.0717 | 1.1282, 0.3379, 0.0713 | 1.8039, 0.1797, 0.0135 |
+| mean area `E[I_n/(σn^{3/2}) ∣ τ > n]` | 0.58810 | 0.57365 | 0.573587 (proved closed form) | 0.217262 |
+| `n^{1/4} P(τ > n)` | 0.835866 | 0.833604 | – | – |
+
+So `2^{1/4} c_{(1,1)} f⋆(0) ≈ 0.38689`, against `A = 0.3868892(2)` from
+per-parity least-squares fits to the exact counts (`150 ≤ n ≤ 500`, two to
+five correction terms in `n^{−1/2}`; even and odd agree to `10⁻⁷`).
+
+The check did not use the write's scripts. It also downloaded the published
+Denisov–Wachtel from numdam and read pp. 169–170 and 186 as rendered pages
+(the Theorem 1 display is the report's (18); Remark 2; Lemma 16 with `κ`);
+read GJW (2.24) in the authors' preprint of 30 August 1999 and confirmed that
+it gives `h⋆`, with `κ^{−1} · 12/(π√(2π)) = K⋆` to 30 digits; recomputed the
+printed mass `0.11545529600527263` (17 digits) and the printed `f(0)` (equal
+to the delivered `₃F₂` value to 30 digits); re-derived Proposition 4.3(a)–(c)
+by hand, its own quadrature giving mass 1 and `f⋆(0)` to 28 digits;
+recomputed Remark 4.4's bounds and majorant; validated the OEIS b-files of
+A345470 (`n ≤ 500`) and A351869 (`n ≤ 501`) by brute force with the full
+Landau criterion (`n ≤ 12`) and its own exact big-integer half-sequence
+dynamic programme (every `n ≤ 40`, every seventh `n` to 160), with no
+mismatch; and confirmed the front matter's explanation of `e^{−λ}` here
+against `e^{−2λ}` in a000571 (`D_500/C_500 = 0.7172086`, gap of order
+`1/n`). This was a careful reading with independent computation, not a
+formal verification. The write checked the mean-area identity by direct
+two-dimensional quadrature at five pairs `(u,w)` (12 digits).
 
 ## What the report does not claim
 
@@ -265,6 +333,9 @@ collect every claim stated without proof, under Vladimir's standing rule of
 
 - **Part I (12.1)**:
   1. Certify `A`. Re-scoped: only `V_DW(1/√2,1/√2)` is now missing.
+     Evidence: `c_{(1,1)} ≈ 0.83360` from the walk computation and
+     `A = 0.3868892(2)` from the counts (the Monte Carlo values were
+     replaced after the independent check, dated note).
   2. Rates and corrections, including the parity correction of relative order
      about `n^{−1/2}` visible in the counts (an observation, claimed by
      neither source).
@@ -272,7 +343,11 @@ collect every claim stated without proof, under Vladimir's standing rule of
   4. Effective inverse brackets.
   5. Correction expansions and transseries.
   6. The density of `μ`: settled to the standard of the literature; what a
-     self-contained check would need is stated.
+     self-contained check would need is stated. Re-scoped after the
+     independent check (dated note): the comparison of `h⋆` with the
+     conditioned walk is now made numerically (`f⋆(0)` to six digits, the
+     mean area to `10⁻⁴`, the velocity ratios to `7·10⁻⁴`); the
+     self-contained derivation remains open.
 - **Part II (21)**: its three next steps, re-scoped by Part I. The endpoint
   constant is achieved by smoothing; the area-local estimate is not proved.
   Constants and parity are answered, with the numerical value open. The
@@ -286,12 +361,17 @@ y-integrals of the kernel give `erf(w√(3/(2(1−s))))`, and the rest is a
 two-dimensional quadrature. Part I's (18) copies it with the printed constant,
 and Part II's (76) copies it up to an unspecified `c_0`. Consequently Part I's
 (22), `f_Y(0) = 0.0377237…`, is not the velocity marginal of `μ`, and Part I's
-(6) evaluated with it would give `A ≈ 0.038`. The placement's Monte Carlo
-gave `c_{(1,1)} = 0.8355` at `n = 500` and `0.8426` at `n = 2000`, while the
-exact counts give `C_n n^{3/4} 2^{−n} = 0.3762, 0.3989` at `n = 320, 321` and
-`A ≈ 0.387` (uncertified extrapolation). The corrected value predicts
-`A = 2^{1/4} c_{(1,1)} f⋆(0) ≈ 0.388–0.391`. The statements stay printed as
-delivered, with the correction beside them.
+(6) evaluated with it would give `A ≈ 0.0374`. The independent check's walk
+computation gives `n^{1/4} P_{(1,1)}(τ > n) = 0.835866` at `n = 600`,
+extrapolating to `c_{(1,1)} ≈ 0.83360`, while the exact counts give
+`C_n n^{3/4} 2^{−n} = 0.3762, 0.3989` at `n = 320, 321` and `A ≈ 0.387`
+(`0.3868892(2)` by parity fits; uncertified extrapolation). The corrected
+value predicts `A = 2^{1/4} c_{(1,1)} f⋆(0) ≈ 0.38689`. The statements stay
+printed as delivered, with the correction beside them. (Dated note,
+5 October 2026: this paragraph first read "would give `A ≈ 0.038`", cited
+"the placement's Monte Carlo" with `c_{(1,1)} = 0.8355` at `n = 500` and
+`0.8426` at `n = 2000`, and predicted "`≈ 0.388–0.391`"; the value at
+`n = 2000` was about 0.009 too large.)
 
 - **Unaffected**: the existence of one amplitude for both parities;
   `D_n/C_n → e^{−λ}` and the `λ`, `r` enclosures; the harmonic identity
@@ -307,6 +387,13 @@ delivered, with the correction beside them.
   it for the meander density, consistent with the correction, but they do not
   comment on the display. GJW was read in the authors' preprint of
   30 August 1999, whose equation numbers match Denisov–Wachtel's citation.
+  The misprint is in the journal version (AIHP 2015) only:
+  arXiv:1207.2270v1, the only arXiv version, states Theorem 1 with a
+  different density, `C h(x,y) g_1(0,0;x,y)`, with no explicit integral;
+  whether that form is correct was not tested (added after the independent
+  check). Denisov–Wachtel's Lemma 16 reads
+  `p̄_1(x,y;u,v)/h(x,y) → κ h̄(u,v)`; the write's first paraphrase omitted
+  `κ` (corrected, dated note).
 
 ## Relation to neighbouring reports
 
@@ -453,6 +540,14 @@ a page, as in other reports with longtables. Builds of the delivered
 (116's bibliography) and an amsmath `\atopwithdelims` warning (114's
 `\choose`). The ragged-right bibliography and `\binom` remove both here.
 
+Rebuilt on 5 October 2026 after the independent check, in a scratch copy with
+four pdfLaTeX passes: 43 pages (was 41). No errors, no undefined or multiply
+defined references or citations, no duplicate destinations, and no overfull
+or underfull boxes; the longtable's infinite-glue message no longer occurs.
+The `.aux` files of the committed and the new text agree on all 128 label
+numbers and all 9 citations; no label was added. The changed pages (4, 15,
+18–19, 28–30, 43) were rendered and inspected.
+
 ## Delivered path → shipped path
 
 Report 116 (`116-leading-`; base):
@@ -488,4 +583,6 @@ Two manuscripts (bundle Reports 116 and 114) were merged into one report, with
 are listed in the article's front matter, "Provenance and merge decisions":
 the base and the order, the union with second routes, the density correction,
 the typography (`\binom`, title, running heads, merged bibliography with three
-added entries) and the package text.
+added entries) and the package text. An independent adversarial check of the
+write followed the same day; its outcome is recorded in the article (dated
+notes and the paragraph at the end of Section 12.1) and in this guide.
