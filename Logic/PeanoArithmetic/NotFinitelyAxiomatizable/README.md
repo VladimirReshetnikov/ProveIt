@@ -131,6 +131,29 @@ is irrelevant: a single first-order sentence can force all of its models to be
 infinite.  The construction above instead produces, for every finite fragment,
 a model of that fragment which refutes a further genuine PA induction axiom.
 
+## Related research report
+
+[`SetTheory/Cardinals/docs/reports/ordinals-and-order-types/random-bits-arithmetic-cuts`](../../../SetTheory/Cardinals/docs/reports/ordinals-and-order-types/random-bits-arithmetic-cuts/)
+(batch 114; AI-assisted, unrefereed, not formalized) studies the coding cut
+of a random predicate `P` on a countable model of PA: the initial segment of
+those `a` for which `P ∩ [0, a)` has an internal binary code. It claims the
+almost-sure value of that cut for every independent bias law, the
+realization of every cut and of every inclusion-monotone system of
+conjunction cuts, and a three-regime classification of `IΔ₀(P, E)` and
+`IΣ₁(P)` in the expansion `(M, P)`. It cites this README and two of its Lean
+files, and describes them correctly. Three declarations are ingredients
+only: `finite_list_beta_code` and `finite_vector_beta_code`
+(`FiniteBetaCoding.lean`; externally finite lists in a raw PA structure)
+cover the coding step of its Lemma 6.5 for lists of standard length, not
+its Lemma 6.1 (internal sequences of nonstandard length) or its binary
+`Bit` relation; `not_sat_inductionForm` (`EvaluatorCutContract.lean`, with
+`sat_cutAt_iff_isStandard`) is the induction-failure pattern of its
+Corollary 6.2 and Lemma 6.5, for a different formula and without a
+predicate `P`. `raw_above_of_nonstandard` is used implicitly in the same
+lemma. Its Section 11 proposes a formalization route built on this
+project's raw first-order semantics; none of its modules exists, and
+nothing in this project depends on the report.
+
 ## References
 
 - C. Ryll-Nardzewski,

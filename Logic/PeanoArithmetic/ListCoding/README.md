@@ -562,9 +562,10 @@ exact-once, and lexicographic specification.
 
 ## Related research reports
 
-Two reports of the surreal collection cite this project as a route to a
-further formalization. Neither is formalized, and nothing in this project
-depends on them.
+Four research reports cite this project: three of the surreal collection,
+two of them as a route to a further formalization and one as an engineering
+pattern, and one of the research-report collection. None is formalized, and
+nothing in this project depends on them.
 
 - [`polish-models-of-omnific-arithmetic`](../../../Algebra/SurrealNumbers/docs/foundations-and-computation/polish-models-of-omnific-arithmetic/):
   its Part VIII (batch 87, labels `pma:atr:`) **claims**, unrefereed and not
@@ -582,3 +583,23 @@ depends on them.
   its source 04 (batch 90, `isg:ptg:`, residue images of nonstandard models
   of PA) read this README for its distinction between the standard-natural
   interpretation of the formulas and internally derived theorems.
+- [`surreal-well-orders`](../../../Algebra/SurrealNumbers/docs/foundations-and-computation/surreal-well-orders/):
+  its Part XVII (batch 97, labels `swo:hn:`) cites this README's hereditary
+  Cantor-normal-form codes below `ε₀` as an engineering pattern for
+  proposed modules on class-sized hereditary normal forms (`OmegaNormalForm`,
+  `EpsilonTerms`). Those modules do not exist, nothing here is used by the
+  report, and its theorems about proper classes are not theorems of this
+  development.
+- [`random-bits-arithmetic-cuts`](../../../SetTheory/Cardinals/docs/reports/ordinals-and-order-types/random-bits-arithmetic-cuts/)
+  (batch 114, labels `rbc:`; AI-assisted, unrefereed, not formalized)
+  studies the coding cut of a random predicate on a countable model of PA,
+  the initial segment where the predicate has internal binary codes, and
+  claims its almost-sure value for every independent bias law, the Boolean
+  spectra of conjunction cuts and a three-regime induction theorem. Its
+  proposed formalization route (Section 11) cites this README's statement
+  that the project's formula evaluations are metatheorems about the
+  standard natural numbers, and concludes that a theorem about arbitrary
+  nonstandard models must pass through syntactic and soundness interfaces
+  instead. It names no declaration of this project; the finite beta coding
+  it uses as an ingredient is `finite_list_beta_code` of
+  [`NotFinitelyAxiomatizable`](../NotFinitelyAxiomatizable/).
