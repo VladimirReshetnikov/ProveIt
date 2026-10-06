@@ -1663,6 +1663,36 @@ so $x\in T_y$. Hence $y$ has at most $2r$ neighbours. The definition of $G$
 uses only $f$ and $c$.
 \end{proof}
 
+\begin{writenote}[Independent check of the write, 5 October 2026]
+An adversarial check made by the intake after the write (commit
+\file{74a988c32}) found no item needing a correction. It re-checked the
+counterexample of Remark~\ref{bwc:rem:injective} by hand and by program
+(the three chains partition $\Pow(\{0,1,2\})$, every $r\ge1$ is covered,
+and $f\circ\Theta$ is constant, so Lemma~\ref{bwc:lem:widthmultiplicity}
+and Theorem~\ref{bwc:thm:transfer} fail as printed) and audited every later use of an antichain code:
+Lemma~\ref{bwc:lem:widthmultiplicity} is cited only in the proof of
+Theorem~\ref{bwc:thm:transfer}, which is used only in
+Theorem~\ref{bwc:thm:core}, where it is applied to the code of
+Lemma~\ref{bwc:lem:transversal}, whose values are pairwise incomparable and
+which is therefore injective; Corollaries~\ref{bwc:cor:duplicate}
+and~\ref{bwc:cor:choice} and Theorem~\ref{bwc:thm:profile} rest on
+Theorem~\ref{bwc:thm:core}, so the $\ZFC$ classification stands, and the
+repaired proof of Theorem~\ref{bwc:thm:transfer} does not use injectivity
+again. It confirmed the Forster note (the publisher's abstract states the
+surjective form, and the reduction to it uses no choice),
+Proposition~\ref{bwc:prop:matching}, items F3 and F7, and the account of
+MathOverflow question~504570, read through the Stack Exchange API (dates,
+roles, both codes, the accepted answer and the credit gap). With its own
+program (not shipped) it recomputed $q_r(n)=\lceil W_n/r\rceil$ for $n\le9$
+and $r\le5$, the upper bound from a de Bruijn--Tengbergen--Kruyswijk
+symmetric chain decomposition coded independently of the article's
+recursion, every group's width checked, and the exact minimum by
+exhaustive search for $n\le3$ and for $n=4$, $r\le3$; the criterion
+$\SC_r([n])\iff W_n\le rn$ exhaustively for $n\le4$; and the defects
+$\delta(1),\dots,\delta(16)$ and the ranges of
+Corollary~\ref{bwc:cor:firstdefects}.
+\end{writenote}
+
 \section{Conclusion}\label{bwc:sec:conclusion}
 
 Bounded-width power-set compression is a compact problem with three distinct

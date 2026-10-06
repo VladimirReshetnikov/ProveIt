@@ -181,6 +181,21 @@ items of Section 13, and one item added by the write:
    `4 ≤ k ≤ 60`, `N(r) − (L + (3/2)log₂L + (1/2)log₂(π/2))` lies between
    −0.5636 (at `k = 45`) and 1.6743 (at `k = 4`); not a proof.
 
+**Independent check of the write (5 October 2026).** An adversarial check
+made by the intake after the write (`74a988c32`) found no item needing a
+correction. It re-checked the counterexample of Remark 9.10 by hand and by
+program and audited every later use of an antichain code: Lemma 9.2 is used
+only through Theorem 9.4, Theorem 9.4 only in Theorem 9.6, whose code
+(Lemma 9.5) is injective, and Corollaries 9.7, 9.8 and Theorem 10.1 rest on
+Theorem 9.6, so the `ZFC` classification stands. It confirmed the Forster
+note, Proposition 13.1, notes F3 and F7, and the account of MathOverflow
+504570 (read through the Stack Exchange API). With its own program (not
+shipped) it recomputed `q_r(n) = ⌈W_n/r⌉` for `n ≤ 9`, `r ≤ 5` (upper bound
+from an independently coded de Bruijn–Tengbergen–Kruyswijk decomposition;
+exhaustive minimum for `n ≤ 3` and `n = 4`, `r ≤ 3`), `SC_r([n]) ⇔ W_n ≤ rn`
+exhaustively for `n ≤ 4`, and `δ(1..16)` with the ranges of Corollary 5.2.
+The record is a dated note at the end of Section 13.1.
+
 ## Checks made at intake
 
 On copies (5 October 2026; Windows, Python 3.14.4, standard library only):
@@ -339,8 +354,8 @@ B=$(mktemp -d); cp article.tex "$B/"; cd "$B"
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The committed PDF was built this way with MiKTeX on 5 October 2026: 29
-pages; no errors or warnings, no undefined references or citations, no
+The committed PDF was built this way with MiKTeX on 5 October 2026, and
+rebuilt after the independent check: 29 pages (unchanged); no errors or warnings, no undefined references or citations, no
 multiply defined labels, no duplicate PDF destinations, and no overfull or
 underfull boxes. A build of the delivered text gives 21 pages, equally clean.
 The write's one layout change is a `\clearpage` before Appendix B, which kept
