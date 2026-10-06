@@ -13,6 +13,15 @@
 \newtheorem{lemma}{Lemma}
 \newcommand{\E}{\mathbb E}
 \newcommand{\ii}{\mathrm i}
+% Added by the ProveIt write phase (batch 108, 6 October 2026): remarks and
+% dated notes marked [write], a macro for file, label and declaration names.
+\usepackage{array}
+\theoremstyle{remark}\newtheorem{remark}{Remark}
+\newcommand{\file}[1]{\nolinkurl{#1}}
+\expandafter\def\expandafter\UrlBreaks\expandafter{\UrlBreaks\do\-\do\_\do\.}
+\newenvironment{writenote}[1][]{\par\smallskip\begingroup\small
+ \noindent\textbf{[write]}\if\relax\detokenize{#1}\relax\else~\textbf{#1.}\fi\ }%
+ {\par\endgroup\smallskip}
 \title{All orders asymptotics for\newline square lonesum decomposable matrices}
 
 \author{Report 132}
@@ -24,6 +33,38 @@
 Let $a_n$ count square binary matrices that split, after independent row and column permutations, into lonesum blocks and zero rows and columns. Starting from Kamano's exact bivariate generating function, we prove a complete expansion in powers of $n^{-1/2}$, with an explicit leading constant and first two correction coefficients. The proof treats the anisotropic saddle and all complementary arcs. We also give a coefficient algorithm, exact integer enumeration, and all-orders inverse threshold brackets that keep rounding uncertainty inside the ceiling. The results concern OEIS A299907, equivalently induced-$P_5$-free bipartite graphs on two fixed labelled shores of size $n$.
 \end{abstract}
 
+\begin{writenote}[Status and trust boundary, added 6 October 2026, batch~108]
+This is bundle Report~132 of an external AI-assisted research session, filed
+in ProveIt as the single-source research report
+\file{a299907-lonesum-decomposable-matrices} (provenance, the sources as the
+write read them, what was checked, relation to the repository, the collected
+non-claims and the reading conventions are in
+Section~\ref{lsd:sec:provenance}). It is unrefereed and not formalized; its
+author line reads ``Report 132'' and its PDF author field is empty.
+\emph{What rests on what.} Kamano's generating
+function~\eqref{lsd:eq:egf} and the exact enumeration~\eqref{lsd:eq:exact}
+are cited prior results (the latter is his Proposition~4.1 summed over the
+decomposition order; Remark~\ref{lsd:rem:oeis}). Theorem~\ref{lsd:thm:asympt}
+is the source's own; its proof (Sections~3--4, with Lemma~\ref{lsd:lem:arc}
+for the global contour) uses nothing but~\eqref{lsd:eq:egf}, and its
+remainder constants are existential. The text gives the steps but not the
+algebra behind the printed $\gamma$, $A$, $B$, $P_1$, $P_2$, $c_1$ and $c_2$;
+the delivered computer-algebra scripts reproduce them, and so does the write's
+own expansion, a separate program written from~\eqref{lsd:eq:formal}.
+Section~5 rests on Theorem~\ref{lsd:thm:asympt} and on the elementary
+doubling $a_{n+1}\ge2a_n$. The finite checks of Section~6 prove nothing
+asymptotic. The write found no error in the source. It adds, with proofs,
+Remark~\ref{lsd:rem:graph} (lonesum decomposability is a property of the
+connected components, each a chain graph, and the forbidden configurations are
+exactly the induced paths $P_5$, both directions),
+Remark~\ref{lsd:rem:oeis} (the three OEIS entries quoted; the entry's
+Mathematica double sum is~\eqref{lsd:eq:exact}; a misprinted value in the
+example table of A299906), Remark~\ref{lsd:rem:transseries} (Section~5 against
+the transseries volume, statement by statement), Remark~\ref{lsd:rem:c3} (the
+third coefficient $c_3$, which the source computed but did not claim) and
+questions in Section~\ref{lsd:sec:further}. Nothing was submitted to the OEIS.
+\end{writenote}
+
 \section{The counted objects and prior results}
 A binary matrix is \emph{lonesum} if its row-sum and column-sum vectors determine it uniquely among binary matrices of the same dimensions. A matrix is \emph{lonesum decomposable} if independent permutations of its rows and columns turn it into a block diagonal matrix with lonesum blocks having no zero row or column, together with optional zero rows and columns outside those blocks. We count the original labelled matrices, not equivalence classes under those permutations. Write $D(m,n)$ for this count and $a_n=D(n,n)$, including $a_0=1$ and the all-zero matrix in every dimension. The diagonal begins
 \[
@@ -32,7 +73,7 @@ A binary matrix is \emph{lonesum} if its row-sum and column-sum vectors determin
 and is OEIS A299907; the rectangular array is A299906~\cite{OEIS,OEISrect}.
 
 Kamano proves uniqueness of the nonzero block decomposition and the exact exponential generating function~\cite[Proposition 1.2; Theorem 3.1, equation (9)]{Kamano}
-\begin{equation}\label{eq:egf}
+\begin{equation}\label{lsd:eq:egf}
  F(x,y)=\sum_{m,n\geq0}D(m,n)\frac{x^my^n}{m!n!}
  =\exp\left(x+y+\frac{1}{1-(e^x-1)(e^y-1)}-1\right).
 \end{equation}
@@ -45,24 +86,241 @@ There is also a useful graph interpretation. Regard a matrix as the bipartite ad
 up to row and column permutations and transposition~\cite[Theorem 2.1]{Kamano}. Its graph is exactly the induced path
 $y_2-x_1-y_1-x_2-y_3$ on five vertices. Thus the forbidden configurations are precisely induced copies of $P_5$. Each nontrivial connected component is a chain (or Ferrers) graph. The theorem below consequently enumerates induced-$P_5$-free bipartite graphs with this prescribed balanced bipartition; it does not count graphs up to isomorphism or graphs with an unspecified bipartition.
 
+
+\begin{remark}[{[write]} Components, chain graphs and induced paths, 6~October 2026]\label{lsd:rem:graph}
+Two sentences of the preceding paragraph are stated without proof: that each
+nontrivial connected component is a chain graph, and that the forbidden
+configurations are \emph{precisely} the induced copies of~$P_5$ (the paragraph
+checks one direction, that the graph of~$U$ is an induced~$P_5$). Both follow
+from Kamano's results. For an $m\times n$ binary matrix $M$ let $G(M)$ be its
+bipartite graph on the labelled row shore $\{x_1,\dots,x_m\}$ and column shore
+$\{y_1,\dots,y_n\}$, with $x_iy_j$ an edge when $M_{ij}=1$.
+
+\emph{(a) A lonesum matrix without zero rows or columns has a connected chain
+graph.} By Ryser's theorem in Kamano's form~\cite[Proposition~1.1]{Kamano}, a
+binary matrix is lonesum if and only if it contains neither
+$\bigl(\begin{smallmatrix}1&0\\0&1\end{smallmatrix}\bigr)$ nor
+$\bigl(\begin{smallmatrix}0&1\\1&0\end{smallmatrix}\bigr)$ as a submatrix.
+Then any two row supports $R_1,R_2$ are comparable under inclusion: otherwise
+columns $c\in R_1\setminus R_2$ and $c'\in R_2\setminus R_1$ would give one of
+the two forbidden submatrices in rows $1,2$ and columns $c,c'$. Nested
+neighbourhoods on the row shore are the definition of a chain (difference,
+Ferrers) graph. If there is no zero column, every column has a~$1$ in some row,
+whose support lies in a row support of largest size; so that row meets every
+column and, with no zero row, the graph is connected.
+
+\emph{(b) $M$ is lonesum decomposable if and only if every connected component
+of $G(M)$ with at least one edge has a lonesum biadjacency submatrix.} If $M$
+is lonesum decomposable, the blocks of its decomposition occupy disjoint sets
+of rows and columns and contain every~$1$; by~(a) each block is connected, so
+the blocks are exactly the components with an edge. Conversely, listing those
+components one after another, then the isolated rows and columns, is a row and
+column permutation to the required block form. In particular every nontrivial
+component is a connected chain graph, as the text says.
+
+\emph{(c) The forbidden configurations are exactly the induced $P_5$.}
+Kamano's set $\mathcal N$~\cite[Section~2]{Kamano} consists of the twelve
+matrices obtained from $U$ and its transpose by permuting rows and columns,
+and $M$ is lonesum decomposable if and only if it contains no member of
+$\mathcal N$ as a submatrix~\cite[Theorem~2.1]{Kamano}. A $2\times3$
+submatrix in rows $i_1,i_2$ and columns $j_1,j_2,j_3$ is a row and column
+permutation of $U$ if and only if each of its two rows has exactly two ones
+and the two rows share exactly one column (two distinct $2$-subsets of a
+$3$-set meet in one element, and a column permutation carries any such pair
+to $\{1,2\},\{1,3\}$). In $G(M)$ this says that $x_{i_1}$ and $x_{i_2}$ have a
+common neighbour $y$ and private neighbours $y'$, $y''$ among the three
+columns, with $x_{i_1}y''$ and $x_{i_2}y'$ absent: $y'-x_{i_1}-y-x_{i_2}-y''$ is
+an induced path, the other pairs of its five vertices lying on one shore.
+Conversely, an induced $P_5$ with vertices $v_1,\dots,v_5$ in path order
+alternates shores, so $v_2,v_4$ lie on one shore and $v_1,v_3,v_5$ on the
+other; its edges are $v_1v_2$, $v_2v_3$, $v_3v_4$, $v_4v_5$ and the pairs
+$v_1v_4$, $v_2v_5$ are non-edges. The submatrix on rows and columns
+$\{v_2,v_4\}\times\{v_1,v_3,v_5\}$ (or its transpose, when $v_2,v_4$ are
+columns) is therefore a permutation of $U$ (or of its transpose). Hence $M$
+is lonesum decomposable if and only if $G(M)$, with both shores fixed, has no
+induced $P_5$: Kamano's Theorem~2.1 restated. The delivered checker's
+exhaustive count through $n=3$ tests exactly the criterion of this paragraph.
+
+\emph{(d) A check.} The write enumerated every $m\times n$ binary matrix for
+$1\le m,n\le4$ and decided lonesum decomposability three ways: from the
+definition through~(b), with lonesumness tested directly as uniqueness among
+all matrices with the same row and column sums (no use of Ryser's theorem);
+by the induced-$P_5$ criterion of~(c); and by the rectangular form
+$D(m,n)=\sum_kk!B_kS(m+1,k+1)S(n+1,k+1)$ of~\eqref{lsd:eq:exact}. The three
+agree for all sixteen shapes, for instance $D(2,3)=58$, $D(3,4)=1786$ and
+$D(4,4)=13528$.
+\end{remark}
+
 \paragraph{Prior-art boundary.}
-Equation~\eqref{eq:egf} and the exact enumeration are prior results. Ordinary lonesum matrices have generating function
+Equation~\eqref{lsd:eq:egf} and the exact enumeration are prior results. Ordinary lonesum matrices have generating function
 $e^{x+y}/(1-(e^x-1)(e^y-1))$; their asymptotics, including higher-order extensions, are already treated by Khera, Lundberg and Melczer~\cite{KLM}. Their use of the symbol $D$ for an ordinary-lonesum variant is unrelated to $D(m,n)$ here. The present exponential of a pole has different saddle scales. Related restricted decomposable classes are studied by B\'enyi and Ram\'irez~\cite{BMRW}. A scoped search of the inspected OEIS entries and accessible primary literature located no balanced-shore asymptotic equivalent for this decomposable class. The full text of Khera's 2021 dissertation was not available in that search~\cite{KheraThesis}. This is a limitation on priority assessment, not a claim of worldwide novelty or the resolution of a named open conjecture.
+
+
+\subsection{Provenance, sources and reading conventions}\label{lsd:sec:provenance}
+\begin{writenote}[Added 6 October 2026, batch~108]
+\emph{Provenance.} This report is Report~132 of the session bundle that
+ProveIt's \file{docs/incoming} intake processed as batch~108: the archive
+\file{A299907_All_Orders_Matrix_Asymptotics_and_Inversion_Source.zip}
+(369{,}597 bytes, SHA-256 \file{ad4d45c02c09...b16feea1362}, 18 files in the
+wrapper directory \file{Report132_bundle}), arrival commit \file{60f54ea06},
+placed in \file{602e5bd0f}. The text is the delivered \file{Report132.tex}
+(334 lines, dated 2~October 2026), shipped as \file{article.tex}. The
+delivered eight-page PDF and the integrity manifest \file{MANIFEST.json} (17
+entries, verified at placement) are not shipped, and the delivered README is
+replaced by the report README; all three are retrievable from the arrival
+commit. The package records no ProveIt commit; its \file{sources.md} mentions
+a ``bounded repository-topic review'' without naming a repository or commit.
+It contains no ``prepared for private review'' line and no personal data. It
+is a single-source report, so no merge choice was made. The write prefixed the
+17 delivered labels with \file{lsd:} and updated the 14 references to them;
+it added the notes marked [write], this subsection,
+Remarks~\ref{lsd:rem:graph}--\ref{lsd:rem:oeis}, the label and the added part
+of Section~\ref{lsd:sec:further}, and nothing else. No statement, proof or
+number of the source was changed; the source has no remark environment, so the
+added remarks carry their own numbers, and every theorem, lemma, section and
+equation keeps its delivered number.
+
+\emph{The sources, as the write read them} (6~October 2026).
+\begin{itemize}\raggedright
+\item Kamano~\cite{Kamano}, arXiv:1701.07157v1: Propositions~1.1 (Ryser's
+ characterization), 1.2 (uniqueness of the decomposition matrix) and~4.1 (the
+ Stirling formula for $D_k(m,n)$), Section~2 with the set $\mathcal N$,
+ Theorem~2.1 (the forbidden submatrices) and Theorem~3.1 with
+ equation~(9), which is~\eqref{lsd:eq:egf} after
+ $e^x+e^y-e^{x+y}=1-(e^x-1)(e^y-1)$; it is on page~7 of the arXiv PDF. The
+ journal version was not read.
+\item Khera, Lundberg and Melczer~\cite{KLM}, arXiv:1912.08850v2: Remark~2
+ (higher-order terms for square lonesum matrices) and their $D_{n,k}$,
+ lonesum matrices without zero rows or columns (not Kamano's $D_1(m,n)$,
+ which allows zero lines outside its one block).
+ B\'enyi and Ram\'irez~\cite{BMRW}, arXiv:1804.03949v1, Section~4.3 and
+ Theorem~11 (restricted lonesum decomposable matrices), as cited.
+\item OEIS A299907, A299906 and A000262, live entries fetched on 6~October
+ 2026 (Remark~\ref{lsd:rem:oeis}). The source's \file{sources.md} says that its
+ own direct OEIS requests ``failed'' during final preparation and that the
+ identification and the fixture transcription were inherited from an earlier
+ review; the write's fetch confirms both.
+\item The transseries volume
+ \path{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex}:
+ \file{p0:prop:factorial-core}, \file{p0:thm:core-reversion},
+ \file{p0:rem:core-instances}, \file{p0:def:three-inverses},
+ \file{p0:thm:staircase}, \file{p0:thm:lambert-centered},
+ \file{plt:def:lw-monomial-log-datum} and \file{plt:thm:lw-template}, read for
+ Remark~\ref{lsd:rem:transseries}.
+\item Not read by the write: Khera's dissertation~\cite{KheraThesis} (the
+ source did not read it either) and the journal texts behind the arXiv
+ versions above.
+\end{itemize}
+
+\emph{What was checked at intake.} The batch-108 dossier read the manuscript in
+full and found no error; it checked by hand the induced-$P_5$ reading of $U$,
+the constant $C$ from~\eqref{lsd:eq:C} and the $-\tfrac14\log n$ term
+of~\eqref{lsd:eq:log}, and reran the delivered checker, both coefficient
+programs and the $n=100$ diagnostic on a copy. The write rechecked every proof
+line by line and found no error. Independently of the delivered programs it
+re-derived, with its own series code, the Laurent
+expansion~\eqref{lsd:eq:formal} through $t^4$ (the cancellation of the $t^{-4}$,
+$t^{-3}$ and $t^{-1}$ terms, $\beta$, $\gamma$, $A$, $B$, $P_1$, $P_2$) and
+from it $c_1$ and $c_2$ exactly; it checked the two $\delta$-expansions and
+$r_n$ of Section~3, and at the exact saddle for $n=10^4,10^6,10^8$ the
+eigenvalue identity $B_{11}-B_{12}=n-r_n^2s/D^2$ and both limits
+of~\eqref{lsd:eq:eigenvalues}; it verified the identity used in the proof of
+Lemma~\ref{lsd:lem:arc} and its case analysis, the Jacobian $2t^5$, the
+prefactor, the parity argument, the three cancellation identities of
+Section~5 (also as Remark~\ref{lsd:rem:transseries}(b)), the doubling
+injection and the derivations of~\eqref{lsd:eq:B} and~\eqref{lsd:eq:exact};
+it recomputed the table of Section~6 for $n=100$, $400$, $800$ from exact
+integers (the row $n=3200$ equals the delivered diagnostics file) and the
+brute-force counts of Remark~\ref{lsd:rem:graph}(d). Finite computations are
+observations, not certificates.
+
+\emph{Relation to the repository.} Before batch~108 no file of the repository
+named A299907, A299906 or lonesum decomposable matrices; A000262 occurred only
+in \file{congruences-and-valuations/a321941-asymptotic-coefficient-integrality},
+as an unrelated tool. The nearest report is
+\file{a122399-surjection-diagonal} (the diagonal of
+$1/(1-ue^y(e^x-1))$, a pole rather than the exponential of a pole, with the
+same $(n!)^2$ normalization and Stirling machinery; it credits Khera, Lundberg
+and Melczer); \file{a089479-fixed-permanent-matrices}, of the same batch,
+mentions a lonesum-decomposable report as a different model. No statement of
+this report is formalized in Lean or Rocq, and its place in the collection
+confers no formal status. Generic ingredients are formalized in the
+FabiusFunction library
+(\path{Analysis/FabiusFunction/Lean/FabiusFunction/}): the Lah numbers
+\file{Fabius.lahNumber} with their column generating function
+\file{Fabius.X_mul_mkOne_pow}, $(t/(1-t))^k=\sum_nk!\,L(n,k)t^n/n!$, from
+which $\sum_kL(n,k)=B_n$ (A000262) follows by summing over~$k$; the vertical
+recurrence \file{Fabius.stirlingSecond_succ_succ_eq_sum}; and the generic
+rounding facts \file{Fabius.staircase_ceil} and
+\file{Fabius.staircase_separation}. None of them is a statement of this
+report.
+\end{writenote}
+\begin{writenote}[What is not claimed, collected from the source]
+The constants in the remainders of Theorem~\ref{lsd:thm:asympt} and in the
+inverse brackets, and the onset thresholds, are existential; no certified
+finite-$n$ error bound or finite-$T$ bracket is given, and numerical tests do
+not supply one. No worldwide novelty or priority is claimed (``a limitation on
+priority assessment, not a claim of worldwide novelty or the resolution of a
+named open conjecture''); the source search was bounded, Khera's
+dissertation was not inspected, and the exact generating function and
+enumeration are Kamano's. The graph statement fixes the labelled
+bipartition: it does not count graphs up to isomorphism or with an unspecified
+bipartition. $\lceil X_1\rceil$ is not a valid rounding rule; the error must
+stay inside the ceiling. No central or local limit theorem for the number of
+blocks is asserted, and optimal truncation and exponentially small terms are
+not identified. The diagnostics file stores $c_3$, which the source does not
+claim. The finite checks and the quality-assurance procedure check
+reproducibility and named finite identities only; they do not mechanize the
+analytic proof; integrity hashes are not authorship authentication; PDF byte
+identity holds only in the delivering \TeX{} environment. The write adds: the
+value of $c_3$ in Remark~\ref{lsd:rem:c3} is a computer-algebra output of the
+delivered recipe, and the comparisons in Remark~\ref{lsd:rem:transseries}
+classify statements; they prove nothing new about~$a_n$.
+\end{writenote}
+\medskip\noindent\begin{minipage}{\textwidth}
+\emph{Reading conventions} (letters the source reuses, with the tempting false
+readings; no symbol of the source was renamed; symbols of the transseries
+volume carry the subscript ``vol'').\par
+\smallskip
+\begingroup\small\renewcommand{\arraystretch}{1.1}
+\noindent\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.95in}>{\raggedright\arraybackslash}p{3.05in}>{\raggedright\arraybackslash}p{2.1in}@{}}
+\toprule
+Symbol & Meaning here (where) & Not to be read as\\
+\midrule
+$D(m,n)$, $a_n$ & lonesum decomposable $m\times n$ matrices; $a_n=D(n,n)$ & lonesum matrices (Kamano's $L(m,n)$); KLM's $D_{n,k}$; Kamano's $D_k(m,n)$ (order $k$); A299906's $T(n,k)=D(n,k)$\\
+$D$; $D_1$, $D_2$ & $1-q^2$ (Section~3); inverse corrections (Section~5) & the count $D(m,n)$\\
+$A(z)$; $A$ & $e^z-1$; the Gaussian constant $4\sqrt{2\ell}$ & each other\\
+$B_{11},B_{12}$; $B$; $B_k$ & Hessian entries; $1-\ell$; A000262 (Section~6) & Bell numbers; KLM's poly-Bernoulli $B_{n,k}$\\
+$k$ & $A(r)^2-\rho$ (proof of Lemma~\ref{lsd:lem:arc}); $\log(2\pi C)$ (Section~5); an index (Sections~4,~6) & Kamano's decomposition order\\
+$c_j$; $c$, $c_0$, $\eta$ & expansion coefficients, $c_0=1$; the constants of Lemma~\ref{lsd:lem:arc}, whose $c_0$ is a gap & each other\\
+$d$; $d_j$ & $1-A(r)^2$ (Lemma~\ref{lsd:lem:arc}); coefficients of $\log(1+\sum c_jz^j)$ & $d_{\rm vol}$ of \file{p0:prop:factorial-core}\\
+$h$ & $(x-y)/2$ (Section~4); $\log(x/\ell)$ (Section~5) & $h_{\rm vol}(E)$ of \file{p0:thm:core-reversion}\\
+$x$, $y$; $m$ & generating-function variables, but in Section~5 the Lambert root and the real variable of $\Phi_M$; the row count, and $(x+y)/2$ in Section~4 & \\
+$\ell$, $L$, $T$ & $\log 2$; $\log T$; a threshold & $\ell_{\rm vol}=\log X$, $L_{\rm vol}=\log Z$ of \file{plt:thm:lw-template}; A299906's $T$\\
+$t$, $U$, $V$; $u$, $v$ & $n^{-1/4}$ and scaled angles; common and opposing angles & $t_{\rm vol}$, $v_{\rm vol}$\\
+$\beta$, $\gamma$ & $\sqrt{2/\ell}$; $2\ell-\tfrac58+\tfrac1{8\ell}$ & Euler's constant; $\beta_{\rm vol}$\\
+$P$; $P_j$, $Q_j$, $\E$ & $A(re^{\ii\theta})A(re^{\ii\phi})$ (Lemma~\ref{lsd:lem:arc}); expansion polynomials; the Gaussian functional & \\
+$N(T)$, $W$ & $\min\{n:a_n\ge T\}$; the branch $W_0$ & equal to the staircase $N_\ast$ of \file{p0:def:three-inverses} here (Remark~\ref{lsd:rem:transseries})\\
+$S(n,k)$ & Stirling numbers of the second kind & \\
+\bottomrule
+\end{tabular}
+\endgroup
+\end{minipage}
 
 \section{Main expansion}
 Put $\ell=\log 2$ and $\beta=\sqrt{2/\ell}$.
-\begin{theorem}\label{thm:asympt}
+\begin{theorem}\label{lsd:thm:asympt}
 For each fixed integer $M\geq0$, there are explicitly computable real constants $c_j$ such that
-\begin{equation}\label{eq:main}
+\begin{equation}\label{lsd:eq:main}
  a_n=(n!)^2 C\ell^{-2n}n^{-5/4}e^{\beta\sqrt n}
  \left(\sum_{j=0}^M c_j n^{-j/2}+O_M(n^{-(M+1)/2})\right),
 \end{equation}
 where $c_0=1$ and
 \begin{align}
- C&=\frac{\exp(-5/8+1/(8\ell))}{\pi(2\ell)^{1/4}\sqrt{1-\ell}},\label{eq:C}\\
- c_1&=-\frac{\sqrt2(167\ell^3-143\ell^2-\ell+1)}{192\ell^{3/2}(\ell-1)},\label{eq:c1}\\
+ C&=\frac{\exp(-5/8+1/(8\ell))}{\pi(2\ell)^{1/4}\sqrt{1-\ell}},\label{lsd:eq:C}\\
+ c_1&=-\frac{\sqrt2(167\ell^3-143\ell^2-\ell+1)}{192\ell^{3/2}(\ell-1)},\label{lsd:eq:c1}\\
  c_2&=\frac{65041\ell^6-108866\ell^5+42099\ell^4+1724\ell^3-573\ell^2-2\ell+1}
- {36864\ell^3(\ell-1)^2}.\label{eq:c2}
+ {36864\ell^3(\ell-1)^2}.\label{lsd:eq:c2}
 \end{align}
 Numerically $C=0.3394739586934123704\ldots$,
 $c_1=-0.5317063378238041150\ldots$, and
@@ -73,7 +331,7 @@ $c_2=-0.1635701301266242142\ldots$.
 Write $g=\log F$ and $A(z)=e^z-1$. For any $0<r<\ell$, the closed bidisc $|x|,|y|\leq r$ lies in the domain of analyticity of $F$: indeed
 $|A(x)A(y)|\leq A(r)^2<1$.
 The positive symmetric saddle is the unique solution of
-\begin{equation}\label{eq:saddle}
+\begin{equation}\label{lsd:eq:saddle}
  n=r+\frac{re^r(e^r-1)}{[1-(e^r-1)^2]^2}.
 \end{equation}
 The right side increases strictly from $0$ to infinity: it is a power series with nonnegative coefficients and a positive linear coefficient. With $\delta=\ell-r$,
@@ -81,7 +339,7 @@ The right side increases strictly from $0$ to infinity: it is a power series wit
 1-(e^r-1)^2=4\delta-6\delta^2+\frac{14}{3}\delta^3+O(\delta^4),\qquad
 \frac1{1-(e^r-1)^2}=\frac1{4\delta}+\frac38+\frac{13}{48}\delta+O(\delta^2).
 \]
-The right side of \eqref{eq:saddle} equals
+The right side of \eqref{lsd:eq:saddle} equals
 $\ell/(8\delta^2)-1/(8\delta)+83\ell/96+O(\delta)$, giving
 \[
  r_n=\ell-\sqrt{\ell/8}\,n^{-1/2}+\frac1{16}n^{-1}+O(n^{-3/2}).
@@ -95,20 +353,20 @@ and off-diagonal entry
  B_{12}=r_n^2\left(\frac{s^2}{D^2}+\frac{2s^2q^2}{D^3}\right).
 \]
 Its eigenvalues satisfy
-\begin{equation}\label{eq:eigenvalues}
+\begin{equation}\label{lsd:eq:eigenvalues}
  \lambda_+\sim4\sqrt{2\ell}\,n^{3/2},\qquad
  \lambda_-=n-\frac{r_n^2s}{D^2}\sim(1-\ell)n.
 \end{equation}
 Thus the common-angle width is $n^{-3/4}$ and the opposing-angle width is $n^{-1/2}$.
 
 Here is the required global contour estimate; a local Hessian calculation alone would not justify the expansion.
-\begin{lemma}\label{lem:arc}
+\begin{lemma}\label{lsd:lem:arc}
 Uniformly for $r<\ell$ sufficiently near $\ell$, put
 $d=1-A(r)^2$, $\theta=u+v$, $\phi=u-v$, and
 $P=A(re^{\ii\theta})A(re^{\ii\phi})$.
 There are fixed positive constants $c,\eta$ such that for
 $|\theta|,|\phi|\leq\eta$,
-\begin{equation}\label{eq:loss}
+\begin{equation}\label{lsd:eq:loss}
  \frac1d-\Re\frac1{1-P}
  \ \geq\ c\min\left(\frac{v^2}{d^2}+\frac{u^2}{d^3},\frac1d\right).
 \end{equation}
@@ -140,7 +398,7 @@ If $k<d$, the sum of the two displayed differences is bounded below by a positiv
 \[
  \frac{u^2+v^2}{d^2}+\frac{u^2}{d(d^2+u^2)},
 \]
-which implies \eqref{eq:loss}.
+which implies \eqref{lsd:eq:loss}.
 
 Away from zero, the triangle inequality for
 $A(re^{\ii\theta})=\sum_{j\geq1}r^je^{\ii j\theta}/j!$
@@ -170,7 +428,7 @@ Cauchy's formula reads
  \int_{[-\pi,\pi]^2}\exp\{g(re^{\ii\theta},re^{\ii\phi})-\ii n(\theta+\phi)\}\,d\theta\,d\phi.
 \]
 Define the following formal Laurent series, keeping $\ell=\log2$ so $e^\ell=2$:
-\begin{equation}\label{eq:formal}
+\begin{equation}\label{lsd:eq:formal}
  \mathcal E(t,U,V)=2m+H^{-1}-1
        -2t^{-4}\log(r/\ell)-2\ii U/t
  =\beta t^{-2}+\gamma-AU^2-BV^2+\sum_{j\geq1}P_j(U,V)t^j,
@@ -191,13 +449,13 @@ The $t^{-1}$ term cancels. Each $P_j$ is a polynomial in $U,V$. In particular
 \end{align*}
 
 Let $Q_0=1$ and
-\begin{equation}\label{eq:Q}
+\begin{equation}\label{lsd:eq:Q}
  Q_j=\frac1j\sum_{k=1}^j kP_kQ_{j-k}.
 \end{equation}
 These are the coefficients of $\exp(\sum_{j\geq1}P_jt^j)$.
 Let $\E$ denote the product Gaussian functional with density
 $\sqrt{AB}\,e^{-AU^2-BV^2}/\pi$. Then the all-orders recipe is
-\begin{equation}\label{eq:recipe}
+\begin{equation}\label{lsd:eq:recipe}
  c_j=\E Q_{2j}.
 \end{equation}
 For monomials the functional is explicit:
@@ -205,16 +463,42 @@ For monomials the functional is explicit:
  \E(U^{2p}V^{2q})=\frac{(2p-1)!!(2q-1)!!}{(2A)^p(2B)^q},
 \]
 and odd moments vanish. Thus each coefficient involves only finitely many exact algebraic operations over $\mathbb Q(\sqrt\ell,\sqrt2)$.
-For example $c_1=\E(P_2+P_1^2/2)$ gives \eqref{eq:c1}; continuing the same recurrence gives \eqref{eq:c2}.
+For example $c_1=\E(P_2+P_1^2/2)$ gives \eqref{lsd:eq:c1}; continuing the same recurrence gives \eqref{lsd:eq:c2}.
 
-For completeness, this formal manipulation is an asymptotic expansion with controlled remainder. On the central logarithmic box, $H/(4\alpha t^2)=1+O(t|U|+t^2(1+V^2))$, so its reciprocal and all other factors have ordinary convergent Taylor expansions after removing the displayed Laurent terms. For each fixed order, Taylor remainders are bounded by a fixed power of $t$ times a polynomial in $|U|+|V|$. For a fixed constant $K>0$, the exponential of the perturbation is bounded in modulus by $K\exp((AU^2+BV^2)/2)$ on this box for sufficiently small $t$. Integrating the remainder against the remaining Gaussian removes any artificial logarithmic factors. Lemma~\ref{lem:arc} applies equally to this explicit radius, since $1-A(r)^2\asymp t^2$, and makes the complement smaller than every power of $t$.
+For completeness, this formal manipulation is an asymptotic expansion with controlled remainder. On the central logarithmic box, $H/(4\alpha t^2)=1+O(t|U|+t^2(1+V^2))$, so its reciprocal and all other factors have ordinary convergent Taylor expansions after removing the displayed Laurent terms. For each fixed order, Taylor remainders are bounded by a fixed power of $t$ times a polynomial in $|U|+|V|$. For a fixed constant $K>0$, the exponential of the perturbation is bounded in modulus by $K\exp((AU^2+BV^2)/2)$ on this box for sufficiently small $t$. Integrating the remainder against the remaining Gaussian removes any artificial logarithmic factors. Lemma~\ref{lsd:lem:arc} applies equally to this explicit radius, since $1-A(r)^2\asymp t^2$, and makes the complement smaller than every power of $t$.
 
 Moreover $\mathcal E(-t,U,V)=\mathcal E(t,-U,V)$, so $Q_j$ is odd in $U$ when $j$ is odd. All odd powers integrate to zero. Expanding through degree $2M+1$ therefore leaves $O(t^{2M+2})=O(n^{-(M+1)/2})$.
 Finally the Jacobian is $d\theta\,d\phi=2t^5dU\,dV$, and the central Gaussian integral is $\pi/\sqrt{AB}$. Its total prefactor is
 \[
  \frac{e^\gamma}{2\pi\sqrt{AB}}=\frac{e^\gamma}{4\pi(2\ell)^{1/4}\sqrt{1-\ell}}=C,
 \]
-because $e^{2\ell}=4$. This proves Theorem~\ref{thm:asympt}.
+because $e^{2\ell}=4$. This proves Theorem~\ref{lsd:thm:asympt}.
+
+\begin{remark}[{[write]} The third coefficient, 6~October 2026]\label{lsd:rem:c3}
+The delivered diagnostics file records $c_3=-0.26674650591076156210735\ldots$,
+and the delivery README says that the article does not claim it. Run by the
+write on a copy (about ten seconds), the delivered program
+\file{derive_general.py} at order~$3$, which evaluates~\eqref{lsd:eq:recipe}
+by computer algebra in the variable $z=\sqrt{\ell/8}$, returns after the
+substitution $z^2=\ell/8$
+\begin{align*}
+ c_3&=-\frac{\sqrt2\,N_3(\ell)}{106168320\,\ell^{9/2}(\ell-1)^3},\\
+ N_3(\ell)&=150570067\ell^9-331569921\ell^8+185237466\ell^7+22417538\ell^6\\
+ &\quad-30193908\ell^5+401964\ell^4+35446\ell^3-9042\ell^2-15\ell+5,
+\end{align*}
+numerically $-0.266746505910761562107\ldots$, the stored value. This is a
+computer-algebra output, not a derivation by hand; the write's own expansion
+(Section~\ref{lsd:sec:provenance}) was taken only to the order of $c_2$. The
+exact counts agree with it: $n^{3/2}(R_n-1-c_1n^{-1/2}-c_2n^{-1})$ equals
+$-0.2188$, $-0.2324$, $-0.2422$ at $n=400$, $800$, $1600$ (the write's
+computation) and $-0.2493$ at $n=3200$ (the diagnostics file), and its
+differences from $c_3$, multiplied by $\sqrt n$, are $0.959$, $0.972$,
+$0.981$, $0.987$, the behaviour expected if $c_4$ is close to~$1$. The
+denominators $192\ell^{3/2}(\ell-1)$, $36864\ell^3(\ell-1)^2=192^2\ell^3(\ell-1)^2$
+and $106168320\ell^{9/2}(\ell-1)^3=15\cdot192^3\ell^{9/2}(\ell-1)^3$ and the
+numerator degrees $3$, $6$, $9$ suggest a pattern; it is recorded as
+Question~\ref{lsd:q:pattern}, not claimed.
+\end{remark}
 
 \section{Inversion and integer thresholds}
 The asymptotic inverse must be distinguished from exact integer rounding. Define
@@ -223,7 +507,7 @@ The asymptotic inverse must be distinguished from exact integer rounding. Define
 \]
 The sequence obeys $a_{n+1}\geq2a_n$: adjoining a last row and column that are zero except for a freely chosen bottom-right entry $0$ or $1$ gives two disjoint injections. The first construction adds isolated row and column vertices; the second adds a separate $1\times1$ lonesum block. Hence both preserve lonesum decomposability, and deleting the last row and column recovers the input. Thus the sequence is strictly increasing.
 Writing $k=\log(2\pi C)$, Stirling's formula gives
-\begin{equation}\label{eq:log}
+\begin{equation}\label{lsd:eq:log}
  \log a_n=2n\log\frac{n}{e\ell}+\beta\sqrt n-\frac14\log n+k+\frac{c_1}{\sqrt n}+O(n^{-1}).
 \end{equation}
 For $L=\log T$, let
@@ -239,7 +523,7 @@ where $W$ is the positive real Lambert function. This $x$ solves $2x\log(x/(e\el
                  {2h\sqrt x},\qquad X_2=X_1+D_2.
 \end{align*}
 There are fixed positive $K_1,K_2$ and sufficiently large $T_0$ such that, for $T\geq T_0$,
-\begin{align}\label{eq:brackets}
+\begin{align}\label{lsd:eq:brackets}
  \left\lceil X_1-\frac{K_1}{\sqrt x\,h}\right\rceil
  &\leq N(T)\leq
  \left\lceil X_1+\frac{K_1}{\sqrt x\,h}\right\rceil,\\
@@ -248,8 +532,8 @@ There are fixed positive $K_1,K_2$ and sufficiently large $T_0$ such that, for $
  \left\lceil X_2+\frac{K_2}{x h}\right\rceil.\nonumber
 \end{align}
 These constants and the onset threshold are existential here; numerical tests do not turn them into certified finite-$T$ error bounds.
-To verify the orders, expand the right side of \eqref{eq:log} at $x$.
-The term $-\beta\sqrt x/(2h)$ cancels the order-$\sqrt x$ term. The displayed $D_1$ cancels all order-one terms, leaving $O(x^{-1/2})$ in the logarithm. The numerator of $D_2$ is exactly the remaining coefficient at order $x^{-1/2}$; adding $D_2$ leaves $O(x^{-1})$. Division by the derivative $2h+O(x^{-1/2})$ gives the stated location scales. Applying increasing upper and lower smooth envelopes to the integer values in \eqref{eq:log}, as detailed below, gives \eqref{eq:brackets}. No interpolation of the unknown exact sequence is being assumed.
+To verify the orders, expand the right side of \eqref{lsd:eq:log} at $x$.
+The term $-\beta\sqrt x/(2h)$ cancels the order-$\sqrt x$ term. The displayed $D_1$ cancels all order-one terms, leaving $O(x^{-1/2})$ in the logarithm. The numerator of $D_2$ is exactly the remaining coefficient at order $x^{-1/2}$; adding $D_2$ leaves $O(x^{-1})$. Division by the derivative $2h+O(x^{-1/2})$ gives the stated location scales. Applying increasing upper and lower smooth envelopes to the integer values in \eqref{lsd:eq:log}, as detailed below, gives \eqref{lsd:eq:brackets}. No interpolation of the unknown exact sequence is being assumed.
 
 In particular one may write $N(T)=\lceil X_1+O((\sqrt x\,h)^{-1})\rceil$, provided the error is explicitly kept \emph{inside} the ceiling. There is no unconditional justification for replacing this by $\lceil X_1\rceil$ for all large $T$: a threshold may be arbitrarily close to a jump. If the error interval crosses an integer, compare the adjacent exact $a_n$ values.
 
@@ -274,23 +558,94 @@ $|\log a_n-\Phi_M(n)|\leq A_M n^{-(M+1)/2}$ for all sufficiently large integers 
 
 The real root can be found by Newton iteration from $x$. In the relevant neighborhood $\Phi_M'\asymp\log x$ and $\Phi_M''=O(1/x)$, so an iteration with location error $e$ produces error $O(e^2/(x\log x))$. A fixed number of iterations, chosen from the requested order, obtains any prescribed algebraic accuracy. If an approximate numerical root is used in a ceiling bracket, its certified location error must be added to $E_M$. This is a constructive all-orders inverse, with the unavoidable rounding caveat.
 
+
+\begin{remark}[{[write]} Section~5 against the transseries volume, 6~October 2026]\label{lsd:rem:transseries}
+The volume is
+\path{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/}.
+Its symbols carry the subscript ``vol'' where they collide with this
+report's. Statement by statement:
+\begin{enumerate}
+\item[(a)] \emph{The Lambert root $x$ is an instance}, verbatim, of
+ \file{p0:prop:factorial-core}, with $(\kappa_{\rm vol},d_{\rm vol}):=(2,-2(1+\log\ell))$
+ and target $L=\log T>0$: the phase is
+ $X(2\log X-2-2\log\ell)=2X\log(X/(e\ell))$, the proposition's solution is
+ $v_{\rm vol}=W_0\bigl(\tfrac L2e^{-1-\log\ell}\bigr)=W_0\bigl(L/(2e\ell)\bigr)$
+ and $X=\exp(v_{\rm vol}+1+\log\ell)=e\ell\,e^{v_{\rm vol}}=L/(2v_{\rm vol})=x$
+ (using $v_{\rm vol}e^{v_{\rm vol}}=L/(2e\ell)$), and its side condition
+ $2\log X+d_{\rm vol}>0$, that is $X>e\ell$, holds because $v_{\rm vol}>0$.
+ Its slope identity reads $\Phi_0'(x)=2(v_{\rm vol}+1)=2h$: the report's
+ $h=\log(x/\ell)$ is $v_{\rm vol}+1$, and the derivative $2h$ used in Section~5
+ is the volume's core slope.
+\item[(b)] \emph{$X_1$ and $X_2$ are an instance, after a change of variable,}
+ of \file{p0:thm:core-reversion}. Write $f(y)$ for the right side
+ of~\eqref{lsd:eq:log} without its $O(n^{-1})$ term, with $n$ replaced by a
+ real $y$, and put $y=x(1+E)$, $t_{\rm vol}=x^{-1/2}$. Since $2x\log(x/(e\ell))=L$
+ and $\log(x/(e\ell))=h-1$, the equation $f(y)=L$, divided by $2x$, is exactly
+ the volume's master equation
+ \[
+  hE+h_{\rm vol}(E)+f_{\rm vol}(t_{\rm vol},E)=0,\qquad
+  h_{\rm vol}(u)=(1+u)\log(1+u)-u,
+ \]
+ \[
+  f_{\rm vol}(t,u)=\tfrac\beta2t(1+u)^{1/2}-\tfrac{t^2}8\bigl(\log x+\log(1+u)\bigr)
+  +\tfrac k2t^2+\tfrac{c_1}2t^3(1+u)^{-1/2},
+ \]
+ with $\Lambda_{\rm vol}=h$, $h_{\rm vol}\in u^2R[[u]]$ and
+ $f_{\rm vol}\in tR[[t,u]]$ over the ring
+ $R=\mathbb Q(\beta,k,c_1,\log\ell)[\log x,h^{-1}]$, in which $\log x$ and
+ $h=\log x-\log\ell$ are treated as constants, as \file{p0:rem:core-instances}
+ does with the core slope. Its unique solution $E=\sum_je_jt_{\rm vol}^j$ has
+ $xe_1t_{\rm vol}=-\beta\sqrt x/(2h)$, $xe_2t_{\rm vol}^2=D_1$ and
+ $xe_3t_{\rm vol}^3=D_2$, so $X_1=x(1+e_1t_{\rm vol}+e_2t_{\rm vol}^2)$ and
+ $X_2=X_1+xe_3t_{\rm vol}^3$ (the write checked the three coefficients
+ symbolically; they are the source's three cancellation identities). The
+ theorem is formal: the location errors $O((\sqrt x\,h)^{-1})$ and
+ $O((xh)^{-1})$ are the source's own estimates.
+\item[(c)] \emph{$N(T)$ is the staircase} $N_\ast$ of
+ \file{p0:def:three-inverses} for $A_n=a_n$ with $n_0=n_1=0$, because the
+ doubling injection makes $a_n$ strictly increasing from $n=0$ on.
+ \emph{The brackets~\eqref{lsd:eq:brackets} and the all-orders bracket are not
+ instances of \file{p0:thm:staircase}, only analogues.} No admissible
+ interpolation is constructed, and no bound $|x_\ast-\nu(T)|\le\eta$ for one
+ is proved: the brackets come from two envelopes, every integer left of the
+ bracket having $a_n<T$ and its right end having $a_n\ge T$. For any
+ admissible interpolation, \file{p0:thm:staircase}(1) gives
+ $N(T)=\lceil\nu(T)\rceil$, which lies in the bracket, while $\nu(T)$ itself
+ can be anywhere in $(N(T)-1,N(T)]$. The source's warning that
+ $\lceil X_1\rceil$ alone is not justified is the failure mode named in
+ \file{p0:thm:staircase}(2) and~(5).
+\item[(d)] \emph{The root $y_M$ is not a formal object.} It is a real root of
+ the smooth function $\Phi_M$, found by Newton iteration from $x$; neither
+ \file{p0:thm:lambert-centered} nor \file{plt:thm:lw-template} produces it.
+ \file{plt:thm:lw-template} does not apply to $\Phi_M$: in the logarithmic
+ chart $Z=\log y$ the term $\beta\sqrt y$ contributes terms in $e^{-Z/2}$ to
+ its $B$, outside $tK[L_{\rm vol}][[t]]$, so hypothesis~(H3) fails. It does apply
+ to the core alone: $2y\log(y/(e\ell))=L$ reads
+ $Z+\log Z+\log2+\log\bigl(1-(1+\log\ell)/Z\bigr)=\log L$, a datum
+ $(\rho,\mu,\beta_{\rm vol},B)=(1,1,\log2,\log(1-(1+\log\ell)t))$ with
+ $B\in t\,\mathbb R[[t]]$, which gives the asymptotic series of $x$; the source
+ uses $W_0$ directly instead.
+\end{enumerate}
+No novelty is claimed for these inversions; the Newton step is the generic one.
+\end{remark}
+
 \section{Exact enumeration and finite checks}
 Put $B_0=B_1=1$ and
-\begin{equation}\label{eq:B}
+\begin{equation}\label{lsd:eq:B}
  B_{k+1}=(2k+1)B_k-k(k-1)B_{k-1}\qquad(k\geq1).
 \end{equation}
-Indeed, if $b(z)=\exp(z/(1-z))$, then $(1-z)^2b'(z)=b(z)$, which gives~\eqref{eq:B} for $B_k=k![z^k]b(z)$. These are the numbers of sets of nonempty lists, OEIS A000262~\cite{lists}. Expanding~\eqref{eq:egf} in powers of $(e^x-1)(e^y-1)$ and using
+Indeed, if $b(z)=\exp(z/(1-z))$, then $(1-z)^2b'(z)=b(z)$, which gives~\eqref{lsd:eq:B} for $B_k=k![z^k]b(z)$. These are the numbers of sets of nonempty lists, OEIS A000262~\cite{lists}. Expanding~\eqref{lsd:eq:egf} in powers of $(e^x-1)(e^y-1)$ and using
 \[
  n![x^n]e^x(e^x-1)^k=k!S(n+1,k+1)
 \]
 gives the finite exact sum
-\begin{equation}\label{eq:exact}
+\begin{equation}\label{lsd:eq:exact}
  a_n=\sum_{k=0}^n k!B_k\,S(n+1,k+1)^2.
 \end{equation}
 Here $S(n,k)$ denotes a Stirling number of the second kind, defined by
 $S(0,0)=1$ and $S(n+1,k)=kS(n,k)+S(n,k-1)$, with zero values outside $0\leq k\leq n$.
 
-For $R_n$ equal to the exact value divided by the leading term of~\eqref{eq:main}, representative diagnostics are
+For $R_n$ equal to the exact value divided by the leading term of~\eqref{lsd:eq:main}, representative diagnostics are
 \begin{center}
 \begin{tabular}{r r r r}
 \toprule
@@ -305,12 +660,105 @@ $n$&$R_n$&$\sqrt n(R_n-1)$&$n(R_n-1-c_1/\sqrt n)$\\
 \end{center}
 The limits of the last two columns are $c_1$ and $c_2$. These finite computations are consistency checks, not error certificates for the asymptotic expansion or its onset.
 
+
+\begin{remark}[{[write]} The three OEIS entries, 6~October 2026]\label{lsd:rem:oeis}
+The live entries were fetched on 6~October 2026 (OEIS internal format); OEIS
+text is quoted verbatim and is CC~BY-SA~4.0.
+
+\emph{(a) Names and data.} A299907 (revision~\#15, 25~October 2019) is named
+\begin{center}\small
+\parbox{0.92\textwidth}{\raggedright\texttt{Number of decomposable lonesum n X n (0,1) matrices.}}
+\end{center}
+and its 16 terms ($0\le n\le15$) are those of \file{data/fixtures.json}
+and of~\eqref{lsd:eq:exact}. A299906 (revision~\#24, 26~October 2019) is named
+\begin{center}\small
+\parbox{0.92\textwidth}{\raggedright\texttt{Array read by antidiagonals: T(n,k) = number of n X k lonesum decomposable (0,1) matrices.}}
+\end{center}
+and its 66 terms are the antidiagonals of $D(m,n)=\sum_kk!B_kS(m+1,k+1)S(n+1,k+1)$.
+A000262 (revision~\#515, 16~August 2026) is named
+\begin{center}\small
+\parbox{0.92\textwidth}{\raggedright\texttt{Number of "sets of lists": number of partitions of \{1,...,n\} into any number of lists, where a list means an ordered subset.}}
+\end{center}
+its first two formula lines read
+\begin{center}\small
+\parbox{0.92\textwidth}{\raggedright\texttt{D-finite with recurrence: a(n) = (2*n-1)*a(n-1) - (n-1)*(n-2)*a(n-2).}\\
+\texttt{E.g.f.: exp( x/(1-x) ).}}
+\end{center}
+which are~\eqref{lsd:eq:B} with $k=n-1$
+and the function $b$ of Section~6, and its 22 data terms satisfy~\eqref{lsd:eq:B}.
+The word order of A299907's name invites a false reading: ``lonesum matrices
+that are decomposable'' would be a subset of the lonesum matrices, of which
+there are $14$ of size $2\times2$ (all but the two permutation matrices, by
+Kamano's Proposition~1.1), whereas $a_2=16$ counts every $2\times2$ matrix.
+The data are those of Kamano's lonesum decomposable matrices, the term
+A299906 uses (its name was corrected in 2019, by its own record).
+
+\emph{(b) The Mathematica line.} A299907 carries
+\begin{center}\small
+\parbox{0.92\textwidth}{\raggedright\texttt{a[n\_] := Sum[Binomial[j - 1 , k - 1 ]*j!\textasciicircum2*StirlingS2[n + 1, j + 1]\textasciicircum2/k!, \{k, 0, n\}, \{j, k, n\}]; Table[a[n], \{n, 0, 15\}] (* \_Jean-Fran\c{c}ois Alcover\_, Feb 24 2018 *)}}
+\end{center}
+This is~\eqref{lsd:eq:exact}. Exchange the sums. Mathematica gives
+$\binom{-1}{-1}=1$ and $\binom{j-1}{-1}=0$ for $j\ge1$ (checked by the write),
+so the terms with $k=0$ contribute $S(n+1,1)^2=1$, the term $j=0$
+of~\eqref{lsd:eq:exact}. For $j\ge1$ the inner sum is
+$j!\sum_{k=1}^{j}\binom{j-1}{k-1}\frac{j!}{k!}=j!\sum_kL(j,k)$, with the Lah
+numbers $L(j,k)=\binom{j-1}{k-1}j!/k!$, and $\sum_kL(j,k)=B_j$ because
+$\sum_k\frac1{k!}\bigl(\frac z{1-z}\bigr)^k=\exp\frac z{1-z}=b(z)$ and
+$\frac1{k!}\bigl(\frac z{1-z}\bigr)^k=\sum_jL(j,k)\frac{z^j}{j!}$ (the
+column generating function formalized as \file{Fabius.X_mul_mkOne_pow}). Before
+summing over~$k$ the line is Kamano's Proposition~4.1, the count $D_k(n,n)$ of
+order~$k$ (with $D_0(n,n)=1$, the zero matrix); so~\eqref{lsd:eq:exact} is
+his formula summed over the order, the second route the source gives. The
+write evaluated the line in Wolfram~15: it returns the 16 data terms.
+
+\emph{(c) A misprint in A299906's example.} The example table of A299906
+prints its row $n=5$ as
+\begin{center}\small
+\texttt{1, 32, 634, 8528, 90446, 833432, ...,}
+\end{center}
+so $T(5,4)=90446$. The correct value is $90946$. Transposition is a bijection
+between $5\times4$ and $4\times5$ lonesum decomposable matrices (the
+definition is symmetric in rows and columns), so $T(5,4)=T(4,5)$, which the
+same table prints as $90946$ in its row $n=4$; the entry's data list $90946$
+in both places; and
+$D(5,4)=1+1\cdot1\cdot31\cdot15+2\cdot3\cdot90\cdot25+6\cdot13\cdot65\cdot10
++24\cdot73\cdot15\cdot1=1+465+13500+50700+26280=90946$ from the rectangular
+form of~\eqref{lsd:eq:exact} (the factors are $k!$, $B_k$, $S(6,k+1)$ and
+$S(5,k+1)$ for $k=0,\dots,4$). Recorded here only; nothing was submitted to
+the OEIS.
+\end{remark}
+
 \paragraph{Reproducible calculations.}
-The accompanying bundle includes the article source, a deterministic PDF build, integer enumeration, and symbolic coefficient extraction. The script \texttt{derive\_general.py} computes the recurrence~\eqref{eq:Q} and Gaussian moments using $\ell=8z^2$ to avoid nested radicals. It accepts every nonnegative coefficient order, including zero. The separate script \texttt{derive.py} obtains $P_1,P_2,c_1$ by direct expansion with $\ell$. The default finite checker verifies exact small fixtures, exhaustive forbidden-submatrix counts through $n=3$, the symbolic formulas for $c_1,c_2$, parity, and the two displayed inverse cancellations. All checks use explicit guards and also run under Python's optimization flag. Optional high-$n$ diagnostics are separate so routine checking does not require the $n=3200$ computation.
+The accompanying bundle includes the article source, a deterministic PDF build, integer enumeration, and symbolic coefficient extraction. The script \texttt{derive\_general.py} computes the recurrence~\eqref{lsd:eq:Q} and Gaussian moments using $\ell=8z^2$ to avoid nested radicals. It accepts every nonnegative coefficient order, including zero. The separate script \texttt{derive.py} obtains $P_1,P_2,c_1$ by direct expansion with $\ell$. The default finite checker verifies exact small fixtures, exhaustive forbidden-submatrix counts through $n=3$, the symbolic formulas for $c_1,c_2$, parity, and the two displayed inverse cancellations. All checks use explicit guards and also run under Python's optimization flag. Optional high-$n$ diagnostics are separate so routine checking does not require the $n=3200$ computation.
 
 The bundle's integrity manifest covers a closed file inventory. Its quality-assurance procedure runs checks on immutable copies, rejects selected modified fixtures and formulas after rebuilding their integrity manifest, compares two clean PDF builds byte for byte, and replays a freshly extracted archive. These tests check reproducibility and the finite identities they name. They do not mechanize or replace the analytic proof in Sections~2--4.
 
-\section{Further questions}
+\begin{writenote}[The package here, and the intake reruns, 6~October 2026]
+``The accompanying bundle'' above is the delivered one. In this report the
+programs \file{derive_general.py}, \file{derive.py}, \file{exact.py},
+\file{formulas.py}, \file{validate.py}, \file{check.py}, \file{build.py},
+\file{qa.py}, \file{package.py} and \file{safe_output.py} are in \file{code/};
+\file{fixtures.json}, \file{diagnostics_3200.json} and \file{requirements.txt}
+are in \file{data/}; \file{sources.md} is at the report root; the article
+source is \file{article.tex}. The delivered PDF and the integrity manifest
+\file{MANIFEST.json} are not shipped. The programs import one another and read
+\file{fixtures.json} and the article from their own directory, and
+\file{check.py} first verifies a closed inventory of the 18 delivered names
+against the manifest, so its default mode runs only in a fresh extraction of
+the arrival archive; on a flat copy of the shipped programs, the fixtures and
+the article (renamed \file{Report132.tex}) its \texttt{--finite-only} mode
+runs every finite check (the report README gives both routes). On copies at
+the write (Windows, Python~3.14.4, SymPy~1.14.0, mpmath~1.3.0): in a fresh
+extraction \file{check.py} passed in normal and \texttt{-O} mode (about five
+seconds), \file{validate.py --max-n 100} reproduced the row $n=100$ of the
+table, and \file{derive_general.py 3} gave $c_3$ (Remark~\ref{lsd:rem:c3}); on
+the flat copy, \texttt{--finite-only} passed and the default mode stopped at
+its inventory check, as designed. The PDF build, \file{qa.py} and
+\file{package.py} need the whole delivered bundle and a POSIX \TeX{}
+installation and were not run.
+\end{writenote}
+
+\section{Further questions}\label{lsd:sec:further}
 \begin{enumerate}
 \item \textbf{Effective remainders.} The proof gives constants and onset thresholds that exist for every fixed order. Explicit numerical values would turn the inverse brackets into certified finite-$T$ tools; this requires quantitative bounds throughout the contour argument.
 \item \textbf{Rectangular asymptotics.} For $m/n$ tending to a fixed positive ratio, the saddle approaches a generally nonsymmetric point on $(e^x-1)(e^y-1)=1$. Uniform expansions as the aspect ratio varies, especially toward an unbalanced regime, remain a separate problem.
@@ -321,6 +769,55 @@ The bundle's integrity manifest covers a closed file inventory. Its quality-assu
 A uniform analysis in $w$ near $1$ should be a starting point for the distribution of the decomposition order. No central or local limit theorem is asserted here.
 \item \textbf{Beyond the power series.} The expansion concerns every fixed algebraic order relative to the leading term. Optimal truncation and exponentially small terms require additional analysis; the present proof does not identify them.
 \end{enumerate}
+
+\begin{writenote}[Added 6 October 2026, batch~108]
+Following Vladimir Reshetnikov's standing rule of 4~October 2026, every claim
+of the source that is not proved in full is stated as an open question with
+its source, the argument offered and what is missing. The four questions
+above are the source's own, kept as delivered; its non-claims are collected in
+Section~\ref{lsd:sec:provenance}. Two statements of the source made without
+proof are now proved (Remark~\ref{lsd:rem:graph}: each nontrivial component is
+a chain graph, and the forbidden configurations are \emph{precisely} the
+induced $P_5$), and the stored but unclaimed $c_3$ is now an output of the
+delivered recipe (Remark~\ref{lsd:rem:c3}). The intake found no false claim in
+the source and the write found none either; the one misprint corrected
+(Remark~\ref{lsd:rem:oeis}(c)) is in OEIS text. What each source question
+needs, as the write reads it: item~1 needs explicit bounds in
+Lemma~\ref{lsd:lem:arc} (the constants $c$, $\eta$ and the gap $c_0$ come from
+continuity and compactness), in the Taylor remainders of Section~4 and in the
+comparison of the explicit radius with the box, after which the brackets of
+Section~5 become checkable for given~$T$; item~2 needs the saddle on the curve
+$(e^x-1)(e^y-1)=1$ uniformly in the aspect ratio, which A299906 would test
+numerically; item~3 starts from Kamano's per-order generating
+function~\cite[Theorem~3.1, equation~(8)]{Kamano}, which is the coefficient of
+$w^k$ in the marked function above; item~4 is untouched.
+\end{writenote}
+\begin{enumerate}
+\setcounter{enumi}{4}
+\item\label{lsd:q:pattern} \textbf{The shape of $c_j$} (added by the write,
+ not a claim of the source). For $j=1,2,3$ the coefficient $c_j$ is
+ $\sqrt2$ (for odd $j$) or $1$ (for even $j$) times a polynomial in $\ell$ of degree $3j$ with integer
+ coefficients, divided by $\delta_j\,\ell^{3j/2}(\ell-1)^j$ with
+ $\delta_j=192,\,192^2,\,15\cdot192^3$
+ (equations~\eqref{lsd:eq:c1}, \eqref{lsd:eq:c2} and
+ Remark~\ref{lsd:rem:c3}). Does this persist, and is there a closed form for
+ the denominators, or a generating function for the $c_j$? The recipe gives
+ each $c_j$ in finitely many operations, so the question is structural.
+\item\label{lsd:q:literature} \textbf{The literature boundary} (from the
+ source's prior-art paragraph). Khera's dissertation~\cite{KheraThesis}
+ treats lonesum matrices and their asymptotics; neither the source nor the
+ write read it, and it is not known here whether it treats lonesum
+ decomposable matrices. Reading it would settle whether the leading
+ equivalent of Theorem~\ref{lsd:thm:asympt} is already in print.
+\end{enumerate}
+\begin{writenote}[Reciprocal pointers, 6~October 2026]
+The write proposes, without applying them, a pointer to this report in
+\file{a122399-surjection-diagonal} (the nearest neighbour; see
+Section~\ref{lsd:sec:provenance}) and a correction of the sentence ``A000262
+occurs nowhere else in the repository'' in the README of
+\file{a321941-asymptotic-coefficient-integrality}, which this report makes
+stale.
+\end{writenote}
 
 \begin{thebibliography}{9}
 \bibitem{Kamano} K. Kamano, \emph{Lonesum decomposable matrices}, Discrete Mathematics 341 (2018), 341--349. DOI: \href{https://doi.org/10.1016/j.disc.2017.09.002}{10.1016/j.disc.2017.09.002}. Preprint \href{https://arxiv.org/abs/1701.07157}{arXiv:1701.07157}, Theorem 3.1, equation (9), PDF page 7.
