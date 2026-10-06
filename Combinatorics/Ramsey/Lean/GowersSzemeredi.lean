@@ -105,6 +105,7 @@ import GowersSzemeredi.Proofs07AffineRestriction
 import GowersSzemeredi.Proofs07ProgressionLinearity
 import GowersSzemeredi.Proofs07SimultaneousLinearity
 import GowersSzemeredi.Proofs07CeilingPartition
+import GowersSzemeredi.Proofs07ModularPartition
 import GowersSzemeredi.Proofs08QuadraticBias
 import GowersSzemeredi.Proofs08Coloring
 import GowersSzemeredi.Proofs09Moments
@@ -138,6 +139,7 @@ import GowersSzemeredi.Proofs13CommonRows
 import GowersSzemeredi.Proofs13RowLinearization
 import GowersSzemeredi.Proofs13BaseRowSelection
 import GowersSzemeredi.Proofs13PartitionSelection
+import GowersSzemeredi.Proofs13LargeScaleExtraction
 import GowersSzemeredi.Proofs13CoefficientExtraction
 import GowersSzemeredi.Proofs14Fourier
 import GowersSzemeredi.Proofs14Configurations
