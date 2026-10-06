@@ -1,0 +1,1148 @@
+\pdfinfoomitdate=1
+\pdftrailerid{}
+\pdfsuppressptexinfo=15
+\documentclass[11pt,letterpaper]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools,booktabs,microtype,longtable}
+\usepackage[colorlinks=true,linkcolor=black,citecolor=black,urlcolor=blue]{hyperref}
+\usepackage{enumitem}
+\setlist{itemsep=3pt,topsep=5pt}
+\setlength{\parskip}{5pt}\setlength{\parindent}{0pt}
+\setlength{\emergencystretch}{2em}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Prob}{\mathbb P}\newcommand{\E}{\mathbb E}
+\newcommand{\dd}{\,\mathrm d}
+\DeclareMathOperator{\NB}{NB}\DeclareMathOperator{\Bin}{Bin}
+\DeclareMathOperator{\TV}{TV}
+\hypersetup{pdftitle={Report 129 The next logarithmic correction for two inversion sequence classes},pdfauthor={}}
+\begin{document}
+\begin{center}
+{\small REPORT 129}\par\vspace{9pt}
+{\LARGE\bfseries The next logarithmic correction}\par
+{\LARGE\bfseries for two inversion sequence classes}\par\vspace{8pt}
+{\large A279556 and A279551}\par\vspace{8pt}
+{\small 2 October 2026}\par
+{\small Full quantitative upgrade with a proved input companion}
+\end{center}
+\begin{abstract}
+For the two commitment-tree enumerations A279556 and A279551 we prove
+\[
+ n\log\mu-\log a(n)=\sigma_D n^{1/3}(\log n)^{2/3}
+ \left(1+\frac73\frac{\log\log n}{\log n}
+                 +O\!\left(\frac1{\log n}\right)\right),
+\]
+where $(\mu,D)=(9,1)$ and $(8,1/2)$, respectively, and
+$\sigma_D=(3\pi^2/(2D))^{1/3}$. The proof gives a quantitative local
+critical root, an anchored derivative estimate, a shrinking-strip
+random-clock construction, and an integrable dual penalty. Exact
+integer-time extraction and endpoint repair are preserved. We derive
+refined inverse thresholds and boundary-derivative growth by explicit
+comparison bounds, without differentiating an unknown remainder.
+The unchanged Report 127 is included as the proved reference for the
+exact combinatorial model, spatial barrier, and uniform discrete
+entrance and repair. The reader bundle therefore contains the proofs
+of the earlier inputs as well as all new estimates. This is a
+logarithmic expansion, not a coefficient equivalent, and it supplies
+no effective numerical onset.
+\end{abstract}
+\setcounter{tocdepth}{1}
+{\small\setlength{\parskip}{0pt}
+ \let\ReportOriginalAddvspace\addvspace
+ \renewcommand{\addvspace}[1]{\ReportOriginalAddvspace{0.3em}}
+ \tableofcontents}
+\newpage
+
+\section{The theorem and the reader bundle}
+An inversion sequence of length $n$ is a sequence $e=(e_1,\ldots,e_n)$
+of integers with $0\le e_i<i$. Write $a_{247}(n)$ for the number with
+no $i<j<k$ satisfying $e_i\le e_j$ and $e_i\ge e_k$, and $a_{759}(n)$
+for the number with no such triple also satisfying $e_j\ne e_k$.
+Their forbidden pattern sets are $(000,010,110,120)$ and
+$(010,110,120)$, respectively. In the usual indexing,
+\[
+ a_{247}(n)=\mathrm{A279551}(n),\qquad
+ a_{759}(n)=\mathrm{A279556}(n),\qquad a_j(0)=1.
+\]
+All logarithms are natural. The diffusion parameter $D$ and the
+critical exponential growth constant $\mu$ are
+\[
+\begin{array}{c|ccc}
+ j&\mu&D&\sigma_D=(3\pi^2/(2D))^{1/3}\\\hline
+ 759&9&1&(3\pi^2/2)^{1/3}\\
+ 247&8&1/2&(3\pi^2)^{1/3}
+\end{array}
+\]
+Set, for sufficiently large $n$,
+\begin{equation}\label{eq:scales}
+ \begin{gathered}
+ N=\log n,\quad J=\log\log n,\quad
+ H=n^{2/3}N^{1/3},\quad S=n^{1/3}N^{2/3},\\
+ \theta=H/n=S/H,\qquad k_0=S/n=N/H.
+ \end{gathered}
+\end{equation}
+Thus $H^2=nS$, $HS=nN$, and $\theta^2=k_0$.
+The symbol $P(n)$ below always denotes a fixed finite power of
+$\log n$, with its exponent allowed to increase between estimates.
+It never hides a positive power of $n$.
+
+\begin{theorem}\label{thm:main}
+For either class, as $n$ tends to infinity through all integers,
+\begin{equation}\label{eq:main}
+ n\log\mu-\log a_j(n)
+ =\sigma_D S+\frac{7\sigma_D}{3}\frac{SJ}{N}
+                  +O\!\left(\frac SN\right).
+\end{equation}
+Equivalently, there are constants $C,n_0$ such that for all $n\ge n_0$,
+\begin{equation}\label{eq:envelopes}
+ e^{-G(n)-C R(n)}\le a_j(n)\mu^{-n}\le e^{-G(n)+C R(n)},
+\end{equation}
+where
+\[
+ \psi(t)=t^{1/3}(\log t)^{2/3},\quad
+ R(t)=\frac{\psi(t)}{\log t},\quad
+ G(t)=\sigma_D\psi(t)+\frac{7\sigma_D}{3}
+                  \frac{\psi(t)\log\log t}{\log t}.
+\]
+The constants are not asserted to be effective or numerically calibrated.
+\end{theorem}
+The coefficient $7/3$ comes from adding the $J/6$ contributed by
+$\tfrac12\log H$ to the $J$ contributed by $\log\log H$, and
+then evaluating the resulting $7J/(6N)$ potential correction along
+the singular minimizing curve. Retaining an integrable height error
+is necessary to distinguish this coefficient from the remainder.
+
+\subsection{How the earlier input is used}
+The bundle contains the unchanged PDF, TeX, checkers, and build source
+of Report 127 under \path{earlier-inputs/report127/}. That report
+proves the exact counting interpretation and the analytic inputs
+stated in Section~\ref{sec:inputs}; its proofs are part of this
+reader bundle. It is not necessary to download a previous development
+note. The present report gives every new quantitative estimate used
+to strengthen the leading logarithmic law.
+
+Statements in the unchanged Report 127 describing the next logarithmic
+correction as open refer to the scope of that earlier report. They
+are superseded here by Theorem~\ref{thm:main}. Its earlier proof and
+files have not been silently revised. The underlying exact commitment
+construction is due to Britt and Beaton~\cite{BB}; the arguments here
+make no global literature-priority claim.
+
+The finite checks are regression and algebra checks, not replacements for
+these proofs. Package and rendering checks have the narrower scopes
+recorded in the accompanying README and generated check results.
+
+\section{Exact model and earlier proved inputs}\label{sec:inputs}
+\subsection{Counting and normalization}
+The two auxiliary label trees start at $(0,0)$ and have edges
+\begin{align*}
+ (p,c)&\longrightarrow(p+1,c),\\
+ (p,c)&\longrightarrow(p+1,c-1)\quad(c>0),\\
+ (p,0)&\longrightarrow(p-\ell,b)\quad(0\le\ell\le p-1).
+\end{align*}
+The last edge has multiplicity
+\[
+ M_{759}(\ell,b)=C_b\binom\ell b,\qquad
+ M_{247}(\ell,b)=C_b\binom{b+1}{\ell-b},\qquad
+ C_b=\frac1{b+1}\binom{2b}b.
+\]
+Out-of-range binomial coefficients are zero. The exact terminal sets are
+\[
+ \mathcal T_{759}=\{(p,0):p\ge0\},\qquad
+ \mathcal T_{247}=\{(p,0):0\le p\le2\}.
+\]
+Multiplicity-weighted paths ending in these sets count the respective
+sequences exactly. In particular the extra auxiliary nodes are not
+all valid terminal objects. The completed decorated-history
+injectivity proof is in Report 127, Section 2.
+
+Use $(\mu,x_j,y_j)=(9,3,1/2)$ for 759 and $(8,2,1/3)$ for 247,
+and normalize an edge of multiplicity $m$ by
+\[
+ q(s,t)=\frac{m h(t)}{\mu h(s)},\qquad h(p,c)=x_j^p y_j^c.
+\]
+Every length-$n$ path of multiplicity $m$ has normalized mass
+$m\mu^{-n}h(\text{endpoint})$. Thus at a valid terminal its
+coefficient multiplier is $x_j^{-p}$. These elementary rows are
+substochastic, so the mass at every exact original integer time is
+at most one, and $a_j(n)\le\mu^n$ for every $n$.
+
+At a boundary $(p,0)$, a completed commitment with $b\ge1$ has drop
+$\ell\le p-1$, followed by $w\ge b$ bulk steps, with its last
+fulfillment at the final bulk step. Its total mass, duration, and
+displacement are
+\begin{equation}\label{eq:cycle}
+ Q_j(b,\ell,w)=\mu^{-w-1}x_j^{w-\ell}M_j(\ell,b)
+                     \binom{w-1}{b-1},\qquad
+ L=w+1,\quad\Delta=w-\ell.
+\end{equation}
+For $b=0$ use $L=1$, $\Delta=-\ell$, and mass
+$\mu^{-1}x_j^{-\ell}M_j(\ell,0)$. The ordinary edge has
+$L=\Delta=1$ and mass $a=x_j/\mu$. Every boundary path decomposes
+uniquely into these cycles, including the duration-one edges. A
+``cycle'' here need not return to the same height.
+
+\subsection{Exact transforms and fixed batch laws}
+Put $d_b=C_b/4^b$. Summing unrestricted drops at a fixed $b$ gives
+$A_j(\lambda,\eta)d_bR_j(\lambda,\eta)^b$, where
+\begin{align}
+ A_{759}&=\frac{e^\eta}{9(1-e^{-\lambda}/3)},&
+ R_{759}&=\frac{4e^\eta}{9(1-e^{-\lambda}/3)(1-e^{\lambda+\eta}/3)},
+ \label{eq:transform759}\\
+ A_{247}&=\frac{e^\eta(1+e^{-\lambda}/2)}8,&
+ R_{247}&=\frac{e^\eta(1+e^{-\lambda}/2)}{2(1-e^{\lambda+\eta}/4)}.
+ \label{eq:transform247}
+\end{align}
+These follow from geometric and binomial summations in
+Report 127, Section 5. They are analytic on a fixed neighborhood of
+$(0,0)$, independently of $b$; no unrestricted infinite positive-tilt
+sum over $b$ is being asserted.
+
+At a fixed $b$ under the exponential tilt, the drop laws are
+\begin{align}
+ 759:\quad&\ell=b+\NB^{\mathrm{fail}}(b+1,1-e^{-\lambda}/3),\\
+ 247:\quad&\ell=b+\Bin(b+1,e^{-\lambda}/(2+e^{-\lambda})),
+ \label{eq:drop}
+\end{align}
+where the negative binomial counts failures before the stated number
+of successes. Independently, for $b\ge1$, $w$ is a negative-binomial
+trials variable with $b$ successes and success probability
+$1-e^{\lambda+\eta}/3$ or $1-e^{\lambda+\eta}/4$, respectively.
+At $b=0$ duration is one. The legal cutoff conditions only the drop,
+so fixed-$b$ independence is preserved; $\Delta$ and $L$ themselves
+are not independent.
+
+Let $F_{b,\lambda}$ be the appropriate drop CDF. The exact legal row is
+\begin{equation}\label{eq:row}
+ T_p(\lambda,\eta)=a e^{\lambda+\eta}
+  +A_j(\lambda,\eta)\sum_{b=0}^{p-1}
+    d_bR_j(\lambda,\eta)^b F_{b,\lambda}(p-1).
+\end{equation}
+The sum is empty at $p=0$. The constants are
+\[
+\begin{array}{c|ccccc}
+ j&a&A_0&\alpha&D&r=a+2A_0\\\hline
+ 759&1/3&1/6&3/2&1&2/3\\
+ 247&1/4&3/16&4/3&1/2&5/8
+\end{array}
+\]
+In both cases $1-r=2A_0$ and
+\begin{equation}\label{eq:logR}
+ \log R(\lambda,\eta)=\alpha\eta+\frac{\alpha D}{2}\lambda^2
+           +O(|\lambda|^3+|\lambda\eta|+\eta^2).
+\end{equation}
+For $b\le p$, the tilted drop mean is
+$\alpha b+O(p|\lambda|+1)$. Uniformly for $\lambda$ near zero,
+\begin{equation}\label{eq:drop-tail}
+ \Prob(|\ell-\E\ell|\ge u)
+ \le C\exp\{-c\min(u^2/(b+1),u)\}.
+\end{equation}
+This follows because the centered log moment generating functions of
+the geometric or Bernoulli summands are bounded by $C\vartheta^2$
+on a fixed interval. At zero tilt, the fixed-$b$ normalized laws also obey
+\begin{align}
+ \Prob(|\Delta|>z)&\le C e^{-c\min(z^2/(b+1),z)},\label{eq:jump-tail}\\
+ \Prob(L>u)&\le C e^{-cu+C(b+1)}.\label{eq:clock-tail}
+\end{align}
+A Chernoff bound applied to \eqref{eq:logR} proves the first;
+a fixed positive duration tilt proves the second. Both include $b=0$.
+
+\subsection{Uniform endpoint and spatial estimates}
+We state the discrete inputs with their uniformity explicitly.
+Their proofs, including integer-time filling, are in Report 127,
+Sections 4, 10, and 12.
+
+\begin{proposition}[Earlier proved inputs]\label{prop:inputs}
+There are fixed positive constants with the following properties.
+\begin{enumerate}
+\item For every sufficiently large integer $p$ there is a legal
+normalized path family from the root to $(p,0)$, of deterministic
+integer length $E(p)$, satisfying
+\begin{equation}\label{eq:entrance-input}
+ E(p)\le C p^{3/2}/\sqrt{\log p},\qquad
+ \text{mass}\ge e^{-C\sqrt{p\log p}}.
+\end{equation}
+\item For every sufficiently large integer $p$ and every integer
+$m\ge C_0p^{3/2}/\sqrt{\log p}$ there is a legal normalized family
+from $(p,0)$ to $(2,0)$ of length exactly $m$, with
+\begin{equation}\label{eq:repair-input}
+ \text{mass}\ge
+ \exp\{-C_1[\sqrt{p\log p}+m\log p/p]\}.
+\end{equation}
+All elementary multiplicity and bulk-path realizations of its selected
+macrocycles are retained.
+\item The total normalized mass of all first-hit boundary prefixes
+reaching height at least $P$ is at most
+\begin{equation}\label{eq:barrier-input}
+ C e^{-\kappa\sqrt{(P+2)\log(P+2)}}.
+\end{equation}
+No restriction on their original duration is needed. The same estimate
+bounds the normalized coefficient contribution of length-$n$ paths
+whose boundary heights reach $P$.
+\end{enumerate}
+\end{proposition}
+For precision about these references, the entrance and repair proof
+uses staircase heights $p_k=\lfloor k^2\log(k+1)\rfloor$ and legal
+moderate-deviation cycles of mass at least $e^{-C\log k}$.
+Their accumulated time is $O(K^3\log K)$ and logarithmic cost
+$O(K\log K)$. Return-cycle blocks and bounded terminal edges fill
+every remaining integer duration. Thus the constants do not depend
+on a fixed positive lower bound for $p/H$.
+The spatial proof uses the increasing concave function
+$\sqrt{(p+2)\log(p+2)}$ and a sufficiently small exponential multiple
+as a positive supermartingale. First-hit prefix extraction followed
+by original-time substochasticity gives the coefficient assertion.
+These proof summaries clarify the hypotheses; their full arguments
+remain in the supplied unchanged companion.
+
+\section{A quantitative local critical root}
+For sufficiently large $p$ and the tilt ranges below, write
+$\eta_p(\lambda)$ for the unique solution of
+$T_p(\lambda,\eta_p(\lambda))=1$ and $\kappa_p=\eta_p(0)$.
+The row is continuous and strictly increasing in $\eta$ near the
+brackets constructed below, so those brackets prove existence and
+uniqueness of the relevant root.
+
+\begin{lemma}\label{lem:root}
+For each fixed $B\ge1$, uniformly for
+$|\lambda|\le p^{-1/2}(\log p)^B$, as $p\to\infty$,
+\begin{align}
+ \kappa_p&=\frac{\tfrac12\log p+\log\log p+c_*
+                 +O(\log\log p/\log p)}p,
+ &c_*&=\tfrac12\log(\pi/\alpha),\label{eq:scalar}\\
+ \eta_p(\lambda)&=\kappa_p-D\lambda^2/2
+                         +O(p^{-3/2}(\log p)^{C_B}),\label{eq:anchor}\\
+ \eta_p'(\lambda)&=-D\lambda+O(p^{-3/4}(\log p)^{C_B}).
+ \label{eq:root-derivative}
+\end{align}
+For each fixed bounded real $z$, uniformly in this same range,
+\begin{equation}\label{eq:shift-row}
+ T_p(\lambda,\eta_p(\lambda)-z/p)
+              =r+(1-r)e^{-z}+o(1).
+\end{equation}
+The finite exponent $C_B$ may be enlarged in each appearance.
+\end{lemma}
+\begin{proof}
+First take $\lambda=0$ and set
+\[
+ s=\tfrac12\log p+\log\log p+c,\quad
+ \beta=\log R(0,s/p),\quad
+ m=p/\alpha+O(\sqrt p(\log p)^2),
+\]
+with bounded $c$. Then $\beta=\alpha s/p+O(s^2/p^2)$ and
+$\beta m=s+O(p^{-1/2}(\log p)^3)$. By \eqref{eq:drop-tail},
+the legal CDF is squeezed between hard cutoffs
+$p/\alpha\pm\sqrt p(\log p)^2$, with exponentially small tails.
+The endpoint Laplace sum has the quantitative estimate
+\begin{equation}\label{eq:laplace}
+ \sum_{b=0}^m d_b e^{\beta b}
+ =2+\frac{e^{\beta m}}{\sqrt\pi m^{3/2}\beta}
+          \left[1+O\!\left(\frac1{\beta m}\right)\right]
+            +O(p^{-1/4}(\log p)^C).
+\end{equation}
+Indeed $d_b\le C(b+1)^{-3/2}$, so the excess from $b\le m/2$
+is at most $C\beta\sqrt m e^{\beta m/2}$, of the displayed
+polynomially small order. For $b>m/2$, put $b=m-h$ and use
+$d_b=(\sqrt\pi b^{3/2})^{-1}(1+O(1/b))$.
+The geometric zeroth moment gives the displayed main term, while
+its first-moment correction divided by $m$ is
+\[
+ \frac{C\sum_{h\ge0}h e^{-\beta h}}
+      {m\sum_{h\ge0}e^{-\beta h}}=O((m\beta)^{-1}).
+\]
+The geometric tail, Stirling error, unweighted missing tail
+$O(m^{-1/2})$, and integer rounding are smaller.
+
+Near $p/\alpha$, the individual weighted Catalan coefficients are
+$O(\log p/p)$. The CDF transition window therefore costs
+$O(p^{-1/2}(\log p)^C)$. Substitution in \eqref{eq:row} yields
+\begin{equation}\label{eq:scalar-row}
+ T_p(0,s/p)=r+2A_0\sqrt{\alpha/\pi}\,e^c
+           [1+O(\log\log p/\log p)].
+\end{equation}
+Since $1-r=2A_0$, monotonicity brackets the root at
+$c=c_*+O(\log\log p/\log p)$. A bounded subtraction of $z$ from
+$s$ similarly proves \eqref{eq:shift-row} at zero tilt.
+
+For the anchored estimate put $\eta_c=\kappa_p-D\lambda^2/2$.
+Analyticity and \eqref{eq:logR} give
+\begin{align}
+ \log R(\lambda,\eta_c)-\log R(0,\kappa_p)
+                         &=O(p^{-3/2}(\log p)^C),\label{eq:Rcomparison}\\
+ A(\lambda,\eta_c)-A(0,\kappa_p)
+                         &=O(p^{-1/2}(\log p)^C).\nonumber
+\end{align}
+For example, the unsimplified remainder is bounded by a constant
+times $|\lambda|^3+|\lambda|\kappa_p+\kappa_p^2+\lambda^4$.
+The cancellation of $D\lambda^2/2$ inside $\log R$ is retained
+even when $\eta_c$ is negative.
+
+Choose $h=\sqrt p(\log p)^{B+2}$ and $m_\pm=p/\alpha\pm h$.
+The actual mean shift $O(p|\lambda|+1)$ is smaller than $h$.
+The two CDFs therefore differ from the hard cutoff only inside this
+window, apart from tails bounded by $e^{-c(\log p)^{2B+4}}$.
+The entire unrestricted coefficient sum through $p$ is at most a
+fixed power of $p$: \eqref{eq:scalar} and \eqref{eq:Rcomparison}
+give $\log R=O(\log p/p)$. Thus these tails remain negligible after
+multiplication by that sum. The truncated unrestricted sum through
+$m_+$ is $O(1)$ by \eqref{eq:laplace}, and each coefficient in the
+window is $O(\log p/p)$. The exponent comparison changes any
+coefficient with $b\le p$ by relative
+$O(p^{-1/2}(\log p)^C)$. Consequently
+\begin{equation}\label{eq:rowcomparison}
+ |T_p(\lambda,\eta_c)-1|\le Cp^{-1/2}(\log p)^C.
+\end{equation}
+
+In an $\eta$ neighborhood of radius $p^{-3/2}(\log p)^{C+1}$,
+we have $\partial_\eta T_p\ge cp$. To see this, restrict $b$ to
+\begin{equation}\label{eq:active-b}
+ [p/\alpha-2p/\log p,\ p/\alpha-p/\log p].
+\end{equation}
+There are order $p/\log p$ terms with individual legal mass at
+least $c\log p/p$. The margin $p/\log p$ dominates both the tilt
+mean shift and its fluctuations; changes of the exponent in the
+stated neighborhood are $o(1)$. Each of these cycles has
+$L\ge b+1\ge cp$. Bracket \eqref{eq:rowcomparison} using this
+derivative lower bound to prove \eqref{eq:anchor}. The same comparison
+after a bounded shift $-z/p$ proves \eqref{eq:shift-row}.
+
+Finally, $\log T_p$ is convex and strictly increasing in $\eta$.
+Its zero sublevel set is the hypograph of the root, so
+$\eta_p$ is concave; analyticity and $\partial_\eta T_p>0$ also
+make it differentiable. A differentiable concave function has its
+derivative between its adjacent secant slopes. Apply these inequalities
+to \eqref{eq:anchor} with increment
+$h_p=p^{-3/4}(\log p)^C$, taking $C$ sufficiently large and first
+enlarging the tilt exponent to $B+1$. Both endpoints then lie in
+that enlarged range. The secant error is
+\[
+ O(h_p)+O(p^{-3/2}(\log p)^C/h_p),
+\]
+which proves \eqref{eq:root-derivative}. The scalar $\kappa_p$
+cancels exactly. Concavity applied only to an unanchored $o(1/p)$
+remainder would not supply the needed derivative rate.
+\end{proof}
+
+\begin{lemma}[Genuine duration moments]\label{lem:moments}
+For the exact row-one probability law
+\begin{equation}\label{eq:law}
+ \Prob_{p,\lambda}(\text{cycle})
+       =Q_p(\text{cycle})e^{\lambda\Delta+\eta_p(\lambda)L},
+\end{equation}
+in the tilt range of Lemma~\ref{lem:root},
+\begin{align}
+ cp\le\E L\le Cp,&\qquad \E L^2\le Cp^2,
+       &\E\Delta^2&\le Cp(\log p)^C,\label{eq:moments}\\
+ \frac{\E\Delta}{\E L}&=D\lambda+O(p^{-3/4}(\log p)^C).
+ \label{eq:drift}
+\end{align}
+\end{lemma}
+\begin{proof}
+At fixed $b$, the duration law remains negative binomial with success
+parameter in a fixed compact subset of $(0,1)$. Its second moment
+is $O((b+1)^2)$. Sum against the actual legal $b$-masses, which total
+at most one, and use \eqref{eq:active-b} for the lower mean.
+For displacement, below $m_+$ the unrestricted fixed-$b$ second
+moment is
+\[
+ O\big((b+1)+(b+1)^2(\lambda^2+\eta_p(\lambda)^2)\big)
+ \le Cp(\log p)^C.
+\]
+Only the unrestricted sum through $m_+$ is used here, and it is
+$O(1)$. Above $m_+$, retain legality: $\ell\le p-1$, and $w$ is
+independent of that event. The second-moment numerator is bounded
+by $Cp^2F_{b,\lambda}(p-1)$, whose exponentially small CDF beats
+the polynomial unrestricted mass. The $b=0$ and ordinary terms
+have bounded moments. Implicit differentiation of the exact row gives
+$\eta_p'(\lambda)=-\E\Delta/\E L$; use
+\eqref{eq:root-derivative}. No individual duration is replaced by
+its conditional mean and no displacement-duration covariance is dropped.
+\end{proof}
+
+\section{The corrected potential and integrable height error}
+Define
+\begin{equation}\label{eq:An}
+ A_n=\frac13+\frac76\frac JN,\qquad e=e_n=N^{-6}.
+\end{equation}
+On a shrinking strip $ce\le x=p/H\le R$, with fixed $c>0$ and
+$R<\infty$, and for $|q|\le P(n)$, Lemma~\ref{lem:root} gives
+\begin{align}
+ \frac nS\eta_p(\theta q)&=\frac{A_n}{x}-\frac D2q^2+E_n(x,q),
+ \label{eq:potential}\\
+ |E_n(x,q)|&\le\frac{C(1+|\log x|)}{Nx}+n^{-1/3}P(n).
+ \label{eq:potential-error}
+\end{align}
+Indeed $\lambda\sqrt p=\sqrt{Nx}\,q$, so some fixed $B$ covers
+all such tilts. The scalar algebra is
+\begin{align*}
+ \tfrac12\log p&=\tfrac13N+\tfrac16J+\tfrac12\log x,\\
+ \log\log p&=J+\log(2/3)+O((J+|\log x|)/N).
+\end{align*}
+Divide their sum by $Nx$. The constants $c_*$ and $\log(2/3)$
+enter the $1/N$ remainder only; the anchored error in
+\eqref{eq:anchor} becomes $n^{-1/3}P(n)$ after multiplication by
+$n/S$ on this strip.
+
+\begin{lemma}[Variational profile and height integrability]\label{lem:profile}
+For $A$ in a compact neighborhood of $1/3$, the minimum of
+\[
+ I_A(f)=\int_0^1\left(\frac{f'^2}{2D}+\frac A f\right)\dd t,
+ \qquad f(0)=f(1)=0,
+\]
+over positive absolutely continuous paths of finite action is
+\begin{equation}\label{eq:min-value}
+ \min I_A=\frac{3A}{M_A}=\sigma_D(3A)^{2/3},\qquad
+ M_A=(2DA/\pi^2)^{1/3}.
+\end{equation}
+The minimizer is parameterized by
+\begin{equation}\label{eq:profile}
+ f_A(t)=M_A\sin^2\varphi,\qquad
+ t=\frac{\varphi-\sin\varphi\cos\varphi}{\pi},
+ \quad0\le\varphi\le\pi.
+\end{equation}
+It satisfies $f_A''=-DA/f_A^2$ and
+\begin{equation}\label{eq:profile-integrals}
+ \int_0^1\frac{\dd t}{f_A}=\frac2{M_A},\qquad
+ \int_0^1\frac{1+|\log f_A|}{f_A}\dd t
+ =\frac2{M_A}(1-\log M_A+2\log2)
+\end{equation}
+when $M_A<1$, as holds here for all sufficiently large $n$.
+All these endpoint estimates are uniform for the indicated $A$.
+\end{lemma}
+\begin{proof}
+Since $\dd t=(2/\pi)\sin^2\varphi\dd\varphi$, direct
+differentiation proves the ODE and the first integral in
+\eqref{eq:profile-integrals}. The ODE first integral is
+$f_A'^2/(2D)=A(1/f_A-1/M_A)$; integrating it proves
+\eqref{eq:min-value}. The second integral follows from
+$\int_0^\pi\log(\sin\varphi)\dd\varphi=-\pi\log2$.
+For completeness the latter identity follows by symmetry and the
+double-angle formula: if $I=\int_0^{\pi/2}\log\sin u\dd u$, then
+$2I=\int_0^{\pi/2}\log(\sin u\cos u)\dd u
+=I-(\pi/2)\log2$.
+
+To verify minimality, convexity of $v\mapsto v^2/(2D)$ and of
+$x\mapsto A/x$ gives, on $[\varepsilon,1-\varepsilon]$, the
+pointwise lower tangent inequality around $f_A$.
+The linear terms integrate by parts to a boundary term because
+$f_A''=-DA/f_A^2$. For a competing finite-action path $f$, its
+zero endpoint and Cauchy--Schwarz imply $f(t)=o(t^{1/2})$ as
+$t\downarrow0$ and similarly at one. Since
+$f_A(t)\asymp t^{2/3}$ and $f_A'(t)=O(t^{-1/3})$, the boundary
+products $f_A'(t)(f(t)-f_A(t))$ vanish. Letting
+$\varepsilon\downarrow0$ proves $I_A(f)\ge I_A(f_A)$.
+Strict convexity gives uniqueness. These endpoint powers also
+show integrability directly and uniformity when $A$ stays in a
+compact positive interval.
+\end{proof}
+A strip supremum bound $|\log x|=O(J)$ would turn
+\eqref{eq:potential-error} into an artificial bulk term of size
+$J/N$. We instead use the finite integral
+\eqref{eq:profile-integrals} in both proof directions.
+
+\section{The coefficient upper bound}
+\subsection{A quantitative dual with an integrated penalty}
+Take $A=A_n$, $\zeta=N^{-9}$, and $r_n=1-2\zeta$. Set
+\[
+ u(t)=f_A'(\zeta+r_nt)/D,\qquad
+ g(t)=f_A(\zeta+r_nt)/\sqrt{r_n}.
+\]
+Then $u'=-A/g^2$, $\min g\asymp N^{-6}=e$, and
+$\max g<1$ for all sufficiently large $n$. Every fixed derivative
+needed below is bounded by $P(n)$. Choose a sufficiently large fixed
+$K$ and define $v(0)=0$ by
+\begin{equation}\label{eq:dual-v}
+ v'(t)=\frac{2A}{g(t)}-\frac D2u(t)^2
+       -\frac{K(1+|\log g(t)|)}{N g(t)}.
+\end{equation}
+The absolute value is smooth because $g<1$. From
+Lemma~\ref{lem:profile},
+\begin{equation}\label{eq:dual-value}
+ v(1)\ge\sigma_D(3A_n)^{2/3}-C/N-C\sqrt e.
+\end{equation}
+Indeed the unpenalized integral is
+\[
+ \frac1{r_n}\int_\zeta^{1-\zeta}
+ \left(\frac{2A\sqrt{r_n}}{f_A}-\frac{f_A'^2}{2D}\right)\dd t.
+\]
+Its omitted endpoint pieces are $O(\zeta^{1/3})=O(\sqrt e)$;
+the time-rescaling factors cost $O(\zeta)$.
+The penalty integrates to $O(1/N)$ by
+\eqref{eq:profile-integrals}.
+
+For each $t$ let $F_t(x)=-Ax/g(t)^2+2A/g(t)$. The exact gap is
+\begin{equation}\label{eq:dual-gap}
+ \frac A x-F_t(x)=\frac A x(1-x/g(t))^2.
+\end{equation}
+For all $ce\le x\le R$, sufficiently large fixed $K$ makes
+\begin{equation}\label{eq:dual-penalty}
+ F_t(x)-\frac{K(1+|\log g(t)|)}{N g(t)}
+ \le\frac A x-\frac{C(1+|\log x|)}{Nx}-\frac3{Nx},
+\end{equation}
+where $C$ is from \eqref{eq:potential-error}. If
+$1/2\le x/g\le2$, both $1/x$ and $1+|\log x|$ are bounded
+by fixed multiples of their counterparts at $g$, so the penalty
+alone suffices. Outside that range \eqref{eq:dual-gap} is at
+least $A/(4x)$, which absorbs the displayed error since
+$|\log x|=O(J)$ and $J/N\to0$. The polynomially small part of
+\eqref{eq:potential-error} is also less than $1/(Nx)$ uniformly.
+Consequently
+\begin{equation}\label{eq:dual-root}
+ u'(t)x+v'(t)\le\frac nS\eta_p(\theta u(t))-\frac2{Nx}.
+\end{equation}
+After multiplying by $k_0=S/n$, the slack is exactly $2/p$.
+
+\subsection{Uniform rows including very small heights}
+For integer original time $0\le t\le n$ and $0\le p\le RH$, put
+\[
+ \Phi(t,p)=S[u(t/n)p/H+v(t/n)].
+\]
+Retain only legal cycles with $t+L\le n$ and endpoints in this
+height region, multiplying their masses by
+$e^{\Phi(t+L,p+\Delta)-\Phi(t,p)}$. Call a cycle good if
+$L\le d_n n$ and $|\Delta|\le d_n H$, where $d_n=n^{-1/12}$.
+Taylor's formula gives
+\begin{equation}\label{eq:taylor}
+ \Phi(t+L,p+\Delta)-\Phi(t,p)
+ \le\theta u(t/n)\Delta+
+ k_0[u'(t/n)p/H+v'(t/n)+d_nP(n)]L.
+\end{equation}
+To include the mixed term explicitly, after dividing by $S$ and
+writing $l=L/n$, $d=\Delta/H$, $x=p/H$, its remainder is
+\begin{align*}
+ &[u(t/n+l)-u(t/n)]d\\
+ &\quad+x[u(t/n+l)-u(t/n)-u'(t/n)l]\\
+ &\quad+[v(t/n+l)-v(t/n)-v'(t/n)l],
+\end{align*}
+bounded by $P(n)(l|d|+l^2)$. This proves \eqref{eq:taylor}.
+
+At $p\ge ceH$, its extra $\eta$ shift times $p$ is at most
+$RN d_nP(n)=o(1)$. Equation~\eqref{eq:dual-root} leaves at least
+$1/p$ root slack. The shifted-row limit \eqref{eq:shift-row} with
+$z=1$ bounds every such good-cycle row by a fixed number below one.
+
+Choose the fixed constant $c>0$ sufficiently small for the remaining
+heights. At $p\le ceH$, the effective tilts in \eqref{eq:taylor}
+obey
+\[
+ \lambda^2\le Ck_0/e,\qquad |\eta|\le Ck_0/e,\qquad
+ \beta=\log R(\lambda,\eta)\le Ck_0/e,
+\]
+with constants independent of small $c\le1$. Indeed
+$|u'|p/H\le C/e$ there, and the terms of $v'$ satisfy the
+same bound. If $\beta\ge0$, discarding only the CDF gives
+\begin{equation}\label{eq:low-excess}
+ \sum_{b=0}^{p}d_b(e^{\beta b}-1)
+ \le C\beta\sqrt{p+1}e^{\beta p}
+ \le n^{-1/3+Cc}P(n).
+\end{equation}
+This uses $e^z-1\le ze^z$ and
+$\sum_{b\le p}bd_b\le C\sqrt{p+1}$. For negative $\beta$
+there is no excess. Take $c$ so that $Cc<1/6$.
+The prefactor and ordinary-edge perturbations vanish uniformly,
+so these rows are bounded above by $r+o(1)$. At $p=0$ there is
+only the ordinary edge. Equality with $r+o(1)$ is not claimed at
+fixed finite height, and no local-root approximation is used there.
+
+For bad cycles, $|\Phi|\le SP(n)$ on the retained region.
+The zero-tilt fixed-$b$ estimates
+\eqref{eq:jump-tail}--\eqref{eq:clock-tail}, retaining $b\le RH$
+and using $\sum d_b\le2$, give transformed mass at most
+\begin{equation}\label{eq:bad}
+ Ce^{SP(n)}\left\{
+ e^{-c\min(d_n^2H^2/(RH+1),d_nH)}
+ +e^{-cd_nn+C(RH+1)}\right\}=o(1).
+\end{equation}
+The first negative exponent has order $n^{1/2}$ times a fixed
+logarithmic power, and the second has order $n^{11/12}$ minus
+$O(H)$. Both dominate $SP(n)$. Thus all transformed rows are
+bounded by a single fixed $\rho<1$ eventually.
+
+\subsection{Exact original time and large heights}
+The transformed mass over every possible number of cycles is at
+most $1/(1-\rho)$. Keeping only paths with actual final original
+time $n$ can only decrease it. Telescoping the transform and then
+applying the genuine terminal multiplier gives
+\[
+ e^{-\Phi(n,p)}x_j^{-p}
+ =e^{-Sv(1)}e^{-p(\log x_j+\theta u(1))}\le e^{-Sv(1)},
+\]
+since $\theta P(n)\to0$. Hence the confined normalized
+coefficient is at most $Ce^{-Sv(1)}$.
+
+For paths with a boundary height beyond $RH$, the spatial input
+\eqref{eq:barrier-input} gives contribution
+\[
+ \exp\{-(\kappa\sqrt{2R/3}+o(1))S\}.
+\]
+Fix $R$ sufficiently large that the coefficient exceeds
+$\sigma_D+1$. This is negligible even at the new logarithmic
+scale. Finally,
+\[
+ \sigma_D(3A_n)^{2/3}
+ =\sigma_D+\frac{7\sigma_D}{3}\frac JN+O(J^2/N^2),
+ \qquad J^2/N^2=O(1/N).
+\]
+Together with \eqref{eq:dual-value}, $\sqrt e=N^{-3}$, and the
+fixed geometric prefactor, this proves
+\begin{equation}\label{eq:upper-coeff}
+ n\log\mu-\log a_j(n)
+ \ge\sigma_D S+\frac{7\sigma_D}{3}\frac{SJ}{N}-O(S/N).
+\end{equation}
+
+\section{The coefficient lower bound with a shrinking strip}
+\subsection{Entrance and the proposed central path}
+Take $P_n=\lfloor eH\rfloor$ and apply
+\eqref{eq:entrance-input}. Write $a_n=E(P_n)/n$. Since
+$\log(eH)/N\to2/3$,
+\begin{equation}\label{eq:entrance-scale}
+ a_n\le Ce^{3/2},\qquad
+ \text{entrance logarithmic cost}\le C\sqrt e\,S.
+\end{equation}
+Let $f=f_{1/3}$ and choose the left endpoint time $t_e$ with
+$f(t_e)=e$. For a sufficiently large fixed $A_{\rm rep}$, put
+\begin{equation}\label{eq:path}
+ \delta=A_{\rm rep}e^{3/2},\quad b_n=1-\delta,\quad
+ c_n=\frac{1-2t_e}{b_n-a_n},\quad
+ f_n(t)=f(t_e+c_n(t-a_n)).
+\end{equation}
+Increase $A_{\rm rep}$ so that $a_n\le\delta/2$ and the
+uniform repair threshold below holds. Because $t_e=O(e^{3/2})$,
+$c_n=1+O(e^{3/2})$. On $[a_n,b_n]$ the path has both endpoints
+$e$, lies in $[e,M_{1/3}]$, and has every required fixed derivative
+bounded by $P(n)$. Extend it beyond $b_n$ by the same formula for
+time $n^{-1/12}$; this is valid eventually because the distance
+to its singular endpoint has only a negative logarithmic order.
+
+\subsection{Controlled law and the clock}
+At an active departure time $s$, use \eqref{eq:law} with
+\begin{equation}\label{eq:control}
+ \lambda_s=\theta q(s/n),\qquad q=f_n'/D.
+\end{equation}
+Stop at the first boundary time $s_K\ge nb_n$, on leaving
+$[eH/2,RH]$, or after
+\begin{equation}\label{eq:cap}
+ m_n=\left\lceil\frac{4n}{c eH}\right\rceil+1
+\end{equation}
+cycles, where $c$ is the lower-mean constant in
+\eqref{eq:moments}. All increments below are set to zero after
+stopping. The chosen $R$ is larger than the profile's maximum.
+All active departure states satisfy the quantitative local lemmas.
+
+The clock martingale $Z_k=\sum_{i<k}(L_i-\E[L_i\mid\text{past}])$
+satisfies
+\[
+ \E Z_{m_n}^2\le m_n C H^2\le nH P(n).
+\]
+Doob's inequality therefore yields
+\begin{equation}\label{eq:clock-control}
+ \max_k|Z_k|/n\le n^{-1/12}
+\end{equation}
+with failure probability at most $n^{-1/6}P(n)$. Also
+\begin{equation}\label{eq:mesh}
+ \E\sum_i(L_i/n)^2\le n^{-1/3}P(n),\qquad
+ \sum_i(L_i/n)^2\le n^{-1/6}
+\end{equation}
+with failure probability at most $n^{-1/6}P(n)$. On this event
+the maximum time mesh is at most $n^{-1/12}$.
+The cycle cap cannot be the first stop without the desired time
+crossing or spatial exit: absent a prior stop,
+$\E[L_i\mid\text{past}]\ge ceH/2$, and the cap in
+\eqref{eq:cap} gives accumulated conditional mean above $2n$.
+Its actual elapsed time would still be below $n$, contradicting
+\eqref{eq:clock-control}. The factor $4$ accounts for the
+lower strip height $eH/2$.
+
+Put $v_i=\E[\Delta_i\mid\text{past}]/\E[L_i\mid\text{past}]$.
+The anchored derivative estimate gives, uniformly,
+\begin{equation}\label{eq:physical-drift}
+ v_i=\theta f_n'(s_i/n)+O(n^{-1/2}P(n)),\qquad
+ v_i/\theta=f_n'(s_i/n)+O(n^{-1/6}P(n)).
+\end{equation}
+The reward martingale $M_k=\sum_{i<k}(\Delta_i-v_iL_i)$ obeys
+$\E M_{m_n}^2\le nP(n)$. To check the rate without independence,
+use $(\Delta-vL)^2\le2\Delta^2+2v^2L^2$ in
+\eqref{eq:moments}; each active increment has second moment at
+most $HP(n)$ and $m_n\le(n/H)P(n)$.
+Doob's inequality gives
+\begin{equation}\label{eq:reward-control}
+ \max_k|M_k|/H\le n^{-1/12}
+\end{equation}
+with failure probability at most $n^{-1/6}P(n)$.
+
+Since the total time is at most $n+\max_iL_i$, these estimates
+imply at every visited boundary
+\begin{equation}\label{eq:path-sum}
+ p_k/H=p_0/H+\sum_{i<k} f_n'(s_i/n)L_i/n
+                     +O(n^{-1/12}P(n)).
+\end{equation}
+The Riemann error in this sum is at most
+$P(n)\sum_i(L_i/n)^2$. The entrance rounding is $O(1/H)$.
+It follows, on an event whose probability tends to one, that
+\begin{equation}\label{eq:tube}
+ \sup_k|p_k/H-f_n(s_k/n)|\le\tau_n:=n^{-1/14},\qquad
+ 0\le s_K/n-b_n\le n^{-1/12}.
+\end{equation}
+Here $n^{-1/12}P(n)=o(n^{-1/14})$. Since $\tau_n=o(e)$,
+the tube excludes a spatial exit: the proposed curve has margin
+at least $e/2$ from the lower boundary and fixed upper margin.
+The stop is therefore the intended original-time crossing.
+This proves a quantitative shrinking-strip result rather than
+appealing to a fixed-strip convergence theorem.
+
+\subsection{Exact likelihood and an integrated error}
+For each realized stopped prefix its inverse change of measure is
+exact:
+\begin{equation}\label{eq:likelihood}
+ \prod_i Q_{p_i}(\text{cycle}_i)
+ =\prod_i\Prob_{p_i,\lambda_{s_i}}(\text{cycle}_i)e^{-B_n},
+ \qquad
+ B_n=\sum_i[\lambda_{s_i}\Delta_i+
+                    \eta_{p_i}(\lambda_{s_i})L_i].
+\end{equation}
+No duration is rounded or frozen. Equations
+\eqref{eq:potential}--\eqref{eq:potential-error}, evaluated at the
+actual random heights on \eqref{eq:tube}, give
+\begin{align}\label{eq:likelihood-expand}
+ \frac{B_n}S={}&\sum_iq(s_i/n)\frac{p_{i+1}-p_i}{H}\nonumber\\
+ &+\sum_i\left(\frac{A_n}{p_i/H}-\frac D2q(s_i/n)^2\right)
+                   \frac{L_i}n+O(1/N)+n^{-c_*'}P(n)
+\end{align}
+for some positive $c_*'$. The $O(1/N)$ is obtained by integration,
+not by a strip supremum. Specifically,
+\begin{equation}\label{eq:integrated-remainder}
+ \sum_i\frac{1+|\log(p_i/H)|}{p_i/H}\frac{L_i}n=O(1).
+\end{equation}
+On $[e/2,R]$ this height function is Lipschitz, with constant
+$P(n)$ (also across $x=1$). Its path-tube and mesh errors are
+polynomially small; its integral along $f_n$ is uniformly bounded
+by \eqref{eq:profile-integrals} and the time change in
+\eqref{eq:path}. The short overshoot contributes only
+$n^{-1/12}P(n)$. This proves \eqref{eq:integrated-remainder}.
+The anchored-root remainder contributes $n^{-1/3}P(n)$.
+
+For the first sum in \eqref{eq:likelihood-expand}, discrete
+summation by parts bounds the replacement error by
+\[
+ \tau_n\big(|q(\text{start})|+|q(\text{end})|+\TV(q)\big)
+ \le\tau_nP(n).
+\]
+Thus no bounded-total-variation assertion for the random boundary
+path is needed. Riemann errors for the deterministic smooth path
+are polynomially small. The second sum is treated by its tube,
+mesh, and lower-height bounds. Hence
+\begin{equation}\label{eq:likelihood-action}
+ \frac{B_n}S=\int_{a_n}^{b_n}
+      \left(\frac{f_n'^2}{2D}+\frac{A_n}{f_n}\right)\dd t
+                  +O(1/N)+n^{-c_*'}P(n).
+\end{equation}
+The overshoot again has time at most $n^{-1/12}$ and every relevant
+integrand there is at most $P(n)$.
+The controlled event has probability tending to one, and is eventually
+at least $1/2$. Integrating \eqref{eq:likelihood} over it costs
+only an additional factor $1/2$ in the lower mass bound.
+
+\subsection{Every integer time and evaluation of the action}
+On the tube, for sufficiently large $n$,
+\[
+ eH/2\le p_K\le2eH,\qquad
+ \delta n/2\le n-s_K\le\delta n.
+\]
+Choose the fixed $A_{\rm rep}$ large enough that the repair input
+\eqref{eq:repair-input} applies throughout this state and time range.
+It appends a legal family of exactly $n-s_K$ steps ending at $(2,0)$,
+with logarithmic cost at most
+\begin{equation}\label{eq:repair-cost}
+ C\big(\sqrt e\,S+(\delta/e)S\big)\le C\sqrt e\,S.
+\end{equation}
+The entrance cost has the same order. The terminal multiplier is
+exactly the constant $x_j^{-2}$. Concatenation is injective by the
+completed-history argument in Report 127: the entrance duration is
+deterministic, the interior stop is the first boundary visit at or
+after $nb_n$, and the repair macrocycle pattern is a deterministic
+function of its start state and residual time. Distinct decorated
+prefixes remain distinct completed histories. Every internal
+multiplicity realization counted by $Q$ is retained.
+
+Set
+\[
+ K_e=\int_{t_e}^{1-t_e}\frac{f'^2}{2D}\dd t,
+ \qquad W_e=\int_{t_e}^{1-t_e}\frac{\dd t}{f}.
+\]
+The central action in \eqref{eq:likelihood-action} is exactly
+$c_nK_e+A_nc_n^{-1}W_e$. The endpoint estimates give
+\[
+ K_e+\tfrac13W_e=\sigma_D+O(\sqrt e),\quad
+ W_e=2\sigma_D+O(\sqrt e),\quad c_n=1+O(e^{3/2}).
+\]
+Therefore
+\begin{equation}\label{eq:lower-action}
+ \int_{a_n}^{b_n}\left(\frac{f_n'^2}{2D}+\frac{A_n}{f_n}\right)\dd t
+ =\sigma_D+\frac{7\sigma_D}{3}\frac JN+O(\sqrt e).
+\end{equation}
+The unperturbed profile suffices because the action is linear in
+$A_n$ at that path. Combine \eqref{eq:entrance-scale},
+\eqref{eq:likelihood-action}, \eqref{eq:repair-cost}, and
+\eqref{eq:lower-action}. Since $\sqrt e=N^{-3}=O(1/N)$ and
+every $n^{-c}P(n)=o(1/N)$, this proves
+\begin{equation}\label{eq:lower-coeff}
+ n\log\mu-\log a_j(n)
+ \le\sigma_D S+\frac{7\sigma_D}{3}\frac{SJ}{N}+O(S/N).
+\end{equation}
+Together with \eqref{eq:upper-coeff}, this proves
+Theorem~\ref{thm:main} at every sufficiently large integer $n$.
+
+\section{Error ledger and the scope of the new term}
+The following ledger lists the errors that must stay below $SJ/N$.
+Unless indicated otherwise, the stated errors are relative to $S$.
+\begin{longtable}{@{}p{0.26\textwidth}p{0.27\textwidth}p{0.41\textwidth}@{}}
+\toprule
+Source & Bound & Reason it is harmless \\\midrule
+\endfirsthead
+\toprule
+Source & Bound & Reason it is harmless \\\midrule
+\endhead
+Scalar local root & $O(1/N)$ after integration & The height error is $(1+|\log x|)/(Nx)$ and is integrated along the profile \\
+Anchored tilt remainder & $n^{-1/3}P(n)$ & Uniform on the strip down to $eH$ \\
+Controlled drift & $n^{-1/6}P(n)$ & Obtained from anchored concavity, not differentiation of an unspecified error \\
+Clock fluctuation & variance $\le nHP(n)$ & Threshold $n^{11/12}$ has failure probability $n^{-1/6}P(n)$ \\
+Reward fluctuation & variance $\le nP(n)$ & Threshold $Hn^{-1/12}$ has failure probability $n^{-1/6}P(n)$ \\
+Squared time mesh & expectation $n^{-1/3}P(n)$ & Threshold $n^{-1/6}$ controls Riemann errors and overshoot \\
+Path tube & radius $n^{-1/14}$ & Smaller than every fixed negative logarithmic power and therefore than the strip margin \\
+Upper Taylor remainder & $n^{-1/12}P(n)$ per unit time & Its root shift times $p$ is $o(1)$, preserving $1/p$ slack \\
+Very small heights & row excess $n^{-1/3+Cc}P(n)$ & Choose fixed $c$ with $Cc<1/6$; the row is bounded above by $r+o(1)$ \\
+Entrance and repair & $O(N^{-3})$ cost; $O(nN^{-9})$ time & Uniform discrete constructions retain every residual integer duration \\
+Likelihood height error & $O(1/N)$ & Lipschitz tube and mesh comparison with an integrable deterministic profile \\
+Large jumps and durations & negative exponents of orders $n^{1/2}$ and $n^{11/12}$ & Both dominate $SP(n)$ even for the growing dual \\
+Boundary heights above $RH$ & exponent greater than $(\sigma_D+1)S$ & One fixed sufficiently large $R$ suffices \\
+Terminal and counting factors & fixed multiplier and $O(1)$ logarithmic cost & Exact terminal $(2,0)$ and injective concatenation \\
+Expansion of minimum & $O(J^2/N^2)$ & This is $O(1/N)$ \\\bottomrule
+\end{longtable}
+The estimate leaves an unknown coefficient at scale
+$S/N=n^{1/3}(\log n)^{-1/3}$. Exponentiating such a remainder does
+not give a multiplicative $1+o(1)$ error. In particular neither an
+exact multiplier nor a polynomial prefactor is determined. The
+presence of $c_*$ in the scalar root does not isolate the next global
+coefficient: other accumulated effects at the same scale have not
+been evaluated. No ratio theorem, full transseries, effective onset,
+or finite-data calibration is asserted.
+
+\section{Refined inverse thresholds}
+In this and the next section write $\sigma=\sigma_D$ and
+$\lambda=\log\mu$. Let $\psi$, $R$, and $G$ be as in
+Theorem~\ref{thm:main}.
+\begin{corollary}\label{cor:inverse}
+For real $T\to\infty$, define
+$N(T)=\min\{n\ge0:a_j(n)\ge T\}$ and $s=(\log T)/\lambda$.
+Then
+\begin{equation}\label{eq:inverse}
+ N(T)=s+\frac\sigma\lambda\psi(s)
+       +\frac{7\sigma}{3\lambda}
+          \frac{\psi(s)\log\log s}{\log s}
+       +O\!\left(\frac{\psi(s)}{\log s}\right).
+\end{equation}
+This conclusion requires neither monotonicity of the coefficients
+nor a ratio asymptotic.
+\end{corollary}
+\begin{proof}
+Put $m(s)=s+G(s)/\lambda$ and consider integers within
+$O(\psi(s))$ of $s$. Direct differentiation of the explicit smooth
+functions gives $G'(t)=O(\psi(t)/t)$ and
+$R'(t)=O(R(t)/t)$. Uniformly in this range,
+\[
+ G(n)=G(s)+O(\psi(s)^2/s)=G(s)+o(R(s)),\qquad
+ R(n)=R(s)(1+o(1)).
+\]
+The small-error assertion follows from
+$\psi(s)\log s/s\to0$. For a fixed sufficiently large $K$, let
+$n_+=\lceil m(s)+KR(s)\rceil$. The coefficient lower envelope
+in \eqref{eq:envelopes} implies
+$\log a_j(n_+)\ge\lambda s$ eventually. Integer rounding costs
+$O(1)=o(R(s))$.
+
+For the other direction, $a_j(n)\le\mu^n$ excludes every
+integer $n<s$. The explicit function
+$t\mapsto\lambda t-G(t)+CR(t)$ is strictly increasing eventually,
+since its derivative tends to $\lambda>0$. At
+$m(s)-KR(s)$ it is less than $\lambda s$ for large enough
+fixed $K$. The upper envelope therefore excludes every integer
+between $s$ and this threshold. These two brackets prove
+$N(T)=m(s)+O(R(s))$, which is \eqref{eq:inverse}.
+\end{proof}
+
+\section{Refined boundary derivative growth}
+Let $b_n=a_j(n)\mu^{-n}$, $F(z)=\sum_{n\ge0}a_j(n)z^n$,
+$\rho=1/\mu$, and $f(t)=F(\rho e^{it})$. Theorem~\ref{thm:main}
+gives radius $\rho$ and $\sum n^k b_n<\infty$ for every fixed
+integer $k$. Thus $f$ is smooth, all its derivatives are represented
+by uniformly convergent series, and positivity gives
+\begin{equation}\label{eq:moment-norm}
+ \|f^{(k)}\|_\infty=M_k:=\sum_{n\ge0}n^k b_n\quad(k\ge1).
+\end{equation}
+Its maximum is attained at $t=0$. Radial boundary derivatives are
+$F^{(k)}(\rho)=\mu^k\sum_{n\ge k}(n)_k b_n$, with the falling
+factorial $(n)_k=n(n-1)\cdots(n-k+1)$.
+
+\begin{corollary}\label{cor:moments}
+As $k\to\infty$ through integers,
+\begin{align}
+ \log\|f^{(k)}\|_\infty
+ ={}&3k\log k-2k\log\log k
+       +[\log(2D/\pi^2)-3]k\nonumber\\
+ &\hspace{8mm}-\frac{k\log\log k}{\log k}
+                     +O\!\left(\frac{k}{\log k}\right),
+ \label{eq:moment-refinement}\\
+ \log F^{(k)}(\rho)
+ ={}&3k\log k-2k\log\log k
+       +[\log\mu+\log(2D/\pi^2)-3]k\nonumber\\
+ &\hspace{8mm}-\frac{k\log\log k}{\log k}
+                     +O\!\left(\frac{k}{\log k}\right).
+ \label{eq:radial-refinement}
+\end{align}
+These are consequences of the explicit envelopes
+\eqref{eq:envelopes}; they assert no extra coefficient term.
+\end{corollary}
+\begin{proof}
+We first optimize explicit smooth bounds. For any fixed real $c$,
+put $V_c(x)=G(x)+cR(x)$ for sufficiently large real $x$. With
+$y=\log x$, $a=7/3$, and $b=c/\sigma$,
+\begin{equation}\label{eq:explicit-potential}
+ V_c(e^y)=\sigma e^{y/3}y^{2/3}
+             \left(1+\frac{a\log y+b}{y}\right).
+\end{equation}
+Its first and second $y$ derivatives are eventually positive,
+with second derivative asymptotic to
+$(\sigma/9)e^{y/3}y^{2/3}$. Thus $ky-V_c(e^y)$ is strictly
+concave eventually, and its unique eventual maximum tends to
+infinity. Finitely many smaller $x$ have objective only $O(k)$.
+We differentiate only this explicit potential.
+
+Write $B(y)=a\log y+b$. The stationary equation is
+\begin{equation}\label{eq:stationarity}
+ k=\frac\sigma3e^{y/3}y^{2/3}
+       \left(1+\frac{B(y)+2}{y}
+                    +O\!\left(\frac{\log y}{y^2}\right)\right).
+\end{equation}
+Taking logarithms and multiplying by three gives, with
+$L=\log k$,
+\begin{equation}\label{eq:saddle-equation}
+ y+2\log y+\frac{7\log y+3b+6}{y}
+ =3L+3\log(3/\sigma)
+                +O\!\left(\frac{(\log y)^2}{y^2}\right).
+\end{equation}
+First this shows $y\sim3L$; then it shows
+$y=3L-2\log L+O(1)$. Substituting this back and expanding yields
+\begin{equation}\label{eq:saddle-location}
+ y=3L-2\ell+c_0-\frac\ell L+O(1/L),\qquad
+ \ell=\log L,\quad c_0=\log(3/\sigma^3).
+\end{equation}
+Here is the coefficient calculation explicitly. If
+$y=3L-2\ell+c_0+d\ell/L+O(1/L)$, then $2\log y$ contributes
+$-4\ell/(3L)$ at this order, and $7\log y/y$ contributes
+$7\ell/(3L)$. Their combined $\ell/L$ coefficient in
+\eqref{eq:saddle-equation} is $d+1$, so $d=-1$.
+The remaining residual is $O(1/L)$ and the left derivative tends
+to one, justifying the stated remainder by the mean-value theorem.
+
+Divide \eqref{eq:explicit-potential} by
+\eqref{eq:stationarity}. At the saddle,
+\begin{equation}\label{eq:saddle-value-potential}
+ V_c(e^y)=3k\left(1-\frac2y
+                    +O\!\left(\frac{\log y}{y^2}\right)\right)
+          =3k-\frac{2k}{L}+O(k\ell/L^2).
+\end{equation}
+Consequently, for every fixed $c$,
+\begin{align}\label{eq:optimized}
+ \sup_{x\ge x_0}\{k\log x-V_c(x)\}
+ ={}&3kL-2k\ell+(c_0-3)k-\frac{k\ell}{L}+O(k/L).
+\end{align}
+The saddle has
+$x\asymp k^3/(\log k)^2$. Rounding to a nearest integer changes
+the objective by $o(1)$: in a fixed neighborhood of that saddle,
+the absolute $x$ derivative is $O(k/x)$, and $k/x\to0$.
+Thus \eqref{eq:optimized} also holds for the integer supremum.
+
+Now use \eqref{eq:envelopes}. A single saddle integer for
+$V_C$ supplies the lower bound for $M_k$.
+For the upper bound reserve the summable positive factor $e^{-R(n)}$:
+\[
+ n^k b_n\le e^{-R(n)}
+       \exp\{k\log n-G(n)+(C+1)R(n)\}
+       \qquad(n\ge n_0).
+\]
+The series $\sum_{n\ge n_0}e^{-R(n)}$ is finite, and the remaining
+supremum is \eqref{eq:optimized} with $c=-(C+1)$.
+The earlier coefficients contribute $e^{O(k)}$, negligible beside
+the saddle on the logarithmic scale $k/L$. Therefore
+\eqref{eq:optimized} proves \eqref{eq:moment-refinement}, since
+$3/\sigma_D^3=2D/\pi^2$.
+
+For radial derivatives, $(n)_k\le n^k$ gives the upper bound.
+At the same lower-bound saddle $n\asymp k^3/(\log k)^2$,
+\[
+ \log\frac{(n)_k}{n^k}
+ =\sum_{j=0}^{k-1}\log(1-j/n)=O(k^2/n)=o(k/\log k).
+\]
+The falling factorial therefore preserves the displayed refinement;
+the factor $\mu^k$ adds $k\log\mu$.
+\end{proof}
+The unknown coefficient of $R(n)$ affects the moment only at
+$O(k/\log k)$, which explains why the additional term in
+\eqref{eq:moment-refinement} is nevertheless determined. In the
+convention $\|f^{(k)}\|_\infty\le C A^k(k!)^s$, the sharp
+Gevrey order remains $3$, as already established in Report 127.
+
+\section{Verification and reproducibility}
+The report supplies every new quantitative estimate, and the unchanged
+earlier companion supplies the complete proofs of the stated inputs.
+A mathematical argument, a finite regression check, a byte-integrity
+check, and a rendered-page review have distinct scopes; none is a
+substitute for another.
+
+The reader bundle is local and offline. It contains this report's
+PDF and editable TeX, the unchanged Report 127 package, and finite-check and reproduction tools.
+The outer closed inventory rejects missing or changed files, extra
+files or directories, unsafe inventory paths, and symbolic links.
+The earlier package retains its own original inventory.
+The README gives the precise checker commands, their scope, and
+the build environment. Full replay verifies checks in normal and
+optimized Python, rebuilds the report in clean external directories,
+extracts a fresh deterministic ZIP, repeats the checks, and compares
+the repack. All runtime products stay outside the immutable package.
+
+The finite companion tests explicit identities and bounded examples.
+It does not certify asymptotic uniformity, the singular variational
+argument, martingale convergence, or infinite tail estimates.
+A source inventory is a record relative to its supplied verifier,
+not an authenticity signature against simultaneous malicious
+replacement. Different TeX or compression versions may produce
+equivalent content with different bytes; the recorded environment
+is used for the bytewise replay.
+
+\begin{thebibliography}{9}
+\bibitem{R127}
+\emph{Report 127. Sharp logarithmic deficit constants for two inversion
+sequence classes}, 2 October 2026. Unchanged proof and source companion
+included under \path{earlier-inputs/report127/}. Exact counting:
+Sections 2--3. Exact transforms and concentration: Section 5.
+Uniform entrance and every-integer-time repair: Section 10.
+Spatial barrier: Section 12.
+\bibitem{BB}
+Nathan Britt and Nicholas Beaton,
+\emph{Completing the enumeration of inversion sequences avoiding triples
+of relations}, arXiv:2512.21943v3, 29 September 2026.
+Exact commitment trees: Sections 3.8--3.9, equations (3.40)--(3.45),
+Lemmas 5--6 and Appendix A.
+\url{https://arxiv.org/html/2512.21943v3}.
+\bibitem{OEIS247}
+OEIS Foundation Inc., \emph{A279551}.
+\url{https://oeis.org/A279551}. Sequence identifier.
+\bibitem{OEIS759}
+OEIS Foundation Inc., \emph{A279556}.
+\url{https://oeis.org/A279556}. Sequence identifier.
+\end{thebibliography}
+\end{document}

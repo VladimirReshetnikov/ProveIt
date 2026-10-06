@@ -1,0 +1,1575 @@
+\pdfinfoomitdate=1
+\pdftrailerid{}
+\pdfsuppressptexinfo=15
+\documentclass[11pt,letterpaper]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools,booktabs,microtype}
+\usepackage[colorlinks=true,linkcolor=black,citecolor=black,urlcolor=blue]{hyperref}
+\usepackage{enumitem}
+\setlist{itemsep=3pt,topsep=5pt}
+\setlength{\parskip}{5pt}
+\setlength{\parindent}{0pt}
+\setlength{\emergencystretch}{2em}
+\makeatletter
+\renewcommand{\@seccntformat}[1]{\csname the#1\endcsname\hspace{1em}}
+\makeatother
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\NN}{\mathbb N}
+\newcommand{\ZZ}{\mathbb Z}
+\newcommand{\QQ}{\mathbb Q}
+\newcommand{\RR}{\mathbb R}
+\newcommand{\CC}{\mathbb C}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\Prob}{\mathbb P}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Qd}{\mathcal Q}
+\newcommand{\1}{\mathbf1}
+\DeclareMathOperator{\diag}{diag}
+\DeclareMathOperator{\Disc}{Disc}
+\newcommand{\Wedge}{\mathcal W}
+\newcommand{\dett}{\sqrt{\det\Sigma}}
+\DeclareMathOperator{\dist}{dist}
+\DeclareMathOperator{\Impart}{Im}
+\hypersetup{pdftitle={Report 125 A279571 leading equivalent and threshold inverse},pdfauthor={}}
+\begin{document}
+\begin{center}
+{\small REPORT 125}\par\vspace{8pt}
+{\LARGE\bfseries A279571: the leading equivalent}\par
+\vspace{6pt}
+{\large A positive harmonic constant and a sharp threshold inverse}\par
+\vspace{9pt}
+{\small 2 October 2026}\par
+{\small Standalone proof and exact finite-check companion}
+\end{center}
+\begin{abstract}
+Let $a_n$ count inversion sequences avoiding $100$, $101$, and $201$.
+We prove
+\[
+ a_n\sim C_A9^n n^{-\kappa},\qquad
+ \kappa=1+\frac{\pi}{\arccos(2/\sqrt7)},\qquad 0<C_A<\infty.
+\]
+The constant is characterized by normalized forward and reversed killed
+harmonic functions and an absolutely convergent positive endpoint series.
+The proof treats the exact two-color walk at its original integer times.
+A strong approximation for full regenerative cycle paths supplies uniform
+rough bounds. Explicit first- and second-order color correctors construct
+the harmonic functions. A deep entrance argument, a side-uniform Brownian
+limit, last-window smoothing, midpoint reversal, and a global endpoint
+bound give the required killed local limit and justify the endpoint sum.
+The threshold inverse has an explicit real center and a ceiling bracket
+whose pre-rounding width tends to zero. We also prove uniqueness of the
+convergence-circle singularity and non-D-finiteness. No amplitude digits,
+quantitative remainder rate, effective onset, or correction expansion is
+asserted.
+\end{abstract}
+\setcounter{tocdepth}{1}
+{\small\setlength{\parskip}{0pt}\tableofcontents}
+\newpage
+
+\section{Definitions, results, and normalization}
+An inversion sequence of length $n$ is an integer sequence
+$(e_1,\ldots,e_n)$ with $0\le e_i<i$. The three forbidden patterns
+are exactly the triples $i<j<k$ satisfying
+\begin{equation}\label{eq:avoid}
+ e_i>e_j,\qquad e_j\le e_k,\qquad e_i\ge e_k.
+\end{equation}
+Let $a_n$ count the avoiders, with $a_0=1$, and write
+$F(z)=\sum_{n\ge0}a_nz^n$. This is OEIS A279571 and Class 2106
+of Britt and Beaton~\cite{oeis,bb}. Its initial terms are
+\[
+1,1,2,6,22,92,424,2106,11102,61436,353980,2110366,\ldots.
+\]
+All logarithms are natural. Define
+\begin{equation}\label{eq:constants}
+ \theta=\arccos\frac2{\sqrt7},\qquad p=\frac\pi\theta,
+ \qquad\kappa=p+1,\qquad\rho_0=\frac19.
+\end{equation}
+The exact walk below has colors $P,Q$, positions in
+$\Qd=\ZZ_{\ge0}^2$, start $o=(0,0,P)$, stationary color masses
+$\pi=(2/3,1/3)$, and covariance
+\begin{equation}\label{eq:Sigma-main}
+ \Sigma=\begin{pmatrix}7/3&-10/3\\-10/3&25/3\end{pmatrix},\qquad
+ A=\begin{pmatrix}1&2/5\\0&\sqrt3/5\end{pmatrix},\qquad
+ A\Sigma A^{\mathsf T}=I.
+\end{equation}
+The wedge $\Wedge=A\RR_{>0}^2$ has angles $0<\phi<\theta$. Set
+\begin{equation}\label{eq:U}
+ u(w)=|w|^p\sin(p\arg w),\qquad U(s)=u(As),\qquad
+ b_\theta=\frac{2^{1-p}}{\theta\Gamma(p+1)}.
+\end{equation}
+Values on the wedge sides are zero. This fixes the multiplicative
+normalization completely; equivalently, on the quadrant,
+\[
+ U(a,b)=\Impart\left(a+\frac{2+i\sqrt3}{5}b\right)^p
+\]
+with the branch of argument between $0$ and $\theta$.
+
+\begin{theorem}[Leading equivalent and killed local limit]\label{thm:main}
+Let $K_n$ be the exact tilted walk killed on leaving $\Qd$, and let
+$K_n^*$ be its stationary-color time reversal, also killed on $\Qd$.
+Writing $\tau,\tau^*$ for their exit times, the limits
+\begin{equation}\label{eq:V-limit}
+ V(s,c)=\lim_{n\to\infty}\E_{s,c}[U(S_n);\tau>n],\qquad
+ V^*(t,d)=\lim_{n\to\infty}\E^*_{t,d}[U(S_n);\tau^*>n]
+\end{equation}
+exist, are nonnegative killed-harmonic functions, and satisfy, for every
+$\delta>0$,
+\begin{equation}\label{eq:V-asymp}
+ V(s,c)=U(s)+O_\delta((1+|s|)^{p-1+\delta}),
+\end{equation}
+and the same bound for $V^*$. For fixed states $(s,c),(t,d)$,
+\begin{equation}\label{eq:killed-LLT}
+ K_n((s,c),(t,d))=
+ \frac{b_\theta\pi_d}{\dett}V(s,c)V^*(t,d)n^{-p-1}
+ +o(n^{-p-1}).
+\end{equation}
+Uniformly over all $(t,d)\in\Qd\times\{P,Q\}$ and $n\ge1$,
+\begin{equation}\label{eq:endpoint-dom}
+ K_n(o,(t,d))\le C(1+|t|)^{2p}n^{-p-1}.
+\end{equation}
+Consequently
+\begin{equation}\label{eq:leading}
+ a_n\sim C_A9^n n^{-\kappa},
+\end{equation}
+where, with $r_P=2,r_Q=1$ and
+$g((a,b),d)=3^{-a}(3/5)^b/r_d$,
+\begin{equation}\label{eq:constant}
+ \boxed{\displaystyle C_A=\frac29\frac{b_\theta}{\dett}V(o)
+      \sum_{t\in\Qd}\sum_{d=P,Q}\pi_d g(t,d)V^*(t,d).}
+\end{equation}
+The series is absolutely convergent, and $0<C_A<\infty$.
+\end{theorem}
+
+\begin{corollary}[Threshold inverse]\label{cor:inverse}
+For $N(y)=\min\{n\ge0:a_n\ge y\}$, put $\lambda=\log9$, $L=\log y$,
+and
+\begin{equation}\label{eq:center}
+ v(y)=\frac{L+\kappa\log L-\kappa\log\lambda-\log C_A}{\lambda}.
+\end{equation}
+There is a positive function $\eps(y)\to0$ such that, for all sufficiently
+large $y$,
+\begin{equation}\label{eq:inverse-bracket}
+ \lceil v(y)-\eps(y)\rceil\le N(y)\le
+ \lceil v(y)+\eps(y)\rceil.
+\end{equation}
+In particular $N(y)=v(y)+O(1)$. The exact identity
+$N(y)=\lceil v(y)\rceil$ follows whenever the displayed real interval
+contains no integer; no unconditional ceiling identity is claimed.
+\end{corollary}
+
+The numbers $p,\kappa$ are irrational, with $4<p<5$. We also prove
+that $F$ is not D-finite over $\CC(z)$ and that its only singularity
+on its convergence circle is $1/9$; see Section~\ref{sec:circle}.
+
+\textbf{Scope and attribution.}
+The generating tree is the exact combinatorial input of
+Britt--Beaton~\cite[Section 2.5, equation (2.44)]{bb}.
+Their Section 4.2 and Appendix B.3, and the OEIS formula credited to
+V\'aclav Kot\v{e}\v{s}ovec on 13 January 2026 after Nicholas R. Beaton,
+contain prior numerical exponent and amplitude estimates. Those estimates
+are credited rather than presented as new results. No numerical fitting
+is used here. The constant in \eqref{eq:constant} is a mathematical
+characterization, without certified decimal digits or effective error
+bounds. The leading equivalent excludes a nonconvergent bounded amplitude
+modulation, but gives no correction series or complex local expansion.
+
+The proof does not apply an iid cone theorem to the colored walk or kill
+only at color returns. The external probabilistic inputs are a full-cycle
+original-time strong approximation and the Brownian wedge heat kernel.
+All discrete stopping, correction, local smoothing, and endpoint-summation
+arguments needed for Theorem~\ref{thm:main} are given below.
+\section{From the generating tree to a quadrant walk}
+\subsection{Exact combinatorial coordinates}
+For a nonempty avoider let $h$ be its maximum, and let its color be $P$
+when its last entry equals $h$, and $Q$ otherwise. Let $k$ be the number
+of values below its last entry that may legally be appended. The source
+labels are $(n,h,k)_P$ and $(n,h,k)_Q$. Its exact rule is
+\begin{align*}
+ (n,h,k)_P&\longrightarrow(n+1,i,k+i-h)_P &&(h\le i\le n),\\
+ (n,h,k)_Q&\longrightarrow(n+1,i,k+i-h-1)_P &&(h+1\le i\le n),\\
+ (n,h,k)_c&\longrightarrow(n+1,h,i)_Q &&(0\le i<k;\ c=P,Q).
+\end{align*}
+To see the descent rule directly, list the valid smaller values as
+$j_0<\cdots<j_{k-1}$. Choosing $j_i$ leaves exactly its $i$ smaller
+valid values: repeating $j_i$ would form $100$, and returning to a larger
+listed value would form $201$ with the earlier maximum. Smaller values
+create no new forbidden triple, and a previously forbidden value cannot
+become valid by appending another entry. From color $Q$, repetition is
+forbidden by $100$, returning to the old maximum by $101$, and any
+intermediate ascent by $201$. A new maximum creates fresh permitted
+values above the old maximum. Thus the first two lines differ precisely
+in whether the old maximum remains available as a future descent,
+which explains their endpoints and the extra decrement in the $Q$ rule.
+
+Put $a=n-h$ and $b=k$, keeping the empty root $(0,0,P)$. Reindex the
+new maximum by $d=i-h$, and the descent rank by $j=k-i$. The rules become
+\begin{align}
+ P(a,b)&\longrightarrow P(a+1-d,b+d) &&(0\le d\le a),\label{eq:tree}\\
+ Q(a,b)&\longrightarrow P(a+1-d,b+d-1)&&(1\le d\le a),\notag\\
+ c(a,b)&\longrightarrow Q(a+1,b-j)&&(1\le j\le b;\ c=P,Q).\notag
+\end{align}
+The sole size-one object has coordinates $(1,0,P)$. From it onward replace
+$a$ by $a-1$. Then every edge is a translation-invariant displacement
+\begin{equation}\label{eq:increments}
+ A_d=(1-d,d) (P\to P,d\ge0),\quad
+ C_d=(1-d,d-1) (Q\to P,d\ge1),\quad
+ D_j=(1,-j) (c\to Q,j\ge1),
+\end{equation}
+retained exactly when the endpoint lies in
+$\Qd=\ZZ_{\ge0}^2$. The shifted starting state is $o=(0,0,P)$.
+For example, $a+1-d\ge0$ is precisely the original bound $d\le a+1$
+after the shift. No additional boundary is missing: the sum of the
+shifted coordinates begins at zero and every step increases it by at
+most one. After $n-1$ steps it is therefore at most $n-1$ automatically.
+Consequently $a_n$, for $n\ge1$, is the number of retained paths of
+length $n-1$ from $o$, summed over endpoints and colors.
+
+\section{A positive change of weights and its covariance}
+\subsection{The Perron tilt and endpoint identity}
+The unrestricted step matrix, with row denoting the old color, is
+\begin{equation}\label{eq:M}
+ M(x,y)=\begin{pmatrix}x^2/(x-y)&x/(y-1)\\x/(x-y)&x/(y-1)\end{pmatrix},
+ \qquad x>y>1.
+\end{equation}
+For example its first entry is
+$\sum_{d\ge0}x^{1-d}y^d=x^2/(x-y)$. At $(x,y)=(3,5/3)$,
+\[
+ M=\begin{pmatrix}27/4&9/2\\9/4&9/2\end{pmatrix},\qquad
+ Mr=9r,\qquad r=\binom21.
+\]
+The other eigenvalue is $9/4$, so this is the positive simple Perron
+root. Give each individual edge $c\to d$ with displacement $v$ probability
+\begin{equation}\label{eq:tilt}
+ q_{cd}(v)=\frac{3^{v_1}(5/3)^{v_2}r_d}{9r_c}.
+\end{equation}
+The row sums equal one. Explicitly,
+\begin{align}
+ q_{PP}(A_d)&=\tfrac13(5/9)^d &(d&\ge0),\notag\\
+ q_{QP}(C_d)&=\tfrac29(5/9)^{d-1}&(d&\ge1),\label{eq:q}\\
+ q_{PQ}(D_j)&=\tfrac16(3/5)^j,\qquad
+ q_{QQ}(D_j)=\tfrac13(3/5)^j &(j&\ge1).\notag
+\end{align}
+Hence there are fixed $A_0,b_0>0$ such that, from either color,
+$\Prob(|v|>u)\le A_0e^{-b_0u}$. The same statement holds in any fixed
+linearly transformed norm.
+
+Let $K_m((s,c),(t,d))$ be the $m$-step kernel of this process killed
+on leaving $\Qd$. Telescoping \eqref{eq:tilt} along a path yields
+\begin{equation}\label{eq:endpoint}
+ a_n=2\,9^{n-1}\sum_{t=(a,b)\in\Qd}\sum_{d=P,Q}
+       K_{n-1}(o,(t,d))g(t,d),\quad
+ g((a,b),d)=\frac{3^{-a}(3/5)^b}{r_d}.
+\end{equation}
+All terms are nonnegative. In particular, $0<g\le1$, and
+\begin{equation}\label{eq:gsum}
+ \sum_{t,d}g(t,d)=
+ (1/2+1)\frac1{1-1/3}\frac1{1-3/5}=\frac{45}{8}.
+\end{equation}
+Its tails are exponentially small. Equation \eqref{eq:endpoint} also gives
+$a_n\le2\,9^{n-1}$ for $n\ge1$. The exponentially summable endpoint
+weight, rather than unweighted survival, is essential to the final power.
+
+\subsection{The color corrector}
+Write $(S_j,C_j)$ for the unrestricted position and color process.
+Summing \eqref{eq:q} gives
+\begin{equation}\label{eq:color}
+ P_0=\begin{pmatrix}3/4&1/4\\1/2&1/2\end{pmatrix},\qquad
+ \pi=(2/3,1/3).
+\end{equation}
+This matrix is primitive. The conditional means of $v$ are
+\[
+ m_P=(1/16,5/16),\qquad m_Q=(-1/8,-5/8),\qquad
+ \pi_Pm_P+\pi_Qm_Q=0.
+\]
+The vectors
+\begin{equation}\label{eq:h}
+ h_P=(1/12,5/12),\qquad h_Q=(-1/6,-5/6)
+\end{equation}
+satisfy $\pi h=0$ and $(I-P_0)h=m$. Thus
+\[
+ Z_j=S_j-S_0+h(C_j)-h(C_0)
+\]
+is a square-integrable martingale. Its increment on an edge $c\to d$ is $v+h_d-h_c$; its mean conditional
+on the initial color $c$ is zero. To compute its covariance one may use
+\[
+ \sum_{k\ge0}r^k=\frac1{1-r},\quad
+ \sum_{k\ge0}kr^k=\frac r{(1-r)^2},\quad
+ \sum_{k\ge0}k^2r^k=\frac{r(1+r)}{(1-r)^3}
+\]
+in \eqref{eq:q}. The two conditional covariance matrices are
+\[
+ \Gamma_P=\frac1{64}\begin{pmatrix}147&-195\\-195&495\end{pmatrix},
+ \qquad
+ \Gamma_Q=\frac1{32}\begin{pmatrix}77&-125\\-125&305\end{pmatrix}.
+\]
+Consequently the effective covariance is
+\begin{equation}\label{eq:Sigma}
+ \Sigma=\pi_P\Gamma_P+\pi_Q\Gamma_Q
+ =\begin{pmatrix}7/3&-10/3\\-10/3&25/3\end{pmatrix},
+ \qquad \det\Sigma=25/3>0.
+\end{equation}
+This includes the serial dependence induced by colors; using only the
+uncorrected single-step covariance would be invalid.
+
+A second exact derivation is useful. Clearing the characteristic
+polynomial of \eqref{eq:M} gives
+\[
+ D(\lambda,x,y)=\lambda^2(x-y)(y-1)
+  -\lambda\{x^2(y-1)+x(x-y)\}+x^2(x-1).
+\]
+At $(\lambda,x,y)=(9,3,5/3)$ one has
+$D=D_x=D_y=0$, $D_\lambda=6$, and
+$(D_{xx},D_{xy},D_{yy})=(-14,36,-162)$.
+Implicit differentiation of the simple Perron root gives
+\[
+ \partial_{\log x_i}\partial_{\log x_j}\log\lambda
+ =-\frac{x_ix_jD_{x_ix_j}}{9D_\lambda}=\Sigma_{ij}.
+\]
+The first derivatives vanish, which explains the absence of extra terms.
+
+
+\subsection{Explicit whitening and reversed correctors}
+The matrix $A$ of \eqref{eq:Sigma-main} satisfies
+\[
+ A^{\mathsf T}A=\Sigma^{-1}
+ =\begin{pmatrix}1&2/5\\2/5&7/25\end{pmatrix},\qquad
+ \det A=\frac{\sqrt3}{5}=\frac1{\dett}.
+\]
+Its boundary vectors have scalar-product cosine $2/\sqrt7$, proving
+that the opening angle is exactly \eqref{eq:constants}. In the physical
+quadrant, $\Sigma:D^2U=0$ away from the origin. Here $B:H$ denotes
+$\sum_{i,j}B_{ij}H_{ij}$.
+
+The reversed free kernel is
+\begin{equation}\label{eq:dual}
+ q^*_{dc}(-v)=\frac{\pi_c}{\pi_d}q_{cd}(v).
+\end{equation}
+Its row sums are one by stationarity. Its color matrix is again $P_0$.
+It has uniform exponential jump tails, stationary zero drift, and the
+same covariance per original time: a stationary reversed displacement
+is the negative of a forward displacement. More explicitly,
+\begin{align*}
+ m_P^*&=(1/2,-5/4),&m_Q^*&=(-1,5/2),\\
+ h_P^*&=(2/3,-5/3),&h_Q^*&=(-4/3,10/3),\\
+ \Gamma_P^*&=\begin{pmatrix}3&-15/4\\-15/4&15/2\end{pmatrix},&
+ \Gamma_Q^*&=\begin{pmatrix}1&-5/2\\-5/2&10\end{pmatrix}.
+\end{align*}
+Thus $(I-P_0)h^*=m^*$, $\pi h^*=0$, and
+$\sum_c\pi_c\Gamma_c^*=\Sigma$. Reversal of every retained path gives
+\begin{equation}\label{eq:reverse}
+ \pi_cK_n((s,c),(t,d))=\pi_dK_n^*((t,d),(s,c)).
+\end{equation}
+The invariant free measure is spatial counting measure times $\pi$.
+Killing at every original step preserves this reversal identity.
+
+The auxiliary kernels are defined on both colors at every point of the
+quadrant. From $o$ no forward path enters a $Q$ state with first coordinate
+zero. In reversal every step out of such a $Q$ state decreases the first
+coordinate by one, so it cannot reach the interior before dying. Such
+extra auxiliary states therefore do not introduce new counted paths.
+They may have zero harmonic value, which is allowed in the theorem.
+
+\section{A strong approximation at original times}\label{sec:coupling}
+\subsection{The imported theorem and its exact hypotheses}
+We use Bashtova--Shashkin~\cite[Conditions (A), (B), Theorem 1,
+pp.~3--4]{bs}; the published theorem is Theorem 2.1.
+In the form needed here, a separable process $X(t)$ has successive
+regeneration times $0=T_0<T_1<\cdots$ such that the pairs
+\[
+ \left(T_j-T_{j-1},\ (X(T_{j-1}+t)-X(T_{j-1}))_{0<t\le T_j-T_{j-1}}\right)
+\]
+are iid. Write $L=T_1$, $Z=X(T_1)-X(0)$, and
+$H=\sup_{0<t\le L}|X(t)-X(0)|$. Assume
+$\E e^{aL}+\E e^{aH}<\infty$ for some $a>0$.
+Then, with $v=\E Z/\E L$ and
+$\Sigma_{\rm reg}=\E[(Z-vL)(Z-vL)^{\mathsf T}]/\E L$,
+there is a coupling with covariance-$\Sigma_{\rm reg}$ Brownian motion
+$W$ and constants $a_0,b_0,c_0>0$ such that
+\begin{equation}\label{eq:strong-general}
+ \Prob\left(\sup_{0\le t\le N}|X(t)-X(0)-vt-W_t|
+             >c_0\log(N+2)+x\right)\le a_0e^{-b_0x}
+ \quad(N\ge1,\ x\ge0).
+\end{equation}
+This theorem makes no independence assumption between $L$ and $Z$ and
+imposes no nonlattice condition. Its control is over the full original
+real-time path, not just the regeneration endpoints.
+
+\subsection{Verifying full-cycle moments and covariance}
+For an initial color $c$, take successive positive returns to that same
+color, and set $X(t)=S_{\lfloor t\rfloor}-S_0$. The piecewise-constant
+process is separable. Translation invariance and the strong Markov
+property make the entire cycle elements iid, with no delayed initial
+cycle. The finite color chain makes the return length $L$ geometrically
+tailed. For example a $P$ return has length one with probability $3/4$;
+otherwise the chain enters $Q$ and returns with probability $1/2$ on
+each subsequent step. Thus $\E_PL=3/2$, while $\E_QL=3$.
+
+Given a color path, the displacements are independent with one of four
+transition-conditioned laws. Each has an exponential moment near zero.
+If $M(a)$ is the maximum of their moment generating functions for jump
+magnitude, then $M(a)\to1$ as $a\downarrow0$, and
+\[
+ \E e^{aH}\le\E e^{a\sum_{j=1}^{L}|\Delta S_j|}
+ \le\E M(a)^L<\infty
+\]
+for small enough $a$. This verifies the within-cycle maximum hypothesis,
+which cannot be replaced by an endpoint-only moment assumption.
+
+Stop $S+h(C)$ at the return to $c$. Exponential cycle moments justify
+optional stopping and make the color offsets cancel, so $\E_c Z=0$.
+The stopped martingale isometry and the stationary occupation formula
+give
+\[
+ \E_c[ZZ^{\mathsf T}]=\sum_j\frac{\pi_j}{\pi_c}\Gamma_j,
+ \qquad \E_cL=\frac1{\pi_c},\qquad
+ \frac{\E_c[ZZ^{\mathsf T}]}{\E_cL}=\Sigma.
+\]
+For an independent explicit calculation, let $\mathcal L(q)_{cd}
+=\sum_vq_{cd}(v)e^{q\cdot v}$. A first $P$ return satisfies
+\begin{equation}\label{eq:return-transform}
+ \E[z^L e^{q\cdot Z}]
+ =z\mathcal L_{PP}(q)+
+ \frac{z^2\mathcal L_{PQ}(q)\mathcal L_{QP}(q)}{1-z\mathcal L_{QQ}(q)}.
+\end{equation}
+Differentiating at $z=1,q=0$ gives
+\begin{equation}\label{eq:cycle-cov}
+ \E(Z_1,Z_2,L)=(0,0,3/2),\qquad
+ \operatorname{Cov}(Z_1,Z_2,L)=
+ \begin{pmatrix}7/2&-5&7/8\\-5&25/2&-25/8\\7/8&-25/8&5/4\end{pmatrix},
+\end{equation}
+whose determinant is $225/32$. Displacement and length are correlated;
+the correlation is harmless here because $v=0$ in the regenerative
+covariance formula, rather than because it vanishes.
+
+The reversed transition-conditioned laws are negatives of the forward
+ones with the color pair interchanged, so all preceding cycle-moment
+arguments hold in reversal. Use the displayed $h^*,\Gamma^*$ to obtain
+its covariance in the same way. Taking maxima of constants over two
+initial colors and two time directions proves that both free chains
+have \eqref{eq:strong-general} with $v=0$ and covariance $\Sigma$,
+uniformly in the initial position and color. In particular, for every
+$M>0$, a suitable $D_M$ gives
+\begin{equation}\label{eq:coupling}
+ \Prob\left(\sup_{0\le t\le n}|S_{\lfloor t\rfloor}-s-W_t|
+               >D_M\log(n+2)\right)\le C_M(n+2)^{-M}.
+\end{equation}
+Every later use restarts a free coupling at a specified state. No
+adaptedness to a future random entrance time is asserted. Original-time
+killing is compared on the whole coupled path.
+
+\section{Brownian wedge normalization and side uniformity}\label{sec:brownian}
+For standard Brownian motion in $\Wedge$, let $q_t(w,z)$ be the killed
+transition density with respect to two-dimensional Lebesgue measure,
+and $\tau_B$ its exit time. Bañuelos--Smits~\cite[Lemma 1,
+equation (2.2)]{banuelos}, with generator $\tfrac12\Delta$ and angular
+normalization $\sqrt{2/\theta}$, gives
+\begin{equation}\label{eq:brownian-kernel}
+ q_t(w,z)=\frac2{\theta t}e^{-(|w|^2+|z|^2)/(2t)}
+ \sum_{j\ge1}I_{jp}(|w||z|/t)
+ \sin(jp\arg w)\sin(jp\arg z).
+\end{equation}
+The leading Bessel term $I_p(a)\sim(a/2)^p/\Gamma(p+1)$ yields
+$b_\theta$ in \eqref{eq:U}. We now give the uniformity needed when the
+starting angle approaches either side.
+
+By scaling take $t=1$ and write $w=(r_0,\alpha)$, $z=(r,\beta)$ in
+polar coordinates. For $0<\alpha<\theta$,
+\[
+ |\sin(jp\alpha)|\le j\sin(p\alpha),\qquad
+ I_\nu(t)\le (t/2)^\nu e^t/\Gamma(\nu+1)\quad(\nu\ge0).
+\]
+The latter follows directly from the Bessel series. To bound the sum,
+put $G(t)=\sum_{j\ge1}jt^{jp}/\Gamma(jp+1)$. For $t\le1$,
+$G(t)\le Ct^p$. For $t\ge1$, put $m=\lfloor jp\rfloor$. Distinct
+$j$ give distinct $m$, $j\le m$, $t^{jp}\le t^{m+1}$, and
+$\Gamma(jp+1)\ge c m!$. Therefore
+\[
+ G(t)\le Ct\sum_{m\ge0}\frac{mt^m}{m!}\le Ct^2e^t,
+ \qquad G(t)\le Ct^p(1+t)^2e^t\quad(t>0).
+\]
+After division of \eqref{eq:brownian-kernel} by
+$u(w)=r_0^p\sin(p\alpha)$, these inequalities give, for $0<r_0\le1$,
+the angle-independent integrable envelope
+\begin{equation}\label{eq:envelope}
+ C r^p(1+r)^2 e^{-r^2/2+2r}.
+\end{equation}
+It is integrable with the radial Jacobian $r\,dr\,d\beta$.
+The $j=1$ term tends to $b_\theta u(z)e^{-|z|^2/2}$ after this
+division, uniformly in $\alpha$. All $j\ge2$ terms tend to zero,
+also uniformly in $\alpha$, by the sine bound and the convergent
+Bessel series. Dominated convergence now proves the stronger $L^1$ limit
+\begin{equation}\label{eq:angle-uniform}
+ \sup_{0<\alpha<\theta}\int_{\Wedge}
+ \left|\frac{q_1((r_0,\alpha),z)}{u((r_0,\alpha))}
+             -b_\theta u(z)e^{-|z|^2/2}\right|\,dz\longrightarrow0
+ \quad(r_0\downarrow0).
+\end{equation}
+In particular, uniformly in all starting angles and $|w|=o(\sqrt t)$,
+\begin{equation}\label{eq:brownian-survival}
+ \Prob_w(\tau_B>t)\sim k_\theta u(w)t^{-p/2},\qquad
+ \operatorname{Law}(W_t/\sqrt t\mid\tau_B>t)\Longrightarrow\varrho(z)\,dz,
+\end{equation}
+where
+\begin{equation}\label{eq:I1}
+ I_1=\int_{\Wedge}u(z)e^{-|z|^2/2}\,dz
+ =\frac{2^{p/2+1}}p\Gamma(p/2+1),\quad
+ k_\theta=b_\theta I_1,\quad
+ \varrho(z)=\frac{u(z)e^{-|z|^2/2}}{I_1}.
+\end{equation}
+The corresponding joint endpoint limit holds for every bounded test
+function with error $o(u(w)t^{-p/2})$ uniformly over these starts.
+The envelope for $|w|\le\sqrt t$ and the trivial bound for larger $w$
+also give the useful global upper bound
+\begin{equation}\label{eq:brownian-upper}
+ \Prob_w(\tau_B>t)\le C\min\{1,|w|^pt^{-p/2}\}.
+\end{equation}
+At the sides the survival probability is zero. These statements require
+no angular lower bound away from the sides.
+
+Two elementary normalization integrals will be used later:
+\begin{equation}\label{eq:I2}
+ I_2=\int_{\Wedge}u(w)^2e^{-|w|^2}\,dw
+ =\frac{\theta\Gamma(p+1)}4,\qquad
+ b_\theta^2 2^{p+1}I_2=b_\theta.
+\end{equation}
+For example $p=2,\theta=\pi/2$ gives $u(x,y)=2xy$ and
+$b_\theta=1/(2\pi)$, matching the product of the two killed half-line
+Brownian kernels. This checks the Lebesgue-measure convention.
+
+\section{Uniform rough bounds and stopped moments}\label{sec:rough}
+Every assertion in this section holds for both time directions and both
+initial colors. Constants may depend on a displayed exponent or $\delta$,
+but not on the starting position $s$ or the time. Write $r=1+|s|$.
+Norms before and after whitening are equivalent, with fixed constants.
+
+\subsection{Survival and free moments}
+A sup-norm coupling error $e$ is absorbed in an upper survival comparison
+by starting covariance-$\Sigma$ Brownian motion at $s+e(1,1)$. If the
+lattice path stays in the quadrant, this shifted Brownian path does too,
+apart from the coupling-failure event. A harmless extra unit in $e$
+avoids equality on the sides. Equations \eqref{eq:coupling} and
+\eqref{eq:brownian-upper} imply, for every $M>0$,
+\begin{equation}\label{eq:rough-survival}
+ \Prob_{s,c}(\tau>n)\le
+ C_M\min\{1,n^{-p/2}(r+\log(n+2))^p\}+C_M(n+2)^{-M}.
+\end{equation}
+Integrating the exponential excess tail in \eqref{eq:strong-general},
+not merely its polynomial corollary, bounds every fixed moment of the
+coupling error by $C_a\log^a(n+2)$. Brownian maximal moments then give
+\begin{equation}\label{eq:free-moments}
+ \E_{s,c}\max_{j\le n}(1+|S_j|)^a\le C_a(r+\sqrt n)^a
+ \qquad(a>0).
+\end{equation}
+The same full coupling inequality and the Brownian Gaussian tail give,
+for each $M>0$,
+\begin{equation}\label{eq:free-tail}
+ \Prob_{s,c}(|S_n-s|>\sqrt n\log(n+2))\le C_M(n+2)^{-M}.
+\end{equation}
+The Brownian part is bounded by $C\exp(-c\log^2(n+2))$ and the
+coupling part by $C\exp(-c\sqrt n\log(n+2))$ for large $n$.
+Either tail is smaller than any prescribed power; finitely many small
+times are absorbed in the constant. Changing the fixed multiplier of
+$\sqrt n\log(n+2)$ has no effect on these conclusions. Spatial
+homogeneity makes the constants independent of $s$.
+
+\subsection{Exit time, radial maximum, and last jump}
+Define the stopped quantities
+\[
+ M_\tau=1+\max_{0\le k\le\tau}|S_k|,\qquad
+ J_\tau=1+\max_{1\le k\le\tau}|S_k-S_{k-1}|.
+\]
+The exit location is included. Summing \eqref{eq:rough-survival} and
+splitting at $r^2$ shows
+\begin{equation}\label{eq:mean-exit}
+ \E_{s,c}\tau\le Cr^2.
+\end{equation}
+Indeed $p>2$, and the tail is bounded by a multiple of
+$r^p\sum_{n>r^2}n^{-p/2}+
+\sum_{n>r^2}n^{-p/2}\log^p(n+2)$, which is $O(r^2)$.
+In particular $\tau<\infty$ almost surely.
+
+For $H\ge2r$, take $N=\lfloor H^2/(D\log H)\rfloor$, adjusting
+bounded $H$ by constants. If $M_\tau>H$, either $\tau>N$ or the
+free maximum up to $N$ exceeds $H$. Brownian maximal tails and the
+exponential coupling inequality make the latter at most $C H^{-M'}$
+for any chosen $M'$, by choosing $D$ sufficiently large. The survival
+term in \eqref{eq:rough-survival} gives
+\begin{equation}\label{eq:radial-tail}
+ \Prob(M_\tau>H)\le
+ C H^{-p}(r+\log H)^p(\log H)^{p/2}+C H^{-M'}.
+\end{equation}
+This dichotomy includes the terminal exit jump: when $\tau\le N$,
+its endpoint occurs in that same free maximum. Integrate against
+$aH^{a-1}\,dH$, treating $H\le2r$ trivially and absorbing logarithms
+into an arbitrary small power of $r$. For all $0<a<p$ and $\eta>0$,
+\begin{equation}\label{eq:radial-moment}
+ \E_{s,c}M_\tau^a\le C_{a,\eta}r^{a+\eta}.
+\end{equation}
+The jump tail is uniform conditionally on the past. Summing the events
+at times $k$ with $\tau\ge k$, which are measurable before jump $k$,
+yields $\Prob(J_\tau>v)\le C\E\tau\,e^{-cv}$ after a constant
+adjustment for the added one. By \eqref{eq:mean-exit},
+\begin{equation}\label{eq:jump-moment}
+ \Prob(J_\tau>v)\le Cr^2e^{-cv},\qquad
+ \E J_\tau^a\le C_a\log^a(r+2)\quad(a>0).
+\end{equation}
+The second bound integrates the minimum of the displayed tail and one.
+
+\subsection{The summable harmonic-defect potential}
+The exact exponent needed for the second-order correction is
+\begin{equation}\label{eq:potential}
+ \E_{s,c}\sum_{k<\tau}(1+|S_k|)^{p-3}
+ \le C_\delta r^{p-1+\delta}\qquad(\delta>0).
+\end{equation}
+Here are explicit uniform estimates. Set $q=p-3\in(1,2)$ and
+$L_k=\log(k+2)$. For $k\le r^2$, \eqref{eq:free-moments} bounds each
+expectation by $Cr^q$, so this part is $O(r^{p-1})$.
+For $k>r^2$ let $E_k=\{|S_k-s|>\sqrt k L_k\}$. Equations
+\eqref{eq:free-tail} with exponent $8$ and \eqref{eq:free-moments}
+with moment $2q$, by Cauchy--Schwarz, give
+\begin{equation}\label{eq:potential-tail}
+ \E[(1+|S_k|)^q;E_k]
+ \le C(r+\sqrt k)^q(k+2)^{-4}\le Ck^{q/2-4}\le Ck^{-3}.
+\end{equation}
+Killing has been removed on this event; no conditional moment estimate
+is hidden. On $E_k^c$, $1+|S_k|\le C\sqrt kL_k$, so
+\eqref{eq:rough-survival} with $M=4$ gives
+\begin{equation}\label{eq:potential-main}
+ \E[(1+|S_k|)^q;\tau>k,E_k^c]
+ \le Ck^{-3/2}L_k^q(r+L_k)^p+Ck^{q/2-4}L_k^q.
+\end{equation}
+For every fixed $a\ge0$,
+\[
+ \sum_{k>r^2}k^{-3/2}\log^a(k+2)
+ \le C_ar^{-1}\log^a(r+2).
+\]
+This follows by integration, using $k=r^2t$ and integrability of
+$t^{-3/2}(1+\log t)^a$. The sum of \eqref{eq:potential-main} is
+therefore at most
+\[
+ C\{r^{p-1}\log^q(r+2)+r^{-1}\log^{p+q}(r+2)+1\}
+ \le C_\delta r^{p-1+\delta}.
+\]
+Together with \eqref{eq:potential-tail}, this proves
+\eqref{eq:potential} with all claimed uniformity.
+
+\section{Constructing the two killed harmonic functions}\label{sec:harmonic}
+\subsection{Second-order color corrections}
+The corrected one-step covariances $\Gamma_P,\Gamma_Q$ are unequal.
+Their average is $\Sigma$, but pointwise isotropy does not follow from
+centering. Introduce the explicit mean-zero matrix correctors
+\begin{equation}\label{eq:B}
+ B_P=\frac1{144}\begin{pmatrix}-7&55\\55&-115\end{pmatrix},\qquad
+ B_Q=\frac1{72}\begin{pmatrix}7&-55\\-55&115\end{pmatrix}.
+\end{equation}
+They satisfy
+\begin{equation}\label{eq:B-poisson}
+ \sum_c\pi_cB_c=0,\qquad (I-P_0)B=\Gamma-\Sigma.
+\end{equation}
+For the dual the corresponding matrices are
+\begin{equation}\label{eq:B-dual}
+ B_P^*=\frac19\begin{pmatrix}8&-5\\-5&-10\end{pmatrix},\qquad
+ B_Q^*=\frac19\begin{pmatrix}-16&10\\10&20\end{pmatrix},
+\end{equation}
+and satisfy the same equations with $\Gamma^*$.
+All these identities follow by rational arithmetic from \eqref{eq:q}.
+On the color-mean-zero subspace $I-P_0$ acts as multiplication by $3/4$,
+which also explains the factor $4/3$ in the Poisson solutions.
+
+\subsection{Smooth extension and Taylor cancellation}
+Continue the analytic expression for $U$ across both boundary rays in
+an angular neighborhood of the quadrant. Extend its smooth angular
+factor elsewhere around the circle, retaining its degree-$p$ homogeneous
+radial factor, and define it as zero at the origin. Because $p>4$, this
+is $C^3$ at the origin. Denote the extension again by $U$; it agrees with
+\eqref{eq:U} on the entire quadrant and vanishes on both boundary rays.
+For $j=0,1,2,3$,
+\begin{equation}\label{eq:U-derivatives}
+ |D^jU(s)|\le C(1+|s|)^{p-j}.
+\end{equation}
+The analytic continuation is $\Sigma$-harmonic in that angular
+neighborhood away from the origin. A bounded color translation of any
+large quadrant point stays in this neighborhood.
+
+On the full free state space define
+\begin{equation}\label{eq:Lambda}
+ \Lambda(s,c)=U(s+h_c)+\tfrac12B_c:D^2U(s+h_c),\qquad
+ f(s,c)=\E_{s,c}\Lambda(S_1,C_1)-\Lambda(s,c).
+\end{equation}
+Then, uniformly on the quadrant,
+\begin{equation}\label{eq:defect}
+ |\Lambda(s,c)-U(s)|\le C(1+|s|)^{p-1},\qquad
+ |f(s,c)|\le C(1+|s|)^{p-3}.
+\end{equation}
+To check the cancellation, put $y=s+h_c$ and
+$\Delta Y=\Delta S+h_d-h_c$. The first-order Taylor term of $U$
+vanishes since $\E_c\Delta Y=0$. The second-order terms, including
+the zeroth-order part from the matrix corrector, are
+\[
+ \tfrac12\{\Gamma_c+(P_0B)_c-B_c\}:D^2U(y)
+ =\tfrac12\Sigma:D^2U(y)=0
+\]
+outside a fixed ball. The fixed ball contributes only $O(1)$.
+The third-derivative Taylor remainder is bounded by
+$C(1+|s|)^{p-3}$ using \eqref{eq:U-derivatives} and the uniform
+exponential jump moments; along long Taylor segments one may use
+$(1+|s|+|\Delta Y|)^{p-3}$ and integrate all jump powers.
+Variation of $D^2U$ in the $B$ term requires only $D^3U$ and gives the
+same order. Both terms are evaluated at the corrected spatial argument;
+mixing the original and corrected increments would give a different,
+incorrect second-order calculation.
+
+\subsection{Exit integrability and stopped Dynkin identity}
+At exit, the position $S_\tau$ is within the last jump length of a point
+on the quadrant boundary. On that boundary $U=0$. The gradient estimate,
+the bounded offsets, and the bounded matrices give
+\begin{equation}\label{eq:exit-Lambda}
+ |\Lambda(S_\tau,C_\tau)|\le C M_\tau^{p-1}J_\tau.
+\end{equation}
+One may use the crossing point of the last segment as the boundary
+point. All points of the comparison segment have radius at most a fixed
+multiple of $M_\tau$, so the angular extension causes no extra
+uncontrolled degree-$p$ term.
+
+For any prescribed $\delta>0$, take
+\[
+ q_0=1+\frac1{2(p-1)},\qquad q_0'=2p-1,
+ \qquad(p-1)q_0=p-\tfrac12<p.
+\]
+Apply \eqref{eq:radial-moment} with $a=p-1/2$ and
+$\eta=\delta q_0/2$, and \eqref{eq:jump-moment} with $a=q_0'$.
+Hölder's inequality gives
+\begin{equation}\label{eq:exit-integrable}
+ \E[M_\tau^{p-1}J_\tau]
+ \le(\E M_\tau^{p-1/2})^{1/q_0}
+       (\E J_\tau^{2p-1})^{1/(2p-1)}
+ \le C_\delta r^{p-1+\delta}.
+\end{equation}
+Also \eqref{eq:potential} and \eqref{eq:defect} make the full defect
+sum absolutely integrable. Stopped Dynkin's identity is consequently
+legitimate and reads
+\begin{align}\label{eq:Dynkin}
+ \E_{s,c}[\Lambda(S_n,C_n);\tau>n]
+ &=\Lambda(s,c)-\E_{s,c}[\Lambda(S_\tau,C_\tau);\tau\le n]\notag\\
+ &\quad+\sum_{k=0}^{n-1}\E_{s,c}[f(S_k,C_k);\tau>k].
+\end{align}
+Both terms on the right have limits by the integrability just proved.
+
+For a fixed start, the difference between the left side and
+$\E[U(S_n);\tau>n]$ tends to zero. Indeed, on
+$|S_n-s|\le\sqrt n\log(n+2)$, its absolute expectation is at most
+\[
+ C_s n^{-1/2}\log^{2p-1}(n+2)+o(1)
+\]
+by \eqref{eq:rough-survival} and \eqref{eq:defect}. On the complementary
+event use \eqref{eq:free-tail} with exponent $12$, the moment
+$2(p-1)$ in \eqref{eq:free-moments}, and Cauchy--Schwarz; this is
+$O_s(n^{(p-1)/2-6})=o(1)$. Thus the first limit in
+\eqref{eq:V-limit} exists and has the exact representation
+\begin{equation}\label{eq:V-representation}
+ V(s,c)=\Lambda(s,c)-\E_{s,c}\Lambda(S_\tau,C_\tau)
+                +\E_{s,c}\sum_{k<\tau}f(S_k,C_k).
+\end{equation}
+It is nonnegative because $U$ is nonnegative on the quadrant.
+Equations \eqref{eq:potential}, \eqref{eq:defect}, and
+\eqref{eq:exit-integrable} prove \eqref{eq:V-asymp}, and choosing
+$\delta<1$ gives $0\le V(s,c)\le C(1+|s|)^p$.
+The identical construction with $h^*,B^*$ proves every assertion for
+$V^*$, including its representation and growth bound.
+
+\subsection{Harmonicity, normalization, and positive seed values}
+The stopped estimates also imply, uniformly in a starting state,
+\[
+ \sup_n\left|\E_{s,c}[U(S_n);\tau>n]\right|
+ \le C(1+|s|)^p.
+\]
+For example use \eqref{eq:Dynkin} and the exit and potential bounds;
+the expectation of $|\Lambda-U|$ before exit is bounded by a moment
+of $M_\tau$ strictly below $p$. This polynomial majorant is integrable
+under one exponential-tailed jump. The one-step Markov property and
+dominated convergence therefore give
+\begin{equation}\label{eq:harmonic}
+ V(s,c)=\sum_{t\in\Qd,d}q_{cd}(t-s)V(t,d),
+\end{equation}
+and likewise for $V^*$. Nonnegative harmonicity permits bounded-time
+optional stopping for the killed chain; the necessary integrability
+also follows from the polynomial growth and free moments.
+
+The normalization is unique in the stated class. If another killed-
+harmonic function $H$ satisfies
+$H-U=O((1+|s|)^{p-1+\delta})$ for some $\delta<1$, its killed
+expectation equals $H(s,c)$ at every finite time. On the event
+$|S_n-s|\le\sqrt n\log(n+2)$, \eqref{eq:rough-survival} makes the
+expected difference from $U$ tend to zero, since its polynomial degree
+is less than $p$. On the complement use \eqref{eq:free-tail} with
+exponent $16$ and \eqref{eq:free-moments}. Hence $H=V$. The same
+argument applies in reversal. This also shows that the choice of smooth
+extension outside the quadrant does not affect either normalized limit.
+
+In any fixed interior angular sector, $U(s)\asymp|s|^p$, so
+\eqref{eq:V-asymp} makes $V$ positive sufficiently far out. From $o$,
+$H$ steps $A_0=(1,0)$ followed by $H$ steps $A_1=(0,1)$ reach
+$(H,H,P)$, stay in the quadrant, and have positive probability. By
+harmonicity, $V(o)>0$. For the dual use $e=(1,0,P)$ and the seed
+\begin{equation}\label{eq:seed}
+ (1,0,P)\to(1,0,Q)\to(0,2,P)\to(2,0,Q)\to(1,3,P).
+\end{equation}
+These four steps reverse $C_1,D_2,C_3,D_3$, respectively. Thereafter
+the dual pair $(2,-2):P\to Q$, $(-1,3):Q\to P$ has net displacement
+$(1,1)$ and stays in the quadrant at every repetition. It reaches an
+arbitrarily deep fixed interior sector. Thus $V^*(e)>0$ as well.
+
+\section{Sharp survival and the endpoint meander}\label{sec:entrance}
+\subsection{Deep entrance with quantitative slack}
+For a horizon $n$ put, with harmless integer rounding,
+\begin{equation}\label{eq:entrance-scales}
+ h=n^{1/3},\qquad T=\lfloor n^{3/4}\rfloor,\qquad
+ R=n^{5/12},\qquad
+ \nu=\inf\{k\ge0:S_k\in[h,\infty)^2\}.
+\end{equation}
+Uniformly over states outside this deep set, the free process in time
+$\lfloor h^2\rfloor$ has a probability bounded below of displacement
+less than $-2h$ in whichever coordinate is initially below $h$.
+This follows from \eqref{eq:coupling}, a nondegenerate Brownian marginal,
+and the finite number of colors. It is independent of the magnitude
+of the other coordinate by translation invariance. On this event the
+chain cannot both stay alive and remain outside the deep set for the
+whole block. Iterating the conditional bound over blocks gives
+\begin{equation}\label{eq:late-entrance}
+ \Prob_{s,c}(\tau>T,\nu>T)\le Ce^{-cT/h^2}
+ \le Ce^{-cn^{1/12}}.
+\end{equation}
+No bounded-jump or ball-confinement assumption is made here.
+
+For starts $|s|\le n^{1/4}$, Brownian maximal tails up to $T$ and the
+full exponential coupling inequality give
+\begin{equation}\label{eq:large-entrance}
+ \Prob_{s,c}\left(\max_{k\le T}|S_k|>R\right)
+ \le Ce^{-cn^{1/12}}.
+\end{equation}
+Indeed $R^2/T=n^{1/12}$, $|s|=o(R)$, and the coupling excess tail at
+$R/4$ is still smaller. By Cauchy--Schwarz and the $2p$ free moment,
+the expectation of
+$(1+\max_{k\le T}|S_k|)^p$ on this event is at most
+$C n^{3p/8}e^{-c'n^{1/12}}$, after reducing the positive constant
+$c'$. The identical weighted bound on $\{\tau>T,\nu>T\}$ follows
+from \eqref{eq:late-entrance}. Both are smaller than every prescribed
+negative power of $n$, uniformly in the full starting range.
+
+Let
+\[
+ E_n=\{\nu\le T,\ \tau>\nu,\ |S_\nu|\le R\}.
+\]
+By optional stopping at $\nu\wedge T$ and nonnegative harmonicity,
+\begin{equation}\label{eq:entrance-mass}
+ \E[V(S_\nu,C_\nu);\nu\le T,\tau>\nu]
+ =V(s,c)-\E[V(S_T,C_T);\tau>T,\nu>T].
+\end{equation}
+The last term and the large-radius contribution are superpolynomially
+small by the preceding weighted estimates. On $E_n$,
+$\min(S_{\nu,1},S_{\nu,2})\ge h$ and $|S_\nu|\le R=o(\sqrt n)$.
+The elementary wedge bound, transformed to physical coordinates, is
+\[
+ U(x)\ge c\dist(x,\partial\RR_{\ge0}^2)|x|^{p-1}.
+\]
+It follows from $\sin(p\phi)\asymp\min(\phi,\theta-\phi)$ and
+norm equivalence. Choose $\delta=1/4$ in \eqref{eq:V-asymp}. Then
+\begin{equation}\label{eq:entrance-ratio}
+ \sup_{\substack{x\in[h,\infty)^2\cap\Qd\\|x|\le R,\ c=P,Q}}
+ \left|\frac{V(x,c)}{U(x)}-1\right|
+ \le C\frac{R^{1/4}}h=O(n^{-11/48})=o(1).
+\end{equation}
+Thus, for every fixed start,
+\begin{equation}\label{eq:U-entrance-mass}
+ \E_{s,c}[U(S_\nu);E_n]\longrightarrow V(s,c).
+\end{equation}
+Uniformly for $|s|\le n^{1/4}$, this entrance expectation is at most
+$C(1+|s|)^p$, since $U\le2V$ on the good set for all large $n$ and
+\eqref{eq:entrance-mass} bounds its $V$-mass.
+
+\subsection{Fresh continuation coupling and the exact limit}
+Restart a free coupling from a good entrance state $x$ over the remaining
+$n-\nu$ steps. Take error $e=D_M\log n+1$. The two shifted Brownian
+starts $x\pm e(1,1)$ remain inside the physical quadrant, and
+\[
+ \frac{U(x\pm e(1,1))}{U(x)}=1+O(e/h)=1+o(1)
+\]
+uniformly over the good set, by the gradient bound and the preceding
+boundary-distance lower bound. Their radii are $o(\sqrt n)$, and
+$n-\nu=n(1+o(1))$. The upper and lower shifted-path comparisons and
+the angle-uniform Brownian limit \eqref{eq:angle-uniform} therefore give
+\begin{equation}\label{eq:continuation}
+ \Prob_{x,c}(\tau>n-\nu)=k_\theta U(x)n^{-p/2}(1+o(1))
+\end{equation}
+uniformly over good positions, colors, and entrance times. The smallest
+principal mass is at least $c h^p n^{-p/2}=c n^{-p/6}$, so the
+coupling failure $O(n^{-M})$ is relatively negligible by taking
+$M>p/6+1$.
+
+For a bounded Lipschitz endpoint test $f(AS_{n-\nu}/\sqrt n)$ the
+same joint formula holds with $k_\theta$ replaced by
+$k_\theta\int f\varrho$. The coupled endpoint arguments differ by
+$O(\log n/\sqrt n)$. Disagreement of survival indicators is bounded
+by the difference of the upper and lower Brownian survival probabilities
+plus the coupling-failure mass, which is $o(U(x)n^{-p/2})$ uniformly.
+This observation justifies signed tests too; a signed integral is not
+being compared solely by ordering its survival events. The time rescaling
+$\sqrt{(n-\nu)/n}\to1$ is uniform and harmless under the $L^1$ limit.
+
+Apply the Markov property at $\nu$. Late and large entrance events cost
+$o(n^{-p/2})$ by \eqref{eq:late-entrance}--\eqref{eq:large-entrance}.
+The uniform relative error in the continuation multiplies the bounded
+expected entrance $U$-mass. From \eqref{eq:U-entrance-mass}, for every
+fixed start and every bounded Lipschitz $f$,
+\begin{equation}\label{eq:meander-joint}
+ n^{p/2}\E_{s,c}[f(AS_n/\sqrt n);\tau>n]
+ \longrightarrow k_\theta V(s,c)\int_{\Wedge}f(w)\varrho(w)\,dw.
+\end{equation}
+In particular
+\begin{equation}\label{eq:sharp-survival}
+ n^{p/2}\Prob_{s,c}(\tau>n)\longrightarrow k_\theta V(s,c).
+\end{equation}
+For $V(s,c)>0$ this gives the corresponding conditional weak limit
+with density $\varrho$. If $V=0$, the unnormalized mass is
+$o(n^{-p/2})$; no conditional positive-mass assertion is needed.
+Both statements hold identically for $V^*$ and the reversed walk.
+
+\subsection{A bound uniform in every starting state}
+The same entrance argument gives, uniformly for $|s|\le n^{1/4}$,
+\[
+ \Prob_{s,c}(\tau>n)\le C(1+|s|)^p n^{-p/2}.
+\]
+The superpolynomial absolute errors can be absorbed since $1+|s|\ge1$.
+For $|s|>n^{1/4}$ the trivial bound one is at most
+$(1+|s|)^{2p}n^{-p/2}$. Enlarging a constant for bounded $n$ proves
+\begin{equation}\label{eq:global-survival}
+ \Prob_{s,c}(\tau>n)\le C(1+|s|)^{2p}n^{-p/2}
+ \qquad(s\in\Qd,\ c=P,Q,\ n\ge1).
+\end{equation}
+The constant is uniform in both time directions. This bound is the
+specific endpoint-uniform input needed for the final infinite sum.
+
+\section{Free local bounds and last-window smoothing}\label{sec:smoothing}
+\subsection{Fourier inversion and removal of lattice periods}
+Let
+$L(u)_{cd}=\sum_vq_{cd}(v)e^{iu\cdot v}$ for
+$u\in[-\pi,\pi]^2$. Exponential moments make $L$ analytic near the
+real torus. Its spectral radius is at most one. If it has a unit-modulus
+eigenvalue $\zeta$, equality in the triangle inequality, together with
+irreducibility, forces all components of its eigenvector to have the
+same modulus and, on every edge,
+\[
+ e^{iu\cdot v}f_d=\zeta f_c.
+\]
+The $P\to P$ steps $A_0=(1,0)$ and $A_1=(0,1)$ give
+$e^{iu_1}=e^{iu_2}=\zeta$. The $Q\to Q$ step $D_1=(1,-1)$ gives
+$\zeta=e^{i(u_1-u_2)}=1$. Hence $u=0$ modulo $2\pi$ is the only
+peripheral point. This proves spatial and temporal aperiodicity directly.
+
+Near zero the simple eigenvalue and its projection satisfy
+\[
+ \lambda(u)=1-\tfrac12u^{\mathsf T}\Sigma u+O(|u|^3),\qquad
+ \Pi(u)=\1\pi+O(|u|).
+\]
+The first expansion follows either from the corrector variance or from
+the log-Perron Hessian. The other eigenvalue is near $1/4$.
+Choose a small neighborhood of zero. Inside it the leading powers are
+bounded by $Ce^{-cm|u|^2}$ and the other part decays geometrically.
+Outside it compactness and the absence of peripheral points imply
+$\|L(u)^m\|\le Cr^m$ for some $r<1$; a slightly larger $r$ absorbs any
+Jordan factors. Fourier inversion, $u=w/\sqrt m$, and dominated
+convergence now give
+\begin{equation}\label{eq:LLT}
+ \Prob_c(S_m-S_0=t,C_m=d)=
+ \frac{\pi_d}{2\pi m\sqrt{\det\Sigma}}
+  e^{-t^{\mathsf T}\Sigma^{-1}t/(2m)}+o(m^{-1}).
+\end{equation}
+The error is uniform in every lattice $t$ and both colors: the absolute
+Fourier-integral error does not depend on $t$. In particular all free
+endpoint probabilities are at most $C/m$, for $m\ge1$ after enlarging
+$C$. Formula \eqref{eq:dual} gives the same LLT and bound for the dual.
+
+
+\subsection{A uniform off-diagonal free bound}
+We also need, for the free kernel $p_k$ and all displacements,
+\begin{equation}\label{eq:free-gaussian}
+ p_k((x,c),(y,d))\le\frac Ck
+ \exp\left\{-c\min\left(\frac{|y-x|^2}k,|y-x|\right)\right\}
+ \qquad(k\ge1).
+\end{equation}
+Here is a uniform small-real-tilt proof. Let
+$\mathcal L(z)_{cd}=\sum_vq_{cd}(v)e^{z\cdot v}$, let
+$\varrho_\lambda$ be its positive Perron root at a small real vector
+$\lambda$, and put $\psi(\lambda)=\log\varrho_\lambda$.
+Analyticity follows from exponential tails, and
+\[
+ \psi(0)=0,\qquad\nabla\psi(0)=0,\qquad D^2\psi(0)=\Sigma>0.
+\]
+Hence, in a small closed real ball,
+$\psi(\lambda)\le C_0|\lambda|^2$ and
+$D^2\psi(\lambda)\ge c_0I$.
+
+If $r_\lambda$ is a positive Perron right eigenvector, the tilted
+stochastic kernel
+\[
+ q_\lambda(c,d,v)=q_{cd}(v)e^{\lambda\cdot v}
+                 \frac{r_\lambda(d)}{\varrho_\lambda r_\lambda(c)}
+\]
+has the same support as $q$. The self-loop phases $A_0,A_1,D_1$
+therefore exclude all nonzero peripheral Fourier frequencies uniformly
+under these small real tilts, by the preceding edge-phase argument.
+Near zero analytic perturbation gives
+\[
+ |[\mathcal L(\lambda+it)^k]_{cd}|
+ \le C\varrho_\lambda^k(e^{-ck|t|^2}+\eta^k),\qquad\eta<1.
+\]
+The linear imaginary term changes only the phase. Away from zero,
+compactness gives a uniform spectral gap after division by
+$\varrho_\lambda$. A resolvent contour exterior to that compact
+spectral set bounds matrix powers uniformly, including possible
+non-Perron eigenvalue collisions. Fourier inversion thus gives
+\[
+ p_k((x,c),(y,d))\le\frac Ck
+ e^{-\lambda\cdot(y-x)+k\psi(\lambda)}
+\]
+for every small real $\lambda$; Perron-vector ratios are bounded and
+absorbed into $C$. Put $\Delta=y-x$, $R=|\Delta|$ and
+$\lambda=\delta\Delta/\max(k,R)$ with small fixed $\delta>0$
+satisfying $C_0\delta\le1/2$. For $R\le k$ the exponent is at most
+$-(\delta/2)R^2/k$; for $R\ge k$ it is at most $-(\delta/2)R$.
+Take $\lambda=0$ if $R=0$. This proves \eqref{eq:free-gaussian}
+uniformly in colors. Reversal has the same bound, by its transposed
+Fourier matrix or the same argument.
+
+\subsection{A compact-interior killed local limit}
+Fix a starting state $x=(s,c)$ and a compact subset $B$ of the open
+physical quadrant. Uniformly for $z/\sqrt n\in B$ and terminal colors
+$d$, we claim
+\begin{equation}\label{eq:bulk-LLT}
+ K_n(x,(z,d))=
+ \frac{b_\theta\pi_d}{\dett}V(x)n^{-p/2-1}
+ u(Az/\sqrt n)e^{-|Az|^2/(2n)}+o(n^{-p/2-1}).
+\end{equation}
+Fix $0<\eps<1/2$, let $l=\lfloor\eps n\rfloor$, $m=n-l$, and
+replace killing in the final window by the free kernel:
+\begin{equation}\label{eq:F-smooth}
+ F_n(z,d)=\sum_{y\in\Qd,a}K_m(x,(y,a))p_l((y,a),(z,d)).
+\end{equation}
+The uniform error in the free local limit \eqref{eq:LLT}, summed
+against $K_m$, costs only $o(l^{-1})\Prob_x(\tau>m)$.
+For each fixed $\eps$ its contribution after multiplying by
+$n^{p/2+1}$ tends to zero. There is no unweighted summation of infinitely
+many local-limit errors.
+
+Put $v=Az/\sqrt n$, $t=1-\eps$, and
+$\phi_\eps(v)=(2\pi\eps)^{-1}e^{-|v|^2/(2\eps)}$.
+Equations \eqref{eq:meander-joint} and \eqref{eq:LLT} give
+\begin{align}\label{eq:convolution}
+ n^{p/2+1}F_n(z,d)&\longrightarrow
+   \frac{\pi_d k_\theta V(x)}{\dett}H_\eps(v),\notag\\
+ H_\eps(v)&=t^{-p/2}\int_{\Wedge}\varrho(w)
+                         \phi_\eps(v-\sqrt t\,w)\,dw.
+\end{align}
+For fixed $\eps$, the Gaussian test functions are bounded and Lipschitz
+in $w$, and uniformly Lipschitz in $v$ on a compact target set.
+A finite-net argument makes convergence uniform there. The free leading
+coefficient is independent of its initial color $a$, so no additional
+conditioned-color mixing theorem is needed.
+
+Extend $\varrho$ by zero outside $\Wedge$. This extension is bounded,
+continuous at the sides and apex, and tends to zero at infinity.
+Changing variables $y=\sqrt t\,w$ shows that $H_\eps$ is the
+convolution of $\phi_\eps$ with
+$t^{-p/2-1}\varrho(y/\sqrt t)$. Consequently $H_\eps\to\varrho$
+uniformly on compact sets as $\eps\downarrow0$. Since
+$k_\theta\varrho=b_\theta u e^{-|\cdot|^2/2}$, this is the profile
+in \eqref{eq:bulk-LLT}. If $V(x)=0$, the free $C/l$ bound instead
+shows directly that
+$n^{p/2+1}\sup_{z,d}F_n(z,d)\to0$ for every fixed $\eps$, using
+the zero-mass version of \eqref{eq:sharp-survival}.
+
+\subsection{Controlling exit and re-entry during the last window}
+Choose $\eta>0$ such that
+$\dist(z,\partial\RR_{\ge0}^2)\ge\eta\sqrt n$ for $z/\sqrt n\in B$.
+Any first exit position $w$ is outside the quadrant, so
+$|z-w|\ge\eta\sqrt n$, even for an unbounded overshoot. From
+\eqref{eq:free-gaussian}, for $\eps$ sufficiently small relative to
+$\eta^2$ and then all sufficiently large $n$,
+\begin{equation}\label{eq:reentry}
+ \sup_{\substack{1\le k\le l,\ w\notin\Qd\\a=P,Q}}
+ p_k((w,a),(z,d))\le\frac C{\eps n}e^{-c\eta^2/\eps}.
+\end{equation}
+To verify it, set $R=|z-w|$. If $R\le k$, maximize
+$k^{-1}e^{-c\eta^2n/k}$ over $k\le\eps n$; for small enough
+$\eps$ it is increasing on this range and its maximum is the displayed
+bound. If $R>k$, use $k^{-1}\le1$ and
+$e^{-cR}\le e^{-c\eta\sqrt n}$, smaller than that bound for fixed
+$\eps,\eta$ and large $n$. The case $k=0$ contributes zero because
+$w$ is outside and $z$ is inside.
+
+By strong Markov at the first exit,
+\[
+ F_n(z,d)-K_n(x,(z,d))
+ =\E_x[\1_{\{m<\tau\le n\}}
+             p_{n-\tau}((S_\tau,C_\tau),(z,d))].
+\]
+Consequently
+\begin{equation}\label{eq:smoothing-error}
+ 0\le F_n(z,d)-K_n(x,(z,d))
+ \le\Prob_x(\tau>m)\frac C{\eps n}e^{-c\eta^2/\eps}.
+\end{equation}
+After scaling by $n^{p/2+1}$, its limsup is at most
+$C_x\eps^{-1}e^{-c\eta^2/\eps}$ by \eqref{eq:sharp-survival}.
+It tends to zero as $\eps\downarrow0$. Taking first $n\to\infty$
+at fixed $\eps$, then $\eps\downarrow0$, proves
+\eqref{eq:bulk-LLT} with its stated compact-interior uniformity.
+All arguments apply equally to the reversed process.
+
+Finally, split a path into two comparable pieces, remove killing in
+the latter half, and apply the free $C/n$ bound. Fixed-start survival
+then gives the global endpoint bound
+\begin{equation}\label{eq:bulk-sup}
+ \sup_{z,d}K_n(x,(z,d))\le C_x n^{-p/2-1}.
+\end{equation}
+Its constant may depend on the fixed start, which is sufficient below.
+
+\section{Fixed endpoints, domination, and the leading constant}\label{sec:endpoints}
+\subsection{Midpoint reversal and all normalization factors}
+For $n=2m$, Chapman--Kolmogorov and \eqref{eq:reverse} give the exact
+identity
+\begin{equation}\label{eq:midpoint}
+ K_{2m}((s,c),(t,d))
+ =\pi_d\sum_{z\in\Qd,a}
+ \frac{K_m((s,c),(z,a))K_m^*((t,d),(z,a))}{\pi_a}.
+\end{equation}
+On a compact interior midpoint set at scale $\sqrt m$, insert the two
+bulk limits \eqref{eq:bulk-LLT}. The whitened lattice has density
+$m\dett$, since the cell of $Az/\sqrt m$ has area
+$1/(m\dett)$. Thus
+\[
+ \sum_z f(Az/\sqrt m)\sim m\dett\int_{\Wedge}f(w)\,dw.
+\]
+The two factors contribute $\pi_a^2$, division in
+\eqref{eq:midpoint} leaves $\pi_a$, and summing colors gives one.
+Using \eqref{eq:I2}, the resulting coefficient is
+\[
+ \frac{\pi_d b_\theta^2}{\dett}V(s,c)V^*(t,d)
+ m^{-p-1}I_2
+ =\frac{\pi_d b_\theta}{\dett}V(s,c)V^*(t,d)(2m)^{-p-1}.
+\]
+There is neither an extra color multiplicity nor an omitted lattice
+Jacobian.
+
+To justify removing the compact restriction, choose compact annular
+sectors $E_j\subset\Wedge$ increasing to $\Wedge$, with boundaries
+of zero limiting probability; for example restrict radius above and
+below and angle away from both sides. On the omitted region use
+\eqref{eq:bulk-sup} for the forward factor, and sum the dual factor.
+After multiplication by $m^{p+1}$ its contribution is at most
+\[
+ C_{s,c}m^{p/2}
+ \Prob^*_{t,d}(\tau^*>m,\ AS_m/\sqrt m\notin E_j).
+\]
+If $V^*(t,d)>0$, \eqref{eq:meander-joint} bounds its limit by a
+constant times the $\varrho$-mass outside $E_j$, tending to zero.
+If $V^*(t,d)=0$, the entire expression tends to zero by
+\eqref{eq:sharp-survival}. This handles both boundary layers and large
+radii without a boundary-uniform killed local limit. A zero forward
+harmonic value is allowed too: its compact bulk coefficient is zero,
+and the same truncation controls the complement.
+
+For odd $n$, use times $m=\lfloor n/2\rfloor$ and
+$j=\lceil n/2\rceil$. On a common compact midpoint set $j/m\to1$,
+and homogeneity and the continuous Gaussian factors give the same
+limiting product. The lattice density is still $m\dett$ and
+$n/m\to2$. The complementary bound is unchanged. Hence
+\eqref{eq:killed-LLT} holds along all integers, with no parity factor.
+
+\subsection{A polynomial bound uniform in the terminal point}
+Write $n=i+j+k$ with the three positive parts comparable to $n$.
+Remove killing in the middle part and use its free $C/j$ bound.
+Reversing the last part gives
+\[
+ \sum_{v,b}K_k((v,b),(t,d))
+ =\pi_d\sum_{v,b}\frac{K_k^*((t,d),(v,b))}{\pi_b}
+ \le\frac{\pi_d}{\min_b\pi_b}\Prob^*_{t,d}(\tau^*>k).
+\]
+Therefore
+\begin{equation}\label{eq:three-way}
+ K_n(o,(t,d))\le\frac Cn\Prob_o(\tau>i)
+                              \Prob^*_{t,d}(\tau^*>k).
+\end{equation}
+Use fixed-start survival \eqref{eq:sharp-survival} for $o$ and the
+global estimate \eqref{eq:global-survival} for $(t,d)$. This proves
+\eqref{eq:endpoint-dom} for all large $n$ uniformly in $t,d$;
+increasing $C$ covers the finitely many smaller $n$.
+
+\subsection{Summing the exact endpoint weights}
+For $m=n-1$, the exact identity \eqref{eq:endpoint} is
+\[
+ a_n=2\,9^{n-1}\sum_{t,d}g(t,d)K_m(o,(t,d)).
+\]
+The endpoint bound dominates
+$m^{p+1}g(t,d)K_m(o,(t,d))$ by
+$Cg(t,d)(1+|t|)^{2p}$, a summable function on the quadrant and colors.
+Dominated convergence using \eqref{eq:killed-LLT} now gives
+\[
+ \lim_{m\to\infty}m^{p+1}\sum_{t,d}g(t,d)K_m(o,(t,d))
+ =\frac{b_\theta}{\dett}V(o)
+                       \sum_{t,d}\pi_dg(t,d)V^*(t,d).
+\]
+This proves \eqref{eq:leading}--\eqref{eq:constant}. The original
+length shift supplies exactly $2/9$, since
+$(n/(n-1))^{p+1}\to1$. Finiteness also follows directly from the
+polynomial growth of $V^*$ and the exponential decay of $g$.
+Strict positivity uses $V(o)>0$ and the single positive summand
+$e=(1,0,P)$, where $g(e)=1/6$, $\pi_P=2/3$, and $V^*(e)>0$.
+All assertions of Theorem~\ref{thm:main} are proved.
+
+For clarity, the same constant can be written
+\[
+ C_A=\frac{2^{2-p}\sqrt3}{45\theta\Gamma(p+1)}V(o)
+                       \sum_{t,d}\pi_dg(t,d)V^*(t,d).
+\]
+This algebraic form introduces no additional normalization. It is not
+an effective numerical evaluation: the proof establishes existence,
+convergence, and positivity without an explicit truncation error for
+computing the harmonic values.
+
+\section{The vanishing-error inverse ceiling bracket}\label{sec:inverse}
+Appending the new largest legal entry $n$ to a length-$n$ avoider is
+injective and cannot create a triple satisfying \eqref{eq:avoid}.
+Thus $a_n\le a_{n+1}$. The leading equivalent makes it unbounded,
+so $N(y)$ is finite for all large $y$.
+
+Put $\lambda=\log9$, $L=\log y$, and
+\[
+ f(x)=\lambda x-\kappa\log x+\log C_A,\qquad
+ \eta_n=\log a_n-f(n)\quad(n\ge1).
+\]
+Equation \eqref{eq:leading} is exactly $\eta_n\to0$.
+Let $b(L)=\kappa\log L-\kappa\log\lambda-\log C_A$, so that
+$v=(L+b(L))/\lambda$ is \eqref{eq:center}. Its deterministic centering
+defect is
+\begin{equation}\label{eq:centering-defect}
+ f(v)-L=-\kappa\log(1+b(L)/L)
+       =O(\log L/L)=o(1).
+\end{equation}
+For large $L$ define
+\begin{equation}\label{eq:inverse-envelope}
+ \begin{split}
+ m(L)&=\lfloor L/(2\lambda)\rfloor,\qquad
+ E(L)=\sup_{n\ge m(L)}|\eta_n|,\\
+ D(L)&=E(L)+|f(v)-L|,\qquad
+ \eps(y)=4D(L)/\lambda+1/L.
+ \end{split}
+\end{equation}
+This is a well-defined positive envelope once $m(L)\ge1$.
+Since $\eta_n\to0$, it satisfies $E(L)\to0$, $D(L)\to0$, and
+$\eps(y)\to0$. It is an existence envelope, without a claimed
+computable rate or finite onset.
+
+For all sufficiently large $L$, $v-\eps$ and $v+\eps$ exceed $m(L)$,
+and
+\[
+ f'(x)=\lambda-\kappa/x\ge\lambda/2\quad(x\ge m(L)).
+\]
+For every integer $m(L)\le n<v-\eps$,
+\begin{align*}
+ \log a_n&\le f(n)+E(L)\le f(v-\eps)+E(L)\\
+ &\le f(v)-\lambda\eps/2+E(L)<L.
+\end{align*}
+The strict inequality follows from the definition of $D$ and the positive
+$1/L$ margin. For the smaller indices, monotonicity and
+\[
+ \log a_{m(L)}=L/2+O(\log L)+o(1)<L
+\]
+give the same conclusion. Every integer $n<v-\eps$ is therefore below
+the threshold, proving $N(y)\ge\lceil v-\eps\rceil$.
+For $n_+=\lceil v+\eps\rceil$,
+\begin{align*}
+ \log a_{n_+}&\ge f(n_+)-E(L)\ge f(v+\eps)-E(L)\\
+ &\ge f(v)+\lambda\eps/2-E(L)>L.
+\end{align*}
+Hence $N(y)\le n_+$ and Corollary~\ref{cor:inverse} follows.
+
+If $[v-\eps,v+\eps]$ contains no integer, both bounding ceilings
+coincide with $\lceil v\rceil$. Near an integer the unknown coefficient
+remainder can choose between neighboring indices, so the leading
+equivalent alone does not justify a universal equality
+$N(y)=\lceil v(y)\rceil$. The constant term in the real center is
+$(-\kappa\log\lambda-\log C_A)/\lambda$. The explicit
+$O(\log L/L)$ defect in \eqref{eq:centering-defect} may be smaller
+than the unknown $\eta_n=o(1)$; it cannot be promoted to a justified
+next inverse correction without a quantitative coefficient remainder.
+
+\section{The unique singularity on the critical circle}\label{sec:circle}
+Put $\rho=1/9$. Besides the leading equivalent, the exact walk proves:
+\begin{corollary}\label{cor:analytic}
+The function $F$ has radius $\rho$, is singular at $\rho$, and admits
+analytic continuation through every other point on $|z|=\rho$.
+Moreover $p,\kappa$ are irrational and
+\begin{equation}\label{eq:derivative-limit}
+ \lim_{x\uparrow\rho}\frac{\log F^{(5)}(x)}{\log(1-9x)}=\kappa-6.
+\end{equation}
+The function $F$ is not D-finite, even over $\CC(z)$.
+\end{corollary}
+\subsection{Uniform return loops}
+Apart from $o$, every reachable shifted state lies in
+\[
+ \mathcal D=\{P(a,b):a,b\ge0,\ a+b\ge1\}
+       \ \cup\ \{Q(a,b):a\ge1,\ b\ge0\}.
+\]
+A $Q$ target always has first coordinate at least one. There is no incoming
+edge to $o$ from $\mathcal D$: an $A_d$ target at $(0,0)$ would require
+$d=b=0$ and $a=-1$, while a $C_d$ target there would require
+$d=1,b=a=0$ in color $Q$, which is absent. Let $T$ be the killed
+transition operator restricted to $\ell^\infty(\mathcal D)$. It is
+positive and $\|T\|_\infty\le1$.
+
+Every state has a retained zero-displacement return loop of length three
+and one of length four, as shown by these edge sequences:
+\begin{center}
+\begin{tabular}{@{}lll@{}}\toprule
+Starting state & Three steps & Four steps\\\midrule
+$P(a,b),\ a\ge1$ & $A_2,D_2,C_1$ & $A_1,A_2,D_3,C_1$\\
+$P(0,b),\ b\ge1$ & $A_1,D_2,C_2$ & $A_1,A_1,D_3,C_2$\\
+$Q(a,b),\ a\ge1$ & $C_1,A_2,D_2$ & $C_1,A_1,A_2,D_3$\\\bottomrule
+\end{tabular}
+\end{center}
+For example, the first triple has displacements $(-1,2),(1,-2),(0,0)$;
+its intermediate states are legal for all $a\ge1,b\ge0$. For the second
+triple, the positions relative to $(0,b)$ are $(0,1),(1,-1),(0,0)$,
+legal for $b\ge1$. The other cases follow by the same explicit additions.
+All intermediate colors and positions remain in $\mathcal D$.
+Since the tilt telescopes around a closed loop, the probability of any
+listed length-$l$ loop is exactly $9^{-l}$. As positive operators,
+\begin{equation}\label{eq:loops}
+ T^3\ge9^{-3}I,\qquad T^4\ge9^{-4}I.
+\end{equation}
+
+\subsection{The operator resolvent away from the positive point}
+For $l=3$ or $4$, write $T^l=\epsilon_lI+B_l$, where
+$\epsilon_l=9^{-l}$, $B_l\ge0$, and
+$\|B_l\|_\infty\le1-\epsilon_l$. If $|t_0|=1$ and $t_0^l\ne1$, then
+\[
+ \frac{|t_0|^l(1-\epsilon_l)}{|1-\epsilon_lt_0^l|}<1.
+\]
+The strict inequality persists in an open neighborhood of $t_0$.
+There the norm-convergent series
+\begin{equation}\label{eq:resolvent}
+ (I-t^lT^l)^{-1}
+  =\frac1{1-\epsilon_lt^l}\sum_{j\ge0}
+       \left(\frac{t^lB_l}{1-\epsilon_lt^l}\right)^j
+\end{equation}
+is analytic. Multiplying by $I+tT+\cdots+t^{l-1}T^{l-1}$ produces a
+two-sided analytic inverse of $I-tT$, since all factors are polynomials
+or norm limits of polynomials in $T$. The only unit-modulus number with
+both $t^3=t^4=1$ is $1$. Thus every other unit-circle point has such a
+resolvent neighborhood.
+
+The first transition from $o$ has just two retained targets; as a row
+functional on $\mathcal D$ its nonzero entries are
+\[
+ v(P(1,0))=1/3,\qquad v(P(0,1))=5/27.
+\]
+Separating $a_0,a_1$ in \eqref{eq:endpoint} gives, initially for
+$|z|<1/9$,
+\begin{equation}\label{eq:Fres}
+ F(z)=1+z+18z^2\,v(I-9zT)^{-1}g.
+\end{equation}
+Here $g|_{\mathcal D}$ is bounded and $v$ has finite support, so the
+operator continuation is an ordinary scalar analytic continuation of
+$F$. Equation \eqref{eq:leading} gives radius exactly $1/9$ by
+Cauchy--Hadamard. Equation \eqref{eq:resolvent} excludes all its
+convergence-circle points except $1/9$. The next section establishes
+that the latter is genuinely singular.
+
+This circle control does not claim a local $\Delta$-domain expansion at
+$1/9$ and is not used to extract a leading amplitude.
+
+\section{Irrationality and the arithmetic obstruction}
+\subsection{The irrational exponent}
+Since $\cos(\pi/4)<2/\sqrt7<\cos(\pi/5)$, one has
+$\pi/5<\theta<\pi/4$ and hence $4<p<5$, $5<\kappa<6$.
+The right-hand trigonometric comparison may be squared using
+$\cos(\pi/5)=(1+\sqrt5)/4$; both sides are positive.
+Moreover
+\[
+ \cos(2\theta)=2\cos^2\theta-1=1/7.
+\]
+If $\theta/\pi$ were rational, $e^{2i\theta}$ would be a root of unity,
+so $e^{2i\theta}+e^{-2i\theta}=2/7$ would be an algebraic integer.
+A rational algebraic integer is an integer, a contradiction. Thus
+$\theta/\pi$, its reciprocal $p$, and $\kappa=1+p$ are irrational.
+
+\subsection{A power bound for the fifth derivative}
+For $t\uparrow1$,
+\[
+ F^{(5)}(t/9)=9^5t^{-5}\sum_{n\ge5}(n)_5\,a_n9^{-n}t^n,
+ \qquad (n)_5=n(n-1)\cdots(n-4).
+\]
+All coefficients are positive. For any
+$0<\eps<6-\kappa$, \eqref{eq:leading} and $(n)_5\asymp n^5$ bound
+the summands, up to fixed positive factors, by
+$n^{5-\kappa-\eps}t^n$ and $n^{5-\kappa+\eps}t^n$.
+For every fixed $\alpha>-1$,
+\begin{equation}\label{eq:abelian}
+ \sum_{n\ge1}n^\alpha t^n\asymp(1-t)^{-\alpha-1}
+ \qquad(t\uparrow1).
+\end{equation}
+To see this directly, put $s=-\log t\asymp1-t$. A lower bound follows
+from $1/s\le n\le2/s$. An upper bound follows by splitting into unit
+intervals in $ns$, or comparing with the integrable function
+$x^\alpha e^{-x}$ after separately treating $ns\le1$.
+Finite omitted terms are absorbed. Therefore
+\begin{equation}\label{eq:5bound}
+ c_\eps(1-t)^{\kappa-6+\eps}
+ \le F^{(5)}(t/9)
+ \le C_\eps(1-t)^{\kappa-6-\eps}.
+\end{equation}
+The lower bound diverges. Taking logarithms, dividing by the negative
+number $\log(1-t)$, and then letting $\eps\downarrow0$ proves
+\eqref{eq:derivative-limit}. In particular $F$ cannot be analytic at
+$1/9$, completing the unique-dominant-singularity assertion.
+
+\subsection{The precise G function implication}
+Suppose first that $F$ is D-finite over $\QQ(z)$. Its coefficients are
+integers and exponentially bounded by \eqref{eq:endpoint}; all their
+algebraic conjugates equal themselves and the common denominators are
+one. These facts, together with hypothetical D-finiteness, verify the
+G-function conditions. The same is true of $F^{(5)}$: its coefficients
+are integers, its polynomial coefficient factor preserves an exponential
+bound, and differentiation preserves D-finiteness.
+
+We use the Andr\'e--Chudnovski--Katz theorem in the precise formulation
+of Fischler--Rivoal~\cite[Theorem 6, pp.~328--329]{fr}. A minimal
+operator for a G-function over an algebraic extension of $\QQ$ is
+Fuchsian with rational local exponents. At each finite point its
+solutions have finite sums of the form
+\begin{equation}\label{eq:powerlog}
+ \sum_{q\in E}\sum_{k=0}^{K_q}w^q(\log w)^k f_{qk}(w),
+ \qquad E\subset\QQ\text{ finite},
+\end{equation}
+where the $f_{qk}$ are holomorphic near $0$ on the chosen local branch.
+The leading power-log conclusion is also stated there as Corollary 1.
+We need only the rationality of that leading power, not its arithmetic
+coefficient.
+
+Apply this at $w=\rho-x\downarrow0$ to $F^{(5)}$. To handle possible
+cancellation explicitly, first combine exponent classes modulo integers
+in \eqref{eq:powerlog}, then expand their finitely many holomorphic
+coefficients. The union of their exponent supports is contained in a
+finite union of sets $q+\NN$ and is bounded below. Since the function
+is nonzero, there is a smallest nonvanishing power $q_0\in\QQ$ and,
+at that power, a largest nonvanishing logarithmic degree $k_0\ge0$.
+Higher powers and lower logarithmic degrees are negligible along the
+positive real $w$ axis. Thus
+\[
+ F^{(5)}(\rho-w)=c\,w^{q_0}(\log w)^{k_0}(1+o(1)),\quad c\ne0.
+\]
+Its positivity permits taking its real logarithm; equivalently take
+absolute values first. Its logarithmic growth exponent must therefore
+be $q_0\in\QQ$. But \eqref{eq:derivative-limit} gives the irrational
+number $\kappa-6$. This contradiction proves non-D-finiteness over
+$\QQ(z)$. Irrational powers of arbitrary complex D-finite functions
+would not supply this contradiction; the G-function hypotheses are the
+necessary arithmetic input.
+
+\subsection{Descent from complex to rational coefficients}
+If a rational-coefficient formal series satisfies a nonzero differential
+operator over $\CC(z)$, clear its denominators and fix the finite order
+and polynomial-degree bounds of that operator. The unknown operator
+coefficients then form a finite vector over $\CC$. Equating every formal
+series coefficient to zero gives homogeneous linear equations with
+rational coefficients, possibly infinitely many. Their rational row
+space is finite dimensional, so finitely many of those rows form a
+basis. Its rank is unchanged by extending scalars from $\QQ$ to $\CC$.
+A nonzero complex null vector therefore implies a nonzero rational null
+vector of the same finite system and thus of all its equations. This
+would give a nonzero operator over $\QQ(z)$ annihilating $F$, contrary
+to what was just proved. Hence $F$ is not D-finite over $\CC(z)$ either.
+
+
+\section{Scope, reproducibility, and further questions}
+The principal theorem is the full coefficient equivalent
+\eqref{eq:leading}, with a finite strictly positive constant characterized
+by \eqref{eq:constant}. Its proof includes original-time survival and
+fixed-endpoint limits, not merely a logarithmic exponent. None of the
+limits above has been assigned an effective convergence rate. Therefore
+this report does not certify amplitude digits, an explicit numerical
+onset, a $1/n$ correction, a correction transseries, or a local complex
+$\Delta$-domain expansion at the positive singularity. Circle
+continuation alone is not such a local expansion.
+
+The argument suggests studying analogous finite-color cone processes,
+but no general Markov-additive cone theorem is asserted here. Extending
+the method requires separate checks of regeneration, harmonic regularity,
+corrector solvability, entrance estimates, lattice structure, and the
+endpoint weights in each proposed setting. These are further questions,
+not additional consequences claimed for an unaudited class of models.
+
+The companion package supplies the editable source, rendered PDF,
+exact integer data, and offline finite checks. The two kinds of evidence
+remain distinct. Rational identities and finite enumerations are exactly
+replayable; strong approximation, stopped integrability, angular
+uniformity, smoothing, and limiting domination are mathematical proofs
+in this text, not consequences of matching finitely many coefficients.
+
+The precise finite ranges and fixture provenance are documented in
+\texttt{checks/README.md}. The checker tests the combinatorial model and
+exact probability algebra, including both first- and second-order color
+correctors, reversal, regenerative covariance, whitening, and the
+normalization and inverse identities. Its guards remain active under
+optimized Python. Independent negative tests mutate mathematical data
+and inventory conditions. Both the checks subtree and the complete
+package have closed bytewise inventories that reject extra files or
+directories, missing files, changed bytes, and symbolic links. Inventories
+are integrity records rather than cryptographic signatures.
+
+The PDF builder runs twice in clean external directories, rejects
+overfull boxes and unresolved references, and requires byte equality.
+The complete replay runs exact checks in normal and optimized Python,
+compares the authoritative result bytes, rebuilds the PDF, creates a
+deterministic ZIP, extracts it into a fresh directory, reruns checks and
+rebuilds, and requires byte-identical repacking. The original package is
+verified again at the end. Commands, dependencies, and distinctions
+between full and checks-only replay appear in \texttt{README.md}.
+Downloaded source papers, intermediate render images, fitted diagnostics,
+and private development material are not reader-package contents.
+
+\begin{thebibliography}{9}
+\bibitem{oeis} OEIS Foundation Inc., \emph{The On-Line Encyclopedia of Integer
+Sequences}, A279571, entry by Megan A. Martinez, 21 February 2017.
+Numerical formula credited to V\'aclav Kot\v{e}\v{s}ovec, 13 January 2026,
+after Nicholas R. Beaton. \url{https://oeis.org/A279571}.
+Accessed 2 October 2026.
+\bibitem{bb} Nathan Britt and Nicholas Beaton,
+\emph{Completing the enumeration of inversion sequences avoiding triples
+of relations}, arXiv:2512.21943v3, 29 September 2026, Section 2.5,
+equations (2.44)--(2.46), Section 4.2 and Appendix B.3.
+\url{https://arxiv.org/html/2512.21943v3}.
+\bibitem{bs} Elena Bashtova and Alexey Shashkin,
+\emph{Strong Gaussian approximation for cumulative processes},
+Stochastic Processes and their Applications \textbf{150} (2022), 1--18,
+Theorem 2.1. DOI:
+\href{https://doi.org/10.1016/j.spa.2022.04.003}{10.1016/j.spa.2022.04.003}.
+The accessible preprint is arXiv:2006.09583v1, 17 June 2020,
+Conditions (A), (B), and Theorem 1, pp.~3--4:
+\url{https://arxiv.org/pdf/2006.09583}.
+\bibitem{banuelos} Rodrigo Ba\~nuelos and Robert G. Smits,
+\emph{Brownian motion in cones}, Probability Theory and Related Fields
+\textbf{108} (1997), 299--319, Lemma 1, equation (2.2).
+\url{https://www.math.purdue.edu/~banuelos/Papers/cones.pdf}.
+\bibitem{fr} St\'ephane Fischler and Tanguy Rivoal,
+\emph{On the values of G-functions}, Commentarii Mathematici Helvetici
+\textbf{89} (2014), 313--341, Theorem 6 and Corollary 1, pp.~328--329.
+DOI: \href{https://doi.org/10.4171/CMH/321}{10.4171/CMH/321}.
+\url{https://ems.press/content/serial-article-files/43350}.
+\end{thebibliography}
+\end{document}
