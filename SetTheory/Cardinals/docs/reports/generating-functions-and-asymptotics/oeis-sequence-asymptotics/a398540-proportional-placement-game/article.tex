@@ -1,0 +1,950 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype,amsmath,amssymb,amsthm,booktabs}
+\usepackage[hidelinks]{hyperref}
+\hypersetup{pdftitle={Report 146 All fixed orders for the proportional placement game},pdfauthor={},pdfsubject={A398540, logarithmic Poincare expansion, signed convolution, threshold inversion}}
+\pdfinfoomitdate=1\pdftrailerid{}\pdfsuppressptexinfo=15
+\setlength{\emergencystretch}{2em}
+\allowdisplaybreaks[2]
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\dd}{\mathrm d}
+\newcommand{\HH}{\mathcal H}
+\newcommand{\norm}[1]{\left\|#1\right\|}
+\newcommand{\ip}[2]{\langle #1,#2\rangle}
+\title{All fixed orders for the proportional placement game}
+\author{Report 146}
+\date{October 3, 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+For the proportional placement probabilities associated with OEIS A398540, we prove a coefficientwise logarithmic Poincar\'e expansion at every fixed order. If $r_*\in(0,1)$ is the exponential rate and $A=r_*\sqrt{2\pi}$, then
+\[
+\frac{W_n}{A\sqrt n\,r_*^n}
+ =1+\sum_{j=1}^M\frac{\widehat P_j(\log n)}{n^j}
+   +O_M\!\left(\frac{(1+\log n)^M}{n^{M+1}}\right),
+\qquad \deg\widehat P_j\le j-1.
+\]
+The proof bootstraps signed, continuous-function-valued convolutions using exact logarithmic coefficient models and absolutely convergent subtracted endpoint moments. Each step reduces to finite algebra and finitely many specified scalar series. The third-order logarithm is explicit and the possible squared logarithm at that order vanishes. We give all-fixed-order Lambert-W threshold inverses with ceiling-safe error brackets. Separately, a finite-coefficient interval algorithm has a proved quadratic-times-log radius-width bound; this is a computability theorem, not a complexity bound or a calculation of new digits. The expansion is not asserted to converge as an infinite series, and its remainder constants and inverse margins are not made effective here.
+\end{abstract}
+\tableofcontents
+
+\section{The sequence and the main theorem}
+There are $n$ ordered empty slots and $n$ independent uniform values on $(0,1)$, arriving sequentially. In a gap $(L,U)$ with $k$ available slots, the proportional policy places an arriving value $t$ in position $\lceil k(t-L)/(U-L)\rceil$ within that gap. It loses when the containing gap has no empty slot. Let $W_n$ be its winning probability, with $W_0=1$. This article makes no optimality assertion about the policy.
+
+Conditioning on the first value and on the number of subsequent values below it gives the exact recurrence
+\begin{align}
+ W_n&=\frac1n\sum_{k=1}^n W_{k-1}W_{n-k}Q_{n,k},\label{eq:Wrec}\\
+ Q_{n,k}&=n\int_{(k-1)/n}^{k/n}\binom{n-1}{k-1}
+          t^{k-1}(1-t)^{n-k}\,\dd t.\label{eq:Q}
+\end{align}
+All $W_n$ are positive rationals; $W_1=1$ and $W_2=3/4$. The two subgames are independent after affine rescaling, which proves the product in \eqref{eq:Wrec}.
+
+Report 144~\cite{r144} establishes
+\begin{equation}\label{eq:leading}
+ r_*:=\lim_{n\to\infty}W_n^{1/n}\in(0,1),\qquad
+ W_n\sim A\sqrt n\,r_*^n,\qquad A=r_*\sqrt{2\pi}.
+\end{equation}
+Set
+\begin{equation}\label{eq:normalization}
+ R=r_*^{-1},\qquad a=(2\pi)^{-1/2},\qquad
+ x_n=\frac{W_nR^n}{A\sqrt{n+1}},\qquad y_n=x_n-1.
+\end{equation}
+Report 145~\cite{r145} supplies the starting rate and the second constant:
+\begin{align}
+ x_n&=1+\frac d n+O\!\left(\frac{1+\log n}{n^2}\right),\quad d=-\frac14,
+ \label{eq:base}\\
+ x_n&=1+\frac d n+\frac{c\log n+C}{n^2}+o(n^{-2}),
+ \quad c=-\frac7{540},\quad C=B_2+\frac14.\label{eq:oldsecond}
+\end{align}
+The rate \eqref{eq:base}, not merely the weaker first correction with an $o(n^{-1})$ remainder, is the induction input. The constant $B_2$ is defined by absolutely convergent series in Report 145. Its decimal value is not needed.
+
+\begin{theorem}[Every fixed order]\label{thm:all}
+There is a unique sequence of real polynomials $P_j$ such that, for each fixed integer $M\ge1$,
+\begin{equation}\label{eq:all}
+ x_n=1+\sum_{j=1}^M\frac{P_j(\log n)}{n^j}
+       +O_M\!\left(\frac{(1+\log n)^M}{n^{M+1}}\right),
+ \qquad \deg P_j\le j-1.
+\end{equation}
+Here $P_1=d$ and $P_2(t)=ct+C$. Each order is determined by the finite scalar construction in Section~\ref{sec:scalar}. Multiplication by $\sqrt{1+1/n}$ gives a consistent expansion
+\begin{equation}\label{eq:allW}
+ \frac{W_n}{A\sqrt n\,r_*^n}
+ =1+\sum_{j=1}^M\frac{\widehat P_j(\log n)}{n^j}
+       +O_M\!\left(\frac{(1+\log n)^M}{n^{M+1}}\right),
+ \qquad \deg\widehat P_j\le j-1.
+\end{equation}
+In particular $\widehat P_1=1/4$ and $\widehat P_2(t)=ct+B_2$.
+\end{theorem}
+
+Theorem~\ref{thm:third} gives the explicit third-order term. Theorem~\ref{thm:threshold} inverts \eqref{eq:allW} at every fixed order. The separate computable enclosure theorem in Section~\ref{sec:rate} concerns the leading rate only. Every big-O constant may depend on the fixed order. No estimate is uniform as $M\to\infty$.
+
+\subsection{Sources and the meaning of all orders}
+The model and recurrence are in Serra's manuscript, version 1, Theorem 3.12 and equations (47)--(48), printed pages 23--24~\cite{serra}. OEIS A398540 records digits associated with the limiting rate, rather than the probability sequence itself~\cite{oeis}. The present article is a continuation of Reports 144 and 145; their unchanged PDF and LaTeX files accompany it. We use their proved input statements, rather than reusing their computational archives. The primary manuscript PDF is not redistributed.
+
+All logarithms are natural. A full fixed-order expansion means the quantified statement \eqref{eq:all} for each finite $M$, with consistent coefficient polynomials. It does not mean a convergent infinite expansion, a complete exponentially small transseries, a proof of analytic continuation, or a universal novelty claim. The proofs below are coefficientwise and work without extending the actual generating function through its circle of convergence.
+
+\section{The exact kernel and its uniform expansion}\label{sec:kernel}
+For $i,j\ge0$, with $n=i+j$, define
+\begin{equation}\label{eq:beta}
+ \beta_{ij}=\frac{Q_{n+1,i+1}}a
+             \sqrt{\frac{(i+1)(j+1)}{n+2}}.
+\end{equation}
+Since $aAR=1$, \eqref{eq:Wrec} becomes
+\begin{equation}\label{eq:xrec}
+ (n+1)x_{n+1}=\sum_{i+j=n}\beta_{ij}x_ix_j.
+\end{equation}
+For $i\ge1$ let $r_i$ be the exact Stirling remainder defined by
+\[
+ i!=\sqrt{2\pi i}(i/e)^i e^{r_i}.
+\]
+Put
+\begin{align}
+ g_i(v)&=\sqrt{1+1/i}\,e^{-r_i}(1+v/i)^i e^{-v},\quad i\ge1,
+ \label{eq:g}\\
+ g_0(v)&=\sqrt{2\pi}\,e^{-v},\qquad
+ b_i=\int_0^1g_i(v)\,\dd v,\label{eq:gzero}\\
+ H_n&=(1+2/n)^{-1/2}\exp\{r_n+1-n\log(1+1/n)\},\quad n\ge1.
+ \label{eq:H}
+\end{align}
+
+\begin{lemma}[Separated kernel including endpoints]\label{lem:factor}
+For $i,j\ge0$ with $i+j=n\ge1$,
+\begin{equation}\label{eq:factor}
+ \beta_{ij}=H_n\int_0^1g_i(v)g_j(1-v)\,\dd v.
+\end{equation}
+\end{lemma}
+\begin{proof}
+For positive child indices this is the exact factorization obtained from \eqref{eq:Q} by the change of variables $t=(i+v)/(n+1)$ and the factorial formula. For completeness at a zero child, define locally
+$f_n(v)=(1+v/n)^n e^{-v}$. Then
+\begin{align*}
+ H_n\sqrt{1+1/n}\,e^{-r_n}
+ &=\sqrt{\frac{n+1}{n+2}}e^{1-n\log(1+1/n)},\\
+ \int_0^1e^{-v}f_n(1-v)\,\dd v
+ &=e^{-1}\frac n{n+1}\{(1+1/n)^{n+1}-1\}.
+\end{align*}
+Multiplication by $\sqrt{2\pi}$ yields
+\[
+ \beta_{0,n}=\sqrt{2\pi}\sqrt{\frac{n+1}{n+2}}
+      \left\{1-\left(\frac n{n+1}\right)^{n+1}\right\},
+\]
+which is also the value from the original integral. Symmetry treats the other endpoint. The isolated pair $(0,0)$ is never needed in \eqref{eq:factor}.
+\end{proof}
+
+\begin{lemma}[Uniform finite kernel expansions]\label{lem:kernel}
+For every fixed $K\ge1$ there are explicitly computable polynomials $G_k(v)$ and numbers $h_k$ for which
+\begin{align}
+ g_n(v)&=1+\sum_{k=1}^K G_k(v)n^{-k}+O_K(n^{-K-1}),\label{eq:gexp}\\
+ H_n&=1+\sum_{k=1}^K h_kn^{-k}+O_K(n^{-K-1}),\label{eq:Hexp}
+\end{align}
+uniformly for $v\in[0,1]$ and integers $n\ge1$.
+\end{lemma}
+\begin{proof}
+The exact difference and limit
+\[
+ r_n-r_{n+1}=(n+\tfrac12)\log(1+1/n)-1,\qquad r_n\to0,
+\]
+determine a finite expansion $r_n=\sum_{k=1}^K r[k]n^{-k}+O(n^{-K-1})$. Match differences successively through $n^{-K-1}$: the new coefficient $r[k]$ has nonzero pivot $k n^{-k-1}$. The unmatched difference is $O(n^{-K-2})$, whose absolutely convergent tail is $O(n^{-K-1})$. This proves the error instead of presupposing a full expansion of $r_n$.
+
+For $t=1/n$ and the just-constructed finite series $\mathcal R(t)=\sum r[k]t^k$, the required recipes are the finite Taylor expansions of
+\begin{align}
+ G(t,v)&=(1+t)^{1/2}\exp\left\{-\mathcal R(t)
+        +\sum_{k\ge1}\frac{(-1)^kv^{k+1}t^k}{k+1}\right\},\label{eq:Grecipe}\\
+ H(t)&=(1+2t)^{-1/2}\exp\left\{\mathcal R(t)
+        +\sum_{k\ge1}\frac{(-1)^{k+1}t^k}{k+1}\right\}.\label{eq:Hrecipe}
+\end{align}
+Only finitely many terms are retained at the requested order. Taylor errors are uniform on the compact interval in $v$ for small $t$; a larger constant covers the finitely many remaining positive $n$. No derivatives in $v$ are used.
+\end{proof}
+The first values, used later, are
+\begin{align}
+ G_1(v)&=\frac5{12}-\frac{v^2}2,
+ &G_2(v)&=-\frac{47}{288}-\frac{5v^2}{24}+\frac{v^3}3+\frac{v^4}8,
+ \label{eq:G12}\\
+ p:=\int_0^1G_1&=\frac14,
+ &b_2^*:=\int_0^1G_2&=-\frac{179}{1440},\label{eq:b12}\\
+ q:=h_1&=-\frac5{12},& f:=h_2&=\frac{217}{288}.
+ \label{eq:H12}
+\end{align}
+The star distinguishes an expansion coefficient $b_2^*$ from the exact integral $b_2$ in \eqref{eq:gzero}.
+
+\section{Exact coefficient models}\label{sec:models}
+Write $u=1-z$ and $L=-\log(1-z)$. For positive integers $p,q$ define
+\[
+ B_{p,q}(z)=u^{p-1}L^q,\qquad b_{p,q}(n)=[z^n]B_{p,q}(z).
+\]
+These are analytic on $|z|<1$. Their use requires no boundary regularity for the actual sequence.
+
+\begin{lemma}[Coefficient expansions and triangular matching]\label{lem:basis}
+Every $b_{p,q}(n)$ has a fixed-order power-log expansion to arbitrary precision, with leading term
+\begin{equation}\label{eq:blead}
+ b_{p,q}(n)=\frac{(-1)^{p-1}q(p-1)!(\log n)^{q-1}
+                 +\text{lower log powers}}{n^p}
+       +O\!\left(\frac{(1+\log n)^{q-1}}{n^{p+1}}\right).
+\end{equation}
+Every later inverse-power coefficient has log degree at most $q-1$. Any specified expansion $\sum_{j=1}^M n^{-j}P_j(\log n)$ with $\deg P_j\le j-1$ therefore has a unique model
+\begin{equation}\label{eq:canonical}
+ S_M(z)=\sum_{p=1}^M\sum_{q=1}^p s_{p,q}u^{p-1}L^q
+\end{equation}
+matching it through order $n^{-M}$. The matching is finite and triangular, and preserves uniformity for continuous parameter coefficients on a compact interval.
+\end{lemma}
+\begin{proof}
+For $n\ge1$ one has the exact identity
+\begin{equation}\label{eq:Lcoeff}
+ [z^n]L^q=\frac{q!}{n}\,
+ e_{q-1}\left(1,\frac12,\ldots,\frac1{n-1}\right),
+\end{equation}
+where $e_j$ is the elementary symmetric polynomial, zero when its index exceeds the number of variables. Indeed, extract the coefficient of $t^q$ in
+\[
+ [z^n](1-z)^{-t}=\frac t n\prod_{k=1}^{n-1}(1+t/k).
+\]
+Newton's identities express $e_{q-1}$ using finitely many generalized harmonic numbers. Euler--Maclaurin for $t^{-r}$ gives their expansions to every fixed order with bounded remainders; for $r=1$ the constant is Euler's $\gamma$, and for $r\ge2$ it is $\zeta(r)$. This proves the power-log expansion of \eqref{eq:Lcoeff} and its log-degree bound.
+
+Multiplication by $u^{p-1}$ takes an exact backward difference. Before differencing a remainder, expand \eqref{eq:Lcoeff} sufficiently many orders farther: an $O(n^{-N}\log^{q-1}n)$ error remains of that order after any fixed number of differences, and $N$ is freely chosen. The retained explicit terms can be differenced directly. Their leading coefficient is the nonzero pivot in \eqref{eq:blead}. Solve first in ascending $p$, then in descending log degree. The model error is $O(n^{-M-1}(1+\log n)^{M-1})$. All operations are finite scalar linear operations, giving the asserted uniformity.
+\end{proof}
+
+The algebra of models closes exactly:
+\begin{equation}\label{eq:product}
+ B_{p,q}B_{r,s}=B_{p+r-1,q+s}.
+\end{equation}
+Polynomials in $u$ will represent moments. Their coefficients have finite support. Two bounds essential below are
+\begin{equation}\label{eq:diffbounds}
+ |[z^n]S_M|\le\frac{C}{n+1},\qquad
+ |[z^n]u^kS_M|\le\frac{C_k}{(n+1)^{k+1}}\quad(k\ge0\text{ fixed}).
+\end{equation}
+For a term with $p=1$, necessarily $q=1$ and no logarithm occurs. For $p\ge2$, the additional factor $n^{-(p-1)}$ absorbs its fixed log power. Applying \eqref{eq:blead} after multiplication by $u^k$ proves \eqref{eq:diffbounds}. These are estimates on exact models, never on differences of an unspecified remainder.
+
+\section{Signed convolution and endpoint moments}\label{sec:convolution}
+We use the commutative Banach algebra $C[0,1]$, with pointwise multiplication and the supremum norm. Scalar real or complex sequences are special cases. Its product satisfies $\norm{fg}\le\norm f\norm g$; reflection $v\mapsto1-v$ preserves the norm.
+
+\begin{lemma}[Uniform signed convolution]\label{lem:conv}
+Fix $M\ge1$. Suppose $a_n=s_n+r_n$, where $s_n=[z^n]S_M$ is a model of the form \eqref{eq:canonical}, and
+\begin{equation}\label{eq:residue}
+ \norm{r_n}\le C\frac{(1+\log(n+2))^M}{(n+1)^{M+1}}.
+\end{equation}
+Define
+\begin{equation}\label{eq:moments}
+ \mu_k=\sum_{n\ge0}\binom nk r_n\quad(0\le k<M),
+ \qquad J_M(z)=\sum_{k=0}^{M-1}(-1)^k\mu_ku^k.
+\end{equation}
+These sums converge absolutely in norm. For a second sequence $\widetilde a$ with the same type of decomposition,
+\begin{equation}\label{eq:conv}
+ (a*\widetilde a)_n=[z^n](S_M+J_M)(\widetilde S_M+\widetilde J_M)
+      +O\!\left(\frac{(1+\log n)^{M+1}}{n^{M+1}}\right).
+\end{equation}
+The polynomial $J_M\widetilde J_M$ has no coefficient once $n>2M-2$.
+\end{lemma}
+\begin{proof}
+The moment of index $k$ has a tail bounded by a constant times
+$\sum n^{k-M-1}(1+\log n)^M$, convergent because $k\le M-1$. This also proves uniform convergence and continuity when the coefficients are functions of $v$. Integration in $v$ may therefore be interchanged with these sums.
+
+For $i\le n/2$, apply integer Newton expansion to $f(i)=s_{n-i}$. With $\nabla$ denoting backward difference,
+\begin{equation}\label{eq:newtondiscrete}
+ s_{n-i}=\sum_{k=0}^{M-1}(-1)^k\binom ik(\nabla^ks)_n+E_{n,i},
+ \qquad \norm{E_{n,i}}\le C i^M n^{-M-1}.
+\end{equation}
+If $i<M$ this is exact. Otherwise the exact remainder is
+\[
+ \sum_{r=0}^{i-M}\binom{i-1-r}{M-1}\Delta^M f(r).
+\]
+Its nonnegative weights sum to $\binom iM$, and
+$\Delta^Mf(r)=(-1)^M(\nabla^Ms)_{n-r}$. All indices appearing are at least $n-i\ge n/2$, so \eqref{eq:diffbounds} proves the bound.
+
+In the left half of $r*s$, the resulting remainder is bounded by
+\begin{equation}\label{eq:borderline}
+ Cn^{-M-1}\sum_{i\le n/2}i^M\norm{r_i}
+   =O\!\left(n^{-M-1}(1+\log n)^{M+1}\right).
+\end{equation}
+The moment at index $M$ is generally divergent. Only its truncated size is used here. Replacing each truncated moment of index $k<M$ by its full sum costs at most
+\[
+ C\sum_{k=0}^{M-1}n^{-k-1}\sum_{i>n/2}i^k\norm{r_i}
+ =O\!\left(n^{-M-1}(1+\log n)^M\right).
+\]
+The other half has the bound
+\[
+ \sup_{i>n/2}\norm{r_i}\sum_{j<n/2}\norm{s_j}
+ =O\!\left(n^{-M-1}(1+\log n)^{M+1}\right),
+\]
+since the absolute partial sums of $s$ are $O(1+\log n)$. Hence $r*s$ is approximated by $[z^n]J_MS_M$ with the stated error. The same argument applies to either cross product with distinct sequences.
+
+Finally, splitting according to which index is at least $n/2$ gives
+\[
+ \norm{(r*\widetilde r)_n}
+ \le\sup_{i\ge n/2}\norm{r_i}\sum_j\norm{\widetilde r_j}
+   +\sup_{j\ge n/2}\norm{\widetilde r_j}\sum_i\norm{r_i}
+ =O\!\left(n^{-M-1}(1+\log n)^M\right).
+\]
+Both residue sums converge. The model-model product is exact, and the remaining moment-moment polynomial has finite support. This proves \eqref{eq:conv} with arbitrary signs and without regularity assumptions on the residual sequence.
+\end{proof}
+
+\section{The forcing identity and the induction}\label{sec:induction}
+Report 145 proves the exact critical inverse, with its boundary condition already enforced:
+\begin{align}
+ y_n&=(Th)_n=\frac{h_{n-1}}{n+2}
+       -2(n+1)\sum_{k\ge n}\frac{h_k}{(k+1)(k+2)(k+3)},\quad n\ge1,
+ \label{eq:T}\\
+ h_n&=\sum_{i+j=n}(\beta_{ij}-1)x_ix_j+(y*y)_n.
+ \label{eq:hdef}
+\end{align}
+The tail is absolutely convergent. For context, the generating-function equation is
+$Y'-2Y/(1-z)=H$, and boundedness of $y_n$ removes the homogeneous solution proportional to $(1-z)^{-2}$. We do not choose this solution by a formal asymptotic guess.
+
+\subsection{An identity that keeps every residual decaying}
+For all $i\ge0$, define
+\begin{align}
+ a_i(v)&=g_i(v)x_i-1,&\bar a_i&=\int_0^1a_i(v)\,\dd v=b_ix_i-1,
+ \label{eq:an}\\
+ \delta_i&=(b_i-1)x_i,& U(v)&=d+G_1(v)=\frac16-\frac{v^2}2.
+ \label{eq:delta}
+\end{align}
+The starting rate \eqref{eq:base} and \eqref{eq:gexp} give uniformly
+\begin{equation}\label{eq:U}
+ a_i(v)=\frac{U(v)}i+O\!\left(\frac{1+\log i}{i^2}\right),\qquad
+ \int_0^1U(v)\,\dd v=0.
+\end{equation}
+Consequently $\bar a_i=O((1+\log i)/i^2)$ and
+$\delta_i=p/i+O(i^{-2})$. The fixed sums
+\begin{equation}\label{eq:SA}
+ S_A=\sum_{i\ge0}\bar a_i,\qquad
+ S_D=\delta_0+\sum_{i\ge1}(\delta_i-p/i)
+\end{equation}
+converge absolutely before the induction begins.
+
+Expand the exact factorization \eqref{eq:factor} in \eqref{eq:hdef}. The identities
+$\bar a_i-y_i=\delta_i$ and
+$\sum x_ix_j=n+1+2\sum y_i+(y*y)_n$ cancel the latter quadratic convolution. Thus, for every $n\ge1$,
+\begin{align}
+ h_n={}&(H_n-1)(n+1)+2\sum_{i=0}^n\delta_i
+       +2(H_n-1)\sum_{i=0}^n\bar a_i\notag\\
+      &+H_n\int_0^1\sum_{i+j=n}a_i(v)a_j(1-v)\,\dd v.
+ \label{eq:forcingidentity}
+\end{align}
+This is an exact identity including zero endpoints. A constant sequence has not been left convolved with a poorly controlled residual.
+
+\subsection{One order of forcing}
+Assume \eqref{eq:all} at order $M$, including its displayed error. Multiplication by the uniform kernel expansion yields an expansion for $a_n(v)$ through order $M$ with degree at most $j-1$ at order $j$ and uniform error $O(n^{-M-1}(1+\log n)^M)$. Form its canonical model $S_M(v;z)$ and the moments \eqref{eq:moments}. Lemma~\ref{lem:conv}, with reflection in $v$, gives the last convolution in \eqref{eq:forcingidentity} from
+\begin{equation}\label{eq:integratedproduct}
+ \int_0^1[S_M(v;z)+J_M(v;z)]
+          [S_M(1-v;z)+J_M(1-v;z)]\,\dd v,
+\end{equation}
+with error $O(n^{-M-1}(1+\log n)^{M+1})$.
+
+Here is the degree and truncation bookkeeping. A product of two model terms has the form $u^aL^q$ with $q\le a+2$; its first coefficient order is $n^{-a-1}$ with log degree at most $a+1$. A cross product with $J_M$ satisfies $q\le a+1$. Retain $a<M$. Every later inverse-power term from a retained monomial has the same or lower log degree and thus satisfies the required degree bound at its later order. When $a=M$, the largest discarded term is $O(n^{-M-1}(1+\log n)^{M+1})$. When $a>M$, the extra inverse power absorbs the extra fixed logarithms. The polynomial product has finite support. Multiplication by a sufficiently long $H_n$ expansion preserves this precision; independently, the convolution is $O((1+\log n)/n)$ by an elementary half split of $a_n=O(1/n)$.
+
+For the remaining terms, $(b_i-1)=O(i^{-1})$ means the known $x_i$ expansion through order $M$ determines $\delta_i$ through order $M+1$ with error $O(i^{-M-2}(1+\log i)^M)$. Hence
+\begin{align}
+ \sum_{i=0}^n\delta_i
+  &=p\HH_n+S_D-\sum_{i>n}(\delta_i-p/i),\label{eq:deltasum}\\
+ \sum_{i=0}^n\bar a_i&=S_A-\sum_{i>n}\bar a_i,\label{eq:abarSum}
+\end{align}
+where $\HH_n=\sum_{i=1}^n1/i$. The first formula has an expansion through $n^{-M}$ with error $O(n^{-M-1}(1+\log n)^M)$. The second only needs to be taken through $n^{-(M-1)}$: its error $O(n^{-M}(1+\log n)^M)$ acquires another inverse power from $H_n-1$.
+
+These assertions use ordinary absolutely convergent model tails. For $F(t)=t^{-p}(\log t)^q$, $p\ge2$, Euler--Maclaurin with the appropriate endpoint convention gives
+\begin{align}
+ \sum_{k>n}F(k)={}&\int_n^\infty F(t)\,\dd t-\frac{F(n)}2
+  -\sum_{r=1}^J\frac{B_{2r}}{(2r)!}F^{(2r-1)}(n)+\mathcal E_J,
+ \label{eq:EM}\\
+ |\mathcal E_J|&\le C_J\int_n^\infty |F^{(2J)}(t)|\,\dd t.\notag
+\end{align}
+Choose $J$ sufficiently large. For example, the tail of $k^{-2}$ begins
+$n^{-1}-(2n^2)^{-1}+(6n^3)^{-1}$. Apply \eqref{eq:EM} only to explicit model terms; bound the residual tails absolutely, without differentiating them. At $M=1$, \eqref{eq:abarSum} simply gives $S_A+O((1+\log n)/n)$, which suffices.
+
+For the factor $(H_n-1)(n+1)$, take the kernel expansion through order $M+1$, so multiplication by $n+1$ leaves an error $O(n^{-M-1})$. Combining all terms proves
+\begin{equation}\label{eq:hexp}
+ h_n=\frac12\log n+B+\sum_{k=1}^M\frac{Q_k(\log n)}{n^k}
+       +O\!\left(\frac{(1+\log n)^{M+1}}{n^{M+1}}\right),
+ \qquad \deg Q_k\le k.
+\end{equation}
+The leading logarithm is $2p\log n$. The non-convolution tails have degree at most $k-1$ at order $k$, while the model-model products may have degree $k$.
+
+\subsection{The exact inverse improves a full power}
+For integers $a\ge-1$, $q\ge0$, the coefficientwise inverse \eqref{eq:T} applied to $F(z)=u^aL^q$ is represented, on positive coefficients, by
+\begin{equation}\label{eq:Tmodel}
+ T[F](z)=-u^{a+1}\sum_{j=0}^q
+       \frac{q!}{(q-j)!}\frac{L^{q-j}}{(a+3)^{j+1}}.
+\end{equation}
+Indeed the critical generating function is
+\[
+ -u^{-2}\int_0^u t^2F(1-t)\,\dd t,
+\]
+and repeated integration by parts proves \eqref{eq:Tmodel}. The integral converges at zero. To check its coefficient interpretation directly, for the forcing $F(z)=z^m$ the coefficient at positive $n$ is
+\[
+ \begin{cases}
+  -2(n+1)/((m+1)(m+2)(m+3)),&1\le n\le m,\\
+  1/(m+3),&n=m+1,\\
+  0,&n>m+1.
+ \end{cases}
+\]
+These are exactly \eqref{eq:T}. Absolute weighted summability extends this verification to the logarithmic models. A polynomial forcing can leave a polynomial output of one higher degree; it is ignored only for sufficiently large $n$.
+
+For arbitrary signed residuals, the following estimate requires no smoothness:
+\begin{equation}\label{eq:Timprovement}
+ v_k=O\!\left(\frac{(1+\log(k+2))^D}{(k+1)^s}\right)
+ \quad\Longrightarrow\quad
+ (Tv)_n=O\!\left(\frac{(1+\log n)^D}{n^{s+1}}\right)
+ \quad(s,D\ge0\text{ fixed}).
+\end{equation}
+The local term has that size. The absolute tail is at most a constant times
+$n\sum_{k\ge n}(1+\log(k+2))^D/(k+1)^{s+3}$, which has the same bound by integration. Finite initial changes affect only finitely many output indices.
+
+Match \eqref{eq:hexp} to a finite coefficient model using $u^{-1}L$, $u^{-1}$ and $u^{k-1}L^q$ for $1\le k\le M$, $1\le q\le k+1$. The first term has coefficients $\HH_n$; subsequent terms are handled by the triangular matching of Lemma~\ref{lem:basis}. The model error is within the error already displayed in \eqref{eq:hexp}. Under \eqref{eq:Tmodel}, the $u^{-1}L$ term maps to $-L/2-1/4$, and the $u^{-1}$ term maps to the constant polynomial $-1/2$. A term $u^{k-1}L^q$ maps to terms $u^kL^{q-j}$, whose first nonpolynomial order is $n^{-k-1}$ and log degree at most $q-1\le k$. Their later coefficients keep that degree bound. The leading forcing $(1/2)\log n$ therefore produces $P_1=-1/4$.
+
+Taking each exact model expansion sufficiently far, and applying \eqref{eq:Timprovement} to the forcing residual, gives
+\[
+ (Th)_n=\sum_{j=1}^{M+1}\frac{P_j^{\rm new}(\log n)}{n^j}
+      +O\!\left(\frac{(1+\log n)^{M+1}}{n^{M+2}}\right),
+ \qquad\deg P_j^{\rm new}\le j-1.
+\]
+Since $y=Th$, this advances the induction. Subtracting the old and new expansions shows agreement at each earlier order: the least differing inverse power, with its highest nonzero logarithm, could not fit a remainder one full inverse power smaller. Starting from \eqref{eq:base} proves \eqref{eq:all}. Equation \eqref{eq:oldsecond} identifies $P_2$ by the same uniqueness argument. Multiplication by the finite square-root expansion proves \eqref{eq:allW}.
+
+\begin{remark}[Why the moments are not circular]
+At $M=1$ only a zeroth residual moment is used, whose summands are $O((1+\log n)/n^2)$. This first step proves the stronger second-order remainder $O((1+\log n)^2/n^3)$. Only then, at $M=2$, is a first residual moment introduced; its summands are $O((1+\log n)^2/n^2)$. A mere $o(n^{-2})$ residual would not justify that moment.
+\end{remark}
+
+\section{A finite scalar recursion}\label{sec:scalar}
+The function-valued notation proves all required estimates uniformly, but a calculation at a fixed order does not require an arbitrary function as an independent input. Every coefficient $s_{p,q}(v)$ of the canonical $S_M(v;z)$ is a polynomial in $v$: the kernel coefficients are polynomials, and canonical matching uses only finite scalar linear operations.
+
+\begin{proposition}[Scalar connection constants]\label{prop:scalar}
+At the step from $M$ to $M+1$, the convolution contribution through order $n^{-M}$ is determined by finite polynomial algebra and at most
+\[
+ \sum_{p=1}^M p(M-p+1)=\frac{M(M+1)(M+2)}6
+\]
+indexed scalar sums, in addition to the fixed sums $S_A,S_D$. Specifically, put
+\begin{align}
+ r_{M,n}(v)&=g_n(v)x_n-1-[z^n]S_M(v;z),\label{eq:rMn}\\
+ m_{k,p,q}&=\sum_{n\ge0}\binom nk\int_0^1s_{p,q}(v)r_{M,n}(1-v)\,\dd v,
+ \quad 1\le p\le M,\quad1\le q\le p,\quad0\le k\le M-p.
+ \label{eq:scalarseries}
+\end{align}
+Every series in \eqref{eq:scalarseries} is absolutely convergent.
+\end{proposition}
+\begin{proof}
+Uniform norm convergence allows the sum and integral to be interchanged, giving
+$m_{k,p,q}=\int_0^1s_{p,q}(v)\mu_k(1-v)\,\dd v$. Reflecting one cross term in \eqref{eq:integratedproduct} shows that the relevant nonpolynomial expression is
+\begin{align}
+ &\int_0^1 S_M(v;z)S_M(1-v;z)\,\dd v\notag\\
+ &\qquad+2\sum_{p=1}^M\sum_{q=1}^p\sum_{k=0}^{M-p}
+       (-1)^km_{k,p,q}u^{k+p-1}L^q.\label{eq:scalarproduct}
+\end{align}
+The retention condition is exactly $k+p-1<M$. Its summands in \eqref{eq:scalarseries} are $O((1+\log n)^M/n^{M+1-k})$ and the exponent is at least 2. The pure moment product is a polynomial of degree at most $2M-2$; even after applying $T$ it remains finitely supported. No unknown algebraic tail is lost by discarding it. Counting the indexed moments gives the bound.
+\end{proof}
+
+Here is a complete order-advancement procedure.
+\begin{enumerate}
+\item From the already proved $P_1,\ldots,P_M$ and \eqref{eq:Grecipe}--\eqref{eq:Hrecipe}, form the asymptotic coefficients of $a_n(v)$ through order $M$.
+\item Use \eqref{eq:Lcoeff} and triangular matching to construct $S_M(v;z)$.
+\item Define the finitely many scalar sums \eqref{eq:scalarseries}. Their convergence follows from the already proved order-$M$ remainder, before $P_{M+1}$ is known.
+\item Form \eqref{eq:scalarproduct}; retain the coefficient expansion through $n^{-M}$ with the explicit discarded-term bounds of Section~\ref{sec:induction}.
+\item Combine it with \eqref{eq:deltasum}--\eqref{eq:EM}, the finite $H_n$ expansion, and \eqref{eq:forcingidentity}, obtaining \eqref{eq:hexp}.
+\item Match to the finite forcing basis, apply \eqref{eq:Tmodel}, and keep the new polynomial $P_{M+1}$.
+\end{enumerate}
+The exact recurrence and exact $R$ already define $x_n$. A series involving the full exact sequence is a definition of a connection constant, not a circular assumption about the next asymptotic coefficient. ``Finite'' here means finitely many algebraic operations and finitely many specified convergent series at each fixed order. It does not mean that an infinite sum is evaluated exactly by finitely many rational operations. The count is an upper bound on indexed constants, not a minimality or independence assertion.
+
+\section{The explicit third order}\label{sec:third}
+The first induction step strengthens \eqref{eq:oldsecond} to
+\begin{equation}\label{eq:strongsecond}
+ x_n=1+\frac d n+\frac{c\log n+C}{n^2}
+       +O\!\left(\frac{(1+\log n)^2}{n^3}\right).
+\end{equation}
+All first moments used below are justified by this strengthened estimate.
+
+\begin{theorem}[Third order and squared logarithm cancellation]\label{thm:third}
+With $S_A$ defined by \eqref{eq:SA},
+\begin{align}
+ x_n={}&1-\frac1{4n}+\frac{c\log n+C}{n^2}
+  +\frac{(323/22680+cS_A)\log n+K_x}{n^3}
+  +O\!\left(\frac{(1+\log n)^3}{n^4}\right),\label{eq:thirdx}\\
+ \frac{W_n}{A\sqrt n\,r_*^n}
+ ={}&1+\frac1{4n}+\frac{c\log n+B_2}{n^2}
+  +\frac{(22/2835+cS_A)\log n+B_3}{n^3}
+  +O\!\left(\frac{(1+\log n)^3}{n^4}\right),\label{eq:thirdW}\\
+ B_3={}&K_x+\frac C2+\frac3{32}.\label{eq:B3}
+\end{align}
+The constants $K_x,B_3$ are specified by ordinary convergent series and polynomial integrals below. The coefficient of $(\log n)^2/n^3$ is zero in both normalizations.
+\end{theorem}
+
+\subsection{The model and convergent constants}
+Further kernel coefficients obtained from \eqref{eq:Grecipe}--\eqref{eq:Hrecipe} are
+\begin{equation}\label{eq:thirdkernel}
+ b_3^*:=\int_0^1G_3(v)\,\dd v=\frac{25009}{362880},
+ \qquad h_3=-\frac{71329}{51840}.
+\end{equation}
+These use $r_n=1/(12n)-1/(360n^3)+O(n^{-4})$. Set
+\begin{equation}\label{eq:VF}
+ V(v)=C+dG_1(v)+G_2(v),\qquad
+ F(v)=c(\gamma-1)-V(v),\qquad K=-c/2.
+\end{equation}
+By \eqref{eq:strongsecond},
+$a_n(v)=U(v)/n+[c\log n+V(v)]/n^2+O((1+\log n)^2/n^3)$ uniformly. Its exact canonical model is
+\begin{equation}\label{eq:S2}
+ S_2(v;z)=U(v)L+u\{KL^2+F(v)L\}.
+\end{equation}
+Indeed $[z^n]uL=-n^{-2}+O(n^{-3})$ and
+$[z^n]uL^2=(-2\log n+2-2\gamma)n^{-2}+O((1+\log n)n^{-3})$.
+Define, including all initial indices,
+\begin{equation}\label{eq:muThird}
+ r_n(v)=a_n(v)-[z^n]S_2(v;z),\qquad
+ \mu_0(v)=\sum_{n\ge0}r_n(v),\qquad
+ \mu_1(v)=\sum_{n\ge0}nr_n(v).
+\end{equation}
+Both converge absolutely uniformly. The coefficients of $uL$ and $uL^2$ are absolutely summable with sum zero, since their functions tend to zero as $z\uparrow1$. Thus
+\begin{equation}\label{eq:muZeroSimple}
+ \mu_0(v)=a_0(v)+\sum_{n\ge1}\{a_n(v)-U(v)/n\},\qquad
+ \int_0^1\mu_0(v)\,\dd v=S_A.
+\end{equation}
+There is no analogous permission to omit the full model from the first moment.
+
+Use the symmetric bilinear form
+$\ip FG=\int_0^1F(v)G(1-v)\,\dd v$, and define
+\begin{align}
+ S_0&=\ip UU=-\frac7{360},& A_0&=2\ip U{\mu_0},\notag\\
+ A_2&=2\ip UF+2KS_A,& A_1&=2\{\ip F{\mu_0}-\ip U{\mu_1}\}.
+ \label{eq:Aconstants}
+\end{align}
+Every integral here is of a uniformly convergent series against a polynomial.
+
+\subsection{The cancellation and the forcing coefficients}
+At precision $O((1+\log n)^3/n^3)$, Lemma~\ref{lem:conv} says the integrated convolution is the coefficient of
+\begin{equation}\label{eq:thirdconvmodel}
+ S_0L^2+A_0L+u\{A_2L^2+A_1L\}.
+\end{equation}
+The candidate term $uL^3$ has coefficient
+$K\int_0^1\{U(v)+U(1-v)\}\,\dd v=0$. This exact zero mean, rather than numerical fitting, removes the squared logarithm in the final third order.
+Since $[z^n]L^2=2(\log n+\gamma)/n-1/n^2+O(n^{-3})$, the convolution equals
+\begin{equation}\label{eq:thirdconv}
+ \frac{2S_0\log n+c_{10}}n+\frac{-2A_2\log n+c_{20}}{n^2}
+       +O\!\left(\frac{(1+\log n)^3}{n^3}\right),
+\end{equation}
+where
+\begin{equation}\label{eq:c1020}
+ c_{10}=2\gamma S_0+A_0,\qquad
+ c_{20}=-S_0+(2-2\gamma)A_2-A_1.
+\end{equation}
+Put
+\begin{equation}\label{eq:a23}
+ a_2=b_2^*+pd=-\frac{269}{1440},\quad
+ a_3=b_3^*+b_2^*d+pC,\quad\bar V=\int_0^1V=C+a_2.
+\end{equation}
+The two partial sums, computed from \eqref{eq:strongsecond} by convergent tails, are
+\begin{align}
+ \sum_{i=0}^n\delta_i={}&p\log n+p\gamma+S_D+\frac{p/2-a_2}n\notag\\
+ &+\frac{-p/12+a_2/2-(pc/2)\log n-pc/4-a_3/2}{n^2}
+       +O\!\left(\frac{(1+\log n)^2}{n^3}\right),\label{eq:thirdDsum}\\
+ \sum_{i=0}^n\bar a_i={}&S_A-\frac{c(\log n+1)+\bar V}n
+       +O\!\left(\frac{(1+\log n)^2}{n^2}\right).\label{eq:thirdAsum}
+\end{align}
+For example, the tails of $(\log i)/i^3$ and $(\log i)/i^2$ begin respectively
+$(\log n/2+1/4)/n^2$ and $(\log n+1)/n$. Substitution into \eqref{eq:forcingidentity} gives
+\begin{equation}\label{eq:thirdh}
+ h_n=\tfrac12\log n+B+\frac{L_1\log n+C_1}n
+         +\frac{L_2\log n+D}{n^2}
+         +O\!\left(\frac{(1+\log n)^3}{n^3}\right),
+\end{equation}
+with the full constant definitions
+\begin{align}
+ L_1&=2S_0=-\frac7{180},\notag\\
+ C_1&=q+f+p-2a_2+2qS_A+c_{10},\notag\\
+ L_2&=-(p+2q)c-2A_2+2qS_0,\label{eq:forcingThirdConstants}\\
+ D&=f+h_3-p/6+a_2-pc/2-a_3
+        +2fS_A-2q(c+\bar V)+c_{20}+qc_{10}.\notag
+\end{align}
+Direct polynomial integration gives
+\begin{equation}\label{eq:L2eval}
+ \ip UV=\frac{173}{15120},\qquad
+ A_2=-2\ip UV-cS_A,\qquad
+ L_2=\frac{617}{11340}+2cS_A.
+\end{equation}
+There is no dependence on the unknown $C$ in $\ip UV$, because $\int U=0$.
+
+\subsection{Applying the inverse}
+Rule \eqref{eq:Tmodel} or the tail formula \eqref{eq:T} now yields
+\begin{equation}\label{eq:Kx}
+ K_x=C-\frac{L_1}4-\frac{L_2}8+\frac D2+\frac1{48},
+ \qquad P_3(t)=(c+L_2/2)t+K_x.
+\end{equation}
+To make the index algebra explicit, if the leading forcing in \eqref{eq:thirdh} is $a_0\log n$ in place of $(1/2)\log n$, then
+\begin{align}
+ (Th)_n={}&-\frac{a_0}{2n}
+ +\frac{C_1/3+(L_1/3)\log n-2L_1/9-a_0/6}{n^2}\notag\\
+ &+\frac{C_1/3+D/2+(L_1/3+L_2/2)\log n
+                   -17L_1/36-L_2/8-a_0/8}{n^3}
+ +O\!\left(\frac{(1+\log n)^3}{n^4}\right).\label{eq:inverse3}
+\end{align}
+Taking $a_0=1/2$ gives $c=L_1/3$ and
+$C=C_1/3-2L_1/9-1/12$, consistent with \eqref{eq:oldsecond}. It reduces the cubic constant to \eqref{eq:Kx}. Combining \eqref{eq:L2eval} with \eqref{eq:Kx} proves \eqref{eq:thirdx}. Finally, multiply by
+$\sqrt{1+1/n}=1+1/(2n)-1/(8n^2)+1/(16n^3)+O(n^{-4})$
+to obtain \eqref{eq:thirdW} and \eqref{eq:B3}. This proves Theorem~\ref{thm:third}.
+
+\section{The first logarithm in the consecutive ratio}\label{sec:ratio}
+\begin{corollary}\label{cor:ratio}
+For $\rho_n=W_{n+1}/W_n$,
+\begin{equation}\label{eq:ratio3}
+ \frac{\rho_n}{r_*}
+ =1+\frac1{2n}-\frac3{8n^2}
+   +\frac{(7/270)\log n+32/135-2B_2}{n^3}
+   +O\!\left(\frac{(1+\log n)^3}{n^4}\right).
+\end{equation}
+More generally, the ratio has a consistent expansion at every fixed inverse-power order, obtained from sufficiently many forward terms.
+\end{corollary}
+\begin{proof}
+Let $F_n=W_n/(A\sqrt n\,r_*^n)$ and $b=1/4$. Taking a finite logarithm of \eqref{eq:thirdW} gives
+\[
+ \log F_n=\frac b n+\frac{c\log n+k}{n^2}
+       +\frac{\text{an explicit linear log polynomial}}{n^3}
+       +O\!\left(\frac{(1+\log n)^3}{n^4}\right),\qquad
+ k=B_2-b^2/2.
+\]
+The consecutive difference of the explicit cubic term is $O((1+\log n)/n^4)$. The consecutive difference of the arbitrary remainder is bounded only at its original order $O((1+\log n)^3/n^4)$, which is sufficient. Expanding the two explicit lower-order terms and $\frac12\log(1+1/n)$ therefore gives
+\[
+ \log(\rho_n/r_*)
+ =\frac1{2n}-\frac1{2n^2}
+   +\frac{1/6+b+c-2c\log n-2k}{n^3}
+   +O\!\left(\frac{(1+\log n)^3}{n^4}\right).
+\]
+A finite exponential yields \eqref{eq:ratio3}; its cubic constant is
+$-1/16+b+c+b^2-2B_2=32/135-2B_2$.
+For any requested finite order, first use a sufficiently long instance of \eqref{eq:allW}, and then take differences only of its explicit smooth terms. The untouched residual is bounded at its original order. The same finite algebra gives consistency by uniqueness. No improved bound for a difference of an unspecified residual is assumed.
+\end{proof}
+The logarithm in \eqref{eq:ratio3} resolves the cubic ratio coefficient left undetermined in Report 145. It does not prove all-index ratio monotonicity or an effective onset of the already established eventual monotonicity.
+
+\begin{corollary}[Logarithm-aware dyadic extrapolation]\label{cor:extrapolation}
+The following asymptotic acceleration is valid:
+\begin{equation}\label{eq:fivepoint}
+ \frac{\rho_n-22\rho_{2n}+168\rho_{4n}-512\rho_{8n}+512\rho_{16n}}{147}
+ =r_*+O\!\left(\frac{(1+\log n)^3}{n^4}\right).
+\end{equation}
+More generally, write $E f(n)=f(2n)$. For fixed $J\ge1$ the finite operator
+\begin{equation}\label{eq:generalextrap}
+ \mathcal Q_J(E)=\prod_{j=1}^J
+     \left(\frac{E-2^{-j}}{1-2^{-j}}\right)^{\max(1,j-1)}
+\end{equation}
+satisfies
+$\mathcal Q_J(E)\rho_n=r_*+O((1+\log n)^J/n^{J+1})$.
+\end{corollary}
+\begin{proof}
+Using the forward expansion at order $J$ in the preceding proof gives ratio coefficients of degree zero at order one and degree at most $j-2$ at order $j\ge2$, with remainder $O((1+\log n)^J/n^{J+1})$. The degree drops because the consecutive difference raises the inverse-power order of each explicit forward term by at least one; nonlinear products do not increase this bound. The arbitrary forward residual retains its original bound.
+
+On $n^{-j}P(\log n)$, the factor $E-2^{-j}$ replaces $P(t)$ by
+$2^{-j}\{P(t+\log2)-P(t)\}$, decreasing a nonconstant polynomial's degree by one and annihilating a constant. Hence the multiplicities in \eqref{eq:generalextrap} kill all retained terms, and the denominators preserve constant sequences. A finite number of dyadic shifts preserves the displayed error. Expanding the product at $J=3$ gives \eqref{eq:fivepoint}; the repeated factor at $2^{-3}$ is essential for the cubic logarithm.
+\end{proof}
+The corollary is an asymptotic cancellation statement. It supplies neither an effective error constant nor a certificate for decimal digits obtained by numerical extrapolation.
+
+\section{All fixed orders of the threshold inverse}\label{sec:inverse}
+Let $\lambda=\log(1/r_*)>0$ and define
+\begin{equation}\label{eq:N}
+ N(\varepsilon)=\min\{n\ge0:W_n\le\varepsilon\},\qquad
+ L_\varepsilon=\log(1/\varepsilon).
+\end{equation}
+Every admissible $W_n$ is strictly positive and $A>0$. These hypotheses matter for a first crossing: asymptotics alone do not exclude an initial zero. The set in \eqref{eq:N} is nonempty for $\varepsilon>0$ because $W_n\to0$.
+
+The logarithm of \eqref{eq:allW}, at any fixed $M\ge1$, gives
+\begin{equation}\label{eq:logW}
+ \log W_n=\log A+\tfrac12\log n-\lambda n
+       +\sum_{j=1}^M\frac{\mathcal L_j(\log n)}{n^j}+d_{M,n},
+ \quad d_{M,n}=O_M\!\left(\frac{(1+\log n)^M}{n^{M+1}}\right),
+\end{equation}
+with $\deg\mathcal L_j\le j-1$. This follows by finite Taylor expansion of $\log(1+w)$: a product of $r$ forward terms of total order $j$ has degree at most $j-r$. In particular,
+\begin{equation}\label{eq:logfirst}
+ \mathcal L_1=b=\frac14,\qquad
+ \mathcal L_2(t)=ct+k,\qquad k=B_2-\frac1{32}.
+\end{equation}
+Define the explicit smooth models
+\begin{equation}\label{eq:fM}
+ f_0(t)=\lambda t-\tfrac12\log t-\log A,
+ \qquad f_M(t)=f_0(t)-\sum_{j=1}^M t^{-j}\mathcal L_j(\log t).
+\end{equation}
+The exact leading large root is
+\begin{equation}\label{eq:x0}
+ x=x_0(\varepsilon)
+ =-\frac1{2\lambda}W_{-1}\!\left(-\frac{2\lambda\varepsilon^2}{A^2}\right),
+ \qquad f_0(x)=L_\varepsilon,
+\end{equation}
+where $W_{-1}$ denotes the lower real Lambert-W branch. For sufficiently small $\varepsilon$ its argument belongs to $(-1/e,0)$ and $x\to\infty$, with $x\sim L_\varepsilon/\lambda$. The principal branch would give the wrong, small root.
+
+\begin{theorem}[Ceiling-safe all-order inversion]\label{thm:threshold}
+Fix $M\ge1$ and put
+\[
+ E_M(x)=\frac{(1+\log x)^M}{x^{M+1}}.
+\]
+There are uniquely determined polynomials $\mathcal R_j$ of degree at most $j-1$ such that the finite center
+\begin{equation}\label{eq:formalcenter}
+ z_M=x+\sum_{j=1}^M x^{-j}\mathcal R_j(\log x)
+\end{equation}
+satisfies, for some finite constant $C_M>0$ and all sufficiently small $\varepsilon>0$,
+\begin{equation}\label{eq:ceiling}
+ \left\lceil z_M-C_ME_M(x)\right\rceil
+ \le N(\varepsilon)\le
+ \left\lceil z_M+C_ME_M(x)\right\rceil.
+\end{equation}
+The same bracket holds, after adjusting $C_M$, for the Newton center $z^{(k)}$ defined by
+\begin{equation}\label{eq:newton}
+ z^{(0)}=x,\qquad
+ z^{(k+1)}=z^{(k)}-
+     \frac{f_M(z^{(k)})-L_\varepsilon}{f'_M(z^{(k)})},
+\end{equation}
+whenever $k$ is fixed and $3\cdot2^k-2\ge M+1$.
+The constants may depend on $M$ and the fixed forward data. They are not effective error certificates in this article.
+\end{theorem}
+
+\subsection{The finite inverse recursion}
+Write $\ell=\log x$, $\delta=\sum_{j=1}^M x^{-j}\mathcal R_j(\ell)$, and $w=\delta/x$. The exact expression to expand is
+\begin{align}
+ f_M(x+\delta)-f_0(x)
+ =\lambda\delta-\tfrac12\log(1+w)
+  -\sum_{j=1}^M x^{-j}(1+w)^{-j}
+       \mathcal L_j\bigl(\ell+\log(1+w)\bigr).
+ \label{eq:inversesub}
+\end{align}
+At inverse order $m$, the new unknown first appears as $\lambda\mathcal R_m$. Every other appearance is through $w$ and thus at a strictly higher inverse order. Since $\lambda>0$, consecutive coefficient cancellation determines the polynomials uniquely.
+
+The degree bound can be checked without assuming a formal infinite solution. Suppose the earlier $\mathcal R_i$ have degree at most $i-1$. A product of $r$ terms of $w$ with indices $i_1,\ldots,i_r$ has inverse order $\sum(i_a+1)$ and degree at most $\sum(i_a-1)$. When multiplied by the $j$th forward term, the total order is $m=j+\sum(i_a+1)$ and its degree is at most $m-1-2r\le m-1$. Derivatives of $\mathcal L_j$ only reduce that degree. Terms from $\log(1+w)$ alone have degree at most $m-2r\le m-2$. This proves $\deg\mathcal R_m\le m-1$.
+
+The coefficients of $\mathcal R_j$ lie in the polynomial ring over the rationals generated by $\lambda^{-1}$ and the forward coefficients through the same order $j$. There is no additional dependence on $A$ after choosing the exact leading root as coordinate. For example, if
+$\mathcal L_3(\ell)=a_2\ell^2+d_1\ell+e_0$, then
+\begin{align}
+ \mathcal R_1(\ell)&=b/\lambda,\notag\\
+ \mathcal R_2(\ell)&=(c\ell+k)/\lambda+b/(2\lambda^2),\label{eq:R123}\\
+ \mathcal R_3(\ell)&=(a_2\ell^2+d_1\ell+e_0)/\lambda
+ +(c\ell+k)/(2\lambda^2)-b^2/\lambda^2+b/(4\lambda^3).\notag
+\end{align}
+For the placement sequence the third logarithmic polynomial is linear, so $a_2=0$. These formulas concern explicit smooth models, not a derivative of the sequence remainder.
+
+For each fixed $M$, $\delta=O(1/x)$ and $w=O(x^{-2})$. Finite Taylor expansions of the smooth factors in \eqref{eq:inversesub}, with bounded errors for $|w|\le1/2$, justify every cancellation and yield
+\begin{equation}\label{eq:formalresidual}
+ f_M(z_M)-L_\varepsilon=O(E_M(x)).
+\end{equation}
+At the first uncanceled inverse order the log degree is at most $M$; higher fixed log powers are absorbed by their additional inverse powers after a sufficiently deep finite Taylor expansion.
+
+\subsection{Newton errors for the smooth model}
+At large $t$,
+\[
+ f'_M(t)=\lambda-\frac1{2t}+O(t^{-2}),\qquad
+ f''_M(t)=\frac1{2t^2}+O(t^{-3}).
+\]
+Thus $f'_M\ge\lambda/2$ for $t\ge x/2$ once $x$ is large. Since $f_M(x)-L_\varepsilon=O(x^{-1})$, the values at $x\pm B/x$, with sufficiently large fixed $B$, bracket a unique root $\alpha_M=x+O(x^{-1})$. Taylor's theorem on this neighborhood proves
+\[
+ |z^{(k+1)}-\alpha_M|\le Cx^{-2}|z^{(k)}-\alpha_M|^2.
+\]
+For each fixed $k$ the iterates remain there. The exponents satisfy
+$p_0=1$, $p_{k+1}=2p_k+2$, hence $p_k=3\cdot2^k-2$, namely $1,4,10,22,\ldots$. If $p_k\ge M+1$, the error and smooth-model residual are $O(x^{-M-1})$, within $O(E_M(x))$. This proves a statement about exact-real Newton iteration, not unqualified floating-point certification.
+
+\subsection{The first crossing and strict integer brackets}
+The forward equivalent gives $\log W_n/n\to-\lambda$. For any $0<\xi<\lambda$, all sufficiently large indices satisfy
+\[
+ e^{-(\lambda+\xi)n}\le W_n\le e^{-(\lambda-\xi)n}.
+\]
+The remaining finite prefix has a positive minimum. For $\varepsilon$ below that minimum, the two exponential envelopes place the first crossing between $L_\varepsilon/(\lambda+\xi)$ and $\lceil L_\varepsilon/(\lambda-\xi)\rceil$, up to bounded integer adjustments. Letting $\xi\downarrow0$ proves
+\begin{equation}\label{eq:firstcrossing}
+ N(\varepsilon)\sim L_\varepsilon/\lambda\sim x,
+ \quad\text{so eventually }N(\varepsilon)>x/2.
+\end{equation}
+No monotonicity of the actual sequence was required.
+
+The function $g_M(t)=(1+\log t)^M/t^{M+1}$ is decreasing for $t\ge1$, since
+\[
+ \frac{g'_M(t)}{g_M(t)}=
+ \frac1t\left\{\frac M{1+\log t}-(M+1)\right\}<0.
+\]
+Consequently \eqref{eq:logW} implies a uniform bound
+$|d_{M,n}|\le K'_ME_M(x)$ for every integer $n\ge x/2$ once $x$ is large. This uniformity holds over the entire unbounded tail without interpolating the remainder.
+
+For either center $z$ above, choose $D_M$ so that
+$|f_M(z)-L_\varepsilon|\le D_ME_M(x)$, and choose a strict margin
+$C_M>2(D_M+K'_M)/\lambda$. Put $\Delta=C_ME_M(x)$. For $x/2\le n<z-\Delta$, the derivative lower bound implies
+\[
+ \log W_n\ge-L_\varepsilon+
+   \{\lambda C_M/2-D_M-K'_M\}E_M(x)>-L_\varepsilon.
+\]
+Earlier crossings are excluded by \eqref{eq:firstcrossing}. At
+$n_+=\lceil z+\Delta\rceil$ the reversed inequalities give
+$\log W_{n_+}<-L_\varepsilon$. Therefore
+$\lceil z-\Delta\rceil\le N(\varepsilon)\le\lceil z+\Delta\rceil$, proving Theorem~\ref{thm:threshold}, including integer endpoint coincidences.
+
+\begin{remark}[The rounding boundary]
+The uncertainty tends to zero before rounding. It does not imply
+$N=z+o(1)$ or $N=\lceil z\rceil$ for every sufficiently small $\varepsilon$. Near an integer, an arbitrarily small unknown signed error can change a ceiling. Effective forward constants and remainder bounds would be needed to turn the existence bracket into a numerical threshold certificate.
+\end{remark}
+
+\section{A computable refinement of the exponential rate}\label{sec:rate}
+This section is independent of the all-orders bootstrap. It uses the following inputs proved in Report 144. Let
+\[
+ u_n=\frac{W_n}{\sqrt{n+1}},\qquad F(z)=\sum_{n\ge0}u_nz^n.
+\]
+Then $u_n>0$, $u_0=1$, the radius is $R=1/r_*$, and $F(z)\to\infty$ as $z\uparrow R$. There is an exact normalized kernel with
+\begin{equation}\label{eq:alphainput}
+ nu_n=\sum_{i+j=n-1}\alpha_{ij}u_iu_j,\qquad
+ a\le\alpha_{ij}\le1,\qquad
+ 0\le\alpha_{ij}-a\le\frac1{i+1}+\frac1{j+1}.
+\end{equation}
+The lower bound used is the established $a=(2\pi)^{-1/2}$, not a weaker preliminary bound. One may start from the already certified rational interval
+\begin{equation}\label{eq:initialR}
+ [L_0,U_0]=[125/79,1000/527]
+\end{equation}
+for $R$. This initial certificate is an input and is not recomputed here.
+
+\subsection{Exact real-axis enclosures}
+Set $v=1/F$ and $H=F'/F^2$. Absolute interior convergence and \eqref{eq:alphainput} give $a\le H\le1$ and $v'=-H$. Boundary divergence gives $v(R-)=0$. Hence
+\begin{equation}\label{eq:reciprocalbounds}
+ a(R-z)\le v(z)=\int_z^R H(t)\,\dd t\le R-z,
+ \qquad z+v(z)\le R\le z+v(z)/a.
+\end{equation}
+For $t>0$, put
+\[
+ J(t)=\sum_{n\ge0}\frac{u_nt^n}{n+1}=\frac1t\int_0^tF(s)\,\dd s.
+\]
+The inverse-index kernel bound implies
+\[
+ 0\le H(t)-a\le2J(t)/F(t)
+ \le\frac{2(R-t)}{at}\log\frac R{R-t}.
+\]
+Indeed \eqref{eq:reciprocalbounds} gives $F(s)\le1/(a(R-s))$ and $v(t)\le R-t$. For $0<z<R$, integration with $\delta=R-z$ yields
+\begin{equation}\label{eq:defect}
+ 0\le v(z)-a\delta
+ \le\frac{\delta^2}{az}\left(\log\frac R\delta+\frac12\right).
+\end{equation}
+Given $U\ge R$ and $D=U-z$, first replace $R$ by $U$ in the logarithm and then replace $\delta$ by $D$. The second replacement is valid because
+$\frac{\dd}{\dd t}\{t^2(\log(U/t)+1/2)\}=2t\log(U/t)>0$ for $0<t<U$. Thus, with
+\begin{equation}\label{eq:Crate}
+ C(z,U)=\frac{D^2}z\left(\log\frac UD+\frac12\right),
+\end{equation}
+we obtain the refined exact enclosure
+\begin{equation}\label{eq:refinedR}
+ z+\frac{v(z)}a-\frac{C(z,U)}{a^2}\le R\le z+\frac{v(z)}a.
+\end{equation}
+Its width is $C/a^2$. Its possibly negative lower endpoint causes no problem after intersection with the old positive bracket.
+
+\subsection{A terminating evaluator using finite coefficients}
+Fix rational $0<z<t<R$ with a known strict-interiority witness. Since each $W_n$ is a computable rational, each $u_n$ can be enclosed by rational square-root bounds. For $N\ge1$, let $P_N(t)=\sum_{n<N}u_nt^n$. Sequentially compute a rational
+\[
+ P_N(t)\le\overline P_N\le P_N(t)+1,
+\]
+and test $4t\overline P_N<N$. If this rational strict test fails, including equality, advance immediately to $N+1$. Each finite computation terminates, and the test succeeds for every $N>4t(F(t)+1)$, since $P_N(t)\le F(t)<\infty$. No equality test on an unknown real is left unresolved.
+
+For the accepted $N$, the nonnegative formal solution
+$B=P_N+(x/N)B^2$, with $P_N(x)=\sum_{n<N}u_nx^n$, dominates $F$ coefficientwise. Below degree $N$ this follows from the polynomial term. At degree $n\ge N$, \eqref{eq:alphainput} gives
+$u_n\le N^{-1}\sum_{i+j=n-1}u_iu_j$, and the factor $x$ makes coefficient induction valid. The Catalan expansion converges at $t$ and selects the smaller quadratic root
+\[
+ B_N(t)=\frac{2P_N(t)}{1+\sqrt{1-4tP_N(t)/N}}
+        \le2P_N(t)\le2\overline P_N=:b.
+\]
+Both numerical roots are positive; selecting this formal branch is essential. Positivity now gives the tail bound
+\begin{equation}\label{eq:tailF}
+ \sum_{k\ge M}u_kz^k\le b(z/t)^M.
+\end{equation}
+Given positive rational tolerance $\epsilon$, find $M$ by rational arithmetic so that the last quantity is at most $\epsilon/2$, and enclose the finite prefix to width at most $\epsilon/2$. Adding the tail only to the upper endpoint gives a rational interval of width at most $\epsilon$ for $F(z)$. Its lower endpoint may be replaced by its maximum with 1. This proves arbitrary-accuracy evaluation with finitely many coefficients, but makes no practical coefficient-count or runtime claim.
+
+If $1\le f_-\le F(z)\le f_+$, then
+\begin{equation}\label{eq:vinterval}
+ v_-=1/f_+\le v(z)\le1/f_-=:v_+,
+ \qquad v_+-v_-\le f_+-f_-.
+\end{equation}
+The reciprocal endpoints reverse order. The elementary constants also have computable rational enclosures: alternating arctangent sums enclose $\pi$, positive square roots admit rational bisection, and for rational $x>1$, $y=(x-1)/(x+1)$ gives
+\begin{equation}\label{eq:loginterval}
+ \log x=2\sum_{j=0}^{m-1}\frac{y^{2j+1}}{2j+1}+T_m,
+ \qquad 0\le T_m\le\frac{2y^{2m+1}}{(2m+1)(1-y^2)}.
+\end{equation}
+These examples establish computability, not computational efficiency.
+
+\subsection{Outward rounding and interval contraction}
+For rational enclosures $0<a_-\le a\le a_+$, $0<v_-\le v\le v_+$, and $0<C_-\le C\le C_+$, define endpoint intervals for
+$A=z+v$, $B=z+v/a$, and $P=z+v/a-C/a^2$ by
+\begin{align}
+ A_-&=z+v_-,&A_+&=z+v_+,\notag\\
+ B_-&=z+v_-/a_+,&B_+&=z+v_+/a_-,\label{eq:roundedendpoints}\\
+ P_-&=z+v_-/a_+-C_+/a_-^2,
+ &P_+&=z+v_+/a_--C_-/a_+^2.\notag
+\end{align}
+All three enclosures are valid, and their widths tend to zero as inputs are refined. This subtraction form avoids the invalid rule of dividing a possibly negative lower numerator by an upper positive denominator.
+
+\begin{theorem}[Computable nested rate enclosures]\label{thm:rate}
+Start from any known rational $0<L_0\le R\le U_0$. There is a terminating finite-coefficient algorithm producing nested rational intervals $[L_k,U_k]$ for $R$, to any prescribed positive rational width tolerance. If $w_k=U_k-L_k>0$, each update satisfies
+\begin{align}
+ w_{k+1}&\le\frac{313}{400}w_k<\frac45w_k,\label{eq:coarsecontract}\\
+ w_{k+1}&\le\frac{25}{8a^2L_0}w_k^2
+       \left(\log\frac{U_0}{w_k}+\frac12\right)+\frac{w_k^2}{50}.
+ \label{eq:supercontract}
+\end{align}
+The corresponding rate intervals are $[1/U_k,1/L_k]$, of width at most $w_k/L_0^2$. The second estimate is a quadratic-times-log width bound. Neither estimate is a bit-complexity bound or a claim that new digits have been computed.
+\end{theorem}
+\begin{proof}
+For the current bracket $[L,U]$, stop if $w=U-L=0$. Otherwise choose rational
+\begin{equation}\label{eq:interior}
+ d=\min(w/4,L/2),\qquad z=L-d,\qquad t=L-d/2,
+ \qquad\eta=\min(w,w^2)/100.
+\end{equation}
+Then $0<z<t<L\le R$, $z\ge L/2$, and $0<d/w\le1/4$. The strict witness for the evaluator is available even when $L=R$. Compute and refine the input intervals until each endpoint interval in \eqref{eq:roundedendpoints} has width at most $\eta$. The evaluator and elementary interval operations terminate; all endpoint widths tend to zero, so this refinement also terminates. Define
+\begin{equation}\label{eq:newLU}
+ L_{\rm new}=\max(L,A_-,P_-),\qquad
+ U_{\rm new}=\min(U,B_+).
+\end{equation}
+The maximum consists of valid lower bounds, and the minimum of valid upper bounds. The new interval is nonempty, rational, nested, and contains $R$.
+
+To bound its width, set $s=d/w$ and $T=v(z)/w$. In units of the old width, the exact coarse intersection in \eqref{eq:reciprocalbounds} has endpoints
+$\max(0,T-s)$ and $\min(1,T/a-s)$. If $T\le a(1+s)$, its width is at most
+$T(1/a-1)\le(1+s)(1-a)$. If $T\ge a(1+s)$, its width is at most
+$1+s-T\le(1+s)(1-a)$. Thus its width is at most $q_0w$, where
+$q_0=(5/4)(1-a)$. Outward errors add at most $2\eta$; the refined lower bound can only decrease the interval. The elementary bound $\pi<22/7$ implies $a>39/100$, so
+\[
+ w_{\rm new}\le q_0w+2\eta
+ \le\left(\frac{61}{80}+\frac1{50}\right)w
+ =\frac{313}{400}w<\frac45w.
+\]
+For the refined intersection, its exact width is $C/a^2$, hence
+$w_{\rm new}\le C/a^2+2\eta$. Throughout iteration,
+$z\ge L_0/2$, $U\le U_0$, and $w\le D=U-z=w+d\le5w/4$. Therefore
+\[
+ \frac C{a^2}\le\frac{25}{8a^2L_0}w^2
+       \left(\log\frac{U_0}w+\frac12\right),\qquad
+ 2\eta\le w^2/50,
+\]
+which proves \eqref{eq:supercontract}. All factors are positive since $w<U\le U_0$. Its right side divided by $w$ tends to zero.
+
+For a radius-width tolerance $\epsilon>0$, find an integer $K$ by rational multiplication until $(4/5)^Kw_0\le\epsilon$. Each of the $K$ updates terminates and \eqref{eq:coarsecontract} proves the stopping guarantee. Finally,
+\[
+ \frac1{L_k}-\frac1{U_k}=\frac{w_k}{L_kU_k}\le\frac{w_k}{L_0^2}.
+\]
+For rate-width tolerance $\epsilon$, use $(4/5)^Kw_0\le\epsilon L_0^2$, or stop sooner when the actual rational width is sufficient.
+\end{proof}
+For a wholly rational coefficient in \eqref{eq:supercontract}, one may replace $25/(8a^2L_0)$ by the larger $31250/(1521L_0)$. No run of this interval-refinement algorithm, beyond its symbolic finite checks, is claimed in the present report.
+
+\section{Limits and further questions}\label{sec:limits}
+The main advance over the foundation reports is an all-fixed-order coefficient theorem with specified logarithmic degree and remainder, obtained without circular endpoint moments. The explicit third order also shows that the generic degree bound need not be attained: the squared logarithm cancels. Several questions remain outside the proved conclusions.
+\begin{enumerate}
+\item \textbf{Effective correction constants.} The endpoint-series formulas prove existence and identify coefficients, but do not provide effective tail bounds or onset indices for $B_2$, $B_3$, or the higher correction constants. The independent rate algorithm does not automatically supply these bounds.
+\item \textbf{Higher cancellations and coefficient structure.} The upper bound $\deg P_j\le j-1$ allows further cancellations. A systematic description of their exact degrees, signs, and dependence on the scalar moments would sharpen the formal structure.
+\item \textbf{Growth with the order.} No estimate on the size of $P_j$ as $j\to\infty$ is proved. Convergence, divergence rates, optimal truncation, exponentially small sectors, and summability of an infinite expansion all require additional arguments.
+\item \textbf{Practical certified numerics.} The rate-enclosure theorem has a terminating evaluator and explicit outer width contraction, but no useful bound on total arithmetic work or the number of probability coefficients. Implementing and benchmarking a certified enclosure computation is a separate task; no new rate digits are certified here.
+\item \textbf{Finite-index behavior and numerical thresholds.} All-index ratio monotonicity, effective onsets of eventual conclusions, and numerical first-crossing certificates remain separate questions. The ceiling brackets cannot be replaced by an unrounded integer asymptotic equality.
+\end{enumerate}
+These limitations are compatible: computability of the leading rate by an independent method does not make the connection constants or the all-order remainders effective.
+
+\section{Exact checks and reproduction}\label{sec:reproduction}
+The accompanying archive contains this PDF and editable LaTeX source, a new standard-library exact-arithmetic companion, deterministic build scripts, a source and toolchain record, and unchanged source/PDF copies of Reports 144 and 145. It contains no primary copyrighted manuscript PDF, prior computational archive, or development intermediates.
+
+The companion recomputes finite rational identities for logarithmic coefficient models, signed discrete Taylor expansion, the critical inverse, kernel and third-order constants, and finite inverse algebra. Its closed fixtures are checked semantically, rather than accepted because a checksum matches. Normal and optimized Python tests exercise exact algebra and structural rejection behavior. The companion documentation states the precise finite scope and separates analytic proof inputs from recomputed rational identities.
+
+These tests are safeguards for algebra, signs, indexing, and reproducibility. They do not prove the uniform convolution bounds, infinite moment convergence, the all-orders quantifier, or analytic error propagation; those are established in the preceding proofs. They do not evaluate the connection constants, execute a new rate-enclosure iteration, certify decimal digits, or certify an integer threshold. The interval-theorem checks concern finite identities, not computational-complexity claims.
+
+The README gives exact commands for verification and rebuilding. The PDF build uses a clean local TeX configuration, fixed timestamp and locale, no shell escape, and stabilized references; it rejects warnings and box defects. With the recorded TeX/font toolchain it is byte-reproducible. The archive uses an explicit fixed allowlist, fixed order, timestamps, and permissions, and a generated hash manifest. Output guards reject overwrites, symlinks, and parent-traversal paths. The foundation documents are archival dependencies and are not rebuilt or changed by the new PDF build.
+
+\begin{thebibliography}{9}
+\bibitem{r144}
+\emph{Asymptotics and a computable exponential rate for a proportional placement game}, Report 144, October 3, 2026. Unchanged source and PDF included in the accompanying archive. Supplies the leading equivalent, kernel bounds, radius properties, initial certified rate bracket, and positive-prefix inverse argument.
+
+\bibitem{r145}
+\emph{Pointwise corrections for the proportional placement game}, Report 145, October 3, 2026. Unchanged source and PDF included in the accompanying archive. Supplies the starting rate, exact critical inverse with its boundary condition, and the absolutely convergent-series definition of $B_2$.
+
+\bibitem{serra}
+Alessandro Serra, \emph{The Number Challenge: Asymptotic Analysis and Hidden Constant of a Recursive Placement Game}, version 1, manuscript dated July 22, 2026, published August 15, 2026. Zenodo record 21946055. Model and recurrence: Theorem 3.12, equations (47)--(48), printed pages 23--24, as documented in the foundation reports.
+\href{https://doi.org/10.5281/zenodo.21946055}{doi:10.5281/zenodo.21946055}.
+
+\bibitem{oeis}
+The OEIS Foundation Inc., \emph{The On-Line Encyclopedia of Integer Sequences}, entry A398540. The association and source scope are documented in Reports 144 and 145. \url{https://oeis.org/A398540}.
+
+\bibitem{robbins}
+Herbert Robbins, A remark on Stirling's formula, \emph{The American Mathematical Monthly} \textbf{62} (1955), no. 1, 26--29.
+\href{https://doi.org/10.2307/2308012}{doi:10.2307/2308012}.
+\end{thebibliography}
+\end{document}

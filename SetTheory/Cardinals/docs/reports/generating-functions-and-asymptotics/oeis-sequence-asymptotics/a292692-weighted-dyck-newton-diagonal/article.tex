@@ -1,0 +1,1041 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype,amsmath,amssymb,amsthm,booktabs}
+\usepackage[hidelinks]{hyperref}
+\hypersetup{pdftitle={Report 142 All orders for the weighted Dyck Newton diagonal},pdfauthor={},pdfsubject={A292692 fixed order asymptotics on the full interior ratio range}}
+\pdfinfoomitdate=1\pdftrailerid{}\pdfsuppressptexinfo=15
+\setlength{\emergencystretch}{2em}
+\allowdisplaybreaks[2]
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\LL}{\mathcal L}
+\newcommand{\fall}[2]{#1^{\underline{#2}}}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Prob}{\mathbb P}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\dd}{\mathcal D}
+\newcommand{\coef}[2]{[#1]#2}
+\title{All orders for the weighted Dyck Newton diagonal}
+\author{Report 142}
+\date{October 2, 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We prove a complete fixed-order asymptotic expansion for the Newton
+coefficients of the weighted Dyck polynomials underlying OEIS A292692.
+The moving ratio $\alpha=m/N$ may lie in any compact subset of $(0,1)$.
+Every normalized coefficient has the form $\sqrt{1-s^2}$ times a rational
+function of the saddle parameter $s$, where $\alpha=2s^2/(1+s)$.
+An explicit finite algorithm determines the coefficients. The full
+interior range follows by freezing a convolution inverse at the base
+state, controlling the change of saddle at neighboring states, and
+bootstrapping a bounded error through finitely many nested compact sets.
+On the diagonal, all relative coefficients belong to $\Q(\sqrt{17})$;
+in particular the second is
+$-(30800095+3912441\sqrt{17})/80494592$.
+We also obtain an all-orders Lambert $W$ and Newton inversion algorithm,
+with the real uncertainty retained inside the integer ceilings.
+Report 141 supplies the exact weighted-path foundation; all analytic
+arguments required for this continuation are given here. The conclusions
+are fixed-order statements, with no effective remainder constants or
+claims at the two ratio boundaries.
+\end{abstract}
+
+\section{Definitions and main results}
+For a Dyck path of semilength $N$, weight each peak at coordinates $(a,b)$
+by $k+a/b$, and let $p_N(k)$ be the total path weight. The exact bridge
+proved in Report 141~\cite{foundation} identifies these polynomials by
+\begin{equation}\label{eq:recurrence}
+ p_0(k)=1,\qquad
+ p_N(k)=(k+2N-2)p_{N-1}(k)
+       +\sum_{i=0}^{N-1}p_i(k)p_{N-1-i}(k).
+\end{equation}
+Our analytic starting point may equivalently be this recurrence. Write
+\begin{gather}
+ \LL_m P=[\fall{k}{m}]P(k)=\frac{\Delta^mP(0)}{m!},\qquad
+ \gamma_N=4^{-N}\binom{2N}{N},\label{eq:Newton}\\
+ z_N(k)=\gamma_N\prod_{i=0}^{N-1}(k+2i+1),\qquad
+ Q_{N,m}=\LL_mz_N,\qquad
+ R_{N,m}=\frac{\LL_mp_N}{2NQ_{N,m}}.\label{eq:normalization}
+\end{gather}
+The last definition applies for $N\ge1$ and $0\le m\le N$.
+The sequence of interest is
+\begin{equation}\label{eq:diagonaldef}
+ a_n=\LL_np_{2n},\qquad a_0=1.
+\end{equation}
+The factor $1/m!$ in \eqref{eq:Newton} is essential.
+
+Throughout the interior ratio range, set
+\begin{equation}\label{eq:saddleparameters}
+ \alpha=\frac mN=\frac{2s^2}{1+s},\quad 0<s<1,\quad
+ t=1-s^2,\quad h=\frac{1-s}{s},\quad
+ \mu=\frac1\alpha=\frac{1+s}{2s^2},\quad
+ B=\frac{t(s+2)}{4s^4}.
+\end{equation}
+The map $s\mapsto\alpha$ is strictly increasing from $(0,1)$ onto $(0,1)$.
+When convenient, a function of $s$ is also regarded as a function of
+$\alpha$ through this map.
+
+\begin{theorem}[All fixed orders on the full interior]\label{thm:allorders}
+There are unique analytic coefficient functions $R_j$ on $0<s<1$, of the
+form
+\begin{equation}\label{eq:rationalform}
+ R_j(s)=\sqrt{1-s^2}\,r_j(s),\qquad r_j\in\Q(s),\qquad r_0=1,
+\end{equation}
+regular throughout this interval, with the following property. For every
+fixed integer $K\ge1$ and every compact $J\subset(0,1)$,
+\begin{equation}\label{eq:allorders}
+ R_{N,m}=\sum_{j=0}^{K-1}R_j(s(m/N))N^{-j}
+                  +O_{J,K}(N^{-K})
+\end{equation}
+uniformly over integer pairs with $m/N\in J$. The finite algorithm in
+Section~\ref{sec:algorithm} determines all coefficients exactly.
+\end{theorem}
+
+\begin{corollary}[The diagonal coefficient field]\label{cor:diagonal}
+For every fixed $K\ge1$,
+\begin{equation}\label{eq:diagonal}
+ a_n=C d^n\frac{n!}{\sqrt n}
+ \left(\sum_{j=0}^{K-1}b_jn^{-j}+O_K(n^{-K})\right),
+\end{equation}
+where
+\begin{gather}
+ d=\frac{51\sqrt{17}-107}{4},\qquad
+ C=\frac{\sqrt{2+2/\sqrt{17}}}{\pi^{3/2}},\qquad b_0=1,\label{eq:constants}\\
+ b_j\in\Q(\sqrt{17})\quad(j\ge0),\qquad
+ b_1=-\frac{989}{2176}-\frac{907\sqrt{17}}{36992},\label{eq:b1}\\
+ b_2=-\frac{30800095+3912441\sqrt{17}}{80494592}.
+ \label{eq:b2}
+\end{gather}
+\end{corollary}
+The first relative correction and the constants were established in
+Report 141. The continuation here includes all fixed orders, the entire
+interior ratio range, the exact coefficient field, and an integer-safe
+inverse at every fixed order. No convergence of the expansion, uniformity
+for $K$ growing with $N$, boundary result at $\alpha=0$ or $1$, effective
+onset or error constant, or priority claim is made. Finite exact checks
+in the companion corroborate algebra; the analytic remainder is proved
+below.
+
+\section{Exact transforms and the positive convolution}\label{sec:exact}
+Report 141 proves the formal convolution identity
+\begin{equation}\label{eq:convolution}
+ 2Nz_N=\sum_{j=1}^N p_jz_{N-j}.
+\end{equation}
+All ordinary coefficients of $p_N,z_N$ are nonnegative. Isolating the
+$j=N$ term therefore gives $0\preceq p_N\preceq2Nz_N$ in ordinary
+coefficientwise order. Since
+$\LL_m k^d=\left\{\begin{smallmatrix}d\\m\end{smallmatrix}\right\}\ge0$,
+Newton extraction preserves this order, and hence
+\begin{equation}\label{eq:bounded}
+ 0\le R_{N,m}\le1.
+\end{equation}
+Here $Q_{N,m}>0$ throughout the valid range, as the next formula shows.
+
+Define analytic functions on $|z|<1$ by
+\begin{equation}\label{eq:fh}
+ f(z)=(1-z)^{-1/2},\qquad h(z)=f(z)-1,\qquad
+ C_{N,m}=[z^N]f(z)h(z)^m.
+\end{equation}
+The product definition gives
+\[
+ \sum_{N\ge0}\frac{z_N(k)}{(2N-1)!!}z^N
+ =f(z)(1+h(z))^k
+ =f(z)\sum_{m\ge0}\frac{\fall{k}{m}}{m!}h(z)^m.
+\]
+Thus, with $(-1)!!=1$,
+\begin{equation}\label{eq:Q}
+ Q_{N,m}=\frac{(2N-1)!!}{m!}C_{N,m}.
+\end{equation}
+All relevant coefficients are positive. The saddle condition
+$t h'(t)/h(t)=N/m$ is exactly \eqref{eq:saddleparameters}.
+
+For any polynomial $P$, Newton multiplication gives
+\begin{equation}\label{eq:multiplication}
+ \LL_m(z_\ell P)=\sum_{r=0}^{\ell}c_{\ell,r}(m)\LL_{m-r}P,
+ \qquad c_{\ell,r}(m)=\frac{\Delta^r z_\ell(m-r)}{r!}.
+\end{equation}
+Indeed, expand $z_\ell(k)$ in the Newton basis centered at $q=m-r$,
+and multiply each term by $\fall{k}{q}$; the identity
+$\fall{k}{q}\fall{(k-q)}{r}=\fall{k}{q+r}$ proves the assertion.
+Only admissible predecessor indices are included; otherwise the
+transformed summand is zero and its kernel is defined to be zero.
+For admissible predecessors the coefficients in \eqref{eq:multiplication}
+are nonnegative.
+
+Put $L=\lfloor N/2\rfloor$. Splitting \eqref{eq:convolution} into
+disjoint halves yields the exact equation
+\begin{align}
+ R_{N,m}&=1-(\mathcal K_NR)_{N,m}-B_{N,m},\label{eq:causal}\\
+ (\mathcal K_NR)_{N,m}
+ &=\sum_{\ell=1}^{L}\sum_{r=0}^{\ell}
+       a_{N,m,\ell,r}R_{N-\ell,m-r},\label{eq:exactkernel}\\
+ a_{N,m,\ell,r}
+ &=\left(1-\frac\ell N\right)c_{\ell,r}(m)
+                 \frac{Q_{N-\ell,m-r}}{Q_{N,m}},\label{eq:kerneldef}\\
+ B_{N,m}&=\sum_{j=1}^{N-L-1}
+                   \frac{\LL_m(p_jz_{N-j})}{2NQ_{N,m}}.\label{eq:oppositeexact}
+\end{align}
+The possible even midpoint occurs once. Every principal predecessor has
+size at least $N/2$.
+
+\section{A uniform shifted saddle expansion}\label{sec:saddle}
+Let $S$ be any compact subinterval of $(0,1)$ in the $s$ variable. Define
+\begin{equation}\label{eq:cumulants}
+ \dd=t\frac d{dt}=-\frac{1-s^2}{2s}\frac d{ds},\qquad
+ \kappa_j=\dd^j\log h(t),\qquad g_j=\dd^j\log f(t).
+\end{equation}
+These are rational functions of $s$; in particular $\kappa_1=\mu$ and
+$\kappa_2=B>0$.
+
+\begin{lemma}[Shifted expansion with summable remainders]\label{lem:saddle}
+Fix $A>0$ and $K\ge1$. Uniformly on $S$ and for
+$0\le r\le\ell\le A\log m$,
+\begin{align}
+ C_{N-\ell,m-r}
+ &=\frac{f(t)h(t)^mt^{-N}t^\ell h^{-r}}{\sqrt{2\pi mB}}
+ \left(\sum_{j=0}^{K-1}D_j(\ell,r;s)m^{-j}
+  +O\bigl(m^{-K}(1+\ell+r)^{M_K}\bigr)\right),\label{eq:shifted}
+\end{align}
+for some fixed exponent $M_K$. Here $D_0=1$ and
+$D_j\in\Q(s)[\ell,r]$.
+\end{lemma}
+\begin{proof}
+Set $\psi(\theta)=h(te^{i\theta})/h(t)$ and
+$g(\theta)=f(te^{i\theta})/f(t)$. After extracting the factors outside the
+parentheses in \eqref{eq:shifted}, the Fourier integral before its Gaussian
+normalization is
+\begin{equation}\label{eq:Fourier}
+ \frac1{2\pi}\int_{-\pi}^{\pi}
+ g(\theta)\psi(\theta)^{-r}e^{i\ell\theta}
+ \exp\{m(\log\psi(\theta)-i\mu\theta)\}\,d\theta.
+\end{equation}
+Use the analytic logarithm only near zero. Elsewhere the exact integrand
+is
+\[
+ g(\theta)\psi(\theta)^{m-r}e^{-i(N-\ell)\theta}.
+\]
+No global logarithm is needed. Moreover $h$ has no zero on $|z|=t>0$,
+since $h(z)=0$ would imply $z=0$.
+
+The function $\psi$ is the characteristic function of the integer law
+$\Prob(X=j)=[z^j]h(z)t^j/h(t)$, $j\ge1$. Every positive degree has positive
+mass, so the law has span one. Its exponential moments are uniform on $S$,
+because $t$ stays in a compact subset of $(0,1)$. The mean and variance
+are $\mu$ and $B$. Uniform aperiodicity gives $|\psi|\le q_*<1$ on any
+fixed outer arc. On a sufficiently small fixed inner arc,
+\[
+ \Re(\log\psi(\theta)-i\mu\theta)\le-b\theta^2
+\]
+with $b>0$ uniform on $S$. Choose $0<\eta<1/6$. The outer arc is
+exponentially small; the intermediate arc
+$m^{-1/2+\eta}\le|\theta|\le\theta_0$ contributes
+$O(\exp(-c m^{2\eta}))$. Polynomial logarithmic shifts do not change
+these conclusions, since $m-r\ge m/2$ eventually.
+
+On the central arc put $\theta=u/\sqrt m$ and $z=m^{-1/2}$. After
+removing $e^{-Bu^2/2}$, the remaining analytic factor is
+\begin{equation}\label{eq:Gaussianexp}
+ \exp\left\{
+ \sum_{j\ge1}\frac{g_j-r\kappa_j+\ell\mathbf1_{j=1}}{j!}(iu)^jz^j
+ +\sum_{j\ge3}\frac{\kappa_j}{j!}(iu)^jz^{j-2}
+ \right\}.
+\end{equation}
+Expand in the real variable $z$ through degree $2K-1$. Fixed derivatives
+at zero are polynomials in $u,\ell,r$ over $\Q(s)$. Odd powers of $z$
+give odd polynomials in $u$ and integrate to zero.
+
+Here is a uniform Taylor remainder bound. For $0\le z'\le m^{-1/2}$,
+$|u|\le m^\eta$, the saddle remainder exponent is
+$O(z'|u|^3)=O(m^{-1/2+\eta})u^2$. Each required fixed derivative has
+polynomial $u$ growth. The amplitude exponent has modulus bounded by
+\[
+ C(1+\ell+r)z'|u|+C(1+r)(z'u)^2.
+\]
+Young's inequality bounds its linear term by
+$\delta u^2/2+C'(1+\ell+r)^2/m$, and the second summand is bounded
+uniformly in the logarithmic range. The quadratic term is absorbed for
+large $m$. Analytic derivatives are uniformly bounded in a fixed complex
+neighborhood of the compact saddle set. Thus every derivative required
+for the remainder is bounded by
+\[
+ C_K(1+\ell+r)^{M_K}(1+|u|)^{E_K}e^{\delta u^2},
+ \qquad \delta<\tfrac14\min_S B.
+\]
+Taylor's integral remainder, multiplied by the Gaussian and integrated,
+is $O(m^{-K}(1+\ell+r)^{M_K})$. Extending polynomial Gaussian moments
+to the whole real line costs a superpolynomially small error. This proves
+the asserted expansion and its uniform remainder.
+\end{proof}
+
+The proof is also a finite coefficient algorithm: expand
+\eqref{eq:Gaussianexp} through $z^{2j}$ and apply
+\begin{equation}\label{eq:Gaussianmoments}
+ u^{2a}\longmapsto\frac{(2a-1)!!}{B^a},\qquad
+ u^{2a+1}\longmapsto0.
+\end{equation}
+The coefficient of $z^{2j}$ is $D_j$. Only
+$\kappa_1,\ldots,\kappa_{2j+2}$ and $g_1,\ldots,g_{2j}$ are needed.
+For later use introduce the normalized ratio series
+\begin{equation}\label{eq:V}
+ V_{\ell,r}(x)=
+ \frac{\sum_{j\ge0}D_j(\ell,r;s)x^j}
+      {\sum_{j\ge0}D_j(0,0;s)x^j}.
+\end{equation}
+It has polynomial coefficients in $\ell,r$ over $\Q(s)$, satisfies
+$V_{0,0}=1$ identically, and has the corresponding relative uniform
+remainder when truncated at a fixed order.
+
+\section{A positive estimate away from the endpoints}\label{sec:middle}
+Define
+\[
+ U_{N,m,\ell}=\frac{\LL_m(z_\ell z_{N-\ell})}{Q_{N,m}}.
+\]
+\begin{lemma}[Uniform middle bound]\label{lem:middle}
+On every compact $J\subset(0,1)$ there are constants $C<\infty$ and
+$0<q<1$ such that
+\begin{equation}\label{eq:middle}
+ U_{N,m,\ell}\le CNq^{\min(\ell,N-\ell)}
+ \quad(1\le\ell<N,\ m/N\in J).
+\end{equation}
+\end{lemma}
+\begin{proof}
+Choose an integer $H=m/(1-s)+O(1)$. On the compact ratio range,
+$H>m$ eventually and $H/N=2s^2/(1-s^2)+O(N^{-1})$ stays in a compact
+positive interval. Nonnegative Newton coefficients imply
+\[
+ \LL_m(z_\ell z_{N-\ell})\le
+ \frac{z_\ell(H)z_{N-\ell}(H)}{\fall H m}.
+\]
+The evaluation must be at an integer: then higher falling factorials
+are nonnegative or zero. By \eqref{eq:Q},
+\[
+ \frac{z_N(H)}{\fall H m\,Q_{N,m}}
+ =\frac{[z^N]f(z)(1+h(z))^H}{\binom Hm C_{N,m}}.
+\]
+Positive-coefficient evaluation bounds the numerator by
+$f(t)(1+h)^Ht^{-N}$. Lemma~\ref{lem:saddle}, with no shift and $K=1$,
+bounds the denominator below by a constant times
+$\binom Hm f(t)h^mt^{-N}/\sqrt m$. Put $p=h/(1+h)=1-s$. The ratio
+is therefore at most
+\[
+ \frac{C\sqrt m}{\binom Hm p^m(1-p)^{H-m}}\le C'N.
+\]
+The last inequality follows from the uniform central binomial estimate:
+$p$ stays away from $0,1$, $m-Hp=O(1)$, and Stirling's formula makes the
+binomial probability at least $c/\sqrt H$.
+
+For $\ell\le N/2$, the product formula gives
+\[
+ \frac{z_\ell(H)z_{N-\ell}(H)}{z_N(H)}
+ =\frac{\gamma_\ell\gamma_{N-\ell}}{\gamma_N}
+ \prod_{i=0}^{\ell-1}\frac{H+2i+1}{H+2(N-\ell+i)+1}.
+\]
+The gamma ratio is uniformly bounded: $\gamma_\ell\le1$ and
+\[
+ \log\frac{\gamma_{N-\ell}}{\gamma_N}
+ \le\sum_{j=N-\ell+1}^N\frac1{2j-1}<\frac12.
+\]
+Each product factor is at most $(H+N)/(H+2N-1)$, which is bounded by
+some $q<1$ on our compact range for all sufficiently large $N$. Symmetry
+treats $\ell>N/2$, and a larger constant absorbs the finite remaining
+sizes. This proves \eqref{eq:middle}.
+\end{proof}
+In \eqref{eq:exactkernel},
+$\sum_r a_{N,m,\ell,r}=(1-\ell/N)U_{N,m,\ell}$.
+Also $p_j\preceq2jz_j$ controls \eqref{eq:oppositeexact} by the same
+bound. Consequently discarding either endpoint beyond $A\log N$ costs
+at most $CN^2q^{A\log N}$. For any prescribed fixed power saving, choose
+$A$ large enough. The sharp logarithmic endpoint estimates below, rather
+than the extra factor $N$ in \eqref{eq:middle}, control the retained terms.
+
+\section{Polynomial coefficients at both endpoints}\label{sec:endpoints}
+\subsection{The Newton multiplication polynomial}
+Let $d=\ell-r$, let $U$ be a sum of $r$ independent uniform variables
+on $[0,1]$, and let $S_d$ be an independent uniformly chosen $d$-subset
+of $\{0,\ldots,\ell-1\}$. Repeated integration of the finite difference
+in \eqref{eq:multiplication} gives the exact identity
+\begin{equation}\label{eq:Newtonintegral}
+ c_{\ell,r}(m)=\gamma_\ell\binom\ell r m^d
+ \E\prod_{i\in S_d}\left(1+\frac{2i+1-r+U}{m}\right).
+\end{equation}
+Each offset has absolute value at most $2\ell$. Truncating the expectation
+after degree $K-1$ in $m^{-1}$ has absolute error at most
+\begin{equation}\label{eq:productremainder}
+ \frac{(2\ell^2/m)^K}{K!}\exp(2\ell^2/m).
+\end{equation}
+Indeed the sum of the absolute elementary products is bounded by the
+corresponding exponential series.
+
+Write this expectation as $U_{\ell,r}(x)=\sum_{q\ge0}u_q(\ell,r)x^q$.
+For fixed $q$,
+\begin{equation}\label{eq:u}
+ u_q(\ell,r)=\frac{\fall{(\ell-r)}q}{\fall\ell q}\,
+ \E e_q(1-r+U,3-r+U,\ldots,2\ell-1-r+U).
+\end{equation}
+Newton identities and sums of powers show that the elementary symmetric
+expression is a polynomial in $\ell,r,U$ over $\Q$, of degree at most
+$2q$. At $\ell=0,\ldots,q-1$ it vanishes identically in $r,U$.
+It is therefore divisible by $\fall\ell q$. Moreover moments of $U$ are
+polynomials in $r$, from
+$\E e^{zU}=((e^z-1)/z)^r$. Thus $u_q$ is a genuine polynomial in
+$\ell,r$. Polynomial continuation, together with $\fall{(\ell-r)}q$,
+also gives the correct value when $\ell<q$. For example
+\begin{equation}\label{eq:u12}
+ u_0=1,\quad u_1=(\ell-r)(\ell-r/2),\quad
+ u_2=\frac{(\ell-r)(\ell-r-1)(12\ell^2-12\ell r-4\ell+3r^2+r-4)}{24}.
+\end{equation}
+
+\subsection{Top ordinary coefficients and their boundary zeros}
+Define $c_a(n)=[k^{n-a}]p_n(k)$ for $n\ge a$, and set $c_a(n)=0$
+for $0\le n<a$. This notation is distinct from the two-index Newton
+coefficient $c_{\ell,r}(m)$.
+\begin{lemma}[Polynomial top coefficients]\label{lem:top}
+For every $a\ge0$, $c_a(n)$ extends to a polynomial in $\Q[n]$ of degree
+at most $2a$. For $a\ge1$ it is divisible by $\fall n a$. In particular,
+\begin{equation}\label{eq:Ca}
+ C_a(n):=\frac{c_a(n)}{\fall n a}\in\Q[n],\qquad
+ \deg C_a\le a,\qquad C_0=1.
+\end{equation}
+The quotient is understood polynomially at its apparent zero denominators.
+\end{lemma}
+\begin{proof}
+Here $c_0(n)=1$. For $a\ge1$, coefficient extraction from
+\eqref{eq:recurrence} gives the constructive recurrence
+\begin{align}
+ c_a(n)-c_a(n-1)
+ &=(2n-2)c_{a-1}(n-1)\notag\\
+ &\quad+\sum_{i=0}^{n-1}\sum_{b=0}^{a-1}
+                   c_b(i)c_{a-1-b}(n-1-i),\qquad c_a(0)=0.
+ \label{eq:toprec}
+\end{align}
+Assume the conclusion for smaller $a$. The right side is a polynomial
+of degree at most $2a-1$: summing a monomial
+$i^v(n-1-i)^w$ has degree at most $v+w+1\le2a-1$.
+Its discrete antiderivative with value zero at $0$ is therefore a polynomial
+of degree at most $2a$.
+
+For an integer $1\le n<a$, the first term in \eqref{eq:toprec} vanishes.
+Both factors of a convolution summand can be nonzero only if
+$i\ge b$ and $n-1-i\ge a-1-b$, which would require $n\ge a$.
+Every increment at $1\le n<a$ is therefore zero. Together with $c_a(0)=0$
+this proves zeros at $0,\ldots,a-1$, and hence divisibility by
+$\fall n a$. The same coefficient extraction, including the zero
+convention, shows that this polynomial agrees with the actual top
+coefficients. The asserted degree of the quotient follows.
+\end{proof}
+For example $c_1(n)=(3n^2-n)/2$. The boundary zeros in this lemma are
+needed for the opposite-endpoint expansion; a degree bound alone would
+not justify the coefficient algorithm at small integer indices.
+
+\subsection{The opposite endpoint to every fixed order}
+For a monomial $k^d$ and $0\le r\le d$,
+\begin{equation}\label{eq:W}
+ \frac{\Delta^r k^d(m-r)}{r!}
+ =\binom dr m^{d-r}W_{d,r}(m^{-1}),\qquad
+ W_{d,r}(x)=\sum_{q\ge0}\binom{d-r}q\E(-r+U)^q x^q.
+\end{equation}
+At every fixed order its coefficients are polynomial in $d,r$.
+For valid integer indices it is an exact finite sum, with a remainder
+bound of the form \eqref{eq:productremainder}. Outside that range below,
+only its polynomial continuation multiplied by a vanishing falling
+factorial is used.
+
+Put $\eps=N^{-1}$ and define formal series
+\begin{equation}\label{eq:FG}
+ F_\ell(\eps)=\prod_{i=0}^{\ell-1}(1-(i+1/2)\eps)^{-1},\qquad
+ G_r(x)=\prod_{i=0}^{r-1}(1-ix).
+\end{equation}
+Each fixed coefficient is polynomial in the indices, by logarithmic
+expansion and Faulhaber sums. Their fixed-order remainders, when the
+indices are logarithmic in $N$, are a fixed polynomial in $1+\ell$
+times the requested power of $N^{-1}$.
+Define
+\begin{align}
+ \beta_{j,r}&=s^{2j}\binom jr s^r(1-s)^{j-r},\label{eq:beta}\\
+ Z_{j,r}(\eps)&=\sum_{a\ge0}(\mu\eps)^a C_a(j)
+                       \fall{(j-r)}a W_{j-a,r}(\mu\eps).
+ \label{eq:Z}
+\end{align}
+Only finitely many $a$ contribute at a prescribed order. The identity
+\[
+ c_a(j)\binom{j-a}r=C_a(j)\fall{(j-r)}a\binom jr
+\]
+justifies \eqref{eq:Z} when $j\ge a$ and $r\le j-a$.
+For $j<a$ or $r>j-a$, its right side is zero at the integer indices used
+in the sum, so the boundary convention is exact.
+
+The formal expansion of the opposite endpoint is
+\begin{align}
+ B(\eps,s)&=\frac\eps2\sum_{j\ge1}\sum_{r=0}^j
+  \beta_{j,r}F_j(\eps)G_r(\mu\eps)V_{j,r}(\mu\eps)Z_{j,r}(\eps)
+   =\sum_{q\ge1}B_q(s)\eps^q.\label{eq:Bseries}
+\end{align}
+Every $B_q$ is rational in $s$. At fixed order each summand is a polynomial
+in $j,r$ over $\Q(s)$, and its moments follow by Euler differentiation of
+\begin{equation}\label{eq:betasymbol}
+ \sum_{j\ge1,r}\beta_{j,r}x^jy^r
+       =\frac1{1-s^2x(1-s+sy)}-1.
+\end{equation}
+All moments converge locally uniformly for $0<s<1$. In particular
+$B_1=s^2/(2t)$.
+
+We now justify the expansion with a genuine uniform remainder. For
+$j\le A\log N$, $0\le d\le j$, and sufficiently large $N$, the
+nonnegative monomial Newton coefficient is at most
+$\binom dr m^{d-r}$, since $0\le m-r+U\le m$ in the integral formula.
+Lemma~\ref{lem:saddle} and the factorial ratios then give
+\begin{align}
+ T_{j,d}:=\frac{\LL_m(k^dz_{N-j})}{Q_{N,m}}
+ &\le C(2N)^{-j}m^dt^j(1+h^{-1})^d
+  =Cs^{2j}M^{d-j},\label{eq:monomialbound}\\
+ M&=m(1+h^{-1})\ge cN.\notag
+\end{align}
+Coefficientwise positivity implies
+\[
+ 0\le c_a(j)\le2j\gamma_j e_a(1,3,\ldots,2j-1)
+               \le2j\gamma_j\frac{j^{2a}}{a!}.
+\]
+Hence losses $a\ge H$ contribute at most
+\begin{equation}\label{eq:lossbound}
+ \sum_{a=H}^j c_a(j)T_{j,j-a}
+ \le Cs^{2j}j\frac{(Cj^2/N)^H}{H!}\exp(Cj^2/N)
+ =O\bigl(s^{2j}(1+j)^{2H+1}N^{-H}\bigr).
+\end{equation}
+For the finitely many retained degree losses, apply
+Lemma~\ref{lem:saddle}, \eqref{eq:W}, and the finite-product expansions.
+Every error is bounded by the requisite power of $N^{-1}$ times a fixed
+polynomial in $j,r$ and the positive weight $\beta_{j,r}$.
+All polynomial moments of $s^{2j}$ are uniformly summable on a compact
+$s$ interval, so summation loses no logarithm. The extra factor $1/(2N)$
+in \eqref{eq:Bseries} is retained. Lemma~\ref{lem:middle} disposes of
+$j>A\log N$. Thus for every fixed $K$,
+\begin{equation}\label{eq:Bexpansion}
+ B_{N,m}=\sum_{q=1}^{K-1}B_q(s)N^{-q}+O_{J,K}(N^{-K})
+\end{equation}
+on every compact interior ratio range.
+
+\subsection{The principal endpoint}
+Combining \eqref{eq:Newtonintegral}, \eqref{eq:V}, \eqref{eq:FG}, and
+\eqref{eq:Q} gives, uniformly for $\ell\le A\log N$,
+\begin{align}
+ a_{N,m,\ell,r}
+ &=a_s(\ell,r)\left(\sum_{q=0}^{K-1}A_q(\ell,r;s)N^{-q}
+       +O\bigl(N^{-K}(1+\ell)^{M_K}\bigr)\right),\label{eq:Aexpansion}\\
+ a_s(\ell,r)&=\gamma_\ell s^{2\ell}\binom\ell r s^r(1-s)^{\ell-r},
+ \label{eq:leadingkernel}\\
+ A_{\ell,r}(\eps,s)&=(1-\ell\eps)F_\ell(\eps)
+ G_r(\mu\eps)U_{\ell,r}(\mu\eps)V_{\ell,r}(\mu\eps)
+     =\sum_{q\ge0}A_q(\ell,r;s)\eps^q.\label{eq:Aseries}
+\end{align}
+All $A_q$ are in $\Q(s)[\ell,r]$ and $A_0=1$. The normalization includes
+\begin{equation}\label{eq:zerocancellation}
+ A_{0,0}(\eps,s)=1,\qquad A_q(0,0;s)=0\quad(q\ge1).
+\end{equation}
+The remainder in \eqref{eq:Aexpansion} is relative to the positive
+$a_s$. Its polynomially weighted sums are uniformly finite, since
+$\sum_r a_s(\ell,r)=\gamma_\ell s^{2\ell}$.
+
+\section{The exact coefficient algorithm and rationality}\label{sec:algorithm}
+Let $H(\eps,\alpha)=\sum_{q\ge0}R_q(\alpha)\eps^q$.
+Insert the endpoint series into the formal equation
+\begin{equation}\label{eq:formalH}
+ H(\eps,\alpha)=1-B(\eps,\alpha)
+ -\sum_{\ell\ge1,r}a_s(\ell,r)A_{\ell,r}(\eps,s)
+ H\left(\frac\eps{1-\ell\eps},
+          \frac{\alpha-r\eps}{1-\ell\eps}\right).
+\end{equation}
+Every coefficient uses finitely many polynomial moments. The leading mass
+is
+\begin{equation}\label{eq:mass}
+ q_0(s)=\sum_{\ell\ge1,r}a_s(\ell,r)=t^{-1/2}-1.
+\end{equation}
+Thus $(1+q_0)R_0=1$, giving $R_0=\sqrt t$. At order $q\ge1$, the only
+new unknown on the right is $-q_0R_q$. If $P_q^{\rm known}$ denotes
+the known order-$q$ principal sum after omitting that term, then
+\begin{equation}\label{eq:Rrec}
+ R_q=-\sqrt t\bigl(B_q+P_q^{\rm known}\bigr).
+\end{equation}
+All other terms use only $R_0,\ldots,R_{q-1}$ and finitely many
+$\alpha$ derivatives. The conversion is
+\begin{equation}\label{eq:alphaderivative}
+ \partial_\alpha=\frac{(1+s)^2}{2s(s+2)}\partial_s.
+\end{equation}
+This constructs unique analytic coefficient functions on the whole
+interior: all series moments converge locally uniformly and all
+necessary denominators $B,t,\alpha,1+q_0$ are positive there.
+
+\begin{proposition}[The zero index removes the radical obstruction]
+Every $R_q$ constructed by \eqref{eq:Rrec} belongs to $\sqrt t\,\Q(s)$.
+\end{proposition}
+\begin{proof}
+Suppose this holds for smaller indices. Every $\alpha$ derivative of
+$\sqrt t$ times a rational function has the same form. Divide the known
+principal residual summand by $\sqrt t$; it becomes a polynomial
+$P_q(\ell,r;s)\in\Q(s)[\ell,r]$. At $\ell=r=0$ there is no kernel
+correction by \eqref{eq:zerocancellation}, no argument shift, and no
+denominator shift. Because the unknown $R_q$ contribution has been
+omitted, we have
+\begin{equation}\label{eq:Pzero}
+ P_q(0,0;s)=0.
+\end{equation}
+All moments including $\ell=0$ are Euler derivatives of
+\[
+ \mathcal G(x,y)=(1-s^2x(1-s+sy))^{-1/2}.
+\]
+Evaluated at $x=y=1$, each derivative is $t^{-1/2}$ times a rational
+function of $s$. Equation~\eqref{eq:Pzero} means that removing $\ell=0$
+changes nothing. The principal residual, including its factor $\sqrt t$,
+is therefore rational in $s$. The opposite residual $B_q$ is rational
+by \eqref{eq:betasymbol}. Equation~\eqref{eq:Rrec} proves the result.
+Without \eqref{eq:Pzero}, the removal of the zero index would introduce
+an extra radical term, so this cancellation is essential.
+\end{proof}
+
+For clarity, the complete finite algorithm at a requested order is:
+\begin{enumerate}
+\item Form the necessary cumulants and Gaussian coefficients using
+\eqref{eq:cumulants}, \eqref{eq:Gaussianexp}, and \eqref{eq:Gaussianmoments};
+then divide the two truncated series in \eqref{eq:V}.
+\item Generate $U_{\ell,r}$ by Newton identities and uniform-sum moments,
+and generate $F_\ell,G_r$ by their finite-product logarithms.
+\item Compute the finitely many $C_a$ needed by the discrete
+antiderivative recurrence \eqref{eq:toprec}, and form \eqref{eq:Z}.
+\item Compute the required principal and opposite moments by Euler
+derivatives of $\mathcal G$ and \eqref{eq:betasymbol}.
+\item Extract successive coefficients of \eqref{eq:formalH}, dividing
+only by $1+q_0=t^{-1/2}$ as in \eqref{eq:Rrec}.
+\end{enumerate}
+All these operations are exact rational-function algebra and finite
+series operations. The coefficients are regular in the full interior;
+any apparent rational pole there is removable by the analytic construction.
+
+\section{The uniform remainder on the full interior}\label{sec:fullrange}
+The principal mass $q_0$ need not be less than one. We instead use an
+exact inverse for a frozen convolution, with an explicit correction for
+neighboring saddle changes.
+
+\subsection{The frozen inverse and its moments}
+For a fixed $s\in(0,1)$ define operators on bounded functions on $\Z^2$:
+\begin{align}
+ (\mathcal A_s E)(N,m)
+ &=\sum_{\ell\ge1}\sum_{r=0}^{\ell}a_s(\ell,r)E(N-\ell,m-r),
+ \label{eq:Aoperator}\\
+ (\mathcal B_s E)(N,m)
+ &=\sum_{\ell\ge1}\sum_{r=0}^{\ell}b_s(\ell,r)E(N-\ell,m-r),\qquad
+ b_s(\ell,r)=\frac{a_s(\ell,r)}{2\ell-1}.
+ \label{eq:Boperator}
+\end{align}
+These $b_s$ are inverse-kernel weights, distinct from the diagonal
+coefficients $b_j$. Their two-variable symbols satisfy
+\begin{gather}
+ 1+A_s(u,v)=[1-s^2u(1-s+sv)]^{-1/2},\label{eq:Asymbol}\\
+ B_s(u,v)=1-[1-s^2u(1-s+sv)]^{1/2},\label{eq:Bsymbol}\\
+ (I-\mathcal B_s)(I+\mathcal A_s)=I.\label{eq:inverseoperator}
+\end{gather}
+The orientation and signs follow by multiplication of the displayed
+symbols; shifts compose as $T_{\beta}T_{\eta}=T_{\beta+\eta}$. Both
+kernels are nonnegative, and
+\begin{equation}\label{eq:kernelmasses}
+ \|\mathcal A_s\|_1=t^{-1/2}-1,\qquad
+ \|\mathcal B_s\|_1=1-\sqrt t<1.
+\end{equation}
+For bounded $E$, the double sum in the product is dominated by
+$\|E\|_\infty\|\mathcal A_s\|_1\|\mathcal B_s\|_1$.
+Consequently \eqref{eq:inverseoperator} is an absolutely convergent
+identity on the entire lattice, not merely a formal one. Its inverse
+norm is at most $1+\|\mathcal B_s\|_1<2$.
+
+On any compact $S\subset(0,1)$ every polynomial moment of both kernels
+is uniformly finite. Their first $s$ derivatives also have exponentially
+decreasing, polynomially weighted tails. Indeed
+\begin{equation}\label{eq:kernelderivative}
+ \partial_s\log a_s(\ell,r)
+ =\partial_s\log b_s(\ell,r)
+ =\frac{2\ell+r}{s}-\frac{\ell-r}{1-s},
+\end{equation}
+so $|\partial_s a_s|\le C_S\ell a_s$ and similarly for $b_s$.
+Summing in $r$ leaves $\gamma_\ell s^{2\ell}$ or
+$\gamma_\ell s^{2\ell}/(2\ell-1)$, both geometrically decreasing
+uniformly on $S$. In particular,
+\begin{equation}\label{eq:Lipschitz}
+ \|\mathcal A_s-\mathcal A_{s'}\|_1\le C_S|s-s'|
+\end{equation}
+when the intervening interval lies in $S$.
+
+\subsection{A bounded extension and its local residual}
+Fix $K$. Choose a compact interval $J_*$ strictly inside $(0,1)$,
+containing the desired ratio range and all the nested intervals to be
+used below, with additional margin. Put
+\[
+ H_K(N,m)=\sum_{j=0}^{K-1}R_j(m/N)N^{-j}.
+\]
+Extend the finitely many coefficient functions smoothly and boundedly
+to $[0,1]$, agreeing with their true values on a neighborhood of $J_*$.
+At valid states set $E_{N,m}=R_{N,m}-H_K(N,m)$; at every other lattice
+state, including $N\le0$, set $E=0$. Equation~\eqref{eq:bounded} shows
+that this is a bounded function on $\Z^2$.
+
+The local expansions, the coefficient cancellations in
+\eqref{eq:formalH}, and Lemma~\ref{lem:middle} prove the uniform residual
+\begin{equation}\label{eq:localresidual}
+ E(x)+(\mathcal K_xE)(x)=\rho(x),\qquad
+ |\rho(x)|\le C N^{-K},\qquad x=(N,m),\quad m/N\in J_*.
+\end{equation}
+Here $\mathcal K_x$ is the finite exact kernel
+\eqref{eq:exactkernel}. To justify this subtraction independently of any
+remainder theorem, use Taylor expansion only for jumps at most
+$A\log N$, whose ratios remain within the extra compact margin. All
+coefficient-function derivatives are uniformly bounded there. Their
+remainders are a fixed polynomial in the jump times $N^{-K}$, summable
+against $a_s$. The long exact jumps act on bounded extensions and are
+$O(N^{-K})$ by \eqref{eq:middle}; the formal tails have the same property
+by geometric decay. Equation~\eqref{eq:Bexpansion} supplies the opposite
+residual. Inadmissible zero-kernel terms are omitted before evaluating
+$H_K$. No equation outside the local ratio domain is asserted.
+
+Let $L_N=\lfloor A\log N\rfloor$, with $A$ sufficiently large for all
+fixed-order tail bounds. From \eqref{eq:Aexpansion},
+\begin{equation}\label{eq:perturbation}
+ |a_{N,m,\ell,r}-a_{s(x)}(\ell,r)|
+ \le C N^{-1}(1+\ell)^D a_{s(x)}(\ell,r)
+ \quad(\ell\le L_N).
+\end{equation}
+The exact and frozen tails acting on bounded $E$ are $O(N^{-K})$.
+Writing $\mathcal D_x$ for $\mathcal A_{s(x)}-\mathcal K_x$ restricted
+to these short shifts, we obtain
+\begin{equation}\label{eq:naturalfrozen}
+ ((I+\mathcal A_{s(x)})E)(x)
+   =\rho(x)+(\mathcal D_xE)(x)+O(N^{-K}).
+\end{equation}
+The sign of this perturbation is fixed by adding
+$\mathcal A_{s(x)}-\mathcal K_x$ to \eqref{eq:localresidual}.
+
+\subsection{A one power improvement}
+\begin{lemma}\label{lem:improvement}
+Let $J\subset\operatorname{int}J'\subset(0,1)$ be compact intervals,
+with a further margin for the residual estimates. If, for an integer
+$p\ge0$, the same error $E=R-H_K$ satisfies
+\[
+ |E_{N,m}|\le C_pN^{-p}\qquad(m/N\in J'),
+\]
+then it satisfies
+\begin{equation}\label{eq:improvement}
+ |E_{N,m}|\le C'_pN^{-\min(K,p+1)}\qquad(m/N\in J).
+\end{equation}
+\end{lemma}
+\begin{proof}
+Fix $x=(N,m)$ in the smaller range and freeze $s_0=s(x)$ for the
+entire following convolution. Define, at \emph{every} lattice state $y$,
+\[
+ F(y)=((I+\mathcal A_{s_0})E)(y).
+\]
+This function is globally bounded, uniformly for $x$ in the fixed compact
+range. The exact identity \eqref{eq:inverseoperator} gives
+\begin{equation}\label{eq:frozenatbase}
+ E(x)=F(x)-\sum_{b\ge1}\sum_{c=0}^b
+                       b_{s_0}(b,c)F(x-(b,c)).
+\end{equation}
+The inverse tail $b>L_N$ is $O(N^{-K})$ against this bounded function.
+For a retained shift $\beta=(b,c)$, including $(0,0)$, set
+$y=x-\beta$ and $s_y=s(y)$. Its size is $N_y=N-O(\log N)$ and
+\begin{equation}\label{eq:drift}
+ |\alpha_y-\alpha_x|
+ =\frac{|\alpha_xb-c|}{N-b}\le C\frac bN,
+ \qquad |s_y-s_0|\le C\frac bN.
+\end{equation}
+For sufficiently large $N$, $y$ and every state reached by a second short
+shift remain in $J'$ and have size comparable to $N$.
+
+The natural neighboring equation has parameter $s_y$, not $s_0$.
+Retain the difference explicitly:
+\begin{align}
+ F(y)
+ &=((I+\mathcal A_{s_y})E)(y)
+                  +((\mathcal A_{s_0}-\mathcal A_{s_y})E)(y)\notag\\
+ &=O(N^{-K})+(\mathcal D_yE)(y)
+                  +((\mathcal A_{s_0}-\mathcal A_{s_y})E)(y).
+ \label{eq:neighbor}
+\end{align}
+The first short perturbation is $O(N^{-p-1})$ by
+\eqref{eq:perturbation}, the induction hypothesis on all short
+predecessors, and the finite weighted moments of $a_{s_y}$.
+
+For the parameter-difference term, first discard shifts $\ell>L_N$
+in both frozen kernels against globally bounded $E$, at cost
+$O(N^{-K})$. On the retained shifts the induction hypothesis applies.
+The mean value theorem, \eqref{eq:kernelderivative}, and
+\eqref{eq:drift} give
+\begin{equation}\label{eq:neighborbound}
+ |((\mathcal A_{s_0}-\mathcal A_{s_y})E)(y)|
+ \le C N^{-p}|s_0-s_y|+O(N^{-K})
+ \le CbN^{-p-1}+O(N^{-K}).
+\end{equation}
+The derivative norm is uniform on the full interval between the two
+saddles. There is no logarithmic loss in this estimate.
+Therefore each retained $F(y)$ is bounded by
+\[
+ C\{N^{-K}+(1+b)N^{-p-1}\}.
+\]
+Insert this in \eqref{eq:frozenatbase}. The mass and first $b$ moment of
+$\mathcal B_{s_0}$ are uniformly finite, while the discarded inverse tail
+is $O(N^{-K})$. This gives
+$|E(x)|\le C(N^{-K}+N^{-p-1})$, proving the lemma.
+\end{proof}
+The proof applies a translation-invariant inverse only after freezing
+the parameter at the base state. It neither substitutes the wrong saddle
+in a neighboring equation nor takes absolute values of an unproved
+signed cancellation.
+
+\subsection{Finite nested compact bootstrap}
+Choose $K+1$ compact intervals
+\[
+ J_0\subset\operatorname{int}J_1\subset\cdots
+     \subset\operatorname{int}J_K\subset(0,1),
+\]
+with the desired compact ratio set inside $J_0$ and the earlier residual
+margin outside $J_K$. Use the same $H_K$ and the same bounded extension
+throughout. Initially $E=O(1)$ on $J_K$. Apply
+Lemma~\ref{lem:improvement} to obtain $O(N^{-1})$ on $J_{K-1}$,
+then $O(N^{-2})$ on $J_{K-2}$, and so on, ending with
+$E=O(N^{-K})$ on $J_0$. This proves Theorem~\ref{thm:allorders}.
+There are only $K$ steps, independent of $N$; no scaled error bound has
+been assumed in advance.
+
+Finally, uniqueness as an asymptotic coefficient family follows by
+comparing two continuous families successively along integer pairs whose
+ratio tends to any prescribed interior value. At the first potentially
+different order, multiply by the corresponding power of $N$ and pass
+to the limit on a compact neighborhood. The two coefficient values
+agree. This proves uniqueness on the whole interior, with no appeal to
+a contraction subinterval.
+
+\section{Diagonal normalization and the second correction}\label{sec:diagonal}
+On the diagonal $N=2n$, $m=n$, the saddle is
+$s_0=(1+\sqrt{17})/8$. From \eqref{eq:Q} and
+Theorem~\ref{thm:allorders},
+\[
+ a_n=4n\frac{(4n-1)!!}{n!}\,
+ \frac{f(t)h^nt^{-2n}}{\sqrt{2\pi nB}}\,\sqrt t
+ \left(\sum_{j\ge0}D_j(0,0;s_0)n^{-j}\right)
+ \left(\sum_{j\ge0}\frac{r_j(s_0)}{(2n)^j}\right),
+\]
+where each series is truncated at the desired fixed order with its proved
+remainder. The factorial normalization is
+\begin{equation}\label{eq:factorialnormal}
+ \frac{(4n-1)!!}{(n!)^2}
+ =\frac{16^n}{\pi\sqrt2\,n}\,\mathcal S(n^{-1}),\qquad
+ \mathcal S(x)=1-\frac3{16}x+\frac9{512}x^2+\cdots.
+\end{equation}
+The logarithmic series of $\mathcal S$ has coefficient
+\begin{equation}\label{eq:Stirlingseries}
+ \frac{\mathsf B_{2v}}{2v(2v-1)}
+ \left(4^{-(2v-1)}-2^{-(2v-1)}-2\right)
+\end{equation}
+at $x^{2v-1}$ and zero at positive even powers, where
+$\mathsf B_{2v}$ denotes a Bernoulli number. Consequently
+\begin{equation}\label{eq:diagonalalgorithm}
+ \sum_{j\ge0}b_jx^j
+ =\mathcal S(x)
+  \left(\sum_{j\ge0}D_j(0,0;s_0)x^j\right)
+  \left(\sum_{j\ge0}r_j(s_0)(x/2)^j\right).
+\end{equation}
+All its coefficients are in $\Q(s_0)=\Q(\sqrt{17})$.
+The leading exponential and amplitude simplify to
+\[
+ d=\frac{16h}{t^2},\qquad
+ C=\frac{2\sqrt t\,f(t)}{\pi^{3/2}\sqrt B},
+\]
+at $s=s_0$, which are precisely \eqref{eq:constants}.
+Finite-order products of the established remainders prove
+Corollary~\ref{cor:diagonal}.
+
+For explicit second-order reproduction the algorithm yields
+\begin{align}
+ r_1(s)&=\frac{s^4+6s^3+7s^2+3s+4}
+                    {4(s-1)(s+1)(s+2)^2},\label{eq:r1}\\
+ D_1(0,0;s)&=\frac{s^6-7s^5-5s^4+32s^3+32s^2-9s-8}
+                    {12(s-1)(s+1)(s+2)^3},\label{eq:D1}\\
+ B_2(s)&=\frac{s^4+9s^3+13s^2+3s+4}{4t^2(s+2)^2}.
+ \label{eq:B2}
+\end{align}
+To keep the higher numerators legible, write
+\begin{align}
+ P_2(s)={}&s^{10}+14s^9+22s^8-218s^7-1295s^6-3068s^5\notag\\
+          &-3675s^4-2402s^3-1160s^2-500s-4,\label{eq:P2}\\
+ T_2(s)={}&s^{12}-14s^{11}+759s^{10}+1574s^9-1079s^8-4386s^7\notag\\
+          &-1346s^6+4410s^5+4128s^4-368s^3-1871s^2-576s+64.
+ \label{eq:T2}
+\end{align}
+Then
+\begin{equation}\label{eq:r2D2}
+ r_2(s)=\frac{P_2(s)}{32s\,t^2(s+2)^5},\qquad
+ D_2(0,0;s)=\frac{T_2(s)}{288t^2(s+2)^6}.
+\end{equation}
+These formulas can be checked directly from the finite algorithm without
+inserting the proposed answers. One convenient Gaussian implementation
+uses $\exp(\sum_{j\ge1}F_jz^j)=\sum_{n\ge0}E_nz^n$ with
+\[
+ F_j=\frac{g_j-r\kappa_j+\ell\mathbf1_{j=1}}{j!}(iu)^j
+       +\frac{\kappa_{j+2}}{(j+2)!}(iu)^{j+2},\qquad
+ E_0=1,\quad E_n=\frac1n\sum_{j=1}^n jF_jE_{n-j}.
+\]
+Apply \eqref{eq:Gaussianmoments} to $E_2,E_4$ and then divide by the
+unshifted series. This independently generates $D_1,D_2$ and the ratio
+coefficients needed in \eqref{eq:Aseries}.
+
+For a direct check of the residual bookkeeping, set
+$\delta=\alpha\ell-r$, $g=(\partial_\alpha\sqrt t)/\sqrt t$, and
+\[
+ \mathcal M(P)=\sqrt t\sum_{\ell\ge1,r}a_s(\ell,r)P(\ell,r).
+\]
+The known shifted terms, divided by the current $R_0$, are
+\begin{align*}
+ H_1&=r_1+g\delta,\\
+ H_2&=\ell r_1+\delta(\partial_\alpha r_1+gr_1)
+       +\ell g\delta+\frac{\delta^2}{2}(\partial_\alpha g+g^2).
+\end{align*}
+Thus the first two residual equations are
+\begin{equation}\label{eq:explicitresiduals}
+ r_1=-\mathcal M(A_1+g\delta)-B_1,\qquad
+ r_2=-\mathcal M(H_2+A_1H_1+A_2)-B_2.
+\end{equation}
+This retains the derivatives of both $R_0$ and $r_1$, the change in
+$1/(N-\ell)$, the cross term, and the opposite endpoint.
+
+Finally, the second diagonal coefficient is
+\begin{equation}\label{eq:b2product}
+ b_2=\left[
+ \frac9{512}+D_2+\frac{r_2}{4}-\frac3{16}D_1
+       +\left(-\frac3{16}+D_1\right)\frac{r_1}{2}
+ \right]_{s=s_0},
+\end{equation}
+which simplifies to \eqref{eq:b2}. Its decimal value is
+$-0.583039199664459265278390709755\ldots$.
+The saddle coefficients are in powers of $m^{-1}$, whereas $r_j$ are
+in powers of $N^{-1}$; the factors $1/2$ and $1/4$ on the diagonal are
+therefore necessary. The companion regenerates these identities exactly.
+
+\section{All orders of the integer safe inverse}\label{sec:inverse}
+Set
+\begin{equation}\label{eq:Phi}
+ c=\log(C\sqrt{2\pi}),\qquad
+ \Phi(x)=x(\log(dx)-1)+c.
+\end{equation}
+Define $\lambda_j$ by the formal identity
+\begin{equation}\label{eq:lambda}
+ \sum_{j\ge1}\lambda_jx^{-j}
+ =\log\left(\sum_{j\ge0}b_jx^{-j}\right)
+       +\sum_{v\ge1}\frac{\mathsf B_{2v}}{2v(2v-1)}x^{-(2v-1)}.
+\end{equation}
+Each $\lambda_j\in\Q(\sqrt{17})$; specifically,
+\begin{align}
+ \lambda_1&=b_1+\frac1{12}
+       =-\frac{2423}{6528}-\frac{907\sqrt{17}}{36992},\label{eq:lambda1}\\
+ \lambda_2&=b_2-\frac{b_1^2}{2}
+       =-\frac{4940681+601183\sqrt{17}}{10061824}.
+ \label{eq:lambda2}
+\end{align}
+The forward theorem and Stirling's expansion imply, for every fixed $K$,
+\begin{equation}\label{eq:loginteger}
+ \log a_n=\Phi(n)+\sum_{j=1}^{K-1}\lambda_jn^{-j}+O(n^{-K}).
+\end{equation}
+The $\tfrac12\log n$ from $\log n!$ cancels the original
+$n^{-1/2}$ factor.
+
+For large $X$ put $L=\log X$, $T=L-c$, and
+\begin{equation}\label{eq:x0}
+ x_0=\frac{T}{W(dT/e)},\qquad
+ \Psi_K(x)=\Phi(x)+\sum_{j=1}^{K-1}\lambda_jx^{-j},
+\end{equation}
+using the positive real Lambert $W$ branch. Thus $\Phi(x_0)=L$ and
+$x_0\sim\log X/\log\log X$.
+
+\begin{theorem}[All orders with the uncertainty inside the ceilings]
+For every fixed $K\ge1$, the equation $\Psi_K(x)=L$ has a unique root
+$x_K$ in $[x_0/2,2x_0]$ for sufficiently large $X$, and
+$x_K-x_0=O((x_0\log x_0)^{-1})$. There is a constant $M_K>0$ such that
+\begin{equation}\label{eq:ceilingbracket}
+ \left\lceil x_K-\frac{M_K}{x_0^K\log(dx_0)}\right\rceil
+ \le N(X):=\min\{n:a_n\ge X\}
+ \le\left\lceil x_K+\frac{M_K}{x_0^K\log(dx_0)}\right\rceil
+\end{equation}
+for all sufficiently large $X$.
+Starting at $y_0=x_0$, finitely many explicit Newton steps
+\begin{equation}\label{eq:Newtoninverse}
+ y_{v+1}=y_v-\frac{\Psi_K(y_v)-L}{\Psi_K'(y_v)}
+\end{equation}
+may replace $x_K$ in \eqref{eq:ceilingbracket}, after increasing $M_K$,
+whenever $2^{v+1}-1\ge K$.
+\end{theorem}
+\begin{proof}
+On $[x_0/2,2x_0]$, $\Psi_K'(x)\sim\log x_0$ uniformly, and its endpoints
+bracket $L$ for large $X$. This proves existence and uniqueness there.
+The value $\Psi_K(x_0)-L$ is $O(x_0^{-1})$, giving the claimed root
+displacement by the mean value theorem.
+
+No interpolation of the sequence is needed for integer rounding.
+For integers in this interval, \eqref{eq:loginteger} has absolute error
+at most $C_Kx_0^{-K}$. Moving a real argument by
+$M_Kx_0^{-K}/\log(dx_0)$ changes $\Psi_K$ by more than this error when
+$M_K$ is large enough. Every integer below the lower witness in
+\eqref{eq:ceilingbracket} therefore has $a_n<X$, while the ceiling of the
+upper witness has $a_n\ge X$. The forward equivalent gives
+$a_{n+1}/a_n\sim dn$, so the sequence is eventually strictly increasing.
+All earlier integers, including the finite initial prefix, are below
+$X$ when $X$ is sufficiently large. These observations prove the bracket.
+
+Throughout a neighborhood of $x_0$,
+$|\Psi_K''/\Psi_K'|=O((x_0\log x_0)^{-1})$.
+The initial error is $O((x_0\log x_0)^{-1})$, and the Newton error
+recurrence therefore gives, for each fixed $v$,
+\begin{equation}\label{eq:Newtonerror}
+ |y_v-x_K|=O\left((x_0\log x_0)^{-(2^{v+1}-1)}\right).
+\end{equation}
+These iterates remain in the required neighborhood for sufficiently large
+$X$. If $2^{v+1}-1\ge K$, their error is
+$O(x_0^{-K}/\log x_0)$ and is absorbed by increasing the witness constant.
+For example, $v=\lceil\log_2(K+1)\rceil$ always suffices.
+\end{proof}
+The constants and onset here are existence statements inherited from the
+asymptotic remainder, not effective numerical certificates. A real error
+tending to zero cannot be removed from the ceilings: arbitrarily close
+approach to an integer prevents an unrounded $o(1)$ formula for the integer
+threshold from following from these estimates.
+
+\section{Reproducibility and scope}\label{sec:reproducibility}
+The accompanying archive includes this complete LaTeX source, its PDF,
+the unchanged Report 141 foundation, and an offline exact-arithmetic
+companion. The companion regenerates the second correction, polynomial
+boundary-zero identities, and frozen two-coordinate inverse checks from
+computational definitions. It distinguishes typed exact fixtures from
+public factual provenance. Its README specifies the runtime requirements,
+isolated entrypoints, closed-inventory verification, absent external output
+paths, semantic mutation tests, and deterministic PDF and ZIP workflows.
+Finite computations do not establish the asymptotic remainder; the proof
+is Sections~\ref{sec:saddle}--\ref{sec:fullrange}.
+
+The crucial analytic points are the shifted saddle remainder uniform for
+logarithmic shifts, summability of both endpoint expansions, the boundary
+zeros in Lemma~\ref{lem:top}, the zero-index cancellation
+\eqref{eq:Pzero}, and the base-frozen identity
+\eqref{eq:frozenatbase} with the neighboring correction
+\eqref{eq:neighborbound}. Together these give every fixed order on every
+compact subset of the interior. They do not give convergence in the order,
+boundary asymptotics, growing-order uniformity, or a certified numerical
+threshold at a specified finite value of $X$.
+
+\begin{thebibliography}{9}
+\bibitem{foundation} \emph{A weighted Dyck path Newton diagonal}, Report 141,
+October 2, 2026. Complete unchanged source and PDF included as the
+foundation of this continuation. Contains the exact weighted-path bridge,
+the formal convolution, source normalization for OEIS A258219, A258220,
+and A292692, and the leading and first-corrected diagonal estimates.
+\end{thebibliography}
+\end{document}

@@ -1,0 +1,707 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype,amsmath,amssymb,amsthm,booktabs}
+\usepackage[hidelinks]{hyperref}
+\hypersetup{pdftitle={Report 139 Polynomial order for permutations containing exactly one 1432},pdfauthor={},pdfsubject={A224182, minima skeletons, a marked split, and inverse thresholds}}
+\pdfinfoomitdate=1\pdftrailerid{}\pdfsuppressptexinfo=15
+\setlength{\emergencystretch}{2em}
+\allowdisplaybreaks[2]
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Av}{\operatorname{Av}}
+\newcommand{\std}{\operatorname{std}}
+\newcommand{\lm}{\operatorname{lmin}}
+\newcommand{\Cat}{\operatorname{Cat}}
+\title{Polynomial order for permutations containing exactly one 1432}
+\author{Report 139}
+\date{October 2, 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+Let $b_n$ count permutations with exactly one classical occurrence of $1432$.
+Reversal identifies this sequence with OEIS A224182, which is defined using
+$2341$. We prove $b_n=\Theta(9^n/n^3)$ by two explicit injections and a
+minima-preserving Ferrers-board correspondence. The upper injection has a
+computer-free eight-case proof and an exact marked inverse. The lower
+injection inflates a left-to-right minimum; an entropy estimate shows that
+such minima have asymptotic mean $n/3$ in the avoidance class. If $A_n$
+is the number of $1234$-avoiders, the bounds give normalized lower and upper
+constants $1/2187$ and $81$. They imply an inverse-threshold bracket of
+unrounded asymptotic width $11/2$. An additional, explicitly computer-assisted
+result characterizes the eligible marked avoiders by adjacency and four
+singleton rectangles. No leading equivalent, amplitude limit, or proposed
+ratio $3/80$ is proved.
+\end{abstract}
+
+\section{The result and its scope}
+An occurrence of a classical pattern is a subsequence, with no adjacency
+requirement, whose relative value order is the pattern. Put
+\[
+ b_n=\#\{\pi\in S_n:N_{1432}(\pi)=1\},\qquad
+ A_n=|\Av_n(1432)|,
+ \qquad M_n=\sum_{\pi\in\Av_n(1432)}\lm(\pi),
+\]
+where $\lm(\pi)$ is the number of left-to-right minima. Set $A_0=1$,
+$M_0=0$, and $b_n=0$ for $n<4$. We prove below that
+$A_n=|\Av_n(1234)|$, including equality of the full minima-skeleton
+refinements. These are equal cardinalities, not equal avoidance sets.
+The classical three-row strip asymptotic of Regev~\cite{Regev} is
+\begin{equation}\label{eq:regev}
+ A_n\sim C_0\frac{9^n}{n^4},\qquad C_0=\frac{81\sqrt3}{16\pi}.
+\end{equation}
+
+\begin{theorem}\label{thm:main}
+For every $n\ge4$,
+\begin{equation}\label{eq:finite}
+ M_{n-3}\le b_n\le (n+2)A_{n+2}.
+\end{equation}
+Moreover, $M_m\sim(m/3)A_m$. Consequently,
+\begin{gather}\label{eq:theta}
+ b_n=\Theta(9^n n^{-3}),\qquad
+ \log b_n=n\log9-3\log n+O(1),\\
+ \frac1{2187}\le\liminf_{n\to\infty}\frac{b_n}{nA_n}
+ \le\limsup_{n\to\infty}\frac{b_n}{nA_n}\le81.\label{eq:ratio}
+\end{gather}
+All assertions of this theorem have a computer-free proof.
+\end{theorem}
+
+Reversal sends $2341$ to $1432$, preserving the number of occurrences;
+thus $b_n$ is A224182~\cite{OEIS}. Nakamura~\cite[Section 3.2,
+Theorem 4]{Nakamura} gave a catalytic functional equation for $2341$ and
+exact initial coefficients. Conway and Guttmann~\cite[Section 5.3]{CG}
+conjectured the stronger equivalent $b_n\sim C_1 9^n/n^3$, with
+$C_1/C_0\approx0.0375$ and the candidate $C_1/C_0=3/80$.
+Theorem~\ref{thm:main} proves the polynomial order in that prediction,
+but not convergence of $b_n/(nA_n)$. The proposed $3/80$ is a ratio of
+amplitudes; it is not the absolute prefactor $C_1$.
+
+The shape-Wilf ingredient is due to Backelin, West and Xin~\cite{BWX};
+the directly inspected growth-diagram proof used here is
+Krattenthaler~\cite[Theorems 1--3]{Kratt}. The split is adapted from
+Burstein's construction for a single global $321$~\cite{Burstein}; a
+supported decreasing triple requires the separate proof in
+Section~\ref{sec:split}. Known fixed-occurrence exponential-growth
+results are discussed in Section~\ref{sec:prior}. No worldwide priority
+claim is made.
+
+\section{Minima skeletons and Ferrers boards}\label{sec:board}
+A left-to-right minimum is an entry smaller than every entry preceding it.
+Its position and value together are a point of the permutation plot, with
+position increasing rightward and value upward. Fix an admissible set
+$S$ of all these points, the \emph{minima skeleton}. Remove their rows and
+columns. A remaining position $h$ and remaining value $y$ form an allowed
+cell precisely when
+\begin{equation}\label{eq:allowed}
+ (s,t)\in S\text{ exists with }s<h\text{ and }t<y.
+\end{equation}
+In the increasing orders of the remaining positions and values, this is a
+northeast-closed Ferrers board: if a cell is allowed, every remaining cell
+to its right and above it is allowed.
+
+\begin{lemma}\label{lem:skeleton}
+The permutations with exact minima skeleton $S$ are in bijection with
+full matchings of this board, one point in each remaining row and column.
+\end{lemma}
+\begin{proof}
+Every nonminimum has a smaller earlier minimum and so occupies an allowed
+cell. Conversely, every point of a matching has an earlier smaller
+skeleton point, and is therefore not a new minimum. Nor can it invalidate
+a later skeleton minimum: it is above its earlier supporting minimum,
+which is itself above every subsequent skeleton minimum. Restoring $S$
+therefore gives exactly the specified skeleton.
+\end{proof}
+
+A chain is \emph{board-contained} if its smallest axis-parallel bounding
+rectangle consists of allowed cells. If three matching points have
+positions $h_1<h_2<h_3$ and values $x>y>z$, the decreasing chain is
+board-contained exactly when $(h_1,z)$ is allowed. That is exactly the
+condition that some minimum can support it on the left and below.
+More precisely, if $\operatorname{supp}_{\pi}(T)$ counts \emph{all}
+permutation points before $h_1$ and below $z$, then
+\begin{equation}\label{eq:support}
+ N_{1432}(\pi)=\sum_{T\text{ a contained decreasing triple}}
+                   \operatorname{supp}_{\pi}(T).
+\end{equation}
+Indeed every $1432$ has a nonminimum decreasing tail. Conversely an
+arbitrary supporting point has an earlier-or-equal minimum still below
+$z$, so its tail is contained. The sum must not count only supporting
+skeleton points: ordinary points can support the same tail too.
+
+For an increasing triple of remaining points, its first point is both
+leftmost and lowest. Its cell is allowed, so its entire bounding rectangle
+is allowed. Such a triple has a smaller earlier minimum and extends to
+$1234$. Conversely the last three entries of any $1234$ are nonminima.
+We have proved
+\begin{align*}
+ \pi\in\Av(1432)&\iff\text{the matching has no contained decreasing triple},\\
+ \pi\in\Av(1234)&\iff\text{the matching has no increasing triple}.
+\end{align*}
+
+\begin{proposition}\label{prop:refinement}
+For each fixed exact minima skeleton $S$, the numbers of $1432$-avoiders
+and $1234$-avoiders realizing $S$ are equal.
+\end{proposition}
+\begin{proof}
+Rotate the compressed board through $180$ degrees to obtain a southwest
+Ferrers shape, the French convention of Krattenthaler~\cite[Section 2]{Kratt}.
+Rotation acts on a matching by reverse-complement, which fixes both
+patterns $123$ and $321$ and preserves rectangle containment.
+
+Here are the precise growth-diagram facts needed from that source.
+Theorem 1 bijects fillings with at most one point in each row and column
+with boundary sequences of partitions; occupied rows and columns
+correspond to strict successive changes. Theorem 2 reads longest
+increasing and decreasing chains in southwest rectangles from the first
+row and column of their partition labels. In Theorem 3, conjugating every
+boundary partition swaps these two maximum-chain statistics. The
+\emph{decreasing} statistic explicitly requires its bounding rectangle
+to lie in the shape. Increasing chains in a southwest shape satisfy that
+requirement automatically, because their northeast endpoint lies in the
+shape.
+
+Conjugation preserves every strict boundary change, hence preserves
+occupancy of each row and each column, not merely the total number of
+points. It therefore restricts to full matchings of our fixed board.
+Summing the equality of the two chain statistics over the unrestricted
+maximum and restricting the forbidden maximum to at most two equates
+avoidance of the two contained triple types. The empty matching is handled
+separately and trivially. Rotate back and restore the unchanged skeleton.
+\end{proof}
+
+\begin{remark}\label{rem:notoccurrence}
+This is an avoidance correspondence, not an equidistribution of
+occurrence counts. For the northeast board of six columns with least
+allowed values $(2,1,1,1,1,1)$, the numbers of full matchings with exactly
+one contained $123$ and exactly one contained $321$ are respectively
+$106$ and $107$. The companion checks these counts directly. Thus a
+one-occurrence theorem cannot be inferred by transferring one contained
+chain through shape-Wilf equivalence.
+\end{remark}
+
+\section{An entropy bound for the number of minima}\label{sec:entropy}
+Let $D_{m,r}$ count $1234$-avoiders of size $m$ with $r$ left-to-right
+minima. Delete all their minima. The remainder avoids $123$: the first
+point of any increasing triple in the remainder has a smaller earlier
+minimum, which would extend it to $1234$. Choose the $r$ positions and
+$r$ values of the minima, whose order is necessarily decreasing, and
+then the standardized remainder. This is an injective encoding, although
+some choices do not produce an admissible permutation. Hence
+\begin{equation}\label{eq:entropybound}
+ D_{m,r}\le {m\choose r}^{\!2}\Cat(m-r)
+            \le {m\choose r}^{\!2}4^{m-r}.
+\end{equation}
+Put $H(u)=-u\log u-(1-u)\log(1-u)$, with endpoint convention
+$0\log0=0$. The standard binomial entropy bound yields
+\[
+ D_{m,r}\le \exp\{m f(r/m)\},\qquad
+ f(u)=2H(u)+(1-u)\log4.
+\]
+On $(0,1)$,
+\[
+ f'(u)=2\log\frac{1-u}{u}-\log4,
+ \qquad f''(u)=-\frac2u-\frac2{1-u}<0.
+\]
+Thus $f$ has its unique maximum at $u=1/3$, where $f(1/3)=\log9$.
+For every fixed $\delta>0$ for which the complement is nonempty,
+compactness supplies $\eta_\delta>0$ such that
+\[
+ \sum_{|r/m-1/3|\ge\delta}D_{m,r}
+ \le (m+1)9^m e^{-\eta_\delta m}.
+\]
+After division by \eqref{eq:regev}, the corresponding probability is
+$O(m^5e^{-\eta_\delta m})$. The minima fraction converges to $1/3$ in
+probability, and its boundedness in $[0,1]$ implies convergence in mean.
+Proposition~\ref{prop:refinement} transfers the entire minima distribution
+to $1432$-avoiders. Therefore
+\begin{equation}\label{eq:minimamean}
+ M_m\sim\frac m3 A_m.
+\end{equation}
+
+\section{A lower injection by inflation}\label{sec:lower}
+\begin{proposition}\label{prop:lower}
+For $m\ge1$, there is an injection from $1432$-avoiders of size $m$ with
+a distinguished left-to-right minimum to permutations of size $m+3$
+with exactly one $1432$.
+\end{proposition}
+\begin{proof}
+If the marked minimum has value $a$, replace it by the consecutive block
+\[
+ (a,a+3,a+2,a+1),
+\]
+raising every other old value greater than $a$ by three. The four-point
+block is an interval in both position and value and has pattern $1432$.
+
+An occurrence using no block point would have existed before inflation;
+one using exactly one would contract to an old occurrence. If an occurrence
+uses two or three block points, these occupy consecutive positions and
+consecutive ranks \emph{within the selected pattern}. The only proper
+nonsingleton intervals of $1432$ are its tail pairs $43$, $32$, and its
+tail triple $432$. Thus the first and smallest point of this occurrence
+would lie outside the block, before it and below it. No such point exists,
+because the inflated entry was a left-to-right minimum. An occurrence
+using all four block points is exactly the internal one.
+
+That unique occurrence identifies the inflated interval. Contracting it
+recovers both the original avoider and its marked minimum, proving
+injectivity and $M_m\le b_{m+3}$.
+\end{proof}
+
+\subsection{A fixed pattern length corollary}
+The lower construction and minima concentration extend to a descending
+tail of any fixed length. For $k\ge2$, put
+$\tau_k=1\oplus\delta_k=(1,k+1,k,\ldots,2)$, and let $A_n^{(k)}$
+and $b_n^{(k)}$ count avoidance and exactly one occurrence, respectively.
+
+\begin{corollary}\label{cor:general}
+For every fixed integer $k\ge2$,
+\[
+ A_n^{(k)}=|\Av_n(12\cdots(k+1))|,\qquad
+ \liminf_{n\to\infty}\frac{b_n^{(k)}}{nA_n^{(k)}}
+ \ge k^{-2k-1}.
+\]
+No matching upper bound for general $k$ is asserted.
+\end{corollary}
+\begin{proof}
+The same fixed-skeleton board argument, forbidding contained monotone
+chains of length $k$, preserves the minima distribution and proves the
+avoidance equality. Let $r$ be the number of minima. Deleting them leaves
+an avoider of $12\cdots k$. By transposed Robinson--Schensted, each such
+permutation is a pair of standard Young tableaux with at most $k-1$ rows.
+A tableau is determined by the row occupied by each of its labels, since
+entries within a row increase. Encoding both tableaux by these row-label
+words gives at most $(k-1)^{2(n-r)}$ possibilities, even without imposing
+the same-shape and standardness conditions on the two words. Consequently
+\[
+ D_{n,r}^{(k)}\le {n\choose r}^{\!2}(k-1)^{2(n-r)}.
+\]
+The entropy function $2H(u)+2(1-u)\log(k-1)$ is strictly concave,
+uniquely maximized at $u=1/k$, with value $2\log k$.
+For this fixed $k$, Regev's strip asymptotic has the form
+$A_n^{(k)}\sim C_k k^{2n}n^{-(k^2-1)/2}$, where $C_k>0$.
+The proof in Section~\ref{sec:entropy} therefore gives
+$M_n^{(k)}\sim(n/k)A_n^{(k)}$.
+
+Inflate a marked minimum into the interval $\tau_k$, increasing the size
+by $k$. Every proper nonsingleton interval of $\tau_k$ lies wholly in
+its descending tail: an initial segment containing its first and smallest
+entry and its largest entry cannot be a proper value interval. Thus an
+occurrence using between two and $k$ block points would require an outside
+earlier, smaller supporter, which does not exist. The arguments for zero,
+one, and all $k+1$ block points are exactly as in
+Proposition~\ref{prop:lower}. The unique internal occurrence recovers
+the marked source, so $M_{n-k}^{(k)}\le b_n^{(k)}$. Finally
+\[
+ \frac{M_{n-k}^{(k)}}{nA_n^{(k)}}\longrightarrow
+ \frac1k(k^2)^{-k}=k^{-2k-1}.
+\]
+\end{proof}
+
+\section{The marked split and its eight-case proof}\label{sec:split}
+Let the unique occurrence in $\pi$ have positions $i<j<k<l$ and values
+$a<d<c<b$. Names of core points will also denote their values when no
+confusion can result. Write
+\[
+ \pi=U\,b\,V\,c\,W\,d\,Z,
+\]
+where the supporting point $a$ lies in $U$. For $0<\varepsilon<1$,
+form and standardize
+\begin{equation}\label{eq:split}
+ q=\std\bigl(U\,(c-\varepsilon)\,V\,d\,c\,b\,W\,
+                      (c+\varepsilon)\,Z\bigr),
+\end{equation}
+marking the retained central $c$. Thus the \emph{old} $d,b$ move to the
+immediate positional neighbors of $c$; the \emph{new} $c-\varepsilon$,
+$c+\varepsilon$ occupy the old $b,d$ slots. For exact integer arithmetic,
+multiply old coordinates by three and replace the offsets by $\pm1$.
+
+\subsection{The forced empty regions}
+Uniqueness of the core forces the following four singleton conditions:
+\begin{align}
+ \{\pi_t:t<j,\ \pi_t<d\}&=\{a\}, &(R1)\label{eq:R1}\\
+ \{\pi_t:i<t<k,\ \pi_t>c\}&=\{b\}, &(R2)\label{eq:R2}\\
+ \{\pi_t:j<t<l,\ d<\pi_t<b\}&=\{c\}, &(R3)\label{eq:R3}\\
+ \{\pi_t:t>k,\ a<\pi_t<c\}&=\{d\}. &(R4)\label{eq:R4}
+\end{align}
+An extra point in each respective region could replace $a,b,c,d$ in the
+core to give a second occurrence.
+
+\begin{lemma}\label{lem:splitavoid}
+The split permutation $q$ avoids $1432$.
+\end{lemma}
+\begin{proof}
+It is convenient to work in unstandardized plot coordinates. The special
+points are
+\[
+ X=(j,c-\varepsilon),\quad D=(k-\varepsilon,d),\quad
+ C=(k,c),\quad B=(k+\varepsilon,b),\quad Y=(l,c+\varepsilon).
+\]
+Every other point is \emph{ordinary} and unchanged. In their position
+order the five special points have pattern $21354$. The only inverted
+special pairs are $(X,D)$ and $(B,Y)$, and $C$ makes no inversion with
+another special point. Consequently a decreasing triple has at most two
+special points.
+
+Suppose a $1432$ in the output has points $(u,v,w,z)$ in position order,
+with values $u<z<w<v$. Its \emph{tail} is $(v,w,z)$. If the tail contains
+none of $X,D,B,Y$, it is unchanged from the original. If $u$ is ordinary,
+the whole occurrence already existed and differs from the core (the old
+$b,d$ are absent from the unchanged set). If $u$ is special, replace it
+by $a$, which is earlier and smaller than every special point. The same
+tail again gives a distinct original occurrence. Both are impossible.
+
+For the remaining cases use transposition of the plot. The pattern
+$1432$ is its own inverse, and the construction commutes with transposition:
+$X$ and $D$ are interchanged, as are $B$ and $Y$, while the first and last
+tail roles are interchanged. Thus for a tail with one special point it
+suffices to consider $D$ and $B$ in each of the three roles. All other
+tail points in these six cases are ordinary.
+
+\medskip\noindent\textbf{Case 1. Tail $(D,w,z)$.}
+Here $u<z<w<d$, so $u$ is ordinary. Since $D$ is immediately before $C$
+and $w,z$ are ordinary points after $D$, they are after old position $k$.
+Replacing $D$ by old $c$ gives the distinct original occurrence
+$(u,c,w,z)$.
+
+\medskip\noindent\textbf{Case 2. Tail $(v,D,z)$.}
+Again $u$ is ordinary. If $v>c$, replacement of $D$ by old $c$ gives
+$(u,v,c,z)$. Otherwise $d<v<c$. If $v$ is after $j$, it is between $j$
+and $k$, violating (R3). If it is before $j$, then $u$ is before $j$
+and below $d$, so (R1) forces $u=a$. Now $z$ is after $k$ with
+$a<z<d<c$, violating (R4).
+
+\medskip\noindent\textbf{Case 3. Tail $(v,w,D)$.}
+The supporter $u$ is ordinary. Replace $D$ by old $d$ at position $l$;
+this gives an original occurrence $(u,v,w,d)$. It cannot be the core:
+$w$ is before $k$, whereas core $c$ is at $k$.
+
+\medskip\noindent\textbf{Case 4. Tail $(B,w,z)$.}
+If $z>a$, then $(a,b,w,z)$ using old $b$ is a distinct original
+occurrence. Thus $z<a$, and $u<z<a<d$ implies that $u$ is ordinary
+before $k$. If $w<c$, then $(u,c,w,z)$ is an original occurrence.
+Otherwise $c<w<b$; since $w$ is after $k$, (R3) forces it to be after
+$l$. The point $z$ is then also after $l$, and $(u,c,d,z)$ is an
+original occurrence, since $u<z<a<d<c$.
+
+\medskip\noindent\textbf{Case 5. Tail $(v,B,z)$.}
+The ordinary point $v$ is before $k$ and above $b>c$. By (R2) it must
+precede $i$, and hence $j$. Replacing $B$ by old $b$ gives the distinct
+original occurrence $(u,v,b,z)$.
+
+\medskip\noindent\textbf{Case 6. Tail $(v,w,B)$.}
+The ordinary point $w$ is before $k$ and above $b>c$. By (R2) it must
+precede $i$, and hence $j$. Replacing $B$ by old $b$ gives the distinct
+original occurrence $(u,v,w,b)$.
+
+\medskip
+It remains to consider two special tail points. They must be either
+$(X,D)$ or $(B,Y)$. If they occupy the first and last tail roles, the
+intermediate ordinary point violates (R3): it is between $j,k$ with
+value between $d,c$ in the first case, or between $k,l$ with value
+between $c,b$ in the second. Thus the special pair occupies the first
+two or last two roles. Transposition exchanges these placements within
+each pair, so only the first-two placement needs checking.
+
+\medskip\noindent\textbf{Case 7. Tail $(X,D,z)$.}
+The supporter $u$ is ordinary, before $j$, with $u<z<d$. By (R1),
+$u=a$. But $z$ is ordinary after $k$ and $a<z<d<c$, contrary to (R4).
+
+\medskip\noindent\textbf{Case 8. Tail $(B,Y,z)$.}
+The ordinary point $z$ is after $l$ and below $c$, because $Y$ is
+immediately above $c$ among old values. If $z>a$, it violates (R4).
+Hence $z<a$, and $u<z<a<d$ shows that $u$ is ordinary before $k$.
+Then $(u,c,d,z)$ is a distinct original $1432$.
+
+Every case contradicts uniqueness or a forced region condition.
+\end{proof}
+
+\subsection{The exact marked inverse}
+Let the marked position in the standardized output be $K$ and its value
+$C=q_K$. Let $D=q_{K-1}$ and $B=q_{K+1}$. Its adjacent values $C-1$ and
+$C+1$ occur at positions $J<K-1$ and $L>K+1$, respectively, and
+$D<C<B$. Delete the two positional neighbors of $K$, replace the value
+at $J$ by $B$ and that at $L$ by $D$, and standardize. This recovers
+$\pi$ exactly. Thus the marked split is injective into the $(n+2)$-pointed
+avoiders of size $n+2$, proving the upper bound in \eqref{eq:finite}.
+
+The mark is essential. The two distinct sources
+\[
+ (3,5,4,6,8,1,9,7,2),\qquad(3,8,5,1,4,2,6,9,7)
+\]
+both split to $(3,5,4,6,10,1,7,2,8,11,9)$, with respective
+\emph{one-based} marked positions $9$ and $4$. Each source has exactly
+one occurrence. This explicit collision rules out forgetting the mark
+in this construction.
+
+\section{The constants and inverse scale}\label{sec:inverse}
+Combining \eqref{eq:minimamean} with Regev's equivalent gives
+\[
+ \frac{M_{n-3}}{nA_n}\longrightarrow\frac1{3\cdot9^3}
+  =\frac1{2187},\qquad
+ \frac{(n+2)A_{n+2}}{nA_n}\longrightarrow9^2=81.
+\]
+This proves Theorem~\ref{thm:main}. Equivalently, with
+\begin{equation}\label{eq:constants}
+ C_-=\frac{C_0}{2187},\qquad C_+=81C_0,
+\end{equation}
+one has
+\[
+ (C_-+o(1))\frac{9^n}{n^3}\le b_n
+ \le(C_++o(1))\frac{9^n}{n^3}.
+\]
+The two $o(1)$ errors are not asserted to be equal or effective.
+
+Prepending or appending a new maximum leaves the number of $1432$
+occurrences unchanged: a new maximum cannot participate in that pattern
+at the first or last position of the full permutation. Both maps are
+injective and their images are disjoint. Therefore
+\begin{equation}\label{eq:monotonicity}
+ b_{n+1}\ge2b_n\qquad(n\ge4).
+\end{equation}
+For real $x>0$, define the finite threshold
+$N(x)=\min\{n\ge4:b_n\ge x\}$. All logarithms below are natural.
+Put $\lambda=\log9$, $L=\log x$, and
+\begin{equation}\label{eq:TC}
+ T_C(x)=\frac{L+3\log L-3\log\lambda-\log C}{\lambda}.
+\end{equation}
+
+\begin{corollary}\label{cor:inverse}
+As $x\to\infty$,
+\begin{equation}\label{eq:invbracket}
+ \left\lceil T_{C_+}(x)+o(1)\right\rceil
+ \le N(x)\le
+ \left\lceil T_{C_-}(x)+o(1)\right\rceil.
+\end{equation}
+In particular $N(x)=(\log x+3\log\log x)/\log9+O(1)$.
+The unrounded endpoints differ by $11/2+o(1)$.
+\end{corollary}
+\begin{proof}
+For fixed $C>0$, the eventually increasing continuous function
+$C e^{\lambda t}/t^3$ has inverse
+$T_C(x)+O(\log L/L)$. This follows by substitution in
+$\lambda t-3\log t+\log C=L$; the residual is $O(\log L/L)$ and the
+derivative tends to $\lambda>0$.
+
+The two-sided order estimate first gives
+$N(x)=(L+3\log L)/\lambda+O(1)$. Uniformly on any fixed enlargement of
+this bounded-width index window, the relative errors in
+\eqref{eq:constants} tend to zero. Bound their absolute values by one
+positive number $\epsilon(x)\to0$, chosen also to cover the two
+continuous inverse endpoints. Let $t_+$ and $t_-$ be the real crossings of $x$ by the upper and
+lower envelopes $(C_++\epsilon(x))e^{\lambda t}/t^3$ and
+$(C_--\epsilon(x))e^{\lambda t}/t^3$, respectively. At the integer
+$\lceil t_+\rceil-1$, the upper envelope is strictly below $x$, so
+$b_{\lceil t_+\rceil-1}<x$. At $\lceil t_-\rceil$, the lower
+envelope is at least $x$, so $b_{\lceil t_-\rceil}\ge x$. These two
+integers lie in the chosen window for large $x$. Monotonicity gives
+$\lceil t_+\rceil\le N(x)\le\lceil t_-\rceil$. The inverse formula just established and
+$\log(C_\pm\pm\epsilon(x))=\log C_\pm+o(1)$ give
+\eqref{eq:invbracket}.
+
+Finally
+\[
+ T_{C_-}(x)-T_{C_+}(x)=\frac{\log(C_+/C_-)}{\log9}
+ =\frac{\log(81\cdot2187)}{\log9}=\frac{11}{2}.
+\]
+\end{proof}
+The endpoint errors in \eqref{eq:invbracket} occur \emph{inside} the
+ceilings and may differ. They cannot be discarded near an integer.
+The width $11/2$ describes real endpoints, not an exact count of
+admissible integers or a certified finite numerical threshold.
+
+\section{An exact eligible-center statistic}\label{sec:image}
+The marked inverse suggests a finite geometric statistic on avoiders.
+The following refinement is logically separate from the computer-free
+order theorem. Its sufficiency proof uses the exhaustive certificate
+specified below.
+
+Given $q\in\Av_{n+2}(1432)$ with a marked position $K$, require
+\begin{equation}\label{eq:adjacency}
+ 1<K<n+2,\quad D=q_{K-1}<C=q_K<B=q_{K+1},\quad
+ \operatorname{pos}_q(C-1)<K-1,\quad
+ \operatorname{pos}_q(C+1)>K+1.
+\end{equation}
+The last conditions include existence of the adjacent values. Unsplit
+as in Section~\ref{sec:split}. The result $p$ has distinguished tail
+$b,c,d$ at positions $j<k<l$. Require exactly one $a<d$ before $j$,
+and let its position be $i$. Finally require (R2)--(R4) in $p$.
+Together with sole support (R1), these are four singleton rectangles.
+Call such a center \emph{eligible}.
+
+\begin{theorem}[Exact image with a finite certificate]\label{thm:image}
+The split is a bijection between permutations of size $n$ with one
+$1432$ and eligible marked centers of $1432$-avoiders of size $n+2$.
+In particular,
+\[
+ b_n=\sum_{q\in\Av_{n+2}(1432)}
+             \#\{K:K\text{ is eligible in }q\}.
+\]
+\end{theorem}
+\begin{proof}
+Necessity follows from the split and (R1)--(R4). Conditions
+\eqref{eq:adjacency} ensure that all roles are distinct. Unsplit then
+split again: deleting $D,B$ and replacing the $C-1,C+1$ entries removes
+exactly the two new ranks adjacent to $C$, while deleting their neighbors
+removes exactly the two new positions adjacent to $K$. After
+standardization the forward construction therefore recovers the given
+$q$ and its mark. In particular $p$ has the designated occurrence
+$(i,j,k,l)$.
+
+Suppose $p$ has another occurrence. Retain the union of this occurrence
+and the designated core, at most eight points, and standardize.
+All four singleton-region conditions persist: their mandatory core points
+remain, and deletion introduces no extra points. Splitting commutes with
+this restriction. To see this, give $X,B$ ancestor $b$, give $D,Y$
+ancestor $d$, and give every other split point its own old ancestor.
+Restriction to a set containing the core keeps precisely the output
+points with ancestors in that set. The two new values remain immediately
+adjacent to $c$ among old values; the two new positions remain immediately
+adjacent to $k$ among old positions. Every comparison is preserved.
+Thus splitting the restricted source and standardizing equals restricting
+the split output and standardizing, and is still an avoider.
+
+It remains to check the following finite, completely specified statement:
+for each $4\le m\le8$, every permutation $p\in S_m$ having at least two
+occurrences, and every designated $1432$ core passing (R1)--(R4), has a
+split containing $1432$. The companion enumerates these objects in two
+independently written implementations, one using word substitution and
+one using integer plot coordinates. Both give the following counts;
+all designated cores counted in the middle row have a nonavoiding split.
+The sealed data includes every one of these $2{,}074$ designated cores,
+its exact split, and one explicit forbidden quadruple in that split;
+replay independently enumerates the complete list again.
+\begin{center}
+\begin{tabular}{lrrrrr}\toprule
+Size $m$&4&5&6&7&8\\\midrule
+Cores in multiple-occurrence sources&0&0&6&130&1938\\
+Cores with an avoiding split&0&0&0&0&0\\\bottomrule
+\end{tabular}
+\end{center}
+This finite certificate contradicts the reduced counterexample and
+proves sufficiency in every size. The inverse already proved gives
+uniqueness.
+\end{proof}
+
+Sole support does not suffice without the other three regions. For
+$q=(1,3,6,2,4,7,5)$ with one-based center $5$, the inverse is
+$p=(1,5,4,3,2)$, which has four occurrences. The exact eligible-center
+statistic provides a possible target for amplitude analysis, but no
+limiting density for this statistic is established here.
+
+\section{Prior results and reproducibility}\label{sec:prior}
+The exponential growth rate $9$ is inherited from avoidance and the
+general fixed-occurrence theory of Mansour, Rastegar and
+Roitershtein~\cite{MRR}. Their proof of Theorem 3.1 displays the stronger
+one-step estimate $f_m^\xi(n)\le n\sum_{r=0}^{m-1}f_r^\xi(n-1)$,
+where $f_r^\xi(n)$ counts exactly $r$ occurrences of $\xi$. For $m=1$
+and $\xi=1432$, this would give $b_n\le nA_{n-1}$ and hence the same
+upper order. We do not rely on that estimate here: the marked split
+independently proves the upper bound actually used in
+Theorem~\ref{thm:main}. No novelty is claimed for the upper order. The contribution established by the argument here
+is the complete stated order theorem with a matched lower scale and
+explicit constants, relative to the conjecture being addressed.
+A scoped literature and repository check is not a global priority proof.
+
+The original Backelin--West--Xin journal full text was not successfully
+retrieved in this investigation. Attribution to that work is distinct
+from the directly checked proof in Krattenthaler's Theorems 1--3, whose
+hypotheses and rectangle convention were verified above. The cited
+Burstein paper concerns a unique global decreasing triple; it does not
+by itself prove Lemma~\ref{lem:splitavoid}. Conway--Guttmann Section 5.5
+repeats identifier A224182 for a different class; the identification here
+uses OEIS's $2341$ definition and reversal, consistent with their
+Section 5.3 and Nakamura's equation.
+
+\subsection{What the companion checks}
+The offline archive contains this editable \LaTeX\ article and PDF,
+two standard-library-only exact implementations, closed typed data,
+a read-only integrity/replay/build tool, and source provenance. It needs
+no network access or third-party Python package. Normal and optimized
+isolated Python runs must agree byte for byte; assertions removable by
+\texttt{-O} are not used as checks.
+
+Through size eight the replay checks every permutation and all $5{,}102$
+one-occurrence sources, the marked inverses and injectivity, and the
+exact equality for each minima position-and-value skeleton. It also
+checks $75{,}419$ core-preserving restriction commutations, all $110{,}459$
+interior-center candidates in avoiders of sizes six through eight, all $314$
+marked-minimum inflations through source size five, the explicit
+unmarked collision, the $106$ versus $107$ board obstruction, and the
+finite exact-image certificate. Mathematical fixture values are
+recomputed rather than merely trusted after a hash comparison.
+
+The main theorem does not depend on these finite tests: its split proof,
+inflation argument, entropy estimate, and uses of cited avoidance
+theorems are ordinary mathematical proofs. Theorem~\ref{thm:image}
+\emph{does} use its finite exhaustive certificate, after a proved
+universal obstruction reduction. This distinction is essential. Neither
+the numerical cross-checks nor the archive seal constitute formal
+verification, a digital signature, or proof of an asymptotic amplitude.
+
+The companion's documented commands reject nonisolated launches before
+nonbuilt-in imports, enforce a closed inventory and strict JSON schemas,
+reject unsafe output targets and symlink paths, compare exact replay in
+normal and optimized modes, and test deliberately corrupted copies.
+PDF reproduction performs two fresh clean builds and compares their bytes
+with the frozen PDF. Deterministic ZIP packing is checked again after
+fresh extraction. These are reproducibility and integrity controls,
+not a substitute for reviewing the mathematics.
+
+\section{Further questions}
+The principal unresolved question is whether $b_n/(nA_n)$ has a limit,
+and if so whether that limit is the suggested $3/80$. The exact image
+formula in Theorem~\ref{thm:image} turns this into a question about the
+asymptotic mean number of eligible centers in a uniform avoider. Even a
+proof of convergence without evaluation would strengthen the order theorem.
+
+The constants $1/2187$ and $81$ arise from transparent injections and are
+not asserted to be sharp. Better control of the split image could narrow
+them and the inverse bracket. For $1\oplus\delta_k$, a matching general
+upper bound would complement Corollary~\ref{cor:general}; none follows
+from the present eight-case proof. Finally, a computer-free sufficiency
+proof for the four-rectangle exact image criterion would remove the finite
+certificate from that additional theorem, just as the eight-case argument
+already does for the main upper bound.
+
+\begin{thebibliography}{9}
+\small
+\setlength{\itemsep}{3pt}
+\bibitem{OEIS} OEIS Foundation, \emph{A224182: Number of permutations of
+length $n$ with exactly one occurrence of the pattern $2341$}.
+\url{https://oeis.org/A224182}. Definition and initial terms checked
+October 2, 2026.
+\bibitem{Nakamura} B. Nakamura, \emph{Approaches for enumerating
+permutations with a prescribed number of occurrences of patterns},
+arXiv:1301.5080 (2013), Section 3.2, Theorem 4.
+\url{https://arxiv.org/abs/1301.5080}.
+\bibitem{CG} A. R. Conway and A. J. Guttmann, \emph{Counting occurrences
+of patterns in permutations}, Electronic Journal of Combinatorics
+\textbf{32}(1) (2025), P1.3, Section 5.3.
+\url{https://www.combinatorics.org/ojs/index.php/eljc/article/view/v32i1p3}.
+\bibitem{Burstein} A. Burstein, \emph{A short proof for the number of
+permutations containing pattern $321$ exactly once}, Electronic Journal of
+Combinatorics \textbf{18}(2) (2011), P21.
+\url{https://www.kurims.kyoto-u.ac.jp/EMIS/journals/EJC/Volume_18/PDF/v18i2p21.pdf}.
+\bibitem{BWX} J. Backelin, J. West and G. Xin, \emph{Wilf-equivalence
+for singleton classes}, Advances in Applied Mathematics \textbf{38}
+(2007), 133--148, Proposition 2.2.
+\url{https://doi.org/10.1016/j.aam.2004.11.006}.
+\bibitem{Kratt} C. Krattenthaler, \emph{Growth diagrams, and increasing
+and decreasing chains in fillings of Ferrers shapes}, Advances in Applied
+Mathematics \textbf{37} (2006), 404--431, Theorems 1--3.
+\url{https://arxiv.org/abs/math/0510676}.
+\bibitem{Regev} A. Regev, \emph{Asymptotic values for degrees associated
+with strips of Young diagrams}, Advances in Mathematics \textbf{41}
+(1981), 115--136.
+\url{https://doi.org/10.1016/0001-8708(81)90012-8}.
+\bibitem{MRR} T. Mansour, R. Rastegar and A. Roitershtein,
+\emph{Finite automata, probabilistic method, and occurrence enumeration
+of a pattern in words and permutations}, SIAM Journal on Discrete
+Mathematics \textbf{34}(2) (2020), 1011--1038, Theorem 3.1.
+\url{https://doi.org/10.1137/19M1262206}.
+\url{https://arxiv.org/abs/1905.05646}.
+\end{thebibliography}
+\end{document}

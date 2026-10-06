@@ -1,0 +1,812 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype,amsmath,amssymb,amsthm}
+\usepackage[hidelinks]{hyperref}
+\hypersetup{pdftitle={Report 137 All orders logarithmic asymptotics for A217057},pdfauthor={},pdfsubject={Uniform Banach estimates, regularized coefficients, and inverse thresholds}}
+\pdfinfoomitdate=1\pdftrailerid{}\pdfsuppressptexinfo=15
+\setlength{\emergencystretch}{2em}
+\allowdisplaybreaks[2]
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\N}{\mathbb N_0}
+\newcommand{\B}{\mathcal B}
+\newcommand{\E}{\mathbb E}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\fall}[2]{#1^{\underline{#2}}}
+\newcommand{\pa}[2]{\langle #1,#2\rangle_{\mathcal K}}
+\title{All orders logarithmic asymptotics for A217057}
+\author{Report 137}
+\date{October 2, 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+For the number $u_n$ of permutations with exactly one classical occurrence
+of $1234$, and its avoidance counterpart $A_n$, we prove a complete
+Poincare expansion whose coefficients are affine functions of $\log n$.
+The first logarithm occurs at relative order three. Every logarithmic
+coefficient is a computable rational multiple of $\sqrt3/\pi$; the next
+one after Report 135 is $-5041845\sqrt3/\pi$ at relative order four.
+Every nonlogarithmic coefficient has an absolutely convergent regularized
+series prescription. In particular, the previously undetermined finite
+third coefficient exists. The proof uses uniform all-order character
+estimates in a weighted Banach space and a coefficient-level convolution
+lemma. No analytic continuation or singularity-analysis hypothesis for
+a remainder generating function is assumed. Inverse thresholds have
+expansions to every fixed order as well.
+\end{abstract}
+
+\section{Exact inputs and the conclusion}
+An occurrence of the classical pattern $1234$ is a choice of four
+positions with increasing values, without any adjacency requirement.
+Let $u_n$ count permutations of $[n]$ with exactly one such choice; set
+$u_0=u_1=u_2=u_3=0$. This is OEIS A217057. The corresponding avoidance
+count is $A_n$, with $A_0=1$.
+
+Report 134~\cite{R134} established an exact two-half decomposition and a
+positive leading ratio. Report 135~\cite{R135} obtained its first two
+power corrections and its first logarithmic correction, with an
+$O(n^{-3})$ remainder in the ratio. The present report proves the finite
+third constant and extends the expansion to every fixed order. All new
+uniform estimates and convolution arguments are supplied below. The
+unchanged final Report 135 bundle, including its Report 134 companion,
+is included with the reproducibility archive for the exact combinatorial
+inputs. The advance claimed here is relative to those reports; an
+exhaustive literature-priority claim is not made.
+
+Let $F_m(p,q)$ count $1234$-avoiders with the final $p$ entries decreasing
+and with the $q$ smallest values occurring in decreasing order. Write
+$A_m=F_m(0,0)$, and put
+\[
+H_s(i,j)=F_{s+2}(i+1,j+1)-F_{s+1}(i,j)\quad(i+j\le s),
+\qquad H_s(i,j)=0\quad(i+j>s).
+\]
+For $0\le p,q\le m$, we use the following proved inputs from
+Report 135, whose combinatorial foundations are supplied in its
+Report 134 companion:
+\begin{align}
+u_n&=\sum_{s+t=n-4}\pa{H_s}{H_t},\label{eq:glue}\\
+\pa{X}{Y}&=\sum_{i,j,k,l\ge0}X(i,j)Y(k,l)
+ \binom{i+k}{i}\binom{j+l}{j},\label{eq:pair}\\
+0\le H_s(i,j)&\le K A_s(i+1)^4(j+1)^4 3^{-i-j},\label{eq:bound}\\
+c\frac{9^m}{(m+1)^4}&\le A_m\le C\frac{9^m}{(m+1)^4},\label{eq:Abound}\\
+F_m(p,q)&=\int_{U(3)}P^{m-p}h_p\overline{P^{m-q}h_q}\dd U.
+\label{eq:unitary}
+\end{align}
+Here $P=\operatorname{tr}U$, $h_p$ is the complete homogeneous character,
+and Haar measure has mass one. Set
+\[
+C_0=\frac{81\sqrt3}{16\pi},\quad d_p=\binom{p+2}{2}3^{-p},
+\quad a_p=\frac{p(p-1)}2,
+\]
+\begin{align}
+C(i,j)&=81d_{i+1}d_{j+1}-9d_id_j,\label{eq:C}\\
+B(i,j)&=-81d_{i+1}d_{j+1}(8+a_{i+1}+a_{j+1})
+ +9d_id_j(4+a_i+a_j).\label{eq:B}
+\end{align}
+The avoidance and half expansions of Report 135 start as
+\[
+A_m=C_0 9^m m^{-4}\left(1-\frac{11}{2m}+\frac{20}{m^2}
+ +O(m^{-3})\right),\qquad
+\frac{H_m(i,j)}{A_m}=C(i,j)+\frac{B(i,j)}m+\cdots.
+\]
+The positivity $R>0$ of its ratio limit is another inherited input.
+
+\begin{theorem}\label{thm:main}
+There are uniquely determined real numbers $r_j,\kappa_j$ such that,
+for every fixed integer $J\ge0$,
+\begin{equation}\label{eq:full}
+\frac{u_n}{A_n}=\sum_{j=0}^J\frac{r_j+\kappa_j\log n}{n^j}
+ +O_J\left(\frac{1+\log n}{n^{J+1}}\right).
+\end{equation}
+They satisfy
+\[
+r_0=R,\quad r_1=S,\quad r_2=S_2,\qquad
+\kappa_0=\kappa_1=\kappa_2=0,
+\]
+\begin{equation}\label{eq:kappas}
+\kappa_3=\frac{43020\sqrt3}{\pi},\qquad
+\kappa_4=-\frac{5041845\sqrt3}{\pi}.
+\end{equation}
+Every $\kappa_j$ belongs to $(\sqrt3/\pi)\mathbb Q$ and is computable
+by finite rational operations. Each $r_j$ is specified by finitely many
+absolutely convergent Banach-valued regularized series followed by
+continuous pairings and finite algebra with universal harmonic constants.
+In particular,
+\[
+\lim_{n\to\infty}\left[n^3\left(\frac{u_n}{A_n}
+ -R-\frac Sn-\frac{S_2}{n^2}\right)-\kappa_3\log n\right]=r_3
+\]
+exists; an explicit convergent-series recipe is given in
+Section~\ref{sec:third}.
+\end{theorem}
+This is an all-orders asymptotic statement at each fixed order. It makes
+no assertion of convergence or summability of the infinite asymptotic
+series, or of an expansion into exponentially small sectors. It supplies
+neither certified decimal values for the regularized constants nor an
+effective numerical onset.
+
+\section{All orders estimates in a weighted Banach space}
+Fix $1/3<r<1/2$, and let $E_r$ be the space of real arrays with norm
+\[
+\|X\|_r=\sup_{i,j\ge0}|X(i,j)|r^{-i-j}.
+\]
+It is a Banach space, by its isometric identification with bounded real
+arrays after multiplying coordinate $(i,j)$ by $r^{-i-j}$. The pairing in~\eqref{eq:pair} is symmetric and
+continuous, since
+\begin{equation}\label{eq:pairnorm}
+|\pa XY|\le(1-2r)^{-2}\|X\|_r\|Y\|_r.
+\end{equation}
+Indeed $\sum_{i,k\ge0}r^{i+k}\binom{i+k}{i}=(1-2r)^{-1}$.
+Put $a_n=9^{-n}H_n\in E_r$. The global estimates imply
+$\|a_n\|_r=O((n+1)^{-4})$, since a fixed polynomial times
+$(3r)^{-i-j}$ is bounded. We reserve $A_m$ for avoidance counts and use $U_j$ for the Banach
+coefficient arrays below.
+
+\begin{proposition}\label{prop:Banach}
+There are arrays $U_j\in E_r$, independent of $r$, such that for every
+fixed $M\ge0$,
+\begin{equation}\label{eq:Banach}
+\left\|a_n-n^{-4}\sum_{j=0}^M U_j n^{-j}\right\|_r
+ =O_{M,r}(n^{-M-5}).
+\end{equation}
+They have the form $U_j(i,k)=C_0 3^{-i-k}P_j(i,k)$ for a rational
+polynomial $P_j$. The first two are
+\begin{equation}\label{eq:A01}
+U_0=C_0C,\qquad U_1=C_0\left(-\frac{11}{2}C+B\right).
+\end{equation}
+The avoidance sequence has a complete pure-power expansion
+\begin{equation}\label{eq:avoidall}
+A_m=C_0 9^m m^{-4}\left(\sum_{j=0}^M\alpha_jm^{-j}
+ +O_M(m^{-M-1})\right),
+\quad\alpha_j\in\mathbb Q,
+\end{equation}
+where $\alpha_0=1$, $\alpha_1=-11/2$, $\alpha_2=20$, and
+$\alpha_3=-965/16$.
+\end{proposition}
+
+\subsection{The fixed order Laplace estimates}
+Common central phase cancels in~\eqref{eq:unitary}. On the quotient
+of the eigenangle torus by common phase, $|P|=3$ has a single maximum.
+Use a small centered chart $\theta_1+\theta_2+\theta_3=0$, and put
+$Q=\sum\theta_i^2$ and $\Delta=\prod_{i<j}(\theta_i-\theta_j)$.
+The phase and factored Weyl density are real analytic there:
+\[
+\phi(\theta)=\log(|P|^2/9)=-Q/3+O(Q^2),\qquad
+\prod_{i<j}|e^{i\theta_i}-e^{i\theta_j}|^2
+ =\Delta(\theta)^2 w(\theta),\quad w(0)=1.
+\]
+Both $\phi$ and $w$ are even under $\theta\mapsto-\theta$.
+In a sufficiently small chart $\phi\le-cQ$; outside it the trace ratio
+is at most some $\rho<1$. The quotient has a constant local Jacobian.
+Rescaling $\theta=y/\sqrt m$ gives leading density
+$e^{-Q_y/3}\Delta(y)^2\dd y$ and a leading factor $m^{-4}$.
+
+Here is a fixed-order remainder argument. Write
+$\phi=-Q/3+v$, where $v=O(Q^2)$, and fix an integer $M\ge0$.
+Choose the chart small enough that $|v|\le Q/12$. Truncate
+$v$ through degree $2M+2$, leaving a remainder $O(Q^{M+2})$,
+and truncate $w$ through degree $2M$, leaving $O(Q^{M+1})$.
+For $M=0$ the first truncation is the empty polynomial.
+Changing the phase to that polynomial creates an error bounded by
+$C mQ^{M+2}e^{-c'mQ}$, by the mean value formula for the exponential;
+its integral is of relative order $m^{-M-1}$.
+
+For the polynomial phase perturbation $v_{\le2M+2}$, Taylor's integral
+formula bounds the remainder after its exponential is expanded through
+power $M$ by
+\[
+C_M m^{M+1}Q^{2M+2}e^{m|v_{\le2M+2}|}.
+\]
+A smaller chart absorbs this exponential into $e^{-mQ/3}$, and its
+integral has relative order $m^{-M-1}$. Expand the retained finite
+polynomial products and retain exactly the monomials of relative
+weight at most $M$, where $m^a$ times a homogeneous polynomial of
+degree $2b$ has weight $b-a$. Each discarded term has weight at least
+$M+1$. In fact, direct radial scaling on the two-dimensional plane gives
+\[
+\int Q^b\Delta^2 e^{-c'mQ}\dd\theta=O(m^{-4-b});
+\]
+thus $m^aQ^b$ has the claimed relative order. The amplitude remainder is
+handled by the same bound. Extending the resulting Gaussian polynomial
+integrals to the whole plane changes them by an exponentially small
+quantity. Odd terms integrate to zero on an inversion-symmetric chart.
+This proves the fixed-order expansion with an actual remainder, rather
+than only a formal series.
+
+The argument also applies with an arbitrary fixed polynomial insertion.
+For a homogeneous insertion of degree $2h$, scaling first extracts
+$m^{-h}$, and the proof gives any requested number of further integer
+powers. Linearity and finite-dimensional norm equivalence make the
+remainder constant uniform on a coefficient-norm unit ball of any
+fixed polynomial space. The complementary region is exponentially
+small, using the original integrand there.
+The same argument gives, for fixed $c_1,h$ and sufficiently small
+$\varepsilon>0$,
+\begin{equation}\label{eq:moment}
+\E_m[Q^h e^{c_1LQ};\mathrm{local}]\le C_hm^{-h}
+\quad(0\le L\le\varepsilon m),
+\end{equation}
+where $\E_m$ is normalized trace-moment expectation.
+These arguments prove~\eqref{eq:avoidall} and all polynomial-insertion
+moment expansions, uniformly on the unit ball of each fixed
+finite-dimensional polynomial space.
+
+The normalized Gaussian moments are rational. For example, write
+$\theta=(x,y,-x-y)$: the Gaussian $e^{-Q/3}$ has covariance
+$\left(\begin{smallmatrix}1&-1/2\\-1/2&1\end{smallmatrix}\right)$,
+and the additional weight is the rational polynomial $\Delta^2$.
+The Gaussian moment recurrence of Isserlis~\cite{Isserlis}, often
+called Wick's rule, then gives rational normalized moments. All Taylor
+coefficients above are rational, proving $\alpha_j\in\mathbb Q$.
+The constant $C_0$ is the already established leading constant.
+
+\subsection{Uniformity in both boundary parameters}
+Put $c_p=\binom{p+2}{2}$ and
+\[
+r_p(\theta)=\frac{h_p(e^{i\theta})}{c_p(P(\theta)/3)^p},
+\qquad h_p/P^p=d_pr_p.
+\]
+For a centered unit vector $v$, set $g_p(t)=h_p(e^{itv})/c_p$ and
+$z(t)=P(tv)/3$. For every fixed derivative order $D$,
+\[
+|g_p^{(h)}(t)|\le(p+1)^h\quad(0\le h\le D),\qquad
+\left|\frac{\mathrm d^h}{\mathrm dt^h}z(t)^{-p}\right|
+ \le C_D(p+1)^h e^{C_Dpt^2}
+\]
+on a fixed sufficiently small interval, uniformly in $v$. The first
+bound follows by averaging the $c_p$ weak-composition terms; the second
+is the finite chain rule, using $|z(t)|\ge e^{-Ct^2}$.
+Consequently, for $L=p+q$ and any fixed $M$, the real even function
+$\Re(r_p\overline{r_q})$ has a homogeneous Taylor expansion
+\begin{equation}\label{eq:boundaryTaylor}
+\Re(r_p\overline{r_q})=\sum_{h=0}^M D_{2h}^{p,q}(\theta)
+ +\mathcal R_{M,p,q}(\theta),
+\end{equation}
+with
+\[
+|D_{2h}^{p,q}(\theta)|\le C_M(1+L)^{2h}Q^h,
+\quad
+|\mathcal R_{M,p,q}(\theta)|
+ \le C_M(1+L)^{2M+2}Q^{M+1}e^{C_MLQ}.
+\]
+The real product is even because the characters conjugate when the
+angles are negated. Taylor's theorem through degree $2M+1$ proves the
+remainder bound; its last odd homogeneous coefficient vanishes.
+
+Integrate the remainder using~\eqref{eq:moment}. Expand the expectation
+of $D_{2h}^{p,q}$ through relative order $M-h$ by the polynomial-insertion
+argument above. Uniformity on that finite-dimensional space, and the
+displayed polynomial bound for its coefficients, show that for some
+$\varepsilon_M>0$ and uniformly when $p+q\le\varepsilon_M m$,
+\begin{equation}\label{eq:Fhigher}
+\frac{F_m(p,q)}{A_m}=d_pd_q\left[
+ \sum_{j=0}^M f_j(p,q)m^{-j}
+ +O_M\left((1+p+q)^{2M+2}m^{-M-1}\right)\right].
+\end{equation}
+The $f_j$ are rational polynomials of degree at most $2j$, with $f_0=1$.
+To see polynomiality directly, weak compositions satisfy
+\[
+\frac1{c_p}\sum_{\delta_1+\delta_2+\delta_3=p}
+ (\delta_1)_{\underline a}(\delta_2)_{\underline b}
+ (\delta_3)_{\underline c}
+ =\frac{2a!b!c!}{(a+b+c+2)!}\fall p{a+b+c}.
+\]
+All Taylor coefficients of the averaged character, and of $z^{-p}$,
+are therefore rational polynomials in the parameters.
+
+There is no division by $P$ outside the chart. The original polynomial
+integrand in~\eqref{eq:unitary} has modulus bounded by
+\[
+9^m d_pd_q\left(\frac{|P|}{3}\right)^{2m-p-q}.
+\]
+After division by $A_m$ its off-chart part is
+$O(d_pd_qm^4\rho^{(2-\varepsilon_M)m})$, absorbed in the remainder.
+Thus~\eqref{eq:Fhigher} is uniform on its entire stated range.
+
+Combining~\eqref{eq:Fhigher},~\eqref{eq:avoidall} and the fixed shifts
+$m=n+1,n+2$ yields the claimed half coefficients and, whenever
+$i+j+2\le\varepsilon'_M n$, a bound
+\[
+\left|a_n(i,j)-n^{-4}\sum_{h=0}^M U_h(i,j)n^{-h}\right|
+ \le C_Mn^{-M-5}(1+i+j)^{D_M}3^{-i-j}
+\]
+for a fixed finite $D_M$. Dividing by $r^{i+j}$ makes the boundary
+polynomial uniformly bounded. In the complementary range,
+\eqref{eq:bound} and the polynomial coefficient bounds give an
+exponentially small norm tail, since $(3r)^{-i-j}$ decays geometrically
+and $i+j\ge\varepsilon'_Mn-2$. This includes the triangular zero region
+$i+j>n$. It proves~\eqref{eq:Banach} and completes the uniform estimates.
+
+
+\subsection{A finite algorithm for every local coefficient}\label{sec:algorithm}
+The construction above can be carried out with rational polynomials
+at each fixed order. Let $\phi_{2h}$ and $w_{2h}$ be the homogeneous
+parts of the local phase and amplitude, where $\phi_2=-Q/3$ and
+$w_0=1$. With $t$ a formal variable, define
+\begin{equation}\label{eq:Kalgorithm}
+K_j(y)=[t^j]\left\{
+ \left(\sum_{h=0}^j t^h w_{2h}(y)\right)
+ \exp\left(\sum_{h=2}^{j+1}t^{h-1}\phi_{2h}(y)\right)
+\right\}.
+\end{equation}
+Only finitely many terms of the exponential can contribute. If
+$\E_0$ is expectation for the normalized density
+$e^{-Q/3}\Delta^2$, then $\alpha_j=\E_0K_j$. The normalization agrees
+with $\alpha_0=1$; the leading factor $C_0$ is the inherited one.
+
+For the boundary insertion in~\eqref{eq:boundaryTaylor}, put
+\[
+N_j(p,q)=\sum_{h=0}^j\E_0\bigl[D_{2h}^{p,q}K_{j-h}\bigr].
+\]
+The finite division rule
+\begin{equation}\label{eq:falgorithm}
+f_0=1,\qquad
+f_j=N_j-\sum_{h=1}^j\alpha_h f_{j-h}
+\end{equation}
+gives the coefficients in~\eqref{eq:Fhigher}. The averaged character
+Taylor coefficients are obtained from the displayed weak-composition
+factorial moments, converting ordinary powers to falling powers if
+necessary. The reciprocal trace is expanded by its finite binomial
+series. Thus this is an explicit rational algorithm for the polynomials
+$f_j$, including $f_2$ and $f_3$, without needing a separate closed-form
+third-boundary formula.
+
+For clarity, it also gives the half arrays directly. Write
+$g_j(p,q)=\sum_{h=0}^j\alpha_h f_{j-h}(p,q)$, and define, for a fixed
+integer shift $s$,
+\[
+E_j(s;p,q)=\sum_{h=0}^j g_h(p,q)
+ \binom{-4-h}{j-h}s^{j-h}.
+\]
+Expanding $(n+s)^{-4-h}$ proves
+\begin{equation}\label{eq:Aalgorithm}
+\begin{split}
+U_j(i,k)=C_0\bigl[&81d_{i+1}d_{k+1}E_j(2;i+1,k+1)\\
+ &-9d_id_kE_j(1;i,k)\bigr].
+\end{split}
+\end{equation}
+These formulas use only finitely many exact Gaussian moments at any
+fixed $j$. One elementary implementation, in coordinates $(x,y,-x-y)$,
+sets $G(a,b)=\E_{\rm G}(x^ay^b)$ and uses
+\[
+G(a,b)=(a-1)G(a-2,b)-\frac b2G(a-1,b-1)\quad(a\ge1),
+\]
+with $G(0,2b)=(2b-1)!!$, $G(0,2b+1)=0$, $G(0,0)=1$, and negative
+indices interpreted as zero. This recurrence follows directly by
+Gaussian integration by parts. Multiplying by $\Delta^2$ and dividing
+by $\E_{\rm G}\Delta^2$ then evaluates $\E_0$.
+\subsection{A reproducible check of the third avoidance coefficient}
+Let $D_1=x-y,D_2=x+2y,D_3=2x+y$, and let $L_{2h}$ be the coefficient
+of $t^h$ in
+\[
+\log\left(1+\frac29\sum_{h\ge1}
+ \frac{(-1)^ht^h}{(2h)!}\sum_{i=1}^3D_i^{2h}\right).
+\]
+Let $W_{2h}$ be the coefficient of $t^h$ in
+\[
+\prod_{i=1}^3\left(\frac{\sin(\sqrt tD_i/2)}{\sqrt tD_i/2}\right)^2.
+\]
+Expectation below is with Gaussian covariance just specified and extra
+weight $\Delta^2=D_1^2D_2^2D_3^2$. Its normalizing Gaussian moment is
+$\E_{\rm G}\Delta^2=81/2$. Then
+\begin{align*}
+\alpha_3=\E_0\bigl[W_6+W_4L_4+W_2(L_6+L_4^2/2)
+ +L_8+L_4L_6+L_4^3/6\bigr]=-965/16.
+\end{align*}
+These are finite polynomial calculations. The companion replay evaluates the Gaussian moments exactly over
+$\mathbb Q$, reproducing $1,-11/2,20,-965/16$.
+
+\section{A coefficient level convolution theorem}
+The following elementary argument works for any real Banach space $E$
+with a continuous symmetric bilinear form $\B:E\times E\to\mathbb R$.
+Assume a sequence $a_n\in E$ has~\eqref{eq:Banach}, with the same leading
+power $n^{-4}$. Let
+\[
+v_n=\sum_{t=0}^n\B(a_t,a_{n-t}).
+\]
+For $k\ge3$ define the scalar model sequence
+\begin{equation}\label{eq:bk}
+b_k(n)=[z^n](1-z)^k\log(1-z).
+\end{equation}
+For $n>k$ the coefficient is exactly
+\begin{equation}\label{eq:bexact}
+b_k(n)=\frac{(-1)^{k+1}k!}{\fall n{k+1}}.
+\end{equation}
+For all $n\ge0$ the coefficient is also given by the finite sum
+\[
+b_k(n)=-\sum_{h=0}^{\min(k,n-1)}\frac{(-1)^h\binom kh}{n-h},
+\qquad b_k(0)=0,
+\]
+with the sum used when $n\ge1$. For example,
+$(b_3(0),b_3(1),b_3(2),b_3(3))=(0,-1,5/2,-11/6)$.
+The finitely many coefficients at $n\le k$ retain their definition
+in~\eqref{eq:bk}; replacing them by another extension would change the
+regularized constants and is not permitted.
+
+\begin{lemma}\label{lem:models}
+There are unique vectors $V_k\in E$, $k\ge3$, such that for every
+$K\ge3$,
+\begin{equation}\label{eq:rdecay}
+r^{(K)}_n=a_n-\sum_{k=3}^KV_kb_k(n)=O_E((n+1)^{-K-2}).
+\end{equation}
+If $h_d(1,\ldots,k)$ denotes the complete homogeneous polynomial of
+degree $d$ in $1,\ldots,k$, they are computed by
+\begin{equation}\label{eq:Vrec}
+V_k=\frac{U_{k-3}-\sum_{\ell=3}^{k-1}
+ (-1)^{\ell+1}\ell!h_{k-\ell}(1,\ldots,\ell)V_\ell}
+ {(-1)^{k+1}k!}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Expand the rational function~\eqref{eq:bexact} as
+$(-1)^{k+1}k!n^{-k-1}\prod_{j=1}^k(1-j/n)^{-1}$ to any fixed order.
+Its leading coefficient is nonzero. Triangular matching against the
+assumed Banach expansion gives~\eqref{eq:Vrec} and~\eqref{eq:rdecay}.
+\end{proof}
+
+For $j\ge0$ define a regularized Taylor coefficient by
+\begin{equation}\label{eq:Tj}
+T_j=\frac{(-1)^j}{j!}\sum_{n\ge0}\fall nj
+ \left(a_n-\sum_{k=3}^{j}V_kb_k(n)\right).
+\end{equation}
+An empty inner sum means zero. These series converge absolutely in $E$:
+for $j\le2$, use $a_n=O_E(n^{-4})$; for $j\ge3$, apply
+\eqref{eq:rdecay} with $K=j$. In the latter case the weighted summand is
+$O_E(n^{-2})$.
+
+\begin{lemma}\label{lem:remainder}
+For a fixed $K\ge3$ set
+\[
+S_K(z)=\sum_{k=3}^KV_k(1-z)^k\log(1-z),\qquad
+P_K(z)=\sum_{j=0}^{K-1}T_j(1-z)^j.
+\]
+Then, as $n\to\infty$,
+\begin{equation}\label{eq:finitecalc}
+v_n=[z^n]\left(2\B(P_K,S_K)+\B(S_K,S_K)\right)
+ +O(n^{-K-2}).
+\end{equation}
+\end{lemma}
+\begin{proof}
+Let $R_K(z)=\sum r_n^{(K)}z^n$. Its derivatives through order $K$ at
+$z=1$ are absolutely convergent coefficient sums. For $k>j$, the
+$j$th derivative of $(1-z)^k\log(1-z)$ tends to zero at $z=1$ and its
+coefficient derivative series is absolutely convergent. Therefore the
+Taylor polynomial of $R_K$ through degree $K-1$, expressed in powers
+of $1-z$, is exactly $P_K$ from~\eqref{eq:Tj}.
+Let $q_n=[z^n](R_K-P_K)$. Then
+\begin{equation}\label{eq:q}
+\|q_n\|=O((n+1)^{-K-2}),\quad
+\sum_{n\ge0}\fall njq_n=0\ (0\le j\le K-1),\quad
+\sum_{n\ge0}n^K\|q_n\|<\infty.
+\end{equation}
+The zero falling-factorial moments also imply zero ordinary moments
+through $K-1$.
+
+All generating functions converge absolutely for $|z|<1$, so their
+products equal coefficient convolutions. Terms involving $P_K$ twice
+are polynomial and vanish for sufficiently large $n$. Convolution of
+$q$ with $P_K$ is $O(n^{-K-2})$. Convolution of $q$ with itself has the
+same bound: split at $n/2$, bound the larger index by $O(n^{-K-2})$,
+and sum the other sequence absolutely.
+
+It remains to bound $q*b_k$, for fixed $3\le k\le K$. In the part
+$t>n/2$, $\|q_t\|=O(n^{-K-2})$ and $\sum_s|b_k(s)|<\infty$.
+In the part $t\le n/2$, use the rational extension in~\eqref{eq:bexact}:
+its $h$th derivative on $[n/2,n]$ is $O(n^{-k-1-h})$ for all large $n$.
+Taylor expansion of $b_k(n-t)$ through degree $K-1$ has remainder
+$O(t^Kn^{-k-1-K})$. Its convolution with $q$ is bounded using the last
+condition in~\eqref{eq:q}. Each retained moment, after extending the
+sum to all $t$, vanishes. The truncation tail for its degree $h$ is
+\[
+O(n^{-k-1-h})\sum_{t>n/2}t^h\|q_t\|
+ =O(n^{-k-K-2}).
+\]
+Thus the entire convolution is $O(n^{-K-2})$. Continuity of $\B$ handles
+its vector coefficients. Expansion of
+$\B(P_K+S_K+(R_K-P_K),P_K+S_K+(R_K-P_K))$ proves the lemma.
+No continuation of $R_K$ across $|z|=1$ has been used.
+\end{proof}
+
+\begin{theorem}\label{thm:conv}
+The convolution has a complete expansion
+\begin{equation}\label{eq:convexp}
+v_n=\sum_{j=0}^J(c_j+\ell_j\log n)n^{-4-j}
+ +O_J(n^{-5-J}(1+\log n))
+\end{equation}
+for every fixed $J$, with $\ell_0=\ell_1=\ell_2=0$.
+Every coefficient is obtained by expanding the finite expression
+in~\eqref{eq:finitecalc}, with any $K\ge J+4$.
+In particular, each $\ell_j$ depends only on the local tail vectors
+$U_h$, never on the regularized moments $T_h$.
+\end{theorem}
+\begin{proof}
+Products $P_KS_K$ are finite sums of the single-logarithm models
+in~\eqref{eq:bk}. Products $S_K^2$ are finite sums of
+$(1-z)^m\log^2(1-z)$ with $m\ge6$. For $n>m$, differentiation twice
+in $\alpha$ of the finite polynomial
+$[z^n](1-z)^\alpha=(-1)^n\fall\alpha n/n!$ gives the exact formula
+\begin{equation}\label{eq:log2}
+[z^n](1-z)^m\log^2(1-z)
+ =2b_m(n)(H_m-H_{n-m-1}).
+\end{equation}
+Here $H_m=\sum_{h=1}^m1/h$ and $H_0=0$; these scalar harmonic
+numbers are distinct from the earlier half arrays $H_s(i,j)$.
+For a fixed integer $p\ge0$, Euler--Maclaurin gives
+\[
+H_N=\log N+\gamma+\frac1{2N}
+ -\sum_{h=1}^p\frac{B_{2h}}{2hN^{2h}}+O_p(N^{-2p-2}),
+\]
+where $B_{2h}$ are Bernoulli numbers. The finite remainder follows from
+the integral remainder in Euler--Maclaurin applied to $1/x$; the
+periodic Bernoulli function is bounded and the appropriate derivatives
+are integrable on $[N,\infty)$. Equivalently, see the exact
+harmonic--digamma identity and its fixed-order expansion in
+DLMF~\cite{DLMFharm,DLMFEM}. Expanding $N=n-m-1$ with fixed $m$ and
+using~\eqref{eq:bexact} gives full expansions involving only a constant
+and a single $\log n$. The earliest log-squared model has $m=6$, so its
+coefficient logarithm first occurs at $n^{-7}$. No higher logarithmic
+powers occur. Taking $K\ge J+4$ makes the error of
+\eqref{eq:finitecalc} smaller than the error in~\eqref{eq:convexp}.
+\end{proof}
+
+\section{The constants and the first two logarithms}\label{sec:third}
+Apply Theorem~\ref{thm:conv} to $E_r$, $\B=\langle\cdot,\cdot\rangle_{
+\mathcal K}$ and $a_n=9^{-n}H_n$. By~\eqref{eq:glue},
+\begin{equation}\label{eq:unshift}
+u_n=9^{n-4}v_{n-4}.
+\end{equation}
+The fixed shift, the pure-power avoidance expansion, and ordinary
+formal division yield~\eqref{eq:full}, with its claimed error.
+The coefficients are unique: at the first differing order, multiplying
+the difference by that power of $n$ would give a nonzero affine
+function of $\log n$ tending to zero. Thus the first three constants
+agree with $R,S,S_2$ from Report 135.
+
+Here is an explicit recipe for the finite third coefficient. The first
+four singular vectors are
+\begin{align}
+V_3&=U_0/6,&V_4&=(6U_0-U_1)/24,\notag\\
+V_5&=(35U_0-10U_1+U_2)/120,&
+V_6&=(225U_0-85U_1+15U_2-U_3)/720.\label{eq:Vfirst}
+\end{align}
+Compute $U_2,U_3$ by the finite character/Gaussian algorithm in
+Section~\ref{sec:algorithm}. Form the absolutely convergent series
+\begin{align}
+T_0&=\sum_{n\ge0}a_n,&T_1&=-\sum_{n\ge0}na_n,\notag\\
+T_2&=\frac12\sum_{n\ge0}n(n-1)a_n,&
+T_3&=-\frac16\sum_{n\ge0}n(n-1)(n-2)(a_n-V_3b_3(n)).
+\label{eq:Tfirst}
+\end{align}
+For $m=3,4,5,6$, put
+\[
+\Phi_m=2\sum_{k=3}^{m}\pa{T_{m-k}}{V_k}.
+\]
+The finite coefficients of $v_n$ through the first log are
+\begin{align}
+c_0&=6\Phi_3,\notag\\
+c_1&=36\Phi_3-24\Phi_4,\notag\\
+c_2&=150\Phi_3-240\Phi_4+120\Phi_5,\notag\\
+\ell_3&=1440\pa{V_3}{V_3}=40\pa{U_0}{U_0},\notag\\
+c_3&=540\Phi_3-1560\Phi_4+1800\Phi_5-720\Phi_6
+ +\ell_3(\gamma-H_6),\label{eq:cfirst}
+\end{align}
+where $\gamma$ is Euler's constant. These formulas use the finite
+coefficients of $b_k$ at small $n$ exactly as in~\eqref{eq:bk}.
+The inverse avoidance series starts
+\[
+(1-11/(2n)+20/n^2-965/(16n^3)+\cdots)^{-1}
+ =1+\frac{11}{2n}+\frac{41}{4n^2}+\frac{107}{16n^3}+\cdots.
+\]
+Expanding the shift $n-4$ in~\eqref{eq:unshift} now gives
+\begin{equation}\label{eq:r3}
+r_3=\frac{9^{-4}}{C_0}
+ \left(c_3+\frac{59}{2}c_2+\frac{1441}{4}c_1
+ +\frac{37291}{16}c_0\right).
+\end{equation}
+Equations~\eqref{eq:Tfirst}--\eqref{eq:r3}, together with finite local
+polynomial calculations, are the promised absolutely convergent
+regularized-series prescription. Existence and convergence, not a
+numerically certified evaluation, are claimed here.
+
+The next logarithmic coefficient of the unshifted convolution is
+\begin{align*}
+\ell_4&=30240\pa{V_3}{V_3}-20160\pa{V_3}{V_4}
+       =140\pa{U_0}{U_1}.
+\end{align*}
+The shift and division therefore give
+\begin{align}
+\kappa_3&=\frac{9^{-4}}{C_0}\ell_3,
+\notag\\
+\kappa_4&=\frac{9^{-4}}{C_0}\left(\ell_4+\frac{67}{2}\ell_3\right)
+ =C_0 9^{-4}\left(570\pa CC+140\pa CB\right).\label{eq:kappa4}
+\end{align}
+For transparency, both needed pairings are exact rational calculations:
+\begin{equation}\label{eq:pairvals}
+\pa CC=1393848,\qquad \pa CB=-52348032.
+\end{equation}
+A convenient general evaluation rule is this: if
+$f_i=3^{-i}f(i)$ and $g_i=3^{-i}g(i)$ for rational polynomials, write
+$f(i)=\sum_p f_p\fall ip$ and $g(i)=\sum_q g_q\fall iq$. Then
+\begin{equation}\label{eq:fallpair}
+\sum_{i,k\ge0} f_i g_k\binom{i+k}{i}
+ =3\sum_{p,q}f_pg_q(p+q)!.
+\end{equation}
+It follows by differentiating $(1-x-y)^{-1}$ and putting $x=y=1/3$.
+Absolute convergence licenses every differentiation. Rank-one
+factorizations of $C,B$ reduce~\eqref{eq:pairvals} to this rule; the companion replay carries out the rational arithmetic. Substitution proves~\eqref{eq:kappas}.
+
+More generally, every $V_k$ is $C_0$ times an array of the form
+$3^{-i-j}$ times a rational polynomial. Thus all pairings of singular
+vectors are $C_0^2$ times rationals by~\eqref{eq:fallpair}.
+The log coefficient of~\eqref{eq:log2} is the rational function
+$-2b_m(n)$. Shift and division use rational coefficients. Consequently
+every $\kappa_j$ is a rational multiple of $C_0$, proving the final
+algebraic assertion of Theorem~\ref{thm:main}.
+
+\section{All orders inverse thresholds}
+Let $M_0=C_0R>0$, $\lambda=\log9$, and
+\[
+N(T)=\min\{n\ge0:u_n\ge T\}.
+\]
+The ratio $u_{n+1}/u_n\to9$ makes the sequence eventually strictly
+increasing. For sufficiently large thresholds, this controls the
+inverse irrespective of finitely many early values.
+
+The direct expansion implies, to every fixed order,
+\begin{equation}\label{eq:logu}
+\log u_n=\lambda n-4\log n+\log M_0
+ +\sum_{j=1}^{J}\frac{L_j(\log n)}{n^j}
+ +O_J\left(\frac{(1+\log n)^{J+1}}{n^{J+1}}\right),
+\end{equation}
+where $L_j$ is a polynomial with $\deg L_j\le\lfloor j/3\rfloor$.
+Indeed every logarithm in the normalized direct expansion costs at
+least three powers of $1/n$; expand the ordinary scalar logarithm by
+its finite Taylor formula. This degree bound concerns $\log u_n$,
+where higher powers of logarithms may occur; it does not contradict the
+affine-log structure of $u_n/A_n$.
+
+\begin{corollary}\label{cor:inverse}
+For every fixed $J\ge0$ there are explicitly recursive polynomials
+$Q_j$, $1\le j\le J$, of degree at most $j$, such that, with
+$y=\log T$ and $d=\log M_0+4\log\lambda$,
+\[
+x_J(T)=\frac1\lambda\left[y+4\log y-d
+ +\sum_{j=1}^J\frac{Q_j(\log y)}{y^j}\right]
+\]
+satisfies the eventual sandwich
+\begin{equation}\label{eq:inverse}
+\left\lceil x_J(T)-C_J\frac{(1+\log y)^{J+1}}{y^{J+1}}\right\rceil
+ \le N(T)\le
+\left\lceil x_J(T)+C_J\frac{(1+\log y)^{J+1}}{y^{J+1}}\right\rceil.
+\end{equation}
+The constants and onset are not asserted effective. No convention of
+rounding a truncated asymptotic expansion to a single exact integer is
+implied when its error interval crosses an integer.
+\end{corollary}
+\begin{proof}
+Set $w=\lambda x$ and formally substitute
+$w=y+4\log y-d+\sum_{j=1}^JQ_j(\log y)y^{-j}$ in
+\eqref{eq:logu}. At each new order $y^{-j}$ the new polynomial $Q_j$
+appears with coefficient one; all other terms have already been
+computed. This determines $Q_j$ successively. Expansion of
+$\log(1+(w-y)/y)$ and $(1+(w-y)/y)^{-h}$ shows inductively that its
+degree is at most $j$. Finite Taylor remainders on $(w-y)/y=o(1)$ give
+residual $O_J((1+\log y)^{J+1}y^{-J-1})$.
+
+For a rigorous threshold conclusion, regard the right side of the
+finite expansion~\eqref{eq:logu} as a smooth function of a positive
+real variable $x$. Its derivative is $\lambda+o(1)$, bounded below by
+$\lambda/2$ for all large $x$. The discrete remainder and the
+substitution residual have the stated bound uniformly for integers
+within a bounded distance of $x_J$. Increasing the constant $C_J$ makes
+the lower and upper shifts dominate both errors. For full precision about rounding, put
+$\epsilon=C_J(1+\log y)^{J+1}y^{-J-1}$. The lower comparison is at
+$k_-=\lceil x_J-\epsilon\rceil-1<x_J-\epsilon$, and the upper one
+is at $k_+=\lceil x_J+\epsilon\rceil\ge x_J+\epsilon$.
+The derivative bound and the chosen error margin give
+$\log u_{k_-}<\log T$ and $\log u_{k_+}\ge\log T$.
+All these integers lie within a bounded distance of $x_J$.
+Eventual monotonicity, with the finite early maximum below $T$, gives
+$k_-<N(T)\le k_+$, exactly~\eqref{eq:inverse}.
+\end{proof}
+For example, write
+$u_n=M_0 9^n n^{-4}(1+\beta/n+\delta/n^2+\cdots)$, where
+\[
+\beta=-\frac{11}{2}+\frac SR,
+\qquad \delta=20-\frac{11S}{2R}+\frac{S_2}{R}.
+\]
+If
+$a=4z-d$, the first two inverse polynomials are
+\[
+Q_1(z)=4a-\lambda\beta,
+\qquad Q_2(z)=4Q_1(z)-2a^2+\lambda\beta a
+ -\lambda^2(\delta-\beta^2/2).
+\]
+At higher orders the same recursion includes the logarithmic
+coefficients and the regularized constants from the direct expansion.
+
+\section{Reproducibility and the scope of the computations}
+The companion archive contains this article in editable \LaTeX\ and
+PDF, the exact arithmetic replay, typed reference fixtures, integrity
+checks, and documented clean-build and deterministic-pack commands.
+It also includes the unchanged final Report 135 companion and its
+Report 134 materials. The latter retain their own verifiers and seals;
+the new replay checks their byte integrity before relying on them.
+No third-party paper PDFs are redistributed.
+
+The new finite checks cover the single-log coefficient identities and
+squared-log coefficient products, triangular singular-vector matching,
+the Gaussian coefficients through $\alpha_3$, the two exact kernel
+pairings and $\kappa_4$, the finite $r_3$ shift weights, and the first
+inverse-polynomial cancellations. Additional regularization checks use
+explicit synthetic scalar sequences with exactly known model tails.
+They check the implementation of subtraction and convergent weighted
+sums. They are not numerical evaluations or error certificates for the
+actual A217057 constants.
+
+The verifier rejects undeclared or ill-typed fixture data and checks the
+sealed source inventory. Normal and optimized Python runs are required
+to produce the same result; the tests do not rely on removable
+\texttt{assert} statements. Separate output locations and explicit
+path guards protect the frozen package. Fresh clean builds and
+repacking are checked for deterministic output. These finite
+computations support the displayed algebra and reproducibility.
+The uniform estimates, infinite-series convergence, and all-orders
+claims are established by the proofs in this article, not by testing
+finitely many coefficients.
+
+\section{Further questions}
+The all-orders statement, existence of the finite third constant,
+convergent regularization algorithm, next exact logarithmic coefficient,
+and arbitrary fixed-order inverse sandwich are proved here from the
+exact inputs of Report 135. The following questions remain separate.
+\begin{enumerate}
+\item Can the regularized series be evaluated with explicit tail bounds
+to certify useful decimal enclosures for $R,S,S_2,r_3$ and later
+nonlogarithmic constants? Absolute convergence alone supplies no
+numerical certificate at a stated truncation.
+\item Can the local and off-chart estimates be made effective enough
+to give practical constants and onset thresholds in the direct and
+inverse remainders? A shrinking asymptotic error interval still does
+not resolve exact integer rounding if it crosses an integer.
+\item What is the growth of the coefficients as their order increases?
+Convergence, Gevrey bounds, or summability of the infinite formal series
+would require additional analysis. No exponentially small sector
+expansion is established here.
+\item Can the exact rational-diagonal description from Report 135 be
+turned into a usable differential equation or recurrence that supports
+certified large-index computation of the regularized constants?
+\item Which other exact-pattern decompositions admit a comparable
+weighted Banach expansion and a bilinear convolution reduction? The
+coefficient theorem applies whenever its explicit hypotheses hold;
+verifying those hypotheses for another pattern is a new problem.
+\end{enumerate}
+
+\begin{thebibliography}{9}
+\bibitem{R134} Report 134, \emph{Permutations with exactly one increasing
+subsequence of length four}, October 2, 2026. Unchanged \LaTeX, PDF,
+exact-count code, and certificate included in the Report 135 companion.
+\bibitem{R135} Report 135, \emph{Rational structure and logarithmic
+asymptotics for A217057}, October 2, 2026. Final version with the
+second correction and first logarithmic term; included unchanged with
+its full reproducibility companion.
+\bibitem{Isserlis} L. Isserlis, On a formula for the product-moment
+coefficient of any order of a normal frequency distribution in any
+number of variables, \emph{Biometrika} \textbf{12} (1918), 134--139.
+\href{https://doi.org/10.1093/biomet/12.1-2.134}{doi:10.1093/biomet/12.1-2.134}.
+\bibitem{DLMFharm} NIST Digital Library of Mathematical Functions,
+\href{https://dlmf.nist.gov/5.4.E14}{equation 5.4.14}
+(harmonic numbers and the digamma function) and
+\href{https://dlmf.nist.gov/5.11.E2}{equation 5.11.2}
+(fixed-order digamma asymptotics). Consulted October 2, 2026.
+\bibitem{DLMFEM} NIST Digital Library of Mathematical Functions,
+\href{https://dlmf.nist.gov/2.10.E1}{equation 2.10.1}
+(Euler--Maclaurin with integral remainder) and
+\href{https://dlmf.nist.gov/2.10.E8}{equation 2.10.8}
+(harmonic asymptotics and the stated remainder bound).
+Consulted October 2, 2026.
+\end{thebibliography}
+\end{document}
