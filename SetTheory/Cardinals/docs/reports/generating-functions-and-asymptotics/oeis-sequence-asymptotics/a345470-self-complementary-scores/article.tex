@@ -5,14 +5,16 @@
 \usepackage[T1]{fontenc}
 \usepackage{lmodern}
 \usepackage[margin=1in]{geometry}
-\usepackage{amsmath,amssymb,amsthm,mathtools,booktabs,array}
+\usepackage{amsmath,amssymb,amsthm,mathtools,booktabs,array,longtable}
 \usepackage{microtype,xcolor,enumitem,fancyhdr}
 \usepackage[colorlinks=true,linkcolor=black,citecolor=black,urlcolor=blue!55!black]{hyperref}
-\hypersetup{pdftitle={Leading equivalents for self complementary tournament score sequences},pdfsubject={Report 116: A345470 and A351869},pdfauthor={Research report}}
+\usepackage{xurl}
+\newcommand{\file}[1]{\nolinkurl{#1}}
+\hypersetup{pdftitle={Self-complementary tournament score sequences (OEIS A345470 and A351869)},pdfauthor={},pdfsubject={Merged report a345470-self-complementary-scores (batch 103): leading equivalents, the strong fraction and inverses (Report 116), the growth theorem and monotonicity (Report 114), with a corrected Denisov-Wachtel limit density}}
 \setlength{\headheight}{14pt}
 \pagestyle{fancy}\fancyhf{}
 \fancyhead[L]{\small Self-complementary score sequences}
-\fancyhead[R]{\small Report 116}
+\fancyhead[R]{\small A345470 and A351869}
 \fancyfoot[C]{\thepage}
 \renewcommand{\headrulewidth}{0.3pt}
 \setlength{\parskip}{4pt}\setlength{\parindent}{0pt}
@@ -23,14 +25,148 @@
 \newtheorem{proposition}[theorem]{Proposition}
 \newtheorem{corollary}[theorem]{Corollary}
 \theoremstyle{definition}\newtheorem{remark}[theorem]{Remark}
+% Macros of the two sources; every shared name has the same definition in both.
 \newcommand{\Pp}{\mathbb P}\newcommand{\Ee}{\mathbb E}
-\newcommand{\Z}{\mathbb Z}\newcommand{\R}{\mathbb R}
+\newcommand{\Z}{\mathbb Z}\newcommand{\R}{\mathbb R}\newcommand{\NN}{\mathbb N}
 \newcommand{\ind}{\mathbf 1}\newcommand{\Vdw}{V_{\mathrm{DW}}}
-\newcommand{\fY}{f_Y}
-\title{\vspace{-1.2em}\textbf{Leading equivalents for self complementary\\tournament score sequences}}
-\author{Report 116}\date{2 October 2026}
-\begin{document}\maketitle\thispagestyle{empty}
+\newcommand{\fY}{f_Y}\newcommand{\code}[1]{\texttt{#1}}
+% Added in the write (batch 103).
+\newcommand{\hstar}{\bar h_\star}\newcommand{\fstar}{f_\star}\newcommand{\Kstar}{K_\star}
+\newcommand{\erf}{\operatorname{erf}}
+\newenvironment{writenote}[1][]{\par\smallskip\begingroup\small
+ \noindent\textbf{[write]}\if\relax\detokenize{#1}\relax\else~\textbf{#1.}\fi\ }%
+ {\par\endgroup\smallskip}
+\newcommand{\wtag}{\textup{\textbf{[write]}}}
+\newenvironment{partabstract}{\begin{quote}\small\noindent\textbf{Abstract of this Part (as delivered).}\ }{\end{quote}}
+\newcommand{\partsource}[1]{\par\noindent\begin{minipage}{\textwidth}\small #1\end{minipage}\par\medskip}
+\title{\vspace{-1.2em}\textbf{Self-complementary tournament score sequences\\(OEIS A345470 and A351869)}\\[7pt]
+\large Leading equivalents, the strong fraction $e^{-\lambda}$, the growth theorem,\\ monotonicity and threshold inverses}
+\author{Two research reports of one external research session\\(bundle Reports 116 and 114), merged into one ProveIt report}
+\date{Parts I and II: 2 October 2026\quad merged: 5 October 2026}
+\begin{document}
+\hypersetup{pageanchor=false}
+\maketitle
+\thispagestyle{empty}
 \begin{abstract}
+A tournament score sequence $s_1\le\cdots\le s_n$ is self-complementary when $s_i+s_{n+1-i}=n-1$. Let $C_n$ count these sequences (OEIS A345470) and $D_n$ the strong ones (A351869). This report prints two manuscripts as Parts~I and~II. Part~I (Report~116, the base) proves $C_n\sim A\,2^nn^{-3/4}$ and $D_n\sim e^{-\lambda}A\,2^nn^{-3/4}$ with one amplitude $A>0$ for both parities. Here $\lambda=0.33023754\ldots$ is the constant of the ordinary score sequences ($S(1/4)=e^\lambda$, Kolesnik), so the limiting strong fraction is $e^{-\lambda}=0.71875297\ldots$. Part~I also proves a harmonic identity for the Denisov--Wachtel harmonic function, a Lambert-$W$ smooth inverse with vanishing-width integer brackets, and an eventual zero-or-one gap between the strong and the all thresholds. Part~II (Report~114) proved the bounds $\Theta(2^nn^{-3/4})$ first, by a bounded-bridge argument, with an $O(1)$ inverse, and shows that $C_n$ is nondecreasing for all $n$ and $D_n$ for $n\ge2$. Both manuscripts copy the limit density of the Denisov--Wachtel conditional limit theorem as printed (2015, p.~170). That display integrates to $0.1154552960\ldots$, not~$1$. The write identifies the misprint: the display is not the density $\kappa^{-1}\bar h(1,x,-y)$ that the same paper's Remark~2 takes from Groeneboom, Jongbloed and Wellner; a factor $s^{-2}$ and the constant are lost. The write proves that the corrected density has total mass exactly~$1$ and velocity marginal $\sqrt{2/3}\,\Gamma(3/4)^2/\pi=0.3902762\ldots$ at~$0$, about ten times Part~I's printed value $0.0377237\ldots$. Hence $A=\sqrt6\,\Gamma(3/4)\pi^{-3/2}\Vdw(1/\sqrt2,1/\sqrt2)$, and the one proof step that used the misprinted shape is repaired. Exact counts suggest $A\approx0.387$ (uncertified). A certified value of $A$, rates, correction terms and a direct proof of the harmonic identity remain open. The report is unrefereed, and nothing in it is formalized.
+\end{abstract}
+\hypersetup{pageanchor=true}
+\setcounter{tocdepth}{1}
+\tableofcontents
+\newpage
+\section*{Guide to this report}\label{sct:sec:guide}
+\addcontentsline{toc}{section}{Guide to this report}
+The two Parts are two manuscripts of the session bundle of Reports 1--243 (arrival commit \texttt{60f54ea06}), placed in this directory by commit \texttt{9c995cefe} (batch~103):
+\begin{center}
+\small
+\begin{tabular}{@{}l l >{\raggedright\arraybackslash}p{0.47\textwidth} l@{}}
+\toprule
+Part & Bundle report & Delivered title & Labels\\
+\midrule
+I & 116 (base) & Leading equivalents for self complementary tournament score sequences & \texttt{sct:}\\
+II & 114 & The growth of self complementary tournament score sequences & \texttt{sct:gr:}\\
+\bottomrule
+\end{tabular}
+\end{center}
+Report~114 was written first; Report~116 cites it as ``Report 114'' for the $\Theta$ estimates and proves more. The placement made the stronger manuscript the base, so it is printed first. Part~II keeps everything of Report~114, including what Part~I proves again or more strongly (marked as second routes) and its monotonicity proposition, which Part~I does not have.
+
+Each Part prints its manuscript's text, with every result, proof, remark, open question and limitation; statements keep their delivered wording. Sections and equations are numbered continuously through the report, and statements within sections, as in both deliveries. Part~I keeps exactly the section, statement and equation numbers of Report~116 (Sections~1--12, equations (1)--(56)). In Part~II, Report~114's Section~$k$ is Section~$k+12$, its statement $k.j$ is $(k+12).j$, and its equation~$(k)$ is equation~$(k+56)$. The write added Section~\ref{sct:sub:density} at the end of Section~4, Section~\ref{sct:sub:further} at the end of Section~12, and Section~\ref{sct:gr:sec:further} at the end of Part~II, so no delivered number moved.
+
+Notes added when the manuscripts were merged are set in small type and tagged \textbf{[write]}, with their date. They give cross-references between the Parts, mark results proved twice, record the correction of the limit density and connect the report to its neighbour \file{a000571-tournament-score-sequences}. Under Vladimir's standing rule of 4~October 2026, every claim stated without proof is collected in Sections~\ref{sct:sub:further} and~\ref{sct:gr:sec:further}, with its source, its sketch and what is missing. The one claim found to be wrong stays printed as delivered, with its refutation in Remark~\ref{sct:rem:misprint}.
+
+\paragraph{The correction in brief.} Both Parts use the limit law $\mu$ of Denisov--Wachtel's Theorem~1 \cite{dw} and copy its displayed density, Part~I with the printed constant (equation~\eqref{sct:eq:density}), Part~II with an unspecified constant $c_0>0$ (equation~\eqref{sct:gr:eq:density}). That display integrates to $0.1154552960\ldots$, so it is not a probability density (Remark~\ref{sct:rem:misprint}). Part~I's closed form \eqref{sct:eq:fY-explicit} is therefore the value at~$0$ of the wrong function, and the amplitude formula \eqref{sct:eq:amplitude} evaluated with it is about ten times too small; the exact counts confirm the factor. The density that Denisov--Wachtel's own Remark~2 and proof refer to, $\hstar=\kappa^{-1}\bar h_{\mathrm{GJW}}(1,x,-y)$ with $\bar h_{\mathrm{GJW}}$ from Groeneboom--Jongbloed--Wellner \cite[(2.24)]{gjw}, has $s^{-5/2}$ where the display has $s^{-1/2}$ and the constant $2^{9/4}/\Gamma(1/4)$. Proposition~\ref{sct:prop:corrected} (\textbf{[write]}) proves that $\hstar$ has mass exactly~$1$ and computes its velocity marginal at~$0$. Remark~\ref{sct:rem:lemmafix} shows that Lemma~\ref{sct:lem:marginal}, the one step whose proof used the printed shape, holds for $\hstar$ with a repaired majorant. Remark~\ref{sct:rem:scope} lists what the misprint never touched.
+
+\section*{What is proved, and where}\label{sct:sec:status}
+\addcontentsline{toc}{section}{What is proved, and where}
+Here $C_n$ and $D_n$ count self-complementary and strong self-complementary score sequences (sorted sequences, not tournaments or isomorphism classes), $\lambda=\sum_kN_k/(k4^k)$, $r=e^{-\lambda}$, and $\Vdw$ is the Denisov--Wachtel harmonic function of the variance-one geometric-minus-one walk.
+\begin{center}
+\small
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.52\textwidth} >{\raggedright\arraybackslash}p{0.43\textwidth}@{}}
+\toprule
+Statement & Where\\
+\midrule
+$C_n,D_n=\Theta(2^nn^{-3/4})$; inverse $N_E(x)=\log_2x+\frac34\log_2\log_2x+O(1)$ & Part~II, Theorem~\ref{sct:gr:thm:main} (first proof); implied by Part~I\\
+$C_n\sim A\,2^nn^{-3/4}$, $D_n\sim rA\,2^nn^{-3/4}$, one $A>0$ for both parities & Part~I, Theorem~\ref{sct:thm:main}, with $\fY$ read as $\fstar$ (Remark~\ref{sct:rem:lemmafix})\\
+$A=2^{1/4}\kappa\Vdw(1/\sqrt2,1/\sqrt2)\fstar(0)=\sqrt6\,\Gamma(3/4)\pi^{-3/2}\Vdw(1/\sqrt2,1/\sqrt2)$ & \eqref{sct:eq:amplitude} with \wtag\ Proposition~\ref{sct:prop:corrected}\\
+$0.7187529767<r<0.7187529792$; $r=1/S(1/4)$ & Part~I, Section~\ref{sct:sec:D}\\
+Exact encoding by an integrated geometric walk; the final slack is untested & Part~I, Section~\ref{sct:sec:encoding}; Part~II, Proposition~\ref{sct:gr:prop:exact}\\
+$\Pp_z(\tau>n,V_n=b)\sim c_z\fstar(0)\sigma^{-1}n^{-3/4}$ for every positive start; $\Theta(k^{-3/4})$ from $(1,1)$ & Part~I, Theorem~\ref{sct:thm:endpoint}; Part~II, Lemma~\ref{sct:gr:lem:endpoint} (second route to the order)\\
+Endpoint-weighted maximal estimate; bounded-bridge lower bound & Part~I, Lemma~\ref{sct:lem:max}; Part~II, Lemma~\ref{sct:gr:lem:bridge}\\
+Harmonic identity $\sum_{g\ge1}2^{-g-1}\Vdw(g/\sqrt2,g/\sqrt2)=e^{-\lambda}\Vdw(1/\sqrt2,1/\sqrt2)$ & Part~I, \eqref{sct:eq:harmonic-identity}\\
+Lambert $W_{-1}$ smooth inverse with constant term; vanishing-width ceiling brackets; $N_C\le N_D\le N_C+1$ eventually, both gaps infinitely often & Part~I, Proposition~\ref{sct:prop:inverse}, Corollary~\ref{sct:cor:gap}\\
+$C_n$ nondecreasing for all $n\ge0$, $D_n$ for $n\ge2$ & Part~II, Proposition~\ref{sct:gr:prop:mono} (not in Part~I)\\
+The corrected limit density $\hstar$: total mass $1$, $\fstar(0)=\sqrt{2/3}\,\Gamma(3/4)^2/\pi$; Lemma~\ref{sct:lem:marginal} for $\hstar$ & \wtag\ Proposition~\ref{sct:prop:corrected}, Remark~\ref{sct:rem:lemmafix}\\
+\midrule
+\multicolumn{2}{@{}l}{\emph{Refuted}}\\
+\multicolumn{2}{@{}p{0.97\textwidth}@{}}{The display \eqref{sct:eq:density} (and \eqref{sct:gr:eq:density}) as the density of $\mu$; the value $0.0377237\ldots$ of \eqref{sct:eq:fY-explicit} as the velocity marginal of $\mu$ at~$0$, and \eqref{sct:eq:amplitude} evaluated with it: Remark~\ref{sct:rem:misprint}.}\\
+\midrule
+\multicolumn{2}{@{}l}{\emph{Open in both Parts}}\\
+\multicolumn{2}{@{}p{0.97\textwidth}@{}}{A certified value of $A$ (equivalently of $\Vdw(1/\sqrt2,1/\sqrt2)$); rates of convergence and correction terms, including the parity correction visible in the data; a direct proof of the harmonic identity; effective inverse brackets. See Sections~\ref{sct:sub:further} and~\ref{sct:gr:sec:further}.}\\
+\bottomrule
+\end{tabular}
+\end{center}
+Finite computations in both Parts (exact counts, fixtures, mutation campaigns, the rational enclosure of $\lambda$) are checks of formulas and implementations; no asymptotic statement rests on them. The exceptions are the enclosures of $\lambda$ and $r$, which combine exact partial sums with Kolesnik's published tail bound.
+
+\section*{Notation across the two Parts}\label{sct:sec:notation}
+\addcontentsline{toc}{section}{Notation across the two Parts}
+Common to both Parts: $n=2m$ or $2m+1$, $M=\lfloor(n-1)/2\rfloor$; the gaps $G_j$ with $\Pp(G_j=g)=2^{-g-1}$ and $X_j=G_j-1$; $\sigma=\sqrt2$; the velocity $V_j$, the area $I_j$ of the walk started at $(a,v)$, the exit time $\tau$; the Gaussian transition density $p_t$ of $(\int_0^tB,B_t)$ and $q_t=p_t(\cdot;u,v)-p_t(\cdot;u,-v)$; the Denisov--Wachtel cone $K_+$, constant $\kappa$, harmonic function $\Vdw$ and limit law $\mu$. No symbol of the sources was renamed. The symbols below change meaning between the Parts, inside one Part, or against the neighbouring report \file{a000571-tournament-score-sequences} (``a000571'').
+\begingroup\small
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.16\textwidth} >{\raggedright\arraybackslash}p{0.80\textwidth}@{}}
+\toprule
+Symbol & Meanings\\
+\midrule
+\endhead
+$C$, $D$ & Part~I: counts $C_n$, $D_n$, series $C(z)$, $D(z)$; $C$ alone, $C_z$, $C_0$ are constants. Part~II: counts $C(n)$, $D(n)$; $C_C$, $c_C$, $C_D$, $c_D$, $C_0$ constants. Both: $C_0=D_0=1$ by convention.\\
+$A$ & Part~I: the amplitude $A$ of Theorem~\ref{sct:thm:main}, $A_C=A$, $A_D=rA$ (Section~\ref{sct:sec:inverse}); also the Landau excess $A_j$ (Section~\ref{sct:sec:encoding}). Part~II: the Landau excess $A_r$. a000571: $A(z)$ its logarithmic generating function, $A(1/4)=\lambda$. \emph{False reading:} $A$ is a constant, $A_j$ a walk.\\
+$T$ & Part~I: $T_j=X_1+\cdots+X_j$ (Sections~\ref{sct:sec:bridge}--\ref{sct:sec:smoothing}), but $T_k$, $T(z)$ the strong \emph{ordinary} score counts (Section~\ref{sct:sec:D}), which are a000571's $I_k$, $I(z)$. Part~II: $T_j$ partial sums only.\\
+$I$ & Both Parts: $I_j$ the area of the walk ($I_r=A_r+1$ from the start $(1,1)$). a000571: $I_n$ the strong ordinary counts, which Part~I calls $T_n$. \emph{False reading:} Part~I's $I_j$ is not a000571's $I_n$.\\
+$S$ & Part~I: $S_k$, $S(z)$ ordinary score counts (A000571), a000571's $S_n$, $S(z)$.\\
+$r$ & Part~I: $r=e^{-\lambda}$; $r_n\in\{-1,0\}$ the terminal velocity. Part~II: $r$ an index ($A_r$, $1\le r\le m$).\\
+$\bar h$, $\hstar$, $c_{\mathrm{DW}}$, $c_0$, $\Kstar$ & $\bar h$: the density as printed in \cite[Theorem~1]{dw} with $s^{-1/2}$, copied with constant $c_{\mathrm{DW}}$ (Part~I) or $c_0>0$ (Part~II); it is not a probability density (Remark~\ref{sct:rem:misprint}). $\hstar$, $\Kstar=2^{9/4}/\Gamma(1/4)$: the corrected density (Proposition~\ref{sct:prop:corrected}). $\bar h_{\mathrm{GJW}}(t,x,y)$: Groeneboom--Jongbloed--Wellner's function \cite[(2.24)]{gjw}.\\
+$\fY$, $F_a$, $\fstar$, $F^\star_a$ & Part~I: $F_a$, $\fY=F_0$ the velocity marginals of $\bar h$; Theorem~\ref{sct:thm:main} and Sections~\ref{sct:sec:smoothing}--\ref{sct:sec:C} need those of $\mu$, which are $F^\star_a$, $\fstar$. \emph{False reading:} \eqref{sct:eq:fY-explicit} $=0.0377\ldots$ is not $\fstar(0)=0.3903\ldots$.\\
+$h$ & Part~I: the slack index $h\ge0$ in \eqref{sct:eq:C-exact}; Denisov--Wachtel's Brownian harmonic function $h$ (Section~\ref{sct:sec:DW}); $h=\lfloor\ell/2\rfloor$ in the proof of Lemma~\ref{sct:lem:max}. Part~II: $h=\lfloor\ell/2\rfloor$ in Lemma~\ref{sct:gr:lem:bridge}.\\
+$q$ & Part~I: $q_t$ the Gaussian difference; $q_E(X)$ the smooth inverse (Section~\ref{sct:sec:inverse}). Part~II: $q_u$ the Gaussian difference; $q=\ell-h$ in Lemma~\ref{sct:gr:lem:bridge}.\\
+$K$ & Part~I: the velocity cutoff of \eqref{sct:eq:retained}, the convolution cutoff (Section~\ref{sct:sec:D}), $K=1669$ terms of the enclosure; $K_+$ the cone. Part~II: the bridge constant $K>B$ of Lemma~\ref{sct:gr:lem:bridge}; $K_+$.\\
+$N$ & Part~I: $N_k$ the Erd\H{o}s--Ginzburg--Ziv numbers \eqref{sct:eq:EGZ} (a000571's $N_k$, A145855); $N_E(X)$ thresholds with natural logarithms and real $X$. Part~II: $N_E(x)$ with $\log_2$ and real $x$; same thresholds.\\
+$a$, $b$ & Part~I: $a$ the starting area of $z=(a,v)$, and $a=3/4$ in Section~\ref{sct:sec:inverse}; $b$ a terminal velocity. Part~II: $(a,b)$ the area--velocity arguments of the density (Part~I's $(x,y)$), and $b$ a terminal velocity in Lemma~\ref{sct:gr:lem:endpoint}.\\
+$B$ & Part~I: the direct strong amplitude \eqref{sct:eq:B-direct}, and the constant in $c_n\le B(n+1)^{-3/4}$. Part~II: the window constant of Lemmas~\ref{sct:gr:lem:atoms}--\ref{sct:gr:lem:bridge}.\\
+$c$ & Part~I: $c_z=\kappa\Vdw(a/\sigma,v/\sigma)$, $c_{(1,1)}$; $c_n=C_n/2^n$; $t_k=T_k/4^k$. Part~II: $c_*$ is Part~I's $c_{(1,1)}$; $c_B$, $c_L$, $c$, $c'$, $c''$ generic.\\
+$t$, $u$, $L$ & Part~I: $t$ the time in $p_t$, $t=\varepsilon/\alpha$ in Section~\ref{sct:sec:smoothing}; $u$ a substitution; $L=\log X$. Part~II: $u$ the time in $p_u$; $t=\lfloor k/2\rfloor$ the halfway time; $L$ an area level in Section~\ref{sct:gr:sec:endpoint}.\\
+$\mu$, $\tau$, $\sigma$ & Both Parts: $\mu$ the limit law, $\tau$ the exit time, $\sigma=\sqrt2$. a000571: $\mu=\rho A'(\rho)$, $\tau$ a weight parameter, $\sigma$ a sign.\\
+$\lambda$ & Both Parts and a000571: the same constant $\lambda=A(1/4)=\log S(1/4)=0.3302375439859293\ldots$.\\
+\bottomrule
+\end{longtable}
+\endgroup
+
+\section*{Provenance and merge decisions}\label{sct:sec:provenance}
+\addcontentsline{toc}{section}{Provenance and merge decisions}
+Two manuscripts of the session bundle of Reports 1--243, both dated 2~October 2026, with the delivered author lines ``Report~116'' and ``Report~114'' (PDF metadata author ``Research report''). Neither names an author or a tool, says it is AI-assisted, or carries ``prepared for private review'' wording, and neither pins a ProveIt commit or names a repository path. They arrived in commit \texttt{60f54ea06} and were placed by \texttt{9c995cefe} (batch~103).
+\begin{itemize}
+\item \textbf{Part~I}, bundle Report~116, archive \file{Self_Complementary_Tournament_Scores_Leading_Constants_and_Inverses_Source.zip} (541{,}891 bytes, 17 files; \file{report116.tex}, 900 lines, 14 pages). The base: its \file{report116.tex} became this \file{article.tex}. Its \file{checks/fixtures.json} pins Report~114's \file{checks/results.json} by SHA-256 (checked at placement). Contributes the leading equivalents with one amplitude, the strong fraction $e^{-\lambda}$ with its enclosure, the endpoint smoothing theorem, the harmonic identity, the inverses and threshold gap.
+\item \textbf{Part~II}, bundle Report~114, archive \file{Self_Complementary_Tournament_Scores_Growth_and_Inverse_Source.zip} (483{,}412 bytes, 17 files; \file{report114.tex}, 717 lines, 11 pages). Contributes the first proof of the $\Theta(2^nn^{-3/4})$ bounds (Stockmeyer's Section~6 conjectures), the bounded-bridge lemma, the $O(1)$ inverse and the monotonicity proposition.
+\end{itemize}
+Where the merge had to choose:
+\begin{enumerate}
+\item \emph{Base and order.} Report~116 is the base (stronger results) and is printed first, although Report~114 was written first. Report~116 credits Report~114 for the $\Theta$ estimates; the notes keep that priority.
+\item \emph{Union.} Every result, proof and limitation of Report~114 is printed, including the encoding, lemmas and inverse that Part~I proves again or more strongly; they are marked as second routes, not removed.
+\item \emph{The density.} Both manuscripts copy the misprinted display of \cite{dw}. The delivered statements stay as printed. The write adds Section~\ref{sct:sub:density} (the refutation, the corrected density and the repaired lemma) and dated notes at every place that uses the display.
+\item \emph{Typography.} Labels were prefixed (\texttt{sct:}, \texttt{sct:gr:}) before anything cited them. Part~II's seven \verb|{n\choose2}|-type binomials are typeset with \verb|\binom| (same output, and the amsmath warning about \verb|\atopwithdelims| disappears). The delivered title pages and running heads (``Report 116'', ``Report 114'') are replaced by this report's; the letter paper, margins and theorem styles of both deliveries are kept. The two bibliographies are merged at the end (same keys, annotations of both kept), with three entries added in the write.
+\item \emph{Package text.} Section~\ref{sct:sec:checks} and Section~\ref{sct:gr:sec:checks} describe the delivered packages under their delivery names; the README maps them to the shipped names and gives rerun routes.
+\end{enumerate}
+
+\section*{Relation to the ordinary score sequences (a000571)}\label{sct:sec:neighbours}
+\addcontentsline{toc}{section}{Relation to the ordinary score sequences}
+The collection's report \file{a000571-tournament-score-sequences} (same directory) treats ordinary score sequences: $S_n$ (A000571), the strong ones $I_n$, $S(z)=e^{A(z)}$ and $I(z)=1-e^{-A(z)}$ with the singularity at $\rho=1/4$. Its constant $\lambda=A(1/4)=0.3302375439859293$ is exactly the $\lambda$ of \eqref{sct:eq:lambda}: Part~I's $T_k$ and $S_k$ are its $I_k$ and $S_k$, and \eqref{sct:eq:ordinary-recurrence} is its $S=e^A$. Its value lies inside Part~I's certified enclosure $[0.3302375420437401,0.3302375453489038]$, and $e^{-\lambda}=0.71875297770\ldots$ at its value lies inside both of Part~I's intervals for $r$.
+
+\emph{Why the strong fraction is $e^{-\lambda}$ here but $e^{-2\lambda}$ there.} a000571 records Kolesnik's $S_n\sim e^{\lambda}4^nn^{-5/2}/(2\sqrt\pi)$ and $I_n\sim e^{-\lambda}4^nn^{-5/2}/(2\sqrt\pi)$, so $I_n/S_n\to e^{-2\lambda}$ (its equation \texttt{tss:eq:known}). Both are transforms of one singular series: if $a_n=[z^n]A(z)\sim4^nn^{-5/2}/(2\sqrt\pi)$, then $[z^n]e^{\pm A(z)}\sim\pm e^{\pm A(1/4)}a_n$, because $A(1/4)$ is finite and the singular part of $e^{\pm A}$ is $\pm e^{\pm A(1/4)}$ times that of $A$. So $S_n\sim e^{\lambda}a_n$ and $I_n=-[z^n]e^{-A(z)}\sim e^{-\lambda}a_n$ ($n\ge1$): the all count gains one factor $e^{\lambda}$ and the strong count loses one, and their ratio is $e^{-2\lambda}$. Here instead $D(z)=C(z)\,(1-T(z^2))=C(z)\,e^{-A(z^2)}$ by Stockmeyer's \eqref{sct:eq:SC-gf}. The two factors are not transforms of one series: $C_n$ is of order $2^nn^{-3/4}$, while the coefficients of $e^{-A(z^2)}$ are of order $2^nn^{-5/2}$ (on even $n$) and summable at the radius $1/2$. The heavier factor dominates and the lighter one contributes only its value $e^{-A(1/4)}=1/S(1/4)=e^{-\lambda}$, which is the convolution argument of Section~\ref{sct:sec:D}. In particular $r=1-I(1/4)$ in a000571's notation.
+
+\emph{Inverses.} Part~I's Lambert $W_{-1}$ inverse \eqref{sct:eq:Lambert} is the same mechanism as a000571's \texttt{tss:eq:lambert}, there for $4^xx^{-5/2}$ and here for $2^tt^{-3/4}$: a second instance, not a re-proof.
+
+\emph{Other reports.} No other report of the repository treats self-complementary score sequences, A345470, A351869, integrated random walks or the Denisov--Wachtel exit-time theorem (searched 5~October 2026); \file{a377922-corner-polyhedra-schnyder} and \file{a215561-fixed-composition-excursions} cite Denisov--Wachtel's paper on random walks in cones, a different paper. Nothing in this report is formalized in Lean or Rocq, and its placement confers no formal status.
+\clearpage
+\part{Leading equivalents, the strong fraction and inverses}\label{sct:part}
+\partsource{Bundle Report~116, archive \file{Self_Complementary_Tournament_Scores_Leading_Constants_and_Inverses_Source.zip}, delivered as \file{report116.tex} (14 pages), dated 2~October 2026. Delivered title ``Leading equivalents for self complementary tournament score sequences''; author line ``Report 116''. Printed as delivered, with \textbf{[write]} notes; section, statement and equation numbers are those of the delivery. ``Report 114'' in the text is Part~\ref{sct:gr:part}. Section~\ref{sct:sub:density} and Section~\ref{sct:sub:further} are added in the write.}
+\begin{partabstract}
 Let $C_n$ count self-complementary tournament score sequences of length $n$
 (OEIS A345470), and let $D_n$ count the strong ones (A351869). We derive
 \[
@@ -48,12 +184,15 @@ It also gives a harmonic identity, a Lambert $W$ smooth inverse, sharp
 vanishing-width ceiling brackets for integer thresholds, and an eventual
 zero-or-one threshold gap, with both values occurring infinitely often.
 No convergence rate or higher-order counting correction is proved.
-\end{abstract}
+\end{partabstract}
+\begin{writenote}[5 October 2026]
+The ``exact harmonic-function characterization'' of $A$ is formula \eqref{sct:eq:amplitude}. It is correct when $\fY$ is the velocity marginal of the limit law $\mu$. The ``universal density factor'' evaluated in Section~\ref{sct:sec:marginal} is computed from the density as printed in \cite{dw}, which is misprinted, and its value is about ten times too small; see Section~\ref{sct:sub:density}.
+\end{writenote}
 
-\section{Result and conventions}\label{sec:result}
+\section{Result and conventions}\label{sct:sec:result}
 A tournament score sequence is the sorted list of vertex outdegrees.
 Self-complementarity of a score sequence means
-\begin{equation}\label{eq:complement}
+\begin{equation}\label{sct:eq:complement}
  s_i+s_{n+1-i}=n-1\qquad(1\le i\le n).
 \end{equation}
 We count distinct sorted sequences, not labeled tournaments or tournament
@@ -67,29 +206,38 @@ Set $C_0=D_0=1$ for the empty terms in generating functions. The small values
 are $C_1=D_1=1$ and $C_2=1,D_2=0$; empty-term conventions do not assert that an
 empty tournament is strongly connected.
 
-\begin{theorem}\label{thm:main}
+\begin{theorem}\label{sct:thm:main}
 There exists $A>0$ such that, through all positive integers $n$,
-\begin{equation}\label{eq:main}
+\begin{equation}\label{sct:eq:main}
  C_n\sim A\,2^n n^{-3/4},\qquad
  D_n\sim rA\,2^n n^{-3/4},\qquad r=e^{-\lambda},
 \end{equation}
 where
 \begin{align}
- \lambda&=\sum_{k\ge1}\frac{N_k}{k4^k},\label{eq:lambda}\\
+ \lambda&=\sum_{k\ge1}\frac{N_k}{k4^k},\label{sct:eq:lambda}\\
  N_k&=\frac1{2k}\sum_{d\mid k}(-1)^{k+d}\varphi(k/d)\binom{2d}{d}.
- \label{eq:EGZ}
+ \label{sct:eq:EGZ}
 \end{align}
 Here $\varphi$ is Euler's totient. In particular,
-\begin{equation}\label{eq:ratio-bounds}
+\begin{equation}\label{sct:eq:ratio-bounds}
  0.7187529762<r<0.7187529792.
 \end{equation}
 For the variance-one geometric-minus-one walk defined in
-Section~\ref{sec:DW}, with its Denisov--Wachtel normalization,
-\begin{equation}\label{eq:amplitude}
+Section~\ref{sct:sec:DW}, with its Denisov--Wachtel normalization,
+\begin{equation}\label{sct:eq:amplitude}
  A=2^{1/4}\kappa\Vdw(1/\sqrt2,1/\sqrt2)\fY(0)>0.
 \end{equation}
 Thus the same leading constants hold on even and odd lengths.
 \end{theorem}
+\begin{writenote}[5 October 2026, reading of $\fY$]
+In \eqref{sct:eq:amplitude}, $\fY(0)$ must be the density at~$0$ of the velocity marginal of the limit law $\mu$ of \eqref{sct:eq:weak-limit}. Section~\ref{sct:sec:marginal} defines $\fY$ from the density displayed in \cite[Theorem~1]{dw}, which has total mass $0.1154552960\ldots$, not~$1$ (Remark~\ref{sct:rem:misprint}). With $\fY$ read as the marginal $\fstar$ of the corrected density $\hstar$ of Proposition~\ref{sct:prop:corrected}, the theorem and its proof stand (Remark~\ref{sct:rem:lemmafix}), and
+\[
+ A=2^{1/4}\kappa\Vdw(1/\sqrt2,1/\sqrt2)\,\fstar(0)
+ =\frac{\sqrt6\,\Gamma(3/4)}{\pi^{3/2}}\Vdw(1/\sqrt2,1/\sqrt2)
+ =0.53905690\ldots\times\Vdw(1/\sqrt2,1/\sqrt2),
+\]
+by $\fstar(0)=\sqrt{2/3}\,\Gamma(3/4)^2/\pi$, \eqref{sct:eq:kappa} and $\Gamma(1/4)\Gamma(3/4)=\pi\sqrt2$. With the printed value \eqref{sct:eq:fY-explicit} the formula would give an $A$ about ten times too small. The two equivalents, their common amplitude and $r=e^{-\lambda}$ do not depend on the value of $\fY(0)$ (Remark~\ref{sct:rem:scope}).
+\end{writenote}
 
 Report 114 established the two $\Theta(2^n n^{-3/4})$ estimates, resolving the
 order-of-growth questions in \cite[Section 6]{stockmeyer}. This separate report
@@ -98,6 +246,9 @@ read independently. The underlying ordinary-score theorems, generating
 functions and numerical bound on $\lambda$ are published results and are
 attributed below. The application here concerns the self-complementary
 counts. No claim of publication, peer review or priority is made.
+\begin{writenote}[5 October 2026]
+Report~114 is Part~\ref{sct:gr:part} of this report: its Theorem~\ref{sct:gr:thm:main} is the $\Theta$ estimate with the inverse \eqref{sct:gr:eq:inverse}. Part~\ref{sct:gr:part} also proves, in Proposition~\ref{sct:gr:prop:mono}, that $C_n$ is nondecreasing for all $n$ and $D_n$ for $n\ge2$; this Part has only eventual strict increase (Section~\ref{sct:sec:inverse}).
+\end{writenote}
 
 \subsection{Proof outline and scope}
 An exact geometric-gap encoding gives $2^{-n}C_n$ as a survival probability
@@ -111,17 +262,17 @@ the first equivalent. Stockmeyer's exact convolution and the ordinary-score
 tail bound give the second. The proof uses no killed local-limit formula,
 and specifically does not use equation (12) of \cite{dw}.
 
-\section{Exact half-score and slack encoding}\label{sec:encoding}
+\section{Exact half-score and slack encoding}\label{sct:sec:encoding}
 Write $n=2m$ or $n=2m+1$ and
 \[
  M=\left\lfloor\frac{n-1}{2}\right\rfloor
  =\begin{cases}m-1,&n=2m,\\m,&n=2m+1.\end{cases}
 \]
 For $m\ge1$, every self-complementary candidate is uniquely determined by
-\begin{equation}\label{eq:half}
+\begin{equation}\label{sct:eq:half}
  0\le s_1\le\cdots\le s_m\le M.
 \end{equation}
-Reflect by \eqref{eq:complement}, inserting $s_{m+1}=m$ in the odd case.
+Reflect by \eqref{sct:eq:complement}, inserting $s_{m+1}=m$ in the odd case.
 The result is nondecreasing and its total is $\binom n2$.
 For the full sequence put
 \[
@@ -132,20 +283,20 @@ The last $j$ scores sum to $j(n-1)-\sum_{i\le j}s_i$, and therefore
  A_{n-j}=\binom n2-j(n-1)+\sum_{i\le j}s_i-\binom{n-j}2=A_j.
 \]
 Consequently all Landau inequalities reduce exactly to
-\begin{equation}\label{eq:Landau}
+\begin{equation}\label{sct:eq:Landau}
  A_j\ge0\quad(1\le j\le m);
  \qquad\text{strongness replaces $\ge0$ by $>0$.}
 \end{equation}
 This includes the middle inequality, and both middle inequalities for odd $n$.
 
 Define the gaps and the \emph{last slack}
-\begin{equation}\label{eq:gaps}
+\begin{equation}\label{sct:eq:gaps}
  G_1=s_1,\quad G_j=s_j-s_{j-1}\ (2\le j\le m),\quad
  G_{m+1}=M-s_m.
 \end{equation}
-This is a bijection between \eqref{eq:half} and nonnegative compositions
+This is a bijection between \eqref{sct:eq:half} and nonnegative compositions
 $\sum_{j=1}^{m+1}G_j=M$. Take the $G_j$ independent with
-\begin{equation}\label{eq:geom}
+\begin{equation}\label{sct:eq:geom}
  \Pp(G_j=g)=2^{-g-1},\qquad g\in\Z_{\ge0},
  \qquad X_j=G_j-1.
 \end{equation}
@@ -156,13 +307,13 @@ With initial velocity $V_0=1$ and area $A_0=0$, set
 \]
 For $j\le m$, $V_j=s_j-j+1$, so $A_j$ is precisely the Landau excess.
 The composition condition is equivalent to
-\begin{equation}\label{eq:rn}
+\begin{equation}\label{sct:eq:rn}
  V_{m+1}=r_n,\qquad
  r_n=\begin{cases}-1,&n=2m,\\0,&n=2m+1.\end{cases}
 \end{equation}
 
 For a general state $z=(a,v)$ we henceforth use
-\begin{equation}\label{eq:process}
+\begin{equation}\label{sct:eq:process}
  V_j=v+\sum_{i=1}^jX_i,\qquad
  I_j=a+\sum_{i=1}^jV_i,\qquad
  \tau=\min\{j\ge1:I_j\le0\}.
@@ -170,7 +321,7 @@ For a general state $z=(a,v)$ we henceforth use
 Because $A_j$ is integer, $A_j\ge0$ is equivalent to $I_j=A_j+1>0$.
 Thus weak inequalities correspond to the start $(I_0,V_0)=(1,1)$.
 Conditioning on the independent last slack $G_{m+1}=h$ gives the exact formula
-\begin{equation}\label{eq:C-exact}
+\begin{equation}\label{sct:eq:C-exact}
  2^{-n}C_n=\sum_{h\ge0}2^{-h-1}
  \Pp_{(1,1)}(\tau>m,\ V_m=r_n+1-h).
 \end{equation}
@@ -178,20 +329,23 @@ The area at time $m+1$ is deliberately untested. For $n=2$, the valid weak
 half sequence $(0)$ would fail a new test on its final unshifted area; for
 $n=4$, the strong half sequence $(1,1)$ has final unshifted area zero and
 would fail a strict extra test. The slack is not another score.
+\begin{writenote}[5 October 2026]
+Part~\ref{sct:gr:part}, Proposition~\ref{sct:gr:prop:exact}, proves the same encoding, with the same two slack counterexamples; \eqref{sct:eq:C-exact} refines it by conditioning on the last slack. Part~\ref{sct:gr:part} writes the excess $A_r$ and the endpoint as $V_{m+1}$; here the endpoint is moved to time~$m$ by the slack mixture.
+\end{writenote}
 
-\section{The imported survival and weak-limit theorem}\label{sec:DW}
-For \eqref{eq:geom},
-\begin{equation}\label{eq:moments}
+\section{The imported survival and weak-limit theorem}\label{sct:sec:DW}
+For \eqref{sct:eq:geom},
+\begin{equation}\label{sct:eq:moments}
  \Ee X=0,\qquad \Ee X^2=\sigma^2=2,\qquad
  \Ee e^{\theta|X|}<\infty\quad(0<\theta<\log2).
 \end{equation}
 Its support $\{-1,0,1,\ldots\}$ has maximal lattice span one.
 Apply Denisov--Wachtel \cite[Theorem 1, (7)--(8), pp.~169--170]{dw} to
 $X/\sigma$. Its assumptions are mean zero, variance one and a finite
-$(2+\delta)$-moment for some $\delta>0$, all verified by \eqref{eq:moments}.
+$(2+\delta)$-moment for some $\delta>0$, all verified by \eqref{sct:eq:moments}.
 The theorem's positive harmonic function $\Vdw$ is normalized as in that paper;
 its universal survival constant is
-\begin{equation}\label{eq:kappa}
+\begin{equation}\label{sct:eq:kappa}
  \kappa=\frac{3\Gamma(1/4)}{2^{3/4}\pi^{3/2}}.
 \end{equation}
 For a fixed point in
@@ -204,14 +358,14 @@ weak limit. In this definition $Z_j$ denotes the area--velocity pair of the
 variance-one process. Every positive-coordinate start belongs to $K_+$ at
 $j=0$.
 
-Divide \emph{both} coordinates of \eqref{eq:process} by $\sigma$. For any
+Divide \emph{both} coordinates of \eqref{sct:eq:process} by $\sigma$. For any
 fixed positive-coordinate integer state $z=(a,v)$ this gives
 \begin{align}
  \Pp_z(\tau>n)&\sim c_z n^{-1/4},\qquad
- c_z=\kappa\Vdw(a/\sigma,v/\sigma)>0,\label{eq:survival}\\
+ c_z=\kappa\Vdw(a/\sigma,v/\sigma)>0,\label{sct:eq:survival}\\
  \mathcal L\left(\frac{I_n}{\sigma n^{3/2}},
        \frac{V_n}{\sigma\sqrt n}\ \middle|\ \tau>n\right)
- &\Longrightarrow\mu.\label{eq:weak-limit}
+ &\Longrightarrow\mu.\label{sct:eq:weak-limit}
 \end{align}
 The measure $\mu$ is universal for these standardized walks. Theorem 1 has no
 lattice condition; the span-one calculations below remain in the original
@@ -221,38 +375,44 @@ $1/\sigma$, not a two-dimensional lattice-cell factor.
 For precision, define $\Vdw$ using the paper's normalization
 $\Vdw(z)=\lim_{n\to\infty}\Ee_z[h(Z_n);\tau>n]$, where $h$ is its Brownian
 harmonic function \cite[equation (4)]{dw}. This fixes the scale of
-\eqref{eq:amplitude}; it is not an arbitrary positive harmonic function.
-Equivalently, the product $\kappa\Vdw(z)$ is fixed by \eqref{eq:survival}.
+\eqref{sct:eq:amplitude}; it is not an arbitrary positive harmonic function.
+Equivalently, the product $\kappa\Vdw(z)$ is fixed by \eqref{sct:eq:survival}.
+\begin{writenote}[5 October 2026]
+The density of $\mu$ is displayed in \cite[Theorem~1]{dw} with a misprint, and Section~\ref{sct:sec:marginal} copies that display. The paper's own Remark~2 identifies the density as $\kappa^{-1}\bar h_{\mathrm{GJW}}(1,x,-y)$ with $\bar h_{\mathrm{GJW}}$ from \cite[(2.24)]{gjw}; this is the corrected density $\hstar$ of Section~\ref{sct:sub:density}. The survival equivalent \eqref{sct:eq:survival}, the weak limit \eqref{sct:eq:weak-limit} and the normalization of $\Vdw$ are not affected.
+\end{writenote}
 
-\section{Regularity of the limiting velocity density}\label{sec:marginal}
+\section{Regularity of the limiting velocity density}\label{sct:sec:marginal}
 We must localize at velocity zero. Abstract weak convergence alone does not
 supply this step. We verify the required regularity from the density displayed
 in \cite[Theorem 1]{dw}. Write
 \begin{align}
  \bar h(x,y)&=c_{\mathrm{DW}}\int_0^1\int_0^\infty
     w^{3/2}s^{-1/2}e^{-2w^2/s}
-    q_{1-s}(x,-y;0,-w)\,dw\,ds,\label{eq:density}\\
+    q_{1-s}(x,-y;0,-w)\,dw\,ds,\label{sct:eq:density}\\
  c_{\mathrm{DW}}&=\frac{2^{9/4}\sqrt\pi}{\sqrt3\Gamma(1/4)},\qquad
  q_t(x,y;u,v)=p_t(x,y;u,v)-p_t(x,y;u,-v),\nonumber
 \end{align}
 where the free Gaussian density is
-\begin{equation}\label{eq:gaussian}
+\begin{equation}\label{sct:eq:gaussian}
  p_t(x,y;u,v)=\frac{\sqrt3}{\pi t^2}
  \exp\left(-\frac{6(u-x-ty)^2}{t^3}
  +\frac{6(u-x-ty)(v-y)}{t^2}-\frac{2(v-y)^2}{t}\right).
 \end{equation}
 For $a\ge0$ define
-\begin{equation}\label{eq:marginal}
+\begin{equation}\label{sct:eq:marginal}
  F_a(y)=\int_{x>a}\bar h(x,y)\,dx,\qquad \fY(y)=F_0(y).
 \end{equation}
 
-\begin{lemma}\label{lem:marginal}
+\begin{writenote}[5 October 2026, correction]
+The display \eqref{sct:eq:density} copies \cite[p.~170]{dw} exactly, and that display is misprinted: it integrates to $0.1154552960\ldots$, so it is not the density of $\mu$ (Remark~\ref{sct:rem:misprint}). The density of $\mu$ is $\hstar$ of Proposition~\ref{sct:prop:corrected}: $s^{-1/2}$ must read $s^{-5/2}$, and $c_{\mathrm{DW}}$ must read $\Kstar=2^{9/4}/\Gamma(1/4)$. The proof of Lemma~\ref{sct:lem:marginal} below is correct for the display as printed. For $\hstar$ the lemma remains true, but its majorant must be replaced; see Remark~\ref{sct:rem:lemmafix}.
+\end{writenote}
+\begin{lemma}\label{sct:lem:marginal}
 The functions $F_a(y)$ are jointly continuous in $(a,y)\in[0,\infty)\times\R$
 and bounded by a single finite constant. Moreover $0<\fY(0)<\infty$.
 \end{lemma}
 \begin{proof}
 Completing the square in the starting area $x$ gives
-\begin{equation}\label{eq:gaussian-integral}
+\begin{equation}\label{sct:eq:gaussian-integral}
  \int_\R p_t(x,-y;0,\pm w)\,dx
    =(2\pi t)^{-1/2}\exp\left(-\frac{(y\pm w)^2}{2t}\right).
 \end{equation}
@@ -260,7 +420,7 @@ Consequently
 \[
  \int_{x>a}|q_t(x,-y;0,-w)|\,dx\le2(2\pi t)^{-1/2}.
 \]
-Multiplying by the weight in \eqref{eq:density} and integrating over $w$
+Multiplying by the weight in \eqref{sct:eq:density} and integrating over $w$
 yields a constant times
 \[
  s^{-1/2}(1-s)^{-1/2}\int_0^\infty w^{3/2}e^{-2w^2/s}\,dw
@@ -269,7 +429,7 @@ yields a constant times
 This is integrable over $0<s<1$. Thus Fubini's theorem applies absolutely to
 the integrals defining $F_a$, and they share a bound independent of $a,y$.
 For fixed $s,w$, the integral over $x>a$ of either Gaussian in
-\eqref{eq:gaussian-integral} is a continuous Gaussian-tail function of $a,y$.
+\eqref{sct:eq:gaussian-integral} is a continuous Gaussian-tail function of $a,y$.
 The same integrable majorant and dominated convergence prove joint continuity,
 including at $a=0$.
 
@@ -278,7 +438,7 @@ Finally, for $x,w,t>0$,
  \frac{p_t(x,0;0,-w)}{p_t(x,0;0,w)}
  =\exp(12wx/t^2)>1.
 \]
-All outer weights in \eqref{eq:density} are positive, so
+All outer weights in \eqref{sct:eq:density} are positive, so
 $\bar h(x,0)>0$ for $x>0$. Hence $F_a(0)>0$ for every finite $a$, and the
 claimed assertion at zero follows.
 \end{proof}
@@ -289,14 +449,14 @@ it does not rely on their almost-everywhere values at one chosen point.
 \subsection{An explicit universal factor}
 The factor $\fY(0)$ admits a convergent special-function expression independent
 of the discrete harmonic function:
-\begin{equation}\label{eq:fY-explicit}
+\begin{equation}\label{sct:eq:fY-explicit}
  \fY(0)=\frac{5\Gamma(7/4)^2}{96\sqrt{2\pi}}
  {}_3F_2\left(\begin{matrix}1,7/4,9/4\\3/2,4\end{matrix};\frac34\right).
 \end{equation}
 Here ${}_pF_q$ has its usual series definition
 $\sum_{j\ge0}(a_1)_j\cdots(a_p)_jz^j/
 ((b_1)_j\cdots(b_q)_j j!)$, where $(a)_j$ is the rising factorial.
-The series in \eqref{eq:fY-explicit} is positive and convergent.
+The series in \eqref{sct:eq:fY-explicit} is positive and convergent.
 
 To derive the formula, integration of the two completed Gaussian squares
 over $x>0$ gives, with $u=1-s$,
@@ -306,7 +466,7 @@ over $x>0$ gives, with $u=1-s$,
        \operatorname{erf}\!\left(\sqrt{\frac3{2u}}\,w\right).
 \]
 For $P,Q>0$, the resulting $w$ integral is
-\begin{equation}\label{eq:erf-integral}
+\begin{equation}\label{sct:eq:erf-integral}
  \int_0^\infty w^{3/2}e^{-Pw^2}\operatorname{erf}(Qw)\,dw
  =\frac{Q\Gamma(7/4)}{\sqrt\pi P^{7/4}}
  {}_2F_1\left(\frac12,\frac74;\frac32;-\frac{Q^2}{P}\right).
@@ -320,7 +480,7 @@ Pfaff's transformation changes the hypergeometric factor to
  \left(\frac{4-3s}{4}\right)^{7/4}
  {}_2F_1\left(1,\frac74;\frac32;\frac{3s}{4}\right).
 \]
-After cancellation of powers, \eqref{eq:density} therefore gives
+After cancellation of powers, \eqref{sct:eq:density} therefore gives
 \[
  \fY(0)=\frac{\Gamma(7/4)}{\sqrt{2\pi}\Gamma(1/4)}
  \int_0^1s^{5/4}(1-s)^{3/4}
@@ -330,13 +490,163 @@ Termwise integration is justified by positivity and convergence at $3/4$.
 The beta integral contributes $B(9/4,7/4)$ and the additional hypergeometric
 parameters $9/4$ and $4$. Finally
 $\Gamma(9/4)=5\Gamma(1/4)/16$ and $\Gamma(4)=6$ give
-\eqref{eq:fY-explicit}. This exact evaluation of the universal factor does
+\eqref{sct:eq:fY-explicit}. This exact evaluation of the universal factor does
 not evaluate $A$, which still contains $\Vdw(1/\sqrt2,1/\sqrt2)$.
+\begin{writenote}[5 October 2026, correction]
+This evaluation is correct for the printed display: its value is $0.0377237238918081803966\ldots$, and a quadrature of \eqref{sct:eq:density} at the placement agreed to 30 digits. It is not the velocity marginal of $\mu$ at~$0$. The same steps with $s^{-5/2}$ in place of $s^{-1/2}$ give $\fstar(0)=\sqrt{2/3}\,\Gamma(3/4)^2/\pi=0.3902762188691763\ldots$, which is $10.3456\ldots$ times larger (Proposition~\ref{sct:prop:corrected}(b)). The ratio is not the factor $8.6614$ by which the mass is off, because the misprint changes the shape as well as the constant.
+\end{writenote}
+\subsection{The limit density: a misprint and its correction}\label{sct:sub:density}
+\wtag\ (5 October 2026.) This subsection was added in the write. It records a claim, shared by both Parts, that is demonstrably wrong (under Vladimir's standing rule of 4~October 2026), identifies its source and corrects it. Throughout, $u=1-s$, and for $v\in\R$
+\[
+ G_a(v)=\int_{x>a}p_u(x,-y;0,v)\,dx,\qquad
+ \int_{x>a}q_u(x,-y;0,-w)\,dx=G_a(-w)-G_a(w).
+\]
 
-\section{Free endpoint masses and a maximal estimate}\label{sec:bridge}
+\begin{remark}[\wtag, wrong claim]\label{sct:rem:misprint}
+The display \eqref{sct:eq:density}, copied from \cite[Theorem~1, p.~170]{dw} by this Part and, with an unspecified constant $c_0>0$, by Part~\ref{sct:gr:part} as \eqref{sct:gr:eq:density}, is not a probability density. Its total mass is
+\[
+ \int_0^\infty\!\!\int_\R\bar h(x,y)\,dy\,dx=0.11545529600527263025801512135\ldots .
+\]
+Consequently the value $0.0377237\ldots$ of \eqref{sct:eq:fY-explicit} is not the density at~$0$ of the velocity marginal of $\mu$, and \eqref{sct:eq:amplitude} evaluated with it does not give~$A$. The statements are kept as printed.
+
+\emph{Proof of the counterexample.} Write $d=uy-x$ and $m=u(v+y)/2$. Completing the square in $d$ in \eqref{sct:eq:gaussian} gives
+\[
+ p_u(x,-y;0,v)=\frac{\sqrt3}{\pi u^2}
+ \exp\Bigl(-\frac{(v+y)^2}{2u}-\frac{6(d-m)^2}{u^3}\Bigr),
+\]
+and integrating over $x>a$, that is over $d<uy-a$,
+\[
+ G_a(v)=\frac{e^{-(v+y)^2/(2u)}}{2\sqrt{2\pi u}}
+ \Bigl(1+\erf\Bigl(\sqrt6\,\frac{u(y-v)/2-a}{u^{3/2}}\Bigr)\Bigr).
+\]
+For $a=0$ the factor $e^{-(v+y)^2/(2u)}/\sqrt{2\pi u}$ is the density in $y$ of $N(-v,u)$, under which $y-v\sim N(-2v,u)$. The Gaussian identity $\Ee\erf(cZ)=\erf\bigl(c\,\Ee Z/\sqrt{1+2c^2\operatorname{Var}Z}\bigr)$ with $c=\sqrt{3/(2u)}$, so that $1+2c^2u=4$, gives $\int_\R G_0(v)\,dy=\frac12\bigl(1-\erf(v\sqrt{3/(2u)})\bigr)$, hence
+\[
+ \int_\R\int_{x>0}q_u(x,-y;0,-w)\,dx\,dy=\erf\bigl(w\sqrt{3/(2u)}\bigr).
+\]
+The integrand of \eqref{sct:eq:density} is absolutely integrable over $(s,w,x,y)$ by the majorant in the proof of Lemma~\ref{sct:lem:marginal} (with the bound $\int\int|q_u|\,dx\,dy\le2$). By Fubini the mass is therefore
+\[
+ c_{\mathrm{DW}}\int_0^1s^{-1/2}\int_0^\infty w^{3/2}e^{-2w^2/s}
+ \erf\Bigl(w\sqrt{\tfrac{3}{2(1-s)}}\Bigr)\,dw\,ds,
+\]
+whose inner integral is \eqref{sct:eq:erf-integral} with $P=2/s$ and $Q^2=3/(2(1-s))$. Quadrature gives the value above (40 digits with mpmath at the placement; 12 digits by an independent scipy quadrature in the write). It would have to be~$1$.
+
+\emph{Counts against the prediction.} By Section~\ref{sct:sec:C}, $A=2^{3/4}c_{(1,1)}\fY(0)/\sigma=2^{1/4}c_{(1,1)}\fY(0)$ with $c_{(1,1)}=\lim n^{1/4}\Pp_{(1,1)}(\tau>n)$, which neither Part evaluates. A Monte Carlo of the geometric-minus-one walk at the placement (480{,}000 paths each) gave $n^{1/4}\Pp_{(1,1)}(\tau>n)=0.8355$ at $n=500$ and $0.8426$ at $n=2000$. With \eqref{sct:eq:fY-explicit} the formula then predicts $A\approx0.038$. The exact counts (floating-point dynamic programming at the placement) give $C_nn^{3/4}2^{-n}=0.3606$ and $0.4249$ at $n=40,41$, and $0.3762$ and $0.3989$ at $n=320,321$; the even values increase, the odd values decrease, with a gap of order $n^{-1/2}$, and the parity average extrapolates to $A\approx0.387$. Both extrapolations are uncertified, but the factor of ten is far outside their uncertainty.
+\end{remark}
+
+\begin{proposition}[\wtag]\label{sct:prop:corrected}
+Let $\Kstar=2^{9/4}/\Gamma(1/4)$ and, for $x>0$ and $y\in\R$,
+\[
+ \hstar(x,y)=\Kstar\int_0^1\int_0^\infty
+ w^{3/2}s^{-5/2}e^{-2w^2/s}\,q_{1-s}(x,-y;0,-w)\,dw\,ds .
+\]
+Then $\hstar(x,y)=\kappa^{-1}\bar h_{\mathrm{GJW}}(1,x,-y)$, where $\bar h_{\mathrm{GJW}}$ is the function \cite[(2.24)]{gjw} named in \cite[Remark~2]{dw}. The integral converges absolutely for almost every $(x,y)$, and:
+\begin{enumerate}
+\item[(a)] $\int_0^\infty\int_\R\hstar(x,y)\,dy\,dx=1$;
+\item[(b)] the velocity marginal $\fstar(y)=\int_{x>0}\hstar(x,y)\,dx$ has the value
+ \[\fstar(0)=\sqrt{2/3}\,\Gamma(3/4)^2/\pi=0.3902762188691763\ldots;\]
+\item[(c)] the integrand of $\hstar(x,y)$ is positive for $x>0$ and $y\le3x$; in particular $\int_{x>a}\hstar(x,0)\,dx>0$ for every $a\ge0$.
+\end{enumerate}
+The display \eqref{sct:eq:density} differs from $\hstar$ in the power of $s$ ($s^{-1/2}$ for $s^{-5/2}$: the factor $s^{-2}$ of $p_s(0,w;0,0)$ is lost) and in the constant ($c_{\mathrm{DW}}=\sqrt{\pi/3}\,\Kstar$).
+\end{proposition}
+\begin{proof}
+\emph{Identification.} By \eqref{sct:eq:gaussian}, $p_s(0,w;0,0)=\sqrt3\,e^{-2w^2/s}/(\pi s^2)$. Groeneboom, Jongbloed and Wellner define
+\[
+ \bar h_{\mathrm{GJW}}(t,x,y)=\frac{4\sqrt3}{\sqrt{2\pi}}\int_0^t\int_0^\infty
+ w^{3/2}s^{-1/2}p_s(0,w;0,0)\,q_{t-s}(x,y;0,-w)\,dw\,ds
+\]
+\cite[(2.24)]{gjw} (the same formula is restated in \cite[Section~6]{bdw}). At $t=1$, with $y$ replaced by $-y$, this is $\frac{12}{\pi\sqrt{2\pi}}\int_0^1\int_0^\infty w^{3/2}s^{-5/2}e^{-2w^2/s}q_{1-s}(x,-y;0,-w)\,dw\,ds$, and $\kappa^{-1}\cdot12/(\pi\sqrt{2\pi})=2^{9/4}/\Gamma(1/4)$ by \eqref{sct:eq:kappa}.
+
+\emph{Two bounds on $q$.} The formula for $G_a$ in Remark~\ref{sct:rem:misprint} gives $0\le G_a(v)\le(2\pi u)^{-1/2}$, and $\int_\R\int_\R p_u\,dx\,dy=1$. Moreover $\partial_v\log p_u(x,-y;0,v)=6(d-m)/u^2-(v+y)/u$, and $\int_\R e^{-6z^2/u^3}dz=(\pi u^3/6)^{1/2}$, $\int_\R|z|e^{-6z^2/u^3}dz=u^3/6$, $\sup_z|z|e^{-z^2/(2u)}=(u/e)^{1/2}$. Hence
+\[
+ \int_\R|\partial_vp_u(x,-y;0,v)|\,dx\le\frac{3}{u},\qquad
+ \int_\R\int_\R|\partial_vp_u(x,-y;0,v)|\,dx\,dy\le\frac{3}{\sqrt u}.
+\]
+Since $q_u(x,-y;0,-w)=-\int_{-w}^{w}\partial_vp_u(x,-y;0,v)\,dv$, for all $a\ge0$, $y\in\R$, $w>0$ and $u\in(0,1)$,
+\[
+ \int_{x>a}|q_u(x,-y;0,-w)|\,dx\le\min\Bigl\{\frac{2}{\sqrt{2\pi u}},\frac{6w}{u}\Bigr\},\qquad
+ \int_\R\int_{x>0}|q_u(x,-y;0,-w)|\,dx\,dy\le\min\Bigl\{2,\frac{6w}{\sqrt u}\Bigr\}.
+\]
+
+\emph{An integrable majorant.} Put $W(s,w)=w^{3/2}s^{-5/2}e^{-2w^2/s}$ and
+\[
+ M(s,w)=W(s,w)\Bigl(\frac{6w}{1-s}\ind_{\{s\le1/2\}}+\frac{2}{\sqrt{2\pi(1-s)}}\ind_{\{s>1/2\}}\Bigr).
+\]
+For $s\le1/2$, $\int_0^\infty M\,dw\le12s^{-5/2}\int_0^\infty w^{5/2}e^{-2w^2/s}dw=12\cdot2^{-11/4}\Gamma(7/4)\,s^{-3/4}$. For $s>1/2$, $\int_0^\infty M\,dw\le2^{7/2}(2\pi(1-s))^{-1/2}\int_0^\infty w^{3/2}e^{-2w^2}dw$. Both are integrable, so $\int_0^1\int_0^\infty M<\infty$, and $M$ dominates $W(s,w)\int_{x>a}|q_{1-s}(x,-y;0,-w)|\,dx$ for every $a\ge0$ and $y$. In the same way $W(s,w)\min\{2,6w(1-s)^{-1/2}\}$, which dominates $W(s,w)\int_\R\int_{x>0}|q_{1-s}|\,dx\,dy$, is integrable. By Tonelli the integral defining $\hstar$ converges absolutely for almost every $(x,y)$, and every integral of $\hstar$ over $x>a$, or over $x>0$ and $y\in\R$, may be computed in any order.
+
+\emph{(a)} By the identity in Remark~\ref{sct:rem:misprint}, the mass is $\Kstar\int_0^1s^{-5/2}J(s)\,ds$, where $Q=(3/(2(1-s)))^{1/2}$ and
+\[
+ J(s)=\int_0^\infty w^{3/2}e^{-2w^2/s}\erf(Qw)\,dw,\qquad
+ \erf(Qw)=\frac{2Qw}{\sqrt\pi}\int_0^1e^{-Q^2w^2t^2}dt.
+\]
+Inserting the second formula in the first and integrating in $w$ (all terms positive),
+\[
+ s^{-5/2}J(s)=\frac{\Gamma(7/4)\,Q}{\sqrt\pi}\int_0^1\frac{s^{-5/2}\,dt}{(2/s+Q^2t^2)^{7/4}}
+ =\frac{\Gamma(7/4)}{2^{7/4}\sqrt\pi}\sqrt{\frac32}\int_0^1
+ \frac{s^{-3/4}(1-s)^{5/4}}{(1-s(1-3t^2/4))^{7/4}}\,dt.
+\]
+For fixed $t\in(0,1]$ put $z=1-3t^2/4\in[1/4,1)$. Euler's integral $\int_0^1s^{b-1}(1-s)^{c-b-1}(1-zs)^{-a}ds=B(b,c-b)\,F(a,b;c;z)$ with $(a,b,c)=(7/4,1/4,5/2)$, followed by Euler's transformation $F(a,b;c;z)=(1-z)^{c-a-b}F(c-a,c-b;c;z)$, gives
+\[
+ \int_0^1\frac{s^{-3/4}(1-s)^{5/4}}{(1-zs)^{7/4}}\,ds
+ =B\bigl(\tfrac14,\tfrac94\bigr)\,\frac{\sqrt3\,t}{2}\,F\bigl(\tfrac34,\tfrac94;\tfrac52;z\bigr).
+\]
+Since $\frac{d}{dz}F(-\frac14,\frac54;\frac32;z)=-\frac5{24}F(\frac34,\frac94;\frac52;z)$ and $t\,dt=-\frac23dz$,
+\[
+ \int_0^1\frac{\sqrt3\,t}{2}F\bigl(\tfrac34,\tfrac94;\tfrac52;1-\tfrac34t^2\bigr)dt
+ =\frac1{\sqrt3}\int_{1/4}^1F\bigl(\tfrac34,\tfrac94;\tfrac52;z\bigr)dz
+ =\frac{24}{5\sqrt3}\Bigl[F\bigl(-\tfrac14,\tfrac54;\tfrac32;\tfrac14\bigr)-F\bigl(-\tfrac14,\tfrac54;\tfrac32;1\bigr)\Bigr];
+\]
+the integrand has an integrable singularity $(1-z)^{-1/2}$ at $z=1$, and $F(-\frac14,\frac54;\frac32;\cdot)$ is continuous on $[0,1]$ because $\frac32+\frac14-\frac54>0$. The quadratic case $F(\alpha,1-\alpha;\frac32;\sin^2\theta)=\sin((2\alpha-1)\theta)/((2\alpha-1)\sin\theta)$ \cite[\S15.4(i)]{dlmf} with $\alpha=-\frac14$ gives $2\sqrt2/3$ at $\theta=\pi/6$ and $\sqrt2/3$ at $\theta=\pi/2$ (Gauss's sum gives the same). So the $t$-integral is $8\sqrt2/(5\sqrt3)$. With $B(\frac14,\frac94)=\Gamma(\frac14)\Gamma(\frac94)/\Gamma(\frac52)=5\Gamma(1/4)^2/(12\sqrt\pi)$,
+\[
+ \int\!\!\int\hstar=\Kstar\,\frac{\Gamma(7/4)}{2^{7/4}\sqrt\pi}\sqrt{\frac32}\cdot\frac{5\Gamma(1/4)^2}{12\sqrt\pi}\cdot\frac{8\sqrt2}{5\sqrt3}
+ =\Kstar\,\frac{2\,\Gamma(7/4)\Gamma(1/4)^2}{3\cdot2^{7/4}\pi}
+ =\Kstar\,2^{-9/4}\Gamma(1/4)=1,
+\]
+using $\Gamma(7/4)=\frac34\Gamma(\frac34)$ and $\Gamma(\frac14)\Gamma(\frac34)=\pi\sqrt2$.
+
+\emph{(b)} For $a=y=0$ the formula for $G_0$ gives the inner integral of Section~\ref{sct:sec:marginal},
+\[
+ G_0(-w)-G_0(w)=(2\pi u)^{-1/2}e^{-w^2/(2u)}\erf\bigl(w\sqrt{3/(2u)}\bigr).
+\]
+The steps of that section, with $s^{-5/2}$ in place of $s^{-1/2}$ (so with \eqref{sct:eq:erf-integral} for $P=(4-3s)/(2s(1-s))$ and Pfaff's transformation), give
+\[
+ \fstar(0)=\Kstar\,\frac{\sqrt3\,\Gamma(7/4)}{2^{11/4}\pi}\int_0^1s^{-3/4}(1-s)^{3/4}
+ F\bigl(1,\tfrac74;\tfrac32;\tfrac{3s}4\bigr)\,ds
+ =\Kstar\,\frac{\sqrt3\,\Gamma(7/4)}{2^{11/4}\pi}\,B\bigl(\tfrac14,\tfrac74\bigr)\,
+ {}_3F_2\Bigl(\begin{matrix}\frac14,1,\frac74\\[1pt]\frac32,2\end{matrix};\frac34\Bigr),
+\]
+by termwise integration of positive terms. Because two parameters are $1$ and $2$,
+${}_3F_2(a,1,b;c,2;z)=\frac{c-1}{(a-1)(b-1)z}\bigl(F(a-1,b-1;c-1;z)-1\bigr)$, and $F(-\frac34,\frac34;\frac12;\sin^2\theta)=\cos(\frac32\theta)$ \cite[\S15.4(i)]{dlmf} vanishes at $\sin^2\theta=\frac34$. Hence the ${}_3F_2$ equals $-\frac{32}{27}(0-1)=\frac{32}{27}$, and with $B(\frac14,\frac74)=\Gamma(\frac14)\Gamma(\frac74)$,
+\[
+ \fstar(0)=\frac{2^{9/4}}{\Gamma(1/4)}\cdot\frac{\sqrt3\,\Gamma(7/4)^2\Gamma(1/4)}{2^{11/4}\pi}\cdot\frac{32}{27}
+ =\sqrt{\frac32}\cdot\frac{9}{16}\cdot\frac{32}{27}\cdot\frac{\Gamma(3/4)^2}{\pi}
+ =\sqrt{\frac23}\,\frac{\Gamma(3/4)^2}{\pi}.
+\]
+
+\emph{(c)} For $0<t<1$ and $w>0$, $p_t(x,-y;0,-w)/p_t(x,-y;0,w)=\exp(4w(3x-yt)/t^2)$ (the ratio of Lemma~\ref{sct:lem:starts} and of \eqref{sct:gr:eq:ratio}), which exceeds~$1$ when $x>0$ and $y\le3x$; all weights are positive. For $y=0$ the integrand $W(s,w)\,(G_a(-w)-G_a(w))$ of $\int_{x>a}\hstar(x,0)\,dx$ is therefore positive.
+
+\emph{Numerical checks} (write, 5 October 2026; uncertified floating point): an independent scipy quadrature of $\hstar$ gives mass $1.000000000000$ and $\fstar(0)=0.390276218869$, both to 12 digits; mpmath confirms the Euler-integral step, the two quadratic values and ${}_3F_2=32/27$ to 40 digits.
+\end{proof}
+
+\begin{remark}[\wtag, Lemma~\ref{sct:lem:marginal} for the true density]\label{sct:rem:lemmafix}
+Let $F^\star_a(y)=\int_{x>a}\hstar(x,y)\,dx$. The assertions of Lemma~\ref{sct:lem:marginal} hold for $F^\star_a$ and $\fstar=F^\star_0$: joint continuity in $(a,y)\in[0,\infty)\times\R$, a common bound, and $0<\fstar(0)<\infty$.
+
+\emph{Proof.} The delivered proof does not transfer as it stands. Its majorant $C\,s^{3/4}(1-s)^{-1/2}$ becomes $C\,s^{-5/4}(1-s)^{-1/2}$ with $s^{-5/2}$, which is not integrable at $s=0$. (The delivered check ``dominating s power 3/4'' verifies the printed display only.) By the proof of Proposition~\ref{sct:prop:corrected}, $F^\star_a(y)=\Kstar\int_0^1\int_0^\infty W(s,w)\,(G_a(-w)-G_a(w))\,dw\,ds$ for every $a$ and $y$. Here $G_a(\pm w)$ is continuous in $(a,y)$ by its closed form, and the integrand is dominated by $\Kstar M(s,w)$, which does not depend on $(a,y)$. Dominated convergence gives joint continuity and the bound $\Kstar\int\int M$. Positivity is Proposition~\ref{sct:prop:corrected}(c), and finiteness is (b).
+
+Theorem~\ref{sct:thm:endpoint} uses the density of $\mu$ only through Lemma~\ref{sct:lem:marginal} and through the fact that $F_a(y)$ is the density of $\mu(\{x>a\}\times dy)$. With $\hstar$ in place of $\bar h$, both hold, so Theorem~\ref{sct:thm:endpoint}, Section~\ref{sct:sec:C} and Theorem~\ref{sct:thm:main} hold with $\fY=\fstar$. The positivity on rectangles used in Lemma~\ref{sct:lem:starts} ($2<x<3$, $1<y<2$) and in Part~\ref{sct:gr:part}, Section~\ref{sct:gr:sec:endpoint} (area large and velocity near~$0$) lies in the region $y\le3x$ of Proposition~\ref{sct:prop:corrected}(c). It holds for $\hstar$ with the delivered arguments unchanged.
+\end{remark}
+
+\begin{remark}[\wtag, what the misprint affects]\label{sct:rem:scope}
+\emph{Not affected:} the existence of one amplitude $A>0$ for both parities and $D_n/C_n\to e^{-\lambda}$ (Sections~\ref{sct:sec:C}--\ref{sct:sec:D} use only the existence of the limit in \eqref{sct:eq:C-asymptotic}); the enclosures of $\lambda$ and $r$; the harmonic identity \eqref{sct:eq:harmonic-identity}, in which $\fY(0)$ cancels between \eqref{sct:eq:B-direct} and $B=rA$; Proposition~\ref{sct:prop:inverse} and Corollary~\ref{sct:cor:gap}, which use only \eqref{sct:eq:main}; every upper bound of both Parts (survival \eqref{sct:eq:survival} and atom bounds only); Part~\ref{sct:gr:part}'s Theorem~\ref{sct:gr:thm:main} upper bounds, inverse and Proposition~\ref{sct:gr:prop:mono}. \emph{Wrong:} the value \eqref{sct:eq:fY-explicit} as the marginal of $\mu$, and the numerical reading of \eqref{sct:eq:amplitude} with it (Remark~\ref{sct:rem:misprint}). \emph{Conditional on the density's shape, now settled:} Lemma~\ref{sct:lem:marginal} (and through it Theorem~\ref{sct:thm:endpoint} and the equivalents \eqref{sct:eq:main}), the rectangle of Lemma~\ref{sct:lem:starts}, and Part~\ref{sct:gr:part}'s lower bound in Section~\ref{sct:gr:sec:endpoint}. They hold for $\hstar$ (Remark~\ref{sct:rem:lemmafix}).
+
+\emph{Why $\hstar$ is the density of $\mu$.} It is the function that \cite[Remark~2]{dw} names, and the proof of \cite[(8)]{dw} rests on \cite[Lemma~16]{dw}, the convergence $\bar p_1(x,y;u,v)/h(x,y)\to\bar h(u,v)$ of the killed transition density, which is the same identification; Bär, Duraj and Wachtel \cite[Propositions~3--4, Corollary~5]{bdw} restate it with Groeneboom--Jongbloed--Wellner's $\bar h$. Proposition~\ref{sct:prop:corrected}(a) gives mass exactly~$1$, a non-trivial identity in $\Gamma(1/4)$ that the printed display fails. Numerically, the velocity marginal of $\hstar$ has $\fstar(1)/\fstar(0)=1.128$, $\fstar(2)/\fstar(0)=0.338$ and $\fstar(-1)/\fstar(0)=0.0713$. A Monte Carlo of the conditioned Gaussian walk at $n=2000$ at the placement gave $1.107$, $0.347$ and $0.0775$, and the printed display renormalized to mass one gives $1.803$, $0.180$ and $0.0135$. The Monte Carlo conditional velocity density of the geometric walk near~$0$ was $0.448$ at $n=500$ and $0.395$ at $n=2000$, against $\fstar(0)=0.390$. Finally $2^{1/4}c_{(1,1)}\fstar(0)=0.388$ and $0.391$ for the Monte Carlo values $0.8355$ and $0.8426$ of $c_{(1,1)}$, against $A\approx0.387$ from the counts. The Monte Carlo values drift with $n$ and are evidence only.
+
+\emph{Literature.} A search on 5~October 2026 found no erratum to \cite{dw} and no published remark on this display. \cite{bdw} prints $\bar h_{\mathrm{GJW}}$ with the factor $p_s(0,w;0,0)$ and characterizes the meander density through it, consistent with $\hstar$, but does not comment on the display in \cite[Theorem~1]{dw}. The write reads \cite{gjw} in the authors' preprint of 30 August 1999, whose equation numbers agree with the citation in \cite{dw}.
+\end{remark}
+
+\section{Free endpoint masses and a maximal estimate}\label{sct:sec:bridge}
 Put $T_j=X_1+\cdots+X_j$. The ordinary span-one lattice local central limit
 theorem gives, uniformly over integers $d$,
-\begin{equation}\label{eq:LCLT}
+\begin{equation}\label{sct:eq:LCLT}
  \sqrt\ell\,\Pp(T_\ell=d)=
  \frac1{\sigma\sqrt{2\pi}}
  \exp\left(-\frac{d^2}{2\sigma^2\ell}\right)+o(1).
@@ -344,7 +654,7 @@ theorem gives, uniformly over integers $d$,
 In particular $\sup_d\Pp(T_\ell=d)\le C\ell^{-1/2}$ for $\ell\ge1$.
 The hypotheses here are just the finite variance and span one already checked.
 For this particular increment law the exact atom is also explicit:
-\begin{equation}\label{eq:NB}
+\begin{equation}\label{sct:eq:NB}
  \Pp(T_\ell=d)=\binom{2\ell+d-1}{\ell-1}2^{-2\ell-d}\quad(d\ge-\ell),
 \end{equation}
 and it is zero otherwise. The ratio of consecutive positive masses is
@@ -352,10 +662,10 @@ $(2\ell+d)/(2(\ell+d+1))$, so $d=-1$ is a mode and the maximum is
 $\frac12\binom{2\ell-2}{\ell-1}4^{-(\ell-1)}=O(\ell^{-1/2})$.
 Thus the uniform atom bound can alternatively be checked directly by Stirling.
 
-\begin{lemma}\label{lem:max}
+\begin{lemma}\label{sct:lem:max}
 There is a constant $C$, depending only on the increment law, such that for
 $\ell\ge4$, $H>0$, and an integer $d$ with $|d|\le H/2$,
-\begin{equation}\label{eq:max}
+\begin{equation}\label{sct:eq:max}
  \Pp\left(T_\ell=d,\ \max_{j\le\ell}|T_j|\ge H\right)
  \le C\frac{\sqrt\ell}{H^2}.
 \end{equation}
@@ -375,23 +685,26 @@ another $C\sqrt\ell/H^2$. Their sum proves the estimate.
 \end{proof}
 The estimate concerns joint endpoint mass. Dividing by an endpoint probability
 would introduce an unnecessary, possibly nonuniform bridge constant.
+\begin{writenote}[5 October 2026]
+Part~\ref{sct:gr:part}, Lemma~\ref{sct:gr:lem:bridge} (bounded bridge), proves the complementary lower bound by the same Kolmogorov split; Lemma~\ref{sct:lem:max} is the endpoint-weighted upper form. The atom formula \eqref{sct:eq:NB} and its mode are Part~\ref{sct:gr:part}'s \eqref{sct:gr:eq:nb} and Lemma~\ref{sct:gr:lem:atoms}, which adds a local lower bound.
+\end{writenote}
 
-\section{Smoothing to one fixed terminal velocity}\label{sec:smoothing}
-\begin{theorem}\label{thm:endpoint}
+\section{Smoothing to one fixed terminal velocity}\label{sct:sec:smoothing}
+\begin{theorem}\label{sct:thm:endpoint}
 For every fixed positive-coordinate integer state $z=(a,v)$ and every fixed
 integer $b$,
-\begin{equation}\label{eq:endpoint}
+\begin{equation}\label{sct:eq:endpoint}
  \Pp_z(\tau>n,V_n=b)\sim\frac{c_z\fY(0)}{\sigma}\,n^{-3/4}.
 \end{equation}
 Also, uniformly over integer $b$,
-\begin{equation}\label{eq:uniform-endpoint}
+\begin{equation}\label{sct:eq:uniform-endpoint}
  \Pp_z(\tau>n,V_n=b)\le C_z(n+1)^{-3/4}\qquad(n\ge1).
 \end{equation}
 \end{theorem}
 \begin{proof}
-For \eqref{eq:uniform-endpoint}, split at $\lfloor n/2\rfloor$, retain survival
+For \eqref{sct:eq:uniform-endpoint}, split at $\lfloor n/2\rfloor$, retain survival
 only in the first block, and use the free endpoint-atom bound in the second.
-The survival equivalent \eqref{eq:survival}, enlarged to a global upper bound,
+The survival equivalent \eqref{sct:eq:survival}, enlarged to a global upper bound,
 then gives $C_z n^{-1/4}n^{-1/2}$. Enlarge $C_z$ for small times.
 
 For the equivalent fix $0<\varepsilon<1/2$ and put
@@ -403,17 +716,17 @@ All limits in $n$ below keep $\varepsilon$ fixed.
 
 \textbf{Upper bound.}
 Dropping the area tests after $k$ gives
-\begin{equation}\label{eq:upper-Markov}
+\begin{equation}\label{sct:eq:upper-Markov}
  \Pp_z(\tau>n,V_n=b)
  \le\Ee_z[\ind_{\{\tau>k\}}\Pp(T_\ell=b-V_k)].
 \end{equation}
-The uniform error in \eqref{eq:LCLT} is $o(\ell^{-1/2})$; after averaging it is
+The uniform error in \eqref{sct:eq:LCLT} is $o(\ell^{-1/2})$; after averaging it is
 multiplied by $\Pp_z(\tau>k)=O(k^{-1/4})$. Under the scaling
 $V_k=\sigma\sqrt k\,y$, the Gaussian test functions converge uniformly on
 $\R$ to the Gaussian with exponent $-\alpha y^2/(2\varepsilon)$.
-Thus \eqref{eq:survival}--\eqref{eq:weak-limit} show that $n^{3/4}$ times the
-right side of \eqref{eq:upper-Markov} converges to
-\begin{equation}\label{eq:Ueps}
+Thus \eqref{sct:eq:survival}--\eqref{sct:eq:weak-limit} show that $n^{3/4}$ times the
+right side of \eqref{sct:eq:upper-Markov} converges to
+\begin{equation}\label{sct:eq:Ueps}
  U_\varepsilon=\frac{c_z\alpha^{-1/4}}{\sigma\sqrt{2\pi\varepsilon}}
  \int_\R e^{-\alpha y^2/(2\varepsilon)}\fY(y)\,dy.
 \end{equation}
@@ -424,15 +737,15 @@ $\phi_t(y)=(2\pi t)^{-1/2}e^{-y^2/(2t)}$, this is
  \int_\R\phi_t(y)\fY(y)\,dy\longrightarrow\frac{c_z\fY(0)}{\sigma}
  \quad(\varepsilon\downarrow0)
 \]
-by Lemma~\ref{lem:marginal}. This proves the limsup bound.
+by Lemma~\ref{sct:lem:marginal}. This proves the limsup bound.
 
 \textbf{Lower bound before the killing error.}
 Fix $\delta,K>0$ and at time $k$ retain only the states
-\begin{equation}\label{eq:retained}
+\begin{equation}\label{sct:eq:retained}
  I_k>\delta n^{3/2},\qquad |V_k|<K\sqrt n.
 \end{equation}
 First ignore killing in the last block. The same calculation gives the limit
-\begin{equation}\label{eq:Leps}
+\begin{equation}\label{sct:eq:Leps}
  L_{\varepsilon,\delta,K}=
  \frac{c_z\alpha^{-1/4}}{\sigma\sqrt{2\pi\varepsilon}}
  \int_{|y|<K/(\sigma\sqrt\alpha)}
@@ -453,7 +766,7 @@ For a retained state $(a,v)$, the area after $j$ more steps is
 \]
 For large $n$, $\ell\le2\varepsilon n$. If
 $\varepsilon\le\delta/(8(K+1))$, then a failure of positivity implies
-\begin{equation}\label{eq:H}
+\begin{equation}\label{sct:eq:H}
  \max_{i\le\ell}|T_i|\ge H,\qquad
  H=\frac{\delta}{4\varepsilon}\sqrt n.
 \end{equation}
@@ -461,9 +774,9 @@ In fact $a-\ell|v|>\delta n^{3/2}-2\varepsilon Kn^{3/2}
 \ge\delta n^{3/2}/2$, so a nonpositive area requires
 $\max|T_i|\ge\delta n^{3/2}/(2\ell)\ge H$.
 The endpoint condition is $T_\ell=b-v$ and eventually
-$|b-v|\le(K+1)\sqrt n\le H/2$. Lemma~\ref{lem:max} therefore gives,
+$|b-v|\le(K+1)\sqrt n\le H/2$. Lemma~\ref{sct:lem:max} therefore gives,
 uniformly over all retained states,
-\begin{equation}\label{eq:kill-error}
+\begin{equation}\label{sct:eq:kill-error}
  \Pp_{(a,v)}(\tau\le\ell,V_\ell=b)
  \le C\varepsilon^{5/2}\delta^{-2}n^{-1/2}.
 \end{equation}
@@ -472,14 +785,14 @@ from which $n$ is sufficiently large may depend on $b,\delta,K,\varepsilon$.
 Multiplying by $\Pp_z(\tau>k)$ shows that the error in $n^{3/4}$-scaled mass
 is at most $C_z\alpha^{-1/4}\varepsilon^{5/2}\delta^{-2}$ in the limit.
 Consequently
-\begin{equation}\label{eq:liminf}
+\begin{equation}\label{sct:eq:liminf}
  \liminf_{n\to\infty}n^{3/4}\Pp_z(\tau>n,V_n=b)
  \ge L_{\varepsilon,\delta,K}
       -C_z\alpha^{-1/4}\varepsilon^{5/2}\delta^{-2}.
 \end{equation}
 
 \textbf{Taking the limits in order.}
-In \eqref{eq:Leps} substitute $y=\sqrt{\varepsilon/\alpha}\,u$ to obtain
+In \eqref{sct:eq:Leps} substitute $y=\sqrt{\varepsilon/\alpha}\,u$ to obtain
 \[
  L_{\varepsilon,\delta,K}=\frac{c_z}{\sigma}\alpha^{-3/4}
  \int_{|u|<K/(\sigma\sqrt\varepsilon)}
@@ -488,26 +801,29 @@ In \eqref{eq:Leps} substitute $y=\sqrt{\varepsilon/\alpha}\,u$ to obtain
        (\sqrt{\varepsilon/\alpha}\,u)\,du.
 \]
 For fixed $\delta,K>0$, joint continuity and the common bound of
-Lemma~\ref{lem:marginal} give
+Lemma~\ref{sct:lem:marginal} give
 $L_{\varepsilon,\delta,K}\to(c_z/\sigma)F_{\delta/\sigma}(0)$ as
-$\varepsilon\downarrow0$. The error in \eqref{eq:liminf} vanishes.
+$\varepsilon\downarrow0$. The error in \eqref{sct:eq:liminf} vanishes.
 Finally let $\delta\downarrow0$, giving $F_{\delta/\sigma}(0)\to\fY(0)$.
-This agrees with the upper bound and proves \eqref{eq:endpoint}.
+This agrees with the upper bound and proves \eqref{sct:eq:endpoint}.
 The order is $n\to\infty$, then $\varepsilon\downarrow0$ at fixed $\delta,K$,
 then $\delta\downarrow0$. Any one fixed $K>0$ suffices.
 \end{proof}
+\begin{writenote}[5 October 2026]
+Theorem~\ref{sct:thm:endpoint} contains Part~\ref{sct:gr:part}'s Lemma~\ref{sct:gr:lem:endpoint} (order $k^{-3/4}$ from $(1,1)$). Part~\ref{sct:gr:part}'s proof (a high-area rectangle at halfway time and a bounded bridge) is a second route to the order of magnitude. Here $\fY$ is to be read as $\fstar$, the velocity marginal of the true density; the proof uses only Lemma~\ref{sct:lem:marginal}, which holds for it (Remark~\ref{sct:rem:lemmafix}).
+\end{writenote}
 
-\section{The common amplitude for all self-complementary counts}\label{sec:C}
-Apply Theorem~\ref{thm:endpoint} to each fixed $h$ in \eqref{eq:C-exact}.
+\section{The common amplitude for all self-complementary counts}\label{sct:sec:C}
+Apply Theorem~\ref{sct:thm:endpoint} to each fixed $h$ in \eqref{sct:eq:C-exact}.
 For both terminal values $r_n=-1,0$,
 \[
  m^{3/4}\Pp_{(1,1)}(\tau>m,V_m=r_n+1-h)
  \longrightarrow\frac{c_{(1,1)}\fY(0)}{\sigma}.
 \]
-The uniform bound \eqref{eq:uniform-endpoint} gives a summable majorant after
+The uniform bound \eqref{sct:eq:uniform-endpoint} gives a summable majorant after
 multiplication by $2^{-h-1}$. Dominated convergence and
 $\sum_{h\ge0}2^{-h-1}=1$ give
-\begin{equation}\label{eq:C-asymptotic}
+\begin{equation}\label{sct:eq:C-asymptotic}
  2^{-n}C_n\sim\frac{c_{(1,1)}\fY(0)}{\sigma}\,m^{-3/4}.
 \end{equation}
 Since $m\sim n/2$ along either parity, its amplitude is
@@ -518,27 +834,33 @@ Since $m\sim n/2$ along either parity, its amplitude is
 The half-length conversion contributes $2^{3/4}$, the span-one endpoint mass
 contributes $1/\sigma$, and the final-slack weights contribute total mass one.
 There is no residual parity multiplier. This proves the first assertion of
-Theorem~\ref{thm:main}.
+Theorem~\ref{sct:thm:main}.
+\begin{writenote}[5 October 2026]
+With $\fstar(0)$ from Proposition~\ref{sct:prop:corrected}, $A=2^{1/4}c_{(1,1)}\fstar(0)=0.46411\ldots\times c_{(1,1)}$. No certified value of $c_{(1,1)}=\kappa\Vdw(1/\sqrt2,1/\sqrt2)$ is known (Section~\ref{sct:sub:further}); the counts suggest $c_{(1,1)}\approx0.834$.
+\end{writenote}
 
-\section{The strong equivalent from an exact convolution}\label{sec:D}
+\section{The strong equivalent from an exact convolution}\label{sct:sec:D}
 Let $S_k$ and $T_k$ count ordinary all and strong tournament score sequences,
 with $S_0=1,T_0=0$. Write their ordinary generating functions as $S(z),T(z)$,
 and use $C(z),D(z)$ for the self-complementary counts. Stockmeyer's
 Theorems 11 and 13 \cite{stockmeyer} give
 \begin{align}
- S(z)&=\frac1{1-T(z)},\label{eq:ordinary-gf}\\
+ S(z)&=\frac1{1-T(z)},\label{sct:eq:ordinary-gf}\\
  D_n&=C_n-\sum_{1\le k\le\lfloor n/2\rfloor}T_k C_{n-2k}\quad(n\ge1),
- \label{eq:Stock-conv}\\
+ \label{sct:eq:Stock-conv}\\
  D(z)&=C(z)(1-T(z^2)),\qquad C(z)=D(z)S(z^2).
- \label{eq:SC-gf}
+ \label{sct:eq:SC-gf}
 \end{align}
 These are formal power-series identities, so no analytic assumption is needed
 at this stage. The established ordinary-score asymptotic in \cite{kolesnik}
 in particular yields
-\begin{equation}\label{eq:ordinary-tail}
+\begin{equation}\label{sct:eq:ordinary-tail}
  0\le T_k/4^k\le S_k/4^k\le C(k+1)^{-5/2}.
 \end{equation}
 This ordinary-score input is not a new result of the present report.
+\begin{writenote}[5 October 2026]
+$S_k$ and $T_k$ are the $S_n$ and $I_n$ of \file{a000571-tournament-score-sequences} (strong ordinary score sequences there have $I_0=0$, like $T_0=0$ here), and $1-T(z)=e^{-A(z)}$ in its notation. Why the strong fraction is $e^{-\lambda}$ here but $I_n/S_n\to e^{-2\lambda}$ there is explained in the front matter (``Relation to the ordinary score sequences'').
+\end{writenote}
 
 \subsection{Justifying the convolution limit}
 Put $c_n=C_n/2^n$ and $t_k=T_k/4^k$. We have
@@ -549,7 +871,7 @@ For fixed $K$,
  \longrightarrow A\sum_{k=1}^K t_k.
 \]
 For $K<k\le n/4$, the bound on $c_{n-2k}$ gives
-\begin{equation}\label{eq:conv-tail-one}
+\begin{equation}\label{sct:eq:conv-tail-one}
  n^{3/4}\sum_{K<k\le n/4}t_k c_{n-2k}
  \le C\sum_{k>K}t_k\longrightarrow0\quad(K\to\infty),
 \end{equation}
@@ -558,40 +880,40 @@ uniformly in large $n$. The remaining terms satisfy
  n^{3/4}\sum_{n/4<k\le n/2}t_k c_{n-2k}
  &\le C n^{3/4}n^{-5/2}
        \sum_{0\le j\le n/2}(j+1)^{-3/4}\nonumber\\
- &=O(n^{-3/2}).\label{eq:conv-tail-two}
+ &=O(n^{-3/2}).\label{sct:eq:conv-tail-two}
 \end{align}
 Only one parity of $j=n-2k$ occurs, and extending the sum only enlarges it.
 Thus
-\begin{equation}\label{eq:conv-limit}
+\begin{equation}\label{sct:eq:conv-limit}
  n^{3/4}\sum_{1\le k\le n/2}t_k c_{n-2k}
  \longrightarrow A\sum_{k\ge1}t_k.
 \end{equation}
-Using \eqref{eq:Stock-conv},
-\begin{equation}\label{eq:D-amplitude}
+Using \eqref{sct:eq:Stock-conv},
+\begin{equation}\label{sct:eq:D-amplitude}
  D_n\sim A(1-T(1/4))\,2^n n^{-3/4}
        =\frac{A}{S(1/4)}\,2^n n^{-3/4}.
 \end{equation}
 The ordinary tail bound makes $S(1/4)$ finite. Taking increasing real limits
-in \eqref{eq:ordinary-gf} gives $1-T(1/4)=1/S(1/4)>0$.
+in \eqref{sct:eq:ordinary-gf} gives $1-T(1/4)=1/S(1/4)>0$.
 
 \subsection{Identifying the ratio and its numerical enclosure}
 The ordinary recurrence and its generating-function form, recorded in
 \cite{kolesnik,bdk}, are
-\begin{equation}\label{eq:ordinary-recurrence}
+\begin{equation}\label{sct:eq:ordinary-recurrence}
  kS_k=\sum_{j=1}^kN_jS_{k-j},\qquad
  S(z)=\exp\left(\sum_{k\ge1}\frac{N_k}{k}z^k\right),
 \end{equation}
-with the exact divisor formula \eqref{eq:EGZ}. Its terms at $z=1/4$ are
+with the exact divisor formula \eqref{sct:eq:EGZ}. Its terms at $z=1/4$ are
 $O(k^{-5/2})$: the $d=k$ term has this order after division by $k4^k$,
 and all proper divisors satisfy $d\le k/2$, giving an exponentially smaller
 bound. Thus the increasing real limit gives $S(1/4)=e^\lambda$ and proves
-\eqref{eq:main} with $r=e^{-\lambda}$.
+\eqref{sct:eq:main} with $r=e^{-\lambda}$.
 
 Kolesnik \cite[Section 3.1, equation (8)]{kolesnik} obtains the certified interval
-\begin{equation}\label{eq:published-lambda}
+\begin{equation}\label{sct:eq:published-lambda}
  0.330237542\le\lambda\le0.330237546.
 \end{equation}
-Exponentiating with the reversed order yields \eqref{eq:ratio-bounds}.
+Exponentiating with the reversed order yields \eqref{sct:eq:ratio-bounds}.
 The archived checker also independently reproduces a narrower enclosure by
 computing $N_1,\ldots,N_{1669}$ exactly and combining their rational partial
 sum with the tail estimate of \cite[Lemma 11, equation (17)]{kolesnik}.
@@ -611,25 +933,31 @@ The exact partial sum and full outward enclosures appear in
 \path{checks/results.json}. This certificate uses a published infinite-tail
 theorem; finite enumeration alone would not certify $\lambda$. We have
 $1/2<r<1$ and $D_n/C_n\to r$.
+\begin{writenote}[5 October 2026]
+The value $\lambda=0.3302375439859293$ of \file{a000571-tournament-score-sequences} lies inside the enclosure above, and $e^{-\lambda}=0.7187529777045\ldots$ at that value. Floating-point counts at the placement give $D_n/C_n=0.6964$, $0.7082$, $0.7137$, $0.7154$, $0.7163$ at $n=40$, $80$, $160$, $240$, $320$, approaching $r$ with a gap of order $1/n$. This is evidence, not a proof; the identity $D(z)=C(z)(1-T(z^2))$ was checked exactly for $n\le44$.
+\end{writenote}
 
 These numerical enclosures concern $\lambda$ and $r$. Formula
-\eqref{eq:amplitude} characterizes $A$ exactly, but contains a discrete harmonic
+\eqref{sct:eq:amplitude} characterizes $A$ exactly, but contains a discrete harmonic
 function that has not been evaluated or numerically enclosed here. The
 limiting density is explicit; that does not by itself numerically determine
 $A$.
+\begin{writenote}[5 October 2026]
+The density as printed in Section~\ref{sct:sec:marginal} is not that of $\mu$ (Remark~\ref{sct:rem:misprint}); the corrected factor $\fstar(0)=\sqrt{2/3}\,\Gamma(3/4)^2/\pi$ is explicit (Proposition~\ref{sct:prop:corrected}), and $A=\sqrt6\,\Gamma(3/4)\pi^{-3/2}\Vdw(1/\sqrt2,1/\sqrt2)$. The discrete harmonic function remains unevaluated, as stated.
+\end{writenote}
 
-\section{A direct strong amplitude and a harmonic identity}\label{sec:harmonic}
+\section{A direct strong amplitude and a harmonic identity}\label{sct:sec:harmonic}
 This section gives an independent expression for the strong amplitude.
-It is optional for Theorem~\ref{thm:main}, whose proof is already complete.
+It is optional for Theorem~\ref{sct:thm:main}, whose proof is already complete.
 It also checks that a mixture over unbounded starting states can be justified
-without assuming a uniform version of \eqref{eq:survival}.
+without assuming a uniform version of \eqref{sct:eq:survival}.
 
-\begin{lemma}\label{lem:starts}
+\begin{lemma}\label{sct:lem:starts}
 There is a constant $C$ such that, for all integers $g,m\ge1$,
 \begin{align}
- \Pp_{(g,g)}(\tau>m)&\le C\sqrt g\,m^{-1/4},\label{eq:start-surv}\\
+ \Pp_{(g,g)}(\tau>m)&\le C\sqrt g\,m^{-1/4},\label{sct:eq:start-surv}\\
  \sup_{b\in\Z}\Pp_{(g,g)}(\tau>m,V_m=b)
-   &\le C\sqrt g\,m^{-3/4}.\label{eq:start-atom}
+   &\le C\sqrt g\,m^{-3/4}.\label{sct:eq:start-atom}
 \end{align}
 In particular $c_{(g,g)}\le C\sqrt g$.
 \end{lemma}
@@ -644,8 +972,8 @@ It has positive $\mu$-mass. Indeed,
  \frac{p_t(x,-y;0,-w)}{p_t(x,-y;0,w)}
    =\exp\left(\frac{4w(3x-yt)}{t^2}\right)>1
 \]
-for $0<t<1$ on this rectangle, so \eqref{eq:density} is positive there.
-By \eqref{eq:survival}--\eqref{eq:weak-limit}, the probability of reaching it
+for $0<t<1$ on this rectangle, so \eqref{sct:eq:density} is positive there.
+By \eqref{sct:eq:survival}--\eqref{sct:eq:weak-limit}, the probability of reaching it
 while surviving is at least $c g^{-1/2}$ for all sufficiently large $g$.
 Every state there dominates $(g,g)$ coordinatewise. For the finitely many
 smaller $g$, force $G_1=g$ and $G_j=1$ for $2\le j\le g^2$.
@@ -659,29 +987,32 @@ The Markov property therefore gives
  \Pp_{(1,1)}(\tau>g^2+m)
  \ge c g^{-1/2}\Pp_{(g,g)}(\tau>m).
 \]
-The global upper bound following from \eqref{eq:survival} proves
-\eqref{eq:start-surv}. Split an endpoint event at halfway and use the free
-atom bound to obtain \eqref{eq:start-atom}, enlarging $C$ for $m=1$.
+The global upper bound following from \eqref{sct:eq:survival} proves
+\eqref{sct:eq:start-surv}. Split an endpoint event at halfway and use the free
+atom bound to obtain \eqref{sct:eq:start-atom}, enlarging $C$ for $m=1$.
 Taking $m\to\infty$ in the first bound gives the assertion about $c_{(g,g)}$.
 \end{proof}
+\begin{writenote}[5 October 2026]
+The positivity on the rectangle uses only the ratio displayed in the proof and positive weights, so it holds for the true density $\hstar$ (Proposition~\ref{sct:prop:corrected}(c)); the rectangle lies in $y\le3x$.
+\end{writenote}
 
 For strict Landau inequalities the first geometric value must be $g\ge1$.
 At time one its unshifted state is $(A_1,V_1)=(g,g)$.
 Decomposing this first value and the final slack yields, for $m\ge2$,
-\begin{equation}\label{eq:D-direct}
+\begin{equation}\label{sct:eq:D-direct}
  2^{-n}D_n=\sum_{g\ge1}\sum_{h\ge0}2^{-g-1}2^{-h-1}
  \Pp_{(g,g)}(\tau>m-1,V_{m-1}=r_n+1-h).
 \end{equation}
 Here the probabilities use the state after that first step as their new start.
-Theorem~\ref{thm:endpoint} applies for each fixed $g,h$;
-Lemma~\ref{lem:starts} and $\sum_{g\ge1}2^{-g-1}\sqrt g<\infty$ justify
+Theorem~\ref{sct:thm:endpoint} applies for each fixed $g,h$;
+Lemma~\ref{sct:lem:starts} and $\sum_{g\ge1}2^{-g-1}\sqrt g<\infty$ justify
 summation. Hence the direct strong amplitude is
-\begin{equation}\label{eq:B-direct}
+\begin{equation}\label{sct:eq:B-direct}
  B=\frac{2^{3/4}\fY(0)}{\sigma}
      \sum_{g\ge1}2^{-g-1}c_{(g,g)}.
 \end{equation}
 Comparing with $B=rA$ gives the exact identity
-\begin{equation}\label{eq:harmonic-identity}
+\begin{equation}\label{sct:eq:harmonic-identity}
  \sum_{g\ge1}2^{-g-1}\Vdw(g/\sqrt2,g/\sqrt2)
    =e^{-\lambda}\Vdw(1/\sqrt2,1/\sqrt2).
 \end{equation}
@@ -689,8 +1020,11 @@ The first-step weights are unconditional; their sum over $g\ge1$ is $1/2$.
 Renormalizing them would incorrectly double the amplitude. The identity is a
 consequence of two independently justified amplitude representations; whether
 it has a shorter direct harmonic or combinatorial proof is a further question.
+\begin{writenote}[5 October 2026]
+$\fY(0)$ cancels between \eqref{sct:eq:B-direct} and $B=rA$, so \eqref{sct:eq:harmonic-identity} does not depend on its value and is unaffected by the misprint of Section~\ref{sct:sec:marginal}.
+\end{writenote}
 
-\section{Smooth inverses and integer thresholds}\label{sec:inverse}
+\section{Smooth inverses and integer thresholds}\label{sct:sec:inverse}
 All logarithms in this section are natural. Put $a=3/4$, $\gamma=\log2$,
 and $A_C=A$, $A_D=rA$. For $E=C$ or $D$, define
 \[
@@ -700,15 +1034,18 @@ and $A_C=A$, $A_D=rA$. For $E=C$ or $D$, define
 The counts tend to infinity, so the minimum exists. Their equivalents imply
 $E_{n+1}/E_n\to2$, hence eventual strict increase; a finite initial exception
 such as $D_1>D_2$ has no effect for large $X$.
+\begin{writenote}[5 October 2026]
+Part~\ref{sct:gr:part}, Proposition~\ref{sct:gr:prop:mono}, proves more for all $n$: $C_n$ is nondecreasing for $n\ge0$ and $D_n$ for $n\ge2$ (not strictly: $C_1=C_2$ and $C_3=C_4$).
+\end{writenote}
 
-\begin{proposition}\label{prop:inverse}
+\begin{proposition}\label{sct:prop:inverse}
 For all sufficiently large $X$, the large real solution of $F_E(t)=X$ is
-\begin{equation}\label{eq:Lambert}
+\begin{equation}\label{sct:eq:Lambert}
  q_E(X)=-\frac a\gamma W_{-1}\left(
        -\frac\gamma a\left(\frac{A_E}{X}\right)^{1/a}\right),
 \end{equation}
 where $W_{-1}$ is the real branch with values at most $-1$. It satisfies
-\begin{equation}\label{eq:inverse-expand}
+\begin{equation}\label{sct:eq:inverse-expand}
  q_E(X)=\frac{\log X}{\gamma}
  +\frac a\gamma\log\log X
  -\frac a\gamma\log\gamma
@@ -716,7 +1053,7 @@ where $W_{-1}$ is the real branch with values at most $-1$. It satisfies
 \end{equation}
 Moreover $q_E(E_n)=n+o(1)$. There exists $\eta_E(X)\ge0$ with $\eta_E(X)\to0$ such that, for all
 sufficiently large $X$,
-\begin{equation}\label{eq:ceil-brackets}
+\begin{equation}\label{sct:eq:ceil-brackets}
  \left\lceil q_E(X)-\eta_E(X)\right\rceil
  \le N_E(X)\le
  \left\lceil q_E(X)+\eta_E(X)\right\rceil.
@@ -727,7 +1064,7 @@ $N_E(X)=q_E(X)+o(1)$ is not justified and is false.
 \begin{proof}
 The function $F_E$ is strictly increasing for $t>a/\gamma$.
 Rearranging its equation gives
-$t e^{-\gamma t/a}=(A_E/X)^{1/a}$, from which \eqref{eq:Lambert} follows.
+$t e^{-\gamma t/a}=(A_E/X)^{1/a}$, from which \eqref{sct:eq:Lambert} follows.
 The branch $W_{-1}$ gives the large solution; $W_0$ would give a solution
 approaching zero.
 
@@ -739,7 +1076,7 @@ Then $u\sim L/\gamma$ and
 $\log F_E(u)=\log A_E+\gamma u-a\log u=L+o(1)$.
 Since $(\log F_E)'(t)=\gamma-a/t$ is bounded away from zero at large $t$,
 the mean value theorem gives $q_E(X)-u=o(1)$, proving
-\eqref{eq:inverse-expand}. Similarly
+\eqref{sct:eq:inverse-expand}. Similarly
 $\log E_n-\log F_E(n)=o(1)$ proves $q_E(E_n)=n+o(1)$.
 
 For the integer statement write $e_n=q_E(E_n)-n\to0$ and, for large $X$,
@@ -763,22 +1100,22 @@ In base-two form the smooth expansion is
  q_E(X)=\log_2X+\frac34\log_2\log_2X-\log_2A_E+o(1).
 \]
 In particular
-\begin{equation}\label{eq:smooth-gap}
+\begin{equation}\label{sct:eq:smooth-gap}
  q_D(X)-q_C(X)\longrightarrow\frac\lambda{\log2}\in(0,1).
 \end{equation}
 The nonintegral limiting smooth displacement must not be confused with the
 integer threshold gap.
 
-\begin{corollary}\label{cor:gap}
+\begin{corollary}\label{sct:cor:gap}
 For every sufficiently large real $X$,
-\begin{equation}\label{eq:threshold-gap}
+\begin{equation}\label{sct:eq:threshold-gap}
  N_C(X)\le N_D(X)\le N_C(X)+1.
 \end{equation}
 Both possible gaps, zero and one, occur for infinitely many $X$ tending to
 infinity, even if thresholds are restricted to integers.
 \end{corollary}
 \begin{proof}
-Always $D_n\le C_n$, and \eqref{eq:main} gives
+Always $D_n\le C_n$, and \eqref{sct:eq:main} gives
 $D_{n+1}/C_n\to2r>1$. For $m=N_C(X)$ large, therefore
 $D_{m+1}>C_m\ge X$, so $N_D(X)\le m+1$; the other inequality is immediate.
 At $X=D_n$ the eventual inequalities
@@ -787,11 +1124,14 @@ $N_C(X)=N_D(X)=n$. At $X=C_n$, we have eventually
 $D_n<C_n<D_{n+1}$, giving $N_C(X)=n$ and $N_D(X)=n+1$.
 Both sequences of thresholds are integer and tend to infinity.
 \end{proof}
-Neither a rate for \eqref{eq:main} nor a higher-order coefficient expansion is
+Neither a rate for \eqref{sct:eq:main} nor a higher-order coefficient expansion is
 used in these arguments. Further terms of the smooth Lambert inverse alone
 would not supply corresponding further terms for the actual count thresholds.
+\begin{writenote}[5 October 2026]
+Part~\ref{sct:gr:part}'s inverse \eqref{sct:gr:eq:inverse}, $N_E(x)=\log_2x+\frac34\log_2\log_2x+O(1)$, follows from \eqref{sct:eq:inverse-expand} and \eqref{sct:eq:ceil-brackets} in base two; Proposition~\ref{sct:prop:inverse} identifies the constant $-\log_2A_E$ of the smooth inverse. Numerically $\lambda/\log2=0.47643206702\ldots$ in \eqref{sct:eq:smooth-gap}. The same Lambert-$W_{-1}$ mechanism, for $4^xx^{-5/2}$, is \texttt{tss:eq:lambert} of \file{a000571-tournament-score-sequences}.
+\end{writenote}
 
-\section{Exact checks and reproducibility}\label{sec:checks}
+\section{Exact checks and reproducibility}\label{sct:sec:checks}
 The accompanying reader archive separates finite verification from the
 analytic argument. Exact finite counts can check an encoding, coefficient
 identity or decimal transformation; they cannot prove the survival theorem,
@@ -823,15 +1163,18 @@ does not require network access and does not modify the sealed package.
 The manifest rejects unexpected or missing files and directories, links,
 special files, duplicate or unsafe paths, malformed entries and hash changes.
 It is an integrity record, not a signature or a mathematical certificate.
-Theorem~\ref{thm:main} rests on the proof and its stated published inputs.
+Theorem~\ref{sct:thm:main} rests on the proof and its stated published inputs.
+\begin{writenote}[5 October 2026]
+The package is shipped under other names: \file{checks/reader_validation.md} is \file{116-leading-checks-reader_validation.md}, \file{checks/results.json} is \file{data/116-leading-checks-results.json}, and the scripts are in \file{code/} (README, ``Delivered path to shipped path''). The delivered checks of Section~\ref{sct:sec:marginal}'s algebra, including ``dominating s power 3/4'' and the formula \eqref{sct:eq:fY-explicit}, verify the algebra of the printed display. They cannot detect the misprint, which is in the imported display itself (Remark~\ref{sct:rem:misprint}).
+\end{writenote}
 
-\section{Further questions and precise limits}\label{sec:questions}
+\section{Further questions and precise limits}\label{sct:sec:questions}
 \begin{enumerate}
 \item \textbf{Evaluate and certify the amplitude.}
 Develop rigorous bounds for $\Vdw(1/\sqrt2,1/\sqrt2)$ in the specified
 normalization and combine them with controlled quadrature for $\fY(0)$.
-The exact expression \eqref{eq:amplitude} and the harmonic identity
-\eqref{eq:harmonic-identity} provide consistency checks. A fit to moderate
+The exact expression \eqref{sct:eq:amplitude} and the harmonic identity
+\eqref{sct:eq:harmonic-identity} provide consistency checks. A fit to moderate
 counts would be evidence, not a certified value.
 \item \textbf{Obtain quantitative errors and higher corrections.}
 The smoothing proof takes successive limits and imports weak convergence
@@ -842,12 +1185,12 @@ values, the half-length conversion and the slack mixture separately before
 claiming that correction terms are parity-independent.
 \item \textbf{Explain the harmonic identity directly.}
 Find a potential-theoretic or combinatorial proof of
-\eqref{eq:harmonic-identity} that does not compare two asymptotic amplitude
+\eqref{sct:eq:harmonic-identity} that does not compare two asymptotic amplitude
 formulas. Such a proof could clarify its computational value or possible
 extensions to other increment laws and symmetry constraints.
 \item \textbf{Make inverse bounds effective.}
 Certified bounds for the amplitude and counting error could turn
-\eqref{eq:ceil-brackets} into usable threshold brackets. No explicit
+\eqref{sct:eq:ceil-brackets} into usable threshold brackets. No explicit
 rounding cutoff is supplied here.
 \end{enumerate}
 The established conclusions are the full leading equivalents, their common
@@ -855,22 +1198,747 @@ parity constants, the exact limiting strong fraction, the stated harmonic
 identity, and the qualitative inverse refinements. No numerical amplitude,
 convergence rate, higher-order counting coefficient or effective asymptotic
 threshold is asserted.
+\subsection{Further questions and research}\label{sct:sub:further}
+\wtag\ (5 October 2026.) Under Vladimir's standing rule of 4~October 2026, this subsection collects every claim of Part~\ref{sct:part} stated without proof, with its source, its sketch and what is missing, and the one claim refuted.
+\begin{enumerate}
+\item \emph{Evaluate and certify the amplitude} (item~1 above). Re-scoped: $\fstar(0)$ is now explicit (Proposition~\ref{sct:prop:corrected}), so $A=\sqrt6\,\Gamma(3/4)\pi^{-3/2}\Vdw(1/\sqrt2,1/\sqrt2)$ and the question is $\Vdw(1/\sqrt2,1/\sqrt2)$, equivalently $c_{(1,1)}$. Evidence only: $A\approx0.387$ from the counts (Remark~\ref{sct:rem:misprint}), hence $c_{(1,1)}\approx0.834$ and $\Vdw(1/\sqrt2,1/\sqrt2)\approx0.718$; Monte Carlo gives $n^{1/4}\Pp_{(1,1)}(\tau>n)=0.8355$, $0.8426$ at $n=500$, $2000$. Missing: rigorous two-sided bounds on $\Vdw$, for example from the corrector representation \cite[Proposition~4]{dw}, and a certified error for the counts.
+\item \emph{Rates and higher corrections} (item~2 above). The data show a parity-dependent correction of relative order about $n^{-1/2}$: $C_nn^{3/4}2^{-n}$ increases on even $n$ and decreases on odd $n$ (Remark~\ref{sct:rem:misprint}), and $D_n/C_n-r$ is of order $1/n$. This is an observation from the placement computations, not claimed by either Part. Missing: quantitative versions of \eqref{sct:eq:survival}--\eqref{sct:eq:weak-limit} and of the smoothing step, tracking the terminal value, the half-length conversion and the slack mixture separately.
+\item \emph{A direct proof of the harmonic identity} \eqref{sct:eq:harmonic-identity} (item~3 above). Open.
+\item \emph{Effective inverse brackets} (item~4 above). Open; needs item~1 and an effective rate.
+\item \emph{Correction expansions and transseries} (Part~\ref{sct:gr:part}, Section~\ref{sct:gr:sec:scope}, third step). Open in both Parts.
+\item \emph{The density of $\mu$.} Settled to the standard of the cited literature (Remark~\ref{sct:rem:scope}): $\hstar=\kappa^{-1}\bar h_{\mathrm{GJW}}(1,x,-y)$. The write proves that $\hstar$ has mass~$1$ and computes $\fstar(0)$; it does not re-derive \cite[(2.24)]{gjw} or \cite[Lemma~16]{dw}. A self-contained check would derive the meander density at time~$1$ from the killed transition density of the Kolmogorov diffusion (Lachal's formula, as in the proof of \cite[Lemma~16]{dw}), or compare $\hstar$ with the conditioned walk more precisely than the Monte Carlo above. The velocity marginal $\fstar(y)$ at $y\ne0$ has no closed form here.
+\end{enumerate}
+\emph{Refuted} (Remark~\ref{sct:rem:misprint}): the identification of \eqref{sct:eq:fY-explicit}, $0.0377237\ldots$, with the velocity marginal of $\mu$ at~$0$, and with it the evaluation of \eqref{sct:eq:amplitude}; the display \eqref{sct:eq:density} as the density of $\mu$. The statements stay printed as delivered. Nothing else in this Part failed a check.
 
+\clearpage
+\part{The growth theorem and monotonicity}\label{sct:gr:part}
+\partsource{Bundle Report~114, archive \file{Self_Complementary_Tournament_Scores_Growth_and_Inverse_Source.zip}, delivered as \file{report114.tex} (11 pages), dated 2~October 2026. Delivered title ``The growth of self complementary tournament score sequences''; author line ``Report 114''. Printed as delivered, with \textbf{[write]} notes and \texttt{\textbackslash binom} for \texttt{\textbackslash choose}. Delivered Section~$k$ is Section~$k+12$ here, its statement $k.j$ is $(k+12).j$, and its equation $(k)$ is $(k+56)$. Section~\ref{sct:gr:sec:further} is added in the write.}
+\begin{partabstract}
+Let $C(n)$ count nondecreasing tournament score sequences invariant under
+score complementation, and let $D(n)$ count the strong sequences among them.
+These are OEIS A345470 and A351869. We prove
+\[
+ C(n)=\Theta\!\left(2^n n^{-3/4}\right),\qquad
+ D(n)=\Theta\!\left(2^n n^{-3/4}\right).
+\]
+This establishes the two order-of-growth conjectures stated in Section 6 of
+Stockmeyer's 2023 paper. The proof gives an exact encoding by integrated
+geometric random walks and combines the survival and conditional weak-limit
+theorem of Denisov and Wachtel with an elementary bounded-bridge estimate.
+It treats both parities, strict versus weak Landau inequalities, and the final
+untested slack step explicitly. The corresponding threshold inverses satisfy
+$\log_2 x+\tfrac34\log_2\log_2 x+O(1)$.
+Leading constants, an asymptotic strong-to-all ratio, and correction expansions
+are not established. Exact finite checks and a reproducible build accompany
+the proof, but are logically separate from it.
+\end{partabstract}
+\begin{writenote}[5 October 2026]
+Part~\ref{sct:part} (Report~116, written after this Part and crediting it for the $\Theta$ estimates) proves the leading equivalents with one amplitude for both parities, the strong-to-all ratio $e^{-\lambda}$ and an inverse with constant term. The sentence ``Leading constants, an asymptotic strong-to-all ratio, and correction expansions are not established'' remains true of this Part. The first two are established in Part~\ref{sct:part}; correction expansions remain open in both Parts. The density displayed in Section~\ref{sct:gr:sec:endpoint} is the misprinted one of \cite{dw}; the argument here survives unchanged (Remark~\ref{sct:rem:lemmafix}).
+\end{writenote}
+
+\section{The problem and the result}\label{sct:gr:sec:problem}
+
+The score of a tournament vertex is its outdegree. A score sequence is the
+nondecreasing list of these scores. Landau's criterion says that an integer
+sequence $0\le s_1\le\cdots\le s_n$ is a tournament score sequence precisely when
+\begin{equation}\label{sct:gr:eq:landau}
+ \sum_{i=1}^r s_i\ge \binom{r}{2}\quad(1\le r<n),
+ \qquad \sum_{i=1}^n s_i=\binom{n}{2}.
+\end{equation}
+A score sequence is \emph{strong} precisely when all the proper inequalities
+in \eqref{sct:gr:eq:landau} are strict. These criteria are recorded in Stockmeyer
+\cite[Propositions 1 and 7]{stockmeyer}.
+
+We call the score sequence self-complementary when
+\begin{equation}\label{sct:gr:eq:complement}
+ s_i+s_{n+1-i}=n-1\qquad(1\le i\le n).
+\end{equation}
+Let $C(n)$ count score sequences satisfying \eqref{sct:gr:eq:complement}, and let
+$D(n)$ count those that are also strong. With the empty sequence convention,
+$C(0)=D(0)=1$; also $C(1)=D(1)=1$.
+
+\textbf{The objects being counted.}
+Each sorted score sequence is counted once, regardless of how many tournaments
+realize it. We do not count labeled tournaments or isomorphism classes of
+self-complementary tournaments. Complement symmetry of a score sequence does
+not imply that every tournament realizing it is isomorphic to its reverse.
+Stockmeyer discusses this distinction in Section 3 \cite{stockmeyer}.
+
+\begin{theorem}\label{sct:gr:thm:main}
+There are positive constants $c_C,C_C,c_D,C_D$ and an integer $n_0$ such that,
+for every $n\ge n_0$,
+\[
+ c_C2^n n^{-3/4}\le C(n)\le C_C2^n n^{-3/4},\qquad
+ c_D2^n n^{-3/4}\le D(n)\le C_D2^n n^{-3/4}.
+\]
+For $E=C$ or $E=D$, define
+\[
+ N_E(x)=\min\{n\ge1:E(n)\ge x\}.
+\]
+Then, as $x\to\infty$,
+\begin{equation}\label{sct:gr:eq:inverse}
+ N_E(x)=\log_2 x+\frac34\log_2\log_2 x+O(1).
+\end{equation}
+\end{theorem}
+
+Stockmeyer conjectured the two $\Theta$ estimates in
+\cite[Section 6, p.~8]{stockmeyer}. The proof here uses a published probability
+theorem with its hypotheses checked below. This report makes no claim about
+publication, peer review, priority, or the absence of other proofs.
+\begin{writenote}[5 October 2026]
+This is the first proof of the two $\Theta$ estimates. Part~\ref{sct:part}, Theorem~\ref{sct:thm:main}, implies them, and Proposition~\ref{sct:prop:inverse} implies \eqref{sct:gr:eq:inverse} with $O(1)$ replaced by $-\log_2A_E+o(1)$ for the smooth inverse (in base two, \eqref{sct:eq:inverse-expand} reads $\log_2X+\frac34\log_2\log_2X-\log_2A_E+o(1)$). The lower bounds here use the density of the limit law only through the positivity of Section~\ref{sct:gr:sec:endpoint}, which holds for the true density (Remark~\ref{sct:rem:lemmafix}); the upper bounds do not use the density at all.
+\end{writenote}
+
+\subsection{Proof map}
+
+The exact encoding in Section~\ref{sct:gr:sec:encoding} expresses each count as $2^n$
+times an integrated-walk probability with a fixed terminal velocity. The
+probability has order $n^{-3/4}$: survival to a halfway time costs $n^{-1/4}$,
+and hitting one specified velocity over the remaining block costs $n^{-1/2}$.
+The lower bound must couple these two requirements without losing survival.
+A large positive halfway area and a bounded-velocity bridge accomplish that.
+Sections~\ref{sct:gr:sec:bridge}--\ref{sct:gr:sec:endpoint} supply the argument, and
+Section~\ref{sct:gr:sec:application} transfers it back to both counting problems.
+
+\section{Exact encoding by a half sequence}\label{sct:gr:sec:encoding}
+
+Write $n=2m$ or $n=2m+1$ and set
+\[
+ M=\left\lfloor\frac{n-1}{2}\right\rfloor
+ =\begin{cases}m-1,&n=2m,\\m,&n=2m+1.\end{cases}
+\]
+For $m\ge1$, a self-complementary candidate is uniquely determined by
+\begin{equation}\label{sct:gr:eq:half}
+ 0\le s_1\le\cdots\le s_m\le M.
+\end{equation}
+Reflect these entries using \eqref{sct:gr:eq:complement}; for odd $n$, insert the
+central score $s_{m+1}=m$. The bound $M$ is exactly what makes the full reflected
+sequence nondecreasing. Its total is automatically $\binom{n}{2}$.
+
+For the full sequence define the Landau excess
+\[
+ A_r=\sum_{i=1}^r s_i-\binom{r}{2},\qquad 0\le r\le n.
+\]
+The last $r$ scores sum to $r(n-1)-\sum_{i=1}^r s_i$, so
+\begin{align*}
+ A_{n-r}
+ &= \binom{n}{2}-r(n-1)+\sum_{i=1}^r s_i-\binom{n-r}{2}\\
+ &=\sum_{i=1}^r s_i-\binom{r}{2}=A_r.
+\end{align*}
+Consequently all the Landau inequalities are equivalent to
+\begin{equation}\label{sct:gr:eq:half-landau}
+ A_r\ge0\quad(1\le r\le m),
+\end{equation}
+and strongness is equivalent to $A_r>0$ on exactly the same index set.
+This includes the even midpoint and, by symmetry, both odd midpoint
+inequalities. There is no omitted middle condition.
+
+\subsection{Differences and the final slack}
+
+Introduce nonnegative integers
+\begin{equation}\label{sct:gr:eq:gaps}
+ G_1=s_1,\qquad G_j=s_j-s_{j-1}\ (2\le j\le m),
+ \qquad G_{m+1}=M-s_m.
+\end{equation}
+Then
+\begin{equation}\label{sct:gr:eq:composition}
+ G_1+\cdots+G_{m+1}=M.
+\end{equation}
+Conversely, each nonnegative composition \eqref{sct:gr:eq:composition} gives
+\eqref{sct:gr:eq:half} by $s_r=G_1+\cdots+G_r$. Thus this is a bijection,
+not an approximation or a weighting of score sequences by realizations.
+
+Now take $G_1,\ldots,G_{m+1}$ independently with
+\begin{equation}\label{sct:gr:eq:geom}
+ \Pp(G_j=g)=2^{-g-1},\qquad g=0,1,2,\ldots.
+\end{equation}
+Every composition \eqref{sct:gr:eq:composition} has probability
+\[
+ 2^{-(M+m+1)}=2^{-n}
+\]
+for either parity. Define an ordinary walk and its integrated area by
+\begin{equation}\label{sct:gr:eq:walk}
+ X_j=G_j-1,\qquad V_0=1,\qquad
+ V_r=1+\sum_{j=1}^r X_j,\qquad A_0=0,\qquad
+ A_r=\sum_{j=1}^r V_j.
+\end{equation}
+For $r\le m$, $V_r=s_r-r+1$, so this $A_r$ is precisely the Landau excess.
+The total-composition condition becomes
+\[
+ V_{m+1}=1+M-(m+1)=M-m.
+\]
+We have proved the following exact identities.
+
+\begin{proposition}\label{sct:gr:prop:exact}
+For every $m\ge1$,
+\begin{align}
+ C(2m)&=2^{2m}\Pp(A_r\ge0\ (1\le r\le m),\ V_{m+1}=-1),\label{sct:gr:eq:Ceven}\\
+ C(2m+1)&=2^{2m+1}\Pp(A_r\ge0\ (1\le r\le m),\ V_{m+1}=0).\label{sct:gr:eq:Codd}
+\end{align}
+Replacing $\ge0$ by $>0$ gives the corresponding identities for $D$.
+\end{proposition}
+\begin{writenote}[5 October 2026]
+The same encoding is Part~\ref{sct:part}, Section~\ref{sct:sec:encoding}, which adds the slack mixture \eqref{sct:eq:C-exact}. Here the endpoint is the composition condition at time $m+1$; there it is moved to time $m$ by conditioning on the last gap.
+\end{writenote}
+
+\textbf{The final step is not tested for area positivity.}
+The last geometric variable is a slack variable, rather than an additional
+score in the half sequence. Imposing a positivity condition on $A_{m+1}$
+would change the count. For example, at $n=2$ the valid weak half sequence
+$(0)$ has $(A_1,V_2)=(0,-1)$ and $A_2=-1$. At $n=4$ the valid strong half
+sequence $(1,1)$ has $A_1=A_2=1$ and $A_3=0$. Both would be wrongly excluded
+by an extra test at the slack step.
+
+\subsection{Why the exponential factor is two}
+
+Before Landau inequalities are imposed, the number of half sequences is
+$\binom{M+m}{m}$. This is $\binom{2m-1}{m}$ for even length and
+$\binom{2m}{m}$ for odd length, each of order $2^n n^{-1/2}$.
+The additional integrated positivity constraint accounts for another
+$n^{-1/4}$ factor. This observation explains the exponent but is not itself
+a proof: survival and the terminal-velocity condition are dependent. The next
+two sections handle that dependence.
+
+\section{An elementary bounded bridge estimate}\label{sct:gr:sec:bridge}
+
+Let $T_j=X_1+\cdots+X_j$, with $T_0=0$ and the increment law in
+\eqref{sct:gr:eq:geom}--\eqref{sct:gr:eq:walk}. Then
+\begin{equation}\label{sct:gr:eq:moments}
+ \Ee X=0,\qquad \Ee X^2=2,\qquad
+ \Ee e^{\theta|X|}<\infty\quad(0<\theta<\log2).
+\end{equation}
+The support is $\{-1,0,1,\ldots\}$, of lattice span one. All endpoint estimates
+in this section use these original integer coordinates.
+
+\begin{lemma}\label{sct:gr:lem:atoms}
+There is a finite constant $C$ such that
+\[
+ \sup_{d\in\Z}\Pp(T_\ell=d)\le C\ell^{-1/2}\qquad(\ell\ge1).
+\]
+For each fixed $B>0$, there are $c_B>0$ and $\ell_B$ such that
+\[
+ \Pp(T_\ell=d)\ge c_B\ell^{-1/2}
+ \quad\text{if }\ell\ge\ell_B,\ d\in\Z,\ |d|\le B\sqrt\ell.
+\]
+\end{lemma}
+
+\begin{proof}
+The sum of $\ell$ independent geometric variables has a negative-binomial
+law, so, for $d\ge-\ell$,
+\begin{equation}\label{sct:gr:eq:nb}
+ \Pp(T_\ell=d)=\binom{2\ell+d-1}{\ell-1}2^{-2\ell-d}.
+\end{equation}
+For $d<-\ell$ it is zero. Consecutive positive masses have ratio
+\[
+ \frac{\Pp(T_\ell=d+1)}{\Pp(T_\ell=d)}
+ =\frac{2\ell+d}{2(\ell+d+1)}.
+\]
+Thus $d=-1$ is a mode (also $d=-2$ when $\ell\ge2$), and
+\[
+ \sup_d\Pp(T_\ell=d)
+ =\frac12\binom{2\ell-2}{\ell-1}4^{-(\ell-1)}
+ =O(\ell^{-1/2}).
+\]
+Stirling's formula, uniformly over $|d|\le B\sqrt\ell$, gives
+\begin{equation}\label{sct:gr:eq:stirling}
+ \Pp(T_\ell=d)=\frac{1}{\sqrt{4\pi\ell}}
+ \exp\!\left(-\frac{d^2}{4\ell}\right)
+ \bigl(1+O_B(\ell^{-1/2})\bigr).
+\end{equation}
+For clarity, the uniformity follows by writing
+$\binom{2\ell+d-1}{\ell-1}=\frac{\ell}{2\ell+d}\binom{2\ell+d}{\ell}$,
+applying Stirling to its three factorials, and expanding their logarithms
+about $d=0$. In this window $d/\ell=O_B(\ell^{-1/2})$; the cubic remainder is
+$O_B(\ell^{-1/2})$, and the factorial error terms are $O(\ell^{-1})$.
+The Gaussian factor in \eqref{sct:gr:eq:stirling} is at least $e^{-B^2/4}$, which
+proves the lower bound.
+\end{proof}
+
+\begin{lemma}[Bounded bridge]\label{sct:gr:lem:bridge}
+For every fixed $B>0$ there are $K>B$, $c>0$, and $\ell_0$ such that,
+for every $\ell\ge\ell_0$ and every integer $|d|\le B\sqrt\ell$,
+\begin{equation}\label{sct:gr:eq:bridge}
+ \Pp\!\left(T_\ell=d,\ \max_{0\le j\le\ell}|T_j|\le K\sqrt\ell\right)
+ \ge c\ell^{-1/2}.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Put $h=\lfloor\ell/2\rfloor$ and $q=\ell-h$. For $\ell\ge3$, both are
+comparable to $\ell$. On a violation during the first $h$ steps, condition
+on those steps, apply the uniform endpoint bound to the remaining $q$
+increments, and use Kolmogorov's maximal inequality. Since
+$\operatorname{Var}(T_h)=2h$, this gives
+\begin{align*}
+ &\Pp\!\left(T_\ell=d,\ \max_{j\le h}|T_j|>K\sqrt\ell\right)\\
+ &\hspace{1cm}\le \frac{C}{\sqrt q}
+      \Pp\!\left(\max_{j\le h}|T_j|>K\sqrt\ell\right)
+ \le\frac{C}{\sqrt q}\frac{2h}{K^2\ell}.
+\end{align*}
+For a violation at some $j>h$, the terminal condition $T_\ell=d$ implies
+\[
+ |T_\ell-T_j|\ge |T_j|-|d|>(K-B)\sqrt\ell.
+\]
+The reversed suffix sums
+$R_i=X_\ell+X_{\ell-1}+\cdots+X_{\ell-i+1}$, $0\le i\le q$,
+depend only on the last $q$ increments and have the same maximal inequality.
+Condition on that block and use the atom bound on the first $h$ increments:
+\begin{align*}
+ &\Pp\!\left(T_\ell=d,\ \max_{h<j\le\ell}|T_j|>K\sqrt\ell\right)\\
+ &\hspace{1cm}\le\frac{C}{\sqrt h}\frac{2q}{(K-B)^2\ell}.
+\end{align*}
+Hence, for a constant $C_0$ depending only on the increment law,
+\begin{equation}\label{sct:gr:eq:bridge-tail}
+ \Pp\!\left(T_\ell=d,\ \max_{j\le\ell}|T_j|>K\sqrt\ell\right)
+ \le\frac{C_0}{\sqrt\ell}
+ \left(\frac1{K^2}+\frac1{(K-B)^2}\right).
+\end{equation}
+Choose $K$ so large that the parenthesis times $C_0$ is at most $c_B/2$,
+where $c_B$ is from Lemma~\ref{sct:gr:lem:atoms}. Subtracting
+\eqref{sct:gr:eq:bridge-tail} from the lower endpoint mass proves
+\eqref{sct:gr:eq:bridge} with $c=c_B/2$.
+\end{proof}
+
+The bridge is controlled by a deterministic velocity bound, so no conditioned
+bridge invariance principle or two-dimensional local limit theorem is needed.
+\begin{writenote}[5 October 2026]
+Part~\ref{sct:part}, Lemma~\ref{sct:lem:max}, proves the endpoint-weighted maximal upper bound $C\sqrt\ell/H^2$ by the same split; Lemma~\ref{sct:gr:lem:bridge} is the lower-bound form used only in this Part.
+\end{writenote}
+
+\section{The integrated walk with a fixed final velocity}\label{sct:gr:sec:endpoint}
+
+For a starting state $(a,v)$, write
+\[
+ V_j=v+T_j,\qquad I_j=a+\sum_{i=1}^j V_i,
+ \qquad \tau=\min\{j\ge1:I_j\le0\}.
+\]
+Probabilities with this starting state are denoted by $\Pp_{(a,v)}$.
+The main probabilistic step is the following lemma.
+
+\begin{lemma}\label{sct:gr:lem:endpoint}
+For every fixed integer $b$,
+\begin{equation}\label{sct:gr:eq:endpoint}
+ \Pp_{(1,1)}(\tau>k,\ V_k=b)=\Theta(k^{-3/4})
+ \qquad(k\to\infty).
+\end{equation}
+The constants may depend on $b$. The applications below require only $b=0,1$.
+\end{lemma}
+
+\subsection{The imported theorem and its hypotheses}
+
+Denisov and Wachtel \cite[Theorem 1, equations (7)--(8), pp.~169--170]{dw}
+consider independent identically distributed increments $Y$ satisfying
+\[
+ \Ee Y=0,\qquad \Ee Y^2=1,\qquad
+ \Ee|Y|^{2+\delta}<\infty\quad\text{for some }\delta>0.
+\]
+For the integrated process killed when its area ceases to be positive, their
+theorem supplies a positive harmonic function on
+\[
+ K_+=\{z\in(0,\infty)\times\R:
+ \Pp_z(Z_j\in(0,\infty)^2,\ \tau>j)>0
+ \text{ for some }j\ge0\}.
+\]
+For a fixed starting point in $K_+$, it gives a positive-constant survival
+asymptotic of order $k^{-1/4}$ and weak convergence of the conditional endpoint,
+with area divided by $k^{3/2}$ and velocity divided by $k^{1/2}$, to a probability
+measure $\mu$ whose density is displayed in that theorem.
+
+Here $\sigma=\sqrt2$ and $Y=X/\sigma$. Equation~\eqref{sct:gr:eq:moments}
+checks all the moment assumptions. Divide \emph{both} area and velocity by
+$\sigma$, so the start becomes $(1/\sigma,1/\sigma)$. This point belongs to
+$K_+$ already at time zero. Scaling by a positive number preserves the exit
+event. Consequently, for a constant $c_*>0$,
+\begin{align}
+ \Pp_{(1,1)}(\tau>t)&\sim c_*t^{-1/4},\label{sct:gr:eq:DWsurvival}\\
+ \mathcal L\!\left(
+ \frac{I_t}{\sigma t^{3/2}},\frac{V_t}{\sigma\sqrt t}
+ \ \middle|\ \tau>t\right)&\Longrightarrow\mu.
+ \label{sct:gr:eq:DWlimit}
+\end{align}
+Theorem 1 has no lattice hypothesis. The normalized increments need not be
+integer valued; the exact lattice calculations of Section~\ref{sct:gr:sec:bridge}
+remain in the unscaled coordinates. We use only Theorem 1, not any killed
+local-limit statement elsewhere in that paper.
+
+\subsection{Positive limiting mass at large area}
+
+We need more than survival alone: some surviving paths must have a large
+positive area and a bounded velocity at halfway time. The density formula in
+\cite[Theorem 1]{dw} has the form
+\begin{equation}\label{sct:gr:eq:density}
+ \bar h(a,b)=c_0\int_0^\infty\int_0^1
+ w^{3/2}s^{-1/2}e^{-2w^2/s}\,
+ q_{1-s}(a,-b;0,-w)\,ds\,dw,
+ \qquad c_0>0,
+\end{equation}
+where
+\[
+ q_u(x,y;z,v)=p_u(x,y;z,v)-p_u(x,y;z,-v)
+\]
+and the Gaussian transition density is
+\begin{equation}\label{sct:gr:eq:gaussian}
+ p_u(x,y;z,v)=\frac{\sqrt3}{\pi u^2}
+ \exp\!\left(-\frac{6(z-x-uy)^2}{u^3}
+ +\frac{6(z-x-uy)(v-y)}{u^2}
+ -\frac{2(v-y)^2}{u}\right).
+\end{equation}
+Taking the ratio of the two Gaussian terms gives
+\begin{equation}\label{sct:gr:eq:ratio}
+ \frac{p_u(a,-b;0,-w)}{p_u(a,-b;0,w)}
+ =\exp\!\left(\frac{4w(3a-bu)}{u^2}\right).
+\end{equation}
+If $a>0$ and $b<3a$, the right side exceeds one for all $0<u<1$, $w>0$.
+Thus the integrand in \eqref{sct:gr:eq:density} is positive and $\bar h(a,b)>0$
+in this region. In particular, every sufficiently high-area open rectangle
+with velocity close to zero has positive $\mu$-mass.
+\begin{writenote}[5 October 2026, correction]
+The display \eqref{sct:gr:eq:density} has the form of the density printed in \cite[Theorem~1]{dw}, which is misprinted: the true density of $\mu$ has $s^{-5/2}$ in place of $s^{-1/2}$ (and $c_0=2^{9/4}/\Gamma(1/4)$); see Remark~\ref{sct:rem:misprint} and Proposition~\ref{sct:prop:corrected}. ``The density formula \dots\ has the form \eqref{sct:gr:eq:density}'' is therefore true of the printed display but not of $\mu$. The argument of this subsection uses only the positivity of the outer weights and the ratio \eqref{sct:gr:eq:ratio}, both unchanged for the true density. Its conclusion, positive $\mu$-mass of the rectangle, holds verbatim (Proposition~\ref{sct:prop:corrected}(c): the integrand is positive where $a>0$ and $b\le3a$).
+\end{writenote}
+
+Fix any sufficiently large $L$. In the normalized coordinates of
+\eqref{sct:gr:eq:DWlimit}, the open rectangle
+\[
+ (L/\sigma,(L+1)/\sigma)\times(-1/\sigma,1/\sigma)
+\]
+lies in that positive-density region. The Portmanteau theorem and
+\eqref{sct:gr:eq:DWsurvival} imply that, for some $c_L>0$ and all large $t$,
+\begin{equation}\label{sct:gr:eq:halfway}
+ \Pp_{(1,1)}\!\left(\tau>t,
+ Lt^{3/2}<I_t<(L+1)t^{3/2},\ |V_t|<\sqrt t\right)
+ \ge c_Lt^{-1/4}.
+\end{equation}
+The constant can be small, but it is fixed and strictly positive. No
+continuity of the density or local endpoint theorem is required for this use
+of weak convergence.
+
+\subsection{Proof of the endpoint lemma}
+
+\begin{proof}[Proof of Lemma~\ref{sct:gr:lem:endpoint}]
+Put $t=\lfloor k/2\rfloor$ and $\ell=k-t$. The upper bound follows by
+forgetting every area condition after time $t$. The Markov property,
+Lemma~\ref{sct:gr:lem:atoms}, and \eqref{sct:gr:eq:DWsurvival} yield
+\begin{align*}
+ \Pp_{(1,1)}(\tau>k,V_k=b)
+ &\le \Pp_{(1,1)}(\tau>t)\sup_d\Pp(T_\ell=d)\\
+ &=O(t^{-1/4}\ell^{-1/2})=O(k^{-3/4}).
+\end{align*}
+
+For the lower bound, take $B=2$ in Lemma~\ref{sct:gr:lem:bridge}, and fix its
+constant $K$. Then choose $L=4(K+1)$ in \eqref{sct:gr:eq:halfway}. Given a halfway
+state $(a,v)$ in that event, $|v|<\sqrt t\le\sqrt\ell$. Since $b$ is fixed,
+$|b-v|\le2\sqrt\ell$ for all large $k$. The independent remaining increments
+therefore have probability at least $c/\sqrt\ell$ of satisfying
+\[
+ T_\ell=b-v,\qquad \max_{j\le\ell}|T_j|\le K\sqrt\ell.
+\]
+During this event every remaining velocity is at least
+$-(K+1)\sqrt\ell$. For every $j\le\ell$, the area obeys
+\[
+ I_{t+j}=a+jv+\sum_{i=1}^jT_i
+ \ge a-(K+1)\ell^{3/2}
+ >Lt^{3/2}-(K+1)\ell^{3/2}>0.
+\]
+The last inequality holds for all sufficiently large $t$, since
+$\ell\in\{t,t+1\}$ and $L=4(K+1)$. Thus the entire final block survives,
+and $V_k=b$. Multiplying the conditional bridge bound by
+\eqref{sct:gr:eq:halfway} gives
+\[
+ \Pp_{(1,1)}(\tau>k,V_k=b)
+ \ge c' t^{-1/4}\ell^{-1/2}\ge c''k^{-3/4}.
+\]
+This proves both bounds.
+\end{proof}
+\begin{writenote}[5 October 2026]
+Part~\ref{sct:part}, Theorem~\ref{sct:thm:endpoint}, proves the equivalent $\Pp_z(\tau>k,V_k=b)\sim c_z\fstar(0)\sigma^{-1}k^{-3/4}$ for every positive integer start; this proof is a second route to the order of magnitude, from the start $(1,1)$.
+\end{writenote}
+
+\section{Application to the two counting sequences}\label{sct:gr:sec:application}
+
+\subsection{Weak upper bound and the extra endpoint step}
+
+In Proposition~\ref{sct:gr:prop:exact}, put $I_r=A_r+1$. Since the areas are integers,
+$A_r\ge0$ if and only if $I_r>0$. The shifted walk has starting state
+$(I_0,V_0)=(1,1)$, so \eqref{sct:gr:eq:DWsurvival} applies.
+
+Set $t=\lfloor m/2\rfloor$, and let $b=-1$ for even length or $b=0$ for
+odd length. Dropping all area constraints after $t$ and retaining the endpoint
+at time $m+1$ gives
+\begin{align*}
+ &\Pp(A_r\ge0\ (1\le r\le m),\ V_{m+1}=b)\\
+ &\hspace{1cm}\le\Pp_{(1,1)}(\tau>t)
+              \sup_d\Pp(T_{m+1-t}=d)
+ =O(m^{-3/4}).
+\end{align*}
+There is no new area condition at time $m+1$ in this bound. Multiplication by
+$2^n$ gives $C(n)=O(2^nn^{-3/4})$, and $D(n)\le C(n)$ gives the same upper
+bound for the strong count.
+
+\subsection{Strong lower bound from two fixed gaps}
+
+For the strong event, force
+\begin{equation}\label{sct:gr:eq:forced}
+ G_1=1,\qquad G_{m+1}=0.
+\end{equation}
+These independent requirements cost exactly $(1/4)(1/2)=1/8$.
+The first step gives $(A_1,V_1)=(1,1)$, so strict positivity is already
+satisfied. The next $m-1$ tested steps are an integrated walk from this
+strictly interior starting state. This avoids applying the imported theorem
+to the boundary starting point $(0,1)$.
+
+The final slack increment is $X_{m+1}=-1$. Therefore the tested-time endpoint
+needed at time $m$ is
+\[
+ V_m=\begin{cases}0,&n=2m,\\1,&n=2m+1.\end{cases}
+\]
+Let $b$ denote the indicated tested-time target. Independence and
+Lemma~\ref{sct:gr:lem:endpoint} show that the event in the strong counting identity
+has probability at least
+\[
+ \frac18\Pp_{(1,1)}(\tau>m-1,V_{m-1}=b)
+ =\Omega(m^{-3/4}).
+\]
+Here the time index $m-1$ belongs to the walk restarted after the forced first
+step. The endpoint velocity is still the absolute velocity, not a displacement.
+The final forced slack restores the required original terminal velocity
+$-1$ or $0$, respectively.
+
+Thus $D(n)=\Omega(2^nn^{-3/4})$. Since $C(n)\ge D(n)$, the same lower bound
+holds for $C$. This completes the growth part of Theorem~\ref{sct:gr:thm:main},
+with constants valid across both parities.
+\begin{writenote}[5 October 2026]
+Part~\ref{sct:part}, Section~\ref{sct:sec:harmonic}, decomposes the strong count over the first gap $g\ge1$, \eqref{sct:eq:D-direct}, instead of forcing $G_1=1$. It obtains the strong amplitude, and comparison with $D_n\sim rC_n$ gives the harmonic identity \eqref{sct:eq:harmonic-identity}. The forced-gap class here keeps only a subset of the paths, as Section~\ref{sct:gr:sec:scope} says.
+\end{writenote}
+
+\section{Monotonicity and threshold inversion}\label{sct:gr:sec:inverse}
+
+\begin{proposition}\label{sct:gr:prop:mono}
+$C(n)$ is nondecreasing for all $n\ge0$. $D(n)$ is nondecreasing for $n\ge2$.
+The initial exception is $D(1)=1>D(2)=0$.
+\end{proposition}
+
+\begin{proof}
+From length $2m$ to length $2m+1$, keep the same half sequence. The cap increases
+from $m-1$ to $m$, while all tested excesses remain unchanged. Reflection
+recovers the original half sequence, so the map is injective and preserves
+weak or strict inequalities.
+
+From length $2m+1$ to length $2m+2$, send
+\[
+ (s_1,\ldots,s_m)\longmapsto(s_1,\ldots,s_m,m).
+\]
+The new cap is $m$. Earlier excesses are unchanged, and the new one is
+\[
+ A_{m+1}=A_m+m-m=A_m.
+\]
+For $m\ge1$ this preserves both weak and strict inequalities; removing the
+last half score proves injectivity. For $m=0$ it preserves only the weak
+condition, because $A_0=0$. Directly checking $n=0,1,2$ gives the asserted
+initial behavior.
+\end{proof}
+\begin{writenote}[5 October 2026]
+Not in Part~\ref{sct:part}, which has only eventual strict increase of both counts (Section~\ref{sct:sec:inverse}). Together: $C_n$ is nondecreasing for all $n$ and $D_n$ for $n\ge2$, both eventually strictly increasing; the table of Section~\ref{sct:gr:sec:checks} shows equalities $C(1)=C(2)$ and $C(3)=C(4)=2$, $D(3)=D(4)$, $D(5)=D(6)$.
+\end{writenote}
+
+\pagebreak[3]
+\begin{proof}[Proof of the inverse formula]
+Fix $E=C$ or $E=D$. The growth theorem makes $N_E(x)$ finite for all large
+$x$ and ensures $N_E(x)\to\infty$. Write $n=N_E(x)$ and $y=\log_2x$.
+Minimality gives $E(n-1)<x\le E(n)$. For sufficiently large $x$, both
+$n-1$ and $n$ lie beyond the finite exceptions in the two-sided growth bounds,
+so
+\[
+ c\,2^{n-1}(n-1)^{-3/4}<x
+ \le C\,2^n n^{-3/4}
+\]
+for fixed positive $c,C$. Taking logarithms yields
+\begin{equation}\label{sct:gr:eq:invert-middle}
+ y=n-\frac34\log_2n+O(1).
+\end{equation}
+First $n\asymp y$ and then $n=y+O(\log y)$. Hence
+$\log_2n=\log_2y+O((\log y)/y)$. Substituting in
+\eqref{sct:gr:eq:invert-middle} proves \eqref{sct:gr:eq:inverse}.
+The isolated decrease in $D$ is irrelevant: minimality, eventual bounds, and
+unboundedness suffice for this argument.
+\end{proof}
+\begin{writenote}[5 October 2026]
+Part~\ref{sct:part}, Proposition~\ref{sct:prop:inverse}, sharpens the $O(1)$ for the smooth inverse to the constant $-\log_2A_E$ plus $o(1)$ and gives vanishing-width ceiling brackets for $N_E$; Corollary~\ref{sct:cor:gap} adds the eventual zero-or-one gap between $N_C$ and $N_D$. Its proof also shows that a global $o(1)$ error for $N_E$ is false. This is consistent with Section~\ref{sct:gr:sec:scope}: a $\Theta$ estimate alone gives no constant, and the constant comes from the equivalents.
+\end{writenote}
+
+\section{What is proved and what remains open}\label{sct:gr:sec:scope}
+
+The proof establishes two-sided growth bounds, with positive finite constants,
+and an inverse accurate to a bounded additive error. It also gives an
+integrated-walk endpoint estimate valid for every fixed integer terminal
+velocity from the interior start $(1,1)$.
+
+It does not identify a limit for $C(n)/(2^nn^{-3/4})$ or
+$D(n)/(2^nn^{-3/4})$, nor prove that such limits exist on either parity.
+The two-sided bounds imply that $D(n)/C(n)$ stays bounded away from zero
+for all large $n$, but they do not prove convergence of this ratio or the
+numerical proportion suggested by finite data. An $O(1)$ error in the inverse
+cannot be sharpened to a fixed constant from a $\Theta$ estimate alone.
+
+Three natural next steps are:
+\begin{enumerate}
+ \item \textbf{Endpoint-conditioned density estimates.}
+ Establish a local estimate for a fixed terminal velocity, with integrated
+ area ranging over its natural $n^{3/2}$ scale, and prove tail bounds strong
+ enough to sum it. Conditional weak convergence alone does not determine
+ the probability of a single velocity value.
+ \item \textbf{Leading constants and parity.}
+ Use such an estimate, together with the exact initial and final gap
+ constraints, to determine whether the even and odd normalized counts
+ converge and whether their limits agree. The fixed-gap lower bound used
+ here intentionally retains only a subset of valid paths, so it cannot
+ recover a leading constant.
+ \item \textbf{Strong-to-all ratios and corrections.}
+ Analyze the weak and strict boundary conditions sharply enough to compare
+ their amplitudes, then justify any lower-order powers, logarithmic terms,
+ or other correction expansions. No transseries or full correction
+ expansion is established in this report.
+\end{enumerate}
+
+No inference about differential finiteness or analytic continuation is drawn
+from the order-of-growth estimates. Such conclusions require additional
+arguments, not numerical fitting of the exponent.
+\begin{writenote}[5 October 2026]
+Status after Part~\ref{sct:part}. Steps~1 and~2 are answered there for the purposes stated: Theorem~\ref{sct:thm:endpoint} gives the fixed-velocity endpoint equivalent (without localizing the area), and Section~\ref{sct:sec:C} shows that both parities have one limit with no parity multiplier. The strong-to-all limit of step~3 is $e^{-\lambda}$ (Section~\ref{sct:sec:D}). Correction terms, logarithmic terms and transseries remain open in both Parts. The non-claims above remain true of this Part as printed. See Section~\ref{sct:gr:sec:further}.
+\end{writenote}
+
+\section{Exact checks and reproducibility}\label{sct:gr:sec:checks}
+
+The accompanying program is a finite consistency check of the combinatorial
+encoding and its indexing. It is not a numerical proof of an asymptotic claim,
+and the probabilistic lemmas above do not depend on the program's output.
+
+\subsection{Independent finite formulations}
+
+The checker uses four representations:
+\begin{enumerate}
+ \item A half-score dynamic program on the last score and the running score sum,
+ extending nondecreasing half sequences directly.
+ \item A composition dynamic program on the used gap total and weighted gap sum,
+ appending the uniquely determined final slack without another area test.
+ \item An integrated-walk dynamic program on velocity and area, using endpoint
+ reachability to bound transitions and including the final untested slack step.
+ \item Brute enumeration of full nondecreasing score lists, imposing reflection
+ symmetry and every proper Landau inequality in the full list.
+\end{enumerate}
+The first three agree for both weak and strict inequalities at every
+$n=0,\ldots,38$ (156 pairwise comparisons); the full enumeration agrees for
+$n=0,\ldots,9$ (20 comparisons). The computed prefixes match 35 reference
+terms of A345470 and 39 of A351869, independently checked against the OEIS
+entry pages on 2 October 2026, starting at $n=0$.
+
+Exhaustive tests for $n=2,\ldots,17$ compare 26,364 half candidates with
+26,364 independently generated compositions. They check reflection of
+excesses, the gap bijection, equal geometric mass, 22,987 valid monotonicity
+injections, the fixed-gap lower-bound class, and both final-slack
+counterexamples. Exact rational and symbolic checks also cover the
+negative-binomial identities, increment moments, Gaussian density-ratio
+algebra, and finite threshold bookkeeping. These checks support the formulas
+and indexing; they do not certify the probability limit theorem or replace
+any proof above.
+\begin{writenote}[5 October 2026]
+The package is shipped under other names (\file{checks/reader_validation.md} is \file{114-growth-checks-reader_validation.md}, the scripts are in \file{code/} and the records in \file{data/}; README, ``Delivered path to shipped path''). The 35 and 39 reference terms are OEIS data (CC BY-SA 4.0). The ``Gaussian density-ratio algebra'' checked here is the ratio \eqref{sct:gr:eq:ratio}, which is the same for the printed and the true density.
+\end{writenote}
+
+The first values are included for orientation; no extrapolation is used.
+\begin{center}
+\begin{tabular}{r rr@{\qquad}r rr}
+\toprule
+$n$&$C(n)$&$D(n)$&$n$&$C(n)$&$D(n)$\\
+\midrule
+0&1&1&9&48&30\\
+1&1&1&10&64&39\\
+2&1&0&11&161&103\\
+3&2&1&12&223&141\\
+4&2&1&13&557&363\\
+5&5&3&14&796&514\\
+6&6&3&15&1971&1301\\
+7&15&9&16&2887&1894\\
+8&19&11&17&7090&4727\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Replay contract}
+
+The reader archive contains this TeX source and PDF, a standard-library Python
+checker, fixed reference prefixes with provenance, generated exact counts and
+check summary, a deterministic PDF build script, a replay driver, and a strict
+SHA-256 manifest. No downloaded source PDFs are bundled. Bibliographic links below identify
+the primary sources.
+
+Run \code{python3 replay.py} from the extracted package directory. The replay
+first validates the exact manifest path set, file types, sizes, and hashes.
+It runs the finite checker both normally and under \code{python3 -O} and
+compares both outputs with the archived results. The mathematical and schema
+mutation campaign rejects 37 named mutants in 74 normal and optimized runs,
+each with its prescribed diagnostic rather than a syntax error or crash. The suite also rejects 17 damaged, absent, unexpected, or unsafe manifest
+and package variants, with the same protections active under optimization. All requirements use
+explicit exceptions rather than Python \code{assert}, so optimized execution
+cannot silently disable checks.
+
+If \code{pdflatex} is installed, \code{python3 replay.py -{}-build-pdf} also builds
+the PDF twice in clean temporary directories and compares the bytes with each
+other and with the archived PDF. Byte-for-byte reproduction requires the same
+TeX engine, packages, and fonts. The recorded toolchain is included in
+\code{build-environment.txt}; a different toolchain may typeset an equivalent
+PDF with different bytes. Arithmetic verification uses only Python's standard
+library and does not require network access or external source downloads.
+
+\section{Further questions and research}\label{sct:gr:sec:further}
+\wtag\ (5 October 2026.) This section was added in the write, under Vladimir's standing rule of 4~October 2026. It collects every claim of Part~\ref{sct:gr:part} stated without proof or left open, and records how Part~\ref{sct:part} has re-scoped it.
+\begin{enumerate}
+\item \emph{Endpoint-conditioned density estimates} (Section~\ref{sct:gr:sec:scope}, step~1). Its purpose, the probability of a single terminal velocity with its constant, is achieved by Part~\ref{sct:part}, Theorem~\ref{sct:thm:endpoint}, by smoothing over a short final block instead of a local estimate in the area. A local estimate with the area on its $n^{3/2}$ scale and summable tails, the step as stated, is not proved in either Part; \cite[(12)]{dw} states a conditional local limit theorem that Part~\ref{sct:part} deliberately does not use.
+\item \emph{Leading constants and parity} (step~2). Answered by Part~\ref{sct:part}: one amplitude $A$ for both parities, with $A=\sqrt6\,\Gamma(3/4)\pi^{-3/2}\Vdw(1/\sqrt2,1/\sqrt2)$ after the correction of Section~\ref{sct:sub:density}. Open: the numerical value (Section~\ref{sct:sub:further}, item~1).
+\item \emph{Strong-to-all ratios and corrections} (step~3). The ratio is answered, $D(n)/C(n)\to e^{-\lambda}$. Lower-order powers, logarithmic terms and correction expansions remain open (Section~\ref{sct:sub:further}, items~2 and~5).
+\item \emph{Differential finiteness and analytic continuation.} This Part draws no inference from the growth estimates, and neither does Part~\ref{sct:part}. Whether $C(z)$ or $D(z)$ is D-finite is not addressed in this report.
+\end{enumerate}
+\emph{Refuted} (Remark~\ref{sct:rem:misprint}): ``The density formula in \cite[Theorem~1]{dw} has the form \eqref{sct:gr:eq:density}'' is true of the printed display, but that display is not the density of $\mu$: the true density has $s^{-5/2}$. No conclusion of this Part changes. Nothing else in this Part failed a check: the encoding, the reflection identity, the $2^{-n}$ mass for both parities, the forced-gap time indices and the monotonicity injections were rechecked at the placement.
+\clearpage
 \begin{thebibliography}{9}
+\raggedright
 \bibitem{dw}
 D. Denisov and V. Wachtel,
 \emph{Exit times for integrated random walks},
 Annales de l'Institut Henri Poincar\'e, Probabilit\'es et Statistiques
-\textbf{51} (2015), 167--193.
-Theorem 1, equations (7)--(8), and its displayed density on pp.~169--170.
+\textbf{51} (2015), no.~1, 167--193.
+Part~I: Theorem 1, equations (7)--(8), and its displayed density on pp.~169--170.
+Part~II: Theorem 1, equations (7)--(8), and the density immediately following (8), pp.~169--170.
+\wtag\ The displayed density is misprinted (Remark~\ref{sct:rem:misprint}); Remark~2 (p.~170) and Lemma~16 (p.~186) identify the correct one.
 \href{https://doi.org/10.1214/13-AIHP577}{doi:10.1214/13-AIHP577}.
-\href{https://www.numdam.org/item/10.1214/13-AIHP577.pdf}{Open full text}.
+\href{https://www.numdam.org/item/10.1214/13-AIHP577.pdf}{Open full text};
+\url{https://www.numdam.org/articles/10.1214/13-AIHP577/}
+
+\bibitem{gjw}
+\wtag\ P. Groeneboom, G. Jongbloed and J. A. Wellner,
+\emph{Integrated Brownian motion, conditioned to be positive},
+Annals of Probability \textbf{27} (1999), no.~3, 1283--1303. Equation (2.24).
+\href{https://doi.org/10.1214/aop/1022677447}{doi:10.1214/aop/1022677447}.
+Read in the authors' preprint of 30 August 1999,
+\url{https://diamhomes.ewi.tudelft.nl/~pgroeneboom/ibm.pdf}.
+
+\bibitem{bdw}
+\wtag\ M. B\"ar, J. Duraj and V. Wachtel,
+\emph{Invariance principles for integrated random walks conditioned to stay positive},
+Annals of Applied Probability \textbf{33} (2023), no.~1, 127--160.
+\href{https://doi.org/10.1214/22-AAP1811}{doi:10.1214/22-AAP1811}.
+Read as arXiv:2007.13211v1 (2020): Section~6, the function $\bar h$, Propositions~3--4 and Corollary~5.
+
+\bibitem{dlmf}
+\wtag\ NIST Digital Library of Mathematical Functions, \S15.4(i), special cases of the hypergeometric function.
+\url{https://dlmf.nist.gov/15.4}
 
 \bibitem{stockmeyer}
 P. K. Stockmeyer,
 \emph{Counting Various Classes of Tournament Score Sequences},
 Journal of Integer Sequences \textbf{26} (2023), Article 23.5.2.
-Propositions 1 and 7, Theorems 11 and 13, and Section 6.
+Part~I: Propositions 1 and 7, Theorems 11 and 13, and Section 6.
+Part~II: Sections 3 and 5 define and count the two families; Section 6 states the
+order-of-growth conjectures.
 \href{https://cs.uwaterloo.ca/journals/JIS/VOL26/Stockmeyer/stock14.pdf}{Open full text}.
 
 \bibitem{kolesnik}
@@ -878,7 +1946,7 @@ B. Kolesnik,
 \emph{The Asymptotic Number of Score Sequences},
 Combinatorica \textbf{43} (2023), 827--844.
 Ordinary-score asymptotics, generating functions, Lemma 11, equation (17),
-and Section 3.1, equation (8), for the interval \eqref{eq:published-lambda}.
+and Section 3.1, equation (8), for the interval \eqref{sct:eq:published-lambda}.
 \href{https://doi.org/10.1007/s00493-023-00037-4}{doi:10.1007/s00493-023-00037-4}.
 
 \bibitem{bdk}
@@ -892,9 +1960,11 @@ Theorem 1.2, Proposition 1.3 and equations (1.2)--(1.5).
 \bibitem{oeisC}
 The OEIS Foundation, \emph{A345470: Self-complementary tournament score sequences}.
 \href{https://oeis.org/A345470}{oeis.org/A345470}.
+Reference prefix used in Part~II's finite checker: $n=0,\ldots,34$.
 
 \bibitem{oeisD}
 The OEIS Foundation, \emph{A351869: Strong self-complementary tournament score sequences}.
 \href{https://oeis.org/A351869}{oeis.org/A351869}.
+Reference prefix used in Part~II's finite checker: $n=0,\ldots,38$.
 \end{thebibliography}
 \end{document}
