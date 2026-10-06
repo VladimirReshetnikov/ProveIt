@@ -1,0 +1,59 @@
+Exact finite verification of robust self-dual choices
+Method: complete enumeration, integer bitsets, exact comparisons.
+No random sampling. Display decimals are not used for checks.
+
+n=1: 2 maps; max surviving counts [2, 0]; PASS
+  rho* = 1, 0; majority on 1 coordinates attains all budgets
+  prefix robustness checks: 4; general prefix boundary checks: 2; PASS
+n=2: 4 maps; max surviving counts [4, 0, 0]; PASS
+  rho* = 1, 0, 0; majority on 1 coordinates attains all budgets
+  prefix robustness checks: 12; general prefix boundary checks: 12; PASS
+n=3: 16 maps; max surviving counts [8, 2, 0, 0]; PASS
+  rho* = 1, 1/4, 0, 0; majority on 3 coordinates attains all budgets
+  prefix robustness checks: 64; general prefix boundary checks: 96; PASS
+n=4: 256 maps; max surviving counts [16, 4, 0, 0, 0]; PASS
+  rho* = 1, 1/4, 0, 0, 0; majority on 3 coordinates attains all budgets
+  prefix robustness checks: 1,280; general prefix boundary checks: 2,560; PASS
+n=5: 65,536 maps; max surviving counts [32, 12, 2, 0, 0, 0]; PASS
+  rho* = 1, 3/8, 1/16, 0, 0, 0; majority on 5 coordinates attains all budgets
+  prefix robustness checks: 393,216; general prefix boundary checks: 983,040; PASS
+
+TOTAL: 65,814 self-dual maps checked.
+AUDIT: bitset tails agree with direct minimum Hamming distances for all maps through dimension 4.
+TOTAL: 394,576 prefix robustness inequalities checked.
+TOTAL: 985,710 general prefix boundary inequalities checked.
+
+Exact majority formula evaluations (larger n are not exhaustive):
+n, r, rho_exact, rho_decimal
+3, 0, 1, 1
+3, 1, 1/4, 0.25
+3, 2, 0, 0
+5, 0, 1, 1
+5, 1, 3/8, 0.375
+5, 2, 1/16, 0.0625
+5, 3, 0, 0
+9, 0, 1, 1
+9, 1, 65/128, 0.5078125
+9, 2, 23/128, 0.1796875
+9, 3, 5/128, 0.0390625
+9, 4, 1/256, 0.00390625
+9, 5, 0, 0
+25, 0, 1, 1
+25, 1, 2894229/4194304, 0.690037965775
+25, 2, 1779879/4194304, 0.424356222153
+25, 3, 962689/4194304, 0.229522943497
+25, 5, 363103/8388608, 0.0432852506638
+25, 8, 3819/4194304, 0.000910520553589
+25, 12, 1/16777216, 5.96046447754e-8
+25, 13, 0, 0
+101, 0, 1, 1
+101, 1, 133480771599357146935087748165/158456325028528675187087900672, 0.842382098508
+101, 2, 218931632757999816462482895355/316912650057057350374175801344, 0.690826423996
+101, 5, 12665704062345472987900103705/39614081257132168796771975168, 0.319727320700
+101, 10, 7295973634991271586926269435/158456325028528675187087900672, 0.0460440669293
+101, 15, 1682036744161510605073844195/633825300114114700748351602688, 0.00265378605723
+101, 25, 58995545081408665808387/158456325028528675187087900672, 3.72314232775e-7
+101, 50, 1/1267650600228229401496703205376, 7.88860905221e-31
+101, 51, 0, 0
+
+OVERALL STATUS: PASS

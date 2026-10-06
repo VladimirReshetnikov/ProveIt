@@ -1,0 +1,118 @@
+COMPUTATION REPORT: CRITICAL MORPHIC DISCREPANCY
+
+Conventions
+-----------
+sigma_a(0)=1; sigma_a(1)=1 0^a 1^(a-2), a >= 3.
+X=#0-#1. Histograms count 0 <= n < |sigma_a^r(c)|: the empty
+prefix is included and the complete word is excluded.
+All algebraic checks below use exact integers and rational numbers.
+Finite checks corroborate the article's proofs; they are not proofs
+of statements quantified over all a or all iteration depths.
+
+Exact verification
+------------------
+Kernel, transfer, and seed identities: every integer 3 <= a <= 20.
+Recurrence versus geometric-mixture histogram: 3 <= a <= 9, 0 <= m <= 32, c=0,1.
+Lengths, full mean/variance, support, extrema, and endpoint multiplicities
+are checked on the same complete family of even histograms.
+Literal substitution histograms: 3 <= a <= 9, both initial letters,
+all depths until the larger word would exceed 200,000 symbols.
+Literal words inspected: 106; total symbols inspected: 906,168.
+Generalized words: every word beginning with 1 and containing a zeros and
+a-1 ones, for 2 <= a <= 8. This includes the a=2 limiting case.
+Generalized words enumerated: 4,081.
+For each, literal zero-start heights verify the sharp variance bounds,
+all equality classifications, telescoping and transfer identities,
+extreme kernel coefficients, and the literal histogram at r=2.
+A deterministic subset of 341 words
+is checked by literal substitution through r=4, including every word
+with a<=6 and all variance extremizers. Endpoint multiplicities are also checked.
+
+  a3_reflection: 32 passed assertions
+  deep_extrema: 3 passed assertions
+  deep_length: 3 passed assertions
+  deep_moments: 3 passed assertions
+  endpoint_multiplicity: 448 passed assertions
+  extrema: 448 passed assertions
+  full_moments: 462 passed assertions
+  general_attained_bounds: 14 passed assertions
+  general_complete_maximizers: 7 passed assertions
+  general_complete_minimizers: 7 passed assertions
+  general_endpoint_coefficient: 4081 passed assertions
+  general_endpoint_multiplicity: 341 passed assertions
+  general_endpoint_positions: 341 passed assertions
+  general_literal_r2: 4081 passed assertions
+  general_literal_r4: 341 passed assertions
+  general_maximum_classification: 4081 passed assertions
+  general_minimum_multiset: 4081 passed assertions
+  general_minimum_words: 4081 passed assertions
+  general_telescoping: 4081 passed assertions
+  general_transfer_trace: 4081 passed assertions
+  general_variance_bounds: 4081 passed assertions
+  histogram: 462 passed assertions
+  kernel: 72 passed assertions
+  length: 462 passed assertions
+  literal_histogram: 106 passed assertions
+  literal_total_discrepancy: 106 passed assertions
+  mixture: 231 passed assertions
+  seed: 108 passed assertions
+  support: 448 passed assertions
+  transfer: 36 passed assertions
+  TOTAL: 37129 passed assertions
+
+Deeper exact histograms with floating-point diagnostics
+-------------------------------------------------------
+The plotted histograms use a=3, c=1, and exact integer multiplicities.
+Their means and variances are exact rational numbers in JSON.
+The values below and the rendered figures use binary64 arithmetic.
+CDF error is the maximum discrepancy from the normal CDF on both
+sides of every jump. Local mass error is max_k |sd*p(k)-phi(z_k)|.
+These diagnostic errors have no interval-arithmetic certification.
+
+m=8; |W_(2m,1)|=64570081
+  support: [-17, 16]
+  mean=-0.499999992256; variance=11.0833334133
+  CDF normal error=0.059691802
+  local mass normal error=0.0042978354
+  endpoint probability=1.5487049e-08
+
+m=32; |W_(2m,1)|=5150525730438768726986773633921
+  support: [-65, 64]
+  mean=-0.5; variance=43.0833333333
+  CDF normal error=0.030360266
+  local mass normal error=0.001143927
+  endpoint probability=1.9415494e-31
+
+m=128; |W_(2m,1)|=208512678565717099147409680184491954671328276212793706987407236645054108944649653911502653731164414282717498310823349153281
+  support: [-257, 256]
+  mean=-0.5; variance=171.083333333
+  CDF normal error=0.015246511
+  local mass normal error=0.0002906199
+  endpoint probability=4.7958714e-123
+
+Figure conventions
+------------------
+gaussian_histograms: z=(k-E[X])/sd, bar width 1/sd and height sd*p(k).
+The displayed density is normalized with the exact finite mean and variance.
+extreme_and_typical_scales: both axes logarithmic; the horizontal quantity
+is already log L. Solid curves use the exact closed formulas; dashed curves
+use the leading asymptotic expressions. Floating evaluation is stable at
+large m and does not enumerate long words.
+pressure_and_rate: pressure and Legendre transform are numerical evaluations
+of the formulas in the article, normalized per substitution depth r=2m:
+chi_a(s)=log(sinh(a*s/2)/(a*sinh(s/2))). The rate domain is
+|x|<=(a-1)/2, with endpoint rate log(a). The finite rate curve uses
+exact m=128 counts, coordinates x=k/256, and rate -log(p(k))/256.
+All PNG figures are 220 dpi; PDF figures retain vector text and curves.
+
+Reproduction
+------------
+python code/verify.py
+python code/verify.py --skip-figures  # standard-library run without figures
+
+Software versions
+-----------------
+matplotlib: 3.10.8
+numpy: 2.3.5
+python: 3.12.14
+scipy: 1.17.0

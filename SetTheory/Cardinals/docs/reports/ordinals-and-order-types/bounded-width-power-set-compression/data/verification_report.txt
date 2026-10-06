@@ -1,0 +1,130 @@
+BOUNDED-WIDTH POWER-SET COMPRESSION: EXACT VERIFICATION
+
+1. Recursive symmetric-chain decompositions
+   n= 0: chains=     1 = C(n,floor(n/2)); elements=     1 = 2^n
+   n= 1: chains=     1 = C(n,floor(n/2)); elements=     2 = 2^n
+   n= 2: chains=     2 = C(n,floor(n/2)); elements=     4 = 2^n
+   n= 3: chains=     3 = C(n,floor(n/2)); elements=     8 = 2^n
+   n= 4: chains=     6 = C(n,floor(n/2)); elements=    16 = 2^n
+   n= 5: chains=    10 = C(n,floor(n/2)); elements=    32 = 2^n
+   n= 6: chains=    20 = C(n,floor(n/2)); elements=    64 = 2^n
+   n= 7: chains=    35 = C(n,floor(n/2)); elements=   128 = 2^n
+   n= 8: chains=    70 = C(n,floor(n/2)); elements=   256 = 2^n
+   n= 9: chains=   126 = C(n,floor(n/2)); elements=   512 = 2^n
+   n=10: chains=   252 = C(n,floor(n/2)); elements=  1024 = 2^n
+   n=11: chains=   462 = C(n,floor(n/2)); elements=  2048 = 2^n
+   n=12: chains=   924 = C(n,floor(n/2)); elements=  4096 = 2^n
+   n=13: chains=  1716 = C(n,floor(n/2)); elements=  8192 = 2^n
+   n=14: chains=  3432 = C(n,floor(n/2)); elements= 16384 = 2^n
+
+2. Grouped-chain upper certificates
+   n= 1: verified r=1,2,3,4,5
+   n= 2: verified r=1,2,3,4,5
+   n= 3: verified r=1,2,3,4,5
+   n= 4: verified r=1,2,3,4,5
+   n= 5: verified r=1,2,3,4,5
+   n= 6: verified r=1,2,3,4,5
+   n= 7: verified r=1,2,3,4,5
+   n= 8: verified r=1,2,3,4,5
+   n= 9: verified r=1,2,3,4,5
+   n=10: verified r=1,2,3,4,5
+
+3. Monotonicity
+   W_n/n and ceil(W_n/n) are nondecreasing for 1 <= n <= 300.
+   The manuscript also supplies the exact two-parity ratio proof.
+
+4. Exact self-indexed defect table
+   n                    W_n        delta(n)=ceil(W_n/n)
+    1                      1            1
+    2                      2            1
+    3                      3            1
+    4                      6            2
+    5                     10            2
+    6                     20            4
+    7                     35            5
+    8                     70            9
+    9                    126           14
+   10                    252           26
+   11                    462           42
+   12                    924           77
+   13                   1716          132
+   14                   3432          246
+   15                   6435          429
+   16                  12870          805
+   17                  24310         1430
+   18                  48620         2702
+   19                  92378         4862
+   20                 184756         9238
+   21                 352716        16796
+   22                 705432        32066
+   23                1352078        58786
+   24                2704156       112674
+   25                5200300       208012
+   26               10400600       400024
+   27               20058300       742900
+   28               40116600      1432736
+   29               77558760      2674440
+   30              155117520      5170584
+
+5. Thresholds N(r)=max{n: W_n <= r n}
+   r=       1: N(r)= 3
+   r=       2: N(r)= 5
+   r=       3: N(r)= 5
+   r=       4: N(r)= 6
+   r=       5: N(r)= 7
+   r=       6: N(r)= 7
+   r=       7: N(r)= 7
+   r=       8: N(r)= 7
+   r=       9: N(r)= 8
+   r=      10: N(r)= 8
+   r=      11: N(r)= 8
+   r=      12: N(r)= 8
+   r=      13: N(r)= 8
+   r=      14: N(r)= 9
+   r=      15: N(r)= 9
+   r=      16: N(r)= 9
+   r=      17: N(r)= 9
+   r=      18: N(r)= 9
+   r=      19: N(r)= 9
+   r=      20: N(r)= 9
+   r=      32: N(r)=10
+   r=      64: N(r)=11
+   r=     128: N(r)=12
+   r=     256: N(r)=14
+   r=     512: N(r)=15
+   r=    1024: N(r)=16
+   r=    4096: N(r)=18
+   r=   65536: N(r)=23
+   r= 1048576: N(r)=27
+
+6. Asymptotic diagnostic for r=2^k
+   k   exact N    L+(3/2)log2 L+(1/2)log2(pi/2)    difference
+    4         9                  7.325748064736  1.674251935
+    5        10                  8.808640207067  1.191359793
+    6        11                 10.203191815818  0.796808184
+    7        12                 11.536780447823  0.463219552
+    8        14                 12.825748064736  1.174251935
+    9        15                 14.080635566900  0.919364433
+   10        16                 15.308640207067  0.691359793
+   11        17                 16.514895492692  0.485104507
+   12        18                 17.703191815818  0.296808184
+   13        19                 18.876407641948  0.123592358
+   14        20                 20.036780447823 -0.036780448
+   15        22                 21.186083958149  0.813916042
+   16        23                 22.325748064736  0.674251935
+   17        24                 23.456942326612  0.543057673
+   18        25                 24.580635566900  0.419364433
+   19        26                 25.697639334902  0.302360665
+   20        27                 26.808640207067  0.191359793
+   21        28                 27.914224198904  0.085775801
+   22        29                 29.014895492692 -0.014895493
+   23        30                 30.111090998822 -0.111090999
+   24        31                 31.203191815818 -0.203191816
+
+7. Standard recursive SCD of B_4
+C1: {} < {1} < {1,2} < {1,2,3} < {1,2,3,4}
+C2: {4} < {1,4} < {1,2,4}
+C3: {3} < {1,3} < {1,3,4}
+C4: {3,4}
+C5: {2} < {2,3} < {2,3,4}
+C6: {2,4}

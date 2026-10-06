@@ -1,0 +1,674 @@
+{
+  "title": "Exact finite verification of robust self-dual choices",
+  "method": "Exhaustive enumeration; integer bitsets; exact rational comparisons",
+  "sampling": false,
+  "formal_proof": false,
+  "assumptions": {
+    "domain": "{0,1}^n with uniform measure",
+    "self_duality": "f(complement(x)) = -f(x)",
+    "robustness": "R_f(x) is the minimum Hamming distance to a vertex with opposite output",
+    "tail_convention": "rho_f(r) = P(R_f > r), for integer r >= 0",
+    "prefix": "coordinates 0 through m-1; all 2^m assignments examined"
+  },
+  "claims_checked": [
+    "max_f rho_f(r) = 2^(1-d) sum_{j=0}^{(d-1)/2-r} binomial(d,j), d=n if odd else n-1",
+    "majority on d coordinates attains every robustness budget simultaneously",
+    "alpha_m = ||E[f | first m coordinates]||_infinity <= P(R_f <= m)",
+    "alpha_m <= (2^m/V(m,r)) P(R_f <= r), 1 <= r <= m <= n; V(m,r)=sum_{j=0}^r binomial(m,j)"
+  ],
+  "total_self_dual_maps_checked": 65814,
+  "total_independent_direct_hamming_audit_maps": 278,
+  "total_prefix_robustness_checks": 394576,
+  "total_prefix_boundary_checks": 985710,
+  "dimensions": [
+    {
+      "dimension": 1,
+      "vertices": 2,
+      "self_dual_maps": 2,
+      "independent_direct_hamming_audit_maps": 2,
+      "robustness_budgets_checked": [
+        0,
+        1
+      ],
+      "maximum_surviving_vertex_counts": [
+        2,
+        0
+      ],
+      "optimum_fractions": [
+        "1",
+        "0"
+      ],
+      "number_of_maximizers_by_budget": [
+        2,
+        2
+      ],
+      "majority_active_coordinates": 1,
+      "majority_surviving_vertex_counts": [
+        2,
+        0
+      ],
+      "prefix_robustness_checks": 4,
+      "prefix_boundary_checks": 2,
+      "prefix_one_step_boundary_checks_included": 2,
+      "individual_prefix_assignments_examined": 6,
+      "prefix_robustness_equality_counts_by_m": [
+        2,
+        2
+      ],
+      "prefix_boundary_equality_counts_by_m_and_r": {
+        "1": {
+          "1": 2
+        }
+      },
+      "status": "PASS"
+    },
+    {
+      "dimension": 2,
+      "vertices": 4,
+      "self_dual_maps": 4,
+      "independent_direct_hamming_audit_maps": 4,
+      "robustness_budgets_checked": [
+        0,
+        1,
+        2
+      ],
+      "maximum_surviving_vertex_counts": [
+        4,
+        0,
+        0
+      ],
+      "optimum_fractions": [
+        "1",
+        "0",
+        "0"
+      ],
+      "number_of_maximizers_by_budget": [
+        4,
+        4,
+        4
+      ],
+      "majority_active_coordinates": 1,
+      "majority_surviving_vertex_counts": [
+        4,
+        0,
+        0
+      ],
+      "prefix_robustness_checks": 12,
+      "prefix_boundary_checks": 12,
+      "prefix_one_step_boundary_checks_included": 8,
+      "individual_prefix_assignments_examined": 28,
+      "prefix_robustness_equality_counts_by_m": [
+        4,
+        2,
+        4
+      ],
+      "prefix_boundary_equality_counts_by_m_and_r": {
+        "1": {
+          "1": 2
+        },
+        "2": {
+          "1": 0,
+          "2": 4
+        }
+      },
+      "status": "PASS"
+    },
+    {
+      "dimension": 3,
+      "vertices": 8,
+      "self_dual_maps": 16,
+      "independent_direct_hamming_audit_maps": 16,
+      "robustness_budgets_checked": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "maximum_surviving_vertex_counts": [
+        8,
+        2,
+        0,
+        0
+      ],
+      "optimum_fractions": [
+        "1",
+        "1/4",
+        "0",
+        "0"
+      ],
+      "number_of_maximizers_by_budget": [
+        16,
+        8,
+        16,
+        16
+      ],
+      "majority_active_coordinates": 3,
+      "majority_surviving_vertex_counts": [
+        8,
+        2,
+        0,
+        0
+      ],
+      "prefix_robustness_checks": 64,
+      "prefix_boundary_checks": 96,
+      "prefix_one_step_boundary_checks_included": 48,
+      "individual_prefix_assignments_examined": 240,
+      "prefix_robustness_equality_counts_by_m": [
+        16,
+        2,
+        12,
+        16
+      ],
+      "prefix_boundary_equality_counts_by_m_and_r": {
+        "1": {
+          "1": 2
+        },
+        "2": {
+          "1": 8,
+          "2": 12
+        },
+        "3": {
+          "1": 0,
+          "2": 0,
+          "3": 16
+        }
+      },
+      "status": "PASS"
+    },
+    {
+      "dimension": 4,
+      "vertices": 16,
+      "self_dual_maps": 256,
+      "independent_direct_hamming_audit_maps": 256,
+      "robustness_budgets_checked": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "maximum_surviving_vertex_counts": [
+        16,
+        4,
+        0,
+        0,
+        0
+      ],
+      "optimum_fractions": [
+        "1",
+        "1/4",
+        "0",
+        "0",
+        "0"
+      ],
+      "number_of_maximizers_by_budget": [
+        256,
+        32,
+        256,
+        256,
+        256
+      ],
+      "majority_active_coordinates": 3,
+      "majority_surviving_vertex_counts": [
+        16,
+        4,
+        0,
+        0,
+        0
+      ],
+      "prefix_robustness_checks": 1280,
+      "prefix_boundary_checks": 2560,
+      "prefix_one_step_boundary_checks_included": 1024,
+      "individual_prefix_assignments_examined": 7936,
+      "prefix_robustness_equality_counts_by_m": [
+        256,
+        2,
+        60,
+        240,
+        256
+      ],
+      "prefix_boundary_equality_counts_by_m_and_r": {
+        "1": {
+          "1": 2
+        },
+        "2": {
+          "1": 16,
+          "2": 60
+        },
+        "3": {
+          "1": 0,
+          "2": 0,
+          "3": 240
+        },
+        "4": {
+          "1": 0,
+          "2": 0,
+          "3": 0,
+          "4": 256
+        }
+      },
+      "status": "PASS"
+    },
+    {
+      "dimension": 5,
+      "vertices": 32,
+      "self_dual_maps": 65536,
+      "independent_direct_hamming_audit_maps": 0,
+      "robustness_budgets_checked": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "maximum_surviving_vertex_counts": [
+        32,
+        12,
+        2,
+        0,
+        0,
+        0
+      ],
+      "optimum_fractions": [
+        "1",
+        "3/8",
+        "1/16",
+        "0",
+        "0",
+        "0"
+      ],
+      "number_of_maximizers_by_budget": [
+        65536,
+        32,
+        32,
+        65536,
+        65536,
+        65536
+      ],
+      "majority_active_coordinates": 5,
+      "majority_surviving_vertex_counts": [
+        32,
+        12,
+        2,
+        0,
+        0,
+        0
+      ],
+      "prefix_robustness_checks": 393216,
+      "prefix_boundary_checks": 983040,
+      "prefix_one_step_boundary_checks_included": 327680,
+      "individual_prefix_assignments_examined": 4128768,
+      "prefix_robustness_equality_counts_by_m": [
+        65536,
+        2,
+        1020,
+        27120,
+        65280,
+        65536
+      ],
+      "prefix_boundary_equality_counts_by_m_and_r": {
+        "1": {
+          "1": 2
+        },
+        "2": {
+          "1": 64,
+          "2": 1020
+        },
+        "3": {
+          "1": 0,
+          "2": 0,
+          "3": 27120
+        },
+        "4": {
+          "1": 0,
+          "2": 0,
+          "3": 0,
+          "4": 65280
+        },
+        "5": {
+          "1": 0,
+          "2": 0,
+          "3": 0,
+          "4": 0,
+          "5": 65536
+        }
+      },
+      "status": "PASS"
+    }
+  ],
+  "majority_table_note": "Dimensions above the enumeration limit are evaluations of the exact majority formula, not exhaustive checks of all Boolean maps.",
+  "majority_table": [
+    {
+      "n": 3,
+      "d": 3,
+      "r": 0,
+      "surviving_vertices": 8,
+      "total_vertices": 8,
+      "rho_exact": "1",
+      "rho_decimal": "1",
+      "epsilon_exact": "0",
+      "epsilon_decimal": "0"
+    },
+    {
+      "n": 3,
+      "d": 3,
+      "r": 1,
+      "surviving_vertices": 2,
+      "total_vertices": 8,
+      "rho_exact": "1/4",
+      "rho_decimal": "0.25",
+      "epsilon_exact": "3/4",
+      "epsilon_decimal": "0.75"
+    },
+    {
+      "n": 3,
+      "d": 3,
+      "r": 2,
+      "surviving_vertices": 0,
+      "total_vertices": 8,
+      "rho_exact": "0",
+      "rho_decimal": "0",
+      "epsilon_exact": "1",
+      "epsilon_decimal": "1"
+    },
+    {
+      "n": 5,
+      "d": 5,
+      "r": 0,
+      "surviving_vertices": 32,
+      "total_vertices": 32,
+      "rho_exact": "1",
+      "rho_decimal": "1",
+      "epsilon_exact": "0",
+      "epsilon_decimal": "0"
+    },
+    {
+      "n": 5,
+      "d": 5,
+      "r": 1,
+      "surviving_vertices": 12,
+      "total_vertices": 32,
+      "rho_exact": "3/8",
+      "rho_decimal": "0.375",
+      "epsilon_exact": "5/8",
+      "epsilon_decimal": "0.625"
+    },
+    {
+      "n": 5,
+      "d": 5,
+      "r": 2,
+      "surviving_vertices": 2,
+      "total_vertices": 32,
+      "rho_exact": "1/16",
+      "rho_decimal": "0.0625",
+      "epsilon_exact": "15/16",
+      "epsilon_decimal": "0.9375"
+    },
+    {
+      "n": 5,
+      "d": 5,
+      "r": 3,
+      "surviving_vertices": 0,
+      "total_vertices": 32,
+      "rho_exact": "0",
+      "rho_decimal": "0",
+      "epsilon_exact": "1",
+      "epsilon_decimal": "1"
+    },
+    {
+      "n": 9,
+      "d": 9,
+      "r": 0,
+      "surviving_vertices": 512,
+      "total_vertices": 512,
+      "rho_exact": "1",
+      "rho_decimal": "1",
+      "epsilon_exact": "0",
+      "epsilon_decimal": "0"
+    },
+    {
+      "n": 9,
+      "d": 9,
+      "r": 1,
+      "surviving_vertices": 260,
+      "total_vertices": 512,
+      "rho_exact": "65/128",
+      "rho_decimal": "0.5078125",
+      "epsilon_exact": "63/128",
+      "epsilon_decimal": "0.4921875"
+    },
+    {
+      "n": 9,
+      "d": 9,
+      "r": 2,
+      "surviving_vertices": 92,
+      "total_vertices": 512,
+      "rho_exact": "23/128",
+      "rho_decimal": "0.1796875",
+      "epsilon_exact": "105/128",
+      "epsilon_decimal": "0.8203125"
+    },
+    {
+      "n": 9,
+      "d": 9,
+      "r": 3,
+      "surviving_vertices": 20,
+      "total_vertices": 512,
+      "rho_exact": "5/128",
+      "rho_decimal": "0.0390625",
+      "epsilon_exact": "123/128",
+      "epsilon_decimal": "0.9609375"
+    },
+    {
+      "n": 9,
+      "d": 9,
+      "r": 4,
+      "surviving_vertices": 2,
+      "total_vertices": 512,
+      "rho_exact": "1/256",
+      "rho_decimal": "0.00390625",
+      "epsilon_exact": "255/256",
+      "epsilon_decimal": "0.99609375"
+    },
+    {
+      "n": 9,
+      "d": 9,
+      "r": 5,
+      "surviving_vertices": 0,
+      "total_vertices": 512,
+      "rho_exact": "0",
+      "rho_decimal": "0",
+      "epsilon_exact": "1",
+      "epsilon_decimal": "1"
+    },
+    {
+      "n": 25,
+      "d": 25,
+      "r": 0,
+      "surviving_vertices": 33554432,
+      "total_vertices": 33554432,
+      "rho_exact": "1",
+      "rho_decimal": "1",
+      "epsilon_exact": "0",
+      "epsilon_decimal": "0"
+    },
+    {
+      "n": 25,
+      "d": 25,
+      "r": 1,
+      "surviving_vertices": 23153832,
+      "total_vertices": 33554432,
+      "rho_exact": "2894229/4194304",
+      "rho_decimal": "0.690037965775",
+      "epsilon_exact": "1300075/4194304",
+      "epsilon_decimal": "0.309962034225"
+    },
+    {
+      "n": 25,
+      "d": 25,
+      "r": 2,
+      "surviving_vertices": 14239032,
+      "total_vertices": 33554432,
+      "rho_exact": "1779879/4194304",
+      "rho_decimal": "0.424356222153",
+      "epsilon_exact": "2414425/4194304",
+      "epsilon_decimal": "0.575643777847"
+    },
+    {
+      "n": 25,
+      "d": 25,
+      "r": 3,
+      "surviving_vertices": 7701512,
+      "total_vertices": 33554432,
+      "rho_exact": "962689/4194304",
+      "rho_decimal": "0.229522943497",
+      "epsilon_exact": "3231615/4194304",
+      "epsilon_decimal": "0.770477056503"
+    },
+    {
+      "n": 25,
+      "d": 25,
+      "r": 5,
+      "surviving_vertices": 1452412,
+      "total_vertices": 33554432,
+      "rho_exact": "363103/8388608",
+      "rho_decimal": "0.0432852506638",
+      "epsilon_exact": "8025505/8388608",
+      "epsilon_decimal": "0.956714749336"
+    },
+    {
+      "n": 25,
+      "d": 25,
+      "r": 8,
+      "surviving_vertices": 30552,
+      "total_vertices": 33554432,
+      "rho_exact": "3819/4194304",
+      "rho_decimal": "0.000910520553589",
+      "epsilon_exact": "4190485/4194304",
+      "epsilon_decimal": "0.999089479446"
+    },
+    {
+      "n": 25,
+      "d": 25,
+      "r": 12,
+      "surviving_vertices": 2,
+      "total_vertices": 33554432,
+      "rho_exact": "1/16777216",
+      "rho_decimal": "5.96046447754e-8",
+      "epsilon_exact": "16777215/16777216",
+      "epsilon_decimal": "0.999999940395"
+    },
+    {
+      "n": 25,
+      "d": 25,
+      "r": 13,
+      "surviving_vertices": 0,
+      "total_vertices": 33554432,
+      "rho_exact": "0",
+      "rho_decimal": "0",
+      "epsilon_exact": "1",
+      "epsilon_decimal": "1"
+    },
+    {
+      "n": 101,
+      "d": 101,
+      "r": 0,
+      "surviving_vertices": 2535301200456458802993406410752,
+      "total_vertices": 2535301200456458802993406410752,
+      "rho_exact": "1",
+      "rho_decimal": "1",
+      "epsilon_exact": "0",
+      "epsilon_decimal": "0"
+    },
+    {
+      "n": 101,
+      "d": 101,
+      "r": 1,
+      "surviving_vertices": 2135692345589714350961403970640,
+      "total_vertices": 2535301200456458802993406410752,
+      "rho_exact": "133480771599357146935087748165/158456325028528675187087900672",
+      "rho_decimal": "0.842382098508",
+      "epsilon_exact": "24975553429171528252000152507/158456325028528675187087900672",
+      "epsilon_decimal": "0.157617901492"
+    },
+    {
+      "n": 101,
+      "d": 101,
+      "r": 2,
+      "surviving_vertices": 1751453062063998531699863162840,
+      "total_vertices": 2535301200456458802993406410752,
+      "rho_exact": "218931632757999816462482895355/316912650057057350374175801344",
+      "rho_decimal": "0.690826423996",
+      "epsilon_exact": "97981017299057533911692905989/316912650057057350374175801344",
+      "epsilon_decimal": "0.309173576004"
+    },
+    {
+      "n": 101,
+      "d": 101,
+      "r": 5,
+      "surviving_vertices": 810605059990110271225606637120,
+      "total_vertices": 2535301200456458802993406410752,
+      "rho_exact": "12665704062345472987900103705/39614081257132168796771975168",
+      "rho_decimal": "0.319727320700",
+      "epsilon_exact": "26948377194786695808871871463/39614081257132168796771975168",
+      "epsilon_decimal": "0.680272679300"
+    },
+    {
+      "n": 101,
+      "d": 101,
+      "r": 10,
+      "surviving_vertices": 116735578159860345390820310960,
+      "total_vertices": 2535301200456458802993406410752,
+      "rho_exact": "7295973634991271586926269435/158456325028528675187087900672",
+      "rho_decimal": "0.0460440669293",
+      "epsilon_exact": "151160351393537403600161631237/158456325028528675187087900672",
+      "epsilon_decimal": "0.953955933071"
+    },
+    {
+      "n": 101,
+      "d": 101,
+      "r": 15,
+      "surviving_vertices": 6728146976646042420295376780,
+      "total_vertices": 2535301200456458802993406410752,
+      "rho_exact": "1682036744161510605073844195/633825300114114700748351602688",
+      "rho_decimal": "0.00265378605723",
+      "epsilon_exact": "632143263369953190143277758493/633825300114114700748351602688",
+      "epsilon_decimal": "0.997346213943"
+    },
+    {
+      "n": 101,
+      "d": 101,
+      "r": 25,
+      "surviving_vertices": 943928721302538652934192,
+      "total_vertices": 2535301200456458802993406410752,
+      "rho_exact": "58995545081408665808387/158456325028528675187087900672",
+      "rho_decimal": "3.72314232775e-7",
+      "epsilon_exact": "158456266032983593778422092285/158456325028528675187087900672",
+      "epsilon_decimal": "0.999999627686"
+    },
+    {
+      "n": 101,
+      "d": 101,
+      "r": 50,
+      "surviving_vertices": 2,
+      "total_vertices": 2535301200456458802993406410752,
+      "rho_exact": "1/1267650600228229401496703205376",
+      "rho_decimal": "7.88860905221e-31",
+      "epsilon_exact": "1267650600228229401496703205375/1267650600228229401496703205376",
+      "epsilon_decimal": "1.00000000000"
+    },
+    {
+      "n": 101,
+      "d": 101,
+      "r": 51,
+      "surviving_vertices": 0,
+      "total_vertices": 2535301200456458802993406410752,
+      "rho_exact": "0",
+      "rho_decimal": "0",
+      "epsilon_exact": "1",
+      "epsilon_decimal": "1"
+    }
+  ],
+  "status": "PASS"
+}

@@ -1,0 +1,1288 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{mathpazo}
+\usepackage[margin=1in,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype}
+\usepackage{aliascnt}
+\usepackage{booktabs,tabularx,array,longtable,multirow}
+\usepackage{float}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{fancyhdr}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+
+\definecolor{ink}{RGB}{25,45,66}
+\definecolor{accent}{RGB}{33,96,119}
+\definecolor{warm}{RGB}{137,78,31}
+\definecolor{lightgray}{gray}{0.94}
+\definecolor{paleblue}{RGB}{237,246,249}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=accent,
+  citecolor=accent,
+  urlcolor=accent,
+  pdftitle={Bounded-Width Power-Set Compression},
+  pdfauthor={Research manuscript prepared for Vladimir Reshetnikov with ChatGPT},
+  pdfsubject={Finite Boolean-lattice compression and choiceless infinite obstructions},
+  pdfkeywords={Boolean lattice, width, Sperner theorem, Dilworth theorem, power set, axiom of choice, finite-to-one map, formalization}
+}
+\urlstyle{same}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textsc{Bounded-Width Power-Set Compression}}
+\fancyhead[R]{\small Research manuscript}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.35pt}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{1.25em}
+\setlength{\emergencystretch}{2em}
+\setcounter{tocdepth}{2}
+\setlist[enumerate]{itemsep=3pt,topsep=5pt,leftmargin=2.1em}
+\setlist[itemize]{itemsep=3pt,topsep=5pt,leftmargin=1.8em}
+\numberwithin{equation}{section}
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newaliascnt{lemma}{theorem}
+\newtheorem{lemma}[lemma]{Lemma}
+\aliascntresetthe{lemma}
+\newaliascnt{proposition}{theorem}
+\newtheorem{proposition}[proposition]{Proposition}
+\aliascntresetthe{proposition}
+\newaliascnt{corollary}{theorem}
+\newtheorem{corollary}[corollary]{Corollary}
+\aliascntresetthe{corollary}
+\theoremstyle{definition}
+\newaliascnt{definition}{theorem}
+\newtheorem{definition}[definition]{Definition}
+\aliascntresetthe{definition}
+\newaliascnt{problem}{theorem}
+\newtheorem{problem}[problem]{Problem}
+\aliascntresetthe{problem}
+\crefname{problem}{Problem}{Problems}
+\Crefname{problem}{Problem}{Problems}
+\newaliascnt{conjecture}{theorem}
+\newtheorem{conjecture}[conjecture]{Conjecture}
+\aliascntresetthe{conjecture}
+\theoremstyle{remark}
+\newaliascnt{remark}{theorem}
+\newtheorem{remark}[remark]{Remark}
+\aliascntresetthe{remark}
+\newaliascnt{example}{theorem}
+\newtheorem{example}[example]{Example}
+\aliascntresetthe{example}
+
+\newcommand{\Pow}{\mathcal P}
+\newcommand{\B}{\mathbb B}
+\newcommand{\NN}{\mathbb N}
+\newcommand{\ZZ}{\mathbb Z}
+\newcommand{\pwidth}{\operatorname{wd}}
+\newcommand{\im}{\operatorname{im}}
+\newcommand{\ran}{\operatorname{ran}}
+\newcommand{\dom}{\operatorname{dom}}
+\newcommand{\Fin}{\operatorname{Fin}}
+\newcommand{\SC}{\mathsf{SC}}
+\newcommand{\ZF}{\mathsf{ZF}}
+\newcommand{\ZFC}{\mathsf{ZFC}}
+\newcommand{\AC}{\mathsf{AC}}
+\newcommand{\bfto}{\preccurlyeq_{\mathrm{bfto}}}
+\newcommand{\fto}{\preccurlyeq_{\mathrm{fto}}}
+\newcommand{\repo}[1]{\texttt{\detokenize{#1}}}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newcommand{\status}[1]{\par\noindent\colorbox{lightgray}{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{#1}}\par}
+\newcommand{\resultbox}[1]{\par\medskip\noindent\fcolorbox{accent}{paleblue}{\parbox{\dimexpr\linewidth-2\fboxsep-2\fboxrule\relax}{#1}}\par\medskip}
+
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\color{ink}
+\noindent\textsc{Set theory \;\textbar\; Extremal combinatorics \;\textbar\; Formal mathematics}
+\vspace{0.85in}
+\begin{flushleft}
+{\Huge\bfseries Bounded-Width\\[5pt] Power-Set Compression}\par
+\vspace{0.22in}
+{\Large Exact finite thresholds, choiceless infinite obstructions,\\[3pt]
+and a defect extension of Glazer's chain-fiber theorem}\par
+\vspace{0.28in}
+{\large A finite/infinite research problem with proof certificates and a formalization route}\par
+\end{flushleft}
+\vspace{0.30in}
+\noindent\rule{\linewidth}{0.7pt}
+\vspace{0.18in}
+\noindent Prepared for Vladimir Reshetnikov\\
+Research manuscript prepared with ChatGPT\\
+5 October 2026
+\vfill
+\status{\textbf{Research status.} The finite theorems are proved from Dilworth's and Sperner's theorems, with an explicit symmetric-chain certificate. The local-expansion, Dedekind-infinitude, and antichain-transfer theorems are proved in the manuscript; the transfer theorem imports Forster's published finite-to-one strengthening of Cantor's theorem. The full choiceless classification for width bound $r\geq2$ is posed as an open problem, not claimed solved. Historical priority for the new formulation and intermediate observations has not been established. This manuscript is AI-assisted, unrefereed, and not formally verified. Elliot Glazer is a cited researcher, not an author or endorser.}
+\vspace{7pt}
+{\footnotesize\noindent\textbf{Repository snapshot.} The proposed integration targets the public \emph{ProveIt} repository at commit \texttt{b71545625}, inspected on 5 October 2026. The archive accompanying this manuscript contains the \LaTeX{} source, compiled PDF, and an exact standard-library Python verifier.\par}
+\end{titlepage}
+\hypersetup{pageanchor=true}
+
+\pagenumbering{roman}
+\section*{Abstract}
+\addcontentsline{toc}{section}{Abstract}
+For a poset $P$ and a positive integer $r$, call a map $c:P\to Y$ an
+$r$-width compression when every fiber has width at most $r$.  The motivating
+infinite question asks for such a map
+\[
+        f:\Pow(X)\longrightarrow X,
+\]
+where $\Pow(X)$ is ordered by inclusion.  At $r=1$ this is the chain-fiber
+problem recently settled in $\ZF$ by Elliot Glazer: such a map exists exactly
+when $1\leq |X|\leq3$.
+
+We formulate the bounded-width extension and solve its finite form exactly.
+For every finite poset $P$ of width $w$ and every list of fiber budgets
+$r_1,\dots,r_q$, a coloring with $i$th fiber of width at most $r_i$ exists if
+and only if $\sum_i r_i\geq w$.  Hence, for the Boolean lattice
+$\B_n=\Pow([n])$,
+\[
+ q_r(n)=\min\{|Y|:\B_n\to Y\text{ has fibers of width }\leq r\}
+       =\left\lceil\frac{\binom n{\lfloor n/2\rfloor}}{r}\right\rceil.
+\]
+A self-indexed compression $\Pow([n])\to[n]$ therefore exists exactly when
+$\binom n{\lfloor n/2\rfloor}\leq rn$.  Its least admissible defect is
+\[
+ \delta(n)=\left\lceil\frac1n\binom n{\lfloor n/2\rfloor}\right\rceil
+ \sim \sqrt{\frac2\pi}\,\frac{2^n}{n^{3/2}},
+\]
+and the largest feasible $n$ for a fixed $r$ is
+\[
+ N(r)=\log_2 r+\frac32\log_2\log_2 r
+       +\frac12\log_2\!\frac\pi2+O(1).
+\]
+The upper bound is constructive: group the chains in a symmetric-chain
+decomposition, at most $r$ chains per label.  The middle layer is the matching
+lower-bound certificate.
+
+For the infinite form we prove three choice-free results.  First, every finite
+$S\subseteq X$ obeys the exact expansion inequality
+\[
+ |f[\Pow(S)]|\geq q_r(|S|).
+\]
+Consequently every hypothetical infinite example canonically generates a
+countably infinite subset by iterating $S\mapsto S\cup f[\Pow(S)]$; in
+particular no Dedekind-finite or amorphous set can be a counterexample.
+Second, an antichain-transfer theorem converts any antichain code
+$\Pow(U)\to\Pow(X)$ together with a finite-to-one map $X\to U$ into a
+finite-to-one map $\Pow(U)\to U$, contradicting Forster when $U$ is infinite.
+Third, if $2\times X$ injects into $X$, the complementary-transversal code
+supplies such an antichain.  Thus no well-orderable infinite $X$ works, and
+under Choice the finite classification is complete.  The unresolved $\ZF$
+frontier for $r\geq2$ is sharply localized: an infinite counterexample would
+have to be Dedekind-infinite but non-duplicable, with no suitable
+finite-to-one core.
+
+\vspace{0.12in}
+\noindent\textbf{Keywords.} Boolean lattice; poset width; Dilworth theorem; Sperner theorem; symmetric-chain decomposition; power set; axiom of choice; finite-to-one map; Dedekind-infinite set; formal proof certificate.
+
+\clearpage
+\begingroup
+\fontsize{10}{11}\selectfont
+\setlength{\parskip}{0pt}
+\tableofcontents
+\endgroup
+\clearpage
+\pagenumbering{arabic}
+
+\section{The problem and why the finite/infinite bridge matters}\label{sec:intro}
+
+\subsection{The chain-fiber starting point}
+In December 2025 Alexander Pruss asked whether $\ZF$ alone rules out, for an
+infinite set $X$, a map $f:\Pow(X)\to X$ that separates every incomparable
+pair: $f(A)\neq f(B)$ whenever neither $A\subseteq B$ nor $B\subseteq A$.
+Equivalently, each fiber $f^{-1}(x)$ must be a chain under inclusion.  Elliot
+Glazer answered with a sharp theorem: in $\ZF$, the map exists exactly for
+sets of cardinality $1$, $2$, or $3$ \cite{PrussGlazer2025}.  Emil
+Je\v{r}\'abek supplied a complementary cardinal-arithmetic argument on the
+same thread.
+
+That result has an unusually clean finite/infinite profile.  The finite cutoff
+is not merely an artifact of cardinality: it is the width of a Boolean
+lattice.  The infinite proof, by contrast, must survive the absence of a
+well-order and of the finite choices that would normally split a bounded-width
+poset into chains.  This suggests varying the amount of incomparability
+allowed inside one label.
+
+\subsection{The bounded-width extension}
+Fix a positive integer $r$.  We permit each label to identify several
+mutually incompatible subsets, but cap the size of an antichain inside one
+fiber by $r$.
+
+\begin{problem}[bounded-width power-set compression]\label{prob:main}
+Classify the pairs $(X,r)$ for which there is a function
+\[
+ f:\Pow(X)\longrightarrow X
+\]
+such that every fiber $f^{-1}(x)$ has inclusion-width at most $r$.
+Determine the exact finite threshold, the strongest theorem provable in
+$\ZF$, and the additional strength supplied by choice principles.
+\end{problem}
+
+The parameter $r$ is a \emph{contradiction budget}: a label may be attached to
+at most $r$ pairwise incomparable descriptions.  The case $r=1$ is Glazer's
+theorem.  For $r>1$ the problem retains a fully explicit finite extremal
+answer but opens a genuinely choiceless infinite frontier.
+
+\subsection{Why this should interest Glazer}
+The problem directly extends a theorem proved by Glazer, while its infinite
+part lies at the intersection of his documented interests in choiceless set
+theory and hard, independently checkable mathematical problems.  His work
+with Bokai Yao separates principles that coincide under Choice but diverge in
+$\ZF$ with urelements \cite{GlazerYao2026}; the present problem similarly has
+a complete $\ZFC$ classification and a narrower unresolved $\ZF$ boundary.
+His work on FrontierMath emphasizes original expert-level problems with
+objective verification surfaces \cite{FrontierMath}; here the finite theorem
+has compact upper and lower certificates, while the infinite theorem has a
+precise imported dependency and a transparent open remainder.
+
+\subsection{Relation to ProveIt}
+The current ProveIt repository describes itself as machine-checked mathematics
+in Lean and Rocq/Coq, with executable certificates separated from untrusted
+exploratory computations \cite{ProveIt}.  This problem naturally spans three
+of its active surfaces:
+\begin{enumerate}
+\item finite posets and Boolean-lattice certificates in combinatorics;
+\item first-order $\ZF$ and cardinal arithmetic in set theory;
+\item a small proof-producing checker whose trusted boundary is simpler than
+      a general-purpose optimizer.
+\end{enumerate}
+The finite core is suitable for immediate formalization.  The infinite side
+suggests a staged project: formalize the local expansion and antichain code
+first, then isolate Forster's theorem as the only substantial imported
+set-theoretic component.
+
+\subsection{Contribution boundary}
+The exact finite formula is a short synthesis of classical results of
+Dilworth and Sperner, enhanced here by a nonuniform budget theorem, an
+explicit certificate format, threshold inversion, and its connection to the
+choiceless problem.  The local-expansion, definable Dedekind-infinitude, and
+general antichain-transfer statements are proved below.  A targeted search of
+the inspected literature did not locate this precise bounded-width
+formulation, but absence from a search is not a priority proof.  No claim is
+made that the unresolved $r\geq2$ question is known to be open in every
+source not inspected.
+
+\resultbox{\textbf{Main outcome.}  The finite problem and the entire $\ZFC$
+classification are solved exactly.  In $\ZF$, every possible infinite
+counterexample for $r\geq2$ is forced into a narrow cardinal-arithmetic gap:
+it is Dedekind-infinite, it is not binary-duplicable, and it has no
+finite-to-one core carrying two disjoint copies of itself.}
+
+\section{Definitions and the classification targets}\label{sec:definitions}
+
+\begin{definition}[width]\label{def:width}
+For a poset $P$, its width $\pwidth(P)$ is the supremum of the cardinalities of
+its antichains.  When $r\in\NN_{>0}$, the assertion $\pwidth(P)\leq r$ means that
+$P$ has no antichain of size $r+1$.
+\end{definition}
+
+\begin{definition}[width compression]\label{def:compression}
+Let $P$ be a poset, let $Y$ be a set, and let $r\geq1$.  An
+\emph{$r$-width compression} is a function $c:P\to Y$ such that
+\[
+       \pwidth(c^{-1}(y))\leq r \qquad(y\in Y).
+\]
+For a finite poset define
+\[
+ \chi_r(P)=\min\{|Y|: \text{an $r$-width compression }P\to Y\text{ exists}\}.
+\]
+\end{definition}
+
+\begin{definition}[Boolean and self-indexed parameters]\label{def:booleanparams}
+Write $\B_n=(\Pow([n]),\subseteq)$ and
+\[
+ W_n=\pwidth(\B_n)=\binom n{\lfloor n/2\rfloor}.
+\]
+Set
+\[
+ q_r(n)=\chi_r(\B_n),\qquad
+ \delta(n)=\min\{r:\Pow([n])\to[n]\text{ is an $r$-width compression}\},
+\]
+for $n\geq1$, and
+\[
+ N(r)=\max\{n\geq1:\delta(n)\leq r\}.
+\]
+\end{definition}
+
+For arbitrary sets it is useful to name the existence statement.
+
+\begin{definition}[self-compression statement]\label{def:SC}
+For $r\geq1$, let $\SC_r(X)$ denote:
+\[
+ \exists f:\Pow(X)\to X\quad
+ \forall x\in X\quad \pwidth(f^{-1}(x))\leq r.
+\]
+\end{definition}
+
+The strongest natural classification suggested by the finite answer is the
+following.
+
+\begin{conjecture}[bounded-width Glazer classification]\label{conj:BWG}
+For every fixed $r\geq1$, $\ZF$ proves that $\SC_r(X)$ holds if and only if
+$X$ is finite, nonempty, and
+\[
+ \binom{|X|}{\lfloor |X|/2\rfloor}\leq r|X|.
+\]
+\end{conjecture}
+
+For $r=1$ this is Glazer's theorem.  We prove the finite direction in $\ZF$,
+the full statement in $\ZFC$, and several choice-free restrictions on a
+hypothetical counterexample for $r\geq2$.
+
+\section{A universal finite theorem with nonuniform budgets}\label{sec:finiteposets}
+
+The first result is not specific to Boolean lattices.  It identifies width as
+the complete resource controlling finite compression.
+
+\begin{theorem}[budgeted finite-poset theorem]\label{thm:budget}
+Let $P$ be a finite poset of width $w$, and let $r_1,\dots,r_q$ be
+nonnegative integers.  There is a map $c:P\to[q]$ satisfying
+\[
+       \pwidth(c^{-1}(i))\leq r_i\qquad(1\leq i\leq q)
+\]
+if and only if
+\[
+       \sum_{i=1}^q r_i\geq w.
+\]
+\end{theorem}
+
+\begin{proof}
+Let $A$ be an antichain of size $w$.  Each fiber contains at most $r_i$
+points of $A$, so
+\[
+ w=|A|=\sum_{i=1}^q |A\cap c^{-1}(i)|\leq\sum_{i=1}^q r_i.
+\]
+This proves necessity.
+
+For sufficiency, Dilworth's decomposition theorem partitions $P$ into exactly
+$w$ chains \cite{Dilworth1950}.  Distribute these chains among bins
+$1,\dots,q$, placing at most $r_i$ chains in bin $i$; the capacity inequality
+makes this possible.  Color every point by the bin containing its chain.  An
+antichain meets each chain at most once, so the union of at most $r_i$ chains
+has width at most $r_i$.
+\end{proof}
+
+\begin{corollary}[uniform compression number]\label{cor:uniform}
+For every finite poset $P$ and every $r\geq1$,
+\[
+              \chi_r(P)=\left\lceil\frac{\pwidth(P)}r\right\rceil.
+\]
+\end{corollary}
+
+\begin{proof}
+Apply \cref{thm:budget} with all capacities equal to $r$.
+\end{proof}
+
+\begin{remark}[partition versus cover]\label{rem:cover}
+The same criterion holds if one begins with a cover by width-bounded
+subposets.  Choose one covering set for each point and delete the point from
+all other sets; taking subposets cannot increase width.  Thus the function
+and cover formulations are equivalent in the finite theorem.
+\end{remark}
+
+\begin{remark}[why the proof does not settle the infinite problem]
+Two finite ingredients become delicate without Choice.  A finite-width
+infinite poset need not come equipped with a selectable decomposition into
+finitely many chains, and even if each individual fiber can be decomposed,
+choosing coherent decompositions for an $X$-indexed family is itself a choice
+problem.  More importantly, replacing $X$ by $X\times r$ can change
+cardinality in $\ZF$.
+\end{remark}
+
+\section{Boolean lattices: exact formula and explicit certificates}\label{sec:boolean}
+
+Sperner's theorem gives $\pwidth(\B_n)=W_n$ \cite{Sperner1928}.  Combining it with
+\cref{cor:uniform} yields the exact finite answer.
+
+\begin{theorem}[exact Boolean-lattice compression]\label{thm:booleanexact}
+For all $n\geq0$ and $r\geq1$,
+\[
+       q_r(n)=\left\lceil\frac{W_n}{r}\right\rceil
+             =\left\lceil\frac1r\binom n{\lfloor n/2\rfloor}\right\rceil.
+\]
+\end{theorem}
+
+The proof has a particularly transparent pair of certificates.
+
+\subsection{Lower certificate: the middle layer}
+The family
+\[
+       L_n=\{A\subseteq[n]:|A|=\lfloor n/2\rfloor\}
+\]
+is an antichain of size $W_n$.  A color can contain at most $r$ members of
+$L_n$, so at least $\lceil W_n/r\rceil$ colors are required.  The certificate
+is simply the list of all middle-layer subsets.
+
+\subsection{Upper certificate: grouped symmetric chains}
+The Boolean lattice has a symmetric-chain decomposition: a partition into
+saturated chains whose bottom and top ranks sum to $n$ \cite{deBruijn1951,
+GreeneKleitman1976}.  Every such decomposition has exactly $W_n$ chains,
+because each chain meets rank $\lfloor n/2\rfloor$ exactly once.  Group at
+most $r$ chains under each label.  Every fiber is then a union of at most
+$r$ chains and consequently has width at most $r$.
+
+A recursive decomposition can be constructed without optimization.  Begin
+with the sole chain $\varnothing$ in $\B_0$.  Suppose
+\[
+ C:A_k\subset A_{k+1}\subset\cdots\subset A_{n-1-k}
+\]
+is a symmetric chain in $\B_{n-1}$.  Replace it in $\B_n$ by
+\begin{align*}
+ C^+&:A_k\subset\cdots\subset A_{n-1-k}
+       \subset A_{n-1-k}\cup\{n\},\\
+ C^-&:A_k\cup\{n\}\subset\cdots\subset A_{n-2-k}\cup\{n\},
+\end{align*}
+where the second chain is omitted when empty.  The two new chains are
+symmetric, disjoint, and together contain both copies of every old member.
+Induction gives a full decomposition.
+
+\begin{example}[$\B_4$]\label{ex:B4}
+The recursive construction gives six chains:
+\begin{align*}
+C_1&:\varnothing<1<12<123<1234, &
+C_2&:4<14<124,\\
+C_3&:3<13<134,                 &
+C_4&:34,\\
+C_5&:2<23<234,                 &
+C_6&:24.
+\end{align*}
+Here a string denotes the corresponding subset.  For $r=2$, the groups
+$(C_1,C_2)$, $(C_3,C_4)$, and $(C_5,C_6)$ give a three-label compression.
+The six two-subsets form the matching lower certificate, so three is optimal.
+\end{example}
+
+\subsection{A proof-certificate interface}
+An upper certificate consists of a list of chains and a group number for each
+chain.  A checker verifies:
+\begin{enumerate}
+\item every element of $\B_n$ occurs exactly once;
+\item consecutive members of each chain differ by adding one element;
+\item each group contains at most $r$ chains.
+\end{enumerate}
+The checker never computes a width.  The lower certificate is the middle
+layer and the integer inequality $|L_n|>r(q-1)$.  Thus optimality can be
+kernel-checked by elementary finite-set operations.
+
+\section{Self-indexed finite compression}\label{sec:selfindexed}
+
+A map $\Pow([n])\to[n]$ may leave labels unused.  Therefore it exists exactly
+when the minimum number of labels is at most $n$.
+
+\begin{theorem}[complete finite classification]\label{thm:finiteclass}
+Let $n\geq1$ and $r\geq1$.  The following are equivalent:
+\begin{enumerate}
+\item there is an $r$-width compression $\Pow([n])\to[n]$;
+\item $q_r(n)\leq n$;
+\item $W_n\leq rn$;
+\item $r\geq\delta(n)$, where
+\[
+ \delta(n)=\left\lceil\frac{W_n}{n}\right\rceil.
+\]
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Only the equivalence between (1) and (2) needs comment.  A map to $[n]$ uses
+at most $n$ nonempty fibers, so (1) implies $q_r(n)\leq n$.  Conversely, an
+optimal compression with $q_r(n)\leq n$ labels can inject its label set into
+$[n]$; the remaining labels have empty fibers.
+\end{proof}
+
+\begin{corollary}[the first defects]\label{cor:firstdefects}
+The least width budgets are
+\[
+\delta(1),\delta(2),\dots=
+1,1,1,2,2,4,5,9,14,26,42,77,132,246,429,805,\dots.
+\]
+In particular:
+\begin{enumerate}
+\item $r=1$ permits exactly $n=1,2,3$;
+\item $r=2$ permits exactly $1\leq n\leq5$;
+\item $r=3$ still permits only $1\leq n\leq5$;
+\item $r=4$ permits exactly $1\leq n\leq6$.
+\end{enumerate}
+\end{corollary}
+
+The finite $r=1$ line coincides with Glazer's full $\ZF$ theorem, which is a
+useful consistency check on the formulation.
+
+\subsection{Monotonicity}
+The threshold is genuinely one-sided; no later value of $n$ becomes feasible
+after failure.
+
+\begin{proposition}[monotonic defect]\label{prop:monotonic}
+The sequence $W_n/n$ is nondecreasing for $n\geq1$.  Hence $\delta(n)$ is
+nondecreasing and
+\[
+ N(r)=\max\{n:W_n\leq rn\}
+\]
+is well-defined.
+\end{proposition}
+
+\begin{proof}
+Put $a_n=W_n/n$.  For $m\geq1$,
+\[
+ \frac{a_{2m+1}}{a_{2m}}
+ =\frac{2m}{m+1}\geq1,
+\qquad
+ \frac{a_{2m+2}}{a_{2m+1}}
+ =\frac{2m+1}{m+1}>1.
+\]
+Also $a_1=a_2=1$.  Taking ceilings preserves monotonicity.  Finally,
+$W_n\geq2^n/(n+1)$ because the largest binomial coefficient is at least the
+average of the $n+1$ coefficients.  Thus $W_n/n\to\infty$, so the defining
+set for $N(r)$ is finite.
+\end{proof}
+
+\begin{remark}[plateaus]
+Ceiling creates a few initial plateaus: $\delta(1)=\delta(2)=\delta(3)=1$ and
+$\delta(4)=\delta(5)=2$.  Thereafter the values grow quickly.  The real ratio
+$W_n/n$ itself is strictly increasing except for the first two parity steps
+where the displayed ratios equal one.
+\end{remark}
+
+\section{Asymptotic defect and inversion}\label{sec:asymptotics}
+
+The exact formula makes the growth transparent.  Stirling's expansion,
+uniform across the two parities, gives
+\begin{equation}\label{eq:centralasymp}
+ W_n=2^n\sqrt{\frac{2}{\pi n}}\left(1+O(n^{-1})\right).
+\end{equation}
+
+\begin{theorem}[defect asymptotic]\label{thm:defectasymp}
+As $n\to\infty$,
+\[
+ \delta(n)=\sqrt{\frac2\pi}\,\frac{2^n}{n^{3/2}}
+              \left(1+O(n^{-1})\right).
+\]
+\end{theorem}
+
+\begin{proof}
+Divide \cref{eq:centralasymp} by $n$.  The ratio tends to infinity, so taking
+the ceiling changes it by a relative $o(1)$ amount, absorbed by the stated
+error.
+\end{proof}
+
+Thus a fixed multiplicative allowance in fiber width buys only an additive
+amount in the universe size.  More precisely:
+
+\begin{theorem}[threshold inversion]\label{thm:thresholdasymp}
+Let $L=\log_2 r$.  As $r\to\infty$,
+\[
+ N(r)=L+\frac32\log_2 L+\frac12\log_2\!\frac\pi2+O(1).
+\]
+\end{theorem}
+
+\begin{proof}
+At the smooth transition $W_n/n\asymp r$, \cref{eq:centralasymp} gives
+\[
+ n-\frac32\log_2 n+\frac12\log_2\frac2\pi
+      =L+O(n^{-1}).
+\]
+The equation first implies $n=L+O(\log L)$.  Substituting this estimate inside
+$\log_2 n$ yields
+\[
+ n=L+\frac32\log_2 L+\frac12\log_2\frac\pi2
+       +O\!\left(\frac{\log L}{L}\right)
+\]
+for the real transition.  The integer maximum $N(r)$ differs from that
+transition by at most a bounded rounding and parity term, which gives the
+stated $O(1)$ remainder.
+\end{proof}
+
+\begin{remark}[interpretation]
+The factor $n^{-3/2}$ has two sources: $n^{-1/2}$ from concentration of the
+binomial layers and another $n^{-1}$ because the available label set has only
+$n$ elements.  Inverting $2^n/n^{3/2}$ creates the secondary
+$\tfrac32\log_2\log_2 r$ term.
+\end{remark}
+
+\section{The infinite problem in \texorpdfstring{$\ZF$}{ZF}}\label{sec:infinite}
+
+\subsection{The solved chain case}
+The following theorem is the exact $r=1$ endpoint motivating the present
+extension.
+
+\begin{theorem}[Glazer, 2025]\label{thm:glazer}
+$\ZF$ proves, for every set $X$, that the following are equivalent:
+\begin{enumerate}
+\item $1\leq|X|\leq3$;
+\item there is $f:\Pow(X)\to X$ whose fibers are inclusion-chains;
+\item $\Pow(X)$ is the union of an $X$-indexed family of inclusion-chains.
+\end{enumerate}
+\end{theorem}
+
+The published form here is a MathOverflow answer rather than a journal paper
+\cite{PrussGlazer2025}.  The proof is choice-free and uses a diagonal
+construction after extracting enough coding power from the two-element layer.
+It is stronger than merely observing that the finite width $W_n$ exceeds $n$
+for $n\geq4$.
+
+\subsection{Why \texorpdfstring{$r\geq2$}{r >= 2} is structurally different}
+For one chain, each rank contains at most one member, and the two-element
+layer supplies a single-valued coding object.  A width-$r$ fiber can contain
+$r$ members of the same rank.  Turning those finite sets into $r$ separately
+named chains requires choosing an ordering or coloring inside many finite
+fibers.  Such finite choices cannot be silently made in $\ZF$.
+
+This is exactly the setting in which boundedly finite-to-one maps become
+subtle.  Hu and Shen emphasize that, without Choice, a boundedly finite-to-one
+map need not yield an injection; they prove several generalized Cantor
+nonexistence theorems while recording models where familiar implications fail
+\cite{HuShen2025}.  Shen's work on finitary partitions likewise shows that a
+natural Cantor analogue can consistently fail when the power-set functor is
+replaced by another large combinatorial construction \cite{Shen2026}.
+
+The next two sections isolate what can nevertheless be proved directly from
+the order structure of $\Pow(X)$.
+
+\section{Finite expansion inside every infinite candidate}\label{sec:expansion}
+
+The finite theorem applies to every finite subcube, even though its labels may
+land anywhere in $X$.
+
+\begin{theorem}[exact local expansion]\label{thm:localexpansion}
+Assume $\SC_r(X)$, witnessed by $f:\Pow(X)\to X$.  For every finite
+$S\subseteq X$ with $|S|=n$,
+\[
+       |f[\Pow(S)]|\geq q_r(n)
+       =\left\lceil\frac{W_n}{r}\right\rceil.
+\]
+Consequently,
+\[
+ |f[\Pow(S)]\setminus S|\geq
+       \max\left(0,\left\lceil\frac{W_n}{r}\right\rceil-n\right).
+\]
+\end{theorem}
+
+\begin{proof}
+Restrict $f$ to the finite Boolean lattice $\Pow(S)$.  For every label $x$,
+the restricted fiber $f^{-1}(x)\cap\Pow(S)$ is a subposet of the global
+fiber, hence has width at most $r$.  By \cref{thm:booleanexact}, the restricted
+map uses at least $q_r(n)$ distinct labels.  At most $n$ of those labels lie
+in $S$, giving the second inequality.
+\end{proof}
+
+\begin{corollary}[no large finite closed set]\label{cor:nofiniteclosed}
+If $n>N(r)$, no $n$-element set $S\subseteq X$ can satisfy
+$f[\Pow(S)]\subseteq S$.
+\end{corollary}
+
+\begin{proof}
+For $n>N(r)$, $q_r(n)>n$ by definition.  The image cannot both have more than
+$n$ elements and be contained in $S$.
+\end{proof}
+
+Define the finite-hull operator
+\[
+             H_f(S)=S\cup f[\Pow(S)].
+\]
+Then \cref{thm:localexpansion} gives the exact recurrence
+\begin{equation}\label{eq:hullgrowth}
+       |H_f(S)|\geq q_r(|S|)
+       \qquad\text{whenever }|S|>N(r).
+\end{equation}
+Since $W_n\geq2^n/(n+1)$, this eventually dominates
+$2^n/(r(n+1))$; iterating the hull therefore grows faster than an ordinary
+exponential recurrence.
+
+\begin{theorem}[definable Dedekind-infinitude]\label{thm:dedekind}
+Fix $r\geq1$.  In $\ZF$, if $X$ is infinite and $\SC_r(X)$ holds, then $X$
+is Dedekind-infinite.  More precisely, from a witnessing map $f$ and any
+ordered $(N(r)+1)$-tuple of distinct elements of $X$, one can define an
+injection $\NN\to X$.
+\end{theorem}
+
+\begin{proof}
+Let $S_0\subseteq X$ have $N(r)+1$ elements, equipped with the order supplied
+by the chosen tuple.  Recursively put
+\[
+       S_{k+1}=H_f(S_k)=S_k\cup f[\Pow(S_k)].
+\]
+Each $S_k$ is finite.  Since $|S_k|>N(r)$, \cref{eq:hullgrowth} gives
+$|S_{k+1}|>|S_k|$.
+
+It remains to choose a new point at every stage without invoking countable
+choice.  We define an order on $S_{k+1}$ canonically from the order on $S_k$.
+The latter induces a lexicographic order on the finite set $\Pow(S_k)$.  For
+$y\in f[\Pow(S_k)]$, let $\mu_k(y)$ be the least subset $A\subseteq S_k$ with
+$f(A)=y$.  The map $\mu_k$ is injective, so it transports the lexicographic
+order to a linear order on $f[\Pow(S_k)]$.  Order $S_{k+1}$ by listing the old
+points in their old order, followed by the new points in this transported
+order.
+
+Let $x_k$ be the first point of $S_{k+1}\setminus S_k$ in that order.  The
+construction is recursive and functional, so Replacement produces the
+sequence $k\mapsto x_k$.  The points are pairwise distinct because
+$x_k\in S_{k+1}\setminus S_k$ and the $S_k$ are increasing.  Hence this
+sequence is an injection from $\NN$ into $X$.
+\end{proof}
+
+\begin{corollary}[Dedekind-finite obstruction]\label{cor:dedekindfinite}
+No infinite Dedekind-finite set, and in particular no amorphous set, satisfies
+$\SC_r(X)$ for any finite $r$.
+\end{corollary}
+
+\begin{remark}[more than existential infinitude]
+The proof does not appeal to the principle that a countable union of nonempty
+finite sets has a choice function.  It manufactures a canonical local order
+from least preimages at each stage.  Relative to $f$ and the finite seed, the
+countable subset is definable.  This feature is useful for formalization and
+may be stronger than the bare Dedekind-infinitude conclusion in symmetric
+models.
+\end{remark}
+
+\section{Antichain transfer and the duplicability obstruction}\label{sec:transfer}
+
+The second infinite mechanism extracts a finite-to-one map from a large,
+explicit antichain.
+
+\begin{definition}[antichain code]\label{def:antichaincode}
+An \emph{antichain code from $U$ into $X$} is a map
+\[
+        \Theta:\Pow(U)\longrightarrow\Pow(X)
+\]
+whose range is an antichain under inclusion.
+\end{definition}
+
+\begin{lemma}[width becomes bounded multiplicity]\label{lem:widthmultiplicity}
+If $f:\Pow(X)\to X$ has fibers of width at most $r$ and $\Theta$ is an
+antichain code from $U$ into $X$, then $f\circ\Theta:\Pow(U)\to X$ is at most
+$r$-to-one.
+\end{lemma}
+
+\begin{proof}
+If $r+1$ distinct subsets of $U$ had the same image, their $\Theta$-images
+would be $r+1$ pairwise incomparable members of one fiber of $f$.
+\end{proof}
+
+We use Forster's theorem in its published $\ZF$ form.
+
+\begin{theorem}[Forster]\label{thm:forster}
+If there is a finite-to-one map $\Pow(U)\to U$, then $U$ is finite.
+\end{theorem}
+
+\noindent Forster's result strictly strengthens Cantor's theorem in the
+absence of Choice \cite{Forster2003}.
+
+\begin{theorem}[antichain-transfer obstruction]\label{thm:transfer}
+Let $U$ be infinite.  Suppose there are
+\begin{enumerate}
+\item an antichain code $\Theta:\Pow(U)\to\Pow(X)$, and
+\item a finite-to-one map $p:X\to U$.
+\end{enumerate}
+Then $\SC_r(X)$ fails for every finite $r$.
+\end{theorem}
+
+\begin{proof}
+If $f$ witnessed $\SC_r(X)$, then $h=f\circ\Theta$ would be at most
+$r$-to-one by \cref{lem:widthmultiplicity}.  For a point $u\in U$, the fiber
+of $p\circ h$ is the union, over the finite set $p^{-1}(u)$, of fibers of
+$h$ of size at most $r$.  Hence $p\circ h:\Pow(U)\to U$ is finite-to-one,
+contradicting \cref{thm:forster}.
+\end{proof}
+
+The required antichain code has a simple two-channel construction.
+
+\begin{lemma}[complementary-transversal code]\label{lem:transversal}
+If there is an injection $e:U\times2\to X$, then there is an antichain code
+$\Theta:\Pow(U)\to\Pow(X)$.
+\end{lemma}
+
+\begin{proof}
+Write $e_i(u)=e(u,i)$.  The two ranges are disjoint.  Define
+\[
+       \Theta(A)=e_0[A]\cup e_1[U\setminus A].
+\]
+If $A\neq B$, choose $u$ in their symmetric difference.  If
+$u\in A\setminus B$, then $e_0(u)\in\Theta(A)\setminus\Theta(B)$ while
+$e_1(u)\in\Theta(B)\setminus\Theta(A)$.  Thus neither coded set contains the
+other.  The other case is symmetric.
+\end{proof}
+
+\begin{theorem}[two-channel core criterion]\label{thm:core}
+Let $U$ be infinite.  If
+\[
+             U\times2\preccurlyeq X
+       \quad\text{and}\quad
+             X\fto U,
+\]
+then $\SC_r(X)$ fails for every finite $r$.
+\end{theorem}
+
+\begin{proof}
+The first map supplies the antichain code by \cref{lem:transversal}; the
+second map and \cref{thm:transfer} finish the proof.
+\end{proof}
+
+\begin{corollary}[binary duplicability obstruction]\label{cor:duplicate}
+If $X$ is infinite and $X\times2\preccurlyeq X$, then $\SC_r(X)$ fails for
+every finite $r$.
+\end{corollary}
+
+\begin{proof}
+Use \cref{thm:core} with $U=X$ and $p=\operatorname{id}_X$.
+\end{proof}
+
+\begin{corollary}[well-orderable and choice cases]\label{cor:choice}
+No infinite well-orderable set satisfies $\SC_r(X)$.  Consequently $\ZFC$
+proves that $\SC_r(X)$ holds exactly for the finite nonempty sets satisfying
+$W_{|X|}\leq r|X|$.
+\end{corollary}
+
+\begin{proof}
+Every infinite well-orderable set is equipotent with an infinite initial
+ordinal $\kappa$, and $2\times\kappa$ injects into $\kappa$.  Apply
+\cref{cor:duplicate}.  Under $\AC$, every set is well-orderable.  The finite
+cases are exactly \cref{thm:finiteclass}.
+\end{proof}
+
+\begin{remark}[why Forster is the right dependency]
+Cantor's theorem alone excludes an injection $\Pow(U)\to U$, but
+$f\circ\Theta$ is only $r$-to-one.  Turning that map into an injection would
+silently use a finite choice operation on its fibers.  Forster's theorem is
+precisely the choice-free statement needed here.
+\end{remark}
+
+\section{The remaining choiceless frontier}\label{sec:frontier}
+
+Combining the preceding sections yields a sharp profile of any counterexample
+to \cref{conj:BWG}.
+
+\begin{theorem}[counterexample profile]\label{thm:profile}
+Fix $r\geq2$.  If an infinite set $X$ satisfies $\SC_r(X)$, then:
+\begin{enumerate}
+\item $X$ is Dedekind-infinite, and a countable subset is definable from the
+      witness and finitely many parameters;
+\item $X\times2\not\preccurlyeq X$;
+\item more generally, there is no infinite $U$ with
+      $U\times2\preccurlyeq X$ and $X\fto U$;
+\item every finite $S\subseteq X$ of size $n$ emits at least
+      $q_r(n)-n$ labels outside itself whenever this number is positive;
+\item the ambient model violates Choice.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Items (1)--(4) are \cref{thm:dedekind,thm:core,thm:localexpansion}.  Item (5)
+follows from \cref{cor:choice}.
+\end{proof}
+
+This profile rules out the most familiar choiceless candidates.  An amorphous
+set is impossible by (1); an infinite cardinal is impossible by (2); and a
+set that is finite-to-one reducible to an infinite two-channel core is
+impossible by (3).  The only remaining region consists of Dedekind-infinite
+sets with highly nonclassical finite-multiple arithmetic.
+
+\subsection{Why the obvious reductions stop here}
+One might try to decompose each width-$r$ fiber into $r$ chains and apply the
+$r=1$ theorem.  There are two obstructions.
+\begin{enumerate}
+\item Infinite Dilworth decompositions can require compactness or choice.
+\item Even if each fiber separately admits a decomposition, choosing one for
+      every $x\in X$ may be a family-choice principle; afterward one still
+      has an $X\times r$-indexed family, and $X\times r$ need not reduce to
+      $X$ in $\ZF$.
+\end{enumerate}
+Likewise, restricting $f$ to one rank produces an $r$-to-one map from a
+finite-subset functor into $X$, but boundedly finite-to-one maps do not in
+general canonically split into injections without Choice \cite{HuShen2025}.
+
+\subsection{Two credible routes forward}
+A proof of \cref{conj:BWG} could seek a \emph{canonical} chain splitting
+special to families of subsets, avoiding arbitrary finite choices.  A
+counterexample would likely require a permutation or symmetric model with a
+Dedekind-infinite, non-duplicable set $X$ and an equivariant map on its full
+power set.  The local expansion theorem imposes a severe support condition:
+large finite subcubes must acquire exponentially many distinct output atoms.
+Either route is concrete enough for a focused research program.
+
+\section{Algorithms, exact checks, and certificate complexity}\label{sec:checks}
+
+The accompanying script \repo{verification.py} uses only Python's standard
+library.  Its role is diagnostic, not foundational: the proofs above are
+symbolic.
+
+\subsection{What was checked}
+The executed verifier performs the following exact checks.
+\begin{enumerate}
+\item It constructs the recursive symmetric-chain decomposition for
+      $0\leq n\leq14$ and verifies coverage, disjointness, saturation,
+      symmetry, and the chain count $W_n$.
+\item For $1\leq n\leq10$ and $1\leq r\leq5$, it groups chains and verifies
+      that the number of groups is $\lceil W_n/r\rceil$.
+\item It checks exact rational monotonicity of $W_n/n$ and monotonicity of
+      $\delta(n)$ for $1\leq n\leq300$.
+\item It generates the defect and threshold tables in this manuscript and a
+      numerical diagnostic for \cref{thm:thresholdasymp}.
+\end{enumerate}
+All assertions passed.  The full textual output is included as
+\repo{verification_report.txt}.
+
+\subsection{Complexity}
+An explicit decomposition necessarily names all $2^n$ subsets, so its output
+size is exponential.  The verifier runs in time polynomial in that output
+size.  The lower certificate is much smaller only in representation, not in
+cardinality: it contains $W_n\asymp2^n/\sqrt n$ middle-layer subsets.
+
+For formal work, one can avoid materializing the entire certificate by
+proving the recursive SCD algorithm correct once and evaluating only the
+closed formula for the number of chains.  This separates an executable
+instance certificate from a reusable theorem.
+
+\subsection{Pseudocode}
+\begin{verbatim}
+SCD(0) := [[empty set]]
+for new = 1,...,n:
+    output := []
+    for chain C = [A_k,...,A_t] in SCD(new-1):
+        append [A_k,...,A_t,A_t union {new}] to output
+        if C has at least two members:
+            append [A_k union {new},...,A_{t-1} union {new}] to output
+    chains := output
+return chains
+\end{verbatim}
+The two output chains partition the two copies of the input chain in
+$\B_{n-1}\times\{0,1\}$, which makes the inductive coverage proof especially
+short.
+
+\section{A ProveIt formalization blueprint}\label{sec:formalization}
+
+The repository snapshot inspected for this report distinguishes formal proofs,
+executable certificates, and unformalized research reports \cite{ProveIt}.
+The present project can follow that boundary explicitly.
+
+\subsection{Stage I: finite posets}
+A small generic library should define finite antichains, chain covers, width,
+and budgeted colorings.  The principal theorem can be stated schematically as
+\begin{verbatim}
+theorem exists_width_budget_coloring_iff
+    (P : FinitePoset) (budget : Fin q -> Nat) :
+  (exists c, forall i, width (fiber c i) <= budget i) <->
+  width P <= sum budget
+\end{verbatim}
+The upper implication can either import a finite Dilworth theorem from
+mathlib or prove the needed chain-partition form through bipartite matching.
+The latter produces a reusable algorithmic certificate.
+
+\subsection{Stage II: Boolean lattices}
+Formalize the recursive SCD directly.  Its invariants are:
+\begin{enumerate}
+\item every chain is saturated;
+\item bottom rank plus top rank is $n$;
+\item chains are pairwise disjoint;
+\item their union is the entire Boolean lattice.
+\end{enumerate}
+The chain count follows by intersecting with the middle layer.  Sperner's
+lower bound can be imported if available or proved through the LYM inequality;
+for this particular theorem the standard SCD itself also supplies an upper
+chain cover while the middle layer supplies the lower antichain.
+
+\subsection{Stage III: set-theoretic local expansion}
+In the first-order $\ZF$ development, define the assertion that a function's
+fibers contain no $(r+1)$-element antichain.  The restriction to a finite
+subcube should then instantiate the finite theorem.  The hull recursion in
+\cref{thm:dedekind} requires only finite powersets, least elements of finite
+linear orders, and ordinary recursion on $\omega$.
+
+\subsection{Stage IV: antichain transfer}
+The complementary-transversal code is elementary and should formalize
+independently of cardinal arithmetic.  The dependency graph is:
+\[
+\boxed{U\times2\hookrightarrow X}
+\Longrightarrow
+\boxed{\Pow(U)\to\Pow(X)\text{ antichain code}}
+\Longrightarrow
+\boxed{\Pow(U)\to X\text{ boundedly finite-to-one}}
+\]
+followed by a finite-to-one map $X\to U$ and Forster's theorem.  This makes
+Forster's theorem a named interface rather than a hidden metatheoretic step.
+
+\subsection{Stage V: independent verification}
+A Rocq/Coq port of the finite certificate checker would be modest and useful.
+The set-theoretic theorem can remain Lean-first until a common encoding of
+finite-to-one cardinal comparison is available.  The article should continue
+to mark all unformalized infinite dependencies explicitly.
+
+\section{Further research questions and topics}\label{sec:questions}
+
+\begin{enumerate}
+\item \textbf{The main $\ZF$ classification.}  Prove or refute
+      \cref{conj:BWG} for one fixed $r\geq2$, beginning with $r=2$.
+
+\item \textbf{Permutation-model construction.}  Can a Fraenkel--Mostowski or
+      symmetric-extension model contain a Dedekind-infinite, non-duplicable
+      $X$ with $\SC_2(X)$?  The map must satisfy the finite expansion bounds
+      equivariantly.
+
+\item \textbf{Weak choice strength.}  Determine the weakest standard choice
+      principle implying the full finite classification for every $r$.
+      Candidates include finite-choice schemes, the Boolean prime ideal
+      theorem, and compactness principles sufficient for finite-width chain
+      decompositions.
+
+\item \textbf{Canonical chain splitting.}  Does every width-$r$ subfamily of
+      a power set admit, in $\ZF$, a decomposition into $r$ chains after
+      adjoining a finite amount of structure canonically definable from the
+      family?
+
+\item \textbf{Finite-to-one core extraction.}  Does $\SC_r(X)$ itself imply
+      the existence of an infinite $U$ with $U\times2\preccurlyeq X$ and
+      $X\fto U$?  A positive answer would settle the main conjecture through
+      \cref{thm:core}.
+
+\item \textbf{Matching formulation.}  The values
+      $f(\{x,c_n\})$ from a definable countable core generate a bipartite graph
+      with infinite left degree and bounded right degree.  Identify the exact
+      choice principle needed for a two-matching saturating the left side.
+
+\item \textbf{Variable fiber budgets.}  For an infinite target, replace the
+      constant $r$ by a function $b:X\to\NN$.  The finite restriction gives
+      $W_n\leq\sum_{x\in f[\Pow(S)]}b(x)$.  Which growth or summability
+      hypotheses force nonexistence in $\ZF$?
+
+\item \textbf{Stability.}  Classify finite colorings of $\B_n$ using
+      $\lceil W_n/r\rceil+o(W_n)$ labels.  Must most middle-layer classes be
+      nearly saturated, and must most fibers be close to unions of $r$
+      chains?
+
+\item \textbf{Enumeration.}  Count optimal labeled and unlabeled
+      $r$-width compressions of $\B_n$.  Even the subclass arising from grouped
+      symmetric-chain decompositions has a nontrivial orbit structure.
+
+\item \textbf{Other Peck posets.}  For any finite poset the numerical optimum
+      is width divided by $r$, but Boolean lattices offer canonical
+      certificates.  Develop equally explicit constructions for products of
+      chains, subspace lattices, Young lattices at fixed rank, and divisor
+      lattices.
+
+\item \textbf{$q$-ary cubes.}  Replace $\Pow([n])$ by $[q]^n$ under coordinate
+      order.  Determine exact self-indexed thresholds when the target has
+      size $n$, $qn$, or the size of a prescribed rank.
+
+\item \textbf{Transfinite width bounds.}  Let the allowed fiber width be an
+      infinite cardinal $\rho$.  Under which assumptions does an antichain
+      code convert a $\rho$-width map into a cardinal inequality strong enough
+      to contradict generalized Cantor theorems?
+
+\item \textbf{Reverse mathematics of the finite proof.}  Over weak arithmetic,
+      calibrate the strength of the uniform statement that every finite poset
+      obeys \cref{thm:budget}, distinguishing existence from an executable
+      chain decomposition.
+
+\item \textbf{Formalize Forster.}  Produce a self-contained Lean proof of the
+      theorem that a finite-to-one $\Pow(X)\to X$ forces $X$ finite, with an
+      explicit audit of every finite-choice step avoided by the argument.
+
+\item \textbf{Definability strength.}  Analyze the sequence produced in
+      \cref{thm:dedekind}: can the finite seed be removed, or can one obtain a
+      parameter-free countable subset from structural assumptions on $f$?
+
+\item \textbf{Benchmark variants.}  Package the finite theorem, the threshold
+      inversion, and the antichain-transfer lemma as separate automatically
+      verifiable challenge problems.  A high-end version can ask solvers to
+      discover the Dedekind-infinitude recursion without being told the hull
+      operator.
+\end{enumerate}
+
+\section{Conclusion}\label{sec:conclusion}
+
+Bounded-width power-set compression is a compact problem with three distinct
+layers.  The finite layer is exact and universal: width is the only resource,
+and a middle antichain plus a grouped chain decomposition gives a complete
+certificate.  For Boolean lattices this produces the central-binomial
+threshold and its logarithmic inversion.  The classical $r=1$ case is not
+merely a finite observation; Glazer's theorem shows that the same cutoff is
+absolute in $\ZF$.
+
+For larger $r$, the infinite problem exposes precisely where choice enters.
+The local finite theorem still acts inside every finite subcube and forces a
+canonical countable subset.  A large complementary-transversal antichain,
+combined with Forster's theorem, eliminates every binary-duplicable set and
+therefore every well-orderable infinite set.  What remains is not a vague
+``pathological set'' possibility but a sharply delimited class of
+Dedekind-infinite, non-duplicable objects with unusual finite-multiple
+arithmetic.
+
+This combination -- exact finite extremal structure, an objective certificate
+surface, a clean $\ZFC$ classification, and a narrow unresolved choiceless
+boundary -- makes the problem well suited both to Glazer's research themes
+and to ProveIt's formal research program.
+
+\appendix
+\section{Exact tables}\label{app:tables}
+
+\begin{table}[H]
+\centering
+\caption{Central width and least self-indexed defect.}
+\label{tab:defects}
+\begin{tabular}{r@{\qquad}r@{\qquad}r}
+\toprule
+$n$ & $W_n=\binom n{\lfloor n/2\rfloor}$ & $\delta(n)=\lceil W_n/n\rceil$\\
+\midrule
+1 & 1 & 1 \\
+2 & 2 & 1 \\
+3 & 3 & 1 \\
+4 & 6 & 2 \\
+5 & 10 & 2 \\
+6 & 20 & 4 \\
+7 & 35 & 5 \\
+8 & 70 & 9 \\
+9 & 126 & 14 \\
+10 & 252 & 26 \\
+11 & 462 & 42 \\
+12 & 924 & 77 \\
+13 & 1{,}716 & 132 \\
+14 & 3{,}432 & 246 \\
+15 & 6{,}435 & 429 \\
+16 & 12{,}870 & 805 \\
+17 & 24{,}310 & 1{,}430 \\
+18 & 48{,}620 & 2{,}702 \\
+19 & 92{,}378 & 4{,}862 \\
+20 & 184{,}756 & 9{,}238 \\
+21 & 352{,}716 & 16{,}796 \\
+22 & 705{,}432 & 32{,}066 \\
+23 & 1{,}352{,}078 & 58{,}786 \\
+24 & 2{,}704{,}156 & 112{,}674 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption{Selected exact thresholds $N(r)$.}
+\label{tab:thresholds}
+\begin{tabular}{r@{\qquad}r|r@{\qquad}r}
+\toprule
+$r$ & $N(r)$ & $r$ & $N(r)$\\
+\midrule
+1 & 3 & 26 & 10 \\
+2 & 5 & 32 & 10 \\
+3 & 5 & 64 & 11 \\
+4 & 6 & 128 & 12 \\
+5 & 7 & 256 & 14 \\
+8 & 7 & 512 & 15 \\
+9 & 8 & 1{,}024 & 16 \\
+16 & 9 & 4{,}096 & 18 \\
+65{,}536 & 23 & 1{,}048{,}576 & 27 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Claim and dependency ledger}\label{app:ledger}
+
+\begin{longtable}{L{0.24\linewidth}L{0.28\linewidth}L{0.38\linewidth}}
+\toprule
+Claim & Status & Dependency or verification\\
+\midrule
+\endfirsthead
+\toprule
+Claim & Status & Dependency or verification\\
+\midrule
+\endhead
+Budgeted finite-poset theorem & Proved here & Dilworth's finite chain-decomposition theorem.\\
+Exact Boolean formula & Proved here & Sperner's width theorem plus the budget theorem; SCD gives explicit upper certificate.\\
+Finite self-indexed classification & Proved here & Immediate from the exact Boolean formula.\\
+Monotonicity and asymptotics & Proved here & Exact binomial ratios and Stirling's formula.\\
+Glazer chain-fiber classification & Imported & MathOverflow answer of 2 December 2025; not reproved in full.\\
+Exact local expansion & Proved here & Restriction to a finite Boolean subcube.\\
+Definable Dedekind-infinitude & Proved here & Iterated finite hull with canonical least-preimage orders.\\
+Forster theorem & Imported & JSL 68 (2003), 1251--1253.\\
+Antichain-transfer theorem & Proved here & Width-to-multiplicity lemma plus Forster.\\
+Binary duplicability obstruction & Proved here & Explicit complementary-transversal antichain code.\\
+Full $\ZFC$ classification & Proved here & Binary duplicability of infinite well-orderable sets plus finite theorem.\\
+Full $\ZF$ classification for $r\geq2$ & Open in this manuscript & Stated as \cref{conj:BWG}; no solution claimed.\\
+Historical novelty & Not established & Targeted source search only; independent literature review required.\\
+Formal verification & Not claimed & Python checks finite instances; no Lean/Rocq proof accompanies the article.\\
+\bottomrule
+\end{longtable}
+
+\section{Reproducing the checks}\label{app:reproduce}
+
+From the extracted archive, run
+\begin{verbatim}
+python3 verification.py
+\end{verbatim}
+The script rewrites \repo{verification_report.txt} and exits nonzero if any
+assertion fails.  No third-party Python package is required.  To rebuild the
+article, run
+\begin{verbatim}
+latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
+\end{verbatim}
+or use the PDF skill's \repo{latex_to_pdf.py} wrapper.
+
+\begin{thebibliography}{99}
+
+\bibitem{deBruijn1951}
+N.~G. de Bruijn, C. van Ebbenhorst Tengbergen, and D. Kruyswijk,
+\newblock On the set of divisors of a number,
+\newblock \emph{Nieuw Archief voor Wiskunde} (2) \textbf{23} (1951), 191--193.
+
+\bibitem{Dilworth1950}
+R.~P. Dilworth,
+\newblock A decomposition theorem for partially ordered sets,
+\newblock \emph{Annals of Mathematics} (2) \textbf{51} (1950), 161--166.
+
+\bibitem{Forster2003}
+Thomas Forster,
+\newblock Finite-to-one maps,
+\newblock \emph{Journal of Symbolic Logic} \textbf{68} (2003), no.~4,
+1251--1253, doi:10.2178/jsl/1067620184.
+
+\bibitem{FrontierMath}
+Elliot Glazer et al.,
+\newblock FrontierMath: A benchmark for evaluating advanced mathematical reasoning in AI,
+\newblock arXiv:2411.04872, version 7, 23 December 2025.
+
+\bibitem{GlazerYao2026}
+Elliot Glazer and Bokai Yao,
+\newblock Reflection principles in ZFU,
+\newblock arXiv:2602.21970, 25 February 2026.
+
+\bibitem{GreeneKleitman1976}
+Curtis Greene and Daniel J. Kleitman,
+\newblock Strong versions of Sperner's theorem,
+\newblock \emph{Journal of Combinatorial Theory, Series A} \textbf{20}
+(1976), 80--88.
+
+\bibitem{HuShen2025}
+Xiao Hu and Guozhen Shen,
+\newblock Boundedly finite-to-one functions,
+\newblock \emph{Logic Journal of the IGPL} \textbf{33} (2025), no.~3,
+doi:10.1093/jigpal/jzae130; arXiv:2407.10183v4.
+
+\bibitem{ProveIt}
+Vladimir Reshetnikov,
+\newblock \emph{ProveIt: machine-checked mathematics in Lean 4 and Rocq/Coq},
+\newblock GitHub repository, snapshot
+\texttt{b71545625}, 5 October 2026,
+\url{https://github.com/VladimirReshetnikov/ProveIt}.
+
+\bibitem{PrussGlazer2025}
+Alexander Pruss, Elliot Glazer, Emil Je\v{r}\'abek, and contributors,
+\newblock Without AC can there be a function with linearly ordered fibers from the powerset of an infinite set to the set?,
+\newblock MathOverflow question 504570 and answers, 2--4 December 2025,
+\url{https://mathoverflow.net/questions/504570/}.
+
+\bibitem{Shen2026}
+Guozhen Shen,
+\newblock Cantor's theorem may fail for finitary partitions,
+\newblock \emph{Journal of Symbolic Logic} \textbf{91} (2026), no.~2,
+599--616; arXiv:2309.00235.
+
+\bibitem{Sperner1928}
+Emanuel Sperner,
+\newblock Ein Satz \"uber Untermengen einer endlichen Menge,
+\newblock \emph{Mathematische Zeitschrift} \textbf{27} (1928), 544--548.
+
+\end{thebibliography}
+
+\end{document}
