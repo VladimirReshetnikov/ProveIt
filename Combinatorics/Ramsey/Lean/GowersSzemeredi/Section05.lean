@@ -277,14 +277,15 @@ def lemma_5_9 : Prop :=
 /-! ## Multilinear partitioning -/
 
 /-- **Lemma 5.10.** Small-diameter partitioning for one multilinear map.
-The threshold is `2^(K^(2^k) * 2^(40 k^3+1))`, and the scale exponent is
-`K^(-2^k)`, as dictated by the height induction. -/
+The threshold is `(2*T_k)^(K^(2^k))`, and the scale exponent is
+`K^(-2^k)`, as dictated by the height induction. Proper axes make the
+formal width equal to the minimum axis cardinality used in the paper. -/
 def lemma_5_10 : Prop :=
   forall (N k m : Nat) [NeZero N] (P : Box N k) (mu : Point N k -> ZMod N),
-    2 <= k -> multilinearPartitionThreshold k 1 <= m -> m <= P.width ->
+    P.IsProper -> 2 <= k -> multilinearPartitionThreshold k 1 <= m -> m <= P.width ->
     MultilinearOn P.carrier mu ->
       exists M : Nat, exists Q : Fin M -> Box N k,
-        IsBoxPartition Q P /\
+        IsBoxPartition Q P /\ (forall j, (Q j).IsProper) /\
         forall j,
           (m : Real) ^ multilinearPartitionExponent k 1 <= (Q j).width /\
           diameterAtMostReal ((Q j).carrier.image mu)
@@ -296,10 +297,10 @@ multilinear maps.  Repeating Lemma 5.10 gives exponent
 def corollary_5_11 : Prop :=
   forall (N k q m : Nat) [NeZero N] (P : Box N k)
       (mu : Fin q -> Point N k -> ZMod N),
-    2 <= k -> 1 <= q -> multilinearPartitionThreshold k q <= m -> m <= P.width ->
+    P.IsProper -> 2 <= k -> 1 <= q -> multilinearPartitionThreshold k q <= m -> m <= P.width ->
     (forall i, MultilinearOn P.carrier (mu i)) ->
       exists M : Nat, exists Q : Fin M -> Box N k,
-        IsBoxPartition Q P /\
+        IsBoxPartition Q P /\ (forall j, (Q j).IsProper) /\
         forall i j,
           (m : Real) ^ multilinearPartitionExponent k q <= (Q j).width /\
           diameterAtMostReal ((Q j).carrier.image (mu i))
