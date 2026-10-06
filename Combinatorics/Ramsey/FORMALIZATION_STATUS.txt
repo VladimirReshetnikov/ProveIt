@@ -12,8 +12,8 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 204 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 1,864 public Gowers theorems and found only propext,
+  All 206 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 1,878 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 100 exact
   companion proofs and 20 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -364,8 +364,15 @@ Section 13.7 selection and remaining partition input
   Proofs13LargeScaleExtraction identifies its exponent exactly with
   2^-100*alpha^448 and proves the full Stage 13.7 conclusion when
     4096*pi/(2^-43*alpha^224) <= R.length^(2^-100*alpha^448).
-  The prime-modulus and scale hypotheses are explicit. Treating the remaining
-  scales is still required before an unconditional Stage 13.7 conclusion.
+  The prime-modulus and scale hypotheses are explicit.
+  Proofs07ShortLinearity proves affine extension on domains of size at most two
+  and uses the order-two relation to prove affine linearity on any proper
+  progression of length at most three. A partition into cells of length two or
+  three then handles any target at most two, without a density threshold.
+  Proofs13SmallScaleExtraction applies this to prove the full Stage 13.7
+  conclusion when R.length^(2^-100*alpha^448) <= 2. The intermediate range
+  between this bound and the large-scale threshold remains open; neither
+  scale-qualified theorem is counted as a full numbered completion.
 
 Ceiling targets in Corollary 7.11
   Proofs07SimultaneousLinearity now exports the direct sufficient budget
