@@ -80,10 +80,13 @@ writing.
 `foundation141/` and `comparison142/` hold the sources and PDFs of Reports 141
 and 142; all six files are byte-identical to the standalone deliveries (SHA-256
 at placement, `cmp` again at the write). They are printed once, as Parts I and
-II, and not shipped. Part II's Section 14 and Part III's Subsection 24.1
-restate Part I's convolution, Newton transform and logarithmic derivative in
-their own words (no verbatim overlap); they are printed in full with notes
-pointing to Part I.
+II, and not shipped. In their own words (no verbatim overlap), Part II's
+Section 14 restates Part I's convolution, the positivity of Newton extraction,
+the auxiliary transform (Lemma 4.1), the multiplication rule and the exact
+split; Part III's Subsection 24.1 restates the equivalence of the recurrence
+with the Riccati equation, the logarithmic derivative, the convolution and the
+bound `0 ≤ R ≤ 1`, strengthened to `0 < R_{N,m}` for `0 ≤ m ≤ N`. They are
+printed in full with notes pointing to Part I.
 
 ## Files
 
@@ -239,26 +242,33 @@ mean `2q/3`), **`D`**, **`E`**, **`M`**, **`r`**. Part I's kernel
   order (`f₂…f₅` printed; the companion carries `f₀…f₈` exactly).
 - Section 28: A292186's Riccati equation, logarithmic derivative and factorial
   asymptotic — **prior art** (Martin–Kearney; Ciobanu–Kolpakov; Bala on the
-  OEIS, Aug 22 2023), re-derived with the correction `1 − 3/(16n)` and
-  remainders, which the manuscript states as its own.
+  OEIS, Aug 22 2023), re-derived with the first corrections
+  `v_n = 1 − 3/(16n) + O(n⁻²)` (Lemma 28.1) and
+  `V_n = (2√2/π) 4ⁿ n! {1 − 3/(8n) + O(n⁻²)}`, and remainders, which the
+  manuscript states as its own.
 - Theorem 31.1: strict monotonicity of `F_q` and the ceiling-safe inverse
   `J_M(x) = x + 7/8 + 203/(128x) + 3231/(512x²) + …`, `x = 3Y²/4`.
 - Section 32: `r₁(s)/N → −7/(16q)` at `s → 1` — algebraic consistency only.
 
 **Added by the write** (all marked `[write]`, dated 5 October 2026): the front
 matter (including the OEIS entries as read on 5 October 2026 and the
-inverses as instances of the transseries volume); dated notes marking what
+leading inverses as instances of the transseries volume's factorial core);
+dated notes marking what
 later Parts supersede or answer; Subsection 22.1 and Section 35 (further
 questions); and **Remark 35.1** with its proof: `R_{N,N−q} ≍ √((q+1)/N)`
-uniformly for `q ≤ min(c√N, N/4)`, a direct consequence of Corollary 24.3 and
-Theorems 24.4 and 31.1.
+uniformly for `q ≤ min(c√N, N/4)`, a direct consequence of Corollary 24.3,
+Theorem 24.4 and the positivity of every `F_q` (the proof first also cited
+Theorem 31.1, whose monotonicity it does not need; trimmed after the
+independent check).
 
 **The inverses.** Parts I and II solve `x(log x + log d − 1) = T`: the factorial
 core `p0:prop:factorial-core` (`κ = 1`) of the transseries volume
 `Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex`,
-a form of its Lambert core `p0:thm:lambert-core`, with the two-ceiling
-separation pattern of `p0:thm:staircase`. Part III's inverse has **no Lambert
-W**: a linear core after squaring, inverted by reversion, with the same
+which after taking logarithms is its Lambert core `p0:thm:lambert-core` with
+`a = b = 1` in the variable `log x + log d − 1`; the two-ceiling brackets follow
+the separation pattern of `p0:thm:staircase` but are proved directly at the
+integers, without the interpolation that theorem presupposes. Part III's
+inverse has **no Lambert W**: a linear core after squaring, inverted by reversion, with the same
 ceiling pattern. No manuscript claims novelty for the inversion.
 
 ## What the report does not claim
@@ -310,6 +320,39 @@ sketches and what is missing:
 13.2). **Nothing in the three manuscripts was found to be wrong**, and no
 claim was refuted.
 
+**Independent check of the write (5 October 2026).** An adversarial check
+made by the intake after the write (`42721c521`) reread the front matter
+against the Parts, the merge (restatements, "answered" notes, transseries
+citations), the write's deductions and Remark 35.1, and recomputed the
+numbers. It confirmed the live OEIS entries (A258219 #30, A292692 #12,
+A292186 #57) with their histories and every quotation; that Theorem 1.1 and
+Proposition 3.2 prove Bala's conjecture for indeterminate `k` (his form and
+the S-fraction agree with the recurrence through `x²⁴` at `k = 0, …, 24`);
+`C` and `d` to 45 digits, also from the saddle definitions, and, independently
+of the derivation, `C` to 27 digits, `b₁` to 17 and `b₂` to 15 by Richardson
+extrapolation of the OEIS b-file (`n ≤ 290`); the first 91 terms of A258219
+and the terms of A292692 for `n ≤ 39` from the path definition (a dynamic
+program over Dyck prefixes); Remark 35.1
+(`F_q/√(q+1) ∈ [0.8355, 1.1520]` for `q ≤ 400`, no
+violation of Corollary 24.3's exponential bounds for `16 ≤ N ≤ 220`); the
+leading coefficient `L_a` of `c_a(n)`; the factorial-core identity; the
+correction `1 − 3/(8n)` of `V_n`; and the delivered suites on fresh
+extractions. **No mathematical claim of the manuscripts was found wrong.** One
+statement of the write was false: its note in Subsection 24.1 justified
+`0 < R_{N,m}` by the Stirling number `{N, m} > 0` for `0 ≤ m ≤ N`, but
+`{N, 0} = 0`; the claim holds at `m = 0` because `P_{N,0} = p_N(0) > 0`
+(A005411: 1, 4, 25, 208, …), and the same note wrongly said that Part III
+re-derives Part I's Theorem 1.1 (Part III *defines* `p_N` by the recurrence).
+Corrected in the article, each with a dated note keeping the first wording:
+that note; the Guide's "Each Part ends with open questions" (Part III ends
+with its reproducibility section); the Restatements item of the merge
+decisions; the transseries citations (the factorial core is the Lambert core
+only after taking logarithms, in `log x + d′`; the ceiling brackets are not
+instances of the staircase theorem); "bounded" for the `α = 0.9` interior
+residuals (−5565, −7052, −5496 at `N = 100, 200, 300`: "of stable size"); and
+Remark 35.1's proof. This README is corrected likewise (the restatement lists,
+the `v_n`/`V_n` corrections of Section 28, the transseries bullet).
+
 ## Relation to neighbouring reports
 
 - No other report of the collection treats A258219, A258220, A292692,
@@ -324,8 +367,10 @@ claim was refuted.
   all-orders factorial expansion) and
   `Late_Coefficients_Factorially_Forced_Catalan_Recurrence` (A229741/A260879,
   positive Stirling transforms, safe integer threshold enclosures).
-- The transseries volume `Transseries_And_Inversion` supplies the inversion
-  apparatus of which the inverses here are instances (above).
+- The transseries volume `Transseries_And_Inversion` supplies the factorial
+  core of which the leading inverses here are instances; the ceiling brackets
+  follow its staircase pattern but are proved directly at the integers
+  (above).
 
 ## Relation to formal projects
 
@@ -396,7 +441,9 @@ such as `/Users/<you>/out143`. Its `selftest` fails on Windows with
 sources with `Path.read_text`/`write_text`, which on Windows rewrites LF as
 CRLF, so the fingerprint check fails — a platform artifact, not a
 mathematical failure; run it on Linux or macOS. Reports 141's and 142's suites
-run on Windows as given.
+run on Windows as given. Run Report 143's `bundle.py replay` from PowerShell or
+`cmd`; Git Bash rewrites a leading `/Users/...` argument into a
+`C:/Program Files/Git/...` path unless `MSYS_NO_PATHCONV=1` is set.
 
 Results: at placement (5 October 2026, Python 3.14.4, Windows, on copies,
 recorded in the batch-105 dossier) Report 141 `check`, `replay` and `-O replay`
@@ -430,9 +477,10 @@ was submitted to the OEIS.
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-pdfLaTeX (MiKTeX), in a scratch copy; commit only `article.pdf`. The write's
-build: 71 pages, no errors, no undefined or multiply defined references or
-citations, no duplicate destinations, no overfull boxes. The log carries one
+pdfLaTeX (MiKTeX), in a scratch copy; commit only `article.pdf`. The build
+(72 pages since the independent check, 71 at the write): no errors, no
+undefined or multiply defined references or citations, no duplicate
+destinations, no overfull boxes. The log carries one
 underfull-box message, at the `multline*` display of Section 2.1 (a build of
 the delivered `Report141.tex` has the same one), and one "Infinite glue
 shrinkage found in box being split" message from the notation longtable
