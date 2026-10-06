@@ -16,6 +16,13 @@
 \newcommand{\std}{\operatorname{std}}
 \newcommand{\lm}{\operatorname{lmin}}
 \newcommand{\Cat}{\operatorname{Cat}}
+% Added by the ProveIt write phase (batch 105, 5 October 2026): dated notes
+% marked [write], and the array package for the reading-conventions table.
+\usepackage{array}
+\newcommand{\file}[1]{\nolinkurl{#1}}
+\newenvironment{writenote}[1][]{\par\smallskip\begingroup\small
+ \noindent\textbf{[write]}\if\relax\detokenize{#1}\relax\else~\textbf{#1.}\fi\ }%
+ {\par\endgroup\smallskip}
 \title{Polynomial order for permutations containing exactly one 1432}
 \author{Report 139}
 \date{October 2, 2026}
@@ -37,6 +44,33 @@ singleton rectangles. No leading equivalent, amplitude limit, or proposed
 ratio $3/80$ is proved.
 \end{abstract}
 
+\begin{writenote}[Status and trust boundary, added 5 October 2026, batch~105]
+This is bundle Report~139 of an external AI-assisted research session,
+filed in ProveIt as the single-source research report
+\file{a224182-unique-1432-order} (provenance, the sources as the write read
+them, relation to the repository, reading conventions and the collected
+non-claims in Section~\ref{u1432:sec:provenance}). It is unrefereed and not
+formalized; its author line reads ``Report 139'' and its PDF author field is
+empty. \emph{What rests on what.} Theorem~\ref{u1432:thm:main} (the order
+$b_n=\Theta(9^n/n^3)$ with the constants $1/2187$ and $81$) has a
+computer-free proof; it cites Regev's strip asymptotic~\cite{Regev} and
+Krattenthaler's growth-diagram theorems~\cite{Kratt}, which are not
+re-proved. Theorem~\ref{u1432:thm:image} (the exact image of the split) is
+computer-assisted: a proved reduction to at most eight points, then an
+exhaustive finite certificate of $2{,}074$ designated cores, replayed by two
+independent programs (Section~\ref{u1432:sec:image}). No asymptotic statement
+rests on a computation. The write adds three remarks with proofs:
+Remark~\ref{u1432:rem:lambert} (the inverse as an instance of the
+transseries volume's Lambert core), Remark~\ref{u1432:rem:nonalg} (the
+generating function of A224182 is not algebraic) and
+Remark~\ref{u1432:rem:mrr} (the one-step bound that the source attributes
+to Mansour, Rastegar and Roitershtein is not justified by their printed
+argument, which gives a factor $n^2$ instead of $n$, one power of $n$ short
+of the upper order), and Section~\ref{u1432:sec:further}, the open questions
+with a recomputation of $b_n/(nA_n)$ for $n\le18$.
+\end{writenote}
+{\small\setlength{\parskip}{0pt}\tableofcontents}
+
 \section{The result and its scope}
 An occurrence of a classical pattern is a subsequence, with no adjacency
 requirement, whose relative value order is the pattern. Put
@@ -50,21 +84,21 @@ $M_0=0$, and $b_n=0$ for $n<4$. We prove below that
 $A_n=|\Av_n(1234)|$, including equality of the full minima-skeleton
 refinements. These are equal cardinalities, not equal avoidance sets.
 The classical three-row strip asymptotic of Regev~\cite{Regev} is
-\begin{equation}\label{eq:regev}
+\begin{equation}\label{u1432:eq:regev}
  A_n\sim C_0\frac{9^n}{n^4},\qquad C_0=\frac{81\sqrt3}{16\pi}.
 \end{equation}
 
-\begin{theorem}\label{thm:main}
+\begin{theorem}\label{u1432:thm:main}
 For every $n\ge4$,
-\begin{equation}\label{eq:finite}
+\begin{equation}\label{u1432:eq:finite}
  M_{n-3}\le b_n\le (n+2)A_{n+2}.
 \end{equation}
 Moreover, $M_m\sim(m/3)A_m$. Consequently,
-\begin{gather}\label{eq:theta}
+\begin{gather}\label{u1432:eq:theta}
  b_n=\Theta(9^n n^{-3}),\qquad
  \log b_n=n\log9-3\log n+O(1),\\
  \frac1{2187}\le\liminf_{n\to\infty}\frac{b_n}{nA_n}
- \le\limsup_{n\to\infty}\frac{b_n}{nA_n}\le81.\label{eq:ratio}
+ \le\limsup_{n\to\infty}\frac{b_n}{nA_n}\le81.\label{u1432:eq:ratio}
 \end{gather}
 All assertions of this theorem have a computer-free proof.
 \end{theorem}
@@ -75,7 +109,7 @@ Theorem 4]{Nakamura} gave a catalytic functional equation for $2341$ and
 exact initial coefficients. Conway and Guttmann~\cite[Section 5.3]{CG}
 conjectured the stronger equivalent $b_n\sim C_1 9^n/n^3$, with
 $C_1/C_0\approx0.0375$ and the candidate $C_1/C_0=3/80$.
-Theorem~\ref{thm:main} proves the polynomial order in that prediction,
+Theorem~\ref{u1432:thm:main} proves the polynomial order in that prediction,
 but not convergence of $b_n/(nA_n)$. The proposed $3/80$ is a ratio of
 amplitudes; it is not the absolute prefactor $C_1$.
 
@@ -84,25 +118,217 @@ the directly inspected growth-diagram proof used here is
 Krattenthaler~\cite[Theorems 1--3]{Kratt}. The split is adapted from
 Burstein's construction for a single global $321$~\cite{Burstein}; a
 supported decreasing triple requires the separate proof in
-Section~\ref{sec:split}. Known fixed-occurrence exponential-growth
-results are discussed in Section~\ref{sec:prior}. No worldwide priority
+Section~\ref{u1432:sec:split}. Known fixed-occurrence exponential-growth
+results are discussed in Section~\ref{u1432:sec:prior}. No worldwide priority
 claim is made.
 
-\section{Minima skeletons and Ferrers boards}\label{sec:board}
+\subsection{Provenance, sources and reading conventions}\label{u1432:sec:provenance}
+\begin{writenote}[Added 5 October 2026, batch~105]
+\emph{Provenance.} This report is Report~139 of the session bundle of
+Reports 1--243 that ProveIt's \file{docs/incoming} intake processed as
+batch~105: the archive
+\file{A224182_Polynomial_Growth_Order_and_Inverse_Bounds_Source.zip}
+(1{,}316{,}107 bytes, wrapper directory \file{Report139/}, 10 files),
+arrival commit \file{60f54ea06}, placed in \file{e85586b7c}. The text is the
+delivered \file{Report139.tex} (707 lines), shipped as \file{article.tex}.
+The delivered 10-page PDF and the checksum manifest \file{manifest.json} are
+not shipped (the manifest was verified at placement); both are retrievable
+from the arrival commit. The package names no ProveIt commit, path or
+report, so the report has no pin; it carries no ``prepared for private
+review'' line and no personal data. It is a single-source report, so no merge
+choice was made. The write prefixed the 34 delivered labels with
+\file{u1432:} and updated every reference; it added this subsection, the
+notes marked [write], Remarks~\ref{u1432:rem:lambert},
+\ref{u1432:rem:nonalg} and~\ref{u1432:rem:mrr},
+Section~\ref{u1432:sec:further}, a table of contents and two bibliography
+entries, and typeset three binomial coefficients with \verb|\binom| instead
+of \verb|\choose| (identical output; this removes an \textsf{amsmath}
+warning). No statement, proof or number of the source was changed: the
+added remarks are the last statements of their sections and the added
+displays are unnumbered, so every theorem and equation keeps its delivered
+number.
+
+\emph{The sources, as the write read them} (5~October 2026).
+\begin{itemize}
+\item OEIS A224182~\cite{OEIS} (revision~\#11 of September~3, 2026): ``Number
+ of permutations of length $n$ containing exactly 1 occurrence of $2341$'',
+ offset~1, 18 terms, through $b_{18}=2{,}055{,}119{,}789{,}289$; Nakamura
+ is its author. Reversal turns $2341$ into $1432$.
+\item Nakamura~\cite{Nakamura}: Section~3.2 extends the $231$ method to
+ $2341$, and Theorem~4 there is the functional equation (FE2341); located.
+\item Conway and Guttmann~\cite{CG}: Section~5.3 analyses the 18 OEIS terms
+ of A224182 together with 26 further approximate terms of their own, finds
+ the ratio $\psi^{III}_1(n)/(n\,\psi^{III}_0(n))$ (here $b_n/(nA_n)$)
+ ``going to an apparent limit of $0.0375\pm0.0005$'', and writes that it is
+ tempting to guess that this is $3/80$; they conclude
+ $b_n\sim C_19^n/n^3$ with $C_1\approx0.0375\cdot81\sqrt3/(16\pi)$, ``and
+ perhaps $C_1=3^5\sqrt3/(2^8\cdot5\pi)$ exactly'', which is $(3/80)C_0$.
+ Their Section~5.5 does name A224182 for one occurrence of $1324$ (class~V),
+ as Section~\ref{u1432:sec:prior} says; so does their Section~4, which
+ attributes those 17 terms to Johansson and Nakamura. Both are slips of the
+ paper: A224182 is the class-III sequence.
+\item Mansour, Rastegar and Roitershtein~\cite{MRR}: Theorem~3.1 and its
+ proof (arXiv version~1, pp.~28--29; the same text in the published author
+ manuscript, PubMed Central PMC7144682). The display quoted in
+ Section~\ref{u1432:sec:prior} is printed there; Remark~\ref{u1432:rem:mrr}
+ explains why its printed justification gives a factor $n^2$ instead of $n$.
+\item B\'ona and Burstein~\cite{BB}: Lemma~6.3 (p.~8; its rigorous proof is
+ credited there to Alin Bostan), used in Remark~\ref{u1432:rem:nonalg}. Their
+ non-algebraicity theorem (Theorem~6.2) concerns one copy of $k\cdots21$, $k$
+ even; their generalized injection (Theorem~4.1) and non-rationality theorem
+ (Theorem~5.5) concern $321\ominus\rho$, which for length four is only
+ $4321$. Neither covers $1432$ or any pattern in its symmetry class
+ $\{1432,2341,3214,4123\}$.
+\item Krattenthaler~\cite{Kratt}: Theorems~1--3 are in Section~2 of the arXiv
+ version, as Proposition~\ref{u1432:prop:refinement} uses them (the
+ growth-diagram bijection, Greene-type chain readings, conjugation swapping
+ the NE and SE chain statistics). The write located them and did not
+ re-derive them. Burstein~\cite{Burstein} (three pages) is the short proof
+ of Noonan's count of permutations with one $321$; located.
+\item Not read by the write: Regev~\cite{Regev} and the journal text of
+ Backelin, West and Xin~\cite{BWX} (which the source also could not
+ retrieve). For Regev's constant, exact values of $A_n$ from the hook-length
+ formula give $n^4A_n/(C_09^n)=0.8975$, $0.9469$, $0.9730$, $0.9864$ at
+ $n=50,100,200,400$, consistent with \eqref{u1432:eq:regev} (an observation,
+ not a check of the cited theorem).
+\end{itemize}
+
+\emph{What was checked at intake.} The batch-105 dossier read the manuscript
+in full and found no error. It checked by hand the eight cases of
+Lemma~\ref{u1432:lem:splitavoid}, the inflation interval argument and its
+$\tau_k$ version, the entropy maxima $f(1/3)=\log9$ and $2\log k$ at $u=1/k$,
+the constants $1/2187$, $81$ and $11/2$, the monotonicity
+\eqref{u1432:eq:monotonicity} and the restriction reduction in
+Theorem~\ref{u1432:thm:image}. Its own programs checked the split
+exhaustively for $n\le10$ (two sizes beyond the companion), the bounds
+\eqref{u1432:eq:finite} for $n\le9$, the brute-force counts $b_n$ for
+$n\le10$ against the OEIS, the collision and sole-support examples and the
+$106$ versus $107$ board counts. The delivered suites passed on copies
+(Section~\ref{u1432:sec:prior}, note at the end).
+
+\emph{Relation to the repository.} Before batch~105 no file of the
+repository mentioned A224182, A005802 or the papers of Conway--Guttmann,
+Regev, B\'ona--Burstein or Backelin--West--Xin, and the source makes no claim
+about the repository, so nothing needed correcting. The report meets the
+following texts.
+\begin{itemize}\raggedright
+\item \file{a217057-unique-pattern-occurrences} (same collection, same
+ batch): exactly one $1234$ (A217057), one $1243$ (A224179) and one $12345$
+ (A224248), from bundle Reports 134--138 and 140. \emph{See also}: its
+ normalizer $A_n=|\Av_n(1234)|$ and Regev's constant $C_0$ are the ones here,
+ and Report~136 there derives non-algebraicity of the A224179 generating
+ function from the same Lemma~6.3 of~\cite{BB} that
+ Remark~\ref{u1432:rem:nonalg} uses. Otherwise the methods share nothing:
+ the reports there work with a tableau spine, three-row strips and unitary
+ integrals and prove amplitudes; this one uses minima skeletons, Ferrers
+ boards and a Burstein-type split and proves an order. Neither source cites
+ the other.
+\item \file{a273821-first-pattern-failure} (collection
+ \file{enumerative-combinatorics}), Part~II, Section ``A worked example:
+ first failure of $1432$'' (\file{fpf:lp:sec:example}): the patterns
+ $\tau_r=1\oplus\delta_r$ of Corollary~\ref{u1432:cor:general}, studied there
+ through a different statistic (the first failure in $123$-avoiders). No
+ shared theorem.
+\item \file{a047874-long-increasing-subsequences}: $A_n=|\Av_n(1234)|$ is the
+ number of permutations of $[n]$ whose longest increasing subsequence has
+ length at most three, a partial row sum of A047874. No shared theorem.
+\item The transseries volume
+ \path{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/}
+ (\file{transseries_and_inversion.tex}): Corollary~\ref{u1432:cor:inverse}
+ is an instance of its \file{p0:thm:lambert-core} and fits the setting of
+ its \file{p0:thm:staircase}\,(1) (Remark~\ref{u1432:rem:lambert}).
+\end{itemize}
+No Lean or Rocq file of the repository treats pattern occurrences; no
+statement of this report is formalized, and its place in the collection
+confers no formal status.
+\end{writenote}
+
+\begin{writenote}[What is not claimed, collected from the source]
+No leading equivalent, no convergence of $b_n/(nA_n)$, no proof of the
+candidate $3/80$ (which is $C_1/C_0$, not $C_1$), no D-finiteness; the two
+$o(1)$ errors in the bounds are not asserted equal or effective. No matching
+upper bound for $1\oplus\delta_k$, $k\ge4$. No novelty is claimed for the
+upper order, and no worldwide priority claim is made; the literature and
+repository check was ``scoped, not an exhaustive worldwide literature
+review''. Theorem~\ref{u1432:thm:image} is computer-assisted; the main
+theorem is not. The inverse bracket's width $11/2$ concerns unrounded
+endpoints, ``not an exact count of admissible integers or a certified finite
+numerical threshold''. No limiting density of eligible centres. The
+Backelin--West--Xin full text was not retrieved; the cited Burstein paper does
+not by itself prove Lemma~\ref{u1432:lem:splitavoid}. Neither the numerical
+cross-checks nor the archive seal are formal verification, a digital
+signature or proof of an amplitude; ``no repository publication, outside
+contact, or external submission'' is part of the delivery. The write adds:
+its numerical observations (Section~\ref{u1432:sec:further}) are exact
+ratios of OEIS terms or floating-point diagnostics, and certify nothing about
+limits.
+\end{writenote}
+
+\medskip\noindent\begin{minipage}{\textwidth}
+\emph{Reading conventions} (letters the manuscript reuses, with the tempting
+false readings; no symbol was renamed).
+
+\smallskip
+\begingroup\small\renewcommand{\arraystretch}{1.1}
+\noindent\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.75in}>{\raggedright\arraybackslash}p{3.45in}>{\raggedright\arraybackslash}p{1.95in}@{}}
+\toprule
+Symbol & Meaning here (where) & Not to be read as\\
+\midrule
+$b_n$ & permutations of $[n]$ with exactly one $1432$, OEIS A224182 (offset
+ 1; A224182 itself is stated for $2341$) & the $1243$ count A224179, which
+ Report~136 (filed in \file{a217057}) also writes $b_n$\\
+$A_n$ & $|\Av_n(1432)|$, proved equal to $|\Av_n(1234)|$ (A005802) &
+ equality of avoidance \emph{sets}; Section~\ref{u1432:sec:board} proves
+ equal cardinalities only\\
+$N_{1432}(\pi)$, $N(x)$ & the number of occurrences in $\pi$; the threshold
+ $\min\{n\ge4:b_n\ge x\}$ (Section~\ref{u1432:sec:inverse}) & each other\\
+$M_n$, $\lm$ & $M_n$ the total number of left-to-right minima over
+ $\Av_n(1432)$; $\lm(\pi)$ their number in $\pi$ & the marks $M(\sigma)$ of
+ Report~136 in \file{a217057}\\
+$C_0$, $C_1$, $C_\pm$ & Regev's constant $81\sqrt3/(16\pi)$; Conway and
+ Guttmann's conjectured amplitude of $b_n$; the proved bounds
+ \eqref{u1432:eq:constants} & $C_1$ as proved; the conjectured $3/80$ is
+ $C_1/C_0$, not $C_1$\\
+$a,b,c,d$ & values of the unique occurrence, $a<d<c<b$, at positions
+ $i<j<k<l$ (Section~\ref{u1432:sec:split}) & \\
+$B$, $C$, $D$, $X$, $Y$ & the special points of the split (Lemma~\ref{u1432:lem:splitavoid});
+ in the marked inverse, $C=q_K$, $D=q_{K-1}$, $B=q_{K+1}$ & the constants
+ $C_\pm$, $C_0$; $D_{m,r}$\\
+$k$ & a core position (Sections~\ref{u1432:sec:split},
+ \ref{u1432:sec:image}); the tail length of $\tau_k$
+ (Corollary~\ref{u1432:cor:general}) & each other\\
+$K$ & the marked position in a split image & the tail length $k$\\
+$\delta$, $\delta_k$ & a tolerance in Section~\ref{u1432:sec:entropy};
+ $\delta_k$ the decreasing permutation of length $k$ & \\
+$D_{m,r}$, $H$, $f$ & avoiders with $r$ minima; the binary entropy; the
+ entropy exponent (Section~\ref{u1432:sec:entropy}) & \\
+$\lambda$, $L$, $T_C$ & $\log9$; $\log x$; the continuous inverse
+ \eqref{u1432:eq:TC} & $L$ as a length\\
+(R1)--(R4) & the four forced singleton regions, equations
+ \eqref{u1432:eq:R1}--\eqref{u1432:eq:R4} & \\
+$\psi^{III}_r(n)$ & Conway and Guttmann's name for the number of
+ permutations with $r$ occurrences of a class-III pattern; $b_n=\psi^{III}_1(n)$,
+ $A_n=\psi^{III}_0(n)$ & \\
+\bottomrule
+\end{tabular}
+\endgroup
+\end{minipage}
+
+\section{Minima skeletons and Ferrers boards}\label{u1432:sec:board}
 A left-to-right minimum is an entry smaller than every entry preceding it.
 Its position and value together are a point of the permutation plot, with
 position increasing rightward and value upward. Fix an admissible set
 $S$ of all these points, the \emph{minima skeleton}. Remove their rows and
 columns. A remaining position $h$ and remaining value $y$ form an allowed
 cell precisely when
-\begin{equation}\label{eq:allowed}
+\begin{equation}\label{u1432:eq:allowed}
  (s,t)\in S\text{ exists with }s<h\text{ and }t<y.
 \end{equation}
 In the increasing orders of the remaining positions and values, this is a
 northeast-closed Ferrers board: if a cell is allowed, every remaining cell
 to its right and above it is allowed.
 
-\begin{lemma}\label{lem:skeleton}
+\begin{lemma}\label{u1432:lem:skeleton}
 The permutations with exact minima skeleton $S$ are in bijection with
 full matchings of this board, one point in each remaining row and column.
 \end{lemma}
@@ -122,7 +348,7 @@ board-contained exactly when $(h_1,z)$ is allowed. That is exactly the
 condition that some minimum can support it on the left and below.
 More precisely, if $\operatorname{supp}_{\pi}(T)$ counts \emph{all}
 permutation points before $h_1$ and below $z$, then
-\begin{equation}\label{eq:support}
+\begin{equation}\label{u1432:eq:support}
  N_{1432}(\pi)=\sum_{T\text{ a contained decreasing triple}}
                    \operatorname{supp}_{\pi}(T).
 \end{equation}
@@ -141,7 +367,7 @@ We have proved
  \pi\in\Av(1234)&\iff\text{the matching has no increasing triple}.
 \end{align*}
 
-\begin{proposition}\label{prop:refinement}
+\begin{proposition}\label{u1432:prop:refinement}
 For each fixed exact minima skeleton $S$, the numbers of $1432$-avoiders
 and $1234$-avoiders realizing $S$ are equal.
 \end{proposition}
@@ -172,7 +398,7 @@ avoidance of the two contained triple types. The empty matching is handled
 separately and trivially. Rotate back and restore the unchanged skeleton.
 \end{proof}
 
-\begin{remark}\label{rem:notoccurrence}
+\begin{remark}\label{u1432:rem:notoccurrence}
 This is an avoidance correspondence, not an equidistribution of
 occurrence counts. For the northeast board of six columns with least
 allowed values $(2,1,1,1,1,1)$, the numbers of full matchings with exactly
@@ -182,7 +408,7 @@ one-occurrence theorem cannot be inferred by transferring one contained
 chain through shape-Wilf equivalence.
 \end{remark}
 
-\section{An entropy bound for the number of minima}\label{sec:entropy}
+\section{An entropy bound for the number of minima}\label{u1432:sec:entropy}
 Let $D_{m,r}$ count $1234$-avoiders of size $m$ with $r$ left-to-right
 minima. Delete all their minima. The remainder avoids $123$: the first
 point of any increasing triple in the remainder has a smaller earlier
@@ -190,9 +416,9 @@ minimum, which would extend it to $1234$. Choose the $r$ positions and
 $r$ values of the minima, whose order is necessarily decreasing, and
 then the standardized remainder. This is an injective encoding, although
 some choices do not produce an admissible permutation. Hence
-\begin{equation}\label{eq:entropybound}
- D_{m,r}\le {m\choose r}^{\!2}\Cat(m-r)
-            \le {m\choose r}^{\!2}4^{m-r}.
+\begin{equation}\label{u1432:eq:entropybound}
+ D_{m,r}\le \binom{m}{r}^{\!2}\Cat(m-r)
+            \le \binom{m}{r}^{\!2}4^{m-r}.
 \end{equation}
 Put $H(u)=-u\log u-(1-u)\log(1-u)$, with endpoint convention
 $0\log0=0$. The standard binomial entropy bound yields
@@ -212,17 +438,17 @@ compactness supplies $\eta_\delta>0$ such that
  \sum_{|r/m-1/3|\ge\delta}D_{m,r}
  \le (m+1)9^m e^{-\eta_\delta m}.
 \]
-After division by \eqref{eq:regev}, the corresponding probability is
+After division by \eqref{u1432:eq:regev}, the corresponding probability is
 $O(m^5e^{-\eta_\delta m})$. The minima fraction converges to $1/3$ in
 probability, and its boundedness in $[0,1]$ implies convergence in mean.
-Proposition~\ref{prop:refinement} transfers the entire minima distribution
+Proposition~\ref{u1432:prop:refinement} transfers the entire minima distribution
 to $1432$-avoiders. Therefore
-\begin{equation}\label{eq:minimamean}
+\begin{equation}\label{u1432:eq:minimamean}
  M_m\sim\frac m3 A_m.
 \end{equation}
 
-\section{A lower injection by inflation}\label{sec:lower}
-\begin{proposition}\label{prop:lower}
+\section{A lower injection by inflation}\label{u1432:sec:lower}
+\begin{proposition}\label{u1432:prop:lower}
 For $m\ge1$, there is an injection from $1432$-avoiders of size $m$ with
 a distinguished left-to-right minimum to permutations of size $m+3$
 with exactly one $1432$.
@@ -256,7 +482,7 @@ tail of any fixed length. For $k\ge2$, put
 $\tau_k=1\oplus\delta_k=(1,k+1,k,\ldots,2)$, and let $A_n^{(k)}$
 and $b_n^{(k)}$ count avoidance and exactly one occurrence, respectively.
 
-\begin{corollary}\label{cor:general}
+\begin{corollary}\label{u1432:cor:general}
 For every fixed integer $k\ge2$,
 \[
  A_n^{(k)}=|\Av_n(12\cdots(k+1))|,\qquad
@@ -276,13 +502,13 @@ entries within a row increase. Encoding both tableaux by these row-label
 words gives at most $(k-1)^{2(n-r)}$ possibilities, even without imposing
 the same-shape and standardness conditions on the two words. Consequently
 \[
- D_{n,r}^{(k)}\le {n\choose r}^{\!2}(k-1)^{2(n-r)}.
+ D_{n,r}^{(k)}\le \binom{n}{r}^{\!2}(k-1)^{2(n-r)}.
 \]
 The entropy function $2H(u)+2(1-u)\log(k-1)$ is strictly concave,
 uniquely maximized at $u=1/k$, with value $2\log k$.
 For this fixed $k$, Regev's strip asymptotic has the form
 $A_n^{(k)}\sim C_k k^{2n}n^{-(k^2-1)/2}$, where $C_k>0$.
-The proof in Section~\ref{sec:entropy} therefore gives
+The proof in Section~\ref{u1432:sec:entropy} therefore gives
 $M_n^{(k)}\sim(n/k)A_n^{(k)}$.
 
 Inflate a marked minimum into the interval $\tau_k$, increasing the size
@@ -292,7 +518,7 @@ entry and its largest entry cannot be a proper value interval. Thus an
 occurrence using between two and $k$ block points would require an outside
 earlier, smaller supporter, which does not exist. The arguments for zero,
 one, and all $k+1$ block points are exactly as in
-Proposition~\ref{prop:lower}. The unique internal occurrence recovers
+Proposition~\ref{u1432:prop:lower}. The unique internal occurrence recovers
 the marked source, so $M_{n-k}^{(k)}\le b_n^{(k)}$. Finally
 \[
  \frac{M_{n-k}^{(k)}}{nA_n^{(k)}}\longrightarrow
@@ -300,7 +526,7 @@ the marked source, so $M_{n-k}^{(k)}\le b_n^{(k)}$. Finally
 \]
 \end{proof}
 
-\section{The marked split and its eight-case proof}\label{sec:split}
+\section{The marked split and its eight-case proof}\label{u1432:sec:split}
 Let the unique occurrence in $\pi$ have positions $i<j<k<l$ and values
 $a<d<c<b$. Names of core points will also denote their values when no
 confusion can result. Write
@@ -309,7 +535,7 @@ confusion can result. Write
 \]
 where the supporting point $a$ lies in $U$. For $0<\varepsilon<1$,
 form and standardize
-\begin{equation}\label{eq:split}
+\begin{equation}\label{u1432:eq:split}
  q=\std\bigl(U\,(c-\varepsilon)\,V\,d\,c\,b\,W\,
                       (c+\varepsilon)\,Z\bigr),
 \end{equation}
@@ -321,15 +547,15 @@ multiply old coordinates by three and replace the offsets by $\pm1$.
 \subsection{The forced empty regions}
 Uniqueness of the core forces the following four singleton conditions:
 \begin{align}
- \{\pi_t:t<j,\ \pi_t<d\}&=\{a\}, &(R1)\label{eq:R1}\\
- \{\pi_t:i<t<k,\ \pi_t>c\}&=\{b\}, &(R2)\label{eq:R2}\\
- \{\pi_t:j<t<l,\ d<\pi_t<b\}&=\{c\}, &(R3)\label{eq:R3}\\
- \{\pi_t:t>k,\ a<\pi_t<c\}&=\{d\}. &(R4)\label{eq:R4}
+ \{\pi_t:t<j,\ \pi_t<d\}&=\{a\}, &(R1)\label{u1432:eq:R1}\\
+ \{\pi_t:i<t<k,\ \pi_t>c\}&=\{b\}, &(R2)\label{u1432:eq:R2}\\
+ \{\pi_t:j<t<l,\ d<\pi_t<b\}&=\{c\}, &(R3)\label{u1432:eq:R3}\\
+ \{\pi_t:t>k,\ a<\pi_t<c\}&=\{d\}. &(R4)\label{u1432:eq:R4}
 \end{align}
 An extra point in each respective region could replace $a,b,c,d$ in the
 core to give a second occurrence.
 
-\begin{lemma}\label{lem:splitavoid}
+\begin{lemma}\label{u1432:lem:splitavoid}
 The split permutation $q$ avoids $1432$.
 \end{lemma}
 \begin{proof}
@@ -425,7 +651,7 @@ $C+1$ occur at positions $J<K-1$ and $L>K+1$, respectively, and
 $D<C<B$. Delete the two positional neighbors of $K$, replace the value
 at $J$ by $B$ and that at $L$ by $D$, and standardize. This recovers
 $\pi$ exactly. Thus the marked split is injective into the $(n+2)$-pointed
-avoiders of size $n+2$, proving the upper bound in \eqref{eq:finite}.
+avoiders of size $n+2$, proving the upper bound in \eqref{u1432:eq:finite}.
 
 The mark is essential. The two distinct sources
 \[
@@ -436,15 +662,15 @@ both split to $(3,5,4,6,10,1,7,2,8,11,9)$, with respective
 one occurrence. This explicit collision rules out forgetting the mark
 in this construction.
 
-\section{The constants and inverse scale}\label{sec:inverse}
-Combining \eqref{eq:minimamean} with Regev's equivalent gives
+\section{The constants and inverse scale}\label{u1432:sec:inverse}
+Combining \eqref{u1432:eq:minimamean} with Regev's equivalent gives
 \[
  \frac{M_{n-3}}{nA_n}\longrightarrow\frac1{3\cdot9^3}
   =\frac1{2187},\qquad
  \frac{(n+2)A_{n+2}}{nA_n}\longrightarrow9^2=81.
 \]
-This proves Theorem~\ref{thm:main}. Equivalently, with
-\begin{equation}\label{eq:constants}
+This proves Theorem~\ref{u1432:thm:main}. Equivalently, with
+\begin{equation}\label{u1432:eq:constants}
  C_-=\frac{C_0}{2187},\qquad C_+=81C_0,
 \end{equation}
 one has
@@ -458,19 +684,19 @@ Prepending or appending a new maximum leaves the number of $1432$
 occurrences unchanged: a new maximum cannot participate in that pattern
 at the first or last position of the full permutation. Both maps are
 injective and their images are disjoint. Therefore
-\begin{equation}\label{eq:monotonicity}
+\begin{equation}\label{u1432:eq:monotonicity}
  b_{n+1}\ge2b_n\qquad(n\ge4).
 \end{equation}
 For real $x>0$, define the finite threshold
 $N(x)=\min\{n\ge4:b_n\ge x\}$. All logarithms below are natural.
 Put $\lambda=\log9$, $L=\log x$, and
-\begin{equation}\label{eq:TC}
+\begin{equation}\label{u1432:eq:TC}
  T_C(x)=\frac{L+3\log L-3\log\lambda-\log C}{\lambda}.
 \end{equation}
 
-\begin{corollary}\label{cor:inverse}
+\begin{corollary}\label{u1432:cor:inverse}
 As $x\to\infty$,
-\begin{equation}\label{eq:invbracket}
+\begin{equation}\label{u1432:eq:invbracket}
  \left\lceil T_{C_+}(x)+o(1)\right\rceil
  \le N(x)\le
  \left\lceil T_{C_-}(x)+o(1)\right\rceil.
@@ -488,7 +714,7 @@ derivative tends to $\lambda>0$.
 The two-sided order estimate first gives
 $N(x)=(L+3\log L)/\lambda+O(1)$. Uniformly on any fixed enlargement of
 this bounded-width index window, the relative errors in
-\eqref{eq:constants} tend to zero. Bound their absolute values by one
+\eqref{u1432:eq:constants} tend to zero. Bound their absolute values by one
 positive number $\epsilon(x)\to0$, chosen also to cover the two
 continuous inverse endpoints. Let $t_+$ and $t_-$ be the real crossings of $x$ by the upper and
 lower envelopes $(C_++\epsilon(x))e^{\lambda t}/t^3$ and
@@ -499,7 +725,7 @@ envelope is at least $x$, so $b_{\lceil t_-\rceil}\ge x$. These two
 integers lie in the chosen window for large $x$. Monotonicity gives
 $\lceil t_+\rceil\le N(x)\le\lceil t_-\rceil$. The inverse formula just established and
 $\log(C_\pm\pm\epsilon(x))=\log C_\pm+o(1)$ give
-\eqref{eq:invbracket}.
+\eqref{u1432:eq:invbracket}.
 
 Finally
 \[
@@ -507,31 +733,92 @@ Finally
  =\frac{\log(81\cdot2187)}{\log9}=\frac{11}{2}.
 \]
 \end{proof}
-The endpoint errors in \eqref{eq:invbracket} occur \emph{inside} the
+The endpoint errors in \eqref{u1432:eq:invbracket} occur \emph{inside} the
 ceilings and may differ. They cannot be discarded near an integer.
 The width $11/2$ describes real endpoints, not an exact count of
 admissible integers or a certified finite numerical threshold.
 
-\section{An exact eligible-center statistic}\label{sec:image}
+\begin{remark}[{[write]} The inverse in the terms of the transseries volume, 5~October 2026]\label{u1432:rem:lambert}
+The equation $\lambda t-3\log t+\log C=L$ inverted in the proof of
+Corollary~\ref{u1432:cor:inverse} is the dominant block
+$\Phi_0(X)=aX+b\log X=L'$ of \file{p0:thm:lambert-core} in the transseries
+volume~\cite{TSvol}, with
+\[
+ a=\lambda=\log9,\qquad b=-3,\qquad L'=L-\log C .
+\]
+Since $b<0$, part~(3) of that theorem says that for
+$L'>L_c=3\bigl(1-\log(3/\lambda)\bigr)$ there are exactly two positive
+solutions, and the large one, on which $\Phi_0$ increases, is
+\[
+ X=\frac3\lambda\Bigl(-W_{-1}\bigl(-\tfrac\lambda3e^{-L'/3}\bigr)\Bigr).
+\]
+With $u=\frac\lambda3e^{-L'/3}\to0^+$, the expansion
+$-W_{-1}(-u)=\ell_1+\ell_2+O(\ell_2/\ell_1)$, $\ell_1=\log(1/u)=L'/3+\log(3/\lambda)$,
+$\ell_2=\log\ell_1=\log L-\log3+O(1/L)$, gives
+\[
+ X=\frac{L'+3\log(3/\lambda)+3\log L-3\log3}{\lambda}+O\Bigl(\frac{\log L}{L}\Bigr)
+  =T_C(x)+O\Bigl(\frac{\log L}{L}\Bigr),
+\]
+the formula used in the proof, so $T_C(x)$ is the two-term expansion of the
+Lambert solution. The threshold $N(x)$ is the integer staircase $N_\ast$ of
+\file{p0:def:three-inverses} with $n_1=4$: by \eqref{u1432:eq:monotonicity}
+and $b_4=1$, $(b_n)_{n\ge4}$ is strictly increasing and unbounded, so it has
+admissible interpolations (piecewise linear, for example), and
+\file{p0:thm:staircase}\,(1) gives $N(x)=\lceil\nu(x)\rceil$ for each of them.
+The proof of Corollary~\ref{u1432:cor:inverse} does not choose an
+interpolation: it compares $b_n$ with two continuous envelopes at the
+integers, which yields the two-ceiling bracket directly. No novelty is
+claimed for the inversion.
+\end{remark}
+
+\begin{remark}[{[write]} The generating function is not algebraic, 5~October 2026]\label{u1432:rem:nonalg}
+The generating function $B(z)=\sum_{n\ge1}b_nz^n$ of A224182 is not an
+algebraic power series.
+
+\emph{Proof.} Put $f(z)=z+z^2+z^3+B(z)$, so that $f_n=1$ for $n\le3$ and
+$f_n=b_n$ for $n\ge4$. For $n\ge4$, \eqref{u1432:eq:finite} gives
+$b_n\ge M_{n-3}\ge A_{n-3}\ge1$, because every permutation has at least one
+left-to-right minimum; hence $f_n>0$ for every $n\ge1$. By
+\eqref{u1432:eq:theta} there are $0<c'\le C'$ and $n_0$ with
+$c'9^n/n^3\le f_n\le C'9^n/n^3$ for $n\ge n_0$. Put
+$c=\min\{c',\min_{1\le n<n_0}f_nn^3/9^n\}>0$ and
+$C=\max\{C',\max_{1\le n<n_0}f_nn^3/9^n\}$. Then
+\[
+ c\,\frac{9^n}{n^3}\le f_n\le C\,\frac{9^n}{n^3}\qquad(n\ge1).
+\]
+The series $f$ has nonnegative coefficients and radius of convergence $1/9$,
+so it is analytic at the origin. Lemma~6.3 of B\'ona and
+Burstein~\cite{BB}, with $K=9$ and the integer $m=3>1$, shows that $f$ is not
+an algebraic power series. As $B=f-z-z^2-z^3$ differs from $f$ by a
+polynomial, $B$ is not algebraic either. \qed
+
+The source does not state this consequence of its theorem. Report~136 of the
+same bundle (in \file{a217057-unique-pattern-occurrences}) draws it in the
+same way for one $1243$; B\'ona and Burstein's own non-algebraicity theorem
+concerns one copy of $k\cdots21$ with $k$ even and does not cover $1432$.
+Whether $B$ is D-finite is open (Question~\ref{u1432:q:dfinite}).
+\end{remark}
+
+\section{An exact eligible-center statistic}\label{u1432:sec:image}
 The marked inverse suggests a finite geometric statistic on avoiders.
 The following refinement is logically separate from the computer-free
 order theorem. Its sufficiency proof uses the exhaustive certificate
 specified below.
 
 Given $q\in\Av_{n+2}(1432)$ with a marked position $K$, require
-\begin{equation}\label{eq:adjacency}
+\begin{equation}\label{u1432:eq:adjacency}
  1<K<n+2,\quad D=q_{K-1}<C=q_K<B=q_{K+1},\quad
  \operatorname{pos}_q(C-1)<K-1,\quad
  \operatorname{pos}_q(C+1)>K+1.
 \end{equation}
 The last conditions include existence of the adjacent values. Unsplit
-as in Section~\ref{sec:split}. The result $p$ has distinguished tail
+as in Section~\ref{u1432:sec:split}. The result $p$ has distinguished tail
 $b,c,d$ at positions $j<k<l$. Require exactly one $a<d$ before $j$,
 and let its position be $i$. Finally require (R2)--(R4) in $p$.
 Together with sole support (R1), these are four singleton rectangles.
 Call such a center \emph{eligible}.
 
-\begin{theorem}[Exact image with a finite certificate]\label{thm:image}
+\begin{theorem}[Exact image with a finite certificate]\label{u1432:thm:image}
 The split is a bijection between permutations of size $n$ with one
 $1432$ and eligible marked centers of $1432$-avoiders of size $n+2$.
 In particular,
@@ -542,7 +829,7 @@ In particular,
 \end{theorem}
 \begin{proof}
 Necessity follows from the split and (R1)--(R4). Conditions
-\eqref{eq:adjacency} ensure that all roles are distinct. Unsplit then
+\eqref{u1432:eq:adjacency} ensure that all roles are distinct. Unsplit then
 split again: deleting $D,B$ and replacing the $C-1,C+1$ entries removes
 exactly the two new ranks adjacent to $C$, while deleting their neighbors
 removes exactly the two new positions adjacent to $K$. After
@@ -591,7 +878,7 @@ $p=(1,5,4,3,2)$, which has four occurrences. The exact eligible-center
 statistic provides a possible target for amplitude analysis, but no
 limiting density for this statistic is established here.
 
-\section{Prior results and reproducibility}\label{sec:prior}
+\section{Prior results and reproducibility}\label{u1432:sec:prior}
 The exponential growth rate $9$ is inherited from avoidance and the
 general fixed-occurrence theory of Mansour, Rastegar and
 Roitershtein~\cite{MRR}. Their proof of Theorem 3.1 displays the stronger
@@ -600,17 +887,66 @@ where $f_r^\xi(n)$ counts exactly $r$ occurrences of $\xi$. For $m=1$
 and $\xi=1432$, this would give $b_n\le nA_{n-1}$ and hence the same
 upper order. We do not rely on that estimate here: the marked split
 independently proves the upper bound actually used in
-Theorem~\ref{thm:main}. No novelty is claimed for the upper order. The contribution established by the argument here
+Theorem~\ref{u1432:thm:main}. No novelty is claimed for the upper order. The contribution established by the argument here
 is the complete stated order theorem with a matched lower scale and
 explicit constants, relative to the conjecture being addressed.
 A scoped literature and repository check is not a global priority proof.
+
+\begin{remark}[{[write]} The one-step bound of Mansour, Rastegar and Roitershtein, 5~October 2026]\label{u1432:rem:mrr}
+The display quoted above is printed in the proof of Theorem~3.1
+of~\cite{MRR} (arXiv version~1, p.~29; the same text in the published author
+manuscript), where it is derived from one sentence: removing the leftmost
+letter of the leftmost occurrence of $\xi$ in $\pi\in S_n$ and renaming the
+remaining letters gives $\pi'\in S_{n-1}$ with at most $m-1$ occurrences.
+That map recovers $\pi$ from $\pi'$ only together with the position \emph{and
+the value} of the removed letter, so the printed argument bounds each fibre
+by $n^2$, not by $n$, and proves
+\[
+ f_m^\xi(n)\le n^2\sum_{r=0}^{m-1}f_r^\xi(n-1).
+\]
+This suffices for Theorem~3.1 there, which concerns exponential rates only.
+For $\xi=1432$ and $m=1$ it gives $b_n\le n^2A_{n-1}=O(9^nn^{-2})$, one
+power of $n$ short of the upper order in~\eqref{u1432:eq:theta}.
+
+The fibres do exceed $n$. For $n=8$, let $v\in\{1,2,3\}$ and
+$p\in\{1,2,3\}$, and let $\pi$ be obtained from $4571263\in\Av_7(1432)$ by
+raising every letter $\ge v$ by one and inserting $v$ at position $p$; the
+nine permutations are
+\[
+ 15682374,\ 25681374,\ 35681274,\ 51682374,\ 52681374,\ 53681274,\
+ 56182374,\ 56281374,\ 56381274 .
+\]
+A $1432$ is a letter followed by a decreasing triple of larger letters. In
+each $\pi$ the letters other than $v$ read $5,6,8,x,y,7,4$ in this order,
+where $\{x,y\}=\{1,2,3\}\setminus\{v\}$ and $x<y$. No letter other than $v$
+starts a $1432$: the larger letters following $5$, $6$, $x$ and $y$ are
+among $6,8,7$, among $8,7$, the letters $y,7,4$ and the letters $7,4$,
+respectively, and $8$, $7$ and $4$ are followed by no larger letter; none of
+these lists contains a decreasing triple. The larger letters following $v$
+are, in order, some of $5,6$, then $8$, then some of $x,y$, then $7,4$; as
+$x<y<4$, their only decreasing triple is $(8,7,4)$. Hence $\pi$ has exactly
+one $1432$, namely $(v,8,7,4)$; its leftmost letter is $v$, and removing it
+gives back $4571263$. So this
+avoider of size $7$ has at least nine preimages in $S_8$. By exhaustive
+enumeration the largest fibre is $2,4,6,9,12$ for $n=5,\dots,9$.
+
+Whether the stated inequality with the factor $n$ holds is therefore not
+settled by~\cite{MRR}; it is Question~\ref{u1432:q:mrr}. The source's
+sentence that the estimate ``would give'' the same upper order is correct as
+a conditional, and its non-claim of novelty for the upper order is kept as the
+source's own. But among the sources the manuscript cites, the marked split of
+Section~\ref{u1432:sec:split} is the only complete proof of
+$b_n=O(9^n/n^3)$ that the write found. (The placement record of this batch,
+commit \file{e85586b7c}, says that the upper order was known through this
+paper; this remark qualifies that statement.)
+\end{remark}
 
 The original Backelin--West--Xin journal full text was not successfully
 retrieved in this investigation. Attribution to that work is distinct
 from the directly checked proof in Krattenthaler's Theorems 1--3, whose
 hypotheses and rectangle convention were verified above. The cited
 Burstein paper concerns a unique global decreasing triple; it does not
-by itself prove Lemma~\ref{lem:splitavoid}. Conway--Guttmann Section 5.5
+by itself prove Lemma~\ref{u1432:lem:splitavoid}. Conway--Guttmann Section 5.5
 repeats identifier A224182 for a different class; the identification here
 uses OEIS's $2341$ definition and reversal, consistent with their
 Section 5.3 and Nakamura's equation.
@@ -635,7 +971,7 @@ recomputed rather than merely trusted after a hash comparison.
 
 The main theorem does not depend on these finite tests: its split proof,
 inflation argument, entropy estimate, and uses of cited avoidance
-theorems are ordinary mathematical proofs. Theorem~\ref{thm:image}
+theorems are ordinary mathematical proofs. Theorem~\ref{u1432:thm:image}
 \emph{does} use its finite exhaustive certificate, after a proved
 universal obstruction reduction. This distinction is essential. Neither
 the numerical cross-checks nor the archive seal constitute formal
@@ -650,24 +986,144 @@ with the frozen PDF. Deterministic ZIP packing is checked again after
 fresh extraction. These are reproducibility and integrity controls,
 not a substitute for reviewing the mathematics.
 
-\section{Further questions}
+\begin{writenote}[The companion here, and the intake reruns, 5~October 2026]
+``The offline archive'' is the delivered package; in this report its four
+programs are \file{code/verify.py}, \file{code/primary.py},
+\file{code/coordinate.py} and \file{code/replay.py}, its sealed data
+\file{checks/fixtures.json} is \file{data/checks-fixtures.json}
+(864{,}678 bytes, the $2{,}074$ certificate records and the other fixture
+values), and its source provenance is \file{SOURCES.md}; the PDF and the
+manifest are not shipped. The verifier enforces the delivered layout (it
+reads \file{manifest.json}, \file{checks/} and \file{Report139.pdf}), so it
+does not run in the shipped directory; the report README gives two routes,
+from the arrival commit's archive and from the shipped programs. At
+placement, on copies, \texttt{check}, \texttt{replay} and \texttt{-O replay}
+passed (43--49~s under load; both outputs byte-identical to the sealed
+fixture) and \texttt{selftest} passed 51 tests in 238~s. At the write, on a
+fresh extraction, \texttt{check} and \texttt{replay} (normal and \texttt{-O})
+passed again in about 5~s each, with output byte-identical to the shipped
+fixture, and running \texttt{replay.run()} from copies of the three shipped
+mathematical programs reproduced the shipped fixture's content exactly.
+The PDF build and packing commands, which compare TeX environments, were
+not run.
+\end{writenote}
+
+\section{Further questions}\label{u1432:sec:questions}
 The principal unresolved question is whether $b_n/(nA_n)$ has a limit,
 and if so whether that limit is the suggested $3/80$. The exact image
-formula in Theorem~\ref{thm:image} turns this into a question about the
+formula in Theorem~\ref{u1432:thm:image} turns this into a question about the
 asymptotic mean number of eligible centers in a uniform avoider. Even a
 proof of convergence without evaluation would strengthen the order theorem.
 
 The constants $1/2187$ and $81$ arise from transparent injections and are
 not asserted to be sharp. Better control of the split image could narrow
 them and the inverse bracket. For $1\oplus\delta_k$, a matching general
-upper bound would complement Corollary~\ref{cor:general}; none follows
+upper bound would complement Corollary~\ref{u1432:cor:general}; none follows
 from the present eight-case proof. Finally, a computer-free sufficiency
 proof for the four-rectangle exact image criterion would remove the finite
 certificate from that additional theorem, just as the eight-case argument
 already does for the main upper bound.
 
-\begin{thebibliography}{9}
-\small
+\subsection{Further questions and research}\label{u1432:sec:further}
+\begin{writenote}[Added 5 October 2026, batch~105]
+Following Vladimir Reshetnikov's standing rule of 4~October 2026, every
+claim of the source that is not proved in full is stated here as an open
+question, with its source, the argument offered and what is missing. The
+three paragraphs above are
+Questions~\ref{u1432:q:limit}, \ref{u1432:q:density} (first paragraph),
+\ref{u1432:q:constants}, \ref{u1432:q:tau} (second) and \ref{u1432:q:image}
+(third); Questions~\ref{u1432:q:mrr} and~\ref{u1432:q:dfinite} come from
+Remarks~\ref{u1432:rem:mrr} and~\ref{u1432:rem:nonalg};
+Question~\ref{u1432:q:external} concerns the external inputs. The intake
+found no false claim in the source.
+\end{writenote}
+\begin{enumerate}
+\item\label{u1432:q:limit} \textbf{Does $b_n/(nA_n)$ converge, and to
+ $3/80$?} (Source, first paragraph; Conway and Guttmann~\cite[Section~5.3]{CG}.)
+ Theorem~\ref{u1432:thm:main} confines the ratio to $[1/2187,81]$ in the
+ limit; nothing in the source bears on convergence. Missing: any limit
+ theorem; Question~\ref{u1432:q:density} is one route.
+
+ \emph{Observation, not a claim.} From the 18 terms of A224182 and exact
+ $A_n$ (hook-length formula), the ratios $r_n=b_n/(nA_n)$, to seven digits,
+ are
+ \begin{center}\small\setlength{\tabcolsep}{3.5pt}
+ \begin{tabular}{@{}lccccccccc@{}}\toprule
+ $n$ & 10 & 11 & 12 & 13 & 14 & 15 & 16 & 17 & 18\\\midrule
+ $r_n$ & .0369735 & .0375056 & .0378384 & .0380455 & .0381713 & .0382435 & .0382801 & .0382927 & .0382892\\
+ \bottomrule\end{tabular}
+ \end{center}
+ They increase through $n=17$ and decrease for the first time at $n=18$
+ ($r_{18}-r_{17}=-3.5\cdot10^{-6}$); $r_n$ first exceeds $3/80=0.0375$ at
+ $n=11$. Polynomials in $1/n$ of degrees $1,2,3,4$ through the last
+ $2,3,4,5$ terms extrapolate to $0.0382$, $0.0361$, $0.0367$, $0.0370$; for
+ degrees $2$--$4$ the extrapolated value increases as the last term used
+ moves from $n=14$ to $n=18$. All of this
+ is consistent with Conway and Guttmann's $0.0375\pm0.0005$, which used 26
+ further approximate terms. The placement record of this batch
+ (\file{e85586b7c}) and its dossier read the same data as ``above $3/80$ and
+ rising''; the turn at $n=18$ corrects that reading. Eighteen terms cannot
+ separate $3/80$ from nearby values, and none of these numbers is a bound.
+\item\label{u1432:q:density} \textbf{A limiting density of eligible
+ centres} (source, first paragraph and after Theorem~\ref{u1432:thm:image}).
+ By Theorem~\ref{u1432:thm:image}, $b_n=A_{n+2}E_{n+2}$, with $E_{n+2}$ the
+ mean number of eligible centres of a uniform $1432$-avoider of size $n+2$.
+ Since $A_{n+2}/A_n\to81$, the ratio $b_n/(nA_n)$ converges if and only if
+ $E_{n+2}/n$ does, and the value $3/80$ corresponds to $E_{n+2}\sim
+ n/2160$. Missing: any law of large numbers for eligible centres.
+\item\label{u1432:q:constants} \textbf{Sharper constants and a narrower
+ inverse bracket} (source, second paragraph). The constants $1/2187$ and $81$
+ come from the two injections and are not claimed sharp; the unrounded width
+ $11/2$ of Corollary~\ref{u1432:cor:inverse} is $\log(81\cdot2187)/\log9$.
+ If the inequality of Question~\ref{u1432:q:mrr} holds, the upper constant
+ improves from $81$ to $1/9$ ($C_+=C_0/9$) and the width to
+ $\log(2187/9)/\log9=5/2$.
+ Missing: control of the split image (the eligible-centre statistic) or a
+ better lower injection.
+\item\label{u1432:q:mrr} \textbf{The one-step inequality with the factor
+ $n$} (from Remark~\ref{u1432:rem:mrr}). Is $f_m^\xi(n)\le
+ n\sum_{r<m}f_r^\xi(n-1)$ true, in general or for $\xi=1432$, $m=1$, that
+ is $b_n\le nA_{n-1}$? The printed argument of~\cite{MRR} gives $n^2$, and
+ its fibres exceed $n$ from $n=8$. \emph{Observation:} $b_n/(nA_{n-1})$
+ increases from $0.0417$ at $n=4$ to $0.2787$ at $n=18$; brute force over
+ every $m$, $n\le7$, for the patterns $123$, $132$, $1234$, $1243$, $1324$,
+ $1432$ and $2413$ finds no violation (largest ratio $0.46$). If Conway and
+ Guttmann's estimate is right, $b_n/(nA_{n-1})\to9\cdot3/80=0.3375$, inside the
+ bound. Missing: a proof; counting the fibres of the deletion map cannot
+ give it.
+\item\label{u1432:q:tau} \textbf{A matching upper bound for
+ $\tau_k=1\oplus\delta_k$, $k\ge4$} (source, second paragraph;
+ Corollary~\ref{u1432:cor:general}). The lower bound
+ $\liminf b^{(k)}_n/(nA^{(k)}_n)\ge k^{-2k-1}$ is proved; no upper bound of
+ order $nA^{(k)}_n$ is. The eight-case proof of
+ Lemma~\ref{u1432:lem:splitavoid} is specific to $k=3$, and the printed
+ argument of~\cite{MRR} gives only $b^{(k)}_n\le n^2A^{(k)}_{n-1}$, a factor
+ $n$ too large. Missing: a split for a longer decreasing tail, with its case
+ analysis.
+\item\label{u1432:q:image} \textbf{A computer-free proof of sufficiency in
+ Theorem~\ref{u1432:thm:image}} (source, third paragraph). The reduction to
+ at most eight points is proved; the remaining statement is the finite
+ certificate of $0+0+6+130+1938=2{,}074$ designated cores in sizes $4$--$8$.
+ Missing: a case analysis, like Section~\ref{u1432:sec:split}'s, showing
+ that a second occurrence always survives the split.
+\item\label{u1432:q:dfinite} \textbf{Is the generating function of A224182
+ D-finite?} (The delivered README: the package ``does not prove \dots\
+ D-finiteness''; Remark~\ref{u1432:rem:nonalg}.) It is not algebraic. The integer
+ exponent $-3$ does not obstruct D-finiteness, and Nakamura's functional
+ equation (FE2341)~\cite{Nakamura} uses $n(n+1)$ catalytic variables at
+ size $n$.
+ Missing: an annihilating operator, or an argument excluding one.
+\item\label{u1432:q:external} \textbf{External inputs and priority.} The
+ proofs use Regev's strip asymptotic~\cite{Regev} and Krattenthaler's
+ Theorems~1--3~\cite{Kratt}, which the write located but did not re-derive,
+ and attribute the shape-Wilf ingredient to Backelin, West and
+ Xin~\cite{BWX}, whose journal text neither the source nor the write read.
+ The source's literature check was scoped; priority for the matched order and
+ the constants is not established beyond it.
+\end{enumerate}
+
+\begin{thebibliography}{99}
+\small\raggedright
 \setlength{\itemsep}{3pt}
 \bibitem{OEIS} OEIS Foundation, \emph{A224182: Number of permutations of
 length $n$ with exactly one occurrence of the pattern $2341$}.
@@ -703,5 +1159,15 @@ of a pattern in words and permutations}, SIAM Journal on Discrete
 Mathematics \textbf{34}(2) (2020), 1011--1038, Theorem 3.1.
 \url{https://doi.org/10.1137/19M1262206}.
 \url{https://arxiv.org/abs/1905.05646}.
+\bibitem{BB} [write] M. B\'ona and A. Burstein, \emph{Permutations with
+exactly one copy of a monotone pattern of length $k$, and a generalization},
+arXiv:2101.00332v3 (2021), Lemma~6.3 (with Theorems~4.1, 5.5 and~6.2).
+\url{https://arxiv.org/abs/2101.00332}. Read 5~October 2026.
+\bibitem{TSvol} [write] ProveIt, \emph{Transseries: the
+polynomial-logarithmic calculus, series reversal at infinity, and
+inversion},
+\path{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex},
+\texttt{p0:def:three-inverses}, \texttt{p0:thm:lambert-core} and
+\texttt{p0:thm:staircase}.
 \end{thebibliography}
 \end{document}
