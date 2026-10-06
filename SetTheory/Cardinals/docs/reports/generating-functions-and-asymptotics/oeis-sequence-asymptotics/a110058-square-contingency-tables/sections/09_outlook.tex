@@ -1,15 +1,15 @@
-\section{Context and further questions}\label{sec:outlook}
+\section{Context and further questions}\label{sqt:sec:outlook}
 \subsection{What is inherited and what is specialized}
 The leading equivalent is established prior work of Canfield--McKay \cite{CM} and is also within Barvinok--Hartigan's smooth-margin theory \cite{BH}. General complex cumulant control is due to Isaev \cite{Isaev}, with earlier complex-martingale antecedents in Isaev--McKay \cite{IM2018}. Connected-Wick identities and high-dimensional power counting are standard tools, explicitly developed in the related enumeration literature \cite{IM,IMZ}. Higher-order saddlepoint corrections for contingency tables also have a substantial earlier history, including the double-saddlepoint approach of Zipunnikov--Booth--Yoshida \cite{ZBY}.
 
-The assertion proved here is the stated geometric square-table specialization with its complete cutoff and gauge reduction, all-fixed-order rational coefficient algorithm, evaluated corrections, and controlled consequences. It is not a claim to a new general saddlepoint or cumulant method. A bounded primary-source review did not locate the explicit coefficient pair or this dense-square specialization, but absence from the sources inspected is not a worldwide priority certificate. The sparse occurrence of the first numerical coefficient is noted in Section~\ref{sec:conjecture}.
+The assertion proved here is the stated geometric square-table specialization with its complete cutoff and gauge reduction, all-fixed-order rational coefficient algorithm, evaluated corrections, and controlled consequences. It is not a claim to a new general saddlepoint or cumulant method. A bounded primary-source review did not locate the explicit coefficient pair or this dense-square specialization, but absence from the sources inspected is not a worldwide priority certificate. The sparse occurrence of the first numerical coefficient is noted in Section~\ref{sqt:sec:conjecture}.
 
 A concrete comparison explains why a leading-order Edgeworth expression does not settle the present correction. Specializing the cubic/quartic exponent displayed by Barvinok--Hartigan to these square margins gives, by direct algebra,
-\begin{equation}\label{eq:BHcompare}
+\begin{equation}\label{sqt:eq:BHcompare}
 -\frac\mu2+\nu=B_0(u)-\frac1n+
 \frac1{n^2}\left(\frac7{12}+\frac1{12u}\right).
 \end{equation}
-At $\lambda=1$, this is $1/4-1/n+5/(8n^2)$. Their theorem uses this expression with relative error tending to zero; it does not assert that its lower-order displayed terms are the true higher-order counting coefficients. The additional connected cumulants account for the difference at the precision sought here. Equation~\eqref{eq:BHcompare} is a specialization of their formula, not a correction to a claim in their theorem.
+At $\lambda=1$, this is $1/4-1/n+5/(8n^2)$. Their theorem uses this expression with relative error tending to zero; it does not assert that its lower-order displayed terms are the true higher-order counting coefficients. The additional connected cumulants account for the difference at the precision sought here. Equation~\eqref{sqt:eq:BHcompare} is a specialization of their formula, not a correction to a claim in their theorem.
 
 Recent binary or bounded-entry enumeration results are likewise not interchangeable with geometric tables. For example, admixed arrays in Aw \cite{Aw} and simple multipartite hypergraphs in Isaev--Makai--McKay \cite{IMM} concern different underlying models. Their statements do not supply the analytic specialization above.
 
@@ -20,8 +20,69 @@ Recent binary or bounded-entry enumeration results are likewise not interchangea
 \item \textbf{Growth and optimal truncation.} What is the growth of $P_j$ with $j$? Fixed-order proofs do not answer whether the series converges, has a Gevrey bound, or admits useful optimal truncation. Identifying exponentially small contributions would require analysis beyond the present Poincar\'e expansion.
 \item \textbf{Transition regimes.} The compact-density constants degenerate as density tends to zero or infinity. A parameter-dependent analysis could connect the positive-density result with sparse table asymptotics or growing-margin regimes. Substitution into a fixed-density formula is insufficient to justify those limits.
 \item \textbf{Rectangular and nonconstant margins.} The null direction remains, but the whitening map, covariance structure and coefficient complexity change. Extending the full argument to controlled aspect ratios or smooth nonconstant margins requires fresh uniform bounds rather than an automatic appeal to the square proof.
-\item \textbf{The correction-factor conjecture at all sizes.} Corollary~\ref{cor:delta} identifies a positive eventual correction in a dense square regime. Proving the conjectured strict inequalities at every finite size, or uniformly across changing densities and aspect ratios, remains a different problem.
+\item \textbf{The correction-factor conjecture at all sizes.} Corollary~\ref{sqt:cor:delta} identifies a positive eventual correction in a dense square regime. Proving the conjectured strict inequalities at every finite size, or uniformly across changing densities and aspect ratios, remains a different problem.
 \end{enumerate}
 These questions preserve the distinction between the theorem already proved, its computational checks, and stronger conclusions that would need additional analysis.
 
 The theorem numbering for Canfield--McKay and the complex cumulant result refers to the linked preprint versions. The source package links to primary papers but does not redistribute their PDFs.
+
+\section{Further questions and research}\label{sqt:sec:further}
+\begin{writenote}[Added 6 October 2026, batch~108]
+Following Vladimir Reshetnikov's standing rule of 4~October 2026, every
+claim of the source that is not proved in full is stated here as an open
+question, with its source, the argument offered and what is missing; the
+source's own questions are those of Section~\ref{sqt:sec:outlook}, which
+stay as printed. The intake and the write found no false statement in the
+source. One claim read as more than is proved, ``an eventual square case''
+of the Canfield--McKay conjecture; it is narrowed, not refuted, since the
+precise statement, Corollary~\ref{sqt:cor:delta}, is proved
+(Remark~\ref{sqt:rem:cmregime}). One step rests on the source's reading of
+an external proof (Question~\ref{sqt:q:uniform}).
+\end{writenote}
+\begin{enumerate}
+\item\label{sqt:q:uniform} \textbf{The uniform localization rate} (source:
+ Section~\ref{sqt:sec:density}, the paragraph before
+ \eqref{sqt:eq:densityminor}: Canfield--McKay's ``stated asymptotic constants
+ allow dependence on $a,b$ and the fixed localization exponent'', and ``One
+ can also check uniformity directly in their localization proof'', with the
+ three normalized bounds displayed there). \emph{Proved at the write:}
+ Lemma~\ref{sqt:lem:sequential}, a uniform superpolynomial bound, which is
+ all that Theorem~\ref{sqt:thm:density} and Corollary~\ref{sqt:cor:delta}
+ use; it needs only the statement of Theorem~3 of \cite{CM}, read
+ sequentially. \emph{Open:} the uniform rate
+ $O_I(e^{-c_In^\eta})$ of~\eqref{sqt:eq:densityminor} as a theorem. What is
+ missing is a version of Canfield--McKay's Theorem~3 with every implied
+ constant tracked as a function of $\lambda$ on compact sets, including the
+ constants of their Lemmas~3 and~4, whose proofs the preprint omits
+ (Remark~\ref{sqt:rem:uniformity}). The write found the source's reading
+ consistent with the steps of that proof it read. A tracked version is also
+ the first step of the source's Question~1 (explicit finite-size bounds).
+\item\label{sqt:q:regime} \textbf{The conjecture outside the regime} (source:
+ Section~\ref{sqt:sec:outlook}, Questions~4 and~6; sharpened by the write in
+ Remark~\ref{sqt:rem:cmregime}(c)). \emph{Proved:} $0<\Delta(n,s;n,s)<2$ for
+ $s/n\in I$, $n\ge n_0(I)$, with $n_0(I)$ ineffective. \emph{Open:} an
+ explicit $n_0(I)$, which together with Canfield--McKay's case~(a) and finite
+ computation would settle the conjecture for all square tables of density
+ in~$I$; the square tuples with $s/n\to0$ but $s$ not $o(n^{1/5})$, between
+ Greenhill--McKay's sparse range and the compact-density range; $s/n\to\infty$;
+ and every nonsquare tuple. The formal agreement of the two leading terms
+ (Remark~\ref{sqt:rem:cmregime}(e)) suggests a uniform transition but proves
+ none.
+\item\label{sqt:q:monotone} \textbf{Monotonicity of the correction}
+ (added by the write; not a claim of the source). For $2\le n\le13$ the
+ values $\Delta(n,n;n,n)$ decrease and the products $n\Delta(n,n;n,n)$
+ increase toward the predicted limit $12$ (table in
+ Remark~\ref{sqt:rem:cmregime}). Do both monotonicities hold for all $n\ge2$?
+ Either would be a finite-size statement that the eventual
+ Corollary~\ref{sqt:cor:delta} does not give.
+\item\label{sqt:q:literature} \textbf{Sources the write did not read}
+ (source: Sections~\ref{sqt:sec:imports}, \ref{sqt:sec:conjecture}
+ and~\ref{sqt:sec:outlook}). The statements made about Barvinok--Hartigan's
+ Theorem~1.3 and their displayed exponent~\eqref{sqt:eq:BHcompare},
+ Greenhill--McKay's Corollaries~4.1 and~4.2, the hypotheses of
+ Isaev--McKay's graph-factor theorem and the other works cited in
+ Section~\ref{sqt:sec:outlook} are the source's and were not checked against
+ those texts by the write (Canfield--McKay's own record supports the
+ sparse case of the conjecture). The source's literature review is bounded
+ and is not a priority certificate.
+\end{enumerate}

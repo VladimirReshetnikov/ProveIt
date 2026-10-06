@@ -1,6 +1,6 @@
-\section{An eventual square case of a correction factor conjecture}\label{sec:conjecture}
+\section{The correction-factor conjecture in an eventual dense square regime}\label{sqt:sec:conjecture}
 Canfield--McKay's Conjecture~1 \cite[Eq.~(1.4)]{CM} defines a correction $\Delta(m,s;n,t)$ by
-\begin{align}\label{eq:CMdelta}
+\begin{align}\label{sqt:eq:CMdelta}
 M(m,s;n,t)={}&G_{\rm Good}(m,s;n,t)
  \left(1+\frac1m\right)^{(m-1)/2}
  \left(1+\frac1n\right)^{(n-1)/2}\notag\\
@@ -12,27 +12,27 @@ G_{\rm Good}(m,s;n,t)=
 \frac{\binom{n+s-1}{s}^{m}\binom{m+t-1}{t}^{n}}
  {\binom{mn+ms-1}{ms}}.
 \]
-They conjecture $0<\Delta<2$ for all positive integer admissible parameters. This $G_{\rm Good}$ differs from the Gaussian prefactor $G_n$ of \eqref{eq:leading}.
+They conjecture $0<\Delta<2$ for all positive integer admissible parameters. This $G_{\rm Good}$ differs from the Gaussian prefactor $G_n$ of \eqref{sqt:eq:leading}.
 
-\begin{corollary}\label{cor:delta}
+\begin{corollary}\label{sqt:cor:delta}
 On each fixed compact interval $I\subset(0,\infty)$, uniformly over square tables with integer line sum $s$ and $\lambda=s/n\in I$,
-\begin{equation}\label{eq:deltaasymp}
+\begin{equation}\label{sqt:eq:deltaasymp}
 \Delta(n,s;n,s)=\frac1n\left(\frac{67}{6}+\frac5{3u}\right)+O_I(n^{-2}),
 \qquad u=\lambda(1+\lambda).
 \end{equation}
 Consequently $0<\Delta(n,s;n,s)<2$ for all sufficiently large $n$, uniformly over those margins. In particular,
-\begin{equation}\label{eq:deltadensityone}
+\begin{equation}\label{sqt:eq:deltadensityone}
 \Delta(n,n;n,n)=\frac{12}{n}+O(n^{-2}).
 \end{equation}
 \end{corollary}
 \begin{proof}
 Set $\mathcal L(n,\lambda)=\mathcal G(n,\lambda)e^{B_0(u)}$. The standard Stirling expansion of the three factorial ratios in $G_{\rm Good}$ gives, uniformly on $I$,
-\begin{equation}\label{eq:goodstirling}
+\begin{equation}\label{sqt:eq:goodstirling}
 \log\frac{G_{\rm Good}(n,s;n,s)e^{1/2}}{\mathcal L(n,\lambda)}
  =\frac{g_2(u)}{n^2}+O_I(n^{-4}),
 \end{equation}
 where
-\begin{equation}\label{eq:g2}
+\begin{equation}\label{sqt:eq:g2}
 g_2(u)=\frac4{45}+\frac1{12u}+\frac1{60u^2}+\frac1{180u^3}.
 \end{equation}
 Here is an explicit way to see the coefficient. If
@@ -49,13 +49,13 @@ b_3(u)=\frac{1+3/u^2+1/u^3}{360}.
 The constant in this display needs the factor $1/(1+\lambda)$ in
 $\binom{(1+\lambda)N-1}{\lambda N}=\binom{(1+\lambda)N}{\lambda N}/(1+\lambda)$; it is already included in $-\tfrac12\log(2\pi N u)$. Since
 $\log G_{\rm Good}=2n\log B(n,\lambda)-\log B(n^2,\lambda)$,
-its $n^{-2}$ coefficient is $2b_3-b_1=g_2$. Its constant is $2b_1=B_0-1/2$. This proves \eqref{eq:goodstirling}.
+its $n^{-2}$ coefficient is $2b_3-b_1=g_2$. Its constant is $2b_1=B_0-1/2$. This proves \eqref{sqt:eq:goodstirling}.
 
-Taking logarithms in \eqref{eq:CMdelta} in the square case,
+Taking logarithms in \eqref{sqt:eq:CMdelta} in the square case,
 \[
 \frac{\Delta}{2n}=\log\frac{T(n,s)}{G_{\rm Good}}-(n-1)\log(1+1/n)+\frac12.
 \]
-Use Theorem~\ref{thm:density}, \eqref{eq:goodstirling}, and
+Use Theorem~\ref{sqt:thm:density}, \eqref{sqt:eq:goodstirling}, and
 \[
 (n-1)\log(1+1/n)=1-\frac{3}{2n}+\frac5{6n^2}+O(n^{-3}).
 \]
@@ -63,11 +63,80 @@ The constants and $n^{-1}$ terms cancel. The remaining coefficient is
 \[
 P_2(1/u)-g_2(u)-\frac56=\frac{67}{12}+\frac5{6u}.
 \]
-Multiplication by $2n$ proves \eqref{eq:deltaasymp}. The leading coefficient is positive and bounded above and below on $I$, so its uniform remainder proves the eventual strict inequalities. Substituting $u=2$ gives \eqref{eq:deltadensityone}.
+Multiplication by $2n$ proves \eqref{sqt:eq:deltaasymp}. The leading coefficient is positive and bounded above and below on $I$, so its uniform remainder proves the eventual strict inequalities. Substituting $u=2$ gives \eqref{sqt:eq:deltadensityone}.
 \end{proof}
 
-This is an eventual compact-positive-density \emph{square} case of the conjecture, with no explicit starting index. It does not settle all finite sizes, nonsquare tables, or densities tending to zero or infinity. Prior progress includes Greenhill--McKay \cite[Corollary~4.2]{GM}, which proves
+This verifies the conjectured inequalities in one regime only: square tables, density in a fixed compact subset of $(0,\infty)$, and $n$ beyond a threshold that is not made explicit (Remark~\ref{sqt:rem:cmregime}). It does not settle all finite sizes, nonsquare tables, or densities tending to zero or infinity. Prior progress includes Greenhill--McKay \cite[Corollary~4.2]{GM}, which proves
 $\Delta(m,s;n,t)\sim5(s+t)/(6st)$ in the sparse regime
 $st=o((mn)^{1/5})$. Their preceding Corollary~4.1 also contains $-3/(4n)-3/(4m)$, hence $-3/(2n)$ for squares, under sparse assumptions. Those assumptions exclude fixed positive square density. Thus the numerical first coefficient has a sparse-regime antecedent; the present assertion concerns its analytically controlled dense regime and the next correction.
 
 The explicit prefactor in the original conjecture also suggests a term $-3/(2n)$ on expansion. It did not prove that coefficient, because the unknown term $\Delta/(2n)$ could have contributed at the same order. The present corollary shows $\Delta\to0$ in the stated regime.
+
+\begin{remark}[{[write]} The conjecture and the claim, quoted; what is proved, 6~October 2026]\label{sqt:rem:cmregime}
+(a) \emph{The conjecture.} Conjecture~1 of \cite{CM} (arXiv:math/0703600v2,
+p.~4) reads: ``Consider a 4-tuple of positive integers $m,s,n,t$ such that
+$ms=nt$. Define $\Delta(m,s;n,t)$ by'' \eqref{sqt:eq:CMdelta}. ``Then
+$0<\Delta(m,s;n,t)<2$.'' Canfield and McKay record it as proved ``(a) for
+$m=n\le9$, using the exact values'' of the Ehrhart polynomials; ``(b) for
+sufficiently large $m,n$ when $st=o\bigl((mn)^{1/5}\bigr)$'', using
+Greenhill--McKay's asymptotics \cite{GM}; and (c) for several thousand
+tuples with $m,n\le30$.
+
+(b) \emph{The claim, as delivered.} The abstract said the density extension
+``proves an eventual square case of the Canfield--McKay correction-factor
+conjecture''; this section was titled ``An eventual square case of a
+correction factor conjecture''; and the sentence after
+Corollary~\ref{sqt:cor:delta} began ``This is an eventual
+compact-positive-density \emph{square} case of the conjecture, with no
+explicit starting index.'' The write narrowed all three on 6~October 2026
+(this is the first wording).
+
+(c) \emph{What is proved.} Corollary~\ref{sqt:cor:delta} gives: for every
+compact $I\subset(0,\infty)$ there is $n_0(I)$ such that
+$0<\Delta(n,s;n,s)<2$ for all $n\ge n_0(I)$ and all integers $s$ with
+$s/n\in I$. The threshold $n_0(I)$ comes from the implied constants of
+Theorem~\ref{sqt:thm:density} and of the imported theorems and is not
+effective, so the corollary verifies the conjecture at no explicitly named
+tuple, and it says nothing when $m\ne n$. For each fixed rational density
+$\lambda$ it covers the tuples $(n,\lambda n;n,\lambda n)$ with $n$ large,
+but not uniformly as $\lambda\to0$ or $\lambda\to\infty$. Square tuples
+covered neither by the corollary nor by Canfield and McKay's cases~(a)
+and~(b) (their case~(c) is a finite set with $m,n\le30$ that they do not
+list) therefore remain for every choice of the $I$'s: sizes $10\le
+n<n_0(I)$ within the regime, and, for large $n$, densities $s/n\to0$ with $s$
+not $o(n^{1/5})$ (at $m=n$, $s=t$, case~(b) needs $s^2=o(n^{2/5})$), and
+$s/n\to\infty$. The corollary settles one regime of the conjecture: not the
+conjecture, and not its square case.
+
+(d) \emph{Exact counts.} From the OEIS values (Remark~\ref{sqt:rem:oeis}) and
+the definition~\eqref{sqt:eq:CMdelta}, evaluated in 60-digit floating
+arithmetic (not interval arithmetic):
+\begin{center}\footnotesize\setlength{\tabcolsep}{3pt}
+\begin{tabular}{@{}r*{13}{c}@{}}
+\toprule
+$n$ & 1&2&3&4&5&6&7&8&9&10&11&12&13\\
+\midrule
+$\Delta(n,n;n,n)$ & 1&1.416&1.291&1.070&0.950&0.869&0.805&0.751&0.704&0.663&0.627&0.594&0.565\\
+$n\Delta$ & 1&2.83&3.87&4.28&4.75&5.21&5.63&6.01&6.33&6.63&6.89&7.13&7.35\\
+\bottomrule
+\end{tabular}
+\end{center}
+($\Delta(1,1;1,1)=1$ exactly.) Every value lies in $(0,2)$, at distance at
+least $0.56$ from both ends; the cases $n\le9$ are within Canfield and
+McKay's case~(a). Corollary~\ref{sqt:cor:delta} predicts $n\Delta\to12$.
+The products $n\Delta$ increase through $n=13$ and are still far from $12$;
+the ratio $\Delta/(12/n)$ rises from $0.36$ at $n=4$ to $0.61$ at $n=13$.
+Richardson extrapolation of order $k$ (the model
+$n\Delta=c_0+c_1/n+\cdots+c_k/n^k$ fitted exactly at $n=13-k,\ldots,13$)
+gives $c_0\approx9.94$, $10.98$, $11.43$, $11.66$, $11.78$ for $k=1,\ldots,5$.
+This is consistent with the limit $12$, and it is not a proof of anything;
+in particular it bounds no $n_0(I)$.
+
+(e) \emph{The sparse end, formally.} As $\lambda\to0$ the coefficient
+in~\eqref{sqt:eq:deltaasymp} behaves like $5/(3un)\sim5/(3\lambda n)=5/(3s)$,
+which is the square case $s=t$ of the sparse asymptotic
+$\Delta\sim5(s+t)/(6st)$ attributed above to Greenhill--McKay. The two
+regimes are thus formally compatible; substituting $\lambda\to0$ into a
+fixed-density formula proves nothing about the transition (the source's
+Question~4 in Section~\ref{sqt:sec:outlook}; Question~\ref{sqt:q:regime}).
+\end{remark}

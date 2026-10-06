@@ -1,4 +1,4 @@
-\section{Finite diagnostics and reproducibility}\label{sec:computation}
+\section{Finite diagnostics and reproducibility}\label{sqt:sec:computation}
 \subsection{Small exact counts}
 A direct dynamic program places one full labelled row at each step. If the residual column capacities are $r_1,\ldots,r_n$, enumerate all vectors $(x_1,\ldots,x_n)$ with $0\leq x_j\leq r_j$ and $\sum_jx_j=n$, then recurse on $(r_j-x_j)_j$. Sorting the residual vector is only a memoization symmetry: distinct labelled row choices remain distinct summands even when they lead to the same sorted state. There is no quotient by column permutations.
 
@@ -7,11 +7,11 @@ The public counter verifies $a_0,\ldots,a_5=1,1,3,55,10147,22069251$. A second u
 D_1(n)=n\log(a_n/L_n),\qquad
 D_2(n)=n^2\left(\log(a_n/L_n)+\frac3{2n}\right).
 \]
-The theorem predicts limits $-3/2$ and $223/32=6.96875$, respectively. The finite values in Table~\ref{tab:diagnostics} are still noticeably away from these limits.
+The theorem predicts limits $-3/2$ and $223/32=6.96875$, respectively. The finite values in Table~\ref{sqt:tab:diagnostics} are still noticeably away from these limits.
 
 \begin{table}[!htbp]
 \centering
-\caption{Rounded diagnostics from exact counts. The values beyond $n=5$ are source data from OEIS, not recomputed by the public counter.}\label{tab:diagnostics}
+\caption{Rounded diagnostics from exact counts. The values beyond $n=5$ are source data from OEIS, not recomputed by the public counter.}\label{sqt:tab:diagnostics}
 \begin{tabular}{rrr}
 \toprule
 $n$ & $D_1(n)$ & $D_2(n)$\\

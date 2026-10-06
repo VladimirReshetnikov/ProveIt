@@ -1,8 +1,8 @@
-\section{The exact integral and a product cutoff}\label{sec:gauge}
+\section{The exact integral and a product cutoff}\label{sqt:sec:gauge}
 \subsection{Fourier inversion and the null direction}
 Let the $n^2$ entries $X_{ij}$ be independent with
-$\PP(X_{ij}=k)=2^{-k-1}$ for $k\geq0$. Every matrix with the prescribed margins has total sum $n^2$ and probability $4^{-n^2}$. The characteristic function of $X_{ij}-1$ is $\psi$ in \eqref{eq:integrand}. Fourier inversion of all $2n$ margin constraints, including their one redundancy, gives the exact identity
-\begin{equation}\label{eq:fourier}
+$\PP(X_{ij}=k)=2^{-k-1}$ for $k\geq0$. Every matrix with the prescribed margins has total sum $n^2$ and probability $4^{-n^2}$. The characteristic function of $X_{ij}-1$ is $\psi$ in \eqref{sqt:eq:integrand}. Fourier inversion of all $2n$ margin constraints, including their one redundancy, gives the exact identity
+\begin{equation}\label{sqt:eq:fourier}
 a_n=4^{n^2}(2\pi)^{-2n}\mathcal J_n,\qquad
 \mathcal J_n=\int_{[-\pi,\pi]^{2n}}\mathcal F(\theta,\phi)\,\dd\theta\,\dd\phi.
 \end{equation}
@@ -14,17 +14,17 @@ q(x)=\sum_{i,j}(x_i+x_{n+j})^2=x^{\mathsf T}Qx,
 \qquad Q=\begin{pmatrix}nI&\mathbf J_n\\\mathbf J_n&nI\end{pmatrix}.
 \]
 Since $Q+vv^{\mathsf T}/2=nI+\mathbf J_{2n}/2$, define
-\begin{equation}\label{eq:augmented}
+\begin{equation}\label{sqt:eq:augmented}
 q_+(x)=q(x)+\frac{(v\cdot x)^2}{2}=nx^{\mathsf T}Ax,
 \qquad A=I+\frac{\mathbf J_{2n}}{2n}.
 \end{equation}
 The eigenvalues of $A$ are $2$ on the all-ones direction and $1$ on its orthogonal complement. Hence
-\begin{equation}\label{eq:whitening}
+\begin{equation}\label{sqt:eq:whitening}
 T=A^{-1/2}=I+\gamma\frac{\mathbf J_{2n}}{2n},
 \qquad\gamma=\frac1{\sqrt2}-1,\qquad\det T=\frac1{\sqrt2}.
 \end{equation}
 Both $T$ and $T^{-1}$ have uniformly bounded $1$- and infinity-operator norms, and $Tv=T^{-1}v=v$. The augmented Gaussian integral is
-\begin{equation}\label{eq:Zn}
+\begin{equation}\label{sqt:eq:Zn}
 Z_n=\int_{\R^{2n}}e^{-q_+(x)}\,\dd x=\frac1{\sqrt2}\left(\frac\pi n\right)^n.
 \end{equation}
 
@@ -41,24 +41,24 @@ v\cdot x=\sum_i s_i-\sum_{j<n}t_j-2nh,
 \int_{\R}e^{-(v\cdot x)^2/2}\,\dd h=\frac{\sqrt{2\pi}}{2n}.
 \]
 On the torus, setting $\phi_n=0$ instead leaves a gauge orbit factor $2\pi$. Thus the conversion from an augmented real integral on a full lift to the corresponding torus integral multiplies by
-\begin{equation}\label{eq:gaugefactor}
+\begin{equation}\label{sqt:eq:gaugefactor}
 \frac{2\pi}{\sqrt{2\pi}/(2n)}=2n\sqrt{2\pi}.
 \end{equation}
 This also verifies the eventual prefactor directly:
-\begin{equation}\label{eq:prefactor}
+\begin{equation}\label{sqt:eq:prefactor}
 \frac{2n\sqrt{2\pi}\,Z_n}{(2\pi)^{2n}}
  =(4\pi)^{-n+1/2}n^{1-n}.
 \end{equation}
 
 \subsection{Transfer to a whitened cube}
-Choose $0<\eps\leq1/100$ small enough that Proposition~\ref{prop:minor} applies with $\eta=\eps/2$. Put
-\begin{equation}\label{eq:cubes}
+Choose $0<\eps\leq1/100$ small enough that Proposition~\ref{sqt:prop:minor} applies with $\eta=\eps/2$. Put
+\begin{equation}\label{sqt:eq:cubes}
 \rho=n^{-1/2+\eps},\qquad
 \mathcal C_n=[-\rho,\rho]^{2n},\qquad\mathcal B_n=T\mathcal C_n.
 \end{equation}
-\begin{lemma}\label{lem:transfer}
+\begin{lemma}\label{sqt:lem:transfer}
 For some fixed $c>0$,
-\begin{equation}\label{eq:transfer}
+\begin{equation}\label{sqt:eq:transfer}
 \mathcal J_n=2n\sqrt{2\pi}\left\{
 \int_{\mathcal B_n}\mathcal F(x)e^{-(v\cdot x)^2/2}\,\dd x
  +O(e^{-c n^\eta})Z_n\right\}.
@@ -71,27 +71,27 @@ x_{H,i}=\theta_i-\bar\theta+\mu/2,\qquad
 x_{H,n+j}=\phi_j-\bar\phi+\mu/2.
 \]
 Consequently,
-\begin{equation}\label{eq:smallrep}
+\begin{equation}\label{sqt:eq:smallrep}
 \|x_H\|_\infty\leq\tfrac12n^{-1/2+\eta}+\tfrac14n^{-1+4\eta}=o(\rho),
 \qquad \|T^{-1}x_H\|_\infty=o(\rho).
 \end{equation}
 The associated $s,t$ coordinates lie in $(-\pi,\pi)$ for large $n$. These small representatives are injective in the quotient torus: if two differ by a projected $2\pi$ integer vector, their row-plus-column differences are multiples of $2\pi$ of magnitude $o(1)$, hence zero. Their difference is then a gauge vector, and membership in $v^\perp$ makes it zero.
 
 Let $D$ be the resulting small $s,t$ region and $\widetilde D$ its full real lift, with $h$ unrestricted. The exact gauge calculation gives
-\begin{equation}\label{eq:liftidentity}
+\begin{equation}\label{sqt:eq:liftidentity}
 \int_{\mathcal R_\eta}\mathcal F
  =2n\sqrt{2\pi}\int_{\widetilde D}\mathcal F(x)e^{-(v\cdot x)^2/2}\,\dd x.
 \end{equation}
 We compare $\widetilde D$ and $\mathcal B_n$ in the two directions separately.
 
-On $\mathcal B_n\setminus\widetilde D$, all coordinates are $O(\rho)$, so the quotient projection is still in an injective small chart and outside $D$. The integral of the nonnegative gauge weight over any subset of a fiber is at most the full fiber integral $\sqrt{2\pi}/(2n)$. Thus the absolute integral on this difference is at most $(2n\sqrt{2\pi})^{-1}$ times the torus minor-arc integral. By \eqref{eq:minor}, this is $O(e^{-c n^\eta})Z_n$, since $I_0/(2n\sqrt{2\pi}Z_n)=e^{-1/4}/(2\pi)$ is constant.
+On $\mathcal B_n\setminus\widetilde D$, all coordinates are $O(\rho)$, so the quotient projection is still in an injective small chart and outside $D$. The integral of the nonnegative gauge weight over any subset of a fiber is at most the full fiber integral $\sqrt{2\pi}/(2n)$. Thus the absolute integral on this difference is at most $(2n\sqrt{2\pi})^{-1}$ times the torus minor-arc integral. By \eqref{sqt:eq:minor}, this is $O(e^{-c n^\eta})Z_n$, since $I_0/(2n\sqrt{2\pi}Z_n)=e^{-1/4}/(2\pi)$ is constant.
 
-On $\widetilde D\setminus\mathcal B_n$, write $x=x_H+uv$. By \eqref{eq:smallrep} and $T^{-1}v=v$, exclusion from $\mathcal B_n$ forces $|u|>\rho/2$ eventually. Since $v\cdot x=2nu$, the omitted gauge fiber has relative Gaussian mass at most $O(e^{-c n^2\rho^2})$. Here $n^2\rho^2=n^{1+2\eps}$. Even using only $|\mathcal F|\leq1$, quotient volume at most $(2\pi)^{2n-1}$, and the normalization \eqref{eq:Zn}, the loss is bounded by
+On $\widetilde D\setminus\mathcal B_n$, write $x=x_H+uv$. By \eqref{sqt:eq:smallrep} and $T^{-1}v=v$, exclusion from $\mathcal B_n$ forces $|u|>\rho/2$ eventually. Since $v\cdot x=2nu$, the omitted gauge fiber has relative Gaussian mass at most $O(e^{-c n^2\rho^2})$. Here $n^2\rho^2=n^{1+2\eps}$. Even using only $|\mathcal F|\leq1$, quotient volume at most $(2\pi)^{2n-1}$, and the normalization \eqref{sqt:eq:Zn}, the loss is bounded by
 \[
 Z_n\exp\{-c n^{1+2\eps}+O(n\log n)\}
  =O(e^{-c' n^\eta})Z_n.
 \]
-Finally, the torus outside $\mathcal R_\eta$ has the absolute bound \eqref{eq:minor}. Combining this with \eqref{eq:liftidentity} proves \eqref{eq:transfer}.
+Finally, the torus outside $\mathcal R_\eta$ has the absolute bound \eqref{sqt:eq:minor}. Combining this with \eqref{sqt:eq:liftidentity} proves \eqref{sqt:eq:transfer}.
 \end{proof}
 
 The asymmetric choice $\eta=\eps/2$ leaves the main quotient region strictly inside the whitened cube. It avoids a comparison that would multiply a Gaussian tail by a crude supremum of the positive quartic exponential.
