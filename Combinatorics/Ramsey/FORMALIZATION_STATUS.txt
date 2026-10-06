@@ -12,8 +12,8 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 185 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 1,760 public Gowers theorems and found only propext,
+  All 188 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 1,770 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 99 exact
   companion proofs and 21 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -217,9 +217,9 @@ Two-anchor interpolation for Lemma 16.10
   candidates, independently of the number of affine classes.
   This preserves the correlation between slope and intercept choices; it
   does not yet prove a stronger MultiplyLinear parameter or a final bound.
-  The common base partition is now constructed below. Synchronization with
-  the final-coordinate progression and the final quantitative comparison in
-  Lemma 16.10 remain outstanding.
+  The common base partition and synchronization with the final-coordinate
+  progression are now constructed below. The final quantitative comparison
+  in Lemma 16.10 remains outstanding.
 
 Corrected distinct-anchor sampling estimate
   Proofs16DistinctSampling counts samples avoiding a subset exactly and
@@ -264,10 +264,20 @@ Corrected distinct-anchor sampling estimate
   Proofs16RecoveredSliceCover puts both cases on the common slice partition
   and intersects the sampling good set with the lifted good base domain.
   The resulting product good set loses at most the sum of those two losses.
-  A complete Lemma 16.10 proof still needs global cell assembly, synchronization
-  of base and final-coordinate steps, and the unresolved final width comparison
-  with the corrected sampling cost. The base-cell conclusion does not assert
-  synchronized product boxes, and empty column cells require separate bookkeeping.
+  Proofs16SynchronizedCover retiles the final axis using the existing short
+  parent geometry. It preserves both the candidate family and the good set.
+  Proofs16SynchronizedSliceCover constructs the slice partition inside those
+  short parents, so their hypotheses are supplied rather than assumed for an
+  arbitrary refinement. If v^2+1 fits below the refined base width, every
+  output box is proper and has width at least v-1.
+  Proofs16LocalAffineLift assembles the complete local construction on a proper
+  prime-modulus box with k>=1 and initial scale m>=4. The total loss is at most
+  2*tau+epsilon, and the graph count remains r*p+r*r*p*p with p bounded by the
+  sampled-slice union control. Its geometric output is a genuine box partition.
+  A complete Lemma 16.10 proof still needs global cell assembly, small-scale
+  and empty-cell bookkeeping, and the unresolved final width comparison with
+  the corrected sampling cost. The local conclusion retains its explicit
+  integer tiling-scale condition instead of asserting the prescribed bound.
   The newly received gowers_interpolation_article.zip proposes sampling
   without replacement and singleton recovery for a sharper local bound. Its
   argument has been inspected, but is not a checked Lean result at this stage.
