@@ -17,6 +17,13 @@
 \newtheorem{theorem}{Theorem}[section]\newtheorem{lemma}[theorem]{Lemma}\newtheorem{proposition}[theorem]{Proposition}\newtheorem{corollary}[theorem]{Corollary}
 \theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
 \theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+% Added by the ProveIt write phase (batch 108, 6 October 2026): dated notes
+% marked [write] and a macro for file, label and declaration names.
+\newcommand{\file}[1]{\nolinkurl{#1}}
+\expandafter\def\expandafter\UrlBreaks\expandafter{\UrlBreaks\do\-\do\_\do\.}
+\newenvironment{writenote}[1][]{\par\smallskip\begingroup\small
+ \noindent\textbf{[write]}\if\relax\detokenize{#1}\relax\else~\textbf{#1.}\fi\ }%
+ {\par\endgroup\smallskip}
 \newcommand{\E}{\mathbb E}\newcommand{\PP}{\mathbb P}\newcommand{\R}{\mathbb R}\newcommand{\N}{\mathbb N}\newcommand{\eps}{\varepsilon}\newcommand{\Var}{\operatorname{Var}}\newcommand{\Cov}{\operatorname{Cov}}\newcommand{\Bin}{\operatorname{Bin}}\newcommand{\Normal}{\mathcal N}\newcommand{\ind}{\mathbf1}\newcommand{\cC}{\mathcal C}\newcommand{\dd}{\mathrm d}
 \begin{document}
 \begin{center}
@@ -28,6 +35,37 @@
 \begin{abstract}
 Let $A_n$ count symmetric $n\times n$ matrices with entries in $\{-1,+1\}$ and nonnegative row sums, with diagonal entries included. This is OEIS A027832. An exact graph encoding adds one distinguished vertex whose degree is unrestricted. We prove that removing a fixed number $f$ of degree caps near half the graph order multiplies the all-capped graph count by $\Phi(\ell)^{-f}(1+o(1))$, where $\phi(\ell)=\ell\Phi(\ell)$. More generally, uniformly for $f=O(\sqrt M)$ free vertices, a finite-saddle formula and a fully explicit equivalent retain a collective quadratic correction and a bounded-offset linear correction. The argument combines uniform dense degree-sequence enumeration with relative graph concentration, an exact exponential tilt, exponential-square uniform integrability, and explicit balancing of the even degree-sum lattice. Applying the established all-capped asymptotic gives a leading relative equivalent for $A_n$ with an essential factor $\exp(\ell\sqrt n)$ on even orders. We derive the precision of a continuous inverse and rigorous eventual two-ceiling threshold bounds. Exact finite checks and reproducible TeX and Python accompany the proof. The result is a leading $1+o(1)$ theorem; no all-orders count expansion, effective onset, or historical priority is asserted.
 \end{abstract}
+
+\begin{writenote}[Status and trust boundary, added 6 October 2026, batch~108]
+This is bundle Report~239 of an external AI-assisted research session, filed
+in ProveIt as the single-source research report
+\file{a027832-symmetric-sign-matrices} (provenance, the sources as the write
+read them, relation to the repository, reading conventions and the collected
+non-claims in Section~\ref{ssm:sec:provenance}). It is unrefereed and not
+formalized; its author line and PDF author field read ``Report 239''.
+\emph{What rests on what.} The proof imports three published results, cited
+and not reproved: McKay--Wormald's dense degree-sequence enumeration
+(Theorem~\ref{ssm:thm:MW}), and McKay--Wanless--Wormald's all-capped count
+(their Corollary~2, here~\eqref{ssm:eq:allcapped}) and finite-saddle
+estimates (their Lemma~2 and equation~(29), here~\eqref{ssm:eq:sourceSrate}
+and~\eqref{ssm:eq:sourceLrate}). The constants $q$, $Z_0$, $J$, the
+exponential rate and the square-root boundary effect of
+Theorem~\ref{ssm:thm:matrix} are therefore McKay--Wanless--Wormald's; what
+the source proves is the transfer from all-capped to mixed capped and free
+coordinates (Theorem~\ref{ssm:thm:transfer}), which turns their count into
+the matrix equivalent through the graph bridge credited to
+Greenhill--McKay. The write read the statements of the
+McKay--Wanless--Wormald results used and the Greenhill--McKay
+correspondence, and found them as the source quotes them; it did not read
+the 1990 McKay--Wormald paper. No proof uses a floating-point computation.
+The write also restored two characters lost in the delivered
+Section~\ref{ssm:sec:transferproof} (the subscript ``even'' of two parity
+indicators, which printed as ``meven''), and added
+Remark~\ref{ssm:rem:oeis} (the OEIS entry and the historical table),
+Remark~\ref{ssm:rem:transseries} (Section~\ref{ssm:sec:inverse} against the
+transseries volume, with a proof that $A_n$ is strictly increasing for
+$n\ge1$) and Section~\ref{ssm:sec:further} (open questions).
+\end{writenote}
 \setcounter{tocdepth}{1}
 \begingroup\small\setlength{\parskip}{0pt}
 \makeatletter\renewcommand\l@section[2]{\@dottedtocline{1}{0em}{2em}{#1}{#2}}\makeatother

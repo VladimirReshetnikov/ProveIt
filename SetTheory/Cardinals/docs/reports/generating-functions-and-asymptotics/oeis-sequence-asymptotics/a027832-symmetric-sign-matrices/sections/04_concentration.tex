@@ -1,13 +1,13 @@
-\section{Relative concentration for mixed constraints}\label{sec:concentration}
+\section{Relative concentration for mixed constraints}\label{ssm:sec:concentration}
 Take a random graph with independent edge probability $1/2$. Let $E_f$ be the event that its first $M-f$ degrees are at most $k=M/2+O(1)$. Then
 \[
  \PP(E_f)=2^{-H}U_f(M,k),\qquad \PP(E_0)=2^{-H}B(M,k).
 \]
 We prove the following stronger uniformity than is needed for the critical window.
 
-\begin{lemma}\label{lem:relative}
+\begin{lemma}\label{ssm:lem:relative}
 Uniformly over $0\le f\le M$ and bounded offsets $k-M/2$,
-\begin{equation}\label{eq:relative}
+\begin{equation}\label{ssm:eq:relative}
  \PP(\boldsymbol d\in\cC\mid E_f)=1-o(1).
 \end{equation}
 \end{lemma}
@@ -19,13 +19,13 @@ Every cap event is decreasing in the edges. If
  h_M=\PP\{\Bin(M-1,1/2)\le k\},
 \]
 then $h_M\to1/2$ uniformly for bounded offsets. Repeated positive association gives
-\begin{equation}\label{eq:denominator}
+\begin{equation}\label{ssm:eq:denominator}
  \PP(E_f)\ge\PP(E_0)\ge h_M^M\ge3^{-M}
 \end{equation}
 for large $M$. This rough exponential lower bound is enough to control very small unconditional edge-count tails.
 
 Write $t=M^{1/2+\delta}$ and let $m$ denote the number of edges. A binomial Chernoff bound, or the exponential moment proof of Hoeffding's inequality, gives
-\begin{equation}\label{eq:edgetail}
+\begin{equation}\label{ssm:eq:edgetail}
  \PP(m<H/2-Mt\mid E_f)
  \le3^M\exp\{-cM^{1+2\delta}\}=o(1)
 \end{equation}
@@ -58,7 +58,7 @@ so the number of reverse switches is at most
  R_d=(d+1)M-2m+(M-d-2)D.
 \]
 Switches with their ordered endpoints reverse uniquely. Double counting yields
-\begin{equation}\label{eq:switchratio}
+\begin{equation}\label{ssm:eq:switchratio}
  a_dL_d\le a_{d+1}R_d.
 \end{equation}
 
@@ -67,10 +67,10 @@ The gain is visible without a hidden asymptotic cancellation:
  L_d-R_d=4m-(M+1)d-M-(M-2)D.
 \]
 Using $d\le M/2-10t$, $m\ge H/2-Mt$, and $D\le M/2+t+1$ gives
-\begin{equation}\label{eq:switchgain}
+\begin{equation}\label{ssm:eq:switchgain}
  L_d-R_d\ge5Mt+12t-\tfrac52M+2\ge c_1Mt
 \end{equation}
-for large $M$. Also $R_d=O(M^2)$ whenever the target class is nonempty. If a lower class is nonempty, $L_d>0$ forces a nonempty next class; a zero reverse bound cannot occur in that case. Thus \eqref{eq:switchratio} implies
+for large $M$. Also $R_d=O(M^2)$ whenever the target class is nonempty. If a lower class is nonempty, $L_d>0$ forces a nonempty next class; a zero reverse bound cannot occur in that case. Thus \eqref{ssm:eq:switchratio} implies
 \[
  a_{d+1}\ge(1+c_2M^{-1/2+\delta})a_d
  \qquad(d\le M/2-10t)
@@ -82,11 +82,11 @@ $a_d\le a_b\exp(-c_3M^{3\delta})$; if all such lower classes are empty the concl
 \[
  \PP(d_v\le a\mid m,\text{caps})\le M e^{-c_3M^{3\delta}}.
 \]
-This is uniform in $v,m,f$. A union bound over $v$, followed by restoration of the discarded events in \eqref{eq:edgetail} and the free upper tails, proves \eqref{eq:relative}.
+This is uniform in $v,m,f$. A union bound over $v$, followed by restoration of the discarded events in \eqref{ssm:eq:edgetail} and the free upper tails, proves \eqref{ssm:eq:relative}.
 \end{proof}
 
 For comparison, positive association also gives the exact elementary bounds
-\begin{equation}\label{eq:FKGbound}
+\begin{equation}\label{ssm:eq:FKGbound}
  1\le\frac{U_f(M,k)}{B(M,k)}\le h_M^{-f}.
 \end{equation}
 Indeed, conditioned on $E_f$, the probability that every free vertex also satisfies its cap is at least the product of their unconditional cap probabilities. For $f=1$, the upper bound tends to $2$. These bounds are useful finite checks, but they do not replace the relative concentration argument above.

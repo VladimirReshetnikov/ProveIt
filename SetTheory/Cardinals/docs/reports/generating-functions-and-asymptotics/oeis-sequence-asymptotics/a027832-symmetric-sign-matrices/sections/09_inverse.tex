@@ -1,32 +1,32 @@
-\section{Controlled inversion of the leading model}\label{sec:inverse}
+\section{Controlled inversion of the leading model}\label{ssm:sec:inverse}
 A relative $1+o(1)$ count equivalent is an $o(1)$ logarithmic approximation. Because the logarithm grows quadratically, this already gives a sharper continuous-index statement than an $o(1)$ index error, but it does not justify a certified finite-input rounding rule.
 
 Let $s=1$ designate even positive indices and $s=0$ designate odd positive indices. Put
-\begin{equation}\label{eq:inverseconstants}
+\begin{equation}\label{ssm:eq:inverseconstants}
  a=\frac{\log2}{2},\qquad b=\frac{\log2}{2}+\log q,\qquad
  c_s=\log Z_0-\frac{\ell^2}{2}+\frac{sJ}{4},
 \end{equation}
 and define, for $t>0$,
-\begin{equation}\label{eq:Fs}
+\begin{equation}\label{ssm:eq:Fs}
  F_s(t)=at^2+bt+s\ell\sqrt t+c_s.
 \end{equation}
-Theorem~\ref{thm:matrix} is equivalent to
-\begin{equation}\label{eq:logerror}
+Theorem~\ref{ssm:thm:matrix} is equivalent to
+\begin{equation}\label{ssm:eq:logerror}
  \log A_n=F_s(n)+o(1)
 \end{equation}
 on the indicated parity. For sufficiently large $y$, let $r_s(y)$ be the unique sufficiently large solution of $F_s(r_s(y))=y$.
 
-\begin{proposition}[Continuous inverse and its precision]\label{prop:inverse}
+\begin{proposition}[Continuous inverse and its precision]\label{ssm:prop:inverse}
 The inverse is well-defined eventually and
-\begin{equation}\label{eq:inversederivative}
+\begin{equation}\label{ssm:eq:inversederivative}
  r_s'(y)\sim\frac1{(\log2)r_s(y)}.
 \end{equation}
 At the actual sequence values,
-\begin{equation}\label{eq:indexerror}
+\begin{equation}\label{ssm:eq:indexerror}
  r_s(\log A_n)=n+o(n^{-1}).
 \end{equation}
 Writing $u=\sqrt{y/a}$, its elementary model expansion is
-\begin{equation}\label{eq:modelinverse}
+\begin{equation}\label{ssm:eq:modelinverse}
  r_s(y)=u-\frac b{2a}-\frac{s\ell}{2a}u^{-1/2}
  +\left(\frac{b^2}{8a^2}-\frac{c_s}{2a}\right)u^{-1}
  +O(u^{-3/2}).
@@ -38,15 +38,15 @@ We have
 \[
  F_s'(t)=2at+b+\frac{s\ell}{2\sqrt t}\sim(\log2)t>0
 \]
-eventually, and $F_s(t)\to\infty$. This proves existence, uniqueness on the increasing tail, and \eqref{eq:inversederivative}. Equation~\eqref{eq:logerror} first implies $r_s(\log A_n)\sim n$. The mean value theorem then divides the $o(1)$ logarithmic discrepancy by a derivative asymptotic to $(\log2)n$, proving \eqref{eq:indexerror}.
+eventually, and $F_s(t)\to\infty$. This proves existence, uniqueness on the increasing tail, and \eqref{ssm:eq:inversederivative}. Equation~\eqref{ssm:eq:logerror} first implies $r_s(\log A_n)\sim n$. The mean value theorem then divides the $o(1)$ logarithmic discrepancy by a derivative asymptotic to $(\log2)n$, proving \eqref{ssm:eq:indexerror}.
 
-For \eqref{eq:modelinverse}, substitute
+For \eqref{ssm:eq:modelinverse}, substitute
 $t=u+A+Bu^{-1/2}+Du^{-1}$ in $F_s(t)-y$. Cancellation of the coefficients of $u$, $u^{1/2}$, and $1$ gives
 \[
  A=-\frac b{2a},\qquad B=-\frac{s\ell}{2a},\qquad
  D=\frac{b^2}{8a^2}-\frac{c_s}{2a}.
 \]
-The residual is $O(u^{-1/2})$ and $F_s'(t)\asymp u$, so one further mean value estimate gives the $O(u^{-3/2})$ model remainder. At an actual sequence value, \eqref{eq:indexerror} contributes only a known $o(u^{-1})$ error, which dominates the finer model remainder. This establishes the last assertion without postulating an unknown count coefficient.
+The residual is $O(u^{-1/2})$ and $F_s'(t)\asymp u$, so one further mean value estimate gives the $O(u^{-3/2})$ model remainder. At an actual sequence value, \eqref{ssm:eq:indexerror} contributes only a known $o(u^{-1})$ error, which dominates the finer model remainder. This establishes the last assertion without postulating an unknown count coefficient.
 \end{proof}
 
 The parity displacement in this continuous inverse first appears at order $u^{-1/2}$. It is a consequence of the known square-root term in the logarithm; it is not an additional term of a proved all-orders expansion for $A_n$.
@@ -58,9 +58,9 @@ Define
 \]
 the least integer at least $t$ of the parity designated by $s$. Let $N_s(x)$ be the least positive index of that parity with $A_n\ge x$.
 
-\begin{proposition}[Eventual threshold brackets]\label{prop:threshold}
+\begin{proposition}[Eventual threshold brackets]\label{ssm:prop:threshold}
 For every $\eps>0$, once $x$ is sufficiently large,
-\begin{equation}\label{eq:ceilings}
+\begin{equation}\label{ssm:eq:ceilings}
  \left\lceil r_s(\log x-\eps)\right\rceil_s
  \le N_s(x)\le
  \left\lceil r_s(\log x+\eps)\right\rceil_s.
@@ -68,9 +68,87 @@ For every $\eps>0$, once $x$ is sufficiently large,
 The least unrestricted positive index with $A_n\ge x$ is $\min(N_0(x),N_1(x))$. The required lower bound on $x$ is not made effective here.
 \end{proposition}
 \begin{proof}
-The sequence is nondecreasing: append an all-positive last row and column to a valid matrix. This is an injection, since every existing row sum increases by one and the new row sum is positive. The sequence is unbounded by Theorem~\ref{thm:matrix}.
+The sequence is nondecreasing: append an all-positive last row and column to a valid matrix. This is an injection, since every existing row sum increases by one and the new row sum is positive. The sequence is unbounded by Theorem~\ref{ssm:thm:matrix}.
 
-For all sufficiently large indices of the indicated parity, \eqref{eq:logerror} implies $|\log A_n-F_s(n)|\le\eps$. Below the lower ceiling in \eqref{eq:ceilings}, an integer of that parity is strictly less than $r_s(\log x-\eps)$, so $\log A_n<\log x$. At the upper ceiling, $F_s(n)\ge\log x+\eps$, hence $\log A_n\ge\log x$. Taking $x$ large enough also excludes the finitely many earlier indices. This proves both bounds.
+For all sufficiently large indices of the indicated parity, \eqref{ssm:eq:logerror} implies $|\log A_n-F_s(n)|\le\eps$. Below the lower ceiling in \eqref{ssm:eq:ceilings}, an integer of that parity is strictly less than $r_s(\log x-\eps)$, so $\log A_n<\log x$. At the upper ceiling, $F_s(n)\ge\log x+\eps$, hence $\log A_n\ge\log x$. Taking $x$ large enough also excludes the finitely many earlier indices. This proves both bounds.
 \end{proof}
 
 The two ceilings may coincide, but the theorem does not certify when they do for a prescribed finite input. Such a certificate requires either an explicit remainder bound with a known validity range or exact counts at adjacent candidate indices. More decimal digits in $\ell$ or a smaller numerical residual in $F_s(t)=y$ cannot supply that missing asymptotic error bound.
+
+\begin{remark}[{[write]} This section against the transseries volume, 6~October 2026]\label{ssm:rem:transseries}
+The volume is
+\path{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex};
+its symbols carry the subscript ``vol'' here.
+
+(1)~\emph{Strict monotonicity} (proved by the write). $A_0=A_1=1$, and
+$A_{n+1}>A_n$ for every $n\ge1$. \emph{Proof.} The proof of
+Proposition~\ref{ssm:prop:threshold} maps each counted matrix of order $n$
+injectively to a counted matrix of order $n+1$ whose last row and column
+are all $+1$. For $n\ge1$, the symmetric matrix of order $n+1$ whose only
+entry $-1$ is at position $(n+1,n+1)$ has row sums $n+1$ in its first $n$
+rows and $n-1\ge0$ in the last, so it is counted by $A_{n+1}$ but lies
+outside the image. At $n=0$ the only matrix of order~$1$ with nonnegative
+row sum is $(+1)$, so $A_1=1=A_0$. \qed
+
+\noindent Hence $(A_n)_{n\ge1}$ is strictly increasing, and the least
+unrestricted index $\min(N_0(x),N_1(x))$ of
+Proposition~\ref{ssm:prop:threshold} is \emph{exactly} the integer staircase
+$N_\ast^{\rm vol}(x)$ of \file{p0:def:three-inverses}(1) with $n_1=1$ (an
+instance). The parity ceiling $\lceil t\rceil_s$ is exactly the residue-class
+ceiling $\rho+r\lceil(\nu-\rho)/r\rceil$ of \file{p0:eq:residue-staircase},
+with $r_{\rm vol}=2$, $\rho=1-s$ and $t$ in place of $\nu$.
+
+(2)~\emph{An admissible core, but not a Lambert one.} Put
+$X_\ast=\max\{1,|b|/\log2\}$. On $(X_\ast,\infty)$ the function $F_s$ is
+$C^2$, $F_s'(t)=t\log2+b+s\ell/(2\sqrt t)>|b|+b\ge0$,
+$F_s''(t)=\log2-s\ell/(4t^{3/2})\ge\log2-\ell/4>0$ (as $\ell<1/\sqrt2$), and
+$F_s'(t)\to+\infty$, $tF_s'(t)\to+\infty$, $F_s(t)\to+\infty$. So $F_s$ is
+an admissible core in the sense of \file{p0:def:core}, with
+$\Lambda_\infty^{\rm vol}=+\infty$; for $y>F_s(X_\ast)$ its core solution is
+the unique solution of $F_s(t)=y$ in $(X_\ast,\infty)$, and for all large
+$y$ it is $r_s(y)$ (an instance of that definition). The phase
+is neither of the volume's two cores, $a_{\rm vol}X+b_{\rm vol}\log X$
+(\file{p0:thm:lambert-core}) and $X(\kappa_{\rm vol}\log X+d_{\rm vol})$
+(\file{p0:prop:factorial-core}): it has no logarithm, its leading balance
+is quadratic, and no Lambert function occurs.
+
+(3)~\emph{An instance after a change of variables.} The four-term model
+expansion~\eqref{ssm:eq:modelinverse} is the start of the unique formal
+solution in \file{p0:thm:core-reversion}. Put $t_{\rm vol}=u^{-1/2}$ and
+$r_s(y)=u(1+E)$, so that $y=au^2$. Dividing $F_s(u(1+E))-au^2=0$ by $au^2$
+gives exactly
+\[
+ 2E+E^2+f_{\rm vol}(t_{\rm vol},E)=0,\qquad
+ f_{\rm vol}(t,w)=\frac bat^2(1+w)+\frac{s\ell}at^3(1+w)^{1/2}+\frac{c_s}at^4,
+\]
+that is \file{p0:eq:core-master} with $\Lambda_{\rm vol}=2$,
+$h_{\rm vol}(w)=w^2$ and
+$R_{\rm vol}=\mathbb Q[a^{-1},b,s\ell,c_s]$ (the binomial series of
+$(1+w)^{1/2}$ has rational coefficients, and $f_{\rm vol}\in
+t\,R_{\rm vol}[[t,w]]$). Its unique solution
+$E=\sum_{n\ge1}e_n^{\rm vol}t_{\rm vol}^n$ has
+$e_1^{\rm vol}=0$, $e_2^{\rm vol}=-b/(2a)$, $e_3^{\rm vol}=-s\ell/(2a)$,
+$e_4^{\rm vol}=b^2/(8a^2)-c_s/(2a)$, the coefficients $A$, $B$, $D$ of the
+proof of Proposition~\ref{ssm:prop:inverse}, so
+$u(1+e_2^{\rm vol}u^{-1}+e_3^{\rm vol}u^{-3/2}+e_4^{\rm vol}u^{-2})$ is the
+right side of~\eqref{ssm:eq:modelinverse} without its remainder (checked by
+the write in SymPy from the triangular recurrence
+\file{p0:eq:core-triangular}, the displayed equation re-derived
+from~\eqref{ssm:eq:Fs}). The volume's theorem is formal: the analytic
+remainder $O(u^{-3/2})$, and the statement at $y=\log A_n$, are the
+source's mean-value arguments.
+
+(4)~\emph{Analogues only.} Proposition~\ref{ssm:prop:threshold} is not an
+instance of \file{p0:thm:staircase}: $r_s$ is not the inverse of an
+interpolation of $(A_n)$ (Proposition~\ref{ssm:prop:inverse} gives only
+$r_s(\log A_n)=n+o(n^{-1})$, not the identity $\nu_{\rm vol}(A_n)=n$ of an
+interpolated inverse), and the brackets come from the two
+envelopes $F_s\pm\eps$ at the integers of one parity. Its conclusion has the
+shape of the separation condition \file{p0:thm:staircase}(2) (when the two
+ceilings of~\eqref{ssm:eq:ceilings} coincide, $N_s(x)$ is their common
+value) and of the residue-class formula \file{p0:thm:staircase}(4) with
+$r_{\rm vol}=2$. Likewise~\eqref{ssm:eq:indexerror} gives
+$n=\lfloor r_s(\log A_n)+\tfrac12\rfloor$ for all sufficiently large $n$ of
+parity~$s$, the analogue of \file{p0:thm:staircase}(3), with an
+ineffective threshold. No novelty is claimed for the inversions.
+\end{remark}
