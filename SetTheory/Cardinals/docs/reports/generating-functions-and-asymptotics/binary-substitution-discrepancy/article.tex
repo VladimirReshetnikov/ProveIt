@@ -17,7 +17,7 @@
 \definecolor{pale}{HTML}{F1F5F6}
 \hypersetup{colorlinks=true,linkcolor=ink,citecolor=ink,urlcolor=ink,
  pdftitle={Sharp discrepancy for two families of binary substitutions},
- pdfauthor={ChatGPT},pdfsubject={Counterexamples to OEIS A284365 and A284366; sharp envelopes for A284368--A284371}}
+ pdfauthor={ChatGPT},pdfsubject={Counterexamples to OEIS A284365 and A284366; sharp envelopes for A284368--A284371; fluctuation laws and critical and supercritical normalization}}
 \pagestyle{fancy}
 \fancyhf{}
 \fancyhead[L]{\small\textcolor{muted}{Sharp discrepancy for binary substitutions}}
@@ -48,6 +48,14 @@
 \newcommand{\abs}[1]{\lvert#1\rvert}
 \newcommand{\ones}[1]{\lvert#1\rvert_1}
 \newcommand{\zeros}[1]{\lvert#1\rvert_0}
+% Part III (batch 114, binary_morphic_fluctuations) macros.
+\newcommand{\E}{\mathbb E}
+\newcommand{\Prob}{\mathbb P}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\ph}{\varphi}
+\newcommand{\pref}{\operatorname{pref}}
 \definecolor{warm}{HTML}{F7F0E8}
 \lstset{basicstyle=\ttfamily\footnotesize,breaklines=true,columns=fullflexible,
  keepspaces=true,showstringspaces=false,frame=single,rulecolor=\color{muted},
@@ -59,9 +67,10 @@
 \title{\color{ink}\LARGE Beyond the conjectured bound\\[5pt]
 \Large Sharp discrepancy for two families\\of binary substitutions\\[9pt]
 \large Counterexamples and corrected theorems for\\OEIS A284365 and A284366\\[4pt]
-\normalsize with Part II: exact position-error envelopes\\for quadratic morphic words (OEIS A284368--A284371)}
+\normalsize with Part II: exact position-error envelopes\\for quadratic morphic words (OEIS A284368--A284371)\\[3pt]
+and Part III: exact fluctuation laws and sharp\\critical and supercritical normalization}
 \author{Research study prepared with ChatGPT}
-\date{Part I: September 19, 2026\quad Part II: October 1, 2026}
+\date{Part I: September 19, 2026\quad Part II: October 1, 2026\quad Part III: October 5, 2026}
 
 \begin{document}
 \maketitle
@@ -94,6 +103,19 @@ A284368 ($1\mapsto1011$) and A284369 ($1\mapsto1001$). For A284369 this
 proves the conjectured bounds of A284370 and A284371 with sharper constants;
 for A284368 it recovers, as a calibration, the known $s$-Wythoff floor
 formulas of A184484--A184485.
+
+Part~III, added on October 6, 2026 (batch 114), answers Part~II's question
+on the unbounded regimes. At $a=b+2$ the discrepancy $\#0-\#1$ divided by
+$\log N$ has the cluster interval $[-(a-1)/(2\log a),(a-1)/(2\log a)]$, with
+explicit first extremal prefixes; for $a\geq b+3$ the eigenweight
+$\#0-q\#1$ divided by $N^{\log_\lambda q}$ has a closed-form symmetric
+cluster interval and a continuous graph-directed phase profile (endpoints
+$\pm\sqrt{10}$ and the bound $X(N)^2+5X(N)\leq10N$ at every prefix for
+$1\mapsto1\,0^81$). For every word with $a$ zeros and $a-1$ ones beginning
+with $1$, an exact positive convolution formula for complete-block prefix
+histograms yields a random-sum law, exact moments, Gaussian, local and
+large-deviation laws, sharp variance and pressure comparisons, and a
+classification of the zero-height profiles, counted by $(a-1)2^{a-2}$.
 \end{abstract}
 
 \begin{resultbox}
@@ -992,6 +1014,10 @@ method to the family $0\mapsto1$, $1\mapsto1\,0^a1^b$; it neither contains
 nor re-proves Part~I's results. Section~\ref{qmw:sec:provenance} records the
 provenance, fixes the notation of the addition, and compares the two
 families.}
+[Added 6 October 2026, batch~114: Part~III
+(Sections~\ref{bmf:sec:provenance}--\ref{bmf:sec:status}) follows Part~II
+and answers its research question~7; the front matter now also announces
+Part~III.]
 
 \paragraph{Summary (the manuscript's abstract).}
 We study the fixed point of the binary substitution
@@ -1601,6 +1627,18 @@ $X(P_k)\asymp q^{2k}$, hence exhibit the power law
 $X(P_k)\asymp\abs{P_k}^{\log_\lambda q}$.  A full normalized limit theory is
 left for future work.  These refinements are not needed for the OEIS
 applications.
+[Added 6 October 2026, batch~114: Part~III supplies this limit theory. At
+$a=b+2$ the cluster set of $X(N)/\log N$ is
+$[-(a-1)/(2\log a),(a-1)/(2\log a)]$
+(Theorem~\ref{bmf:thm:general-extremes}), so the $O(\log N)$ bound above
+holds with the sharp constant: $\abs{X(N)}\leq\frac{a-1}{2\log a}\log N+O(1)$;
+and $P_k$ is the first prefix of weight $k(a-1)$, with an exact length
+formula (Theorem~\ref{bmf:thm:first-hit}). For $a\geq b+3$ the cluster set
+of $X(N)/N^{\alpha}$, $\alpha=\log_\lambda q$, is
+$[-\mathcal C_{a,b},\mathcal C_{a,b}]$ with $\mathcal C_{a,b}$ in closed
+form (Theorem~\ref{bmf:thm:supercritical-amplitude}), and
+$X(P_k)/\abs{P_k}^\alpha\to\mathcal C_{a,b}$
+(Remark~\ref{bmf:rem:partII}).]
 
 \section{When the state attractors are full intervals}\label{qmw:sec:intervals}
 
@@ -1873,17 +1911,36 @@ limiting empirical measures of $E_0(n)$ and $E_1(n)$, their continuity or
 singularity, moments, and local dimensions.  In interval cases, decide
 whether the measures are absolutely continuous or have self-similar density
 singularities.
+[Added 6 October 2026, batch~114: for the critical family $a=b+2$, and for
+every word with $a$ zeros and $a-1$ ones beginning with $1$, Part~III
+determines the law of the prefix weight under uniform prefix sampling:
+exact complete-block histograms (Theorem~\ref{bmf:thm:histogram}),
+Gaussian and local limit laws at every cutoff
+(Theorems~\ref{bmf:thm:block-normal} and~\ref{bmf:thm:all-cutoff}) and
+large deviations (Theorem~\ref{bmf:thm:ldp}). The bounded regime $a\leq b+1$
+asked about here remains open (Question~1 of
+Section~\ref{bmf:sec:research}).]
 
 \item \textbf{Threshold densities and record statistics.}
 For a fixed threshold $t$, determine the natural density of ranks with
 $E_i(n)>t$, when it exists.  This directly continues an open direction in
 Part~I (A284364--A284366; Section~\ref{sec:consequences}), where sharp supports are known but violation
 densities are not.
+[Added 6 October 2026, batch~114: at $a=b+2$, where the errors are
+unbounded, \eqref{bmf:eq:threshold-density} gives the frequency of prefixes
+with $X(n)\geq x\log_aN$ up to a factor $N^{o(1)}$, namely
+$N^{-I_a(x)/\log a+o(1)}$. The densities asked for here, in the bounded
+regime, remain open.]
 
 \item \textbf{Exact first-hitting algorithms.}
 Develop automata or Ostrowski-type numeration systems that return the first
 rank at which a prescribed algebraic error interval is entered.  The graph
 system suggests a branch-and-bound algorithm with exact quadratic endpoints.
+[Added 6 October 2026, batch~114: at $a=b+2$,
+Theorem~\ref{bmf:thm:first-hit} gives the first prefixes reaching the
+extremal weights $k(a-1)$ and $-k(a-1)-1$, with closed lengths and ranks.
+First hits of general prescribed intervals, and the bounded regime, remain
+open.]
 
 \item \textbf{Closed forms for A284370 and A284371.}
 A284368 is linked to generalized Wythoff sequences.  Determine whether the
@@ -1902,6 +1959,18 @@ $K_i-K_j$ together with legal endpoint states.
 At $a=b+2$, determine the exact limsup and liminf after division by
 $\log N$.  For $a\geq b+3$, normalize by the predicted power
 $N^{\log_\lambda q}$ and identify the resulting graph-directed limit sets.
+[Added 6 October 2026, batch~114: answered in Part~III. At $a=b+2$,
+$\limsup X(N)/\log N=-\liminf X(N)/\log N=(a-1)/(2\log a)$, and every
+value in between is a limit point (Theorem~\ref{bmf:thm:general-extremes}).
+For $a\geq b+3$, with $\alpha=\log_\lambda q$, the limsup and liminf of
+$X(N)/N^\alpha$ are $\pm\mathcal C_{a,b}$, the cluster set is the whole
+interval, and $X(N)=c^\alpha N^\alpha\Theta(\log_\lambda(cN))+O(N^{\alpha^2})$
+with a continuous anti-periodic profile $\Theta$ obtained from a two-state
+graph-directed system (Theorem~\ref{bmf:thm:supercritical-amplitude});
+Corollary~\ref{bmf:cor:phase-laws} gives the induced empirical laws. Open:
+the regularity of $\Theta$ and of these laws, and whether the error
+$O(N^{\alpha^2})$ is sharp (Questions~6 and~7 of
+Section~\ref{bmf:sec:research}).]
 
 \item \textbf{Automated OEIS survey.}
 Apply the state-equation pipeline to other primitive binary morphisms whose
@@ -1935,7 +2004,2367 @@ separation between sharp envelopes and internal fractal geometry provides a
 natural next research program.
 
 
-% End of Part II's main text: Part I's Appendix A keeps its Table 3.
+%% ====================================================================
+%% Batch-114 addition (binary_morphic_fluctuations.zip, "Exact fluctuation
+%% laws and sharp discrepancy in binary morphic words", 5 October 2026).
+%% Every label of Part III carries the prefix bmf: ; Parts I and II keep
+%% their labels unchanged.
+%% ====================================================================
+\clearpage
+\phantomsection\part*{Part III.\quad Exact fluctuation laws and sharp discrepancy in binary morphic words}
+\addcontentsline{toc}{part}{Part III.\texorpdfstring{\quad}{ } Exact fluctuation laws and sharp discrepancy in binary morphic words}
+% Part III's tables are numbered III.1, ... (Part I's Appendix A keeps its
+% Table 3; the counter is restored after Part III).
+\setcounter{table}{0}
+\renewcommand{\thetable}{III.\arabic{table}}
+\renewcommand{\theHtable}{III.\arabic{table}}
+
+\noindent{\large\color{ink}Positive convolution formulas, extremal variance,
+and sharp critical and supercritical normalization}\par\smallskip
+\noindent Research prepared with ChatGPT, dated 5 October 2026 (the
+manuscript's title page: ``A study of an open question in Vladimir
+Reshetnikov's ProveIt''); added to this report on 6 October 2026 in
+batch~114 of ProveIt's incoming-report intake.\par\medskip
+
+\noindent\emph{Part~III answers research question~7 of Part~II
+(Section~\ref{qmw:sec:further}): the exact normalization of the unbounded
+prefix discrepancy of $0\mapsto1$, $1\mapsto1\,0^a1^b$ at $a=b+2$ and for
+$a\geq b+3$. Its critical analysis covers every word with $a$ zeros and
+$a-1$ ones that begins with $1$. Parts~I and~II are unchanged except for dated
+notes of 6 October 2026 (Section~\ref{qmw:sec:phase}, research
+questions~2, 3, 4 and~7 of Section~\ref{qmw:sec:further}, and the
+introduction of Part~II) and a front matter that now announces Part~III.
+Section~\ref{bmf:sec:provenance} records the provenance, fixes the notation
+of the addition, and relates it to Parts~I and~II.}
+
+\paragraph{Summary (the manuscript's abstract).}
+The ProveIt study of the substitutions
+$0\mapsto1$, $1\mapsto1\,0^a1^b$ leaves the exact normalization of
+unbounded prefix discrepancy open. We solve its critical case
+$a=b+2$: the discrepancy $X(N)=\#0-\#1$ has the complete logarithmic
+cluster interval
+$[-(a-1)/(2\log a),(a-1)/(2\log a)]$, with explicit first extremal
+prefixes and exact formulas for their lengths. For $a\geq b+3$,
+we also determine the closed supercritical amplitude and the
+entire normalized cluster interval by an invariant polygon envelope.
+
+The main structural result is broader. For every word $w$ beginning
+with $1$ and containing $a$ zeros and $a-1$ ones, the complete
+proper-prefix histogram of $(0\mapsto1,1\mapsto w)^{2m}(c)$ equals
+$1+K_c(t)\sum_{j<m}[S(t)S(t^{-1})]^j$, with nonnegative integer
+coefficients throughout. Here $S$ records the heights preceding the
+zeros of $w$. This gives an exact mixture of independent digit
+differences, explicit finite moments, a local Gaussian expansion,
+quantitative Gaussian laws for every cutoff, and an explicit
+large-deviation pressure. Among all arrangements with the same
+incidence matrix, a single consecutive run of zeros maximizes the
+variance, at $(a^2-1)/12$ per substitution depth.
+
+The general central limit theorem and the underlying invariant-section
+identity have established precedents, which we identify. The contribution
+is the exact positive representation and the sharp, evaluated
+consequences. Proofs are accompanied by exact computations and a
+research agenda.
+
+\begin{statusbox}
+\textbf{Status and claim boundary (the manuscript's title page).}
+The manuscript is self-contained at the level of conventional proofs,
+with standard probability estimates explicitly identified. The
+computations check finite identities; they are not substitutes for
+the asymptotic arguments. No proof-assistant verification or external
+peer review is claimed.
+[Added 6 October 2026, batch~114: the ``local Gaussian expansion'' of the
+summary is proved to leading order (Theorems~\ref{bmf:thm:block-normal}
+and~\ref{bmf:thm:all-cutoff}); its first correction term
+\eqref{bmf:eq:edgeworth} is sketched only
+(Question~\ref{bmf:q:edgeworth}).]
+\end{statusbox}
+
+\section{Provenance, conventions and relation to Parts I and II}
+\label{bmf:sec:provenance}
+Part~III is built from one manuscript: \emph{Exact Fluctuation Laws and
+Sharp Discrepancy in Binary Morphic Words} (5 October 2026; author line
+``Research prepared with ChatGPT''; 30-page PDF, 2,187-line source, 117
+labels), delivered as \texttt{binary\_\allowbreak morphic\_\allowbreak
+fluctuations.zip} in arrival commit \texttt{e4d5dcf9e} (one of the two
+``New research reports'' commits of 5 October 2026) and placed in commit
+\texttt{99053b5d1} (batch~114). The manuscript read this report at ProveIt
+commit \texttt{112d6bed} (its pin; it also mentions a search-index commit
+\texttt{52d8ca404}, which it did not use). This report's directory has no
+difference between \texttt{112d6bed} and the placement commit, so Parts~I
+and~II as the manuscript read them are Parts~I and~II here, apart from the
+dated notes of this write. Its programs, data and figures are shipped with
+the prefix \texttt{03-fluct-} (the README lists them). The merge made these
+choices.
+\begin{itemize}[leftmargin=*,itemsep=1pt]
+\item Every theorem, corollary, proposition, lemma, definition, remark,
+proof, table, figure and research item of the manuscript is printed. Its
+section~$n$ is Section~$n+23$ here (its Theorem~3.2, the positive convolution formula, is
+Theorem~\ref{bmf:thm:histogram}); its four figures are
+Figures~\ref{bmf:fig:supercritical}--\ref{bmf:fig:pressure}. Its abstract is
+the summary above and its title-page note is the status box.
+\item ``The ProveIt report'', ``the predecessor'' and ``the repository'' in
+Sections~\ref{bmf:sec:intro}--\ref{bmf:sec:status} mean Part~II of this
+report as read at \texttt{112d6bed}. The manuscript's bibliography entry for
+the repository is replaced by references to Part~II's sections; its
+entries for Adamczewski's two papers and for A284368--A284371 are merged
+with the existing ones (the manuscript accessed those OEIS pages on
+5 October 2026, the existing entries record 1 October 2026).
+\item All 117 delivered labels carry the prefix \texttt{bmf:}; five labels
+are new (\texttt{bmf:sec:provenance}, \texttt{bmf:tab:notation},
+\texttt{bmf:rem:partII}, \texttt{bmf:q:edgeworth},
+\texttt{bmf:q:fixed-orders}). No symbol is renamed and no normalization
+changed; Table~\ref{bmf:tab:notation} resolves every clash with Parts~I
+and~II by scope.
+\item File names in the text are the shipped names, with dated notes in
+Section~\ref{bmf:sec:computations} where the delivered programs and build
+script still use delivery names.
+\item Vladimir's standing rule of 4 October 2026: two statements that the
+manuscript argues only in outline (the first local correction
+\eqref{bmf:eq:edgeworth} and every fixed correction order) are marked in
+place and recorded as Questions~\ref{bmf:q:edgeworth}
+and~\ref{bmf:q:fixed-orders} of Section~\ref{bmf:sec:research}. No claim of
+the manuscript was found to be wrong.
+\end{itemize}
+
+\paragraph{Citations checked at the write (6 October 2026).}
+Solomyak, \emph{On the Lyapunov spectrum of the twisted cocycle for
+substitutions} (arXiv:2502.14308, version~3 of 20 August 2025): its
+Proposition~3.1, attributed there to Rajabzadeh and Safaee, states that the
+vector function $\mathcal R(\mathbf z)=(1-z_0,\dots,1-z_{d-1})^{\mathsf T}$
+is an invariant section of the twisted cocycle,
+$\mathcal M_\zeta(\mathbf z)\mathcal R(\mathbf z)=\mathcal R(E_\zeta\mathbf z)$.
+At $z_0=t$, $z_1=t^{-1}$ the row of letter~$1$ is the identity
+$(1-t)S(t)+(1-t^{-1})T(t)=1-t$ used for \eqref{bmf:eq:telescoping} ([write]: writing
+$\mathbf z^{p}=z_0^{\abs p_0}z_1^{\abs p_1}$, the row of the letter~$1$
+telescopes, $\sum_{p\,c\text{ a prefix of }w}\mathbf z^{p}(1-z_c)=1-\mathbf z^{w}$,
+and at $z_0=t$, $z_1=t^{-1}$ one has $\mathbf z^{p}=t^{X(p)}$ and
+$X(w)=1$), so the manuscript's ``one-variable specialization'' is
+accurate. The
+publisher's page gives Studia Math.\ \textbf{286} (2026), 189--206
+(online first 15 December 2025), doi:10.4064/sm250402-31-7; the issue
+number ``no.~2'' of the delivered reference was not confirmed. Of
+Rajabzadeh--Safaee (arXiv:2501.16824) and Bressaud--Bufetov--Hubert
+(arXiv:1106.2666, Proc.\ London Math.\ Soc.\ 2014) only the abstracts were
+read; the latter's limit distributions are along exponential subsequences
+of times for constant-length substitutions, as the manuscript says.
+Paquette--Son (arXiv:1505.01428, version~1 of 6 May 2015) was read: its
+Theorem~3.3 is the central limit theorem for $S_f(u_{K_N})/\sqrt{\log N}$
+with $K_N$ uniform on $\{1,\dots,N\}$, every $N$, for a left eigenfunction
+of modulus-one eigenvalue that is not a coboundary, and its
+Proposition~3.1(iv)(a) (part of its condition~(iv), which is equivalent there to being a
+coboundary) requires
+$f(\zeta(a)_j)=\theta_f^{-1}(h(\zeta(a)_j)-h(\zeta(a)_{j+1}))$ at adjacent
+letters of an image; two adjacent zeros give $f(0)=0$ ([write]: take $\zeta(a)_j=\zeta(a)_{j+1}=0$),
+which fails for the weight $f=(1,-1)$, as the manuscript's remark after
+Theorem~\ref{bmf:thm:all-cutoff} says. The journal version (Ergodic Theory
+Dynam.\ Systems \textbf{39} (2019), no.~7, 1971--2005, as cited) was not
+read; its numbering was not compared. Feller's Chapter~XVI was not checked.
+
+\paragraph{Independent checks.}
+At intake (dossier of batch~114, on copies of the delivered layout): the
+three standard-library programs and \texttt{verify\_supercritical.py} pass
+(37,129 exact assertions; 1,078 words; 1,793 profiles;
+\texttt{all\_exact\_checks\_passed}). Separately programmed spot checks
+agree with Proposition~\ref{bmf:prop:finite-extrema} ($a=3$, $r\le8$;
+$a=4,5$, $r\le6$), with the first-hit lengths \eqref{bmf:eq:pq-length}
+against literal first occurrences ($a=3$: $4,32,276,2464$ and
+$9,89,817,7377$; $a=4$: $5,58,879$ and $12,215,3490$; $a=5$: $6,92,2178$
+and $15,429,10843$), with the profile count \eqref{bmf:eq:profile-count}
+by brute force over all $\binom{2a-2}{a}$ words for $a=2,\dots,8$, with the
+slopes $d/2$ of the depth-$r$ extrema for words with $d=1,2,3$, with the
+exact finite bound $\abs{X(N)}\le KL_N^\alpha$ for six supercritical pairs
+($(8,1)$, $(4,1)$, $(5,1)$, $(5,2)$, $(7,3)$, $(9,2)$; $3$--$12$ million
+prefixes each; largest ratio $0.99976$), and with
+\eqref{bmf:eq:finite-quadratic} on all $2\,096\,128$ prefixes of
+$\tau^{10}(1)$ at $(a,b)=(8,1)$, without a violation. At the write: the
+algebra of the proof of Theorem~\ref{bmf:thm:moments} (the seed moments
+from $K_0,K_1$ for an arbitrary zero-height law, and the reduction of the
+mixture variance to \eqref{bmf:eq:exact-var} at both parities) was checked
+symbolically, and the constants of \eqref{bmf:eq:edgeworth} were compared
+with exact histograms (Question~\ref{bmf:q:edgeworth}).
+
+\paragraph{Notation.} Part~III's symbols are local to
+Sections~\ref{bmf:sec:provenance}--\ref{bmf:sec:status}. Its critical
+Sections~\ref{bmf:sec:class}--\ref{bmf:sec:critical-extremes} use the
+weight $X=\#0-\#1$, which is Part~II's weight $X=\#0-q\#1$ at $q=1$;
+Section~\ref{bmf:sec:supercritical} uses Part~II's weight itself.
+Table~\ref{bmf:tab:notation} prints, for each letter that Parts~I--II also
+use, both meanings. Clashes inside the manuscript, kept as delivered: $\chi$
+is the pressure and $\chi_0,\chi_1$ are the vertical increments of
+Section~\ref{bmf:sec:supercritical}; $d$ is the diameter of the zero-height
+support in Sections~\ref{bmf:sec:class}--\ref{bmf:sec:critical-extremes} and $d=q+1$ in Section~\ref{bmf:sec:supercritical}; $e=\lambda-1$
+in Section~\ref{bmf:sec:supercritical} beside the exponential $e^s$; $A,B$
+are the length constants \eqref{bmf:eq:ab-length}, while $A_r,B_r$ are
+finite extrema, $A$ is the polygon height of
+Section~\ref{bmf:sec:supercritical}, $B(t)$ is the one-step matrix and $B_j$
+are Bernoulli numbers; $c\in\{0,1\}$ is a letter, $c_h$ and $c_\pm$ are
+multiplicities, and $c=(\lambda+q)/(q+1)$ in
+Section~\ref{bmf:sec:supercritical}; $Y_i$ are digit differences and
+$Y(n)=X(n)/n^\alpha$; $E$ is an error constant beside the expectation
+$\E$; $\log$ is natural and $\log_a$ is to base~$a$.
+
+\begin{table}[htbp]
+\centering\small
+\caption{Letters used by Part~III and by Parts~I--II with different
+meanings.}\label{bmf:tab:notation}
+\begin{tabular}{>{\raggedright\arraybackslash}p{.12\textwidth}>{\raggedright\arraybackslash}p{.35\textwidth}>{\raggedright\arraybackslash}p{.43\textwidth}}
+\toprule
+Symbol & Parts I--II & Part III\\
+\midrule
+$X$ & $X(P)=\zeros P-q\ones P$, \eqref{eq:weight}, \eqref{qmw:eq:weight} & $\#0-\#1$ in Sections~\ref{bmf:sec:class}--\ref{bmf:sec:critical-extremes} (Part~II's $X$ at $q=1$); Part~II's $X$ in Section~\ref{bmf:sec:supercritical}; $X_a(N)$, $X_q(N)$, $X_r$, $X(U_N)$ as defined there\\
+$\sigma$, $W$ & Part~I: $\sigma_m$: $1\mapsto(10)^m$, $W_k=\sigma_m^k(1)$ & $\sigma$: $1\mapsto w$ \eqref{bmf:eq:general-sub}; $\sigma_a=\tau_{a,a-2}$ \eqref{bmf:eq:run-family}; $W_r=\sigma^r(1)$, $L_r=\abs{W_r}$\\
+$w$, $\word$ & $\word$ ($\word^{(a,b)}$): the fixed point & $w$: the finite image $\sigma(1)$ (Sections~\ref{bmf:sec:class}--\ref{bmf:sec:critical-extremes}), the fixed point of $\tau$ (Section~\ref{bmf:sec:supercritical}); $\mathbf u$: the fixed point of $\sigma$\\
+$S$ & $S_0,S_1$: weights of prefixes by next letter & $S(t)$: zero-height polynomial \eqref{bmf:eq:ST}; $S^-(t)=S(t^{-1})$; $S_j=Y_1+\dots+Y_j$ (Section~\ref{bmf:sec:gaussian}); $S_1,S_2$: two profiles (Question~5)\\
+$K_0,K_1$ & compact sets: Lemma~\ref{lem:hausdorff}; $K_i=\cl S_i$ & seed polynomials $K_c(t)$, \eqref{bmf:eq:K0}--\eqref{bmf:eq:K1}; $K$: the amplitude $A/t_*^\alpha$ (Section~\ref{bmf:sec:supercritical})\\
+$C$ & $C=q/(1-q^2)$ \eqref{eq:CH}; $\widehat C$ \eqref{qmw:eq:Cdef} & $C(t)$: the paired matrix \eqref{bmf:eq:paired}; $\mathcal C_{a,b}$: the supercritical amplitude\\
+$T$ & $T=m(m+2)$; $T_k$: a prefix & $T(t)$: one-height polynomial \eqref{bmf:eq:ST}; the profile operator (Section~\ref{bmf:sec:supercritical})\\
+$H$ & Part~I's $H$ \eqref{eq:CH} & polygonal paths $H_{i,k}$, $H$; Hermite $H_2,H_4$; harmonic $H_M$; an accumulator (Section~\ref{bmf:sec:computations})\\
+$r$, $s$, $t$ & slopes $r=1+1/q$, $s=1+q$; Part~I: $t=1-q$ & $r$: substitution depth, $s$: tilt, $t$: Laurent variable; in Section~\ref{bmf:sec:supercritical} $r=\lambda^{-2}$, $s=q^{-2}$, $t$: geometric time\\
+$m$ & Part~I's parameter in $\sigma_m$ & half depth ($r=2m$); $m_r$: limiting means; slope $m=e/d$ (Section~\ref{bmf:sec:supercritical})\\
+$u$, $v$ & $u(n)$, $v(n)$: positions of the $n$th zero and one & $v=\Var Z$; $u(n),v(n)$ as in Parts~I--II (Section~\ref{bmf:sec:critical-extremes}); $u$: a profile variable\\
+$\rho$, $\delta$ & frequencies \eqref{qmw:eq:frequencies} & $\rho,\rho_1$: decay rates (Section~\ref{bmf:sec:gaussian}); $\delta$ not used\\
+$P_k$, $Q_k$ & \eqref{qmw:eq:Pk}; $Q_k=\tau_{a,b}(P_k)$ & $P_k$: the same recursion; $Q_k=\sigma_a(P_k)1$ in \eqref{bmf:eq:PQ}, $Q_k=\tau(P_k)$ in Section~\ref{bmf:sec:supercritical}; $P$: the polygon there\\
+$E_0,E_1$ & position errors \eqref{qmw:eq:E1X}, \eqref{qmw:eq:E0X} & the same at $q=1$ \eqref{bmf:eq:position-exact}; $E$: an error constant (Section~\ref{bmf:sec:supercritical})\\
+$I$, $F$, $\ell$ & $I_0,I_1$ \eqref{eq:intervals}; $F_m(z)$, $F_0,F_1$; $\ell_i=\min K_i$ & rate functions $I_w,I_a$, identity $I$; histograms $F_{r,c}$ and profile $F$; $\ell_0,\ell_1$: letter lengths, $\ell$: least height, an index\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{remark}[Relation to Parts~I and~II]\label{bmf:rem:partII}
+\emph{What is answered.} Part~II's research question~7 asks for the exact
+limsup and liminf of the discrepancy divided by $\log N$ at $a=b+2$, and
+for the limit sets after normalization by $N^{\log_\lambda q}$ at
+$a\geq b+3$. The critical family $\tau_{a,a-2}$, $a\geq3$, is the run
+family $\sigma_a$ \eqref{bmf:eq:run-family}, with $d=a-1$, so
+Theorem~\ref{bmf:thm:general-extremes} gives the cluster set
+$[-(a-1)/(2\log a),(a-1)/(2\log a)]$ of $X(N)/\log N$; this is the sharp
+constant in the $O(\log N)$ bound of Section~\ref{qmw:sec:phase}. In the
+supercritical range, $\alpha=\log q/\log\lambda$ is Part~II's predicted
+exponent, Theorem~\ref{bmf:thm:supercritical-amplitude} gives the cluster
+set $[-\mathcal C_{a,b},\mathcal C_{a,b}]$ of $X(N)/N^\alpha$, and the
+graph-directed limit object is the continuous anti-periodic profile
+$\Theta$, whose range over a period is an interval.
+
+\emph{The same cycle} [write]. The prefixes $P_k$ of \eqref{bmf:eq:PQ} and of
+Section~\ref{bmf:sec:supercritical} are defined by Part~II's recursion
+\eqref{qmw:eq:Pk}. At $q=1$ Part~II computes $X(P_k)=k(a-1)$;
+Theorem~\ref{bmf:thm:first-hit} adds that $P_k$ is the \emph{first} prefix
+of that weight and gives its length. For $q>1$ the recursion
+\eqref{qmw:eq:xrec}, $x_{k+1}=q^2x_k+a-q$, $x_0=0$, has the solution
+$x_k=(a-q)(q^{2k}-1)/(q^2-1)$, which is the weight of $P_k$ printed in
+Section~\ref{bmf:sec:supercritical} because $a-q=q(\lambda-1)$
+($\lambda=a/q$); so Part~II's power law along $P_k$ has the sharp constant,
+$X(P_k)/\abs{P_k}^\alpha\to\mathcal C_{a,b}$. The supercritical $Q_k=\tau(P_k)$
+is Part~II's $Q_k$; the critical $Q_k=\sigma_a(P_k)1$ of \eqref{bmf:eq:PQ}
+is Part~II's $Q_k$ followed by a one.
+
+\emph{Position errors} [write]. \eqref{bmf:eq:position-exact} is the case $q=1$ of
+\eqref{qmw:eq:E1X} and \eqref{qmw:eq:E0X}: if $P$ immediately precedes the
+$n$th one, then $X(v(n))=X(P)-1$, so $E_1(n)=-X(v(n))=1-X(P)$; if $P$
+immediately precedes the $n$th zero, then $E_0(n)=X(u(n))=X(P)+1$.
+
+\emph{Beyond Parts~I--II.} The critical class of
+Section~\ref{bmf:sec:class} contains every word with $a$ zeros and $a-1$
+ones beginning with $1$, not only $1\,0^a1^{a-2}$, and it includes $a=2$
+($w=100$, that is $(a,b)=(2,0)$, outside Part~II's hypothesis $b\geq1$).
+It is disjoint from Part~I's family: $(10)^m$ has as many ones as zeros.
+Part~III proves nothing about Part~I's words or about Part~II's bounded
+regime $a\leq b+1$; Part~I's open questions
+(Section~\ref{sec:consequences}) and Part~II's research questions other
+than question~7 stay open (of question~4, Theorem~\ref{bmf:thm:first-hit}
+answers only the extremal slice at $a=b+2$) (Part~III's own Question~1 says that its critical mixture does not
+extend across $q=1$).
+
+\emph{Method.} Parts~I and~II solve contracting set recursions and Bellman
+systems for the extremes. Part~III's critical results rest on an exact,
+coefficientwise positive identity for complete-block prefix histograms
+(Theorem~\ref{bmf:thm:histogram}), its supercritical result on continuous
+graph-directed profiles and an invariant concave polygon envelope
+(Section~\ref{bmf:sec:supercritical}).
+\end{remark}
+
+\paragraph{What Part~III does not claim.} Its text keeps every limitation
+the manuscript states; in summary: no external review or proof-assistant
+verification; finite computations corroborate the proofs and do not replace
+them, and the floating-point diagnostics and profile plots are not
+interval-certified; the spectral explanation of discrepancy growth
+(Adamczewski), the existence of the Gaussian limit (Paquette--Son,
+Theorem~3.3) and the invariant-section identity (Rajabzadeh--Safaee,
+Solomyak) are prior work, and the unnamed ``general predecessors'' of the
+continuous profile construction are acknowledged without a claim of a new
+general limit-profile theorem; the priority statement is a bounded
+literature assessment; the critical word $10001$ is given no OEIS number
+(A284370 is a position sequence of $1001$); the bounded-regime distribution
+questions are not solved; no absolute continuity or absence of atoms is
+asserted for the phase laws; Theorem~\ref{bmf:thm:realization} counts
+profiles, not words; the error $O(N^{\alpha^2})$ is not claimed sharp; the
+endpoint values of the rate function concern neighbourhoods, not exact
+extremes; and the first local correction is sketched only.
+
+\section{The question, the answer, and its provenance}\label{bmf:sec:intro}
+
+A morphism replaces each letter of a finite word by another finite
+word and concatenates the replacements. If the image of $1$ begins
+with $1$ and grows, its iterates give longer and longer prefixes of
+one infinite word. Such a word can be completely deterministic while
+its prefix counts display substantial statistical variation.
+
+The starting point is the ProveIt report \emph{Sharp discrepancy for
+two families of binary substitutions}, specifically its Part~II
+(Sections~\ref{qmw:sec:oeis}--\ref{qmw:sec:further} of this report, read
+by the manuscript at commit \texttt{112d6bed}; see
+Section~\ref{bmf:sec:provenance}). Its family is
+\eqref{qmw:eq:tauab}, repeated here:
+\begin{equation}\label{bmf:eq:source-family}
+ \tau_{a,b}(0)=1,\qquad \tau_{a,b}(1)=1\,0^a1^b,\qquad a,b\geq1.
+\end{equation}
+Writing
+\begin{equation}\label{bmf:eq:source-spectrum}
+ q=\frac{\sqrt{(b+1)^2+4a}-(b+1)}2,\qquad
+ \lambda=b+1+q,
+\end{equation}
+the incidence eigenvalues are $\lambda$ and $-q$. The predecessor
+establishes bounded discrepancy for $q<1$, logarithmic extremal growth
+at $q=1$, and power growth for $q>1$ (Theorem~\ref{qmw:thm:phase} and
+Section~\ref{qmw:sec:phase}). Its research question 7
+(Section~\ref{qmw:sec:further}) asks for
+the exact critical limsup and liminf and the supercritical normalized
+limit sets. Our principal critical results answer the first part
+exactly and extend it to every arrangement with the same incidence
+matrix. Section~\ref{bmf:sec:supercritical} answers the supercritical
+part as well, including a closed formula for its endpoints.
+
+\subsection{The OEIS connection, with the indices kept distinct}
+
+The link with OEIS is through the explicitly investigated
+two-parameter family, rather than an unverified assignment of a new
+OEIS number to its critical boundary. The entries inspected for this
+article have the following meanings \cite{oeis368,oeis369,oeis370,oeis371}.
+
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+Entry & Object & Parameters in \eqref{bmf:eq:source-family}\\
+\midrule
+A284368 & Fixed word of $1\mapsto1011$ & $(a,b)=(1,2)$\\
+A284369 & Fixed word of $1\mapsto1001$ & $(a,b)=(2,1)$\\
+A284370 & Positions of zeros in A284369 & same bounded case\\
+A284371 & Positions of ones in A284369 & same bounded case\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+These examples are in the bounded regime. The critical continuation is
+\begin{equation}\label{bmf:eq:run-family}
+ \sigma_a(0)=1,\qquad \sigma_a(1)=1\,0^a1^{a-2},\qquad a\geq3.
+\end{equation}
+For example, $a=3$ gives $1\mapsto10001$. This word is not A284370:
+A284370 is a position sequence for $1\mapsto1001$.
+The bounded-regime distribution questions in the predecessor remain
+separate from the critical distribution laws proved below.
+
+\subsection{The main concrete conclusions}
+
+Let $X_a(N)$ be the number of zeros minus the number of ones among
+the first $N$ letters of the fixed point of \eqref{bmf:eq:run-family}.
+We prove
+\begin{equation}\label{bmf:eq:intro-extremes}
+ \limsup_{N\to\infty}\frac{X_a(N)}{\log N}
+ =-\liminf_{N\to\infty}\frac{X_a(N)}{\log N}
+ =\frac{a-1}{2\log a}.
+\end{equation}
+Every value between these two endpoints is a subsequential limit.
+If $U_N$ is uniform on $\{0,\ldots,N-1\}$, then
+\begin{equation}\label{bmf:eq:intro-clt}
+ \frac{X_a(U_N)}
+ {\sqrt{((a^2-1)/12)\log_a N}}
+ \ \Longrightarrow\ {\cal N}(0,1).
+\end{equation}
+Thus typical errors are of order $\sqrt{\log N}$, whereas extremal
+errors are of order $\log N$. These are different assertions about
+the same deterministic word.
+
+The exact pressure controlling deviations on the larger scale is
+\begin{equation}\label{bmf:eq:intro-pressure}
+ \chi_a(s)=
+ \log\!\left(\frac{\sinh(as/2)}{a\sinh(s/2)}\right),
+ \qquad \chi_a(0)=0.
+\end{equation}
+In particular, the frequency of a prescribed positive
+logarithmic-size deviation is a power of $N$ with an explicitly
+determined exponent; see Section~\ref{bmf:sec:pressure}.
+
+All three conclusions arise from one exact finite identity, rather
+than extrapolation from sampled prefixes.
+
+In the supercritical range $a\geq b+3$, set
+$\alpha=\log q/\log\lambda$. For the eigenweight
+$X_q(N)=\#0-q\#1$, we obtain the complete cluster interval
+\[
+ \operatorname{Clust}_{N\to\infty}\frac{X_q(N)}{N^\alpha}
+ =[-\mathcal C_{a,b},\mathcal C_{a,b}],
+\]
+with the explicit constant
+\begin{equation}\label{bmf:eq:intro-superconstant}
+ \mathcal C_{a,b}=
+ \frac{\lambda-1}{q^2-1}
+ \left(\frac{(\lambda+q)(\lambda^2-1)}{(q+1)^2}\right)^\alpha.
+\end{equation}
+For example, $0\mapsto1$, $1\mapsto1\,0^8\,1$ has
+$q=2$, $\lambda=4$, $\alpha=1/2$ and sharp endpoints
+$\pm\sqrt{10}$.
+
+\subsection{What is established theory and what is supplied here}
+
+Adamczewski's work supplies the general relation between substitution
+spectra and bounded or logarithmic discrepancy
+\cite{adam2003,adamczewski}. Paquette and Son, Theorem 3.3, already prove
+the existence of a Gaussian limit for noncoboundary eigenfunctions
+with eigenvalue of modulus one, using a uniformly selected prefix
+and arbitrary cutoffs \cite{paquette}. It applies to our class.
+Our Gaussian limit is therefore an explicit evaluation and refinement
+of that theorem, with an elementary independent-summand proof.
+
+The telescoping identity used below is a one-variable specialization
+of the invariant-section identity attributed to Rajabzadeh and
+Safaee in Solomyak's Proposition 3.1 \cite{solomyak,rajabzadeh}.
+We do not claim the general invariant-section mechanism as new.
+The exact positive histogram mixture, its reduction to the finite
+zero-height distribution, and the resulting sharp constants are the
+specific results developed here. We have not located these exact
+statements in the primary sources surveyed; that is a bounded
+literature assessment, not a certification of publication priority.
+
+The related work of Bressaud, Bufetov, and Hubert
+\cite{bressaud} concerns a different sampling framework in its
+constant-length limit theorems: a random initial point at prescribed
+times. We keep it distinct from a uniform prefix of one fixed word.
+
+\section{A general critical binary class}\label{bmf:sec:class}
+
+Fix an integer $a\geq2$. Let $w$ be any binary word that begins with
+$1$ and has $a$ zeros and $a-1$ ones. Define
+\begin{equation}\label{bmf:eq:general-sub}
+ \sigma(0)=1,\qquad \sigma(1)=w.
+\end{equation}
+The substitution is primitive, and its nested iterates on $1$
+define a fixed point $\mathbf u=u_1u_2\cdots$. For a finite word $P$ set
+\begin{equation}\label{bmf:eq:weight}
+ X(P)=|P|_0-|P|_1,\qquad
+ X(N)=X(u_1\cdots u_N),\qquad X(0)=0.
+\end{equation}
+The incidence matrix and its eigenweight identity are
+\begin{equation}\label{bmf:eq:matrix}
+ M=\begin{pmatrix}0&a\\1&a-1\end{pmatrix},
+ \qquad X(\sigma(P))=-X(P).
+\end{equation}
+The eigenvalues are $a$ and $-1$. The eigenweight identity follows
+already from $X(\sigma(0))=-1$ and $X(\sigma(1))=1$.
+
+For $r\geq0$ let $W_r=\sigma^r(1)$ and $L_r=|W_r|$.
+The order of the letters in $w$ does not affect these lengths:
+\begin{equation}\label{bmf:eq:length}
+ L_r=\frac{2a^{r+1}+(-1)^{r+1}(a-1)}{a+1}.
+\end{equation}
+Indeed $L_0=1$, $L_1=2a-1$, and
+$L_{r+1}=(a-1)L_r+aL_{r-1}$. Its characteristic roots are $a,-1$.
+For $r\geq1$, $|\sigma^r(0)|=L_{r-1}$.
+
+\begin{definition}[Zero-height distribution]\label{bmf:def:zero-height}
+For each occurrence of a zero in $w$, record the value of $X$
+immediately before that occurrence. Let $Z$ be a uniformly selected
+one of these $a$ values, with repetitions retained. Define
+\begin{equation}\label{bmf:eq:ST}
+ S(t)=\sum_{\substack{p0\text{ is a prefix}\\\text{of }w}}t^{X(p)},
+ \qquad
+ T(t)=\sum_{\substack{p1\text{ is a prefix}\\\text{of }w}}t^{X(p)}.
+\end{equation}
+Thus $S(t)/a$ is the Laurent probability generating function of $Z$.
+We write $\mu=\E Z$, $v=\Var Z$, and
+$d=\max\supp Z-\min\supp Z$.
+\end{definition}
+
+\begin{lemma}[The zero heights have no gaps]\label{bmf:lem:gaps}
+The support of $Z$ is a consecutive interval of integers containing
+$-1$ and $0$. In particular $v>0$, $d\geq1$, and $Z-Z'$ has lattice
+span one for an independent copy $Z'$.
+\end{lemma}
+\begin{proof}
+The prefix weights trace a nearest-neighbor path from $0$ to $1$.
+The first step is downward. The path must later cross upward from
+$-1$ to $0$ and from $0$ to $1$, so both starting heights occur.
+If a negative height is reached, the subsequent return to the final
+height $1$ includes every intervening upward crossing. If a
+nonnegative height is reached by an upward crossing, the path from
+its initial height $0$ must include all intervening upward crossings.
+The set of starting heights of the upward steps is consequently
+an integer interval. Each such step is exactly a zero occurrence.
+\end{proof}
+
+For \eqref{bmf:eq:run-family}, the zero heights are
+$-1,0,\ldots,a-2$, each once, so
+\begin{equation}\label{bmf:eq:run-muv}
+ \mu=\frac{a-3}{2},\qquad
+ v=\frac{a^2-1}{12},\qquad d=a-1.
+\end{equation}
+
+\section{An exact positive formula for every prefix histogram}\label{bmf:sec:histogram}
+
+\begin{definition}[Proper-prefix histogram]
+For $c\in\{0,1\}$, let
+\begin{equation}\label{bmf:eq:Fdef}
+ F_{r,c}(t)=
+ \sum_{0\leq n<|\sigma^r(c)|}
+ t^{X(\pref_n(\sigma^r(c)))}.
+\end{equation}
+The empty prefix is included and the complete word is excluded.
+Consequently $F_{0,0}=F_{0,1}=1$.
+\end{definition}
+
+\begin{theorem}[Positive convolution formula]\label{bmf:thm:histogram}
+Let $S^-(t)=S(t^{-1})$ and $T^-(t)=T(t^{-1})$, and put
+\begin{align}
+ \Delta(t)&=S(t)S^-(t),\label{bmf:eq:Delta}\\
+ K_0(t)&=S(t)+T(t)-1,\label{bmf:eq:K0}\\
+ K_1(t)&=K_0(t^{-1})+T^-(t)K_0(t).\label{bmf:eq:K1}
+\end{align}
+Both $K_c$ have nonnegative integer coefficients, and
+\begin{equation}\label{bmf:eq:Kmass}
+ K_0(1)=2(a-1),\qquad K_1(1)=2a(a-1).
+\end{equation}
+For every $m\geq0$ and $c\in\{0,1\}$,
+\begin{equation}\label{bmf:eq:positive-hist}
+ \boxed{\displaystyle
+ F_{2m,c}(t)=1+K_c(t)\sum_{j=0}^{m-1}\Delta(t)^j.}
+\end{equation}
+The sum is empty when $m=0$. Odd depths for $W_r$ are recovered by
+$F_{r,1}=F_{r+1,0}$.
+\end{theorem}
+
+\begin{proof}
+An upward step from height $h$ changes $t^h$ by
+$(t-1)t^h$; a downward step changes it by
+$(t^{-1}-1)t^h$. Summing these increments along $w$, whose final
+height is $1$, gives the Laurent-polynomial identity
+\[
+ t-1=(t-1)S(t)+(t^{-1}-1)T(t).
+\]
+It follows that
+\begin{equation}\label{bmf:eq:telescoping}
+ T(t)=t(S(t)-1).
+\end{equation}
+This identity holds formally, including at $t=1$ by evaluation.
+
+Every proper prefix of $\sigma^{r+1}(c)$ selects one letter in
+$\sigma(c)$ and then a proper prefix in its $\sigma^r$ image.
+The preceding complete images contribute
+$(-1)^r X(p)$. With column vectors
+$F_r=(F_{r,0},F_{r,1})^{\mathsf T}$, this gives
+\begin{equation}\label{bmf:eq:one-step}
+ F_{r+1}(t)=B(t^{(-1)^r})F_r(t),
+ \qquad
+ B(t)=\begin{pmatrix}0&1\\S(t)&T(t)\end{pmatrix}.
+\end{equation}
+Pairing two steps therefore gives
+\begin{equation}\label{bmf:eq:paired}
+ F_{2m}=C(t)^m\binom11,\qquad
+ C(t)=B(t^{-1})B(t)
+ =\begin{pmatrix}S&T\\T^-S&S^-+T^-T\end{pmatrix}.
+\end{equation}
+Equation \eqref{bmf:eq:telescoping} implies
+$T^-T=(S^--1)(S-1)$, so
+\[
+ \operatorname{tr}C=\Delta+1,\qquad \det C=\Delta.
+\]
+The Cayley--Hamilton identity becomes
+$(C-I)(C-\Delta I)=0$. Induction, entirely in the Laurent-polynomial
+ring, now gives
+\[
+ C^m=I+(C-I)\sum_{j=0}^{m-1}\Delta^j.
+\]
+Multiplication by $(1,1)^{\mathsf T}$ yields
+\eqref{bmf:eq:positive-hist}, because
+\[
+ (C-I)\binom11
+ =\binom{S+T-1}{S^--1+T^-(S+T)}
+ =\binom{K_0}{K_1}.
+\]
+Finally $w$ begins with $1$, so $T$ includes the constant term
+of its empty prefix. Subtracting this one contribution leaves
+$K_0\geq0$ coefficientwise. Formula \eqref{bmf:eq:K1} then proves
+$K_1\geq0$. Their total masses follow from $S(1)=a$ and $T(1)=a-1$.
+The odd-depth assertion is the word identity
+$\sigma^{r+1}(0)=\sigma^r(1)$.
+\end{proof}
+
+\begin{remark}[Why positivity matters]
+The factorization of the two eigenvalues by itself would give a
+spectral formula. Equation \eqref{bmf:eq:positive-hist} gives more:
+it expresses the integer histogram as a sum of positive convolutions.
+It therefore has an exact probability interpretation with no signed
+weights, and no spectral remainder has to be guessed or fitted.
+The telescoping mechanism is related to the general invariant section
+in \cite[Proposition 3.1]{solomyak}; the positivity and probability
+interpretation here use the specified binary class.
+\end{remark}
+
+\subsection{A complete small example}
+
+Take $a=3$ and $w=10001$. Then
+\[
+ S=t^{-1}+1+t,\qquad T=1+t^2,
+\]
+\[
+ \Delta=t^{-2}+2t^{-1}+3+2t+t^2,\qquad
+ K_0=t^{-1}+1+t+t^2,
+\]
+\begin{equation}\label{bmf:eq:a3K}
+ K_1=t^{-3}+2t^{-2}+3t^{-1}+3+2t+t^2.
+\end{equation}
+The depth-two word is the concatenation
+$10001\,|\,1\,|\,1\,|\,1\,|\,10001$, of length $13$.
+Its proper-prefix weights are
+\[
+ 0,-1,0,1,2,1,0,-1,-2,-3,-2,-1,0.
+\]
+Their histogram is $1+K_1$, exactly as the theorem says. The same
+identity computes the entire histogram at depth $256$, even though
+the corresponding word has on the order of $3^{256}$ letters.
+
+\section{The exact random-sum law and finite moments}\label{bmf:sec:mixture}
+
+Let $Z_i,Z_i'$ be independent copies of $Z$, and set
+$Y_i=Z_i-Z_i'$. Then
+\begin{equation}\label{bmf:eq:digit-law}
+ \E t^{Y_i}=\frac{\Delta(t)}{a^2},\qquad
+ \E Y_i=0,\qquad \Var Y_i=2v.
+\end{equation}
+The distribution of $Y_i$ is symmetric and has span one.
+
+\begin{corollary}[Exact geometric mixture]\label{bmf:cor:mixture}
+Fix $m\geq1$, $c\in\{0,1\}$, and let $L=|\sigma^{2m}(c)|$.
+A uniformly chosen proper-prefix weight has the following law:
+with probability $1/L$ it is $0$; with probability
+$\omega=(L-1)/L$ it is
+\begin{equation}\label{bmf:eq:mixture-law}
+ V_c+\sum_{i=1}^{J}Y_i,
+\end{equation}
+where all variables on the right are independent,
+\[
+ \E t^{V_c}=\frac{K_c(t)}{K_c(1)},\qquad
+ \Prob(J=j)=\frac{a^{2j}}{\sum_{h=0}^{m-1}a^{2h}},
+ \quad 0\leq j<m.
+\]
+\end{corollary}
+\begin{proof}
+Divide each summand of \eqref{bmf:eq:positive-hist} by its total mass.
+The mass of the summand $K_c\Delta^j$ is $K_c(1)a^{2j}$.
+\end{proof}
+
+The depth loss $m-1-J$ has a truncated geometric distribution.
+All of its fixed moments are bounded independently of $m$.
+In particular, with $R=a^2$,
+\begin{equation}\label{bmf:eq:EJ}
+ \E J=m-\frac{R}{R-1}+\frac{m}{R^m-1}.
+\end{equation}
+The random sum therefore contains essentially one independent
+digit difference for every two substitution levels.
+
+\subsection{Exact moments for every word in the class}
+
+The first two moments can be evaluated using only $\mu=\E Z$ and
+$v=\Var Z$. Define
+\begin{align}
+ m_r&=
+ \begin{cases}
+ -\dfrac12-\dfrac{\mu}{a-1},&r\text{ even},\\[2mm]
+ \dfrac12+\dfrac{a\mu}{a-1},&r\text{ odd},
+ \end{cases}\label{bmf:eq:parity-mean}\\
+ \beta&=\frac{v}{a+1}-\frac{a\mu^2}{(a-1)^2}+\frac14,
+ \qquad
+ \omega_r=1-\frac1{L_r},\label{bmf:eq:beta}\\
+ \eta_r&=
+ \begin{cases}ar,&r\text{ even},\\r+1,&r\text{ odd}.
+ \end{cases}\label{bmf:eq:eta}
+\end{align}
+
+\begin{theorem}[Finite mean and variance]\label{bmf:thm:moments}
+For $U_r$ uniform on $\{0,\ldots,L_r-1\}$ and
+$X_r=X(U_r)$, the following identities hold for every $r\geq0$:
+\begin{align}
+ \E X_r&=\omega_r m_r,\label{bmf:eq:exact-mean}\\
+ \Var X_r&=
+ \omega_r(rv+\beta)
+ +\frac{2v\eta_r}{(a+1)L_r}
+ +\omega_r(1-\omega_r)m_r^2.\label{bmf:eq:exact-var}
+\end{align}
+Consequently
+\begin{equation}\label{bmf:eq:moment-asym}
+ \E X_r=m_r+O_w(a^{-r}),\qquad
+ \Var X_r=rv+\beta+O_w(ra^{-r}).
+\end{equation}
+The variance correction $\beta$ is the same in both parity classes.
+\end{theorem}
+\begin{proof}
+Differentiate the probability generating functions at $t=e^s$,
+so derivatives at $s=0$ give moments. From \eqref{bmf:eq:telescoping}
+and \eqref{bmf:eq:K0}--\eqref{bmf:eq:K1} one obtains
+\begin{align*}
+ \E V_0&=\frac12+\frac{a\mu}{a-1},&
+ \Var V_0&=\frac{av}{a-1}-\frac{a\mu^2}{(a-1)^2}+\frac14,\\
+ \E V_1&=-\frac12-\frac{\mu}{a-1},&
+ \Var V_1&=\frac{(2a-1)v}{a-1}
+                 -\frac{a\mu^2}{(a-1)^2}+\frac14.
+\end{align*}
+For example $S(e^s)'|_0=a\mu$ and
+$S(e^s)''|_0=a(v+\mu^2)$; substitution in
+$K_0=(1+t)S-t-1$ gives the first row directly.
+Substitution in $K_1=K_0^-+T^-K_0$ gives the second.
+
+Conditional on the non-atomic part of \eqref{bmf:eq:mixture-law},
+the mean is $\E V_c$ and the variance is
+$\Var V_c+2v\E J$. The zero atom changes these to
+$\omega\E V_c$ and
+$\omega(\Var V_c+2v\E J)+\omega(1-\omega)(\E V_c)^2$.
+Use \eqref{bmf:eq:EJ}. For even $r=2m$, use $c=1$; for odd
+$r=2m-1$, use $c=0$ at depth $2m$. The lengths from
+\eqref{bmf:eq:length} reduce the resulting expressions to
+\eqref{bmf:eq:exact-mean}--\eqref{bmf:eq:exact-var}.
+For $r=0$, $\omega_0=\eta_0=0$, so both sides vanish.
+\end{proof}
+
+For the critical run family \eqref{bmf:eq:run-family}, these constants are
+\begin{equation}\label{bmf:eq:run-moments}
+ m_{\rm even}=-\frac{a-2}{a-1},\qquad
+ m_{\rm odd}=\frac{a-1}{2}-\frac1{a-1},\qquad
+ \beta=\frac{7-a}{6}-\frac1{(a-1)^2}.
+\end{equation}
+At $a=3$, the limiting means are $-1/2$ and $1/2$,
+$v=2/3$, and $\beta=5/12$. At depth two the exact values are
+$\E X_2=-6/13$ and $\Var X_2=302/169$.
+
+\section{Gaussian laws, local expansions, and arbitrary cutoffs}\label{bmf:sec:gaussian}
+
+Throughout this section $w$ is fixed. Constants in $O_w(\cdot)$ may
+depend on that finite word, but never on the cutoff or substitution
+depth. Write $\ph(x)=(2\pi)^{-1/2}e^{-x^2/2}$ and let $\Phi$ be
+its distribution function.
+
+\subsection{A bounded independent-summand estimate}
+
+The exact mixture makes the relevant probability input elementary.
+For $S_j=Y_1+\cdots+Y_j$, the usual Berry--Esseen estimate for
+bounded independent summands gives
+\begin{equation}\label{bmf:eq:iid-be}
+ \sup_x\left|
+ \Prob\left(\frac{S_j}{\sqrt{2vj}}\leq x\right)-\Phi(x)
+ \right|=O_w(j^{-1/2}).
+\end{equation}
+This is a standard probability theorem, not a new general estimate;
+see, for example, \cite[Chapter XVI]{feller}.
+The lattice local estimate can be seen directly. The characteristic
+function is
+\[
+ \psi(t)=\E e^{itY_1}=|\E e^{itZ}|^2
+       =1-vt^2+O_w(t^4).
+\]
+Lemma~\ref{bmf:lem:gaps} gives $|\psi(t)|<1$ for
+$0<|t|\leq\pi$. On any closed interval separated from $0$ the
+bound is uniform. Fourier inversion, with a small neighborhood of
+zero separated from its complement, therefore gives
+\begin{equation}\label{bmf:eq:iid-local}
+ \sup_{k\in\Z}\left|
+ \Prob(S_j=k)-\frac1{\sqrt{2vj}}
+       \ph\left(\frac{k}{\sqrt{2vj}}\right)
+ \right|=O_w(j^{-3/2}).
+\end{equation}
+For completeness, in the small neighborhood the integrand difference
+is bounded by
+$Cj t^4e^{-cjt^2}$; its integral is $O(j^{-3/2})$.
+The complementary integral is exponentially small. This also
+explains the absence of a bulk skewness term.
+
+\begin{theorem}[Full-block normal and local laws]\label{bmf:thm:block-normal}
+For $X_r$ as in Theorem~\ref{bmf:thm:moments}, as $r\to\infty$,
+\begin{align}
+ \sup_x\left|
+ \Prob\left(\frac{X_r-m_r}{\sqrt{rv}}\leq x\right)-\Phi(x)
+ \right|&=O_w(r^{-1/2}),\label{bmf:eq:block-be}\\
+ \sup_{k\in\Z}\left|
+ \Prob(X_r=k)-\frac1{\sqrt{rv}}
+       \ph\left(\frac{k-m_r}{\sqrt{rv}}\right)
+ \right|&=O_w(r^{-3/2}).\label{bmf:eq:block-local}
+\end{align}
+\end{theorem}
+\begin{proof}
+For \eqref{bmf:eq:block-be}, apply \eqref{bmf:eq:iid-be} conditional on
+$J$ in Corollary~\ref{bmf:cor:mixture}. The event $J<m/2$ is exponentially
+small. On its complement, the bounded seed changes a normal
+distribution function by $O(m^{-1/2})$, and the scale change from
+$J$ to $m$ is bounded by $C(m-J)/m$. The geometric depth loss has
+bounded moments. The atom contributes only $O(a^{-r})$.
+Odd depths use state $0$ at the next even depth.
+
+Here are details yielding the sharper centered local estimate.
+On a complex neighborhood of $s=0$, choose the analytic logarithm
+and square root that are real at $0$, and put
+\begin{equation}\label{bmf:eq:chi-def}
+ \chi(s)=\frac12\log\frac{S(e^s)S(e^{-s})}{a^2}.
+\end{equation}
+The finite geometric identity implies
+\begin{equation}\label{bmf:eq:block-analytic}
+ \E e^{sX_r}
+ =e^{r\chi(s)}g_{\epsilon}(s)(1+O_w(\rho^r)),
+ \qquad 0<\rho<1,\quad \epsilon=r\bmod2,
+\end{equation}
+uniformly on a smaller fixed neighborhood, where
+\begin{align}
+ g_0(s)&=\frac{(a+1)K_1(e^s)}
+                   {2a(\Delta(e^s)-1)},\label{bmf:eq:g-even}\\
+ g_1(s)&=\frac{(a+1)K_0(e^s)\sqrt{\Delta(e^s)}}
+                   {2a(\Delta(e^s)-1)}.\label{bmf:eq:g-odd}
+\end{align}
+Both are $1$ at $0$. The moment identities give
+$(\log g_\epsilon)'(0)=m_r$ and
+$(\log g_\epsilon)''(0)=\beta$. Also
+$\chi'(0)=\chi'''(0)=0$ and $\chi''(0)=v$.
+Consequently, after removal of the bounded mean,
+the small-frequency characteristic function differs from
+$e^{-rvt^2/2}$ by an integrable error bounded by
+$C(t^2+rt^4)e^{-crt^2}$, whose integral is $O(r^{-3/2})$.
+Away from zero, use the original finite geometric sum, so that
+possible points $\Delta(e^{it})=1$ create no denominator problem:
+its normalized modulus is bounded by $Cr\rho_1^r$ for some
+$\rho_1<1$. Fourier inversion proves \eqref{bmf:eq:block-local}.
+\end{proof}
+
+\subsection{The first local correction}
+
+Let $\kappa_4(Z)=\E(Z-\mu)^4-3v^2$ and set
+$H_2(y)=y^2-1$, $H_4(y)=y^4-6y^2+3$.
+Keeping the next terms in the preceding Fourier proof gives,
+uniformly for $y=(k-m_r)/\sqrt{rv}$ in any fixed compact interval,
+\begin{equation}\label{bmf:eq:edgeworth}
+ \Prob(X_r=k)=\frac{\ph(y)}{\sqrt{rv}}
+ \left[
+ 1+\frac1r\left\{
+ \frac{\beta}{2v}H_2(y)
+ +\frac{\kappa_4(Z)}{24v^2}H_4(y)
+ \right\}+O_w(r^{-3/2})
+ \right].
+\end{equation}
+Indeed $\chi^{(4)}(0)=\kappa_4(Z)$; the second derivative
+of $\log g_\epsilon$ supplies the $H_2$ term. Higher odd
+derivatives of $\chi$ vanish. The bounded third derivative of
+$\log g_\epsilon$ first enters at order $r^{-3/2}$ in the bracket.
+The same analytic expansion gives every fixed local correction
+order. This statement concerns fixed orders and does not assert
+convergence of an infinite asymptotic expansion.
+[Added 6 October 2026, batch~114: the manuscript argues
+\eqref{bmf:eq:edgeworth} and the preceding sentence on every fixed
+correction order only in outline (``keeping the next terms''); neither is
+proved here as a theorem. Both are recorded as
+Questions~\ref{bmf:q:edgeworth} and~\ref{bmf:q:fixed-orders} of
+Section~\ref{bmf:sec:research}, with what is missing. The constants in
+\eqref{bmf:eq:edgeworth} and \eqref{bmf:eq:run-edgeworth} agree with an
+exact-histogram check made at the write (same section).]
+
+In the critical run family,
+$\kappa_4(Z)=-(a^4-1)/120$. The displayed correction polynomial is
+\begin{equation}\label{bmf:eq:run-edgeworth}
+ \frac{6\beta}{a^2-1}H_2(y)
+ -\frac{a^2+1}{20(a^2-1)}H_4(y).
+\end{equation}
+
+\subsection{Why every cutoff has the same leading law}
+
+A theorem about $L_r$ alone does not automatically imply a theorem
+about all $N$. The required passage uses a precise prefix
+decomposition.
+
+\begin{lemma}[Decomposition with a geometric loss of depth]\label{bmf:lem:decompose}
+Let $h$ be the least integer with $N\leq L_h$.
+The prefix of length $N$ can be partitioned into complete blocks
+$\sigma^r(c)$ with at most $2a-2$ blocks at each level $r<h$,
+or into the single block $W_h$ if it is complete.
+For a block at level $r=h-j$, its mass under uniform sampling
+of the $N$ prefix positions is $O_w(a^{-j})$, summed over
+all blocks at that level. Its starting weight has absolute value
+$O_w(j+1)$.
+\end{lemma}
+\begin{proof}
+Expand the one unfinished block into the images of its letters.
+Accept the complete children and continue only inside the next
+unfinished child. There are at most $2a-2$ accepted children at
+a stage. By \eqref{bmf:eq:length}, a level-$r$ child has length
+comparable to $a^r$, while $N$ is comparable to $a^h$.
+The mass estimate follows. At an ancestor level, every preceding
+complete sibling has total weight $1$ or $-1$ by
+\eqref{bmf:eq:matrix}; a bounded number of siblings is passed at
+each of the $j+1$ levels. Their sum is the stated starting weight.
+\end{proof}
+
+\begin{theorem}[Quantitative normal laws at every cutoff]\label{bmf:thm:all-cutoff}
+Let $N\geq2$, let $U_N$ be uniform on $\{0,\ldots,N-1\}$,
+and put $b_N=\log_a N$. As $N\to\infty$,
+\begin{align}
+ \E X(U_N)&=O_w(1),&
+ \Var X(U_N)&=vb_N+O_w(1),\label{bmf:eq:all-moments}\\
+ \sup_x\left|
+ \Prob\left(\frac{X(U_N)}{\sqrt{vb_N}}\leq x\right)-\Phi(x)
+ \right|&=O_w(b_N^{-1/2}),\label{bmf:eq:all-be}\\
+ \sup_{k\in\Z}\left|
+ \sqrt{vb_N}\Prob(X(U_N)=k)
+ -\ph\left(\frac{k}{\sqrt{vb_N}}\right)
+ \right|&=O_w(b_N^{-1/2}).\label{bmf:eq:all-local}
+\end{align}
+These conclusions also hold for the one-based convention
+$U_N\in\{1,\ldots,N\}$.
+\end{theorem}
+\begin{proof}
+Condition on the block of Lemma~\ref{bmf:lem:decompose}.
+Its internal mean is bounded and its variance is $vr+O_w(1)$.
+The lost depth $j$ and the starting weight have uniformly bounded
+moments under the geometric mass bound. Conditional expectation and
+variance therefore give \eqref{bmf:eq:all-moments}, using
+$h=b_N+O_w(1)$.
+
+For the normal estimates first retain $j\leq h/2$.
+There $r$ is comparable to $b_N$. The full-block error is
+$O_w(b_N^{-1/2})$. The bounded seed and starting shift change the
+normal comparison by at most $C_w(j+1)/\sqrt{b_N}$,
+and the variance-scale change contributes at most
+$C_w(j+1)/b_N$. Summation over the geometric level masses proves
+the asserted errors. The discarded mass is $O_w(a^{-h/2})$;
+for the local assertion multiply it by $\sqrt{b_N}$ before
+discarding it. This is still negligible. Replacing the sampled
+interval $\{0,\ldots,N-1\}$ by $\{1,\ldots,N\}$ changes the
+law in total variation by at most $1/N$.
+Since $X(N)=O_w(\log N)$, as also proved in
+Section~\ref{bmf:sec:critical-extremes}, the corresponding changes
+in the first and second moments are $O_w(\log N/N)$ and
+$O_w((\log N)^2/N)$. Thus the moment conclusions transfer too.
+\end{proof}
+
+\begin{remark}[Relation to the existing central limit theorem]
+The existence of the limit in \eqref{bmf:eq:all-be} is already implied
+by Paquette--Son \cite[Theorem 3.3]{paquette}. In this class their
+noncoboundary condition can also be checked directly: $w$ must
+contain $00$, since its first letter is $1$ and there are more
+zeros than ones. Their Proposition 3.1 applied to adjacent equal
+letters excludes a coboundary for the weight $(1,-1)$.
+Theorem~\ref{bmf:thm:all-cutoff} adds an evaluated variance and
+quantitative, locally resolved statements through the positive
+representation.
+\end{remark}
+
+\subsection{Cumulants at arbitrary cutoffs}
+
+For each fixed positive integer $j$, the same decomposition gives
+\begin{equation}\label{bmf:eq:all-cumulants}
+ \kappa_{2j}(X(U_N))=b_N\kappa_{2j}(Z)+O_{w,j}(1),
+ \qquad
+ \kappa_{2j-1}(X(U_N))=O_{w,j}(1).
+\end{equation}
+One must justify differentiating here; a pointwise pressure limit
+alone would not suffice. To do so, combine the block decomposition
+and the exact random-sum law to write, conditional on the selected
+block and depth,
+$X(U_N)=A_N+\sum_{i=1}^{J_N}Y_i$. Both $A_N$ and
+$J_N-b_N/2$ have uniformly bounded exponential moments in
+a neighborhood of zero. This follows from the geometric depth
+tails and the $O(j+1)$ offset bound, including the exponentially
+rare base component. Therefore
+\[
+ \E e^{sX(U_N)}
+ =e^{b_N\chi(s)}
+ \E\exp\left\{sA_N+
+       (J_N-b_N/2)\log\E e^{sY_1}\right\}.
+\]
+The last factor is analytic, uniformly bounded, and uniformly
+nonzero on a sufficiently small disk about $0$; it is $1$ at $0$,
+and uniform analyticity bounds its derivative there and nearby.
+All fixed derivatives of its logarithm are bounded. Differentiating
+proves \eqref{bmf:eq:all-cumulants}.
+For the run family, with Bernoulli numbers defined by
+$s/(e^s-1)=\sum B_j s^j/j!$,
+\begin{equation}\label{bmf:eq:bernoulli-cumulants}
+ \kappa_{2j}(X(U_N))
+ =b_N\,\frac{B_{2j}(a^{2j}-1)}{2j}+O_{a,j}(1).
+\end{equation}
+
+\section{Exact pressure and the rarity of logarithmic errors}\label{bmf:sec:pressure}
+
+\begin{theorem}[Pressure for every cutoff]\label{bmf:thm:pressure}
+For every real $s$,
+\begin{equation}\label{bmf:eq:pressure-asym}
+ \log\E e^{sX(U_N)}
+ =(\log_a N)\chi(s)+O_{w,s}(1),
+ \qquad
+ \chi(s)=\frac12\log\frac{S(e^s)S(e^{-s})}{a^2}.
+\end{equation}
+The function $\chi$ is even, analytic on the real line, strictly
+convex, and satisfies $\chi(0)=\chi'(0)=0$, $\chi''(0)=v$.
+\end{theorem}
+\begin{proof}
+For real $s$, Cauchy--Schwarz gives
+$\Delta(e^s)\geq a^2>1$. The positive finite formula, and its
+odd-depth counterpart, give
+\[
+ \log F_{r,1}(e^s)=\frac r2\log\Delta(e^s)+O_{w,s}(1).
+\]
+Let $L_{h-1}<N\leq L_h$. Since $W_{h-1}$ is a prefix of $W_h$,
+positivity gives the decisive squeeze
+\[
+ F_{h-1,1}(e^s)
+ \leq \sum_{n=0}^{N-1}e^{sX(n)}
+ \leq F_{h,1}(e^s).
+\]
+Subtract $\log N$ and use $h=\log_a N+O_w(1)$.
+Strict convexity follows because
+$\chi''(s)$ is one half the sum of the variances of the
+nondegenerate finite distribution $Z$ under tilts $s$ and $-s$.
+\end{proof}
+
+Define the rate function
+\begin{equation}\label{bmf:eq:rate}
+ I_w(x)=\sup_{s\in\R}\{sx-\chi(s)\}.
+\end{equation}
+Let $z_-=\min\supp Z$, $z_+=\max\supp Z$,
+$d=z_+-z_-$, and let $c_-,c_+$ be the multiplicities of
+$z_-,z_+$ among the $a$ zero heights.
+
+\begin{theorem}[A full large-deviation law]\label{bmf:thm:ldp}
+The variables $X(U_N)/\log_a N$ satisfy a large-deviation principle
+with speed $\log_a N$ and rate \eqref{bmf:eq:rate}. Thus for a closed
+set $F\subseteq\R$ and an open set $G\subseteq\R$,
+\begin{align}
+ \limsup_{N\to\infty}\frac1{\log_a N}
+  \log\Prob\!\left(\frac{X(U_N)}{\log_a N}\in F\right)
+ &\leq-\inf_F I_w,\label{bmf:eq:ldp-upper}\\
+ \liminf_{N\to\infty}\frac1{\log_a N}
+  \log\Prob\!\left(\frac{X(U_N)}{\log_a N}\in G\right)
+ &\geq-\inf_G I_w.\label{bmf:eq:ldp-lower}
+\end{align}
+Its effective domain is $[-d/2,d/2]$ and its endpoint values are
+\begin{equation}\label{bmf:eq:rate-endpoint}
+ I_w(d/2)=I_w(-d/2)
+ =\log a-\frac12\log(c_-c_+).
+\end{equation}
+For $|x|<d/2$, the supremum is attained at the unique solution
+$\chi'(s)=x$.
+\end{theorem}
+\begin{proof}
+Exponential Markov bounds from \eqref{bmf:eq:pressure-asym} give the
+upper bound on an interval; finitely many such intervals cover
+a compact closed set. Exponential tightness also follows either
+from the same bounds or from the deterministic logarithmic bound
+proved in Section~\ref{bmf:sec:critical-extremes}.
+
+For the lower bound at $x=\chi'(s)$, tilt the distribution by
+$e^{sX}/\E e^{sX}$. Under the tilted measure the scaled
+logarithmic moment generating function is
+$\chi(s+t)-\chi(s)$. Strict convexity and exponential Markov
+bounds with small positive and negative $t$ show concentration
+of $X/\log_a N$ within any fixed neighborhood of $x$.
+Undoing the tilt on this neighborhood gives the lower exponent
+$\chi(s)-sx-|s|\varepsilon$; let $\varepsilon\downarrow0$.
+This proves the lower bound for all interior points, and hence
+for all open sets meeting the interior.
+
+As $s\to+\infty$,
+\[
+ \chi(s)=\frac d2s-\log a+\frac12\log(c_-c_+)+o(1).
+\]
+The analogous formula holds at $-\infty$. It determines the
+effective domain and the endpoint values. The rate approaches
+these finite endpoint values from the interior. An open
+neighborhood of an endpoint contains interior points, completing
+the lower bound there.
+\end{proof}
+
+\begin{remark}[Endpoint events]
+The endpoint assertion concerns neighborhoods in a large-deviation
+principle. It does not assert a single asymptotic formula for one
+exact extremal integer at every cutoff. Moreover the endpoint
+rate is $\log a$ only when both extreme zero heights have
+multiplicity one.
+\end{remark}
+
+\subsection{Explicit formulas in the run family}
+
+For $Z$ uniform on $-1,0,\ldots,a-2$, the translation cancels and
+\begin{equation}\label{bmf:eq:run-pressure}
+ \chi_a(s)=\log\left(\frac{\sinh(as/2)}{a\sinh(s/2)}\right).
+\end{equation}
+For $0<|x|<(a-1)/2$, the tilting parameter is determined by
+\begin{equation}\label{bmf:eq:saddle}
+ x=\frac a2\coth\frac{as}{2}-\frac12\coth\frac{s}{2},
+ \qquad I_a(x)=sx-\chi_a(s).
+\end{equation}
+The continuation at $s=0$ has $x=0$. The rate is even and
+\[
+ I_a(0)=0,\qquad I_a\!\left(\pm\frac{a-1}{2}\right)=\log a.
+\]
+Near zero,
+\begin{equation}\label{bmf:eq:rate-near0}
+ I_a(x)=\frac{6x^2}{a^2-1}
+       +\frac{36(a^2+1)x^4}{5(a^2-1)^3}+O_a(x^6).
+\end{equation}
+This follows by reverting
+$\chi_a'(s)=vs+\kappa_4(Z)s^3/6+O(s^5)$.
+
+For every fixed $0<x<(a-1)/2$, the large-deviation law yields
+the exact logarithmic exponent
+\begin{equation}\label{bmf:eq:threshold-density}
+ \frac1N\#\{0\leq n<N:X_a(n)\geq x\log_a N\}
+   =N^{-I_a(x)/\log a+o(1)}.
+\end{equation}
+To see the matching lower bound, use a small interval strictly
+above $x$ and then let its left endpoint decrease to $x$.
+The upper bound follows from the closed half-line and the
+strict increase of $I_a$ on its positive half-domain.
+
+Equation \eqref{bmf:eq:threshold-density} describes how exceptional
+prefixes interpolate between the Gaussian scale and the extremal
+logarithmic scale. It gives a frequency exponent, not a leading
+multiplicative constant.
+
+\section{Which arrangement has the largest fluctuations?}\label{bmf:sec:arrangements}
+
+The incidence matrix \eqref{bmf:eq:matrix} is the same for all choices
+of $w$ at fixed $a$. It determines the frequencies and the
+substitution growth, but not the magnitude of the fluctuations.
+The zero-height representation makes the comparison exact.
+
+\begin{theorem}[Sharp variance and pressure comparison]\label{bmf:thm:arrangements}
+For every admissible $w$,
+\begin{equation}\label{bmf:eq:variance-extrema}
+ \boxed{\displaystyle
+ \frac{a-1}{a^2}\leq v\leq\frac{a^2-1}{12}.}
+\end{equation}
+The upper equality holds exactly for
+\begin{equation}\label{bmf:eq:max-arrangements}
+ w=1^h0^a1^{a-1-h},\qquad 1\leq h\leq a-1.
+\end{equation}
+The lower equality holds exactly for
+\begin{equation}\label{bmf:eq:min-arrangements}
+ w=(10)^{a-1}0
+ \quad\hbox{or}\quad
+ w=10(01)^{a-2}0.
+\end{equation}
+They coincide when $a=2$.
+
+For every real $s$ the entire pressure is bounded by
+\begin{equation}\label{bmf:eq:pressure-comparison}
+ \frac12\log\left(1+\frac{2(a-1)}{a^2}(\cosh s-1)\right)
+ \leq\chi_w(s)\leq
+ \log\left(\frac{\sinh(as/2)}{a\sinh(s/2)}\right).
+\end{equation}
+At any $s\ne0$, its equality cases are exactly the corresponding
+words in \eqref{bmf:eq:min-arrangements} and
+\eqref{bmf:eq:max-arrangements}.
+\end{theorem}
+\begin{proof}
+Sort the $a$ zero heights, with multiplicity, as
+$z_1\leq\cdots\leq z_a$. By Lemma~\ref{bmf:lem:gaps}, each
+successive gap is either $0$ or $1$. Hence
+$0\leq z_j-z_i\leq j-i$, and
+\[
+ v=\frac1{a^2}\sum_{i<j}(z_j-z_i)^2
+ \leq\frac1{a^2}\sum_{i<j}(j-i)^2
+ =\frac{a^2-1}{12}.
+\]
+Equality requires all successive gaps to be $1$, so all heights
+are distinct. An internal run of ones between two zeros forces
+a repetition of a zero height: its downward move either lands
+inside the already crossed interval, or lands below that interval
+and must later cross it again to end at height $1$.
+Therefore distinct heights force all zeros into one run.
+Conversely, \eqref{bmf:eq:max-arrangements} gives $a$ consecutive
+distinct heights and attains the bound.
+
+A nonconstant list of $a$ integers has at least $a-1$ unequal
+unordered pairs, each contributing at least $1$ to the variance
+sum. This gives the lower bound. Equality requires two adjacent
+heights with multiplicities $1$ and $a-1$. Since $-1$ and $0$
+are both present, these are exactly the two heights.
+Such a path consists of excursions $10$ below height $0$ and
+$01$ above it, followed by its last $0$. It starts with a $10$
+excursion. Requiring one of the two heights to occur only once
+gives exactly \eqref{bmf:eq:min-arrangements}.
+
+Finally,
+\begin{equation}\label{bmf:eq:cosh-pairs}
+ \Delta(e^s)=a^2+
+ 2\sum_{i<j}\bigl(\cosh(s(z_j-z_i))-1\bigr).
+\end{equation}
+The same pairwise upper and lower comparisons give
+\[
+ a^2+2(a-1)(\cosh s-1)
+ \leq\Delta(e^s)
+ \leq\left(\frac{\sinh(as/2)}{\sinh(s/2)}\right)^2.
+\]
+Take one half the logarithm after division by $a^2$.
+For $s\ne0$, strict increase of $\cosh(sx)$ in $x\geq0$
+gives precisely the already identified equality cases.
+\end{proof}
+
+\begin{corollary}[Ordering the deviation costs]\label{bmf:cor:rate-order}
+Let $I_{\rm run}$ be the rate function for any word in
+\eqref{bmf:eq:max-arrangements}, and $I_{\rm alt}$ that for either
+word in \eqref{bmf:eq:min-arrangements}. Then, with extended-real
+values allowed,
+\[
+ I_{\rm run}(x)\leq I_w(x)\leq I_{\rm alt}(x)
+ \qquad(x\in\R).
+\]
+\end{corollary}
+\begin{proof}
+Taking a Legendre transform reverses pointwise inequalities.
+\end{proof}
+
+Thus a single zero run maximizes more than the variance: it
+maximizes the complete logarithmic moment generating function.
+It minimizes the exponential cost of every deviation on the
+common part of the effective domains. The critical family selected
+by the repository is an extremal member of a much larger class.
+
+\section{Which height profiles occur? A second OEIS connection}
+\label{bmf:sec:realization}
+
+The distribution of the zero heights is sufficient to recover the
+complete histograms: it determines $S$, then $T=t(S-1)$, the seeds,
+and every expression in Theorem~\ref{bmf:thm:histogram}. This makes the
+inverse problem natural. Are there constraints beyond positivity,
+total mass, and the no-gap condition?
+
+\begin{theorem}[Complete realization and profile count]
+\label{bmf:thm:realization}
+Fix $a\geq2$. A Laurent polynomial is the zero-height polynomial of
+an admissible word if and only if it has the form
+\[
+ S(t)=\sum_{h=\ell}^{H}c_h t^h,\qquad
+ c_h\in\{1,2,\ldots\},\qquad
+ \sum_{h=\ell}^{H}c_h=a,\qquad \ell\leq-1<0\leq H.
+\]
+The number of distinct such polynomials is
+\begin{equation}\label{bmf:eq:profile-count}
+ \sum_{k=2}^{a}(k-1)\binom{a-1}{k-1}
+ =(a-1)2^{a-2}.
+\end{equation}
+Thus these profiles give an interpretation of
+$\mathrm{A001787}(a-1)$, where A001787 is $n2^{n-1}$
+with its usual value $0$ at $n=0$ \cite{oeis1787}.
+\end{theorem}
+\begin{proof}
+Necessity is Lemma~\ref{bmf:lem:gaps}. For sufficiency, construct a
+directed multigraph on the integers $\ell,\ldots,H+1$.
+For each $h$ put $c_h$ upward edges $h\to h+1$ and
+$c_h-\mathbf1_{\{h=0\}}$ downward edges $h+1\to h$.
+There are $a$ upward and $a-1$ downward edges. The difference
+between outdegree and indegree is $1$ at $0$, $-1$ at $1$,
+and zero at every other vertex.
+
+There is a downward edge $0\to-1$, because $c_{-1}>0$.
+Prescribe this as the first edge and temporarily remove it.
+All upward edges remain, so the underlying undirected graph is
+still connected. The new degree imbalance is $1$ at $-1$ and
+$-1$ at $1$. The directed Euler-trail criterion therefore gives
+a trail from $-1$ to $1$ using all remaining edges. Prepending
+the removed edge gives a trail from $0$ to $1$ beginning with a
+downward step. Read upward edges as $0$ and downward edges as
+$1$. The resulting word begins with $1$, has the required letter
+counts, and has exactly $c_h$ zero occurrences beginning at height
+$h$.
+
+If the support has $k$ values, there are $k-1$ positions for a
+consecutive integer interval containing both $-1$ and $0$.
+Its positive coefficient vectors are the
+$\binom{a-1}{k-1}$ compositions of $a$ into $k$ parts. Summing
+over $k$ proves the first equality in \eqref{bmf:eq:profile-count}.
+The second is the standard binomial identity
+$\sum_{j=0}^{a-1}j\binom{a-1}{j}=(a-1)2^{a-2}$.
+\end{proof}
+
+This counts profiles, not words. There are
+$\binom{2a-2}{a}$ admissible words, and different words can
+have the same profile. Such words have identical complete-block
+prefix histograms at every depth, even when their internal
+prefix order differs. Arbitrary-cutoff bounded corrections may
+retain information that the profile forgets.
+For $a=2,\ldots,9$ the profile counts are
+\[
+ 1,\ 4,\ 12,\ 32,\ 80,\ 192,\ 448,\ 1024.
+\]
+The constructive proof also supplies an algorithm for generating
+a representative word for every profile.
+
+\section{Sharp logarithmic envelopes and exact first hits}\label{bmf:sec:critical-extremes}
+
+\subsection{A sharp constant for every arrangement}
+
+\begin{theorem}[General critical cluster interval]\label{bmf:thm:general-extremes}
+For an arbitrary admissible $w$, let $d$ be the diameter of its
+zero-height support. Then
+\begin{equation}\label{bmf:eq:general-extremes}
+ \limsup_{N\to\infty}\frac{X(N)}{\log N}
+ =-\liminf_{N\to\infty}\frac{X(N)}{\log N}
+ =\frac{d}{2\log a}.
+\end{equation}
+The complete cluster set is the closed interval between these
+endpoints. In particular
+$|X(N)|\leq(d/2)\log_a N+O_w(1)$.
+\end{theorem}
+\begin{proof}
+The support of $\Delta$ is the full integer interval $[-d,d]$,
+and both endpoint coefficients are positive. Since each $K_c$
+is a fixed nonzero positive polynomial,
+\eqref{bmf:eq:positive-hist} shows that the maximum and minimum
+proper-prefix weights at depth $r$ are
+$dr/2+O_w(1)$ and $-dr/2+O_w(1)$.
+The odd-depth identity supplies the same statement at odd $r$.
+Enclosing an arbitrary prefix between adjacent full-word lengths
+proves the uniform bound.
+
+Choose positions $p_r,q_r$ attaining the maximum and minimum
+in a depth-$r$ block. The uniform bound applied to their attained
+values forces
+$\log_a p_r=r+O_w(1)$ and $\log_a q_r=r+O_w(1)$.
+The opposite inequalities follow from $p_r,q_r\leq L_r$.
+These positions attain both constants in \eqref{bmf:eq:general-extremes}.
+Between $p_r$ and $q_r$ the walk changes by $\pm1$ at every
+step and therefore crosses every intermediate integer height.
+All these positions have logarithm $r\log a+O_w(1)$.
+Selecting crossings of any prescribed proportional height gives
+every intermediate normalized limit.
+\end{proof}
+
+\subsection{Exact finite extrema in the repository's critical family}
+
+Now specialize to \eqref{bmf:eq:run-family}, so $a\geq3$ and
+$d=a-1$. Set $W_{-1}=0$. Its word recursion is
+\begin{equation}\label{bmf:eq:wordrec}
+ W_{r+1}=W_rW_{r-1}^{\,a}W_r^{\,a-2},\qquad
+ X(W_r)=(-1)^{r+1}.
+\end{equation}
+
+\begin{proposition}[Finite envelopes]\label{bmf:prop:finite-extrema}
+Including both empty and complete prefixes of $W_r$, the maximum
+and minimum weights are
+\begin{equation}\label{bmf:eq:finite-extrema}
+ A_r=\left\lceil\frac r2\right\rceil(a-1),\qquad
+ B_r=-\left\lfloor\frac r2\right\rfloor(a-1)-1
+ \qquad(r\geq0).
+\end{equation}
+Every integer in $[B_r,A_r]$ occurs.
+\end{proposition}
+\begin{proof}
+The initial values are $A_0=0$, $B_0=-1$,
+$A_1=a-1$, and $B_1=-1$.
+The offsets of the blocks in \eqref{bmf:eq:wordrec} give, for odd
+$r\geq1$,
+\[
+ A_{r+1}=\max(A_r,A_{r-1}+1),\qquad
+ B_{r+1}=\min(B_r+1-a,B_{r-1}+2-a),
+\]
+and for even $r\geq1$,
+\[
+ A_{r+1}=\max(A_r+a-1,A_{r-1}+a-2),\qquad
+ B_{r+1}=\min(B_r,B_{r-1}-1).
+\]
+Substitution proves \eqref{bmf:eq:finite-extrema} by induction.
+The nearest-neighbor property proves the interval assertion.
+Alternatively, at positive even depths the outer exponents of
+the histogram give the same extrema directly.
+\end{proof}
+
+\begin{theorem}[Explicit first extremal prefixes]\label{bmf:thm:first-hit}
+Define
+\begin{equation}\label{bmf:eq:PQ}
+ P_0=\varnothing,\qquad P_{k+1}=\sigma_a^2(P_k)\,1\,0^a,
+ \qquad Q_k=\sigma_a(P_k)1.
+\end{equation}
+Then $P_k$ and $Q_k$ are the first prefixes of the infinite word
+with weights $k(a-1)$ and $-k(a-1)-1$, respectively.
+Writing
+\begin{equation}\label{bmf:eq:ab-length}
+ A=\frac{4a}{(a-1)(a+1)^2},\qquad
+ B=\frac{(a-1)^2}{a+1},
+\end{equation}
+their exact lengths are
+\begin{equation}\label{bmf:eq:pq-length}
+ p_k=A(a^{2k}-1)+Bk,\qquad
+ q_k=aA(a^{2k}-1)-Bk+1.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Every $P_k$ is a legal prefix immediately before a one; when
+$k\geq1$ it ends in zero. The word $1\,0^a$ is a prefix
+immediately before a one in $\sigma_a^2(1)$, so induction
+proves legality. Every $Q_k$ ends in a one immediately before
+a zero. The eigenweight identity gives the stated weights.
+
+For $k\geq1$, $P_k$ is a proper prefix of $W_{2k-1}$,
+and $Q_k$ is a proper prefix of $W_{2k}$. The extreme
+coefficients of $\Delta$ and $K_1$ are all $1$ in this family.
+Equation \eqref{bmf:eq:positive-hist} therefore shows that each
+extreme of $W_{2k}$ is attained at exactly one proper prefix.
+The full word has weight $-1$ and adds no duplicate extreme.
+The exhibited prefixes consequently are the first occurrences
+of their weights in the infinite fixed point.
+
+For a finite word $P$,
+\[
+ |\sigma_a(P)|=a|P|-(a-1)X(P),\qquad
+ |\sigma_a^2(P)|=a^2|P|-(a-1)^2X(P).
+\]
+Thus
+\[
+ p_{k+1}=a^2p_k-(a-1)^3k+a+1,\qquad
+ q_k=ap_k-(a-1)^2k+1.
+\]
+Solve the first recurrence with $p_0=0$ and substitute into
+the second to obtain \eqref{bmf:eq:pq-length}.
+\end{proof}
+
+In particular $p_1=a+1$, $q_1=3a$,
+$p_k\sim Aa^{2k}$ and $q_k\sim aAa^{2k}$.
+At $a=3$ the first positive hitting lengths are
+$4,32,276,\ldots$ and the negative ones are
+$9,89,817,\ldots$. These formulas answer an explicit extremal
+slice of the predecessor's first-hitting question as well as
+its critical normalization question.
+
+\subsection{Counting and position errors}
+
+Let $O(N)$ count ones and $Z_0(N)$ count zeros.
+Then
+\[
+ Z_0(N)-N/2=X(N)/2,\qquad O(N)-N/2=-X(N)/2.
+\]
+Both frequencies are $1/2$. For the run family their normalized
+counting-error cluster intervals are
+$[-(a-1)/(4\log a),(a-1)/(4\log a)]$.
+
+If $u(n)$ and $v(n)$ are the positions of the $n$th zero and
+one, respectively, their errors satisfy
+\begin{equation}\label{bmf:eq:position-exact}
+ E_0(n)=2n-u(n)=X(u(n)),\qquad
+ E_1(n)=2n-v(n)=-X(v(n)).
+\end{equation}
+Thus $u(n)=2n+O_a(\log n)$ and $v(n)=2n+O_a(\log n)$.
+Both $E_i(n)/\log n$ have the complete cluster interval
+\begin{equation}\label{bmf:eq:position-cluster}
+ \left[-\frac{a-1}{2\log a},\frac{a-1}{2\log a}\right].
+\end{equation}
+To justify transfer of every intermediate value, both letters
+occur within a bounded distance of every position: each of
+the two fixed finite words $\sigma_a^2(0),\sigma_a^2(1)$
+contains both letters, and the fixed point is their
+concatenation. Move a chosen prefix endpoint to the next
+required letter. The length and weight change by $O_a(1)$,
+which does not change the logarithmic limit.
+
+The four explicit extremal rank sequences, with $h_k=k(a-1)$,
+are as follows.
+\begin{center}
+\begin{tabular}{llll}
+\toprule
+Prefix & Last letter & Rank & Position error\\
+\midrule
+$P_k$ & $0$ & $(p_k+h_k)/2$ & $E_0=h_k$\\
+$Q_k0$ & $0$ & $(q_k+1-h_k)/2$ & $E_0=-h_k$\\
+$Q_k$ & $1$ & $(q_k+h_k+1)/2$ & $E_1=h_k+1$\\
+$P_k1$ & $1$ & $(p_k-h_k+2)/2$ & $E_1=1-h_k$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{An exact letter-conditioned refinement}
+
+The paired matrix $C(t)^m$ also records the histogram separately
+according to the next letter. Its $(c,j)$ entry counts the proper
+prefixes of $\sigma^{2m}(c)$ immediately followed by $j$.
+Moreover
+\begin{equation}\label{bmf:eq:rankone}
+ C-I=
+ \binom{S-1}{T^-S}\begin{pmatrix}1&t\end{pmatrix}.
+\end{equation}
+All its entries are nonnegative: $S$ contains the zero-height
+upward crossing, so $S-1\geq0$.
+Consequently
+\begin{equation}\label{bmf:eq:conditioned}
+ C^m=I+(C-I)\sum_{h=0}^{m-1}\Delta^h
+\end{equation}
+is a positive histogram formula even after conditioning on the
+next letter. The two seed laws in each row differ by a shift
+of one. This supplies exact distributions for the position
+errors at complete substitution cutoffs, through
+$E_0=X(\hbox{preceding prefix})+1$ and
+$E_1=1-X(\hbox{preceding prefix})$.
+Their bulk variance and pressure are the same as above.
+
+\section{An exact supercritical amplitude and its self-affine profile}
+\label{bmf:sec:supercritical}
+
+In this section we return to the two-parameter family of the predecessor.
+The weight is now $\#0-q\#1$, and $L(P)$ denotes geometric length;
+ordinary word length remains $|P|$.
+
+Let $a,b\geq1$ be integers with $a\geq b+3$, and let $w$ be the
+fixed point starting with $1$ of
+\[
+ \tau(0)=1,\qquad \tau(1)=1\,0^a1^b.
+\]
+Write
+\[
+ q=\frac{\sqrt{(b+1)^2+4a}-(b+1)}2>1,\qquad
+ \lambda=q+b+1=\frac aq,\qquad
+ \alpha=\frac{\log q}{\log\lambda}\in(0,1).
+\]
+For a finite word $P$, define
+\[
+ X(P)=|P|_0-q|P|_1,\qquad
+ L(P)=|P|_0+\lambda |P|_1.
+\]
+Both are additive, and
+\[
+ X(\tau(P))=-qX(P),\qquad L(\tau(P))=\lambda L(P).
+\]
+For the first $N$ letters of $w$, abbreviate their weight and geometric
+length by $X(N)$ and $L_N$.
+
+\begin{theorem}[Exact supercritical normalization]
+\label{bmf:thm:supercritical-amplitude}
+Set
+\[
+ \mathcal C_{a,b}=
+ \frac{\lambda-1}{q^2-1}
+ \left(\frac{(\lambda+q)(\lambda^2-1)}{(q+1)^2}\right)^\alpha.
+\]
+Then
+\[
+ \limsup_{N\to\infty}\frac{X(N)}{N^\alpha}=\mathcal C_{a,b},
+ \qquad
+ \liminf_{N\to\infty}\frac{X(N)}{N^\alpha}=-\mathcal C_{a,b}.
+\]
+The full cluster set is $[-\mathcal C_{a,b},\mathcal C_{a,b}]$.
+There is a continuous function $\Theta:\mathbb R\to\mathbb R$ satisfying
+$\Theta(s+1)=-\Theta(s)$ such that, with $c=(\lambda+q)/(q+1)$,
+\[
+ X(N)=c^\alpha N^\alpha\Theta(\log_\lambda(cN))
+       +O_{a,b}(N^{\alpha^2}).
+\]
+The function is obtained from a two-state graph-directed system with
+explicit affine maps. Its amplitude is
+\[
+ \max_s|\Theta(s)|=
+ \frac{\lambda-1}{q^2-1}
+ \left(\frac{\lambda^2-1}{q+1}\right)^\alpha.
+\]
+\end{theorem}
+
+\subsection{Continuous block profiles}
+
+Assign geometric letter lengths $\ell_0=1,\ell_1=\lambda$ and vertical
+increments $\chi_0=1,\chi_1=-q$. Let $H_{i,k}$ be the polygonal path of
+$\tau^k(i)$ with these increments. Define
+\[
+ f_{i,k}(t)=(-q)^{-k}H_{i,k}(\lambda^k t),
+ \qquad 0\leq t\leq\ell_i.
+\]
+The initial profiles are $f_{0,0}(t)=t$ and $f_{1,0}(t)=-qt/\lambda$.
+The pair of continuous functions with endpoint data
+$f_i(0)=0,f_i(\ell_i)=\chi_i$ is a complete metric space in the maximum
+uniform norm. On the interval corresponding to a letter $j$ of $\tau(i)$,
+preceded by a prefix $P$ of that image, set
+\[
+ (Tf)_i\left(\frac{L(P)+u}{\lambda}\right)
+    =-\frac{X(P)+f_j(u)}q,
+ \qquad 0\leq u\leq\ell_j.
+\]
+Endpoint compatibility makes this a continuous function. The operator $T$
+is a contraction of ratio $1/q$, and $f_{\cdot,k+1}=Tf_{\cdot,k}$.
+Consequently the profiles converge uniformly to a unique pair $(f_0,f_1)$.
+Its graph maps are exactly
+\[
+ (u,y)\longmapsto
+ \left(\frac{L(P)+u}{\lambda},-\frac{X(P)+y}{q}\right).
+\]
+In particular they contract in both coordinates.
+
+For later verification, their branch equations are
+\begin{align*}
+ f_0(t)&=-q^{-1}f_1(\lambda t), &&0\leq t\leq1,\\
+ f_1(t)&=-q^{-1}f_1(\lambda t), &&0\leq t\leq1,\\
+ f_1\left(1+\frac{j+u}{\lambda}\right)
+   &=1-\frac jq-\frac{f_0(u)}q,
+   &&0\leq j<a,\quad0\leq u\leq1,\\
+ f_1\left(q+1+\ell+\frac u\lambda\right)
+   &=1-\lambda+\ell-\frac{f_1(u)}q,
+   &&0\leq\ell<b,\quad0\leq u\leq\lambda.
+\end{align*}
+The first-level difference from the initial line is linear on each piece.
+For state $0$ it vanishes. For state $1$ its largest absolute value occurs
+after the zero block and equals
+\[
+ D_0=\frac{b(\lambda+q)}\lambda.
+\]
+Therefore, with
+\[
+ E=\frac{bq(\lambda+q)}{\lambda(q-1)},
+\]
+the uniform error satisfies
+\[
+ \max_i\|f_{i,k}-f_i\|_\infty\leq E q^{-k}.
+\]
+
+Let $H:[0,\infty)\to\mathbb R$ be the corresponding polygonal path of
+the infinite fixed point. Because $\tau^k(1)$ is a prefix of $w$,
+$f_{1,k}(t)=(-q)^{-k}H(\lambda^k t)$ for $0\leq t\leq\lambda$.
+Extend the limiting profile by
+\[
+ F(t)=(-q)^k f_1(t/\lambda^k)
+\]
+for any sufficiently large integer $k\geq0$. The first branch equation
+makes this independent of $k$. It gives a continuous function satisfying
+\[
+ F(\lambda t)=-qF(t),\qquad |H(t)-F(t)|\leq E
+ \quad(t\geq0).
+\]
+Every refinement preserves all existing polygon vertices, since the child
+profiles have fixed endpoint weights. Thus $f_1=f_{1,k}$ at the depth-$k$
+vertices. Choosing a substitution prefix long enough to contain a given
+integer prefix gives the exact interpolation identity
+\[
+ F(L_N)=X(N)\qquad(N\geq0).
+\]
+The bounded-error comparison with $H$ is only needed between these vertices.
+
+The function $F$ is globally H\"older continuous of exponent $\alpha$.
+Indeed, at depth $k$ the profile intervals have lengths
+$\ell_i\lambda^{-k}\geq\lambda^{-k}$ and oscillations bounded by
+$Dq^{-k}$, where $D=\max_i\operatorname{osc}(f_i)$. An interval of length
+at most $\lambda^{-k}$ meets at most two interiors of depth-$k$ cells;
+allowing three cells avoids all endpoint conventions. Choosing $k$ at the
+scale of $|x-y|$ proves a uniform $\alpha$-H\"older bound on $[0,\lambda]$.
+The relation $F(\lambda t)=-qF(t)$ extends the same bound to all positive
+arguments, since $q=\lambda^\alpha$.
+
+\subsection{A concave polygon envelope: proof of the exact amplitude}
+
+This is the substantive sharp-constant argument. Put
+\[
+ d=q+1,\quad e=\lambda-1,\quad
+ r=\lambda^{-2},\quad s=q^{-2},\quad
+ t_* =\frac d{1-r},\quad A=\frac e{1-s}.
+\]
+Thus $0<r<s<1$, $s=r^\alpha$, and
+\[
+ d=(1-r)t_*,\qquad e=(1-s)A.
+\]
+Moreover,
+\[
+ \frac{t_*}{\lambda}<1<t_*,\qquad rt_*<1,
+\]
+because $\lambda-q-1=b\geq1$ and
+$\lambda^2-1-\lambda(q+1)=b\lambda-1>0$.
+
+Define $P:[0,\infty)\to[0,A]$ by
+\[
+ P(0)=0,\qquad P(t_*r^n)=As^n\quad(n\geq0),
+\]
+using linear interpolation between consecutive displayed points and setting
+$P(t)=A$ for $t\geq t_*$. Its successive slopes are
+\[
+ m(s/r)^n,\qquad
+ m=\frac{A(1-s)}{t_*(1-r)}=\frac ed.
+\]
+Thus $P$ is increasing and concave, with slope at most $m$ on $[1,\infty)$.
+Because it interpolates the concave power curve at its breakpoints,
+\[
+ P(t)\leq \frac A{t_*^\alpha}t^\alpha\quad(t\geq0).
+\]
+It also satisfies
+\begin{equation}\label{bmf:eq:polygon-main}
+ P(d+rv)\geq e+sP(v)\qquad(v\geq0).
+\end{equation}
+For $v\geq t_*$ both sides equal $A$. For $v<t_*$, the argument
+$d+rv$ lies in the last linear segment $[rt_*,t_*]$, because
+$d>rt_*$ follows from $\lambda^2>2$. Hence
+\[
+ P(d+rv)=A-mr(t_*-v).
+\]
+Concavity gives $A-P(v)\geq m(t_*-v)$; multiplying by $s>r$ proves
+\eqref{bmf:eq:polygon-main}. We shall also use
+\[
+ q^{-2}P(\lambda^2t)\leq P(t),\qquad
+ \frac m\lambda<\frac1q.
+\]
+The first follows from the exact small-scale relation below the final
+breakpoint and monotonicity above it. The second is
+$q(\lambda-1)<\lambda(q+1)$.
+
+We claim that $T$ preserves the following closed bounds:
+\begin{align*}
+ -P(t)\leq f_1(t)&\leq q^{-1}P(\lambda t),\\
+ -q^{-2}P(\lambda^2t)\leq f_0(t)&\leq q^{-1}P(\lambda t).
+\end{align*}
+The state-$0$ equation proves its bounds directly. The first state-$1$
+branch then follows using $q^{-2}P(\lambda^2t)\leq P(t)$.
+
+For a zero-block branch let $v=\lambda u$ and
+$t=1+j/\lambda+rv$. The lower bound is equivalent to
+\[
+ P(t)\geq j/q-1+sP(v).
+\]
+Since $t\geq1$ and $d+rv-t=(a-j)/\lambda$, the slope bound and
+\eqref{bmf:eq:polygon-main} give
+\begin{align*}
+ P(t)&\geq P(d+rv)-m(a-j)/\lambda\\
+     &\geq e+sP(v)-(a-j)/q\\
+     &=j/q-1+sP(v).
+\end{align*}
+For the upper bound, $t\geq1>t_*/\lambda$, so its desired value is the
+constant $A/q$. The old lower bound on $f_0$ gives
+\[
+ 1-j/q-f_0(u)/q\leq1+A/q^3\leq A/q,
+\]
+where the last inequality is equivalent to $e/q\geq1$, true since
+$e=q+b$.
+
+For a trailing-one branch write $v=\lambda u$ and
+$t=d+\ell+rv$. Its lower bound follows from
+\[
+ P(t)\geq P(d+rv)\geq e+sP(v)\geq e-\ell+sP(v).
+\]
+Its upper bound follows from
+$-e+\ell+P(u)/q\leq A/q$, since $\ell\leq b-1<e$.
+This verifies every branch.
+
+The initial straight profiles belong to these bounds: $P$ is concave,
+$P(\lambda)=A$, and $A/q>1$, so $P(\lambda t)\geq At\geq qt$
+for $0\leq t\leq1$; the state-$1$ lower bound follows in the same way
+on $[0,\lambda]$. Contraction therefore gives the asserted bounds for
+the limit profiles. In particular,
+\[
+ |f_1(t)|\leq Kt^\alpha,
+ \qquad K=\frac A{t_*^\alpha}.
+\]
+In fact the same bound holds for every finite profile $f_{1,k}$, since the
+bounds contain the initial profiles and are invariant under $T$. Rescaling
+a sufficiently long substitution prefix therefore gives the useful exact
+finite inequality
+\[
+ |H(t)|\leq Kt^\alpha\quad(t\geq0),
+ \qquad |X(N)|\leq K L_N^\alpha.
+\]
+This is an inequality in geometric length; the corresponding symmetric
+physical-length constant need not hold without a lower-order correction at
+every finite $N$.
+
+The constant is attained. Set $s_*=t_*/\lambda<1$. The first and first
+trailing branch equations give
+\[
+ f_1(s_*)=-q^{-1}f_1(t_*),\qquad
+ f_1(t_*)=-e-q^{-1}f_1(s_*).
+\]
+Here $t_*=d+t_*/\lambda^2$ ensures that the second evaluation is legal.
+Solving gives $f_1(t_*)=-A$ and $f_1(s_*)=A/q$. Consequently
+\[
+ \sup_{t>0}\frac{|F(t)|}{t^\alpha}
+ =K
+ =\frac{\lambda-1}{q^2-1}
+   \left(\frac{\lambda^2-1}{q+1}\right)^\alpha.
+\]
+Both signs attain this normalized amplitude at geometrically rescaled
+copies of $t_*$ and $s_*$.
+
+\subsection{Conversion from geometric time to prefix length}
+
+Solving for the letter counts gives the exact identities
+\[
+ N=\frac{q+1}{\lambda+q}L_N
+    +\frac{\lambda-1}{\lambda+q}X(N),
+ \qquad
+ L_N=cN-\frac{\lambda-1}{q+1}X(N).
+\]
+The identity $X(N)=F(L_N)$ and the sharp bound on $F$ first
+give $X(N)=O(N^\alpha)$, because $N\leq L_N\leq\lambda N$.
+The H\"older bound then yields
+\[
+ X(N)=F(cN)+O(N^{\alpha^2}).
+\]
+Define
+\[
+ \Theta(s)=\lambda^{-\alpha s}F(\lambda^s).
+\]
+This function is continuous and anti-periodic with step $1$. Its range
+over a full period is $[-K,K]$: it is a continuous interval, the sharp
+bound places it inside that interval, and the two explicitly exhibited
+points attain both endpoints. Every phase is approached by integer
+subsequences $N_k$ nearest to $c^{-1}\lambda^{2k+s}$. Therefore the full
+cluster set of $X(N)/N^\alpha$ is $[-c^\alpha K,c^\alpha K]$.
+The identity $c^\alpha K=\mathcal C_{a,b}$ proves the theorem.
+
+\subsection{Explicit extremizing prefixes and a second check of constants}
+
+Define legal prefixes immediately before a one by
+\[
+ P_0=\varnothing,\qquad P_{k+1}=\tau^2(P_k)\,1\,0^a.
+\]
+Their exact weights and geometric lengths are
+\[
+ X(P_k)=\frac{q(\lambda-1)}{q^2-1}(q^{2k}-1),\qquad
+ L(P_k)=\frac{\lambda(q+1)}{\lambda^2-1}(\lambda^{2k}-1).
+\]
+Their physical lengths consequently are
+\begin{align*}
+ |P_k|={}&
+ \frac{\lambda(q+1)^2}{(\lambda+q)(\lambda^2-1)}
+       (\lambda^{2k}-1)\\
+ &+\frac{q(\lambda-1)^2}{(\lambda+q)(q^2-1)}
+       (q^{2k}-1).
+\end{align*}
+Since $q<\lambda$ and $\lambda^\alpha=q$, direct division verifies
+\[
+ \frac{X(P_k)}{|P_k|^\alpha}\longrightarrow\mathcal C_{a,b}.
+\]
+The legal prefixes $Q_k=\tau(P_k)$ satisfy
+$X(Q_k)=-qX(P_k)$ and $|Q_k|/|P_k|\to\lambda$, so their normalized
+weights tend to $-\mathcal C_{a,b}$.
+
+\paragraph{Scope and priority.}
+The continuous substitution-profile construction and broad spectral
+power-law phenomenon have general predecessors. The result established
+here is the exact amplitude for this specified family, with a branchwise
+concave-envelope certificate and complete physical-length cluster set.
+No claim of a previously unknown general limit-profile theorem is required.
+The graph is a graph-directed self-affine object; its scalar normalized
+cluster set is an interval and should not be described as a Cantor set.
+
+
+\subsection{A square-root example with an exact finite inequality}
+\label{bmf:sec:sqrt-example}
+
+Take
+\[
+ \tau(0)=1,\qquad \tau(1)=1\,0^8\,1 .
+\]
+Then $q=2$, $\lambda=4$, $\alpha=1/2$, $c=2$, and
+$K=\sqrt5$. The sharp asymptotic statement becomes
+\begin{equation}\label{bmf:eq:sqrt-ten}
+ \operatorname{Clust}_{N\to\infty}
+ \frac{\#0-2\#1}{\sqrt N}=[-\sqrt{10},\sqrt{10}].
+\end{equation}
+There is also a particularly simple statement valid at every
+finite prefix. Since $L_N=2N-X(N)$, the geometric inequality
+$X(N)^2\leq5L_N$ is exactly
+\begin{equation}\label{bmf:eq:finite-quadratic}
+ \boxed{X(N)^2+5X(N)\leq10N.}
+\end{equation}
+Equivalently,
+$|X(N)+5/2|\leq\sqrt{10N+25/4}$.
+This explains why a finite negative ratio $X(N)/\sqrt N$
+can lie below $-\sqrt{10}$ while converging to the proved
+asymptotic envelope.
+
+The positive extremizing prefixes have
+\[
+ X(P_k)=2(4^k-1),\qquad
+ |P_k|=\frac{2\cdot16^k+5\cdot4^k-7}{5}.
+\]
+The first lengths are $9,117,1701,26469,420453$.
+Their ratios increase toward $\sqrt{10}$; the asymptotic
+limit follows directly from these formulas, without a numerical
+fit.
+
+\begin{figure}[htbp]
+ \centering
+ \includegraphics[width=\textwidth]{figures/03-fluct-supercritical_profile.pdf}
+ \caption{The supercritical example $(a,b)=(8,1)$.
+ Left: the depth-eight geometric profile, whose uniform distance
+ from $f_1$ is at most $3/256$, with the invariant polygon
+ bounds and exact limiting contacts $(4/5,2)$ and $(16/5,-4)$.
+ Right: finite prefix ratios and the limiting phase curve.
+ The dashed levels are the asymptotic physical amplitudes
+ $\pm\sqrt{10}$; the exact finite envelope is
+ \eqref{bmf:eq:finite-quadratic}.}
+ \label{bmf:fig:supercritical}
+\end{figure}
+
+More generally, for an integer $q\geq2$, the parameters
+$a=q^3$, $b=q^2-q-1$ give $\lambda=q^2$ and $\alpha=1/2$.
+Direct substitution in the theorem yields
+\[
+ \mathcal C_{a,b}=\sqrt{q(q-1)(q^2+1)}
+\]
+and the exact finite inequality
+\begin{equation}\label{bmf:eq:sqrt-family}
+ X(N)^2+(q-1)^2(q^2+1)X(N)
+ \leq q(q-1)(q^2+1)N .
+\end{equation}
+Indeed here $K^2=(q-1)(q^2+1)$, $c=q$, and
+$L_N=qN-(q-1)X(N)$. This is an infinite family of
+explicit quadratic envelopes.
+
+\subsection{Consequences for phase-dependent empirical distributions}
+\label{bmf:sec:phase-distributions}
+
+The continuous profile determines more than the cluster interval.
+For $n\geq1$ put $Y(n)=X(n)/n^\alpha$ and
+$G(s)=c^\alpha\Theta(s)$, a continuous function of period $2$.
+Theorem~\ref{bmf:thm:supercritical-amplitude} gives
+\begin{equation}\label{bmf:eq:phase-approx}
+ Y(n)=G(\log_\lambda(cn))+O_{a,b}(n^{-\alpha(1-\alpha)}).
+\end{equation}
+
+\begin{corollary}[Logarithmic sampling and phase subsequences]
+\label{bmf:cor:phase-laws}
+Let $H_M=\sum_{n=1}^{M}1/n$. The logarithmically weighted
+empirical probability measures satisfy
+\begin{equation}\label{bmf:eq:log-law}
+ \frac1{H_M}\sum_{n=1}^{M}\frac1n\,\delta_{Y(n)}
+ \ \Longrightarrow\ \nu,\qquad
+ \int h\,\mathrm d\nu=\frac12\int_0^2h(G(s))\,\mathrm ds
+\end{equation}
+for every bounded continuous function $h$.
+The limit is symmetric and has support
+$[-\mathcal C_{a,b},\mathcal C_{a,b}]$.
+
+If $M_j\to\infty$ and
+$\log_\lambda(cM_j)\bmod2\to s$, then ordinary uniform sampling
+has the subsequential law
+\begin{equation}\label{bmf:eq:phase-law}
+ \frac1{M_j}\sum_{n=1}^{M_j}\delta_{Y(n)}
+ \ \Longrightarrow\
+ \operatorname{Law}\bigl(G(s+\log_\lambda U)\bigr),
+ \qquad U\sim\operatorname{Uniform}(0,1).
+\end{equation}
+These formulas describe all subsequential laws, allowing that
+different phases might induce the same measure.
+\end{corollary}
+\begin{proof}
+The error in \eqref{bmf:eq:phase-approx} tends to zero and all the
+variables are bounded, so it can be removed against a continuous
+test function. In the logarithmic average, uniform continuity
+allows replacement of the sum by
+\[
+ \frac1{\log M}\int_1^M
+     h(G(\log_\lambda(cu)))\,\frac{\mathrm du}{u}.
+\]
+The substitution $s=\log_\lambda(cu)$ turns this into an average
+of a continuous function of period $2$ over an interval whose
+length tends to infinity. This proves \eqref{bmf:eq:log-law}.
+Anti-periodicity gives symmetry. Continuity and the attained
+extreme values show that every open interval meeting the range
+has a nonempty open preimage and therefore positive measure.
+
+For \eqref{bmf:eq:phase-law}, first restrict $n/M_j$ to $[\varepsilon,1]$.
+There the phase approximation is uniform and the sum is a Riemann
+sum for $h(G(s+\log_\lambda u))$. The omitted proportion is at
+most $\varepsilon$. Let $\varepsilon\downarrow0$.
+Finally every sequence of phases has a convergent subsequence
+modulo $2$, and every prescribed phase is approached by integer
+cutoffs nearest to $c^{-1}\lambda^{2j+s}$.
+\end{proof}
+
+No absolute continuity or absence of atoms is asserted for these
+pushforward measures. Those properties depend on the level sets
+and regularity of the profile and are natural next questions.
+
+\section{Exact computations and how to reproduce them}
+\label{bmf:sec:computations}
+
+The accompanying archive contains the complete \LaTeX\ source,
+the compiled article, four figures, exact data, and four verification
+programs. The computations have two roles: checking algebraic
+identities against literal words at feasible sizes, and displaying
+the exact histogram laws far beyond feasible literal expansion.
+The proofs above do not depend on a guessed pattern from these checks.
+[Added 6 October 2026, batch~114: in this report the manuscript's
+\LaTeX\ source and compiled article are not shipped (their text is
+Part~III); the four figures, the data and the four programs are shipped
+byte-identical with the prefix \texttt{03-fluct-}, and the program names
+below are the shipped names. The programs still write their outputs under
+their delivery names (Section~\ref{bmf:sec:provenance} and the README).]
+
+\subsection{What was checked}
+
+\begin{center}
+\small
+\begin{tabular}{p{0.26\textwidth}p{0.64\textwidth}}
+\toprule
+Program & Scope of completed checks\\
+\midrule
+\texttt{code/03-fluct-}\newline\texttt{verify.py}
+& 37,129 passed integer or rational assertions.
+Canonical kernels and transfer identities for $3\leq a\leq20$;
+even histograms for $3\leq a\leq9$, $0\leq m\leq32$;
+106 literal words totaling 906,168 symbols.
+All 4,081 admissible words for $2\leq a\leq8$ were
+checked at depth two; 341 were also checked at depth four.\\[3pt]
+\texttt{code/03-fluct-}\newline\texttt{general\_word\_audit.py}
+& An independent implementation checked all 1,078 words
+for $2\leq a\leq7$, with 4,312 literal histogram comparisons
+and 4,312 exact finite mean/variance comparisons.\\[3pt]
+\texttt{code/03-fluct-}\newline\texttt{verify\_profile\_}\newline\texttt{realization.py}
+& Constructed all 1,793 profiles for $2\leq a\leq9$ and
+independently enumerated all 15,521 admissible words.
+The two sets of profiles agreed exactly at each $a$.\\[3pt]
+\texttt{code/03-fluct-}\newline\texttt{verify\_}\newline\texttt{supercritical.py}
+& Checked all 524,801 prefixes, including the empty prefix,
+of $\tau^9(1)$ for $(a,b)=(8,1)$ against the integer
+inequality $X^2+5X\leq10N$, and verified the first five
+explicit extremizing prefixes and their length formulas.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+These totals describe finite execution scopes. They do not certify
+unbounded quantifiers, interval enclosures for floating-point
+diagnostics, or a formalization in a proof assistant.
+The separate implementations help detect indexing, parity, and
+normalization mistakes that a symbolic derivation can conceal.
+
+\subsection{Exact histograms at very large lengths}
+
+For $a=3$, the histogram of $W_{256}$ is obtained with only
+514 possible integer weights, although the word length is about
+$2.0851\times10^{122}$. Every histogram coefficient is computed
+as an integer; no word of that length is constructed.
+
+\begin{figure}[htbp]
+ \centering
+ \includegraphics[width=\textwidth]{figures/03-fluct-gaussian_histograms.pdf}
+ \caption{Exact histograms for the critical word
+ $0\mapsto1$, $1\mapsto10001$, at depths $r=16,64,256$.
+ The horizontal coordinate is $(k-\E X_r)/\sqrt{\Var X_r}$;
+ each bar has width $1/\sqrt{\Var X_r}$ and height
+ $\sqrt{\Var X_r}\Prob(X_r=k)$. Thus bar area is probability.
+ The orange curve is the standard normal density.}
+ \label{bmf:fig:gaussian}
+\end{figure}
+
+\begin{center}
+\begin{tabular}{rrrr}
+\toprule
+Depth $r$ & $\Var X_r$ & CDF error & Scaled local error\\
+\midrule
+16 & $11.0833334133$ & $0.059691802$ & $0.0042978354$\\
+64 & $43.0833333333$ & $0.030360266$ & $0.0011439270$\\
+256 & $171.083333333$ & $0.015246511$ & $0.0002906199$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The CDF error compares both sides of every jump to a normal
+law using the exact finite mean and variance. The scaled local
+error is
+\[
+ \sup_k\left|
+ \sqrt{\Var X_r}\Prob(X_r=k)-
+ \ph\!\left(\frac{k-\E X_r}{\sqrt{\Var X_r}}\right)
+ \right|.
+\]
+These decimal diagnostics use binary64 arithmetic. They illustrate
+the proved orders; their printed digits are not interval-certified
+bounds. The theorem's unscaled full-block local error is
+$O(r^{-3/2})$, corresponding to a scaled error $O(r^{-1})$.
+
+\begin{figure}[htbp]
+ \centering
+ \includegraphics[width=0.88\textwidth]{figures/03-fluct-extreme_and_typical_scales.pdf}
+ \caption{The critical word at $a=3$ has two different scales:
+ standard deviation proportional to $\sqrt{\log L}$ and largest
+ absolute prefix weight proportional to $\log L$. The horizontal
+ quantity is already $\log L$; both axes are logarithmic.
+ Solid curves use the exact finite expressions and dashed curves
+ their leading terms.}
+ \label{bmf:fig:scales}
+\end{figure}
+
+\begin{figure}[htbp]
+ \centering
+ \includegraphics[width=\textwidth]{figures/03-fluct-pressure_and_rate.pdf}
+ \caption{The pressure $\chi_3$ and its Legendre transform $I_3$
+ on the substitution-depth normalization used in this article.
+ The finite comparison on the right uses $W_{256}$, plotting
+ $-\log\Prob(X_{256}=k)/256$ at $x=k/256$.
+ Its finite offset includes the usual local-mass prefactor.
+ The endpoint rate is $\log3$ and the limiting domain is $[-1,1]$.}
+ \label{bmf:fig:pressure}
+\end{figure}
+
+\subsection{An economical histogram algorithm}
+
+For a fixed word, compute the finite Laurent polynomials $S$, $T$,
+$K_0$, $K_1$, and $\Delta$. To obtain the even-depth histogram
+for state $c$, accumulate
+\[
+ H\leftarrow1,\quad Q\leftarrow K_c;\qquad
+ H\leftarrow H+Q,\quad Q\leftarrow Q\Delta
+ \quad\hbox{for }j=0,\ldots,m-1 .
+\]
+The support width grows linearly in $m$, whereas the literal word
+length grows like $a^{2m}$. For a fixed substitution, multiplication
+by the fixed-support polynomial $\Delta$ gives
+$O_w(m^2)$ integer coefficient operations for this elementary
+implementation. Coefficient bit lengths are $O_w(m)$; this
+operation count does not treat arbitrary-size integer arithmetic
+as having a fixed bit cost. Odd depths use the state-$0$ identity.
+The supplied programs implement the formulas independently of
+literal word generation whenever possible.
+
+\subsection{Build and verification commands}
+
+From the archive directory, the article can be rebuilt with
+\begin{verbatim}
+latexmk -pdf -interaction=nonstopmode -halt-on-error \
+  binary_morphic_fluctuations.tex
+\end{verbatim}
+The bibliography is embedded in the source, so no separate
+bibliographic database is required. A standard \TeX\ installation
+needs the packages listed in the preamble.
+
+The first three verification commands use only Python's standard
+library when figure generation is omitted:
+\begin{verbatim}
+python3 code/verify.py --skip-figures
+python3 code/general_word_audit.py
+python3 code/verify_profile_realization.py
+\end{verbatim}
+To reproduce the figures and the supercritical computation, install
+the versions recorded in \texttt{code/requirements.txt} in an
+isolated Python environment, then run
+\begin{verbatim}
+python3 code/verify.py
+python3 code/verify_supercritical.py
+\end{verbatim}
+The JSON files preserve exact integers and rational moments.
+The text report records the check scopes and the numerical
+conventions.
+[Added 6 October 2026, batch~114: these are the commands of the delivered
+layout. In this report the manuscript source
+\texttt{binary\_\allowbreak morphic\_\allowbreak fluctuations.tex} is not shipped, so the
+first command and \texttt{code/\allowbreak 03-fluct-build.sh} (the delivered
+\texttt{build.sh}) do not apply; the report is built from
+\texttt{article.tex}. The delivered \texttt{code/requirements.txt} is
+shipped as \texttt{data/03-fluct-requirements.txt}. The programs resolve
+their output directories relative to their own location and write
+\texttt{data/} and \texttt{figures/} files under unprefixed delivery names,
+so they are to be run on a copy of the delivered layout (README, ``Rerun
+the checks''). At intake (on such a copy) the three standard-library
+programs passed in seconds, with the totals of the table above, and
+\texttt{verify\_supercritical.py} reported
+\texttt{all\_exact\_checks\_passed: true}.]
+
+\clearpage
+\section{Further questions and research}
+\label{bmf:sec:research}
+
+The exact representation closes several questions while making
+others precise. The following projects have distinct mathematical
+content; none is claimed solved by the present computations.
+[Added 6 October 2026, batch~114: items 1--10 are the manuscript's
+section ``Further research: concrete questions after these results'', as
+delivered. Items~\ref{bmf:q:edgeworth} and~\ref{bmf:q:fixed-orders} were
+added at the write under Vladimir's standing rule of 4 October 2026: they
+are statements the manuscript makes with an argument sketch only
+(Section~\ref{bmf:sec:gaussian}). Item~1 overlaps Part~II's research
+question~2 (Section~\ref{qmw:sec:further}): both ask for the limiting
+distributions in the bounded regime, item~1 for the prefix weight under
+uniform prefix sampling and Part~II's for the position errors;
+item~3 continues Part~II's question~4, of which
+Theorem~\ref{bmf:thm:first-hit} answers the extremal slice at $a=b+2$.]
+
+\begin{enumerate}[leftmargin=*,itemsep=7pt]
+\item \textbf{Bounded-regime value distributions.}
+For the repository's original cases $a\leq b+1$, determine the
+limiting distribution, if any, of $\#0-q\#1$ under uniform prefix
+sampling. For $(a,b)=(1,2)$ and $(2,1)$, obtain explicit laws
+for the OEIS words A284368 and A284369 and transfer them to
+the position sequences. Decide whether the laws have densities,
+atoms, or a singular continuous part. Our critical positive
+mixture does not automatically extend across $q=1$.
+
+\item \textbf{Local large deviations with a leading constant.}
+For the critical class, prove a saddle-point formula for
+$\Prob(X_r=k)$ uniformly when $k/r$ lies in a compact subset
+of $(-d/2,d/2)$, evaluating the prefactor from $g_0$ and $g_1$.
+Then characterize the additional cutoff dependence when
+$N$ is not a substitution length. The present pressure gives
+the exponential cost; the arithmetic phase and exact leading
+constant remain to be organized.
+
+\item \textbf{Extreme atoms and near-extreme multiplicities.}
+The endpoint rate depends only on $c_-c_+$, while the run family
+has unique even-block extremal prefixes. Classify the exact
+multiplicities and locations of the first $j$ levels inward
+from each extreme for a general profile. Determine how much
+of this information is determined by $S$, and what further
+data are needed to recover first-hit positions in the word.
+
+\item \textbf{Counting words with a prescribed profile.}
+Theorem~\ref{bmf:thm:realization} counts distinct profiles and constructs
+one representative. Determine the number of admissible words
+realizing each coefficient vector $(c_h)$. The Euler-trail
+description suggests an exact formula using directed trail
+enumeration, with care about indistinguishable parallel edges
+and the prescribed first letter. This would refine the
+A001787 interpretation and identify the largest histogram
+equivalence classes.
+
+\item \textbf{Inverse problems from fluctuation data.}
+Determine when two distinct profiles have the same pressure,
+that is,
+$S_1(t)S_1(t^{-1})=S_2(t)S_2(t^{-1})$.
+Translations and reflection are immediate sources of agreement,
+but factorization can produce further coincidences.
+Classify which additional seed or parity data recover $S$.
+This separates equality of bulk laws from equality of complete
+finite histograms.
+
+\item \textbf{Regularity and distribution of the supercritical profile.}
+Determine the sharp local H\"older exponents and the sizes of
+level sets of $\Theta$. Is the logarithmic-sampling law
+\eqref{bmf:eq:log-law} absolutely continuous, atomless, or singular
+for particular $(a,b)$? Obtain a usable density equation where
+one exists. The scalar cluster set is already known to be an
+interval; the unresolved geometry concerns the graph and
+its induced measures.
+
+\item \textbf{Sharper physical-time asymptotics.}
+The conversion from geometric length to letter count gives an
+error $O(N^{\alpha^2})$ using global H\"older continuity.
+Find whether that exponent is sharp, and identify parameters
+or phases where a smaller error holds. A second-order
+expansion may require local information about $\Theta$ rather
+than a derivative, because differentiability is not assumed.
+
+\item \textbf{Optimizing supercritical arrangements.}
+Keep the incidence matrix fixed but rearrange the zeros and
+ones in the long image. Determine which arrangements maximize
+or minimize the normalized supercritical amplitude. The
+critical variance comparison uses ordered zero heights;
+its supercritical analogue involves a discounted branch
+optimization. Seek an algorithm that outputs a verifiable
+polygon or other finite envelope certificate.
+
+\item \textbf{Higher alphabets and roots of unity.}
+For primitive substitutions with an eigenvalue that is a
+root of unity of order greater than two, group that many
+levels and ask when the histogram transfer matrix admits a
+nonnegative low-rank remainder. A useful target is an exact
+finite mixture of independent vector increments. The
+invariant-section identity by itself does not establish
+this positivity.
+
+\item \textbf{Formal proof and certified computation.}
+Formalize the positive histogram identity and its finite
+moment consequences first: they involve finite words,
+Laurent polynomials, and elementary sums. A separate
+formalization could check the finitely many branch inequalities
+of the supercritical envelope. For publication-quality
+numerical constants beyond the closed forms here, add
+interval-certified saddle-point calculations.
+
+\item \label{bmf:q:edgeworth}\textbf{The first local correction
+(proof sketched).} \emph{Source:} the manuscript,
+Section~\ref{bmf:sec:gaussian}, display \eqref{bmf:eq:edgeworth} and its
+run-family form \eqref{bmf:eq:run-edgeworth}. \emph{Claim:} uniformly for
+$y=(k-m_r)/\sqrt{rv}$ in a fixed compact interval, $\Prob(X_r=k)$ equals
+$\ph(y)/\sqrt{rv}$ times
+$1+r^{-1}\{\beta H_2(y)/(2v)+\kappa_4(Z)H_4(y)/(24v^2)\}+O_w(r^{-3/2})$.
+\emph{Sketch given:} expand $\log\E e^{itX_r}$ through
+\eqref{bmf:eq:block-analytic} as $r\chi(it)+\log g_\epsilon(it)$, with
+$\chi''(0)=v$, $\chi^{(4)}(0)=\kappa_4(Z)$, vanishing odd derivatives of
+$\chi$, $(\log g_\epsilon)''(0)=\beta$, and invert as in the proof of
+Theorem~\ref{bmf:thm:block-normal}. \emph{Missing:} the expansion of the
+characteristic function to fourth order with a remainder that is uniform
+and integrable after Fourier inversion; the control, at relative order
+$r^{-3/2}$, of the neighbourhood of zero and of its complement (where only
+the finite geometric sum is available); and the odd-depth case through
+$g_1$. \emph{Evidence at the write} (6 October 2026, from the exact
+histograms of the positive formula, even depths, run family $a=3,4,5$,
+$r=16,\dots,256$, all $k$ with $|y|\le2$): the largest relative deviation
+of $\sqrt{rv}\,\Prob(X_r=k)/\ph(y)$ from $1$ times $r$ stays between
+$0.49$ and $1.28$, while after the correction the largest deviation times
+$r^{3/2}$ stays below $0.24$ and decreases in $r$ for each $a$. This is
+consistent with the display and its constants but is not a proof.
+
+\item \label{bmf:q:fixed-orders}\textbf{Every fixed correction order
+(stated without proof).} \emph{Source:} the manuscript,
+Section~\ref{bmf:sec:gaussian}, after \eqref{bmf:eq:edgeworth}: ``the same
+analytic expansion gives every fixed local correction order'' (for fixed
+orders only, with no claim that the infinite expansion converges).
+\emph{Missing:} a statement of the polynomials multiplying $r^{-i/2}$,
+$i\le j$, in terms of the derivatives of $\chi$ and $\log g_\epsilon$
+and the uniform remainder
+estimate $O_{w,j}(r^{-(j+1)/2})$ after the terms through $r^{-j/2}$; the
+case $j=2$ is Question~\ref{bmf:q:edgeworth}.
+\end{enumerate}
+
+\section{Status of the results and source record}
+\label{bmf:sec:status}
+
+The selected predecessor explicitly asks for sharp normalization
+in its critical and supercritical regimes. This article provides
+complete conventional proofs of the critical logarithmic constants
+and the supercritical amplitude and cluster interval for that
+same two-parameter family. The critical result is strengthened
+to arbitrary arrangements with the stated letter counts.
+
+The positive histogram identity is the central exact statement.
+The random-sum representation, finite moments, local expansions,
+pressure, and extremal arrangement comparisons follow from it
+with the probability arguments supplied above. The profile
+realization theorem supplies a separate combinatorial
+classification and the A001787 connection. The supercritical
+result uses a different proof: an explicit contraction and a
+branchwise invariant concave envelope.
+
+The general spectral explanation for discrepancy growth, the
+existence of a unit-modulus-eigenvalue central limit theorem,
+and the general invariant-section identity are established
+literature. We have cited them and do not present them as
+new general theorems. The exact evaluated results in this
+article were derived for the present project and were not
+found in the targeted sources surveyed. That statement does
+not establish global priority.
+
+The source snapshot used for direct file inspection was
+\begin{center}
+\texttt{112d6bedeb346034e89d1b1c423371d76e68fb09}.
+\end{center}
+The report and its adjacent README were read at the path
+of this report in that snapshot (the manuscript's reference to
+``ProveIt: Sharp discrepancy for two families of binary substitutions,
+Part~II, question~7 and accompanying README'', inspected 5 October 2026).
+Search indexing also exposed
+the earlier commit
+\texttt{52d8ca404b076c38eb7c513569592ebd8c479115};
+the directly inspected snapshot, rather than search-index
+freshness, defines the predecessor addressed here.
+The research search was targeted to this report, OEIS entries,
+and the cited primary substitution literature. It was not an
+exhaustive audit of every issue, branch, paper, or unpublished
+argument related to the repository.
+
+All prefix conventions, logarithm bases, and changes of
+eigenweight have been stated explicitly. Finite computations
+were performed with independent integer and rational checks,
+and asymptotic claims have analytic proofs in the text.
+The manuscript has not been externally refereed or
+proof-assistant verified.
+[Added 6 October 2026, batch~114: with two exceptions, recorded as
+Questions~\ref{bmf:q:edgeworth} and~\ref{bmf:q:fixed-orders}: the first
+local correction \eqref{bmf:eq:edgeworth} and the remark on every fixed
+correction order are argued in outline only.]
+
+% End of Parts II and III's main text: Part I's Appendix A keeps its Table 3.
 \renewcommand{\thetable}{\arabic{table}}
 \renewcommand{\theHtable}{\arabic{table}}
 \setcounter{table}{2}
@@ -2124,5 +4553,48 @@ The OEIS Foundation Inc.,
 The OEIS Foundation Inc.,
 \emph{A284371: Positions of 1 in A284369},
 \url{https://oeis.org/A284371}, accessed October 1, 2026.
+
+% Part III (batch 114) references, as delivered.
+\bibitem{oeis1787}
+OEIS Foundation Inc., \emph{The On-Line Encyclopedia of Integer Sequences},
+\href{https://oeis.org/A001787}{A001787}, $n2^{n-1}$.
+Accessed 5 October 2026.
+
+\bibitem{paquette}
+Elliot Paquette and Younghwan Son,
+\emph{Birkhoff sum fluctuations in substitution dynamical systems},
+Ergodic Theory and Dynamical Systems \textbf{39} (2019),
+no.~7, 1971--2005.
+\href{https://doi.org/10.1017/etds.2017.83}{doi:10.1017/etds.2017.83};
+\href{https://arxiv.org/abs/1505.01428}{arXiv:1505.01428}.
+
+\bibitem{solomyak}
+Boris Solomyak,
+\emph{On the Lyapunov spectrum of the twisted cocycle for substitutions},
+Studia Mathematica \textbf{286} (2026), no.~2, 189--206.
+\href{https://doi.org/10.4064/sm250402-31-7}{doi:10.4064/sm250402-31-7};
+\href{https://arxiv.org/abs/2502.14308}{arXiv:2502.14308}.
+
+\bibitem{rajabzadeh}
+Hesam Rajabzadeh and Pedram Safaee,
+\emph{Twisted cocycle for interval exchange transformations:
+Invariant structures and Lyapunov spectrum},
+preprint (2025),
+\href{https://arxiv.org/abs/2501.16824}{arXiv:2501.16824}.
+
+\bibitem{bressaud}
+Xavier Bressaud, Alexander I. Bufetov, and Pascal Hubert,
+\emph{Deviation of ergodic averages for substitution dynamical systems
+with eigenvalues of modulus 1},
+Proceedings of the London Mathematical Society (3)
+\textbf{109} (2014), no.~2, 483--522.
+\href{https://doi.org/10.1112/plms/pdu009}{doi:10.1112/plms/pdu009};
+\href{https://arxiv.org/abs/1106.2666}{arXiv:1106.2666}.
+
+\bibitem{feller}
+William Feller,
+\emph{An Introduction to Probability Theory and Its Applications},
+Vol.~II, second edition, John Wiley \& Sons, New York, 1971,
+Chapter XVI.
 \end{thebibliography}
 \end{document}
