@@ -267,8 +267,10 @@ four agree with exact recomputation, and A192563's b-file (n ≤ 270) with Part
 I's definition. No entry states an asymptotic formula. What Part I proves
 about A344639: its identities (credited), and Theorem 1.2, an expansion to
 every fixed order uniform for `α ≤ k/n ≤ β`, whose diagonal is Theorem 1.1;
-nothing for fixed rows or columns (`k/n → ∞` or `0`, Part I's question 2) or
-for the antidiagonal sums A344640. **Nothing was submitted to the OEIS.**
+nothing for fixed rows or columns (`k/n → ∞` or `0`, Part I's question 2), nor
+for any other regime with `k/n → 0` or `k/n → ∞` (such as `k = n log n`;
+widened after the independent check of 6 October 2026), nor for the
+antidiagonal sums A344640. **Nothing was submitted to the OEIS.**
 
 **The inverses** (transseries volume
 `Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex`).
@@ -328,6 +330,31 @@ October 2026), with sources, sketches and what is missing:
 
 **Refuted or corrected**: nothing; no claim of either manuscript was found
 wrong. **Answered inside the merge**: none of the manuscripts' questions.
+
+**Independent check of the write (6 October 2026).** An adversarial check
+made by the intake after the write (`774c233c4`) re-proved Proposition 23.1
+(A192562) line by line and checked it exactly: the first two forms and
+`0 < c_n < a_n` for `1 ≤ n ≤ 300`, the third form by genuine power-series
+multiplication in `ℚ[[z]]` for `1 ≤ n ≤ 30`. A192562 has no independent
+b-file (the OEIS one is synthesized from the 17 listed terms), so only those
+are compared, as the report says. Part I's Subsection 2.1 with the write's
+one-line identity `(m+1)^k = Σ_j {k+1, j+1} (m)_j` proves Munarini's form
+equal to A192563 for every `n`; exact checks of the Bényi–Ramírez identity
+(`n, k ≤ 80`), the one-line identity (`m, k ≤ 60`) and both forms against the
+whole A192563 b-file (`n ≤ 270`). Both cited Lean ingredients exist with the
+stated content. The instance and analogue classifications were re-derived
+(Part II's leading inverse is a factorial-core instance with `κ = 2`,
+`d = −2`; the brackets are staircase analogues; Part I's nested-log inverse
+agrees with the Lambert template to first order only). All listed terms of
+A192561, A192562, A192563 (17 each) and A344639 (55) agree, revisions and
+quotations are exact; Theorem 1.1's relative error at `R = 1` is
+`−4.834·10⁻³ … −1.101·10⁻³` for `n = 50 … 300` and `−1.49·10⁻⁵ … −4.18·10⁻⁷`
+after the first correction; Remark 23.2 reproduces to every printed digit.
+No mathematical error was found and no correction is required. One precision
+is added (with a dated note keeping the first wording): Theorem 1.2 says
+nothing about any regime with `k/n → 0` or `k/n → ∞`, not only about fixed
+rows and columns (Part I's note after Theorem 1.2, the front matter, and
+above). The record is a dated note at the end of Section 23.
 
 ## Relation to neighbouring reports
 
@@ -450,7 +477,7 @@ latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
 pdfLaTeX (MiKTeX), in a scratch copy; commit only `article.pdf`. The build (52
-pages): no errors, no undefined or multiply defined references or citations, no
+pages at the write, 53 after the independent check): no errors, no undefined or multiply defined references or citations, no
 duplicate destinations, no overfull or underfull boxes, no warnings. The log
 carries one "Infinite glue shrinkage found in box being split" message, from
 the notation longtable breaking across pages 6–7 (the delivered `.tex` files
