@@ -12,8 +12,8 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 192 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 1,786 public Gowers theorems and found only propext,
+  All 194 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 1,791 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 99 exact
   companion proofs and 21 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -288,10 +288,18 @@ Corrected distinct-anchor sampling estimate
   with the union of the new local good sets. The total loss is sigma+2*tau+epsilon.
   With b=multipleQ(epsilon/(r*s),gamma,k)^(r*s), the global graph count is at
   most r*b+r*r*b*b; the width remains sqrt((m/8)^a)/4 for m<=l.
-  This closes global cell assembly under the explicit positive-count and
-  sampling-budget hypotheses. A complete Lemma 16.10 proof still needs the
-  unresolved comparison with its prescribed width and graph controls. The
-  verified global formula is not that comparison.
+  Proofs16GlobalLiftParameters pads the line-cover graph count to max(1,q),
+  chooses r=ceil(6*max(1,q)/tau^2), and takes m=floor(l) for l>=0. This handles
+  zero graph counts and removes the auxiliary integer choices from assembly.
+  Proofs16ClosingComparison proves that the transcription's same-dimensional
+  closing graph comparison is false throughout its stated positive range:
+  for p>=1 and 0<gamma,rho<=1, Q(rho,gamma,k) < Q(rho/(4*p),gamma,k)^p.
+  At gamma=rho=1 the analogous comparison also fails for arbitrary source
+  and target dimensions. These results distinguish the edited formula from
+  the original published formula; they do not refute Lemma 16.10 itself.
+  The verified global lift therefore needs a different argument to attain
+  the catalogue's prescribed controls. Proving the displayed comparison is
+  not a remaining feasible arithmetic obligation: its reverse is now checked.
   The newly received gowers_interpolation_article.zip proposes sampling
   without replacement and singleton recovery for a sharper local bound. Its
   argument has been inspected, but is not a checked Lean result at this stage.
