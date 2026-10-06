@@ -170,6 +170,61 @@ The [packed counter-guard transfer obstruction](korec_positive_guard_transfer_ob
 
 The [scalar complement reuse](residue_affine_complement_reuse.md) and [vector positive-guard template](counter_vector_positive_guard.md), with [independent proof and source review](review_counter_positive_guard_extensions.md), extend the counter-step savings to every fixed program of the stated form. Reusing the scalar remainder-complement equation saves one addition: the complete SOS costs **10B+21**, with six positive witnesses; its B=14 fixture costs **161=76M+85A**, of exact degree28. For r counters and K states represented directly, positivity forces the branch selector using only two witnesses, giving a paid SOS template of **2(r+2)K+7r+11** operations and degree at most2K+2. This saves three operations against the same template with an explicit Boolean residual. The distinct endpoint interfaces cannot be compared without a paid conversion. The scalar source receives independent inert structure and polynomial checks; the vector result is proof-only. Neither result supplies unbounded iteration or improves the universal84 frontier.
 
+The [centralizer-to-projective bridge](positive7_centralizer_projective_bridge_aristotle.md)
+now proves that the new universal word family retains the **3=2M+1A ordinary-input
+loader**. Naming only the two query words gives four presentation generators,
+17681 relator slots and35370 signed alphabet slots; the third word stays a
+fixed conjugator. Britton's lemma removes both projective ambiguities, and
+the seven-coordinate positive lift and generic column6 compiler apply.
+The note supplies exact finite word-composition and coefficient recipes
+without expanding the large matrices. Both full hand challenges pass;
+the [mandatory scope correction](positive7_centralizer_projective_bridge_metadata_correction_aristotle.md)
+amends one frozen read-range endpoint. Actual fixed-data/source bindings
+remain to be published and audited. The old specialized sparse paired
+formulas do not automatically transfer to this conjugator, and the
+**84-operation /18-positive-witness /degree187** frontier is unchanged.
+
+The [bounded review of the latest four report topics](triage_batch105_computational_relevance_pascal.md)
+finds no new Turing-completeness or Diophantine interface in the inspected
+guides and theorem statements. A398540's placement game supplies a
+fixed-real approximation theorem, while its “universality” question
+concerns convolution asymptotics. A224182 supplies a finite combinatorial
+certificate; A279551 and A005163 concern enumeration/asymptotic corrections.
+The note preserves the source-recorded corrections and questions without
+claiming a full proof or numerical audit. Research continues with the
+concrete group/word-to-arithmetic bridge.
+
+The [Accepted centralizer branch](positive7_higman_centralizer_branch_riemann.md)
+now gives a literal **499-generator,17,679-relator** presentation with the
+universal word query `W_n=[alpha^(beta^n),t]`. The
+[hand membership-to-word-problem lemma](positive7_higman_membership_word_problem_aristotle.md)
+uses Britton's lemma and the inherited Accepted subgroup. The
+[independent branch audit](review_higman_centralizer_branch_root.md) passed
+for the complete498-generator/17676-relator retained prefix, all three new
+fixing relations, query ports and metadata. A separate
+[finite two-generator embedding proof](positive7_finite_two_generator_embedding_aristotle.md)
+preserves all17679 relator slots using the full universal words, including
+identity-valued named generators; a counterexample refutes the source's
+unqualified shortened formula. The two-generator substitution is proved
+but its large arrays are not expanded, and the paid matrix/input/history
+interface remains open. **84 operations /18 positive witnesses /degree187**
+is unchanged.
+
+The [complete literal Higman presentation](positive7_higman_literal_presentation_riemann.md)
+now supplies all **499 generators and 17,678 relators** of the preembedding
+construction. The [independent full comparison](review_positive7_higman_literal_presentation_pascal.md)
+passed for every generator, relator, all124 operation traces, all123 cached
+lists and the three final words; both original programs ran once after
+full preflight and are frozen. The [focused word-premise review](review_positive7_higman_word_premises_aristotle.md)
+records exact spellings and imported subgroup lemmas. The
+[mandatory metadata correction](review_positive7_higman_literal_linecount_correction_pascal.md)
+amends a frozen primary-text line count (3483 lines,3482 LF separators),
+retains the separate failed root metadata check, and changes no scientific
+result or execution count. This closes the literal-expansion audit; the
+historical20808 continuation remains invalidated by the Section7 kernel
+counterexample below. A faithful paid arithmetic interface is still
+required, and **84 operations /18 positive witnesses /degree187** is unchanged.
+
 The [Section 7 embedding counterexample](review_higman_section7_noninjective_root.md)
 refutes an injectivity claim in the printed downstream group construction.
 Four independent source conjugates map to the dependent target words
@@ -6041,6 +6096,12 @@ New research and the completed75-operation construction:
 
 | Artifact | Established result | Remaining boundary |
 |---|---|---|
+| [Centralizer projective/positive7 bridge](positive7_centralizer_projective_bridge_aristotle.md), [mandatory scope correction](positive7_centralizer_projective_bridge_metadata_correction_aristotle.md) | Same3=2M+1A loader; four names/17681 relations/35370 signed slots; Britton removes both projective ambiguities and generic column6 theorem applies | Exact composition recipes given, but fixed coefficient/source bindings unmaterialized; old sparse paired-action formulas require a new derivation |
+| [Four incoming report topics: bounded relevance review](triage_batch105_computational_relevance_pascal.md) | Exact guide/theorem scope distinguishes placement-game computability and asymptotic universality from Turing completeness | No new computational/Diophantine bridge found; source proofs and numerical evidence not recertified |
+| [Universal centralizer word query](positive7_higman_membership_word_problem_aristotle.md), [literal branch](positive7_higman_centralizer_branch_riemann.md), [independent audit](review_higman_centralizer_branch_root.md) |499 generators/17679 relators; exact retained prefix and three new fixes checked; `[alpha^(beta^n),t]=1` iff `n` lies in the inherited universal set | Scoped upstream premises; three-fixed-word paid arithmetic interface remains separate |
+| [Finite two-generator embedding](positive7_finite_two_generator_embedding_aristotle.md) | Full universal-word substitution is injective for any finite named presentation and retains17679 relator slots here | Shortened formula fails with identity-valued named generators; no expanded substitution or paid matrix/history compiler yet |
+| [Complete literal preembedding](positive7_higman_literal_presentation_riemann.md), [full independent audit](review_positive7_higman_literal_presentation_pascal.md), [mandatory correction](review_positive7_higman_literal_linecount_correction_pascal.md) | All499 generators,17678 relators,124 events,123 caches and3 final words independently compared; exact first sources/results/logs frozen | Scoped imported subgroup semantics; no valid Section7 continuation or paid arithmetic bound follows |
+| [Focused word-premise review](review_positive7_higman_word_premises_aristotle.md) | Exact rho/pi/omega spellings, omega1 distinct letters and persistent tracked-word transport reviewed | Operation-specific subgroup lemmas remain attributed; downstream Section7 map refuted |
 | [Section 7 embedding counterexample](review_higman_section7_noninjective_root.md) | Explicit nontrivial free-basis word dies under the proposed map and the finite 15-relation extension; full independent reviews pass | Historical 20,808 and three alternative downstream counts are syntactic only; a faithful replacement is open; the preceding 499/17,678 benign pair remains separate |
 | [Two-relator affine-line transducer](positive7_higman_affine_line_transducer_aristotle.md) and [full shared schedule](positive7_higman_shared_schedule_riemann.md) | Exact free-pair HNN transfer adds one generator and two relations; complete hand schedule gives 499 generators, 17,678 relators and three subgroup words; full peer challenges pass | Literal presentation, embedding and matrices remain unmaterialized; 20,808 historical slots have a refuted embedding premise; replacement open; all three weaker finishes and the Keep count correction are retained |
 | [Complete grouped-left compiler](positive7_grouped_left_compiler_riemann.md), [independent full-record review](review_positive7_grouped_left_compiler_pascal.md) | Saved totals798/862/1003; all2663 records audited; rM saving, identical final polynomial and positive-witness contract | Collected branch proved by grammar; numerical universal group/matrix data, degree and optimality remain open |
