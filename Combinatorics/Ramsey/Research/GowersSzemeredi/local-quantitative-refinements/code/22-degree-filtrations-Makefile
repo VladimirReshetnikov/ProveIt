@@ -1,0 +1,16 @@
+PYTHON ?= python3
+TEX = gowers_degree_stratification
+
+.PHONY: pdf verify clean
+
+pdf:
+	latexmk -pdf -interaction=nonstopmode -halt-on-error $(TEX).tex
+
+verify:
+	$(PYTHON) code/verify_certificates.py
+	$(PYTHON) code/verify_two_cubes.py
+	$(PYTHON) code/verify_polynomial_patterns.py > data/polynomial_pattern_verification.json
+	$(PYTHON) code/verify_norm_obstruction.py --output data/norm_obstruction_verification.json
+
+clean:
+	latexmk -c $(TEX).tex

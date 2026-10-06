@@ -1,0 +1,23 @@
+LATEX ?= pdflatex
+PYTHON ?= python3
+MAIN := gowers_sharp_thresholds
+
+.PHONY: all pdf check figure clean
+
+all: pdf
+
+pdf:
+	$(LATEX) -interaction=nonstopmode -halt-on-error $(MAIN).tex
+	$(LATEX) -interaction=nonstopmode -halt-on-error $(MAIN).tex
+	$(LATEX) -interaction=nonstopmode -halt-on-error $(MAIN).tex
+
+check:
+	$(PYTHON) code/verify_prescribed_partitions.py > data/partition_checks.json
+	$(PYTHON) code/check_fifth.py > data/fifth_checks.txt
+	$(PYTHON) code/verify_section16_gluing.py > data/gluing_checks.json
+
+figure:
+	$(PYTHON) code/make_figure.py
+
+clean:
+	rm -f $(MAIN).aux $(MAIN).log $(MAIN).out $(MAIN).toc $(MAIN).fls $(MAIN).fdb_latexmk

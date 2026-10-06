@@ -1,0 +1,21 @@
+PYTHON ?= python3
+LATEX ?= pdflatex
+ARTICLE = gowers_characteristic_five
+
+.PHONY: all pdf verify figures clean
+
+all: verify pdf
+
+pdf:
+	$(LATEX) -interaction=nonstopmode -halt-on-error $(ARTICLE).tex
+	$(LATEX) -interaction=nonstopmode -halt-on-error $(ARTICLE).tex
+
+verify:
+	$(PYTHON) code/verify_order5.py > data/order5_verification.txt
+	$(PYTHON) code/verify_profiles.py --output data/profile_validation_results.json > data/profile_verification.txt
+
+figures:
+	$(PYTHON) code/make_figures.py
+
+clean:
+	rm -f $(ARTICLE).aux $(ARTICLE).log $(ARTICLE).out $(ARTICLE).toc
