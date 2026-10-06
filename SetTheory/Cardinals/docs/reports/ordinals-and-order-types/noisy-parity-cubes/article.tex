@@ -38,6 +38,12 @@
 \newcommand{\dist}{\operatorname{dist}}
 \newcommand{\one}{\mathbf 1}
 \newcommand{\pin}{b71545625fedc631edc2ead542abbfba72eb6063}
+% Added by the ProveIt write phase (batch 114, 5 October 2026): dated notes
+% marked [write], and a command for repository paths and commits.
+\newcommand{\file}[1]{\nolinkurl{#1}}
+\newenvironment{writenote}[1][]{\par\smallskip\begingroup\small
+ \noindent\textbf{[write]}\if\relax\detokenize{#1}\relax\else~\textbf{#1.}\fi\ }%
+ {\par\endgroup\smallskip}
 \setlist{itemsep=3pt,topsep=5pt}
 \setlength{\parskip}{4pt}
 \setlength{\parindent}{1.2em}
@@ -102,6 +108,33 @@ and is not a Lean or Rocq formalization.
 {\small Repository reference: ProveIt, snapshot \texttt{b71545625}\par}
 \end{titlepage}
 \hypersetup{pageanchor=true}
+\begin{writenote}[Status and trust boundary, added 5 October 2026, batch~114]
+This manuscript is filed in ProveIt as the single-source research report
+\file{noisy-parity-cubes} of the research-report collection (provenance,
+the repository claims checked against the current tree, the two lemmas that
+the report \file{measurable-box-games} already proves, reading conventions
+and the collected non-claims are in Section~\ref{np:sec:provenance}). It is
+AI-assisted (the title page says ``AI-assisted mathematical development and
+exposition''; the PDF author field reads ``OpenAI ChatGPT; prepared for
+Vladimir Reshetnikov''), unrefereed and \emph{not formalized}: no Lean or
+Rocq declaration states any theorem of this report. \emph{What rests on
+what.} Every theorem has a written proof; the Fourier and influence
+machinery is classical~\cite{odonnell}, and the parity-function and
+measurable-colouring facts of Section~\ref{np:found:section} are classical
+and credited~\cite{glr,serafin,conleymiller}. The exhaustive finite checks
+(dimensions $1$--$4$) and the 65-digit asymptotic diagnostics of
+Section~\ref{np:sec:checks} support the finite formulas and the signs and
+sizes of the asymptotic coefficients; no infinite statement rests on a
+computation. The write adds two remarks with proofs:
+Remark~\ref{np:rem:deterministic} (under strictly decreasing weights no
+deterministic tree attains the inspection frontier at a non-integer budget
+below $K$) and Remark~\ref{np:rem:gap-shrinks} (the stability gap of
+Theorem~\ref{np:thm:stability} tends to zero as $\eta\downarrow0$ on a
+countable cube); it also adds the second-route notes at
+Lemma~\ref{np:lem:query} and after Corollary~\ref{np:cor:simulation}, and
+Section~\ref{np:sec:further}, which states every open item as a question.
+Nothing in the source was found to be wrong.
+\end{writenote}
 \begingroup\small\setlength{\parskip}{0pt}\tableofcontents\endgroup
 \clearpage
 
@@ -156,6 +189,22 @@ trees, and inspection budgets \cite{repobox}. Its README describes the
 report as unrefereed and unformalized. We use this as context, not as an
 assumed theorem dependency.
 
+\begin{writenote}[Checked against the current tree, 5 October 2026]
+Both statements are correct at the pin and still at the current tree: the
+two cited files are byte-identical at the pin and at the write. The cited
+Lean module proves the three finite product identities named in
+Section~\ref{np:sec:formalization}, and the sign it uses is
+$(-1)^{\text{binary weight of }n}$, so the parity character of the first
+$m$ coordinates is that sign under binary enumeration of $\{0,1\}^m$.
+A neighbouring module, not cited by the source, proves Walsh-character
+orthogonality on the same dyadic block. The report
+\file{measurable-box-games} has five Parts (at the pin as now), and its
+Part~IV proves the
+two classical lemmas that this report re-proves in
+Section~\ref{np:sec:spectral}. Details, with declaration names, are in
+Section~\ref{np:sec:provenance}.
+\end{writenote}
+
 The principal results below concern a single labeling evaluated at two
 correlated configurations. They do not re-prove the repository's
 infinite-hat surplus or box-guessing budget theorems. All proofs needed for
@@ -176,6 +225,227 @@ claims in the specified models, not claims that a named published open
 problem has been settled. A targeted search found the relevant classical
 machinery but did not establish historical priority for the precise
 formulation and assembled results.
+
+\subsection{Provenance, repository context and reading conventions}
+\label{np:sec:provenance}
+\begin{writenote}[Added 5 October 2026, batch~114]
+\emph{Provenance.} This report is built from one manuscript, the archive
+\file{Noisy_Parity_Finite_and_Infinite_Cubes.zip} (474{,}728 bytes, SHA-256 beginning
+\file{c58216c1}; wrapper directory \file{noisy_parity/}, 13
+files, 639{,}515 bytes unpacked), which arrived in ProveIt's
+\file{docs/incoming} drop zone in commit \file{2399df2bd} (``New research
+reports'', 5~October 2026). It is not part of a numbered report bundle. The
+intake placed it as batch~114 in commit \file{99053b5d1}. The text is the
+delivered \file{noisy_parity.tex} (2{,}298 lines, 97 labels, all already
+prefixed \file{np:}), shipped as \file{article.tex}; the three figure PDFs,
+the three programs and their three recorded outputs are shipped
+byte-identical (\file{build.sh} in \file{code/}). The delivered 32-page
+\file{noisy_parity.pdf} is not shipped and is retrievable from the arrival
+commit; the package has no checksum manifest. The package is ``Prepared for
+Vladimir Reshetnikov'' (authorship, kept here, not an author line) and
+pins ProveIt commit \texttt{\pin} (title page, Appendix~\ref{np:app:package},
+bibliography), an ancestor of the current tree. Single source, so no merge
+choice was made.
+
+\emph{The repository claims, checked at the current tree.}
+(i)~\file{Analysis/FabiusFunction/Lean/FabiusFunction/ThueMorseBooleanCube.lean}
+(97 lines, namespace \file{Fabius}; blob \file{3527bee8} at the pin and
+now) proves four theorems: \file{prod_one_add_eq_sum_powerset}
+($\prod_{j\in S}(1+x_j)=\sum_{T\subseteq S}\prod_{j\in T}x_j$),
+\file{prod_one_add_mul_pow}
+($\prod_{j<m}(1+uz^{2^j})=\sum_{n<2^m}u^{w(n)}z^n$ over every commutative
+semiring, $w$ the binary weight),
+\file{prod_one_sub_pow_eq_sum_thueMorseSign}
+($\prod_{j<m}(1-z^{2^j})=\sum_{n<2^m}\varepsilon(n)z^n$ over every
+commutative ring) and \file{sum_pow_binaryWeight_eq_one_add_pow}
+($\sum_{n<2^m}u^{w(n)}=(1+u)^m$); the sign is
+$\varepsilon(n)=(-1)^{w(n)}$, the definition of \file{thueMorseSign} in
+\file{FabiusFunction/Arithmetic.lean}. The source's description is
+correct, and so is its reading that $\chi_{[m]}$ is $\varepsilon$ under
+binary enumeration of $\{0,1\}^m$. \emph{Observation of the write, not used
+by the source:} over $\mathbb Q$ or $\R$, the last identity with
+$u=-\eta/(1-\eta)$, multiplied by $(1-\eta)^k$, is
+$\sum_{n<2^k}\eta^{w(n)}(1-\eta)^{k-w(n)}(-1)^{w(n)}=(1-2\eta)^k$, that is
+$\E\chi_S(B)=a^{|S|}$ for $|S|=k$, the noise factor
+of~\eqref{np:eq:eigenvalue}. (ii)~The neighbouring module
+\file{ThueMorseWalsh.lean} (353 lines, blob \file{63a333d6} at the pin and
+now; not cited by the source) proves
+\file{sum_neg_one_pow_binaryWeight_land}: for $a<2^m$,
+$\sum_{n<2^m}(-1)^{w(a\,\&\,n)}$ is $2^m$ if $a=0$ and $0$ otherwise (the
+vanishing of a nontrivial character sum, in binary encoding; the
+orthogonality $\E\chi_S\chi_T=\one_{\{S=T\}}$ follows from it by
+$\chi_S\chi_T=\chi_{S\triangle T}$, which that file does not state), the
+masked character sum \file{sum_pow_binaryWeight_mul_pow_binaryWeight_land}
+and the one-point Walsh spectrum \file{sum_thueMorseSign_mul_walsh} of the
+full parity. (iii)~No Lean or Rocq file of the repository proves Walsh
+inversion or Parseval for arbitrary functions on a binary cube, or treats
+influences, decision trees or noise channels (searches for
+\emph{walsh}, \emph{parseval}, \emph{plancherel}, \emph{influence},
+\emph{decision tree}, \emph{noise} in \file{*.lean} and \file{*.v}; the
+Walsh-basis lemma of \file{Combinatorics/Ramsey/Lean/GowersSzemeredi/}
+concerns Gowers' Lemma~15.1 over $\mathbb Z/N$ and is unrelated). So the
+statement of Section~\ref{np:sec:formalization} that its modules are
+proposed, not present, is still true; (i) and (ii) supply ingredients of its
+first layer only. This report shares no declaration with any formal file
+and none of its statements is formalized. (iv)~The report
+\file{SetTheory/Cardinals/docs/reports/ordinals-and-order-types/measurable-box-games}
+(README blob \file{04ce7e69} at the pin and now) does study measurable
+prediction, finite decision trees and inspection budgets (its Parts~I, IV
+and~V), and its README calls it ``AI-assisted, unrefereed, not
+formalized''.
+
+\emph{Second routes.} Two standard lemmas proved here are already proved
+in Part~IV of \file{measurable-box-games}~\cite{repoboxart}, where they are
+credited as classical: Lemma~\ref{np:lem:query} (influence at most the
+expected number of inspections, with its per-coordinate form used in
+Proposition~\ref{np:prop:equality}) is the second display of its
+Lemma~64.1, \file{mbg:insp:var-covariance} (source~04 of that Part); the
+statement after Corollary~\ref{np:cor:simulation} that a depth-$d$ tree
+has Walsh degree at most $d$ is its Lemma~49.1, \file{mbg:qry:lem:degree}
+(source~06). The proofs here are independent one-paragraph arguments of the
+same kind and are kept as second routes; notes at both places point there.
+That report works with $\pm1$ hats and $\chi_A=\prod_{j\in A}x_j$, this one
+with bits and $\chi_S=(-1)^{\sum_{i\in S}x_i}$; its $\Inf_j(g)=
+\E(\partial_jg)^2$ equals the flip influence $\Inf_j$ used here for
+$\pm1$-valued $g$. It uses the Walsh expansion and a noise operator for
+degree and hypercontractive estimates; the write found there no counterpart
+of the spectral simulation (Theorem~\ref{np:thm:fourier},
+Corollary~\ref{np:cor:simulation}) or of the other results of this report.
+
+\emph{See also.} \file{ordinals-and-order-types/robust-neutral-choice}
+(batch~114, placed in the same commit, independent source) meets this report
+only in side sections: choice-built labels invariant under finite changes on
+$2^{\N}$, their failure of measurability and the Baire property, and a
+biased-product threshold there
+($\sum_i(p_i-\tfrac12)^2=\infty$ for its neutral $E_0$-invariant rules)
+beside Proposition~\ref{np:found:biased} here
+($\sum_i\min(q_i,1-q_i)<\infty$ for total parity labels). These concern
+different symmetries; neither is an instance of the other. Neither source
+cites the other.
+
+\emph{What the write changed.} It added the notes marked [write], this
+subsection, Remarks~\ref{np:rem:deterministic} and~\ref{np:rem:gap-shrinks}
+(each the last numbered statement of its section),
+Section~\ref{np:sec:further} with questions Q13--Q15, labels on the source's
+Q1--Q12 (with a \texttt{ref} key on their list, which does not
+change the output), two preamble definitions and two bibliography entries.
+No statement, proof or number of the source was changed.
+
+\emph{The external sources, as the write read them} (5~October 2026).
+Geschke, Lubarsky and Rahn~\cite{glr} (manuscript dated March~13, 2015):
+Lemma~5 proves that a strategy with at most one mistake exists if and only
+if a parity function exists, Corollary~9(b) that a parity function exists if
+and only if there is a transversal of $E_{\mathrm{ev}}$-classes within
+$E_0$-classes (the equivalence of
+Proposition~\ref{np:found:choice}), and Question~12 asks whether ZF plus a
+parity function gives a free ultrafilter or an $E_0$-transversal.
+Serafin~\cite{serafin} (arXiv v2, 2~December 2023): Theorem~1, ``Assuming
+the consistency of the existence of an inaccessible cardinal'', gives a
+model with a parity function and neither a nonprincipal ultrafilter on $\N$
+nor an $E_0$-transversal (``otherwise known as a Vitali set''); his
+Section~2 makes ``model of set theory'' mean a model of ZF+DC; he presents
+the theorem as the answer to that question. So the two literature
+statements of Section~\ref{np:found:section} are accurate as cited. Not read
+by the write: Conley--Miller~\cite{conleymiller}, O'Donnell~\cite{odonnell},
+OSSS~\cite{osss}, DLMF~25.11~\cite{dlmf} and the Epoch AI
+biography~\cite{glazerbio}.
+\end{writenote}
+
+\begin{writenote}[Reading conventions, 5 October 2026]
+The source reuses several letters; each meaning is fixed by its section.
+No symbol was renamed. ``Success'' always means \emph{disagreement},
+$f(X)\ne f(Y)$; $\Win$ is not the probability of a correct label.
+\end{writenote}
+{\small
+\begin{longtable}{@{}L{.13\textwidth}L{.50\textwidth}L{.28\textwidth}@{}}
+\toprule
+Symbol & Meanings (where) & Do not read as\\
+\midrule
+\endhead
+$a$, $a_i$, $a(S)$ & $a=1-2\eta$ (homogeneous noise); $a_i=1-2\eta_i$ and
+ $a(S)=\prod_{i\in S}a_i$ (summable noise, Section~\ref{np:found:section}) &
+ \\
+$A$, $B$ & $A=a(\N)$ (Theorem~\ref{np:found:full-parity}); Fourier
+ coefficients $A,B$ (proofs of Theorems~\ref{np:thm:optimizers},
+ \ref{np:thm:stability}); an independent set (proof of
+ Proposition~\ref{np:found:regularity}); the event
+ $A_n=\{\supp D\subseteq[n]\}$ (Theorem~\ref{np:thm:finiteperturb}) &
+ \\
+$b_k$, $b$ & $b_k=2P_k-1$; the modal sequence $b$ (proof of
+ Proposition~\ref{np:found:biased}); $b_0(\rho)$ (Zipf proof) &
+ \\
+$B$ & the noise vector $(B_i)$; the event $B_n$ (proof of
+ Theorem~\ref{np:found:summable-theorem}); the Bernoulli polynomial $B_2$
+ (Theorem~\ref{np:asym:lattice-theorem}) &
+ \\
+$C$ & Zipf constant; $C(f)$, $C_n(f)$ minimum expected tree cost; a
+ cylinder; an $E_0$-class with representative $r_C$ & \\
+$D$, $d$ & a random finite-support flip vector
+ (Section~\ref{np:sec:finiteperturb}); $D=\alpha/s+2\varepsilon$ (Zipf);
+ the coefficient $D$ of Q8; $d_k=2ap_{k+1}-(1-a)b_k$; the rounding offset
+ $d$ in $k=Rs+d$ & \\
+$\varepsilon$, $\epsilon$ & the score deficit of
+ Theorem~\ref{np:thm:stability}; the Zipf scale $\varepsilon=\eta R$; the
+ zero-noise deficit $\epsilon(f)$ & three unrelated quantities\\
+$\alpha$ & the tail index; the spectral mixture $\alpha(S)$; the
+ probabilities $\alpha_n$ of $B_n$ or $A_n$ & \\
+$F_k$, $F(S)$ & $F_k=a^kb_k$; $F(S)=(2p(S)-1)a(S)$; with equal noise
+ rates $F_k=F([k])$ & $F_k>0$ (false at $k=0$)\\
+$G$ & the frontier $G(c)$; $G_0(\rho)$ (Zipf proof) & \\
+$h$ & $h_k=p_k/b_k$; a total parity function $h$
+ (Corollary~\ref{np:cor:uniformchoice}); sections $h_{j,z}$ & \\
+$K$, $k_\eta$ & $K=K_\eta$ the \emph{smallest} maximizing degree;
+ $k_\eta$ any chosen maximizing degree (Section~\ref{np:asym:section}) &
+ the unique maximizer (an adjacent tie can occur)\\
+$L$, $\mathcal L$ & $L(\eta)=1-V(\eta)$; label classes $\mathcal L_\mu
+ \subseteq\mathcal L_{\mathrm{evt}}$; smooth losses $\mathcal L_0$,
+ $\mathcal L(x)$ & a measurable success event as a measurable label\\
+$M$, $\mathcal M$ & $\mathcal M$ the optimal family of finite sets
+ (Section~\ref{np:sec:stability}); $M=\max_SF(S)$; a truncation size $M$
+ (Section~\ref{np:sec:spectral}); $M_0$ (Zipf) & \\
+$q$ & biased coordinate probabilities $q_i$
+ (Proposition~\ref{np:found:biased}); $q(S)$
+ (Theorem~\ref{np:thm:finiteperturb}) & \\
+$R$ & the shared seed; $R=(C/\eta)^{1/\alpha}$; $R_n=\sum_{i>n}\eta_i$ & \\
+$s$ & $s(c)$ (Theorem~\ref{np:asym:uniform-limit}); the saddle root
+ $s_\alpha(\varepsilon)$ & \\
+$T$, $t_k$ & the operator $T_\rho$; the Zipf tail $T(x)$; $t_k=1-P_k$ & \\
+$u$ & $u_\rho(S)$; $u_\eta=\{x_\eta\}$; the lattice phase $\{Rs\}$; the
+ argument of $g_\alpha$; a finite-support translation & \\
+$V$ & optimal scores of different models: $V(p,\eta)$, $V_\rho(c)$, $V_n$,
+ $V_\infty$, $V(\eta)$, $V_n(\eta)$, and $V$ in
+ Theorem~\ref{np:found:summable-theorem} & one quantity\\
+$\eta$ & the noise rate (here); in
+ \file{robust-neutral-choice} $\eta$ is an unrelated tolerance & \\
+$\Inf_i$ & flip influence, a probability & a variance of a
+ non-Boolean function\\
+\bottomrule
+\end{longtable}}
+
+\begin{writenote}[What is not claimed, collected from the source]
+The Fourier, spectral-sample and influence machinery is classical and
+credited to O'Donnell; infinite parity functions and their choice behaviour
+are classical (Geschke--Lubarsky--Rahn, Serafin), and the measurable
+chromatic obstruction is classical (Conley--Miller). The puzzle is designed;
+historical priority is not established; it is not a named open problem,
+not refereed, not a Lean or Rocq formalization, and claims no endorsement or
+involvement of Elliot Glazer. The spectral simulation neither computes $f$
+nor preserves correlations of three or more inputs, and computing the
+spectral distribution is a separate problem. The expected-budget optimum is
+not identified with the optimum over deterministic trees under an average
+cost constraint. The restricted parity-choice principle is not equated with
+AC or with choice for arbitrary pairs; ultrafilter or
+$E_0$-transversal constructions are sufficient, not necessary; no new choice
+equivalence is inferred. The stability gap may shrink as $\eta\to0$ (the
+write proves it does, Remark~\ref{np:rem:gap-shrinks}). There is no
+countably infinite uniform model. The Zipf formula is not read as resolving
+terms below its remainder. The Decimal checks are not interval
+certificates, and the plots illustrate proved formulas without being
+evidence for them. The formalization table proposes modules. The requested
+LinkedIn page gave no usable content; Glazer's interests are taken from his
+Epoch AI biography. No repository modification or communication with a
+named mathematician was part of the deliverable.
+\end{writenote}
 
 \section{Rules, notation, and the main answers}\label{np:sec:rules}
 
@@ -381,6 +651,17 @@ Finite flips preserve \(\mu\), so these exceptions remain null. Integrating
 and summing over \(i\) proves the inequality.
 \end{proof}
 
+\begin{writenote}[Second route, 5 October 2026]
+This lemma, and its per-coordinate form (\(\Inf_i(f)\) is at most the
+probability that coordinate \(i\) is inspected) used in the proof of
+Proposition~\ref{np:prop:equality}, are the second display of
+Lemma~64.1 (\file{mbg:insp:var-covariance}) in Part~IV of the report
+\file{measurable-box-games}~\cite{repoboxart}, proved there by the same
+path argument for almost surely terminating deterministic inspection
+algorithms and credited as classical. The proof above is an independent
+second route; nothing here depends on that report.
+\end{writenote}
+
 \begin{corollary}[No advantage from adaptive inspection]
 \label{np:cor:simulation}
 For every exact adaptive shared-randomized labeling protocol there is
@@ -404,6 +685,13 @@ O'Donnell--Saks--Schramm--Servedio inequality \cite{osss}.
 A uniform maximum depth is also preserved: a depth-\(d\) decision tree
 has Fourier degree at most \(d\), by induction on the root query.
 Its spectral sample therefore has size at most \(d\).
+
+\begin{writenote}[Second route, 5 October 2026]
+The degree bound is Lemma~49.1 (\file{mbg:qry:lem:degree}) in Part~IV of
+\file{measurable-box-games}~\cite{repoboxart}, proved there by the same
+induction on the first query (with \(\pm1\) coordinates); the one-line
+argument here is a second route.
+\end{writenote}
 
 \begin{proposition}[When the cost inequality is equality]
 \label{np:prop:equality}
@@ -595,6 +883,55 @@ Formula~\eqref{np:eq:generalbudget} gives the claim, attained by mixing
 the empty and a singleton parity when \(c<1\).
 \end{proof}
 
+\begin{remark}[{[write]} Deterministic trees miss the frontier between integers, 5~October 2026]
+\label{np:rem:deterministic}
+Let \(0<\eta<1/2\), let the weights be strictly decreasing
+(\(p_1>p_2>\cdots\)), and let \(0<c<K\) be a non-integer. Then every
+labeling \(f\) computed by a deterministic (unrandomized) exact adaptive
+procedure with expected cost \(\E Q\le c\) has
+\(\Win_{p,\eta}(f)<G(c)\). On a finite cube there are finitely many such
+procedures, so the optimum over deterministic trees with an average cost
+constraint is strictly below \(G(c)\) for every such \(c\). This sharpens
+the distinction drawn after the proof of Theorem~\ref{np:thm:main}; how
+far below, and whether the supremum reaches \(G(c)\) on a countable cube,
+is question~\ref{np:q:dettrees} of Section~\ref{np:sec:further}.
+\end{remark}
+\begin{proof}
+For finite \(S\) put \(u(S)=\bigl(1+a^{|S|}(2p(S)-1)\bigr)/2\), the score of
+\(\chi_S\) (Section~\ref{np:sec:exact}). Since \(a>0\), \(u(S)\) increases
+strictly with \(p(S)\), and \(p(S)\le P_{|S|}\) with equality only for
+\(S=[|S|]\), because the weights are strictly decreasing. Hence
+\(u(S)\le w_{|S|}\), with equality only for prefix sets. Also
+\(w_k\le G(k)\) for every \(k\) (equality for \(k\le K\); \(G(k)=w_K\ge
+w_k\) for \(k>K\)). With \(\alpha(S)=\widehat f(S)^2\),
+Theorem~\ref{np:thm:fourier}, Jensen's inequality for the concave \(G\),
+the identity~\eqref{np:eq:influence}, Lemma~\ref{np:lem:query} and the
+monotonicity of \(G\) give
+\[
+ \Win(f)=\sum_S\alpha(S)u(S)\le\sum_S\alpha(S)w_{|S|}
+ \le\sum_S\alpha(S)G(|S|)\le G(\mathcal I(f))\le G(c).
+\]
+Suppose equality held throughout. The first equality forces \(\alpha\) to
+live on prefix sets \([k]\). The increments \(w_{k+1}-w_k=a^kd_k/2\) are
+positive and strictly decreasing for \(k<K\) (both \(a^k\) and \(d_k>0\)
+strictly decrease), and \(G\) is constant on \([K,\infty)\); so \(G\) is
+strictly increasing on \([0,K]\) and its slope drops strictly at each
+integer \(1,\dots,K\). Equality in \(G(\mathcal I(f))\le G(c)\) with
+\(\mathcal I(f)\le c<K\) forces \(\mathcal I(f)=c\). Equality in Jensen's
+inequality forces the distribution of \(|S|\) to lie in one interval on
+which \(G\) is affine, that is in \([m,m+1]\) with \(m+1\le K\), or in
+\([K,\infty)\); its mean \(\mathcal I(f)=c\) is a non-integer below \(K\),
+so the interval is \([m,m+1]\) with \(m=\lfloor c\rfloor\), and both
+\([m]\) and \([m+1]\) carry positive mass. Thus
+\(f=A\chi_{[m]}+B\chi_{[m+1]}=\chi_{[m]}(A+B\chi_{\{m+1\}})\) with
+\(AB\ne0\). Evaluating at the two values of \(\chi_{\{m+1\}}\), the Boolean
+condition gives \((A+B)^2=(A-B)^2=1\), hence \(AB=0\), a contradiction. So
+\(\Win(f)<G(c)\). A finite cube has finitely many deterministic exact
+procedures that never repeat a query (repetitions can be cached, as in
+Section~\ref{np:sec:rules}), so the maximum over them is attained and is
+below \(G(c)\).
+\end{proof}
+
 \section{All optimizers, stability, and ties}\label{np:sec:stability}
 
 Put \(\lambda_S=a^{|S|}(1-2p(S))\), and let
@@ -700,6 +1037,40 @@ The best signed parity mismatch is at most
 The gap depends on the weights and the noise rate. In particular, it can
 shrink as \(\eta\downarrow0\). A fixed-noise stability statement does
 not by itself give a uniform small-noise conclusion.
+
+\begin{remark}[{[write]} The gap tends to zero on a countable cube, 5~October 2026]
+\label{np:rem:gap-shrinks}
+Let \(I=\N\), with all \(p_i>0\), and write \(\gamma(\eta)\) and \(K_\eta\)
+for the gap of Theorem~\ref{np:thm:stability} and the smallest maximizing
+degree of Theorem~\ref{np:thm:main}. Then
+\(0<\gamma(\eta)<2p_{K_\eta}\) for every \(0<\eta<1/2\), and
+\(\gamma(\eta)\to0\) as \(\eta\downarrow0\). This proves the source's
+``can shrink'' for every such weight sequence: no positive lower bound for
+the gap holds uniformly in small \(\eta\). (On a finite cube the write
+makes no claim.)
+\end{remark}
+\begin{proof}
+Write \(K=K_\eta\). Since \(F_0=-1\) and the maximum of \(F_k\) is positive,
+\(K\ge1\); and \(\lambda_*=-F_K=a^K(1-2P_K)=\lambda_{[K]}\). Because
+\(p_j\to0\) and \(p_K>0\), some \(j>K\) has \(p_j<p_K\). Put
+\(S=[K-1]\cup\{j\}\) (so \(S=\{j\}\) when \(K=1\)). Then \(|S|=K\),
+\(p(S)=P_{K-1}+p_j\), and
+\[
+ \lambda_S-\lambda_*
+ =a^K\bigl[(1-2P_{K-1}-2p_j)-(1-2P_K)\bigr]
+ =2a^K(p_K-p_j)\in(0,2p_K).
+\]
+In particular \(\lambda_S\ne\lambda_*\), so \(S\notin\mathcal M\) and
+\(\gamma(\eta)\le\lambda_S-\lambda_*<2p_K\); positivity is
+Theorem~\ref{np:thm:stability}.
+
+It remains to show \(K_\eta\to\infty\). Fix \(m\). As \(\eta\downarrow0\),
+\(F_k=(1-2\eta)^kb_k\to b_k\) for each of the finitely many
+\(k\le m+1\), and \(b_{m+1}>b_k\) for \(k\le m\) because \(b_k=2P_k-1\)
+strictly increases (all \(p_i>0\)). Hence for all sufficiently small
+\(\eta\), \(F_{m+1}>\max_{k\le m}F_k\), so no \(k\le m\) maximizes and
+\(K_\eta>m\). Since \(p_k\to0\), \(2p_{K_\eta}\to0\).
+\end{proof}
 
 \section{The infinite limit and escape of finite information}
 \label{np:sec:infinite}
@@ -1969,6 +2340,32 @@ standalone vector figures and a small example table. Figure generation
 uses NumPy and Matplotlib; the two mathematical check programs require
 only the Python standard library.
 
+\begin{writenote}[The shipped layout and the intake reruns, 5 October 2026]
+In ProveIt the programs and their outputs keep their delivered names and
+bytes, in \file{code/}, \file{data/} and \file{figures/} of the report
+directory; the source is \file{article.tex} and \file{build.sh} is in
+\file{code/}. Three delivered behaviours matter for reruns, which should
+therefore be made on a copy (the report's README gives the routes):
+\file{create_figures.py} writes into \file{figures/} and
+\file{data/examples.json} two levels above itself, so run in place it would
+overwrite shipped files; \file{verify_parity.py} writes
+\file{verification.json} in the working directory unless given
+\file{--output}; and \file{build.sh} changes to its own directory and runs
+\file{latexmk} on \file{noisy_parity.tex}, so it fails from \file{code/}.
+On copies (Python~3.14.4; NumPy and Matplotlib for the figure script) the
+intake found: \file{verify_parity.py} passes in every dimension
+(65{,}812 truth tables, 526{,}496 pairs, about 3~s) and its JSON equals
+\file{data/verification.json} except the fields \file{python_version}
+(3.12.14 in the delivery) and \file{elapsed_seconds};
+\file{check_asymptotics.py} prints \file{data/asymptotics_check.txt}
+exactly; \file{create_figures.py} reports ``Exact examples and nonlinear
+optimizer: PASS'', the enclosure $0.844268768560169857728257178\ldots$ to
+$0.844268768560169857728257273\ldots$ of the value in
+Remark~\ref{np:found:dyadic-example}, and a JSON file equal to
+\file{data/examples.json}; its figure PDFs differ in bytes from the shipped
+ones (another Matplotlib version), which the article uses.
+\end{writenote}
+
 \Needspace{28\baselineskip}
 \section{A proposed formalization path in ProveIt}
 \label{np:sec:formalization}
@@ -2020,6 +2417,19 @@ dictionary; they do not already establish the optimization or
 countable-measure results here. No Lean build was performed for this
 manuscript.
 
+\begin{writenote}[Checked against the current tree, 5 October 2026]
+The three declarations exist, in namespace \file{Fabius}, with the
+statements quoted in Section~\ref{np:sec:provenance}, and the description
+above is accurate. For the first layer of the table, the repository also
+has, in \file{ThueMorseWalsh.lean}~\cite{repowalsh}, the vanishing of every
+nontrivial Walsh character sum on the dyadic block and a masked character
+sum; with \file{sum_pow_binaryWeight_eq_one_add_pow} these give the
+product-noise factor $a^{|S|}$ after a substitution
+(Section~\ref{np:sec:provenance}). Finite Walsh inversion and Parseval for
+arbitrary functions, the one-flip eigenvalue, and every later layer are not
+in the repository. Nothing of this report is formalized.
+\end{writenote}
+
 A sensible first deliverable would be the finite theorem with rational
 \(p_i,\eta\), an explicit optimal degree, and an exact evaluator for
 the witness. This would turn a finite computation into a proved
@@ -2033,8 +2443,8 @@ These are proposed directions for the designed problem, rather than
 a list of independently verified open problems in the literature.
 Several have direct finite versions and meaningful infinite analogues.
 
-\begin{enumerate}[label=\textbf{Q\arabic*.},leftmargin=12mm]
-\item \textbf{Biased configurations and the value of adaptation.}
+\begin{enumerate}[label=\textbf{Q\arabic*.},ref=Q\arabic*,leftmargin=12mm]
+\item\label{np:q:biased} \textbf{Biased configurations and the value of adaptation.}
 Replace the fair-bit measure by a biased product measure and use
 coordinate Markov transitions that preserve those marginals.
 The orthogonal product basis then has non-Boolean basis functions,
@@ -2043,21 +2453,21 @@ weights as labels. Determine exact two- and three-coordinate examples,
 and identify conditions under which adaptive inspection strictly improves
 the optimum over fixed coordinate sets.
 
-\item \textbf{Simultaneous tests of three or more configurations.}
+\item\label{np:q:multi} \textbf{Simultaneous tests of three or more configurations.}
 Theorem~\ref{np:thm:fourier} preserves every two-input XOR response,
 but higher correlations depend on products of different Fourier
 coefficients. Classify which multi-input acceptance predicates still
 admit a resource-preserving parity simulation. A small finite
 counterexample would be as informative as a positive criterion.
 
-\item \textbf{All Boolean functions in the optimizing eigenspace.}
+\item\label{np:q:ties} \textbf{All Boolean functions in the optimizing eigenspace.}
 With strict weights the classification is complete. With ties,
 Example~\ref{np:ex:nonlinear} shows that nonlinear optima occur.
 Determine the extremal eigenspaces that contain such functions,
 classify their minimum inspection costs, and study how a small
 perturbation of the tied weights selects among them.
 
-\item \textbf{Different costs for different coordinates.}
+\item\label{np:q:costs} \textbf{Different costs for different coordinates.}
 If reading coordinate \(i\) costs \(c_i>0\), spectral simulation still
 costs \(\sum_{i\in S}c_i\) on parity \(S\), and weighted influence is
 bounded by expected paid cost. The remaining finite problem becomes
@@ -2065,7 +2475,7 @@ optimization over subset mass and cost. Find tractable distribution
 families, exact certificates, and approximation schemes; in the infinite
 case, determine when a cost bound ensures attainment.
 
-\item \textbf{Algorithms for correlated finite perturbations.}
+\item\label{np:q:correlated} \textbf{Algorithms for correlated finite perturbations.}
 Theorem~\ref{np:thm:finiteperturb} settles the variational value for
 every finite-support perturbation law. What efficient representations
 of that law permit efficient maximization over \(S\)? In finite
@@ -2073,7 +2483,7 @@ dimension the spectral formula can still require exponentially many
 characters. Identify structural conditions on correlated faults that
 make the maximizing subset recoverable without exhaustive search.
 
-\item \textbf{Nonsummable heterogeneous noise.}
+\item\label{np:q:nonsummable} \textbf{Nonsummable heterogeneous noise.}
 The homogeneous model has finite measurable optimizers; summable
 noise has the compact classification of
 Theorem~\ref{np:found:summable-theorem}. For
@@ -2083,14 +2493,14 @@ sets is still
 \((2p(S)-1)\prod_{i\in S}(1-2\eta_i)\), but its extension to all subsets
 need not be continuous. This is a concrete intermediate regime.
 
-\item \textbf{Recovering challenge tails from optimal failure.}
+\item\label{np:q:tauberian} \textbf{Recovering challenge tails from optimal failure.}
 For regularly varying \(p_k\), the failure exponent determines
 \((\alpha-1)/\alpha\). Formulate converse Tauberian statements:
 under what minimal monotonicity or regularity hypotheses does a
 regularly varying \(L(\eta)\) force a regularly varying challenge tail?
 Which irregular tails can have the same leading optimal loss?
 
-\item \textbf{Second-order tail perturbations.}
+\item\label{np:q:secondorder} \textbf{Second-order tail perturbations.}
 Assume
 \(p_k=Ck^{-\alpha}(1+Dk^{-\beta}+o(k^{-\beta}))\).
 Determine how this correction competes with the \(\varepsilon^2\)
@@ -2098,14 +2508,14 @@ term, the order-\(\eta\) half correction, and the Bernoulli lattice
 term. A useful answer would list the transition surfaces in
 \((\alpha,\beta)\) and give uniform expansions on those surfaces.
 
-\item \textbf{Joint truncation and small-noise limits.}
+\item\label{np:q:joint} \textbf{Joint truncation and small-noise limits.}
 For weights \(p_i/P_n\) on \([n]\), study the regime in which
 \(n/(C/\eta)^{1/\alpha}\) tends to a finite positive constant.
 This should interpolate between full-panel parity and the infinite
 power-law optimizer. Determine the limiting degree and loss profile,
 including boundary layers near resource saturation.
 
-\item \textbf{Effective values versus effective optimizers.}
+\item\label{np:q:effective} \textbf{Effective values versus effective optimizers.}
 With computable challenge weights and a computable summability modulus
 for the noise, the uniform error bound
 \eqref{np:found:uniform-truncation} gives a route to certified
@@ -2113,7 +2523,7 @@ approximations of the optimal value. Determine the computational
 complexity of deciding whether a finite maximizing set exists, and
 what additional separation promise permits extracting one.
 
-\item \textbf{Almost-sure optimality and the exact parity principle.}
+\item\label{np:q:choice} \textbf{Almost-sure optimality and the exact parity principle.}
 Over ZF+DC, determine the strength of the assertion that every law of an
 almost surely finite perturbation has an arbitrary total label with a
 measurable comparison event attaining the compact optimum.
@@ -2125,7 +2535,7 @@ on a conull invariant set can be corrected on the remaining classes
 without additional choice. Any formulation must respect the separations
 already proved by Serafin \cite{serafin}.
 
-\item \textbf{Proof certificates and asymptotic verification.}
+\item\label{np:q:certificates} \textbf{Proof certificates and asymptotic verification.}
 Formalize the finite optimizer and decision-tree inequality first,
 then formalize the spectral simulation on countable products.
 A separate project can turn the exact Zipf expansion into explicit
@@ -2138,6 +2548,92 @@ The most immediate mathematical follow-ups are the nonsummable
 heterogeneous-noise attainment criterion, the tied-weight Boolean
 classification, and converse asymptotic reconstruction. The most immediate
 formalization target is the exact rational finite game.
+
+\subsection{Further questions and research}\label{np:sec:further}
+\begin{writenote}[Added 5 October 2026, batch~114]
+Following Vladimir Reshetnikov's standing rule of 4~October 2026, every
+claim of the source that is not proved in full is stated as an open
+question with its source, the argument offered and what is missing. The
+source's Q1--Q12 above are its own proposals (``proposed directions for the
+designed problem, rather than a list of independently verified open
+problems''); none is answered or advanced by the write, except where noted.
+What the report proves toward each, and what is missing:
+\begin{itemize}
+\item \ref{np:q:biased}: nothing is proved for biased input measures;
+ Proposition~\ref{np:found:biased} concerns only the measurability of
+ total parity labels under a biased measure. Missing: the examples and a
+ criterion for strict gain from adaptivity.
+\item \ref{np:q:multi}: Theorem~\ref{np:thm:fourier} covers two inputs
+ only. Missing: any classification or counterexample.
+\item \ref{np:q:ties}: Theorem~\ref{np:thm:optimizers} confines all
+ optima to the eigenspace spanned by $\chi_S$, $S\in\mathcal M$, and
+ classifies them under strict weights; Example~\ref{np:ex:nonlinear}
+ shows nonlinear optima under ties. Missing: the Boolean functions of the
+ tied eigenspaces, their costs, and selection under perturbation.
+\item \ref{np:q:costs}: the source's bound ``weighted influence is
+ bounded by expected paid cost'' follows from the per-coordinate form of
+ Lemma~\ref{np:lem:query} (multiply by $c_i$ and sum), and the spectral
+ simulation of parity $S$ costs $\sum_{i\in S}c_i$. Missing: the
+ resulting optimization over subset mass and cost, and infinite
+ attainment.
+\item \ref{np:q:correlated}: the value is
+ Theorem~\ref{np:thm:finiteperturb}. Missing: algorithms.
+\item \ref{np:q:nonsummable}: settled for homogeneous noise
+ (Theorems~\ref{np:thm:main}, \ref{np:thm:optimizers}) and summable noise
+ (Theorem~\ref{np:found:summable-theorem}). Missing: a criterion when
+ $\eta_i\downarrow0$ and $\sum_i\eta_i=\infty$.
+\item \ref{np:q:tauberian}: Theorem~\ref{np:asym:regular-theorem} is the
+ forward direction. Missing: any converse.
+\item \ref{np:q:secondorder}: Theorems~\ref{np:asym:zipf-envelope}
+ and~\ref{np:asym:lattice-theorem} treat exact Zipf weights ($D=0$).
+ Missing: the competition with a correction $Dk^{-\beta}$.
+\item \ref{np:q:joint}: Proposition~\ref{np:prop:truncation} and
+ Theorem~\ref{np:asym:uniform-limit} treat other regimes. Missing: the
+ joint limit.
+\item \ref{np:q:effective}: \eqref{np:found:uniform-truncation} gives
+ certified approximation of the value. Missing: the complexity results.
+\item \ref{np:q:choice}: Corollary~\ref{np:cor:uniformchoice} gives the
+ forward direction (one total parity function suffices for every law).
+ Missing: the converse and the exact strength over ZF+DC; Serafin's
+ Theorem~1~\cite{serafin} (read by the write,
+ Section~\ref{np:sec:provenance}) is the separation any answer must respect.
+\item \ref{np:q:certificates}: nothing of this report is formalized; the
+ Lean ingredients that exist are listed in Section~\ref{np:sec:provenance}.
+\end{itemize}
+The write adds three questions. No claim of the source was found to be
+wrong.
+\end{writenote}
+\begin{enumerate}[label=\textbf{Q\arabic*.},ref=Q\arabic*,leftmargin=12mm,start=13]
+\item\label{np:q:dettrees} \textbf{[write] Deterministic trees under an
+ average cost constraint.} (From the paragraph after the proof of
+ Theorem~\ref{np:thm:main}, which declines to identify the two
+ optimizations.) For a deterministic exact procedure with
+ $\E Q\le c$, $G(c)$ is an upper bound (Corollary~\ref{np:cor:simulation}
+ and Jensen, as in that proof), attained by $\chi_{[c]}$ at integers
+ $c\le K$; Remark~\ref{np:rem:deterministic} proves it is not attained at
+ non-integer $c<K$ under strictly decreasing weights, and that on a finite
+ cube the deterministic optimum is then strictly smaller. Missing: that
+ optimum (is it $w_{\lfloor c\rfloor}$, or can a non-parity tree with
+ average cost between $\lfloor c\rfloor$ and $c$ do better?), the tied-weight
+ case, and whether on a countable cube the supremum equals $G(c)$.
+\item\label{np:q:smallnoise} \textbf{[write] Stability uniformly in small
+ noise.} (From the paragraph after Theorem~\ref{np:thm:stability}.) The
+ gap $\gamma(\eta)$ tends to zero on a countable cube
+ (Remark~\ref{np:rem:gap-shrinks}), so~\eqref{np:eq:stability} degenerates
+ as $\eta\downarrow0$. For regularly varying weights the paragraph after
+ Proposition~\ref{np:asym:regret} gives a degree-concentration statement
+ on the scale $\eta R$. Missing: a quantitative stability statement on the
+ natural scale of the loss, for geometric and for general weights.
+\item\label{np:q:external} \textbf{[write] External inputs and priority.}
+ The classical inputs are quoted, not re-proved: the spectral-sample and
+ influence facts (O'Donnell), the measurable chromatic example
+ (Conley--Miller, located by the source at the end of their Section~1),
+ the Hurwitz-zeta expansion (DLMF~25.11.43) behind~\eqref{np:asym:zipf-tail}.
+ The write read Geschke--Lubarsky--Rahn and Serafin
+ (Section~\ref{np:sec:provenance}), not the other three. Priority for the
+ designed problem and its assembled results is not established; the
+ source's search was targeted, not exhaustive.
+\end{enumerate}
 
 \appendix
 \section{Assumption and claim ledger}\label{np:app:ledger}
@@ -2228,6 +2724,16 @@ internal consistency; they are not peer review or machine formalization.
 No repository modification or communication to any named mathematician
 was made for this deliverable.
 
+\begin{writenote}[In ProveIt, 5 October 2026]
+This appendix describes the delivered package. In the repository the main
+source is \file{article.tex}, \file{noisy_parity.pdf} and
+\file{README.txt} are not shipped (the report's own \file{article.pdf} and
+\file{README.md} replace them), and \file{build.sh} lies in \file{code/},
+where it fails; the commands above work in the delivered layout only. Use
+the routes of the report's README, on copies; see also the note at the end
+of Section~\ref{np:sec:checks}.
+\end{writenote}
+
 \begin{thebibliography}{99}
 \bibitem{odonnell}
 Ryan O'Donnell.
@@ -2293,6 +2799,19 @@ Vladimir Reshetnikov, ProveIt research-report collection.
 \emph{Countable Information, Uncountably Many Boxes}, README,
 snapshot \texttt{b71545625}, inspected 5 October 2026.
 \url{https://github.com/VladimirReshetnikov/ProveIt/blob/b71545625fedc631edc2ead542abbfba72eb6063/SetTheory/Cardinals/docs/reports/ordinals-and-order-types/measurable-box-games/README.md}.
+
+\bibitem{repoboxart}
+[write] ProveIt research-report collection.
+\emph{Countable Information, Uncountably Many Boxes}, Part~IV (Lemmas~49.1
+and~64.1),
+\path{SetTheory/Cardinals/docs/reports/ordinals-and-order-types/measurable-box-games/article.tex},
+read 5 October 2026.
+
+\bibitem{repowalsh}
+[write] ProveIt repository.
+\emph{The Walsh spectrum of the Thue--Morse block},
+\path{Analysis/FabiusFunction/Lean/FabiusFunction/ThueMorseWalsh.lean},
+read 5 October 2026 (unchanged since snapshot \texttt{b71545625}).
 \end{thebibliography}
 \end{document}
 
