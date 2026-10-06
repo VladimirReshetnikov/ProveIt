@@ -34,7 +34,7 @@
 \newenvironment{writenote}[1][]{\par\smallskip\begingroup\small\emergencystretch=3em
  \noindent\textbf{[write]}\if\relax\detokenize{#1}\relax\else~\textbf{#1.}\fi\ }%
  {\par\endgroup\smallskip}
-\hypersetup{pdftitle={Rooted identity trees with fixed maximum outdegree},pdfauthor={},pdfsubject={Explicit transversality, all fixed order asymptotics, and specified model inversion}}
+\hypersetup{pdftitle={Rooted identity trees with fixed maximum outdegree},pdfauthor={},pdfsubject={Explicit transversality, all fixed order asymptotics, and specified model inversion; Part II: certified constants for d = 3, 4 and a second route}}
 \begin{document}
 \thispagestyle{empty}
 \begin{center}
@@ -42,13 +42,16 @@
 \vspace{10pt}
 {\large Boundary closure and computable asymptotic inverses}\par
 \vspace{9pt}
-Research article\quad 2 October 2026
+Research article\quad 2 October 2026\par
+\vspace{3pt}{\small Part~II: 5 October 2026}
 \end{center}
 \vspace{8pt}
 \begin{abstract}
 For each fixed integer $d\ge2$, let $a_{d,n}$ count rooted unlabeled trees with at most $d$ children at every vertex and trivial root-preserving automorphism group. We establish a unique square-root dominant singularity of their generating function by an explicit positive lower bound for the partial derivative in the signed root equation. A plane-tree majorant and a binary-root discriminant first give a finite boundary value and analytic nested inputs. The derivative bound then closes the characteristic-point and transversality arguments, while positivity after substitution excludes other dominant singularities. Consequently $a_{d,n}=C_d\rho_d^{-n}n^{-3/2}(1+\sum_{j=1}^R D_{d,j}n^{-j}+\bigO_{d,R}(n^{-R-1}))$ for every fixed $R$.
 
 We give finite Puiseux and Gamma-ratio generators, explicit first corrections for OEIS A116379 and A116380, and inverses of specified smooth models using $W_{-1}$ or logarithmic polynomials. Integer thresholds receive an error enclosure, not unconditional exact rounding. The computational supplement contains exact enumeration and portable numerical replay. Numerical digits are stability checks, not interval certificates. Standard singularity methods and the derivative cancellation are prior work; the emphasis is the explicit analytic closure. Priority is not claimed, and two older full texts remain unchecked.
+
+\emph{Part~II} (added 5 October 2026) prints a second, independent manuscript on the same theorem. Its new content is a rational-interval certificate, in exact integer arithmetic with Catalan tail bounds and a global identification of the critical root, which encloses $\rho$, $\tau$, $C$, $D_1$, $D_2$, $\lambda$ and the Puiseux coefficients $b_1,\ldots,b_5$ for $d=3,4$ in intervals of width at most $1.4\cdot10^{-41}$. It certifies every digit of Table~\ref{bit:tab:constants}, so for these constants the digits are no longer only stability checks. Part~II also proves $\rho_d<0.4464105<9/20$ from an explicit infinite family, gives a purely rational recurrence for the Gamma-ratio coefficients and an exact threshold algorithm, and re-proves the all-orders theorem and the integer inverse enclosure by a second route. It corrects one citation of its source and adds a question on unrooted identity trees.
 \end{abstract}
 
 \section*{Results and conventions}
@@ -105,7 +108,33 @@ $t$, $\eta$ & $t=\sqrt{1-z/\rho}$; $\eta=1-810/(319\sqrt{19})$ the transversalit
 \end{tabular}
 \end{center}
 \end{writenote}
+
+\begin{writenote}[Added 5 October 2026, batch~103]
+Since 5~October 2026 this report has two Parts. Part~\ref{bit:part:one}
+(Sections~\ref{bit:sec:equation}--\ref{bit:sec:future}) is the batch-77
+manuscript described in the preceding note, printed as before: its sections,
+equations, theorems, tables and labels keep their numbers. The preceding
+note's ``single manuscript, printed in full'' and ``no pin'' now describe
+Part~\ref{bit:part:one}; its statement that no other report treats identity
+trees, A116379 or A116380 remains true (the report
+\texttt{a182220-\allowbreak source-\allowbreak boundary}, written
+3~October 2026, counts extensional acyclic digraphs, the other classical
+coding of hereditarily finite sets, and points to this one).
+Part~\ref{bit:cert:part}
+(Sections~\ref{bit:cert:sec:intro}--\ref{bit:cert:sec:further}) prints
+bundle Report~130 of batch~103 (arrival commit \texttt{60f54ea06}, placed in
+\texttt{9c995cefe}), a second, independent manuscript of 2~October 2026 on
+the same theorem: unrefereed, presumed AI-assisted, not formalized, with no
+pin. Its new content is a rational-interval certificate of $\rho$, $\tau$,
+$C$, $D_1$, $D_2$, $\lambda$ and $b_1,\ldots,b_5$ for $d=3,4$, which certifies
+the digits of Table~\ref{bit:tab:constants}. Part~II's symbols $F$, $G$,
+$E_j$, $P_j$, $T$, $B$, $H$, $\eta$, $L$, $u$ and $M$ do not mean what the table
+above says; in particular Part~II's $G$ is Part~I's $F$, and its $F$ is
+minus Part~I's $G$. Section~\ref{bit:cert:sec:notation} fixes them.
+\end{writenote}
 \clearpage
+
+\part{Boundary closure and computable asymptotic inverses}\label{bit:part:one}
 
 \section{The rooted set equation}
 \label{bit:sec:equation}
@@ -194,6 +223,16 @@ The positive roots of this quadratic bound $y$ uniformly because $z\ge1/8$. Nonn
 
 Finally $\rho^r\le\rho^2\le81/400<1/4\le\rho$ for $r\ge2$. For fixed $d$ there is a common disk larger than $|z|\le\rho$ on which all finitely many nested inputs $I(z^r)$ are analytic.
 \end{proof}
+
+\begin{writenote}[Added 5 October 2026, batch~103]
+Part~II proves the strict bound explicitly
+(Section~\ref{bit:cert:sec:radius}): an infinite injective family of binary
+identity trees, with generating function $z^{21}/(1-z(1+S(z)))$ where $S$
+collects the binary counts through size~20, gives
+$\rho_d\le\rho_2\le r<9/20$ for every $d\ge2$, with $0.4464104<r<0.4464105$
+(\eqref{bit:cert:eq:radiusbound} and Remark~\ref{bit:cert:rem:r}). The
+non-strict bound proved here is all that Part~I uses.
+\end{writenote}
 
 Differentiating \eqref{bit:eq:esym} in $p_r$ gives the useful cancellation
 \begin{equation}
@@ -364,6 +403,14 @@ In particular,
                          +\frac{15}{4}\frac{b_5}{b_1}.
  \label{bit:eq:D2}
 \end{align}
+\begin{writenote}[Added 5 October 2026, batch~103]
+Part~II gives a second, purely rational recurrence
+\eqref{bit:cert:eq:Hrec} for these coefficients, without Bernoulli
+polynomials; Proposition~\ref{bit:cert:prop:hgamma} proves that it produces
+$\gamma_k(\alpha)$ (Part~II's $H_k(\alpha)$) for every
+$\alpha\notin\{0,1,2,\ldots\}$. Part~II's formula \eqref{bit:cert:eq:cJ}
+for its $c_J$ is \eqref{bit:eq:D} term by term.
+\end{writenote}
 
 \begin{proof}[Proof of Theorem~\ref{bit:thm:coeff}]
 The convergent Puiseux expansion from Theorem~\ref{bit:thm:sqrt} may be truncated after $t^{2R+2}$ with remainder $\bigO(t^{2R+3})$. The finitely many even powers are polynomials in $z$ and have no coefficients for sufficiently large $n$. Transfer in the $\Delta$-domain \eqref{bit:eq:delta}, applied to each odd power and to the remainder, yields an absolute remainder
@@ -414,6 +461,26 @@ The intake checked the table independently from the exact counts: at $n=400$,
 $n\bigl(a_n/(C\rho^{-n}n^{-3/2})-1\bigr)-D_1$ is $-0.00146$ for $d=3$ and
 $-0.00143$ for $d=4$, matching $D_2/n=-0.00143$ and $-0.00141$ to the
 expected accuracy, which confirms $\rho$, $C$, $D_1$ and $D_2$ for both caps.
+\end{writenote}
+
+\begin{writenote}[Added 5 October 2026, batch~103]
+Part~II (Section~\ref{bit:cert:sec:certificate}) certifies these
+constants. Its rational-interval certificate (exact integer arithmetic with
+outward rounding, Catalan tail bounds for the nested jets, and a global
+argument that identifies the critical root on $0<z\le9/20$) encloses $\rho$,
+$\tau$, $C$, $D_1$, $D_2$, and also $\lambda$, $b_1,\ldots,b_5$, $F_z$ and
+$F_{yy}$, for $d=3,4$, in intervals of width at most $1.4\cdot10^{-41}$
+(Table~\ref{bit:cert:tab:full}). Every entry of
+Table~\ref{bit:tab:constants} lies strictly within half a unit of its last
+decimal from the corresponding enclosure, so each printed digit is the
+correctly rounded value; the same holds for the $E_1$, $E_2$ values of
+Section~\ref{bit:sec:inverse} (Remark~\ref{bit:cert:rem:parti-tables}). The
+caption ``Non-certified'' and the statements that no value is
+interval-certified describe the manuscript as delivered and are kept. The
+certificate is computer-assisted (a Python program in exact integer
+arithmetic), not a proof-assistant check, and it uses
+Theorem~\ref{bit:thm:sqrt} to identify the endpoint. $D_j$ for $j\ge3$ and
+the residual Table~\ref{bit:tab:residuals} are not certified.
 \end{writenote}
 
 Define the residual, including its sign convention, by
@@ -612,6 +679,19 @@ those lemmas concern an arbitrary monotone function, not $a_{d,n}$, and give
 this report no formal status.
 \end{writenote}
 
+\begin{writenote}[Added 5 October 2026, batch~103]
+Part~II's Theorem~\ref{bit:cert:thm:inverse} is the same integer enclosure
+in another normalization ($\log y$ and $\log\log y$ instead of
+$L=\log(y/C)$ and $h$), with the pure-logarithmic approximant directly inside
+the ceilings; Remark~\ref{bit:cert:rem:inverse-route} derives it from
+Proposition~\ref{bit:prop:threshold} and \eqref{bit:eq:purelog}, and its
+polynomials \eqref{bit:cert:eq:P1}--\eqref{bit:cert:eq:P2} are
+\eqref{bit:eq:P1}--\eqref{bit:eq:P2} after re-expansion. Part~II's exact
+threshold algorithm (Section~\ref{bit:cert:sec:repro}) decides $N(y)$ for a
+given $y$ by integer comparisons alone. Neither Part gives an effective
+$K_{d,R}$ or a certified starting threshold.
+\end{writenote}
+
 \section{Relation to prior work and remaining priority checks}
 \label{bit:sec:prior}
 The leading $n^{-3/2}$ mechanism, analytic implicit-function analysis, Puiseux expansions and Gamma-ratio transfer are classical \cite{fs}. Bell--Burris--Yeats \cite[\S\S6.1--6.2]{bby} explain why the signed Set or PSET construction is not automatically covered by their broad positive-operator theorem. Their Example~77 treats binary identity trees separately, and Example~78 discusses the unrestricted class. They already state the derivative cancellation for fixed-cardinality Set and the resulting nonnegativity after substitution on printed page~57. The issue addressed by Sections~\ref{bit:sec:closure}--\ref{bit:sec:dominance} is the remaining finite-boundary, nonvanishing-derivative and complex-dominance closure, with an explicit bound valid for every finite cap.
@@ -619,6 +699,15 @@ The leading $n^{-3/2}$ mechanism, analytic implicit-function analysis, Puiseux e
 Genitrini's all-order P\'olya-structure analysis \cite{genitrini} assumes an equation $T=\zeta\exp T$ with suitable analyticity beyond the dominant radius and a nonzero derivative of $\zeta$. Its identity-tree example in \S3.2 is the unrestricted PSET class A004111, not either finite cap considered here. Defining $\zeta=I\exp(-I)$ formally would not by itself verify those analytic hypotheses and cannot replace the boundary argument. The degree-restricted $\Omega$-P\'olya framework in Gittenberger--Jin--Wallner \cite[\S5.2]{gjw} is based on multiset trees and explicitly distinguishes identity trees; it does not supply a positive-weight bounded-PSET theorem.
 
 The inspected A116379 and A116380 pages retain an unknown-asymptotic comment as of 2 October 2026 \cite{oeis3,oeis4}. That database status motivates the calculation but is not evidence of exhaustive priority. Two especially relevant older works remain unresolved at full-text level: Meir--Moon--Mycielski's \emph{Hereditarily finite sets and identity trees} \cite{mmm}, and Haigh--Kennedy--Quintas's \emph{Counting and coding identity trees with fixed diameter and bounded degree} \cite{hkq}. The latter's available abstract concerns large-diameter asymptotics, but this does not exclude an additional size theorem in the complete paper. Public publisher and metadata routes did not yield readable full texts in the present check. Accordingly this article makes no first-ever claim or assertion that those papers omit the result. Establishing publication-level novelty would require resolving those sources and a broader literature review.
+
+\begin{writenote}[Added 5 October 2026, batch~103]
+Part~II's manuscript cites two further older works whose full texts it did
+not obtain, Labelle (1992) \cite{labelle} and Kennedy--McKeon--Palmer--Robinson
+(1990) \cite{kmpr}, and attributes \cite{hkq} to ``G.~W. Furnas'', which is
+wrong (Remark~\ref{bit:cert:rem:furnas}); it does not cite
+Meir--Moon--Mycielski. The priority question, now with four unchecked papers,
+is question~5 of Section~\ref{bit:cert:sec:further}.
+\end{writenote}
 
 \section{Exact enumeration and reproducibility}
 \label{bit:sec:reproduce}
@@ -654,13 +743,1255 @@ check in 41~s, and \texttt{check\_identity.py} reproduced the stored counts.
 \label{bit:sec:future}
 \begin{enumerate}
 \item \textbf{Certified constants and effective thresholds.} Certify $\rho,C,D_j$ by interval root and tail bounds, then make \eqref{bit:eq:ceiling} effective.
+\begin{writenote}[Added 5 October 2026, batch~103]
+The first half is answered for $d=3,4$ and $j\le2$: Part~II
+(Section~\ref{bit:cert:sec:certificate}, Table~\ref{bit:cert:tab:full})
+certifies $\rho$, $C$, $D_1$, $D_2$ (and $\tau$, $\lambda$, $b_1,\ldots,b_5$)
+by exactly such an interval root and tail-bound computation. Open: $D_j$ for
+$j\ge3$ and caps other than $3$ and $4$ (the method is specified there, not
+implemented), and the second half, an effective \eqref{bit:eq:ceiling} with
+explicit $K_{d,R}$ and starting threshold. See questions~1--2 of
+Section~\ref{bit:cert:sec:further}.
+\end{writenote}
 \item \textbf{Growing degree caps.} Determine whether the local analytic domains and derivative estimates can be controlled uniformly as $d\to\infty$, and identify the scale at which finite-cap coefficients approach unrestricted identity-tree coefficients. The bound in Proposition~\ref{bit:prop:transverse} is only one ingredient.
 \item \textbf{Other allowed outdegree sets.} For arbitrary finite allowed sets the cumulative $E_d$ structure is lost. Which restrictions retain enough positivity of the evaluated derivatives for a comparable closure? Periodicity and absent unary roots would require separate dominance and threshold arguments.
 \item \textbf{Structure of random bounded identity trees.} Derive height, profile or fringe-subtree laws from suitable marked equations after verifying their signed analytic hypotheses. Existing multiset-tree limit laws cannot simply be imported.
 \item \textbf{Priority and formulation.} Resolve the two older full-text references, compare maximum graph degree with rooted outdegree conventions, and identify the precise strongest statement already in the literature before making a novelty claim.
 \end{enumerate}
+\begin{writenote}[Added 5 October 2026, batch~103]
+Question~2 is unchanged by Part~II and is its question~3. Question~5 now
+concerns four older papers (question~5 of Section~\ref{bit:cert:sec:further}).
+Questions~3 and~4 are untouched. Part~II adds a question on unrooted identity
+trees with a bound on the total degree (its question~4).
+\end{writenote}
 
-\begin{thebibliography}{9}
+%% ====================================================================
+%% Batch-103 addition (bundle Report 130, "All-orders asymptotics and
+%% inversion for bounded-outdegree rooted identity trees").  All labels
+%% of Part II carry the prefix bit:cert:.  Section bit:cert:sec:intro,
+%% Section bit:cert:sec:further and every text marked [write] were added
+%% when Part II was written into the report; the other Part II sections
+%% print the manuscript.
+%% ====================================================================
+\clearpage
+\part{Certified constants and a second route}\label{bit:cert:part}
+
+\noindent\emph{Part~I (Sections~\ref{bit:sec:equation}--\ref{bit:sec:future})
+is unchanged except for dated \textsf{[write]} notes of 5~October 2026 (after
+the first note, after the proof of Lemma~\ref{bit:lem:radius}, after
+\eqref{bit:eq:D2}, in Section~\ref{bit:sec:numerics}, at the end of
+Section~\ref{bit:sec:threshold}, in Section~\ref{bit:sec:prior}, and in and
+after the list of Section~\ref{bit:sec:future}), a paragraph of the abstract,
+a line in the title block, the heading of Part~I, and two bibliography
+entries added for Part~II. No number of Part~I moves.}
+
+\section{Part II: source, scope and notation}\label{bit:cert:sec:intro}
+This section was written when Part~II was added.
+Sections~\ref{bit:cert:sec:main}--\ref{bit:cert:sec:repro} print the
+manuscript; Section~\ref{bit:cert:sec:further} collects its unproved claims
+and open directions together with those that remain of Part~I.
+
+\subsection{Source and status}\label{bit:cert:sec:source}
+Sections~\ref{bit:cert:sec:main}--\ref{bit:cert:sec:repro} print bundle
+Report~130 of ProveIt's incoming-reports intake (batch~103), titled
+``All-orders asymptotics and inversion for bounded-outdegree rooted identity
+trees'' and dated 2~October 2026, the same day as the manuscript of Part~I.
+It arrived as the archive
+\texttt{A116379\_\allowbreak A116380\_\allowbreak All\_\allowbreak Orders\_\allowbreak Identity\_\allowbreak Trees\_\allowbreak and\_\allowbreak Inversion\_\allowbreak Source.zip}
+(main file \texttt{Report130.tex}, which inputs
+\texttt{certified\_\allowbreak constants.tex}; 17-page PDF) in commit
+\texttt{60f54ea06} and was placed in commit \texttt{9c995cefe}, its code and
+data under the local prefix \texttt{02-certified-}. Its author line, and the
+author field of its PDF, read ``Research report''; like Part~I it names
+neither an author nor a tool and is presumed AI-assisted. It calls itself
+standalone, names no ProveIt commit and does not know Part~I, so it has no
+pin. It is a second, independent answer to the same question: its main
+theorem is the theorem of Part~I. Part~II is unrefereed; nothing in it is
+formalized in Lean or Rocq, and its place in the collection confers no formal
+status. The manuscript's Sections~1--10 and Appendices~A--B are
+Sections~\ref{bit:cert:sec:main}--\ref{bit:cert:sec:repro} here: its
+Sections~1--2 form Section~\ref{bit:cert:sec:main}, Section~3 is
+Section~\ref{bit:cert:sec:radius}, Sections~4--5 are
+Section~\ref{bit:cert:sec:critical}, Sections~6--7 and Appendices~A--B are
+Section~\ref{bit:cert:sec:transfer}, Section~8 with the input file
+\texttt{certified\_\allowbreak constants.tex} is
+Section~\ref{bit:cert:sec:certificate}, Section~9 is
+Section~\ref{bit:cert:sec:inverse}, and Section~10 is
+Section~\ref{bit:cert:sec:repro} except its ``Further research'' paragraph,
+which opens Section~\ref{bit:cert:sec:further}.
+Every statement, proof, table and number of the manuscript is printed;
+wording was shortened where a passage repeats Part~I verbatim in substance,
+and such places say so.
+
+\emph{New in Part~II} (relative to Part~I): the rational-interval certificate
+of Section~\ref{bit:cert:sec:certificate}, which encloses
+$\rho,\tau,C,c_1,c_2,\lambda,b$ and $\beta_1,\ldots,\beta_5$ for $d=3,4$ and
+identifies the critical root globally on $0<z\le9/20$; the strict bound
+$\rho_d<9/20$ from an explicit infinite family
+(Section~\ref{bit:cert:sec:radius}); the purely rational recurrence
+\eqref{bit:cert:eq:Hrec} for the Gamma-ratio coefficients; the explicit
+$\beta_2,\beta_3$ and the $t^2,t^3,t^4$ equations; the exact threshold
+algorithm of Section~\ref{bit:cert:sec:repro}; and the question on unrooted
+identity trees (Section~\ref{bit:cert:sec:further}).
+\emph{Second routes} to Part~I: Theorem~\ref{bit:cert:thm:main} is
+Lemma~\ref{bit:lem:radius} with Theorems~\ref{bit:thm:sqrt}
+and~\ref{bit:thm:coeff}; $c_J$ is $D_J$ of \eqref{bit:eq:D}; and
+Theorem~\ref{bit:cert:thm:inverse} is a corollary of
+Proposition~\ref{bit:prop:threshold} with \eqref{bit:eq:purelog}
+(Remark~\ref{bit:cert:rem:inverse-route}). Table~\ref{bit:cert:tab:map} maps
+every result.
+
+The manuscript's limitations are printed with it and remain in force: it
+makes no literature-priority claim (its title footnote: ``No publication or
+priority claim is made''; its Section~1: the agreement with the OEIS records
+is ``\emph{not a certification of literature priority}''); the derivative
+identity is credited to Bell--Burris--Yeats and the unrestricted all-orders
+expansion to Genitrini, neither claimed as new; the full texts of
+Labelle~(1992) and Kennedy--McKeon--Palmer--Robinson~(1990) were not obtained,
+so incidental overlap is not excluded; no estimate is uniform as $d\to\infty$;
+the certificate uses the qualitative theorem to identify the radius and does
+not independently prove analytic continuation; it is computer-assisted, not a
+proof-assistant development; its executable is restricted to $d=3,4$, $N=400$
+and local degree six, and the arbitrary-order extension is specified, not
+implemented; the 90-place strings of its JSON record the arithmetic grid, not
+90 certified digits; no finite-$n$ error bound, explicit inverse remainder
+constant or certified starting threshold is given, and
+$N_d(T)\ne f_M(\log T)+o(1)$ in general; hashes give file identity, not
+authenticity; and nothing was uploaded, submitted or published.
+
+\subsection{What was rechecked at intake and in this write}\label{bit:cert:sec:rechecked}
+Independently of the delivery, on 5~October 2026 (Python~3.14.4; the release
+used 3.12.14):
+\begin{itemize}[leftmargin=*,itemsep=0.15em]
+\item at intake, the 14 entries of the delivered checksum manifest and the
+ closed-inventory check of \texttt{verify\_package.py} passed; its
+ \texttt{--replay} fails on Windows for a line-ending reason only (the
+ programs print in text mode, so Windows writes CRLF where the reference
+ files have LF), and every replayed output equals its reference after
+ removing carriage returns; the negative regression suite
+ \texttt{test\_package.py} passed in ordinary and optimized mode;
+\item in this write, the certifier and its supplementary tests
+ (\texttt{code/\allowbreak 02-certified-\allowbreak certify.py},
+ \texttt{code/\allowbreak 02-certified-\allowbreak test\_certifier.py}), copied
+ to a scratch directory with the prefix removed, reproduced
+ \texttt{data/\allowbreak 02-certified-\allowbreak certificate.json} and
+ \texttt{data/\allowbreak 02-certified-\allowbreak tests.json} up to carriage
+ returns; the
+ coefficient exports for $d=3,4$ have the SHA-256 recorded in the certificate
+ (after LF normalization) and equal the counts $a_{d,0},\ldots,a_{d,400}$ of
+ Part~I's \texttt{data/identity-checks.json};
+\item the certifier was read in full; the global bounds
+ \eqref{bit:cert:eq:globalbounds}, the constants $27/80$, $787/2000$,
+ $787/4000$, the value $p(9/20)=7879/40000$, the table of $a_2(n)$ and the
+ rational number \eqref{bit:cert:eq:radiuscert} were recomputed exactly;
+\item \eqref{bit:cert:eq:Hrec} was compared with Part~I's Bernoulli route
+ \eqref{bit:eq:h}--\eqref{bit:eq:gamma} symbolically in $\gamma$ for
+ $m\le5$ and exactly for seven rational $\gamma$ and $m\le10$ (all equal;
+ Proposition~\ref{bit:cert:prop:hgamma} proves equality in general), and the
+ polynomials \eqref{bit:cert:eq:P1}--\eqref{bit:cert:eq:P2} were compared with
+ Part~I's \eqref{bit:eq:P1}--\eqref{bit:eq:P2} after re-expansion (SymPy~1.14.0;
+ equal);
+\item every entry of Part~I's Table~\ref{bit:tab:constants} and of its
+ $E_1,E_2$ table was compared with the certified enclosures by exact rational
+ arithmetic (Remark~\ref{bit:cert:rem:parti-tables});
+\item the bibliographic data of the paper the manuscript credits to
+ ``G.~W. Furnas'' were checked against Crossref
+ (Remark~\ref{bit:cert:rem:furnas}).
+\end{itemize}
+
+\subsection{Reading conventions}\label{bit:cert:sec:notation}
+Part~II prints the manuscript's symbols unchanged. Several of them clash with
+Part~I; the table fixes them. The most dangerous clash is the \emph{swap of
+$F$ and $G$}: Part~II's $G$ is Part~I's $F$, and Part~II's $F=G-y$ is
+\emph{minus} Part~I's $G=y-F$. Partial derivatives agree up to that renaming
+($G_z,G_{yy}$ here are $F_z,F_{yy}$ there).
+\begin{center}\footnotesize
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.17\linewidth}>{\raggedright\arraybackslash}p{0.77\linewidth}@{}}
+\toprule
+Part~II symbol & meaning in Part~II, and the Part~I counterpart (or the false reading)\\
+\midrule
+$A_d$, $a_d(n)$ & generating function and counts; Part~I's $I_d$, $a_{d,n}$.\\
+$G(z,y)$, $F(z,y)$ & $G=z\sum_{j\le d}P_j$ is Part~I's $F$; $F=G-y$ is $-G$ of Part~I. Not Part~I's $F$.\\
+$E_j$, $\Phi_j$ & $E_j(z)$: series of sets of $j$ distinct trees, Part~I's $e_j$ evaluated at the tree power sums; $\Phi_j=\sum_{i\le j}E_i$ is Part~I's cumulative $E_j$. Part~II's $E_j$ is \emph{not} Part~I's $E_j$, nor Part~I's inverse coefficients $E_k$.\\
+$P_j(z,y)$, $P_m(\ell)$ & elementary polynomials in $y$ with inner $A(z^k)$ \eqref{bit:cert:eq:P}; and the inverse polynomials \eqref{bit:cert:eq:formalinverse}, in $\ell=\log\log T$ (not Part~I's $P_k(h)$, $h=\log(L/\lambda)$, nor the plane-tree $P(z)$).\\
+$T(z)$, $T_{k,j}$, $T$ & plane-tree (Catalan) series, Part~I's $P(z)$; inner jets \eqref{bit:cert:eq:innerjet}, with $T_{k,j}=(-1)^jN_{k,j}$ for Part~I's $N_{r,q}$ \eqref{bit:eq:nested}; and the threshold target $T$ of Section~\ref{bit:cert:sec:inverse}.\\
+$\beta_m$, $c_j$, $d_j$ & Puiseux coefficients, Part~I's $b_m$; relative corrections, Part~I's $D_j$; $d_j$ the logarithmic corrections \eqref{bit:cert:eq:dj} ($d_2$ is Part~I's $L_2$), not the cap $d$.\\
+$C$, $\rho$, $\tau$, $\lambda$ & as in Part~I; $\lambda=\log(1/\rho)$.\\
+$b$, $\alpha$, $u$ & $b=-\alpha\log\lambda-\log C$ and $\alpha=3/2$ (Part~I's $p$); $u=\alpha\ell+b$ in Section~\ref{bit:cert:sec:inverse}, but $u=z^2A'(z^2)$ in Section~\ref{bit:cert:sec:certificate}. Not Part~I's Puiseux $b_j$.\\
+$B(x)$, $B_k$ & $B(x)=x\Phi_{d-1}(x)$, Part~I's $H$ \eqref{bit:eq:H}; $B_k(z)=A(z^k)$, Part~I's $p_k$. Not Bernoulli polynomials or Part~I's constant $B$.\\
+$H(z)$, $H_m(\gamma)$ & the spine subclass \eqref{bit:cert:eq:spine}; Gamma-ratio coefficients \eqref{bit:cert:eq:binomialgamma}, equal to Part~I's $\gamma_m(\gamma)$ (Proposition~\ref{bit:cert:prop:hgamma}). Not Part~I's $H(z)$.\\
+$\eta$, $\eta_j$, $\phi$ & radial enlargement of the $\Delta$-domain (Part~I's $\varepsilon$); tail ratios \eqref{bit:cert:eq:tail}. Not Part~I's transversality margin $\eta$.\\
+$L$, $\ell$ & $L=\log T$, $\ell=\log L$; Part~I's $L$ is $\log(y/C)$.\\
+$N$, $N_d(T)$, $M$, $K$, $R$ & $N=400$ the enumeration bound; $N_d(T)$ the threshold, Part~I's $N(y)$; $M$ the inverse order, the doubling bound of the threshold algorithm, and $M(z)$ of \eqref{bit:cert:eq:M}; $K$ the bracket constant (Part~I's $K_{d,R}$); $R$ an interval containing $\rho$, and $R_{m+1}$ the residuals of \eqref{bit:cert:eq:betarec} (not Part~I's model order $R$).\\
+$Q$, $Z$, $J$ & $Q(y)$ a local analytic factor; $Z(y)$ the local inverse of $A$; $J$ the expansion order (Part~I's $R$).\\
+\bottomrule
+\end{tabular}
+\end{center}
+Bibliography keys were merged with Part~I's: the manuscript's \texttt{BBY},
+\texttt{Genitrini}, \texttt{FS}, \texttt{oeis3}, \texttt{oeis4} are Part~I's
+\cite{bby}, \cite{genitrini}, \cite{fs}, \cite{oeis3}, \cite{oeis4}, and its
+\texttt{Furnas} is Part~I's \cite{hkq} (Remark~\ref{bit:cert:rem:furnas}). Its
+two further references are \cite{labelle} and \cite{kmpr}.
+
+\begin{table}[htbp]
+\centering\footnotesize
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.27\linewidth}>{\raggedright\arraybackslash}p{0.33\linewidth}>{\raggedright\arraybackslash}p{0.32\linewidth}@{}}
+\toprule
+Part~II & Part~I & status\\
+\midrule
+Theorem~\ref{bit:cert:thm:main} & Lemma~\ref{bit:lem:radius}, Theorems~\ref{bit:thm:sqrt}, \ref{bit:thm:coeff} & same theorem, second proof\\
+\eqref{bit:cert:eq:derivativeidentity} & \eqref{bit:eq:newtonderivative} & same identity (BBY, p.~57)\\
+\eqref{bit:cert:eq:spine}--\eqref{bit:cert:eq:radiusbound} & Lemma~\ref{bit:lem:radius} (non-strict) & second route; strict, explicit\\
+\eqref{bit:cert:eq:transversebound} & Proposition~\ref{bit:prop:transverse} & weaker bound, at the critical point only\\
+Section~\ref{bit:cert:sec:local} & proof of Theorem~\ref{bit:thm:sqrt} & same argument\\
+\eqref{bit:cert:eq:betarec} & \eqref{bit:eq:triangular} & same recurrence; \eqref{bit:cert:eq:beta2}--\eqref{bit:cert:eq:beta3} new displays\\
+\eqref{bit:cert:eq:Hrec} & \eqref{bit:eq:h}--\eqref{bit:eq:gamma} & new formula, same numbers\\
+\eqref{bit:cert:eq:cJ}--\eqref{bit:cert:eq:c2} & \eqref{bit:eq:D}--\eqref{bit:eq:D2} & same formulas\\
+\eqref{bit:cert:eq:G3}--\eqref{bit:cert:eq:G4} & \eqref{bit:eq:d3}--\eqref{bit:eq:d4} & same equations\\
+Section~\ref{bit:cert:sec:certificate}, Tables~\ref{bit:cert:tab:d3}--\ref{bit:cert:tab:full} & Table~\ref{bit:tab:constants} (non-certified) & new: certified; Part~I's digits inside\\
+Theorem~\ref{bit:cert:thm:inverse}, \eqref{bit:cert:eq:Prec} & Proposition~\ref{bit:prop:threshold}, \eqref{bit:eq:purelog}, \eqref{bit:eq:logrec} & same theorem, other normalization\\
+exact threshold algorithm & Section~\ref{bit:sec:reproduce} (enumeration only) & new, elementary\\
+\bottomrule
+\end{tabular}
+\caption{Map of Part~II to Part~I.}\label{bit:cert:tab:map}
+\end{table}
+
+\begin{remark}[A wrong citation, corrected]\label{bit:cert:rem:furnas}
+The manuscript's bibliography lists \emph{Counting and coding identity trees
+with fixed diameter and bounded degree}, Discrete Applied Mathematics
+\textbf{7} (1984), 141--160, doi:10.1016/0166-218X(84)90063-5, as a paper by
+``G.~W. Furnas''. Its authors are C.~W. Haigh, J.~W. Kennedy and
+L.~V. Quintas: so says the Crossref record of that DOI (checked 5~October
+2026), and Part~I already cites the paper correctly
+as~\cite{hkq}. The DOI, title, journal, volume and pages printed by the
+manuscript are right; only the author is wrong. Part~II cites the paper as
+\cite{hkq}. Its full text has not been inspected for either Part.
+\end{remark}
+
+\section{The main theorem and the signed set equation}\label{bit:cert:sec:main}
+A \emph{rooted identity tree} is an isomorphism class of finite rooted trees
+whose root-preserving automorphism group is trivial. Children are unordered
+and vertices are unlabelled. Fix an integer $d\ge2$, and require that every
+vertex have at most $d$ children. The bound is on \emph{outdegree}; it is not
+a bound of $d$ on the total degree of a nonroot vertex. Let
+$A_d(z)=\sum_{n\ge1}a_d(n)z^n$. All limits keep $d$ fixed; no uniform estimate
+as $d\to\infty$ is asserted.
+
+The model has a direct recursive interpretation: an object consists of a root
+and a set of at most $d$ pairwise nonisomorphic child trees of the same class.
+Equivalently it is a hereditarily finite set with cardinality at most $d$ at
+every nested set, size counted by the total number of recursively written set
+nodes. This is a natural regular family of combinatorial sequences, rather
+than a sequence built to manufacture a particular asymptotic law.
+
+\begin{theorem}[Complete asymptotic expansion]\label{bit:cert:thm:main}
+For each fixed $d\ge2$, there exist numbers $\rho=\rho_d$, $\tau=\tau_d$,
+$C=C_d$ and real constants $c_j=c_{d,j}$ such that
+\[
+ \frac14\le\rho<\frac9{20},\qquad \tau=A_d(\rho)<\infty,\qquad C>0.
+\]
+The point $\rho$ is the unique singularity on the circle of convergence. There
+are $\eta>0$ and $0<\phi<\pi/2$ such that $A_d$ continues analytically to
+\begin{equation}\label{bit:cert:eq:delta}
+ \Delta=\{z:|z|<\rho+\eta,\ z\ne\rho,\ |\arg(z-\rho)|>\phi\}.
+\end{equation}
+At $\rho$, it has a convergent expansion
+\begin{equation}\label{bit:cert:eq:puiseux}
+ A_d(z)=\tau+\sum_{m\ge1}\beta_m(1-z/\rho)^{m/2},\qquad \beta_1<0.
+\end{equation}
+For every fixed integer $J\ge0$,
+\begin{equation}\label{bit:cert:eq:asymptotic}
+ a_d(n)=C\rho^{-n}n^{-3/2}
+ \left(1+\sum_{j=1}^{J}c_jn^{-j}+O_{d,J}(n^{-J-1})\right).
+\end{equation}
+The constants are specified by convergent inner series and finite recurrences
+in Sections~\ref{bit:cert:sec:local}--\ref{bit:cert:sec:transfer}.
+\end{theorem}
+Apart from the strict inequality $\rho<9/20$, this is
+Lemma~\ref{bit:lem:radius} with Theorems~\ref{bit:thm:sqrt}
+and~\ref{bit:thm:coeff} of Part~I ($\beta_m=b_m$, $c_j=D_j$, $J=R$); the
+proof below is a second route to it.
+
+The cases $d=3$ and $d=4$ are A116379 and A116380. The manuscript states that
+the records inspected on 2~October 2026 explicitly retain a question about
+the leading form $C\rho^{-n}n^{-3/2}$ \cite{oeis3,oeis4}, which
+Theorem~\ref{bit:cert:thm:main} answers in the rooted, maximum-outdegree
+model; this concerns the contents of those records and the proof, and is
+\emph{not a certification of literature priority}. (Part~I reports the same
+OEIS status; the intake did not re-check the pages.) Bell, Burris and Yeats
+already developed the signed-SET derivative identities and treated binary
+identity trees in their discussion of mixed-sign functional equations
+\cite[Section~6]{bby}; Genitrini gives full expansions for the
+\emph{unrestricted} identity-tree class \cite{genitrini}. Neither is claimed
+as new. Related work includes bounded-degree, fixed-diameter identity trees
+\cite{hkq}, asymmetric enriched trees \cite{labelle} and symmetries in locally
+restricted trees \cite{kmpr}; the last two full texts were not obtained, so
+incidental overlap has not been excluded. The proof does not depend on an
+absence claim about that literature.
+
+\subsection{The exact signed set equation}\label{bit:cert:sec:model}
+An automorphism can act within a child subtree or permute isomorphic child
+subtrees, so a rooted tree is an identity tree if and only if all its child
+subtrees are identity trees and no two are isomorphic. Suppress the subscript
+$d$ and put
+\begin{align}
+ E_j(z)&=[u^j]\prod_{n\ge1}(1+uz^n)^{a_d(n)},\qquad E_0(z)=1,\qquad
+ \Phi_j(z)=\sum_{i=0}^j E_i(z).\label{bit:cert:eq:forests}
+\end{align}
+The coefficient of $u^jz^m$ counts sets of $j$ distinct allowed trees with
+$m$ vertices in total; all coefficients of $E_j$ and $\Phi_j$ are nonnegative
+integers. The root decomposition gives
+\begin{equation}\label{bit:cert:eq:root}
+ A(z)=z\Phi_d(z),
+\end{equation}
+which determines the coefficients successively. The logarithm of the product
+in \eqref{bit:cert:eq:forests} is
+\[
+ \sum_{k\ge1}\frac{(-1)^{k-1}}{k}u^kA(z^k).
+\]
+With an independent outer variable $y$, set
+\begin{align}
+ P_j(z,y)&=[u^j]\exp\Bigl(uy+
+        \sum_{k=2}^d\frac{(-1)^{k-1}}{k}u^kA(z^k)\Bigr),\label{bit:cert:eq:P}\\
+ G(z,y)&=z\sum_{j=0}^dP_j(z,y),\qquad F(z,y)=G(z,y)-y.\label{bit:cert:eq:G}
+\end{align}
+Terms with $k>d$ cannot affect these coefficients. $G$ is a polynomial in $y$
+whose coefficients involve the inner functions $A(z^k)$; it need not have
+nonnegative coefficients as a bivariate series. Nevertheless
+\begin{equation}\label{bit:cert:eq:functional}
+ F(z,A(z))=0.
+\end{equation}
+Differentiation in the independent $y$ shifts the index of $u$, so for
+$0\le r\le d$
+\begin{equation}\label{bit:cert:eq:derivativeidentity}
+ \partial_y^rG(z,A(z))=z\Phi_{d-r}(z);
+\end{equation}
+in particular $G_y(z,A(z))=z\Phi_{d-1}(z)$ and $G_{yy}(z,A(z))=z\Phi_{d-2}(z)$.
+Positivity is claimed \emph{after substituting the actual tree series}, not
+for arbitrary values of the outer variable; this distinction lets the proof
+work with the signed SET equation. (This is \eqref{bit:eq:newtonderivative}
+of Part~I with $r=1$ iterated; both credit Bell--Burris--Yeats.) Newton's
+identities give an exact coefficient algorithm:
+\begin{equation}\label{bit:cert:eq:newton}
+ jE_j(z)=\sum_{k=1}^j(-1)^{k-1}A(z^k)E_{j-k}(z),\qquad j\ge1.
+\end{equation}
+At degree $m$ the right side involves only $a_d(n)$ with $n\le m$, so
+computing the forest coefficients and then $a_d(m+1)=[z^m]\Phi_d(z)$ is a
+noncircular recurrence (Part~I's \eqref{bit:eq:newton}).
+
+\section{A strict radius bound from an explicit infinite family}\label{bit:cert:sec:radius}
+Choosing a canonical ordering of the children of every rooted nonplane tree
+(for example by recursively ordering canonical parenthesis encodings) injects
+the class into rooted plane trees, so
+\begin{equation}\label{bit:cert:eq:catalan}
+ 1\le a_d(n)\le\operatorname{Cat}(n-1)\le4^{n-1},
+\end{equation}
+the lower bound being the rooted path. Plane rooted trees have generating
+function
+\begin{equation}\label{bit:cert:eq:plane}
+ T(z)=\sum_{n\ge1}\operatorname{Cat}(n-1)z^n=\frac{1-\sqrt{1-4z}}2,
+\end{equation}
+so $\rho_d\ge1/4$ (Part~I's \eqref{bit:eq:plane}).
+
+For a strict upper bound valid for every $d\ge2$, a finite count is promoted
+to an \emph{infinite injective subclass}. The binary identity-tree equation
+$A_2=z\bigl(1+A_2+\frac12(A_2(z)^2-A_2(z^2))\bigr)$ gives $a_2(1)=1$ and, for
+$n\ge2$,
+\begin{equation}\label{bit:cert:eq:binaryrec}
+ a_2(n)=a_2(n-1)+\frac12\Bigl(
+  \sum_{i=1}^{n-2}a_2(i)a_2(n-1-i)
+  -\mathbf1_{2\mid n-1}\,a_2\bigl(\tfrac{n-1}2\bigr)\Bigr),
+\end{equation}
+an empty sum being zero. It yields the complete finite data
+\begin{center}\small
+\begin{tabular}{r|rrrrrrrrrr}\toprule
+$n$&1&2&3&4&5&6&7&8&9&10\\
+$a_2(n)$&1&1&1&2&3&6&11&22&43&88\\\midrule
+$n$&11&12&13&14&15&16&17&18&19&20\\
+$a_2(n)$&179&372&774&1631&3448&7347&15713&33791&72923&158021\\\bottomrule
+\end{tabular}
+\end{center}
+(equal to the $d=2$ counts of Part~I's \texttt{data/identity-checks.json}).
+Let $S(z)=\sum_{n=1}^{20}a_2(n)z^n$. Start from one fixed rooted path with 21
+vertices. At each step add a new root, with either the current tree as its
+only child or with two children: the current tree and any binary identity tree
+of size at most 20. The children in the second case are distinct because their
+sizes differ. This encoding is injective: at every added root there is a
+unique child of size at least 21, and at most one other child, of size at most
+20. Decode by removing roots and following the unique large child until the
+fixed 21-vertex seed is reached; a nonempty sequence of extensions has more
+than 21 vertices, so it cannot be confused with the seed. The subclass
+therefore has generating function
+\begin{equation}\label{bit:cert:eq:spine}
+ H(z)=\frac{z^{21}}{1-z(1+S(z))},\qquad H(z)\preceq A_2(z)\preceq A_d(z),
+\end{equation}
+where $\preceq$ is coefficientwise domination. Exact rational evaluation
+gives
+\begin{equation}\label{bit:cert:eq:radiuscert}
+ \frac9{20}\Bigl(1+S\bigl(\tfrac9{20}\bigr)\Bigr)-1
+ =\frac{64127583713420512656095449}
+        {2097152000000000000000000000}>0.
+\end{equation}
+The function $x(1+S(x))$ increases strictly from zero on $x\ge0$, so its
+unique positive solution of $x(1+S(x))=1$ is some $r<9/20$; the denominator
+of $H$ vanishes there without cancellation, so $H$ has a singularity at $r$,
+and coefficientwise domination proves
+\begin{equation}\label{bit:cert:eq:radiusbound}
+ \frac14\le\rho_d\le\rho_2\le r<\frac9{20}.
+\end{equation}
+This is a radius proof from an infinite family, not an extrapolation from a
+finite list of coefficient ratios.
+
+\begin{remark}[\textsf{[write]} The value of $r$]\label{bit:cert:rem:r}
+Exact rational evaluation of $x(1+S(x))-1$ at $x=0.4464104$ and $0.4464105$
+gives a negative and a positive number, so
+$0.4464104<r<0.4464105$ and $\rho_d<0.4464105$ for every $d\ge2$. Part~I's
+uncertified $\rho_2=0.42892377\ldots$ (\texttt{data/identity-checks.json})
+is consistent with this. Part~I's Lemma~\ref{bit:lem:radius} proves
+$\rho\le9/20$ by the discriminant \eqref{bit:eq:disc} and notes that
+continuity excludes equality; \eqref{bit:cert:eq:radiusbound} is a second,
+explicit route with a strictly smaller bound. Part~II needs the strict bound
+only through $\rho^2<1/4$, which $\rho\le9/20$ already gives.
+\end{remark}
+
+\section{The critical endpoint, transversality and dominance}\label{bit:cert:sec:critical}
+\subsection{Finiteness and the characteristic equations}
+Because forests of exactly two trees are among those of at most $d$, for
+$0<x<\rho$ we have $A(x)\ge\frac x2\bigl(A(x)^2-A(x^2)\bigr)$, that is
+$xA(x)^2-2A(x)-xA(x^2)\le0$, and therefore
+\begin{equation}\label{bit:cert:eq:taubound}
+ A(x)\le\frac{1+\sqrt{1+x^2A(x^2)}}x.
+\end{equation}
+Since $\rho<1$, $A(\rho^2)$ is finite, and on $\rho/2\le x<\rho$ the right side
+of \eqref{bit:cert:eq:taubound} is uniformly bounded. Monotone convergence
+gives $\tau:=\lim_{x\uparrow\rho}A(x)=\sum_{n\ge1}a_d(n)\rho^n<\infty$. Every
+inner function $A(z^k)$, $k\ge2$, is analytic on $|z|<\sqrt\rho$, a disk
+strictly larger than $|z|\le\rho$; hence $G$ is analytic near $(\rho,\tau)$ and
+continuity gives $G(\rho,\tau)=\tau$. By Pringsheim's theorem $\rho$ is a
+singularity of $A$. If $G_y(\rho,\tau)\ne1$, the analytic implicit-function
+theorem applied to $F$ would continue $A$ through $\rho$, a contradiction.
+Thus
+\begin{equation}\label{bit:cert:eq:critical}
+ G(\rho,\tau)=\tau,\qquad G_y(\rho,\tau)=1,
+ \qquad \rho\Phi_{d-1}(\rho)=1,
+\end{equation}
+and the derivative identity gives
+\begin{equation}\label{bit:cert:eq:Gyy}
+ G_{yy}(\rho,\tau)=\rho\Phi_{d-2}(\rho)>0,
+\end{equation}
+since the forest series includes its constant term (also for $d=2$, where
+$\Phi_0=1$). This is the first half of Part~I's \eqref{bit:eq:critical};
+\eqref{bit:cert:eq:taubound} is a second route to the finiteness of $\tau$
+there.
+
+\subsection{A positive lower bound for \texorpdfstring{$G_z$}{Gz} at the critical point}
+Here $z$-differentiation includes all inner functions $A(z^k)$ while $y$ is
+held independent. Differentiating \eqref{bit:cert:eq:P}--\eqref{bit:cert:eq:G}
+gives, at the critical point,
+\begin{equation}\label{bit:cert:eq:Gz}
+ G_z(\rho,\tau)=\frac\tau\rho+
+  \sum_{k=2}^d(-1)^{k-1}\rho^kA'(\rho^k)\Phi_{d-k}(\rho);
+\end{equation}
+the factor $k$ from differentiating $A(z^k)$ cancels the divisor $k$ of the
+logarithmic SET expression (compare Part~I's \eqref{bit:eq:fzexact}). Paths
+give $\tau/\rho\ge1/(1-\rho)$. At the critical point
+$0\le\Phi_{d-k}(\rho)\le\Phi_{d-1}(\rho)=\rho^{-1}$ for $2\le k\le d$. Catalan
+domination, differentiated inside its disk, gives
+$A'(u)\le T'(u)=1/\sqrt{1-4u}$ for $0\le u<1/4$, and
+\eqref{bit:cert:eq:radiusbound} ensures $\rho^2<1/4$. Drop the nonnegative
+odd-$k$ terms of \eqref{bit:cert:eq:Gz}, bound the even-$k$ derivatives by the
+common value at $\rho^2$, and enlarge their finite sum to an infinite
+geometric series:
+\begin{equation}\label{bit:cert:eq:transversebound}
+ G_z(\rho,\tau)\ge
+ \frac1{1-\rho}-\frac{\rho}{(1-\rho^2)\sqrt{1-4\rho^2}}>0.
+\end{equation}
+The final strict inequality holds throughout $[0,9/20]$: after multiplication
+by positive factors and squaring nonnegative quantities it is equivalent to
+\[
+ p(x):=(1+x)^2(1-4x^2)-x^2=1+2x-4x^2-8x^3-4x^4>0,
+\]
+and $p''(x)=-8-48x-48x^2<0$, so $p$ lies above the chord through
+$p(0)=1$ and $p(9/20)=7879/40000>0$. This proves transversality for every
+fixed $d\ge2$ without a numerical critical-point computation.
+
+\emph{Comparison with Part~I.} Proposition~\ref{bit:prop:transverse} is
+stronger: it bounds $F_z$ below by $(I(z)/z)\eta$ along the whole branch
+$0<z\le\rho$, with the $d$-independent margin $\eta=1-810/(319\sqrt{19})$,
+using $E_{d-r}\le E_d=y/z$ where \eqref{bit:cert:eq:transversebound} uses
+$\Phi_{d-k}\le\rho^{-1}$ and $\tau/\rho\ge1/(1-\rho)$. The bound
+\eqref{bit:cert:eq:transversebound} holds at the critical point only. It is a
+second route to the transversality $F_z(\rho,\tau)>0$ of
+Theorem~\ref{bit:thm:sqrt}.
+
+\subsection{The first real branch}
+Set $B(x)=G_y(x,A(x))=x\Phi_{d-1}(x)$ (Part~I's $H$). It has nonnegative
+coefficients, a positive coefficient of $x$, and $B(\rho)=1$; therefore
+\begin{equation}\label{bit:cert:eq:subcritical}
+ B(x)<1\qquad(0\le x<\rho).
+\end{equation}
+There is no earlier characteristic point along the actual analytic branch
+issued from $A(0)=0$. One can alternatively rule out a first interior crossing
+using $(1-G_y)A'=G_z$ and a positive bound like
+\eqref{bit:cert:eq:transversebound}. The argument identifies the singularity
+of the enumerative series before invoking a local fold; it does not select a
+radius by solving an unrelated algebraic system.
+
+\subsection{The square root and unique dominance}\label{bit:cert:sec:local}
+Since $F_z(\rho,\tau)=G_z(\rho,\tau)>0$, the implicit-function theorem solves
+$F(z,y)=0$ locally as $z=Z(y)$, with $Z(\tau)=\rho$, $Z'(\tau)=0$ and
+$Z''(\tau)=-G_{yy}(\rho,\tau)/G_z(\rho,\tau)<0$. Consequently
+$1-Z(y)/\rho=\frac{G_{yy}}{2\rho G_z}(y-\tau)^2Q(y)$ with analytic $Q$,
+$Q(\tau)=1$. With an analytic square root of $Q$ near $\tau$, the function
+$(y-\tau)\sqrt{G_{yy}Q(y)/(2\rho G_z)}$ has nonzero derivative at $\tau$ and
+hence an analytic local inverse; this proves a convergent expansion in
+$t=\sqrt{1-z/\rho}$. For real $x<\rho$ positivity gives $A(x)<\tau$, selecting
+\begin{equation}\label{bit:cert:eq:beta1}
+ \beta_1=-\sqrt{\frac{2\rho G_z}{G_{yy}}}<0.
+\end{equation}
+All derivatives in local formulas are evaluated at $(\rho,\tau)$. (Part~I
+reaches \eqref{bit:eq:puiseux} by analytic preparation of $G$ instead of the
+inverse function $Z$.)
+
+To exclude other singularities on the circle, the manuscript argues exactly
+as the proof of Theorem~\ref{bit:thm:sqrt}: $A$ converges uniformly on
+$|z|\le\rho$, so its functional equation holds at every boundary point; $B(z)$
+has nonnegative coefficients, $B(\rho)=1$, and coefficients exactly one at $z$
+and $z^2$, so equality in $|B(z)|\le B(\rho)$ at $z=\rho e^{i\theta}$ forces
+$e^{i\theta}=e^{2i\theta}$, that is $e^{i\theta}=1$. Therefore
+\begin{equation}\label{bit:cert:eq:boundary}
+ |G_y(z,A(z))|=|B(z)|<1
+ \quad\text{if }|z|=\rho\text{ and }z\ne\rho
+\end{equation}
+(Part~I's \eqref{bit:eq:strictH}), and the implicit-function theorem continues
+the branch through every such point. For the common domain: around $\rho$ the
+selected square root is analytic in a small disk slit to the right of $\rho$;
+the rest of the circle is compact, so finitely many implicit-function
+neighbourhoods cover it, and after shrinking them (so that branches agree on
+overlaps) and the radial enlargement, the union with the open disk and the
+slit neighbourhood contains a domain \eqref{bit:cert:eq:delta} for any
+sufficiently small fixed $\phi\in(0,\pi/2)$ and some $\eta>0$. Further
+shrinking keeps $|z|<\sqrt\rho$ wherever the inner functions are used. This
+proves unique dominance and the dented continuation needed for singularity
+analysis.
+
+\section{All-orders local and coefficient recurrences}\label{bit:cert:sec:transfer}
+\subsection{A finite recurrence for every Puiseux coefficient}
+Write
+\begin{equation}\label{bit:cert:eq:jet}
+ F(\rho(1-t^2),\tau+h)=\sum_{p,q\ge0}f_{p,q}t^ph^q.
+\end{equation}
+Only even $p$ occur. The characteristic identities give $f_{0,0}=f_{0,1}=0$,
+and $f_{2,0}=-\rho G_z$, $f_{0,2}=G_{yy}/2>0$. Set $h=\sum_{m\ge1}\beta_mt^m$;
+the coefficient of $t^2$ gives \eqref{bit:cert:eq:beta1}. For $m\ge2$
+substitute only the known part $h_{<m}=\sum_{i=1}^{m-1}\beta_it^i$ and define
+\begin{equation}\label{bit:cert:eq:betarec}
+ R_{m+1}=[t^{m+1}]\,F(\rho(1-t^2),\tau+h_{<m}),\qquad
+ \beta_m=-\frac{R_{m+1}}{G_{yy}\beta_1}.
+\end{equation}
+The missing $\beta_m$ first enters through $f_{0,2}h^2$, with coefficient
+$2f_{0,2}\beta_1\beta_m$; every other potential contribution occurs at a
+higher power, because $f_{0,1}=0$ and no odd powers of $t$ occur in
+\eqref{bit:cert:eq:jet}. The denominator never vanishes. This is Part~I's
+triangular recurrence \eqref{bit:eq:triangular}, whose bracketed series is
+$-F$ in Part~II's notation.
+For illustration,
+\begin{align}
+ \beta_2&=\frac{\rho G_{zy}}{G_{yy}}
+              -\frac{G_{yyy}\beta_1^2}{6G_{yy}},\label{bit:cert:eq:beta2}\\*
+ \beta_3&=-\frac1{G_{yy}\beta_1}\Bigl(
+  \frac{G_{yy}\beta_2^2}{2}-\rho G_{zy}\beta_2
+  +\frac{\rho^2G_{zz}}2+\frac{G_{yyy}\beta_1^2\beta_2}2
+  -\frac{\rho G_{zyy}\beta_1^2}2
+  +\frac{G_{yyyy}\beta_1^4}{24}\Bigr).\label{bit:cert:eq:beta3}
+\end{align}
+They come from the coefficients of $t^2,t^3,t^4$ after substituting
+$z=\rho(1-t^2)$ and $h=\beta_1t+\beta_2t^2+\beta_3t^3+\cdots$ into
+$F(z,\tau+h)=0$, which are respectively
+\begin{align*}
+ &\frac{G_{yy}\beta_1^2}2-\rho G_z,\qquad
+ G_{yy}\beta_1\beta_2-\rho G_{zy}\beta_1+\frac{G_{yyy}\beta_1^3}6,\\
+ &G_{yy}\beta_1\beta_3+\frac{G_{yy}\beta_2^2}2
+       -\rho G_{zy}\beta_2+\frac{\rho^2G_{zz}}2
+       +\frac{G_{yyy}\beta_1^2\beta_2}2
+       -\frac{\rho G_{zyy}\beta_1^2}2
+       +\frac{G_{yyyy}\beta_1^4}{24}.
+\end{align*}
+The coefficient of $t^{m+1}$ is the first that determines $\beta_m$ once
+$\beta_1$ is selected, so one must expand one degree beyond the last desired
+Puiseux coefficient. The recurrence applied for $m=4,5$ specifies $\beta_5$
+without a large closed formula. For any finite order the needed derivatives
+of the inner functions converge absolutely because $\rho^k<\rho$ for $k\ge2$.
+
+\subsection{Transfer coefficients at all orders}
+For a nonintegral exponent $\gamma$,
+\begin{equation}\label{bit:cert:eq:binomialgamma}
+ [z^n](1-z)^\gamma
+ =\frac{\Gamma(n-\gamma)}{\Gamma(-\gamma)\Gamma(n+1)}
+ \sim\frac{n^{-\gamma-1}}{\Gamma(-\gamma)}
+      \sum_{m\ge0}H_m(\gamma)n^{-m},\qquad H_0(\gamma)=1,
+\end{equation}
+by the Gamma-ratio expansion \cite[Chapter~VI]{fs}. A convenient purely
+rational recurrence for the needed half-integer cases is
+\begin{equation}\label{bit:cert:eq:Hrec}
+ H_m(\gamma)=\frac1m\sum_{j=0}^{m-1}H_j(\gamma)
+ \Bigl\{\binom{-\gamma-1-j}{m+1-j}
+       -(-1)^{m+1-j}(1+\gamma)\Bigr\},\qquad m\ge1,
+\end{equation}
+with generalized binomial coefficients given by their finite falling-product
+formula. The manuscript derives it by inserting $n^{-\gamma-1}\sum H_jn^{-j}$
+into the exact adjacent-coefficient ratio $(n-\gamma)/(n+1)$ and equating the
+coefficients of $n^{-\gamma-1-(m+1)}$ (in its words, ``at order $n^{-m-1}$''
+after cancellation), where $H_m$ has coefficient $-m$. For example
+$H_1(1/2)=3/8$, $H_2(1/2)=25/128$, $H_3(1/2)=105/1024$, $H_1(3/2)=15/8$.
+
+\begin{proposition}[\textsf{[write]} The two Gamma-ratio routes agree]\label{bit:cert:prop:hgamma}
+For every complex $\gamma\notin\{0,1,2,\ldots\}$ and every $m\ge0$, the
+numbers $H_m(\gamma)$ defined by $H_0=1$ and \eqref{bit:cert:eq:Hrec} are the
+coefficients of the asymptotic expansion
+$\Gamma(n-\gamma)/\Gamma(n+1)\sim n^{-\gamma-1}\sum_{m\ge0}H_m(\gamma)n^{-m}$,
+and $H_m(\gamma)=\gamma_m(\gamma)$, the coefficients of Part~I defined by
+\eqref{bit:eq:h}--\eqref{bit:eq:gamma}.
+\end{proposition}
+\begin{proof}
+Write $g(n)=\Gamma(n-\gamma)/\Gamma(n+1)$. Part~I's \eqref{bit:eq:gammaratio}
+(the log-Gamma expansion) gives an asymptotic expansion
+$g(n)\sim n^{-\gamma-1}\sum_{k\ge0}\gamma_k(\gamma)n^{-k}$, $\gamma_0=1$, to
+every fixed order; asymptotic expansions in the powers $n^{-\gamma-1-k}$ are
+unique, so it remains to show that the $\gamma_k$ satisfy
+\eqref{bit:cert:eq:Hrec}, which determines $H_m$ from $H_0,\ldots,H_{m-1}$.
+From $\Gamma(x+1)=x\Gamma(x)$, $g(n+1)=g(n)(n-\gamma)/(n+1)$, and
+$(n-\gamma)/(n+1)=1-(1+\gamma)\sum_{i\ge1}(-1)^{i-1}n^{-i}$ for $n>1$. Expand
+both sides to order $n^{-\gamma-1-K}$ for a fixed $K$: on the left,
+$(n+1)^{-\gamma-1-j}=n^{-\gamma-1-j}\sum_{i\ge0}\binom{-\gamma-1-j}{i}n^{-i}$,
+so the coefficient of $n^{-\gamma-1-k}$ is
+$\sum_{j\le k}\gamma_j\binom{-\gamma-1-j}{k-j}$; on the right it is
+$\gamma_k-(1+\gamma)\sum_{j<k}(-1)^{k-j-1}\gamma_j$. The remainders are
+$O(n^{-\gamma-2-K})$ on both sides, so the coefficients agree for $k\le K$.
+The term $j=k$ on the left cancels $\gamma_k$ on the right, leaving
+$\sum_{j<k}\gamma_j\bigl\{\binom{-\gamma-1-j}{k-j}+(-1)^{k-j-1}(1+\gamma)\bigr\}=0$.
+The summand $j=k-1$ has the factor $(-\gamma-k)+(1+\gamma)=-(k-1)$. Putting
+$m=k-1\ge1$ and solving for $\gamma_m$ gives exactly \eqref{bit:cert:eq:Hrec}.
+\end{proof}
+
+Integer powers in \eqref{bit:cert:eq:puiseux} are locally analytic; any finite
+sum of them is a polynomial in $z$ and contributes nothing to sufficiently
+large coefficients. Expand the convergent Puiseux series until its remainder
+is of order $(1-z/\rho)^{J+3/2}$ after subtracting the analytic terms; the
+transfer remainder bound then gives a relative $O(n^{-J-1})$. Combining the
+odd half-integer terms proves \eqref{bit:cert:eq:asymptotic} with
+\begin{equation}\label{bit:cert:eq:C}
+ C=\frac{\beta_1}{\Gamma(-1/2)}
+   =-\frac{\beta_1}{2\sqrt\pi}
+   =\sqrt{\frac{\rho G_z}{2\pi G_{yy}}}>0
+\end{equation}
+and, for every $J\ge0$,
+\begin{equation}\label{bit:cert:eq:cJ}
+ c_J=\sum_{\ell=0}^J\frac{\beta_{2\ell+1}}{\beta_1}
+             (-1)^\ell(3/2)_\ell\,
+             H_{J-\ell}(\ell+1/2),\qquad c_0=1,
+\end{equation}
+where $(a)_\ell=a(a+1)\cdots(a+\ell-1)$, $(a)_0=1$, and
+$\Gamma(-1/2)/\Gamma(-\ell-1/2)=(-1)^\ell(3/2)_\ell$. In particular
+\begin{align}
+ c_1&=\frac38-\frac32\frac{\beta_3}{\beta_1},\label{bit:cert:eq:c1}\\
+ c_2&=\frac{25}{128}-\frac{45}{16}\frac{\beta_3}{\beta_1}
+                       +\frac{15}{4}\frac{\beta_5}{\beta_1}.\label{bit:cert:eq:c2}
+\end{align}
+With Proposition~\ref{bit:cert:prop:hgamma}, \eqref{bit:cert:eq:cJ} is
+Part~I's \eqref{bit:eq:D} term by term, and
+\eqref{bit:cert:eq:c1}--\eqref{bit:cert:eq:c2} are \eqref{bit:eq:D1}--\eqref{bit:eq:D2}.
+Equations \eqref{bit:cert:eq:jet}, \eqref{bit:cert:eq:betarec},
+\eqref{bit:cert:eq:Hrec} and \eqref{bit:cert:eq:cJ} are finite all-orders
+algorithms, not fits to coefficient data; they complete the proof of
+Theorem~\ref{bit:cert:thm:main}.
+
+\subsection{Ternary and quaternary specializations}\label{bit:cert:sec:special}
+Write $B_k(z)=A(z^k)$ for the series of the given $d$. Expanding the signed set
+polynomials gives
+\begin{align}
+ \frac{G_3(z,y)}z
+ &=1+y+\frac{y^2}2+\frac{y^3}6
+       -\frac{B_2(1+y)}2+\frac{B_3}3,\label{bit:cert:eq:G3}\\
+ \frac{G_4(z,y)}z
+ &=1+y+\frac{y^2}2+\frac{y^3}6+\frac{y^4}{24}
+       -B_2\Bigl(\frac12+\frac y2+\frac{y^2}4\Bigr)
+       +\frac{B_3(1+y)}3+\frac{B_2^2}8-\frac{B_4}4,\label{bit:cert:eq:G4}
+\end{align}
+which are Part~I's \eqref{bit:eq:d3} and \eqref{bit:eq:d4} rearranged in
+powers of $y$. Putting $y=A(z)$ reproduces the equations of the two OEIS
+records. The initial counts are
+\begin{center}
+\begin{tabular}{c|rrrrrrrrrrr}\toprule
+$n$&1&2&3&4&5&6&7&8&9&10&11\\\midrule
+$d=3$&1&1&1&2&3&6&12&25&52&113&245\\
+$d=4$&1&1&1&2&3&6&12&25&52&113&247\\\bottomrule
+\end{tabular}
+\end{center}
+in agreement with A116379 and A116380 \cite{oeis3,oeis4} and with Part~I's data.
+
+\subsection{Minimal all-orders recipe}\label{bit:cert:sec:recipe}
+For fixed $d$ and target relative order $J$:
+\begin{enumerate}
+\item define $A$ by the distinct-child recurrence and obtain its critical
+ point $G=\tau$, $G_y=1$ on the actual first branch;
+\item compute the finitely many inner jets $T_{k,j}$, $2\le k\le d$,
+ $0\le j\le J+1$ \eqref{bit:cert:eq:innerjet}, with tail bounds if numerical
+ enclosures are desired;
+\item build $F(\rho(1-t^2),\tau+h)$ through total degree $2J+2$ with the signed
+ Newton identities;
+\item choose the negative $\beta_1$ and apply \eqref{bit:cert:eq:betarec}
+ through $\beta_{2J+1}$;
+\item compute $H_m$ by \eqref{bit:cert:eq:Hrec} and $c_1,\ldots,c_J$ by
+ \eqref{bit:cert:eq:cJ};
+\item take the formal logarithm \eqref{bit:cert:eq:dj}, compute any compatible
+ inverse order from \eqref{bit:cert:eq:Prec}, and retain the ceiling brackets
+ \eqref{bit:cert:eq:ceiling}.
+\end{enumerate}
+The first step is justified globally by
+Sections~\ref{bit:cert:sec:radius}--\ref{bit:cert:sec:critical}; the later
+formal manipulations do not replace that global argument.
+
+\section{Rational interval certification of the constants}\label{bit:cert:sec:certificate}
+This section specifies how a finite exact computation encloses the constants
+of Section~\ref{bit:cert:sec:special}, and prints the enclosures. The
+qualitative theorem is independent of the computation. Conversely, the
+computation uses that theorem to identify the actual singular endpoint; it does
+not independently prove complex analytic continuation. The verifier
+(\texttt{code/02-certified-certify.py}) uses only Python's standard-library
+integer arithmetic, exact rational arithmetic and integer square roots. It is a
+computer-assisted certificate, not a formal proof-assistant development.
+
+\subsection{Independent exact enumeration and inner-series tails}
+The first coefficient computation builds the product
+\eqref{bit:cert:eq:forests} in increasing subtree size. Before the factor for
+size $n$ is added, the coefficient at forest size $n-1$ determines $a_d(n)$. In
+$(1+uz^n)^{a_d(n)}$ the coefficient for choosing $j$ distinct trees of size $n$
+is $\binom{a_d(n)}j$, and updating forest cardinalities in descending order
+prevents reuse of a newly updated row. A separate computation by the signed
+Newton recurrence \eqref{bit:cert:eq:newton} cross-checks every coefficient
+through $N=400$. Exact divisibility, equality of the two enumerations,
+positivity, monotonicity and the Catalan bounds are checked.
+
+Let a positive interval $R$ contain $\rho$, let $r$ be its upper endpoint, and
+take $k\ge2$. The inner jets needed in \eqref{bit:cert:eq:jet} are
+\begin{equation}\label{bit:cert:eq:innerjet}
+ T_{k,j}=\sum_{n\ge1}a_d(n)\rho^{kn}\binom{kn}j,\qquad
+ A\bigl((\rho(1-t^2))^k\bigr)=\sum_{j\ge0}(-1)^jT_{k,j}t^{2j}.
+\end{equation}
+Put $q=4r^k$ and $\eta_j=q((N+2)/(N+1))^j$. If $\eta_j<1$, Catalan domination
+\eqref{bit:cert:eq:catalan} and $\binom{kn}j\le(kn)^j/j!$ yield
+\begin{equation}\label{bit:cert:eq:tail}
+ 0\le\sum_{n>N}a_d(n)\rho^{kn}\binom{kn}j
+ \le\frac{k^j(N+1)^jq^{N+1}}{4\,j!\,(1-\eta_j)}:
+\end{equation}
+the majorant term is $(k^j/(4j!))n^jq^n$, whose consecutive-term ratio for
+$n\ge N+1$ is at most $\eta_j$. Each finite sum is evaluated by interval
+Horner arithmetic and enlarged by this nonnegative tail enclosure. To certify
+through $\beta_5$ only $j\le3$ and $2\le k\le d$ are needed. In the reference
+certificate every tail bound is below $5.5\cdot10^{-70}$ ($d=3$) and
+$8.8\cdot10^{-73}$ ($d=4$).
+
+\subsection{Identification of the numerical critical root}\label{bit:cert:sec:identify}
+For $d=3,4$ a global monotonicity argument gives a unique scalar critical root
+on the whole interval $0<z\le9/20$. Put $u=z^2A'(z^2)$ and $v=z^4A'(z^4)$. From
+\eqref{bit:cert:eq:plane} and its derivative ($A(w)\le T(w)$ and
+$wA'(w)\le wT'(w)=w/\sqrt{1-4w}$, increasing in $w$), the following strict
+inequalities hold on that interval, certified by rational squaring at
+$z=9/20$:
+\begin{equation}\label{bit:cert:eq:globalbounds}
+ B_2<\frac{283}{1000},\quad u<\frac{465}{1000},\quad
+ B_4<\frac{44}{1000},\quad v<\frac{45}{1000}
+\end{equation}
+(the values of the majorants at $z=9/20$ are $0.28206$, $0.46457$, $0.04285$
+and $0.04485$ to five places). For $y\ge0$, \eqref{bit:cert:eq:G3}--\eqref{bit:cert:eq:G4}
+give
+\[
+ G_{3,yy}=z(1+y)>0,\qquad
+ G_{4,yy}=z\Bigl(1+y+\frac{y^2-B_2}2\Bigr)>0.
+\]
+Holding $y$ fixed and dropping only nonnegative terms yields
+\begin{align}
+ G_{3,z}&\ge(1-B_2/2-u)(1+y)+y^2/2+y^3/6>0,\label{bit:cert:eq:G3positive}\\
+ G_{4,z}&\ge(1-B_2/2-B_4/4-u-v)
+ +(1-B_2/2-u)y\notag\\[-2pt]
+ &\hspace{19mm}+(1/2-B_2/4-u/2)y^2+y^3/6+y^4/24>0.\label{bit:cert:eq:G4positive}
+\end{align}
+In the second inequality the constant, linear and quadratic coefficients are
+strictly larger than $27/80$, $787/2000$ and $787/4000$. The retained terms
+omitted from these lower bounds are nonnegative because the $B_k$ and their
+derivatives are nonnegative.
+
+Moreover $G_{3,y}(z,0)=z(1-B_2/2)<1$, and
+\[
+ G_{4,y}(z,0)=z(1-B_2/2+B_3/3)
+ \le\frac9{20}\Bigl(1+\frac{283}{3000}\Bigr)<1,
+\]
+where $B_3\le B_2$. Since $G_y(z,y)$ strictly increases to infinity with $y$,
+there is a unique positive $y_*(z)$ with $G_y(z,y_*(z))=1$. The function
+\begin{equation}\label{bit:cert:eq:M}
+ M(z)=F(z,y_*(z))
+\end{equation}
+satisfies $M'(z)=G_z(z,y_*(z))>0$, because $F_y=0$ along it.
+Theorem~\ref{bit:cert:thm:main} supplies $M(\rho)=0$ and $\tau=y_*(\rho)$, so
+the unique zero of $M$ is the actual radius.
+
+At each rational test endpoint, the verifier brackets $y_*$ between 0 and 2 by
+strict interval signs of $G_y-1$ and refines by bisection; an ambiguous
+interval sign is never used to discard a half-interval. Evaluating $F$ over the
+resulting $y$ interval encloses $M$. Opposite strict signs at two rational $z$
+endpoints therefore enclose $\rho$ without a spurious-branch assumption. A fresh
+bisection over the whole resulting $\rho$ interval encloses $\tau$;
+monotonicity of $y_*(z)$ is not assumed.
+
+\begin{remark}[\textsf{[write]} Two details of this argument]\label{bit:cert:rem:identify}
+(i)~The manuscript justifies $B_3\le B_2$ ``from coefficient nonnegativity and
+$z\le1$''. The reason is monotonicity: $A$ has nonnegative coefficients, so it
+is increasing on $[0,\rho)$, and $0\le z^3\le z^2<\rho$. (Already
+$1-B_2/2+B_3/3\le1-B_2/6\le1$ suffices for $G_{4,y}(z,0)<1$.)
+(ii)~The identification uses three facts besides the bounds: $\rho\le9/20$
+(Lemma~\ref{bit:lem:radius} or \eqref{bit:cert:eq:radiusbound}), so that
+$\rho$ lies in the interval where $M$ is increasing; $G_y(\rho,\tau)=1$ with
+$\tau>0$, so that $\tau=y_*(\rho)$ by uniqueness of the positive root; and
+$y_*$ is differentiable, by the implicit-function theorem, since
+$G_{yy}>0$ for $y\ge0$. With these, $M(z_0)<0<M(z_1)$ at the two rational
+endpoints $z_0<z_1$ in $(0,9/20]$ forces $z_0<\rho<z_1$. In the reference
+certificate $z_1-z_0=10^{-45}$, with $M(z_0)\approx-9.0\cdot10^{-46}$,
+$M(z_1)\approx1.3\cdot10^{-45}$ for $d=3$ and $M(z_0)\approx-2.0\cdot10^{-46}$,
+$M(z_1)\approx1.9\cdot10^{-45}$ for $d=4$, each enclosed with strict sign.
+\end{remark}
+
+\subsection{Outward arithmetic and elementary constants}
+All interval endpoints have the form $L/S$ and $H/S$ with integers $L,H$ and
+$S=10^{90}$. Addition and negation are exact. For products take the smallest
+and largest of the four integer products and divide by $S$ with downward and
+upward rounding. For an interval excluding zero, reciprocal endpoints come from
+outward rounding of $S^2/H$ and $S^2/L$. Exact rational input is rounded
+outward. These formulas inductively preserve enclosure, regardless of
+dependencies between occurrences of the same quantity. For a nonnegative
+interval the square-root endpoints follow from integer square roots of $LS$ and
+$HS$, raising the upper one by one unless its square is exact. The value of
+$\pi$ is enclosed by Machin's identity
+$\pi=16\arctan(1/5)-4\arctan(1/239)$, using finite rational alternating sums
+and their next-term errors (80 and 25 terms). For logarithms set
+$w=(x-1)/(x+1)$ and use
+\begin{equation}\label{bit:cert:eq:logcert}
+ \log x=2\sum_{j=0}^{m-1}\frac{w^{2j+1}}{2j+1}+\mathcal R_m,
+ \qquad |\mathcal R_m|\le\frac{2r^{2m+1}}{(2m+1)(1-r^2)},
+\end{equation}
+where $r\ge|w|$ and $r<1$; the verifier uses $m=180$ and checks the last
+condition. No floating-point approximation to $\pi$, square roots or logarithms
+supplies mathematical evidence.
+
+\subsection{Propagation to corrections and higher orders}
+Substitute the interval inner jets \eqref{bit:cert:eq:innerjet} into the
+signed Newton polynomials and build \eqref{bit:cert:eq:jet} through total
+degree six. At the enclosed actual critical point the identities
+$f_{0,0}=f_{0,1}=0$ hold exactly; their raw interval evaluations are checked to
+contain zero (width about $10^{-43}$), and the known identities are then used
+as exact cancellations. This does not assert that they vanish on the whole
+enclosing rectangle. Compute $\beta_1$ from its negative square root and then
+$\beta_2,\ldots,\beta_5$ by \eqref{bit:cert:eq:betarec}; each division checks
+a denominator bounded away from zero. Substitution residual intervals through
+degree six must contain zero; this is a consistency check accompanying the
+enclosure induction, not its replacement. Finally \eqref{bit:cert:eq:C},
+\eqref{bit:cert:eq:c1}, \eqref{bit:cert:eq:c2} and \eqref{bit:cert:eq:logcert}
+enclose $C,c_1,c_2$, $\lambda=\log(1/\rho)$ and the inverse constant $b$ of
+\eqref{bit:cert:eq:inverseparams}. The supplementary tests
+(\texttt{code/02-certified-test\_certifier.py}) also check the interval
+primitives on 9009 random exact cases, the values of $H_m$ above, and
+$\beta_2,\beta_3$ against the closed forms
+\eqref{bit:cert:eq:beta2}--\eqref{bit:cert:eq:beta3}.
+
+For arbitrary finite relative order $J$, expand the bivariate jet through
+total degree $2J+2$, use inner jets $j\le J+1$, and compute through
+$\beta_{2J+1}$; increase $N$ to control \eqref{bit:cert:eq:tail} and the
+arithmetic and root precision as necessary. For every fixed order the tail
+converges geometrically because $4\rho^2<1$, and the recursive characteristic
+denominator remains nonzero. This specifies the all-orders extension; the
+supplied executable is specialized to degree six and $d=3,4$.
+
+\subsection{The certified enclosures}\label{bit:cert:sec:tables}
+The following are closed rational enclosures with exact terminating-decimal
+endpoints, obtained by the method above and certified by the included exact
+integer-interval verifier. They are not rounded equalities. Here
+$\lambda=\log(1/\rho)$ and $b=-(3/2)\log\lambda-\log C$ are the constants of
+Section~\ref{bit:cert:sec:inverse}. Tables~\ref{bit:cert:tab:d3}
+and~\ref{bit:cert:tab:d4} are the manuscript's.
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabular}{c@{\qquad}r@{\quad}r}\toprule
+Quantity & Lower endpoint & Upper endpoint\\\midrule
+$\rho$ & $0.400774500477539473704620732219$ & $0.400774500477539473704620732220$\\
+$\tau$ & $1.045166273395837405445129471289$ & $1.045166273395837405445129471290$\\
+$C$ & $0.414316870666512014232537980551$ & $0.414316870666512014232537980552$\\
+$c_1$ & $-0.708396139596070031595088414678$ & $-0.708396139596070031595088414677$\\
+$c_2$ & $-0.572628680061486211786162046680$ & $-0.572628680061486211786162046679$\\
+$\lambda$ & $0.914356352798444759761535752942$ & $0.914356352798444759761535752943$\\
+$b$ & $1.015426561034829120548538743296$ & $1.015426561034829120548538743297$\\
+\bottomrule\end{tabular}
+\caption{A116379, $d=3$: certified enclosures rounded outward to 30 decimals.}
+\label{bit:cert:tab:d3}
+\end{table}
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabular}{c@{\qquad}r@{\quad}r}\toprule
+Quantity & Lower endpoint & Upper endpoint\\\midrule
+$\rho$ & $0.397585196670872770885924531229$ & $0.397585196670872770885924531230$\\
+$\tau$ & $1.006157697606778380774781545294$ & $1.006157697606778380774781545295$\\
+$C$ & $0.371658807505686761191129677634$ & $0.371658807505686761191129677635$\\
+$c_1$ & $-0.453862309357400171863826908421$ & $-0.453862309357400171863826908420$\\
+$c_2$ & $-0.562216000439483655162154638924$ & $-0.562216000439483655162154638923$\\
+$\lambda$ & $0.922346036605932168162266720250$ & $0.922346036605932168162266720251$\\
+$b$ & $1.111031252181146118715415629664$ & $1.111031252181146118715415629665$\\
+\bottomrule\end{tabular}
+\caption{A116380, $d=4$: certified enclosures rounded outward to 30 decimals.}
+\label{bit:cert:tab:d4}
+\end{table}
+
+The full radius brackets in the reference JSON have width exactly $10^{-45}$.
+The full enclosures for $\rho,\tau,C,c_1,c_2$ have widths less than
+$10^{-35}$; Tables~\ref{bit:cert:tab:d3}--\ref{bit:cert:tab:d4} round them
+outward to 30 places. Ninety-place endpoint strings in the JSON record exact
+rationals and do not assert ninety accurate digits. No coefficient-asymptotic
+remainder bound or finite-threshold guarantee follows from these constant
+enclosures alone.
+
+\begin{writenote}[Added 5 October 2026, batch~103]
+Table~\ref{bit:cert:tab:full} prints every enclosure of
+\texttt{data/\allowbreak 02-certified-\allowbreak certificate.json} in full,
+including the Puiseux coefficients $\beta_1,\ldots,\beta_5$ (keys
+\texttt{a1}--\texttt{a5} there) and $G_z,G_{yy}$ at the critical point, which
+the manuscript's tables omit. Each entry is written as a common digit string
+followed by the last digits of the lower endpoint (subscript) and of the upper
+endpoint (superscript), both rounded outward two digits after the first
+place where the exact endpoints differ; the true value lies between them. For
+a negative quantity the subscript belongs to the more negative endpoint: for
+example $c_1$ for $d=3$ lies between $-0.70839\ldots7275996\,98$ and
+$-0.70839\ldots7275996\,35$. Widths are those of the exact endpoints. Spaces
+group the decimals in fives.
+\end{writenote}
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabular}{@{}lll@{}}\toprule
+ & enclosure & width\\\midrule
+\multicolumn{3}{@{}l}{A116379, $d=3$}\\
+$\rho$ & $0.40077\,45004\,77539\,47370\,46207\,32219\,34740\,07631\,8924{}^{80}_{70}$ & $1.0\cdot10^{-45}$\\
+$\tau$ & $1.04516\,62733\,95837\,40544\,51294\,71289\,20906\,23353\,965{}^{86}_{41}$ & $4.5\cdot10^{-44}$\\
+$G_z(\rho,\tau)$ & $2.20583\,85694\,69025\,03803\,18421\,85039\,16193\,73722\,69{}^{74}_{58}$ & $1.5\cdot10^{-43}$\\
+$G_{yy}(\rho,\tau)$ & $0.81965\,04916\,13727\,66408\,44577\,13351\,64056\,00647\,978{}^{56}_{35}$ & $2.0\cdot10^{-44}$\\
+$C$ & $0.41431\,68706\,66512\,01423\,25379\,80551\,90734\,83055\,502{}^{83}_{63}$ & $1.8\cdot10^{-44}$\\
+$c_1$ & $-0.70839\,61395\,96070\,03159\,50884\,14677\,28095\,72759\,96{}^{35}_{98}$ & $6.2\cdot10^{-43}$\\
+$c_2$ & $-0.57262\,86800\,61486\,21178\,61620\,46679\,51243\,22372{}^{77}_{91}$ & $1.3\cdot10^{-41}$\\
+$\lambda$ & $0.91435\,63527\,98444\,75976\,15357\,52942\,35245\,90374\,1733{}^{60}_{34}$ & $2.5\cdot10^{-45}$\\
+$b$ & $1.01542\,65610\,34829\,12054\,85387\,43296\,59301\,56192\,4{}^{91}_{89}$ & $4.8\cdot10^{-44}$\\
+$\beta_1$ & $-1.46871\,50658\,15963\,70493\,25307\,17216\,96234\,97520\,83{}^{74}_{82}$ & $6.5\cdot10^{-44}$\\
+$\beta_2$ & $0.93052\,47133\,16070\,52313\,06735\,09292\,04842\,31876\,25{}^{61}_{42}$ & $1.9\cdot10^{-43}$\\
+$\beta_3$ & $-1.06080\,01549\,81068\,66544\,87619\,20369\,88431\,68940{}^{79}_{81}$ & $5.6\cdot10^{-43}$\\
+$\beta_4$ & $0.86232\,42707\,61499\,26723\,17876\,90588\,15402\,40230\,6{}^{75}_{58}$ & $1.6\cdot10^{-42}$\\
+$\beta_5$ & $-0.49483\,03080\,17989\,61748\,83456\,44803\,65949\,37519\,9{}^{28}_{77}$ & $4.8\cdot10^{-42}$\\
+\addlinespace
+\multicolumn{3}{@{}l}{A116380, $d=4$}\\
+$\rho$ & $0.39758\,51966\,70872\,77088\,59245\,31229\,55260\,91912\,6980{}^{60}_{50}$ & $1.0\cdot10^{-45}$\\
+$\tau$ & $1.00615\,76976\,06778\,38077\,47815\,45294\,75819\,09840\,577{}^{53}_{41}$ & $1.1\cdot10^{-44}$\\
+$G_z(\rho,\tau)$ & $2.09856\,66204\,36446\,98331\,91531\,98306\,88101\,41966\,6{}^{81}_{79}$ & $5.7\cdot10^{-44}$\\
+$G_{yy}(\rho,\tau)$ & $0.96135\,59976\,29576\,01020\,70836\,97169\,69343\,86803\,987{}^{46}_{33}$ & $1.2\cdot10^{-44}$\\
+$C$ & $0.37165\,88075\,05686\,76119\,11296\,77634\,94289\,87038\,536{}^{66}_{58}$ & $6.8\cdot10^{-45}$\\
+$c_1$ & $-0.45386\,23093\,57400\,17186\,38269\,08420\,63109\,56911\,57{}^{66}_{93}$ & $2.5\cdot10^{-43}$\\
+$c_2$ & $-0.56221\,60004\,39483\,65516\,21546\,38923\,69892\,44636\,3{}^{06}_{62}$ & $5.5\cdot10^{-42}$\\
+$\lambda$ & $0.92234\,60366\,05932\,16816\,22667\,20250\,92941\,67672\,3254{}^{90}_{64}$ & $2.5\cdot10^{-45}$\\
+$b$ & $1.11103\,12521\,81146\,11871\,54156\,29664\,11488\,13787\,94{}^{22}_{19}$ & $2.2\cdot10^{-44}$\\
+$\beta_1$ & $-1.31749\,61691\,72812\,80730\,03444\,20338\,28942\,05344\,353{}^{01}_{27}$ & $2.4\cdot10^{-44}$\\
+$\beta_2$ & $0.64123\,77359\,09655\,16110\,66432\,56599\,27453\,93667\,73{}^{12}_{04}$ & $6.9\cdot10^{-44}$\\
+$\beta_3$ & $-0.72801\,52782\,33403\,73385\,06882\,67526\,37995\,77355\,76{}^{01}_{23}$ & $2.1\cdot10^{-43}$\\
+$\beta_4$ & $0.60853\,66639\,94243\,16927\,60797\,36207\,72101\,46119\,87{}^{73}_{12}$ & $6.0\cdot10^{-43}$\\
+$\beta_5$ & $-0.27986\,72193\,76854\,09137\,86233\,54511\,19191\,74825\,1{}^{23}_{41}$ & $1.8\cdot10^{-42}$\\
+\bottomrule\end{tabular}
+\caption{\textsf{[write]} Every certified enclosure of the reference
+certificate, in full (format in the note above).}
+\label{bit:cert:tab:full}
+\end{table}
+
+\begin{remark}[\textsf{[write]} Part~I's tables are correctly rounded]\label{bit:cert:rem:parti-tables}
+By exact rational comparison with the enclosures of
+Table~\ref{bit:cert:tab:full}: every one of the ten entries of Part~I's
+Table~\ref{bit:tab:constants} lies inside the corresponding 30-place interval
+of Tables~\ref{bit:cert:tab:d3}--\ref{bit:cert:tab:d4}, and more precisely each
+full enclosure lies strictly within half a unit of the thirtieth decimal of the
+printed entry, so every printed digit string is the correctly rounded value
+($D_j=c_j$, $b_j=\beta_j$). This includes the two entries discussed in the
+first note of Section~\ref{bit:sec:numerics} (the true $C$ for $d=3$ is
+$\ldots980551907\ldots$, the true $\rho$ for $d=4$ is $\ldots531229552\ldots$).
+Interval evaluation of \eqref{bit:eq:E12} from the enclosures of
+$\lambda,c_1,c_2$ gives
+\begin{align*}
+ d=3:\quad E_1&\in0.77474\,84199\,43689\,76129\,50794\,35644\,96402\,24129\,58{}^{70}_{01},\\
+ E_2&\in2.17165\,20579\,71796\,11833\,55612\,75953\,08307\,6073{}^{963}_{946},\\
+ d=4:\quad E_1&\in0.49207\,37893\,85523\,88787\,58880\,80793\,10675\,35119\,88{}^{78}_{50},\\
+ E_2&\in1.52147\,03882\,82210\,65137\,47100\,98590\,36465\,6153{}^{822}_{815},
+\end{align*}
+and Part~I's 20- and 19-decimal values of $E_1,E_2$ (Section~\ref{bit:sec:inverse})
+are their correct roundings. These are computations from the certificate, not
+new proofs; they inherit its trust boundary (computer-assisted, and the use of
+Theorem~\ref{bit:thm:sqrt} to identify $\rho$).
+\end{remark}
+
+\section{Asymptotic inversion with the rounding retained}\label{bit:cert:sec:inverse}
+Define the integer threshold
+\begin{equation}\label{bit:cert:eq:threshold}
+ N_d(T)=\min\{n\ge1:a_d(n)\ge T\},\qquad T>0.
+\end{equation}
+Adding a unary root is an injection, so $a_d(n+1)\ge a_d(n)$ for all $n$.
+Theorem~\ref{bit:cert:thm:main} gives $a_d(n+1)/a_d(n)\to\rho^{-1}>1$, so the
+sequence is eventually strictly increasing and unbounded, and the threshold is
+well defined (Part~I's \eqref{bit:eq:threshold}, with $T=y$). Put
+\begin{equation}\label{bit:cert:eq:inverseparams}
+ \alpha=\frac32,\quad \lambda=\log(1/\rho),\quad
+ L=\log T,\quad \ell=\log L,\quad
+ b=-\alpha\log\lambda-\log C,
+\end{equation}
+and define $d_j$ by the formal logarithm
+\begin{equation}\label{bit:cert:eq:dj}
+ \log\Bigl(1+\sum_{j\ge1}c_jx^j\Bigr)=\sum_{j\ge1}d_jx^j,
+\end{equation}
+so $d_1=c_1$ and $d_2=c_2-c_1^2/2$. At integers $n\to\infty$,
+\begin{equation}\label{bit:cert:eq:logasymptotic}
+ \log a_d(n)=\lambda n-\alpha\log n+\log C
+              +\sum_{j=1}^{J}d_jn^{-j}+O(n^{-J-1}).
+\end{equation}
+This is a statement about integer coefficients. A real formal inverse is an
+intermediate asymptotic expression, not an extension of the combinatorial count
+to all real $n$. Seek
+\begin{equation}\label{bit:cert:eq:formalinverse}
+ f_M(L)=\frac1\lambda\Bigl(L+\alpha\ell+b+
+              \sum_{m=1}^{M}P_m(\ell)L^{-m}\Bigr).
+\end{equation}
+With $u=\alpha\ell+b$, the first two numerator corrections are
+\begin{align}
+ P_1(\ell)&=\alpha u-\lambda d_1,\label{bit:cert:eq:P1}\\*
+ P_2(\ell)&=\alpha P_1-\frac\alpha2u^2
+                   +\lambda d_1u-\lambda^2d_2.\label{bit:cert:eq:P2}
+\end{align}
+For all orders, set $x=1/L$ and $s=u+\sum_{m\ge1}P_mx^m$; the triangular
+recursion is
+\begin{equation}\label{bit:cert:eq:Prec}
+ P_m=[x^m]\Bigl\{\alpha\log(1+xs)
+        -\sum_{j=1}^m d_j\lambda^jx^j(1+xs)^{-j}\Bigr\},\qquad m\ge1.
+\end{equation}
+Only $P_i$ with $i<m$ can affect this coefficient, because $s$ always occurs
+multiplied by $x$. To derive \eqref{bit:cert:eq:Prec}, substitute
+$n=(L+s)/\lambda$ into \eqref{bit:cert:eq:logasymptotic}, use
+$\log n=\log L-\log\lambda+\log(1+xs)$, and cancel the leading terms; this also
+shows by induction that $P_m$ is a polynomial in $\ell$ of degree at most $m$.
+The first-correction formula, often the most useful, is
+\begin{equation}\label{bit:cert:eq:f1}
+ f_1(L)=\frac1\lambda\Bigl[
+ L+\frac32\log L+b+
+ \frac{\frac94\log L+\frac32 b-\lambda c_1}{L}\Bigr];
+\end{equation}
+in particular the sign in front of $\lambda c_1$ is negative.
+
+\begin{theorem}[All-orders integer inverse brackets]\label{bit:cert:thm:inverse}
+For every fixed $d\ge2$ and integer $M\ge0$ there are constants $K>0$ and $T_0$
+such that, for $T\ge T_0$, writing $L=\log T$ and
+$\epsilon_M(L)=K(\log L)^{M+1}/L^{M+1}$,
+\begin{equation}\label{bit:cert:eq:ceiling}
+ \bigl\lceil f_M(L)-\epsilon_M(L)\bigr\rceil\le N_d(T)
+ \le\bigl\lceil f_M(L)+\epsilon_M(L)\bigr\rceil.
+\end{equation}
+For sufficiently large $T$ the endpoints are equal or adjacent integers. In
+particular
+$N_d(T)=\bigl(L+\frac32\log L-\frac32\log\lambda-\log C\bigr)/\lambda+O(1)$,
+and the real interval inside the ceilings for \eqref{bit:cert:eq:f1} has width
+$O((\log L)^2/L^2)$.
+\end{theorem}
+\begin{proof}
+Choose in \eqref{bit:cert:eq:logasymptotic} sufficiently many terms for the
+desired $M$ and call the resulting smooth truncated expression $h(n)$. Its
+derivative satisfies $h'(x)=\lambda+O(1/x)$, so $h'(x)\ge\lambda/2$ for large
+$x$. Formal substitution and \eqref{bit:cert:eq:Prec} give
+$h(f_M(L))-L=O((\log L)^{M+1}L^{-M-1})$. The integer error in
+\eqref{bit:cert:eq:logasymptotic} is bounded by a constant times a suitable
+negative power of $n$, and is no larger than this scale once $n\asymp L$.
+Increasing $K$ supplies lower and upper comparison points
+$f_M(L)\mp\epsilon_M(L)$ with a strict margin covering both errors. Every
+sufficiently large integer below the lower point has logarithmic count less
+than $L$; every integer at or above the upper point has logarithmic count at
+least $L$; the finitely many small integers are below threshold once $T$ is
+large. Taking ceilings proves \eqref{bit:cert:eq:ceiling}. Finally
+$2\epsilon_M(L)<1$ eventually, so the two ceilings differ by at most one.
+\end{proof}
+
+\begin{remark}[\textsf{[write]} The same theorem as Part~I's]\label{bit:cert:rem:inverse-route}
+Theorem~\ref{bit:cert:thm:inverse} is Proposition~\ref{bit:prop:threshold}
+with the pure-logarithmic expansion \eqref{bit:eq:purelog}, in another
+normalization: Part~I expands in $L_{\mathrm I}=\log(T/C)$ and
+$h=\log(L_{\mathrm I}/\lambda)$, Part~II in $L=\log T$ and $\ell=\log L$, and
+Part~I's $p$, $D_j$, $L_2$ are $\alpha$, $c_j$, $d_2$. A second proof from
+Part~I runs as follows. Fix $M$ and take Part~I's model order $R\ge M$, so
+that its $\log M_R(x)=\lambda x-\alpha\log x+\log C+\sum_{j\le M}d_jx^{-j}+O(x^{-M-1})$
+with the true $d_1,\ldots,d_M$. Put $\lambda x=L+s$; then
+$\log M_R(x)-L=s-\alpha\log(1+s/L)-u+\sum_{j\le M}d_j\lambda^jL^{-j}(1+s/L)^{-j}+O(L^{-M-1})$
+for bounded $s/L$, and \eqref{bit:cert:eq:Prec} is precisely the statement
+that $s=s_M:=u+\sum_{m\le M}P_mL^{-m}$ makes this $O((\log L)^{M+1}L^{-M-1})$
+(the first neglected coefficient is a polynomial of degree at most $M+1$ in
+$\ell$). Since $(\log M_R)'\ge\lambda/2$ for large arguments
+\eqref{bit:eq:monmodel}, the inverse $x_R(T)$ of Part~I satisfies
+$|\lambda x_R(T)-\lambda f_M(L)|\le K_1(\log L)^{M+1}L^{-M-1}$ for large $T$.
+Part~I's bracket \eqref{bit:eq:ceiling} around $x_R(T)$ has half-width
+$K_{d,R}x_R^{-R-1}\le K_2L^{-M-1}$, because $x_R(T)\sim L/\lambda$ and
+$R\ge M$. With $K=K_1/\lambda+K_2$ and $L\ge e$ we get
+$f_M-\epsilon_M\le x_R-K_{d,R}x_R^{-R-1}$ and
+$f_M+\epsilon_M\ge x_R+K_{d,R}x_R^{-R-1}$, and monotonicity of the ceiling
+turns \eqref{bit:eq:ceiling} into \eqref{bit:cert:eq:ceiling}. By uniqueness of expansions in the scale $(\log L)^aL^{-m}$, re-expanding
+Part~I's \eqref{bit:eq:purelog} in $L$ reproduces the $P_m$ of
+\eqref{bit:cert:eq:Prec}; for $m=1,2$ the write checked this symbolically
+(Section~\ref{bit:cert:sec:rechecked}), for example $P_1=\alpha u-\lambda d_1$
+is Part~I's $P_1(h)=p^2h-\lambda D_1$ after $L_{\mathrm I}=L-\log C$,
+$h=\ell-\log\lambda+O(1/L)$. Both inversions are instances of the transseries
+volume's results, as the note at the end of Section~\ref{bit:sec:threshold}
+says.
+\end{remark}
+
+\begin{remark}[What an inverse expansion does not say]\label{bit:cert:rem:notsay}
+In general $N_d(T)\ne f_M(\log T)+o(1)$: an integer-valued threshold
+necessarily retains a rounding effect. Nor do the existential constants
+$K,T_0$ of Theorem~\ref{bit:cert:thm:inverse} constitute an algorithmically
+usable finite-$T$ certificate. The rational constant enclosures of
+Section~\ref{bit:cert:sec:certificate} do not supply explicit
+coefficient-remainder constants or a numerical range for that theorem.
+\end{remark}
+
+\section{Exact finite thresholds and reproducibility}\label{bit:cert:sec:repro}
+\subsection{An exact threshold algorithm}
+For a specified positive integer $T$, a complete certificate for
+\eqref{bit:cert:eq:threshold} needs no asymptotic remainder estimate:
+\begin{enumerate}
+\item enumerate exact coefficients through a bound $M$, initially for example
+ $M=32$, using \eqref{bit:cert:eq:forests} or \eqref{bit:cert:eq:newton};
+\item if $a_d(M)<T$, double $M$ and extend or recompute the exact list;
+\item once $a_d(M)\ge T$, binary-search the monotone exact list for its first
+ coefficient at least $T$;
+\item return $n$ and the integer inequalities $a_d(n-1)<T\le a_d(n)$, with the
+ convention $a_d(0)=0$.
+\end{enumerate}
+The unary-root injection proves the monotonicity the search needs.
+Unboundedness from Theorem~\ref{bit:cert:thm:main}, or directly the spine
+subclass \eqref{bit:cert:eq:spine}, proves termination. A formal inverse may
+suggest a starting bound, but the proof of the output uses only integer
+comparisons. For a real noninteger input, exact or certified comparisons to
+that input must be specified; a floating-point approximation must not silently
+be treated as an exact real number. (Part~I's
+Section~\ref{bit:sec:reproduce} has the exact enumeration but no threshold
+search.)
+
+\subsection{Computational scope and trust boundary}
+The delivered package contained the mathematical source, its PDF, the
+unchanged integer-interval verifier, the reference certificate, exact
+coefficient exports through 400 and supplementary verifier tests; the
+repository ships the verifier, the certificate, the tests and the release
+tools (see the shipped-files note below). The executable certificate is
+restricted to $d=3,4$ and local degree six. General $d$ and arbitrary orders are
+proved and algorithmically specified, not claimed as already implemented and
+exercised by that executable. The certificate replays with Python~3 and no
+third-party dependencies: run the program from a temporary directory, compare
+its standard output byte for byte with the frozen reference JSON, and repeat
+with optimization enabled. A build script compiles the article in a fresh
+temporary output directory. The guarantees have distinct roles:
+\begin{itemize}
+\item the mathematical proof establishes the model, actual radius, unique
+ square-root singularity, every fixed asymptotic order, and the asymptotic
+ inverse brackets;
+\item the numerical certificate encloses selected constants and local
+ coefficients for the two specified sequences;
+\item exact coefficient comparisons certify finite thresholds when that
+ algorithm is run for a stated input;
+\item hashes establish file identity; replays and tests establish the outcomes
+ of those runs, not a proof-assistant guarantee or a universal
+ software-correctness theorem.
+\end{itemize}
+No finite-$n$ asymptotic error bound, explicit inverse remainder constant,
+global literature-priority conclusion, upload, submission or publication is
+part of these guarantees.
+
+\begin{writenote}[Added 5 October 2026, batch~103]
+\emph{Shipped files.} The repository ships, byte-identical to the delivery and
+with the prefix \texttt{02-certified-}, five programs in \texttt{code/}
+(\texttt{certify.py} and \texttt{test\_certifier.py}, delivered in
+\texttt{certificate/}; \texttt{verify\_package.py}, \texttt{test\_package.py}
+and \texttt{build.sh}) and three records in \texttt{data/}
+(\texttt{certificate.json} and \texttt{tests.json}, delivered in
+\texttt{certificate/}; \texttt{release\_checks.json}). Not shipped (all in the arrival commit): the
+manuscript sources and PDF, the delivered README, the checksum manifest
+\texttt{SHA256SUMS} (verified at intake) and the two coefficient exports
+\texttt{a\_d3\_through\_400.json} and \texttt{a\_d4\_through\_400.json}, which
+\texttt{certify.py -{}-coefficients-out} regenerates in seconds, whose SHA-256
+the certificate records, and whose integers are Part~I's
+\texttt{data/identity-checks.json}. The prefixed names break the delivered
+imports (\texttt{import certify}, \texttt{import verify\_package}), and
+\texttt{verify\_package.py} needs \texttt{SHA256SUMS} and the delivered tree
+beside it; the report's \texttt{README.md} gives a rerun route on a scratch
+copy with the prefix removed, and warns that on Windows the programs write
+CRLF, so outputs must be compared modulo carriage returns.
+\end{writenote}
+
+\section{Further questions and research (Part II)}\label{bit:cert:sec:further}
+Vladimir's standing rule of 4~October 2026: unproved claims are recorded here,
+with their source, sketch and what is missing. The manuscript's own
+``Further research'' paragraph names three extensions as outside the proved
+scope, each requiring additional arguments rather than a change of parameter;
+they are questions~1, 3 and~4.
+\begin{enumerate}
+\item \textbf{Effective remainders and thresholds} (manuscript; Part~I's
+ question~1, second half). Effective finite-$n$ remainder constants and a
+ certified starting index would turn the brackets of
+ Theorem~\ref{bit:cert:thm:inverse} (or \eqref{bit:eq:ceiling}) into fast
+ numerical threshold certificates, reducing reliance on exact enumeration.
+ Missing: explicit $K$ and $T_0$; this needs an explicit transfer remainder in
+ the $\Delta$-domain, hence explicit $\eta,\phi$ and a bound for $A$ on its
+ boundary, none of which Part~I or Part~II provides.
+\item \textbf{Certified corrections of higher order and other caps}
+ (manuscript, Section~\ref{bit:cert:sec:certificate}). The certificate encloses
+ $c_1,c_2$ and $\beta_1,\ldots,\beta_5$ for $d=3,4$ only. The extension to
+ $c_J$ for $J\ge3$ and to other $d$ is specified (jets through degree $2J+2$,
+ inner jets $j\le J+1$, larger $N$) but not implemented or run. For $d\ge5$ the
+ global identification of Section~\ref{bit:cert:sec:identify} would also need
+ new bounds like \eqref{bit:cert:eq:G3positive}--\eqref{bit:cert:eq:G4positive},
+ since it is proved only for $d=3,4$.
+\item \textbf{Uniformity as $d$ grows} (manuscript; Part~I's question~2).
+ Estimates uniform in $d$ would connect the fixed-outdegree expansions with the
+ unrestricted class (A004111) and the maximum-outdegree behaviour of a large
+ random identity tree. Neither Part proves anything uniform in $d$.
+\item \textbf{Unrooted identity trees with a bound on total degree}
+ (manuscript; new). Unrooted (free) identity trees with every vertex degree at
+ most $d$ call for a separate treatment of automorphisms and root positions.
+ The manuscript suggests equivariant dissymmetry as a route, but proves neither
+ an unrooted counting formula nor its asymptotics, and nothing in either Part
+ addresses it. (Haigh--Kennedy--Quintas \cite{hkq} count identity trees of
+ bounded degree with fixed diameter; their full text, and so their degree
+ convention, has not been checked, and comparing conventions is Part~I's
+ question~5.)
+\item \textbf{Priority} (both manuscripts). Four older works remain unchecked at
+ full-text level: Meir--Moon--Mycielski \cite{mmm} and Haigh--Kennedy--Quintas
+ \cite{hkq}, cited by Part~I, and Labelle \cite{labelle} and
+ Kennedy--McKeon--Palmer--Robinson \cite{kmpr}, cited by Part~II after
+ abstract-level checks only. Part~II's manuscript does not cite
+ Meir--Moon--Mycielski. Neither Part claims priority.
+\item \textbf{The OEIS status} (manuscript). The statement that the A116379 and
+ A116380 records ``explicitly retain a question about the leading form'' was
+ inspected by the manuscript on 2~October 2026 and has not been re-checked by
+ the intake.
+\end{enumerate}
+No claim of the manuscript was found to be mathematically wrong. The one
+demonstrably wrong statement is bibliographic, the author of \cite{hkq}
+(Remark~\ref{bit:cert:rem:furnas}); a packaging overstatement (the delivered
+README's ``any working directory'' replay does not pass on Windows except
+modulo line endings) is disclosed in the report's \texttt{README.md}.
+
+\begin{thebibliography}{99}
 \bibitem{bby}
 J.~P. Bell, S.~N. Burris and K.~A. Yeats.
 \emph{Counting Rooted Trees: The Universal Law $t(n)\sim C\rho^{-n}n^{-3/2}$.}
@@ -712,5 +2043,19 @@ K.~A. Yeats and OEIS contributors.
 \emph{A116380: Number of quaternary rooted identity trees with $n$ nodes.}
 The On-Line Encyclopedia of Integer Sequences.
 \url{https://oeis.org/A116380}. Inspected 2 October 2026.
+
+\bibitem{labelle}
+G. Labelle.
+\emph{Counting asymmetric enriched trees.}
+Journal of Symbolic Computation \textbf{14} (1992), 211--242.
+\href{https://doi.org/10.1016/0747-7171(92)90037-5}{doi:10.1016/0747-7171(92)90037-5}.
+Cited by Part~II; abstract-level check only, full text not inspected.
+
+\bibitem{kmpr}
+J.~W. Kennedy, K.~A. McKeon, E.~M. Palmer and R.~W. Robinson.
+\emph{Asymptotic number of symmetries in locally restricted trees.}
+Discrete Applied Mathematics \textbf{26} (1990), 121--124.
+\href{https://doi.org/10.1016/0166-218X(90)90026-9}{doi:10.1016/0166-218X(90)90026-9}.
+Cited by Part~II; abstract-level check only, full text not inspected.
 \end{thebibliography}
 \end{document}
