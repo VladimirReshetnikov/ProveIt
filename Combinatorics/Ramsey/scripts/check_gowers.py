@@ -37,14 +37,15 @@ def main():
         for dependency in local:
             build(dependency)
         target = OUTPUT / (module.replace('.', '/') + '.olean')
-        inputs = [source, ROOT / 'lean-toolchain', ROOT / 'lake-manifest.json']
+        inputs = [source, Path(__file__), ROOT / 'lean-toolchain', ROOT / 'lake-manifest.json']
         inputs += [OUTPUT / (d.replace('.', '/') + '.olean') for d in local]
         if target.exists() and all(p.stat().st_mtime < target.stat().st_mtime for p in inputs):
             done.add(module)
             return
         target.parent.mkdir(parents=True, exist_ok=True)
         print(f'Checking {module}', flush=True)
-        subprocess.run(['lean', '-o', str(target), str(source)], cwd=ROOT, env=env, check=True)
+        subprocess.run(['lean', '-R', str(SOURCE), '-o', str(target), str(source)],
+                       cwd=ROOT, env=env, check=True)
         done.add(module)
 
     for module in sys.argv[1:] or ['GowersSzemeredi']:
