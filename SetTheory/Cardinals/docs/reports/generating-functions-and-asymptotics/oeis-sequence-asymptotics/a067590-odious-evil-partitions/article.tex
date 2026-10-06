@@ -204,9 +204,26 @@ and its first eight digits are those printed. The decimal
 $K_-\approx0.2218648339570363$ comes from a floating-point evaluation of~$d$;
 the intake recomputed $d$ independently from~\eqref{oep:eq:dquadrature}
 (mpmath quadrature, $-0.487450622521547$) and obtained
-$K_-=0.221864833957$, which begins with the nine printed digits. Neither
+$K_-=0.221864833957$, which begins with the nine printed digits. An
+independent check of the write (6~October 2026) enclosed
+$\log Q=\sum_{k\ge1}\eps(k)\log\frac{2k}{2k+1}$ in interval arithmetic
+(mpmath \texttt{iv}, 120 bits), summing Prouhet blocks of length $2^{10}$
+(on which $\sum_{r<2^{10}}\eps(r)r^i=0$ for $i<10$) with the tail bound
+$\lvert\text{block }n\rvert\le1/(22\,n^{11})$, from Taylor's theorem; it
+gives $d\in[-0.48745062252154755,\,-0.48745062252154734]$ and
+$K_-\in[0.22186483395703626,\,0.22186483395703629]$. Given the established
+evaluation~\eqref{oep:eq:Q}, the nine digits of $c$ printed in A067590 are
+therefore correct (a machine interval computation, not a formal proof). The
+quadrature~\eqref{oep:eq:dquadrature} and the block sum, two independent
+mpmath routes, agree to $4\times10^{-32}$:
+$d=-0.4874506225215474445445025398\ldots$,
+$Q=1.6281601297189172488215312\ldots$,
+$K_-=0.22186483395703627316229215\ldots$ and
+$K_+=0.12358068700732633070667746\ldots$. \textup{(Added after the
+independent check of 6~October 2026; the first wording read ``Neither
 evaluation is an interval enclosure, so that the digits of $c$ printed in
-A067590 are right is supported by two concordant computations, not proved.
+A067590 are right is supported by two concordant computations, not
+proved.'')}
 The evil counterparts A067591 (revision~\#6) and A116491 (revision~\#14)
 carry no asymptotic formula. Both conjecture lines are still labelled
 conjectures in the OEIS; this is recorded here only, and nothing was
@@ -323,7 +340,9 @@ does not say that $p_{-,m}-(m+1)p_{+,m}$ is polynomially small. No constant
 ($d$, $Q$, $K_\pm$), error constant, onset of eventual monotonicity or
 threshold constant ($C$, $y_0$ of Proposition~\ref{oep:prop:threshold}) is
 interval-certified or evaluated; numerical quadrature supplies no enclosure
-for~$d$. A bare ceiling of an asymptotic inverse is not a threshold. No
+for~$d$ \textup{(since the independent check of 6~October 2026, $\log Q$,
+and hence $d$ and $K_\pm$ given~\eqref{oep:eq:Q}, has an interval enclosure;
+Remark~\ref{oep:rem:kotesovec})}. A bare ceiling of an asymptotic inverse is not a threshold. No
 historical priority is claimed: the continuation of $D$ and the evaluation
 of~$d$ are credited to Allouche--Cohen and Allouche; the literature search
 is bounded (Merca's article read at abstract level only; the Allouche--Cohen
@@ -509,7 +528,14 @@ $\log^22-2d\log2=1.156203063244203$ to 16 digits; mpmath, uncertified.)
 with its zeros at $s=0$, give the value $D'(0,\tfrac12)=\log2$ without this
 report. The dyadic
 equation $D(s,1)=2^{-s}\bigl(D(s,\tfrac12)-D(s,1)\bigr)$
-(\file{p1:thm:Dirichlet-dyadic} at $a=1$), differentiated at $s=0$ with
+(\file{p1:thm:Dirichlet-dyadic} at $a=1$, in its entire form
+\file{p1:eq:Dirichlet-dyadic-entire}, valid for every $s\in\mathbb C$ by the
+identity theorem and formal as
+\file{Fabius.dirichletMellinContinuation_dyadic}; the theorem itself is
+stated for $\Re s>0$ only)
+\textup{(entire form cited after the independent check of 6~October 2026;
+the first wording cited only ``\file{p1:thm:Dirichlet-dyadic} at $a=1$'')},
+differentiated at $s=0$ with
 $D(0,\tfrac12)=D(0,1)=0$, gives $D'(0,1)=D'(0,\tfrac12)-D'(0,1)$. The
 derivative bridge $\log G(a,b)=D'(0,b)-D'(0,a)$ (\file{p1:cor:G-Dirichlet})
 at $(a,b)=(\tfrac12,1)$, with the Woods--Robbins product
@@ -528,9 +554,14 @@ novelty is claimed.
 
 {\raggedright\emph{(d) Formal status.} Formal in Lean (statements read at the commit of
 this write): the effective real-axis bounds
+$2^{\binom m2}(t/2)^m\mathcal E(\tfrac12)\le\mathcal E(t)$ when
+$\tfrac12\le2^mt\le2$, and $\mathcal E(t)\le2^{\binom m2}t^m$ for all $t>0$,
+$m\ge0$ (\file{Fabius.le_lacunaryExpProduct}, \file{Fabius.lacunaryExpProduct_le},
+for $\mathcal E=$ \file{Fabius.lacunaryExpProduct}) \textup{(level condition
+added after the independent check of 6~October 2026; the first wording
+stated the chain
 $2^{\binom m2}(t/2)^m\mathcal E(\tfrac12)\le\mathcal E(t)\le2^{\binom m2}t^m$
-(\file{Fabius.le_lacunaryExpProduct}, \file{Fabius.lacunaryExpProduct_le},
-for $\mathcal E=$ \file{Fabius.lacunaryExpProduct}); the entire continuation
+without it)}; the entire continuation
 of $D(s,a)$, $a>0$ (\file{Fabius.dirichletMellinContinuation},
 \file{Fabius.dirichletMellinContinuation_differentiable}, agreement for real
 $s>1$ by \file{Fabius.dirichletMellinContinuation_eq}); its zeros, in the
@@ -542,7 +573,15 @@ as their docstrings warn); the dyadic equation at every complex~$s$
 (\file{Fabius.mpLimit_eq_deriv_sub}); $\log G(\tfrac12,1)=-\tfrac12\log2$
 (\file{Fabius.mpLimit_one_half_one}); and the evil and odious enumerators of
 \file{p1:thm:evil-odious} (\file{Fabius.evilEnum}, \file{Fabius.odiousEnum}).
-Not formal: the combination in~(c), which has not been written in Lean; the
+Not formal: the conclusion $D'(0,\tfrac12)=\log2$ of~(c), which has not
+been stated in Lean, although its inputs are: the differentiated dyadic
+equation is \file{Fabius.thueMorseGammaLog_dyadic} at $r=0$, $a=1$ (where
+\file{Fabius.thueMorseGammaLog} $0\;a$ is the derivative at $s=0$ of the
+continuation and $2^0=1$), and the bridge and its value are
+\file{Fabius.mpLimit_eq_deriv_sub} and \file{Fabius.mpLimit_one_half_one}
+\textup{(corrected after the independent check of 6~October 2026; the first
+wording read ``the combination in~(c), which has not been written in
+Lean'')}; the
 identity~(b); the unshifted $D(s)$, its continuation, values and
 derivative~$d$; the evaluation~\eqref{oep:eq:Q}; the sector and derivative
 forms of flatness; and everything in
@@ -1053,7 +1092,9 @@ proves one negative statement (Question~\ref{oep:q:caps}).
  Section~\ref{oep:sec:bessel}; an interval value of~$d$ (from
  \eqref{oep:eq:dquadrature} or from~\eqref{oep:eq:Q}), which would also
  certify the digits of Kot\v e\v sovec's decimal
- (Remark~\ref{oep:rem:kotesovec}); and from these, an explicit onset of
+ (Remark~\ref{oep:rem:kotesovec}) \textup{(supplied from~\eqref{oep:eq:Q} by
+ the independent check of 6~October 2026, in that remark; the error
+ constants, onsets and threshold enclosures remain open)}; and from these, an explicit onset of
  eventual increase and certified threshold enclosures.
 \item\label{oep:q:literature} \textbf{The literature boundary} (source,
  Section~\ref{oep:sec:sources}). Merca's article~\cite{merca} was read at
@@ -1062,6 +1103,40 @@ proves one negative statement (Question~\ref{oep:q:caps}).
  digit-restricted parts, already contains the equivalents proved here.
  Missing: reading them.
 \end{enumerate}
+\begin{writenote}[Independent check of the write, 6~October 2026]
+An adversarial check made by the intake after the write (commit
+\file{715fb82db}) re-read Remarks~\ref{oep:rem:kotesovec},
+\ref{oep:rem:atlas} and~\ref{oep:rem:transseries}, Question~\ref{oep:q:caps}
+and the counts, with its own code. The two conjecture lines are verbatim at
+A067590 revision~\#17 and A116492 revision~\#18 (A067591 \#6 and A116491
+\#14 carry no asymptotic formula), and the normalisation $N=n-\frac1{48}$
+against Kot\v e\v sovec's unshifted $n$ is harmless. Counts recomputed from
+the definitions agree with all 54, 63, 69 and 74 listed terms and with the
+b-files of A067590 and A116492 ($0\le n\le10000$) and A116491
+($0\le n\le1000$); the relative Bessel residuals quoted in
+Question~\ref{oep:q:residual} were reproduced. The bridge~(b) of
+Remark~\ref{oep:rem:atlas} was re-proved and checked numerically (mpmath, 40 digits):
+$\partial_sD(s,\frac12)|_{s=0}=\log2$ to 30 digits, the second derivative
+$1.156203063244203004818459767$ to 40 digits, $D(2,\frac12)=-3D(2)=3.4657672610904246175$,
+and $\lvert D(2\pi i/\log2,\frac12)\rvert=4.5\times10^{-37}$ (control at
+$1+2\pi i/\log2$: $2.34$). Each Lean declaration named in~(d) was re-read and
+states what is claimed. Remark~\ref{oep:rem:transseries} was confirmed item
+by item (the $W_{-1}$ residuals are below $10^{-29}$). For
+Question~\ref{oep:q:caps}, $K_-/K_+=\sqrt{12}\,Q/\pi=1.7953034517754646109$,
+and $\sqrt n\,p_-(n)/((n+1)p_+(n))=1.9497$, $1.8334$, $1.8175$ at $n=100$,
+$1000$, $3000$. No mathematical error was found. Three precision fixes to
+Remark~\ref{oep:rem:atlas} are made, each with a dated note keeping the first
+wording: the dyadic equation of the atlas is stated for $\Re s>0$ only, so
+differentiating it at $s=0$ cites its entire form
+\file{p1:eq:Dirichlet-dyadic-entire}
+(\file{Fabius.dirichletMellinContinuation_dyadic}); the lower bound
+\file{Fabius.le_lacunaryExpProduct} needs the level condition
+$\frac12\le2^mt\le2$; and the differentiation step of~(c) is already formal,
+as \file{Fabius.thueMorseGammaLog_dyadic} at $r=0$, $a=1$, so only the
+conclusion $D'(0,\frac12)=\log2$ is not stated in Lean. Added: the interval
+enclosure of $\log Q$ in Remark~\ref{oep:rem:kotesovec}, which certifies the
+nine printed digits of $c$ given~\eqref{oep:eq:Q}.
+\end{writenote}
 
 \begin{thebibliography}{99}
 \raggedright
