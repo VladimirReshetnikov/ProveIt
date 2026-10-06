@@ -41,7 +41,7 @@ Hackl and Linusson). With `p_n` their number (`p_0 = 1`;
   came first; Part III credits it.
 - **Added by the write**: the front matter; **Remark 5.1**, an interval-arithmetic
   proof that the list of positive poles printed by Claesson–Guðmundsson–Pantone
-  omits `ρ₁₂ = 5.338876712720…` and that each of its fifteen values is a correct
+  omits `ρ₁₂ = 5.33887671271979…` and that each of its fifteen values is a correct
   truncation; the check of their three printed complex pairs; the check of
   Patel's proof; the classification of the inverses against the transseries
   volume; dated notes; Section 33.
@@ -310,15 +310,20 @@ values including `ρ₁₂`, all within their stated last-digit uncertainty, so 
 omission is in the paper's transcription. The three printed complex pairs are
 correct to 62–66 decimal places; from there each printed string is the
 repository's with two consecutive digits deleted (floating-point Newton
-iteration in 220 digits; the repository's values agree to 110 or more digits).
+iteration in 220 digits; the repository's values agree to at least 108 decimal
+places).
 Neither is an error of a theorem: the paper presents experimental estimates.
 
 **Asinowski–Banderier–Hackl** (*Flip-sort and combinatorial aspects of
 pop-stack sorting*, DMTCS 22:2, 2021; read by the write): Section 2.4 (p. 18)
 calls an exact asymptotic analysis "a challenge" and reports the conjectures
 above; Theorem 12 (p. 18) is the interleaving lower bound that Part II
-re-proves without citing it (noted in Section 18); the total-count costs
-`O(N⁴)`/`O(N³)` are in the discussion after Theorem 11 (pp. 16–17); the
+re-proves without citing it (noted in Section 18); Theorem 11 (p. 16) states
+the run-refined recurrence and, in its last sentence, the total-count costs
+`∼ n⁴/8` time and `∼ n³/3` memory, restated as `O(N⁴)`/`O(N³)` (and `O(N⁵)`
+for all `p_{n,k}`) in the proof and discussion (pp. 16–17), so Part I's
+citation of Theorem 11 is accurate (the write first placed the costs outside
+the theorem; corrected after the independent check below); the
 conclusion (p. 37) leaves "the optimal cost of the computation of pop-stacked
 permutations" open (still open: Part I lowers the operation count only).
 
@@ -360,6 +365,26 @@ instance: the two-ceiling bracket (Proposition 11.1 = Theorem 19.2), proved
 directly at the integers without an interpolation; when its ceilings agree it
 reaches the conclusion of `p0:thm:staircase` (2), whose failure mode both Parts
 describe.
+
+**Independent check of the write (6 October 2026).** An adversarial check
+made by the intake after the write (`12013349a`) re-derived every `[write]`
+statement. Remark 5.1: the same fifteen identifications (`mpmath.iv`, 130
+digits, its own phase argument), `k = 12` at `5.3388767127`, the twelve-decimal
+table and the decimals of `C` and `1/ρ`. The repository file has exactly one
+commit (`9c58ae6`) and is unchanged since; its twenty positive values are within
+their stated uncertainty (`ρ₄,…,ρ₁₉` at 230 digits, `ρ₀,…,ρ₃`, with 252–782
+decimals, at 900 digits). The complex misprints, Patel's account and every step
+of his proof, the Theorem 12 credit and the transseries classifications were
+confirmed; Part I's recurrence reproduces all 450 b-file terms, the definition
+for `n ≤ 9` and the Taylor coefficients of `N/D` for `n ≤ 25`. No mathematical
+error was found. Corrected: `ρ₁₂` was printed in four places as a rounded value
+followed by `…` (now the truncation `5.33887671271979…`); "agree to 110 or more
+digits" is now "at least 108 decimal places" (the third pair's real part:
+`|difference| = 1.8·10⁻¹⁰⁹`); the quoted MathDB label "unverified claimed
+solution" is not on the page, whose status for the problem is "Claimed solved";
+and the write's location note for Asinowski–Banderier–Hackl's Theorem 11 was
+itself partly wrong (the theorem's statement on p. 16 includes the costs), so
+Part I's citation stands, with a dated note keeping both wordings.
 
 ## What the report does not claim
 
@@ -529,7 +554,8 @@ latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
 pdfLaTeX (MiKTeX), in a scratch copy of `article.tex` (no other inputs);
-commit only `article.pdf`. The build (59 pages): no errors, no undefined or
+commit only `article.pdf`. The build (59 pages; rebuilt after the independent
+check of 6 October 2026, still 59): no errors, no undefined or
 multiply defined references or citations, no duplicate destinations, no
 overfull or underfull boxes, no warnings. The log carries one "Infinite glue
 shrinkage found in box being split" message, from the notation longtable
