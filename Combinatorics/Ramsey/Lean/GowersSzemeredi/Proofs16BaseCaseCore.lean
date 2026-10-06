@@ -1,17 +1,17 @@
-import GowersSzemeredi.Section16
+import GowersSzemeredi.Proofs16BoxGeometry
 
 /-!
 # The proper-box repair for Gowers's Section 16
 
-This small isolated module records the structural repair needed before the
-base case can be folded into the statement catalogue.  A box is required to
+This module records the structural repair used by the shared catalogue and
+the one-dimensional base case.  A box is required to
 be genuine axis by axis, and the loss parameter in multiple linearity is
 restricted to `(0,1]`.  The compact witness at the end exposes the loophole in
 the old predicate: a step-zero progression can have singleton carrier and an
 arbitrarily inflated formal width.
 
-Nothing here changes the shared Section 16 statement catalogue.  The
-temporary names are intended to disappear once that catalogue is migrated.
+The shared Section 16 catalogue now uses these conditions. The former
+proper-predicate names remain as reducible compatibility aliases.
 -/
 
 set_option autoImplicit false
@@ -23,44 +23,13 @@ open Finset
 
 namespace LeanProofs.GowersSzemeredi
 
-namespace Box
-
-/-- A box is genuine when each modular arithmetic-progression axis is
-proper. -/
-def IsProper {N k : Nat} (P : Box N k) : Prop :=
-  ∀ i, (P.axis i).IsProper
-
-end Box
-
-/-- Temporary repaired form of `MultiplyLinear`. -/
-def ProperMultiplyLinear {N k : Nat} [NeZero N] (gamma r : Real)
+/-- Compatibility name for the migrated shared predicate. -/
+abbrev ProperMultiplyLinear {N k : Nat} [NeZero N] (gamma r : Real)
     (Gamma : Finset (Point N k × ZMod N)) : Prop :=
-  ∀ eta : Real, 0 < eta → eta ≤ 1 → ∀ P : Box N k, P.IsProper →
-    ∃ M q : Nat, ∃ H : Finset (Point N k),
-      ∃ Q : Fin M → Box N k,
-        ∃ mu : Fin M → Fin q → Point N k → ZMod N,
-          H ⊆ P.carrier ∧ (1 - eta) * P.carrier.card ≤ H.card ∧
-          IsBoxPartition Q P ∧ (∀ j, (Q j).IsProper) ∧
-          (q : Real) ≤ (multipleQ (r⁻¹ * eta) gamma k) ^ r ∧
-          (∀ j, (P.width : Real) ^
-              ((multipleC (r⁻¹ * eta) gamma k) ^ r) ≤ (Q j).width) ∧
-          (∀ j i, IsMultilinear (mu j i)) ∧
-          ∀ j x, x ∈ (Q j).carrier → x ∈ H → ∀ y,
-            (x, y) ∈ Gamma → ∃ i, y = mu j i x
+  MultiplyLinear gamma r Gamma
 
-/-- Temporary repaired fixed-dimensional assertion of Theorem 16.2. -/
-def ProperTheorem162At (k : Nat) : Prop :=
-  ∀ gamma theta : Real, 0 < gamma → gamma ≤ 1 →
-    0 < theta → theta ≤ 1 → ∃ N0 : Nat,
-      ∀ (N : Nat) [NeZero N] [Fact N.Prime], N0 ≤ N →
-        ∀ Gamma : Finset (Point N k × ZMod N),
-          (Gamma.card : Real) ≤ gamma ^ (-(2 : Int)) * (N : Real) ^ k →
-          RelationProductProperty gamma Gamma →
-          ∃ J : Finset (Point N k),
-            (1 - theta) * (N : Real) ^ k ≤ J.card ∧
-            ProperMultiplyLinear gamma
-              (gamma ^ (-(2 : Int)) * multipleS theta gamma k)
-              (restrictRelation Gamma J)
+/-- Compatibility name for the migrated fixed-dimensional assertion. -/
+abbrev ProperTheorem162At (k : Nat) : Prop := Theorem162At k
 
 /-! ## The improper-box loophole -/
 

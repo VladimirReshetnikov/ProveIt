@@ -4,7 +4,7 @@ Scope
   The goal remains open. No improvement to the final Szemeredi bound is claimed.
   The source catalogue contains all 120 unique numbered theorem, lemma,
   proposition, and corollary headings in sz-thm-gowers-proof.tex.
-  There are 92 checked exact companion proofs and 28 open statements.
+  There are 93 checked exact companion proofs and 27 open statements.
   The JSON ledger records every statement, its TeX heading lines, its Lean
   definition, and related results. Conditional implications, restricted cases,
   and counterexamples are not counted as proofs of the full statement.
@@ -12,10 +12,10 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 129 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 1,222 public Gowers theorems and found only propext,
-  Classical.choice, and Quot.sound. The audit independently counted 92 exact
-  companion proofs and 28 open catalogue statements from Lean's theorem types.
+  All 130 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 1,230 public Gowers theorems and found only propext,
+  Classical.choice, and Quot.sound. The audit independently counted 93 exact
+  companion proofs and 27 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
   errors remain in this build. The JSON ledger reproduces exactly and has no
   unmatched numbered TeX headings or unmatched catalogue entries.
@@ -34,8 +34,24 @@ Completed polynomial degree induction
   Proofs05DegreeStep assembles the degree induction. Proofs05DegreeScale and
   Proofs05DegreeBudgets prove the real rounding and integer tower estimates.
   Proofs05FullPartition closes Corollaries 5.6 and 5.7 and Lemmas 5.9 and 5.14.
-  It also proves the stronger diameter N*r^(-2/K), with the documented
-  recurrence-supported threshold and rounding-safe simultaneous threshold.
+  The explicitly scale-qualified Corollary 5.8 is also proved; the original
+  catalogue statement remains open. The degree induction also proves the
+  stronger diameter N*r^(-2/K), with the documented recurrence-supported
+  threshold and rounding-safe simultaneous threshold.
+
+Shared Section 16 migration
+  Box.IsProper is now a shared definition. MultiplyLinear requires proper
+  input and output boxes and loss parameters in (0,1]. Former proper-only
+  predicates are compatibility aliases of the shared definitions.
+  Proofs16BoxGeometry proves that a proper box's width is bounded by every
+  axis cardinality and by the modulus. It also proves the printed uncapped
+  loss quantifier impossible: loss 2 would require a proper box in ZMod 2
+  of width at least 4. The earlier inflated-singleton counterexample remains.
+  This is an explicit repair of the printed definition, not a proof that its
+  unrestricted loss quantifier is sound.
+  The finite-union and finite-sum proofs now share one proper refinement
+  engine. Lemma 16.8 and downward closure use the repaired shared predicate.
+  The existing base-case construction now closes the catalogue's Lemma 16.3.
 
 New Section 18 infrastructure
   Proofs18IntervalTransfer:
@@ -67,14 +83,15 @@ Next substantial obligations
   quantitative dependency chain. The qualitative Freiman theorems 7.1--7.2
   and the quadratic inverse theorem 8.2 also remain open.
   1. Resolve Corollary 5.8's missing common-target scale assumptions. Its
-     existing repaired implication can now use the proved Corollary 5.6,
-     but does not establish the unrepaired catalogue statement.
+     scale-qualified repair is proved, but does not establish the unrepaired
+     catalogue statement.
   2. Complete the multilinear partition results and the bilinear extraction
      stages 13.5--13.9. Corollary 13.10 currently requires extra compatibility
      and grid inputs; do not silently discharge them by citing the paper.
-  3. Migrate the proper-box Section 16 predicates consistently before counting
-     ProperTheorem162At 1 as the catalogue's Lemma 16.3. Complete the higher-
-     dimensional induction and resolve the documented Corollary 16.11 bound.
+  3. Complete the higher-dimensional Section 16 induction using the migrated
+     proper-box predicates, propagate properness through the remaining box
+     statements, and resolve the documented Corollary 16.11 bound.
+     Its one-dimensional base case, Lemma 16.3, is now proved.
   4. Prove Theorem 18.1 with explicit thresholds strong enough for iteration.
      The existing Section 18 cyclic dichotomy is conditional on that theorem.
      Account for the epsilon/4 density increment and cell-size prefactor, and

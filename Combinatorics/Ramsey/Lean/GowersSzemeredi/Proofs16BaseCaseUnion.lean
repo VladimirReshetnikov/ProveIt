@@ -582,7 +582,7 @@ private lemma final_graph_count_bounds {d r q0 : Nat}
       (q0 : Real) ^ r ≤ b ^ r := pow_le_pow_left₀ (by positivity) hq0b r
       _ = Qc ^ ((r : Real) * s) := htarget
 
-private theorem properMultiplyLinear_finsetUnion {N d r : Nat} [NeZero N]
+theorem properMultiplyLinear_finsetUnion {N d r : Nat} [NeZero N]
     (gamma s : Real) (hs : 1 ≤ s)
     (Gamma : Fin r → Finset (Point N d × ZMod N))
     (hr : 0 < r) (hGamma : ∀ i, ProperMultiplyLinear gamma s (Gamma i)) :
@@ -685,5 +685,149 @@ theorem properUnionClosure_holds : ProperUnionClosure := by
   intro N d r _ gamma s Gamma hr hs hGamma
   exact properMultiplyLinear_finsetUnion gamma s hs Gamma hr hGamma
 
+
+private lemma isMultilinear_sum {N d r : Nat}
+    (mu : Fin r → Point N d → ZMod N)
+    (hmu : ∀ i, IsMultilinear (mu i)) :
+    IsMultilinear (fun x => ∑ i, mu i x) := by
+  classical
+  choose c hc using hmu
+  refine ⟨fun e => ∑ i, c i e, ?_⟩
+  intro x
+  calc
+    ∑ i, mu i x = ∑ i, ∑ e, c i e * ∏ j, if e j then x j else 1 := by
+      apply Finset.sum_congr rfl
+      intro i _
+      exact hc i x
+    _ = ∑ e, ∑ i, c i e * ∏ j, if e j then x j else 1 :=
+      Finset.sum_comm
+    _ = ∑ e, (∑ i, c i e) * ∏ j, if e j then x j else 1 := by
+      apply Finset.sum_congr rfl
+      intro e _
+      rw [Finset.sum_mul]
+
+private noncomputable def finFunctionEquiv (r q : Nat) :
+    (Fin r → Fin q) ≃ Fin (q ^ r) :=
+  (Fintype.equivFin (Fin r → Fin q)).trans
+    (finCongr (by simp))
+
+private lemma mem_partialGraph_iff {N d : Nat} [NeZero N]
+    (B : Finset (Point N d)) (phi : Point N d → ZMod N)
+    (x : Point N d) (y : ZMod N) :
+    (x, y) ∈ partialGraph B phi ↔ x ∈ B ∧ y = phi x := by
+  classical
+  rw [partialGraph, Finset.mem_image]
+  constructor
+  · rintro ⟨z, hz, hzx⟩
+    have hx : z = x := congrArg Prod.fst hzx
+    subst z
+    exact ⟨hz, congrArg Prod.snd hzx |>.symm⟩
+  · rintro ⟨hx, rfl⟩
+    exact ⟨x, hx, rfl⟩
+
+theorem properMultiplyLinear_fin_sum {N d r : Nat} [NeZero N]
+    (gamma s : Real) (hs : 1 ≤ s) (B : Finset (Point N d))
+    (phi : Fin r → Point N d → ZMod N) (hr : 0 < r)
+    (hphi : ∀ i, MultiplyLinearFunction gamma s B (phi i)) :
+    MultiplyLinearFunction gamma ((r : Real) * s) B
+      (fun x => ∑ i, phi i x) := by
+  let Gamma : Fin r → Finset (Point N d × ZMod N) :=
+    fun i => partialGraph B (phi i)
+  have hGamma : ∀ i, MultiplyLinear gamma s (Gamma i) := hphi
+  intro theta htheta hthetaOne P hP
+  have hsPos : 0 < s := zero_lt_one.trans_le hs
+  have hrReal : (0 : Real) < r := by exact_mod_cast hr
+  let eta : Real := theta / (r : Real)
+  have heta : 0 < eta := by dsimp only [eta]; positivity
+  have hetaOne : eta ≤ 1 := by
+    dsimp only [eta]
+    apply (div_le_one hrReal).2
+    exact hthetaOne.trans (by exact_mod_cast hr)
+  have harg : s⁻¹ * eta = ((r : Real) * s)⁻¹ * theta := by
+    dsimp only [eta]
+    field_simp
+  let stageQ := multipleQ (s⁻¹ * eta) gamma d
+  let q0 := Nat.floor (stageQ ^ s)
+  have hstageQnonneg : 0 ≤ stageQ := by
+    dsimp only [stageQ, multipleQ]
+    apply inv_nonneg.mpr
+    unfold multipleC
+    exact (Nat.even_pow.mpr ⟨even_two, by positivity⟩).pow_nonneg _
+  have hstageBoundNonneg : 0 ≤ stageQ ^ s :=
+    Real.rpow_nonneg hstageQnonneg _
+  have hq0Floor : (q0 : Real) ≤ stageQ ^ s :=
+    Nat.floor_le hstageBoundNonneg
+  let D := iterateProperUnionRefinement Gamma P hP gamma eta s heta hetaOne hsPos hGamma
+    (fun q hq => Nat.le_floor hq) (q0 := q0) (t := r) le_rfl
+  have hDcard : (1 - theta) * (P.carrier.card : Real) ≤ D.H.card := by
+    have h := D.H_card
+    have hetaCancel : (r : Real) * eta = theta := by
+      dsimp only [eta]
+      field_simp
+    simpa only [hetaCancel] using h
+  have hDwidth : ∀ j, (P.width : Real) ^
+      ((multipleC (((r : Real) * s)⁻¹ * theta) gamma d) ^
+        ((r : Real) * s)) ≤ (D.Q j).width := by
+    intro j
+    simpa only [harg] using D.width j
+  have htargetBoundNonneg : 0 ≤
+      (multipleQ (((r : Real) * s)⁻¹ * theta) gamma d) ^
+        ((r : Real) * s) := by
+    apply Real.rpow_nonneg
+    unfold multipleQ
+    apply inv_nonneg.mpr
+    unfold multipleC
+    exact (Nat.even_pow.mpr ⟨even_two, by positivity⟩).pow_nonneg _
+  by_cases hthetaOne : theta < 1
+  · by_cases hBNe : B.Nonempty
+    · obtain ⟨x0, hx0⟩ := hBNe
+      let i0 : Fin r := ⟨0, hr⟩
+      have hGiNe : (Gamma i0).Nonempty := by
+        exact ⟨(x0, phi i0 x0), (mem_partialGraph_iff B (phi i0) _ _).2
+          ⟨hx0, rfl⟩⟩
+      have hgammaPos : 0 < |gamma| := abs_pos.mpr
+        (gamma_ne_zero_of_nonempty hsPos (hGamma i0) hGiNe)
+      have hgamma := abs_gamma_le_iteration_of_nonempty hsPos (hGamma i0) hGiNe
+      have hcounts := final_graph_count_bounds (d := d) hr htheta hthetaOne hs
+        hgammaPos hgamma (by simpa only [stageQ, eta] using hq0Floor)
+      let ef := finFunctionEquiv r q0
+      let mu : Fin D.M → Fin (q0 ^ r) → Point N d → ZMod N :=
+        fun j a x => ∑ i, D.mu j i (ef.symm a i) x
+      refine ⟨D.M, q0 ^ r, D.H, D.Q, mu, D.H_subset, hDcard,
+        D.partition, D.proper, hcounts.2, hDwidth, ?_, ?_⟩
+      · intro j a
+        exact isMultilinear_sum (fun i => D.mu j i (ef.symm a i))
+          (fun i => D.multilinear j i (ef.symm a i))
+      · intro j x hxQ hxH y hxy
+        have hgraph := (mem_partialGraph_iff B (fun x => ∑ i, phi i x) x y).1 hxy
+        have hex : ∀ i, ∃ a, phi i x = D.mu j i a x := by
+          intro i
+          exact D.cover j x hxQ hxH i (phi i x)
+            ((mem_partialGraph_iff B (phi i) x (phi i x)).2 ⟨hgraph.1, rfl⟩)
+        choose a ha using hex
+        let tuple : Fin r → Fin q0 := fun i => a i
+        refine ⟨ef tuple, ?_⟩
+        change y = ∑ i, D.mu j i (ef.symm (ef tuple) i) x
+        rw [ef.symm_apply_apply]
+        rw [hgraph.2]
+        exact Finset.sum_congr rfl fun i _ => ha i
+    · refine ⟨D.M, 0, D.H, D.Q, (fun _ i => Fin.elim0 i),
+        D.H_subset, hDcard, D.partition, D.proper, (by simpa using htargetBoundNonneg),
+        hDwidth, ?_, ?_⟩
+      · intro j i
+        exact Fin.elim0 i
+      · intro j x hxQ hxH y hxy
+        have hxB := (mem_partialGraph_iff B (fun x => ∑ i, phi i x) x y).1 hxy |>.1
+        exact (hBNe ⟨x, hxB⟩).elim
+  · refine ⟨D.M, 0, ∅, D.Q, (fun _ i => Fin.elim0 i),
+      Finset.empty_subset _, ?_, D.partition, D.proper,
+      (by simpa using htargetBoundNonneg), hDwidth, ?_, ?_⟩
+    · simp only [Finset.card_empty, Nat.cast_zero]
+      have hPnonneg : (0 : Real) ≤ P.carrier.card := by positivity
+      nlinarith
+    · intro j i
+      exact Fin.elim0 i
+    · intro j x hxQ hxH
+      simp at hxH
 
 end LeanProofs.GowersSzemeredi.BaseCase

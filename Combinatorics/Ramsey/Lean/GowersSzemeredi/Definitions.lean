@@ -244,6 +244,10 @@ structure Box (N k : Nat) where
   commonDiff : ZMod N
   axis_step : ∀ i, (axis i).step = commonDiff
 
+/-- Each axis is represented injectively, so its length equals its cardinality. -/
+def Box.IsProper {N k : Nat} (P : Box N k) : Prop :=
+  ∀ i, (P.axis i).IsProper
+
 /-- The set of points in a box. -/
 noncomputable def Box.carrier {N k : Nat} [NeZero N]
     (P : Box N k) : Finset (Point N k) := by

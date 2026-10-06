@@ -20,10 +20,10 @@ namespace LeanProofs.GowersSzemeredi
 same parameters. -/
 theorem multiplyLinear_downward_closed_holds :
     multiplyLinear_downward_closed := by
-  intro N k _ gamma r Gamma Gamma' hsub hGamma theta htheta P
-  obtain ⟨M, q, H, Q, mu, hHP, hHcard, hpartition, hq, hwidth,
-      hmultilinear, hcover⟩ := hGamma theta htheta P
-  refine ⟨M, q, H, Q, mu, hHP, hHcard, hpartition, hq, hwidth,
+  intro N k _ gamma r Gamma Gamma' hsub hGamma theta htheta hthetaOne P hP
+  obtain ⟨M, q, H, Q, mu, hHP, hHcard, hpartition, hproper, hq, hwidth,
+      hmultilinear, hcover⟩ := hGamma theta htheta hthetaOne P hP
+  refine ⟨M, q, H, Q, mu, hHP, hHcard, hpartition, hproper, hq, hwidth,
     hmultilinear, ?_⟩
   intro j x hxQ hxH y hxy
   exact hcover j x hxQ hxH y (hsub hxy)

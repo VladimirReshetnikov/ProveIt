@@ -18,10 +18,10 @@ namespace LeanProofs.GowersSzemeredi
 
 /-- Multiple multilinearity is inherited by subrelations. -/
 theorem multiplyLinear_downward_closed_holds : multiplyLinear_downward_closed := by
-  intro N k _ gamma r Gamma Gamma' hsubset hGamma theta htheta P
-  obtain ⟨M, q, H, Q, mu, hHP, hHcard, hpartition, hq, hwidth, hmu, hcover⟩ :=
-    hGamma theta htheta P
-  refine ⟨M, q, H, Q, mu, hHP, hHcard, hpartition, hq, hwidth, hmu, ?_⟩
+  intro N k _ gamma r Gamma Gamma' hsubset hGamma theta htheta hthetaOne P hP
+  obtain ⟨M, q, H, Q, mu, hHP, hHcard, hpartition, hproper, hq, hwidth, hmu, hcover⟩ :=
+    hGamma theta htheta hthetaOne P hP
+  refine ⟨M, q, H, Q, mu, hHP, hHcard, hpartition, hproper, hq, hwidth, hmu, ?_⟩
   intro j x hxQ hxH y hxy
   exact hcover j x hxQ hxH y (hsubset hxy)
 
