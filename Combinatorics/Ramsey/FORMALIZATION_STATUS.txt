@@ -12,8 +12,8 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 174 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 1,699 public Gowers theorems and found only propext,
+  All 175 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 1,716 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 99 exact
   companion proofs and 21 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -217,8 +217,23 @@ Two-anchor interpolation for Lemma 16.10
   candidates, independently of the number of affine classes.
   This preserves the correlation between slope and intercept choices; it
   does not yet prove a stronger MultiplyLinear parameter or a final bound.
-  The common-domain construction, distinct-anchor sampling, and final
-  quantitative comparison in Lemma 16.10 remain outstanding.
+  The common-domain construction, simultaneous good-sample selection, and
+  final quantitative comparison in Lemma 16.10 remain outstanding.
+
+Corrected distinct-anchor sampling estimate
+  Proofs16DistinctSampling counts samples avoiding a subset exactly and
+  bounds failure to hit two distinct class elements by missing one of two
+  disjoint parts. Splitting a class of size c in an n-point space gives
+  failure probability at most 2*((n-floor(c/2))/n)^r.
+  For c>=2 and c>=sigma*n/q, the verified budget
+  r=ceil(6*q/sigma^2) makes this failure probability at most sigma.
+  This replaces the printed two-hit estimate; it is not an improved bound.
+  A checked counterexample uses q=1, sigma=1/4, n=4, and c=1: the class
+  meets the stated size threshold but its distinct-pair failure probability
+  is one for all 16 draws, while the printed expression is below sigma.
+  A complete Lemma 16.10 proof still needs to handle such small classes or
+  short cells, select one sample with controlled total discarded mass, and
+  carry the corrected sampling cost through the unresolved width comparison.
 
 Shared Section 16 migration
   Box.IsProper is now a shared definition. MultiplyLinear requires proper
