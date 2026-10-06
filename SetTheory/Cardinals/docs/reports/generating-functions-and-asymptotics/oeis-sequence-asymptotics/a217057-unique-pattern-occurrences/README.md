@@ -48,7 +48,8 @@ The first two are normalized by `A_n = |Av_n(1234)| = |Av_n(1243)|`
 The same method has opposite outcomes: logarithms from relative order three for
 `1234` (integer half exponent 4), none for `12345` (half exponent 15/2; products
 of the fractional-binomial models are polynomials). The write's Remark 66.1
-says this, and answers Report 140's question 5 in the negative for `1234`.
+says this, and settles one instance (`1234`) of Report 140's question 5,
+which asks for which decompositions this happens.
 
 | Source | Bundle report | Archive | Pin | Placed | Printed as |
 |---|---|---|---|---|---|
@@ -367,12 +368,27 @@ and what is missing (Vladimir's standing rule of 4 October 2026):
 Answered inside the merge, with dated notes at the questions: Report 134's first
 and higher corrections and all-orders inverse (Parts II–III); Report 135's
 question 3 and, in part, 4 (Part III); Report 137's question 5, in part
-(Parts IV–VI); Report 138's question 3 (Part VI); Report 140's question 5, in
-the negative for `1234` (Part III, Remark 66.1). **Nothing in the six
+(Parts IV–VI); Report 138's question 3 (Part VI); Report 140's question 5, for
+one instance, `1234` (Part III, Remark 66.1). **Nothing in the six
 manuscripts was found to be wrong.** The one wrong claim on record is external:
 Conway and Guttmann's `R = 1/2`, refuted with a proof in Part I. Report 138's
 two uncited claims ("the known nonrationality result", "the cited even-length
 nonalgebraicity theorem") are now cited.
+
+**Independent check of the write (5 October 2026).** An adversarial check
+made by the intake after the write (`84c52f028`) reread Part I's refutation of
+Conway–Guttmann's `R = 1/2` end to end and found no gap. Its own prefix-state
+count of `u_n` (no tableaux, no halves) reproduces `u_4, …, u_15`, the OEIS
+terms through `n = 20` and at `n = 48, 50`; its own rebuild of the half counts
+reproduces `L_{40,10}` and `Π_44 = 0.501537884…` as the printed fractions
+(`Π_44 > 0.50153` true, `> 0.50154` false). It confirmed the Bostan–Lairez–Salvy
+hypotheses of Remark 13.2, the Bóna–Burstein and Waite citations, `κ_3` and
+`κ_4` from its own pairings, and the merge fidelity. Two wordings were
+corrected with dated notes: Remark 6.2 compares the logarithmic terms with the
+proved margin `0.0015` (about ten and six times it), not the unknown true
+margin, and the `κ_4` term dominates the `κ_3` term for `n < 117` (the first
+wording said "below `n ≈ 70`"); Remark 66.1 and Part VI's note now say that
+question 5 is settled for one instance.
 
 ## Relation to neighbouring reports
 
@@ -513,7 +529,7 @@ latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
 pdfLaTeX (MiKTeX), in a scratch copy; commit only `article.pdf`. The write's
-build: 121 pages, no errors, no warnings, no undefined or multiply defined
+build: 122 pages after the independent check (121 at the write), no errors, no warnings, no undefined or multiply defined
 references or citations, no duplicate destinations, no overfull or underfull
 boxes. The six delivered `.tex` files also compile with MiKTeX pdfLaTeX (12,
 22, 13, 24, 17 and 18 pages).
