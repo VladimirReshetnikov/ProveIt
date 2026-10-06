@@ -51,6 +51,9 @@ import GowersSzemeredi.Proofs16InducedSelection
 import GowersSzemeredi.Proofs16ShortProduct
 import GowersSzemeredi.Proofs16ShortScale
 import GowersSzemeredi.Proofs16RecurrenceThreshold
+import GowersSzemeredi.Proofs16SingletonPartition
+import GowersSzemeredi.Proofs16StepBounds
+import GowersSzemeredi.Proofs16ProductGeometry
 import GowersSzemeredi.Proofs16ArrangementSelection
 import GowersSzemeredi.Proofs16CubeDensity
 import GowersSzemeredi.Proofs05Progressions
