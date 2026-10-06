@@ -493,7 +493,11 @@ exact counts agree with it: $n^{3/2}(R_n-1-c_1n^{-1/2}-c_2n^{-1})$ equals
 $-0.2188$, $-0.2324$, $-0.2422$ at $n=400$, $800$, $1600$ (the write's
 computation) and $-0.2493$ at $n=3200$ (the diagnostics file), and its
 differences from $c_3$, multiplied by $\sqrt n$, are $0.959$, $0.972$,
-$0.981$, $0.987$, the behaviour expected if $c_4$ is close to~$1$. The
+$0.981$, $0.987$, the behaviour expected from
+$c_4=1.0034201765950181\ldots$, the value of the recipe at order~$4$.
+\textup{(Made exact after the independent check of 6~October 2026, which
+computed $c_4$ by its own expansion and with the delivered program; the first
+wording read ``the behaviour expected if $c_4$ is close to~$1$''.)} The
 denominators $192\ell^{3/2}(\ell-1)$, $36864\ell^3(\ell-1)^2=192^2\ell^3(\ell-1)^2$
 and $106168320\ell^{9/2}(\ell-1)^3=15\cdot192^3\ell^{9/2}(\ell-1)^3$ and the
 numerator degrees $3$, $6$, $9$ suggest a pattern; it is recorded as
@@ -619,7 +623,11 @@ report's. Statement by statement:
  \file{p0:thm:lambert-centered} nor \file{plt:thm:lw-template} produces it.
  \file{plt:thm:lw-template} does not apply to $\Phi_M$: in the logarithmic
  chart $Z=\log y$ the term $\beta\sqrt y$ contributes terms in $e^{-Z/2}$ to
- its $B$, outside $tK[L_{\rm vol}][[t]]$, so hypothesis~(H3) fails. It does apply
+ its $B$, and the term $-\frac54\log y$, together with Stirling's corrections,
+ terms in $Ze^{-Z}$ and $e^{-Z}$, all outside $tK[L_{\rm vol}][[t]]$, so
+ hypothesis~(H3) fails. \textup{(Completed after the independent check of
+ 6~October 2026; the first wording named only the term $\beta\sqrt y$, which
+ already suffices.)} It does apply
  to the core alone: $2y\log(y/(e\ell))=L$ reads
  $Z+\log Z+\log2+\log\bigl(1-(1+\log\ell)/Z\bigr)=\log L$, a datum
  $(\rho,\mu,\beta_{\rm vol},B)=(1,1,\log2,\log(1-(1+\log\ell)t))$ with
@@ -756,6 +764,52 @@ the flat copy, \texttt{--finite-only} passed and the default mode stopped at
 its inventory check, as designed. The PDF build, \file{qa.py} and
 \file{package.py} need the whole delivered bundle and a POSIX \TeX{}
 installation and were not run.
+\end{writenote}
+\begin{writenote}[Independent check of the write, 6~October 2026]
+An adversarial check made by the intake after the write (commit
+\file{6ef3f0983}) re-derived the statements marked [write] with its own code.
+\emph{Remark~\ref{lsd:rem:graph}.} Every $m\times n$ binary matrix with
+$m,n\le4$ was classified by four independent deciders: the literal definition
+(a search for a block decomposition, with lonesum tested as uniqueness of the
+pair of line-sum vectors, without Ryser's criterion), criterion~(b), Kamano's
+twelve forbidden matrices generated from~$U$, and a search for induced paths
+on five vertices; every $m\times n$ matrix with $m,n\le5$ (all $2^{25}$ at
+$5\times5$) was classified by the last two. There was no pointwise
+disagreement; every count equals the rectangular form
+of~\eqref{lsd:eq:exact}, e.g.\ $D(5,4)=D(4,5)=90946$ and $D(5,5)=833432$; and
+through $5\times5$ the lonesum matrices without zero lines are exactly the
+connected chain graphs. Kamano's set and his Theorem~2.1 were read again in
+the arXiv text. \emph{Remark~\ref{lsd:rem:c3}.} An independent truncated
+trivariate expansion of~\eqref{lsd:eq:formal} from its definition, through
+$t^8$ at $50$ and $90$ digits, reproduced $\beta$, $\gamma$, $A$, $B$, $C$, the
+vanishing odd orders, and $c_1$, $c_2$ (differences $2\cdot10^{-91}$ and
+$9\cdot10^{-90}$ from \eqref{lsd:eq:c1} and~\eqref{lsd:eq:c2}); its $c_3$
+agrees with the closed form of the remark to 88 digits, and it gives
+$c_4=1.003420176595018111637014920569\ldots$; rerun when the check was
+applied, the delivered \file{derive_general.py} at order~$4$ (about fifteen
+seconds) gives the same $c_4$ to 69 digits, as a rational function of $\ell$
+with denominator $30\cdot192^4\ell^6(\ell-1)^4$ and a numerator of
+degree~$12$ (the pattern of Question~\ref{lsd:q:pattern}; not claimed).
+Exact $a_n$ for $n=100$, $200$, $400$, $800$, $1600$, $3200$ reproduce every
+digit of the table above and every number of the remark;
+$n^2\bigl(R_n-\sum_{j\le3}c_jn^{-j/2}\bigr)$ is $0.916$, $0.959$, $0.972$,
+$0.981$, $0.987$ at $n=100$, $400$, $800$, $1600$, $3200$, approaching $c_4$,
+and with the $c_4$ term also subtracted the remainder times $n^{5/2}$ is
+$-0.874$, $\dots$, $-0.907$, stable. \emph{Remark~\ref{lsd:rem:transseries}.}
+The seven statements of the volume that it uses were read again; SymPy
+confirms that $f(y)=L$ divided by $2x$ is identically the master equation
+of~(b) and that its recurrence gives $-\beta/(2h)$, $D_1$ and $D_2$; (a), (c)
+and~(d) were re-derived. \emph{Remark~\ref{lsd:rem:oeis}.} In the live A299906
+(still revision~\#24) the example row $n=5$ prints $90446$, while row $n=4$
+and the data print $90946$; $T(5,4)=90946$ by the formula, by enumeration of
+all $2^{20}$ matrices of size $5\times4$ and by transposition, and all 66 data
+terms are antidiagonals of $D(m,n)$. The 16 terms of A299907 equal
+\eqref{lsd:eq:exact}, and $a_n$ for $n\le5$ also follows from the definition
+by enumeration; the names, revisions and the quoted formula lines of A000262
+match. No mathematical error was found. Two statements are made more precise,
+each with a dated note keeping the first wording: Remark~\ref{lsd:rem:c3} now
+states $c_4$, and Remark~\ref{lsd:rem:transseries}(d) names all the terms that
+violate~(H3).
 \end{writenote}
 
 \section{Further questions}\label{lsd:sec:further}

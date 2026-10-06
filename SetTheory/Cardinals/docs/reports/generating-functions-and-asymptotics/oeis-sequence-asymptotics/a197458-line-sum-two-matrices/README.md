@@ -95,7 +95,10 @@ Added by the write (6 October 2026), with proofs, marked `[write]`:
   `f_vol = √2 τ(1+ξ)^{1/2} + (τ²/8)(q + log(1+ξ) − log 2) + O(τ³)`; the
   first two coefficients reproduce `δ₀` and `δ₁` exactly. Only the general
   part of the theorem applies (not its Bell form, which needs integer
-  exponents), the coefficients are Laurent polynomials in `q`, and the
+  exponents), the coefficients are polynomials in `q^{−1}` as in
+  `p0:rem:core-instances` except that `e_2` has the constant term `−1/8`
+  (from the `τ²q/8` in `f_vol`; the write first said "Laurent polynomials in
+  `q`", corrected after the independent check below), and the
   analytic remainder is the source's own: the volume's theorem is formal.
   (c) Theorem 7.2 is **not an instance** of `p0:thm:staircase` as proved
   (no interpolation is used), but **follows from part (1)** of it with the
@@ -251,6 +254,29 @@ the write.
   Goulden–Jackson, Knuth's solution, Greenhill–McKay–Wang and
   Caizergues–de Panafieu (what the source inspected is recorded in
   `data/SOURCE_PROVENANCE.json`).
+- **Independent check of the write (6 October 2026).** An adversarial check
+  made by the intake after the write (`3834812cd`), with its own code:
+  Remark 2.1 re-derived (`F = e^{x+y−xy} F₁₅₄` and its combinatorial reading,
+  Bricard's `B(t)`, the A001499 equivalent step by step); all 17 terms of
+  A197458 by five routes (component EGF, `e^{x+y−xy}F₁₅₄`, column-degree DP,
+  Bessel diagonal, recurrence (3.3) at 60 digits) and brute force for
+  `n ≤ 5` (304186) and every `A_{m,n}` with `m, n ≤ 5`; A062156, A001499 and
+  all 46 data terms of A062154 likewise. Remark 7.3 (a), (c), (d) re-derived
+  and the numbers of (d) reproduced. In (b), SymPy with the full Stirling
+  series gives `e_3`, `e_4` with `q`-exponents −1…−5 and −1…−7, so the
+  sentence "Laurent polynomials in `q`, not polynomials in `q^{−1}`" was
+  false; the shift `ξ = ξ' − τ²/8` removes `q` from the perturbation, and only
+  `e_2` has a constant term (`−1/8`). When the check was applied this was
+  recomputed with a generic `q`-free remainder (`e_1 … e_5`). Lemma 9.1
+  re-read against Sections 5–6; Proposition 9.2 by an independent
+  implementation of (6.4) (`c_1 … c_4` to 25 digits,
+  `c_1^{(d)} − c_1 = −(√2/2) d(d−1)` for `d = 1, 2, 3`) and counts to
+  `n = 800`: the offset ratio 0.887193 … 0.954218 within `O(n^{−5/2})` of the
+  five-term prediction; no zero line 0.17547 … 0.14912, whose difference from
+  `e^{−2}(1 + 2√2/√n)` times `n` is a stable 0.087–0.100;
+  `E[Z_r Z_c]` 0.874 → 0.952, toward 1; brute-force joint laws for `n ≤ 5`.
+  Corrected, with a dated note keeping the first wording: that one sentence of
+  Remark 7.3(b). The check is recorded at the end of Section 8.
 
 ## Relation to the repository
 
@@ -422,8 +448,8 @@ B=$(mktemp -d); cp article.tex "$B/"; cd "$B"
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The committed PDF was built this way with MiKTeX on 6 October 2026: 23
-pages; no errors or warnings, no undefined references or citations, no
+The committed PDF was built this way with MiKTeX on 6 October 2026, after
+the independent check (also 23 pages at the write): 23 pages; no errors or warnings, no undefined references or citations, no
 multiply defined labels, no duplicate PDF destinations, no overfull or
 underfull boxes. The delivered source builds the same way to 15 pages, also
 without warnings. The article keeps the delivered preamble lines that
