@@ -1,0 +1,861 @@
+\newcommand{\DoNotLoadEpstopdf}{}
+\pdfinfoomitdate=1
+\pdftrailerid{}
+\pdfsuppressptexinfo=-1
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage[margin=1in]{geometry}
+\usepackage{booktabs,longtable,array}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+\hypersetup{pdftitle={Report 156 Proofs of two conjectures on subdiagonal and superdiagonal partitions},pdfauthor={},pdfsubject={OEIS A238875 and A238873}}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{1.2em}
+\setlength{\emergencystretch}{2em}
+\setcounter{tocdepth}{1}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\PP}{\mathbb P_n}
+\newcommand{\ZZ}{\mathbb Z}
+\newcommand{\NN}{\mathbb N}
+\newcommand{\floor}[1]{\left\lfloor #1\right\rfloor}
+\newcommand{\ceil}[1]{\left\lceil #1\right\rceil}
+\newcommand{\dd}{\,\mathrm d}
+\DeclareMathOperator{\sech}{sech}
+\title{Proofs of two conjectures on subdiagonal and superdiagonal partitions\\\large Quantitative rank coupling and exponential separation}
+\author{Report 156}
+\date{3 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+For weakly increasing partitions of $n$, let $s_r(n)$ count those satisfying
+$\lambda_i\leq i+r$ at every index, and let $A(n)$ count those satisfying
+$\lambda_i\geq i$. We prove both conjectures in Section~5 of Archibald,
+Blecher, Elizalde and Knopfmacher, \emph{Subdiagonal and superdiagonal
+partitions}, Afrika Matematika \textbf{36}, 77 (2025).
+
+An extension of their rank-zero injection, together with an elementary
+interior estimate and the classical Hardy--Ramanujan formula, gives
+\[
+ 0\leq\PP(R\leq r)-\frac{s_r(n)}{p(n)}=O((\log n)^{-1})
+ \qquad(r\in\ZZ_{\geq0}),
+\]
+uniformly over all nonnegative integer shifts, where $R$ is Dyson's rank.
+In particular $s_0(n)/p(n)=1/2+O((\log n)^{-1})$, proving their
+Conjecture~5.3. We derive its Lambert $W$ inverse with the growing
+localization error $O(\log y/\log\log y)$. A separate application of
+the Dousse--Mertens rank theorem gives a uniform logistic crossover.
+
+For superdiagonal partitions, Catalan prefixes followed by distinct
+large parts give explicit finite lower bounds. Restricting the prefix
+to fixed-height Dyck paths yields
+\[
+ \liminf_{n\to\infty}\frac{\log A(n)}{\sqrt n}
+ \geq \sqrt{\pi^2/3+2(\log2)^2}>\frac\pi{\sqrt3}.
+\]
+Thus distinct partitions are exponentially negligible relative to
+$A(n)$ on the $\sqrt n$ scale, proving Conjecture~5.2. This is a lower
+bound, not an exact superdiagonal growth rate. No all-orders expansion
+is established. An exact, independently implemented companion checks
+sequence prefixes and the finite combinatorial mechanisms.
+\end{abstract}
+\newpage
+\tableofcontents
+\medskip
+\noindent\textbf{Attribution and scope.}
+The definitions, generating functions, conjectures, and rank-zero
+injection are due to the cited sources. The argument below extends
+that injection to fixed ranks and supplies the quantitative coupling
+and prefix constructions needed for the two limits. A bounded search
+of the current article, OEIS entries, relevant literature, and the
+available report catalogue found no identical later solution as of
+3 October 2026. This is not a claim of exhaustive scholarly priority.
+The constants and starting indices in asymptotic error terms are not
+numerically certified.
+\newpage
+
+\section{Definitions and the two conjectures}\label{sec:targets}
+A partition will always be written in \emph{weakly increasing} order:
+\[
+ \lambda=(\lambda_1,\ldots,\lambda_k),\qquad
+ 1\leq\lambda_1\leq\cdots\leq\lambda_k,\qquad |\lambda|=n.
+\]
+Let $p(n)$ be the ordinary partition number and $q(n)$ the number of
+partitions into distinct parts. For an integer $r\geq0$, put
+\begin{align}
+ s_r(n)&=\#\{\lambda\vdash n:\lambda_i\leq i+r\text{ for all }i\},\label{eq:subdef}\\
+ A(n)&=\#\{\lambda\vdash n:\lambda_i\geq i\text{ for all }i\}.\label{eq:superdef}
+\end{align}
+The empty partition gives $s_r(0)=A(0)=p(0)=q(0)=1$.
+The unshifted sequences are $s_0(n)=\mathrm{A238875}(n)$ and
+$A(n)=\mathrm{A238873}(n)$ in OEIS~\cite{oeissub,oeissuper}.
+Changing the order convention changes the problem: weakly decreasing
+superdiagonal partitions belong to the Rogers--Ramanujan class
+A003114, not the class studied here.
+
+Archibald et al.~\cite{abek}, Section~5, use exactly this increasing
+convention. Their Conjecture~5.2 asserts $q(n)/A(n)\to0$; their
+Conjecture~5.3 asserts $s_0(n)/p(n)\to1/2$. They prove
+$A(n)/p(n)\to0$ in Proposition~5.1 and
+$\limsup s_0(n)/p(n)\leq1/2$ in Proposition~5.5. The following
+quantitative results settle the two conjectures.
+
+\begin{theorem}[Uniform subdiagonal coupling]\label{thm:coupling}
+For a uniformly random partition of $n$, let $R$ be its largest part
+minus its number of parts. As $n\to\infty$,
+\begin{equation}\label{eq:coupling}
+ 0\leq\PP(R\leq r)-\frac{s_r(n)}{p(n)}
+ \leq\frac{C}{\log n}\qquad\text{for every integer }r\geq0,
+\end{equation}
+with one constant $C$ and one sufficiently large starting index,
+independent of $r$. In particular,
+\begin{align}
+ \frac{s_0(n)}{p(n)}&=\frac12+O((\log n)^{-1}),\label{eq:half}\\
+ s_0(n)&=\frac{\exp(\pi\sqrt{2n/3})}{8\sqrt3\,n}
+       \left(1+O((\log n)^{-1})\right).\label{eq:subeq}
+\end{align}
+The one-sided upper error in \eqref{eq:half} is $O(n^{-1/2})$.
+\end{theorem}
+
+\begin{theorem}[Exponential separation]\label{thm:super}
+Let
+\begin{equation}\label{eq:constants}
+ b=\frac\pi{\sqrt3},\qquad
+ B_*=\sqrt{\frac{\pi^2}{3}+2(\log2)^2}.
+\end{equation}
+Then
+\begin{equation}\label{eq:strong}
+ \liminf_{n\to\infty}\frac{\log A(n)}{\sqrt n}\geq B_*.
+\end{equation}
+For every $\eta>0$, there is an index after which
+\begin{equation}\label{eq:ratio}
+ \frac{q(n)}{A(n)}
+ \leq \exp\bigl(-(B_*-b-\eta)\sqrt n\bigr).
+\end{equation}
+Since $B_*>b$, this proves $q(n)/A(n)\to0$.
+\end{theorem}
+
+Here and throughout, logarithms are natural. Both theorems are
+asymptotic statements with unspecified constants and onset. The
+finite inequalities used in the superdiagonal proof, however, hold
+at every integer satisfying their explicitly stated feasibility
+conditions. The remaining sections also distinguish the elementary
+proof of Theorem~\ref{thm:coupling} from the external rank theorem
+used for the logistic corollary.
+
+\section{Classical input and a fixed rank injection}\label{sec:rank}
+Put $c=\pi/\sqrt6$, so $2c=\pi\sqrt{2/3}$. We use the classical
+refined Hardy--Ramanujan estimate~\cite{dlmf}, obtainable from
+the first term of the Rademacher expansion there,
+\begin{equation}\label{eq:hr}
+ p(n)=\frac{e^{2c\sqrt n}}{4\sqrt3\,n}
+       \left(1+O(n^{-1/2})\right).
+\end{equation}
+For distinct partitions we need only the classical leading
+formula, also recalled in \cite[Section~5.2]{abek},
+\begin{equation}\label{eq:distinct}
+ q(n)\sim\frac{e^{b\sqrt n}}{4\,3^{1/4}n^{3/4}},
+ \qquad \log q(n)=b\sqrt n+O(\log n).
+\end{equation}
+These are inputs; no asymptotic enumeration of the constrained
+classes is being assumed.
+
+For $n\geq1$, write $L=\lambda_k$, $k=\ell(\lambda)$,
+$Z_1=\#\{i:\lambda_i=1\}$, and $R=L-k$. Let
+\[
+ N(r,n)=\#\{\lambda\vdash n:R(\lambda)=r\},\qquad
+ D(n)=p(n)-p(n-1).
+\]
+Deleting one part equal to $1$ shows that $D(n)$ counts partitions
+of $n$ with no ones.
+
+\begin{lemma}[Uniform rank atom bound]\label{lem:atom}
+For every $n\geq2$ and every integer $r$,
+\begin{equation}\label{eq:atom}
+ N(r,n)\leq D(n),\qquad \frac{D(n)}{p(n)}=O(n^{-1/2}).
+\end{equation}
+Consequently the probability of any interval of $m$ consecutive
+integer ranks is at most $mD(n)/p(n)$.
+\end{lemma}
+\begin{proof}
+Fix the source rank $r$. For a partition other than the all-ones
+partition, delete its $j=Z_1$ ones and add $j$ to one largest remaining
+part. For $j=0$ this is the identity. The resulting partition $\nu$
+has no ones, has the same weight, and satisfies
+\begin{equation}\label{eq:rankshift}
+ R(\nu)=(L+j)-(k-j)=r+2j.
+\end{equation}
+Thus $\nu$ and the specified rank $r$ determine
+$j=(R(\nu)-r)/2$. If $j>0$, the enlarged part is the unique largest
+part, even if several parts were largest before the map. Subtracting
+$j$ from this part and restoring $j$ ones recovers the source. If
+$j=0$, the inverse is the identity. Outputs coming from these two
+cases cannot coincide at fixed $r$, by \eqref{eq:rankshift}.
+This proves the injection into the $D(n)$ no-ones partitions.
+
+The excluded partition has rank $1-n$. This rank is attained only
+by the all-ones partition: $L\geq1$ and $k\leq n$, with equality in
+$L-k\geq1-n$ only in that case. Since the singleton $(n)$ has no ones
+for $n\geq2$, $D(n)\geq1$ and \eqref{eq:atom} holds at this rank too.
+Empty rank classes cause no difficulty.
+
+Finally, directly taking the ratio in \eqref{eq:hr} gives
+\[
+ \frac{p(n-1)}{p(n)}
+ =\frac{n}{n-1}e^{2c(\sqrt{n-1}-\sqrt n)}
+    \left(1+O(n^{-1/2})\right)
+ =1+O(n^{-1/2}).
+\]
+Together with $D(n)\geq0$, this proves the stated bound. No sharper
+one-step error is needed. Summing the atom bound gives the interval
+assertion.
+\end{proof}
+
+\noindent\textbf{Attribution.}
+The rank-zero instance of this map is the injection in
+\cite[Lemma~5.4]{abek}. Its extension to each specified source rank,
+using \eqref{eq:rankshift} to recover the number of deleted ones,
+is the step needed here.
+
+Ferrers conjugation exchanges the largest part and the number of
+parts, so $N(r,n)=N(-r,n)$. Therefore
+\begin{equation}\label{eq:rankhalf}
+ \PP(R\leq0)=\frac12+\frac{N(0,n)}{2p(n)}
+            =\frac12+O(n^{-1/2}).
+\end{equation}
+A subdiagonal partition necessarily has $L\leq k$, explaining the
+source paper's upper bound. The task is to show that the interior
+indices exclude only a negligible additional proportion.
+
+\section{Interior control and exceptional events}\label{sec:interior}
+\begin{lemma}[Three regions]\label{lem:interior}
+Let $r\geq0$ and $m\geq1$ be integers. Suppose that a partition
+$\lambda\vdash n$ has $k$ parts and satisfies
+\begin{equation}\label{eq:interiorhyp}
+ k\geq2m+1,\quad Z_1\geq m,\quad L\leq k+r-m,
+ \quad (m+1)(k-m+1)>n.
+\end{equation}
+Then $\lambda_i\leq i+r$ for every index $i$.
+\end{lemma}
+\begin{proof}
+For $i\leq m$, the part is $1$. For $i>k-m$, the largest-part
+bound gives $\lambda_i\leq k+r-m\leq i+r$. If a remaining index
+$m<i\leq k-m$ violates the conclusion, integrality and $r\geq0$
+imply $\lambda_i\geq i+r+1\geq i+1$. The final $k-i+1$ parts
+then give
+\[
+ n\geq(i+1)(k-i+1).
+\]
+This is a concave quadratic in $i$, so its minimum on
+$[m+1,k-m]$ occurs at an endpoint. Those endpoint values are
+$(m+2)(k-m)$ and $(m+1)(k-m+1)$; their difference is
+$k-2m-1\geq0$. Both are at least the last expression in
+\eqref{eq:interiorhyp}, a contradiction.
+\end{proof}
+
+For all sufficiently large $n$, choose
+\begin{equation}\label{eq:scales}
+ K=\floor{\frac{\sqrt n\log n}{4c}},\qquad
+ m=\ceil{\frac{5c\sqrt n}{\log n}}.
+\end{equation}
+Then $K/m\to\infty$, $m=o(\sqrt n)$, and
+\begin{equation}\label{eq:areascale}
+ \frac{(m+1)(K-m+1)}{n}\longrightarrow\frac54.
+\end{equation}
+Thus $K\geq2m+1$ and $(m+1)(K-m+1)>n$ eventually. Both
+conditions remain true with $k\geq K$ replacing $K$.
+The constants in \eqref{eq:scales} are convenient for the proof;
+no all-$n$ feasibility assertion is made.
+
+\subsection{Too few ones}
+Deleting exactly $m$ ones is a bijection between partitions of $n$
+with at least $m$ ones and all partitions of $n-m$. Hence
+\begin{equation}\label{eq:ones}
+ \PP(Z_1<m)=1-\frac{p(n-m)}{p(n)}=O((\log n)^{-1}).
+\end{equation}
+To justify the variable shift directly, $n-m\sim n$ and
+\eqref{eq:hr} give
+\begin{align*}
+ \log\frac{p(n-m)}{p(n)}
+ &=2c(\sqrt{n-m}-\sqrt n)+\log\frac n{n-m}+O(n^{-1/2})\\
+ &=O(m/\sqrt n)=O((\log n)^{-1}).
+\end{align*}
+Exponentiation and $p(n-m)\leq p(n)$ prove \eqref{eq:ones}.
+This does not rely on subtracting two uncontrolled asymptotic
+remainders or on a sharpened one-step ratio.
+
+\subsection{Too few parts}
+By conjugation, $\PP(k<K)$ is the probability that the largest part
+is less than $K$. Let $p_{\leq K}(n)$ count partitions whose parts
+are at most $K$. With $t=c/\sqrt n$ and $z=e^{-t}$, coefficient
+positivity in the ordinary partition product gives
+\begin{equation}\label{eq:productbound}
+ p_{\leq K}(n)\leq z^{-n}P(z)\prod_{j>K}(1-z^j),
+ \qquad P(z)=\prod_{j\geq1}(1-z^j)^{-1}.
+\end{equation}
+The function $f(x)=-\log(1-e^{-tx})$ is positive and decreasing;
+its logarithmic singularity at zero is integrable. Thus
+\begin{align*}
+ \log P(e^{-t})&=\sum_{j\geq1}f(j)
+ \leq\int_0^\infty f(x)\dd x\\
+ &=\sum_{\ell\geq1}\frac1\ell\int_0^\infty e^{-t\ell x}\dd x
+ =\frac{\pi^2}{6t}.
+\end{align*}
+The exchange uses nonnegative terms. In particular,
+\[
+ z^{-n}P(z)\leq e^{tn+\pi^2/(6t)}=e^{2c\sqrt n},
+ \qquad \frac{z^{-n}P(z)}{p(n)}=O(n).
+\]
+Furthermore, $\log(1-u)\leq-u$ implies
+\begin{equation}\label{eq:tailproduct}
+ \prod_{j>K}(1-z^j)
+ \leq\exp\left(-\frac{z^{K+1}}{1-z}\right),\qquad
+ \frac{z^{K+1}}{1-z}\sim c^{-1}n^{1/4}.
+\end{equation}
+Indeed, the floor in \eqref{eq:scales} gives
+$z^{K+1}=n^{-1/4}(1+O(n^{-1/2}))$, while
+$1-z\sim c/\sqrt n$. For a fixed $c_0>0$ small enough,
+\begin{equation}\label{eq:length}
+ \PP(k<K)\leq\frac{p_{\leq K}(n)}{p(n)}
+ =O\bigl(n e^{-c_0n^{1/4}}\bigr).
+\end{equation}
+
+\subsection{The rank window}
+For every integer $r$, the interval $r-m<R\leq r$ contains exactly
+$m$ integer ranks. Lemma~\ref{lem:atom} therefore gives
+\begin{equation}\label{eq:window}
+ \PP(r-m<R\leq r)\leq\frac{mD(n)}{p(n)}
+ =O((\log n)^{-1}),
+\end{equation}
+uniformly in $r$. The treatment of the all-ones partition in that
+lemma avoids any exceptional-rank convention in this bound.
+
+\subsection{Completion of the first conjecture}
+Every $r$-subdiagonal partition satisfies $L\leq k+r$, hence
+$R\leq r$. Conversely, among partitions satisfying $R\leq r$,
+remove the events $Z_1<m$, $k<K$, and $r-m<R\leq r$.
+All remaining partitions satisfy Lemma~\ref{lem:interior}.
+For every sufficiently large $n$ and every integer $r\geq0$, we
+obtain the exact union-bound inequality
+\begin{align}
+ 0\leq\PP(R\leq r)-\frac{s_r(n)}{p(n)}
+ &\leq \PP(Z_1<m)+\PP(k<K)\nonumber\\
+ &\hspace{1em}+\PP(r-m<R\leq r).\label{eq:union}
+\end{align}
+No independence among these events is assumed. Estimates
+\eqref{eq:ones}, \eqref{eq:length}, and \eqref{eq:window} prove the
+uniform coupling. Setting $r=0$ and using \eqref{eq:rankhalf} gives
+\eqref{eq:half}, including its sharper one-sided upper bound.
+Finally \eqref{eq:hr} gives \eqref{eq:subeq}. This completes the
+proof of Theorem~\ref{thm:coupling}, and thus of Conjecture~5.3.
+
+\section{A separate logistic crossover}\label{sec:logistic}
+The preceding proof uses no rank limit theorem. The following
+stronger description of growing shifts invokes the positive-rank
+part of Dousse--Mertens~\cite[Theorem~1.2]{dm}.
+
+\begin{corollary}\label{cor:logistic}
+Uniformly for all integers $r\geq0$,
+\begin{equation}\label{eq:logistic}
+ \frac{s_r(n)}{p(n)}
+ =\frac1{1+\exp(-\pi r/\sqrt{6n})}+O((\log n)^{-1}).
+\end{equation}
+Consequently, if $r_n/\sqrt n\to\alpha\in[0,\infty)$, the ratio
+tends to $(1+e^{-c\alpha})^{-1}$. If $r_n/\sqrt n\to\infty$,
+the ratio tends to $1$.
+\end{corollary}
+\begin{proof}
+Set $\beta=c/\sqrt n$, $J=\floor{\sqrt n\log n/(\pi\sqrt6)}$,
+$g(x)=\tfrac14\sech^2(x/2)$, and $F(x)=(1+e^{-x})^{-1}$.
+The cited theorem yields, uniformly for $1\leq j\leq J$,
+\begin{equation}\label{eq:dm}
+ \frac{N(j,n)}{p(n)}
+ =\beta g(\beta j)\left(1+O(\beta^{1/2}j^{1/3})\right).
+\end{equation}
+Only positive ranks are used here; the zero rank is controlled
+by Lemma~\ref{lem:atom}. Since $g$ decreases on $[0,\infty)$,
+\begin{equation}\label{eq:riemann}
+ \left|\beta\sum_{j=1}^r g(\beta j)
+      -\int_0^{\beta r}g(x)\dd x\right|\leq\beta g(0)
+ \qquad(0\leq r\leq J).
+\end{equation}
+In particular the main-term masses have bounded sum. Summing the
+relative error in \eqref{eq:dm} thus costs at most
+$O(\beta^{1/2}J^{1/3})$, not $J$ times this quantity. By
+\eqref{eq:rankhalf}, \eqref{eq:riemann}, and $F'=g$,
+\[
+ \PP(R\leq r)=F(\beta r)
+ +O\bigl(n^{-1/12}(\log n)^{1/3}\bigr)
+ \qquad(0\leq r\leq J).
+\]
+At the endpoint $\beta J=(\log n)/6+O(n^{-1/2})$, so
+$1-F(\beta J)=O(n^{-1/6})$. For $r>J$, both distribution
+functions lie between their values at $J$ and $1$; monotonicity
+therefore extends the same error bound to all such $r$.
+This error is $o(1/\log n)$. Combining it with
+Theorem~\ref{thm:coupling} proves \eqref{eq:logistic}.
+\end{proof}
+
+\section{The inverse at the precision actually proved}\label{sec:inverse}
+For real $y>1$, define the first threshold
+\begin{equation}\label{eq:threshold}
+ T(y)=\min\{n\geq0:s_0(n)\geq y\}.
+\end{equation}
+Prepending a part $1$ is an injection from subdiagonal partitions of
+$n$ to those of $n+1$: each old index increases by one. Thus $s_0(n)$
+is nondecreasing; \eqref{eq:subeq} makes it unbounded. It is in fact
+strictly increasing for $n\geq4$. At every odd target size at least
+$5$, a partition $(1,2,\ldots,2)$ has exactly one one; at every even
+target size at least $6$, a partition $(1,2,\ldots,2,3)$ does too.
+Both are subdiagonal and outside the prepending map's image, whose
+members have at least two ones when the source is nonempty.
+
+\begin{theorem}[Limited-precision inverse]\label{thm:inverse}
+Let $W_{-1}$ be the real branch of Lambert's function with values at
+most $-1$. For sufficiently large $y$, put
+\begin{equation}\label{eq:inversecenter}
+ x_0(y)=c^{-2}
+ W_{-1}\!\left(-\frac{c}{\sqrt{8\sqrt3\,y}}\right)^2.
+\end{equation}
+Then
+\begin{align}
+ T(y)&=x_0(y)+O\left(\frac{\sqrt{x_0(y)}}{\log x_0(y)}+1\right)\label{eq:inverseerror}\\
+ &=x_0(y)+O\left(\frac{\log y}{\log\log y}\right).\nonumber
+\end{align}
+Writing $H=\log y$, an equivalent explicit initializer is
+\begin{equation}\label{eq:loginverse}
+ T(y)=\frac{\left[H+2\log H+\log(12\sqrt3/\pi^2)\right]^2}{4c^2}
+       +O\left(\frac{H}{\log H}\right).
+\end{equation}
+\end{theorem}
+\begin{proof}
+For $x>0$ define
+\[
+ M(x)=\frac{e^{2c\sqrt x}}{8\sqrt3\,x},\qquad
+ h(x)=\log M(x)=2c\sqrt x-\log x-\log(8\sqrt3).
+\]
+The large solution of $M(x)=y$ is \eqref{eq:inversecenter}:
+put $u=\sqrt x$, take the positive square root, and rearrange as
+$(-cu)e^{-cu}=-c/\sqrt{8\sqrt3\,y}$. The branch $W_{-1}$
+selects $u\to\infty$. Also
+\begin{equation}\label{eq:logmodel}
+ \log s_0(n)=h(n)+O((\log n)^{-1}),\qquad
+ h'(x)=\frac c{\sqrt x}-\frac1x\sim\frac c{\sqrt x}.
+\end{equation}
+Let $x_0=x_0(y)$ and, for a fixed sufficiently large $D$, put
+$\Delta=D\sqrt{x_0}/\log x_0$. For
+$x\in[x_0-\Delta-1,x_0+\Delta+1]$, one has $x\sim x_0$,
+$\log x\sim\log x_0$, and $h'(x)\sim c/\sqrt{x_0}$ uniformly.
+Thus
+\[
+ h(x_0\pm\Delta)-h(x_0)
+ =\pm\frac{cD+o(1)}{\log x_0}.
+\]
+Choose $D$ large enough to dominate the fixed implicit constant
+in \eqref{eq:logmodel}. Rounding the lower point down and the upper
+point up changes $h$ by only $O(x_0^{-1/2})=o(1/\log x_0)$.
+For all sufficiently large $y$, therefore,
+\[
+ s_0(\floor{x_0-\Delta})<y,
+ \qquad s_0(\ceil{x_0+\Delta})\geq y.
+\]
+Monotonicity brackets the first threshold and proves
+\eqref{eq:inverseerror}. Since $\sqrt{x_0}\sim H/(2c)$ and
+$\log x_0\sim2\log H$, the second error form follows.
+
+To obtain \eqref{eq:loginverse}, set $v=2c\sqrt{x_0}$.
+The model equation becomes
+\[
+ v-2\log v=H+\log(2\sqrt3/c^2).
+\]
+It follows first that $v\sim H$, and substitution back into this
+equation gives
+\[
+ v=H+2\log H+\log(2\sqrt3/c^2)+O(\log H/H).
+\]
+Squaring changes $x_0$ by $O(\log H)$, which is smaller than
+$O(H/\log H)$, and $2\sqrt3/c^2=12\sqrt3/\pi^2$.
+\end{proof}
+
+The window in \eqref{eq:inverseerror} grows. This theorem does not
+identify the exact integer threshold by rounding $x_0$, does not
+produce two adjacent candidate integers, and does not supply a
+numerically certified interval for any specified $y$. Such statements
+would need explicit error constants and substantially sharper
+information. The elementary nested-log initializer is not an
+all-orders expansion for the constrained counting sequence.
+
+\section{Catalan prefixes and distinct tails}\label{sec:prefix}
+We now prove Conjecture~5.2 independently of the subdiagonal
+argument. The first construction already yields a strict
+exponential separation. A refinement in the next section improves
+the constant.
+
+For $M\geq1$, let $\mathcal C_M$ consist of weakly increasing
+lists $\lambda=(\lambda_1,\ldots,\lambda_M)$ satisfying
+\begin{equation}\label{eq:prefixdef}
+ i\leq\lambda_i\leq M\qquad(1\leq i\leq M).
+\end{equation}
+Reverse complementation,
+$\mu_j=M+1-\lambda_{M+1-j}$, is a bijection from
+$\mathcal C_M$ to weakly increasing lists with $1\leq\mu_j\leq j$.
+Placing the $j$th north step at horizontal coordinate $\mu_j-1$
+and then completing with east steps gives the usual Dyck path from
+$(0,0)$ to $(M,M)$. The inverse reads those coordinates. The
+reflection principle therefore gives
+\begin{equation}\label{eq:catalan}
+ |\mathcal C_M|=C_M=\binom{2M}{M}-\binom{2M}{M+1}
+                  =\frac1{M+1}\binom{2M}{M}.
+\end{equation}
+Every prefix has weight $w(\lambda)\leq M^2$.
+
+Let $f_M(N)$ count distinct partitions of $N$ with all parts greater
+than $M$, with $f_M(0)=1$ and $f_M(N)=0$ for negative $N$.
+For a prefix $\lambda\in\mathcal C_M$, append such a distinct tail
+$\tau_1<\cdots<\tau_\ell$. Its $j$th part is at least $M+j$,
+so the combined list is superdiagonal at index $M+j$ as well as at
+every prefix index. It is weakly increasing, since the prefix parts
+are at most $M$ and the tail parts exceed $M$. The cutoff $M$
+recovers the prefix and tail uniquely. Consequently
+\begin{equation}\label{eq:exactprefix}
+ A(n)\geq\sum_{\lambda\in\mathcal C_M}f_M(n-w(\lambda)).
+\end{equation}
+
+\begin{lemma}[Tail comparison]\label{lem:tail}
+For $N\geq M+1$, the values $f_M(N)$ are positive and nondecreasing,
+and
+\begin{equation}\label{eq:tailcompare}
+ 2^M f_M(N)\geq q(N).
+\end{equation}
+\end{lemma}
+\begin{proof}
+The singleton $(N)$ shows positivity. Increasing the unique largest
+part of a distinct partition by $1$ preserves distinctness and the
+lower cutoff. It is injective: on its image, subtract $1$ from the
+still unique largest part. Thus $f_M(N+1)\geq f_M(N)$.
+
+Every distinct partition is uniquely determined by its subset of
+small parts and its remaining large parts. Hence
+\begin{equation}\label{eq:subsetdecomp}
+ q(N)=\sum_{S\subseteq\{1,\ldots,M\}}
+ f_M\left(N-\sum_{j\in S}j\right).
+\end{equation}
+Each summand is at most $f_M(N)$. For arguments at least $M+1$,
+use monotonicity; arguments between $1$ and $M$ contribute zero;
+argument zero contributes $1\leq f_M(N)$; negative arguments
+contribute zero. There are $2^M$ subsets.
+\end{proof}
+
+\begin{proposition}[Finite Catalan lower bound]\label{prop:finite}
+For integers $M\geq1$ and $n-M^2\geq M+1$,
+\begin{equation}\label{eq:finitebase}
+ A(n)\geq C_M f_M(n-M^2)\geq C_M2^{-M}q(n-M^2).
+\end{equation}
+\end{proposition}
+\begin{proof}
+Every argument in \eqref{eq:exactprefix} is at least $n-M^2$,
+inside the monotonicity range. Apply Lemma~\ref{lem:tail}.
+\end{proof}
+
+Fix $0<\varepsilon<1$ and take $M=\floor{\varepsilon\sqrt n}$.
+The feasibility condition in Proposition~\ref{prop:finite} holds
+for all sufficiently large $n$. Stirling's formula in
+\eqref{eq:catalan} and \eqref{eq:distinct} give
+\[
+ \log(C_M2^{-M})=M\log2+O(\log M),\qquad
+ \log q(n-M^2)=b\sqrt{n-M^2}+O(\log n).
+\]
+It follows that
+\begin{equation}\label{eq:baselineepsilon}
+ \liminf_{n\to\infty}\frac{\log A(n)}{\sqrt n}
+ \geq\varepsilon\log2+b\sqrt{1-\varepsilon^2}.
+\end{equation}
+The maximum of the right side is
+\begin{equation}\label{eq:baseline}
+ B_0=\sqrt{b^2+(\log2)^2}>b,
+ \qquad\varepsilon=\frac{\log2}{B_0}.
+\end{equation}
+This follows from Cauchy--Schwarz applied to the unit vector
+$(\varepsilon,\sqrt{1-\varepsilon^2})$, with equality at the
+stated value. Thus the simple construction alone proves
+Conjecture~5.2. It makes no assertion that $B_0$ is the actual
+growth rate.
+
+\section{Fixed height prefixes improve the exponential rate}\label{sec:height}
+Fix an integer $h\geq3$. Restrict the prefixes further to
+\begin{equation}\label{eq:heightprefix}
+ i\leq\lambda_i\leq\min(M,i+h-1).
+\end{equation}
+Under the reverse complementation in Section~\ref{sec:prefix},
+this becomes $1\leq\mu_j\leq j$ and $\mu_j\geq j-h+1$.
+In the associated Dyck path, the height $y-x$ just after its $j$th
+north step is $j-\mu_j+1$. Maxima occur just after north steps,
+so \eqref{eq:heightprefix} corresponds exactly to Dyck paths of
+semilength $M$ with maximum height at most $h$.
+
+Let $D_h(M)$ denote their number. If $T_h$ is the adjacency matrix
+of the path graph on vertices $0,1,\ldots,h$, recording successive
+heights gives
+\begin{equation}\label{eq:walk}
+ D_h(M)=(T_h^{2M})_{00}.
+\end{equation}
+The standard sine eigenvectors can also be checked directly:
+for $1\leq j\leq h+1$ and $0\leq a\leq h$,
+\[
+ v_j(a)=\sqrt{\frac2{h+2}}\sin\frac{(a+1)j\pi}{h+2},\qquad
+ T_hv_j=2\cos\frac{j\pi}{h+2}\,v_j.
+\]
+The boundary values at $a=-1,h+1$ vanish, and the sine addition
+formula verifies the eigenvalue equation. The vectors are an
+orthonormal basis by finite sine orthogonality. Therefore
+\begin{equation}\label{eq:spectral}
+ D_h(M)=\frac2{h+2}\sum_{j=1}^{h+1}
+ \sin^2\frac{j\pi}{h+2}
+ \left(2\cos\frac{j\pi}{h+2}\right)^{2M}.
+\end{equation}
+The eigenvalues of largest modulus are opposites, corresponding to
+$j=1$ and $j=h+1$. Since $2M$ is even, their contributions add.
+For each \emph{fixed} $h$ this proves
+\begin{equation}\label{eq:heightasymp}
+ D_h(M)=c_h\rho_h^M(1+O_h(\theta_h^M)),\qquad
+ \rho_h=4\cos^2\frac\pi{h+2},\quad
+ c_h=\frac4{h+2}\sin^2\frac\pi{h+2}>0,
+\end{equation}
+where $0\leq\theta_h<1$. In particular $\rho_h>2$ for $h\geq3$.
+No uniformity in $h$ is asserted in this estimate.
+
+Every restricted prefix has weight at most
+\begin{equation}\label{eq:weight}
+ W_h(M)=\frac{M(M+1)}2+(h-1)M.
+\end{equation}
+This bound is deliberately simple; the upper cutoff $M$ can make
+it nonsharp at the final indices. The same injection and tail
+comparison now give the finite inequality
+\begin{equation}\label{eq:finiteheight}
+ A(n)\geq D_h(M)2^{-M}q(n-W_h(M))
+ \quad\text{if }n-W_h(M)\geq M+1.
+\end{equation}
+Here $h,M,n$ are integers, and the statement itself is exact.
+
+Keep $h$ fixed and put $M=\floor{\varepsilon\sqrt n}$, with
+$0<\varepsilon<\sqrt2$. Then $W_h(M)/n\to\varepsilon^2/2$, so
+the feasibility condition eventually holds. Using
+\eqref{eq:heightasymp}, \eqref{eq:distinct}, and
+\eqref{eq:finiteheight}, we obtain
+\begin{equation}\label{eq:heightepsilon}
+ \liminf_{n\to\infty}\frac{\log A(n)}{\sqrt n}
+ \geq\varepsilon\log(\rho_h/2)
+       +b\sqrt{1-\varepsilon^2/2}.
+\end{equation}
+Write $a_h=\log(\rho_h/2)>0$. Cauchy--Schwarz, now with the
+unit vector $(\varepsilon/\sqrt2,\sqrt{1-\varepsilon^2/2})$,
+shows that the maximum is
+\begin{equation}\label{eq:Bh}
+ B_h=\sqrt{b^2+2a_h^2},\qquad
+ \varepsilon_h=\frac{2a_h}{\sqrt{b^2+2a_h^2}}\in(0,\sqrt2).
+\end{equation}
+Thus the left side of \eqref{eq:heightepsilon} is at least $B_h$
+for \emph{every fixed} integer $h\geq3$. Taking the supremum of
+these already established lower bounds and using $\rho_h\to4$
+gives \eqref{eq:strong}.
+
+This order of limits is essential: first fix $h$, then take
+$n\to\infty$, then take the supremum over fixed heights. No
+estimate with a height growing with $n$ is used or needed.
+By \eqref{eq:distinct},
+\[
+ \limsup_{n\to\infty}\frac1{\sqrt n}\log\frac{q(n)}{A(n)}
+ \leq b-B_*.
+\]
+This is equivalent to \eqref{eq:ratio} and completes the proof of
+Theorem~\ref{thm:super}.
+
+For orientation, the three constants are approximately
+\[
+ b=1.8137993642,\qquad B_0=1.9417314819,\qquad
+ B_*=2.0617405660.
+\]
+These decimals merely illustrate exact expressions. The trivial
+upper bound $A(n)\leq p(n)$ yields
+\begin{equation}\label{eq:unknownrate}
+ B_*\leq\liminf\frac{\log A(n)}{\sqrt n}
+ \leq\limsup\frac{\log A(n)}{\sqrt n}
+ \leq\pi\sqrt{2/3}=2.5650996603\ldots.
+\end{equation}
+Neither existence of a limit nor equality with $B_*$ follows from
+these inequalities.
+
+\section{Exact computation and reproducibility}\label{sec:computation}
+The source package supplies a Python standard-library companion.
+Its exact integer computations test the finite mechanisms, not the
+truth of an asymptotic statement by numerical extrapolation.
+The empty-partition convention and increasing order are included
+in all sequence checks.
+
+\subsection{Independent enumeration}
+One method directly enumerates increasing partitions and tests the
+index inequalities. A second method processes part sizes and their
+multiplicities, recording the number of parts and total weight.
+For a block of $a$ new parts equal to $v$ following $k$ smaller
+parts, the subdiagonal condition is $v\leq k+1+r$ when $a>0$;
+the superdiagonal condition is $v\geq k+a$. These are respectively
+the strongest inequalities at the first and last index of the
+block. Thus the multiplicity method enforces the definitions
+without reusing the direct enumerator.
+
+The original OEIS numeric prefixes have 57 entries for A238875
+and 61 for A238873, both beginning at $n=0$. The companion stores
+the extracted integers and source URLs, and compares them with
+its independently computed values. Exact data extend through
+$n=200$. The following sample values are intended only as
+illustrations of the finite sequences.
+\begin{center}
+\begin{tabular}{r r r r r}
+\toprule
+$n$ & $p(n)$ & $s_0(n)$ & $A(n)$ & $q(n)$\\
+\midrule
+25 & 1958 & 898 & 349 & 142\\
+40 & 37338 & 17319 & 3997 & 1113\\
+50 & 204226 & 95502 & 16582 & 3658\\
+100 & 190569292 & 91171308 & 5323937 & 444793\\
+200 & 3972999029388 & 1930845918142 & 25548856857 & 487067746\\
+\bottomrule
+\end{tabular}
+\end{center}
+For example, at $n=200$ the ratios are about $0.485992$ and
+$0.0190642$. These do not establish an error constant, a valid
+starting index, or the exact superdiagonal rate.
+
+\subsection{Finite mechanisms checked}
+The companion verifies the fixed-rank map and its inverse, detects
+collisions within each rank class, and treats the all-ones rank
+separately. It checks the deterministic interior lemma whenever its
+hypotheses hold; shifted subdiagonal counts are compared with the
+appropriate rank cumulative counts. The prefix tests compare
+Catalan enumeration with the exact binomial formula, and bounded
+height prefix enumeration with integer walk counts. Distinct-tail
+monotonicity, the small-subset decomposition, prefix--tail validity
+and disjointness, and both finite lower bounds are tested with
+integer arithmetic. The shipped verification exhausts 215,308 partitions, including the
+empty partition, through $n=40$; checks 215,267 injection and inverse
+cases and 446,242 interior-lemma cases; and verifies 1,690 Catalan and
+9,995 bounded-height finite lower bounds. The reproducible output
+records the remaining ranges and numbers of successful checks.
+
+Finite verification does not replace any proof above. In
+particular, the asymptotic choices \eqref{eq:scales} need not satisfy
+the interior hypotheses at modest $n$, and finite data cannot
+certify the eventual spectral or partition asymptotics. The exact
+threshold command, where supported within a finite table, must
+search actual integer counts; the asymptotic center is not an
+integer-threshold certificate.
+
+\subsection{Package contract}
+The accompanying README gives bounded commands, exact result
+files, and regression tests that run both normally and with Python
+optimization enabled. Validation does not depend on Python
+\texttt{assert} statements. Output paths must be new regular files
+in trusted directories; existing paths, symlinks, and special-file
+targets are rejected. The software has explicit finite workload
+limits independent of the unrestricted mathematical theorems.
+
+The PDF builder uses a clean exclusive directory, a fixed epoch,
+fixed metadata, an isolated LaTeX format, disabled shell escape,
+and stable references. A fixed allowlist and SHA-256 manifest
+control the source ZIP; working files and third-party
+journal PDFs are not included. Two clean builds and two archive
+replays must be byte-identical within the recorded toolchain.
+This is a same-toolchain reproducibility claim, not a promise of
+identical output across different TeX versions or fonts. The
+trusted-directory and modified-TeX qualifications are stated in
+the README.
+
+\section{Further questions and present limits}\label{sec:questions}
+\paragraph{The subdiagonal defect.}
+The coupling reduces the half-partition conjecture to the fact that
+interior violations are rare. It does not identify the first term of
+\[
+ \PP(R\leq0)-s_0(n)/p(n).
+\]
+The $O(1/\log n)$ estimate comes from a deliberately coarse union
+bound and uniform rank atom estimate. Determining the actual defect
+scale, its leading constant, or an all-orders expansion requires
+more precise joint information on the rank, small-part
+multiplicities, and interior shape. The known expansion of $p(n)$
+alone does not provide an expansion of $s_0(n)$.
+
+\paragraph{Sharper shifts.}
+Theorem~\ref{thm:coupling} is uniform over all nonnegative integer
+$r$, including $n$-dependent shifts. A natural refinement is an
+error sensitive to $r/\sqrt n$, with smaller error in regions where
+the logistic tail is small. Negative integer shifts do not give a
+symmetric extension of this definition: $r\leq-1$ already makes
+$\lambda_1\leq1+r$ impossible for every nonempty partition.
+
+\paragraph{The superdiagonal exponential constant.}
+The prefix construction sacrifices information twice: it replaces
+prefix weights by a common upper bound, and it bounds every
+small-part subset contribution by the largest tail count. Keeping
+the full weighted fixed-height transfer matrix, or using a sharper
+tail comparison, may improve $B_*$. A matching upper bound and a
+proof that $\log A(n)/\sqrt n$ has a limit remain open within this
+report. A leading amplitude, correction series, and precise inverse
+for $A(n)$ are therefore also beyond the present results.
+
+\paragraph{Explicit numerical onset.}
+The superdiagonal finite inequalities are directly computable.
+The asymptotic results would become numerical certificates only
+after supplying explicit classical remainder bounds and tracking
+all constants through the coupling and inverse. In particular, the
+window in Theorem~\ref{thm:inverse} cannot be turned into a
+specified finite search interval merely by choosing an arbitrary
+multiplier in its big-$O$ term.
+
+\begin{thebibliography}{9}
+\bibitem{abek}
+M. Archibald, A. Blecher, S. Elizalde and A. Knopfmacher,
+\emph{Subdiagonal and superdiagonal partitions},
+Afrika Matematika \textbf{36}, article 77 (2025).
+\href{https://doi.org/10.1007/s13370-025-01282-0}{doi:10.1007/s13370-025-01282-0}.
+The final article's Section~5 and Lemma~5.4 are the direct targets
+and injection antecedent; Theorem~3.3 defines shifted subdiagonal
+partitions and gives their generating function.
+
+\bibitem{dm}
+J. Dousse and M. H. Mertens,
+\emph{Asymptotic formulae for partition ranks},
+Acta Arithmetica \textbf{168} (2015), 83--100.
+\href{https://doi.org/10.4064/aa168-1-5}{doi:10.4064/aa168-1-5}.
+Theorem~1.2 in the
+\href{https://www.unige.ch/~doussej/rank.pdf}{author-hosted manuscript}
+(arXiv:1406.6848), used here only at positive ranks.
+
+\bibitem{dlmf}
+NIST Digital Library of Mathematical Functions,
+\href{https://dlmf.nist.gov/27.14}{Section 27.14, Unrestricted Partitions},
+especially Section 27.14(iii), Asymptotic Formulas.
+Classical Hardy--Ramanujan and Rademacher estimates; in particular
+\href{https://dlmf.nist.gov/27.14.E9}{equation 27.14.9} supports
+the refined estimate used in this report.
+
+\bibitem{oeissub}
+OEIS Foundation Inc.,
+\href{https://oeis.org/A238875}{A238875, Subdiagonal partitions}.
+Numeric prefix and increasing-order convention checked against the
+\href{https://github.com/oeis/oeisdata/blob/main/seq/A238/A238875.seq}{official data mirror},
+entry revision of 14 April 2025, accessed 3 October 2026.
+
+\bibitem{oeissuper}
+OEIS Foundation Inc.,
+\href{https://oeis.org/A238873}{A238873, Superdiagonal partitions}.
+Numeric prefix and order convention checked against the
+\href{https://github.com/oeis/oeisdata/blob/main/seq/A238/A238873.seq}{official data mirror},
+entry revision of 7 October 2025, accessed 3 October 2026.
+\end{thebibliography}
+\end{document}

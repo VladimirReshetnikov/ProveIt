@@ -1,0 +1,1311 @@
+\newcommand{\DoNotLoadEpstopdf}{}
+\pdfinfoomitdate=1
+\pdftrailerid{}
+\pdfsuppressptexinfo=-1
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage[margin=1in]{geometry}
+\usepackage{booktabs,longtable,array}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+\hypersetup{pdftitle={Report 154 Diagonal poly Cauchy permutations at all fixed orders},pdfauthor={},pdfsubject={OEIS A192563 exact saddle expansion, growing cycle moments, and inverse thresholds}}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{1.2em}
+\setlength{\emergencystretch}{2em}
+\setcounter{tocdepth}{1}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\EE}{\mathbb E}
+\newcommand{\NN}{\mathbb N}
+\newcommand{\QQ}{\mathbb Q}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\sone}[2]{\genfrac{[}{]}{0pt}{}{#1}{#2}}
+\newcommand{\stwo}[2]{\genfrac{\{} {\}}{0pt}{}{#1}{#2}}
+\newcommand{\ceil}[1]{\left\lceil #1\right\rceil}
+\newcommand{\floor}[1]{\left\lfloor #1\right\rfloor}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\ii}{\mathrm i}
+\title{Diagonal poly Cauchy permutations at all fixed orders\\\large Exact saddle expansion and inverse thresholds for OEIS A192563}
+\author{Report 154}
+\date{3 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+The diagonal second-kind poly-Cauchy numbers satisfy
+$a_n=\sum_m\sone nm(m+1)^n$ and count the $(n,n)$-poly-Cauchy
+permutations of B\'enyi and Ram\'irez. Equivalently,
+$a_n/n!$ is the $n$th ordinary moment of one plus the cycle count
+of a uniform permutation of $n$ labels. We prove a complete
+asymptotic expansion at every fixed order, using the exact saddle
+of $e^z\Gamma(n+e^z)/\Gamma(e^z)$ and explicit finite Gaussian
+contraction polynomials in its standardized cumulants. The small scale is
+$r/n$, where
+$r=\log n-\log\log n-\log\log\log n+o(1)$.
+A positive exponential sum controls the whole complementary
+contour, and a weighted Taylor argument proves the integrated
+remainder. The result is uniform when the moment order $k$ and
+permutation size $n$ have ratio in a fixed compact subset of
+$(0,\infty)$. Differentiating an explicit real-parameter model
+then gives arbitrarily fine smooth inverse windows, with
+strictly justified floor and ceiling bounds at equality cases.
+We also obtain an explicit nested-logarithm inversion,
+including its relative remainder. Exact companion calculations
+check the coefficient identities and the OEIS prefix; optional
+high-precision diagnostics are separated from the proof.
+\end{abstract}
+\noindent\textbf{Scope and attribution.}
+The sequence, signed conventions, exact identities, and combinatorial
+interpretation are established prior art. This report supplies a
+sequence-specific fixed-order saddle analysis and its inverse
+consequences. It does not claim exhaustive priority. Several related
+full texts, notably Yakymiv's cycle-moment paper, remain uninspected.
+No numerical asymptotic onset or universal error constant is certified
+here. No claim concerns growing truncation order or exponentially
+small sectors.
+\newpage
+\tableofcontents
+\newpage
+
+\section{Results and mathematical purpose}\label{sec:results}
+
+Let $\sone nm$ and $\stwo nm$ be, respectively, the unsigned
+Stirling numbers of the first kind and the Stirling numbers of the
+second kind, with both $(0,0)$ entries equal to one. Define
+\begin{equation}\label{eq:definition}
+ A_{n,k}=\sum_{m=0}^n\sone nm(m+1)^k,
+ \qquad a_n=A_{n,n}\quad(n,k\geq0).
+\end{equation}
+The diagonal begins
+\[
+1,\ 2,\ 13,\ 161,\ 3148,\ 87784,\ 3274640,\ 156359874.
+\]
+It is OEIS A192563, the diagonal of A344639
+\cite{oeisdiag,oeisarray}. Throughout, logarithms are natural and
+all asymptotic statements refer to positive arguments tending to
+infinity.
+
+\subsection{Why this diagonal is a natural asymptotic problem}
+
+If $C_n$ is the number of cycles of a uniform random permutation
+of $n$ labels, then
+\begin{equation}\label{eq:moment}
+ \frac{A_{n,k}}{n!}=\EE(C_n+1)^k.
+\end{equation}
+Thus the diagonal studies a moment order that grows with the
+underlying combinatorial size. The familiar fixed-order cycle-moment
+regime does not settle it. Large moments give disproportionate
+weight to atypically large cycle counts, so replacing $C_n$ by its
+typical order $\log n$ is not a justified approximation.
+
+There is also a direct combinatorial class. Take a permutation of
+$n$ red labels, put its cycles into canonical order with the largest
+entry of each cycle first and these largest entries increasing,
+and assign each of $k$ blue labels to one of the $m+1$ gaps around
+its $m$ cycles. Within each gap put the blue labels in increasing
+order. Removing cycle parentheses produces the second-kind
+poly-Cauchy permutations of B\'enyi--Ram\'irez
+\cite[Theorem 2.1]{benyi}. This description explains both positivity
+and the factor $(m+1)^k$. It counts structured permutations on two
+specified label sets, not arbitrary permutations of their total size.
+
+The present results consequently serve three concrete purposes:
+asymptotic enumeration of that class, evaluation of growing ordinary
+cycle-count moments, and inversion of a prescribed counting or moment
+scale. The compact aspect-ratio theorem permits the two label sets
+to grow at comparable but unequal rates.
+
+\subsection{The exact saddle and its coefficients}
+
+For real $N\geq1$ and real $z$, set
+\begin{equation}\label{eq:LN}
+ L_N(z)=z+\log\Gamma(N+e^z)-\log\Gamma(e^z).
+\end{equation}
+Let $r=r(N)>0$ solve
+\begin{equation}\label{eq:saddle}
+ rL_N'(r)=N,
+ \quad\text{or}\quad
+ r\bigl[1+e^r\{\psi(N+e^r)-\psi(e^r)\}\bigr]=N.
+\end{equation}
+Here $\psi$ is the digamma function. Existence and uniqueness for
+every $N\geq1$ are proved in Section~\ref{sec:real}. Define
+\begin{equation}\label{eq:cumulants}
+ \kappa_j(N)=\left.(z\partial_z)^jL_N(z)\right|_{z=r(N)},
+ \qquad b=\kappa_2,
+ \qquad h=\frac rN.
+\end{equation}
+The differential operator acts with $N$ held fixed, before evaluation
+at the saddle. In particular $\kappa_1=N$ and $b>0$.
+
+Put $E_0=1$. For $q\geq1$, define the finite polynomial expression
+\begin{equation}\label{eq:Ek}
+ E_q=\sum_{\substack{m_3,\ldots,m_{2q+2}\geq0\\
+                    \sum_{j=3}^{2q+2}(j-2)m_j=2q}}
+ (-1)^{J/2}(J-1)!!
+ \prod_{j=3}^{2q+2}\frac1{m_j!}
+       \left(\frac{\kappa_j}{j!b^{j/2}}\right)^{m_j},
+ \qquad J=\sum_{j=3}^{2q+2}jm_j.
+\end{equation}
+The constraint makes $J$ even; the apparent half-powers of $b$ thus
+combine to integer powers in every monomial. We use $(-1)!!=1$
+when representing $E_0$ by the empty product.
+
+\begin{theorem}[All fixed orders on the diagonal]\label{thm:main}
+For every fixed integer $R\geq1$, as $n\to\infty$,
+\begin{equation}\label{eq:main}
+ a_n=\frac{n!\exp L_n(r)}{r^n\sqrt{2\pi b}}
+       \left(\sum_{q=0}^{R-1}E_q(n)+O_R\left((r/n)^R\right)\right).
+\end{equation}
+Moreover, for each fixed $j\geq1$,
+\begin{align}
+ r(N)&=\log N-\log\log N-\log\log\log N+o(1),\label{eq:rscale}\\
+ \kappa_j(N)&\sim Nr^{j-1},\qquad
+ E_q(N)=O_q\left((r/N)^q\right).\label{eq:kappascale}
+\end{align}
+In particular,
+\begin{equation}\label{eq:E1}
+ E_1=\frac{\kappa_4}{8b^2}
+       -\frac{5\kappa_3^2}{24b^3}
+       \sim-\frac{r}{12N}.
+\end{equation}
+The implicit constants and sufficiently large onsets may depend on
+$R$ or on the displayed fixed index.
+\end{theorem}
+
+The leading equivalent already involves an exact transcendental
+saddle. Retaining it is essential at higher orders. The replacement
+$E_1\sim-r/(12n)$ explains a sign and a scale, but does \emph{not}
+replace the full $E_1$ in the $R=2$ formula. The errors in that
+replacement, and in a finite nested-log approximation to $r$, can
+be much larger than $(r/n)^2$. This is an exact-saddle expansion with
+slowly varying coefficients, not a constant-coefficient power series
+in $1/n$.
+
+\begin{theorem}[Compact aspect ratios]\label{thm:aspect}
+Fix $0<\alpha\leq\beta<\infty$ and a fixed integer $R\geq1$.
+For positive integers $n,k$ with $\alpha\leq k/n\leq\beta$,
+let $r>0$ solve $rL_n'(r)=k$ and define $\kappa_j,b,E_q$ as in
+\eqref{eq:cumulants}--\eqref{eq:Ek}, with $n$ held fixed. Uniformly
+in this range,
+\begin{equation}\label{eq:aspect}
+ A_{n,k}=\frac{k!\exp L_n(r)}{r^k\sqrt{2\pi b}}
+    \left(\sum_{q=0}^{R-1}E_q
+          +O_{R,\alpha,\beta}\left((r/k)^R\right)\right).
+\end{equation}
+Also, uniformly in the same range,
+\begin{align}
+ r&=\log n-\log\log n-\log\log\log n
+               +\log(k/n)+o(1),\label{eq:aspectr}\\
+ \kappa_j&\sim kr^{j-1},\qquad b\sim kr.
+\end{align}
+The theorem makes no uniform assertion as $k/n$ approaches zero or
+infinity.
+\end{theorem}
+
+\subsection{Inverse results and rounding}
+
+For fixed $R\geq1$, put
+\begin{equation}\label{eq:YR}
+ P_R(N)=\sum_{q=0}^{R-1}E_q(N),\qquad
+ Y_R(N)=\frac{\Gamma(N+1)\exp L_N(r(N))}
+                   {r(N)^N\sqrt{2\pi b(N)}}P_R(N).
+\end{equation}
+This defines an explicit smooth function for sufficiently large real
+$N$. It does not assert an extension of the combinatorial sequence
+to noninteger indices.
+
+\begin{theorem}[Smooth inverse and integer thresholds]\label{thm:inverse}
+The function $P_R$ is eventually positive and $Y_R$ is eventually
+strictly increasing, with
+\begin{equation}\label{eq:Yderivative}
+ (\log Y_R)'(N)=2\log N-\log r(N)+o(1)\sim2\log N.
+\end{equation}
+For sufficiently large $X$, let $\nu_R$ be the unique solution of
+$Y_R(\nu_R)=X$ in the eventual increasing range. There is a constant
+$C_R>0$ such that, with
+\begin{equation}\label{eq:epsilon}
+ \eps_R=C_R\frac{(\log\nu_R)^{R-1}}{\nu_R^R},
+\end{equation}
+the two thresholds
+\[
+ T_{\geq}(X)=\min\{n\geq0:a_n\geq X\},\qquad
+ T_{>}(X)=\min\{n\geq0:a_n>X\}
+\]
+satisfy
+\begin{equation}\label{eq:bracket}
+ \floor{\nu_R-\eps_R}+1
+ \ \leq T_{\geq}(X)\leq T_{>}(X)
+ \ \leq\ceil{\nu_R+\eps_R}.
+\end{equation}
+In addition, if $L=\log X$, $\ell=\log L$, and $m=\log\ell$,
+then
+\begin{equation}\label{eq:nested}
+ \nu_R=\frac{L}{2\ell}
+       \left[1+\frac{\tfrac32m+1+\log2}{\ell}
+               +O_R\left(\frac{m^2}{\ell^2}\right)\right].
+\end{equation}
+\end{theorem}
+
+The shrinking $\eps_R$ measures uncertainty around a \emph{smooth}
+center before rounding. An integer threshold cannot in general equal
+$\nu_R+o(1)$ without a rounding qualification. If the interval
+$[\nu_R-\eps_R,\nu_R+\eps_R]$ lies strictly between consecutive
+integers $j$ and $j+1$, both thresholds equal $j+1$. If $X=a_n$,
+then $T_{\geq}(X)=n$ and $T_>(X)=n+1$; the two-sided statement
+\eqref{eq:bracket} deliberately retains that possibility.
+The explicit nested-log expression has a much coarser error than
+\eqref{eq:epsilon}; it must not silently replace $\nu_R$ in that
+fine bracket.
+
+\section{Established identities and source boundaries}\label{sec:sources}
+
+\subsection{Signs and the OEIS identification}
+
+In Komatsu's notation for second-kind poly-Cauchy numbers,
+\[
+ A_{n,k}=(-1)^n\widehat c_n^{(-k)}.
+\]
+B\'enyi--Ram\'irez write the nonnegative normalization as
+$\widehat c_{n,k}$. These conventions exclude the signed first-kind
+poly-Cauchy numbers, which are a different family
+\cite[Theorem 4]{komatsu2013}. The final published version of
+B\'enyi--Ram\'irez gives \eqref{eq:definition} and its interpretation
+in Theorem 2.1 and gives
+\begin{equation}\label{eq:stirlingproduct}
+ A_{n,k}=\sum_{j=0}^k j!\sone{n+1}{j+1}\stwo{k+1}{j+1}
+\end{equation}
+in Theorem 2.6 \cite{benyi}. The diagonal of
+\eqref{eq:stirlingproduct} is precisely the defining formula in
+A192563. The theorem numbers in the earlier preprint are different;
+all theorem references here use the final 2022 volume version.
+
+For completeness, a direct algebraic check of
+\eqref{eq:stirlingproduct} is short. The standard identity
+\[
+ (m+1)^k=\sum_{j=0}^k\stwo{k+1}{j+1}(m)_j
+\]
+uses the falling factorial $(m)_j=m(m-1)\cdots(m-j+1)$.
+The coefficient of $x^j$ in
+\[
+ \sum_{m=0}^n\sone nm(1+x)^m
+      =(1+x)(2+x)\cdots(n+x)
+\]
+is $\sone{n+1}{j+1}$, and also equals
+$\sum_m\sone nm\binom mj$. Multiplying by $j!$ and interchanging
+finite sums proves the formula. The companion verifies both sides
+by independent recurrences.
+
+\subsection{The coefficient function}
+
+The rising-factorial identity gives the entire function
+\begin{align}
+ F_n(z)&=\sum_{m=0}^n\sone nm e^{(m+1)z}\label{eq:positive}\\
+       &=e^z\prod_{q=0}^{n-1}(e^z+q)
+        =e^z\frac{\Gamma(n+e^z)}{\Gamma(e^z)}.
+        \label{eq:Fn}
+\end{align}
+The gamma quotient in \eqref{eq:Fn} is understood through its
+finite product wherever necessary; $F_n$ is entire. Hence
+\begin{equation}\label{eq:coefficient}
+ A_{n,k}=k![z^k]F_n(z),\qquad a_n=n![z^n]F_n(z).
+\end{equation}
+Summing the rising-factorial exponential generating function in
+$n$ also gives
+\begin{equation}\label{eq:doubleegf}
+ \sum_{n,k\geq0}A_{n,k}\frac{x^n}{n!}\frac{y^k}{k!}
+     =e^y(1-x)^{-e^y}.
+\end{equation}
+These are exact prior-art identities, including the shifted-family
+specialization behind \eqref{eq:doubleegf}. The one-variable form
+\eqref{eq:coefficient} is the convenient route for the asymptotic
+analysis; it changes with $n$, so the proof must control a triangular
+family of entire functions.
+
+\subsection{What the literature screen establishes}
+
+The official OEIS data-mirror entry for A192563 was inspected in
+full on 3 October 2026, as was A344639; the latter was also read at
+its OEIS page. Neither inspected entry contains a diagonal asymptotic.
+The individual A192563 webpage and its b-file were not successfully
+retrieved in that pass. Thus the verified finite prefix used here
+comes from the official mirror, not from a claimed b-file inspection.
+
+Full inspected primary texts include Komatsu's 2013 article
+\cite{komatsu2013}, the final B\'enyi--Ram\'irez article
+\cite{benyi}, Komatsu's 2021 transform preprint
+\cite{transform}, and Jha's cycle-moment preprint \cite{jha}.
+The first three provide exact identities and related generalizations;
+no matching diagonal all-orders theorem was located in those texts.
+Jha's fixed-order factorial-moment result is not a theorem uniform in
+the growing ordinary moment order used here.
+
+The following limits matter to any novelty claim. The full texts of
+Komatsu--Szalay's shifted-family paper \cite{shifted}, Komatsu's
+2019 recurrence paper \cite{recurrence}, and the final 2022 version
+of the transform paper were not inspected. Most importantly,
+Yakymiv's paper on moments of cycle counts of restricted permutations
+\cite{yakymiv} was identified through its official abstract, but its
+full text and its moment-order uniformity were not verified. This
+report therefore does not rule out overlap with that paper. A
+bounded search for the sequence identifiers, diagonal poly-Cauchy
+asymptotics, and growing cycle-count moments found no matching
+result; absence from that search is not an exhaustive priority proof.
+
+The analytic inputs below are classical gamma-function formulas
+\cite{dlmf}. The mathematical contribution presented here is their
+application with a complete fixed-order error argument, exact
+coefficient retention, compact aspect-ratio uniformity, and
+rounding-aware inverse consequences. Source snapshots and precise
+inspection levels are recorded in the accompanying provenance file.
+
+\section{Real parameter saddles and scale estimates}\label{sec:real}
+
+This section works with real $N\geq1$. It simultaneously supplies
+integer saddle estimates and the smooth continuation required for
+inversion. Write $t=e^r$ and
+\begin{equation}\label{eq:q}
+ q_N(t)=t\{\psi(N+t)-\psi(t)\}.
+\end{equation}
+
+\begin{lemma}[Existence and uniqueness]\label{lem:exist}
+For every real $N\geq1$, the equation $rL_N'(r)=N$ has exactly
+one solution $r>0$. At this solution $b>0$, and $r(N)$ is smooth.
+\end{lemma}
+\begin{proof}
+The digamma difference integral from DLMF 5.9.16 \cite{dlmf} gives
+\begin{equation}\label{eq:digammadiff}
+ q_N(t)=\int_0^\infty te^{-tu}h_N(u)\dd u,
+ \qquad h_N(u)=\frac{1-e^{-Nu}}{1-e^{-u}}.
+\end{equation}
+For $u>0$,
+\[
+ \frac{h_N'(u)}{h_N(u)}
+ =\frac{N}{e^{Nu}-1}-\frac1{e^u-1}\leq0,
+\]
+because $e^{Nu}-1\geq N(e^u-1)$ for $N\geq1$.
+The last inequality follows, for example, from convexity in the
+exponent parameter. If $V$ is exponential with rate one,
+\eqref{eq:digammadiff} is $\EE h_N(V/t)$. Since $h_N$ is
+nonincreasing, this expectation is nondecreasing in $t$.
+The integral is smooth for $t>0$, so $q_N'(t)\geq0$.
+Consequently
+\[
+ L_N'(r)=1+q_N(e^r)>0,\qquad L_N''(r)\geq0.
+\]
+Thus $rL_N'(r)$ is strictly increasing for $r>0$, begins at zero,
+and tends to infinity, since it is at least $r$. Its derivative is
+$L_N'(r)+rL_N''(r)=b/r>0$. Existence, uniqueness, and smoothness
+follow from continuity and the implicit function theorem.
+\end{proof}
+
+\begin{lemma}[Derivative bounds with an integral remainder]\label{lem:psi}
+For every fixed integer $j\geq0$ and $x>0$,
+\begin{equation}\label{eq:psiremainder}
+ \left|\frac{\mathrm d^j}{\mathrm dx^j}
+          \{\psi(x)-\log x\}\right|
+       \leq \frac{j!}{x^{j+1}}.
+\end{equation}
+In particular, for each fixed $j\geq1$,
+\begin{equation}\label{eq:polygamma}
+ \psi(x)=\log x+O(x^{-1}),\qquad
+ \psi^{(j)}(x)=(-1)^{j-1}(j-1)!x^{-j}+O_j(x^{-j-1}).
+\end{equation}
+\end{lemma}
+\begin{proof}
+The digamma remainder integral, DLMF 5.9.13 \cite{dlmf}, is
+\begin{equation}\label{eq:G}
+ \psi(x)-\log x=-\int_0^\infty G(u)e^{-xu}\dd u,
+ \qquad G(u)=\frac1{1-e^{-u}}-\frac1u.
+\end{equation}
+For $u>0$ one has $0<G(u)<1$: the lower inequality uses
+$1-e^{-u}<u$, and the upper one uses $e^u-1>u$.
+On each compact subinterval of $x>0$, dominated differentiation is
+valid to every fixed order. The absolute value of the $j$th
+derivative of \eqref{eq:G} is at most
+$\int_0^\infty u^je^{-xu}\dd u=j!x^{-j-1}$.
+This proves the claims without differentiating an unspecified
+asymptotic remainder.
+\end{proof}
+
+\begin{lemma}[Saddle and cumulant scales]\label{lem:scales}
+As $N\to\infty$, with $t=e^{r(N)}$,
+\begin{equation}\label{eq:tscale}
+ \frac tN\sim\frac1{r\log r},\qquad
+ r\sim\log N,\qquad
+ r=\log N-\log\log N-\log\log\log N+o(1).
+\end{equation}
+For every fixed $j\geq1$,
+\begin{equation}\label{eq:Lderivatives}
+ L_N^{(j)}(r)=\frac Nr+O_j(t+1)\sim\frac Nr,
+ \qquad \kappa_j\sim Nr^{j-1}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Lemma~\ref{lem:psi} first yields, uniformly for $N,t\geq1$,
+\begin{equation}\label{eq:qapprox}
+ q_N(t)=t\log(1+N/t)+O(1).
+\end{equation}
+At $r=\tfrac12\log N$, the left side of the saddle equation is
+$O(\sqrt N\log^2N)=o(N)$. At $r=\log N$ it exceeds $N$ for
+large $N$, since $q_N(N)=N\log2+O(1)$. Monotonicity therefore
+gives
+\begin{equation}\label{eq:roughr}
+ \tfrac12\log N<r<\log N
+\end{equation}
+for all sufficiently large $N$.
+
+Put $x=N/t$. The saddle equation and \eqref{eq:qapprox} give
+\begin{equation}\label{eq:xequation}
+ \frac xr=\log(1+x)+O(t^{-1}).
+\end{equation}
+Here $x\geq1$, $r\to\infty$, and $t\to\infty$.
+A bounded subsequence of $x$ would contradict
+\eqref{eq:xequation}, so $x\to\infty$. Hence
+$x/(r\log x)\to1$. The function $x/\log x$ is eventually
+increasing. Substitution of fixed multiples of $r\log r$ into
+this function brackets $x$ between such multiples, proving
+$\log x\sim\log r$ and then $x\sim r\log r$.
+Taking logarithms once more gives
+\[
+ \log x=\log r+\log\log r+o(1).
+\]
+Since $r=\log N-\log x$, the refined formula in
+\eqref{eq:tscale} follows from \eqref{eq:roughr} and
+$r/\log N\to1$.
+
+For derivatives, apply $(t\partial_t)^{j-1}$ to $q_N(t)$.
+The explicit bounds \eqref{eq:psiremainder} imply that the
+remainder in \eqref{eq:qapprox} and each of its fixed
+$t\partial_t$ derivatives are $O_j(1)$. Indeed each resulting
+term has a power of $t$ multiplying a derivative bounded at
+$t$ or at $N+t$ by the corresponding inverse power. In the main
+term $t\log(1+N/t)$, the original logarithmic term survives
+once after every application of $t\partial_t$; all other terms
+are $O_j(t)$. It follows that
+\[
+ L_N^{(j)}(r)=t\log(1+N/t)+O_j(t+1)
+           =N/r+O_j(t+1).
+\]
+For $j=1$ the saddle equation gives the exact equality
+$L_N'(r)=N/r$. Since $rt/N\sim1/\log r\to0$, these expressions
+are asymptotic to $N/r$.
+
+Finally, the Stirling differential-operator identity is
+\begin{equation}\label{eq:operator}
+ (z\partial_z)^jL_N(z)
+   =\sum_{v=1}^j\stwo jv z^v L_N^{(v)}(z).
+\end{equation}
+At $z=r$, its term $v=j$ is asymptotic to $Nr^{j-1}$ and its
+other fixed terms are smaller. This proves the cumulant estimate.
+\end{proof}
+
+\subsection{A finite Bernoulli representation at integer size}
+
+For integer $n$, the product form gives a second, elementary
+calculus for the derivatives. Write
+\begin{equation}\label{eq:p}
+ p_q=\frac{t}{t+q}\quad(0\leq q\leq n-1).
+\end{equation}
+Let $B_j(p)$ be the $j$th cumulant polynomial of a Bernoulli
+variable with success probability $p$. These polynomials satisfy
+\begin{equation}\label{eq:bernoulli}
+ B_1(p)=p,\qquad
+ B_{j+1}(p)=p(1-p)B_j'(p),\qquad B_j(p)=p+O_j(p^2).
+\end{equation}
+Then
+\begin{equation}\label{eq:integerderivatives}
+ L_n'=1+\sum_qp_q,\qquad
+ L_n^{(j)}=\sum_qB_j(p_q)\quad(j\geq2).
+\end{equation}
+Integral comparison shows
+\[
+ \sum_qp_q=t\log(1+n/t)+O(1),\qquad
+ \sum_qp_q^2=O(t+1).
+\]
+This recovers the fixed-derivative estimates without numerical
+differentiation. It also furnishes the optional diagnostic program
+with a numerically stable finite-sum route, independent of repeated
+differentiation of the gamma quotient.
+
+\section{Contour control and the integrated expansion}\label{sec:contour}
+
+Only integer $n$ is needed in the coefficient integral. All real
+parameter arguments above serve estimates and the later inverse;
+we do not integrate a noninteger-size generating function.
+Fix a small constant $0<\rho<\pi/3$.
+
+\begin{lemma}[A fixed complex neighborhood]\label{lem:complex}
+For each fixed $j\geq1$, the analytic logarithm of $F_n$ agreeing
+with $L_n$ on the real line satisfies
+\begin{equation}\label{eq:complex}
+ |L_n^{(j)}(z)|\leq C_jn/r\qquad(|z-r|\leq\rho)
+\end{equation}
+for all sufficiently large $n$. If
+$f(\theta)=L_n(re^{\ii\theta})$, then, on intervals with
+$r|\theta|=o(1)$,
+\begin{equation}\label{eq:fderivatives}
+ |f^{(j)}(\theta)|\leq C_jnr^{j-1}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+In the disk $|z-r|\leq\rho$, one has
+$\operatorname{Re}e^z\geq c e^r=ct$. Hence every factor
+$e^z+q$ is nonzero there, and
+\[
+ \left|\frac{e^z}{e^z+q}\right|
+       \leq C\frac{t}{t+q}=Cp_q.
+\]
+The logarithmic derivatives of $e^z+q$ are the same fixed
+Bernoulli cumulant polynomials as in \eqref{eq:bernoulli},
+evaluated at $e^z/(e^z+q)$. Each has zero constant coefficient.
+The sum of their absolute values is bounded by a fixed multiple
+of $\sum_qp_q=O(n/r)$; the extra term $z$ is harmless.
+A nonvanishing analytic function on this disk has an analytic
+logarithm, establishing \eqref{eq:complex}. Applying the chain
+rule repeatedly, or \eqref{eq:operator}, gives
+\eqref{eq:fderivatives}.
+\end{proof}
+
+Set $\delta=n^{-2/5}$. At $\theta=0$,
+$f^{(j)}(0)=\ii^j\kappa_j$. Taylor's theorem through degree two
+therefore gives, uniformly for $|\theta|\leq\delta$,
+\begin{align}
+ \operatorname{Re}\{L_n(re^{\ii\theta})-L_n(r)-\ii n\theta\}
+ &\leq-\tfrac12b\theta^2+Cnr^2|\theta|^3\notag\\
+ &\leq-\tfrac14b\theta^2.\label{eq:localgaussian}
+\end{align}
+The last inequality follows from $b\sim nr$ and $r\delta\to0$.
+
+\begin{lemma}[The full complementary circle]\label{lem:minor}
+For some fixed $c>0$ and all large $n$,
+\begin{equation}\label{eq:minor}
+ \sup_{\delta\leq|\theta|\leq\pi}
+ \frac{|F_n(re^{\ii\theta})|}{F_n(r)}
+       \leq e^{-cn\delta^2}=e^{-cn^{1/5}}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+The positive exponential sum \eqref{eq:positive} implies
+\begin{align*}
+ |F_n(re^{\ii\theta})|
+ &\leq\sum_m\sone nm e^{(m+1)r\cos\theta}\\
+ &=F_n(r\cos\theta)\leq F_n(r\cos\delta)
+       \qquad(\delta\leq|\theta|\leq\pi).
+\end{align*}
+The function $F_n$ is increasing on the entire real line because
+all its exponential-sum coefficients are nonnegative and their
+exponents are positive. On $s\in[r\cos\delta,r]$, one has
+$s-r=o(1)$. The finite-sum estimates
+\eqref{eq:integerderivatives} give $L_n'(s)\sim n/r$ uniformly
+there. Since $r-r\cos\delta\asymp r\delta^2$,
+\[
+ L_n(r\cos\delta)-L_n(r)
+       =-\int_{r\cos\delta}^r L_n'(s)\dd s
+       \leq-cn\delta^2.
+\]
+This proves the assertion over the whole complementary circle.
+\end{proof}
+
+The last argument is useful because $e^z$ has an imaginary period,
+which can make an informal local saddle calculation look vulnerable
+to secondary peaks. The bound handles the entire circle at once;
+no alleged periodic peak has been omitted.
+
+\subsection{Normalization and the central cutoff}
+
+Cauchy's coefficient formula is
+\begin{equation}\label{eq:cauchy}
+ \frac{a_nr^n}{n!F_n(r)}
+ =\frac1{2\pi}\int_{-\pi}^{\pi}
+      \exp\{L_n(re^{\ii\theta})-L_n(r)-\ii n\theta\}\dd\theta,
+\end{equation}
+where the integrand on the full circle is interpreted as
+$F_n(re^{\ii\theta})e^{-\ii n\theta}/F_n(r)$, so a global
+logarithm is unnecessary. Only the local arc uses its chosen
+analytic logarithm. After multiplying by $\sqrt{2\pi b}$,
+Lemma~\ref{lem:minor} bounds the complementary contribution by
+\[
+ O\bigl(\sqrt b\,e^{-cn^{1/5}}\bigr),
+\]
+which is smaller than every fixed power of $r/n$.
+
+Write
+\begin{equation}\label{eq:normalization}
+ \eta=\sqrt{r/n},\qquad u=\sqrt b\,\theta,\qquad
+ \lambda_j=\frac{\kappa_j}{b^{j/2}}.
+\end{equation}
+Then $\lambda_j=O_j(\eta^{j-2})$ for every fixed $j\geq3$.
+Restrict further to $|u|\leq U=\eta^{-1/6}$. This interval lies
+inside $|\theta|\leq\delta$, since
+\[
+ \frac U{\sqrt b}=O(n^{-5/12}r^{-7/12})=o(n^{-2/5}).
+\]
+By \eqref{eq:localgaussian}, the omitted part of the local arc
+has normalized integral $O(e^{-cU^2})$. This too is smaller than
+any fixed power of $\eta$.
+
+\subsection{A weighted remainder that can be integrated}
+
+Fix $R\geq1$. Taylor expansion through degree $2R+2$, using
+Lemma~\ref{lem:complex} at degree $2R+3$, gives
+\begin{equation}\label{eq:centralphase}
+ L_n(re^{\ii\theta})-L_n(r)-\ii n\theta
+       =-u^2/2+Q(u)+\mathcal R(u),
+\end{equation}
+where
+\begin{equation}\label{eq:Q}
+ Q(u)=\sum_{j=3}^{2R+2}\frac{\lambda_j(\ii u)^j}{j!},
+ \qquad
+ |\mathcal R(u)|\leq C_R\eta^{2R+1}|u|^{2R+3}.
+\end{equation}
+Indeed the normalized derivative bound is
+$nr^{2R+2}/b^{(2R+3)/2}=O_R(\eta^{2R+1})$.
+On $|u|\leq U$, the bounds imply
+$|Q(u)|\leq C_R\eta|u|^3=o(1)$ and
+$|\mathcal R(u)|=o(1)$. Therefore
+\[
+ |e^{Q(u)+\mathcal R(u)}-e^{Q(u)}|
+       \leq C_R|\mathcal R(u)|,
+\]
+and its integral against $e^{-u^2/2}$ is
+$O_R(\eta^{2R+1})$.
+
+For the remaining exponential, write
+$\lambda_j=\eta^{j-2}c_j$, where all the finitely many $c_j$
+are bounded uniformly in $n$. Introduce an auxiliary real variable
+$s$ and set
+\begin{equation}\label{eq:H}
+ H(s,u)=\exp\left(
+    \sum_{j=3}^{2R+2}\frac{c_j(\ii u)^j s^{j-2}}{j!}
+                       \right).
+\end{equation}
+The exponent is bounded uniformly for $0\leq s\leq\eta$ and
+$|u|\leq U$. Differentiating $H$ exactly $2R$ times with respect
+to $s$ produces $H$ times a finite polynomial in $u$, the bounded
+$c_j$, and nonnegative powers of $s$. Thus there is a fixed
+integer $M_R$ for which Taylor's theorem in $s$ yields
+\begin{equation}\label{eq:weightedTaylor}
+ H(\eta,u)=\sum_{d=0}^{2R-1}\eta^dH_d(u)
+          +O_R\bigl(\eta^{2R}(1+|u|^{M_R})\bigr).
+\end{equation}
+The bound is integrable against the Gaussian, uniformly in $n$.
+This is the necessary integrated error argument. A pointwise Taylor
+bound evaluated only at the outer cutoff would not by itself prove
+the asserted relative remainder.
+
+Every monomial of weighted degree $d$ has ordinary degree
+$J=\sum j m_j$ in $u$, while
+$d=\sum(j-2)m_j$. Hence $J\equiv d\pmod2$.
+Odd $d$ terms integrate to zero on the symmetric interval.
+For even $d=2q$, extending each polynomial Gaussian integral from
+$[-U,U]$ to $\mathbb R$ incurs only an exponentially decaying
+error. The identities
+\begin{equation}\label{eq:Gaussian}
+ \frac1{\sqrt{2\pi}}\int_{\mathbb R}e^{-u^2/2}u^{2v}\dd u
+     =(2v-1)!!,\qquad
+ \int_{\mathbb R}e^{-u^2/2}u^{2v+1}\dd u=0
+\end{equation}
+give precisely the contraction formula \eqref{eq:Ek}.
+Combining \eqref{eq:cauchy}--\eqref{eq:weightedTaylor} proves
+\eqref{eq:main} with error $O_R(\eta^{2R})=O_R((r/n)^R)$.
+Each monomial of $E_q$ is $O_q(\eta^{2q})$, proving its size
+claim. Finally, substituting $\kappa_j\sim nr^{j-1}$ and
+$b\sim nr$ into \eqref{eq:E1} gives
+$(1/8-5/24)r/n=-r/(12n)$. This completes the proof of
+Theorem~\ref{thm:main}.
+
+\section{Exact coefficient calculus}\label{sec:coefficients}
+
+The coefficients are finite universal expressions in the exact
+cumulants. For example, the next one after \eqref{eq:E1} is
+\begin{align}\label{eq:E2}
+ E_2={}&-\frac{\kappa_6}{48b^3}
+      +\frac{7\kappa_3\kappa_5}{48b^4}
+      +\frac{35\kappa_4^2}{384b^4}\notag\\
+     &-\frac{35\kappa_3^2\kappa_4}{64b^5}
+      +\frac{385\kappa_3^4}{1152b^6}.
+\end{align}
+No limiting replacement of a cumulant is part of this formula.
+
+\subsection{Two independent finite generation rules}
+
+Formula \eqref{eq:Ek} can be generated by enumerating the
+nonnegative integer solutions of
+$\sum_{j\geq3}(j-2)m_j=2q$. There is also an algebraically
+independent formal exponential recurrence. For indeterminates
+$x_3,x_4,\ldots$, set
+\begin{equation}\label{eq:formalQ}
+ Q_w(u)=\frac{x_{w+2}(\ii u)^{w+2}}{(w+2)!},\qquad
+ \exp\left(\sum_{w\geq1}Q_w(u)s^w\right)
+     =\sum_{d\geq0}H_d(u)s^d.
+\end{equation}
+Formal differentiation with respect to $s$ gives
+\begin{equation}\label{eq:formalrecurrence}
+ H_0(u)=1,\qquad
+ H_d(u)=\frac1d\sum_{w=1}^d wQ_w(u)H_{d-w}(u).
+\end{equation}
+Integrating $H_{2q}$ term by term against the standard Gaussian
+and then putting $x_j=\kappa_j/b^{j/2}$ yields $E_q$.
+Every step takes place in a finite rational polynomial ring after
+a degree cutoff; convergence of the formal infinite series is not
+asserted or needed. The companion compares this recurrence with
+the weighted-partition formula using exact rational arithmetic.
+
+For the Bernoulli polynomials there are likewise two exact rules:
+\eqref{eq:bernoulli} and
+\begin{equation}\label{eq:BernoulliStirling}
+ B_j(p)=\sum_{v=1}^j(-1)^{v-1}(v-1)!\stwo jv p^v.
+\end{equation}
+The latter follows by expanding
+$\log(1+p(e^z-1))$ in powers of $p$ and extracting the $j$th
+derivative at zero. Comparison of these two constructions checks
+the derivative input used by the numerical diagnostics.
+
+\subsection{What an exact finite check certifies}
+
+The rational contraction identities, Stirling recurrences,
+Bernoulli identities, and agreement of finite sequence values can
+all be certified by terminating exact calculations. They check
+signs, factorial normalizations, parity, and the correct sequence
+convention. They do not prove the uniform contour estimate or an
+asymptotic remainder. Those claims depend on the analytic arguments
+in Sections~\ref{sec:real} and \ref{sec:contour}.
+
+Similarly, a small numerical residual at a finite list of sizes is
+not an interval bound for all larger sizes. The optional numerical
+program is explicitly a diagnostic. In particular, it cannot turn
+the asymptotic threshold theorem into a certified finite-$X$
+rounding oracle without explicit constants and an onset.
+
+\section{Uniformity for comparable moment orders}\label{sec:aspect}
+
+We give the details needed for Theorem~\ref{thm:aspect}, rather than
+merely substituting $k$ for $n$ in the diagonal formula. Let
+$\lambda=k/n\in[\alpha,\beta]$ and choose the unique positive
+saddle satisfying $rL_n'(r)=k$. The same existence proof applies,
+since $rL_n'(r)$ increases from zero to infinity.
+
+The preliminary comparison at $r=\tfrac12\log n$ and
+$r=\log n$ now gives
+\[
+ \tfrac12\log n<r<\log n
+\]
+for all large $n$, uniformly in $\lambda$. Put $t=e^r$ and
+$x=n/t$. The saddle relation becomes
+\begin{equation}\label{eq:aspectx}
+ \frac{\lambda x}{r}=\log(1+x)+O(t^{-1}).
+\end{equation}
+Since $\lambda$ stays bounded above and away from zero,
+$x\to\infty$ uniformly and inversion gives
+\[
+ x\sim\frac r\lambda\log r,
+ \qquad \log x=\log r+\log\log r-\log\lambda+o(1),
+\]
+uniformly. Taking $r=\log n-\log x$ proves
+\eqref{eq:aspectr}. The derivative estimates become
+\[
+ L_n^{(j)}(r)=k/r+O_j(t+1)\sim k/r,
+ \qquad \kappa_j\sim kr^{j-1}.
+\]
+The constants can be chosen uniformly on the compact ratio interval.
+
+The disk $|z-r|\leq\rho$ used in Lemma~\ref{lem:complex} is
+unchanged. The derivative bound is now $C_jkr^{j-1}$ for the
+angular function. With $\delta=n^{-2/5}$, positivity gives a
+complementary-circle bound $\exp(-ck\delta^2)$, where $c>0$
+can be chosen uniformly in $\lambda$. Since $k\asymp n$, this
+is at most $\exp(-c' n^{1/5})$. The central Gaussian argument
+uses $\eta=\sqrt{r/k}$ and $U=\eta^{-1/6}$; both the cutoff
+inclusion and every fixed-degree integrated remainder remain
+uniform. Applying Cauchy's formula to
+$A_{n,k}=k![z^k]F_n(z)$ proves \eqref{eq:aspect}.
+
+This theorem leaves two different boundary regimes open. Fixed
+or slowly growing $k$ is not covered by a compact positive ratio;
+neither is $k/n\to\infty$. A theorem connecting these regimes
+would need new uniform estimates, not an unqualified appeal to
+\eqref{eq:aspect}.
+
+\section{Differentiating the smooth model}\label{sec:differentiation}
+
+We now prove the derivative claim needed for inversion. All
+derivatives in this section are of exact gamma, polygamma, and
+finite cumulant expressions. No derivative is taken of the
+asymptotic error in \eqref{eq:main}.
+
+\begin{lemma}[Parameter derivatives]\label{lem:parameter}
+For fixed $j\geq1$, along the real saddle,
+\begin{equation}\label{eq:kappaderivative}
+ r_N\sim N^{-1},\qquad
+ \frac{\mathrm d\kappa_j}{\mathrm dN}=O_j(r^{j-1}),
+ \qquad \frac{b_N}{b}=O(N^{-1}).
+\end{equation}
+For fixed $q\geq1$,
+\begin{equation}\label{eq:Ederivative}
+ E_q'(N)=O_q\left(\frac{(r/N)^q}{N}\right).
+\end{equation}
+\end{lemma}
+\begin{proof}
+With $r$ temporarily held fixed, direct differentiation gives
+\begin{equation}\label{eq:partialN}
+ \partial_NL_N^{(j)}(r)
+  =(t\partial_t)^j\psi(N+t)
+  =\sum_{v=1}^j\stwo jv t^v\psi^{(v)}(N+t)
+  =O_j(t/N).
+\end{equation}
+The last bound follows from Lemma~\ref{lem:psi}, since $t/N\to0$.
+Implicit differentiation of \eqref{eq:saddle} gives exactly
+\begin{equation}\label{eq:rprime}
+ r_N=\frac{r\{1-rt\psi'(N+t)\}}{b}.
+\end{equation}
+Now $rt\psi'(N+t)\sim rt/N\sim1/\log r\to0$ and
+$b\sim Nr$, proving $r_N\sim1/N$.
+
+From \eqref{eq:operator}, \eqref{eq:Lderivatives}, and
+\eqref{eq:partialN}, with the other variable fixed,
+\[
+ \partial_r\kappa_j=O_j(Nr^{j-1}),\qquad
+ \partial_N\kappa_j=O_j(r^jt/N).
+\]
+The chain rule and \eqref{eq:rprime} give
+\[
+ \frac{\mathrm d\kappa_j}{\mathrm dN}
+ =\partial_N\kappa_j+r_N\partial_r\kappa_j
+ =O_j(r^{j-1}),
+\]
+because $rt/N=O(1)$. Division by
+$\kappa_j\sim Nr^{j-1}$ shows that every fixed $\kappa_j$
+is eventually positive with logarithmic derivative $O_j(1/N)$.
+The same applies to $b$.
+
+Differentiate each monomial of \eqref{eq:Ek} separately.
+Its size is $O_q((r/N)^q)$, and the product rule multiplies
+that bound by $O_q(1/N)$. Summing finitely many terms proves
+\eqref{eq:Ederivative}. This argument does not assume that the
+sum $E_q$ itself is nonzero.
+\end{proof}
+
+It follows that
+\begin{equation}\label{eq:Pbounds}
+ P_R=1+O_R(r/N),\qquad
+ P_R'=O_R(r/N^2).
+\end{equation}
+For $R=1$, the derivative is exactly zero. Thus $P_R>0$ for
+large $N$. In the logarithm of \eqref{eq:YR}, all terms involving
+$r_N$ from $L_N(r)-N\log r$ cancel by the saddle equation.
+The exact derivative is
+\begin{equation}\label{eq:envelope}
+ (\log Y_R)'=
+ \psi(N+1)+\psi(N+t)-\log r
+ -\frac{b_N}{2b}+\frac{P_R'}{P_R}.
+\end{equation}
+Lemma~\ref{lem:psi} and \eqref{eq:Pbounds} yield
+\begin{equation}\label{eq:logYderivative}
+ (\log Y_R)'=2\log N-\log r
+             +O_R(t/N+1/N)
+           =2\log N-\log r+o(1).
+\end{equation}
+This proves eventual strict monotonicity. It also shows
+$Y_R(N)\to\infty$, so every sufficiently large $X$ has one
+solution in the eventual increasing range. There is no need to
+assert global monotonicity of $Y_R$ at small $N$.
+
+\section{Threshold windows and strict equality edges}\label{sec:thresholds}
+
+We first check exact monotonicity of the original sequence.
+The unsigned Stirling recurrence gives, for $n\geq1$,
+\begin{equation}\label{eq:monotone}
+ a_{n+1}=\sum_{m=0}^n\sone nm
+       \{n(m+1)^{n+1}+(m+2)^{n+1}\}>a_n.
+\end{equation}
+Also $a_1=2>a_0=1$. Since $a_n\geq n!$, the sequence tends to
+infinity, and both thresholds are well defined.
+
+Theorem~\ref{thm:main} and $P_R=1+O_R(r/n)$ imply
+\begin{equation}\label{eq:logerror}
+ \log a_n-\log Y_R(n)
+   =O_R\left((r(n)/n)^R\right)
+   =O_R\left((\log n/n)^R\right).
+\end{equation}
+Fix a sufficiently large $X$, abbreviate $\nu=\nu_R$, and take
+\begin{equation}\label{eq:rounded}
+ n_- =\floor{\nu-\eps},\qquad
+ n_+ =\ceil{\nu+\eps},\qquad
+ \eps=C_R\frac{(\log\nu)^{R-1}}{\nu^R}.
+\end{equation}
+Both integers are asymptotic to $\nu$ and, for large $X$, lie
+beyond every onset used in the proof. On the short intervals
+joining them to $\nu$, \eqref{eq:logYderivative} is at least
+$\log\nu$. Consequently
+\begin{align}
+ \log Y_R(\nu)-\log Y_R(n_-)&\geq\eps\log\nu,\notag\\
+ \log Y_R(n_+)-\log Y_R(\nu)&\geq\eps\log\nu.
+ \label{eq:strictgaps}
+\end{align}
+The local errors in \eqref{eq:logerror} are bounded by a constant
+multiple of $(\log\nu/\nu)^R$. Choose $C_R$ strictly larger
+than that constant, increasing the onset if necessary. Since
+$\eps\log\nu=C_R(\log\nu/\nu)^R$, this gives the
+\emph{strict} inequalities
+\begin{equation}\label{eq:strictendpoints}
+ a_{n_-}<X<a_{n_+}.
+\end{equation}
+Exact monotonicity now proves \eqref{eq:bracket}. A fixed initial
+prefix causes no difficulty: increasing $X$ past its largest entry
+excludes it automatically.
+
+\subsection{Why the strict inequalities are necessary}
+
+The lower edge is $n_-+1$, not merely $n_-$. The upper edge
+bounds the strict threshold because $X<a_{n_+}$, not just
+$X\leq a_{n_+}$. If $X=a_j$, the threshold definitions give
+$j$ and $j+1$ respectively. Any derivation which tacitly identifies
+these two thresholds at equality would be false. The strictly
+larger error constant in \eqref{eq:strictgaps} ensures that
+\eqref{eq:bracket} covers this case as written.
+
+The theorem supplies a hierarchy of centers. At $R=1$, the
+smooth uncertainty is $O(\nu^{-1})$; at $R=2$ it is
+$O(\log\nu/\nu^2)$; at $R=3$ it is
+$O((\log\nu)^2/\nu^3)$. The constants are not numerically
+certified here. These are asymptotic precision statements, not
+precomputed finite-input guarantees. A certified implementation
+would require effective constants for the contour and central
+errors together with interval evaluation of the saddle and inverse.
+
+\section{First corrected nested logarithm inversion}\label{sec:nested}
+
+The fine inverse center is defined implicitly, but its leading
+nested-logarithm form can be proved with an explicit relative
+remainder. We begin with the required logarithmic growth estimate.
+
+\begin{lemma}[Logarithmic size of the smooth model]\label{lem:loggrowth}
+For every fixed $R\geq1$,
+\begin{equation}\label{eq:loggrowth}
+ \log Y_R(N)
+ =2N\log N-N\log\log N-2N
+   +O_R\left(\frac{N\log\log N}{\log N}\right).
+\end{equation}
+\end{lemma}
+\begin{proof}
+The logarithmic Stirling formula with its positive-real remainder
+bound \cite[5.11.1 and 5.11(ii)]{dlmf}, together with $t/N\to0$,
+gives
+\begin{equation}\label{eq:Stirlingratio}
+ \log\Gamma(N+t)-\log\Gamma(t)
+ =N\log N-N+t\log(N/t)
+      +O(t+t^2/N+\log N).
+\end{equation}
+For example, expand $(N+t)\log(N+t)$ around $N$ using
+$\log(1+t/N)=t/N+O((t/N)^2)$; the remaining half-logarithm
+terms are $O(\log N)$ and the Stirling remainders are bounded.
+The saddle relation yields
+$t\log(1+N/t)=N/r+O(1)$ and hence
+$t\log(N/t)=O(N/r)$. Also
+$t+t^2/N+\log N=O(N/r)$.
+Adding the initial term $r$ in \eqref{eq:LN} therefore gives
+\[
+ L_N(r)=N\log N-N+O(N/r).
+\]
+Now use
+$\log\Gamma(N+1)=N\log N-N+O(\log N)$,
+$\log b=O(\log N)$, and $\log P_R=O_R(r/N)$ in
+\eqref{eq:YR}. We obtain
+\begin{equation}\label{eq:loggrowthr}
+ \log Y_R(N)=2N\log N-N\log r-2N+O_R(N/r).
+\end{equation}
+From \eqref{eq:rscale},
+$\log r=\log\log N+O(\log\log N/\log N)$.
+Substitution proves \eqref{eq:loggrowth}.
+\end{proof}
+
+Let $L=\log X$, $\ell=\log L$, and $m=\log\ell$.
+Equation \eqref{eq:loggrowth} first implies
+$\nu_R\sim L/(2\ell)$: it gives
+$L\sim2\nu_R\log\nu_R$, so
+$\log\nu_R\sim\log L$ and then the stated equivalent.
+Set
+\begin{equation}\label{eq:x0}
+ c=\tfrac32m+1+\log2,
+ \qquad x_0=\frac{L}{2\ell}\left(1+\frac c\ell\right).
+\end{equation}
+Elementary logarithmic expansions give
+\begin{align}
+ \log x_0&=\ell-m-\log2+c/\ell+O(m^2/\ell^2),
+                  \label{eq:logx0}\\
+ \log\log x_0&=m-(m+\log2)/\ell+O(m^2/\ell^2).
+                  \label{eq:loglogx0}
+\end{align}
+On substituting \eqref{eq:logx0}--\eqref{eq:loglogx0} into
+\eqref{eq:loggrowth}, the coefficient of $L/\ell$ cancels:
+\[
+ c-\tfrac32m-1-\log2=0.
+\]
+The result is
+\begin{equation}\label{eq:x0error}
+ \log Y_R(x_0)=L+O_R(Lm^2/\ell^2).
+\end{equation}
+Both $x_0$ and $\nu_R$ are asymptotic to $L/(2\ell)$.
+Throughout the interval between them, \eqref{eq:Yderivative}
+is of order $\ell$. The mean value theorem applied to
+\eqref{eq:x0error} consequently gives
+\[
+ \nu_R-x_0=O_R(Lm^2/\ell^3).
+\]
+This is exactly \eqref{eq:nested}, including its relative
+$O_R(m^2/\ell^2)$ remainder, and completes the proof of
+Theorem~\ref{thm:inverse}.
+
+The coefficient $3/2$ has two contributions: inversion of
+$N\log N$ contributes one factor of $\log\log L$, and the
+term $-N\log\log N$ contributes an additional half after
+normalization by $2N\log N$. The constants $1+\log2$ likewise
+come from the $-2N$ term and the leading factor two. This explanation
+is an interpretation of the explicit cancellation, not a substitute
+for its remainder calculation.
+
+\section{Reproducible exact checks and numerical diagnostics}\label{sec:repro}
+
+The accompanying archive contains this PDF, its standalone LaTeX
+source, deterministic build and packaging scripts, source provenance,
+and a companion directory. It does not require a private proof file,
+an earlier report, or a live network connection to verify its exact
+identities. Only the optional diagnostics require an external Python
+package, pinned as \texttt{mpmath==1.3.0}.
+
+The exact companion checks are designed around independent routes:
+\begin{enumerate}
+\item Generate unsigned first-kind and second-kind Stirling rows by
+      their integer recurrences, and compare the moment sum with
+      \eqref{eq:stirlingproduct} and a derivative-product evaluation
+      of \eqref{eq:Fn}.
+\item Reproduce the entire 17-term prefix in the inspected official
+      A192563 mirror snapshot, with offset zero and the specified
+      sign normalization.
+\item Compare weighted-partition Gaussian contractions with the
+      formal exponential recurrence \eqref{eq:formalrecurrence},
+      using exact rational coefficients. Check the displayed
+      $E_1$ and $E_2$ separately.
+\item Compare Bernoulli cumulant polynomials generated by
+      \eqref{eq:bernoulli} and \eqref{eq:BernoulliStirling}, and
+      verify the Stirling differential-operator identity at finite
+      degrees.
+\item Check strict and nonstrict threshold definitions at exact
+      finite equality cases, and exercise the output-safety rules
+      under both ordinary Python and \texttt{python3 -O}.
+\end{enumerate}
+The released exact run checks all $4225$ pairs $0\leq n,k\leq64$
+by the three integer routes and constructs $E_0,\ldots,E_6$.
+Their monomial counts are $1,2,5,11,22,42,77$. It performs
+$11993$ individual finite checks, including the polynomial and
+threshold identities; normal and optimized runs have the same
+mathematical payload. No correctness condition relies on Python's
+removable \texttt{assert} statements. The companion's documented finite
+cutoffs are verification parameters, not hypotheses of the theorems.
+The companion README lists the commands; result files record the checks.
+
+Optional diagnostics solve the real saddle, evaluate cumulants by
+finite Bernoulli sums, and compare the leading and corrected saddle
+models with exact integer counts. They report the normalized error
+\begin{equation}\label{eq:diagnostic}
+ \frac{a_n/M_n-\sum_{q=0}^{R-1}E_q}{(r/n)^R},
+ \qquad M_n=\frac{n!F_n(r)}{r^n\sqrt{2\pi b}},
+\end{equation}
+and analogous compact-aspect-ratio samples. These values are
+floating-point observations, separated from exact pass/fail
+identities and from the proof of the remainder. The diagnostics do
+not infer rigorous interval bounds or an asymptotic onset from
+sampled residuals.
+
+
+\begin{table}[htbp]
+\centering
+\caption{Observed scaled residuals in \eqref{eq:diagnostic}.
+These rounded 100-digit calculations are diagnostics, not error bounds.}
+\label{tab:residuals}
+\begin{tabular}{rrrr}
+\toprule
+$n$ & $R=2$ & $R=3$ & $R=4$\\
+\midrule
+20 & -0.008764515 & -0.001372810 & 0.000515071 \\
+50 & -0.006294384 & 0.000461294 & 0.001454634 \\
+100 & -0.004675041 & 0.001130859 & 0.001471817 \\
+200 & -0.003449208 & 0.001464946 & 0.001341716 \\
+500 & -0.002300129 & 0.001667662 & 0.001143029 \\
+1000 & -0.001672183 & 0.001739809 & 0.001010160 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The numerical file additionally covers aspect ratios $1/2$ and $2$
+at $n=50,200,500$, and all corrections through $E_6$. Changes of
+sign in the scaled residuals are compatible with the theorem:
+it supplies a fixed-order magnitude estimate, not a prescribed sign
+or a monotone approach to a limit.
+
+\subsection{Build and release boundaries}
+
+The scripts use exclusive new output paths and reject static symlinked
+path components. Builds assume a trusted parent directory with no
+concurrent malicious path replacement; directory creation is not a
+security boundary against a same-user process swapping the new leaf
+before it is opened. PDF builds use a fresh directory, fixed metadata,
+no shell escape, and stable cross-references. The release packager
+reads a fixed allowlist, checks every member against the SHA-256
+manifest, and creates a stored ZIP with fixed timestamps, ordering,
+and permissions. Byte reproducibility of the PDF is checked in
+clean builds under the recorded TeX toolchain; a different TeX or
+font version may produce different PDF bytes. Exact mathematical
+checks need only the Python standard library.
+
+No publication, OEIS edit, repository modification, or external
+submission is part of this report. The source references are public;
+the archive distributes original exposition and programs, not copies
+of the cited journal PDFs or private review material.
+
+\section{Limits and further research}\label{sec:questions}
+
+The results cover each fixed truncation order with a proved
+integrated remainder. They do not provide estimates uniform in
+$R\to\infty$, an optimal truncation theorem, or a decomposition
+into exponentially small asymptotic sectors. The fact that the
+noncentral contour is smaller than every fixed algebraic order
+does not, by itself, supply any of those stronger claims.
+
+Several extensions have concrete mathematical content:
+\begin{enumerate}
+\item \textbf{Effective remainder constants.}
+      Can one turn the disk, contour, and weighted Taylor bounds
+      into practical explicit constants and onsets? Combining
+      those with interval gamma and polygamma evaluation could
+      produce certified finite-$X$ threshold decisions.
+\item \textbf{Transition between moment regimes.}
+      Determine a uniform expansion as $k/n\to0$, connecting
+      fixed-order cycle moments to the present growing-order
+      regime. The transition as $k/n\to\infty$ is a separate
+      problem; it may involve substantially different saddle scales.
+\item \textbf{Cycle statistics under the moment weight.}
+      For the probability proportional to
+      $\sone nm(m+1)^k$, obtain a limit law and local estimates
+      for $m$. This would describe the cycle counts typical of
+      large poly-Cauchy structures rather than just their total
+      number. No such limit law is asserted here.
+\item \textbf{Further explicit inverse terms.}
+      Sharpen \eqref{eq:loggrowthr} using higher saddle-scale and
+      gamma expansions, and derive a full hierarchy in nested
+      logarithms with proved remainders. Its error should remain
+      distinct from the much finer exact-saddle inverse window.
+\item \textbf{Restricted and shifted families.}
+      Investigate restricted cycle lengths and shifted poly-Cauchy
+      parameters after a complete comparison with Yakymiv and the
+      shifted-family literature. Positivity may still control
+      global contours, but the local derivative scales require
+      separate proofs.
+\item \textbf{Large truncation orders.}
+      Study the growth of the contraction polynomials and their
+      analytic remainder constants. A valid growing-order or
+      exponential-improvement theorem would need information beyond
+      the fixed-order estimates established here.
+\end{enumerate}
+
+These questions are proposed research directions, not claims of
+proved results or of absence from all prior literature. In particular,
+reading the uninspected cycle-moment source is a priority before
+making stronger originality statements about restricted permutations
+or growing moments.
+
+\begin{thebibliography}{99}
+
+\bibitem{oeisdiag}
+OEIS Foundation Inc., \emph{A192563}, official OEIS data mirror,
+entry last changed 26 May 2021, inspected 3 October 2026.
+\href{https://github.com/oeis/oeisdata/blob/main/seq/A192/A192563.seq}
+{Official mirror entry}.
+The inspected snapshot digest is recorded in the source provenance file.
+
+\bibitem{oeisarray}
+OEIS Foundation Inc., \emph{A344639}, sign-normalized second-kind
+poly-Cauchy array, inspected 3 October 2026.
+\href{https://oeis.org/A344639}{OEIS entry};
+\href{https://github.com/oeis/oeisdata/blob/main/seq/A344/A344639.seq}
+{official mirror}.
+
+\bibitem{benyi}
+B. B\'enyi and J. L. Ram\'irez,
+\emph{Poly-Cauchy Numbers of the Second Kind---the Combinatorics Behind},
+Enumerative Combinatorics and Applications \textbf{2}:1 (2022),
+Article S2R1, 13 pp.
+\href{https://doi.org/10.54550/ECA2022V2S1R1}{DOI};
+\href{https://ecajournal.haifa.ac.il/Volume2022/ECA2022_S2A1.pdf}
+{inspected final PDF}.
+Final Theorems 2.1 and 2.6 are used here. The publisher records
+online publication in June 2021 for the 2022 volume.
+
+\bibitem{komatsu2013}
+T. Komatsu, \emph{Poly-Cauchy numbers},
+Kyushu Journal of Mathematics \textbf{67} (2013), 143--153.
+\href{https://doi.org/10.2206/kyushujm.67.143}{DOI};
+\href{https://www.jstage.jst.go.jp/article/kyushujm/67/1/67_143/_pdf}
+{inspected final PDF}.
+
+\bibitem{transform}
+T. Komatsu, \emph{Recurrence relations of poly-Cauchy numbers by
+the $r$-Stirling transform}, arXiv:2103.15291 (2021),
+subsequently Mediterranean Journal of Mathematics \textbf{19} (2022).
+\href{https://arxiv.org/abs/2103.15291}{Inspected preprint}.
+A separate full final version was not inspected.
+
+\bibitem{jha}
+S. K. Jha, \emph{Asymptotic expansions for factorial moments of
+some distributions in the analysis of algorithms},
+arXiv:1611.07336 (2016).
+\href{https://arxiv.org/abs/1611.07336}{Inspected preprint}.
+The cycle-count moment order in Theorem 2.2 is fixed.
+
+\bibitem{shifted}
+T. Komatsu and L. Szalay, \emph{Shifted poly-Cauchy numbers},
+Lithuanian Mathematical Journal \textbf{54}:2 (2014), 166--181.
+\href{https://doi.org/10.1007/s10986-014-9235-y}{DOI}.
+Only repository and indexed extracts were inspected, including the
+bivariate formula associated with Proposition 3; full text uninspected.
+
+\bibitem{recurrence}
+T. Komatsu, \emph{Some recurrence relations of poly-Cauchy numbers},
+Journal of Nonlinear Sciences and Applications \textbf{12}:12
+(2019), 829--845.
+\href{https://www.isr-publications.com/jnsa/articles-8077-some-recurrence-relations-of-poly-cauchy-numbers}
+{Publisher record}. Abstract and indexed theorem only; full text
+uninspected.
+
+\bibitem{yakymiv}
+A. L. Yakymiv, \emph{Asymptotics with remainder term for moments
+of the total cycle number of random A-permutation},
+Diskretnaya Matematika \textbf{31}:3 (2019), 114--127;
+English translation, Discrete Mathematics and Applications
+\textbf{31}:1 (2021), 51--60.
+\href{https://doi.org/10.4213/dm1582}{Russian DOI};
+\href{https://doi.org/10.1515/dma-2021-0005}{translation DOI}.
+Official abstract inspected; full text and uniformity in moment order
+unverified.
+
+\bibitem{dlmf}
+NIST Digital Library of Mathematical Functions, Chapter 5,
+\emph{Gamma Function}, equations
+\href{https://dlmf.nist.gov/5.9.E13}{5.9.13},
+\href{https://dlmf.nist.gov/5.9.E16}{5.9.16},
+\href{https://dlmf.nist.gov/5.11.E1}{5.11.1}, and
+\href{https://dlmf.nist.gov/5.11.ii}{Section 5.11(ii)};
+verified 3 October 2026. The fixed-derivative bound used here is
+derived directly from the integral remainder. Standard fuller
+expansions also appear in
+\href{https://dlmf.nist.gov/5.11.E2}{5.11.2} and
+\href{https://dlmf.nist.gov/5.15.E9}{5.15.9}.
+
+\end{thebibliography}
+\end{document}

@@ -1,0 +1,565 @@
+\newcommand{\DoNotLoadEpstopdf}{}
+\pdfinfoomitdate=1
+\pdftrailerid{}
+\pdfsuppressptexinfo=-1
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage[margin=1in]{geometry}
+\usepackage{booktabs,array}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+\hypersetup{pdftitle={Report 163 Growth bounds for maximal families of disjoint partitions},pdfauthor={},pdfsubject={Rigorous growth bounds and correction of asymptotic fits for OEIS A068598}}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{1.2em}
+\setlength{\emergencystretch}{2em}
+\setcounter{tocdepth}{1}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\floor}[1]{\left\lfloor#1\right\rfloor}
+\newcommand{\ceil}[1]{\left\lceil#1\right\rceil}
+\title{Growth bounds for maximal families of disjoint partitions\\\large A correction of asymptotic fits for OEIS A068598}
+\author{Report 163}
+\date{3 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+Let $a(n)$ count inclusion-maximal unordered families of strict partitions
+of $n$ in which no part occurs twice anywhere in the family. We prove
+\[
+ \frac15\le\liminf_{n\to\infty}\frac{\log a(n)}{n\log n}
+ \le\limsup_{n\to\infty}\frac{\log a(n)}{n\log n}\le\frac14.
+\]
+The upper bound is elementary and explicit:
+$a(n)\le 3^{n-1}n^{\lfloor(n-2)/4\rfloor}$ for $n\ge2$.
+It follows from a recoverable-maximum encoding and the distinct-parts
+mass inequality credited to Joel Spencer by Nathanson. The lower bound
+injects ordinary queens configurations into maximal families and uses
+the published lower bound of Luria and Simkin. A separate elementary
+construction gives the weaker lower constant $1/7$.
+Both positive-parameter models $A\exp(Bn^c)$ with $c>1$ listed in the
+OEIS entry have ratio $a(n)/(A\exp(Bn^c))\to0$.
+The first-passage inverse has leading-scale constants between $4$ and $5$,
+without assuming monotonicity of $a(n)$. Neither existence of a limiting
+coefficient, a multiplicative asymptotic equivalent, nor a transseries
+is established. A bounded exact companion checks conventions and the
+finite encodings independently of the asymptotic argument.
+\end{abstract}
+\tableofcontents
+
+\section{The objects and the main conclusion}
+For an integer $n\ge1$, let $H_n$ be the finite hypergraph with vertex set
+$[n]=\{1,\ldots,n\}$ and edge set
+\[
+ \mathcal P_n=\left\{B\subseteq[n]:\sum_{b\in B}b=n\right\}.
+\]
+An edge is a strict integer partition, represented as a set of positive
+parts. A family of pairwise disjoint edges is a matching. It is
+\emph{inclusion-maximal} if no further edge can be added disjointly.
+The edges and the family itself are unordered. Edge sizes may differ
+within one family. Let $a(n)$ denote the number of these maximal
+matchings and set $a(0)=1$ as the separate sequence convention.
+Throughout, $\log$ is the natural logarithm.
+
+This is the interpretation of OEIS A068598 supported by its title,
+examples, and maximal-clique Python code \cite{oeis}. The graph comment
+should say \emph{maximal cliques}: counting all cliques would give a
+different sequence. Maximality does not mean maximum cardinality.
+For instance the three families at $n=8$ are
+\[
+\begin{split}
+ &\{\{8\},\{1,7\},\{2,6\},\{3,5\}\},\\
+ &\{\{8\},\{1,2,5\}\},\\
+ &\{\{8\},\{1,3,4\},\{2,6\}\}.
+\end{split}
+\]
+Their cardinalities differ. There is no quotient by a symmetry of labels.
+
+\begin{theorem}\label{thm:main}
+For every integer $n\ge2$,
+\begin{equation}\label{eq:upper}
+ a(n)\le 3^{n-1}n^{\lfloor(n-2)/4\rfloor}.
+\end{equation}
+If $Q(k)$ counts ordinary nonattacking placements of $k$ queens on a
+labeled $k\times k$ board and $k=\lfloor(n-1)/5\rfloor\ge1$, then
+\begin{equation}\label{eq:lowerfinite}
+ a(n)\ge Q(k).
+\end{equation}
+Consequently,
+\begin{equation}\label{eq:logbounds}
+ \frac15\le\liminf_{n\to\infty}\frac{\log a(n)}{n\log n}
+ \le\limsup_{n\to\infty}\frac{\log a(n)}{n\log n}\le\frac14.
+\end{equation}
+In particular $\log a(n)=\Theta(n\log n)$. More precisely, the lower
+bound obtained from the queens theorem is the one-sided estimate
+\begin{equation}\label{eq:linear}
+ \log a(n)\ge \frac n5\log n-\frac{\log5+3}{5}n+o(n).
+\end{equation}
+\end{theorem}
+The meaning of \eqref{eq:linear} is that some error sequence $r_n=o(n)$
+makes the displayed inequality true for all sufficiently large $n$.
+It is not an equality or a determination of the linear term of
+$\log a(n)$. The upper bound is self-contained; the stronger lower
+constant uses precisely the external theorem stated in Section~\ref{sec:queens}.
+
+\section{An encoding with at most one quarter free labels}
+\label{sec:upper}
+Every maximal matching contains $\{n\}$. Indeed, no other edge of $H_n$
+contains $n$, since every part is positive. Thus $\{n\}$ could be added
+to any matching lacking it. Remove this forced edge and write the
+remaining matching as $\mathcal M$. Let $m=|\mathcal M|$ and let $v$
+be the number of labels used by its edges. Every remaining edge has at
+least two parts, so $v\ge2m$.
+
+For each $B\in\mathcal M$, retain its smallest part $a_B$ as an
+\emph{anchor}, omit its largest part $z_B$, and call its other parts
+\emph{free}. Define the disjoint subsets of $[n-1]$
+\[
+ A=\{a_B:B\in\mathcal M\},\qquad
+ F=\bigcup_{B\in\mathcal M}(B\setminus\{a_B,z_B\}),
+\]
+and define $f:F\to A$ by assigning each free part to the anchor of its
+edge. Put $q=|F|=v-2m$.
+
+\begin{lemma}\label{lem:code}
+The code $(A,F,f)$ determines $\mathcal M$ uniquely.
+\end{lemma}
+\begin{proof}
+For each $a\in A$, recover the corresponding edge as
+\begin{equation}\label{eq:decode}
+ \{a\}\ \cup\ f^{-1}(a)\ \cup\
+ \left\{n-a-\sum_{x\in f^{-1}(a)}x\right\}.
+\end{equation}
+For a code that came from a matching, the final part is its original
+largest part. This also recovers two-part edges, whose fibers are empty.
+The empty matching has the unique empty code. Unused labels need no
+additional information. Arbitrary codes may fail to reconstruct valid
+edges or disjoint families; the count below only overcounts by including
+them.
+\end{proof}
+
+The used labels are $v$ distinct positive integers and their sum is
+$mn$. Therefore
+\begin{equation}\label{eq:mass}
+ mn\ge1+2+\cdots+v=\frac{v(v+1)}2.
+\end{equation}
+Nathanson \cite[p.~108]{nathanson} explicitly attributes the fixed-arity
+version of this summation argument to Joel Spencer. We use the same
+ingredient for variable edge sizes and combine it with the encoding;
+we make no claim to have originated the mass inequality.
+
+Using \eqref{eq:mass} gives
+\begin{align}
+ q=v-2m
+ &\le v-\frac{v(v+1)}n\notag\\
+ &=\frac{(n-1)^2}{4n}
+   -\frac1n\left(v-\frac{n-1}{2}\right)^2
+ \le\frac{(n-1)^2}{4n}.\label{eq:qbound}
+\end{align}
+For integers $n\ge2$,
+\begin{equation}\label{eq:floor}
+ \floor{\frac{(n-1)^2}{4n}}=\floor{\frac{n-2}{4}}.
+\end{equation}
+Indeed, the left argument equals $(n-2)/4+1/(4n)$; the fractional
+part of $(n-2)/4$ belongs to $\{0,1/4,1/2,3/4\}$ and adding
+$1/(4n)\le1/8$ does not cross the next integer.
+
+There are $3^{n-1}$ choices of a disjoint pair $(A,F)$, assigning each
+label to $A$, $F$, or neither. For a pair supporting an actual code,
+the number of maps is at most $m^q\le n^q$, and
+\eqref{eq:qbound}--\eqref{eq:floor} bound $q$. When $A=F=\varnothing$
+there is exactly one empty function; when $A=\varnothing$ and
+$F\ne\varnothing$ there is none. Thus no convention about $0^0$ is
+needed. Lemma~\ref{lem:code} now proves \eqref{eq:upper}, and hence
+\begin{equation}\label{eq:logupper}
+ \log a(n)\le\tfrac14n\log n+(n-1)\log3.
+\end{equation}
+Only the initial forced-singleton step used maximality. In particular,
+the code is also injective on every matching without the singleton.
+
+\section{Recoverable bases from queens configurations}\label{sec:queens}
+A queens configuration on a labeled $k\times k$ board is represented by
+a permutation $\pi$ of $[k]$ such that both $i+\pi(i)$ and $i-\pi(i)$
+are pairwise distinct. These are ordinary diagonals, with no reduction
+modulo $k$, and configurations are not identified under board symmetries.
+The sole external asymptotic input is the following published theorem.
+
+\begin{theorem}[Luria and Simkin]\label{thm:queens}
+As $k\to\infty$ through all positive integers,
+\begin{equation}\label{eq:queens}
+ Q(k)\ge \bigl((1-o(1))k/e^3\bigr)^k.
+\end{equation}
+\end{theorem}
+The primary version used is Theorem~1.1 on page~1 of
+arXiv:2105.11431v2 \cite{queens}. Its page~2 also explicitly gives
+$\log Q(k)/(k\log k)\to1$, using $Q(k)\le k!$ for the other direction.
+The theorem is for ordinary queens through all integers. The use of
+toroidal placements inside its proof imposes no coprimality condition
+on the theorem used here. That external proof is not reproduced in
+this report.
+
+Fix $n$ and $k=\lfloor(n-1)/5\rfloor\ge1$. Then $n>5k$. Given a
+queens permutation $\pi$, define
+\begin{equation}\label{eq:triples}
+ B_i(\pi)=\{i,\ k+\pi(i),\ n-k-i-\pi(i)\},
+ \qquad 1\le i\le k.
+\end{equation}
+Each triple sums to $n$. Its three value classes lie in
+\[
+ [1,k],\qquad[k+1,2k],\qquad[n-3k,n-k-2],
+\]
+respectively, and $n-3k>2k$. Thus the classes are disjoint and each
+triple is strict. The first two classes have no repetitions because
+$\pi$ is a permutation; the third has no repetitions because the sums
+$i+\pi(i)$ are distinct. The triples therefore form a matching.
+Only one diagonal condition is needed for this embedding; ordinary
+queens provide a subset for which the required count is known.
+
+\begin{lemma}\label{lem:extension}
+Choose any maximal extension in $H_n$ of each matching
+$\{B_i(\pi):1\le i\le k\}$. Distinct queens permutations receive
+distinct extensions, regardless of these choices.
+\end{lemma}
+\begin{proof}
+A maximal extension exists because the edge set of $H_n$ is finite:
+add a disjoint edge whenever possible until none remains. Extensions
+can include edges of all sizes. If a matching contained the bases for
+both $\pi$ and $\sigma$, then its unique edge containing each
+$i\in[1,k]$ would equal both $B_i(\pi)$ and $B_i(\sigma)$. Each such
+edge has exactly one member of $[k+1,2k]$, so $\pi(i)=\sigma(i)$ for
+every $i$. This proves injectivity.
+\end{proof}
+Lemma~\ref{lem:extension} proves \eqref{eq:lowerfinite}.
+The cases $k=2,3$, where $Q(k)=0$, are harmless vacuous inequalities.
+For large $k$, taking logarithms in \eqref{eq:queens} yields
+\[
+ \log a(n)\ge k\log k-3k+o(k).
+\]
+Writing $n=5k+r$ with $r\in\{1,2,3,4,5\}$ gives
+\[
+ k\log k=\frac n5\log n-\frac{\log5}{5}n+O(\log n).
+\]
+It follows that \eqref{eq:linear} holds for every sufficiently large
+$n$, rather than only a subsequence. Together with
+\eqref{eq:logupper}, this completes Theorem~\ref{thm:main}.
+
+\section{A self contained elementary lower bound}
+The $1/5$ constant depends on Theorem~\ref{thm:queens}, but an
+elementary construction already proves factorial-logarithmic growth.
+
+\begin{proposition}\label{prop:greedy}
+If positive integers $k,m$ satisfy $m\ge2k$ and $3k+2m<n$, then
+\begin{equation}\label{eq:greedyfinite}
+ a(n)\ge\prod_{i=1}^k(m-2(i-1))\ge(m-2k+2)^k.
+\end{equation}
+In particular, for $n\ge8$ and $k=\lfloor(n-1)/7\rfloor$,
+\begin{equation}\label{eq:factorial}
+ a(n)\ge 2^k k!.
+\end{equation}
+Consequently,
+\begin{equation}\label{eq:seventh}
+ \liminf_{n\to\infty}\frac{\log a(n)}{n\log n}\ge\frac17
+\end{equation}
+without invoking the queens theorem.
+\end{proposition}
+\begin{proof}
+Let $A=[1,k]$ and $B=[k+1,k+m]$. Choose $b_i\in B$ successively,
+requiring all $b_i$ and all sums $i+b_i$ to be distinct. At step $i$,
+repeating an earlier $b_j$ excludes at most $i-1$ choices. An equality
+$i+b_i=j+b_j$ excludes at most another $i-1$ choices. At least
+$m-2(i-1)$ possibilities remain, proving the product count.
+Set $c_i=n-i-b_i$. Then
+\[
+ c_i\ge n-2k-m>k+m.
+\]
+The triples $\{i,b_i,c_i\}$ are strict partitions of $n$ with disjoint
+value ranges. Within those ranges there are no repeated values, the
+last because the sums $i+b_i$ are distinct. Each base is a matching,
+and every anchor in $A$ is used. The argument of
+Lemma~\ref{lem:extension}, with middle range $B$, proves that distinct
+choices cannot share a maximal extension. This proves
+\eqref{eq:greedyfinite}.
+
+Set $m=2k$ and retain the full product rather than its smallest
+factor. If $n>7k$, then
+\[
+ \prod_{i=1}^k(2k-2(i-1))=2^k k!,
+\]
+which proves \eqref{eq:factorial} for $k=\lfloor(n-1)/7\rfloor$.
+The elementary estimate
+$\log(k!)=k\log k-k+O(\log k)$ gives
+\[
+ \log a(n)\ge\frac n7\log n+O(n),
+\]
+and proves \eqref{eq:seventh}.
+\end{proof}
+Together with \eqref{eq:upper}, this gives a wholly elementary proof
+of $\log a(n)=\Theta(n\log n)$ and of the rejection of the fits below.
+The factorial bound also provides finite first-passage bounds.
+
+\section{Why the posted asymptotic fits fail}
+The inspected OEIS entry records a 2022 conjectural model with
+parameters approximately $(A,B,c)=(0.57,0.062,1.54)$, and a February
+2026 revision to $(0.26,0.129,1.36)$ \cite{oeis}. The following statement
+rules out either model as an asymptotic equivalent, regardless of
+its finite-range numerical quality.
+
+\begin{corollary}\label{cor:fits}
+For every fixed $A,B>0$ and $c>1$,
+\begin{equation}\label{eq:fits}
+ \frac{a(n)}{A\exp(Bn^c)}\longrightarrow0.
+\end{equation}
+\end{corollary}
+\begin{proof}
+By \eqref{eq:logupper},
+\[
+ \log\frac{a(n)}{A\exp(Bn^c)}
+ \le\tfrac14n\log n+O(n)-Bn^c-\log A\longrightarrow-\infty,
+\]
+since $n\log n=o(n^c)$ for $c>1$. Exponentiation proves the claim.
+\end{proof}
+Only the elementary upper bound is needed for this conclusion.
+It does not imply that the two expressions cannot approximate a
+short data range. No regression in the companion is used to prove or
+choose a growth coefficient.
+
+\section{First passage inversion without monotonicity}
+For a real threshold $y>1$ define
+\[
+ N(y)=\min\{n\ge0:a(n)\ge y\}.
+\]
+The all-integer lower bound implies that this set is nonempty for all
+$y>1$. Since each $a(n)$ is finite, $N(y)\to\infty$ as $y\to\infty$.
+
+\begin{corollary}\label{cor:inverse}
+As $y\to\infty$,
+\begin{equation}\label{eq:inverse}
+ 4\le\liminf N(y)\frac{\log\log y}{\log y}
+ \le\limsup N(y)\frac{\log\log y}{\log y}\le5.
+\end{equation}
+In particular $N(y)=\Theta(\log y/\log\log y)$.
+\end{corollary}
+\begin{proof}
+Write $L=\log y$. Fix $0<u<4$ and $w>5$, and choose $\varepsilon>0$
+so that $(1/4+\varepsilon)u<1$ and $(1/5-\varepsilon)w>1$.
+Theorem~\ref{thm:main} supplies a fixed $n_0$ such that for all
+integers $n\ge n_0$,
+\begin{equation}\label{eq:epsilon}
+ (1/5-\varepsilon)n\log n\le\log a(n)
+ \le(1/4+\varepsilon)n\log n.
+\end{equation}
+Let $n_- =\lfloor uL/\log L\rfloor$. For every
+$n_0\le n\le n_-$, monotonicity of the elementary function $n\log n$
+and \eqref{eq:epsilon} give
+\[
+ \log a(n)\le(1/4+\varepsilon)n_-\log n_-
+ =(1/4+\varepsilon)uL(1+o(1))<L.
+\]
+The finitely many $n<n_0$ also have $a(n)<y$ for large $y$.
+Thus $N(y)>n_-$. Next put $n_+=\lceil wL/\log L\rceil$.
+The lower bound in \eqref{eq:epsilon} gives
+\[
+ \log a(n_+)\ge(1/5-\varepsilon)n_+\log n_+
+ =(1/5-\varepsilon)wL(1+o(1))>L,
+\]
+so $N(y)\le n_+$. Letting $u$ increase to $4$ and $w$ decrease to $5$
+proves \eqref{eq:inverse}.
+\end{proof}
+No comparison of $a(n)$ and $a(n+1)$ occurs in this proof. We assert
+neither monotonicity of the sequence nor an exact inverse equivalent.
+The inequalities do not justify an exact ceiling formula. If only the
+elementary lower bound is used, the same proof gives constants $4$
+and $7$ instead.
+
+\subsection{Finite elementary inverse bounds}
+Let $W$ be the positive real Lambert function: $W(t)e^{W(t)}=t$ for
+$t>0$. The elementary estimates also give explicit finite bounds.
+\begin{proposition}\label{prop:finiteinverse}
+For every real $y>1$, with $L=\log y$,
+\begin{equation}\label{eq:finiteinverse}
+ \ceil{\frac{4(L+\log3)}{W(324(L+\log3))}}
+ \le N(y)\le
+ 7\ceil{\frac{L}{W(2L/e)}}+1.
+\end{equation}
+\end{proposition}
+\begin{proof}
+The continuous function $h(x)=x\log(81x)/4$ is strictly increasing
+for $x\ge1$, and $h(1)=\log3$. Its unique root $r>1$ of
+$h(r)=L+\log3$ is
+\[
+ r=\frac{4(L+\log3)}{W(324(L+\log3))}.
+\]
+By \eqref{eq:logupper}, every integer $2\le n<r$ has
+$\log a(n)\le h(n)-\log3<L$. The values $n=0,1$ separately have
+$a(n)=1<y$. Thus $N(y)\ge\lceil r\rceil$.
+
+For the upper bound let $s=L/W(2L/e)$. Then $s>e/2$ and
+$s\log(2s/e)=L$. The function $x\log(2x/e)$ is strictly increasing
+for $x\ge e/2$. With $k=\lceil s\rceil\ge2$, the elementary integral
+bound $\log(k!)\ge k\log k-k$ gives
+\[
+ 2^k k!\ge(2k/e)^k\ge e^L=y.
+\]
+At $n=7k+1$, \eqref{eq:factorial} therefore yields
+$a(n)\ge y$, proving the right inequality without monotonicity.
+\end{proof}
+These are exact-real mathematical inequalities. Uncertified floating-
+point evaluations of $W$ near an integer do not certify the ceilings.
+The companion instead uses integer powers and factorials to produce
+finite brackets at integer thresholds: it excludes every index whose
+explicit upper bound is too small, and supplies an index $7k+1$ for
+which $2^k k!$ reaches the threshold. The finite elementary upper
+bound has leading constant $7$; the asymptotic queens estimate, without an explicit
+onset here, improves the asymptotic upper constant to $5$.
+
+\section{Finite verification and the reproducible companion}
+The companion uses exact integer arithmetic and the Python standard
+library. Its production module has no network, input-file, or
+file-writing API. It prints deterministic JSON and imposes fixed bounds
+before enumeration. The code is standalone; it does not require any
+other report or unpublished working file. See the accompanying README
+for complete commands and output-safety assumptions.
+
+Strict partitions are constructed by subset-sum dynamic programming
+and checked against a separate recursive generator. A direct increasing-
+edge matching traversal tests maximality against \emph{every} edge,
+including earlier edges not chosen. A separate maximal-clique traversal
+provides another count comparison in a smaller range. Removal of the
+forced singleton does not change the maximal-family count.
+
+The exact tests cover the following.
+\begin{enumerate}
+\item All values $a(n)$ for $0\le n\le24$ agree with the inspected
+OEIS data. The singleton, unordered-family, and inclusion-maximal
+conventions are checked explicitly.
+\item Every matching without its singleton through $n=24$ is encoded
+and decoded, including the empty matching and empty fibers. No two
+matchings have the same code. The mass inequality, the integer free-
+label bound, and the explicit upper bound are checked exactly.
+\item Ordinary queens are enumerated through $k=8$. For every one of
+the five choices $n=5k+r$, $1\le r\le5$, actual maximal extensions
+of the triple bases are constructed. Original permutations are
+recovered from the extensions and distinctness is checked.
+\item The upper floor identity and the five-residue inequalities are
+checked through $n=100000$. Bounded greedy-construction examples
+check the choice counts and disjoint triple ranges.
+\item Argument validation, workload caps, first-passage scans,
+intentional fault detection, and byte-identical normal and optimized
+Python outputs are exercised. No correctness check relies on an
+\texttt{assert} statement that disappears under \texttt{-O}.
+\end{enumerate}
+The first values include
+\[
+\begin{array}{c|rrrrrrrrr}
+n&16&17&18&19&20&21&22&23&24\\\hline
+a(n)&75&115&199&312&533&888&1536&2535&4608.
+\end{array}
+\]
+The threshold command performs an exact bounded scan; failure to reach
+a threshold only proves that its first passage exceeds the scanned
+range. It does not extrapolate using the asymptotic bounds. A separate integer
+bracket command implements the proven finite elementary bounds; its
+endpoints are not asserted to be exact first-passage indices.
+
+These computations are finite diagnostics, not proofs of the
+asymptotic statements or of novelty. Earlier independent checks
+through $n=22$ and a separate direct-enumeration audit through $n=24$
+served the same diagnostic role. The proof consists of the explicit
+arguments above together with Theorem~\ref{thm:queens}.
+
+The release includes complete LaTeX, a deterministic PDF builder,
+fixed-allowlist ZIP creation, and SHA-256 checksums. Builds and archive
+creation use new output names and refuse existing destinations and
+symlink components; they assume a trusted local parent directory.
+Two clean PDF builds and two archive constructions are compared
+byte for byte in the reported environment. Reproduction with a
+different TeX installation can legitimately change PDF bytes.
+
+\section{Source provenance and the remaining gap}
+The official A068598 snapshot used here is revision \#50, dated
+17 February 2026, retrieved from the official OEIS data repository on
+3 October 2026. Its definition, displayed terms, and fit comments
+were also checked against the public entry. A site-wide footer is
+not treated as an entry revision date. Exact snapshot digests and
+the inspected source locations appear in the companion's provenance
+file; full third-party papers and full entry prose are not redistributed.
+
+Nathanson's paper \cite{nathanson} was read beyond its abstract.
+It studies the largest and smallest cardinalities of maximal families
+when \emph{every} partition has a fixed number of parts. That is a
+different extremal problem from counting unrestricted maximal
+families. Its page~108 gives the Spencer attribution used above.
+Filaseta's related 1996 chapter \cite{filaseta} was located and its
+publisher abstract inspected. That abstract likewise concerns a
+minimum cardinality at fixed arity. The full subscription chapter
+was not read, so its arguments and remarks have not been excluded
+as possible prior art.
+
+Bounded exact-ID and topic searches found no primary source claiming
+the unrestricted enumeration bounds proved here. Search terms
+included A068598 with ``asymptotic'' or ``growth'', maximal pairwise
+disjoint partitions with ``number'' or ``asymptotic'', and disjoint
+partitions with ``$n\log n$''. This is a bounded literature check,
+not a priority certificate. The result should be described as an
+independently verified proof candidate and application of known
+ingredients, rather than as a certified first proof.
+
+The principal mathematical gap is still
+\[
+ \frac15\le\liminf\frac{\log a(n)}{n\log n}
+ \le\limsup\frac{\log a(n)}{n\log n}\le\frac14.
+\]
+The report does not prove that the lower and upper limits coincide,
+identify their value, establish a multiplicative equivalent, or
+supply any all-orders expansion or transseries. The linear term in
+\eqref{eq:linear} belongs only to a lower bound. Improving either
+counting construction or showing a matching upper and lower
+coefficient remains open in this treatment.
+
+One concrete unproved direction is to count decompositions of $[4k]$
+into $k$ quadruples each summing to $8k+2$. A bound
+$k^{2k-o(k)}$ would, by maximal extension and recovery of the used
+labels, attain coefficient $1/4$ along $n=8k+2$. It would not by
+itself settle all $n$. Requiring one part from each of four consecutive
+$k$-blocks leads to permutations $\pi,\sigma,\tau$ with
+$i+\pi(i)+\sigma(i)+\tau(i)=2k+2$. The elementary complementary-pair
+construction gives only $k!$, far short of that proposed count.
+No stronger count or resulting limit is claimed here.
+
+\begin{thebibliography}{9}
+\bibitem{oeis}
+The OEIS Foundation Inc., \emph{The On-Line Encyclopedia of Integer
+Sequences}, A068598, entry by Naohiro Nomoto with later contributions.
+Revision \#50, 17 February 2026; inspected 3 October 2026.
+\href{https://oeis.org/A068598}{oeis.org/A068598}.
+Official data: \href{https://github.com/oeis/oeisdata/blob/main/seq/A068/A068598.seq}{A068598.seq}.
+
+\bibitem{nathanson}
+M.~B. Nathanson, \emph{Largest and smallest maximal sets of pairwise
+disjoint partitions}, Journal of Number Theory \textbf{17} (1983),
+103--112. Spencer's summation argument is on p.~108.
+\href{https://www.theoryofnumbers.com/melnathanson/pdfs/nath1983-49.pdf}{Author-hosted primary PDF}.
+
+\bibitem{queens}
+Z.~Luria and M.~Simkin, \emph{A lower bound for the $n$-queens problem},
+Proceedings of the 2022 Annual ACM--SIAM Symposium on Discrete
+Algorithms (SODA), 2022.
+\href{https://doi.org/10.1137/1.9781611977073.86}{doi:10.1137/1.9781611977073.86}.
+Version inspected: \href{https://arxiv.org/abs/2105.11431v2}{arXiv:2105.11431v2}
+(9 July 2021), Theorem~1.1 on PDF p.~1 and consequence on p.~2.
+
+\bibitem{filaseta}
+M.~Filaseta, \emph{The smallest maximal set of pairwise disjoint
+partitions}, in D.~V. Chudnovsky, G.~V. Chudnovsky, and M.~B. Nathanson
+(eds.), \emph{Number Theory: New York Seminar 1991--1995}, Springer,
+1996, 103--113.
+\href{https://doi.org/10.1007/978-1-4612-2418-1_8}{doi:10.1007/978-1-4612-2418-1\_8}.
+Publisher metadata and abstract were inspected. The full chapter
+was not read.
+\end{thebibliography}
+\end{document}

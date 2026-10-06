@@ -1,0 +1,659 @@
+\input{tex/pdf_settings}
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,booktabs,array,microtype}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\hypersetup{pdftitle={Report 205: The Stirling transform of Catalan numbers},pdfauthor={}}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small Stirling--Catalan asymptotics}\fancyhead[R]{\small Report 205}\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\emergencystretch}{2em}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Prob}{\mathbb P}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\ceil}[1]{\left\lceil #1\right\rceil}
+\newcommand{\G}{\mathcal G}
+\input{tex/constants}
+\title{The Stirling transform of Catalan numbers\\\large Lambert-saddle asymptotics, Bell comparison, and integer-safe inversion}
+\author{Report 205}
+\date{4 October 2026\\Corrected revision 2}
+\begin{document}
+\maketitle
+\begin{abstract}
+For the sequence $a_n=\sum_{k=0}^n S(n,k)C_k$ (OEIS A064856), we prove a relative asymptotic expansion to every fixed order in the scale $W(n/4)/n$. The leading factor retains the factorial exactly; the corrections are explicitly computable rational functions of the Lambert saddle. The proof combines a positive Catalan moment integral, a sectorial endpoint expansion, and a contour estimate with a uniform integrated remainder. We compare $a_n$ with Bell numbers and obtain $\log(a_n/B_n)\sim(\log4)n/\log n$. We then construct an all-fixed-order inverse with shrinking absolute index uncertainty and a two-ceiling enclosure. Its elementary carrier equation must be solved rather than replaced by a finite inverse-logarithmic seed. At exact sequence thresholds the simplest single-ceiling approximation is eventually wrong by one. Exact coefficient and enumeration checks, high-precision diagnostics, and a deterministic reproduction archive accompany the proofs. The generating function and general asymptotic methods are prior; no global priority or growing-order assertion is made.
+\end{abstract}
+\setcounter{tocdepth}{1}
+\tableofcontents
+\newpage
+
+\section{Sequence, normalization, and principal conclusions}\label{sec:main}
+Let $S(n,k)$ denote the Stirling number of the second kind, with $S(0,0)=1$, and let
+\begin{equation}\label{eq:sequence}
+ C_k=\frac1{k+1}\binom{2k}{k},\qquad
+ a_n=\sum_{k=0}^n S(n,k)C_k.
+\end{equation}
+This is OEIS A064856 \cite{oeis}. Combinatorially, a structure counted by $a_n$ is a partition of $[n]$ together with a Catalan decoration of its $k$ blocks, ordered canonically, for example by their least elements. A plane binary tree with $k$ internal nodes is one possible decoration. This interpretation fixes the transform convention and includes the empty structure.
+
+Throughout, $W$ is the positive real Lambert function, characterized by $W(t)e^{W(t)}=t$ for $t>0$. Set
+\begin{equation}\label{eq:saddle}
+ r=W(n/4),\qquad p=1+r,\qquad \eta=\frac rn,
+ \qquad 4re^r=n.
+\end{equation}
+The quantity $r$ grows like $\log n$; thus $\eta\to0$. An expansion below is always at a \emph{fixed} truncation order. The constants in its remainder may depend on that order.
+
+\begin{theorem}[All fixed orders]\label{thm:main}
+Define
+\begin{equation}\label{eq:leading}
+ L_n=\frac{e^{-4}n!\,e^{n/r}r^{3/2-n}}
+ {\pi\sqrt2\,n^2\sqrt{1+r}}.
+\end{equation}
+There are rational functions $Q_j\in\mathbb Q(r)$, explicitly defined in Section~\ref{sec:assembly}, with $Q_0=1$ and $Q_j(r)=O_j(r^j)$, such that for every fixed integer $M\ge0$,
+\begin{equation}\label{eq:allorders}
+ a_n=L_n\left\{\sum_{j=0}^M\frac{Q_j(r)}{n^j}
+       +O_M\left(\left(\frac rn\right)^{M+1}\right)\right\}.
+\end{equation}
+The first two corrections are
+\begin{align}
+ Q_1(r)&=\Qone,\label{eq:q1}\\
+ Q_2(r)&=\QtwoDisplay.\label{eq:q2}
+\end{align}
+After multiplication by $(1+r)^{3j}$, each $Q_j$ is a polynomial of degree at most $4j$.
+\end{theorem}
+
+The formula keeps $n!$ exact. Applying only the leading term of Stirling's formula gives the equivalent
+\begin{equation}\label{eq:stirling-leading}
+ a_n\sim\frac{e^{-4}r^{3/2}}{\sqrt\pi\,n^{3/2}\sqrt{1+r}}
+ \exp\!\left\{n\left(\log\frac nr-1+\frac1r\right)\right\}.
+\end{equation}
+The corrections in \eqref{eq:allorders} cannot be transferred unchanged to \eqref{eq:stirling-leading}: the factorial's Stirling series must then also be included. For example, the first relative correction in that normalization is $Q_1(r)+1/12$.
+
+For $B_n=\sum_kS(n,k)$, we prove
+\begin{equation}\label{eq:bell-conclusion}
+ \log\frac{a_n}{B_n}\sim\frac{(\log4)n}{\log n},
+ \qquad \frac{a_n}{B_n}\longrightarrow\infty,
+ \qquad \left(\frac{a_n}{B_n}\right)^{1/n}\longrightarrow1.
+\end{equation}
+The inverse problem is to determine
+\begin{equation}\label{eq:inverse-def}
+ N(y)=\min\{n\ge1:a_n\ge y\},\qquad y>1.
+\end{equation}
+Section~\ref{sec:inverse} constructs $I_M(y)$ and $E_M(y)\to0$ such that
+\begin{equation}\label{eq:inverse-preview}
+ \ceil{I_M(y)-C_ME_M(y)}\le N(y)
+ \le\ceil{I_M(y)+C_ME_M(y)}
+\end{equation}
+for sufficiently large $y$. The constants and onset are existential. There is no claim that numerical diagnostics certify them, nor that one may replace both ceilings by $\ceil{I_M(y)}$.
+
+\paragraph{Prior results and scope.}
+The OEIS entry already gives the Bessel and hypergeometric exponential generating functions used here; those exact formulas are not new. Spiridonov's 2004 thesis \cite{spiridonov}, p.~13, identifies this sequence in a spectral-moment question and gives a numerical Bell-ratio extrapolation. Our comparison settles the asymptotic behavior of this ratio. The spectral-moment inequality stated there already follows from Bauer and Golinelli's earlier coefficientwise theorem \cite{bauer}; Section~\ref{sec:known-spectral} gives the normalization explicitly. General Stirling-transform identities and Bell/Stirling asymptotic expansions are well-established topics \cite{rahmani,hwang}. Section~\ref{sec:sources} specifies the bounded source check and its limitations.
+
+\section{A positive integral and exact identities}\label{sec:exact}
+Let
+\begin{equation}\label{eq:density}
+ \varrho(x)=\frac1{2\pi}\sqrt{\frac{4-x}{x}},\qquad 0<x<4,
+ \qquad M(t)=\int_0^4e^{tx}\varrho(x)\dd x.
+\end{equation}
+The density is integrable at both endpoints. With $x=4u$, the beta integral gives
+\begin{align}
+ \int_0^4x^k\varrho(x)\dd x
+ &=\frac{4^{k+1}}{2\pi}\int_0^1u^{k-1/2}(1-u)^{1/2}\dd u\notag\\
+ &=\frac{4^{k+1}\Gamma(k+1/2)\Gamma(3/2)}{2\pi\Gamma(k+2)}
+ =C_k.\label{eq:beta}
+\end{align}
+In particular the total mass is one. Compact support makes $M$ entire and permits termwise expansion. The Stirling-number EGF identity then yields
+\begin{equation}\label{eq:egf}
+ F(z):=\sum_{n\ge0}a_n\frac{z^n}{n!}
+ =M(e^z-1)
+ =\int_0^4\exp\{x(e^z-1)\}\varrho(x)\dd x.
+\end{equation}
+Indeed, $\sum_{n\ge k}S(n,k)z^n/n!=(e^z-1)^k/k!$, so substituting the moment expansion of $M$ proves the identity. The convergence is locally absolute. The previously recorded forms \cite{oeis} are
+\begin{align}
+ F(z)&={}_1F_1\!\left(\tfrac12;2;4(e^z-1)\right),\label{eq:hyper}\\
+ F(z)&=e^{2(e^z-1)}\left\{I_0(2(e^z-1))-I_1(2(e^z-1))\right\}.
+ \label{eq:bessel}
+\end{align}
+Here $I_\nu$ denotes the modified Bessel function. The integral form is useful because it controls the entire Cauchy contour without applying a local special-function expansion outside its sector.
+
+\begin{lemma}[Monotonicity]\label{lem:monotone}
+One has $a_0=a_1=1$, $a_{n+1}>a_n$ for every $n\ge1$, and $a_n\to\infty$.
+\end{lemma}
+\begin{proof}
+Take a random variable $X$ with density $\varrho$, and conditionally on $X$ let $K$ be Poisson with mean $X$. Its moment generating function is \eqref{eq:egf}, hence $a_n=\E K^n$, where $K^0=1$. For $n\ge1$, $K^{n+1}-K^n$ is nonnegative and strictly positive when $K\ge2$, an event of positive probability. Also $a_n\ge2^n\Prob(K\ge2)$ for $n\ge1$, which proves unboundedness. The first two values follow from \eqref{eq:sequence}. This is an auxiliary moment representation; the mixing variable need not be a statistic of the decorated partitions.
+\end{proof}
+
+Two exact differential equations will also be useful as independent checks. The moment coefficients satisfy $tM''+(2-4t)M'-2M=0$, either from the hypergeometric equation or directly by comparing successive Catalan coefficients. With $t=e^z-1$ and the chain rule,
+\begin{equation}\label{eq:ode}
+ (e^z-1)F''+(1+5e^z-4e^{2z})F'-2e^{2z}F=0.
+\end{equation}
+This provides an exact recurrence independent of the original finite Stirling sum; it is used in the reproduction checks.
+
+\section{The endpoint expansion}\label{sec:endpoint}
+The dominant part of the integral \eqref{eq:density} is the endpoint $x=4$. Put $v=4-x$. Then
+\begin{equation}\label{eq:endpoint-integral}
+ M(t)=\frac{e^{4t}}{4\pi}\int_0^4e^{-tv}v^{1/2}(1-v/4)^{-1/2}\dd v.
+\end{equation}
+Let $(a)_j=a(a+1)\cdots(a+j-1)$, with $(a)_0=1$.
+
+\begin{lemma}[Sectorial expansion]\label{lem:endpoint}
+For each fixed $J\ge0$ and $\epsilon>0$, uniformly as $|t|\to\infty$ in $|\arg t|\le\pi/2-\epsilon$,
+\begin{equation}\label{eq:endpoint-exp}
+ M(t)=\frac{e^{4t}}{8\sqrt\pi\,t^{3/2}}
+ \left\{\sum_{j=0}^J\beta_jt^{-j}+O_{J,\epsilon}(|t|^{-J-1})\right\},
+ \qquad \beta_j=\frac{(1/2)_j(3/2)_j}{4^j j!}.
+\end{equation}
+Powers use the branch continued from the positive real axis.
+\end{lemma}
+\begin{proof}
+Choose a fixed $d\in(0,4)$. On $[0,d]$, Taylor's theorem gives
+\[
+ (1-v/4)^{-1/2}=\sum_{j=0}^J\frac{(1/2)_j}{4^j j!}v^j+O_J(v^{J+1}).
+\]
+For $\Re t\ge |t|\sin\epsilon$, integration of the remainder against $v^{1/2}e^{-tv}$ is $O_{J,\epsilon}(|t|^{-J-5/2})$. Extend each retained integral to infinity; the additional tails are exponentially small times a fixed polynomial. The full gamma integrals are $\Gamma(j+3/2)t^{-j-3/2}$. On $[d,4]$, the integrable factor $v^{1/2}(1-v/4)^{-1/2}$ is multiplied by at most $e^{-d\Re t}$. This is again exponentially small compared with any inverse power. Finally $\Gamma(3/2)=\sqrt\pi/2$ gives the stated prefactor and coefficients.
+\end{proof}
+
+Near a large positive real $z$, set $q=e^{-z}$ and $t=e^z-1$. Re-expanding a \emph{finite} number of terms in \eqref{eq:endpoint-exp} gives
+\begin{equation}\label{eq:localF}
+ F(z)=\frac{e^{-4}}{8\sqrt\pi}\,e^{4e^z-3z/2}
+ \left\{\sum_{m=0}^Jc_me^{-mz}+O_J(e^{-(J+1)\Re z})\right\},
+\end{equation}
+where
+\begin{equation}\label{eq:cm}
+ c_m=\sum_{j=0}^m\beta_j\frac{(3/2+j)_{m-j}}{(m-j)!}.
+\end{equation}
+For example,
+\begin{equation}\label{eq:cvalues}
+ (c_0,c_1,c_2,c_3)=(\Czero,\Cone,\Ctwo,\Cthree).
+\end{equation}
+To verify \eqref{eq:cm}, factor $t^{-3/2-j}=e^{-(3/2+j)z}(1-q)^{-3/2-j}$ and use the binomial expansion to the required finite order. The infinite series in $c_m$ is not being asserted to converge.
+
+\section{A uniform fixed-amplitude saddle lemma}\label{sec:saddle}
+We give the error proof in detail because the saddle itself grows. For fixed $c>0$ put $r=W(n/c)$; $c=4$ is the main case. Let $P_1(r)=1$ and define
+\begin{equation}\label{eq:touchard}
+ P_{k+1}(r)=rP'_k(r)+(1+r)P_k(r).
+\end{equation}
+Equivalently, $rP_k(r)=\sum_{\ell=1}^kS(k,\ell)r^\ell$ is the $k$th Touchard polynomial. In particular, $P_2=1+r$, $P_3=1+3r+r^2$, and $P_k(r)=O_k(r^{k-1})$ for $r\ge1$.
+
+Define a linear functional on polynomials in $v$ by
+\begin{equation}\label{eq:gaussian}
+ \G_r(v^{2\ell})=\frac{(-1)^\ell(2\ell-1)!!}{(1+r)^\ell},
+ \qquad \G_r(v^{2\ell+1})=0,
+\end{equation}
+with $(-1)!!=1$. For fixed real $b$ define the rational functions
+\begin{equation}\label{eq:Aj}
+ A_j(r,b)=[\eps^{2j}]\,\G_r\exp\!\left(
+ \sum_{s\ge1}\eps^s
+ \left\{\frac{P_{s+2}(r)v^{s+2}}{(s+2)!}-\frac{brv^s}{s!}\right\}\right).
+\end{equation}
+The functional acts coefficientwise. At a chosen $j$ the expression uses only $s\le2j$ and finitely many polynomial operations. It is a formal coefficient definition, independent of any analytic interchange of infinite series.
+
+\begin{lemma}[Uniform saddle expansion]\label{lem:saddle}
+For fixed $c>0$, real $b$, and integer $J\ge0$, as $n\to\infty$,
+\begin{equation}\label{eq:saddle-lemma}
+ n![z^n]e^{ce^z-bz}
+ =\frac{n!e^{n/r-br}}{r^n\sqrt{2\pi n(1+r)}}
+ \left\{\sum_{j=0}^J\frac{A_j(r,b)}{n^j}
+ +O_{J,b,c}\left(\left(\frac rn\right)^{J+1}\right)\right\}.
+\end{equation}
+Here $r=W(n/c)$, $A_0=1$, and $A_j(r,b)=O_{j,b}(r^j)$. The functions $A_j$ do not depend on $c$.
+\end{lemma}
+
+\subsection{Global localization}
+Cauchy's formula on $z=re^{i\theta}$ is
+\begin{equation}\label{eq:cauchy}
+ n![z^n]e^{ce^z-bz}
+ =\frac{n!e^{n/r-br}}{2\pi r^n}
+ \int_{-\pi}^{\pi}e^{\Psi(\theta)-b(z-r)}\dd\theta,
+ \quad \Psi(\theta)=c(e^{re^{i\theta}}-e^r)-in\theta.
+\end{equation}
+For $|\theta|\le r^{-2}$, elementary cosine estimates give
+\begin{equation}\label{eq:inner-loss}
+ \Re\Psi(\theta)
+ =ce^r\left\{e^{-r(1-\cos\theta)}\cos(r\sin\theta)-1\right\}
+ \le-\kappa nr\theta^2
+\end{equation}
+with an absolute $\kappa>0$ for all sufficiently large $r$. Indeed $|r\sin\theta|\le1/r$ and $1-\cos(r\sin\theta)\ge\kappa_1r^2\theta^2$ there; the other exponential factor is at most one and the cosine remains positive. The amplitude contributes only
+\[
+ |e^{-b(z-r)}|=e^{br(1-\cos\theta)}\le e^{|b|r\theta^2/2},
+\]
+which is absorbed by the Gaussian loss.
+
+For $r^{-2}\le|\theta|\le\pi$, discard the inner cosine. Since $1-\cos\theta\ge\kappa_2\theta^2$ on this interval,
+\begin{equation}\label{eq:outer-loss}
+ \Re\Psi(\theta)\le
+ -ce^r\{1-e^{-r(1-\cos\theta)}\}
+ \le-\kappa_3\frac n{r^4}.
+\end{equation}
+The amplitude's ratio to its value at the positive saddle is at most $e^{2|b|r}$. Because $n/r^4$ grows exponentially in $r$ up to polynomial factors, the outer integral, including the Gaussian normalization, is smaller than every fixed power of $r/n$.
+
+For later use, the original $F$ is localized globally without the sectorial expansion. Positivity in \eqref{eq:egf} implies, for any complex $z$,
+\begin{equation}\label{eq:Fglobal}
+ |F(z)|\le M(\Re(e^z)-1)
+ \le\max\{1,e^{4(\Re(e^z)-1)}\}.
+\end{equation}
+Together with \eqref{eq:outer-loss} at $c=4$, this bounds its outer arc by the same super-polynomially small relative error. The polynomial factors and factors exponential in $r$ in the normalization are harmless. On the inner arc $|\Im z|\le1/r$, so $e^z-1$ lies in a fixed closed subsector of the right half-plane and has modulus comparable to $e^r$. Thus \eqref{eq:localF} will only be used where it is valid.
+
+\subsection{Uniform integrated remainder}\label{sec:remainder}
+Put $p=1+r$, $\eta=r/n$, $\lambda=\sqrt\eta$, and $u=\sqrt{np}\,\theta$. The quadratic term of $\Psi$ is $-u^2/2$. After removing it, define
+\[
+ E(u)=c(e^z-e^r)-in\theta+u^2/2-b(z-r).
+\]
+For a fixed $K$ the angular Taylor expansion has the form
+\begin{align}
+ E(u)&=\sum_{s=1}^K\lambda^s U_s(r,u)+\mathcal R_K(r,u),\label{eq:local-exponent}\\
+ U_s(r,u)&=
+ \frac{P_{s+2}(r)(iu)^{s+2}}{(s+2)!r^{s/2}p^{s/2+1}}
+ -\frac{br^{1-s/2}(iu)^s}{s!p^{s/2}}.\label{eq:Us}
+\end{align}
+All coefficients of $U_s$ are bounded uniformly for $r\ge1$. Moreover,
+\begin{equation}\label{eq:parity}
+ U_s(r,-u)=(-1)^sU_s(r,u).
+\end{equation}
+The coefficient bound follows directly from $P_{s+2}(r)=O_s(r^{s+1})$ and $p\asymp r$.
+
+Here are explicit bounds sufficient for every fixed order. Take $K=2J+2$. The $k$th angular derivative of $ce^z$ has absolute value at most $ce^r\sum_\ell S(k,\ell)r^\ell=nP_k(r)$ anywhere on the circle; this uses the nonnegative coefficients of the Touchard polynomial. The $k$th derivative of $-bz$ has magnitude $|b|r$. Taylor's theorem therefore gives
+\begin{equation}\label{eq:angular-rem}
+ |\mathcal R_K(r,u)|\le C_{J,b}\lambda^{2J+3}
+ \bigl(|u|^{2J+5}+|u|^{2J+3}\bigr).
+\end{equation}
+Choose a fixed $\delta$ with
+\begin{equation}\label{eq:delta}
+ 0<\delta<\frac1{12J+24},\qquad |u|\le\eta^{-\delta}.
+\end{equation}
+On this cutoff, $\lambda|u|\to0$. The finite perturbation $V=\sum_{s=1}^K\lambda^sU_s$ obeys
+\begin{equation}\label{eq:Vbound}
+ |V|\le C_{J,b}\lambda(|u|+|u|^3),
+\end{equation}
+and \eqref{eq:angular-rem} is $o(1+u^2)$ uniformly. Consequently the original Gaussian multiplied by all exponential absolute-value error factors is bounded by a constant times $e^{-u^2/4}$ for sufficiently large $n$.
+
+Expand $e^V$ through ordinary power $2J+1$. The exponential-series remainder is bounded by
+\begin{equation}\label{eq:exp-rem}
+ C_{J,b}\lambda^{2J+2}(1+|u|^{6J+6})e^{|V|}.
+\end{equation}
+Within the resulting finite polynomial expression, discard monomials whose total degree in $\lambda$ is at least $2J+2$. There are finitely many such monomials, each bounded by $\lambda^{2J+2}$ times a fixed polynomial in $|u|$, since $0<\lambda<1$. The angular remainder changes the integral by $O_{J,b}(\lambda^{2J+3})$, using $|e^{V+R}-e^V|\le |R|e^{|V|+|R|}$ and \eqref{eq:angular-rem}. Gaussian integration of \eqref{eq:exp-rem} and all discarded monomials is therefore
+\begin{equation}\label{eq:integrated-error}
+ O_{J,b}(\lambda^{2J+2})=O_{J,b}(\eta^{J+1}).
+\end{equation}
+This is an integrated bound independent of the increasing saddle, not merely a pointwise formal expansion.
+
+Odd total degrees in $\lambda$ integrate to zero on the symmetric cutoff by \eqref{eq:parity}. Extending each retained polynomial's Gaussian integral to the whole real line incurs an error smaller than every fixed power of $\eta$. The remaining middle arc,
+\[
+ \eta^{-\delta}\le |u|\le\frac{\sqrt{np}}{r^2},
+\]
+is bounded by \eqref{eq:inner-loss}; its Gaussian tail is likewise super-polynomially small. The cutoff is contained in the inner arc eventually because $\eta^{-\delta}=o(\sqrt{np}/r^2)$ for fixed $\delta<1/2$.
+
+Finally, make the equivalent substitution $v=i\sqrt n\,\theta$ before taking the Gaussian moments. It yields exactly \eqref{eq:Aj}, with the variance in \eqref{eq:gaussian}. The bounded coefficients in the $\lambda$ expansion show $A_j(r,b)/r^j=O_{j,b}(1)$. This proves Lemma~\ref{lem:saddle}. The half-integer powers of $r$ in \eqref{eq:Us} were only a bounding device: \eqref{eq:Aj} uses rational polynomial arithmetic throughout.
+
+\section{Assembly and finite correction calculation}\label{sec:assembly}
+Insert \eqref{eq:localF}, with $J=M$, in the inner part of Cauchy's formula for $F$. For its $m$th term, apply Lemma~\ref{lem:saddle} with
+\[
+ c=4,\qquad b=\tfrac32+m,\qquad J=M-m.
+\]
+The extra factor is $e^{-mr}=(4r/n)^m$. Therefore
+\begin{equation}\label{eq:Qformula}
+ Q_j(r)=\sum_{m=0}^jc_m(4r)^m A_{j-m}(r,\tfrac32+m).
+\end{equation}
+The common factor is
+\[
+ \frac{e^{-4}}{8\sqrt\pi}
+ \frac{n!e^{n/r-3r/2}}{r^n\sqrt{2\pi n(1+r)}}.
+\]
+Since $e^{-3r/2}=8(r/n)^{3/2}$, this is precisely $L_n$ in \eqref{eq:leading}.
+
+The endpoint remainder has relative magnitude $O(e^{-(M+1)\Re z})$ on the inner arc. There $\Re z=r+O(r\theta^2)$, so this is $O(\eta^{M+1})$ times an exponential factor absorbable by the Gaussian bound. Its integral is $O(\eta^{M+1})$ relative to the common factor. Each finite saddle remainder, after multiplication by $e^{-mr}$, has the same total order. Outer arcs for $F$ and the finitely many model terms are negligible by Section~\ref{sec:saddle}. This proves \eqref{eq:allorders} with a rigorous remainder at each fixed $M$.
+
+For reference the first saddle correction, writing $p=1+r$, is
+\begin{equation}\label{eq:A1}
+ A_1(r,b)=\frac{P_4}{8p^2}-\frac{5P_3^2}{24p^3}
+ -\frac{brP_3}{2p^2}-\frac{b^2r^2-br}{2p}.
+\end{equation}
+It follows by keeping the degree-two exponent term and half the square of the degree-one term in \eqref{eq:Aj}. Formula \eqref{eq:Qformula} gives \eqref{eq:q1}--\eqref{eq:q2}. The next correction is supplied exactly in the archive rather than expanded into a long inline numerator.
+
+\begin{proposition}[Finite rational identity certificate]\label{prop:degree}
+The functions in \eqref{eq:Qformula} satisfy
+\[
+ (1+r)^{3j}Q_j(r)\in\mathbb Q[r],\qquad
+ \deg((1+r)^{3j}Q_j(r))\le4j.
+\]
+Thus $4j+1$ distinct exact rational evaluations certify any proposed expression having the same denominator and degree bound.
+\end{proposition}
+\begin{proof}
+Consider a monomial of total $\eps$ degree $2j$ in \eqref{eq:Aj}, and let $q$ be its number of principal-phase factors. Its $v$ degree is $2j+2q$, so its Gaussian denominator is $p^{j+q}$, with $q\le2j$. The numerator degree in $r$ is at most $2j+q$: a phase factor of degree $s$ in $\eps$ has degree at most $s+1$ in $r$, while an amplitude factor has degree one, at most its $\eps$ degree. Raising the denominator to $p^{3j}$ adds degree $2j-q$, giving total at most $4j$. In the endpoint sector $m$, multiplying by $r^m$ and raising the denominator from $p^{3(j-m)}$ to $p^{3j}$ adds degree $4m$. This preserves the bound $4j$. The last statement is the elementary uniqueness theorem for polynomials.
+\end{proof}
+
+The estimate $Q_j(r)=O_j(r^j)$ also follows from \eqref{eq:Qformula} and Lemma~\ref{lem:saddle}. Hence the correction scale is $\eta=r/n$, even though it is convenient to write rational functions divided by $n^j$. The coefficients are not constants of an ordinary $1/n$ expansion.
+
+\section{Comparison with Bell numbers}\label{sec:bell}
+For fixed $c>0$ define the Touchard numbers
+\[
+ B_n(c)=\sum_{k=0}^nS(n,k)c^k,
+ \qquad \sum_{n\ge0}B_n(c)\frac{z^n}{n!}=e^{c(e^z-1)}.
+\]
+They obey Lemma~\ref{lem:saddle} with $b=0$, saddle $r_c=W(n/c)$, and an additional constant factor $e^{-c}$. At $c=4$, division of the two expansions gives
+\begin{equation}\label{eq:bell4}
+ \frac{a_n}{B_n(4)}=\frac{(r/n)^{3/2}}{\sqrt\pi}
+ \left\{1+\frac1n\,\BellCorrection+O\left(\left(\frac rn\right)^2\right)\right\}.
+\end{equation}
+The correction is $Q_1(r)-A_1(r,0)$; direct rational simplification yields the displayed expression.
+
+For ordinary Bell numbers, put $s=W(n)$ and continue to write $r=W(n/4)$. Cancellation of the exact factorial prefactors gives
+\begin{align}
+ \log\frac{a_n}{B_n}
+ ={}&n\left(\log\frac sr+\frac1r-\frac1s\right)-3
+ +\frac32\log\frac rn-\frac12\log\pi\notag\\
+ &+\frac12\log\frac{1+s}{1+r}+O(s/n).
+ \label{eq:bell-log}
+\end{align}
+No factorial correction is missing in this formula, because the factorials canceled before any Stirling expansion.
+
+To identify the leading term, write
+\[
+ G(c)=-n\log W(n/c)+\frac{n}{W(n/c)}.
+\]
+Differentiating with respect to $\log c$ and using the defining equation of $W$ gives
+\[
+ \frac{\dd G(c)}{\dd\log c}=\frac n{W(n/c)}.
+\]
+Consequently the principal term of \eqref{eq:bell-log} is exactly
+\begin{equation}\label{eq:bell-integral}
+ n\left(\log\frac sr+\frac1r-\frac1s\right)
+ =\int_1^4\frac n{W(n/c)}\frac{\dd c}{c}
+ \sim\frac{(\log4)n}{\log n}.
+\end{equation}
+The equivalence is uniform over the fixed compact interval $c\in[1,4]$. All other displayed terms in \eqref{eq:bell-log} are $O(\log n)$ and are negligible. This proves \eqref{eq:bell-conclusion}.
+
+\paragraph{Historical consequence and its boundary.}
+On p.~13 of \cite{spiridonov}, the quantity denoted $SC_k$ is exactly \eqref{eq:sequence}, and the numerical estimate written there is approximately $(1.47^k+1)$ times a Bell asymptotic. Equation~\eqref{eq:bell-conclusion} shows that this fixed exponential base cannot give the asymptotic ratio: the ratio diverges subexponentially and its $n$th root tends to one. The same passage states Conjecture~3.3, an upper bound on sparse-matrix spectral moments by $SC_k$. That inequality is already a consequence of Bauer and Golinelli's 2001 theorem \cite{bauer}, rather than a remaining conjecture to be proved here.
+
+\subsection{The known spectral-moment comparison}\label{sec:known-spectral}
+Let $A_N$ be the symmetric adjacency matrix with zero diagonal and independent Bernoulli entries of parameter $\alpha/N$ above the diagonal, for fixed $\alpha>0$. Write
+\begin{equation}\label{eq:moment-normalization}
+ \mu_{2k}(\alpha)=\lim_{N\to\infty}\frac1N\E\operatorname{Tr}(A_N^{2k})
+ =\sum_{\ell=0}^k I(k,\ell)\alpha^\ell.
+\end{equation}
+Here $I(k,\ell)$ counts closed tree walks of length $2k$ using exactly $\ell$ distinct edges, with vertex labels normalized by order of first appearance; set $I(0,0)=1$. This is the normalization of \cite[Section~5.3]{bauer}.
+
+For completeness, a trace term using $v$ vertices and $\ell$ distinct edges has normalized total weight $N^{\underline v}N^{-1}(\alpha/N)^\ell$, where $N^{\underline v}=N(N-1)\cdots(N-v+1)$. Its walk graph is connected. For fixed $k$, only finitely many normalized patterns occur, and only trees, with $v=\ell+1$, survive the limit. Each surviving normalized pattern contributes $\alpha^\ell$. A tree edge is crossed an even number of times, so $\ell\le k$. Patterns containing diagonal loops have $v\le\ell$ and vanish. Thus allowing the loops in Spiridonov's model does not change this limit; his unweighted $\alpha=1$ moment $M_{2k}$ equals $\mu_{2k}(1)$.
+
+Bauer and Golinelli prove the coefficientwise inequalities
+% BEGIN VERIFIED spectral_comparison
+\begin{equation}\label{eq:known-coeff-bound}
+ S(k,\ell)\le I(k,\ell)\le C_\ell S(k,\ell)
+ \qquad(0\le\ell\le k)
+\end{equation}
+% END VERIFIED spectral_comparison
+in \cite[Section~5.5, equation~(9), pp.~26--30]{bauer}; the $k=0$ case uses the stated empty convention. Their proof decomposes normalized walks by ordered rooted trees and bounds each tree's admissible covering walks by $S(k,\ell)$. Summing their established inequality gives the following consequences, with no novelty claim.
+
+\begin{corollary}[Consequences of the prior comparison]\label{cor:known-moment}
+For Spiridonov's unweighted $\alpha=1$ moments,
+\begin{equation}\label{eq:known-moment-bound}
+ B_k\le M_{2k}\le a_k\qquad(k\ge0).
+\end{equation}
+In particular his Conjecture~3.3 follows from the prior theorem. Together with \eqref{eq:bell-conclusion}, this yields
+\begin{equation}\label{eq:moment-root}
+ \left(\frac{M_{2k}}{B_k}\right)^{1/k}\longrightarrow1,
+ \qquad M_{2k}^{1/k}\sim\frac{k}{e\log k}.
+\end{equation}
+\end{corollary}
+\begin{proof}
+At $\alpha=1$, sum \eqref{eq:known-coeff-bound} over $\ell$ to obtain \eqref{eq:known-moment-bound}. Taking $k$th roots gives a quantity between $1$ and $(a_k/B_k)^{1/k}\to1$. The $c=1$, $b=0$ case of Lemma~\ref{lem:saddle}, combined with Stirling's formula, gives $\log B_k/k=\log k-\log\log k-1+o(1)$ and hence the second assertion. These statements are on the root scale; neither $M_{2k}\sim a_k$ nor $M_{2k}\sim B_k$ follows from the comparison.
+\end{proof}
+Theorem~\ref{thm:main} also supplies an all-fixed-order asymptotic estimate for the known upper comparison sequence $a_k$. It is not a relative asymptotic expansion for $M_{2k}$ itself.
+
+\section{Integer-safe inverse asymptotics}\label{sec:inverse}
+Strict increase from Lemma~\ref{lem:monotone} makes \eqref{eq:inverse-def} well defined. There are two complementary formulations. First, a smooth logarithmic profile supplies rigorous increasing envelopes. Second, an explicitly computable expansion of their inverse supplies shrinking absolute index uncertainty.
+
+\subsection{Smooth profiles and rigorous envelopes}
+For real $x$ sufficiently large let $r(x)=W(x/4)$, replace $n!$ in $L_n$ by $\Gamma(x+1)$, and define
+\begin{equation}\label{eq:fM}
+ f_M(x)=\log L(x)+\log\left(\sum_{j=0}^M\frac{Q_j(r(x))}{x^j}\right).
+\end{equation}
+The sum inside the logarithm is eventually positive, since it is $1+O(r/x)$. Theorem~\ref{thm:main} implies that, for some constants $K_M,x_M$ and all integers $n\ge x_M$,
+\begin{equation}\label{eq:integer-errors}
+ |\log a_n-f_M(n)|\le K_M(r(n)/n)^{M+1}.
+\end{equation}
+With $\psi=\Gamma'/\Gamma$, direct differentiation gives
+\begin{equation}\label{eq:Lderivative}
+ (\log L(x))'=\psi(x+1)-\log r
+ +\frac{3}{2x(1+r)}-\frac2x-\frac{r}{2x(1+r)^2}.
+\end{equation}
+The correction logarithm has derivative $O(r/x^2)$, by the rational-function bounds already proved. Since $\psi(x+1)=\log x+O(1/x)$,
+\begin{equation}\label{eq:profile-slope}
+ f_M'(x)\sim\log(x/r)=r+\log4>0.
+\end{equation}
+Both $U_M(x)=f_M(x)+K_M(r/x)^{M+1}$ and $V_M(x)=f_M(x)-K_M(r/x)^{M+1}$ are eventually increasing, because the derivatives of their added terms are $O_M((r/x)^{M+1}/x)$.
+
+Let $x_-(y)=U_M^{-1}(\log y)$ and $x_+(y)=V_M^{-1}(\log y)$ on these final increasing intervals. Then, for sufficiently large $y$,
+\begin{equation}\label{eq:profile-ceil}
+ \ceil{x_-(y)}\le N(y)\le\ceil{x_+(y)}.
+\end{equation}
+For the lower bound, $\log a_{N(y)}\ge\log y$ implies $U_M(N(y))\ge\log y$. For the upper bound, at $m=\ceil{x_+(y)}$, monotonicity gives $V_M(m)\ge\log y$, and hence $a_m\ge y$. This also explains the otherwise easy-to-reverse directions of the envelope inverses.
+
+If $x_0$ solves $f_M(x_0)=\log y$, the mean value theorem and \eqref{eq:profile-slope} give
+\begin{equation}\label{eq:profile-width}
+ x_\pm(y)-x_0=O_M\left(\frac{r(x_0)^M}{x_0^{M+1}}\right)=o(1).
+\end{equation}
+Thus the two ceilings eventually coincide or differ by one. These are bounds explicit in form, with existential constants and onset; they are not certified numerical interval bounds at a specified finite threshold.
+
+\subsection{An elementary inverse carrier}
+Put $L=\log y$ and $c=\log4-1$, and define
+\begin{equation}\label{eq:H}
+ H(\rho)=4e^\rho(\rho^2+c\rho+1).
+\end{equation}
+For $L>4$, let $\rho$ be the unique positive solution of $H(\rho)=L$, and set
+\begin{equation}\label{eq:carrier}
+ n_0=4\rho e^\rho,\qquad u=\rho+\log4.
+\end{equation}
+Indeed $H(0)=4$, $H(\rho)\to\infty$, and
+\[
+ H'(\rho)=4e^\rho(\rho+1)(\rho+\log4)>0.
+\]
+This elementary monotone equation defines the carrier exactly. It can be solved efficiently numerically, but it is not a Lambert closed form.
+
+A useful Lambert seed is
+\begin{equation}\label{eq:seed}
+ R=2W(\sqrt L/4),\qquad \rho=R-\frac cR+O(R^{-2}).
+\end{equation}
+To see this, $4e^RR^2=L$, and
+\[
+ H(R)/L=1+c/R+1/R^2,
+ \qquad (\log H)'(R)=1+2/R+O(R^{-2}).
+\]
+One correction by Taylor's theorem gives \eqref{eq:seed}. A fixed finite expansion in inverse powers of $R$ is suitable for initialization, not as a replacement for the exactly defined carrier in a shrinking-absolute-error theorem: multiplication by the sensitivity $\dd(4\rho e^\rho)/\dd\rho\asymp n_0$ magnifies an algebraic inverse-logarithmic error to macroscopic index error.
+
+\subsection{The logarithmic correction functions}
+Using Stirling's logarithmic series in Theorem~\ref{thm:main}, define
+\begin{equation}\label{eq:h}
+ h(r)=-\frac32r-\frac12\log(1+r)-4-\frac32\log4-\frac12\log\pi,
+\end{equation}
+and
+\begin{equation}\label{eq:Rj}
+ R_j(r)=[z^j]\left\{
+ \log\!\left(\sum_{m\ge0}Q_m(r)z^m\right)
+ +\sum_{k\ge1}\frac{B_{2k}}{2k(2k-1)}z^{2k-1}\right\}.
+\end{equation}
+Here $B_{2k}$ are Bernoulli numbers, and both sums in \eqref{eq:Rj} are formal: only finitely many terms enter a fixed coefficient. In particular,
+\begin{equation}\label{eq:Rfirst}
+ R_1=Q_1+\frac1{12},\qquad R_2=Q_2-\frac12Q_1^2.
+\end{equation}
+Each $R_j$ is rational and $O_j(r^j)$ with the corresponding differentiated rational-function bounds. At integers $n$, $r=W(n/4)$, we have for every fixed $M\ge0$
+\begin{equation}\label{eq:logexp}
+ \log a_n=H(r)+h(r)+\sum_{j=1}^M\frac{R_j(r)}{n^j}
+ +O_M((r/n)^{M+1}).
+\end{equation}
+For $M=0$ the sum is empty. The $1/n$ Stirling term is then included in the stated $O(r/n)$ error. Formula \eqref{eq:logexp} follows by taking the logarithm of a finite asymptotic expansion about one, and collecting the factorial's logarithmic corrections. It does not identify the $R_j$ with the $Q_j$.
+
+\subsection{The first two inverse shifts}
+Write $D(x)=H(W(x/4))$. Differentiation gives
+\begin{equation}\label{eq:Dderivatives}
+ D'(n_0)=u,\qquad D''(n_0)=\frac{\rho}{n_0(1+\rho)}.
+\end{equation}
+Define
+\begin{equation}\label{eq:d0}
+ d_0(\rho)=\frac{\frac32\rho+\frac12\log(1+\rho)+4+\frac32\log4+\frac12\log\pi}
+ {\rho+\log4}=-\frac{h(\rho)}u.
+\end{equation}
+The next shift is
+\begin{equation}\label{eq:d1}
+ d_1(\rho)=-\frac1u\left\{
+ \frac{\rho\,d_0^2}{2(1+\rho)}
+ -\frac{\rho}{1+\rho}\left(\frac32+\frac1{2(1+\rho)}\right)d_0
+ +R_1(\rho)\right\}.
+\end{equation}
+These are \emph{index} shifts. To derive them, substitute $x=n_0+d_0+d_1/n_0$ into the smooth right side of \eqref{eq:logexp}; its constant residual is $ud_0+h(\rho)$, and its coefficient of $1/n_0$ is the braces in \eqref{eq:d1} plus $ud_1$. Cancel them in order. Consequently
+\begin{equation}\label{eq:shiftlimits}
+ d_0(\rho)\longrightarrow\FirstInverseShiftLimit,
+ \qquad d_1(\rho)\longrightarrow\InverseShiftLimit.
+\end{equation}
+% BEGIN VERIFIED inverse_limit_explanation
+The second limit follows because $Q_1(\rho)/\rho\to115/24$, whereas the other terms in the braces of \eqref{eq:d1} remain bounded. Thus $I_0=n_0+d_0$ has index uncertainty $O(1/n_0)$, while $I_1=n_0+d_0+d_1/n_0$ has uncertainty $O(\rho/n_0^2)$, in the precise enclosure sense established next.
+% END VERIFIED inverse_limit_explanation
+
+\subsection{A finite recursion at every fixed order}\label{sec:inverse-recursion}
+Regard $\rho$ as a parameter and $w$ as a formal variable. Write
+\begin{equation}\label{eq:Delta}
+ \Delta(w)=\sum_{j\ge0}d_j(\rho)w^j.
+\end{equation}
+Define $s(w)$ with $s(0)=0$ by
+\begin{equation}\label{eq:simplicit}
+ \log(1+w\Delta(w))=s(w)+\log(1+s(w)/\rho).
+\end{equation}
+The derivative of the right side in $s$ at zero is $(1+\rho)/\rho\ne0$, so its coefficients are determined uniquely by finite formal operations. For $w=1/n_0$, this is exactly the Lambert relation
+\[
+ W((n_0+\Delta)/4)=\rho+s,
+ \qquad (n_0+\Delta)/n_0=(1+s/\rho)e^s.
+\]
+Set
+\begin{align}
+ \Phi(w,\Delta)={}&\frac1w\left\{
+ (1+w\Delta)\left(\rho+s+c+\frac1{\rho+s}\right)
+ -\left(\rho+c+\frac1\rho\right)\right\}\notag\\
+ &+h(\rho+s)+\sum_{m\ge1}R_m(\rho+s)
+ \left(\frac w{1+w\Delta}\right)^m.\label{eq:Phi}
+\end{align}
+The braces vanish at $w=0$, so no negative powers occur. The constant coefficient is $ud_0+h(\rho)$, giving \eqref{eq:d0}. If $d_0,\ldots,d_{j-1}$ are known, set
+\begin{equation}\label{eq:drecursion}
+ d_j(\rho)=-\frac1u[w^j]\Phi\left(w,\sum_{k=0}^{j-1}d_k(\rho)w^k\right),\qquad j\ge1.
+\end{equation}
+To use the formula, solve \eqref{eq:simplicit} through degree $j+1$ and retain $R_1,\ldots,R_j$ only. The new $d_j$ would enter the coefficient of $w^j$ in \eqref{eq:Phi} as exactly $ud_j$; every nonlinear occurrence brings an additional power of $w$. This proves finiteness and uniqueness. The procedure uses only $Q_0,\ldots,Q_j$, rational operations, finite differentiation, $\rho$, $\log(1+\rho)$, $\log4$, and $\log\pi$. The only carrier equation is \eqref{eq:H}.
+
+\begin{theorem}[All-fixed-order inverse]\label{thm:inverse}
+For every fixed $M\ge0$, define
+\begin{equation}\label{eq:IM}
+ I_M(y)=n_0+\sum_{j=0}^Md_j(\rho)n_0^{-j},
+ \qquad E_M(y)=\frac{\rho^M}{n_0^{M+1}}.
+\end{equation}
+Then $d_0=O(1)$ and $d_j=O_j(\rho^{j-1})$ for $j\ge1$. There exist constants $C_M,Y_M>0$ such that \eqref{eq:inverse-preview} holds for all $y\ge Y_M$. Its two integer bounds are eventually equal or adjacent.
+\end{theorem}
+\begin{proof}
+For fixed $k\ge2$, differentiating $D'(x)=W(x/4)+\log4$ gives $D^{(k)}(x)=O_k(x^{1-k})$. The $k$th derivatives of $h(W(x/4))$ are $O_k(x^{-k})$ for $k\ge1$. For fixed $j,k$, those of $R_j(W(x/4))x^{-j}$ are $O_{j,k}(r^jx^{-j-k})$. These statements follow from $r'=r/(x(1+r))$ and the rational-function bounds; further differentiation preserves their stated orders for large positive $r$.
+
+Inductively, suppose the earlier shifts have the stated bounds. Taylor expansion of the smooth log-profile about $n_0$, using these derivative bounds, shows that the coefficient at order $n_0^{-j}$ which remains to be canceled is $O_j(\rho^j)$. For clarity, $R_j/n_0^j$ supplies at most this order directly; a term from $D^{(k)}\Delta^k$ has at least $k-1$ inverse powers of $n_0$ for $k\ge2$, and all coefficients of $\Delta$ already satisfy the inductive bounds. Terms from $h$ or from earlier $R_m/n_0^m$ have at least the inverse powers indicated by their derivative estimates. Dividing by $u\asymp\rho$ proves $d_j=O_j(\rho^{j-1})$. The base $d_0=O(1)$ follows from \eqref{eq:d0}.
+
+At a fixed truncation, $I_M-n_0=O_M(1)$. Taylor's theorem on a fixed-size interval about $n_0$, with the same derivative bounds, makes the formal cancellations into a genuine residual estimate. For the smooth profile
+\[
+ g_M(x)=D(x)+h(W(x/4))+\sum_{j=1}^MR_j(W(x/4))x^{-j},
+\]
+we obtain
+\begin{equation}\label{eq:inverse-residual}
+ g_M(I_M(y))-\log y=O_M((\rho/n_0)^{M+1}).
+\end{equation}
+The factorial Stirling remainder and finite logarithmic re-expansion show that $f_M-g_M=O_M((r/x)^{M+1})$ as well, uniformly for real large $x$. Their derivatives are asymptotic to $r$. Hence \eqref{eq:inverse-residual}, the mean value theorem, and the increasing envelopes from \eqref{eq:integer-errors} place both envelope roots within $O_M(\rho^M/n_0^{M+1})$ of $I_M$. Enlarging one constant gives \eqref{eq:inverse-preview}. Since $E_M\to0$, the length between its real endpoints is eventually less than one, and their ceilings are equal or adjacent.
+\end{proof}
+
+\subsection{Why one ceiling really can fail}\label{sec:rounding}
+There is a concrete obstruction at exact thresholds. For $y=a_n$ one has $N(y)=n$. We prove a real-index estimate before applying any ceiling; a ceiling sandwich alone would not imply it.
+
+Use
+\[
+ g_1(x)=D(x)+h(W(x/4))+R_1(W(x/4))/x.
+\]
+The leading relation \eqref{eq:logexp} first gives $n/n_0\to1$ at $y=a_n$, because $D(x)\sim x\log x$ and its lower-order discrepancy is $O(\log x)$. Theorem~\ref{thm:main} and \eqref{eq:inverse-residual} give respectively
+\begin{align*}
+ g_1(n)-\log a_n&=O((\rho/n_0)^2),\\
+ g_1(I_1(a_n))-\log a_n&=O((\rho/n_0)^2).
+\end{align*}
+Both arguments are asymptotic to $n_0$, and $g_1'(x)\sim\rho$ uniformly throughout the interval between them. The mean value theorem therefore yields
+\begin{equation}\label{eq:rounding-residual}
+ n=I_1(a_n)+O(\rho/n_0^2)
+   =I_0(a_n)+\frac{d_1(\rho)}{n_0}+O(\rho/n_0^2).
+\end{equation}
+Since $d_1(\rho)\to-115/24$,
+% BEGIN VERIFIED rounding_coefficient
+\begin{equation}\label{eq:rounding-failure}
+ I_0(a_n)-n\sim\frac{115}{24n_0}>0,
+ \qquad \ceil{I_0(a_n)}=n+1
+\end{equation}
+% END VERIFIED rounding_coefficient
+for all sufficiently large $n$. Thus a shrinking real-index error does not justify a universal single-ceiling rule, even for this simplest corrected inverse.
+
+\section{Exact checks and numerical diagnostics}\label{sec:computation}
+The accompanying archive separates three logically different roles: exact algebra checks, independent exact enumeration, and floating-point diagnostics. The analytic remainders in Sections~\ref{sec:endpoint}--\ref{sec:inverse} establish the asymptotic theorems. The computations test finite consequences and transcription, not the universal remainder constants or their onset.
+
+The coefficient generator implements \eqref{eq:cm}, \eqref{eq:touchard}, \eqref{eq:Aj}, and \eqref{eq:Qformula} using exact rational symbolic arithmetic through $Q_3$. An independent checker computes the same Gaussian moments at rational values of $r$ and uses Proposition~\ref{prop:degree} to certify the rational identities. Separate exact Stirling--Catalan enumeration is compared with the coefficient recurrence from \eqref{eq:ode}. The initial sequence prefix is checked against the inspected OEIS entry. All runtime failures are explicit exceptions, so optimization with \texttt{python -O} does not remove checks.
+
+For the asymptotic table, let
+\[
+ E_j(n)=\left(\frac{a_n}{L_n}-\sum_{k=0}^j\frac{Q_k(r)}{n^k}\right)\left(\frac nr\right)^{j+1}.
+\]
+The table records these scaled signed remainders and the normalized count $a_n/L_n$, using exact integers for $a_n$ and high-precision evaluation for the approximants. The theorem says that each $E_j(n)$ stays bounded eventually; the finite sample neither proves this nor certifies a bound. In particular, no monotone-error assertion is inferred from the data.
+\begin{table}[htbp]
+\centering\small
+\input{tex/asymptotic_table}
+\caption{Floating-point asymptotic diagnostics. Scaled signed remainders are not certified interval bounds.}\label{tab:asymptotic}
+\end{table}
+
+For the inverse table take exact thresholds $y=a_n$, solve the elementary carrier equation, and evaluate the explicit shifts. It displays the real errors before rounding. The sign predicted by \eqref{eq:rounding-failure} is an eventual analytic result; the sampled signs alone do not establish an onset.
+\begin{table}[htbp]
+\centering\small
+\input{tex/inverse_table}
+\caption{Floating-point inverse diagnostics at exact thresholds. The carrier is numerically solved rather than replaced by a truncated Lambert seed.}\label{tab:inverse}
+\end{table}
+
+All manuscript table cells and supplied exact constants are generated and checked by the build. The source archive includes instructions, public source links, exact coefficient data, numerical data, an integrity manifest, and the manuscript source and PDF. The build uses a fixed source epoch, suppressed variable PDF metadata, and fixed archive entry metadata. Complete normal and optimized builds must reproduce every archived member and the whole archive byte-for-byte within the recorded toolchain. Reproducibility across different TeX or dependency versions is not asserted.
+
+\section{Source check, limitations, and further questions}\label{sec:sources}
+The public sources below were rechecked on 4 October 2026. The scope is intentionally bounded.
+
+\paragraph{Correction to the earlier release.}
+The earlier version incorrectly proposed proving the spectral-moment comparison as further work. Bauer--Golinelli's coefficientwise theorem already implies it. This revision corrects that historical status and adds Section~\ref{sec:known-spectral}; the Stirling--Catalan expansion, inverse theorem, coefficients, and numerical tables are unchanged.
+\begin{itemize}
+ \item The inspected OEIS A064856 entry \cite{oeis} identifies the finite sum, credits Karol A.~Penson in 2001, and records the Bessel and hypergeometric EGFs. No asymptotic formula is listed in the inspected entry. That absence is not a literature-exhaustiveness result.
+ \item Spiridonov's thesis \cite{spiridonov}, especially pp.~11--13, provides the Bell comparison context and identifies A064856. Its numerical extrapolation is distinct from its spectral-moment inequality, which follows from the earlier theorem in \cite{bauer}.
+ \item Bauer and Golinelli \cite{bauer}, Sections~5.3 and~5.5, give the normalized moment polynomial and prove the coefficientwise bounds in equation~(9). Their 2001 publication predates Spiridonov's thesis.
+ \item Rahmani's \emph{Generalized Stirling transform} \cite{rahmani}, Theorems~1--4 and Example~5, supplies exact transform context. Its Catalan example concerns Catalan numbers as a final sequence and inverse signed transforms. No A064856 asymptotic theorem was located in those inspected parts.
+ \item Hwang, Li, and Zacharovas \cite{hwang} develop Bell and Stirling expansions; Appendix~A discusses a Touchard saddle approach near parameter one. This is methodological context, not a theorem being claimed here for the Catalan mixture. A full-text search for Catalan and inspection of the relevant sections did not locate such a result.
+\end{itemize}
+The source and overlap checks are limited to the identified materials and inspected portions. They do not prove that this subject has never been treated elsewhere, nor establish global novelty or a first proof. Endpoint, Gaussian, and saddle-point methods are established tools. This report supplies the stated sequence-specific calculation and its proof.
+
+No growing-order control, optimal truncation, exponentially small completion, convergent correction series, or complete transseries is asserted. No theorem is given here for a varying power of the Catalan weights or for other Stirling transforms. The inverse constants and onset remain ineffective in this presentation. Effective interval-certified thresholds and growing-order bounds would require additional work. The known moment comparison is recorded in Section~\ref{sec:known-spectral}; no assertion about the current literature status of full moment asymptotics is made.
+
+\paragraph{Concrete further questions.}
+Three possible continuations have different proof requirements:
+\begin{enumerate}
+ \item \emph{Effective inverse thresholds.} Track explicit constants in the endpoint Taylor bound and the central/outer contour estimates at a specified order, then combine them with outward-rounded evaluation of the monotone profiles. This could turn the existential two-ceiling enclosure into a certified algorithm beyond a verified finite onset.
+ \item \emph{Increasing truncation order.} Quantify the dependence on the order in the gamma factors, Touchard derivatives, and Gaussian moments before allowing the order to grow with $n$. The present fixed-order proof supplies no such uniform dependence, so optimal truncation cannot be inferred from its coefficient formula alone.
+ \item \emph{Effective consequences of the known moment bound.} Combine certified finite-index estimates for $a_k$ with \eqref{eq:known-moment-bound} to obtain explicit moment bounds. Keep these one-sided estimates distinct from a relative asymptotic formula for $M_{2k}$.
+\end{enumerate}
+
+\begin{thebibliography}{9}
+\bibitem{oeis}
+The OEIS Foundation Inc., \emph{A064856: Stirling transform of Catalan numbers}, entry credited to Karol A.~Penson (2001). \url{https://oeis.org/A064856}. Accessed 4 October 2026.
+\bibitem{spiridonov}
+Alexey Spiridonov, \emph{Spectra of sparse graphs and matrices}, senior thesis, 2004, especially pp.~11--13. \url{https://alexey.im/papers/sparse-random-graphs-senior-thesis.pdf}.
+\bibitem{bauer}
+M. Bauer and O. Golinelli, \emph{Random incidence matrices: moments of the spectral density}, Journal of Statistical Physics \textbf{103} (2001), 301--337; arXiv:cond-mat/0007127v2, Sections~5.3 and~5.5. \url{https://arxiv.org/abs/cond-mat/0007127}. \url{https://doi.org/10.1023/A:1004879905284}.
+\bibitem{rahmani}
+Mourad Rahmani, \emph{Generalized Stirling transform}, arXiv:1212.0957 (2012); Miskolc Mathematical Notes \textbf{15}(2) (2014), 677--690. \url{https://arxiv.org/abs/1212.0957}.
+\bibitem{hwang}
+Hsien-Kuei Hwang, Chong-Yi Li, and Vytas Zacharovas, \emph{Elementary asymptotics for the Stirling numbers of the second kind: The central range}, arXiv:2605.29633 (2026), especially Appendix~A. \url{https://arxiv.org/abs/2605.29633}.
+\end{thebibliography}
+\end{document}
