@@ -795,4 +795,160 @@ theorem lemma_7_8_holds : lemma_7_8 := by
     intro x hx y hy hxy
     exact lemma78_induced_agrees A phi alpha halpha hcard hphi x hx y hy hxy
 
+
+private lemma lemma78_fourth_moment_lower {N : Nat} [NeZero N]
+    (A : Finset (ZMod N)) :
+    (A.card : Real) ^ 4 ≤ ∑ r : ZMod N, ‖fourier (indicator A) r‖ ^ 4 := by
+  have h := Finset.single_le_sum
+    (fun r (_ : r ∈ (Finset.univ : Finset (ZMod N))) ↦
+      pow_nonneg (norm_nonneg (fourier (indicator A) r)) 4) (Finset.mem_univ 0)
+  simpa [lemma78_fourier_indicator_zero] using h
+
+private lemma lemma78_constant_phase_bound {N : Nat} [NeZero N]
+    (A : Finset (ZMod N)) (alpha : Real) (d : ZMod N)
+    (hd : d ∈ bohr (section7Spectrum A alpha) (1 / (8 * Real.pi)))
+    (r : ZMod N) (hr : r ∈ section7Spectrum A alpha) :
+    ‖exponential (r * d) - 1‖ ≤ (1 : Real) / 4 := by
+  have hcenter := (Finset.mem_filter.mp hd).2 r hr
+  have hN : (0 : Real) < N := by exact_mod_cast NeZero.pos N
+  calc
+    _ ≤ 2 * Real.pi * centeredAbs (r * d) / N :=
+      lemma78_norm_exponential_sub_one_le (r * d)
+    _ ≤ (1 : Real) / 4 := by
+      apply (div_le_iff₀ hN).mpr
+      calc
+        _ ≤ 2 * Real.pi * ((1 / (8 * Real.pi)) * N) := by gcongr
+        _ = (1 / 4 : Real) * N := by field_simp [Real.pi_ne_zero]; ring
+
+private lemma lemma78_constant_weighted_phase {N : Nat} [NeZero N]
+    (A : Finset (ZMod N)) (alpha : Real) (hα : 0 < alpha)
+    (hcard : (A.card : Real) = alpha * N) (d : ZMod N)
+    (hd : d ∈ bohr (section7Spectrum A alpha) (1 / (8 * Real.pi))) :
+    (∑ r : ZMod N, ‖fourier (indicator A) r‖ ^ 4 * ‖exponential (r * d) - 1‖) ≤
+      (3 / 8 : Real) * ∑ r : ZMod N, ‖fourier (indicator A) r‖ ^ 4 := by
+  classical
+  let K := section7Spectrum A alpha
+  let F := fun r : ZMod N ↦ ‖fourier (indicator A) r‖ ^ 4
+  let w := fun r : ZMod N ↦ F r * ‖exponential (r * d) - 1‖
+  have hmain : (∑ r ∈ Finset.univ.filter (fun r ↦ r ∈ K), w r) ≤
+      (1 / 4 : Real) * ∑ r, F r := by
+    calc
+      _ ≤ ∑ r ∈ Finset.univ.filter (fun r ↦ r ∈ K), (1 / 4 : Real) * F r := by
+        apply Finset.sum_le_sum
+        intro r hr
+        dsimp only [w]
+        rw [mul_comm (1 / 4 : Real)]
+        exact mul_le_mul_of_nonneg_left
+          (lemma78_constant_phase_bound A alpha d hd r (Finset.mem_filter.mp hr).2)
+          (by dsimp [F]; positivity)
+      _ = (1 / 4 : Real) * ∑ r ∈ Finset.univ.filter (fun r ↦ r ∈ K), F r := by
+        rw [Finset.mul_sum]
+      _ ≤ _ := mul_le_mul_of_nonneg_left
+        (Finset.sum_le_sum_of_subset_of_nonneg (Finset.filter_subset _ _)
+          (fun _ _ _ ↦ by dsimp [F]; positivity)) (by norm_num)
+  have htailPhase : (∑ r ∈ Finset.univ.filter (fun r ↦ r ∉ K), w r) ≤
+      2 * ∑ r ∈ Finset.univ.filter (fun r ↦ r ∉ K), F r := by
+    rw [Finset.mul_sum]
+    apply Finset.sum_le_sum
+    intro r hr
+    dsimp only [w]
+    rw [mul_comm (2 : Real)]
+    exact mul_le_mul_of_nonneg_left (lemma78_norm_exponential_sub_one_le_two (r * d))
+      (by dsimp [F]; positivity)
+  let lambda := alpha ^ ((3 : Real) / 2) / 4
+  have htail := lemma78_small_spectrum_tail A alpha lambda rfl hcard
+  rw [lemma78_lambda_sq alpha lambda hα rfl] at htail
+  have hzero := lemma78_fourth_moment_lower A
+  rw [hcard] at hzero
+  have htailRelative : (∑ r ∈ Finset.univ.filter (fun r ↦ r ∉ K), F r) ≤
+      (1 / 16 : Real) * ∑ r, F r := by
+    dsimp only [F, K]
+    nlinarith [htail, hzero]
+  have hsplit := Finset.sum_filter_add_sum_filter_not (Finset.univ : Finset (ZMod N))
+    (fun r ↦ r ∈ K) w
+  change (∑ r, w r) ≤ (3 / 8 : Real) * ∑ r, F r
+  linarith
+
+private lemma lemma78_constant_correlation_nonzero {N : Nat} [NeZero N]
+    (A : Finset (ZMod N)) (alpha : Real) (hα : 0 < alpha)
+    (hcard : (A.card : Real) = alpha * N) (d : ZMod N)
+    (hd : d ∈ bohr (section7Spectrum A alpha) (1 / (8 * Real.pi))) :
+    lemma78FourCorrelation A d != 0 := by
+  have hN : (0 : Real) < N := by exact_mod_cast NeZero.pos N
+  let E : Real := ∑ r : ZMod N, ‖fourier (indicator A) r‖ ^ 4
+  have hE : 0 < E := by
+    have hcardpos : (0 : Real) < A.card := by rw [hcard]; exact mul_pos hα hN
+    exact (pow_pos hcardpos 4).trans_le (lemma78_fourth_moment_lower A)
+  have hzero : ‖lemma78FourCorrelation A 0‖ = (N : Real)⁻¹ * E := by
+    rw [lemma78_fourCorrelation_inversion A 0]
+    have hexp : exponential (0 : ZMod N) = 1 :=
+      AddChar.map_zero_eq_one (ZMod.stdAddChar (N := N))
+    simp only [mul_zero, hexp, mul_one]
+    rw [← Complex.ofReal_sum, norm_mul, norm_inv, Complex.norm_natCast,
+      Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg hE.le]
+  have hshift : ‖lemma78FourCorrelation A d - lemma78FourCorrelation A 0‖ ≤
+      (N : Real)⁻¹ * ((3 / 8 : Real) * E) := by
+    rw [lemma78_fourCorrelation_sub_zero, norm_mul, norm_inv, Complex.norm_natCast]
+    apply mul_le_mul_of_nonneg_left _ (inv_nonneg.mpr hN.le)
+    calc
+      _ ≤ ∑ r : ZMod N, ‖((‖fourier (indicator A) r‖ ^ 4 : Real) : Complex) *
+          (exponential (r * d) - 1)‖ := norm_sum_le _ _
+      _ = ∑ r : ZMod N, ‖fourier (indicator A) r‖ ^ 4 * ‖exponential (r * d) - 1‖ := by
+        apply Finset.sum_congr rfl
+        intro r _
+        rw [norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (by positivity)]
+      _ ≤ _ := lemma78_constant_weighted_phase A alpha hα hcard d hd
+  rw [bne_iff_ne]
+  intro hdzero
+  rw [hdzero, zero_sub, norm_neg, hzero] at hshift
+  have hp : 0 < (N : Real)⁻¹ * E := mul_pos (inv_pos.mpr hN) hE
+  nlinarith only [hshift, hp]
+
+private lemma lemma78_induced_on_represented_domain {N : Nat} {G : Type*}
+    [AddCommGroup G] (A B : Finset (ZMod N)) (phi : ZMod N → G)
+    (hphi : FreimanHom 8 A phi)
+    (hrep : ∀ d ∈ B, Nonempty (Lemma78Representation A d)) :
+    ∃ psi : ZMod N → G, FreimanHom 2 B psi ∧
+      ∀ x ∈ A, ∀ y ∈ A, x - y ∈ B → phi x - phi y = psi (x - y) := by
+  classical
+  let rep := fun d hd ↦ Classical.choice (hrep d hd)
+  let psi := fun d ↦ if hd : d ∈ B then (rep d hd).value phi else 0
+  refine ⟨psi, ?_, ?_⟩
+  · rw [FreimanHom, isAddFreimanHom_two]
+    refine ⟨Set.mapsTo_univ _ _, ?_⟩
+    intro a ha b hb c hc d hd habcd
+    change a ∈ B at ha
+    change b ∈ B at hb
+    change c ∈ B at hc
+    change d ∈ B at hd
+    have h := lemma78_representation_value_additive A phi hphi
+      (rep a ha) (rep b hb) (rep c hc) (rep d hd) habcd
+    simpa only [psi, dif_pos ha, dif_pos hb, dif_pos hc, dif_pos hd] using h
+  · intro x hx y hy hxy
+    let q : Lemma78Representation A (x - y) :=
+      ⟨x, y, x, x, hx, hy, hx, hx, by ring⟩
+    have h := lemma78_representation_value_wellDefined A phi hphi q (rep (x - y) hxy)
+    dsimp only [psi]
+    rw [dif_pos hxy]
+    change phi x + phi x - phi y - phi x = (rep (x - y) hxy).value phi at h
+    convert h using 1 <;> abel
+
+/-- A constant-radius strengthening of the Bogolyubov--Freiman lemma.
+Controlling the error relative to the actual fourth moment removes the
+factor of the density from the Bohr radius, without changing the spectrum. -/
+theorem lemma_7_8_constant_radius {G : Type*} [AddCommGroup G]
+    (N : Nat) [NeZero N] (A : Finset (ZMod N)) (phi : ZMod N → G)
+    (alpha : Real) (hα : 0 < alpha) (hcard : (A.card : Real) = alpha * N)
+    (hphi : FreimanHom 8 A phi) :
+    let K := section7Spectrum A alpha
+    (K.card : Real) ≤ 16 * alpha ^ (-(2 : Real)) ∧
+      ∃ psi : ZMod N → G, FreimanHom 2 (bohr K (1 / (8 * Real.pi))) psi ∧
+        ∀ x ∈ A, ∀ y ∈ A, x - y ∈ bohr K (1 / (8 * Real.pi)) →
+          phi x - phi y = psi (x - y) := by
+  refine ⟨lemma78_spectrum_card_bound A alpha hα hcard, ?_⟩
+  apply lemma78_induced_on_represented_domain A _ phi hphi
+  intro d hd
+  exact lemma78_representation_of_fourCorrelation_ne_zero A d
+    (lemma78_constant_correlation_nonzero A alpha hα hcard d hd)
+
 end LeanProofs.GowersSzemeredi
