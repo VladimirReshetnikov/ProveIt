@@ -219,6 +219,8 @@ quotations are verbatim.
  enclosures of Section~\ref{fpm:sec:constants} and agree with the first 55
  of the 103 digits printed in each of A245654 and A245655~\cite{oeisa}
  (revision \#15, 21~January 2015; the further digits were not compared); so $M=0.574\ldots$, not $0.474$.
+ \textup{(The independent check of 6~October 2026 compared all 103 digits
+ of each entry with $130$-digit values of its own: they agree.)}
 \item The same entry has the comment
  \begin{center}\small
  \parbox{0.92\textwidth}{\raggedright\texttt{Also the number of n X n real (0,1)-matrices with permanent equal to 1, up to permutation of rows/columns, cf. A089482. - \_Vladeta Jovovic\_, Oct 28 2009}}
@@ -233,7 +235,15 @@ quotations are verbatim.
  orbits; rows behave the same way, since $\Per A^{\mathsf T}=\Per A$. Under
  rows and columns jointly, the six matrices of permanent one at $n=2$ form
  two orbits (the identity with the antidiagonal matrix, and the four
- matrices with exactly three ones), while $\mathrm{A003024}(2)=3$. This is
+ matrices with exactly three ones), while $\mathrm{A003024}(2)=3$.
+ In general the joint orbits are the isomorphism classes of acyclic
+ digraphs: permuting the rows by $\pi$ and the columns arbitrarily replaces
+ the digraph $D$ of Section~\ref{fpm:sec:matching} (the unique matching
+ moved to the diagonal) by $\pi(D)$, and conversely
+ $I+A_{\pi(D)}=P_\pi(I+A_D)P_\pi^{-1}$; so their number is the number of
+ unlabelled acyclic digraphs, OEIS A003087~\cite{oeisunl} ($1,2,6,31$ for
+ $n=1,\dots,4$, as an exhaustive enumeration confirms). \textup{(Added after
+ the independent check of 6~October 2026.)} This is
  recorded here only; nothing was submitted to the OEIS.
 \item A350790~\cite{robinson} (revision \#28, 18~April 2023), ``\texttt{Number
  of digraphs on n labeled nodes with a global source and sink.}'', is cited
@@ -298,7 +308,8 @@ source keeps its delivered number.
  \file{p0:def:core}, \file{p0:thm:lambert-core},
  \file{p0:prop:factorial-core}, \file{p0:def:three-inverses},
  \file{p0:thm:staircase}, \file{plt:def:lw-monomial-log-datum} and
- \file{plt:thm:lw-template}, read for Remark~\ref{fpm:rem:transseries}.
+ \file{plt:thm:lw-template}, read for Remark~\ref{fpm:rem:transseries};
+ and, when the independent check was applied, \file{p0:thm:core-reversion}.
 \item Not read by the write: Kim, Lee and Seol~\cite{prescribed} (the
  source read it in full); Robinson~\cite{robinson}, whose host
  \file{cobweb.cs.uga.edu} refused connections on 6~October 2026 as during
@@ -1153,7 +1164,13 @@ written here with the subscript ``vol''.
  share the conclusion of the separation condition of
  \file{p0:thm:staircase}(2): when the two ceilings of a bracket coincide,
  $N_k(y)$ is their common value; when they differ, two consecutive values
- remain. The source's remark that no single eventual rounding formula is
+ remain (the two arguments of the ceilings differ by less than one there:
+ by $O(q^rr^{-d-1})$ in~\eqref{fpm:eq:ceilingenv}
+ and~\eqref{fpm:eq:ceilingprecise}, by
+ $O((\log t)^{J+2}t^{-J-1})$ in~\eqref{fpm:eq:ceilingtruncated}, and
+ in~\eqref{fpm:eq:effectiveinverse} because $G_k(x+1)/G_k(x)=(x+1)^22^x/\rho$
+ dwarfs $(P_k+1/10)/(P_k-1/10)$ for $x\ge50$; \textup{added after the
+ independent check of 6~October 2026}). The source's remark that no single eventual rounding formula is
  universally valid is in line with \file{p0:thm:staircase}(5). The constants
  $B'$ and $B_{k,J}$ in~\eqref{fpm:eq:ceilingprecise}
  and~\eqref{fpm:eq:ceilingtruncated} are existential; only
@@ -1202,7 +1219,25 @@ written here with the subscript ``vol''.
  (the write checked it for $j\le3$). The expansion of $r_k(y)$ plays the
  role of the volume's asymptotic inverse (object~(3) of
  \file{p0:def:three-inverses}), produced by this reversion rather than by
- the volume's Lambert theorems. No novelty is claimed for the inversions; the
+ the volume's Lambert theorems. Equivalently, and without the square root,
+ Theorem~\ref{fpm:thm:reversion} is a formal instance of
+ \file{p0:thm:core-reversion}, the route of Remark~11.1(a) of
+ \file{a222959-zero-slope-matrices} for its own quadratic phase: with
+ $x=t(1+E_{\mathrm{vol}})$, $t_{\mathrm{vol}}=1/t$ and $s=\log t$ an
+ indeterminate, $(\log F_k(x)-\ell t^2/2)/t^2$ is exactly
+ $\ell E_{\mathrm{vol}}+\frac\ell2E_{\mathrm{vol}}^2
+ +f_{\mathrm{vol}}(t_{\mathrm{vol}},E_{\mathrm{vol}})$, where
+ \begin{align*}
+  f_{\mathrm{vol}}(\tau,u)={}&\tau\bigl[2(1+u)\bigl(s+\log(1+u)\bigr)-\beta(1+u)\bigr]
+  +\tau^2\bigl[cs+c\log(1+u)+\delta\bigr]\\
+  &+\sum_{j\ge1}\lambda_{k,j}\tau^{j+2}(1+u)^{-j}
+ \end{align*}
+ lies in $\tau R[[\tau,u]]$ over $R=\mathbb R[s]$; so
+ $\Lambda_{\mathrm{vol}}=\ell$, $h_{\mathrm{vol}}(u)=\ell u^2/2$, and the
+ triangular recurrence~(\file{p0:eq:core-triangular}) gives
+ $e_{j+1}=U_j$, since $x=t+\sum_{n\ge1}e_nt^{1-n}$; for $j\le2$ this was
+ checked with SymPy. \textup{(Added after the independent check of
+ 6~October 2026.)} No novelty is claimed for the inversions; the
  source calls Theorem~\ref{fpm:thm:reversion} ``standard asymptotic
  reversion''.
 \end{enumerate}
@@ -1285,6 +1320,46 @@ delivered TSV files (after removing carriage returns) only when linked with
 16{,}774 matching normalizations pass, and the $2^{25}$ matrices at $n=5$
 take about 1.2~s. The PDF and ZIP builder was not run. The report README
 gives the rerun routes.
+\end{writenote}
+\begin{writenote}[Independent check of the write, 6~October 2026]
+An adversarial check made by the intake after the write (commit
+\file{71813ce3f}) re-derived the statements marked [write] with its own
+code, and fetched the OEIS entries again (the revisions quoted in
+Remark~\ref{fpm:rem:oeis} are current; Royle's row $n=6$ is as quoted).
+\emph{Remark~\ref{fpm:rem:oeis}.} $\rho$ and $a$ at $130$ digits (a root
+of the $110$-term series; $a$ also as $\rho E(\rho/2)$, difference
+$10^{-131}$) agree with all 103 printed digits of A245654 and A245655. With
+A003024 from its own recurrence, $\mathrm{A003024}(n)\,a\rho^n/(n!\,2^{\binom
+n2})-1$ is $-1.3\cdot10^{-3}$, $-3.5\cdot10^{-6}$, $-9.3\cdot10^{-9}$,
+$-2.4\cdot10^{-11}$, $-6.4\cdot10^{-14}$ at $n=5$, $10$, $15$, $20$, $25$.
+Every matrix of permanent one with $n\le4$ ($1$, $6$, $150$, $13032$ of
+them) has pairwise distinct rows and columns; the row and the column orbits
+number $1,3,25,543=\mathrm{A003024}(n)$, the joint orbits $1,2,6,31$.
+\emph{The table of Section~\ref{fpm:sec:results}.} A C++ program counted
+all $2^{n^2}$ binary $n\times n$ matrices for $n\le6$ (all $2^{36}$ at
+$n=6$, as weighted row multisets, the totals checked against $2^{n^2}$) by
+an exact permanent, without the transform: rows $n\le6$, $k\le4$ equal the
+table, the OEIS data and Royle's row, including $T(6,0)=13906734081$. A
+second program counted the strongly connected kernels directly for $m\le7$:
+$s_{m,2}=(m-1)!$, $s_{m,3}=0,9,84,720,6480,63000$ and
+$s_{m,4}=0,6,256,4940,80400,1259160$ for $m=2,\dots,7$, which are
+$m![z^m]$ of \eqref{fpm:eq:S3} and~\eqref{fpm:eq:S4}.
+\emph{Section~\ref{fpm:sec:constants}.} The thirteen certified quantities
+by a third route (exact Taylor coefficients of $e^{-z}W_k$ from the printed
+rational functions, $110$ terms at $130$ digits, Laurent division at $\rho$):
+each lies inside its printed interval, with margins at least
+$1.7\cdot10^{-27}$; $c_{2,2}=h_2/a^2$ and $c_{4,3}/2=h_2^2/(2a^3)$ to $30$
+digits. \emph{Remark~\ref{fpm:rem:transseries}.} (a) and (b) re-derived,
+the equation numbers checked in the PDF; SymPy reproduces $U_0$, $U_1$,
+$U_2$ and $\deg U_3=4$, and the expansion of $G$ in~(c). No mathematical
+error was found. Three additions, each marked with the date:
+Remark~\ref{fpm:rem:oeis}(d) names the number of joint orbits (A003087)
+with its proof; Remark~\ref{fpm:rem:transseries}(b) says why at most two
+consecutive values remain; and (c) records that
+Theorem~\ref{fpm:thm:reversion} is also a direct formal instance of
+\file{p0:thm:core-reversion}, as in the sibling report
+\file{a222959-zero-slope-matrices}. The digit comparison of
+Remark~\ref{fpm:rem:oeis}(c) is extended to all 103 digits.
 \end{writenote}
 
 \section{Source review and attribution boundary}\label{fpm:sec:prior}
@@ -1381,5 +1456,6 @@ paper was again unreachable on 6~October 2026 (Section~\ref{fpm:sec:prior}).
 \bibitem{robinson} R. W. Robinson, \emph{Counting digraphs with restrictions on the strong components}, 1995; author-hosted file linked by OEIS A350790, unavailable during this review. Attribution of the transform is supported by \cite{symbolic}. \url{https://cobweb.cs.uga.edu/~rwr/publications/components.pdf}.
 \bibitem{oeisrho} The OEIS Foundation Inc., \emph{A245654}, decimal expansion of the smallest positive root of $\sum_{n\ge0}(-1)^nx^n/(2^{n(n-1)/2}n!)$, revision \#19, read 6 October 2026 (added by the write). \url{https://oeis.org/A245654}.
 \bibitem{oeisa} The OEIS Foundation Inc., \emph{A245655}, decimal expansion of a constant in the asymptotics of labeled acyclic digraphs, revision \#15, read 6 October 2026 (added by the write). \url{https://oeis.org/A245655}.
+\bibitem{oeisunl} The OEIS Foundation Inc., \emph{A003087}, number of acyclic digraphs with $n$ unlabeled nodes, revision \#71, read 6 October 2026 (added after the independent check). \url{https://oeis.org/A003087}.
 \end{thebibliography}
 \end{document}

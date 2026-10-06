@@ -98,7 +98,8 @@ Added by the write (6 October 2026), marked `[write]`:
 - **Remark 1.4 (`fpm:rem:oeis`)**: the OEIS entries quoted and compared
   (next section), with two proofs: `k = 1` of Theorem 1.1 is an instance of
   the asymptotic stated in A003024 (`p = ρ`, `M = a`), and the reading of a
-  comment of A003024.
+  comment of A003024 (since the independent check, also the joint orbits:
+  the unlabelled acyclic digraphs, A003087).
 - **Remark 12.2 (`fpm:rem:transseries`)**: Sections 11–12 against the
   transseries volume
   (`Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/`).
@@ -107,13 +108,19 @@ Added by the write (6 October 2026), marked `[write]`:
   applies and `p0:thm:staircase`(1) gives `N_k = ⌈ν⌉` for every admissible
   interpolation, for `y > C_{n_1,k}`. (b) The brackets (46), (47), (50), (56)
   are **analogues, not instances** of `p0:thm:staircase`: `F_k`, `F_{k,±}`,
-  `F^eff_{k,±}` sandwich the counts but do not interpolate them. (c)
+  `F^eff_{k,±}` sandwich the counts but do not interpolate them; at most two
+  consecutive values remain, since the two ceiling arguments differ by less
+  than one (said explicitly since the independent check). (c)
   Theorem 12.1 is **an instance only after a change of variable, and only
   formally**: with `G(x) = √((2/log 2) log F_k(x))`, the equation `G(x) = t`
   is of monomial–logarithmic type (`plt:def:lw-monomial-log-datum`) with data
   `(ρ_vol, μ_vol, β_vol) = (1, 2/log 2, −β/log 2)`, and its formal solution
   from `plt:thm:lw-template` is the source's series; the analytic remainder
-  and `deg U_j ≤ j + 1` are the source's own. The quadratic phase is not one
+  and `deg U_j ≤ j + 1` are the source's own. Without the square root it is
+  also a direct formal instance of `p0:thm:core-reversion`
+  (`x = t(1+E_vol)`, `Λ_vol = log 2`, `h_vol(u) = (log 2) u²/2`,
+  `e_{j+1} = U_j`), the route of `a222959-zero-slope-matrices` (recorded
+  since the independent check). The quadratic phase is not one
   of the Lambert cores of `p0:thm:lambert-core` or
   `p0:prop:factorial-core`.
 - Section 1.2 (`fpm:sec:provenance`: provenance, the sources as the write
@@ -147,14 +154,20 @@ Read on 6 October 2026 in the internal format; quoted verbatim.
   classical asymptotic, not a new result**: `p = ρ` (A245654 is "the
   smallest positive root" of `E`), and `M = a`, since the series for `M` is
   `−ρE'(ρ)` term by term. The write's 60-digit values of `ρ` and `a` agree
-  with the first 55 of the 103 printed digits of A245654 and A245655.
+  with the first 55 of the 103 printed digits of A245654 and A245655; the
+  independent check compared all 103 with 130-digit values of its own, and
+  they agree.
 - **A003024, a reading.** The comment "Also the number of n X n real
   (0,1)-matrices with permanent equal to 1, up to permutation of
   rows/columns, cf. A089482. - _Vladeta Jovovic_, Oct 28 2009" is right with
   "rows/columns" read as "rows, or columns": columns of a permanent-one matrix
   are pairwise distinct, so the column action is free and has
   `A089482(n)/n! = A003024(n)` orbits. Jointly, at `n = 2` the six
-  permanent-one matrices form 2 orbits, against `A003024(2) = 3`. Recorded
+  permanent-one matrices form 2 orbits, against `A003024(2) = 3`. In
+  general the joint orbits are the isomorphism classes of acyclic digraphs
+  (a row permutation `π` sends the marked digraph `D` to `π(D)`), counted
+  by A003087: `1, 2, 6, 31` for `n = 1, …, 4`, confirmed exhaustively
+  (added after the independent check). Recorded
   only: **nothing was submitted to the OEIS.**
 - **A350790** (revision #28): "Number of digraphs on n labeled nodes with a
   global source and sink."; cited by the source only for its link to
@@ -227,6 +240,27 @@ was again unreachable. **Nothing in the source was found to be wrong.**
   Sections 4.3–4.4); Greenhill–Hasheminezhad–Iliffe–McKay arXiv:2601.04822v1
   (Theorems 4.2–4.5); the transseries volume (labels named above). Not read:
   Kim–Lee–Seol (2005); Robinson (1995), unreachable.
+- **Independent check of the write (6 October 2026).** An adversarial check
+  made by the intake after the write (`71813ce3f`), with its own code: the
+  OEIS entries fetched again (revisions as quoted); `ρ` and `a` at 130
+  digits agree with **all 103** printed digits of A245654 and A245655, and
+  A003024(n) from its own recurrence matches `n! 2^C(n,2)/(a ρⁿ)` with
+  relative errors `−1.3e−3 … −6.4e−14` at `n = 5, 10, …, 25`; every
+  permanent-one matrix with `n ≤ 4` has distinct rows and columns, row and
+  column orbits `1, 3, 25, 543`, joint orbits `1, 2, 6, 31` (A003087). An
+  exact C++ count of all binary `n × n` matrices for `n ≤ 6` (all `2^36` at
+  `n = 6`, without the transform) reproduces rows `n ≤ 6`, `k ≤ 4` and
+  Royle's row; a direct count of strongly connected kernels for `m ≤ 7`
+  gives `s_{m,3} = 0, 9, 84, 720, 6480, 63000` and
+  `s_{m,4} = 0, 6, 256, 4940, 80400, 1259160` (`m = 2, …, 7`), the
+  coefficients of (15), (16). The thirteen constants of Section 7 at 130
+  digits by a third route, each inside its interval (margins ≥ 1.7e−27).
+  Remark 12.2 re-derived (SymPy: `U_0, U_1, U_2`, `deg U_3 = 4`).
+  No mathematical error. Added, each marked with the date: the joint-orbit
+  count with its proof in Remark 1.4(d); why at most two consecutive values
+  remain in Remark 12.2(b); the `p0:thm:core-reversion` route in 12.2(c);
+  the full 103-digit comparison in 1.4(c). One bibliography entry (A003087).
+  The check is recorded at the end of Section 13.
 
 ## Relation to the repository
 
@@ -235,7 +269,7 @@ collection confers no formal status.
 
 **The transseries volume.** Remark 12.2: the brackets are analogues of
 `p0:thm:staircase`, the reversion a formal instance of `plt:thm:lw-template`
-after `G = √((2/log 2) log F_k)`.
+after `G = √((2/log 2) log F_k)`, and directly of `p0:thm:core-reversion`.
 
 **Neighbouring reports** (under
 `SetTheory/Cardinals/docs/reports/generating-functions-and-asymptotics/oeis-sequence-asymptotics/`):
@@ -297,7 +331,7 @@ one of Section 1, and the added displays are unnumbered.
 README.md                                    this guide (replaces the delivery README)
 README_REPRODUCIBILITY.md                    the delivered reproducibility guide (delivered at the root)
 article.tex                                  the report (delivered Report184.tex; labels prefixed, [write] additions)
-article.pdf                                  compiled report, 31 pages
+article.pdf                                  compiled report, 32 pages
 code/build.py                                release builder (delivered at the root)
 code/test_build.py                           176 build-guard cases, simulated compiler (delivered at the root)
 code/reproduce.py                            mandatory reproduction driver (delivered at the root)
@@ -441,8 +475,8 @@ B=$(mktemp -d); cp article.tex "$B/"; cd "$B"
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The committed PDF was built this way with MiKTeX on 6 October 2026: 31
-pages; no errors or warnings, no undefined references or citations, no
+The committed PDF was built this way with MiKTeX on 6 October 2026, after
+the independent check (31 pages at the write): 32 pages; no errors or warnings, no undefined references or citations, no
 multiply defined labels, no duplicate PDF destinations, no overfull boxes;
 two underfull boxes in delivered bibliography entries, which the delivered
 text also gives (24 pages). The article keeps the delivered preamble lines
@@ -483,7 +517,7 @@ submitted to the OEIS.
   Dovgal and Nurligareev (arXiv:2310.05282v3); Kim, Lee and Seol, IJPAM 19
   (2005) 413–418; Greenhill, Hasheminezhad, Iliffe and McKay
   (arXiv:2601.04822v1); Robinson (1995, not obtained). Added by the write:
-  OEIS A245654 and A245655.
+  OEIS A245654 and A245655; after the independent check: A003087.
 - Batch 108 of `docs/incoming`, bundle Report 184; arrival `60f54ea06`,
   placement `602e5bd0f`, written 6 October 2026. Single source, so no merge
   choices. The delivered `Report184.tex` is shipped as `article.tex`; the

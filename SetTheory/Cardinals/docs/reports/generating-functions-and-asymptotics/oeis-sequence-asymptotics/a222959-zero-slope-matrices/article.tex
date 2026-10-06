@@ -262,7 +262,9 @@ delivered number.
  \file{p0:prop:factorial-core}, \file{p0:thm:core-reversion},
  \file{p0:thm:flattening}, \file{p0:def:three-inverses},
  \file{p0:thm:staircase} and \file{p0:rem:parity-instances}, read for
- Remark~\ref{zsm:rem:transseries}.
+ Remark~\ref{zsm:rem:transseries}; and, at the independent check of
+ 6~October 2026, \file{plt:def:lw-monomial-log-datum} and
+ \file{plt:thm:lw-template}.
 \item Not read by the write: Prodinger~\cite{prodinger} and the other works
  compared in Section~\ref{zsm:sec:literature}
  (\cite{bera,arratia,bhgaussian,bhedgeworth,klp,harrison,aw}). What
@@ -1506,7 +1508,7 @@ put $\ell_X:=\log X$.
 \begin{enumerate}
 \item[(a)] \emph{The smooth inverse~\eqref{zsm:eq:smoothinverse} is a formal
  instance of \file{p0:thm:core-reversion}, after a change of variable, and
- of no Lambert theorem of the volume.} The core $\Phi_0(X)=A_0X^2$ is
+ of none of the Lambert theorems of Part~0 of the volume.} The core $\Phi_0(X)=A_0X^2$ is
  admissible in the sense of \file{p0:def:core} ($\Phi_0'=2A_0X>0$ increases
  to $+\infty$ and $X\Phi_0'\to\infty$), with core solution
  $X=\sqrt{L/A_0}$, the $X$ of~\eqref{zsm:eq:smoothinverse}. It is neither
@@ -1541,6 +1543,19 @@ put $\ell_X:=\log X$.
  $X^{-1}$ term. The source's ``higher inverse coefficients follow
  recursively by formal substitution'' is that recurrence; $r_1$ enters first
  at order $t^3$, that is in the $X^{-2}$ term of~$x$, as the source says.
+ After the further change of variable $G(x)=\sqrt{M(x)/A_0}$ it is also a
+ formal instance of the volume's \file{plt:thm:lw-template}: $M(x)/A_0=x^2(1+\varepsilon)$
+ with $\varepsilon$ of positive order in $x^{-1}$ and coefficients polynomial
+ in $\log x$, so $G(x)=x-\frac{3}{2A_0}\log x+\frac{D_d}{2A_0}+B(x)$ with
+ $B\in x^{-1}\R[\log x][[x^{-1}]]$, and $G(x)=X$ is of monomial--logarithmic
+ type (\file{plt:def:lw-monomial-log-datum}) with data
+ $(1,-3/(2A_0),D_d/(2A_0),B)$, $Z_{\rm vol}=x$, $\xi_{\rm vol}=X$; this is
+ the route of Remark~12.2(c) of
+ \file{a089479-fixed-permanent-matrices} for its quadratic phase.
+ \textup{(Corrected after the independent check of 6~October 2026, which
+ found this instance and checked with SymPy that the template's solution
+ reproduces $u$ and $v$; the heading first read ``and of no Lambert theorem
+ of the volume'', which overlooked \file{plt:thm:lw-template}.)}
  The instance is formal only: \file{p0:thm:core-reversion} is a statement
  about formal series, and the analytic statement, that the large root of
  the truncated phase differs from the truncation through $e_2$ by
@@ -1650,8 +1665,10 @@ named
 $C_n=T_{959}(n,n)$, and $C_1=2$ is the entry's single-point convention. Its
 data lines list the array by antidiagonals, $T_{959}(n,k)$ at index
 $(n+k-1)(n+k-2)/2+n$ (the array is symmetric), and reach the diagonal only
-through $T_{959}(6,6)=512$; the value $8000$ that occurs there is
-$T_{959}(5,7)$, not a diagonal term. The comment ``Table starts'' displays
+through $T_{959}(6,6)=512$; the value $8000$, which occurs there twice, is
+$T_{959}(5,7)=T_{959}(7,5)$, not a diagonal term. \textup{(Both cells named
+after the independent check of 6~October 2026; the first wording named only
+$T_{959}(5,7)$.)} The comment ``Table starts'' displays
 the array for $n\le12$ rows, with the diagonal $2, 2, 16, 16, 512, 512,
 323600, 144930, 1808243216$ for $n\le9$, the values of the table above. The
 entry links Hardin's b-file of $199$ terms~\cite{bfiles}, which the source
@@ -1754,6 +1771,47 @@ named-pipe and two double-slash-path rejections, run only where
 \texttt{--max-n9} run reproduces $C_9$. The PDF and archive builder was not
 run.
 \end{writenote}
+\begin{writenote}[Independent check of the write, 6~October 2026]
+An adversarial check made by the intake after the write (commit
+\file{3e9c7ae10}) re-derived the statements marked [write] with its own
+code, after fetching again A222959 and A222955 (the revisions quoted), both
+b-files (that of A222959 identical to the write's copy) and Richomme's v1.
+\emph{Proposition~\ref{zsm:prop:narrow}.} The proof was re-read line by
+line. A general $n\times k$ counter of its own (rows from $V_k$, paired by
+opposite weights, the sums partitioned by their first coordinate, sorted and
+counted) gave $119$ cells $T_{959}(n,k)$: all $n,k\le10$, $n=11$ with
+$k\le10$, and $n\le9$ with $k=11$. Every cell satisfies (1) and~(2), with
+equality for $k\le6$ and strict inequality for $k\ge7$; the array is
+symmetric where computed both ways ($T_{959}(9,10)=T_{959}(10,9)=1052045568$);
+and the $118$ cells within the b-file agree with it. The numbers and the
+shares $72\%$ and $41\%$ after the proposition were recomputed.
+\emph{Remark~\ref{zsm:rem:oeisdata}.} The same program, whose partition
+differs from that of the write's, gives $C_{10}=615667968$ (b-file
+index~$181$) and $C_1,\dots,C_9$ as in the table; the ratios at
+$n=7,\dots,10$ were recomputed at $30$ digits, and $r_1=521/350$,
+$r_2=2983/3500$ re-derived. The value $8000$ occurs twice in the data, at
+indices $60$ and $62$. \emph{Parity classes.} $C_{2m}/C_{2m-1}=1$, $1$, $1$,
+$0.4479$, $0.3405$ for $m=1,\dots,5$, so the combined sequence does not
+increase at any even step observed (equal at $n=2,4,6$, decreasing at
+$n=8,10$), while the odd terms $2,16,512,323600,1808243216$ and the even
+terms $2,16,512,144930,615667968$ increase strictly: the sign pattern used
+in Remark~\ref{zsm:rem:transseries}(b), far from the asymptotic ratio
+of~\eqref{zsm:eq:parityratio} ($0.0015$ and $0.00076$ at $m=4,5$).
+\emph{Remark~\ref{zsm:rem:wiseman}} was checked against Richomme's text
+(Theorems~5.13 and~5.14 and the paragraph between them).
+\emph{Remark~\ref{zsm:rem:transseries}.} The master equation of~(a) and
+$e_1$, $e_2$ were re-derived, and (b), (c) re-read against the volume. One
+statement was too strong: (a) said that the smooth inverse is an instance
+``of no Lambert theorem of the volume'', but after $G=\sqrt{M/A_0}$ it is a
+formal instance of \file{plt:thm:lw-template}, as Remark~12.2(c) of
+\file{a089479-fixed-permanent-matrices} treats its own quadratic phase;
+corrected with a dated note keeping the first wording. Made precise, also
+with dated notes: Remark~\ref{zsm:rem:oeisdata} names both cells of the
+value $8000$ (the text after Proposition~\ref{zsm:prop:narrow} names
+$T_{959}(7,5)$), and Remark~\ref{zsm:rem:wiseman} says that Richomme proved
+the first form, the second being the remark's own equivalence. No other
+defect was found.
+\end{writenote}
 
 \section{Primary source comparison and limits of the search}\label{zsm:sec:literature}
 This section separates established predecessors from the specific theorem
@@ -1800,13 +1858,16 @@ The entry A222955~\cite{oeis955} (revision~\#24, 17~March 2026, read on
 \begin{center}\small
 \parbox{0.92\textwidth}{\raggedright\texttt{Conjecture: A binary word is counted iff it has the same sum of positions of 1's as its reverse, or, equivalently, the same sum of partial sums as its reverse. - \_Gus Wiseman\_, Jan 07 2023}}
 \end{center}
-(quoted verbatim). Richomme proved it~\cite{richomme}: his Theorem~5.13
+(quoted verbatim). Richomme proved its first form~\cite{richomme} (the
+second is equivalent to it by the identity for partial sums below): his
+Theorem~5.13
 identifies the zero-slope words with the fair words, and his Theorem~5.14
 states that a binary word is fair exactly when the positions of one letter
 have the same sum in the word and in its mirror image; his introduction says
 the paper
 solves ``a 2023 conjecture presented in'' the entry. The entry still labels
-the comment a conjecture. \emph{A second, direct proof} of both forms, in
+the comment a conjecture. \textup{(Made precise after the independent check
+of 6~October 2026; the first wording was ``Richomme proved it''.)} \emph{A second, direct proof} of both forms, in
 the notation of Section~\ref{zsm:sec:main}: for $v\in\{0,1\}^n$ put
 $|v|=\sum_jv_j$, $P(v)=\sum_jjv_j$ and $v^R_j=v_{n+1-j}$. Then
 $P(v^R)=\sum_j(n+1-j)v_j=(n+1)|v|-P(v)$, so $P(v)=P(v^R)$ if and only if
