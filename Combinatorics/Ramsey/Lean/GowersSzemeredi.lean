@@ -47,6 +47,9 @@ import GowersSzemeredi.Proofs05BoxTransport
 import GowersSzemeredi.Proofs05MultilinearIteration
 import GowersSzemeredi.Proofs16Lemma1
 import GowersSzemeredi.Proofs16Lemma5
+import GowersSzemeredi.Proofs16InducedSelection
+import GowersSzemeredi.Proofs16ShortProduct
+import GowersSzemeredi.Proofs16ShortScale
 import GowersSzemeredi.Proofs16ArrangementSelection
 import GowersSzemeredi.Proofs16CubeDensity
 import GowersSzemeredi.Proofs05Progressions

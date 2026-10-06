@@ -12,8 +12,8 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 149 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 1,457 public Gowers theorems and found only propext,
+  All 153 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 1,501 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 97 exact
   companion proofs and 23 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -97,6 +97,24 @@ Completed Lemma 16.5
   Proofs16Lemma5 combines these results with Theorem 10.13, restricts the
   Bohr model to the requested spectrum and radius, and proves the exact
   catalogue companion without additional assumptions or statement changes.
+
+Constructive inputs for Lemma 16.6
+  Proofs16InducedSelection constructs the induced value on occupied cube
+  fibres, proves that it is independent of the representative, and uses
+  Corollary 10.14 to prove linearity on every short Bohr progression. The
+  packaged result derives Section16InducedSelection from Lemma 16.5 in
+  prime moduli, rather than treating this selection as a standing input.
+  Proofs16ProductRecurrence applies the simultaneous partition theorem
+  directly to the lifted whole product. The resulting last axis already
+  has the controlled common difference; no unjustified retile of a separate
+  original last axis is needed. The exponent and threshold match Lemma 16.1.
+  Proofs16ShortProduct refines these proper cells to lengths v-1 or v at
+  their existing common difference, retains the recurrence estimate, and
+  proves local final-coordinate linearity under the explicit scale budgets.
+  Proofs16ShortScale verifies ceiling rounding above the singleton scale:
+  v=ceil((zeta/2)*sqrt(s))+1 fits both v^2<=s and 2/s<=zeta/v.
+  Lemma 16.6 is still open. Its uniform assembly, singleton case, and
+  proper-input migration must be completed before counting its companion.
 
 Shared Section 16 migration
   Box.IsProper is now a shared definition. MultiplyLinear requires proper
