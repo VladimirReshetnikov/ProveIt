@@ -192,8 +192,8 @@ question, with its sketch and what is missing (Vladimir's standing rule of
 1. **The full equivalent** (`osr:q:equivalent`; source item 1): the
    amplitude part of the Asinowski–Cardinal–Felsner–Fusy conjecture. Pointer:
    **Report 125** of the same bundle (A279571,
-   `A279571_Leading_Equivalent_and_Harmonic_Constant_Source.zip`, a later
-   intake batch) proves a leading equivalent `a_n ~ C_A 9ⁿ n^{−κ}` for an
+   `A279571_Leading_Equivalent_and_Harmonic_Constant_Source.zip`; now Part I
+   of `a279571-inversion-cone-walk`, with Report 123 as Part II) proves a leading equivalent `a_n ~ C_A 9ⁿ n^{−κ}` for an
    exact two-colour quadrant walk of the same kind, via killed harmonic
    functions, a deep-entrance argument and midpoint reversal; a natural
    model, not checked to transfer. *Observation, not a claim:*
@@ -269,7 +269,14 @@ Rocq, and its place in the collection confers no formal status.
   novelty is claimed for the inversion mechanics.
 - `a113226-vincular-avoiders`: a different vincular pattern (12-34); no
   shared question.
-- Report 125 (A279571, later batch): see Question 1.
+- `a279571-inversion-cone-walk` (A279571; bundle Reports 125 and 123,
+  batch 104). Its Part II (Report 123) proves the A279571 exponent by the
+  same logarithmic-scale argument as this report, model by model, for a
+  two-colour walk with unbounded steps; its Part I (Report 125) is the model
+  named in Question 1, which as written needs `p > 2` and `4 < p < 5`
+  (its Remark 26.4), while here `p ≈ 1.957`. A dated note in Question 1 of
+  the article says so. *[5 October 2026; this bullet first read "Report 125
+  (A279571, later batch): see Question 1."]*
 
 **Stale claims.** The manuscript makes no claim about the repository. Before
 batch 103 no file mentioned A348351, one-sided or area-universal

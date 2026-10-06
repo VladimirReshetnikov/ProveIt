@@ -40,8 +40,8 @@ proof-assistant certification".
 
 ```
 article.tex        the merged report, standalone LaTeX with an internal bibliography
-article.pdf        the compiled report, 80 pages (title page and contents 1–3,
-                   Guide 4–9, Part I 9–20, II 20–29, III 29–44, IV 44–61, V 61–80)
+article.pdf        the compiled report, 81 pages (title page and contents 1–3,
+                   Guide 4–9, Part I 9–20, II 20–29, III 29–45, IV 45–61, V 61–81)
 README.md          this guide
 
 Source 39 (Part I), files from oeis-a202061-report.zip
@@ -309,6 +309,21 @@ Two notes about particular files:
   factorial growth), [`a202062-ascent-201-enumeration`](../a202062-ascent-201-enumeration/)
   (201-avoiding; cubic generating function, `μ^n n^{−9/2}` asymptotics) and this
   report. A202061 and A202062 share μ.
+- **Same method, other sequences** (dated note, 5 October 2026, batch 104).
+  [`a279551-inversion-log-deficit`](../a279551-inversion-log-deficit/)
+  treats the Britt–Beaton inversion-sequence classes A279551 and A279556 by
+  commitment trees and proves the same three kinds of statement as Parts
+  I–III here: the order `F = n^{1/3}(log n)^{2/3}`, the sharp constant
+  `σ_D = (3π²/(2D))^{1/3}`, and the second term with coefficient `7σ_D/3`.
+  Its local root `(½ log p + log log p + c)/p` matches Part III's row
+  threshold `κ(r)/r` here (measured in `Ψ`, which carries a factor `1/α`),
+  and its potential `1/3 + (7/6) log L/L` matches Part III's
+  `B_n = α/3 + (7α/6) log L/L + O(1/L)`. Its Remark 1.2 excludes
+  Britt–Beaton's numerical `n^{3/8}` forms as Part I here excludes CCEG's.
+  Different sequences, constants in another normalization, no
+  cross-citation between the source manuscripts; its next constant (the
+  analogue of Part IV's `κ`) is open there, with Parts IV–V here as the
+  model. A dated note after Theorem 16.1 (`a61:o2:thm:main`) says so.
 - **Second route to μ.** The A202062 report, in its section "A consequence for
   120 avoidance", derives `lim a_n^{1/n} = μ` for A202061. It uses CCEG's
   Theorem 4 (equal growth rates) and its own proof of the Guttmann–Kotěšovec
@@ -395,7 +410,7 @@ latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 
 The build uses pdflatex with the standard AMS packages, `booktabs`,
 `longtable`, `array`, `geometry`, `hyperref`, `microtype` and Latin Modern. It
-gives 80 pages, with no errors, undefined references, multiply defined labels,
+gives 81 pages (80 before the batch-104 reciprocal note), with no errors, undefined references, multiply defined labels,
 duplicate destinations or overfull boxes. The three `\pdfmapfile` lines come
 from source 39; on MiKTeX they produce several hundred harmless "fontmap
 entry … already exists" messages. Copy back only `article.pdf`.

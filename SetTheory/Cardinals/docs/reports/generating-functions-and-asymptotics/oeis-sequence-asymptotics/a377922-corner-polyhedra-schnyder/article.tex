@@ -1762,7 +1762,9 @@ annuli, two first-hit prefixes glued at the exact time, then non-D-finiteness by
 derivative and the $G$-function theorem, and an $o(\log\log y)$ inverse. Report 111 proves it for
 one-sided rectangulations, A348351, with bounded steps; it is the report \repo{a348351-one-sided-rectangulations} in the same collection directory as this one,
 placed in \texttt{9c995cefe}. Report 123 proves it for the inversion-sequence class A279571; it
-arrived in \texttt{60f54ea06} and has not been placed (5 October 2026). Reports 111 and 123 argue
+arrived in \texttt{60f54ea06} and is Part~II of the report \repo{a279571-inversion-cone-walk} in the
+same collection directory (placed in \texttt{612787fb4}, written in batch~104), beside Report~125 as
+Part~I. Reports 111 and 123 argue
 model by model; Report 112 alone states the argument as a theorem,
 Theorem~\ref{cps:log:thm:cone}. Report 111 proves
 $\log a(n)=n\log\Gamma-\alpha\log n+o(\log n)$ for A348351, with $\Gamma=(7+\sqrt{17})/2$, for a
@@ -1778,6 +1780,25 @@ criterion in general, as Remark~\ref{cps:log:rem:criterion} does here. Its irrat
 certificate differs from Lemma~\ref{cps:lem:irrational}: there $2\cos\theta=(-29+7\sqrt{17})/2$
 is an algebraic integer, and the certificate is its conjugate, which lies below $-2$. No text is
 shared, and the reports stay separate.
+
+\noindent(Dated note, 5~October 2026, batch~104: the sentence on Report~123 above first read ``it
+arrived in \texttt{60f54ea06} and has not been placed (5 October 2026)''. Remark~26.1 of
+\repo{a279571-inversion-cone-walk} (\texttt{icw:log:rem:seeds}) checks Report~123's walk against
+Theorem~\ref{cps:log:thm:cone}. (H1)--(H4) hold, with $\theta=\arccos(2/\sqrt7)$ and
+$\nu=\pi/\theta\in(4,5)$, but (H5) fails at the origin endpoints that the theorem states: its forward
+half holds there, but the stationary dual has no legal excursion from either phase at the origin, and
+$K_n(o,((0,0),b))=0$ for all $n\ge1$ and both phases $b$. Report~123's exponent is therefore an
+instance of the theorem's \emph{proof}, run at the endpoint $((1,0),P)$, not of its statement.
+Proposition~26.2 there (\texttt{icw:log:prop:endpoints}) writes this out: under (H1)--(H4) the proof of
+Theorem~\ref{cps:log:thm:cone} gives survival and the kernel upper bound uniformly over starts and
+endpoints at distance $O(\log n)$ from the origin, and, with seeds from arbitrary fixed endpoint
+states, the matching lower bound; its Corollary~26.3 (\texttt{icw:log:cor:exponent}) derives
+Report~123's exponent from it. The independent check of that report (commit \texttt{1c7e526c7}) read
+the proof of Theorem~\ref{cps:log:thm:cone} in full and confirmed that Proposition~26.2 follows from it
+unchanged: the start enters only through the first radius $r_0(n)$, and the endpoints only through the
+seeds, their largest radii, the reversal ratio of stationary masses and first-hit uniqueness. The same
+walk is an example for Question~\ref{cps:log:q:seeds}, and that report's Part~I bears on
+Question~\ref{cps:log:q:amplitude}; see the notes there.)
 
 \section{Results and their precise scope}
 Write $p_n=\mathrm{A377922}(n)$ and $s_n=\mathrm{A377920}(n)$, both with
@@ -3067,6 +3088,14 @@ write found to be wrong.
  without a buffer, or a phase-sensitive killed local limit theory (Report 112's own
  suggestions); the crossing argument of Section~\ref{cps:log:sec:crossings} loses $q^{\pm\eta}$
  per annulus and cannot give a constant.
+ \textup{[}Dated note, 5~October 2026: for one chain of this kind, the two-colour walk of A279571
+ with unbounded steps, Part~I of \repo{a279571-inversion-cone-walk} (bundle Report~125) proves the
+ amplitude form at every fixed pair of states,
+ $K_n((s,c),(t,d))=(b_\theta\pi_d/\sqrt{\det\Sigma})\,V(s,c)V^*(t,d)\,n^{-1-\nu}+o(n^{-1-\nu})$
+ (its display \texttt{icw:eq:killed-LLT}, where $\nu$ is written $p$), with no cycle buffer, by a
+ phase-sensitive killed local limit theory. That walk is not an instance of this question ((H5)
+ fails at the origin, its Remark~26.1), and the argument uses $4<\nu<5$ and $\nu>2$ (its
+ Remark~26.4, \texttt{icw:log:rem:amplitude}); no general theorem is claimed there.\textup{]}
 \item\label{cps:log:q:theta} \emph{A $\Theta$ form.} Do (H1)--(H5) give
  $K_n((0,a),(0,b))=\Theta(n^{-1-\nu})$? Part~\ref{cps:part:exponents} proves this for the two
  models by regeneration and the buffer. The proof of Theorem~\ref{cps:log:thm:cone} gives no rate
@@ -3074,6 +3103,11 @@ write found to be wrong.
 \item\label{cps:log:q:seeds} \emph{Endpoints without seeds.} Report 112 notes that a centred chain
  can have a boundary phase from which no legal interior excursion exists, and makes no claim
  there. What is the exponent, if any, at such endpoints?
+ \textup{[}Dated note, 5~October 2026: A279571's walk is an example
+ (\repo{a279571-inversion-cone-walk}, Remarks~26.1 and~26.4): at both phases of the origin the
+ stationary dual has no seed, and the kernel from any state into the origin vanishes for every
+ $n\ge2$ (from $o$, for every $n\ge1$), so there is no exponent there. The question remains open in
+ general.\textup{]}
 \item\label{cps:log:q:unchecked} \emph{Steps not independently rechecked at the write.} The uniform
  transfer from Brownian motion near the sides of the wedge (Section~\ref{cps:log:sec:crossings}),
  the bridge tightness in the proof of Lemma~\ref{cps:log:lem:bridge}, and the page locators of

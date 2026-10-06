@@ -254,7 +254,9 @@ pointer is made here only.
 model by model: Report 111, the report `a348351-one-sided-rectangulations`
 in this directory (placed in `9c995cefe`), for one-sided rectangulations
 (A348351), and Report 123, for the inversion-sequence class A279571
-(arrival `60f54ea06`, not yet placed). The a348351 report's Remark 1.2
+(arrival `60f54ea06`; Part II of `a279571-inversion-cone-walk`, placed in
+`612787fb4` and written in batch 104, beside Report 125 as Part I; this
+parenthesis first read "not yet placed"). The a348351 report's Remark 1.2
 (`osr:rem:cone`) checks that its bounded-step four-colour walk satisfies
 (H1)–(H5), so its exponent is an instance of Theorem 24.1
 (`cps:log:thm:cone`); its Remark 10.1 (`osr:rem:criterion`) generalizes
@@ -263,6 +265,18 @@ Part I's Lemma 9.2 (`cps:lem:nonD`) to `μⁿn^(−α+o(1))`, as Part III's Rema
 `−2`) differs from Lemma 9.1. Neither Report 111 nor Report 112 cites the
 other; Section 22.5 and a dated note after Lemma 9.2 say so. The reports
 share no text and stay separate.
+
+*[5 October 2026, batch-104 reciprocal note]* `a279571-inversion-cone-walk`
+checks Theorem 24.1's hypotheses for Report 123's walk (its Remark 26.1):
+(H1)–(H4) hold, but (H5) fails at the origin endpoints (the stationary dual
+has no seed there, and the kernel into the origin vanishes), so Report 123's
+exponent is an instance of the theorem's proof, not of its statement. Its
+Proposition 26.2 states the theorem at arbitrary fixed endpoint states, and
+the independent check of that report (`1c7e526c7`) confirmed that it follows
+from the proof of Theorem 24.1 unchanged. Its Part I (Report 125) proves, for
+that one walk, the amplitude form asked by Question Q1 (`cps:log:q:amplitude`;
+it uses `4 < ν < 5`), and the walk is an example for Question Q3
+(`cps:log:q:seeds`). Dated notes in Section 22.5 and in Q1 and Q3 say so.
 
 **Stale delivery statements.** Both literature receipts
 (`45-cone-literature-status.md`, `46-amp-literature-status.md`) and
@@ -330,7 +344,7 @@ end of Section 31. No label was added, renamed or renumbered.
 ```text
 README.md                                    this guide (replaces both delivery READMEs)
 article.tex                                  the report (source 45 delivered as article.tex, source 46 as addendum.tex, source 47 as report112.tex)
-article.pdf                                  compiled report, 64 pages
+article.pdf                                  compiled report, 66 pages
 45-cone-literature-status.md                 source 45: bounded literature and overlap receipt (as delivered)
 45-cone-mathematical-verification.md         source 45: the delivery's own mathematical review (as delivered)
 46-amp-integrated-mathematical-review.md     source 46: the delivery's own review of the addendum with the Foundation
@@ -556,8 +570,9 @@ latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
 The committed PDF was built in a scratch directory with MiKTeX on 5
-October 2026. It has 64 pages (title and contents 1–4, guide 5–8, Part I
-9–22, Part II 23–36, Part III 37–61, Appendix A 62–63, references 64), with
+October 2026 (rebuilt after the batch-104 reciprocal notes). It has 66 pages
+(title and contents 1–4, guide 5–8, Part I 9–22, Part II 23–36, Part III
+37–64, Appendix A 64–65, references 66), with
 no errors, no undefined references or citations, no multiply defined
 labels, no duplicate PDF destinations and no overfull boxes. Three
 underfull lines remain in one `[write]` note of Section 20, as before Part
