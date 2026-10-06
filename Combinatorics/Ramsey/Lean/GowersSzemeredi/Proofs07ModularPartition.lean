@@ -108,12 +108,12 @@ theorem indexCell_scalar_linear {N : Nat} [Fact N.Prime]
 
 /-- Corollary 7.11 on a proper modular progression, retaining the full
 real-power lower length bound and explicit rounding-safe threshold. -/
-theorem corollary_7_11_modular (N : Nat) [Fact N.Prime]
+theorem corollary_7_11_constant_modular (N : Nat) [Fact N.Prime]
     (R : ModAP N) (A : Finset (ZMod N)) (phi : ZMod N → ZMod N) (alpha : Real)
     (hR : R.IsProper) (hl : 0 < R.length) (hα : 0 < alpha) (hαone : alpha ≤ 1)
     (hA : A ⊆ R.carrier) (hdensity : alpha * R.length ≤ A.card)
     (hfreiman : FreimanHom 8 A phi)
-    (hlarge : 4096 * Real.pi / alpha ≤ (R.length : Real) ^ cor711Exponent alpha 1) :
+    (hlarge : 8 ≤ (R.length : Real) ^ cor711Exponent alpha 1) :
     ∃ M : Nat, ∃ Q : Fin M → ModAP N,
       IsPartition (fun j ↦ (Q j).carrier) R.carrier ∧
       (∀ j, (Q j).step != 0 ∧ (Q j).IsProper ∧
@@ -148,7 +148,7 @@ theorem corollary_7_11_modular (N : Nat) [Fact N.Prime]
     rw [hBdomain]
     exact hfreiman
   obtain ⟨M, T, hTpart, hTcell, hTstep, hTlinear⟩ :=
-    corollary_7_11_real_lower_bound N 1 U (fun _ ↦ C) (fun _ ↦ psi) alpha
+    corollary_7_11_constant_real_lower_bound N 1 U (fun _ ↦ C) (fun _ ↦ psi) alpha
       (by norm_num) hα (by simpa only [hUlength] using hl)
       (BaseCase.boxOneIndexAP_proper P)
       (fun _ ↦ ⟨BaseCase.boxOneIndexDomain_subset P B,
@@ -158,11 +158,7 @@ theorem corollary_7_11_modular (N : Nat) [Fact N.Prime]
   have hQproper (j : Fin M) : (Q j).IsProper :=
     BaseCase.indexCellBox_proper P hP (T j) (hTcell j).1 (hTpart.cell_subset j) 0
   have hXtwo : (2 : Real) < (R.length : Real) ^ cor711Exponent alpha 1 := by
-    have hC : (2 : Real) < 4096 * Real.pi / alpha := by
-      apply (lt_div_iff₀ hα).mpr
-      have hpi := Real.pi_gt_three
-      nlinarith
-    exact hC.trans_le hlarge
+    linarith only [hlarge]
   have hQstep (j : Fin M) : (Q j).step ≠ 0 :=
     BaseCase.proper_modAP_step_ne_zero_of_two_le (Q j) (hQproper j) (by
       have hlen : (2 : Real) < (T j).length :=
@@ -179,5 +175,25 @@ theorem corollary_7_11_modular (N : Nat) [Fact N.Prime]
         simpa only [hUlength] using (hTcell j).2)
     · exact indexCell_scalar_linear P (T j) A phi (hTpart.cell_subset j) (hQstep j)
         (hTlinear (0 : Fin 1) j)
+
+/-- Corollary 7.11 on a proper modular progression, retaining the full
+real-power lower length bound and explicit rounding-safe threshold. -/
+theorem corollary_7_11_modular (N : Nat) [Fact N.Prime]
+    (R : ModAP N) (A : Finset (ZMod N)) (phi : ZMod N → ZMod N) (alpha : Real)
+    (hR : R.IsProper) (hl : 0 < R.length) (hα : 0 < alpha) (hαone : alpha ≤ 1)
+    (hA : A ⊆ R.carrier) (hdensity : alpha * R.length ≤ A.card)
+    (hfreiman : FreimanHom 8 A phi)
+    (hlarge : 4096 * Real.pi / alpha ≤ (R.length : Real) ^ cor711Exponent alpha 1) :
+    ∃ M : Nat, ∃ Q : Fin M → ModAP N,
+      IsPartition (fun j ↦ (Q j).carrier) R.carrier ∧
+      (∀ j, (Q j).step != 0 ∧ (Q j).IsProper ∧
+        (R.length : Real) ^ cor711Exponent alpha 1 ≤ (Q j).length ∧
+        LinearOn ((Q j).carrier.filter fun x ↦ x ∈ A) phi) := by
+  apply corollary_7_11_constant_modular N R A phi alpha hR hl hα hαone hA hdensity hfreiman
+  have hC : 8 ≤ 4096 * Real.pi / alpha := by
+    apply (le_div_iff₀ hα).mpr
+    have := Real.pi_gt_three
+    nlinarith
+  exact hC.trans hlarge
 
 end LeanProofs.GowersSzemeredi
