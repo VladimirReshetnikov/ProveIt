@@ -1,0 +1,264 @@
+\section{Quantitative continuous-Hahn smoothing}\label{sec:smoothing}
+The required estimate is a column rate, stronger than compactness.
+Let $f_j=\sqrt{w_y}\psi_j\in L^2(\R)$ and $b_y=\sqrt{p(y)}$.
+Let $v$ denote the mixed-gamma phase in the exact Jacobi transform:
+in the scaled variable $z=y/(3\sqrt3)$,
+\[
+ G(z)=\Gamma(5/6+iz)\Gamma(7/6-iz),\qquad v=G/|G|.
+\]
+
+\begin{theorem}\label{thm:smoothing}
+For the kernels in \eqref{kernelreal},
+\begin{equation}\label{smoothingrates}
+ \sqrt j\|\mathcal E f_j\|_2\longrightarrow0,\qquad
+ \sqrt j\|(M_vC_0M_v^*-C_0)f_j\|_2\longrightarrow0.
+\end{equation}
+The second assertion also holds with input $M_vf_j$ and with the
+conjugate phase difference $C_0-M_v^*C_0M_v$. All statements hold
+on the full degree sequence, irrespective of the consistent real
+leading-sign convention for $\psi_j$.
+\end{theorem}
+
+\subsection{An elementary fixed-variable asymptotic, including zero}
+We first derive a local asymptotic rather than invoke a large-variable
+formula excluding the origin. For positive $A,B$ put $s=A+B$ and
+$W(z)=|\Gamma(A+iz)\Gamma(B+iz)|^2$.
+The standard continuous-Hahn polynomial $p_j(z;A,B,A,B)$ has positive
+leading coefficient and squared norm in $W(z)\,dz$
+\begin{equation}\label{Hahnnorm}
+ h_j^{A,B}=\frac{2\pi\Gamma(j+2A)\Gamma(j+s)^2\Gamma(j+2B)}
+              {(2j+2s-1)\Gamma(j+2s-1)j!}.
+\end{equation}
+The removable expression at $j=0,s=1/2$ is interpreted by
+$(2s-1)\Gamma(2s-1)=\Gamma(2s)$. Neither parameter pair below
+requires that convention. The classical generating function
+\cite[DLMF 18.23.6]{dlmf} is
+\[
+ {}_1F_1(A+iz;2A;-it)\,{}_1F_1(B-iz;2B;it)
+       =\sum_{j\ge0}\frac{p_j(z)t^j}{(2A)_j(2B)_j}.
+\]
+Euler's beta integral for ordinary ${}_1F_1$ (DLMF 13.4.1 together
+with the normalization conversion 13.2.4) gives exactly
+\begin{align}
+ p_j(z)&=\frac{i^j\Gamma(j+2A)\Gamma(j+2B)}{j!W(z)}I_j(z),
+ \label{Hahnbeta}\\
+ I_j(z)&=\int_0^1\!\int_0^1(v-u)^j
+ u^{A+iz-1}(1-u)^{A-iz-1}
+ v^{B-iz-1}(1-v)^{B+iz-1}\,du\,dv.\nonumber
+\end{align}
+Absolute convergence and boundedness of the entire exponential on
+the integration square justify coefficient extraction. The norm
+and polynomial conventions agree with \cite[Equations (1.1)--(1.4)]{cll}.
+
+Uniformly for real $z$ in a compact set, the corners $(u,v)=(0,1)$
+and $(1,0)$ yield
+\begin{equation}\label{corners}
+ I_j(z)=\Gamma(A+iz)\Gamma(B+iz)j^{-s-2iz}
+  +(-1)^j\Gamma(A-iz)\Gamma(B-iz)j^{-s+2iz}+O_K(j^{-s-1}).
+\end{equation}
+To verify the error, at the first corner set $q=1-v$. The smooth
+remaining factor equals $1+O_K(u+q)$. On the full triangle
+$u,q\ge0$, $u+q\le1$ the leading Dirichlet integral is
+\[
+ \int u^{A+iz-1}q^{B+iz-1}(1-u-q)^j\,du\,dq
+ =\frac{\Gamma(A+iz)\Gamma(B+iz)\Gamma(j+1)}
+        {\Gamma(j+s+2iz+1)}.
+\]
+The $O(u+q)$ term has absolute integral $O_K(j^{-s-1})$.
+Removing the portion outside a fixed corner neighborhood costs an
+exponentially small error. The second corner is the conjugate version
+with $(-1)^j$. Away from these corners $|v-u|\le1-\eps$; the beta
+powers have integrable absolute values independent of real $z$.
+This proves \eqref{corners}, uniformly through $z=0$.
+
+Let $F_j=\sqrt Wp_j/\sqrt{h_j^{A,B}}$ and
+$\eta(z)=\Gamma(A+iz)\Gamma(B+iz)/|\Gamma(A+iz)\Gamma(B+iz)|$.
+The gamma-ratio estimate in \eqref{Hahnnorm} gives
+\begin{equation}\label{Hahnlocal}
+ F_j(z)=\frac1{\sqrt{\pi j}}
+ \left\{i^j\eta(z)j^{-2iz}+(-i)^j\overline{\eta(z)}j^{2iz}\right\}
+          +O_K(j^{-3/2}).
+\end{equation}
+This additive uniform error remains valid at zeros and for odd
+polynomials at zero. For compactly supported integrable $H$, squaring
+and using Riemann--Lebesgue gives
+\begin{equation}\label{localmeasure}
+ \int H(z)jF_j(z)^2\,dz\longrightarrow\frac2\pi\int H(z)\,dz.
+\end{equation}
+For compactly supported $L^2$ tests, \eqref{Hahnlocal} similarly
+implies $\int H\sqrt jF_j\to0$. The oscillatory frequencies are
+$2\log j$ and $4\log j$, respectively.
+
+\subsection{A positive exact norm identity prevents escape of mass}
+For the desired pair $(A,B)=(5/6,7/6)$ put $d_0=1/6$ and
+$V(z)=|\Gamma(1/6+iz)\Gamma(5/6+iz)|^2$. Gamma recurrence gives
+$W(z)=(z^2+d_0^2)V(z)$ exactly. Let $P_j^V,Q_j^W$ be the monic
+orthogonal polynomials for $V,W$, with squared norms $H_j^V,H_j^W$.
+Both have their degree parity. At $id_0$, the terminating
+hypergeometric formula has upper parameter zero, so
+\[
+ P_j^V(id_0)=\frac{i^j(1/3)_j}{\binom{2j}{j}},\qquad
+ r_j=-\frac{P_{j+2}^V(id_0)}{P_j^V(id_0)}
+ =\frac{(j+1/3)(j+4/3)(j+1)(j+2)}{4(2j+1)(2j+3)}>0.
+\]
+The standard leading coefficient in this parameter pair is
+$\binom{2j}{j}$. Direct divisibility and orthogonality prove the
+quadratic Christoffel relations
+\begin{equation}\label{Christoffel}
+ Q_j^W(z)=\frac{P_{j+2}^V(z)+r_jP_j^V(z)}{z^2+d_0^2},\qquad
+ H_j^W=r_jH_j^V.
+\end{equation}
+Indeed parity gives the two zeros in the numerator; multiplying by
+$z^2+d_0^2$ proves orthogonality against all lower degrees, and the
+norm identity follows by pairing with the numerator.
+
+Put $a_j^V=|P_j^V(id_0)|^2/H_j^V$. For $k\le j$ of the same parity,
+$P_k^V-[P_k^V(id_0)/P_j^V(id_0)]P_j^V$ is divisible by $z^2+d_0^2$
+with quotient of degree less than $j$. Orthogonality and monicity
+therefore give
+\[
+ \langle Q_j^W,P_k^V\rangle_V
+       =H_j^V P_k^V(id_0)/P_j^V(id_0).
+\]
+Opposite-parity pairings vanish. Expand $Q_j^W$ in the $V$ basis
+and use \eqref{Christoffel}. For the same normalized function $F_j$
+as above this gives the positive exact identity
+\begin{equation}\label{normidentity}
+ \int\frac{F_j(z)^2}{z^2+1/36}\,dz
+       =\frac1{r_ja_j^V}\sum_{\substack{0\le k\le j\\k\equiv j\ (2)}}a_k^V.
+\end{equation}
+The lowered norm formula \eqref{Hahnnorm} is
+$h_j^{1/6,5/6}=2\pi\Gamma(j+1/3)\Gamma(j+5/3)/(2j+1)$,
+so
+\[
+ a_j^V=\frac{(2j+1)\Gamma(j+1/3)}
+                  {2\pi\Gamma(1/3)^2\Gamma(j+5/3)}
+      \sim\frac{j^{-1/3}}{\pi\Gamma(1/3)^2}.
+\]
+For either parity, elementary power-sum comparison yields
+\[
+ \sum_{\substack{k\le j\\k\equiv j\ (2)}}a_k^V
+       \sim\frac{3j^{2/3}}{4\pi\Gamma(1/3)^2},\qquad r_j\sim j^2/16.
+\]
+Thus \eqref{normidentity} proves
+\begin{equation}\label{totalmassz}
+ j\int\frac{F_j(z)^2}{z^2+1/36}\,dz\longrightarrow12.
+\end{equation}
+This uses a positive sum and no cancellation of asymptotic terms.
+
+Let $k_0=3\sqrt3$, $y=k_0z$. Up to the real leading sign,
+$f_j(y)=k_0^{-1/2}F_j(y/k_0)$ and
+$p(y)=k_0^2(z^2+1/36)$. Therefore
+\begin{equation}\label{totalmass}
+ \|\sqrt j f_j/b_y\|_2^2\longrightarrow4/9.
+\end{equation}
+On each bounded interval \eqref{localmeasure} gives the limiting
+weighted mass $(2/(\pi k_0))\int dy/p(y)$, whose total over the real
+line is also $4/9$. Subtracting the compact-interval limit from
+\eqref{totalmass} and then enlarging the interval proves
+\begin{equation}\label{tightness}
+ \lim_{R\to\infty}\limsup_{j\to\infty}
+      j\int_{|y|>R}\frac{|f_j(y)|^2}{p(y)}\,dy=0.
+\end{equation}
+The sequence $u_j=\sqrt j f_j/b_y$ is bounded by \eqref{totalmass}
+and weakly null by the compactly supported test conclusion of
+\eqref{Hahnlocal}, followed by density. Multiplication by a fixed
+bounded unimodular function preserves weak nullity and tightness.
+
+\subsection{A local compactness principle and the original kernel}
+If $A$ is bounded and $A\one_{[-R,R]}$ is compact for every $R$,
+then a bounded, weakly null, $L^2$-tight sequence $u_j$ satisfies
+$\|Au_j\|\to0$. Indeed the compact part tends to zero for fixed
+$R$, and the other part is at most $\|A\|\|\one_{|y|>R}u_j\|$.
+Taking limsup and then $R\to\infty$ proves the assertion.
+
+Split off the rank-one positive-tail kernel
+\[
+ R_0(y,x)=\tfrac13G_0(y)r_0(x),\quad
+ G_0(y)=g_0(y)e^{2ay},\quad
+ r_0(x)=h_0(x)e^{-2ax}\one_{x\ge0}.
+\]
+Both factors lie in $L^2$. We claim that
+$A_0=(\mathcal E-R_0)M_{b_y}$, with the multiplier absorbed in
+the input kernel, is bounded and locally compact.
+For $x,y<0$ set $r_x=e^{2ax}$ and $d_x=\sqrt{1-r_x+r_x^2}$.
+The exact formulas in \eqref{kernelreal} are
+$g_0(y)=b_y/[\sqrt2(1+r_y)d_y]$ and
+$h_0(x)=\sqrt2d_x/b_x$. The negative-quadrant kernel of $A_0$ is
+\begin{align*}
+ &\one_{x,y<0}(b_y-b_x)\varphi(x-y)\\
+ &\quad+\one_{x,y<0}b_y\varphi(x-y)
+                  \left[\frac{d_x}{(1+r_y)d_y}-1\right].
+\end{align*}
+The first is bounded by $|x-y|\varphi(x-y)$ since $b_y$ is
+1-Lipschitz, so Schur's test applies. Restricting its input to a
+bounded interval makes it square integrable. The second bracket is
+$O(e^{2ax}+e^{2ay})$; exponential off-diagonal decay and these half-line
+tails make that whole kernel square integrable.
+
+For $x\ge0$ the kernel is
+\[
+ g_0(y)\left[\varphi(x-y)-\tfrac13e^{-2a(x-y)}\right]h_0(x)b_x.
+\]
+Here $h_0(x)b_x=O(e^{2ax})$. The bracket is $O(e^{-4a(x-y)})$
+for $x\ge y$ and $O(e^{2a(y-x)})$ for $x<y$.
+Use $g_0(y)=O(1+|y|)$ at $-\infty$ and
+$O((1+y)e^{-4ay})$ at $+\infty$. The resulting bounds on the three
+regions $y<0\le x$, $0\le y\le x$, and $0\le x<y$ are respectively
+\[
+ C(1+|y|)e^{4ay}e^{-2ax},\qquad
+ C(1+y)e^{-2ax},\qquad C(1+y)e^{-2ay}.
+\]
+Each is square integrable, including the triangular regions.
+For $x<0\le y$, the reference and rank-one kernels vanish;
+the remaining bound $C(1+y)e^{-6ay}e^{2ax}$ is square integrable.
+This proves the claim. The local compactness principle and
+\eqref{tightness} now show
+\begin{equation}\label{minusRrate}
+ \sqrt j\|(\mathcal E-R_0)f_j\|_2=\|A_0u_j\|_2\longrightarrow0.
+\end{equation}
+
+The exceptional rank-one term uses the calibrated coefficient,
+not a noncalibrated asymptotic. At $t=3$, \eqref{qsource} simplifies to
+\begin{equation}\label{q3simple}
+ q_3(y)=\frac{\sqrt2[\sqrt3e^{ay}-y-3/2]}{p(y)}.
+\end{equation}
+Put $F=\sqrt{w_y}q_3$. Then
+\begin{equation}\label{subtraction}
+ b_y[r_0-\sqrt{2/3}F]\in L^2(\R).
+\end{equation}
+For $y\ge0$, set $\rho=e^{-2ay}$, $d=\sqrt{1-\rho+\rho^2}$.
+Exactly $r_0=\sqrt2d/b_y$ and
+$F=[\sqrt3-(y+3/2)e^{-ay}]/(b_yd)$, so the left expression in
+\eqref{subtraction} is
+$\sqrt2(d-1/d)+\sqrt{2/3}(y+3/2)e^{-ay}/d$, which decays
+exponentially. On the negative tail $r_0=0$ and $b_yF$ decays
+exponentially up to a polynomial; all factors are bounded near zero.
+Writing the function in \eqref{subtraction} as $h_0^{\rm sub}$,
+weak nullity and \eqref{calcoefficient} give
+\[
+ \sqrt j\langle r_0,f_j\rangle
+ =\sqrt{2/3}\sqrt j\langle F,f_j\rangle
+      +\langle h_0^{\rm sub},u_j\rangle\longrightarrow0.
+\]
+The rank-one norm therefore tends to zero at the required scale.
+Together with \eqref{minusRrate} this proves the first assertion of
+\eqref{smoothingrates}.
+
+\subsection{The phase correction has a compact weighted kernel}
+The exact gamma phase in \cite[Section 8]{r124} satisfies, on $x,y<0$,
+\[
+ |v(y)/v(x)-1|\le
+     \frac{C|x-y|}{(1+|x|)(1+|y|)}.
+\]
+Consequently for $D_v=M_vC_0M_v^*-C_0$,
+\[
+ |D_v(y,x)b_x|\le
+       \frac{C\one_{x,y<0}|x-y|\varphi(x-y)}{1+|y|}.
+\]
+The right side is square integrable, by integrating in the difference
+variable and then in $y$. Thus $D_vM_{b_y}$ is Hilbert--Schmidt.
+Compactness applied to $u_j\rightharpoonup0$ proves
+$\sqrt jD_vf_j\to0$. Apply the identical argument to $M_vu_j$ and
+to the conjugate phase difference to obtain all the stated variants.
+This completes the proof of Theorem~\ref{thm:smoothing}.

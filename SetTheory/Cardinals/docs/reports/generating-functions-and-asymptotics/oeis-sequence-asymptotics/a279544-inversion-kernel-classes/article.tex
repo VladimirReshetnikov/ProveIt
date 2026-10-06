@@ -1,0 +1,1100 @@
+\pdfinfoomitdate=1
+\pdftrailerid{}
+\pdfsuppressptexinfo=15
+\documentclass[11pt,letterpaper]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools,booktabs,microtype}
+\usepackage[colorlinks=true,linkcolor=black,citecolor=black,urlcolor=blue]{hyperref}
+\usepackage{enumitem}
+\setlist{itemsep=3pt,topsep=6pt}
+\setlength{\parskip}{5pt}
+\setlength{\parindent}{0pt}
+\setlength{\emergencystretch}{2em}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\dd}{\mathrm d}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\ceil}[1]{\left\lceil#1\right\rceil}
+\newcommand{\coeff}[2]{[#1^{#2}]}
+\hypersetup{pdftitle={Report 118 Inversion sequence asymptotics from iterated kernels},pdfauthor={}}
+\begin{document}
+\begin{center}
+{\small REPORT 118}\par\vspace{8pt}
+{\LARGE\bfseries Inversion sequence asymptotics\par}
+\vspace{4pt}
+{\LARGE\bfseries from iterated kernels\par}
+\vspace{9pt}
+{\large Rigorous asymptotics and counting index inverses}\par
+\vspace{9pt}
+{\small 2 October 2026}\par
+{\small Self-contained proof and exact reproducibility companion}
+\end{center}
+\begin{abstract}
+For the inversion-sequence classes counted by OEIS A279544 and A279567,
+we prove $a_n\sim C4^n n^{-3/2}$ and
+$b_n\sim\widehat C(3+2\sqrt2)^n n^{-3/2}$ with positive,
+explicitly characterized constants. These establish the leading laws
+stated numerically by Britt and Beaton for their classes 214 and 1509.
+Normally convergent M\"obius-orbit sums from their exact catalytic
+equations give global continuation, convergent local square-root
+expansions, and exact certificates of nonzero amplitudes. The second
+class also requires a global nonvanishing denominator argument for
+an iterated quotient. Both representations give coefficient asymptotics
+to every fixed algebraic order, with explicit recurrences. We derive
+Lambert-$W_{-1}$ counting-index inverses and shrinking two-ceiling
+brackets for exact integer thresholds. The local expansion is convergent; the large-index
+expansion is an all-fixed-order asymptotic statement. No complete
+exponentially improved transseries, effective numerical inverse cutoff,
+nonalgebraicity theorem, literature-priority claim, or external peer-review
+claim is made.
+\end{abstract}
+\setcounter{tocdepth}{1}
+{\small\setlength{\parskip}{0pt}\tableofcontents}
+\newpage
+
+\section{Model and main conclusions}
+\subsection{The counted objects and source statement}
+An inversion sequence of length $n$ is a vector $e=(e_1,\ldots,e_n)$
+of integers with $0\le e_i<i$. Let $a_n$ count those vectors for which
+there are no indices $i<j<k$ satisfying
+\begin{equation}\label{avoid214}
+e_j\ge e_k\quad\hbox{and}\quad e_i\ge e_k.
+\end{equation}
+Set $a_0=1$ and $A(z)=\sum_{n\ge0}a_nz^n$. This is an ordinary generating
+function, with no factorial normalization. The sequence is
+OEIS A279544~\cite{oeis214}; its initial terms are
+\[
+1,1,2,4,10,26,73,214,651,2040,6549,21453,71485,241702,827603.
+\]
+The relation notation is $(-,\ge,\ge)$, where the dash imposes no
+condition on $e_i,e_j$. Equivalently, the forbidden reduced patterns
+are $000,010,100,110,120,210$.
+
+Britt and Beaton~\cite[Section 3.5]{bb} give an exact auxiliary generating
+tree and catalytic equation for this class. Their label ``214'' is the
+length-seven count, not a shift in the sequence index. Their Section 4.2,
+equation (4.8), predicts $a_n\sim C4^n n^{-3/2}$ with $C\approx0.0549097$;
+the section explicitly identifies its asymptotics as numerical and
+non-rigorous. We use version 3, dated 29 September 2026. The proof below
+starts from the exact enumerative model and establishes this specific
+leading law together with stronger fixed-order and inverse statements. Section~\ref{sec1509}
+gives the same complete treatment of class 1509, whose growth constant
+is $3+2\sqrt2$.
+
+The source places the class among generating functions believed to be
+nonalgebraic. Neither that belief nor non-$D$-finiteness is proved here.
+Having a local square-root singularity is compatible with either an
+algebraic or a nonalgebraic generating function.
+
+\subsection{The result and its scope}
+\begin{theorem}\label{main214}
+The generating function $A$ has radius of convergence $\rho=1/4$.
+It extends holomorphically to
+\begin{equation}\label{slit214}
+\{z:|z|<R\}\setminus[1/4,R)\qquad(1/4<R<1/2),
+\end{equation}
+and $1/4$ is its unique singularity on the circle of convergence.
+For every fixed integer $K\ge0$,
+\begin{equation}\label{asym214}
+a_n=C4^n n^{-3/2}\left(1+\sum_{j=1}^{K}\frac{c_j}{n^j}
++O(n^{-K-1})\right),\qquad n\longrightarrow\infty,
+\end{equation}
+where $C>0$. The constants are uniquely specified by the convergent
+orbit representation and explicit recurrences below. Moreover the
+minimum counting index $N(Y)=\min\{n\ge0:a_n\ge Y\}$ admits the
+Lambert-$W_{-1}$ expansion and two-ceiling brackets of
+Theorem~\ref{inverse}.
+\end{theorem}
+The constants hidden in \eqref{asym214} may depend on $K$.
+No assertion of convergence as $K\to\infty$ is part of this theorem.
+The positive amplitude is certified without fitting coefficients.
+
+The proof has four separate requirements: identify the formal generating
+function; prove normal convergence and global continuation; prove that
+the square-root term is genuinely nonzero; and transfer with the correct
+remainder before inverting. A kernel discriminant alone meets none of
+the last three requirements.
+
+\section{Exact generating tree and kernel cancellation}
+\subsection{Auxiliary labels and coefficient extraction}
+The auxiliary class of~\cite[Section 3.5]{bb} permits the patterns
+$000,010,100$ only when their zero symbols have actual value zero.
+Its labels $(p,s)$ are lengths of the initial and possible second run of
+zeros. The root has label $(0,0)$. Each occurrence of a label creates the
+following children, retaining all multiplicities:
+\begin{equation}\label{tree214}
+\begin{aligned}
+(p,s)&\longmapsto(p+1,s),\\
+(p,s)&\longmapsto(p+1,s-1)&& (s>0),\\
+(p,0)&\longmapsto(p-\ell,\ell)&& (0\le\ell\le p-1),\\
+(p,0)&\longmapsto(p-\ell-1,\ell)&& (0\le\ell\le p-2).
+\end{aligned}
+\end{equation}
+An empty index range contributes no child. The desired objects have
+$s=0$ and $p\le2$. This completely specifies an integer state recurrence
+for $a_n$, and is source equation (3.31).
+
+Let $B(z,x,y)$ record length and the two label coordinates. Put
+$F(z,x)=B(z,x,0)$. Every nonroot label has $p\ge1$, so $F(z,0)=1$.
+Write $F_p(z)=[x^p]F(z,x)$. The transitions into $(1,0)$ give
+\begin{equation}\label{normalize214}
+F_1=z(1+F_1+F_2),\qquad
+A=1+F_1+F_2=F_1/z.
+\end{equation}
+The last quotient is removable at zero.
+
+Summing \eqref{tree214}, or clearing the denominators in source
+(3.33), gives the exact catalytic relation
+\begin{equation}\label{catalytic214}
+0=(y+z)(y-x)-(y-zx-zxy)(y-x)B(z,x,y)
++xz(1+y)F(z,y)-z(y+2xy-x^2)F(z,x).
+\end{equation}
+Each coefficient of $z$ is a polynomial in $x,y$; thus substitutions
+below are justified formally after denominator clearing.
+
+\subsection{The root orbit}
+Define
+\begin{equation}\label{kernel214}
+f_z(x)=\frac{zx}{1-zx},\qquad
+P(z,x)=zx^2+(2z-1)x+z.
+\end{equation}
+Substitute $y=f_z(x)$ in \eqref{catalytic214}. Its $B$ term vanishes,
+and elementary algebra gives
+\begin{equation}\label{F214}
+F(z,f_z(x))=P(z,x)F(z,x)+Q(z,x),\qquad
+Q(z,x)=\frac{(1+(1-z)x)(1-z-zx)}{1-zx}.
+\end{equation}
+Set $F(z,x)=1+xG(z,x)$. Then \eqref{F214} becomes
+\begin{equation}\label{G214}
+G(z,f_z(x))=a(z,x)G(z,x)+b(z,x),
+\end{equation}
+where
+\begin{equation}\label{ab214}
+a(z,x)=\frac{(1-zx)P(z,x)}z,
+\qquad b(z,x)=x(1-z-zx),\qquad A(z)=G(z,0)/z.
+\end{equation}
+The apparent $z^{-1}$ is addressed explicitly when its iterated arguments
+are substituted; it causes no unproved analytic assumption.
+
+The small root of $P$ is
+\begin{equation}\label{r214}
+r(z)=\frac{1-2z-\sqrt{1-4z}}{2z}
+=\frac{1-\sqrt{1-4z}}{1+\sqrt{1-4z}}\in z\Q[[z]].
+\end{equation}
+For an arbitrary seed $x$, the iterates have the exact form
+\begin{equation}\label{orbit214}
+x_j=f_z^{\,j}(x)=
+\frac{z^jx}{1-zx(1-z^j)/(1-z)}\qquad(j\ge0).
+\end{equation}
+It follows either by induction or by summing the geometric series
+in the denominator. Define the finite sums and their intended limit by
+\begin{align}
+\Phi_M(z,x)&=\sum_{k=0}^{M}b(z,x_k)\prod_{j=k+1}^{M}a(z,x_j),\label{partial214}\\
+\Phi(z,x)&=\sum_{k\ge0}b(z,x_k)\prod_{j>k}a(z,x_j).\label{phi214}
+\end{align}
+An empty product is one. No reciprocal of an $a$ factor is used.
+The finite sums satisfy
+\begin{equation}\label{partialrec214}
+\Phi_0=b(z,x),\qquad
+\Phi_M=a(z,x_M)\Phi_{M-1}+b(z,x_M).
+\end{equation}
+
+\begin{proposition}\label{formal214}
+As an identity of formal power series,
+\begin{equation}\label{representation214}
+A(z)=\Phi(z,r(z))/z.
+\end{equation}
+\end{proposition}
+\begin{proof}
+Use seed $x=r(z)$. The initial factor $a(z,r)=0$, so repeated use of
+\eqref{G214} gives $G(z,x_{M+1})=\Phi_M(z,r)$. Formula
+\eqref{orbit214} gives $x_j=O(z^{j+1})$. For $j\ge1$,
+$a(z,x_j)=1+O(z^j)$, while $b(z,x_j)=O(z^{j+1})$.
+All products and sums therefore stabilize coefficientwise, and
+$G(z,x_{M+1})\to G(z,0)$. Now use \eqref{ab214}.
+In particular, this argument never assumes that the original catalytic
+series $F(z,x)$ converges at the eventual critical seed $x=1$.
+\end{proof}
+
+\section{Normal convergence and dominant singularity control}
+\subsection{A holomorphic two-variable orbit sum}
+\begin{lemma}\label{normal214}
+Choose $0<R<1/2$ and $0<X<(1-R)/R$. The series \eqref{phi214}
+and its products converge normally on $|z|\le R$, $|x|\le X$.
+They define a jointly holomorphic function near each compact set
+with strict room in these inequalities.
+\end{lemma}
+\begin{proof}
+Put $\delta=1-RX/(1-R)>0$. The orbit denominator in
+\eqref{orbit214} has modulus at least $\delta$, since
+$|z+\cdots+z^j|\le R/(1-R)$. Consequently
+\[
+|x_j|\le (X/\delta)|z|^j.
+\]
+For $j\ge1$, $x_j/z$ is holomorphic at zero and uniformly bounded
+by $(X/\delta)R^{j-1}$. Expand the first factor as
+\begin{equation}\label{expand_a214}
+a(z,u)=1+(2-z-1/z)u+(2-2z)u^2-zu^3.
+\end{equation}
+There are constants $K,K'$ independent of $j,k$ such that
+\[
+|a(z,x_j)-1|\le KR^{j-1}\quad(j\ge1),\qquad
+|b(z,x_k)|\le K'R^k\quad(k\ge0).
+\]
+The infinite products converge normally and are bounded by
+$\exp(K/(1-R))$. The outer sum is therefore dominated by a geometric
+series. Uniform limits on slightly larger polydiscs give joint
+holomorphy and termwise differentiation on the chosen compact set.
+Zeros in finite factors cause no problem because there is no division
+by such factors.
+\end{proof}
+At $z=0$, the first composed factor $a(z,x_1)$ tends to $1-x$, rather
+than to one; later factors tend to one. Thus $\Phi(0,x)=x(1-x)$.
+This is consistent with the lemma. Since $r(0)=0$, the composition
+$\Phi(z,r(z))$ vanishes at zero and its quotient in
+\eqref{representation214} is holomorphic there.
+
+\subsection{Continuation on a slit disc}
+Use the principal square root on $\C\setminus[1/4,\infty)$.
+Then $\operatorname{Re}\sqrt{1-4z}>0$, so the Cayley transform
+\eqref{r214} satisfies $|r(z)|<1$. For any $1/4<R<1/2$, one can choose
+$1<X<(1-R)/R$. Lemma~\ref{normal214} now proves that
+\eqref{representation214} extends the exact germ $A$ to
+\eqref{slit214}. In particular, the entire circle $|z|=1/4$ except
+$z=1/4$ is crossed holomorphically. This global argument rules out
+unexamined competing singularities; inspection of the kernel roots
+alone would not do so.
+
+Put $t=\sqrt{1-4z}$ and define
+\begin{equation}\label{H214}
+H(t)=\frac4{1-t^2}\,
+\Phi\left(\frac{1-t^2}{4},\frac{1-t}{1+t}\right)
+=\sum_{m\ge0}h_mt^m.
+\end{equation}
+The lemma applies near $(z,x)=(1/4,1)$, so $H$ is holomorphic for
+$|t|$ sufficiently small. This Taylor series is genuinely convergent.
+It follows that $A(z)=H(\sqrt{1-4z})$ on the local slit neighborhood,
+and differentiation at $t=0$ gives
+\begin{equation}\label{h1}
+h_1=-8\Phi_x(1/4,1).
+\end{equation}
+It remains to show that this coefficient is nonzero.
+
+\section{Positive amplitude by exact arithmetic}
+\subsection{Rational critical recurrence and a proved tail}
+At $z=1/4$ and seed $x=1$, the orbit and its seed derivative are
+\begin{equation}\label{criticalorbit}
+u_j=\frac3{2\cdot4^j+1},\qquad
+v_j^{\mathrm{orb}}=\left.\partial_xx_j\right|_{x=1}
+=\frac{9\cdot4^j}{(2\cdot4^j+1)^2}.
+\end{equation}
+For this subsection write $d_j=v_j^{\mathrm{orb}}$ and
+\[
+\mathrm a(u)=(1-u/4)(1-u)^2,\qquad
+\mathrm b(u)=u(3-u)/4.
+\]
+Then
+\[
+\mathrm a'(u)=-\tfrac34(1-u)(3-u),\qquad
+\mathrm b'(u)=(3-2u)/4.
+\]
+If $q_M=\Phi_M(1/4,1)$ and $v_M=\partial_x\Phi_M(1/4,1)$,
+\eqref{partialrec214} gives the entirely rational recurrence
+\begin{equation}\label{criticalrec}
+\begin{aligned}
+q_0&=\tfrac12,&v_0&=\tfrac14,\\
+q_m&=\mathrm a(u_m)q_{m-1}+\mathrm b(u_m),\\
+v_m&=\mathrm a(u_m)v_{m-1}
++d_m\bigl(\mathrm a'(u_m)q_{m-1}+\mathrm b'(u_m)\bigr)
+&& (m\ge1).
+\end{aligned}
+\end{equation}
+The derivative uses the old value $q_{m-1}$.
+
+For $0\le u\le1$, one has
+\[
+0\le\mathrm a\le1,\quad 0\le\mathrm b\le3u/4,\quad
+|\mathrm a'|\le9/4,\quad|\mathrm b'|\le3/4,\quad
+1-\mathrm a\le9u/4.
+\]
+For $j\ge1$, $u_j\le(3/2)4^{-j}$ and $d_j\le(9/4)4^{-j}$.
+In particular $q_M\le7/8\le9/8$, and the convenient uniform bound
+$|\mathrm a'q+\mathrm b'|\le105/32$ yields
+\[
+|v_M|\le\tfrac14+\tfrac{105}{32}\sum_{j\ge1}d_j
+\le\tfrac{347}{128}.
+\]
+Therefore
+\[
+|v_m-v_{m-1}|\le\tfrac{347}{128}\tfrac94 u_m
++\tfrac{105}{32}d_m\le\tfrac{16929}{1024}4^{-m}.
+\]
+Normal convergence identifies the derivative limit, and summation proves
+\begin{equation}\label{derivtail}
+\left|\Phi_x(1/4,1)-v_M\right|
+\le E_M:=\frac{16929}{3072\cdot4^M}.
+\end{equation}
+At $M=8$, direct exact fraction arithmetic gives
+\[
+v_8>0.02433,\qquad E_8<0.000085,
+\]
+so $\Phi_x(1/4,1)>0.024245>0$. The finite inequalities are reproducible
+from \eqref{criticalrec}, and no floating-point sign decision is needed.
+Consequently
+\begin{equation}\label{amplitude}
+C=-\frac{h_1}{2\sqrt\pi}
+=\frac{4\Phi_x(1/4,1)}{\sqrt\pi}>0.
+\end{equation}
+Together with \eqref{h1}, this proves that $1/4$ is an actual square-root
+singularity. The continuation already established proves the radius and
+uniqueness assertions in Theorem~\ref{main214}.
+
+\subsection{Outward rational numerical enclosures}
+A certified decimal enclosure for \eqref{amplitude} requires bounds
+on $\pi$, not just high-precision evaluation. Use Machin's identity
+\[
+\pi=16\arctan(1/5)-4\arctan(1/239).
+\]
+For either arctangent, its alternating rational series is enclosed by
+the sum of the first $m$ terms and that sum plus its next term.
+Taking $m=100$ and $m=32$, respectively, gives exact rational bounds
+$p_-<\pi<p_+$. For $S=10^{80}$ put
+\[
+s_- =\frac{\lfloor\sqrt{\lfloor S^2p_-\rfloor}\rfloor}{S},
+\qquad
+s_+ =\frac{\lfloor\sqrt{\lfloor S^2p_+\rfloor}\rfloor+1}{S}.
+\]
+Integer square roots give $s_-^2\le p_-<\pi<p_+<s_+^2$.
+Using \eqref{derivtail} at $M=96$, the exact interval
+\[
+\frac{4(v_{96}-E_{96})}{s_+}<C<
+\frac{4(v_{96}+E_{96})}{s_-}
+\]
+is narrower than $10^{-56}$. Outward decimal rounding gives
+\begin{equation}\label{Cdigits}
+\begin{gathered}
+0.0549097036253448014962069269284638611865763295943683<C,\\
+C<0.0549097036253448014962069269284638611865763295943684.
+\end{gathered}
+\end{equation}
+The interval, rather than any rounded midpoint, is the certified claim.
+The matching high-precision numerical constant already appears in
+A279544, credited to V\'aclav Kot\v{e}\v{s}ovec on 7 October
+2021~\cite{oeis214}. The contribution here is proof and certification
+of the amplitude, not discovery of previously unreported digits.
+
+\section{Every fixed coefficient order}
+\subsection{Transfer of the convergent local expansion}
+For nonintegral $\alpha$, the exact binomial coefficient identity is
+\begin{equation}\label{gammaratio}
+[z^n](1-4z)^\alpha
+=4^n\frac{\Gamma(n-\alpha)}{\Gamma(-\alpha)\Gamma(n+1)}.
+\end{equation}
+The slit disc provides a standard $\Delta$-domain at $1/4$.
+Singularity analysis~\cite[Chapter VI]{fs}, applied to the convergent
+Taylor expansion \eqref{H214}, gives, for every fixed $m\ge1$,
+\begin{equation}\label{finitegamma}
+a_n=4^n\sum_{j=0}^{m-1}
+\frac{h_{2j+1}}{\Gamma(-j-1/2)}
+\frac{\Gamma(n-j-1/2)}{\Gamma(n+1)}
++O(4^nn^{-m-3/2}).
+\end{equation}
+For clarity about the remainder, expand $H$ through degree $2m+2$.
+The even terms are polynomials in $z$ and have zero coefficients for
+all sufficiently large $n$. The first omitted odd term contributes
+$O(4^nn^{-m-3/2})$; the remaining Taylor remainder has still smaller
+transfer order. No differentiation of an uncontrolled asymptotic
+remainder is involved.
+
+Define the standard gamma-ratio polynomials by
+\begin{equation}\label{gdef}
+\frac{\Gamma(n-\alpha)}{\Gamma(n+1)}
+\sim n^{-\alpha-1}\sum_{j\ge0}g_j(\alpha)n^{-j},
+\qquad g_0(\alpha)=1.
+\end{equation}
+Then the exact prescription for the coefficients in \eqref{asym214} is
+\begin{equation}\label{Crec}
+C_m:=C c_m=\sum_{k=0}^{m}
+\frac{h_{2k+1}g_{m-k}(k+1/2)}{\Gamma(-k-1/2)},
+\qquad c_0=1.
+\end{equation}
+In particular, $C_0=C$. For a fully explicit recurrence, let $B_j(x)$
+be the Bernoulli polynomials, defined by
+$we^{xw}/(e^w-1)=\sum_{j\ge0}B_j(x)w^j/j!$. Set
+\begin{equation}\label{grec}
+\lambda_j(\alpha)=
+\frac{(-1)^{j+1}\bigl(B_{j+1}(-\alpha)-B_{j+1}(1)\bigr)}{j(j+1)},
+\qquad
+g_m(\alpha)=\frac1m\sum_{j=1}^{m}j\lambda_j(\alpha)g_{m-j}(\alpha).
+\end{equation}
+This follows by exponentiating the logarithmic Stirling expansion of
+the ratio in \eqref{gdef}. It determines any fixed order using rational
+arithmetic at the half-integer arguments.
+
+The first two relative corrections are
+\begin{equation}\label{c12}
+\begin{aligned}
+c_1&=\frac38-\frac32\frac{h_3}{h_1},\\
+c_2&=\frac{25}{128}-\frac{45}{16}\frac{h_3}{h_1}
++\frac{15}{4}\frac{h_5}{h_1}.
+\end{aligned}
+\end{equation}
+Here $g_1(1/2)=3/8$, $g_1(3/2)=15/8$, and $g_2(1/2)=25/128$.
+These identities also provide immediate normalization checks.
+
+\subsection{Certified local jets and the first corrections}
+The Taylor coefficients $h_j$ can be computed by rational series
+arithmetic in \eqref{partialrec214}, after substituting
+$z=(1-t^2)/4$ and $x=(1-t)/(1+t)$. A uniform complex-circle bound
+certifies the truncation. On $|t|=1/10$ choose
+\[
+R=101/400,\qquad X=11/9,\qquad
+\delta=1-RX/(1-R),\qquad T=X/\delta.
+\]
+Then $|z|\le R$, $|x|\le X$ and $|x_j|\le TR^j$. Define
+\begin{align*}
+A_*&=T+(2+R)TR+(2+2R)T^2R^2+T^3R^3,\\
+B_*&=T(1+R+RT).
+\end{align*}
+Equation \eqref{expand_a214} gives
+$|a(z,x_j)-1|\le A_*R^{j-1}$ for $j\ge1$, and
+$|b(z,x_j)|\le B_*R^j$. Exact rational inequalities give
+\[
+A_* /(1-R)<6,\qquad B_*<4,\qquad (1-R)^{-1}<3/2.
+\]
+Using $e<3$, the finite sums obey
+$|\Phi_M|\le B_*e^{A_* /(1-R)}/(1-R)<5000$.
+Telescoping \eqref{partialrec214} therefore yields
+\[
+|\Phi-\Phi_M|
+\le\frac{5000A_*+B_*R}{1-R}R^M<40000R^M.
+\]
+Since $|1/z|\le400/99<5$, if $H_M(t)=\Phi_M(z(t),x(t))/z(t)$, then
+\begin{equation}\label{Htail}
+\sup_{|t|=1/10}|H-H_M|<200000R^M,
+\qquad
+|h_j-[t^j]H_M|<200000\cdot10^jR^M.
+\end{equation}
+The second inequality is Cauchy's estimate. This supplies an effective
+certificate for every fixed local coefficient by increasing $M$.
+
+Degree-five rational jets with $M=64$, followed by interval arithmetic
+in \eqref{c12}, give the outward enclosures
+\begin{equation}\label{correctiondigits}
+\begin{aligned}
+27.604095556555475840191975&<c_1<27.604095556555475840191976,\\
+43.988908237439005751766276&<c_2<43.988908237439005751766277.
+\end{aligned}
+\end{equation}
+For orientation, $h_1\approx-0.19464983128564593535$,
+$h_3\approx3.53342590409616985565$, and
+$h_5\approx0.37689182228965126927$.
+The comparatively large $c_1$ warns against interpreting a short
+moderate-$n$ fit as a proof of the leading constant.
+
+\subsection{What is and is not an all-order result}
+The series \eqref{H214} converges in a neighborhood of $t=0$.
+The expansion \eqref{asym214} means that each fixed truncation has its
+own proved algebraic remainder. These are different statements.
+No uniform estimate in a truncation order growing with $n$ has been
+proved. We do not claim optimal truncation, all subdominant exponential
+sectors, Stokes constants, or a complete resurgent transseries. Nor do
+the finite coefficient checks replace the analytic continuation and
+tail arguments above.
+
+\section{A quotient kernel for class 1509}\label{sec1509}
+\subsection{The second counted class and exact equations}
+Let $b_n$ count inversion sequences with no $i<j<k$ satisfying
+\begin{equation}\label{avoid1509}
+e_j\ge e_k\quad\hbox{and}\quad e_i>e_k.
+\end{equation}
+This is class $(-,\ge,>)$, or avoidance of $100,110,120,210$,
+counted by OEIS A279567~\cite{oeis1509}. Put
+$\mathcal A(z)=\sum_{n\ge0}b_nz^n$. Its initial terms are
+\[
+1,1,2,6,21,82,343,1509,6893,32419,156058,765578,3815062.
+\]
+Source~\cite[Section 3.6, equation (3.34)]{bb} gives the root $(0,0)$
+and these multiplicity-preserving transitions:
+\begin{equation}\label{tree1509}
+\begin{aligned}
+(p,s)&\longmapsto(p+1,s),\\
+(p,s)&\longmapsto(p+1,s-1)&& (s>0),\\
+(p,s)&\longmapsto(p-i,0)&& (s\le1,\ 0\le i<p),\\
+(p,s)&\longmapsto(p-\ell,\ell-k)&&
+(s\le1,\ 1\le\ell<p,\ 0\le k<\ell).
+\end{aligned}
+\end{equation}
+The target is the sum of all states with $s\le1$. The auxiliary class
+allows $100$ when both zero symbols have actual value zero. Let
+$\mathcal B(z,x,y)$ be its generating function, and set
+\[
+J(z,x)=\mathcal B(z,x,0)+[y]\mathcal B(z,x,y),\qquad
+\mathcal A(z)=J(z,1).
+\]
+Write $B_0(x)=\mathcal B(z,x,0)$ and $B_1(x)=[y]\mathcal B(z,x,y)$,
+suppressing only the $z$ argument. The source's equations (3.36)--(3.37)
+are, equivalently,
+\begin{align}
+B_0(x)&=1+zxJ(z,x)+\frac{zx}{1-x}\bigl(\mathcal A-J(z,x)\bigr),
+\label{B01509}\\
+\mathcal B(z,x,y)&=B_0(x)-zxB_1(x)
++\frac{zx(y+1)}y\bigl(\mathcal B(z,x,y)-B_0(x)\bigr)\notag\\
+&\quad-\frac{zxy}{(1-x)(x-y)}J(z,x)
++\frac{zxy}{(1-x)(1-y)}\mathcal A
++\frac{zxy}{(1-y)(x-y)}J(z,y).
+\label{B1509}
+\end{align}
+Clear denominators before making formal substitutions. Equation
+\eqref{B01509} gives
+$B_0(x)=1+zx\mathcal A/(1-x)-zx^2J(z,x)/(1-x)$.
+Set $y=f_z(x)=zx/(1-zx)$ in \eqref{B1509}, substitute this expression,
+and collect terms. The result is
+\begin{equation}\label{J1509}
+J(z,f_z(x))=c(z,x)J(z,x)+d(z,x)+e(z,x)\mathcal A(z),
+\end{equation}
+where, with $K(z,x)=1-x+zx+zx^2$,
+\begin{equation}\label{cde1509}
+\begin{aligned}
+c(z,x)&=\frac{(2zx-1)K(z,x)}{z(x-1)},\\
+d(z,x)&=\frac{(2zx-1)(zx+z-1)}{z(zx-1)},\qquad
+e(z,x)=-\frac{2x(zx+z-1)}{x-1}.
+\end{aligned}
+\end{equation}
+Thus the scalar reduction follows by rational algebra from the exact
+source model, not from a guessed coefficient recurrence.
+
+Define
+\begin{equation}\label{rho1509}
+\sigma=3-2\sqrt2,\quad \mu=\sigma^{-1}=3+2\sqrt2,\qquad
+X(z)=\frac{1-z-\sqrt{1-6z+z^2}}{2z},\quad X(0)=1.
+\end{equation}
+It satisfies $X=1+zX+zX^2$, so its Taylor coefficients are nonnegative.
+Put
+\begin{equation}\label{y1509}
+y(z)=\frac{X(z)-1}{2}=f_z(X(z)),\qquad
+X(\sigma)=1+\sqrt2,\quad y(\sigma)=1/\sqrt2.
+\end{equation}
+At $x=X(z)$, the kernel $K$ vanishes. The substitution is legitimate
+because every coefficient in $z$ of $J$ is a polynomial in $x$;
+intermediate divisions by $X-1=2z+O(z^2)$ are interpreted in Laurent
+series, or removed by clearing denominators. At that root,
+$d=y-1/y$ and $e=1/y$, whence
+\begin{equation}\label{boundary1509}
+\mathcal A=1-y^2+yJ(z,y).
+\end{equation}
+
+\subsection{Iterating in the contracting direction}
+Rearrange \eqref{J1509} in the opposite direction from class 214:
+\begin{equation}\label{back1509}
+J(z,x)=p(z,x)J(z,f_z(x))+q(z,x)+r_*(z,x)\mathcal A(z),
+\end{equation}
+where
+\begin{equation}\label{pqr1509}
+\begin{aligned}
+p(z,x)&=\frac{z(1-x)}{(1-2zx)K(z,x)},\\
+q(z,x)&=\frac{(1-x)(1-z-zx)}{(1-zx)K(z,x)},\\
+r_*(z,x)&=\frac{2zx(1-z-zx)}{(1-2zx)K(z,x)}.
+\end{aligned}
+\end{equation}
+For the orbit $x_j=f_z^{\,j}(x)$ of \eqref{orbit214}, put
+$P_0=1$, $P_j=\prod_{i=0}^{j-1}p(z,x_i)$, and define
+\begin{equation}\label{UV1509}
+U(z,x)=\sum_{j\ge0}P_jq(z,x_j),\qquad
+V(z,x)=\sum_{j\ge0}P_jr_*(z,x_j).
+\end{equation}
+Let $U_N,V_N$ stop at $j=N-1$. Finite iteration gives exactly
+\[
+J(z,x)=U_N(z,x)+V_N(z,x)\mathcal A(z)+P_NJ(z,x_N).
+\]
+For $x=y(z)=O(z)$, every $p(z,x_j)$ has positive $z$ valuation, so
+the last term tends coefficientwise to zero. Combining with
+\eqref{boundary1509} proves the formal identity
+\begin{equation}\label{F1509}
+\mathcal A(z)=\mathcal F(z,y(z)),\qquad
+\mathcal F(z,x)=\frac{1-x^2+xU(z,x)}{1-xV(z,x)}.
+\end{equation}
+Its denominator has constant term one. The essential additional analytic
+issue is to exclude zeros of this new denominator throughout the whole
+disc, not merely at the positive critical point.
+
+\subsection{A global nonzero denominator certificate}
+For $|z|\le\sigma$, positivity and \eqref{rho1509}--\eqref{y1509} give
+\[
+|z|<R:=43/250,\qquad |X(z)|<M:=483/200,\qquad
+|y(z)|<Y:=177/250.
+\]
+The algebraic kernel factors as
+\[
+K(z,x)=(1-x/X(z))(1-zX(z)x).
+\]
+Since $X$ is never zero and $y/X=z/(1-zX)$, at the first orbit point
+$x_0=y(z)$ the lower bound is
+\begin{equation}\label{k01509}
+|K(z,x_0)|\ge k_0:=(1-a)(1-RMY)>0,\qquad
+ a=R/(1-RM).
+\end{equation}
+The exact rational upper bounds
+\begin{equation}\label{first1509}
+\begin{aligned}
+\frac{R(1+Y)}{(1-2RY)k_0}&<\frac45,&
+\frac{2RY(1+R+RY)}{(1-2RY)k_0}&<\frac{17}{20},\\
+\frac{RY}{1-RY}&<\frac7{50}
+\end{aligned}
+\end{equation}
+imply respectively $|p(z,x_0)|<4/5$, $|r_*(z,x_0)|<17/20$,
+and $|x_1|<7/50$. Also
+$|q(z,x_0)|\le(1+Y)(1+R+RY)/((1-RY)k_0)$ is finite.
+
+For $|x|\le w:=7/50$, the simpler lower bound
+$|K(z,x)|\ge k_s:=1-w-Rw-Rw^2>0$ suffices. Direct rational
+inequalities give
+\begin{equation}\label{tailbounds1509}
+|p|<\tfrac14,\qquad |q|<2,\qquad
+|r_*|<\tfrac35|x|,\qquad |f_z(x)|<\tfrac9{50}|x|.
+\end{equation}
+For example, the upper bounds for $p$ and $r_*/x$ are
+$R(1+w)/((1-2Rw)k_s)$ and
+$2R(1+R+Rw)/((1-2Rw)k_s)$; the corresponding bounds for $q$ and
+$f_z(x)/x$ are $(1+w)(1+R+Rw)/((1-Rw)k_s)$ and $R/(1-Rw)$.
+This displays every finite inequality needed for \eqref{tailbounds1509}.
+
+The orbit satisfies $|x_j|\le w(9/50)^{j-1}$ for $j\ge1$.
+Normal convergence of both series \eqref{UV1509} follows by geometric
+majorants. In particular,
+\begin{equation}\label{denom1509}
+|yV(z,y)|\le Y\left(\frac{17}{20}
++\frac{(4/5)(3/5)(7/50)}{1-(1/4)(9/50)}\right)<\frac23.
+\end{equation}
+Hence $|1-yV(z,y)|>1/3$ throughout the closed disc. The factorization
+\eqref{k01509} is important: using only the crude first-step triangle
+bound would lose the strength required for this global conclusion.
+The formal identity \eqref{F1509} is therefore a convergent analytic
+representation in $|z|<\sigma$ without a presupposed growth estimate
+for the coefficients.
+
+There is also a two-variable neighborhood for $U,V$. On
+$|z|\le43/250$, $|x|\le709/1000$, one has
+\[
+|K(z,x)|\ge1-|x|-R|x|-R|x|^2>0,\qquad |p(z,x)|<5,
+\qquad |f_z(x)|<7/50.
+\]
+The later iterates obey \eqref{tailbounds1509}. All these inequalities
+have strict margins, so slightly larger polydiscs still work.
+Thus $U,V$ are holomorphic on a neighborhood of this closed polydisc;
+$\mathcal F$ is holomorphic near the compact critical curve
+$\{(z,y(z)):|z|\le\sigma\}$ by \eqref{denom1509}.
+
+Away from $z=\sigma$ on the boundary circle, the discriminant in
+\eqref{rho1509} is nonzero, so $X,y$ extend holomorphically. The
+nonzero denominators and contraction estimates persist locally.
+At $\sigma$, use a square-root coordinate for $y$ and the just-proved
+two-variable holomorphy. Compactness then supplies $\eta>0$ and
+$0<\phi<\pi/2$ such that $\mathcal A$ continues to the $\Delta$-domain
+\begin{equation}\label{delta1509}
+\{z:|z|<\sigma+\eta,\ z\ne\sigma,\ |\arg(z-\sigma)|>\phi\}.
+\end{equation}
+The next step proves that the possible singularity at $\sigma$ is real.
+
+\subsection{An exact positive critical derivative}
+Put $y_*=1/\sqrt2$. For fixed $z=\sigma$, the disc
+$|x-y_*|\le1/1000$ lies in $|x|<709/1000$. Its first product factor
+has modulus less than five; subsequent factors have modulus less than
+$1/4$. Since both subsequent $q$ and $r_*$ have modulus less than two,
+the omitted tails in \eqref{UV1509} satisfy, for $N\ge1$,
+\begin{equation}\label{UVtail1509}
+|U-U_N|,\ |V-V_N|\le E_N:=\frac{40}{3}4^{1-N}.
+\end{equation}
+Indeed, after the first factor the remaining geometric majorant is
+$2/(1-1/4)=8/3$. Cauchy's formula gives at $x=y_*$
+\begin{equation}\label{UVderiv1509}
+|U_x-(U_N)_x|,\ |V_x-(V_N)_x|\le1000E_N.
+\end{equation}
+
+The finite quantities are reproducible with rational interval arithmetic.
+Start with zero terminal values and use, backwards for $j=N-1,\ldots,0$,
+\[
+U_j=q(z,x_j)+p(z,x_j)U_{j+1},\qquad
+V_j=r_*(z,x_j)+p(z,x_j)V_{j+1}.
+\]
+For derivatives, set $\dot x_0=1$,
+$\dot x_{j+1}=z\dot x_j/(1-zx_j)^2$, and use, for example,
+\[
+\dot U_j=q_x(z,x_j)\dot x_j+
+ p_x(z,x_j)\dot x_j U_{j+1}+p(z,x_j)\dot U_{j+1}.
+\]
+Use the identical rule with $q,U$ replaced by $r_*,V$.
+All functions being differentiated are the displayed rational functions.
+Enclose $\sqrt2$ by scaled integer square roots, then form the intervals
+for $\sigma$ and $y_*$. At $N=24$, interval operations on the rational
+grid $10^{-60}\mathbb Z$, rounding every operation outward, followed by
+\eqref{UVtail1509}--\eqref{UVderiv1509} and quotient differentiation in
+\eqref{F1509}, give
+\begin{equation}\label{Fx1509}
+0.1631959191663560<\mathcal F_x(\sigma,y_*)
+<0.1631959201118698.
+\end{equation}
+In particular, the derivative is strictly positive. This is an exact
+finite interval certificate plus a proved infinite tail, not a
+floating-point sign test.
+
+Set $t=\sqrt{1-z/\sigma}$ and $z=\sigma(1-t^2)$. The local branch is
+\begin{equation}\label{local1509}
+y(z)=\frac{1-3z-t\sqrt{1-\sigma z}}{4z}
+=y_*-\kappa t+O(t^2),\qquad
+\kappa=\frac{\sqrt{1-\sigma^2}}{4\sigma}>0.
+\end{equation}
+Since $\mathcal F$ is holomorphic near $(\sigma,y_*)$, the expansion
+\begin{equation}\label{Blocal1509}
+\mathcal F\left(\sigma(1-t^2),
+\frac{1-3\sigma(1-t^2)-t\sqrt{1-\sigma^2(1-t^2)}}{4\sigma(1-t^2)}
+\right)=\sum_{j\ge0}\widehat h_j t^j
+\end{equation}
+converges for sufficiently small $|t|$. In particular,
+\begin{equation}\label{C1509}
+\widehat h_1=-\kappa\mathcal F_x(\sigma,y_*)<0,\qquad
+\widehat C=\frac{\kappa\mathcal F_x(\sigma,y_*)}{2\sqrt\pi}>0.
+\end{equation}
+A rational Machin-series enclosure for $\pi$, combined with the same
+outward interval arithmetic, proves
+\begin{equation}\label{C1509digits}
+0.0660857086342079<\widehat C<0.0660857090170910.
+\end{equation}
+The more precise numerical value $0.066085708825649431\ldots$ was
+already reported by V\'aclav Kot\v{e}\v{s}ovec in A279567 on
+7 October 2021~\cite{oeis1509}. The short certificate \eqref{C1509digits} suffices for positivity;
+the higher-jet certificate below proves a tighter enclosure.
+
+\subsection{The second all-order theorem}
+\begin{theorem}\label{main1509}
+For A279567, the radius of convergence is $\sigma=3-2\sqrt2$,
+with $\sigma$ the unique dominant singularity. For every fixed $K\ge0$,
+\begin{equation}\label{asym1509}
+b_n=\widehat C\mu^n n^{-3/2}
+\left(1+\sum_{j=1}^{K}\frac{\widehat c_j}{n^j}
++O(n^{-K-1})\right),\qquad \mu=3+2\sqrt2.
+\end{equation}
+The amplitude is \eqref{C1509}, certified by \eqref{C1509digits}.
+Using $g_j$ from \eqref{grec}, all corrections are given by
+\begin{equation}\label{Chatrec}
+\widehat C\widehat c_m=\sum_{k=0}^{m}
+\frac{\widehat h_{2k+1}g_{m-k}(k+1/2)}{\Gamma(-k-1/2)}.
+\end{equation}
+In particular,
+\[
+\widehat c_1=\frac38-\frac32\frac{\widehat h_3}{\widehat h_1},\qquad
+\widehat c_2=\frac{25}{128}-\frac{45}{16}\frac{\widehat h_3}{\widehat h_1}
++\frac{15}{4}\frac{\widehat h_5}{\widehat h_1}.
+\]
+The counting-index inverse of Section~\ref{secinverse} applies with
+$4,C,c_j$ replaced by $\mu,\widehat C,\widehat c_j$.
+\end{theorem}
+\begin{proof}
+The nonzero coefficient \eqref{C1509} makes $\sigma$ a genuine
+square-root singularity. The convergence and continuation leading to
+\eqref{delta1509} prove radius and uniqueness. Apply exactly the
+transfer argument of \eqref{finitegamma}, replacing $4^n,h_j$ by
+$\mu^n,\widehat h_j$. More explicitly, expansion through degree
+$2K+4$ has remainder $O(t^{2K+5})$; even powers are polynomials in
+$z$, the last retained odd term contributes at most
+$O(\mu^nn^{-K-5/2})$, and the remaining terms are smaller after
+transfer. The gamma-ratio recurrence proves \eqref{Chatrec} and
+\eqref{asym1509}. This also proves source equation (4.10), stated there
+as a numerical leading law. The convergent local series permits
+certification of each fixed coefficient by finite orbit jets and
+Cauchy bounds; no numerical evaluation of a correction is required for
+the theorem.
+\end{proof}
+
+\subsection{Certified correction jets for class 1509}
+The preceding $N=24$ certificate is enough to prove positivity.
+A separate degree-five jet calculation gives a much tighter amplitude
+and certifies the first two relative corrections. Let
+$h=1/10000$ and retain the exact local parametrization
+\eqref{local1509}. On $|t|\le h$, subtraction at zero gives
+\[
+y(t)-y_*=
+\frac{t^2-t\sqrt{1-\sigma^2+\sigma^2t^2}}{4\sigma(1-t^2)}.
+\]
+The radicand has modulus less than one, so
+\begin{equation}\label{localbox1509}
+|y(t)-y_*|\le\frac{h^2+h}{4\sigma(1-h^2)}<\frac1{5000}.
+\end{equation}
+Using the rational bounds
+$\sigma<171573/10^6$, $y_*<707107/10^6$, and $\sigma>171/1000$,
+one obtains $|z|<R$, $|y|<Y$, $|X|=|1+2y|<M$ with the same
+$R,M,Y$ used above. The identities $K(z,X)=0$ and $y=f_z(X)$
+still hold throughout this $t$ disc, including both signs of $t$.
+Therefore the kernel factorization, first-step bound $|p_0|<4/5$,
+later bound $|p_j|<1/4$, and $|yV|<2/3$ apply on both branches.
+This uses direct complex bounds, not positivity improperly extended
+to the second branch.
+
+For $N$ terms the uniform tails now satisfy
+\[
+|U-U_N|,\ |V-V_N|\le \widetilde E_N
+:=\frac{32}{15}4^{1-N}.
+\]
+The first $q$ bound plus $(4/5)(8/3)$ is less than eight, so
+$|U|,|U_N|<8$. For the numerator and denominator of
+\eqref{F1509}, write $B=1-y^2+yU$ and $D=1-yV$, and define
+$B_N,D_N$ with the finite sums. Then $|B|<8$, $|D|>1/3$, and
+$|B-B_N|,|D-D_N|\le Y\widetilde E_N$.
+At $N=96$, $Y\widetilde E_N<1/12$, hence $|D_N|>1/4$. Thus
+\begin{equation}\label{quotienttail1509}
+\left|\frac BD-\frac{B_N}{D_N}\right|
+\le\frac{|B-B_N|}{|D_N|}
++\frac{|B|\,|D-D_N|}{|D|\,|D_N|}
+<100\widetilde E_N.
+\end{equation}
+By Cauchy's coefficient estimate,
+\begin{equation}\label{jettail1509}
+\left|\widehat h_j-[t^j]\mathcal F_N(z(t),y(t))\right|
+\le100\widetilde E_N h^{-j}.
+\end{equation}
+There is no factorial in this coefficient bound.
+
+The finite Taylor jets are evaluated with the same outward rational
+interval arithmetic as before. Addition and multiplication are
+componentwise sum and truncated convolution. If $A(t)B(t)=1$,
+the reciprocal recurrence is
+\[
+B_0=A_0^{-1},\qquad
+B_n=-A_0^{-1}\sum_{k=1}^{n}A_kB_{n-k}.
+\]
+For the radical in \eqref{local1509}, its degree-four jet is
+\[
+s+\frac{\sigma^2}{2s}t^2-\frac{\sigma^4}{8s^3}t^4,
+\qquad s=\sqrt{1-\sigma^2}.
+\]
+Multiplication by $t$ means this is sufficient through degree five.
+After widening the finite jet coefficients by \eqref{jettail1509},
+the formulas of \eqref{C1509} and Theorem~\ref{main1509} give the
+following conservative strict enclosures:
+\begin{equation}\label{tight1509}
+\begin{gathered}
+0.066085708825649431003670013119332<\widehat C,\\
+\widehat C<0.066085708825649431003670013119333,\\[3pt]
+8.0552783200743063565266608644113<\widehat c_1,\\
+\widehat c_1<8.0552783200743063565266608644114,\\[3pt]
+-17.49290139551774359177529920663<\widehat c_2,\\
+\widehat c_2<-17.49290139551774359177529920662.
+\end{gathered}
+\end{equation}
+These bounds certify the two corrections, as well as the indicated
+amplitude digits. All higher correction coefficients remain specified
+exactly by \eqref{Chatrec}; this report numerically certifies only the
+first two relative corrections for each class.
+
+\section{The counting index inverse}\label{secinverse}
+\subsection{Leading inverse and formal correction recurrence}
+The inverse considered here takes a target count to its required index.
+It is not the compositional inverse of the generating function $A(z)$.
+The following notation applies to either sequence: let $\mu_0$ be its
+growth constant, $C_0$ its positive amplitude, and $c_j^{(0)}$ its
+relative corrections. Thus $(\mu_0,C_0,c_j^{(0)})$ equals
+$(4,C,c_j)$ for A279544 and $(3+2\sqrt2,\widehat C,\widehat c_j)$
+for A279567. In this section abbreviate them to $\mu,C,c_j$,
+and write $L=\log\mu$ and $\beta=3/2$. For sufficiently large
+real $Y>0$, let
+\begin{equation}\label{Wleading}
+u(Y)=-\frac{\beta}{L}\,
+W_{-1}\left(-\frac{L}{\beta}\left(\frac CY\right)^{1/\beta}\right).
+\end{equation}
+The branch $W_{-1}$ is the real branch with values at most $-1$ on
+$[-1/e,0)$~\cite{lambert}. It selects the large solution of
+\begin{equation}\label{leadingeq}
+C e^{Lu}u^{-\beta}=Y.
+\end{equation}
+The principal branch would select the small solution and would be
+incorrect for this counting inverse. In logarithmic form,
+\begin{equation}\label{logleading}
+u(Y)=\frac{\log Y+\beta\log\log Y-\log C-\beta\log L}{L}
++O\left(\frac{\log\log Y}{\log Y}\right).
+\end{equation}
+
+Let the logarithmic correction coefficients be defined formally by
+\begin{equation}\label{ddef}
+\log\left(1+\sum_{j\ge1}c_jw^j\right)=\sum_{j\ge1}d_jw^j.
+\end{equation}
+Thus $d_1=c_1$, $d_2=c_2-c_1^2/2$, and in general
+\begin{equation}\label{drec}
+d_m=c_m-\frac1m\sum_{j=1}^{m-1}j d_jc_{m-j}.
+\end{equation}
+There is a unique formal inverse expansion
+\begin{equation}\label{yinverse}
+y(Y)=u(Y)+\sum_{j\ge1}e_j u(Y)^{-j},
+\end{equation}
+obtained by setting all powers of $u^{-1}$ to zero in
+\begin{equation}\label{erec}
+L(y-u)-\beta\log(y/u)+\sum_{j\ge1}d_jy^{-j}.
+\end{equation}
+At order $u^{-m}$, the new unknown occurs only as $Le_m$; hence this
+is an unambiguous recursion. In particular,
+\begin{equation}\label{e123}
+\begin{aligned}
+e_1&=-d_1/L,\\
+e_2&=-\beta d_1/L^2-d_2/L,\\
+e_3&=-\beta^2d_1/L^3-\beta d_2/L^2-d_1^2/L^2-d_3/L.
+\end{aligned}
+\end{equation}
+This is the smooth inverse of the asymptotic model. It does not impose
+a canonical interpolation on the discrete sequence $a_n$.
+
+\subsection{Strict increase and integer threshold brackets}
+Appending the value $n$ to any admissible length-$n$ sequence gives
+an admissible length-$(n+1)$ sequence: a new forbidden triple would
+have its last, maximal entry at $k=n+1$, which is impossible in
+\eqref{avoid214}. The sequence
+$(0,1,\ldots,n-1,n-1)$ is also admissible and is not in the image.
+For $n=1$ it is $(0,0)$. Therefore $a_{n+1}>a_n$ for $n\ge1$.
+For class 1509, appending the maximum gives the same injection,
+and the all-zero sequence supplies an extra valid object. Thus
+$b_{n+1}>b_n$ for $n\ge1$ as well. In the theorem below, $a_n$
+denotes either of these two sequences with its matching constants.
+
+\begin{theorem}\label{inverse}
+Let $N(Y)=\min\{n\ge0:a_n\ge Y\}$ and, for a fixed integer $K\ge0$,
+put
+\[
+y_K(Y)=u(Y)+\sum_{j=1}^{K}e_j u(Y)^{-j}.
+\]
+There are constants $E_K>0$ and $Y_K$ such that, for every $Y\ge Y_K$,
+\begin{equation}\label{ceilingbracket}
+\ceil{y_K(Y)-E_Ku(Y)^{-K-1}}
+\le N(Y)\le
+\ceil{y_K(Y)+E_Ku(Y)^{-K-1}}.
+\end{equation}
+For sufficiently large $Y$, these bounds contain at most two adjacent
+integer candidates. The convention at equality is $N(a_n)=n$ for
+$n\ge2$.
+\end{theorem}
+\begin{proof}
+The coefficient expansion implies, for every fixed $K$,
+\[
+\log a_n=Ln-\beta\log n+\log C+
+\sum_{j=1}^{K}d_jn^{-j}+O(n^{-K-1}).
+\]
+Let $F_K(x)=Lx-\beta\log x+\log C+\sum_{j=1}^{K}d_jx^{-j}$.
+Choose $D$ and a starting index so that the error at every subsequent
+integer is bounded in absolute value by $Dx^{-K-1}$. The smooth
+functions $F_K(x)\pm Dx^{-K-1}$ are eventually strictly increasing,
+because their derivatives tend to $L>0$.
+
+Invert these two envelopes at $\log Y$. Formal substitution from
+\eqref{erec} gives $F_K(y_K)-\log Y=O(u^{-K-1})$; the mean value
+theorem, using a fixed positive lower derivative bound, puts both
+inverse roots at $y_K+O(u^{-K-1})$. If an integer lies below the
+inverse root of the upper envelope, its count is below $Y$. Every
+integer at or above the inverse root of the lower envelope has count
+at least $Y$. Applying the corresponding ceilings gives
+\eqref{ceilingbracket}, after enlarging the fixed constant $E_K$.
+Since the real interval has length $2E_Ku^{-K-1}\to0$, its ceilings
+are eventually equal or adjacent.
+\end{proof}
+Already at $K=0$, the real bracket width is $O(1/u)$, not $O(1)$.
+It is essential to retain both ceilings: a target may lie arbitrarily
+close to an exact sequence value, so unconditional rounding of $y_K$
+or an unconditional single ceiling is not justified. The proof gives
+existence of $E_K,Y_K$, but this report supplies no effective numerical
+values for them. The theorem is therefore not an executable certified
+threshold routine for a specified finite target.
+
+\section{Reproducibility and limitations}
+The companion package contains this standalone \LaTeX{} source, the
+rendered PDF, portable exact checks and fixed data, and deterministic
+build and archive scripts. The checks distinguish the 29 displayed
+OEIS A279544 prefix terms and 26 displayed A279567 prefix terms from
+longer internally generated coefficient lists. Direct brute-force
+counting through $n=8$ independently verifies both forbidden-relation
+models. For each class, an exact orbit-series construction and a state
+recurrence independently agree at all 81 indices $n=0,\ldots,80$.
+The class-1509 reconstruction uses the rational orbit quotient. These finite checks identify the models and catch algebraic
+or indexing mistakes; they do not prove the asymptotic assertions by
+sampling.
+
+The amplitude check uses rational recurrence \eqref{criticalrec}, its
+proved infinite tail \eqref{derivtail}, rational arctangent intervals,
+and exact integer square roots. The class-214 correction check uses rational
+jets and the uniform analytic estimate \eqref{Htail}. The class-1509
+checks certify the global denominator bound \eqref{denom1509},
+the critical derivative with its Cauchy tail, and the higher-jet
+bounds \eqref{quotienttail1509}--\eqref{jettail1509}. Every decimal
+interval is rounded outward and checked against its rational
+endpoints. The mathematical justification for infinite convergence,
+continuation and coefficient transfer is in this report.
+
+The README describes the precise commands, tested toolchain, fixture
+schema, checks and failure tests. The package inventory is closed:
+changed, missing and unexpected files are rejected. Checksums detect
+changes but are not authenticated signatures. The reproducibility
+claim is same-toolchain replay in fresh directories, rather than
+identity across arbitrary TeX, font or compression versions.
+
+The result establishes the source's class-214 and class-1509 leading
+asymptotic laws and all fixed algebraic orders, with their counting-index
+inverses in the
+stated sense. It does not establish nonalgebraicity or non-$D$-finiteness,
+solve every neighboring inversion class, or supply a complete
+exponentially improved expansion. The source comparison is explicit
+and bounded; no global literature-priority or external peer-review
+claim is made.
+
+\section{Further research questions}
+The proofs isolate several concrete next questions without presuming
+their answers.
+\begin{enumerate}[label=\arabic*.]
+\item \textbf{Effective inverse thresholds.}
+Can one turn the coefficient-transfer remainder into explicit constants
+$E_K,Y_K$ in \eqref{ceilingbracket}? This would give a finite-target
+certified inverse routine, with exact recurrence checks only at the
+remaining one or two candidate indices.
+\item \textbf{Algebraic and differential status.}
+Do these generating functions fail to be algebraic or $D$-finite, as
+suggested in the source? The present local square-root descriptions
+do not decide either question.
+\item \textbf{Secondary singularities and exponential improvement.}
+Can the orbit representations be continued farther, and can their
+secondary singularities and exponentially small coefficient
+contributions be classified? The bound $R<1/2$ in the class-214
+continuation proof is a sufficient domain for this argument, not a
+claim of a singularity at $1/2$.
+\item \textbf{Other catalytic kernels.}
+Which additional inversion-sequence classes admit a contracting
+orbit representation with an equally effective nonzero-denominator
+certificate? The class-1509 quotient illustrates a new obstruction
+that must be handled before transferring a kernel's square root.
+\end{enumerate}
+
+\begin{thebibliography}{9}
+\bibitem{bb}
+N. Britt and N. R. Beaton,
+\emph{Completing the enumeration of inversion sequences avoiding
+triples of relations}, arXiv:2512.21943v3, 29 September 2026.
+Sections 3.5, 3.6 and 4.2, equations (3.31)--(3.37), (4.8) and (4.10).
+\url{https://arxiv.org/html/2512.21943v3}.
+\bibitem{oeis214}
+OEIS Foundation, \emph{A279544}, accessed 2 October 2026.
+\url{https://oeis.org/A279544}.
+\bibitem{oeis1509}
+OEIS Foundation, \emph{A279567}, accessed 2 October 2026.
+\url{https://oeis.org/A279567}.
+\bibitem{fs}
+P. Flajolet and R. Sedgewick, \emph{Analytic Combinatorics},
+Cambridge University Press, 2009, Chapter VI.
+\url{https://ac.cs.princeton.edu/home/}.
+\bibitem{lambert}
+R. M. Corless, G. H. Gonnet, D. E. G. Hare, D. J. Jeffrey and D. E. Knuth,
+On the Lambert $W$ function, \emph{Advances in Computational Mathematics}
+\textbf{5} (1996), 329--359.
+\url{https://doi.org/10.1007/BF02124750}.
+\end{thebibliography}
+\end{document}
