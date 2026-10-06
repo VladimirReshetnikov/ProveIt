@@ -117,7 +117,7 @@ theorem stage139_support_of_stage137_stage138 {N : Nat} [NeZero N]
     (h139 : IsStage139Data S E G H J) :
     J.D ⊆ G.S.carrier.product (translateFinset J.U.carrier G.y) := by
   classical
-  rcases h137 with
+  rcases h137.1 with
     ⟨_hSstep, _hSproper, _hSsub, _hSlower, hBsupport,
       _hBlargeOne, _hBlargeTwo, _hlinear⟩
   rcases h138 with

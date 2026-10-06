@@ -133,6 +133,9 @@ import GowersSzemeredi.Proofs13QuadraticRecurrence
 import GowersSzemeredi.Proofs13BilinearRestriction
 import GowersSzemeredi.Proofs13RowCoefficients
 import GowersSzemeredi.Proofs13RowSelection
+import GowersSzemeredi.Proofs13CommonRows
+import GowersSzemeredi.Proofs13RowLinearization
+import GowersSzemeredi.Proofs13CoefficientExtraction
 import GowersSzemeredi.Proofs14Fourier
 import GowersSzemeredi.Proofs14Configurations
 import GowersSzemeredi.Proofs14Arrangements
