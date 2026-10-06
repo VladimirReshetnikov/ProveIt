@@ -1,0 +1,17 @@
+PYTHON ?= python3
+LATEXMK ?= latexmk
+DOCUMENT := transport_rigidity
+
+.PHONY: all pdf check clean
+all: check pdf
+
+pdf: $(DOCUMENT).pdf
+
+$(DOCUMENT).pdf: $(DOCUMENT).tex
+	$(LATEXMK) -pdf -interaction=nonstopmode -halt-on-error $(DOCUMENT).tex
+
+check:
+	$(PYTHON) checks.py --output verification.json
+
+clean:
+	$(LATEXMK) -c $(DOCUMENT).tex

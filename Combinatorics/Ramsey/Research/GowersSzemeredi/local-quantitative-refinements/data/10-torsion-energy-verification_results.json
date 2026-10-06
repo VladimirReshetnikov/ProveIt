@@ -1,0 +1,102 @@
+{
+  "description": "Finite diagnostics; general claims are proved in the article.",
+  "completed_at_utc": "2026-10-06T20:18:06.261318+00:00",
+  "python": "3.12.14",
+  "dependencies": {
+    "numpy": "2.3.5",
+    "matplotlib": "3.10.8"
+  },
+  "all_passed": true,
+  "checks": [
+    {
+      "script": "verification/verify_density_phase.py",
+      "sha256": "b1b5d5c4ce3c438dfb3165d9284de3c81bddd6a6606f229aee76579fdfe176f7",
+      "exit_code": 0,
+      "elapsed_seconds": 14.12,
+      "stdout": "PASS: 1230 exact density profiles; 4098 tail bounds\nPASS: 2532 exact exceptional-set bounds; 45 sharp-tail equalities\nPASS: 39648 phase partitions, covering 1408790 cells\nCoverage, length, circular approximation and half-angle checks are exact.\nComplex disc distances were checked with floating-point tolerance 1e-12.\n",
+      "stderr": ""
+    },
+    {
+      "script": "verification/verify_structural.py",
+      "sha256": "f61939f126399c6099cdf9cbc56ccb299265247e65e69cd7d3e6628efadfd7e8",
+      "exit_code": 0,
+      "elapsed_seconds": 0.594,
+      "stdout": "PASS: 23538 exhaustive fibre instances over F_2, F_3, F_5\nPASS: 41 exact weighted/eight-tuple count instances\n",
+      "stderr": ""
+    },
+    {
+      "script": "verification/verify_torsion.py",
+      "sha256": "d38523fc9390ebadd034eea9b83744a92e1fc82243278a8037c512ab3393d052",
+      "exit_code": 0,
+      "elapsed_seconds": 0.264,
+      "stdout": "{\n  \"seed\": 20261006,\n  \"status\": \"all checks passed\",\n  \"mixed_Lp\": {\n    \"cases\": {\n      \"arithmetic_progressions\": 216,\n      \"general_coefficients\": 216\n    },\n    \"maximum_left_over_right\": {\n      \"arithmetic_progressions\": 0.9943457714033831,\n      \"general_coefficients\": 0.9943457714033831\n    }\n  },\n  \"heterogeneous_indicator_count\": {\n    \"cases\": 210,\n    \"maximum_left_over_right\": 0.5946035575013605\n  },\n  \"exact_witnesses\": {\n    \"sharp_characteristic_two\": [\n      {\n        \"dimension\": 1,\n        \"U2_fourth_power\": \"1/2\"\n      },\n      {\n        \"dimension\": 2,\n        \"U2_fourth_power\": \"1/4\"\n      },\n      {\n        \"dimension\": 3,\n        \"U2_fourth_power\": \"1/8\"\n      },\n      {\n        \"dimension\": 4,\n        \"U2_fourth_power\": \"1/16\"\n      }\n    ],\n    \"Z3_counterexample_U3_eighth_power\": \"49/81\",\n    \"endpoint_progression_average_in_both_witnesses\": 1\n  },\n  \"scope\": \"Finite diagnostics supplement the written proofs.\"\n}\n",
+      "stderr": "",
+      "structured_output": {
+        "seed": 20261006,
+        "status": "all checks passed",
+        "mixed_Lp": {
+          "cases": {
+            "arithmetic_progressions": 216,
+            "general_coefficients": 216
+          },
+          "maximum_left_over_right": {
+            "arithmetic_progressions": 0.9943457714033831,
+            "general_coefficients": 0.9943457714033831
+          }
+        },
+        "heterogeneous_indicator_count": {
+          "cases": 210,
+          "maximum_left_over_right": 0.5946035575013605
+        },
+        "exact_witnesses": {
+          "sharp_characteristic_two": [
+            {
+              "dimension": 1,
+              "U2_fourth_power": "1/2"
+            },
+            {
+              "dimension": 2,
+              "U2_fourth_power": "1/4"
+            },
+            {
+              "dimension": 3,
+              "U2_fourth_power": "1/8"
+            },
+            {
+              "dimension": 4,
+              "U2_fourth_power": "1/16"
+            }
+          ],
+          "Z3_counterexample_U3_eighth_power": "49/81",
+          "endpoint_progression_average_in_both_witnesses": 1
+        },
+        "scope": "Finite diagnostics supplement the written proofs."
+      }
+    },
+    {
+      "script": "verification/verify_polynomial.py",
+      "sha256": "3ce1d548ab70b89bc863f731a1a6204f97f8c502e245933ba178b3c386aaca4f",
+      "exit_code": 0,
+      "elapsed_seconds": 0.987,
+      "stdout": "{\n  \"prime\": 5,\n  \"defining_cubic\": \"T^3+T+1\",\n  \"irreducible_cubic\": true,\n  \"determinant_evaluations_checked\": 125,\n  \"norm_zero_count\": 1,\n  \"color_class_sizes\": [\n    125,\n    125,\n    125,\n    125,\n    125\n  ],\n  \"ordered_nontrivial_4aps_checked\": 390000,\n  \"symmetric_4aps_found\": 0,\n  \"status\": \"PASS\"\n}\n",
+      "stderr": "",
+      "structured_output": {
+        "prime": 5,
+        "defining_cubic": "T^3+T+1",
+        "irreducible_cubic": true,
+        "determinant_evaluations_checked": 125,
+        "norm_zero_count": 1,
+        "color_class_sizes": [
+          125,
+          125,
+          125,
+          125,
+          125
+        ],
+        "ordered_nontrivial_4aps_checked": 390000,
+        "symmetric_4aps_found": 0,
+        "status": "PASS"
+      }
+    }
+  ]
+}
