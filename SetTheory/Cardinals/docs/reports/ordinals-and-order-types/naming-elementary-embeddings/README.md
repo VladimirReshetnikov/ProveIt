@@ -574,7 +574,12 @@ Theorem 35.1 (the supply of types under forcing) complements Part II's Theorem
   treats urelements or cites Glazer–Yao or Yao's dissertation. (Corrected 4
   October 2026, batch 90: this sentence had said "no other report", which was
   already stale for Parts VI–VII; the article's sentence in Section 1.4 named
-  them and gains a dated note for Parts VIII and XII.)
+  them and gains a dated note for Parts VIII and XII.) (Corrected 6
+  October 2026, batch 114: `../bounded-width-power-set-compression/` also
+  cites Glazer–Yao (arXiv:2602.21970), as motivation only; it works in ZF
+  without atoms, names this report only for the shared citation, does not
+  cite Yao's dissertation and shares no theorem. The same sentence in
+  Section 1.4 gains a dated note.)
 
 **Stale claims.** Part I's dated note "Status of the questions" (Section 10)
 said that none of its twelve questions is answered in ProveIt; a dated
@@ -897,7 +902,10 @@ were added.
 The committed PDF was built this way with MiKTeX on 4 October 2026:
 128 pages (34 before Part II, 69 before Part III); no errors or warnings, no
 undefined references or citations, no multiply defined labels, no duplicate
-PDF destinations, no overfull or underfull boxes. The delivered Part I source,
+PDF destinations, no overfull or underfull boxes. Rebuilt the same way after
+the batch-114 note of 6 October 2026: still 128 pages with the same Part
+boundaries, every label with its number, and the same clean log. The
+delivered Part I source,
 built the same way, gives 27 pages and one duplicate-destination warning
 (`page.1`), removed as described under Labels.
 

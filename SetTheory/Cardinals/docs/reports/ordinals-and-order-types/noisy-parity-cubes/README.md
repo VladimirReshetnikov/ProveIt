@@ -281,6 +281,16 @@ proof modules, not files already present" therefore still holds.
   Proposition 8.3 here (`Σ min(q_i, 1−q_i) < ∞` for total parity labels).
   Different symmetries; neither is an instance of the other; neither source
   cites the other. Its `η` is an unrelated tolerance.
+- `ordinals-and-order-types/random-bits-arithmetic-cuts` (**see also**; batch
+  114, same placement commit, dated 6 October 2026): its Theorem 3.1
+  (`rbc:thm:product`) gives the almost-sure coding cut
+  `Cut(P) = Cut(b) ∩ SumCut(ε)` of a random predicate on a countable model
+  of PA, and its Theorem 9.2 (`rbc:thm:budget-atomic`) shows that bounded
+  finite catalogs suffice iff `Σ ε_i < ∞`, with `ε_i = min(p_i, 1 − p_i)`:
+  the threshold of Proposition 8.3 here (`np:found:biased`), reached by the
+  same first Borel–Cantelli step (almost every point is a finite
+  modification of the modal sequence). Different theorems; neither source
+  cites the other.
 
 **Stale claims.** None. The source's three repository statements (the Lean
 module's content, the box-games report's subject and status, the
