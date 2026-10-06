@@ -331,6 +331,20 @@ Answered inside the merge, with dated notes: Report 123's open leading law,
 its constant, log-periodic modulation and an inverse with bounded error (by
 Part I). **Nothing in the two manuscripts was found to be wrong.**
 
+**Independent check of the write (5 October 2026).** An adversarial check
+made by the intake after the write (`4d3a6730f`) read Theorem 24.1 of
+`a377922-corner-polyhedra-schnyder` and its proof in full and confirmed that
+Proposition 26.2 follows from that proof unchanged (the start enters only
+through the first radius `r_0(n) = max{R_0, L_n²}`, the endpoints only
+through the seeds, their largest radii, the reversal ratio and first-hit
+uniqueness; no step uses irreducibility or a return to the origin). It also
+re-derived Remark 26.1 and Corollary 26.3, recomputed `κ` to 35 digits,
+counted A279571 from the pattern definition (agreeing with the b-file for
+`n ≤ 18`), reproduced every printed number and the four `N(y) = ⌈v(y)⌉`
+cases, and confirmed the "conditional mean zero" note, the transseries
+citations (instances) and the merge. No item needed a correction; the record
+is a dated note at the end of Section 27.
+
 ## Relation to neighbouring reports
 
 All in `SetTheory/Cardinals/docs/reports/generating-functions-and-asymptotics/oeis-sequence-asymptotics/`:
@@ -468,7 +482,7 @@ latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
 pdfLaTeX (MiKTeX), in a scratch copy; commit only `article.pdf`. The write's
-build: 50 pages, no errors, no warnings, no undefined or multiply defined
+build: 51 pages after the independent check (50 at the write), no errors, no warnings, no undefined or multiply defined
 references or citations, no duplicate destinations, no overfull or underfull
 boxes. The log carries two "Infinite glue shrinkage found in box being
 split" messages from the front matter's two longtables breaking across
