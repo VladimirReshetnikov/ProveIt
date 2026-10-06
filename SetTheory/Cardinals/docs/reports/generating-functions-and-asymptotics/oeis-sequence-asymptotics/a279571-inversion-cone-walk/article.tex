@@ -35,18 +35,153 @@
 \newcommand{\dett}{\sqrt{\det\Sigma}}
 \DeclareMathOperator{\dist}{dist}
 \DeclareMathOperator{\Impart}{Im}
-\hypersetup{pdftitle={Report 125 A279571 leading equivalent and threshold inverse},pdfauthor={}}
+\usepackage{xurl}
+\usepackage{longtable,array}
+% Notes added when the two manuscripts were merged (batch 104).
+\newenvironment{writenote}[1][]{\par\smallskip\begingroup\small
+ \noindent\textbf{[write]}\if\relax\detokenize{#1}\relax\else~\textbf{#1.}\fi\ }%
+ {\par\endgroup\smallskip}
+\newcommand{\wtag}{\textup{\textbf{[write]}}}
+\newenvironment{partabstract}{\begin{quote}\small\noindent\textbf{Abstract of this Part (as delivered).}\ }{\end{quote}}
+\newcommand{\partsource}[1]{\par\noindent\begin{minipage}{\textwidth}\small #1\end{minipage}\par\medskip}
+\newcommand{\file}[1]{\textup{\nolinkurl{#1}}}
+\hypersetup{pdftitle={Inversion sequences avoiding 100, 101, 201 (OEIS A279571)},pdfauthor={},pdfsubject={Merged report a279571-inversion-cone-walk (batch 104): the leading equivalent and a harmonic constant (Report 125), the exact logarithmic exponent and non-D-finiteness (Report 123)}}
+\title{\textbf{Inversion sequences avoiding 100, 101, 201 (OEIS A279571)}\\[7pt]
+\large The leading equivalent and the cone exponent}
+\author{Two research reports of one external research session\\(bundle Reports 125 and 123), merged into one ProveIt report}
+\date{Parts I and II: 2 October 2026\quad merged: 5 October 2026}
 \begin{document}
-\begin{center}
-{\small REPORT 125}\par\vspace{8pt}
-{\LARGE\bfseries A279571: the leading equivalent}\par
-\vspace{6pt}
-{\large A positive harmonic constant and a sharp threshold inverse}\par
-\vspace{9pt}
-{\small 2 October 2026}\par
-{\small Standalone proof and exact finite-check companion}
-\end{center}
+\hypersetup{pageanchor=false}
+\maketitle
 \begin{abstract}
+Let $a_n$ count the inversion sequences of length $n$ that avoid the patterns $100$, $101$ and $201$: OEIS A279571, Class 2106 of Britt and Beaton. A positive change of weights turns Britt and Beaton's generating tree into a centred Markov-additive walk with two colours and unbounded steps in the quadrant; its effective covariance gives the wedge angle $\theta=\arccos(2/\sqrt7)$ and the irrational exponent $p=\pi/\theta\in(4,5)$. This report prints two manuscripts as Parts~I and~II. Part~I (Report~125) proves
+$a_n\sim C_A9^nn^{-\kappa}$ with $\kappa=1+p\approx5.40169$ and $0<C_A<\infty$, where $C_A$ is characterized by normalized forward and reversed killed harmonic functions and a positive endpoint series; on the way it proves a killed local limit theorem at every fixed pair of states. It also proves a threshold inverse with an explicit real centre and a ceiling bracket of vanishing width, that $1/9$ is the only singularity of the generating function on its circle of convergence, and that the generating function is not D-finite over $\mathbb C(z)$. Part~II (Report~123, whose archive was created 49 minutes earlier) proves the weaker law $a_n=9^nn^{-\kappa+o(1)}$ by geometric annuli and exact-time gluing; it is the earlier proof of the exponent, of the circle statement and of non-D-finiteness, and it alone has the functional equations, kernel and discriminant of the generating tree. A remark added in the merge shows that Report~123's walk satisfies hypotheses (H1)--(H4) of the logarithmic cone theorem of the neighbouring report \file{a377922-corner-polyhedra-schnyder} (its Theorem~24.1) but not the seed hypothesis (H5) at the origin endpoints that the theorem states, since no legal path returns to the origin; the theorem's proof, run at fixed endpoint states, gives Report~123's exponent. No amplitude digits, remainder rate, correction expansion or local expansion at $1/9$ is proved. The report is unrefereed, and nothing in it is formalized.
+\end{abstract}
+\hypersetup{pageanchor=true}
+\setcounter{tocdepth}{1}
+{\small\setlength{\parskip}{0pt}\tableofcontents}
+\newpage
+
+\section*{Guide to this report}\label{icw:sec:guide}
+\addcontentsline{toc}{section}{Guide to this report}
+The two Parts are two manuscripts of the session bundle of Reports 1--243 (arrival commit \texttt{60f54ea06}), placed in this directory by commit \texttt{612787fb4} (batch~104). Both are dated 2~October 2026. Report~123 is the earlier (its archive was created at 14:23:20 UTC, Report~125's at 15:12:25 UTC), but Report~125 proves every statement of Report~123's main theorem or a stronger one, under the same hypotheses, so it is the base and comes first:
+\begin{center}
+\small
+\begin{tabular}{@{}l l >{\raggedright\arraybackslash}p{0.5\textwidth} l@{}}
+\toprule
+Part & Bundle report & Delivered title & Labels\\
+\midrule
+I & 125 (base) & A279571: the leading equivalent. A positive harmonic constant and a sharp threshold inverse & \texttt{icw:}\\
+II & 123 & A279571 exact logarithmic exponent. Unique dominant singularity and non D finiteness & \texttt{icw:log:}\\
+\bottomrule
+\end{tabular}
+\end{center}
+Each Part prints its manuscript's text, with every result, proof, remark and limitation; statements keep their delivered wording. Sections and statements are numbered continuously, statements within their sections; both deliveries number equations consecutively through the document, and so does this report. Part~I keeps Report~125's section, statement and equation numbers (Sections~1--14); Section~\ref{icw:sub:further} is added in the write. In Part~II, Report~123's Section~$k$ is Section~$k+14$ and its Lemma~$k.j$ is Lemma~$(k+14).j$; its equations continue the report's numbering, so their numbers differ from the delivery (the README maps them). About two fifths of Report~123 is word for word Report~125's text: its Sections~2.1, 3.1, 3.2, 4.2, 8 and~9 are Report~125's Sections~2.1, 3.1, 3.2, 9.1, 12 and~13. That text is printed once, in Part~I, and Part~II keeps the headings with pointers (Sections~\ref{icw:log:sub:exact}, \ref{icw:log:sub:tilt}, \ref{icw:log:sub:corrector}, \ref{icw:log:sub:fourier}, \ref{icw:log:sec:circle} and~\ref{icw:log:sec:arith}). Part~II ends with two sections added in the write, Sections~\ref{icw:log:sec:cone} and~\ref{icw:log:sec:further}.
+
+Notes added when the manuscripts were merged are set in small type and tagged \textbf{[write]}, with their date. They give cross-references between the Parts, mark results proved twice, mark statements that Part~I supersedes, and relate the report to its neighbours. The write adds one proposition with its proof, Proposition~\ref{icw:log:prop:endpoints}, a remark with a proof, Remark~\ref{icw:log:rem:seeds}, and a corollary, Corollary~\ref{icw:log:cor:exponent}, all in Section~\ref{icw:log:sec:cone}. Superseded statements of Part~II are printed as delivered, with a dated note pointing to Part~I, as in the merged report \file{a135501-closed-lambda-terms} of the same collection directory. No delivered statement was changed, and no symbol was renamed. Each Part ends with a ``Further questions and research'' section (Sections~\ref{icw:sub:further} and~\ref{icw:log:sec:further}), which collects, under Vladimir's standing rule of 4~October 2026, every claim of that Part that is stated without proof, with its source, its sketch and what is missing.
+
+\section*{What is proved, and where}\label{icw:sec:status}
+\addcontentsline{toc}{section}{What is proved, and where}
+Here $p=\pi/\arccos(2/\sqrt7)$, $\kappa=1+p$, $K_n$ is the killed kernel of the tilted walk, $o=(0,0,P)$ its start and $e=(1,0,P)$.
+\begin{center}
+\small\renewcommand{\arraystretch}{1.25}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.55\textwidth} >{\raggedright\arraybackslash}p{0.4\textwidth}@{}}
+\toprule
+Statement & Where\\
+\midrule
+\endhead
+$a_n\sim C_A9^nn^{-\kappa}$ with $0<C_A<\infty$ and $C_A$ given by the series \eqref{icw:eq:constant} & Part~I, Theorem~\ref{icw:thm:main}\\
+Normalized killed harmonic functions $V$, $V^*$ with $V=U+O((1+|s|)^{p-1+\delta})$; the killed local limit $K_n((s,c),(t,d))\sim(b_\theta\pi_d/\sqrt{\det\Sigma})V(s,c)V^*(t,d)n^{-p-1}$ at fixed states; $K_n(o,(t,d))\le C(1+|t|)^{2p}n^{-p-1}$ & Part~I, Theorem~\ref{icw:thm:main}, Sections~\ref{icw:sec:harmonic}--\ref{icw:sec:endpoints}\\
+Threshold inverse $\lceil v(y)-\eps(y)\rceil\le N(y)\le\lceil v(y)+\eps(y)\rceil$, $\eps(y)\to0$, explicit centre $v(y)$ & Part~I, Corollary~\ref{icw:cor:inverse}; it also follows from Theorem~20.1 of \file{a377922-corner-polyhedra-schnyder}\\
+Radius $1/9$; $1/9$ the only singularity on $|z|=1/9$; the log-limit of $F^{(5)}$; $p$, $\kappa$ irrational; $F$ not D-finite over $\CC(z)$ & Part~I, Corollary~\ref{icw:cor:analytic}, Sections~\ref{icw:sec:circle}--\ref{icw:sec:arith} (Report~123's Sections~8--9, proved there first, from the logarithmic law)\\
+Weaker: $c_\eps9^nn^{-\kappa-\eps}\le a_n\le C_\eps9^nn^{-\kappa+\eps}$; $N(y)=\frac{\log y}{\log9}+\frac{\kappa}{\log9}\log\log y+o(\log\log y)$ & Part~II, Theorem~\ref{icw:log:thm:main} (second route: functional limit theorem, annuli, exact-time gluing)\\
+Functional equations of the generating tree, the kernel, its discriminant, the branch points and their collision at $(1/9,3,5/3)$ & Part~II, Section~\ref{icw:log:sub:kernel} (not in Part~I)\\
+Exact-time interior bridge; uniform annulus estimates; survival from starts at radius $O(\log n)$ & Part~II, Lemmas~\ref{icw:log:lem:bridge}, \ref{icw:log:lem:annuli}, \ref{icw:log:lem:survival}\\
+\wtag\ (H1)--(H4) of Theorem~24.1 of \file{a377922-corner-polyhedra-schnyder} hold for this walk; (H5) fails at the origin endpoints, where $K_n(o,((0,0),b))=0$ for $n\ge1$ & Remark~\ref{icw:log:rem:seeds}\\
+\wtag\ That theorem at fixed endpoint states, from its proof; Report~123's exponent as a corollary & Proposition~\ref{icw:log:prop:endpoints}, Corollary~\ref{icw:log:cor:exponent}\\
+\midrule
+\multicolumn{2}{@{}l}{\emph{Open in both Parts}}\\
+\multicolumn{2}{@{}p{0.96\textwidth}@{}}{Digits of $C_A$ or an effective evaluation of $V(o)$ and the endpoint series; any rate for $a_n/(C_A9^nn^{-\kappa})-1$, a $1/n$ or other correction, a correction transseries; a local $\Delta$-domain expansion at $1/9$; an unconditional rule $N(y)=\lceil v(y)\rceil$; effective onsets; a general finite-colour cone theorem with amplitudes. See Sections~\ref{icw:sub:further} and~\ref{icw:log:sec:further}.}\\
+\bottomrule
+\end{longtable}
+\end{center}
+Finite computations in both Parts (enumerations, exact rational algebra, mutation tests) are checks of formulas and of the combinatorial model; no asymptotic statement rests on them. The literature statements that the Parts use (strong approximation, Brownian wedge kernels, the martingale functional limit theorem, the $G$-function theorem, Britt and Beaton's generating tree) were not re-checked against the papers at the write, except the locators of Fischler and Rivoal, which the independent check of \file{a377922-corner-polyhedra-schnyder} confirmed. The generating tree itself is re-derived in Section~\ref{icw:sub:exact}; the delivered checkers compare it with direct pattern-avoidance enumeration through $n=9$ and with the OEIS terms through $n=65$, and the intake compared the walk with the OEIS terms through $n=90$.
+
+\section*{Notation across the two Parts}\label{icw:sec:notation}
+\addcontentsline{toc}{section}{Notation across the two Parts}
+Common to both Parts, with the same meaning: $\theta$, $p$, $\kappa=1+p$, the quadrant $\Qd=\ZZ_{\ge0}^2$, the colours $P$, $Q$, the start $o=(0,0,P)$, the steps $A_d$, $C_d$, $D_j$, the tilted law $q_{cd}$, the Perron vector $r=(2,1)$, the endpoint weight $g$, the killed kernels $K_m$, $K_m^*$, the colour matrix $P_0$, $\pi=(2/3,1/3)$, the drifts $m_c$, the correctors $h_c$, $h^*_c$, the covariances $\Gamma_c$ and $\Sigma$, the dual law $q^*$, the Fourier matrix $L(u)$, the killed operator $T$ on $\ell^\infty(\mathcal D)$ and the row functional $v$ of the circle sections, $\epsilon_l=9^{-l}$, $\lambda=\log9$ and $L=\log y$ in the inverse, and $N(y)=\min\{n:a_n\ge y\}$. The letters below change meaning between the Parts or inside one; each Part's own text fixes its meaning there.
+
+\emph{Labels.} Twenty-five label names occur in both manuscripts. Under the prefixes \texttt{icw:} and \texttt{icw:log:} they are distinct. Seventeen of them name equations of the six shared blocks, which are printed once, in Part~I: \texttt{eq:tree}, \texttt{eq:increments}, \texttt{eq:M}, \texttt{eq:tilt}, \texttt{eq:q}, \texttt{eq:endpoint}, \texttt{eq:gsum}, \texttt{eq:color}, \texttt{eq:h}, \texttt{eq:Sigma}, \texttt{eq:LLT}, \texttt{eq:loops}, \texttt{eq:resolvent}, \texttt{eq:Fres}, \texttt{eq:abelian}, \texttt{eq:5bound}, \texttt{eq:powerlog}; Part~II's citations of them point to Part~I. Six are printed in both Parts with the same content (\texttt{eq:avoid}, \texttt{eq:constants}, \texttt{eq:dual}, \texttt{eq:reverse}, \texttt{eq:seed}, \texttt{eq:derivative-limit}); \eqref{icw:log:eq:constants} writes $\rho$ where \eqref{icw:eq:constants} writes $\rho_0$. Two name different mathematics:
+\begin{center}
+\small
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.15\textwidth} >{\raggedright\arraybackslash}p{0.38\textwidth} >{\raggedright\arraybackslash}p{0.38\textwidth}@{}}
+\toprule
+Delivered name & Part~I (Report~125) & Part~II (Report~123)\\
+\midrule
+\texttt{thm:main} & Theorem~\ref{icw:thm:main}: the leading equivalent and the killed local limit & Theorem~\ref{icw:log:thm:main}: the logarithmic law, the circle, non-D-finiteness, the inverse\\
+\texttt{eq:harmonic} & \eqref{icw:eq:harmonic}: discrete harmonicity of $V$ & \eqref{icw:log:eq:harmonic}: the Brownian harmonic-measure series $H_f$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\emph{Symbols.}
+\begingroup\small
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.12\textwidth} >{\raggedright\arraybackslash}p{0.84\textwidth}@{}}
+\toprule
+Symbol & Meanings\\
+\midrule
+\endhead
+$A$, $W$ & Part~I: $A$ the explicit whitening matrix \eqref{icw:eq:Sigma-main}; $A_d$ the steps; $A_0$ a tail constant (Section~\ref{icw:sub:tilt}); $W$ a Brownian motion (Section~\ref{icw:sec:coupling}) and $\Wedge$ the wedge. Part~II: $W$ any whitening matrix with $W\Sigma W^{\mathsf T}=I$ (Section~\ref{icw:log:sub:whitening}); $A$, $B$ compact sets (Lemma~\ref{icw:log:lem:bridge}); $A$ also a jump-cutoff constant in Lemma~\ref{icw:log:lem:survival}. \emph{Tempting false reading:} Part~II's $W(1,1)$ is a whitened vector, not a Brownian value; Part~I's $A$ is one admissible choice of Part~II's $W$.\\
+$T$ & The killed operator on $\ell^\infty(\mathcal D)$ (Section~\ref{icw:sec:circle}); $T=\lfloor n^{3/4}\rfloor$ (Section~\ref{icw:sec:entrance}); in Part~II the time constants $T(q)$, $T$ of Section~\ref{icw:log:sec:annuli}.\\
+$q$ & The tilted transition law $q_{cd}$ (both); $q=p-3$ in \eqref{icw:eq:potential}; the H\"older exponents $q_0$, $q_0'$ (Section~\ref{icw:sec:harmonic}); $q\in E$ in \eqref{icw:eq:powerlog}; the heat kernel $q_t$ (Section~\ref{icw:sec:brownian}); the transform variable of $\mathcal L(q)$ \eqref{icw:eq:return-transform}. Part~II: $q>1$ the annulus ratio and the outer radius in \eqref{icw:log:eq:harmonic}.\\
+$v$ & A displacement (both); the row functional $v$ (Section~\ref{icw:sec:circle}); the inverse centre $v(y)$ \eqref{icw:eq:center}; $v=Az/\sqrt n$ (Section~\ref{icw:sec:smoothing}); the drift $v$ of \eqref{icw:eq:strong-general}; $v_j$ a step (Part~II).\\
+$L$, $\lambda$ & $L=\log y$ (Corollary~\ref{icw:cor:inverse}, Section~\ref{icw:log:sec:inverse}); $L(u)$ the Fourier matrix; $L$ a return length (Section~\ref{icw:sec:coupling}); in Part~II also the multiplier of $\log n$ in Lemma~\ref{icw:log:lem:survival}. $\lambda=\log9$ in the inverse; $\lambda(u)$ the Perron eigenvalue near $u=0$; $\lambda$ a small real tilt (Section~\ref{icw:sec:smoothing}); $\lambda$ the variable of the Perron polynomial $D(\lambda,x,y)$.\\
+$h$, $H$ & $h$ the maximum of an avoider (Section~\ref{icw:sub:exact}); $h_c$, $h^*_c$ the correctors; $h=n^{1/3}$ (Section~\ref{icw:sec:entrance}). $H$: in Part~I a cycle supremum (Section~\ref{icw:sec:coupling}), a radius (Section~\ref{icw:sec:rough}), a competing harmonic function and a seed length (Section~\ref{icw:sec:harmonic}), $H_\eps$ (Section~\ref{icw:sec:smoothing}); in Part~II the series $H(z,x)$ (Section~\ref{icw:log:sub:kernel}), the harmonic measure $H_f$ \eqref{icw:log:eq:harmonic} and a seed length.\\
+$B$, $K$, $J$ & $B_P$, $B_Q$, $B^*_c$ the second-order correctors \eqref{icw:eq:B}; $B:H$ the Frobenius product; $B_l$ (Section~\ref{icw:sec:circle}); a compact set $B$ (Section~\ref{icw:sec:smoothing}). Part~II: $B=P+Q$ and the branch term $B_0$ \eqref{icw:log:eq:scalar}; the cutoff $B_n$ (Lemma~\ref{icw:log:lem:survival}). $K_n$ the killed kernel (both); $K(z,x,y)$ the kernel polynomial \eqref{icw:log:eq:kernel}; $K$ an error power (Lemma~\ref{icw:log:lem:survival}); $K_q$ in \eqref{icw:eq:powerlog}. $J_\tau$ the last-jump maximum (Section~\ref{icw:sec:rough}); in Part~II $J(z,y)$ a series and $J$ an angular interval (Section~\ref{icw:log:sec:annuli}).\\
+$P$, $Q$, $D$ & Colours (both); in Section~\ref{icw:log:sub:kernel} also the series $P(z,x,y)$, $Q(z,x,y)$. $D_j$ the descent steps; $D(\lambda,x,y)$ the Perron polynomial; $D(L)$ an envelope \eqref{icw:eq:inverse-envelope}; $D_M$ \eqref{icw:eq:coupling}; $\mathcal D$ the reachable states (Section~\ref{icw:sec:circle}).\\
+$\rho$, $\varrho$, $\eps$ & $\rho_0=1/9$ \eqref{icw:eq:constants}, but $\rho=1/9$ in Section~\ref{icw:sec:circle} and in Part~II \eqref{icw:log:eq:constants}; $\varrho$ the meander density \eqref{icw:eq:I1}. $\eps$ several small numbers, $\eps(y)$ the inverse envelope; $\epsilon_l=9^{-l}$.\\
+$r$, $e$, $M$ & $r=(2,1)$, $r_P=2$, $r_Q=1$; $r=1+|s|$ (Section~\ref{icw:sec:rough}); $r_\pm(z)$ branch points and $r_j$ radii (Part~II). $e=(1,0,P)$ the seed endpoint (both); $e$ a coupling error (Sections~\ref{icw:sec:rough}, \ref{icw:sec:entrance}). $M(x,y)$ the step matrix; $M_\tau$ the stopped radial maximum; $M$ a power in tail bounds.\\
+\bottomrule
+\end{longtable}
+\endgroup
+
+\emph{Against \file{a377922-corner-polyhedra-schnyder}.} Its Part~III writes $\nu=\pi/\theta$ for the exponent $p$ here, $E$ for the phase set ($\{P,Q\}$ here), $F(t)$ for the Fourier matrix ($L(u)$ here), $W=\Sigma^{-1/2}$ for a whitening, $\rho=\Sigma_{12}/\sqrt{\Sigma_{11}\Sigma_{22}}$ for a correlation ($-2/\sqrt7$ here, so its $\theta=\arccos(-\rho)$ is the $\theta$ here), and $a$, $b$ for endpoint phases. Its $\kappa$ is a tail rate in its jump bound, and its $\kappa_P$, $\kappa_S$ are \emph{amplitudes}; here $\kappa=1+p$ is the \emph{exponent}, the analogue of its $\alpha_P$, $\alpha_S$. Its $J$ is the angular interval of (H5), as in Part~II.
+
+\section*{Provenance and merge decisions}\label{icw:sec:provenance}
+\addcontentsline{toc}{section}{Provenance and merge decisions}
+Two manuscripts of the session bundle of Reports 1--243, both dated 2~October 2026, with the header lines ``REPORT 125'' and ``REPORT 123''; neither names an author or a tool, the PDF author fields are empty, and neither carries ``prepared for private review'' wording. They arrived in commit \texttt{60f54ea06} and were placed by \texttt{612787fb4} (batch~104). Neither pins a ProveIt commit or names a repository path, and neither cites the other in its text; but Report~125's finite-check package contains a byte-for-byte copy of Report~123's (its \file{checks/legacy/}, anchored by the manifest SHA-256 \texttt{79f5dfa1}\ldots), and its checker reruns Report~123's checks.
+\begin{itemize}
+\item \textbf{Part~I}, bundle Report~125, archive \file{A279571_Leading_Equivalent_and_Harmonic_Constant_Source.zip} (952,684 bytes, 29 files; \file{report125.tex}, 1,575 lines, 25 pages). The base: its \file{report125.tex} became this \file{article.tex}. Contributes the leading equivalent with the characterization of $C_A$, the strong approximation at original times, the explicit second-order colour correctors, the normalized killed harmonic functions, the deep-entrance sharp survival, the killed local limit with last-window smoothing and midpoint reversal, the global endpoint bound, and the inverse bracket.
+\item \textbf{Part~II}, bundle Report~123, archive \file{A279571_Exact_Asymptotic_Exponent_and_Non_D_Finiteness_Source.zip} (887,643 bytes, 23 files; \file{report123.tex}, 979 lines, 16 pages). Contributes the functional equations and the kernel, the logarithmic law by the functional limit theorem, the interior bridge, uniform annuli and exact-time gluing, the first proofs of the circle statement and of non-D-finiteness (printed in Part~I), and the logarithmic inverse.
+\end{itemize}
+Where the merge had to choose:
+\begin{enumerate}
+\item \emph{Base and order.} Report~125 is the base and Part~I, because its Theorem~1.1 and Corollaries~1.2 and~12.1 imply every statement of Report~123's Theorem~1.1 under the same hypotheses: the two-sided bounds follow from \eqref{icw:eq:leading}, the circle and arithmetic statements are the same text, and the inverse \eqref{icw:log:eq:inverse} follows from \eqref{icw:eq:inverse-bracket}, since $v(y)=\frac{\log y}{\log9}+\frac\kappa{\log9}\log\log y+O(1)$. Report~123, created 49 minutes earlier, keeps priority within the bundle for the exponent, the circle statement and non-D-finiteness, and sole credit for the kernel of its Section~2.2 and for the annulus route.
+\item \emph{Shared text printed once.} Report~123's Sections~2.1, 3.1, 3.2, 4.2, 8 and~9 are Report~125's Sections~2.1, 3.1, 3.2, 9.1, 12 and~13, word for word except in three places: Report~125's Section~12 opens with the statement of Corollary~\ref{icw:cor:analytic}, where Report~123 has none; in two sentences of Sections~12.2 and~13.2 Report~125 cites its equivalent \eqref{icw:eq:leading} where Report~123 cites its logarithmic law \eqref{icw:log:eq:main-bounds}; and one clause of Section~3.2 is worded differently (note in Section~\ref{icw:log:sub:corrector}). The text is printed once, in Part~I, in Report~125's wording; Part~II keeps the six headings with pointers, and its citations of the seventeen equations of these blocks point to Part~I.
+\item \emph{Overlaps kept.} Report~123's Section~1 restates the definitions of Report~125's Section~1 with one more sentence, and its Section~3.3 covers the ground of Report~125's Section~3.3 with a general whitening matrix and different wording; both are printed in full in Part~II, under the union rule.
+\item \emph{Second route.} Report~123's proof of its Theorem~1.1 is printed in full (Sections~\ref{icw:log:sec:free}--\ref{icw:log:sec:lower} and~\ref{icw:log:sec:inverse}), with dated notes marking what Part~I supersedes; its ``What is not asserted'' paragraph and its Section~10 describe Report~123 alone and are printed as delivered with dated notes.
+\item \emph{Front matter and bibliography.} The two title blocks and abstracts are printed at the head of their Parts; one table of contents replaces two. The bibliographies are merged: the entries \texttt{oeis}, \texttt{bb} and \texttt{fr} are identical in both, and Report~123's \texttt{whitt} is added to Report~125's five. Report~123's first section heading carried a manual \verb|\hspace{1em}| on top of the delivered section-number spacing; it is dropped.
+\item \emph{Write additions.} Remark~\ref{icw:log:rem:seeds} with its proof, Proposition~\ref{icw:log:prop:endpoints} with its proof, Corollary~\ref{icw:log:cor:exponent} with its proof and Remark~\ref{icw:log:rem:amplitude} (Section~\ref{icw:log:sec:cone}); the two ``Further questions and research'' sections; the dated notes; the section labels added to delivered headings; and this front matter. Everything else is delivered text.
+\end{enumerate}
+
+\section*{Relation to neighbouring reports and to the formal projects}\label{icw:sec:neighbours}
+\addcontentsline{toc}{section}{Relation to neighbouring reports and to the formal projects}
+All reports named here are in the same collection directory, \file{SetTheory/Cardinals/docs/reports/generating-functions-and-asymptotics/oeis-sequence-asymptotics/}.
+
+\emph{The cone theorem of \file{a377922-corner-polyhedra-schnyder}, Part~III (bundle Report~112).} Its Section~22.5 (\texttt{cps:log:sec:siblings}) lists Report~123 among three bundle reports that run one argument: a Perron tilt to a centred walk with a finite phase, a bounded Poisson corrector and the martingale functional limit theorem, a Fourier local limit theorem with an edge-phase aperiodicity argument, an exact-time interior bridge, Brownian wedge harmonic measure over geometric annuli, two first-hit prefixes glued at the exact time, non-D-finiteness by a positive derivative and the $G$-function theorem, and an $o(\log\log y)$ inverse. That is the whole of Part~II's proof, and Report~112 states it as Theorem~24.1 there (\texttt{cps:log:thm:cone}), for Markov-additive walks with finitely many phases and a uniform exponential moment, under hypotheses (H1)--(H5). Report~123's walk satisfies (H1)--(H4), but \emph{not} (H5) at the endpoints the theorem states, which lie at the spatial origin: no legal path from $o$ returns to the origin, the dual has no seed there, and $K_n(o,((0,0),b))=0$ for $n\ge1$ and both colours $b$ (Remark~\ref{icw:log:rem:seeds}). Report~123's exponent is therefore an instance of that theorem's \emph{proof}, run at the endpoint $e=(1,0,P)$, not of its statement. Proposition~\ref{icw:log:prop:endpoints} writes this out as a statement, Theorem~24.1 at arbitrary fixed endpoint states with seeds, and Corollary~\ref{icw:log:cor:exponent} derives Report~123's two-sided bounds from it. A279571 is a concrete example for Question~Q3 there (\texttt{cps:log:q:seeds}, endpoints without seeds): at the origin endpoints there is no exponent at all. For this one walk Part~I proves the kind of statement that Question~Q1 there asks for (\texttt{cps:log:q:amplitude}, an amplitude form of Theorem~24.1), at every fixed pair of states and without a cycle buffer, by a phase-sensitive killed local limit, the route that question names as missing. The walk is not an instance of that question, whose hypotheses include (H5) at the origin; Part~I needs no (H5), and the positivity of $V$ and $V^*$ at the chosen endpoints takes its place. Its argument uses $4<p<5$, so it does not generalize as written (Remark~\ref{icw:log:rem:amplitude}). It is a third route to amplitudes beside Part~II there (comparison with an iid cone walk through a fixed cycle buffer) and Part~III there (annuli, logarithmic scale only). At the write, Section~22.5 there and its README still call Report~123 unplaced; a reciprocal note is proposed for a separate commit.
+
+\emph{Inverses and non-D-finiteness.} Corollary~\ref{icw:cor:inverse} follows from Theorem~20.1 of \file{a377922-corner-polyhedra-schnyder} (\texttt{cps:amp:thm:inverse}) with $\gamma=C_A$, $\mu=9$, $\alpha=\kappa$: that theorem's centre $r(Y)$ differs from $v(y)$ by $o(1)$ (its display (20.2), \texttt{cps:amp:eq:inverseexpansion}), so its bracket, widened by $|r-v|$, is \eqref{icw:eq:inverse-bracket}. That theorem needs no monotonicity of $a_n$; Report~125's proof (Section~\ref{icw:sec:inverse}) uses it for the indices below $m(L)$. Its mechanics are those of the transseries volume (\file{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex}): \texttt{p0:thm:lambert-core} (branch $W_{-1}$), \texttt{p0:thm:lambert-centered} and \texttt{p0:thm:staircase}; $N(y)$ is the integer staircase of \texttt{p0:def:three-inverses}. No novelty is claimed for the inversion mechanics. The non-D-finiteness argument of Section~\ref{icw:sec:arith} is an instance of the general criterion of Remark~27.1 of \file{a377922-corner-polyhedra-schnyder} (\texttt{cps:log:rem:criterion}) and of Remark~10.1 of \file{a348351-one-sided-rectangulations} (\texttt{osr:rem:criterion}), with derivative order $5>\kappa-1$; the radius $1/9$ is rational, so the algebraicity point added to that criterion at its independent check does not arise.
+
+\emph{\file{a348351-one-sided-rectangulations}} (bundle Report~111) runs the same spine as Part~II for a four-colour walk with bounded steps and its endpoint at the origin, where its seeds exist (its Remark~1.2, \texttt{osr:rem:cone}). Its Questions~1 and~2 (\texttt{osr:q:equivalent}, \texttt{osr:q:harmonic}) name Report~125 as a model for the full equivalent and the harmonic functions ``to be filed by a later intake batch''; it is Part~I here. Whether Part~I's route carries over there was not checked; as written it does not, since there $p=\alpha-1\approx1.957$, while Part~I uses $p>2$ in \eqref{icw:eq:mean-exit} and $p>4$ in Section~\ref{icw:sub:smooth}. Its uncertified observation $a(n)\Gamma^{-n}n^\alpha\approx4.65$ at $n=599$ is of the same kind as the one recorded in Section~\ref{icw:sub:further}.
+
+\emph{Other Britt--Beaton classes.} Batch~104 placed two further inversion-sequence reports from the same bundle beside this one, \file{a279544-inversion-kernel-classes} (A279544, A279567, A279569, A279558; bundle Reports 118, 119, 122: algebraic kernels, square-root singularities) and \file{a279551-inversion-log-deficit} (A279551, A279556; bundle Reports 126, 127, 129: stretched-exponential deficits). They share with this report only the definition of inversion sequences and Britt and Beaton's paper: no theorem, method, notation or text, and no cross-citation in either direction. Other reports of the collection cite inversion-sequence papers (\file{a113227-powered-catalan}, \file{a336070-weak-ascents}, \file{a196275-column-convex-permutominoes}) but treat no Britt--Beaton class.
+
+\emph{Formal projects.} No Lean or Rocq development of the repository touches A279571, inversion sequences or Markov-additive cone walks; no statement of this report is formalized, and its placement confers no formal status.
+
+\clearpage
+\part{The leading equivalent and a harmonic constant}\label{icw:part}
+\partsource{Bundle Report~125, archive \file{A279571_Leading_Equivalent_and_Harmonic_Constant_Source.zip}, delivered as \file{report125.tex} (25 pages), dated 2~October 2026. Delivered title ``A279571: the leading equivalent'', subtitle ``A positive harmonic constant and a sharp threshold inverse'', with the header ``REPORT 125'' and the line ``Standalone proof and exact finite-check companion''. Printed as delivered, with \textbf{[write]} notes; section, statement and equation numbers are those of the delivery. Its Sections~2.1, 3.1, 3.2, 9.1, 12 and~13 are also Report~123's Sections~2.1, 3.1, 3.2, 4.2, 8 and~9 (Part~II). Section~\ref{icw:sub:further} is added in the write.}
+\begin{partabstract}
 Let $a_n$ count inversion sequences avoiding $100$, $101$, and $201$.
 We prove
 \[
@@ -66,16 +201,14 @@ whose pre-rounding width tends to zero. We also prove uniqueness of the
 convergence-circle singularity and non-D-finiteness. No amplitude digits,
 quantitative remainder rate, effective onset, or correction expansion is
 asserted.
-\end{abstract}
-\setcounter{tocdepth}{1}
-{\small\setlength{\parskip}{0pt}\tableofcontents}
-\newpage
+\end{partabstract}
+\noindent\textbf{Reading conventions.} This Part's letters are the reference letters of the report. Here $A$ is the explicit whitening matrix \eqref{icw:eq:Sigma-main}, $\rho_0=1/9$ in \eqref{icw:eq:constants} but $\rho=1/9$ in Section~\ref{icw:sec:circle}, and $q$, $v$, $L$, $\lambda$, $h$, $H$, $T$, $D$ carry several meanings (front matter, ``Notation across the two Parts''). Part~II writes $W$ for a whitening matrix and $\rho$ for $1/9$.
 
 \section{Definitions, results, and normalization}
 An inversion sequence of length $n$ is an integer sequence
 $(e_1,\ldots,e_n)$ with $0\le e_i<i$. The three forbidden patterns
 are exactly the triples $i<j<k$ satisfying
-\begin{equation}\label{eq:avoid}
+\begin{equation}\label{icw:eq:avoid}
  e_i>e_j,\qquad e_j\le e_k,\qquad e_i\ge e_k.
 \end{equation}
 Let $a_n$ count the avoiders, with $a_0=1$, and write
@@ -85,20 +218,20 @@ of Britt and Beaton~\cite{oeis,bb}. Its initial terms are
 1,1,2,6,22,92,424,2106,11102,61436,353980,2110366,\ldots.
 \]
 All logarithms are natural. Define
-\begin{equation}\label{eq:constants}
+\begin{equation}\label{icw:eq:constants}
  \theta=\arccos\frac2{\sqrt7},\qquad p=\frac\pi\theta,
  \qquad\kappa=p+1,\qquad\rho_0=\frac19.
 \end{equation}
 The exact walk below has colors $P,Q$, positions in
 $\Qd=\ZZ_{\ge0}^2$, start $o=(0,0,P)$, stationary color masses
 $\pi=(2/3,1/3)$, and covariance
-\begin{equation}\label{eq:Sigma-main}
+\begin{equation}\label{icw:eq:Sigma-main}
  \Sigma=\begin{pmatrix}7/3&-10/3\\-10/3&25/3\end{pmatrix},\qquad
  A=\begin{pmatrix}1&2/5\\0&\sqrt3/5\end{pmatrix},\qquad
  A\Sigma A^{\mathsf T}=I.
 \end{equation}
 The wedge $\Wedge=A\RR_{>0}^2$ has angles $0<\phi<\theta$. Set
-\begin{equation}\label{eq:U}
+\begin{equation}\label{icw:eq:U}
  u(w)=|w|^p\sin(p\arg w),\qquad U(s)=u(As),\qquad
  b_\theta=\frac{2^{1-p}}{\theta\Gamma(p+1)}.
 \end{equation}
@@ -109,51 +242,54 @@ normalization completely; equivalently, on the quadrant,
 \]
 with the branch of argument between $0$ and $\theta$.
 
-\begin{theorem}[Leading equivalent and killed local limit]\label{thm:main}
+\begin{theorem}[Leading equivalent and killed local limit]\label{icw:thm:main}
 Let $K_n$ be the exact tilted walk killed on leaving $\Qd$, and let
 $K_n^*$ be its stationary-color time reversal, also killed on $\Qd$.
 Writing $\tau,\tau^*$ for their exit times, the limits
-\begin{equation}\label{eq:V-limit}
+\begin{equation}\label{icw:eq:V-limit}
  V(s,c)=\lim_{n\to\infty}\E_{s,c}[U(S_n);\tau>n],\qquad
  V^*(t,d)=\lim_{n\to\infty}\E^*_{t,d}[U(S_n);\tau^*>n]
 \end{equation}
 exist, are nonnegative killed-harmonic functions, and satisfy, for every
 $\delta>0$,
-\begin{equation}\label{eq:V-asymp}
+\begin{equation}\label{icw:eq:V-asymp}
  V(s,c)=U(s)+O_\delta((1+|s|)^{p-1+\delta}),
 \end{equation}
 and the same bound for $V^*$. For fixed states $(s,c),(t,d)$,
-\begin{equation}\label{eq:killed-LLT}
+\begin{equation}\label{icw:eq:killed-LLT}
  K_n((s,c),(t,d))=
  \frac{b_\theta\pi_d}{\dett}V(s,c)V^*(t,d)n^{-p-1}
  +o(n^{-p-1}).
 \end{equation}
 Uniformly over all $(t,d)\in\Qd\times\{P,Q\}$ and $n\ge1$,
-\begin{equation}\label{eq:endpoint-dom}
+\begin{equation}\label{icw:eq:endpoint-dom}
  K_n(o,(t,d))\le C(1+|t|)^{2p}n^{-p-1}.
 \end{equation}
 Consequently
-\begin{equation}\label{eq:leading}
+\begin{equation}\label{icw:eq:leading}
  a_n\sim C_A9^n n^{-\kappa},
 \end{equation}
 where, with $r_P=2,r_Q=1$ and
 $g((a,b),d)=3^{-a}(3/5)^b/r_d$,
-\begin{equation}\label{eq:constant}
+\begin{equation}\label{icw:eq:constant}
  \boxed{\displaystyle C_A=\frac29\frac{b_\theta}{\dett}V(o)
       \sum_{t\in\Qd}\sum_{d=P,Q}\pi_d g(t,d)V^*(t,d).}
 \end{equation}
 The series is absolutely convergent, and $0<C_A<\infty$.
 \end{theorem}
+\begin{writenote}[5 October 2026]
+Part~II, Theorem~\ref{icw:log:thm:main}, proves the weaker two-sided bounds $c_\eps9^nn^{-\kappa-\eps}\le a_n\le C_\eps9^nn^{-\kappa+\eps}$ by another route (Sections~\ref{icw:log:sec:free}--\ref{icw:log:sec:lower}); \eqref{icw:eq:leading} implies them. Display \eqref{icw:eq:killed-LLT} is, for this walk and every fixed pair of states, the amplitude form that Question~Q1 of \file{a377922-corner-polyhedra-schnyder} (\texttt{cps:log:q:amplitude}) asks for its general cone theorem, although this walk is not an instance of that question, since its hypothesis (H5) fails at the origin (Remarks~\ref{icw:log:rem:seeds} and~\ref{icw:log:rem:amplitude}). At the origin endpoints $V^*((0,0),b)=0$ and $K_n(o,((0,0),b))=0$ for $n\ge1$ (Remark~\ref{icw:log:rem:seeds}), which is consistent with \eqref{icw:eq:killed-LLT}. \emph{Observation, not a claim:} on the exact OEIS terms (the shipped b-file), $a_n9^{-n}n^{\kappa}=77.91$, $83.24$, $86.55$, $87.65$ at $n=100$, $200$, $500$, $1000$ (double precision), still increasing; no digit of $C_A$ is certified (Section~\ref{icw:sub:further}, items~1--2).
+\end{writenote}
 
-\begin{corollary}[Threshold inverse]\label{cor:inverse}
+\begin{corollary}[Threshold inverse]\label{icw:cor:inverse}
 For $N(y)=\min\{n\ge0:a_n\ge y\}$, put $\lambda=\log9$, $L=\log y$,
 and
-\begin{equation}\label{eq:center}
+\begin{equation}\label{icw:eq:center}
  v(y)=\frac{L+\kappa\log L-\kappa\log\lambda-\log C_A}{\lambda}.
 \end{equation}
 There is a positive function $\eps(y)\to0$ such that, for all sufficiently
 large $y$,
-\begin{equation}\label{eq:inverse-bracket}
+\begin{equation}\label{icw:eq:inverse-bracket}
  \lceil v(y)-\eps(y)\rceil\le N(y)\le
  \lceil v(y)+\eps(y)\rceil.
 \end{equation}
@@ -161,10 +297,13 @@ In particular $N(y)=v(y)+O(1)$. The exact identity
 $N(y)=\lceil v(y)\rceil$ follows whenever the displayed real interval
 contains no integer; no unconditional ceiling identity is claimed.
 \end{corollary}
+\begin{writenote}[5 October 2026]
+Corollary~\ref{icw:cor:inverse} follows from Theorem~20.1 of \file{a377922-corner-polyhedra-schnyder} (\texttt{cps:amp:thm:inverse}) with $\gamma=C_A$, $\mu=9$, $\alpha=\kappa$, and is an instance of the transseries volume's Lambert-$W$ inversion (front matter, ``Relation to neighbouring reports''). Part~II's inverse \eqref{icw:log:eq:inverse} is weaker: since $v(y)=\frac{\log y}{\log9}+\frac\kappa{\log9}\log\log y+O(1)$, the bracket \eqref{icw:eq:inverse-bracket} gives \eqref{icw:log:eq:inverse} with error $O(1)$ in place of $o(\log\log y)$.
+\end{writenote}
 
 The numbers $p,\kappa$ are irrational, with $4<p<5$. We also prove
 that $F$ is not D-finite over $\CC(z)$ and that its only singularity
-on its convergence circle is $1/9$; see Section~\ref{sec:circle}.
+on its convergence circle is $1/9$; see Section~\ref{icw:sec:circle}.
 
 \textbf{Scope and attribution.}
 The generating tree is the exact combinatorial input of
@@ -173,7 +312,7 @@ Their Section 4.2 and Appendix B.3, and the OEIS formula credited to
 V\'aclav Kot\v{e}\v{s}ovec on 13 January 2026 after Nicholas R. Beaton,
 contain prior numerical exponent and amplitude estimates. Those estimates
 are credited rather than presented as new results. No numerical fitting
-is used here. The constant in \eqref{eq:constant} is a mathematical
+is used here. The constant in \eqref{icw:eq:constant} is a mathematical
 characterization, without certified decimal digits or effective error
 bounds. The leading equivalent excludes a nonconvergent bounded amplitude
 modulation, but gives no correction series or complex local expansion.
@@ -182,9 +321,12 @@ The proof does not apply an iid cone theorem to the colored walk or kill
 only at color returns. The external probabilistic inputs are a full-cycle
 original-time strong approximation and the Brownian wedge heat kernel.
 All discrete stopping, correction, local smoothing, and endpoint-summation
-arguments needed for Theorem~\ref{thm:main} are given below.
-\section{From the generating tree to a quadrant walk}
-\subsection{Exact combinatorial coordinates}
+arguments needed for Theorem~\ref{icw:thm:main} are given below.
+\section{From the generating tree to a quadrant walk}\label{icw:sec:tree}
+\begin{writenote}[5 October 2026]
+Sections~\ref{icw:sub:exact}, \ref{icw:sub:tilt} and~\ref{icw:sub:corrector} are also Report~123's Sections~2.1, 3.1 and~3.2, word for word except for one clause of Section~\ref{icw:sub:corrector} (note in Part~II, Section~\ref{icw:log:sub:corrector}). Report~123's Section~2.2, the functional equations and the kernel of the generating tree, is printed in Part~II, Section~\ref{icw:log:sub:kernel}; it is not in this Part.
+\end{writenote}
+\subsection{Exact combinatorial coordinates}\label{icw:sub:exact}
 For a nonempty avoider let $h$ be its maximum, and let its color be $P$
 when its last entry equals $h$, and $Q$ otherwise. Let $k$ be the number
 of values below its last entry that may legally be appended. The source
@@ -209,13 +351,13 @@ which explains their endpoints and the extra decrement in the $Q$ rule.
 Put $a=n-h$ and $b=k$, keeping the empty root $(0,0,P)$. Reindex the
 new maximum by $d=i-h$, and the descent rank by $j=k-i$. The rules become
 \begin{align}
- P(a,b)&\longrightarrow P(a+1-d,b+d) &&(0\le d\le a),\label{eq:tree}\\
+ P(a,b)&\longrightarrow P(a+1-d,b+d) &&(0\le d\le a),\label{icw:eq:tree}\\
  Q(a,b)&\longrightarrow P(a+1-d,b+d-1)&&(1\le d\le a),\notag\\
  c(a,b)&\longrightarrow Q(a+1,b-j)&&(1\le j\le b;\ c=P,Q).\notag
 \end{align}
 The sole size-one object has coordinates $(1,0,P)$. From it onward replace
 $a$ by $a-1$. Then every edge is a translation-invariant displacement
-\begin{equation}\label{eq:increments}
+\begin{equation}\label{icw:eq:increments}
  A_d=(1-d,d) (P\to P,d\ge0),\quad
  C_d=(1-d,d-1) (Q\to P,d\ge1),\quad
  D_j=(1,-j) (c\to Q,j\ge1),
@@ -229,10 +371,10 @@ most one. After $n-1$ steps it is therefore at most $n-1$ automatically.
 Consequently $a_n$, for $n\ge1$, is the number of retained paths of
 length $n-1$ from $o$, summed over endpoints and colors.
 
-\section{A positive change of weights and its covariance}
-\subsection{The Perron tilt and endpoint identity}
+\section{A positive change of weights and its covariance}\label{icw:sec:tilt}
+\subsection{The Perron tilt and endpoint identity}\label{icw:sub:tilt}
 The unrestricted step matrix, with row denoting the old color, is
-\begin{equation}\label{eq:M}
+\begin{equation}\label{icw:eq:M}
  M(x,y)=\begin{pmatrix}x^2/(x-y)&x/(y-1)\\x/(x-y)&x/(y-1)\end{pmatrix},
  \qquad x>y>1.
 \end{equation}
@@ -244,13 +386,13 @@ $\sum_{d\ge0}x^{1-d}y^d=x^2/(x-y)$. At $(x,y)=(3,5/3)$,
 \]
 The other eigenvalue is $9/4$, so this is the positive simple Perron
 root. Give each individual edge $c\to d$ with displacement $v$ probability
-\begin{equation}\label{eq:tilt}
+\begin{equation}\label{icw:eq:tilt}
  q_{cd}(v)=\frac{3^{v_1}(5/3)^{v_2}r_d}{9r_c}.
 \end{equation}
 The row sums equal one. Explicitly,
 \begin{align}
  q_{PP}(A_d)&=\tfrac13(5/9)^d &(d&\ge0),\notag\\
- q_{QP}(C_d)&=\tfrac29(5/9)^{d-1}&(d&\ge1),\label{eq:q}\\
+ q_{QP}(C_d)&=\tfrac29(5/9)^{d-1}&(d&\ge1),\label{icw:eq:q}\\
  q_{PQ}(D_j)&=\tfrac16(3/5)^j,\qquad
  q_{QQ}(D_j)=\tfrac13(3/5)^j &(j&\ge1).\notag
 \end{align}
@@ -259,25 +401,25 @@ $\Prob(|v|>u)\le A_0e^{-b_0u}$. The same statement holds in any fixed
 linearly transformed norm.
 
 Let $K_m((s,c),(t,d))$ be the $m$-step kernel of this process killed
-on leaving $\Qd$. Telescoping \eqref{eq:tilt} along a path yields
-\begin{equation}\label{eq:endpoint}
+on leaving $\Qd$. Telescoping \eqref{icw:eq:tilt} along a path yields
+\begin{equation}\label{icw:eq:endpoint}
  a_n=2\,9^{n-1}\sum_{t=(a,b)\in\Qd}\sum_{d=P,Q}
        K_{n-1}(o,(t,d))g(t,d),\quad
  g((a,b),d)=\frac{3^{-a}(3/5)^b}{r_d}.
 \end{equation}
 All terms are nonnegative. In particular, $0<g\le1$, and
-\begin{equation}\label{eq:gsum}
+\begin{equation}\label{icw:eq:gsum}
  \sum_{t,d}g(t,d)=
  (1/2+1)\frac1{1-1/3}\frac1{1-3/5}=\frac{45}{8}.
 \end{equation}
-Its tails are exponentially small. Equation \eqref{eq:endpoint} also gives
+Its tails are exponentially small. Equation \eqref{icw:eq:endpoint} also gives
 $a_n\le2\,9^{n-1}$ for $n\ge1$. The exponentially summable endpoint
 weight, rather than unweighted survival, is essential to the final power.
 
-\subsection{The color corrector}
+\subsection{The color corrector}\label{icw:sub:corrector}
 Write $(S_j,C_j)$ for the unrestricted position and color process.
-Summing \eqref{eq:q} gives
-\begin{equation}\label{eq:color}
+Summing \eqref{icw:eq:q} gives
+\begin{equation}\label{icw:eq:color}
  P_0=\begin{pmatrix}3/4&1/4\\1/2&1/2\end{pmatrix},\qquad
  \pi=(2/3,1/3).
 \end{equation}
@@ -287,7 +429,7 @@ This matrix is primitive. The conditional means of $v$ are
  \pi_Pm_P+\pi_Qm_Q=0.
 \]
 The vectors
-\begin{equation}\label{eq:h}
+\begin{equation}\label{icw:eq:h}
  h_P=(1/12,5/12),\qquad h_Q=(-1/6,-5/6)
 \end{equation}
 satisfy $\pi h=0$ and $(I-P_0)h=m$. Thus
@@ -301,14 +443,14 @@ on the initial color $c$ is zero. To compute its covariance one may use
  \sum_{k\ge0}kr^k=\frac r{(1-r)^2},\quad
  \sum_{k\ge0}k^2r^k=\frac{r(1+r)}{(1-r)^3}
 \]
-in \eqref{eq:q}. The two conditional covariance matrices are
+in \eqref{icw:eq:q}. The two conditional covariance matrices are
 \[
  \Gamma_P=\frac1{64}\begin{pmatrix}147&-195\\-195&495\end{pmatrix},
  \qquad
  \Gamma_Q=\frac1{32}\begin{pmatrix}77&-125\\-125&305\end{pmatrix}.
 \]
 Consequently the effective covariance is
-\begin{equation}\label{eq:Sigma}
+\begin{equation}\label{icw:eq:Sigma}
  \Sigma=\pi_P\Gamma_P+\pi_Q\Gamma_Q
  =\begin{pmatrix}7/3&-10/3\\-10/3&25/3\end{pmatrix},
  \qquad \det\Sigma=25/3>0.
@@ -317,7 +459,7 @@ This includes the serial dependence induced by colors; using only the
 uncorrected single-step covariance would be invalid.
 
 A second exact derivation is useful. Clearing the characteristic
-polynomial of \eqref{eq:M} gives
+polynomial of \eqref{icw:eq:M} gives
 \[
  D(\lambda,x,y)=\lambda^2(x-y)(y-1)
   -\lambda\{x^2(y-1)+x(x-y)\}+x^2(x-1).
@@ -333,20 +475,20 @@ Implicit differentiation of the simple Perron root gives
 The first derivatives vanish, which explains the absence of extra terms.
 
 
-\subsection{Explicit whitening and reversed correctors}
-The matrix $A$ of \eqref{eq:Sigma-main} satisfies
+\subsection{Explicit whitening and reversed correctors}\label{icw:sub:whitening}
+The matrix $A$ of \eqref{icw:eq:Sigma-main} satisfies
 \[
  A^{\mathsf T}A=\Sigma^{-1}
  =\begin{pmatrix}1&2/5\\2/5&7/25\end{pmatrix},\qquad
  \det A=\frac{\sqrt3}{5}=\frac1{\dett}.
 \]
 Its boundary vectors have scalar-product cosine $2/\sqrt7$, proving
-that the opening angle is exactly \eqref{eq:constants}. In the physical
+that the opening angle is exactly \eqref{icw:eq:constants}. In the physical
 quadrant, $\Sigma:D^2U=0$ away from the origin. Here $B:H$ denotes
 $\sum_{i,j}B_{ij}H_{ij}$.
 
 The reversed free kernel is
-\begin{equation}\label{eq:dual}
+\begin{equation}\label{icw:eq:dual}
  q^*_{dc}(-v)=\frac{\pi_c}{\pi_d}q_{cd}(v).
 \end{equation}
 Its row sums are one by stationarity. Its color matrix is again $P_0$.
@@ -361,7 +503,7 @@ is the negative of a forward displacement. More explicitly,
 \end{align*}
 Thus $(I-P_0)h^*=m^*$, $\pi h^*=0$, and
 $\sum_c\pi_c\Gamma_c^*=\Sigma$. Reversal of every retained path gives
-\begin{equation}\label{eq:reverse}
+\begin{equation}\label{icw:eq:reverse}
  \pi_cK_n((s,c),(t,d))=\pi_dK_n^*((t,d),(s,c)).
 \end{equation}
 The invariant free measure is spatial counting measure times $\pi$.
@@ -374,7 +516,7 @@ coordinate by one, so it cannot reach the interior before dying. Such
 extra auxiliary states therefore do not introduce new counted paths.
 They may have zero harmonic value, which is allowed in the theorem.
 
-\section{A strong approximation at original times}\label{sec:coupling}
+\section{A strong approximation at original times}\label{icw:sec:coupling}
 \subsection{The imported theorem and its exact hypotheses}
 We use Bashtova--Shashkin~\cite[Conditions (A), (B), Theorem 1,
 pp.~3--4]{bs}; the published theorem is Theorem 2.1.
@@ -390,7 +532,7 @@ Then, with $v=\E Z/\E L$ and
 $\Sigma_{\rm reg}=\E[(Z-vL)(Z-vL)^{\mathsf T}]/\E L$,
 there is a coupling with covariance-$\Sigma_{\rm reg}$ Brownian motion
 $W$ and constants $a_0,b_0,c_0>0$ such that
-\begin{equation}\label{eq:strong-general}
+\begin{equation}\label{icw:eq:strong-general}
  \Prob\left(\sup_{0\le t\le N}|X(t)-X(0)-vt-W_t|
              >c_0\log(N+2)+x\right)\le a_0e^{-b_0x}
  \quad(N\ge1,\ x\ge0).
@@ -431,13 +573,13 @@ give
 \]
 For an independent explicit calculation, let $\mathcal L(q)_{cd}
 =\sum_vq_{cd}(v)e^{q\cdot v}$. A first $P$ return satisfies
-\begin{equation}\label{eq:return-transform}
+\begin{equation}\label{icw:eq:return-transform}
  \E[z^L e^{q\cdot Z}]
  =z\mathcal L_{PP}(q)+
  \frac{z^2\mathcal L_{PQ}(q)\mathcal L_{QP}(q)}{1-z\mathcal L_{QQ}(q)}.
 \end{equation}
 Differentiating at $z=1,q=0$ gives
-\begin{equation}\label{eq:cycle-cov}
+\begin{equation}\label{icw:eq:cycle-cov}
  \E(Z_1,Z_2,L)=(0,0,3/2),\qquad
  \operatorname{Cov}(Z_1,Z_2,L)=
  \begin{pmatrix}7/2&-5&7/8\\-5&25/2&-25/8\\7/8&-25/8&5/4\end{pmatrix},
@@ -451,10 +593,10 @@ ones with the color pair interchanged, so all preceding cycle-moment
 arguments hold in reversal. Use the displayed $h^*,\Gamma^*$ to obtain
 its covariance in the same way. Taking maxima of constants over two
 initial colors and two time directions proves that both free chains
-have \eqref{eq:strong-general} with $v=0$ and covariance $\Sigma$,
+have \eqref{icw:eq:strong-general} with $v=0$ and covariance $\Sigma$,
 uniformly in the initial position and color. In particular, for every
 $M>0$, a suitable $D_M$ gives
-\begin{equation}\label{eq:coupling}
+\begin{equation}\label{icw:eq:coupling}
  \Prob\left(\sup_{0\le t\le n}|S_{\lfloor t\rfloor}-s-W_t|
                >D_M\log(n+2)\right)\le C_M(n+2)^{-M}.
 \end{equation}
@@ -462,19 +604,19 @@ Every later use restarts a free coupling at a specified state. No
 adaptedness to a future random entrance time is asserted. Original-time
 killing is compared on the whole coupled path.
 
-\section{Brownian wedge normalization and side uniformity}\label{sec:brownian}
+\section{Brownian wedge normalization and side uniformity}\label{icw:sec:brownian}
 For standard Brownian motion in $\Wedge$, let $q_t(w,z)$ be the killed
 transition density with respect to two-dimensional Lebesgue measure,
 and $\tau_B$ its exit time. Bañuelos--Smits~\cite[Lemma 1,
 equation (2.2)]{banuelos}, with generator $\tfrac12\Delta$ and angular
 normalization $\sqrt{2/\theta}$, gives
-\begin{equation}\label{eq:brownian-kernel}
+\begin{equation}\label{icw:eq:brownian-kernel}
  q_t(w,z)=\frac2{\theta t}e^{-(|w|^2+|z|^2)/(2t)}
  \sum_{j\ge1}I_{jp}(|w||z|/t)
  \sin(jp\arg w)\sin(jp\arg z).
 \end{equation}
 The leading Bessel term $I_p(a)\sim(a/2)^p/\Gamma(p+1)$ yields
-$b_\theta$ in \eqref{eq:U}. We now give the uniformity needed when the
+$b_\theta$ in \eqref{icw:eq:U}. We now give the uniformity needed when the
 starting angle approaches either side.
 
 By scaling take $t=1$ and write $w=(r_0,\alpha)$, $z=(r,\beta)$ in
@@ -492,10 +634,10 @@ $\Gamma(jp+1)\ge c m!$. Therefore
  G(t)\le Ct\sum_{m\ge0}\frac{mt^m}{m!}\le Ct^2e^t,
  \qquad G(t)\le Ct^p(1+t)^2e^t\quad(t>0).
 \]
-After division of \eqref{eq:brownian-kernel} by
+After division of \eqref{icw:eq:brownian-kernel} by
 $u(w)=r_0^p\sin(p\alpha)$, these inequalities give, for $0<r_0\le1$,
 the angle-independent integrable envelope
-\begin{equation}\label{eq:envelope}
+\begin{equation}\label{icw:eq:envelope}
  C r^p(1+r)^2 e^{-r^2/2+2r}.
 \end{equation}
 It is integrable with the radial Jacobian $r\,dr\,d\beta$.
@@ -503,19 +645,19 @@ The $j=1$ term tends to $b_\theta u(z)e^{-|z|^2/2}$ after this
 division, uniformly in $\alpha$. All $j\ge2$ terms tend to zero,
 also uniformly in $\alpha$, by the sine bound and the convergent
 Bessel series. Dominated convergence now proves the stronger $L^1$ limit
-\begin{equation}\label{eq:angle-uniform}
+\begin{equation}\label{icw:eq:angle-uniform}
  \sup_{0<\alpha<\theta}\int_{\Wedge}
  \left|\frac{q_1((r_0,\alpha),z)}{u((r_0,\alpha))}
              -b_\theta u(z)e^{-|z|^2/2}\right|\,dz\longrightarrow0
  \quad(r_0\downarrow0).
 \end{equation}
 In particular, uniformly in all starting angles and $|w|=o(\sqrt t)$,
-\begin{equation}\label{eq:brownian-survival}
+\begin{equation}\label{icw:eq:brownian-survival}
  \Prob_w(\tau_B>t)\sim k_\theta u(w)t^{-p/2},\qquad
  \operatorname{Law}(W_t/\sqrt t\mid\tau_B>t)\Longrightarrow\varrho(z)\,dz,
 \end{equation}
 where
-\begin{equation}\label{eq:I1}
+\begin{equation}\label{icw:eq:I1}
  I_1=\int_{\Wedge}u(z)e^{-|z|^2/2}\,dz
  =\frac{2^{p/2+1}}p\Gamma(p/2+1),\quad
  k_\theta=b_\theta I_1,\quad
@@ -525,14 +667,14 @@ The corresponding joint endpoint limit holds for every bounded test
 function with error $o(u(w)t^{-p/2})$ uniformly over these starts.
 The envelope for $|w|\le\sqrt t$ and the trivial bound for larger $w$
 also give the useful global upper bound
-\begin{equation}\label{eq:brownian-upper}
+\begin{equation}\label{icw:eq:brownian-upper}
  \Prob_w(\tau_B>t)\le C\min\{1,|w|^pt^{-p/2}\}.
 \end{equation}
 At the sides the survival probability is zero. These statements require
 no angular lower bound away from the sides.
 
 Two elementary normalization integrals will be used later:
-\begin{equation}\label{eq:I2}
+\begin{equation}\label{icw:eq:I2}
  I_2=\int_{\Wedge}u(w)^2e^{-|w|^2}\,dw
  =\frac{\theta\Gamma(p+1)}4,\qquad
  b_\theta^2 2^{p+1}I_2=b_\theta.
@@ -541,7 +683,7 @@ For example $p=2,\theta=\pi/2$ gives $u(x,y)=2xy$ and
 $b_\theta=1/(2\pi)$, matching the product of the two killed half-line
 Brownian kernels. This checks the Lebesgue-measure convention.
 
-\section{Uniform rough bounds and stopped moments}\label{sec:rough}
+\section{Uniform rough bounds and stopped moments}\label{icw:sec:rough}
 Every assertion in this section holds for both time directions and both
 initial colors. Constants may depend on a displayed exponent or $\delta$,
 but not on the starting position $s$ or the time. Write $r=1+|s|$.
@@ -552,22 +694,22 @@ A sup-norm coupling error $e$ is absorbed in an upper survival comparison
 by starting covariance-$\Sigma$ Brownian motion at $s+e(1,1)$. If the
 lattice path stays in the quadrant, this shifted Brownian path does too,
 apart from the coupling-failure event. A harmless extra unit in $e$
-avoids equality on the sides. Equations \eqref{eq:coupling} and
-\eqref{eq:brownian-upper} imply, for every $M>0$,
-\begin{equation}\label{eq:rough-survival}
+avoids equality on the sides. Equations \eqref{icw:eq:coupling} and
+\eqref{icw:eq:brownian-upper} imply, for every $M>0$,
+\begin{equation}\label{icw:eq:rough-survival}
  \Prob_{s,c}(\tau>n)\le
  C_M\min\{1,n^{-p/2}(r+\log(n+2))^p\}+C_M(n+2)^{-M}.
 \end{equation}
-Integrating the exponential excess tail in \eqref{eq:strong-general},
+Integrating the exponential excess tail in \eqref{icw:eq:strong-general},
 not merely its polynomial corollary, bounds every fixed moment of the
 coupling error by $C_a\log^a(n+2)$. Brownian maximal moments then give
-\begin{equation}\label{eq:free-moments}
+\begin{equation}\label{icw:eq:free-moments}
  \E_{s,c}\max_{j\le n}(1+|S_j|)^a\le C_a(r+\sqrt n)^a
  \qquad(a>0).
 \end{equation}
 The same full coupling inequality and the Brownian Gaussian tail give,
 for each $M>0$,
-\begin{equation}\label{eq:free-tail}
+\begin{equation}\label{icw:eq:free-tail}
  \Prob_{s,c}(|S_n-s|>\sqrt n\log(n+2))\le C_M(n+2)^{-M}.
 \end{equation}
 The Brownian part is bounded by $C\exp(-c\log^2(n+2))$ and the
@@ -583,9 +725,9 @@ Define the stopped quantities
  M_\tau=1+\max_{0\le k\le\tau}|S_k|,\qquad
  J_\tau=1+\max_{1\le k\le\tau}|S_k-S_{k-1}|.
 \]
-The exit location is included. Summing \eqref{eq:rough-survival} and
+The exit location is included. Summing \eqref{icw:eq:rough-survival} and
 splitting at $r^2$ shows
-\begin{equation}\label{eq:mean-exit}
+\begin{equation}\label{icw:eq:mean-exit}
  \E_{s,c}\tau\le Cr^2.
 \end{equation}
 Indeed $p>2$, and the tail is bounded by a multiple of
@@ -598,8 +740,8 @@ bounded $H$ by constants. If $M_\tau>H$, either $\tau>N$ or the
 free maximum up to $N$ exceeds $H$. Brownian maximal tails and the
 exponential coupling inequality make the latter at most $C H^{-M'}$
 for any chosen $M'$, by choosing $D$ sufficiently large. The survival
-term in \eqref{eq:rough-survival} gives
-\begin{equation}\label{eq:radial-tail}
+term in \eqref{icw:eq:rough-survival} gives
+\begin{equation}\label{icw:eq:radial-tail}
  \Prob(M_\tau>H)\le
  C H^{-p}(r+\log H)^p(\log H)^{p/2}+C H^{-M'}.
 \end{equation}
@@ -607,14 +749,14 @@ This dichotomy includes the terminal exit jump: when $\tau\le N$,
 its endpoint occurs in that same free maximum. Integrate against
 $aH^{a-1}\,dH$, treating $H\le2r$ trivially and absorbing logarithms
 into an arbitrary small power of $r$. For all $0<a<p$ and $\eta>0$,
-\begin{equation}\label{eq:radial-moment}
+\begin{equation}\label{icw:eq:radial-moment}
  \E_{s,c}M_\tau^a\le C_{a,\eta}r^{a+\eta}.
 \end{equation}
 The jump tail is uniform conditionally on the past. Summing the events
 at times $k$ with $\tau\ge k$, which are measurable before jump $k$,
 yields $\Prob(J_\tau>v)\le C\E\tau\,e^{-cv}$ after a constant
-adjustment for the added one. By \eqref{eq:mean-exit},
-\begin{equation}\label{eq:jump-moment}
+adjustment for the added one. By \eqref{icw:eq:mean-exit},
+\begin{equation}\label{icw:eq:jump-moment}
  \Prob(J_\tau>v)\le Cr^2e^{-cv},\qquad
  \E J_\tau^a\le C_a\log^a(r+2)\quad(a>0).
 \end{equation}
@@ -622,24 +764,24 @@ The second bound integrates the minimum of the displayed tail and one.
 
 \subsection{The summable harmonic-defect potential}
 The exact exponent needed for the second-order correction is
-\begin{equation}\label{eq:potential}
+\begin{equation}\label{icw:eq:potential}
  \E_{s,c}\sum_{k<\tau}(1+|S_k|)^{p-3}
  \le C_\delta r^{p-1+\delta}\qquad(\delta>0).
 \end{equation}
 Here are explicit uniform estimates. Set $q=p-3\in(1,2)$ and
-$L_k=\log(k+2)$. For $k\le r^2$, \eqref{eq:free-moments} bounds each
+$L_k=\log(k+2)$. For $k\le r^2$, \eqref{icw:eq:free-moments} bounds each
 expectation by $Cr^q$, so this part is $O(r^{p-1})$.
 For $k>r^2$ let $E_k=\{|S_k-s|>\sqrt k L_k\}$. Equations
-\eqref{eq:free-tail} with exponent $8$ and \eqref{eq:free-moments}
+\eqref{icw:eq:free-tail} with exponent $8$ and \eqref{icw:eq:free-moments}
 with moment $2q$, by Cauchy--Schwarz, give
-\begin{equation}\label{eq:potential-tail}
+\begin{equation}\label{icw:eq:potential-tail}
  \E[(1+|S_k|)^q;E_k]
  \le C(r+\sqrt k)^q(k+2)^{-4}\le Ck^{q/2-4}\le Ck^{-3}.
 \end{equation}
 Killing has been removed on this event; no conditional moment estimate
 is hidden. On $E_k^c$, $1+|S_k|\le C\sqrt kL_k$, so
-\eqref{eq:rough-survival} with $M=4$ gives
-\begin{equation}\label{eq:potential-main}
+\eqref{icw:eq:rough-survival} with $M=4$ gives
+\begin{equation}\label{icw:eq:potential-main}
  \E[(1+|S_k|)^q;\tau>k,E_k^c]
  \le Ck^{-3/2}L_k^q(r+L_k)^p+Ck^{q/2-4}L_k^q.
 \end{equation}
@@ -649,47 +791,47 @@ For every fixed $a\ge0$,
  \le C_ar^{-1}\log^a(r+2).
 \]
 This follows by integration, using $k=r^2t$ and integrability of
-$t^{-3/2}(1+\log t)^a$. The sum of \eqref{eq:potential-main} is
+$t^{-3/2}(1+\log t)^a$. The sum of \eqref{icw:eq:potential-main} is
 therefore at most
 \[
  C\{r^{p-1}\log^q(r+2)+r^{-1}\log^{p+q}(r+2)+1\}
  \le C_\delta r^{p-1+\delta}.
 \]
-Together with \eqref{eq:potential-tail}, this proves
-\eqref{eq:potential} with all claimed uniformity.
+Together with \eqref{icw:eq:potential-tail}, this proves
+\eqref{icw:eq:potential} with all claimed uniformity.
 
-\section{Constructing the two killed harmonic functions}\label{sec:harmonic}
+\section{Constructing the two killed harmonic functions}\label{icw:sec:harmonic}
 \subsection{Second-order color corrections}
 The corrected one-step covariances $\Gamma_P,\Gamma_Q$ are unequal.
 Their average is $\Sigma$, but pointwise isotropy does not follow from
 centering. Introduce the explicit mean-zero matrix correctors
-\begin{equation}\label{eq:B}
+\begin{equation}\label{icw:eq:B}
  B_P=\frac1{144}\begin{pmatrix}-7&55\\55&-115\end{pmatrix},\qquad
  B_Q=\frac1{72}\begin{pmatrix}7&-55\\-55&115\end{pmatrix}.
 \end{equation}
 They satisfy
-\begin{equation}\label{eq:B-poisson}
+\begin{equation}\label{icw:eq:B-poisson}
  \sum_c\pi_cB_c=0,\qquad (I-P_0)B=\Gamma-\Sigma.
 \end{equation}
 For the dual the corresponding matrices are
-\begin{equation}\label{eq:B-dual}
+\begin{equation}\label{icw:eq:B-dual}
  B_P^*=\frac19\begin{pmatrix}8&-5\\-5&-10\end{pmatrix},\qquad
  B_Q^*=\frac19\begin{pmatrix}-16&10\\10&20\end{pmatrix},
 \end{equation}
 and satisfy the same equations with $\Gamma^*$.
-All these identities follow by rational arithmetic from \eqref{eq:q}.
+All these identities follow by rational arithmetic from \eqref{icw:eq:q}.
 On the color-mean-zero subspace $I-P_0$ acts as multiplication by $3/4$,
 which also explains the factor $4/3$ in the Poisson solutions.
 
-\subsection{Smooth extension and Taylor cancellation}
+\subsection{Smooth extension and Taylor cancellation}\label{icw:sub:smooth}
 Continue the analytic expression for $U$ across both boundary rays in
 an angular neighborhood of the quadrant. Extend its smooth angular
 factor elsewhere around the circle, retaining its degree-$p$ homogeneous
 radial factor, and define it as zero at the origin. Because $p>4$, this
 is $C^3$ at the origin. Denote the extension again by $U$; it agrees with
-\eqref{eq:U} on the entire quadrant and vanishes on both boundary rays.
+\eqref{icw:eq:U} on the entire quadrant and vanishes on both boundary rays.
 For $j=0,1,2,3$,
-\begin{equation}\label{eq:U-derivatives}
+\begin{equation}\label{icw:eq:U-derivatives}
  |D^jU(s)|\le C(1+|s|)^{p-j}.
 \end{equation}
 The analytic continuation is $\Sigma$-harmonic in that angular
@@ -697,12 +839,12 @@ neighborhood away from the origin. A bounded color translation of any
 large quadrant point stays in this neighborhood.
 
 On the full free state space define
-\begin{equation}\label{eq:Lambda}
+\begin{equation}\label{icw:eq:Lambda}
  \Lambda(s,c)=U(s+h_c)+\tfrac12B_c:D^2U(s+h_c),\qquad
  f(s,c)=\E_{s,c}\Lambda(S_1,C_1)-\Lambda(s,c).
 \end{equation}
 Then, uniformly on the quadrant,
-\begin{equation}\label{eq:defect}
+\begin{equation}\label{icw:eq:defect}
  |\Lambda(s,c)-U(s)|\le C(1+|s|)^{p-1},\qquad
  |f(s,c)|\le C(1+|s|)^{p-3}.
 \end{equation}
@@ -716,7 +858,7 @@ the zeroth-order part from the matrix corrector, are
 \]
 outside a fixed ball. The fixed ball contributes only $O(1)$.
 The third-derivative Taylor remainder is bounded by
-$C(1+|s|)^{p-3}$ using \eqref{eq:U-derivatives} and the uniform
+$C(1+|s|)^{p-3}$ using \eqref{icw:eq:U-derivatives} and the uniform
 exponential jump moments; along long Taylor segments one may use
 $(1+|s|+|\Delta Y|)^{p-3}$ and integrate all jump powers.
 Variation of $D^2U$ in the $B$ term requires only $D^3U$ and gives the
@@ -728,7 +870,7 @@ incorrect second-order calculation.
 At exit, the position $S_\tau$ is within the last jump length of a point
 on the quadrant boundary. On that boundary $U=0$. The gradient estimate,
 the bounded offsets, and the bounded matrices give
-\begin{equation}\label{eq:exit-Lambda}
+\begin{equation}\label{icw:eq:exit-Lambda}
  |\Lambda(S_\tau,C_\tau)|\le C M_\tau^{p-1}J_\tau.
 \end{equation}
 One may use the crossing point of the last segment as the boundary
@@ -741,19 +883,19 @@ For any prescribed $\delta>0$, take
  q_0=1+\frac1{2(p-1)},\qquad q_0'=2p-1,
  \qquad(p-1)q_0=p-\tfrac12<p.
 \]
-Apply \eqref{eq:radial-moment} with $a=p-1/2$ and
-$\eta=\delta q_0/2$, and \eqref{eq:jump-moment} with $a=q_0'$.
+Apply \eqref{icw:eq:radial-moment} with $a=p-1/2$ and
+$\eta=\delta q_0/2$, and \eqref{icw:eq:jump-moment} with $a=q_0'$.
 Hölder's inequality gives
-\begin{equation}\label{eq:exit-integrable}
+\begin{equation}\label{icw:eq:exit-integrable}
  \E[M_\tau^{p-1}J_\tau]
  \le(\E M_\tau^{p-1/2})^{1/q_0}
        (\E J_\tau^{2p-1})^{1/(2p-1)}
  \le C_\delta r^{p-1+\delta}.
 \end{equation}
-Also \eqref{eq:potential} and \eqref{eq:defect} make the full defect
+Also \eqref{icw:eq:potential} and \eqref{icw:eq:defect} make the full defect
 sum absolutely integrable. Stopped Dynkin's identity is consequently
 legitimate and reads
-\begin{align}\label{eq:Dynkin}
+\begin{align}\label{icw:eq:Dynkin}
  \E_{s,c}[\Lambda(S_n,C_n);\tau>n]
  &=\Lambda(s,c)-\E_{s,c}[\Lambda(S_\tau,C_\tau);\tau\le n]\notag\\
  &\quad+\sum_{k=0}^{n-1}\E_{s,c}[f(S_k,C_k);\tau>k].
@@ -766,34 +908,34 @@ $|S_n-s|\le\sqrt n\log(n+2)$, its absolute expectation is at most
 \[
  C_s n^{-1/2}\log^{2p-1}(n+2)+o(1)
 \]
-by \eqref{eq:rough-survival} and \eqref{eq:defect}. On the complementary
-event use \eqref{eq:free-tail} with exponent $12$, the moment
-$2(p-1)$ in \eqref{eq:free-moments}, and Cauchy--Schwarz; this is
+by \eqref{icw:eq:rough-survival} and \eqref{icw:eq:defect}. On the complementary
+event use \eqref{icw:eq:free-tail} with exponent $12$, the moment
+$2(p-1)$ in \eqref{icw:eq:free-moments}, and Cauchy--Schwarz; this is
 $O_s(n^{(p-1)/2-6})=o(1)$. Thus the first limit in
-\eqref{eq:V-limit} exists and has the exact representation
-\begin{equation}\label{eq:V-representation}
+\eqref{icw:eq:V-limit} exists and has the exact representation
+\begin{equation}\label{icw:eq:V-representation}
  V(s,c)=\Lambda(s,c)-\E_{s,c}\Lambda(S_\tau,C_\tau)
                 +\E_{s,c}\sum_{k<\tau}f(S_k,C_k).
 \end{equation}
 It is nonnegative because $U$ is nonnegative on the quadrant.
-Equations \eqref{eq:potential}, \eqref{eq:defect}, and
-\eqref{eq:exit-integrable} prove \eqref{eq:V-asymp}, and choosing
+Equations \eqref{icw:eq:potential}, \eqref{icw:eq:defect}, and
+\eqref{icw:eq:exit-integrable} prove \eqref{icw:eq:V-asymp}, and choosing
 $\delta<1$ gives $0\le V(s,c)\le C(1+|s|)^p$.
 The identical construction with $h^*,B^*$ proves every assertion for
 $V^*$, including its representation and growth bound.
 
-\subsection{Harmonicity, normalization, and positive seed values}
+\subsection{Harmonicity, normalization, and positive seed values}\label{icw:sub:seeds}
 The stopped estimates also imply, uniformly in a starting state,
 \[
  \sup_n\left|\E_{s,c}[U(S_n);\tau>n]\right|
  \le C(1+|s|)^p.
 \]
-For example use \eqref{eq:Dynkin} and the exit and potential bounds;
+For example use \eqref{icw:eq:Dynkin} and the exit and potential bounds;
 the expectation of $|\Lambda-U|$ before exit is bounded by a moment
 of $M_\tau$ strictly below $p$. This polynomial majorant is integrable
 under one exponential-tailed jump. The one-step Markov property and
 dominated convergence therefore give
-\begin{equation}\label{eq:harmonic}
+\begin{equation}\label{icw:eq:harmonic}
  V(s,c)=\sum_{t\in\Qd,d}q_{cd}(t-s)V(t,d),
 \end{equation}
 and likewise for $V^*$. Nonnegative harmonicity permits bounded-time
@@ -804,30 +946,33 @@ The normalization is unique in the stated class. If another killed-
 harmonic function $H$ satisfies
 $H-U=O((1+|s|)^{p-1+\delta})$ for some $\delta<1$, its killed
 expectation equals $H(s,c)$ at every finite time. On the event
-$|S_n-s|\le\sqrt n\log(n+2)$, \eqref{eq:rough-survival} makes the
+$|S_n-s|\le\sqrt n\log(n+2)$, \eqref{icw:eq:rough-survival} makes the
 expected difference from $U$ tend to zero, since its polynomial degree
-is less than $p$. On the complement use \eqref{eq:free-tail} with
-exponent $16$ and \eqref{eq:free-moments}. Hence $H=V$. The same
+is less than $p$. On the complement use \eqref{icw:eq:free-tail} with
+exponent $16$ and \eqref{icw:eq:free-moments}. Hence $H=V$. The same
 argument applies in reversal. This also shows that the choice of smooth
 extension outside the quadrant does not affect either normalized limit.
 
 In any fixed interior angular sector, $U(s)\asymp|s|^p$, so
-\eqref{eq:V-asymp} makes $V$ positive sufficiently far out. From $o$,
+\eqref{icw:eq:V-asymp} makes $V$ positive sufficiently far out. From $o$,
 $H$ steps $A_0=(1,0)$ followed by $H$ steps $A_1=(0,1)$ reach
 $(H,H,P)$, stay in the quadrant, and have positive probability. By
 harmonicity, $V(o)>0$. For the dual use $e=(1,0,P)$ and the seed
-\begin{equation}\label{eq:seed}
+\begin{equation}\label{icw:eq:seed}
  (1,0,P)\to(1,0,Q)\to(0,2,P)\to(2,0,Q)\to(1,3,P).
 \end{equation}
 These four steps reverse $C_1,D_2,C_3,D_3$, respectively. Thereafter
 the dual pair $(2,-2):P\to Q$, $(-1,3):Q\to P$ has net displacement
 $(1,1)$ and stays in the quadrant at every repetition. It reaches an
 arbitrarily deep fixed interior sector. Thus $V^*(e)>0$ as well.
+\begin{writenote}[5 October 2026]
+These are also Report~123's seeds (Part~II, Section~\ref{icw:log:sec:lower}). In the language of Theorem~24.1 of \file{a377922-corner-polyhedra-schnyder} they are seed paths in the sense of its (H5) from $o$ for the forward walk and from $e$ for the dual (Corollary~\ref{icw:log:cor:exponent}); from the origin no dual seed exists (Remark~\ref{icw:log:rem:seeds}).
+\end{writenote}
 
-\section{Sharp survival and the endpoint meander}\label{sec:entrance}
+\section{Sharp survival and the endpoint meander}\label{icw:sec:entrance}
 \subsection{Deep entrance with quantitative slack}
 For a horizon $n$ put, with harmless integer rounding,
-\begin{equation}\label{eq:entrance-scales}
+\begin{equation}\label{icw:eq:entrance-scales}
  h=n^{1/3},\qquad T=\lfloor n^{3/4}\rfloor,\qquad
  R=n^{5/12},\qquad
  \nu=\inf\{k\ge0:S_k\in[h,\infty)^2\}.
@@ -835,12 +980,12 @@ For a horizon $n$ put, with harmless integer rounding,
 Uniformly over states outside this deep set, the free process in time
 $\lfloor h^2\rfloor$ has a probability bounded below of displacement
 less than $-2h$ in whichever coordinate is initially below $h$.
-This follows from \eqref{eq:coupling}, a nondegenerate Brownian marginal,
+This follows from \eqref{icw:eq:coupling}, a nondegenerate Brownian marginal,
 and the finite number of colors. It is independent of the magnitude
 of the other coordinate by translation invariance. On this event the
 chain cannot both stay alive and remain outside the deep set for the
 whole block. Iterating the conditional bound over blocks gives
-\begin{equation}\label{eq:late-entrance}
+\begin{equation}\label{icw:eq:late-entrance}
  \Prob_{s,c}(\tau>T,\nu>T)\le Ce^{-cT/h^2}
  \le Ce^{-cn^{1/12}}.
 \end{equation}
@@ -848,7 +993,7 @@ No bounded-jump or ball-confinement assumption is made here.
 
 For starts $|s|\le n^{1/4}$, Brownian maximal tails up to $T$ and the
 full exponential coupling inequality give
-\begin{equation}\label{eq:large-entrance}
+\begin{equation}\label{icw:eq:large-entrance}
  \Prob_{s,c}\left(\max_{k\le T}|S_k|>R\right)
  \le Ce^{-cn^{1/12}}.
 \end{equation}
@@ -858,7 +1003,7 @@ the expectation of
 $(1+\max_{k\le T}|S_k|)^p$ on this event is at most
 $C n^{3p/8}e^{-c'n^{1/12}}$, after reducing the positive constant
 $c'$. The identical weighted bound on $\{\tau>T,\nu>T\}$ follows
-from \eqref{eq:late-entrance}. Both are smaller than every prescribed
+from \eqref{icw:eq:late-entrance}. Both are smaller than every prescribed
 negative power of $n$, uniformly in the full starting range.
 
 Let
@@ -866,7 +1011,7 @@ Let
  E_n=\{\nu\le T,\ \tau>\nu,\ |S_\nu|\le R\}.
 \]
 By optional stopping at $\nu\wedge T$ and nonnegative harmonicity,
-\begin{equation}\label{eq:entrance-mass}
+\begin{equation}\label{icw:eq:entrance-mass}
  \E[V(S_\nu,C_\nu);\nu\le T,\tau>\nu]
  =V(s,c)-\E[V(S_T,C_T);\tau>T,\nu>T].
 \end{equation}
@@ -878,19 +1023,19 @@ The elementary wedge bound, transformed to physical coordinates, is
  U(x)\ge c\dist(x,\partial\RR_{\ge0}^2)|x|^{p-1}.
 \]
 It follows from $\sin(p\phi)\asymp\min(\phi,\theta-\phi)$ and
-norm equivalence. Choose $\delta=1/4$ in \eqref{eq:V-asymp}. Then
-\begin{equation}\label{eq:entrance-ratio}
+norm equivalence. Choose $\delta=1/4$ in \eqref{icw:eq:V-asymp}. Then
+\begin{equation}\label{icw:eq:entrance-ratio}
  \sup_{\substack{x\in[h,\infty)^2\cap\Qd\\|x|\le R,\ c=P,Q}}
  \left|\frac{V(x,c)}{U(x)}-1\right|
  \le C\frac{R^{1/4}}h=O(n^{-11/48})=o(1).
 \end{equation}
 Thus, for every fixed start,
-\begin{equation}\label{eq:U-entrance-mass}
+\begin{equation}\label{icw:eq:U-entrance-mass}
  \E_{s,c}[U(S_\nu);E_n]\longrightarrow V(s,c).
 \end{equation}
 Uniformly for $|s|\le n^{1/4}$, this entrance expectation is at most
 $C(1+|s|)^p$, since $U\le2V$ on the good set for all large $n$ and
-\eqref{eq:entrance-mass} bounds its $V$-mass.
+\eqref{icw:eq:entrance-mass} bounds its $V$-mass.
 
 \subsection{Fresh continuation coupling and the exact limit}
 Restart a free coupling from a good entrance state $x$ over the remaining
@@ -902,8 +1047,8 @@ starts $x\pm e(1,1)$ remain inside the physical quadrant, and
 uniformly over the good set, by the gradient bound and the preceding
 boundary-distance lower bound. Their radii are $o(\sqrt n)$, and
 $n-\nu=n(1+o(1))$. The upper and lower shifted-path comparisons and
-the angle-uniform Brownian limit \eqref{eq:angle-uniform} therefore give
-\begin{equation}\label{eq:continuation}
+the angle-uniform Brownian limit \eqref{icw:eq:angle-uniform} therefore give
+\begin{equation}\label{icw:eq:continuation}
  \Prob_{x,c}(\tau>n-\nu)=k_\theta U(x)n^{-p/2}(1+o(1))
 \end{equation}
 uniformly over good positions, colors, and entrance times. The smallest
@@ -922,16 +1067,16 @@ being compared solely by ordering its survival events. The time rescaling
 $\sqrt{(n-\nu)/n}\to1$ is uniform and harmless under the $L^1$ limit.
 
 Apply the Markov property at $\nu$. Late and large entrance events cost
-$o(n^{-p/2})$ by \eqref{eq:late-entrance}--\eqref{eq:large-entrance}.
+$o(n^{-p/2})$ by \eqref{icw:eq:late-entrance}--\eqref{icw:eq:large-entrance}.
 The uniform relative error in the continuation multiplies the bounded
-expected entrance $U$-mass. From \eqref{eq:U-entrance-mass}, for every
+expected entrance $U$-mass. From \eqref{icw:eq:U-entrance-mass}, for every
 fixed start and every bounded Lipschitz $f$,
-\begin{equation}\label{eq:meander-joint}
+\begin{equation}\label{icw:eq:meander-joint}
  n^{p/2}\E_{s,c}[f(AS_n/\sqrt n);\tau>n]
  \longrightarrow k_\theta V(s,c)\int_{\Wedge}f(w)\varrho(w)\,dw.
 \end{equation}
 In particular
-\begin{equation}\label{eq:sharp-survival}
+\begin{equation}\label{icw:eq:sharp-survival}
  n^{p/2}\Prob_{s,c}(\tau>n)\longrightarrow k_\theta V(s,c).
 \end{equation}
 For $V(s,c)>0$ this gives the corresponding conditional weak limit
@@ -947,15 +1092,18 @@ The same entrance argument gives, uniformly for $|s|\le n^{1/4}$,
 The superpolynomial absolute errors can be absorbed since $1+|s|\ge1$.
 For $|s|>n^{1/4}$ the trivial bound one is at most
 $(1+|s|)^{2p}n^{-p/2}$. Enlarging a constant for bounded $n$ proves
-\begin{equation}\label{eq:global-survival}
+\begin{equation}\label{icw:eq:global-survival}
  \Prob_{s,c}(\tau>n)\le C(1+|s|)^{2p}n^{-p/2}
  \qquad(s\in\Qd,\ c=P,Q,\ n\ge1).
 \end{equation}
 The constant is uniform in both time directions. This bound is the
 specific endpoint-uniform input needed for the final infinite sum.
 
-\section{Free local bounds and last-window smoothing}\label{sec:smoothing}
-\subsection{Fourier inversion and removal of lattice periods}
+\section{Free local bounds and last-window smoothing}\label{icw:sec:smoothing}
+\subsection{Fourier inversion and removal of lattice periods}\label{icw:sub:fourier}
+\begin{writenote}[5 October 2026]
+This subsection is also Report~123's Section~4.2 (Part~II, Section~\ref{icw:log:sub:fourier}).
+\end{writenote}
 Let
 $L(u)_{cd}=\sum_vq_{cd}(v)e^{iu\cdot v}$ for
 $u\in[-\pi,\pi]^2$. Exponential moments make $L$ analytic near the
@@ -984,7 +1132,7 @@ Outside it compactness and the absence of peripheral points imply
 $\|L(u)^m\|\le Cr^m$ for some $r<1$; a slightly larger $r$ absorbs any
 Jordan factors. Fourier inversion, $u=w/\sqrt m$, and dominated
 convergence now give
-\begin{equation}\label{eq:LLT}
+\begin{equation}\label{icw:eq:LLT}
  \Prob_c(S_m-S_0=t,C_m=d)=
  \frac{\pi_d}{2\pi m\sqrt{\det\Sigma}}
   e^{-t^{\mathsf T}\Sigma^{-1}t/(2m)}+o(m^{-1}).
@@ -992,12 +1140,12 @@ convergence now give
 The error is uniform in every lattice $t$ and both colors: the absolute
 Fourier-integral error does not depend on $t$. In particular all free
 endpoint probabilities are at most $C/m$, for $m\ge1$ after enlarging
-$C$. Formula \eqref{eq:dual} gives the same LLT and bound for the dual.
+$C$. Formula \eqref{icw:eq:dual} gives the same LLT and bound for the dual.
 
 
 \subsection{A uniform off-diagonal free bound}
 We also need, for the free kernel $p_k$ and all displacements,
-\begin{equation}\label{eq:free-gaussian}
+\begin{equation}\label{icw:eq:free-gaussian}
  p_k((x,c),(y,d))\le\frac Ck
  \exp\left\{-c\min\left(\frac{|y-x|^2}k,|y-x|\right)\right\}
  \qquad(k\ge1).
@@ -1042,7 +1190,7 @@ absorbed into $C$. Put $\Delta=y-x$, $R=|\Delta|$ and
 $\lambda=\delta\Delta/\max(k,R)$ with small fixed $\delta>0$
 satisfying $C_0\delta\le1/2$. For $R\le k$ the exponent is at most
 $-(\delta/2)R^2/k$; for $R\ge k$ it is at most $-(\delta/2)R$.
-Take $\lambda=0$ if $R=0$. This proves \eqref{eq:free-gaussian}
+Take $\lambda=0$ if $R=0$. This proves \eqref{icw:eq:free-gaussian}
 uniformly in colors. Reversal has the same bound, by its transposed
 Fourier matrix or the same argument.
 
@@ -1050,17 +1198,17 @@ Fourier matrix or the same argument.
 Fix a starting state $x=(s,c)$ and a compact subset $B$ of the open
 physical quadrant. Uniformly for $z/\sqrt n\in B$ and terminal colors
 $d$, we claim
-\begin{equation}\label{eq:bulk-LLT}
+\begin{equation}\label{icw:eq:bulk-LLT}
  K_n(x,(z,d))=
  \frac{b_\theta\pi_d}{\dett}V(x)n^{-p/2-1}
  u(Az/\sqrt n)e^{-|Az|^2/(2n)}+o(n^{-p/2-1}).
 \end{equation}
 Fix $0<\eps<1/2$, let $l=\lfloor\eps n\rfloor$, $m=n-l$, and
 replace killing in the final window by the free kernel:
-\begin{equation}\label{eq:F-smooth}
+\begin{equation}\label{icw:eq:F-smooth}
  F_n(z,d)=\sum_{y\in\Qd,a}K_m(x,(y,a))p_l((y,a),(z,d)).
 \end{equation}
-The uniform error in the free local limit \eqref{eq:LLT}, summed
+The uniform error in the free local limit \eqref{icw:eq:LLT}, summed
 against $K_m$, costs only $o(l^{-1})\Prob_x(\tau>m)$.
 For each fixed $\eps$ its contribution after multiplying by
 $n^{p/2+1}$ tends to zero. There is no unweighted summation of infinitely
@@ -1068,8 +1216,8 @@ many local-limit errors.
 
 Put $v=Az/\sqrt n$, $t=1-\eps$, and
 $\phi_\eps(v)=(2\pi\eps)^{-1}e^{-|v|^2/(2\eps)}$.
-Equations \eqref{eq:meander-joint} and \eqref{eq:LLT} give
-\begin{align}\label{eq:convolution}
+Equations \eqref{icw:eq:meander-joint} and \eqref{icw:eq:LLT} give
+\begin{align}\label{icw:eq:convolution}
  n^{p/2+1}F_n(z,d)&\longrightarrow
    \frac{\pi_d k_\theta V(x)}{\dett}H_\eps(v),\notag\\
  H_\eps(v)&=t^{-p/2}\int_{\Wedge}\varrho(w)
@@ -1088,19 +1236,19 @@ convolution of $\phi_\eps$ with
 $t^{-p/2-1}\varrho(y/\sqrt t)$. Consequently $H_\eps\to\varrho$
 uniformly on compact sets as $\eps\downarrow0$. Since
 $k_\theta\varrho=b_\theta u e^{-|\cdot|^2/2}$, this is the profile
-in \eqref{eq:bulk-LLT}. If $V(x)=0$, the free $C/l$ bound instead
+in \eqref{icw:eq:bulk-LLT}. If $V(x)=0$, the free $C/l$ bound instead
 shows directly that
 $n^{p/2+1}\sup_{z,d}F_n(z,d)\to0$ for every fixed $\eps$, using
-the zero-mass version of \eqref{eq:sharp-survival}.
+the zero-mass version of \eqref{icw:eq:sharp-survival}.
 
 \subsection{Controlling exit and re-entry during the last window}
 Choose $\eta>0$ such that
 $\dist(z,\partial\RR_{\ge0}^2)\ge\eta\sqrt n$ for $z/\sqrt n\in B$.
 Any first exit position $w$ is outside the quadrant, so
 $|z-w|\ge\eta\sqrt n$, even for an unbounded overshoot. From
-\eqref{eq:free-gaussian}, for $\eps$ sufficiently small relative to
+\eqref{icw:eq:free-gaussian}, for $\eps$ sufficiently small relative to
 $\eta^2$ and then all sufficiently large $n$,
-\begin{equation}\label{eq:reentry}
+\begin{equation}\label{icw:eq:reentry}
  \sup_{\substack{1\le k\le l,\ w\notin\Qd\\a=P,Q}}
  p_k((w,a),(z,d))\le\frac C{\eps n}e^{-c\eta^2/\eps}.
 \end{equation}
@@ -1119,44 +1267,44 @@ By strong Markov at the first exit,
              p_{n-\tau}((S_\tau,C_\tau),(z,d))].
 \]
 Consequently
-\begin{equation}\label{eq:smoothing-error}
+\begin{equation}\label{icw:eq:smoothing-error}
  0\le F_n(z,d)-K_n(x,(z,d))
  \le\Prob_x(\tau>m)\frac C{\eps n}e^{-c\eta^2/\eps}.
 \end{equation}
 After scaling by $n^{p/2+1}$, its limsup is at most
-$C_x\eps^{-1}e^{-c\eta^2/\eps}$ by \eqref{eq:sharp-survival}.
+$C_x\eps^{-1}e^{-c\eta^2/\eps}$ by \eqref{icw:eq:sharp-survival}.
 It tends to zero as $\eps\downarrow0$. Taking first $n\to\infty$
 at fixed $\eps$, then $\eps\downarrow0$, proves
-\eqref{eq:bulk-LLT} with its stated compact-interior uniformity.
+\eqref{icw:eq:bulk-LLT} with its stated compact-interior uniformity.
 All arguments apply equally to the reversed process.
 
 Finally, split a path into two comparable pieces, remove killing in
 the latter half, and apply the free $C/n$ bound. Fixed-start survival
 then gives the global endpoint bound
-\begin{equation}\label{eq:bulk-sup}
+\begin{equation}\label{icw:eq:bulk-sup}
  \sup_{z,d}K_n(x,(z,d))\le C_x n^{-p/2-1}.
 \end{equation}
 Its constant may depend on the fixed start, which is sufficient below.
 
-\section{Fixed endpoints, domination, and the leading constant}\label{sec:endpoints}
+\section{Fixed endpoints, domination, and the leading constant}\label{icw:sec:endpoints}
 \subsection{Midpoint reversal and all normalization factors}
-For $n=2m$, Chapman--Kolmogorov and \eqref{eq:reverse} give the exact
+For $n=2m$, Chapman--Kolmogorov and \eqref{icw:eq:reverse} give the exact
 identity
-\begin{equation}\label{eq:midpoint}
+\begin{equation}\label{icw:eq:midpoint}
  K_{2m}((s,c),(t,d))
  =\pi_d\sum_{z\in\Qd,a}
  \frac{K_m((s,c),(z,a))K_m^*((t,d),(z,a))}{\pi_a}.
 \end{equation}
 On a compact interior midpoint set at scale $\sqrt m$, insert the two
-bulk limits \eqref{eq:bulk-LLT}. The whitened lattice has density
+bulk limits \eqref{icw:eq:bulk-LLT}. The whitened lattice has density
 $m\dett$, since the cell of $Az/\sqrt m$ has area
 $1/(m\dett)$. Thus
 \[
  \sum_z f(Az/\sqrt m)\sim m\dett\int_{\Wedge}f(w)\,dw.
 \]
 The two factors contribute $\pi_a^2$, division in
-\eqref{eq:midpoint} leaves $\pi_a$, and summing colors gives one.
-Using \eqref{eq:I2}, the resulting coefficient is
+\eqref{icw:eq:midpoint} leaves $\pi_a$, and summing colors gives one.
+Using \eqref{icw:eq:I2}, the resulting coefficient is
 \[
  \frac{\pi_d b_\theta^2}{\dett}V(s,c)V^*(t,d)
  m^{-p-1}I_2
@@ -1169,16 +1317,16 @@ To justify removing the compact restriction, choose compact annular
 sectors $E_j\subset\Wedge$ increasing to $\Wedge$, with boundaries
 of zero limiting probability; for example restrict radius above and
 below and angle away from both sides. On the omitted region use
-\eqref{eq:bulk-sup} for the forward factor, and sum the dual factor.
+\eqref{icw:eq:bulk-sup} for the forward factor, and sum the dual factor.
 After multiplication by $m^{p+1}$ its contribution is at most
 \[
  C_{s,c}m^{p/2}
  \Prob^*_{t,d}(\tau^*>m,\ AS_m/\sqrt m\notin E_j).
 \]
-If $V^*(t,d)>0$, \eqref{eq:meander-joint} bounds its limit by a
+If $V^*(t,d)>0$, \eqref{icw:eq:meander-joint} bounds its limit by a
 constant times the $\varrho$-mass outside $E_j$, tending to zero.
 If $V^*(t,d)=0$, the entire expression tends to zero by
-\eqref{eq:sharp-survival}. This handles both boundary layers and large
+\eqref{icw:eq:sharp-survival}. This handles both boundary layers and large
 radii without a boundary-uniform killed local limit. A zero forward
 harmonic value is allowed too: its compact bulk coefficient is zero,
 and the same truncation controls the complement.
@@ -1188,7 +1336,7 @@ $j=\lceil n/2\rceil$. On a common compact midpoint set $j/m\to1$,
 and homogeneity and the continuous Gaussian factors give the same
 limiting product. The lattice density is still $m\dett$ and
 $n/m\to2$. The complementary bound is unchanged. Hence
-\eqref{eq:killed-LLT} holds along all integers, with no parity factor.
+\eqref{icw:eq:killed-LLT} holds along all integers, with no parity factor.
 
 \subsection{A polynomial bound uniform in the terminal point}
 Write $n=i+j+k$ with the three positive parts comparable to $n$.
@@ -1200,36 +1348,36 @@ Reversing the last part gives
  \le\frac{\pi_d}{\min_b\pi_b}\Prob^*_{t,d}(\tau^*>k).
 \]
 Therefore
-\begin{equation}\label{eq:three-way}
+\begin{equation}\label{icw:eq:three-way}
  K_n(o,(t,d))\le\frac Cn\Prob_o(\tau>i)
                               \Prob^*_{t,d}(\tau^*>k).
 \end{equation}
-Use fixed-start survival \eqref{eq:sharp-survival} for $o$ and the
-global estimate \eqref{eq:global-survival} for $(t,d)$. This proves
-\eqref{eq:endpoint-dom} for all large $n$ uniformly in $t,d$;
+Use fixed-start survival \eqref{icw:eq:sharp-survival} for $o$ and the
+global estimate \eqref{icw:eq:global-survival} for $(t,d)$. This proves
+\eqref{icw:eq:endpoint-dom} for all large $n$ uniformly in $t,d$;
 increasing $C$ covers the finitely many smaller $n$.
 
 \subsection{Summing the exact endpoint weights}
-For $m=n-1$, the exact identity \eqref{eq:endpoint} is
+For $m=n-1$, the exact identity \eqref{icw:eq:endpoint} is
 \[
  a_n=2\,9^{n-1}\sum_{t,d}g(t,d)K_m(o,(t,d)).
 \]
 The endpoint bound dominates
 $m^{p+1}g(t,d)K_m(o,(t,d))$ by
 $Cg(t,d)(1+|t|)^{2p}$, a summable function on the quadrant and colors.
-Dominated convergence using \eqref{eq:killed-LLT} now gives
+Dominated convergence using \eqref{icw:eq:killed-LLT} now gives
 \[
  \lim_{m\to\infty}m^{p+1}\sum_{t,d}g(t,d)K_m(o,(t,d))
  =\frac{b_\theta}{\dett}V(o)
                        \sum_{t,d}\pi_dg(t,d)V^*(t,d).
 \]
-This proves \eqref{eq:leading}--\eqref{eq:constant}. The original
+This proves \eqref{icw:eq:leading}--\eqref{icw:eq:constant}. The original
 length shift supplies exactly $2/9$, since
 $(n/(n-1))^{p+1}\to1$. Finiteness also follows directly from the
 polynomial growth of $V^*$ and the exponential decay of $g$.
 Strict positivity uses $V(o)>0$ and the single positive summand
 $e=(1,0,P)$, where $g(e)=1/6$, $\pi_P=2/3$, and $V^*(e)>0$.
-All assertions of Theorem~\ref{thm:main} are proved.
+All assertions of Theorem~\ref{icw:thm:main} are proved.
 
 For clarity, the same constant can be written
 \[
@@ -1241,9 +1389,9 @@ an effective numerical evaluation: the proof establishes existence,
 convergence, and positivity without an explicit truncation error for
 computing the harmonic values.
 
-\section{The vanishing-error inverse ceiling bracket}\label{sec:inverse}
+\section{The vanishing-error inverse ceiling bracket}\label{icw:sec:inverse}
 Appending the new largest legal entry $n$ to a length-$n$ avoider is
-injective and cannot create a triple satisfying \eqref{eq:avoid}.
+injective and cannot create a triple satisfying \eqref{icw:eq:avoid}.
 Thus $a_n\le a_{n+1}$. The leading equivalent makes it unbounded,
 so $N(y)$ is finite for all large $y$.
 
@@ -1252,16 +1400,16 @@ Put $\lambda=\log9$, $L=\log y$, and
  f(x)=\lambda x-\kappa\log x+\log C_A,\qquad
  \eta_n=\log a_n-f(n)\quad(n\ge1).
 \]
-Equation \eqref{eq:leading} is exactly $\eta_n\to0$.
+Equation \eqref{icw:eq:leading} is exactly $\eta_n\to0$.
 Let $b(L)=\kappa\log L-\kappa\log\lambda-\log C_A$, so that
-$v=(L+b(L))/\lambda$ is \eqref{eq:center}. Its deterministic centering
+$v=(L+b(L))/\lambda$ is \eqref{icw:eq:center}. Its deterministic centering
 defect is
-\begin{equation}\label{eq:centering-defect}
+\begin{equation}\label{icw:eq:centering-defect}
  f(v)-L=-\kappa\log(1+b(L)/L)
        =O(\log L/L)=o(1).
 \end{equation}
 For large $L$ define
-\begin{equation}\label{eq:inverse-envelope}
+\begin{equation}\label{icw:eq:inverse-envelope}
  \begin{split}
  m(L)&=\lfloor L/(2\lambda)\rfloor,\qquad
  E(L)=\sup_{n\ge m(L)}|\eta_n|,\\
@@ -1296,7 +1444,7 @@ For $n_+=\lceil v+\eps\rceil$,
  \log a_{n_+}&\ge f(n_+)-E(L)\ge f(v+\eps)-E(L)\\
  &\ge f(v)+\lambda\eps/2-E(L)>L.
 \end{align*}
-Hence $N(y)\le n_+$ and Corollary~\ref{cor:inverse} follows.
+Hence $N(y)\le n_+$ and Corollary~\ref{icw:cor:inverse} follows.
 
 If $[v-\eps,v+\eps]$ contains no integer, both bounding ceilings
 coincide with $\lceil v\rceil$. Near an integer the unknown coefficient
@@ -1304,21 +1452,24 @@ remainder can choose between neighboring indices, so the leading
 equivalent alone does not justify a universal equality
 $N(y)=\lceil v(y)\rceil$. The constant term in the real center is
 $(-\kappa\log\lambda-\log C_A)/\lambda$. The explicit
-$O(\log L/L)$ defect in \eqref{eq:centering-defect} may be smaller
+$O(\log L/L)$ defect in \eqref{icw:eq:centering-defect} may be smaller
 than the unknown $\eta_n=o(1)$; it cannot be promoted to a justified
 next inverse correction without a quantitative coefficient remainder.
 
-\section{The unique singularity on the critical circle}\label{sec:circle}
+\section{The unique singularity on the critical circle}\label{icw:sec:circle}
 Put $\rho=1/9$. Besides the leading equivalent, the exact walk proves:
-\begin{corollary}\label{cor:analytic}
+\begin{corollary}\label{icw:cor:analytic}
 The function $F$ has radius $\rho$, is singular at $\rho$, and admits
 analytic continuation through every other point on $|z|=\rho$.
 Moreover $p,\kappa$ are irrational and
-\begin{equation}\label{eq:derivative-limit}
+\begin{equation}\label{icw:eq:derivative-limit}
  \lim_{x\uparrow\rho}\frac{\log F^{(5)}(x)}{\log(1-9x)}=\kappa-6.
 \end{equation}
 The function $F$ is not D-finite, even over $\CC(z)$.
 \end{corollary}
+\begin{writenote}[5 October 2026]
+Sections~\ref{icw:sec:circle} and~\ref{icw:sec:arith} are Report~123's Sections~8 and~9, word for word except that Report~123 has no corollary here (these statements are part of its Theorem~\ref{icw:log:thm:main}) and that it cites its logarithmic law \eqref{icw:log:eq:main-bounds} where this text cites \eqref{icw:eq:leading}: in Section~\ref{icw:sec:circle}, for the radius $1/9$ by Cauchy--Hadamard, and in Section~\ref{icw:sec:arith}, for the bounds $n^{5-\kappa\pm\eps}t^n$ on the summands. Both uses need only $a_n=9^nn^{-\kappa+o(1)}$, so Corollary~\ref{icw:cor:analytic} does not depend on the equivalent; it was proved first in Report~123, from its own logarithmic law.
+\end{writenote}
 \subsection{Uniform return loops}
 Apart from $o$, every reachable shifted state lies in
 \[
@@ -1349,7 +1500,7 @@ legal for $b\ge1$. The other cases follow by the same explicit additions.
 All intermediate colors and positions remain in $\mathcal D$.
 Since the tilt telescopes around a closed loop, the probability of any
 listed length-$l$ loop is exactly $9^{-l}$. As positive operators,
-\begin{equation}\label{eq:loops}
+\begin{equation}\label{icw:eq:loops}
  T^3\ge9^{-3}I,\qquad T^4\ge9^{-4}I.
 \end{equation}
 
@@ -1362,7 +1513,7 @@ $\|B_l\|_\infty\le1-\epsilon_l$. If $|t_0|=1$ and $t_0^l\ne1$, then
 \]
 The strict inequality persists in an open neighborhood of $t_0$.
 There the norm-convergent series
-\begin{equation}\label{eq:resolvent}
+\begin{equation}\label{icw:eq:resolvent}
  (I-t^lT^l)^{-1}
   =\frac1{1-\epsilon_lt^l}\sum_{j\ge0}
        \left(\frac{t^lB_l}{1-\epsilon_lt^l}\right)^j
@@ -1378,22 +1529,22 @@ functional on $\mathcal D$ its nonzero entries are
 \[
  v(P(1,0))=1/3,\qquad v(P(0,1))=5/27.
 \]
-Separating $a_0,a_1$ in \eqref{eq:endpoint} gives, initially for
+Separating $a_0,a_1$ in \eqref{icw:eq:endpoint} gives, initially for
 $|z|<1/9$,
-\begin{equation}\label{eq:Fres}
+\begin{equation}\label{icw:eq:Fres}
  F(z)=1+z+18z^2\,v(I-9zT)^{-1}g.
 \end{equation}
 Here $g|_{\mathcal D}$ is bounded and $v$ has finite support, so the
 operator continuation is an ordinary scalar analytic continuation of
-$F$. Equation \eqref{eq:leading} gives radius exactly $1/9$ by
-Cauchy--Hadamard. Equation \eqref{eq:resolvent} excludes all its
+$F$. Equation \eqref{icw:eq:leading} gives radius exactly $1/9$ by
+Cauchy--Hadamard. Equation \eqref{icw:eq:resolvent} excludes all its
 convergence-circle points except $1/9$. The next section establishes
 that the latter is genuinely singular.
 
 This circle control does not claim a local $\Delta$-domain expansion at
 $1/9$ and is not used to extract a leading amplitude.
 
-\section{Irrationality and the arithmetic obstruction}
+\section{Irrationality and the arithmetic obstruction}\label{icw:sec:arith}
 \subsection{The irrational exponent}
 Since $\cos(\pi/4)<2/\sqrt7<\cos(\pi/5)$, one has
 $\pi/5<\theta<\pi/4$ and hence $4<p<5$, $5<\kappa<6$.
@@ -1415,11 +1566,11 @@ For $t\uparrow1$,
  \qquad (n)_5=n(n-1)\cdots(n-4).
 \]
 All coefficients are positive. For any
-$0<\eps<6-\kappa$, \eqref{eq:leading} and $(n)_5\asymp n^5$ bound
+$0<\eps<6-\kappa$, \eqref{icw:eq:leading} and $(n)_5\asymp n^5$ bound
 the summands, up to fixed positive factors, by
 $n^{5-\kappa-\eps}t^n$ and $n^{5-\kappa+\eps}t^n$.
 For every fixed $\alpha>-1$,
-\begin{equation}\label{eq:abelian}
+\begin{equation}\label{icw:eq:abelian}
  \sum_{n\ge1}n^\alpha t^n\asymp(1-t)^{-\alpha-1}
  \qquad(t\uparrow1).
 \end{equation}
@@ -1428,19 +1579,19 @@ from $1/s\le n\le2/s$. An upper bound follows by splitting into unit
 intervals in $ns$, or comparing with the integrable function
 $x^\alpha e^{-x}$ after separately treating $ns\le1$.
 Finite omitted terms are absorbed. Therefore
-\begin{equation}\label{eq:5bound}
+\begin{equation}\label{icw:eq:5bound}
  c_\eps(1-t)^{\kappa-6+\eps}
  \le F^{(5)}(t/9)
  \le C_\eps(1-t)^{\kappa-6-\eps}.
 \end{equation}
 The lower bound diverges. Taking logarithms, dividing by the negative
 number $\log(1-t)$, and then letting $\eps\downarrow0$ proves
-\eqref{eq:derivative-limit}. In particular $F$ cannot be analytic at
+\eqref{icw:eq:derivative-limit}. In particular $F$ cannot be analytic at
 $1/9$, completing the unique-dominant-singularity assertion.
 
 \subsection{The precise G function implication}
 Suppose first that $F$ is D-finite over $\QQ(z)$. Its coefficients are
-integers and exponentially bounded by \eqref{eq:endpoint}; all their
+integers and exponentially bounded by \eqref{icw:eq:endpoint}; all their
 algebraic conjugates equal themselves and the common denominators are
 one. These facts, together with hypothetical D-finiteness, verify the
 G-function conditions. The same is true of $F^{(5)}$: its coefficients
@@ -1452,7 +1603,7 @@ of Fischler--Rivoal~\cite[Theorem 6, pp.~328--329]{fr}. A minimal
 operator for a G-function over an algebraic extension of $\QQ$ is
 Fuchsian with rational local exponents. At each finite point its
 solutions have finite sums of the form
-\begin{equation}\label{eq:powerlog}
+\begin{equation}\label{icw:eq:powerlog}
  \sum_{q\in E}\sum_{k=0}^{K_q}w^q(\log w)^k f_{qk}(w),
  \qquad E\subset\QQ\text{ finite},
 \end{equation}
@@ -1463,7 +1614,7 @@ coefficient.
 
 Apply this at $w=\rho-x\downarrow0$ to $F^{(5)}$. To handle possible
 cancellation explicitly, first combine exponent classes modulo integers
-in \eqref{eq:powerlog}, then expand their finitely many holomorphic
+in \eqref{icw:eq:powerlog}, then expand their finitely many holomorphic
 coefficients. The union of their exponent supports is contained in a
 finite union of sets $q+\NN$ and is bounded below. Since the function
 is nonzero, there is a smallest nonvanishing power $q_0\in\QQ$ and,
@@ -1475,7 +1626,7 @@ positive real $w$ axis. Thus
 \]
 Its positivity permits taking its real logarithm; equivalently take
 absolute values first. Its logarithmic growth exponent must therefore
-be $q_0\in\QQ$. But \eqref{eq:derivative-limit} gives the irrational
+be $q_0\in\QQ$. But \eqref{icw:eq:derivative-limit} gives the irrational
 number $\kappa-6$. This contradiction proves non-D-finiteness over
 $\QQ(z)$. Irrational powers of arbitrary complex D-finite functions
 would not supply this contradiction; the G-function hypotheses are the
@@ -1496,10 +1647,10 @@ would give a nonzero operator over $\QQ(z)$ annihilating $F$, contrary
 to what was just proved. Hence $F$ is not D-finite over $\CC(z)$ either.
 
 
-\section{Scope, reproducibility, and further questions}
+\section{Scope, reproducibility, and further questions}\label{icw:sec:scope}
 The principal theorem is the full coefficient equivalent
-\eqref{eq:leading}, with a finite strictly positive constant characterized
-by \eqref{eq:constant}. Its proof includes original-time survival and
+\eqref{icw:eq:leading}, with a finite strictly positive constant characterized
+by \eqref{icw:eq:constant}. Its proof includes original-time survival and
 fixed-endpoint limits, not merely a logarithmic exponent. None of the
 limits above has been assigned an effective convergence rate. Therefore
 this report does not certify amplitude digits, an explicit numerical
@@ -1513,6 +1664,9 @@ the method requires separate checks of regeneration, harmonic regularity,
 corrector solvability, entrance estimates, lattice structure, and the
 endpoint weights in each proposed setting. These are further questions,
 not additional consequences claimed for an unaudited class of models.
+\begin{writenote}[5 October 2026]
+At the logarithmic scale a general theorem of this kind is in the repository: Theorem~24.1 of \file{a377922-corner-polyhedra-schnyder} (bundle Report~112), whose method is Part~II's. Section~\ref{icw:log:sec:cone} records how this walk meets its hypotheses and extends it to fixed endpoint states; Remark~\ref{icw:log:rem:amplitude} lists where this Part uses $4<p<5$. No general amplitude theorem is claimed here either.
+\end{writenote}
 
 The companion package supplies the editable source, rendered PDF,
 exact integer data, and offline finite checks. The two kinds of evidence
@@ -1542,6 +1696,715 @@ verified again at the end. Commands, dependencies, and distinctions
 between full and checks-only replay appear in \texttt{README.md}.
 Downloaded source papers, intermediate render images, fitted diagnostics,
 and private development material are not reader-package contents.
+\begin{writenote}[5 October 2026]
+In this repository the delivered \file{checks/README.md} is \file{125-equiv-checks-README.md} and the checker is \file{code/125-equiv-checks-verify.py}; the PDF, the inventories and the \file{checks/legacy/} copy of Report~123's checks are not shipped (Report~123's checks are shipped once, under the prefix \file{123-logexp-}), and the delivered \file{README.md} is replaced by this report's guide. The delivered scripts read the delivered layout, so they run only on a copy of the delivery; the report's README gives the routes.
+\end{writenote}
+
+
+\subsection{Further questions and research}\label{icw:sub:further}
+\begin{writenote}[5 October 2026]
+This subsection is added in the write. Under Vladimir's standing rule of 4~October 2026 it collects every claim of this Part that is stated without proof, and the questions this Part leaves open, with source, sketch and what is missing. The intake found no false claim in Report~125. Items common to both Parts are stated here once; Section~\ref{icw:log:sec:further} adds Part~II's own.
+\end{writenote}
+\begin{enumerate}[label=\arabic*.,ref=\arabic*]
+\item\label{icw:q:digits} \textbf{Digits of $C_A$.} Report~125 (Sections~\ref{icw:sec:endpoints} and~\ref{icw:sec:scope}) characterizes $C_A$ by \eqref{icw:eq:constant} and says that the proof gives no truncation error for computing $V(o)$ or the series $\sum_{t,d}\pi_dg(t,d)V^*(t,d)$, so no digit is certified. Missing: an effective evaluation of the killed harmonic functions, for example a rate in the limits \eqref{icw:eq:V-limit} or a computable representation \eqref{icw:eq:V-representation} with explicit tails. Prior numerical estimates of exponent and amplitude are Kot\v{e}\v{s}ovec's (OEIS, 13~January 2026, after Beaton) and Britt and Beaton's (their Section~4.2 and Appendix~B.3), credited by both Parts; they are not reproduced or checked here. \emph{Observation, not a claim} (intake, double precision on the exact b-file terms): $a_n9^{-n}n^\kappa=77.91$, $83.24$, $86.55$, $87.65$ at $n=100$, $200$, $500$, $1000$, increasing; a two-point extrapolation in $1/n$ from $n=500$ and $1000$ gives about $88.76$, but the order of the correction is unknown, so this is not a digit of $C_A$.
+\item\label{icw:q:rate} \textbf{A remainder rate and corrections.} Is $a_n/(C_A9^nn^{-\kappa})-1=O(n^{-\delta})$ for some $\delta>0$, and what is the first correction (a $1/n$ term or another scale), or a correction transseries? Report~125, Section~\ref{icw:sec:scope}, and Report~123, Section~\ref{icw:log:sec:defs} (``What is not asserted''), leave this open. Missing: rates in every limit of the proof (strong approximation transfer, deep entrance, angular uniformity, last-window smoothing, dominated endpoint sum). \emph{Observation, not a claim:} the secant exponent $-\log(a_n9^{-n}/a_m9^{-m})/\log(n/m)$ is $5.3834$ at $(n,m)=(1000,500)$, against $\kappa=5.40169$.
+\item\label{icw:q:delta} \textbf{A local expansion at $1/9$.} Both Parts say that their circle control (Section~\ref{icw:sec:circle}) is not a local $\Delta$-domain expansion. Is $F$ continuable to a $\Delta$-domain at $1/9$ with a singular expansion $c(1-9z)^{\kappa-1}(1+o(1))$ plus analytic terms? Missing: control of the resolvent \eqref{icw:eq:Fres} near $z=1/9$ off the real axis; Report~123's kernel (Section~\ref{icw:log:sub:kernel}) is a possible algebraic entry point.
+\item\label{icw:q:ceiling} \textbf{The ceiling rule.} Report~125 (Section~\ref{icw:sec:inverse}) proves only the bracket \eqref{icw:eq:inverse-bracket} and says that $N(y)=\lceil v(y)\rceil$ holds whenever $[v-\eps,v+\eps]$ contains no integer, and that the $O(\log L/L)$ centring defect cannot be promoted to a next inverse correction. Is $N(y)=\lceil v(y)\rceil$ for all large $y$, or for a set of $y$ of full logarithmic density? Missing: a quantitative remainder in item~\ref{icw:q:rate}. \emph{Observation, not a claim:} with the uncertified value $88.76$ in place of $C_A$, the intake found $N(y)=\lceil v(y)\rceil$ at $y=10^{100}$, $10^{300}$, $10^{600}$, $10^{900}$.
+\item\label{icw:q:onsets} \textbf{Effective onsets.} The envelope $\eps(y)$ of Corollary~\ref{icw:cor:inverse} is an existence envelope without a computable rate or onset (Section~\ref{icw:sec:inverse}); Part~II's $n_\eps$ (Theorem~\ref{icw:log:thm:main}) and $n_0$ (Lemma~\ref{icw:log:lem:bridge}) are not explicit either. Missing: explicit constants in the functional limit and coupling inputs.
+\item\label{icw:q:general} \textbf{A general amplitude theorem.} Report~125, Section~\ref{icw:sec:scope}, suggests studying analogous finite-colour cone processes and lists what each would need: regeneration, harmonic regularity, solvability of the correctors, entrance estimates, lattice structure and the endpoint weights. This is Question~Q1 of \file{a377922-corner-polyhedra-schnyder} (\texttt{cps:log:q:amplitude}). Missing beyond the checks named there: this Part uses $4<p<5$ and $p>2$ (Remark~\ref{icw:log:rem:amplitude}); for other exponents the corrector $\Lambda$ of \eqref{icw:eq:Lambda} and the potential bound \eqref{icw:eq:potential} need another construction.
+\item\label{icw:q:external} \textbf{External inputs not re-checked at the write.} Bashtova and Shashkin's strong approximation (SPA~150 (2022), Theorem~2.1; arXiv:2006.09583v1, Conditions~(A), (B), Theorem~1), including the statement that it needs no independence or nonlattice condition and controls the whole path; the normalization of Ba\~nuelos and Smits' wedge kernel (Lemma~1, equation~(2.2)); Whitt's Theorem~2.1(ii) (Part~II); Britt and Beaton's equations (2.44)--(2.46), Section~4.2 and Appendix~B.3 (arXiv:2512.21943v3; not retrieved at the write); the OEIS attributions. The locators of Fischler and Rivoal (Theorem~6 on p.~328 and Corollary~1 on p.~329 of the journal version; Theorem~3 and Corollary~1 in arXiv:1103.6022v2) were confirmed at the independent check of \file{a377922-corner-polyhedra-schnyder}. Two arguments of this Part are condensed and were read as sound at the intake, not expanded: the angular uniformity of Section~\ref{icw:sec:brownian} (\eqref{icw:eq:envelope}--\eqref{icw:eq:brownian-upper}) and the tilted-resolvent bound of Section~\ref{icw:sec:smoothing} (\eqref{icw:eq:free-gaussian}).
+\end{enumerate}
+
+\clearpage
+\part{The exact logarithmic exponent: a second route}\label{icw:log:part}
+\partsource{Bundle Report~123, archive \file{A279571_Exact_Asymptotic_Exponent_and_Non_D_Finiteness_Source.zip}, delivered as \file{report123.tex} (16 pages), dated 2~October 2026. Delivered title ``A279571 exact logarithmic exponent'', subtitle ``Unique dominant singularity and non D finiteness'', with the header ``REPORT 123'' and the line ``Standalone proof and exact finite check companion''. Printed with \textbf{[write]} notes. Report~123's Section~$k$ is Section~$k+14$ here, and its Lemma~$k.j$ is Lemma~$(k+14).j$; its equations continue the report's numbering. Its Sections~2.1, 3.1, 3.2, 4.2, 8 and~9 are Part~I's text and are replaced by pointers. Sections~\ref{icw:log:sec:cone} and~\ref{icw:log:sec:further} are added in the write.}
+\begin{partabstract}
+Let $a_n$ count inversion sequences of length $n$ avoiding $100$, $101$,
+and $201$. We prove the logarithmic asymptotic law
+\[
+ a_n=9^n n^{-\kappa+o(1)},\qquad
+ \kappa=1+\frac{\pi}{\arccos(2/\sqrt7)}.
+\]
+The generating function has its unique convergence-circle singularity at
+$1/9$ and is not D-finite, even over $\CC(z)$. An exact positive change of
+weights turns the published two-color generating tree into a centered
+Markov-additive walk in a quadrant. Its corrected covariance gives an
+irrational wedge exponent. Free limit theorems, uniform annulus estimates,
+and two stopped arms joined at the original integer time prove matching
+logarithmic bounds. Uniform loops of lengths three and four control the
+rest of the critical circle. A G-function argument uses the irrational
+real growth exponent of the fifth derivative. We also prove the two-term
+logarithmic inverse. The argument does not establish a leading constant,
+a coefficient equivalent, or a correction expansion. Previously published
+numerical exponent and amplitude estimates are explicitly credited.
+\end{partabstract}
+\noindent\textbf{Reading conventions.} As in Part~I, except that $W$ is a whitening matrix (any real $W$ with $W\Sigma W^{\mathsf T}=I$; Part~I's $A$ is one), $\rho=1/9$, $\|s\|_W=|Ws|$, and $J$ is an angular interval. This Part's $H$, $J$, $P$, $Q$, $K$, $B$ in Section~\ref{icw:log:sub:kernel} are generating functions and polynomials, not Part~I's objects (front matter, ``Notation across the two Parts'').
+
+\section{Definitions and main theorem}\label{icw:log:sec:defs}
+An inversion sequence of length $n$ is an integer sequence
+$(e_1,\ldots,e_n)$ with $0\le e_i<i$. The forbidden patterns here are
+exactly the triples $i<j<k$ satisfying
+\begin{equation}\label{icw:log:eq:avoid}
+ e_i>e_j,\qquad e_j\le e_k,\qquad e_i\ge e_k.
+\end{equation}
+Indeed $e_j=e_k$, $e_i=e_k$, and the strict intermediate case give
+$100$, $101$, and $201$, respectively. Let $a_n$ count the avoiders,
+$a_0=1$, and $F(z)=\sum_{n\ge0}a_nz^n$. This is OEIS A279571 and
+Class 2106 of Britt and Beaton~\cite{oeis,bb}. The initial terms are
+\[
+ 1,1,2,6,22,92,424,2106,11102,61436,353980,2110366,\ldots.
+\]
+Throughout, logarithms are natural. Put
+\begin{equation}\label{icw:log:eq:constants}
+ \theta=\arccos\frac2{\sqrt7},\qquad p=\frac\pi\theta,
+ \qquad \kappa=1+p,\qquad \rho=\frac19.
+\end{equation}
+\begin{theorem}\label{icw:log:thm:main}
+The numbers $p$ and $\kappa$ are irrational, with $4<p<5$. For every
+$\eps>0$ there are constants $c_\eps,C_\eps>0$ and $n_\eps$ such that
+\begin{equation}\label{icw:log:eq:main-bounds}
+ c_\eps9^n n^{-\kappa-\eps}\le a_n
+       \le C_\eps9^n n^{-\kappa+\eps}\qquad(n\ge n_\eps).
+\end{equation}
+Equivalently, $a_n=9^n n^{-\kappa+o(1)}$. The function $F$ has radius
+$\rho$, admits analytic continuation through every point of
+$|z|=\rho$ other than $\rho$, and is singular at $\rho$. Moreover,
+\begin{equation}\label{icw:log:eq:derivative-limit}
+ \lim_{x\uparrow\rho}\frac{\log F^{(5)}(x)}{\log(1-9x)}=\kappa-6,
+\end{equation}
+and $F$ is not D-finite over $\CC(z)$.
+For $N(y)=\min\{n\ge0:a_n\ge y\}$,
+\begin{equation}\label{icw:log:eq:inverse}
+ N(y)=\frac{\log y}{\log9}
+       +\frac{\kappa}{\log9}\log\log y+o(\log\log y)
+       \qquad(y\to\infty).
+\end{equation}
+\end{theorem}
+\begin{writenote}[5 October 2026]
+Part~I supersedes every item of this theorem. The bounds \eqref{icw:log:eq:main-bounds} follow from \eqref{icw:eq:leading}. The circle statement, \eqref{icw:log:eq:derivative-limit} and non-D-finiteness are Corollary~\ref{icw:cor:analytic}, whose proof is this Part's own Sections~8--9, printed once in Part~I (Sections~\ref{icw:sec:circle}--\ref{icw:sec:arith}). The inverse \eqref{icw:log:eq:inverse} follows from Corollary~\ref{icw:cor:inverse} with error $O(1)$. The proof below is the earlier and weaker route, the first proof of the exponent in the bundle. It is also an instance of the proof, though not of the statement, of Theorem~24.1 of \file{a377922-corner-polyhedra-schnyder} (Section~\ref{icw:log:sec:cone}).
+\end{writenote}
+
+\textbf{What is not asserted.}
+There is no proof here of $a_n\sim C9^n n^{-\kappa}$, of the existence
+or value of $C$, or of any all-order correction or transseries law.
+The proved estimate allows bounded positive log-periodic modulation,
+logarithmic factors, and more generally $\exp(o(\log n))$ factors.
+It excludes a different power of $n$ and a real factor
+$\exp(cn^\delta)$ with fixed $c\ne0$, $\delta>0$. No effective numerical
+threshold $n_\eps$ is provided. The uniform constants needed in the proof
+are quantified by their dependencies below.
+\begin{writenote}[5 October 2026]
+This paragraph describes Report~123 alone. Part~I proves $a_n\sim C_A9^nn^{-\kappa}$ with $0<C_A<\infty$ (Theorem~\ref{icw:thm:main}); this excludes bounded log-periodic modulation, logarithmic factors and every factor $\exp(o(\log n))$ that does not tend to a positive constant. Part~I also gives the inverse with error $O(1)$ and an explicit centre (Corollary~\ref{icw:cor:inverse}). Still open in both Parts: the value of $C_A$, corrections, any transseries, and effective onsets such as $n_\eps$ (Section~\ref{icw:sub:further}, items~\ref{icw:q:digits}, \ref{icw:q:rate} and~\ref{icw:q:onsets}).
+\end{writenote}
+
+\textbf{Attribution.}
+The exact combinatorial input is the generating tree in
+Britt--Beaton~\cite{bb}, version 3, 29 September 2026, Section 2.5,
+equation (2.44). Their Section 4.2 and Appendix B.3 give numerical
+asymptotic estimates. The OEIS formula credits V\'aclav Kot\v{e}\v{s}ovec,
+13 January 2026, after Nicholas R. Beaton, for refined numerical exponent
+and amplitude estimates. Those prior estimates are not new numerical
+results of this report. We do not reproduce or refine amplitude digits,
+and numerical fitting plays no role in the proof.
+
+\section{From the generating tree to a quadrant walk}\label{icw:log:sec:tree}
+\subsection{Exact combinatorial coordinates}\label{icw:log:sub:exact}
+\begin{writenote}[5 October 2026]
+Report~123's Section~2.1 is word for word Part~I's Section~\ref{icw:sub:exact}, with the rules \eqref{icw:eq:tree} and the steps \eqref{icw:eq:increments}; it is printed there.
+\end{writenote}
+
+\subsection{Functional identities and the exact kernel}\label{icw:log:sub:kernel}
+For this subsection only use the unshifted coordinates, including the
+empty root. Let $P(z,x,y)$ and $Q(z,x,y)$ mark size and those two
+coordinates; set
+\[
+ H(z,x)=P(z,x,1)+Q(z,x,1),\qquad
+ J(z,y)=yP(z,y,y)+Q(z,y,y).
+\]
+For a monomial $x^ay^b$ of color $P$, the first rule contributes
+$\sum_{d=0}^a x^{a+1-d}y^{b+d}$, and the other two rules give analogous
+finite geometric sums. Thus, as coefficientwise formal identities,
+\begin{equation}\label{icw:log:eq:fe}
+ P=1+\frac{zx}{x-y}(xP+Q-J),\qquad
+ Q=\frac{zx}{1-y}(H-P-Q).
+\end{equation}
+The denominators are harmless after multiplication: each coefficient is
+a polynomial. Eliminating $P$ and $Q$ gives the kernel
+\begin{align}
+ K(z,x,y)&=(x-y)(1-y)-zx^2(1-y)+zx(x-y)-z^2x^2(x-1)\notag\\
+ &=y^2+(zx^2-zx-x-1)y+x-z^2x^2(x-1),\label{icw:log:eq:kernel}
+\end{align}
+and, writing $B=P+Q$,
+\begin{equation}\label{icw:log:eq:scalar}
+ KB=(1-y)(x-y-zxJ)+zx\{x-y-zx(x-1)\}H.
+\end{equation}
+On a kernel branch where the evaluations and divisions are valid,
+\[
+ J=A(z,x,y)H+B_0(z,x,y),\quad
+ A=\frac{x-y-zx(x-1)}{1-y},\quad B_0=\frac{x-y}{zx}.
+\]
+Two $x$ roots at fixed $y$ therefore give the affine relation
+$H(x_j)=(A_iH(x_i)+B_{0,i}-B_{0,j})/A_j$ when $A_j\ne0$.
+At exceptional points the cleared identity \eqref{icw:log:eq:scalar} is the
+appropriate statement. No global contraction property is assumed.
+
+Direct expansion gives
+\begin{equation}\label{icw:log:eq:disc}
+ \Disc_y K=(x-1)(zx-1)(zx^2+3zx-x+1).
+\end{equation}
+For $0<z<1/9$, the four branch points in increasing order are
+\[
+ 1,\quad r_-(z),\quad r_+(z),\quad 1/z,
+ \qquad r_\pm(z)=\frac{1-3z\pm\sqrt{(1-z)(1-9z)}}{2z}.
+\]
+The middle pair collides at $(z,x,y)=(1/9,3,5/3)$, and there
+$\Disc_y K=(x-1)(x-3)^2(x-9)/81$. This exact collision locates the
+critical parameters used next. The exponent itself will come from the
+covariance of the actual constrained walk, not from fitting the kernel.
+\begin{writenote}[5 October 2026]
+This subsection is not in Part~I. Its collision point $(z,x,y)=(1/9,3,5/3)$ is Part~I's Perron tilt (Section~\ref{icw:sub:tilt}: $x=3$, $y=5/3$, eigenvalue $9=1/z$). Report~123 cites Britt and Beaton's equations (2.44)--(2.46); whether their (2.45)--(2.46) already print \eqref{icw:log:eq:fe}--\eqref{icw:log:eq:scalar} was not checked, so these identities are presented as derived here (Section~\ref{icw:log:sec:further}, item~\ref{icw:log:q:bb}). Report~123's finite checker verifies both cleared functional equations and the eliminated equation at every coefficient through $z^{65}$, and the factorization \eqref{icw:log:eq:disc} (\file{123-logexp-checks-README.md}); this is a check of the identities, which are proved by the geometric sums above.
+\end{writenote}
+
+\section{A positive change of weights and its covariance}\label{icw:log:sec:tilt}
+\subsection{The Perron tilt and endpoint identity}\label{icw:log:sub:tilt}
+\begin{writenote}[5 October 2026]
+Report~123's Section~3.1 is word for word Part~I's Section~\ref{icw:sub:tilt}: the step matrix \eqref{icw:eq:M}, the tilt \eqref{icw:eq:tilt}, the explicit laws \eqref{icw:eq:q}, the endpoint identity \eqref{icw:eq:endpoint} and the weight sum \eqref{icw:eq:gsum}; it is printed there.
+\end{writenote}
+
+\subsection{The color corrector}\label{icw:log:sub:corrector}
+\begin{writenote}[5 October 2026]
+Report~123's Section~3.2 is Part~I's Section~\ref{icw:sub:corrector} (the colour matrix \eqref{icw:eq:color}, the corrector \eqref{icw:eq:h}, the covariance \eqref{icw:eq:Sigma} and the Perron-polynomial derivation), word for word except one clause. Report~123 writes ``Its increment given a transition $c\to d$ is $v+h_d-h_c$, of conditional mean zero''; Report~125 writes that its mean conditional on the initial colour $c$ is zero. Part~I prints Report~125's wording, which names the right conditioning: the martingale property, and the covariances $\Gamma_c$, use the mean given the current colour. Given the transition $c\to d$ itself the mean is not zero in general: given $P\to P$ the increment is $A_d$ with $d$ geometric, $\Prob(d=k)=\frac49(\frac59)^k$, so its mean is $(-\frac14,\frac54)$. Report~123 uses only the first reading, so nothing in its proof changes.
+\end{writenote}
+
+\subsection{Whitening and time reversal}\label{icw:log:sub:whitening}
+Choose a real invertible $W$ with $W\Sigma W^{\mathsf T}=I$.
+The image of the quadrant is a wedge of opening angle
+\begin{equation}\label{icw:log:eq:angle}
+ \cos\theta=\frac{-\Sigma_{12}}{\sqrt{\Sigma_{11}\Sigma_{22}}}
+            =\frac2{\sqrt7}.
+\end{equation}
+Indeed the scalar product of the two transformed boundary vectors is
+computed with $W^{\mathsf T}W=\Sigma^{-1}$. We measure radii below by
+$\|s\|_W=|Ws|$ and use angular coordinate $0\le\phi\le\theta$.
+The wedge's positive homogeneous Brownian harmonic function is
+$r^p\sin(p\phi)$, where $p=\pi/\theta$.
+
+The reversed free process has probabilities
+\begin{equation}\label{icw:log:eq:dual}
+ q^*_{dc}(-v)=\frac{\pi_c}{\pi_d}q_{cd}(v).
+\end{equation}
+Stationarity proves its row sums are one. It has a primitive color
+matrix, exponential tails, zero stationary drift, and covariance
+$\Sigma$: a stationary reversed $m$-step displacement is the negative
+of a forward one, so its covariance growth rate is identical. Reversal
+of each retained path proves
+\begin{equation}\label{icw:log:eq:reverse}
+ \pi_cK_m((s,c),(t,d))=\pi_dK_m^*((t,d),(s,c)).
+\end{equation}
+The ratios of these two stationary masses are bounded between $1/2$
+and $2$. The auxiliary killed kernels may be defined on the whole
+quadrant with both colors. Forward paths from $o$ never enter a $Q$
+state with first coordinate zero. A dual path reaching such a state
+cannot subsequently reach the interior without leaving the quadrant,
+since every dual step out of $Q$ decreases the first coordinate by one.
+Thus the successful dual arms and interior bridges below cannot
+introduce paths absent from the original tree.
+\begin{writenote}[5 October 2026]
+Part~I's Section~\ref{icw:sub:whitening} covers the same ground with the explicit whitening $A$ of \eqref{icw:eq:Sigma-main}; \eqref{icw:log:eq:dual} and \eqref{icw:log:eq:reverse} are \eqref{icw:eq:dual} and \eqref{icw:eq:reverse}, and the angle \eqref{icw:log:eq:angle} is the one checked there with $A$.
+\end{writenote}
+
+\section{Free functional and local limits}\label{icw:log:sec:free}
+\subsection{Checking the martingale functional limit hypotheses}
+For $R\to\infty$, let $Z^{(R)}(t)=R^{-1}Z_{\lfloor R^2t\rfloor}$.
+Its predictable bracket is
+\[
+ \langle Z^{(R)}_i,Z^{(R)}_j\rangle(t)
+   =R^{-2}\sum_{k<\lfloor R^2t\rfloor}(\Gamma_{C_k})_{ij}.
+\]
+The finite-state ergodic theorem makes this converge to $t\Sigma_{ij}$
+uniformly on compact time intervals in probability, from either color.
+Every bracket jump is $O(R^{-2})$, with a fixed constant. Uniform
+exponential increment tails imply, for each fixed $T$,
+\[
+ \E\max_{k\le R^2T}|Z_k-Z_{k-1}|^2=O((\log R)^2),
+ \qquad
+ \E\sup_{t\le T}|\Delta Z^{(R)}(t)|^2\longrightarrow0.
+\]
+For completeness, integrate the union bound
+$\Prob(\max_{k\le m}|\Delta Z_k|>u)\le\min(1,Cme^{-cu})$ against
+$2u\,du$, splitting at $u=c^{-1}\log(Cm)$. Local square integrability
+holds by the same tails. These are exactly the predictable-bracket and
+maximal-jump requirements of Whitt~\cite[Theorem 2.1(ii)]{whitt}.
+Thus $Z^{(R)}$ converges in the Skorohod topology to covariance-$\Sigma$
+Brownian motion. The corrector is bounded, so it vanishes on division by
+$R$. Polygonal interpolation gives the same limit, now in the uniform
+continuous-path topology on compact intervals. The dual satisfies the
+same conclusions. Explicitly its conditional drifts are
+$m_P^*=(1/2,-5/4)$ and $m_Q^*=(-1,5/2)$, and a mean-zero corrector is
+$h_P^*=(2/3,-5/3)$, $h_Q^*=(-4/3,10/3)$. It solves the same
+finite-state Poisson equation; its covariance is $\Sigma$ by reversal.
+
+Translation invariance and the finite number of colors make this
+convergence uniform for starting scaled positions in compact sets:
+otherwise a failing sequence has a convergent subsequence of positions
+and a constant subsequence of colors, contradicting the preceding limit.
+This compact-subsequence argument will also be used for the annuli.
+
+\subsection{Fourier inversion and removal of lattice periods}\label{icw:log:sub:fourier}
+\begin{writenote}[5 October 2026]
+Report~123's Section~4.2 is word for word Part~I's Section~\ref{icw:sub:fourier}, with the local limit theorem \eqref{icw:eq:LLT}; it is printed there.
+\end{writenote}
+
+\subsection{An interior bridge bound}
+\begin{lemma}\label{icw:log:lem:bridge}
+Let $A,B$ be compact subsets of the open quadrant and
+$0<\alpha<\beta<\infty$. There are $c>0$ and $n_0$ such that
+\begin{equation}\label{icw:log:eq:bridge}
+ K_m((x,c_0),(y,d_0))\ge\frac c n
+\end{equation}
+whenever $n\ge n_0$, $\alpha n\le m\le\beta n$,
+$x/\sqrt n\in A$, $y/\sqrt n\in B$, and either color is prescribed.
+\end{lemma}
+\begin{proof}
+The free endpoint probability is at least $c_1/n$ by
+\eqref{icw:eq:LLT}. For a fixed $s<1$, conditioning a free path on its final
+endpoint and color changes its density up to time $\lfloor sm\rfloor$
+by the remaining endpoint kernel divided by that total probability.
+The numerator is at most $C/((1-s)m)$ and the denominator at least
+$c_1/m$. On compact scaled intermediate positions their ratio converges
+by \eqref{icw:eq:LLT} to the Gaussian bridge density. The functional limit,
+this uniform bounded-density bound, and tightness of the free paths
+prove bridge convergence on $[0,s]$.
+
+Applying the same argument to the reversed bridge controls the other
+end. Tightness on $[0,2/3]$ and on $[1/3,1]$ yields full-interval
+tightness, and the finite-dimensional limits identify the Brownian
+bridge. This argument is uniform in the stated compact sets and time
+ratios by subsequences. The segments joining $A$ to $B$ have uniformly
+positive distance from both coordinate axes, since the quadrant is
+convex. A fixed sufficiently thin tube about each segment therefore
+lies in the open quadrant. A Brownian bridge has a positive probability
+of lying in that tube, uniformly for the compact ranges of endpoints
+and durations; its centered fluctuation is a nonsingular Gaussian
+bridge and the duration range is compact. Portmanteau for the open tube
+gives a fixed positive lower bound for the conditioned discrete paths.
+Multiply it by $c_1/n$ to obtain \eqref{icw:log:eq:bridge}.
+\end{proof}
+Only a free local limit and an interior bridge estimate have been proved.
+There is no assumed killed-cone local limit at the vertex or the boundary.
+\begin{writenote}[5 October 2026]
+Lemma~\ref{icw:log:lem:bridge} is the model-specific form of Lemma~24.2 of \file{a377922-corner-polyhedra-schnyder} (\texttt{cps:log:lem:bridge}), with the same proof. Part~I does not use it: its lower bounds come from the killed local limit \eqref{icw:eq:bulk-LLT}.
+\end{writenote}
+
+\section{Uniform annulus estimates}\label{icw:log:sec:annuli}
+\subsection{Brownian crossings and the time cutoff}
+Fix a closed angular interval $J\subset(0,\theta)$ with nonempty interior,
+containing the direction of $W(1,1)$ in its interior. Fix a small
+$\delta>0$, and consider starts with radii in $[1,1+\delta]$ in the
+whitened wedge. The harmonic measure of the radius-$q$ arc, before a
+side, with bounded boundary values $f$, is
+\begin{equation}\label{icw:log:eq:harmonic}
+ H_f(r,\phi)=\sum_{k\ge1}b_k(r/q)^{kp}\sin(kp\phi),\qquad
+ b_k=\frac2\theta\int_0^\theta f(\psi)\sin(kp\psi)\,d\psi.
+\end{equation}
+This follows by separating variables in the polar Laplace equation;
+boundedness at the vertex excludes negative radial powers. For $f=1$,
+$b_1=4/\pi$. For $f$ the indicator of a nonempty closed subarc of the
+interior of $J$, $b_1>0$. Since $|b_k|\le2\|f\|_\infty$, the terms
+$k\ge2$ are uniformly $O(q^{-2p})$ on the stated starting radii.
+The first sine is uniformly positive for starting angles in $J$.
+There are therefore $c_B,C_B>0$, independent of large $q$, such that
+\begin{align}
+ \Prob(\text{reach radius }q\text{ before a side})&\le C_Bq^{-p},
+       &&\text{all starting angles},\label{icw:log:eq:brownian-cross}\\
+ \Prob(\text{exit on the chosen subarc of }J)&\ge c_Bq^{-p},
+       &&\text{starting angles in }J.\notag
+\end{align}
+For a start on a side the upper probability is zero: a nondegenerate
+Brownian normal coordinate immediately visits the exterior.
+
+Uniform disk confinement has an exponential time tail. For example,
+from any position of modulus at most $q$, an increment over $q^2$ time
+units of modulus exceeding $3q$ forces departure from that disk and has
+a fixed positive probability $a_B$. The Markov property gives a bound
+$(1-a_B)^{\lfloor t/q^2\rfloor}$. Choose $T(q)<\infty$ large enough
+that this is smaller than a fixed multiple of $q^{-p}$ at $t=T(q)q^2$.
+Thus the lower event in \eqref{icw:log:eq:brownian-cross} can be required to
+finish before this time and retain, for example, half its lower bound.
+The upper bound can also be split at this time with an arbitrarily small
+multiple of $q^{-p}$ lost in its tail.
+
+\subsection{Transfer to both discrete processes}
+\begin{lemma}\label{icw:log:lem:annuli}
+For every $\eta>0$, one can choose $q>1$, $R_0<\infty$, and $T<\infty$
+such that the following hold for both the forward and dual killed walks.
+From any color and any starting position with
+$R\le\|s\|_W\le(1+\delta)R$, $R\ge R_0$, the probability of reaching
+radius $qR$ before killing is at most $q^{-p+\eta}$. If its angle is in
+$J$, the probability of reaching that radius before killing, in time at
+most $T(qR)^2$, with terminal angle in $J$ and terminal radius at most
+$(1+\delta)qR$, is at least $q^{-p-\eta}$.
+\end{lemma}
+\begin{proof}
+Fix $q$ first. The functional limit transfers crossing probabilities
+on a fixed scaled time interval. For the upper estimate, the event that
+a continuous path has some witness time at which it reaches radius $q$
+and remains in the closed wedge up to that time is closed: along a
+convergent sequence of paths extract a convergent subsequence of witness
+times. Polygonal interpolations of retained discrete paths stay in the
+wedge by convexity. Portmanteau therefore gives the upper estimate on
+the truncated time interval, even along starting positions tending to
+a side.
+
+A corresponding uniform discrete disk-confinement estimate follows
+from the free functional limit. For all sufficiently large $r$ and
+all colors, a free displacement larger than $3r$ in $\lceil r^2\rceil$
+steps has probability at least some $a>0$ independent of $r$. From
+any point in the radius-$r$ disk it forces exit. Hence
+\begin{equation}\label{icw:log:eq:confine}
+ \Prob(\text{stay in the radius-}r\text{ disk for }m\text{ steps})
+ \le (1-a)^{\lfloor m/\lceil r^2\rceil\rfloor}.
+\end{equation}
+This bounds late crossings after the truncated interval and removes
+the time cutoff in the upper bound.
+
+For the lower estimate choose the smaller subarc used above and a
+strict time bound. A Brownian path succeeding before a side, starting
+inside, has positive distance from the sides up to its finite exit time;
+it also crosses the outer circle immediately almost surely. Boundary
+arc endpoints have zero exit mass. One may exhaust the successful event
+by open tubes that cross the circle and end in the interior of $J$.
+Portmanteau then gives its lower bound. Exponential tails give
+\[
+ \Prob\bigl(\max_{j\le CR^2}|v_j|>\eps R\bigr)
+       \le CR^2A_0e^{-b_0'\eps R}\longrightarrow0
+\]
+for fixed $C,\eps>0$, so the relative overshoot can also be bounded by
+$\delta$. This applies to both processes. Compactness of the scaled
+starting annulus, a subsequence argument, and the finite colors make
+the bounds uniform. After the time-tail choices the transferred bounds
+are $C_1q^{-p}$ above and $c_1q^{-p}$ below, with positive fixed
+$c_1,C_1$ independent of large $q$. Choose $q$ so that
+$C_1\le q^\eta$ and $c_1\ge q^{-\eta}$; then choose $R_0$ large enough
+for that fixed $q$. The resulting time constant $T$ and scale threshold
+may depend on $\eta,J,\delta$ and the two chains, never on later $n$.
+\end{proof}
+\begin{writenote}[5 October 2026]
+Section~\ref{icw:log:sec:annuli} is the model-specific form of the crossing bounds of Theorem~24.1's proof in \file{a377922-corner-polyhedra-schnyder} (its Section~24.4, \texttt{cps:log:sec:crossings}); the two differ only in how the overshoot at each radius is controlled (there by the jump bound $\sqrt R$, here by the relative bound $\delta$).
+\end{writenote}
+
+\section{The logarithmic upper bound}\label{icw:log:sec:upper}
+\subsection{Survival from slowly growing starting sets}
+\begin{lemma}\label{icw:log:lem:survival}
+For each $L<\infty$ and $\eps>0$, for either chain,
+\begin{equation}\label{icw:log:eq:survival}
+ \sup_{\|s\|_W\le L\log n,\ c}\Prob_{s,c}(\tau>n)
+       \le C_{L,\eps}n^{-p/2+\eps}
+\end{equation}
+for all sufficiently large $n$, where $\tau$ is the killing time.
+\end{lemma}
+\begin{proof}
+Choose a target error power $K>p/2+1$. For $B_n=A\log n$, the uniform
+exponential tails and the union bound show that the event
+\[
+ G_n=\{\|v_j\|_W\le B_n\text{ for }1\le j\le n\}
+\]
+has complement at most $C n^{-K}$ if $A$ is sufficiently large. This
+cutoff is imposed only on the first $n$ steps of the original process;
+we do not define a truncated process or change its covariance.
+
+Start annular comparison at $r_0=(\log n)^2$ and radii $r_j=q^jr_0$,
+where $q,R_0$ come from Lemma~\ref{icw:log:lem:annuli} with small $\eta>0$.
+The initial position lies inside $r_0$ for large $n$. On $G_n$, the
+first hit of any $r_j$ by time $n$ overshoots it by at most $B_n=o(r_j)$;
+for large $n$ it cannot skip the next scale. After each such first hit,
+the next crossing probability is at most $q^{-p+\eta}$. In applying the
+Markov property we drop any restrictions on future jumps, which only
+increases probability. Therefore, if $R\ge qr_0$,
+\begin{equation}\label{icw:log:eq:reach}
+ \Prob(\text{reach }R\text{ before killing and by time }n,\ G_n)
+ \le C_q(R/r_0)^{-p+\eta}.
+\end{equation}
+Taking the last scale below $R$ changes only $C_q$.
+
+A path surviving to time $n$ either reaches $R$ by then or stays in the
+radius-$R$ disk. Put $R=\sqrt{n/(M\log n)}$. Equation
+\eqref{icw:log:eq:confine} is $O(n^{-K})$ when $M$ is sufficiently large
+(depending on $K$). Combining with \eqref{icw:log:eq:reach} yields
+\[
+ \Prob(\tau>n)\le
+ C n^{-(p-\eta)/2}(\log n)^{(5/2)(p-\eta)}+C n^{-K}.
+\]
+The power of $\log n$ is immaterial; it is displayed to make the scale
+loss explicit. Choose $\eta$ with $\eta/2<\eps$ and absorb this fixed
+logarithmic power into the remaining positive power of $n$. All choices
+are uniform in the specified initial set, proving the lemma.
+\end{proof}
+
+\subsection{A reverse endpoint bound and summing the weights}
+Split $n=n_1+n_2+n_3$ into three integers comparable to $n$. For an
+endpoint $(t,d)$ with $\|t\|_W\le L\log n$, use the Markov property,
+remove killing in the middle, and apply \eqref{icw:eq:LLT}:
+\begin{align*}
+ K_n(o,(t,d))
+ &\le\frac Cn\sum_{x,c}K_{n_1}(o,(x,c))
+                   \sum_{y,e}K_{n_3}((y,e),(t,d))\\
+ &\le\frac{2C}n\Prob_o(\tau>n_1)
+                      \Prob^*_{t,d}(\tau>n_3).
+\end{align*}
+The second line is exactly the reversal identity
+\eqref{icw:log:eq:reverse}, with $\pi_d/\pi_e\le2$. Applying
+Lemma~\ref{icw:log:lem:survival}, with half of the desired error on each side,
+gives for every $\eps>0$
+\begin{equation}\label{icw:log:eq:endpoint-upper}
+ K_n(o,(t,d))\le C_{L,\eps}n^{-p-1+\eps}.
+\end{equation}
+The norm $\|t\|_W$ is equivalent to $a+b$ on the quadrant, so
+\[
+ \sum_{\|t\|_W>L\log n,d}g(t,d)\le C e^{-cL\log n}.
+\]
+Choose $L$ large enough that this is at most $Cn^{-p-2}$.
+Use $K_n\le1$ on this tail, and \eqref{icw:log:eq:endpoint-upper} and
+\eqref{icw:eq:gsum} on its complement. The exact identity
+\eqref{icw:eq:endpoint}, with $n-1$ in place of $n$, proves the upper half
+of \eqref{icw:log:eq:main-bounds}.
+\begin{writenote}[5 October 2026]
+Lemma~\ref{icw:log:lem:survival} is uniform over starts at radius at most $L\log n$. The statement of Theorem~24.1 of \file{a377922-corner-polyhedra-schnyder} gives survival from a fixed start only, but its proof gives this uniformity (Proposition~\ref{icw:log:prop:endpoints}(i)). Part~I's global bound \eqref{icw:eq:global-survival} is sharper (a power of $1+|s|$ in place of $n^{\eps}$) and covers every start.
+\end{writenote}
+
+\section{The lower bound at the original integer time}\label{icw:log:sec:lower}
+The fixed endpoint used here is $e=(1,0,P)$ in shifted coordinates,
+and its weight in \eqref{icw:eq:endpoint} is $g(e)=1/6>0$.
+
+\subsection{Two positive probability seed paths}
+The forward chain from $o$ can reach $(H,H,P)$ using $H$ steps
+$A_0=(1,0)$ and $H$ steps $A_1=(0,1)$ in any order. These stay in the
+quadrant and each has positive probability. For the dual from $e$ the
+following explicit path is valid:
+\begin{equation}\label{icw:log:eq:seed}
+ (1,0,P)\to(1,0,Q)\to(0,2,P)\to(2,0,Q)\to(1,3,P).
+\end{equation}
+The four steps reverse, respectively, $C_1,D_2,C_3,D_3$.
+From a state of color $P$, the dual pair
+$(2,-2):P\to Q$ and $(-1,3):Q\to P$ has net displacement $(1,1)$.
+Starting at $(1,3,P)$ all its intermediate states remain in the quadrant.
+Thus the dual too reaches arbitrarily large radii with direction tending
+to that of $W(1,1)$, by a fixed positive-probability path. Choose the two
+seed paths once so that their endpoints have radius at least $R_0$ and
+angle in the interior of $J$. Their possibly different radii and their
+lengths are constants independent of $n$.
+
+\subsection{Stopping arms and exact length gluing}
+Fix small $\eta>0$ and the constants of Lemma~\ref{icw:log:lem:annuli}. Starting
+at each seed endpoint, impose successive successful lower annulus events
+at scales multiplied by $q$. Stop at the first hit of the largest chosen
+radius at most $d\sqrt n$. Its value lies between $d\sqrt n/q$ and
+$d\sqrt n$ for large $n$. Every final endpoint has angle in $J$ and
+relative overshoot at most $\delta$. On division by $\sqrt n$, the
+forward and dual endpoints therefore belong to fixed compact subsets
+$A,B$ of the open quadrant.
+
+The number of crossings in each arm is
+$\frac12\log n/\log q+O(1)$, so the mass of each successful arm is at
+least $c_\eta n^{-(p+\eta)/2}$. Its total allowed time is at most
+\[
+ \text{seed length}+T\sum_{j\le k}r_j^2
+ \le \text{seed length}+\frac{T}{1-q^{-2}}d^2n.
+\]
+Choose $d>0$ small enough that the last coefficient is less than $1/8$.
+For sufficiently large $n$, each arm then lasts at most $n/4$ including
+its seed. The final time is its first-hit stopping time of the chosen
+final radius: no earlier point of an earlier annulus can exceed that
+radius on a successful arm. If needed increase $q$ so that
+$1+\delta<q$.
+
+For every successful forward arm with time $t\le n/4$ and terminal
+state $(x,c)$, and every successful dual arm with time $u\le n/4$
+and terminal state $(y,d)$, insert a forward killed bridge of exactly
+$m=n-t-u$ steps from $(x,c)$ to $(y,d)$. Since $n/2\le m\le n$,
+Lemma~\ref{icw:log:lem:bridge} gives mass at least $c/n$ uniformly. Reverse the
+dual arm to obtain a suffix ending at $e$. By \eqref{icw:log:eq:reverse}, its
+weight differs from the dual-arm weight by $\pi_P/\pi_d$, a factor
+between $1$ and $2$.
+
+There is no overcounting in this gluing. From a resulting length-$n$
+path, the forward arm is recovered as the first forward crossing of its
+fixed target radius, and the suffix as the first backward crossing of
+the dual target radius, with backward traversal starting at $e$. All
+these radii remain centered at the coordinate origin. They are
+separated because both stopping lengths are at most $n/4$. The prescribed
+seed and intermediate crossing conditions restrict these recovered arms;
+they do not create new decompositions. Summing over their actual integer
+stopping times and endpoints therefore gives
+\begin{equation}\label{icw:log:eq:lower}
+ K_n(o,e)\ge c_\eta n^{-p-1-\eta}.
+\end{equation}
+No renewal-time replacement has occurred. This is a bound at every
+sufficiently large original integer $n$. Insert the positive fixed weight
+$g(e)$ in \eqref{icw:eq:endpoint} and reindex $n-1$ to obtain the lower half
+of \eqref{icw:log:eq:main-bounds}. Together with the upper bound it proves the
+logarithmic coefficient law of Theorem~\ref{icw:log:thm:main}.
+\begin{writenote}[5 October 2026]
+The fixed endpoint $e=(1,0,P)$ is not at the origin. Theorem~24.1 of \file{a377922-corner-polyhedra-schnyder} is stated for endpoints at the origin, where this walk has no dual seed and $K_n(o,((0,0),b))=0$ for $n\ge1$ (Remark~\ref{icw:log:rem:seeds}); this section proves, for this walk, the statement of Proposition~\ref{icw:log:prop:endpoints}(ii) at $(o,e)$.
+\end{writenote}
+
+\section{The unique singularity on the critical circle}\label{icw:log:sec:circle}
+\begin{writenote}[5 October 2026]
+Report~123's Section~8 (``Uniform return loops'' and ``The operator resolvent away from the positive point'') is Part~I's Section~\ref{icw:sec:circle} without its opening corollary: the return loops \eqref{icw:eq:loops}, the resolvent \eqref{icw:eq:resolvent} and the representation \eqref{icw:eq:Fres}. It is printed there. Where Part~I cites \eqref{icw:eq:leading} for the radius $1/9$, Report~123 cites \eqref{icw:log:eq:main-bounds}; Cauchy--Hadamard needs only that.
+\end{writenote}
+
+\section{Irrationality and the arithmetic obstruction}\label{icw:log:sec:arith}
+\begin{writenote}[5 October 2026]
+Report~123's Section~9 (``The irrational exponent'', ``A power bound for the fifth derivative'', ``The precise G function implication'', ``Descent from complex to rational coefficients'') is Part~I's Section~\ref{icw:sec:arith}, word for word except that its Section~9.2 bounds the summands by \eqref{icw:log:eq:main-bounds} where Part~I uses \eqref{icw:eq:leading}; the bounds $n^{5-\kappa\pm\eps}t^n$ that the argument needs follow from either. It is printed there, with \eqref{icw:eq:abelian}, \eqref{icw:eq:5bound} and \eqref{icw:eq:powerlog}; its conclusion is this Part's \eqref{icw:log:eq:derivative-limit}.
+\end{writenote}
+
+\section{Inversion and the remaining open leading law}\label{icw:log:sec:inverse}
+Appending the new maximum $n$ to any length-$n$ avoider is legal and
+injective: a newly formed triple would end with a value larger than all
+earlier entries and cannot satisfy \eqref{icw:log:eq:avoid}. Thus $a_n$ is
+nondecreasing. It is unbounded by \eqref{icw:log:eq:main-bounds}, so $N(y)$ is
+well-defined for large $y$.
+
+Write $\lambda=\log9$, $L=\log y$, and $m=N(y)$. The logarithmic law
+is exactly
+\[
+ \log a_n=\lambda n-\kappa\log n+o(\log n).
+\]
+Since $a_{m-1}<y\le a_m$, first division by $m$ gives $L/m\to\lambda$.
+Use this in both inequalities of the consecutive-integer sandwich to
+obtain
+\[
+ L=\lambda m-\kappa\log m+o(\log m),\qquad
+ \log m=\log L-\log\lambda+o(1).
+\]
+The constant $-\kappa\log\lambda$ and the one-step displacement are
+$o(\log L)$, yielding \eqref{icw:log:eq:inverse}. This is an integer threshold
+statement with a genuinely unbounded allowed remainder. No bounded
+inverse constant, ceiling prescription with bounded error, differentiable
+remainder, or all-order inverse follows from the proved law.
+
+A full leading equivalent would require a further result: for example,
+a finite-state Markov-additive killed-cone endpoint local limit, with
+uniform control strong enough to sum \eqref{icw:eq:endpoint}. An iid cone
+theorem cannot be substituted, since the color-conditioned drift is not
+zero and the position process alone is not the required iid walk.
+The present annulus method avoids that missing stronger result and loses
+arbitrarily small powers at each scale. It proves exactly the logarithmic
+exponent and the stated consequences. In particular it leaves bounded
+log-periodic amplitudes and logarithmic corrections unresolved.
+\begin{writenote}[5 October 2026]
+The last paragraph describes Report~123 alone, and Part~I supplies the further result it asks for, for this walk: a killed local limit at fixed endpoints, \eqref{icw:eq:killed-LLT}, with the uniform endpoint bound \eqref{icw:eq:endpoint-dom} that sums \eqref{icw:eq:endpoint}. It gives the equivalent \eqref{icw:eq:leading}, so bounded log-periodic amplitudes and logarithmic corrections are excluded; the inverse has error $O(1)$ (Corollary~\ref{icw:cor:inverse}). Part~I also avoids an iid cone theorem (its Section~1, ``Scope and attribution''). A ceiling rule with bounded error is proved only as the bracket \eqref{icw:eq:inverse-bracket}; an exact rule and an all-order inverse remain open (Section~\ref{icw:sub:further}, item~\ref{icw:q:ceiling}).
+\end{writenote}
+
+\section{Reproducibility and limits of finite checks}\label{icw:log:sec:repro}
+The companion package supplies this editable source, the rendered PDF,
+exact integer data, and offline finite checks. It separates two forms of
+evidence. Rational algebra and finite enumeration can be replayed exactly;
+the uniform limits, annulus argument, analytic continuation, and
+G-function theorem application are mathematical proofs in the text,
+not consequences of matching a finite coefficient list.
+
+The independent checker documents its precise finite ranges in
+\texttt{checks/README.md}. Its active guards check the generating rules,
+critical algebra, color corrector, effective covariance, return loops,
+and declared fixtures. It is required to retain those checks under
+optimized Python. Negative tests deliberately mutate mathematical data
+and the closed inventories. The complete package has a bytewise inventory
+and rejects extra files, missing files, changed bytes, and symbolic links.
+These inventories are integrity records, not cryptographic signatures.
+
+The build creates the PDF twice in clean external directories, rejects
+overfull boxes and unresolved references, and requires byte equality.
+The full replay repeats finite checks in normal and optimized Python,
+rebuilds the PDF, creates a deterministic ZIP, extracts it into a fresh
+directory, reruns checks and rebuilds, and requires the extracted tree to
+repack identically. Build details and commands are in \texttt{README.md}.
+No downloaded source papers, numerical fit files, intermediate render
+images, or private working material form part of the reader package.
+\begin{writenote}[5 October 2026]
+In this repository Report~123's \file{checks/README.md} is \file{123-logexp-checks-README.md} and its checker \file{code/123-logexp-checks-verify.py}; the PDF and the inventories are not shipped, and its \file{README.md} and \file{report123.tex} are not shipped either (this Part prints the latter). Report~125's package contains these checks as \file{checks/legacy/} and reruns them; they are shipped once. The report's README gives rerun routes on a copy of the delivery.
+\end{writenote}
+
+\section{Relation to the cone theorem of a377922}\label{icw:log:sec:cone}
+\begin{writenote}[5 October 2026]
+This section is added in the write. Theorem~24.1 of \file{a377922-corner-polyhedra-schnyder} (bundle Report~112, \texttt{cps:log:thm:cone}) states this Part's method for a translation-invariant Markov-additive chain on $\ZZ^2\times E$, $E$ finite, killed on leaving the closed quadrant, under five hypotheses: (H1) a primitive phase matrix with positive stationary law; (H2) a uniform exponential moment of the steps; (H3) zero stationary drift and a positive definite effective covariance $\Sigma$; (H4) no peripheral Fourier eigenvalue except the simple Perron eigenvalue at $0$; and (H5), for endpoint phases $a$, $b$ \emph{at the spatial origin}, a compact interval $J\subset(0,\theta)$ of positive length such that for every $R>0$ a finite positive-probability legal path from $(0,a)$ reaches a point $x$ with $|Wx|\ge R$ and $\arg(Wx)\in J$, and the same from $(0,b)$ for the stationary dual. Under (H1)--(H5) it proves $K_n((0,a),(0,b))=n^{-1-\nu+o(1)}$ with $\nu=\pi/\theta$, and under (H1)--(H4) the survival bound $\Prob_{(0,c)}(\tau>n)\le C_\epsilon n^{-\nu/2+\epsilon}$. Here $E=\{P,Q\}$, the chain is the tilted walk \eqref{icw:eq:q}, its dual is \eqref{icw:eq:dual}, which is that theorem's dual, and $\nu=p$. ``Legal'' means that every visited lattice point lies in the closed quadrant. Arguments of whitened vectors are measured from the side $We_1$ of the whitened wedge, which is then $\{0<\arg<\theta\}$; this is the convention under which (H5) there writes $J\subset(0,\theta)$.
+\end{writenote}
+
+\begin{remark}[\wtag, 5 October 2026: the hypotheses for this walk]\label{icw:log:rem:seeds}
+\textup{(a)} The tilted walk of Part~I, Section~\ref{icw:sub:tilt}, satisfies \textup{(H1)--(H4)}, and its wedge angle in the sense of Theorem~24.1 is $\theta=\arccos(2/\sqrt7)$.
+
+\textup{(b)} The forward half of \textup{(H5)} holds at the phase $P$ of the origin, but the dual half fails at both phases $b\in\{P,Q\}$ of the origin: from $((0,0),Q)$ the dual has no legal step, and from $((0,0),P)$ its only legal step goes to $((0,0),Q)$.
+
+\textup{(c)} For every state $(x,a)$ and every $n\ge2$, $K_n((x,a),((0,0),b))=0$ for both $b$; for $n=1$ it is positive only for $(x,a)=((0,0),Q)$ and $b=P$. In particular $K_n(o,((0,0),b))=0$ for all $n\ge1$.
+
+So Theorem~24.1 makes no claim about this walk at any pair of endpoints its statement allows, and its first display would be false here if \textup{(H5)} were dropped; only its survival bound applies, from $o$.
+\end{remark}
+\begin{proof}
+(a) (H1): the colour matrix $P_0$ of \eqref{icw:eq:color} has positive entries and $\pi=(2/3,1/3)$. (H2): by \eqref{icw:eq:q} the step lengths have geometric tails with ratios $5/9$ and $3/5$ from either colour. (H3): $\pi_Pm_P+\pi_Qm_Q=0$ (Section~\ref{icw:sub:corrector}), and the effective covariance in the sense of Theorem~24.1, $\sum_c\pi_c\Gamma_c$ for the corrected martingale increments, is $\Sigma$ of \eqref{icw:eq:Sigma}, with $\Sigma_{11}=7/3>0$ and $\det\Sigma=25/3>0$. (H4): Section~\ref{icw:sub:fourier} shows that $L(u)$ has a unit-modulus eigenvalue only at $u\equiv0$; since its spectral radius is at most one, it is less than one at every nonzero $u$, and $L(0)=P_0$ has the eigenvalues $1$ and $1/4$. Finally $\rho=\Sigma_{12}/\sqrt{\Sigma_{11}\Sigma_{22}}=(-10/3)/(5\sqrt7/3)=-2/\sqrt7$, so $\arccos(-\rho)=\arccos(2/\sqrt7)$.
+
+(b) The forward seeds of Section~\ref{icw:sub:seeds} start at $o=((0,0),P)$. For the dual, \eqref{icw:eq:dual} gives a step of positive probability from $(s,d)$ with displacement $-v$ to colour $c$ exactly when the forward walk has an edge $c\to d$ with displacement $v$. By \eqref{icw:eq:increments} the edges into $Q$ are the $D_j$, $v=(1,-j)$, from either colour, so every dual step out of a $Q$ state has displacement $(-1,j)$. The edges into $P$ are the $A_d$ from $P$, $v=(1-d,d)$ with $d\ge0$, and the $C_d$ from $Q$, $v=(1-d,d-1)$ with $d\ge1$; the dual steps out of a $P$ state therefore have displacement $(d-1,-d)$ (to $P$) or $(d-1,1-d)$ (to $Q$). From the origin, $(-1,j)$ leaves the quadrant; $(d-1,-d)$ would need $d\ge1$ and $d\le0$; and $(d-1,1-d)$ stays in the quadrant only for $d=1$, where it is the zero step to $((0,0),Q)$. Hence every legal dual path from $((0,0),b)$ stays at the origin and has length at most one, and no such path reaches $|Wx|\ge R$ for any $R>0$.
+
+(c) By the reversal identity \eqref{icw:eq:reverse}, $\pi_aK_n((x,a),((0,0),b))=\pi_bK^*_n(((0,0),b),(x,a))$. By (b), $K^*_n(((0,0),b),\cdot)=0$ for $n\ge2$, and $K^*_1(((0,0),b),\cdot)$ is positive only for $b=P$, at $((0,0),Q)$. Since $o$ has colour $P$, $K_n(o,((0,0),b))=0$ for every $n\ge1$.
+\end{proof}
+This agrees with Part~I: the dual harmonic function vanishes at the origin, $V^*((0,0),b)=0$, since the dual from there dies within two steps; Part~I's Section~\ref{icw:sub:whitening} already notes that the auxiliary $Q$ states with first coordinate zero, $((0,0),Q)$ among them, may have zero harmonic value.
+
+\begin{proposition}[\wtag, 5 October 2026: Theorem~24.1 at fixed endpoint states]\label{icw:log:prop:endpoints}
+Let $(S_n,C_n)$ be a chain as in Theorem~24.1 of \file{a377922-corner-polyhedra-schnyder} that satisfies \textup{(H1)--(H4)}, with its stationary dual, killed kernels $K_n$, $K^*_n$, killing times $\tau$, $\tau^*$, whitening $W=\Sigma^{-1/2}$, wedge angle $\theta$ and $\nu=\pi/\theta$.
+
+\textup{(i)} For every $\epsilon>0$ and $D'<\infty$ there is $C$ such that, for all $n\ge1$, all phases $a$, $b$ and all $x,y\in\ZZ_{\ge0}^2$ with $|x|,|y|\le D'\log(n+2)$,
+\begin{equation}\label{icw:log:eq:fixed-upper}
+ \Prob_{(x,a)}(\tau>n)+\Prob^*_{(y,b)}(\tau^*>n)\le Cn^{-\nu/2+\epsilon},\qquad
+ K_n((x,a),(y,b))\le Cn^{-1-\nu+\epsilon}.
+\end{equation}
+
+\textup{(ii)} Fix states $(x,a)$ and $(y,b)$ with $x,y\in\ZZ_{\ge0}^2$. Suppose that there is a compact interval $J\subset(0,\theta)$ of positive length such that, for every $R>0$, a finite positive-probability legal path of the chain from $(x,a)$, and one of the dual from $(y,b)$, reach points $z$ with $|Wz|\ge R$ and $\arg(Wz)\in J$. Then for every $\eta>0$ there is $c_\eta>0$ with
+\begin{equation}\label{icw:log:eq:fixed-lower}
+ K_n((x,a),(y,b))\ge c_\eta n^{-1-\nu-\eta}\qquad\text{for all sufficiently large }n,
+\end{equation}
+and so $K_n((x,a),(y,b))=n^{-1-\nu+o(1)}$. For $x=y=0$ this is Theorem~24.1.
+\end{proposition}
+\begin{proof}
+We follow the proof of Theorem~24.1 in \file{a377922-corner-polyhedra-schnyder} (its Sections~24.5 and~24.6, \texttt{cps:log:sec:upper} and \texttt{cps:log:sec:lower}, in its notation: $X_n=WS_n$, the radii $r_j$, the first hitting times $\sigma_j$, the events $A_j$) and list every place where it uses the endpoints.
+
+(i) \emph{Survival.} Fix $\eta$, then $q$, $T(q)$ and $R_0(q)$ as in its display (24.14) (\texttt{cps:log:eq:chooseq}), then $M>\nu+2$, $D$, $L_n=D\log(n+2)$, $r_0(n)=\max\{R_0,L_n^2\}$ and $r_j=q^jr_0(n)$, as there. The start enters that argument only through the first radius: if $|X_0|<r_0(n)$, then $\sigma_0$ is the first hit of radius $r_0(n)$ from inside, $\Prob(A_0)\le1$, and the overshoot bound $L_n\le\sqrt{r_j}$ on $A_j$, the inclusions $A_{j+1}\subset A_j$ and the strong Markov steps behind (24.16) (\texttt{cps:log:eq:annularupper}) do not involve $X_0$. The final dichotomy (a bad jump, confinement in the disk of radius $R_n=\sqrt{n/(B\log(n+2))}$, or the event $A_J$ with $r_J\le R_n<r_{J+1}$) holds for every start in that disk, and the confinement bound (24.9) (\texttt{cps:log:eq:confine}) holds from every point of the disk. Hence (24.17) (\texttt{cps:log:eq:survival-proof}) holds uniformly over all starts with $|X_0|<r_0(n)$ and both phases, with constants that depend on $\eta$ and the chain only. If $|x|\le D'\log(n+2)$ then $|Wx|\le\|W\|D'\log(n+2)<D^2\log^2(n+2)\le r_0(n)$ for all $n$ beyond a threshold that depends on $D'$, $D$ and $W$; smaller $n$ are absorbed into $C$. Choosing $\eta<\epsilon$ gives the survival half of \eqref{icw:log:eq:fixed-upper}. The dual satisfies (H1)--(H4) (it preserves centring, exponential tails and the effective covariance, and its Fourier matrix is $\diag(\pi)^{-1}F(-t)^{\mathsf T}\diag(\pi)$, as shown there), so the same holds for it.
+
+\emph{Kernel.} Write $n=n_1+n_2+n_3$ with $n_1,n_2,n_3\ge\lfloor n/3\rfloor$. By Chapman--Kolmogorov, and since the killed middle kernel is at most the unrestricted one, which is at most $C/n_2$ by the local limit theorem (24.5) (\texttt{cps:log:eq:llt}),
+\[
+ K_n((x,a),(y,b))\le\frac{C'}n\sum_{u,c}K_{n_1}((x,a),(u,c))\sum_{w,d}K_{n_3}((w,d),(y,b)).
+\]
+The first sum is $\Prob_{(x,a)}(\tau>n_1)$. By the reversal identity (24.6) (\texttt{cps:log:eq:reversal}) the second is $\pi_b\sum_{w,d}K^*_{n_3}((y,b),(w,d))/\pi_d\le(\pi_b/\min_d\pi_d)\Prob^*_{(y,b)}(\tau^*>n_3)$. For $n\ge6$ one has $\log(n+2)\le2\log(n_i+2)$, so $|x|,|y|\le2D'\log(n_i+2)$, and the survival half, with $2D'$ and $\epsilon/2$, bounds both probabilities by $Cn^{-\nu/2+\epsilon/2}$. This proves the kernel half.
+
+(ii) \emph{Lower bound.} The argument of its Section~24.6 (\texttt{cps:log:sec:lower}) uses the endpoints in four places only. (1) It fixes one legal seed for each chain with terminal radius at least $R_0$ and terminal angle in $J$; the hypothesis of (ii) supplies them from $(x,a)$ and, for the dual, from $(y,b)$. (2) For large $n$ the final radius $r_J>\delta\sqrt n/q$ exceeds the largest radius visited by the fixed seed; the seed now starts at $x$ (or $y$), but its largest radius is still a fixed finite number, so this holds for large $n$, and every accepted prefix ends at the first global hit of its final radius. (3) Reversing the accepted dual prefix gives a suffix ending at $(y,b)$, with weight changed by a ratio of stationary masses, bounded above and below. (4) A glued path determines its two prefixes as the first forward hit and the first backward hit of the two final radii, by (2) and because both prefixes have length at most $n/4$. The crossing estimates (24.12) (\texttt{cps:log:eq:cross-lower}) concern states at radius at least $R_0$, and the bridge bound (Lemma~24.2 there) concerns states at scale $\sqrt n$ in a fixed compact subset of the open quadrant; neither involves the endpoints. Hence the escape-mass bound (24.19) (\texttt{cps:log:eq:escapemass}) holds for the prefixes from $(x,a)$ and $(y,b)$, and the gluing gives $K_n((x,a),(y,b))\ge(c/n)F_nG_n\ge c_\eta n^{-1-\nu-\eta}$, which is \eqref{icw:log:eq:fixed-lower}. Together with (i) at fixed $x$, $y$, this gives $K_n((x,a),(y,b))=n^{-1-\nu+o(1)}$.
+\end{proof}
+
+\begin{corollary}[\wtag, 5 October 2026: Report~123's exponent from Proposition~\ref{icw:log:prop:endpoints}]\label{icw:log:cor:exponent}
+For the tilted walk of Part~I, Section~\ref{icw:sub:tilt}, $K_n(o,e)=n^{-1-p+o(1)}$ with $e=((1,0),P)$, and Report~123's bounds \eqref{icw:log:eq:main-bounds} follow: for every $\eps>0$, $c_\eps9^nn^{-\kappa-\eps}\le a_n\le C_\eps9^nn^{-\kappa+\eps}$ for large $n$.
+\end{corollary}
+\begin{proof}
+(H1)--(H4) hold by Remark~\ref{icw:log:rem:seeds}(a), with $\nu=p$. Let $\phi_0=\arg(W(1,1))$; since $(1,1)$ lies in the open quadrant, $\phi_0\in(0,\theta)$, and we take $J=[\phi_0-\delta',\phi_0+\delta']\subset(0,\theta)$ for a small $\delta'>0$. From $o$, $H$ steps $A_0$ followed by $H$ steps $A_1$ reach $((H,H),P)$ through legal states with positive probability (Section~\ref{icw:sub:seeds}), at whitened angle $\phi_0$ and radius $H|W(1,1)|\to\infty$. From $e$, the dual seed \eqref{icw:eq:seed} reaches $((1,3),P)$, and $k$ repetitions of the dual pair $(2,-2):P\to Q$, $(-1,3):Q\to P$ reach $((1,3)+k(1,1),P)$ through legal states (Section~\ref{icw:sub:seeds}); the whitened angle tends to $\phi_0$ and the radius to infinity as $k\to\infty$. So the hypothesis of Proposition~\ref{icw:log:prop:endpoints}(ii) holds at $(o,e)$, and $K_n(o,e)\ge c_\eta n^{-1-p-\eta}$. By \eqref{icw:eq:endpoint} with $g(e)=1/6$,
+\[
+ a_{n+1}=2\cdot9^n\sum_{t,d}g(t,d)K_n(o,(t,d))\ge\tfrac13\,9^nK_n(o,e)\ge\tfrac{c_\eta}3\,9^nn^{-1-p-\eta}.
+\]
+For the upper bound, fix $D'$ with $D'\log(5/3)>p+3$. Proposition~\ref{icw:log:prop:endpoints}(i) and \eqref{icw:eq:gsum} bound the endpoints with $|t|\le D'\log(n+2)$ by $\frac{45}8Cn^{-1-p+\eps}$. For the others use $K_n\le1$, $g((a,b),d)\le(3/5)^{a+b}/r_d$, $\sum_d1/r_d=3/2$ and $|t|\le a+b$: their total weight is at most $\frac32\sum_{m>D'\log(n+2)}(m+1)(3/5)^m=O(n^{-p-2})$. Hence $a_{n+1}\le C_\eps9^nn^{-1-p+\eps}$. Since $\kappa=1+p$ and $(n+1)/n\to1$, reindexing gives \eqref{icw:log:eq:main-bounds}.
+\end{proof}
+This is the argument of Sections~\ref{icw:log:sec:upper}--\ref{icw:log:sec:lower} with Lemma~\ref{icw:log:lem:survival} and the gluing replaced by Proposition~\ref{icw:log:prop:endpoints}: Report~123's exponent is an instance of the proof of Theorem~24.1, and with Proposition~\ref{icw:log:prop:endpoints} it becomes a corollary of a stated theorem. Report~123's non-D-finiteness and circle statements then follow as in Sections~\ref{icw:sec:circle}--\ref{icw:sec:arith}, and its non-D-finiteness argument is an instance of the criterion of Remark~27.1 there (\texttt{cps:log:rem:criterion}).
+
+\begin{remark}[\wtag, 5 October 2026: what Part~I adds to Questions~Q1 and~Q3 of a377922]\label{icw:log:rem:amplitude}
+Question~Q1 there (\texttt{cps:log:q:amplitude}) asks whether, under (H1)--(H5), $K_n((0,a),(0,b))\sim\kappa\,V_a(0)V^*_b(0)\,n^{-1-\nu}$ with positive phase-indexed killed harmonic functions, and names as missing a harmonic comparison without a cycle buffer, or a phase-sensitive killed local limit theory. For this one walk Part~I proves such a statement at every fixed pair of states, \eqref{icw:eq:killed-LLT}, with positivity of $V$ and $V^*$ in place of (H5) ($V(o)>0$ and $V^*(e)>0$, Section~\ref{icw:sub:seeds}; $V^*((0,0),b)=0$, consistent with Remark~\ref{icw:log:rem:seeds}(c)), with no cycle buffer, by exactly such a local limit theory: deep entrance, an angle-uniform Brownian limit, last-window smoothing and midpoint reversal. It does not generalize as written, and Report~125 says that no general theorem is claimed (Section~\ref{icw:sec:scope}). Part~I uses $p>4$ to make the extended $U$ of class $C^3$ at the origin (Section~\ref{icw:sub:smooth}), $q=p-3\in(1,2)$ in the potential bound \eqref{icw:eq:potential}, and $p>2$ for the mean exit time \eqref{icw:eq:mean-exit}. It is a third route to amplitudes beside Part~II of \file{a377922-corner-polyhedra-schnyder} (comparison with an iid cone walk through a fixed cycle buffer) and that report's Part~III (annuli, logarithmic scale only).
+
+Question~Q3 there (\texttt{cps:log:q:seeds}) asks for the exponent, if any, at endpoints without seeds. This walk is an example: at both phases of the origin the dual has no seed (Remark~\ref{icw:log:rem:seeds}(b)), and $K_n$ into the origin vanishes for every $n\ge2$ (Remark~\ref{icw:log:rem:seeds}(c)), so there is no exponent. The question remains open in general.
+\end{remark}
+
+\section{Further questions and research}\label{icw:log:sec:further}
+\begin{writenote}[5 October 2026]
+This section is added in the write. Under Vladimir's standing rule of 4~October 2026 it collects the claims of this Part that are stated without proof, with source, sketch and what is missing. Items~\ref{icw:q:digits}--\ref{icw:q:external} of Section~\ref{icw:sub:further} concern both Parts and are not repeated: digits of $C_A$, rates and corrections, a local expansion at $1/9$, the ceiling rule, effective onsets (including this Part's $n_\eps$ and the $n_0$ of Lemma~\ref{icw:log:lem:bridge}), a general amplitude theorem, and external inputs. The open items that Report~123 lists in Sections~\ref{icw:log:sec:defs} and~\ref{icw:log:sec:inverse} (the equivalent and its constant, log-periodic modulation, an inverse with bounded error, the killed local limit that ``a full leading equivalent would require'') are settled or re-scoped by Part~I (dated notes there). The intake found no false claim in Report~123; the clause discussed in Section~\ref{icw:log:sub:corrector} is a matter of wording.
+\end{writenote}
+\begin{enumerate}[label=\arabic*.,ref=\arabic*]
+\item\label{icw:log:q:bb} \textbf{The functional equations in Britt and Beaton.} Report~123 cites Britt and Beaton's Section~2.5, equations (2.44)--(2.46), for its generating tree, and derives \eqref{icw:log:eq:fe}--\eqref{icw:log:eq:disc} itself. Do their (2.45)--(2.46) already print these identities, or equivalent ones? Missing: a comparison with arXiv:2512.21943v3, which was not retrieved at the write. Until then the identities are credited to Report~123 as derived there.
+\item\label{icw:log:q:kernel} \textbf{An analytic route through the kernel.} Report~123 locates the critical point by the collision of the branch points $r_\pm(z)$ at $(1/9,3,5/3)$ but takes the exponent ``from the covariance of the actual constrained walk, not from fitting the kernel'', and assumes no global contraction for the affine relation between kernel branches (Section~\ref{icw:log:sub:kernel}). Can the kernel equation \eqref{icw:log:eq:scalar} give an independent proof of the exponent, the local expansion at $1/9$ of Section~\ref{icw:sub:further}, item~\ref{icw:q:delta}, or a formula for $C_A$? This is a research question; neither Part claims anything about it.
+\item\label{icw:log:q:seeds} \textbf{Endpoints without seeds.} Question~Q3 of \file{a377922-corner-polyhedra-schnyder} remains open in general; for this walk it is answered by Remark~\ref{icw:log:rem:amplitude}: no exponent at the origin, because $K_n$ vanishes there.
+\item\label{icw:log:q:unchecked} \textbf{Steps of this Part not re-checked at the write.} The bridge tightness in the proof of Lemma~\ref{icw:log:lem:bridge} and the uniform transfer from Brownian motion near the sides of the wedge in Lemma~\ref{icw:log:lem:annuli} are given with the arguments printed above; the intake read them as sound, as it read their general forms in \file{a377922-corner-polyhedra-schnyder} (its Question~Q4). The locator of Whitt's Theorem~2.1(ii) was not checked against the paper.
+\end{enumerate}
 
 \begin{thebibliography}{9}
 \bibitem{oeis} OEIS Foundation Inc., \emph{The On-Line Encyclopedia of Integer
@@ -1566,6 +2429,10 @@ Conditions (A), (B), and Theorem 1, pp.~3--4:
 \emph{Brownian motion in cones}, Probability Theory and Related Fields
 \textbf{108} (1997), 299--319, Lemma 1, equation (2.2).
 \url{https://www.math.purdue.edu/~banuelos/Papers/cones.pdf}.
+\bibitem{whitt} Ward Whitt, \emph{Proofs of the martingale FCLT},
+Probability Surveys \textbf{4} (2007), 268--302, Theorem 2.1(ii).
+DOI: \href{https://doi.org/10.1214/07-PS122}{10.1214/07-PS122}.
+\url{https://www.columbia.edu/~ww2040/WWproofs2007pub.pdf}.
 \bibitem{fr} St\'ephane Fischler and Tanguy Rivoal,
 \emph{On the values of G-functions}, Commentarii Mathematici Helvetici
 \textbf{89} (2014), 313--341, Theorem 6 and Corollary 1, pp.~328--329.
