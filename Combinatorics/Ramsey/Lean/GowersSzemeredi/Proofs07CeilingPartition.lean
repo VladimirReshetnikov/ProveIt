@@ -156,4 +156,32 @@ theorem corollary_7_11_constant_real_lower_bound (N q : Nat) [NeZero N] (R : Int
   · rw [hj, Nat.cast_add, Nat.cast_one]
     exact (Nat.le_ceil _).trans (by linarith)
 
+/-- A domain-dependent partition with the full real-power cell length works
+for every Freiman map, with no loss for multiple maps on the same domain. -/
+theorem corollary_7_11_universal_real_lower_bound (N q : Nat) [NeZero N] (R : IntAP)
+    (A : Fin q → Finset Int) (alpha : Real)
+    (hq : 0 < q) (hα : 0 < alpha) (hl : 0 < R.length) (hR : R.IsProper)
+    (hA : ∀ i, A i ⊆ R.carrier ∧ alpha * R.length ≤ (A i).card)
+    (hlarge : 8 ≤ (R.length : Real) ^ cor711Exponent alpha q) :
+    ∃ M : Nat, ∃ P : Fin M → IntAP,
+      IsIntAPPartition P R ∧
+      (∀ j, (P j).IsProper ∧
+        (R.length : Real) ^ cor711Exponent alpha q ≤ (P j).length) ∧
+      (∃ d : Nat, 0 < d ∧ ∀ j, (P j).step = d) ∧
+      ∀ phi : Fin q → Int → ZMod N, (∀ i, FreimanHom 8 (A i) (phi i)) →
+        ∀ i j, IntAPLinearOn (P j) (A i) (phi i) := by
+  obtain ⟨M, P, hP, hcell, hstep, hlinear⟩ :=
+    corollary_7_11_universal_budget N q
+      (Nat.ceil ((R.length : Real) ^ cor711Exponent alpha q)) R A alpha hq
+      (Nat.ceil_pos.mpr (Real.rpow_pos_of_pos (by exact_mod_cast hl) _)) hα hl hR hA
+      (cor711_constant_ceiling_budget hl hlarge)
+  refine ⟨M, P, hP, ?_, hstep, hlinear⟩
+  intro j
+  refine ⟨(hcell j).1, ?_⟩
+  rcases (hcell j).2 with hj | hj
+  · rw [hj]
+    exact Nat.le_ceil _
+  · rw [hj, Nat.cast_add, Nat.cast_one]
+    exact (Nat.le_ceil _).trans (by linarith)
+
 end LeanProofs.GowersSzemeredi

@@ -950,14 +950,14 @@ private lemma rpow_neg_two_le_scaled {a b : Real}
   nlinarith [sq_nonneg (16 * b - a)]
 
 private lemma cor711_one_partition {N q : Nat} [NeZero N]
-    (R : IntAP) (A : Fin q -> Finset Int) (phi : Fin q -> Int -> ZMod N)
+    (R : IntAP) (A : Fin q -> Finset Int)
     (hl : 0 < R.length) (hproper : R.IsProper) :
     exists M : Nat, exists S : Fin M -> IntAP,
       IsIntAPPartition S R /\
       (forall j, (S j).IsProper /\
         ((S j).length = 1 \/ (S j).length = 1 + 1)) /\
       (exists d : Nat, 0 < d /\ forall j, (S j).step = d) /\
-      (forall i j, IntAPLinearOn (S j) (A i) (phi i)) := by
+      (forall phi : Fin q → Int → ZMod N, forall i j, IntAPLinearOn (S j) (A i) (phi i)) := by
   let d := R.length
   have hd : 0 < d := hl
   have hclass : forall a : Fin d,
@@ -973,7 +973,7 @@ private lemma cor711_one_partition {N q : Nat} [NeZero N]
     hproper.1 hd le_rfl (by omega) hclass, ?_, ?_, ?_⟩
   · exact (balancedResidueChunkFamily_properties R d 1 hproper.1 hd).1
   · exact (balancedResidueChunkFamily_properties R d 1 hproper.1 hd).2
-  · intro i j
+  · intro phi i j
     let z := (Fintype.equivFin (BalancedResidueChunkIndex R.length d 1)).symm j
     have hlen : (S j).length = 1 := by
       change balancedChunkLength 1
@@ -1199,36 +1199,51 @@ def Cor711Conclusion {N q : Nat} (m : Nat) (R : IntAP)
     (exists d : Nat, 0 < d /\ forall j, (S j).step = d) /\
     (forall i j, IntAPLinearOn (S j) (A i) (phi i))
 
-/-- The simultaneous partition construction under its direct numerical
-budget. This form allows integer targets slightly above the displayed power
-in Corollary 7.11 when the ambient progression is sufficiently large. -/
-theorem corollary_7_11_constant_budget (N q m : Nat) [NeZero N] (R : IntAP)
-    (A : Fin q → Finset Int) (phi : Fin q → Int → ZMod N) (alpha : Real)
+/-- A partition chosen from the domains alone, affine for every order-eight
+Freiman map on those domains. The maps are quantified after the partition. -/
+def Cor711UniversalConclusion (N : Nat) {q : Nat} (m : Nat) (R : IntAP)
+    (A : Fin q → Finset Int) : Prop :=
+  ∃ M : Nat, ∃ S : Fin M → IntAP,
+    IsIntAPPartition S R ∧
+    (∀ j, (S j).IsProper ∧ ((S j).length = m ∨ (S j).length = m + 1)) ∧
+    (∃ d : Nat, 0 < d ∧ ∀ j, (S j).step = d) ∧
+    ∀ phi : Fin q → Int → ZMod N, (∀ i, FreimanHom 8 (A i) (phi i)) →
+      ∀ i j, IntAPLinearOn (S j) (A i) (phi i)
+
+/-- A single partition works for every Freiman map on the given domains.
+Only the domains contribute to the spectrum union and exponent, so several
+maps on the same domain incur no extra quantitative loss. -/
+theorem corollary_7_11_universal_budget (N q m : Nat) [NeZero N] (R : IntAP)
+    (A : Fin q → Finset Int) (alpha : Real)
     (hq : 0 < q) (hm : 0 < m) (halpha : 0 < alpha) (hl : 0 < R.length)
     (hproper : R.IsProper)
-    (hA : ∀ i, A i ⊆ R.carrier ∧ alpha * R.length ≤ (A i).card ∧
-      FreimanHom 8 (A i) (phi i))
+    (hA : ∀ i, A i ⊆ R.carrier ∧ alpha * R.length ≤ (A i).card)
     (hbudget : 34 * (m : Real) ^ 2 ≤
       (R.length : Real) ^ ((23 / 6) * cor711Exponent alpha q)) :
-    Cor711Conclusion m R A phi := by
+    Cor711UniversalConclusion N m R A := by
   by_cases hmOne : m = 1
   · subst m
-    exact cor711_one_partition R A phi hl hproper
+    obtain ⟨M, S, hp, hc, hd, hf⟩ := cor711_one_partition (N := N) R A hl hproper
+    exact ⟨M, S, hp, hc, hd, fun phi _ ↦ hf phi⟩
   have hmTwo : 2 <= m := by omega
   have halphaOne := cor711_alpha_le_one R A alpha hq hl hproper
-    (fun i => ⟨(hA i).1, (hA i).2.1⟩)
+    hA
   obtain ⟨p, hpPrime, hpLower, hpUpper⟩ :=
     Nat.exists_prime_lt_and_le_two_mul (8 * R.length) (by omega)
   have hpUpper' : p <= 16 * R.length := by omega
   letI : NeZero p := ⟨hpPrime.ne_zero⟩
   let L := cor711SpectrumUnion p R A
-  have hspec (i : Fin q) := cor711_spectrum_bound R A phi alpha hl halpha
-    hproper.1 hpLower hpUpper' hA i
+  have hspec (phi : Fin q → Int → ZMod N)
+      (hf : ∀ i, FreimanHom 8 (A i) (phi i)) (i : Fin q) :=
+    cor711_spectrum_bound R A phi alpha hl halpha hproper.1 hpLower hpUpper'
+      (fun i ↦ ⟨(hA i).1, (hA i).2, hf i⟩) i
+  have hzero : ∀ i, FreimanHom 8 (A i) (fun _ : Int ↦ (0 : ZMod N)) :=
+    fun _ ↦ isAddFreimanHom_const (Set.mem_univ _)
   have hLcard : ((L.card : Nat) : Real) <=
       4097 * q * alpha ^ (-(2 : Real)) := by
     dsimp only [L]
     exact cor711_spectrumUnion_card R A alpha hq halpha halphaOne
-      (fun i => (hspec i).1)
+      (fun i => (hspec (fun _ _ ↦ 0) hzero i).1)
   have honeL : (1 : ZMod p) ∈ L := by
     simp [L, cor711SpectrumUnion]
   have hLne : L.Nonempty := ⟨1, honeL⟩
@@ -1265,9 +1280,9 @@ theorem corollary_7_11_constant_budget (N q m : Nat) [NeZero N] (R : IntAP)
     balancedResidueChunkFamily_partition R D m hproper.1 hDpos hDle hm hclasses,
     (balancedResidueChunkFamily_properties R D m hproper.1 hDpos).1,
     (balancedResidueChunkFamily_properties R D m hproper.1 hDpos).2, ?_⟩
-  intro i j
+  intro phi hf i j
   let z := (Fintype.equivFin (BalancedResidueChunkIndex R.length D m)).symm j
-  obtain ⟨_hKi, hAmodNe, psi, hpsi, hagree⟩ := hspec i
+  obtain ⟨_hKi, hAmodNe, psi, hpsi, hagree⟩ := hspec phi hf i
   let K := cor711Spectrum p R A i
   have hKsub : K ⊆ L := by
     intro r hr
@@ -1299,6 +1314,22 @@ theorem corollary_7_11_constant_budget (N q m : Nat) [NeZero N] (R : IntAP)
   exact balancedResidueChunkAP_linear R (A i) (phi i) D m z hDpos hDle hm
     (by omega : R.length < p) (hclasses z.1)
     (bohr K (1 / (8 * Real.pi))) psi hpsi hagree hshort hAmodNe
+
+/-- The simultaneous partition construction under its direct numerical
+budget. This form allows integer targets slightly above the displayed power
+in Corollary 7.11 when the ambient progression is sufficiently large. -/
+theorem corollary_7_11_constant_budget (N q m : Nat) [NeZero N] (R : IntAP)
+    (A : Fin q → Finset Int) (phi : Fin q → Int → ZMod N) (alpha : Real)
+    (hq : 0 < q) (hm : 0 < m) (halpha : 0 < alpha) (hl : 0 < R.length)
+    (hproper : R.IsProper)
+    (hA : ∀ i, A i ⊆ R.carrier ∧ alpha * R.length ≤ (A i).card ∧
+      FreimanHom 8 (A i) (phi i))
+    (hbudget : 34 * (m : Real) ^ 2 ≤
+      (R.length : Real) ^ ((23 / 6) * cor711Exponent alpha q)) :
+    Cor711Conclusion m R A phi := by
+  obtain ⟨M, S, hp, hc, hd, hf⟩ := corollary_7_11_universal_budget N q m R A alpha
+    hq hm halpha hl hproper (fun i ↦ ⟨(hA i).1, (hA i).2.1⟩) hbudget
+  exact ⟨M, S, hp, hc, hd, hf phi (fun i ↦ (hA i).2.2)⟩
 
 /-- Compatibility with the earlier density-dependent sufficient budget. -/
 theorem corollary_7_11_of_budget (N q m : Nat) [NeZero N] (R : IntAP)
