@@ -152,12 +152,15 @@ source, sketch and what is missing (Vladimir's standing rule of 4 October
    (`n = 16`) through `n = 30` and **falls below `b_0` between `n = 26` and
    `n = 27`**; `δ^I_n` is still above it at 30. The intake's reading
    ("decreasing towards `b_0`", through `n = 25`) is superseded: the approach
-   is not monotone from above. Fits through the last 3–5 values give limits
-   from −21.4 to 2.8, drifting with the window, so thirty terms neither
-   confirm nor contradict `b_0`. The one input testable much further: exact
-   diagonal totals `T_m` through `m = 200` give `T_m/F_m − 2 log m` = 0.338,
-   0.283, 0.201 at `m = 30, 50, 200`, extrapolating to 0.15904 against
-   `2a_0 = 0.159031`.
+   is not monotone from above. Fits through 3–5 consecutive values ending at
+   `n = 26, 28, 30` give limits from −21.4 to 2.8 (−3.8 to 1.7 for the
+   windows ending at 30; corrected at the independent check, which found
+   that the first wording, "the last 3–5 values", did not match the range),
+   drifting with the window, so thirty terms neither confirm nor contradict
+   `b_0`. The one input testable much further: exact diagonal totals `T_m`
+   through `m = 200` give `T_m/F_m − 2 log m` = 0.338, 0.283, 0.201 at
+   `m = 30, 50, 200`, extrapolating to 0.15904 against `2a_0 = 0.159031`
+   (0.159031 with an additional `m⁻²` term, independent check).
 2. **A full power–logarithm expansion** (`ivg:q:expansion`; item 2).
 3. **Effective constants and an explicit onset** (`ivg:q:effective`; item 3
    and Remark 10.2).
@@ -194,6 +197,30 @@ On copies (5 October 2026; Windows, Python 3.14.4, standard library only):
 - The dossier spot-checked Lemmas 5.1–5.4, Proposition 6.1, the Section 7
   case split and the Newton bound; the write rechecked the arithmetic of the
   constant in Theorem 9.1. No error.
+
+**Independent check of the write (5 October 2026).** An adversarial check
+made by the intake after the write (`c6488293e`) fetched the OEIS b-files of
+A005975 and A005976 (both `n = 1, …, 30`) and A022493 (`n ≤ 488`), and reread
+Hanlon's article, Bukh–Jeffs (arXiv v2, printed p. 11), Acan (arXiv v1) and
+the Yang–Pippenger abstract. It confirmed Remark 12.2 and the assignment of
+the two sequences; the inverse Euler transform of the A005975 b-file
+reproduces the A005976 b-file at every `n ≤ 30` and Hanlon's Table VIII at
+every printed row, and Table VII's rows 25–30 equal the A005975 b-file. It
+confirmed Remark 12.1 (`log(K√(2π)) = 1.2206464656`; differences −0.450,
+−0.178, −0.102), the three parts of Remark 10.3 (monotonicity also checked on
+the data through 30), all eighteen `δ` values, the maximum at `n = 16` and
+the crossing between 26 and 27. Two sentences of `ivg:q:remainder` were
+corrected, with dated notes keeping the first wording: the values beyond the
+OEIS data fields are also in the OEIS b-files (which the write had not
+used), and the fit range −21.4 to 2.8 comes from windows ending at `n = 26`
+(windows ending at 30 give −3.8 to 1.7; the conclusion is unchanged). It
+computed `T_m` through `m = 200` by an independent route — the diagonal
+generating function of Hwang–Jin, Proposition 4(ii) and (2.12), to first
+order at `v = 1`; brute force agrees for `m ≤ 6` and `F_m` equals the A022493
+b-file for `m ≤ 200` — confirmed 0.338, 0.283, 0.201 and 0.15904, and with an
+additional `m⁻²` term obtained 0.159031, that is `2a_0` to about `2·10⁻⁷`
+(sentence added). No mathematical error was found. The record is a dated note
+at the end of Section 12.1 (`ivg:sec:further`).
 
 ## Relation to the repository
 
@@ -260,7 +287,7 @@ numbered statements of their sections and the added displays are unnumbered.
 ```text
 README.md                    this guide (replaces the delivery README)
 article.tex                  the report (delivered report133.tex; labels prefixed, [write] additions)
-article.pdf                  compiled report, 26 pages
+article.pdf                  compiled report, 27 pages
 code/check_math.py           self-contained exact checks (delivered at the package root)
 code/output_guard.py         new-only, outside-bundle output guard imported by the others (root)
 code/verify.py               closed inventory, manifest check, normal/-O replay (root)
@@ -344,8 +371,8 @@ D=$(mktemp -d); cp article.tex "$D/"; cd "$D"
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The committed PDF was built this way with MiKTeX on 5 October 2026: 26
-pages; no errors or warnings, no undefined references or citations, no
+The committed PDF was built this way with MiKTeX on 5 October 2026: 27
+pages after the independent check (26 at the write); no errors or warnings, no undefined references or citations, no
 multiply defined labels, no duplicate PDF destinations, no overfull or
 underfull boxes. The delivered source built the same way gives 20 pages
 with one `amsmath` warning (`\atop`); the write typesets that summation

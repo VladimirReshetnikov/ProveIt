@@ -983,7 +983,10 @@ decomposition used here. The rows of Hanlon's Table~VII that the scan
 renders legibly agree with the OEIS terms of A005975, and its six further
 rows ($n=25,\dots,30$), inverted through \eqref{ivg:eq:Euler}, reproduce the
 connected counts of Table~VIII at $n=10,15,20,25,30$ exactly; they are used
-in Question~\ref{ivg:q:remainder}.
+in Question~\ref{ivg:q:remainder}. \textup{(Added after the independent check
+of 5~October 2026: the OEIS b-files of A005975 and A005976 already list
+$n\le30$; Table~VII's rows $25,\dots,30$ equal the A005975 b-file, and the
+inversion of that b-file reproduces the A005976 b-file at every $n\le30$.)}
 \end{remark}
 
 The exact shifted formulas determine $b_0$. The nonlogarithmic coefficient under the conventional $K n!\sqrt n\,q^n$ normalization is not evaluated here: it also involves the second coefficient in the Fishburn expansion. The inverse theorem retains its stated, valid error scale. Several questions remain within this report's scope.
@@ -1018,7 +1021,10 @@ claim in the source.
  $\delta^I_n=(F_n/2-F_{n-1}/2-I_n)/F_{n-2}-\log n$; by
  Theorem~\ref{ivg:thm:constant} both tend to $b_0=1.0795154\ldots$. From the
  OEIS terms ($n\le24$ for $I$, $n\le25$ for $C$) and Hanlon's Table~VII for
- $n=25,\dots,30$ (Remark~\ref{ivg:rem:hanlon}):
+ $n=25,\dots,30$ (Remark~\ref{ivg:rem:hanlon}; the OEIS b-files of A005975
+ and A005976, fetched 5~October 2026, list $n\le30$ and agree with Table~VII
+ and with its inversion; this parenthesis was added after the independent
+ check of 5~October 2026):
  \begin{center}\small\setlength{\tabcolsep}{4pt}
  \begin{tabular}{@{}lccccccccc@{}}\toprule
  $n$ & 15 & 20 & 24 & 25 & 26 & 27 & 28 & 29 & 30\\\midrule
@@ -1032,8 +1038,14 @@ claim in the source.
  values through $n=25$, read them as decreasing towards $b_0$; the five
  further terms show that $\delta^C_n$ does not approach $b_0$ monotonically
  from above. Fits of $b+(c_1\log n+c_0)/n$, with or without
- $(\log n)^2/n$ and $n^{-2}$ terms, through the last three to five values
- give limits between $-21.4$ and $2.8$ that move with the window: thirty terms
+ $(\log n)^2/n$ and $n^{-2}$ terms, each through as many consecutive values of
+ $\delta^C_n$ or $\delta^I_n$ (three to five) as it has parameters, ending at
+ $n=26$, $28$ or $30$, give limits between $-21.4$ and $2.8$ (between $-3.8$
+ and $1.7$ for the windows ending at $n=30$) that move with the window.
+ \textup{(Corrected after the independent check of 5~October 2026; the first
+ wording read ``through the last three to five values give limits between
+ $-21.4$ and $2.8$'', but those extremes come from windows ending at
+ $n=26$.)} Thirty terms
  neither confirm nor contradict $b_0$, and a crossing does not contradict
  Theorem~\ref{ivg:thm:constant}, whose remainder may change sign. One input
  can be tested much further: with $T_m$ computed exactly through $m=200$
@@ -1043,7 +1055,13 @@ claim in the source.
  $b+(c_1\log m+c_0)/m+c_2(\log m)/m^2$ give $0.15904$, against
  $2a_0=2(\log q+\gamma)=0.159031$ in \eqref{ivg:eq:rootconstant}. This
  tests that input only; at $m=30$ it is still $0.18$ from its limit, so the
- remainders are large at the sizes of the table.
+ remainders are large at the sizes of the table. \textup{(Added after the
+ independent check of 5~October 2026: that check computed $T_m$ exactly
+ through $m=200$ by a second route, the bivariate generating function of the
+ diagonal in Proposition~4\,(ii) and (2.12) of~\cite{HJ}, differentiated at
+ $v=1$, and found the same values; with an additional $m^{-2}$ term the fits
+ on five points ending at $m=160$ and at $m=200$ give $0.159031$, that is
+ $2a_0$ to about $2\cdot10^{-7}$.)}
 \item\label{ivg:q:expansion} \textbf{A full power--logarithm expansion}
  (source, item~2). The proof gives the logarithmic term and the following
  shifted constant only. Missing: every further term, which would involve the
@@ -1082,6 +1100,33 @@ claim in the source.
  and Bukh and Jeffs's remark that their factor can be upgraded to
  $\tfrac12$ through Hanlon's work points the same way.
 \end{enumerate}
+\begin{writenote}[Independent check of the write, 5~October 2026]
+An adversarial check made by the intake after the write (commit
+\file{c6488293e}) fetched the OEIS b-files of A005975, A005976 (both
+$n=1,\dots,30$) and A022493 ($n\le488$) and reread Hanlon's article, the
+Bukh--Jeffs and Acan preprints and the Yang--Pippenger abstract. It confirmed
+Remark~\ref{ivg:rem:hanlon} against those texts and the assignment of the two
+sequences (A005976 counts the connected graphs). The inverse Euler transform
+of the A005975 b-file reproduces the A005976 b-file at every $n\le30$, and
+the inverted values equal Hanlon's Table~VIII at every printed row; Table~VII's
+rows $25,\dots,30$ equal the A005975 b-file. It confirmed
+Remark~\ref{ivg:rem:bukhjeffs} (the reading of Bukh and Jeffs's printed
+p.~11, the derivation from Corollary~\ref{ivg:cor:normalized} and the
+differences $-0.450$, $-0.178$, $-0.102$) and the three parts of
+Remark~\ref{ivg:rem:lambert}, with the monotonicity checked on the data
+through $n=30$. All eighteen values of $\delta^C_n$ and $\delta^I_n$ in
+Question~\ref{ivg:q:remainder} agree, as do the maximum at $n=16$ and the
+crossing between $n=26$ and $n=27$. Two sentences of that question were
+corrected, with dated notes keeping the first wording: the values beyond the
+OEIS data fields are also in the OEIS b-files, and the fit range $-21.4$ to
+$2.8$ comes from windows ending at $n=26$ (the windows ending at $n=30$ give
+$-3.8$ to $1.7$); the conclusion is unchanged. It computed $T_m$ through
+$m=200$ independently, from the diagonal generating function of
+Hwang and Jin (checked against brute force for $m\le6$ and with $F_m$ equal to
+the A022493 b-file for $m\le200$), confirmed $0.338$, $0.283$, $0.201$ and
+$0.15904$, and with an additional $m^{-2}$ term obtained $0.159031=2a_0$.
+No mathematical error was found.
+\end{writenote}
 
 \begin{thebibliography}{9}
 \bibitem{HJ} H.-K. Hwang and E. Y. Jin,
