@@ -263,13 +263,22 @@ the front matter, two further-questions sections, the merged bibliography.
 positive integer with `H_κ ≥ 2K + 3` (`κ_K ≤ e^{2K+3}`; `κ_0 = 11`,
 `κ_1 = 83`), `log R(b,u) ≥ u/2 − 2κ_K(1 + log u)` for all `u ≥ 1`, `b ≥ 0`
 with `b ≥ (u/2)(H_u − 1) − Ku`. Hence `log R(b,u)/u → 1/2` whenever
-`α − ½ log log u → ∞` and `log(b+1) = o(u)` (including `α ≥ δ log u`), and
-the two-sided bound of Remark 18.1(4) holds for every admissible `u` in Part
-I's window `|u/u_* − 1| < 1/log N`, `r = 1, 2`. The proof tilts the
-single-spine law by `θ = 1 − κ/u` before Cantelli's inequality; the idea is
-the independent check's, the write wrote out the proof, sharpened its mean
-estimate and made the constant explicit, and checked every step numerically
-(the note after the proposition lists the checks).
+`α − ½ log log u → ∞` and `log(b+1) = o(u)` (including `α ≥ δ log u`), and,
+for `N ≥ N_0(r)`, the two-sided bound of Remark 18.1(4) holds for every
+admissible `u` in Part I's window `|u/u_* − 1| < 1/log N`, `r = 1, 2`. The
+proof tilts the single-spine law by `θ = 1 − κ/u` before Cantelli's
+inequality; the idea is the independent check's, the write wrote out the
+proof, sharpened its mean estimate and made the constant explicit, and
+checked every step numerically (the note after the proposition lists the
+checks). After the second check (below), consequence (2) states the range
+`N ≥ N_0(r)` that its proof gives; it first claimed the bound for every `N`,
+which fails at `r = 2`, `N = 3`, `u = 1` and at `r = 1`, `N = 2`, `u = 1`
+(there `b = 0`, `R = 1` and `log R − u/2 = −1/2`). Its last clause now says
+that the hypothesis of Remark 18.1(4) excludes part of the window for both
+`r`; for `r = 1` that part is covered by Remark 18.1(2), for `r = 2` it is
+not, since the margin `α − ½(H_u − 1)` tends to
+`log 2 − ½ − γ/2 ≈ −0.0955` at the upper edge. A dated note after the proof
+keeps the first wording.
 
 - *[Independent check, 5 October 2026.]* An adversarial check of the write
   made by the intake after it (`b432720bf`) found all eleven items it examined
@@ -303,6 +312,23 @@ estimate and made the constant explicit, and checked every step numerically
   constant out to `L = 10^16` and `v = 10^15`. The record is an unlabelled
   dated paragraph at the end of Section 20. This was a careful reading with
   numerical tests, not a formal verification.
+- *[Second independent check, 5 October 2026.]* A second adversarial check,
+  of Proposition 18.2 alone and with its own programs, found (18.5), the
+  constants `κ_K` and consequence (1) valid, and consequence (2) valid for
+  large `N`, with the two wording fixes described above. It tested (18.5) at
+  `b ≥ ⌈μ − Ku⌉` for `K = 0, ½, 1, 2`: in exact integers for `u ≤ 12`,
+  `b ≤ 60` (the totals recover A135501 and A220894), on the full ratio `R` in
+  scaled floating point to `u = 140`, and on the single-spine ratio, which is
+  at most `R`, to `u = 3000`, with no failure and large slack (202, 562, 1498
+  and 11,086 for `K = 0, ½, 1, 2` at `u = 3000`). Over the window of
+  consequence (2) the margin `α − ½(H_u − 1)` is at least 0.71 for `r = 1`
+  (at `N = 10`) and grows like `½ log u_*`; for `r = 2` its least value,
+  always on the upper side of the window, is −0.234 at `N = 20`, −0.043 at
+  `N = 100`, −0.058 at `N = 10^6` and −0.063 at `N = 10^12`, with limit
+  `log 2 − ½ − γ/2 ≈ −0.0955` at the upper edge. So for `r = 2` the
+  hypothesis of Remark 18.1(2) fails on part of the window for all large `N`,
+  and the proposition is needed there. The record is a dated sentence
+  appended to the Section 20 paragraph.
 
 ## What the report does not claim
 
@@ -499,6 +525,13 @@ four pdfLaTeX passes: 45 pages, no errors, no undefined or multiply defined
 references, no duplicate destinations, no overfull or underfull boxes, and the
 same single infinite-glue message; the 141 labels resolve, and the 139 earlier
 ones keep their numbers (`.aux` compared with a build of the committed text).
+
+Rebuilt again on 5 October 2026 after the second check, the same way: 46
+pages (the appended record runs onto a new page before the references), no
+errors, no undefined or multiply defined references, no duplicate
+destinations, no overfull or underfull boxes, and the same single
+infinite-glue message; all 141 labels keep their numbers and pages (`.aux`
+compared with a build of the committed text).
 
 ## Delivered path → shipped path
 
