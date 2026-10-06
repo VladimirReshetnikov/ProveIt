@@ -1,15 +1,17 @@
 # Sharp discrepancy for two families of binary substitutions
 
-**Part I: counterexamples and corrected theorems for OEIS A284365 and A284366, `0 -> 1, 1 -> (10)^m` (September 19, 2026). Part II: exact position-error envelopes for the quadratic morphic words `0 -> 1, 1 -> 1 0^a 1^b`, OEIS A284368–A284371 (October 1, 2026).**
+**Part I: counterexamples and corrected theorems for OEIS A284365 and A284366, `0 -> 1, 1 -> (10)^m` (September 19, 2026). Part II: exact position-error envelopes for the quadratic morphic words `0 -> 1, 1 -> 1 0^a 1^b`, OEIS A284368–A284371 (October 1, 2026). Part III: exact fluctuation laws and sharp critical and supercritical normalization for the same family and for every critical arrangement (October 5, 2026).**
 
-This is a research report in two Parts, built from two manuscripts. Both
-author lines read "Research study prepared with ChatGPT"; both are
-AI-assisted, unrefereed and not formalized in a proof assistant.
+This is a research report in three Parts, built from three manuscripts. The
+author lines read "Research study prepared with ChatGPT" (Parts I, II) and
+"Research prepared with ChatGPT" (Part III); all three are AI-assisted,
+unrefereed and not formalized in a proof assistant.
 
 | Source | Manuscript | Archive | Pin | Placed | Printed as |
 |---|---|---|---|---|---|
 | Part I | the original report, one of the 64 research reports catalogued on 19 September 2026 | `oeis_discrepancy_counterexamples.zip` (17-page PDF) | none | `a3fe9660e` (former Cardinals repository, merged here in `dc54c3cb3`) | Part I: Sections 1–10, Appendix A |
 | Part II | batch 73O1, manuscript 44 | `OEIS_Quadratic_Morphic_Words_Research_Package.zip` of arrival commit `c79d64038` (main file `article.tex`, 15-page PDF) | none (cites this report by repository URL) | `9df4ba51a` | Part II: Sections 11–22, Appendices B–C |
+| Part III | batch 114, "Exact Fluctuation Laws and Sharp Discrepancy in Binary Morphic Words" (5 October 2026) | `binary_morphic_fluctuations.zip` of arrival commit `e4d5dcf9e` (main file `binary_morphic_fluctuations.tex`, 30-page PDF) | `112d6bed` (it read this report there; this directory is unchanged between the pin and the placement) | `99053b5d1` | Part III: Sections 23–36 |
 
 Every theorem, corollary, proposition, lemma, remark, proof, table, figure
 and research question of manuscript 44 is printed. Part I is unchanged except
@@ -17,6 +19,16 @@ for a dated note (`[Added 1 October 2026, batch 73O1: …]`) in its Section 9.4,
 a front matter (title, abstract) that announces both Parts, and the place of
 its Appendix A, which now follows Part II. The title's "a family" became
 "two families"; Part I keeps the old title as its Part heading.
+
+Every theorem, corollary, proposition, lemma, definition, remark, proof,
+table, figure and research item of the batch-114 manuscript is printed as
+Part III, which answers Part II's research question 7. Parts I and II are
+unchanged except for dated notes (`[Added 6 October 2026, batch 114: …]`) in
+Part II — at the end of Section 16, at research questions 2, 3, 4 and 7 of
+Section 21, and in Part II's introduction — and a front matter (title, date
+line, abstract, PDF subject) that also announces Part III. The title "two
+families" is kept: Part III treats Part II's family, and in its critical part
+a wider class of words.
 
 ## Results
 
@@ -66,6 +78,37 @@ Part II proves:
 - constructive extremal subsequences and rational generating functions of
   their indices.
 
+### Part III
+
+Part III answers Part II's research question 7 (the unbounded regimes of
+`tau_(a,b)`), with `X = #0 - q #1` (so `#0 - #1` at the critical value q = 1):
+
+- **critical, a = b+2:** `limsup X(N)/log N = -liminf X(N)/log N = (a-1)/(2 log a)`,
+  every value in between is a limit point, and `|X(N)| <= ((a-1)/(2 log a)) log N + O(1)`
+  (Theorem 32.1); Part II's cycle `P_k` is the *first* prefix of weight
+  `k(a-1)`, with exact lengths `p_k = A(a^(2k)-1) + Bk` (Theorem 32.3;
+  a = 3: 4, 32, 276, 2464, …);
+- **supercritical, a >= b+3:** with `alpha = log q / log lambda`, the cluster set of
+  `X(N)/N^alpha` is `[-C, C]`, `C = (lambda-1)/(q^2-1) * ((lambda+q)(lambda^2-1)/(q+1)^2)^alpha`,
+  and `X(N) = c^alpha N^alpha Theta(log_lambda(cN)) + O(N^(alpha^2))` with a continuous
+  anti-periodic graph-directed profile `Theta` (Theorem 33.1); exact finite bound
+  `|X(N)| <= K L_N^alpha` in geometric length;
+- **(a,b) = (8,1)** (`1 -> 1 0^8 1`): endpoints `±sqrt(10)` and
+  `X(N)^2 + 5X(N) <= 10N` for every prefix; an infinite family
+  `a = q^3, b = q^2-q-1` with quadratic envelopes.
+
+Its critical analysis holds for **every word w with a zeros and a-1 ones
+beginning with 1** (`0 -> 1, 1 -> w`): an exact, coefficientwise positive
+convolution formula `F_(2m,c) = 1 + K_c sum_(j<m) (S(t)S(1/t))^j` for every
+complete-block prefix histogram (Theorem 26.2), an exact random-sum law and
+exact finite mean and variance, quantitative Gaussian and local limit laws at
+every cutoff, cumulants, the pressure `chi(s) = (1/2) log(S(e^s)S(e^-s)/a^2)`
+and a full large-deviation principle, the sharp variance bounds
+`(a-1)/a^2 <= v <= (a^2-1)/12` with their equality words and the matching
+pressure comparison, the cluster interval `[-d/(2 log a), d/(2 log a)]` for
+the support diameter d, and the classification of the zero-height profiles,
+counted by `(a-1)2^(a-2) = A001787(a-1)`.
+
 ## What is not claimed
 
 - Part I does not determine the frequency distribution of discrepancy values
@@ -81,8 +124,28 @@ Part II proves:
 - Part II leaves open: the interval-versus-Cantor classification of the
   attractors, the error distributions, threshold densities, exact
   first-hitting algorithms, closed forms for A284370/A284371, the optimal
-  factor-balance constant, the critical and supercritical normalizations,
-  an automated OEIS survey, and a Lean formalization.
+  factor-balance constant, an automated OEIS survey, and a Lean
+  formalization. Its question on the critical and supercritical
+  normalizations is answered in Part III; Part III also answers the extremal
+  slice of the first-hitting question at a = b+2 and proves the critical
+  analogues of the distribution and threshold questions, which stay open in
+  the bounded regime.
+- Part III states two results with an argument sketch only: the first local
+  (Edgeworth) correction to the local limit law, and the remark that every
+  fixed correction order follows likewise. They are recorded as Questions 11
+  and 12 of its Section 35 (Vladimir's standing rule of 4 October 2026);
+  its other results come with proofs, those of the quantitative Gaussian
+  estimates in condensed form. It does not claim: external
+  review or proof-assistant verification; that its finite computations
+  replace the proofs, or that its floating-point diagnostics and plots are
+  interval-certified; the spectral explanation of discrepancy growth
+  (Adamczewski), the existence of the Gaussian limit (Paquette–Son,
+  Theorem 3.3) or the invariant-section identity (Rajabzadeh–Safaee,
+  Solomyak, Proposition 3.1) as new; global priority; an OEIS number for the
+  critical word `10001`; anything about the bounded regime; absolute
+  continuity or absence of atoms of the supercritical phase laws; a count of
+  words (it counts profiles); sharpness of the error `O(N^(alpha^2))`;
+  exact-extreme asymptotics from the endpoint values of the rate function.
 - The two families are disjoint: `(10)^m = 1 0^a 1^b` only for m = 1,
   (a,b) = (1,0), which Part II excludes. Part II does not contain, re-prove or
   refine Part I. For (a,b) = (m, m−1) the incidence matrix and q coincide
@@ -92,18 +155,20 @@ Part II proves:
 - Classical substitution-discrepancy methods (Adamczewski 2003, 2004) are not
   claimed as new.
 - No Lean or Rocq declaration in this repository formalizes any statement of
-  either Part (a search of `*.lean`/`*.v` for A2843xx, A18448x, Beatty and
+  any Part (a search of `*.lean`/`*.v` for A2843xx, A18448x, Beatty and
   Wythoff finds only the ExponentialIdentities project's Beatty-fiber modules
-  for the two-base exponent problem, which are unrelated). Placement in the
+  for the two-base exponent problem, which are unrelated; a search for
+  A001787 and the zero-height and histogram notions of Part III finds nothing
+  either). Placement in the
   Cardinals research-report collection confers no formal status.
 
 ## Files
 
 ```
-article.tex                              the report (Parts I and II), standalone LaTeX with an embedded bibliography
-article.pdf                              the compiled report, 34 pages (title and abstract, contents pp. 2-3,
-                                         Part I pp. 4-16, Part II pp. 17-31, Appendices A-C pp. 32-33,
-                                         references p. 34)
+article.tex                              the report (Parts I-III), standalone LaTeX with an embedded bibliography
+article.pdf                              the compiled report, 71 pages (title and abstract pp. 1-2, contents
+                                         pp. 3-5, Part I pp. 6-18, Part II pp. 19-34, Part III pp. 35-68,
+                                         Appendices A-C pp. 69-70, references p. 71)
 README.md                                this guide
 Makefile                                 Part I's build and verification targets
 oeis_proposed_updates.txt                Part I's suggested OEIS corrections, not submitted
@@ -124,6 +189,25 @@ data/02-morphic-verification.json        Part II: executed test report (201,686 
 figures/finite_maxima.pdf, figures/finite_maxima.png                         Part I figure
 figures/02-morphic-A284368_errors.pdf, figures/02-morphic-A284368_errors.png   Part II figure
 figures/02-morphic-A284369_errors.pdf, figures/02-morphic-A284369_errors.png   Part II figure
+code/03-fluct-verify.py                  Part III: main exact critical verifier (histograms, moments, extrema,
+                                         arrangements) and the three critical figures
+code/03-fluct-general_word_audit.py      Part III: independent literal-word audit of the general finite formulas
+code/03-fluct-verify_profile_realization.py   Part III: Euler-trail profile realization and enumeration
+code/03-fluct-verify_supercritical.py    Part III: integer checks at (a,b) = (8,1) and the supercritical figure
+code/03-fluct-build.sh                   Part III: the manuscript's PDF build script (see "Rerun hazards")
+data/03-fluct-requirements.txt           Part III: Python package versions for figures and the supercritical check
+data/03-fluct-computation_report.txt     Part III: check scopes and numerical conventions
+data/03-fluct-verification_summary.json  Part III: summary of the main run (37,129 exact assertions)
+data/03-fluct-literal_checks.json        Part III: 106 literal words, 906,168 symbols
+data/03-fluct-generalized_word_audit.json   Part III: the 4,081 words with a = 2..8
+data/03-fluct-independent_general_moment_audit.json   Part III: 1,078 words, 4,312 histograms and moments
+data/03-fluct-profile_realization_checks.json   Part III: 1,793 profiles, 15,521 words, a = 2..9
+data/03-fluct-supercritical_checks.json  Part III: (8,1) prefix inequality and extremizing prefixes
+data/03-fluct-supercritical_figure_caption.txt   Part III: figure conventions
+data/03-fluct-diagnostics.json           Part III: floating-point Gaussian diagnostics (not certified)
+data/03-fluct-histogram_a3_m{008,032,128}_c1.json   Part III: exact histograms of W_16, W_64, W_256 at a = 3
+figures/03-fluct-{supercritical_profile,gaussian_histograms,extreme_and_typical_scales,pressure_and_rate}.{pdf,png}
+                                         Part III figures (Figures 4-7)
 ```
 
 Delivery-name map of Part II (manuscript 44; every file byte-identical to the
@@ -135,6 +219,17 @@ delivery): `code/verify.py`, `code/make_figures.py` → `code/02-morphic-*`;
 Part II), its 15-page PDF, its delivery README, the file list `MANIFEST.txt`
 and the checksum ledger `SHA256SUMS.txt` (verified 14/14 at placement,
 retired).
+
+Delivery-name map of Part III (batch 114; every file byte-identical to the
+delivery): `code/verify.py`, `code/general_word_audit.py`,
+`code/verify_profile_realization.py`, `code/verify_supercritical.py` →
+`code/03-fluct-*`; `build.sh` → `code/03-fluct-build.sh`;
+`code/requirements.txt` → `data/03-fluct-requirements.txt`; `data/*` →
+`data/03-fluct-*` (12 files); `figures/*.{pdf,png}` → `figures/03-fluct-*`
+(8 files). Not shipped: the manuscript `binary_morphic_fluctuations.tex` (its
+text is Part III), its 30-page PDF and its delivery `README.txt`
+(retrievable from `git show e4d5dcf9e:docs/incoming/binary_morphic_fluctuations.zip`).
+No checksum manifest was delivered.
 
 ## Labels and numbering
 
@@ -151,6 +246,18 @@ are Appendices B, C. Section 11 (provenance, notation table, comparison of the
 two families) is new. Part II's tables are numbered II.1–II.3 so that Part I's
 Table 3 (in Appendix A, now printed after Part II) keeps its number.
 
+Every label of Part III carries the prefix `bmf:`: the 117 delivered labels
+of the batch-114 manuscript and five new ones (`bmf:sec:provenance`,
+`bmf:tab:notation`, `bmf:rem:partII`, `bmf:q:edgeworth`,
+`bmf:q:fixed-orders`): 279 labels in all. The manuscript's section *n* is
+Section *n* + 23 here (its Theorem 3.2 is Theorem 26.2); Section 23
+(provenance, notation table, relation to Parts I–II, citations checked,
+independent checks, non-claims) is new. Its four figures are Figures 4–7, its
+one new table is Table III.1, and the table counter is restored after Part
+III, so Part I's Table 3 keeps its number. The `.aux` numbers of all 157
+labels of Parts I–II are unchanged (compared with a build of the committed
+text).
+
 ## Notation (Part II)
 
 Table II.1 of the article lists every symbol shared by the two Parts. Only one
@@ -160,12 +267,30 @@ intervals, while `Ĉ` is the largest state-1 weight (the role of Part I's `H`).
 No normalization changed. `q`, `λ`, `r`, `s`, `M`, `X`, `S_a`, `E_0`, `E_1`
 have the same definitions in both Parts, applied to the respective word.
 
+## Notation (Part III)
+
+No symbol of the batch-114 manuscript is renamed. Table III.1 prints, for
+every letter that Parts I–II also use, both meanings; the clashes are
+resolved by scope (Part III's symbols are local to Sections 23–36). The
+important ones: Part III's `X` is `#0 - #1` in its critical Sections 25–32
+(Part II's `X` at q = 1) and Part II's `X` in Section 33; `S(t)` is the
+zero-height polynomial, not Part II's state sets `S_0, S_1`; `K_0(t), K_1(t)`
+are seed polynomials, not Part II's attractors; `C(t)` is a 2×2 matrix and
+`𝒞_(a,b)` the supercritical amplitude, neither Part I's `C` nor Part II's
+`Ĉ`; `v = Var Z` beside the positions `u(n), v(n)`; `r, s, t` are depth, tilt
+and Laurent variable (and `λ^-2`, `q^-2`, geometric time in Section 33), not
+Part II's slopes or Part I's `t = 1 - q`; `m` is half the depth, not Part I's
+parameter. `P_k` is Part II's recursion; the critical `Q_k = σ_a(P_k)1` is
+Part II's `Q_k` followed by a one. Clashes inside the manuscript (`χ`, `d`,
+`e`, `A`, `B`, `c`, `Y`, `E`) are listed in Section 23.
+
 ## Relation to other material
 
 - `../../automata-and-formal-languages/tribonacci-additive-complexity` cites
   Part I; its "optimal discrepancy" concerns the Tribonacci word.
 - No other report treats A284368–A284371, A184484/A184485 or the family
-  `1 -> 1 0^a 1^b`.
+  `1 -> 1 0^a 1^b`, and none uses A001787 or the zero-height histogram
+  identity of Part III.
 
 ## Rerun the checks
 
@@ -247,6 +372,42 @@ were not rerun. Independently, a floating-point brute force over 2·10⁶
 letters for eight parameter pairs stayed inside every envelope, and the
 extremal-index generating functions and the phase transition were reproduced.
 
+### Part III: rerun on a copy
+
+The delivered Part III programs are byte-identical and resolve their output
+directories relative to their own location (`code/..`, i.e. the report root),
+writing **unprefixed** delivery names: `03-fluct-verify.py` writes
+`data/{literal_checks,generalized_word_audit,diagnostics,verification_summary}.json`,
+`data/histogram_a3_m{008,032,128}_c1.json`, `data/computation_report.txt` and,
+without `--skip-figures`, `figures/{gaussian_histograms,extreme_and_typical_scales,pressure_and_rate}.{pdf,png}`;
+`03-fluct-general_word_audit.py` writes `data/independent_general_moment_audit.json`;
+`03-fluct-verify_profile_realization.py` writes `data/profile_realization_checks.json`;
+`03-fluct-verify_supercritical.py` writes `data/supercritical_checks.json`,
+`data/supercritical_figure_caption.txt` and `figures/supercritical_profile.{pdf,png}`.
+`code/03-fluct-build.sh` runs `latexmk` on `binary_morphic_fluctuations.tex`
+in `code/`, which is not shipped. So re-extract the archive
+(`git show e4d5dcf9e:docs/incoming/binary_morphic_fluctuations.zip`) or copy
+each `03-fluct-` file back to its delivery name in a scratch directory, then
+there:
+
+```sh
+python code/verify.py --skip-figures      # standard library; or --output-dir <scratch dir>
+python code/general_word_audit.py
+python code/verify_profile_realization.py
+python code/verify_supercritical.py      # needs numpy and matplotlib (data/03-fluct-requirements.txt)
+```
+
+At intake (batch 114, on a copy, Python 3.14.4 on Windows) all four passed,
+each in seconds (`verify.py`: "PASS: 37129 exact assertions; 106 literal
+words"; the supercritical check: `all_exact_checks_passed: true`). The
+regenerated data equal the shipped files apart from CRLF line endings on
+Windows and the software-version lines of `computation_report.txt` and
+`verification_summary.json`; `supercritical_checks.json`,
+`profile_realization_checks.json`, `independent_general_moment_audit.json`
+and `supercritical_figure_caption.txt` were byte-identical. The figures were
+not regenerated. Separately programmed spot checks at intake and two checks
+at the write are listed in Section 23 of the article.
+
 ## Build the PDF
 
 ```sh
@@ -257,10 +418,12 @@ or `make pdf` (two `pdflatex` passes; Part I's `Makefile`). A TeX installation
 with `newpxtext`, `newpxmath`, `amsmath`, `amsthm`, `mathtools`, `microtype`,
 `tcolorbox`, `listings`, `enumitem`, `hyperref`, `bookmark` and the other
 packages named in the preamble is sufficient. The pre-rendered figures are
-included. The batch-73O1 build (MiKTeX, pdfLaTeX) has no errors, undefined
+included. The batch-114 build (MiKTeX, pdfLaTeX, 71 pages) has no errors, undefined
 references or citations, multiply defined labels, duplicate destinations, or
-overfull boxes. The figure PDFs (Part I's and Part II's, as delivered) embed
-matplotlib Type 3 fonts; they were not regenerated.
+overfull or underfull boxes; Part III needs no package beyond those above.
+The figure PDFs of Parts I and II and Part III's
+`03-fluct-supercritical_profile.pdf` embed matplotlib Type 3 fonts (Part
+III's other three figures embed TrueType fonts); none was regenerated.
 
 ## Discrepancies and disclosures
 
@@ -280,6 +443,31 @@ matplotlib Type 3 fonts; they were not regenerated.
   b-files were not compared. Part II's verifier compared the posted initial
   OEIS terms. No OEIS changes have been submitted.
 
+- **Part III, delivered texts naming delivery files.**
+  `data/03-fluct-computation_report.txt` gives the commands
+  `python code/verify.py` (shipped as `code/03-fluct-verify.py`);
+  `code/03-fluct-build.sh` builds the unshipped manuscript source;
+  `data/03-fluct-requirements.txt` was `code/requirements.txt`. The
+  manuscript's own text refers to "the accompanying archive" with its
+  source and PDF; dated notes in Section 34 say what is shipped.
+- **Part III, pin and citation of this report.** The manuscript read this
+  report at `112d6bed` and cited it as "Vladimir Reshetnikov, ProveIt: Sharp
+  discrepancy for two families of binary substitutions, Part II"; Part III
+  cites Part II by section instead. It also names a search-index commit
+  `52d8ca404`, which it did not use. The OEIS pages A284368–A284371 were
+  accessed by the manuscript on 5 October 2026; the bibliography keeps the
+  existing entries.
+- **Part III, citations checked at the write.** Solomyak's Proposition 3.1
+  (arXiv:2502.14308v3) and Paquette–Son's Theorem 3.3 and Proposition 3.1
+  (arXiv:1505.01428v1) were read and support the manuscript's uses; the
+  journal page confirms Studia Math. 286 (2026), 189–206, but not the issue
+  number "no. 2" of the delivered reference; the journal version of
+  Paquette–Son was not read; Rajabzadeh–Safaee and Bressaud–Bufetov–Hubert
+  were read only in abstract; Feller was not checked (Section 23).
+- **OEIS data.** The OEIS values used as fixtures or cited (A001787,
+  A284368–A284371) are under CC BY-SA 4.0. Part III, like Parts I–II,
+  submits nothing to OEIS.
+
 ## Primary references
 
 - https://oeis.org/A284364, https://oeis.org/A284365, https://oeis.org/A284366
@@ -289,6 +477,22 @@ matplotlib Type 3 fonts; they were not regenerated.
   l'Institut Fourier 54 (2004), no. 7, 2201–2234, doi:10.5802/aif.2079.
 - B. Adamczewski, *Balances for fixed points of primitive substitutions*,
   Theoretical Computer Science 307 (2003), 47–75.
+- https://oeis.org/A001787 (Part III)
+- E. Paquette and Y. Son, *Birkhoff sum fluctuations in substitution
+  dynamical systems*, Ergodic Theory Dynam. Systems 39 (2019), no. 7,
+  1971–2005, doi:10.1017/etds.2017.83, arXiv:1505.01428.
+- B. Solomyak, *On the Lyapunov spectrum of the twisted cocycle for
+  substitutions*, Studia Math. 286 (2026), 189–206,
+  doi:10.4064/sm250402-31-7, arXiv:2502.14308.
+- H. Rajabzadeh and P. Safaee, *Twisted cocycle for interval exchange
+  transformations: invariant structures and Lyapunov spectrum*,
+  arXiv:2501.16824 (2025).
+- X. Bressaud, A. I. Bufetov and P. Hubert, *Deviation of ergodic averages
+  for substitution dynamical systems with eigenvalues of modulus 1*,
+  Proc. London Math. Soc. (3) 109 (2014), no. 2, 483–522,
+  doi:10.1112/plms/pdu009.
+- W. Feller, *An Introduction to Probability Theory and Its Applications*,
+  Vol. II, 2nd ed., Wiley, 1971, Chapter XVI.
 
 No external papers, fonts, checksum files, or transient TeX build files are
 bundled.
