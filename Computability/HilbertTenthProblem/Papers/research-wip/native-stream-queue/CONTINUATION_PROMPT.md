@@ -191,6 +191,20 @@
 > The [scalar complement reuse](residue_affine_complement_reuse.md) and [vector positive-guard template](counter_vector_positive_guard.md), with [independent proof and source review](review_counter_positive_guard_extensions.md), extend the counter-step savings to every fixed program of the stated form. Reusing the scalar remainder-complement equation saves one addition: the complete SOS costs **10B+21**, with six positive witnesses; its B=14 fixture costs **161=76M+85A**, of exact degree28. For r counters and K states represented directly, positivity forces the branch selector using only two witnesses, giving a paid SOS template of **2(r+2)K+7r+11** operations and degree at most2K+2. This saves three operations against the same template with an explicit Boolean residual. The distinct endpoint interfaces cannot be compared without a paid conversion. The scalar source receives independent inert structure and polynomial checks; the vector result is proof-only. Neither result supplies unbounded iteration or improves the universal84 frontier.
 >
 >
+> The [Section 7 embedding counterexample](review_higman_section7_noninjective_root.md)
+> refutes an injectivity claim in the printed downstream group construction.
+> Four independent source conjugates map to the dependent target words
+> `vp, v, vq, vpq`; the finite presentation (7.10) already kills their
+> nontrivial four-letter relation. Root's proof passed full independent
+> challenges by Aristotle and Pascal, with the printed notation checked
+> visually. The historical **20,808 / 34,232 / 37,937 / 49,792** slot counts
+> are retained as syntactic substitutions with a refuted embedding premise.
+> An explicit faithful replacement and its audited count are open. The
+> earlier **499-generator / 17,678-relator** benign pair and its local
+> two-relator transducer end before this defect; their materialization
+> continues. The general **84 / degree 187 / 18-witness** result is unchanged.
+>
+>
 > The [two-relator affine-line transducer](positive7_higman_affine_line_transducer_aristotle.md)
 > and [complete shared presentation schedule](positive7_higman_shared_schedule_riemann.md)
 > give a hand-counted target pair with **499 generators, 17,678 relators and
@@ -202,8 +216,9 @@
 > typing, history extraction and the initial-line restriction. Full independent
 > hand challenges pass. The valid full-marker decoder, theta projection and
 > Keep projection remain recorded, including the corrected Keep list length
-> 622 and its two additional relations. The later embedding ledger gives
-> **20,808 conditional relation slots**, not an instantiated universal parameter.
+> 622 and its two additional relations. The historical ledger gives
+> **20,808 syntactic relation slots**; its printed embedding premise is
+> [refuted by a separate review](review_higman_section7_noninjective_root.md). A faithful replacement is open.
 > Materializing and independently auditing all literal presentation words,
 > embedding images and matrices remains open. The established universal
 > **84-operation / degree-187 / 18-witness** frontier is unchanged.

@@ -170,6 +170,19 @@ The [packed counter-guard transfer obstruction](korec_positive_guard_transfer_ob
 
 The [scalar complement reuse](residue_affine_complement_reuse.md) and [vector positive-guard template](counter_vector_positive_guard.md), with [independent proof and source review](review_counter_positive_guard_extensions.md), extend the counter-step savings to every fixed program of the stated form. Reusing the scalar remainder-complement equation saves one addition: the complete SOS costs **10B+21**, with six positive witnesses; its B=14 fixture costs **161=76M+85A**, of exact degree28. For r counters and K states represented directly, positivity forces the branch selector using only two witnesses, giving a paid SOS template of **2(r+2)K+7r+11** operations and degree at most2K+2. This saves three operations against the same template with an explicit Boolean residual. The distinct endpoint interfaces cannot be compared without a paid conversion. The scalar source receives independent inert structure and polynomial checks; the vector result is proof-only. Neither result supplies unbounded iteration or improves the universal84 frontier.
 
+The [Section 7 embedding counterexample](review_higman_section7_noninjective_root.md)
+refutes an injectivity claim in the printed downstream group construction.
+Four independent source conjugates map to the dependent target words
+`vp, v, vq, vpq`; the finite presentation (7.10) already kills their
+nontrivial four-letter relation. Root's proof passed full independent
+challenges by Aristotle and Pascal, with the printed notation checked
+visually. The historical **20,808 / 34,232 / 37,937 / 49,792** slot counts
+are retained as syntactic substitutions with a refuted embedding premise.
+An explicit faithful replacement and its audited count are open. The
+earlier **499-generator / 17,678-relator** benign pair and its local
+two-relator transducer end before this defect; their materialization
+continues. The general **84 / degree 187 / 18-witness** result is unchanged.
+
 The [two-relator affine-line transducer](positive7_higman_affine_line_transducer_aristotle.md)
 and [complete shared presentation schedule](positive7_higman_shared_schedule_riemann.md)
 give a hand-counted target pair with **499 generators, 17,678 relators and
@@ -181,8 +194,9 @@ The schedule pays all 48 affine edge leaves, 47 unions, global nonnegative
 typing, history extraction and the initial-line restriction. Full independent
 hand challenges pass. The valid full-marker decoder, theta projection and
 Keep projection remain recorded, including the corrected Keep list length
-622 and its two additional relations. The later embedding ledger gives
-**20,808 conditional relation slots**, not an instantiated universal parameter.
+622 and its two additional relations. The historical ledger gives
+**20,808 syntactic relation slots**; its printed embedding premise is
+[refuted by a separate review](review_higman_section7_noninjective_root.md). A faithful replacement is open.
 Materializing and independently auditing all literal presentation words,
 embedding images and matrices remains open. The established universal
 **84-operation / degree-187 / 18-witness** frontier is unchanged.
@@ -6027,7 +6041,8 @@ New research and the completed75-operation construction:
 
 | Artifact | Established result | Remaining boundary |
 |---|---|---|
-| [Two-relator affine-line transducer](positive7_higman_affine_line_transducer_aristotle.md) and [full shared schedule](positive7_higman_shared_schedule_riemann.md) | Exact free-pair HNN transfer adds one generator and two relations; complete hand schedule gives 499 generators, 17,678 relators and three subgroup words; full peer challenges pass | Literal presentation, embedding and matrices remain unmaterialized; 20,808 later relation slots are conditional; all three weaker finishes and the Keep count correction are retained |
+| [Section 7 embedding counterexample](review_higman_section7_noninjective_root.md) | Explicit nontrivial free-basis word dies under the proposed map and the finite 15-relation extension; full independent reviews pass | Historical 20,808 and three alternative downstream counts are syntactic only; a faithful replacement is open; the preceding 499/17,678 benign pair remains separate |
+| [Two-relator affine-line transducer](positive7_higman_affine_line_transducer_aristotle.md) and [full shared schedule](positive7_higman_shared_schedule_riemann.md) | Exact free-pair HNN transfer adds one generator and two relations; complete hand schedule gives 499 generators, 17,678 relators and three subgroup words; full peer challenges pass | Literal presentation, embedding and matrices remain unmaterialized; 20,808 historical slots have a refuted embedding premise; replacement open; all three weaker finishes and the Keep count correction are retained |
 | [Complete grouped-left compiler](positive7_grouped_left_compiler_riemann.md), [independent full-record review](review_positive7_grouped_left_compiler_pascal.md) | Saved totals798/862/1003; all2663 records audited; rM saving, identical final polynomial and positive-witness contract | Collected branch proved by grammar; numerical universal group/matrix data, degree and optimality remain open |
 | [Persistent Higman ambient](positive7_higman_shared_ambient_aristotle.md) | Proven common-ambient binary operations, paid marker transport, persistent shift and affine-base lists; exact update counts and 105/1979 nonnegativity prefix | Imported unary subgroup identifications; actual complete word lists and numerical universal compiler still open |
 | [Affine-edge unary recognizer](positive7_affine_typed_recognizer_pascal.md) | Literal 46-branch all-I/D table; global omega1 typing; signed affine branch lists; exact accepted unary set and affine pattern | Stuck partial states are rejecting; group word-list expansion, embedding images and arithmetic bound remain separate tasks |
