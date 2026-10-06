@@ -1,0 +1,200 @@
+{
+  "title": "Sharp Freiman Extension and Polynomial Bohr Radii",
+  "date": "2026-10-06",
+  "source_snapshot": {
+    "repository": "VladimirReshetnikov/ProveIt",
+    "commit": "9ea383e9b28d885a936d5d681cd5584fffd2cb29"
+  },
+  "notation": {
+    "G": "Z/NZ in the Section 10 application; finite abelian groups for the general lemmas",
+    "alpha": "|X|/(M*N)",
+    "M": "positive integer cap on each input fibre",
+    "d": "actual number of characters in the chosen spectrum, including the trivial character",
+    "varrho": "component selection parameter; distinct from outer Bohr radius rho",
+    "rho": "outer Bohr radius before finite radius selection",
+    "r0": "selected ambient Bohr radius in (rho/2,rho]",
+    "zeta": "inner Bohr radius"
+  },
+  "extension": {
+    "translation_loss": "b_B(t)=|B \\ (B-t)|/|B|",
+    "density": "|S| >= (1-epsilon)|B|",
+    "directions": "C=-C, 0 in C",
+    "overlap": "sup_{t in C} b_B(t) <= kappa",
+    "sharp_sufficient_condition": "3*epsilon + 2*kappa < 1",
+    "boundary_counterexamples": "every rational point of 3*epsilon+2*kappa=1 with 0<=epsilon<=1/3 and 0<=kappa<=1/2; arbitrary abelian ambient and target groups",
+    "higher_order_sufficient_condition": "3*epsilon + r*kappa < 1 for integer r>=2",
+    "robust_sufficient_condition": "3*epsilon + 2*kappa + 3*chi(eta_directional) < 1",
+    "chi": "chi(u)=(1-sqrt(1-2*u))/2; 0<=u<1/2",
+    "global_affine_agreement": "at least 1-chi(chi(eta_directional)) under the global directional-repair hypotheses"
+  },
+  "bohr_selection": {
+    "covering": "|B(Gamma,rho)| <= 4^d |B(Gamma,rho/2)|",
+    "selected_radius": "r0=rho/2+j*rho/(2*m), some integer j in {1,...,m}",
+    "inner_radius": "rho/(2*m)",
+    "overlap_fraction": "at least 4^(-d/m)",
+    "measured_growth_version": "at least R^(-1/m), R=|B(Gamma,rho)|/|B(Gamma,rho/2)|",
+    "seven_eighths_density": "m=4*d gives inner radius rho/(8*d)",
+    "section_10_density": "m=3*d gives inner radius rho/(6*d)"
+  },
+  "fourier": {
+    "normalization": "unnormalized Fourier transform and convolution",
+    "L": "alpha^3*M^4*N^3 = M*|X|^3",
+    "h": "g * g_tilde * g * g_tilde",
+    "xi": "sum_gamma |g_hat(gamma)|^4/(L*N), alpha<=xi<=1",
+    "smoothing_error_bound": "||h(.+t)-h||_infinity <= (2*pi*rho*xi + 2*lambda^2/alpha^2)*L",
+    "threshold_allocation": "lambda^2=sigma*alpha^2/4",
+    "rho": "sigma/(4*pi)",
+    "rank_bound": "d<=4/(sigma*alpha)",
+    "measured_rho": "sigma/(4*pi*xi), provided it is at most 1/2"
+  },
+  "component_conditions": {
+    "eta": "2^-43",
+    "theta": "10*eta^(1/5) < 1/36",
+    "q": "sqrt(theta) < 1/6",
+    "varrho": "0<varrho<=min(alpha/192,alpha^2/32)",
+    "sigma": "0<sigma<=min(eta*alpha^2,eta*varrho^4*alpha/384,eta*varrho*alpha^2/16), sigma<alpha^2/16",
+    "source": "Corrected Gowers component extraction input, stated as Lemma 8.1 in the article"
+  },
+  "parameterized_conclusion": {
+    "zeta": "sigma/(24*pi*d) >= sigma^2*alpha/(96*pi)",
+    "retained_fraction": "|Y|/|X| >= (1-q)*varrho^2*alpha/16",
+    "local_identity": "phi(y)-phi(z)=psi1(r(y)-r(z)) whenever y,z in Y and r(y)-r(z) in B(Gamma,zeta)",
+    "psi1": "Freiman homomorphism of order two on B(Gamma,zeta), psi1(0)=0"
+  },
+  "fixed_original_spectrum": {
+    "density_range": "0<alpha<=1/6",
+    "varrho": "alpha^2/32",
+    "sigma": "2^-72*alpha^9",
+    "lambda": "2^-37*alpha^(11/2)",
+    "rank_bound": "d<=2^74*alpha^-10",
+    "rho": "2^-74*alpha^9/pi",
+    "zeta": "2^-74*alpha^9/(6*pi*d) >= alpha^19/(3*pi*2^149)",
+    "retained_fraction": "at least alpha^5/20000"
+  },
+  "all_density_schedule": {
+    "density_range": "0<alpha<=1",
+    "varrho": "min(alpha/192,alpha^2/32)",
+    "sigma": "2^-43*alpha*varrho^4/384",
+    "optimized_sparse_sigma": "2^-70*alpha^9/3 for alpha<=1/6",
+    "optimized_sparse_lambda_squared": "2^-72*alpha^11/3",
+    "optimized_sparse_rank_bound": "3*2^72*alpha^-10",
+    "optimized_sparse_zeta_lower_bound": "2^-145*alpha^19/(27*pi)",
+    "optimized_sparse_radius_gain_over_fixed_spectrum": "16/9; spectrum threshold is different"
+  },
+  "volume_comparison": {
+    "rank_budget": "k=ceil(2^74*alpha^-10)",
+    "old_radius": "2^(-155*k)*alpha^(18*k)/k",
+    "new_radius_lower_bound": "alpha^19/(3*pi*2^149)",
+    "old_volume_exponent": "E_old=k*(1+155*k+18*k*log2(1/alpha)+log2(k))",
+    "new_volume_exponent": "E_new=k*(150+log2(3*pi)+19*log2(1/alpha))",
+    "interpretation": "|Bohr| >= 2^(-E)*N; at fixed logarithmic density dependence, the explicit rank cost changes from quadratic to linear",
+    "alpha_one_eighth_example": {
+      "k": "2^104",
+      "negative_log2_old_radius": "209*2^104+104",
+      "negative_log2_new_guaranteed_radius": "206+log2(3*pi)",
+      "negative_log2_new_guaranteed_radius_decimal": 209.23645863019348,
+      "old_volume_exponent": "209*(2^104)^2+105*2^104",
+      "new_volume_exponent": "(207+log2(3*pi))*2^104",
+      "retained_fraction_gain": "8"
+    }
+  },
+  "exact_rational_samples": [
+    {
+      "alpha": "1/64",
+      "varrho": "1/131072",
+      "sigma": "1/63802943797675961899382738893456539648",
+      "lambda_squared": "1/1045347431181122959759486794030391945592832",
+      "rank_upper_bound": "16333553612205046246241981156724874149888",
+      "outer_radius_times_pi": "1/255211775190703847597530955573826158592",
+      "inner_radius_lower_bound_times_pi": "1/25011091275260298211491332761876588096306316687778361832522838145709236002226176",
+      "retained_fraction_lower_bound_using_q_less_than_one_sixth": "5/105553116266496",
+      "fixed_spectrum": {
+        "sigma": "1/85070591730234615865843651857942052864",
+        "lambda_squared": "1/1393796574908163946345982392040522594123776",
+        "rank_upper_bound": "21778071482940061661655974875633165533184",
+        "outer_radius_times_pi": "1/340282366920938463463374607431768211456",
+        "inner_radius_lower_bound_times_pi": "1/44464162267129419042651258243336156615655674111605976591151712259038641781735424",
+        "retained_fraction_lower_bound": "1/21474836480000",
+        "optimized_to_fixed_radius_ratio": "16/9"
+      }
+    },
+    {
+      "alpha": "1/16",
+      "varrho": "1/8192",
+      "sigma": "1/243388915243820045087367015432192",
+      "lambda_squared": "1/249230249209671726169463823802564608",
+      "rank_upper_bound": "15576890575604482885591488987660288",
+      "outer_radius_times_pi": "1/973555660975280180349468061728768",
+      "inner_radius_lower_bound_times_pi": "1/90989820001633409307001175918691253523525362426074432123724684591104",
+      "retained_fraction_lower_bound_using_q_less_than_one_sixth": "5/103079215104",
+      "fixed_spectrum": {
+        "sigma": "1/324518553658426726783156020576256",
+        "lambda_squared": "1/332306998946228968225951765070086144",
+        "rank_upper_bound": "20769187434139310514121985316880384",
+        "outer_radius_times_pi": "1/1298074214633706907132624082305024",
+        "inner_radius_lower_bound_times_pi": "1/161759680002903838768002090522117784041822866535243434886621661495296",
+        "retained_fraction_lower_bound": "1/20971520000",
+        "optimized_to_fixed_radius_ratio": "16/9"
+      }
+    },
+    {
+      "alpha": "1/8",
+      "varrho": "1/2048",
+      "sigma": "1/475368975085586025561263702016",
+      "lambda_squared": "1/121694457621910022543683507716096",
+      "rank_upper_bound": "15211807202738752817960438464512",
+      "outer_radius_times_pi": "1/1901475900342344102245054808064",
+      "inner_radius_lower_bound_times_pi": "1/173549308779970949758531905972845561072397923328541626212548608",
+      "retained_fraction_lower_bound_using_q_less_than_one_sixth": "5/3221225472",
+      "fixed_spectrum": {
+        "sigma": "1/633825300114114700748351602688",
+        "lambda_squared": "1/162259276829213363391578010288128",
+        "rank_upper_bound": "20282409603651670423947251286016",
+        "outer_radius_times_pi": "1/2535301200456458802993406410752",
+        "inner_radius_lower_bound_times_pi": "1/308532104497726132904056721729503219684262974806296224377864192",
+        "retained_fraction_lower_bound": "1/655360000",
+        "optimized_to_fixed_radius_ratio": "16/9"
+      }
+    },
+    {
+      "alpha": "1/6",
+      "varrho": "1/1152",
+      "sigma": "1/35692930361212119068612493312",
+      "lambda_squared": "1/5139781972014545145880199036928",
+      "rank_upper_bound": "856630328669090857646699839488",
+      "outer_radius_times_pi": "1/142771721444848476274449973248",
+      "inner_radius_lower_bound_times_pi": "1/733815519995714626143070159022701933195797404825804964102144",
+      "retained_fraction_lower_bound_using_q_less_than_one_sixth": "5/764411904",
+      "fixed_spectrum": {
+        "sigma": "1/47590573814949492091483324416",
+        "lambda_squared": "1/6853042629352726861173598715904",
+        "rank_upper_bound": "1142173771558787810195599785984",
+        "outer_radius_times_pi": "1/190362295259797968365933297664",
+        "inner_radius_lower_bound_times_pi": "1/1304560924436826002032124727151470103459195386356986602848256",
+        "retained_fraction_lower_bound": "1/155520000",
+        "optimized_to_fixed_radius_ratio": "16/9"
+      }
+    },
+    {
+      "alpha": "1/2",
+      "varrho": "1/384",
+      "sigma": "1/146884487083177444726800384",
+      "lambda_squared": "1/2350151793330839115628806144",
+      "rank_upper_bound": "1175075896665419557814403072",
+      "outer_radius_times_pi": "1/587537948332709778907201536",
+      "inner_radius_lower_bound_times_pi": "1/4142410088772119348016450512979062209327831715049111552",
+      "retained_fraction_lower_bound_using_q_less_than_one_sixth": "5/28311552"
+    },
+    {
+      "alpha": "1",
+      "varrho": "1/192",
+      "sigma": "1/4590140221349295147712512",
+      "lambda_squared": "1/18360560885397180590850048",
+      "rank_upper_bound": "18360560885397180590850048",
+      "outer_radius_times_pi": "1/18360560885397180590850048",
+      "inner_radius_lower_bound_times_pi": "1/2022661176158261400398657477040557719398355329613824",
+      "retained_fraction_lower_bound_using_q_less_than_one_sixth": "5/3538944"
+    }
+  ],
+  "scope": "The article proves the stated local refinements and uses explicitly cited component lemmas. No global Szemeredi bound or new Lean certification is claimed."
+}
