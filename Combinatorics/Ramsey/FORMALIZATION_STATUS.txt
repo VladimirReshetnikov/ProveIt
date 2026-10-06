@@ -12,8 +12,8 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 173 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 1,689 public Gowers theorems and found only propext,
+  All 174 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 1,699 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 99 exact
   companion proofs and 21 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -205,6 +205,20 @@ Constructive proof of the migrated Lemma 16.9
   both predicates and Lemma 16.9 are retained without asserted companions.
   The proved uniform wrapper supplies Section16AllBoxLineCovers, but does not
   resolve the documented quantitative gap in the remaining Lemma 16.10.
+
+Two-anchor interpolation for Lemma 16.10
+  Proofs16Interpolation proves multilinear closure under addition, scalar
+  multiplication, and adding an unused final coordinate. It constructs the
+  affine interpolant directly from the two slice values and proves agreement
+  on any affine fibre domain containing the two distinct anchors.
+  Two slice covers with p and q functions give p*q interpolants. With r
+  sampled slices and q functions on each slice, a common base domain and
+  two distinct anchors in each nonempty affine class suffice for r*r*q*q
+  candidates, independently of the number of affine classes.
+  This preserves the correlation between slope and intercept choices; it
+  does not yet prove a stronger MultiplyLinear parameter or a final bound.
+  The common-domain construction, distinct-anchor sampling, and final
+  quantitative comparison in Lemma 16.10 remain outstanding.
 
 Shared Section 16 migration
   Box.IsProper is now a shared definition. MultiplyLinear requires proper
