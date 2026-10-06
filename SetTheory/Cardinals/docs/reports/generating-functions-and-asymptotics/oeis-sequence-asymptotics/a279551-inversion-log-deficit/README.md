@@ -253,15 +253,62 @@ corollaries), **`k`**, **`L`**, **`H`** (Part I's is rounded).
 **Added by the write** (all marked `[write]`, dated 5 October 2026):
 Remark 1.2 — Britt and Beaton's forms (their (4.12)–(4.13), with their fitted
 values) on record, and a proof that no form `C nᵍ μⁿ exp(−b n^β)` with real
-`g, b, β` is an asymptotic equivalent of either sequence; Remark 29.2 — the
+`g, b, β` is an asymptotic equivalent of either sequence (extended after the
+independent check, below, to `exp(−b n^β (log n)^γ)`); Remark 29.2 — the
 parallel with `a202061-ascent-120-deficit`; the three further-questions
 sections; dated supersession and cross-reference notes; the front matter.
 Section 39 also records the residual
-`[𝒟(n) − σ_D S(1 + 7J/(3N))]/(σ_D S/N)` = −2.74, −2.95, −3.02, −3.05
+`[𝒟(n) − σ_D S(1 + 7J/(3N))]/(σ_D S/N)` = −2.74, −2.95, −3.02, −3.04
 (A279551) and −2.37, −2.63, −2.75, −2.81 (A279556) at `n = 40, 100, 200, 400`,
 from a floating-point run of the commitment-tree recursion (placement dossier,
 rerun at the write; at `n = 40` it agrees with an exact big-integer run). This
-is a hint for question 1, **not a fit**.
+is a hint for question 1, **not a fit**. (The value at `n = 400` was first
+printed −3.05, and A279551's `𝒟/(σ_D S)` at `n = 40` was first printed 1.083
+in the article's table, both rounded twice from four decimals; corrected after
+the independent check to −3.04 and 1.082.)
+
+**Independent check of the write (5 October 2026).** An adversarial check
+made by the intake after the write (`80adcb910`) reread the items of the write
+that carry mathematics, citations or numbers — Remark 1.2, its proof and its
+quotation of Britt–Beaton; Remark 29.2 and each statement it makes about
+`a202061-ascent-120-deficit`; "Report 127's Sections 2–4 are Report 126's
+character for character"; the numerical hint under question 1 and the numbers
+of question 5 of Section 39; and the exact counts behind them — and found every
+mathematical claim valid, with no counterexample and no gap in Remark 1.2's
+proof (its case analysis covers every `(b, β)`, including `β = 1/3`). Changes,
+each dated:
+
+- Two entries of Section 39's table were rounded twice: A279551's
+  `𝒟/(σ_D S)` at `n = 40` is 1.082 (true 1.08245…), not 1.083, and its residual
+  at `n = 400` is −3.04 (true −3.04499…), not −3.05. Corrected in the article
+  (a dated note keeps the first values) and above; the qualitative reading is
+  unchanged.
+- Remark 1.2: "only the upper half of the deficit bound is needed for
+  `β = 3/8`" is restricted to Britt–Beaton's case `b > 0` (for `b ≤ 0` the
+  lower half is used); and a paragraph added with the check's proof shows that
+  a factor `(log n)^γ` in the stretched term does not repair the form either
+  (Theorem 13.1 forces `(β, γ, b) = (1/3, 2/3, σ_D)`, and Theorem 29.1's second
+  term is not `O(log n)`).
+- Remark 29.2: the A202061 report's local root is its Part III's row threshold
+  `(½ log r + log log r − C₀/2)/r`, measured in its exponent `Ψ`, which carries a
+  factor `1/α`.
+
+The tests, none of which used the delivered or the write's programs: a
+prefix-pruned brute force from the literal triple conditions for `n ≤ 11`; an
+independent left-to-right transfer program (not the commitment tree), exact for
+`n ≤ 26`; the commitment-tree recursion coded from Part I's Section 2, exact for
+`n ≤ 400` and modulo `2⁶¹ − 1` for `n ≤ 1000` — all equal to each other and to
+the OEIS b-files of A279551 and A279556 (terms 0–1000, fetched 5 October
+2026); the table and question 5's numbers recomputed at 50 digits from the
+exact counts (`J/N = 0.2988`, `(7/3)J/N = 0.6972` at `n = 400`); Britt–Beaton's
+Section 4.2, (4.12)–(4.13) and their fitted values read in the HTML text of
+arXiv:2512.21943v3; Reports 126 and 127 split at their section headings, with
+Sections 2, 3, 4 of equal length (4586, 2708, 2055 characters) and equal
+SHA-256 digests; and every label, scale, constant (`C_⋆ = 2.2326253…`,
+`κ = −1.9401481831…`) and non-citation that Remark 29.2 attributes to the
+A202061 report confirmed in its `article.tex`. The record is an unlabelled
+dated paragraph at the end of Section 39. This was a careful reading with
+numerical tests, not a formal verification.
 
 ## What the report does not claim
 
@@ -441,6 +488,14 @@ underfull-box messages, all in Part III's error-ledger longtable (a build of
 the staged base `report129.tex` has the same three), and one "Infinite glue
 shrinkage found in box being split" message from the notation longtable
 breaking across a page.
+
+Rebuilt on 5 October 2026 after the independent check, in a scratch copy with
+four pdfLaTeX passes: 70 pages (69 before; the record and the added paragraph
+of Remark 1.2 add a page), no errors, no undefined or multiply defined
+references or citations, no duplicate destinations, no overfull boxes, and the
+same three underfull-box messages and the same infinite-glue message; all 272
+labels keep their numbers (`.aux` compared with a build of the committed text;
+page numbers after Remark 1.2 move by at most one).
 
 ## Delivered path → shipped path
 
