@@ -1,4 +1,4 @@
-\section{The result and its scope}\label{sec:results}
+\section{The result and its scope}\label{sqt:sec:results}
 For $n\geq1$, define
 \[
 a_n=\#\left\{(m_{ij})\in\mathbb Z_{\geq0}^{n\times n}:
@@ -6,24 +6,24 @@ a_n=\#\left\{(m_{ij})\in\mathbb Z_{\geq0}^{n\times n}:
  \sum_im_{ij}=n\text{ for all }j\right\}.
 \]
 Rows and columns are labelled. Thus matrices related by a permutation of rows or columns are generally distinct. The first values are $1,3,55,10147,22069251$ for $n=1,\ldots,5$; with $a_0=1$, this is OEIS A110058 \cite{oeis}. Throughout, all logarithms are natural, and asymptotic assertions concern integer $n\to\infty$ unless a real variable is specified. Set
-\begin{equation}\label{eq:leading}
+\begin{equation}\label{sqt:eq:leading}
 G_n=\frac{4^{n^2}}{(4\pi)^{n-1/2}n^{n-1}},\qquad L_n=e^{1/4}G_n.
 \end{equation}
 The leading equivalent $a_n\sim L_n$ is already contained in Canfield--McKay \cite{CM}; it is also covered by the smooth-margin theory of Barvinok--Hartigan \cite{BH}. The purpose here is to justify every fixed algebraic order in this square density-one specialization, evaluate two corrections, and control inversion.
 
-\begin{theorem}\label{thm:main}
+\begin{theorem}\label{sqt:thm:main}
 There are rational numbers $C_j$, $j\geq1$, such that for every fixed integer $K\geq0$,
-\begin{equation}\label{eq:main}
+\begin{equation}\label{sqt:eq:main}
 \log\frac{a_n}{L_n}=\sum_{j=1}^{K}\frac{C_j}{n^j}+O_K(n^{-K-1}).
 \end{equation}
 Each $C_j$ is given by a finite rational combinatorial algorithm. In particular,
-\begin{equation}\label{eq:two}
+\begin{equation}\label{sqt:eq:two}
 C_1=-\frac32,\qquad C_2=\frac{223}{32}.
 \end{equation}
 Consequently,
 \begin{align}
-\log\frac{a_n}{L_n}&=-\frac{3}{2n}+\frac{223}{32n^2}+O(n^{-3}),\label{eq:logtwo}\\
-\frac{a_n}{L_n}&=1-\frac{3}{2n}+\frac{259}{32n^2}+O(n^{-3}).\label{eq:relativetwo}
+\log\frac{a_n}{L_n}&=-\frac{3}{2n}+\frac{223}{32n^2}+O(n^{-3}),\label{sqt:eq:logtwo}\\
+\frac{a_n}{L_n}&=1-\frac{3}{2n}+\frac{259}{32n^2}+O(n^{-3}).\label{sqt:eq:relativetwo}
 \end{align}
 \end{theorem}
 
@@ -32,17 +32,205 @@ The effective assertion is about individual coefficients. It does not assert exp
 The argument has three distinct parts. First, an exact Fourier integral is localized by the integer-table theorem of Canfield--McKay. A Gaussian gauge penalty and a linear whitening map then convert the localized problem into an expectation on a product of truncated Gaussian intervals. Second, Isaev's theorem for bounded \emph{complex} functions \cite{Isaev} gives a sufficiently accurate finite cumulant expansion. Third, connected Wick contractions provide exact Laurent polynomials and a degree bound that leaves only finitely many degree multisets at any required order. The complex cumulant method is imported; the checks needed to apply it to these geometric tables are supplied in full.
 
 For later use, define the inverse counting function
-\begin{equation}\label{eq:inversecount}
+\begin{equation}\label{sqt:eq:inversecount}
 \nu(Y)=\min\{n\geq1:a_n\geq Y\},\qquad Y>1,
 \end{equation}
 and, for fixed $K$, the real approximation
-\begin{equation}\label{eq:FK}
+\begin{equation}\label{sqt:eq:FK}
 F_K(x)=x^2\log4-(x-\tfrac12)\log(4\pi)-(x-1)\log x
        +\frac14+\sum_{j=1}^{K}C_jx^{-j}.
 \end{equation}
-There is a unique sufficiently large solution $t_K=t_K(Y)$ of $F_K(t_K)=\log Y$. We prove in Section~\ref{sec:inverse} that some $D_K>0$ gives, for all sufficiently large $Y$,
-\begin{equation}\label{eq:inverseintro}
+There is a unique sufficiently large solution $t_K=t_K(Y)$ of $F_K(t_K)=\log Y$. We prove in Section~\ref{sqt:sec:inverse} that some $D_K>0$ gives, for all sufficiently large $Y$,
+\begin{equation}\label{sqt:eq:inverseintro}
 \ceil{t_K-D_Kt_K^{-K-2}}\leq\nu(Y)\leq
 \ceil{t_K+D_Kt_K^{-K-2}}.
 \end{equation}
 The two ceilings matter near an integer threshold. An unqualified rule $\nu(Y)=\lceil t_K\rceil$ is not a consequence of the theorem.
+
+\begin{remark}[{[write]} The OEIS entry, 6~October 2026]\label{sqt:rem:oeis}
+The live entry A110058 \cite{oeis} (revision~\#30 of 30~May 2026, read
+6~October 2026) is named ``Number of nonnegative integer matrices of order n
+for which all row and column sums equal n.'' Its data run through $a_{13}$,
+its one link is to the Combinatorica version of \cite{CM}, and its only
+formula, the only asymptotic statement in the entry, reads verbatim
+\begin{center}\small
+\texttt{log a(n) = 2(log 2)*n\^{}2 - n*(log n) - n*(log 4*Pi) + (log n) + O(1). - \_Igor Pak\_, May 15 2019}
+\end{center}
+(with \texttt{log 4*Pi} read as $\log(4\pi)$). Since
+$\log L_n=n^2\log4-(n-\tfrac12)\log(4\pi)-(n-1)\log n+\tfrac14$, Pak's main
+terms are exactly $\log L_n-\tfrac12\log(4\pi)-\tfrac14$. So the formula is
+consistent with $a_n\sim L_n$, which is Canfield--McKay's, and the latter
+identifies Pak's bounded term as $\tfrac12\log(4\pi)+\tfrac14+o(1)
+=1.51551\ldots+o(1)$; Theorem~\ref{sqt:thm:main} expands the $o(1)$ to every
+fixed order. Nothing in the entry is corrected, and nothing was submitted to
+the OEIS. The ``b-file'' cited by the source is synthesized by the OEIS from
+the entry's data (its header reads ``A110058 (b-file synthesized from
+sequence entry)'', $0\le n\le13$); the counts at $n=6,8,10,13$ in
+Table~\ref{sqt:tab:diagnostics} are taken from it.
+\end{remark}
+
+\subsection{Provenance, sources and reading conventions}\label{sqt:sec:provenance}
+\begin{writenote}[Added 6 October 2026, batch~108]
+\emph{Provenance.} This report is Report~236 of the session bundle that
+ProveIt's \file{docs/incoming} intake processed as batch~108: the archive
+\file{Report236.zip} (669{,}911 bytes, SHA-256
+\file{1b73cd6bd55d...5b132059}, 35 files in a wrapper directory
+\file{Report236/}), arrival commit \file{60f54ea06}, placed in
+\file{602e5bd0f}. The text is the delivered \file{article.tex} with its
+twelve files \file{sections/*.tex} (980 lines in all, dated 5~October 2026),
+shipped under the same names. The delivered 24-page PDF and the checksum
+manifest \file{MANIFEST.sha256} (34 entries, verified at placement) are not
+shipped, and the delivered README is replaced by the report README; all
+three are retrievable from the arrival commit. The package records no
+ProveIt commit and cites nothing in the repository. The phrase ``private
+review'' occurs in it only in sentences saying that such material is not
+included (Section~\ref{sqt:sec:computation}, \file{SOURCES.md} and the
+delivered README); the PDF author field is ``Report 236''. It is a
+single-source report, so no merge choice was made. The write prefixed the
+97 delivered labels with \file{sqt:} and updated the 87 references to them;
+it added this subsection, the notes marked [write],
+Remarks~\ref{sqt:rem:oeis}, \ref{sqt:rem:uniformity},
+\ref{sqt:rem:cmregime} and~\ref{sqt:rem:transseries},
+Lemma~\ref{sqt:lem:sequential} and Section~\ref{sqt:sec:further}, and it
+narrowed three sentences on the correction-factor conjecture (the abstract,
+the title of Section~\ref{sqt:sec:conjecture} and the sentence after
+Corollary~\ref{sqt:cor:delta}; first wordings kept in the notes). No
+theorem, proof or number of the source was changed: the added statements are
+the last of their sections, the added section comes after the last numbered
+one, and the added displays are unnumbered, so every theorem, section,
+table and equation keeps its delivered number.
+
+\emph{The sources, as the write read them} (6~October 2026).
+\begin{itemize}\raggedright
+\item OEIS A110058, revision~\#30, and its synthesized b-file
+ (Remark~\ref{sqt:rem:oeis}).
+\item Canfield--McKay \cite{CM}, arXiv:math/0703600v2: pages 1--6 and
+ 15--20 (Theorem~1 with condition~(1.1), Conjecture~1 with~(1.4) and their
+ record of proved cases, the convention on asymptotic constants, the
+ integral~(2.2)--(2.3), the region~(3.1), Theorem~3, Lemmas~3 and~4 and
+ the proof of Theorem~3). Checked against the source: at $m=n$, $s=t=\lambda
+ n$ their integrand $F$ of~(2.3) is $\mathcal F_\lambda$ of
+ Section~\ref{sqt:sec:density}, since
+ $e^{-\ii s\sum_j\theta_j-\ii t\sum_k\phi_k}=\prod_{j,k}e^{-\ii\lambda(\theta_j+\phi_k)}$;
+ their $I_0$ of~(4.1) is $I_{0,\lambda}$ of~\eqref{sqt:eq:densityminor}
+ (and $I_0$ of~\eqref{sqt:eq:minor} at $\lambda=1$); their region~(3.1) is
+ the region described in Sections~\ref{sqt:sec:imports}
+ and~\ref{sqt:sec:density}, with their $\varepsilon$ equal to the source's
+ $\eta$; the left side of~(1.1) is $3$ at $\lambda=1$ and
+ $\tfrac23(4+1/u)$ in general; and their leading formula~(1.3) at $m=n$ is
+ $\mathcal G(n,\lambda)e^{B_0(u)}$, so $B_0$ and $\mathcal G$ (and $L_n$ at
+ $\lambda=1$) are theirs. Their Theorem~3 gives $O(e^{-n^\varepsilon})I_0$;
+ Proposition~\ref{sqt:prop:minor} states the weaker $O(e^{-cn^\eta})I_0$.
+ Not read: their Sections~3 and~5 (the central evaluation and the proof of
+ Theorem~1), which the source does not use.
+\item Isaev \cite{Isaev}, arXiv:2508.16952v2 (HTML version): the statement
+ of Theorem~1.2 and the definitions of $\Delta_V$, $\overline\Delta_V$ and
+ $S_k$. Proposition~\ref{sqt:prop:complex} is that theorem with $n=N$ and
+ $S_k$ replaced by the larger $D_k$, since
+ $\overline\Delta_V(f,X)\le\Delta_V(f)$.
+\item The transseries volume
+ \path{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex}:
+ \file{p0:def:core}, \file{p0:thm:lambert-core},
+ \file{p0:prop:factorial-core}, \file{p0:thm:core-reversion},
+ \file{p0:def:three-inverses}, \file{p0:thm:staircase} and
+ \file{plt:thm:lw-template}, read for Remark~\ref{sqt:rem:transseries}.
+\item Not read by the write: Barvinok--Hartigan \cite{BH} (beyond its arXiv
+ title page), Greenhill--McKay \cite{GM}, Isaev--McKay \cite{IM,IM2018},
+ Isaev--McKay--Zhang \cite{IMZ}, Zipunnikov--Booth--Yoshida \cite{ZBY}, Aw
+ \cite{Aw} and Isaev--Makai--McKay \cite{IMM}. What is said about them
+ (Barvinok--Hartigan's Theorem~1.3 and the comparison~\eqref{sqt:eq:BHcompare},
+ the hypotheses of Isaev--McKay, Greenhill--McKay's Corollaries~4.1
+ and~4.2) is the source's. Canfield--McKay's own record (their case~(b),
+ quoted in Remark~\ref{sqt:rem:cmregime}) independently states that the
+ conjecture holds eventually in Greenhill--McKay's sparse range.
+\end{itemize}
+
+\emph{What was checked at intake.} The batch-108 dossier read the
+manuscript, checked the conjecture and condition~(1.1) against the
+Canfield--McKay text, and reran the package on a copy (Windows, Python
+3.14.4, SymPy 1.14.0): \file{build.py --verify-only} verified 34 files;
+\file{connected_wick.py}, \file{verify_coefficients.py} and
+\file{count_tables.py} reproduced the delivered receipts after line-ending
+conversion; \file{diagnostics.py} reproduced
+Table~\ref{sqt:tab:diagnostics}; \file{guard_tests.py} stops on Windows
+at its own path guard; the PDF and ZIP rebuilds were not run. It
+computed $\Delta(n,n;n,n)$ from exact counts and found $1.070,\ldots,0.565$
+for $n=4,5,6,8,10,13$, and Richardson extrapolation of $D_1,D_2$ over
+$6\le n\le13$ gave about $-1.47$ and $6.5$ against $-3/2$ and $223/32$. The
+write rechecked by hand the coefficient identity
+$P_2(1/u)-g_2(u)-\tfrac56=\tfrac{67}{12}+\tfrac5{6u}$, the expansion of
+$(n-1)\log(1+1/n)$, the two normalization identities of
+Section~\ref{sqt:sec:density}, the value $3$ of condition~(1.1) and the
+identifications listed above; it computed $\Delta(n,n;n,n)$ for all
+$1\le n\le13$ (Remark~\ref{sqt:rem:cmregime}) and checked in SymPy that the
+four reversion coefficients of~\eqref{sqt:eq:reversion} solve the
+fixed-point equation of Remark~\ref{sqt:rem:transseries}. Finite
+computations are observations, not certificates.
+
+\emph{Relation to the repository.} Before batch~108 no file of the
+repository mentioned A110058 or Canfield and McKay's conjecture. No
+statement of this report is formalized in Lean or Rocq, and its place in the
+collection confers no formal status. The neighbouring reports are listed in
+the report README; \file{a380592-tied-football-seasons} applies the same
+Isaev theorem to another integral and receives a reciprocal note.
+\end{writenote}
+\begin{writenote}[What is not claimed, collected from the source]
+No numerical value of a remainder constant or a starting index is asserted:
+Theorem~\ref{sqt:thm:main} is a Poincar\'e expansion at each fixed order $K$,
+with no convergence of the series, no uniformity in growing $K$, no optimal
+truncation and no exponentially small terms; no nonperturbative sectors,
+resurgence or Stokes behaviour are established. The leading equivalent is
+Canfield--McKay's and is also within Barvinok--Hartigan's theory; Isaev's
+complex cumulant theorem and the connected-Wick toolkit are imported, and
+no new general saddle-point or cumulant method is claimed. The literature
+review was bounded: absence of the coefficient pair from the sources
+inspected ``is not a worldwide priority certificate''; Greenhill--McKay's
+sparse result is the antecedent of the first coefficient, and
+equation~\eqref{sqt:eq:BHcompare} is a specialization of Barvinok--Hartigan's
+formula, not a correction. The inverse constants are existential:
+$\lceil t_K\rceil$ is not a valid rule, computing a root does not compute
+$B_K$, and the Newton statement is about exact-real iteration. The density
+extension is not uniform as the density tends to $0$ or~$\infty$; at a fixed
+irrational density there are no exact margins. The corollary on the
+correction factor has no explicit starting index and does not settle finite
+sizes, nonsquare tables or degenerating densities. No monotonicity of the
+diagnostics or sign of omitted terms is claimed. The package's computations
+verify finite identities and small counts in a fixed validated range (cost at
+most three); a receipt certifies no remainder, localization, finite-size
+inequality, inverse ceiling or priority; byte-identical PDF reproduction is
+toolchain-specific; the manifest is ``not a digital signature''; and the
+reproducibility controls are ``not a sandbox''. The write adds: the
+uniformity in density of the imported localization is established in this
+text only in the weaker form of Lemma~\ref{sqt:lem:sequential}
+(Question~\ref{sqt:q:uniform}).
+\end{writenote}
+\medskip\noindent\begin{minipage}{\textwidth}
+\emph{Reading conventions} (letters the manuscript reuses, with the tempting
+false readings; no symbol of the source was renamed; symbols of the
+transseries volume carry the subscript ``vol'' in
+Remark~\ref{sqt:rem:transseries}).\par
+\smallskip
+\begingroup\small\renewcommand{\arraystretch}{1.1}
+\noindent\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.85in}>{\raggedright\arraybackslash}p{3.15in}>{\raggedright\arraybackslash}p{2.15in}@{}}
+\toprule
+Symbol & Meaning here (where) & Not to be read as\\
+\midrule
+$\Delta$ & Isaev's mixed difference $\Delta_V(f)$ (Section~\ref{sqt:sec:imports}); Canfield--McKay's correction $\Delta(m,s;n,t)$ (Section~\ref{sqt:sec:conjecture}) & each other\\
+$D_k$, $D_K$, $D_1$, $D_2$ & Isaev's sums $D_k(f)$; the constant of Theorem~\ref{sqt:thm:inverse}; the diagnostics of Section~\ref{sqt:sec:computation} & each other\\
+$G_n$, $G_{\rm Good}$, $\mathcal G$ & Gaussian prefactor~\eqref{sqt:eq:leading}; Canfield--McKay's (Good's) binomial estimate; density prefactor~\eqref{sqt:eq:densityG} & each other\\
+$A$, $A_\lambda$ & augmented matrix~\eqref{sqt:eq:augmented}; the scalar $u/2$, Canfield--McKay's $A$ & each other\\
+$T$, $T(n,s)$ & whitening map~\eqref{sqt:eq:whitening}; the table count of Section~\ref{sqt:sec:density} & each other\\
+$h$ & local interaction~\eqref{sqt:eq:h}; the gauge coordinate $x_{2n}$ (Section~\ref{sqt:sec:gauge}) & $h_{\rm vol}$ of \file{p0:thm:core-reversion}\\
+$m$, $L$ & cumulant order and Taylor cutoff~\eqref{sqt:eq:cutofforders} & Canfield--McKay's row count $m$ ($=n$ here); $L_n$ of~\eqref{sqt:eq:leading}\\
+$\varepsilon$, $\eta$ & cube exponent; localization exponent $\eta=\varepsilon/2$ & Canfield--McKay's $\varepsilon$, which is the source's $\eta$\\
+$a$, $b$ & in Section~\ref{sqt:sec:imports}: the constants of condition~(1.1); in Section~\ref{sqt:sec:inverse}: $\log4$, $\log(4\pi)$ & each other; $a_n$\\
+$r$ & number of cumulant arguments; $\sqrt{\log Y/a}$ (Section~\ref{sqt:sec:inverse}); exceptional count (Section~\ref{sqt:sec:density}) & each other\\
+$u$ & $\lambda(1+\lambda)$; the gauge parameter in the proof of Lemma~\ref{sqt:lem:transfer} & $u_{\rm vol}$ of \file{p0:thm:core-reversion}\\
+$d,e,f,g$ & reversion coefficients~\eqref{sqt:eq:reversiond}--\eqref{sqt:eq:reversiong} & degrees $d_a$; $f=R\circ T$\\
+$P_j$, $\Part$ & density polynomials; set partitions & each other; $P_a(A)$ power sums\\
+$\nu(Y)$ & $\min\{n\ge1:a_n\ge Y\}$ & it \emph{is} the staircase $N_\ast$ of \file{p0:def:three-inverses} (Remark~\ref{sqt:rem:transseries})\\
+$\kappa$ & cumulants $\kappa_r$; geometric cumulants $\kappa_d(\lambda)$ & the $\kappa$ of \file{p0:prop:factorial-core}\\
+\bottomrule
+\end{tabular}
+\endgroup
+\end{minipage}\par

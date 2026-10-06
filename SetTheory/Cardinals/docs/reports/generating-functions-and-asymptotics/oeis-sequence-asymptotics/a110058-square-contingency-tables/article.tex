@@ -16,6 +16,13 @@
 \newtheorem{theorem}{Theorem}[section]\newtheorem{lemma}[theorem]{Lemma}\newtheorem{proposition}[theorem]{Proposition}\newtheorem{corollary}[theorem]{Corollary}
 \theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
 \theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+% Added by the ProveIt write phase (batch 108, 6 October 2026): dated notes
+% marked [write] and a macro for file, label and declaration names.
+\newcommand{\file}[1]{\nolinkurl{#1}}
+\expandafter\def\expandafter\UrlBreaks\expandafter{\UrlBreaks\do\-\do\_\do\.}
+\newenvironment{writenote}[1][]{\par\smallskip\begingroup\small
+ \noindent\textbf{[write]}\if\relax\detokenize{#1}\relax\else~\textbf{#1.}\fi\ }%
+ {\par\endgroup\smallskip}
 \newcommand{\E}{\mathbb E}\newcommand{\PP}{\mathbb P}\newcommand{\R}{\mathbb R}\newcommand{\N}{\mathbb N}\newcommand{\ii}{\mathrm i}\newcommand{\1}{\mathbf 1}\newcommand{\Cov}{\operatorname{Cov}}\newcommand{\Var}{\operatorname{Var}}\newcommand{\eps}{\varepsilon}\newcommand{\cost}{\operatorname{cost}}\newcommand{\Part}{\mathcal P}\newcommand{\dd}{\mathrm d}\newcommand{\ceil}[1]{\left\lceil #1\right\rceil}
 \begin{document}
 \begin{center}
@@ -29,8 +36,48 @@ Let $a_n$ count labelled $n\times n$ nonnegative integer matrices with every row
 \[
 L_n=\frac{e^{1/4}4^{n^2}}{(4\pi)^{n-1/2}n^{n-1}},
 \]
-we prove that, for every fixed $K\geq0$, the logarithm $\log(a_n/L_n)$ has a rational inverse-power expansion through $n^{-K}$ with error $O_K(n^{-K-1})$. A finite connected-Wick algorithm determines every coefficient; the first two are $-3/2$ and $223/32$. The proof combines Canfield--McKay's absolute localization theorem for integer tables with Isaev's complex cumulant theorem. We give the gauge normalization, product cutoff, all-order variation bounds, and connected-diagram power counting needed for this application. An independent formal Gaussian factorization verifies all eighteen cumulants entering the first two corrections. A compact-positive-density extension has coefficient polynomials in $1/[\lambda(1+\lambda)]$ and proves an eventual square case of the Canfield--McKay correction-factor conjecture. The expansion also gives a two-ceiling enclosure for the inverse counting function, with real-index uncertainty $O(t^{-4})$ at two corrections. Constants in the asymptotic remainder are not made numerically explicit. The accompanying exact computations verify identities and small counts; they are not finite-size error certificates.
+we prove that, for every fixed $K\geq0$, the logarithm $\log(a_n/L_n)$ has a rational inverse-power expansion through $n^{-K}$ with error $O_K(n^{-K-1})$. A finite connected-Wick algorithm determines every coefficient; the first two are $-3/2$ and $223/32$. The proof combines Canfield--McKay's absolute localization theorem for integer tables with Isaev's complex cumulant theorem. We give the gauge normalization, product cutoff, all-order variation bounds, and connected-diagram power counting needed for this application. An independent formal Gaussian factorization verifies all eighteen cumulants entering the first two corrections. A compact-positive-density extension has coefficient polynomials in $1/[\lambda(1+\lambda)]$ and proves the inequalities $0<\Delta<2$ of the Canfield--McKay correction-factor conjecture in one regime only: square tables whose density $s/n$ lies in a fixed compact subset of $(0,\infty)$, for all $n$ beyond a threshold that is not made explicit. The conjecture itself, stated for all sizes, shapes and densities, is not settled. The expansion also gives a two-ceiling enclosure for the inverse counting function, with real-index uncertainty $O(t^{-4})$ at two corrections. Constants in the asymptotic remainder are not made numerically explicit. The accompanying exact computations verify identities and small counts; they are not finite-size error certificates.
 \end{abstract}
+
+\begin{writenote}[Status and trust boundary, added 6 October 2026, batch~108]
+This is bundle Report~236 of an external AI-assisted research session, filed
+in ProveIt as the single-source research report
+\file{a110058-square-contingency-tables} (provenance, the sources as the
+write read them, relation to the repository, reading conventions and the
+collected non-claims in Section~\ref{sqt:sec:provenance}). It is unrefereed
+and not formalized; its author line and PDF author field read ``Report 236''.
+\emph{Narrowed wording.} The abstract's sentence on the correction-factor
+conjecture read, as delivered, ``A compact-positive-density extension has
+coefficient polynomials in $1/[\lambda(1+\lambda)]$ and proves an eventual
+square case of the Canfield--McKay correction-factor conjecture.'' Canfield
+and McKay conjecture $0<\Delta<2$ for \emph{every} admissible 4-tuple;
+Corollary~\ref{sqt:cor:delta} proves it for the square tuples
+$(n,s;n,s)$ with $s/n$ in a fixed compact $I\subset(0,\infty)$ and
+$n\ge n_0(I)$, with $n_0(I)$ not explicit, so it settles one regime, not the
+conjecture, and verifies it at no explicitly named tuple
+(Remark~\ref{sqt:rem:cmregime}, which quotes both statements). The
+sentence was narrowed accordingly, as were the title of
+Section~\ref{sqt:sec:conjecture} and one sentence after the corollary (first
+wordings kept there). \emph{What rests on what.} The analytic proof imports
+two theorems, cited and not reproved: Canfield--McKay's absolute
+localization (Theorem~3 of arXiv:math/0703600v2) and Isaev's complex
+cumulant theorem (Theorem~1.2 of arXiv:2508.16952v2); the write read both
+statements and checks the specializations in
+Section~\ref{sqt:sec:provenance}. For the density extension
+(Theorem~\ref{sqt:thm:density}) the source asserts that Canfield--McKay's
+localization holds \emph{uniformly} for $\lambda$ in a compact interval and
+supports this by its own reading of their proof; that is a trust boundary of
+the source. The write adds Lemma~\ref{sqt:lem:sequential}, which derives the
+uniform superpolynomial smallness that Theorem~\ref{sqt:thm:density} uses
+from the \emph{statement} of their Theorem~3 alone, and reports what the
+write found in their proof (Remark~\ref{sqt:rem:uniformity},
+Question~\ref{sqt:q:uniform}). Coefficient values are checked by exact finite
+computations in the package; no proof uses a floating-point computation. The
+write also adds Remark~\ref{sqt:rem:oeis} (the OEIS entry, whose only
+asymptotic formula is Pak's log-scale one),
+Remark~\ref{sqt:rem:transseries} (Section~\ref{sqt:sec:inverse} against the
+transseries volume) and Section~\ref{sqt:sec:further} (open questions).
+\end{writenote}
 \setcounter{tocdepth}{1}
 \begingroup
 \small\setlength{\parskip}{0pt}
