@@ -4,7 +4,7 @@ Scope
   The goal remains open. No improvement to the final Szemeredi bound is claimed.
   The source catalogue contains all 120 unique numbered theorem, lemma,
   proposition, and corollary headings in sz-thm-gowers-proof.tex.
-  There are 99 checked exact companion proofs and 21 open statements.
+  There are 100 checked exact companion proofs and 20 open statements.
   The JSON ledger records every statement, its TeX heading lines, its Lean
   definition, and related results. Conditional implications, restricted cases,
   and counterexamples are not counted as proofs of the full statement.
@@ -12,10 +12,10 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 196 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 1,805 public Gowers theorems and found only propext,
-  Classical.choice, and Quot.sound. The audit independently counted 99 exact
-  companion proofs and 21 open catalogue statements from Lean's theorem types.
+  All 201 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 1,844 public Gowers theorems and found only propext,
+  Classical.choice, and Quot.sound. The audit independently counted 100 exact
+  companion proofs and 20 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
   errors remain in this build. The JSON ledger reproduces exactly and has no
   unmatched numbered TeX headings or unmatched catalogue entries.
@@ -318,18 +318,49 @@ Shared Section 16 migration
   engine. Lemma 16.8 and downward closure use the repaired shared predicate.
   The existing base-case construction now closes the catalogue's Lemma 16.3.
 
-New Section 13 row extraction
-  Proofs13RowCoefficients proves that translating inputs preserves Freiman
-  relations of every order. Over a field, two distinct affine evaluations
-  recover the Freiman relations of both row coefficients. The Section 13
-  application explicitly assumes prime modulus and B contained in S.A;
-  neither assumption is supplied by the current lemma_13_8 antecedent.
-  Proofs13RowSelection proves the cubic row-moment identity, the exact
-  quadratic diagonal contribution, and selection of distinct columns from
-  a lower bound on their difference. A mixed density bound supplies the
-  cubic moment, while a separate theorem bounds the quadratic contribution.
-  Connecting these generic counts to Stage138Data and repairing the missing
-  domain hypotheses remain open; no new numbered completion is claimed.
+Completed Section 13 coefficient extraction
+  Proofs13RowCoefficients proves translation of Freiman relations and recovery
+  of both affine coefficients from two distinct column evaluations over a field.
+  Proofs13RowSelection proves the cubic row-moment identity, the exact quadratic
+  diagonal contribution, and selection of distinct columns from their difference.
+  A mixed density estimate supplies the cubic moment; another theorem bounds
+  the diagonal contribution. Proofs13CommonRows identifies this mass with the
+  cardinality of the actual retained subset and chooses affine coefficients
+  without assuming uniqueness on rows with fewer than two points.
+  Proofs13CoefficientExtraction proves the migrated Lemma 13.8. Its input
+  densities 2^-43*alpha^224 and 2^-48*alpha^256 give cubic coefficient
+  2^-134*alpha^704; the stated width condition then yields output density
+  2^-135*alpha^704. The zero-length Q case is handled separately.
+  The generic theorem keeps the stronger lower bound
+    m * (delta^2 * beta * |S| - 1)
+  whenever it is positive, before weakening to the displayed half-size bound.
+  This auxiliary improvement does not improve the final Szemeredi estimate.
+  Fidelity repair: Stage137Data now records B contained in the original domain,
+  as supplied by its construction from vertical edges. Lemma 13.8 explicitly
+  assumes prime modulus, the paper's standing field hypothesis. The earlier
+  IsStage137DataWithoutDomain, lemma_13_7_without_domain, and
+  lemma_13_8_without_domain_assumptions encodings are preserved and unproved.
+  Proofs13RowLinearization constructs the selected upper-endpoint set and
+  derives its domain containment from the vertical-edge condition. Adding an
+  affine base row and affine vertical difference gives each affine upper row;
+  the slopes add (the printed calculation displays a minus sign at this step).
+  The quantitative progression selection in Stage 13.7 remains open; these
+  structural lemmas and the coefficient extraction do not discharge it.
+
+Section 13.7 selection and remaining partition input
+  Proofs13BaseRowSelection proves the exact sum over base heights, selects one
+  base row preserving both Stage 13.6 edge-count bounds, and derives its original
+  domain density. Proofs13PartitionSelection proves that a column partition
+  partitions the selected upper endpoints and uses weighted averaging to retain
+  both density bounds on one cell, without assuming equal cell sizes.
+  The full Stage 13.7 conclusion is now proved conditional only on a suitably
+  long affine partition of each dense base row. The original-domain Freiman
+  property is inherited by restriction. Stage 13.6 forces the ambient progression
+  to be nonempty; the case of empty critical heights is discharged separately.
+  Lemma 13.7 remains open: the existing Corollary 7.11 has an explicit scale
+  threshold and integer target lengths at most the real-power bound. Its
+  threshold and rounding must be resolved before using it for the unrounded
+  lower length bound demanded by Stage 13.7.
 
 New Section 18 infrastructure
   Proofs18IntervalTransfer:
@@ -363,8 +394,9 @@ Next substantial obligations
   1. Resolve Corollary 5.8's missing common-target scale assumptions. Its
      scale-qualified repair is proved, but does not establish the unrepaired
      catalogue statement.
-  2. Complete the bilinear extraction stages 13.5--13.9. Corollary 13.10 requires compatibility
-     and grid inputs; do not silently discharge them by citing the paper.
+  2. Complete extraction stages 13.5--13.7 and 13.9; repaired Lemma 13.8 is proved.
+     Corollary 13.10 requires compatibility and grid inputs; do not silently
+     discharge them by citing the paper.
   3. Complete the higher-dimensional Section 16 induction using the migrated
      proper-box predicates, propagate properness through the remaining box
      statements, and resolve the documented Corollary 16.11 bound.

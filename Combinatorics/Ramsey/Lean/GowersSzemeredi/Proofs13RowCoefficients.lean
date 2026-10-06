@@ -7,7 +7,8 @@ Two distinct columns determine both affine row coefficients over a field.
 Their Freiman relations therefore determine the corresponding relations for
 the coefficient pair. The application to the paper states explicitly that
 the selected points belong to the original domain of the separately Freiman
-map. `IsStage137Data` alone does not record this containment.
+map. The repaired `IsStage137Data` now records this containment; the earlier
+`IsStage137DataWithoutDomain` encoding is retained for comparison.
 -/
 
 set_option autoImplicit false

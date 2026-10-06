@@ -474,8 +474,9 @@ structure Stage137Data (N : Nat) where
   S : ModAP N
   B : Finset (Pair N)
 
-/-- The complete conclusion of Lemma 13.7. -/
-def IsStage137Data {N : Nat} [NeZero N] (S0 : Section13Context N)
+/-- The earlier Stage 13.7 encoding, which omitted containment in the
+original domain of `phi`. Retained explicitly for comparison. -/
+def IsStage137DataWithoutDomain {N : Nat} [NeZero N] (S0 : Section13Context N)
     (D : Stage134Data N) (E : Stage135Data N) (F : Stage136Data N)
     (G : Stage137Data N) : Prop :=
   G.S.step != 0 ∧ G.S.IsProper ∧ G.S.carrier ⊆ F.R.carrier ∧
@@ -489,6 +490,21 @@ def IsStage137Data {N : Nat} [NeZero N] (S0 : Section13Context N)
   ∀ h, h ∈ criticalHeights S0 D E →
     LinearOn (G.S.carrier.filter fun x => (x, G.y + h) ∈ G.B)
       (fun x => S0.phi (x, G.y + h))
+
+/-- The complete Stage 13.7 data, including the domain containment supplied
+by the printed construction from edges in `A`. This condition is essential
+when the following lemma uses the vertical Freiman relations of `phi`. -/
+def IsStage137Data {N : Nat} [NeZero N] (S0 : Section13Context N)
+    (D : Stage134Data N) (E : Stage135Data N) (F : Stage136Data N)
+    (G : Stage137Data N) : Prop :=
+  IsStage137DataWithoutDomain S0 D E F G ∧ G.B ⊆ S0.A
+
+/-- Earlier Lemma 13.7 encoding without original-domain containment. -/
+def lemma_13_7_without_domain : Prop :=
+  ∀ (N : Nat) [NeZero N] (S : Section13Context N) (D : Stage134Data N)
+      (E : Stage135Data N) (F : Stage136Data N),
+    IsStage136Data S D E F →
+    ∃ G : Stage137Data N, IsStage137DataWithoutDomain S D E F G
 
 /-- **Lemma 13.7.** After propagating the corrected Lemma 13.6 density, the
 progression-size exponent is `2^-100 * alpha^448`, all in the exponent of
@@ -520,9 +536,20 @@ def IsStage138Data {N : Nat} [NeZero N] (S : Section13Context N)
   (2 : Real) ^ (-(135 : Int)) * S.alpha ^ 704 * E.Q.length * G.S.length ≤
     H.C.card
 
-/-- **Lemma 13.8.** -/
-def lemma_13_8 : Prop :=
+/-- Earlier Lemma 13.8 encoding without primality or domain containment.
+The proved catalogue statement below restores both standing hypotheses. -/
+def lemma_13_8_without_domain_assumptions : Prop :=
   ∀ (N : Nat) [NeZero N] (S : Section13Context N) (D : Stage134Data N)
+      (E : Stage135Data N) (F : Stage136Data N) (G : Stage137Data N),
+    IsStage137DataWithoutDomain S D E F G →
+    (2 : Real) ^ 135 * S.alpha ^ (-(704 : Int)) ≤ G.S.length →
+    ∃ H : Stage138Data N, IsStage138Data S D E G H
+
+/-- **Lemma 13.8.** Prime modulus and original-domain containment (now in
+`IsStage137Data`) are the standing hypotheses used by its printed proof.
+The constants propagate the corrected upstream density estimates. -/
+def lemma_13_8 : Prop :=
+  ∀ (N : Nat) [Fact N.Prime] (S : Section13Context N) (D : Stage134Data N)
       (E : Stage135Data N) (F : Stage136Data N) (G : Stage137Data N),
     IsStage137Data S D E F G →
     (2 : Real) ^ 135 * S.alpha ^ (-(704 : Int)) ≤ G.S.length →
