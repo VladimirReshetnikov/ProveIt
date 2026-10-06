@@ -1,0 +1,19 @@
+.PHONY: all pdf verify checks regenerate clean
+
+all: pdf verify
+
+pdf:
+	latexmk -pdf -interaction=nonstopmode -halt-on-error gowers_refinements.tex
+
+verify:
+	python code/carry_certificates.py verify certificates/carry.json
+	python code/check_certificate_rejection.py
+
+checks:
+	python code/check_refinements.py
+
+regenerate:
+	python code/carry_certificates.py generate --max-k 4 --out certificates/carry.json
+
+clean:
+	latexmk -c gowers_refinements.tex

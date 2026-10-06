@@ -1,0 +1,2987 @@
+% Complete manuscript source. See README.txt for build instructions.
+% Prepared on 2026-10-06. No new Lean kernel verification is claimed.
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=0.95in]{geometry}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx,booktabs,tabularx,array}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{bookmark}
+\definecolor{ink}{HTML}{17365D}
+\definecolor{teal}{HTML}{126B7B}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=ink,
+  citecolor=teal,
+  urlcolor=teal,
+  pdftitle={Sharper Local Bounds in Gowers's Proof of Szemeredi's Theorem},
+  pdfauthor={Prepared for Vladimir Reshetnikov},
+  pdfsubject={Explicit local refinements, proofs, sharpness examples, and research questions},
+  pdfkeywords={Szemeredi theorem, Gowers norms, approximate homomorphisms, additive energy, floor patterns}
+}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\E}{\mathbb E}
+\newcommand{\F}{\mathbb F}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\1}{\mathbf 1}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\norm}[1]{\left\|#1\right\|}
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\rank}{rank}
+\numberwithin{equation}{section}
+\setcounter{tocdepth}{2}
+\setlength{\emergencystretch}{2em}
+\setlength{\headheight}{14pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{ink}Sharper local bounds in Gowers's proof}
+\fancyhead[R]{\small\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\raggedbottom
+\begin{document}
+
+\begin{titlepage}
+\vspace*{0.7cm}
+{\color{teal}\large\noindent ADDITIVE COMBINATORICS \par}
+\vspace{0.6cm}
+{\color{ink}\huge\bfseries\raggedright\noindent Sharper Local Bounds in Gowers's Proof of
+Szemer\'edi's Theorem\par}
+\vspace{0.5cm}
+{\Large\raggedright\noindent Polynomial homomorphism restriction, sharp cube estimates,
+and floor-pattern complexity\par}
+\vspace{0.7cm}
+{\large\noindent Prepared for Vladimir Reshetnikov\par}
+\vspace{0.15cm}
+{\noindent 6 October 2026\par}
+\vspace{0.55cm}
+\noindent{\color{teal}\rule{\textwidth}{1.1pt}}
+\vspace{0.3cm}
+\begin{abstract}
+\noindent
+We give explicit refinements of local estimates in Gowers's proof of
+Szemer\'edi's theorem and identify interfaces for their formalization.
+Exact Fourier second moments sharpen the lifting of respected additive
+relations.  A powered-cosine selection argument, with Fourier-weighted
+control of exceptional relations and separate treatment of repetitions,
+gives a polynomial restriction theorem at every fixed tuple order.
+For real centered functions on odd-order groups, we prove the sharp gap
+\(\|f\|_{U^3}^8\geq2\|f\|_{U^2}^8\), classify equality, and obtain stability.
+The resulting three-cube bound has sharp leading coefficient
+\(6\sqrt2\).  Without \(2\)- or \(3\)-torsion, its first correction has
+optimal exponent \(16/3\), witnessed by an explicit two-frequency family.
+Further results retain density factors in progression counting and
+determine the quadratic exponential scale of fractional floor patterns,
+improving the associated local phase-extraction loss.
+The article includes complete proofs, exact examples, supplementary
+verification programs, a map to the inspected Lean files, and twelve
+research questions.  Improvements are relative to the specified local
+source estimates; worldwide priority, a new best global Szemer\'edi bound,
+and new kernel-checked Lean proofs are not claimed.
+\end{abstract}
+\vfill
+\noindent\small
+Companion materials: editable \LaTeX\ source, compiled PDF, exact rational
+pattern certificates, verification programs, and a source manifest.
+\end{titlepage}
+
+\begingroup
+\small
+\tableofcontents
+\endgroup
+\clearpage
+
+% ===== introduction =====
+\section{Purpose, results, and scope}
+\label{sec:introduction}
+
+This article develops explicit improvements to several local estimates in
+Gowers's proof of Szemer\'edi's theorem \cite{Gowers2001}.  The starting
+points are the paper and its companion Lean development in the ProveIt
+repository \cite{ProveIt}.  The improvements come from retaining quantities
+that a convenient coarse estimate discards: the size of a Fourier support
+measure, cancellation in a centered cube expansion, the simultaneous
+dependence of floor values on their parameters, and the number of patterns
+that occur at a fixed parameter.
+
+The most substantial quantitative change concerns the passage from a map
+respecting many additive quadruples to a restriction respecting almost all
+additive tuples of a higher order.  Here is a concrete consequence, stated
+at the same order as Gowers's Corollary~9.4.
+Suppose that \(B\subset\F_p\), \(|B|=\beta p\), and
+\(\phi:B\to\F_p\) respects at least \(\gamma|B|^3\) additive quadruples.
+If \(0<\beta,\gamma,\eta\leq1\) and
+\[
+ p\geq 2^{102}\gamma^{-112}\eta^{-16}\beta^{-1},
+\]
+then there is \(B'\subset B\) containing at least
+\[
+ 2^{-95}\gamma^{112}\eta^{15}|B|^{15}
+\]
+ordered additive \(16\)-tuples, at least a proportion \(1-\eta\) of which
+are respected by \(\phi\).  Both the exponents and the size hypothesis
+are explicit.  The proof uses one powered cosine filter and bounds the
+exceptional relations with their Fourier weights.  It generalizes to every fixed
+tuple order \(2d\), with a retention bound proportional to
+\(\alpha^{2d}\eta^{2d-1}\) when the initial respected-tuple proportion is
+normalized by \(|B|^{2d-1}\).
+
+The second set of results concerns additive cubes.  For a real centered
+function on a finite abelian group of odd order, we prove the sharp inequality
+\[
+ \norm{f}_{U^3}^{8}\geq 2\norm{f}_{U^2}^{8}.
+\]
+Equality, apart from the zero function, is characterized by support on
+one conjugate pair of Fourier characters.  A quantitative stability
+statement identifies an almost extremizing Fourier pair.  Combined with
+an exact enumeration of the surviving terms in a centered three-cube
+expansion, this gives a sharp leading coefficient \(6\sqrt2\) for the
+cube excess as a function of \(\norm f_{U^3}\).  In groups whose order is
+coprime to \(6\), a further refinement replaces a fifth-order remainder
+by a remainder of order \(u^{16/3}\).  An explicit two-frequency family
+shows why that fractional exponent occurs.
+
+The remaining results provide useful quantitative interfaces for the
+larger proof.  A telescoping expansion reduces the exponential counting
+factor in Corollary~3.3 to a density-weighted sum with \(k-2\) terms.
+The statement extends to composite cyclic groups and other finite
+abelian groups under exact invertibility hypotheses.  In Section~17,
+separating integer parts from fractional parts gives polynomial
+dependence on the slope range.  Matching quadratic-order upper and lower
+bounds determine the exponential scale of the fractional floor-pattern
+count.  A distinction between global patterns and the patterns for a fixed
+slope improves a subsequent Cauchy--Schwarz loss.
+
+\subsection{What is established, and what is not claimed}
+
+All results asserted as theorems below have proofs.  The supplementary
+programs check finite instances, exact support counts, coefficient
+inequalities, and rational certificates.  These computations are additional
+evidence and reproducibility aids; the general mathematical statements do
+not rest on numerical experimentation.
+
+The claim of improvement is relative to the explicitly identified
+estimates in Gowers's paper and the inspected repository files.
+H\"older interpolation, generalized von Neumann inequalities, and
+hyperplane-arrangement estimates are established tools.  A targeted
+literature review did not determine priority for every exact refinement
+assembled here.  Accordingly this article does not present the collection
+as a certified first discovery in the literature.
+
+There is also a material distinction between improving a local lemma and
+improving the best bound in Szemer\'edi's theorem.  Leng, Sah, and Sawhney
+prove, for fixed \(k\geq5\), a bound of the form
+\[
+ r_k(N)\ll_k N\exp\bigl(-(\log\log N)^{c_k}\bigr),
+ \qquad c_k>0,
+\]
+using their quantitative inverse theorem \cite{LSS2024bounds,LSS2024inverse}.
+The local arguments here do not improve that result.  Green and Tao's
+four-term work \cite{GreenTao2017} provides an additional example of why
+approximate-homomorphism restriction is a useful component of a density
+increment proof.  Manners's polynomial true-complexity theorem
+\cite{Manners2021} places the counting arguments in a broader established
+theory.  No unresolved global Szemer\'edi or inverse-theorem conjecture
+is declared solved in this article.
+
+\subsection{The inspected repository}
+
+The repository was inspected on 6 October 2026.  Its paper transcription
+already contains editorial corrections, and the Lean directory separates
+formal statement definitions from companion proof modules.  The referenced
+files agree with the snapshot
+\[
+ \texttt{327773149bd272239f1f6c0015f76d5097512c88}.
+\]
+In particular, the relevant files include
+\texttt{Proofs09Moments.lean},
+\texttt{Proofs03CubeUpper.lean},
+\texttt{Proofs03ProgressionAverage.lean}, and
+\texttt{Proofs03ProgressionCount.lean}.
+The appendix gives a concrete plan for adding the strengthened results.
+No new Lean proof is claimed to have been compiled or kernel checked in
+the present project, and no repository changes are part of this deliverable.
+
+\section{Notation and normalization}
+\label{sec:notation}
+
+Let \(G\) be a finite abelian group, written additively, and let \(N=|G|\).
+We write \(\E_{x\in G}g(x)=N^{-1}\sum_{x\in G}g(x)\).
+Characters are written multiplicatively.  Except in the moment section,
+which explicitly introduces an unnormalized transform, Fourier
+coefficients are normalized:
+\[
+ \widehat f(\chi)=\E_x f(x)\overline{\chi(x)}.
+\]
+Thus
+\[
+ \E_x|f(x)|^2=\sum_{\chi\in\widehat G}|\widehat f(\chi)|^2.
+\]
+Sums over the dual group in this convention are ordinary sums, not
+averages.
+
+For \(d\geq1\), put
+\[
+ \norm f_{U^d(G)}^{2^d}
+ =\E_{x,h_1,\ldots,h_d}
+   \prod_{\epsilon\in\{0,1\}^d}
+    \mathcal C^{|\epsilon|}
+    f(x+\epsilon_1h_1+\cdots+\epsilon_dh_d),
+\]
+where \(\mathcal C\) is complex conjugation.  We omit \(G\) when it is clear.
+For \(d=1\) this means \(\norm f_{U^1}=|\E f|\).
+For \(d\geq2\) it is the Gowers norm.  If \(f\) is real, conjugations can
+be omitted.
+
+For a real function \(w\), define its normalized cube count
+\[
+ Q_d(w)=
+ \E_{x,h_1,\ldots,h_d}\prod_{\epsilon\in\{0,1\}^d}
+     w(x+\epsilon\cdot h).
+\]
+For \(w=1_A\), \(N^{d+1}Q_d(w)\) counts all ordered additive
+\(d\)-cubes, including degenerate cubes, exactly as in the corresponding
+count in the source.  If \(\delta=|A|/N\), its balanced function is
+\(f=1_A-\delta\).
+
+The conversion to Gowers's parameter is important:
+\[
+ \text{\(f\) is \(\alpha\)-uniform of degree \(d-1\)}
+ \quad\Longleftrightarrow\quad
+ \norm f_{U^d}^{2^d}\leq\alpha.
+\]
+In particular, the letter \(u\) below generally denotes a norm, while
+\(\alpha\) denotes an upper bound on a power of that norm.  Confusing these
+two quantities would conceal the improvement in the exponent.
+
+We use the standard Gowers--Cauchy--Schwarz inequality in normalized form:
+\[
+ \left|
+ \E_{x,h}\prod_{\epsilon}
+  \mathcal C^{|\epsilon|}f_\epsilon(x+\epsilon\cdot h)
+ \right|
+ \leq\prod_\epsilon\norm{f_\epsilon}_{U^d}.
+\]
+It follows by applying Cauchy--Schwarz successively in the cube
+coordinates; this is Lemma~3.8 in the source.
+Its ordinary consequences include the triangle inequality and
+\(\norm f_{U^d}\leq\norm f_{U^{d+1}}\).
+For clarity, the latter also follows by writing
+\[
+ \norm f_{U^d}^{2^d}
+ =\E_{h_1,\ldots,h_{d-1}}
+   \left|\E_x\Delta_{h_1}\cdots\Delta_{h_{d-1}}f(x)\right|^2.
+\]
+Square this identity and use Cauchy--Schwarz, then apply
+\(|\E g|^4\leq\norm g_{U^2}^4\) to each derivative.  The resulting
+right-hand side is \(\norm f_{U^{d+1}}^{2^{d+1}}\).
+
+An ordered additive \(2d\)-tuple of a set \(B\) is a tuple with
+\(x_1+\cdots+x_d=x_{d+1}+\cdots+x_{2d}\).
+A map \(\phi:B\to H\) \emph{respects} the tuple if the same equation holds
+after applying \(\phi\).  All tuple counts in this article are ordered
+and allow repetitions unless expressly called nonexceptional.
+
+
+% ===== moments =====
+\section{Exact second moments and density-sensitive lifting}
+\label{mom:section}
+
+Several losses in the paper occur when a second moment is bounded using
+the size of the ambient space rather than the size of the set under
+consideration.  Retaining the exact second moment is useful on its own,
+and becomes particularly effective when followed by the restriction
+argument in the next section.  The underlying interpolation inequality
+is standard H\"older; the contribution here is the careful normalization,
+the resulting sharper statements, and their use in the subsequent
+selection theorem.
+
+\subsection{Weighted energies on finite abelian groups}
+
+Let \(H\) be a finite abelian group of order \(M\), and let
+\(\widehat H\) be its character group.  For \(w:H\to\C\), use the
+unnormalized transform
+\[
+ \widehat w(\chi)=\sum_{x\in H}w(x)\overline{\chi(x)}.
+\]
+For an integer \(j\geq1\), define
+\[
+ \mathcal E_j(w)=\frac1M\sum_{\chi\in\widehat H}
+                       \abs{\widehat w(\chi)}^{2j}.
+\]
+Character orthogonality gives
+\[
+ \mathcal E_1(w)=\sum_{x\in H}\abs{w(x)}^2.
+\]
+For an indicator \(w=1_A\), the same orthogonality calculation shows
+that \(\mathcal E_j(A)\) counts ordered tuples
+\((a_1,\ldots,a_{2j})\in A^{2j}\) satisfying
+\[
+ a_1+\cdots+a_j=a_{j+1}+\cdots+a_{2j}.
+\]
+Repeated entries are included throughout.
+
+\begin{theorem}[Exact energy interpolation]
+\label{mom:interpolation}
+Let \(j\geq2\), and suppose that \(\mathcal E_1(w)>0\).  Then
+\[
+ \boxed{\quad
+ \mathcal E_j(w)\geq
+ \frac{\mathcal E_2(w)^{j-1}}{\mathcal E_1(w)^{j-2}}.
+ \quad}
+ \tag{M1}
+\]
+For \(j>2\), equality holds if and only if all nonzero Fourier
+coefficients of \(w\) have the same modulus.  In particular, if
+\(A\ne\varnothing\), then
+\[
+ \mathcal E_j(A)\geq
+ \frac{\mathcal E_2(A)^{j-1}}{\abs A^{j-2}}.
+ \tag{M2}
+\]
+For \(j>2\), equality in \(\mathrm{(M2)}\) holds exactly when \(A\)
+is a coset of a subgroup.
+\end{theorem}
+
+\begin{proof}
+Put \(x_\chi=\abs{\widehat w(\chi)}^2\).  If \(j=2\), the assertion
+is an identity.  For \(j>2\), H\"older gives
+\[
+ \sum_\chi x_\chi^2
+ =
+ \sum_\chi x_\chi^{(j-2)/(j-1)}
+                 x_\chi^{j/(j-1)}
+ \leq
+ \left(\sum_\chi x_\chi\right)^{(j-2)/(j-1)}
+ \left(\sum_\chi x_\chi^j\right)^{1/(j-1)}.
+\]
+Raising to the power \(j-1\) and dividing by \(M^{j-1}\) proves
+\(\mathrm{(M1)}\).  Equality in H\"older says that the positive
+values of \(x_\chi\) are equal.
+
+Now let \(w=1_A\), and put \(m=\abs A\).  Its trivial Fourier
+coefficient is \(m\).  Thus equality forces every nonzero Fourier
+coefficient to have modulus \(m\).  Let \(K\) be the subgroup
+generated by \(A-A\).  Equality in the triangle inequality shows
+that \(\abs{\widehat{1_A}(\chi)}=m\) precisely when \(\chi\) is
+constant on \(A\), equivalently when \(\chi\in K^\perp\).
+Consequently Parseval gives
+\[
+ Mm=\abs{K^\perp}m^2=\frac{M}{\abs K}m^2.
+\]
+Hence \(m=\abs K\).  Since \(A\) is contained in a coset of \(K\),
+it is that entire coset.  Conversely, the Fourier transform of a
+coset indicator has constant modulus on its support, so it gives
+equality.
+\end{proof}
+
+The proof applies without change to any finite family of spectra:
+the index \(\chi\) can be replaced by a pair \((i,\chi)\).
+This observation will be used for arrangements, where the extra
+index records common sidelengths.
+
+\begin{corollary}[Lifting respected graph energies]
+\label{mom:graph}
+Let \(B\) be a nonempty subset of a finite abelian group, and let
+\(\phi:B\to K\) take values in another finite abelian group.
+Write \(m=\abs B\), let \(0\leq\gamma\leq1\), and suppose that at least \(\gamma m^3\)
+ordered additive quadruples of \(B\) are respected by \(\phi\).
+Then, for every integer \(j\geq2\), at least
+\[
+ \gamma^{j-1}m^{2j-1}
+ \tag{M3}
+\]
+ordered additive \(2j\)-tuples are respected by \(\phi\).
+\end{corollary}
+
+\begin{proof}
+Apply Theorem~\ref{mom:interpolation} to the indicator of the graph
+\(\Gamma=\{(x,\phi(x)):x\in B\}\).  Its first energy is \(m\),
+and its \(j\)-th energy is exactly the number in question.
+\end{proof}
+
+For \(B\subset\F_p\) of size \(\beta p\), the source proof of
+Lemma~9.2 uses
+\[
+ \sum_{u,r}\abs{\widehat f_u(r)}^2\leq p^3.
+\]
+The exact identity is
+\[
+ \sum_{u,r}\abs{\widehat f_u(r)}^2
+       =p^2\abs B=\beta p^3.
+ \tag{M4}
+\]
+Thus, under its unnormalized hypothesis of at least
+\(\gamma_0p^3\) respected quadruples, its conclusion strengthens to
+\(\gamma_0^7\beta^{-6}p^{15}\) respected \(16\)-tuples.
+Under the hypothesis of Corollary~9.4, where
+\(\gamma_0=\gamma\beta^3\), this is
+\[
+ \gamma^7\beta^{15}p^{15},
+ \tag{M5}
+\]
+rather than \(\gamma^7\beta^{21}p^{15}\).
+These comparisons refer to the displayed statements in the source
+and its repository transcription \cite{Gowers2001,ProveIt}.
+
+\subsection{A finite-size correction from the trivial character}
+
+There is a further refinement when the ambient group size matters.
+Its proof also identifies a useful limitation of using only the
+full first and second moments.
+
+\begin{proposition}[Removing the trivial Fourier coefficient]
+\label{mom:residual}
+Let \(A\subset H\), where \(0<m=\abs A<M=\abs H\), and put
+\[
+ \rho=\frac mM,\qquad
+ \gamma=\frac{\mathcal E_2(A)}{m^3}.
+\]
+Then \(\gamma\geq\rho\), and for every integer \(j\geq2\),
+\[
+ \frac{\mathcal E_j(A)}{m^{2j-1}}
+ \geq
+ \rho+\frac{(\gamma-\rho)^{j-1}}{(1-\rho)^{j-2}}.
+ \tag{M6}
+\]
+The right side is at least \(\gamma^{j-1}\).  If only
+\(\mathcal E_2(A)\geq\gamma_0m^3\) is known, one may replace
+\(\gamma-\rho\) by \(\max\{\gamma_0-\rho,0\}\).
+\end{proposition}
+
+\begin{proof}
+Remove the trivial character before applying the H\"older argument.
+The sums of the remaining squared and fourth Fourier moduli are
+\[
+ M\left(m-\frac{m^2}{M}\right),
+ \qquad
+ M\left(\mathcal E_2(A)-\frac{m^4}{M}\right),
+\]
+respectively.  The remaining \(2j\)-th moment is
+\(M(\mathcal E_j(A)-m^{2j}/M)\).  Substitution in the same
+interpolation inequality proves \(\mathrm{(M6)}\).
+The second displayed quantity is nonnegative, giving
+\(\gamma\geq\rho\).  Finally, write
+\[
+ \gamma=\rho\cdot1+(1-\rho)
+                     \frac{\gamma-\rho}{1-\rho}
+\]
+and apply convexity of \(t\mapsto t^{j-1}\).
+\end{proof}
+
+This correction can be sharp away from subgroup examples.
+For the parabola
+\(\Gamma=\{(x,x^2):x\in\F_p\}\), with \(p\) odd, the trivial
+Fourier coefficient has modulus \(p\), the coefficients at
+\((r,0)\) with \(r\ne0\) vanish, and all coefficients whose
+second frequency is nonzero have modulus \(\sqrt p\).
+Indeed, completing the square reduces the latter assertion to
+\[
+ \abs{\sum_x e_p(ux^2)}^2
+ =\sum_{x,y}e_p\bigl(u(x-y)(x+y)\bigr)=p
+ \qquad(u\ne0),
+\]
+where \(e_p(t)=\exp(2\pi i t/p)\); the change of variables
+\((x,y)\mapsto(x-y,x+y)\) is invertible.  It follows that
+\[
+ \mathcal E_2(\Gamma)=2p^2-p,\qquad
+ \mathcal E_j(\Gamma)=p^{2j-2}+(p-1)p^{j-1}.
+ \tag{M7}
+\]
+All nonzero residual squared Fourier moduli agree, so
+Proposition~\ref{mom:residual} is an equality in this example.
+
+\section{Polynomial restriction to approximate homomorphisms}
+\label{rest:section}
+
+We now replace the repeated degree-one filters in the proof of
+Lemma~9.3 by one filter of higher degree.  The degree is chosen
+from the desired accuracy.  Although more coefficient relations
+appear, their nonnegative Fourier weights have total mass one.
+A weighted error bound therefore avoids a loss proportional to
+the number of those relations.  The retained number of
+configurations has a polynomial dependence with exponent
+linear in the number of entries, instead of the much larger
+exponent in the source.
+
+For \(B\subset\F_p\), let \(T_d(B)\) denote its number of ordered
+additive \(2d\)-tuples, and let \(T_d^\phi(B)\) denote the number
+also satisfying
+\[
+ \phi(x_1)+\cdots+\phi(x_d)
+   =\phi(x_{d+1})+\cdots+\phi(x_{2d}).
+ \tag{R1}
+\]
+Thus \(T_d^\phi(B)=\mathcal E_d(\Gamma)\).  An elementary upper
+bound that will be used repeatedly is
+\[
+ T_d(B)\leq\abs B^{2d-1},
+ \tag{R2}
+\]
+because the first \(2d-1\) entries uniquely determine the last.
+
+\begin{theorem}[Polynomial restriction theorem]
+\label{rest:main}
+Let \(d\geq2\) be an integer, and let \(0<\alpha,\beta,\eta\leq1\).
+Define
+\[
+ \kappa_d=\frac{1}{2(400d)^d},
+ \qquad
+ \Lambda_d=2\left(1+\binom{2d}{2}\right)(400d)^d.
+ \tag{R3}
+\]
+Suppose that \(p\) is a prime with
+\[
+ p\geq
+ \Lambda_d(\alpha\eta)^{-2d}\beta^{-1}.
+ \tag{R4}
+\]
+Let \(B\subset\F_p\), with \(\abs B=\beta p\), and let
+\(\phi:B\to\F_p\) satisfy
+\[
+ T_d^\phi(B)\geq
+       \alpha\beta^{2d-1}p^{2d-1}.
+ \tag{R5}
+\]
+Then there is \(B'\subset B\) for which
+\[
+ \boxed{\quad
+ T_d(B')\geq
+ \kappa_d\alpha^{2d}\eta^{2d-1}
+                  \beta^{2d-1}p^{2d-1},
+ \quad}
+ \tag{R6}
+\]
+and
+\[
+ \frac{T_d^\phi(B')}{T_d(B')}
+       \geq\frac1{1+\eta}\geq1-\eta.
+ \tag{R7}
+\]
+\end{theorem}
+
+Equivalently, the size hypothesis is
+\(\abs B\geq\Lambda_d(\alpha\eta)^{-2d}\).
+It depends on the number of available points rather than a
+separate density requirement.
+The theorem concerns preservation of additive configurations.
+It does not merely assert that \(B'\) has many points.  The
+normalization by \(\abs B^{2d-1}\), rather than the ambient
+configuration count, is essential for its use after
+Corollary~\ref{mom:graph}.
+
+\subsection{The kernel and its coefficients}
+
+\begin{lemma}[A powered cosine with many useful coefficients]
+\label{rest:kernel}
+Let \(d,L\) be positive integers, and put \(q=4dL^2\).  Write
+\[
+ K_q(t)=\cos^{2q}(\pi t)
+       =\sum_{\ell=-q}^q b_\ell e^{2\pi i\ell t},
+ \qquad
+ b_\ell=4^{-q}\binom{2q}{q+\ell}.
+ \tag{R8}
+\]
+Then \(0\leq K_q\leq1\), its coefficients are nonnegative and
+symmetric, and
+\[
+ b_0\geq\frac1{2\sqrt q},
+ \qquad
+ \sum_{\ell=-q}^q
+       \left(\frac{b_\ell}{b_0}\right)^{2d}\geq L+1.
+ \tag{R9}
+\]
+\end{lemma}
+
+\begin{proof}
+The expansion follows by applying the binomial theorem to
+\((e^{\pi it}+e^{-\pi it})^{2q}/2^{2q}\).
+For the central coefficient, write
+\(u_q=4^{-q}\binom{2q}{q}\).  We have \(u_1=1/2\) and
+\[
+ \frac{u_{q+1}}{u_q}
+       =\frac{2q+1}{2q+2}
+       \geq\sqrt{\frac q{q+1}}.
+\]
+After squaring, the last inequality reduces to
+\((2q+1)^2\geq4q(q+1)\).  Induction proves the stated lower
+bound for \(b_0\).
+
+For \(0\leq\ell\leq L\),
+\[
+ \frac{b_\ell}{b_0}
+ =
+ \prod_{j=1}^{\ell}\frac{q-j+1}{q+j}
+ =
+ \prod_{j=1}^{\ell}
+       \left(1-\frac{2j-1}{q+j}\right)
+ \geq1-\frac{\ell^2}{q}.
+ \tag{R10}
+\]
+Here all factors lie in \([0,1]\), and
+\(\prod_j(1-z_j)\geq1-\sum_jz_j\), while
+\(\sum_{j=1}^{\ell}(2j-1)/(q+j)\leq\ell^2/q\).
+Bernoulli's inequality now gives
+\[
+ \left(\frac{b_\ell}{b_0}\right)^{2d}
+       \geq1-\frac{2d\ell^2}{q}\geq\frac12.
+ \tag{R11}
+\]
+The central term contributes \(1\), and the \(2L\) terms with
+\(1\leq\abs\ell\leq L\) contribute at least \(L\).
+\end{proof}
+
+\subsection{Repeated entries and weighted relation errors}
+
+A direct union bound over all the kernel's coefficient relations
+would be expensive, because its degree depends on the desired
+accuracy.  Instead, we keep their Fourier weights.  Positivity
+and the fact that the weights sum to one allow all the
+unwanted relations to be controlled together.
+
+\begin{lemma}[A rank-two relation inside a finite set]
+\label{rest:exceptional}
+Let \(d\geq2\), let \(p\) be prime, let
+\(B\subset\F_p\) have size \(m>0\), and put
+\[
+ v=(\underbrace{1,\ldots,1}_{d},
+      \underbrace{-1,\ldots,-1}_{d})\in\F_p^{2d}.
+\]
+For every \(\epsilon\in\F_p^{2d}\setminus\F_pv\),
+\[
+ \#\{x\in B^{2d}:v\cdot x=\epsilon\cdot x=0\}
+       \leq m^{2d-2}.
+ \tag{R12}
+\]
+The number of additive \(2d\)-tuples in \(B\) with repeated
+entries is at most \(\binom{2d}{2}m^{2d-2}\).
+\end{lemma}
+
+\begin{proof}
+The matrix with rows \(v,\epsilon\) has rank two, so it has
+an invertible \(2\)-by-\(2\) column minor.  Fix the other
+\(2d-2\) coordinates arbitrarily in \(B\).  The two remaining
+coordinates are uniquely determined in \(\F_p\); either
+both belong to \(B\), or this choice gives no admissible
+completion.  This proves \(\mathrm{(R12)}\).
+
+If \(x_i=x_j\), the vector \(e_i-e_j\) supplies a second
+relation.  It is not a scalar multiple of \(v\), since it
+has zero coordinates whereas every nonzero scalar multiple
+of \(v\) has none.  Apply \(\mathrm{(R12)}\) to each of the
+\(\binom{2d}{2}\) pairs of positions and take a union bound.
+\end{proof}
+
+\begin{lemma}[Weighted selection estimates]
+\label{rest:survival}
+Let \(d\geq2\), \(q\geq1\), and let \(p>2q\) be prime.
+Let \(B\subset\F_p\) have size \(m>0\), and let
+\(\phi:B\to\F_p\).  Choose \(r,s\) independently and uniformly
+in \(\F_p\).  Conditional on this choice, retain each
+point \(x\in B\) independently with probability
+\[
+ K_q\left(\frac{rx+s\phi(x)}p\right).
+ \tag{R13}
+\]
+Integer representatives do not matter because \(K_q\) is
+periodic.  Put
+\[
+ P_0=b_0^{2d},\qquad
+ Q=\sum_{\ell=-q}^q
+            \left(\frac{b_\ell}{b_0}\right)^{2d},
+ \qquad
+ C_d=1+\binom{2d}{2}.
+ \tag{R14}
+\]
+Let \(X\) count all selected respected additive tuples,
+and let \(Y\) count all selected unrespected additive
+tuples.  Then
+\[
+ \E X\geq P_0Q\,T_d^\phi(B),
+ \qquad
+ \E Y\leq P_0\bigl(T_d(B)-T_d^\phi(B)\bigr)
+                         +C_dm^{2d-2}.
+ \tag{R15}
+\]
+\end{lemma}
+
+\begin{proof}
+For a fixed tuple \(x=(x_1,\ldots,x_{2d})\), abbreviate its
+point probabilities by \(P_{r,s}(x_j)\), and form the
+product with multiplicities
+\[
+ A_{r,s}(x)=\prod_{j=1}^{2d}P_{r,s}(x_j).
+\]
+Its actual conditional survival probability is the product
+over the \emph{distinct} entries of \(x\).  Since all point
+probabilities lie in \([0,1]\), the actual probability is
+at least \(A_{r,s}(x)\), equals it when the entries are
+distinct, and exceeds it by at most \(1\) otherwise.
+This observation accounts for repeated points without
+assuming that their inclusion events are independent.
+
+Expand \(A_{r,s}(x)\) using the nonnegative Fourier
+coefficients from \(\mathrm{(R8)}\).  For
+\(\epsilon\in\{-q,\ldots,q\}^{2d}\), put
+\(w_\epsilon=\prod_jb_{\epsilon_j}\).  Orthogonality gives
+\[
+ \E_{r,s}A_{r,s}(x)=
+ \sum_{\epsilon}w_\epsilon
+       1_{\{\epsilon\cdot x=0\}}
+       1_{\{\epsilon\cdot\phi(x)=0\}},
+ \qquad
+ \sum_\epsilon w_\epsilon
+       =\left(\sum_{\ell=-q}^qb_\ell\right)^{2d}=1.
+ \tag{R16}
+\]
+Here \(\epsilon\cdot\phi(x)\) denotes
+\(\sum_j\epsilon_j\phi(x_j)\).  The last equality uses \(K_q(0)=1\).
+All weights in this identity are nonnegative.
+
+If \(\epsilon\) is a scalar multiple of \(v\) modulo \(p\),
+the condition \(p>2q\) forces its integer entries to be
+\((\ell,\ldots,\ell,-\ell,\ldots,-\ell)\) for a single
+\(\ell\in[-q,q]\).  These terms have total weight \(P_0Q\).
+Every one contributes for a respected additive tuple.
+Thus its expected product with multiplicities is at least
+\(P_0Q\), and the same lower bound holds for its actual
+survival probability.  Summing proves the assertion about
+\(\E X\).
+
+For an unrespected additive tuple, every nonzero such
+\(\ell\) is invertible modulo \(p\), so only \(\ell=0\)
+can contribute among these scalar multiples.  Its weight
+is \(P_0\).  For each remaining coefficient vector,
+Lemma~\ref{rest:exceptional} bounds the number of domain
+tuples satisfying the additional relation by \(m^{2d-2}\).
+Requiring that they be unrespected, or imposing the
+additional image relation in \(\mathrm{(R16)}\), can only
+reduce this number.  Summing first over tuples and then
+over coefficient vectors, and using
+\(\sum_\epsilon w_\epsilon=1\), gives
+\[
+ \sum_{\substack{x\in B^{2d}\\
+                 x\text{ additive and unrespected}}}
+          \E_{r,s}A_{r,s}(x)
+ \leq P_0\bigl(T_d(B)-T_d^\phi(B)\bigr)+m^{2d-2}.
+\]
+Finally, the difference between actual survival and this
+product need only be charged to repeated tuples.
+Lemma~\ref{rest:exceptional} bounds their number by
+\(\binom{2d}{2}m^{2d-2}\).  Adding that error proves the
+assertion about \(\E Y\).
+\end{proof}
+
+\subsection{Proof of the polynomial restriction theorem}
+
+\begin{proof}[Proof of Theorem~\ref{rest:main}]
+Set
+\[
+ a=\alpha\eta,\qquad m=\abs B=\beta p,\qquad
+ H=m^{2d-1},\qquad c=\kappa_da^{2d}.
+ \tag{R17}
+\]
+Choose
+\[
+ L=\left\lceil\frac4a\right\rceil,\qquad q=4dL^2.
+ \tag{R18}
+\]
+Since \(a\leq1\),
+\[
+ L\leq\frac5a,\qquad q\leq\frac{100d}{a^2}.
+ \tag{R19}
+\]
+The size condition is \(m\geq\Lambda_da^{-2d}\).
+It implies \(p>2q\), since \(p\geq m\),
+\(\Lambda_d>200d\), and \(a^{-2d}\geq a^{-2}\).
+Furthermore, with \(C_d=1+\binom{2d}{2}\), it gives
+\[
+ C_dm^{2d-2}\leq cH,
+ \tag{R20}
+\]
+because \(\Lambda_d=C_d/\kappa_d\).
+
+Apply Lemma~\ref{rest:survival} with this kernel.
+Lemma~\ref{rest:kernel} gives
+\[
+ Q\geq L+1\geq\frac4a,\qquad
+ P_0\geq(4q)^{-d}
+       \geq\frac{a^{2d}}{(400d)^d}=2c.
+ \tag{R21}
+\]
+The input hypothesis and the bound \(T_d(B)\leq H\)
+therefore imply
+\[
+ \E X\geq P_0Q\alpha H,\qquad
+ \E Y\leq P_0H+C_dm^{2d-2}.
+ \tag{R22}
+\]
+Consequently
+\[
+ \begin{aligned}
+ \E[\eta X-Y]
+ &\geq P_0(\eta Q\alpha-1)H-C_dm^{2d-2}\\
+ &\geq3P_0H-C_dm^{2d-2}
+ \geq5cH\geq cH.
+ \end{aligned}
+ \tag{R23}
+\]
+Some realization \(B'\) thus satisfies
+\[
+ \eta X-Y\geq cH.
+ \tag{R24}
+\]
+There is no omitted class of tuples here: \(X\) and \(Y\)
+include all additive tuples in \(B'\), with repeated
+entries counted.  Hence
+\[
+ T_d(B')=X+Y\geq X\geq\frac{cH}{\eta}
+       =\kappa_d\alpha^{2d}\eta^{2d-1}H,
+ \tag{R25}
+\]
+and
+\[
+ \frac{T_d^\phi(B')}{T_d(B')}
+       =\frac{X}{X+Y}\geq\frac1{1+\eta}\geq1-\eta.
+ \tag{R26}
+\]
+This proves both conclusions.
+\end{proof}
+
+The weighted estimate is what makes the size condition depend
+on \((\alpha\eta)^{-2d}\).  Counting all coefficient vectors
+separately would introduce a power of the bandwidth \(q\).
+Instead, each unwanted relation is bounded by the same
+\(m^{2d-2}\), and its contribution is multiplied by its
+Fourier weight; the weights have total mass one.  The
+separate error for repeated entries has the same lower
+power of \(m\).  No independence assumption is made for
+repeated coordinates.
+
+The exponent \(\eta^{2d-1}\) in the conclusion also deserves
+attention.  The survival calculation supplies a quantity
+\(c\) proportional to \((\alpha\eta)^{2d}\), but
+\(\mathrm{(R24)}\) yields \(X\geq cH/\eta\).
+Keeping this final factor improves the retained count by
+\(\eta^{-1}\).
+
+\subsection{Order eight and the comparison with Corollary 9.4}
+
+\begin{corollary}[Explicit order-eight restriction]
+\label{rest:eight}
+Let \(0<\beta,\gamma,\eta\leq1\), let \(p\) be prime, and let
+\(B\subset\F_p\) have size \(\beta p\).  Suppose that
+\(\phi:B\to\F_p\) respects at least
+\(\gamma\abs B^3\) additive quadruples.  If
+\[
+ \boxed{\quad
+ p\geq2^{102}\gamma^{-112}\eta^{-16}\beta^{-1},
+ \quad}
+ \tag{R27}
+\]
+then there is \(B'\subset B\) containing at least
+\[
+ \boxed{\quad
+ 2^{-95}\gamma^{112}\eta^{15}\beta^{15}p^{15}
+ \quad}
+ \tag{R28}
+\]
+ordered additive \(16\)-tuples, at least a proportion
+\(1-\eta\) of which are respected by \(\phi\).
+\end{corollary}
+
+\begin{proof}
+Corollary~\ref{mom:graph} permits
+\(\alpha=\gamma^7\) in Theorem~\ref{rest:main} with \(d=8\).
+Its exact constants are
+\[
+ \kappa_8=\frac1{2\cdot3200^8},\qquad
+ \Lambda_8=242\cdot3200^8.
+ \tag{R29}
+\]
+The integer inequalities
+\[
+ 2\cdot3200^8<2^{95},\qquad
+ 242\cdot3200^8<2^{102}
+ \tag{R30}
+\]
+give the convenient powers of two in the statement.
+\end{proof}
+
+The displayed count in source Corollary~9.4 is
+\[
+ \left(\frac{\gamma^7\beta^6\eta}{4}\right)^{2^{19}}
+                  \beta^{15}p^{15}.
+ \tag{R31}
+\]
+The improvement has two distinct causes.  Exact Parseval
+removes the \(\beta^6\) inside the large power.  The powered
+cosine replaces the repeated weak enrichment by one stronger
+selection, giving the powers \(\gamma^{112}\eta^{15}\).
+Both changes preserve the same configuration normalization.
+The source corollary also inherits the sufficiently-large-\(p\)
+condition from Lemma~9.3; the present statement gives an explicit
+sufficient condition instead of suppressing it
+\cite{Gowers2001,ProveIt}.
+
+This is a local improvement in the transition from a positive
+proportion of respected relations to an almost-homomorphism.
+Its relevance is not confined to the original exposition:
+later quantitative work also uses transitions of this kind,
+followed by additional steps that organize and extend the
+approximate homomorphism \cite{GreenTao2017}.
+The present calculations do not by themselves supply an improved
+global bound for Szemer\'edi's theorem.  Such a claim would
+require propagating the parameters through all later
+restrictions and density increments.
+
+\subsection{What the exponent says about this selection method}
+
+The use of a higher-degree kernel raises a natural optimization
+question.  There is a simple bound that explains why the powers
+in Theorem~\ref{rest:main} are natural for the particular
+expectation argument just used.
+
+\begin{proposition}[A limitation of single-kernel amplification]
+\label{rest:method-bound}
+Let \(K\) be a real trigonometric polynomial with \(0\leq K\leq1\),
+mean \(b_0>0\), and Fourier coefficients \(b_\ell\).  For
+\(d\geq2\), put
+\[
+ Q_K=\frac{\sum_\ell\abs{b_\ell}^{2d}}{b_0^{2d}}.
+\]
+Then
+\[
+ Q_K\leq\frac1{b_0}.
+ \tag{R32}
+\]
+Consequently, if \(Q_K\geq4/(\alpha\eta)\), the base survival
+probability \(b_0^{2d}\) is at most
+\((\alpha\eta/4)^{2d}\), and the scalar-multiple contribution
+\(\sum_\ell\abs{b_\ell}^{2d}\) to respected-tuple survival is at most
+\((\alpha\eta/4)^{2d-1}\).
+\end{proposition}
+
+\begin{proof}
+Since \(K\geq0\), \(\abs{b_\ell}\leq b_0\).  Parseval and
+\(K^2\leq K\) imply
+\[
+ \sum_\ell\abs{b_\ell}^{2d}
+ \leq b_0^{2d-2}\sum_\ell\abs{b_\ell}^2
+ =b_0^{2d-2}\int_0^1K(t)^2\,dt
+ \leq b_0^{2d-1}.
+\]
+Divide by \(b_0^{2d}\), and then use the assumed lower bound
+for \(Q_K\).
+\end{proof}
+
+For an input with exactly \(\alpha H\) respected tuples, the
+contribution guaranteed by the scalar-multiple coefficient
+relations is bounded by a constant times
+\(\alpha^{2d}\eta^{2d-1}H\), under the stipulated amplification
+requirement.  Theorem~\ref{rest:main} attains these parameter
+powers up to constants depending on \(d\).
+This is an observation about that part of the single-kernel
+expectation budget.  Additional relations and repeated entries
+can increase the actual expectation.  The calculation is not
+a lower bound for every possible restriction procedure, does
+not rule out unusually favorable realizations, and does not
+establish optimality of the theorem's size threshold.
+
+\section{Arrangement moments retain the cross-section profile}
+\label{mom:arrangement-section}
+
+The same principle applies to Lemmas~12.3 and~14.7, but their
+second moments carry multiplicities.  The correct quantity to
+retain is the number of respected pairs of congruent cubes
+within a cross-section, rather than simply \(\abs B\).
+
+\subsection{The weighted representation}
+
+Let \(B\subset\F_p^{k+1}\), with \(k\geq1\), let
+\(\phi:B\to\F_p\), and write
+\[
+ B_r=\{y\in\F_p^k:(y,r)\in B\}.
+\]
+For \(h,y\in\F_p^k\), the axis-parallel cube with base \(y\)
+and sidelengths \(h\) has vertices
+\[
+ y+\epsilon\cdot h
+   =(y_1+\epsilon_1h_1,\ldots,y_k+\epsilon_kh_k),
+ \qquad \epsilon\in\{0,1\}^k.
+\]
+If all these vertices lie in \(B_r\), define its value by
+\[
+ \Phi_h(y,r)=
+ \sum_{\epsilon\in\{0,1\}^k}
+       (-1)^{\epsilon_1+\cdots+\epsilon_k}
+       \phi(y+\epsilon\cdot h,r).
+ \tag{A1}
+\]
+For each \(h\), define the nonnegative integer weight
+\[
+ a_h(r,v)=
+ \#\{y:\ y+\{0,1\}^k\cdot h\subset B_r,\
+                         \Phi_h(y,r)=v\}.
+ \tag{A2}
+\]
+
+Let \(R_j\) count the respected \(j\)-arrangements: ordered
+lists of \(2j\) cubes with common \(h\), satisfying equal sums
+of the first and second halves of their cross-section indices,
+and equal sums of their cube values.  Zero sidelengths and
+repeated vertices are included in this count, as in the
+moment identities of the source.  Expanding the Fourier
+transform of \(a_h\) on \(\F_p^2\) gives
+\[
+ R_j=\frac1{p^2}
+       \sum_{h\in\F_p^k}\sum_{\chi\in\widehat{\F_p^2}}
+                     \abs{\widehat a_h(\chi)}^{2j}.
+ \tag{A3}
+\]
+In particular,
+\[
+ R_1=\sum_{h,r,v}a_h(r,v)^2
+ \tag{A4}
+\]
+counts ordered congruent cube pairs in the same cross-section
+with equal values.
+
+\begin{theorem}[Arrangement interpolation with profile]
+\label{mom:arrangements}
+Suppose that \(R_2>0\).  For every integer \(j\geq2\),
+\[
+ R_j\geq\frac{R_2^{j-1}}{R_1^{j-2}}.
+ \tag{A5}
+\]
+Define
+\[
+ \beta_r=\frac{\abs{B_r}}{p^k},\qquad
+ \beta=\frac{\abs B}{p^{k+1}},\qquad
+ \sigma=\frac1p\sum_r\beta_r^3.
+ \tag{A6}
+\]
+Then
+\[
+ R_1\leq\sigma p^{3k+1},\qquad \sigma\leq\beta.
+ \tag{A7}
+\]
+Consequently, if \(\theta>0\) and \(R_2\geq\theta p^{5k+3}\), then
+\[
+ \boxed{\quad
+ R_j\geq
+ \theta^{j-1}\sigma^{-(j-2)}
+               p^{(2j+1)k+2j-1}.
+ \quad}
+ \tag{A8}
+\]
+\end{theorem}
+
+\begin{proof}
+Apply the H\"older calculation of
+Theorem~\ref{mom:interpolation} to the spectrum indexed by
+\((h,\chi)\), using the common normalization \(p^{-2}\)
+in \(\mathrm{(A3)}\).  This gives \(\mathrm{(A5)}\).
+The hypothesis \(R_2>0\) ensures \(R_1>0\), so the
+denominator is legitimate.
+
+To bound \(R_1\), temporarily ignore the equality of cube
+values.  A pair of cubes in \(B_r\), with bases \(y,z\)
+and common sidelengths \(h\), determines a triple
+\[
+ (y,z,y+h)\in B_r^3.
+ \tag{A9}
+\]
+The last point is the opposite vertex of the first cube.
+This map is injective: the triple determines both bases
+and \(h=(y+h)-y\).  Hence there are at most
+\(\abs{B_r}^3\) such pairs, even before the value condition
+is imposed.  Summing over \(r\) gives
+\[
+ R_1\leq\sum_r\abs{B_r}^3=\sigma p^{3k+1}.
+\]
+Since \(0\leq\beta_r\leq1\), and
+\(p^{-1}\sum_r\beta_r=\beta\), we have \(\sigma\leq\beta\).
+Finally substitute these estimates into
+\(\mathrm{(A5)}\).  The ambient exponent is
+\[
+ (5k+3)(j-1)-(3k+1)(j-2)
+       =(2j+1)k+2j-1,
+\]
+which proves \(\mathrm{(A8)}\).
+\end{proof}
+
+For \(j=8\), the replacement for Lemma~14.7 is therefore
+\[
+ R_8\geq\theta^7\sigma^{-6}p^{17k+15}
+       \geq\theta^7\beta^{-6}p^{17k+15}.
+ \tag{A10}
+\]
+The source uses the same fourth-moment hypothesis but discards
+the factor \(\sigma\) when bounding the second moment.
+If every cross-section has density \(\beta\), then
+\(\sigma=\beta^3\), so the gain is \(\beta^{-18}\).
+More generally, \(\beta_r\leq K\beta\) for every \(r\)
+implies
+\[
+ \sigma\leq K^2\beta^3.
+ \tag{A11}
+\]
+This records exactly which information about the cross-sections
+can be used by the interpolation step.
+
+Using Corollary~14.6 as stated in the repository's corrected
+transcription, the density power in Lemma~14.8 improves from
+\(7\cdot4^{k+1}\) to \(7\cdot4^{k+1}-6\):
+\[
+ R_8\geq
+ \beta^{7\cdot4^{k+1}-6}
+ \gamma^{21k\cdot4^{k+1}}p^{17k+15}.
+ \tag{A12}
+\]
+Keeping the profile gives the stronger factor
+\(\beta^{7\cdot4^{k+1}}\sigma^{-6}\).
+The analogous use in Lemma~12.4 changes
+\(\beta^{112}\gamma^{336}p^{32}\) to
+\(\beta^{106}\gamma^{336}p^{32}\).
+In that section the relevant fibers are vertical; its two
+coordinate roles are exchanged relative to the notation above.
+These conclusions use only the improved moment step, with the
+preceding hypotheses and estimates retained
+\cite{Gowers2001,ProveIt}.
+
+\subsection{Equality examples and the scope of sharpness}
+
+The arrangement interpolation and the profile bound extend to
+axis-parallel cubes over any finite abelian group \(G\); the
+proof uses only its characters and additive operations.
+This extension supplies a sharp example for the factor
+\(\beta^{-6}\).  Let \(\abs G=N\), let \(C\leq G\), and take
+\[
+ B=G^k\times C,\qquad \phi=0,\qquad \beta=\frac{\abs C}{N}.
+\]
+The nonempty cross-sections are full.  Direct counting gives
+\[
+ R_1=\beta N^{3k+1},\qquad
+ R_2=\beta^3N^{5k+3},\qquad
+ R_j=\beta^{2j-1}N^{(2j+1)k+2j-1}.
+ \tag{A13}
+\]
+Thus both the interpolation inequality and
+\(\sigma\leq\beta\) are equalities.  This proves sharpness
+for the finite-abelian formulation; it does not assert the
+existence of proper subgroups of a cyclic group of prime order.
+
+The uniform-profile case also has equality examples over a
+prime field.  Let \(V\) be a coordinate subspace of \(\F_p^k\),
+and take \(B=V\times\F_p\), with \(\phi=0\).
+Every cross-section has density
+\(\beta=\abs V/p^k\).  A cube is contained in \(V\) precisely
+when its base and sidelength vector belong to \(V\).  Therefore
+\[
+ R_j=\abs V^{2j+1}p^{2j-1},\qquad
+ \sigma=\beta^3.
+ \tag{A14}
+\]
+Again the moment and profile estimates are equalities.
+In particular, the improvement by \(\beta^{-18}\) in the
+uniform-profile order-eight bound is attained at the available
+densities of these examples.
+
+These equality constructions identify which parts of the
+argument cannot be improved using only the displayed moments
+and profile.  They leave open the use of additional geometric
+or distributional information in applications.
+
+
+% ===== cubes =====
+\section{Sharp centered refinements of the cube-counting lemma}
+\label{cub:section}
+
+Gowers' Lemma~3.10 bounds the number of $d$-dimensional cubes by applying
+the triangle inequality to the constant and balanced parts of an indicator.
+Centering contains additional information that this application of the
+triangle inequality discards. We retain it, first by identifying correlations
+that vanish, and then by proving a sharp comparison between the second and
+third uniformity norms of real centered functions. These results strengthen
+the stated cube-counting lemma; no historical priority beyond that comparison
+is asserted. As Gowers explains, this lemma is supplementary to his main
+density-increment argument, so an improvement here does not by itself imply
+an improved global bound in Szemer\'edi's theorem.
+
+Throughout this section, averages on a finite abelian group $G$ are normalized.
+For $d\geq2$, put $q=2^d$, $V_d=\{0,1\}^d$, and
+\[
+ L_v(x,h)=x+v\cdot h,\qquad
+ Q_d(W)=\mathbb E_{x,h_1,\ldots,h_d\in G}
+                  \prod_{v\in V_d}W(L_v(x,h)).
+\]
+For real $W$, conjugation has no effect, so
+$Q_d(W)=\|W\|_{U^d}^{q}$. For an indicator, $|G|^{d+1}Q_d(1_A)$ is
+exactly Gowers' ordered cube count, including degenerate cubes. Write
+$W=\delta+f$, where $\delta\geq0$, $f$ is real, and $\mathbb E f=0$;
+these are standing assumptions throughout the section. Set
+$u=\|f\|_{U^d}$. No bound on $f$ is needed for the inequalities below.
+
+\subsection{Cancellation, parallelograms, and support counts}
+
+\begin{lemma}[Cancellation through degree three]
+\label{cub:low-cancellation}
+Any at most three distinct forms $L_v$ are jointly uniform on the
+corresponding power of $G$, for every finite abelian group $G$. Consequently,
+if $\delta\geq0$,
+\begin{equation}
+ \bigl|Q_d(\delta+f)-\delta^q\bigr|
+ \leq \sum_{r=4}^{q}\binom qr\delta^{q-r}u^r.
+ \label{cub:universal-fourth}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Reflect coordinates of the Boolean cube to move the first selected vertex
+to $0$; these reflections correspond to invertible changes of the averaging
+variables. For three vertices the others are distinct nonzero Boolean
+vectors $a,b$. Two coordinates give a $2\times2$ minor of the matrix with
+rows $a,b$ equal to $1$ or $-1$: use two coordinates distinguishing their
+supports, or one in their intersection and one in their difference if the
+supports are nested. Thus the map to $(x,x+a\cdot h,x+b\cdot h)$ is
+surjective, with equally sized fibers, on every abelian group. The cases of
+one or two vertices are immediate.
+
+Expand the cube product according to the support on which $f$ is chosen.
+Every term with one, two, or three factors of $f$ vanishes. For a support
+of size $r$, the cube Cauchy--Schwarz inequality, with constant $1$ at all
+other vertices, bounds its correlation in absolute value by $u^r$.
+Summation proves the assertion.
+\end{proof}
+
+Odd group order permits a much more precise fourth-order term.
+
+\begin{proposition}[Exact quartic coefficient]
+\label{cub:quartic}
+Suppose $|G|$ is odd, and put $v=\|f\|_{U^2}$. Then
+\begin{align}
+ Q_d(\delta+f)
+   &=\delta^q+P_d\delta^{q-4}v^4+R_d,\\
+ |R_d|&\leq\sum_{r=5}^{q}\binom qr\delta^{q-r}u^r,
+ \label{cub:quartic-expansion}\\
+ P_d&=2^{d-3}\bigl(3^d-2^{d+1}+1\bigr).
+ \label{cub:parallelogram-number}
+\end{align}
+In particular, $P_2=1$, $P_3=12$, $P_4=100$, and $P_5=720$.
+\end{proposition}
+
+\begin{proof}
+Four distinct Boolean vertices are either affinely independent or form a
+parallelogram. Indeed, any three are affinely independent. If four are
+dependent, their affine span is a plane, and some projection onto two
+coordinate axes is injective on that plane. The four images must be all
+four vertices of the unit square. The affine inverse of this projection
+preserves its parallelogram relation.
+
+If the four vertices are independent, a $3\times3$ Boolean minor after this
+translation has determinant $\pm1$ or $\pm2$. The determinant bound follows
+by adjoining a row and column of ones, changing binary entries $b$ to
+$1-2b$, and applying Hadamard's inequality to the resulting $4\times4$
+matrix. Multiplication by either determinant is invertible on an odd-order
+group. Thus the four forms are jointly uniform and their centered
+correlation is zero. On a parallelogram, any three forms are jointly uniform
+by Lemma~\ref{cub:low-cancellation}, while the fourth is their alternating
+sum. Its correlation is therefore exactly $v^4$.
+
+To count parallelograms, choose the $k$ coordinates in which a pair of
+opposite vertices differs and fix the other coordinates. Around that center
+there are $2^{k-1}$ opposite pairs; choose two of them. The diagonal midpoint
+is unique, so
+\[
+ P_d=\sum_{k=2}^d\binom dk2^{d-k}\binom{2^{k-1}}2
+     =2^{d-3}(3^d-2^{d+1}+1).
+\]
+Bound the terms of degree at least five by cube Cauchy--Schwarz as before.
+\end{proof}
+
+A general organizing principle is useful. Over $G=\mathbb F_p^n$, consider
+the vector matroid of the coefficient vectors $(1,v)$. If a selected support
+has a coloop, its centered correlation vanishes. Indeed, linear algebra gives
+a direction on which that form has coefficient $1$ and all other selected
+forms have coefficient $0$. Averaging along that direction averages one
+factor of $f$ to zero. Thus only supports with no coloop need to be counted.
+
+For $d=3$ this count can be made completely explicit, and the result also
+holds on every odd-order abelian group.
+
+\begin{lemma}[The surviving supports of a $3$-cube]
+\label{cub:supports}
+Suppose that \(G\) has odd order.  The numbers of supports with no coloop,
+in sizes $0,1,\ldots,8$, are
+\[
+        1,\ 0,\ 0,\ 0,\ 12,\ 8,\ 28,\ 8,\ 1.
+\]
+All twelve quartic correlations equal $\|f\|_{U^2}^4$. The eight quintic
+correlations are equal to
+\begin{equation}
+ B_5(f)=\mathbb E_{x,a,b,c}
+ f(x)f(x+a)f(x+b)f(x+c)f(x+a+b+c).
+ \label{cub:B5-definition}
+\end{equation}
+Consequently, with $u=\|f\|_{U^3}$ and $v=\|f\|_{U^2}$,
+\begin{align}
+ Q_3(\delta+f)
+ &=\delta^8+12\delta^4v^4+8\delta^3B_5(f)+R_6+R_7+u^8,
+ \label{cub:exact-cubic-expansion}\\
+ |R_6|&\leq28\delta^2u^6,\qquad |R_7|\leq8\delta u^7.
+ \label{cub:remainder67}
+\end{align}
+\end{lemma}
+
+\begin{proof}
+The twelve coplanar quadruples are the six faces and six diagonal
+rectangles. A plane contains at most four Boolean vertices: some projection
+onto two coordinate axes is injective on the plane, and its Boolean image
+has at most four points. A five-set therefore has rank four and has a
+coloop exactly when it contains a coplanar quadruple. Each of the twelve
+quadruples has four extensions to a five-set. No five-set contains two such
+quadruples, since distinct planes meet in a line and a line contains at most
+two Boolean vertices. Thus $\binom85-12\cdot4=8$ five-sets survive. Every
+set of size at least six remains rank four after a deletion.
+
+The eight surviving five-sets consist of one parity tetrahedron and one
+vertex of the opposite parity. Cube symmetries act transitively on them;
+a representative is $\{000,100,010,001,111\}$. The corresponding changes of
+averaging variables prove \eqref{cub:B5-definition}. These arguments remain
+valid on odd-order groups: any four independent cube forms have a minor
+$\pm1$ or $\pm2$, hence are jointly uniform; an extra vertex outside a
+parallelogram is therefore independent of its three determining forms.
+Finally apply cube Cauchy--Schwarz to the $28$ sextic and $8$ septic supports.
+\end{proof}
+
+For comparison, in characteristic two the support counts are
+$1,0,0,0,14,0,28,8,1$: the parity tetrahedra become two additional affine
+planes. The odd-order hypothesis is therefore a substantive restriction.
+
+\subsection{A sharp gap between the real centered \texorpdfstring{$U^2$ and $U^3$}{U2 and U3} norms}
+
+Use normalized Fourier coefficients
+\[
+ a_\xi=\widehat f(\xi)
+       =\mathbb E_{x\in G}f(x)\overline{\xi(x)},
+ \qquad \xi\in\widehat G,
+\]
+and write the dual group additively. Fourier inversion in
+\eqref{cub:B5-definition} gives
+\begin{equation}
+ B_5(f)=\sum_{\xi\in\widehat G}a_{2\xi}a_{-\xi}^{\,3}a_\xi.
+ \label{cub:B5-fourier}
+\end{equation}
+For real centered $f$ on an odd-order group,
+$a_{-\xi}=\overline{a_\xi}$, $a_0=0$, and the nonzero coefficients occur
+in distinct pairs. Therefore, with $\rho=\max_\xi|a_\xi|$,
+\begin{equation}
+ |B_5(f)|\leq\rho\|f\|_{U^2}^4
+             \leq2^{-1/4}\|f\|_{U^2}^5.
+ \label{cub:B5-bound}
+\end{equation}
+
+\begin{theorem}[Sharp real centered norm gap]
+\label{cub:norm-gap}
+Let $G$ have odd order and let $f:G\to\mathbb R$ have mean zero. Then
+\begin{equation}
+        \|f\|_{U^3}^{8}\geq2\|f\|_{U^2}^{8}.
+ \label{cub:gap}
+\end{equation}
+For nonzero $f$, equality holds exactly when
+\[
+                   f(x)=2\operatorname{Re}(c\xi(x))
+\]
+for a nontrivial character $\xi$ and a nonzero complex number $c$.
+\end{theorem}
+
+\begin{proof}
+We first use the Fourier identity
+\begin{align}
+ \|f\|_{U^3}^{8}&=\sum_{s,t\in\widehat G}|T(s,t)|^2,
+ \label{cub:fourier-duality}\\
+ T(s,t)&=\sum_{r\in\widehat G}
+       a_r\overline{a_{r+s}}\,\overline{a_{r+t}}a_{r+s+t}.
+ \nonumber
+\end{align}
+The Fourier coefficients are normalized, but all sums in
+\eqref{cub:fourier-duality} are unnormalized. To verify the identity, expand
+the original cube in Fourier series. The four orthogonality equations say
+precisely that its frequency variables form an affine cube:
+\[
+ r_v=r_{000}+v_1(r_{100}-r_{000})
+             +v_2(r_{010}-r_{000})+v_3(r_{001}-r_{000}).
+\]
+These equations are solved without division. Grouping the two parallel
+faces gives \eqref{cub:fourier-duality}.
+
+Put
+\[
+ \lambda_r=|a_r|^2,\qquad S=\sum_r\lambda_r^2=\|f\|_{U^2}^4,
+ \qquad M=\sum_r\lambda_r^4.
+\]
+Retain only the two coordinate axes in the nonnegative sum
+\eqref{cub:fourier-duality}. Since
+$T(0,t)=\sum_r\lambda_r\lambda_{r+t}$, this gives
+\begin{equation}
+ \|f\|_{U^3}^8\geq2\mathcal E(\lambda)-S^2,
+ \qquad
+ \mathcal E(\lambda)=\sum_{r+s=t+w}\lambda_r\lambda_s\lambda_t\lambda_w.
+ \label{cub:axes-energy}
+\end{equation}
+The subtraction corrects the double counting of the origin.
+
+The energy summands are nonnegative. Retain the union of three families:
+\[
+ \begin{array}{lll}
+ \mathcal A:&r=t,&s=w,\\
+ \mathcal B:&r=w,&s=t,\\
+ \mathcal C:&s=-r,&w=-t.
+ \end{array}
+\]
+Each family contributes $S^2$, because $\lambda$ is even. Each pairwise
+intersection contributes $M$. Their triple intersection has $2r=0$;
+odd group order and $\lambda_0=0$ make its contribution zero. Thus
+\[
+          \mathcal E(\lambda)\geq3S^2-3M,
+\]
+and hence
+\begin{equation}
+                 \|f\|_{U^3}^8\geq5S^2-6M.
+ \label{cub:strong-gap-intermediate}
+\end{equation}
+Group nonzero frequencies into pairs $\{r,-r\}$, and let $b_j$ denote
+$\lambda_r^2$ for a representative of each pair. Then
+\[
+ S=2\sum_jb_j,\qquad M=2\sum_jb_j^2\leq\frac{S^2}{2}.
+\]
+This proves \eqref{cub:gap}.
+
+Equality in \eqref{cub:gap} forces equality in the last inequality, so
+only one Fourier pair can be nonzero. Conversely, a parallelogram on a
+two-point subset of an odd-order group is degenerate in at least one
+direction. If the Fourier support is $\{\xi,-\xi\}$, all nonzero terms in
+\eqref{cub:fourier-duality} therefore lie on its coordinate axes. Directly,
+the two norm powers are $8|a_\xi|^8$ and $4|a_\xi|^8$, respectively.
+\end{proof}
+
+\begin{corollary}[Stability of the norm gap]
+\label{cub:gap-stability}
+Suppose that \(G\) has odd order.  If $f\ne0$, $0\leq\varepsilon<3$, and
+\[
+ \|f\|_{U^3}^8\leq(2+\varepsilon)\|f\|_{U^2}^8,
+\]
+then some nontrivial character $\xi$, with $c=\widehat f(\xi)$, satisfies
+\begin{equation}
+ \|f-2\operatorname{Re}(c\xi)\|_{U^2}
+       \leq(\varepsilon/3)^{1/4}\|f\|_{U^2}.
+ \label{cub:stability}
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+Equation~\eqref{cub:strong-gap-intermediate} implies
+$M/S^2\geq1/2-\varepsilon/6$. For the pair masses $p_j=2b_j/S$, we have
+$\sum_jp_j=1$ and $\sum_jp_j^2\geq1-\varepsilon/3$.
+Since $\max_jp_j\geq\sum_jp_j^2$, one pair carries at least
+$1-\varepsilon/3$ of the Fourier fourth-power mass. Removing it and using
+the Fourier formula for $U^2$ proves the claim.
+\end{proof}
+
+This is a statement of stability in $U^2$, not an assertion of approximation
+in $L^2$. A large amount of Fourier square mass can be spread over many
+small coefficients.
+
+\subsection{The sharp leading cube bound and its models}
+
+\begin{theorem}[Refined form of Lemma~3.10 in dimension three]
+\label{cub:main}
+Let $G$ have odd order, $f:G\to\mathbb R$ have mean zero, $\delta\geq0$,
+and $u=\|f\|_{U^3}$. Then
+\begin{align}
+ Q_3(\delta+f)\leq{}&\delta^8+6\sqrt2\,\delta^4u^4
+                 +2^{17/8}\delta^3u^5\nonumber\\
+                 &+28\delta^2u^6+8\delta u^7+u^8.
+ \label{cub:main-bound}
+\end{align}
+Consequently, if $A$ is $\alpha$-uniform of degree two in Gowers' convention,
+\begin{align}
+ Q_3(1_A)\leq{}&\delta^8+6\sqrt2\,\delta^4\alpha^{1/2}
+                 +2^{17/8}\delta^3\alpha^{5/8}\nonumber\\
+                 &+28\delta^2\alpha^{3/4}
+                   +8\delta\alpha^{7/8}+\alpha.
+ \label{cub:alpha-bound}
+\end{align}
+\end{theorem}
+
+\begin{proof}
+In \eqref{cub:exact-cubic-expansion}, use
+$v^4\leq u^4/\sqrt2$ from Theorem~\ref{cub:norm-gap} and
+\[
+ |B_5(f)|\leq2^{-1/4}v^5\leq2^{-7/8}u^5.
+\]
+The remainder bounds give \eqref{cub:main-bound}. Gowers' parameter
+satisfies $u^8\leq\alpha$, which yields \eqref{cub:alpha-bound}.
+\end{proof}
+
+The leading error at fixed density is now $\alpha^{1/2}$, with an optimal
+constant, in place of the $\alpha^{1/8}$ term in
+$(\delta+\alpha^{1/8})^8$. In higher dimensions, monotonicity and
+Theorem~\ref{cub:norm-gap} similarly improve the quartic term in
+Proposition~\ref{cub:quartic} to
+$P_d\delta^{q-4}u^4/\sqrt2$ for $d\geq3$; sharpness of that higher-dimensional
+constant is not established here.
+
+\begin{proposition}[An exact model for the leading constant]
+\label{cub:cosine}
+Let $p>8$ be prime and $f(x)=t\cos(2\pi x/p)$ on $\mathbb Z/p\mathbb Z$.
+Then
+\begin{align}
+ \|f\|_{U^2}^4&=t^4/8,\qquad \|f\|_{U^3}^8=t^8/32,\\
+ Q_3(\delta+f)&=\delta^8+\tfrac32\delta^4t^4+t^8/32
+               =\delta^8+6\sqrt2\,\delta^4u^4+u^8.
+ \label{cub:cosine-exact}
+\end{align}
+For $0<t\leq\min(\delta,1-\delta)$ this is a weight in $[0,1]$.
+\end{proposition}
+
+\begin{proof}
+The Fourier support is $\{1,-1\}$, with coefficients $t/2$. Odd-degree
+terms vanish, since an odd number of signs cannot sum to zero and $p>8$
+prevents modular aliasing. A six-set omits two distinct vertices. In a
+coordinate where those vertices differ, the selected set has exactly three
+ones, so no signed zero sum is possible there either.
+
+In the full eight-vertex term, the positive-sign four-set must have two ones
+in each coordinate. There are exactly eight choices: six unions of two
+opposite-vertex pairs, and the two parity tetrahedra. To see completeness,
+if one opposite pair occurs, the remaining two vertices must also be
+opposite; otherwise, reflecting a selected vertex to $000$ forces the other
+three to be $110,101,011$. Thus the full term is $8(t/2)^8=t^8/32$.
+The quartic term follows from Proposition~\ref{cub:quartic}.
+\end{proof}
+
+This proves that both the fourth power of $u$ and its coefficient
+$6\sqrt2\,\delta^4$ are optimal. Moreover, a family attaining this leading
+coefficient as $u\to0$ at fixed positive density must approach equality in
+Theorem~\ref{cub:norm-gap}. Corollary~\ref{cub:gap-stability} then concentrates
+its Fourier fourth-power mass on one conjugate pair.
+
+The next coefficient in \eqref{cub:main-bound} is also optimal over odd-order
+groups, but this assertion uses $3$-torsion. On $\mathbb Z/3\mathbb Z$,
+\begin{equation}
+ Q_3\bigl(\delta+t\cos(2\pi x/3)\bigr)
+ =\delta^8+\tfrac32\delta^4t^4+\tfrac12\delta^3t^5
+              +\tfrac12\delta^2t^6+t^8/32.
+ \label{cub:three-torsion-example}
+\end{equation}
+For a direct verification, put $A=\delta+t$, $B=\delta-t/2$. Among the
+$81$ cube parameters, the numbers with $k$ vertices equal to zero are
+\[
+ \begin{array}{c|rrrrr}
+ k&0&2&3&4&8\\\hline
+ \text{number}&8&32&16&24&1.
+ \end{array}
+\]
+These counts follow by separating the cases of zero, one, two, or three
+nonzero increments. The cube count is therefore
+$(8B^8+32A^2B^6+16A^3B^5+24A^4B^4+A^8)/81$; expansion gives
+\eqref{cub:three-torsion-example}. Since $u^8=t^8/32$, its quintic term is
+exactly $2^{17/8}\delta^3u^5$. This optimality is not asserted for large
+prime cyclic groups, where there is no $3$-torsion.
+
+\subsection{Without \texorpdfstring{$3$}{3}-torsion: a sharp fractional correction exponent}
+
+The distinction just observed leads to a further refinement. The fifth-order
+correlation requires a frequency and its double. A function near equality
+in the sharp norm gap concentrates on a pair; without $3$-torsion, doubling
+leaves that pair. Balancing the resulting loss and gain produces a fractional
+power.
+
+\begin{theorem}[A correction of order $u^{16/3}$]
+\label{cub:fractional}
+Suppose $|G|$ is coprime to $6$, $\mathbb E f=0$, $f$ is real, and
+$\delta>0$. With $u=\|f\|_{U^3}$,
+\begin{align}
+ Q_3(\delta+f)\leq{}&\delta^8+6\sqrt2\,\delta^4u^4
+                        +6\delta^{8/3}u^{16/3}\nonumber\\
+                      &+28\delta^2u^6+8\delta u^7+u^8.
+ \label{cub:fractional-bound}
+\end{align}
+The exponent $16/3$ cannot be increased after subtracting the sharp leading
+term. The coefficient $6$ is an explicit upper bound, not a claimed optimal
+constant. In the parameter $\alpha=u^8$, the correction has order
+$\alpha^{2/3}$.
+\end{theorem}
+
+\begin{proof}
+The zero function is immediate. Otherwise put $S=\|f\|_{U^2}^4$, choose
+a largest Fourier pair $\{\xi,-\xi\}$, and set
+\[
+ \rho=|a_\xi|,\qquad z=1-\frac{2\rho^4}{S},\qquad
+ D=zS=\sum_{r\notin\{\xi,-\xi\}}|a_r|^4.
+\]
+Here $0\leq z<1$. Since
+$M=\sum_r|a_r|^8\leq\rho^4S=(1-z)S^2/2$,
+\eqref{cub:strong-gap-intermediate} gives $u^8\geq(2+3z)S^2$.
+The convex function $g(z)=(1+3z/2)^{-1/2}$ lies below its chord on $[0,1]$,
+so
+\[
+ g(z)\leq1-(1-\sqrt{2/5})z\leq1-z/3.
+\]
+Consequently,
+\begin{equation}
+ 12\delta^4S\leq6\sqrt2\,\delta^4u^4
+                          -2\sqrt2\,\delta^4u^4z.
+ \label{cub:fractional-loss}
+\end{equation}
+
+There is no $3$-torsion, so $2\xi$ and $-2\xi$ are outside the selected
+pair. The two selected terms of \eqref{cub:B5-fourier} contribute at most
+$2\rho^4(D/2)^{1/4}$ in absolute value; the other terms contribute at most
+$\rho D$. Thus
+\begin{align*}
+ |B_5(f)|
+ &\leq2^{-1/4}S^{5/4}
+       \bigl((1-z)z^{1/4}+(1-z)^{1/4}z\bigr)\\
+ &\leq2^{3/4}S^{5/4}z^{1/4}
+ \leq2^{1/8}u^5z^{1/4}.
+\end{align*}
+Combine this with \eqref{cub:fractional-loss}. For $A,K>0$,
+\[
+ \sup_{z\geq0}\bigl(Kz^{1/4}-Az\bigr)
+       =\frac{3K^{4/3}}{4^{4/3}A^{1/3}}.
+\]
+Taking $A=2\sqrt2\,\delta^4u^4$ and $K=2^{25/8}\delta^3u^5$ makes the
+right side $6\delta^{8/3}u^{16/3}$. Inserting the remainder estimates from
+\eqref{cub:remainder67} proves \eqref{cub:fractional-bound}.
+\end{proof}
+
+\begin{proposition}[A two-frequency obstruction]
+\label{cub:two-frequency}
+Fix $0<\delta<1$ and a prime $p>16$. There are weights $W_u$ on
+$\mathbb Z/p\mathbb Z$, with mean $\delta$ and
+$\|W_u-\delta\|_{U^3}=u$, such that, as $u\downarrow0$,
+\begin{equation}
+ Q_3(W_u)-\delta^8
+ =6\sqrt2\,\delta^4u^4
+   +(9/4)^{1/3}\delta^{8/3}u^{16/3}+o_\delta(u^{16/3}).
+ \label{cub:two-frequency-asymptotic}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+For $f(x)=a\cos(2\pi x/p)+b\cos(4\pi x/p)$, with $a,b>0$, Fourier
+inversion gives
+\begin{equation}
+ \|f\|_{U^3}^8=\frac{a^8+6a^4b^4+b^8}{32},\qquad
+ \|f\|_{U^2}^4=\frac{a^4+b^4}{8},\qquad
+ B_5(f)=\frac{a^4b}{16}.
+ \label{cub:two-frequency-identities}
+\end{equation}
+In fact there is the complete identity
+\begin{align}
+ Q_3(\delta+f)
+ ={}&\delta^8+\tfrac32\delta^4(a^4+b^4)
+            +\tfrac12\delta^3a^4b+\tfrac32\delta^2a^4b^2
+             \nonumber\\
+    &+\frac{a^8+6a^4b^4+b^8}{32}.
+ \label{cub:two-frequency-complete}
+\end{align}
+Here is a finite counting proof of both this identity and the first formula
+in \eqref{cub:two-frequency-identities}. Apply the Fourier cube identity
+\eqref{cub:fourier-duality} to $\delta+f$. Its frequency support is contained
+in $\{-2,-1,0,1,2\}$, with coefficients $\delta,a/2,b/2$ at frequencies
+of absolute value $0,1,2$, respectively. Since $p>16$, the orthogonality
+equations have no modular aliasing, so the frequency variables are integer
+affine cubes in this five-point interval.
+
+Reflecting directions with negative increments makes all increments
+nonnegative; their sum is at most four. Enumerate their nonzero magnitudes,
+choose their coordinate positions and signs, and then choose the initial
+vertex between $-2$ and $2$ minus their sum. The possibilities are the empty
+list, the singletons $(1),(2),(3),(4)$, the pairs
+$(1,1),(1,2),(1,3),(2,2)$, and the triples $(1,1,1),(1,1,2)$.
+If $n_j$ is the number of vertices with frequency of absolute value $j$,
+this gives
+\[
+ \begin{array}{c|r}
+ (n_0,n_1,n_2)&\text{number of frequency cubes}\\\hline
+ (8,0,0)&1\\
+ (4,4,0)&24\\
+ (4,0,4)&24\\
+ (3,4,1)&16\\
+ (2,4,2)&96\\
+ (0,8,0)&8\\
+ (0,4,4)&48\\
+ (0,0,8)&8
+ \end{array}
+\]
+Each row contributes its count times
+$\delta^{n_0}(a/2)^{n_1}(b/2)^{n_2}$, proving
+\eqref{cub:two-frequency-complete}. Setting $\delta=0$ proves the stated
+$U^3$ formula. The remaining two formulas in
+\eqref{cub:two-frequency-identities} follow from the Fourier fourth moment
+and \eqref{cub:B5-fourier}.
+
+Let $c=(\sqrt2/6)^{1/3}$ and choose
+\[
+ b=c\delta^{-1/3}u^{4/3},\qquad
+ a^4=-3b^4+\sqrt{32u^8+8b^8}.
+\]
+For small $u$ this is positive, $\delta+f$ takes values in $[0,1]$, and
+\eqref{cub:two-frequency-identities} gives $\|f\|_{U^3}=u$ exactly. Since
+\[
+ a^4=4\sqrt2\,u^4-3b^4+O(b^8/u^4),
+\]
+equation \eqref{cub:two-frequency-complete} gives
+\begin{align*}
+ Q_3(\delta+f)-\delta^8
+  ={}&6\sqrt2\,\delta^4u^4
+      -3\delta^4b^4+2\sqrt2\,\delta^3u^4b+O_\delta(u^6).
+\end{align*}
+Substitution of $b$ produces the coefficient
+$-3c^4+2\sqrt2c=(9/4)^{1/3}$, proving
+\eqref{cub:two-frequency-asymptotic}.
+\end{proof}
+
+For the local extremal problem over groups of order coprime to $6$, these
+results determine the first coefficient and the next exponent. More
+precisely, subtract $6\sqrt2\,\delta^4u^4$ from the supremum of the cube
+excess over weights of mean $\delta$ with centered $U^3$ norm at most $u$,
+and divide by $\delta^{8/3}u^{16/3}$. The liminf of this normalized correction
+is at least $(9/4)^{1/3}$, and its limsup is at most $6$. Proving convergence
+and determining the limit remain focused open questions; existence of an
+asymptotic second coefficient is not asserted here.
+
+\subsection{Sharpness for indicator sets}
+
+\begin{proposition}[Rounding the sharpness examples]
+\label{cub:rounding}
+For every fixed $0<\delta<1$, there are subsets $A_j$ of prime cyclic groups,
+with densities $\delta_j\to\delta$ and
+$\alpha_j=\|1_{A_j}-\delta_j\|_{U^3}^8\to0$, such that
+\begin{equation}
+ Q_3(1_{A_j})-\delta_j^8
+       \sim6\sqrt2\,\delta^4\alpha_j^{1/2}.
+ \label{cub:indicator-sharpness}
+\end{equation}
+The obstruction to improving the exponent $16/3$ also persists for indicator
+sets on growing prime cyclic groups.
+\end{proposition}
+
+\begin{proof}
+Independently include each $x\in\mathbb Z/p\mathbb Z$ with probability
+$w(x)$, where $w$ is a prescribed weight of mean $\delta$. At most
+$\binom{2^d}{2}/p$ of the normalized cube parameters identify two distinct
+vertices: each equality is one nontrivial linear equation with probability
+$1/p$. Away from these parameters, independence makes the expected product
+of indicators equal the product of their probabilities. The same argument
+applies to the centered variables $1_A(x)-\delta$. Thus the expectation
+error in the centered cube polynomial is at most
+$2\binom{2^d}{2}/p$.
+
+Changing one inclusion decision changes a normalized cube polynomial by at
+most $2^d/p$. Indeed, telescope the product over its vertex occurrences;
+each occurrence has $p^d$ possible remaining parameters, and the other
+factors are bounded by one. The bounded-difference variance inequality
+therefore gives variance $O_d(1/p)$. The empirical density has variance at
+most $1/(4p)$. Replacing $\delta$ by the empirical density $\delta_A$ changes
+the centered cube polynomial by at most $2^d|\delta_A-\delta|$. Consequently,
+for sufficiently large $p$ there is a realization simultaneously
+approximating the prescribed density, cube count, and centered cube power
+to any specified positive error.
+
+Apply this to the cosine weights of Proposition~\ref{cub:cosine}, with
+$t_j\to0$, and choose primes $p_j$ sufficiently large that all errors are
+$o(t_j^8)$. Then
+\[
+ \alpha_j=t_j^8/32+o(t_j^8),\qquad
+ Q_3(1_{A_j})-\delta_j^8
+       =\tfrac32\delta^4t_j^4+o(t_j^4),
+\]
+which proves \eqref{cub:indicator-sharpness}.
+
+For the two-frequency example, choose approximation errors
+$o(u^{28/3})$. The error in replacing its prescribed $u^4$ by the rounded
+value is then $o(u^{16/3})$, since $u^4$ is the square root of the centered
+eighth power. The density and cube-count errors are smaller as well.
+Thus \eqref{cub:two-frequency-asymptotic} transfers with its nonzero
+$u^{16/3}$ term. The $3$-torsion quintic example can instead be rounded on
+$\mathbb Z/3\mathbb Z\times\mathbb Z/p\mathbb Z$; it does not give
+quintic sharpness on prime cyclic groups.
+\end{proof}
+
+
+% ===== progressions =====
+\section{Density-weighted progression counting}
+\label{sec:progressions}
+
+The expansion in Gowers's Corollary~3.3 uses every subset of the set of
+positions, producing a factor bounded by \(2^k\).  An ordered telescoping
+expansion gives a smaller bound and keeps the density factors.  This
+section first states the precise group hypothesis needed for the
+Cauchy--Schwarz argument.
+
+\begin{definition}
+Integers \(c_1,\ldots,c_m\) are \emph{admissible on \(G\)} if
+the map \(x\mapsto(c_i-c_j)x\) is an automorphism of \(G\) for every
+\(i\ne j\).  For functions \(a_i:G\to\C\), write
+\[
+ \Lambda_{\mathbf c}(a_1,\ldots,a_m)
+  =\E_{x,y}\prod_{i=1}^m a_i(x+c_i y).
+\]
+\end{definition}
+
+For \(G=\Z/N\Z\), admissibility is equivalent to
+\(\gcd(c_i-c_j,N)=1\) for all pairs.  Consecutive slopes
+\(0,1,\ldots,k-1\) are therefore admissible whenever
+\(\gcd(N,(k-1)!)=1\).  Primality is sufficient but unnecessary.
+
+\begin{lemma}[Generalized von Neumann bound]\label{prog:gvn}
+Suppose \(m\geq2\), the slopes are admissible, and \(|a_i|\leq1\).
+For every \(j\),
+\[
+ |\Lambda_{\mathbf c}(a_1,\ldots,a_m)|
+ \leq \norm{a_j}_{U^{m-1}}.
+\]
+\end{lemma}
+
+\begin{proof}
+Relabel so that the target is \(a_m\).  For \(m=2\), the map
+\((x,y)\mapsto(x+c_1y,x+c_2y)\) is a bijection: its inverse uses the
+automorphism \(c_2-c_1\).  The average factors as
+\((\E a_1)(\E a_2)\), giving the assertion.
+
+Assume \(m>2\) and the result for \(m-1\).  Replace \(x\) by
+\(x-c_1y\), and apply Cauchy--Schwarz in \(x\), using \(|a_1|\leq1\).
+Writing \(d_i=c_i-c_1\), this gives
+\[
+ |\Lambda_{\mathbf c}|^2
+ \leq \E_x\left|\E_y\prod_{i=2}^m a_i(x+d_i y)\right|^2
+ =\E_h\E_{x,y}
+    \prod_{i=2}^m a_i(x+d_i y)
+      \overline{a_i(x+d_i y+d_i h)}.
+\]
+For each \(h\), apply the inductive assertion to the \(m-1\)
+derivative functions.  Differences of the new slopes are still
+automorphisms.  The triangle inequality bounds the last expression by
+\[
+ \E_h\norm{\Delta_{d_mh}a_m}_{U^{m-2}},
+ \qquad \Delta_ta(x)=a(x)\overline{a(x+t)}.
+\]
+The map \(h\mapsto d_mh\) is a bijection.  H\"older's inequality and
+the derivative identity for Gowers norms give
+\[
+ \E_h\norm{\Delta_{d_mh}a_m}_{U^{m-2}}
+ \leq
+ \left(\E_t\norm{\Delta_ta_m}_{U^{m-2}}^{2^{m-2}}\right)^{1/2^{m-2}}
+ =\norm{a_m}_{U^{m-1}}^2.
+\]
+Taking square roots completes the induction.
+\end{proof}
+
+\begin{theorem}[Telescoping with the density factors retained]
+\label{prog:telescoping}
+Let \(k\geq3\), let the slopes be admissible on \(G\), and let
+\(a_i:G\to[0,1]\) have means \(\delta_i\).  Put
+\(b_i=a_i-\delta_i\) and \(u_i=\norm{b_i}_{U^{i-1}}\) for \(i\geq3\).
+Then
+\[
+ \left|\Lambda_{\mathbf c}(a_1,\ldots,a_k)-\prod_{i=1}^k\delta_i\right|
+ \leq
+ \sum_{j=3}^k
+    \left(\prod_{i=j+1}^k\delta_i\right)u_j.
+ \tag{\(\ast\)}\label{prog:weightedbound}
+\]
+Every permutation of the positions gives a valid version, with the
+appropriate Gowers norm of the function in the \(j\)-th position.
+\end{theorem}
+
+\begin{proof}
+Successively write \(a_j=\delta_j+b_j\), starting with \(j=k\) and
+ending with \(j=3\).  Multilinearity gives the exact identity
+\[
+ \Lambda_{\mathbf c}(a_1,\ldots,a_k)-\prod_i\delta_i
+ =
+ \sum_{j=3}^k
+ \left(\prod_{i=j+1}^k\delta_i\right)
+ \Lambda_{c_1,\ldots,c_j}(a_1,\ldots,a_{j-1},b_j).
+\]
+The remaining two-function average is exactly \(\delta_1\delta_2\)
+by pairwise admissibility.  Each term is bounded by \(u_j\), by
+Lemma~\ref{prog:gvn}; all other functions in that term are \(1\)-bounded.
+Taking absolute values proves the result.  Relabeling preserves
+admissibility, proving the last assertion.
+\end{proof}
+
+Under the source's hypotheses \(u_j\leq\varepsilon\), the new error is
+\[
+ \varepsilon\sum_{j=3}^k\prod_{i=j+1}^k\delta_i
+ \leq(k-2)\varepsilon.
+\]
+This is a direct replacement for \(2^k\varepsilon\), in the same
+normalization.  When all densities equal \(\delta\), the factor is
+\[
+ S_{k-2}(\delta):=\sum_{r=0}^{k-3}\delta^r
+ =\begin{cases}
+ (1-\delta^{k-2})/(1-\delta),&\delta\ne1,\\
+ k-2,&\delta=1.
+ \end{cases}
+\]
+In particular it is at most \(1/(1-\delta)\) for \(0\leq\delta<1\),
+independently of \(k\), and the inequality is strict when \(0<\delta<1\).
+
+\subsection{Choosing the order of elimination}
+
+The preceding result has a small useful optimization principle.  Suppose
+one has upper bounds \(u_i(s)\geq\norm{b_i}_{U^s}\), for all
+\(2\leq s\leq k-1\).  For a subset \(S\) of positions define
+\[
+ D(S)=0\quad(|S|\leq2),\qquad
+ D(S)=\min_{i\in S}\bigl(u_i(|S|-1)+\delta_iD(S\setminus\{i\})\bigr)
+ \quad(|S|\geq3).
+\]
+Induction on \(|S|\) shows that \(D(S)\) bounds the counting error for
+the subsystem indexed by \(S\).  Moreover it is precisely the smallest
+bound obtained by this family of telescoping estimates.  Computing the
+recurrence requires at most \(k2^k\) elementary comparisons, once the
+norm bounds have been supplied.
+
+If a single upper bound \(v_i\) is used for each function at every
+remaining order, there is also a simple exchange rule.  For two successive
+eliminations \(i,j\), their contribution before the common later tail is
+either \(v_i+\delta_i v_j\) or \(v_j+\delta_jv_i\).
+Thus \(i\) should precede \(j\) exactly when
+\[
+ v_i(1-\delta_j)\leq v_j(1-\delta_i).
+\]
+For a fixed pair of positions to retain, sort the other positions by
+\(v_i/(1-\delta_i)\), with the degenerate cases interpreted through the
+displayed inequality.  One can compare the \(\binom{k}{2}\) possible
+retained pairs.  This optimizes the stated bound, and is not a claim of
+an optimal counting inequality among all methods.
+
+\subsection{An explicit supersaturation consequence}
+
+\begin{corollary}[A sharper uniformity threshold]\label{prog:super}
+Let \(A\subset G\) have density \(0<\delta\leq1\), and suppose that
+the consecutive slopes \(0,\ldots,k-1\) are admissible, with \(k\geq3\).
+Put \(u=\norm{1_A-\delta}_{U^{k-1}}\).  The number \(T_k^*(A)\)
+of ordered \(k\)-term progressions with nonzero difference satisfies
+\begin{equation}\label{prog:nonconstant}
+ T_k^*(A)\geq
+ N^2\bigl(\delta^k-uS_{k-2}(\delta)\bigr)-\delta N.
+\end{equation}
+In particular, if
+\[
+ u\leq\frac{\delta^k}{2S_{k-2}(\delta)}
+ \quad\hbox{and}\quad N>2\delta^{1-k},
+\]
+then \(T_k^*(A)>0\).
+\end{corollary}
+
+\begin{proof}
+Norm monotonicity bounds every \(U^{j-1}\)-norm in
+Theorem~\ref{prog:telescoping} by \(u\).  There are \(N^2\) ordered
+choices of start and difference.  Exactly \(|A|=\delta N\) of the
+counted progressions have difference zero, so subtracting them gives
+the asserted bound.  The two displayed assumptions make its
+right-hand side positive.
+\end{proof}
+
+Admissibility also ensures that a progression with nonzero difference
+has \(k\) distinct entries: a repetition would give
+\((i-j)y=0\) with \(0<|i-j|<k\), contrary to the automorphism hypothesis.
+In the paper's uniformity parameter, the sufficient condition becomes
+\[
+ \alpha\leq
+ \left(\frac{\delta^k}{2S_{k-2}(\delta)}\right)^{2^{k-1}}.
+\]
+For fixed \(k\) and small \(\delta\), its density exponent is
+\(k2^{k-1}\), compared with \(k2^k\) in the sufficient condition
+\((\delta/2)^{k2^k}\) displayed in the inspected version of
+Corollary~3.6.  This comparison concerns the modular progression step.
+
+\begin{lemma}[Lifting from a short interval]\label{prog:lift}
+Let \(A\subset\{0,\ldots,n-1\}\) be viewed in \(\Z/N\Z\), with
+\(2(n-1)<N\).  If \(A\) contains a nonconstant modular progression
+of length \(k\geq3\), then it contains an ordinary integer progression
+of length \(k\) and positive difference.
+\end{lemma}
+
+\begin{proof}
+Let \(x_0,\ldots,x_{k-1}\in\{0,\ldots,n-1\}\) be the representatives.
+Each integer \(x_i+x_{i+2}-2x_{i+1}\) is divisible by \(N\) and has
+absolute value at most \(2(n-1)<N\); it is therefore zero.
+Successive integer differences are equal.  The common difference is
+nonzero because the modular progression is nonconstant.  Reverse the
+sequence if that integer difference is negative.
+\end{proof}
+
+The lemma specifies the extra hypothesis needed to draw an integer
+conclusion.  A modular progression in an unrestricted subset of
+\(\Z/N\Z\) can wrap around, so that conclusion should not be silently
+inserted into Corollary~\ref{prog:super}.
+
+\begin{remark}[Why invertibility cannot simply be omitted]
+For \(G=\Z/2\Z\), take slopes \(0,1,2\),
+\(a_3(0)=1\), \(a_3(1)=\mathrm i\),
+\(a_1=\overline{a_3}\), and \(a_2=1\).
+The forms at positions \(0\) and \(2\) coincide, so \(\Lambda=1\).
+Both normalized Fourier coefficients of \(a_3\) have modulus
+\(2^{-1/2}\), whence \(\norm{a_3}_{U^2}=2^{-1/4}<1\).
+Thus the stated generalized von Neumann inequality itself fails
+without an algebraic hypothesis.
+The obstruction is an algebraic dependence, and the admissibility
+condition states exactly what the present proof uses.
+\end{remark}
+
+
+% ===== patterns =====
+\section{Floor patterns and efficient extraction of a progression profile}
+\label{pat:section}
+
+Corollaries 17.5 and 17.6 of Gowers's paper bound the number of functions
+obtained by taking integer parts of linear expressions on a Boolean
+cube~\cite{Gowers2001}. These estimates control the number of ways that a
+cube can meet a partition into arithmetic progressions. We isolate the
+fractional parts of the coefficients, determine the exact dependence on
+their integer ranges, and prove matching quadratic orders of magnitude
+for the logarithm of the remaining complexity. A second observation
+reduces the loss incurred when selecting one progression profile.
+
+The edited repository already uses a joint hyperplane count in its proof
+of Proposition 17.7~\cite{ProveIt}. The refinements below go further by
+separating integer and fractional parameters and distinguishing the
+number of globally possible profiles from the number possible at a fixed
+slope. The arguments establish the stated bounds; they do not establish
+historical priority for these elementary refinements.
+
+\subsection{Fractional patterns and their boundary values}
+
+Write $\Omega_k=\{0,1\}^k$ and put
+\[
+ \begin{split}
+ F_k&=\#\left\{\bigl(\lfloor\epsilon\cdot t\rfloor\bigr)_{epsilon\in\Omega_k}:
+                  t\in[0,1)^k\right\},\\
+ A_k&=\#\left\{\bigl(\lfloor t_0+\epsilon\cdot t\rfloor\bigr)_{epsilon\in\Omega_k}:
+                  (t_0,t)\in[0,1)^{k+1}\right\}.
+ \end{split}
+\]
+Set $F_0=A_0=1$, and define
+\[
+ R_d(H)=\sum_{j=0}^d\binom Hj,
+ \qquad H_k=(k-2)2^{k-1}+1,
+ \qquad Q_k=k2^{k-1},
+\]
+where $\binom Hj=0$ for $j>H$.
+
+\begin{lemma}[Boundary removal]\label{pat:boundary}
+Every pattern counted by $F_k$ or $A_k$ has a representative in the open
+parameter cube which lies on none of its nonconstant integer-threshold
+hyperplanes.
+\end{lemma}
+\begin{proof}
+Add a sufficiently small positive multiple of the all-ones vector to
+the parameters. Every nonconstant form under consideration increases
+strictly. An integer value moves into the interior of the same floor
+interval; a noninteger value remains in its floor interval if the step
+is sufficiently small. There are finitely many forms and every coordinate
+is initially less than $1$, so one positive step works for all forms
+and coordinates. The identically zero form in the definition of $F_k$
+requires no adjustment.
+\end{proof}
+
+\begin{theorem}[Quadratic order of fractional complexity]\label{pat:bounds}
+For every $k\ge1$,
+\begin{equation}\label{pat:two-sided}
+ 2^{k(k-1)/2}\le F_k\le R_k(H_k),
+ \qquad
+ \prod_{j=0}^{k-1}(2^j+1)\le A_k\le R_{k+1}(Q_k).
+\end{equation}
+Consequently $\log_2 F_k=\Theta(k^2)$ and
+$\log_2 A_k=\Theta(k^2)$. In particular,
+\begin{equation}\label{pat:simple-upper}
+ F_k\le e^k2^{k(k-1)}\quad(k\ge3),
+ \qquad
+ A_k\le e^{k+1}2^{k^2-1}\quad(k\ge2).
+\end{equation}
+\end{theorem}
+\begin{proof}
+For a nonempty subset $S\subseteq\{1,\ldots,k\}$ of size $s$, the form
+$\sum_{i\in S}t_i$ crosses precisely the possible thresholds
+$1,\ldots,s-1$ inside the open cube. The resulting arrangement has
+\[
+ \sum_{s=1}^k\binom ks(s-1)
+   =k2^{k-1}-(2^k-1)=H_k
+\]
+hyperplanes. A pattern is constant in each chamber. Its strict feasible
+region is an intersection of open halfspaces and is therefore convex,
+so a single pattern cannot occupy two chambers. Lemma~\ref{pat:boundary}
+also accounts for all patterns originally attained on boundaries.
+Thus $F_k$ is the number of chambers meeting the open cube. The standard
+arrangement bound, also stated as Lemma 17.4 in~\cite{Gowers2001}, gives
+$F_k\le R_k(H_k)$.
+
+With an intercept, the form $t_0+\sum_{i\in S}t_i$ has thresholds
+$1,\ldots,s$, and there are $Q_k=\sum_s s\binom ks$ relevant
+hyperplanes in dimension $k+1$. This gives the bound for $A_k$.
+For $H\ge d\ge1$, $R_d(H)\le(eH/d)^d$: apply
+$(1+u)^H\le e^{Hu}$ with $u=d/H$, observing that
+$u^j\ge u^d$ for $j\le d$. Applying this with $H_k/k\le2^{k-1}$
+and $Q_k/(k+1)\le2^{k-1}$ proves~\eqref{pat:simple-upper}.
+
+For the lower bound, fix one pattern counted by $F_{k-1}$. Its region
+contains a nonempty open set. Choose a representative in that set whose
+$2^{k-1}$ subset sums have pairwise distinct fractional parts. Such a
+choice is possible because the prohibited equalities are finitely many
+proper hyperplanes
+\[
+ \sum_i(\epsilon_i-\epsilon_i')t_i=j,
+ \qquad \epsilon\ne\epsilon',\quad j\in\mathbb Z.
+\]
+Only finitely many $j$ can occur in the bounded parameter cube.
+In particular, no nonempty subset sum has fractional part zero.
+As $t_k$ varies through $(0,1)$, each nonempty old subset sum produces
+one jump, at $1-\{\sum_{i\in S}t_i\}$. The $2^{k-1}-1$ jump locations
+are distinct, and hence there are $2^{k-1}$ different extension patterns.
+Extensions of different old patterns remain different on the face
+$\epsilon_k=0$. Therefore
+$F_k\ge2^{k-1}F_{k-1}$, which proves the first lower bound.
+
+For $A_k$, choose an old representative for which the $2^{k-1}$ affine
+sums $t_0+\sum_{i\in S}t_i$ have distinct nonzero fractional parts.
+Varying $t_k$ now gives $2^{k-1}$ distinct jumps and
+$2^{k-1}+1$ extensions. Thus
+$A_k\ge(2^{k-1}+1)A_{k-1}$, proving the second lower bound.
+\end{proof}
+
+\subsection{Exact dependence on integer ranges}
+
+\begin{theorem}[Integer-part scaling]\label{pat:scaling}
+Let $a_i<b_i$ be integers and $m_i=b_i-a_i$. The number of functions
+\[
+ \epsilon\longmapsto\left\lfloor\sum_{i=1}^k\epsilon_i\alpha_i\right\rfloor,
+ \qquad \alpha_i\in(a_i,b_i),
+\]
+is exactly $F_k\prod_i m_i$. In particular, the count in Gowers's
+Corollary 17.5 is exactly $(2r)^kF_k$ for a positive integer $r$.
+
+Let $F_{k,M}$ count the fractional patterns in the definition of $F_k$
+after reduction modulo a positive integer $M$. The corresponding number
+of functions with values in $\mathbb Z/M\mathbb Z$ is exactly
+\begin{equation}\label{pat:modular-exact}
+ F_{k,M}\prod_{i=1}^k\min(m_i,M).
+\end{equation}
+Moreover, $F_{k,M}=F_k$ whenever $M\ge k$.
+\end{theorem}
+\begin{proof}
+Write $\alpha_i=n_i+t_i$, where $n_i=\lfloor\alpha_i\rfloor$ and
+$0\le t_i<1$. Then
+\[
+ \lfloor\epsilon\cdot\alpha\rfloor
+   =\epsilon\cdot n+\lfloor\epsilon\cdot t\rfloor.
+\]
+The singleton values recover $n_i$ exactly, since
+$\lfloor t_i\rfloor=0$. Subtracting their linear contribution recovers
+the fractional pattern. Conversely, every fractional pattern has an
+interior representative by Lemma~\ref{pat:boundary}; this representative
+works in every integer cell, including those with an excluded left
+endpoint. There are precisely $\prod_i m_i$ integer choices.
+
+Modulo $M$, the same singleton argument recovers the residues of the
+$n_i$, and each interval of $m_i$ consecutive integers has
+$\min(m_i,M)$ residues. Subtracting these residues recovers the
+fractional residue pattern, proving~\eqref{pat:modular-exact}.
+Finally, every fractional floor belongs to $\{0,\ldots,k-1\}$;
+reduction modulo $M\ge k$ is injective on this range.
+\end{proof}
+
+For arbitrary real endpoints, the same argument gives the upper bound
+$F_k\prod_i(\lceil b_i\rceil-\lfloor a_i\rfloor)$; equality need
+not hold because the extreme integer cells may be truncated.
+
+\begin{corollary}[Affine modular bound]\label{pat:affine}
+With the integer endpoints of Theorem~\ref{pat:scaling}, let
+$\alpha_0$ vary over all real numbers. The number of functions
+\[
+ \epsilon\longmapsto
+ \lfloor\alpha_0+\epsilon\cdot\alpha\rfloor\pmod M
+\]
+is at most $M A_k\prod_i\min(m_i,M)$. The number of equivalence classes
+under addition of a common constant is at most
+$A_k\prod_i\min(m_i,M)$. Both assertions remain valid if every
+slope interval $(a_i,b_i)$ is replaced by $[a_i,b_i]$.
+\end{corollary}
+\begin{proof}
+Writing $\alpha_0=n_0+t_0$ gives
+\[
+ \lfloor\alpha_0+\epsilon\cdot\alpha\rfloor
+  =n_0+\epsilon\cdot n+\lfloor t_0+\epsilon\cdot t\rfloor.
+\]
+Choose $n_0\pmod M$, the allowed slope residues, and one of the $A_k$
+fractional patterns. This proves the upper bound. Translation by a
+constant acts freely, as seen at $\epsilon=0$, and all $M$ translates
+occur by changing $n_0$.
+
+To handle closed slope intervals, move each endpoint slope inward with
+velocity $d_i=1$ at $a_i$ and $d_i=-1$ at $b_i$, leaving other slopes
+fixed. Move $t_0$ upward with velocity $k+1$. Every affine form has
+strictly positive velocity $k+1+\epsilon\cdot d\ge1$. A sufficiently
+small movement preserves every floor and keeps $t_0<1$, while moving
+all slope endpoints into the open intervals.
+\end{proof}
+
+In the symmetric case, Corollary~\ref{pat:affine} replaces the bound
+$M2^{2r(k+1)^3}$ in Gowers's Corollary 17.6 by
+\[
+ M\min(2r,M)^k R_{k+1}(k2^{k-1}).
+\]
+The dependence on $r$ is polynomial, and the exponent governing the
+fractional complexity is quadratic in $k$. Theorem~\ref{pat:bounds}
+shows that this quadratic order cannot be reduced to $o(k^2)$.
+
+\subsection{Small cases with exact certificates}
+
+The first values are
+\begin{center}
+\begin{tabular}{c|rrr}
+$k$ & $1$ & $2$ & $3$\\\hline
+$F_k$ & $1$ & $2$ & $10$\\
+$A_k$ & $2$ & $6$ & $38$
+\end{tabular}
+\end{center}
+For example, in the definition of $F_3$ the three pair-sum threshold
+indicators attain all eight Boolean patterns. If all three are zero,
+the total floor can be $0$ or $1$; if all are one, it can be $1$ or $2$.
+For each of the other six patterns, the total floor is $1$. This gives
+$F_3=2+2+6=10$. Similarly, the two singleton values for $A_2$ give two
+possibilities for the pair value when they agree and one when they
+disagree, giving $A_2=6$.
+
+The accompanying files \texttt{pattern\_census.py} and
+\texttt{pattern\_census.json} certify all six counts. The arrangement is
+constructed one hyperplane at a time, and both possible children of
+every surviving chamber are checked. For a system of strict inequalities
+$Cx<b$, a feasible branch has a rational point satisfying all inequalities
+strictly. An infeasible branch has rational weights $y\ge0$ satisfying
+\[
+ \sum_i y_i=1,\qquad C^{\mathsf T}y=0,\qquad b^{\mathsf T}y\le0.
+\]
+Multiplying the strict inequalities by these weights would yield
+$0<b^{\mathsf T}y\le0$, a contradiction. All 450 branch certificates are
+checked with exact fractions. Numerical linear programming proposes the
+certificates during generation; the verifier itself uses only Python's
+standard library and runs with
+\begin{verbatim}
+python -S pattern_census.py --verify pattern_census.json
+\end{verbatim}
+
+\subsection{Few profiles at a fixed slope}
+
+\begin{lemma}[Intercept profiles]\label{pat:fixed-slope}
+For fixed $c\in\mathbb R^k$, the functions
+\[
+ \epsilon\longmapsto\lfloor\beta+\epsilon\cdot c\rfloor,
+ \qquad 0\le\beta<1,
+\]
+take at most $2^k$ different values. The same bound holds after reduction
+modulo $M$. Over the integers the count is exactly one plus the number
+of distinct nonzero fractional parts among the nonempty subset sums
+$\epsilon\cdot c$.
+\end{lemma}
+\begin{proof}
+Each noninteger subset sum gives one jump in $(0,1)$, at
+$1-\{\epsilon\cdot c\}$. Integer subset sums give no interior jump.
+There are at most $2^k-1$ distinct jump locations. The floor function is
+right-continuous, so a jump does not create an extra isolated pattern.
+Reduction modulo $M$ can only identify patterns. Generic slopes make all
+subset sums distinct modulo $1$, showing that the integer bound is sharp.
+\end{proof}
+
+\begin{lemma}[Extraction from locally few classes]\label{pat:sparse}
+Let $z_{s,a}$ be complex numbers on finite index sets, with each pair
+$(s,a)$ assigned one of $L$ labels. Suppose that at most $K$ labels occur
+for each fixed $a$. Set
+\[
+ E=\sum_a\left|\sum_s z_{s,a}\right|^2,
+ \qquad
+ E_j=\sum_a\left|\sum_{s:\,j(s,a)=j}z_{s,a}\right|^2.
+\]
+Then $E\le K\sum_jE_j$, and some label satisfies $E_j\ge E/(KL)$.
+\end{lemma}
+\begin{proof}
+For each $a$, apply Cauchy--Schwarz to its at most $K$ class sums.
+Sum over $a$, then average over the $L$ labels.
+\end{proof}
+
+\subsection{A quantitative local phase-extraction statement}
+
+Here is a precise form of the improvement at the stage of Proposition
+17.7. For a function $u$ on $G=\mathbb F_p$, write
+\[
+ \mathcal U_s(u)=
+ \sum_{x,h_1,\ldots,h_s\in G}
+ \prod_{\omega\in\Omega_s}
+ \mathcal C^{|\omega|}u(x-\omega\cdot h),
+\]
+where $\mathcal C$ denotes complex conjugation. This quantity is
+nonnegative; it is $p^{s+1}\|u\|_{U^s}^{2^s}$. We use the usual
+Gowers--Cauchy--Schwarz inequality for its mixed version
+\cite[Lemma 3.8]{Gowers2001}.
+
+\begin{theorem}[Local extraction with a quadratic exponential loss]
+\label{pat:local}
+Let $k\ge1$, let $p>k+1$ be prime, and let
+$m=2h+1>3k$ satisfy $m\le\sqrt p$. Put
+$I=\{-h,\ldots,h\}\subseteq G$. Let $r\in G^k$, let
+$\tau:G^k\to G$ be a multi-affine polynomial, and let $f:G\to\mathbb C$.
+For $\epsilon\in\Omega_k$, put
+$f_\epsilon(s)=f(s-\epsilon\cdot r)$. Suppose $\alpha>0$ and
+\begin{equation}\label{pat:hypothesis}
+ \sum_{a\in I^k}
+ \left|\sum_{s\in G}e_p(-s\tau(a))
+      \prod_{\epsilon\in\Omega_k}
+       \mathcal C^{|\epsilon|}f_\epsilon(s-\epsilon\cdot a)
+ \right|^2
+ \ge\alpha p^2m^k,
+ \qquad e_p(t)=\exp(2\pi i t/p).
+\end{equation}
+Set
+\[
+ q=\lceil h/k\rceil,\quad M=\lfloor p/q\rfloor,
+ \quad B_k=(2k)^kR_{k+1}(k2^{k-1}).
+\]
+There is a polynomial $P$ of degree at most $k+1$ and a partition
+$(R_i)_{i\in\mathbb Z/M\mathbb Z}$ into modular arithmetic progressions
+of lengths $q$ or $q+1$, each at least $m/(3k)$, such that
+\begin{equation}\label{pat:energy-conclusion}
+ \sum_i\mathcal U_{k+1}\bigl(1_{R_i}f e_p(-P)\bigr)
+ \ge\frac{\alpha p^2m^k}{2^kB_kM}
+ \ge\frac{\alpha}{9k^2\,2^kB_k}\,m^{k+2}M.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Put $w=p/M$. Since $q\le\sqrt p$, division $p=qM+r_0$ gives
+$0\le r_0<q\le M$. The intervals
+\[
+ Q_i=\{x\in\{0,\ldots,p-1\}:iw\le x<(i+1)w\},
+ \qquad 0\le i<M,
+\]
+therefore form a partition with lengths $q$ or $q+1$. Also
+$w\ge q\ge h/k\ge m/(3k)$, where the last inequality follows from
+$h=(m-1)/2$ and $m\ge3$.
+
+For each $(s,a)$, the unique progression profile of its cube is
+\[
+ j_{s,a}(\epsilon)
+   =\left\lfloor s/w-\epsilon\cdot a/w\right\rfloor\pmod M.
+\]
+This formula is valid across modular wraparound because $p/w=M$.
+Normalize by subtracting $j_{s,a}(0)$. The resulting profile has
+intercept $\{s/w\}$ and slopes $-a_i/w\in[-k,k]$.
+Corollary~\ref{pat:affine} gives at most $L\le B_k$ normalized
+profiles globally. Lemma~\ref{pat:fixed-slope} gives at most $2^k$ for
+each fixed $a$.
+
+Apply Lemma~\ref{pat:sparse} to the integrand
+in~\eqref{pat:hypothesis}. There is a normalized profile
+$j:\Omega_k\to\mathbb Z/M\mathbb Z$ whose class sum has squared
+energy at least $\alpha p^2m^k/(2^kL)$. Write this class sum as a sum
+over its $M$ translates. A further Cauchy--Schwarz inequality gives
+\begin{equation}\label{pat:class-energy}
+ \sum_i\sum_{a\in I^k}|T_i(a)|^2
+ \ge\frac{\alpha p^2m^k}{2^kLM},
+\end{equation}
+where
+\[
+ T_i(a)=\sum_s e_p(-s\tau(a))
+  \prod_{\epsilon\in\Omega_k}
+   \mathcal C^{|\epsilon|}
+   \bigl(1_{Q_{j(\epsilon)+i}}f_\epsilon\bigr)
+       (s-\epsilon\cdot a).
+\]
+The identity of this expression with the class sum uses the disjointness
+of the $Q_i$: exactly one product of their indicators is nonzero for
+any given $(s,a)$.
+
+Extend the sum in~\eqref{pat:class-energy} to all $a\in G^k$,
+which increases it. We record the phase decomposition explicitly.
+For suitable polynomials $P_\omega$ of degree at most $k+1$,
+\begin{equation}\label{pat:polarization}
+ u\tau(a)=\sum_{\omega\in\Omega_{k+1}}(-1)^{|\omega|}
+ P_\omega\bigl(s-\omega\cdot(a,u)\bigr).
+\end{equation}
+Indeed, expand $\tau$ into squarefree monomials. For a monomial involving
+the coordinates indexed by $J\subseteq\{1,\ldots,k+1\}$, use
+\[
+ \prod_{j\in J}b_j
+  =\frac1{|J|!}\sum_{\nu\in\{0,1\}^{J}}(-1)^{|\nu|}
+       \left(s-\sum_{j\in J}\nu_jb_j\right)^{|J|}.
+\]
+Here $J$ includes the coordinate of $u$; all required factorials are
+invertible because $p>k+1$. Adding these identities proves
+\eqref{pat:polarization}.
+
+Expand $|T_i(a)|^2$ and write its two base points as $s$ and $s-u$.
+Using~\eqref{pat:polarization} makes the resulting expression the mixed
+$(k+1)$-cube form of
+\[
+ h_{i,\omega}
+   =1_{Q_{j(\epsilon)+i}}f_\epsilon e_p(-P_\omega),
+ \qquad \omega=(\epsilon,b),\quad b\in\{0,1\}.
+\]
+Gowers--Cauchy--Schwarz and the arithmetic--geometric mean inequality give
+\[
+ \sum_{a\in G^k}|T_i(a)|^2
+ \le\prod_{\omega}\mathcal U_{k+1}(h_{i,\omega})^{1/2^{k+1}}
+ \le2^{-(k+1)}\sum_{\omega}\mathcal U_{k+1}(h_{i,\omega}).
+\]
+For a fixed $\omega$, summing over $i$ permutes all blocks, so that
+$\sum_i\mathcal U_{k+1}(h_{i,\omega})$ is independent of
+$j(\epsilon)$. Averaging over $\omega$ and
+using~\eqref{pat:class-energy} produces one $\omega=(\epsilon,b)$ with
+\[
+ \sum_i\mathcal U_{k+1}
+    (1_{Q_i}f_\epsilon e_p(-P_\omega))
+ \ge\frac{\alpha p^2m^k}{2^kLM}.
+\]
+Finally put $t=\epsilon\cdot r$, replace $P_\omega(z)$ by
+$P_\omega(z+t)$, and translate every block by $-t$.
+Translation invariance of the cube form gives the first inequality
+in~\eqref{pat:energy-conclusion}. The second follows from
+$L\le B_k$ and $p/M=w\ge m/(3k)$.
+\end{proof}
+
+\begin{corollary}[Explicit strict nonuniformity coefficient]
+\label{pat:coefficient}
+Under Theorem~\ref{pat:local}, the coefficient
+\[
+ c_k=\frac1{18k^2\,2^k(2k)^kR_{k+1}(k2^{k-1})}
+\]
+gives strict failure of the inequality
+$\sum_i\mathcal U_{k+1}(1_{R_i}fe_p(-P))
+\le c_k\alpha m^{k+2}M$.
+For $k\ge2$,
+\[
+ \log_2(1/c_k)
+ \le k^2+k\log_2k+(2+\log_2e)k
+       +2\log_2k+\log_2(9e).
+\]
+\end{corollary}
+\begin{proof}
+The lower bound in~\eqref{pat:energy-conclusion} is twice the proposed
+threshold and is positive. The logarithmic estimate follows from
+$R_{k+1}(Q_k)\le(eQ_k/(k+1))^{k+1}
+\le e^{k+1}2^{k^2-1}$.
+\end{proof}
+
+This gives a local coefficient of size
+$2^{-k^2-k\log_2k-O(k)}$ at the stage where Proposition 17.7 uses
+$2^{-2(k+1)^3}$. The statement above specifies the field characteristic
+and the multi-affine extension used in the phase argument. It does not
+recompute the later inverse-theorem induction or the final bound for
+$r_k(N)$. Those are separate problems, and the local improvement alone
+does not supply a new global quantitative Szemer\'edi theorem.
+
+
+% ===== ending =====
+\section{Quantitative comparisons and what they enable}
+\label{sec:comparisons}
+
+The preceding results address different sources of loss.  Their benefits
+should therefore be read at the interface where each estimate is used.
+The following table records those interfaces without combining unrelated
+parameters into a single claimed global improvement.
+
+\begin{table}[htbp]
+\centering
+\small
+\renewcommand{\arraystretch}{1.25}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{0.20\textwidth}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
+\toprule
+Interface & Coarse source estimate & Strengthened estimate here\\
+\midrule
+Graph moment, input \(\gamma|B|^3\)
+& \(\gamma^7\beta^{21}p^{15}\)
+& \(\gamma^7\beta^{15}p^{15}\); arbitrary moment order and equality cases\\
+Almost-homomorphism restriction, order eight
+& \((\gamma^7\beta^6\eta/4)^{2^{19}}|B|^{15}\)
+& \(2^{-95}\gamma^{112}\eta^{15}|B|^{15}\), under the explicit size hypothesis in Corollary~\ref{rest:eight}\\
+Three-cube upper bound, \(u=\|f\|_{U^3}\)
+& \((\delta+u)^8\)
+& Excess begins with \(6\sqrt2\,\delta^4u^4\), with explicit higher terms\\
+\(k\)-term progression counting
+& Error bounded by \(2^k u\)
+& Error bounded by \(u\sum_{j=0}^{k-3}\delta^j\)\\
+Section 17 local coefficient
+& \(2^{-2(k+1)^3}\)
+& \(2^{-k^2-k\log_2 k-O(k)}\), with an explicit constant\\
+\bottomrule
+\end{tabularx}
+\caption{Comparisons with the specified local estimates in
+\cite{Gowers2001,ProveIt}.  The variables and hypotheses are those of the
+corresponding sections.  The improved restriction theorem includes a
+large-field condition, and the phase theorem includes a characteristic
+condition.}
+\label{tab:comparisons}
+\end{table}
+
+The field-size requirement in the restriction theorem has a particularly
+simple interpretation:
+\[
+ |B|\geq \Lambda_d(\alpha\eta)^{-2d}.
+\]
+The ambient density does not otherwise enter this sufficient condition.
+Two elementary decisions are responsible.  A rank-two exceptional relation
+leaves at most \(|B|^{2d-2}\) tuples, because its free coordinates can be
+chosen from \(B\).  These contributions are then summed with their
+nonnegative Fourier weights, whose total is at most one.  Thus the number
+of possible coefficient vectors does not enter the error bound.
+Repeated entries are handled separately.  These refinements are useful
+even before any attempt to optimize the kernel.
+
+For an illustrative comparison, take \(\gamma=\eta=\beta=1/2\).
+The retained fraction of \(|B|^{15}\) in the source display is
+\(2^{-8\,388\,608}\), whereas the convenient bound here is \(2^{-222}\).
+The corresponding sufficient field-size condition here is
+\(p\geq2^{231}\).  These are deliberately transparent evaluations of the
+proved formulas, not practical finite-size estimates.  They show the
+change in parameter dependence and also the cost of the conservative
+exceptional-tuple estimate.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{figures/cube_refinements.pdf}
+\caption{Proved bounds and an exact extremizing model at \(\delta=1/4\).
+Left: the excess above \(\delta^8\) in the source triangle-inequality
+bound and the two refined bounds of
+Theorems~\ref{cub:main} and~\ref{cub:fractional}.  The refined curves nearly
+coincide at small \(u\) because they have the same sharp leading term.
+Right: after subtracting that leading term, the explicit two-frequency
+family of Proposition~\ref{cub:two-frequency}, divided by
+\(\delta^{8/3}u^{16/3}\), tends to \((9/4)^{1/3}\).
+The figure evaluates formulas; it is not a statistical fit.}
+\label{fig:cubes}
+\end{figure}
+
+The cube results answer two precise local extremal questions.
+The best universal leading coefficient in the real centered, odd-order
+setting is \(6\sqrt2\).  In the setting without \(2\)- or \(3\)-torsion,
+the first possible correction after that leading term has optimal
+exponent \(16/3\).  What remains undetermined is the exact coefficient
+of this correction and the existence of a universal asymptotic expansion
+for the extremal envelope.  These are local conclusions with explicit
+models, independent of any claim about the best quantitative bound for
+arithmetic-progression-free sets.
+
+\clearpage
+\section{Further research questions and a proposed program}
+\label{sec:research}
+
+The questions below are proposed research targets arising from the
+calculations.  The list distinguishes exact optimization problems from
+larger integration projects.  It is not a claim that each formulation is
+already recognized as an open problem in the literature; a more extensive
+priority review should accompany work toward publication.
+
+\subsection{Extremal cube counts}
+
+\begin{enumerate}[label=\textbf{Q\arabic*.},leftmargin=2.6em]
+\item \textbf{Does the secondary extremal coefficient exist, and what is it?}
+Fix \(0<\delta<1\), and let \(M_\delta(u)\) be the supremum of
+\(Q_3(W)\) over prime cyclic groups of order greater than \(16\) and weights
+\(0\leq W\leq1\) satisfying
+\(\E W=\delta\) and \(\|W-\delta\|_{U^3}=u\).
+Theorems~\ref{cub:fractional} and
+Proposition~\ref{cub:two-frequency} imply
+\[
+ (9/4)^{1/3}
+ \leq
+ \liminf_{u\downarrow0}
+ \frac{M_\delta(u)-\delta^8-6\sqrt2\,\delta^4u^4}
+      {\delta^{8/3}u^{16/3}}
+ \leq
+ \limsup_{u\downarrow0}
+ \frac{M_\delta(u)-\delta^8-6\sqrt2\,\delta^4u^4}
+      {\delta^{8/3}u^{16/3}}
+ \leq6.
+ \tag{Q1}
+\]
+Determine whether the limit exists.  Is the two-frequency value
+\((9/4)^{1/3}\) optimal?  A useful first step is a sharper estimate of the
+quintic correlation in terms of the exact loss in the norm-gap inequality,
+instead of the separate bounds used above.
+
+\item \textbf{What is the correct stability statement for cube extremizers?}
+Corollary~\ref{cub:gap-stability} controls the fourth-power Fourier mass
+outside one conjugate pair, equivalently a \(U^2\) remainder.  This does
+not alone control an \(L^2\) remainder: many small Fourier coefficients
+can have little fourth-power mass but substantial second-power mass.
+Determine the strongest stability conclusion for bounded weights that
+nearly attain the leading cube bound, and identify any additional
+hypothesis needed for a stronger metric.  For near optimal secondary
+behavior, test whether concentration on frequencies
+\(\{\pm\xi,\pm2\xi\}\) follows.
+
+\item \textbf{What replaces the sharp norm gap in higher dimensions?}
+For \(d\geq4\), determine the best constant in the comparison of
+\(\|f\|_{U^d}^{2^d}\) and \(\|f\|_{U^2}^{2^d}\) for real centered
+functions, specifying the allowed group orders.  Combine it with the
+exact coefficient \(P_d\) of Proposition~\ref{cub:quartic}.
+The Boolean support matroid gives a finite organizing device for the
+next correlations, but their values and sharp norm bounds require
+additional harmonic analysis.  Separate large-characteristic behavior
+from the extra identities produced by small torsion.
+\end{enumerate}
+
+\subsection{Restriction and moment estimates}
+
+\begin{enumerate}[label=\textbf{Q\arabic*.},leftmargin=2.6em,resume]
+\item \textbf{Can the size threshold be substantially lowered?}
+Theorem~\ref{rest:main} requires
+\(|B|\geq\Lambda_d(\alpha\eta)^{-2d}\).
+The proof already controls exceptional relations in expectation using
+their Fourier weights.  Can their contribution be made to reflect the
+additive structure of \(B\), rather than the uniform rank-two bound?
+Can a kernel with a more favorable coefficient distribution reduce the
+required size without weakening the retained tuple count?  Any proposed
+improvement must handle repeated entries as well as extra relations among
+distinct entries.
+
+\item \textbf{What is the true optimal retention law?}
+The bound
+\(\kappa_d\alpha^{2d}\eta^{2d-1}|B|^{2d-1}\) has the natural parameter
+powers for the single-kernel expectation budget in
+Proposition~\ref{rest:method-bound}.  That proposition does not establish
+optimality among all selection procedures.  Construct upper-bound
+examples, or find a different selection method with better powers.
+Also ask for useful simultaneous guarantees on \(|B'|\), its ordinary
+additive energies, and the density of respected relations.
+
+\item \textbf{How far does restriction extend beyond prime cyclic groups?}
+The interpolation theorem already applies to arbitrary finite abelian
+groups.  The restriction theorem uses a field to turn two independent
+linear equations into a uniform bound on the number of solutions.
+Develop versions for \(\mathbb Z/N\mathbb Z\), finite-field vector
+spaces, and maps into other groups.  The appropriate hypotheses should
+quantify kernels of the relevant coefficient maps, rather than silently
+treat nonzero determinants as invertible.  A weighted formulation would
+also allow nonuniform input measures.
+
+\item \textbf{Can the cross-section profile be propagated through the proof?}
+For arrangements the gain is governed by
+\(\sigma=\E_r\beta_r^3\), not just by the global density.
+Track this profile through subsequent restrictions and changes of
+variables.  Determine which operations preserve useful control of
+\(\sigma\), and whether a collection of higher cross-section moments
+gives a stronger interface than a single density parameter.  Equality
+models in Section~\ref{mom:arrangement-section} provide tests against
+overly optimistic exponents.
+\end{enumerate}
+
+\subsection{Patterns, counting, and integration}
+
+\begin{enumerate}[label=\textbf{Q\arabic*.},leftmargin=2.6em,resume]
+\item \textbf{Determine the asymptotics of the fractional pattern counts.}
+The proved estimates imply
+\[
+ \tfrac12
+ \leq\liminf_{k\to\infty}\frac{\log_2 F_k}{k^2}
+ \leq\limsup_{k\to\infty}\frac{\log_2 F_k}{k^2}
+ \leq1,
+ \tag{Q2}
+\]
+and the same bounds for \(A_k\).
+Determine the leading constant, or improve the gap in these bounds.
+Relate the particular affine arrangements here to established results
+on threshold patterns and subset-sum arrangements before assigning
+novelty.  Exact certified counts for \(k=4\) are a concrete computational
+next step; exploiting symmetries is likely to matter more than merely
+using a faster numerical solver.
+
+\item \textbf{Which global and local profiles are actually realizable?}
+The phase-extraction proof uses the uniform bound \(2^k\) for the
+profiles at a fixed slope and an arrangement bound for all slopes.
+The slopes there come from a short discrete interval.  Determine the
+joint distribution of profiles in that arithmetic setting, including
+small moduli \(M\), and test whether an average multiplicity can replace
+the worst-case local multiplicity.  The exact modular formula of
+Theorem~\ref{pat:scaling} isolates one source of collisions.
+
+\item \textbf{Can progression counting use more of the mixed information?}
+The dynamic program in Section~\ref{sec:progressions} finds the best
+bound within a specified telescoping family.  It is not an optimality
+theorem for all counting arguments.  Investigate whether mixed
+uniformity norms, additional cancellations, or information about
+particular pairs of factors can lower that bound.  Any extension to
+nonadmissible slopes should display the relevant subgroup averages
+explicitly; the \(\mathbb Z/2\mathbb Z\) example rules out simply
+dropping the invertibility assumptions.
+
+\item \textbf{What survives complete propagation through the density increment?}
+Create a dependency graph for the quantitative parameters of the
+original proof.  Substitute the improved moment, restriction, and
+profile estimates, and recompute every subsequent threshold with the
+same hypotheses.  The output should be an explicit final function of
+\(k\) and density, with each loss traceable to a proved lemma.
+Compare the resulting bound with both the original argument and
+later work \cite{LSS2024bounds,LSS2024inverse}; an improvement in the
+historical proof need not improve the stronger modern theorem.
+
+\item \textbf{Can the refinements be verified by a proof assistant?}
+Formalize the lowest-risk interfaces first: exact moment interpolation,
+the density-weighted telescope, and the finite support enumeration.
+Then formalize the selection theorem, where the main obligations are
+finite Fourier orthogonality, independent sampling, and the exceptional
+rank count.  A fully checked dependency chain would clarify which
+quantitative gains are compatible with the later induction, and would
+separate a correct theorem statement from a completed formal proof.
+Appendix~\ref{app:lean} gives a proposed implementation order.
+\end{enumerate}
+
+Questions~1, 4, and 8 offer relatively contained starting points: a sharp
+analytic constant, a finite selection threshold, and a concrete
+arrangement census.  Questions~7 and 11 are integration projects, for
+which local success must be accompanied by careful propagation of
+hypotheses.  The distinction helps keep a proposed research program
+testable.
+
+\section{Closing perspective}
+
+The strongest conclusions of this investigation are explicit local
+theorems with complete proofs.  Exact moment accounting feeds a
+polynomial restriction theorem; centered Fourier structure yields sharp
+cube coefficients and a fractional correction exponent; and simultaneous
+floor-pattern counting replaces a cubic exponential local loss by a
+quadratic one.  The sharpness examples identify which aspects have
+already reached their natural limit and which constants remain to be
+determined.
+
+The next substantial step is to turn these interfaces into a fully
+checked quantitative dependency chain.  That would establish how much of
+the local improvement survives later stages of Gowers's argument, while
+the extremal and pattern questions above offer independent research
+directions with precise targets.
+
+\clearpage
+\appendix
+\section{A map to the Lean development}
+\label{app:lean}
+
+This appendix identifies interfaces in the inspected snapshot
+\cite{ProveIt}.  It records a plan for additional work; it is not a report
+that new Lean declarations have been proved.  A declaration defining a
+proposition, a theorem with a proof term, and a theorem successfully
+checked by the Lean kernel are different pieces of evidence.
+
+\begin{table}[htbp]
+\centering
+\small
+\renewcommand{\arraystretch}{1.2}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{0.35\textwidth}>{\raggedright\arraybackslash}X@{}}
+\toprule
+Inspected interface & Proposed strengthening and principal proof obligations\\
+\midrule
+\texttt{Proofs09Moments.lean};
+\texttt{lemma\_9\_2\_holds}
+& Keep the exact second moment before applying the higher-moment inequality.
+State the arbitrary-order graph version, with \(|B|\) in the denominator.
+The proof already computes an exact cardinality before weakening it.\\
+\texttt{Proofs03CubeUpper.lean};
+\texttt{lemma\_3\_10\_holds}
+& Add centered cancellation and the real odd-order norm gap as separate
+lemmas.  Prove the twelve quartic and eight quintic support classifications
+with explicit finite certificates or a transparent finite case split.\\
+\texttt{Proofs03ProgressionAverage.lean};
+\texttt{theorem\_3\_2\_holds}
+& Generalize the required changes of variables to admissible slopes.
+Make multiplication automorphisms explicit, and reuse the
+Gowers--Cauchy--Schwarz infrastructure.\\
+\texttt{Proofs03ProgressionCount.lean};
+\texttt{corollary\_3\_3\_holds}
+& Replace the full subset expansion by a finite telescoping identity.
+Retain density products and cancel the exact two-factor average.\\
+\texttt{Proofs09Restriction.lean};
+\texttt{lemma\_9\_3\_holds} and
+\texttt{corollary\_9\_4\_holds}
+& Introduce a prime-specialized version of the strengthened restriction
+theorem.  Formalize the rank-two completion bound, the nonnegative
+Fourier weights, and the random-selection expectation.\\
+\texttt{Sections17\_18.lean}
+& Add definitions of fractional patterns and normalized profiles, followed
+by the hyperplane bound and the local phase-extraction theorem with
+explicit characteristic assumptions.\\
+\bottomrule
+\end{tabularx}
+\caption{Suggested interfaces for formalizing the proved refinements.}
+\end{table}
+
+One signature issue deserves explicit review.  The inspected definitions
+of \texttt{lemma\_9\_3} and \texttt{corollary\_9\_4} in
+\texttt{Sections08\_09.lean} quantify over nonzero moduli without an
+explicit primality typeclass.  The selection theorem in this article
+uses primality essentially.  It must therefore be formalized as a
+separate prime-specialized statement, or accompanied by a justified
+revision of the intended source interface.  It is not automatically a
+proof of the broader existing proposition.  The repository already has
+proofs of those statements through another route; the present claim is
+a stronger prime-field interface.  By contrast, the exact
+moment inequality itself does hold over arbitrary finite abelian groups.
+
+For a practical implementation order, first isolate a normalized and an
+unnormalized Fourier convention with explicit conversion lemmas.  Next
+prove the exact moment and telescoping statements, which need little
+specialized finite enumeration.  Then introduce a library of finite
+Boolean support certificates for the cube identities.  Finally add the
+probabilistic selection and floor-pattern arguments.  Each step should
+compile against the pinned toolchain of the repository, and the final
+verification report should name the checked declarations and the commit.
+None of those future verification steps is represented as complete here.
+
+\section{Reproducibility and supplementary checks}
+\label{app:checks}
+
+The source archive contains the complete \LaTeX\ manuscript, its compiled
+PDF, the figure source and PDF, a provenance manifest, and three independent
+verification programs.  The programs are deliberately supplementary to
+the proofs.  In particular, testing finitely many functions cannot prove
+the norm-gap theorem, and checking small groups cannot prove the
+restriction theorem for all sufficiently large primes.
+
+\subsection{Energy, cube, and coefficient checks}
+
+\texttt{verify\_refinements.py} uses the Python standard library.  The
+recorded run checked all \(8\,470\) nonempty graphs of partial maps
+\(\mathbb Z/n\mathbb Z\to\mathbb Z/n\mathbb Z\) for
+\(n=2,3,4,5\), giving \(59\,290\) exact integer instances of the energy
+inequality for moment orders \(2,\ldots,8\).
+It also enumerated the three-cube support ranks over the rationals and
+over \(\mathbb F_2,\mathbb F_3,\mathbb F_5,\mathbb F_7\), and counted
+parallelograms through dimension seven.  These computations exhibit the
+different support count in characteristic two.
+
+The kernel checks use exact rational arithmetic for the selected
+coefficient ratios and the central-binomial inequality, and exact integer
+arithmetic for the convenient powers of two in
+Corollary~\ref{rest:eight}.  The complete
+two-frequency polynomial in Proposition~\ref{cub:two-frequency} is
+independently recovered with rational coefficients.
+
+Floating-point checks are identified separately in the results file.
+They test the Fourier identity and norm gap on \(40\) real centered
+functions on small odd cyclic groups, the cosine examples, and \(36\)
+density-weighted progression identities, including an admissible example
+modulo \(25\).  The largest recorded Fourier-identity discrepancy is less
+than \(1.1\times10^{-16}\), and the progression identity discrepancy is
+less than \(3.4\times10^{-17}\).  The asserted numerical tolerance is
+\(2\times10^{-11}\).  These are consistency checks, not rational
+certificates for arbitrary functions.
+
+The supplied \texttt{verify\_selection.py} checks the selection expectation
+bounds directly by exact rational Fourier expansion in \(10\) examples
+over \(\mathbb F_3,\mathbb F_5,\mathbb F_7\), covering \(40\,584\) ordered
+additive tuples.  It treats each distinct selected point only once and
+includes \(504\) distinct unrespected six-tuples.  These checks use the
+degree-one kernel and supplement the proof of the general weighted
+selection lemma; the large-degree constants are checked separately.
+
+\subsection{Exact floor-pattern certificates}
+
+\texttt{pattern\_census.py} verifies the supplied
+\texttt{pattern\_census.json} using only rational arithmetic from the
+Python standard library.  It obtains
+\[
+ (F_1,F_2,F_3)=(1,2,10),\qquad
+ (A_1,A_2,A_3)=(2,6,38).
+\]
+Every branch in the hyperplane enumeration has one of two certificates:
+a rational point satisfying all relevant strict inequalities, or
+nonnegative rational weights whose combination proves that those strict
+inequalities are infeasible.  The verifier checks both sides of every
+split, so it checks completeness as well as feasibility.
+There are \(450\) certified branches in the supplied record.
+Generating the certificates uses a numerical linear-programming solver
+to propose candidates, but accepting them and verifying the saved census
+does not use numerical tolerances.
+
+\subsection{Build and verification commands}
+
+From the extracted archive directory, the following commands rebuild the
+article and check its supplementary records:
+\begin{verbatim}
+latexmk -pdf -interaction=nonstopmode -halt-on-error \
+  gowers_quantitative_refinements.tex
+python3 -S verify_refinements.py --output verification_results.json
+python3 -S verify_selection.py --report selection_verification.json
+python3 -S pattern_census.py --verify pattern_census.json
+\end{verbatim}
+The prebuilt vector figure is included, so rebuilding the article does
+not require Python plotting libraries.  To regenerate the figure, run
+\texttt{python3 make\_figures.py}; that optional step requires NumPy and
+Matplotlib.  Certificate generation additionally requires SciPy.
+The source manifest records the inspected repository commit and the
+relevant Git object identifiers.  The archive does not redistribute the
+original paper or the full repository.
+
+
+\clearpage
+\begin{thebibliography}{9}
+\addcontentsline{toc}{section}{References}
+
+\bibitem{Gowers2001}
+W.~T.~Gowers,
+\emph{A new proof of Szemer\'edi's theorem},
+Geometric and Functional Analysis \textbf{11} (2001), 465--588.
+\href{https://doi.org/10.1007/s00039-001-0332-9}{doi:10.1007/s00039-001-0332-9}.
+Accessible author-paper copy:
+\url{https://www.cs.umd.edu/~gasarch/TOPICS/vdw/sz-thm-gowers-proof.pdf}.
+
+\bibitem{ProveIt}
+Vladimir Reshetnikov and contributors,
+\emph{ProveIt: paper transcription and Lean development for Gowers's
+proof of Szemer\'edi's theorem}, GitHub repository.
+Inspected 6 October 2026, snapshot
+\texttt{327773149bd272239f1f6c0015f76d5097512c88}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/327773149bd272239f1f6c0015f76d5097512c88/Combinatorics/Ramsey/Papers/sz-thm-gowers-proof}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/327773149bd272239f1f6c0015f76d5097512c88/Combinatorics/Ramsey/Lean/GowersSzemeredi}.
+
+\bibitem{GreenTao2017}
+Ben Green and Terence Tao,
+\emph{New bounds for Szemer\'edi's theorem, III: A polylogarithmic bound
+for \(r_4(N)\)}, 2017.
+\url{https://arxiv.org/abs/1705.01703}.
+
+\bibitem{Manners2021}
+Freddie Manners,
+\emph{True complexity and iterated Cauchy--Schwarz}, 2021.
+\url{https://arxiv.org/abs/2109.05731}.
+
+\bibitem{LSS2024inverse}
+James Leng, Ashwin Sah, and Mehtaab Sawhney,
+\emph{Quasipolynomial bounds on the inverse theorem for the Gowers
+\(U^{s+1}[N]\)-norm}, 2024.
+\url{https://arxiv.org/abs/2402.17994}.
+
+\bibitem{LSS2024bounds}
+James Leng, Ashwin Sah, and Mehtaab Sawhney,
+\emph{Improved bounds for Szemer\'edi's theorem}, 2024.
+\url{https://arxiv.org/abs/2402.17995}.
+
+\end{thebibliography}
+\end{document}
