@@ -12,8 +12,8 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 201 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 1,844 public Gowers theorems and found only propext,
+  All 202 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 1,851 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 100 exact
   companion proofs and 20 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -357,10 +357,21 @@ Section 13.7 selection and remaining partition input
   long affine partition of each dense base row. The original-domain Freiman
   property is inherited by restriction. Stage 13.6 forces the ambient progression
   to be nonempty; the case of empty critical heights is discharged separately.
-  Lemma 13.7 remains open: the existing Corollary 7.11 has an explicit scale
-  threshold and integer target lengths at most the real-power bound. Its
-  threshold and rounding must be resolved before using it for the unrounded
-  lower length bound demanded by Stage 13.7.
+  Lemma 13.7 remains open. The integer target rounding can now be handled by
+  Proofs07CeilingPartition, but its explicit scale hypothesis remains. Transport
+  of that theorem to the modular base row and treatment of the remaining scales
+  must precede an unconditional Stage 13.7 conclusion.
+
+Ceiling targets in Corollary 7.11
+  Proofs07SimultaneousLinearity now exports the direct sufficient budget
+    (1024*pi/alpha) * m^2 <= length^(3*e),
+  where e = 2^-14 * alpha^2 / q. The original exact companion is derived from
+  this construction without changing its catalogue statement or hypotheses.
+  Proofs07CeilingPartition proves that length^e >= 4096*pi/alpha suffices to use
+  m = ceil(length^e). Every cell then has length at least the full real-power
+  target, preserving e and avoiding a floor loss. The common positive integer
+  step, properness, partition, and simultaneous affine formulas are retained.
+  This is an auxiliary partition improvement, not a new final Szemeredi bound.
 
 New Section 18 infrastructure
   Proofs18IntervalTransfer:
