@@ -46,6 +46,8 @@ import GowersSzemeredi.Proofs05Multiaffine
 import GowersSzemeredi.Proofs05BoxTransport
 import GowersSzemeredi.Proofs05MultilinearIteration
 import GowersSzemeredi.Proofs16Lemma1
+import GowersSzemeredi.Proofs16ArrangementSelection
+import GowersSzemeredi.Proofs16CubeDensity
 import GowersSzemeredi.Proofs05Progressions
 import GowersSzemeredi.Proofs05_10
 import GowersSzemeredi.Proofs07AdditiveRestriction
