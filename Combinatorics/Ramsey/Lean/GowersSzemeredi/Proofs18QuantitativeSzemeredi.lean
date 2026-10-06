@@ -23,10 +23,12 @@ proved Corollary 3.6 to obtain the corresponding uniform/nonuniform
 dichotomy on a prime cyclic group.  It deliberately does not claim the live
 Theorem 18.2: in addition to the two factor-four losses, `theorem_18_1`
 contains an opaque existential large-modulus threshold, whereas Theorem 18.2
-asserts a fixed explicit tower bound.  Iteration also needs an affine transfer
-from a modular progression to a new prime cyclic model and a final no-wrap
-transfer back to a progression in `Finset.Icc 1 N`; neither fact is present in
-the live Section 18 antecedent.
+asserts a fixed explicit tower bound. The combinatorial affine and no-wrap
+transfers are proved in `Proofs18AffineTransfer` and `Proofs18IntervalTransfer`,
+and `Proofs18UniformInterval` supplies the uniform stopping cases. Iteration
+still needs a quantitative prime-model construction preserving the required
+density increment: `ModAP.density_cyclic_pullback` records the ambient-density
+loss when the progression indices are embedded in a larger cyclic group.
 -/
 
 set_option autoImplicit false
