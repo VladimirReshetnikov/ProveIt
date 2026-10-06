@@ -235,23 +235,24 @@ private theorem box_sigma_partition {X : Type*} [DecidableEq X]
         (IsPartition.cell_subset (hB w.1) w.2)
         (hA.2 z.1 w.1 (bne_iff_ne.mpr hi))
 
-/-- Flattened proper-box refinements cover the original box exactly. -/
-theorem boxFlatten_partition {N k M : Nat} [NeZero N]
-    (P : Box N k) (Q : Fin M → Box N k) (L : Fin M → Nat)
-    (R : (i : Fin M) → Fin (L i) → Box N k)
-    (hQ : IsBoxPartition Q P) (hR : ∀ i, IsBoxPartition (R i) (Q i)) :
-    IsBoxPartition (boxFlatten L R) P := by
+/-- Flatten arbitrary finite-set refinements using the shared finite index
+encoding. The outer cells need not themselves be boxes. -/
+theorem finsetPartition_flatten {X : Type*} [DecidableEq X] {M : Nat}
+    (L : Fin M → Nat) (A : Fin M → Finset X) (S : Finset X)
+    (B : (i : Fin M) → Fin (L i) → Finset X)
+    (hA : IsPartition A S) (hB : ∀ i, IsPartition (B i) (A i)) :
+    IsPartition (fun j : Fin (∑ i, L i) =>
+      let z := (section5NatFlattenEquiv L).symm j; B z.1 z.2) S := by
   classical
   let e := section5NatFlattenEquiv L
-  have hsigma := box_sigma_partition L (fun i => (Q i).carrier) P.carrier
-    (fun i j => (R i j).carrier) hQ hR
+  have hsigma := box_sigma_partition L A S B hA hB
   constructor
   · intro x
     rw [hsigma.1 x]
     constructor
     · rintro ⟨z, hz⟩
       refine ⟨e z, ?_⟩
-      change x ∈ (R (e.symm (e z)).1 (e.symm (e z)).2).carrier
+      change x ∈ B (e.symm (e z)).1 (e.symm (e z)).2
       rw [e.symm_apply_apply]
       exact hz
     · rintro ⟨j, hj⟩
@@ -259,5 +260,14 @@ theorem boxFlatten_partition {N k M : Nat} [NeZero N]
   · intro i j hij
     have hpre : e.symm i ≠ e.symm j := fun h => (bne_iff_ne.mp hij) (e.symm.injective h)
     exact hsigma.2 (e.symm i) (e.symm j) (bne_iff_ne.mpr hpre)
+
+/-- Flattened proper-box refinements cover the original box exactly. -/
+theorem boxFlatten_partition {N k M : Nat} [NeZero N]
+    (P : Box N k) (Q : Fin M → Box N k) (L : Fin M → Nat)
+    (R : (i : Fin M) → Fin (L i) → Box N k)
+    (hQ : IsBoxPartition Q P) (hR : ∀ i, IsBoxPartition (R i) (Q i)) :
+    IsBoxPartition (boxFlatten L R) P :=
+  finsetPartition_flatten L (fun i => (Q i).carrier) P.carrier
+    (fun i j => (R i j).carrier) hQ hR
 
 end LeanProofs.GowersSzemeredi

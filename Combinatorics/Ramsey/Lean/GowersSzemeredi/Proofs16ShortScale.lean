@@ -5,13 +5,14 @@ set_option autoImplicit false
 noncomputable section
 namespace LeanProofs.GowersSzemeredi
 
-/-- Above the singleton scale, the ceiling target fits both the quadratic
-partition budget and the Bohr-frequency budget. -/
-theorem section16_short_scale (s zeta : Real) (hs : 0 < s)
+/-- Above the singleton scale, ceiling rounding leaves a full unit of
+slack in the quadratic budget. This covers the length-minus-one requirement
+for changing the common difference of the final axis. -/
+theorem section16_short_scale_margin (s zeta : Real) (hs : 0 < s)
     (hz : 0 < zeta) (hzHalf : zeta ≤ 1 / 2)
     (hl : 1 < (zeta / 2) * Real.sqrt s) :
     ∃ v : Nat, 2 ≤ v ∧ (zeta / 2) * Real.sqrt s ≤ (v - 1 : Nat) ∧
-      (v : Real) ^ 2 ≤ s ∧ 2 / s ≤ zeta / v := by
+      (v : Real) ^ 2 + 1 ≤ s ∧ 2 / s ≤ zeta / v := by
   let l := (zeta / 2) * Real.sqrt s
   let v := Nat.ceil l + 1
   change 1 < l at hl
@@ -34,7 +35,7 @@ theorem section16_short_scale (s zeta : Real) (hs : 0 < s)
     nlinarith [mul_nonneg (by linarith : 0 ≤ 1 / 2 - zeta) hr]
   have hr4 : 4 < Real.sqrt s := by linarith
   have hvsqrt : (v : Real) ≤ 3 * Real.sqrt s / 4 := by linarith
-  have hvSq : (v : Real) ^ 2 ≤ s := by
+  have hvSq : (v : Real) ^ 2 + 1 ≤ s := by
     have hv2 := pow_le_pow_left₀ hvr.le hvsqrt 2
     nlinarith
   have hrs : 3 * Real.sqrt s ≤ s := by nlinarith
@@ -43,6 +44,16 @@ theorem section16_short_scale (s zeta : Real) (hs : 0 < s)
     dsimp [l] at hv3
     nlinarith
   exact ⟨v, hvNat, hceil, hvSq, (div_le_div_iff₀ hs hvr).mpr hbudget⟩
+
+/-- Above the singleton scale, the ceiling target fits both the quadratic
+partition budget and the Bohr-frequency budget. -/
+theorem section16_short_scale (s zeta : Real) (hs : 0 < s)
+    (hz : 0 < zeta) (hzHalf : zeta ≤ 1 / 2)
+    (hl : 1 < (zeta / 2) * Real.sqrt s) :
+    ∃ v : Nat, 2 ≤ v ∧ (zeta / 2) * Real.sqrt s ≤ (v - 1 : Nat) ∧
+      (v : Real) ^ 2 ≤ s ∧ 2 / s ≤ zeta / v := by
+  obtain ⟨v, hv, hwidth, hmargin, hbudget⟩ := section16_short_scale_margin s zeta hs hz hzHalf hl
+  exact ⟨v, hv, hwidth, by linarith, hbudget⟩
 
 /-- The Section 16 radius is at most one half, uniformly over its stated
 parameter range. -/
