@@ -145,8 +145,12 @@ Re-scoped:
    for `k = 1` it is part of item 1. Open from `k = 2`, `n = 15`, coefficient
    `z^3` (125 for `3K_5`).
 3. **Strength of `SAP_1`** (`fbl:fq:sap1`): `SAP_1 ⇒ C_2 ∧ C_3`; so it is
-   equivalent to choice for pairs only if `C_2 ⇒ C_3` over ZF (literature not
-   consulted).
+   equivalent to choice for pairs only if `C_2 ⇒ C_3` over ZF. The
+   independent check (below) supplied the answer, confirmed in Jech, *The
+   Axiom of Choice* (1973), Theorem 7.16, p. 111 (Mostowski's condition (S)
+   fails for `m = 2`, `n = 3`): `C_2` does not imply `C_3` over ZF, so
+   `SAP_1` is strictly stronger than choice for pairs. Its exact strength
+   remains open.
 4. **Hierarchy** (`fbl:fq:hierarchy`): the source's sentence that `BPI` is
    "substantially stronger" than the finite-choice principles has no proof or
    reference (not checked); Läuchli's paper, in the bibliography but uncited,
@@ -163,6 +167,24 @@ Re-scoped:
    systems (the "substantially larger safe sets" sentence is a heuristic;
    the worst case is `⌈n/(2k+1)⌉`, printed `n/(2k+1)`); 15. hypergraph
    avoidance; 16. games; 17. formalization and sequences (proposals).
+
+**Independent check of the write (5 October 2026).** An adversarial check
+made by the intake after the write (`bf70d7db4`) found no item needing a
+correction. It reread the proofs of Propositions 12.16–12.18 and the note
+completing Theorem 6.3's minimizer step, and confirmed that Proposition 12.17
+is new exactly for `k = 1`. With its own program, by a different method from
+the write's (trees plus tree-plus-one-edge as connected pseudoforests,
+bitmask independence polynomials, coefficientwise minima over all
+partitions; not shipped), it found the coefficientwise minimum over all
+`n`-vertex pseudoforests to be exactly `I_{H_n}` for `3 ≤ n ≤ 15`; brute
+force over all `n^n` one-bounded systems (`n ≤ 6`) and all `11^5`
+two-bounded systems on five points agreed, as did `A_2(n,1)`, `A_3(n,1)`,
+the table, `[z^4] I_{H_10} = 18` and `[z^3] I_{3K_5} = 125`. It checked the
+de Bruijn–Erdős account and pagination against the scan (the variant
+369–373 for *Indag. Math.* found by a web search remains unresolved). Its
+one lead — `C_2 ⇏ C_3` over ZF — was confirmed in Jech's Theorem 7.16 when
+the check was recorded and now answers item 3. The record is a dated note at
+the end of Section 12.6.
 
 ## Checks made at intake
 
@@ -193,7 +215,8 @@ On copies (5 October 2026; Windows, Python 3.14.4, standard library only):
   Sierpiński" and the reference list cites Sierpiński's *Hypothèse du
   continu*, 2nd ed., 1956, not read); Crossref data of Läuchli (1971) and
   Mycielski (1964). Not read: Glazer, Cowen, Howard–Rubin, Kechris, Turán,
-  Jech, Bollobás, Erdős (1950), Hajnal (1961).
+  Jech (apart from Theorem 7.16 and the notes to Chapter 7, read when the
+  independent check was recorded), Bollobás, Erdős (1950), Hajnal (1961).
 
 ## Relation to the repository
 
@@ -310,8 +333,8 @@ B=$(mktemp -d); cp article.tex "$B/"; cd "$B"
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The committed PDF was built this way with MiKTeX on 5 October 2026: 28
-pages; no errors or warnings, no undefined references or citations, no
+The committed PDF was built this way with MiKTeX on 5 October 2026, and
+rebuilt after the independent check: 28 pages (unchanged); no errors or warnings, no undefined references or citations, no
 multiply defined labels, no duplicate PDF destinations, no overfull boxes,
 and 15 underfull-box messages, all in delivered lines (the phase-diagram
 table, the ledger and two bibliography entries), which a build of the

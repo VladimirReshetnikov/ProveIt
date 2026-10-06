@@ -344,7 +344,10 @@ unnumbered, so every delivered theorem and equation keeps its number.
  Bollob\'as~\cite{Bollobas}. The standard facts the proofs take from them
  (propositional compactness from $\BPI$, the Kuratowski--Ulam and Mycielski
  theorems, Tur\'an's theorem and its equality case) are used as the source
- states them.
+ states them. [5~October 2026: Theorem~7.16 of Jech's book and the notes to
+ its Chapter~7 were read when the independent check of the write was
+ recorded; Jech is now cited in item~\ref{fbl:fq:sap1} of
+ Section~\ref{fbl:sec:further}.]
 \item The OEIS: the counts of distinct conflict graphs in
  Section~\ref{fbl:sec:computation} are terms of A133686, labelled graphs
  whose components have at most one cycle~\cite{OEIS}, and
@@ -1473,7 +1476,19 @@ write found no false statement in the source.
  Proposition~\ref{fbl:prop:three}, $\SAP_1\Rightarrow\Cm_3$. So $\SAP_1$ is
  equivalent to choice for pairs only if $\Cm_2$ implies $\Cm_3$ over ZF;
  the write did not consult the literature on implications among the
- principles $\Cm_m$. The source's sketch (colouring the components of a
+ principles $\Cm_m$. [Independent check, 5~October 2026: $\Cm_2$ does not
+ imply $\Cm_3$ over ZF, so $\SAP_1$ is strictly stronger than choice for
+ pairs. Jech~\cite[Theorem~7.16, p.~111]{Jech}: if $m,n$ do not satisfy
+ Mostowski's condition~(S), that $n$ has no decomposition $n=p_1+\dots+p_s$
+ into primes all larger than~$m$, then there is a model of set theory in
+ which $\Cm_k$ holds for every $k\le m$ but $\Cm_n$ fails. For $m=2$, $n=3$
+ the condition fails, since $3$ is itself a prime larger than~$2$. The model
+ is a permutation model, transferred to ZF as in Jech's Example~7.13, and
+ Jech's notes to Chapter~7 credit this independence result to Mostowski
+ (1945, for ZFA). In that model $\Cm_2$ holds and $\Cm_3$ fails, so
+ $\SAP_1$ fails by Proposition~\ref{fbl:prop:three}. The lead is the
+ check's; Jech's statement was read when the check was recorded.] The
+ source's sketch (colouring the components of a
  partial functional graph ``appears to require choosing phases or markers,
  but much less than arbitrary propositional compactness'') is a heuristic.
  Missing: any upper bound on $\SAP_1$ below $\BPI$ other than
@@ -1680,6 +1695,33 @@ conflict graph, so a colouring $c:X\to\omega$ with safe classes is
 injective on it, and choosing from $A$ the element of least colour defines
 a choice function on $\cA$ in ZF.
 \end{proof}
+
+\begin{writenote}[Independent check of the write, 5 October 2026]
+An adversarial check made by the intake after the write (commit
+\file{bf70d7db4}) found no item needing a correction. It reread the proofs
+of Propositions~\ref{fbl:prop:small}, \ref{fbl:prop:three}
+and~\ref{fbl:prop:finite}, every implication of the last included, and the
+note completing the minimizer step of Theorem~\ref{fbl:thm:k1-triples}; it
+confirmed that for $k\ge2$ choice for triples is already the case $m=3$ of
+Theorem~\ref{fbl:thm:choice-sandwich}, so Proposition~\ref{fbl:prop:three}
+is new exactly for $k=1$. With its own program, by a method different from
+the write's transfer matrices (all nonisomorphic trees, and every tree plus
+one edge, as the connected pseudoforests; independence polynomials by
+bitmask recursion; coefficientwise minima for each order and over all
+partitions of $n$; not shipped), it found the coefficientwise minimal
+independence polynomial over all $n$-vertex pseudoforests, trees included,
+to be exactly $I_{H_n}$ for every $3\le n\le15$. Brute force over all $n^n$
+one-bounded systems for $n\le6$, and over all $11^5$ two-bounded systems on
+five points (unique minimum $1+5z$), agreed, as did the closed forms
+$A_2(n,1)$ and $A_3(n,1)$, the printed table, $[z^4]I_{H_{10}}=18$ and
+$[z^3]I_{3K_5}=125$. It checked the account of de Bruijn and Erd\H{o}s
+against the same scan (Theorems~1, 3 and~4 and their proofs; three pages,
+numbered [371], 372 and~373, with Theorem~4 on p.~372); a web search finds
+the variant 369--373 attributed to \emph{Indag.\ Math.}\ in secondary
+sources, which neither the check nor the write resolved. Its one lead, that
+choice for pairs does not imply choice for triples over ZF, is confirmed
+from Jech's book in item~\ref{fbl:fq:sap1}.
+\end{writenote}
 
 \section{Formalization plan for ProveIt}\label{fbl:sec:formal}
 
