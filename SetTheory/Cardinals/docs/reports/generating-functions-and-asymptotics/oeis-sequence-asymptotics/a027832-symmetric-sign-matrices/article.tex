@@ -1,0 +1,48 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,booktabs,array,longtable}
+\usepackage{xcolor,enumitem,fancyhdr}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black,breaklinks=true]{hyperref}
+\pdfmapfile{+lm.map}\pdfmapfile{+cm.map}\pdfmapfile{+symbols.map}
+\pdfinfoomitdate=1\pdfsuppressptexinfo=15
+\pdftrailerid{<5369676E4D617472697832303236313030><5369676E4D617472697832303236313030>}
+\providecommand{\ReportNumber}{239}
+\hypersetup{pdftitle={Symmetric Sign Matrices and Free Degree Constraints},pdfauthor={Report \ReportNumber},pdfsubject={OEIS A027832 leading asymptotics critical free vertex window and controlled inverses}}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small Symmetric sign matrices}\fancyhead[R]{\small Report \ReportNumber}\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0pt}\setlength{\headheight}{14pt}
+\setlength{\parskip}{4pt}\setlength{\emergencystretch}{2em}
+\setlist{itemsep=2pt,topsep=4pt}\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]\newtheorem{lemma}[theorem]{Lemma}\newtheorem{proposition}[theorem]{Proposition}\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\E}{\mathbb E}\newcommand{\PP}{\mathbb P}\newcommand{\R}{\mathbb R}\newcommand{\N}{\mathbb N}\newcommand{\eps}{\varepsilon}\newcommand{\Var}{\operatorname{Var}}\newcommand{\Cov}{\operatorname{Cov}}\newcommand{\Bin}{\operatorname{Bin}}\newcommand{\Normal}{\mathcal N}\newcommand{\ind}{\mathbf1}\newcommand{\cC}{\mathcal C}\newcommand{\dd}{\mathrm d}
+\begin{document}
+\begin{center}
+{\large Report \ReportNumber}\par\vspace{8pt}
+{\LARGE\bfseries Symmetric Sign Matrices\\[5pt] and Free Degree Constraints}\par\vspace{9pt}
+{\large Leading asymptotics, a critical window, and controlled inverses}\par\vspace{7pt}
+5 October 2026
+\end{center}
+\begin{abstract}
+Let $A_n$ count symmetric $n\times n$ matrices with entries in $\{-1,+1\}$ and nonnegative row sums, with diagonal entries included. This is OEIS A027832. An exact graph encoding adds one distinguished vertex whose degree is unrestricted. We prove that removing a fixed number $f$ of degree caps near half the graph order multiplies the all-capped graph count by $\Phi(\ell)^{-f}(1+o(1))$, where $\phi(\ell)=\ell\Phi(\ell)$. More generally, uniformly for $f=O(\sqrt M)$ free vertices, a finite-saddle formula and a fully explicit equivalent retain a collective quadratic correction and a bounded-offset linear correction. The argument combines uniform dense degree-sequence enumeration with relative graph concentration, an exact exponential tilt, exponential-square uniform integrability, and explicit balancing of the even degree-sum lattice. Applying the established all-capped asymptotic gives a leading relative equivalent for $A_n$ with an essential factor $\exp(\ell\sqrt n)$ on even orders. We derive the precision of a continuous inverse and rigorous eventual two-ceiling threshold bounds. Exact finite checks and reproducible TeX and Python accompany the proof. The result is a leading $1+o(1)$ theorem; no all-orders count expansion, effective onset, or historical priority is asserted.
+\end{abstract}
+\setcounter{tocdepth}{1}
+\begingroup\small\setlength{\parskip}{0pt}
+\makeatletter\renewcommand\l@section[2]{\@dottedtocline{1}{0em}{2em}{#1}{#2}}\makeatother
+\tableofcontents\endgroup
+\clearpage
+\input{sections/01_model}
+\input{sections/02_results}
+\input{sections/03_enumeration}
+\input{sections/04_concentration}
+\input{sections/05_binomial}
+\input{sections/06_saddle}
+\input{sections/07_transfer}
+\input{sections/08_explicit}
+\input{sections/09_inverse}
+\input{sections/10_computation}
+\input{sections/11_outlook}
+\input{sections/12_references}
+\end{document}

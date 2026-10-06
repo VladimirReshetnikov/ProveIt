@@ -1,0 +1,35 @@
+\section{The matrix model and its graph encoding}\label{sec:model}
+A symmetric sign matrix is a symmetric matrix $X=(x_{ij})_{1\le i,j\le n}$ with every $x_{ij}\in\{-1,+1\}$. Its diagonal is variable. Let $A_n$ be the number for which every row sum is nonnegative. Symmetry makes the column conditions identical. Positions are labelled: simultaneous permutations of rows and columns are not identified. We set $A_0=1$ by the empty-matrix convention; the published sequence begins with $A_1=1$ and $A_2=5$ \cite{oeis}.
+
+For $M\ge1$, $0\le k\le M-1$, and $0\le f\le M$, let $U_f(M,k)$ count simple graphs on the fixed vertex set $[M]$ such that the first $M-f$ degrees are at most $k$. The last $f$ vertices are specified in advance and unrestricted. Write $B(M,k)=U_0(M,k)$. There is no factor $\binom Mf$ in this definition.
+
+\begin{proposition}[Exact graph bridge]\label{prop:bridge}
+For every $n\ge0$,
+\begin{equation}\label{eq:bridge}
+ A_n=U_1(n+1,\lfloor n/2\rfloor).
+\end{equation}
+For $n\ge1$, one also has the exact soft-boundary formula
+\begin{equation}\label{eq:soft}
+ A_n=2^n\sum_{\substack{G\text{ on }[n]\\\Delta(G)\le k}}2^{-N_k(G)},
+ \qquad k=\lfloor n/2\rfloor,
+\end{equation}
+where $N_k(G)$ is the number of vertices of degree $k$.
+\end{proposition}
+\begin{proof}
+Add a distinguished vertex $*$ to $[n]$. Put an edge $ij$, $i\ne j$, precisely when $x_{ij}=-1$, and an edge $i*$ precisely when $x_{ii}=-1$. Each of the $n(n+1)/2=\binom{n+1}{2}$ independent signs specifies one possible edge, so the correspondence is bijective. The number of negative entries in row $i$ is exactly $d_i$, giving row sum $n-2d_i$. Hence the row condition is $d_i\le\lfloor n/2\rfloor$, with no condition at $*$.
+
+Alternatively, fix only the negative off-diagonal entries, giving a graph $G$ on $[n]$. If $d_i>k$, no diagonal sign is allowed. If $d_i=k$, the diagonal must be positive. If $d_i<k$, either diagonal sign is allowed. Multiplication over vertices gives $2^{n-N_k(G)}$, proving \eqref{eq:soft}.
+\end{proof}
+
+The diagonal-to-extra-vertex correspondence is a prior structural fact: Greenhill and McKay state it explicitly for symmetric $0$--$1$ matrices with diagonal weight one \cite[p.~902; preprint p.~3]{gm}. Proposition~\ref{prop:bridge} includes the short proof to fix the sign convention and the inequality cap. Their dense Theorem 1.4 treats prescribed exact row sums with a variable diagonal, a direct pointwise predecessor; summing to the capped event still requires the relative estimates developed here.
+
+The extra vertex is useful because it replaces the boundary weight in \eqref{eq:soft} by a single free degree coordinate. Treating the row sums as independent would lose the relevant rare-event correlation. A multivariate central limit theorem with an absolute error is likewise insufficient: the desired probability decays exponentially in $n$.
+
+\subsection{What is imported and what is proved here}
+McKay and Wormald's uniform dense degree-sequence enumeration \cite[Theorem 3(ii)]{mw} is the pointwise counting input. McKay, Wanless, and Wormald \cite{mww} already determined the all-capped graph equivalent, including its exponential rate, constant, and square-root boundary effect. We use their Corollary 2 for the final matrix constants, and their Lemma 2 and equation (29) for the first correction to an auxiliary saddle mass.
+
+The proof below supplies the passage from all-capped to mixed capped and free coordinates, including the window $f=O(\sqrt M)$. It does not apply the comparison theorem \cite[Theorem 3]{mww} directly to $2^{-N_k}$. That theorem requires a polynomial bound on the ratio of an observable's maximum to its comparison-model expectation; this condition has not been established for the weight in \eqref{eq:soft}. Instead, the proof sums the pointwise enumeration formula with an exact tilt and controls its positive exponential weight. The switching argument is an unequal-cap adaptation of the method in \cite[Lemma 4]{mww}, and its counts are derived explicitly here.
+
+Flammenkamp's university page identifies a joint counting project with Sillke in 1981 and links an exact table agreeing with $A_n$ through order $16$ \cite{sf}. This dates the project, not necessarily every value in the current table. The underlying unpublished manuscript or proof notes cited by OEIS were not recovered. Anderson's cited Section 3.1 \cite{anderson} was also not inspected. Greene and Kleitman's complete displayed article \cite{gk} was read; it concerns symmetric chains, strengthened Sperner bounds, lattice paths, and two-row plane partitions, and does not state the sign-matrix asymptotic used here. These are precise limits on the inspected historical record, not evidence that no earlier unpublished result exists.
+
+Later neighboring work addresses loopy exact margins, partial stability at exponential-rate scale, and friendly bisections at constant-factor precision \cite{gm,dgz,mss}. The inspected results do not directly supply the mixed-cap relative equivalent below. In particular, broad partial-constraint ideas and the graph bridge are not presented as new. The present article makes no priority claim.

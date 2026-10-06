@@ -1,0 +1,930 @@
+\pdfinfoomitdate=1
+\pdftrailerid{}
+\pdfsuppressptexinfo=15
+\newcommand{\DoNotLoadEpstopdf}{}
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools,booktabs,array}
+\usepackage[margin=1in]{geometry}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+\usepackage{enumitem}
+\setlist{itemsep=3pt,topsep=5pt}
+\allowdisplaybreaks[2]
+\emergencystretch=2em
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\NN}{\mathbb N_0}
+\newcommand{\OO}{\mathcal O}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\Per}{\operatorname{per}}
+\newcommand{\coef}[2]{[#1^{#2}]}
+\DeclareMathOperator{\Res}{Res}
+\DeclareMathOperator{\diag}{diag}
+\hypersetup{pdftitle={Report184 Fixed positive permanent binary matrices},pdfauthor={Research report},pdfsubject={OEIS A089479 finite kernels prime blocks all orders asymptotics and threshold inverses}}
+\title{Report184\\[5pt]Fixed positive permanent binary matrices\\[3pt]OEIS A089479}
+\author{Asymptotics, canonical block laws, and reproducible certificates}
+\date{3 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+For each fixed positive integer $k$, let $C_{n,k}$ count all labelled binary $n\times n$ matrices with ordinary integer permanent $k$. We prove
+\[
+ C_{n,k}=\frac{(n!)^2}{k}\,2^{\binom n2}
+ \left\{\rho^{-n}P_k(n)+O_k(2^{-n})\right\},
+\]
+where $\rho=1.4880785455997102946562460\ldots$ is the classical directed-acyclic-graph root, and $P_k$ is an effectively computable polynomial of exact degree $\Omega(k)$, the number of prime factors of $k$ with multiplicity. Its positive leading coefficient is an explicit product of prime amplitudes. The proof combines marked perfect matchings, finite suppressed strongly connected kernels, the classical Robinson component transform, and a self-contained complex root isolation. We compute the complete polynomials for $k=2,3,4$ with rationally certified coefficient intervals, prove explicit all-$n$ remainder constants, give every fixed Stirling and finite spectral order, and derive smooth and integer threshold inverse bounds. Canonical allowed-edge blocks have a limiting independent prime-block size law, with expansions to every fixed order in exponentially weighted total variation. Exact counting code and rational certificates are supplied separately from numerical diagnostics.
+\end{abstract}
+
+\paragraph{Scope and attribution.}
+The model is the full permanent-distribution triangle A089479, with no row-degree or column-degree restriction. The $k=1$ case is the known permanent-one/DAG correspondence, not a new counting theorem. The SCC transform is classical Robinson machinery, read in its primary 2019 restatement. The target-specific results are derived below; the bounded source review in Section~\ref{sec:prior} is not a worldwide priority determination. All limits keep $k$, every requested expansion order, and every probability weight fixed.
+
+\newpage
+{\small\tableofcontents}
+\newpage
+
+\section{Main results and normalization}\label{sec:results}
+For a binary matrix $A=(a_{ij})_{1\le i,j\le n}$, define
+\[
+ \Per A=\sum_{\sigma\in\operatorname{Sym}(n)}\prod_{i=1}^n a_{i,\sigma(i)},
+ \qquad C_{n,k}=\#\{A\in\{0,1\}^{n\times n}:\Per A=k\}.
+\]
+Rows and columns are labelled. We set $\Per(\varnothing)=1$, so $C_{0,1}=1$ and $C_{0,k}=0$ for $k\ne1$. In this report $k\ge1$ is fixed. Write
+\[
+ k=\prod_p p^{e_p},\qquad d=\Omega(k)=\sum_p e_p,
+ \qquad E(z)=\sum_{m\ge0}\frac{(-z)^m}{m!2^{\binom m2}}.
+\]
+The product is empty and $d=0$ when $k=1$. Section~\ref{sec:root} proves that $E$ has exactly one zero in $|z|\le2$, a simple real zero $\rho\in(1.48,1.50)$. Put
+\begin{equation}\label{eq:a}
+ a=-\rho E'(\rho)=\rho E(\rho/2)>0.
+\end{equation}
+The derivative identity follows by termwise differentiation of the entire series.
+
+\begin{theorem}[Fixed permanent asymptotic]\label{thm:main}
+For every fixed integer $k\ge1$ there is an effectively computable real polynomial $P_k$, of exact degree $d=\Omega(k)$, such that
+\begin{equation}\label{eq:main}
+ C_{n,k}=\frac{(n!)^2}{k}\,2^{\binom n2}
+ \left\{\rho^{-n}P_k(n)+O_k(2^{-n})\right\}.
+\end{equation}
+Let $s_{m,p}$ count strongly connected loopless simple digraphs on $m$ labelled vertices with $\Per(I+A)=p$. Antiparallel arcs are permitted. For each prime $p$, define
+\begin{equation}\label{eq:hp}
+ h_p=\sum_{m\ge2}\frac{s_{m,p}\rho^m}{m!2^{\binom m2}}
+ E(\rho/2^m)>0.
+\end{equation}
+Then the leading monomial coefficient of $P_k$ is
+\begin{equation}\label{eq:leading}
+ L_k=\frac{\prod_p h_p^{e_p}}{a^{d+1}\prod_p e_p!}.
+\end{equation}
+In particular $P_1=1/a$. The $O$ constant may depend on $k$.
+\end{theorem}
+
+The squared factorial in \eqref{eq:main} is essential. One factor comes from labelled digraphs, the other from undoing a marked matching's column permutation. Neither the ordinary generating series $\sum C_{n,k}z^n$ nor its single-factorial exponential version is the meromorphic series used in the proof.
+
+The conclusion identifies the complete dominant algebraic correction when factorials are retained: it is the finite polynomial $P_k$, not merely its leading monomial. For example, a prime $k$ gives a linear polynomial, while $k=4$ gives a quadratic. The degree is $\Omega(k)$, not $\lfloor\log_2 k\rfloor$.
+
+\begin{theorem}[Effective small permanent bounds]\label{thm:effectiveintro}
+Set $M_2=1000$, $M_3=3900$, and $M_4=170000$. For $k=2,3,4$ and every integer $n\ge0$,
+\begin{equation}\label{eq:effective}
+ \left|\frac{kC_{n,k}}{(n!)^2 2^{\binom n2}}-\rho^{-n}P_k(n)\right|
+ \le M_k2^{-n}.
+\end{equation}
+The coefficients of $P_k$ are certified in Section~\ref{sec:constants}. Explicit increasing upper and lower smooth envelopes, and global threshold brackets derived from them, are valid on $x\ge50$; see Section~\ref{sec:effectiveinverse}.
+\end{theorem}
+
+\begin{theorem}[Prime block law]\label{thm:blocksintro}
+In a uniformly chosen matrix counted by $C_{n,k}$, consider the connected components of the bipartite graph consisting only of entries that belong to at least one perfect matching. With probability $1-O_k(n^{-1})$, exactly $d$ components are nontrivial and their permanents are the prime factors of $k$, counted with multiplicity. For each prime $p$, the $e_p$ limiting block sizes are independent with law
+\begin{equation}\label{eq:pi}
+ \pi_p(m)=\frac{s_{m,p}\rho^mE(\rho/2^m)}{h_pm!2^{\binom m2}},\qquad m\ge2.
+\end{equation}
+Their unordered multiset converges in total variation, and admits every fixed-order expansion in the exponentially weighted norm specified in Section~\ref{sec:blocks}. All these size laws have every positive exponential moment finite.
+\end{theorem}
+
+Thus the number of vertices in nontrivial allowed-edge blocks stays tight as $n\to\infty$. This does not say that the original matrix has only a bounded number of nonzero entries: entries outside the allowed-edge graph can be numerous.
+
+\subsection{Small exact values}
+The following counts use the OEIS convention at $n=0$ and agree with the exact transform and the visible A089479 data~\cite{oeis}. They are useful normalization checks.
+\begin{center}
+\begin{tabular}{r r r r r}
+\toprule
+$n$ & $C_{n,1}$ & $C_{n,2}$ & $C_{n,3}$ & $C_{n,4}$\\
+\midrule
+0&1&0&0&0\\
+1&1&0&0&0\\
+2&6&1&0&0\\
+3&150&69&18&9\\
+4&13032&10800&4992&4254\\
+5&3513720&4339440&2626800&3015450\\
+6&2722682160&4513642920&3177532800&4466769300\\
+\bottomrule
+\end{tabular}
+\end{center}
+The $n=6$ entries are exact transform computations checked against the OEIS comment; the exhaustive matrix audit described later stops at $n=5$.
+
+\section{Marking one perfect matching}\label{sec:matching}
+A matrix of permanent $k$ has exactly $k$ perfect matchings in its associated bipartite graph. Count a matrix together with one marked matching. Permute its columns by the unique permutation making that matching the main diagonal, and remove the diagonal entries. This gives a loopless simple directed graph $D$ on $[n]$; an off-diagonal entry $(i,j)$ is the arc $i\to j$.
+
+Conversely, from any such digraph with $\Per(I+A_D)=k$ and any column permutation, one reconstructs a unique matrix with a marked matching. The mark is part of the object, so coincidences between unmarked matrices from different permutations cause no quotient. If
+\[
+ b_{n,k}=\#\{D\text{ on }[n]:\Per(I+A_D)=k\},
+\]
+then
+\begin{equation}\label{eq:marked}
+ kC_{n,k}=n!b_{n,k}.
+\end{equation}
+
+Every nonidentity permutation in $\Per(I+A_D)$ is a collection of pairwise vertex-disjoint directed simple cycles of lengths at least two; unselected vertices use their diagonal entry. The empty cycle collection is included. A directed cycle lies in one strongly connected component (SCC), so
+\begin{equation}\label{eq:multiplicative}
+ \Per(I+A_D)=\prod_{B\text{ an SCC of }D}\Per(I+A_{D[B]}).
+\end{equation}
+A singleton SCC has permanent one. Every nontrivial SCC contains a directed cycle and has permanent at least two.
+
+Let $s_{m,k}$ count the strongly connected digraphs of the indicated kind, and set
+\begin{equation}\label{eq:Sk}
+ S_k(z)=\sum_{m\ge1}s_{m,k}\frac{z^m}{m!}.
+\end{equation}
+Then $S_1(z)=z$, and $s_{m,k}=0$ for $m<2$ if $k\ge2$. If $k=1$, there can be no directed cycle at all. Thus $b_{n,1}$ is the number of labelled DAGs, the known correspondence recorded in A089482 and A003024~\cite{perone,dag}. The rest of the proof extends the component analysis to each fixed positive permanent.
+
+\section{Finite strongly connected kernels}\label{sec:kernels}
+\subsection{A circulation bound}
+\begin{lemma}\label{lem:cycles}
+A strongly connected directed graph with $v$ vertices and $m$ arcs has at least $m-v+1$ distinct directed simple cycles. Consequently, if its diagonal-one permanent is $k$, then $m-v\le k-2$.
+\end{lemma}
+\begin{proof}
+The directed incidence matrix has rank $v-1$, so its real circulation space has dimension $m-v+1$. Every arc lies on a directed cycle. Summing one such cycle circulation for each arc gives a strictly positive circulation $c$.
+
+For any real signed circulation $x$, choose a sufficiently large positive $t$ so that $x+tc$ is nonnegative. Every nonnegative circulation is a nonnegative linear combination of simple cycle circulations: start along a positive arc, continue along positive outgoing arcs using conservation at each vertex, stop at a repeated vertex, and subtract the minimum weight around the resulting simple cycle. At least one positive arc disappears in each subtraction. This terminates after finitely many steps. Thus all signed circulations lie in the span of the simple cycles, proving their number is at least the dimension of the space.
+
+Every simple directed cycle is itself a distinct nonempty cycle collection in the permanent. Adding the empty collection gives $k\ge m-v+2$.
+\end{proof}
+
+When $k=2$, strong connectivity gives $m\ge v$, and the lemma forces equality. Every indegree and outdegree is then one, so the graph is one directed cycle. Its labelled count is $(m-1)!$, yielding
+\begin{equation}\label{eq:S2}
+ S_2(z)=\sum_{m\ge2}\frac{z^m}{m}=-\log(1-z)-z.
+\end{equation}
+
+\subsection{Unique suppression and permanent preservation}
+For $k\ge3$, a strongly connected graph is not a single directed cycle. Call a vertex a branch vertex when its indegree and outdegree are not both one. Suppress all other vertices along their maximal directed paths. Each maximal path starts and ends at branch vertices: a cycle made entirely of suppressed vertices could not coexist with a branch vertex in a strongly connected graph. The resulting kernel is a directed multigraph $K$, with loops and parallel arcs allowed.
+
+This suppression is unique. Each surviving vertex keeps its original indegree and outdegree, with loops counted once in each; no new suppressible branch vertex is created. Write $v=v(K)$, $m=m(K)$, and $e=m-v$. Subdivision and suppression preserve $e$. Every branch vertex has positive indegree and outdegree and total degree at least three. Therefore
+\begin{equation}\label{eq:kernelbound}
+ 3v\le2m=2v+2e,\qquad
+ v\le2e\le2k-4,\qquad m\le3k-6.
+\end{equation}
+Only finitely many kernels are possible for fixed $k$.
+
+The permanent also survives suppression, with multiplicities correctly retained. A nonempty cycle collection using an internal vertex of a subdivided path must use the entire path, since each such vertex has a unique incoming and outgoing off-diagonal arc. It projects to a kernel cycle collection. Conversely every kernel cycle collection lifts uniquely. A loop at a branch vertex represents a genuine directed cycle through that vertex and at least one internal vertex. It competes with the identity choice at that vertex. Parallel arcs represent distinct possible paths and must be counted distinctly. If $M_K$ is the integer adjacency matrix of the kernel, the invariant is exactly
+\begin{equation}\label{eq:kernelper}
+ \Per(I+M_K)=k.
+\end{equation}
+There is no additional cycle collection wholly inside the interior of one suppressed path.
+
+\subsection{The exact finite kernel formula}
+Let $L=L(z)=z/(1-z)$, the EGF of a nonempty ordered list of labelled internal vertices. Define
+\begin{equation}\label{eq:Qj}
+ Q_0(z)=1,\qquad
+ Q_j(z)=\frac{L^j}{j!}+\frac{L^{j-1}}{(j-1)!}\quad(j\ge1).
+\end{equation}
+For an off-diagonal bundle of $j$ parallel kernel arcs, either every path is nonempty, or exactly one path is empty. Two empty paths would give the same original arc twice, which is forbidden. These two cases give \eqref{eq:Qj}. In a loop bundle every path must be nonempty, because the original digraph is loopless, so its factor is $L^j/j!$.
+
+For each $v$, let $\mathcal K_{v,k}$ be the set of nonnegative integer $v\times v$ matrices $M$ such that the associated directed multigraph is strongly connected, every indegree and outdegree is positive, none is simultaneously one, $\Per(I+M)=k$, and $\sum M_{ij}-v\le k-2$.
+
+\begin{proposition}[Finite kernel formula]\label{prop:kernel}
+For $k\ge3$,
+\begin{equation}\label{eq:kernel}
+ S_k(z)=\sum_{v=1}^{2k-4}\frac{z^v}{v!}
+ \sum_{M\in\mathcal K_{v,k}}
+ \prod_i\frac{L(z)^{M_{ii}}}{M_{ii}!}
+ \prod_{i\ne j}Q_{M_{ij}}(z).
+\end{equation}
+In particular, $S_k$ is rational with no possible finite pole except $z=1$.
+\end{proposition}
+\begin{proof}
+The unique suppression associates one admissible kernel to each strongly connected graph of permanent $k$. The preceding bundle factors reconstruct exactly its simple lifts. An adjacency matrix $M$ has branch positions labelled $1,\ldots,v$; multiplying by $z^v/v!$ performs the labelled branch-vertex accounting. Dividing by each bundle factorial forgets permutations of indistinguishable kernel arcs. Every nonempty list carries distinct labels, so its internal labels distinguish the corresponding nonempty paths. There is at most one empty path in a nonloop bundle. Hence there is no additional arc-labelling factor.
+
+Conversely, subdividing each kernel arc at least once always produces a simple strongly connected lift, and the permitted shorter choices produce exactly the other simple lifts. The permanent is preserved by \eqref{eq:kernelper}. This proves the identity and the absence of hidden feasibility restrictions. Each summand is rational in $L$, and the sum is finite by \eqref{eq:kernelbound}.
+\end{proof}
+
+The construction is effective, but it is not a claim that exhaustive kernel enumeration is practical for large $k$. Bounds \eqref{eq:kernelbound} give a finite algorithm for every individual $k$.
+
+\subsection{The first rational component functions}
+For $k=3$, the excess is at most one. The kernels are a one-vertex bouquet of two loops and an oriented theta with two parallel arcs in one direction and one in the other. There are two labelled orientations of the latter. Formula~\eqref{eq:kernel} gives
+\begin{align}
+ S_3(z)&=\frac{zL^2}{2}
+ +z^2\left(\frac{L^2}{2}+L\right)(1+L)\notag\\
+ &=\frac{z^3(3-2z)}{2(1-z)^3}.\label{eq:S3}
+\end{align}
+For $k=4$, enumerating the finite set in \eqref{eq:kernel} gives
+\begin{equation}\label{eq:S4}
+ S_4(z)=\frac{z^3(-6z^4+28z^3-47z^2+28z+6)}{6(1-z)^6}.
+\end{equation}
+The exact code checks the rational numerator, without numerical fitting. The numbers of labelled kernels by branch count are
+\begin{center}
+\begin{tabular}{c r r r r}
+\toprule
+$k$ & $v=1$ & $v=2$ & $v=3$ & $v=4$\\
+\midrule
+3&1&2&0&0\\
+4&1&6&24&48\\
+\bottomrule
+\end{tabular}
+\end{center}
+All listed $k=4$ kernels have excess two. The finite formula, rather than a guess from initial coefficients, certifies \eqref{eq:S4}.
+
+For every $k\ge2$ there is a strongly connected example: take $k-1$ directed 2-cycles sharing one common vertex and otherwise disjoint. Every nonempty cycle collection consists of exactly one of these cycles. Its permanent is $k$. This also proves that every prime amplitude used below is nonempty.
+
+\section[The classical component transform]{The classical component transform with a permanent mark}\label{sec:transform}
+Define the coefficient-damping operator
+\begin{equation}\label{eq:delta}
+ \Delta\!\left(\sum_{m\ge0}f_mz^m\right)
+ =\sum_{m\ge0}\frac{f_mz^m}{2^{\binom m2}}.
+\end{equation}
+It converts an EGF to the graphic generating function when their coefficients are expressed consistently. The relevant series is
+\begin{equation}\label{eq:Dk}
+ D_k(z)=\sum_{n\ge0}\frac{b_{n,k}}{n!2^{\binom n2}}z^n
+ =\sum_{n\ge0}\frac{kC_{n,k}}{(n!)^2 2^{\binom n2}}z^n.
+\end{equation}
+
+To justify all operations without global convergence in the permanent index, fix $k$ and use the finite-divisor algebra with basis $e_j$ for $j\mid k$, unit $e_1$, and multiplication
+\[
+ e_i e_j=\begin{cases}e_{ij},&ij\mid k,\\0,&ij\nmid k.\end{cases}
+\]
+This multiplication is associative: once a product fails to divide $k$, multiplying it by another positive integer cannot make it divide $k$. The ideal generated by $e_j$, $j\ge2$, is nilpotent of index at most $d+1$. Every coefficient identity below can be read in this fixed algebra.
+
+Set
+\[
+ \mathcal S(z)=ze_1+\sum_{\substack{j\mid k\\j\ge2}}S_j(z)e_j,
+ \qquad \mathcal D(z)=\sum_{j\mid k}D_j(z)e_j.
+\]
+The classical SCC identity of Robinson, restated with proof in Theorem 3.4 of de Panafieu and Dovgal~\cite{symbolic}, is
+\begin{equation}\label{eq:robinson}
+ \mathcal D(z)=\left[\Delta\exp(-\mathcal S(z))\right]^{-1}.
+\end{equation}
+Its multiplicative permanent mark is justified by \eqref{eq:multiplicative}.
+
+For completeness, mark an arbitrary subset of the source SCCs of a digraph and give each selected SCC weight $-1$. Distinct source SCCs have no arcs between them. Their labelled collection is therefore a SET, giving $\exp(-\mathcal S)$ before applying $\Delta$. Arcs from the selected vertices to the remaining digraph may be chosen arbitrarily, while reverse arcs are forbidden. If the two sides have $a$ and $b$ vertices, there are $2^{ab}$ choices. This arrow product becomes ordinary multiplication in graphic normalization, because
+\[
+ \binom{a+b}{2}=\binom a2+\binom b2+ab.
+\]
+Every nonempty condensation DAG has a source. Summing the signs over its possible selected source subsets yields zero, while the empty graph contributes one. This proves \eqref{eq:robinson} in the marked algebra. It also explains why the denominator is $2^{\binom n2}$ even though both directions of each possible arc are allowed in the underlying digraph class.
+
+Write
+\begin{equation}\label{eq:Hdef}
+ \Delta\exp(-\mathcal S(z))=E(z)e_1-
+ \sum_{\substack{j\mid k\\j\ge2}}H_j(z)e_j.
+\end{equation}
+Explicitly, for $j\ge2$,
+\begin{equation}\label{eq:Hexplicit}
+ H_j(z)=\sum_{r=1}^{\Omega(j)}\frac{(-1)^{r+1}}{r!}
+ \sum_{\substack{j_1\cdots j_r=j\\j_i\ge2}}
+ \Delta\!\left(e^{-z}\prod_{i=1}^r S_{j_i}(z)\right).
+\end{equation}
+Every $H_j$ is entire. Indeed, every fixed product on the right is analytic for $|z|<1$ and has coefficients bounded by $C_RR^{-m}$ on each fixed circle of radius $R<1$. The damping factor $2^{-\binom m2}$ makes the transformed series converge absolutely and uniformly on every compact complex disk. All such statements concern a fixed finite-divisor algebra, not the unrestricted sum over all permanents.
+
+Expanding the inverse using its nilpotent ideal gives the exact finite expression
+\begin{equation}\label{eq:Dexplicit}
+ D_1=\frac1E,\qquad
+ D_k=\sum_{r=1}^{d}\frac1{E^{r+1}}
+ \sum_{\substack{j_1\cdots j_r=k\\j_i\ge2}}\prod_{i=1}^rH_{j_i}
+ \quad(k>1).
+\end{equation}
+Thus every $D_k$ is meromorphic on the whole complex plane and its only possible poles are zeros of $E$.
+
+For later computation the first cases are
+\begin{align}
+ D_2&=H_2/E^2,&H_2&=\Delta(e^{-z}S_2),\notag\\
+ D_3&=H_3/E^2,&H_3&=\Delta(e^{-z}S_3),\label{eq:lowD}\\
+ D_4&=H_4/E^2+H_2^2/E^3,&H_4&=\Delta\{e^{-z}(S_4-S_2^2/2)\}.\notag
+\end{align}
+The subtraction in $H_4$ is necessary. Treating it as simply $\Delta(e^{-z}S_4)$ would lose the multiplicative component accounting and give an incorrect polynomial.
+
+\section{A self contained complex root isolation}\label{sec:root}
+\begin{lemma}\label{lem:root}
+$E$ has exactly one zero in $|z|\le2$. It is simple and real, lies in $(37/25,3/2)$, and $E(x)>0$ for $0\le x<\rho$. On $|z|=2$,
+\begin{equation}\label{eq:eta}
+ |E(z)|>\eta:=119/1000.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Let
+\[
+ Q(z)=1-z+z^2/4-z^3/48.
+\]
+Its derivative is $Q'(z)=-(z-4)^2/16$, so it has exactly one real root $r_0$. Direct evaluation puts $r_0\in(1.48,1.50)$. The other two roots are conjugate nonreal numbers with common modulus $\sqrt{48/r_0}>\sqrt{32}$, using the product of the three roots. Hence on $|z|=2$,
+\[
+ |Q(z)|>\frac1{48}\cdot\frac12\cdot(\sqrt{32}-2)^2>\frac{13}{100}.
+\]
+The first term of $E-Q$ on that circle has absolute value $1/96$. The ratio of consecutive absolute terms is at most $1/40$ from index four onward. Therefore
+\[
+ |E(z)-Q(z)|\le\frac{1/96}{1-1/40}=\frac5{468}<\frac{11}{1000}.
+\]
+Rouch\'e's theorem gives exactly one zero, counted with multiplicity, inside the circle, and the strict bounds exclude boundary zeros. Conjugation makes that zero real and the count makes it simple. Alternating-series bounds give explicit real signs:
+\[
+ E(37/25)>Q(37/25)=\frac{47}{750000}>0,
+\]
+\[
+ E(3/2)<Q(3/2)+\frac{(3/2)^4}{1536}
+ =-\frac{37}{8192}<0.
+\]
+This isolates the root. Since $E(0)=1$ and there is no earlier real zero, $E$ is positive on $[0,\rho)$. Subtracting the two circle bounds gives \eqref{eq:eta}.
+\end{proof}
+
+No assertion about all zeros of $E$ being real is required. Its other zeros enter only through their actual locations and multiplicities when a larger finite radius is chosen in Section~\ref{sec:allorders}.
+
+\section{Positive prime amplitudes and the exact pole degree}\label{sec:positivity}
+Alternating transforms do not preserve positivity in general. The needed positivity has a special direct proof.
+
+\begin{lemma}\label{lem:positive}
+If $S(z)=\sum_{m\ge2}s_mz^m/m!$ has radius of convergence at least one, then
+\begin{equation}\label{eq:convolution}
+ \Delta(e^{-z}S)(z)=\sum_{m\ge2}
+ \frac{s_mz^m}{m!2^{\binom m2}}E(z/2^m).
+\end{equation}
+Both sides are entire and the displayed sum converges locally uniformly.
+\end{lemma}
+\begin{proof}
+Expand $e^{-z}$ and write the total degree as $m+t$. The identity
+\[
+ \binom{m+t}{2}=\binom m2+\binom t2+mt
+\]
+turns the inner sum over $t$ into $E(z/2^m)$, with the factors $m!$ and $t!$ unchanged. Absolute local convergence follows by bounding $s_m/m!$ by an exponential on a smaller initial disk and using the quadratic damping. Thus regrouping is valid.
+\end{proof}
+
+For prime $p$, the only factorization in \eqref{eq:Hexplicit} has one factor, so $H_p=\Delta(e^{-z}S_p)$. At $z=\rho$, every $E(\rho/2^m)$ is strictly positive by Lemma~\ref{lem:root}; every $s_{m,p}$ is nonnegative; and at least one is positive by the bouquet construction. Hence $H_p(\rho)=h_p>0$, proving \eqref{eq:hp}.
+
+Let $t=1-z/\rho$. Near $\rho$,
+\[
+ E(z)=at+O(t^2),\qquad a>0.
+\]
+The greatest number of factors in an ordered factorization of $k$ is $d=\Omega(k)$, and equality occurs only for its ordered prime factorizations. Consequently the coefficient of the highest denominator power $E^{-d-1}$ in \eqref{eq:Dexplicit} is
+\begin{equation}\label{eq:toppole}
+ \frac{d!}{\prod_p e_p!}\prod_p H_p(z)^{e_p}.
+\end{equation}
+At $\rho$ this is strictly positive; terms with fewer factors have strictly lower pole order. Thus $D_k$ has a pole of exact order $d+1$.
+
+Write its complete principal part as
+\begin{equation}\label{eq:principal}
+ \operatorname{PP}_{\rho}D_k(z)=\sum_{j=1}^{d+1}c_{k,j}(1-z/\rho)^{-j},
+ \qquad
+ P_k(n)=\sum_{j=1}^{d+1}c_{k,j}\binom{n+j-1}{j-1}.
+\end{equation}
+The polynomial has real coefficients, since $\rho$ and the series are real. The top coefficient in \eqref{eq:toppole}, divided by $a^{d+1}$ and then by $d!$ from coefficient extraction, gives exactly \eqref{eq:leading}.
+
+Subtracting \eqref{eq:principal} leaves a function analytic on a neighborhood of the closed disk $|z|\le2$, by Lemma~\ref{lem:root} and meromorphicity. Cauchy's coefficient bound on that circle gives
+\[
+ [z^n]D_k(z)=\rho^{-n}P_k(n)+O_k(2^{-n}).
+\]
+Combining this with \eqref{eq:Dk} proves Theorem~\ref{thm:main}. This argument also covers $k=1$ directly with $P_1=1/a$.
+
+\section{The first complete polynomial prefactors}\label{sec:constants}
+The binomial basis in \eqref{eq:principal} is the natural basis for the answer. In particular,
+\begin{align}
+ P_2(n)&=c_{2,2}(n+1)+c_{2,1},\notag\\
+ P_3(n)&=c_{3,2}(n+1)+c_{3,1},\label{eq:lowP}\\
+ P_4(n)&=c_{4,3}(n+1)(n+2)/2+c_{4,2}(n+1)+c_{4,1}.\notag
+\end{align}
+The leading coefficient $L_4$ is $c_{4,3}/2$, not $c_{4,3}$.
+
+\subsection{Exact derivative formulas}
+Write, at $z=\rho$,
+\[
+ b=\rho^2E''(\rho)/2,\qquad c=-\rho^3E'''(\rho)/6,
+ \qquad E(z)=at+bt^2+ct^3+O(t^4).
+\]
+For $k=2,3$, writing $h_k=H_k(\rho)$ and $h_k'=H_k'(\rho)$ gives
+\begin{equation}\label{eq:coeff23}
+ c_{k,2}=\frac{h_k}{a^2},\qquad
+ c_{k,1}=-\frac{\rho h_k'}{a^2}-\frac{2bh_k}{a^3}.
+\end{equation}
+For $k=4$, abbreviate $h=H_2(\rho)$, $h'=H_2'(\rho)$, $h''=H_2''(\rho)$, $g=H_4(\rho)$, and $g'=H_4'(\rho)$. Then
+\begin{align}
+ c_{4,3}&=h^2/a^3,\notag\\
+ c_{4,2}&=g/a^2-2\rho hh'/a^3-3bh^2/a^4,\label{eq:coeff4}\\
+ c_{4,1}&=-\rho g'/a^2-2bg/a^3
+ +\rho^2\{(h')^2+hh''\}/a^3\notag\\
+ &\hspace{10mm}+6b\rho hh'/a^4+h^2(6b^2/a^5-3c/a^4).\notag
+\end{align}
+These follow by multiplying the Taylor series of \eqref{eq:lowD} in $t$. For example,
+\[
+ H_2(z)^2=h^2-2\rho hh't+\rho^2\{(h')^2+hh''\}t^2+O(t^3),
+\]
+which fixes both the second-derivative and cross-term factors.
+
+\subsection{Outward rational decimal intervals}
+Every endpoint in the following table is an exact terminating decimal. Each listed quantity lies between the two endpoints, and every interval has width $10^{-25}$. These are certified enclosures, not floating-point error estimates.
+\begin{center}\small
+\begin{tabular}{c r r}
+\toprule
+Quantity & Lower endpoint & Upper endpoint\\
+\midrule
+$\rho$&1.4880785455997102946562460&1.4880785455997102946562461\\
+$a$&0.5743623733093114769166708&0.5743623733093114769166709\\
+$h_2$&0.4979712937691307225327241&0.4979712937691307225327242\\
+$h_3$&0.7957739216056920566378634&0.7957739216056920566378635\\
+$H_4(\rho)$&1.3898313409494419980287943&1.3898313409494419980287944\\
+$c_{1,1}$&1.7410611252932298403421880&1.7410611252932298403421881\\
+$c_{2,2}$&1.5094973162987879512533343&1.5094973162987879512533344\\
+$c_{2,1}$&$-4.8156204403511959734926939$&$-4.8156204403511959734926938$\\
+$c_{3,2}$&2.4122245881933563368810739&2.4122245881933563368810740\\
+$c_{3,1}$&$-10.9317703274957438628613269$&$-10.9317703274957438628613268$\\
+$c_{4,3}$&1.3087318502556789012954150&1.3087318502556789012954151\\
+$c_{4,2}$&$-3.3028358986717741260484241$&$-3.3028358986717741260484240$\\
+$c_{4,1}$&$-2.3699604764464618517018264$&$-2.3699604764464618517018263$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Here $H_4(\rho)$ is a convenient numerator value; it is not a prime amplitude in formula~\eqref{eq:leading}.
+
+\subsection{Proof of the numerical certificate}\label{sec:certproof}
+All certificate arithmetic is integer or rational. The script retains terms of degrees $0$ through $44$ and uses the exact root bracket
+\begin{align*}
+ \rho_-&=1.4880785455997102946562460315823576618935,\\
+ \rho_+&=1.4880785455997102946562460315823576618936.
+\end{align*}
+Let $N=45$ and $R=3/2$. For $0\le j\le4$, the first omitted absolute term of $E^{(j)}$ on $|z|\le R$ is bounded by
+\begin{equation}\label{eq:etail}
+ A_{E,j}=\frac{R^{N-j}}{(N-j)!2^{\binom N2}}.
+\end{equation}
+The consecutive ratio is $R/((n+1-j)2^n)<1/2$ for $n\ge N$. Hence twice \eqref{eq:etail} bounds the whole tail.
+
+For the $H$ functions, use $W_2=S_2$, $W_3=S_3$, and $W_4=S_4-S_2^2/2$. On $|z|=1/2$, nonnegative coefficients of $S_j$ and \eqref{eq:S2}--\eqref{eq:S4} give
+\[
+ S_2(1/2)<1/4,\qquad S_3(1/2)=1,\qquad S_4(1/2)=91/6.
+\]
+The first inequality follows termwise from $1/m\le1/2$ for $m\ge2$, strictly for some terms. Also $e^{1/2}<2$, by the exponential series comparison with a geometric series. Thus all three functions $e^{-z}W_k$ have modulus below $64$ on this circle; for the largest case the bound is already
+\[
+ 2(91/6+1/32)=1459/48<64.
+\]
+Cauchy's coefficient bound gives $|[z^m]e^{-z}W_k|\le64\cdot2^m$. After graphic damping, the first omitted absolute term of $H_k^{(j)}$ is at most
+\begin{equation}\label{eq:htail}
+ A_{H,j}=\frac{64\,2^N(N)_jR^{N-j}}{2^{\binom N2}},
+ \qquad (N)_j=N(N-1)\cdots(N-j+1).
+\end{equation}
+Its consecutive ratio for $n\ge45$ is
+\[
+ \frac{2R(n+1)}{(n+1-j)2^n}<\frac12.
+\]
+Again twice the first term is a valid tail bound.
+
+The coefficients through degree 44 are exact fractions obtained from the finite kernel formula and $[z^m]S_2=1/m$. Interval Horner evaluation with the above tails proves $E(\rho_-)>0$ and $E(\rho_+)<0$. Lemma~\ref{lem:root} makes this the desired unique root. The same interval arithmetic evaluates the derivatives and formulas~\eqref{eq:coeff23}--\eqref{eq:coeff4}; its positive enclosure for $a$ excludes division by zero. Finally the lower endpoint is rounded down and the upper endpoint up by exact integer floor and ceiling at denominator $10^{25}$.
+
+The certificate guards the coefficient length, derivative order $0\le j\le4$, derivative type, and disk $|z|\le3/2$. These are part of the proved domain, not optional assumptions. A second independent rational implementation using 50 terms and formal Laurent-series inversion reproduces the displayed intervals. The bundled primary certificate is sufficient to replay their proof.
+
+\section{Explicit all index error constants}\label{sec:effectiveproof}
+This section proves Theorem~\ref{thm:effectiveintro}. The constants are deliberately safe, rather than optimized.
+
+The circle bound \eqref{eq:eta} gives $|E|>\eta=119/1000$ on $|z|=2$. The preceding $|z|=1/2$ estimates can be sharpened individually to
+\begin{align*}
+ |[z^m]e^{-z}S_2|&<\tfrac12\,2^m,\\
+ |[z^m]e^{-z}S_3|&<2\cdot2^m,\\
+ |[z^m]e^{-z}(S_4-S_2^2/2)|&<32\cdot2^m.
+\end{align*}
+The last follows from $1459/48<32$. Also
+\begin{equation}\label{eq:27}
+ \sum_{m\ge0}\frac{4^m}{2^{\binom m2}}<27.
+\end{equation}
+Indeed the terms through $m=5$ sum to $26$; the next is $1/8$ and subsequent ratios are at most $1/16$, so the remainder is at most $2/15$.
+
+It follows that on $|z|=2$,
+\[
+ |H_2|<27/2,\qquad |H_3|<54,\qquad |H_4|<864.
+\]
+Using \eqref{eq:lowD} gives
+\begin{align*}
+ |D_2|&<(27/2)\eta^{-2},\\
+ |D_3|&<54\eta^{-2},\\
+ |D_4|&<864\eta^{-2}+(27/2)^2\eta^{-3}.
+\end{align*}
+Since $\rho<3/2$,
+\[
+ |1-z/\rho|^{-1}\le\rho/(2-\rho)<3
+ \quad (|z|=2).
+\]
+The certified intervals imply
+\[
+ |c_{2,1}|<5,\ |c_{2,2}|<2,\quad
+ |c_{3,1}|<11,\ |c_{3,2}|<3,
+\]
+\[
+ |c_{4,1}|<3,\ |c_{4,2}|<4,\ |c_{4,3}|<2.
+\]
+Thus the absolute bounds for the complete principal parts on that circle are, respectively, $33$, $60$, and $99$. Removing them leaves analytic remainders bounded by
+\begin{align}
+ (27/2)\eta^{-2}+33&<1000,\notag\\
+ 54\eta^{-2}+60&<3900,\label{eq:Mproof}\\
+ 864\eta^{-2}+(27/2)^2\eta^{-3}+99&<170000.\notag
+\end{align}
+These are exact rational inequalities. Their positive slacks are
+\[
+ \frac{193687}{14161},\qquad
+ \frac{378240}{14161},\qquad
+ \frac{1244199259}{1685159}.
+\]
+Cauchy's coefficient bound now proves \eqref{eq:effective} for every $n\ge0$, including initial indices for which the polynomial contribution is negative or the matrix family is empty.
+
+\section{Every fixed asymptotic order}\label{sec:allorders}
+\subsection{Factorials retained and Stirling expanded}
+Theorem~\ref{thm:main} already gives every algebraic correction with factorials retained. Namely, if
+\[
+ P_k(n)=L_kn^d\left(1+\sum_{j=1}^d p_{k,j}n^{-j}\right),
+\]
+then the finite expression on the right is exact as a polynomial. The remaining relative error is
+\begin{equation}\label{eq:relerror}
+ O_k\bigl((\rho/2)^n n^{-d}\bigr).
+\end{equation}
+For $n$ large, the positivity of $L_k$ ensures the division used here is valid.
+
+To remove the factorials, put
+\begin{equation}\label{eq:ellbeta}
+ \ell=\log2,\qquad \beta=2+\log\rho+\ell/2.
+\end{equation}
+The usual fixed-order Stirling expansion yields, for every fixed $J\ge0$,
+\begin{align}
+ C_{n,k}={}&\frac{2\pi L_k}{k}n^{d+1}
+ \exp\left(\frac{\ell n^2}{2}+2n\log n-\beta n\right)\notag\\
+ &\quad\times\left(1+\sum_{j=1}^Jq_{k,j}n^{-j}
+ +O_{k,J}(n^{-J-1})\right).\label{eq:stirling}
+\end{align}
+Each $q_{k,j}$ is effective: multiply $P_k/(L_kn^d)$ by the exponential of the squared-factorial logarithmic Stirling series
+\begin{equation}\label{eq:stirlseries}
+ 2\sum_{r\ge1}\frac{B_{2r}}{2r(2r-1)n^{2r-1}}
+ =\frac1{6n}-\frac1{180n^3}+\frac1{630n^5}-\cdots.
+\end{equation}
+This is a fixed-order Poincar\'e expansion, not a claim of convergence of the infinite series. For example, with missing $p$ coefficients understood as zero,
+\[
+ q_{k,1}=p_{k,1}+1/6,\qquad
+ q_{k,2}=p_{k,2}+p_{k,1}/6+1/72.
+\]
+Finite Stirling remainders and the exponentially smaller error \eqref{eq:relerror} establish \eqref{eq:stirling} at each requested order.
+
+\subsection{Finite spectral sectors}
+\begin{theorem}[Finite radius spectral expansion]\label{thm:spectral}
+Fix $k$ and $R>\rho$ such that $E$ has no zero on $|z|=R$. For each zero $\zeta$ of $E$ inside that circle, let
+\[
+ \operatorname{PP}_{\zeta}D_k(z)
+ =\sum_{j=1}^{r_{k,\zeta}}c_{k,\zeta,j}(1-z/\zeta)^{-j},
+ \quad
+ P_{k,\zeta}(n)=\sum_jc_{k,\zeta,j}\binom{n+j-1}{j-1},
+\]
+with the polynomial zero if the apparent pole cancels. Then
+\begin{equation}\label{eq:spectral}
+ \frac{kC_{n,k}}{(n!)^2 2^{\binom n2}}
+ =\sum_{\substack{E(\zeta)=0\\|\zeta|<R}}\zeta^{-n}P_{k,\zeta}(n)
+ +O_{k,R}(R^{-n}).
+\end{equation}
+If $\zeta$ has multiplicity $m$ as a zero of $E$, then $r_{k,\zeta}\le m(d+1)$.
+\end{theorem}
+\begin{proof}
+Formula~\eqref{eq:Dexplicit} gives the possible pole-order bound. There are only finitely many zeros inside the closed disk, since $E$ is entire and not identically zero. Subtract all actual principal parts. The result is analytic through the circle, and Cauchy's bound gives \eqref{eq:spectral}. Conjugate poles pair to give real coefficients when needed.
+\end{proof}
+This is the standard meromorphic coefficient-transfer argument. It allows cancellations, multiple zeros and nonreal zeros. No convergent sum over all poles is asserted, and the radius-two dominant sector requires none of these further zeros to be located numerically.
+
+\section{Canonical blocks and their probability laws}\label{sec:blocks}
+\subsection{Why the blocks do not depend on the marked matching}
+Call an edge of the original bipartite graph \emph{allowed} if it belongs to at least one perfect matching. Fix one perfect matching and normalize it onto the diagonal. An off-diagonal arc $i\to j$ is allowed if and only if it lies on a directed cycle. One direction follows by rotating the diagonal matching around that cycle. In the other direction, any alternative matching decomposes relative to the diagonal matching into vertex-disjoint permutation cycles.
+
+An arc lies on a directed cycle if and only if its ends belong to the same SCC. Consequently the allowed bipartite graph has no edges between distinct SCC row/column blocks. Within an SCC, the diagonal matching together with all the directed arcs forms a connected bipartite graph: contracting the diagonal edges yields the connected underlying graph of that SCC. Thus the SCC blocks are exactly the connected components of the allowed-edge graph.
+
+This is a matching-independent construction. Each component has equal numbers of row and column vertices because the fixed matching restricts to it. Its size and the permanent of its square submatrix are intrinsic. A singleton SCC corresponds to one allowed bipartite edge, with block permanent one. Entries between different components may exist in the original matrix, but none belongs to a perfect matching.
+
+If a uniform matrix of permanent $k$ is followed by a uniform choice of one of its $k$ matchings, every marked pair is uniform. The bijection of Section~\ref{sec:matching} gives a uniform digraph counted by $b_{n,k}$, since each one has $n!$ marked preimages. There is no block-dependent sampling bias. Therefore SCC statistics established for these digraphs apply to the canonical blocks of uniform unmarked matrices.
+
+\subsection{The limiting size distribution}
+Let $X_n$ be the multiset of pairs $(j,m)$, one for each nontrivial canonical block, where $j$ is its permanent and $m$ its row count. Its permanent labels multiply to $k$. Let $\mathcal M_k$ be the countable set of all such finite multisets, including the empty multiset for $k=1$. For $X\in\mathcal M_k$, set
+\[
+ V(X)=\sum_{(j,m)\in X}m.
+\]
+With $w_{p,m}$ denoting the numerator in \eqref{eq:pi}, formula~\eqref{eq:hp} proves $h_p=\sum_m w_{p,m}>0$, so $\pi_p$ is a probability law. Since $S_p$ has radius at least one and $2^{-\binom m2}$ dominates every exponential, all its positive exponential moments are finite.
+
+Let $X_\infty$ be obtained by independently drawing $e_p$ sizes from $\pi_p$ for each prime $p\mid k$, marking each with permanent $p$, and then forgetting any order among the blocks. Repeated primes mean independent draws from the same law, followed by formation of an unordered multiset. No additional factorial belongs in its probability normalization.
+
+\begin{theorem}[Weighted expansions for the complete multiset]\label{thm:weighted}
+For every fixed $k\ge1$, $\theta\ge0$ and integer $J\ge0$, there are effectively computable signed measures $\nu_{k,0},\ldots,\nu_{k,J}$ on $\mathcal M_k$ such that $\nu_{k,0}=\mathcal L(X_\infty)$ and
+\begin{equation}\label{eq:weighted}
+ \left\|\mathcal L(X_n)-\sum_{r=0}^Jn^{-r}\nu_{k,r}\right\|_\theta
+ =O_{k,\theta,J}(n^{-J-1}),
+ \quad
+ \|\nu\|_\theta=\sum_{X\in\mathcal M_k}e^{\theta V(X)}|\nu(X)|.
+\end{equation}
+For $r\ge1$, the total mass of $\nu_{k,r}$ is zero. At $\theta=0$ this norm bounds ordinary total variation, whichever of the usual factor-of-two conventions is used.
+\end{theorem}
+\begin{proof}
+Use weighted $\ell^1$ measures on all block multisets whose permanent products divide the fixed $k$. Multiply point masses by multiset union, setting the product to zero if its permanent product no longer divides $k$. The empty multiset is the unit. The norm is submultiplicative because $V$ is additive and discarded products can only reduce the bound. This is a commutative unital Banach algebra. Its ideal of nonempty multisets is nilpotent of index at most $d+1$.
+
+Replace the scalar series $S_j$ in the component transform by
+\[
+ \boldsymbol S_j(z)=\sum_{m\ge2}\frac{s_{m,j}z^m}{m!}\delta_{[(j,m)]}.
+\]
+For any fixed $\theta$, choose $R_0<e^{-\theta}$. The norm of this series is bounded on $|z|=R_0$, because it is bounded by $S_j(e^\theta R_0)$. Products of at most $d$ such series times $e^{-z}$ have coefficient norms bounded by $C R_0^{-m}$. Applying $\Delta$ therefore produces entire Banach-valued functions, with norm convergence on every compact disk. The exact finite formulas~\eqref{eq:Hexplicit} and \eqref{eq:Dexplicit} hold unchanged for the corresponding bold symbols.
+
+For prime $p$, the coefficientwise form of \eqref{eq:convolution} gives
+\[
+ \boldsymbol H_p(\rho)=\sum_m w_{p,m}\delta_{[(p,m)]},
+\]
+a positive measure of mass $h_p$. The leading principal coefficient of $\boldsymbol D_k$ at $\rho$ is
+\[
+ \frac{d!}{a^{d+1}\prod_pe_p!}
+ \mathop{*}_p\boldsymbol H_p(\rho)^{*e_p},
+\]
+where $*$ denotes convolution by multiset union. Subtracting the full Banach-valued principal part and applying the radius-two Cauchy estimate gives
+\begin{equation}\label{eq:measurepoly}
+ [z^n]\boldsymbol D_k(z)=\rho^{-n}\boldsymbol P_k(n)
+ +O_{k,\theta}(2^{-n})
+\end{equation}
+in the weighted norm, for a measure-valued polynomial of degree at most $d$. The total-mass map gives exactly the scalar $P_k(n)$.
+
+Divide \eqref{eq:measurepoly} by the positive scalar coefficient $[z^n]D_k$. The uniform marked-matrix normalization cancels. The leading coefficient of the measure polynomial divided by $L_k$ is
+\[
+ \mathop{*}_p(\boldsymbol H_p(\rho)/h_p)^{*e_p},
+\]
+which is precisely $\mathcal L(X_\infty)$. Expanding the reciprocal of
+$P_k(n)/(L_kn^d)=1+O_k(n^{-1})$ to any fixed order yields \eqref{eq:weighted}. The normalized exponential error is smaller than every fixed power $n^{-1}$. Total mass one on the left forces mass zero for every higher coefficient, or this follows directly by scalar formal division.
+\end{proof}
+
+The leading law is supported on exactly $d$ prime-permanent blocks. There can never be more than $d$ nontrivial blocks, and equality holds exactly when every block permanent is prime. Taking $J=0$ in \eqref{eq:weighted} proves Theorem~\ref{thm:blocksintro} and the $O_k(n^{-1})$ exceptional probability. Fixed exponential moments and all fixed polynomial moments of $V(X_n)$ have corresponding expansions. No uniformity in a growing $k$, growing $\theta$, or growing truncation order is being claimed.
+
+For $k=1$, $X_n$ is always empty. For prime $k$, every nonempty finite matrix family already has exactly one nontrivial block. In particular, for $k=2$ that block is exactly a directed cycle. Its limiting probabilities begin
+\begin{center}
+\begin{tabular}{c r}
+\toprule
+Cycle size $m$ & Diagnostic $\pi_2(m)$\\
+\midrule
+2&0.7354112130140739\\
+3&0.2267783070809675\\
+4&0.0349695725447146\\
+5&0.0027303593128658\\
+6&0.0001083409118175\\
+\bottomrule
+\end{tabular}
+\end{center}
+These rounded probabilities are numerical illustrations. The exact law is \eqref{eq:pi}, and its proof does not rely on the displayed digits.
+
+\section{Smooth envelopes and integer threshold inverses}\label{sec:inverse}
+For sufficiently large real $x$, $P_k(x)>0$. Define
+\begin{equation}\label{eq:envelope}
+ F_k(x)=\frac{\Gamma(x+1)^2}{k}\,2^{x(x-1)/2}\rho^{-x}P_k(x),
+ \qquad q=\rho/2<1.
+\end{equation}
+This is a target-specific smooth envelope, not an assertion of an exact canonical interpolation of the integer counts. Theorem~\ref{thm:main} gives
+\[
+ C_{n,k}/F_k(n)=1+O_k(q^n n^{-d}).
+\]
+Its logarithmic derivative satisfies
+\begin{align}
+ (\log F_k)'(x)
+ &=2\psi(x+1)+(x-1/2)\ell-\log\rho+P_k'(x)/P_k(x)\notag\\
+ &=\ell x+2\log x+O_k(1),\label{eq:logder}
+\end{align}
+so it is positive and bounded below by a positive multiple of $x$ eventually. Write $r_k(y)=F_k^{-1}(y)$ on this final interval.
+
+\subsection{Monotonicity of the integer sequence}
+From any matrix counted by $C_{n,k}$ form
+\[
+ \begin{pmatrix}A&0\\v&1\end{pmatrix},\qquad v\in\{0,1\}^{1\times n}.
+\]
+The final column forces the final row's matched entry, so the permanent remains $k$. Distinct pairs $(A,v)$ give distinct matrices. Hence
+\begin{equation}\label{eq:injection}
+ C_{n+1,k}\ge2^nC_{n,k}\qquad(n\ge0).
+\end{equation}
+The bouquet construction and singleton extensions guarantee eventual nonemptiness for every $k$. Thus the sequence is eventually strictly increasing and unbounded. More precisely it is strictly increasing for $n\ge1$ whenever $C_{n,k}>0$; the initial equality $C_{0,1}=C_{1,1}=1$ is an exception to strictness. Define the global threshold
+\begin{equation}\label{eq:threshold}
+ N_k(y)=\min\{n\ge0:C_{n,k}\ge y\}.
+\end{equation}
+
+\subsection{The two ceiling bounds}
+For a sufficiently large fixed $B>0$ put
+\[
+ F_{k,\pm}(x)=F_k(x)(1\pm Bq^xx^{-d})
+\]
+on a final interval where they are positive and increasing. Their integer values sandwich $C_{n,k}$ there. After excluding the finite prefix by taking $y$ sufficiently large, monotonicity gives
+\begin{equation}\label{eq:ceilingenv}
+ \left\lceil F_{k,+}^{-1}(y)\right\rceil
+ \le N_k(y)\le
+ \left\lceil F_{k,-}^{-1}(y)\right\rceil.
+\end{equation}
+The upper counting envelope has the smaller inverse, which fixes the directions of the inequalities.
+
+Both perturbed inverse roots lie within distance one of $r=r_k(y)$ eventually: their relative perturbations vanish while \eqref{eq:logder} grows linearly. On this unit neighborhood, $q^xx^{-d}$ is comparable with $q^rr^{-d}$ and the logarithmic derivative is bounded below by a positive multiple of $r$. The mean value theorem applied to the logarithms then gives
+\[
+ F_{k,\pm}^{-1}(y)=r_k(y)+O_k(q^{r_k(y)}r_k(y)^{-d-1}).
+\]
+Consequently, for some fixed $B'>0$ and every sufficiently large $y$,
+\begin{equation}\label{eq:ceilingprecise}
+ \left\lceil r_k(y)-B'q^{r_k(y)}r_k(y)^{-d-1}\right\rceil
+ \le N_k(y)\le
+ \left\lceil r_k(y)+B'q^{r_k(y)}r_k(y)^{-d-1}\right\rceil.
+\end{equation}
+This is a pointwise statement, including values of $y$ arbitrarily close to a threshold. It deliberately keeps the uncertainty inside two ceilings. Exponentially small smooth-root uncertainty alone does not imply one universally valid eventual rounding formula: the root may be equally close to an integer.
+
+\subsection{Explicit low permanent envelopes}\label{sec:effectiveinverse}
+For $k=2,3,4$ define, for $x\ge50$,
+\begin{equation}\label{eq:effectiveenv}
+ G_k(x)=\frac{\Gamma(x+1)^2}{k}\,2^{x(x-1)/2}\rho^{-x},
+ \qquad F^{\mathrm{eff}}_{k,\pm}(x)=G_k(x)\{P_k(x)\pm M_kq^x\}.
+\end{equation}
+The all-$n$ estimate \eqref{eq:effective} sandwiches every integer value for $n\ge50$. We next prove that both envelopes are positive and strictly increasing throughout the entire real interval.
+
+The certified binomial-basis intervals imply, for $x\ge50$,
+\begin{align*}
+ P_2(x)&>1.5x-3.5,&P_2'(x)&>1.5,\\
+ P_3(x)&>2.4x-8.6,&P_3'(x)&>2.4,\\
+ P_4(x)&>0.65x^2-1.45x-4.5,&P_4'(x)&>1.3x-1.45.
+\end{align*}
+For the last line use $c_{4,3}>1.3$, $c_{4,2}>-3.4$, and $c_{4,1}>-2.4$ in \eqref{eq:lowP}; the derivative multipliers are positive on this interval. Since $1/2<q<3/4$,
+\begin{equation}\label{eq:perturb}
+ M_kq^x\le170000(3/4)^{50}<1/10,
+ \qquad |(M_kq^x)'|<1/10.
+\end{equation}
+The first inequality is exact rational arithmetic, with slack
+\[
+ \frac1{10}-170000(3/4)^{50}
+ =\frac{1475750661002500018352497043}{396140812571321687967719751680}>0.
+\]
+The derivative bound follows from $|\log q|<1$. Therefore both bracketed factors in \eqref{eq:effectiveenv} are positive and increasing.
+
+Also $\Gamma(x+1)$ is positive and increasing for $x\ge2$: the digamma function is increasing, and $\psi(3)=3/2-\gamma>0$ using $\gamma<1$. The logarithmic derivative of $2^{x(x-1)/2}\rho^{-x}$ exceeds $(3/2)\log2-\log(3/2)>0$ for $x\ge2$. Thus $G_k$ and the effective envelopes are increasing on $x\ge50$.
+
+Finally \eqref{eq:injection} gives $C_{n,k}\le C_{50,k}$ for all $n\le50$, even across an initial zero segment. Hence the explicit condition
+\[
+ y>F^{\mathrm{eff}}_{k,+}(50)\ge C_{50,k}
+\]
+excludes the whole earlier prefix. We obtain the global, fully specified bounds
+\begin{equation}\label{eq:effectiveinverse}
+ \left\lceil(F^{\mathrm{eff}}_{k,+})^{-1}(y)\right\rceil
+ \le N_k(y)\le
+ \left\lceil(F^{\mathrm{eff}}_{k,-})^{-1}(y)\right\rceil.
+\end{equation}
+These are explicit smooth equations with a concrete starting interval. Implementing numerical bounds for a chosen $y$ would require certified interval root solving, including the needed Gamma evaluations. No implemented certified inverse solver is claimed in the present package.
+
+\section{Inverse expansions to every fixed order}\label{sec:inverseorders}
+Put
+\[
+ Y=\log y,\qquad t=\sqrt{2Y/\ell},\qquad s=\log t,
+ \qquad c=d+1,\qquad \delta=\log(2\pi L_k/k),
+\]
+with $\ell,\beta$ from \eqref{eq:ellbeta}. Taking the logarithm of \eqref{eq:envelope} and using fixed-order Stirling gives
+\begin{equation}\label{eq:logF}
+ \log F_k(x)=\frac{\ell x^2}{2}+2x\log x-\beta x
+ +c\log x+\delta+\sum_{j\ge1}\lambda_{k,j}x^{-j}
+\end{equation}
+in the fixed-order Poincar\'e sense. The coefficients come from \eqref{eq:stirlseries} and the formal logarithm of $P_k/(L_kx^d)$. For example,
+\[
+ \lambda_{k,1}=p_{k,1}+1/6,\qquad
+ \lambda_{k,2}=p_{k,2}-p_{k,1}^2/2.
+\]
+
+\begin{theorem}[Logarithmic reversion]\label{thm:reversion}
+For every fixed $J\ge0$ there are recursively computable polynomials $U_0,\ldots,U_J$, with $\deg U_j\le j+1$, such that
+\begin{equation}\label{eq:reversion}
+ r_k(y)=t+\sum_{j=0}^J U_j(\log t)t^{-j}
+ +O_{k,J}\!\left(\frac{(\log t)^{J+2}}{t^{J+1}}\right).
+\end{equation}
+The first three are
+\begin{align}
+ U_0(s)&=\frac{\beta-2s}{\ell},\label{eq:U0}\\
+ U_1(s)&=\frac{U_0(s)^2}{2}
+ -\frac{2U_0(s)+cs+\delta}{\ell},\label{eq:U1}\\
+ U_2(s)&=-\frac{2U_1(s)+U_0(s)^2+cU_0(s)+\lambda_{k,1}}{\ell}.
+ \label{eq:U2}
+\end{align}
+For general $j$, substitute the previous truncation plus $U_j(s)t^{-j}$ into $\log F_k(x)-\ell t^2/2$ and cancel the coefficient of $t^{1-j}$.
+\end{theorem}
+\begin{proof}
+Write $x=t+u$ and expand
+$\log(t+u)=\log t+\log(1+u/t)$. At order $t$, the residual is
+$\ell U_0+2s-\beta$, proving \eqref{eq:U0}. At constant order it is
+\[
+ \ell U_1-\ell U_0^2/2+2U_0+cs+\delta,
+\]
+which gives \eqref{eq:U1}. The coefficient of $t^{-1}$ gives \eqref{eq:U2}.
+
+In general the new unknown enters the quadratic term first as $\ell U_jt^{1-j}$. Every other contribution at that order depends only on earlier coefficients. This uniquely determines a polynomial $U_j(s)$. Inductively, products from the quadratic and $x\log x$ terms have degree at most $j+1$ at this order; the $\log x$ and negative-power terms have no higher degree. Thus $\deg U_j\le j+1$.
+
+For fixed $J$, the retained correction is $u=O_k(\log t)$. The finite Taylor expansions used above have uniform remainders in that range, and the fixed-order Stirling remainder is uniform on the positive real tail. After cancellation through $j=J$, the residual in the logarithmic equation is
+$O_{k,J}((\log t)^{J+2}t^{-J})$. Both the approximate root and the true root lie on the same final monotone interval. Using \eqref{eq:logder}, or first bracketing the approximate root by a vanishing neighborhood, the mean value theorem divides this residual by a derivative comparable to $\ell t$. This proves \eqref{eq:reversion}.
+\end{proof}
+
+In particular,
+\[
+ r_k(y)=\sqrt{\frac{2\log y}{\log2}}
+ -\frac{2}{\log2}\log\sqrt{\frac{2\log y}{\log2}}
+ +\frac{\beta}{\log2}
+ +O_k\!\left(\frac{(\log\log y)^2}{\sqrt{\log y}}\right).
+\]
+The theorem is standard asymptotic reversion applied to the target-specific counting envelope, not a new general inversion method.
+
+If $r_{k,J}$ is the finite sum in \eqref{eq:reversion}, then replacing $r_k$ in the pointwise integer bracket gives, for some $B_{k,J}>0$ and all sufficiently large $y$,
+\begin{equation}\label{eq:ceilingtruncated}
+ \left\lceil r_{k,J}(y)-B_{k,J}\frac{(\log t)^{J+2}}{t^{J+1}}\right\rceil
+ \le N_k(y)\le
+ \left\lceil r_{k,J}(y)+B_{k,J}\frac{(\log t)^{J+2}}{t^{J+1}}\right\rceil.
+\end{equation}
+A finite algebraic-logarithmic truncation has the error shown here. It does not retain the exponentially small precision in \eqref{eq:ceilingprecise}. That precision requires solving the full Gamma-polynomial envelope equation.
+
+\section{Finite accuracy and computational evidence}\label{sec:computation}
+\subsection{What the asymptotic looks like at finite sizes}
+The table reports the relative discrepancy $F_k(n)/C_{n,k}-1$, using the entire dominant polynomial rather than just its leading monomial. Values are rounded diagnostics, not certified finite-error intervals.
+\begin{center}\small
+\begin{tabular}{c r r r r}
+\toprule
+$n$ & $k=1$ & $k=2$ & $k=3$ & $k=4$\\
+\midrule
+5  &$1.3365\,10^{-3}$ &$-1.2414\,10^{-2}$ &$-9.1800\,10^{-2}$ &$-1.1264\,10^{-1}$\\
+10 &$3.5185\,10^{-6}$ &$-2.3626\,10^{-5}$ &$-1.4660\,10^{-4}$ &$-7.2692\,10^{-5}$\\
+20 &$2.4401\,10^{-11}$ &$-1.4342\,10^{-10}$ &$-8.7540\,10^{-10}$ &$6.6647\,10^{-11}$\\
+30 &$1.6922\,10^{-16}$ &$-9.5481\,10^{-16}$ &$-5.8314\,10^{-15}$ &$1.8076\,10^{-15}$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The signs can change, as the $k=4$ column illustrates. Nothing in the theorem promises that the dominant contribution lies on one fixed side of the true count. The safe bounds in \eqref{eq:effective} are substantially looser than these observed errors; they are designed to certify every index with elementary estimates.
+
+\subsection{Exact experiments and their limits}
+The standard-library checker enumerates all suppressed kernels for $k=3,4$, evaluates their exact rational subdivision series, verifies the rational functions \eqref{eq:S3}--\eqref{eq:S4}, and exhaustively counts diagonal-one matrices through $n=4$. It uses the multiplicative denominator and exact coefficient inversion to compute the four columns. Its displayed source comparisons through $n=6$ are checks against OEIS, not exhaustive enumeration at $n=6$.
+
+An independent C++ audit uses subset zeta transforms of permutation supports to enumerate all binary matrices through $n=5$, including $2^{25}=33554432$ matrices at size five. Separately it enumerates all diagonal-one matrices through $n=5$, including $2^{20}=1048576$ at size five, and tests strong connectivity by transitive closure. It verifies the marked matching identity for every permanent value, including unattained values. At $n=5$, selected counts are
+\begin{center}
+\begin{tabular}{c r r r}
+\toprule
+$k$ & $C_{5,k}$ & $b_{5,k}$ & $s_{5,k}$\\
+\midrule
+1&3513720&29281&0\\
+2&4339440&72324&24\\
+3&2626800&65670&720\\
+4&3015450&100515&4940\\
+5&1451400&60475&13975\\
+6&1872800&93640&26220\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The independent block audit renormalizes all perfect matchings of all diagonal-one digraphs through $n=4$ and verifies that all $16774$ matching normalizations preserve their SCC-size/permanent signature. It also enumerates complete signatures through $n=5$, $k\le4$, and an independent exact marked transform reproduces them. For instance, at $n=5,k=4$, the signatures and diagonal-one counts are
+\begin{center}
+\begin{tabular}{l r}
+\toprule
+Multiset of $(\text{permanent},\text{size})$ & Count\\
+\midrule
+$\{(2,2),(2,2)\}$&18735\\
+$\{(2,2),(2,3)\}$&2540\\
+$\{(4,3)\}$&34620\\
+$\{(4,4)\}$&39680\\
+$\{(4,5)\}$&4940\\
+\bottomrule
+\end{tabular}
+\end{center}
+Their sum is $100515$, as required. These finite tests support the implementation; the all-size proofs are the combinatorial and analytic arguments above.
+
+\subsection{Reproducibility contract}
+The ZIP contains the manuscript, code, reference outputs, and build instructions. Mandatory Python computation uses only the standard library, exact integers and fractions for all certificates, and explicit exceptions rather than optimization-removable assertions for critical checks. The normal and optimized Python runs must reproduce the reference certificate bytes. Malformed certificate-domain inputs are tested in both modes.
+
+The optional C++ exhaustive programs and their reference outputs are identified separately from mandatory Python replay. Numerical diagnostics have no role in the proofs or the certified intervals. The build requires a local TeX installation and compiles without shell escape. The package records its file inventory and hashes and is intended to reproduce the same PDF bytes on the same installed Python/TeX stack; byte identity across different TeX versions is not promised. Detailed commands, guard tests, and the exact mandatory/optional distinction are in the packaged README files. No network access, downloaded third-party source code, or third-party paper files are needed for replay.
+
+\section{Source review and attribution boundary}\label{sec:prior}
+\subsection{The live sequence and the intended model}
+The A089479 internal record was read on 3 October 2026, including its revision 31 of 19 February 2026, definitions, initial rows, comments and references. It counts all labelled binary square matrices by their ordinary integer permanent. The displayed record did not state the fixed-positive-$k$ asymptotic proved here. A089482 supplies the established permanent-one/DAG correspondence, and A003024 supplies the classical DAG sequence. This current-record observation is not a conclusion about all literature.
+
+Different nearby models are intentionally excluded. Matrices with exactly two ones per row, zero-permanent matrices, degree-constrained permanent expectations, and counts of distinct permanent values attained by a matrix family are not the same as the fixed-positive-permanent fibers $C_{n,k}$.
+
+\subsection{Primary results inspected and their relation}
+\begin{enumerate}
+\item De Panafieu and Dovgal, \emph{Symbolic method and directed graph enumeration}~\cite{symbolic}. The seven-page text, including Theorem 3.4 and its proof, was read. Its exact SCC-family transform, normalization, and marked version are classical input here. The authors explicitly credit Robinson's earlier machinery. The use of this transform is not a novelty claim.
+\item De Panafieu and Dovgal, \emph{Counting directed acyclic and elementary digraphs}~\cite{elementary}. The model, exact elementary formula in Section 2.3, and the complete relevant asymptotic theorem statements were inspected. Their elementary class has only singleton and directed-cycle SCCs, including 2-cycles. Its main asymptotic regime constrains the edge count near $n(1+\mu n^{-1/3})$. The $k=2$ family here is a one-cycle specialization of that classical exact class. Its mere generating-function construction is therefore not presented as new.
+\item Dovgal and Nurligareev, \emph{Asymptotics for graphically divergent series: dense digraphs and 2-SAT formulae}~\cite{dense}. The model, transfer scale, SCC transform, and theorem/model statements of Sections 4.3--4.4 in the August 2026 version were inspected. The printed fixed-total-SCC-count results have one large SCC and a fixed number of singleton components. Fixed positive permanent here instead gives $n-O(1)$ SCCs in the limiting size law. Their framework is relevant prior; the inspected statements do not supply the $\Omega(k)$ degree and amplitude formula of this report.
+\item Kim, Lee and Seol, \emph{Matrices with prescribed permanent using binary number system of integers}~\cite{prescribed}. The full six-page paper was read. It constructs matrices attaining prescribed permanent values and analyzes a particular family; its final section concerns the number of distinct attained values. It does not give an asymptotic for the number of all binary matrices having one fixed permanent. Its existence results remain related classical work.
+\item Greenhill, Hasheminezhad, Iliffe and McKay, \emph{Asymptotic enumeration of constrained bipartite, directed and oriented graphs by degree sequence}~\cite{degrees}. The model and relevant Section 4, including Theorems 4.2--4.5 and proofs, were read. These concern expected permanents under prescribed degree conditions and near-complete pointwise estimates. An expectation under degree conditioning is different from the fixed-permanent fiber count considered here.
+\end{enumerate}
+
+The full text of Robinson's \emph{Counting digraphs with restrictions on the strong components}, linked from A350790, could not be retrieved from its author's server during the source pass. The needed general transform was instead read in full in the primary 2019 restatement. This is a historical-priority inspection limitation; no claim is made that the inaccessible text lacks a further fixed-permanent theorem.
+
+Bounded exact-ID and thematic searches of the available report collections found no matching report. Potentially nearby reports on bounded-indegree DAGs, lonesum-decomposable binary matrices, orientation partition sums, and cyclic-word cover models were checked at their actual model level and concern different classes. These checks do not exhaust unpublished work or the literature worldwide.
+
+\subsection{What is proved here and what is standard}
+Classical ingredients include the matching/permanent correspondence, circulation decomposition, SCC condensation, labelled subdivision counting, Robinson's graphic component transform, Rouch\'e and Cauchy arguments, finite-pole transfer, Stirling expansion, and inverse reversion. This report supplies the fixed-permanent finite-kernel reduction, the explicit multiplicative marking formulas, the transformed-prime positivity identity, the exact prime-factor pole degree and leading amplitude, low-$k$ prefactors and certificates, and the stated canonical block and threshold consequences. This attribution separates the application-specific derivation from its established tools without asserting worldwide priority.
+
+\section{Further questions}\label{sec:questions}
+The results leave several concrete directions open.
+\begin{enumerate}
+\item \textbf{Efficient large-permanent kernel algorithms.} The finite bounds prove computability, but direct multigraph enumeration grows quickly. A canonical-kernel or dynamic program tailored to $\Per(I+M)=k$ could make additional columns practical.
+\item \textbf{Sharper small-permanent error constants.} The circle $|z|=2$ and the majorants used here are intentionally simple. Certified isolation of the next zeros, or optimized circle estimates, could reduce both exponential and constant factors in the low-$k$ remainder.
+\item \textbf{Explicit correction laws.} The weighted-measure proof gives all corrections algorithmically. Computing the first signed measure for a composite $k$, especially $k=4$ or $6$, would quantify the finite-size probability of a composite-permanent block and the interaction of repeated prime types.
+\item \textbf{Certified inverse implementation.} The effective equations already give rigorous targets. A practical interval solver for the Gamma-polynomial envelopes, together with exact prefix counts, would turn them into certified numerical threshold answers for large specified $y$.
+\item \textbf{Growing permanent regimes.} None of the fixed-$k$ estimates controls $k=k(n)$. Determining where the finite-kernel picture loses uniformity is a separate problem, requiring bounds on both kernel counts and prime amplitudes.
+\item \textbf{A fuller historical comparison.} Obtaining the inaccessible Robinson component paper and examining further matching-theoretic enumeration literature would strengthen the bounded prior review. This is an attribution question distinct from the proved correctness of the present formulas.
+\end{enumerate}
+
+\begin{thebibliography}{99}
+\bibitem{oeis} The OEIS Foundation Inc., \emph{A089479}, number of binary $n\times n$ matrices with specified permanent, record read 3 October 2026. \url{https://oeis.org/A089479}.
+\bibitem{perone} The OEIS Foundation Inc., \emph{A089482}, permanent-one binary matrices. \url{https://oeis.org/A089482}.
+\bibitem{dag} The OEIS Foundation Inc., \emph{A003024}, labelled acyclic digraphs. \url{https://oeis.org/A003024}.
+\bibitem{symbolic} \mbox{\'E. de Panafieu} and S. Dovgal, \emph{Symbolic method and directed graph enumeration}, arXiv:1903.09454v2, 2019. \url{https://arxiv.org/abs/1903.09454}.
+\bibitem{elementary} \mbox{\'E. de Panafieu} and S. Dovgal, \emph{Counting directed acyclic and elementary digraphs}, arXiv:2001.08659v2, 2020. \url{https://arxiv.org/abs/2001.08659}.
+\bibitem{dense} S. Dovgal and K. Nurligareev, \emph{Asymptotics for graphically divergent series: dense digraphs and 2-SAT formulae}, arXiv:2310.05282v3, 5 August 2026. \url{https://arxiv.org/abs/2310.05282}.
+\bibitem{prescribed} I.-P. Kim, S.-G. Lee and H.-G. Seol, \emph{Matrices with prescribed permanent using binary number system of integers}, International Journal of Pure and Applied Mathematics \textbf{19}(3) (2005), 413--418. \url{https://www.ijpam.eu/contents/2005-19-3/12/12.pdf}.
+\bibitem{degrees} C. Greenhill, M. Hasheminezhad, I. Iliffe and B. D. McKay, \emph{Asymptotic enumeration of constrained bipartite, directed and oriented graphs by degree sequence}, arXiv:2601.04822v1, 8 January 2026. \url{https://arxiv.org/abs/2601.04822}.
+\bibitem{robinson} R. W. Robinson, \emph{Counting digraphs with restrictions on the strong components}, 1995; author-hosted file linked by OEIS A350790, unavailable during this review. Attribution of the transform is supported by \cite{symbolic}. \url{https://cobweb.cs.uga.edu/~rwr/publications/components.pdf}.
+\end{thebibliography}
+\end{document}

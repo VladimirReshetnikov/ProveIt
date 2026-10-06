@@ -1,0 +1,856 @@
+\newcommand{\DoNotLoadEpstopdf}{}
+\pdfinfoomitdate=1
+\pdftrailerid{}
+\pdfsuppressptexinfo=-1
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage[margin=1in]{geometry}
+\usepackage{booktabs,array,microtype}
+\usepackage[hidelinks]{hyperref}
+\hypersetup{pdftitle={Report 164 Exact generating function for pop stacked permutations},pdfauthor={},pdfsubject={Explicit EGF, poles, differential algebraicity and faster enumeration of A307030}}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{1.2em}
+\setlength{\emergencystretch}{3em}
+\setcounter{tocdepth}{1}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\one}{\mathbf1}
+\newcommand{\CC}{\mathbb C}
+\newcommand{\lo}{\operatorname{lo}}
+\newcommand{\hi}{\operatorname{hi}}
+\newcommand{\spr}{\operatorname{spr}}
+\newcommand{\Res}{\operatorname{Res}}
+\newcommand{\ceil}[1]{\left\lceil#1\right\rceil}
+\title{Exact generating function for pop stacked permutations\\\large Poles differential algebraicity and faster enumeration}
+\author{Report 164}
+\date{3 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+Let $p_n$ count permutations in the image of one pass through a pop stack,
+with $p_0=1$. We derive an explicit exponential generating function
+$P(z)=\sum_{n\geq0}p_nz^n/n!$ for OEIS A307030. Its branch-free expression
+is a quotient of entire functions. A cumulative integral boundary problem
+and an explicit half-angle cancellation establish the formula from the
+run-overlap characterization, rather than from fitted coefficients.
+
+Every genuine complex pole is simple and has an explicit residue.
+There are infinitely many positive real poles, proving that $P$ is not
+D-finite and $(p_n)$ is not P-recursive. Nevertheless $P$ is differentially
+algebraic, with an order-at-most-two polynomial annihilator given by a
+small resultant. An exact Riccati equation computes $p_0,\ldots,p_N$ in
+$O(N^2)$ arithmetic operations and $O(N)$ scalar storage, improving the
+$O(N^4)$ arithmetic-operation total-count algorithms in the cited papers.
+
+A self-contained positive-operator argument isolates the unique dominant
+pole $\rho$. We obtain its exact amplitude $C$, rationally certify narrow
+intervals for both, and prove finite-radius pole expansions. Fixed-order
+Stirling and rounding-safe inverse consequences follow. The numerical
+pole estimates and leading constants are prior art; the contribution here
+is the explicit formula and proofs. No effective numerical complex gap,
+infinite pole-sum convergence, bit-complexity, optimality, or unrestricted
+priority claim is made.
+\end{abstract}
+\newpage
+\tableofcontents
+\medskip
+\noindent\textbf{Scope and reproduction.}
+This is a standalone derivation. The overlap characterization and earlier
+counting algorithms are attributed in Section~\ref{sec:sources}. A bounded
+standard-library companion independently expands the entire quotient,
+checks the integer recurrence, and certifies the constants with rational
+inequalities. Its checks do not replace the proofs. All computed public
+commands write deterministic JSON to standard output only. The source
+package includes the report, reproducible PDF builder, fixtures, tests,
+and checked output certificates. The existing Report 161 is unchanged.
+\newpage
+
+\section{The explicit generating function}\label{sec:main}
+A pop-stack pass reverses each maximal decreasing run and concatenates
+the resulting increasing blocks. A permutation in its image is
+\emph{pop-stacked}. The first values, including the empty permutation, are
+\[
+1,1,1,3,11,49,263,1653,11877,95991,862047,8516221.
+\]
+The established characterization~\cite{abbhl,abh} says that consecutive
+maximal ascending runs, with endpoints $(a,b)$ and $(c,d)$, satisfy
+\begin{equation}\label{eq:overlap}
+ a<d,\qquad c<b.
+\end{equation}
+A singleton has equal endpoints. Thus a singleton may sit strictly inside
+the range of an adjacent run, but two singleton runs cannot be adjacent.
+The second inequality enforces the descent between maximal runs; the
+first is the extra image condition.
+
+Put
+\[
+ Q(z)=4e^z-1,\qquad E(z)=e^{z/2},\qquad B(z)=2E(z)+1,
+\]
+and define the entire functions
+\begin{align}
+ H(z)&=\sum_{k\geq0}\frac{(-1)^kz^{2k}Q(z)^k}{16^k(2k)!},\label{eq:H}\\
+ J_0(z)&=\frac z4\sum_{k\geq0}\frac{(-1)^kz^{2k}Q(z)^k}{16^k(2k+1)!}.
+ \label{eq:J}
+\end{align}
+Factorial denominators give locally uniform convergence. Set
+\begin{equation}\label{eq:ND}
+ N(z)=e^{-z}Q(z)\bigl(H(z)+B(z)J_0(z)\bigr),\qquad
+ D(z)=B(z)H(z)-Q(z)J_0(z).
+\end{equation}
+\begin{theorem}\label{thm:main}
+The exponential generating function of pop-stacked permutations is
+\begin{equation}\label{eq:entire}
+ \boxed{P(z)=\frac{N(z)}{D(z)}}.
+\end{equation}
+This denotes a meromorphic function on $\CC$, with removable common zeros
+filled in. Near zero, write $r=\sqrt{4e^z-1}$ with $r(0)=\sqrt3$; then
+\begin{equation}\label{eq:trig}
+ P(z)=e^{-z}r\,
+ \frac{(2E+1)\sin(zr/4)+r\cos(zr/4)}
+      {(2E+1)\cos(zr/4)-r\sin(zr/4)}.
+\end{equation}
+The global expression \eqref{eq:entire} uses no square-root branch.
+The genuine pole set is exactly
+\begin{equation}\label{eq:poleset}
+ \{\zeta\in\CC:D(\zeta)=0,\ Q(\zeta)\ne0\}.
+\end{equation}
+Every member is simple, and
+\begin{equation}\label{eq:residue}
+ \Res(P,\zeta)=-\frac{2e^{-2\zeta}(4e^\zeta-1)}{\zeta+2}.
+\end{equation}
+There are infinitely many positive poles. The EGF is not D-finite, and
+the counts are not P-recursive, although the EGF is differentially
+algebraic over $\mathbb Q(z)$.
+\end{theorem}
+The proof occupies Sections~\ref{sec:model}--\ref{sec:algebraic}.
+The exact recurrence and arithmetic complexity appear in
+Section~\ref{sec:recurrence}; the leading asymptotic and constants appear
+in Sections~\ref{sec:dominance}--\ref{sec:certificate}.
+
+\section{Mixed run states and exact normalization}\label{sec:model}
+Let
+\[
+ I=(0,1),\qquad \Delta=\{(a,b):0<a<b<1\},\qquad
+ X=I\sqcup\Delta,\qquad \mu=\dd x\sqcup\dd a\dd b.
+\]
+A state $x\in I$ is a singleton with $\lo(x)=\hi(x)=x$; a state
+$(a,b)\in\Delta$ has $\lo=a,\hi=b$. Define
+\begin{align}
+ K(s,t)&=\one\{\lo(s)<\hi(t),\ \lo(t)<\hi(s)\},\label{eq:K}\\
+ w_z(x)&=z,\qquad w_z(a,b)=z^2e^{z(b-a)},\label{eq:weight}\\
+ (A_zf)(s)&=\int_X K(s,t)w_z(t)f(t)\dd\mu(t).
+ \label{eq:operator}
+\end{align}
+Work, for example, on $L^2(X,\mu)$. The kernel is bounded, $\mu(X)=3/2$,
+and the weights are uniformly bounded on compact $z$-sets. Thus $A_z$
+is compact, entire in operator norm, and $A_z=O(|z|)$ near zero.
+
+Here is the factorial normalization. Represent $n$ distinct labels by
+independent coordinates in $(0,1)$. Each of the $n!$ rank orders has
+volume $1/n!$. A run of length $\ell\geq2$ with extreme coordinates
+$a<b$ has ordered interior-coordinate volume
+$(b-a)^{\ell-2}/(\ell-2)!$. Its summed weight is
+\[
+ \sum_{\ell\geq2}z^\ell\frac{(b-a)^{\ell-2}}{(\ell-2)!}
+ =z^2e^{z(b-a)}.
+\]
+A singleton contributes $z\dd x$. The product of kernels enforces exactly
+the adjacent-run conditions \eqref{eq:overlap}; there is neither an
+extra run-order factor nor an extra factorial. For instance,
+\[
+ \int_Xw_z\dd\mu=z+z^2\int_0^1(1-t)e^{zt}\dd t=e^z-1,
+\]
+the EGF of the unique increasing permutation of each positive size.
+
+Summing over the number of runs, with absolute convergence for small
+$|z|$, now proves
+\begin{equation}\label{eq:resolvent}
+ h=(I-A_z)^{-1}\one,\qquad
+ P(z)=1+\int_Xw_z h\dd\mu.
+\end{equation}
+The pairing is bilinear; no complex conjugate is inserted.
+
+\section{Cumulative boundary problem}\label{sec:bvp}
+For small $z$, define the endpoint cumulatives
+\begin{align*}
+ U(x)&=\int_{\hi(s)\leq x}w_z(s)h(s)\dd\mu(s),&
+ V(x)&=\int_{\lo(s)<x}w_z(s)h(s)\dd\mu(s),\\
+ T&=\int_Xw_z h\dd\mu=P-1.
+\end{align*}
+Endpoint equality sets have measure zero. Hence
+\begin{equation}\label{eq:ends}
+ U(0)=V(0)=0,\qquad U(1)=V(1)=T.
+\end{equation}
+Complementing the two nonoverlap regions in \eqref{eq:K} gives
+\begin{equation}\label{eq:hUV}
+ h(x)=1+V(x)-U(x),\qquad h(a,b)=1+V(b)-U(a).
+\end{equation}
+These identities first yield continuous representatives and then the
+smoothness used below. Introduce
+\[
+ I_0(x)=\int_0^x e^{z(x-a)}U(a)\dd a,\qquad
+ J_1(x)=\int_x^1 e^{z(b-x)}V(b)\dd b.
+\]
+Direct differentiation of the cumulatives gives
+\begin{align}
+ U'&=ze^{zx}(1+V)-zU-z^2I_0, & I_0'&=U+zI_0,\label{eq:firstU}\\
+ V'&=zV+ze^{z(1-x)}(1-U)+z^2J_1, & J_1'&=-V-zJ_1.
+ \label{eq:firstV}
+\end{align}
+For example, differentiating the upper endpoint of the interval part of
+$U$ gives $z^2\int_0^xe^{z(x-a)}(1+V(x)-U(a))\dd a$; combining this with
+the singleton term $z(1+V(x)-U(x))$ gives \eqref{eq:firstU}.
+Differentiating again and substituting eliminates the integral terms:
+\begin{equation}\label{eq:secondUV}
+ U''=ze^{zx}V',\qquad V''=-ze^{z(1-x)}U'.
+\end{equation}
+Writing $u=U'$ and $v=V'$ yields
+\begin{equation}\label{eq:uv}
+ u'=ze^{zx}v,\qquad v'=-ze^{z(1-x)}u,
+ \qquad u(0)=z,\quad v(1)=z.
+\end{equation}
+The final boundary condition uses $U(1)=V(1)$ in \eqref{eq:firstV}.
+For $z\ne0$, elimination gives the constant-coefficient problem
+\begin{equation}\label{eq:ode}
+ u''-zu'+z^2e^zu=0,\qquad u(0)=z,\quad u'(1)=z^2e^z.
+\end{equation}
+At zero the homogeneous scalar problem is $u''=0,u(0)=u'(1)=0$;
+its only solution is zero. Analytic fundamental matrices therefore give
+local uniqueness for \eqref{eq:ode}. The first-order problem
+\eqref{eq:uv} is likewise locally unique, including $z=0$.
+
+\begin{lemma}[Sufficiency of the boundary problem]
+The locally unique solution of \eqref{eq:uv}, integrated from zero,
+reconstructs precisely the resolvent in \eqref{eq:resolvent}.
+\end{lemma}
+\begin{proof}
+The reflected pair $(v(1-x),u(1-x))$ solves the same equations and boundary
+data. Uniqueness gives $u(x)=v(1-x)$. Therefore the reconstructed
+$U(x)=\int_0^xu$ and $V(x)=\int_0^xv$ satisfy $U(1)=V(1)$.
+Define $I_0,J_1$ from these functions and put
+\begin{align*}
+ F_1&=u-ze^{zx}(1+V)+zU+z^2I_0,\\
+ F_2&=v-zV-ze^{z(1-x)}(1-U)-z^2J_1.
+\end{align*}
+Calculation using \eqref{eq:uv} gives $F_1'=zF_1$ and $F_2'=-zF_2$.
+Their boundary values are $F_1(0)=0$ and
+$F_2(1)=z(U(1)-V(1))=0$. Both vanish. Consequently the endpoint
+cumulatives of the $h$ defined by \eqref{eq:hUV} have derivatives
+$U',V'$ and initial values zero; they are exactly $U,V$.
+Complementing nonoverlap regions gives $h=1+A_zh$. The Neumann inverse
+is unique near zero, completing the sufficiency proof.
+\end{proof}
+This step retains the endpoint condition that could otherwise be lost
+by differentiating. No global uniqueness of the unreduced boundary
+problem is asserted at exceptional complex parameters.
+
+\section{Explicit solution and the canceled factor}\label{sec:cancellation}
+Choose $r=\sqrt{4e^z-1}$ locally at zero and put $w=zr/2$. Solving
+\eqref{eq:ode} gives
+\begin{align}
+ u(x)&=e^{zx/2}\bigl(z\cos(wx)+A\sin(wx)\bigr),\label{eq:usolution}\\
+ \frac Az&=\frac{2E-\cos w+r\sin w}{r\cos w+\sin w}.
+ \label{eq:A}
+\end{align}
+Integrate the differential equation and use $P=1+\int_0^1u$ to obtain
+\begin{equation}\label{eq:integrated}
+ P=\frac{zu(1)-z^2/2+Aw}{z^2E^2}.
+\end{equation}
+Substitution, with $\sin^2w+\cos^2w=1$, simplifies this to
+\begin{equation}\label{eq:fullangle}
+ P=e^{-z}r\frac{2E-\cos w+r\sin w}{r\cos w+\sin w}.
+\end{equation}
+All identities with apparent division by $z$ are first obtained for
+small nonzero $z$ and then continued to zero.
+
+To display the cancellation, set $c=\cos(w/2)$, $s=\sin(w/2)$ and
+\[
+ D_+=(2E+1)c-rs,\quad D_-=(2E-1)c+rs,\quad L=rc+(2E+1)s.
+\]
+The identity $r^2=(2E-1)(2E+1)$ gives, by multiplication,
+\begin{align}
+ r(r\cos w+\sin w)&=D_+D_-,\label{eq:factor1}\\
+ r(2E-\cos w+r\sin w)&=D_-L.\label{eq:factor2}
+\end{align}
+As $D_-(0)=1$, the common factor cancels near zero. Substituting into
+\eqref{eq:fullangle} proves \eqref{eq:trig}. In particular, zeros of the
+full boundary determinant coming solely from $D_-$ are not poles of the
+scalar counting EGF.
+
+Locally $H=\cos(zr/4)$ and $J_0=\sin(zr/4)/r$, so \eqref{eq:trig}
+is exactly \eqref{eq:entire}. Both $N,D$ are entire and $N(0)=D(0)=3$.
+This proves the branch-free meromorphic continuation and $P(0)=1$.
+It does not require a square root or inverse trigonometric function to
+be defined globally.
+
+\section{Positive poles and non D finiteness}\label{sec:positive}
+For real $z\geq0$ put $r=\sqrt{4e^z-1}>0$ and
+\begin{equation}\label{eq:phase}
+ \alpha(z)=\frac12\arccos\!\left(\frac1{2e^{z/2}}\right),\qquad
+ \phi(z)=\frac{zr}{4}+\alpha(z).
+\end{equation}
+The real inverse cosine takes values in $[0,\pi]$.
+Since $\tan\alpha=r/(2E+1)$, equation \eqref{eq:trig} becomes
+\begin{equation}\label{eq:tan}
+ P(z)=e^{-z}r\tan\phi(z).
+\end{equation}
+Differentiation simplifies to
+\begin{equation}\label{eq:phiprime}
+ \phi'(z)=\frac{e^z(z+2)}{2r}>0.
+\end{equation}
+Moreover $\phi(0)=\pi/6$ and $\phi(z)\to\infty$. Thus for each
+integer $k\geq0$ there is a unique positive $\rho_k$ satisfying
+\begin{equation}\label{eq:realpoles}
+ \phi(\rho_k)=\frac\pi2+k\pi,
+\end{equation}
+or equivalently
+\[
+ \frac{\rho_k\sqrt{4e^{\rho_k}-1}}2+
+ \arccos\!\left(\frac1{2e^{\rho_k/2}}\right)=(2k+1)\pi.
+\]
+The derivative and prefactor in \eqref{eq:tan} are nonzero there, so all
+these points are genuine simple poles. This describes positive poles
+only, without ordering them among complex poles by modulus.
+
+An analytic D-finite germ satisfies a nonzero linear differential
+equation with polynomial coefficients. At every point where its leading
+coefficient is nonzero, the standard local linear-ODE continuation
+theorem excludes singularities. Its finite-plane singularities can thus
+occur at only finitely many points. The infinitely many distinct poles
+above prove that $P$ is not D-finite. If $(p_n)$ were P-recursive, then
+$(p_n/n!)$ would be P-recursive and its ordinary generating function $P$
+would be D-finite, a contradiction. The ordinary series
+$\sum p_nz^n$, understood formally, is not D-finite either.
+
+\section{Riccati equation and every complex pole}\label{sec:riccati}
+On a local branch in \eqref{eq:tan}, let $a=e^{-z}r$. Then
+\[
+ \frac{a'}a=\frac{1-2e^z}{Q},\qquad
+ a\phi'=\frac{z+2}{2},\qquad
+ \frac{\phi'}a=\frac{e^{2z}(z+2)}{2Q}.
+\]
+Differentiating $P=a\tan\phi$ yields the exact identity
+\begin{equation}\label{eq:riccati}
+ 2Q P'=2(1-2e^z)P+(z+2)Q+(z+2)e^{2z}P^2,
+ \qquad P(0)=1.
+\end{equation}
+It holds globally by meromorphic continuation. Since $2Q(0)=6$, it is
+also a locally unique analytic initial-value equation at zero.
+
+\subsection{Removal of the degenerate parameters}
+All zeros of $Q$ are $z_k=-\log4+2\pi ik$, and they are simple. At such
+a point $E=(-1)^k/2$. If $k$ is even, $B=2$, $D=2$ and $P(z_k)=0$.
+If $k$ is odd, locally
+\[
+ B=1-\sqrt{1+Q}=-Q/2+O(Q^2),\quad H=1+O(Q),\quad
+ J_0=z/4+O(Q).
+\]
+Consequently
+\[
+ D=-Q(z+2)/4+O(Q^2),\qquad N=4Q+O(Q^2).
+\]
+As $z_k\ne-2$, the singularity is removable and
+$P(z_k)=-16/(z_k+2)$. Thus no zero of $Q$ is a pole.
+
+The other potentially degenerate coefficient for a Riccati pole balance
+is $z=-2$. Put $s=\sqrt{1-4/e^2}$, so $0<s<1$. Direct evaluation gives
+\[
+ D(-2)=(1+2/e)\cosh(s/2)-s\sinh(s/2)>0,
+\]
+because $1+2/e>1>s\tanh(s/2)$. Hence $-2$ is not a pole.
+
+\subsection{Simplicity residues and the exact pole set}
+At a genuine pole $\zeta$, the preceding argument gives
+$Q(\zeta)\ne0$ and $\zeta\ne-2$. If its order is $m$, the most singular
+orders in \eqref{eq:riccati} are $m+1$ from $P'$ and $2m$ from $P^2$;
+the other terms are of lower order. Thus $m+1=2m$ and $m=1$.
+Writing $P=a_{-1}/(z-\zeta)+O(1)$ and comparing coefficients gives
+\eqref{eq:residue}.
+
+Away from $Q=0$, a zero of $D$ cannot cancel against $N$. Indeed the two
+linear combinations in \eqref{eq:trig} have coefficient determinant
+\[
+ (2E+1)^2+r^2=4E(2E+1)\ne0.
+\]
+The last inequality follows because $E\ne0$ and $2E+1=0$ would imply
+$Q=0$. Simultaneous vanishing would force $\sin(zr/4)=\cos(zr/4)=0$,
+which is impossible. This proves exactly \eqref{eq:poleset}.
+
+For a genuine pole define
+\begin{equation}\label{eq:Czeta}
+ C_\zeta=-\frac{\Res(P,\zeta)}\zeta
+ =\frac{2e^{-2\zeta}(4e^\zeta-1)}{\zeta(\zeta+2)}.
+\end{equation}
+There is no pole at zero. For every fixed $R>0$ with no pole on
+$|z|=R$, there are finitely many poles inside, and subtraction of their
+principal parts leaves a function analytic on a neighborhood of the
+closed disk. Cauchy's bound therefore proves
+\begin{equation}\label{eq:finitepole}
+ \frac{p_n}{n!}=\sum_{|\zeta|<R}C_\zeta\zeta^{-n}+O_R(R^{-n}).
+\end{equation}
+This is a finite-radius expansion. It does not assert convergence of an
+infinite sum over all poles, a numerical ordering of nonreal poles, or an
+effective bound for the constant implicit in the remainder.
+
+\section{Differential algebraicity}\label{sec:algebraic}
+Use independent jet variables $p,u,v$ and an auxiliary variable $X$.
+Define the following polynomials in $\mathbb Q[z,p,u,v]$:
+\begin{align*}
+ A&=(z+2)p^2,& B_1&=-8u-4p+4(z+2),& C_1&=2u+2p-(z+2),\\
+ A_2&=p^2+2(z+2)pu+2A,&
+ B_2&=-8v-4u+4+B_1,& C_2&=2v+2u-1.
+\end{align*}
+The Riccati equation states
+$AX^2+B_1X+C_1=0$ at $X=e^z$, $p=P$, $u=P'$. Differentiating with
+$X'=X$ gives $A_2X^2+B_2X+C_2=0$ at $v=P''$. Therefore
+\begin{equation}\label{eq:resultant}
+ \mathcal F(z,p,u,v)=\det
+ \begin{pmatrix}
+ A&B_1&C_1&0\\
+ 0&A&B_1&C_1\\
+ A_2&B_2&C_2&0\\
+ 0&A_2&B_2&C_2
+ \end{pmatrix}
+\end{equation}
+satisfies $\mathcal F(z,P,P',P'')=0$.
+It is not the zero polynomial: at $(z,p,u,v)=(0,1,0,0)$, the two
+quadratics are $2X(X+2)$ and $5X^2+8X-1$. Their resultant is
+$2^2(-1)(3)=-12$. Thus $P$ is differentially algebraic of order at most
+two over $\mathbb Q(z)$, despite being non-D-finite. The polynomial
+condition can have extraneous solution germs; neither minimal order nor
+uniqueness from this resultant is asserted. Earlier unsuccessful bounded
+D-algebraic fitting experiments do not establish differential
+transcendence and do not contradict this annihilator.
+
+\section{Exact quadratic arithmetic enumeration}\label{sec:recurrence}
+Let $q_n=4-\delta_{n,0}$ for $n\geq0$, with $q_{-1}=0$. For $n\geq0$ put
+\begin{align*}
+ E_n&=\sum_{k=0}^n\binom nkp_k,&
+ S_n&=\sum_{k=0}^n\binom nkp_kp_{n-k},\\
+ T_n&=\sum_{k=0}^n\binom nk2^{n-k}S_k,&
+ G_n&=\sum_{k=0}^{n-1}\binom nkp_{k+1},
+\end{align*}
+where $T_{-1}=G_0=0$. Extracting exponential coefficients in
+\eqref{eq:riccati} gives
+\begin{equation}\label{eq:recurrence}
+ \boxed{6p_{n+1}=2p_n-4E_n+2q_n+nq_{n-1}+2T_n+nT_{n-1}-8G_n},
+ \qquad p_0=1.
+\end{equation}
+For example, the left side of \eqref{eq:riccati} contributes
+$6p_{n+1}+8G_n$, while the three terms on the right contribute
+$2p_n-4E_n$, $2q_n+nq_{n-1}$, and $2T_n+nT_{n-1}$.
+
+All inputs at stage $n$ are already available from $p_0,\ldots,p_n$ and
+previous $S_k,T_k$. Each finite sum has $O(n)$ terms. Computing through
+$p_N$ thus takes $O(N^2)$ arithmetic operations. The binomial row can be
+streamed from $\binom n0=1$ by
+$\binom n{k+1}=\binom nk(n-k)/(k+1)$; powers of two can likewise be
+updated exactly. Storing the three sequences uses $O(N)$ scalar entries.
+Divisibility by six is a consequence of the EGF identity, and is also
+checked explicitly by the companion at every stage.
+
+This improves the total-count bounds of $O(N^4)$ arithmetic operations
+and $O(N^3)$ scalar storage in~\cite[Section 2]{cgp}
+\cite[Theorem 11]{abh}. The comparison is in the constant-cost arithmetic
+model used there. Integers grow with $n$; no $O(N^2)$ bit-complexity,
+wall-clock guarantee, optimality, or corresponding run-refined bound is
+claimed.
+
+The independent verification route expands \eqref{eq:H}--\eqref{eq:ND}
+as rational ordinary power series, divides by $D$, and multiplies the
+$n$th coefficient by $n!$. It does not use the Riccati recurrence.
+Both routes match all 71 fixture counts $p_0,\ldots,p_{70}$ exactly.
+The fixture records separate provenance: $p_1,\ldots,p_{25}$ are the
+posted OEIS values checked in the earlier source work; the longer
+fixture was computed independently from the published endpoint
+recurrence. Agreement is finite evidence, not the proof of the formula.
+
+\section{Unique dominant pole and leading asymptotic}\label{sec:dominance}
+For completeness we supply the positive-operator isolation argument,
+rather than infer a complex gap from the positive pole equation.
+Let $\mathcal K$ denote the integral operator with kernel $K$ from
+\eqref{eq:K}. For real $t>0$, multiplication by $\sqrt{w_t}$ is boundedly
+invertible on $L^2(X,\mu)$. Thus $A_t$ is similar to the compact
+self-adjoint, positivity-preserving operator
+\[
+ S_t=M_{\sqrt{w_t}}\mathcal K M_{\sqrt{w_t}}.
+\]
+It need not be positive semidefinite. For any states $s,s'$, every
+interval $(a,b)$ with
+\[
+ 0<a<\min(\lo(s),\lo(s')),
+ \qquad \max(\hi(s),\hi(s'))<b<1
+\]
+overlaps both. This set has positive area. Consequently $S_t^2$ has a
+strictly positive kernel almost everywhere.
+
+\begin{lemma}\label{lem:perron}
+For such an operator, $\lambda(t)=\spr(A_t)=\|S_t\|>0$ is a simple
+positive eigenvalue with positive left and right eigenfunctions.
+All other eigenvalues have smaller modulus.
+\end{lemma}
+\begin{proof}
+The compact self-adjoint spectral theorem gives a top eigenvector of
+$S_t^2$. Replacing it by its absolute value cannot decrease its Rayleigh
+quotient, so the absolute value is also a top eigenvector. Strict
+positivity of the squared kernel makes it positive almost everywhere.
+A sign-changing top eigenvector would yield a strictly larger Rayleigh
+quotient after taking its absolute value, a contradiction. Hence the top
+eigenspace is one-dimensional: two independent real vectors would
+produce a nonzero vector orthogonal to a positive vector, which must
+change sign. The action of $S_t$ on the positive vector is positive,
+so its eigenvalue is $+\|S_t\|$. Any other eigenvalue of the same modulus
+would give another top vector of $S_t^2$. Compactness gives the strict
+spectral gap. Similarity transfers simplicity and positive left and
+right eigenvectors to $A_t$.
+\end{proof}
+Norm continuity gives continuity of $\lambda$. Increasing $t$ strictly
+increases the kernel of $S_t$ wherever $K=1$; testing on its positive
+Perron vector proves strict increase of $\lambda$. Also $\lambda(t)\to0$
+as $t\downarrow0$. On
+$F=\{(a,b):a<1/4,\ b>3/4\}$, all pairs overlap, $\mu(F)=1/16$, and
+$w_t\geq t^2e^{t/2}$. Its indicator Rayleigh quotient gives
+\[
+ \lambda(t)\geq t^2e^{t/2}/16\longrightarrow\infty.
+\]
+Thus there is a unique $t_*>0$ with $\lambda(t_*)=1$.
+
+The simple eigenvalue depends analytically on the parameter locally.
+If $f_t>0$ is its real unit eigenvector for $S_t$, differentiation gives
+\begin{equation}\label{eq:lambdaprime}
+ \lambda'(t)=\lambda(t)\int_X\frac{w'_t}{w_t}f_t^2\dd\mu>0.
+\end{equation}
+One can obtain this directly from
+$S_t'=\tfrac12(M_{w'_t/w_t}S_t+S_tM_{w'_t/w_t})$ and the normalized
+simple-eigenvalue derivative formula. Local analyticity follows from a
+Riesz projection around the isolated eigenvalue, choosing the positive
+weight square root locally.
+
+At $t_*$ put $h_*=M_{1/\sqrt{w_{t_*}}}f_{t_*}$ and
+$\ell_*=M_{\sqrt{w_{t_*}}}f_{t_*}$. Their pairing is one. The local
+resolvent singular part is the corresponding analytic rank-one
+projection divided by $1-\lambda(z)$. Its scalar numerator in
+\eqref{eq:resolvent} is
+\[
+ \left(\int_X\sqrt{w_{t_*}}f_{t_*}\dd\mu\right)^2>0.
+\]
+Equation \eqref{eq:lambdaprime} proves that this is a genuine simple
+positive scalar pole. For $|z|<t_*$, the absolute kernel comparison
+$|A_z^kf|\leq A_{|z|}^k|f|$ and the spectral-radius formula show
+$\spr(A_z)\leq\lambda(|z|)<1$; hence there are no poles inside.
+The scalar resolvent identity extends over this disk by its invertible
+analytic resolvent. It follows that $t_*=\rho_0$ from
+\eqref{eq:realpoles}. Write $\rho=\rho_0$.
+
+For $|z|=\rho$, $z\ne\rho$, define
+$B_z=\mathcal K M_{|w_z|}$. Its weights are positive and bounded away
+from zero. The same squared-kernel argument gives a positive Perron
+vector $h_z$ with eigenvalue $\beta=\spr(B_z)$. On the interval component,
+\[
+ |w_z(a,b)|=\rho^2e^{\operatorname{Re}(z)(b-a)}<w_\rho(a,b),
+\]
+whereas the singleton weights have equal absolute value. Using the
+positive left eigenvector $\ell_*$ of $A_\rho$ yields
+\begin{align*}
+ (1-\beta)\int_X\ell_*h_z\dd\mu
+ &=\int_\Delta(w_\rho-|w_z|)h_z(\mathcal K\ell_*)\dd\mu>0.
+\end{align*}
+Indeed $\mathcal K\ell_*=\ell_*/w_\rho>0$ almost everywhere.
+Thus $\spr(A_z)\leq\beta<1$ at every other point of this circle.
+Invertibility near such a point and continuation from the interior
+identify the quotient with the analytic scalar resolvent there.
+
+We already know from \eqref{eq:entire} that scalar poles form a discrete
+set. Compactness of the circle and discreteness, including at $\rho$,
+give some $R>\rho$ with no other scalar pole on or inside that disk.
+Subtracting the $\rho$ pole and applying Cauchy's estimate proves
+\begin{theorem}\label{thm:leading}
+There exist $R>\rho$ and $0<\theta=\rho/R<1$ such that
+\begin{equation}\label{eq:leading}
+ p_n=C\,n!\rho^{-n}\bigl(1+O(\theta^n)\bigr),\qquad
+ C=\frac{2e^{-2\rho}(4e^\rho-1)}{\rho(\rho+2)}>0.
+\end{equation}
+The positive pole $\rho$ is the unique dominant pole.
+\end{theorem}
+The residue formula gives $C$ directly; equivalently
+$C=e^{-\rho}r(\rho)/(\rho\phi'(\rho))$.
+This proof establishes existence of a complex pole-free gap, but supplies
+no certified numerical value of $R$, error constant, or onset index.
+The real interval certificate below does not fill that separate gap.
+
+\section{Rational certificates for the constants}\label{sec:certificate}
+Let the terminating decimals below denote exact rationals:
+\begin{align*}
+ L&=1.11343904173672704376166152691808324014139016583344946615,\\
+ U&=1.11343904173672704376166152691808324014139016583344946616,\\
+ C_L&=0.695688549070635767995703168724110156574198350721,\\
+ C_U&=0.695688549070635767995703168724110156574198350722.
+\end{align*}
+The companion proves with integer and rational arithmetic that
+\begin{equation}\label{eq:brackets}
+ L<\rho<U,\qquad C_L<C<C_U.
+\end{equation}
+The following remainder bounds make the certificate reproducible without
+assuming the correctness of numerical transcendental functions.
+
+For $0\leq x<202$, let $T_{200}(x)=\sum_{j=0}^{200}x^j/j!$. Each ratio
+between consecutive terms in the tail after $x^{201}/201!$ is at most
+$x/202$. Hence
+\begin{equation}\label{eq:expbound}
+ T_{200}(x)\leq e^x\leq T_{200}(x)+
+ \frac{x^{201}/201!}{1-x/202}.
+\end{equation}
+Monotonicity of $e^x$ extends these bounds to interval inputs.
+For a nonnegative rational $x$, put $S=10^{120}$ and
+$k=\lfloor\sqrt{\lfloor xS^2\rfloor}\rfloor$ using integer square root.
+Checked integer squares prove
+\[
+ (k/S)^2\leq x<((k+1)/S)^2,
+\]
+which encloses $\sqrt x$. For $0\leq x\leq1$, the sine and cosine Taylor
+terms decrease in magnitude. Truncating each alternating series at index
+60 gives an upper bound, because the last included term is positive;
+subtracting the next term's magnitude gives a lower bound. Sine is
+increasing and cosine decreasing on this interval, so their endpoint
+bounds propagate interval inputs rigorously.
+
+For $x=L,U$ the program evaluates
+\[
+ (2e^{x/2}+1)\cos\!\left(\frac{x\sqrt{4e^x-1}}4\right)
+ -\sqrt{4e^x-1}\sin\!\left(\frac{x\sqrt{4e^x-1}}4\right)
+\]
+by those rational interval operations. It verifies that both sine/cosine
+arguments are in $(0,1)$ and that $D(L)>0>D(U)$. In this bracket
+$0<zr/4<1$ and $0<\alpha<\pi/4$, so $\phi<1+\pi/4<\pi$.
+Only the first positive tangent pole can be crossed. Continuity and
+strict increase from \eqref{eq:phiprime} therefore isolate $\rho_0$.
+Finally direct positive interval substitution into
+\[
+ C=\frac{2(4e^\rho-1)}{e^{2\rho}\rho(\rho+2)}
+\]
+proves the amplitude bracket. The machine-readable certificate records
+outward decimal enclosures of both denominator signs and the propagated
+amplitude interval. Decimal endpoints are suggested values only until
+these rational inequalities have been verified; no binary floating
+point or fitted coefficient is trusted by the certificate.
+
+\section{Stirling expansions and safe inversion}\label{sec:inverse}
+For sufficiently large integers, Theorem~\ref{thm:leading} gives
+\begin{equation}\label{eq:logH}
+ \log p_n=\mathcal H(n)+\epsilon_n,\quad
+ \mathcal H(x)=\log\Gamma(x+1)-x\log\rho+\log C,\quad
+ |\epsilon_n|\leq M\theta^n
+\end{equation}
+for some fixed $M>0$, $0<\theta<1$ and onset $n_0$.
+For each fixed $m\geq1$, the ordinary Stirling remainder then gives
+\begin{align}
+ \log p_n={}&n\log n-(1+\log\rho)n+\tfrac12\log n
+ +\log(C\sqrt{2\pi})\notag\\
+ &+\sum_{j=1}^m\frac{B_{2j}}{2j(2j-1)n^{2j-1}}
+ +O(n^{-2m-1}).\label{eq:stirling}
+\end{align}
+Exponentiating a sufficiently long finite truncation gives, for every
+fixed $K\geq0$,
+\[
+ p_n=C\sqrt{2\pi n}\left(\frac n{e\rho}\right)^n
+ \left(\sum_{k=0}^K\frac{s_k}{n^k}+O(n^{-K-1})\right),
+\]
+where $s_k$ are the formal coefficients of
+\[
+ \exp\left(\sum_{j\geq1}\frac{B_{2j}t^{2j-1}}{2j(2j-1)}\right)
+ =1+\frac t{12}+\frac{t^2}{288}-\frac{139t^3}{51840}+\cdots.
+\]
+These are fixed-order Poincar\'e expansions; no convergence of the
+infinite Bernoulli series is claimed. Also
+$p_{n+1}/p_n=((n+1)/\rho)(1+O(\theta^n))$.
+
+Define $N(y)=\min\{n\geq0:p_n\geq y\}$ for $y>0$. Appending the new
+maximum extends the last ascending run and preserves the overlap
+inequalities, giving an injection from size $n$ to size $n+1$.
+Thus $(p_n)$ is nondecreasing; the ratio formula makes it eventually
+strictly increasing and unbounded. For large $y$, let $x$ be the unique
+large solution of $\mathcal H(x)=\log y$. This is the eventually
+increasing branch because
+$\mathcal H'(x)=\psi(x+1)-\log\rho\sim\log x$ and
+$\mathcal H''(x)=\psi'(x+1)>0$.
+
+\begin{proposition}[Rounding-safe threshold]
+If \eqref{eq:logH} holds for all $n\geq n_0$ and
+\[
+ x-2\geq n_0,\qquad \mathcal H'(x-2)>0,\qquad
+ \delta(x)=\frac{2M\theta^{x-2}}{\mathcal H'(x-2)}<1,
+\]
+then
+\begin{equation}\label{eq:ceil}
+ \ceil{x-\delta(x)}\leq N(y)\leq\ceil{x+\delta(x)}.
+\end{equation}
+\end{proposition}
+\begin{proof}
+Set $a=\ceil{x-\delta}-1$ and $b=\ceil{x+\delta}$. Both lie in
+$[x-2,x+2]$. The increasing positive derivative of $\mathcal H$ gives
+$\mathcal H(x)-\mathcal H(a)>2M\theta^{x-2}$ and
+$\mathcal H(b)-\mathcal H(x)\geq2M\theta^{x-2}$.
+The absolute errors at $a,b$ are at most $M\theta^{x-2}$.
+Hence $p_a<y\leq p_b$, and monotonicity gives the bracket.
+\end{proof}
+If the two ceilings agree, they determine the exact threshold; otherwise
+exact counting or stronger information is required. In particular one
+cannot automatically round an asymptotic root, even if its error tends
+to zero. Here $\delta(x)=O(\theta^x/\log x)$.
+The certified $\rho,C$ intervals alone do not provide effective
+$M,\theta,n_0$ for this implication.
+
+For a convenient real starting estimate, write $L_y=\log y$ and
+$u=W(L_y/(e\rho))$ on the positive real Lambert branch, so
+$x_0=L_y/u$ satisfies $x_0\log(x_0/(e\rho))=L_y$.
+One Newton correction in the Stirling expansion gives
+\begin{equation}\label{eq:inverseinit}
+ x=x_0-\frac{\tfrac12\log x_0+\log(C\sqrt{2\pi})}{u+1}
+ +O\!\left(\frac1{x_0u}\right).
+\end{equation}
+Indeed the displayed correction is $O(1)$, the omitted residual is
+$O(1/x_0)$, and the derivative is asymptotic to $u+1$.
+This continuous inverse estimate is not an exact integer-ceiling rule.
+
+\section{Source status and claim boundaries}\label{sec:sources}
+The underlying overlap characterization is due to Asinowski, Banderier,
+Billey, Hackl and Linusson~\cite{abbhl}, with the later development by
+Asinowski, Banderier and Hackl~\cite{abh}. Claesson, Gu\dh mundsson and
+Pantone~\cite{cgp} give polynomial-time counting and extensive numerical
+experiments. Their author PDF, page 2, leaves a total-count generating
+function or closed enumeration formula open. Section 3 distinguishes
+unsuccessful bounded symbolic fits from experimental differential
+approximants. In particular those fits do not prove non-D-finiteness or
+differential transcendence. Their Section 3.3 predicts positive and
+nonreal simple poles and the leading asymptotic numerically.
+
+The authors' linked repository~\cite{repo} already contains estimates of
+$\rho$, $C$, positive poles, and nonreal poles. For orientation, its first
+positive estimates begin $1.113439\ldots$, $2.417184\ldots$,
+$3.076673\ldots$; these decimal observations are prior art. Neither their
+numerical discovery nor a claimed numerical complex-pole ordering is a
+contribution of this report. The new statements here are the exact
+formula, equations, residues, rational bounds, and proofs.
+
+The 2021 paper~\cite{abh}, Section 2.4, records the exact asymptotic
+problem and the infinitely-many-singularities/non-D-finiteness question
+as unresolved. Its Theorem 10 is a multivariate ordinary functional
+equation, distinct from the present one-variable explicit EGF.
+Theorem 11 gives $O(N^4)$ arithmetic operations and $O(N^3)$ simultaneous
+scalar allocations for total counts. The counting paper~\cite{cgp},
+Section 2, gives the same operation and memory orders and explicitly
+separates constant-cost arithmetic from its multiprecision implementation.
+Neither comparison is a bit-complexity claim.
+
+The final published 2023 version of Defant and Williams'
+\emph{Semidistrim Lattices}~\cite{dw} was also checked, not only its
+2021 preprint. Its Section 11.2 and Figure 12 connect the type-A image
+count to A307030, while Remark 11.3 records later progress on neighboring
+problems. The cited subsequent Choi--Sun work~\cite{cs} concerns other
+Coxeter/Tamari/root-poset settings and does not provide the present
+classical type-A total-count EGF. The current OEIS source entry~\cite{oeis}
+was read as revision 63 dated 18 November 2021; its lack of a formula
+field corroborates but cannot establish novelty.
+
+A bounded source search on 3 October 2026 covered these primary papers,
+the authors' live repository, the current OEIS entry, and exact or
+near-exact searches combining pop-stacked permutations or A307030 with
+generating function, closed form, exponential, D-finite, Riccati,
+differential equation, and quadratic enumeration. No matching explicit
+total-count EGF, proved non-D-finiteness, exact nonlinear ODE, or quadratic
+arithmetic total-count recurrence was located. This is a bounded search
+result, not proof of worldwide priority; scholarly author and citation
+review remains appropriate before any submission. No publication,
+author contact, or repository edit was undertaken.
+
+\section{Companion and reproducible release}\label{sec:companion}
+The source package contains a standard-library Python companion with
+three bounded public modes: count through at most $N=400$, independently
+verify quotient coefficients through at most $N=70$, and certify the
+fixed real constants. It rejects invalid types, negative indices and
+out-of-range requests before allocating a large computation. The public
+computational API performs no writes; command-line JSON goes to standard
+output, and errors go to standard error. Mathematical gates use explicit
+exceptions and remain active under Python's optimization flag.
+
+The quotient check is intentionally a separate, slower exact series
+calculation. It is not covered by the recurrence's quadratic arithmetic
+bound. The certificate uses exact fractions, Taylor bounds and integer
+square roots as proved in Section~\ref{sec:certificate}. The data fixture
+and output receipts distinguish source values from computed values.
+
+PDF reproduction uses a fresh exclusive output directory, disabled TeX
+shell escape, fixed metadata, a bounded stabilization loop, and settled
+reference/layout checks. ZIP reproduction uses a fixed allowlist, SHA-256
+verification, fixed member metadata, and exclusive no-clobber output.
+The I/O helpers reject symbolic-link path components and pin opened
+parent directories. This assumes trusted source files and trusted output
+parent directories; it is not a sandbox for malicious TeX or a hostile
+user who can replace files inside those directories.
+
+Normal and optimized tests, two clean PDF builds, two ZIP creations,
+and all-page rendered inspection are release checks. A deterministic
+archive packages only the allowlisted report, source, fixtures,
+certificates and reproduction scripts; temporary logs and page images
+are excluded. Consult the package README for the exact commands and
+scope of the final receipts.
+
+\newpage
+\begin{thebibliography}{9}
+\bibitem{abbhl}
+A. Asinowski, C. Banderier, S. Billey, B. Hackl and S. Linusson,
+\emph{Pop-stack sorting and its image: Permutations with overlapping runs},
+Acta Math. Univ. Comenianae 88(3) (2019), 395--402.
+\href{https://www.iam.fmph.uniba.sk/amuc/ojs/index.php/amuc/article/download/1307/672/}{Publisher PDF}.
+Theorem 1 and Sections 3--4.
+\bibitem{cgp}
+A. Claesson, B. \'A. Gu\dh mundsson and J. Pantone,
+\emph{Counting pop-stacked permutations in polynomial time},
+\href{https://arxiv.org/abs/1908.08910}{arXiv:1908.08910};
+\href{https://doi.org/10.1080/10586458.2021.1926001}{journal DOI}.
+\href{https://akc.is/papers/033-Counting-pop-stacked-permutations-in-polynomial-time.pdf}{Author PDF},
+pp. 2--6 and Sections 3.1--3.3; page references use this 12-page PDF.
+\bibitem{abh}
+A. Asinowski, C. Banderier and B. Hackl,
+\emph{Flip-sort and combinatorial aspects of pop-stack sorting},
+Discrete Math. Theor. Comput. Sci. 22:2 (2021).
+\href{https://doi.org/10.46298/dmtcs.6196}{DOI};
+\href{https://dmtcs.episciences.org/7411/pdf}{publisher PDF}.
+Theorems 3, 10 and 11, Section 2.4 and conclusion.
+\bibitem{repo}
+B. \'A. Gu\dh mundsson and collaborators,
+\href{https://github.com/SuprDewd/pop-stacked-perms}{Pop-stacked permutations repository},
+README and
+\href{https://github.com/SuprDewd/pop-stacked-perms/blob/master/singularity_estimates.txt}{singularity estimates}.
+Checked 3 October 2026; numerical estimates, not certified bounds.
+\bibitem{dw}
+C. Defant and N. Williams, \emph{Semidistrim Lattices},
+Forum Math. Sigma 11 (2023), e50.
+\href{https://doi.org/10.1017/fms.2023.46}{DOI}.
+Published Section 11.2, pp. 29--30; Figure 12, p. 31;
+Remark 11.3, p. 33. Preprint: \href{https://arxiv.org/abs/2111.08122}{arXiv:2111.08122}.
+\bibitem{cs}
+Y. Choi and N. Sun, \emph{The image of the pop operator on various lattices},
+\href{https://arxiv.org/abs/2209.13695}{arXiv:2209.13695}.
+Scope checked against the primary abstract and the published reference
+in \cite{dw}.
+\bibitem{oeis}
+The OEIS Foundation, \href{https://oeis.org/A307030}{A307030},
+\href{https://github.com/oeis/oeisdata/blob/main/seq/A307/A307030.seq}{official source entry}.
+Revision 63, 18 November 2021; checked 3 October 2026.
+\bibitem{ekp}
+R. Ehrenborg, S. Kitaev and P. Perry,
+\emph{A spectral approach to consecutive pattern-avoiding permutations},
+J. Combin. 2(3) (2011), 305--353.
+\href{https://arxiv.org/abs/1009.2119}{arXiv:1009.2119}.
+Background on integral-operator enumeration; the specific mixed-run
+construction and calculations are proved here.
+\end{thebibliography}
+\end{document}

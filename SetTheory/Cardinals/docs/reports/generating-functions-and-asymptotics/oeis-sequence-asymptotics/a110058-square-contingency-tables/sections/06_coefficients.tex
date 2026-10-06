@@ -1,0 +1,89 @@
+\section{Two exact correction coefficients}\label{sec:coefficients}
+\subsection{The seven cumulants through the first correction}
+The costs one and two give the following seven exact Laurent identities:
+\begin{align}
+K_{(4)}&=\frac{3(2n-1)^2}{4n^2},&
+K_{(6)}&=\frac{15(2n-1)^3}{8n^4},\label{eq:k46}\\
+K_{(3,3)}&=\frac{3(16n^2-12n+1)}{8n^2},&
+K_{(3,5)}&=\frac{15(2n-1)(20n^2-12n-1)}{16n^4},\label{eq:k335}\\
+K_{(4,4)}&=\frac{3(13n^3-15n^2+3n+1)}{n^4},\label{eq:k44}\\
+K_{(3,3,4)}&=\frac{9(124n^3-116n^2+10n+7)}{8n^4},\label{eq:k334}\\
+K_{(3,3,3,3)}&=\frac{243(22n^3-18n^2+1)}{8n^4}.\label{eq:k3333}
+\end{align}
+They follow from the finite contractions above; the package provides exact independent checks. For example, $\Var(Z_{ij})=(2n-1)/(2n^2)$ and Wick's fourth moment immediately gives $K_{(4)}$. For two centered Gaussian variables $U,V$, Wick gives
+\[
+\E U^3V^3=9\Var(U)\Var(V)\Cov(U,V)+6\Cov(U,V)^3.
+\]
+Substituting \eqref{eq:covariance} and summing the indices gives $K_{(3,3)}$.
+
+In the order $(4),(6),(3,3),(3,5),(4,4),(3,3,4),(3,3,3,3)$, the respective weights are
+\[
+\frac{13}{12},\quad-\frac{541}{360},\quad-\frac12,\quad
+\frac54,\quad\frac{169}{288},\quad-\frac{13}{24},\quad\frac1{24}.
+\]
+Their weighted sum is
+\begin{equation}\label{eq:lowercostsum}
+\frac14-\frac{3}{2n}+\frac{35}{8n^2}+O(n^{-3}).
+\end{equation}
+In particular the constant is $13/4-\tfrac12\cdot6=1/4$. The cubic sum has limiting variance $6$; it is not asymptotically negligible. This is precisely the order-one phase that the complex cumulant theorem resums.
+
+\subsection{The eleven additional cost three terms}
+Through $n^{-2}$, costs $1,2,3$ give $2+5+11=18$ degree multisets. For cost three, the leading Laurent degree is $-2$. Table~\ref{tab:costthree} supplies that coefficient and the corresponding log-series weight. Multiplying and summing its rows gives $83/32$. Combining with the $35/8$ already present in \eqref{eq:lowercostsum} gives
+\[
+C_2=\frac{35}{8}+\frac{83}{32}=\frac{223}{32}.
+\]
+Exponentiating adds $C_1^2/2=9/8$ to the second relative coefficient, yielding $259/32$ in \eqref{eq:relativetwo}.
+
+\begin{table}[htbp]
+\centering
+\caption{All new terms at cost three. The middle column is the coefficient of $n^{-2}$ in the exact cumulant.}\label{tab:costthree}
+\begin{tabular}{lrr}
+\toprule
+Degree tuple $\boldsymbol d$ & $[n^{-2}]K_{\boldsymbol d}$ & $w(\boldsymbol d)$\\
+\midrule
+$(8)$ & $105$ & $47293/20160$\\
+$(3,7)$ & $315$ & $-223/120$\\
+$(4,6)$ & $315$ & $-7033/4320$\\
+$(5,5)$ & $270$ & $-25/32$\\
+$(3,3,6)$ & $2655/2$ & $541/720$\\
+$(3,4,5)$ & $2475/2$ & $65/48$\\
+$(4,4,4)$ & $1350$ & $2197/10368$\\
+$(3,3,3,5)$ & $6885$ & $-5/24$\\
+$(3,3,4,4)$ & $6813$ & $-169/576$\\
+$(3,3,3,3,4)$ & $89181/2$ & $13/288$\\
+$(3,3,3,3,3,3)$ & $681615/2$ & $-1/720$\\
+\bottomrule
+\end{tabular}
+\end{table}
+Ignoring the lower-cost $n^{-2}$ terms would give the incorrect answer $83/32$. Omitting the six-cubic cumulant would also change the result substantially. The graph calculation includes all $3550$ labelled connected graphs with six cubic vertices, with loops and multiple edges allowed.
+
+\subsection{An independent formal factorization}
+The second verification computes all eighteen \emph{full} Laurent polynomials without generating connected graphs, coloring edges, fitting numerical values, or interpolating. Introduce a formal Gaussian Wick functional under which $A_1,\ldots,A_n,B_1,\ldots,B_n,C$ are independent and
+\[
+\E A_i^2=\E B_j^2=1,\qquad\E C^2=-\frac1n.
+\]
+This is an algebraic moment functional, not a probability distribution. It assigns zero to odd Gaussian moments and the usual pairing value to even ones, allowing the displayed negative covariance. Then
+\[
+Z_{ij}=\frac{A_i+B_j+C}{\sqrt{2n}}
+\]
+has exactly the covariance \eqref{eq:covariance}. Since Gaussian polynomial moments are determined by their pair covariances, the formal functional reproduces the required true-Gaussian polynomial moments.
+
+Let $P_a(A)=\sum_iA_i^a$ with $P_0(A)=n$, and similarly for $B$. The multinomial identity gives
+\begin{equation}\label{eq:powerfactor}
+S_d=(2n)^{-d/2}\sum_{a+b+c=d}\frac{d!}{a!b!c!}
+ P_a(A)P_b(B)C^c.
+\end{equation}
+For positive exponents $u_1,\ldots,u_q$, decomposing the chosen row indices by their equality partition gives
+\begin{equation}\label{eq:powersummoments}
+\E\prod_{j=1}^qP_{u_j}(A)
+ =\sum_{\pi\in\Part([q])}(n)_{|\pi|}
+   \prod_{B\in\pi}\E G^{\sum_{j\in B}u_j},
+\end{equation}
+where $G$ is standard normal and $(n)_k=n(n-1)\cdots(n-k+1)$. Factors $P_0$ are first replaced by $n$. The $B$ moments have the same formula, independently, and
+\[
+\E C^c=\begin{cases}0,&c\text{ odd},\\(c-1)!!(-1/n)^{c/2},&c\text{ even}.
+\end{cases}
+\]
+Expanding products of \eqref{eq:powerfactor}, using \eqref{eq:powersummoments}, and finally applying \eqref{eq:cumulantpartition} gives a separate exact derivation. It agrees identically with all eighteen full Laurent polynomials, not just the three coefficients retained here.
+
+Additional direct checks at $n=1,2$ use actual Gaussian variables. At $n=2$ the four cells can be represented as $\pm a\pm b+w$, with independent $a,b,w\sim N(0,1/8)$ and the row and column signs chosen separately. This reproduces \eqref{eq:covariance} and avoids the formal negative variance. These algebraic cross-checks support the coefficient computation; the analytic remainder is supplied by Sections~\ref{sec:gauge}--\ref{sec:diagrams}.

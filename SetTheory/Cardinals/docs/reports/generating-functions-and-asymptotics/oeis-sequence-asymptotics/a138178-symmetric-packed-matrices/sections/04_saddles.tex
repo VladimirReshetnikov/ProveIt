@@ -1,0 +1,105 @@
+\section{The two saddle variables and their tails}\label{sec:saddles}
+\subsection{The complex involution contour}
+Let
+\begin{equation}\label{eq:r}
+ r=r_n(v)=\sqrt{n+v^2/4}-v/2,\qquad r^2+vr=n,
+\end{equation}
+where $r/\sqrt n\to1$. Even when $r$ is complex, $x=re^{\ii\theta}$ parametrizes a permissible circle around the origin. Relative to $\theta=0$, the coefficient exponent is
+\begin{equation}\label{eq:Phi}
+ \Phi_n(\theta)=vr(e^{\ii\theta}-1)
+ +\frac{r^2}{2}(e^{2\ii\theta}-1)-\ii n\theta.
+\end{equation}
+Its first derivative at zero vanishes exactly.
+
+\begin{lemma}[Uniform angular localization]\label{lem:involution}
+For a sufficiently small fixed complex neighborhood of $v=1$ and $0<\delta<1/6$,
+\begin{equation}\label{eq:angulartail}
+ \int_{|\theta|>n^{-1/2+\delta}}|e^{\Phi_n(\theta)}|\,\dd\theta
+ =O\bigl(n^{-1/2}e^{-c n^{2\delta}}\bigr).
+\end{equation}
+The full absolute integral is $O(n^{-1/2})$. The signed integral is asymptotic to $\sqrt{\pi/n}$, uniformly, and hence
+\begin{equation}\label{eq:involutioncomparability}
+ |I_n(v)|\asymp
+ \frac{n!}{\sqrt n}\left|r^{-n}e^{vr+r^2/2}\right|.
+\end{equation}
+In particular $I_n(v)$ is nonzero there for all sufficiently large $n$.
+\end{lemma}
+\begin{proof}
+Using $r^2=n-vr$, rewrite the exponent as
+\[
+ \Phi_n(\theta)=\frac n2(e^{2\ii\theta}-1-2\ii\theta)
+ +vr\left(e^{\ii\theta}-1-\frac{e^{2\ii\theta}-1}{2}\right).
+\]
+Its leading real part is $-n\sin^2\theta$. Near zero the expression multiplying $vr$ is $O(\theta^2)$, and $vr=O(\sqrt n)$, so $\Re\Phi_n\leq-cn\theta^2$ on a fixed small neighborhood. No spurious linear error remains.
+
+Near $\pi$ or $-\pi$, put $\theta=\pi+\phi$ modulo $2\pi$. The constant term is $-2vr$, with $\Re(vr)\geq c\sqrt n$. The remaining terms are bounded by $C\sqrt n|\phi|-c'n\phi^2$. Completing the square shows that this saddle has height at most $-c\sqrt n+O(1)$ and Gaussian width $O(n^{-1/2})$. For complex $v$ its maximum may be displaced by $O(n^{-1/2})$; this changes the height only by $O(1)$. Away from both angular neighborhoods the bound is $-cn$. These three bounds prove \eqref{eq:angulartail} and the absolute-integral estimate.
+
+On $\theta=w/\sqrt n$, Taylor expansion gives $\Phi_n=-w^2+o(1)$ uniformly on each bounded interval. The preceding tails give an integrable majorant, so the signed integral is $\sqrt{\pi/n}(1+o(1))$. The Cauchy formula proves \eqref{eq:involutioncomparability}. Expanding $r=\sqrt n-v/2+O(n^{-1/2})$ gives the size estimates used in Section~\ref{sec:envelope}, independently of its conclusions.
+\end{proof}
+
+\subsection{The gamma variable over its whole range}
+For sufficiently large $k$ relative to $\sqrt n$, factor the scaled generating function as
+\begin{equation}\label{eq:factor}
+ (1-vx/k)^{-k}(1-x^2/k^2)^{-(k^2-k)/2}
+ =e^{vx+x^2/2}e^{B(x,k,v)},
+\end{equation}
+where the convergent logarithmic correction is
+\begin{align}\label{eq:B}
+ B(x,k,v)={}&\sum_{m\geq2}\frac{v^m x^m}{m k^{m-1}}
+ +\sum_{m\geq2}\frac{x^{2m}}{2m k^{2m-2}}
+ -\sum_{m\geq1}\frac{x^{2m}}{2m k^{2m-1}}.
+\end{align}
+For $t\geq\eps n$, $k=t/L$, and $|x|=|r_n(v)|$, this correction is uniformly bounded in modulus. On that range \eqref{eq:gammaexact} becomes
+\begin{equation}\label{eq:mainintegral}
+ L^{-n-1}\int e^{-t}t^n
+ [x^n]e^{vx+x^2/2+B(x,t/L,v)}\,\dd t.
+\end{equation}
+This is first an identity for a fixed coefficient polynomial, not an exchange with a divergent full generating-function integral.
+
+The absolute angular bound and \eqref{eq:involutioncomparability} show that the coefficient inside the integral has absolute value at most $C|I_n(v)|/n!$. Thus, relative to $I_n(v)L^{-n-1}$, the mass outside
+\begin{equation}\label{eq:gammawindow}
+ |t-n|\leq n^{1/2+\delta}
+\end{equation}
+is $O(e^{-c n^{2\delta}})$ on $t\geq\eps n$. The gamma estimate follows directly from
+\[
+ \frac{t^ne^{-t}}{n^ne^{-n}}
+ =\exp\left[-n\left(\frac tn-1-\log\frac tn\right)\right].
+\]
+The rate function $x-1-\log x$ is at least a positive constant times $(x-1)^2$ on a fixed interval about $1$ and is bounded away from zero off that interval, with sufficient growth to integrate the tails.
+
+On $0\leq t<\eps n$, use Lemma~\ref{lem:envelope}, monotonicity, and the endpoint estimate from Lemma~\ref{lem:gammabound}. Dividing by \eqref{eq:involutioncomparability} gives
+\[
+ O\bigl((e\eps)^n e^{C\sqrt n}\operatorname{poly}(n)\bigr),
+\]
+which is exponentially small for fixed sufficiently small $\eps$. This separate treatment is essential: the substitution $x/k$ would be invalid at $k=0$.
+
+Together these arguments localize the product gamma/angular integral with absolute estimates for complex markers. No positivity of a complex integrand is used.
+
+\subsection{Real auxiliary and diagonal concentration}
+The preceding bounds also explain the two scales in elementary probabilistic terms. For positive real $u,v$ in a fixed compact neighborhood, give the auxiliary integer $K$ probability proportional to $e^{-Lk}f_n(k,v)$. Uniformly for $cn\leq k\leq Cn$ and real $w$ near $v$, the same angular saddle yields
+\begin{equation}\label{eq:centralcomparison}
+ \frac{f_n(k,w)}{k^n I_n(w)/n!}
+ =e^{B(r_n(w),k,w)}(1+O(n^{-1/2})).
+\end{equation}
+The multiplier is positive and bounded away from zero. Its change on the angular scale is $O(n^{-1/2})(1+|w_{\rm ang}|)$, which proves the error after Gaussian integration. For $k\geq\eps n$ the corresponding upper bound holds on the entire range. A central interval supplies a matching lower normalization. Comparison of the unimodal kernel $e^{-Lk}k^n$ with adjacent integrals then gives
+\begin{equation}\label{eq:Ktail}
+ \PP\{|K-n/L|>n^{1/2+\delta}\}
+ \leq C e^{-c n^{2\delta}},\qquad 0<\delta<1/6.
+\end{equation}
+The small-$k$ range is covered by the majorant with $\eps$ chosen relative to the compact $L$ range. The auxiliary $K$ is not the matrix dimension $D$.
+
+For the reference involution distribution, let $\Lambda$ have probabilities proportional to
+\[
+ \frac{v^\ell}{\ell!2^j j!},\qquad \ell+2j=n.
+\]
+The one-dimensional saddle, expanded with uniform derivatives, gives for real small $s$
+\begin{equation}\label{eq:reference-mgf}
+ \log\frac{I_n(ve^s)}{I_n(v)}
+ =v(e^s-1)\sqrt n-\frac{v^2(e^{2s}-1)}4+O(n^{-1/2}).
+\end{equation}
+Chernoff's inequality with $s$ proportional to $n^{-1/4+\delta}$ therefore yields
+\begin{equation}\label{eq:fixedpointtail}
+ \PP\{|\Lambda-v\sqrt n|>n^{1/4+\delta}\}
+ \leq C e^{-c n^{2\delta}},\qquad 0<\delta<1/4.
+\end{equation}
+This is not merely a reference-distribution bound. By \eqref{eq:centralcomparison}, the tilted diagonal generating-function ratio for actual matrices at each $cn\leq k\leq Cn$ is at most a constant times $I_n(ve^s)/I_n(v)$. Hence their diagonal sum obeys the same bound, with changed constants. This explicitly controls the rising-factorial reweighting that could otherwise invalidate a fixed-point moment argument. The complex-marker proof above does not depend on these probabilistic comparisons.

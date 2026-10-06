@@ -1,0 +1,48 @@
+\section{The result and its scope}\label{sec:results}
+For $n\geq1$, define
+\[
+a_n=\#\left\{(m_{ij})\in\mathbb Z_{\geq0}^{n\times n}:
+ \sum_jm_{ij}=n\text{ for all }i,\quad
+ \sum_im_{ij}=n\text{ for all }j\right\}.
+\]
+Rows and columns are labelled. Thus matrices related by a permutation of rows or columns are generally distinct. The first values are $1,3,55,10147,22069251$ for $n=1,\ldots,5$; with $a_0=1$, this is OEIS A110058 \cite{oeis}. Throughout, all logarithms are natural, and asymptotic assertions concern integer $n\to\infty$ unless a real variable is specified. Set
+\begin{equation}\label{eq:leading}
+G_n=\frac{4^{n^2}}{(4\pi)^{n-1/2}n^{n-1}},\qquad L_n=e^{1/4}G_n.
+\end{equation}
+The leading equivalent $a_n\sim L_n$ is already contained in Canfield--McKay \cite{CM}; it is also covered by the smooth-margin theory of Barvinok--Hartigan \cite{BH}. The purpose here is to justify every fixed algebraic order in this square density-one specialization, evaluate two corrections, and control inversion.
+
+\begin{theorem}\label{thm:main}
+There are rational numbers $C_j$, $j\geq1$, such that for every fixed integer $K\geq0$,
+\begin{equation}\label{eq:main}
+\log\frac{a_n}{L_n}=\sum_{j=1}^{K}\frac{C_j}{n^j}+O_K(n^{-K-1}).
+\end{equation}
+Each $C_j$ is given by a finite rational combinatorial algorithm. In particular,
+\begin{equation}\label{eq:two}
+C_1=-\frac32,\qquad C_2=\frac{223}{32}.
+\end{equation}
+Consequently,
+\begin{align}
+\log\frac{a_n}{L_n}&=-\frac{3}{2n}+\frac{223}{32n^2}+O(n^{-3}),\label{eq:logtwo}\\
+\frac{a_n}{L_n}&=1-\frac{3}{2n}+\frac{259}{32n^2}+O(n^{-3}).\label{eq:relativetwo}
+\end{align}
+\end{theorem}
+
+The effective assertion is about individual coefficients. It does not assert explicit values of the implicit remainder constants or starting indices. The theorem is a Poincar\'e expansion at every fixed order, with $K$ fixed before $n\to\infty$. It does not assert convergence of the infinite series, uniformity in growing $K$, optimal truncation, or a description of exponentially small contributions.
+
+The argument has three distinct parts. First, an exact Fourier integral is localized by the integer-table theorem of Canfield--McKay. A Gaussian gauge penalty and a linear whitening map then convert the localized problem into an expectation on a product of truncated Gaussian intervals. Second, Isaev's theorem for bounded \emph{complex} functions \cite{Isaev} gives a sufficiently accurate finite cumulant expansion. Third, connected Wick contractions provide exact Laurent polynomials and a degree bound that leaves only finitely many degree multisets at any required order. The complex cumulant method is imported; the checks needed to apply it to these geometric tables are supplied in full.
+
+For later use, define the inverse counting function
+\begin{equation}\label{eq:inversecount}
+\nu(Y)=\min\{n\geq1:a_n\geq Y\},\qquad Y>1,
+\end{equation}
+and, for fixed $K$, the real approximation
+\begin{equation}\label{eq:FK}
+F_K(x)=x^2\log4-(x-\tfrac12)\log(4\pi)-(x-1)\log x
+       +\frac14+\sum_{j=1}^{K}C_jx^{-j}.
+\end{equation}
+There is a unique sufficiently large solution $t_K=t_K(Y)$ of $F_K(t_K)=\log Y$. We prove in Section~\ref{sec:inverse} that some $D_K>0$ gives, for all sufficiently large $Y$,
+\begin{equation}\label{eq:inverseintro}
+\ceil{t_K-D_Kt_K^{-K-2}}\leq\nu(Y)\leq
+\ceil{t_K+D_Kt_K^{-K-2}}.
+\end{equation}
+The two ceilings matter near an integer threshold. An unqualified rule $\nu(Y)=\lceil t_K\rceil$ is not a consequence of the theorem.

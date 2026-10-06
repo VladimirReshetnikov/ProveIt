@@ -1,0 +1,91 @@
+\section{Connected contractions and finite power counting}\label{sec:diagrams}
+\subsection{The exact covariance and connected Wick identity}
+Put $Z_{ij}=Y_i+Y_{n+j}$ and $S_d=\sum_{i,j}Z_{ij}^d$. Since $TT^{\mathsf T}=A^{-1}=I-\mathbf J_{2n}/(4n)$,
+\begin{equation}\label{eq:covariance}
+\Cov(Y_a,Y_b)=\frac{\delta_{ab}-1/(4n)}{2n},\qquad
+\Cov(Z_{ij},Z_{k\ell})=\frac{n\delta_{ik}+n\delta_{j\ell}-1}{2n^2}.
+\end{equation}
+For a nonempty degree tuple $\boldsymbol d=(d_1,\ldots,d_r)$, $r\geq1$, with every $d_a\geq3$, let
+\[
+K_{\boldsymbol d}(n)=\kappa(S_{d_1},\ldots,S_{d_r}),\qquad
+D=\sum_a d_a.
+\]
+It vanishes if $D$ is odd. For even $D$, set $E=D/2$ and
+\begin{equation}\label{eq:cost}
+c(\boldsymbol d)=E-r=\frac12\sum_a(d_a-2).
+\end{equation}
+This half-sum is the cost throughout the article.
+
+The connected-Wick toolkit and general cost-counting viewpoint are standard; see, for example, Isaev--McKay \cite[Theorems~2.2 and~2.4]{IM}. We give the needed specialized argument here. Wick's formula pairs the $D$ marked half-edges attached to the $r$ labelled polynomial vertices. In a joint cumulant, only pairings whose induced multigraph is connected remain; loops are allowed and a one-vertex graph is connected. For completeness, insert Wick's moment formula into
+\begin{equation}\label{eq:cumulantpartition}
+\kappa(W_1,\ldots,W_r)=
+\sum_{\pi\in\Part([r])}(-1)^{|\pi|-1}(|\pi|-1)!
+ \prod_{B\in\pi}\E\prod_{a\in B}W_a.
+\end{equation}
+For a fixed pairing, each component must lie within one block of $\pi$. Summing the displayed coefficients over partitions of the set of components gives $1$ when there is one component and $0$ otherwise. This follows either from the moment-cumulant identity for a constant variable or the coefficient identity $\log(e^z)=z$. Thus the connected rule follows directly from ordinary Wick and partition identities.
+
+For each paired edge, expand \eqref{eq:covariance} into a row equality term $\delta_{ik}/(2n)$, a column equality term $\delta_{j\ell}/(2n)$, and a constant term $-1/(2n^2)$. Let their counts be $E_R,E_C,E_0$. Let $c_R,c_C$ be the numbers of components, including isolated vertices, in the row-colored and column-colored graphs. Summing freely over all cell indices gives exactly
+\begin{equation}\label{eq:colorweight}
+2^{-E}(-1)^{E_0}n^{c_R+c_C+E_R+E_C-2E}.
+\end{equation}
+Loops impose no equality on different indices; this convention handles them automatically. Every cumulant $K_{\boldsymbol d}(n)$ is therefore a finite rational Laurent polynomial in $n$.
+
+A more efficient enumeration uses edge multiplicities. If $m_{ab}$ edges join distinct vertices $a,b$ and $\ell_a$ loops sit at $a$, the number of marked half-edge pairings inducing that multigraph is
+\begin{equation}\label{eq:pairmultiplicity}
+N(G)=\frac{\prod_a d_a!}
+ {\left(\prod_{a<b}m_{ab}!\right)\left(\prod_a2^{\ell_a}\ell_a!\right)}.
+\end{equation}
+Indeed, assign the marked half-edges at each vertex to its neighbors and loops; match half-edges between each pair of distinct vertices; then pair the $2\ell_a$ loop half-edges. The resulting factorials simplify to \eqref{eq:pairmultiplicity}. Using this multiplicity is exactly equivalent to enumerating marked pairings.
+
+\subsection{A bound before cancellation}
+\begin{lemma}\label{lem:power}
+Every colored contribution to $K_{\boldsymbol d}(n)$ has Laurent degree between $-2c(\boldsymbol d)$ and $1-c(\boldsymbol d)$. In particular,
+\begin{equation}\label{eq:powerbound}
+K_{\boldsymbol d}(n)=O\bigl(n^{1-c(\boldsymbol d)}\bigr).
+\end{equation}
+\end{lemma}
+\begin{proof}
+Write $q=E_R+E_C$ and let $\rho_R=r-c_R$, $\rho_C=r-c_C$ be the two graphic ranks. Since each nonconstant edge increases rank by at most one,
+$\rho_R+\rho_C\leq q$. The exponent in \eqref{eq:colorweight} is
+\[
+2r-\rho_R-\rho_C+q-2E
+ =-2c+(q-\rho_R-\rho_C)\geq-2c.
+\]
+For the upper bound, let $c_U$ be the number of components in the union of the row- and column-colored graphs. Connectivity of the original pairing graph after adding $E_0$ constant edges implies $c_U\leq E_0+1$. The sum of graphic ranks is at least the rank of the union:
+\[
+(r-c_R)+(r-c_C)\geq r-c_U.
+\]
+Thus $c_R+c_C\leq r+E_0+1$, and the exponent is at most
+$r+E_0+1+E_R+E_C-2E=r+1-E=1-c$.
+\end{proof}
+This estimate is termwise. It does not depend on cancellation between colors or on an observed pattern in low-order computations.
+
+\subsection{A formula at every fixed order}
+Because $d_a\geq3$ and $D$ is even, every nonzero tuple has integer cost $c\geq1$. Lemma~\ref{lem:power} makes every term in $H_{p,n}$ bounded. Moreover $R_L(-Y)=\overline{R_L(Y)}$ and the Gaussian law is symmetric, so its moments and cumulants are real. These facts establish the claim about $H_{p,n}$ used in \eqref{eq:analyticreduction}.
+
+Define
+\begin{equation}\label{eq:tupleweight}
+w(\boldsymbol d)=\frac{\prod_{a=1}^r h_{d_a}}{\prod_{d\geq3}m_d!},
+\qquad m_d=\#\{a:d_a=d\}.
+\end{equation}
+The denominator accounts for passing from the ordered cumulant sum, which has factor $1/r!$, to nondecreasing degree tuples. The Taylor factorials are already included in the $h_d$; no further degree factorial is inserted into $w$.
+
+If $c(\boldsymbol d)>p$, \eqref{eq:powerbound} is $O(n^{-p})$. Conversely, if $c\leq p$, then $r\leq2p$ and $d_a\leq2p+2$. Hence every such tuple occurs among the cutoffs $m,L$ in \eqref{eq:cutofforders}. Taking the real logarithm in \eqref{eq:analyticreduction}, we obtain
+\begin{equation}\label{eq:finiteformula}
+\log\frac{a_n}{G_n}
+ =\sum_{\substack{\boldsymbol d\text{ nondecreasing},\ r\geq1,\ d_a\geq3\\
+                  D\text{ even},\ c(\boldsymbol d)\leq p}}
+ w(\boldsymbol d)K_{\boldsymbol d}(n)+O(n^{-p}).
+\end{equation}
+Laurent monomials of degree at most $-p$ may be discarded. All retained coefficients are rational: in even total degree the product of powers of $\ii$ in the $h_d$ is real, and the remaining factors are rational.
+
+At cost one only $(4)$ and $(3,3)$ occur. Their constant contributions, computed directly below, are $13/4$ and $-3$, giving $1/4$. With $p=K+1$, equation~\eqref{eq:finiteformula} proves \eqref{eq:main}. Compatibility of the coefficients as $p$ increases follows directly from the degree bound, or from uniqueness of a Poincar\'e expansion.
+
+Here is a finite coefficient algorithm for any prescribed $K$:
+\begin{enumerate}
+\item For $1\leq c\leq K+1$, list the integer partitions of $2c$ and add $2$ to every part. These are precisely the possible nondecreasing degree tuples.
+\item Compute $h_d$ through $d=2K+4$ by \eqref{eq:stirling}.
+\item Enumerate connected multigraphs with the prescribed degrees. Weight by \eqref{eq:pairmultiplicity}, then sum \eqref{eq:colorweight} over edge colors.
+\item Multiply by \eqref{eq:tupleweight}, add the Laurent polynomials, and retain degrees $0,-1,\ldots,-K$.
+\end{enumerate}
+This is a finite rational algorithm, not a claim of practical efficiency for large $K$. The public implementation deliberately restricts itself to $K\leq2$; the mathematical algorithm has no such fixed-order restriction.

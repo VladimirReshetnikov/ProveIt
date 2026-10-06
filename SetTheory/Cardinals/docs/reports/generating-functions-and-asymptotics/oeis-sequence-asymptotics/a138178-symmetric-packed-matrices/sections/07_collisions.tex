@@ -1,0 +1,87 @@
+\section{Collision markers on arbitrary fixed compact sets}\label{sec:collision}
+For a symmetric packed matrix, let $R_n$ count diagonal cells with entry at least $2$, and let $S_n$ count upper-triangular off-diagonal cells with entry at least $2$. Each symmetric off-diagonal pair is counted once. These statistics count repeated \emph{cells}, not the number of extra units of weight. Define
+\[
+ A_n(u,v;w,\zeta)=\sum_{M\in\mathcal A_n}
+ u^{D(M)}v^{T(M)}w^{R(M)}\zeta^{S(M)}.
+\]
+A diagonal cell and an upper-triangular off-diagonal cell contribute respectively
+\[
+ 1+vz+\frac{w(vz)^2}{1-vz}
+   =\frac{1+(w-1)v^2z^2}{1-vz},\qquad
+ 1+z^2+\frac{\zeta z^4}{1-z^2}
+   =\frac{1+(\zeta-1)z^4}{1-z^2}.
+\]
+Consequently, before zero-line deletion, the coefficient polynomial is
+\begin{align}\label{eq:collision-fn}
+ f_n(k,v;w,\zeta)=[z^n]{}&(1-vz)^{-k}(1-z^2)^{-(k^2-k)/2}\notag\\
+ &\mathrel{}\times[1+(w-1)v^2z^2]^k
+ [1+(\zeta-1)z^4]^{(k^2-k)/2}.
+\end{align}
+It still has degree at most $n$ in $k$, and zero constant term for $n>0$, since each logarithmic atom $k^az^b$ has $a\leq b$. Proposition~\ref{prop:transform} applies unchanged.
+
+\begin{theorem}[Compact collision-marker expansion]\label{thm:collision}
+There is a sufficiently small complex neighborhood $U$ of $(u,v)=(1,1)$ such that, for every fixed compact set $K\subset\C^2$ of collision markers $(w,\zeta)$ and every fixed integer $J\geq0$,
+\begin{align}\label{eq:collision-theorem}
+ A_n(u,v;w,\zeta)
+ =\frac{I_n(v)e^{S_*(L,v,w,\zeta)}}{(1+u)L^{n+1}}
+ \left(\sum_{j=0}^{J}C_j^*(L,v,w,\zeta)n^{-j/2}
+       +O_{J,K}(n^{-(J+1)/2})\right)
+\end{align}
+uniformly on compact subsets of $U\times K$. Here $C_0^*=1$,
+\begin{equation}\label{eq:Sstar}
+ S_*=S(L,v)+(w-1)v^2L+(\zeta-1)L^2/2,
+\end{equation}
+and every $C_j^*$ is a rational-coefficient polynomial in $L,v,w,\zeta$. In particular $K$ may contain $(0,0)$.
+\end{theorem}
+\begin{proof}
+We verify every required global and local modification of the proof of Theorem~\ref{thm:main}. The additional logarithmic correction on the scaled contour is
+\begin{align}\label{eq:deltaB}
+ \Delta B={}&k\log\left(1+(w-1)v^2x^2/k^2\right)\notag\\
+ &+\frac{k^2-k}{2}\log\left(1+(\zeta-1)x^4/k^4\right).
+\end{align}
+For $t\geq\eps n$, $k=t/L$, and $|x|=|r_n(v)|$, the two arguments are $1+O_K(n^{-1})$ and $1+O_K(n^{-2})$. Their branches are uniquely specified by expansion at zero, and $\Delta B$ is uniformly bounded. On the central scale it tends to
+$(w-1)v^2L+(\zeta-1)L^2/2$.
+
+For the global envelope choose real $V\geq|v|$, $M\geq|w-1|$, and $N\geq|\zeta-1|$ uniformly on the fixed compact set. Replace \eqref{eq:envelope} by
+\begin{align}\label{eq:collision-envelope}
+ \sum_{n\geq0}g_n(k)z^n={}&(1-Vz)^{-k}(1-z^2)^{-(k^2+k)/2}\notag\\
+ &\mathrel{}\times(1-MV^2z^2)^{-k}
+ (1-Nz^4)^{-(k^2+k)/2}.
+\end{align}
+Expansion of the two new logarithms majorizes the absolute values of their counterparts in \eqref{eq:collision-fn}; replacing $k^2-k$ by $k^2+k$ also majorizes in the variable $k$. Exponentiation preserves the bound. All coefficients of this new envelope in $k,z$ are nonnegative.
+
+For $k\geq\eps n$ and $|x|=\sqrt n$, the logarithm of \eqref{eq:collision-envelope} after removing $Vx+x^2/2$ is bounded by a compact-dependent constant. Its new largest terms are $MV^2x^2/k=O_K(1)$ and $Nx^4/(2k^2)=O_K(1)$. Hence the gamma/Cauchy bound remains valid. For small $k$, monotonicity gives the same endpoint estimate. Applying the exact partial-fraction formula to all positive powers of $k$ and using this envelope proves an exponentially small nonreal-pole error exactly as in \eqref{eq:allpolebound}--\eqref{eq:poleerror}. This includes every low degree.
+
+On the involution contour, multiplication by $e^{\Delta B}$ changes the angular absolute bounds only by a fixed factor. The opposite saddle remains suppressed by $\Re v>0$. The local multiplier $e^{S_*}$ never vanishes, even at zero collision markers. Thus neither positivity of $w,\zeta$ nor an asymptotic continuation from their neighborhood of $1$ is needed.
+
+Finally the scaled $\Delta B$ has a removable singularity at $h=0$, polynomial coefficients, and polynomially bounded fixed derivatives in the Gaussian variables. The argument for \eqref{eq:taylorbound} applies verbatim. Replace $\mathcal B$ by $\mathcal B+\Delta\mathcal B$ and $e^{-S}$ by $e^{-S_*}$ in \eqref{eq:algorithm}. This constructs every $C_j^*$, with both normalizers retained, and proves the stated remainder directly on each fixed compact set.
+\end{proof}
+
+A useful explicit coefficient is obtained by setting
+\[
+ a=\frac{v^2-1}{2}+(w-1)v^2,\qquad c=\frac{2\zeta-1}{4}.
+\]
+Then
+\begin{equation}\label{eq:C1star}
+ C_1^*=-v(aL+2cL^2)+\frac{v^3L^2}{3}.
+\end{equation}
+Indeed the leading correction atoms are $ax^2/k+cx^4/k^2$; the first-order Gaussian calculation in Section~\ref{sec:allorders} with these replacements gives \eqref{eq:C1star}. At $w=\zeta=1$ it recovers $C_1$.
+
+\subsection{The binary specialization and its attribution}
+Setting $w=\zeta=0$ forbids every entry of size at least $2$, so this specialization is exactly the symmetric binary model. Its amplitude and first correction are
+\begin{align}
+ S_*(L,v,0,0)&=-\frac{(v^2+1)L}{2}-\frac{L^2}{4},\label{eq:binaryS}\\
+ C_1^*(L,v,0,0)&=\frac{v(v^2+1)L}{2}
+                   +\left(\frac v2+\frac{v^3}{3}\right)L^2.\label{eq:binaryC1}
+\end{align}
+At $u=v=1$ this gives
+\begin{equation}\label{eq:binaryrefined}
+ B_n=\frac{e^{-L-L^2/4}I_n(1)}{2L^{n+1}}
+ \left(1+\frac{L+5L^2/6}{\sqrt n}+O(n^{-1})\right).
+\end{equation}
+The leading term is precisely the established Cameron--Prellberg--Stark equivalent \eqref{eq:priorbinary}, recovered here as a consistency check. In particular
+\begin{equation}\label{eq:binaryprob}
+ \frac{B_n}{A_n}
+ =e^{-L-L^2/2}\left(1+\frac{L+L^2}{\sqrt n}+O(n^{-1})\right).
+\end{equation}
+The probability of being binary has a nonzero limit even though the dimension diverges.

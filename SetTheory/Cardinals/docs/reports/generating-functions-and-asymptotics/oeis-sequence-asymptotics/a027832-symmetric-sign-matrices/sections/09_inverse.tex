@@ -1,0 +1,76 @@
+\section{Controlled inversion of the leading model}\label{sec:inverse}
+A relative $1+o(1)$ count equivalent is an $o(1)$ logarithmic approximation. Because the logarithm grows quadratically, this already gives a sharper continuous-index statement than an $o(1)$ index error, but it does not justify a certified finite-input rounding rule.
+
+Let $s=1$ designate even positive indices and $s=0$ designate odd positive indices. Put
+\begin{equation}\label{eq:inverseconstants}
+ a=\frac{\log2}{2},\qquad b=\frac{\log2}{2}+\log q,\qquad
+ c_s=\log Z_0-\frac{\ell^2}{2}+\frac{sJ}{4},
+\end{equation}
+and define, for $t>0$,
+\begin{equation}\label{eq:Fs}
+ F_s(t)=at^2+bt+s\ell\sqrt t+c_s.
+\end{equation}
+Theorem~\ref{thm:matrix} is equivalent to
+\begin{equation}\label{eq:logerror}
+ \log A_n=F_s(n)+o(1)
+\end{equation}
+on the indicated parity. For sufficiently large $y$, let $r_s(y)$ be the unique sufficiently large solution of $F_s(r_s(y))=y$.
+
+\begin{proposition}[Continuous inverse and its precision]\label{prop:inverse}
+The inverse is well-defined eventually and
+\begin{equation}\label{eq:inversederivative}
+ r_s'(y)\sim\frac1{(\log2)r_s(y)}.
+\end{equation}
+At the actual sequence values,
+\begin{equation}\label{eq:indexerror}
+ r_s(\log A_n)=n+o(n^{-1}).
+\end{equation}
+Writing $u=\sqrt{y/a}$, its elementary model expansion is
+\begin{equation}\label{eq:modelinverse}
+ r_s(y)=u-\frac b{2a}-\frac{s\ell}{2a}u^{-1/2}
+ +\left(\frac{b^2}{8a^2}-\frac{c_s}{2a}\right)u^{-1}
+ +O(u^{-3/2}).
+\end{equation}
+If $y=\log A_n$, the right side without its displayed remainder equals $n+o(u^{-1})$.
+\end{proposition}
+\begin{proof}
+We have
+\[
+ F_s'(t)=2at+b+\frac{s\ell}{2\sqrt t}\sim(\log2)t>0
+\]
+eventually, and $F_s(t)\to\infty$. This proves existence, uniqueness on the increasing tail, and \eqref{eq:inversederivative}. Equation~\eqref{eq:logerror} first implies $r_s(\log A_n)\sim n$. The mean value theorem then divides the $o(1)$ logarithmic discrepancy by a derivative asymptotic to $(\log2)n$, proving \eqref{eq:indexerror}.
+
+For \eqref{eq:modelinverse}, substitute
+$t=u+A+Bu^{-1/2}+Du^{-1}$ in $F_s(t)-y$. Cancellation of the coefficients of $u$, $u^{1/2}$, and $1$ gives
+\[
+ A=-\frac b{2a},\qquad B=-\frac{s\ell}{2a},\qquad
+ D=\frac{b^2}{8a^2}-\frac{c_s}{2a}.
+\]
+The residual is $O(u^{-1/2})$ and $F_s'(t)\asymp u$, so one further mean value estimate gives the $O(u^{-3/2})$ model remainder. At an actual sequence value, \eqref{eq:indexerror} contributes only a known $o(u^{-1})$ error, which dominates the finer model remainder. This establishes the last assertion without postulating an unknown count coefficient.
+\end{proof}
+
+The parity displacement in this continuous inverse first appears at order $u^{-1/2}$. It is a consequence of the known square-root term in the logarithm; it is not an additional term of a proved all-orders expansion for $A_n$.
+
+\subsection{Integer thresholds need two ceilings}
+Define
+\[
+ \lceil t\rceil_s=2\left\lceil\frac{t-(1-s)}2\right\rceil+(1-s),
+\]
+the least integer at least $t$ of the parity designated by $s$. Let $N_s(x)$ be the least positive index of that parity with $A_n\ge x$.
+
+\begin{proposition}[Eventual threshold brackets]\label{prop:threshold}
+For every $\eps>0$, once $x$ is sufficiently large,
+\begin{equation}\label{eq:ceilings}
+ \left\lceil r_s(\log x-\eps)\right\rceil_s
+ \le N_s(x)\le
+ \left\lceil r_s(\log x+\eps)\right\rceil_s.
+\end{equation}
+The least unrestricted positive index with $A_n\ge x$ is $\min(N_0(x),N_1(x))$. The required lower bound on $x$ is not made effective here.
+\end{proposition}
+\begin{proof}
+The sequence is nondecreasing: append an all-positive last row and column to a valid matrix. This is an injection, since every existing row sum increases by one and the new row sum is positive. The sequence is unbounded by Theorem~\ref{thm:matrix}.
+
+For all sufficiently large indices of the indicated parity, \eqref{eq:logerror} implies $|\log A_n-F_s(n)|\le\eps$. Below the lower ceiling in \eqref{eq:ceilings}, an integer of that parity is strictly less than $r_s(\log x-\eps)$, so $\log A_n<\log x$. At the upper ceiling, $F_s(n)\ge\log x+\eps$, hence $\log A_n\ge\log x$. Taking $x$ large enough also excludes the finitely many earlier indices. This proves both bounds.
+\end{proof}
+
+The two ceilings may coincide, but the theorem does not certify when they do for a prescribed finite input. Such a certificate requires either an explicit remainder bound with a known validity range or exact counts at adjacent candidate indices. More decimal digits in $\ell$ or a smaller numerical residual in $F_s(t)=y$ cannot supply that missing asymptotic error bound.

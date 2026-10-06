@@ -1,0 +1,54 @@
+\section{The uniform degree sequence input}\label{sec:enumeration}
+Put $H=\binom M2$. For an integer vector $\boldsymbol d=(d_1,\ldots,d_M)$ with even sum $2m$, define
+\begin{equation}\label{eq:graphparameters}
+ p=\frac mH,\qquad \bar d=\frac{2m}M,\qquad
+ \gamma(\boldsymbol d)=\frac1{(M-1)^2}\sum_{i=1}^M(d_i-\bar d)^2.
+\end{equation}
+Let $N_M(\boldsymbol d)$ be the number of labelled simple graphs with exactly these degrees.
+
+\begin{theorem}[Imported dense enumeration]\label{thm:MW}
+There exists a sufficiently small positive $\eps_*$ such that, uniformly for graphical even-sum degree vectors satisfying
+\[
+ \max_i|d_i-\bar d|=O(M^{1/2+\eps_*}),\qquad
+ \min(\bar d,M-1-\bar d)>cM/\log M
+\]
+for a fixed $c>2/3$, one has
+\begin{equation}\label{eq:degreeenum}
+ N_M(\boldsymbol d)=(1+o(1))g(\gamma(\boldsymbol d),p)
+ p^m(1-p)^{H-m}\prod_{i=1}^M\binom{M-1}{d_i},
+\end{equation}
+where
+\begin{equation}\label{eq:g}
+ g(x,p)=\sqrt2\exp\left\{\frac14-\frac{x^2}{4p^2(1-p)^2}\right\}.
+\end{equation}
+\end{theorem}
+
+This is \cite[Theorem 3(ii)]{mw}, with uniformity supplied by its underlying Theorem 2; it is restated probabilistically in \cite[equations (17)--(18)]{mww}. To translate that restatement, the graph-model probability of $\boldsymbol d$ at edge probability $p$ is $N_M(\boldsymbol d)p^m(1-p)^{H-m}$, whereas the independent-binomial probability is
+$\prod_i\binom{M-1}{d_i}p^{2m}(1-p)^{2H-2m}$. Dividing gives \eqref{eq:degreeenum}. In particular, the exponent contains $\gamma^2$, although $\gamma$ is already a scaled second moment. We use this theorem only at relative order $1+o(1)$.
+
+Choose once and for all $\delta>0$ so small that $3\delta<\eps_*$ and $\delta<1/16$, and set
+\begin{equation}\label{eq:window}
+ \cC=\left\{\boldsymbol d:\max_i|d_i-M/2|\le M^{1/2+2\delta}\right\}.
+\end{equation}
+On this window, $p=1/2+O(M^{-1/2+2\delta})$ and
+$\max_i|d_i-\bar d|\le2M^{1/2+2\delta}\le M^{1/2+3\delta}$ eventually. The density and concentration hypotheses therefore hold uniformly.
+
+\begin{lemma}[No nongraphical mass in the window]\label{lem:graphical}
+For all sufficiently large $M$, every integer vector in $\cC$ with even sum is graphical.
+\end{lemma}
+\begin{proof}
+Sort the degrees in decreasing order and let $a=\min_i d_i$ and $b=\max_i d_i$. Both equal $M/2+o(M)$, and every entry lies in $[0,M-1]$. By the Erd\H{o}s--Gallai criterion, it remains to check
+\[
+ \sum_{i=1}^j d_i\le j(j-1)+\sum_{i=j+1}^M\min(j,d_i),\qquad 1\le j\le M.
+\]
+For $j\le a$, the right side is $j(M-1)$, at least the left side. For $j\ge a$, its excess over the left side is at least
+\[
+ j(j-1)+(M-j)a-jb
+ =Ma+j^2-j(a+b+1)
+ \ge Ma-\frac{(a+b+1)^2}{4}
+ =\frac{M^2}{4}+o(M^2)>0.
+\]
+The even-sum condition completes the criterion.
+\end{proof}
+
+We must still justify discarding degree vectors outside $\cC$ relative to the small graph probability of interest. That is a statement about the actual mixed graph model, not just the later independent comparison model. The next section supplies it before any use of \eqref{eq:degreeenum} in a sum.

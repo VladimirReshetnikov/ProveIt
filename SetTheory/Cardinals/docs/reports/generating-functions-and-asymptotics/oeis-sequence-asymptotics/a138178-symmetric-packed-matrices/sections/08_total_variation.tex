@@ -1,0 +1,117 @@
+\section{Independent collisions and sharp total variation}\label{sec:TV}
+Throughout this section $L=\log2$ and
+\[
+ \lambda=L,\qquad \mu=L^2/2,\qquad \kappa=\lambda+2\mu=L+L^2.
+\]
+
+\begin{theorem}[Joint Gaussian and Poisson limits]\label{thm:joint}
+For every fixed compact set of $(w,\zeta)\in\C^2$,
+\begin{equation}\label{eq:collisionlimit}
+ \E[w^{R_n}\zeta^{S_n}]
+ \longrightarrow e^{\lambda(w-1)+\mu(\zeta-1)}
+\end{equation}
+uniformly. Moreover,
+\begin{equation}\label{eq:fourjoint}
+ \left(\frac{D_n-n/(2L)}{\sigma_D\sqrt n},
+       \frac{T_n-\sqrt n}{n^{1/4}},R_n,S_n\right)
+ \Longrightarrow (Z_1,Z_2,P_1,P_2),
+\end{equation}
+where all four variables on the right are independent, $Z_1,Z_2$ are standard normal, $P_1\sim\Pois(\lambda)$, and $P_2\sim\Pois(\mu)$.
+\end{theorem}
+\begin{proof}
+Normalize Theorem~\ref{thm:collision} by its value at all markers equal to $1$. At $u=v=1$, its leading multiplier is the right side of \eqref{eq:collisionlimit}. For the full joint limit substitute the scaled dimension and trace markers from Theorem~\ref{thm:gaussian} and take $w=e^r,\zeta=e^q$ near $1$. Since $L(u)\to L$ and $v\to1$, the limiting log moment generating function is
+\[
+ (s^2+t^2)/2+\lambda(e^r-1)+\mu(e^q-1).
+\]
+It separates into four cumulant generating functions, proving the assertion. The finite-$n$ trace parity in \eqref{eq:parity} is consistent with this weak limit.
+\end{proof}
+
+\subsection{A summable first correction}
+Let $p_n(r,s)=\PP(R_n=r,S_n=s)$ and let
+\[
+ p_{r,s}=e^{-\lambda-\mu}\frac{\lambda^r\mu^s}{r!s!}
+\]
+be the independent Poisson mass function. From \eqref{eq:C1star},
+\[
+ C_1^*(L,1,w,\zeta)-C_1(L,1)
+ =\lambda(1-w)+2\mu(1-\zeta).
+\]
+Consequently the generating-function correction extracts to
+\begin{equation}\label{eq:masscorrection}
+ p_n(r,s)=p_{r,s}\left[1+\frac{\kappa-r-2s}{\sqrt n}\right]+e_n(r,s),
+ \qquad \sum_{r,s\geq0}|e_n(r,s)|=O(n^{-1}).
+\end{equation}
+The bracket is a signed correction; it is not claimed positive for every $r,s$.
+
+The summability of the remainder is important. Fix any $\rho>1$. The compact-marker theorem applies on the entire closed polydisc $|w|,|\zeta|\leq\rho$. After scalar normalization, its additive generating-function remainder $E_n(w,\zeta)$ has supremum $O_\rho(n^{-1})$ there. Cauchy's estimate gives
+\[
+ |[w^r\zeta^s]E_n|\leq C_\rho n^{-1}\rho^{-r-s}.
+\]
+Summing the geometric bound proves \eqref{eq:masscorrection}. Uniformity only near marker $1$ would not suffice for this argument; the larger compact domain was proved directly in Section~\ref{sec:collision}.
+
+\begin{theorem}[Sharp total-variation constant]\label{thm:TV}
+Use $\TV(P,Q)=\frac12\sum|P-Q|$. Then
+\begin{equation}\label{eq:sharpTV}
+ \TV\bigl(\Law(R_n,S_n),\Pois(L)\otimes\Pois(L^2/2)\bigr)
+ =\frac{e^{-L-L^2/2}L^2(2+L)}{\sqrt n}+O(n^{-1}).
+\end{equation}
+For $n>4$, set
+\begin{equation}\label{eq:adjustedmeans}
+ \lambda_n=L(1-n^{-1/2}),\qquad
+ \mu_n=\frac{L^2}{2}(1-2n^{-1/2}).
+\end{equation}
+These positive means give the genuine probability approximation
+\begin{equation}\label{eq:correctedTV}
+ \TV\bigl(\Law(R_n,S_n),\Pois(\lambda_n)\otimes\Pois(\mu_n)\bigr)
+ =O(n^{-1}).
+\end{equation}
+\end{theorem}
+\begin{proof}
+Under $p$, $\E_p(\kappa-R-2S)=0$. Thus \eqref{eq:masscorrection} and the inequality $||x+y|-|x||\leq|y|$ give
+\[
+ \TV(\Law(R_n,S_n),p)
+ =n^{-1/2}\E_p[(\kappa-R-2S)_+]+O(n^{-1}).
+\]
+Since $1<\kappa<2$, only $(R,S)=(0,0)$ and $(1,0)$ contribute to the positive part. Therefore
+\begin{align*}
+ \E_p[(\kappa-R-2S)_+]
+ &=e^{-\lambda-\mu}\bigl[\kappa+\lambda(\kappa-1)\bigr]\\
+ &=e^{-L-L^2/2}L^2(2+L),
+\end{align*}
+proving \eqref{eq:sharpTV}, including its factor of $1/2$.
+
+The pgf of the adjusted Poisson pair is
+\[
+ e^{\lambda(w-1)+\mu(\zeta-1)}
+ \exp\left(n^{-1/2}[\lambda(1-w)+2\mu(1-\zeta)]\right).
+\]
+Its expansion has the same first correction, with uniform $O(n^{-1})$ remainder on the same radius-$\rho$ polydisc. The same Cauchy summation proves \eqref{eq:correctedTV}.
+\end{proof}
+
+No optimality among all possible approximating distributions is claimed. Neither the $O(n^{-1})$ constant nor a numerical starting index has been made effective.
+
+\subsection{Every fixed order in the joint mass law}
+There is also a useful general consequence, requiring no new saddle analysis. Form the formal normalized coefficient series
+\begin{equation}\label{eq:Qpolynomials}
+ \sum_{j\geq0}Q_j(w,\zeta)h^j
+ =\frac{\sum_{j\geq0}C_j^*(L,1,w,\zeta)h^j}
+        {\sum_{j\geq0}C_j(L,1)h^j}.
+\end{equation}
+Each $Q_j$ is a finite polynomial. If $Q_j=\sum_{a,b}q_{j,a,b}w^a\zeta^b$, define
+\begin{equation}\label{eq:Charlier}
+ H_j(r,s)=\sum_{a,b}q_{j,a,b}
+        \frac{(r)_a(s)_b}{\lambda^a\mu^b},
+\end{equation}
+where $(r)_a=r(r-1)\cdots(r-a+1)$ and $(r)_0=1$. For nonnegative integer $r<a$ the falling factorial is zero. These are finite polynomial, or Charlier-type, signed corrections; $H_0=1$ and $H_1=\kappa-r-2s$.
+
+\begin{corollary}[All fixed order summable mass expansion]\label{cor:massall}
+For every fixed $J\geq0$,
+\begin{equation}\label{eq:massall}
+ \sum_{r,s\geq0}\left|p_n(r,s)
+  -p_{r,s}\sum_{j=0}^J H_j(r,s)n^{-j/2}\right|
+ =O_J(n^{-(J+1)/2}).
+\end{equation}
+\end{corollary}
+\begin{proof}
+Multiply \eqref{eq:Qpolynomials} by the limiting Poisson pgf. Coefficient extraction of $w^a\zeta^b$ times that pgf gives $p_{r,s}(r)_a(s)_b/(\lambda^a\mu^b)$, yielding \eqref{eq:Charlier}. At every fixed order the normalized remainder is $O_J(n^{-(J+1)/2})$ on a fixed radius-$\rho$ polydisc. The same geometric Cauchy sum used for \eqref{eq:masscorrection} proves \eqref{eq:massall}.
+\end{proof}

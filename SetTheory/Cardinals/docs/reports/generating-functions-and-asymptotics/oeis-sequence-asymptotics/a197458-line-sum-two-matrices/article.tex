@@ -1,0 +1,879 @@
+\newcommand{\DoNotLoadEpstopdf}{}
+\pdfinfoomitdate=1
+\pdftrailerid{}
+\pdfsuppressptexinfo=-1
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage[margin=1in]{geometry}
+\usepackage{booktabs,array,microtype}
+\usepackage[hidelinks]{hyperref}
+\hypersetup{pdftitle={Report 168 Sparse binary matrices with line sums at most two},pdfauthor={},pdfsubject={Exact generating functions all fixed order asymptotics and safe inversion of A197458}}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{1.2em}
+\setlength{\emergencystretch}{3em}
+\setcounter{tocdepth}{1}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\CC}{\mathbb C}
+\newcommand{\QQ}{\mathbb Q}
+\newcommand{\NN}{\mathbb N}
+\newcommand{\Rea}{\operatorname{Re}}
+\newcommand{\Imma}{\operatorname{Im}}
+\newcommand{\ceil}[1]{\left\lceil #1\right\rceil}
+\title{Sparse binary matrices with line sums at most two\\\large Exact counts and all fixed order asymptotics}
+\author{Report 168}
+\date{3 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+Let $a_n$ count $n\times n$ binary matrices with at most two ones in
+every row and column, with $a_0=1$. This is OEIS A197458. We prove
+\[
+ a_n\sim \frac{(n!)^2}{2^{5/4}\pi n^{3/4}}e^{2\sqrt{2n}},
+\]
+and an expansion to every fixed order in $n^{-1/2}$, with four explicit
+corrections and a finite exact Gaussian-moment rule for all subsequent
+coefficients. The proof starts from an elementary labeled-component
+decomposition and a modified-Bessel diagonal. A sectorial Bessel
+remainder, a whole-circle bound, explicit off-circle connector
+estimates, and an integrable Taylor remainder give the claimed sharp
+fixed-order error.
+
+We also derive a logarithmic expansion, an explicit Lambert-$W$
+real-inverse formula through its bounded correction, and a rigorous
+two-ceiling enclosure for the integer threshold. This enclosure
+retains the distinction between a smooth comparison inverse and the
+actual discrete crossing. The companion supplies bounded exact counts,
+independent finite checks, and optional symbolic coefficient checks.
+
+General bounded-degree enumeration and configuration-model methods are
+classical. This is an explicit specialization and refinement; no
+historical-priority assertion is made. The results are fixed-order
+asymptotics, not a complete beyond-all-orders description. Remainder
+constants and eventual thresholds are existential, not numerically
+certified.
+\end{abstract}
+\newpage
+\tableofcontents
+\medskip
+\noindent\textbf{Reading guide.}
+Section~\ref{sec:results} states the asymptotic results. Sections
+\ref{sec:exact}--\ref{sec:gaussian} prove the exact formulas and the
+coefficient expansion. Section~\ref{sec:inverse} proves real and integer
+inversion. Sections~\ref{sec:checks}--\ref{sec:literature} record
+reproducibility and the precisely bounded source coverage. All analytic
+arguments used for the main theorem are included.
+\newpage
+
+\section{Results and conventions}\label{sec:results}
+Rows and columns are individually labeled. A line means either a row
+or a column. Write $b_n=a_n/(n!)^2$, and use $[z^k]$ for coefficient
+extraction. Every asymptotic statement below is as its argument tends
+to positive infinity. An order index such as $J$ is fixed before the
+limit; implied constants may depend on it.
+
+\begin{theorem}\label{thm:main}
+For each integer $J\geq0$ there are constants $c_j\in\QQ(\sqrt2)$ such
+that
+\begin{equation}\label{eq:main}
+ a_n=\frac{(n!)^2e^{2\sqrt{2n}}}{2^{5/4}\pi n^{3/4}}
+ \left(\sum_{j=0}^J c_jn^{-j/2}
+              +O_J\bigl(n^{-(J+1)/2}\bigr)\right).
+\end{equation}
+The first five coefficients are
+\begin{align}\label{eq:cs}
+ c_0&=1,&c_1&=-\frac{17\sqrt2}{96},&c_2&=\frac{6409}{9216},\notag\\
+ c_3&=-\frac{18114133\sqrt2}{13271040},&
+ c_4&=\frac{13052721749}{2548039680}.
+\end{align}
+The finite rule in Section~\ref{sec:gaussian} specifies every $c_j$.
+\end{theorem}
+The theorem asserts a Poincar\'e expansion at every fixed order. It
+neither asserts convergence of the formal coefficient series nor
+identifies every exponentially small contribution. In particular,
+letting $J$ grow with $n$ is not justified by the theorem.
+
+\begin{corollary}\label{cor:log}
+The logarithmic expansion begins
+\begin{align}\label{eq:log}
+ \log a_n={}&2n(\log n-1)+2\sqrt{2n}
+       +\tfrac14\log n-\tfrac14\log2\notag\\
+ &-\frac{17\sqrt2}{96\sqrt n}+\frac{319}{384n}
+       +O(n^{-3/2}).
+\end{align}
+There is a logarithmic expansion to every fixed half-integer order.
+\end{corollary}
+For the latter assertion, formally expand
+$\log(\sum c_jn^{-j/2})$ to the desired finite order and add twice
+Stirling's logarithmic series. The constant and first correction check
+is
+\[
+ c_2-\tfrac12c_1^2=\frac{85}{128},\qquad
+ \frac{85}{128}+\frac16=\frac{319}{384}.
+\]
+Positivity of the leading normalized quantity for sufficiently large
+$n$ justifies taking its logarithm with the stated remainder.
+
+\section{Exact component decomposition and diagonal}\label{sec:exact}
+A matrix is a simple bipartite graph with specified shores of size $n$.
+Maximum degree two means that each connected component is an isolated
+vertex, a path, or an even cycle. Let $A_{m,n}$ count the rectangular
+class and define its bivariate exponential generating function
+\[
+ F(x,y)=\sum_{m,n\geq0}A_{m,n}\frac{x^m y^n}{m!n!}.
+\]
+For $t=xy$, the connected component contributions are as follows:
+\begin{center}
+\begin{tabular}{ll}
+\toprule
+Component & Contribution\\
+\midrule
+Isolated vertices & $x+y$\\
+Balanced paths on $k+k$ vertices, $k\geq1$ & $t^k$\\
+Unbalanced paths on $(k+1)+k$ vertices, $k\geq1$
+ & $(x+y)t^k/2$\\
+Even cycles on $k+k$ vertices, $k\geq2$ & $t^k/(2k)$\\
+\bottomrule
+\end{tabular}
+\end{center}
+A balanced path has $(k!)^2$ realizations on specified labels: choose
+its ordering starting from its unique endpoint in the first shore.
+An unbalanced path has a reversal symmetry of order two. A cycle has
+$2k$ equivalent oriented starting descriptions. The lower cutoff
+$k=2$ for cycles excludes the parallel-edge component forbidden in a
+binary matrix. The exponential formula for sets of labeled connected
+components now gives
+\begin{equation}\label{eq:egf}
+ F(x,y)=(1-t)^{-1/2}
+ \exp\left\{\frac{t}{1-t}-\frac t2
+             +(x+y)\frac{2-t}{2(1-t)}\right\}.
+\end{equation}
+This identity also follows directly by multiplying the exponential
+series for the four kinds of components, so no asymptotic input is
+being invoked.
+
+Put
+\begin{equation}\label{eq:Pq}
+ P(t)=(1-t)^{-1/2}e^{t/(1-t)-t/2},\quad
+ h(t)=\frac{2-t}{2(1-t)},\quad
+ q(t)=2\sqrt t\,h(t).
+\end{equation}
+The diagonal requires equal powers from $e^{xh(t)}$ and $e^{yh(t)}$.
+Consequently
+\begin{equation}\label{eq:bessel}
+ G(t):=\sum_{n\geq0}b_nt^n
+   =P(t)\sum_{k\geq0}\frac{t^kh(t)^{2k}}{(k!)^2}
+   =P(t)I_0\left(\frac{\sqrt t(2-t)}{1-t}\right),
+\end{equation}
+where
+\[
+ I_0(z)=\sum_{k\geq0}\frac{(z^2/4)^k}{(k!)^2}.
+\]
+The square root is harmless because $I_0$ is even. In particular,
+$q(t)^2=t(2-t)^2/(1-t)^2$ is rational, and $G$ is analytic in $|t|<1$
+with nonnegative coefficients.
+
+\section{Differential equation and exact recurrence}\label{sec:ode}
+Let
+\[
+ R(t)=\frac{t(2-t)^2}{(1-t)^2},\quad
+ L(t)=\frac{P'(t)}{P(t)}=\frac1{2(1-t)}+\frac1{(1-t)^2}-\frac12.
+\]
+Termwise differentiation shows that $f(R)=I_0(\sqrt R)$ solves
+$Rf''+f'-f/4=0$. Under the pullback $R=R(t)$ define
+\[
+ A=\frac{R'}R-\frac{R''}{R'},\qquad B=\frac{R'^2}{4R}.
+\]
+The pulled-back solution satisfies $Y''+AY'-BY=0$. Conjugating by
+$P$, then clearing denominators, yields
+\begin{equation}\label{eq:ode}
+ p_2(t)G''+p_1(t)G'+p_0(t)G=0,
+\end{equation}
+with
+\begin{align}\label{eq:poly}
+ p_0(t)&=t^6-2t^5-3t^4+20t^3-36t^2+32,\notag\\
+ p_1(t)&=4t^6-12t^5+8t^4+28t^3-92t^2+96t-16,\\
+ p_2(t)&=4t^6-20t^5+44t^4-60t^3+48t^2-16t.\notag
+\end{align}
+For example, the unnormalized coefficients before clearing
+ denominators are $A-2L$ and $L^2-L'-AL-B$; this gives a short rational
+identity check of every displayed polynomial.
+
+Write $p_{i,k}=[t^k]p_i(t)$ and interpret negative-index $b$'s as zero.
+The coefficient equation is
+\begin{align}\label{eq:recurrence}
+0={}&\sum_{k=0}^6p_{2,k}(n-k+2)(n-k+1)b_{n-k+2}\notag\\
+ &+\sum_{k=0}^6p_{1,k}(n-k+1)b_{n-k+1}
+   +\sum_{k=0}^6p_{0,k}b_{n-k}.
+\end{align}
+The coefficient of $b_{n+1}$ is $-16(n+1)^2$. Thus $b_0=1$ uniquely
+determines the analytic power series. For a recurrence involving only
+integers, multiply the other terms by $(n!)^2$ before solving for
+$a_{n+1}$: since
+$16(n+1)^2b_{n+1}(n!)^2=16a_{n+1}$, every remaining term is an integer
+multiple of $a_m(n!/m!)^2$ with $0\leq m\leq n$. Division by $16$ is
+exact, as follows either from the generating function or the
+combinatorial interpretation. The companion checks this division at
+every step rather than silently truncating it.
+
+\section{A sectorial Bessel expansion with remainder}\label{sec:bessel}
+The following elementary proof specifies the uniformity needed later.
+For all complex $q$,
+\begin{equation}\label{eq:bessel-integral}
+ I_0(q)=\frac1\pi\int_0^\pi e^{q\cos v}\dd v
+       =\frac{e^q}\pi\int_0^2
+          e^{-qw^2/2}(1-w^2/4)^{-1/2}\dd w.
+\end{equation}
+The first identity follows by expanding the exponential and
+integrating powers of cosine; the second uses the real substitution
+$w=2\sin(v/2)$.
+
+\begin{lemma}\label{lem:bessel}
+For any fixed $M\geq1$ and $\delta>0$, uniformly as $|q|\to\infty$ in
+$|\arg q|\leq\pi/2-\delta$,
+\begin{equation}\label{eq:bessel-asym}
+ I_0(q)=\frac{e^q}{\sqrt{2\pi q}}
+  \left(\sum_{k=0}^{M-1}\gamma_kq^{-k}+O_{M,\delta}(|q|^{-M})\right),
+ \qquad
+ \gamma_k=\frac{\bigl(1\cdot3\cdots(2k-1)\bigr)^2}{k!8^k},
+\end{equation}
+where $\gamma_0=1$ and the square root is positive on the positive axis.
+\end{lemma}
+\begin{proof}
+On $0\leq w\leq1$ expand
+\[
+ (1-w^2/4)^{-1/2}
+   =\sum_{k=0}^{M-1}\frac{\binom{2k}{k}}{16^k}w^{2k}
+       +O_M(w^{2M}).
+\]
+Since $\Rea q\geq |q|\sin\delta$, the integral of the remainder is
+$O_{M,\delta}(|q|^{-M-1/2})$. The interval $1\leq w\leq2$ contributes
+an exponentially small quantity: the endpoint singularity is
+integrable and $|e^{-qw^2/2}|\leq e^{-|q|\sin\delta/2}$ there.
+Extending each retained monomial integral from $[0,1]$ to
+$[0,\infty)$ has the same type of exponentially small error. Finally,
+\[
+ \int_0^\infty e^{-qw^2/2}w^{2k}\dd w
+   =2^{k-1/2}\Gamma(k+\tfrac12)q^{-k-1/2}.
+\]
+This is a real substitution for positive $q$, and then holds throughout
+$\Rea q>0$ by holomorphic continuation; local domination makes the
+integral holomorphic there. Combining factors proves the formula.
+No complex substitution of the original real integration path is used.
+\end{proof}
+
+Set $s=1-t$ and
+\begin{equation}\label{eq:local-p}
+ p(s)=\sqrt{1-s}(1+s),\qquad q(t)=p(s)/s,
+\end{equation}
+where $p$ is analytic and positive at zero. Direct substitution into
+\eqref{eq:bessel} gives, in a sufficiently narrow fixed sector about
+positive real $s$,
+\begin{equation}\label{eq:localG}
+ G(1-s)=\frac{e^{-1}}{\sqrt{2\pi}}e^{2/s}
+ \left(\sum_{j=0}^{M-1}h_js^j+O_M(|s|^M)\right).
+\end{equation}
+The formal series $H(s)=\sum h_js^j$ is specified by
+\begin{equation}\label{eq:H}
+ H(s)=p(s)^{-1/2}
+   \exp\left(\frac{p(s)-1}{s}-\frac12+\frac s2\right)
+   \sum_{k\geq0}\gamma_k\left(\frac{s}{p(s)}\right)^k.
+\end{equation}
+Only finite truncations are used. The first factors are analytic at
+zero: the apparent singularity in $(p(s)-1)/s$ is removable. Their
+product with a finite Bessel expansion gives the stated remainder, but
+no convergence of the infinite formal $H$ is asserted. In particular,
+\begin{align}\label{eq:hexp}
+ H(s)&=1-\frac s4+\frac{7s^2}{32}-\frac{47s^3}{384}
+                      +\frac{1361s^4}{6144}+O(s^5),\notag\\
+ \frac{p(s)-1}{s}-\frac12+\frac s2
+     &=-\frac s8-\frac{3s^2}{16}-\frac{13s^3}{128}
+                      -\frac{17s^4}{256}+O(s^5).
+\end{align}
+Here and subsequently a finite-order $O$ attached to a formal series
+means the corresponding finite truncation, justified analytically by
+\eqref{eq:localG} when it is used in a contour integral.
+
+\section{Whole-circle control and contour deformation}\label{sec:arcs}
+Choose
+\[
+ s_0=\sqrt{2/n},\qquad r=1-s_0,\qquad
+ t=re^{i\theta},\quad -\pi\leq\theta\leq\pi.
+\]
+We use only sufficiently large $n$, so $0<r<1$. Because
+$q(t)=\sqrt t\,(1+(1-t)^{-1})$,
+\[
+ |q(t)|\leq\sqrt r\,(1+(1-r)^{-1})=q(r).
+\]
+The nonnegative coefficients of $I_0$ give
+$|I_0(q(t))|\leq I_0(|q(t)|)\leq I_0(q(r))$. Also
+$|1-t|\geq1-r$. Define the exact loss
+\begin{equation}\label{eq:D}
+ D(r,\theta)=\frac r{1-r}-\Rea\frac t{1-t}
+  =\frac{r(1+r)(1-\cos\theta)}
+        {(1-r)|1-re^{i\theta}|^2}.
+\end{equation}
+The remaining factor $e^{-t/2}$ costs at most $e$, and hence
+\begin{equation}\label{eq:global}
+ |G(re^{i\theta})|\leq e\,G(r)e^{-D(r,\theta)}.
+\end{equation}
+Uniformly on the whole circle,
+\begin{equation}\label{eq:Dlower}
+ D(r,\theta)\geq c\min\{\theta^2/s_0^3,1/s_0\}
+\end{equation}
+for an absolute $c>0$. Indeed $1-\cos\theta$ is bounded above and below
+by positive multiples of $\theta^2$ on $[-\pi,\pi]$, and
+$|1-re^{i\theta}|^2=s_0^2+2r(1-\cos\theta)$.
+
+Take $\theta_0=s_0^{3/2}\log n$. By \eqref{eq:global} and
+\eqref{eq:Dlower}, the coefficient integral outside
+$|\theta|\leq\theta_0$ is bounded by
+\begin{equation}\label{eq:minor}
+ O\left(r^{-n}G(r)e^{-c\log^2n}\right).
+\end{equation}
+The positive-axis instance of \eqref{eq:localG} shows
+$r^{-n}G(r)=O(e^{2\sqrt{2n}})$. Thus \eqref{eq:minor} is smaller than
+$e^{2\sqrt{2n}}n^{-3/4}$ by every fixed power of $n$. This estimates
+all other Bessel sectors without using the local Bessel expansion
+there.
+
+On the retained arc, $s=1-t$ satisfies $|s|\asymp s_0$ and
+$\arg s=O(n^{-1/4}\log n)$, so \eqref{eq:localG} is uniform.
+To see explicitly that its remainder retains the Gaussian width,
+observe the exact circle identity
+\begin{equation}\label{eq:Re2s}
+ \Rea(2/s)=2/s_0-2D(r,\theta).
+\end{equation}
+An $O(s_0^M)$ amplitude remainder contributes at most a constant times
+\[
+ s_0^Mr^{-n}e^{2/s_0}
+       \int_{-\theta_0}^{\theta_0}e^{-2D(r,\theta)}\dd\theta
+  =O\left(s_0^{M+3/2}r^{-n}e^{2/s_0}\right).
+\]
+The equality follows from \eqref{eq:Dlower} and the substitution
+$\theta=s_0^{3/2}v$. Relative to the saddle scale this is $O(s_0^M)$,
+without any extra power or logarithm of $n$.
+
+For a particularly simple coefficient calculator we deform the local
+arc into the vertical segment
+\[
+ s=s_0+iv,\qquad |v|\leq v_n:=r\sin\theta_0.
+\]
+At each end, a horizontal connector joins this segment to the original
+arc, whose real coordinate is $1-r\cos\theta_0$. Connector length is
+$O(\theta_0^2)$. The region is analytic and avoids $s=0$, and stays
+inside $|t|<1$ for large $n$.
+Define the real phase
+\[
+ E(s)=\Rea\{2/s-(n+1)\log(1-s)\}.
+\]
+At a vertical endpoint the exact difference is
+\begin{equation}\label{eq:endpoint}
+ E(s_0+iv_n)-E(s_0)
+  =-\frac{2v_n^2}{s_0(s_0^2+v_n^2)}
+    -\frac{n+1}{2}\log(1+v_n^2/r^2)
+  \leq-c\log^2n.
+\end{equation}
+On either connector,
+\[
+ \left|\frac{\partial E}{\partial\Rea s}\right|
+ \leq\frac2{|s|^2}+\frac{n+1}{|1-s|}=O(n).
+\]
+Therefore its phase varies by only
+$O(n\theta_0^2)=O(n^{-1/2}\log^2n)=o(1)$. The finite amplitude from
+\eqref{eq:localG} is bounded there. The connector integrals are again
+smaller than the saddle term by every power. This separate estimate
+is essential: the circle-only bound \eqref{eq:global} was not applied
+to an off-circle path.
+
+\section{Gaussian coefficient rule and sharp remainder}\label{sec:gaussian}
+Let $\varepsilon=n^{-1/4}$ and put
+\begin{equation}\label{eq:scale}
+ s=\sqrt2\,\varepsilon^2+i2^{1/4}\varepsilon^3u.
+\end{equation}
+The vertical endpoints satisfy $|u|\sim\sqrt2\log n$. Define
+\begin{equation}\label{eq:Psi}
+ \Psi(\varepsilon,u)=\frac2s-(\varepsilon^{-4}+1)\log(1-s)
+                  -2\sqrt2\,\varepsilon^{-2}-1+u^2.
+\end{equation}
+Expanding the rational term and logarithm shows that the negative
+powers cancel, and the constant term is zero. Thus
+$\Psi\in\varepsilon\CC[u][[\varepsilon]]$. Notice the $n+1$ in this
+expression, which comes from the coefficient kernel $(1-s)^{-n-1}$.
+
+Define the Gaussian functional $\mathcal M$ on polynomials by
+\begin{equation}\label{eq:moment}
+ \mathcal M(u^{2k})=\frac{(2k)!}{4^kk!},\qquad
+ \mathcal M(u^{2k+1})=0.
+\end{equation}
+Equivalently, $\mathcal M(Q)=\pi^{-1/2}\int_{\mathbb R}e^{-u^2}Q(u)\dd u$.
+The promised all-fixed-order rule is
+\begin{equation}\label{eq:calculator}
+ \boxed{\quad c_j=\mathcal M\left(
+ [\varepsilon^{2j}]\,H(s)e^{\Psi(\varepsilon,u)}\right).\quad}
+\end{equation}
+For a requested $j$, retain $H$ through degree $j$, expand $\Psi$
+through degree $2j$, and perform finite polynomial multiplication.
+Although $2^{1/4}$ and $i$ appear in the intermediate scaling, only
+even powers survive the Gaussian moments, giving $c_j\in\QQ(\sqrt2)$.
+One can also see this from the parity of the powers of $u$ in the
+expansion. All operations are exact algebraic operations.
+
+For an explicit implementation, if $\Psi=\sum_{m\geq1}\psi_m(u)
+\varepsilon^m$ and $e^\Psi=\sum E_m(u)\varepsilon^m$, use
+\begin{equation}\label{eq:exp-rec}
+ E_0=1,\qquad E_m=\frac1m\sum_{k=1}^m k\psi_k E_{m-k}.
+\end{equation}
+It follows by differentiating the formal exponential. Equations
+\eqref{eq:H}, \eqref{eq:Psi}, \eqref{eq:moment}, and \eqref{eq:exp-rec}
+are a finite calculator at every requested fixed order, independent
+of any numerical fitting.
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+The discarded circle arcs and horizontal connectors are already
+controlled. On the vertical segment substitute \eqref{eq:localG} and
+\eqref{eq:scale} into Cauchy's formula. The leading constant is
+\[
+ \frac{e^{-1}}{\sqrt{2\pi}}\,
+ \frac{2^{1/4}}{2\pi}\,e\,\sqrt\pi
+       =\frac1{2^{5/4}\pi}.
+\]
+The differential supplies $\varepsilon^3=n^{-3/4}$, while the
+remaining exponential is $e^{2\sqrt{2n}}e^{-u^2}e^\Psi$.
+In particular the $e^{-1}$ in the local Bessel expression cancels
+the $e$ from coefficient extraction; dropping that cancellation
+would change the leading normalization.
+
+It remains to justify finite expansion and its sharp integrated
+remainder. Choose the Bessel expansion with $M=J+1$. Its error is
+$O(|s|^{J+1})=O(\varepsilon^{2J+2})$, and integrates to that relative
+order by \eqref{eq:Re2s}, or by the analogous vertical Gaussian bound
+from \eqref{eq:endpoint}. Use the resulting finite polynomial
+$H_J(s)=\sum_{j=0}^Jh_js^j$ in the analytic factor
+$H_J(s)e^{\Psi(\varepsilon,u)}$.
+
+After cancellation in \eqref{eq:Psi}, this factor is analytic in
+$\varepsilon$ near zero whenever $|\varepsilon u|$ is sufficiently
+small. For each fixed derivative order, the derivatives of its
+rational and logarithmic factors are bounded by fixed polynomials
+in $|u|$, uniformly for $|u|\leq C\log n$ and every real intermediate
+$0\leq\varepsilon'\leq\varepsilon$. The canceled phase obeys
+\[
+ |\Psi(\varepsilon',u)|
+       \leq C\varepsilon'(1+|u|+|u|^3).
+\]
+Indeed this follows from the convergent geometric expansion of
+$(1+i2^{-1/4}\varepsilon' u)^{-1}$ and the logarithm expansion in
+$s$, after removing the finitely many Laurent and constant terms.
+Since $\varepsilon\log n\to0$, the cubic term is at most $u^2/4$
+for large $n$, while the other terms are bounded by $u^2/4+O(1)$.
+Taylor's integral remainder through degree $2J+1$, multiplied by
+$e^{-u^2}$, is therefore bounded by
+\begin{equation}\label{eq:gaussian-rem}
+ C_J\varepsilon^{2J+2}(1+|u|)^{D_J}e^{-u^2/2}
+\end{equation}
+for a fixed $D_J$. Its integral is $O_J(\varepsilon^{2J+2})$,
+with no logarithmic loss.
+
+The identity $s(-\varepsilon,-u)=s(\varepsilon,u)$, and the identical
+symmetry for $\Psi$, makes every odd $\varepsilon$ coefficient an odd
+polynomial in $u$. Its integral over the symmetric segment vanishes.
+The Gaussian tails of each retained polynomial outside the segment
+are superpolynomially small. Thus the even coefficients are precisely
+\eqref{eq:calculator}, proving \eqref{eq:main} and its remainder.
+The finite calculation through degree eight yields \eqref{eq:cs}.
+\end{proof}
+
+\subsection*{An independent algebraic check of the corrections}
+The ODE recurrence gives a useful second route to the first four
+coefficients, without proving existence of the expansion. Insert
+\[
+ b_n=C e^{2\sqrt{2n}}n^{-3/4}\sum_{j\geq0}c_jn^{-j/2}
+\]
+into \eqref{eq:recurrence}, put $z=n^{-1/2}$, and normalize each shift
+$n\mapsto n+d$ by the unshifted leading factor. Its contribution is
+\[
+ \exp\left(\frac{2\sqrt2}{z}
+                  (\sqrt{1+dz^2}-1)\right)
+ \sum_{j\geq0}c_jz^j(1+dz^2)^{-3/4-j/2}.
+\]
+Expand the recurrence after multiplying by $z^4$. Successive nonzero
+equations, with previous coefficients substituted, are
+\begin{align*}
+ 8\sqrt2c_1+17/6&=0,\\
+ \sqrt2(9216c_2-6409)/576&=0,\\
+ 24\sqrt2c_3+18114133/276480&=0,\\
+ \sqrt2(2548039680c_4-13052721749)/79626240&=0.
+\end{align*}
+They independently recover \eqref{eq:cs}. This is a finite symbolic
+identity check, not a replacement for the all-arcs and remainder proof.
+
+\section{Real inverse and discrete threshold}\label{sec:inverse}
+For a fixed $J\geq0$ define the explicit smooth comparison
+\begin{equation}\label{eq:FJ}
+ F_J(x)=\frac{\Gamma(x+1)^2e^{2\sqrt{2x}}}
+                   {2^{5/4}\pi x^{3/4}}
+                \sum_{j=0}^Jc_jx^{-j/2}.
+\end{equation}
+The correction polynomial tends to one, so $F_J$ is positive for
+all sufficiently large $x$. Differentiated Stirling expansions give
+\begin{equation}\label{eq:derivative}
+ (\log F_J)'(x)=2\log x+O_J(x^{-1/2}),
+\end{equation}
+and therefore it is eventually strictly increasing and unbounded.
+Let $x_J(y)$ denote its inverse on any such eventual interval.
+The interval's finite initial choice has no effect for large $y$.
+
+\begin{theorem}\label{thm:smooth-inverse}
+For $L=\log y$, let $W$ be the positive real branch of Lambert's
+function and put
+\begin{equation}\label{eq:N}
+ N=\frac{L}{2W(L/(2e))},\qquad q=\log N.
+\end{equation}
+For every fixed $J$, the inverse has the expansion
+\begin{equation}\label{eq:inverse}
+ x_J(y)=N-\frac{\sqrt{2N}}q-\frac18+
+             \frac{\log2}{8q}+\frac1{q^2}-\frac1{q^3}
+             +O_J\left(\frac1{\sqrt N\,q}\right).
+\end{equation}
+Moreover,
+\begin{equation}\label{eq:sequence-inverse}
+ x_J(a_n)=n+O_J\left(\frac{n^{-(J+1)/2}}{\log n}\right).
+\end{equation}
+In particular the right side of \eqref{eq:inverse}, evaluated with
+$y=a_n$, equals $n+O(1/(\sqrt{N}\log N))$.
+\end{theorem}
+\begin{proof}
+The definition of $W$ gives exactly $2N(\log N-1)=L$.
+For $f(x)=2x(\log x-1)$ we have $f'(N)=2q$ and $f''(N)=2/N$.
+Stirling's formula in \eqref{eq:FJ} gives
+\[
+ \log F_J(x)=f(x)+2\sqrt{2x}
+                  +\tfrac14\log x-\tfrac14\log2+O_J(x^{-1/2}).
+\]
+Set $\delta_0=-\sqrt{2N}/q$. Taylor expansion at $N$ shows that
+$\log F_J(N+\delta_0)-L$ equals
+\begin{equation}\label{eq:inverse-residual}
+ \frac{q-\log2}{4}-\frac2q+\frac2{q^2}+O_J(N^{-1/2}).
+\end{equation}
+The $\sqrt N$ terms cancel by the choice of $\delta_0$; the quadratic
+term of $f$ contributes $2/q^2$, and the linear term of the square
+root contributes $-2/q$.
+Dividing the displayed part of \eqref{eq:inverse-residual} by $-2q$
+gives
+\[
+ \delta_1=-\frac18+\frac{\log2}{8q}+\frac1{q^2}-\frac1{q^3}.
+\]
+This is bounded. The cross term of $f$ involving $\delta_0\delta_1$
+is $O(1/(\sqrt N q))$; its cubic remainder is
+$O(1/(\sqrt Nq^3))$. The square-root term involving $\delta_1$ is
+$O(N^{-1/2})$, and its quadratic remainder is
+$O(1/(\sqrt Nq^2))$. The logarithmic term changes by
+$O(1/(\sqrt Nq))$. These estimates prove that
+\[
+ \log F_J(N+\delta_0+\delta_1)-L=O_J(N^{-1/2}).
+\]
+The derivative in \eqref{eq:derivative} is at least $q$ near this point
+for large $N$. For completeness, the residual and this derivative
+bound place a root inside a fixed sufficiently large multiple of
+$1/(\sqrt Nq)$ of the point by the intermediate value theorem.
+Monotonicity identifies that root as $x_J(y)$, proving
+\eqref{eq:inverse}.
+
+By Theorem~\ref{thm:main},
+$\log a_n-\log F_J(n)=O_J(n^{-(J+1)/2})$.
+Bracketing near $n$ with derivative at least $\log n$, or applying
+the mean value theorem after that bracketing, proves
+\eqref{eq:sequence-inverse}. The final statement follows by combining
+this estimate with \eqref{eq:inverse}; $N\sim n$.
+\end{proof}
+
+\subsection*{Constructing further fixed inverse orders}
+All higher fixed inverse accuracy is constructive. One may use the
+known finite expansion of $\log F_J$ and Newton reversion, with the
+error divided by a derivative bounded below by $\log x$. Here is an
+explicit procedure with a quantitative stopping criterion.
+For any fixed $B>0$, Stirling's series and the finite logarithmic
+expansion of the correction polynomial give an explicit elementary
+function $T(x)$ with
+\[
+ T(x)=\log F_J(x)+O_{J,B}(x^{-B}),\quad
+ T'(x)=2\log x+O_J(x^{-1/2}),\quad T''(x)=O_J(1/x).
+\]
+Retain sufficiently many half-powers (and Stirling terms) to ensure
+that remainder. The derivative statements follow by differentiating
+the finite expression, rather than differentiating an unspecified
+$O$ term. The corresponding remainder for the original smooth
+function follows from the usual Stirling remainder and the convergent
+logarithm of the finite correction polynomial near one.
+
+Starting at $X_0=N$, iterate the entirely explicit rule
+\begin{equation}\label{eq:newton}
+ X_{k+1}=X_k-\frac{T(X_k)-L}{T'(X_k)}.
+\end{equation}
+The root of $T(x)=L$ is within $O(\sqrt N/\log N)$ of $N$ and within
+$O_{J,B}(N^{-B}/\log N)$ of $x_J(y)$. On that neighborhood the Newton
+error satisfies
+\[
+ |e_{k+1}|\leq\frac{C_J}{N\log N}|e_k|^2.
+\]
+This follows from Taylor's theorem, the bound on $T''$, and the lower
+bound on $T'$. For every fixed desired power of $N^{-1}$, a finite
+number of iterations suffices. Choosing $B$ larger than that desired
+power yields a finite expression to that accuracy. Expanding these
+finite expressions gives the customary formal inverse series.
+For an inverse valid at sequence values, increasing $J$ in
+\eqref{eq:sequence-inverse} supplies any requested fixed half-power
+accuracy divided by $\log n$. This procedure does not determine
+unspecified effective error constants or threshold locations.
+
+\begin{theorem}\label{thm:integer}
+Define the actual integer crossing by
+\[
+ I(y)=\min\{n\geq0:a_n\geq y\}.
+\]
+For every fixed $J$, there are $K_J>0$ and $Y_J$ such that for
+$y\geq Y_J$, with $x=x_J(y)$,
+\begin{equation}\label{eq:ceil}
+ \ceil{x-K_J\frac{x^{-(J+1)/2}}{\log x}}
+ \ \leq I(y)\leq\
+ \ceil{x+K_J\frac{x^{-(J+1)/2}}{\log x}}.
+\end{equation}
+Eventually the two displayed integers are equal or adjacent.
+\end{theorem}
+\begin{proof}
+Appending a zero row and column injects the $n\times n$ class into the
+$(n+1)\times(n+1)$ class. The matrix with a single one in the new
+bottom-right position is outside the image, so $a_n$ is strictly
+increasing. It is unbounded, for example because it contains every
+permutation matrix. Thus $I(y)$ exists.
+
+Put $\alpha=(J+1)/2$, $e(t)=t^{-\alpha}/\log t$, and
+$z_n=x_J(a_n)$ for sufficiently large $n$. Equation
+\eqref{eq:sequence-inverse} says $|z_n-n|\leq C e(n)$.
+For large $y$ all relevant indices are in this range, and strict
+monotonicity gives
+\[
+ I(y)=\min\{n:z_n\geq x\}.
+\]
+Since $e(n)\to0$, neighboring integer bounds first give
+$I(y)=x+O(1)$. Explicitly, for all sufficiently large indices
+$|z_n-n|<1$; hence indices below $x-1$ cannot cross, whereas any
+integer at least $x+1$ does. Uniformly for integers $m=x+O(1)$,
+$e(m)/e(x)\to1$, so $e(m)\leq2e(x)$ eventually.
+
+Let $k=I(y)$. Then $x\leq z_k\leq k+Ce(k)$, so
+$k\geq x-2Ce(x)$. Since $k$ is an integer,
+$k\geq\ceil{x-K_Je(x)}$ whenever $K_J\geq2C$.
+For the upper bound, choose $K_J>2C$ and put
+$m=\ceil{x+K_Je(x)}$. Here $m=x+O(1)$, and
+\[
+ z_m\geq m-Ce(m)\geq x+(K_J-2C)e(x)\geq x.
+\]
+Thus $k\leq m$. This proves both sides, including at exact thresholds
+$y=a_n$ and arbitrarily close to them. Finally $2K_Je(x)<1$
+eventually, so the two ceilings differ by at most one.
+\end{proof}
+
+The enclosure is an asymptotic theorem with existential constants.
+It is not a finite-input certified rounding algorithm. In general one
+cannot round an asymptotic real inverse in a universally correct way:
+$y$ can be arbitrarily close to a discrete threshold. Formula
+\eqref{eq:inverse} alone therefore gives $I(y)$ equal to its displayed
+real expression plus $O(1)$, while \eqref{eq:ceil} supplies the stronger
+rounding-safe statement when the comparison and error allowance are
+retained.
+
+\section{Exact fixtures and reproducibility}\label{sec:checks}
+The seventeen values in the inspected OEIS record, beginning at $n=0$,
+are reproduced below as finite numeric fixtures. The companion checks
+every value against the exact recurrence.
+\begin{center}\small
+\begin{tabular}{r r}
+\toprule $n$ & $a_n$\\\midrule
+0&1\\1&2\\2&16\\3&265\\4&7343\\5&304186\\6&17525812\\
+7&1336221251\\8&129980132305\\9&15686404067098\\
+10&2297230134084416\\11&400977650310256537\\
+12&82188611938415464231\\13&19536244019455339261970\\
+14&5328019975275896220786388\\
+15&1651867356348327784988233291\\
+16&577522171260292028520919811777\\\bottomrule
+\end{tabular}
+\end{center}
+The following independent counting construction does not use the ODE.
+For a fixed number $n$ of columns, let a state $(k,\ell)$ record the
+numbers of columns currently of degree zero and one. A new row has
+zero, one, or two ones. Its transitions, with multiplicities, are
+\[
+\begin{array}{c|c}
+\text{new state}&\text{multiplicity}\\\hline
+(k,\ell)&1\\
+(k-1,\ell+1)&k\\
+(k,\ell-1)&\ell\\
+(k-2,\ell+2)&\binom{k}{2}\\
+(k-1,\ell)&k\ell\\
+(k,\ell-2)&\binom{\ell}{2}
+\end{array}
+\]
+Start at $(n,0)$, repeat for $n$ rows, and sum the state weights.
+Invalid states are omitted. A more literal check retains the entire
+labeled column-degree tuple. Small binary matrices can also be
+exhaustively checked by their $n^2$-bit masks. These constructions
+supply checks with genuinely different state representations.
+
+The source archive contains the LaTeX source, deterministic PDF and
+ZIP builders, a manifest, finite numeric fixtures, and bounded
+companion programs. The core exact arithmetic uses standard-library
+Python integers and rational numbers; the finite symbolic
+coefficient calculations also use only the standard library. The companion's usage guide specifies implemented input bounds,
+commands, and precise test coverage. The code uses explicit exceptions
+and test assertions that remain active with Python optimization.
+No network access is needed to reproduce the packaged computations.
+
+Finite exact agreement verifies implementations and identities, not
+the asymptotic theorem. Conversely, the proof gives no effective
+finite-$n$ error constant. Any decimal diagnostic in the companion is
+uncertified floating-point evidence and must not be read as an interval
+bound or proof. The release README records build requirements and
+replay commands; the verification receipt reports the actual completed
+checks.
+
+\section{Questions for further research}\label{sec:future}
+The exact bivariate function \eqref{eq:egf} suggests several concrete
+extensions that are not proved here.
+
+\paragraph{Rectangular aspect ratios.}
+For $m\neq n$, the coefficient $m!n![x^my^n]F(x,y)$ invites a bivariate saddle analysis, or a uniform analysis of
+Bessel functions whose order grows with the dimensions. A useful first target is a uniform leading
+formula when $m/n$ stays in a compact subinterval of $(0,\infty)$,
+followed by the transition as the aspect ratio approaches one on a
+shrinking scale. The balanced Bessel diagonal alone does not supply
+that uniformity.
+
+\paragraph{Marked components and distributions.}
+Separate variables can mark isolated vertices, balanced and unbalanced
+paths, or cycles in the connected-component exponent. Differentiating
+an appropriate marked coefficient expansion could yield means,
+covariances, and limit laws for a uniformly chosen matrix. Such claims
+require complex-uniform marked estimates and control of the
+normalization; the unmarked expansion does not by itself prove them.
+
+\paragraph{Effective errors and onset.}
+Explicit constants in the Bessel remainder, arc estimates, and Taylor
+majorant could turn the eventual two-ceiling theorem into a certified
+finite-input enclosure. This would require a quantitative onset and
+verified error allowances, rather than fitting the constants from
+finite exact values.
+
+\paragraph{Exponentially small terms.}
+The present minor-arc bound is sufficient for every fixed algebraic
+order, but does not classify secondary saddles or Stokes effects of
+the Bessel factor. Determining late coefficient growth, optimal
+truncation, and exponentially small contributions is a separate
+problem. No complete transseries is supplied by the current proof.
+
+\section{Literature coverage and claim boundaries}\label{sec:literature}
+The inspected A197458 record defines the same square binary class and
+provides a multivariate recurrence and Java implementation
+\cite{oeis}. Its revision is number 25, dated 8 April 2020; the
+source retrieval on 3 October 2026 found no asymptotic formula in that
+record. Mathar's seven-page note gives recurrences, numerical tables,
+and a Maple implementation; its Table~2 contains the relevant
+rectangular family \cite{mathar}. The linked original discussion gives
+the recurrence rather than an asymptotic \cite{mse}.
+
+Closely related component EGFs are older. OEIS A062154 records a
+bivariate EGF for matrices over $\{0,1,2\}$ with line sums one or two,
+and it and the square companion A062156 cite Goulden and Jackson,
+\emph{Combinatorial Enumeration}, Problem~3.4.15 \cite{companion}.
+The printed exercise and its answer were not directly inspected.
+Their exact scope remains an explicit source gap; the indirect
+citation must not be converted into a claim about an unread theorem.
+The exactly-two binary family A001499 is also classical, and the
+retrieved OEIS entry records a leading equivalent and older
+references \cite{regular}. This nearby class is not A197458, but it
+precludes any suggestion that degree-two bipartite enumeration itself
+is new.
+
+Greenhill, McKay, and Wang's uniform asymptotics for prescribed sparse
+row and column degree sequences include bounded degrees at most two
+\cite{gmw}. Their theorem does not explicitly perform the sum over all
+vectors defining $a_n$, but it provides classical machinery from
+which a leading specialization can be approached. Caizergues and
+de Panafieu give a general exact bounded-degree bipartite generating
+function, allowing different degree weights on the two shores
+\cite{cp}; this includes the finite degree set of the present class.
+The retrieved paper does not state the scalar asymptotic proved here.
+These facts warrant crediting general enumeration methods rather than
+claiming a new enumeration principle.
+
+The present work supplies an elementary explicit specialization,
+a sharp all-fixed-orders calculation, four displayed corrections,
+and an inverse with a safe discrete interpretation. A bounded search
+of retrieved sources did not locate the particular scalar expansion;
+that is not a historical-priority certificate. Older degree-two
+terminology and the unread textbook exercise leave uncertainty. No
+claim of first discovery is needed for any mathematical statement in
+this report.
+
+The primary analytic scope is also deliberately narrow: all orders
+are fixed before taking the limit; no complete beyond-all-orders
+transseries, convergent coefficient expansion, effective global
+remainder constant, or universally correct rounded inverse is
+asserted. The theorem and exact checks remain valid independently of
+whether the scalar equivalent appears elsewhere in the literature.
+
+\begin{thebibliography}{9}
+\bibitem{oeis}
+OEIS Foundation Inc., A197458, \emph{Number of $n\times n$ binary
+matrices with at most two ones in each row and column}.
+\url{https://oeis.org/A197458}.
+Inspected record revision 25, 8 April 2020; retrieved 3 October 2026.
+Official data record:
+\url{https://github.com/oeis/oeisdata/blob/main/seq/A197/A197458.seq}.
+
+\bibitem{mathar}
+R. J. Mathar, \emph{The number of binary $n\times m$ matrices with at
+most $k$ ones in each row or column}, 23 November 2014, seven pages.
+\url{https://oeis.org/A247158/a247158.pdf}.
+
+\bibitem{mse}
+\emph{Filling out an $n\times n$ square grid with zeros and ones},
+Math Stack Exchange question 72600 (2011), answer by joriki (2012).
+\url{https://math.stackexchange.com/questions/72600}.
+Original exposition of the recurrence; not a refereed publication.
+
+\bibitem{companion}
+OEIS Foundation Inc., A062154 and A062156.
+\url{https://oeis.org/A062154}; \url{https://oeis.org/A062156}.
+These entries cite I. P. Goulden and D. M. Jackson,
+\emph{Combinatorial Enumeration}, Wiley, 1983, Problem 3.4.15.
+The book exercise was not directly inspected.
+
+\bibitem{regular}
+OEIS Foundation Inc., A001499, the exactly-two line-sum family.
+\url{https://oeis.org/A001499}.
+Historical attributions here are via the entry; the cited original
+Knuth solution was not directly inspected.
+
+\bibitem{gmw}
+C. Greenhill, B. D. McKay, and X. Wang,
+\emph{Asymptotic enumeration of sparse 0--1 matrices with irregular
+row and column sums}, 2006, Theorem 1.3.
+Author-hosted text: \url{https://cs.anu.edu.au/~bdm/papers/irregular.pdf}.
+
+\bibitem{cp}
+E. Caizergues and \'E. de Panafieu,
+\emph{Exact enumeration of graphs and bipartite graphs with degree
+constraints}, EuroComb 2023, pp.~254--262, Theorem 2.
+\url{https://doi.org/10.5817/CZ.MUNI.EUROCOMB23-035}.
+Publisher text: \url{https://journals.muni.cz/eurocomb/article/view/35569}.
+\end{thebibliography}
+\end{document}

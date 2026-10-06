@@ -1,0 +1,12 @@
+#include <algorithm>
+#include <cassert>
+#include <fstream>
+#include <iostream>
+#include <map>
+#include <numeric>
+#include <sstream>
+#include <vector>
+using namespace std;
+int permanent(vector<vector<int>> a){int n=a.size(),r=0;vector<int>p(n);iota(p.begin(),p.end(),0);do{int x=1;for(int i=0;i<n;i++)x*=a[i][p[i]];r+=x;}while(next_permutation(p.begin(),p.end()));return r;}
+string signature(const vector<vector<int>>&a){int n=a.size();vector<int>reach(n);for(int i=0;i<n;i++)for(int j=0;j<n;j++)if(a[i][j])reach[i]|=1<<j;for(int t=0;t<n;t++)for(int i=0;i<n;i++)if(reach[i]&(1<<t))reach[i]|=reach[t];vector<pair<int,int>>marks;int visited=0;for(int i=0;i<n;i++)if(!(visited&(1<<i))){vector<int>vs;for(int j=0;j<n;j++)if((reach[i]&(1<<j))&&(reach[j]&(1<<i)))vs.push_back(j);for(int j:vs)visited|=1<<j;if(vs.size()>1){vector<vector<int>>b(vs.size(),vector<int>(vs.size()));for(int u=0;u<vs.size();u++)for(int v=0;v<vs.size();v++)b[u][v]=a[vs[u]][vs[v]];marks.push_back({permanent(b),(int)vs.size()});}}sort(marks.begin(),marks.end());ostringstream out;for(auto [k,m]:marks)out<<k<<":"<<m<<";";return out.str();}
+int main(){ofstream out("audit_block_counts.tsv");out<<"n\tk\tmarks\tcount\n";long long comparisons=0;for(int n=1;n<=5;n++){int pos[6][6],q=0;for(int i=0;i<n;i++)for(int j=0;j<n;j++)pos[i][j]=i==j?-1:q++;vector<int>a(1u<<q);vector<int>p(n);iota(p.begin(),p.end(),0);do{unsigned mask=0;for(int i=0;i<n;i++)if(pos[i][p[i]]>=0)mask|=1<<pos[i][p[i]];a[mask]++;}while(next_permutation(p.begin(),p.end()));for(int b=0;b<q;b++)for(unsigned s=0;s<a.size();s++)if(s&(1<<b))a[s]+=a[s^(1<<b)];map<pair<int,string>,long long>counts;for(unsigned mask=0;mask<a.size();mask++){if(n==5&&a[mask]>4)continue;vector<vector<int>>mat(n,vector<int>(n));for(int i=0;i<n;i++)for(int j=0;j<n;j++)mat[i][j]=i==j||mask&(1<<pos[i][j]);string sig=signature(mat);if(a[mask]<=4)counts[{a[mask],sig}]++;if(n<=4){iota(p.begin(),p.end(),0);do{bool matching=true;for(int i=0;i<n;i++)if(!mat[i][p[i]])matching=false;if(!matching)continue;vector<vector<int>>b(n,vector<int>(n));for(int i=0;i<n;i++)for(int j=0;j<n;j++)b[i][j]=mat[i][p[j]];assert(signature(b)==sig);comparisons++;}while(next_permutation(p.begin(),p.end()));}}for(auto [key,c]:counts)out<<n<<'\t'<<key.first<<'\t'<<key.second<<'\t'<<c<<'\n';}cerr<<"PASS all "<<comparisons<<" matching normalizations on all diagonal-one graphs with n<=4 preserve block signatures\n";}

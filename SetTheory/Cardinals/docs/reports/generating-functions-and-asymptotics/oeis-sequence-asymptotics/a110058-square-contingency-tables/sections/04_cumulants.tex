@@ -1,0 +1,115 @@
+\section{The analytic cumulant reduction}\label{sec:analytic}
+\subsection{Keep the exact remainder on a bounded domain}
+Take the analytic logarithm equal to zero at the origin and write
+\begin{equation}\label{eq:h}
+h(z)=-\ii z-\log(2-e^{\ii z})+z^2=\sum_{d\geq3}h_dz^d,
+\qquad R(x)=\sum_{i,j}h(x_i+x_{n+j}).
+\end{equation}
+The closest zero of $2-e^{\ii z}$ is $-\ii\log2$, so $h$ is analytic for $|z|<\log2$. Cauchy estimates on a smaller fixed disk give constants independent of $n$ such that, on $|z|\leq C\rho$,
+\begin{equation}\label{eq:derivativebounds}
+h'(z)=O(\rho^2),\quad h''(z)=O(\rho),\quad
+|h^{(k)}(z)|\leq k!C_0^k\quad(k\geq3).
+\end{equation}
+The first coefficients are
+\begin{equation}\label{eq:hsix}
+h_3=-\ii,\quad h_4=\frac{13}{12},\quad h_5=\frac{5\ii}{4},\quad
+h_6=-\frac{541}{360},\quad h_7=-\frac{223\ii}{120},\quad
+h_8=\frac{47293}{20160}.
+\end{equation}
+More generally, if $\genfrac{\{}{\}}{0pt}{}{a}{b}$ is a Stirling number of the second kind,
+\begin{equation}\label{eq:stirling}
+h_d=\frac{2\ii^d}{d!}\sum_{j=1}^{d-1}\genfrac{\{}{\}}{0pt}{}{d-1}{j}j!,\qquad d\geq3.
+\end{equation}
+Indeed the $d$th geometric cumulant is $\sum_{k\geq1}k^{d-1}2^{-k}$, and the falling-factorial expansion of $k^{d-1}$ evaluates that sum as twice the finite Stirling sum. In particular all $h_d/\ii^d$ are rational.
+
+Let $X$ have $2n$ independent $N(0,1/(2n))$ coordinates, and let $\widehat X$ be $X$ conditioned on $\mathcal C_n$. The conditioning event is a product of intervals, so the coordinates remain independent. With $f=R\circ T$,
+\begin{equation}\label{eq:boundedexpectation}
+\int_{\mathcal B_n}\mathcal F(x)e^{-(v\cdot x)^2/2}\,\dd x
+ =Z_n\PP(X\in\mathcal C_n)\E e^{f(\widehat X)},
+\end{equation}
+where
+\begin{equation}\label{eq:tailprob}
+\PP(X\notin\mathcal C_n)\leq O(n)e^{-n^{2\eps}}
+ =O(e^{-c n^{2\eps}}).
+\end{equation}
+All exponential expectations in this proof use this bounded product domain. Full Gaussians will appear only in fixed polynomial moments and cumulants.
+
+\subsection{Control of every mixed-difference order}
+For a cell $e=(i,j)$ write its whitened pair sum as $a_e\cdot y=(Ty)_i+(Ty)_{n+j}$. Its coefficient vector has two entries $1+\gamma/n$ and $2n-2$ entries $\gamma/n$. With $\beta=-\gamma=1-1/\sqrt2$,
+\begin{equation}\label{eq:rowsumbounds}
+\sum_{q=1}^{2n}|a_{e,q}|\leq2+2\beta,\qquad
+\sum_e|a_{e,q}|\leq(1+\beta)n.
+\end{equation}
+For a coordinate set $V$ of size $k$, repeated integration of the mixed derivative along the coordinate intervals gives
+\[
+\Delta_V(f)\leq(2\rho)^k\sum_e
+ \sup_{y\in\mathcal C_n}|h^{(k)}(a_e\cdot y)|
+ \prod_{q\in V}|a_{e,q}|.
+\]
+For fixed $q$, an elementary symmetric-sum bound yields
+\[
+\sum_{\substack{|V|=k\\q\in V}}\prod_{j\in V}|a_{e,j}|
+ \leq\frac{|a_{e,q}|}{(k-1)!}\left(\sum_j|a_{e,j}|\right)^{k-1}.
+\]
+Combining this inequality, \eqref{eq:derivativebounds} and \eqref{eq:rowsumbounds}, uniformly for $k\leq2n$, proves
+\begin{equation}\label{eq:Dk}
+D_1(f),D_2(f)=O(n\rho^3),\qquad
+D_k(f)\leq nk(C\rho)^k\quad(k\geq3).
+\end{equation}
+These bounds include orders above the selected cumulant truncation.
+
+Fix an integer $p\geq1$, and choose
+\begin{equation}\label{eq:cutofforders}
+m=4(p+1),\qquad L=11(p+1),\qquad\alpha=n^{-1/2+4\eps}.
+\end{equation}
+For each fixed $t\leq m$, the left side of \eqref{eq:isaevhyp} is $O_m(n\rho^3)$. For example, for $t\geq3$ put $z=C\rho e^{3\alpha/2}$ and use
+\[
+\sum_{k\geq t}k\binom{k-1}{t-1}z^k
+ =\frac{tz^t}{(1-z)^{t+1}}.
+\]
+The first two terms for $t=1,2$ are controlled by \eqref{eq:Dk}, and the remaining series is again $O_m(n\rho^3)$. As
+$\alpha/(n\rho^3)=n^\eps$, all the hypotheses of Proposition~\ref{prop:complex} hold for sufficiently large $n$, including $\alpha\leq1/100$. The function is bounded, measurable and complex-valued on the required product domain.
+
+The dimension-adjusted error is
+\[
+2n\alpha^{m+1}=O\left(n^{1-(1/2-4\eps)(4p+5)}\right)=O(n^{-p}).
+\]
+At $\eps=1/100$ the exponent is $-1.84p-1.30$, leaving ample slack. Thus
+\begin{equation}\label{eq:finitecumulant}
+\E e^{f(\widehat X)}
+ =(1+O(n^{-p}))\exp\left(\sum_{r=1}^m\frac{\kappa_r(f(\widehat X))}{r!}\right).
+\end{equation}
+This is where the order-one cubic phase is controlled. Expanding that phase as if it were a uniformly small perturbation would not justify \eqref{eq:finitecumulant}.
+
+\subsection{Replace only the finite cumulants by polynomials}
+Let
+\[
+R_L(x)=\sum_{d=3}^L h_d\sum_{i,j}(x_i+x_{n+j})^d.
+\]
+On $\mathcal B_n$,
+\begin{equation}\label{eq:RLbounds}
+|R|+|R_L|=O(n^2\rho^3),\qquad |R-R_L|=O(n^2\rho^{L+1}).
+\end{equation}
+The moment-partition formula for a cumulant, with one factor subtracted at a time, bounds the difference of each order-$r$ cumulant by
+\[
+C_r\|R-R_L\|_\infty
+ (1+\|R\|_\infty+\|R_L\|_\infty)^{r-1}.
+\]
+For $r\leq m$ the exponent of $n$ in this bound is at most
+\begin{equation}\label{eq:replacementexponent}
+1+\frac m2-\frac L2+\eps(L+3m-2)
+ \leq-\frac{327}{100}p-\frac{229}{100}<-p.
+\end{equation}
+Hence replacing $R$ by $R_L$ inside the finite cumulant sum costs $O(n^{-p})$.
+
+For fixed $r,L$, the polynomial $R_L(TX)^r$ has fixed degree; the number of its terms and the magnitude of its coefficients are bounded by powers of $n$. Fixed Gaussian moments are likewise polynomially bounded. By Cauchy--Schwarz and \eqref{eq:tailprob}, conditioning on $\mathcal C_n$ changes any required moment by at most a polynomial in $n$ times $e^{-c n^{2\eps}}$. Applying the moment-partition formula again gives
+\begin{equation}\label{eq:fullgaussreplace}
+\kappa_r(R_L(T\widehat X))=\kappa_r(R_L(TX))+O(n^{-p}),\qquad r\leq m.
+\end{equation}
+No unbounded exponential of $R_L$ has been introduced in this step.
+
+Set $Y=TX$ and $H_{p,n}=\sum_{r=1}^m\kappa_r(R_L(Y))/r!$. The diagram bound in the next section proves that $H_{p,n}$ is real and $O(1)$. Therefore $e^{H_{p,n}}$ is bounded above and away from zero. Combining \eqref{eq:transfer}, \eqref{eq:prefactor}, \eqref{eq:boundedexpectation}, and \eqref{eq:finitecumulant}--\eqref{eq:fullgaussreplace} gives
+\begin{equation}\label{eq:analyticreduction}
+a_n=G_n\exp(H_{p,n})(1+O(n^{-p})).
+\end{equation}
+The exponentially small absolute localization error is now a relative negligible error. Positivity and the real logarithm in subsequent formulas are justified by the real bounded exponent and a factor tending to $1$; no nonvanishing assumption has been added to Isaev's theorem.

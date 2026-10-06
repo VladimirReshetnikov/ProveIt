@@ -1,0 +1,77 @@
+\section{The exact saddle and the product model}\label{sec:saddle}
+For $r\in(0,1)$, let $X_r$ be $\Bin(M-1,r)$ conditioned to be at most $k$, and define
+\[
+ \mu_M(r)=\E X_r,\qquad
+ p(r)=\frac{r^2}{r^2+(1-r)^2}.
+\]
+We use one saddle for all $f$, chosen by the exact identity
+\begin{equation}\label{eq:exactsaddle}
+ \mu_M(r_M)=(M-1)p(r_M),\qquad
+ r_M=\frac12-\frac{L_M}{2\sqrt M},\quad 0\le L_M\le1.
+\end{equation}
+
+\begin{lemma}\label{lem:saddle}
+For sufficiently large $M$, a root in \eqref{eq:exactsaddle} exists, uniformly for bounded offsets $k-M/2$. Every such root has $L_M\to\ell$. Moreover,
+\begin{equation}\label{eq:saddlelimits}
+ S_M\to\Phi(\ell),\qquad
+ \frac{\Var(X_{r_M})}{M}\to v,\qquad
+ \frac{\Delta_M}{\sqrt M}\to\frac\ell2,
+\end{equation}
+where $\Delta_M=(M-1)r_M-\mu_M(r_M)$.
+\end{lemma}
+\begin{proof}
+Write $b=M-1$ and $r=1/2-L/(2\sqrt M)$ with $0\le L\le1$. The binomial central limit theorem is uniform on this compact range of parameters, and its centered moments are uniformly integrable by the usual binomial exponential-moment bound. Its standardized upper endpoint is
+\[
+ \frac{k-br}{\sqrt{br(1-r)}}=L+O(M^{-1/2}).
+\]
+Writing $\lambda(L)=\phi(L)/\Phi(L)$, the elementary truncated normal identities are
+\[
+ \E[Z\mid Z\le L]=-\lambda(L),\qquad
+ \Var(Z\mid Z\le L)=1-L\lambda(L)-\lambda(L)^2,
+\]
+obtained by integration using $\phi'(z)=-z\phi(z)$. Hence
+\[
+ \mu_M(r)=br-\tfrac12\sqrt M\lambda(L)+o(\sqrt M),
+ \qquad p(r)=\tfrac12-LM^{-1/2}+O(M^{-3/2}),
+\]
+uniformly. Subtraction gives
+\begin{equation}\label{eq:rootlimit}
+ \frac{\mu_M(r)-(M-1)p(r)}{\sqrt M}
+ =\frac12\{L-\lambda(L)\}+o(1).
+\end{equation}
+The limiting function is negative at $0$, positive at $1$, and has its unique zero at $\ell$, by \eqref{eq:ell}. Continuity gives a finite-$M$ root, and compactness plus uniform convergence forces every such root to converge to $\ell$. Finite-$M$ uniqueness is unnecessary.
+
+The binomial cap probability tends to $\Phi(\ell)$. The truncated variance identity, with $\lambda(\ell)=\ell$, gives the variance limit $v=(1-2\ell^2)/4$. Finally the exact saddle yields
+\[
+ \Delta_M=(M-1)(r_M-p(r_M))=\tfrac12\ell\sqrt M+o(\sqrt M).
+\]
+All assertions are uniform over bounded offsets by the same compactness argument.
+\end{proof}
+
+Set $r=r_M$, $p_0=p(r_M)$, and $m_0=Hp_0$. Under a product law $R_f$, take $M-f$ independent copies of $X_r$ and $f$ independent ordinary $\Bin(M-1,r)$ variables. These are degree coordinates for a comparison calculation, not the degrees of an independent-edge graph. Define
+\begin{equation}\label{eq:Yandshift}
+ Y_M=\frac{\sum_iX_i-2m_0}{M},\qquad
+ a_M=\E_{R_f}Y_M=\frac{f\Delta_M}{M}.
+\end{equation}
+The saddle identity ensures that $a_M=0$ for $f=0$.
+
+\begin{lemma}\label{lem:productlimits}
+Along any sequence with bounded $k-M/2$ and $f/\sqrt M\to\tau\in[0,\infty)$,
+\begin{equation}\label{eq:productlimits}
+ Y_M\ \Longrightarrow\ \Normal(a,v),\qquad
+ a=\tau\ell/2,\qquad
+ \gamma(\boldsymbol X)\ \longrightarrow\ v\quad\text{in probability},
+\end{equation}
+and $R_f(\cC)\to1$. The means $a_M$ are uniformly bounded for $f\le C\sqrt M$, and the exponential-square moment bound \eqref{eq:shiftUI} applies to $Y_M$ uniformly in that window.
+\end{lemma}
+\begin{proof}
+The total variance divided by $M^2$ tends to $v$: the $M-f$ capped coordinates each contribute $vM+o(M)$, while replacing $f=o(M)$ of them changes the normalized variance by $O(f/M)$. The third absolute centered moments are $O(M^{3/2})$ uniformly by Lemma~\ref{lem:subgaussian}, so their sum divided by the total variance to the power $3/2$ is $O(M^{-1/2})$. The triangular-array Lyapunov theorem therefore gives a centered normal limit of variance $v$. Equation~\eqref{eq:saddlelimits} gives $a_M\to a$.
+
+For the sample second moment, center each coordinate at its own mean. Its fourth moment is $O(M^2)$, so the variance of $M^{-2}\sum_i(X_i-\E X_i)^2$ is $O(M^{-1})$. Its mean tends to $v$. The difference between the two group means is $\Delta_M=O(\sqrt M)$, whose additional squared contribution divided by $M^2$ is $O(f\Delta_M^2/M^2)=O(f/M)=o(1)$. Cross terms vanish by Cauchy--Schwarz. Subtracting the square of the sample mean error changes the normalized second moment by $o_{\PP}(1)$, and replacing $M^2$ by $(M-1)^2$ has no effect. This proves the assertion about $\gamma$.
+
+Every coordinate's mean differs from $M/2$ by $O(\sqrt M)$. The single-coordinate bound \eqref{eq:mgf} therefore gives
+\[
+ R_f(\cC^c)\le2M\exp\{-cM^{4\delta}\}=o(1)
+\]
+for large $M$. The square-moment statement is Corollary~\ref{cor:squareUI}, since $Y_M=Z_M+a_M$ with $a_M$ bounded.
+\end{proof}

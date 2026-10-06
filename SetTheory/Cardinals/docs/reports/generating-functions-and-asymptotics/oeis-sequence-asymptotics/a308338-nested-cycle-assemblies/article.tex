@@ -1,0 +1,908 @@
+\newcommand{\DoNotLoadEpstopdf}{}
+\pdfinfoomitdate=1
+\pdftrailerid{}
+\pdfsuppressptexinfo=-1
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage[margin=1in]{geometry}
+\usepackage{booktabs,array,microtype}
+\usepackage[hidelinks]{hyperref}
+\hypersetup{pdftitle={Report 167 Asymptotics of assemblies of nested cycles},pdfauthor={},pdfsubject={Fixed order marked saddle expansion for A308338 and A392471}}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{1.2em}
+\setlength{\emergencystretch}{3em}
+\setcounter{tocdepth}{1}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\CC}{\mathbb C}
+\newcommand{\NN}{\mathbb N}
+\newcommand{\EE}{\mathbb E}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\Li}{\operatorname{Li}}
+\newcommand{\dist}{\operatorname{dist}}
+\title{Asymptotics of assemblies of nested cycles\\\large Exact counts and fixed order marked saddle expansions}
+\author{Report 167}
+\date{3 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+Let $P(z)=\prod_{m\geq1}(1+z^m/m)$ and
+$F(z,u)=\exp\{u(P(z)-1)\}$. The labeled count
+$a_n=n![z^n]F(z,1)$ is OEIS A308338, and the coefficient of $u^k$ counts
+objects with $k$ nonempty nested-cycle components, giving A392471.
+With $c=e^{-\gamma}$, we prove
+\[
+ a_n\sim \frac{e^{c(1/2-\log2)-1}c^{1/4-c/2}}{2\sqrt\pi}
+             n!n^{c/2-3/4}e^{2\sqrt{cn}}.
+\]
+More generally, every fixed order has a complex-uniform expansion in
+$n^{-1/2}$ with polynomial coefficients in $\log n$; we give the first
+two corrections explicitly. A whole-circle estimate controls all
+secondary arcs, and a Gaussian Taylor lemma gives the stated sharp
+logarithmic remainder without crossing a natural boundary.
+
+For the component count, holomorphic normalization justifies
+differentiation and gives explicit logarithmic and constant corrections
+to the mean and variance. In particular the mean divided by $\sqrt n$
+tends to $e^{-\gamma/2}$. We recover the established Gaussian regime
+with variance equivalent $\sqrt{cn}/2$ and prove a rounding-safe
+asymptotic inverse for the integer count sequence.
+
+The component asymptotics and generic expansive-assembly limit laws
+are prior results. The contribution developed here is the explicit
+sequence-specific marked expansion and its refinements. The companion
+contains bounded exact integer and symbolic checks. No worldwide
+priority claim, complete beyond-all-orders transseries, or certified
+numerical asymptotic error bound is asserted.
+\end{abstract}
+\newpage
+\tableofcontents
+\medskip
+\noindent\textbf{Scope and reading guide.}
+Sections~\ref{sec:exact}--\ref{sec:main} specify the object and results.
+Sections~\ref{sec:sector}--\ref{sec:gaussian} prove the fixed-order
+coefficient theorem. Sections~\ref{sec:corrections}--\ref{sec:inverse}
+give corrections, probability laws, and inversion.
+Section~\ref{sec:computation} separates exact verification from numerical
+diagnostics. Section~\ref{sec:sources} records source coverage and
+limits. The report is self-contained after the explicitly credited
+component coefficient estimate~\eqref{eq:prior}.
+\newpage
+
+\section{Exact objects and established input}\label{sec:exact}
+A labeled cycle on an $m$-element set has $(m-1)!$ possible cyclic
+orders and exponential generating function $z^m/m$. Choosing at most
+one cycle of each length therefore gives
+\begin{equation}\label{eq:P}
+ P(z)=\prod_{m\geq1}\left(1+\frac{z^m}{m}\right)
+     =\sum_{m\geq0}B_m\frac{z^m}{m!},\qquad p_m=\frac{B_m}{m!}.
+\end{equation}
+The integers $B_m$ form A007838. A nonempty collection of cycles of
+distinct lengths has a unique decreasing-length nesting order. It is
+one nested component in Riedel's interpretation; there is no extra
+ordering or geometric-embedding choice. A set of such nonempty labeled
+components has marked exponential generating function
+\begin{equation}\label{eq:F}
+ F(z,u)=\exp\{u(P(z)-1)\},\qquad f_n(u)=[z^n]F(z,u).
+\end{equation}
+Thus
+\begin{equation}\label{eq:counts}
+ T(n,k)=\frac{n!}{k!}[z^n](P(z)-1)^k,
+ \qquad a_n=n!f_n(1)=\sum_{k=0}^nT(n,k).
+\end{equation}
+The $a_n$ are A308338, with $a_0=1$, and the published triangle A392471
+starts at $n=1$, $1\leq k\leq n$. We use the natural empty extension
+$T(0,0)=1$ and $T(n,0)=0$ for $n>0$ only for recurrences. In particular
+$T(n,1)=B_n$ for $n\geq1$.
+
+Ilya Gutkovskiy entered A308338 and its defining EGF on 20 May 2019
+\cite{oeis308338}. Riedel's January 2026 note supplies the nested-cycle
+interpretation, the marked triangle, and recurrences
+\cite{riedel,oeis392471}. The component EGF is much older. The prior
+estimate we use is
+\begin{equation}\label{eq:prior}
+ p_m=c+\frac{c}{m}+O\!\left(\frac{\log m}{m^2}\right),
+ \qquad c=e^{-\gamma},\qquad m\longrightarrow\infty,
+\end{equation}
+where $\gamma$ is Euler's constant. Flajolet, Fusy, Gourdon, Panario,
+and Pouyanne \cite[Section 3, equation (22)]{hybrid} attribute this
+estimate to Greene and Knuth. Their Proposition 1 gives the full
+component coefficient expansion, including periodic terms from roots
+of unity. We use~\eqref{eq:prior} as a credited theorem; their theorem
+for $P$ is not itself a coefficient theorem for the outer exponential
+$F$.
+
+For a component spectrum $(j_1,\ldots,j_n)$ with $\sum m j_m=n$, the
+number of objects is
+\[
+ n!\prod_{m=1}^n\frac{p_m^{j_m}}{j_m!}.
+\]
+After division by $a_n$, this is the Gibbs assembly law with weights
+$p_m\sim c$, so its expansive exponent is $1$. The weights are $p_m$,
+not $B_m$ or $p_m/m$. The square-root component law and normal
+fluctuations lie within established expansive-assembly theory.
+Erlihson and Granovsky \cite[Corollary 4.5]{eg2008} explicitly attribute
+the total-component CLT to their 2004 work~\cite{eg2004}. We derive the
+precise normalization and lower-order terms directly below.
+
+\section{The marked coefficient theorem}\label{sec:main}
+Fix a sufficiently small open complex disc about $u=1$. Choose
+$\log(cu)$ and $\sqrt{cu}$ to be real on positive real $u$, and set
+\begin{equation}\label{eq:C}
+ A=\frac12-\log2,\qquad
+ C(u)=\frac{e^{u(cA-1)}(cu)^{1/4-cu/2}}{2\sqrt\pi}.
+\end{equation}
+All statements about fixed order mean that the order is fixed as
+$n\to\infty$; constants need not be uniform when that order grows.
+
+\begin{theorem}[Uniform fixed-order expansion]\label{thm:main}
+For every fixed integer $J\geq0$ there are polynomials $R_j(L;u)$ of
+degree at most $2j$ in $L$, with coefficients holomorphic near $1$, such
+that
+\begin{align}\label{eq:main}
+ f_n(u)&=C(u)n^{cu/2-3/4}e^{2\sqrt{cun}}
+ \left\{1+\sum_{j=1}^J n^{-j/2}R_j(\log n;u)
+       +E_{n,J}(u)\right\},\\
+ E_{n,J}(u)&=O\!\left(n^{-(J+1)/2}(1+\log n)^{2J+2}\right).
+ \notag
+\end{align}
+The estimate is uniform on every sufficiently small fixed closed disc
+about $1$. The exact normalized residual $E_{n,J}$ is holomorphic on
+an open disc containing any smaller disc on which derivatives are
+taken, and each fixed derivative obeys the same order bound there.
+\end{theorem}
+
+Taking $u=1$, $J=0$ gives the equivalent
+\begin{equation}\label{eq:equivalent}
+ a_n\sim C n!n^{c/2-3/4}e^{2\sqrt{cn}},\qquad
+ C=\frac{e^{c(1/2-\log2)-1}c^{1/4-c/2}}{2\sqrt\pi}.
+\end{equation}
+For orientation only,
+$C\approx0.0947779253874791584250013230745944160$; this is an
+uncertified floating evaluation of the exact expression. The logarithmic
+term of $P$ supplies the power $n^{c/2}$ in~\eqref{eq:equivalent}.
+Discarding that term would give an incorrect equivalent.
+
+The theorem is an all-fixed-orders algebraic expansion with logarithmic
+polynomials. It makes no claim about convergence, optimal truncation,
+Stokes phenomena, or a complete description of terms beyond all orders.
+
+\section{Local component expansion in a right half plane}\label{sec:sector}
+We first prove the needed local expansion without continuing $P$
+through its natural boundary. For $\Re t>0$, isolating the factor $m=1$
+gives the absolutely convergent identity
+\begin{align}\label{eq:polylog}
+ \log P(e^{-t})={}&\log(1+e^{-t})+\Li_1(e^{-t})-e^{-t}\\
+ &+\sum_{k\geq2}\frac{(-1)^{k+1}}{k}
+       \{\Li_k(e^{-kt})-e^{-kt}\}.\notag
+\end{align}
+Fix a desired order $H$ and choose an integer $K>H+2$. The tail $k>K$
+can be written as a double sum over $k>K$, $m\geq2$. For
+$0\leq h\leq H+1$, its $h$th derivative in $t$ is bounded absolutely
+and uniformly on the closed right half plane by
+\begin{equation}\label{eq:tail}
+ \sum_{k>K}k^{h-1}\sum_{m\geq2}m^{h-k}<\infty.
+\end{equation}
+Indeed $k-h>1$ and the inner sum decreases exponentially as $k$ grows.
+Termwise differentiation up to that order is consequently valid. The
+integral remainder along the segment from $0$ to $t$ gives a Taylor
+polynomial for the tail with error $O(|t|^{H+1})$, uniformly in the
+closed right half plane near $0$.
+
+Each retained polylogarithm has the classical finite-order expansion
+\begin{equation}\label{eq:li}
+ \Li_k(e^{-x})=
+ \frac{(-x)^{k-1}}{(k-1)!}(H_{k-1}-\log x)
+ +\sum_{\substack{r\geq0\\r\ne k-1}}
+       \zeta(k-r)\frac{(-x)^r}{r!},
+\end{equation}
+where $H_j=\sum_{m=1}^j1/m$ and $H_0=0$. For a fixed finite set of
+$k$, truncations and their remainders are uniform in every closed
+subsector of $\Re t>0$. Combining them with~\eqref{eq:tail} gives each
+fixed order of $\log P(e^{-t})$. At every positive power $t^r$, the
+coefficient is affine in $\log t$. Its logarithmic coefficient comes
+only from $k=r+1$ in~\eqref{eq:polylog} and is
+\[
+ -\frac{(r+1)^{r-1}}{r!}\qquad(r\geq1).
+\]
+The constant after removing $-\log t$ is $-\gamma$, by the convergent
+Euler product with the harmonic term subtracted. Explicitly,
+\begin{align}\label{eq:logP}
+ \log P(e^{-t})={}&-\log t-\gamma+t(-\log t+A)
+       +t^2\left(-\frac32\log t+B\right)\notag\\
+ &+t^3\left(-\frac83\log t+B_3\right)
+       +O\bigl(|t|^4(1+|\log t|)\bigr),\\
+ B={}&\frac{41}{24}-\frac{\zeta(2)}2-\frac32\log3,\qquad
+ B_3=\frac{49}{12}-\frac{\pi^2}{4}
+             +\frac{\zeta(3)}3-\frac83\log4.\notag
+\end{align}
+
+For completeness, the $t^2$ constant contributions from the isolated
+prefactor, $k=2$, $k=3$, and $k\geq4$ are, respectively,
+\[
+ -\frac5{12},\qquad \frac32,\qquad
+ \frac34-\frac32\log3,\qquad -\frac{\zeta(2)}2-\frac18.
+\]
+The last follows by summing a rational series:
+\begin{align*}
+ \frac12\sum_{k\geq4}(-1)^{k+1}k(\zeta(k-2)-1)
+ &=-\frac12\sum_{m\geq2}\frac{4m+3}{m(m+1)^2}\\
+ &=-\frac{\zeta(2)}2-\frac18.
+\end{align*}
+For $B_3$, the corresponding contributions (now separating $k=4$)
+are $1/6$, $-13/18$, $9/4$, $20/9-(8/3)\log4$, and
+\[
+ -\frac16\sum_{m\geq2}\frac{25m^2+39m+16}{m(m+1)^3}
+   =\frac16-\frac32\zeta(2)+\frac13\zeta(3).
+\]
+These calculations supply the constants rather than attributing them
+to a short displayed formula in the component source.
+
+Exponentiation to any prescribed fixed order yields
+\begin{equation}\label{eq:localP}
+ P(e^{-t})=\frac ct+c(-\log t+A)
+     +\sum_{j=1}^{M}t^jU_j(\log t)
+     +O\bigl(|t|^{M+1}(1+|\log t|)^{M+2}\bigr),
+\end{equation}
+where $\deg U_j\leq j+1$. To obtain the stated error, first expand
+$\log P$ through degree $M+1$, with error
+$O(|t|^{M+2}(1+|\log t|))$, and then exponentiate. The largest omitted
+logarithmic degree comes from $M+2$ copies of $t\log t$.
+Define
+\begin{align}\label{eq:QZ}
+ D&=\log2-2,\qquad E=B+A^2/2,\qquad Q(X)=X^2/2+DX+E,\notag\\
+ Z(X)&=\frac{(-X+A)^3}{6}+(-X+A)\left(-\frac32X+B\right)
+                  -\frac83X+B_3.
+\end{align}
+Then $U_1=cQ$ and $U_2=cZ$. All these are sector expansions inside the
+right half plane. No analytic continuation of $P$ across $|z|=1$ has
+been used.
+
+\section{The complete circle and complex saddle}\label{sec:circle}
+The global step comes from the prior coefficient estimate rather than
+from a claim that the positive real singularity is the only singularity.
+From~\eqref{eq:prior}, absolute summation of
+$|p_m-c|e^{-am}$, including the bounded $m=0$ adjustment, gives uniformly
+for $0<a<1$, $|y|\leq\pi$,
+\begin{equation}\label{eq:globalP}
+ P(e^{-a-iy})=\frac{c}{1-e^{-a-iy}}+O(1+\log(1/a))
+             =\frac{c}{a+iy}+O(1+\log(1/a)).
+\end{equation}
+For the second equality, $(1-e^{-t})^{-1}-t^{-1}$ is bounded on
+$0\leq\Re t\leq1$, $|\Im t|\leq\pi$ after filling its removable
+value at $0$. Thus~\eqref{eq:globalP} includes every secondary
+root-of-unity arc.
+
+Put $v=cu$ and $s=\sqrt{v/n}=a+ib$, where $a>0$. Coefficient extraction
+on $|z|=e^{-a}$, with $z=e^{-t}$, gives
+\begin{equation}\label{eq:cauchy}
+ f_n(u)=\frac1{2\pi i}\int_{a-i\pi}^{a+i\pi}
+        \exp\{u(P(e^{-t})-1)+nt\}\dd t.
+\end{equation}
+The sign from $\dd z/z=-\dd t$ is canceled by reversal of the circle
+parameter. The principal phase is $\Phi(t)=v/t+nt$, with saddle $s$.
+Since $v=ns^2$, direct algebra gives the exact loss identity
+\begin{equation}\label{eq:loss}
+ \Re\Phi(a+iy)=2na-na\frac{(y-b)^2}{a^2+y^2}.
+\end{equation}
+Uniformly on the small marking disc, $a\asymp n^{-1/2}$ and $|b|/a$
+is bounded. Take $h=a^{3/2}\log n$. Outside $|y-b|<h$, the loss in
+\eqref{eq:loss} is at least $\kappa(\log n)^2$ for a positive
+constant $\kappa$. To see this, when $|y|\leq C_0a$ the denominator
+is $O(a^2)$ and $na h^2/a^2\asymp(\log n)^2$; when
+$|y|>C_0a$ with $C_0$ sufficiently large, the fraction is bounded
+below, and the loss is of order $\sqrt n$.
+
+The error from~\eqref{eq:globalP} costs only $O(\log n)$ in the real
+exponent, with $u$ bounded. The entire off-saddle contribution is
+therefore
+\begin{equation}\label{eq:off}
+ O\!\left(e^{2na-\kappa'(\log n)^2}\right)
+\end{equation}
+for a uniform $\kappa'>0$. The modulus of the leading term in
+\eqref{eq:main} is $e^{2na}$ times a quantity bounded above and below
+by fixed powers of $n$. Hence~\eqref{eq:off}, relatively to that term,
+is smaller than every fixed inverse power of $n$. This proves the
+needed suppression for the whole circle, including the natural-boundary
+points, rather than relying only on positivity or aperiodicity.
+
+\section{The local Gaussian expansion and its remainder}\label{sec:gaussian}
+On $|t-s|\leq h$, $t$ remains in a fixed right-half-plane subsector
+and $|t|\asymp n^{-1/2}$. Equation~\eqref{eq:localP} gives, for any
+fixed $J$,
+\begin{align}\label{eq:amplitude}
+ e^{u(P(e^{-t})-1)}={}&e^{u(cA-1)}t^{-v}e^{v/t}\\
+ &\quad\times\left\{\sum_{j=0}^Jt^jQ_j(\log t;u)
+   +O\bigl(|t|^{J+1}(1+|\log t|)^{2J+2}\bigr)\right\}.\notag
+\end{align}
+Here $Q_0=1$, and all $Q_j$ are defined by the formal identity
+\begin{equation}\label{eq:Qj}
+ \exp\left(u\sum_{j\geq1}t^jU_j(X)\right)
+             =\sum_{j\geq0}t^jQ_j(X;u).
+\end{equation}
+A product of $r$ positive-degree factors with total $t$-degree $j$
+has logarithmic degree at most $j+r\leq2j$; therefore
+$\deg_XQ_j\leq2j$. Truncating the ordinary exponential gives the error
+in~\eqref{eq:amplitude}, since $t(1+|\log t|)^2\to0$ on the segment.
+The component error in~\eqref{eq:localP} is no larger. In particular,
+\begin{equation}\label{eq:Q12}
+ Q_1=vQ,\qquad Q_2=vZ+\frac{v^2}{2}Q^2.
+\end{equation}
+
+The next lemma records the integrated Taylor remainder carefully;
+replacing powers of the integration variable by endpoint bounds would
+lose unnecessary powers of $\log n$.
+
+\begin{lemma}[Uniform Gaussian Taylor remainder]\label{lem:gaussian}
+Set $\delta=n^{-1/4}$, $\lambda=\sqrt{vn}$, and use the actual
+vertical contour parametrization
+\[
+ t=s+in^{-3/4}x=s(1+i\delta x/\sqrt v),\qquad
+ |x|\leq X_n=(\Re\sqrt v)^{3/2}\log n.
+\]
+For fixed nonnegative integers $j,k,S$, the integral of the monomial
+$t^{j-v}(\log t)^k$ times $e^{nt+v/t}$ has an expansion, after removing
+its common leading scale, in powers $n^{-r/2}$, $0\leq r\leq S$.
+Its relative-to-that-scale remainder is
+$O(n^{-(S+1)/2}(1+|\log s|)^k)$, uniformly in $u$ on a sufficiently
+small fixed closed disc. Each coefficient is polynomial in $\log s$
+of degree at most $k$ and holomorphic in $u$.
+\end{lemma}
+\begin{proof}
+The exact phase, with no truncated exponential yet, is
+\begin{equation}\label{eq:exactphase}
+ nt+\frac vt=2\lambda-\frac{x^2}{\sqrt v}
+             +\frac{i\delta x^3}{v(1+i\delta x/\sqrt v)}.
+\end{equation}
+Write $\ell=\log s=(\log v-\log n)/2$ and remove $s^{j-v}$ from the
+monomial. The residual analytic factor multiplying the Gaussian is
+\begin{align}\label{eq:H}
+ H_{j,k}(\delta,x;v,\ell)={}&(1+i\delta x/\sqrt v)^{j-v}
+       [\ell+\log(1+i\delta x/\sqrt v)]^k\notag\\
+ &\times\exp\left(\frac{i\delta x^3}{v(1+i\delta x/\sqrt v)}\right).
+\end{align}
+In a Taylor expansion in $\delta$, hold $\ell$ fixed; substitute its
+stated value afterwards. Let $d>0$ be a uniform lower bound for
+$\Re(v^{-1/2})$ on the marking disc. For every fixed derivative order
+$m$ and all sufficiently large $n$, one has, for $0\leq\xi\leq\delta$
+and $|x|\leq X_n$,
+\begin{equation}\label{eq:derivbound}
+ |\partial_\delta^mH_{j,k}(\xi,x;v,\ell)|
+ \leq C_{j,k,m}(1+|\ell|)^k
+            P_{j,k,m}(|x|)e^{dx^2/2},
+\end{equation}
+with a fixed polynomial $P_{j,k,m}$ having nonnegative coefficients.
+Indeed, $|\xi x/\sqrt v|\leq1/2$ eventually. Differentiation of the
+rational exponent and logarithm gives fixed polynomial bounds in
+$|x|$, with denominators uniformly separated from zero. The exponential
+modulus is at most $\exp(C\delta |x|^3)$, and
+$C\delta X_n\leq d/2$ eventually. The complex power and its fixed
+number of derivatives are bounded in the same way by polynomials.
+Finite product and chain rules prove~\eqref{eq:derivbound}.
+
+Expand~\eqref{eq:H} through degree $2S+1$. The integral Taylor
+remainder, multiplied by $e^{-x^2/\sqrt v}$ and integrated, is at most
+\begin{align}\label{eq:integratedrem}
+ C\delta^{2S+2}(1+|\ell|)^k
+       \int_{\mathbb R}P_{j,k,2S+2}(|x|)e^{-dx^2/2}\dd x
+  =O\bigl(n^{-(S+1)/2}(1+|\ell|)^k\bigr).
+\end{align}
+This uses Gaussian moments, not the bound $|x|\leq X_n$ for the
+polynomial factor, so it introduces no extra powers of $\log n$.
+The identity $H_{j,k}(-\delta,-x)=H_{j,k}(\delta,x)$ implies that
+the coefficient of $\delta^m$ has parity $m$ in $x$. All odd
+coefficients integrate to zero on the symmetric centered segment,
+also for complex $u$ because its center is the actual saddle $s$.
+The remaining even coefficients can be integrated over $\mathbb R$:
+the tails beyond $X_n\asymp\log n$ are smaller than every fixed
+inverse power of $n$.
+
+The moments used are
+\begin{equation}\label{eq:moments}
+ \int_{\mathbb R}x^{2r}e^{-x^2/\sqrt v}\dd x
+  =\sqrt\pi\frac{(2r-1)!!}{2^r}v^{(2r+1)/4},\qquad
+ \int_{\mathbb R}x^{2r+1}e^{-x^2/\sqrt v}\dd x=0,
+\end{equation}
+with $(-1)!!=1$. They hold first for real positive $v$ by substitution
+and then throughout the disc by holomorphy of dominated Gaussian
+integrals. This use of continuation concerns the Gaussian integral
+only. Polynomial dependence on $\ell$ and holomorphic dependence on
+$u$ are preserved by the finite Taylor and moment operations.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+For a monomial in $Q_j$, apply Lemma~\ref{lem:gaussian} with $S=J-j$.
+Its $s^j$ contributes $n^{-j/2}$, and its logarithmic degree is at most
+$2j$. Its total relative error is therefore
+\[
+ O\bigl(n^{-(J+1)/2}(1+\log n)^{2j}\bigr).
+\]
+The remainder in~\eqref{eq:amplitude}, integrated absolutely with the
+local Gaussian, contributes
+$O(n^{-(J+1)/2}(1+\log n)^{2J+2})$ relative to the leading scale.
+Equation~\eqref{eq:loss}, or~\eqref{eq:exactphase} with its small
+correction, supplies a fixed Gaussian majorant; $t^{-v}/s^{-v}$ is
+bounded on the segment. Equation~\eqref{eq:off} disposes of the
+rest of the circle.
+
+The Jacobian and leading Gaussian integral give precisely
+\begin{align*}
+ \frac{n^{-3/4}}{2\pi}e^{u(cA-1)}s^{-v}e^{2\lambda}
+           \sqrt\pi v^{1/4}
+       =C(u)n^{v/2-3/4}e^{2\sqrt{vn}}.
+\end{align*}
+Every even correction coming from $Q_j$ has logarithmic degree at
+most $2j$. At total order $n^{-r/2}$, $j\leq r$, proving the degree
+bound $2r$ and the coefficient holomorphy.
+
+Finally, let $L_n(u)=C(u)n^{cu/2-3/4}e^{2\sqrt{cun}}$. It is
+holomorphic and nonzero on a small fixed open disc. Since $f_n(u)$ is
+a polynomial, the exact expression
+\begin{equation}\label{eq:residual}
+ E_{n,J}(u)=\frac{f_n(u)}{L_n(u)}-1
+              -\sum_{j=1}^Jn^{-j/2}R_j(\log n;u)
+\end{equation}
+is holomorphic there. The proof gives its bound on every sufficiently
+small closed disc. Choose two concentric discs whose closures are
+inside the open disc; Cauchy's derivative estimates transfer the bound
+on the larger disc to all fixed derivatives on the smaller disc,
+without changing its powers of $n$ or $\log n$. The contour radius
+$a=\Re\sqrt{cu/n}$ need not vary holomorphically: it is a device for
+proving a bound on the already holomorphic expression~\eqref{eq:residual}.
+\end{proof}
+
+\section{Explicit corrections and a fixed order calculator}\label{sec:corrections}
+Retain $v=cu$, $\ell=(\log v-L)/2$ and $Q,Z,D$ from
+\eqref{eq:QZ}. The first two correction polynomials are
+\begin{equation}\label{eq:R1}
+ R_1(L;u)=v^{3/2}Q(\ell)
+              -\frac{4(v-1)^2-1}{16\sqrt v}
+\end{equation}
+and
+\begin{align}\label{eq:R2}
+ R_2(L;u)={}&\frac{[4(v-1)^2-1][4(v-1)^2-9]}{512v}\notag\\
+ &+v\left\{\frac{1-4(v-2)^2}{16}Q(\ell)
+              +\frac{v-2}{2}(\ell+D)-\frac14\right\}\notag\\
+ &+v^2Z(\ell)+\frac{v^3}{2}Q(\ell)^2.
+\end{align}
+In particular the coefficient of $L^2$ in $R_1$ is $v^{3/2}/8$.
+
+Here is a direct Gaussian check of the first correction. The
+unperturbed amplitude $t^{-v}$ has order-$\delta^2$ integrand
+\[
+ -\frac{v+1}{2}x^2+\frac{v+1}{v^{3/2}}x^4-\frac1{2v^2}x^6.
+\]
+The normalized Gaussian moments are $\sqrt v/2$, $3v/4$, and
+$15v^{3/2}/8$, giving $-[4(v-1)^2-1]/(16\sqrt v)$. The $tQ_1$ term
+contributes $v^{3/2}Q(\ell)$, proving~\eqref{eq:R1}.
+
+For clarity, the four parts of~\eqref{eq:R2} have separate origins.
+The unperturbed fourth-order term gives its first line. The
+order-$\delta^2$ correction to $tQ_1$ gives its second line. The
+leading Gaussian integral of $t^2Q_2$ gives its last line, by
+\eqref{eq:Q12}. Each follows from~\eqref{eq:H} and the exact moments
+\eqref{eq:moments}; the companion repeats these identities symbolically.
+This makes $R_2$ a finite algebraic consequence of the same local
+calculation, rather than an additional asymptotic assumption.
+
+For general fixed order, equations~\eqref{eq:polylog},
+\eqref{eq:Qj}, and~\eqref{eq:H} are an algorithm using only finitely
+many coefficients and Gaussian moments. An equivalent compact
+formal calculator for a monomial $t^{-\beta}$ is
+\begin{align}\label{eq:calculator}
+ \mathcal B_\beta(v,n)={}&
+ \left(\frac nv\right)^{(\beta-1)/2}
+ \frac{e^{2\sqrt{vn}}}{\sqrt{4\pi\sqrt{vn}}}\notag\\
+ &\times\sum_{r\geq0}
+ \frac{(-1)^r\prod_{l=1}^r[4(\beta-1)^2-(2l-1)^2]}
+      {r!(16\sqrt{vn})^r}.
+\end{align}
+For $t^{j-v}(\log t)^k$, replace the monomial by
+$(-\partial_\beta)^k\mathcal B_\beta(v,n)$ at $\beta=v-j$,
+holding $v$ fixed, multiply by $e^{u(cA-1)}$, and retain terms with
+$j+r\leq J$. Equation~\eqref{eq:calculator} is the dominant-saddle
+formal series familiar from the modified Bessel function. Its use
+here is a coefficient calculator: the original full contour has not
+been identified with a Bessel contour, and no convergence of the
+formal series is claimed. The remainder proof is the Gaussian
+argument of Section~\ref{sec:gaussian}.
+
+\section{Refined component moments and the Gaussian limit}\label{sec:probability}
+Let $K_n$ be the number of nested components in an object chosen
+uniformly from the $a_n$ labeled objects. Its probability generating
+function is
+\[
+ \EE u^{K_n}=\frac{f_n(u)}{f_n(1)}.
+\]
+Since $f_n/L_n\to1$ uniformly near $u=1$, the ratio is nonzero on a
+fixed smaller disc for all sufficiently large $n$ and has the analytic
+logarithm tending to zero there. The theorem and finite logarithmic
+expansion imply
+\begin{equation}\label{eq:logf}
+ \log f_n(u)=\log L_n(u)+n^{-1/2}R_1(\log n;u)
+          +O\bigl(n^{-1}(1+\log n)^4\bigr),
+\end{equation}
+with the same order for any fixed number of derivatives on a smaller
+disc. This follows by applying Cauchy's estimates to the exact
+normalized residual before differentiation. Thus no real-axis
+asymptotic is being differentiated without justification.
+
+\begin{theorem}[Mean and variance]\label{thm:moments}
+As $n\to\infty$,
+\begin{align}\label{eq:mean}
+ \EE K_n&=\sqrt{cn}+\frac c2\log n+m_0
+             +O\bigl(n^{-1/2}(1+\log n)^2\bigr),\\
+ m_0&=-\frac34-c\log2+\frac{c\gamma}{2},\notag\\
+ \Var K_n&=\frac{\sqrt{cn}}2+\frac c2\log n+v_0
+             +O\bigl(n^{-1/2}(1+\log n)^2\bigr),\label{eq:variance}\\
+ v_0&=-1-c\left(\log2+\frac12-\frac\gamma2\right).\notag
+\end{align}
+The next corrections are respectively $n^{-1/2}M_1(\log n)$ and
+$n^{-1/2}V_1(\log n)$, after which both errors are
+$O(n^{-1}(1+\log n)^4)$, where
+\begin{equation}\label{eq:M1V1}
+ M_1(L)=\left.c\partial_v\mathcal R_1(L,v)\right|_{v=c},\qquad
+ V_1(L)=\left.(c\partial_v+c^2\partial_v^2)
+                      \mathcal R_1(L,v)\right|_{v=c}.
+\end{equation}
+Here $\mathcal R_1(L,v)$ is the right side of~\eqref{eq:R1} with
+$\ell=(\log v-L)/2$, and $L$ is held fixed.
+\end{theorem}
+\begin{proof}
+The cumulant operator for marking by $u$ is
+$\mathcal D=u\partial_u=v\partial_v$. Consequently the mean and
+variance are $\mathcal D\log f_n|_{u=1}$ and
+$\mathcal D^2\log f_n|_{u=1}$. The logarithm of the leading term is
+\begin{equation}\label{eq:logleading}
+ \log L_n(u)=2\sqrt{vn}+\left(\frac v2-\frac34\right)\log n
+       +u(cA-1)+\left(\frac14-\frac v2\right)\log v
+       -\log(2\sqrt\pi).
+\end{equation}
+Differentiating this explicit holomorphic function and using
+$\log c=-\gamma$ gives~\eqref{eq:mean}--\eqref{eq:variance}.
+Differentiating the next term in~\eqref{eq:logf} gives
+\eqref{eq:M1V1}; its residual is controlled as just explained.
+\end{proof}
+
+An entirely explicit form of these first refined polynomials is also
+useful. Write $q=Q(\ell_c)$, $q'=\ell_c+D$, and
+$\ell_c=(\log c-L)/2$. Then
+\begin{align}\label{eq:explicitM1}
+ M_1(L)={}&c^{3/2}\left(\frac32q+\frac12q'\right)
+       -\frac38c^{3/2}+\frac14c^{1/2}+\frac3{32}c^{-1/2},\\
+ V_1(L)={}&c^{3/2}\left(\frac94q+\frac32q'+\frac14\right)
+       -\frac9{16}c^{3/2}+\frac18c^{1/2}-\frac3{64}c^{-1/2}.
+       \label{eq:explicitV1}
+\end{align}
+These follow by writing the nonlogarithmic term in~\eqref{eq:R1}
+as $-v^{3/2}/4+v^{1/2}/2-3v^{-1/2}/16$ and using
+$v\partial_v\ell=1/2$.
+
+In particular,
+\begin{equation}\label{eq:meanlimit}
+ \lim_{n\to\infty}\frac{\EE K_n}{\sqrt n}
+       =e^{-\gamma/2}\approx0.749306001288449.
+\end{equation}
+The decimal is uncertified. Riedel's numerical estimate
+$0.7719351399$~\cite[p. 3]{riedel} is a finite-data estimate of the
+constant, accompanied there by caution about the fitted exponent.
+The positive $\frac c2\log n$ term explains a slow approach to the
+limit. The exact square-root limit belongs to the pre-existing
+expansive-assembly regime; the displayed lower-order corrections are
+specific to these component weights.
+
+\begin{corollary}[Credited Gaussian regime]\label{cor:clt}
+With $\sigma_n^2=\sqrt{cn}/2$,
+\begin{equation}\label{eq:clt}
+ \frac{K_n-\EE K_n}{\sigma_n}\ \Longrightarrow\ N(0,1).
+\end{equation}
+The same statement holds with $\sigma_n^2$ replaced by $\Var K_n$.
+\end{corollary}
+\begin{proof}
+Use the analytic logarithm of $f_n(e^t)/f_n(1)$ in a fixed complex
+neighborhood of $t=0$. By~\eqref{eq:logf} and Cauchy's estimates,
+its third derivative is $O(\sqrt n+\log n)$ there. Its second derivative
+at $0$ is $\sigma_n^2+O(\log n)$. For fixed real $\theta$, substitute
+$t=i\theta/\sigma_n$ and subtract $t\EE K_n$. Taylor's theorem gives
+\[
+ \log\EE\exp\left(i\theta\frac{K_n-\EE K_n}{\sigma_n}\right)
+ =-\frac{\theta^2}{2}+o(1),
+\]
+with cubic error $O(n^{-1/4})$ and second-derivative replacement error
+$O(n^{-1/2}\log n)$. The continuity theorem for characteristic
+functions proves~\eqref{eq:clt}. Equation~\eqref{eq:variance} and
+Slutsky's theorem justify the variance normalization.
+\end{proof}
+
+The proof recovers a known generic limit-law phenomenon with the
+normalization needed here. It is not a new universality assertion.
+No local limit theorem or quantitative distribution-distance bound
+is inferred from this fixed-frequency argument.
+
+\section{Asymptotic inversion with safe integer rounding}\label{sec:inverse}
+For sufficiently large real $y$, define
+\[
+ N(y)=\min\{n\geq0:a_n\geq y\}.
+\]
+The sequence is strictly increasing for $n\geq1$. Adding label $n+1$
+as a new singleton component is an injection; a single cycle on all
+$n+1$ labels is outside its image. The equality $a_0=a_1=1$ causes
+no problem for large $y$.
+
+Put $\beta=c/2-3/4$. For fixed $J\geq0$, define at sufficiently large
+real $x$
+\begin{align}\label{eq:G}
+ G_J(x)={}&\log\Gamma(x+1)+2\sqrt{cx}+\beta\log x+\log C\notag\\
+ &+\log\left(1+\sum_{j=1}^Jx^{-j/2}R_j(\log x;1)\right).
+\end{align}
+The last logarithm is real and well defined eventually, and
+$G_J'(x)\sim\log x$. At integer $n$, Theorem~\ref{thm:main} implies
+\begin{equation}\label{eq:logerror}
+ \log a_n=G_J(n)+O(n^{-q}(\log n)^p),\qquad
+ q=(J+1)/2,\quad p=2J+2.
+\end{equation}
+For large $y$, let $x_J$ be the unique sufficiently large real solution
+of $G_J(x_J)=\log y$.
+
+\begin{theorem}[Two-ceiling enclosure]\label{thm:inverse}
+For each fixed $J$ there exist $M_J>0$ and a threshold such that, with
+\[
+ \epsilon_J=M_Jx_J^{-q}(\log x_J)^{p-1},
+\]
+one has
+\begin{equation}\label{eq:inverse}
+ \lceil x_J-\epsilon_J\rceil\ \leq N(y)\ \leq
+                       \lceil x_J+\epsilon_J\rceil.
+\end{equation}
+If $\dist(x_J,\mathbb Z)>\epsilon_J$, the two ceilings coincide and
+$N(y)=\lceil x_J\rceil$. No explicit certified $M_J$ or onset threshold
+is supplied.
+\end{theorem}
+\begin{proof}
+Bound the integer error in~\eqref{eq:logerror} by
+$Kn^{-q}(\log n)^p$. For $x=x_J$ sufficiently large,
+$\epsilon_J<1$, $G_J'\geq(\log x)/2$ on $[x-2,x+2]$, and the
+error at integers in that interval is at most $2Kx^{-q}(\log x)^p$.
+Choose $M_J>4K$. Then $n_+=\lceil x+\epsilon_J\rceil$ satisfies
+\[
+ G_J(n_+)-G_J(x)\geq\frac{\log x}{2}\epsilon_J
+                       >2Kx^{-q}(\log x)^p,
+\]
+so $\log a_{n_+}>\log y$. Similarly
+$n_-=\lceil x-\epsilon_J\rceil-1<x-\epsilon_J$ satisfies
+$\log a_{n_-}<\log y$. Monotonicity gives~\eqref{eq:inverse}.
+Enlarging the threshold ensures all comparisons used above.
+\end{proof}
+
+A single ceiling of a finite continuous asymptotic expansion is not
+valid unconditionally: a target may lie arbitrarily close to an exact
+integer threshold. One must use the two-ceiling enclosure, prove the
+stated separation, or compare exact counts.
+
+For a convenient starting approximation let $L=\log y$ and use the
+positive real branch of Lambert's $W$ function:
+\begin{equation}\label{eq:W}
+ x_0^*=\frac{L}{W(L/e)}.
+\end{equation}
+It solves $x(\log x-1)=L$, and $N(y)\sim x_0^*$. With
+$\alpha=c/2-1/4$ and $K_0=\log(C\sqrt{2\pi})$, Stirling's formula gives
+\begin{align}\label{eq:newton}
+ x_*&=x_0^*-
+ \frac{2\sqrt{cx_0^*}+\alpha\log x_0^*+K_0}{\log x_0^*},\\
+ x_J&=x_*+O\bigl((\log x_0^*)^{-2}\bigr).\notag
+\end{align}
+For justification, the displacement from $x_0^*$ is
+$O(\sqrt{x_0^*}/\log x_0^*)$. Substituting~\eqref{eq:newton} into
+$G_J-L$, the uncanceled derivative correction is $O(1/\log x_0^*)$;
+the quadratic curvature term is $O((\log x_0^*)^{-2})$ and the
+omitted Stirling and fixed-order corrections are smaller. Dividing
+by $G_J'\sim\log x_0^*$ proves the displayed error. Newton iteration
+or formal reversion of~\eqref{eq:G} gives further continuous orders.
+Every integer conclusion still needs~\eqref{eq:inverse} or an exact
+comparison. The companion's bounded exact inverse compares integer
+counts directly and does not use an uncertified asymptotic rounding
+rule.
+
+\section{Exact recurrences and reproducible checks}\label{sec:computation}
+The infinite products in the definitions reduce to finite exact
+computations at every fixed size. The companion uses a deliberately
+bounded range, not an unbounded enumeration promise.
+
+Let $B_n^{(m)}$ count labeled permutations of $n$ labels having at
+most one cycle of each length in $\{1,\ldots,m\}$. With
+$B_0^{(0)}=1$ and all other entries zero,
+\begin{equation}\label{eq:integercycle}
+ B_n^{(m)}=B_n^{(m-1)}+
+ \begin{cases}
+  \binom nm(m-1)!B_{n-m}^{(m-1)},& n\geq m,\\
+  0,&n<m.
+ \end{cases}
+\end{equation}
+The cycle's labels are chosen first and its cyclic order next; using
+the previous row enforces at most one such cycle. Thus $B_n=B_n^{(n)}$.
+The component containing label $1$ gives the partial Bell recurrence
+\begin{equation}\label{eq:bell}
+ T(n,k)=\sum_{m=1}^n\binom{n-1}{m-1}B_mT(n-m,k-1),
+ \qquad n,k\geq1.
+\end{equation}
+All arithmetic in these recurrences is integer arithmetic. Their
+first five nonempty rows and row sums are
+\[
+\begin{array}{c|l|r}
+ n&T(n,1),\ldots,T(n,n)&a_n\\\hline
+ 1&1&1\\
+ 2&1,1&2\\
+ 3&5,3,1&9\\
+ 4&14,23,6,1&44\\
+ 5&74,120,65,10,1&270
+\end{array}
+\]
+
+An independent rational-series check follows from
+\[
+ \log P(z)=\sum_{r\geq1}\ell_rz^r,\qquad
+ \ell_r=\sum_{m\mid r}\frac{(-1)^{r/m+1}}{(r/m)m^{r/m}}.
+\]
+Formal differentiation gives
+\begin{equation}\label{eq:rational}
+ np_n=\sum_{r=1}^n r\ell_rp_{n-r},\qquad
+ nf_n(1)=\sum_{r=1}^n rp_rf_{n-r}(1),\qquad p_0=f_0(1)=1.
+\end{equation}
+A separate power-series multiplication checks
+$T(n,k)=n![z^n](P-1)^k/k!$ directly. At small sizes, literal
+permutation cycle decomposition followed by enumeration of admissible
+groupings of cycles gives an additional combinatorial check.
+
+The frozen OEIS fixtures contain the displayed numeric terms with
+public source URLs and retrieval metadata: 23 values of A007838,
+22 values of A308338, and 55 entries of A392471. They are independent
+expected values, not values generated during a verification run.
+The companion checks those prefixes, complete counts and triangle
+through $n=100$, independent rational count recurrences through
+$n=100$, power-series triangle identities through $n=30$, and literal
+enumeration through $n=7$. Exact rational mean and variance samples
+come directly from the triangle. Optional SymPy checks verify the
+finite symbolic correction identities. See the package README for
+the commands and dependency versions used.
+
+\textbf{Evidence levels.} The fixtures, finite recurrences, exact
+integer comparisons, rational moments, and symbolic identities are
+exact. They are finite checks and do not prove an asymptotic theorem.
+The fixed-order remainder, complex uniformity, all-circle suppression,
+moment expansion, CLT, and inverse enclosure are proved in the text
+using the credited component estimate. Their implied constants and
+onset thresholds have not been made effective here. All decimal
+constants or other numerical asymptotic diagnostics are uncertified;
+high arithmetic precision alone would not certify their errors.
+The package supplies no interval enclosure for the transcendental
+constant $C$ and no empirical fitted constant as a substitute for its
+exact definition.
+
+\section{Source coverage and attribution}\label{sec:sources}
+The source review covered the three OEIS entries and Riedel's revised
+January 2026 note, the 2006 hybrid asymptotics paper, and the later
+Erlihson--Granovsky expansive-assembly paper. It also checked the
+connection between the stated component weights and the hypotheses
+of that general assembly theory. This is bounded source coverage,
+not a worldwide historical-priority certificate.
+
+The attribution is deliberately separated by mathematical role.
+Gutkovskiy's 2019 OEIS entry supplies A308338's defining EGF. Riedel
+supplies the nested-cycle interpretation and A392471. Greene and
+Knuth are credited for~\eqref{eq:prior} by the inspected hybrid paper;
+the original book was not independently inspected. The hybrid paper
+itself develops the full component expansion, with root-of-unity
+periodic coefficient terms. Those component results do not by
+themselves establish the marked outer-exponential expansion proved
+here.
+
+The inspected Erlihson--Granovsky preprint is the 19 June 2007
+arXiv version of the paper published in October 2008. Theorem and
+corollary numbers agree with the journal version, while some equation
+numbers differ. The reference to the 2004 total-component CLT is
+attribution verified in the later work, not a direct reading of the
+2004 paper. That original paper was not inspected for this report.
+
+The variance in~\eqref{eq:variance} is derived independently from
+\eqref{eq:logleading}. There is a normalization inconsistency in the
+later source's displayed general-$C$ covariance formula (preprint
+(4.54), published (4.18)): with its definition
+$b_r(u)=C\Gamma(r+1,u)$, the printed conditioning denominator is
+$\Gamma(p+2)$. The hypotheses allow every $C>0$. At the interior choice
+$p=1$, $C=3$, $u=1$, literal substitution gives
+$3/e-18/e^2<0$, which cannot be a variance.
+This display is therefore not used to certify our constant. The
+paper remains the cited source for the general regime and its explicit
+historical attribution.
+
+Within the checked sources, the explicit count prefactor, fixed-order
+complex-marked outer expansion, logarithmic moment refinements, and
+rounding-qualified inverse are the sequence-specific development of
+this report. No claim is made that no other work contains overlapping
+results. There is no external publication or amendment of an OEIS
+entry associated with this document.
+
+\section{Further questions}\label{sec:questions}
+Several extensions require additional work beyond the proved fixed-order
+statements.
+\begin{enumerate}
+ \item Can the component estimates and Gaussian remainders be made
+ effective enough to give certified constants and usable onset
+ thresholds for the count equivalent and inverse enclosure?
+ \item Can complex marking be controlled beyond a small disc to prove
+ a lattice local limit theorem, moderate deviations, or a quantitative
+ normal-approximation bound for $K_n$?
+ \item How do the periodic component corrections at secondary roots
+ of unity appear in exponentially small outer-coefficient terms?
+ A complete beyond-all-orders expansion would require a separate
+ global analysis and is not implied by the present all-arc bound.
+ \item Can the fixed-order coefficient calculator be extended to
+ higher corrections with explicit complexity bounds and certified
+ symbolic simplification?
+ \item Can the exact Bell triangle be computed faster at large $n$
+ while retaining an independent check and exact integer arithmetic?
+\end{enumerate}
+These are research questions, not consequences of the finite numerical
+or symbolic checks.
+
+\begin{thebibliography}{9}
+\bibitem{oeis7838}
+The OEIS Foundation, \emph{A007838}, permutations with distinct cycle
+lengths. \url{https://oeis.org/A007838}. Entry inspected 3 October 2026.
+
+\bibitem{oeis308338}
+I. Gutkovskiy, \emph{A308338}, OEIS entry dated 20 May 2019.
+\url{https://oeis.org/A308338}. Entry inspected 3 October 2026.
+
+\bibitem{oeis392471}
+M. Riedel, \emph{A392471}, triangle counting nested-cycle assemblies
+by component count. \url{https://oeis.org/A392471}.
+Entry inspected 3 October 2026.
+
+\bibitem{riedel}
+M. Riedel, \emph{Nested Cycle Partitions: a conjecture}, revised 24 January 2026
+author-hosted note, 6 pp.
+\url{https://pnp.mathematik.uni-stuttgart.de/iadm/Riedel/papers/ncp-comp2.pdf}.
+Original 13 January version linked from OEIS:
+\url{https://oeis.org/A392471/a392471.pdf}.
+The nested-cycle specification and component-count discussion were
+inspected directly.
+
+\bibitem{hybrid}
+P. Flajolet, \'E. Fusy, X. Gourdon, D. Panario, and N. Pouyanne,
+\emph{A Hybrid of Darboux's Method and Singularity Analysis in
+Combinatorial Asymptotics}, Electronic Journal of Combinatorics
+\textbf{13}(1) (2006), R103, 35 pp.
+\url{https://arxiv.org/abs/math/0606370}.
+Section 3 and Proposition 1 of the 15 June 2006 version were inspected.
+The Greene--Knuth attribution is indirect through that work; the book
+itself was not inspected.
+
+\bibitem{eg2008}
+M. M. Erlihson and B. L. Granovsky,
+\emph{Limit shapes of Gibbs distributions on the set of integer
+partitions: The expansive case}, Annales de l'Institut Henri Poincar\'e,
+Probabilit\'es et Statistiques \textbf{44}(5) (2008), 915--945.
+\url{https://doi.org/10.1214/07-AIHP129}.
+Published text: \url{https://numdam.org/item/10.1214/07-AIHP129.pdf}.
+The assembly weights, expansive scaling, Theorems 4.1 and 4.3, and
+Corollary 4.5 were checked against the 2007 preprint; relevant published
+equation numbering and covariance text were also checked.
+
+\bibitem{eg2004}
+M. Erlihson and B. Granovsky,
+\emph{Reversible coagulation-fragmentation processes and random
+combinatorial structures: asymptotics for the number of groups},
+Random Structures \& Algorithms \textbf{25} (2004), 227--245.
+Cited here solely through the explicit historical attribution in
+\cite[Corollary 4.5 and reference 12]{eg2008}; this paper was not
+inspected directly.
+\end{thebibliography}
+\end{document}

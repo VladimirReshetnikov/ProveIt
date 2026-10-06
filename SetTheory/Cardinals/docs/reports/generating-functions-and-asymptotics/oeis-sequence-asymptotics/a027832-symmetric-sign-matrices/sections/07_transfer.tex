@@ -1,0 +1,108 @@
+\section{Entropy weights and parity balancing}\label{sec:transferproof}
+We now sum the uniform enumeration formula. This is the step where relative tail control and exponential-square integrability are both needed.
+
+\subsection{An exact change of measure}
+For an even-sum degree vector $\boldsymbol d\in\cC$ satisfying the $M-f$ caps, its $R_f$ probability is
+\[
+ R_f(\boldsymbol d)=S_M^{-(M-f)}r^{2m}(1-r)^{2H-2m}
+ \prod_i\binom{M-1}{d_i}.
+\]
+Define the positive common factor
+\begin{equation}\label{eq:K}
+ K_M=2^{-H}S_M^M p_0^{m_0}(1-p_0)^{H-m_0}
+ r^{-2m_0}(1-r)^{2m_0-2H}.
+\end{equation}
+Real exponents cause no difficulty; $m_0$ need not be integral. Division of \eqref{eq:degreeenum} by the product mass gives
+\begin{equation}\label{eq:pointtransfer}
+ 2^{-H}N_M(\boldsymbol d)
+ =(1+o(1))K_MS_M^{-f}g(\gamma(\boldsymbol d),p)W_M(m)R_f(\boldsymbol d),
+\end{equation}
+uniformly in the window, where the remaining factor is exactly
+\begin{equation}\label{eq:entropy}
+ \begin{split}
+ W_M(m)&=\exp\{H D(p\Vert p_0)\},\\
+ D(p\Vert p_0)&=p\log\frac p{p_0}+(1-p)\log\frac{1-p}{1-p_0}.
+ \end{split}
+\end{equation}
+For verification, subtract the logarithm of the weight at $m_0$. The coefficient of the linear term vanishes because
+\[
+ \log\frac{p_0}{1-p_0}=2\log\frac r{1-r}.
+\]
+The remainder is precisely the binary relative entropy in \eqref{eq:entropy}. Its sign is positive.
+
+\subsection{Uniform integrability of the positive weight}
+Since $p-p_0=MY_M/(2H)$ and $p,p_0\to1/2$ uniformly on $\cC$, Taylor's theorem gives
+\begin{equation}\label{eq:entropybound}
+ 0\le HD(p\Vert p_0)\le(1+o(1))Y_M^2\quad\text{on }\cC.
+\end{equation}
+The leading coefficient is $M^2/[8Hp_0(1-p_0)]\to1$. On each set $|Y_M|\le A$ with fixed $A$, one also has
+\begin{equation}\label{eq:entropycompact}
+ HD(p\Vert p_0)=Y_M^2+o(1)
+\end{equation}
+uniformly. For example, the mean-value form of the entropy Taylor expansion proves \eqref{eq:entropybound} directly, without estimating a large cubic remainder separately.
+
+Corollary~\ref{cor:squareUI} and boundedness of $a_M$ imply, after decreasing $\eta>0$ if necessary,
+\begin{equation}\label{eq:weightmoment}
+ \sup_{\substack{M,\,f\le C\sqrt M\\ |k-M/2|\le K}}
+ \E_{R_f}\bigl[(\ind_{\cC}W_M)^{1+\eta}\bigr]<\infty
+\end{equation}
+for all sufficiently large $M$. Thus these weights are uniformly integrable. The same holds for $e^{Y_M^2}$. Compact approximation using \eqref{eq:entropycompact}, $R_f(\cC)\to1$, and then the two uniform-integrability bounds yields
+\begin{equation}\label{eq:L1}
+ \E_{R_f}\left|\ind_{\cC}W_M-e^{Y_M^2}\right|\to0.
+\end{equation}
+This is an $L^1$ replacement, so it remains valid after multiplication by the even-sum indicator.
+
+Furthermore, $0<g(x,p)\le\sqrt2e^{1/4}$ and Lemma~\ref{lem:productlimits} gives
+\begin{equation}\label{eq:gzero}
+ g(\gamma(\boldsymbol X),p)\to g_0:=\sqrt2e^{1/4-4v^2}
+ \quad\text{in probability on }\cC.
+\end{equation}
+Here $g$ may be defined arbitrarily off $\cC$ without affecting a weighted expression supported on $\cC$. Boundedness of $g$ and H\"older's inequality with \eqref{eq:weightmoment} imply that replacing $g$ by $g_0$ introduces $o(1)$ in the weighted expectation.
+
+\subsection{The even degree sum contributes one half}
+For all sufficiently large $M$, $f\le C\sqrt M$ leaves a capped coordinate. Its mass function $q_x$, extended by zero to all integers, is unimodal. Since $r\to1/2$ and $S_M$ stays bounded away from zero, the standard binomial mode bound gives
+\[
+ \max_xq_x=O(M^{-1/2}),\qquad
+ \sum_x|q_x-q_{x-1}|=2\max_xq_x.
+\]
+Let $F$ be a bounded Lipschitz function and fix the sum $T$ of the other coordinates. Define
+\[
+ A_T=\sum_x(-1)^xq_x F((T+x-2m_0)/M).
+\]
+Shifting the sum by one and averaging bounds it by
+\begin{equation}\label{eq:alternation}
+ |A_T|\le\|F\|_\infty\max_xq_x+\frac{\operatorname{Lip}(F)}{2M}=o(1),
+\end{equation}
+uniformly in $T$. Indeed the two contributions are respectively half the total variation of $q$ and half the change in $F$ under a step $1/M$.
+
+Conditioning on the other coordinates, including their parity sign, shows that even and odd total sums receive equal asymptotic expectations for every such $F(Y_M)$. Approximate $e^{y^2}$ by bounded Lipschitz cutoffs and use the uniform integrability above. Equations \eqref{eq:L1} and \eqref{eq:gzero} then show, along any sequence with $f/\sqrt M\to\tau$,
+\begin{equation}\label{eq:weightedlimit}
+ \begin{split}
+ &\E_{R_f}\left[\ind_{\{\sum_iX_i\ {m even}\}}\ind_{\cC}
+ g(\gamma,p)W_M\right]\\
+ &\hspace{20mm}\longrightarrow\frac{g_0}{2}\E e^{(Z+a)^2},
+ \qquad Z\sim\Normal(0,v),\quad a=\tau\ell/2.
+ \end{split}
+\end{equation}
+No rare-event local central limit theorem is used for this parity step.
+
+\subsection{Completion of the transfer proof}
+An elementary Gaussian integral, by completing the square, gives
+\begin{equation}\label{eq:gaussianintegral}
+ \E e^{(Z+a)^2}
+ =\frac1{\sqrt{1-2v}}\exp\left(\frac{a^2}{1-2v}\right),\qquad v<1/2.
+\end{equation}
+Summing \eqref{eq:pointtransfer} over even vectors in $\cC$ is legitimate because its relative error is uniform and all summands are nonnegative. Lemma~\ref{lem:graphical} ensures that no nongraphical even vectors enter. Lemma~\ref{lem:relative} then restores all graph vectors at relative error $1+o(1)$. Thus
+\[
+ \PP(E_f)=(1+o(1))K_MS_M^{-f}
+ \E_{R_f}\left[\ind_{\{\sum_iX_i\ {m even}\}}\ind_{\cC}g(\gamma,p)W_M\right].
+\]
+For $f=0$, the final expectation tends to the positive number
+$g_0/[2\sqrt{1-2v}]$. Dividing the $f$ expression by the $f=0$ expression, and using $1-2v=(1+2\ell^2)/2$, yields
+\[
+ \frac{U_f(M,k)}{B(M,k)}S_M^f
+ \longrightarrow\exp\left\{\frac{\ell^2\tau^2}{2(1+2\ell^2)}\right\}
+\]
+whenever $f/\sqrt M\to\tau$.
+
+This sequential statement implies the uniform equivalent \eqref{eq:criticalexact}. Otherwise a sequence of counterexamples with $f/\sqrt M\in[0,C]$ would have a subsequence on which this ratio converges to some $\tau$, contradicting the preceding limit and continuity of its right side. Bounded cap offsets cause no problem, since all preceding estimates are uniform over them. This proves the finite-saddle part of Theorem~\ref{thm:transfer}. The remaining explicit simplification and the matrix theorem are established next.
