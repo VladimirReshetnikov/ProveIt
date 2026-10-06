@@ -143,6 +143,14 @@ Checked by `git grep` in `Logic/PeanoArithmetic` at `3988bf5c4`.
   elements. Same pattern as Corollary 6.2 and Lemma 6.5, **different
   formula**, no predicate `P`. `raw_above_of_nonstandard` (nonstandard
   elements lie above every numeral) is used implicitly in Lemma 6.5.
+- **Outside `Logic/PeanoArithmetic`** (added after the independent check of
+  6 October 2026): same-named copies of the three no-finite-model Lean
+  declarations, for a `ShallowPAModel` with only zero, successor and the two
+  successor axioms (namespace `ProveIt.Optimizations.NoFiniteModel`), are in
+  `Optimizations/Logic_Foundations_Optimizations.lean` (`88e56dc38`), which
+  the root library (`lakefile.toml`, `ProveIt.lean`) does not import. The
+  article's sentence "and nothing else that bears on this report" is
+  corrected accordingly, with a dated note keeping the first wording.
 - **Not formalized:** every numbered statement of the report; nothing
   probabilistic, no coding cut, no summability cut, no `Bit`, no induction
   statement about `(M, P)`.
@@ -229,6 +237,22 @@ On copies (5–6 October 2026; Windows):
   theorems not read: Kontoyiannis–Verdú (arXiv:1212.2668), Chen–Effros–
   Kostina (arXiv:1902.03366, DOI confirmed). Not read: Boros–Prékopa (nor by
   the source).
+
+**Independent check of the write (6 October 2026).** An adversarial check
+made by the intake after the write (`90198e982`), with its own code, found
+the write's additions correct. Remark 13.1 matches arXiv:2107.11867v3
+(conventions of Section 1.1, the definition of a class in Section 4,
+Theorem 19 and its proof), and its probabilistic part follows from
+Theorems 3.1, 6.6 and 4.2 as stated. Every declaration, file and line of
+the formal-status paragraph was confirmed by `git grep`; the check found the
+standalone copies in `Optimizations/Logic_Foundations_Optimizations.lean`
+that the paragraph's "nothing else" omitted, now added there with a dated
+note. Benjamini–Gurel-Gurevich–Peled's formula (12) agrees with an exact
+linear program in 112 cases (n = 2..15, eight biases); the Hamming-layer
+formula and the exact finite optimization agree with brute force over all
+words, N ≤ 10 (6,138 cases); the Poisson limits are approached at N = 10^4
+and 10^5 as claimed. No other item needed a correction. The record is a
+dated note at the end of Section 13.1.
 
 ## Relation to the repository
 
@@ -377,8 +401,8 @@ B=$(mktemp -d); cp -r article.tex figures "$B/"; cd "$B"
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The committed PDF was built this way with MiKTeX on 6 October 2026: 44
-pages; no errors or warnings, no undefined references or citations, no
+The committed PDF was built this way with MiKTeX on 6 October 2026, and rebuilt
+after the independent check the same day: 44 pages (unchanged); no errors or warnings, no undefined references or citations, no
 multiply defined labels, no duplicate PDF destinations, no overfull boxes;
 two underfull boxes (in the formalization table and in a bibliography
 entry), both present in a build of the delivered text (37 pages).
