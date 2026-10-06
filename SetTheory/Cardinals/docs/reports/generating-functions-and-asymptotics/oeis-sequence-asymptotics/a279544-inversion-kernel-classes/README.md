@@ -17,7 +17,9 @@ to a scalar affine functional equation, solved by a normally convergent sum or
 quotient along contracting Möbius-type orbits seeded at an algebraic kernel
 root; global continuation, exclusion of competing singularities and an exact
 certificate of a nonzero square-root amplitude then give coefficient
-asymptotics to every fixed order and a Lambert-W₋₁ threshold inverse.
+asymptotics to every fixed order and a threshold inverse, centred at a
+Lambert-W₋₁ root in Parts I and II and expanded in powers of `1/log M` with
+coefficients polynomial in `log log M` in Part III.
 
 - **Part I** (Report 118, the base): class 214 = A279544 (`μ = 4`) and class
   1509 = A279567 (`μ = 3 + 2√2`); a forward orbit sum, and for 1509 a backward
@@ -262,9 +264,15 @@ Citation keys: Report 119's `oeis` is `oeis1953`, Report 122's is `oeis830`.
 **Added by the write** (all marked `[write]`, dated 5 October 2026):
 - Remark 10.2: the counting statements of Part II hold for class 1953B
   (`(≠, ≥, >)`, avoidance of 100, 120, 210), by the Wilf-equivalence that
-  Britt and Beaton (Table 1, Section 3.7) attribute to Martinez and Savage
-  (J. Integer Seq. 21 (2018), Article 18.2.2; not consulted here); a brute
-  force at the write gives equal counts for `n ≤ 10`.
+  Britt and Beaton (Table 1, Section 3.7) attribute to Martinez and Savage:
+  Theorem 60 (Section 3.2.1) of arXiv:1609.08106v2, proved there by showing
+  that their bijection between the inversion sequences avoiding {110, 210}
+  and those avoiding {100, 210} preserves avoidance of 120 (the journal
+  version, J. Integer Seq. 21 (2018), Article 18.2.2, was not consulted). A
+  brute force at the write gives equal counts for `n ≤ 10`, and an
+  independent dynamic program at the independent check for `n ≤ 80`. The
+  citation replaced "not consulted here" after the independent check, with a
+  dated note.
 - Remark 28.2: `a_{n+1} ≥ a_n + 1` for `n ≥ 1` for class 830, by the extra
   object `(0, …, 0, n)` outside the image of "append the current maximum".
   Report 122 proves only weak monotonicity directly and strictness from the
@@ -290,6 +298,58 @@ intervals for A279544 and A279567 and agree digit for digit, as far as they are
 displayed, with those for A279569 and A279558. **No digits are new**: the
 contribution is proof and certification.
 
+**Independent check of the write (5 October 2026).** An adversarial check
+made by the intake after the write (`37c5ebe97`) reread the seven items of the
+write that carry mathematics or citations — Remark 10.2 and the transfer to
+class 1953B; Remark 28.2; the note identifying Theorem 20.2 with Proposition
+28.1 at `J = 1`, `B = 4B_1`; the note identifying (128) with (136) and its
+error term with Proposition 28.1's proof; the amplitude comparisons with
+Kotěšovec's values; the transseries-volume citations; and the transfer
+formulas for `c₁`, `c₂` — and found every mathematical claim valid, with no
+counterexample and no gap in any proof chain. Changes, each with a dated note
+keeping the first wording where wording was replaced:
+
+- The abstract and the front-matter row on threshold inverses no longer say
+  that every Part proves a Lambert-W₋₁ inverse with error `O(u^(−K−1))`: Part
+  III's inverse contains no `W₋₁` (Theorem 20.2 and Proposition 28.1 expand
+  in powers of `1/L` with polynomials in `log L`), and its error is
+  `O((1 + log L)^(J+1)/L^(J+1))`.
+- The transseries volume's `p0:thm:flattening`, the theorem that Part III's
+  expansion and Part II's (128) instantiate, and `p0:rem:accuracy-claim`,
+  which names the `(1 + log L)^(J+1)` factor as the only rigorous difference
+  from the Lambert-centred form, are now cited in the front matter, the note
+  after Proposition 28.1 and the bibliography (both labels and statements
+  confirmed in the volume).
+- The hedges on Martinez and Savage in Remark 10.2, Part II's
+  further-questions item 6 and the bibliography are replaced by the precise
+  citation, Theorem 60 of arXiv:1609.08106v2, read at arXiv; the statement that
+  no bijection carrying Part II's generating tree to 1953B is given stands.
+- Two precisions in notes: the note after Theorem 20.2 writes `ε₁^P` for
+  Proposition 28.1's error at `J = 1`, which it had also called `ε₁`, the
+  theorem's letter; and the staircase of `p0:def:three-inverses` is matched to
+  `N(Y)` for `Y > 1` with `n_1 = 1` (`a_0 = a_1 = 1`).
+
+The tests, none of which used the delivered or the write's programs: brute
+force from the forbidden-relation definitions for `n ≤ 10` for classes 214,
+1509, 1953A, 1953B and 830; its own generating-tree recurrences, derived from
+the definitions (class 830's reproducing Part III's "ends on its maximum or
+premaximum" rule and its S/T split), equal to the brute force and to the OEIS
+b-files for `n ≤ 60`; the 1953B recurrence equal to the 1953A recurrence and
+the A279569 b-file for every `n ≤ 80`; `a_{n+1} − a_n ≥ 1` for class 830 for
+`1 ≤ n < 60`; the extra object of Remark 28.2 checked against the injection the
+remark uses (append the maximum; under "append `n`" it would lie in the
+image); SymPy confirmation of `P_1`, `P_2` (zero residual through `L^(−2)`)
+and of `B(L) = q_L`, `pB − λd₁ = P_1`; `(ν₁(log a_n) − n)L²/(log L)²` bounded
+on the b-files (between −246 and −181 for A279558 at `100 ≤ n ≤ 1000`; at most
+25 in absolute value for A279569 at `100 ≤ n ≤ 400`); 80-digit comparisons of
+Kotěšovec's amplitudes with the certified intervals (inside for A279544,
+A279567 and A279569's (77); equal to both truncated endpoints of (115) at 31
+decimals, and of `C√π` for A279558 at 39 decimals); a re-derivation of the
+transfer formulas for `c₁`, `c₂`; and a reading of each transseries-volume
+citation against the volume. The record is an unlabelled dated paragraph at
+the end of Section 30.1. This was a careful reading with numerical tests, not
+a formal verification.
+
 ## What the report does not claim
 
 Every limitation is printed in place. In short: **no nonalgebraicity or
@@ -308,7 +368,8 @@ literature priority and no external review; the numerical amplitudes were known
 (Kotěšovec); finite checks corroborate, they do not prove continuation or
 transfer; byte reproducibility holds only in the tested toolchain; checksums
 are not signatures; OEIS b-files were not used, and terms beyond the displayed
-prefixes are internally generated.
+prefixes are internally generated (the independent check of the write, above,
+compared its own counts with the b-files).
 
 ## Further questions, and the standing rule
 
@@ -330,7 +391,10 @@ stated without proof or left open, with source, sketch and what is missing:
   nonvanishing or determinant-gap certificate (118 Q4, 119 Q5); refined
   statistics through the catalytic variables (122 Q6).
 - **Class 1953B** directly (Part II, item 6): the transfer of Remark 10.2 rests
-  on a cited Wilf-equivalence, checked only for `n ≤ 10`.
+  on Martinez and Savage's Theorem 60, a Wilf-equivalence proved by an
+  explicit bijection (checked here for `n ≤ 80`), but neither a direct
+  treatment of 1953B nor a bijection carrying Part II's generating tree to it
+  is given.
 - **Earlier rigorous proofs**: the wider literature was not searched beyond
   Britt–Beaton and the OEIS, at placement or at the write.
 
@@ -355,9 +419,13 @@ All in `SetTheory/Cardinals/docs/reports/generating-functions-and-asymptotics/oe
   `Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex`:
   the three threshold inverses are instances of `p0:thm:lambert-core` (its
   `b < 0` branch rule gives `W₋₁`), `p0:thm:lambert-centered` (the all-order
-  reversion), `p0:def:three-inverses` / `p0:thm:staircase` (the integer
-  staircase and the separation condition) and `p0:cor:forward-to-inverse`
-  (the mean-value step). The manuscripts bracket by two smooth envelopes
+  reversion; Parts I and II), `p0:thm:flattening` (the direct
+  polynomial–logarithmic reversion, whose remainder carries the factor
+  `(1 + log L)^(J+1)` that `p0:rem:accuracy-claim` compares with the
+  Lambert-centred form; Part III's inverse and Part II's (128), cited after
+  the independent check), `p0:def:three-inverses` / `p0:thm:staircase` (the
+  integer staircase, with `n_1 = 1` for targets above 1, and the separation
+  condition) and `p0:cor:forward-to-inverse` (the mean-value step). The manuscripts bracket by two smooth envelopes
   instead of an admissible interpolation; same conclusion. Cited as context;
   not new inverse mechanics.
 - No other report treats A279544, A279567, A279569 or A279558 (searched
@@ -503,6 +571,13 @@ the front matter's notation longtable breaking across a page, as in other
 reports with longtables. Builds of the three delivered `.tex` files (18, 16 and
 17 pages) are warning-free; their 228 labels keep their numbers here under the
 offsets above (`.aux` compared).
+
+Rebuilt on 5 October 2026 after the independent check, in a scratch copy with
+four pdfLaTeX passes: 66 pages (the appended record adds a page before the
+references), no errors, warnings, undefined or multiply defined
+references or citations, duplicate destinations, or overfull or underfull
+boxes, and the same single infinite-glue message; all 252 labels keep their
+numbers and pages (`.aux` compared with a build of the committed text).
 
 ## Delivered path → shipped path
 
