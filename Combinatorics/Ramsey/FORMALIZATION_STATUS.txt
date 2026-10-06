@@ -1,0 +1,71 @@
+Gowers Szemeredi formalization checkpoint — 2026-10-06
+
+Scope
+  The goal remains open. No improvement to the final Szemeredi bound is claimed.
+  The source catalogue contains all 120 unique numbered theorem, lemma,
+  proposition, and corollary headings in sz-thm-gowers-proof.tex.
+  There are 88 checked exact companion proofs and 32 open statements.
+  The JSON ledger records every statement, its TeX heading lines, its Lean
+  definition, and related results. Conditional implications, restricted cases,
+  and counterexamples are not counted as proofs of the full statement.
+  Matching headings does not establish mathematical fidelity: several source
+  statements and shared definitions have documented repairs or unresolved gaps.
+
+Verification at this checkpoint
+  All 119 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 1,151 public Gowers theorems and found only propext,
+  Classical.choice, and Quot.sound. The audit independently counted 88 exact
+  companion proofs and 32 open catalogue statements from Lean's theorem types.
+  Existing dependency modules emit linter/deprecation warnings; no proof
+  errors remain in this build. The JSON ledger reproduces exactly and has no
+  unmatched numbered TeX headings or unmatched catalogue entries.
+
+New Section 18 infrastructure
+  Proofs18IntervalTransfer:
+    A modular progression with natural representatives at most n lifts to an
+    ordinary progression when 2*n < N. Descending representatives are reversed.
+    The interval-image wrapper gives a progression in the original natural set.
+  Proofs18AffineTransfer:
+    Proper progression indices are injective. Pullback and cyclic embedding
+    cardinalities are exact. An index progression transports to a nonconstant
+    progression in the old modulus, without a primality assumption there.
+    Density in a new modulus M is (length/M) times density on the progression.
+  Proofs18UniformInterval:
+    Corollary 3.6 now supplies both an integer-interval uniform stopping case
+    and a uniform stopping case in a fresh cyclic model of a proper progression.
+
+Reproducible checks (from repository root)
+  python3 Combinatorics/Ramsey/scripts/check_gowers.py GowersSzemeredi.Audit
+  python3 Combinatorics/Ramsey/scripts/gowers_status.py
+
+  The first command compiles local dependencies one at a time, uses existing
+  Lake package caches, and checks the axioms of every public theorem under
+  LeanProofs.GowersSzemeredi. Only propext, Classical.choice, and Quot.sound
+  are allowed. It also audits conditional theorems; this does not discharge
+  their hypotheses. The source inventory is deliberately a separate check.
+  The build uses the repository's Lean 4.32.0 toolchain and pinned mathlib.
+
+Next substantial obligations
+  The JSON ledger is exhaustive; the sequence below highlights the main
+  quantitative dependency chain. The qualitative Freiman theorems 7.1--7.2
+  and the quadratic inverse theorem 8.2 also remain open.
+  1. Establish the strong one-polynomial diameter input in Proofs05Lemma9.
+     The square-root recurrence is proved in Proofs05PolynomialPartition.
+     Proofs05Lemma9Induction and Proofs05Lemma9Scale already provide the
+     simultaneous refinement engine and its rounding-safe scale schedule.
+     The one-polynomial degree induction still needs its actual target-length
+     partition construction, including a separate degree-one argument.
+  2. Complete the multilinear partition results and the bilinear extraction
+     stages 13.5--13.9. Corollary 13.10 currently requires extra compatibility
+     and grid inputs; do not silently discharge them by citing the paper.
+  3. Migrate the proper-box Section 16 predicates consistently before counting
+     ProperTheorem162At 1 as the catalogue's Lemma 16.3. Complete the higher-
+     dimensional induction and resolve the documented Corollary 16.11 bound.
+  4. Prove Theorem 18.1 with explicit thresholds strong enough for iteration.
+     The existing Section 18 cyclic dichotomy is conditional on that theorem.
+     Account for the epsilon/4 density increment and cell-size prefactor, and
+     for density loss in the prime model. The new transfers address the
+     combinatorial transport, not these quantitative estimates.
+  5. Close Theorem 18.2 and its headline consequences; then investigate tighter
+     final bounds without treating improved auxiliary statements as a proved
+     improvement of the full Szemeredi estimate.
