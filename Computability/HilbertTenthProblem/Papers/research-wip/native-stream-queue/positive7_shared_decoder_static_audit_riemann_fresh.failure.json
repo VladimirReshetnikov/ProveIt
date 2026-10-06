@@ -1,0 +1,26 @@
+{
+  "status": "FROZEN failed first run; never replay, import, or modify-copy",
+  "auditor": {
+    "path": "/tmp/positive7_shared_decoder_static_audit_riemann_fresh.py",
+    "sha256": "5924ef410e0350e96f6917c88229cc5fe8538c5480507804abe70ed5c68441be",
+    "bytes": 13948,
+    "lines": 178
+  },
+  "exit_code": 1,
+  "first_error": "ValueError: fixed literal role; line 119 required tag == '*'; raised by require at line 19",
+  "concrete_counterexample": [
+    "program_tau",
+    "+",
+    "program_scaled",
+    {
+      "fixed": "gamma"
+    }
+  ],
+  "incorrect_reviewer_condition": "All fixed role occurrences are multiplication operands",
+  "incorrect_author_claim": "Each role occurs in one paid multiplication.",
+  "author_location": "positive7_shared_decoder_compiler_root.md section 3",
+  "correction": "Every role occurs exactly once in a paid operation; gamma occurs in one addition. All other roles, including all 5r new basis roles, occur in multiplications.",
+  "completion_claim": false,
+  "successful_receipt_created": false,
+  "next_evidence": "A wholly fresh independent record audit, with no replay or modified copy of this failed source."
+}
