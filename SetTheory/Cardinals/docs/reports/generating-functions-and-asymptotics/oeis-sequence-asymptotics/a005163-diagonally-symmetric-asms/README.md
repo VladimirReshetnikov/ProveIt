@@ -216,7 +216,8 @@ Their places in Parts III and IV (Sections 26, 28, 29, 33; 42–45) keep the
 title, the equation numbers (advanced so that the following equations keep
 theirs), every differing sentence (the "structural part of Theorem [main]"
 ending, Report 120's longer closing non-claim, Report 120's `d` for
-`d_ASM`, Report 121's identities (III.63)–(III.64) and last sentence) and a
+`d_ASM`, Report 121's root formula written without the definition of `M_n`,
+its identities (III.63)–(III.64) and last sentence) and a
 pointer. A reference in Parts III and IV to an equation of a repeated section
 shows its printed number, e.g. (II.17) for Report 121's (15). A comparison of
 the build's `.aux` with separate builds of the four delivered `.tex` files
@@ -312,6 +313,55 @@ the leading term (existence and characterization of `C`); the `n^{−2}` and
 not proved. The manuscripts' citations (eqs. (4.1), (4.11), (5.10)/Prop. 5.1,
 (11.3)–(11.6), Theorem 11.2) match that version.
 
+**Independent check of the write (5 October 2026).** An adversarial check
+made by the intake after the write (`ed4d0a12f`) reread the deductions (a)–(e)
+and the identification of Theorem 1.1 with the leading term of (11.8) (and
+`p < B(1) = β < q`), the merge (the eight `\cite{r124}` conversions, (I1)–(I4)
+against Report 124, the shared sections printed once), the statements about
+Conjecture 11.1, and every number in the notes and in Section 9. It found every
+mathematical claim valid, with no counterexample and no gap, and the merge
+faithful. Changes, each dated, with a note keeping the first wording where
+wording was replaced:
+
+- Section 9, item 1: the centre of the uncertified estimate is
+  `C_* ≈ 0.7235287` (`exp(−0.323615) = 0.72352875…`), not 0.7235288; a note
+  adds that a `1/n`-drift extrapolation has no basis in the form of (11.8), and
+  that least-squares fits of `r_n` to that form over four windows in
+  `80 ≤ n ≤ 200` give `log C_*` between −0.3236153120 and −0.3236153117, within
+  `7·10⁻¹⁰` of BFK's −0.3236153123 (uncertified).
+- Section 9, item 6: the boundary-ratio errors are not "decreasing"; each
+  varies with period 4 in `n` without changing sign, and only its maximum over
+  `4k ≤ n ≤ 4k + 3` decreases (about `4·10⁻⁷`, `10⁻⁶`, `1.6·10⁻⁵` for
+  `192 ≤ n ≤ 195`).
+- Notes in Sections 42 and 49: Part II proves **weak** cross-size interlacing
+  (with multiplicities, (II.21)); strict interlacing remains open with root
+  simplicity.
+- Note in Section 40: the comparison values 0.352, 0.455, 0.485, 0.499 are
+  `ν([0, x])`, whose finite part has mass ½, not values of its normalized
+  finite part; the note adds that Part II's proof of (II.121) is locally
+  uniform in `s`, and that every exact `P_n`, `n ≤ 64`, is squarefree with
+  `gcd(P_n, P_{n+1}) = 1`, so roots are simple and interlacing strict there.
+- Provenance, item 2: the third difference of Report 121's interlacing section
+  (the root formula without the definition of `M_n`), already recorded in
+  Section 33's note, is added to the list.
+
+The tests, none of which used the delivered or the write's programs: exact
+`a_n` for `n ≤ 200` from BFK's Pfaffian (Corollary 4.2) by skew elimination
+modulo 280 primes near `2³¹` with CRT (stable when 15 primes are dropped), equal
+to the OEIS b-file (`n ≤ 131`) and to the write's terms (`n ≤ 177`); brute-force
+enumeration of all ASMs for `n ≤ 7` (counts, `Z_4`, `Z_5`); from these, `r_n`,
+the period-4 increments, the residual against (11.8) with BFK's constants
+(at most `1.895·10⁻¹⁰` for `170 ≤ n ≤ 177`, `1.56·10⁻¹⁰` for `178 ≤ n ≤ 200`) and
+the fits; exact `P_n` for `n ≤ 64` and exact `P_n`, `P_n'` at `t = 1, 3, ¼, 9`
+for `n ≤ 200`, confirming `P_n(1) = a_n`, `Z_n(2) = a_{n+1}` (`n ≤ 63`),
+`Z_n(c)Z_{n+1}(c) = c2ⁿA_{n+1}` (`n ≤ 199`), the Newton inequalities, the `P_60`
+root data, `M_n(1) − n/3 → 0.4060` on both parities and the boundary ratios; a
+normalized diff of Part I against Report 128's delivered sections (exactly the
+13 lines the conversions explain) and diffs of the shared sections; and (11.8)
+and its constants read in the HTML text of arXiv:2309.08446v3. The record is an
+unlabelled dated paragraph at the end of Section 9. This was a careful reading
+with numerical tests, not a formal verification.
+
 ## What the report does not claim
 
 Every limitation is printed in place. In short: **no numerical digits** for
@@ -321,7 +371,8 @@ correction, no all-orders expansion or transseries; no uniformity as `s → 0` o
 `s → ∞` or in growing derivative order; `ε(T)` in the inverse has no explicit
 decay and cannot be dropped inside the ceilings; no effective constants or onsets
 anywhere, so no certified finite inverse; no root simplicity or strict
-interlacing; stability is not claimed for arbitrary further six-vertex weights or
+interlacing (both hold for `n ≤ 64`, a finite check at the independent check
+of the write); stability is not claimed for arbitrary further six-vertex weights or
 for a general `r`-refinement of `X_n(r,s,1)`; the Bernoulli representation is
 of the total diagonal count, not independence of diagonal indicators; the
 root-measure atom at infinity is essential (the finite density has mass ½); the
@@ -339,9 +390,11 @@ without proof there, with source, sketch and what is missing, and re-scoped the
 questions a stronger Part answers:
 
 - Part I, Section 9 (added): (1) the value of `C_*` — **uncertified**:
-  `C_* ≈ 0.7235288 ± 10⁻⁶` (so `E(1) ≈ −0.248070 ± 2·10⁻⁶`) from exact terms to
+  `C_* ≈ 0.7235287 ± 10⁻⁶` (so `E(1) ≈ −0.248070 ± 2·10⁻⁶`) from exact terms to
   `n = 177` (residuals `r_n = log a_n − αn² − βn + κ log n`, four-term averages
-  and Richardson extrapolation), agreeing with BFK's `log C = −0.32361531…`;
+  and Richardson extrapolation), agreeing with BFK's `log C = −0.32361531…`
+  (the centre was first printed 0.7235288; corrected, and sharpened by
+  least-squares fits, after the independent check above);
   (2) rate and the finer corrections — **uncertified**: `r_n − r_{n−1}` shows a
   decaying period-4 oscillation (about `±3·10⁻⁷`, `±7·10⁻⁷` near `n = 175`,
   signs `+,+,−,−`), the period of the conjectured `n^{−5/2}` terms, and `r_n`
@@ -354,10 +407,12 @@ questions a stronger Part answers:
   (`M_n(s) − nm(s) = o(√n)`) **answered by Parts II and I**; 3 (scales of root
   escape; uncertified: `P_60` has largest root ≈ `7.3·10³²` and root fractions
   consistent with half the mass escaping), 4 (prefactors away from the central
-  window), 5 (effective constants) open; root simplicity open.
+  window), 5 (effective constants) open; root simplicity open (it holds, with
+  strict interlacing, for `n ≤ 64`).
 - Part IV, Section 49: questions 1, 3, 4 **answered** (Parts III, II, I), 2
-  overtaken (Part III's root measure), 5 open; interlacing (Part II) and a common
-  calibration amplitude (Part I) now proved, root simplicity open.
+  overtaken (Part III's root measure), 5 open; weak interlacing (Part II) and a
+  common calibration amplitude (Part I) now proved, root simplicity and strict
+  interlacing open.
 
 Superseded statements stay as printed with dated notes pointing forward: Part
 II's bounds, inverse and "no limiting amplitude" scope; Part III's `o(n)` growth,
@@ -468,6 +523,13 @@ build (5 October 2026): 104 pages, no errors, no warnings, no undefined or
 multiply defined references or citations, no duplicate destinations, no
 overfull or underfull boxes; the four delivered `.tex` files build alone
 without warnings (27, 34, 27 and 15 pages).
+
+Rebuilt on 5 October 2026 after the independent check, in a scratch copy with
+four pdfLaTeX passes: 106 pages (104 before; the record and the longer notes
+of Section 9 add two pages), no errors, no warnings, no undefined or multiply
+defined references or citations, no duplicate destinations, no overfull or
+underfull boxes; all 386 labels keep their numbers (`.aux` compared with a
+build of the committed text; page numbers from the end of the front matter on move by at most two).
 
 ## Delivered path → shipped path
 
