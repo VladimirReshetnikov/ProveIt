@@ -21,8 +21,9 @@ unrefereed, not formalized: no Lean or Rocq declaration exists for any
 statement of this report. **No priority is claimed** by either source. Four
 relevant older works were not inspected at full-text level:
 Meir–Moon–Mycielski, *Hereditarily finite sets and identity trees* (JCTB
-1983), and Haigh–Kennedy–Quintas, *Counting and coding identity trees with
-fixed diameter and bounded degree* (Discrete Appl. Math. 7, 1984), both cited
+35 (1983) 142–155), and Haigh–Kennedy–Quintas, *Counting and coding identity
+trees with fixed diameter and bounded degree* (Discrete Appl. Math. 7, 1984),
+both cited
 by Part I; Labelle, *Counting asymmetric enriched trees* (J. Symbolic Comput.
 14, 1992), and Kennedy–McKeon–Palmer–Robinson, *Asymptotic number of
 symmetries in locally restricted trees* (Discrete Appl. Math. 26, 1990), cited
@@ -92,6 +93,41 @@ nonisomorphic); `I_d(z) = Σ a_{d,n} z^n` satisfies the signed root equation
 - **Section 18.** An exact threshold algorithm (doubling plus binary search on
   exact counts) that certifies `N_d(T)` for a given `T` by integer comparisons
   alone.
+- *[Independent check, 5 October 2026.]* An adversarial check made by the
+  intake after the write (`a2dc5d320`) reread every item of the write that
+  carries a proof or a transcription (Proposition 15.1, Remarks 11.1, 13.1,
+  16.1, 16.2 and 17.2, Table 6) and the certificate method of Section 16, as
+  printed and as coded in `code/02-certified-certify.py`. It found every item
+  valid, no counterexample and no gap in any proof chain. One statement of
+  the write was wrong: Remark 16.1(i) called the manuscript's reason for
+  `B_3 ≤ B_2` ("coefficient nonnegativity and `z ≤ 1`") deficient, but it is
+  a complete termwise proof (`0 ≤ a_d(n) z^(3n) ≤ a_d(n) z^(2n)` for
+  `0 ≤ z ≤ 1`). The criticism is withdrawn; part (i) is rewritten in place,
+  with a dated note after the remark keeping its first wording. While the
+  check was applied, one five-place value added by the write in Section 16.2
+  was found wrong and corrected in place: the majorant of `B_4` at `9/20` is
+  `0.0428416…`, so `0.04284`, not `0.04285` (the certified bound
+  `B_4 < 44/1000` is unaffected). The tests used neither the delivered
+  programs nor the write's. An own count recurrence (different loop order
+  from the certifier's) agrees with brute-force enumeration of canonical tree
+  forms for `n ≤ 13` (`d = 2, 3, 4`), with the OEIS b-files of A116379 and
+  A116380 for `n ≤ 1000` and with `data/identity-checks.json` for `n ≤ 400`.
+  All certified constants were recomputed at 100 digits by a different
+  route (Newton on `F = 0`, `G_y = 1`; a bivariate jet to total degree 11;
+  series reversion for `β_1, …, β_5`; Flajolet–Sedgewick's Theorem VI.1 in
+  place of (80)). In exact rational comparison all 28 certificate intervals,
+  all 28 rows of Table 6 and all 14 thirty-place entries of Tables 4–5
+  contain the recomputed values, and Part I's Table 1 and `E_1`, `E_2` values
+  are correctly rounded. Proposition 15.1 was confirmed symbolically in `γ`
+  for `m ≤ 7` and against `Γ` itself, including negative and complex `γ`;
+  Remark 17.2's `P_1`, `P_2` were checked symbolically against Part I's, with
+  a corrupted-`P_2` control that fails; Remark 13.1's bracket and (65) were
+  checked in exact rationals; and each item of the certificate method
+  (outward rounding, Machin `π`, the `artanh` remainder, Catalan tails, jet
+  orders, exact zeros, global bounds, `G_z` lower bounds, uniqueness of `y_*`
+  and of the zero of `M`) was re-derived. Its record is an unlabelled dated
+  paragraph at the end of Section 19: a careful reading with independent
+  high-precision computation, not a formal verification.
 
 The proofs written at the write (not in either source) are Proposition 15.1,
 Remarks 13.1, 16.1, 16.2 and 17.2, and the citation correction Remark 11.1.
@@ -99,8 +135,10 @@ Remarks 13.1, 16.1, 16.2 and 17.2, and the citation correction Remark 11.1.
 ## What is not claimed
 
 - No priority (above); the OEIS pages' "unknown leading asymptotic" comment
-  (inspected 2 October 2026 by both manuscripts, not re-checked at intake)
-  motivates the calculation but "is not evidence of exhaustive priority".
+  (inspected 2 October 2026 by both manuscripts; re-checked 5 October 2026,
+  when both records still said "It is not known if these trees have the
+  asymptotic form `C rho^{-n} n^{-3/2}`") motivates the calculation but "is
+  not evidence of exhaustive priority".
 - The classical machinery (the `n^(-3/2)` mechanism, analytic implicit
   functions, Puiseux, Gamma-ratio transfer) is prior work; Genitrini (2016)
   and Gittenberger–Jin–Wallner (2018) are discussed as not covering the
@@ -144,6 +182,14 @@ Remarks 13.1, 16.1, 16.2 and 17.2, and the citation correction Remark 11.1.
   5 October 2026); Part I already cites it correctly. Part II cites it as
   Part I's entry, with Remark 11.1 recording the error. No mathematical claim
   of either source was found to be wrong.
+- **A mistaken criticism of the write, withdrawn (5 October 2026).** The
+  write's Remark 16.1(i) first said that the manuscript's reason for
+  `B_3 ≤ B_2` ("from coefficient nonnegativity and `z ≤ 1`") needed
+  replacing by monotonicity of `A`. The manuscript's reason is complete
+  termwise; part (i) now says so, and a dated note after the remark keeps the
+  first wording. The write's five-place value `0.04285` of the `B_4` majorant
+  in Section 16.2 is corrected to `0.04284`. Part I's entry for
+  Meir–Moon–Mycielski now gives volume 35 and pages 142–155 (Crossref).
 - **Part I's further question 1** ("Certify ρ, C, D_j by interval root and tail
   bounds, then make (49) effective") is half answered: certified for
   `d = 3, 4` and `j ≤ 2`; `j ≥ 3`, other caps and the effective ceiling stay
@@ -211,14 +257,15 @@ labels of source 02 (prefixed before anything cited them) and 20 added by the
 write (sections, tables, remarks, Proposition 15.1, `bit:cert:part`); the
 write also added `bit:part:one`. Total 154 (`\label` count, with the
 `\label[type]{…}` form included). The `.aux` files of the committed and new
-builds give all 68 Part I labels the same numbers.
+builds give all 68 Part I labels the same numbers. The independent check of
+5 October 2026 added, removed and renumbered no label.
 
 ## Files
 
 ```text
 README.md                                 this guide (replaces both delivery READMEs)
 article.tex                               the report (Part I delivered as report.tex; Part II merged from Report130.tex and certified_constants.tex)
-article.pdf                               compiled report, 34 pages
+article.pdf                               compiled report, 37 pages
 code/README.md                            Part I: delivered guide to the generators (delivery commands; see below)
 code/check_identity.py                    Part I: exact counts by the positive product and an independent Newton recurrence
 code/identity_allorders.py                Part I: Puiseux/Gamma jets (sum and Taylor-differentiation routes)
@@ -358,7 +405,7 @@ booktabs, array, enumitem, xcolor, hyperref, fancyhdr; the preamble uses
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The committed PDF was built in a scratch directory with MiKTeX: 34 pages, no
+The committed PDF was built in a scratch directory with MiKTeX: 37 pages, no
 errors or LaTeX warnings, no undefined references or citations, no multiply
 defined labels, no duplicate PDF destinations, no overfull or underfull boxes
 (the font-map "already exists" messages caused by the preamble's
@@ -376,8 +423,9 @@ scratch directory with the source it expects (`report.tex`, or the archive's
   Math. 341 (2018); Meir–Moon–Mycielski (1983), Haigh–Kennedy–Quintas (1984),
   Labelle (1992) and Kennedy–McKeon–Palmer–Robinson (1990), full texts not
   inspected; OEIS A116379, A116380 (inspected 2 October 2026 by both
-  manuscripts). The counts in the data and tables are computed by the
-  delivered programs and agree with the OEIS records; OEIS terms as such are
+  manuscripts, re-checked 5 October 2026). The counts in the data and tables
+  are computed by the delivered programs and agree with the OEIS records;
+  OEIS terms as such are
   CC BY-SA 4.0 material of The OEIS Foundation.
 - Repository input: none recorded for either source; no pin.
 - Source 01: batch 77 of `docs/incoming`, manuscript 63 (cluster P3); arrival
