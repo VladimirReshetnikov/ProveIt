@@ -191,6 +191,36 @@
 > The [scalar complement reuse](residue_affine_complement_reuse.md) and [vector positive-guard template](counter_vector_positive_guard.md), with [independent proof and source review](review_counter_positive_guard_extensions.md), extend the counter-step savings to every fixed program of the stated form. Reusing the scalar remainder-complement equation saves one addition: the complete SOS costs **10B+21**, with six positive witnesses; its B=14 fixture costs **161=76M+85A**, of exact degree28. For r counters and K states represented directly, positivity forces the branch selector using only two witnesses, giving a paid SOS template of **2(r+2)K+7r+11** operations and degree at most2K+2. This saves three operations against the same template with an explicit Boolean residual. The distinct endpoint interfaces cannot be compared without a paid conversion. The scalar source receives independent inert structure and polynomial checks; the vector result is proof-only. Neither result supplies unbounded iteration or improves the universal84 frontier.
 >
 >
+> The [two-relator affine-line transducer](positive7_higman_affine_line_transducer_aristotle.md)
+> and [complete shared presentation schedule](positive7_higman_shared_schedule_riemann.md)
+> give a hand-counted target pair with **499 generators, 17,678 relators and
+> three subgroup words**. A free rank-two HNN transfer sends the accepted
+> configuration directly to the commutator pattern, paying one generator and
+> two relations. Its exact Britton intersection preserves the old marker and
+> cached pairs; the new letter does not normalize the whole marker group.
+> The schedule pays all 48 affine edge leaves, 47 unions, global nonnegative
+> typing, history extraction and the initial-line restriction. Full independent
+> hand challenges pass. The valid full-marker decoder, theta projection and
+> Keep projection remain recorded, including the corrected Keep list length
+> 622 and its two additional relations. The later embedding ledger gives
+> **20,808 conditional relation slots**, not an instantiated universal parameter.
+> Materializing and independently auditing all literal presentation words,
+> embedding images and matrices remains open. The established universal
+> **84-operation / degree-187 / 18-witness** frontier is unchanged.
+>
+>
+> The [complete grouped-left compiler](positive7_grouped_left_compiler_riemann.md), with [independent full-record review](review_positive7_grouped_left_compiler_pascal.md), lowers the saved `r=1,2,4` totals to **798/862/1003 operations**. The exact left-pack identity saves `r` multiplications with unchanged additions, final polynomial, witnesses and comparisons. All **2,663 records** passed an independent literal audit: 2,613 unmoved and nine moved records are retained, while 41 insertions replace 48 old records. Both original metadata programs were fully preflighted, run once and frozen. The collected route remains an explicit hand-proved grammar; a numerical universal presentation, source degree and optimality are still open.
+>
+>
+> The [persistent Higman ambient](positive7_higman_shared_ambient_aristotle.md) proves that cached benign pairs can share one presentation: binary operations use two new letters, marker changes use one paid HNN transport, and one initial shift letter implements all later fixed shifts by named-word conjugation. A direct affine-orbit lemma supplies constants, boxes and finite affine relations inside the same nine-generator group. The [affine-edge recognizer](positive7_affine_typed_recognizer_pascal.md) uses 46 literal increment/decrement branches and one global `omega_1(N)` condition, with a full accepting-history proof and an affine final commutator pattern. Independent hand challenges passed; the reusable nonnegativity fragment has a 105-generator, 1,979-relator schedule. Actual presentation words, named embeddings and numerical universal arithmetic bounds still require materialization and audit.
+>
+>
+> The [grouped left-pack identity](positive7_grouped_left_shared_tail_riemann.md) saves another **r multiplications and no additions** for every `r>=1`, using the already paid shared tail power. It collects the relator quartets and factors the two six-field history pairs, with the collected center correction retained inside the correct outer power. Root and Pascal independently passed the full hand proof; inert parent scans identify one preserved arithmetic exit and movable support rows. The resulting **798/862/1003** totals are prospective at this local-proof freeze; a complete successor and independent record audit are separate downstream work. No numerical universal presentation or new general bound is claimed.
+>
+>
+> The [normalized Higman presentation grammar](positive7_higman_benign_recipes_aristotle.md), with [independent bounded source review](review_positive7_higman_benign_boundaries_riemann.md), supplies explicit generator, relator and subgroup-word recipes for every primitive in the closed recognizer and commutator pattern. Hand checks correct omitted inherited relations, name collisions and several printed counts. The proposed block construction needs a zero block; all three actual inputs supply one, and a separate finite expression repairs arbitrary block inputs without deciding membership. These are conditional word-list recipes with the primary subgroup-identification lemmas stated as premises. Expansion of the actual group, named embedding images and a numerical universal arithmetic bound remain open.
+>
+>
 > The [complete grouped right-pack compiler](positive7_grouped_right_compiler_riemann.md), with [independent full source review](review_positive7_grouped_right_compiler_pascal.md), reduces the saved `r=1,2,4` graphs from **809/875/1021 to 799/864/1007 operations**. Grouped selector polynomials and a shared native/tail power give the general saving; three additional fixed-size power identities save another 3/2/1 multiplications. All **2,670 records** were independently compared: 2,570 literal survivors and 100 insertions replace 135 old records, preserving both exit names, the full final polynomial, witnesses and comparisons. The generic collected branch remains a hand-proved grammar with no fabricated saved example. Numerical universal group data, source degree and optimality remain open.
 >
 >
