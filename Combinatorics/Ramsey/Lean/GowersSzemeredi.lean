@@ -108,6 +108,7 @@ import GowersSzemeredi.Proofs07CeilingPartition
 import GowersSzemeredi.Proofs07ModularPartition
 import GowersSzemeredi.Proofs07ShortLinearity
 import GowersSzemeredi.Proofs07NinePointLinearity
+import GowersSzemeredi.Proofs07UniversalPartition
 import GowersSzemeredi.Proofs08QuadraticBias
 import GowersSzemeredi.Proofs08Coloring
 import GowersSzemeredi.Proofs09Moments
@@ -145,6 +146,7 @@ import GowersSzemeredi.Proofs13LargeScaleExtraction
 import GowersSzemeredi.Proofs13SmallScaleExtraction
 import GowersSzemeredi.Proofs13CompleteRowExtraction
 import GowersSzemeredi.Proofs13CoefficientExtraction
+import GowersSzemeredi.Proofs13CoefficientPartition
 import GowersSzemeredi.Proofs14Fourier
 import GowersSzemeredi.Proofs14Configurations
 import GowersSzemeredi.Proofs14Arrangements
