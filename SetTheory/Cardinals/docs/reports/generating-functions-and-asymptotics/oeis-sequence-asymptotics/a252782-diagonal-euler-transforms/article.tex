@@ -1,4 +1,3 @@
-\newcommand{\DoNotLoadEpstopdf}{}
 \pdfinfoomitdate=1
 \pdftrailerid{}
 \pdfsuppressptexinfo=-1
@@ -9,8 +8,8 @@
 \usepackage[margin=1in]{geometry}
 \usepackage{booktabs,longtable,array}
 \usepackage{microtype}
-\usepackage[hidelinks]{hyperref}
-\hypersetup{pdftitle={Report 147 Diagonal Euler transforms},pdfauthor={},pdfsubject={Exact phases critical crossover and residue aware inverses for A252782 and A270917}}
+\usepackage[colorlinks=true,linkcolor=black,citecolor=black,urlcolor=blue]{hyperref}
+\usepackage{xurl}
 \setlength{\parskip}{4pt}
 \setlength{\parindent}{1.2em}
 \setlength{\emergencystretch}{2em}
@@ -21,6 +20,8 @@
 \newtheorem{corollary}[theorem]{Corollary}
 \theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
 \theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+% Macros of the two sources. Names defined by both (\fall, \eps, \NN) have the
+% same definition in each.
 \newcommand{\fall}[2]{(#1)_{\underline{#2}}}
 \newcommand{\eps}{\varepsilon}
 \newcommand{\NN}{\mathbb N}
@@ -28,12 +29,191 @@
 \newcommand{\coef}[2]{[#1^{#2}]}
 \newcommand{\ceilr}[2]{\left\lceil #1\right\rceil_{#2}}
 \DeclareMathOperator{\supp}{supp}
-\title{Diagonal Euler transforms\\\large Exact phases critical crossover and residue aware inverses}
-\author{Report 147}
-\date{3 October 2026}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Prb}{\mathbb P}
+\newcommand{\Bad}{\mathcal B}
+\newcommand{\M}{\mathcal M}
+\DeclareMathOperator{\Pois}{Pois}
+% Added in the merge (batch 106).
+\newcommand{\file}[1]{\nolinkurl{#1}}
+\newenvironment{writenote}[1][]{\par\smallskip\begingroup\small
+ \noindent\textbf{[write]}\if\relax\detokenize{#1}\relax\else~\textbf{#1.}\fi\ }%
+ {\par\endgroup\smallskip}
+\newcommand{\wtag}{\textup{\textbf{[write]}}}
+\newenvironment{partabstract}{\begin{quote}\small\noindent\textbf{Abstract of this Part (as delivered).}\ }{\end{quote}}
+\newcommand{\partsource}[1]{\par\noindent\begin{minipage}{\textwidth}\small #1\end{minipage}\par\medskip}
+\hypersetup{pdftitle={Diagonal Euler transforms (OEIS A252782 and A270917)},pdfauthor={},pdfsubject={Merged report a252782-diagonal-euler-transforms (batch 106): the corrected root limit, exact phases, inverses and the critical crossover (Report 147); the growing crossover and attenuation inverse (Report 148)}}
+\title{\textbf{Diagonal Euler transforms\\ (OEIS A252782 and A270917)}\\[7pt]
+\large The $n^2$-th root tends to $3^{1/3}$, not $e^{1/e}$: exact phases,\\ residue-aware inverses, the critical crossover and the growing crossover}
+\author{Two research reports of one external research session\\(bundle Reports 147 and 148), merged into one ProveIt report}
+\date{Both Parts: 3 October 2026\quad merged: 5 October 2026}
 \begin{document}
+\hypersetup{pageanchor=false}
 \maketitle
 \begin{abstract}
+Let $A_\eps(n)=[x^n]\prod_{j\ge1}(1-\eps x^j)^{-\eps j^n}$: for $\eps=+1$ the $n$th term of the Euler transform of the $n$th powers, OEIS A252782, and for $\eps=-1$ its distinct-colour analogue, A270917. Both OEIS entries state the conjecture $A_\eps(n)^{1/n^2}\to\exp(e^{-1})=1.44466786\ldots$ (V\'aclav Kot\v{e}\v{s}ovec, March 25, 2016). This report prints two manuscripts as Parts~I and~II. Part~I proves that the limit is $3^{1/3}=1.44224957\ldots$, which refutes the conjecture: $\log x/x$ is maximal at $x=e$ over the reals but at $j=3$ over the integers. The write adds the bound $A_\eps(n)\le2^{n-1}3^{n^2/3}$ with a complete elementary proof, from which $A_\eps(n)^{1/n^2}<e^{1/e}$ for every $n\ge414$. Part~I then gives an exact expansion over logarithmic atoms, the three residue-dependent leading amplitudes with all exponentially small sectors and a uniform tail bound, the first unrestricted-minus-distinct difference, power-log inverses to every order, convergent inverses of finite sector models, asymptotic residue-aware integer threshold brackets, strict increase at every $n\ge1$, and a uniform crossover for a separately varying exponent $\tau$ with bounded $z=m^2(8/9)^\tau$ ($n=3m+r$), including a correction of non-integer order $m^{-\delta}$, $\delta=2.0959\ldots$, from parts of size five. Part~II extends the crossover to growing $z\le Sm^{3/4}$, where the coefficient acquires the attenuation $\exp(-8s^{4/3}/9)$, $s=z/m^{3/4}$, with two quarter-power corrections and a term of order $m^{-0.6849\ldots}$, and inverts the attenuation of a smooth model on compact windows; it answers in part a question Part~I left open. Effective constants and onsets, all-orders expansions in the crossover regimes, the range $s\to\infty$ and integer-exponent thresholds remain open. The report is unrefereed, and nothing in it is formalized.
+\end{abstract}
+\hypersetup{pageanchor=true}
+\setcounter{tocdepth}{1}
+{\small\setlength{\parskip}{0pt}\tableofcontents}
+\newpage
+
+\section*{Guide to this report}\phantomsection\label{det:sec:guide}
+\addcontentsline{toc}{section}{Guide to this report}
+The two Parts are two manuscripts of the session bundle of Reports 1--243 (arrival commit \texttt{60f54ea06}), placed in this directory by commit \texttt{47fc7a069} (batch~106). They study one family of coefficients,
+\[
+ A_\eps(n,\tau)=[x^n]\prod_{j\ge1}(1-\eps x^j)^{-\eps j^\tau},\qquad \eps\in\{+1,-1\},
+\]
+on the diagonal $\tau=n$ (OEIS A252782 for $\eps=+1$, A270917 for $\eps=-1$) and off it, with $n=3m+r$, $r\in\{0,1,2\}$:
+\begin{center}
+\small
+\begin{tabular}{@{}l l >{\raggedright\arraybackslash}p{0.5\textwidth} l@{}}
+\toprule
+Part & Bundle report & Delivered title & Labels\\
+\midrule
+I & 147 (base) & Diagonal Euler transforms: Exact phases critical crossover and residue aware inverses & \texttt{det:dia:}\\
+II & 148 & Growing Euler crossover and attenuation inverse: Uniform moderate defect clouds for diagonal Euler families & \texttt{det:grow:}\\
+\bottomrule
+\end{tabular}
+\end{center}
+\emph{Arrangement.} The base of the merge is Report~147; its \file{Report147.tex} was staged as this \file{article.tex}, and it is printed first, as Part~I. Report~148 extends Part~I's critical crossover (Section~\ref{det:dia:sec:crossover}) from bounded $z=m^2(8/9)^\tau$ to $0<z\le Sm^{3/4}$, and so answers in part Part~I's further question~3 (Section~\ref{det:dia:sec:further}). It restates the definitions it needs and proves its own normalization and estimates (its Section~\ref{det:grow:sec:background} says so); it takes from Part~I the setting, the leading amplitudes and the pure-defect functions $\Psi_r$. It is printed second, as Part~II. Dependency order is also the order of writing.
+
+\emph{Embedded copy.} Report~148's archive carries Report~147's source and PDF under \file{foundation/}; both files are byte-identical to Report~147's standalone delivery (SHA-256 at placement, \texttt{cmp} again at the write). They are printed once, as Part~I, and are not shipped.
+
+\emph{Numbering.} Sections are numbered continuously, and statements and equations within sections, so a statement or equation number moves with its section only. Part~I keeps Report~147's Sections~1--13 and all its numbers. Report~148's Section~$k$ is Section~$k+13$ here (Sections~14--26), and its statement or equation $k.j$ is $(k+13).j$: its Theorem~2.1 and Corollary~2.2 are Theorem~\ref{det:grow:thm:forward} and Corollary~\ref{det:grow:cor:limit}, its Propositions~5.1 and~6.1 are Propositions~\ref{det:grow:prop:pure} and~\ref{det:grow:prop:bad}, and its Theorems~8.1 and~9.1 are Theorems~\ref{det:grow:thm:inverse} and~\ref{det:grow:thm:brackets}. Subsection~\ref{det:dia:sub:explicit} and Section~\ref{det:sec:further} were added in the write; no delivered number moved.
+
+Notes added when the manuscripts were merged are set in small type and tagged \textbf{[write]}, with their date (5~October 2026). They give cross-references between the Parts, mark the question that Part~II answers, mark restated material, and record what the write checked. No delivered statement was changed and no delivered symbol was renamed; the one printed decimal found wrong (a digit of $\beta$ in Part~II) is corrected in a dated note beside it. Each Part ends with its own section of open questions (Sections~\ref{det:dia:sec:further} and~\ref{det:grow:sec:further}); Section~\ref{det:sec:further} gathers them for the whole report under Vladimir's standing rule of 4~October 2026, with their sources, sketches and what is missing.
+
+\section*{What is proved, and where}\phantomsection\label{det:sec:status}
+\addcontentsline{toc}{section}{What is proved, and where}
+Here $n=3m+r$; $z=m^2(8/9)^\tau$ (Part~II writes $t$ for $\tau$); $s=z/m^{3/4}$; $\rho=5/\sqrt{32}$ and $\delta=2\log(\sqrt{32}/5)/\log(9/8)=2.0958882\ldots$.
+\begin{center}
+\small
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.56\textwidth} >{\raggedright\arraybackslash}p{0.39\textwidth}@{}}
+\toprule
+Statement & Where\\
+\midrule
+$\log A_\eps(n)=\frac{\log3}3n^2+O(n\log n)$, so $A_\eps(n)^{1/n^2}\to3^{1/3}$: the OEIS conjecture $\to e^{1/e}$ is false & Part~I, Theorem~\ref{det:dia:thm:root}\\
+$3^{mn}/m^m\le A_\eps(n)\le2^{n-1}3^{n^2/3}$ for $n\ge3$; $A_\eps(n)^{1/n^2}<e^{1/e}$ for every $n\ge414$ (and, by exact computation, for every $n\ge8$) & \wtag\ Proposition~\ref{det:dia:prop:explicit}, Corollary~\ref{det:dia:cor:refute}, Remark~\ref{det:dia:rem:exact}\\
+The integer-break maximum $M(n)$ (classical) & Part~I, \eqref{det:dia:eq:integerbreak}\\
+Exact expansion over logarithmic atoms; atom bound $\mu^6\le9^r(8/9)^D$; uniform degree and spectral tails, explicit onset $n\ge192$ & Part~I, Theorem~\ref{det:dia:thm:exact}, Lemma~\ref{det:dia:lem:atom}, Theorem~\ref{det:dia:thm:tail}\\
+$A_\eps(n)\sim L_r(n)$ with the three residue amplitudes; every common relative phase $\ge7/10$ (exhaustive rational certificate) & Part~I, Theorem~\ref{det:dia:thm:sectors}, Table~\ref{det:dia:tab:common}\\
+First unrestricted-minus-distinct difference, phases $4/9$, $1/2$, $1/2$ & Part~I, Theorem~\ref{det:dia:thm:diff}, Table~\ref{det:dia:tab:odd}\\
+Leading inverse with every power-log order; convergent inverse of each finite sector model; compatibility under deeper truncation & Part~I, Proposition~\ref{det:dia:prop:core}, Theorems~\ref{det:dia:thm:powerlog} and~\ref{det:dia:thm:inverse}, Proposition~\ref{det:dia:prop:compatibility}\\
+Residue-aware integer threshold brackets (asymptotic, no effective onset); strict increase for every $n\ge1$ & Part~I, Theorem~\ref{det:dia:thm:bracket}, Proposition~\ref{det:dia:prop:monotone}\\
+Uniform crossover for bounded $z$, entire $\Psi_r$, two algebraic corrections and the term $\rho^\tau\Phi_r(z)$ of order $m^{-\delta}$ & Part~I, Theorem~\ref{det:dia:thm:crossover}\\
+Growing crossover for $0<z\le Sm^{3/4}$: attenuation $e^{-8s^{4/3}/9}$, two quarter-power corrections, a term of order $m^{-\beta}$, $\beta=\frac58(\delta-1)$, remainder $O_S(m^{-3/4})$ & Part~II, Theorem~\ref{det:grow:thm:forward}, Corollary~\ref{det:grow:cor:limit}\\
+Pure-cloud depletion; the whole bad-atom sum; the size-five term and the zero endpoint & Part~II, Proposition~\ref{det:grow:prop:pure}, Lemma~\ref{det:grow:lem:shift}, Proposition~\ref{det:grow:prop:bad}, Section~\ref{det:grow:sec:five}\\
+Attenuation inverse of the smooth model on a compact window; exact real-parameter crossings exist and are localized (uniqueness not claimed); a second route to the pure coefficients & Part~II, Theorems~\ref{det:grow:thm:inverse} and~\ref{det:grow:thm:brackets}, Lemma~\ref{det:grow:lem:global-factorial}\\
+\midrule
+\multicolumn{2}{@{}l}{\emph{Open}}\\
+\multicolumn{2}{@{}p{0.96\textwidth}@{}}{Effective onsets and certified integer thresholds; all orders in both crossover regimes; the range $s\to\infty$ and the bridge to fixed exponents; exact monotonicity and integer-exponent sampling; other integer weights; convergence of the inverse series; a full-text literature comparison. See Section~\ref{det:sec:further}.}\\
+\bottomrule
+\end{tabular}
+\end{center}
+The finite computations of the two companions (exact integers and rationals) check coefficient rows, identities, enumerations and coefficient algebra; no asymptotic statement rests on them. The inverses are discussed below, after the OEIS statements.
+
+\section*{The OEIS conjecture, and its refutation}\phantomsection\label{det:sec:oeis}
+\addcontentsline{toc}{section}{The OEIS conjecture, and its refutation}
+The two entries as read by the write on 5~October 2026 (A252782 revision \#20 of March 22, 2017; A270917 revision \#15 of October 16, 2017):
+\begin{itemize}
+\item \textbf{A252782} (Alois P. Heinz, Dec 21, 2014), with name\\
+\verb!a(n) = n-th term of Euler transform of n-th powers!\\
+and the formula $a(n)=[x^n]\prod_{j\ge1}1/(1-x^j)^{j^n}$, so $a(n)=A_+(n)$. Its formula section reads, verbatim:\\
+\verb!Conjecture: limit n->infinity a(n)^(1/n^2) = exp(exp(-1)) = 1.444667861... .!\\
+\verb!- _Vaclav Kotesovec_, Mar 25 2016!
+\item \textbf{A270917} (Vaclav Kotesovec, Mar 25, 2016), with name\\
+\verb!Coefficient of x^n in Product_{k>=1} (1 + x^k)^(k^n)!\\
+so $a(n)=A_-(n)$. Its formula section reads, verbatim and unsigned, in the entry Kot\v{e}\v{s}ovec created on that date:\\
+\verb!Conjecture: limit n->infinity a(n)^(1/n^2) = exp(exp(-1)) = 1.444667861...!
+\end{itemize}
+\emph{What is right and what is wrong.} The definitions and the listed terms are right: the write recomputed $A_\pm(n)$ exactly for $n\le109$ (Euler recurrence \eqref{det:dia:eq:recurrence}), and the values agree with both entries' b-files, which run to $n=80$. What is wrong is the conjectured limit. Theorem~\ref{det:dia:thm:root} proves $A_\eps(n)^{1/n^2}\to3^{1/3}=1.4422495703\ldots$, while $e^{1/e}=1.4446678610\ldots$. The write's Subsection~\ref{det:dia:sub:explicit} prints the proof with every constant explicit: from $j\le3^{j/3}$ for every integer $j\ge1$ each of the at most $2^{n-1}$ profiles has weight at most $3^{n^2/3}$, so $A_\eps(n)\le2^{n-1}3^{n^2/3}$; the profile of $m$ parts of size~3 gives $A_\eps(n)\ge3^{mn}/m^m$; and since $\log3/3<1/e$ the upper bound alone gives $A_\eps(n)^{1/n^2}<e^{1/e}$ for every $n\ge414$ (Corollary~\ref{det:dia:cor:refute}; the intake record's ``$n\ge415$'' is valid but one more than needed). So the conjecture is \emph{refuted}, not merely sharpened: the $n^2$-th root stays below $e^{1/e}$ from $n=414$ on and converges to a different number. By an exact finite computation (Remark~\ref{det:dia:rem:exact}) it is below $e^{1/e}$ already for every $n\ge8$ and above it for $2\le n\le7$ ($3\le n\le7$ for A270917). The approach to the limit is slow, $\log A_\eps(n)/n^2=0.35699$ at $n=90$ against $\log3/3=0.36620$, which is the $O(\log n/n)$ term of the bounds; Part~I explains the two constants by the maximum of $\log j/j$ over the integers ($j=3$) and over the reals ($x=e$), and says that this ``is not evidence about how the original conjecture was produced''. Nothing was submitted to the OEIS.
+
+\emph{The inverses.} None of the inverse statements is an instance of the transseries volume's Lambert core \file{p0:thm:lambert-core} or factorial core \file{p0:prop:factorial-core} \cite{TSvol}, and no Lambert~$W$ occurs in either Part. Statement by statement:
+\begin{itemize}
+\item Part~I, Theorem~\ref{det:dia:thm:powerlog}: the phase $F_r(x)=\alpha x^2-\frac x3\log x+c_rx+\cdots$ is quadratic, outside the volume's exponential--power model \file{p0:def:model} (exponent at most~1) and not reduced to it by \file{p0:lem:alpha-reduction}. Its core $\alpha x^2$ is an admissible core in the sense of \file{p0:def:core}, and the triangular recurrence \eqref{det:dia:eq:Prec} is the scheme of \file{p0:thm:core-reversion} with coefficients that are polynomials in $\log y$: an analogue, proved directly in Part~I.
+\item Part~I, Theorem~\ref{det:dia:thm:inverse}: the series \eqref{det:dia:eq:LB} is the series of the volume's perturbed-inversion theorem \file{p0:thm:perturbed-inversion} with core $F_r$, perturbation $H_r$ and $\varepsilon=1$. That theorem gives convergence only for $|\varepsilon|<\varepsilon_0$; Part~I proves, for large $t$, that the disk of convergence contains $|\varepsilon|\le2$. So an instance of the formula, with the convergence at $\varepsilon=1$ proved in Part~I.
+\item Part~I, Theorem~\ref{det:dia:thm:bracket} and \eqref{det:dia:eq:globalinverse}: the residue-class ceilings and the minimum over residues have the form of \file{p0:thm:staircase}\,(4), and the bracket follows the separation idea of its item~(2); but that theorem presupposes an admissible interpolation of the sequence itself, and Part~I interpolates only the model (``No interpolation of the original sequence is being assumed''). Not an instance; proved directly at the integers.
+\item Part~II, Theorem~\ref{det:grow:thm:inverse}: the core $F(s)=-\gamma s^{4/3}$ is inverted by a power, $s_0=(-\log q/\gamma)^{3/4}$. The coefficients \eqref{det:grow:eq:inverse-coeff} are the first coefficients of the multi-parameter form \file{p0:eq:perturbed-multi} of \file{p0:thm:perturbed-inversion} with perturbations $G$, $H_r$, $J$ and small parameters $u$, $u^2$, $v$ (checked by the write symbolically, including the $u^2$ coefficient); the remainder is Part~II's own mean-value argument. An instance of the coefficient formula.
+\item Part~II, Theorem~\ref{det:grow:thm:brackets}: brackets in the real parameter $t$ only; no counterpart in the volume's integer apparatus.
+\end{itemize}
+Neither manuscript claims novelty for the inversion mechanics: Part~I calls Lagrange inversion classical, and Part~II calls its methods classical.
+
+\section*{Notation across the two Parts}\phantomsection\label{det:sec:notation}
+\addcontentsline{toc}{section}{Notation across the two Parts}
+Common to both Parts, with the same meaning: $\eps$, $n=3m+r$, $z=m^2(8/9)^\tau$, $a=z^{1/3}$, $\rho=5/\sqrt{32}$, $\delta$, $H_k=[u^k]\exp(u+u^2)$, $\Psi_r$, $F_q(a)=\sum_{k\equiv q\,(3)}H_ka^k$, $\omega=e^{2\pi i/3}$, the atom activities $\lambda_{jk}=j^\tau\xi^{jk}$ (Part~II: $\lambda_{j,k}$), the depletion index $\ell=(D-r)/3$, the degree $D$, and the falling factorial $\fall m\ell$. Part~II's $L_r$ is Part~I's $\mathcal L_r$ of \eqref{det:dia:eq:crossL}; Part~II's $P_\ell(m)$ is Part~I's $W_\ell(m)$; Part~II's $x_0$ is Part~I's $\xi$; Part~II's $q_r=(0,2,1)$ and $c_r=(1,3/2,1)$ are Part~I's $\kappa_r$ and $g_r$; Part~II's $\rho_{j,k}$ is Part~I's $R_{jk}$; Part~II's $B=a+a^2$ is Part~I's $B_0$ of Section~\ref{det:dia:sec:crossover}. The symbols below change meaning between the Parts or inside one; each Part's text fixes its meaning there, and each Part opens with a short table of its own readings. No symbol was renamed.
+\begingroup\small
+\renewcommand{\theHtable}{notation.\arabic{table}}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.12\textwidth} >{\raggedright\arraybackslash}p{0.84\textwidth}@{}}
+\toprule
+Symbol & Meanings\\
+\midrule
+\endhead
+$\tau$, $t$ & Part~I: $\tau$ the separately varying outer exponent (Section~\ref{det:dia:sec:crossover}); $t=\log X$ the logarithmic threshold of Sections~\ref{det:dia:sec:inverses}--\ref{det:dia:sec:brackets}. Part~II: $t$ the outer exponent (Part~I's $\tau$); $t_m(s)$ the exponent at given $s$; $\tau_{r,m}(q)$ the inverse value of $t$ (Theorem~\ref{det:grow:thm:inverse}). \emph{Tempting false reading:} Part~II's $t$ is not Part~I's $t$.\\
+$L$ & Part~I: $L_r(n)$ the diagonal amplitudes \eqref{det:dia:eq:L}; $L_r(x)$ their smooth branch \eqref{det:dia:eq:smoothL}; $\mathcal L_r$ the two-parameter amplitudes \eqref{det:dia:eq:crossL}. Part~II: $L=\log(9/8)$; $L_r$ the two-parameter amplitudes \eqref{det:grow:eq:amplitudes}, equal to Part~I's $\mathcal L_r$ (and to Part~I's $L_r(n)$ only on the diagonal $t=n$); $L^3$ norms. \emph{False reading:} Part~II's $L$ is not an amplitude.\\
+$\alpha$ & Part~I: $\alpha=\log3/3$. Part~II: $\alpha=5/(4L)$ (proof of Proposition~\ref{det:grow:prop:bad}, Section~\ref{det:grow:sec:inverse}).\\
+$\beta$, $\mathcal B$ & Part~I: $\beta$ a relative phase (Table~\ref{det:dia:tab:common}); $\beta$ the base in \eqref{det:dia:eq:forwardrelative}; $\beta_{\max}$; $\mathcal B$ the finite set of sector bases \eqref{det:dia:eq:model}. Part~II: $\beta=\frac58(\delta-1)=0.6849\ldots$ an exponent; $\mathcal B$ the set of bad atoms. \emph{False reading:} Part~II's $\beta$ is an exponent of $m$, not a base.\\
+$B$ & Part~I: $B=T^6/9^r$ \eqref{det:dia:eq:boundB}; $B=\max(1,M^{1/6})$ and $B_0=a+a^2$ (Section~\ref{det:dia:sec:crossover}); $B_k(b)$ Bernoulli polynomials. Part~II: $B=a+a^2$; $B_0$ a bound on the shift $b$ (Lemma~\ref{det:grow:lem:shift}).\\
+$q$ & Part~I: $q=\sqrt2/3^{1/3}$, $q^6=8/9$ \eqref{det:dia:eq:q}; $q$ the index of $F_q(a)$. Part~II: $q_r$, $q'_r$ residue maps; $q\in Q$ a target level in $(0,1)$ (Section~\ref{det:grow:sec:inverse}); $F_q$ as in Part~I.\\
+$\kappa$, $g$, $c$ & Part~I: $\kappa=(0,2,1)$ and $g=(1,3/2,1)$ \eqref{det:dia:eq:crossnormalization}; $c_r$ inverse constants \eqref{det:dia:eq:inverseconstants}; $c_\eps(b)$ atom coefficients; $C_r(m)$ first corrections \eqref{det:dia:eq:C}; $g_{r,k}$ Stirling coefficients. Part~II: $\kappa=1.618\ldots$ an exponent \eqref{det:grow:eq:bad-asymp}; $\kappa_j(K)$ cumulants; $c_r=(1,3/2,1)$; $c_1,c_2,c_b$ inverse coefficients; $g_m(x)$ a Gaussian.\\
+$R$, $\rho$ & Part~I: $R_{jk}=j/2^{jk/2}$; $R_j(z)$ residual coefficients (proof of Theorem~\ref{det:dia:thm:powerlog}). Part~II: $\rho_{j,k}$ for Part~I's $R_{jk}$; $R$ a radius (proof of Proposition~\ref{det:grow:prop:bad}); $R_r^{\rm pure}$ and $R_{\eps,r,m}(s)$ ratios.\\
+$W$, $P$ & Part~I: $W_\ell(m)$ the cutoff-normalized falling factorial; $P_{\eps,r,\mu}(m)$ equal-phase polynomials \eqref{det:dia:eq:polynomial}; $P_{r,j}$ inverse polynomials. Part~II: $P_\ell(m)$ for Part~I's $W_\ell(m)$; $W_\ell=4w/9$ a variance and $W$ a remainder (Sections~\ref{det:grow:sec:pure} and~\ref{det:grow:sec:second}). \emph{False reading:} Part~II's $W_\ell$ is not Part~I's $W_\ell(m)$.\\
+$Q$, $E$ & Part~I: $Q_r(m)$ the coefficients of Table~\ref{det:dia:tab:common}; $Q_r(\theta)$, $E_r(\theta)$ operators \eqref{det:dia:eq:Q}--\eqref{det:dia:eq:E}; $E$ a logarithmic error \eqref{det:dia:eq:logerror}. Part~II: $Q$ a compact subset of $(0,1)$; $\E$, $\E_r$ (conditional) expectations.\\
+$H$ & $H_k$ as above (Part~I also writes $H_t$). Part~I: $H_r=\log S_r$ (Section~\ref{det:dia:sec:convergent}). Part~II: $H_r(s)$ a coefficient function (proof of Theorem~\ref{det:grow:thm:inverse}).\\
+$M$, $\mathcal M$ & Part~I: $M(n)$ the integer-break maximum; $M_r(x)$ the finite model \eqref{det:dia:eq:model}; $M$ the bound on $z$ in Theorem~\ref{det:dia:thm:crossover}. Part~II: $\mathcal M_{r,m}(s)$ the attenuation model \eqref{det:grow:eq:model}.\\
+$S$, $s$ & Part~I: $S_r(x)$ the sector sum; $S_T(B)$ a majorant; $s(b)$ the sign exponent \eqref{det:dia:eq:bc}; $s_1(\ell)$. Part~II: $S$ the range constant, $s=z/m^{3/4}$, $\mathcal S_{\rm bad}$.\\
+$T$ & Part~I: a rational threshold \eqref{det:dia:eq:boundB}; $T=T(M)$. Part~II: a radius, $T_{\rm bad}$, $T_0$.\\
+$\Delta$, $\mu$, $\eta$ & Part~I: $\Delta$ the bracket half-width \eqref{det:dia:eq:Delta}; $\mu(b)$ the phase, $\mu_*$; $\eta$ a phase cutoff (Theorem~\ref{det:dia:thm:tail}) and $\eta=2\log(4/3)/\log(9/8)$. Part~II: $\Delta=\ell-\mu_\ell$; $\mu=a+2a^2$, $\mu_\ell$; $\eta$ the second meaning only.\\
+$h$, $d$, $p$ & Part~I: $h_r$, $d_r$, $p_r$ constants \eqref{det:dia:eq:params}; $p_{r,\beta}(x)$. Part~II: $h=\log(5/4)$ and a moment order; $d=4a^2/3$, $d_0=\log(5/(2\sqrt2))$; $p=\delta/2+5/6$, $p_*$ a probability bound.\\
+$u$, $v$, $x$, $y$ & Part~I: $u$ the variable of $H_k$ and a complex parameter (proof of Theorem~\ref{det:dia:thm:inverse}); $v_r(t)$ the model inverse; $x_r(t)$ the leading inverse; $y=\sqrt{t/\alpha}$. Part~II: $u=m^{-1/4}$, $v=m^{-\beta}$; $x_0$ the activity radius; $y_\ell$.\\
+$F$, $G$, $J$, $K$ & Part~I: $F_r(x)=\log L_r(x)$ besides $F_q(a)$; $K$, $J$ orders. Part~II: $F(s)=-\gamma s^{4/3}$, $G$, $J=s^p$ (proof of Theorem~\ref{det:grow:thm:inverse}); $J_m=t_m(I)$; $K=N_2+2N_4$ a random variable; $K_0,K_1$ constants. $\gamma=8/9$ and the exponents $\gamma_\xi$, $\gamma_T$, $\gamma_1$, $\gamma_{c1}$, $\gamma_{c2}$ occur in Part~II only.\\
+\bottomrule
+\end{longtable}
+\addtocounter{table}{-1}% the uncaptioned longtable must not consume a table number
+\endgroup
+
+\section*{Provenance and merge decisions}\phantomsection\label{det:sec:provenance}
+\addcontentsline{toc}{section}{Provenance and merge decisions}
+Two manuscripts of the session bundle of Reports 1--243. Their author lines read ``Report 147'' and ``Report 148''; neither names an author, a tool or an addressee (each sets an empty PDF author field), neither carries ``prepared for private review'' wording. They arrived in commit \texttt{60f54ea06} and were placed by \texttt{47fc7a069} (batch~106, cluster 106-EULERD).
+\begin{itemize}
+\item \textbf{Part~I}, bundle Report~147, archive \file{Diagonal_Euler_Transforms_Corrected_Growth_Crossover_and_Inverses_Source.zip} (\file{Report147.tex}, 1250 lines, 21 pages, dated 3 October 2026); the base. It pins ProveIt commit \texttt{bb1cb91b7} (Section~\ref{det:dia:sec:scope}), which exists in the history. Contributes the corrected root limit, the exact atom identity, the uniform tails, the residue amplitudes with the exhaustive sector certificates, the first sign-sensitive difference, the inverses and brackets, strict monotonicity, and the bounded-$z$ crossover.
+\item \textbf{Part~II}, bundle Report~148, archive \file{Growing_Euler_Crossover_and_Attenuation_Inverse_Source.zip} (\file{Report148.tex}, 1061 lines, 17 pages, dated 3 October 2026); no pin. Its \file{foundation/} holds Report~147's source and PDF byte for byte. Contributes the growing crossover with its Poisson conditioning, depletion and bad-atom estimates, the zero endpoint, the attenuation inverse, the exact-crossing localization and the second route to the pure coefficients.
+\end{itemize}
+Where the merge had to choose:
+\begin{enumerate}
+\item \emph{Order and base.} Report~147 first, as the base and as the foundation Report~148 builds on (see the Guide).
+\item \emph{Restatements.} In its own words Part~II restates, from Part~I: the two-parameter product \eqref{det:dia:eq:twoparam} as \eqref{det:grow:eq:def} with $t$ for $\tau$; the formal logarithm \eqref{det:dia:eq:logatoms} as \eqref{det:grow:eq:log}; the amplitudes \eqref{det:dia:eq:crossL} as \eqref{det:grow:eq:amplitudes}; $H_k$ and $\Psi_r$ \eqref{det:dia:eq:Psi} as \eqref{det:grow:eq:H}--\eqref{det:grow:eq:Psi}; the critical-scale atom formula \eqref{det:dia:eq:criticalatom}--\eqref{det:dia:eq:crossnormalization} as \eqref{det:grow:eq:profile}--\eqref{det:grow:eq:normalization}; the real form of the roots-of-unity filter \eqref{det:dia:eq:realfilter} as \eqref{det:grow:eq:filter}; the bad-ratio bound, fixed majorant and exceptional $(1,1)$ term of Section~\ref{det:dia:sec:crossover} (\eqref{det:dia:eq:badrho}, \eqref{det:dia:eq:ST}, \eqref{det:dia:eq:exception}) in Section~\ref{det:grow:sec:five} (\eqref{det:grow:eq:fixedmajorant}, \eqref{det:grow:eq:exception}); and the Euler recurrence \eqref{det:dia:eq:recurrence} as \eqref{det:grow:eq:recurrence}. They are printed in full, because Part~II's estimates are stated in its own normalization, with notes pointing to Part~I.
+\item \emph{Front matter and bibliography.} The two title blocks, abstracts and scope paragraphs are printed at the heads of their Parts; one table of contents replaces two. The two bibliographies are merged into one, keeping every detail of every entry; Report~148's entry for Report~147 now points to Part~I. The write added the entry for the transseries volume \cite{TSvol}.
+\item \emph{Write additions.} This front matter, the reading-conventions tables of the Parts, Subsection~\ref{det:dia:sub:explicit} with Proposition~\ref{det:dia:prop:explicit}, Corollary~\ref{det:dia:cor:refute} and Remark~\ref{det:dia:rem:exact}, Section~\ref{det:sec:further}, the dated notes, labels for unlabelled sections, and the label prefixes. Everything else is delivered text.
+\end{enumerate}
+
+\section*{What was checked, and what was not}\phantomsection\label{det:sec:trust}
+\addcontentsline{toc}{section}{What was checked, and what was not}
+The report is unrefereed and not formalized. At intake (dossier of batch~106, 5~October 2026) both manuscripts were read in full and no step was found false. Checked there: the key step of the root limit by hand; the first twelve terms of both entries; Theorem~\ref{det:dia:thm:sectors}, Table~\ref{det:dia:tab:common} and Theorem~\ref{det:dia:thm:diff} by exact values to $n=90$ (the remainders after the displayed sectors, divided by the next base to the power~$n$, stay of polynomial size, and the difference ratio to Theorem~\ref{det:dia:thm:diff}'s model is $1.013$ at $n=90$); Proposition~\ref{det:dia:prop:monotone} to $n=90$; Part~II's heuristic scale $d=4a^2/3$ with $e^{-d^2/(2m)}=e^{-8a^4/(9m)}$, and its inequality $\delta<11/5$. The write recomputed $A_\pm(n)$ for $n\le109$ and compared them with the b-files and with $e^{n^2/e}$ (Remark~\ref{det:dia:rem:exact}); checked $L_r(3m+r)$ against \eqref{det:dia:eq:L}, the Stirling data $c_r$, $a_r$, $c_{r,0}$, $g_{r,k}$ of \eqref{det:dia:eq:stirling} against DLMF~(5.11.8), and $P_{r,0}$; recomputed $H_k$ for $k\le8$ and the displayed coefficients of $\Psi_r$; verified Part~II's inverse coefficients \eqref{det:grow:eq:inverse-coeff}, the logarithmic coefficient in the proof of Theorem~\ref{det:grow:thm:inverse} and the quadratic coefficient $128/81-32/81=32/27$ symbolically; and recomputed the decimals $3^{1/3}$, $e^{1/e}$, $2/\log(9/8)$, $\delta$, $\beta$, $\kappa$ and $\eta$ to 30 digits, finding one wrong digit (Part~II's $\beta$, dated note at \eqref{det:grow:eq:exponents}). The delivered suites pass on copies (README; two of Report~148's 26 tests need a POSIX host).
+
+What was \emph{not} done: the analytic estimates (the uniform tails, the Rouch\'e and Lagrange--B\"urmann argument, the conditioned Poisson moments, the global falling-factorial approximations, the bad-atom sums, the Gaussian second route) were read and their displayed algebra checked, but they are the manuscripts' proofs, not an independent verification. External inputs: the write read DLMF~\S5.11, (5.11.2) and (5.11.8). It did \emph{not} read Kot\v{e}\v{s}ovec's arXiv paper \cite{kotesovec} (Part~I's statement that its pp.~21--22 treat fixed exponents is the manuscript's), and it did not read Arratia--Tavar\'e \cite{arratia-tavare} or Arratia--DeSalvo \cite{arratia-desalvo}, of which Part~II itself inspected only the abstracts.
+
+\section*{Relation to neighbouring reports and formal projects}\phantomsection\label{det:sec:neighbours}
+\addcontentsline{toc}{section}{Relation to neighbouring reports and formal projects}
+No other report of the repository treats A252782, A270917, their parent arrays A144048 and A284992, or Euler transforms with exponent equal to the index (repository search, 5~October 2026). The report \file{a290354-iterated-euler-diagonals}, placed in the same batch, studies $m$-fold \emph{iterated} Euler transforms by parabolic iteration; it shares no definition, lemma, constant or method with this one, only the words ``Euler transform''. Part~II's conditioning of independent Poisson components on a weighted sum is the device whose general theory (Arratia--Tavar\'e) is also used in \file{a033552-catalan-partitions}; the parallel is of method only. The transseries volume \file{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex} is related to the inverses as stated above. Placement in the collection confers no formal status: no Lean or Rocq file in the repository treats these sequences, and no statement of this report is formalized.
+\clearpage
+
+\part{Diagonal Euler transforms: exact phases, critical crossover and residue aware inverses}\label{det:dia:part}
+\partsource{Bundle Report~147, archive \file{Diagonal_Euler_Transforms_Corrected_Growth_Crossover_and_Inverses_Source.zip}, delivered as \file{Report147.tex} (21 pages), the base of the merge. Delivered title block ``Diagonal Euler transforms / Exact phases critical crossover and residue aware inverses / Report 147 / 3 October 2026''. Printed as delivered, with \textbf{[write]} notes; section, statement and equation numbers are those of the delivery. Subsection~\ref{det:dia:sub:explicit} is added in the write.}
+\begin{center}
+\small
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.46\textwidth} >{\raggedright\arraybackslash}p{0.46\textwidth}@{}}
+\toprule
+Reading conventions of Part~I & Elsewhere in the report\\
+\midrule
+$\tau$ the outer exponent of Section~\ref{det:dia:sec:crossover}; $t$ a logarithmic threshold (Sections~\ref{det:dia:sec:inverses}--\ref{det:dia:sec:brackets}) & Part~II: $t$ the outer exponent\\
+$L_r(n)$, $L_r(x)$ amplitudes; $\mathcal L_r$ two-parameter amplitudes & Part~II: $L_r$ for $\mathcal L_r$; $L=\log(9/8)$\\
+$\alpha=\log3/3$; $\beta$ a base or relative phase; $q=\sqrt2/3^{1/3}$ & Part~II: $\alpha=5/(4L)$; $\beta=\frac58(\delta-1)$; $q$ a target level\\
+$W_\ell(m)$; $\xi$; $\kappa=(0,2,1)$, $g=(1,\frac32,1)$; $R_{jk}$ & Part~II: $P_\ell(m)$; $x_0$; $q_r$, $c_r$; $\rho_{j,k}$\\
+\bottomrule
+\end{tabular}
+\end{center}
+\begin{partabstract}
 For the diagonal Euler products defining OEIS A252782 and A270917, the
 $n^2$th-root limit is $3^{1/3}$, correcting the value $\exp(1/e)$ conjectured
 in the inspected entries. The classical integer-product maximization
@@ -46,19 +226,17 @@ coefficient of each leading inverse, prove convergence of the inverse
 series for every fixed finite sector model, and transport its error to
 residue-class integer threshold brackets. The latter are asymptotic
 brackets, not an unconditional finite-input inversion algorithm. A uniform critical crossover for a separately varying exponent resums the dominant sector ladder and identifies a noninteger finite-size correction caused by size-five parts.
-\end{abstract}
+\end{partabstract}
 \noindent\textbf{Scope.} This is a self-contained mathematical report with an exact
 standard-library computational companion. The integer-break argument,
 Stirling expansion, and Lagrange inversion are classical tools. The
 source comparison is bounded to the inspected sources; no global priority
 claim or external submission is made.
-\newpage
-\tableofcontents
-\newpage
+\medskip
 
 \section{Definitions and the diagonal regime}
 For $n\geq0$ and $\eps\in\{+1,-1\}$, define
-\begin{equation}\label{eq:def}
+\begin{equation}\label{det:dia:eq:def}
  A_\eps(n)=\coef{x}{n}\prod_{j\geq1}
  (1-\eps x^j)^{-\eps j^n}.
 \end{equation}
@@ -72,7 +250,7 @@ For $\eps=+1$, a part of size $j$ has $j^n$ colors and may be repeated.
 For $\eps=-1$, each colored part may be used at most once; uncolored
 sizes may still repeat in different colors. A profile $(m_j)$ with
 $\sum jm_j=n$ has respective weights
-\begin{equation}\label{eq:profiles}
+\begin{equation}\label{det:dia:eq:profiles}
  \prod_j\binom{j^n+m_j-1}{m_j},\qquad
  \prod_j\binom{j^n}{m_j}.
 \end{equation}
@@ -80,7 +258,7 @@ The second product is interpreted as zero if a lower argument exceeds
 the upper one.
 
 Throughout, write $n=3m+r$ with $r\in\{0,1,2\}$, and put
-\begin{equation}\label{eq:Z}
+\begin{equation}\label{det:dia:eq:Z}
  Z_n=\frac{3^{mn}}{m!},\qquad
  \fall{m}{\ell}=\prod_{i=0}^{\ell-1}(m-i),\qquad
  \fall{m}{0}=1.
@@ -108,12 +286,15 @@ maximum of $\log j/j$ over \emph{integer} $j$. Its maximizer is $3$.
 The continuous function has its maximum at $e$. This explains a possible
 mechanism for the two different constants; it is not evidence about how
 the original conjecture was produced. A scoped source and overlap
-statement appears in Section~\ref{sec:scope}.
+statement appears in Section~\ref{det:dia:sec:scope}.
+\begin{writenote}[5 October 2026]
+Both entries were read again on 5~October 2026 and still display the conjecture; their texts, with signatures and revision numbers, are quoted in the front matter (``The OEIS conjecture, and its refutation''). In A270917 the conjecture line is unsigned, in an entry that Kot\v{e}\v{s}ovec created on March~25, 2016. The b-files of both entries ($n\le80$) agree with exact recomputation, so the data are right and only the conjectured limit is wrong. Corollary~\ref{det:dia:cor:refute} shows that the conjecture is refuted, not merely sharpened.
+\end{writenote}
 
-\section{The root limit and classical integer products}
-\begin{theorem}[Corrected root limit]\label{thm:root}
+\section{The root limit and classical integer products}\label{det:dia:sec:root}
+\begin{theorem}[Corrected root limit]\label{det:dia:thm:root}
 For either sign,
-\begin{equation}\label{eq:root}
+\begin{equation}\label{det:dia:eq:root}
  \log A_\eps(n)=\frac{\log3}{3}n^2+O(n\log n),\qquad
  \lim_{n\to\infty} A_\eps(n)^{1/n^2}=3^{1/3}.
 \end{equation}
@@ -145,11 +326,14 @@ so $\log3/3<1/e$.
 \end{proof}
 For orientation only, the two constants are approximately
 $1.4422495703074083823$ and $1.4446678610097661337$.
+\begin{writenote}[5 October 2026]
+Both decimals are correct (recomputed to 30 digits). The proof above uses the integer inequality $j\le3^{j/3}$ without proof and states the lower bound ``for all sufficiently large $n$''; Subsection~\ref{det:dia:sub:explicit} proves the inequality, gives both bounds with explicit constants for every $n\ge3$, and shows that the upper bound alone keeps $A_\eps(n)^{1/n^2}$ below $e^{1/e}$ for every $n\ge414$.
+\end{writenote}
 
 The refinement of the dominant profile uses the classical integer-break
 calculation. If $M(n)$ is the largest product of positive integer parts
 summing to $n$, then for $n\geq2$
-\begin{equation}\label{eq:integerbreak}
+\begin{equation}\label{det:dia:eq:integerbreak}
  M(3m)=3^m,\quad M(3m+1)=4\,3^{m-1},\quad
  M(3m+2)=2\,3^m.
 \end{equation}
@@ -160,9 +344,63 @@ These replacements also identify all maximizing profiles. This argument
 is classical and is not claimed as new. It motivates the leading terms,
 but the uniform expansion below supplies their rigorous asymptotic proof.
 
+\subsection{\texorpdfstring{\wtag}{[write]} The refutation with explicit constants}\label{det:dia:sub:explicit}
+\begin{writenote}[5 October 2026]
+This subsection is added in the write. It restates the bounds of the proof of Theorem~\ref{det:dia:thm:root} with every constant explicit, proves the integer inequality $j\le3^{j/3}$ that the proof uses, and computes the first index from which the upper bound alone excludes the conjectured value $e^{1/e}$. The quoted OEIS texts are in the front matter, ``The OEIS conjecture, and its refutation''.
+\end{writenote}
+
+\begin{proposition}[\wtag\ Explicit two-sided bound]\label{det:dia:prop:explicit}
+For either sign and every $n=3m+r\ge3$ (so $m\ge1$),
+\begin{equation}\label{det:dia:eq:explicit}
+ \frac{3^{mn}}{m^m}\le A_\eps(n)\le2^{n-1}\,3^{n^2/3}.
+\end{equation}
+Consequently
+\begin{equation}\label{det:dia:eq:explicitlog}
+ \frac{\log3}{3}-\frac{2\log3}{3n}-\frac{\log(n/3)}{3n}
+ \le\frac{\log A_\eps(n)}{n^2}
+ \le\frac{\log3}{3}+\frac{(n-1)\log2}{n^2},
+\end{equation}
+and $A_\eps(n)^{1/n^2}\to3^{1/3}$. The upper bound in \eqref{det:dia:eq:explicit} holds for every $n\ge1$.
+\end{proposition}
+\begin{proof}
+\emph{(i) $j\le3^{j/3}$ for every integer $j\ge1$, with equality only at $j=3$.} For $j=1$, $1<3^{1/3}$. For $j=2$, $2^3=8<9=3^2$, so $2<3^{2/3}$. For $j=3$ there is equality. If $j\ge3$ and $j\le3^{j/3}$, then $j+1=j(1+1/j)\le\frac43j<3^{1/3}j\le3^{(j+1)/3}$, because $(4/3)^3=64/27<3$; so the inequality holds for all $j\ge3$, strictly for $j\ge4$.
+
+\emph{(ii) Weights.} For integers $c\ge1$ and $h\ge0$, a multiset of $h$ colours from $c$ colours is determined by its nondecreasing word in $\{1,\ldots,c\}^h$, so $\binom{c+h-1}{h}\le c^h$; and $\binom ch\le c^h/h!\le c^h$. Hence each of the two weights in \eqref{det:dia:eq:profiles} of a profile $(m_j)$ with $\sum_jjm_j=n$ is a nonnegative integer at most
+\[
+ \prod_jj^{nm_j}=\Bigl(\prod_jj^{m_j}\Bigr)^n\le\Bigl(\prod_j3^{jm_j/3}\Bigr)^n=3^{n\cdot n/3},
+\]
+by~(i).
+
+\emph{(iii) Upper bound.} $A_\eps(n)$ is the sum of these weights over the profiles, that is over the partitions of $n$. Listing the parts of a partition in nonincreasing order is an injection into the compositions of $n$, of which there are $2^{n-1}$ for $n\ge1$. So $A_\eps(n)\le2^{n-1}3^{n^2/3}$.
+
+\emph{(iv) Lower bound.} Take the profile with $m$ parts of size~$3$, together with one part of size~$1$ if $r=1$ or one part of size~$2$ if $r=2$. All weights are nonnegative, so $A_\eps(n)$ is at least the weight of this one profile. The padding factor is $\binom{1}{1}=1$ for a part of size one (one colour) and $\binom{2^n}{1}=2^n\ge1$ for a part of size two, in both models. The factor of the threes is $\binom{3^n+m-1}{m}\ge\binom{3^n}{m}$ for $\eps=+1$ and $\binom{3^n}{m}$ for $\eps=-1$. For $1\le m\le N$,
+\[
+ \binom Nm=\prod_{i=0}^{m-1}\frac{N-i}{m-i}\ge\Bigl(\frac Nm\Bigr)^m,
+\]
+since $(N-i)/(m-i)\ge N/m$ when $N\ge m>i$. With $N=3^n\ge m$ this gives $A_\eps(n)\ge3^{nm}/m^m$.
+
+\emph{(v) Logarithms.} The upper bound gives the right side of \eqref{det:dia:eq:explicitlog}. For the left side, $nm=n(n-r)/3\ge n(n-2)/3$, and $m\log m\le\frac n3\log\frac n3$ because $1\le m\le n/3$ and $x\log x$ is increasing for $x\ge1$. Dividing $\log A_\eps(n)\ge nm\log3-m\log m$ by $n^2$ gives the left side. Both sides of \eqref{det:dia:eq:explicitlog} tend to $\log3/3$.
+\end{proof}
+
+\begin{corollary}[\wtag\ The conjecture is refuted]\label{det:dia:cor:refute}
+For either sign and every $n\ge414$,
+\begin{equation}\label{det:dia:eq:refute}
+ A_\eps(n)^{1/n^2}\le2^{(n-1)/n^2}\,3^{1/3}<2^{1/n}\,3^{1/3}<e^{1/e}.
+\end{equation}
+In particular $\limsup_nA_\eps(n)^{1/n^2}\le3^{1/3}<e^{1/e}$, so the limit $e^{1/e}$ conjectured in A252782 and A270917 is false; this needs only the upper bound of Proposition~\ref{det:dia:prop:explicit}.
+\end{corollary}
+\begin{proof}
+The first two inequalities are \eqref{det:dia:eq:explicit} and $(n-1)/n^2<1/n$. The derivative of $\log x/x$ is $(1-\log x)/x^2$, so $\log x/x$ has its strict maximum on $(0,\infty)$ at $x=e$, and $\gamma_0:=1/e-\log3/3>0$. The last inequality of \eqref{det:dia:eq:refute} is equivalent to $\log2<n\gamma_0$. From $1/e>0.367879441$ and $\log3/3<0.366204097$ we get $\gamma_0>0.001675344$, hence $414\gamma_0>0.693592$, while $\log2<0.693148$. So the inequality holds for every $n\ge414$.
+\end{proof}
+Here $\gamma_0=0.0016753449487\ldots$ and $\log2/\gamma_0=413.734\ldots$, so $n=414$ is the least index for which $2^{1/n}3^{1/3}<e^{1/e}$. The sharper middle factor $2^{(n-1)/n^2}$ in \eqref{det:dia:eq:refute} already gives the conclusion at $n=413$ ($412\log2/413^2<\gamma_0$), but not at $n=412$. The intake record states ``every $n\ge415$'', which is true but not the least index this bound gives.
+
+\begin{remark}[\wtag\ Exact comparison for small $n$]\label{det:dia:rem:exact}
+The write computed $A_\pm(n)$ exactly for $0\le n\le109$ by the Euler recurrence \eqref{det:dia:eq:recurrence}. The values agree with the b-files of A252782 and A270917 (both $0\le n\le80$), and a 60-digit comparison of $\log A_\pm(n)$ with $n^2/e$ gives: $A_+(n)^{1/n^2}>e^{1/e}$ exactly for $2\le n\le7$ and $A_-(n)^{1/n^2}>e^{1/e}$ exactly for $3\le n\le7$, and $A_\pm(n)^{1/n^2}<e^{1/e}$ for every other $n$ with $1\le n\le109$. For $110\le n\le413$, step~(iii) of the proof above gives the sharper $A_\eps(n)\le p(n)3^{n^2/3}$, with $p(n)$ the number of partitions of~$n$, and the exact values of $p(n)$ satisfy $\log p(n)<\gamma_0n^2$ throughout that range (the margin is smallest at $n=110$: $\log p(110)=20.2243\ldots<20.2717\ldots=110^2\gamma_0$; it fails at $n=109$). With Corollary~\ref{det:dia:cor:refute}, $A_\eps(n)^{1/n^2}<e^{1/e}$ for both signs and every $n\ge8$. This is a finite computation made by the write, not a computation of the delivered companions. It also shows how slowly the limit is approached: $\log A_\pm(n)/n^2=0.356990$ at $n=90$ and $0.357763$ at $n=109$ (the two signs agree to these digits), against $\log3/3=0.366204$, in line with the $O(\log n/n)$ terms of \eqref{det:dia:eq:explicitlog}.
+\end{remark}
+
 \section{An exact expansion by logarithmic atoms}
-The formal logarithm of the product in \eqref{eq:def} is
-\begin{equation}\label{eq:logatoms}
+The formal logarithm of the product in \eqref{det:dia:eq:def} is
+\begin{equation}\label{det:dia:eq:logatoms}
  \sum_{j,k\geq1}\frac{\eps^{k-1}j^n}{k}x^{jk}.
 \end{equation}
 Call $(j,k)$ an atom, of degree $jk$. Isolate the core atom $(3,1)$.
@@ -170,31 +408,31 @@ A defect profile $b=(b_{jk})$ is a finitely supported nonnegative integer
 array on the remaining atoms. Define
 \begin{align}
  D(b)&=\sum_{(j,k)\ne(3,1)}jk b_{jk},&
- s(b)&=\sum_{(j,k)\ne(3,1)}(k-1)b_{jk},\label{eq:bc}\\
+ s(b)&=\sum_{(j,k)\ne(3,1)}(k-1)b_{jk},\label{det:dia:eq:bc}\\
  c_\eps(b)&=\frac{\eps^{s(b)}}{\prod_{(j,k)\ne(3,1)}k^{b_{jk}}b_{jk}!}.
  \notag
 \end{align}
 If $D(b)\equiv r\pmod3$, set
-\begin{equation}\label{eq:phase}
+\begin{equation}\label{det:dia:eq:phase}
  \ell(b)=\frac{D(b)-r}{3},\qquad
  \mu(b)=\frac{\prod j^{b_{jk}}}{3^{\ell(b)}}.
 \end{equation}
 Then $\ell\geq0$ and the phase $\mu$ is a positive rational number.
 
-\begin{theorem}[Exact atom identity]\label{thm:exact}
+\begin{theorem}[Exact atom identity]\label{det:dia:thm:exact}
 For every $n=3m+r\geq0$,
-\begin{equation}\label{eq:exact}
+\begin{equation}\label{det:dia:eq:exact}
  \frac{A_\eps(n)}{Z_n}=
  \sum_{\substack{D(b)\leq n\\D(b)\equiv r\ ({\rm mod}\ 3)}}
  c_\eps(b)\fall{m}{\ell(b)}\mu(b)^n.
 \end{equation}
 \end{theorem}
 \begin{proof}
-Exponentiate \eqref{eq:logatoms} and extract a multiplicity $b_{jk}$
+Exponentiate \eqref{det:dia:eq:logatoms} and extract a multiplicity $b_{jk}$
 from each off-core exponential. The residual degree is
 $n-D=3(m-\ell)$ and the core contributes
 $3^{n(m-\ell)}/(m-\ell)!$. Dividing by $Z_n$ leaves precisely the
-summand in \eqref{eq:exact}. Only finitely many profiles have $D\leq n$,
+summand in \eqref{det:dia:eq:exact}. Only finitely many profiles have $D\leq n$,
 so formal rearrangement is legitimate. The empty defect profile is
 included when $r=0$.
 \end{proof}
@@ -204,12 +442,12 @@ distinct model are already present in the exact identity.
 
 \section{Local finiteness and a uniform remainder}
 Put
-\begin{equation}\label{eq:q}
+\begin{equation}\label{det:dia:eq:q}
  q=\frac{\sqrt2}{3^{1/3}},\qquad q^6=\frac89<1.
 \end{equation}
-\begin{lemma}[Atom bound]\label{lem:atom}
+\begin{lemma}[Atom bound]\label{det:dia:lem:atom}
 For every off-core atom $(j,k)$,
-\begin{equation}\label{eq:atomineq}
+\begin{equation}\label{det:dia:eq:atomineq}
  j^2\leq 2^{jk},\qquad
  \mu(b)\leq3^{r/3}q^{D(b)},\qquad
  \mu(b)^6\leq9^r(8/9)^{D(b)}.
@@ -226,7 +464,7 @@ remaining inequalities.
 Consequently only finitely many profiles have phase at least any fixed
 $\eta>0$: their degrees are bounded, and there are finitely many atoms
 of bounded degree. Equal-phase coefficients
-\begin{equation}\label{eq:polynomial}
+\begin{equation}\label{det:dia:eq:polynomial}
  P_{\eps,r,\mu}(m)=
  \sum_{\substack{b:\,\mu(b)=\mu\\D(b)\equiv r\ ({\rm mod}\ 3)}}
  c_\eps(b)\fall{m}{\ell(b)}
@@ -236,7 +474,7 @@ zero polynomials can be discarded. The unsigned profile phases are
 locally finite away from zero.
 
 Local finiteness alone would not control the growing number of terms in
-\eqref{eq:exact}. The following absolute majorant is the necessary
+\eqref{det:dia:eq:exact}. The following absolute majorant is the necessary
 uniform step. Let $C_D$ be the sum of $|c_\eps(b)|$ over all degree-$D$
 profiles, without a residue restriction. Then
 \[
@@ -249,24 +487,24 @@ At $x=1/2$ its exponent is at most
  \leq 2\sum_{j\geq1}2^{-j}=2,
 \]
 so
-\begin{equation}\label{eq:mass}
+\begin{equation}\label{det:dia:eq:mass}
  C_D\leq e^2 2^D.
 \end{equation}
-On the integer summands of \eqref{eq:exact},
+On the integer summands of \eqref{det:dia:eq:exact},
 $0\leq\fall{m}{\ell}\leq n^\ell\leq n^{D/3}$.
 
-\begin{theorem}[Uniform degree and spectral tails]\label{thm:tail}
+\begin{theorem}[Uniform degree and spectral tails]\label{det:dia:thm:tail}
 For every fixed integer $D_0\geq1$ and every integer $n\geq192$, the
-absolute contribution in \eqref{eq:exact} of degrees $D\geq D_0$ is at
+absolute contribution in \eqref{det:dia:eq:exact} of degrees $D\geq D_0$ is at
 most
-\begin{equation}\label{eq:tail}
+\begin{equation}\label{det:dia:eq:tail}
  2e^2 2^{D_0}n^{D_0/3}
  \left(3^{r/3}q^{D_0}\right)^n.
 \end{equation}
 Fix a phase cutoff $\eta>0$. Let $\mu_*$ be the largest unsigned profile
 phase strictly below $\eta$, and choose an integer $D_0\geq1$ with
 $3^{r/3}q^{D_0}<\mu_*$. For $n\geq\max(192,D_0)$,
-\begin{equation}\label{eq:spectraltail}
+\begin{equation}\label{det:dia:eq:spectraltail}
  \left|\frac{A_\eps(n)}{Z_n}-
  \sum_{\mu\geq\eta}P_{\eps,r,\mu}(m)\mu^n\right|
  \leq e^2 2^{D_0}(D_0+2)n^{D_0/3}\mu_*^n.
@@ -275,11 +513,11 @@ The sum over phases is finite. This supplies the full exponential-polynomial
 expansion to every fixed exponential depth.
 \end{theorem}
 \begin{proof}
-Equations \eqref{eq:atomineq} and \eqref{eq:mass} bound the degree-$D$
+Equations \eqref{det:dia:eq:atomineq} and \eqref{det:dia:eq:mass} bound the degree-$D$
 absolute contribution by
 $e^2 3^{rn/3}[2n^{1/3}q^n]^D$. If
 $2n^{1/3}q^n\leq1/2$, its sum over $D\geq D_0$ is
-\eqref{eq:tail}. Extending the actual finite sum to infinity only
+\eqref{det:dia:eq:tail}. Extending the actual finite sum to infinity only
 increases the bound.
 
 Here is a safe explicit onset. The displayed condition is equivalent to
@@ -293,17 +531,17 @@ There are phases below $\eta$, for example profiles made of arbitrarily
 many $(1,1)$ atoms in the required residue. Local finiteness shows that
 their supremum is attained and positive: start with any one such phase,
 then only finitely many can exceed it. Every retained profile has degree
-$D<D_0$ by \eqref{eq:atomineq}. Its term is therefore eligible for
-\eqref{eq:exact} once $n\geq D_0$. The omitted terms of degree below
+$D<D_0$ by \eqref{det:dia:eq:atomineq}. Its term is therefore eligible for
+\eqref{det:dia:eq:exact} once $n\geq D_0$. The omitted terms of degree below
 $D_0$ have phase at most $\mu_*$ and absolute coefficient mass at most
 $e^2\sum_{D<D_0}2^D$. Bound their factorial polynomials by $n^{D_0/3}$
-and add \eqref{eq:tail}. The resulting bound is smaller than the
-convenient, deliberately loose constant in \eqref{eq:spectraltail}.
+and add \eqref{det:dia:eq:tail}. The resulting bound is smaller than the
+convenient, deliberately loose constant in \eqref{det:dia:eq:spectraltail}.
 \end{proof}
 
 \section{Residue amplitudes and the first common sectors}
 Define
-\begin{equation}\label{eq:L}
+\begin{equation}\label{det:dia:eq:L}
 \begin{aligned}
  L_0(n)&=\frac{3^{mn}}{m!}&& (n=3m),\\
  L_1(n)&=\frac32\,\frac{4^n3^{(m-1)n}}{(m-1)!}&& (n=3m+1),\\
@@ -312,26 +550,26 @@ Define
 \end{equation}
 Only sufficiently large $m$ is intended in these asymptotic models.
 
-\begin{theorem}[Leading equivalents and first sectors]\label{thm:sectors}
+\begin{theorem}[Leading equivalents and first sectors]\label{det:dia:thm:sectors}
 For either sign, $A_\eps(n)\sim L_r(n)$. More precisely, for fixed
-nonnegative exponents $K$ supplied by Theorem~\ref{thm:tail},
+nonnegative exponents $K$ supplied by Theorem~\ref{det:dia:thm:tail},
 \begin{align}
  \frac{A_\eps(3m)}{L_0(3m)}
  &=1+\frac76\fall{m}{2}(8/9)^n
  +\frac{331}{720}\fall{m}{4}(64/81)^n
- +O\bigl(n^K(20/27)^n\bigr),\label{eq:sector0}\\
+ +O\bigl(n^K(20/27)^n\bigr),\label{det:dia:eq:sector0}\\
  \frac{A_\eps(3m+1)}{L_1(3m+1)}
  &=1+\frac9{20}\fall{m-1}{2}(8/9)^n
  +\frac23(m-1)(5/6)^n
- +O\bigl(n^K(64/81)^n\bigr),\label{eq:sector1}\\
+ +O\bigl(n^K(64/81)^n\bigr),\label{det:dia:eq:sector1}\\
  \frac{A_\eps(3m+2)}{L_2(3m+2)}
  &=1+\frac{25}{24}\fall{m}{2}(8/9)^n
  +m(5/6)^n
- +O\bigl(n^K(64/81)^n\bigr).\label{eq:sector2}
+ +O\bigl(n^K(64/81)^n\bigr).\label{det:dia:eq:sector2}
 \end{align}
 In each equation $n$ is the argument on the left. The first relative
 correction is asymptotic to $C_r(m)(8/9)^n$, where
-\begin{equation}\label{eq:C}
+\begin{equation}\label{det:dia:eq:C}
  (C_0,C_1,C_2)=
  \left(\frac76\fall{m}{2},\frac9{20}\fall{m-1}{2},
  \frac{25}{24}\fall{m}{2}\right).
@@ -342,14 +580,14 @@ correction is asymptotic to $C_r(m)(8/9)^n$, where
 Before proving the theorem, we specify a finite enumeration with proved
 bounds; it excludes hidden intervening phases. For residue $r$ and
 rational absolute threshold $T>0$, put
-\begin{equation}\label{eq:boundB}
+\begin{equation}\label{det:dia:eq:boundB}
  B=\frac{T^6}{9^r},\quad
  u(j,k)=\frac{j^6}{9^{jk}}.
 \end{equation}
 For the thresholds used below $B\leq1$. Let $D_{\max}$ be the largest
-integer with $(8/9)^{D_{\max}}\geq B$. Lemma~\ref{lem:atom} implies
+integer with $(8/9)^{D_{\max}}\geq B$. Lemma~\ref{det:dia:lem:atom} implies
 that every qualifying profile has $D\leq D_{\max}$. Also
-\begin{equation}\label{eq:weightproduct}
+\begin{equation}\label{det:dia:eq:weightproduct}
  \prod_{j,k}u(j,k)^{b_{jk}}=\frac{\mu(b)^6}{9^r}\geq B.
 \end{equation}
 All off-core $u(j,k)$ lie strictly below one. Thus each atom in a
@@ -379,7 +617,7 @@ $r$ & $D_{\max}$ & Eligible atoms $(j,k)$ & Profiles\\
 \end{tabular}
 \end{center}
 No eligible atom has $k\geq2$, so the two signs agree throughout this
-entire range. The complete aggregates are in Table~\ref{tab:common}.
+entire range. The complete aggregates are in Table~\ref{det:dia:tab:common}.
 Its normalization is deliberately stated precisely: each row contributes
 $Q_r(m)\beta^n$ to
 $A_\eps(n)/(Z_n\rho_r^n)$, where $\rho=(1,4/3,2)$.
@@ -388,7 +626,7 @@ division is needed in residues zero or two.
 
 \renewcommand{\arraystretch}{1.55}
 \begin{longtable}{ccr}
-\caption{Every common relative phase at least $7/10$\label{tab:common}}\\
+\caption{Every common relative phase at least $7/10$\label{det:dia:tab:common}}\\
 \toprule $r$&$\beta$&$Q_r(m)$\\\midrule\endfirsthead
 \toprule $r$&$\beta$&$Q_r(m)$\\\midrule\endhead
 \bottomrule\endfoot
@@ -413,12 +651,12 @@ division is needed in residues zero or two.
 \end{longtable}
 \renewcommand{\arraystretch}{1}
 
-\begin{proof}[Proof of Theorem~\ref{thm:sectors}]
+\begin{proof}[Proof of Theorem~\ref{det:dia:thm:sectors}]
 The certificate identifies the maximal phase and coefficient in each
 residue as $(1,1)$, $(4/3,3m/2)$, and $(2,1)$ in the $Z_n$
-normalization. These give \eqref{eq:L}. In residue one, one four and two
+normalization. These give \eqref{det:dia:eq:L}. In residue one, one four and two
 twos have equal product; their atom coefficients $1$ and $1/2$ add to
-$3/2$. Theorem~\ref{thm:tail}, applied just below each successive phase,
+$3/2$. Theorem~\ref{det:dia:thm:tail}, applied just below each successive phase,
 bounds all later phases uniformly and proves both the equivalents and
 the displayed error terms.
 
@@ -427,7 +665,7 @@ $H_t=\coef{z}{t}\exp(z+z^2)=\sum_{a+2b=t}1/(a!b!)$.
 A profile made of twos and fours with $a$ twos and $b$ fours has degree
 $2t$ and numerator product $2^t$. The full $(8/9)^{hn}$ ladder in
 $A_\eps/L_r$ therefore has coefficients
-\begin{equation}\label{eq:ladder}
+\begin{equation}\label{det:dia:eq:ladder}
  H_{3h}\fall{m}{2h},\qquad
  \frac23 H_{2+3h}\fall{m-1}{2h},\qquad
  H_{1+3h}\fall{m}{2h}
@@ -450,9 +688,9 @@ $5/6>64/81$ in residues one and two, even though a polynomial prefactor
 can reverse their numerical size at moderate $n$.
 
 \section{The first unrestricted and distinct difference}
-\begin{theorem}[First sign-sensitive sector]\label{thm:diff}
+\begin{theorem}[First sign-sensitive sector]\label{det:dia:thm:diff}
 As $n=3m+r\to\infty$,
-\begin{equation}\label{eq:diff}
+\begin{equation}\label{det:dia:eq:diff}
  \frac{A_+(n)-A_-(n)}{L_r(n)}\sim
  \begin{cases}
  \dfrac52\fall{m}{2}(4/9)^n,&r=0,\\[2pt]
@@ -473,7 +711,7 @@ eligible atom lists is
  (1,1),(1,2),(2,1),(2,2),(4,1),(5,1),(6,1),(7,1).
 \]
 After imposing odd parity, exactly $3,2,1$ profiles remain in the three
-residues. They are displayed in Table~\ref{tab:odd}. The last column is
+residues. They are displayed in Table~\ref{det:dia:tab:odd}. The last column is
 the coefficient \emph{after} subtracting signs, before multiplication by
 $\fall{m}{\ell}\mu^n$.
 \begin{center}
@@ -489,40 +727,40 @@ $r$&$D$&Off-core atoms with multiplicity&$\mu$&Coefficient\\
 2&2&$(1,2)$&$1$&$1$\\
 \bottomrule
 \end{tabular}
-\refstepcounter{table}\label{tab:odd}\par\smallskip
+\refstepcounter{table}\label{det:dia:tab:odd}\par\smallskip
 \small Table \thetable: All odd profiles at or above the leading difference thresholds
 \end{center}
 The sums in the $Z_n$ normalization are
 $(5/2)\fall{m}{2}(4/9)^n$, $2m(2/3)^n$, and $1$.
-Division by \eqref{eq:L} gives \eqref{eq:diff}. All remaining odd phases
+Division by \eqref{det:dia:eq:L} gives \eqref{det:dia:eq:diff}. All remaining odd phases
 are strictly smaller; the same unsigned majorant as in
-Theorem~\ref{thm:tail}, restricted to odd profiles, controls their sum.
+Theorem~\ref{det:dia:thm:tail}, restricted to odd profiles, controls their sum.
 A strict spectral gap dominates all fixed polynomial factors, proving
 the equivalents.
 \end{proof}
 This proof uses a complete finite certificate for the maximal odd
 phases, rather than an unsupported informal list of candidate defects.
 
-\section{Canonical leading inverses to every power-log order}
+\section{Canonical leading inverses to every power-log order}\label{det:dia:sec:inverses}
 Put $\alpha=\log3/3$. For $r=0,1,2$, define the triples
-\begin{equation}\label{eq:params}
+\begin{equation}\label{det:dia:eq:params}
  (d_r,p_r,h_r)=(0,1,1),\ (4,4,3/2),\ (2,2,1),
  \quad b_r=1-d_r/3,\quad\lambda_r=\alpha d_r-\log p_r.
 \end{equation}
 The canonical smooth leading branch is
-\begin{equation}\label{eq:smoothL}
+\begin{equation}\label{det:dia:eq:smoothL}
  L_r(x)=\frac{h_r\exp(\alpha x^2-\lambda_r x)}
  {\Gamma(x/3+b_r)},\qquad F_r(x)=\log L_r(x).
 \end{equation}
 For sufficiently large $x$ this is positive, and substitution
-$x=3m+r$ reproduces \eqref{eq:L} exactly. No interpolation of the
+$x=3m+r$ reproduces \eqref{det:dia:eq:L} exactly. No interpolation of the
 original sequence is being assumed.
 
-\begin{proposition}[Leading inverse]\label{prop:core}
+\begin{proposition}[Leading inverse]\label{det:dia:prop:core}
 For sufficiently large $t$ there is a unique large root $x_r(t)$ of
 $F_r(x)=t$. Its derivative satisfies
 $x_r'(t)=1/F_r'(x_r(t))$, with
-\begin{equation}\label{eq:Fprime}
+\begin{equation}\label{det:dia:eq:Fprime}
  F_r'(x)=2\alpha x-\lambda_r-\frac13\psi(x/3+b_r)
  \sim2\alpha x.
 \end{equation}
@@ -535,20 +773,20 @@ follow.
 \end{proof}
 
 Let
-\begin{equation}\label{eq:inverseconstants}
+\begin{equation}\label{det:dia:eq:inverseconstants}
  y=\sqrt{t/\alpha},\quad c_r=(\log3+1)/3-\lambda_r,
  \quad a_r=\tfrac12-d_r/3,
  \quad c_{r,0}=a_r\log3-\tfrac12\log(2\pi)+\log h_r.
 \end{equation}
-\begin{theorem}[All algebraic-logarithmic orders]\label{thm:powerlog}
+\begin{theorem}[All algebraic-logarithmic orders]\label{det:dia:thm:powerlog}
 For every fixed $J\geq0$, there are uniquely specified polynomials
 $P_{r,j}$, with $\deg P_{r,j}\leq j+1$, such that
-\begin{equation}\label{eq:powerlog}
+\begin{equation}\label{det:dia:eq:powerlog}
  x_r(t)=y+\sum_{j=0}^J\frac{P_{r,j}(\log y)}{y^j}
  +O\left(\frac{(\log y)^{J+2}}{y^{J+1}}\right).
 \end{equation}
 They are determined by the recurrence below; in particular
-\begin{equation}\label{eq:P0}
+\begin{equation}\label{det:dia:eq:P0}
  P_{r,0}(z)=\frac{z}{6\alpha}-\frac{c_r}{2\alpha}.
 \end{equation}
 \end{theorem}
@@ -559,18 +797,18 @@ Let $B_k(b)$ denote the Bernoulli polynomial and set
 \]
 Shifted Stirling expansion with a remainder after each fixed order
 \cite{dlmf} gives
-\begin{equation}\label{eq:stirling}
+\begin{equation}\label{det:dia:eq:stirling}
  F_r(x)\sim \alpha x^2-\frac{x}{3}\log x+c_rx-a_r\log x+c_{r,0}
  -\sum_{k\geq1}g_{r,k}x^{-k}.
 \end{equation}
 After $P_0,\ldots,P_{j-1}$ have been chosen, substitute
 $X_{j-1}=y+\sum_{i<j}P_i(\log y)y^{-i}$ in the formal right side of
-\eqref{eq:stirling}. Let $R_j(z)$ be the coefficient of $y^{1-j}$ in
+\eqref{det:dia:eq:stirling}. Let $R_j(z)$ be the coefficient of $y^{1-j}$ in
 $F_r(X_{j-1})-\alpha y^2$. Define
-\begin{equation}\label{eq:Prec}
+\begin{equation}\label{det:dia:eq:Prec}
  P_j(z)=-R_j(z)/(2\alpha).
 \end{equation}
-For $j=0$ use $X_{-1}=y$. This also yields \eqref{eq:P0}.
+For $j=0$ use $X_{-1}=y$. This also yields \eqref{det:dia:eq:P0}.
 A new term $P_j y^{-j}$ changes the highest uncancelled order only
 through multiplication by $2\alpha y$, so the procedure is triangular
 and unique. Formal expansions of $\log(1+u)$ and $(1+u)^{-k}$ show
@@ -582,25 +820,25 @@ these substitutions for real large $y$. The leading equation places the
 root in an interval $y+O(\log y)$: evaluate $F_r$ at
 $y\pm C\log y$ with $C$ sufficiently large. On that interval
 $F_r'\geq c y>0$. The mean-value theorem divides the residual by this
-lower bound and proves \eqref{eq:powerlog}.
+lower bound and proves \eqref{det:dia:eq:powerlog}.
 \end{proof}
 For a readily checkable next coefficient,
-\begin{equation}\label{eq:P1}
+\begin{equation}\label{det:dia:eq:P1}
  P_{r,1}(z)=-\frac{\alpha P_{r,0}(z)^2
  -\frac13P_{r,0}(z)(z+1)+c_rP_{r,0}(z)-a_rz+c_{r,0}}
  {2\alpha}.
 \end{equation}
 The residue changes already affect the constant term of $P_{r,0}$
 through $\lambda_r/(2\alpha)$. A single residue-blind smooth inverse
-would lose these shifts. Equation~\eqref{eq:powerlog} is an all-orders
+would lose these shifts. Equation~\eqref{det:dia:eq:powerlog} is an all-orders
 asymptotic expansion; convergence of this infinite power-log series is
 not claimed.
 
-\section{Convergent inverses of finite sector models}
+\section{Convergent inverses of finite sector models}\label{det:dia:sec:convergent}
 Fix one residue and any fixed forward cutoff that includes the leading
 phase. After replacing $m$ by $(x-r)/3$ and dividing by $L_r(x)$, the
 finite model has the form
-\begin{equation}\label{eq:model}
+\begin{equation}\label{det:dia:eq:model}
  M_r(x)=L_r(x)S_r(x),\qquad
  S_r(x)=1+\sum_{\beta\in\mathcal B}p_{r,\beta}(x)\beta^x.
 \end{equation}
@@ -611,17 +849,17 @@ $3m/2$ can create negative powers. Put $H_r=\log S_r$, choosing the
 branch near $1$. The model is positive and strictly increasing for all
 sufficiently large real $x$.
 
-\begin{theorem}[Actual model inverse and first displacement]\label{thm:inverse}
+\begin{theorem}[Actual model inverse and first displacement]\label{det:dia:thm:inverse}
 Let $v_r(t)$ be the unique large solution $M_r(v)=e^t$, and write
 $x=x_r(t)$. For every sufficiently large fixed $t$ the series
-\begin{equation}\label{eq:LB}
+\begin{equation}\label{det:dia:eq:LB}
  v_r(t)=x_r(t)+\sum_{k\geq1}\frac{(-1)^k}{k!}
  \left(\frac{d}{dt}\right)^{k-1}
  \left[x_r'(t)H_r(x_r(t))^k\right]
 \end{equation}
 converges absolutely. If $\mathcal B$ is nonempty and
 $\beta_{\max}=\max\mathcal B$, then for some fixed $K$,
-\begin{equation}\label{eq:shift}
+\begin{equation}\label{det:dia:eq:shift}
  v_r(t)-x=-\frac{H_r(x)}{F_r'(x)}
  +O\left(x^K\beta_{\max}^{2x}\right).
 \end{equation}
@@ -651,14 +889,14 @@ $z(u)$ on a neighborhood of this closed $u$ disk.
 
 Set $w=F(z)-t$. The local inverse of $F$ gives
 $w=-uH(x_r(t+w))$. Lagrange--B\"urmann inversion applied to
-$z=x_r(t+w)$ yields the Taylor coefficients in \eqref{eq:LB}.
+$z=x_r(t+w)$ yields the Taylor coefficients in \eqref{det:dia:eq:LB}.
 Analyticity in a disk of radius greater than one proves absolute
 convergence at $u=1$.
 
 Convergence alone does not prove the squared-phase remainder in
-\eqref{eq:shift}. To establish that estimate separately, write
+\eqref{det:dia:eq:shift}. To establish that estimate separately, write
 $A=F'(z)+uH'(z)$. Implicit differentiation gives
-\begin{equation}\label{eq:implicitderivs}
+\begin{equation}\label{det:dia:eq:implicitderivs}
  z'=-\frac{H(z)}A,\qquad
  z''=-\frac{(F''(z)+uH''(z))(z')^2+2H'(z)z'}A.
 \end{equation}
@@ -666,29 +904,29 @@ Uniformly for $|u|\leq1$, $|A|\geq c x$. The defining equation and
 the above linear approximation show
 $|z(u)-x|=O(x^{K-1}\beta_{\max}^x)$. Consequently $H,H',H''$ at
 $z(u)$ remain polynomial times $\beta_{\max}^x$.
-Equation~\eqref{eq:implicitderivs} now gives
+Equation~\eqref{det:dia:eq:implicitderivs} now gives
 $z''=O(x^{K'}\beta_{\max}^{2x})$ uniformly. Taylor's integral
 remainder along $0\leq u\leq1$, and
-$z'(0)=-H(x)/F'(x)$, prove \eqref{eq:shift}.
+$z'(0)=-H(x)/F'(x)$, prove \eqref{det:dia:eq:shift}.
 \end{proof}
-For example, the second term of \eqref{eq:LB} is
-\begin{equation}\label{eq:secondinverse}
+For example, the second term of \eqref{det:dia:eq:LB} is
+\begin{equation}\label{det:dia:eq:secondinverse}
  \frac{H(x)H'(x)}{F'(x)^2}
  -\frac{F''(x)H(x)^2}{2F'(x)^3}.
 \end{equation}
 Expanding $\log S$ and collecting products of the finitely many bases
-in \eqref{eq:LB} produces every inverse exponential sector. Products
+in \eqref{det:dia:eq:LB} produces every inverse exponential sector. Products
 of bases in $(0,1)$ are locally finite above any positive floor: a
 product with $k$ factors is at most $\beta_{\max}^k$, bounding $k$.
 Equal product phases must be combined, notably
 $(8/9)^2=64/81$. Each coefficient has an all-orders power-log
-expansion from Theorem~\ref{thm:powerlog} and differentiation. Such
+expansion from Theorem~\ref{det:dia:thm:powerlog} and differentiation. Such
 differentiation is justified by the analytic implicit functions and
 uniform fixed-order Stirling expansions on small complex neighborhoods
 of the positive ray, equivalently by Cauchy estimates there.
 
 The first forward correction gives the leading inverse displacement
-\begin{equation}\label{eq:firstinverse}
+\begin{equation}\label{det:dia:eq:firstinverse}
  -\frac{C_r((x-r)/3)(8/9)^x}{F_r'(x)},\qquad x=x_r(t).
 \end{equation}
 Its next error base is $64/81$ in residue zero and $5/6$ in residues
@@ -697,11 +935,11 @@ by $\beta^y$ without also transporting $x-y=O(\log y)$: that shift
 changes the amplitude by a power of $y$ and a residue-dependent factor.
 
 \subsection{Compatibility under deeper truncation}
-\begin{proposition}\label{prop:compatibility}
+\begin{proposition}\label{det:dia:prop:compatibility}
 Suppose two fixed finite normalized models differ by
 $O(x^K\beta_*^x)$ near positive large $x$, with $0<\beta_*<1$.
 Their inverse branches satisfy
-\begin{equation}\label{eq:compatibility}
+\begin{equation}\label{det:dia:eq:compatibility}
  v_2(t)-v_1(t)=O\left(x_r(t)^{K-1}\beta_*^{x_r(t)}\right).
 \end{equation}
 \end{proposition}
@@ -716,11 +954,11 @@ invertible finite smooth model and a proved next-rate error. The models
 are compatible as the cutoff deepens. This does not assert a canonical
 convergent infinite smooth interpolation of the discrete sequences.
 
-\section{Residue aware integer threshold brackets}
+\section{Residue aware integer threshold brackets}\label{det:dia:sec:brackets}
 Let $a_n$ be either $A_+(n)$ or $A_-(n)$. Fix an eventual residue branch
 and a finite model for which, for all sufficiently large $n\equiv r$
 modulo $3$,
-\begin{equation}\label{eq:forwardrelative}
+\begin{equation}\label{det:dia:eq:forwardrelative}
  \left|\frac{a_n}{M_r(n)}-1\right|\leq C n^K\beta^n,
  \qquad C>0,\ K\geq0,\ 0<\beta<1.
 \end{equation}
@@ -730,16 +968,16 @@ the positive leading amplitude and enlargement of constants. Define
  \ceilr{z}{r}=r+3\left\lceil\frac{z-r}{3}\right\rceil.
 \]
 For a threshold $X=e^t$, let $v=v_r(t)$ and put
-\begin{equation}\label{eq:Delta}
+\begin{equation}\label{det:dia:eq:Delta}
  \Delta=\frac{4C2^K}{\alpha\beta^4}\,v^{K-1}\beta^v.
 \end{equation}
 Define $N_r(X)$ to be the least nonnegative index in residue class $r$
 with $a_n\geq X$. The global monotonicity proof below shows that no
 unknown finite initial maximum is needed for these diagonal sequences.
 
-\begin{theorem}[Asymptotic integer bracket]\label{thm:bracket}
+\begin{theorem}[Asymptotic integer bracket]\label{det:dia:thm:bracket}
 For all sufficiently large $X$,
-\begin{equation}\label{eq:bracket}
+\begin{equation}\label{det:dia:eq:bracket}
  \ceilr{v-\Delta}{r}\leq N_r(X)\leq\ceilr{v+\Delta}{r}.
 \end{equation}
 When $\Delta<3/2$, the two bounds are equal or are adjacent points of
@@ -749,10 +987,10 @@ one exact evaluation at the lower candidate resolves it.
 \end{theorem}
 \begin{proof}
 For $|n-v|\leq4$ and $v\geq8$, the right side of
-\eqref{eq:forwardrelative} is at most
+\eqref{det:dia:eq:forwardrelative} is at most
 $C2^K\beta^{-4}v^K\beta^v$, which is eventually at most $1/2$.
 The logarithmic error is therefore at most
-\begin{equation}\label{eq:logerror}
+\begin{equation}\label{det:dia:eq:logerror}
  E=2C2^K\beta^{-4}v^K\beta^v.
 \end{equation}
 Eventually $(\log M_r)'\geq\alpha v$ throughout $[v-4,v+4]$.
@@ -762,7 +1000,7 @@ or below $v-\Delta$ is strictly below the threshold, and every one
 at or above $v+\Delta$ is strictly above it. The lattice point just
 below $\ceilr{v-\Delta}{r}$ and the point
 $\ceilr{v+\Delta}{r}$ lie within distance $3+\Delta<4$ eventually.
-Monotonicity proves \eqref{eq:bracket}. The interval has width
+Monotonicity proves \eqref{det:dia:eq:bracket}. The interval has width
 $2\Delta<3$ when $\Delta<3/2$, so its ceiling endpoints differ by at
 most one lattice step. Compare $a_n\geq X$ exactly at the lower
 candidate when the endpoints differ; this handles equality thresholds
@@ -772,13 +1010,13 @@ without rounding ambiguity.
 \noindent\textbf{Operational boundary.}
 This is an asymptotic bracket theorem. For a supplied finite $X$, its
 use as a numerical certificate requires verified onsets for
-\eqref{eq:forwardrelative}, logarithmic-error smallness, the derivative
+\eqref{det:dia:eq:forwardrelative}, logarithmic-error smallness, the derivative
 bound on $[v-4,v+4]$, $\Delta<1$, and placement of the tested lattice
 points within the verified range of the model estimate. It also requires a validated computation of the model root and
 its resulting ceiling bounds. The report does not provide a turnkey
 interval solver or a single uniform usable onset for all these
 conditions. The explicit $n\geq192$ bound in
-Theorem~\ref{thm:tail} certifies the geometric forward tail condition
+Theorem~\ref{det:dia:thm:tail} certifies the geometric forward tail condition
 only; it does not by itself discharge these additional inverse checks.
 
 \subsection{The global threshold}
@@ -786,7 +1024,7 @@ An elementary injection strengthens eventual increase to an all-index
 statement. We record the proof because it removes an otherwise necessary
 finite-prefix exclusion in threshold inversion.
 
-\begin{proposition}[Strict increase at every positive index]\label{prop:monotone}
+\begin{proposition}[Strict increase at every positive index]\label{det:dia:prop:monotone}
 For fixed positive integer $p$, define
 $A_\eps(n,p)=\coef{w}{n}\prod_{j\geq1}(1-\eps w^j)^{-\eps j^p}$.
 Then $A_\eps(n+1,p)>A_\eps(n,p)$ for every $n\geq1$, while the
@@ -825,7 +1063,7 @@ $A_\eps(n+1,n+1)\geq A_\eps(n+1,n)>A_\eps(n,n)$.
 \end{proof}
 
 The exact adjacent leading-model ratios are
-\begin{equation}\label{eq:ratios}
+\begin{equation}\label{det:dia:eq:ratios}
 \begin{aligned}
  \frac{L_1(3m+1)}{L_0(3m)}&=2m(64/9)^m,\\
  \frac{L_2(3m+2)}{L_1(3m+1)}&=\frac2m(81/8)^m,\\
@@ -833,13 +1071,13 @@ The exact adjacent leading-model ratios are
 \end{aligned}
 \end{equation}
 Each tends to infinity. The equivalents in
-Theorem~\ref{thm:sectors} therefore prove eventual strict increase of
+Theorem~\ref{det:dia:thm:sectors} therefore prove eventual strict increase of
 both original sequences globally, not only within residue classes,
 and independently check the eventual behavior already implied by
-Proposition~\ref{prop:monotone}.
+Proposition~\ref{det:dia:prop:monotone}.
 The ordinary threshold inverse, for every threshold where the crossing
 is defined, is
-\begin{equation}\label{eq:globalinverse}
+\begin{equation}\label{det:dia:eq:globalinverse}
  N(X)=\min\{n\geq0:a_n\geq X\}=\min_{r=0,1,2}N_r(X).
 \end{equation}
 Apply the bracket separately to each residue and then minimize the
@@ -847,11 +1085,11 @@ three lower bounds and the three upper bounds. A finite asymptotic
 series followed by ordinary nearest-integer rounding is not a substitute
 for this residue-aware procedure.
 
-\section{A uniform critical crossover for a varying exponent}\label{sec:crossover}
+\section{A uniform critical crossover for a varying exponent}\label{det:dia:sec:crossover}
 The diagonal regime has outer exponent $n$, far above a second natural
 scale. To see the transition into an isolated dominant profile, let the
 exponent vary independently. Write
-\begin{equation}\label{eq:twoparam}
+\begin{equation}\label{det:dia:eq:twoparam}
  A_\eps(n,\tau)=\coef{w}{n}
  \prod_{j\geq1}(1-\eps w^j)^{-\eps j^\tau},\qquad n=3m+r.
 \end{equation}
@@ -861,22 +1099,25 @@ defined through its formal logarithm. In that extension the distinct
 model is a signed formal model; positivity of each generalized binomial
 factor is not asserted. The parameter $\tau$ in this section is unrelated
 to the logarithmic threshold $t$ in the inverse sections.
+\begin{writenote}[5 October 2026]
+Part~II writes $t$ for this $\tau$ (its $t$ is unrelated to the $t$ of Sections~\ref{det:dia:sec:inverses}--\ref{det:dia:sec:brackets}), $L_r$ for $\mathcal L_r$, $P_\ell$ for $W_\ell$, $x_0$ for $\xi$, $(q_r)$ and $(c_r)$ for $\kappa$ and $g$. Its Theorem~\ref{det:grow:thm:forward} continues this section from bounded $z$ to $0<z\le Sm^{3/4}$.
+\end{writenote}
 
 Put
-\begin{equation}\label{eq:crossparams}
+\begin{equation}\label{det:dia:eq:crossparams}
  z=m^2(8/9)^\tau,\quad a=z^{1/3},\quad
  \rho=\frac5{\sqrt{32}},\quad
  \delta=\frac{2\log(\sqrt{32}/5)}{\log(9/8)}.
 \end{equation}
 For the two-parameter family replace $n$ by $\tau$ in the exponents,
 but retain $m$ in the factorials, of the leading models:
-\begin{equation}\label{eq:crossL}
+\begin{equation}\label{det:dia:eq:crossL}
  \mathcal L_0=\frac{3^{m\tau}}{m!},\quad
  \mathcal L_1=\frac32\frac{4^\tau3^{(m-1)\tau}}{(m-1)!},\quad
  \mathcal L_2=\frac{2^\tau3^{m\tau}}{m!}.
 \end{equation}
-Using $H_k=\coef{u}{k}\exp(u+u^2)$ from \eqref{eq:ladder}, define
-\begin{equation}\label{eq:Psi}
+Using $H_k=\coef{u}{k}\exp(u+u^2)$ from \eqref{det:dia:eq:ladder}, define
+\begin{equation}\label{det:dia:eq:Psi}
  \Psi_0(z)=\sum_{h\geq0}H_{3h}z^h,\quad
  \Psi_1(z)=\frac23\sum_{h\geq0}H_{2+3h}z^h,\quad
  \Psi_2(z)=\sum_{h\geq0}H_{1+3h}z^h.
@@ -893,14 +1134,14 @@ nontrivial function when $z$ has positive finite size.
 Let $\theta=z\,d/dz$ and introduce the polynomial operators
 \begin{align}
  Q_0(\theta)=Q_2(\theta)&=2\theta^2-\theta,&
- Q_1(\theta)&=2\theta^2+\theta,\label{eq:Q}\\
+ Q_1(\theta)&=2\theta^2+\theta,\label{det:dia:eq:Q}\\
  E_0(\theta)=E_2(\theta)
  &=\frac16\theta(\theta-1)(2\theta-1)(6\theta-1),\notag\\
  E_1(\theta)&=\frac16\theta(2\theta+1)(2\theta-1)(3\theta+1).
- \label{eq:E}
+ \label{det:dia:eq:E}
 \end{align}
 For real $z\geq0$, put
-\begin{equation}\label{eq:Phi}
+\begin{equation}\label{det:dia:eq:Phi}
  \Phi_0(z)=\tfrac32 z^{3/2}\Psi_1(z),\quad
  \Phi_1(z)=\tfrac23 z^{1/2}\Psi_2(z),\quad
  \Phi_2(z)=z^{1/2}\Psi_0(z),
@@ -908,10 +1149,10 @@ For real $z\geq0$, put
 with continuous value zero at $z=0$.
 
 \begin{theorem}[Uniform crossover and the first noninteger order]
-\label{thm:crossover}
+\label{det:dia:thm:crossover}
 For each fixed $M>0$, uniformly in both signs, all residues, and
 $m,\tau$ as $m\to\infty$ with $0<z=m^2(8/9)^\tau\leq M$,
-\begin{equation}\label{eq:crossover}
+\begin{equation}\label{det:dia:eq:crossover}
 \begin{split}
  \frac{A_\eps(3m+r,\tau)}{\mathcal L_r}
  ={}&\Psi_r(z)-\frac{Q_r(\theta)\Psi_r(z)}m
@@ -922,7 +1163,7 @@ $m,\tau$ as $m\to\infty$ with $0<z=m^2(8/9)^\tau\leq M$,
 In particular the leading approximation has uniform error $O_M(m^{-1})$,
 and retaining its first correction gives error $O_M(m^{-2})$.
 The size-five term equals
-\begin{equation}\label{eq:deltaorder}
+\begin{equation}\label{det:dia:eq:deltaorder}
  \rho^\tau\Phi_r(z)=m^{-\delta}z^{\delta/2}\Phi_r(z),
  \qquad 2<\delta<3.
 \end{equation}
@@ -934,7 +1175,7 @@ is in general impossible.
 All constants are independent of the way $z$ approaches zero. Numerically,
 $2/\log(9/8)\approx16.9803740$ and $\delta\approx2.09588823$.
 At fixed positive $z$ the transition occurs at
-\begin{equation}\label{eq:crossscale}
+\begin{equation}\label{det:dia:eq:crossscale}
  \tau=\frac{2}{\log(9/8)}\log m-\frac{\log z}{\log(9/8)}.
 \end{equation}
 For integer $\tau$, a prescribed positive limit $z_0$ is realized along
@@ -946,12 +1187,12 @@ tends to $\Psi_r(z_0)$.
 
 \subsection{Closed forms of the crossover functions}
 Let $\omega=e^{2\pi i/3}$, and for $q\in\{0,1,2\}$ set
-\begin{equation}\label{eq:rootsofunity}
+\begin{equation}\label{det:dia:eq:rootsofunity}
  F_q(a)=\frac13\sum_{\ell=0}^2\omega^{-q\ell}
  \exp(\omega^\ell a+\omega^{2\ell}a^2).
 \end{equation}
 The roots-of-unity filter gives
-\begin{equation}\label{eq:Psifilter}
+\begin{equation}\label{det:dia:eq:Psifilter}
  \Psi_0(z)=F_0(a),\quad
  \Psi_1(z)=\tfrac23a^{-2}F_2(a),\quad
  \Psi_2(z)=a^{-1}F_1(a),\qquad a^3=z.
@@ -962,7 +1203,7 @@ $F_q(a)=\sum_{h\geq0}H_{q+3h}a^{q+3h}$. This identity also proves
 entireness, for the relevant series converge absolutely at every finite
 $|a|$. For real positive $z$, let $B_0=a+a^2$ and
 $C_0=\sqrt3(a-a^2)/2$. Then
-\begin{equation}\label{eq:realfilter}
+\begin{equation}\label{det:dia:eq:realfilter}
  F_q(a)=\frac13\left\{e^{B_0}+2e^{-B_0/2}
  \cos(C_0-2\pi q/3)\right\}.
 \end{equation}
@@ -971,7 +1212,7 @@ formula suffers cancellation for $q=1,2$.
 
 \subsection{Exact critical-scale atom formula}
 Isolate $(3,1)$ in the formal logarithm, and set
-\begin{equation}\label{eq:activity}
+\begin{equation}\label{det:dia:eq:activity}
  \xi=(m/3^\tau)^{1/3},\quad R_{jk}=j/2^{jk/2},\quad
  \lambda_{jk}=j^\tau\xi^{jk}=a^{jk/2}R_{jk}^{\tau}.
 \end{equation}
@@ -985,14 +1226,14 @@ $R=1$. Define the cutoff-normalized falling factorial
 \]
 For off-core profiles use $D=\sum jk b_{jk}$ as before. Exact extraction
 of the core gives
-\begin{equation}\label{eq:criticalatom}
+\begin{equation}\label{det:dia:eq:criticalatom}
  \frac{A_\eps(3m+r,\tau)}{3^{m\tau}/m!}
  =\xi^{-r}\sum_{D\equiv r\ (3)}W_{(D-r)/3}(m)
  \prod_{j,k}\frac{(\eps^{k-1}\lambda_{jk}/k)^{b_{jk}}}{b_{jk}!}.
 \end{equation}
 The zero convention makes the sum effectively finite. With
 $\kappa=(0,2,1)$ and $g=(1,3/2,1)$, direct simplification gives
-\begin{equation}\label{eq:crossnormalization}
+\begin{equation}\label{det:dia:eq:crossnormalization}
  \frac{\xi^r\mathcal L_r}{3^{m\tau}/m!}=g_r a^{\kappa_r}.
 \end{equation}
 These identities retain every collision atom and all distinct-model
@@ -1000,7 +1241,7 @@ signs; $0\leq W_\ell\leq1$ gives an absolute majorant.
 
 \subsection{Uniform control of the infinite off-family mass}
 Call an atom bad if it is neither the core nor either pure atom. Then
-\begin{equation}\label{eq:badrho}
+\begin{equation}\label{det:dia:eq:badrho}
  R_{jk}\leq\rho=5/\sqrt{32}<1,
 \end{equation}
 with equality only at $(5,1)$. For $k=1$, the sequence $j2^{-j/2}$
@@ -1011,7 +1252,7 @@ $R_{jk}\leq j2^{-j}\leq1/2$.
 
 Fix $M>0$ and put $B=\max(1,M^{1/6})$. Choose a fixed sufficiently
 large $T=T(M)$ that $v=B2^{-T/2}<1$. The convergent majorant
-\begin{equation}\label{eq:ST}
+\begin{equation}\label{det:dia:eq:ST}
  S_T(B)=\sum_{\mathrm{bad}\ (j,k)}\frac{B^{jk}R_{jk}^T}{k}<\infty
 \end{equation}
 follows by comparison with
@@ -1029,12 +1270,12 @@ $a^{D/2-\kappa_r}$. Except for $r=1,D=1$, this exponent is nonnegative
 by the residue condition. Thus $a^{D/2-\kappa_r}\leq B^D$ for
 $0<a\leq M^{1/3}$. The total absolute normalized mass of profiles
 with a bad atom, apart from that single exception, is at most
-\begin{equation}\label{eq:badmass}
+\begin{equation}\label{det:dia:eq:badmass}
  e^{B^2+B^4}\bigl(e^{S_\tau(B)}-1\bigr)=O_M(\rho^\tau).
 \end{equation}
 The exception consists of the single atom $(1,1)$, with exact normalized
 contribution
-\begin{equation}\label{eq:exception}
+\begin{equation}\label{det:dia:eq:exception}
  \frac{2}{3m}(3/4)^\tau.
 \end{equation}
 It is also $O_M(\rho^\tau)$. This residue-specific handling is what
@@ -1053,7 +1294,7 @@ $2<\delta<3$ without using the displayed decimals.
 Pure profiles with $b_2+2b_4=k$ have degree $2k$ and aggregate coefficient
 $H_k$. The residue condition is $k=\kappa_r+3h$, so their exact normalized
 contribution is
-\begin{equation}\label{eq:purecross}
+\begin{equation}\label{det:dia:eq:purecross}
  U_r(m,z)=g_r^{-1}\sum_{h\geq0}H_{\kappa_r+3h}z^h
  W_{2h+\mathbf1_{r=1}}(m).
 \end{equation}
@@ -1065,9 +1306,9 @@ For nonnegative integers $\ell$ set
 Uniformly in all $\ell\geq0$ and integer $m\geq1$,
 \begin{align}
  W_\ell(m)&=1-\frac{s_1(\ell)}m
- +O\left(\frac{(1+\ell)^4}{m^2}\right),\label{eq:W1}\\
+ +O\left(\frac{(1+\ell)^4}{m^2}\right),\label{det:dia:eq:W1}\\
  W_\ell(m)&=1-\frac{s_1(\ell)}m+\frac{e_2(\ell)}{m^2}
- +O\left(\frac{(1+\ell)^6}{m^3}\right).\label{eq:W2}
+ +O\left(\frac{(1+\ell)^6}{m^3}\right).\label{det:dia:eq:W2}
 \end{align}
 For $\ell\leq m+1$, apply the first Bonferroni bounds to the product
 $\prod_{i=0}^{\ell-1}(1-i/m)$. The respective errors are at most
@@ -1080,15 +1321,15 @@ This proves the bounds also beyond the exact coefficient cutoff.
 
 For every fixed integer $K$, the series
 $\sum_h(1+h)^K H_{q+3h}M^h$ converges, by entireness of
-$\exp(u+u^2)$. Consequently \eqref{eq:W1} and \eqref{eq:W2} can be
-summed in \eqref{eq:purecross} uniformly on $0\leq z\leq M$.
+$\exp(u+u^2)$. Consequently \eqref{det:dia:eq:W1} and \eqref{det:dia:eq:W2} can be
+summed in \eqref{det:dia:eq:purecross} uniformly on $0\leq z\leq M$.
 Substituting $\ell=2h$ or $2h+1$ gives exactly the operators in
-\eqref{eq:Q}--\eqref{eq:E}:
-\begin{equation}\label{eq:pureexpansion}
+\eqref{det:dia:eq:Q}--\eqref{det:dia:eq:E}:
+\begin{equation}\label{det:dia:eq:pureexpansion}
  U_r=\Psi_r-\frac{Q_r(\theta)\Psi_r}{m}
  +\frac{E_r(\theta)\Psi_r}{m^2}+O_M(m^{-3}).
 \end{equation}
-Together with \eqref{eq:badmass}, this already proves the two-term
+Together with \eqref{det:dia:eq:badmass}, this already proves the two-term
 version of the crossover and a remainder $O_M(m^{-\delta})$ after
 the $m^{-2}$ term.
 
@@ -1101,7 +1342,7 @@ majorant gives activity $O_M(\nu^\tau)$.
 Profiles with exactly one $(5,1)$ atom and otherwise only pure atoms
 have degree $D=5+2k$. Their residue conditions on $k$ are $2,1,0$
 modulo $3$. If $W$ is replaced by one, summing these profiles gives
-precisely $\rho^\tau\Phi_r(z)$ in \eqref{eq:Phi}.
+precisely $\rho^\tau\Phi_r(z)$ in \eqref{det:dia:eq:Phi}.
 Restoring $W$ changes the result by $O_M(\rho^\tau/m)$, using
 $|W_\ell-1|\leq s_1(\ell)/m$ for all $\ell$ with the cutoff
 convention, and the same summable polynomial moments.
@@ -1109,9 +1350,9 @@ convention, and the same summable polynomial moments.
 All remaining profiles contain another bad atom or at least two
 $(5,1)$ atoms. Their absolute normalized mass is
 $O_M(\nu^\tau+\rho^{2\tau})$, with the exceptional degree-one
-term \eqref{eq:exception} separately $O(m^{-1}\nu^\tau)$.
+term \eqref{det:dia:eq:exception} separately $O(m^{-1}\nu^\tau)$.
 Hence the entire nonpure contribution is
-\begin{equation}\label{eq:nonpureexpansion}
+\begin{equation}\label{det:dia:eq:nonpureexpansion}
  \rho^\tau\Phi_r(z)+O_M\left(
  \rho^\tau/m+\rho^{2\tau}+\nu^\tau+m^{-1}\nu^\tau\right).
 \end{equation}
@@ -1119,9 +1360,9 @@ Set $\eta=2\log(4/3)/\log(9/8)$, so
 $\nu^\tau=m^{-\eta}z^{\eta/2}$.
 The inequality $\nu^2<(8/9)^3$, equivalently $6561<8192$, proves
 $\eta>3$. Since $\delta>2$, every error in
-\eqref{eq:nonpureexpansion} is $O_M(m^{-3})$, in fact
-$o_M(m^{-3})$. Combining with \eqref{eq:pureexpansion} proves
-Theorem~\ref{thm:crossover}. Finally, every $H_k$ is positive, so
+\eqref{det:dia:eq:nonpureexpansion} is $O_M(m^{-3})$, in fact
+$o_M(m^{-3})$. Combining with \eqref{det:dia:eq:pureexpansion} proves
+Theorem~\ref{det:dia:thm:crossover}. Finally, every $H_k$ is positive, so
 $\Phi_r(z)>0$ for fixed $z>0$, proving that the noninteger-order term
 is genuinely present.
 
@@ -1130,8 +1371,11 @@ with the isolated-profile limit. This crossover theorem does not replace
 the sharper diagonal spectral theorem, whose exponentially small
 relative errors contain information far below the crossover's uniform
 algebraic remainder.
+\begin{writenote}[5 October 2026]
+On bounded $z$ both this theorem and Part~II's Theorem~\ref{det:grow:thm:forward} apply. There every displayed correction of Theorem~\ref{det:grow:thm:forward} is $O(m^{-1})$, so it gives only $A_\eps/(\mathcal L_r\Psi_r)=1+O(m^{-3/4})$, consistent with, and weaker than, Theorem~\ref{det:dia:thm:crossover}, whose $m^{-1}$, $m^{-2}$ and $m^{-\delta}$ terms lie below Part~II's remainder. On $z\to\infty$ with $z=O(m^{3/4})$ only Part~II applies.
+\end{writenote}
 
-\section{Exact computation and reproducibility}
+\section{Exact computation and reproducibility}\label{det:dia:sec:companion}
 The accompanying Python package uses only the standard library. Its
 arithmetic evidence has three logically separate roles:
 \begin{enumerate}
@@ -1140,9 +1384,9 @@ recurrence, direct product multiplication using binomial coefficients,
 and multiplication of individual atom exponentials with rational
 coefficients. The exponent $n$ is fixed throughout each row.
 \item Exhaustive phase enumeration implements
-\eqref{eq:boundB}--\eqref{eq:weightproduct}, records all eligible atoms,
+\eqref{det:dia:eq:boundB}--\eqref{det:dia:eq:weightproduct}, records all eligible atoms,
 degree bounds and contributing profiles, and compares their aggregates
-with typed exact fixtures for Tables~\ref{tab:common} and~\ref{tab:odd}.
+with typed exact fixtures for Tables~\ref{det:dia:tab:common} and~\ref{det:dia:tab:odd}.
 \item Semantic tests run in both ordinary Python and optimized mode.
 Failure checks are explicit and do not disappear when Python removes
 \texttt{assert} statements. Exact integer and rational fixtures avoid
@@ -1152,13 +1396,13 @@ the rational inequalities that locate the noninteger correction order.
 \end{enumerate}
 The Euler recurrence itself is worth recording. For an outer exponent
 $n$, let $a^{(n)}_0=1$ and
-\begin{equation}\label{eq:recurrence}
+\begin{equation}\label{det:dia:eq:recurrence}
  k a^{(n)}_k=\sum_{i=1}^k h_i^{(n,\eps)}a^{(n)}_{k-i},\qquad
  h_i^{(n,\eps)}=\sum_{d\mid i}\eps^{i/d-1}d^{n+1}.
 \end{equation}
 It follows by logarithmic differentiation, and $A_\eps(n)=a^{(n)}_n$.
 The direct product method instead multiplies the truncated factors with
-coefficients in \eqref{eq:profiles}. The atom method multiplies
+coefficients in \eqref{det:dia:eq:profiles}. The atom method multiplies
 $\exp(\eps^{k-1}j^n x^{jk}/k)$ through degree $n$. Their agreement
 is a substantive implementation cross-check because their extraction
 mechanisms differ.
@@ -1174,8 +1418,11 @@ and the distinction between code tests and the LaTeX PDF build. The
 build uses fixed PDF metadata and a fresh temporary build directory.
 The archive is formed from an explicit allowlist with fixed ZIP timestamps;
 auxiliary logs, bytecode, draft notes, and local paths are not deliverables.
+\begin{writenote}[5 October 2026]
+The archive README and \file{SHA256SUMS} are not shipped; the companion is shipped with the prefix \file{147-diagonal-} (its README as \file{147-diagonal-companion-README.md}, its code under \file{code/}, its certificate under \file{data/}). The report's README gives the rerun route from the arrival archive. At the write (Python 3.14.4, Windows, on a fresh extraction) the 56 tests passed in normal and optimized mode, and the regenerated certificate equals \file{certificate.json} after removal of the carriage returns that Windows text mode adds.
+\end{writenote}
 
-\section{Scope of the source and overlap review}\label{sec:scope}
+\section{Scope of the source and overlap review}\label{det:dia:sec:scope}
 The public source review inspected both target entries, both parent
 arrays, and the fixed-exponent portions of \cite{kotesovec}. Exact-ID
 and bounded topic searches found no correcting diagonal result. This is
@@ -1195,6 +1442,9 @@ unrelated computability package. The nearest generic maximum-product
 and transseries machinery does not state the diagonal conjecture
 correction or these residue amplitudes. These facts delimit the overlap
 review; they do not turn generic asymptotic machinery into a new claim.
+\begin{writenote}[5 October 2026]
+Commit \texttt{bb1cb91b7} exists in the repository history (2~October 2026; it changed only files under \file{Computability/HilbertTenthProblem/}, as stated). The ``supplied 178-entry report catalogue'' and its exclusion manifest are not part of the delivery. At the write the only repository files naming A252782 or A270917 are this report's. The front matter (``The OEIS conjecture, and its refutation'') says which inverse statements are instances of the transseries volume's apparatus and which are not.
+\end{writenote}
 
 The root-limit proof is elementary. The broader content of the report is
 the exact defect-phase organization, exhaustive finite classifications,
@@ -1203,7 +1453,7 @@ smooth-model-to-integer inverse passage. The critical-exponent extension additio
 residue amplitudes become entire crossover functions, with a uniform
 small-parameter boundary and an explicit noninteger correction.
 
-\section{Further questions}
+\section{Further questions}\label{det:dia:sec:further}
 Several natural extensions remain open within the scope of this report.
 \begin{enumerate}
 \item \textbf{Effective integer inversion.} Derive practical verified
@@ -1218,13 +1468,1076 @@ interactions with falling-factorial corrections.
 with quantitative uniformity. A bridge from this regime toward
 fixed-exponent weighted-partition asymptotics requires further estimates;
 substitution into either existing regime is not justified here.
+\begin{writenote}[5 October 2026]
+\emph{Answered in part} by Part~II: Theorem~\ref{det:grow:thm:forward} and Corollary~\ref{det:grow:cor:limit} give a uniform expansion, with quantitative remainder $O_S(m^{-3/4})$, for $0<z\le Sm^{3/4}$ and every fixed $S$. The range $z/m^{3/4}\to\infty$ and the bridge to fixed exponents remain open (Section~\ref{det:sec:further}, item~\ref{det:q:growing}).
+\end{writenote}
 \item \textbf{Other integer-weight products.} Determine analogous
 phase spectra when the weight sequence changes, especially when two
 integer part sizes compete for dominance or the maximizing size changes.
 \end{enumerate}
 These are questions for further work, not additional solved claims.
+\begin{writenote}[5 October 2026]
+All four questions are carried into Section~\ref{det:sec:further}, with Part~II's.
+\end{writenote}
 
-\begin{thebibliography}{9}
+\clearpage
+\part{Growing Euler crossover and attenuation inverse}\label{det:grow:part}
+\partsource{Bundle Report~148, archive \file{Growing_Euler_Crossover_and_Attenuation_Inverse_Source.zip}, delivered as \file{Report148.tex} (17 pages). Delivered title block ``Growing Euler crossover and attenuation inverse / Uniform moderate defect clouds for diagonal Euler families / Report 148 / 3 October 2026''. Printed as delivered, with \textbf{[write]} notes. Delivered Section~$k$ is Section~$k+13$ here, and its statement or equation $k.j$ is $(k+13).j$. Section~\ref{det:sec:further}, which closes the report, is added in the write.}
+\begin{center}
+\small
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.46\textwidth} >{\raggedright\arraybackslash}p{0.46\textwidth}@{}}
+\toprule
+Reading conventions of Part~II & Elsewhere in the report\\
+\midrule
+$t$ the outer exponent; $\tau_{r,m}(q)$ its inverse value & Part~I: $\tau$ the exponent; $t$ a logarithmic threshold\\
+$L=\log(9/8)$; $L_r$ the two-parameter amplitudes & Part~I: $\mathcal L_r$; its $L_r(n)$ are diagonal amplitudes\\
+$\beta=\frac58(\delta-1)$, $\alpha=5/(4L)$, $\gamma=8/9$, $\kappa=1.618\ldots$ & Part~I: $\beta$ a base, $\alpha=\log3/3$, $\kappa=(0,2,1)$\\
+$P_\ell(m)$; $x_0$; $q_r$, $c_r$; $\rho_{j,k}$; $\mathcal B$ the bad atoms & Part~I: $W_\ell(m)$; $\xi$; $\kappa$, $g$; $R_{jk}$; $\mathcal B$ sector bases\\
+$W_\ell=4w/9$ a variance; $\E$ expectation; $Q$ a compact set & Part~I: $W_\ell(m)$; $E_r(\theta)$, $Q_r(\theta)$ operators\\
+\bottomrule
+\end{tabular}
+\end{center}
+\begin{partabstract}
+The two-parameter Euler products associated with A252782 and A270917
+have a second crossover when the previously resummed defect activity
+$z=m^2(8/9)^t$ grows like $m^{3/4}$, with $n=3m+r$. Relative to the
+undepleted pure-defect normalizer, the coefficient acquires the uniform
+attenuation $\exp[-8s^{4/3}/9]$, where $s=z/m^{3/4}$. We prove the first
+two quarter-power corrections, the residue-dependent term, and a
+noninteger correction of order $m^{-\beta}$, $\beta\approx0.684930$,
+caused by one size-five atom, with remainder $O_S(m^{-3/4})$ for
+$0<z\le S m^{3/4}$. The proof includes exact conditional-Poisson
+normalization, global falling-factorial control, the entire growing-radius
+infinite atom tail, and the vanishing-activity endpoint. A smooth finite
+model has a unique inverse on a prescribed positive compact window.
+Every exact real-parameter level crossing in that window is localized
+by the same expansion, and at least one exists; uniqueness of the exact
+crossing is not asserted. A new exact standard-library companion checks
+finite algebra and semantics independently of the analytic proof.
+\end{partabstract}
+\noindent\textbf{Scope.} This report extends the fixed-compact crossover of
+Report~147. The conditioning, roots-of-unity, moment, and Taylor methods
+are classical. No global priority claim, all-orders theorem, complete
+phase diagram, or integer-threshold inversion is claimed here.
+\medskip
+
+\section{Definitions and relation to the diagonal problem}\label{det:grow:sec:definitions}
+For $n\ge0$, $t>0$, and $\eps\in\{+1,-1\}$, define
+\begin{equation}\label{det:grow:eq:def}
+ A_\eps(n,t)=[x^n]\prod_{j\ge1}(1-\eps x^j)^{-\eps j^t}.
+\end{equation}
+Only $j\le n$ can contribute to a given coefficient. The parameter $t$
+is held fixed throughout that coefficient extraction and throughout any
+row recurrence. The diagonal specializations $A_+(n,n)$ and
+$A_-(n,n)$ are the families treated in Report~147 in connection with OEIS
+A252782 and A270917~\cite{foundation}. Here $t$ varies separately from
+$n$. In the positive moderate window it is logarithmic in $m$, rather
+than equal to $n$. Thus the present result concerns a two-parameter
+extension of those diagonal sequences.
+\begin{writenote}[5 October 2026]
+``Report~147'' and \cite{foundation} are Part~\ref{det:dia:part} of this report; the unchanged copies under \file{foundation/} are byte-identical to it and are not shipped. Equation~\eqref{det:grow:eq:def} is Part~I's \eqref{det:dia:eq:twoparam} with $t$ for $\tau$, and \eqref{det:grow:eq:log} is Part~I's \eqref{det:dia:eq:logatoms}. The $t$ of this Part is not Part~I's logarithmic threshold $t$.
+\end{writenote}
+
+For positive integer $t$, a part of size $j$ has $j^t$ colors. The plus
+product permits repetition of a colored part; the minus product permits
+each colored part at most once. The two profile weights are, respectively,
+\[
+ \prod_j\binom{j^t+b_j-1}{b_j},\qquad
+ \prod_j\binom{j^t}{b_j},\qquad \sum_jjb_j=n.
+\]
+For arbitrary real $t>0$, we instead use the formal logarithm
+\begin{equation}\label{det:grow:eq:log}
+ \log\prod_{j\ge1}(1-\eps x^j)^{-\eps j^t}
+ =\sum_{j,k\ge1}\eps^{k-1}\frac{j^t x^{jk}}{k}.
+\end{equation}
+This definition agrees with the generalized-binomial product. Individual
+minus factors can have signed coefficients when $t$ is not an integer.
+No positivity of those factors will be used.
+
+Write $n=3m+r$, $r\in\{0,1,2\}$, and let $m\ge1$. Put
+\begin{align}\label{det:grow:eq:variables}
+ L&=\log(9/8),& z&=m^2(8/9)^t,& a&=z^{1/3},&
+ s&=z/m^{3/4},\\
+ \rho&=5/\sqrt{32},&
+ \delta&=\frac{2\log(1/\rho)}{L},&
+ \beta&=\frac58(\delta-1),&p&=\frac\delta2+\frac56.\notag
+\end{align}
+Here and below $O_S(\cdot)$ means one bound with constants and eventual
+onset depending only on the fixed positive number $S$, unless additional
+subscripts are displayed. All finite choices of sign and residue are
+included in the same bounds.
+
+The leading residue amplitudes are
+\begin{equation}\label{det:grow:eq:amplitudes}
+ L_0=\frac{3^{mt}}{m!},\qquad
+ L_1=\frac32\frac{4^t3^{(m-1)t}}{(m-1)!},\qquad
+ L_2=\frac{2^t3^{mt}}{m!}.
+\end{equation}
+Although we suppress it in notation, $L_r$ depends on both $m$ and $t$.
+\begin{writenote}[5 October 2026]
+These $L_r$ are Part~I's $\mathcal L_r$ of \eqref{det:dia:eq:crossL}; on the diagonal $t=n$ they equal Part~I's $L_r(n)$ of \eqref{det:dia:eq:L}. The letter $L$ alone denotes $\log(9/8)$ in this Part. $H_k$ and $\Psi_r$ are Part~I's \eqref{det:dia:eq:Psi}.
+\end{writenote}
+Define $H_k=[u^k]\exp(u+u^2)$, so that
+\begin{equation}\label{det:grow:eq:H}
+ H_k=\sum_{v=0}^{\lfloor k/2\rfloor}\frac{1}{(k-2v)!v!},\qquad
+ H_0=H_1=1,\quad H_2=\frac32.
+\end{equation}
+The undepleted pure-defect functions are
+\begin{align}\label{det:grow:eq:Psi}
+ \Psi_0(z)&=\sum_{h\ge0}H_{3h}z^h,&
+ \Psi_1(z)&=\frac23\sum_{h\ge0}H_{2+3h}z^h,&
+ \Psi_2(z)&=\sum_{h\ge0}H_{1+3h}z^h.
+\end{align}
+Each is entire, positive on $[0,\infty)$, and equals one at zero. Entirety
+follows, for example, from Cauchy's bound for $\exp(u+u^2)$ on an arbitrary
+circle and then letting the circle radius increase.
+
+\section{The uniform growing crossover}
+\begin{theorem}\label{det:grow:thm:forward}
+Fix $S>0$. Uniformly for $\eps\in\{+1,-1\}$, $r\in\{0,1,2\}$, and
+positive real $t$ such that $0<z\le S m^{3/4}$, as the positive integer
+$m$ tends to infinity,
+\begin{equation}\label{det:grow:eq:forward}
+\begin{aligned}
+ \frac{A_\eps(3m+r,t)}{L_r\Psi_r(z)}
+ =e^{-8s^{4/3}/9}\bigg[&1-\frac89s\,m^{-1/4}\\
+ &+\left\{\frac{4(r-1)}9s^{2/3}+\frac{128}{81}s^2\right\}m^{-1/2}\\
+ &+s^p m^{-\beta}\bigg]+O_S(m^{-3/4}).
+\end{aligned}
+\end{equation}
+There is no positive lower bound imposed on $z$ or $s$.
+\end{theorem}
+
+The first correction is independent of sign and residue. Residue
+dependence first appears at order $m^{-1/2}$. The noninteger correction
+is positive for both signs, and its exponent satisfies
+\begin{equation}\label{det:grow:eq:exponents}
+ 2<\delta<\frac{11}{5},\qquad
+ \frac58<\beta<\frac34,
+ \qquad
+ \delta=2.09588822834986\ldots,\quad
+ \beta=0.684930142718664\ldots.
+\end{equation}
+These strict inequalities do not depend on rounded decimals. Indeed,
+$\delta>2$ is equivalent to $2025<2048$, while $\delta<11/5$ follows from
+\[
+ (25/32)^5>(8/9)^{11},\qquad
+ 306455660244140625>288230376151711744.
+\]
+The fractional correction cannot be absorbed in the displayed
+$O(m^{-3/4})$ remainder at fixed positive $s$.
+\begin{writenote}[5 October 2026]
+\emph{A wrong decimal.} The last digits of the decimal of $\beta$ in \eqref{det:grow:eq:exponents} are wrong: $\beta=\frac58(\delta-1)=0.684930142718661914\ldots$, so the printed $0.684930142718664\ldots$ should read $0.684930142718661\ldots$ (from the printed, rounded $\delta$ one gets $0.6849301427186625$). The decimals of $\delta$ and of $\kappa$ in \eqref{det:grow:eq:bad-asymp} are right. Nothing depends on the decimal: the inequalities $2<\delta<11/5$ and $5/8<\beta<3/4$ are proved by the integer comparisons above, which the write rechecked.
+
+Theorem~\ref{det:grow:thm:forward} answers in part Part~I's further question~3 (Section~\ref{det:dia:sec:further}); see the dated note there, and the note at the end of Part~I's Section~\ref{det:dia:sec:crossover} for the overlap of the two theorems on bounded~$z$.
+\end{writenote}
+
+\begin{corollary}\label{det:grow:cor:limit}
+Uniformly in the same range,
+\begin{equation}\label{det:grow:eq:first}
+ \frac{A_\eps(3m+r,t)}{L_r\Psi_r(z)}
+ =e^{-8s^{4/3}/9}\left(1-\frac89s\,m^{-1/4}\right)
+ +O_S(m^{-1/2}).
+\end{equation}
+If $z/m^{3/4}\to s_0\in[0,\infty)$, then
+\begin{equation}\label{det:grow:eq:limit}
+ \frac{A_\eps(3m+r,t)}{L_r\Psi_r(z)}\longrightarrow e^{-8s_0^{4/3}/9}.
+\end{equation}
+The residue and the sign may vary along the sequence.
+\end{corollary}
+
+The endpoint $s_0=0$ includes $z\to0$, bounded $z$, and $z\to\infty$
+with $z=o(m^{3/4})$. At a fixed positive $s$,
+\begin{equation}\label{det:grow:eq:t-of-s}
+ t=t_m(s)=\frac{5}{4L}\log m-\frac{\log s}{L}.
+\end{equation}
+Each fixed $s>0$ is realizable even with integer $t$: let $t\to\infty$
+through integers and take $m$ nearest to $s^{4/5}(9/8)^{4t/5}$.
+The relative rounding error of $m$ then tends to zero. This observation
+does not license rounding a continuous inverse in $t$ to an exact
+integer threshold.
+
+The scale can be anticipated from the pure cloud. Its mean depletion
+index is asymptotic to $4a^2/3$, while the leading finite-core penalty is
+$\exp[-\ell^2/(2m)]$. An order-one penalty therefore occurs at
+$a\asymp m^{1/4}$, equivalently $z\asymp m^{3/4}$. The proof below
+makes this heuristic uniform and identifies the additional terms.
+
+\section{Exact atom normalization and Poisson conditioning}
+Isolate the logarithmic core atom $(3,1)$ and set
+\begin{equation}\label{det:grow:eq:activities}
+ x_0=(m/3^t)^{1/3}=a^{1/2}2^{-t/2},\qquad
+ \lambda_{j,k}=j^t x_0^{jk}
+ =a^{jk/2}\left(\frac{j}{2^{jk/2}}\right)^t.
+\end{equation}
+The equality of the two expressions for $x_0$ follows exactly from
+$a^3=m^2(8/9)^t$. The pure off-core atoms $(2,1)$ and $(4,1)$ have
+activities $a$ and $a^2$. Let $\Bad$ contain every other off-core pair,
+so it excludes exactly $(2,1),(3,1),(4,1)$.
+
+For a finite off-core profile $b=(b_{j,k})$, write
+$D=\sum jk b_{j,k}$. When $D\equiv r\pmod3$, define
+$\ell=(D-r)/3$. It is a nonnegative integer. Use the cutoff convention
+\begin{equation}\label{det:grow:eq:P}
+ P_\ell(m)=\begin{cases}
+ \fall{m}{\ell}/m^\ell,&0\le\ell\le m,\\
+ 0,&\ell>m.
+ \end{cases}
+\end{equation}
+Extracting the remaining core coefficient gives the exact identity
+\begin{equation}\label{det:grow:eq:profile}
+ \frac{A_\eps(3m+r,t)}{3^{mt}/m!}
+ =x_0^{-r}\sum_{D\equiv r\ (3)}P_{(D-r)/3}(m)
+ \prod_{(j,k)\ne(3,1)}
+ \frac{(\eps^{k-1}\lambda_{j,k}/k)^{b_{j,k}}}{b_{j,k}!}.
+\end{equation}
+Only degrees $D\le3m+r$ survive, so this identity is formal without
+any convergence assumption. Later majorants justify absolutely
+convergent profile sums after removal of the cutoff.
+
+Put
+\begin{equation}\label{det:grow:eq:residues}
+ (q_0,q_1,q_2)=(0,2,1),\qquad(c_0,c_1,c_2)=(1,3/2,1),\qquad
+ F_q(a)=\sum_{k\equiv q\ (3)}H_k a^k.
+\end{equation}
+Direct substitution in \eqref{det:grow:eq:amplitudes} yields
+\begin{equation}\label{det:grow:eq:normalization}
+ \frac{x_0^rL_r}{3^{mt}/m!}=c_r a^{q_r},\qquad
+ \Psi_r(a^3)=\frac{F_{q_r}(a)}{c_r a^{q_r}}.
+\end{equation}
+Thus division of \eqref{det:grow:eq:profile} by $L_r\Psi_r$ divides its profile
+sum by $F_{q_r}(a)$, with no further residue factor.
+\begin{writenote}[5 October 2026]
+Equations \eqref{det:grow:eq:activities}--\eqref{det:grow:eq:normalization} restate Part~I's \eqref{det:dia:eq:activity}--\eqref{det:dia:eq:crossnormalization} and \eqref{det:dia:eq:Psifilter}: $x_0$ is Part~I's $\xi$, $P_\ell$ its $W_\ell$, $(q_r)$ and $(c_r)$ its $\kappa$ and $g$, and $F_q$ its $F_q$.
+\end{writenote}
+
+Let $N_2\sim\Pois(a)$ and $N_4\sim\Pois(a^2)$ be independent, and put
+$K=N_2+2N_4$. Then
+\[
+ \Prb(K=k)=e^{-a-a^2}H_k a^k.
+\]
+The pure part of the exact normalized ratio is consequently
+\begin{equation}\label{det:grow:eq:pure-exact}
+ R_r^{\rm pure}(m,a)
+ =\E\left[P_{(2K-r)/3}(m)\mid K\equiv q_r\pmod3\right].
+\end{equation}
+We write $\E_r$ for this conditional expectation. The minimal values of
+$K$ are $0,2,1$ for $r=0,1,2$, respectively, so the minimal depletion
+indices are $0,1,0$. In particular $P_1=1$ makes residue one regular.
+
+\section{Uniform control of the residue conditioning}
+Put $B=a+a^2$ and $\omega=e^{2\pi i/3}$. Filtering the generating
+function at $1,\omega,\omega^2$ gives
+\begin{equation}\label{det:grow:eq:filter}
+ F_q(a)=\frac13\left\{e^B+2e^{-B/2}
+ \cos\left[\frac{\sqrt3}{2}(a-a^2)-\frac{2\pi q}{3}\right]\right\}.
+\end{equation}
+For $a\ge1$, this implies
+\begin{equation}\label{det:grow:eq:pstar}
+ \Prb(K\equiv q\pmod3)\ge p_*:=\frac{1-2e^{-3}}3>0.
+\end{equation}
+For $0<a\le1$ one must first account for the vanishing residue mass.
+For every fixed integer $h\ge0$,
+\begin{equation}\label{det:grow:eq:smallmom}
+ \E[(1+K)^h\mid K\equiv q\ (3)]
+ \le\frac1{H_q}\sum_{k\equiv q\ (3)}(1+k)^hH_k<\infty.
+\end{equation}
+This follows by dividing numerator and denominator by $a^q$, using
+$F_q(a)\ge H_q a^q$, and then $a^{k-q}\le1$. The last series converges
+because the generating function is entire.
+
+For every nonnegative integer $\ell$, including beyond the cutoff,
+\begin{equation}\label{det:grow:eq:Pfirst}
+ 0\le1-P_\ell(m)\le\frac{\ell(\ell-1)}{2m}.
+\end{equation}
+For $\ell\le m$, this is the elementary inequality
+$1-\prod_i(1-v_i)\le\sum_i v_i$ for $0\le v_i\le1$.
+For $\ell>m$, its right side is at least one. Hence
+\begin{equation}\label{det:grow:eq:pure-small}
+ R_r^{\rm pure}(m,a)=1+O(m^{-1})\qquad(0<a\le1).
+\end{equation}
+The limit as $a\downarrow0$ is one for all residues.
+
+For $a\ge1$, conditioning increases nonnegative expectations by at most
+$p_*^{-1}$. The compound-Poisson cumulants of $K$ are
+$\kappa_j(K)=a+2^j a^2$. For every fixed integer $h\ge1$,
+\begin{equation}\label{det:grow:eq:moments}
+ \E_r|K-(a+2a^2)|^h\le C_h a^h,\qquad
+ \E_r(1+K)^h\le C_h(1+a^{2h}).
+\end{equation}
+Indeed, the central moment of even order $2v$ is a sum over partitions
+with block sizes at least two; each product has at most $v$ cumulants
+and is $O(a^{2v})$. Other absolute moments follow from H\"older's
+inequality, and \eqref{det:grow:eq:pstar} transfers the bounds to the conditional
+law.
+
+Fixed polynomial moments also become equidistributed among residues.
+Differentiating the filter gives, for a polynomial of fixed degree $h$,
+a conditional-minus-unconditional error bounded by a constant times
+\begin{equation}\label{det:grow:eq:filtererror}
+ (1+a)^{2h}e^{-3B/2}\qquad(a\ge1).
+\end{equation}
+The reason is that every fixed Euler derivative $(u\,d/du)^h$ of
+$\exp(au+a^2u^2)$ at $u=\omega,\omega^2$ equals that exponential times
+a polynomial in $a$, while its modulus is $e^{-B/2}$. Division by the
+residue normalizer costs at most $p_*^{-1}e^{-B}$. Additional fixed
+polynomials in $a$ preserve exponential decay. These observations
+supply all moment replacements made below, without applying a
+large-$a$ estimate at small $a$.
+
+\section{Pure cloud depletion with a global remainder}\label{det:grow:sec:pure}
+\begin{proposition}\label{det:grow:prop:pure}
+For every fixed $A>0$, uniformly for $0<a\le A m^{1/4}$ and all residues,
+\begin{equation}\label{det:grow:eq:pure}
+ R_r^{\rm pure}(m,a)
+ =e^{-8a^4/(9m)}\left[1-\frac{8a^3}{9m}
+ +\frac{4(r-1)a^2}{9m}+\frac{128a^6}{81m^2}\right]
+ +O_A(m^{-3/4}).
+\end{equation}
+\end{proposition}
+\begin{proof}
+For $0<a\le1$, \eqref{det:grow:eq:pure-small} suffices: the displayed
+approximation also equals $1+O(m^{-1})$. Suppose therefore that
+$1\le a\le A m^{1/4}$. Define
+\[
+ f_m(x)=\exp\left[-\frac{x^2-x}{2m}-\frac{x^3}{6m^2}\right].
+\]
+On the nonnegative integer support, $0<f_m\le1$. For $0\le\ell\le m/2$,
+expansion of $\log(1-i/m)$ and summation over $0\le i<\ell$ give
+\begin{equation}\label{det:grow:eq:logPbound}
+ |\log P_\ell-\log f_m(\ell)|
+ \le C\left(\frac{\ell^2}{m^2}+\frac{\ell^4}{m^3}\right).
+\end{equation}
+Both logarithms are nonpositive, so exponentiation is 1-Lipschitz there.
+On $\ell>m/2$, simply use $|P_\ell-f_m(\ell)|\le1$ and the fourth
+moment Markov bound. This covers $\ell>m$ as well. By
+\eqref{det:grow:eq:moments},
+\begin{equation}\label{det:grow:eq:globalPaverage}
+\begin{aligned}
+ \E_r|P_\ell-f_m(\ell)|
+ &\le C\left\{\frac{1+a^4}{m^2}+\frac{1+a^8}{m^3}
+                  +\frac{1+a^8}{m^4}\right\}\\
+ &=O_A(m^{-1}),\qquad \ell=(2K-r)/3.
+\end{aligned}
+\end{equation}
+The cutoff has thus been handled globally rather than by an unquantified
+``typical profile'' restriction.
+
+Set $d=4a^2/3$ and $X=\ell-d$. Then
+$f_m(\ell)=e^{-d^2/(2m)}e^V$, where exactly
+\begin{equation}\label{det:grow:eq:V}
+ V=-\frac{dX}{m}-\frac{X^2}{2m}+\frac{d+X}{2m}
+                  -\frac{(d+X)^3}{6m^2}.
+\end{equation}
+The displacement of $d$ from the unconditioned mean of $\ell$ is
+$(2a-r)/3=O(a)$, so \eqref{det:grow:eq:moments} implies
+$\E_r|X|^h\le C_h a^h$ for every fixed $h$. Each monomial of
+\eqref{det:grow:eq:V} has $L^3$ norm bounded by a constant times one of
+\[
+ a^3/m,\ a^2/m,\ a/m,\ a^6/m^2,\ a^5/m^2,\ a^4/m^2,\ a^3/m^2.
+\]
+It follows that $\|V\|_3=O_A(m^{-1/4})$. Moreover,
+$V\le d^2/(2m)\le8A^4/9$, because $\log f_m(\ell)\le0$ on the support.
+The exponential Taylor remainder obeys
+$|e^v-1-v-v^2/2|\le C_A|v|^3$ for all $v\le8A^4/9$, even with an
+unbounded negative tail. Therefore
+\begin{equation}\label{det:grow:eq:Etaylor}
+ \E_r e^V=1+\E_rV+\frac12\E_r V^2+O_A(m^{-3/4}).
+\end{equation}
+
+The required unconditional moments are
+\begin{equation}\label{det:grow:eq:Xmom}
+ \E X=\frac{2a-r}{3},\qquad
+ \E X^2=\frac{20a^2+4(1-r)a+r^2}{9}.
+\end{equation}
+Equation \eqref{det:grow:eq:filtererror} permits their conditional replacements:
+each error is a polynomial in $a$ times $e^{-3B/2}$ and is multiplied by
+at least $1/m$. The total replacement error is $O(m^{-1})$.
+Expanding \eqref{det:grow:eq:V} and retaining terms larger than the target error
+now gives
+\begin{equation}\label{det:grow:eq:EV}
+ \E_rV=-\frac{8a^3}{9m}+\frac{4(r-1)a^2}{9m}
+                       -\frac{32a^6}{81m^2}+O_A(m^{-3/4}).
+\end{equation}
+For example, all $a/m$ terms are $O_A(m^{-3/4})$, and all terms of
+size $(1+a^5)/m^2$ are also $O_A(m^{-3/4})$.
+
+For the quadratic term, write $V=-dX/m+W$. For every fixed moment
+order the norm of $W$ is $O_A(m^{-1/2})$, whereas that of $dX/m$ is
+$O_A(m^{-1/4})$. H\"older's inequality bounds the cross term and $W^2$
+by $O_A(m^{-3/4})$. Using \eqref{det:grow:eq:Xmom} yields
+\begin{equation}\label{det:grow:eq:EV2}
+ \frac12\E_rV^2=\frac{d^2}{2m^2}\E X^2+O_A(m^{-3/4})
+              =\frac{160a^6}{81m^2}+O_A(m^{-3/4}).
+\end{equation}
+Combining \eqref{det:grow:eq:globalPaverage}, \eqref{det:grow:eq:Etaylor},
+\eqref{det:grow:eq:EV}, and \eqref{det:grow:eq:EV2} proves the proposition.
+\end{proof}
+
+\begin{lemma}\label{det:grow:lem:shift}
+Fix $A,B_0>0$. Suppose $|b|\le B_0$ and a residue condition
+$K\equiv q\pmod3$ makes $(2K+b)/3$ a nonnegative integer on its
+support. Uniformly for $1\le a\le A m^{1/4}$,
+\begin{equation}\label{det:grow:eq:shift}
+ \E\left[P_{(2K+b)/3}(m)\mid K\equiv q\ (3)\right]
+ =e^{-8a^4/(9m)}+O_{A,B_0}(m^{-1/4}).
+\end{equation}
+\end{lemma}
+\begin{proof}
+The change in $b$ changes $X$ by a bounded constant. The moment bounds,
+global approximation, and upper bound on $V$ remain uniform. Retaining
+only $\E|V|=O_{A,B_0}(m^{-1/4})$ in the preceding proof proves the claim.
+Only the three shifts $b=5-r$ will be used.
+\end{proof}
+
+\section{The entire growing radius bad atom sum}
+Define
+\begin{equation}\label{det:grow:eq:Sbad}
+ \mathcal S_{\rm bad}=\sum_{(j,k)\in\Bad}\frac{\lambda_{j,k}}k,
+ \qquad\lambda_5=\lambda_{5,1}=a^{5/2}\rho^t.
+\end{equation}
+The next bound controls both infinite indices, including all collisions
+of the core and pure sizes. It does not transfer constants from a
+fixed-radius result.
+
+\begin{proposition}\label{det:grow:prop:bad}
+Uniformly for $0<a\le S^{1/3}m^{1/4}$ with the exact relation
+$a^3=m^2(8/9)^t$,
+\begin{equation}\label{det:grow:eq:bad-asymp}
+ \mathcal S_{\rm bad}=\lambda_5\{1+O_S(m^{-\kappa})\},\qquad
+ \kappa=\frac5{4L}\log\frac{5\sqrt2}{6}-\frac18
+       =1.61816310250741\ldots.
+\end{equation}
+In particular,
+\begin{equation}\label{det:grow:eq:lambda5}
+ \lambda_5=m^{-\delta}a^{(3\delta+5)/2}=m^{-\beta}s^p,
+ \qquad\mathcal S_{\rm bad}=O_S(m^{-\beta}).
+\end{equation}
+\end{proposition}
+\begin{proof}
+To avoid confusing a radius with the inverse target used later, denote
+\[
+ \xi=x_0=a^{1/2}2^{-t/2},\qquad
+ R=a^{1/2}\left(\frac6{5\sqrt2}\right)^t,\qquad
+ T=a(3/4)^t.
+\]
+Since $t=(2\log m-3\log a)/L$, the upper endpoint for $a$ gives
+\begin{equation}\label{det:grow:eq:radiusbounds}
+ \xi\le C_\xi(S)m^{-\gamma_\xi},\quad
+ R\le C_R(S)m^{-\kappa},\quad
+ T\le C_T(S)m^{-\gamma_T},
+\end{equation}
+where
+\begin{align}\label{det:grow:eq:radiusconstants}
+ C_\xi(S)&=S^{1/6+\log2/(2L)},&
+ \gamma_\xi&=\frac{5\log2}{8L}-\frac18,\\
+ C_R(S)&=S^{1/6+\log(5\sqrt2/6)/L},&
+ C_T(S)&=S^{1/3+\log(4/3)/L},\notag\\
+ \gamma_T&=\frac5{4L}\log(4/3)-\frac14.&&\notag
+\end{align}
+All three exponents are positive. Eventually $\xi,R,T\le1/2$.
+For every $j\ge5$,
+\[
+ \frac{\lambda_{j+1,1}}{\lambda_{j,1}}
+ =\xi\left(\frac{j+1}{j}\right)^t\le R,
+\]
+whence the entire single-atom degree tail satisfies
+\begin{equation}\label{det:grow:eq:jtail}
+ \lambda_5\le\sum_{j\ge5}\lambda_{j,1}\le\frac{\lambda_5}{1-R}.
+\end{equation}
+
+For the collision family, sum all $k\ge2$ first:
+\[
+ \sum_{k\ge2}\frac{j^t\xi^{jk}}k
+ \le\frac{j^t\xi^{2j}}{2(1-\xi^j)}
+ \le\frac{j^t\xi^{2j}}{2(1-\xi)}.
+\]
+Put $b_j=j^t\xi^{2j}$. For $j\ge2$,
+$b_{j+1}/b_j\le\xi^2(3/2)^t=T$, while
+$b_1=a2^{-t}$ and $b_2=a^2 2^{-t}$. Thus
+\begin{equation}\label{det:grow:eq:ktail}
+ \sum_{j\ge1,k\ge2}\frac{\lambda_{j,k}}k
+ \le\frac{b_1+b_2/(1-T)}{2(1-\xi)}\le b_1+2b_2.
+\end{equation}
+This also establishes convergence of the infinite activity sum. The
+remaining $k=1$ bad atom is $(1,1)$, so
+\begin{equation}\label{det:grow:eq:operational}
+ \lambda_5\le\mathcal S_{\rm bad}
+ \le\frac{\lambda_5}{1-R}+\lambda_{1,1}+b_1+2b_2.
+\end{equation}
+
+The comparison with $\lambda_5$ must remain valid as $a\downarrow0$.
+Write $h=\log(5/4)$, $d_0=\log(5/(2\sqrt2))$, and $\alpha=5/(4L)$.
+Exactly,
+\begin{align}\label{det:grow:eq:activityratios}
+ \frac{\lambda_{1,1}}{\lambda_5}
+ &=m^{-2h/L}a^{3h/L-2},\\
+ \frac{b_1}{\lambda_5}&=m^{-2d_0/L}a^{3d_0/L-3/2},\notag\\
+ \frac{b_2}{\lambda_5}&=m^{-2d_0/L}a^{3d_0/L-1/2}.\notag
+\end{align}
+Every displayed power of $a$ is positive: the first assertion is
+$125>81$, the second follows from $25/8>9/8$, and the third is stronger.
+Maximization at the allowed upper endpoint therefore gives
+\begin{align}\label{det:grow:eq:comparisonbounds}
+ \lambda_{1,1}/\lambda_5&\le S^{h/L-2/3}m^{-\gamma_1},&
+ \gamma_1&=\kappa+5/4,\\
+ b_1/\lambda_5&\le S^{d_0/L-1/2}m^{-\gamma_{c1}},&
+ \gamma_{c1}&=\alpha d_0+3/8,\notag\\
+ b_2/\lambda_5&\le S^{d_0/L-1/6}m^{-\gamma_{c2}},&
+ \gamma_{c2}&=\alpha d_0+1/8.\notag
+\end{align}
+Here
+\[
+ \gamma_{c2}-\kappa=\alpha\log(3/2)+1/4>0,\qquad
+ \gamma_{c1}=\gamma_{c2}+1/4.
+\]
+Using $(1-R)^{-1}\le1+2R$ now proves \eqref{det:grow:eq:bad-asymp}.
+Finally, substitution of the exact relation for $t$ gives
+\eqref{det:grow:eq:lambda5}.
+\end{proof}
+
+For an operational bound, once \eqref{det:grow:eq:radiusbounds} is at most
+$1/2$ in each component, a permissible upper bound for
+$\mathcal S_{\rm bad}/\lambda_5-1$ is
+\begin{equation}\label{det:grow:eq:explicit-bad-error}
+ 2C_R(S)m^{-\kappa}+S^{h/L-2/3}m^{-\gamma_1}
+ +S^{d_0/L-1/2}m^{-\gamma_{c1}}
+ +2S^{d_0/L-1/6}m^{-\gamma_{c2}}.
+\end{equation}
+A sufficient onset for the radius inequalities is the maximum of one
+and $(2C_\xi)^{1/\gamma_\xi}$, $(2C_R)^{1/\kappa}$,
+$(2C_T)^{1/\gamma_T}$, with a further strict increase if needed to
+ensure $t>0$. The forward theorem as a whole does not provide an
+explicit universal finite-input onset, since its moment constants have
+not all been optimized.
+
+Notice that $\kappa>1/2$ already follows from
+$(5\sqrt2/6)^2=25/18>9/8$. The order of the absolute activity bound is
+sharp at $z=S m^{3/4}$, since the single positive activity is exactly
+$\lambda_5=S^p m^{-\beta}$.
+
+\section{The size five contribution and the zero endpoint}\label{det:grow:sec:five}
+First suppose $a\ge1$. Dropping residue constraints and using
+$P_\ell\le1$ bounds the unsigned relative mass of profiles containing
+at least one bad atom by
+\begin{equation}\label{det:grow:eq:roughbad}
+ p_*^{-1}(e^{\mathcal S_{\rm bad}}-1)=O_S(m^{-\beta}).
+\end{equation}
+This is enough for \eqref{det:grow:eq:first}, since $\beta>1/2$, but not enough
+for \eqref{det:grow:eq:forward}. We must isolate exactly one size-five atom.
+
+A profile with one $(5,1)$ atom and otherwise pure atoms has degree
+$5+2K$. Its required residue is
+\begin{equation}\label{det:grow:eq:qprime}
+ q'_r=(q_r+2)\bmod3,\qquad(q'_0,q'_1,q'_2)=(2,1,0).
+\end{equation}
+The exact single-five contribution to the normalized ratio is
+\begin{equation}\label{det:grow:eq:singlefive}
+ V_r=\lambda_5\frac{F_{q'_r}(a)}{F_{q_r}(a)}
+ \E\left[P_{(5+2K-r)/3}(m)\mid K\equiv q'_r\pmod3\right].
+\end{equation}
+The minimal indices in the three residues are $3,2,1$. This term is
+positive for both signs because $k=1$. Equations \eqref{det:grow:eq:filter} and
+\eqref{det:grow:eq:shift} give
+\[
+ \frac{F_{q'_r}}{F_{q_r}}=1+O(e^{-3B/2}),\qquad
+ \E[P_{(5+2K-r)/3}\mid K\equiv q'_r]
+ =e^{-8a^4/(9m)}+O_S(m^{-1/4}).
+\]
+Moreover,
+\[
+ \lambda_5e^{-3B/2}
+ =m^{-\delta}a^{(3\delta+5)/2}e^{-3B/2}=O(m^{-\delta}),
+\]
+uniformly for $a\ge1$. Thus
+\begin{equation}\label{det:grow:eq:fiveerror}
+ V_r=\lambda_5e^{-8a^4/(9m)}
+       +O_S(m^{-\beta-1/4}+m^{-\delta}).
+\end{equation}
+
+Set $T_{\rm bad}=\mathcal S_{\rm bad}-\lambda_5\ge0$. All remaining
+nonpure profiles contain at least two size-five atoms or another bad
+atom. Their total relative absolute mass is at most
+\begin{align}\label{det:grow:eq:otherprofiles}
+ &p_*^{-1}\{e^{\lambda_5}-1-\lambda_5
+              +e^{\lambda_5}(e^{T_{\rm bad}}-1)\}\notag\\
+ &\hspace{2em}=O_S(\lambda_5^2+T_{\rm bad})
+              =O_S(m^{-2\beta}+m^{-\beta-\kappa}).
+\end{align}
+Every error exponent in \eqref{det:grow:eq:fiveerror} and
+\eqref{det:grow:eq:otherprofiles} is strictly greater than $3/4$:
+$\beta+1/4>7/8$, $\delta>2$, $2\beta>5/4$, and
+$\beta+\kappa>9/8$. These are absolute estimates and hence remain
+valid for the signed real-$t$ minus model.
+
+\subsection{Why small activity needs a separate argument}
+\begin{writenote}[5 October 2026]
+This subsection repeats, in Part~II's normalization, the small-activity argument of Part~I's Section~\ref{det:dia:sec:crossover}: the bad-ratio bound \eqref{det:dia:eq:badrho}, the fixed majorant \eqref{det:dia:eq:ST} and the exceptional term \eqref{det:dia:eq:exception}, which equals \eqref{det:grow:eq:exception}.
+\end{writenote}
+For $0<a\le1$, the normalizers $F_1$ and $F_2$ vanish with $a$.
+Dividing a residue-free error by them would not establish uniformity.
+Instead, take a profile of degree $D\equiv r\pmod3$. After division by
+$F_{q_r}(a)\ge c_r a^{q_r}$ its activity has a residual factor
+$a^{D/2-q_r}$. This power is nonnegative in every admissible profile
+except $r=1,D=1$, the unique profile consisting of one $(1,1)$ atom.
+
+Exclude that profile temporarily. Every bad ratio
+$\rho_{j,k}=j/2^{jk/2}$ is at most $\rho=5/\sqrt{32}<1$.
+For $k=1$, $j/2^{j/2}$ decreases from $j=3$ onward; the remaining
+$j=1$ term is smaller. For $k\ge2$,
+$\rho_{j,k}\le j/2^j\le1/2$. Fix a sufficiently large $T_0>0$.
+Then
+\begin{equation}\label{det:grow:eq:fixedmajorant}
+ \sum_{\Bad}\frac{\rho_{j,k}^t}{k}
+ \le\rho^{t-T_0}\sum_{\Bad}\frac{\rho_{j,k}^{T_0}}k
+ =O(\rho^t).
+\end{equation}
+The fixed sum converges, since the larger sum over all pairs equals
+\[
+ \sum_{j\ge1}j^{T_0}\big[-\log(1-2^{-T_0j/2})\big]<\infty.
+\]
+After dropping the nonnegative residual powers of $a$, unrestricted
+pure profiles contribute at most $e^2$. Exponentiating the convergent
+bad-atom majorant therefore bounds all nonexceptional profiles with a
+bad atom by $O(\rho^t)$ relative to their residue normalizer.
+
+The excluded degree-one profile has relative mass at most
+\begin{equation}\label{det:grow:eq:exception}
+ \frac23a^{-3/2}2^{-t/2}=\frac{2}{3m}(3/4)^t.
+\end{equation}
+Since $a\le1$ implies $t\ge2\log m/L$,
+\[
+ \rho^t=m^{-\delta}a^{3\delta/2}\le m^{-\delta},\qquad
+ (3/4)^t\le m^{-\eta},\quad \eta=2\log(4/3)/L>2.
+\]
+The exceptional term is smaller than $O(m^{-\delta})$, because
+$1+\eta>3>\delta$. Thus the full nonpure contribution is
+$O(m^{-\delta})$ uniformly at this endpoint. Together with
+\eqref{det:grow:eq:pure-small}, the exact ratio is $1+O(m^{-1})$ there, and so
+is the right side of \eqref{det:grow:eq:forward}. This is stronger than needed.
+
+\subsection{Completion of the forward theorem}
+For $a\ge1$, Proposition~\ref{det:grow:prop:pure}, \eqref{det:grow:eq:fiveerror}, and
+\eqref{det:grow:eq:otherprofiles} give
+\begin{align*}
+ \frac{A_\eps}{L_r\Psi_r}
+ =e^{-8a^4/(9m)}\left[1-\frac{8a^3}{9m}
+ +\frac{4(r-1)a^2}{9m}+\frac{128a^6}{81m^2}+\lambda_5\right]
+ +O_S(m^{-3/4}).
+\end{align*}
+Use
+\[
+ \frac{a^4}{m}=s^{4/3},\quad
+ \frac{a^3}{m}=s m^{-1/4},\quad
+ \frac{a^2}{m}=s^{2/3}m^{-1/2},\quad
+ \frac{a^6}{m^2}=s^2m^{-1/2},\quad\lambda_5=s^p m^{-\beta}.
+\]
+The small-$a$ argument covers the entire remaining range, proving
+Theorem~\ref{det:grow:thm:forward}. Dropping terms of bounded coefficient proves
+Corollary~\ref{det:grow:cor:limit}.
+
+\section{The attenuation inverse on a prescribed window}\label{det:grow:sec:inverse}
+The inverse result concerns a real exponent parameter. Its unique root
+belongs to a smooth finite model; the exact ratio is only shown to have
+one or more crossings in a narrow bracket.
+
+Set $\gamma=8/9$, $\alpha=5/(4L)$, $u=m^{-1/4}$, and $v=m^{-\beta}$.
+For $s>0$, define $t_m(s)$ by \eqref{det:grow:eq:t-of-s} and
+\begin{equation}\label{det:grow:eq:exactR}
+ R_{\eps,r,m}(s)=
+ \frac{A_\eps(3m+r,t_m(s))}
+ {L_r(m,t_m(s))\Psi_r(s m^{3/4})}.
+\end{equation}
+On any fixed compact interval $I\subset(0,\infty)$, the forward theorem
+implies
+\begin{equation}\label{det:grow:eq:modelerror}
+ R_{\eps,r,m}(s)=\M_{r,m}(s)+O_I(u^3),
+\end{equation}
+where the positive finite model is
+\begin{equation}\label{det:grow:eq:model}
+ \M_{r,m}(s)=\exp\left[-\gamma s^{4/3}-\gamma s u
+ +\left\{\frac{4(r-1)}9s^{2/3}+\frac{32}{27}s^2\right\}u^2+s^p v\right].
+\end{equation}
+To check the changed quadratic coefficient, taking the logarithm of
+the bracket in \eqref{det:grow:eq:forward} subtracts
+$\gamma^2s^2/2=32s^2/81$ from $128s^2/81$, leaving $32s^2/27$.
+The mixed errors $uv$ and $v^2$ are $O(u^3)$ because
+$\beta+1/4>3/4$ and $2\beta>3/4$. On $I$ the leading factor stays
+bounded away from zero; for large $m$ the exact ratio is positive by
+the forward theorem. This justifies the logarithm despite possible
+signed formal coefficients at other real parameter values.
+
+Let $Q$ be a fixed compact subset of $(0,1)$, and set
+\begin{equation}\label{det:grow:eq:s0}
+ s_0(q)=\left(\frac{-\log q}{\gamma}\right)^{3/4}.
+\end{equation}
+Choose a fixed compact interval $I=[b_-,b_+]\subset(0,\infty)$ whose
+interior contains every $s_0(q)$ for $q\in Q$. For example, if
+$Q\subset[q_-,q_+]\subset(0,1)$, take
+$I=[s_0(q_+)/2,2s_0(q_-)]$.
+
+\begin{theorem}\label{det:grow:thm:inverse}
+Uniformly for $q\in Q$ and all residues, for sufficiently large $m$ the
+model $\M_{r,m}$ is strictly decreasing on $I$, and
+$\M_{r,m}(\sigma)=q$ has a unique solution $\sigma_{r,m}(q)$ in $I$.
+Writing $s_0=s_0(q)$, its expansion is
+\begin{equation}\label{det:grow:eq:s-inverse}
+\begin{aligned}
+ \sigma_{r,m}(q)=s_0&-\frac34s_0^{2/3}u\\
+ &+\left\{\frac{3(4r+1)}{32}s_0^{1/3}+s_0^{5/3}\right\}u^2\\
+ &+\frac{27}{32}s_0^{(\delta+1)/2}v+O_{Q,I}(u^3).
+\end{aligned}
+\end{equation}
+Its exponent parameter $\tau_{r,m}(q)=t_m(\sigma_{r,m}(q))$ satisfies
+\begin{equation}\label{det:grow:eq:t-inverse}
+\begin{aligned}
+ \tau_{r,m}(q)=\frac5{4L}\log m-\frac{\log s_0}{L}
+ &+\frac{3s_0^{-1/3}}{4L}u\\
+ &-\frac1L\left\{\frac{3(2r-1)}{16}s_0^{-2/3}+s_0^{2/3}\right\}u^2\\
+ &-\frac{27}{32L}s_0^{(\delta-1)/2}v+O_{Q,I}(u^3).
+\end{aligned}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Write the logarithm of the model as
+$F(s)+G(s)u+H_r(s)u^2+J(s)v$, where
+\[
+ F=-\gamma s^{4/3},\quad G=-\gamma s,\quad
+ H_r=\frac{4(r-1)}9s^{2/3}+\frac{32}{27}s^2,\quad J=s^p.
+\]
+Its derivative converges uniformly on $I$ to
+$F'(s)=-(4\gamma/3)s^{1/3}<0$. Both the logarithmic derivative and the
+model derivative are eventually bounded above by a negative constant.
+The limiting roots lie a positive distance from the endpoints, so
+uniform endpoint straddling and the intermediate value theorem give
+existence and uniqueness of the model root in $I$.
+
+Substitute $s=s_0+c_1u+c_2u^2+c_bv$. Taylor expansion, using
+$F(s_0)=\log q$, gives the three coefficient equations
+\begin{align}\label{det:grow:eq:inverse-identities}
+ F'c_1+G&=0,\\
+ F'c_2+\tfrac12F''c_1^2+G'c_1+H_r&=0,\notag\\
+ F'c_b+J&=0,\notag
+\end{align}
+all evaluated at $s_0$. Solving yields
+\begin{equation}\label{det:grow:eq:inverse-coeff}
+ c_1=-\frac34s_0^{2/3},\quad
+ c_2=\frac{3(4r+1)}{32}s_0^{1/3}+s_0^{5/3},\quad
+ c_b=\frac{27}{32}s_0^{(\delta+1)/2}.
+\end{equation}
+All derivatives are bounded on a fixed positive compact neighborhood
+of the limiting roots. Pure cubic and mixed terms are $O_{Q,I}(u^3)$,
+so substitution leaves a logarithmic-model residual of that order.
+The derivative lower bound and the mean-value theorem convert it into
+a root error, proving \eqref{det:grow:eq:s-inverse}.
+
+Finally,
+\begin{align*}
+ \log\sigma=\log s_0+\frac{c_1}{s_0}u
+ +\left(\frac{c_2}{s_0}-\frac{c_1^2}{2s_0^2}\right)u^2
+ +\frac{c_b}{s_0}v+O_{Q,I}(u^3),
+\end{align*}
+with
+\[
+ \frac{c_2}{s_0}-\frac{c_1^2}{2s_0^2}
+ =\frac{3(2r-1)}{16}s_0^{-2/3}+s_0^{2/3}.
+\]
+Substitution into $t_m(\sigma)=\alpha\log m-(\log\sigma)/L$ proves
+\eqref{det:grow:eq:t-inverse}.
+\end{proof}
+
+\section{What the exact level crossings inherit}
+Let $s_{\rm app}$ and $t_{\rm app}$ denote the displayed expressions in
+\eqref{det:grow:eq:s-inverse} and \eqref{det:grow:eq:t-inverse}, with their error terms
+omitted.
+
+\begin{theorem}\label{det:grow:thm:brackets}
+For the compact sets $Q,I$ above there exist constants $C,D>0$ and a
+uniform eventual onset, valid for both signs and all residues, such that
+\begin{equation}\label{det:grow:eq:sbrackets}
+ R_{\eps,r,m}(s_{\rm app}-Cu^3)>q,\qquad
+ R_{\eps,r,m}(s_{\rm app}+Cu^3)<q.
+\end{equation}
+At least one exact real-parameter level-$q$ crossing occurs between
+these endpoints. Every exact crossing $s\in I$ satisfies
+\begin{equation}\label{det:grow:eq:slocal}
+ |s-s_{\rm app}|\le Cu^3.
+\end{equation}
+Put $J_m=t_m(I)$ and $s(t)=m^{5/4}(8/9)^t$. Then
+\begin{equation}\label{det:grow:eq:tbrackets}
+ R_{\eps,r,m}(s(t_{\rm app}-Du^3))<q,\qquad
+ R_{\eps,r,m}(s(t_{\rm app}+Du^3))>q.
+\end{equation}
+Every exact real-$t$ crossing in $J_m$ lies within $D m^{-3/4}$ of
+$t_{\rm app}$, and at least one exists in that bracket.
+\end{theorem}
+\begin{proof}
+For fixed $n$, the formal coefficient in \eqref{det:grow:eq:def} is a finite
+sum of finite products of the continuous functions $j^t$. Its
+normalizer is positive. Thus the exact ratio is continuous in real
+$t$, and hence in $s$ on $I$ for all sufficiently large $m$.
+This argument uses no generalized-binomial nonnegativity.
+
+Let $K_0$ bound the uniform error in \eqref{det:grow:eq:modelerror}, and let
+$K_1$ bound $|\M(s_{\rm app})-q|/u^3$. Choose $c>0$ so that
+$-\M'(s)\ge c$ throughout $I$. All constants can be chosen uniformly.
+For $C>(K_0+K_1)/c$, the mean-value theorem gives
+\[
+ R(s_{\rm app}-Cu^3)-q\ge(cC-K_1-K_0)u^3>0,
+\]
+and the analogous strictly negative bound at the right endpoint.
+These points lie inside $I$ eventually. Continuity proves existence.
+
+If $R(s_*)=q$ at any $s_*\in I$, then
+$|\M(s_*)-q|\le K_0u^3$. Since $\M$ has its unique root $\sigma$
+and derivative magnitude at least $c$,
+$|s_* -\sigma|\le K_0u^3/c$. Combining this with
+\eqref{det:grow:eq:s-inverse} proves \eqref{det:grow:eq:slocal}, after enlarging $C$.
+The same reasoning classifies the sign of $R-q$ outside the bracket
+throughout $I$.
+
+The map $t_m$ is decreasing with derivative $-1/(Ls)$, bounded above
+and below in magnitude on $I$. Also
+$t_m(s_{\rm app})=t_{\rm app}+O_{Q,I}(u^3)$ by the logarithmic expansion.
+Transforming the bracket, reversing its orientation, and enlarging its
+constant proves \eqref{det:grow:eq:tbrackets} and the $t$ localization.
+\end{proof}
+
+These conclusions are uniform asymptotic residual brackets, with
+constants and eventual onsets; they are not a numerical certification
+at a prescribed finite $m$. A uniform approximation of function values
+does not imply approximation of derivatives. No monotonicity or
+uniqueness of the exact ratio has been proved. Nor does this identify
+a first crossing over all $t>0$ or exclude crossings outside $J_m$.
+Integer values of $t$ usually do not attain a prescribed $q$ exactly.
+A unit change in $t$ multiplies $s$ by $8/9$, so a continuous inverse
+cannot simply be rounded while retaining the $O(m^{-3/4})$ accuracy.
+
+\section{An independent global factorial derivation}\label{det:grow:sec:second}
+For completeness we give a second route to the pure-cloud coefficients.
+Besides checking the algebra, this route records an all-$\ell$ factorial
+remainder without using a cutoff-tail expectation. Write
+\[
+ g_m(x)=e^{-x(x-1)/(2m)},\qquad
+ y_\ell=\frac{\ell(\ell-1)(2\ell-1)}{12m^2}.
+\]
+\begin{lemma}\label{det:grow:lem:global-factorial}
+For all integers $m\ge1$, $\ell\ge0$, with \eqref{det:grow:eq:P},
+\begin{equation}\label{det:grow:eq:global-factorial}
+ |P_\ell(m)-g_m(\ell)(1-y_\ell)|
+ \le C\left(\frac{\ell^4}{m^3}+\frac{\ell^6}{m^4}\right).
+\end{equation}
+\end{lemma}
+\begin{proof}
+For $\ell\le m/2$, summing the logarithmic series gives
+\[
+ \log P_\ell=-\frac{\ell(\ell-1)}{2m}-y_\ell-\mathcal R_\ell,
+ \qquad0\le\mathcal R_\ell\le C\ell^4/m^3.
+\]
+For $y,\mathcal R\ge0$,
+$|e^{-y-\mathcal R}-(1-y)|\le y^2/2+\mathcal R$, which proves the
+bound there. For $\ell>m/2$, use
+$|P_\ell-g_m(\ell)(1-y_\ell)|\le2+y_\ell$.
+If $\ell\ge2$, a universal multiple of $\ell^4/m^3$ dominates both
+two and $y_\ell$ because $m<2\ell$; the cases $\ell=0,1$ are exact.
+This includes the entire region $\ell>m$.
+\end{proof}
+
+Put $\mu=a+2a^2$, $w=a+4a^2$, and
+\[
+ \mu_\ell=(2\mu-r)/3,\qquad W_\ell=4w/9,\qquad
+ \Delta=\ell-\mu_\ell.
+\]
+For $a\ge1$, the moments and residue corrections established above give
+$\E_r|\Delta|^h\le C_h a^h$ for fixed $h$, and
+\[
+ \E_r\Delta=O((a+a^2)e^{-3B/2}),\qquad
+ \E_r\Delta^2-W_\ell=O((a+a^4)e^{-3B/2}).
+\]
+Averaging \eqref{det:grow:eq:global-factorial} gives a remainder
+\[
+ O\left((1+a^8)/m^3+(1+a^{12})/m^4\right)=O_A(m^{-1}).
+\]
+Since $g_m(x)=e^{1/(8m)}e^{-(x-1/2)^2/(2m)}$, its fixed derivatives
+satisfy $\sup_x|g_m^{(j)}(x)|\le C_jm^{-j/2}$. Taylor expansion around
+$\mu_\ell$ gives
+\begin{equation}\label{det:grow:eq:gaussianaverage}
+ \E_r g_m(\ell)=g_m(\mu_\ell)+\tfrac12g_m''(\mu_\ell)W_\ell
+ +O\left(m^{-1}+(1+a^3)m^{-3/2}\right).
+\end{equation}
+For the first derivative term, the exact formula
+$g_m'(\mu_\ell)=-(\mu_\ell-1/2)g_m(\mu_\ell)/m$ and the exponentially
+small residue factor give $O(m^{-1})$. The second moment replacement
+also costs $O(m^{-1})$.
+
+For $h_m(x)=x^3g_m(x)$,
+$\sup_{x\ge-2/3}|h_m'(x)|\le Cm$, by Gaussian scaling.
+Since $\mu_\ell\ge-2/3$ and $\ell\ge0$, the mean-value theorem gives
+\begin{equation}\label{det:grow:eq:yaverage}
+ \E_r[g_m(\ell)y_\ell]
+ =\frac{g_m(\mu_\ell)\mu_\ell^3}{6m^2}
+ +O\left((1+a)/m+(1+a^4)/m^2\right).
+\end{equation}
+Together these formulas yield
+\begin{equation}\label{det:grow:eq:secondroute}
+\begin{aligned}
+ \E_rP_\ell=g_m(\mu_\ell)\bigg[1-\frac{W_\ell}{2m}
+ +\frac{(\mu_\ell-1/2)^2W_\ell}{2m^2}
+ -\frac{\mu_\ell^3}{6m^2}\bigg]+O_A(m^{-3/4}).
+\end{aligned}
+\end{equation}
+The bracket is $1+O_A(m^{-1/2})$, and $g_m(\mu_\ell)$ is bounded below
+by a positive $A$-dependent constant in the allowed range. Its
+logarithm may therefore be taken with the same error order.
+The exact polynomial identity
+\begin{equation}\label{det:grow:eq:poly1}
+\begin{aligned}
+ -\frac{\mu_\ell(\mu_\ell-1)+W_\ell}{2m}
+ ={}&-\frac{8a^4}{9m}-\frac{8a^3}{9m}
+ +\frac{4(r-1)a^2}{9m}\\
+ &+\frac{(2r+1)a}{9m}-\frac{r(r+3)}{18m}
+\end{aligned}
+\end{equation}
+and the leading-degree computation
+\begin{equation}\label{det:grow:eq:poly2}
+ \frac{(\mu_\ell-1/2)^2W_\ell}{2m^2}
+ -\frac{\mu_\ell^3}{6m^2}
+ =\frac{32a^6}{27m^2}+O((1+a^5)/m^2)
+\end{equation}
+show that
+\begin{equation}\label{det:grow:eq:purelog}
+ \log R_r^{\rm pure}
+ =-\frac{8a^4}{9m}-\frac{8a^3}{9m}
+ +\frac{4(r-1)a^2}{9m}+\frac{32a^6}{27m^2}+O_A(m^{-3/4}).
+\end{equation}
+Exponentiation adds $32a^6/(81m^2)$, recovering $128/81$ in
+\eqref{det:grow:eq:pure}. The small-$a$ argument remains
+\eqref{det:grow:eq:pure-small}; no Gaussian large-activity approximation is
+needed at that endpoint.
+
+\section{Exact companion and reproducibility}\label{det:grow:sec:companion}
+The source archive contains a newly written Python standard-library
+companion, the report source, deterministic local build and archive
+scripts, and unchanged PDF and TeX copies of Report~147 under
+\texttt{foundation/}. It does not include or depend on that report's
+computational archive. The package README is the authoritative list of
+commands and file roles.
+\begin{writenote}[5 October 2026]
+The package README, \file{SHA256SUMS} and the \file{foundation/} copies are not shipped; \file{SOURCE_PROVENANCE.json} is shipped as \file{data/148-growing-SOURCE_PROVENANCE.json} and names seven source notes that were never part of the delivery. The companion is shipped with the prefix \file{148-growing-}. The recurrence \eqref{det:grow:eq:recurrence} is Part~I's \eqref{det:dia:eq:recurrence}. At the write (Python 3.14.4, Windows, fresh extraction) 24 of the 26 tests passed; the other two exercise the POSIX-only output hardening and stop with ``safe certificate creation requires POSIX O\_NOFOLLOW/O\_DIRECTORY'', as the package README says they require; \texttt{-{}-verify} passed in normal and optimized mode.
+\end{writenote}
+
+The companion separates exact finite checks from analytic theorems.
+It compares fixed-exponent Euler rows computed from logarithmic
+recurrence with an independent product convolution. For integer $t$,
+\begin{equation}\label{det:grow:eq:recurrence}
+ nA_\eps(n,t)=\sum_{d=1}^n B_\eps(d,t)A_\eps(n-d,t),\qquad
+ B_\eps(d,t)=\sum_{j\mid d}\eps^{d/j-1}j^{t+1}.
+\end{equation}
+Both signs and all three output residues are tested; the exponent stays
+fixed across the row. Semantic fixtures check the distinction between
+unrestricted and distinct colored parts, the residue map in
+\eqref{det:grow:eq:residues}, and the shifted map in \eqref{det:grow:eq:qprime}.
+Independent rational polynomial identities check the pure coefficients
+and the inverse coefficient equations. Rational comparisons verify the
+strict exponent inequalities without rounded logarithms. Finite
+falling-factorial tests cover the cutoff convention and elementary
+bounds.
+
+Tests use explicit checks that remain active under Python's optimized
+mode. They use exact integers and rational arithmetic rather than
+floating-point tolerances for the identities claimed exact. The
+certificate and its semantic fixtures are independently recomputed by
+the documented verification command. The build script uses a clean
+local TeX environment, disables shell escape, clears the default font
+map before adding the required maps, repeats until cross-references
+stabilize, and rejects warnings or box defects in the final settled log.
+The fixed allowlist archive uses normalized metadata and includes
+SHA-256 hashes for all payloads.
+
+\textbf{What these checks establish.} They detect finite algebra,
+normalization, recurrence, inverse-coefficient, and packaging errors.
+They do not prove the uniform remainder, control an infinite tail by
+sampling it, establish exact-ratio monotonicity, or certify a finite-$m$
+level bracket. Those conclusions, where asserted, come from the
+proofs in this report. The distinction remains important even when
+all tests pass.
+
+\section{Background and limits of the comparison}\label{det:grow:sec:background}
+Report~147~\cite{foundation} develops the diagonal asymptotics and the
+fixed-compact defect crossover. Its normalized pure functions provide
+the natural reference scale here. The present report proves its own
+normalization and estimates, so the moderate-window argument can be
+read without importing a fixed-compact error constant.
+
+Independent-process conditioning is classical. Arratia and
+Tavar\'e~\cite{arratia-tavare} describe independent component variables
+conditioned on a weighted sum, across assemblies, multisets, and
+selections. The arXiv posting is from 2013 and identifies itself as
+nearly identical to the 1994 article in \emph{Advances in Mathematics},
+volume 104, pages 90--154. Arratia and DeSalvo~\cite{arratia-desalvo}
+study Poisson approximations when both total size and component count
+are specified, including small-rank transition behavior for assemblies.
+These are relevant background methods; their abstract statements are
+not a proof of the specialized $j^t$ Euler theorem above.
+
+Only the abstracts and bibliographic metadata of these two primary
+sources were inspected for this report. No full-text theorem-by-theorem
+overlap review or comprehensive current priority search was performed.
+Thus the contribution claimed here is the explicit proved extension
+relative to Report~147, not a global assertion of novelty. No external
+submission, repository change, or contact is part of this report.
+\begin{writenote}[5 October 2026]
+The write did not read the two cited papers either. The conditioning device of Arratia and Tavar\'e is also used, through its Theorem~3, in the repository report \file{a033552-catalan-partitions}.
+\end{writenote}
+
+\section{Further questions}\label{det:grow:sec:further}
+The proof suggests several well-defined extensions, none of which is
+claimed as established here.
+\begin{enumerate}
+ \item \textbf{Beyond bounded moderate activity.} Determine a uniform
+ range with $s\to\infty$. The present exponential Taylor and moment
+ bounds depend on a fixed upper bound for $s$; simply allowing that
+ constant to grow does not prove a new regime.
+ \item \textbf{The next mixed correction.} Resolve the terms at and
+ beyond order $m^{-3/4}$, including shifted size-five depletion and
+ mixed pure/nonpure terms. An all-orders organization must control
+ the infinite atom sum at every required scale.
+ \item \textbf{Exact local monotonicity.} Obtain derivative estimates
+ strong enough to decide whether the exact real-$t$ ratio has a
+ unique crossing within the moderate window. Uniform function-value
+ approximation alone is insufficient.
+ \item \textbf{Integer sampling.} Formulate an appropriate discrete
+ level-crossing statement for integer $t$, retaining the fixed
+ multiplicative spacing of $s$. It should specify bracketing rather
+ than treating a rounded continuous inverse as an exact threshold.
+ \item \textbf{Effective finite bounds.} Make all moment and Taylor
+ constants explicit to turn the eventual asymptotic brackets into
+ verifiable finite-input certificates for specified $S$ and $Q$.
+ \item \textbf{Literature overlap.} Carry out a full-text comparison of
+ conditioned component models and variable-weight Euler products
+ before making any independent priority or publication claim.
+\end{enumerate}
+\begin{writenote}[5 October 2026]
+All six questions are carried into Section~\ref{det:sec:further}, with Part~I's.
+\end{writenote}
+
+
+\section{\texorpdfstring{\wtag}{[write]} Further questions and research (both Parts)}\label{det:sec:further}
+This section is added in the write (5~October 2026), under Vladimir's standing rule of 4~October 2026: no unproved claim and no stated limitation of either manuscript is dropped. Each item names its source, the argument sketch the source gives, and what is missing. Part~I's Section~\ref{det:dia:sec:further} and Part~II's Section~\ref{det:grow:sec:further} are printed as delivered; the items below collect them, with the non-claims that the two manuscripts state in their text. Neither manuscript states a claim without proof that this section had to move, and no claim of either manuscript was found wrong; the one refuted claim is the OEIS conjecture (Corollary~\ref{det:dia:cor:refute}), and the one corrected decimal is recorded at \eqref{det:grow:eq:exponents}.
+
+\begin{enumerate}
+\item\label{det:q:effective} \textbf{Effective onsets and certified integer thresholds.} \emph{Sources:} Part~I, question~1, the ``Operational boundary'' after Theorem~\ref{det:dia:thm:bracket}, and Theorem~\ref{det:dia:thm:tail} (``This onset is sufficient, not sharp''); Part~II, question~5 and the remark after \eqref{det:grow:eq:explicit-bad-error}. \emph{Sketch:} Part~I's tail bound already has the explicit onset $n\ge192$, and Part~II's bad-atom bound has an explicit error \eqref{det:grow:eq:explicit-bad-error} and onset. \emph{Missing:} verified onsets for the forward estimates \eqref{det:dia:eq:forwardrelative} and \eqref{det:grow:eq:modelerror}, for the logarithmic-error and derivative bounds used in Theorems~\ref{det:dia:thm:bracket} and~\ref{det:grow:thm:brackets}, explicit moment and Taylor constants in Part~II, and an interval-validated root solver; together they would turn the asymptotic brackets into finite-input certificates. A sharp onset in Theorem~\ref{det:dia:thm:tail} is also open.
+\item\label{det:q:allorders} \textbf{All orders in the two crossover regimes.} \emph{Sources:} Part~I, question~2; Part~II, question~2 and its Scope (``No \dots\ all-orders theorem''). \emph{Sketch:} Part~I's Theorem~\ref{det:dia:thm:crossover} has two algebraic corrections and the size-five term, from the Bonferroni expansions \eqref{det:dia:eq:W1}--\eqref{det:dia:eq:W2}; Part~II's Theorem~\ref{det:grow:thm:forward} stops at $O_S(m^{-3/4})$. \emph{Missing:} the falling-factorial corrections to every order together with all nonpure atom families, equal decay phases combined, and in Part~II's range the shifted size-five depletion and the mixed pure/nonpure terms at and beyond $m^{-3/4}$, with control of the infinite atom sum at every scale.
+\item\label{det:q:growing} \textbf{Beyond $z\le Sm^{3/4}$, and the bridge to fixed exponents.} \emph{Sources:} Part~I, question~3, re-scoped (dated note there): Part~II's Theorem~\ref{det:grow:thm:forward} answers it for $0<z\le Sm^{3/4}$, uniformly; Part~II, question~1. \emph{Sketch:} Part~II's proof uses exponential Taylor and moment bounds that depend on the fixed bound $S$; Part~I notes that substitution into either existing regime ``is not justified''. \emph{Missing:} a uniform range with $s=z/m^{3/4}\to\infty$, where the attenuation $e^{-8s^{4/3}/9}$ is no longer bounded below, and estimates connecting it with the fixed-exponent weighted-partition asymptotics that Part~I attributes to Kot\v{e}\v{s}ovec \cite{kotesovec}.
+\item\label{det:q:monotone} \textbf{Exact monotonicity and uniqueness of crossings.} \emph{Source:} Part~II, question~3 and the paragraph after Theorem~\ref{det:grow:thm:brackets} (``No monotonicity or uniqueness of the exact ratio has been proved''; no first crossing over all $t>0$; no exclusion of crossings outside $J_m$). \emph{Sketch:} the smooth model is strictly decreasing on the window. \emph{Missing:} derivative estimates for the exact real-$t$ ratio, which uniform approximation of values does not give.
+\item\label{det:q:integer} \textbf{Integer exponents.} \emph{Source:} Part~II, question~4, and the remarks after Corollary~\ref{det:grow:cor:limit} and Theorem~\ref{det:grow:thm:brackets}; Part~I's remark after Theorem~\ref{det:dia:thm:crossover} (no fixed rounding rule for $\tau$ is claimed to realize every limit). \emph{Sketch:} a unit change of $t$ multiplies $s$ by $8/9$. \emph{Missing:} a discrete level-crossing statement for integer $t$ that brackets rather than rounds the continuous inverse.
+\item\label{det:q:weights} \textbf{Other integer weights.} \emph{Source:} Part~I, question~4. \emph{Missing:} the phase spectra for other weight sequences, in particular when two part sizes compete for the integer maximum or the maximizing size changes.
+\item\label{det:q:convergence} \textbf{Convergence and canonical interpolation.} \emph{Source:} Part~I, after Theorem~\ref{det:dia:thm:powerlog} (``convergence of this infinite power-log series is not claimed'') and after Proposition~\ref{det:dia:prop:compatibility} (no ``canonical convergent infinite smooth interpolation of the discrete sequences''). \emph{Missing:} whether the power-log series \eqref{det:dia:eq:powerlog} converges or is resummable, and whether a canonical smooth interpolation exists whose inverse carries the exponentially small layers.
+\item\label{det:q:literature} \textbf{Literature and priority.} \emph{Sources:} Part~I, Section~\ref{det:dia:sec:scope} (bounded search, ``not proof that no earlier solution exists''); Part~II, question~6 and Section~\ref{det:grow:sec:background} (abstracts of Arratia--Tavar\'e and Arratia--DeSalvo only). \emph{Missing:} a full-text comparison with conditioned component models and variable-weight Euler products, and a search for an earlier statement of the limit $3^{1/3}$. The write did not read \cite{kotesovec}, \cite{arratia-tavare} or \cite{arratia-desalvo} either.
+\end{enumerate}
+
+\begin{thebibliography}{10}
 \bibitem{oeisplus} OEIS Foundation, \emph{A252782}.
 \url{https://oeis.org/A252782}. Definition and conjectured root limit;
 inspected 3 October 2026, retrieved crawl six days earlier.
@@ -1246,5 +2559,36 @@ version 3, 7 March 2016, printed pp.~21--22.
 \S5.11, especially the digamma and shifted log-Gamma asymptotic
 expansions (5.11.2) and (5.11.8), and its remainder discussion.
 \url{https://dlmf.nist.gov/5.11}. Inspected 3 October 2026.
+
+\bibitem{foundation}
+\emph{Diagonal Euler transforms: Exact phases, critical crossover, and
+residue aware inverses}. Report 147, 3 October 2026.
+Unchanged PDF and TeX reference copies are included in the source
+archive under \texttt{foundation/}.
+[\wtag\ Printed in this report as Part~\ref{det:dia:part}; the included copies are byte-identical to it and are not shipped.]
+
+\bibitem{arratia-tavare}
+R. Arratia and S. Tavar\'e,
+\emph{Independent Process Approximations for Random Combinatorial
+Structures}, Advances in Mathematics 104 (1994), no.~1, 90--154.
+Author-posted version, 15 August 2013.
+\href{https://arxiv.org/abs/1308.3279}{arXiv:1308.3279}.
+Abstract and bibliographic metadata inspected 3 October 2026.
+
+\bibitem{arratia-desalvo}
+R. Arratia and S. DeSalvo,
+\emph{Poisson and independent process approximation for random
+combinatorial structures with a given number of components, and
+near-universal behavior for low rank assemblies}, 2016, version 2,
+4 July 2016.
+\href{https://arxiv.org/abs/1606.04642v2}{arXiv:1606.04642v2}.
+Abstract and bibliographic metadata inspected 3 October 2026.
+
+\bibitem{TSvol} [\wtag] \emph{Transseries and inversion}, ProveIt volume,
+\file{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex}:
+Definition \file{p0:def:model}, Lemma \file{p0:lem:alpha-reduction},
+Definition \file{p0:def:core}, Theorems \file{p0:thm:perturbed-inversion},
+\file{p0:thm:core-reversion}, \file{p0:thm:lambert-core},
+\file{p0:thm:staircase} and Proposition \file{p0:prop:factorial-core}.
 \end{thebibliography}
 \end{document}
