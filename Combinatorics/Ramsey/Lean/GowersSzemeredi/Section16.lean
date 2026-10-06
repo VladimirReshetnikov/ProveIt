@@ -389,11 +389,11 @@ def section16Lemma6Width (m q k : Nat) (sigma delta theta1 zeta : Real) : Real :
     (((multipleC (sigma / t) delta k) ^ t) /
       (2 * (section16K k : Real) ^ ((2 : Nat) ^ (k + 1) * q)))
 
-/-- **Lemma 16.6.** Partition a product box so that the induced map is
-linear in its final variable.  `q` is explicitly natural and has the bound
-from multiple multilinearity.  The frequency estimate used here is the one
-from Lemma 16.1 with its missing factor `N` restored. -/
-def lemma_16_6 : Prop :=
+/-- The earlier unrestricted encoding of Lemma 16.6 is retained for auditing.
+It omitted the paper's standing prime-modulus convention and positive
+induction range, and used formal axis lengths without properness. It is not
+the repaired numbered catalogue statement and has no asserted companion. -/
+def lemma_16_6_unrestricted_box_encoding : Prop :=
   ∀ (N k m : Nat) [NeZero N] (theta gamma sigma : Real),
     0 < theta → theta ≤ 1 → 0 < gamma → gamma ≤ 1 →
     0 < sigma → sigma ≤ 1 →
@@ -421,6 +421,54 @@ def lemma_16_6 : Prop :=
               G ⊆ Q.carrier ∧
               (1 - sigma) * Q.carrier.card ≤ G.card ∧
               IsBoxPartition S P ∧
+              (∀ u, IsLastCoordinateBoxProduct (S u) (T u) (A u)) ∧
+              (∀ u, section16Lemma6Width m q k sigma delta theta1 zeta ≤
+                (S u).width) ∧
+              ∀ u h, h ∈ G → h ∈ H1 → h ∈ (T u).carrier →
+                LinearOn ((A u).carrier.filter fun x =>
+                  (h, x) ∈ section16InducedDomain B H Y) (phiPrime h)
+
+/-- **Lemma 16.6.** Partition a proper product box into proper boxes on which
+the induced map is linear in the final variable. This makes the paper's
+standing prime-modulus convention (TeX line 117) and the positive-dimensional
+Section 16 induction (Lemmas 16.3--16.4) explicit. Proper input and output
+boxes make formal widths equal to the cardinality-based widths used in the
+paper. The older unrestricted encoding is retained above for comparison.
+
+The natural graph count, corrected nested exponent, and original width
+prefactor are unchanged. The proof explicitly absorbs preliminary
+localization and integer rounding, rather than assuming different-step
+products are boxes. The shared modular Box representation still permits
+wrapping; its separate source-fidelity issue is documented in the status. -/
+def lemma_16_6 : Prop :=
+  ∀ (N k m : Nat) [NeZero N] [Fact N.Prime], 1 ≤ k →
+    ∀ (theta gamma sigma : Real),
+    0 < theta → theta ≤ 1 → 0 < gamma → gamma ≤ 1 →
+    0 < sigma → sigma ≤ 1 →
+    ∀ (B : Finset (Point N (k + 1)))
+      (phi : Point N (k + 1) → ZMod N)
+      (H Jbase H1 : Finset (Point N k))
+      (Y : (h : Point N k) → Finset (Section16CubeElement B h))
+      (phiPrime : Point N k → ZMod N → ZMod N),
+    let theta1 := section16ThetaOne theta gamma k
+    let delta := section16Delta theta1
+    let zeta := section16Zeta theta gamma k
+    let t := section16T delta theta1 k
+    H1 = H ∩ Jbase →
+    MultiplyLinear delta t
+      (restrictRelation (section16SpectrumRelation B delta) Jbase) →
+    Section16InducedSelection B phi H Y
+      (fun h => section16LargeSpectrum B h delta) zeta phiPrime →
+    ∀ (P : Box N (k + 1)) (Q : Box N k) (I : ModAP N),
+      P.IsProper → IsLastCoordinateBoxProduct P Q I → m ≤ P.width →
+      ∃ q : Nat,
+        (q : Real) ≤ section16Lemma6QBound sigma delta theta1 k ∧
+        ∃ G : Finset (Point N k), ∃ M : Nat,
+          ∃ S : Fin M → Box N (k + 1),
+            ∃ T : Fin M → Box N k, ∃ A : Fin M → ModAP N,
+              G ⊆ Q.carrier ∧
+              (1 - sigma) * Q.carrier.card ≤ G.card ∧
+              IsBoxPartition S P ∧ (∀ u, (S u).IsProper) ∧
               (∀ u, IsLastCoordinateBoxProduct (S u) (T u) (A u)) ∧
               (∀ u, section16Lemma6Width m q k sigma delta theta1 zeta ≤
                 (S u).width) ∧

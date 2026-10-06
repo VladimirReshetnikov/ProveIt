@@ -4,7 +4,7 @@ Scope
   The goal remains open. No improvement to the final Szemeredi bound is claimed.
   The source catalogue contains all 120 unique numbered theorem, lemma,
   proposition, and corollary headings in sz-thm-gowers-proof.tex.
-  There are 97 checked exact companion proofs and 23 open statements.
+  There are 98 checked exact companion proofs and 22 open statements.
   The JSON ledger records every statement, its TeX heading lines, its Lean
   definition, and related results. Conditional implications, restricted cases,
   and counterexamples are not counted as proofs of the full statement.
@@ -12,10 +12,10 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 166 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 1,637 public Gowers theorems and found only propext,
-  Classical.choice, and Quot.sound. The audit independently counted 97 exact
-  companion proofs and 23 open catalogue statements from Lean's theorem types.
+  All 169 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 1,658 public Gowers theorems and found only propext,
+  Classical.choice, and Quot.sound. The audit independently counted 98 exact
+  companion proofs and 22 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
   errors remain in this build. The JSON ledger reproduces exactly and has no
   unmatched numbered TeX headings or unmatched catalogue entries.
@@ -98,7 +98,7 @@ Completed Lemma 16.5
   Bohr model to the requested spectrum and radius, and proves the exact
   catalogue companion without additional assumptions or statement changes.
 
-Constructive inputs for Lemma 16.6
+Constructive proof of the migrated Lemma 16.6
   Proofs16InducedSelection constructs the induced value on occupied cube
   fibres, proves that it is independent of the representative, and uses
   Corollary 10.14 to prove linearity on every short Bohr progression. The
@@ -166,13 +166,22 @@ Constructive inputs for Lemma 16.6
   scale, positive floored recurrence input, full recurrence threshold, and
   all short-cell budgets from the original above-one width target, assuming
   the multiple-linearity exponent lies in (0,1].
-  Lemma 16.6 is still open. The local constructions must now be assembled
-  with the actual Section 16 parameter bounds and width identity. The small
-  scale and dimension endpoints and proper-input/prime-modulus migration
-  also remain. The paper's
-  definition also requires axes to remain progressions in integer
-  representatives; Box.IsProper alone allows wrapping and does not express
-  that requirement. These local results are not counted as numbered proofs.
+  Proofs16ProductAssembly unites the uniform cover, local retiled recurrence,
+  and singleton branch into one product partition with the original target.
+  Proofs16Lemma6Parameters establishes the actual theta1, delta, t, and
+  exponent ranges, the exact square-root/printed-width identity, and the
+  m<4 singleton bound. Proofs16Lemma6 then supplies the exact companion for
+  the migrated catalogue statement, including proper output boxes.
+  This is an explicit statement migration: the catalogue now assumes prime
+  N (the paper's standing convention at TeX line 117), k>=1 (the induction
+  range in Lemmas 16.3--16.4), and a proper input box, and requires proper
+  output boxes. Its width and graph-count bounds are unchanged. The earlier
+  unrestricted formal-width encoding is retained as the unproved definition
+  lemma_16_6_unrestricted_box_encoding; it is not counted as a numbered proof.
+  Source fidelity still needs a separate audit: the paper also requires
+  axes to remain progressions in integer representatives. Box.IsProper alone
+  allows wrapping and does not express that requirement. Closing the migrated
+  companion does not by itself discharge that shared representation issue.
 
 Shared Section 16 migration
   Box.IsProper is now a shared definition. MultiplyLinear requires proper
@@ -225,7 +234,8 @@ Next substantial obligations
   3. Complete the higher-dimensional Section 16 induction using the migrated
      proper-box predicates, propagate properness through the remaining box
      statements, and resolve the documented Corollary 16.11 bound.
-     Its one-dimensional base case, Lemma 16.3, is now proved.
+     Its one-dimensional base case, Lemma 16.3, and the migrated Lemma 16.6
+     are now proved. Lemmas 16.9--16.10 and the inductive extraction remain.
   4. Prove Theorem 18.1 with explicit thresholds strong enough for iteration.
      The existing Section 18 cyclic dichotomy is conditional on that theorem.
      Account for the epsilon/4 density increment and cell-size prefactor, and
