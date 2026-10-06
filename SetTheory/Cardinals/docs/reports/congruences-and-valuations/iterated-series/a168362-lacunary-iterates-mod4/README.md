@@ -44,7 +44,7 @@ below.
 ```
 README.md                                         this guide
 article.tex                                       the report (LaTeX, internal bibliography), Parts I and II
-article.pdf                                       the compiled report, 45 pages (numbered 1-45)
+article.pdf                                       the compiled report, 46 pages (numbered 1-46)
 oeis_update_draft.txt                             Part I: the proposed OEIS update text (not submitted), as delivered
 02-digitsum-SOURCE_AUDIT.txt                      Part II: the manuscript's source audit (pin, sources, novelty limits), as delivered
 code/verify_a168362.py                            Part I: exact standard-library verifier (direct composition mod 4, residue sets, exceptions)
@@ -113,6 +113,10 @@ batch-114 write, dated 6 October 2026:
 - the heading "Appendices", with a note saying which appendix belongs to
   which Part.
 
+The independent check of the write added two more notes, dated 6 October
+2026: a correction after the proof of Theorem 5.2 (Part I's formula (16)
+is kept as printed) and the record of the check at the end of Section 27.
+
 The batch-114 write also corrected the names of Part I's cross-references.
 Its theorem-like environments share one counter, and `cleveref` cited every
 lemma, proposition, corollary, definition, conjecture, remark and research
@@ -140,7 +144,8 @@ and a(n) = g_n(n) (A168362):
 - **Theorem 1.2** (whole iteration array): g_m(N) ≡ 0 (mod 4) whenever N has
   at least three binary 1-bits, for every m; g_m(N) is odd only at powers of
   two. **Theorem 5.2** gives exact mod-4 formulas at one-bit and two-bit
-  exponents.
+  exponents. Its one-bit formula (16) holds only with its first binomial
+  reduced mod 2 (corrected with a dated note; see below).
 - The tools: a balanced-pair valuation lemma and polarization of the
   lacunary operator mod 4 (Section 3), the carry transform and a one-step
   lift (Section 4), a closed form for the parity iterates via Lucas's
@@ -206,6 +211,40 @@ F(x)", which taken literally gives F_1(x) = xF(x); the rows printed beneath
 (114 and 110 entries), the DATA (19 and 18 terms) and the PARI programs are
 all those of plain composition. Recorded only; nothing was submitted to
 OEIS.
+
+**Correction to Part I (6 October 2026).** Formula (16) of Theorem 5.2(c),
+g_m(2^r) ≡ C(m+r−1, r) + 2 Σ_{ℓ=1}^{m−1} C(#{0 ≤ j ≤ r : j AND (ℓ−1) = 0}, 2)
+(mod 4), is false if the first binomial is read as an integer: m = 2, r = 1
+gives 2 + 2 = 4 ≡ 0, but g_2(2) = [x²]F(F(x)) = 2 (and m = 3, r = 1 gives 1,
+but g_3(2) = 3). The proof derives that term from the parity series P_m,
+so it is the binomial reduced mod 2 to {0, 1}; with that reading the
+formula is right. Exact composition mod 4 for 1 ≤ m ≤ 6, N ≤ 160: the
+integer reading fails at 19 of 960 entries (all one-bit N), the mod-2
+reading at none. Under Vladimir's standing rule of 4 October 2026 the
+printed statement is kept, and a dated note after the proof of Theorem 5.2
+gives the counterexample and the repaired formula. Nothing depends on the
+integer reading: the proof of Proposition 6.2 (hence Theorem 1.1) uses the
+mod-2 reading (it drops C(2^r + r − 1, r), which is ≡ 2 mod 4 at r = 1),
+Part II's claims table uses only the weight-0 residue mod 2, and the
+delivered verifier tests one-bit exponents only for parity and on the
+diagonal. The error is Part I's (batch 73O1), not the batch-114 write's.
+
+**Independent check of the write (6 October 2026).** An adversarial check
+made by the intake after the write (`42d31831e`), with its own exact integer
+code, found every addition of the write correct: the counterexample
+[x^{2p−1}] F_p(F_p(x)) = p to Research question 13.3 (computed for p ≤ 13)
+and the corrected mod-p² support statement (digit sums 1 and p only, both
+occupied for every tested m ∉ {0, 1}, inverse iterates included); the
+answer to Research question 13.2 for every q (4,090 coefficients, p ≤ 11,
+−3 ≤ m ≤ 6, no violation of support, valuation bound or integrality); the
+second routes to Theorem 1.2, Proposition 5.1 (equation (51) in 170 of 170
+cases) and Proposition 6.1; Remark 15.1 against the live OEIS entries; the
+claims-table agreement with Theorem 5.2(c),(d) at p = 2, m = 2 (its own
+residue formula of Theorem 20.1 agrees with direct composition in 160, 60,
+32 and 17 cases for p = 2, 3, 5, 7); and the `\crefalias` change (Part I's
+numbers unchanged; the nine wrong "Theorem" names of the earlier build now
+right). It also found the Part I error corrected above. Recorded in a dated
+note at the end of Section 27.
 
 ## What is not claimed
 
@@ -305,7 +344,7 @@ From a scratch copy of this directory (the figure
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-pdfLaTeX (MiKTeX 26.2) produced the shipped `article.pdf`: 45 pages, with no
+pdfLaTeX (MiKTeX 26.2) produced the shipped `article.pdf`: 46 pages (45 at the write), with no
 errors, no warnings, no undefined references or citations, no multiply
 defined labels, no duplicate destinations, and no overfull or underfull
 boxes. Copy back only `article.pdf`.

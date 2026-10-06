@@ -354,7 +354,9 @@ write (note in Section~\ref{rbc:sec:audit}).
 \emph{Relation to the repository; formal status.} Placement in the
 collection confers no formal status. At HEAD the repository's formal
 developments contain the following, and nothing else that bears on this
-report.
+report apart from the standalone copies named at the end of the first item.
+\textup{(Wording corrected after the independent check of 6~October 2026;
+the first wording ended ``and nothing else that bears on this report''.)}
 \begin{itemize}\raggedright
 \item \emph{Formalized: the remark that $\PA$ has no finite models}
  (Section~\ref{rbc:sec:introduction}). Lean: \file{no_finite_PA_model} and
@@ -370,6 +372,14 @@ report.
  The proof uses only that successor is injective and omits zero, exactly as
  the remark does, so the argument covers every first-order model of $\PA$;
  the formal statement is the one for the shallow interface.
+ \textup{[Added after the independent check of 6~October 2026.]}
+ Same-named copies of the three Lean declarations, in the namespace
+ \file{ProveIt.Optimizations.NoFiniteModel} and for a structure
+ \file{ShallowPAModel} with only zero, successor and the two successor
+ axioms (no induction field), are in
+ \file{Optimizations/Logic_Foundations_Optimizations.lean} (commit
+ \file{88e56dc38}). That file is not imported by the root Lean library
+ (\file{lakefile.toml}, \file{ProveIt.lean}).
 \item \emph{Ingredients only, not statements of this report.}
  \file{finite_list_beta_code} and \file{finite_vector_beta_code}, in
  \file{Logic/PeanoArithmetic/NotFinitelyAxiomatizable/Lean/PAFiniteBasisReduction/FiniteBetaCoding.lean}:
@@ -3000,6 +3010,33 @@ $\SumCut(\varepsilon)=\SumCut(p)=\{x:W_x<\infty\}$, which is $M$ when every
 $W_x$ is finite. The law of Theorem~\ref{rbc:thm:realization} with $I=M$
 has $\Cut(P)=M$ almost surely by that theorem.
 \end{proof}
+
+\begin{writenote}[Independent check of the write, 6 October 2026]
+An adversarial check made by the intake after the write (commit
+\file{90198e982}), with its own code, found the write's additions correct.
+It read Remark~\ref{rbc:rem:cp-class} against arXiv:2107.11867v3 (the
+conventions of its Section~1.1, the definition of a class in its Section~4,
+and Theorem~19 with its proof), found the paraphrases exact, and confirmed
+the definability argument and the probabilistic part
+(Theorem~\ref{rbc:thm:product}, the first two regimes of
+Theorem~\ref{rbc:thm:induction-three-regimes}, and
+Theorem~\ref{rbc:thm:realization} with $I=M$). It confirmed, by
+\texttt{git grep} at the write, every declaration and file described under
+``Relation to the repository; formal status'' in
+Section~\ref{rbc:sec:provenance}, and found the same-named copies in
+\file{Optimizations/Logic_Foundations_Optimizations.lean} that the first
+wording of that paragraph left out; the paragraph is corrected there with a
+dated note. It verified formula~(12) of Proposition~25
+of~\cite{benjamini-gurel-peled} against an exact linear program over exchangeable laws in
+$112$ cases ($2\le n\le15$, eight biases), including the values $1/(n+1)$
+for odd and $1/(n+2)$ for even $n$ at $p=1/2$; checked
+Theorem~\ref{rbc:thm:binomial-budget} and
+Proposition~\ref{rbc:prop:budget-exact} by brute force over all words of
+length $N\le10$ ($6{,}138$ cases, exact rationals); and recomputed the
+convergence of Theorem~\ref{rbc:thm:budget-poisson} at $\lambda=1$ for
+$N=10^4$ and $10^5$, reproducing the printed values $0.45979872$ and
+$0.73572209$ for $K=N/4$ and $K=N$. No other item needed a correction.
+\end{writenote}
 
 
 

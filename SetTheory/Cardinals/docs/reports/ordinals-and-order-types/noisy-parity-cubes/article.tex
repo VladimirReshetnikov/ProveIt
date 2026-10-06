@@ -2635,6 +2635,34 @@ wrong.
  source's search was targeted, not exhaustive.
 \end{enumerate}
 
+\begin{writenote}[Independent check of the write, 6 October 2026]
+An adversarial check made by the intake after the write (commit
+\file{b7d0d5e96}), with its own code, found every addition of the write
+correct; no item needed a correction. It followed
+Remark~\ref{np:rem:deterministic} step by step (Jensen's inequality for the
+concave piecewise-affine $G$ and its equality case, the reduction to prefix
+sets, the Booleanness contradiction) and confirmed it on all $16{,}430$
+deterministic decision trees on $n=3$ in exact rationals: for
+$p=(1/2,3/10,1/5)$ and $\eta=1/20$ the best deterministic score under
+$\E Q\le c$ is strictly below $G(c)$ at each of the eight non-integer
+values of $c$ tested in $(0,3)$ and equal to it at $c=1,2,3$, and likewise
+at $\eta=1/8$ for the values tested there. It re-derived Remark~\ref{np:rem:gap-shrinks} (the
+witness $S=[K-1]\cup\{j\}$ with gap in $(0,2p_K)$, and $K_\eta\to\infty$)
+and checked it numerically for $p_i=2^{-i}$ and $p_i=6/(\pi^2i^2)$. It
+confirmed the optimum $\max_k[1+(1-2\eta)^k(2P_k-1)]/2$ and the maximizers
+of Theorem~\ref{np:thm:optimizers} by brute force over all Boolean
+functions on $n\le4$ ($65{,}536$ at $n=4$, computed from the transition
+matrix without the Fourier step), including a tie between $\pm\chi_{[2]}$
+and $\pm\chi_{[3]}$. It confirmed the four declarations of
+\file{ThueMorseBooleanCube.lean} and the Walsh sums of
+\file{ThueMorseWalsh.lean} as described in Section~\ref{np:sec:provenance},
+together with the substitution $u=-\eta/(1-\eta)$ that turns the first
+into $\E\chi_S(B)=(1-2\eta)^{|S|}$; re-ran the searches behind the
+statement that nothing else in the repository bears on this report; and
+confirmed the two second-route pointers to Lemmas~49.1 and~64.1 of
+\file{measurable-box-games}.
+\end{writenote}
+
 \appendix
 \section{Assumption and claim ledger}\label{np:app:ledger}
 
