@@ -37,7 +37,7 @@
 \DeclareMathOperator{\Var}{Var}
 \DeclareMathOperator{\Res}{Res}
 \DeclareMathOperator{\Disc}{Disc}
-\hypersetup{pdftitle={Matrix Compositions: Exact Spectra, Hankel Products, and Uniform Asymptotics},pdfauthor={Part I: OpenAI ChatGPT, research prepared for Vladimir Reshetnikov; Part II: research report prepared for Vladimir Reshetnikov; Part III: OpenAI ChatGPT},pdfsubject={OEIS A261781 and A261784; rigorous recurrence, determinant, coverage, and diagonal results; the limiting law of the Hankel determinant zeros; merged report a261781-matrix-compositions (batches 85B and 98)}}
+\hypersetup{pdftitle={Matrix Compositions: Exact Spectra, Hankel Products, and Uniform Asymptotics},pdfauthor={Part I: OpenAI ChatGPT, research prepared for Vladimir Reshetnikov; Part II: research report prepared for Vladimir Reshetnikov; Part III: OpenAI ChatGPT; Part IV: Report 169 (no author named)},pdfsubject={OEIS A261781 and A261784; rigorous recurrence, determinant, coverage, and diagonal results; the limiting law of the Hankel determinant zeros; packed matrices on the total-weight 2N diagonal with repeated-cell and column markers; merged report a261781-matrix-compositions (batches 85B, 98 and 108)}}
 % Added 3 October 2026, batch 85B: finite tables of manuscript 01, shipped as data/01-two-poisson-*.tex
 \makeatletter
 \newcommand{\tableinput}[1]{\@@input #1 }
@@ -55,11 +55,13 @@
 \title{\textbf{Matrix Compositions:\\ Exact Spectra, Hankel Products,\\ and Uniform Asymptotics}\\[8pt]
 \large OEIS A261781, its empty-row transition,\\ and refined asymptotics for A261784\\[6pt]
 \normalsize Part II: finite spectra, uniform asymptotics, and two Poisson limits\\[2pt]
-\normalsize Part III: Cauchy limits, arithmetic atoms, and edge laws for the Hankel zeros}
+\normalsize Part III: Cauchy limits, arithmetic atoms, and edge laws for the Hankel zeros\\[2pt]
+\normalsize Part IV: packed matrices on the total-weight $2N$ diagonal}
 \author{Part I: OpenAI ChatGPT\\\small Research prepared for Vladimir Reshetnikov\\[4pt]
 \normalsize Part II: a research report prepared for Vladimir Reshetnikov\\[4pt]
-\normalsize Part III: OpenAI ChatGPT}
-\date{October 3, 2026 (Pacific time); merged 3 October 2026 (batch 85B);\\ Part III added 5 October 2026 (batch 98)}
+\normalsize Part III: OpenAI ChatGPT\\[4pt]
+\normalsize Part IV: Report 169 (no author named)}
+\date{October 3, 2026 (Pacific time); merged 3 October 2026 (batch 85B);\\ Part III added 5 October 2026 (batch 98);\\ Part IV added 6 October 2026 (batch 108)}
 \begin{document}
 \maketitle
 
@@ -133,6 +135,28 @@ renames manuscript~08's letters that clash with Parts~I and~II
 Sections~\ref{mxc:sec:scope}, \ref{mxc:sec:dictionary}, \ref{mxc:sec:hankel}
 and~\ref{mxc:sec:questions} and in Appendix~\ref{mxc:app:provenance} record
 what has changed. Part~III is AI-assisted, unrefereed and not formalized.
+
+\paragraph{Editorial note (6 October 2026, batch 108).}
+Since batch~108 the report has four Parts. Part~IV
+(Section~\ref{mxc:pm:sec:front} onwards) is built from Report~169 of a
+session bundle, written without sight of this report, on the diagonal
+$a_N=T(2N,N)$ (A261784). It proves again, by a different route, the
+expansion of $a_N$ to every order (Corollaries~\ref{mxc:cor:784}
+and~\ref{mxc:tp:cor:diagonal}), the column mean and variance at $n/k=2$
+(Corollary~\ref{mxc:cor:dense-columns}) and the first step of the inversion
+with its integer brackets (Section~\ref{mxc:tp:sec:inverse}); these are
+printed as marked second routes. It adds two further terms of the inversion,
+an expansion uniform for complex markers of the columns and of the cells
+with entry at least~$2$, and the Poisson limit, of mean $Lr$, of the number
+of such cells, independent of the Gaussian column count. It answers no
+question of this report; it bears on one question of Part~II and settles one
+instance of another (Section~\ref{mxc:pm:sec:front}). Part~IV's labels carry
+the prefix \texttt{mxc:pm:}, and it renames Report~169's letters into those of
+Parts~I and~II (Table~\ref{mxc:pm:tab:dictionary}). Dated notes in
+Sections~\ref{mxc:sec:scope}, \ref{mxc:sec:dictionary}, \ref{mxc:sec:dense},
+\ref{mxc:sec:questions}, \ref{mxc:tp:sec:diagonal}, \ref{mxc:tp:sec:inverse}
+and~\ref{mxc:tp:sec:future} and in Appendix~\ref{mxc:app:provenance} record
+what has changed. Part~IV is AI-assisted, unrefereed and not formalized.
 
 \newpage
 \tableofcontents
@@ -247,7 +271,8 @@ $(2-e^t)\sum_q\mathsf F_qt^q/q!=1$, in
 \cite{leanob}. Nothing else stated in either Part is formalized, and
 placement beside the repository's formal projects confers no formal
 status.] [Added 5 October 2026, batch 98: nor is anything stated in
-Part~III.]
+Part~III.] [Added 6 October 2026, batch 108: nor anything stated in
+Part~IV.]
 
 \subsection{Notation and conventions}
 Throughout, $n$ is total matrix mass, $k$ is the number of rows, and $C$ is
@@ -285,7 +310,8 @@ weight $u=1$, so its $A$, $T$, $c_k$, $d_k$ are the unweighted ones of
 Part~I.
 [Added 5 October 2026, batch 98: the renames of manuscript~08, the source of
 Part~III, are in its own Table~\ref{mxc:hz:tab:dictionary}; this table is
-unchanged.]
+unchanged.] [Added 6 October 2026, batch 108: those of Report~169, the source
+of Part~IV, are in Table~\ref{mxc:pm:tab:dictionary}.]
 
 {\small
 \setlength{\LTcapwidth}{\textwidth}
@@ -1826,6 +1852,14 @@ programs and agree in every printed digit. Manuscript~01 adds the third
 correction $\beta_3$, the recipe for every further one, and fifty-digit
 values (Section~\ref{mxc:tp:sec:diagonal}).]
 
+[Added 6 October 2026, batch 108: Report~169 (Part~IV) proves the
+corollary to every fixed order by a third route, a residue in the variable
+$Q$ of Section~\ref{mxc:pm:sec:saddle} with Euler--Maclaurin summation
+(Theorem~\ref{mxc:pm:thm:main}); its closed form~\eqref{mxc:pm:eq:C1} is the
+expression for $\beta$ above, expanded, and its coefficients are the $\beta_j$
+of Corollary~\ref{mxc:tp:cor:diagonal}
+(Remark~\ref{mxc:pm:rem:identification}).]
+
 \subsection{Column counts under the dense row condition}\label{mxc:sec:dense-columns}
 There is a further consequence: enforcing every row to be nonzero in
 this regime still leaves a universal leading Gaussian column law.
@@ -1912,6 +1946,16 @@ is $e^{v(\xi-1)}(1+O(k^{-1}))$ uniformly for complex $\xi$ in compact sets,
 with an expansion to every fixed order (Theorem~\ref{mxc:tp:thm:defect}).
 The two displayed moments follow from it. Both manuscripts state that no
 canonical matrix statistic is claimed for this variable.]
+
+[Added 6 October 2026, batch 108: at $n/k=2$ Report~169 (Part~IV) proves
+\eqref{mxc:eq:dense-column-mean} and~\eqref{mxc:eq:dense-column-variance}
+again, term for term, from an expansion uniform for complex column weights
+$|u-1|\le0.02$ (Theorem~\ref{mxc:pm:thm:joint}, Remark~\ref{mxc:pm:rem:columns}),
+and adds the joint limit of the column count with the number of cells with
+entry at least~$2$, which is Poisson of mean $Lr=2v$ and independent of the
+column count. That number is a statistic of the matrices themselves; it is not
+$D$, and no relation between the two is claimed
+(Remark~\ref{mxc:pm:rem:defect}).]
 
 The compact restriction $K\Subset(1,\infty)$ is essential in all
 these statements. At $k=n$ the Stirling kernel collapses and
@@ -2278,6 +2322,13 @@ estimate agree, including their relative errors. Such a result would
 turn the separate formulas in this article into a controlled asymptotic
 description of a much larger part of A261781.
 
+[Added 6 October 2026, batch 108: Report~169 (Part~IV) asks for a variable
+row-density regime, $k/n$ in a compact subset of $(0,1)$, and for the limits
+toward sparse and nearly unit row occupancy (its question~2). For the unmarked
+count the compact part is Theorem~\ref{mxc:thm:dense}, and the two limits are
+this question; Research question~\ref{mxc:pm:q:density} keeps only its marked
+form.]
+
 \begin{question}[Wider windows and higher coverage corrections]
 For which explicit ranges of $s_k=n/k-\log k$ can the Poisson--Charlier
 expansion of Section~\ref{mxc:sec:poisson} be extended, and can all its
@@ -2321,6 +2372,11 @@ would quantify the small dependence that survives before taking the
 limit, and would refine the order-one column-moment formulas on dense
 rays. This is a natural setting in which to compare joint Edgeworth
 and Poisson--Charlier expansions.
+
+[Added 6 October 2026, batch 108: the analogue on the ray $n/k=2$, with the
+number of cells with entry at least~$2$ in place of the zero-row count, is
+Research question~\ref{mxc:pm:q:local} (Report~169); there too only the
+distributional limit is proved (Theorem~\ref{mxc:pm:thm:joint}).]
 
 \begin{question}[Small column weights and equivalence of ensembles]
 How does the coverage transition change when the column weight
@@ -3132,7 +3188,11 @@ decimals,
 [Added 3 October 2026, batch 85B: the intake compared these with
 manuscript~06's independent seventy-digit values in
 \path{data/06-hankel-diagonal_constants.json}; $r$, $b$, $v$, $d_*$, $c_*$,
-$\beta_1$ and $\beta_2$ agree in every printed digit.]
+$\beta_1$ and $\beta_2$ agree in every printed digit.] [Added 6 October 2026,
+batch 108: Report~169's exact expressions for $\beta_1$, $\beta_2$, $\beta_3$
+(Section~\ref{mxc:pm:sec:coefficients}) agree with $\beta_1$, $\beta_2$ and
+\eqref{mxc:tp:eq:beta3} to within $10^{-50}$, as they must
+(Remark~\ref{mxc:pm:rem:identification}).]
 
 Let $a^{[i]}_N$ denote~\eqref{mxc:tp:eq:diagonalall} truncated after
 $\beta_i/N^i$, with $i=0$ the leading approximation.
@@ -3272,6 +3332,18 @@ the bracket is a valid statement that does not hide that ambiguity. Its
 constants are existential consequences of the asymptotic proof; no
 numerically certified value of $C_J$ is claimed.
 
+[Added 6 October 2026, batch 108: Report~169 (Part~IV) proves
+Propositions~\ref{mxc:tp:prop:inverse} and~\ref{mxc:tp:prop:threshold} again
+and carries the inversion two terms further
+(Proposition~\ref{mxc:pm:prop:inverse}, Theorem~\ref{mxc:pm:thm:ceiling}): with
+$\widetilde\beta_2=\beta_2-\frac12\beta_1^2$ and
+$\widetilde\beta_3=\beta_3-\beta_1\beta_2+\frac13\beta_1^3-\frac1{180}$, the root
+has the further terms $-\widetilde\beta_2/(2x_0^2(1+\varpi))$ and
+$-x_0^{-3}\bigl(\widetilde\beta_3/(2(1+\varpi))+\widetilde\beta_1^2/(4(1+\varpi)^2)
++\widetilde\beta_1^2/(8(1+\varpi)^3)\bigr)$, with error
+$O(x_0^{-4}/(1+\varpi))$; Remark~\ref{mxc:pm:rem:inverse} shows that this holds
+for $x_J(Y)$, $J\ge3$.]
+
 \section{Manuscript 01's checks}\label{mxc:tp:sec:checks}
 
 Manuscript~01's program \path{code/01-two-poisson-verify.py} (delivered
@@ -3364,7 +3436,16 @@ the weights~\eqref{mxc:tp:eq:defectdef}. Ideally the defect would count a
 familiar local feature and make the factor $e^{Lr/2}$ visible; such a
 construction could also explain the polynomials $P_r$ and the negative
 first-order term in $P_1$ without Faulhaber expansion. [Added: open; both
-manuscripts decline to claim a canonical statistic.]
+manuscripts decline to claim a canonical statistic.] [Added 6 October 2026,
+batch 108: Report~169 (Part~IV) bears on this question without answering
+it. On the ray $n/k=2$ the number $\mathcal J_N$ of cells with entry at
+least~$2$, a familiar local feature of the matrices, has a generating function
+carrying the factor $e^{Lr(\omega-1/2)}$, so that weighting each such cell by
+$\frac12$ removes the factor $e^{Lr/2}$ from the amplitude; $\mathcal J_N$ is
+asymptotically Poisson of mean $Lr$, twice the mean of the defect
+(Remark~\ref{mxc:pm:rem:defect}). It is not the defect, no decorated
+construction inducing the weights~\eqref{mxc:tp:eq:defectdef} is given, and
+nothing is proved on other rays; the question stays open.]
 
 \paragraph{Joint laws with the number of columns.} Mark the columns by
 $u$; before requiring nonzero rows the bivariate generating function is
@@ -3383,7 +3464,13 @@ rays Corollary~\ref{mxc:cor:dense-columns} gives the column central limit
 theorem and its proof the exact mixture over $Q_{n,k}$; the joint law of
 the column count and the defect $\Delta_{n,k}$, or a combinatorial
 defect, remains open, as do the local refinements of Research
-question~3.]
+question~3.] [Added 6 October 2026, batch 108: Report~169 (Part~IV) settles
+one instance of the second half: on the single ray $n/k=2$, the column count
+and the number of cells with entry at least~$2$, a combinatorial statistic in
+place of the defect, are asymptotically independent, Gaussian and
+$\Pois(Lr)$ (Theorem~\ref{mxc:pm:thm:joint},
+Remark~\ref{mxc:pm:rem:columns}). The joint law with $\Delta_{n,k}$, every
+other compact ray, and the local refinements stay open.]
 
 \paragraph{Weighted rows, columns, and restricted alphabets.} Replace the
 identical row weights or the unrestricted column entries by a specified
@@ -3407,6 +3494,12 @@ for the Fubini numbers themselves the sectors are exact and convergent,
 Theorem \texttt{q2:thm:fubini} of \cite{tsvol}; the open problem is to
 carry them through the Stirling transform and the saddle. The report on
 A260700 \cite{pdc} lists the same open problem for its sequence.]
+[Added 6 October 2026, batch 108: Report~169 (Part~IV) asks the same
+question for A261784 (its question~6, printed only here), adding the growth
+of the coefficients $\beta_j$ and possible Gevrey bounds, and the role of
+complex saddles other than the Fubini sectors; it notes that its explicit
+pole-tail bound (Lemma~\ref{mxc:pm:lem:pole}) identifies one exponentially
+small scale but supplies no exponentially improved expansion. Open.]
 
 \paragraph{Effective certified computation and formalization.} Make the
 constants in the compact-ray error bound and
@@ -5467,6 +5560,1413 @@ convergence of the scaled global discrepancy''
 (Figure~\ref{mxc:hz:fig:moments}), a finite comparison with no rate proved
 for either side beyond the theorems above.
 
+\part{Packed matrices on the total-weight \texorpdfstring{$2N$}{2N} diagonal: fixed-order asymptotics, controlled inversion, and joint marked limits}
+\label{mxc:pm:part}
+
+\section{Provenance, scope and notation of Part IV}\label{mxc:pm:sec:front}
+
+[Added 6 October 2026, batch 108.] Part~IV was added in the write of
+batch~108. It is built from Report~169 of a session bundle of research
+reports, which studies the diagonal $a_N=T(2N,N)$ of this report, OEIS
+A261784 \cite{oeis784}. Report~169 was written without sight of this
+report, and several of its theorems are theorems of Parts~I and~II proved
+by a different route: its expansion of $a_N$ to every fixed order is
+Corollaries~\ref{mxc:cor:784} and~\ref{mxc:tp:cor:diagonal}, its column
+mean and variance are Corollary~\ref{mxc:cor:dense-columns} at $n/k=2$, and
+its Lambert-$W$ inversion and integer brackets are
+Propositions~\ref{mxc:tp:prop:inverse} and~\ref{mxc:tp:prop:threshold}.
+These are printed as marked second routes, with remarks of the write that
+identify them (Table~\ref{mxc:pm:tab:claims}); Report~169's own proofs are
+printed because its marked theorem reuses them. New relative to Parts~I--III
+are the two further terms of the inversion, an explicit pole-tail bound, a
+Morse/Lagrange finite formula for the coefficients, a complex-uniform
+expansion with two markers (cells with entry at least~$2$, and columns), the
+Poisson limit of the number of such cells jointly with the column count, and
+the transfer to entries at least~$3$ and to the total excess.
+Everything of Report~169 is printed below, in the letters of
+Table~\ref{mxc:pm:tab:dictionary}. Bracketed notes marked ``[Note of the
+batch-108 write]'' and remarks marked ``[write]'' are the write's; all other
+text of Part~IV is Report~169's.
+
+\subsection{The manuscript}
+Report~169 is the archive
+\nolinkurl{Packed_Matrices_Asymptotics_Inverses_and_Joint_Limits_Source.zip}
+(571,859 bytes; 27 files in an inner directory \texttt{report169/}), which
+arrived in commit \texttt{60f54ea06} and was placed in this report by commit
+\texttt{602e5bd0f} (batch~108). Its article is titled \emph{Report 169:
+Packed matrices on the total-weight $2n$ diagonal}, subtitled
+\emph{Fixed-order asymptotics, controlled inversion, and joint marked
+limits} (16~pages; main file \texttt{source/report169.tex}, 686 lines,
+60 labels; dated 3~October 2026). Its author line and PDF author field are
+empty; it names no person, tool or addressee. It has no pin: it names no
+ProveIt commit, cites nothing in the repository and none of Parts~I--III,
+which were written on the same day. Its literature list overlaps this
+report's (Munarini, Poneti and Rinaldi's Proposition~29, Louchard,
+Kot\v{e}\v{s}ovec's leading formula). It is not an edition of any earlier
+source of this report: 0.66\,\% of its word 8-grams occur in this report,
+and 0.13\,\% of this report's in it.
+
+\paragraph{Status and non-claims of Report~169, kept.} Its statements
+concern fixed-order asymptotics: no convergence of the coefficient series,
+no optimal truncation and no effective numerical threshold are claimed;
+$O$-constants and onsets are existence statements. It proves no local limit
+theorem for the column count; the coupling of the total excess with the
+repeated-cell count says nothing about unbounded moments. Its decimal values
+are not interval-certified. It credits the leading equivalent to
+Kot\v{e}\v{s}ovec (OEIS, 18~February 2017, updated 20~April 2024) and the
+exact transform to Munarini, Poneti and Rinaldi; it names Cerbai--Claesson,
+Cameron--Prellberg--Stark, Louchard and Greenhill--McKay as precedents; it
+makes ``no claim of historical priority or global novelty''; and it says
+that Kot\v{e}\v{s}ovec's mathematics page and the A261784 history were not
+available to its review. Exact computations and independent checking ``do
+not amount to formal proof-assistant verification or certified interval
+arithmetic'' (Section~\ref{mxc:pm:sec:literature}).
+
+\subsection{What Part IV adds}
+
+{\small
+\renewcommand{\arraystretch}{1.12}
+\setlength{\LTcapwidth}{\textwidth}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{.24\textwidth}>{\raggedright\arraybackslash}p{.30\textwidth}>{\raggedright\arraybackslash}p{.38\textwidth}@{}}
+\caption{Report~169 against Parts~I--III. ``Second route'' means the same
+statement proved here by a different argument; the remark named identifies
+it.}\label{mxc:pm:tab:claims}\\
+\toprule
+Report 169 (Part IV) & Parts I--III & Status here\\
+\midrule
+\endfirsthead
+\toprule
+Report 169 (Part IV) & Parts I--III & Status here\\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+Transform~\eqref{mxc:pm:eq:transform} & \eqref{mxc:eq:stirling}, credited to \cite[Proposition~29]{mpr2009} & the same identity; a dummy-column derivation\\
+Lemma~\ref{mxc:pm:lem:pole} & \eqref{mxc:eq:fubini-estimate} & the same exponent, with an explicit sum over the poles (Remark~\ref{mxc:pm:rem:pole})\\
+Theorem~\ref{mxc:pm:thm:main}, $\beta_1$ in~\eqref{mxc:pm:eq:C1} & Corollary~\ref{mxc:cor:784} (first order), Corollary~\ref{mxc:tp:cor:diagonal} (every order) & second route; \eqref{mxc:pm:eq:C1} is the same rational function as Corollary~\ref{mxc:cor:784}'s $\beta$ (Remark~\ref{mxc:pm:rem:identification})\\
+\eqref{mxc:pm:eq:Gaussianformula}, \eqref{mxc:pm:eq:exactfinite}, \eqref{mxc:pm:eq:C23} & \eqref{mxc:eq:saddle-algorithm}, \eqref{mxc:tp:eq:deltarecipe} & a second finite prescription, on the $Q$-plane contour; $\beta_2$, $\beta_3$ agree\\
+Proposition~\ref{mxc:pm:prop:inverse} & Proposition~\ref{mxc:tp:prop:inverse} (first correction) & first step a second route; the $x_0^{-2}$ and $x_0^{-3}$ terms are new (Remark~\ref{mxc:pm:rem:inverse})\\
+Theorem~\ref{mxc:pm:thm:ceiling} & Proposition~\ref{mxc:tp:prop:threshold} & the same statement, second route\\
+Theorem~\ref{mxc:pm:thm:marked} & \eqref{mxc:eq:weighted-dense}: real column weight, first order & new: complex column weight, a marker for cells $\ge2$, every order (Remark~\ref{mxc:pm:rem:weighted})\\
+Theorem~\ref{mxc:pm:thm:joint}, \eqref{mxc:pm:eq:moments} & Corollary~\ref{mxc:cor:dense-columns} at $n/k=2$ & second route, identical formulas (Remark~\ref{mxc:pm:rem:columns})\\
+Theorem~\ref{mxc:pm:thm:joint}, \eqref{mxc:pm:eq:joint} & --- & new: Poisson$(Lr)$ limit of the repeated cells, independent of the Gaussian column count\\
+\eqref{mxc:pm:eq:triples} and the total excess & --- & new\\
+\end{longtable}
+}
+
+Two questions of Part~II are touched; neither is answered
+(Section~\ref{mxc:tp:sec:future}). The repeated-cell count is a statistic of
+the matrices themselves whose generating function carries the factor
+$e^{Lr(\omega-1/2)}$, and so bears on ``A combinatorial realization of the
+latent defect''; it does not construct the decorated model that paragraph
+asks for (Remark~\ref{mxc:pm:rem:defect}). Theorem~\ref{mxc:pm:thm:joint}
+settles one instance of ``Joint laws with the number of columns'': on the
+single ray $n/k=2$, with the repeated-cell count in place of the defect. Dated
+notes at both paragraphs say so.
+
+\subsection{Notation of Part IV}\label{mxc:pm:sec:notation}
+Report~169 writes $n$ for the number of rows, $\rho$ for $\log2$, $t$ for
+the saddle, $u$ and $v$ for its two markers, and uses many letters that
+Parts~I--III use for other objects. Part~IV is printed in the letters of
+Parts~I and~II: $N$ rows and total $2N$ as in Section~\ref{mxc:sec:784},
+$L=\log2$, the saddle $r$ of~\eqref{mxc:eq:784-r}, the column weight $u$ of
+Part~I, the corrections $\beta_j$ of Corollary~\ref{mxc:tp:cor:diagonal},
+and the inverse core $\Lambda$, $\varpi$, $x_0$ of
+Section~\ref{mxc:tp:sec:inverse}. Table~\ref{mxc:pm:tab:dictionary} lists every
+rename with the false reading the delivered letter would have in this
+report. The renames are changes of letter only; no normalization is changed.
+
+{\small
+\setlength{\LTcapwidth}{\textwidth}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.30\textwidth}>{\raggedright\arraybackslash}p{0.17\textwidth}>{\raggedright\arraybackslash}p{0.13\textwidth}>{\raggedright\arraybackslash}p{0.31\textwidth}@{}}
+\caption{Report~169's symbols and the letters used for them in Part~IV.
+``False reading'' gives what the Report-169 letter means elsewhere in this
+report.}\label{mxc:pm:tab:dictionary}\\
+\toprule
+Notion & Part IV & Rep.~169 & False reading if copied\\
+\midrule
+\endfirsthead
+\toprule
+Notion & Part IV & Rep.~169 & False reading if copied\\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+Number of rows; total & $N$; $2N$ & $n$; $2n$ & $n$ is the total mass\\
+Total in the triangle & $n$, in $T(n,k)$ & $N$, in $T(N,k)$ & $N$ is the diagonal index\\
+A261784 & $a_N$ & $a_n$ & ---\\
+$\log 2$ & $L$ & $\rho$ & $\rho=L/\sqrt{L^2+8}$ is the pole-bound ratio\\
+Saddle $2+W_0(-2e^{-2})$ & $r$ & $t$ & $t$ is a local variable\\
+Its half (contour radius) & $\mathsf q=r/2$ & $q$ & $q=1/(1+u_0)$ in Section~\ref{mxc:sec:joint}; $q$ indexes $\mathsf F_q$\\
+$\mathcal D_Q^2\Phi(\mathsf q)=2(r-1)/(2-r)$ & $b_Q$ & $b$ & $b=2(r-1)$ at $\lambda=2$ (Corollary~\ref{mxc:cor:784})\\
+Growth constant; amplitude & $d_*$, $c_*$ & $d$, $C$ & $d$ is a Hankel size; $C$ counts columns\\
+Poisson mean of the repeated cells & $Lr=2v$ & $\lambda=\rho t$ & $\lambda=n/k$; $v=Lr/2$\\
+Column variance per row & $2\sigma_\infty^2=\frac{1-L}{2L^2}$ & $\sigma^2$ & $\sigma_\infty^2$ of~\eqref{mxc:eq:unweighted-clt} is per unit of total\\
+Diagonal corrections & $\beta_j$ & $C_j$ & $C_J$ is a bracket constant\\
+Logarithmic coefficients & $\widetilde\beta_1,\widetilde\beta_2,\widetilde\beta_3$ & $h_1,h_2,h_3$ & $h=n/k$; $\widetilde\beta_1$ is~\eqref{mxc:tp:eq:inverseconst}\\
+Ordered Bell (Fubini) numbers; weighted & $\mathsf F_j$; $\mathsf F_j(u)$ & $B_j$; $B_j(v)$ & $B$, $B(u)$ are pole-bound constants\\
+Bernoulli numbers & $\mathrm B_{2m}$ & $B_{2r}$ & as above; $r$ is the saddle\\
+Fubini poles & $L^{(\ell)}=L+2\pi i\ell$; $L_u^{(\ell)}$ & $R_\ell$; $R_\ell(v)$ & $R_p(w)$ are kernel polynomials\\
+$\operatorname{Log}(1+1/u)$ & $L_u$ & $R(v)$ & ---\\
+Pole contributions & $\mathsf H_N(\cdot)$, $\mathsf H_{N,\ell}$ & $H_n(\cdot)$, $H_{n,\ell}$ & $H_{n,k}(z)$ is the kernel, $H_{k,s}(u)$ the Hankel determinant\\
+Pole ratio $L/\sqrt{L^2+4\pi^2}$ & $\vartheta_0$ & $\kappa$ & $\kappa_j$ are cumulants\\
+Marked pole-tail base; bound on $|L_u|$ & $\vartheta_*$; $L^*=0.71$ & $\beta_*$; $r_*$ & $\beta_j$ are corrections\\
+Kernel; marked kernel & $\mathfrak K_N(Q)$; $\mathfrak K_N(Q,\omega,u)$ & $K_n(Q)$; $K_n$ & $K$ is a compact set; $K_n$ also counts columns in Rep.~169\\
+Kernel coefficients & $\mathfrak k_j$ & $k_j$ & $k$ is the number of rows\\
+Euler operator in $Q$ & $\mathcal D_Q$ & $D$ & $D$ is overloaded in Part~I; $\mathcal D=r\,\mathrm d/\mathrm dr$\\
+Amplitude $(1-Q)^{-1/2}e^{LQ}$ & $\mathfrak A(Q)$ & $A(Q)$ & $A(n,k)$ is a count\\
+Logarithmic corrections; their exponential & $\mathfrak h_j(Q)$; $\mathfrak p_j(Q)$ & $H_j(Q)$; $P_j(Q)$ & $P_j(t)$, $P_j(w)$ are other polynomials\\
+Morse-coordinate auxiliaries & $\mathfrak f(x)$, $\mathfrak S(x)$, $\mathfrak F_j(x)$ & $f(x)$, $S(x)$, $F_j(x)$ & $f(z)=e^z-1$; $F_k(z;u)$ is a generating function\\
+Gaussian-lemma amplitude; outputs & $\mathfrak a_N(\theta,p)$; $\mathfrak c_j(p)$ & $a_n(\theta,p)$; $\gamma_j(p)$ & $a_N$ is A261784; $\gamma$ in Corollary~\ref{mxc:cor:shifted-window}\\
+Gaussian-lemma Taylor variable; phase & $\varrho$; $\phi$ & $r$; $f$ & $r$ is the saddle\\
+Marker of cells with entry $\ge2$ & $\omega$ & $u$ & $u$ is the column weight; $\omega_j$ are roots of unity\\
+Marker of columns & $u$ & $v$ & $v=Lr/2$\\
+Marker of cells with entry $\ge3$ & $\omega'$ & $s$ & $s$ is the window parameter and the Hankel shift\\
+Marked count & $\mathsf T_N(\omega,u)$ & $A_n(u,v)$ & $A(n,k)$ allows zero rows\\
+Marked leading term & $\mathcal V_N(\omega,u)$ & $L_n(u,v)$ & $L=\log2$\\
+Marked constants & $d_*(u)$, $c_*(\omega,u)$, $\beta_j(\omega,u)$ & $d(v)$, $C(u,v)$, $C_j(u,v)$ & ---\\
+Marker polydisc & $\mathcal U$ & $\mathcal P$ & $\mathcal P(K,Q)$ in Part~III\\
+Inverse of $w(\cdot,\omega)$ & $\mathsf z(w,\omega)$, $\mathsf z_3$ & $\psi$, $\psi_3$ & $\psi$ is Dedekind's function\\
+Column weight factor $u/(1+u)$ & $p_u$ & $r$ & $r$ is the saddle\\
+Cells $\ge2$; $\ge3$; columns; total excess & $\mathcal J_N$; $\mathcal J^{(3)}_N$; $C$; $\mathcal E_N$ & $J_n$; $L_n^{(3)}$; $K_n$; $E_n$ & $J_q$ is a block count, $J$ an order; $E_j$, $E_n(w)$\\
+Target value; inverse core; $1+W$ & $Y$; $\Lambda$, $\varpi$, $x_0$; $1+\varpi$ & $x$; $Y$, $W$, $v$; $L$ & as in Section~\ref{mxc:tp:sec:inverse}; $L=\log2$\\
+Core; truncated logarithm; its root & $\mathfrak g_0$; $\mathfrak g_{J'}$; $\widetilde x_{J'}(Y)$ & $F$; $G_H$; $s_H(x)$ & $F_k$, $G_k$ (gcd sums)\\
+Smooth comparator; its root & $\mathcal A^{[J]}$; $x_J(Y)$ & $f_M$; $v_M$ & as in~\eqref{mxc:tp:eq:smoothmodel}\\
+Integer threshold; bracket & $\mathcal N(Y)$; $\epsilon_J$, $C_J$ & $N(x)$; $\delta_M$, $K_M$ & as in~\eqref{mxc:tp:eq:thresholdbracket}\\
+Truncation order & $J$ & $M$ & $M$ is the zero-row count\\
+Nonempty-column count & $A(n,k)$ & $c_{N,k}$ & $c_k$ is the fixed-$k$ amplitude\\
+\end{longtable}
+}
+
+Local letters whose meaning is fixed where they occur, and which do not
+refer to the objects of Parts~I--III with the same name: the coefficient
+variables $z$, $w=-\log(1-z)$ (Sections~\ref{mxc:pm:sec:transform}--\ref{mxc:pm:sec:saddle})
+or $w=\log g(z,\omega)$ (Section~\ref{mxc:pm:sec:marked}), $x$, $y$, $s$; the
+contour variable $Q$ (not the Stirling index $Q$ of
+Corollary~\ref{mxc:cor:dense-columns}); the generic pole argument $R$; the
+phase functions $I$, $\Phi$, $h$ of Section~\ref{mxc:pm:sec:saddle} ($\Phi$ is
+unindexed, unlike the cyclotomic $\Phi_m$ of Part~III); $F$, $G$ in the proof
+of Theorem~\ref{mxc:pm:thm:marked}; $\varphi_1$, $\varphi_2$, $\theta$, $\tau$ in
+the proof of Theorem~\ref{mxc:pm:thm:joint}; and $\epsilon$, $\delta$,
+$\delta_0$, $p$, $c$, $c_1$ and $\mathrm{const}$ (Report~169's $C_k$, $C_M$)
+as small or generic constants. The cell series $g(z,\omega)$ is not the
+function $g$ of Section~\ref{mxc:sec:dense}. Report~169 uses $\epsilon$ both
+for $N^{-1/2}$ and for $1/N$; each use is stated where it occurs.
+
+\section{The model, attribution, and results}\label{mxc:pm:sec:model}
+A \emph{packed matrix} here has entries in $\mathbb Z_{\ge0}$ and has no
+zero row or zero column. Both line orders are retained; repeated lines are
+allowed. Let $T(n,k)$ count such matrices of total $n$ with exactly $k$
+rows. We study
+\[
+ a_N=T(2N,N)\quad(N\ge1),\qquad a_0=1.
+\]
+There are at most $2N$ columns, so each set being counted is finite. Reading
+columns as weakly increasing words on the ordered row alphabet identifies
+this definition with A261784. In particular,
+\[
+ a_0,a_1,a_2,a_3,a_4,a_5=1,2,66,5546,893490,235804122.
+\]
+The sequence is neither a binary-matrix count nor a lonesum or
+triangular-matrix count. No row or column factorial is divided out.
+[Note of the batch-108 write: these packed matrices are the matrix
+compositions of Part~I, $T(n,k)$ is the triangle A261781 of
+Section~\ref{mxc:sec:scope}, and $a_N$ is the diagonal of
+Section~\ref{mxc:sec:784}.]
+
+Set
+\begin{equation}\label{mxc:pm:eq:constants}
+ L=\log2,\qquad r=2+W_0(-2e^{-2}),\qquad \mathsf q=r/2,
+ \qquad b_Q=\frac{2\mathsf q-1}{1-\mathsf q}.
+\end{equation}
+Here $W_0$ is the principal real Lambert branch. Equivalently $\mathsf q$ is
+the unique positive solution of $-\log(1-\mathsf q)=2\mathsf q$ in $(0,1)$;
+it lies in $(1/2,1)$. The zero solution is excluded. Define
+\begin{equation}\label{mxc:pm:eq:Cd}
+ d_*=\frac{4}{L^2r(2-r)},\qquad
+ c_*=\frac{e^{Lr/2}}{4\pi L\sqrt{r-1}},\qquad
+ Lr,\qquad 2\sigma_\infty^2=\frac{1-L}{2L^2}.
+\end{equation}
+For orientation only, $r\approx1.5936242600$, $d_*\approx12.8556891737$,
+$c_*\approx0.2588649231$, and $Lr\approx1.1046161627$. [Note of the
+batch-108 write: $r$, $d_*$, $c_*$ are~\eqref{mxc:eq:784-r},
+\eqref{mxc:eq:784-d} and~\eqref{mxc:eq:784-c} ($e^{Lr/2}=2^{r/2}$);
+$Lr=2v$ with $v=Lr/2$ of Section~\ref{mxc:sec:784}; and $2\sigma_\infty^2$ is
+twice the constant of~\eqref{mxc:eq:unweighted-clt}, because it is measured
+per row, and there are two units of total per row.]
+
+\begin{theorem}[All fixed orders; second route to Corollaries~\ref{mxc:cor:784} and~\ref{mxc:tp:cor:diagonal}]\label{mxc:pm:thm:main}
+For every fixed integer $J\ge0$ there are $\beta_j\in\mathbb Q(L,r)$, with
+$\beta_0=1$, such that
+\begin{equation}\label{mxc:pm:eq:main}
+ a_N=c_*d_*^N\frac{(N!)^2}{N}
+ \left(\sum_{j=0}^{J}\frac{\beta_j}{N^j}+O_J(N^{-J-1})\right).
+\end{equation}
+The first correction is
+\begin{align}\label{mxc:pm:eq:C1}
+ \beta_1=\frac{r}{48(r-1)^3}\bigl(&2L^2r^4-9L^2r^3+12L^2r^2-5L^2r\notag\\
+ &-6Lr^3+6Lr^2+12Lr-12L\notag\\
+ &-2r^3-3r^2+24r-24\bigr).
+\end{align}
+Section~\ref{mxc:pm:sec:coefficients} gives finite exact representations for
+$\beta_2,\beta_3$ and a prescription for each fixed coefficient.
+\end{theorem}
+The $O$-constant and the threshold in $N$ may depend on $J$. This theorem
+asserts neither convergence of the coefficient series nor validity of
+optimal truncation. It supplies no explicit numerical threshold for a
+prescribed error.
+
+\begin{remark}[write; the identification with Parts~I and~II]\label{mxc:pm:rem:identification}
+Theorem~\ref{mxc:pm:thm:main} is Corollary~\ref{mxc:cor:784} at first order and
+Corollary~\ref{mxc:tp:cor:diagonal} at every order: the constants $d_*$,
+$c_*$ are the same, and the coefficients agree. Indeed, two expansions of the
+same sequence in powers of $1/N$ with the same leading factor have the same
+coefficients (subtract them and multiply by $N^j$ successively), so
+Theorem~\ref{mxc:pm:thm:main} and Corollary~\ref{mxc:tp:cor:diagonal} together
+force Report~169's coefficients to be the $\beta_j$ of
+Corollary~\ref{mxc:tp:cor:diagonal}; this is why the same letter is used.
+For $\beta_1$ more is true: the right side of~\eqref{mxc:pm:eq:C1} and the
+expression for $\beta$ in Corollary~\ref{mxc:cor:784}, with $b=2(r-1)$,
+$\kappa_3$, $\kappa_4$ and $v=Lr/2$ substituted, are the same rational
+function of two \emph{independent} indeterminates $L$ and $r$ (checked with
+SymPy at the write), so no relation between $L$ and $r$ is used;
+\eqref{mxc:pm:eq:C1} is that expression expanded. The intake evaluated it to
+$-0.5218067015564826638891441$, equal to $\beta$ in every digit, and the
+write found Report~169's exact expressions for $\beta_1$, $\beta_2$, $\beta_3$
+(\path{data/08-packed-companion-coefficient_formulas.txt}) equal to the
+fifty-digit values of Section~\ref{mxc:tp:sec:diagonal} to within $10^{-50}$.
+The route is different. Part~I reduces the positive sum to the analytic
+amplitude $H_{n,k}$ on rays and integrates on $|z|=r$
+(Section~\ref{mxc:sec:dense}); Part~II integrates the entire kernel
+$\mathsf W_n$; Report~169 uses the exact pole lattice of the Fubini numbers,
+the substitution $z=1-e^{-LQ/N}$, Euler--Maclaurin summation of
+$\sum_\nu\log(1-\nu Q/N)$ and a Gaussian lemma on the circle $|Q|=\mathsf q$
+(Section~\ref{mxc:pm:sec:saddle}), and specializes to $\lambda=2$ from the
+start, so no central-binomial correction enters. Its proof is printed in full
+because Section~\ref{mxc:pm:sec:marked} reuses it with complex markers.
+\end{remark}
+
+\paragraph{What was already known.}
+The inspected OEIS entry~\cite{oeis784} credits the equivalent
+$a_N\sim c_*d_*^N(N!)^2/N$ to Kot\v e\v sovec, dated 18 February 2017 and
+updated 20 April 2024. It gives a Lambert-$W$ formula for $d_*$ and a
+numerical amplitude matching~\eqref{mxc:pm:eq:Cd}. That leading equivalent is
+credited here, not claimed as a discovery. The exact transform used below is
+Proposition 29, equation (36), of Munarini--Poneti--Rinaldi~\cite{mpr2009}.
+Exact row/column marking is also part of the Burge-matrix enumeration of
+Cerbai--Claesson~\cite{pmcc23,pmcc25}. Cameron--Prellberg--Stark~\cite{pmcps,pmcpsclasses}
+provide closely related proportional-dimension binary saddles;
+Louchard~\cite{louchard} proves column Gaussian laws in a
+fixed-row-dimension composition model; Greenhill--McKay~\cite{pmgm} analyze
+sparse specified-margin multiple entries. These precedents are essential
+context for the refinements and probability consequences, rather than
+instances of a new generic Gaussian or Poisson phenomenon.
+Section~\ref{mxc:pm:sec:literature} explains the model distinctions and the
+limits of the literature comparison. [Note of the batch-108 write: Part~I
+credits the same two results in Section~\ref{mxc:sec:scope} and
+Table~\ref{mxc:tab:scope}. The Cerbai--Claesson, Cameron--Prellberg--Stark,
+Greenhill--McKay, Duchamp--Hivert--Thibon, Khera--Lundberg--Melczer and
+Hwang--Jin--Schlosser citations are Report~169's; the write did not reread
+them.]
+
+\section{An exact finite transform and pole reduction}\label{mxc:pm:sec:transform}
+Let $\mathsf F_j=\sum_{c=0}^jc!\StirTwo{j}{c}$ be the ordered Bell numbers,
+with exponential generating function $(2-e^z)^{-1}$. We use unsigned
+Stirling numbers of the first kind. The known identity is
+\begin{equation}\label{mxc:pm:eq:transform}
+ T(n,k)=\frac{k!}{n!}\sum_{j=k}^n\StirOne nj\StirTwo jk\mathsf F_j.
+\end{equation}
+One direct route starts with $m$ dummy columns: for the ordinary cell series
+$(1-z)^{-1}$ the no-zero-row series is $((1-z)^{-m}-1)^k$. Weighting dummy
+columns by $2^{-m-1}$ erases all inserted zero columns, because
+$\sum_{m\ge C}2^{-m-1}\binom mC=1$. Expanding $(e^{mw}-1)^k$ at
+$w=-\log(1-z)$ and using
+\[
+ [z^n]w^j=\frac{j!}{n!}\StirOne nj
+\]
+gives~\eqref{mxc:pm:eq:transform}. This also fixes the ordered-line
+normalization. [Note of the batch-108 write: \eqref{mxc:pm:eq:transform} is
+\eqref{mxc:eq:stirling}; Part~I derives it from
+$\mathsf F_q=\frac12\sum_bb^q2^{-b}$ and a binomial difference.]
+
+For every $j\ge1$, the exact pole identity is
+\begin{equation}\label{mxc:pm:eq:Fubini}
+ \mathsf F_j=\frac{j!}{2}\sum_{\ell\in\mathbb Z}(L+2\pi i\ell)^{-j-1}.
+\end{equation}
+Indeed $(2-e^z)^{-1}=(1+\coth((L-z)/2))/4$; the differentiated partial
+fractions of $\coth$ converge absolutely and locally uniformly away from the
+poles. Coefficient extraction for $j\ge1$ gives~\eqref{mxc:pm:eq:Fubini}. The
+exceptional undifferentiated constant does not enter when $N\ge1$. [Note of
+the batch-108 write: this is Theorem \texttt{q2:thm:fubini} of the
+transseries volume \cite{tsvol}, quoted in the note after
+\eqref{mxc:eq:fubini-estimate}.]
+
+Put $L^{(\ell)}=L+2\pi i\ell$. The ordinary Stirling-column identity
+\[
+ \sum_{j\ge N}\StirTwo jN x^j=\frac{x^N}{\prod_{\nu=1}^N(1-\nu x)}
+\]
+then gives
+\begin{equation}\label{mxc:pm:eq:poles}
+ a_N=\sum_{\ell\in\mathbb Z}\mathsf H_N(L^{(\ell)}),\qquad
+ \mathsf H_N(R)=\frac{N!}{2R}[z^{2N}]
+ \frac{(w/R)^N}{\prod_{\nu=1}^N(1-\nu w/R)}.
+\end{equation}
+Only $N\le j\le2N$ contribute to the coefficient. Thus this is a finite
+coefficient calculation with an absolutely convergent pole sum, not an
+assumption about convergence of a factorially divergent generating series in
+$N$.
+
+\begin{lemma}[Exponential principal-pole reduction]\label{mxc:pm:lem:pole}
+With $\vartheta_0=L/\sqrt{L^2+4\pi^2}<0.110$,
+\begin{equation}\label{mxc:pm:eq:tailunmarked}
+ \frac{|a_N-\mathsf H_N(L)|}{\mathsf H_N(L)}
+ \le\sum_{\ell\ne0}\left(\frac{L}{|L^{(\ell)}|}\right)^{N+1}
+ =O(\vartheta_0^N).
+\end{equation}
+\end{lemma}
+\begin{proof}
+Each finite-transform summand for $\mathsf H_N(L)$ is nonnegative. Replacing
+$L$ by $L^{(\ell)}$ changes its factor $L^{-j-1}$ to $(L^{(\ell)})^{-j-1}$;
+since $j\ge N$, termwise absolute values give the inequality. If
+$r_\ell=L/|L^{(\ell)}|$, then $r_\ell\le\vartheta_0$ for $\ell\ne0$ and
+\[
+ \sum_{\ell\ne0}r_\ell^{N+1}\le
+ \vartheta_0^{N-1}\sum_{\ell\ne0}r_\ell^2\quad(N\ge1).
+\]
+The last sum converges. In particular all nonreal poles are controlled
+together.
+\end{proof}
+
+\begin{remark}[write]\label{mxc:pm:rem:pole}
+Part~I's estimate~\eqref{mxc:eq:fubini-estimate} replaces $\mathsf F_q$ by its
+first pole with relative error $O(\vartheta^q)$ for every fixed
+$\vartheta>\vartheta_0$, by Cauchy's estimate; Lemma~\ref{mxc:pm:lem:pole}
+uses the exact identity~\eqref{mxc:pm:eq:Fubini} to give an explicit bound by
+the pole sum itself, with the same exponential rate. ($r_\ell$ here is a
+local ratio, not $r_k=1-a_k$ of Section~\ref{mxc:sec:scope}.)
+\end{remark}
+
+\section{The saddle and a complete fixed-order remainder argument}\label{mxc:pm:sec:saddle}
+Make the exact substitution $w=LQ/N$, $z=1-e^{-w}$ in the residue for
+$\mathsf H_N(L)$. It gives
+\begin{equation}\label{mxc:pm:eq:integral}
+ \mathsf H_N(L)=\frac{N!\,N^N}{2L^{2N+1}}
+ \frac1{2\pi i}\oint_{|Q|=\mathsf q}Q^{-N}
+ \prod_{\nu=1}^N(1-\nu Q/N)^{-1}\mathfrak K_N(Q)\frac{\dd Q}{Q},
+\end{equation}
+where
+\begin{equation}\label{mxc:pm:eq:kernel}
+ \mathfrak K_N(Q)=\left(\frac{w}{1-e^{-w}}\right)^{2N}
+          \frac{w}{e^w-1}.
+\end{equation}
+The product poles have $Q=N/\nu\ge1>\mathsf q$. For sufficiently large $N$ the
+inverse map is analytic on the relevant shrinking $w$-disk, has winding one,
+and creates no other singularity inside the contour. This is a residue change
+of coordinate.
+
+\subsection{Uniform Euler--Maclaurin expansion}
+Let
+\begin{equation}\label{mxc:pm:eq:phase}
+ I(Q)=1+\frac{(1-Q)\log(1-Q)}Q,\quad
+ \Phi(Q)=I(Q)-\log Q,\quad \mathcal D_Q=Q\frac{\mathrm d}{\mathrm dQ}.
+\end{equation}
+Fix $\delta_0>0$ with $\mathsf q+\delta_0<1$. For $f_Q(x)=-\log(1-Qx)$, all
+fixed $x$ derivatives are bounded uniformly on $|Q|\le\mathsf q+\delta_0$,
+$0\le x\le1$, since $|1-Qx|\ge1-\mathsf q-\delta_0$. The right-endpoint
+Euler--Maclaurin formula, using one term beyond the last retained term to
+bound its remainder, gives for each fixed $p\ge0$
+\begin{align}\label{mxc:pm:eq:EM}
+ \sum_{\nu=1}^N f_Q(\nu/N)
+ ={}&NI(Q)-\tfrac12\log(1-Q)\notag\\
+ &+\sum_{m=1}^p
+ \frac{\mathrm B_{2m}Q^{2m-1}\{(1-Q)^{-(2m-1)}-1\}}
+ {2m(2m-1)N^{2m-1}}+O(N^{-2p-1}).
+\end{align}
+Here $\mathrm B_{2m}$ are Bernoulli numbers. The error is uniform on that
+disk. Formula~\eqref{mxc:pm:eq:EM} always means a finite truncation with its
+stated remainder.
+
+Put $h(Q)=-\log(1-Q)/Q$. Direct differentiation gives
+\[
+ \mathcal D_Q\Phi=h-2,\qquad \mathcal D_Qh=(1-Q)^{-1}-h.
+\]
+Therefore $\mathcal D_Q\Phi(\mathsf q)=0$ and $\mathcal D_Q^2\Phi(\mathsf q)=b_Q>0$.
+Expanding~\eqref{mxc:pm:eq:kernel} uniformly on the disk gives
+$\log\mathfrak K_N=LQ+O(N^{-1})$, and to any fixed order it gives analytic
+coefficient functions with uniform remainders. The leading amplitude is
+\begin{equation}\label{mxc:pm:eq:A}
+ \mathfrak A(Q)=(1-Q)^{-1/2}e^{LQ}.
+\end{equation}
+
+\subsection{The entire contour, not only a local saddle}
+For $a=\nu\mathsf q/N$,
+\[
+ \frac{|1-ae^{i\theta}|^2}{(1-a)^2}
+ =1+\frac{4a\sin^2(\theta/2)}{(1-a)^2}.
+\]
+For a positive fraction of the indices $\nu$, $a\in[\mathsf q/2,\mathsf q]$. On
+this compact interval the logarithm of the right side is at least a positive
+constant times $\sin^2(\theta/2)$. Consequently
+\begin{equation}\label{mxc:pm:eq:minor}
+ \frac{\left|\prod_{\nu=1}^N(1-\nu\mathsf qe^{i\theta}/N)^{-1}\right|}
+      {\prod_{\nu=1}^N(1-\nu\mathsf q/N)^{-1}}
+ \le e^{-cN\sin^2(\theta/2)}
+\end{equation}
+for some $c>0$, uniformly on the full circle. The kernel is uniformly
+bounded there. Thus $|\theta|\ge N^{-2/5}$ contributes
+$O(e^{N\Phi(\mathsf q)}e^{-c_1N^{1/5}})$ to the integral. Dividing by the
+eventual main scale $e^{N\Phi(\mathsf q)}N^{-1/2}$ introduces a factor
+$\sqrt N$, which is absorbed into a smaller positive exponential constant.
+There is a unique dominant arc. [Note of the batch-108 write: the index $\nu$
+of the products is Report~169's $r$, which is the saddle here.]
+
+\subsection{A Gaussian lemma without logarithmic loss}\label{mxc:pm:sec:gauss}
+We give the remainder step explicitly, in a form also valid for compact
+complex marker sets. Write a local integral after removal of its constant
+exponential factor as
+\[
+ \int e^{N\phi(\theta)}\mathfrak a_N(\theta,p)\dd\theta,
+ \qquad \phi(0)=\phi'(0)=0,\quad \phi''(0)=-b_Q<0,
+\]
+where $p$ lies in a compact parameter set. Suppose the phase is analytic in a
+fixed neighborhood and the amplitude has, uniformly there,
+\[
+ \mathfrak a_N(\theta,p)=\sum_{j=0}^J\mathfrak a_j(\theta,p)N^{-j}+O(N^{-J-1}),
+\]
+with bounded fixed derivatives of the analytic $\mathfrak a_j$. These
+hypotheses follow from~\eqref{mxc:pm:eq:EM} and the kernel expansion; choose
+sufficiently many Euler--Maclaurin terms for the desired $J$.
+
+Set $\epsilon=N^{-1/2}$, $\theta=\epsilon y$, and
+\[
+ h_*(z)=\frac{\phi(z)+b_Qz^2/2}{z^2},\qquad h_*(0)=0,
+ \qquad H(\varrho,y)=y^2h_*(\varrho y).
+\]
+Choose $\delta>0$ so that $|h_*(z)|\le b_Q/8$ for $|z|\le\delta$. On the
+central interval $|y|\le N^{1/10}$, for $0\le\varrho\le\epsilon$ and large
+$N$,
+\[
+ |H(\varrho,y)|\le b_Qy^2/8,\qquad
+ |\partial_\varrho^mH(\varrho,y)|\le\mathrm{const}_m|y|^{m+2}\quad(m\ge1).
+\]
+Apply Taylor's theorem in the real variable $\varrho$ through degree $2J+1$ to
+\[
+ e^{H(\varrho,y)}\sum_{j=0}^J\varrho^{2j}\mathfrak a_j(\varrho y,p).
+\]
+The product and chain rules bound every required derivative by a fixed
+polynomial in $|y|$ times $e^{b_Qy^2/8}$. After multiplication by
+$e^{-b_Qy^2/2}$ the Taylor remainder is bounded by
+\begin{equation}\label{mxc:pm:eq:gaussbound}
+ \mathrm{const}_J\,\epsilon^{2J+2}(1+|y|^{e_J})e^{-3b_Qy^2/8}.
+\end{equation}
+The omitted amplitude remainder has the same type of integrable Gaussian
+bound. The coefficient of $\epsilon^k$ is a polynomial in $y$ of parity $k$,
+so odd degrees integrate to zero on the symmetric interval. Extending the
+retained polynomial--Gaussian integrals to $\mathbb R$ costs an exponentially
+small error. The integral of~\eqref{mxc:pm:eq:gaussbound} is
+$O(\epsilon^{2J+2})$ with no logarithmic or interval-length loss. Restoring
+$\dd\theta=\epsilon\dd y$ proves
+\[
+ \int_{|\theta|\le N^{-2/5}} e^{N\phi(\theta)}\mathfrak a_N(\theta,p)\dd\theta
+ =N^{-1/2}\left(\sum_{j=0}^J\mathfrak c_j(p)N^{-j}
+                     +O(N^{-J-1})\right).
+\]
+All constants are uniform over the compact parameter set. If the leading
+saddle amplitude is bounded away from zero, division gives the corresponding
+relative expansion.
+
+\subsection{Normalization}
+The leading integral in~\eqref{mxc:pm:eq:integral} is
+\[
+ \frac{e^{N\Phi(\mathsf q)}\mathfrak A(\mathsf q)}{\sqrt{2\pi Nb_Q}}.
+\]
+Use
+\[
+ \frac{N^N}{N!}=\frac{e^N}{\sqrt{2\pi N}}
+ \exp\left\{-\frac1{12N}+\frac1{360N^3}+\cdots\right\},
+\]
+again as a fixed-order expansion, together with $I(\mathsf q)=2\mathsf q-1$,
+$1-\mathsf q=e^{-2\mathsf q}$, and $(1-\mathsf q)b_Q=2\mathsf q-1$. The result
+is exactly~\eqref{mxc:pm:eq:Cd}. Lemma~\ref{mxc:pm:lem:pole} and the Gaussian
+remainder prove Theorem~\ref{mxc:pm:thm:main}.
+
+\section{Exact correction coefficients}\label{mxc:pm:sec:coefficients}
+This section specifies the coefficients by finite algebra, without numerical
+fitting. Let $\mathfrak h_j(Q)$ denote the coefficient of $s^j$ in the
+following formal logarithmic correction:
+\begin{align}\label{mxc:pm:eq:Hgeneral}
+ \sum_{m\ge1}&\frac{\mathrm B_{2m}Q^{2m-1}\{(1-Q)^{-(2m-1)}-1\}}
+                  {2m(2m-1)}s^{2m-1}
+ -\frac{LQ}{2}s\notag\\
+ &-\sum_{m\ge1}\frac{\mathrm B_{2m}(LQ)^{2m}}{2m(2m)!}
+                  (2s^{2m-1}+s^{2m})
+ -\sum_{m\ge1}\frac{\mathrm B_{2m}}{2m(2m-1)}s^{2m-1}.
+\end{align}
+The lines come from Euler--Maclaurin, the odd and even kernel terms, and
+inverse Stirling normalization, respectively. For a fixed degree only
+finitely many terms enter. Define
+\[
+ \mathfrak p_j(Q)=[s^j]\exp\left(\sum_{i\ge1}\mathfrak h_i(Q)s^i\right).
+\]
+In particular,
+\begin{align}\label{mxc:pm:eq:H123}
+ \mathfrak h_1&=\frac{Q^2}{12(1-Q)}-\frac{LQ}{2}
+       -\frac{(LQ)^2}{12}-\frac1{12},\notag\\
+ \mathfrak h_2&=-\frac{(LQ)^2}{24},\qquad
+ \mathfrak h_3=-\frac{Q^3\{(1-Q)^{-3}-1\}}{360}
+          +\frac{(LQ)^4}{1440}+\frac1{360},\\
+ \mathfrak p_0&=1,\quad \mathfrak p_1=\mathfrak h_1,\quad
+ \mathfrak p_2=\mathfrak h_2+\tfrac12\mathfrak h_1^2,
+ \quad \mathfrak p_3=\mathfrak h_3+\mathfrak h_1\mathfrak h_2+\tfrac16\mathfrak h_1^3.\notag
+\end{align}
+
+\subsection{A Gaussian prescription at every fixed order}
+For a standard normal $U$, $\beta_m$ is the coefficient of $\epsilon^{2m}$ in
+\begin{align}\label{mxc:pm:eq:Gaussianformula}
+ \E\Bigg[&\frac{\mathfrak A(\mathsf qe^{i\epsilon U/\sqrt{b_Q}})}{\mathfrak A(\mathsf q)}
+ \sum_{j\ge0}\mathfrak p_j(\mathsf qe^{i\epsilon U/\sqrt{b_Q}})\epsilon^{2j}\notag\\
+ &\times\exp\left\{\sum_{k\ge3}
+ \frac{(\mathcal D_Q^k\Phi)(\mathsf q)}{k!}
+       \left(\frac{iU}{\sqrt{b_Q}}\right)^k\epsilon^{k-2}\right\}\Bigg].
+\end{align}
+Only finitely many derivatives and Gaussian moments can contribute.
+Differentiating via $\mathcal D_Qh=(1-Q)^{-1}-h$ and then putting
+$h(\mathsf q)=2$ eliminates all logarithms at the saddle. Odd Gaussian moments
+vanish and even ones are $(2i-1)!!$; therefore
+$\beta_m\in\mathbb Q(L,\mathsf q)=\mathbb Q(L,r)$. [Note of the batch-108
+write: here $\epsilon=N^{-1/2}$. As with~\eqref{mxc:eq:saddle-algorithm}, the
+expression is expanded and truncated in $\epsilon$ first and the Gaussian
+expectation is applied to each polynomial coefficient
+(Section~\ref{mxc:tp:sec:audit}, ``Formal Gaussian algebra'').]
+
+\subsection{An alternative finite coefficient representation}
+The following form makes $\beta_2$ and $\beta_3$ compact and is convenient for
+exact calculation. Put
+\begin{equation}\label{mxc:pm:eq:FS}
+ \mathfrak f(x)=\Phi(\mathsf q(1+x))-\Phi(\mathsf q),\quad
+ \mathfrak S(x)=\frac{2\mathfrak f(x)}{b_Q x^2},\quad
+ \mathfrak F_j(x)=\frac{\mathfrak A(\mathsf q(1+x))\mathfrak p_j(\mathsf q(1+x))}{\mathfrak A(\mathsf q)(1+x)}.
+\end{equation}
+The apparent singularity in $\mathfrak S$ is removable and $\mathfrak S(0)=1$.
+Then
+\begin{equation}\label{mxc:pm:eq:exactfinite}
+ \beta_m=\sum_{j=0}^m
+ \frac{(-1)^{m-j}(2(m-j)-1)!!}{b_Q^{m-j}}
+ [x^{2(m-j)}]\mathfrak F_j(x)\mathfrak S(x)^{-(m-j)-1/2},
+\end{equation}
+with $(-1)!!=1$. In particular the promised exact finite expressions are
+\begin{align}\label{mxc:pm:eq:C23}
+ \beta_2={}&\mathfrak p_2(\mathsf q)-\frac1{b_Q}[x^2]\mathfrak F_1\mathfrak S^{-3/2}
+                   +\frac3{b_Q^2}[x^4]\mathfrak F_0\mathfrak S^{-5/2},\notag\\
+ \beta_3={}&\mathfrak p_3(\mathsf q)-\frac1{b_Q}[x^2]\mathfrak F_2\mathfrak S^{-3/2}
+           +\frac3{b_Q^2}[x^4]\mathfrak F_1\mathfrak S^{-5/2}
+           -\frac{15}{b_Q^3}[x^6]\mathfrak F_0\mathfrak S^{-7/2}.
+\end{align}
+All symbols in these finite representations are explicit analytic series
+defined in~\eqref{mxc:pm:eq:phase}, \eqref{mxc:pm:eq:A}, \eqref{mxc:pm:eq:H123},
+and~\eqref{mxc:pm:eq:FS}. Expand only through $x^6$, using
+$\log(1-\mathsf q)=-2\mathsf q$. The companion contains the resulting exact
+rational expressions as well as an exact calculator. [Note of the batch-108
+write: shipped as \path{data/08-packed-companion-frozen-coefficients_C0_C3.json}
+and \path{data/08-packed-companion-coefficient_formulas.txt}, in the variables
+$q=\mathsf q$ and $R=L$, and \path{code/08-packed-companion-packed_matrix.py}.]
+
+For completeness, the analytic Morse coordinate $y=x\sqrt{\mathfrak S(x)}$
+satisfies $\mathfrak f(x)=b_Qy^2/2$. Residue substitution gives
+\[
+ [y^{2k}]\mathfrak F_j(x(y))x'(y)
+   =[x^{2k}]\mathfrak F_j(x)\mathfrak S(x)^{-k-1/2}.
+\]
+The even Gaussian moments on the local steepest-descent contour contribute
+$(-1)^k(2k-1)!!b_Q^{-k}$; summing the amplitude orders
+proves~\eqref{mxc:pm:eq:exactfinite}. This also gives an algebraically
+independent way to check~\eqref{mxc:pm:eq:Gaussianformula}.
+
+Uncertified decimal illustrations, deliberately shorter than working
+precision, are
+\[
+ \beta_1\approx-0.521806701556483,\quad
+ \beta_2\approx 0.128288828088706,\quad
+ \beta_3\approx-0.002443538422849.
+\]
+The exact formulas, rather than the rounded values, define the coefficients.
+[Note of the batch-108 write: they agree in every printed digit with
+Corollary~\ref{mxc:cor:784}, \eqref{mxc:eq:numeric-beta2} and
+\eqref{mxc:tp:eq:beta3}. Equation~\eqref{mxc:pm:eq:exactfinite} is a third
+finite prescription beside~\eqref{mxc:eq:saddle-algorithm}
+and~\eqref{mxc:tp:eq:deltarecipe}.]
+
+\section{Lambert-\texorpdfstring{$W$}{W} inversion and integer thresholds}\label{mxc:pm:sec:inverse}
+Taking logarithms in Theorem~\ref{mxc:pm:thm:main} and using Stirling's
+series gives
+\begin{equation}\label{mxc:pm:eq:log}
+ \log a_N=2N\log N+(\log d_*-2)N+\log(2\pi c_*)
+             +\frac{\widetilde\beta_1}N+\frac{\widetilde\beta_2}{N^2}
+             +\frac{\widetilde\beta_3}{N^3}+O(N^{-4}),
+\end{equation}
+where
+\begin{equation}\label{mxc:pm:eq:h}
+ \widetilde\beta_1=\beta_1+\tfrac16,\quad \widetilde\beta_2=\beta_2-\tfrac12\beta_1^2,
+ \quad \widetilde\beta_3=\beta_3-\beta_1\beta_2+\tfrac13\beta_1^3-\tfrac1{180}.
+\end{equation}
+The $\log N$ term cancels exactly. Omitting $\log(2\pi c_*)$, $1/6$, or
+$-1/180$ would change the stated inverse corrections. [Note of the batch-108
+write: $\widetilde\beta_1$ is~\eqref{mxc:tp:eq:inverseconst}, and
+\eqref{mxc:pm:eq:log} is~\eqref{mxc:tp:eq:loginverse} with two more terms;
+$2N\log N+(\log d_*-2)N=2N\log(\alpha N)$ with $\alpha=\sqrt{d_*}/e$. The
+write evaluates $\widetilde\beta_2=-0.0078522888059223\ldots$ and
+$\widetilde\beta_3=0.0115833114844424\ldots$ from Report~169's exact
+expressions.]
+
+For large positive $Y$, define
+\begin{equation}\label{mxc:pm:eq:Wcore}
+ \Lambda=\tfrac12\log\frac{Y}{2\pi c_*},\qquad
+ \varpi=W_0\left(\frac{\sqrt{d_*}}{e}\Lambda\right),\qquad
+ x_0=\frac\Lambda\varpi.
+\end{equation}
+The leading logarithmic core
+$\mathfrak g_0(x)=2x\log x+(\log d_*-2)x+\log(2\pi c_*)$ satisfies
+$\mathfrak g_0(x_0)=\log Y$ and $\mathfrak g_0'(x_0)=2(1+\varpi)$. [Note of
+the batch-108 write: $\Lambda$, $\varpi$, $x_0$ are those
+of~\eqref{mxc:tp:eq:inversecore}; Report~169 calls them $Y$, $W$, $v$, calls
+the target value $x$, and writes $L$ for $1+\varpi$.]
+
+\begin{proposition}[Controlled smooth expansion]\label{mxc:pm:prop:inverse}
+For a fixed integer $J'\ge3$, let $\widetilde x_{J'}(Y)$ be the eventual real
+root of
+\[
+ \mathfrak g_{J'}(x)=\mathfrak g_0(x)+\sum_{j=1}^{J'}\widetilde\beta_jx^{-j}=\log Y,
+\]
+where the $\widetilde\beta_j$ are the coefficients of the fixed-order
+logarithmic expansion and $\mathfrak g_0$ is the exact core above. Writing
+$x=\widetilde x_{J'}(Y)$, one has
+\begin{align}\label{mxc:pm:eq:inverse}
+ x={}&x_0-\frac{\widetilde\beta_1}{2x_0(1+\varpi)}-\frac{\widetilde\beta_2}{2x_0^2(1+\varpi)}\notag\\
+ &-\frac1{x_0^3}\left(\frac{\widetilde\beta_3}{2(1+\varpi)}
+                 +\frac{\widetilde\beta_1^2}{4(1+\varpi)^2}+\frac{\widetilde\beta_1^2}{8(1+\varpi)^3}\right)
+     +O\left(\frac{x_0^{-4}}{1+\varpi}\right).
+\end{align}
+In particular stopping after the $x_0^{-2}$ term gives error
+$O(x_0^{-3}/(1+\varpi))$. Higher fixed orders are obtained by finite
+substitution or Newton recursion; their coefficients are rational functions
+of $1+\varpi$, not just constants times $(1+\varpi)^{-1}$.
+\end{proposition}
+\begin{proof}
+Substitute $x=x_0+\delta$ in
+$\mathfrak g_0(x)+\widetilde\beta_1/x+\widetilde\beta_2/x^2+\widetilde\beta_3/x^3+\cdots=\log Y$.
+Here $\mathfrak g_0''(x_0)=2/x_0$. The successive leading shifts are
+$-\widetilde\beta_1/(2x_0(1+\varpi))$ and $-\widetilde\beta_2/(2x_0^2(1+\varpi))$. At
+order $x_0^{-3}$, the residual is
+\[
+ \frac1{x_0^3}\left(\widetilde\beta_3+\frac{\widetilde\beta_1^2}{2(1+\varpi)}
+ +\frac{\widetilde\beta_1^2}{4(1+\varpi)^2}\right),
+\]
+from the unshifted $\widetilde\beta_3$, the shifted $\widetilde\beta_1/x$, and the
+quadratic core term. Dividing by $2(1+\varpi)$ gives~\eqref{mxc:pm:eq:inverse}.
+After substitution the remaining residual is $O(x_0^{-4})$, while the
+derivative is $2(1+\varpi)+O(x_0^{-2})$ in the relevant neighborhood. The
+mean-value theorem gives the claimed root error. The same
+residual-over-derivative argument controls any fixed Newton/substitution
+order.
+\end{proof}
+
+This smooth expansion alone is not an exact ceiling formula for the discrete
+sequence. To make the relation precise, for fixed $J$ set
+\begin{equation}\label{mxc:pm:eq:fM}
+ \mathcal A^{[J]}(x)=c_*d_*^x\frac{\Gamma(x+1)^2}{x}
+                 \sum_{j=0}^J\beta_jx^{-j}
+\end{equation}
+on its eventually positive increasing real branch. Write
+$x_J(Y)=(\mathcal A^{[J]})^{-1}(Y)$. [Note of the batch-108 write: this is
+the smooth comparator~\eqref{mxc:tp:eq:smoothmodel} and its root $x_J(Y)$ of
+Section~\ref{mxc:tp:sec:inverse}.]
+
+\begin{theorem}[Safe integer inverse; second route to Proposition~\ref{mxc:tp:prop:threshold}]\label{mxc:pm:thm:ceiling}
+Let $\mathcal N(Y)=\min\{N\ge0:a_N\ge Y\}$. For every fixed $J$ there is
+$C_J>0$ such that, for all sufficiently large $Y$,
+\begin{equation}\label{mxc:pm:eq:ceilings}
+ \left\lceil x_J-\epsilon_J\right\rceil\le \mathcal N(Y)
+      \le\left\lceil x_J+\epsilon_J\right\rceil,
+ \qquad \epsilon_J=C_J\frac{x_J^{-J-1}}{\log x_J}.
+\end{equation}
+The constant and the threshold are existence statements, not numerically
+certified bounds.
+\end{theorem}
+\begin{proof}
+The logarithmic derivative of~\eqref{mxc:pm:eq:fM} is
+$2\log x+\log d_*+O(x^{-1})$, hence is positive for large $x$.
+Theorem~\ref{mxc:pm:thm:main} implies
+\[
+ |\log a_N-\log\mathcal A^{[J]}(N)|\le\Theta_J N^{-J-1}
+\]
+for some $\Theta_J$ and every sufficiently large integer $N$. Also
+$a_{N+1}/a_N\sim d_*N(N+1)>1$, so the exact counts are eventually strictly
+increasing.
+
+Choose $C_J$ sufficiently large relative to $\Theta_J$. On $|x-x_J|\le2$, the
+mean-value theorem and uniform comparability of $x$ and $x_J$ show that the
+change in $\log\mathcal A^{[J]}$ over a distance $\epsilon_J$ exceeds the error
+bound with a strict margin. Apply this directly to the last integer below
+$x_J-\epsilon_J$ and the first integer at or above $x_J+\epsilon_J$: the former
+has $a_N<Y$, and the latter has $a_N\ge Y$. Eventual monotonicity handles all
+more distant integers; the finitely many earlier values are below $Y$ when
+$Y$ is large. This proves both inequalities, including equality thresholds.
+\end{proof}
+Away from the shrinking neighborhoods of integer boundaries the two ceilings
+coincide. Near a threshold the interval can leave two adjacent
+possibilities; claiming a universal exact ceiling of a finite asymptotic
+expansion would discard that genuine uncertainty.
+Formula~\eqref{mxc:pm:eq:inverse} approximates these smooth roots to the
+indicated order when the logarithmic truncation in~\eqref{mxc:pm:eq:fM} is
+taken sufficiently far.
+
+\begin{remark}[write; relation to Section~\ref{mxc:tp:sec:inverse}]\label{mxc:pm:rem:inverse}
+(i)~Through its $x_0^{-1}$ term, \eqref{mxc:pm:eq:inverse} is
+Proposition~\ref{mxc:tp:prop:inverse}: the same core, the same $\Lambda$,
+$\varpi$, $x_0$, and the correction $-\widetilde\beta_1/(2x_0(1+\varpi))$; its
+error $O(x_0^{-2}/\log x_0)$ there is $O(x_0^{-2}/(1+\varpi))$ here, since
+$1+\varpi=\log(\alpha x_0)+1$ grows like $\log x_0$. The $x_0^{-2}$ and
+$x_0^{-3}$ terms are new; the write rederived the $x_0^{-3}$ coefficient by
+matching powers of $x_0^{-1}$ in $\mathfrak g_0(x_0+\delta)-\mathfrak
+g_0(x_0)=2(1+\varpi)\delta+\delta^2/x_0+O(\delta^3/x_0^2)$ against
+$-\sum_j\widetilde\beta_j(x_0+\delta)^{-j}$. (ii)~Proposition~\ref{mxc:pm:prop:inverse}
+concerns the root $\widetilde x_{J'}$ of the truncated logarithm, and
+Section~\ref{mxc:tp:sec:inverse} the root $x_J$ of $\mathcal A^{[J]}$; for
+$J,J'\ge3$ the two satisfy the same expansion~\eqref{mxc:pm:eq:inverse}.
+Indeed, by Stirling's series at real $x$,
+$2\log\Gamma(x+1)-\log x=2x\log x-2x+\log(2\pi)+\frac1{6x}-\frac1{180x^3}+O(x^{-5})$,
+and $\log\bigl(\sum_{j\le J}\beta_jx^{-j}\bigr)=\beta_1x^{-1}+(\beta_2-\frac12\beta_1^2)x^{-2}
++(\beta_3-\beta_1\beta_2+\frac13\beta_1^3)x^{-3}+O(x^{-4})$ for $J\ge3$; hence
+$\log\mathcal A^{[J]}(x)=\mathfrak g_3(x)+O(x^{-4})$, and
+$\mathfrak g_{J'}=\mathfrak g_3+O(x^{-4})$ as well. Both functions have
+derivative $2(1+\varpi)+O(x_0^{-1})$ on a fixed neighbourhood of $x_0$, so
+their roots differ by $O(x_0^{-4}/(1+\varpi))$ by the mean-value theorem.
+(iii)~Theorem~\ref{mxc:pm:thm:ceiling} is
+Proposition~\ref{mxc:tp:prop:threshold} with the same comparator and the
+same bracket. The two proofs differ only in monotonicity: Report~169 uses the
+eventual growth $a_{N+1}/a_N\sim d_*N(N+1)$, Section~\ref{mxc:tp:sec:inverse}
+an injection that gives $a_N<a_{N+1}$ for every $N$. The non-claim after
+Theorem~\ref{mxc:pm:thm:ceiling} is the one after
+Proposition~\ref{mxc:tp:prop:threshold}. Proposition~\ref{mxc:tp:prop:inverse}
+is an instance of the transseries volume's perturbed inversion
+\cite{tsvol}, as the note at the head of Section~\ref{mxc:tp:sec:inverse}
+says; Proposition~\ref{mxc:pm:prop:inverse} carries the same substitution two
+steps further, and no novelty is claimed for the method.
+\end{remark}
+
+\section{A complex-uniform two-marker theorem}\label{mxc:pm:sec:marked}
+For a uniformly chosen counted matrix let $\mathcal J_N$ be the number of cells
+with entry at least $2$, and $C$ the number of columns. Define the finite
+polynomial
+\[
+ \mathsf T_N(\omega,u)=\sum_M\omega^{\mathcal J_N(M)}u^{C(M)},\qquad
+ \mathsf T_N(1,1)=a_N.
+\]
+The cell function and its local logarithm are
+\[
+ g(z,\omega)=\frac{1+(\omega-1)z^2}{1-z},\qquad w(z,\omega)=\log g(z,\omega),
+\]
+with the logarithm defined by its power series at $z=0$. Let
+\[
+ L_u=\operatorname{Log}(1+1/u),\quad L_1=L,\qquad
+ L_u^{(\ell)}=L_u+2\pi i\ell.
+\]
+All branches below continue from $u=1$. [Note of the batch-108 write:
+$\mathsf T_N(1,u)=T(2N,N;u)$, the column-weighted count of
+Section~\ref{mxc:sec:dense-columns}, and $L_u$ is Part~I's $\log(1+1/u)$,
+continued to complex $u$ by the principal branch.]
+
+\begin{theorem}[Uniform marked expansion]\label{mxc:pm:thm:marked}
+On the compact polydisc
+\begin{equation}\label{mxc:pm:eq:polydisc}
+ \mathcal U=\{|\omega-1|\le2.1,\ |u-1|\le0.02\},
+\end{equation}
+define
+\begin{align}\label{mxc:pm:eq:markedleading}
+ d_*(u)&=\frac4{L_u^2r(2-r)},\notag\\
+ c_*(\omega,u)&=\frac{\exp\{L_ur(\omega-1/2)\}}
+                   {2\pi(1+u)L_u\sqrt{r-1}},\qquad
+ \mathcal V_N(\omega,u)=c_*(\omega,u)d_*(u)^N\frac{(N!)^2}{N}.
+\end{align}
+For every fixed $J\ge0$, there are holomorphic coefficient functions
+$\beta_j(\omega,u)$ on a neighborhood of $\mathcal U$, with $\beta_0(\omega,u)=1$
+and $\beta_j(1,1)=\beta_j$, such that
+\begin{equation}\label{mxc:pm:eq:markedexpansion}
+ \frac{\mathsf T_N(\omega,u)}{\mathcal V_N(\omega,u)}
+   =\sum_{j=0}^J\beta_j(\omega,u)N^{-j}+O_J(N^{-J-1})
+\end{equation}
+uniformly on $\mathcal U$. On every smaller compact polydisc the error admits
+termwise differentiation of any fixed marker order, preserving its $N$-order.
+\end{theorem}
+
+\subsection{Exact marked decomposition}
+With $m$ dummy columns the no-zero-row series is $(g(z,\omega)^m-1)^N$. Put
+$p_u=u/(1+u)$. A genuine $C$-column matrix receives weight
+\[
+ \frac1{1+u}\sum_{m\ge C}\binom mC p_u^m=u^C.
+\]
+On $|u-1|\le0.02$, $|p_u|\le1.02/1.98<1$. Each fixed $z$ coefficient grows at
+most polynomially with $m$, so this series and the coefficient operations
+converge uniformly. Expanding the exponential yields
+\begin{equation}\label{mxc:pm:eq:markedfinite}
+ \mathsf T_N(\omega,u)=N!\sum_{j=N}^{2N}\StirTwo jN\frac{\mathsf F_j(u)}{j!}
+                  [z^{2N}]w(z,\omega)^j,
+ \quad \mathsf F_j(u)=\sum_C C!\StirTwo jC u^C.
+\end{equation}
+The exponential generating function of $\mathsf F_j(u)$ is
+$(1-u(e^z-1))^{-1}$. Its partial fractions give, for $j\ge1$,
+\[
+ \frac{\mathsf F_j(u)}{j!}=\frac1{1+u}
+      \sum_{\ell\in\mathbb Z}\bigl(L_u^{(\ell)}\bigr)^{-j-1}.
+\]
+Thus
+\begin{equation}\label{mxc:pm:eq:markedpoles}
+ \mathsf T_N=\sum_\ell \mathsf H_{N,\ell},\qquad
+ \mathsf H_{N,\ell}=\frac{N!}{(1+u)L_u^{(\ell)}}
+ [z^{2N}]\frac{(w/L_u^{(\ell)})^N}{\prod_{\nu=1}^N(1-\nu w/L_u^{(\ell)})}.
+\end{equation}
+As before, all exchanges with the pole sum use the finite range
+$N\le j\le2N$. [Note of the batch-108 write: $\mathsf F_j(u)$ is Part~I's
+weighted Fubini number $\mathsf F_q(u)$ of the proof of
+Corollary~\ref{mxc:cor:dense-columns}.]
+
+\subsection{An explicit complex pole-tail estimate}\label{mxc:pm:sec:markedtail}
+Since $\mathrm dL_u/\mathrm du=-1/(u(1+u))$, integration along the segment
+from $1$ to $u$ gives
+\[
+ |L_u-L|\le\frac{0.02}{0.98\cdot1.98}<0.011.
+\]
+In particular $|L_u|<L^*=0.71$, $|1+u|\ge1.98$, and
+$|L_u^{(\ell)}|\ge2\pi|\ell|-L^*$. Let $w_0(z)=-\log(1-z)$. Coefficientwise
+absolute values satisfy
+\begin{equation}\label{mxc:pm:eq:majorant}
+ |w(z,\omega)|_{\mathrm{coeff}}\preceq3w_0(\sqrt{2.1}\,z).
+\end{equation}
+The $w_0(z)$ part is bounded by $w_0(\sqrt{2.1}\,z)$, and the absolute
+coefficient of $z^{2k}$ from $\log(1+(\omega-1)z^2)$ is at most $2.1^k/k$,
+exactly that of $2w_0(\sqrt{2.1}\,z)$. Convolution gives
+\[
+ |[z^{2N}]w^j|\le 2.1^N3^j[z^{2N}]w_0^j.
+\]
+Positivity is used only in the unmarked comparison core $\mathsf H_N(L)$, not in
+a complex marked integral. Since $3L/|L_u^{(\ell)}|<1$ for $\ell\ne0$ and
+$j\ge N$,
+\begin{equation}\label{mxc:pm:eq:markedtailabs}
+ |\mathsf H_{N,\ell}(\omega,u)|\le
+ \frac2{|1+u|}\mathsf H_N(L)\,2.1^N\frac{L}{|L_u^{(\ell)}|}
+             \left(\frac{3L}{|L_u^{(\ell)}|}\right)^N.
+\end{equation}
+The sum over $\ell\ne0$ is uniformly bounded by a constant times the
+$|\ell|=1$ exponential scale: after taking out that scale, the remaining
+ratios can be dominated by their third powers for $N\ge2$, giving a
+convergent series.
+
+The explicit $c_*(\omega,u)$ is holomorphic and nonzero on a neighborhood of
+$\mathcal U$, so its modulus is bounded away from zero. The unmarked
+asymptotic already proved gives
+\[
+ \frac{\mathsf H_N(L)}{|\mathcal V_N(\omega,u)|}
+    \le\mathrm{const}\cdot\left(\frac{L^*}{L}\right)^{2N}.
+\]
+Hence, uniformly on the entire complex polydisc,
+\begin{equation}\label{mxc:pm:eq:markedtailrelative}
+ \frac{\left|\sum_{\ell\ne0}\mathsf H_{N,\ell}(\omega,u)\right|}{|\mathcal V_N(\omega,u)|}
+ =O(0.83^N),
+\end{equation}
+because the derived exponential base is
+\[
+ \vartheta_* =\frac{3\cdot2.1\cdot(L^*)^2}{L(2\pi-L^*)}
+ <\frac{105861}{128110}<0.83.
+\]
+The first strict bound uses only $L>0.69$ and $\pi>3.14$. It is therefore not
+dependent on floating-point certification. [Note of the batch-108 write:
+$105861/128110$ is the value of the middle expression at $L=0.69$,
+$\pi=3.14$; with the true values $\vartheta_*=0.8221\ldots$.]
+
+\subsection{Uniform analytic inverse and full-circle kernel}
+On $|z|=0.01$ and $|\omega-1|\le2.1$,
+\begin{align*}
+ |w(z,\omega)-z|&\le\frac{0.01^2}{2(1-0.01)}
+       +\frac{2.1\cdot0.01^2}{1-2.1\cdot0.01^2}<0.000263,\\
+ |w_z(z,\omega)-1|&\le\frac{0.01}{0.99}
+       +\frac{2\cdot2.1\cdot0.01}{1-2.1\cdot0.01^2}<0.053.
+\end{align*}
+For a target $|w|<0.009$, Rouch\'e's theorem applied against $z-w$ gives
+exactly one solution in $|z|<0.01$, since $|z-w|>0.001$ on the boundary. Its
+derivative is nonzero. Uniqueness and the analytic implicit function theorem
+give a jointly holomorphic inverse $z=\mathsf z(w,\omega)$, with
+\begin{equation}\label{mxc:pm:eq:psi}
+ \mathsf z(w,\omega)=w-(\omega-1/2)w^2+O(w^3)
+\end{equation}
+uniformly on compact subsets. The strict bounds hold on a slightly larger
+open marker domain as well.
+
+For $N\ge64$, $|L_uQ/N|\le0.71\mathsf q/64<0.009$ on the entire closed $Q$-disk.
+The last inequality can also be seen from $\mathsf q<0.8$, which follows from
+$\log5>1.6$. Substitute $w=L_uQ/N$ into the residue. The inverse has its
+unique zero at $w=0$ and the rational product has no pole before $Q=1$. Thus
+\begin{align}\label{mxc:pm:eq:markedintegral}
+ \mathsf H_{N,0}={}&\frac{N!\,N^N}{(1+u)L_u^{2N+1}}\frac1{2\pi i}
+ \oint_{|Q|=\mathsf q}Q^{-N}\prod_{\nu=1}^N(1-\nu Q/N)^{-1}
+                    \mathfrak K_N(Q,\omega,u)\frac{\dd Q}{Q},\notag\\
+ \mathfrak K_N={}&\left(\frac{w}{\mathsf z(w,\omega)}\right)^{2N+1}\mathsf z_w(w,\omega).
+\end{align}
+Both inverse factors are analytic and nonzero near zero, with value one there.
+Let $F=\log(w/\mathsf z)$ and $G=\log\mathsf z_w$, choosing their branches at
+zero. Then $F=(\omega-1/2)w+O(w^2)$ and $G=O(w)$. With $\epsilon=1/N$, the
+expression
+\[
+ \exp\{(2/\epsilon+1)F(L_uQ\epsilon,\omega)+G(L_uQ\epsilon,\omega)\}
+\]
+has a removable singularity at $\epsilon=0$. Taylor expansion on compact sets
+gives
+\begin{equation}\label{mxc:pm:eq:markedkernel}
+ \mathfrak K_N=e^{(2\omega-1)L_uQ}
+       \left(\sum_{j=0}^J\mathfrak k_j(Q,\omega,u)N^{-j}+O(N^{-J-1})\right),
+ \qquad \mathfrak k_0=1,
+\end{equation}
+uniformly on the full circle and marker domain. In particular the kernel is
+uniformly bounded on that circle.
+
+The phase and product are exactly those of Section~\ref{mxc:pm:sec:saddle}.
+Their all-arc bound is unchanged, and the leading amplitude becomes
+\[
+ (1-Q)^{-1/2}\exp\{(2\omega-1)L_uQ\}.
+\]
+It is nonzero at $Q=\mathsf q$, uniformly bounded away from zero over the
+compact marker set. The Gaussian lemma therefore applies uniformly. Its
+normalization gives~\eqref{mxc:pm:eq:markedleading}; adding
+\eqref{mxc:pm:eq:markedtailrelative} proves~\eqref{mxc:pm:eq:markedexpansion}.
+
+\subsection{Normalized residuals and their logarithm}\label{mxc:pm:sec:residual}
+After subtracting the finite expansion, the residual
+in~\eqref{mxc:pm:eq:markedexpansion} is holomorphic: $\mathsf T_N$ is a
+polynomial, $\mathcal V_N$ is holomorphic and nonzero, and all coefficient
+functions are holomorphic. On
+\begin{equation}\label{mxc:pm:eq:inner}
+ |\omega-1|\le2.05,\qquad |u-1|\le0.01,
+\end{equation}
+Cauchy estimates using the positive margins to~\eqref{mxc:pm:eq:polydisc}
+preserve the $O(N^{-J-1})$ bound for every fixed mixed derivative. Slightly
+smaller circles can be used at the margins.
+
+There is a second point needed for cumulants. The $J=0$ estimate puts
+$\mathsf T_N/\mathcal V_N$ in $|z-1|<1/2$ uniformly for large $N$. Its analytic
+logarithm near $1$ therefore exists and is $O(N^{-1})$. Fixed derivatives of
+this logarithm are also $O(N^{-1})$ on~\eqref{mxc:pm:eq:inner}. This supplies
+differentiated logarithmic, rather than merely pointwise, asymptotics.
+
+\begin{remark}[write; relation to Section~\ref{mxc:sec:dense-columns}]\label{mxc:pm:rem:weighted}
+At $\omega=1$ and real $u$ near $1$, Theorem~\ref{mxc:pm:thm:marked} is the
+column-weighted expansion~\eqref{mxc:eq:weighted-dense} at $n=2N$, $k=N$:
+both have the factor $e^{L_ur/2}/((1+u)L_u^{2N+1})$ in their $u$-dependence,
+and the saddle $\mathsf q=r/2$ does not move with $u$, because $u$ enters only
+through the scale $L_u$ of $w$. Part~I proves that expansion at first order
+for $u$ in a compact real interval around~$1$, on every compact ray;
+Theorem~\ref{mxc:pm:thm:marked} proves it at every order for complex $u$ in the
+small disc $|u-1|\le0.02$, on the single ray $n/k=2$, and adds the marker
+$\omega$. Two specializations lie inside $\mathcal U$: at $\omega=0$,
+$\mathsf T_N(0,1)$ counts packed $0$-$1$ matrices with $N$ rows and total $2N$,
+and $\mathsf T_N(0,1)/a_N\to e^{-Lr}$; at $\omega=1/2$ the exponential factor of
+$c_*(\omega,1)$ disappears (Remark~\ref{mxc:pm:rem:defect}). The write checked
+the first by exact counts: $\mathsf T_N(0,1)/a_N=0.345668$, $0.338424$,
+$0.336044$, $0.334861$ for $N=10,20,30,40$, against $e^{-Lr}=0.331338$, with
+$N(e^{Lr}\mathsf T_N(0,1)/a_N-1)=0.4325$, $0.4277$, $0.4261$, $0.4253$, as an
+$O(1/N)$ correction requires.
+\end{remark}
+
+\section{Columns, repeated cells, and total excess}\label{mxc:pm:sec:probability}
+Dividing~\eqref{mxc:pm:eq:markedexpansion} by its value at $(1,1)$ gives
+\begin{equation}\label{mxc:pm:eq:pgf}
+ \E[\omega^{\mathcal J_N}u^{C}]=
+ \frac{2L}{(1+u)L_u}
+ e^{\,r\{L_u(\omega-1/2)-L/2\}}
+ \left(\frac L{L_u}\right)^{2N}(1+O(N^{-1})),
+\end{equation}
+with a holomorphic differentiable relative remainder on inner compact
+polydiscs.
+
+\begin{theorem}[Moment corrections and joint limit]\label{mxc:pm:thm:joint}
+The column count satisfies
+\begin{align}\label{mxc:pm:eq:moments}
+ \E C&=\frac NL-\frac12+\frac1{2L}-\frac r4+O(N^{-1}),\notag\\
+ \Var C&=2N\sigma_\infty^2-\frac14-\frac1{4L}
+                         +\frac1{4L^2}+\frac r8+O(N^{-1}).
+\end{align}
+Furthermore
+\begin{equation}\label{mxc:pm:eq:joint}
+ \left(\mathcal J_N,\frac{C-N/L}{\sqrt{2\sigma_\infty^2N}}\right)
+       \ \xrightarrow{\ \mathrm d\ }\ (P,Z),
+ \qquad P\sim\Pois(Lr),\quad Z\sim N(0,1),
+\end{equation}
+where $P$ and $Z$ are independent. Exact centering by $\E C$ and scaling by
+$\sqrt{\Var C}$ give the same limit.
+\end{theorem}
+\begin{proof}
+Set $s=\log u$ and $L_{e^s}=\log(1+e^{-s})$. Then $L_{e^s}=L$, $\frac{\mathrm
+d}{\mathrm ds}L_{e^s}=-1/2$ and $\frac{\mathrm d^2}{\mathrm ds^2}L_{e^s}=1/4$ at
+$s=0$. The exponential part has $\varphi_1(s)=-2\log L_{e^s}$, with
+\[
+ \varphi_1'(0)=1/L,\qquad \varphi_1''(0)=(1-L)/(2L^2)=2\sigma_\infty^2.
+\]
+At $\omega=1$ the variable part of the log-amplitude is
+$\varphi_2(s)=-\log(1+e^s)-\log L_{e^s}+rL_{e^s}/2$. Its first two derivatives
+are exactly the constant terms in~\eqref{mxc:pm:eq:moments}. Differentiation
+in $s$, justified by Section~\ref{mxc:pm:sec:residual}, produces ordinary
+cumulants, so no factorial-to-ordinary variance adjustment is missing.
+
+For the joint limit fix real $\theta,\tau$ and substitute
+\[
+ \omega=e^{i\theta},\qquad u=\exp\bigl(i\tau/\sqrt{2\sigma_\infty^2N}\bigr).
+\]
+The entire $\omega$ characteristic circle satisfies $|\omega-1|\le2<2.05$ and
+hence lies strictly inside the uniform domain, including $\omega=-1$. The
+marker $u$ lies there for large $N$. The linear part of
+$N(\varphi_1(s)-\varphi_1(0))$ cancels the centering phase; its quadratic part
+tends to $-\tau^2/2$ and its remaining part is $O(N^{-1/2})$. The amplitude
+tends to $\exp\{Lr(e^{i\theta}-1)\}$, while its mixed $L_u(\omega-1/2)$ part
+differs from its limit by $O(N^{-1/2})$. Thus the joint characteristic
+function tends to
+\[
+ \exp\{Lr(e^{i\theta}-1)-\tau^2/2\}.
+\]
+L\'evy's continuity theorem proves~\eqref{mxc:pm:eq:joint}.
+Formula~\eqref{mxc:pm:eq:moments} justifies changing the centering and
+scaling.
+\end{proof}
+
+\begin{remark}[write; second route to Corollary~\ref{mxc:cor:dense-columns} at $n/k=2$]\label{mxc:pm:rem:columns}
+At $n=2N$, $k=N$, \eqref{mxc:eq:dense-column-mean} reads
+$\E C=\frac{2N+1}{2L}-\frac12-\frac r4+O(N^{-1})$ and
+\eqref{mxc:eq:dense-column-variance} reads
+$\Var C=\frac{(2N+1)(1-L)}{4L^2}-\frac14+\frac r8+O(N^{-1})$. Expanding,
+$\frac{2N+1}{2L}=\frac NL+\frac1{2L}$ and
+$\frac{(2N+1)(1-L)}{4L^2}=2N\sigma_\infty^2+\frac1{4L^2}-\frac1{4L}$, so the two
+are~\eqref{mxc:pm:eq:moments} term for term. The marginal Gaussian law
+in~\eqref{mxc:pm:eq:joint} is~\eqref{mxc:eq:dense-column-clt} at $n=2N$:
+$n/(2L)=N/L$ and $n(1-L)/(4L^2)=2\sigma_\infty^2N$. The routes differ: Part~I
+uses the exact mixture over the Stirling index and real column weights,
+Theorem~\ref{mxc:pm:thm:joint} the cumulants of the complex-uniform marked
+expansion. The joint limit with $\mathcal J_N$ is new. It settles one instance of
+Part~II's question ``Joint laws with the number of columns''
+(Section~\ref{mxc:tp:sec:future}): on the ray $n/k=2$ the column count and a
+combinatorial statistic, the number of cells with entry at least~$2$, are
+asymptotically independent, Gaussian and Poisson. The question as posed, for
+the Stirling defect $\Delta_{n,k}$ or another combinatorial defect on every
+compact ray, stays open.
+\end{remark}
+
+\begin{remark}[write; the repeated cells and the factor $e^{Lr/2}$]\label{mxc:pm:rem:defect}
+By~\eqref{mxc:pm:eq:markedleading} at $u=1$,
+$c_*(\omega,1)=e^{Lr(\omega-1/2)}/(4\pi L\sqrt{r-1})$. Hence
+$c_*=e^{Lr/2}c_*(\tfrac12,1)$: weighting each cell with entry at least~$2$
+by $\frac12$ removes from the amplitude the factor $e^{Lr/2}=e^v$ that
+Section~\ref{mxc:tp:sec:defect} attributes to the Poisson cloud of the
+Stirling defect, and \eqref{mxc:pm:eq:pgf} gives
+$\E[2^{-\mathcal J_N}]\to e^{-Lr/2}$. The limiting law of $\mathcal J_N$ is
+Poisson with mean $Lr=2v$, twice the mean $v$ of the defect
+$\Delta_{2N,N}$ (Theorem~\ref{mxc:tp:thm:defect}). $\mathcal J_N$ is a statistic of
+the matrices themselves; $\Delta_{n,k}$ is defined by the transform weights
+\eqref{mxc:tp:eq:defectdef}. No exact relation between the two is proved or
+claimed here, no decorated construction inducing those weights is given, and
+the statement concerns the ray $n/k=2$ only. It bears on Part~II's question
+``A combinatorial realization of the latent defect''
+(Section~\ref{mxc:tp:sec:future}) without answering it.
+\end{remark}
+
+\subsection{Entries at least three: an explicit smaller-order bound}
+Let $\mathcal J^{(3)}_N$ count cells with entry at least $3$. Its cell series
+and logarithm are
+\[
+ g_3(z,\omega')=\frac{1+(\omega'-1)z^3}{1-z},\qquad
+ w_3=w_0(z)+\log(1+(\omega'-1)z^3).
+\]
+For $|\omega'-1|\le1$ the coefficient majorant is
+$|w_3|_{\mathrm{coeff}}\preceq4w_0(z)$: the correction at $z^{3k}$ is at most
+$1/k$, the corresponding coefficient of $3w_0(z)$. With $|u-1|\le0.02$, the
+normalized nonprincipal-pole base is now
+\[
+ \frac{4(L^*)^2}{L(2\pi-L^*)}<1
+\]
+(and is approximately $0.522$). The inverse argument works with the same
+radii: on $|z|=0.01$ the extra logarithm is bounded by
+$0.01^3/(1-0.01^3)$ and its derivative by $3\cdot0.01^2/(1-0.01^3)$.
+
+The inverse series is
+\[
+ \mathsf z_3(w,\omega')=w-\tfrac12w^2+(\tfrac76-\omega')w^3+O(w^4).
+\]
+Its quadratic term does not depend on $\omega'$, so neither does the leading
+saddle amplitude. More precisely, at $u=1$ the kernel comparison is
+\[
+ \log\mathfrak K_N(Q,\omega')-\log\mathfrak K_N(Q,1)
+     =\frac{2(\omega'-1)L^2Q^2}{N}+O(N^{-2}).
+\]
+The uniform saddle expansion and analytic residual allow this perturbation to
+be evaluated at $Q=\mathsf q$ at order $N^{-1}$, giving
+\begin{equation}\label{mxc:pm:eq:triplepgf}
+ \E[\omega'^{\,\mathcal J^{(3)}_N}]
+     =1+\frac{2L^2\mathsf q^2(\omega'-1)}N+O(N^{-2}).
+\end{equation}
+Cauchy differentiation therefore proves the sharper estimate
+\begin{equation}\label{mxc:pm:eq:triples}
+ \E \mathcal J^{(3)}_N=\frac{(Lr)^2}{2N}+O(N^{-2}),\qquad
+ \Pp(\mathcal J^{(3)}_N\ge1)=O(N^{-1}).
+\end{equation}
+The probability statement uses Markov's inequality; it does not assert
+equality with the displayed expectation to that precision.
+
+Let $\mathcal E_N=2N-\#\{\text{occupied cells}\}$ be total excess. On
+$\mathcal J^{(3)}_N=0$ every nonzero entry is $1$ or $2$, and $\mathcal E_N=\mathcal J_N$.
+Hence
+\[
+ \Pp(\mathcal E_N\ne \mathcal J_N)\le\Pp(\mathcal J^{(3)}_N\ge1)=O(N^{-1}).
+\]
+The pairs $(\mathcal E_N,(C-N/L)/\sqrt{2\sigma_\infty^2N})$ and the pair
+in~\eqref{mxc:pm:eq:joint} agree with probability $1-O(N^{-1})$ under their
+natural coupling. They have the same independent Poisson/Gaussian
+distributional limit. This coupling alone makes no claim about unbounded
+moments of $\mathcal E_N$ on the rare exceptional event.
+
+\section{Report 169's checks, numerical diagnostics, and reproducibility}\label{mxc:pm:sec:checks}
+The companion separates exact identities from approximate diagnostics. Its
+frozen OEIS prefix contains all 15 displayed terms, indexed $0$ through $14$,
+with source and retrieval date. The following two finite counting routes are
+independent:
+\begin{enumerate}
+\item The integer Stirling transform~\eqref{mxc:pm:eq:transform}.
+\item Nonempty-column recurrence followed by row inclusion--exclusion. For
+$k\ge1$, let $A(0,k)=1$ and
+\[
+ A(n,k)=\sum_{i=1}^n\binom{i+k-1}{k-1}A(n-i,k).
+\]
+These count ordered nonzero columns of height $k$, allowing zero rows. Thus
+\[
+ T(n,N)=\sum_{k=0}^N(-1)^{N-k}\binom Nk A(n,k),
+\]
+where $A(n,0)=0$ for $n>0$ and $A(0,0)=1$.
+\end{enumerate}
+Both routes reproduce the frozen prefix exactly. For marked checks, a direct
+enumeration of ordered nonzero column vectors with row coverage is compared
+with~\eqref{mxc:pm:eq:markedfinite} at small $N$. For example,
+\begin{align*}
+ \mathsf T_1(\omega,u)&=\omega u+u^2,\\
+ \mathsf T_2(\omega,u)&=\omega^2u+2\omega^2u^2+2\omega u+16\omega u^2+18\omega u^3
+                       +u^2+12u^3+14u^4.
+\end{align*}
+These check both marker meanings, as well as their total values $2$ and $66$.
+[Note of the batch-108 write: $A(n,k)$ is Part~I's count with zero rows
+allowed, with Part~I's conventions at $n=0$ and $k=0$, and the second route is
+the inclusion--exclusion~\eqref{mxc:eq:ie}; Report~169 writes $c_{N,k}$.
+The write re-enumerated $\mathsf T_1$, $\mathsf T_2$ and $\mathsf T_3$ by brute
+force and found the displays above.]
+
+Exact coefficient calculations are checked against the explicit $\beta_1$ and
+the finite formula~\eqref{mxc:pm:eq:exactfinite}. Rational-expression files
+for $\beta_0$ through $\beta_3$ avoid using floating-point recognition as an
+algebraic proof. The scripts enforce bounded inputs, run offline, and use
+explicit exceptions rather than relying on Python assertions. The companion
+README gives commands for ordinary and optimized Python tests, optional
+computer algebra, and output regeneration.
+
+Additional independently recomputed exact counts through $N=800$ support the
+following \emph{uncertified} diagnostics. If
+$\mathcal R_N=a_N/(c_*d_*^N(N!)^2/N)$, then at $N=800$
+\begin{align*}
+ N^2(\mathcal R_N-1-\beta_1/N)&\approx 0.1282857803,\\
+ N^3(\mathcal R_N-1-\beta_1/N-\beta_2/N^2)&\approx-0.0024381943,\\
+ N^4(\mathcal R_N-1-\beta_1/N-\beta_2/N^2-\beta_3/N^3)&\approx0.0042752840.
+\end{align*}
+At $Y=a_{800}$ the Lambert core $x_0$ has error approximately
+$-2.7880\cdot10^{-5}$; the first corrected expression has error
+$-7.6808\cdot10^{-10}$, and the second has error $2.4552\cdot10^{-12}$. These
+values illustrate signs and scales, not global inequalities or certified
+thresholds. The proofs of the error orders are in
+Sections~\ref{mxc:pm:sec:saddle} and~\ref{mxc:pm:sec:inverse}.
+[Note of the batch-108 write: $\mathcal R_N$ is that of
+Section~\ref{mxc:sec:numerics}, and the first two lines continue the columns
+$V_N$, $W_N$ of Table~\ref{mxc:tab:numeric-diagonal} to $N=800$. The errors are
+those of $x_0$ and of~\eqref{mxc:pm:eq:inverse} truncated after the $x_0^{-1}$
+and $x_0^{-2}$ terms, measured against the integer $800$. The $N=800$ count
+uses the Stirling route only (the companion caps inclusion--exclusion at
+$N=100$); the last line suggests a fourth coefficient near $0.0043$, which is
+an uncertified observation, not a claim.]
+
+The release includes this editable \LaTeX{} source, a deterministic build
+script, the exact companion, frozen inputs, and public-source provenance.
+Build commands refuse to overwrite an existing output. PDF regeneration
+requires a compatible pdf\LaTeX{} installation; byte-for-byte identity
+additionally depends on the same TeX engine, package versions, and font
+files. ZIP timestamps, ordering, and permissions are fixed. No external
+source download or online service is required to run the exact checks.
+
+[Note of the batch-108 write: in this report Report~169's \LaTeX{} source
+and PDF are not shipped (the article here is a build of the merged text), and
+its companion, build and release scripts carry the prefix
+\texttt{08-packed-}; the report README maps the names and gives the rerun
+route on a copy with the delivered layout. On such copies the intake ran the
+companion's unit tests (17 of 19 pass, under \texttt{python} and
+\texttt{python -O}; the two errors are POSIX output-safety tests that require
+\texttt{O\_NOFOLLOW}, not mathematical checks), reproduced the four example
+JSON files byte for byte by calling the generator directly (its
+\texttt{generate} command refuses to write on Windows), and reran the
+optional SymPy identity check (output equal to the shipped one apart from line
+endings). The write reran the unit tests with the same result. Not rerun: the
+$N=800$ run, the PDF build and the archive build.]
+
+\section{Literature comparison and scope}\label{mxc:pm:sec:literature}
+The following comparison concerns the primary sources listed in the
+bibliography and inspected on 3 October 2026. It is a bounded literature
+review, not a priority certificate.
+\begin{itemize}
+\item \textbf{Exact model.} Munarini--Poneti--Rinaldi, Section 7 and Table 2,
+count precisely the nonzero-line model and give~\eqref{mxc:pm:eq:transform}.
+Their fixed-row asymptotic in Proposition 13 concerns a different regime
+allowing zero rows. Cerbai--Claesson's Theorem 4.8 in~\cite{pmcc25} gives a
+joint row/column Stirling--Burge polynomial from which the row-fixed
+enumerator follows. Duchamp--Hivert--Thibon~\cite{pmdht} provide the
+packed-matrix algebraic context and all-dimension series.
+\item \textbf{Existing leading equivalent.} A261784 records
+Kot\v e\v sovec's leading formula and numerical amplitude. The separate
+two-page A120733 note~\cite{pmkot15} treats the sum over all row and column
+dimensions by a related Stirling-transform/defect mechanism. It does not fix
+$N$ rows at total $2N$. The inspected A261784 representation linked no proof;
+that absence is not evidence that no proof exists elsewhere.
+\item \textbf{Adjacent saddle method.} Cameron--Prellberg--Stark~\cite{pmcps},
+especially Theorem 7, treat binary incidence matrices with both dimensions
+proportional to weight. The unrestricted-entry setting replaces a
+falling-factorial structure by a rising one and changes the collision tilt.
+Their proportional saddle and Poisson collision mechanism are close
+precedents; they are not counts of the present unrestricted-entry diagonal.
+Their companion classification paper~\cite{pmcpsclasses} uses other symmetry
+conventions.
+\item \textbf{Column statistics.} Louchard~\cite{louchard} fixes the
+column-vector dimension while total weight grows, allows empty rows, and
+derives Gaussian and local column laws. Here the nonempty row count itself
+grows as half the total. The present constants and uniform conditioning
+therefore require the argument given above.
+\item \textbf{Collisions and other matrix models.} Greenhill--McKay~\cite{pmgm}
+analyze sparse integer tables with prescribed margins, including successive
+double-pair count ratios. Free margins and the present conditioning are
+different. Lonesum asymptotics~\cite{pmklm} impose an extra binary condition;
+Fishburn asymptotics~\cite{pmhjs} impose upper-triangular square shape.
+Neither changes the definition of $a_N$ here.
+\end{itemize}
+No reviewed source states this same combination of every-fixed-order diagonal
+corrections, controlled index inversion, and the complex-uniform marked
+consequences. This limited observation supports the usefulness of a
+consolidated refinement, not a worldwide novelty claim. The author's separate
+mathematics page and the OEIS history endpoint were not available in the
+source review; their contents are not part of this comparison.
+
+The proof establishes fixed-order error bounds with unspecified constants,
+holomorphic uniformity on stated marker domains, a joint weak limit, and
+shrinking integer inverse brackets. It does not establish a convergent
+expansion, optimal truncation, effective numerical thresholds, a local limit
+theorem for the growing column count, or an exact universal ceiling selector.
+Exact computations and independent mathematical checking do not amount to
+formal proof-assistant verification or certified interval arithmetic.
+
+[Note of the batch-108 write: Report~169's review did not include this
+report, whose Parts~I and~II were written on the same day. Two of the three
+items of that combination are in them: the every-fixed-order diagonal
+corrections (Theorem~\ref{mxc:thm:dense} at $\lambda=2$,
+Corollary~\ref{mxc:tp:cor:diagonal}) and the controlled index inversion with
+integer brackets at first order (Section~\ref{mxc:tp:sec:inverse}); Part~I
+also has the column mean and variance (Corollary~\ref{mxc:cor:dense-columns}).
+What Report~169 adds is listed in Table~\ref{mxc:pm:tab:claims}. A120733,
+Kot\v e\v sovec's sum over all dimensions, is $\sum_kT(n,k)$; the collection's
+report \texttt{a260700-\allowbreak parabolic-\allowbreak double-\allowbreak
+cosets} \cite{pdc} names it as the labelled analogue of its own sequence. The
+symmetric analogue of the present model, OEIS A138178, is treated in the
+collection's report \texttt{a138178-\allowbreak symmetric-\allowbreak
+packed-\allowbreak matrices} \cite{pmspm} (batch~108), which uses the same
+devices (a geometric weighting that erases zero lines, the Fubini pole at
+$\log(1+1/u)$, complex-uniform marked expansions and Poisson laws of repeated
+cells) for a different model, with an involution saddle and an expansion in
+powers of $n^{-1/2}$; no theorem is shared.]
+
+\section{Further questions and research}\label{mxc:pm:sec:questions}
+
+[Added 6 October 2026, batch 108.] This section collects every unproved
+claim of Report~169: its six further questions, with its sketches. Report~169
+states no claim that this write found wrong, and its uncertified diagnostics
+(Section~\ref{mxc:pm:sec:checks}) are labelled as such, not claimed. Its
+questions~1--5 are Research
+questions~\ref{mxc:pm:q:effective}--\ref{mxc:pm:q:excess}; the question counter
+of Part~I continues, so no existing number changes. Its question~2 is
+re-scoped, because Part~I answers its unmarked form; its question~6 is the
+paragraph ``Beyond all algebraic orders'' of Section~\ref{mxc:tp:sec:future}
+and is printed there (see the last paragraph below).
+
+Several extensions are substantive and remain separate from the results
+proved here.
+
+\begin{question}[Effective remainders and threshold selection; Report~169]\label{mxc:pm:q:effective}
+Make the Euler--Maclaurin, inverse-kernel, and Gaussian constants explicit
+enough to obtain usable numerical $N$ thresholds, and combine these with exact
+local counts to settle integer inverse ambiguities near a threshold.
+\end{question}
+[Note of the batch-108 write: Part~II's ``Effective certified computation and
+formalization'' (Section~\ref{mxc:tp:sec:future}) asks for explicit constants
+in the compact-ray bound and in~\eqref{mxc:tp:eq:thresholdbracket}; this is
+the same aim for Report~169's route, with the exact counts as the tie-breaker.
+Open.]
+
+\begin{question}[A variable row-density regime; Report~169]\label{mxc:pm:q:density}
+Replace the total $2N$ by $n$ with $N/n$ in a compact subinterval of $(0,1)$.
+A density-dependent saddle should yield uniform coefficient functions; limits
+toward sparse or nearly unit row occupancy may require new transition scales.
+\end{question}
+[Note of the batch-108 write: for the unmarked count the first sentence is
+answered by Part~I: Theorem~\ref{mxc:thm:dense} with~\eqref{mxc:eq:dense-allorders}
+gives a uniform expansion to every fixed order for $n/k$ in every compact
+subset of $(1,\infty)$, which is $k/n$ in a compact subset of $(0,1)$, with
+coefficients $E_j(\lambda)$ that depend smoothly on $\lambda$; and
+Corollary~\ref{mxc:cor:dense-columns} gives the column mean and variance there.
+Its two limits, $n/k\downarrow1$ (nearly unit occupancy) and $n/k\to\infty$
+toward the coverage window (sparse occupancy), are Part~I's Research
+question~1. What stays open is the marked form on variable rays:
+Theorem~\ref{mxc:pm:thm:marked} and Theorem~\ref{mxc:pm:thm:joint}, with the
+repeated-cell marker and complex column weight, uniformly for $n/k$ in compact
+subsets of $(1,\infty)$.]
+
+\begin{question}[Local column probabilities and quantitative joint errors; Report~169]\label{mxc:pm:q:local}
+Derive a local central limit theorem and Edgeworth corrections for the column
+count $C$, jointly with fixed repeated-cell counts.
+\end{question}
+This requires characteristic-function control away from the small
+$u$-neighborhood, beyond the full $\omega$-circle control already proved.
+[Note of the batch-108 write: Part~I's Research question~3 asks the same in
+the coverage window, jointly with the zero-row count. Open.]
+
+\begin{question}[The hierarchy of large entries; Report~169]\label{mxc:pm:q:hierarchy}
+For cells at least $r'\ge3$, determine leading constants and joint rare-event
+probabilities, including the interaction between triple entries and pairs of
+repeated cells.
+\end{question}
+Equation~\eqref{mxc:pm:eq:triples} supplies only the first moment at $r'=3$.
+[Report~169 writes $r$ for the threshold; $r$ is the saddle here.]
+
+\begin{question}[Moments of total excess; Report~169]\label{mxc:pm:q:excess}
+Prove uniform integrability and moment expansions for the total excess
+$\mathcal E_N$.
+\end{question}
+A direct excess marker could prove them. The high-probability equality
+$\mathcal E_N=\mathcal J_N$ by itself is insufficient for those unbounded-moment
+conclusions.
+
+\paragraph{Report~169's question 6: beyond fixed-order asymptotics.}
+Report~169's sixth question asks for the growth of the $\beta_j$, possible
+Gevrey bounds, optimal truncation, and the relative role of the nonreal
+Fubini poles and other complex saddles; the exponentially small pole estimate
+of Lemma~\ref{mxc:pm:lem:pole} identifies one scale, but does not supply a
+complete exponentially improved expansion. This is Part~II's paragraph
+``Beyond all algebraic orders'' (Section~\ref{mxc:tp:sec:future}), and is not
+repeated here; what Report~169 adds to it (the growth and Gevrey type of the
+coefficients, and saddles other than the Fubini sectors) is printed there in a
+dated note. It is open.
+
 \addcontentsline{toc}{part}{Appendix}
 \appendix
 \section{Provenance and editorial notes}\label{mxc:app:provenance}
@@ -5733,6 +7233,111 @@ $H_{1,s}$, $H_{2,s}$, the bound of Remark~\ref{mxc:hz:rem:large-m} and the
 translation of every renamed formula against the delivered source. These
 checks do not replace an independent review of the proofs.
 
+\paragraph{Part~IV (batch 108).}
+[Added 6 October 2026, batch 108.] Part~IV is built from Report~169 of a
+session bundle of research reports, the archive
+\nolinkurl{Packed_Matrices_Asymptotics_Inverses_and_Joint_Limits_Source.zip}
+(571,859 bytes; 27 files in an inner directory \texttt{report169/}, with a
+checksum ledger \texttt{SHA256SUMS} that matched 26 of 26 files at the
+intake), which arrived in commit \texttt{60f54ea06} and was placed in commit
+\texttt{602e5bd0f} (batch~108). Its main file \texttt{source/report169.tex}
+has 686 lines and 60 labels, its PDF 16~pages; it is dated 3~October 2026,
+and its author line and PDF author field are empty. It has no pin and cites
+nothing in the repository. Its article, PDF, delivery README and checksum
+ledger are not shipped (they survive in the arrival commit). Its other 23
+files are shipped byte-identical with the prefix \texttt{08-packed-}: the
+companion's README at the report root, its four programs and the three
+release scripts in \texttt{code/}, and its data, frozen inputs, examples,
+symbolic and optional large-run records and source list in \texttt{data/}.
+It is not an edition of any earlier source: 0.66\,\% of its word 8-grams
+occur in this report, and 0.13\,\% of this report's in it.
+
+\paragraph{Where the batch-108 write had to choose.}
+\begin{itemize}
+\item Report~169 proves again, by a different route, Corollaries~\ref{mxc:cor:784}
+ and~\ref{mxc:tp:cor:diagonal}, the moments of
+ Corollary~\ref{mxc:cor:dense-columns} at $n/k=2$, and
+ Propositions~\ref{mxc:tp:prop:inverse} and~\ref{mxc:tp:prop:threshold}.
+ Unlike Part~III's re-proof, these are printed in full as marked second
+ routes (Theorems~\ref{mxc:pm:thm:main}, \ref{mxc:pm:thm:ceiling}
+ and~\ref{mxc:pm:thm:joint}, Proposition~\ref{mxc:pm:prop:inverse}), because
+ the new marked theorem reuses their proofs; remarks of the write
+ (Remarks~\ref{mxc:pm:rem:identification}, \ref{mxc:pm:rem:inverse}
+ and~\ref{mxc:pm:rem:columns}) identify each with its counterpart, and dated
+ notes at the counterparts point to them.
+\item Report~169's letters are translated into those of Parts~I and~II
+ (Table~\ref{mxc:pm:tab:dictionary}: about forty renames, among them $n\to N$,
+ $\rho\to L$, $t\to r$, $C_j\to\beta_j$, $h_j\to\widetilde\beta_j$, its markers
+ $u,v\to\omega,u$, and the inverse core $Y,W,v\to\Lambda,\varpi,x_0$); the
+ product index $r$ becomes $\nu$ and the Bernoulli index $m$. Its labels are
+ printed as \texttt{mxc:pm:} followed by the delivered name; the write added
+ labels for the Part, its first and last sections, two of its unlabelled
+ sections, its two tables, its research questions and the remarks of the
+ write.
+\item Its six further questions: questions~1, 3, 4 and~5 are Research
+ questions~\ref{mxc:pm:q:effective}, \ref{mxc:pm:q:local},
+ \ref{mxc:pm:q:hierarchy} and~\ref{mxc:pm:q:excess}; question~2 is Research
+ question~\ref{mxc:pm:q:density}, re-scoped because Part~I answers its
+ unmarked form, with a dated note at Part~I's Research question~1; question~6
+ is printed once, as a dated note in Part~II's paragraph ``Beyond all
+ algebraic orders'', with a pointer paragraph in
+ Section~\ref{mxc:pm:sec:questions}.
+\item Its bibliography entries for A261784, Munarini--Poneti--Rinaldi and
+ Louchard are this report's \cite{oeis784,mpr2009,louchard}; nine entries were
+ added \cite{pmkot15,pmcps,pmcpsclasses,pmcc23,pmcc25,pmdht,pmgm,pmklm,pmhjs},
+ and one for the sibling report on symmetric packed matrices \cite{pmspm}.
+\item Following the intake's standing rule on unproved and wrong claims,
+ every unproved claim of Report~169 stands in
+ Section~\ref{mxc:pm:sec:questions}; its uncertified $N=800$ diagnostics are
+ kept with their label, and the fourth coefficient they suggest is recorded
+ as an observation, not a claim. No claim of Report~169 was found wrong. Its
+ statement that no reviewed source combines every-fixed-order diagonal
+ corrections, controlled inversion and the marked consequences is true of
+ the sources it reviewed but not of this repository, where Parts~I and~II have
+ the first two; a note in Section~\ref{mxc:pm:sec:literature} says so.
+\end{itemize}
+
+\paragraph{What the batch-108 write changed.} It added a fourth title,
+author and date line and the PDF metadata; the batch-108 editorial note;
+bracketed notes marked ``[Added 6 October 2026, batch 108]'' in
+Sections~\ref{mxc:sec:scope} and~\ref{mxc:sec:dictionary}, after
+Corollaries~\ref{mxc:cor:784} and~\ref{mxc:cor:dense-columns}, in Research
+questions~1 and~3, after the fifty-digit constants of
+Section~\ref{mxc:tp:sec:diagonal}, at the end of
+Section~\ref{mxc:tp:sec:inverse}, and in three paragraphs of
+Section~\ref{mxc:tp:sec:future}; Part~IV
+(Sections~\ref{mxc:pm:sec:front}--\ref{mxc:pm:sec:questions}); these four
+paragraphs; and ten bibliography entries. All its labels carry the prefix
+\texttt{mxc:pm:}. No existing label was renamed or removed, no existing
+number changed, and no delivered sentence of manuscripts~06, 01 or~08 was
+changed or removed. Report~169 is printed in full, with renamed letters, notes
+of the write and light rewording where a sentence named its own package; none
+of its statements was strengthened, and every one of its non-claims is kept
+(Section~\ref{mxc:pm:sec:front}).
+
+\paragraph{Checks by the intake for Part~IV.} The placement verified the
+checksum ledger, compared $\beta_1$ of~\eqref{mxc:pm:eq:C1} with $\beta$ of
+Corollary~\ref{mxc:cor:784} (25 digits) and the moments~\eqref{mxc:pm:eq:moments}
+with Corollary~\ref{mxc:cor:dense-columns} (differences $0$ and $2\cdot10^{-40}$),
+computed $\E\mathcal J_N=1.0312$, $1.0743$, $1.0893$ at $N=20$, $50$, $100$
+from the finite transform (so $N(Lr-\E\mathcal J_N)=1.47$, $1.52$, $1.53$,
+consistent with $Lr+O(1/N)$), checked $\vartheta_0=0.10965$, the base
+$\vartheta_*$ and the inverse series of $\mathsf z_3$, and reran the companion
+on copies (Section~\ref{mxc:pm:sec:checks}). The write checked
+\eqref{mxc:pm:eq:C1} against $\beta$ as rational functions of independent $L$
+and $r$ (SymPy), Report~169's exact $\beta_1$, $\beta_2$, $\beta_3$ against
+Part~II's fifty-digit values ($<10^{-50}$), the coefficient of $x_0^{-3}$
+in~\eqref{mxc:pm:eq:inverse} by hand and the whole expansion numerically
+(at $\log Y=10^3,10^5,10^7$ the error after the $x_0^{-3}$ term times
+$x_0^4(1+\varpi)$ is $3.6\cdot10^{-4}$, $2.2\cdot10^{-4}$, $1.5\cdot10^{-4}$), the
+displays $\mathsf T_1$, $\mathsf T_2$ by brute force, the $\omega=0$
+specialization by exact counts (Remark~\ref{mxc:pm:rem:weighted}), the
+Euler--Maclaurin, kernel and Stirling terms of~\eqref{mxc:pm:eq:H123}, the
+normalization of Section~\ref{mxc:pm:sec:saddle}, the majorant and the bounds
+of Section~\ref{mxc:pm:sec:marked}, and every renamed formula against the
+delivered source. These checks do not replace an independent review of the
+proofs.
+
 \begin{thebibliography}{99}
 \raggedright
 \bibitem{oeis780} The OEIS Foundation Inc., \emph{The On-Line Encyclopedia of
@@ -5798,5 +7403,43 @@ manuscript~08 for context.
 \texttt{d18416ec7e187a0948248cb3077e37d7b089a8f9}, read by manuscript~08
 (Parts~I and~II as they stand).
 \url{https://github.com/VladimirReshetnikov/ProveIt}.
+\bibitem{pmkot15} V. Kot\v{e}\v{s}ovec, \emph{Asymptotics of the sequence
+A120733}, 2015, two-page note. \url{https://oeis.org/A120733/a120733.pdf}.
+Cited by Report~169 (Part~IV).
+\bibitem{pmcps} P. J. Cameron, T. Prellberg, and D. Stark, \emph{Asymptotic
+enumeration of incidence matrices}, Journal of Physics: Conference Series
+\textbf{42} (2006), 59--70. \url{https://doi.org/10.1088/1742-6596/42/1/007};
+\url{https://arxiv.org/abs/math/0511008}. Cited by Report~169.
+\bibitem{pmcpsclasses} P. J. Cameron, T. Prellberg, and D. Stark,
+\emph{Asymptotics for incidence matrix classes}, Electronic Journal of
+Combinatorics \textbf{13} (2006), R85.
+\url{https://arxiv.org/abs/math/0510155}. Cited by Report~169.
+\bibitem{pmcc23} G. Cerbai and A. Claesson, \emph{Caylerian polynomials},
+arXiv:2310.01270. \url{https://arxiv.org/abs/2310.01270}. Cited by
+Report~169.
+\bibitem{pmcc25} G. Cerbai and A. Claesson, \emph{Enumerative aspects of
+Caylerian polynomials}, arXiv:2411.08426, author version dated 30 July 2025,
+Theorem 4.8.
+\url{https://akc.is/papers/047-Enumerative-aspects-of-Cay-polys.pdf}. Cited
+by Report~169.
+\bibitem{pmdht} G. Duchamp, F. Hivert, and J.-Y. Thibon,
+\emph{Noncommutative symmetric functions VI: Free quasi-symmetric functions
+and related algebras}, 2002, Section 5.
+\url{https://arxiv.org/abs/math/0105065}. Cited by Report~169.
+\bibitem{pmgm} C. Greenhill and B. D. McKay, \emph{Asymptotic enumeration of
+sparse nonnegative integer matrices with specified row and column sums},
+Advances in Applied Mathematics \textbf{41} (2008), 459--481.
+\url{https://arxiv.org/abs/0707.0340}. Cited by Report~169.
+\bibitem{pmklm} J. Khera, E. Lundberg, and S. Melczer, \emph{Asymptotic
+Enumeration of Lonesum Matrices}, arXiv:1912.08850.
+\url{https://arxiv.org/abs/1912.08850}. Cited by Report~169.
+\bibitem{pmhjs} H.-K. Hwang, E. Y. Jin, and M. J. Schlosser,
+\emph{Asymptotics and statistics on Fishburn matrices: dimension
+distribution and a conjecture of Stoimenow}, arXiv:2012.13570.
+\url{https://arxiv.org/abs/2012.13570}. Cited by Report~169.
+\bibitem{pmspm} ProveIt research-report collection, \emph{All fixed order
+asymptotics for symmetric packed matrices} (OEIS A138178, bundle Report~238,
+batch~108),
+\path{SetTheory/Cardinals/docs/reports/generating-functions-and-asymptotics/oeis-sequence-asymptotics/a138178-symmetric-packed-matrices/}.
 \end{thebibliography}
 \end{document}

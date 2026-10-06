@@ -7,9 +7,9 @@
 \usepackage{lmodern}
 \usepackage{amsmath,amssymb,amsthm,mathtools}
 \usepackage[margin=1in]{geometry}
-\usepackage{booktabs,array,microtype}
-\usepackage[hidelinks]{hyperref}
-\hypersetup{pdftitle={Report 164 Exact generating function for pop stacked permutations},pdfauthor={},pdfsubject={Explicit EGF, poles, differential algebraicity and faster enumeration of A307030}}
+\usepackage{booktabs,array,longtable,microtype}
+\usepackage[colorlinks=true,linkcolor=black,citecolor=black,urlcolor=blue]{hyperref}
+\usepackage{xurl}
 \setlength{\parskip}{4pt}
 \setlength{\parindent}{1.2em}
 \setlength{\emergencystretch}{3em}
@@ -20,20 +20,210 @@
 \newtheorem{proposition}[theorem]{Proposition}
 \newtheorem{corollary}[theorem]{Corollary}
 \theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+% Macros of the three sources. Names defined by more than one source
+% (\dd, \one, \CC, \lo, \hi, \spr, \ceil) have the same definition in each.
 \newcommand{\dd}{\,\mathrm d}
 \newcommand{\one}{\mathbf1}
 \newcommand{\CC}{\mathbb C}
 \newcommand{\lo}{\operatorname{lo}}
 \newcommand{\hi}{\operatorname{hi}}
 \newcommand{\spr}{\operatorname{spr}}
-\newcommand{\Res}{\operatorname{Res}}
 \newcommand{\ceil}[1]{\left\lceil#1\right\rceil}
-\title{Exact generating function for pop stacked permutations\\\large Poles differential algebraicity and faster enumeration}
-\author{Report 164}
-\date{3 October 2026}
+% Report 164 (Part I)
+\newcommand{\Res}{\operatorname{Res}}
+% Report 161 (Part II)
+\newcommand{\NN}{\mathbb N}
+\newcommand{\floor}[1]{\left\lfloor#1\right\rfloor}
+% Report 166 (Part III)
+\newcommand{\QQ}{\mathbb Q}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\EE}{\mathbb E}
+\newcommand{\PP}{\mathbb P}
+% Added in the merge (batch 108).
+\newcommand{\file}[1]{\nolinkurl{#1}}
+\newenvironment{writenote}[1][]{\par\smallskip\begingroup\small
+ \noindent\textbf{[write]}\if\relax\detokenize{#1}\relax\else~\textbf{#1.}\fi\ }%
+ {\par\endgroup\smallskip}
+\newcommand{\wtag}{\textup{\textbf{[write]}}}
+\newcommand{\vol}{\mathrm{vol}}
+\newenvironment{partabstract}{\begin{quote}\small\noindent\textbf{Abstract of this Part (as delivered).}\ }{\end{quote}}
+\newcommand{\partsource}[1]{\par\noindent\begin{minipage}{\textwidth}\small #1\end{minipage}\par\medskip}
+\hypersetup{pdftitle={Pop-stacked permutations (OEIS A307030 and A309993)},pdfauthor={},pdfsubject={Merged report a307030-pop-stacked-permutations (batch 108): explicit EGF and poles (Report 164); operator proof and inversion (Report 161); run distribution (Report 166)}}
+\title{\textbf{Pop-stacked permutations\\ (OEIS A307030 and A309993)}\\[7pt]
+\large The explicit generating function and its poles;\\ an operator proof of the leading asymptotic, with inversion;\\ the run distribution and the fixed-run denominators}
+\author{Three research reports of one external research session\\(bundle Reports 164, 161 and 166), merged into one ProveIt report}
+\date{All three Parts: 3 October 2026\quad merged: 6 October 2026}
 \begin{document}
+\hypersetup{pageanchor=false}
 \maketitle
 \begin{abstract}
+Let $p_n$ be the number of permutations of $[n]$ in the image of one pass of pop-stack sorting (OEIS A307030), with $p_0=1$, and let $p_{n,k}$ count those with $k$ maximal ascending runs (OEIS A309993). This report prints three manuscripts on these numbers. Part~I gives an explicit exponential generating function $P=N/D$, a quotient of entire functions with no square-root branch; it proves that every pole is simple, with an explicit residue, that there are infinitely many positive poles, one for each solution of an explicit phase equation, and hence that $P$ is not D-finite and $(p_n)$ is not P-recursive; it shows that $P$ is nevertheless differentially algebraic, gives a Riccati equation that computes $p_0,\dots,p_N$ in $O(N^2)$ arithmetic operations, isolates the dominant pole $\rho$ by a positive-operator argument, gives the amplitude $C$ in closed form and certifies both to about fifty digits. These are the numerical predictions of Claesson, Gu\dh mundsson and Pantone (2019), now proved. Part~II proves the leading asymptotic $p_n=C\,n!\rho^{-n}(1+O(q^n))$ by a self-contained spectral and analytic Fredholm argument, without the explicit formula, with an elementary bracket for $\rho$ and an all-orders expansion of the continuous inverse. Part~III gives the bivariate generating function by runs, the mean and variance of the run count with exponentially small errors, a central limit theorem and a uniform lattice local limit theorem, and an alternate proof of the fixed-run denominator conjecture (Conjecture~2) of Claesson, Gu\dh mundsson and Pantone; a proof posted by Shivam Patel on 20 August 2026 came first, and Part~III credits it. The write records, with an interval-arithmetic proof, that the list of positive poles printed by Claesson, Gu\dh mundsson and Pantone omits the thirteenth pole $\rho_{12}=5.33887671272\ldots$ (their repository lists it), confirms that each of their fifteen printed positive values is a correct truncation, places the inverses relative to the repository's transseries volume, and checks Patel's argument. Effective error constants and onsets, the ordering of the nonreal poles, a minimal differential equation, bit complexity and several finer probabilistic statements remain open. The report is unrefereed, and nothing in it is formalized.
+\end{abstract}
+\hypersetup{pageanchor=true}
+{\small\setlength{\parskip}{0pt}\tableofcontents}
+\newpage
+
+\section*{Guide to this report}\phantomsection\label{psp:sec:guide}
+\addcontentsline{toc}{section}{Guide to this report}
+The three Parts are three manuscripts of the session bundle of Reports 1--243 (arrival commit \texttt{60f54ea06}), placed in this directory by commit \texttt{602e5bd0f} (batch~108, cluster 108-POP). All three are dated 3~October 2026, and all three study pop-stacked permutations: the permutations in the image of one pass of pop-stack sorting, which reverses every maximal decreasing run. By the characterization of Asinowski, Banderier, Billey, Hackl and Linusson \cite{abbhl,abh}, these are the permutations whose consecutive maximal ascending runs, with endpoints $(a,b)$ and $(c,d)$, satisfy $a<d$ and $c<b$.
+\begin{center}
+\small
+\begin{tabular}{@{}l l >{\raggedright\arraybackslash}p{0.47\textwidth} l@{}}
+\toprule
+Part & Bundle report & Delivered title & Labels\\
+\midrule
+I & 164 (base) & Exact generating function for pop stacked permutations: Poles, differential algebraicity and faster enumeration & \texttt{psp:egf:}\\
+II & 161 & Factorial exponential growth of pop stacked permutations: An operator proof and asymptotic inversion & \texttt{psp:op:}\\
+III & 166 & Run distribution in pop stacked permutations: An explicit bivariate generating function and Gaussian laws & \texttt{psp:run:}\\
+\bottomrule
+\end{tabular}
+\end{center}
+\emph{One model.} All three Parts start from the same integral model: a run is a \emph{state}, either a singleton $x\in(0,1)$ or an interval $(a,b)$ with $0<a<b<1$; consecutive runs are joined by the overlap kernel $\one\{\lo(s)<\hi(t),\ \lo(t)<\hi(s)\}$; a singleton has weight $z$ and an interval $z^2e^{z(b-a)}$; and the exponential generating function is $1$ plus a bilinear pairing with the resolvent of the resulting compact operator (Part~I, \eqref{psp:egf:eq:resolvent}; Part~II, \eqref{psp:op:eq:resolvent}; Part~III, \eqref{psp:run:eq:resolvent}, where every run also carries a factor $u$). Each Part proves this normalization itself. Parts~I and~III then reduce the resolvent to a two-point boundary problem and solve it in closed form; Part~II does not solve it, and argues spectrally throughout. All three isolate the dominant pole by the same Perron argument and the same strict comparison on the circle $|z|=\rho$.
+
+\emph{Arrangement.} The base of the merge is Report~164; its \file{Report164.tex} was staged as this \file{article.tex}, and it is printed first, as Part~I. It is the fullest statement on A307030 itself: it contains Report~161's main theorem as its Theorem~\ref{psp:egf:thm:leading}, with the amplitude in closed form, and it has the pole set, the residues, non-D-finiteness, differential algebraicity, the Riccati recurrence and the certificate, none of which the other two prove. Report~161 is printed second, as Part~II: its operator proof is a second route to Part~I's leading asymptotic, with the Fredholm continuation written out, and its all-orders inverse goes beyond Part~I's first Newton step. Report~166 is printed third, as Part~III: its bivariate formula reduces to Part~I's at $u=1$ (a second derivation of Part~I's formula), and its run statistics and fixed-run theorem are new relative to the other two. The order follows the univariate theory first; the manuscripts were written in the order 161, 164, 166 within about an hour and a half, and 164 and 166 each say that the earlier reports are ``unchanged'', but none cites another in its bibliography or uses another's results (Part~I's count fixture is derived from Report~161's count file; see the Provenance).
+
+\emph{Numbering.} Sections are numbered continuously, and statements and equations within sections, as in all three manuscripts. Part~I keeps Report~164's Sections~1--13 and all its numbers. Report~161's Section~$k$ is Section~$k+13$ here (Sections~14--20), and Report~166's Section~$k$ is Section~$k+20$ (Sections~21--32); their statements and equations move with their sections (Report~161's Theorem~1.1 is Theorem~\ref{psp:op:thm:main}, Report~166's Theorem~10.1 is Theorem~\ref{psp:run:thm:fixed}; the README maps them all). Section~\ref{psp:sec:further} and Remark~\ref{psp:egf:rem:cgp-poles} were added in the write; no delivered number of Part~I moved.
+
+Notes added when the manuscripts were merged are set in small type and tagged \textbf{[write]}, with their date (6~October 2026). They give cross-references between the Parts, record what the write checked, and record what later Parts and the write's own computations say about earlier text. No delivered statement was changed and no delivered symbol was renamed. Section~\ref{psp:sec:further} gathers the open questions of all three Parts under Vladimir's standing rule of 4~October 2026, with their sources, sketches and what is missing.
+
+\section*{What is proved, and where}\phantomsection\label{psp:sec:status}
+\addcontentsline{toc}{section}{What is proved, and where}
+\begin{center}
+\small
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.58\textwidth} >{\raggedright\arraybackslash}p{0.37\textwidth}@{}}
+\toprule
+Statement & Where\\
+\midrule
+\multicolumn{2}{@{}l}{\emph{The total count A307030}}\\
+Explicit EGF $P=N/D$ with entire $N$, $D$ and no branch; local trigonometric form & Part~I, Theorem~\ref{psp:egf:thm:main}, \eqref{psp:egf:eq:entire}, \eqref{psp:egf:eq:trig}; second derivation: Part~III at $u=1$\\
+Pole set $\{D=0,\ Q\ne0\}$; every pole simple, residue $-2e^{-2\zeta}(4e^\zeta-1)/(\zeta+2)$; zeros of $Q$ removable; finite-radius pole expansions & Part~I, \eqref{psp:egf:eq:poleset}, \eqref{psp:egf:eq:residue}, Section~\ref{psp:egf:sec:riccati}, \eqref{psp:egf:eq:finitepole}\\
+Exactly one positive pole $\rho_k$ for each $k\ge0$; $P$ not D-finite, $(p_n)$ not P-recursive; the ordinary series not D-finite & Part~I, Section~\ref{psp:egf:sec:positive}\\
+The positive-pole list printed by Claesson--Gu\dh mundsson--Pantone omits $\rho_{12}$; its fifteen values are correct truncations & \wtag\ Remark~\ref{psp:egf:rem:cgp-poles} (interval proof)\\
+Differentially algebraic of order at most two (resultant annihilator) & Part~I, \eqref{psp:egf:eq:resultant}\\
+Riccati equation; $p_0,\dots,p_N$ in $O(N^2)$ arithmetic operations and $O(N)$ storage & Part~I, \eqref{psp:egf:eq:riccati}, \eqref{psp:egf:eq:recurrence}\\
+Unique dominant pole $\rho$; $p_n=C\,n!\rho^{-n}(1+O(\theta^n))$, $C=2e^{-2\rho}(4e^\rho-1)/(\rho(\rho+2))$ & Part~I, Theorem~\ref{psp:egf:thm:leading}; second route: Part~II, Theorem~\ref{psp:op:thm:main} ($C$ in spectral form)\\
+Rational intervals of width $10^{-56}$ for $\rho$ and $10^{-48}$ for $C$ & Part~I, \eqref{psp:egf:eq:brackets}; Part~III, \eqref{psp:run:eq:certified} (same $L$, $U$)\\
+$(24/23)^{1/4}\le\rho\le2$ by elementary counting & Part~II, \eqref{psp:op:eq:rhobounds}\\
+Fixed-order Stirling expansions; two-ceiling bracket for the threshold $N(y)$; one Newton step (Part~I) and every fixed order (Part~II) of the continuous inverse & Part~I, Section~\ref{psp:egf:sec:inverse}; Part~II, Corollary~\ref{psp:op:cor:stirling}, Theorem~\ref{psp:op:thm:bracket}, Proposition~\ref{psp:op:prop:allinverse}\\
+\midrule
+\multicolumn{2}{@{}l}{\emph{Runs, A309993}}\\
+Bivariate EGF $P(z,u)=Q(H+BJ_0)/(h_0(BH-QJ_0))$ & Part~III, Theorem~\ref{psp:run:thm:egf}\\
+$\EE K_n=\mu n+\beta+O(\eta^n)$, $\Var K_n=vn+\gamma+O(\eta^n)$, closed forms for $\mu$, $v$ with rational certificates; CLT; uniform lattice local limit with error $O(n^{-1})$ & Part~III, Theorem~\ref{psp:run:thm:gaussian}, Sections~\ref{psp:run:sec:moments}--\ref{psp:run:sec:limits}\\
+Fixed-run denominators $\prod_{j\le k}(1-jx)^{k-j+1}$, numerator degree $k(k+1)/2$, leading coefficient $(-1)^{k(k+1)/2+1}\prod_{j\le k}j!$ (Conjecture~2 of Claesson--Gu\dh mundsson--Pantone; first proved by Patel) & Part~III, Theorem~\ref{psp:run:thm:fixed} (an alternate proof); the write's check of Patel's proof in the front matter (next section)\\
+\midrule
+\multicolumn{2}{@{}l}{\emph{Open}}\\
+\multicolumn{2}{@{}p{0.96\textwidth}@{}}{Effective complex gap, error constants and onsets (all Parts); ordering of the nonreal poles and convergent pole sums; a minimal-order differential equation; bit complexity and optimal cost of counting; the global bivariate polar set, minimal fixed-run denominators, Edgeworth and large-deviation refinements, certified $\beta$, $\gamma$. See Section~\ref{psp:sec:further}.}\\
+\bottomrule
+\end{tabular}
+\end{center}
+The finite computations of the three packages (exact integers and rationals, rational interval certificates) check identities, coefficients and transcriptions and certify the displayed constants; no asymptotic statement rests on them.
+
+\section*{The predictions of Claesson, Gu\dh mundsson and Pantone, and their status}\phantomsection\label{psp:sec:cgp}
+\addcontentsline{toc}{section}{The predictions of Claesson, Gu\dh mundsson and Pantone}
+Claesson, Gu\dh mundsson and Pantone \cite{cgp} (arXiv:1908.08910, version~1 of 23~August 2019; the write read it and the 12-page author PDF, whose pagination and numbers are the same) computed $p_n$ for $n\le1000$ and analysed the sequence experimentally. They wrote $a_n$ for $p_n$ and $\mu$ for the dominant singularity. Their statements, and where this report stands on each:
+\begin{itemize}
+\item \emph{An open enumeration problem} (Section~1, p.~2): ``finding a generating function or a closed form solution to their enumeration remains an open problem.'' Part~I's Theorem~\ref{psp:egf:thm:main} gives the exponential generating function in closed form.
+\item \emph{Counting cost} (Section~2, p.~5): their algorithm computes all counts up to $N$ ``in $O(N^4)$ time using $O(N^3)$ memory'', and they add that this ``assumes that all arithmetic operations are $O(1)$''. Part~I's recurrence \eqref{psp:egf:eq:recurrence} uses $O(N^2)$ arithmetic operations and $O(N)$ stored numbers in the same model; Part~I claims no bit complexity and no optimality.
+\item \emph{Automated fitting} (Section~3.1, pp.~7--8): from 1000 terms they found no rational, algebraic, D-finite or D-algebraic fit for the ordinary generating function or for transforms of it including the exponential generating function, and derived rigorous size bounds for the rational, algebraic and D-finite cases (a D-finite equation would need $(k+2)(d+1)>1000$). Part~I's non-D-finiteness makes the D-finite bound moot, and its D-algebraic annihilator \eqref{psp:egf:eq:resultant} is consistent with their bounded search (Part~I says so; the write did not compute where the annihilator falls in their search space).
+\item \emph{Conjecture~2} (Section~3.2, p.~9): for every $k$ the ordinary generating function of the permutations with $k$ runs is $F_k(x)=N_k(x)/\prod_{i=1}^k(1-ix)^{k-i+1}$, ``where $N_k(x)$ is a polynomial of degree $k(k+1)/2$, the same degree as the conjectured denominator.'' \textbf{Proved}: first by Shivam Patel (below), then by Part~III's Theorem~\ref{psp:run:thm:fixed}, an alternate proof that also gives the leading coefficient.
+\item \emph{Positive real singularities} (Section~3.3, p.~10): fifteen values, the first nine to 75 decimals and the rest to 56, 47, 36, 18, 11 and 6 decimals, the last two $5.55979961612$ and $5.659669$. ``Each of these singularities is predicted to have critical exponent $-1$, making them simple poles.'' \textbf{Proved}, and more: every pole of $P$ is simple (Part~I, Section~\ref{psp:egf:sec:riccati}), and the positive poles are exactly the solutions $\rho_0<\rho_1<\cdots$ of the phase equation \eqref{psp:egf:eq:realpoles}. The write's interval computation shows that each printed value is a correct truncation of some $\rho_k$, and that the list is $\rho_0,\dots,\rho_{11},\rho_{13},\rho_{14},\rho_{15}$: it omits $\rho_{12}=5.33887671272\ldots$ (Remark~\ref{psp:egf:rem:cgp-poles}). The authors' repository file \cite{repo}, added three days before the arXiv posting, lists $\rho_{12}$; the omission is in the printed list only.
+\item \emph{Infinitely many singularities and non-D-finiteness} (Section~3.3, p.~10): ``These results suggest that the exponential generating function may posses an infinite number of singularities. If true, this would imply the non-D-finiteness of both the ordinary and exponential generating functions.'' \textbf{Proved} (Part~I, Section~\ref{psp:egf:sec:positive}, including the ordinary series).
+\item \emph{Complex pairs} (Section~3.3, p.~10): three pairs, ``also simple poles'', near $0.42794\pm3.60126i$, $1.80793\pm4.04623i$, $2.50840\pm4.24168i$, printed to 73 decimals. Every pole is simple (Part~I). Newton's method on Part~I's $D$ started from the printed digits converges, in 220-digit arithmetic, to zeros of $D$ with $Q\ne0$, hence (by Part~I's pole-set theorem) to poles. The printed digits are correct to 62--66 decimal places, after which each printed string drops two consecutive digits; the repository's values agree to 110 or more digits (Remark~\ref{psp:egf:rem:cgp-poles}). This is a numerical observation, not an interval certificate, and Part~I proves nothing about the positions of nonreal poles beyond the equation $D=0$.
+\item \emph{The constants} (Section~3.3, pp.~10--11): $\mu\approx1.11343904173672704376\ldots$ (75 decimals printed), $\mu^{-1}\approx0.89811831857468696951\ldots$ (34 decimals printed) and $C\approx0.69568854907063576799\ldots$ (58 decimals printed), with $a_n\sim C\cdot n!\cdot(0.898118\ldots)^n$. \textbf{Proved} with an exponentially small relative error (Part~I, Theorem~\ref{psp:egf:thm:leading}; Part~II, Theorem~\ref{psp:op:thm:main}); $C$ has the closed form \eqref{psp:egf:eq:leading}. Part~I's certificate \eqref{psp:egf:eq:brackets} proves 56 decimals of $\rho$ and 48 of $C$; the write's interval check proves all 75 printed decimals of $\rho$, and its 220-digit evaluation of the closed form agrees with all 58 printed decimals of $C$ and all 34 of $\mu^{-1}$ (not interval-certified beyond Part~I's 48 decimals for $C$).
+\end{itemize}
+Asinowski, Banderier and Hackl \cite{abh} (DMTCS 22:2, 2021; read by the write) report these predictions in their Section~2.4 (p.~18), where they say that ``an exact asymptotic analysis of the growth behaviour of the sequence remains a challenge'', give the lower bound of their Theorem~12, and quote the conjectured equivalent $p_n\sim(0.695688\ldots)(0.898118\ldots)^nn!$. Their conclusion (p.~37) lists among open challenges ``the existence of closed-form formulas'' and says that ``the optimal cost of the computation of pop-stacked permutations is still open''. Part~I settles one instance of the first (a closed form for the exponential generating function of the total count) and improves the operation count for the second without settling optimality (Section~\ref{psp:sec:further}, item~\ref{psp:q:complexity}).
+
+\emph{Patel's proof of Conjecture~2, and priority.} Part~III, Section~\ref{psp:run:sec:fixed}, credits a public proof of Conjecture~2 by Shivam Patel on MathDB \cite{patel}, posted 20~August 2026, and calls its own proof an alternate one; it makes no first-resolution claim. At intake (6~October 2026, earlier the same day) the page returned HTTP~403. At the write it was reachable, and the write read it in full. The page shows the conjecture with the credit to Claesson, Gu\dh mundsson and Pantone, a site-generated ``Progress summary'' marked ``Claimed solved'' that says the posted proof ``has not been independently verified'', and one solution by Shivam Patel, whose page metadata give posting and editing times 2026-08-20 14:02:52 and 14:04:08 UTC, as Part~III records. The argument encodes a pop-stacked permutation with $k$ runs as a surjective word on $[k]$ in which the occurrence intervals of every two adjacent letters overlap; it applies inclusion--exclusion over the two disjoint ways each adjacency can fail, which turns each term into a count of words respecting a poset $P$ on $[k]$ (a forest of oriented path edges); it classifies such words by the order of first occurrences, which gives $x^k\sum_\sigma\prod_{j=1}^k(1-m_jx)^{-1}$ over linear extensions $\sigma$, with $m_j$ the number of maximal elements of the first $j$ letters; since $m_j\le j$, every denominator divides $\prod_i(1-ix)^{k-i+1}$; and it evaluates $\lim_{x\to\infty}F_k(x)=-1$ by reading $\sum_\sigma\prod_j1/m_j$ as the total probability of removing a uniformly random maximal element step by step, so that the numerator has exact degree $k(k+1)/2$ and the stated leading coefficient. The write checked each step and found the argument correct and complete for the denominator, the degree and the leading coefficient, in agreement with Part~III's assessment. Patel also proves $N_k(1)=2(-1)^{k(k+1)/2-1}\prod_{j=1}^{k-1}j!$ for $k\ge2$ (only the two consistently oriented full chains have a pole of order $k$ at $x=1$); the write checked this against the published $N_1,\dots,N_5$ ($1$, $2$, $-4$, $-24$, $576$). Priority, as far as the write can see: Patel's proof (20~August 2026) precedes Part~III (3~October 2026); MathDB's own label for it is ``unverified claimed solution''; no peer-reviewed proof is known to the write. Part~III's proof is different (a degree filtration of the bivariate formula) and stands on its own.
+
+\section*{The OEIS entries}\phantomsection\label{psp:sec:oeis}
+\addcontentsline{toc}{section}{The OEIS entries}
+The write read both entries on 6~October 2026. \textbf{A307030} \cite{oeisA307030} (revision \#63 of November~18, 2021, the revision Parts~I and~II cite), author Cyril Banderier (March~20, 2019): ``Number of permutations of $[n]$ with overlapping adjacent runs'', offset~1 (so the entry starts at $p_1$; the Parts add $p_0=1$), with a b-file of $n\le450$ by Bjarki \'Ag\'ust Gu\dh mundsson, links to the papers above and to Defant--Williams, and no formula or asymptotic field. Part~I's recurrence \eqref{psp:egf:eq:recurrence}, run by the write, reproduces all 450 b-file terms, with divisibility by six at every step. \textbf{A309993} \cite{oeisA309993} (revision \#21 of August~29, 2019), author Bjarki \'Ag\'ust Gu\dh mundsson (August~26, 2019): the triangle $T(n,k)=p_{n,k}$ for $1\le k\le n$, row sums A307030, a b-file of 5050 terms ($n\le100$), and the column generating functions for $k\le5$, which are the formulas on p.~10 of \cite{abh} that Part~III uses as fixtures. Neither entry states an asymptotic formula. The b-file of A309993 was not checked by Part~III or by the write. Nothing was submitted to the OEIS.
+
+\section*{The inverses and the transseries volume}\phantomsection\label{psp:sec:inverses}
+\addcontentsline{toc}{section}{The inverses and the transseries volume}
+The repository's transseries volume \cite{TSvol} has a Part~0 apparatus for inverting rapidly growing functions. Its symbols are subscripted ``vol'' here where they meet this report's letters ($\kappa_\vol$, $d_\vol$, $v_\vol$, $X_\vol$, $L_\vol$, $h_\vol$, $f_\vol$, $R_\vol$). Statement by statement (Part~III has no inverse):
+\begin{itemize}
+\item Parts~I and~II, the initializer $x_0=L/W(L/(e\rho))$ (Part~II, \eqref{psp:op:eq:xzero}; Part~I, Section~\ref{psp:egf:sec:inverse}, with $L_y$ for $L=\log y$), the root of $x_0\log(x_0/(e\rho))=L$: an \emph{instance} of the factorial core \file{p0:prop:factorial-core} with $\kappa_\vol=1$, $d_\vol=-(1+\log\rho)$ and target $L_\vol=L>0$. That proposition gives $v_\vol=W_0(Le^{-1-\log\rho})=W_0(L/(e\rho))$, which is Part~I's $u$, and $X_\vol=e^{v_\vol+1+\log\rho}=e\rho e^{v_\vol}$; since $v_\vol e^{v_\vol}=L/(e\rho)$, $X_\vol=L/v_\vol=x_0$, and $\kappa_\vol\log X_\vol+d_\vol=v_\vol>0$, the side condition. Its slope formula gives $\Phi_0'(x_0)=v_\vol+1$, which is Part~I's $u+1$ and Part~II's $u=\log(x_0/\rho)$ (so Part~II's $u$ is Part~I's $u$ plus one, the difference the intake found numerically).
+\item Part~I, the one-step correction \eqref{psp:egf:eq:inverseinit}: exactly the first-order term $X-\varrho(X)/\Phi_0'(X)$ of the perturbation-operator series \file{p0:eq:operator-series} (\file{p0:prop:operator-form}) about the factorial core $\Phi_0(x)=x\log(x/(e\rho))$, with $X=x_0$, $\Phi_0'(x_0)=u+1$ and $\varrho(x)=\frac12\log x+\log(C\sqrt{2\pi})+O(1/x)$, the difference $\mathcal H(x)-\Phi_0(x)$ by Stirling's formula. The error bound $O(1/(x_0u))$ is Part~I's own argument; the proposition is a formal series. An \emph{analogue}, not an instance of a theorem of the volume. The same holds for Part~II's \eqref{psp:op:eq:firstinverse}, which is the same formula.
+\item Part~II, the recursion \eqref{psp:op:eq:inverserecurrence} for the coefficients $d_m$: an \emph{instance} of \file{p0:thm:core-reversion}, with the volume's quadratic part $h_\vol=0$. Take for $R_\vol$ the field $\QQ(u,b)$ of rational functions in two indeterminates (a commutative $\QQ$-algebra), $\Lambda=u$, the volume's $t$ equal to Part~II's $t$, and the unknown $E=d-d_0$ (the volume's second variable). Since $ud_0+b=0$, Part~II's \eqref{psp:op:eq:formalF} reads $\mathcal F(d_0+E,t;u,b)=uE+f_\vol(t,E)$ with
+\[
+ f_\vol(t,E)=\sum_{k\ge2}\frac{(-1)^k(d_0+E)^kt^{k-1}}{k(k-1)}+\tfrac12\log\bigl(1+t(d_0+E)\bigr)+\sum_{j\ge1}\frac{B_{2j}t^{2j-1}}{2j(2j-1)(1+t(d_0+E))^{2j-1}} .
+\]
+Every term carries a factor $t$, and each coefficient of $t^m$ involves finitely many terms, so $f_\vol\in tR_\vol[[t,E]]$. Hence \file{p0:eq:core-master} holds with these data, and its triangular recurrence \file{p0:eq:core-triangular}, $e_m=-u^{-1}[t^m]f_\vol(t,E_{<m})$, is Part~II's \eqref{psp:op:eq:inverserecurrence}, because $[t^m]$ of $uE_{<m}$ vanishes; so $e_m=d_m$ for $m\ge1$. The theorem gives the formal series; the asymptotic statement \eqref{psp:op:eq:allinverse}, with its error $O(x_0^{-m-1}/\log x_0)$ and the location of the root, is Part~II's own. (Part~II's expansion of $H(x_0+d)-L$ into \eqref{psp:op:eq:formalF} was checked by the write: $(x_0+d)\log(1+td)=d+\sum_{k\ge2}(-1)^kd^kt^{k-1}/(k(k-1))$ with $t=1/x_0$.)
+\item Part~I's Proposition~\ref{psp:egf:prop:ceil} and Part~II's Theorem~\ref{psp:op:thm:bracket} (the same statement, proved the same way): the two-ceiling bracket is proved directly at the integers from the log-Gamma model and the error bound $M\theta^n$, without an interpolation of the sequence; \emph{not} an instance of \file{p0:thm:staircase}. When the two ceilings agree they determine $N(y)$, the same conclusion as item~(2) of that theorem; both Parts' warnings that an asymptotic root cannot simply be rounded, and Part~II's $x-x_0\to-\frac12$ against a bare ceiling of $x_0$, describe the failure mode of its items~(2) and~(5).
+\end{itemize}
+Neither Part claims novelty for the inversion mechanics. The pole sums of Part~I's \eqref{psp:egf:eq:finitepole} are finite and involve no inversion.
+
+\section*{Notation across the three Parts}\phantomsection\label{psp:sec:notation}
+\addcontentsline{toc}{section}{Notation across the three Parts}
+Common to all three Parts with the same meaning: $p_n$ (A307030, $p_0=1$), $P(z)$ for the univariate EGF (Part~III's $P(z,1)$), $\rho$, the states $I=(0,1)$ and $X=I\sqcup\Delta$, $\lo$, $\hi$, $w_z$, $A_z$, $\lambda$, $\spr$, $B_{2j}$ (Bernoulli numbers), $\Gamma$, $\psi$, $W$ (the positive real Lambert branch). Part~II's amplitude $C$ is Part~I's $C$, and Part~II's $\rho$ is Part~I's $\rho=\rho_0$ (proved in a note in Section~\ref{psp:op:sec:main}). The symbols below change meaning between the Parts, or inside one; each Part fixes its meaning there, and each Part opens with a short table of its own readings. No symbol was renamed.
+\begingroup\small
+\renewcommand{\theHtable}{notation.\arabic{table}}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.12\textwidth} >{\raggedright\arraybackslash}p{0.84\textwidth}@{}}
+\toprule
+Symbol & Meanings\\
+\midrule
+\endhead
+$K$, $J$, $\mathcal K$ & Part~I and III: $K(s,t)$ the overlap kernel, $\mathcal K$ its operator. Part~II: the same kernel is $J$. Parts~I and~III: $J_0$ an entire function, $J_1$ a cumulative integral. Part~III: $K_n$ the run count of a uniform pop-stacked permutation. \emph{Tempting false reading:} Part~III's $K_n$ is a random variable, not the kernel; Part~II's $J$ is not Part~I's $J_0$.\\
+$\Delta$, $D$ & Parts~I and~III: $\Delta$ the interval states; Part~II calls them $D$. Part~I: $D(z)$ the denominator \eqref{psp:egf:eq:ND}, $D_\pm$ half-angle factors. Part~II: $D(z)$ the finite matrix of the Fredholm reduction (Section~\ref{psp:op:sec:fredholm}), $D_r=M_{w_r'/w_r}$. Part~III: $D(z,u)=BH-QJ_0$, $D_\pm$, and $D_k(x)$ the fixed-run denominator. \emph{False reading:} Part~II's $D$ in \eqref{psp:op:eq:derivative} is a set, not a denominator.\\
+$\mu$, $\nu$ & Parts~I and~II: $\mu$ the measure on $X$. Part~III: $\nu$ is that measure and $\mu$ the mean slope \eqref{psp:run:eq:mu}; $\mu_L$, $\mu_U$ its bounds. Claesson--Gu\dh mundsson--Pantone: $\mu$ the dominant pole $\rho$ (front matter only).\\
+$H$, $\mathcal H$ & Part~I: $H(z)$ entire, locally $\cos(zr/4)$ \eqref{psp:egf:eq:H}; $\mathcal H(x)$ the log-Gamma model \eqref{psp:egf:eq:logH}. Part~II: $H(x)$ that model \eqref{psp:op:eq:loggamma}; $\mathcal H$ the Hilbert space. Part~III: $H(z,u)$ entire; $H_c(t)$ the cumulant exponent \eqref{psp:run:eq:HG}. \emph{False reading:} Part~II's $H$ is Part~I's $\mathcal H$, not Part~I's $H$.\\
+$N$ & Part~I: $N(z)$ the numerator \eqref{psp:egf:eq:ND}; $N(y)$ the threshold. Part~II: $N(y)$ the threshold. Part~III: $N(z,u)$ the phase numerator, $N_0$, and $N_k(x)$ the fixed-run numerator.\\
+$u$ & Part~I: $u(x)=U'(x)$ in the boundary problem; a jet variable in Section~\ref{psp:egf:sec:algebraic}; $u=W(L_y/(e\rho))$ in Section~\ref{psp:egf:sec:inverse}. Part~II: $u=\log(x_0/\rho)$, which is Part~I's $u$ plus one. Part~III: the run marker. \emph{False reading:} Parts~I and~II's $u$ in the inverse differ by exactly one.\\
+$v$ & Part~I: $v=V'$; a jet variable. Part~II: $v=v_\rho$ the Perron eigenfunction. Part~III: $v$ the variance slope \eqref{psp:run:eq:v}; $v_L$, $v_U$.\\
+$q$, $\theta$, $\eta$ & Part~I: $q_n$ in \eqref{psp:egf:eq:recurrence}; $\theta=\rho/R$. Part~II: $q=\rho/R$ (Part~I's $\theta$). Part~III: $q=V'$ in \eqref{psp:run:eq:system}, $q=e^z$ as a formal variable in Section~\ref{psp:run:sec:fixed}; $\theta=zr/4$, and $\theta$ a frequency in Section~\ref{psp:run:sec:limits}; $\eta$ the error ratio.\\
+$r$, $R$ & Parts~I and~III: $r=\sqrt{4e^z-1}$, resp.\ $\sqrt Q$. Part~II: $r>0$ a real parameter. All: $R>\rho$ a radius. Part~III: $\mathcal R$ a ring, $R_1$, $R_2$ residuals, $R_\delta$.\\
+$T$ & Part~I: $T=P-1$, $T_n$ binomial sums, $T_{200}$ a Taylor polynomial. Part~II: $T_r=M_{\sqrt{w_r}}$. Part~III: $T_0=P-1$, $T=e^\rho$, $T_1$, $T_{200}$.\\
+$L$ & Part~I: $L$ the lower rational endpoint \eqref{psp:egf:eq:brackets}; $L=rc+(2E+1)s$ in Section~\ref{psp:egf:sec:cancellation}; $L_y=\log y$. Part~II: $L=\log y$. Part~III: $L$, $U$ the endpoints; $L_0$, $L_1$.\\
+$C$ & Parts~I and~II: the amplitude (the same number); Part~I: $C_\zeta$, $C_L$, $C_U$. Part~III: $C(u)$ the moving amplitude; $C$ a generic constant in \eqref{psp:run:eq:near}.\\
+$B$, $b$ & Part~I: $B(z)=2E+1$; $B_1$, $B_2$ resultant coefficients; $B_z=\mathcal KM_{|w_z|}$. Part~II: $B_z=I-E_z$; $b=\frac12\log(2\pi x_0)+\log C$. Part~III: $B(z,u)$; $b=2ue^{z/2}$; $b_z$ and $B_z^{\rm abs}$.\\
+$A$, $E$ & All: $A_z$ the operator. Part~I: $A$ a coefficient in \eqref{psp:egf:eq:usolution}, $A=(z+2)p^2$ in Section~\ref{psp:egf:sec:algebraic}; $E=e^{z/2}$, $E_n$ sums. Part~II: $E_z=A_z-F$; $E$ a set. Part~III: $A$ in \eqref{psp:run:eq:asolution} and \eqref{psp:run:eq:hyperbolic}; $E=e^{z/2}$; $\EE$ expectation.\\
+$F$, $\mathcal F$, $G$ & Part~I: $F$ a set; $\mathcal F$ the resultant \eqref{psp:egf:eq:resultant}; $G_n$ sums. Part~II: $F$ a finite-rank operator; $\mathcal F$ the formal inverse series \eqref{psp:op:eq:formalF}; $G(z)$ a remainder. Part~III: $F$ a set; $F_k(x)$ the fixed-run OGF; $G(z,u)$, $G_c(t)$. \emph{False reading:} Part~II's $\mathcal F$ is not Part~I's resultant.\\
+$h$ & Part~I: $h$ the resolvent function, $h_*$. Part~II: $h$ the right eigenvector. Part~III: $h$, $h_0=1+u(e^z-1)$, $h_z$, and $h(\theta)$. The transseries volume's $h$ is written $h_\vol$.\\
+$d$ & Part~II: $d_\rho$ \eqref{psp:op:eq:derivative} and $d_m$ \eqref{psp:op:eq:inverserecurrence}. Part~III: $d=\sin\theta$. The volume's $d$ is written $d_\vol$.\\
+$\beta$, $\gamma$, $\delta$ & Parts~I and~II: $\beta$ the Perron eigenvalue of the comparison operator on $|z|=\rho$ (Part~III calls it $b_z$). Part~III: $\beta$, $\gamma$ the constant terms \eqref{psp:run:eq:betagamma}; $\delta$ a frequency cutoff, and $\delta=\sqrt{(1-2u)^2-4u^2q}$ in Section~\ref{psp:run:sec:fixed}. Parts~I and~II: $\delta(x)$ the bracket width. Part~I: $\delta_{n,0}$.\\
+$s$, $S$ & Part~I: $s_k$ Stirling coefficients; $s=\sin(w/2)$; $S_t$; $S=10^{120}$; $S_n$ sums. Part~II: $S_r$; $s_k$. Part~III: $s=2u-1$; $S_t$; $S=10^{120}$.\\
+$\phi$, $\Phi$, $\alpha$ & Part~I: $\phi(z)=zr/4+\alpha(z)$ \eqref{psp:egf:eq:phase}. Part~III: the same $\phi$ at $u=1$, and $\Phi(z,u)$. The volume's core is written $\Phi_0$ (front matter only).\\
+$M$, $Q$, $\kappa$ & Parts~I and~II: $M$ a constant in the log error; $M_f$ multiplication. Part~II: $M=\max\hi$ in Section~\ref{psp:op:sec:perron}. Part~III: $M=xa_0-1$. Part~I: $Q=4e^z-1$. Part~II: $Q_z=JM_{|w_z|}$. Part~III: $Q(z,u)$; $Q_0=4T-1$; $\kappa=u+u^2(e^z-1)$ (the volume's $\kappa$ is $\kappa_\vol$).\\
+$x$, $X$, $\ell$ & All: $X$ the state space; Part~I also uses $X$ for $e^z$ in Section~\ref{psp:egf:sec:algebraic}. Part~II: $x$ the real root of $H(x)=L$, $x_0$. Part~III: $x=\rho$ in Sections~\ref{psp:run:sec:moments}--\ref{psp:run:sec:certificate}, and $x$ the OGF variable. Part~II: $\ell$ the left eigenvector (Part~I's $\ell_*$); $\ell$ a run length elsewhere.\\
+\bottomrule
+\end{longtable}
+\addtocounter{table}{-1}% the uncaptioned longtable must not consume a table number
+\endgroup
+
+\section*{Provenance and merge decisions}\phantomsection\label{psp:sec:provenance}
+\addcontentsline{toc}{section}{Provenance and merge decisions}
+Three manuscripts of the session bundle of Reports 1--243, all dated 3~October 2026. Their author lines read ``Report 164'', ``Report 161'' and ``Report 166''; none names an author, a tool or an addressee, none pins a repository commit, none carries ``prepared for private review'' wording, and their PDF author fields are empty. They arrived in commit \texttt{60f54ea06} and were placed by \texttt{602e5bd0f} (batch~108, cluster 108-POP).
+\begin{itemize}
+\item \textbf{Part~I}, bundle Report~164, archive \file{Pop_Stacked_Permutations_Exact_Generating_Function_and_Poles_Source.zip} (464,784 bytes; 16 files; \file{Report164.tex}, 856 lines, 15 pages); the base. Contributes the explicit formula, the pole theory, non-D-finiteness, differential algebraicity, the recurrence, the closed amplitude and the certificate.
+\item \textbf{Part~II}, bundle Report~161, archive \file{Pop_Stacked_Permutations_Asymptotics_and_Inverses_Source.zip} (517,332 bytes; 15 files; \file{Report161.tex}, 806 lines, 13 pages). Contributes the operator proof with the Fredholm continuation, the elementary bracket for $\rho$, the all-orders inverse, the endpoint recurrence as used by its companion, and the count data that Part~I's fixture is derived from.
+\item \textbf{Part~III}, bundle Report~166, archive \file{Pop_Stacked_Permutations_Run_Distribution_Source.zip} (579,822 bytes; 19 files; \file{Report166.tex}, 901 lines, 16 pages). Contributes the bivariate formula, the run statistics, and the alternate proof of Conjecture~2.
+\end{itemize}
+\emph{One chain between the packages.} Part~I's count fixture \file{data/164-egf-data-counts_p0_p70.json} names ``Report161/data/counts.json'' as its source and records a SHA-256 beginning \texttt{d42dae1b} (recorded also in its \file{verification_n70.json} and in its companion); that is the SHA-256 of Report~161's delivered \file{data/counts.json}, shipped here as \file{data/161-operator-data-counts.json} (checked at the write). So $p_{26},\dots,p_{70}$ in Part~I's fixture come from Report~161's endpoint-recurrence computation, and only $p_1,\dots,p_{25}$ are posted OEIS terms, as the fixture itself says.
+
+Where the merge had to choose:
+\begin{enumerate}
+\item \emph{Base and order.} Report~164 first, as the base (see the Guide); 161 second; 166 third. The alternative of basing on 166's bivariate formula was not taken, because 166 has none of 164's pole results.
+\item \emph{Repeated arguments.} The three Parts prove the same run-state normalization and resolvent, the same Perron lemma and the same strict comparison on $|z|=\rho$, and Parts~I and~III use the same rational certificate for $\rho$. The texts are independent paraphrases with different detail (Part~II writes out the Fredholm continuation; Part~III carries the marker $u$). Each Part's proof is complete only with its own version, so each is printed as delivered, with \textbf{[write]} pointers to the other places; nothing was dropped.
+\item \emph{Front matter, numbering and bibliography.} The three title blocks and abstracts are printed at the heads of their Parts, with each manuscript's opening scope paragraph; one table of contents replaces three. The three bibliographies are merged into one, keeping every detail of every entry (where the Parts give different links or locators, all are kept and attributed); the two entries keyed \texttt{oeis} became \texttt{oeisA307030} (Parts~I and~II) and \texttt{oeisA309993} (Part~III). The write added entries for the transseries volume.
+\item \emph{Write additions.} This front matter, the reading-conventions tables of the Parts, Remark~\ref{psp:egf:rem:cgp-poles}, Section~\ref{psp:sec:further}, the dated notes, labels for Part~I's Lemma~\ref{psp:egf:lem:sufficiency} and Proposition~\ref{psp:egf:prop:ceil}, and the label prefixes. Everything else is delivered text.
+\end{enumerate}
+
+\section*{What was checked, and what was not}\phantomsection\label{psp:sec:trust}
+\addcontentsline{toc}{section}{What was checked, and what was not}
+The report is unrefereed and not formalized. At intake (dossier of batch~108, 6~October 2026) all three manuscripts were read in full and no mathematical step was found false. Checked there: the trigonometric form \eqref{psp:egf:eq:trig} against $p_0,\dots,p_{25}$ (60 digits); $\rho$, $C$ and $p_{70}/(70!\,\rho^{-70})=C$ to 18 digits; $\rho_0,\dots,\rho_{15}$ from the phase equation; the three printed complex pairs as zeros of $D$; Part~II's operator argument line by line (left eigenvector $\sqrt w\,v$, the strict-domination identity, $\lambda'$, the scalar numerator); $\mu$ and $v$ against $-\rho'(1)/\rho$ and the second-order formula by implicit differentiation of $D(z,u)=0$; Part~III's degrees and leading coefficients against the published $N_1,\dots,N_5$; and the companions on copies (all outputs reproduced).
+
+The write (6~October 2026) re-read Claesson--Gu\dh mundsson--Pantone (arXiv version~1 and the author PDF, whose SHA-256 is the one recorded by Parts~I and~III) and Asinowski--Banderier--Hackl (Sections~2.2--2.4 and the conclusion), the OEIS entries, the authors' repository file of estimates, and Patel's MathDB page; proved the interval statements of Remark~\ref{psp:egf:rem:cgp-poles}; recomputed $\rho_0,\dots,\rho_{19}$, the eight repository complex pairs and $C$ in 220-digit arithmetic; ran Part~I's recurrence against the 450 b-file terms of A307030; recomputed $\mu$, $v$, $\beta$, $\gamma$ by numerical differentiation of Part~III's $\rho(u)$ and $C(u)$, and the exact mean and variance of $K_n$ for $n\le40$ from the delivered rows; checked the identities of the preceding sections; and reran the companions on fresh extractions of the three archives (Report~161's \texttt{counts}, \texttt{verify} and \texttt{sources}, Report~164's \texttt{verify -{}-n 70} and \texttt{certify}, Report~166's full \texttt{run\_checks.py} check): every output reproduced the shipped file byte for byte after removing carriage returns.
+
+What was \emph{not} done: the analytic proofs (the sufficiency lemmas, the half-angle cancellations, the Perron and Fredholm arguments, the complex-uniform transfer, the local limit estimate, the filtration argument) were read and their displayed algebra spot-checked, but they are the manuscripts' proofs, not an independent verification. The positions of the nonreal poles are numerical. Defant--Williams \cite{dw}, Choi--Sun \cite{cs}, Ehrenborg--Kitaev--Perry \cite{ekp}, Kato \cite{kato} and Flajolet--Sedgewick \cite{fs} were not re-read by the write, nor the journal version of \cite{cgp}. The PDF and ZIP release tools were not run (they need POSIX facilities).
+
+\section*{Relation to neighbouring reports and formal projects}\phantomsection\label{psp:sec:neighbours}
+\addcontentsline{toc}{section}{Relation to neighbouring reports and formal projects}
+No other placed report of the repository treats A307030, A309993, pop-stack sorting, or the papers of Claesson--Gu\dh mundsson--Pantone and Asinowski et al.\ (repository search, 6~October 2026), and none uses the integral-operator method of Ehrenborg, Kitaev and Perry that all three Parts credit. The nearest neighbour by subject is \file{a113226-vincular-avoiders} (exponential generating functions and asymptotics of a permutation class defined by adjacency conditions); it shares no lemma with this report. The transseries volume \cite{TSvol} is related to the inverses as stated above. Placement in the collection confers no formal status: no Lean or Rocq file in the repository treats pop-stacked permutations, and no statement of this report is formalized.
+\clearpage
+\part{Exact generating function for pop stacked permutations: poles, differential algebraicity and faster enumeration}\label{psp:egf:part}
+\partsource{Bundle Report~164, archive \file{Pop_Stacked_Permutations_Exact_Generating_Function_and_Poles_Source.zip}, delivered as \file{Report164.tex} (15 pages), the base of the merge. Delivered title block ``Exact generating function for pop stacked permutations / Poles differential algebraicity and faster enumeration / Report 164 / 3 October 2026''. Printed as delivered, with \textbf{[write]} notes; section, statement and equation numbers are those of the delivery. Remark~\ref{psp:egf:rem:cgp-poles} and the labels of Lemma~\ref{psp:egf:lem:sufficiency} and Proposition~\ref{psp:egf:prop:ceil} are added in the write. The opening paragraph ``Scope and reproduction'' is the manuscript's own.}
+\begin{partabstract}
 Let $p_n$ count permutations in the image of one pass through a pop stack,
 with $p_0=1$. We derive an explicit exponential generating function
 $P(z)=\sum_{n\geq0}p_nz^n/n!$ for OEIS A307030. Its branch-free expression
@@ -57,22 +247,35 @@ pole estimates and leading constants are prior art; the contribution here
 is the explicit formula and proofs. No effective numerical complex gap,
 infinite pole-sum convergence, bit-complexity, optimality, or unrestricted
 priority claim is made.
-\end{abstract}
-\newpage
-\tableofcontents
-\medskip
+\end{partabstract}
 \noindent\textbf{Scope and reproduction.}
 This is a standalone derivation. The overlap characterization and earlier
-counting algorithms are attributed in Section~\ref{sec:sources}. A bounded
+counting algorithms are attributed in Section~\ref{psp:egf:sec:sources}. A bounded
 standard-library companion independently expands the entire quotient,
 checks the integer recurrence, and certifies the constants with rational
 inequalities. Its checks do not replace the proofs. All computed public
 commands write deterministic JSON to standard output only. The source
 package includes the report, reproducible PDF builder, fixtures, tests,
 and checked output certificates. The existing Report 161 is unchanged.
-\newpage
 
-\section{The explicit generating function}\label{sec:main}
+\begin{center}
+\small
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.24\textwidth} >{\raggedright\arraybackslash}p{0.70\textwidth}@{}}
+\toprule
+\multicolumn{2}{@{}l}{\emph{Reading conventions of Part~I} \wtag}\\
+\midrule
+$p_n$, $P$, $N$, $D$ & A307030 with $p_0=1$; its EGF; numerator and denominator \eqref{psp:egf:eq:ND}\\
+$Q$, $E$, $B$, $H$, $J_0$ & $4e^z-1$, $e^{z/2}$, $2E+1$, and the entire series \eqref{psp:egf:eq:H}--\eqref{psp:egf:eq:J}\\
+$K$, $w_z$, $A_z$, $\mu$, $X=I\sqcup\Delta$ & overlap kernel (Part~II's $J$), weights, operator, measure, states ($\Delta$ is Part~II's $D$)\\
+$U$, $V$, $u$, $v$, $I_0$, $J_1$ & endpoint cumulatives and the boundary problem of Section~\ref{psp:egf:sec:bvp}\\
+$r$, $\phi$, $\alpha$, $\rho_k$, $\rho$ & $\sqrt{4e^z-1}$, the phase \eqref{psp:egf:eq:phase}, the positive poles, $\rho=\rho_0$\\
+$C$, $C_\zeta$, $\theta$, $R$ & amplitude (equal to Part~II's $C$), pole coefficients, $\theta=\rho/R$ (Part~II's $q$)\\
+$\mathcal H$, $N(y)$, $u$, $x_0$, $L_y$ & log-Gamma model (Part~II's $H$), threshold, $u=W(L_y/(e\rho))$ (Part~II's $u$ minus one), initializer, $\log y$\\
+$L$, $U$, $C_L$, $C_U$ & rational endpoints of the certificate (also Part~III's $L$, $U$)\\
+\bottomrule
+\end{tabular}
+\end{center}
+\section{The explicit generating function}\label{psp:egf:sec:main}
 A pop-stack pass reverses each maximal decreasing run and concatenates
 the resulting increasing blocks. A permutation in its image is
 \emph{pop-stacked}. The first values, including the empty permutation, are
@@ -81,7 +284,7 @@ the resulting increasing blocks. A permutation in its image is
 \]
 The established characterization~\cite{abbhl,abh} says that consecutive
 maximal ascending runs, with endpoints $(a,b)$ and $(c,d)$, satisfy
-\begin{equation}\label{eq:overlap}
+\begin{equation}\label{psp:egf:eq:overlap}
  a<d,\qquad c<b.
 \end{equation}
 A singleton has equal endpoints. Thus a singleton may sit strictly inside
@@ -95,46 +298,49 @@ Put
 \]
 and define the entire functions
 \begin{align}
- H(z)&=\sum_{k\geq0}\frac{(-1)^kz^{2k}Q(z)^k}{16^k(2k)!},\label{eq:H}\\
+ H(z)&=\sum_{k\geq0}\frac{(-1)^kz^{2k}Q(z)^k}{16^k(2k)!},\label{psp:egf:eq:H}\\
  J_0(z)&=\frac z4\sum_{k\geq0}\frac{(-1)^kz^{2k}Q(z)^k}{16^k(2k+1)!}.
- \label{eq:J}
+ \label{psp:egf:eq:J}
 \end{align}
 Factorial denominators give locally uniform convergence. Set
-\begin{equation}\label{eq:ND}
+\begin{equation}\label{psp:egf:eq:ND}
  N(z)=e^{-z}Q(z)\bigl(H(z)+B(z)J_0(z)\bigr),\qquad
  D(z)=B(z)H(z)-Q(z)J_0(z).
 \end{equation}
-\begin{theorem}\label{thm:main}
+\begin{theorem}\label{psp:egf:thm:main}
 The exponential generating function of pop-stacked permutations is
-\begin{equation}\label{eq:entire}
+\begin{equation}\label{psp:egf:eq:entire}
  \boxed{P(z)=\frac{N(z)}{D(z)}}.
 \end{equation}
 This denotes a meromorphic function on $\CC$, with removable common zeros
 filled in. Near zero, write $r=\sqrt{4e^z-1}$ with $r(0)=\sqrt3$; then
-\begin{equation}\label{eq:trig}
+\begin{equation}\label{psp:egf:eq:trig}
  P(z)=e^{-z}r\,
  \frac{(2E+1)\sin(zr/4)+r\cos(zr/4)}
       {(2E+1)\cos(zr/4)-r\sin(zr/4)}.
 \end{equation}
-The global expression \eqref{eq:entire} uses no square-root branch.
+The global expression \eqref{psp:egf:eq:entire} uses no square-root branch.
 The genuine pole set is exactly
-\begin{equation}\label{eq:poleset}
+\begin{equation}\label{psp:egf:eq:poleset}
  \{\zeta\in\CC:D(\zeta)=0,\ Q(\zeta)\ne0\}.
 \end{equation}
 Every member is simple, and
-\begin{equation}\label{eq:residue}
+\begin{equation}\label{psp:egf:eq:residue}
  \Res(P,\zeta)=-\frac{2e^{-2\zeta}(4e^\zeta-1)}{\zeta+2}.
 \end{equation}
 There are infinitely many positive poles. The EGF is not D-finite, and
 the counts are not P-recursive, although the EGF is differentially
 algebraic over $\mathbb Q(z)$.
 \end{theorem}
-The proof occupies Sections~\ref{sec:model}--\ref{sec:algebraic}.
+The proof occupies Sections~\ref{psp:egf:sec:model}--\ref{psp:egf:sec:algebraic}.
 The exact recurrence and arithmetic complexity appear in
-Section~\ref{sec:recurrence}; the leading asymptotic and constants appear
-in Sections~\ref{sec:dominance}--\ref{sec:certificate}.
+Section~\ref{psp:egf:sec:recurrence}; the leading asymptotic and constants appear
+in Sections~\ref{psp:egf:sec:dominance}--\ref{psp:egf:sec:certificate}.
+\begin{writenote}[6 October 2026]
+Theorem~\ref{psp:egf:thm:main} proves the predictions of Claesson, Gu\dh mundsson and Pantone \cite[Section~3.3]{cgp} that the poles are simple, that there are infinitely many singularities, and that neither the exponential nor the ordinary generating function is D-finite (front matter, ``The predictions of Claesson, Gu\dh mundsson and Pantone''). Part~III's Theorem~\ref{psp:run:thm:egf} reduces to \eqref{psp:egf:eq:entire} at $u=1$, where its $Q=4e^z-1$, $B=2e^{z/2}+1$ and $h_0=e^z$; its derivation through the Robin problem \eqref{psp:run:eq:Robin} is therefore a second derivation of this formula. Part~III proves none of the pole statements.
+\end{writenote}
 
-\section{Mixed run states and exact normalization}\label{sec:model}
+\section{Mixed run states and exact normalization}\label{psp:egf:sec:model}
 Let
 \[
  I=(0,1),\qquad \Delta=\{(a,b):0<a<b<1\},\qquad
@@ -143,10 +349,10 @@ Let
 A state $x\in I$ is a singleton with $\lo(x)=\hi(x)=x$; a state
 $(a,b)\in\Delta$ has $\lo=a,\hi=b$. Define
 \begin{align}
- K(s,t)&=\one\{\lo(s)<\hi(t),\ \lo(t)<\hi(s)\},\label{eq:K}\\
- w_z(x)&=z,\qquad w_z(a,b)=z^2e^{z(b-a)},\label{eq:weight}\\
+ K(s,t)&=\one\{\lo(s)<\hi(t),\ \lo(t)<\hi(s)\},\label{psp:egf:eq:K}\\
+ w_z(x)&=z,\qquad w_z(a,b)=z^2e^{z(b-a)},\label{psp:egf:eq:weight}\\
  (A_zf)(s)&=\int_X K(s,t)w_z(t)f(t)\dd\mu(t).
- \label{eq:operator}
+ \label{psp:egf:eq:operator}
 \end{align}
 Work, for example, on $L^2(X,\mu)$. The kernel is bounded, $\mu(X)=3/2$,
 and the weights are uniformly bounded on compact $z$-sets. Thus $A_z$
@@ -162,7 +368,7 @@ $(b-a)^{\ell-2}/(\ell-2)!$. Its summed weight is
  =z^2e^{z(b-a)}.
 \]
 A singleton contributes $z\dd x$. The product of kernels enforces exactly
-the adjacent-run conditions \eqref{eq:overlap}; there is neither an
+the adjacent-run conditions \eqref{psp:egf:eq:overlap}; there is neither an
 extra run-order factor nor an extra factorial. For instance,
 \[
  \int_Xw_z\dd\mu=z+z^2\int_0^1(1-t)e^{zt}\dd t=e^z-1,
@@ -171,13 +377,16 @@ the EGF of the unique increasing permutation of each positive size.
 
 Summing over the number of runs, with absolute convergence for small
 $|z|$, now proves
-\begin{equation}\label{eq:resolvent}
+\begin{equation}\label{psp:egf:eq:resolvent}
  h=(I-A_z)^{-1}\one,\qquad
  P(z)=1+\int_Xw_z h\dd\mu.
 \end{equation}
 The pairing is bilinear; no complex conjugate is inserted.
+\begin{writenote}
+The same normalization and resolvent are proved in Part~II, Section~\ref{psp:op:sec:integral} (with $J$ for $K$ and $D$ for $\Delta$), and in Part~III, Section~\ref{psp:run:sec:model} (every run weight multiplied by $u$, measure $\nu$); \eqref{psp:egf:eq:resolvent} is \eqref{psp:op:eq:resolvent} and the case $u=1$ of \eqref{psp:run:eq:resolvent}. The overlap characterization \eqref{psp:egf:eq:overlap} is proved in Part~II, Lemma~\ref{psp:op:lem:characterization}.
+\end{writenote}
 
-\section{Cumulative boundary problem}\label{sec:bvp}
+\section{Cumulative boundary problem}\label{psp:egf:sec:bvp}
 For small $z$, define the endpoint cumulatives
 \begin{align*}
  U(x)&=\int_{\hi(s)\leq x}w_z(s)h(s)\dd\mu(s),&
@@ -185,11 +394,11 @@ For small $z$, define the endpoint cumulatives
  T&=\int_Xw_z h\dd\mu=P-1.
 \end{align*}
 Endpoint equality sets have measure zero. Hence
-\begin{equation}\label{eq:ends}
+\begin{equation}\label{psp:egf:eq:ends}
  U(0)=V(0)=0,\qquad U(1)=V(1)=T.
 \end{equation}
-Complementing the two nonoverlap regions in \eqref{eq:K} gives
-\begin{equation}\label{eq:hUV}
+Complementing the two nonoverlap regions in \eqref{psp:egf:eq:K} gives
+\begin{equation}\label{psp:egf:eq:hUV}
  h(x)=1+V(x)-U(x),\qquad h(a,b)=1+V(b)-U(a).
 \end{equation}
 These identities first yield continuous representatives and then the
@@ -200,35 +409,35 @@ smoothness used below. Introduce
 \]
 Direct differentiation of the cumulatives gives
 \begin{align}
- U'&=ze^{zx}(1+V)-zU-z^2I_0, & I_0'&=U+zI_0,\label{eq:firstU}\\
+ U'&=ze^{zx}(1+V)-zU-z^2I_0, & I_0'&=U+zI_0,\label{psp:egf:eq:firstU}\\
  V'&=zV+ze^{z(1-x)}(1-U)+z^2J_1, & J_1'&=-V-zJ_1.
- \label{eq:firstV}
+ \label{psp:egf:eq:firstV}
 \end{align}
 For example, differentiating the upper endpoint of the interval part of
 $U$ gives $z^2\int_0^xe^{z(x-a)}(1+V(x)-U(a))\dd a$; combining this with
-the singleton term $z(1+V(x)-U(x))$ gives \eqref{eq:firstU}.
+the singleton term $z(1+V(x)-U(x))$ gives \eqref{psp:egf:eq:firstU}.
 Differentiating again and substituting eliminates the integral terms:
-\begin{equation}\label{eq:secondUV}
+\begin{equation}\label{psp:egf:eq:secondUV}
  U''=ze^{zx}V',\qquad V''=-ze^{z(1-x)}U'.
 \end{equation}
 Writing $u=U'$ and $v=V'$ yields
-\begin{equation}\label{eq:uv}
+\begin{equation}\label{psp:egf:eq:uv}
  u'=ze^{zx}v,\qquad v'=-ze^{z(1-x)}u,
  \qquad u(0)=z,\quad v(1)=z.
 \end{equation}
-The final boundary condition uses $U(1)=V(1)$ in \eqref{eq:firstV}.
+The final boundary condition uses $U(1)=V(1)$ in \eqref{psp:egf:eq:firstV}.
 For $z\ne0$, elimination gives the constant-coefficient problem
-\begin{equation}\label{eq:ode}
+\begin{equation}\label{psp:egf:eq:ode}
  u''-zu'+z^2e^zu=0,\qquad u(0)=z,\quad u'(1)=z^2e^z.
 \end{equation}
 At zero the homogeneous scalar problem is $u''=0,u(0)=u'(1)=0$;
 its only solution is zero. Analytic fundamental matrices therefore give
-local uniqueness for \eqref{eq:ode}. The first-order problem
-\eqref{eq:uv} is likewise locally unique, including $z=0$.
+local uniqueness for \eqref{psp:egf:eq:ode}. The first-order problem
+\eqref{psp:egf:eq:uv} is likewise locally unique, including $z=0$.
 
-\begin{lemma}[Sufficiency of the boundary problem]
-The locally unique solution of \eqref{eq:uv}, integrated from zero,
-reconstructs precisely the resolvent in \eqref{eq:resolvent}.
+\begin{lemma}[Sufficiency of the boundary problem]\label{psp:egf:lem:sufficiency}
+The locally unique solution of \eqref{psp:egf:eq:uv}, integrated from zero,
+reconstructs precisely the resolvent in \eqref{psp:egf:eq:resolvent}.
 \end{lemma}
 \begin{proof}
 The reflected pair $(v(1-x),u(1-x))$ solves the same equations and boundary
@@ -239,10 +448,10 @@ Define $I_0,J_1$ from these functions and put
  F_1&=u-ze^{zx}(1+V)+zU+z^2I_0,\\
  F_2&=v-zV-ze^{z(1-x)}(1-U)-z^2J_1.
 \end{align*}
-Calculation using \eqref{eq:uv} gives $F_1'=zF_1$ and $F_2'=-zF_2$.
+Calculation using \eqref{psp:egf:eq:uv} gives $F_1'=zF_1$ and $F_2'=-zF_2$.
 Their boundary values are $F_1(0)=0$ and
 $F_2(1)=z(U(1)-V(1))=0$. Both vanish. Consequently the endpoint
-cumulatives of the $h$ defined by \eqref{eq:hUV} have derivatives
+cumulatives of the $h$ defined by \eqref{psp:egf:eq:hUV} have derivatives
 $U',V'$ and initial values zero; they are exactly $U,V$.
 Complementing nonoverlap regions gives $h=1+A_zh$. The Neumann inverse
 is unique near zero, completing the sufficiency proof.
@@ -251,20 +460,20 @@ This step retains the endpoint condition that could otherwise be lost
 by differentiating. No global uniqueness of the unreduced boundary
 problem is asserted at exceptional complex parameters.
 
-\section{Explicit solution and the canceled factor}\label{sec:cancellation}
+\section{Explicit solution and the canceled factor}\label{psp:egf:sec:cancellation}
 Choose $r=\sqrt{4e^z-1}$ locally at zero and put $w=zr/2$. Solving
-\eqref{eq:ode} gives
+\eqref{psp:egf:eq:ode} gives
 \begin{align}
- u(x)&=e^{zx/2}\bigl(z\cos(wx)+A\sin(wx)\bigr),\label{eq:usolution}\\
+ u(x)&=e^{zx/2}\bigl(z\cos(wx)+A\sin(wx)\bigr),\label{psp:egf:eq:usolution}\\
  \frac Az&=\frac{2E-\cos w+r\sin w}{r\cos w+\sin w}.
- \label{eq:A}
+ \label{psp:egf:eq:A}
 \end{align}
 Integrate the differential equation and use $P=1+\int_0^1u$ to obtain
-\begin{equation}\label{eq:integrated}
+\begin{equation}\label{psp:egf:eq:integrated}
  P=\frac{zu(1)-z^2/2+Aw}{z^2E^2}.
 \end{equation}
 Substitution, with $\sin^2w+\cos^2w=1$, simplifies this to
-\begin{equation}\label{eq:fullangle}
+\begin{equation}\label{psp:egf:eq:fullangle}
  P=e^{-z}r\frac{2E-\cos w+r\sin w}{r\cos w+\sin w}.
 \end{equation}
 All identities with apparent division by $z$ are first obtained for
@@ -276,38 +485,38 @@ To display the cancellation, set $c=\cos(w/2)$, $s=\sin(w/2)$ and
 \]
 The identity $r^2=(2E-1)(2E+1)$ gives, by multiplication,
 \begin{align}
- r(r\cos w+\sin w)&=D_+D_-,\label{eq:factor1}\\
- r(2E-\cos w+r\sin w)&=D_-L.\label{eq:factor2}
+ r(r\cos w+\sin w)&=D_+D_-,\label{psp:egf:eq:factor1}\\
+ r(2E-\cos w+r\sin w)&=D_-L.\label{psp:egf:eq:factor2}
 \end{align}
 As $D_-(0)=1$, the common factor cancels near zero. Substituting into
-\eqref{eq:fullangle} proves \eqref{eq:trig}. In particular, zeros of the
+\eqref{psp:egf:eq:fullangle} proves \eqref{psp:egf:eq:trig}. In particular, zeros of the
 full boundary determinant coming solely from $D_-$ are not poles of the
 scalar counting EGF.
 
-Locally $H=\cos(zr/4)$ and $J_0=\sin(zr/4)/r$, so \eqref{eq:trig}
-is exactly \eqref{eq:entire}. Both $N,D$ are entire and $N(0)=D(0)=3$.
+Locally $H=\cos(zr/4)$ and $J_0=\sin(zr/4)/r$, so \eqref{psp:egf:eq:trig}
+is exactly \eqref{psp:egf:eq:entire}. Both $N,D$ are entire and $N(0)=D(0)=3$.
 This proves the branch-free meromorphic continuation and $P(0)=1$.
 It does not require a square root or inverse trigonometric function to
 be defined globally.
 
-\section{Positive poles and non D finiteness}\label{sec:positive}
+\section{Positive poles and non D finiteness}\label{psp:egf:sec:positive}
 For real $z\geq0$ put $r=\sqrt{4e^z-1}>0$ and
-\begin{equation}\label{eq:phase}
+\begin{equation}\label{psp:egf:eq:phase}
  \alpha(z)=\frac12\arccos\!\left(\frac1{2e^{z/2}}\right),\qquad
  \phi(z)=\frac{zr}{4}+\alpha(z).
 \end{equation}
 The real inverse cosine takes values in $[0,\pi]$.
-Since $\tan\alpha=r/(2E+1)$, equation \eqref{eq:trig} becomes
-\begin{equation}\label{eq:tan}
+Since $\tan\alpha=r/(2E+1)$, equation \eqref{psp:egf:eq:trig} becomes
+\begin{equation}\label{psp:egf:eq:tan}
  P(z)=e^{-z}r\tan\phi(z).
 \end{equation}
 Differentiation simplifies to
-\begin{equation}\label{eq:phiprime}
+\begin{equation}\label{psp:egf:eq:phiprime}
  \phi'(z)=\frac{e^z(z+2)}{2r}>0.
 \end{equation}
 Moreover $\phi(0)=\pi/6$ and $\phi(z)\to\infty$. Thus for each
 integer $k\geq0$ there is a unique positive $\rho_k$ satisfying
-\begin{equation}\label{eq:realpoles}
+\begin{equation}\label{psp:egf:eq:realpoles}
  \phi(\rho_k)=\frac\pi2+k\pi,
 \end{equation}
 or equivalently
@@ -315,9 +524,45 @@ or equivalently
  \frac{\rho_k\sqrt{4e^{\rho_k}-1}}2+
  \arccos\!\left(\frac1{2e^{\rho_k/2}}\right)=(2k+1)\pi.
 \]
-The derivative and prefactor in \eqref{eq:tan} are nonzero there, so all
+The derivative and prefactor in \eqref{psp:egf:eq:tan} are nonzero there, so all
 these points are genuine simple poles. This describes positive poles
 only, without ordering them among complex poles by modulus.
+
+\begin{remark}[\wtag\ The printed list of predicted positive poles omits $\rho_{12}$]\label{psp:egf:rem:cgp-poles}
+Claesson, Gu\dh mundsson and Pantone \cite[Section~3.3, p.~10]{cgp} print fifteen predicted positive singularities of $P$ as truncated decimals: nine with 75 decimals, then one each with 56, 47, 36, 18, 11 and 6 decimals, ending
+\[
+ \ldots,\ 5.08176797057\ldots,\ 5.21558801277\ldots,\ 5.453200964209036692,\ 5.55979961612,\ 5.659669 .
+\]
+\emph{Claim.} These are, in order, $\rho_0,\dots,\rho_{11},\rho_{13},\rho_{14},\rho_{15}$ of \eqref{psp:egf:eq:realpoles}, and every printed digit is correct; the list omits the positive pole $\rho_{12}=5.338876712720\ldots$, which lies strictly between its twelfth and thirteenth entries.
+
+\emph{Proof.} For real $z>0$ put $E=e^{z/2}>1$ and $r=\sqrt{4e^z-1}>0$. Since $\tan\alpha=r/(2E+1)$ with $\alpha=\alpha(z)\in(\pi/6,\pi/4)$ (because $1/(2E)\in(0,\frac12)$), the denominator of \eqref{psp:egf:eq:trig} is
+\[
+ D(z)=(2E+1)\cos\frac{zr}4-r\sin\frac{zr}4=\sqrt{(2E+1)^2+r^2}\,\cos\phi(z).
+\]
+As $Q(z)>0$, Theorem~\ref{psp:egf:thm:main} makes the positive poles exactly the positive zeros of $D$, that is the points where $\phi(z)\in\frac\pi2+\pi\mathbb Z$; by \eqref{psp:egf:eq:phiprime} and $\phi(0)=\pi/6$ the $k$-th of them is $\rho_k$, the solution of \eqref{psp:egf:eq:realpoles}. At $\rho_k$, $zr/4=\phi-\alpha$ lies in $(k\pi+\pi/4,\,k\pi+\pi/3)$, so $k$ is the integer part of $zr/(4\pi)$ there, and $zr/(4\pi)-k\in(\frac14,\frac13)$. For each printed value $s$ with $d$ decimals the write evaluated $D(s)$, $D(s+10^{-d})$ and the range of $zr/(4\pi)$ over $[s,s+10^{-d}]$ in interval arithmetic (\texttt{mpmath.iv}, 120 digits, outward rounding; only $\exp$, $\sqrt{\ }$, $\cos$, $\sin$ and $\pi$ are needed). In all fifteen cases the two values of $D$ have opposite strict signs, so $D$ has a zero in the open interval $(s,s+10^{-d})$, and the range of $zr/(4\pi)$ lies in $(k+\frac14,k+\frac12)$ for one integer $k$, which identifies that zero as $\rho_k$; the values of $k$ are $0,1,\dots,11,13,14,15$. Hence $s$ is the truncation of $\rho_k$ to $d$ decimals. The same computation with $s=5.3388767127$, $d=10$, gives a sign change and $k=12$. Since $\phi$ is increasing, $\rho_{11}<\rho_{12}<\rho_{13}$, and $\rho_{12}$ is not in the list. \qed
+
+The positive poles to twelve decimals (rounded; from a 220-digit solution of \eqref{psp:egf:eq:realpoles}, each with $|D(\rho_k)|<10^{-190}$); ``printed'' gives the number of decimals in the list of \cite{cgp}:
+\begin{center}
+\small
+\begin{tabular}{@{}r l r @{\qquad} r l r@{}}
+\toprule
+$k$ & $\rho_k$ & printed & $k$ & $\rho_k$ & printed\\
+\midrule
+0 & 1.113439041737 & 75 & 10 & 5.081767970571 & 47\\
+1 & 2.417184228723 & 75 & 11 & 5.215588012778 & 36\\
+2 & 3.076673197412 & 75 & 12 & 5.338876712720 & \textbf{omitted}\\
+3 & 3.527590791728 & 75 & 13 & 5.453200964209 & 18\\
+4 & 3.872438162423 & 75 & 14 & 5.559799616126 & 11\\
+5 & 4.152519207830 & 75 & 15 & 5.659669438240 & 6\\
+6 & 4.388766437824 & 75 & 16 & 5.753624587263 & --\\
+7 & 4.593300493040 & 75 & 17 & 5.842338823685 & --\\
+8 & 4.773787732301 & 75 & 18 & 5.926376164810 & --\\
+9 & 4.935393550294 & 56 & 19 & 6.006213584191 & --\\
+\bottomrule
+\end{tabular}
+\end{center}
+This corrects a list, not a theorem: the authors present experimental estimates and do not say that the list is complete. Their repository file \cite{repo}, committed on 20~August 2019 (three days before arXiv version~1) and unchanged since, lists twenty positive values, $\rho_0$ to $\rho_{19}$, among them $5.33887671271979787441685886230975425489043134007(1)$; the write's values agree with all twenty within the stated uncertainty of their last digits. So the omission is one of transcription into the paper. The same printed page lists three nonreal pairs to 73 decimals. Newton's method on $D$, started from the printed digits, converges in 220-digit arithmetic to zeros of $D$ with $Q\ne0$, which are simple poles by Theorem~\ref{psp:egf:thm:main}. The printed digits are correct up to decimal place 62 to 66 (the first wrong digits are at places 67 and 64, 66 and 63, 67 and 63 for the real and imaginary parts of the three pairs); from there each printed string is the repository's string with two consecutive digits deleted, and the repository's values agree with the zeros to 110 or more digits. These complex computations are floating-point, not interval certificates; the scripts are not shipped, and the method is stated here in full. The intake found the omission of $\rho_{12}$; the write proved it, and found the complex misprints.
+\end{remark}
 
 An analytic D-finite germ satisfies a nonzero linear differential
 equation with polynomial coefficients. At every point where its leading
@@ -328,16 +573,19 @@ above prove that $P$ is not D-finite. If $(p_n)$ were P-recursive, then
 $(p_n/n!)$ would be P-recursive and its ordinary generating function $P$
 would be D-finite, a contradiction. The ordinary series
 $\sum p_nz^n$, understood formally, is not D-finite either.
+\begin{writenote}[6 October 2026]
+This proves what Claesson, Gu\dh mundsson and Pantone \cite[Section~3.3, p.~10]{cgp} predicted (``If true, this would imply the non-D-finiteness of both the ordinary and exponential generating functions''), and what Asinowski, Banderier and Hackl \cite[Section~2.4, p.~18]{abh} report as their conjecture. Part~II's statements that further poles and non-D-finiteness are not proved (Sections~\ref{psp:op:sec:main} and~\ref{psp:op:sec:sources}) were true of Report~161 and are superseded here; dated notes there.
+\end{writenote}
 
-\section{Riccati equation and every complex pole}\label{sec:riccati}
-On a local branch in \eqref{eq:tan}, let $a=e^{-z}r$. Then
+\section{Riccati equation and every complex pole}\label{psp:egf:sec:riccati}
+On a local branch in \eqref{psp:egf:eq:tan}, let $a=e^{-z}r$. Then
 \[
  \frac{a'}a=\frac{1-2e^z}{Q},\qquad
  a\phi'=\frac{z+2}{2},\qquad
  \frac{\phi'}a=\frac{e^{2z}(z+2)}{2Q}.
 \]
 Differentiating $P=a\tan\phi$ yields the exact identity
-\begin{equation}\label{eq:riccati}
+\begin{equation}\label{psp:egf:eq:riccati}
  2Q P'=2(1-2e^z)P+(z+2)Q+(z+2)e^{2z}P^2,
  \qquad P(0)=1.
 \end{equation}
@@ -369,22 +617,22 @@ because $1+2/e>1>s\tanh(s/2)$. Hence $-2$ is not a pole.
 \subsection{Simplicity residues and the exact pole set}
 At a genuine pole $\zeta$, the preceding argument gives
 $Q(\zeta)\ne0$ and $\zeta\ne-2$. If its order is $m$, the most singular
-orders in \eqref{eq:riccati} are $m+1$ from $P'$ and $2m$ from $P^2$;
+orders in \eqref{psp:egf:eq:riccati} are $m+1$ from $P'$ and $2m$ from $P^2$;
 the other terms are of lower order. Thus $m+1=2m$ and $m=1$.
 Writing $P=a_{-1}/(z-\zeta)+O(1)$ and comparing coefficients gives
-\eqref{eq:residue}.
+\eqref{psp:egf:eq:residue}.
 
 Away from $Q=0$, a zero of $D$ cannot cancel against $N$. Indeed the two
-linear combinations in \eqref{eq:trig} have coefficient determinant
+linear combinations in \eqref{psp:egf:eq:trig} have coefficient determinant
 \[
  (2E+1)^2+r^2=4E(2E+1)\ne0.
 \]
 The last inequality follows because $E\ne0$ and $2E+1=0$ would imply
 $Q=0$. Simultaneous vanishing would force $\sin(zr/4)=\cos(zr/4)=0$,
-which is impossible. This proves exactly \eqref{eq:poleset}.
+which is impossible. This proves exactly \eqref{psp:egf:eq:poleset}.
 
 For a genuine pole define
-\begin{equation}\label{eq:Czeta}
+\begin{equation}\label{psp:egf:eq:Czeta}
  C_\zeta=-\frac{\Res(P,\zeta)}\zeta
  =\frac{2e^{-2\zeta}(4e^\zeta-1)}{\zeta(\zeta+2)}.
 \end{equation}
@@ -392,14 +640,14 @@ There is no pole at zero. For every fixed $R>0$ with no pole on
 $|z|=R$, there are finitely many poles inside, and subtraction of their
 principal parts leaves a function analytic on a neighborhood of the
 closed disk. Cauchy's bound therefore proves
-\begin{equation}\label{eq:finitepole}
+\begin{equation}\label{psp:egf:eq:finitepole}
  \frac{p_n}{n!}=\sum_{|\zeta|<R}C_\zeta\zeta^{-n}+O_R(R^{-n}).
 \end{equation}
 This is a finite-radius expansion. It does not assert convergence of an
 infinite sum over all poles, a numerical ordering of nonreal poles, or an
 effective bound for the constant implicit in the remainder.
 
-\section{Differential algebraicity}\label{sec:algebraic}
+\section{Differential algebraicity}\label{psp:egf:sec:algebraic}
 Use independent jet variables $p,u,v$ and an auxiliary variable $X$.
 Define the following polynomials in $\mathbb Q[z,p,u,v]$:
 \begin{align*}
@@ -410,7 +658,7 @@ Define the following polynomials in $\mathbb Q[z,p,u,v]$:
 The Riccati equation states
 $AX^2+B_1X+C_1=0$ at $X=e^z$, $p=P$, $u=P'$. Differentiating with
 $X'=X$ gives $A_2X^2+B_2X+C_2=0$ at $v=P''$. Therefore
-\begin{equation}\label{eq:resultant}
+\begin{equation}\label{psp:egf:eq:resultant}
  \mathcal F(z,p,u,v)=\det
  \begin{pmatrix}
  A&B_1&C_1&0\\
@@ -429,7 +677,7 @@ uniqueness from this resultant is asserted. Earlier unsuccessful bounded
 D-algebraic fitting experiments do not establish differential
 transcendence and do not contradict this annihilator.
 
-\section{Exact quadratic arithmetic enumeration}\label{sec:recurrence}
+\section{Exact quadratic arithmetic enumeration}\label{psp:egf:sec:recurrence}
 Let $q_n=4-\delta_{n,0}$ for $n\geq0$, with $q_{-1}=0$. For $n\geq0$ put
 \begin{align*}
  E_n&=\sum_{k=0}^n\binom nkp_k,&
@@ -438,12 +686,12 @@ Let $q_n=4-\delta_{n,0}$ for $n\geq0$, with $q_{-1}=0$. For $n\geq0$ put
  G_n&=\sum_{k=0}^{n-1}\binom nkp_{k+1},
 \end{align*}
 where $T_{-1}=G_0=0$. Extracting exponential coefficients in
-\eqref{eq:riccati} gives
-\begin{equation}\label{eq:recurrence}
+\eqref{psp:egf:eq:riccati} gives
+\begin{equation}\label{psp:egf:eq:recurrence}
  \boxed{6p_{n+1}=2p_n-4E_n+2q_n+nq_{n-1}+2T_n+nT_{n-1}-8G_n},
  \qquad p_0=1.
 \end{equation}
-For example, the left side of \eqref{eq:riccati} contributes
+For example, the left side of \eqref{psp:egf:eq:riccati} contributes
 $6p_{n+1}+8G_n$, while the three terms on the right contribute
 $2p_n-4E_n$, $2q_n+nq_{n-1}$, and $2T_n+nT_{n-1}$.
 
@@ -462,8 +710,11 @@ and $O(N^3)$ scalar storage in~\cite[Section 2]{cgp}
 model used there. Integers grow with $n$; no $O(N^2)$ bit-complexity,
 wall-clock guarantee, optimality, or corresponding run-refined bound is
 claimed.
+\begin{writenote}[6 October 2026]
+Locations, checked by the write: Claesson--Gu\dh mundsson--Pantone state ``$O(N^4)$ time using $O(N^3)$ memory'' in Section~2 (p.~5), assuming $O(1)$ arithmetic. In Asinowski--Banderier--Hackl the total-count bounds ($O(N^4)$ arithmetic operations, $O(N^3)$ simultaneous allocations, with leading terms $N^4/8$ additions and $N^3/3$ allocations) are in the discussion following Theorem~11 (pp.~16--17); Theorem~11 itself is the run-refined recurrence (their (9)), which computes all $p_{n,k}$ in $O(N^5)$ operations. Their conclusion (p.~37) says that ``the optimal cost of the computation of pop-stacked permutations is still open''; the recurrence \eqref{psp:egf:eq:recurrence} lowers the operation count and leaves that question open (Section~\ref{psp:sec:further}, item~\ref{psp:q:complexity}).
+\end{writenote}
 
-The independent verification route expands \eqref{eq:H}--\eqref{eq:ND}
+The independent verification route expands \eqref{psp:egf:eq:H}--\eqref{psp:egf:eq:ND}
 as rational ordinary power series, divides by $D$, and multiplies the
 $n$th coefficient by $n!$. It does not use the Riccati recurrence.
 Both routes match all 71 fixture counts $p_0,\ldots,p_{70}$ exactly.
@@ -471,12 +722,15 @@ The fixture records separate provenance: $p_1,\ldots,p_{25}$ are the
 posted OEIS values checked in the earlier source work; the longer
 fixture was computed independently from the published endpoint
 recurrence. Agreement is finite evidence, not the proof of the formula.
+\begin{writenote}[6 October 2026]
+The ``earlier source work'' is Report~161 (Part~II): the fixture \file{data/164-egf-data-counts_p0_p70.json} names \file{Report161/data/counts.json} with its SHA-256 \texttt{d42dae1b\ldots}, which is the SHA-256 of the shipped \file{data/161-operator-data-counts.json} (checked at the write). The write also ran \eqref{psp:egf:eq:recurrence} to $n=450$: it reproduces all 450 terms of the OEIS b-file of A307030 \cite{oeisA307030}, and $6\mid$ the right-hand side at every step.
+\end{writenote}
 
-\section{Unique dominant pole and leading asymptotic}\label{sec:dominance}
+\section{Unique dominant pole and leading asymptotic}\label{psp:egf:sec:dominance}
 For completeness we supply the positive-operator isolation argument,
 rather than infer a complex gap from the positive pole equation.
 Let $\mathcal K$ denote the integral operator with kernel $K$ from
-\eqref{eq:K}. For real $t>0$, multiplication by $\sqrt{w_t}$ is boundedly
+\eqref{psp:egf:eq:K}. For real $t>0$, multiplication by $\sqrt{w_t}$ is boundedly
 invertible on $L^2(X,\mu)$. Thus $A_t$ is similar to the compact
 self-adjoint, positivity-preserving operator
 \[
@@ -491,7 +745,7 @@ interval $(a,b)$ with
 overlaps both. This set has positive area. Consequently $S_t^2$ has a
 strictly positive kernel almost everywhere.
 
-\begin{lemma}\label{lem:perron}
+\begin{lemma}\label{psp:egf:lem:perron}
 For such an operator, $\lambda(t)=\spr(A_t)=\|S_t\|>0$ is a simple
 positive eigenvalue with positive left and right eigenfunctions.
 All other eigenvalues have smaller modulus.
@@ -524,7 +778,7 @@ Thus there is a unique $t_*>0$ with $\lambda(t_*)=1$.
 
 The simple eigenvalue depends analytically on the parameter locally.
 If $f_t>0$ is its real unit eigenvector for $S_t$, differentiation gives
-\begin{equation}\label{eq:lambdaprime}
+\begin{equation}\label{psp:egf:eq:lambdaprime}
  \lambda'(t)=\lambda(t)\int_X\frac{w'_t}{w_t}f_t^2\dd\mu>0.
 \end{equation}
 One can obtain this directly from
@@ -537,17 +791,17 @@ At $t_*$ put $h_*=M_{1/\sqrt{w_{t_*}}}f_{t_*}$ and
 $\ell_*=M_{\sqrt{w_{t_*}}}f_{t_*}$. Their pairing is one. The local
 resolvent singular part is the corresponding analytic rank-one
 projection divided by $1-\lambda(z)$. Its scalar numerator in
-\eqref{eq:resolvent} is
+\eqref{psp:egf:eq:resolvent} is
 \[
  \left(\int_X\sqrt{w_{t_*}}f_{t_*}\dd\mu\right)^2>0.
 \]
-Equation \eqref{eq:lambdaprime} proves that this is a genuine simple
+Equation \eqref{psp:egf:eq:lambdaprime} proves that this is a genuine simple
 positive scalar pole. For $|z|<t_*$, the absolute kernel comparison
 $|A_z^kf|\leq A_{|z|}^k|f|$ and the spectral-radius formula show
 $\spr(A_z)\leq\lambda(|z|)<1$; hence there are no poles inside.
 The scalar resolvent identity extends over this disk by its invertible
 analytic resolvent. It follows that $t_*=\rho_0$ from
-\eqref{eq:realpoles}. Write $\rho=\rho_0$.
+\eqref{psp:egf:eq:realpoles}. Write $\rho=\rho_0$.
 
 For $|z|=\rho$, $z\ne\rho$, define
 $B_z=\mathcal K M_{|w_z|}$. Its weights are positive and bounded away
@@ -567,13 +821,13 @@ Thus $\spr(A_z)\leq\beta<1$ at every other point of this circle.
 Invertibility near such a point and continuation from the interior
 identify the quotient with the analytic scalar resolvent there.
 
-We already know from \eqref{eq:entire} that scalar poles form a discrete
+We already know from \eqref{psp:egf:eq:entire} that scalar poles form a discrete
 set. Compactness of the circle and discreteness, including at $\rho$,
 give some $R>\rho$ with no other scalar pole on or inside that disk.
 Subtracting the $\rho$ pole and applying Cauchy's estimate proves
-\begin{theorem}\label{thm:leading}
+\begin{theorem}\label{psp:egf:thm:leading}
 There exist $R>\rho$ and $0<\theta=\rho/R<1$ such that
-\begin{equation}\label{eq:leading}
+\begin{equation}\label{psp:egf:eq:leading}
  p_n=C\,n!\rho^{-n}\bigl(1+O(\theta^n)\bigr),\qquad
  C=\frac{2e^{-2\rho}(4e^\rho-1)}{\rho(\rho+2)}>0.
 \end{equation}
@@ -584,8 +838,11 @@ $C=e^{-\rho}r(\rho)/(\rho\phi'(\rho))$.
 This proof establishes existence of a complex pole-free gap, but supplies
 no certified numerical value of $R$, error constant, or onset index.
 The real interval certificate below does not fill that separate gap.
+\begin{writenote}
+Second routes. Part~II proves Theorem~\ref{psp:egf:thm:leading} without the explicit formula (Theorem~\ref{psp:op:thm:main}, Sections~\ref{psp:op:sec:perron}--\ref{psp:op:sec:circle}), writing out the analytic Fredholm continuation that is used here through the explicit quotient. The constants agree: Part~II's $\rho$ is the unique crossing $\lambda(\rho)=1$, which is $t_*=\rho_0$ above, and Part~II's $C$ of \eqref{psp:op:eq:amplitude} is the amplitude of the principal part $C/(1-z/\rho)$ of the same function $P$ at the same simple pole \eqref{psp:op:eq:pole}, hence equal to $-\Res(P,\rho)/\rho$, the closed form in \eqref{psp:egf:eq:leading}. Lemma~\ref{psp:egf:lem:perron} is Part~II's Lemma~\ref{psp:op:lem:perron} and Part~III's Lemma~\ref{psp:run:lem:perron}; Part~III, Section~\ref{psp:run:sec:dominance}, repeats this isolation at $u=1$.
+\end{writenote}
 
-\section{Rational certificates for the constants}\label{sec:certificate}
+\section{Rational certificates for the constants}\label{psp:egf:sec:certificate}
 Let the terminating decimals below denote exact rationals:
 \begin{align*}
  L&=1.11343904173672704376166152691808324014139016583344946615,\\
@@ -594,7 +851,7 @@ Let the terminating decimals below denote exact rationals:
  C_U&=0.695688549070635767995703168724110156574198350722.
 \end{align*}
 The companion proves with integer and rational arithmetic that
-\begin{equation}\label{eq:brackets}
+\begin{equation}\label{psp:egf:eq:brackets}
  L<\rho<U,\qquad C_L<C<C_U.
 \end{equation}
 The following remainder bounds make the certificate reproducible without
@@ -603,7 +860,7 @@ assuming the correctness of numerical transcendental functions.
 For $0\leq x<202$, let $T_{200}(x)=\sum_{j=0}^{200}x^j/j!$. Each ratio
 between consecutive terms in the tail after $x^{201}/201!$ is at most
 $x/202$. Hence
-\begin{equation}\label{eq:expbound}
+\begin{equation}\label{psp:egf:eq:expbound}
  T_{200}(x)\leq e^x\leq T_{200}(x)+
  \frac{x^{201}/201!}{1-x/202}.
 \end{equation}
@@ -630,7 +887,7 @@ by those rational interval operations. It verifies that both sine/cosine
 arguments are in $(0,1)$ and that $D(L)>0>D(U)$. In this bracket
 $0<zr/4<1$ and $0<\alpha<\pi/4$, so $\phi<1+\pi/4<\pi$.
 Only the first positive tangent pole can be crossed. Continuity and
-strict increase from \eqref{eq:phiprime} therefore isolate $\rho_0$.
+strict increase from \eqref{psp:egf:eq:phiprime} therefore isolate $\rho_0$.
 Finally direct positive interval substitution into
 \[
  C=\frac{2(4e^\rho-1)}{e^{2\rho}\rho(\rho+2)}
@@ -640,10 +897,13 @@ outward decimal enclosures of both denominator signs and the propagated
 amplitude interval. Decimal endpoints are suggested values only until
 these rational inequalities have been verified; no binary floating
 point or fitted coefficient is trusted by the certificate.
+\begin{writenote}[6 October 2026]
+Part~III's certificate \eqref{psp:run:eq:certified} uses the same endpoints $L$, $U$, digit for digit, and adds $U<6/5<\log4$. The write reran the companion's certificate on a fresh extraction; its output reproduced \file{data/164-egf-data-constant_certificate.json}. The interval check of Remark~\ref{psp:egf:rem:cgp-poles} proves all 75 decimals of $\rho$ printed by Claesson, Gu\dh mundsson and Pantone, more than the 56 certified here; their 58 printed decimals of $C$ agree with a 220-digit evaluation of the closed form (certified here to 48 decimals only).
+\end{writenote}
 
-\section{Stirling expansions and safe inversion}\label{sec:inverse}
-For sufficiently large integers, Theorem~\ref{thm:leading} gives
-\begin{equation}\label{eq:logH}
+\section{Stirling expansions and safe inversion}\label{psp:egf:sec:inverse}
+For sufficiently large integers, Theorem~\ref{psp:egf:thm:leading} gives
+\begin{equation}\label{psp:egf:eq:logH}
  \log p_n=\mathcal H(n)+\epsilon_n,\quad
  \mathcal H(x)=\log\Gamma(x+1)-x\log\rho+\log C,\quad
  |\epsilon_n|\leq M\theta^n
@@ -654,7 +914,7 @@ For each fixed $m\geq1$, the ordinary Stirling remainder then gives
  \log p_n={}&n\log n-(1+\log\rho)n+\tfrac12\log n
  +\log(C\sqrt{2\pi})\notag\\
  &+\sum_{j=1}^m\frac{B_{2j}}{2j(2j-1)n^{2j-1}}
- +O(n^{-2m-1}).\label{eq:stirling}
+ +O(n^{-2m-1}).\label{psp:egf:eq:stirling}
 \end{align}
 Exponentiating a sufficiently long finite truncation gives, for every
 fixed $K\geq0$,
@@ -681,14 +941,14 @@ increasing branch because
 $\mathcal H'(x)=\psi(x+1)-\log\rho\sim\log x$ and
 $\mathcal H''(x)=\psi'(x+1)>0$.
 
-\begin{proposition}[Rounding-safe threshold]
-If \eqref{eq:logH} holds for all $n\geq n_0$ and
+\begin{proposition}[Rounding-safe threshold]\label{psp:egf:prop:ceil}
+If \eqref{psp:egf:eq:logH} holds for all $n\geq n_0$ and
 \[
  x-2\geq n_0,\qquad \mathcal H'(x-2)>0,\qquad
  \delta(x)=\frac{2M\theta^{x-2}}{\mathcal H'(x-2)}<1,
 \]
 then
-\begin{equation}\label{eq:ceil}
+\begin{equation}\label{psp:egf:eq:ceil}
  \ceil{x-\delta(x)}\leq N(y)\leq\ceil{x+\delta(x)}.
 \end{equation}
 \end{proposition}
@@ -711,15 +971,18 @@ For a convenient real starting estimate, write $L_y=\log y$ and
 $u=W(L_y/(e\rho))$ on the positive real Lambert branch, so
 $x_0=L_y/u$ satisfies $x_0\log(x_0/(e\rho))=L_y$.
 One Newton correction in the Stirling expansion gives
-\begin{equation}\label{eq:inverseinit}
+\begin{equation}\label{psp:egf:eq:inverseinit}
  x=x_0-\frac{\tfrac12\log x_0+\log(C\sqrt{2\pi})}{u+1}
  +O\!\left(\frac1{x_0u}\right).
 \end{equation}
 Indeed the displayed correction is $O(1)$, the omitted residual is
 $O(1/x_0)$, and the derivative is asymptotic to $u+1$.
 This continuous inverse estimate is not an exact integer-ceiling rule.
+\begin{writenote}
+Part~II, Section~\ref{psp:op:sec:inverse}, proves the same Stirling expansions (Corollary~\ref{psp:op:cor:stirling}), the same bracket with the same proof (Theorem~\ref{psp:op:thm:bracket}), the same first inverse correction \eqref{psp:op:eq:firstinverse}, and every fixed order of the continuous inverse (Proposition~\ref{psp:op:prop:allinverse}). Its $u=\log(x_0/\rho)$ is the present $u$ plus one, so its denominator $\log(x_0/\rho)$ is the present $u+1$, and its numerator $\frac12\log(2\pi x_0)+\log C$ equals the present one. The front matter (``The inverses and the transseries volume'') classifies $x_0$, \eqref{psp:egf:eq:inverseinit} and Proposition~\ref{psp:egf:prop:ceil}.
+\end{writenote}
 
-\section{Source status and claim boundaries}\label{sec:sources}
+\section{Source status and claim boundaries}\label{psp:egf:sec:sources}
 The underlying overlap characterization is due to Asinowski, Banderier,
 Billey, Hackl and Linusson~\cite{abbhl}, with the later development by
 Asinowski, Banderier and Hackl~\cite{abh}. Claesson, Gu\dh mundsson and
@@ -755,7 +1018,7 @@ The final published 2023 version of Defant and Williams'
 count to A307030, while Remark 11.3 records later progress on neighboring
 problems. The cited subsequent Choi--Sun work~\cite{cs} concerns other
 Coxeter/Tamari/root-poset settings and does not provide the present
-classical type-A total-count EGF. The current OEIS source entry~\cite{oeis}
+classical type-A total-count EGF. The current OEIS source entry~\cite{oeisA307030}
 was read as revision 63 dated 18 November 2021; its lack of a formula
 field corroborates but cannot establish novelty.
 
@@ -769,8 +1032,11 @@ arithmetic total-count recurrence was located. This is a bounded search
 result, not proof of worldwide priority; scholarly author and citation
 review remains appropriate before any submission. No publication,
 author contact, or repository edit was undertaken.
+\begin{writenote}[6 October 2026]
+What the write re-read (front matter, ``The predictions of Claesson, Gu\dh mundsson and Pantone''). The authors' repository \cite{repo} lists twenty positive and eight nonreal estimates and the constant $C$; its first positive estimates are as quoted above, and it lists the pole $\rho_{12}$ that the paper's printed list omits (Remark~\ref{psp:egf:rem:cgp-poles}). Asinowski--Banderier--Hackl \cite[Section~2.4]{abh} call an exact asymptotic analysis ``a challenge'' and report the conjectures of \cite{cgp} (p.~18); their Theorem~10 is a functional equation for a five-variable generating function. The OEIS entry \cite{oeisA307030} is still revision \#63. Defant--Williams \cite{dw} and Choi--Sun \cite{cs} were not re-read by the write.
+\end{writenote}
 
-\section{Companion and reproducible release}\label{sec:companion}
+\section{Companion and reproducible release}\label{psp:egf:sec:companion}
 The source package contains a standard-library Python companion with
 three bounded public modes: count through at most $N=400$, independently
 verify quotient coefficients through at most $N=70$, and certify the
@@ -783,7 +1049,7 @@ exceptions and remain active under Python's optimization flag.
 The quotient check is intentionally a separate, slower exact series
 calculation. It is not covered by the recurrence's quadratic arithmetic
 bound. The certificate uses exact fractions, Taylor bounds and integer
-square roots as proved in Section~\ref{sec:certificate}. The data fixture
+square roots as proved in Section~\ref{psp:egf:sec:certificate}. The data fixture
 and output receipts distinguish source values from computed values.
 
 PDF reproduction uses a fresh exclusive output directory, disabled TeX
@@ -801,56 +1067,1723 @@ archive packages only the allowlisted report, source, fixtures,
 certificates and reproduction scripts; temporary logs and page images
 are excluded. Consult the package README for the exact commands and
 scope of the final receipts.
+\begin{writenote}
+In this directory the companion is \file{code/164-egf-companion-pop_egf.py} with its tests and README (\file{164-egf-companion-README.md}), the data are \file{data/164-egf-data-*.json}, and the release tools are \file{code/164-egf-*.py}. The package README is replaced by the report's README; the PDF and \file{SHA256SUMS} are not shipped. Nothing runs in this directory under the shipped names; the README gives the rerun route from the arrival commit.
+\end{writenote}
+\clearpage
 
-\newpage
-\begin{thebibliography}{9}
+\part{Factorial exponential growth of pop stacked permutations: an operator proof and asymptotic inversion}\label{psp:op:part}
+\partsource{Bundle Report~161, archive \file{Pop_Stacked_Permutations_Asymptotics_and_Inverses_Source.zip}, delivered as \file{Report161.tex} (13 pages). Delivered title block ``Factorial exponential growth of pop stacked permutations / An operator proof and asymptotic inversion / Report 161 / 3 October 2026''. Printed as delivered, with \textbf{[write]} notes; Report~161's Section~$k$ is Section~$k+13$ here, and its statements and equations move with their sections. The opening paragraph ``Attribution and scope'' is the manuscript's own.}
+\begin{partabstract}
+Let $p_n$ be the number of permutations of $[n]$ in the image of one
+pass through a pop stack, equivalently the number whose adjacent
+maximal ascending runs overlap. This is OEIS A307030. We prove
+\[
+ p_n=C\,n!\rho^{-n}\bigl(1+O(q^n)\bigr),
+ \qquad \rho>1,\quad C>0,\quad 0<q<1.
+\]
+The constants are specified exactly by a compact integral operator on
+a disjoint union of singleton and interval run states. The proof
+includes the labelled-simplex normalization, a self-adjoint Perron
+argument, an analytic Fredholm reduction, a positive simple pole,
+and strict domination at every other point on its circle of convergence.
+It yields all fixed orders of the Stirling expansion, a recursively
+specified all-orders expansion for the continuous inverse, and an
+exponentially narrow ceiling bracket around the exact log-Gamma root.
+
+The factorial-exponential law was predicted numerically in the
+counting literature. The spectral method itself is classical; the
+contribution here is its variable-run construction and the resulting
+proof for this sequence. Published decimal estimates of $\rho$ and $C$
+are not certified by this report. Non-D-finiteness, further poles,
+and an effective finite-input asymptotic threshold certificate are
+not proved. A standard-library companion supplies independently
+structured finite checks and exact bounded threshold searches.
+\end{partabstract}
+\noindent\textbf{Attribution and scope.}
+The overlap characterization and exact counting algorithms are prior
+results of Asinowski and collaborators~\cite{abbhl,abh} and
+Claesson, Gu\dh mundsson and Pantone~\cite{cgp}.
+Positive integral operators and spectral asymptotics for permutation
+classes were developed by Ehrenborg, Kitaev and Perry~\cite{ekp}.
+The new claim is the theorem proved below for the total pop-stacked
+count, not invention of those methods. A bounded check of the current
+OEIS entry, the primary pop-stack papers, \emph{Semidistrim Lattices},
+and the available report catalogue found no earlier proof of this
+leading equivalent. This is not exhaustive scholarly priority
+clearance. Section~\ref{psp:op:sec:sources} records exactly what the source
+gate and the finite evidence support.
+
+\begin{center}
+\small
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.24\textwidth} >{\raggedright\arraybackslash}p{0.70\textwidth}@{}}
+\toprule
+\multicolumn{2}{@{}l}{\emph{Reading conventions of Part~II} \wtag}\\
+\midrule
+$p_n$, $P$ & as in Part~I\\
+$J$, $D$, $\mu$, $X=I\sqcup D$ & overlap kernel and interval states (Part~I's $K$ and $\Delta$), measure, states\\
+$S_r$, $\lambda$, $v$, $d_\rho$, $h$, $\ell$ & symmetrized operator, Perron eigenvalue, eigenfunction, $\lambda'(\rho)$, right and left eigenvectors\\
+$\rho$, $C$, $q$, $R$ & Part~I's $\rho$ and $C$ (note in Section~\ref{psp:op:sec:main}); $q=\rho/R$ (Part~I's $\theta$)\\
+$H$, $x$, $x_0$, $u$, $b$ & log-Gamma model (Part~I's $\mathcal H$), its root, the initializer, $u=\log(x_0/\rho)$ (Part~I's $u$ plus one), $b=\frac12\log(2\pi x_0)+\log C$\\
+$d_m$, $\mathcal F$ & inverse coefficients, the formal series \eqref{psp:op:eq:formalF} (not Part~I's resultant)\\
+$F$, $E_z$, $B_z$, $D(z)$ & the Fredholm reduction of Section~\ref{psp:op:sec:fredholm} (this $D$ is a matrix, not Part~I's denominator)\\
+\bottomrule
+\end{tabular}
+\end{center}
+\section{Definitions and main theorem}\label{psp:op:sec:main}
+A pop-stack pass reverses each maximal decreasing run of a permutation
+and concatenates the resulting increasing blocks. A permutation in
+its image is called \emph{pop-stacked}. Put $p_0=1$ for the empty
+permutation and let $p_n$ count pop-stacked permutations of $[n]$ for
+$n\geq1$. The first values, with the empty term included, are
+\[
+ 1,1,1,3,11,49,263,1653,11877,95991,862047.
+\]
+All runs below are maximal ascending runs unless stated otherwise.
+For consecutive runs with endpoints $(a,b)$ and $(c,d)$ the two
+required strict inequalities are
+\begin{equation}\label{psp:op:eq:cross}
+ a<d,\qquad c<b.
+\end{equation}
+The second says that the boundary is a descent; the first is the
+additional image condition. A singleton has coincident endpoints.
+Thus the terminology ``overlap'' means these cross inequalities,
+not a positive-length intersection: a singleton may lie strictly
+inside the range of a neighboring nonsingleton run. Two singleton
+runs can never satisfy both inequalities.
+
+Here is an exact specification of the constants. Let
+\[
+ I=(0,1),\quad D=\{(a,b):0<a<b<1\},\quad X=I\sqcup D,
+ \qquad \mu=\dd x\sqcup\dd a\dd b,
+\]
+so the Hilbert space is $\mathcal H=L^2(X,\mu)=L^2(I)\oplus L^2(D)$.
+For $s=x\in I$ set $\lo(s)=\hi(s)=x$; for $s=(a,b)\in D$ set
+$\lo(s)=a$, $\hi(s)=b$. Define the symmetric kernel
+\begin{equation}\label{psp:op:eq:kernel}
+ J(s,t)=\one\{\lo(s)<\hi(t),\ \lo(t)<\hi(s)\},
+ \qquad (Jf)(s)=\int_X J(s,t)f(t)\dd\mu(t),
+\end{equation}
+and the entire weights
+\begin{equation}\label{psp:op:eq:weights}
+ w_z(x)=z\quad(x\in I),\qquad
+ w_z(a,b)=z^2e^{z(b-a)}\quad((a,b)\in D).
+\end{equation}
+Write $M_f$ for multiplication by $f$. For $r>0$ put
+\[
+ S_r=M_{\sqrt{w_r}}JM_{\sqrt{w_r}},\qquad \lambda(r)=\|S_r\|.
+\]
+As proved below, $\lambda(r)$ is the simple positive leading eigenvalue,
+strictly increases from zero to infinity, and has a unique crossing
+\begin{equation}\label{psp:op:eq:rho}
+ \lambda(\rho)=1.
+\end{equation}
+Let $v=v_\rho>0$ be its real eigenfunction normalized by $\|v\|_2=1$.
+Define
+\begin{align}
+ d_\rho&=\frac1\rho\int_I v(x)^2\dd x
+       +\int_D\left(\frac2\rho+b-a\right)v(a,b)^2\dd a\dd b,
+       \label{psp:op:eq:derivative}\\
+ C&=\frac{\left(\int_X\sqrt{w_\rho(s)}v(s)\dd\mu(s)\right)^2}
+             {\rho d_\rho}.\label{psp:op:eq:amplitude}
+\end{align}
+There is no fitted or numerical parameter in these definitions.
+
+\begin{theorem}[Factorial-exponential equivalent]\label{psp:op:thm:main}
+The definitions above give unique constants $\rho$ and $C$, with
+\begin{equation}\label{psp:op:eq:rhobounds}
+ (24/23)^{1/4}\leq\rho\leq2,\qquad C>0.
+\end{equation}
+For some $R>\rho$,
+\begin{equation}\label{psp:op:eq:main}
+ \frac{p_n}{n!}=C\rho^{-n}+O(R^{-n}).
+\end{equation}
+Equivalently, with $q=\rho/R\in(0,1)$,
+$p_n=Cn!\rho^{-n}(1+O(q^n))$.
+The exponential generating function
+$P(z)=\sum_{n\geq0}p_nz^n/n!$ continues meromorphically to $\CC$.
+Its only singularity in some closed disk of radius greater than
+$\rho$ is the simple pole at $\rho$, with principal part
+$C/(1-z/\rho)$.
+\end{theorem}
+
+The scalar function may have cancellations of other operator poles.
+No assertion is made about their number, positions, or existence.
+In particular, meromorphic continuation and one pole do not imply
+non-D-finiteness. The published predictions
+$\rho\approx1.113439041736727\ldots$ and
+$C\approx0.695688549070635\ldots$~\cite[Section 3.3]{cgp}
+are useful context only. We do not certify any of their decimal places
+or identify a numerical isolation interval narrower than
+\eqref{psp:op:eq:rhobounds}.
+\begin{writenote}[6 October 2026]
+Superseded, and kept as delivered. Part~I, written after this Part on the same day, proves that $P$ is meromorphic with exactly the poles $\{D=0,\ Q\ne0\}$, all simple, with infinitely many positive ones, and that $P$ is not D-finite (Sections~\ref{psp:egf:sec:positive}--\ref{psp:egf:sec:riccati}); it certifies $\rho$ to 56 and $C$ to 48 decimals \eqref{psp:egf:eq:brackets}; and the write's interval check proves all 75 printed decimals of $\rho$ (Remark~\ref{psp:egf:rem:cgp-poles}). The constants here are Part~I's: the crossing $\lambda(\rho)=1$ is Part~I's $t_*=\rho_0$, and $C$ of \eqref{psp:op:eq:amplitude}, the amplitude of the principal part \eqref{psp:op:eq:pole}, equals $-\Res(P,\rho)/\rho=2e^{-2\rho}(4e^\rho-1)/(\rho(\rho+2))$ by Part~I's \eqref{psp:egf:eq:residue}. So Theorem~\ref{psp:op:thm:main} is a second route to Part~I's Theorem~\ref{psp:egf:thm:leading}.
+\end{writenote}
+
+\section{The labelled run integral}\label{psp:op:sec:integral}
+\begin{lemma}[Image characterization]\label{psp:op:lem:characterization}
+A permutation is pop-stacked if and only if every consecutive pair
+of its maximal ascending runs satisfies \eqref{psp:op:eq:cross}.
+\end{lemma}
+\begin{proof}
+For necessity, write an input permutation as its maximal decreasing
+blocks, and let $B_1,B_2,\ldots$ be their reversals. The boundary between
+two original blocks is an ascent, so
+$\min B_i<\max B_{i+1}$. Each output block is increasing.
+The maximal ascending runs of the output are obtained by merging
+successive blocks at ascent boundaries. Between two consecutive
+merged groups, let $B_i$ be the last block of the left group and
+$B_{i+1}$ the first block of the right group. Since the merged groups
+are increasing,
+\[
+ \min(\text{left})\leq\min B_i<\max B_{i+1}
+ \leq\max(\text{right}).
+\]
+The other cross inequality holds because the boundary of maximal
+ascending runs is a descent.
+
+Conversely, reverse each maximal ascending run of a permutation
+satisfying \eqref{psp:op:eq:cross}. Each reversed block is decreasing, and
+the boundary between reversed blocks is an ascent because
+$\min(\text{left})<\max(\text{right})$. They are therefore the maximal
+decreasing runs of the resulting input permutation. A pop-stack pass
+reverses them back. This proves the characterization, which is the
+established result in~\cite[Theorem 1]{abbhl} and~\cite[Theorem 3]{abh}.
+\end{proof}
+
+Fix a composition $n=\ell_1+\cdots+\ell_k$ into positive run lengths.
+Place one real coordinate at each of the $n$ actual permutation
+positions, independently in $(0,1)$, with product Lebesgue measure.
+Impose increasing inequalities within the proposed blocks and both
+cross inequalities at every adjacent block boundary. Away from the
+null sets where coordinates tie, the rank order of the coordinates
+is a permutation. Each of the $n!$ labelled rank-order simplexes has
+volume exactly $1/n!$; this follows by coordinate permutation from
+the disjoint partition of the unit cube into these simplexes.
+Thus the constrained volume is exactly the number of admissible
+permutations with this run composition divided by $n!$.
+
+There is no further multinomial coefficient or run factorial.
+The coordinates belong to actual positions. Also there is no
+multiple counting over compositions: the second cross inequality
+makes every proposed boundary a descent, so the composition is
+exactly the unique maximal-ascending-run composition.
+
+For a block of size $\ell\geq2$, retain its first and last coordinates
+$a<b$. Its $\ell-2$ interior coordinates are increasing between them,
+so their integrated volume is
+\[
+ \frac{(b-a)^{\ell-2}}{(\ell-2)!}.
+\]
+After multiplying by $z^\ell$ and summing over all such lengths this is
+\[
+ \sum_{\ell\geq2}\frac{z^\ell(b-a)^{\ell-2}}{(\ell-2)!}
+   =z^2e^{z(b-a)}.
+\]
+A singleton instead contributes $z\dd x$ on its separate
+one-dimensional component. It is not the zero-measure diagonal of
+$D$. For a useful check, the contribution of all single-run objects is
+\begin{equation}\label{psp:op:eq:onerun}
+ \int_Xw_z\dd\mu
+   =z+z^2\int_0^1(1-t)e^{zt}\dd t=e^z-1,
+\end{equation}
+whose coefficient is $1/n!$, as required for the unique increasing
+permutation of every positive size.
+
+Put $A_z=JM_{w_z}$. The contribution from $k\geq1$ runs is
+\[
+ \int_{X^k}\prod_{i=1}^kw_z(s_i)
+       \prod_{i=1}^{k-1}J(s_i,s_{i+1})\dd\mu^k
+ =\int_X w_z A_z^{k-1}\one\dd\mu.
+\]
+Since $\|A_z\|\to0$ as $z\to0$, the Neumann series converges in
+operator norm near zero. The sum of absolute values of these
+integrals is finite there as well, by the same bound with $|w_z|$.
+The simplex argument therefore proves the analytic identity
+\begin{equation}\label{psp:op:eq:resolvent}
+ P(z)=1+\int_Xw_z(s)\bigl[(I-A_z)^{-1}\one\bigr](s)\dd\mu(s)
+ \qquad (|z|\text{ small}).
+\end{equation}
+The scalar pairing here is bilinear, without complex conjugation;
+it preserves holomorphic dependence on $z$.
+\begin{writenote}
+Part~I, Section~\ref{psp:egf:sec:model}, and Part~III, Section~\ref{psp:run:sec:model}, prove the same normalization (Part~I writes $K$ for $J$ and $\Delta$ for $D$; Part~III adds the marker $u$). Lemma~\ref{psp:op:lem:characterization} is the characterization of \cite[Theorem~1]{abbhl} and \cite[Theorem~3]{abh}, proved here; Parts~I and~III cite it.
+\end{writenote}
+
+\section{Compactness and the Perron crossing}\label{psp:op:sec:perron}
+Since $\mu(X)=3/2$ and $J$ is a measurable bounded kernel, $J$ is
+Hilbert--Schmidt, hence compact. The map $z\mapsto w_z$ is entire in
+$L^\infty(X)$: on every compact $z$-disk the exponential series and
+all its derivatives converge uniformly because $0<b-a<1$.
+Consequently $A_z$ is an entire family of compact operators, and
+$A_0=0$.
+
+For every fixed $r>0$, $w_r$ is bounded above and away from zero on
+both components of $X$. Thus $T_r=M_{\sqrt{w_r}}$ is boundedly
+invertible and
+\begin{equation}\label{psp:op:eq:similarity}
+ T_rA_rT_r^{-1}=S_r=T_rJT_r.
+\end{equation}
+The operator $S_r$ is compact, self-adjoint, and positivity preserving.
+We do not assert that $S_r$ is positive semidefinite.
+
+For any states $s,t$ set
+$m=\min(\lo(s),\lo(t))>0$ and
+$M=\max(\hi(s),\hi(t))<1$. Every interval state
+$u=(a,b)$ with $0<a<m$ and $M<b<1$ satisfies
+$J(s,u)J(u,t)=1$. This is a set of area $m(1-M)>0$.
+It follows that $J^2$ has a strictly positive integral kernel;
+the kernel of $S_r^2$ is likewise strictly positive almost everywhere,
+as all intervening weights are positive.
+
+\begin{lemma}[The needed Perron conclusion]\label{psp:op:lem:perron}
+Suppose $S$ is a nonzero compact self-adjoint operator with a
+nonnegative symmetric integral kernel, and $S^2$ has a strictly
+positive kernel almost everywhere. Then $\lambda=\|S\|>0$ is a simple
+positive eigenvalue with a real eigenfunction $v>0$ almost everywhere.
+Every other eigenvalue has modulus strictly smaller than $\lambda$.
+\end{lemma}
+\begin{proof}
+By the compact self-adjoint spectral theorem, the positive-semidefinite
+operator $S^2$ has a real top eigenfunction $f$ with eigenvalue
+$\lambda^2$. Its nonnegative kernel gives
+\[
+ \langle |f|,S^2|f|\rangle\geq
+ \langle f,S^2f\rangle=\lambda^2\|f\|_2^2.
+\]
+The norm bound forces equality, and the spectral theorem then shows
+that $|f|$ is a top eigenfunction. Applying the strictly positive
+kernel shows $|f|>0$ almost everywhere. If $f$ had positive and negative
+sets both of positive measure, the displayed inequality would be
+strict, by integrating the strictly positive kernel across those sets.
+Hence every nonzero real vector in this top eigenspace has constant
+sign. The eigenspace is one-dimensional: two independent real vectors
+would give a nonzero one orthogonal to a positive vector, which must
+change sign. Since $S$ preserves this eigenspace and positivity, its
+action on the positive unit vector is $+\lambda$, not $-\lambda$.
+Any eigenvalue of modulus $\lambda$ would give another vector in the
+top eigenspace of $S^2$. Finally compactness excludes accumulation of
+nonzero eigenvalues at $\lambda$ or $-\lambda$, giving the strict gap.
+\end{proof}
+
+Apply the lemma to $S_r$. Similarity transfers algebraic simplicity
+to $A_r$ and gives positive right and left eigenfunctions. In
+particular $\lambda(r)=\spr(A_r)=\|S_r\|$.
+Norm continuity gives continuity of $\lambda$. If $r_2>r_1>0$,
+the kernel of $S_{r_2}-S_{r_1}$ is positive wherever $J=1$.
+Testing it against the positive unit Perron vector at $r_1$ and
+using the Rayleigh bound gives
+\[
+ \lambda(r_2)\geq\langle v_{r_1},S_{r_2}v_{r_1}\rangle
+  >\lambda(r_1).
+\]
+Also $\lambda(r)\to0$ as $r\downarrow0$.
+On $E=\{(a,b):0<a<1/4,\ 3/4<b<1\}$ all pairs satisfy $J=1$,
+$\mu(E)=1/16$, and $w_r\geq r^2e^{r/2}$. Testing against
+$\one_E/\sqrt{\mu(E)}$ gives
+\begin{equation}\label{psp:op:eq:large-r}
+ \lambda(r)\geq r^2e^{r/2}/16\longrightarrow\infty.
+\end{equation}
+This proves the existence and uniqueness in \eqref{psp:op:eq:rho}.
+
+The simple eigenvalue is analytic locally near any positive $r$.
+For completeness, choose the analytic square root of $z$ near $r$
+on $I$, and $ze^{z(b-a)/2}$ on $D$. This gives a locally analytic
+$S_z$. A small contour around the isolated simple eigenvalue defines
+an analytic rank-one Riesz projection by its resolvent; its rank
+stays one, and the restricted operator gives the analytic eigenvalue.
+For real $r$, put $D_r=M_{w'_r/w_r}$. Differentiation yields
+\[
+ S'_r=\tfrac12(D_rS_r+S_rD_r),\qquad
+ \lambda'(r)=\lambda(r)\int_X\frac{w'_r}{w_r}v_r^2\dd\mu>0.
+\]
+At $r=\rho$ this is $\lambda'(\rho)=d_\rho$, exactly
+\eqref{psp:op:eq:derivative}. This proves a simple, transverse crossing.
+\begin{writenote}
+Lemma~\ref{psp:op:lem:perron} is stated here for a general operator; Part~I's Lemma~\ref{psp:egf:lem:perron} and Part~III's Lemma~\ref{psp:run:lem:perron} are the same argument for $S_t$.
+\end{writenote}
+
+\section{Meromorphic continuation and the positive pole}\label{psp:op:sec:fredholm}
+We give the analytic Fredholm argument used here rather than merely
+invoking its conclusion. Fix $z_0$. Compactness allows a finite-rank
+$F=UV$, with $U:\CC^m\to\mathcal H$ and $V:\mathcal H\to\CC^m$,
+such that $\|A_{z_0}-F\|<1$. In a small disk around $z_0$ set
+$E_z=A_z-F$; there $B_z=I-E_z$ has an analytic Neumann inverse.
+Then
+\[
+ I-A_z=B_z(I-B_z^{-1}UV).
+\]
+The second factor is invertible exactly when the finite-dimensional
+matrix $D(z)=I-VB_z^{-1}U$ is invertible. Where it is,
+\begin{equation}\label{psp:op:eq:woodbury}
+ (I-A_z)^{-1}=B_z^{-1}
+    +B_z^{-1}U D(z)^{-1}VB_z^{-1}.
+\end{equation}
+The determinant of $D$ is analytic. Either it vanishes identically in
+this disk, or its zeros are isolated and \eqref{psp:op:eq:woodbury} is
+meromorphic there with finite-order poles. At zero the inverse
+exists because $A_0=0$. Continue along a path from zero to any
+specified point using a finite chain of overlapping disks of the
+kind just described. The overlap with a previously reached disk
+contains invertible points outside its isolated exceptional set;
+therefore the determinant in the next disk cannot vanish identically.
+This excludes the first alternative throughout the connected plane.
+It proves that the noninvertible set is locally discrete and the
+operator inverse is meromorphic on $\CC$.
+
+The functional $f\mapsto\int_Xw_zf\dd\mu$ is entire in operator
+norm, and $\one\in\mathcal H$, so \eqref{psp:op:eq:resolvent} continues
+$P$ meromorphically. At the crossing, put
+\[
+ h=T_\rho^{-1}v,\qquad \ell=T_\rho v,
+ \qquad \int_X\ell h\dd\mu=1.
+\]
+These are positive right and left eigenvectors of $A_\rho$. The
+rank-one spectral projection is
+$f\mapsto h\int_X\ell f\dd\mu$. Locally the singular resolvent
+part is this analytic projection divided by $1-\lambda(z)$.
+Its scalar numerator at $\rho$ is
+\begin{equation}\label{psp:op:eq:numerator}
+ \left(\int_Xw_\rho h\dd\mu\right)
+ \left(\int_X\ell\dd\mu\right)
+ =\left(\int_X\sqrt{w_\rho}\,v\dd\mu\right)^2>0.
+\end{equation}
+Since
+\[
+ 1-\lambda(z)=\rho\lambda'(\rho)(1-z/\rho)+O((z-\rho)^2),
+\]
+we obtain
+\begin{equation}\label{psp:op:eq:pole}
+ P(z)=\frac{C}{1-z/\rho}+\text{an analytic germ at }\rho,
+\end{equation}
+with exactly the positive amplitude \eqref{psp:op:eq:amplitude}. In
+particular the scalar pole does not cancel.
+
+\section{Strict complex domination and coefficient extraction}\label{psp:op:sec:circle}
+For $|z|=r>0$ define $Q_z=JM_{|w_z|}$. On $I$, $|w_z|=r$;
+on $D$,
+\begin{equation}\label{psp:op:eq:strictweight}
+ |w_z(a,b)|=r^2e^{\operatorname{Re}(z)(b-a)}\leq w_r(a,b).
+\end{equation}
+For every $f\in\mathcal H$ and every positive integer $k$,
+\[
+ |A_z^kf|\leq Q_z^k|f|\leq A_r^k|f|.
+\]
+Norms and the spectral-radius formula give
+\begin{equation}\label{psp:op:eq:domination}
+ \spr(A_z)\leq\spr(Q_z)\leq\lambda(r).
+\end{equation}
+Thus $I-A_z$ is invertible for $|z|<\rho$.
+
+Suppose now that $|z|=\rho$ and $z\ne\rho$.
+Then $\operatorname{Re}(z)<\rho$, and \eqref{psp:op:eq:strictweight} is
+strict on the entire interval component $D$. The positive weight
+$|w_z|$ is bounded above and away from zero. Applying the previous
+similarity and squared-kernel proof to $Q_z$, let
+$Q_zh_z=\beta h_z$ with $h_z>0$ and $\beta=\spr(Q_z)>0$.
+Use the positive left eigenvector $\ell$ of $A_\rho$ above. All
+quantities in the following identity are real:
+\begin{align}
+ (1-\beta)\int_X\ell h_z\dd\mu
+ &=\int_X\ell(A_\rho-Q_z)h_z\dd\mu\notag\\
+ &=\int_D(w_\rho-|w_z|)h_z(J\ell)\dd\mu>0.
+ \label{psp:op:eq:strictdomination}
+\end{align}
+Indeed $A_\rho^*\ell=w_\rho J\ell=\ell$, so
+$J\ell=\ell/w_\rho>0$ almost everywhere. Thus $\beta<1$, and
+\eqref{psp:op:eq:domination} proves invertibility at every other point of
+the circle. This establishes strictness despite the unchanged
+absolute singleton weight; no unproved aperiodicity assertion is
+needed.
+
+The noninvertible set is locally discrete and has no point in
+$|z|\leq\rho$ except $\rho$. Consequently there is an $R>\rho$
+with no other exceptional point on or inside $|z|\leq R$.
+To see the uniformity explicitly, otherwise exceptional points with
+moduli decreasing to $\rho$ would have a convergent subsequence to
+a point of the compact circle; that would contradict local
+discreteness, including at $\rho$. Shrink $R$ if necessary so that
+an open neighborhood of its closed disk has the same property.
+By \eqref{psp:op:eq:pole},
+\[
+ G(z)=P(z)-\frac{C}{1-z/\rho}
+\]
+is analytic on that neighborhood. Cauchy's coefficient bound gives
+$[z^n]G=O(R^{-n})$, which proves \eqref{psp:op:eq:main}.
+
+It remains to prove \eqref{psp:op:eq:rhobounds}. Four consecutive decreasing
+entries $a>b>c>d$ force the two middle entries to be consecutive
+singleton ascending runs. This is forbidden by \eqref{psp:op:eq:cross}.
+For a uniform random permutation, the relative orders in disjoint
+positional blocks of four are independent and uniform, as follows
+also from independent continuous coordinates. Hence
+\begin{equation}\label{psp:op:eq:four}
+ \frac{p_n}{n!}\leq(23/24)^{\floor{n/4}}.
+\end{equation}
+Taking $n$th roots and using \eqref{psp:op:eq:main} gives
+$\rho\geq(24/23)^{1/4}>1$. Four entries, rather than three, are
+essential: $14325$ is pop-stacked and contains the decreasing triple
+$432$.
+
+For the upper bound, interleave any ordering of the lower $m$ values
+with any ordering of the upper $m$ values, beginning with a lower
+value. The maximal ascending runs are the $m$ low--high pairs, and
+all neighboring pairs satisfy \eqref{psp:op:eq:cross}. Thus
+$p_{2m}\geq(m!)^2$ and
+$p_{2m}/(2m)!\geq\binom{2m}{m}^{-1}$. Taking $2m$th roots gives
+$\rho\leq2$. Theorem~\ref{psp:op:thm:main} is proved.
+\begin{writenote}[6 October 2026]
+The interleaving lower bound $p_{2m}\ge(m!)^2$ is the construction of Asinowski, Banderier and Hackl \cite[Theorem~12, Section~2.4]{abh} (intertwining two permutations of size $n/2$), which they state as growth at least $\exp(n\ln n-n\ln2-n+o(n))$; they also mention a comparison with alternating permutations that gives the lower bound $.63^nn!$. This Part does not cite them. The bracket \eqref{psp:op:eq:rhobounds}, $1.0107\ldots\le\rho\le2$, is true and contains Part~I's certified $\rho=1.11343904\ldots$; it is kept as an elementary bound.
+\end{writenote}
+
+\section{All algebraic orders and inverse thresholds}\label{psp:op:sec:inverse}
+The exponentially small relative error implies, for sufficiently
+large integers $n$,
+\begin{equation}\label{psp:op:eq:loggamma}
+ \log p_n=H(n)+\epsilon_n,\qquad
+ H(x)=\log\Gamma(x+1)-x\log\rho+\log C,
+ \qquad |\epsilon_n|\leq Mq^n,
+\end{equation}
+for some fixed $M>0$ and $q\in(0,1)$. The constants $M$, $q$, and
+an onset $n_0$ exist; numerical certified values are not supplied.
+
+\begin{corollary}[Complete fixed-order Stirling expansions]\label{psp:op:cor:stirling}
+For every fixed integer $m\geq1$,
+\begin{align}
+ \log p_n={}&n\log n-(1+\log\rho)n+\tfrac12\log n
+       +\log(C\sqrt{2\pi})\notag\\
+ &+\sum_{j=1}^m\frac{B_{2j}}{2j(2j-1)n^{2j-1}}
+       +O(n^{-2m-1}).\label{psp:op:eq:stirling}
+\end{align}
+Here $B_{2j}$ are the Bernoulli numbers. For every fixed $K\geq0$,
+\begin{equation}\label{psp:op:eq:multstirling}
+ p_n=C\sqrt{2\pi n}\left(\frac{n}{e\rho}\right)^n
+ \left(\sum_{k=0}^K\frac{s_k}{n^k}+O(n^{-K-1})\right),
+\end{equation}
+where $s_0=1$ and the $s_k$ are the formal coefficients of
+\begin{equation}\label{psp:op:eq:stirlingcoeff}
+ \exp\left(\sum_{j\geq1}\frac{B_{2j}t^{2j-1}}{2j(2j-1)}\right)
+ =1+\frac t{12}+\frac{t^2}{288}-\frac{139t^3}{51840}+\cdots.
+\end{equation}
+Also $p_{n+1}/p_n=((n+1)/\rho)(1+O(q^n))$.
+\end{corollary}
+\begin{proof}
+Insert the ordinary finite-order Stirling expansion of
+$\log\Gamma(n+1)$ into \eqref{psp:op:eq:loggamma}; the exponential error is
+smaller than every fixed algebraic order. Exponentiating a sufficiently
+long finite truncation gives \eqref{psp:op:eq:multstirling}. Dividing two
+successive instances of the leading equivalent gives the ratio.
+These are Poincar\'e expansions at fixed order, not claims that an
+infinite Bernoulli series converges.
+\end{proof}
+
+Define the first threshold by
+\[
+ N(y)=\min\{n\geq0:p_n\geq y\}\qquad(y>0).
+\]
+The sequence is nondecreasing: appending the new maximum $n+1$ extends
+the last ascending run and preserves both neighboring cross
+inequalities. This is injective, including from the empty permutation.
+The sequence is eventually strictly increasing by the ratio formula,
+and it tends to infinity.
+
+For $L=\log y$ sufficiently large, there is a unique large real root
+$x=x(y)$ of $H(x)=L$, since
+\[
+ H'(x)=\psi(x+1)-\log\rho\sim\log x,
+ \qquad H''(x)=\psi'(x+1)>0\quad(x>-1).
+\]
+We refer only to this eventually increasing branch.
+
+\begin{theorem}[Precise integer bracket]\label{psp:op:thm:bracket}
+Fix constants $M,q,n_0$ for which \eqref{psp:op:eq:loggamma} holds for all
+integers $n\geq n_0$. Let $x$ be the large root just defined. If
+\begin{equation}\label{psp:op:eq:deltacond}
+ x-2\geq n_0,\qquad H'(x-2)>0,\qquad
+ \delta(x)=\frac{2Mq^{x-2}}{H'(x-2)}<1,
+\end{equation}
+then
+\begin{equation}\label{psp:op:eq:ceilingbracket}
+ \ceil{x-\delta(x)}\leq N(y)\leq\ceil{x+\delta(x)}.
+\end{equation}
+In particular $\delta(x)=O(q^x/\log x)$. If the two ceilings agree,
+they determine the threshold; otherwise exact counts or sharper
+certified information are needed.
+\end{theorem}
+\begin{proof}
+Let $a=\ceil{x-\delta}-1$ and $b=\ceil{x+\delta}$.
+Both belong to $[x-2,x+2]$, with $a<x-\delta$ and $b\geq x+\delta$.
+Since $H'$ is increasing and positive there, the mean value theorem
+gives
+\[
+ H(x)-H(a)>H'(x-2)\delta=2Mq^{x-2},\qquad
+ H(b)-H(x)\geq2Mq^{x-2}.
+\]
+Each logarithmic error at $a,b$ is at most $Mq^{x-2}$ because
+$q<1$. Hence $p_a<y\leq p_b$. Monotonicity gives $a<N(y)\leq b$,
+which is the claim. The stated order of $\delta$ follows from
+$H'(x-2)\sim\log x$.
+\end{proof}
+
+This theorem is an exact implication once its constants and
+hypotheses are supplied. It is not yet a numerically executable
+asymptotic certificate: this report does not give effective certified
+$M,q,n_0,\rho,C$. The companion's bounded threshold search uses
+actual integer counts and has a different, finite scope.
+
+\subsection{Lambert initialization and every fixed inverse order}
+Let $W$ be the positive real branch of Lambert's function,
+$W(s)e^{W(s)}=s$, and put
+\begin{equation}\label{psp:op:eq:xzero}
+ x_0=\frac{L}{W(L/(e\rho))},\qquad
+ u=\log(x_0/\rho),\qquad
+ b=\tfrac12\log(2\pi x_0)+\log C.
+\end{equation}
+Then $x_0\log(x_0/(e\rho))=L$ exactly. This supplies an initializer,
+not an exact threshold. Taylor expansion of $H$ gives
+\begin{equation}\label{psp:op:eq:firstinverse}
+ x=x_0-\frac{\tfrac12\log(2\pi x_0)+\log C}{\log(x_0/\rho)}
+       +O\!\left(\frac1{x_0\log x_0}\right).
+\end{equation}
+In particular $x-x_0\to-1/2$. Taking a bare ceiling of $x_0$ is
+therefore not justified even by an absolute $o(1)$ approximation.
+
+Here is an explicit recursive specification to all fixed orders.
+In formal power series in $t$, with $u,b$ treated as parameters,
+define
+\begin{align}
+ \mathcal F(d,t;u,b)={}&ud+b
+ +\sum_{k\geq2}\frac{(-1)^kd^kt^{k-1}}{k(k-1)}
+ +\tfrac12\log(1+td)\notag\\
+ &+\sum_{j\geq1}\frac{B_{2j}t^{2j-1}}
+            {2j(2j-1)(1+td)^{2j-1}}.\label{psp:op:eq:formalF}
+\end{align}
+Every fixed coefficient uses only finitely many displayed terms.
+Set
+\begin{align}
+ d_0(u,b)&=-b/u,\notag\\
+ d_m(u,b)&=-\frac1u[t^m]\mathcal F
+       \left(\sum_{j=0}^{m-1}d_j(u,b)t^j,t;u,b\right)
+       \qquad(m\geq1).\label{psp:op:eq:inverserecurrence}
+\end{align}
+These are rational functions of $u,b$; for example,
+\begin{align}
+ d_1&=-\frac{d_0^2/2+d_0/2+1/12}{u},\notag\\
+ d_2&=-\frac{(d_0+1/2)d_1-d_0^3/6-d_0^2/4-d_0/12}{u}.
+ \label{psp:op:eq:firstcoeffs}
+\end{align}
+
+\begin{proposition}[All fixed orders of the continuous inverse]\label{psp:op:prop:allinverse}
+For each fixed integer $m\geq0$, with the parameters of
+\eqref{psp:op:eq:xzero},
+\begin{equation}\label{psp:op:eq:allinverse}
+ x=x_0+\sum_{j=0}^{m}\frac{d_j(u,b)}{x_0^j}
+    +O\!\left(\frac{x_0^{-m-1}}{\log x_0}\right)
+ \qquad(y\to\infty).
+\end{equation}
+The result concerns the continuous root $x$; no fixed truncation is
+an exact integer rounding rule for $N(y)$.
+\end{proposition}
+\begin{proof}
+Here $b=u/2+\tfrac12\log(2\pi\rho)+\log C$, so $d_0$ is bounded.
+Induction in \eqref{psp:op:eq:inverserecurrence} gives $d_j=O(1/u)$ for
+every fixed $j\geq1$: the new coefficient in the nonlinear terms is
+a finite polynomial in previously bounded $d_j$, and division by
+$u$ remains. For bounded real $d$, finite Taylor expansion of
+$(x_0+d)\log((x_0+d)/(e\rho))$, of
+$\frac12\log(2\pi(x_0+d))$, and of a sufficiently long finite
+Stirling expansion shows that
+\[
+ H(x_0+d)-L
+\]
+has the fixed-order expansion \eqref{psp:op:eq:formalF} with $t=x_0^{-1}$.
+After truncation through degree $m$ its remainder is $O(t^{m+1})$
+uniformly for bounded $d$. The only unexpanded term with the large
+parameter $u$ is the exact linear term $ud$.
+Substitute $d=\sum_{j=0}^m d_jt^j$; the defining recurrence cancels
+the coefficients through degree $m$, leaving residual
+$O(x_0^{-m-1})$.
+
+To locate the root on the same bounded neighborhood, note that
+$H(x_0)-L=b+O(x_0^{-1})$ and, for example,
+$H(x_0-2)-L=b-2u+O(x_0^{-1})<0$ for large $x_0$,
+whereas $H(x_0)-L>0$. Thus $x\in(x_0-2,x_0)$.
+The proposed approximation also lies in a fixed bounded neighborhood
+of $x_0$. On the interval between the two,
+$H'\asymp\log x_0$. The mean value theorem converts the residual into
+\eqref{psp:op:eq:allinverse}. For $m=0$ it gives \eqref{psp:op:eq:firstinverse}.
+\end{proof}
+
+The integer inverse has $N(y)=x+O(1)$ and the stronger ceiling bracket
+\eqref{psp:op:eq:ceilingbracket}; an ordinary algebraic expansion cannot
+remove rounding at thresholds arbitrarily close to integers.
+Neither differentiating an unknown remainder nor silently rounding
+an approximation is used here.
+\begin{writenote}
+Corollary~\ref{psp:op:cor:stirling} and Theorem~\ref{psp:op:thm:bracket} are Part~I's \eqref{psp:egf:eq:stirling} and Proposition~\ref{psp:egf:prop:ceil}, with the same proof; \eqref{psp:op:eq:firstinverse} is Part~I's \eqref{psp:egf:eq:inverseinit}, because this Part's $u$ is Part~I's $u$ plus one. Proposition~\ref{psp:op:prop:allinverse} goes beyond Part~I. The front matter (``The inverses and the transseries volume'') shows that the recursion \eqref{psp:op:eq:inverserecurrence} is an instance of the transseries volume's reversion about a core, and classifies the other inverse statements.
+\end{writenote}
+
+\section{Finite checks and source position}\label{psp:op:sec:sources}
+The companion checks combinatorial and algebraic inputs by exact
+integer arithmetic. Such checks neither replace the infinite proof
+nor certify a compact-operator discretization. The main proof does
+not rely on numerical fitting or on a discretized eigenvalue.
+
+The prior endpoint recurrence~\cite{cgp} can be stated as follows.
+Let $f_n(c,d)$ count admissible permutations whose last ascending
+run has minimum $c$ and maximum $d$, and define the rectangular sum
+\[
+ F_n(a,b)=\sum_{1\leq c\leq a}\sum_{b\leq d\leq n}f_n(c,d),
+\]
+with out-of-range endpoints giving the natural empty sum. For $n=1$,
+$f_1(1,1)=1$. For $n\geq2$,
+\begin{align}
+ f_n(c,c)&=F_{n-1}(c-1,c),\label{psp:op:eq:recursingle}\\
+ f_n(c,d)&=\one\{c=1,d=n\}
+ +\sum_{\ell=0}^{d-c-1}\binom{d-c-1}{\ell}
+       F_{n-\ell-2}(d-\ell-2,c)\quad(c<d),\label{psp:op:eq:recurmulti}
+\end{align}
+where terms with $n-\ell-2<1$ in the sum are zero. To justify the
+indices, delete the final run, whose $\ell$ interior values are
+chosen from the $d-c-1$ values between $c,d$. After relabelling,
+the preceding run minimum must be at most $d-\ell-2$ and its maximum
+at least $c$. These are precisely the two overlap constraints.
+The isolated all-increasing permutation supplies the first term.
+For a singleton final run the preceding minimum is at most $c-1$
+and maximum at least $c$ after relabelling. Rectangle sums are formed
+by two-dimensional prefix/suffix accumulation, and $p_n=F_n(n,1)$.
+
+A structurally independent test uses every composition of $n$ as a
+proposed maximal-run composition. It creates a poset on the actual
+positions by imposing internal ascents and both boundary cross
+inequalities. Exact subset dynamic programming counts its linear
+extensions (zero if constraints are cyclic). Summing over all
+compositions verifies directly the labelled-simplex normalization
+and uniqueness of the run decomposition. Another test enumerates
+all input permutations, applies the literal decreasing-run reversal,
+and compares its image as a set with the overlap predicate as a set.
+
+The released finite-check packet records:
+\begin{itemize}
+\item exact endpoint-recurrence counts through $n=70$;
+\item agreement with all 25 terms displayed by the inspected OEIS
+entry and all 45 tabulated terms preserved from the counting paper;
+\item literal image and overlap-set equality through $n=9$;
+\item independent position-poset totals through $n=10$;
+\item append-maximum injectivity and the cross-inequality edge cases,
+including the admissible decreasing-triple example $14325$.
+\end{itemize}
+The code has explicit input bounds, deterministic JSON output,
+standard-library dependencies only, and validation active with
+Python's optimization switch. The exact threshold command searches
+only its bounded computed count prefix and reports an unreached
+threshold rather than substituting an asymptotic value.
+
+\subsection{What the source gate establishes}
+The inspected OEIS entry A307030~\cite{oeisA307030} defines adjacent
+overlapping runs, gives a 25-term prefix, and links the primary
+papers. Its saved official-data version is number 63, dated
+18 November 2021; it was retrieved afresh on 3 October 2026.
+The absence of a displayed asymptotic formula alone is not evidence
+of novelty.
+
+The 2019 image paper~\cite{abbhl} provides the characterization and
+factorial-order lower bounds. Claesson, Gu\dh mundsson and
+Pantone~\cite[Section 3.3]{cgp} give numerical predictions for the
+leading constants, further positive and complex poles, and
+non-D-finiteness. The chronology is a 2019 preprint and a 2021 online
+DOI; some final-volume metadata is dated 2023. We do not infer an
+unseen later revision. Asinowski, Banderier and
+Hackl~\cite[Section 2.4]{abh} explicitly identify exact asymptotic
+analysis as a challenge and repeat the numerical law. The relevant
+enumeration section of \emph{Semidistrim Lattices}~\cite{dw}, including
+its A307030 table, does not provide this equivalent.
+
+Ehrenborg, Kitaev and Perry~\cite{ekp} use uniform-coordinate
+normalization, compact integral operators, positivity, and spectral
+asymptotic expansions for consecutive-pattern avoidance. Those
+methods are established prior art. Their fixed-window transfer
+operator differs from the present mixed point/interval,
+variable-run resolvent. The sequence-specific input here consists
+of that representation, its positive simple crossing, and the
+strict complex comparison that isolates the dominant pole.
+
+The bounded search additionally checked combinations of
+``pop-stacked'', ``overlapping runs'', A307030, asymptotic, spectral,
+Fredholm, and integral terminology, as well as later dated references
+and the available report catalogue. It found no competing proof of
+the total-count equivalent. A claim concerning the separate
+fixed-number-of-runs denominator conjecture is a different problem.
+The conclusion is a new-proof claim relative to the sources checked,
+not a guarantee about every unpublished or inaccessible work.
+
+\subsection{Reproducibility and remaining limits}
+The archive includes this editable \LaTeX\ source, the PDF, a bounded
+exact companion and tests, numerical count data, source provenance,
+and fixed-allowlist PDF/archive replay tools. It excludes full
+third-party papers. Two clean PDF replays and two archive replays
+are required for the release; deterministic byte equality is a
+same-toolchain guarantee, not a cross-platform one. The README
+records commands and the toolchain. Output paths are created
+exclusively; source trees and output parents must be trusted and
+nonadversarial. These checks are reproducibility safeguards rather
+than a sandbox for modified code or \TeX.
+
+The following remain outside the theorem: certified decimal
+intervals for $\rho,C$; effective values for $R,M,n_0$; an exact
+finite-input asymptotic threshold certificate; the conjectured
+additional poles; and non-D-finiteness. None is needed for the
+factorial-exponential equivalent or its fixed-order consequences.
+\begin{writenote}[6 October 2026]
+Two of these limits are removed by Part~I: certified decimal intervals for $\rho$ and $C$ \eqref{psp:egf:eq:brackets}, and the additional poles with non-D-finiteness (Sections~\ref{psp:egf:sec:positive}--\ref{psp:egf:sec:riccati}). Effective $R$, $M$, $n_0$ and a finite-input threshold certificate remain open (Section~\ref{psp:sec:further}, items~\ref{psp:q:effective} and~\ref{psp:q:threshold}). The ``separate fixed-number-of-runs denominator conjecture'' mentioned above is Conjecture~2 of \cite{cgp}; it is now proved, first by Patel \cite{patel} and then by Part~III, Theorem~\ref{psp:run:thm:fixed}.
+\end{writenote}
+\clearpage
+
+\part{Run distribution in pop stacked permutations: an explicit bivariate generating function and Gaussian laws}\label{psp:run:part}
+\partsource{Bundle Report~166, archive \file{Pop_Stacked_Permutations_Run_Distribution_Source.zip}, delivered as \file{Report166.tex} (16 pages). Delivered title block ``Run distribution in pop stacked permutations / An explicit bivariate generating function and Gaussian laws / Report 166 / 3 October 2026''. Printed as delivered, with \textbf{[write]} notes; Report~166's Section~$k$ is Section~$k+20$ here, and its statements and equations move with their sections. The opening paragraph ``Reading and scope'' is the manuscript's own.}
+\begin{partabstract}
+Let $p_{n,k}$ count distinct permutations of $[n]$ in the image of a single
+pop-stack pass, with $k$ maximal ascending runs. We derive an explicit
+bivariate exponential generating function
+$P(z,u)=\sum_{n,k}p_{n,k}u^kz^n/n!$ from a weighted mixed-state integral
+model. Endpoint differentiation, a sufficient Robin boundary problem,
+and an explicit cancellation give a single-valued meromorphic formula.
+
+For a uniformly chosen distinct image permutation, the number of runs
+has mean $\mu n+\beta+O(\eta^n)$ and variance $vn+\gamma+O(\eta^n)$, with
+$0<\eta<1$, $\mu\approx0.44214954918886$ and
+$v\approx0.06008555058270$. We give exact analytic definitions of all
+four constants and rational certificates for both slopes. Complex-uniform
+singularity transfer proves a central limit theorem. A spectral
+aperiodicity argument and Fourier inversion prove a uniform lattice
+local limit with absolute error $O(n^{-1})$.
+
+As a separate application, a filtered expansion proves the fixed-run
+denominator representation and exact numerator degree conjectured by
+Claesson, Gu\dh mundsson and Pantone. Shivam Patel publicly posted a
+correct inclusion--exclusion proof on 20 August 2026; the present
+application is an alternate proof. The site labels that post an
+unverified claim, which is distinct from our independent mathematical
+assessment. No first-resolution claim is made.
+\end{partabstract}
+\noindent\textbf{Reading and scope.}
+The probabilistic object is uniform on distinct outputs, not the image
+of a uniformly random input. The derivation and complex estimates are
+standalone. The companion supplies bounded exact checks, not substitutes
+for proofs. The bivariate formula and Gaussian laws go beyond the sources
+checked; the search does not certify worldwide priority. Reports 161
+and 164 remain unchanged. No global bivariate pole classification,
+minimal fixed-run denominator, refined-count complexity improvement,
+Edgeworth expansion, or effective numerical asymptotic error onset is
+claimed.
+
+\begin{center}
+\small
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.24\textwidth} >{\raggedright\arraybackslash}p{0.70\textwidth}@{}}
+\toprule
+\multicolumn{2}{@{}l}{\emph{Reading conventions of Part~III} \wtag}\\
+\midrule
+$p_{n,k}$, $p_n(u)$, $P(z,u)$, $K_n$ & A309993, row polynomials, the bivariate EGF ($P(z,1)$ is Part~I's $P$), the run count (a random variable, not a kernel)\\
+$Q$, $B$, $h_0$, $H$, $J_0$, $D(z,u)$ & \eqref{psp:run:eq:definitions}--\eqref{psp:run:eq:entireHJ} and $BH-QJ_0$; at $u=1$ Part~I's $Q$, $B$, $e^z$, $H$, $J_0$, $D$\\
+$K$, $\nu$, $\Delta$ & overlap kernel, measure (Part~I's $\mu$), interval states\\
+$\mu$, $v$, $\beta$, $\gamma$, $\eta$ & mean and variance slopes, constant terms, error ratio ($\mu$ is not a measure here)\\
+$\rho(u)$, $C(u)$, $\Phi$, $H_c$, $G_c$ & moving pole, its amplitude, local phase, cumulant functions\\
+$F_k$, $N_k$, $D_k$, $q$, $\delta$ & fixed-run OGF, numerator, denominator; $q=e^z$ and $\delta$ as formal objects in Section~\ref{psp:run:sec:fixed}\\
+\bottomrule
+\end{tabular}
+\end{center}
+\section{Counting model and main results}\label{psp:run:sec:main}
+A pop-stack pass reverses each maximal decreasing run and concatenates
+the resulting increasing blocks. Its distinct output permutations are
+called \emph{pop-stacked}. Let $p_{n,k}$ count those of size $n$ with $k$
+maximal ascending runs. Put
+\[
+ p_n(u)=\sum_{k\geq0}p_{n,k}u^k,\qquad
+ P(z,u)=\sum_{n\geq0}p_n(u)\frac{z^n}{n!},\qquad p_0(u)=1.
+\]
+Thus the empty permutation has zero runs. For $n\geq1$, let $K_n$ be the
+run count of a permutation chosen uniformly from the $p_n(1)$ distinct
+outputs. Then $\EE u^{K_n}=p_n(u)/p_n(1)$. Different input permutations
+can produce the same output; weighting by their preimage sizes gives a
+different distribution and is not considered here.
+
+Define
+\begin{align}
+ Q&=4u+4u^2(e^z-1)-1,& E&=e^{z/2},\notag\\
+ B&=2uE+2u-1,& h_0&=1+u(e^z-1),\label{psp:run:eq:definitions}\\
+ H(z,u)&=\sum_{j\geq0}\frac{(-1)^jz^{2j}Q^j}{16^j(2j)!},&
+ J_0(z,u)&=\frac z4\sum_{j\geq0}\frac{(-1)^jz^{2j}Q^j}{16^j(2j+1)!}.
+ \label{psp:run:eq:entireHJ}
+\end{align}
+The last two series converge uniformly on compact subsets of $\CC^2$.
+\begin{theorem}[Bivariate exponential generating function]\label{psp:run:thm:egf}
+As a germ at $z=0$, and by single-valued meromorphic continuation,
+\begin{equation}\label{psp:run:eq:branchfree}
+ \boxed{P(z,u)=\frac{Q(H+BJ_0)}{h_0(BH-QJ_0)}}.
+\end{equation}
+Removable quotient presentations are filled in wherever the counting
+germ is analytic. Locally near $(z,u)=(0,1)$ choose $r=\sqrt Q$ with
+$r(0,1)=\sqrt3$ and put $\theta=zr/4$. Then equivalently
+\begin{equation}\label{psp:run:eq:trig}
+ P(z,u)=\frac r{h_0}
+ \frac{r\cos\theta+B\sin\theta}{B\cos\theta-r\sin\theta}.
+\end{equation}
+\end{theorem}
+For instance, $P(0,u)=1$ and $[u]P=e^z-1$. At exceptional parameters such
+as $u=1/4$, the displayed numerator and denominator can both vanish at
+$z=0$; the counting series still supplies the analytic value. We do not
+assert that every zero of the written denominator is a pole.
+\begin{writenote}
+At $u=1$ the definitions give $Q=4e^z-1$, $B=2e^{z/2}+1$ and $h_0=e^z$, so \eqref{psp:run:eq:branchfree} is Part~I's \eqref{psp:egf:eq:entire}, and \eqref{psp:run:eq:trig} is Part~I's \eqref{psp:egf:eq:trig}: a second derivation of Part~I's formula. At $u=1$ Part~I answers the question left open in the last sentence: the genuine poles of $P(z,1)$ are exactly the zeros of $D(z,1)$ with $Q\ne0$ (Part~I, \eqref{psp:egf:eq:poleset}).
+\end{writenote}
+
+Let $\rho$ be the unique positive solution of
+\begin{equation}\label{psp:run:eq:rho}
+ \frac{\rho\sqrt{4e^\rho-1}}4+
+ \arctan\frac{\sqrt{4e^\rho-1}}{2e^{\rho/2}+1}=\frac\pi2,
+ \qquad \rho=1.113439041736727\ldots.
+\end{equation}
+The arctangent here is the positive real branch. Section~\ref{psp:run:sec:dominance}
+proves that $\rho$ is the unique dominant univariate pole. Write
+$x=\rho$, $T=e^\rho$. Define
+\begin{align}
+ \mu&=\frac{2Tx-x-1}{Tx(x+2)},\label{psp:run:eq:mu}\\
+ v&=\frac{4T^2x^3-3Tx^4-10Tx^3-2Tx^2+4Tx
+            +x^4+4x^3+5x^2+4x+2}{T^2x^2(x+2)^3}.
+ \label{psp:run:eq:v}
+\end{align}
+\begin{theorem}[Moments and Gaussian laws]\label{psp:run:thm:gaussian}
+There are real constants $\beta,\gamma$ and $0<\eta<1$ such that
+\begin{align}
+ \EE K_n&=\mu n+\beta+O(\eta^n),&
+ \Var K_n&=vn+\gamma+O(\eta^n).\label{psp:run:eq:moments}
+\end{align}
+The constants $\beta,\gamma$ are defined analytically in
+\eqref{psp:run:eq:betagamma}. The variance slope $v$ is strictly positive, and
+\begin{equation}\label{psp:run:eq:clt}
+ \frac{K_n-\mu n}{\sqrt{vn}}\ \Longrightarrow\ \mathcal N(0,1).
+\end{equation}
+Moreover, uniformly over every integer $k$,
+\begin{equation}\label{psp:run:eq:llt}
+ \sup_{k\in\mathbb Z}\left|
+ \PP(K_n=k)-\frac{\exp(-(k-\mu n)^2/(2vn))}{\sqrt{2\pi vn}}
+ \right|=O(n^{-1}).
+\end{equation}
+\end{theorem}
+The error in \eqref{psp:run:eq:llt} is absolute, not a uniform relative error in
+the tails. Its constants and onset are not numerically certified.
+Using the exact mean and variance also yields \eqref{psp:run:eq:clt}; replacing
+$\mu n$ by $\mu n+\beta$ in \eqref{psp:run:eq:llt} preserves its stated accuracy.
+
+\section{Run weights and factorial normalization}\label{psp:run:sec:model}
+The established overlapping-run characterization~\cite{abbhl,abh} says
+that consecutive maximal ascending runs with endpoints $(a,b)$ and
+$(c,d)$ satisfy
+\begin{equation}\label{psp:run:eq:overlap}
+ a<d,\qquad c<b.
+\end{equation}
+The second inequality is the descent between runs; the first is the
+extra image condition. A singleton has equal endpoints, so it can occur
+strictly inside the range of a neighboring nonsingleton run, but two
+singletons cannot be adjacent.
+
+Use the disjoint union
+\[
+ I=(0,1),\quad \Delta=\{(a,b):0<a<b<1\},\quad
+ X=I\sqcup\Delta,\quad \nu=\dd x\sqcup\dd a\dd b.
+\]
+A state in $I$ has $\lo(x)=\hi(x)=x$; an interval state has $\lo=a,\hi=b$.
+Define the symmetric overlap kernel and weights
+\begin{align}
+ K(s,t)&=\one\{\lo(s)<\hi(t),\ \lo(t)<\hi(s)\},\notag\\
+ w_z(x)&=z,& w_z(a,b)&=z^2e^{z(b-a)},\label{psp:run:eq:weight}\\
+ (A_zf)(s)&=\int_X K(s,t)w_z(t)f(t)\dd\nu(t).\label{psp:run:eq:Az}
+\end{align}
+On $L^2(X,\nu)$, $A_z$ is compact and entire in operator norm: its
+bounded kernel is square integrable, and the weights and their series
+are uniformly bounded on compact $z$-sets. Also $\|A_z\|=O(|z|)$ near zero.
+
+For a run of length $\ell\geq2$ with endpoints $a<b$, the ordered
+interior coordinates occupy volume $(b-a)^{\ell-2}/(\ell-2)!$.
+Summing $z^\ell$ times this volume gives $w_z(a,b)$. Every rank order of
+$n$ distinct coordinates has volume $1/n!$. Thus the product of weights
+and kernels counts precisely the labeled output permutations with EGF
+normalization. No run-order factorial is needed. The check
+\[
+ \int_Xw_z\dd\nu=z+z^2\int_0^1(1-t)e^{zt}\dd t=e^z-1
+\]
+recovers the unique one-run permutation in each positive size.
+
+Multiplying every run weight by $u$ marks the number of runs exactly
+once. Summing the chain of run states gives
+\begin{equation}\label{psp:run:eq:resolvent}
+ h=(I-uA_z)^{-1}\one,\qquad
+ P(z,u)=1+u\int_Xw_z(s)h(s)\dd\nu(s).
+\end{equation}
+The pairing in this formula is bilinear. For bounded $u$ and sufficiently
+small $z$, the Neumann series converges uniformly, proving joint
+analyticity and the counting identity. Each $p_n(u)$ has degree at most
+$n$. Integral-operator enumeration has classical precedents, for example
+\cite{ekp}; the particular state space and calculations are given here.
+\begin{writenote}
+This is the model of Part~I, Section~\ref{psp:egf:sec:model}, and Part~II, Section~\ref{psp:op:sec:integral}, with every run weight multiplied by $u$.
+\end{writenote}
+
+\section{Endpoint equations and a sufficient boundary problem}\label{psp:run:sec:bvp}
+For small $z$ set
+\begin{align*}
+ U(x)&=u\int_{\hi(s)\leq x}w_z(s)h(s)\dd\nu(s),&
+ V(x)&=u\int_{\lo(s)<x}w_z(s)h(s)\dd\nu(s),\\
+ T_0&=P-1=U(1)=V(1),& U(0)&=V(0)=0.
+\end{align*}
+Boundary equality sets have measure zero. Complementing the two
+nonoverlap regions yields
+\begin{equation}\label{psp:run:eq:hUV}
+ h(x)=1+V(x)-U(x),\qquad h(a,b)=1+V(b)-U(a).
+\end{equation}
+These identities provide continuous representatives and then the
+smoothness needed for differentiation. Put
+\[
+ I_0(x)=\int_0^xe^{z(x-a)}U(a)\dd a,\qquad
+ J_1(x)=\int_x^1e^{z(b-x)}V(b)\dd b.
+\]
+Differentiating the endpoint cumulatives gives
+\begin{align}
+ U'&=uze^{zx}(1+V)-uzU-uz^2I_0,& I_0'&=U+zI_0,\label{psp:run:eq:Ufirst}\\
+ V'&=uzV+uze^{z(1-x)}(1-U)+uz^2J_1,& J_1'&=-V-zJ_1.
+ \label{psp:run:eq:Vfirst}
+\end{align}
+For example, the interval part of $U'$ is
+$uz^2\int_0^xe^{z(x-a)}(1+V(x)-U(a))\dd a$; combining its constant term
+with the singleton contribution gives \eqref{psp:run:eq:Ufirst}. Differentiating
+once more cancels the integrals. With $p=U'$, $q=V'$,
+\begin{align}
+ p'&=(1-u)zp+uze^{zx}q,& p(0)&=uz,\notag\\
+ q'&=(u-1)zq-uze^{z(1-x)}p,& q(1)&=uz.\label{psp:run:eq:system}
+\end{align}
+The last boundary condition uses $U(1)=V(1)$ and is essential.
+Eliminating $q$, locally near $u=1$, gives the Robin problem
+\begin{align}
+ p''-zp'+z^2\kappa p&=0,& \kappa&=u+u^2(e^z-1),\notag\\
+ p(0)&=uz,&p'(1)-(1-u)zp(1)&=u^2z^2e^z.\label{psp:run:eq:Robin}
+\end{align}
+At $z=0$, the homogeneous two-point first-order system has only the
+zero solution. Analytic dependence of its fundamental matrix gives
+local existence and uniqueness, uniformly near $(z,u)=(0,1)$.
+
+\begin{lemma}[Sufficiency]\label{psp:run:lem:sufficiency}
+The local solution of \eqref{psp:run:eq:system} reconstructs the counting
+resolvent \eqref{psp:run:eq:resolvent}; differentiation has lost no condition.
+\end{lemma}
+\begin{proof}
+Reflection sends $(p(x),q(x))$ to $(q(1-x),p(1-x))$ with the same
+system and boundary data. Uniqueness therefore gives $p(x)=q(1-x)$.
+Integrating $p,q$ from zero yields $U,V$ with $U(1)=V(1)$.
+Define $I_0,J_1$ as above and the residuals
+\begin{align*}
+ R_1&=p-uze^{zx}(1+V)+uzU+uz^2I_0,\\
+ R_2&=q-uzV-uze^{z(1-x)}(1-U)-uz^2J_1.
+\end{align*}
+Direct use of \eqref{psp:run:eq:system} gives $R_1'=zR_1$, $R_2'=-zR_2$,
+with $R_1(0)=0$ and $R_2(1)=uz(U(1)-V(1))=0$. Thus both vanish.
+The endpoint cumulatives of the $h$ reconstructed from \eqref{psp:run:eq:hUV}
+have derivatives $U',V'$ and zero initial values; they equal $U,V$.
+The overlap complement then gives $h=1+uA_zh$. Local Neumann uniqueness
+identifies this $h$ with \eqref{psp:run:eq:resolvent}.
+\end{proof}
+Apparent divisions by $z$ in the scalar elimination are used for nonzero
+$z$ first and extended analytically to zero.
+
+\section{Explicit solution and half angle cancellation}\label{psp:run:sec:cancel}
+Write $s=2u-1$, $b=2ue^{z/2}$, $r=\sqrt Q$, and $\theta=zr/4$.
+Then $Q=b^2-s^2$ and $B=b+s$. Solving \eqref{psp:run:eq:Robin} gives
+\begin{align}
+ p(x)&=e^{zx/2}\{uz\cos(zrx/2)+A\sin(zrx/2)\},\notag\\
+ a:=\frac A{uz}&=
+ \frac{b-s\cos(2\theta)+r\sin(2\theta)}
+ {r\cos(2\theta)+s\sin(2\theta)}.\label{psp:run:eq:asolution}
+\end{align}
+For $c=\cos\theta$, $d=\sin\theta$ define
+\[
+ D_+=(b+s)c-rd,\qquad D_-=(b-s)c+rd,\qquad L_0=rc+(b+s)d.
+\]
+Direct multiplication, using $r^2=b^2-s^2$, proves
+\begin{align}
+ D_+D_-&=r\{r\cos(2\theta)+s\sin(2\theta)\},\notag\\
+ D_-L_0&=r\{b-s\cos(2\theta)+r\sin(2\theta)\}.\label{psp:run:eq:cancel}
+\end{align}
+At $z=0$, $D_-=1$. The common factor cancels in the germ and $a=L_0/D_+$.
+Zeros of the canceled factor alone are not scalar poles.
+
+Reflection and the first equation of \eqref{psp:run:eq:system} at zero give
+$p(1)=q(0)=z(s+ar)/2$. Integrating \eqref{psp:run:eq:Robin}, with both endpoint
+derivatives retained, gives
+\[
+ z^2\kappa T_0=2uzp(1)-u^2z^2(e^z+1),\qquad
+ P=1+T_0=\frac{ura}{\kappa}=\frac{ra}{h_0}.
+\]
+This proves \eqref{psp:run:eq:trig} including its prefactor. The local identities
+$H=\cos\theta$, $J_0=\sin\theta/r$ prove \eqref{psp:run:eq:branchfree}.
+The entire definitions in \eqref{psp:run:eq:entireHJ} give a single-valued
+meromorphic continuation. The proof does not choose a global square
+root or classify the global bivariate polar set.
+
+\section{Isolation of the dominant univariate pole}\label{psp:run:sec:dominance}
+We give the spectral isolation needed for a complex parameter transfer,
+not only a real-root calculation. Let $\mathcal K$ have kernel $K$.
+For real $t>0$, $A_t$ is similar to the compact self-adjoint operator
+\[
+ S_t=M_{\sqrt{w_t}}\mathcal K M_{\sqrt{w_t}}.
+\]
+The multiplier and its inverse are bounded. The operator preserves
+positivity but need not be positive semidefinite. Every pair of states
+$s,s'$ is overlapped by all intervals satisfying
+\[
+ 0<a<\min(\lo(s),\lo(s')),
+ \qquad \max(\hi(s),\hi(s'))<b<1.
+\]
+This is a positive-area set; hence $S_t^2$ has a strictly positive kernel
+almost everywhere.
+
+\begin{lemma}\label{psp:run:lem:perron}
+The spectral radius $\lambda(t)$ of $A_t$ is a simple positive eigenvalue
+with positive left and right eigenfunctions. All its other eigenvalues
+have strictly smaller modulus.
+\end{lemma}
+\begin{proof}
+The compact self-adjoint spectral theorem gives a top eigenvector of
+$S_t^2$. Its absolute value cannot lower its Rayleigh quotient and is
+therefore also a top eigenvector. Strict kernel positivity makes that
+vector positive almost everywhere. A sign-changing top vector would
+strictly increase its quotient upon taking absolute values, which is
+impossible. Two independent real top vectors would have a nonzero linear
+combination orthogonal to the positive one and thus changing sign.
+The top eigenspace is consequently one-dimensional. Positivity of $S_t$
+selects the eigenvalue $+\|S_t\|$ on it. Any other eigenvalue of the same
+modulus would give another top vector of $S_t^2$. Similarity transfers
+the conclusion to $A_t$, and compactness gives the gap.
+\end{proof}
+Continuity and strict increase of the weights give continuity and strict
+increase of $\lambda(t)$, by testing the Rayleigh quotient on its positive
+Perron vector. It tends to zero as $t\downarrow0$. On
+$F=\{(a,b):a<1/4,\ b>3/4\}$, every pair overlaps and
+$w_t\geq t^2e^{t/2}$; the indicator Rayleigh quotient gives
+$\lambda(t)\geq t^2e^{t/2}/16\to\infty$.
+There is a unique $t_*>0$ with $\lambda(t_*)=1$.
+
+A Riesz projection at this isolated simple eigenvalue gives local
+analytic dependence, as in standard perturbation theory~\cite{kato}.
+For the real unit Perron eigenvector $f_t$ of $S_t$,
+\begin{equation}\label{psp:run:eq:lambda}
+ \lambda'(t)=\lambda(t)\int_X\frac{w_t'}{w_t}f_t^2\dd\nu>0.
+\end{equation}
+Indeed differentiating $S_t$ gives
+$S_t'=\tfrac12(M_{w_t'/w_t}S_t+S_tM_{w_t'/w_t})$, and the simple-eigenvalue
+derivative formula proves \eqref{psp:run:eq:lambda}. The left and right
+$A_{t_*}$ eigenvectors are $\ell_*=\sqrt{w_{t_*}}f_{t_*}$ and
+$h_*=f_{t_*}/\sqrt{w_{t_*}}$, paired to one. The scalar resolvent's
+singular numerator is
+\[
+ \left(\int_X\sqrt{w_{t_*}}f_{t_*}\dd\nu\right)^2>0.
+\]
+Thus $t_*$ is a genuine simple pole of $P(z,1)$.
+For $|z|<t_*$, kernel comparison and the spectral-radius formula give
+$\spr(A_z)\leq\lambda(|z|)<1$, so there are no poles inside.
+
+At $u=1$, \eqref{psp:run:eq:trig} becomes $P(z,1)=e^{-z}r\tan\phi(z)$, where
+\[
+ \phi(z)=\frac{zr}4+\arctan\frac r{2e^{z/2}+1},\qquad
+ \phi'(z)=\frac{e^z(z+2)}{2r}>0\quad(z\geq0).
+\]
+Since $\phi(0)=\pi/6$ and $\phi(z)\to\infty$, its first positive pole is
+the $\rho$ in \eqref{psp:run:eq:rho}. The preceding paragraph identifies $t_*=\rho$.
+
+For $|z|=\rho$ with $z\ne\rho$, let
+$B_z^{\rm abs}=\mathcal K M_{|w_z|}$. The same positive-kernel argument
+gives a positive Perron vector $h_z$ with eigenvalue
+$b_z=\spr(B_z^{\rm abs})$. On the interval component,
+\[
+ |w_z(a,b)|=\rho^2e^{\operatorname{Re}(z)(b-a)}<w_\rho(a,b).
+\]
+The singleton absolute weights are equal. Pairing with $\ell_*>0$ gives
+\[
+ (1-b_z)\int_X\ell_*h_z\dd\nu
+ =\int_\Delta(w_\rho-|w_z|)h_z(\mathcal K\ell_*)\dd\nu>0,
+\]
+since $\mathcal K\ell_*=\ell_*/w_\rho>0$ almost everywhere. Therefore
+$\spr(A_z)\leq b_z<1$ at every other point of the circle. The scalar
+resolvent is analytic there. Meromorphic discreteness of the explicit
+quotient now supplies a radius larger than $\rho$ containing no other
+scalar pole.
+\begin{writenote}
+The same isolation as Part~I, Section~\ref{psp:egf:sec:dominance}, and Part~II, Sections~\ref{psp:op:sec:perron}--\ref{psp:op:sec:circle}; \eqref{psp:run:eq:rho} is the case $k=0$ of Part~I's \eqref{psp:egf:eq:realpoles} (Part~I writes the phase with $\frac12\arccos(1/(2e^{z/2}))$, equal to the arctangent here for $z\ge0$).
+\end{writenote}
+
+\section{Complex uniform transfer with a moving pole}\label{psp:run:sec:transfer}
+The rational certificate in Section~\ref{psp:run:sec:certificate} implies
+$\rho<\log4$. Choose $R$ with $\rho<R<\log4$ sufficiently close to
+$\rho$. At $u=1$, $Q=4e^z-1$ and $h_0=e^z$ do not vanish on
+$|z|\leq R$. Put
+\[
+ D(z,u)=BH-QJ_0.
+\]
+No zero of $D(z,1)$ in this disk cancels against the numerator: on a
+local square-root branch the two linear combinations in
+\eqref{psp:run:eq:trig} have determinant
+\[
+ B^2+r^2=4e^{z/2}(2e^{z/2}+1)\ne0.
+\]
+Here $B=0$ would imply $Q=0$. Simultaneous vanishing would force sine
+and cosine to vanish together. The spectral result therefore implies
+that $D(z,1)$ has exactly the one simple zero $\rho$ in the disk, and
+none on its boundary.
+
+For complex $u$ sufficiently near one, compactness keeps $Q$ and $h_0$
+nonzero throughout the closed disk. Rouch\'e's theorem preserves exactly
+one zero of $D$, counting multiplicity. The implicit function theorem
+gives its holomorphic position $\rho(u)$, with $\rho(1)=\rho$. Its
+numerator and $z$ derivative remain nonzero. Analytic division at the
+moving simple zero consequently gives
+\begin{equation}\label{psp:run:eq:decomposition}
+ P(z,u)=\frac{C(u)}{1-z/\rho(u)}+G(z,u),
+\end{equation}
+where $C$ is holomorphic and nonzero, and $G$ is jointly holomorphic on
+a neighborhood of the closed $z$-disk times a smaller $u$-disk.
+Cauchy's estimate on the fixed circle proves
+\begin{equation}\label{psp:run:eq:uniform}
+ \frac{p_n(u)}{n!}=C(u)\rho(u)^{-n}+O(R^{-n}),
+ \quad\text{uniformly for complex $u$ near 1}.
+\end{equation}
+The complex neighborhood and uniform error are important: pointwise
+real-parameter estimates alone would not justify moment differentiation.
+This is the usual singularity-perturbation mechanism underlying
+quasi-powers~\cite[Chapter IX]{fs}; the needed uniform argument is supplied
+here rather than assumed from a real-variable version.
+
+For explicit local formulas choose the analytic phase near $(\rho,1)$
+\[
+ \Phi(z,u)=\frac{zr}4+\arctan\frac rB.
+\]
+Choose its branch continuously from \eqref{psp:run:eq:rho}. Then
+$P=(r/h_0)\tan\Phi$, $\Phi(\rho(u),u)=\pi/2$, and
+\begin{align}
+ \Phi_z&=\frac{u^2e^z(z+2)-(u-1)(2u-1)}{2r},\notag\\
+ \Phi_u&=\frac{z\{2u(e^z-1)+1\}-1/u}{2r}.\label{psp:run:eq:phiderivatives}
+\end{align}
+In particular $\Phi_z(\rho,1)=e^\rho(\rho+2)/(2r)>0$.
+Writing
+$N(z,u)=u^2e^z(z+2)-(u-1)(2u-1)$, the residue gives
+\begin{equation}\label{psp:run:eq:C}
+ C(u)=\frac{2Q(\rho(u),u)}
+ {\rho(u)h_0(\rho(u),u)N(\rho(u),u)}.
+\end{equation}
+These formulas use a local phase only; no inverse trigonometric branch
+has been selected globally.
+
+\section{Exact moments and the variance slope}\label{psp:run:sec:moments}
+Define, for complex $t$ near zero,
+\begin{equation}\label{psp:run:eq:HG}
+ H_c(t)=\log\frac\rho{\rho(e^t)},\qquad
+ G_c(t)=\log\frac{C(e^t)}{C(1)},
+\end{equation}
+with logs zero at $t=0$. Shrink the disk so that $|\rho(e^t)|/R$ is
+uniformly less than one and $C(e^t)$ stays nonzero. Dividing
+\eqref{psp:run:eq:uniform} by its value at $u=1$ yields
+\begin{equation}\label{psp:run:eq:quasi}
+ \EE e^{tK_n}=\exp\{nH_c(t)+G_c(t)\}(1+O(\eta^n))
+\end{equation}
+uniformly there, for some $\eta<1$. The relative remainder is holomorphic.
+For large $n$, its analytic logarithm is uniformly $O(\eta^n)$ as well.
+Cauchy estimates on a smaller disk permit differentiation at zero.
+Thus \eqref{psp:run:eq:moments} holds with
+\begin{align}
+ \mu&=H_c'(0)=-\frac{\rho'(1)}\rho,\notag\\
+ v&=H_c''(0)=-\frac{\rho''(1)+\rho'(1)}\rho+
+                 \left(\frac{\rho'(1)}\rho\right)^2,\label{psp:run:eq:slopederivatives}\\
+ \beta&=G_c'(0),\qquad \gamma=G_c''(0).\label{psp:run:eq:betagamma}
+\end{align}
+Equations \eqref{psp:run:eq:rho}, \eqref{psp:run:eq:C}, \eqref{psp:run:eq:HG} and
+\eqref{psp:run:eq:betagamma} are exact analytic definitions of the constant terms.
+For orientation only, numerical differentiation gives
+\[
+ \beta\approx0.3035533256498590630,\qquad
+ \gamma\approx0.0084946050872070072.
+\]
+These two decimal evaluations are not interval-certified. The slope
+certificates below do not certify the displayed $\beta,\gamma$ digits.
+\begin{writenote}[6 October 2026]
+An independent numerical check by the write (50 digits, not interval-certified): $\rho(u)$ from $D(z,u)=0$ and $C(u)$ from \eqref{psp:run:eq:C}, differentiated numerically in $t$ with $u=e^t$, give $\mu$ and $v$ equal to \eqref{psp:run:eq:mu}--\eqref{psp:run:eq:v} to 25 digits, $\beta=0.3035533256498590630377\ldots$ and $\gamma=0.008494605087207007156\ldots$, agreeing with all displayed digits. The exact rows $p_n(u)$, $n\le40$, of \file{data/166-runs-data-full_verification.json} give $\EE K_n-\mu n=0.3035533271$, $0.30355332565$ and $0.303553325649858$ and $\Var K_n-vn=0.0084946100$, $0.00849460508846$ and $0.00849460508720818$ at $n=20$, $30$, $40$, approaching $\beta$ and $\gamma$ as \eqref{psp:run:eq:moments} predicts.
+\end{writenote}
+
+Here is the full derivative calculation of the slopes. Put $x=\rho$,
+$T=e^\rho$, $a_0=2T-1$, $Q_0=4T-1$, $M=xa_0-1$ and $N_0=T(x+2)$.
+All phase derivatives in the following display are at $(\rho,1)$:
+\begin{align}
+ 2r\Phi_z&=N_0,\notag\\
+ 2r\Phi_{zz}&=T(x+3)-\frac{2T^2(x+2)}{Q_0},\notag\\
+ 2r\Phi_{zu}&=2T(x+2)-1-\frac{2N_0a_0}{Q_0},\notag\\
+ 2r\Phi_{uu}&=2x(T-1)+1-\frac{2Ma_0}{Q_0}.\label{psp:run:eq:phase2}
+\end{align}
+Implicit differentiation of $\Phi(\rho(u),u)=\pi/2$ gives
+\[
+ \rho'(1)=-\frac M{N_0},\qquad
+ \rho''(1)=-\frac{\Phi_{uu}+2\Phi_{zu}\rho'(1)+
+                         \Phi_{zz}\rho'(1)^2}{\Phi_z}.
+\]
+Substitution into \eqref{psp:run:eq:slopederivatives} simplifies to
+\eqref{psp:run:eq:mu}--\eqref{psp:run:eq:v}. In particular positivity of $v$ is not
+assumed on the basis of a fitted distribution or an informal
+quasi-powers claim; it is certified next.
+
+\section{Rational certificates for the root and slopes}\label{psp:run:sec:certificate}
+The following terminating decimals denote exact rational endpoints:
+\begin{align*}
+ L&=1.11343904173672704376166152691808324014139016583344946615,\\
+ U&=1.11343904173672704376166152691808324014139016583344946616,\\
+ \mu_L&=0.442149549188859664032644356798334757622397538813,\\
+ \mu_U&=0.442149549188859664032644356798334757622397538814,\\
+ v_L&=0.060085550582698280075387627576274309378657258462,\\
+ v_U&=0.060085550582698280075387627576274309378657258463.
+\end{align*}
+The exact certificate proves
+\begin{equation}\label{psp:run:eq:certified}
+ L<\rho<U,\qquad \mu_L<\mu<\mu_U,\qquad 0<v_L<v<v_U.
+\end{equation}
+For $0\leq x<202$, the positive Taylor polynomial satisfies
+\begin{equation}\label{psp:run:eq:expbounds}
+ T_{200}(x):=\sum_{j=0}^{200}\frac{x^j}{j!}
+ \ \leq e^x\leq T_{200}(x)+\frac{x^{201}/201!}{1-x/202}.
+\end{equation}
+Indeed all successive ratios in the tail after its first term are at
+most $x/202$. Exponential monotonicity extends this to interval inputs.
+For rational $x\geq0$, set $S=10^{120}$ and compute
+$k=\lfloor\sqrt{\lfloor xS^2\rfloor}\rfloor$ using integer square root.
+Checked integer squares give
+\[
+ (k/S)^2\leq x<((k+1)/S)^2,
+\]
+a rational enclosure for $\sqrt x$. On $0\leq x\leq1$, truncate the
+alternating sine and cosine series at index $60$. The last included
+term is positive, giving an upper bound; subtracting the next term's
+magnitude gives a lower bound. Monotonicity of sine and cosine on this
+interval propagates interval inputs.
+
+For $z=L,U$, these bounds enclose
+\[
+ D(z,1)=(2e^{z/2}+1)\cos(z\sqrt{4e^z-1}/4)
+        -\sqrt{4e^z-1}\sin(z\sqrt{4e^z-1}/4).
+\]
+The program checks that the trigonometric arguments lie in $(0,1)$,
+and that $D(L,1)>0>D(U,1)$. In this bracket the phase lies below
+$1+\pi/4<\pi$, so only its first positive pole can be crossed.
+Strict phase monotonicity isolates $\rho$. Also $U<6/5<\log4$:
+\eqref{psp:run:eq:expbounds} at $6/5$ gives $e^{6/5}<4$.
+
+Exact rational interval substitution in \eqref{psp:run:eq:mu} and \eqref{psp:run:eq:v}
+then proves \eqref{psp:run:eq:certified}; in particular the entire numerator
+of \eqref{psp:run:eq:v} has a strictly positive lower bound. The output records
+outward decimal bounds for both root signs and propagated intervals.
+No floating-point fit or trusted transcendental decimal enters these
+checks. The suggested decimal endpoints become certificates only when
+the exact inequalities pass. They do not supply a numerical complex
+gap, an asymptotic error constant, or an onset index.
+\begin{writenote}
+The endpoints $L$, $U$ are Part~I's \eqref{psp:egf:eq:brackets}, digit for digit; the intervals for $\mu$ and $v$ and the bridge $U<6/5<\log4$ are new here. The write reran \texttt{run\_checks.py all} on a fresh extraction; its output reproduced \file{data/166-runs-data-full_verification.json}.
+\end{writenote}
+
+\section{Central and uniform lattice local limits}\label{psp:run:sec:limits}
+For fixed real $y$, substitute $t=iy/\sqrt{vn}$ in \eqref{psp:run:eq:quasi}.
+Taylor expansion gives
+\[
+ n\{H_c(t)-\mu t\}=-y^2/2+O_y(n^{-1/2}),\qquad
+ G_c(t)=O_y(n^{-1/2}).
+\]
+The centered characteristic functions therefore converge to
+$e^{-y^2/2}$. The characteristic-function continuity theorem proves
+\eqref{psp:run:eq:clt}. The moment estimates show that exact mean and variance
+standardization gives the same limit.
+
+The local limit also needs uniform control away from zero frequency.
+For a fixed $0<\delta<\pi$, put
+$U_\delta=\{e^{i\theta}:\delta\leq|\theta|\leq\pi\}$.
+For $u\in U_\delta$ and $|z|<\rho$, the operator $I-uA_z$ is invertible
+because $\spr(uA_z)<1$. The strict comparison in
+Section~\ref{psp:run:sec:dominance} proves the same for $|z|=\rho$, $z\ne\rho$.
+At $z=\rho$, the only eigenvalue of $A_\rho$ on the unit circle is its
+simple eigenvalue $1$, whereas $1/u\ne1$. Hence $I-uA_\rho$ is invertible
+as well.
+
+Invertibility is open in operator norm and the inverse is continuous.
+Compactness of $\{|z|\leq\rho\}\times U_\delta$ therefore supplies
+$R_\delta>\rho$ such that $I-uA_z$ is invertible for every
+$|z|\leq R_\delta$, $u\in U_\delta$. Explicitly, otherwise a sequence
+of noninvertible pairs approaching that compact set would have a
+subsequence converging to an invertible point, contradicting openness.
+After decreasing $R_\delta$ slightly if needed, the boundary resolvents
+are uniformly bounded. Cauchy estimates in \eqref{psp:run:eq:resolvent} and the
+positive leading coefficient asymptotic from \eqref{psp:run:eq:uniform} give
+\begin{equation}\label{psp:run:eq:away}
+ \sup_{\delta\leq|\theta|\leq\pi}
+ |\EE e^{i\theta K_n}|=O((\rho/R_\delta)^n).
+\end{equation}
+This proves the needed lattice aperiodicity from the operator rather
+than guessing it from finite coefficient rows.
+
+Near zero set $h(\theta)=H_c(i\theta)-i\mu\theta$. Since $v>0$,
+\[
+ h(\theta)=-v\theta^2/2+O(|\theta|^3),\qquad
+ \operatorname{Re}h(\theta)\leq-c\theta^2
+\]
+for sufficiently small fixed $\delta>0$. Also
+$e^{G_c(i\theta)}=1+O(|\theta|)$. The identity
+\[
+ e^A-e^B=(A-B)\int_0^1e^{tA+(1-t)B}\dd t
+\]
+with $A=nh(\theta)$, $B=-vn\theta^2/2$ gives, uniformly for
+$|\theta|\leq\delta$,
+\begin{align}
+ \left|e^{-i\mu n\theta}\EE e^{i\theta K_n}
+                    -e^{-vn\theta^2/2}\right|
+ &\leq C(|\theta|+n|\theta|^3)e^{-c'n\theta^2}+C\eta^n.
+ \label{psp:run:eq:near}
+\end{align}
+All constants here are fixed. Fourier inversion on $[-\pi,\pi]$,
+together with the whole-line Fourier integral of the Gaussian, now
+proves \eqref{psp:run:eq:llt}. Indeed,
+\[
+ \int_{-\delta}^{\delta}|\theta|e^{-c'n\theta^2}\dd\theta=O(n^{-1}),
+ \quad
+ n\int_{-\delta}^{\delta}|\theta|^3e^{-c'n\theta^2}\dd\theta=O(n^{-1}).
+\]
+The omitted Gaussian tail and \eqref{psp:run:eq:away} are exponentially small.
+The remaining oscillatory factor has modulus one for every integer
+$k$, so the absolute error is uniform over all $\mathbb Z$.
+This is a direct proof of the claimed rate, with no appeal to a local
+limit theorem whose hypotheses have not been checked.
+
+\section{An alternate fixed run denominator proof}\label{psp:run:sec:fixed}
+For fixed $k\geq1$, let $F_k(x)=\sum_{n\geq0}p_{n,k}x^n$ be the
+\emph{ordinary} generating function. Fixed-run rationality was proved
+in \cite[Theorem 6]{abh}. Claesson, Gu\dh mundsson and Pantone
+\cite[Conjecture 2]{cgp} proposed the representation below.
+
+\noindent\textbf{Prior public proof.}
+Shivam Patel posted an inclusion--exclusion proof on MathDB on
+20 August 2026 at 14:02:52 UTC, edited at 14:04:08 UTC~\cite{patel}.
+The public page labels it an unverified claimed solution. Reading the
+full argument, we find it valid for the denominator representation,
+exact degree, and leading coefficient stated here. This mathematical
+assessment is not a claim of peer review, formal verification, or
+community acceptance. The derivation below is a different proof and an
+application of the bivariate EGF, not a first resolution of that conjecture.
+\begin{writenote}[6 October 2026]
+At intake (earlier on 6~October 2026) the MathDB page returned HTTP~403; at the write it was reachable, and the write read the posted solution in full. Its metadata give the posting and editing times stated above, the solution is signed Shivam Patel, and the site's ``Progress summary'' marks the problem ``Claimed solved'' and says that the posted proof ``has not been independently verified''. The write checked the argument step by step (summary in the front matter, ``The predictions of Claesson, Gu\dh mundsson and Pantone''): it is correct and complete for the denominator, the exact degree and the leading coefficient, as this Part says. It also proves $N_k(1)=2(-1)^{k(k+1)/2-1}\prod_{j=1}^{k-1}j!$ for $k\ge2$, which the write checked against $N_2,\dots,N_5$. Priority: Patel's proof, posted 20~August 2026, precedes this Part (3~October 2026); this Part's proof is a different one.
+\end{writenote}
+
+\begin{theorem}[Fixed-run representation]\label{psp:run:thm:fixed}
+For every $k\geq1$,
+\begin{equation}\label{psp:run:eq:fixeddenominator}
+ F_k(x)=\frac{N_k(x)}{D_k(x)},\qquad
+ D_k(x)=\prod_{j=1}^k(1-jx)^{k-j+1},\qquad N_k\in\mathbb Z[x],
+\end{equation}
+with $\deg N_k=k(k+1)/2$ and leading coefficient
+\[
+ (-1)^{k(k+1)/2+1}\prod_{j=1}^k j!.
+\]
+No reduced or minimal denominator assertion is included.
+\end{theorem}
+\begin{proof}
+Temporarily put $q=e^z$, $s=2u-1$, $L_1=1+u(q-1)$ and
+\[
+ \delta=\sqrt{(1-2u)^2-4u^2q},\qquad \delta|_{u=0}=1.
+\]
+Using $r=i\delta$ in the full-angle form \eqref{psp:run:eq:asolution} gives
+\[
+ P=\frac\delta{L_1}
+ \frac{2ue^{z/2}-s\cosh(z\delta/2)-\delta\sinh(z\delta/2)}
+      {\delta\cosh(z\delta/2)+s\sinh(z\delta/2)}.
+\]
+Multiply numerator and denominator by $2e^{z\delta/2}$ and divide by
+$\delta-s$ to obtain
+\begin{align}
+ P&=\frac\delta{L_1}\frac{1-A+T_1}{1+A},\notag\\
+ A&=\frac{\delta+s}{\delta-s}\,q e^{z(\delta-1)},&
+ T_1&=\frac{4u}{\delta-s}\,q e^{z(\delta-1)/2}.\label{psp:run:eq:hyperbolic}
+\end{align}
+This identity applies to the $u=0$ counting germ. To justify moving
+from the derivation near $u=1$, the Neumann model is jointly analytic
+for small $z$ and bounded $u$. The branch-free quotient is meromorphically
+identical there by the identity theorem, so it continues to $u=0$.
+Equivalently the full-angle expression is invariant under $r\mapsto-r$.
+At $u=0$, $\delta-s=2$ and $L_1=1$, so \eqref{psp:run:eq:hyperbolic} is analytic
+as a $u$-series; apparent intermediate square-root presentations cause
+no change in the counting branch.
+
+Now regard $q,z$ as independent formal variables. Let $\mathcal R$ be
+the ring of formal $u$-series whose $u^k$ coefficient is in $\QQ[q,z]$
+and has total degree at most $k$. A member with nonzero rational
+constant coefficient has its inverse in $\mathcal R$, by the coefficient
+recurrence. If $F\in\mathcal R$ has zero $u$-constant term, then
+$\exp F\in\mathcal R$ as well, because each coefficient is a finite sum
+of products and total degrees add.
+
+The expansion
+\[
+ \delta=(1-2u)\sum_{m\geq0}\binom{1/2}{m}
+           (-4u^2q)^m(1-2u)^{-2m}
+\]
+shows that its $u^k$ coefficient has $q$-degree at most $\lfloor k/2\rfloor$,
+apart from the explicit terms $1-2u$. In particular for $k\geq1$,
+$[u^k](\delta-1)$ has $q$-degree at most $k-1$. Therefore
+$z(\delta-1)\in\mathcal R$, with zero $u$-constant term. Both
+exponentials in \eqref{psp:run:eq:hyperbolic} belong to $\mathcal R$.
+Also $\delta$, $1/L_1$ and $1/(\delta-s)$ belong to $\mathcal R$.
+The series $\delta+s$ starts at $u^2$, and its $u^k$ coefficient has
+$q$-degree at most $k-1$. Thus both $q(\delta+s)/(\delta-s)$ and
+$4uq/(\delta-s)$ belong to $\mathcal R$. So do $A,T_1,(1+A)^{-1}$ and $P$.
+It follows that
+\[
+ [u^k]P(z,u)=\sum_{j=0}^k P_{k,j}(z)e^{jz},\qquad
+ \deg P_{k,j}\leq k-j.
+\]
+Here $q=e^z$ is substituted only after polynomial coefficient extraction.
+At formal $q=0$, $A=T_1=0$ and $\delta=1-2u$, so
+\[
+ P|_{q=0}=\frac{1-2u}{1-u}=1-\sum_{k\geq1}u^k.
+\]
+Consequently, for every $k\geq1$,
+\begin{equation}\label{psp:run:eq:expopoly}
+ [u^k]P(z,u)=-1+\sum_{j=1}^kP_{k,j}(z)e^{jz},\qquad
+ \deg P_{k,j}\leq k-j.
+\end{equation}
+The constant $-1$ is consistent with $[u^k]P(0,u)=0$, because the other
+terms cancel it at zero.
+
+For $j\geq1$ and $\ell\geq0$,
+\[
+ n![z^n](z^\ell e^{jz})=(n)_\ell j^{n-\ell},\qquad
+ \sum_{n\geq0}(n)_\ell j^{n-\ell}x^n
+      =\frac{\ell!x^\ell}{(1-jx)^{\ell+1}}.
+\]
+The summand is zero for $n<\ell$. Since $\ell\leq k-j$, each denominator
+divides $D_k$. Each rational summand is proper, so
+$F_k(x)=-1+\text{proper rational function}$. Multiplying by $D_k$,
+all terms other than $-D_k$ have degree below
+$\deg D_k=k(k+1)/2$. The leading coefficient of $-D_k$ is the stated
+sign times $\prod_{j=1}^k j^{k-j+1}=\prod_{j=1}^k j!$.
+Finally $D_kF_k$ has integer formal coefficients and is already known
+to terminate, so $N_k\in\mathbb Z[x]$.
+\end{proof}
+This proof does not determine which individual poles survive
+cancellation or the minimal denominator. It also supplies no new
+complexity bound for computing the full refined triangle.
+
+\section{Exact checks and source provenance}\label{psp:run:sec:checks}
+The first complete polynomials are
+\begin{align*}
+ p_0(u)&=1,&p_1(u)&=p_2(u)=u,\\
+ p_3(u)&=u+2u^2,&p_4(u)&=u+8u^2+2u^3,\\
+ p_5(u)&=u+22u^2+26u^3,\\
+ p_6(u)&=u+52u^2+168u^3+42u^4,\\
+ p_7(u)&=u+114u^2+804u^3+692u^4+42u^5.
+\end{align*}
+These rows and fixed-run rational formulas are prior data, not novelty
+claims. The companion expands \eqref{psp:run:eq:branchfree} directly in
+$\QQ[u][[z]]$ using exact fractions and exact polynomial division by
+the initial denominator $4u-1$. Multiplication by $n!$ gives integer
+polynomials. This independent expansion is compared against the
+published run-refined endpoint recurrence~\cite[Eq. (3)]{cgp} through
+$n=40$, coefficient by coefficient, rather than by interpolation at a
+few values of $u$.
+
+The second check literally reverses the maximal decreasing runs of
+every input permutation through $n=9$, deduplicates all resulting
+outputs, and counts their maximal ascending runs. This route does not
+use the overlap characterization. A third check multiplies the
+published fixed-run ordinary denominators for $k=1,\ldots,5$ against
+the computed columns~\cite[pp. 10--11]{abh}. Finally optional formal
+checks of \eqref{psp:run:eq:hyperbolic} through $k=12$ verify the degree
+filtration, constant $q$ term, exponential-polynomial counts, integer
+numerator degree and leading coefficient. The slope certificate uses
+only the rational arithmetic in Section~\ref{psp:run:sec:certificate}.
+
+The source package distinguishes published fixed-$k$ fixtures from
+computed outputs and records exact source URLs, locations and snapshot
+hashes. Public research snapshots of full papers and of Patel's post
+were used for source checking; they are not repackaged as authored
+report content. The complete claim text was read, not merely the
+MathDB generated progress summary. The latter's model label is not
+a proof-author attribution.
+
+\subsection{Bounded literature findings}
+The overlap characterization originates in \cite{abbhl}, with the later
+development \cite{abh}. Theorem 6 of \cite{abh} proves fixed-run
+rationality; Theorem 10 is a five-variable ordinary functional equation,
+including run marking, and Theorem 11 gives enumeration recurrences.
+These are distinct from the explicit bivariate EGF here. The run-refined
+endpoint recurrence and fixed-$k$ denominator conjecture are in
+\cite{cgp}; its numerical total-count asymptotics are also prior art.
+No improvement over its stated refined-count operation count is claimed.
+
+The published 2023 version of \emph{Semidistrim Lattices}~\cite{dw},
+Section 11.2 and Figure 12, gives initial type-A image polynomials with
+the ascent statistic. For permutations of $[n]$, those polynomials are
+$u^np_n(1/u)$, because the ascent count is $n-K_n$; the reversal matters
+when comparing rows. The OEIS triangle A309993~\cite{oeisA309993} supplies
+initial rows and the first five fixed-run functions. Its linked
+5050-term b-file was not retrieved in the source audit and is not
+claimed checked.
+\begin{writenote}[6 October 2026]
+The write read A309993 (revision \#21 of August~29, 2019, by Bjarki \'Ag\'ust Gu\dh mundsson): its column generating functions for $k\le5$ have the numerators $N_1,\dots,N_5$ of \cite[p.~10]{abh} used as fixtures here (compared coefficient by coefficient), and its b-file covers $n\le100$. The b-file was not checked by the write either. Asinowski--Banderier--Hackl's Theorem~6 (p.~8) and the formulas (p.~10) are where this Part cites them.
+\end{writenote}
+
+A bounded search on 3 October 2026 checked those primary sources and
+queries combining pop-stacked permutations, runs, bivariate EGF,
+exponential generating function, variance, central limit, local limit,
+and denominator conjecture. No equivalent explicit bivariate EGF or
+run-count Gaussian law was located. This supports only the statement
+that those results go beyond the sources checked, not an exhaustive
+worldwide novelty or priority certification. Patel's earlier denominator
+proof is explicitly credited in Section~\ref{psp:run:sec:fixed}. Broader scholarly
+review remains appropriate before publication. No publication, author contact, OEIS edit, or repository modification
+was performed.
+
+The spectral, analytic-perturbation, quasi-powers and Fourier techniques
+are standard. References \cite{ekp,kato,fs} identify this background;
+the problem-specific normalization, cancellation, complex uniformity,
+variance calculation and lattice estimates are proved above.
+
+\section{Companion and reproducible package}\label{psp:run:sec:package}
+The companion uses Python's standard library only. Its mathematical
+checks remain active under \texttt{python -O}. Public computation
+commands have bounded inputs, produce deterministic JSON on standard
+output, and perform no file or network I/O. Shell redirection is the
+caller's optional choice for saving a result. Separate release helpers
+handle the explicitly requested local PDF and ZIP outputs.
+
+The package includes the editable \LaTeX{} report source, the PDF,
+companion and tests, published numerical fixtures, computed certificates,
+source provenance and reproduction scripts. Full-polynomial checking,
+literal-image checking, published-column checking and optional
+fixed-run filtration have separate reported scopes. None is a claim
+of a general formal proof or of numerical effectiveness for
+\eqref{psp:run:eq:moments}--\eqref{psp:run:eq:llt}.
+
+The PDF builder uses a fresh exclusive output directory, fixed metadata,
+disabled TeX shell escape, a bounded reference-stabilization loop and
+settled log checks. The ZIP builder verifies a fixed SHA-256 allowlist
+and uses fixed member metadata and exclusive no-clobber output.
+The local I/O helpers reject symbolic-link path components and pin
+opened parent directories. They assume trusted source files and output
+parents; they are not a sandbox for hostile TeX or an adversary able to
+replace directory contents. Normal and optimized tests, two independent
+PDF builds, two ZIP replays, and all-page rendered inspection form the
+release checks. Temporary files, logs and rendered page images are
+excluded from the source ZIP. Exact commands and receipts accompany
+the package.
+\begin{writenote}
+In this directory the companion is \file{code/166-runs-companion-*.py} with its README and provenance notes (\file{166-runs-companion-README.md}, \file{166-runs-companion-PROVENANCE.md}), the data are \file{data/166-runs-data-*.json}, and the release tools are \file{code/166-runs-*.py}. The delivered README, \file{Report166.tex}, the PDF and \file{SHA256SUMS} are not shipped. Nothing runs in this directory under the shipped names; the report's README gives the rerun route.
+\end{writenote}
+\clearpage
+\section{Further questions and research}\label{psp:sec:further}
+This section is added in the write, under Vladimir's standing rule of 4~October 2026: every claim of the three manuscripts that is not proved here, and every limitation they state, is collected as a question, with its source, the sketch that came with it, and what is missing. Questions that a later Part answers are recorded as answered, not dropped.
+\begin{enumerate}
+\item\label{psp:q:effective} \emph{Effective complex gap, error constants and onsets.} Parts~I and~II prove $p_n=C\,n!\rho^{-n}(1+O(\theta^n))$ for some $\theta<1$ (Part~I, Theorem~\ref{psp:egf:thm:leading}; Part~II, Theorem~\ref{psp:op:thm:main}); Part~III proves its moment, central and local limit estimates with unspecified constants and onsets; all three say that no numerical value of $R$, of the error constant or of the onset is certified, and that the real-interval certificates do not supply one. \emph{Sketch:} the pole set is explicit, $\{D=0,\ Q\ne0\}$, so a certified argument-principle count of the zeros of the entire function $D$ in a disk $|z|<R$ would give an explicit $R$, and Cauchy's estimate on $|z|=R$ an explicit constant. Numerically, the second pole by modulus is $\rho_1=2.417\ldots$: a floating-point argument-principle count by the write (30 digits, not certified) finds exactly one, two and three zeros of $D$ in $|z|<2$, $3$ and $3.5$ (these are $\rho_0$, $\rho_1$, $\rho_2$; the only zero of $Q$ in these disks is $-\log4$, where $D=2$; the others, $-\log4+2\pi ik$, have modulus above $6.4$), and the nonreal poles known have moduli at least $|0.4279+3.6013i|=3.627$. \emph{Missing:} the certified count and a certified bound for $|P|$ on the circle; for Part~III, uniformity of these in $u$.
+\item\label{psp:q:threshold} \emph{A finite-input threshold certificate} (Part~II, Section~\ref{psp:op:sec:sources}; Part~I, Section~\ref{psp:egf:sec:inverse}). Proposition~\ref{psp:egf:prop:ceil} and Theorem~\ref{psp:op:thm:bracket} are exact implications whose constants $M$, $\theta$, $n_0$ are not effective. \emph{Missing:} item~\ref{psp:q:effective}, after which the bracket becomes executable for every $y$ beyond an explicit bound, with exact counting below it.
+\item\label{psp:q:nonreal} \emph{The nonreal poles} (Part~I, Section~\ref{psp:egf:sec:riccati}). Part~I gives the equation $D=0$, the simplicity and the residues, but no ordering of the nonreal poles by modulus and no convergent expansion over all poles; \eqref{psp:egf:eq:finitepole} is finite-radius only. Claesson--Gu\dh mundsson--Pantone's numerics and the authors' repository list eight nonreal pairs with real parts increasing from $0.43$ to $4.13$ and imaginary parts from $3.60$ to $4.61$ (Remark~\ref{psp:egf:rem:cgp-poles}). \emph{Missing:} a description of the nonreal zeros of $D$ (location, asymptotic distribution, ordering) and bounds for $P$ between them that would justify or refute a convergent pole sum.
+\item\label{psp:q:ode} \emph{A minimal differential equation} (Part~I, Section~\ref{psp:egf:sec:algebraic}). The resultant gives an algebraic differential equation of order at most two; Part~I asserts neither minimality nor that it determines $P$ among its solution germs. \emph{Missing:} whether order one is impossible (that is, whether $P$ satisfies no algebraic first-order equation over $\QQ(z)$), and a minimal polynomial of the given order.
+\item\label{psp:q:complexity} \emph{Bit complexity and optimal cost} (Part~I, Section~\ref{psp:egf:sec:recurrence}; Part~III, Section~\ref{psp:run:sec:checks}). Part~I's recurrence uses $O(N^2)$ arithmetic operations on integers of $O(N\log N)$ bits; it claims no bit-complexity bound, no wall-clock guarantee and no optimality, and Part~III claims no improvement of the run-refined count. Asinowski--Banderier--Hackl's conclusion (p.~37) asks for the optimal cost of computing pop-stacked permutations. \emph{Re-scoped}: the arithmetic operation count for the total count is lowered from $O(N^4)$ to $O(N^2)$; the optimal cost, a bit-complexity bound, and a faster run-refined algorithm (for instance from Part~III's bivariate formula or a bivariate Riccati equation) remain open.
+\item\label{psp:q:polar} \emph{The bivariate polar set} (Part~III, Sections~\ref{psp:run:sec:main} and~\ref{psp:run:sec:cancel}). Part~III proves the formula as a single-valued meromorphic continuation but does not classify the zeros of $D(z,u)$ that are poles, nor the exceptional parameters such as $u=1/4$ where numerator and denominator vanish together. At $u=1$ Part~I answers this. \emph{Missing:} the analogue of Part~I's pole-set theorem for general $u$ (a Riccati equation in $z$ with parameter $u$ would be the natural route).
+\item\label{psp:q:denominators} \emph{Minimal fixed-run denominators} (Part~III, Section~\ref{psp:run:sec:fixed}). Theorem~\ref{psp:run:thm:fixed} and Patel's proof give a denominator that works for every $k$, not the reduced one, and do not say which poles survive cancellation. Claesson--Gu\dh mundsson--Pantone found rational fits for $k\le24$ (Section~3.2); Patel's value $N_k(1)\ne0$ shows that the factor $(1-x)^k$ survives in full. \emph{Missing:} the multiplicity of each factor $1-jx$ in the reduced denominator for general $k$.
+\item\label{psp:q:limits} \emph{Finer limit laws} (Part~III, Sections~\ref{psp:run:sec:main} and~\ref{psp:run:sec:limits}). Part~III proves the central limit theorem and a lattice local limit theorem with absolute error $O(n^{-1})$; it claims no Edgeworth expansion, no global large deviations, no uniform relative error in the tails and no certified onset. \emph{Sketch:} the quasi-power form \eqref{psp:run:eq:quasi} holds uniformly for complex $u$ near $1$, which is the usual starting point for Edgeworth corrections and for large deviations in a neighbourhood of the mean. \emph{Missing:} the higher cumulant terms with uniform error, and control of $\rho(u)$ for $u$ away from $1$.
+\item\label{psp:q:betagamma} \emph{Certified $\beta$ and $\gamma$} (Part~III, Section~\ref{psp:run:sec:moments}). Part~III defines the constant terms exactly and evaluates them numerically without a certificate; the write's independent evaluation agrees with all printed digits (note in Section~\ref{psp:run:sec:moments}). \emph{Missing:} rational interval enclosures, by the same method as Part~III's certificate for $\mu$ and $v$ applied to $C'(1)$ and $C''(1)$.
+\item\label{psp:q:preimage} \emph{The image of a uniformly random input} (Part~III, Section~\ref{psp:run:sec:main}). Part~III studies the run count of a uniformly chosen distinct output and says that weighting outputs by their numbers of preimages gives a different distribution, not considered. \emph{Missing:} any statement about that distribution.
+\item\label{psp:q:data} \emph{Data not checked.} The 5050-term b-file of A309993 was checked neither by Part~III nor by the write. The 450-term b-file of A307030 was checked by the write against Part~I's recurrence (no mismatch); the journal version of Claesson--Gu\dh mundsson--Pantone was not read.
+\item\label{psp:q:literature} \emph{Literature and priority.} All three Parts made bounded source searches on 3~October 2026 and make no worldwide priority claim; Part~I says that scholarly review is appropriate before any submission. The write found one omission of credit, recorded in place: Part~II's interleaving bound is Asinowski--Banderier--Hackl's Theorem~12. For Conjecture~2, Patel's proof has priority over Part~III (Section~\ref{psp:run:sec:fixed}). \emph{Missing:} a search beyond the sources the three Parts and the write read.
+\end{enumerate}
+\begin{writenote}[6 October 2026]
+\emph{Proved, refuted and corrected in this report.} The predictions of Claesson, Gu\dh mundsson and Pantone (simple poles, infinitely many singularities, non-D-finiteness of both generating functions, the constants $\rho$ and $C$, the equivalent $p_n\sim C\,n!\rho^{-n}$) are proved by Part~I, and Conjecture~2 by Patel and, by a different proof, Part~III. Their printed list of predicted positive poles omits $\rho_{12}=5.338876712720\ldots$ (Remark~\ref{psp:egf:rem:cgp-poles}, interval proof; their repository lists it), and their three printed nonreal pairs are correct to decimal places 62--66 and then lose two digits each (Remark~\ref{psp:egf:rem:cgp-poles}, floating-point computation). Part~II's statements that further poles, non-D-finiteness and certified decimals are not proved are superseded by Part~I (dated notes, sentences kept). No mathematical statement of the three manuscripts was found wrong.
+\end{writenote}
+
+\begin{thebibliography}{99}
 \bibitem{abbhl}
 A. Asinowski, C. Banderier, S. Billey, B. Hackl and S. Linusson,
 \emph{Pop-stack sorting and its image: Permutations with overlapping runs},
 Acta Math. Univ. Comenianae 88(3) (2019), 395--402.
-\href{https://www.iam.fmph.uniba.sk/amuc/ojs/index.php/amuc/article/download/1307/672/}{Publisher PDF}.
+\href{https://www.iam.fmph.uniba.sk/amuc/ojs/index.php/amuc/article/download/1307/672/}{Publisher PDF} (Parts~I and~III);
+preprint \url{https://lipn.fr/~cb/Papers/popstack.pdf} (Part~II).
 Theorem 1 and Sections 3--4.
-\bibitem{cgp}
-A. Claesson, B. \'A. Gu\dh mundsson and J. Pantone,
-\emph{Counting pop-stacked permutations in polynomial time},
-\href{https://arxiv.org/abs/1908.08910}{arXiv:1908.08910};
-\href{https://doi.org/10.1080/10586458.2021.1926001}{journal DOI}.
-\href{https://akc.is/papers/033-Counting-pop-stacked-permutations-in-polynomial-time.pdf}{Author PDF},
-pp. 2--6 and Sections 3.1--3.3; page references use this 12-page PDF.
 \bibitem{abh}
 A. Asinowski, C. Banderier and B. Hackl,
 \emph{Flip-sort and combinatorial aspects of pop-stack sorting},
 Discrete Math. Theor. Comput. Sci. 22:2 (2021).
 \href{https://doi.org/10.46298/dmtcs.6196}{DOI};
 \href{https://dmtcs.episciences.org/7411/pdf}{publisher PDF}.
-Theorems 3, 10 and 11, Section 2.4 and conclusion.
-\bibitem{repo}
-B. \'A. Gu\dh mundsson and collaborators,
-\href{https://github.com/SuprDewd/pop-stacked-perms}{Pop-stacked permutations repository},
-README and
-\href{https://github.com/SuprDewd/pop-stacked-perms/blob/master/singularity_estimates.txt}{singularity estimates}.
-Checked 3 October 2026; numerical estimates, not certified bounds.
+Theorems 3, 6, 10 and 11, Section 2.4 and conclusion (Part~I); Theorems 3, 6, 10 and 11, fixed-run formulas on pp.~10--11 (Part~III).
+\bibitem{cgp}
+A. Claesson, B. \'A. Gu\dh mundsson and J. Pantone,
+\emph{Counting pop-stacked permutations in polynomial time},
+Experimental Mathematics, published online 2021,
+\href{https://doi.org/10.1080/10586458.2021.1926001}{journal DOI} (Part~II's link text: doi:10.1080/\allowbreak 10586458.2021.1926001).
+Preprint \href{https://arxiv.org/abs/1908.08910}{arXiv:1908.08910} (2019).
+\href{https://akc.is/papers/033-Counting-pop-stacked-permutations-in-polynomial-time.pdf}{Author PDF};
+page references use this 12-page PDF. Part~I: pp.~2--6 and Sections 3.1--3.3; Part~III: Eq.~(3), Section 3.2 and Conjecture~2.
+\bibitem{cs}
+Y. Choi and N. Sun, \emph{The image of the pop operator on various lattices},
+\href{https://arxiv.org/abs/2209.13695}{arXiv:2209.13695}.
+Scope checked against the primary abstract and the published reference
+in \cite{dw} (Part~I).
 \bibitem{dw}
 C. Defant and N. Williams, \emph{Semidistrim Lattices},
 Forum Math. Sigma 11 (2023), e50.
 \href{https://doi.org/10.1017/fms.2023.46}{DOI}.
 Published Section 11.2, pp. 29--30; Figure 12, p. 31;
-Remark 11.3, p. 33. Preprint: \href{https://arxiv.org/abs/2111.08122}{arXiv:2111.08122}.
-\bibitem{cs}
-Y. Choi and N. Sun, \emph{The image of the pop operator on various lattices},
-\href{https://arxiv.org/abs/2209.13695}{arXiv:2209.13695}.
-Scope checked against the primary abstract and the published reference
-in \cite{dw}.
-\bibitem{oeis}
-The OEIS Foundation, \href{https://oeis.org/A307030}{A307030},
-\href{https://github.com/oeis/oeisdata/blob/main/seq/A307/A307030.seq}{official source entry}.
-Revision 63, 18 November 2021; checked 3 October 2026.
+Remark 11.3, p. 33 (Parts~I and~III). Preprint: \href{https://arxiv.org/abs/2111.08122}{arXiv:2111.08122}; relevant enumeration section and A307030 table inspected (Part~II).
 \bibitem{ekp}
 R. Ehrenborg, S. Kitaev and P. Perry,
 \emph{A spectral approach to consecutive pattern-avoiding permutations},
 J. Combin. 2(3) (2011), 305--353.
-\href{https://arxiv.org/abs/1009.2119}{arXiv:1009.2119}.
-Background on integral-operator enumeration; the specific mixed-run
-construction and calculations are proved here.
+\href{https://doi.org/10.4310/JOC.2011.v2.n3.a1}{DOI} (Part~II);
+\href{https://arxiv.org/abs/1009.2119}{arXiv:1009.2119};
+\url{https://www.ms.uky.edu/~jrge/Papers/Ehrenborg_Kitaev_Perry_A_spectral_approach.pdf}.
+Background on spectral integral-operator enumeration; the specific mixed-run
+construction and calculations are proved in the Parts.
+\bibitem{fs}
+P. Flajolet and R. Sedgewick, \emph{Analytic Combinatorics},
+Cambridge University Press, 2009.
+\href{https://algo.inria.fr/flajolet/Publications/book.pdf}{Author-hosted text};
+Chapter IX, singularity perturbation and Gaussian laws.
+\bibitem{kato}
+T. Kato, \emph{Perturbation Theory for Linear Operators}, 2nd ed.,
+Classics in Mathematics, Springer, 1995 reprint.
+\href{https://doi.org/10.1007/978-3-642-66282-9}{DOI}.
+Chapter VII, analytic perturbation theory.
+\bibitem{oeisA307030}
+The OEIS Foundation, \emph{A307030: Number of permutations of $[n]$ with overlapping adjacent runs},
+\href{https://oeis.org/A307030}{https://oeis.org/A307030};
+\href{https://github.com/oeis/oeisdata/blob/main/seq/A307/A307030.seq}{official source entry}.
+Revision 63, 18 November 2021; checked 3 October 2026 by Parts~I and~II, and again at the write (6 October 2026).
+\bibitem{oeisA309993}
+The OEIS Foundation, \href{https://oeis.org/A309993}{A309993},
+run-refined pop-stacked permutation triangle and fixed-run formulas.
+Checked 3 October 2026 (Part~III); revision 21, 29 August 2019, read at the write. The linked long b-file was not checked.
+\bibitem{patel}
+S. Patel, \emph{The Denominator Conjecture for Pop-Stacked Permutation
+Generating Functions}, public MathDB solution posted 20 August 2026.
+\href{https://mathdb.com/p/381485/the-denominator-conjecture-for-pop-stacked-permutation-gener\#s1}{Solution permalink}.
+Posted 14:02:52 UTC, edited 14:04:08 UTC; read 3 October 2026 (Part~III) and 6 October 2026 (the write).
+Site status: unverified claimed solution. See Section~\ref{psp:run:sec:fixed}
+for the separate mathematical assessment.
+\bibitem{repo}
+B. \'A. Gu\dh mundsson and collaborators,
+\href{https://github.com/SuprDewd/pop-stacked-perms}{Pop-stacked permutations repository},
+README and
+\href{https://github.com/SuprDewd/pop-stacked-perms/blob/master/singularity_estimates.txt}{singularity estimates}
+(added in commit \texttt{9c58ae6} of 20 August 2019, the only commit touching that file).
+Checked 3 October 2026 (Part~I) and 6 October 2026 (the write); numerical estimates, not certified bounds.
+\bibitem{TSvol}
+ProveIt, \emph{Transseries and inversion}, the repository's transseries volume,
+\file{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex};
+Part~0: \file{p0:prop:factorial-core}, \file{p0:prop:operator-form}, \file{p0:thm:core-reversion}, \file{p0:thm:staircase}. Added in the write.
 \end{thebibliography}
 \end{document}

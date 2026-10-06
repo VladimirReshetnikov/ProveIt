@@ -1,0 +1,701 @@
+\pdfinfoomitdate=1
+\pdftrailerid{}
+\pdfsuppressptexinfo=15
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype,amsmath,amssymb,amsthm,mathtools,booktabs,array}
+\usepackage[margin=1in]{geometry}
+\usepackage{xcolor}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,urlcolor=blue!45!black,citecolor=blue!45!black]{hyperref}
+\usepackage{enumitem,fancyhdr}
+\makeatletter
+\renewcommand*\l@section[2]{%
+  \ifnum\c@tocdepth>\z@
+    \addpenalty\@secpenalty\addvspace{0.08em\@plus\p@}%
+    \setlength\@tempdima{1.8em}%
+    \begingroup\parindent\z@\rightskip\@pnumwidth
+      \parfillskip-\@pnumwidth\leavevmode
+      \advance\leftskip\@tempdima\hskip-\leftskip
+      #1\nobreak\hfil\nobreak\hb@xt@\@pnumwidth{\hss#2}\par
+    \endgroup
+  \fi}
+\makeatother
+\hypersetup{pdftitle={Lazy Closed Walks in Growing Dimension},pdfauthor={Research report 179},pdfsubject={OEIS A328716, parity sensitive asymptotics and probability laws}}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small Lazy closed walks in growing dimension}\fancyhead[R]{\small Report 179}\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}\setlength{\emergencystretch}{2em}
+\setlist{itemsep=3pt,topsep=5pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\E}{\mathbb E}\newcommand{\Pp}{\mathbb P}
+\newcommand{\Var}{\operatorname{Var}}\newcommand{\Cov}{\operatorname{Cov}}
+\newcommand{\Poi}{\operatorname{Poisson}}\newcommand{\Normal}{\mathcal N}
+\newcommand{\one}{\mathbf 1}\newcommand{\DD}{\mathcal D}
+\newcommand{\TT}{\mathcal T}\newcommand{\PP}{\mathcal P}
+\newcommand{\ceilp}[2]{\lceil #1\rceil_{#2}}
+\title{\textbf{Lazy Closed Walks\\in Growing Dimension}\\[7pt]\large All fixed orders, parity conditioned Poisson laws,\\and occupied coordinate fluctuations for OEIS A328716}
+\author{Research report 179}
+\date{3 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+Let $a_n$ count the $n$-step walks from the origin to itself in $\mathbb Z^n$, with steps $0,\pm e_1,\ldots,\pm e_n$. This is OEIS A328716. We prove its known parity-dependent leading equivalent, give exact Bessel definitions of its constants, and construct every fixed inverse-power correction, including three explicit terms. The marked expansion has an absolute complex-uniform remainder, so it remains valid when its leading amplitude vanishes.
+
+For a uniformly chosen bridge, the zero-step count has an all-orders exponentially weighted $\ell^1$ expansion about a parity-conditioned Poisson law. The number of occupied coordinate axes has Gaussian fluctuations, asymptotically independent of that residual Poisson variable, and an explicit parity-dependent constant mean correction. Separate inverse carriers retain both parity constants and give an eventual global integer bracket of width at most one. A compact proportional length-to-dimension extension retains the moving Poisson parameter.
+
+The exact generating function and numerical leading equivalent were already recorded in the OEIS. Bessel walk enumeration and full large-powers expansions are classical. This is a family-specific derivation and refinement, with bounded source comparison, not a claim of an open-problem resolution or historical priority. Finite exact verification and optional high-precision diagnostics accompany the proofs; no effective inverse error constant or certified numerical starting threshold is claimed.
+\end{abstract}
+\setcounter{tocdepth}{1}{\small\tableofcontents}
+\newpage
+
+\section{The model and the scope of the results}\label{sec:scope}
+A walk is an ordered sequence of steps from
+$\{0,+e_1,-e_1,\ldots,+e_D,-e_D\}$, where the axes are labeled and the zero step is a single available step. A bridge has total displacement zero. Let
+\[
+ A_{N,D}(u)=\sum_{\text{$N$-step bridges in $\mathbb Z^D$}}u^{\text{number of zero steps}},
+ \qquad A_n(u)=A_{n,n}(u),\qquad a_n=A_n(1).
+\]
+The empty bridge is counted once, including in dimension zero. Random bridges below are uniform over this finite set; they are equivalently uniform-step random walks conditioned to return to the origin. We write $J_n$ for their zero-step count and $K_n$ for the number of axes used at least once. An axis is counted once regardless of how many steps use it.
+
+OEIS A328716~\cite{oeis} records the exact diagonal formula, attributed to Ilya Gutkovskiy on 26 October 2019, and a leading equivalent with numerical parity constants, attributed to V\'aclav Kot\v e\v sovec on 27 October 2019. The general array A328718~\cite{array} identifies A328716 as its diagonal; its entry is due to Seiichi Manyama, and its walk interpretation is attributed to Alois P. Heinz. The classical Bessel-product walk generating function is given by Gessel, Weinstein, and Wilf~\cite{gww}, equation (2). Our lazy step appends an elementary exponential factor.
+
+The large-powers method, including full descending-power expansions and compact-ratio uniformity, is classical; see Flajolet and Sedgewick~\cite{fs}, Theorem VIII.8 and its proof. Their subsequent remarks also discuss vanishing multipliers. We give complete arguments specialized to this period-two family, rather than interpreting the existence of a full expansion as a new analytic theorem. The explicit coefficients, marked probability refinements, occupation calculation, and inverse brackets are the objects of this report. No exhaustive historical novelty claim is made.
+
+Every all-orders statement means a Poincar\'e expansion: the order $M$ is fixed before the size parameter tends to infinity. Constants and onsets may depend on $M$ and any specified compact sets. We do not assert convergence of the infinite series, allow $M$ to grow, or supply computable remainder constants.
+
+\section{Exact enumeration and tilted coordinates}\label{sec:exact}
+Put
+\begin{equation}\label{eq:F}
+ F(z)=I_0(2z)=\sum_{k\ge0}\frac{z^{2k}}{(k!)^2},\qquad
+ \DD=z\frac{d}{dz}.
+\end{equation}
+The defining series is sufficient for all arguments; no Bessel asymptotic formula is required.
+
+\begin{proposition}\label{prop:exact}
+For nonnegative integers $N,D$,
+\begin{align}
+ A_{N,D}(u)&=N![z^N]e^{uz}F(z)^D,\label{eq:exact}\\
+ A_n(u,w)&:=\sum_{\text{bridges}}u^{J_n}w^{K_n}
+ =n![z^n]e^{uz}\{1+w(F(z)-1)\}^n.\label{eq:joint}
+\end{align}
+In particular $J_n\equiv n\pmod2$, $0\le K_n\le\lfloor(n-J_n)/2\rfloor$, and
+$a_{n+1}>a_n$ for every $n\ge1$.
+\end{proposition}
+\begin{proof}
+If there are $j$ zero steps and $k_i$ positive and $k_i$ negative steps in axis $i$, then
+$j+2\sum_i k_i=N$ and the number of orderings is
+\[
+ \frac{N!}{j!\prod_i(k_i!)^2}.
+\]
+Summing proves \eqref{eq:exact}; marking each nonzero $k_i$ proves \eqref{eq:joint}. The parity and support assertions follow from the same constraint. To prove strict monotonicity, embed a bridge in $\mathbb Z^{n+1}$ and append a zero step. This is injective. A bridge using $+e_{n+1}$ once, $-e_{n+1}$ once, and $n-1$ zero steps lies outside the image. The only initial equality is $a_0=a_1=1$.
+\end{proof}
+
+The first twenty values, beginning at $n=0$, agree with the inspected OEIS record:
+% BEGIN VERIFIED OEIS PREFIX
+\[
+\begin{gathered}
+1,1,5,19,217,1451,26041,249705,6116209,76432627,\\
+2373097921,36562658573,1374991573825,25188442156333,\\
+1112491608614933,23620069750701091,1198207214200181217,\\
+28930659427538020915,1657461085278025906081,\\
+44848606508761385855085.
+\end{gathered}
+\]
+% END VERIFIED OEIS PREFIX
+
+For any $r>0$ define an even-valued variable $X_r$ by
+\begin{equation}\label{eq:tilt}
+ \Pp(X_r=2k)=\frac{r^{2k}}{(k!)^2F(r)}\quad(k\ge0).
+\end{equation}
+Its cumulant generating function is $\log F(re^s)-\log F(r)$, so
+\[
+ \E X_r=\DD\log F(r),\qquad
+ \Var X_r=\DD^2\log F(r)>0.
+\]
+If $X_1,\ldots,X_D$ have this law independently and $Z\sim\Poi(r)$ is independent, then, conditional on $Z+\sum_iX_i=N$, the pair
+$(Z,\sum_i\one_{\{X_i>0\}})$ has exactly the zero-step and occupied-axis law of the uniform bridge. Indeed every admissible multiplicity vector has conditional mass proportional to $1/(j!\prod_i(k_i!)^2)$; its factor $r^N$ cancels. This interpretation will explain the occupation variance.
+
+\section{The saddle and exact constants}\label{sec:constants}
+\begin{lemma}\label{lem:saddle}
+There is a unique $r>0$ such that
+\begin{equation}\label{eq:saddle}
+ \DD\log F(r)=\frac{2rI_1(2r)}{I_0(2r)}=1.
+\end{equation}
+Writing $b=\DD^2\log F(r)$, one has $b=4r^2-1>0$.
+\end{lemma}
+\begin{proof}
+The mean in \eqref{eq:tilt} is strictly increasing in $\log r$, since its derivative is the positive variance. It tends to zero as $r\downarrow0$. It tends to infinity as $r\to\infty$: for any finite support cutoff, comparison with one higher positive term of $F$ shows that the probability below the cutoff tends to zero. Thus the intermediate value theorem gives the unique solution.
+
+Termwise differentiation of \eqref{eq:F} gives
+$z^2F''+zF'-4z^2F=0$. With $a(z)=\DD\log F(z)$ this becomes
+\begin{equation}\label{eq:riccati}
+ \DD a=4z^2-a^2.
+\end{equation}
+At $a(r)=1$ it gives the asserted expression for $b$.
+\end{proof}
+
+For $\epsilon\in\{+1,-1\}$ define
+\begin{equation}\label{eq:constants}
+ E_\epsilon(t)=e^t+\epsilon e^{-t},\quad
+ d=\frac{F(r)}{er},\quad C_\epsilon=\frac{E_\epsilon(r)}{\sqrt b},\quad
+ v_\epsilon=\frac{rE'_\epsilon(r)}{E_\epsilon(r)}.
+\end{equation}
+Both $C_\epsilon$ are positive. The signs $+1,-1$ always denote even and odd $n$, respectively. Thus
+$v_+=r\tanh r$ and $v_-=r\coth r$. Useful numerical values are
+\begin{align*}
+ r&=0.804139735863439633472418655\ldots,\\
+ b&=1.586562859178089847374174939\ldots,\\
+ d&=0.804710405919520220662545833\ldots,\\
+ C_+&=2.129462249988081594754954973\ldots,\\
+ C_-&=1.418955997654423260656278534\ldots.
+\end{align*}
+These reproduce the numerical leading constants already recorded in A328716. The decimal values are ordinary high-precision evaluations, not interval certificates.
+
+All higher saddle cumulants have finite algebraic definitions. Set $x=z^2$, $a=\DD\log F(z)$, and
+\begin{equation}\label{eq:derivation}
+ \mathcal L=2x\partial_x+(4x-a^2)\partial_a,\qquad
+ \kappa_h=\left.\mathcal L^{h-1}a\right|_{a=1,\,x=(b+1)/4}.
+\end{equation}
+Then $\kappa_h=\DD^h\log F(r)$ and, explicitly,
+\begin{align}
+ \kappa_1&=1,& \kappa_2&=b,&\kappa_3&=2,\notag\\
+ \kappa_4&=-2b(b-2),&\kappa_5&=4(b-2)(b-1),\notag\\
+ \kappa_6&=8(2b-3)(b^2-b+1).\label{eq:cumulants}
+\end{align}
+Equation \eqref{eq:riccati} proves \eqref{eq:derivation} inductively. In particular all cumulants are polynomials in $b$.
+
+\section{An absolute expansion to every fixed order}\label{sec:expansion}
+For an amplitude $A$ analytic near $r$, define a linear functional $\TT_\ell A$ as follows. Sum over $j\ge0$ and finitely supported nonnegative integers $(m_h)_{h\ge3}$ satisfying
+\begin{equation}\label{eq:index}
+ j+\sum_{h\ge3}(h-2)m_h=2\ell,\qquad
+ q=j+\sum_{h\ge3}hm_h.
+\end{equation}
+The integer $q=2\ell+2\sum_hm_h$ is even. Set
+\begin{equation}\label{eq:operator}
+ \TT_\ell A=
+ \sum_{\eqref{eq:index}}
+ \frac{(\DD^jA)(r)}{j!}
+ \frac{(-1)^{q/2}(q-1)!!}{b^{q/2}}
+ \prod_{h\ge3}\frac{\kappa_h^{m_h}}{m_h!(h!)^{m_h}}.
+\end{equation}
+Here $(-1)!!=1$. The sum is finite, uses amplitude derivatives only through $2\ell$, and cumulants only through $2\ell+2$. In particular $\TT_0A=A(r)$.
+
+Let $s_j$ be the classical Stirling coefficients, specified to all fixed orders by the formal identity
+\begin{equation}\label{eq:stirling}
+ \sum_{j\ge0}s_jt^j=
+ \exp\left(\sum_{k\ge1}\frac{B_{2k}}{2k(2k-1)}t^{2k-1}\right),
+ \qquad
+ \frac{x}{e^x-1}=\sum_{j\ge0}B_j\frac{x^j}{j!}.
+\end{equation}
+Thus $s_0=1$, $s_1=1/12$, $s_2=1/288$, $s_3=-139/51840$. Define
+\begin{equation}\label{eq:Poperator}
+ \PP_\ell=\sum_{h=0}^{\ell}s_h\TT_{\ell-h},\qquad
+ E_{\epsilon,u}(z)=e^{uz}+\epsilon e^{-uz}.
+\end{equation}
+All series used for coefficient extraction in this report are formal when an infinite expansion is displayed.
+
+\begin{theorem}\label{thm:absolute}
+For each fixed $M\ge0$ and $R<\infty$, uniformly for complex $|u|\le R$ as $n\to\infty$,
+\begin{equation}\label{eq:absolute}
+ A_n(u)=\frac{(dn)^n}{\sqrt b}
+ \left\{\sum_{\ell=0}^M\frac{\PP_\ell E_{\epsilon,u}}{n^\ell}
+       +O_{M,R}(n^{-M-1})\right\},\qquad \epsilon=(-1)^n.
+\end{equation}
+The error inside braces is absolute, including at zeros of $E_\epsilon(ru)$.
+In particular, with $c_{\epsilon,\ell}=\PP_\ell E_{\epsilon,1}/E_\epsilon(r)$,
+\begin{equation}\label{eq:main}
+ a_n=C_\epsilon(dn)^n
+ \left\{\sum_{\ell=0}^M\frac{c_{\epsilon,\ell}}{n^\ell}
+          +O_M(n^{-M-1})\right\},\qquad c_{\epsilon,0}=1.
+\end{equation}
+\end{theorem}
+
+\subsection{The two dominant arcs}
+Cauchy's formula on $|z|=r$ gives
+\begin{equation}\label{eq:cauchy}
+ [z^n]e^{uz}F(z)^n
+ =\frac{F(r)^nr^{-n}}{2\pi}
+ \int_{-\pi}^{\pi}e^{ur e^{i\theta}}
+ \left(\frac{F(re^{i\theta})}{F(r)}\right)^n e^{-in\theta}\,d\theta.
+\end{equation}
+Equality in $|F(re^{i\theta})|\le F(r)$ requires $e^{2ik\theta}=1$ for every $k\ge0$, since every even coefficient is strictly positive and the constant coefficient is nonzero. Hence it occurs only at $\theta=0,\pi$ modulo $2\pi$. Outside fixed small neighborhoods of these points the ratio is bounded by a constant $\gamma<1$. The amplitude is uniformly bounded for $|u|\le R$, so those arcs are exponentially small.
+
+Near zero an analytic logarithm exists and
+\begin{equation}\label{eq:phase}
+ \phi(\theta):=\log\frac{F(re^{i\theta})}{F(r)}-i\theta
+ =-\frac{b\theta^2}{2}+\sum_{h\ge3}\frac{\kappa_h(i\theta)^h}{h!}.
+\end{equation}
+By shrinking the neighborhood, $\Re\phi(\theta)\le-b\theta^2/4$. Near $\pi$, translating the angle by $\pi$ gives the identical phase and amplitude
+$\epsilon e^{-ur e^{i\theta}}$. Thus the two local integrals combine into a single symmetric integral with amplitude $E_{\epsilon,u}(re^{i\theta})$.
+
+\subsection{A controlled integrated remainder}\label{sec:remainder}
+Fix any $0<\delta<1/2$ and restrict further to $|\theta|\le n^{-1/2+\delta}$. The removed intermediate arcs contribute $O(\exp(-c n^{2\delta}))$ relative to the saddle scale, even after multiplication by any fixed power of $n$. Put $t=\sqrt n\theta$ and $v=n^{-1/2}$. After extracting $e^{-bt^2/2}$, the remaining phase exponent is
+\begin{equation}\label{eq:H}
+ H(v,t)=\sum_{h\ge3}\frac{\kappa_h(it)^h v^{h-2}}{h!},
+\end{equation}
+an analytic function of $v$ at zero. On $|t|\le n^\delta$, uniformly for $0\le v'\le v$, convergence of the phase series yields
+\[
+ |H(v',t)|\le C v|t|^3\le C n^{-1/2+\delta}t^2.
+\]
+For all sufficiently large $n$ the last constant is smaller than, for example, $b/8$. Each fixed derivative of $H$ in $v'$ is bounded by a fixed polynomial in $|t|$, uniformly on this set. This follows by differentiating its convergent series with $|v't|$ in a fixed sufficiently small disk. Likewise the $k$th $v'$ derivative of $A(re^{iv't})$ is bounded by $C_k|t|^k$ for amplitudes in any compact analytic family.
+
+The product $A(re^{iv't})e^{H(v',t)}$ therefore has every fixed $v'$ derivative bounded by a polynomial in $|t|$ times $e^{bt^2/8}$. Taylor's formula through degree $2M+1$ in $v$ has, after multiplication by $e^{-bt^2/2}$ and integration, a remainder
+\[
+ O(v^{2M+2})\int_{\mathbb R}(1+|t|)^L e^{-3bt^2/8}\,dt
+ =O(n^{-M-1}).
+\]
+This bound is uniform for $A=E_{\epsilon,u}$, $|u|\le R$. A coefficient of odd degree in $v$ is an odd polynomial in $t$: in the notation \eqref{eq:index}, its total $t$ degree differs from its $v$ degree by an even integer. Such coefficients integrate to zero on the symmetric interval. Replacing each remaining finite-range Gaussian moment by the full moment has an exponentially small error.
+
+The normalized Gaussian moments are
+\[
+ \frac{\int_{\mathbb R}(it)^q e^{-bt^2/2}\,dt}
+ {\int_{\mathbb R}e^{-bt^2/2}\,dt}
+ =(-1)^{q/2}(q-1)!!b^{-q/2}\quad(q\text{ even}).
+\]
+Expanding the amplitude and the exponential in \eqref{eq:H} now gives precisely \eqref{eq:operator}, with coefficient constraint \eqref{eq:index}. We have proved
+\begin{equation}\label{eq:pre-stirling}
+ [z^n]e^{uz}F(z)^n
+ =\frac{F(r)^nr^{-n}}{\sqrt{2\pi nb}}
+ \left\{\sum_{\ell=0}^M\frac{\TT_\ell E_{\epsilon,u}}{n^\ell}
+ +O_{M,R}(n^{-M-1})\right\}.
+\end{equation}
+Finally use the fixed-order Stirling expansion
+$n!=\sqrt{2\pi n}(n/e)^n(\sum_{j=0}^M s_jn^{-j}+O_M(n^{-M-1}))$.
+Multiplying gives \eqref{eq:absolute}. Since $E_\epsilon(r)>0$, dividing only at $u=1$ proves \eqref{eq:main}. This completes the proof of Theorem~\ref{thm:absolute}.
+
+\begin{remark}\label{rem:zeros}
+For even $n$, $u=i\pi/(2r)$ makes $E_+(ru)=0$; for odd $n$, $u=i\pi/r$ makes $E_-(ru)=0$. Formula \eqref{eq:absolute} still controls the first nonzero correction there. A relative error of the form $E_\epsilon(ru)(1+O(n^{-1}))$ would not give this statement and generally would be false at these points. No division by a marked leading amplitude occurs in the proof.
+\end{remark}
+
+\section{The first three explicit corrections}\label{sec:coefficients}
+The normalized amplitude derivatives are the moments of the limiting parity law that will appear in Section~\ref{sec:poisson}. Direct differentiation gives
+\begin{equation}\label{eq:mu}
+ \mu_j:=\frac{(\DD^jE_{\epsilon,1})(r)}{E_\epsilon(r)}
+ =\sum_{h=0}^j\left\{\!\begin{matrix}j\\h\end{matrix}\!\right\}
+ \left(\frac{b+1}{4}\right)^{\lfloor h/2\rfloor}
+ \begin{cases}1,&h\text{ even},\\v_\epsilon,&h\text{ odd},\end{cases}
+\end{equation}
+with $\mu_0=1$ and Stirling numbers of the second kind in braces. This follows from the Touchard identity
+$(z\partial_z)^je^z=e^z\sum_h\left\{\begin{smallmatrix}j\\h\end{smallmatrix}\right\}z^h$ and $r^2=(b+1)/4$.
+
+Equations \eqref{eq:derivation}, \eqref{eq:operator}, \eqref{eq:stirling}, and \eqref{eq:mu} constitute a finite exact algorithm at arbitrary fixed order. In the following formulas put $v=v_\epsilon$:
+\begin{equation}\label{eq:c1}
+ c_{\epsilon,1}=\frac{9-7b}{24b}-\frac{5}{6b^3}
+              +\frac{(2-b)v}{2b^2}.
+\end{equation}
+For readability write the next two as polynomials divided by their common denominator:
+\begin{align}
+ 1152b^6c_{\epsilon,2}={}&193b^6+312b^5v-594b^5-2856b^4v\notag\\
+ &+1245b^4+4368b^3v+1624b^3+3360b^2v\notag\\
+ &-6552b^2-6720bv+6160,\label{eq:c2}\\[3pt]
+ 414720b^9c_{\epsilon,3}={}&-37427b^9+105660b^8v+222507b^8\notag\\
+ &+934560b^7v-1371537b^7-8147700b^6v\notag\\
+ &+2306661b^6+8541000b^5v+8767656b^5\notag\\
+ &+23476320b^4v-22863852b^4-36146880b^3v\notag\\
+ &-9517200b^3-14414400b^2v+45405360b^2\notag\\
+ &+28828800bv-27227200.\label{eq:c3}
+\end{align}
+They evaluate as follows:
+\begin{center}
+\begin{tabular}{crrr}
+\toprule
+Parity & $c_{\epsilon,1}$ & $c_{\epsilon,2}$ & $c_{\epsilon,3}$\\
+\midrule
+Even & $-0.219966033027$ & $0.070696999974$ & $-0.011375589727$\\
+Odd & $-0.164864931187$ & $0.080945110173$ & $-0.071114538915$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+For example, the first saddle functional is
+\begin{equation}\label{eq:T1}
+ \TT_1 A=-\frac{\DD^2A(r)}{2b}
+ +\frac{\kappa_3\DD A(r)}{2b^2}
+ +\left(\frac{\kappa_4}{8b^2}-\frac{5\kappa_3^2}{24b^3}\right)A(r).
+\end{equation}
+Adding the Stirling term $A(r)/12$, substituting \eqref{eq:cumulants}, and using $\mu_1=v$, $\mu_2=r^2+v$ yields \eqref{eq:c1}. The finite algorithm gives \eqref{eq:c2}--\eqref{eq:c3}; an independent formal-exponential recurrence provides an algebraic cross-check described in Section~\ref{sec:verification}.
+
+\section{Zero steps and weighted probability expansions}\label{sec:poisson}
+Let $J_\epsilon$ be $\Poi(r)$ conditioned on $(-1)^{J_\epsilon}=\epsilon$. Write its mass function and probability generating function as
+\begin{equation}\label{eq:poisson}
+ \pi_\epsilon(j)=
+ \begin{cases}\displaystyle\frac{2r^j}{j!E_\epsilon(r)},&(-1)^j=\epsilon,\\[4pt]0,&\text{otherwise},\end{cases}
+ \qquad
+ \E u^{J_\epsilon}=\frac{E_\epsilon(ru)}{E_\epsilon(r)}.
+\end{equation}
+In particular $\E J_\epsilon=v_\epsilon$ and $\E J_\epsilon^2=r^2+v_\epsilon$.
+
+\begin{theorem}\label{thm:weighted}
+For every fixed $M\ge0$ and $R>1$, there are polynomials $Q_{\epsilon,\ell}(j)$ of degree at most $2\ell$, with $Q_{\epsilon,0}=1$, such that
+\begin{equation}\label{eq:weighted}
+ \sum_{j\ge0}R^j\left|\Pp(J_n=j)-\pi_\epsilon(j)
+ \sum_{\ell=0}^M\frac{Q_{\epsilon,\ell}(j)}{n^\ell}\right|
+ =O_{M,R}(n^{-M-1}),\qquad\epsilon=(-1)^n.
+\end{equation}
+For $\ell\ge1$, $\E Q_{\epsilon,\ell}(J_\epsilon)=0$. The first polynomial is
+\begin{equation}\label{eq:Q1}
+ Q_{\epsilon,1}(j)=-\frac{j^2-r^2-v_\epsilon}{2b}
+                       +\frac{j-v_\epsilon}{b^2}.
+\end{equation}
+Consequently the total-variation distance from $J_\epsilon$ is $O(n^{-1})$, and every fixed polynomial moment has an expansion to all fixed orders.
+\end{theorem}
+\begin{proof}
+Choose $R'>R$. Theorem~\ref{thm:absolute} holds uniformly on $|u|\le R'$. Dividing by the expansion at $u=1$ is legitimate since its leading coefficient is the positive $E_\epsilon(r)$. Finite series division gives a probability-generating-function expansion with an absolute remainder uniformly $O(n^{-M-1})$ on that disk.
+
+To identify its coefficients explicitly, define the monomial polynomials
+\begin{equation}\label{eq:monomial}
+ H_\ell(j)=r^{-j}\PP_\ell(z^j).
+\end{equation}
+Since $\DD^kz^j=j^kz^j$, these are polynomials in $j$ of degree at most $2\ell$, and
+\[
+ c_{\epsilon,\ell}=\E H_\ell(J_\epsilon).
+\]
+The probability polynomials are specified by the finite recurrence
+\begin{equation}\label{eq:Qrec}
+ Q_{\epsilon,0}=1,\qquad
+ Q_{\epsilon,\ell}(j)=H_\ell(j)-\sum_{h=1}^\ell
+ c_{\epsilon,h}Q_{\epsilon,\ell-h}(j).
+\end{equation}
+Indeed the coefficient of $u^j$ in $\PP_\ell E_{\epsilon,u}$ is
+$(1+\epsilon(-1)^j)r^jH_\ell(j)/j!$. Dividing by the unmarked denominator gives \eqref{eq:Qrec}, including exact zeros at the wrong parity. Taking expectation in that recurrence proves centering inductively.
+
+If $\mathcal R_n(u)$ denotes the analytic remainder after quotient expansion, Cauchy's inequality gives
+\[
+ |[u^j]\mathcal R_n(u)|\le C n^{-M-1}(R')^{-j}.
+\]
+Multiplication by $R^j$ and summation of the geometric series proves \eqref{eq:weighted}. This step controls the infinite tail; pointwise coefficient convergence alone would not suffice.
+
+Finally \eqref{eq:T1}, $\kappa_3=2$, and the subtraction of the mean in \eqref{eq:Qrec} give \eqref{eq:Q1}. Total variation is one half the unweighted $\ell^1$ norm. Any fixed polynomial is bounded in absolute value by a constant times $R^j$, giving the moment statement.
+\end{proof}
+
+The finite correction in \eqref{eq:weighted} is a signed approximation; it is not asserted to be a probability mass function term by term. Setting $M=0$ shows $J_n\Rightarrow J_\epsilon$ along each parity subsequence. The whole sequence has no single zero-step weak limit, since even and odd support remain disjoint. In particular the zero steps stay of order one even though the walk length and dimension both grow.
+
+\section{Occupied axes and a Gaussian product limit}\label{sec:occupation}
+Put
+\begin{equation}\label{eq:occupation-constants}
+ f=F(r),\qquad q=f^{-1},\qquad p=1-q,\qquad
+ \tau^2=pq-\frac{q^2}{b}.
+\end{equation}
+Numerically,
+\[
+ p=0.431494883273705551403382960\ldots,\qquad
+ \tau^2=0.041597460122151058557181923\ldots.
+\]
+
+\begin{theorem}\label{thm:occupation}
+One has $\tau^2>0$ and
+\begin{equation}\label{eq:occupation-clt}
+ \frac{K_n-np}{\sqrt n}\ \Rightarrow\ \Normal(0,\tau^2).
+\end{equation}
+Along a fixed parity $\epsilon=(-1)^n$, jointly
+\begin{equation}\label{eq:product}
+ \left(\frac{K_n-np}{\sqrt n},J_n\right)
+ \ \Rightarrow\ (G,J_\epsilon),
+\end{equation}
+where $G\sim\Normal(0,\tau^2)$ is independent of $J_\epsilon$. Moreover
+\begin{equation}\label{eq:meanoffset}
+ \E K_n=np-\frac qb\left(v_\epsilon+\frac{b-1}{2}-\frac1b\right)
+ +O(n^{-1}),\qquad \Var K_n=n\tau^2+O(1).
+\end{equation}
+The constant mean offsets are approximately $-0.071243028912$ for even $n$ and $-0.311664057977$ for odd $n$.
+\end{theorem}
+
+\subsection{An analytic moving saddle}
+Let
+\[
+ B_w(z)=1+w(F(z)-1).
+\]
+Near $w=1$, the equation $\DD\log B_w(r(w))=1$ has an analytic solution with $r(1)=r$. The implicit-function theorem applies in the variable $\log r$, because the derivative is $b>0$. Shrink to a fixed complex neighborhood of $w=1$ in which $r(w)$, $B_w(r(w))$, and
+\[
+ b(w)=\DD^2\log B_w(r(w))
+\]
+are nonzero and $\Re b(w)$ is bounded below by a positive constant. Take logarithm and square-root branches from their real positive values at $w=1$, and put
+\begin{equation}\label{eq:h}
+ h(w)=\log B_w(r(w))-\log r(w).
+\end{equation}
+
+For completeness the moving contour is valid also for complex $w$. The parametrization $z=r(w)e^{i\theta}$ describes a positively oriented circle of radius $|r(w)|$, merely with a rotated starting point. The coefficient integrand is entire except for its pole at zero, so Cauchy's formula applies on this circle. At $\theta=0$ the exact saddle equation cancels the linear term and gives quadratic term $-b(w)\theta^2/2$. Since $B_w$ is even, the second saddle is exactly $-r(w)$ and its phase factor is still $\epsilon$.
+
+At $w=1$ the compact complement of the two local arcs has a strict normalized modulus gap. Continuity preserves it uniformly for all complex $w$ in a sufficiently small closed neighborhood of one. Local logarithms exist on the two arcs; a global logarithm is not needed. The integrated Taylor-remainder argument of Section~\ref{sec:remainder} then holds with complex analytic cumulants, uniformly in $w$ and bounded $u$. The Gaussian integral is $\sqrt{2\pi/b(w)}$ with the specified branch, by analytic continuation in the right half-plane or direct Gaussian integration. In particular,
+\begin{equation}\label{eq:moving-leading}
+ A_n(u,w)=\left(\frac ne\right)^n\frac{e^{nh(w)}}{\sqrt{b(w)}}
+ \left\{E_\epsilon(ur(w))+O(n^{-1})\right\}.
+\end{equation}
+The remainder inside braces is absolute and analytic in $u,w$. The full fixed-order version follows in the same way. Cauchy's derivative estimate on a smaller $w$ disk allows its uniform remainders to be differentiated any fixed number of times.
+
+\subsection{The variance density and limiting independence}
+Write $H(s)=h(e^s)$ and $x(s)=\log r(e^s)$. At $s=0$ consider the pair $(X,I)$, where $X=X_r$ and $I=\one_{\{X>0\}}$. The log partition function is
+\[
+ \Psi(s,x)=\log\left(1+e^s(F(e^x)-1)\right).
+\]
+The saddle constraint is $\Psi_x(s,x(s))=1$. At $(0,\log r)$ its derivatives are
+\[
+ \Psi_s=p,\quad \Psi_{ss}=pq,\quad \Psi_{xx}=b,\quad
+ \Psi_{sx}=\Cov(I,X)=q.
+\]
+The covariance identity follows from $IX=X$ and $\E X=1$. Differentiating the constraint and $H(s)=\Psi(s,x(s))-x(s)$ gives
+\begin{equation}\label{eq:Hderivatives}
+ x'(0)=-\frac qb,\qquad H'(0)=p,\qquad H''(0)=pq-\frac{q^2}{b}=\tau^2.
+\end{equation}
+Strict Cauchy--Schwarz makes $\tau^2>0$, since $I$ is not an affine function of $X$ on its positive-probability support $0,2,4,\ldots$.
+
+For real $t,y$, put $w=e^{it/\sqrt n}$ and $u=e^{iy}$ in \eqref{eq:moving-leading}. Divide by $A_n(1,1)$ and multiply by $e^{-itp\sqrt n}$. Taylor expansion gives
+\[
+ n\{H(it/\sqrt n)-H(0)\}-itp\sqrt n
+ =-\frac{\tau^2t^2}{2}+O(n^{-1/2}).
+\]
+The remaining amplitude tends to $E_\epsilon(re^{iy})/E_\epsilon(r)$, including at its zeros because the remainder was absolute. The joint characteristic functions therefore tend to
+\[
+ e^{-\tau^2t^2/2}\frac{E_\epsilon(re^{iy})}{E_\epsilon(r)}.
+\]
+This is the characteristic function of the independent product in \eqref{eq:product}; L\'evy's continuity theorem applies. Setting $y=0$ proves \eqref{eq:occupation-clt} without a parity restriction. These are weak limits, not total-variation convergence from a lattice variable to a continuous Gaussian.
+
+\subsection{The constant mean correction}
+At $u=1$ the leading amplitude in \eqref{eq:moving-leading} is nonzero in a small $w$ neighborhood. Its analytic logarithm yields
+\[
+ \log\frac{A_n(1,e^s)}{A_n(1,1)}
+ =n\{H(s)-H(0)\}
+ +\log\frac{E_\epsilon(r(e^s))}{E_\epsilon(r)}
+ -\frac12\log\frac{b(e^s)}b+O(n^{-1}).
+\]
+The remainder may be differentiated, as established above. At fixed $x$, differentiating $\Psi_{xx}$ with respect to $s$ gives
+$\Psi_{xxs}=q(b-1)$. One direct check is
+$\DD p=q$ and $\DD^2p=q(b-1)$ at the saddle. Allowing $x$ to move then gives, using $\kappa_3=2$,
+\[
+ \left.\frac d{ds}b(e^s)\right|_{s=0}
+ =q(b-1)+\kappa_3x'(0)=q\left(b-1-\frac2b\right).
+\]
+The derivative of $\log E_\epsilon(r(e^s))$ is $v_\epsilon x'(0)$. Together with \eqref{eq:Hderivatives} these prove the expectation formula in \eqref{eq:meanoffset}. Two derivatives prove the variance statement. The same analytic expansion supplies all fixed cumulant corrections, although only the first mean offset is needed here.
+
+\section{Parity sensitive inversion}\label{sec:inverse}
+Let
+\[
+ \nu(X)=\min\{n\ge0:a_n\ge X\},\qquad X\to\infty.
+\]
+Strict monotonicity from Proposition~\ref{prop:exact} makes this a genuine threshold. For each parity let $\nu_\epsilon(X)$ be the first such integer of parity $\epsilon$, so $\nu(X)=\min_\epsilon\nu_\epsilon(X)$.
+
+Define the logarithmic coefficients formally by
+\begin{equation}\label{eq:logcoef}
+ \ell_{\epsilon,j}=[t^j]\log\left(\sum_{k\ge0}c_{\epsilon,k}t^k\right).
+\end{equation}
+For example $\ell_{\epsilon,1}=c_{\epsilon,1}$,
+$\ell_{\epsilon,2}=c_{\epsilon,2}-c_{\epsilon,1}^2/2$, and
+$\ell_{\epsilon,3}=c_{\epsilon,3}-c_{\epsilon,1}c_{\epsilon,2}+c_{\epsilon,1}^3/3$.
+For fixed $M\ge0$ put
+\begin{equation}\label{eq:carrier}
+ \mathcal F_{\epsilon,M}(t)=t\log(dt)+\log C_\epsilon
+                     +\sum_{j=1}^M\ell_{\epsilon,j}t^{-j}.
+\end{equation}
+It is eventually increasing, with derivative $1+\log(dt)+O_M(t^{-2})$, and tends to infinity. For large $X$ let $t_{\epsilon,M}(X)$ be its unique sufficiently large solution of $\mathcal F_{\epsilon,M}(t)=\log X$. Write $\ceilp{t}{\epsilon}$ for the least integer at least $t$ with $(-1)^n=\epsilon$.
+
+\begin{theorem}\label{thm:inverse}
+For each fixed $M$ there exists $A_M>0$ such that, for all sufficiently large $X$, with
+\begin{equation}\label{eq:eta}
+ \eta_\epsilon=
+ \frac{A_M t_{\epsilon,M}^{-M-1}}{1+\log(dt_{\epsilon,M})},
+\end{equation}
+one has
+\begin{equation}\label{eq:parity-bracket}
+ \ceilp{t_{\epsilon,M}-\eta_\epsilon}{\epsilon}
+ \le \nu_\epsilon(X)\le
+ \ceilp{t_{\epsilon,M}+\eta_\epsilon}{\epsilon}.
+\end{equation}
+Taking the minimum of the two lower endpoints and of the two upper endpoints gives integers $L_M(X),U_M(X)$ satisfying
+\begin{equation}\label{eq:width}
+ L_M(X)\le\nu(X)\le U_M(X),\qquad U_M(X)-L_M(X)\in\{0,1\}
+\end{equation}
+eventually. No effective value of $A_M$ or onset is asserted.
+\end{theorem}
+\begin{proof}
+Taking logarithms in \eqref{eq:main} gives, on each parity,
+\[
+ \log a_n=\mathcal F_{\epsilon,M}(n)+O_M(n^{-M-1}).
+\]
+The leading relative factor is positive and tends to one, so the logarithm and its fixed-order remainder are valid. On a fixed-width neighborhood of $t=t_{\epsilon,M}$ the carrier derivative is comparable to $\Lambda=1+\log(dt)$, and $n^{-M-1}$ is comparable to $t^{-M-1}$. Choose $A_M$ strictly larger than the common logarithmic error bound after these comparisons.
+
+The parity integer immediately preceding $\ceilp{t-\eta_\epsilon}{\epsilon}$ is below $t-\eta_\epsilon$ and within a fixed distance of $t$. By the mean value theorem its carrier is smaller than $\log X$ by more than the possible logarithmic error, so its actual count is below $X$. The integer $\ceilp{t+\eta_\epsilon}{\epsilon}$ has count at least $X$ by the same argument with opposite sign. Monotonicity proves \eqref{eq:parity-bracket}, including endpoint cases. Taking minima is valid because the global threshold is the minimum of the two parity thresholds.
+
+It remains to prove the width assertion. At a common large argument the two carriers differ by $\log(C_+/C_-)+O_M(t^{-1})$. Their derivatives are of order $\log t$, so their roots differ by $O(1/\log t)$; their radii tend to zero. The convex hull of both real intervals
+$[t_{\epsilon,M}-\eta_\epsilon,t_{\epsilon,M}+\eta_\epsilon]$
+therefore eventually has length less than one.
+
+If $U_M>L_M$, choose a parity attaining the minimum lower ceiling $L_M$. Its upper ceiling must exceed $L_M$, so its real interval contains the integer $L_M$ and extends above it. Every point of the other real interval is strictly below $L_M+1$, since the common hull has length less than one. The opposite-parity upper ceiling is consequently at most $L_M+1$. Thus $U_M\le L_M+1$. The alternative is $U_M=L_M$, completing \eqref{eq:width}.
+\end{proof}
+
+For $M=0$ the carriers have a closed form. With $W_0$ the positive real Lambert branch and $Y_\epsilon=\log(X/C_\epsilon)$,
+\begin{equation}\label{eq:lambert}
+ t_{\epsilon,0}(X)=\frac{Y_\epsilon}{W_0(dY_\epsilon)}.
+\end{equation}
+Substitution verifies the equation exactly. If instead one starts from
+$t_*=(\log X)/W_0(d\log X)$, the first displacement is
+\[
+ t_{\epsilon,0}-t_*=-\frac{\log C_\epsilon}{1+\log(dt_*)}
+ +o\!\left(\frac1{\log t_*}\right).
+\]
+The two constants cannot be silently merged for sharp parity rounding. Newton iteration on \eqref{eq:carrier} computes higher real carriers; interval rounding still requires \eqref{eq:parity-bracket}. A ceiling is certified only when its two parity endpoints coincide, or the global endpoints coincide. The existential width-one theorem is not by itself a certified finite-input inverse calculator.
+
+\section{Proportional length and dimension}\label{sec:ratio}
+Let $D\to\infty$ and $N$ be an integer such that $\rho=N/D$ belongs to a fixed compact interval $K\subset(0,\infty)$. Define $r_\rho>0$ by
+\[
+ \DD\log F(r_\rho)=\rho,\qquad b_\rho=\DD^2\log F(r_\rho)>0,
+ \qquad\kappa_{\rho,h}=\DD^h\log F(r_\rho).
+\]
+The argument of Lemma~\ref{lem:saddle} proves existence and uniqueness. Compactness of $K$ puts the saddles in a compact positive interval and bounds $b_\rho$ away from zero. Let $\TT_{\rho,\ell}$ denote \eqref{eq:operator} with $r,b,\kappa_h$ replaced by these quantities.
+
+\begin{theorem}\label{thm:ratio}
+For fixed $M\ge0$, $R<\infty$, uniformly for $\rho\in K$ and complex $|u|\le R$,
+\begin{equation}\label{eq:ratio}
+ A_{N,D}(u)=\frac{N!F(r_\rho)^D r_\rho^{-N}}{\sqrt{2\pi D b_\rho}}
+ \left\{\sum_{\ell=0}^M\frac{\TT_{\rho,\ell}E_{\epsilon,u}}{D^\ell}
+                  +O_{M,R,K}(D^{-M-1})\right\},\quad\epsilon=(-1)^N.
+\end{equation}
+The remainder is absolute inside braces. Here $E_{\epsilon,u}(z)=e^{uz}+\epsilon e^{-uz}$ as before; $N!$ is retained exactly.
+
+Let $J_{N,D}$ count zero steps. It has an all-fixed-orders weighted $\ell^1$ expansion, uniform for $\rho\in K$, about $\Poi(r_\rho)$ conditioned to have parity $N$. In particular, for every fixed $R>1$,
+\begin{equation}\label{eq:moving-poisson}
+ \sum_{j\ge0}R^j\left|\Pp(J_{N,D}=j)-\pi_{\rho,\epsilon}(j)\right|=O_{R,K}(D^{-1}),
+\end{equation}
+where $\pi_{\rho,\epsilon}$ is \eqref{eq:poisson} with $r$ replaced by $r_\rho$.
+If additionally $\rho\to\rho_0\in(0,\infty)$ and $N$ has fixed parity $\epsilon$, then $J_{N,D}$ converges weakly to $\Poi(r_{\rho_0})$ conditioned on that parity.
+\end{theorem}
+\begin{proof}
+Use the circle $|z|=r_\rho$ and centered phase
+\[
+ \log\frac{F(r_\rho e^{i\theta})}{F(r_\rho)}-i\rho\theta.
+\]
+The quadratic coefficient is $-b_\rho/2$, uniformly negative. Positivity and the even support give exactly two maximum-modulus points for every $\rho$; compactness supplies a uniform strict gap away from the two fixed neighborhoods. Local analytic derivatives and amplitude bounds are uniform on compact sets. The argument of Section~\ref{sec:remainder}, scaled by $\sqrt D$, therefore proves \eqref{eq:ratio}. Translation through $\pi$ contributes $e^{-iN\pi}=(-1)^N$, independent of the parity of $D$.
+
+The unmarked leading amplitudes $E_\epsilon(r_\rho)$ are bounded away from zero for both signs on $K$. Quotient expansion and the larger-disk Cauchy argument of Theorem~\ref{thm:weighted} prove \eqref{eq:moving-poisson} and all its fixed-order refinements. More explicitly set
+\[
+ H_{\rho,\ell}(j)=r_\rho^{-j}\TT_{\rho,\ell}(z^j),\qquad
+ c_{\rho,\epsilon,\ell}=\E H_{\rho,\ell}(J_{\rho,\epsilon}),
+\]
+where $J_{\rho,\epsilon}$ has mass $\pi_{\rho,\epsilon}$, and apply the recurrence \eqref{eq:Qrec} with these quantities. The resulting polynomials of degree at most $2\ell$ give an error $O_{M,R,K}(D^{-M-1})$. Finally continuity of $r_\rho$ gives the asserted fixed-law weak limit when $\rho$ converges and parity is fixed.
+\end{proof}
+
+If desired, expanding $N!$ in \eqref{eq:ratio} replaces $\TT_{\rho,\ell}$ by $\sum_{h=0}^\ell s_h\rho^{-h}\TT_{\rho,\ell-h}$ after extracting the corresponding Stirling leading factor. Compactness controls the additional remainder. For a moving, nonconvergent $\rho$, \eqref{eq:moving-poisson} is an approximation by a moving parameter, not convergence to one fixed distribution. Nothing here treats $\rho\downarrow0$, $\rho\to\infty$, or fixed $D$; in particular the fixed-dimensional row statement in A328718 is a separate regime.
+
+\section{Exact checks and reproducibility}\label{sec:verification}
+The proofs above establish the asymptotic results. Computation checks finite enumeration and coefficient algebra; numerical agreement does not establish a uniform remainder, an effective onset, or priority over prior literature.
+
+\subsection{Three finite counting descriptions}
+An integer convolution avoids cancellation. Put
+\begin{equation}\label{eq:Qcount}
+ Q_{D,k}=(k!)^2[t^k]\left(\sum_{h\ge0}\frac{t^h}{(h!)^2}\right)^D.
+\end{equation}
+Then $Q_{0,0}=1$, $Q_{0,k}=0$ for $k>0$, and
+\begin{equation}\label{eq:Qconvolution}
+ Q_{D,k}=\sum_{h=0}^k\binom kh^2 Q_{D-1,k-h}.
+\end{equation}
+For $N-j=2k\ge0$, the exact number of bridges with $j$ zero steps is
+\begin{equation}\label{eq:exactJ}
+ \binom Nj\binom{2k}k Q_{D,k}.
+\end{equation}
+The count is zero at other parities. To count occupied axes independently, put
+\[
+ R_{k,m}=(m!)^2[t^m]\left(\sum_{h\ge1}\frac{t^h}{(h!)^2}\right)^k.
+\]
+These satisfy $R_{0,0}=1$ and
+$R_{k,m}=\sum_{h=1}^m\binom mh^2R_{k-1,m-h}$. For $n-j=2m$,
+\begin{equation}\label{eq:exactJK}
+ \#\{J_n=j,K_n=k\}=\binom nj\binom{2m}m\binom nk R_{k,m}.
+\end{equation}
+Both recurrences follow by selecting the contribution of one factor in the corresponding generating function.
+
+A different exact calculation uses \eqref{eq:riccati}. Write
+$a(z)=\sum_{k\ge1}\alpha_kz^{2k}$ and $F(z)^D=\sum_{k\ge0}\beta_{D,k}z^{2k}$. Then
+\begin{align}
+ \alpha_k&=\frac{4\one_{\{k=1\}}-\sum_{h=1}^{k-1}\alpha_h\alpha_{k-h}}{2k},\label{eq:alpha}\\
+ \beta_{D,0}&=1,\qquad
+ \beta_{D,k}=\frac{D}{2k}\sum_{h=1}^k\alpha_h\beta_{D,k-h}.\label{eq:beta}
+\end{align}
+The unmarked count is $N!\sum_{k=0}^{\lfloor N/2\rfloor}\beta_{D,k}/(N-2k)!$. Rational arithmetic makes this comparison exact.
+
+\subsection{Independent coefficient verification}
+A raw-derivative route to the cumulants differentiates the second-order Bessel equation instead of iterating \eqref{eq:derivation}. Let $g_m=r^mF^{(m)}(r)/F(r)$, with $g_0=g_1=1$. Then
+\begin{align}
+ g_{m+2}={}&-(2m+1)g_{m+1}-(m^2-4r^2)g_m\notag\\
+ &+8mr^2g_{m-1}+4m(m-1)r^2g_{m-2},\label{eq:rawrec}
+\end{align}
+where terms with negative indices have zero coefficient and are omitted. Converting these factorial moments to raw moments with Stirling numbers, then raw moments to cumulants, checks \eqref{eq:cumulants} and higher orders independently.
+
+For the Gaussian algebra, if
+$\exp(\sum_{h\ge1}e_hv^h)=\sum_{k\ge0}P_kv^k$, then
+\[
+ P_0=1,\qquad P_k=\frac1k\sum_{h=1}^k h e_h P_{k-h}.
+\]
+Take $e_h=\kappa_{h+2}(it)^{h+2}/(h+2)!$, adding $ijt$ to $e_1$ for monomial amplitude $z^j$. Integrating each polynomial by Gaussian moments and multiplying the Stirling series gives the $H_\ell(j)$ of \eqref{eq:monomial}. Averaging over \eqref{eq:poisson} reproduces the three displayed correction coefficients. This recurrence avoids merely repeating the tuple enumeration in \eqref{eq:operator}.
+
+\subsection{Numerical diagnostics}
+For illustration let $B_n=a_n/(C_\epsilon(dn)^n)$ and
+$R_2(n)=n^3(B_n-1-c_{\epsilon,1}/n-c_{\epsilon,2}/n^2)$.
+Exact integer counts followed by high-precision evaluation give
+\begin{center}
+\begin{tabular}{rrrr}
+\toprule
+$n$ & $R_2(n)$ & $n\,d_{\rm TV}(J_n,J_\epsilon)$ & first corrected $n^2\ell^1/2$\\
+\midrule
+40  & $-0.011103362959$ & $0.1186222051$ & $0.0468622340$\\
+80  & $-0.011235240759$ & $0.1188802051$ & $0.0471002563$\\
+160 & $-0.011304345034$ & $0.1190101353$ & $0.0472195093$\\
+41  & $-0.070685517647$ & $0.1662254163$ & $0.0765881923$\\
+81  & $-0.070899449934$ & $0.1671477058$ & $0.0766029313$\\
+161 & $-0.071006847771$ & $0.1676175746$ & $0.0766112777$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The final column uses the signed approximation $\pi_\epsilon(j)(1+Q_{\epsilon,1}(j)/n)$, so it is a half $\ell^1$ error rather than a distance between two probability laws. The Poisson sums were numerically truncated beyond $n+100$; they are diagnostics, not outward-rounded total-error certificates. The $R_2(n)$ values approach the two $c_{\epsilon,3}$ in Section~\ref{sec:coefficients}. Subtracting that term gives stable $n^4$-scaled residuals as well.
+
+Separate bivariate counts at $n=20,21,60,61,120,121$ check the occupation mean offsets and characteristic functions. Marked evaluations at the cancellation points in Remark~\ref{rem:zeros} test the necessity and correctness of the absolute leading formulation. These are additional numerical checks, not replacements for the complex-uniform proof.
+
+\subsection{Package use and scope}
+The accompanying ZIP includes this \LaTeX\ source, the PDF, standard-library exact verification, optional SymPy/mpmath diagnostics, recorded data, and a deterministic no-shell-escape builder. The core and optional dependencies are segregated. The detailed commands and finite test ranges are listed in \texttt{README.md} and \texttt{README\_CODE.md}; the mathematical verifier can be run with Python's \texttt{-S} flag, without site packages. The builder performs explicit runtime checks also under \texttt{-O}, rejects unresolved references and layout defects, and packages a complete SHA-256 inventory. Rebuilding the same sources with the same Python and TeX stack gives byte-identical artifacts; cross-version PDF identity is not promised.
+
+The manifest is an integrity inventory, not a digital signature. The builder does not install dependencies or access the network, and refuses existing output paths. Optional high-precision diagnostics are not required for the exact core or PDF build. No third-party copyrighted book or article PDF is redistributed.
+
+\section{Source comparison and limitations}\label{sec:sources}
+The inspected official OEIS source record already contains the exact Bessel formula and Kot\v e\v sovec's leading equivalent, including both numerical parity constants. Those results are not claimed as new here. The report supplies analytic definitions and a self-contained proof, then develops the stated finite-order, distributional, and inverse refinements. OEIS A328718's fixed-dimensional row comment is not an unresolved problem being solved by this proportional-dimensional argument.
+
+Gessel--Weinstein--Wilf's primary article~\cite{gww} was inspected in full. Its equation (2) gives the Bessel-product walk exponential generating function; its later permutation and Toeplitz-point results concern a different asymptotic framework. Flajolet--Sedgewick's Theorem VIII.8, full proof, and subsequent vanishing-multiplier remarks~\cite{fs} were read from the complete author-hosted book. They already provide the generic full-expansion and compact-ratio machinery. Period-two extraction, or the explicit two-arc proof here, handles our even support. We do not infer novelty from writing out that classical method.
+
+A bounded comparison of the ProveIt report corpus at commit
+\texttt{83befe707f2840c2b53e}\allowbreak\texttt{0606701d8a2b28598e47}
+and of available earlier reports found no matching A328716 treatment in the inspected results. Exact identifier, decimal-constant, Bessel-formula, and lazy-walk searches were used. Nearby reports were actually inspected where relevant: the A039831 two-Fourier-peak maximum-coefficient problem differs from this bridge family, while proposed A047909 and A108242 directions were rejected as already covered. Report 169's packed-matrix family was also excluded. These comparisons are bounded evidence, not an absence certificate. Earlier-report search missed known duplicates and therefore cannot certify novelty by a negative result.
+
+Searches under Bessel-distribution and conditional-occupancy terminology also found general related literature without identifying this full family-specific package. That search was not exhaustive. Full historical priority for individual probability refinements remains unestablished. The accompanying source audit identifies the inspected sources and these limits. No OEIS record or external repository was edited or submitted as part of this report.
+
+The mathematical limits are also explicit: no growing truncation order, boundary-ratio uniformity, fixed-dimensional asymptotic consequence, total-variation Gaussian limit, or effective numerical inverse threshold is asserted. The weighted discrete law, analytic occupation expansion, and eventual width-one inverse theorem hold precisely in the regimes proved above.
+
+\section{Further questions within this treatment}\label{sec:further}
+Several concrete extensions remain outside the results proved here. These are questions for extending this treatment, not claims that the corresponding problems are historically unsolved.
+\begin{enumerate}
+\item Make the compact saddle bounds effective: produce explicit remainder constants and verified onsets, then combine them with interval evaluations of $r$, $C_\epsilon$, and the inverse carriers. That would turn the existential brackets of Theorem~\ref{thm:inverse} into a certified finite-input inverse calculator.
+\item Analyze sparse and dense ratios $N/D\to0$ and $N/D\to\infty$. The compact theorem does not control these limits; the saddle, variance, and relative sizes of the zero-step and coordinate occupancies require separate scaling arguments.
+\item Strengthen the occupied-axis weak limit to a lattice local theorem or a joint Edgeworth expansion with the zero-step count. Such a result should explicitly retain the exact support and parity constraints, and specify the range of uniformity and tail norm rather than infer it from the characteristic-function limit alone.
+\item Compare the finite-size polynomials in Theorem~\ref{thm:weighted} and the occupation corrections systematically with general conditional-occupancy and Bessel-distribution literature. This could clarify alternative formulations and attribution beyond the bounded source search used here.
+\end{enumerate}
+
+\begin{thebibliography}{9}
+\bibitem{oeis}
+OEIS Foundation Inc., \emph{The On-Line Encyclopedia of Integer Sequences}, A328716.
+Exact formula attributed to Ilya Gutkovskiy (26 October 2019); leading equivalent and numerical constants attributed to V\'aclav Kot\v e\v sovec (27 October 2019).
+\href{https://oeis.org/A328716}{Entry};
+\href{https://github.com/oeis/oeisdata/blob/main/seq/A328/A328716.seq}{official source record}.
+Inspected 3 October 2026.
+\bibitem{array}
+OEIS Foundation Inc., A328718, square array of lazy closed lattice walks.
+Entry by Seiichi Manyama (26 October 2019); walk interpretation by Alois P. Heinz (26 October 2019).
+\url{https://oeis.org/A328718}. Inspected 3 October 2026.
+\bibitem{gww}
+I. Gessel, J. Weinstein, and H. S. Wilf,
+\emph{Lattice walks in $\mathbb Z^d$ and permutations with no long ascending subsequences},
+Electronic Journal of Combinatorics \textbf{5} (1998), Research Paper 2, 11 pp.
+\href{https://www.combinatorics.org/ojs/index.php/eljc/article/download/v5i1r2/pdf}{Primary journal PDF}, especially equation (2), pp. 2--3.
+\bibitem{fs}
+P. Flajolet and R. Sedgewick, \emph{Analytic Combinatorics}, Cambridge University Press, 2009.
+Theorem VIII.8 and proof, pp. 587--588; remarks and Note VIII.37, p. 589.
+\href{https://algo.inria.fr/flajolet/Publications/book.pdf}{Author-hosted book PDF}.
+\end{thebibliography}
+\end{document}

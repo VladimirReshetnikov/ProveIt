@@ -120,6 +120,17 @@ The numbering refers to the fourth edition of the synthesis, in which all earlie
 are unchanged; Sections 12-14 and the appended parts of Sections 7 and 8 are otherwise
 not formalized.
 
+The research report
+[`docs/reports/ordinals-and-order-types/robust-neutral-choice`](../docs/reports/ordinals-and-order-types/robust-neutral-choice/)
+(batch 114; unrefereed, not formalized) cites `Countable/GenericErgodicity.lean`.
+Its Remark 10.1 derives the Baire half of its Theorem 8.1 — no neutral
+rule on infinite binary streams that is invariant under finite changes has
+a fibre with the Baire property — from `Cantor.flip` and
+`Cantor.transitive`, `generic_const` (which rests on `Countable.zero_one`)
+and `fixed_label`, given global complementation as a homeomorphism, which
+this library does not define. The assembled statement is not a theorem of
+the library, and nothing here depends on the report.
+
 ### The bridge to ProveIt's internal satisfaction
 
 `Internal/Bridge.lean` proves `zfAxioms_zfset`: Lean's `ZFSet` universe is a model of
