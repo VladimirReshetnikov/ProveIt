@@ -1,15 +1,15 @@
-\section{The matrix model and its graph encoding}\label{sec:model}
+\section{The matrix model and its graph encoding}\label{ssm:sec:model}
 A symmetric sign matrix is a symmetric matrix $X=(x_{ij})_{1\le i,j\le n}$ with every $x_{ij}\in\{-1,+1\}$. Its diagonal is variable. Let $A_n$ be the number for which every row sum is nonnegative. Symmetry makes the column conditions identical. Positions are labelled: simultaneous permutations of rows and columns are not identified. We set $A_0=1$ by the empty-matrix convention; the published sequence begins with $A_1=1$ and $A_2=5$ \cite{oeis}.
 
 For $M\ge1$, $0\le k\le M-1$, and $0\le f\le M$, let $U_f(M,k)$ count simple graphs on the fixed vertex set $[M]$ such that the first $M-f$ degrees are at most $k$. The last $f$ vertices are specified in advance and unrestricted. Write $B(M,k)=U_0(M,k)$. There is no factor $\binom Mf$ in this definition.
 
-\begin{proposition}[Exact graph bridge]\label{prop:bridge}
+\begin{proposition}[Exact graph bridge]\label{ssm:prop:bridge}
 For every $n\ge0$,
-\begin{equation}\label{eq:bridge}
+\begin{equation}\label{ssm:eq:bridge}
  A_n=U_1(n+1,\lfloor n/2\rfloor).
 \end{equation}
 For $n\ge1$, one also has the exact soft-boundary formula
-\begin{equation}\label{eq:soft}
+\begin{equation}\label{ssm:eq:soft}
  A_n=2^n\sum_{\substack{G\text{ on }[n]\\\Delta(G)\le k}}2^{-N_k(G)},
  \qquad k=\lfloor n/2\rfloor,
 \end{equation}
@@ -18,18 +18,231 @@ where $N_k(G)$ is the number of vertices of degree $k$.
 \begin{proof}
 Add a distinguished vertex $*$ to $[n]$. Put an edge $ij$, $i\ne j$, precisely when $x_{ij}=-1$, and an edge $i*$ precisely when $x_{ii}=-1$. Each of the $n(n+1)/2=\binom{n+1}{2}$ independent signs specifies one possible edge, so the correspondence is bijective. The number of negative entries in row $i$ is exactly $d_i$, giving row sum $n-2d_i$. Hence the row condition is $d_i\le\lfloor n/2\rfloor$, with no condition at $*$.
 
-Alternatively, fix only the negative off-diagonal entries, giving a graph $G$ on $[n]$. If $d_i>k$, no diagonal sign is allowed. If $d_i=k$, the diagonal must be positive. If $d_i<k$, either diagonal sign is allowed. Multiplication over vertices gives $2^{n-N_k(G)}$, proving \eqref{eq:soft}.
+Alternatively, fix only the negative off-diagonal entries, giving a graph $G$ on $[n]$. If $d_i>k$, no diagonal sign is allowed. If $d_i=k$, the diagonal must be positive. If $d_i<k$, either diagonal sign is allowed. Multiplication over vertices gives $2^{n-N_k(G)}$, proving \eqref{ssm:eq:soft}.
 \end{proof}
 
-The diagonal-to-extra-vertex correspondence is a prior structural fact: Greenhill and McKay state it explicitly for symmetric $0$--$1$ matrices with diagonal weight one \cite[p.~902; preprint p.~3]{gm}. Proposition~\ref{prop:bridge} includes the short proof to fix the sign convention and the inequality cap. Their dense Theorem 1.4 treats prescribed exact row sums with a variable diagonal, a direct pointwise predecessor; summing to the capped event still requires the relative estimates developed here.
+The diagonal-to-extra-vertex correspondence is a prior structural fact: Greenhill and McKay state it explicitly for symmetric $0$--$1$ matrices with diagonal weight one \cite[p.~902; preprint p.~3]{gm}. Proposition~\ref{ssm:prop:bridge} includes the short proof to fix the sign convention and the inequality cap. Their dense Theorem 1.4 treats prescribed exact row sums with a variable diagonal, a direct pointwise predecessor; summing to the capped event still requires the relative estimates developed here.
 
-The extra vertex is useful because it replaces the boundary weight in \eqref{eq:soft} by a single free degree coordinate. Treating the row sums as independent would lose the relevant rare-event correlation. A multivariate central limit theorem with an absolute error is likewise insufficient: the desired probability decays exponentially in $n$.
+The extra vertex is useful because it replaces the boundary weight in \eqref{ssm:eq:soft} by a single free degree coordinate. Treating the row sums as independent would lose the relevant rare-event correlation. A multivariate central limit theorem with an absolute error is likewise insufficient: the desired probability decays exponentially in $n$.
 
 \subsection{What is imported and what is proved here}
 McKay and Wormald's uniform dense degree-sequence enumeration \cite[Theorem 3(ii)]{mw} is the pointwise counting input. McKay, Wanless, and Wormald \cite{mww} already determined the all-capped graph equivalent, including its exponential rate, constant, and square-root boundary effect. We use their Corollary 2 for the final matrix constants, and their Lemma 2 and equation (29) for the first correction to an auxiliary saddle mass.
 
-The proof below supplies the passage from all-capped to mixed capped and free coordinates, including the window $f=O(\sqrt M)$. It does not apply the comparison theorem \cite[Theorem 3]{mww} directly to $2^{-N_k}$. That theorem requires a polynomial bound on the ratio of an observable's maximum to its comparison-model expectation; this condition has not been established for the weight in \eqref{eq:soft}. Instead, the proof sums the pointwise enumeration formula with an exact tilt and controls its positive exponential weight. The switching argument is an unequal-cap adaptation of the method in \cite[Lemma 4]{mww}, and its counts are derived explicitly here.
+The proof below supplies the passage from all-capped to mixed capped and free coordinates, including the window $f=O(\sqrt M)$. It does not apply the comparison theorem \cite[Theorem 3]{mww} directly to $2^{-N_k}$. That theorem requires a polynomial bound on the ratio of an observable's maximum to its comparison-model expectation; this condition has not been established for the weight in \eqref{ssm:eq:soft}. Instead, the proof sums the pointwise enumeration formula with an exact tilt and controls its positive exponential weight. The switching argument is an unequal-cap adaptation of the method in \cite[Lemma 4]{mww}, and its counts are derived explicitly here.
 
 Flammenkamp's university page identifies a joint counting project with Sillke in 1981 and links an exact table agreeing with $A_n$ through order $16$ \cite{sf}. This dates the project, not necessarily every value in the current table. The underlying unpublished manuscript or proof notes cited by OEIS were not recovered. Anderson's cited Section 3.1 \cite{anderson} was also not inspected. Greene and Kleitman's complete displayed article \cite{gk} was read; it concerns symmetric chains, strengthened Sperner bounds, lattice paths, and two-row plane partitions, and does not state the sign-matrix asymptotic used here. These are precise limits on the inspected historical record, not evidence that no earlier unpublished result exists.
 
 Later neighboring work addresses loopy exact margins, partial stability at exponential-rate scale, and friendly bisections at constant-factor precision \cite{gm,dgz,mss}. The inspected results do not directly supply the mixed-cap relative equivalent below. In particular, broad partial-constraint ideas and the graph bridge are not presented as new. The present article makes no priority claim.
+
+\begin{remark}[{[write]} The OEIS entry and the historical table, 6~October 2026]\label{ssm:rem:oeis}
+The live entry A027832 \cite{oeis} (revision~\#6 of 12~November 2018, the
+revision the source inspected; read 6~October 2026) is named, verbatim,
+``Number of symmetric \{-1, +1\} matrices of order n with nonnegative row
+and column sums.'' Its offset is~1, its 17 data terms $A_1,\ldots,A_{17}$
+equal the source's transcription (\file{data/oeis_prefix.json}), and the
+package's exact recursion of Section~\ref{ssm:sec:computation} regenerates
+all of them. Besides the data the entry has an example ($A_2=5$, the five
+matrices listed), two references (Anderson's \emph{Combinatorics of Finite
+Sets}, Ch.~3.1, and ``Torsten Sillke and Achim Flammenkamp, unpublished'')
+and one link (Greene--Kleitman); it has no formula, no program and no
+asymptotic statement. Theorem~\ref{ssm:thm:matrix} is therefore the only
+asymptotic for A027832 in the entry or in the repository. Nothing in the
+entry is corrected, and nothing was submitted to the OEIS.
+
+\emph{The historical table.} The write fetched the table the source cites
+\cite{sf} on 6~October 2026. It is headed ``number of symmetric
+0-1-matrices with each row- and columnsum >= n/2'' and lists $n=1,\ldots,16$;
+its 16 values equal $A_1,\ldots,A_{16}$. The two counts are the same: under
+$+1\mapsto1$, $-1\mapsto0$ a row with $j$ entries $+1$ has sign sum $2j-n$,
+which is nonnegative exactly when $j\ge n/2$, and the diagonal entry is
+counted once in each. This confirms the source's statement that the table
+agrees with $A_n$ through order~16.
+
+\emph{The leading formula against the data.} The batch-108 intake evaluated
+$A_n$ divided by the right side of~\eqref{ssm:eq:matrix} for all 17 terms
+(40-digit \texttt{mpmath}, $\ell$ found to 40 digits; rerun by the write;
+the delivered noncertified receipt \file{data/diagnostic_receipt.json}
+agrees to the digits shown):
+\begin{center}\small
+\begin{tabular}{@{}r*{9}{c}@{}}
+\toprule
+$n$ & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9\\
+ratio & 0.85922 & 1.01920 & 1.00947 & 1.00152 & 0.99615 & 1.00043 & 0.99616 & 1.00005 & 0.99682\\
+\midrule
+$n$ & 10 & 11 & 12 & 13 & 14 & 15 & 16 & 17 & \\
+ratio & 0.99985 & 0.99733 & 0.99974 & 0.99771 & 0.99967 & 0.99800 & 0.99963 & 0.99822 & \\
+\bottomrule
+\end{tabular}
+\end{center}
+These are the intake's numbers: $0.9996$ at $n=16$ and $0.998$ at $n=17$,
+which the intake read as tending to~$1$ on both parities. In detail, the
+odd-order ratios increase from $n=5$ on; the even-order ratios lie within
+$4.4\cdot10^{-4}$ of~$1$ from $n=6$ on, cross~$1$ between $n=8$ and $n=10$,
+and from $n=8$ to $n=16$ move slowly away from~$1$. Seventeen terms neither
+confirm nor contradict an $o(1)$: Theorem~\ref{ssm:thm:matrix} gives the
+limit~$1$ along each parity, with no rate and no sign
+(Question~\ref{ssm:q:parity}).
+\end{remark}
+
+\subsection{Provenance, sources and reading conventions}\label{ssm:sec:provenance}
+\begin{writenote}[Added 6 October 2026, batch~108]
+\emph{Provenance.} This report is Report~239 of the session bundle that
+ProveIt's \file{docs/incoming} intake processed as batch~108: the archive
+\file{Report239.zip} (567{,}302 bytes, SHA-256
+\file{01d2635f9e90...4d80c1d9}, 31 files in a wrapper directory
+\file{Report239/}), arrival commit \file{60f54ea06}, placed in
+\file{602e5bd0f}. The text is the delivered \file{article.tex} with its
+twelve files \file{sections/*.tex} (792 lines in all, dated 5~October
+2026), shipped under the same names. The delivered 19-page PDF and the
+checksum manifest \file{MANIFEST.sha256} (30 entries, verified at
+placement) are not shipped, and the delivered README is replaced by the
+report README; all three are retrievable from the arrival commit. The
+package records no ProveIt commit and cites nothing in the repository. The
+phrase ``private review'' occurs in it only in sentences saying that such
+material is not included (Section~\ref{ssm:sec:computation} and
+\file{SOURCES.md}; the delivered README likewise excludes ``private audit
+files''); the PDF author field is ``Report 239''. It is a single-source
+report, so no merge choice was made. The write prefixed the 74 delivered
+labels with \file{ssm:} and updated the 67 references to them; it added
+this subsection, the notes marked [write], Remarks~\ref{ssm:rem:oeis}
+and~\ref{ssm:rem:transseries} and Section~\ref{ssm:sec:further}. One
+delivered defect was repaired: \file{sections/07_transfer.tex} contained two
+carriage-return bytes where the two characters \verb|\r| of
+\verb|{\rm even}| had been converted, so the delivered PDF printed
+``meven'' in~\eqref{ssm:eq:weightedlimit} and in the unnumbered display
+before the final limit of Section~\ref{ssm:sec:transferproof}; both now
+read \verb|{\rm even}| (note there). Apart from this repair and the label
+prefixes, no theorem, proof or number of the source was changed: the added statements are the last of their sections,
+the added section comes after the last numbered one, and the added displays
+are unnumbered, so every theorem, section and equation keeps its delivered
+number.
+
+\emph{The sources, as the write read them} (6~October 2026).
+\begin{itemize}\raggedright
+\item OEIS A027832, revision~\#6, and Flammenkamp's table
+ (Remark~\ref{ssm:rem:oeis}).
+\item McKay--Wanless--Wormald \cite{mww}, the authors' final version
+ (\file{deghalfn_final.pdf}): Corollary~2 (p.~3), Lemma~2 and the
+ parametrization~(1) (p.~6), equations~(17)--(18) (pp.~11--12),
+ (19)--(26) (pp.~12--13) and (27)--(30) (p.~14). Checked against the
+ source: Corollary~2 counts graphs on $n$ vertices with maximum degree at
+ most $k=\tfrac12n-1+\tau$, $\tau=o(n^{1/4})$, as
+ $2^{\binom n2}\zeta_0\zeta_1^n\exp(\zeta_2\tau n^{1/2}+\zeta_3\tau^2+\zeta_4\tau^3n^{-1/2}+o(1))$
+ with $\zeta_0=Z_0$, $\zeta_1=e^{-\ell^2}/(\ell\sqrt{2\pi})=q$,
+ $\zeta_2=2\ell$, $\zeta_3=J$ and $\zeta_4$ the cubic coefficient quoted
+ after~\eqref{ssm:eq:allcapped}, so~\eqref{ssm:eq:allcapped} is its case
+ $n=M$, $\tau=\theta_M=O(1)$. Lemma~2 gives
+ $S(r,k)=\Phi(L+T)+O(n^{-1})\phi(L+T)$ for bounded $L$, $T$, with
+ $r=\tfrac12-\tfrac12Ln^{-1/2}$ and $k=\tfrac12n-1+\tfrac12Tn^{1/2}$, which
+ is~\eqref{ssm:eq:sourceSrate}; equation~(29) gives
+ $L/L_0=1-O(n^{-1})$ at every extremum in their interval~$I_0$, which
+ is~\eqref{ssm:eq:sourceLrate}; their $\mu(r)=Nr^2/(r^2+(1-r)^2)$ of~(26)
+ is $Hp(r)$; their $\alpha(r)$ of~(22) at $n=M$ equals $\tfrac M2\mu_M(r)$, half the
+ mean of the capped sum (the write checked this from~(22), the exponents
+ $\tfrac n2\pm\tfrac12Tn^{1/2}=k+1,\ n-1-k$, and
+ $\PP\{\Bin(n-1,r)\le k\}=\PP\{\Bin(n-2,r)\le k-1\}+(1-r)\PP\{\Bin(n-2,r)=k\}$),
+ so their saddle equation $\alpha(r)=\mu(r)$ is~\eqref{ssm:eq:exactsaddle};
+ and their~(17) states the comparison~\eqref{ssm:eq:degreeenum}
+ uniformly over concentrated sequences, with $\gamma_2$ of~(18) equal to
+ $\gamma$ of~\eqref{ssm:eq:graphparameters}. Not read: their Theorem~3,
+ Lemma~4 and equation~(14).
+\item Greenhill--McKay \cite{gm}, arXiv:1103.0080v3: the abstract and the
+ paragraph on p.~3 of the preprint that maps a loop to an edge to one new
+ vertex (for row sums with diagonal weight one), as the source says. Their
+ Theorem~1.4 was not read.
+\item The transseries volume
+ \path{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex}:
+ \file{p0:def:core}, \file{p0:thm:lambert-core},
+ \file{p0:prop:factorial-core}, \file{p0:thm:core-reversion},
+ \file{p0:def:three-inverses} and \file{p0:thm:staircase}, read for
+ Remark~\ref{ssm:rem:transseries}.
+\item Not read by the write: McKay--Wormald \cite{mw} (the hypotheses and
+ uniformity of Theorem~\ref{ssm:thm:MW} as stated are the source's reading
+ of their Theorems~2 and~3(ii)); Anderson \cite{anderson} (the source did
+ not read it either); Greene--Kleitman \cite{gk}; Dandi--Gamarnik--Zdeborov\'a
+ \cite{dgz}; Minzer--Sah--Sawhney \cite{mss}; and the Liebenau--Wormald
+ paper named in \file{SOURCES.md}. What is said about them is the source's.
+\end{itemize}
+
+\emph{What was checked at intake.} The batch-108 dossier read the
+manuscript and found no error, and reran the package on a copy (Windows,
+Python 3.14.4): \file{build.py} with \verb|--verify-only| verified 30 files;
+\file{exact_counts.py} and \file{constant_certificate.py} reproduced the
+delivered receipts byte for byte after line-ending conversion;
+\file{diagnostics.py} reproduced its receipt except in the last one or two
+digits of three binary64 values (the ratios \file{exact_over_S_based_model}
+at $M=13$, $f=1,3,6$, for example $\ldots151$ against $\ldots156$), which
+the receipt itself labels noncertified floating-point output of the
+platform's \texttt{libm}; \file{guard_tests.py} stops on Windows at its own
+path guard; the PDF and ZIP rebuilds were not run. It also evaluated the
+leading formula against all 17 terms (table in Remark~\ref{ssm:rem:oeis}).
+The write rechecked by hand the bridge, the identities $q^{n+1}/\Phi(\ell)
+=q^ne^{-\ell^2/2}$ and $a^2/(1-2v)=\ell^2\tau^2/[2(1+2\ell^2)]$, the switching
+gain~\eqref{ssm:eq:switchgain}, the tail bound~\eqref{ssm:eq:sumtail} and
+the coefficients of~\eqref{ssm:eq:modelinverse}; it checked the change of
+variables of Remark~\ref{ssm:rem:transseries} and the reversion
+coefficients in SymPy, and compared the historical table. Finite
+computations are observations, not certificates.
+
+\emph{Relation to the repository.} Before batch~108 no file of the
+repository mentioned A027832, symmetric sign matrices or graphs with
+degrees capped near half the order. No statement of this report is
+formalized in Lean or Rocq, and its place in the collection confers no
+formal status. The neighbouring reports are listed in the report README;
+none needs a reciprocal note.
+\end{writenote}
+\medskip\noindent\begin{minipage}{\textwidth}
+\emph{Reading conventions} (letters the manuscript reuses, with the tempting
+false readings; no symbol of the source was renamed; symbols of the
+transseries volume carry the subscript ``vol'' in
+Remark~\ref{ssm:rem:transseries}).\par
+\smallskip
+\begingroup\small\renewcommand{\arraystretch}{1.1}
+\noindent\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.8in}>{\raggedright\arraybackslash}p{3.25in}>{\raggedright\arraybackslash}p{2.1in}@{}}
+\toprule
+Symbol & Meaning here (where) & Not to be read as\\
+\midrule
+$\ell$ & the root of $\phi(\ell)=\ell\Phi(\ell)$, $0.50605\ldots$~\eqref{ssm:eq:ell} & a logarithm; $L_M$, $L_0(T)$\\
+$\Phi$, $\phi$ & standard normal distribution function and density & the volume's core $\Phi_0^{\rm vol}$\\
+$q$, $q_j$, $q_x$ & the base $\Phi(\ell)e^{-\ell^2/2}$ (McKay--Wanless--Wormald's $\zeta_1$); binomial masses (Lemma~\ref{ssm:lem:subgaussian}); capped masses (Section~\ref{ssm:sec:transferproof}) & each other\\
+$v$ & the variance constant $(1-2\ell^2)/4$ & $v_{\rm vol}$ of \file{p0:prop:factorial-core}\\
+$S_M$ & the cap probability at the finite saddle; McKay--Wanless--Wormald's $S(r,k)$ at $r=r_M$, $n=M$ & a sum\\
+$\theta_M$, $\tau$ & cap offset $k-M/2+1$ (McKay--Wanless--Wormald's $\tau$); $\tau=\lim f/\sqrt M$ & each other\\
+$h$, $h_M$ & $\phi(x)-x\Phi(x)$ (Section~\ref{ssm:sec:results}); cap probability (Section~\ref{ssm:sec:concentration}) & each other; $h_{\rm vol}$\\
+$f$ & number of free vertices & $f_{\rm vol}$ of \file{p0:thm:core-reversion}\\
+$N_k(G)$, $N_M(\boldsymbol d)$, $N_s(x)$ & vertices of degree $k$; graphs with degrees $\boldsymbol d$; parity threshold index & each other; $\min(N_0,N_1)$, not $N_s$, is the staircase $N_\ast^{\rm vol}$\\
+$B(M,k)$, $B$ & all-capped count; a coefficient in the proof of Proposition~\ref{ssm:prop:inverse} & McKay--Wanless--Wormald's $B=\binom{n-1}k$\\
+$a$, $b$ & in Section~\ref{ssm:sec:inverse}: $\tfrac12\log2$, $\tfrac12\log2+\log q$; elsewhere degrees, vertices, endpoints, $a_d$, $a_M$ & each other; $a_{\rm vol}$, $b_{\rm vol}$ of \file{p0:thm:lambert-core}\\
+$t$, $u$ & continuous index and $\sqrt{y/a}$ (Section~\ref{ssm:sec:inverse}); $t=M^{1/2+\delta}$ (Section~\ref{ssm:sec:concentration}); a real argument (Lemma~\ref{ssm:lem:subgaussian}) & $t_{\rm vol}$, $u_{\rm vol}$\\
+$r_M$, $r_s$ & saddle edge probability; continuous inverse & each other\\
+$D$, $\Delta$ & cap $\lceil M/2+t\rceil$, coefficient $D$ of~\eqref{ssm:eq:modelinverse}, relative entropy $D(p\Vert p_0)$; $\Delta_M$ mean deficit, $\Delta(G)$ maximum degree & each other\\
+$W_M$ & entropy weight~\eqref{ssm:eq:entropy} & a Lambert function (none occurs)\\
+\bottomrule
+\end{tabular}
+\endgroup
+\end{minipage}\par
+\begin{writenote}[What is not claimed, collected from the source]
+Both theorems are leading $1+o(1)$ statements: no rate for the $o(1)$, no
+higher count coefficient, no all-orders expansion and no numerically
+certified starting index is asserted, and the auxiliary
+estimate~\eqref{ssm:eq:Srate} does not strengthen the qualitative error of
+the enumeration. The all-capped equivalent, its constants and its
+square-root boundary effect are McKay--Wanless--Wormald's; the
+diagonal-to-extra-vertex correspondence is Greenhill--McKay's; ``broad
+partial-constraint ideas and the graph bridge are not presented as new'',
+and the article ``makes no priority claim''. The comparison theorem of
+\cite[Theorem~3]{mww} is not applied to the weight $2^{-N_k}$, because its
+hypothesis was not established for it. Nothing is proved for $f/\sqrt
+M\to\infty$, for nonuniform caps beyond bounded offsets, or for deleted or
+fixed diagonals, which give different counts. The inverse statements give
+no certified finite-input rounding rule; Proposition~\ref{ssm:prop:threshold}
+holds only beyond an ineffective threshold, and more digits of $\ell$ cannot
+replace the missing error bound. The historical search was bounded:
+Anderson's chapter and the unpublished Sillke--Flammenkamp work were not
+inspected, and ``These are precise limits on the inspected historical
+record, not evidence that no earlier unpublished result exists''. The
+constant certificate encloses constants only, the diagnostics are
+noncertified, the manifest establishes ``integrity, not authorship or
+independent provenance'', the guards are ``not a sandbox'', and
+reproduction is claimed only for the recorded toolchain.
+\end{writenote}

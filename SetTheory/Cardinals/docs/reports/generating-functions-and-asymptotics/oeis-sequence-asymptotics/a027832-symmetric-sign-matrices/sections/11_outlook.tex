@@ -1,13 +1,63 @@
-\section{Scope and further questions}\label{sec:outlook}
-The proved transfer has two distinct scales. A fixed number of free vertices contributes one factor $\Phi(\ell)^{-1}$ per vertex. At $f\asymp\sqrt M$, the cumulative mean shift survives the Gaussian normalization, and the positive quadratic weight produces a collective factor. The bounded offset of the degree cap contributes a linear correction on that same scale. Both are present in \eqref{eq:criticalexplicit}.
+\section{Scope and further questions}\label{ssm:sec:outlook}
+The proved transfer has two distinct scales. A fixed number of free vertices contributes one factor $\Phi(\ell)^{-1}$ per vertex. At $f\asymp\sqrt M$, the cumulative mean shift survives the Gaussian normalization, and the positive quadratic weight produces a collective factor. The bounded offset of the degree cap contributes a linear correction on that same scale. Both are present in \eqref{ssm:eq:criticalexplicit}.
 
 Several extensions remain meaningful and require new estimates.
 \begin{enumerate}
 \item \textbf{An effective relative remainder.} The present proof uses a uniform $o(1)$ dense enumeration theorem and qualitative limit arguments. An explicit remainder with computable constants would turn the inverse brackets into finite-input certificates. It would need quantitative control of the enumeration input, relative graph tails, tilted moments, and parity error together.
 \item \textbf{Higher count coefficients.} The computable expansion of the saddle mass is only one ingredient. A next term for $A_n$ requires a correspondingly precise mixed degree-sequence expansion and all associated lattice and moment corrections. Expanding the known leading model alone does not produce a justified coefficient for the actual count.
-\item \textbf{More than order $\sqrt M$ free vertices.} If $f/\sqrt M\to\infty$, the normalized mean shift $a_M$ is unbounded. The compact Gaussian argument and bounded-shift integrability used here no longer prove \eqref{eq:criticalexact}. A moving saddle adapted to the free fraction, together with moderate-deviation estimates, is a natural route; no extrapolated formula is claimed.
+\item \textbf{More than order $\sqrt M$ free vertices.} If $f/\sqrt M\to\infty$, the normalized mean shift $a_M$ is unbounded. The compact Gaussian argument and bounded-shift integrability used here no longer prove \eqref{ssm:eq:criticalexact}. A moving saddle adapted to the free fraction, together with moderate-deviation estimates, is a natural route; no extrapolated formula is claimed.
 \item \textbf{Nonuniform caps and marked free degrees.} The graph concentration switching already permits unequal caps. Extending the summation to bounded heterogeneous offsets or generating functions for the free degrees would require choosing and analyzing the corresponding tilt. It may reveal which aggregate offset statistics govern the first collective correction.
 \item \textbf{Historical identification.} The recovered historical table and direct loopy-graph predecessor narrow the attribution question, but they do not replace inspection of Anderson's cited chapter or the underlying unpublished Sillke--Flammenkamp work. Further access could clarify the history without changing the proof given here.
 \end{enumerate}
 
 The analytic conclusions of this report are therefore the leading relative matrix equivalent, the fixed and bounded-critical free-vertex transfer, and the inverse statements justified by their precision. The exact finite computations support the model and implementation, while the source record identifies the imported ingredients. Neither numerical agreement nor a bounded literature search is a priority certificate.
+
+\section{Further questions and research}\label{ssm:sec:further}
+\begin{writenote}[Added 6 October 2026, batch~108]
+Following Vladimir Reshetnikov's standing rule of 4~October 2026, every
+claim of the source that is not proved in full is stated here as an open
+question, with its source, the argument offered and what is missing; the
+source's own five questions are those of Section~\ref{ssm:sec:outlook},
+which stay as printed. The intake and the write found no false statement in
+the source and narrowed none of its claims; the one delivered defect was
+typographical (Section~\ref{ssm:sec:transferproof}). What the source does
+not prove itself is imported and cited, and the questions below record how
+far the write could check those citations.
+\end{writenote}
+\begin{enumerate}
+\item\label{ssm:q:inputs} \textbf{The imported enumeration input} (source:
+ Section~\ref{ssm:sec:enumeration}, Theorem~\ref{ssm:thm:MW} and the
+ paragraph after it; Section~1.1). The source quotes McKay--Wormald's
+ Theorem~3(ii), ``with uniformity supplied by its underlying Theorem~2'',
+ under the hypotheses $\max_i|d_i-\bar d|=O(M^{1/2+\eps_*})$ and
+ $\min(\bar d,M-1-\bar d)>cM/\log M$ with $c>2/3$, and checks that the
+ window $\cC$ satisfies them. \emph{Checked at the write:} the probabilistic
+ restatement in \cite[(17)--(18)]{mww}, uniform over concentrated
+ sequences, and its translation into~\eqref{ssm:eq:degreeenum} (Section
+ \ref{ssm:sec:provenance}). \emph{Not checked:} the hypotheses and the
+ uniformity as stated in McKay--Wormald's 1990 paper, which the write did
+ not read. The other imported statements (Corollary~2, Lemma~2 and
+ equation~(29) of \cite{mww}, and the Greenhill--McKay correspondence) were
+ checked against their texts (Section~\ref{ssm:sec:provenance}).
+\item\label{ssm:q:history} \textbf{The historical record} (source:
+ Section~1.1 and Question~5 of Section~\ref{ssm:sec:outlook}). The
+ Flammenkamp table, dated by its homepage to a 1981 project with Sillke,
+ agrees with $A_1,\ldots,A_{16}$ (confirmed by the write,
+ Remark~\ref{ssm:rem:oeis}). \emph{Open:} whether Anderson's Section~3.1, or
+ the unpublished Sillke--Flammenkamp work cited by the OEIS, states an
+ asymptotic for $A_n$ or for the all-capped count; neither the source nor
+ the write inspected them. The source's argument is that the inspected
+ record (the OEIS entry, the table, Greene--Kleitman) states none; what is
+ missing is the text of those two items.
+\item\label{ssm:q:parity} \textbf{The next term and the parity pattern}
+ (added by the write; not a claim of the source; it sharpens the source's
+ Question~2). Through $n=17$ the ratio of $A_n$ to the right side
+ of~\eqref{ssm:eq:matrix} (table in Remark~\ref{ssm:rem:oeis}) is below~$1$
+ and increasing on odd orders from $n=5$, and on even orders within
+ $4.4\cdot10^{-4}$ of~$1$ from $n=6$, below~$1$ from $n=10$ and slowly moving away
+ from~$1$ through $n=16$. Is there a second term, for instance of relative
+ order $n^{-1/2}$ with a parity-dependent coefficient, and does its sign
+ explain this pattern? The source's Question~2 explains why expanding the
+ leading model alone cannot answer this; the finite data are observations,
+ not evidence of a rate.
+\end{enumerate}

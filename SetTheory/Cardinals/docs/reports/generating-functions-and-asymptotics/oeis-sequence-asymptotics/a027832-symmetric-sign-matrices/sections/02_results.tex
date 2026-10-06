@@ -1,15 +1,15 @@
-\section{Leading equivalents and the critical window}\label{sec:results}
+\section{Leading equivalents and the critical window}\label{ssm:sec:results}
 Let
 \[
  \phi(x)=\frac{e^{-x^2/2}}{\sqrt{2\pi}},\qquad
  \Phi(x)=\int_{-\infty}^x\phi(t)\,\dd t,
 \]
 and let $\ell$ be the unique positive solution
-\begin{equation}\label{eq:ell}
+\begin{equation}\label{ssm:eq:ell}
  \phi(\ell)=\ell\Phi(\ell).
 \end{equation}
 To see existence and uniqueness directly, $h(x)=\phi(x)-x\Phi(x)$ has $h(0)>0$ and $h'(x)=-\Phi(x)-2x\phi(x)<0$ for $x\ge0$, while $h(1)<0$. In fact $0<\ell<1/\sqrt2$: at $x=1/\sqrt2$, the bound $\Phi(x)>1/2+x\phi(x)$ gives $x\Phi(x)>\phi(x)$ because $x>\phi(x)$. Define
-\begin{equation}\label{eq:constants}
+\begin{equation}\label{ssm:eq:constants}
  \begin{split}
  q&=\Phi(\ell)e^{-\ell^2/2},\qquad
  Z_0=\frac{\exp(5\ell^2/4-\ell^4/2)}{\sqrt{1+2\ell^2}},\\
@@ -18,20 +18,20 @@ To see existence and uniqueness directly, $h(x)=\phi(x)-x\Phi(x)$ has $h(0)>0$ a
  \end{split}
 \end{equation}
 
-\begin{theorem}[Mixed degree constraints]\label{thm:transfer}
-Fix finite constants $C,K\ge0$. Let $M\to\infty$, let $k$ be integral with $|k-M/2|\le K$, and let $0\le f\le C\sqrt M$ be integral. Choose the finite saddle $r_M=1/2-L_M/(2\sqrt M)$ described in Section~\ref{sec:saddle}, and put
+\begin{theorem}[Mixed degree constraints]\label{ssm:thm:transfer}
+Fix finite constants $C,K\ge0$. Let $M\to\infty$, let $k$ be integral with $|k-M/2|\le K$, and let $0\le f\le C\sqrt M$ be integral. Choose the finite saddle $r_M=1/2-L_M/(2\sqrt M)$ described in Section~\ref{ssm:sec:saddle}, and put
 \[
  S_M=\PP\{\Bin(M-1,r_M)\le k\},\qquad
  \theta_M=k-M/2+1.
 \]
 Then, uniformly over these $k$ and $f$,
-\begin{equation}\label{eq:criticalexact}
+\begin{equation}\label{ssm:eq:criticalexact}
  \frac{U_f(M,k)}{B(M,k)}
  =(1+o(1))S_M^{-f}
  \exp\left\{\frac{\ell^2}{2(1+2\ell^2)}\frac{f^2}{M}\right\}.
 \end{equation}
 Equivalently, with no implicit saddle mass,
-\begin{equation}\label{eq:criticalexplicit}
+\begin{equation}\label{ssm:eq:criticalexplicit}
  \frac{U_f(M,k)}{B(M,k)}
  =(1+o(1))\Phi(\ell)^{-f}
  \exp\left\{-\frac{2\theta_M\ell}{1+2\ell^2}\frac f{\sqrt M}
@@ -40,16 +40,16 @@ Equivalently, with no implicit saddle mass,
 In particular, $U_f/B\sim\Phi(\ell)^{-f}$ if $f=o(\sqrt M)$, including every fixed $f$.
 \end{theorem}
 
-The equivalence of \eqref{eq:criticalexact} and \eqref{eq:criticalexplicit} requires the source-based estimate
-\begin{equation}\label{eq:Srateintro}
+The equivalence of \eqref{ssm:eq:criticalexact} and \eqref{ssm:eq:criticalexplicit} requires the source-based estimate
+\begin{equation}\label{ssm:eq:Srateintro}
  \log S_M=\log\Phi(\ell)+\frac{2\theta_M\ell}{1+2\ell^2}M^{-1/2}
  +O(M^{-1}),
 \end{equation}
-proved in Section~\ref{sec:explicit}. The mere convergence $S_M\to\Phi(\ell)$ would not suffice when $f$ grows like $\sqrt M$. If $f/\sqrt M\to\tau$, the quadratic term has the nonvanishing limit $\ell^2\tau^2/[2(1+2\ell^2)]$. The linear term remembers the bounded offset of the cap. Both matter on this scale.
+proved in Section~\ref{ssm:sec:explicit}. The mere convergence $S_M\to\Phi(\ell)$ would not suffice when $f$ grows like $\sqrt M$. If $f/\sqrt M\to\tau$, the quadratic term has the nonvanishing limit $\ell^2\tau^2/[2(1+2\ell^2)]$. The linear term remembers the bounded offset of the cap. Both matter on this scale.
 
-\begin{theorem}[Symmetric sign matrices]\label{thm:matrix}
-With the constants in \eqref{eq:constants},
-\begin{equation}\label{eq:matrix}
+\begin{theorem}[Symmetric sign matrices]\label{ssm:thm:matrix}
+With the constants in \eqref{ssm:eq:constants},
+\begin{equation}\label{ssm:eq:matrix}
  A_n\sim 2^{n(n+1)/2}q^n Z_0e^{-\ell^2/2}
  \begin{cases}
  \exp(\ell\sqrt n+J/4),&n\text{ even},\\
@@ -69,4 +69,4 @@ Useful decimal values, displayed for orientation, are
 \]
 Ordinary high-precision decimal evaluations and any exact interval certificates in the computational package are distinguished there. The decimal display itself is not used to establish the theorem.
 
-The diagonal convention is essential. It is responsible for the extra free vertex in \eqref{eq:bridge}; deleting or fixing the diagonal produces a different count. The parity factor is also essential: omitting it from even orders would not yield a relative equivalent. Neither theorem asserts a rate for its $o(1)$, higher asymptotic count coefficients, or a numerically certified starting index.
+The diagonal convention is essential. It is responsible for the extra free vertex in \eqref{ssm:eq:bridge}; deleting or fixing the diagonal produces a different count. The parity factor is also essential: omitting it from even orders would not yield a relative equivalent. Neither theorem asserts a rate for its $o(1)$, higher asymptotic count coefficients, or a numerically certified starting index.

@@ -1,9 +1,9 @@
-\section{Exact computations and reproducible outputs}\label{sec:computation}
-The accompanying package separates exact combinatorial checks, rational certificates for constants, floating-point diagnostics, and deterministic document reproduction. None of these finite checks replaces the analytic proof or supplies an effective onset for Theorems~\ref{thm:transfer} and~\ref{thm:matrix}.
+\section{Exact computations and reproducible outputs}\label{ssm:sec:computation}
+The accompanying package separates exact combinatorial checks, rational certificates for constants, floating-point diagnostics, and deterministic document reproduction. None of these finite checks replaces the analytic proof or supplies an effective onset for Theorems~\ref{ssm:thm:transfer} and~\ref{ssm:thm:matrix}.
 
 \subsection{An exact labelled graph recursion}
 For a list of residual caps $\boldsymbol c=(c_1,\ldots,c_r)$, let $T(\boldsymbol c)$ count graphs on $r$ labelled remaining vertices obeying those caps. A cap above $r-1$ can be replaced by $r-1$. Sorting the cap list preserves the count, since relabelling is a bijection. Remove a vertex of cap $c_1$, and group the other vertices by their common cap $a$, with multiplicity $m_a$. If it chooses $j_a$ neighbors in group $a$, then
-\begin{equation}\label{eq:caprecurrence}
+\begin{equation}\label{ssm:eq:caprecurrence}
  T(\boldsymbol c)=
  \sum_{\substack{0\le j_a\le m_a\ (a\ge1)\\\sum_a j_a\le c_1}}
  \left(\prod_a\binom{m_a}{j_a}\right)
@@ -26,7 +26,7 @@ This computation does not use the asymptotic formulas. It regenerates all 17 pub
 Two direct algorithms supply independent small-case checks. One enumerates all upper-triangular sign assignments, mirrors them, and tests row sums literally. The other enumerates every simple graph edge mask and tests each specified degree cap. The former checks $n=0,\ldots,5$; the latter checks all mixed uniform-cap/free-coordinate choices at graph orders $M=0,\ldots,6$. The exact receipt records $113$ exhaustive mixed-graph cases, $88$ additional multi-free inclusion and product-correlation checks, and $2800$ capped-binomial variance inequalities evaluated with rational parameters and integer arithmetic. The all-free value $2^{\binom M2}$ is also checked. Full ranges and output values are recorded in the receipt.
 
 \subsection{Constants and diagnostics have different guarantees}
-The package contains rational interval certificates for $\ell$ and the transfer constant. The root is isolated by opposite signs of $\phi(x)-x\Phi(x)$ at rational endpoints and the strict monotonicity proved in Section~\ref{sec:results}. Rational Taylor bounds and a Machin formula for $\pi$ enclose the elementary integrals and exponentials used in those sign tests. In particular the verifier establishes
+The package contains rational interval certificates for $\ell$ and the transfer constant. The root is isolated by opposite signs of $\phi(x)-x\Phi(x)$ at rational endpoints and the strict monotonicity proved in Section~\ref{ssm:sec:results}. Rational Taylor bounds and a Machin formula for $\pi$ enclose the elementary integrals and exponentials used in those sign tests. In particular the verifier establishes
 \[
 \begin{split}
  0.506054468989180763236198306442
