@@ -2,57 +2,78 @@
 
 **Density transfer and phase-flat partitions; energies, restriction and dependent random choice; cube and progression counts; floor patterns and the Proposition 17.7 phase extraction**
 
-This is a research report built on 6 October 2026 (write batch 115) from five
-research manuscripts, all dated 6 October 2026 and prepared for Vladimir
-Reshetnikov. Each sharpens local estimates of W. T. Gowers, *A new proof of
-Szemerédi's theorem*, GAFA 11 (2001), 465–588. Each compares its statements
-with the *corrected* statements of ProveIt's formal project beside this
-directory: the edited transcription
-[`Papers/sz-thm-gowers-proof`](../../../Papers/sz-thm-gowers-proof) and the Lean
-development [`Lean/GowersSzemeredi`](../../../Lean/GowersSzemeredi), with the
-ledger [`gowers-proof-status.json`](../../../gowers-proof-status.json). The report
-is filed under `Combinatorics/Ramsey/Research/` by Vladimir's direction (6 October
-2026), not in the research-report collection. That placement gives it **no formal
-status**.
+This is a research report built on 6 October 2026 from ten research manuscripts,
+all dated 6 October 2026. Sources 01–05 were merged in the first write (batch 115,
+`18507e2b2`); sources 06–10 were added in a second write the same day, as dated
+additions that renumber and relabel nothing printed for 01–05. Each source
+sharpens local estimates of W. T. Gowers, *A new proof of Szemerédi's theorem*,
+GAFA 11 (2001), 465–588, and compares its statements with the *corrected*
+statements of ProveIt's formal project beside this directory: the edited
+transcription [`Papers/sz-thm-gowers-proof`](../../../Papers/sz-thm-gowers-proof)
+and the Lean development [`Lean/GowersSzemeredi`](../../../Lean/GowersSzemeredi),
+with the ledger [`gowers-proof-status.json`](../../../gowers-proof-status.json).
+The report is filed under `Combinatorics/Ramsey/Research/` by Vladimir's direction
+(6 October 2026), not in the research-report collection. That placement gives it
+**no formal status**.
 
-Every manuscript spans two to four themes, so the article is arranged in five
+Every manuscript spans several themes, so the article is arranged in five
 **thematic Parts**, with each source's sections printed whole inside them:
 
-- **Part I — density transfer and phase-flat partitions** (sources 01, 02, 03, 05).
+- **Part I — density transfer and phase-flat partitions** (sources 01, 02, 03, 05; 06, 10).
   - A sharp one-sided density–mass bound `P(X > t) ≥ ((a+t)T − at)/(a(b−t))`,
-    proved independently in four sources.
+    proved independently in six sources (01, 02, 03, 05, 06, 10).
   - A sharp one-cell phase envelope `C² ≤ (1−ρ²)F² + ρ²L²`.
-  - Lemma 5.15 with cell size `α(2+α)N/(2(4−α)(M−1))`.
+  - Lemma 5.15 with cell size `α(2+α)N/(2(4−α)(M−1))` (02, 03), and 06's exact
+    optimum for a fixed number `M` of cells, `min{P₊/(b(M−1)), S/(M−2)}`, with
+    extremizers; it is strictly better for `α < 1` and equal at `α = 1`.
   - The optimal lower constant **1/3** in Lemma 2.3, and Corollary 2.4 with
     `36π` and `3α/4`.
-  - Three density-sensitive Fourier increments.
+  - Four density-sensitive Fourier increments (01, 03, 05, 10), with 10's
+    optimal cap `δ + δS/(2δ−S)` and its density–length frontier.
   - Simultaneous phase-flat partitions with the optimal exponent `1/(m+1)`, a
     spectral-energy extraction, and a refinement theorem under the partition
     input `PP(K,R₀)`.
-- **Part II — the inverse step** (02, 03, 04).
+- **Part II — the inverse step** (02, 03, 04; 07, 10).
   - A mixed, weighted extension of Proposition 6.1 on every finite abelian
     group, with coefficient one.
-  - Lemma 7.4 with `7δ³n/(3√6)`, and an elementary Proposition 7.3 with
-    `(c/8, 2¹⁹c⁻⁹)`.
+  - Lemma 7.4 with `7δ³n/(3√6)`, and two elementary Propositions 7.3,
+    `(c/8, 2¹⁹c⁻⁹)` (03) and `(c/4, 2¹⁰c⁻⁵)` (10).
   - Exact moment interpolation; a polynomial restriction theorem over prime
     fields, with order eight `2⁻⁹⁵γ¹¹²η¹⁵|B|¹⁵`; arrangement moments with a
     cross-section profile.
-- **Part III — cube and progression counts** (03, 04).
+  - **Source 07's chapter (Lemma 10.9):** transport-sensitive rigidity, the sharp
+    threshold `δ < 1/(2k)`, Freiman order **five** under exactly the hypotheses of
+    the Lean `lemma_10_9`, and order **nine** under further hypotheses of the
+    Section 10 construction, which `lemma_10_9` does not have.
+  - 10's vertical-fibre Freiman extraction: Corollary 7.6 with `2⁻²⁰⁹γ¹⁰³` in
+    place of `2⁻¹⁸⁸²γ¹¹⁶⁴`.
+- **Part III — cube and progression counts** (03, 04; 06, 08, 09, 10).
   - The exact fourth-order term of the centered cube count on every finite
-    abelian group.
+    abelian group (03, 08, 09), and the exact fifth-order term with Stirling
+    multiplicities and order-two and order-three torsion statistics (09).
   - The sharp gap `‖f‖⁸_{U³} ≥ 2‖f‖⁸_{U²}` (real, centered, odd order), hence
-    the sharp leading constant `6√2`, and the correction exponent `16/3`.
-  - Density-weighted progression counting, and the lifting lemma, which is
-    already formal.
-- **Part IV — floor patterns** (01, 04).
-  - `|F(r)| = (∏ 2rᵢ) C_k`, with `2^{k(k−1)/2} ≤ C_k ≤ R(H_k, k)`.
-  - `log₂ C_k ~ k²`, using the classical threshold-function count.
-  - Certified `C₁..C₄ = 1, 2, 10, 154` and `A₁..A₃ = 2, 6, 38`.
-  - The local coefficient `2^{−k²−k log₂ k−O(k)}` at Proposition 17.7.
+    the sharp leading constant `6√2`, and the correction exponent `16/3` (04).
+  - **The quartic lower bound with coefficient 12 is false** (03, 08, 09):
+    Remark W1 records the counterexample on `ℤ/11ℤ`, ratio `15337/1296 < 12`.
+  - A determinant-5 configuration: order-five torsion first enters at order six (09).
+  - Progression counting: the linear telescope (03, 04, 06, 10), a bound
+    quadratic in the uniformity norm (06), torsion-sensitive mixed-`L^p` bounds
+    (10), and the lifting lemma, which is already formal.
+  - An exact dimension threshold for polynomial colourings without
+    symmetrically coloured even progressions (10).
+- **Part IV — floor patterns** (01, 04; 06).
+  - `|F(r)| = (∏ 2rᵢ) C_k`, with `2^{k(k−1)/2} ≤ C_k ≤ R(H_k, k)`; general
+    coefficient families and modular counts (06).
+  - `log₂ C_k ~ k²`, using the classical threshold-function count (01, 06; 06
+    also uniformly modulo every `M ≥ 2`).
+  - Certified `C₁..C₄ = 1, 2, 10, 154` (twice: 01 and 06) and
+    `A₁..A₃ = 2, 6, 38` (04; 06's `D_k`).
+  - Local coefficients at Proposition 17.7: `2^{−k²−k log₂ k−O(k)}` (04) and
+    `2^{−2k²−O(k log k)}` (06).
 - **Part V — formal interface, ledger crosswalk, research questions.** The
   write's crosswalk to the ledger, the write's deduplicated list of the sources'
-  46 questions, and each source's formalization plan, questions, conclusions and
-  appendices.
+  96 questions, iteration bookkeeping (03, 06, 10), and each source's
+  formalization plan, questions, conclusions and appendices.
 
 | No. | Delivered title | Archive (bytes, files) | Manuscript | Pin | Placed | Printed in |
 |---|---|---|---|---|---|---|
@@ -61,12 +82,22 @@ Every manuscript spans two to four themes, so the article is arranged in five
 | 03 | *Sharper local estimates in Gowers's proof of Szemerédi's theorem: density increments, exact cube expansions, and dependent random choice* | `gowers_local_refinements.zip` (408,961 B, 10) | `gowers_local_refinements.tex`, 2,392 lines, 36 pp. | `3a25020a6` | `aefb0b44a` | F.8; I.13–I.15; II.5–II.6; III.1–III.2; V.12–V.15 |
 | 04 | *Sharper Local Bounds in Gowers's Proof of Szemerédi's Theorem: polynomial homomorphism restriction, sharp cube estimates, and floor-pattern complexity* (**base**) | `gowers_quantitative_refinements.zip` (788,239 B, 14) | `gowers_quantitative_refinements.tex`, 2,987 lines, 40 pp. | `327773149` | `aefb0b44a` | F.9; II.7–II.10; III.3–III.4; IV.6; V.16–V.20 |
 | 05 | *Sharp Finite Phase Partitions and Density-Sensitive Increments* | `gowers_strengthening.zip` (399,349 B, 8) | `article.tex`, 847 lines, 18 pp. | `327773149` | `aefb0b44a` | F.10; I.16–I.20; V.21–V.24 |
+| 06 | *Sharp Local Bounds in Gowers' Proof of Szemerédi's Theorem: carry patterns, quadratic counting errors, and optimal density extraction* | `Gowers_Refinements (1).zip` (647,760 B, 19) | `Gowers_Refinements.tex`, 1,958 lines, 27 pp. | `7d99e5dee` | `ad37962c4` | F.11; I.21; III.5; IV.7–IV.9; V.25–V.27 |
+| 07 | *Transport-sensitive rigidity in Gowers's approximate-homomorphism argument* | `Gowers_Transport_Rigidity.zip` (359,160 B, 9) | `transport_rigidity.tex`, 1,472 lines, 21 pp. | `ae0e89574` | `ad37962c4` | F.12; II.11 (guide), II.12–II.19; V.28–V.31 |
+| 08 | *Fourth-order stability of additive cube counts* | `gowers_cube_refinements.zip` (541,854 B, 8) | `fourth_order_cube_counts.tex`, 1,677 lines, 25 pp. | none (blob ids of `7d99e5dee`) | `ad37962c4` | F.13; III.6–III.15; V.32–V.36 |
+| 09 | *Arithmetic Circuit Expansions for Cubical Counts* | `gowers_cubical_expansions.zip` (512,022 B, 10) | `article.tex`, 1,794 lines, 27 pp. | `7d99e5dee` | `ad37962c4` | F.14; III.16–III.27; V.37–V.41 |
+| 10 | *Quantitative Refinements Around Gowers' Proof of Szemerédi's Theorem: torsion, density profiles, additive energy, and sharp limits for polynomial colorings* | `gowers_refinements.zip` (664,416 B, 15) | `gowers_refinements.tex`, 2,443 lines, 34 pp. | `7d99e5dee` | `ad37962c4` | F.15; I.22–I.24; II.20–II.21; III.28–III.30; V.42–V.45 |
 
-The five archives arrived in `66f24b0d0` ("New research reports", 6 October
-2026) and survive there (`git show 66f24b0d0:docs/incoming/<archive> > <archive>`).
-The placement commit `aefb0b44a` ("Place batch 115 (1/2)") staged their files here
-and retired the archives. Sources are numbered in arrival order and then in ASCII
-order of archive name. The intake record is dossier `dossier115_GOWERS`.
+The first five archives arrived in `66f24b0d0` ("New research reports", 6 October
+2026) and survive there (`git show 66f24b0d0:docs/incoming/<archive> > <archive>`);
+the placement commit `aefb0b44a` ("Place batch 115 (1/2)") staged their files here
+and retired the archives. Sources 06–10 arrived in `62e21161f` and survive there
+in the same way; `ad37962c4` ("Place batch 115 (2/2)") staged them. Sources are
+numbered in arrival order and then in ASCII order of archive name. Archive 06
+(`Gowers_Refinements (1).zip`) and archive 10 (`gowers_refinements.zip`) are
+independent manuscripts, not editions (1.09 % shared text); no two of the ten
+share more than 1.14 % (intake, 8-word shingles). The intake record is dossier
+`dossier115_GOWERS`.
 
 **Status.** Unrefereed; nothing proved here has been checked by a proof
 assistant. The one exception, a lifting lemma, was formalized before the sources
@@ -76,32 +107,42 @@ arrived (below). **Authorship disclosures:**
   ChatGPT", and its PDF author field "Research report prepared with ChatGPT".
 - Sources 02–04 say "prepared for Vladimir Reshetnikov". Source 05 is a "research
   note prepared for Vladimir Reshetnikov" with an empty PDF author field.
+- Source 06 is a "Research report prepared for Vladimir Reshetnikov"; source 07 a
+  "Research draft" (title page, running head and PDF author field); source 10 "A
+  mathematical research report" (PDF author field "Research report").
+- **Source 08** is "Prepared for Vladimir Reshetnikov", and its title page calls
+  it "This AI-assisted research draft".
+- **Source 09 credits ChatGPT**: its author line and PDF author field read
+  "Research manuscript prepared with ChatGPT".
 - No source names a human author.
-- Source 03 mentions "independent mathematical reviews" that are not part of its
-  delivery and are recorded nowhere in the repository.
+- Source 03 mentions "independent mathematical reviews", and source 10 an
+  "independent review", that are not part of their deliveries and are recorded
+  nowhere in the repository. Nothing in the report rests on them.
 
-Every result, proof, example, remark, question and limitation of the five
+Every result, proof, example, remark, question and limitation of the ten
 manuscripts is printed. No proof was replaced by a pointer.
 
-**Five more sources are pending.** Sources 06–10 (arrival `62e21161f`) were
-placed in this directory by `ad37962c4` ("Place batch 115 (2/2)"), as prefixed
-code, data, figures and two root markdown files (listed below). The article does
-not use them yet. A follow-up write will add them to Parts I–V as dated additions
-without renumbering anything here.
+**Further sources, not yet written in.** While the second write was in progress, sources 11–14 (`6f530c29c`), 15–17 (`eed2ab863`), 18–20 (`58aa0c493`) were
+placed in this directory as prefixed files (listed under Files). The article does
+not use them yet; a later write will add them as dated additions without
+renumbering anything here.
 
 ## Why thematic Parts, and how they are filled
 
 Sources 01 and 04 are independent manuscripts, not editions of each other: their
-titles, pins and files differ, and they share 0.23 % of their text. No two of the
-five share more than 0.8 % (intake, 8-word shingles). The overlaps are of
-*results*, not text, and each theme draws on several sources. So each Part holds
-the sections of every source on its theme, in source order. Each section heading
-carries a source tag such as `[01]` and a line naming the delivered section. Each
-manuscript's abstract and Section 1 are in the front matter (F.6–F.10), with its
-title block quoted. Conventions sections open the source's first chapter that uses
-them: 03 §2 is in Part I, and 02 §2 and 04 §2 are in Part II. Source 02's
-Appendix B, a rational example for its tail theorem, sits in Part I beside that
-theorem.
+titles, pins and files differ, and they share 0.23 % of their text; the same holds
+for 06 and 10. The overlaps are of *results*, not text, and each theme draws on
+several sources. So each Part holds the sections of every source on its theme,
+in source order; the sections of sources 06–10 follow those of 01–05 at the end
+of each Part. Each section heading carries a source tag such as `[01]` and a line
+naming the delivered section. Each manuscript's abstract and Section 1 are in the
+front matter (F.6–F.15), with its title block quoted. Conventions sections open
+the source's first chapter that uses them: 03 §2 and 10 §2 are in Part I, and 02
+§2 and 04 §2 are in Part II. Source 07 is a chapter of Part II with a guide
+written for this report (II.11) and its notation appendix first. Source 02's
+Appendix B, 08's Appendix A and 09's Appendices A–B, certificates for nearby
+theorems, sit beside those theorems; 06's computation section (§7) is in Part IV
+with its carry counts, and 09's Section 13 in Part III.
 
 **Results proved by several sources** are printed in each source's own form,
 because the forms and hypotheses differ and the proofs are independent. Examples:
@@ -109,25 +150,31 @@ general `[−a, b]` against `a = δ`; strict against non-strict events; all grou
 against odd-order groups. A dated note at each later print names the first print,
 credits every source, and says whether the proof is the same argument or a second
 route:
-- the one-sided mass bound (02 Thm I.9.1, 03 Thm I.14.1, 01 Thm I.4.1, 05 Lem I.17.3);
+- the one-sided mass bound (02 Thm I.9.1, 03 Thm I.14.1, 01 Thm I.4.1, 05 Lem
+  I.17.3; added: 06 Thm I.21.1 in mass form, 10 Prop I.23.2);
 - the one-cell envelope (01 Lem I.1.2, 02 Thm I.8.1);
-- the Lemma 5.15 replacement (02, 03);
+- the Lemma 5.15 replacement (02, 03), sharpened by 06;
+- exceptional sets (01, 06, 10: three models);
 - the simultaneous partition (01 Thm I.5.1, 05 Thm I.18.2);
 - the scale barrier (01 for one phase, 05 for m phases);
 - cancellation through degree three, and the quartic term
-  (03 on every group, 04 on odd order, `P_d = R_d`);
-- the `ℤ/3` cosine polynomial;
-- generalized von Neumann and the telescoping theorem (03, 04);
-- the floor-pattern counts `C_k = F_k` (01, 04).
+  (03 on every group, 04 on odd order, `P_d = R_d`; added: 08 and 09);
+- the odd-order three-cube polynomial (04, 08, 09) and the `ℤ/3` cosine polynomial;
+- generalized von Neumann and the telescoping theorem (03, 04; added: 06, 10);
+- elementary Proposition 7.3 (03, 10);
+- the floor-pattern counts `C_k = F_k` (01, 04, 06) and their asymptotics (01, 06);
+- rounding to sets (03, 04, 08, 09);
+- iteration bookkeeping (03, 06, 10).
 
 ## Files
 
-The directory holds 87 files: 7 at the root, 33 in `code/`, 40 in `data/`, 7 in
-`figures/`. Of these, 40 were placed with sources 01–05 (two of them, the base's
-`article.tex` and `README.md`, are replaced by the write), 46 with sources 06–10
-(placed, write pending), and `article.pdf` was added in this write.
+The directory holds 168 files: 10 at the root, 61 in `code/`, 77 in `data/`, 20 in
+`figures/`. Of these, 38 were placed with sources 01–05 (besides the base's
+`article.tex` and `README.md`, which the first write replaced), 46 with sources
+06–10, and 81 with later sources not yet written in (below); `article.pdf` was
+added by the first write and rebuilt by the second.
 
-**Report files**, written in the write:
+**Report files**, written in the writes:
 
 ```
 README.md
@@ -214,30 +261,23 @@ data/05-phase-partitions-verification_exact.json
 data/05-phase-partitions-verification_fourier.json
 ```
 
-**Sources 06–10, placed by `ad37962c4`, write pending** (46 files; not used in the
-article; to be described by the follow-up write):
+**Source 06, prefix `06-carry-discrepancy-`** (16 files; delivered under
+`verification/` and `figures/`). `code/`: the standard-library certificate
+verifier, the SciPy chamber generator that proposes the certificates, the
+uniformity and density checkers, and the figure script (Matplotlib). `data/`: the
+carry certificates (215 rational witnesses, 1,165 dual certificates), the compact
+carry results with file hashes, the uniformity, density and bound-comparison
+outputs, the verifier log, the package validation record, the delivered
+verification README (`README_VERIFICATION.txt`, a documentation file of the
+package, not its delivery README) and `provenance.json` (SHA-256 of 18 files,
+verified 18/18 at intake). `figures/`: the comparison figure of Section IV.9.
 
 ```
-07-transport-rigidity-FORMALIZATION.md
-09-cubical-expansions-SOURCE_AUDIT.md
 code/06-carry-discrepancy-bound_comparisons.py
 code/06-carry-discrepancy-compute_carry_chambers.py
 code/06-carry-discrepancy-density_checks.py
 code/06-carry-discrepancy-uniformity_checks.py
 code/06-carry-discrepancy-verify_carry_certificates.py
-code/07-transport-rigidity-Makefile
-code/07-transport-rigidity-checks.py
-code/08-cube-fourth-order-build.sh
-code/08-cube-fourth-order-verify_cube_refinements.py
-code/09-cubical-expansions-build.sh
-code/09-cubical-expansions-verify_expansion.py
-code/09-cubical-expansions-verify_lattices.py
-code/10-torsion-energy-make_figure.py
-code/10-torsion-energy-run_all.py
-code/10-torsion-energy-verify_density_phase.py
-code/10-torsion-energy-verify_polynomial.py
-code/10-torsion-energy-verify_structural.py
-code/10-torsion-energy-verify_torsion.py
 data/06-carry-discrepancy-README_VERIFICATION.txt
 data/06-carry-discrepancy-bound_comparisons.json
 data/06-carry-discrepancy-carry_certificates.json
@@ -247,31 +287,184 @@ data/06-carry-discrepancy-package_validation.json
 data/06-carry-discrepancy-provenance.json
 data/06-carry-discrepancy-uniformity_results.json
 data/06-carry-discrepancy-verification_log.txt
+figures/06-carry-discrepancy-bound_comparisons.pdf
+figures/06-carry-discrepancy-bound_comparisons.png
+```
+
+**Source 07, prefix `07-transport-rigidity-`** (6 files). At the root, its
+formalization plan (`FORMALIZATION.md`: proposed Lean obligations, not completed
+code; pinned to `ae0e89574`). `code/`: the exact-arithmetic checks (standard
+library, fixed seed 20261006) and the delivered Makefile. `data/`: the build
+status, the source manifest with blob ids, and the recorded verification output.
+
+```
+07-transport-rigidity-FORMALIZATION.md
+code/07-transport-rigidity-Makefile
+code/07-transport-rigidity-checks.py
 data/07-transport-rigidity-BUILD_STATUS.txt
 data/07-transport-rigidity-source_manifest.json
 data/07-transport-rigidity-verification.json
+```
+
+**Source 08, prefix `08-cube-fourth-order-`** (5 files). `code/`: the
+exact-arithmetic verifier (673,227 four-sets in dimensions 2–6, the three-cube
+classification, the counterexample polynomial by two independent enumerations)
+and the delivered build script. `data/`: the recorded output, the source
+provenance (blob ids, no commit) and a page-layout validation record.
+
+```
+code/08-cube-fourth-order-build.sh
+code/08-cube-fourth-order-verify_cube_refinements.py
 data/08-cube-fourth-order-layout_validation.json
 data/08-cube-fourth-order-source_provenance.json
 data/08-cube-fourth-order-verification_results.json
+```
+
+**Source 09, prefix `09-cubical-expansions-`** (7 files). At the root, its pinned
+source audit. `code/`: the direct cube-average checks (standard library) and the
+lattice census with Smith normal forms (SymPy), and the delivered build script.
+`data/`: their two recorded outputs and the optional requirement (`sympy==1.14.0`).
+
+```
+09-cubical-expansions-SOURCE_AUDIT.md
+code/09-cubical-expansions-build.sh
+code/09-cubical-expansions-verify_expansion.py
+code/09-cubical-expansions-verify_lattices.py
 data/09-cubical-expansions-lattice_results.json
 data/09-cubical-expansions-requirements-optional.txt
 data/09-cubical-expansions-results.json
+```
+
+**Source 10, prefix `10-torsion-energy-`** (12 files; delivered under
+`verification/`, `figures/` and the package root). `code/`: the runner and its four
+diagnostics (density and phase, structural, torsion, polynomial colouring), and
+the figure script. `data/`: the recorded results with script hashes, the formula
+examples, the source manifest with blob ids, and the requirements (`numpy`,
+`matplotlib`). `figures/`: the frontier figure of Section I.24.
+
+```
+code/10-torsion-energy-make_figure.py
+code/10-torsion-energy-run_all.py
+code/10-torsion-energy-verify_density_phase.py
+code/10-torsion-energy-verify_polynomial.py
+code/10-torsion-energy-verify_structural.py
+code/10-torsion-energy-verify_torsion.py
 data/10-torsion-energy-formula_examples.json
 data/10-torsion-energy-requirements.txt
 data/10-torsion-energy-source_manifest.json
 data/10-torsion-energy-verification_results.json
-figures/06-carry-discrepancy-bound_comparisons.pdf
-figures/06-carry-discrepancy-bound_comparisons.png
 figures/10-torsion-energy-phase_frontier.pdf
 figures/10-torsion-energy-phase_frontier.png
 ```
 
-**Not shipped**, all retrievable from `66f24b0d0`:
-- the five PDFs;
-- the manuscripts of sources 01, 02, 03 and 05, which are printed in the article;
-- the delivery READMEs of 01, 02, 03 and 05 (their limitations are carried below);
+**Sources 11–14, placed by `6f530c29c`, write pending** (39 files; not used in the
+article):
+
+```
+11-affine-rigidity-formalization_plan.md
+11-affine-rigidity-validation.md
+code/11-affine-rigidity-build.sh
+code/11-affine-rigidity-verify.py
+code/12-bohr-extension-make_figure.py
+code/12-bohr-extension-verify_bohr_fourier.py
+code/12-bohr-extension-verify_extension.py
+code/13-simultaneous-recurrence-make_figures.py
+code/13-simultaneous-recurrence-verify_cubes.py
+code/13-simultaneous-recurrence-verify_density.py
+code/13-simultaneous-recurrence-verify_fourier_counting.py
+code/13-simultaneous-recurrence-verify_partitions.py
+code/14-sharp-extremals-make_figures.py
+code/14-sharp-extremals-verify_certificates.py
+code/14-sharp-extremals-verify_results.py
+data/11-affine-rigidity-sources.json
+data/11-affine-rigidity-verification_log.txt
+data/11-affine-rigidity-verification_results.json
+data/12-bohr-extension-build_report.json
+data/12-bohr-extension-extension_validation.json
+data/12-bohr-extension-parameter_ledger.json
+data/12-bohr-extension-verification_bohr_fourier.json
+data/13-simultaneous-recurrence-cube_verification_summary.json
+data/13-simultaneous-recurrence-density_summary.json
+data/13-simultaneous-recurrence-fourier_counting_summary.json
+data/13-simultaneous-recurrence-partition_verification.json
+data/13-simultaneous-recurrence-provenance.json
+data/14-sharp-extremals-certificate_results.json
+data/14-sharp-extremals-environment.json
+data/14-sharp-extremals-quality_checks.json
+data/14-sharp-extremals-source_manifest.json
+data/14-sharp-extremals-verification_results.json
+figures/12-bohr-extension-extension_frontier.pdf
+figures/13-simultaneous-recurrence-density_frontier.pdf
+figures/13-simultaneous-recurrence-density_frontier.png
+figures/13-simultaneous-recurrence-partition_frontier.pdf
+figures/13-simultaneous-recurrence-partition_frontier.png
+figures/14-sharp-extremals-cube_convergence.pdf
+figures/14-sharp-extremals-cube_convergence.png
+```
+
+**Sources 15–17, placed by `eed2ab863`, write pending** (21 files; not used in the
+article):
+
+```
+15-collision-amplification-integration.md
+code/15-collision-amplification-build.sh
+code/15-collision-amplification-verify.py
+code/16-phase-localization-make_figures.py
+code/16-phase-localization-verify_cube_coefficients.py
+code/16-phase-localization-verify_localization.py
+code/16-phase-localization-verify_partitions.py
+code/17-polynomial-restriction-build.sh
+code/17-polynomial-restriction-verify.py
+data/15-collision-amplification-provenance.json
+data/15-collision-amplification-verification.txt
+data/15-collision-amplification-verification_results.json
+data/16-phase-localization-cube_results.txt
+data/16-phase-localization-localization_constants.csv
+data/16-phase-localization-localization_results.json
+data/16-phase-localization-partition_results.json
+data/16-phase-localization-pdf_review.txt
+data/17-polynomial-restriction-source_manifest.json
+data/17-polynomial-restriction-verification_results.json
+figures/16-phase-localization-localization_constants.pdf
+figures/16-phase-localization-localization_constants.png
+```
+
+**Sources 18–20, placed by `58aa0c493`, write pending** (21 files; not used in the
+article):
+
+```
+code/18-arrangement-degeneracy-make_partition_figure.py
+code/18-arrangement-degeneracy-verify_refinements.py
+code/19-shared-interpolation-make_figures.py
+code/19-shared-interpolation-verify_polynomial.py
+code/19-shared-interpolation-verify_sampling.py
+code/20-quadratic-counting-Makefile
+code/20-quadratic-counting-verify.py
+data/18-arrangement-degeneracy-provenance.json
+data/18-arrangement-degeneracy-verification_results.json
+data/19-shared-interpolation-poisson_constants.json
+data/19-shared-interpolation-polynomial_results.json
+data/19-shared-interpolation-sampling_results.json
+data/19-shared-interpolation-source-audit.json
+data/20-quadratic-counting-BUILD_REPORT.txt
+data/20-quadratic-counting-source_manifest.json
+data/20-quadratic-counting-validation_summary.json
+data/20-quadratic-counting-verification_report.json
+figures/18-arrangement-degeneracy-partition_exponents.pdf
+figures/18-arrangement-degeneracy-partition_exponents.png
+figures/19-shared-interpolation-sampling_extrema.pdf
+figures/19-shared-interpolation-sampling_extrema.png
+```
+
+**Not shipped**, all retrievable from the arrival commits (`66f24b0d0` for 01–05,
+`62e21161f` for 06–10):
+- the ten PDFs;
+- the manuscripts of sources 01, 02, 03, 05 and 06–10, which are printed in the
+  article;
+- the delivery READMEs of 01, 02, 03, 05 and 06–10 (their limitations are carried
+  below);
 - source 04's `SHA256SUMS.txt`, verified 13/13 at intake (repository policy drops
-  checksum manifests).
+  checksum manifests). Sources 06–10 had no checksum manifests.
 
 **Delivery names.** A shipped file is its delivered path, flattened, behind its
 prefix:
@@ -281,9 +474,10 @@ prefix:
 - audit and provenance notes go to the root.
 
 For example, source 01's `certificates/carry.json` is
-`data/01-carry-transfer-carry.json` and its `results/environment.json` is
-`data/01-carry-transfer-environment.json`. Source 05's `code/verify.py` is
-`code/05-phase-partitions-verify.py`.
+`data/01-carry-transfer-carry.json`; source 06's
+`verification/carry_certificates.json` is
+`data/06-carry-discrepancy-carry_certificates.json`; source 10's
+`verification/run_all.py` is `code/10-torsion-energy-run_all.py`.
 
 ## Labels and numbering
 
@@ -291,44 +485,55 @@ Label prefix **`gsr:`** (none at HEAD before this report). A label has the form
 `gsr:<part>:<source>:<delivered label>`, with Part codes `dt` (I), `en` (II), `cc`
 (III), `fp` (IV), `fz` (V) and `fm` (front matter). For example, source 02's
 `thm:tail` is `gsr:dt:02:thm:tail`. The delivered labels collide across sources
-(`thm:tail` in 01 and 02, `sec:formal`, `sec:questions`, `sec:phase`, …); under
-the prefixes they are distinct.
+(`thm:tail` in 01 and 02, `sec:lean` in 05, 06, 08 and 09, `lem:rounding` and
+`eq:false-lower` in 08 and 09, …); under the prefixes they are distinct.
 
-The write added:
-- a label on every delivered section, `…:sec:d<k>` (67 labels);
-- two labels on remarks of source 03 (`gsr:dt:03:rem:repo`, `gsr:cc:03:rem:rectify`);
-- the five Part labels `gsr:<code>:part`;
-- the front matter's `gsr:fm:sec:guide`, `…:status`, `…:notation`,
-  `…:provenance`, `…:formal`;
-- Part V's `gsr:fz:sec:crosswalk` and `gsr:fz:sec:further`, with 32 item labels
-  `gsr:fz:q:<theme>:<name>`.
+The first write added a label on every delivered section of 01–05,
+`…:sec:d<k>` (67), two remark labels of source 03, the five Part labels, the
+front matter's five section labels, and Part V's `gsr:fz:sec:crosswalk` and
+`gsr:fz:sec:further` with 32 item labels: 538 labels. The second write added the
+408 delivered labels of 06–10 (06: 85, 07: 75, 08: 93, 09: 89, 10: 66), a label on
+each of their 69 delivered sections, the guide `gsr:en:sec:transport`, the remark
+`gsr:cc:rem:falselower` (Remark W1) and 28 item labels in Part V: **1,045 labels**,
+all distinct. No existing label was renamed or removed, and a comparison of the
+`.aux` with a build of the first write's text found every one of its 538 labels
+with the same printed number. A comparison with separate builds of the five new
+delivered `.tex` files found all 408 of their labels present.
 
-That makes 538 labels in all, all distinct. A comparison of the build's `.aux`
-with separate builds of the five delivered `.tex` files found all 424 delivered
-labels present.
-
-**Numbering.** Sections restart in each Part and carry its numeral (I.9; F.1–F.10
+**Numbering.** Sections restart in each Part and carry its numeral (I.9; F.1–F.15
 in the front matter). Statements and equations are numbered within sections. A
-delivered statement or equation `k.j` keeps its index `j`: the `.aux` comparison
-found every delivered theorem-like and equation number unchanged in `j`. The
-exceptions are sources 02 and 03, which numbered equations through the whole
-manuscript, and the appendices, which now carry Part-V section numbers. Source
-04's tags (M1)–(M7), (R1)–(R32), (A1)–(A14), (Q1), (Q2) and (∗) are kept.
-**Bare numbers such as "Lemma 5.15" refer to Gowers's paper**, as in the sources;
-this report's own numbers always carry a Part numeral or an F. The front matter's
-Section F.1 holds the full concordance of delivered sections with sections here.
+delivered statement or equation `k.j` keeps its index `j`; the exceptions are the
+equations of sources 02, 03 and 06, which numbered them through the whole
+manuscript, and the appendices, which now carry Part numbers. Tables and figures
+of sources 06–10 are numbered within their sections (Figure IV.9.1), so that the
+global table and figure numbers of 01–05 do not move; the write's remark on the
+false quartic bound is Remark W1. Source 04's tags (M1)–(M7), (R1)–(R32),
+(A1)–(A14), (Q1), (Q2) and (∗) are kept. **Bare numbers such as "Lemma 5.15"
+refer to Gowers's paper**, as in the sources; this report's own numbers always
+carry a Part numeral or an F. Section F.1 holds the full concordance of delivered
+sections with sections here.
 
 ## Notation
 
-No delivered symbol was renamed. Section F.3 lists every letter whose meaning
-changes across sources, with the tempting false readings, and each Part opens with
-a reading-conventions table. The main collisions:
+No delivered symbol was renamed; one macro was (06's `\snapshot`, its own pin, is
+`\snapshotsix`), and 09's `question` environment is set as this report's
+"Research question". Section F.3 lists every letter whose meaning changes across
+sources, with the tempting false readings, and each Part opens with
+reading-conventions tables (one for 01–05, one for 06–10). The main collisions:
 - **ℰ/E**: 02's `ℰ(w)` (N⁻³-normalized energy on `G × Ĝ`), 04's `ℰ_j` (unnormalized
-  transform), 03's `ℰ(f) = ‖f‖⁴_{U²}` and `ℰ₍₂₎`, 05's captured energy `E`.
-- **R**: 03's `R_d` (parallelogram count) is 04's `P_d`; 04's `R_d` is a remainder;
-  04's `R_d(H)` is 01's `R(H, d)`, with the arguments reversed.
-- **B_k**: 01's and 04's translation budgets are different numbers.
-- **Q, T, κ, ρ, s, L, M, m, q**: several meanings each.
+  transform), 03's `ℰ(f) = ‖f‖⁴_{U²}` and `ℰ₍₂₎`, 05's captured energy `E`; 08's
+  `E₄(f)` and `E_⟨2⟩(f)` and 09's `𝖤₄`, `𝖳₂` are 03's `ℰ(f)` and `ℰ₍₂₎(f)`; 06's
+  `ℰ_d(g)` is an unnormalized cube energy.
+- **Cube counts**: 03's and 04's `Q_d` are 08's `𝒞_d` and 09's `𝒞_d`; 08's
+  `Q_d(f)` (quartic coefficient) and 09's `Q_d` (star count) are not cube counts.
+- **R, P, T, F, A, K**: 03's `R_d` (parallelograms) = 04's `P_d` = 08's `R_d` =
+  09's `P_d`; 08's `F_d` = 09's `A_d` = 03's `K_d`; 08's `K_d` is a binomial sum;
+  04's `R_d` is a remainder; 04's `R_d(H)` is 01's `R(H, d)` and 06's `ℛ_d(H)`.
+- **B_k, c_k**: 01's and 04's translation budgets differ; 06's `K_k` is 01's
+  `B_k`; 06's `B_k(δ)` is a polynomial; 06's `c_k` is not 04's `c_k`.
+- **δ, κ, h_k**: 07's `δ` is a failure probability; 07's `κ` a fibre ratio, 10's
+  `κ_G(c)` a kernel size; 10's `h_k` is a fibre size, 06's `h_k` = `H_k`.
+- **Q, T, ρ, s, L, M, m, q, η, γ**: several meanings each.
 - **α**: a norm power in Gowers's α-uniformity; a correlation elsewhere.
 - **Arcs**: 01's `r` and 05's `ε` are widths in turns; 02's `ρ = sin θ`, which is
   01's `s`.
@@ -338,13 +543,18 @@ a reading-conventions table. The main collisions:
 Section F.2 of the article is the full status table. In short:
 
 **Part I.**
-- The sharp one-sided bound with extremizers (02, 03; case `a = δ`: 01, 05).
+- The sharp one-sided bound with extremizers (02, 03, 06, 10; case `a = δ`: 01, 05).
 - 01's short-arc density tail with phase parameter `s`, occupied-mass exceptions,
   the optimal forced maximum and its trade-off. These are sharp in the finite
   weighted model, not claimed for arithmetic characters.
 - The envelope `C² ≤ (1−ρ²)F² + ρ²L²` for real `f` (01, 02); 02's complex
   counterexample shows that real values are needed.
-- The Lemma 5.15 replacement (02, 03). It needs `α > 0` and nonempty cells.
+- The Lemma 5.15 replacement (02, 03). It needs `α > 0` and nonempty cells. 06's
+  exact fixed-`M` optimum `min{P₊/(b(M−1)), S/(M−2)}` with extremizers, its
+  Lemma 5.15 corollary, the simultaneous threshold `τ(α) = α/4 + 3α²/32 + O(α³)`,
+  and exceptional-set and signed-drift versions.
+- 10's optimal cap `M ≥ δ + δS/(2δ−S)`, the variance cap `M ≥ δ + V/δ`, the tail,
+  and correlation transfer with an exceptional set.
 - Lemma 2.3 with `√(rs/(9M))`, and `1/3` optimal, also under the exact Lean
   hypotheses (05).
 - Corollary 2.4 with `36π`, `3α/4` and the same upper length (05).
@@ -353,7 +563,9 @@ Section F.2 of the article is the full status table. In short:
     `⌊√((N/2π) arcsin(η/4δb))⌋`, for a real frequency, bounded weights and any `N`;
   - 05: `δ + δα/(4δ−α)` at length `≥ √(αN/(16πδ(1−δ)))`, with an exact integer
     length and a popularity bound;
-  - 03: an adjustable version.
+  - 03: an adjustable version;
+  - 10: the frontier `D_γ = δγη/(2δ−γη)` at length `⌊√(N arcsin((1−γ)η/2v)/2π)⌋`;
+    at `γ = 1/2` this is 05's increment at 01's length.
 - Simultaneous partitions (01, 05), the optimal exponent `1/(m+1)` (05), and the
   one-phase barrier `ℓ ≤ 1+√(3r(N−1))` (01).
 - Spectral extraction with a Gram correction and width allocation (05).
@@ -364,36 +576,58 @@ Section F.2 of the article is the full status table. In short:
 - 02's `𝒯_w(f,g)⁴ ≤ min{m(f)⁴𝒰(g), m(g)⁴𝒰(f)}ℰ(w)` on every finite abelian
   group, with coefficient 1 optimal, plus its deficits, alignment and rigidity.
 - 03's cubic DRC certificate and its optimal scalar tangent `κ* = 0.95378…`.
-- 03's elementary BSG bound, far weaker than Reiher–Schoen.
-- 04's exact interpolation (M1)–(M7).
-- 04's restriction theorem with `κ_d = 1/(2(400d)^d)`, `Λ_d = 2(1+C(2d,2))(400d)^d`,
-  over prime fields only.
-- 04's arrangement interpolation.
+- 03's elementary BSG bound `(c/8, 2¹⁹c⁻⁹)` and 10's `(c/4, 2¹⁰c⁻⁵)`, both far
+  weaker than Reiher–Schoen.
+- 04's exact interpolation (M1)–(M7); its restriction theorem with
+  `κ_d = 1/(2(400d)^d)`, `Λ_d = 2(1+C(2d,2))(400d)^d`, over prime fields only; its
+  arrangement interpolation.
+- 07: the coupled-path rigidity theorem with transport profiles; Freiman order `k`
+  when `2[1+(k−1)κ]δ < 1`; the sharp threshold `1/(2k)` for constant fibres; at
+  Lemma 10.9, order five and (with the ambient package) order nine, allowances
+  `120⁻⁵` and `75⁻⁵`; the root-law linear program, collision-to-mode, weighted and
+  nonabelian versions.
+- 10: Lemma 7.5 with `|B|/(k(h_k−1)+1)`, Corollary 7.6 with `2⁻²⁰⁹γ¹⁰³`, and a
+  torsion budget for general finite codomains.
 
 **Part III.**
-- 03's exact quartic term `δ^{m−4}(R_d ℰ(f) + T_d ℰ₍₂₎(f))`. `K_d` is optimal over
-  all groups, the power 4 is optimal for sets, and the fifth-order remainder is
-  necessary.
+- The exact quartic term `δ^{m−4}(R_d ℰ(f) + T_d ℰ₍₂₎(f))` (03, 08, 09). `K_d` is
+  optimal over all groups, the power 4 is optimal for sets, and the fifth-order
+  remainder is necessary.
+- 09's complete four- and five-vertex classifications on every finite abelian
+  group, the exact fifth order `δ^{m−5}(Q_d 𝖬₅ + S_d 𝖳₃,₅)`, sharpness through
+  order six, the determinant-5 configuration and the all-prime family.
+- 08's complete odd-order three-cube polynomial (support counts 12, 8, 28, 8, 1),
+  Fourier lower bound `(δ⁴+E₄)^{p/4}`, inhomogeneous weights and the
+  character-kernel survival criterion.
+- **Refuted, on record:** `Q₃(F) ≥ δ⁸ + 12δ⁴‖F−δ‖⁴_{U²}` (Remark W1).
 - 04's norm gap with equality and stability; the three-cube bound with leading
   `6√2 δ⁴u⁴`; the `u^{16/3}` correction with optimal exponent for
   `gcd(|G|, 6) = 1`; sharpness for sets.
 - Generalized von Neumann and the telescoping error `(k−2)α` in place of `2^k α`
-  (03, 04).
+  (03, 04, 06, 10); 06's two-target bound and quadratic discrepancy
+  `√δ B_k(δ) ε²` (sharp three-term variance factor); 10's mixed-`L^p` bound with
+  kernel factors, sharp on `(ℤ/2ℤ)ⁿ`, and error `δ S_k(δ) η`.
+- 10's exact dimension threshold `d ≤ Σ ⌈D_ℓ/2⌉²` for polynomial colourings
+  (`D_ℓ ≤ k < p`).
 - The lifting lemma (04 Lemma III.4.5; 03's remark).
 
 **Part IV.**
-- `|F(r)| = (∏ 2rᵢ) C_k` (01); integer intervals and the modular count (04).
-- `C_k ≤ R(H_k, k)` (01, 04).
+- `|F(r)| = (∏ 2rᵢ) C_k` (01); integer intervals and the modular count (04); every
+  finite `V ⊂ ℤ^k_{≥0}` containing 0 and the unit vectors (06).
+- `C_k ≤ R(H_k, k)` (01, 04, 06).
 - `C_k ≥ 2^{⌊k²/4⌋}` (01) and `C_k ≥ 2^{k(k−1)/2}` (04).
 - `log₂ C_k ~ k²` and `log₂ A_k ~ k²`, using the classical threshold-function
-  count of Zuev and Kahn–Komlós–Szemerédi as recorded by Baldi–Vershynin; this is
-  an external input, not reproved.
+  count (Zuev; Kahn–Komlós–Szemerédi as recorded by Baldi–Vershynin); an external
+  input, not reproved; uniformly modulo `M` and for translation classes (06).
 - The polynomial floor entropy (lower half external: Baldi–Vershynin).
-- The certified counts.
-- 04's local phase-extraction coefficient.
+- The certified counts (01, 04, 06).
+- The local phase-extraction coefficients of 04 and 06.
 
-**Proved in the write** (dated notes, each with its proof; listed in the article's
-Section F.1):
+**Part V.** Iteration bookkeeping: 03's density and length recurrence, 06's
+discrete potential with optimal leading cost, 10's `321(δ₀⁻¹ − 1)` steps and exact
+length propagation.
+
+**Proved in the first write** (dated notes, each with its proof; listed in F.1):
 1. **01's increment is at least 3/2 times 05's** (and 03's at `λ = 1/2`) at the
    stated parameters. With `κ = η/(2δb)`, the ratio is
    `3/2 + (3/2)(2−δ)κ/(4−(4−3δ)κ)`. The lengths are of the same order.
@@ -405,16 +639,39 @@ Section F.1):
    follows from 04's norm gap and answers 03's Research question for `d = 3`; the
    best odd-order leading constant is `R₃ c₃^odd = 6√2`.
 4. **04's lower bound `2^{k(k−1)/2}` beats 01's `2^{⌊k²/4⌋}` for every `k ≥ 3`**,
-   and equals it at `k = 1, 2`: `k(k−1)/2 − k²/4 = k(k−2)/4`. The intake dossier
-   said "for every k ≥ 2", which is wrong at `k = 2`.
+   and equals it at `k = 1, 2`.
+
+**Proved in the second write** (dated notes, each with its proof; listed in F.1):
+5. **01 against 10's frontier.** With `κ = η/(2δb)`: 01's increment is at least
+   10's `D_γ` iff `γ(4−κ) ≤ 3`, and at least `(3/2)D_γ` iff `γ(4−(2−δ)κ) ≤ 2`; so
+   the 3/2 domination holds for every `γ ≤ 1/2` (where 10's length is at least
+   01's), not along the whole frontier.
+6. **06's fixed-`M` bound against the `M−1` corollary of 02/03**: at least as
+   large, strictly for `α < 1`, equal at `α = 1` (the intake said "strictly").
+7. **Iteration**: the leading coefficients of `δ₀^{1−p}` in the step counts of 06,
+   10 and 03 satisfy `1/(cq) ≤ 1/(1−(1+c)^{−q}) ≤ (1+c)^p/(cq)`, `q = p−1`.
+8. **Progression criteria**: in the paper's `α`, the powers of `δ` are
+   `k2^{k−1}` (04), `(k−1)2^{k−1}` (10), `(k−½)2^{k−2}` (06) and `k2^k` (Lean
+   `corollary_3_6`); 06's is the smallest for every `k ≥ 3`.
+9. **10 implies the formal Lemma 7.5 and Corollary 7.6 conclusions**
+   (`γ ≤ 1` is forced; `C ≥ 1`); not formalized.
+
+Recomputed independently at the second write: the `ℤ/11` counterexample (exact
+enumeration of all `11⁴` frequency choices, and direct summation over all cubes);
+09's determinant-5 configuration (`det B = −5`, `M_S r = (10,5,5,5,5,5)`, Smith form
+`1,1,1,1,1,5`, moment 4 on `ℤ/5`); 10's `2⁻²⁰⁹γ¹⁰³`; 06's and 04's coefficients at
+`k = 8` (`2⁻²¹²·⁷⁰` and `2⁻¹²¹·⁶⁶`); 07's endpoint `331257600001/335923200000 < 1`;
+08's and 09's order-two closed forms (identical); 09's Stirling coefficients
+against 08's and 03's counts (`d = 2, …, 7`). Script and output:
+not shipped (the write's scratch record).
 
 ## What the report does not claim
 
 No source claims a new bound for `r_k(N)`. All cite Leng–Sah–Sawhney's
-`r_k(N) ≪ N exp(−(log log N)^{c_k})`, `k ≥ 5`, as the benchmark. No source
-claims literature priority or an exhaustive priority search, Lean compilation, or
-kernel verification. Further limitations, kept in place and collected in Section
-V.2:
+`r_k(N) ≪ N exp(−(log log N)^{c_k})`, `k ≥ 5`, as the benchmark (10 also
+Raghavan's 2026 `r₃` bound and Green–Tao's `r₄`). No source claims literature
+priority or an exhaustive priority search, Lean compilation, or kernel
+verification. Further limitations, kept in place and collected in Section V.2:
 - sharpness in the weighted model, not for arithmetic characters (01);
 - `36π` and `3/4` not claimed optimal, and sharpness only for linear phases,
   uniform arcs and symmetric widths (05);
@@ -423,7 +680,17 @@ V.2:
 - the restriction theorem is prime-only and does not prove the Lean
   Lemma 9.3/Corollary 9.4 (04);
 - `PP(K,R₀)` is imported (02);
-- `R_d` is not claimed optimal on odd-order groups (03; for `d = 3` it is not);
+- `R_d` is not claimed optimal on odd-order groups (03, 08; for `d = 3` it is not);
+- orders five and nine are guaranteed orders, not maximal ones; the sharpness is
+  for the directional defect `δ`, not `η`; the factors 243 and 2548.04 are not
+  improvements of a global bound (07);
+- 57 is a convenient constant; the sets in 08's sharpness theorem have densities
+  tending to `δ` (08);
+- 09's sixth-order certificates are not inverse theorems; no originality claim (09);
+- the colouring theorem concerns declared polynomial coordinates only; no novelty
+  claim for the polynomial method (Führer–Taranchuk credited); the
+  Reiher–Schoen variant uses a published input (10);
+- 06's leading entropy rests on Zuev's count;
 - finite and numerical checks prove nothing general (all).
 
 From the delivery READMEs:
@@ -432,66 +699,69 @@ From the delivery READMEs:
   large `N`.
 - 01's finite certificates are proof evidence for the finite counts only, and its
   verifier is ordinary Python.
+- 06, 07, 08, 09, 10: the delivery READMEs repeat that the finite checks are
+  supplementary, that no Lean build was run, and that nothing global is claimed.
 
 ## Further questions, and the standing rule
 
-Section V.2 applies Vladimir's standing rule of 4 October 2026. It groups the
-sources' 46 questions (01: 10, 02: 7, 03: 9, 04: 12, 05: 8) into 32 items under
-five themes, with credits:
-- **I**, density transfer: 10 items, 14 questions;
-- **II**, the inverse step: 8 items, 9 questions;
-- **III**, cubes and progressions: 7 items, 8 questions;
-- **IV**, floor patterns: 5 items, 7 questions;
-- **V**, integration and formalization: 2 items, 8 questions.
+Section V.2 applies Vladimir's standing rule of 4 October 2026. The first write
+grouped the 46 questions of 01–05 (01: 10, 02: 7, 03: 9, 04: 12, 05: 8) into 32
+items. The second write adds the 50 questions of 06–10 (06: 11, 07: 8, 08: 10,
+09: 10, 10: 11; the intake dossier said 10 for source 10) and two question
+paragraphs of 10, as 28 new items or dated sentences in existing items:
+- **I**, density transfer: 11 items, 17 questions;
+- **II**, the inverse step: 18 items, 19 questions and one paragraph;
+- **III**, cubes and progressions: 22 items, 33 questions and one paragraph;
+- **IV**, floor patterns: 6 items, 13 questions;
+- **V**, integration and formalization: 3 items, 14 questions.
 
-Items are numbered within themes, so the follow-up write for sources 06–10 can
-extend them.
-
-- **Answered inside the report** (dated notes at the questions):
-  - 04's Question 8, the leading constant of `log₂ F_k/k²` and `log₂ A_k/k²`, is
-    answered by 01: it is 1, using the classical threshold count, and 01 certifies
-    `F₄ = C₄ = 154`.
-  - 03's question on `c_d^odd` is settled for `d = 3` by 04, as above; with it,
-    03's Remark III.2.9 is settled at `d = 3`. 04's Question 3 is the same
-    question for `d ≥ 4` and is merged with it.
-- **Not certified**, recorded as item IV.2: the intake's recount gives
-  `C₅ = 8410` and `A₄ = 770`. It used floating-point LPs with every feasibility
-  witness re-evaluated exactly, but the infeasibility side rests on solver
-  status. Both values lie within the proved bounds
-  `1024 ≤ C₅ ≤ 2,138,410` and `270 ≤ A₄ ≤ 242,825`.
-- **Refuted:** nothing. No claim of the five manuscripts was found false, and
-  none asserts an unproved theorem as proved.
-- **Moved to further questions:** no unproved claim needed moving. The external
-  inputs, the threshold counts and `PP(K,R₀)`, are listed with their status.
+- **Answered or advanced inside the report** (dated notes at the questions):
+  - 04's Question 8 is answered by 01 and, independently, by 06: the leading
+    constant is 1 (classical threshold count); `C₄ = 154` is certified twice.
+  - 03's question on `c_d^odd` is settled for `d = 3` by 04; 08's question
+    "`κ₃^odd = 1/√2`?" is the same and is answered yes.
+  - 03's question on the fifth and sixth coefficients: the fifth is answered by
+    09; the sixth stays open (09 shows order-five torsion enters there).
+  - 02's finite-cell extremal problem is solved by 06 in the weighted model; integer
+    cardinalities and prescribed sizes stay open.
+  - 06's Question 7 and 04's Question 10 are advanced by 10's torsion factors.
+- **Not certified**, item IV.2: `C₅ = 8410` and `A₄ = 770` (intake recount,
+  floating-point infeasibility side). 06 does not compute them either.
+- **Refuted and kept on record:** the quartic lower bound with coefficient 12
+  (posed and refuted by 08 and 09, also refuted by 03; not a claim of any source),
+  Remark W1 with the counterexample. No claim of the ten manuscripts was found
+  false, and none asserts an unproved theorem as proved.
+- **Intake statements corrected at the second write:** 06's improvement over the
+  `M−1` corollary is strict only for `α < 1`; 01 dominates 10's increment by 3/2
+  only for `γ ≤ 1/2`; 10 asks 11 questions, not 10; 09's date for version 2 of
+  Shi–Dong (24 August 2026) is wrong — arXiv lists 28 July 2026 (bibliography
+  note).
+- **Moved to further questions:** no unproved claim needed moving. External inputs
+  (threshold counts, `PP(K,R₀)`, Plünnecke–Ruzsa, Reiher–Schoen for 10's labelled
+  variant) are listed with their status.
 
 ## What was checked, and what was not
 
-**At intake** (dossier of batch 115, 6 October 2026), all five manuscripts were
-read. Every headline was re-derived, and the computable ones were checked. The
-checks included:
-- the nine-point parity obstruction;
-- the `36π` arithmetic;
-- 02's identities on non-cyclic groups;
-- the Lemma 5.15 replacement;
-- the DRC constants;
-- 04's norm gap, by adversarial minimization on `ℤ/5, ℤ/7, ℤ/9, ℤ/15, ℤ/3×ℤ/3, ℤ/25`;
-- 04's cube bounds, re-evaluated at 60 digits after a float search flagged
-  rounding noise;
-- the two-frequency identity on `ℤ/17`;
-- `R_d = P_d`;
-- the carry counts.
+**At intake** (dossier of batch 115, 6 October 2026), all ten manuscripts were
+read, every headline re-derived and the computable ones checked; all delivered
+suites were rerun on copies and reproduced their recorded outputs (except
+last-ulp floating-point diagnostics and 10's timestamps). For 06–10 the checks
+included 06's fixed-`M` extremizers and `τ(α)`, 06's quadratic discrepancy on
+random sets, 07's order five at the literal Lean hypotheses and its exact
+endpoints, 08's counterexample and `R_d, T_d, F_d` to `d = 6`, 09's Stirling
+multiplicities and determinant-5 certificate, 10's torsion sharpness, weighted
+BSG and `2⁻²⁰⁹γ¹⁰³`, and the online existence of the cited 2026 preprints.
 
-All delivered suites were rerun on copies; they reproduced the recorded outputs,
-except last-ulp floating-point diagnostics.
+**At the first write:** every comparison of 01–05 with the formal project was
+checked against the ledger and the Lean declarations at `25df8755d`; the four
+statements above were proved; the short suites of 01–05 were rerun on copies.
 
-**At the write:**
-- every comparison with the formal project was checked against the ledger and
-  the Lean declarations at HEAD (Section V.1, with files and lines);
-- the four statements above were proved;
-- the Table rows quoted in notes were recomputed;
-- the short suites were rerun on copies, on Windows with Python 3.14.4. The
-  routes are below; all outputs were byte-identical to the shipped ones after
-  removing carriage returns.
+**At the second write:** every comparison of 06–10 with the formal project was
+checked at HEAD `764740f07` (Section V.1, second table, with files and lines);
+statements 5–9 were proved and the recomputations above made; the short suites of
+06–10 were rerun on copies by the routes below (Windows, Python 3.14.4), and all
+outputs matched the shipped ones after removing carriage returns (10: script
+hashes and printed outputs identical; its JSON carries a timestamp).
 
 **Not verified:** the external threshold-count theorems and the published
 literature the sources compare with; the long proofs beyond the intake's
@@ -499,20 +769,23 @@ re-derivations.
 
 ## Relation to the formal project
 
-The ledger (`gowers-proof-status.json`) moved during this write; the Lean
-development is being extended concurrently. At the pins it recorded 88 exact
-companions and 32 open statements. At HEAD `25df8755d` (6 October 2026) it records
-98 and 22. The ten statements closed since the pins are Corollaries 5.6, 5.7 and
-5.11 and Lemmas 5.9, 5.10, 5.14, 16.1, 16.3, 16.5 and 16.6. Each source's
-comparison with a corrected statement is accurate at HEAD except two stale claims,
-which the article corrects in dated notes:
+The ledger (`gowers-proof-status.json`) moves while the Lean development is being
+extended by another session. At the pins of 01–05 it recorded 88 exact companions
+and 32 open statements; at `7d99e5dee` and `ae0e89574` (pins of 06, 09, 10 and
+of 07) 95 and 25. At the first write (`25df8755d`) it recorded 98 and 22; at the
+second write (HEAD `764740f07`) 99 and 21, and
+`FORMALIZATION_STATUS.txt` reported 196 modules and 1,805 audited
+public theorems (06 quotes 140 and 1,365 from its pin). Each source's comparison
+with a corrected statement is accurate at HEAD except stale claims, which the
+article corrects in dated notes:
 - source 02 calls its partition input `PP(K,R₀)`, i.e. Corollary 5.6, "not … Lean-verified". It is now
   `corollary_5_6_holds` (`Proofs05FullPartition.lean`), with identical constants.
   The affine pullback of polynomials is formal (`polynomialOn_affine_pullback`),
   but 02's refinement theorem itself is not.
-- source 03 (and implicitly 01) quotes the ledger as 88/32.
+- source 03 (and implicitly 01) quotes the ledger as 88/32; sources 06 and 10 quote
+  95/25, and 06 quotes 140 modules and 1,365 theorems.
 
-**Formalized:** exactly one statement of the five sources, 04's Lemma III.4.5
+**Formalized:** exactly one statement of the ten sources, 04's Lemma III.4.5
 (lifting a modular progression from a short interval) with 03's rectification
 remark. They are `hasNatAP_of_short_modular_sequence` and
 `hasNatAP_of_hasModAP_image` (`Proofs18IntervalTransfer.lean`, lines 22, 92),
@@ -520,6 +793,18 @@ added in `327773149`, which is 04's own pin, before arrival. Some baselines that
 the sources improve are already proof-level facts of the development:
 - Corollary 2.5's stronger pair, in `cor25_large_scale`;
 - Lemma 9.2's exact Parseval, inside `lemma_9_2_holds`.
+
+**Lemma 10.9 (source 07).** `lemma_10_9` (`Section10.lean`, line 335; companion
+`lemma_10_9_holds`, `Proofs10Shift.lean`, line 717) concludes `FreimanHom 2 B' psi`.
+07's order five has exactly its hypotheses (nonempty `W`,
+`IsSection10ShiftRegular`, `IsSection10LocalDifferenceModel` with
+`θ = 10η^{1/5}`, `6√θ < 1`) and does not use `(1−θ)|B| ≤ |B'|`. 07's order nine
+also needs the fibre lower bound `α²M/16`, ambient invariance
+`DomainInvariant D B (σM)` and `ρ ≤ α²/32`, `σ ≤ ηρα²/16` — hypotheses of
+`lemma_10_6` and the Section 10 set-up, not of `lemma_10_9`; a formal order-nine
+theorem needs a new statement. Neither order is formalized. Likewise 10's
+Lemma 7.5 and Corollary 7.6 replacements imply the conclusions of `lemma_7_5` and
+`corollary_7_6`, but that implication is not formalized.
 
 **Nothing else here is formalized, and the report gains no formal status.**
 Pointers for `FORMALIZATION_STATUS.txt` are left to the session that maintains
@@ -540,9 +825,17 @@ and the source paper in `Papers/sz-thm-gowers-proof`.
   - 01's `check_certificate_rejection.py` imports `carry_certificates`, reads
     `ROOT/certificates/carry.json` and writes `ROOT/results/verifier_negative_tests.json`.
   - 01's `check_refinements.py` writes `../results/refinement_checks.json`.
-  - 01's Makefile and 02's `build.sh` name the delivered files.
-  - 02's `verify.py` overwrites `verification_results.json` beside itself.
-  - 05's `verify.py` does `from phase_partitions import …`.
+  - 01's Makefile, 02's, 08's and 09's `build.sh` and 07's Makefile name the
+    delivered files.
+  - 02's `verify.py` overwrites `verification_results.json` beside itself; 06's and
+    09's checkers write their JSON beside themselves (`verification/` in the
+    delivery); 07's and 08's checkers write to `--output` (default in the current
+    directory).
+  - 05's `verify.py` does `from phase_partitions import …`; 10's `run_all.py` runs
+    its four siblings by their delivered names and writes
+    `../verification_results.json`; 10's `make_figure.py` writes `figures/` and
+    `formula_examples.json` one level up; 06's `bound_comparisons.py` writes its
+    JSON beside itself and its figure under `../figures/`, and needs Matplotlib.
   - 03's `make_figure.py` and 04's `make_figures.py` write into `./figures/`
     beside themselves.
 
@@ -550,26 +843,39 @@ and the source paper in `Papers/sz-thm-gowers-proof`.
 - **Source defects**, disclosed and not fixed in the delivered files:
   - 04's `.tex` wrote `_{epsilon\in\Omega_k}` twice, without the backslash; it is
     corrected in the article, with a dated note.
+  - 10's `.tex` has `M_{\rm rest}` mangled three times into `M_{` + line break +
+    `m rest}` (its PDF prints "M_{m rest}"); restored in the article, with a dated
+    note.
+  - 09's bibliography dates version 2 of Shi–Dong (arXiv:2607.20752) "24 August
+    2026"; arXiv lists 22 July (v1) and 28 July 2026 (v2), checked at the second
+    write. Corrected in a dated bibliography note.
   - 05's `SOURCE_AUDIT.md` says its pinned read of `Proofs02Partition.lean`
     "included lines 580–780". That file has 702 lines; its blob `291b149` and the
     construction described are correct.
-  - 02 and 05 link some repository files through the moving branch `main`; their
-    blob ids are correct.
+  - 02, 05 and 08 link some repository files through the moving branch `main`;
+    their blob ids are correct. 08 records no commit.
   - 02 records no pin in its README; its Appendix A gives the observed branch
     ref `66c02f8a1`.
   - 01's bibliography gives the public Gowers PDF under `users/gasarch`, the
-    others under `~gasarch`.
+    others under `~gasarch` (07, 08 and 09 also under `users/gasarch`).
+  - 10's `.tex` keeps two fragment-assembly comments ("Integration requirements:
+    … No custom macros or citations"); they are invisible and kept.
 - **Delivery names inside shipped text.**
-  - 04's `source_manifest.json` and 03's `SOURCE_NOTES.txt` name delivered files.
+  - 04's and 07's and 10's `source_manifest.json`, 03's `SOURCE_NOTES.txt`, 06's
+    `provenance.json` and `README_VERIFICATION.txt`, 08's `source_provenance.json`,
+    07's `FORMALIZATION.md` and `BUILD_STATUS.txt` and 09's `SOURCE_AUDIT.md`
+    name delivered files.
   - 04's manuscript comment ("See README.txt") is quoted in F.9.
   - 01's `environment.json` records a generic Linux sandbox and no user paths.
 - **Edits of delivered text in the article**, listed in F.1:
   - prefixed labels and unified citation keys;
   - source tags on headings;
   - 02's plain "Section 3" made a live reference;
-  - two figure paths;
+  - four figure paths;
   - two bookmark strings;
-  - the missing backslash restored.
+  - the missing backslash (04) and the damaged `\rm` (10) restored;
+  - 06's `\snapshot` macro renamed, 09's question environment mapped;
+  - 07's Appendix A placed first in its chapter.
 
 ## Rerunning the checks
 
@@ -606,24 +912,56 @@ mkdir -p "$T/r05/code" && for f in phase_partitions verify; do
   same ../verification_exact.json "$OLDPWD/$R/data/05-phase-partitions-verification_exact.json")
 ```
 
-Requirements and run times:
-- 02 needs NumPy; 05's `verify.py` needs mpmath (even for `--part exact`).
-- Do not run Python with `-O`: the 02 and 05 checkers rely on assertions (their
-  delivery READMEs say so).
-- Everything else uses the standard library.
-- Each command runs in under a minute (05 exact: about 40 s).
+Sources 06–10 (added in the second write; same variables):
 
-At the write this block, run verbatim from the repository root (Git Bash on
-Windows, `PY=py`), completed all five comparisons. The
-longer checks also run on these copies:
+```sh
+mkdir -p "$T/r06/verification"
+for f in verify_carry_certificates uniformity_checks density_checks; do
+  cp "$R/code/06-carry-discrepancy-$f.py" "$T/r06/verification/$f.py"; done
+cp "$R/data/06-carry-discrepancy-carry_certificates.json" "$T/r06/verification/carry_certificates.json"
+(cd "$T/r06/verification" && $PY verify_carry_certificates.py &&
+  $PY uniformity_checks.py > /dev/null && same uniformity_results.json "$OLDPWD/$R/data/06-carry-discrepancy-uniformity_results.json" &&
+  $PY density_checks.py > /dev/null && same density_results.json "$OLDPWD/$R/data/06-carry-discrepancy-density_results.json")
+mkdir -p "$T/r07" && cp "$R/code/07-transport-rigidity-checks.py" "$T/r07/checks.py"
+(cd "$T/r07" && $PY checks.py --output verification.json > /dev/null &&
+  same verification.json "$OLDPWD/$R/data/07-transport-rigidity-verification.json")
+mkdir -p "$T/r08" && cp "$R/code/08-cube-fourth-order-verify_cube_refinements.py" "$T/r08/verify_cube_refinements.py"
+(cd "$T/r08" && $PY verify_cube_refinements.py --output verification_results.json > /dev/null &&
+  same verification_results.json "$OLDPWD/$R/data/08-cube-fourth-order-verification_results.json")
+mkdir -p "$T/r09/verification"
+for f in verify_expansion verify_lattices; do cp "$R/code/09-cubical-expansions-$f.py" "$T/r09/verification/$f.py"; done
+(cd "$T/r09/verification" && $PY verify_expansion.py > /dev/null && same results.json "$OLDPWD/$R/data/09-cubical-expansions-results.json" &&
+  $PY verify_lattices.py > /dev/null && same lattice_results.json "$OLDPWD/$R/data/09-cubical-expansions-lattice_results.json")
+mkdir -p "$T/r10/verification"
+for f in run_all verify_density_phase verify_structural verify_torsion verify_polynomial; do
+  cp "$R/code/10-torsion-energy-$f.py" "$T/r10/verification/$f.py"; done
+(cd "$T/r10/verification" && $PY run_all.py)   # writes $T/r10/verification_results.json
+```
+
+Requirements and run times:
+- 02 and 10 need NumPy; 05's `verify.py` needs mpmath (even for `--part exact`);
+  09's `verify_lattices.py` needs SymPy (1.14.0 was used).
+- Do not run Python with `-O`: the 02, 05 and 06 checkers rely on assertions (06's
+  verifier refuses to run under `-O`).
+- Everything else uses the standard library.
+- Each command runs in under a minute (05 exact: about 40 s; 07: about 40 s; 10:
+  about 35 s).
+- 10's `verification_results.json` records a timestamp and the Python version;
+  compare its `stdout` and `sha256` fields with the shipped file instead of the
+  bytes.
+
+At the first write the 01–05 block, and at the second write the 06–10 block, run
+verbatim from the repository root (Git Bash on Windows, `PY=py`; 09 and 10 through
+`uv run --no-project --with sympy==1.14.0` and `--with numpy`), completed all
+comparisons. The longer checks also run on these copies:
 - 01: `check_refinements.py` (NumPy, SymPy);
 - 03: `verify_estimates.py`, compared with `verification_estimates.txt`;
 - 04: `-S verify_refinements.py --output out.json` (two float diagnostics differ
   in the last digit);
 - 05: `verify.py --part fourier` (mpmath, 80 digits).
 
-The intake ran all of these. Regenerating certificates needs SciPy; regenerating
-figures needs Matplotlib.
+The intake ran all of these. Regenerating certificates needs SciPy (01, 06);
+regenerating figures needs Matplotlib (03, 04, 06, 10).
 
 ## Building the article
 
@@ -632,10 +970,11 @@ latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
 Use pdfLaTeX (MiKTeX or TeX Live), in a scratch copy that contains `figures/`.
-The build gives 167 pages, with no warnings, no undefined references, no duplicate
-destinations and no overfull boxes. Packages: amsmath, amssymb, amsthm,
+The build gives 321 pages, with no LaTeX warnings, no undefined references, no
+duplicate destinations and no overfull boxes. Packages: amsmath, amssymb, amsthm,
 mathtools, lmodern, geometry, microtype, graphicx, booktabs, longtable, tabularx,
-array, enumitem, needspace, placeins, xcolor, hyperref, xurl, bookmark. Only
+array, enumitem, needspace, placeins, xcolor, hyperref, xurl, bookmark, tikz
+(source 07's diagram) and listings (source 08's certificate code). Only
 `article.pdf` is committed.
 
 ## Licences
