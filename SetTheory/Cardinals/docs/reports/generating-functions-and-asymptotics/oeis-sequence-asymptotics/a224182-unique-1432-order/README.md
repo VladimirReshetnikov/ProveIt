@@ -259,6 +259,12 @@ confers no formal status.
   nothing (tableau spine, strips and unitary integrals, amplitudes there;
   minima skeletons, Ferrers boards and a split, an order here); neither source
   cites the other. Note: Report 136 writes `b_n` for A224179, not A224182.
+  *[5 October 2026, batch-105 reciprocal note]* What the sibling proves:
+  `u_n ~ C_0 R 9ⁿ n⁻⁴` for one 1234 with `R > 0.50153`, refuting
+  Conway–Guttmann's `R = 1/2` (their Section 5.1; 1432 is their Section
+  5.3), and `b_n/A_n → R_{1243}` for one 1243, with their `149/160` open.
+  For one 1432 the order is `n A_n`, one power of `n` larger, and no
+  amplitude is known (Question 1). A dated note in Section 1.1 says so.
 - `enumerative-combinatorics/a273821-first-pattern-failure`, Part II,
   "A worked example: first failure of 1432" (`fpf:lp:sec:example`): the
   patterns `τ_r = 1 ⊕ δ_r` of Corollary 4.2, through a different statistic.

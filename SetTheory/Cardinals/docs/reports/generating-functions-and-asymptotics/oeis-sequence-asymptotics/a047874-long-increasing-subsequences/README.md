@@ -205,6 +205,14 @@ manuscript uses no repository theorem.
   `Analysis/Transseries/docs/series-and-transseries/Combinatorial_Transseries_Inverses/Combinatorial_Transseries_Inverses.tex`.
 - `a047909-beta-renewal-subsequences` concerns complete increasing
   subsequences of multiset permutations: a different object.
+- `SetTheory/Cardinals/docs/reports/generating-functions-and-asymptotics/oeis-sequence-asymptotics/a217057-unique-pattern-occurrences`
+  (batch 105): permutations with exactly one `1234`, `1243` or `12345`,
+  normalized by the counts with longest increasing subsequence at most 3
+  (A005802) and at most 4 (A047889), that is by partial row sums of
+  A047874. It uses RSK, horizontal-strip tableau sums and unitary-group
+  integrals at those fixed heights as `N → ∞`; no statement overlaps with
+  the sectors `N ≤ rk` or the tail regime `ρ = (N−k)/k` studied here. A
+  cross-reference only. *[5 October 2026, batch-105 reciprocal note]*
 
 **Stale claims.** "A targeted identifier search did not surface an A269021
 report" (Section 1.3; `SOURCE_AUDIT.md`: "returned no matches") is true at

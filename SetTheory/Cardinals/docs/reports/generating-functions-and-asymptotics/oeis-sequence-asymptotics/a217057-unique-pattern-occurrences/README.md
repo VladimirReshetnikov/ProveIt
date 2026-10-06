@@ -398,6 +398,12 @@ All in `SetTheory/Cardinals/docs/reports/`:
   (Report 139, same batch): exactly one `1432`, `Θ(9^n n^{-3})` with explicit
   constants, normalized by the same `A_n`; a minima-skeleton method unrelated
   to the half decompositions here; no cross-citation. A sibling, not a host.
+  *[5 October 2026, batch-105 reciprocal note]* Its Remark 6.3 derives
+  non-algebraicity of the A224182 generating function from the same
+  Bóna–Burstein Lemma 6.3 that Part IV (Report 136) uses for A224179 (a
+  dated note in Section 39 says so). Its explicit constants are
+  `1/2187 ≤ liminf b_n/(nA_n) ≤ limsup b_n/(nA_n) ≤ 81` (its `b_n` is A224182);
+  Conway–Guttmann's `3/80` for 1432 is open there.
 - `generating-functions-and-asymptotics/oeis-sequence-asymptotics/a047874-long-increasing-subsequences`:
   permutations by longest increasing subsequence; `A^{(4)}_n`, `A^{(5)}_n` are
   its counts for length at most 3 and 4, and both reports use RSK and strip
